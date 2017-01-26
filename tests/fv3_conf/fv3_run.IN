@@ -1,0 +1,11 @@
+
+if [ $WARM_START = .F. ]; then
+  cp -r @[RTPWD]/FV3_input_data/INPUT .
+  mkdir RESTART
+else
+  mkdir INPUT RESTART
+  cp -r @[RTPWD]/FV3_input_data/RESTART/* ./INPUT
+fi
+cp    @[RTPWD]/FV3_input_data/*grb .
+cp    @[RTPWD]/FV3_input_data/*_table .
+cp    @[RTPWD]/FV3_input_data/*configure .

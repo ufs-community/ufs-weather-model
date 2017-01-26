@@ -1,0 +1,794 @@
+llogin2
+Compiling 
+
+The FV3 is now configured on wcoss_cray
+
+PrgEnv-intel/5.2.56(211):ERROR:105: Unable to locate a modulefile for 'udreg/2.3.2-1.0502.9889.2.20.ari'
+PrgEnv-intel/5.2.56(211):ERROR:105: Unable to locate a modulefile for 'ugni/6.0-1.0502.10245.9.9.ari'
+PrgEnv-intel/5.2.56(211):ERROR:105: Unable to locate a modulefile for 'pmi'
+PrgEnv-intel/5.2.56(211):ERROR:105: Unable to locate a modulefile for 'dmapp/7.0.1-1.0502.10246.8.47.ari'
+PrgEnv-intel/5.2.56(211):ERROR:105: Unable to locate a modulefile for 'gni-headers/4.0-1.0502.10317.9.2.ari'
+PrgEnv-intel/5.2.56(211):ERROR:105: Unable to locate a modulefile for 'xpmem/0.1-2.0502.57015.1.15.ari'
+PrgEnv-intel/5.2.56(211):ERROR:105: Unable to locate a modulefile for 'dvs/2.5_0.9.0-1.0502.1958.2.55.ari'
+PrgEnv-intel/5.2.56(211):ERROR:105: Unable to locate a modulefile for 'alps/5.2.3-2.0502.9295.14.14.ari'
+PrgEnv-intel/5.2.56(211):ERROR:105: Unable to locate a modulefile for 'rca/1.0.0-2.0502.57212.2.56.ari'
+15.0.3.187
+15.0.3.187
+Currently Loaded Modulefiles:
+  1) craype-network-aries
+  2) craype/2.3.0
+  3) cray-libsci/13.0.3
+  4) udreg/2.3.2-1.0502.9889.2.20.ari
+  5) ugni/6.0-1.0502.10245.9.9.ari
+  6) pmi/5.0.6-1.0000.10439.140.2.ari
+  7) dmapp/7.0.1-1.0502.10246.8.47.ari
+  8) gni-headers/4.0-1.0502.10317.9.2.ari
+  9) xpmem/0.1-2.0502.57015.1.15.ari
+ 10) dvs/2.5_0.9.0-1.0502.1958.2.55.ari
+ 11) alps/5.2.3-2.0502.9295.14.14.ari
+ 12) rca/1.0.0-2.0502.57212.2.56.ari
+ 13) atp/1.8.1
+ 14) PrgEnv-intel/5.2.56
+ 15) intel/16.3.210
+ 16) cray-netcdf/4.3.2
+ 17) xt-lsfhpc/9.1.3
+ 18) craype-haswell
+ 19) ESMF-intel-haswell/7_0_0
+ 20) bacio-intel/2.0.1
+ 21) ip-intel/2.0.0
+ 22) sp-intel/2.0.2
+ 23) w3nco-intel/2.0.6
+ 24) w3emc-intel/2.2.0
++ gmake clean
+Cleaning ... 
+
+(cd fms            && make clean)
+
+Build standalone FV3 fms ...
+
+make[1]: Entering directory `/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/fms'
+Cleaning fms ... 
+
+rm -f -f libfms.a *__genmod.f90 *.o */*.o *.mod *.lst *.i depend
+make[1]: Leaving directory `/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/fms'
+(cd gfsphys        && make clean)
+
+Build standalone FV3 gfsphys ...
+
+make[1]: Entering directory `/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/gfsphys'
+Cleaning gfsphys ... 
+
+rm -f -f libgfsphys.a *__genmod.f90 *.o */*.o *.mod *.lst *.i depend
+make[1]: Leaving directory `/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/gfsphys'
+(cd fv3core        && make clean)
+
+Build standalone FV3 fv3core ...
+
+make[1]: Entering directory `/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/fv3core'
+Cleaning fv3core ... 
+
+rm -f -f libfv3core.a *__genmod.f90 *.o */*.o */*/*.o *.mod *.lst *.i depend
+make[1]: Leaving directory `/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/fv3core'
+rm -f -f fv3.exe libfv3cap.a *.o *.mod *.lst depend 
++ gmake -j 8 nemsinstall
+Building dependencies ...
+gmake -C fms      --jobserver-fds=3,4 -j
+
+Build standalone FV3 fms ...
+
+gmake[1]: Entering directory `/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/fms'
+Building dependencies ...
+gmake[1]: Leaving directory `/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/fms'
+
+Build standalone FV3 fms ...
+
+gmake[1]: Entering directory `/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/fms'
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c mpp/mpp_parameter.F90 -o mpp/mpp_parameter.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c constants/constants.F90 -o constants/constants.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c platform/platform.F90 -o platform/platform.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c drifters/cloud_interpolator.F90 -o drifters/cloud_interpolator.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c drifters/drifters_core.F90 -o drifters/drifters_core.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c drifters/drifters_input.F90 -o drifters/drifters_input.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c drifters/drifters_io.F90 -o drifters/drifters_io.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c drifters/quicksort.F90 -o drifters/quicksort.o
+Using 8-byte addressing
+Using PURE
+Converting pointers to allocatable components
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c random_numbers/MersenneTwister.F90 -o random_numbers/MersenneTwister.o
+Using 8-byte addressing
+Using PURE
+Converting pointers to allocatable components
+Using 8-byte addressing
+Using PURE
+Converting pointers to allocatable components
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c sat_vapor_pres/sat_vapor_pres_k.F90 -o sat_vapor_pres/sat_vapor_pres_k.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c tridiagonal/tridiagonal.F90 -o tridiagonal/tridiagonal.o
+Using 8-byte addressing
+Using PURE
+Converting pointers to allocatable components
+Using 8-byte addressing
+Using PURE
+Converting pointers to allocatable components
+cc -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE  -D__IFC -sox -fp-model source -O2 -debug minimal -qopenmp   -c memutils/memuse.c -o memutils/memuse.o
+cc -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE  -D__IFC -sox -fp-model source -O2 -debug minimal -qopenmp   -c mosaic/create_xgrid.c -o mosaic/create_xgrid.o
+cc -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE  -D__IFC -sox -fp-model source -O2 -debug minimal -qopenmp   -c mosaic/gradient_c2l.c -o mosaic/gradient_c2l.o
+cc -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE  -D__IFC -sox -fp-model source -O2 -debug minimal -qopenmp   -c mosaic/interp.c -o mosaic/interp.o
+cc -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE  -D__IFC -sox -fp-model source -O2 -debug minimal -qopenmp   -c mosaic/mosaic_util.c -o mosaic/mosaic_util.o
+cc -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE  -D__IFC -sox -fp-model source -O2 -debug minimal -qopenmp   -c mosaic/read_mosaic.c -o mosaic/read_mosaic.o
+cc -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE  -D__IFC -sox -fp-model source -O2 -debug minimal -qopenmp   -c mpp/affinity.c -o mpp/affinity.o
+cc -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE  -D__IFC -sox -fp-model source -O2 -debug minimal -qopenmp   -c mpp/nsclock.c -o mpp/nsclock.o
+cc -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE  -D__IFC -sox -fp-model source -O2 -debug minimal -qopenmp   -c mpp/threadloc.c -o mpp/threadloc.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c mpp/mpp_data.F90 -o mpp/mpp_data.o
+Using 8-byte addressing
+Using PURE
+Converting pointers to allocatable components
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c mpp/mpp.F90 -o mpp/mpp.o
+Using 8-byte addressing
+Using PURE
+Converting pointers to allocatable components
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c mpp/mpp_pset.F90 -o mpp/mpp_pset.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c mpp/mpp_efp.F90 -o mpp/mpp_efp.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c mpp/mpp_memutils.F90 -o mpp/mpp_memutils.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c horiz_interp/horiz_interp_type.F90 -o horiz_interp/horiz_interp_type.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c mosaic/gradient.F90 -o mosaic/gradient.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c fft/fft99.F90 -o fft/fft99.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c mpp/mpp_utilities.F90 -o mpp/mpp_utilities.o
+Using 8-byte addressing
+Using PURE
+Converting pointers to allocatable components
+Using 8-byte addressing
+Using PURE
+Converting pointers to allocatable components
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c mpp/test_mpp_pset.F90 -o mpp/test_mpp_pset.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c mpp/mpp_domains.F90 -o mpp/mpp_domains.o
+Using 8-byte addressing
+Using PURE
+Converting pointers to allocatable components
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c mpp/mpp_io.F90 -o mpp/mpp_io.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c block_control/block_control.F90 -o block_control/block_control.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c drifters/drifters_comm.F90 -o drifters/drifters_comm.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c mpp/test_mpp_domains.F90 -o mpp/test_mpp_domains.o
+Using 8-byte addressing
+Using PURE
+Converting pointers to allocatable components
+Using 8-byte addressing
+Using PURE
+Converting pointers to allocatable components
+Compiling in MPI mode (with or without MPP) 
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c drifters/drifters.F90 -o drifters/drifters.o
+Using 8-byte addressing
+Using PURE
+Converting pointers to allocatable components
+Using 8-byte addressing
+Using PURE
+Converting pointers to allocatable components
+Compiling in MPI mode (with or without MPP) 
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c fms/fms_io.F90 -o fms/fms_io.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c memutils/memutils.F90 -o memutils/memutils.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c mpp/test_mpp.F90 -o mpp/test_mpp.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c mpp/test_mpp_io.F90 -o mpp/test_mpp_io.o
+Using 8-byte addressing
+Using PURE
+Converting pointers to allocatable components
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c fms/fms.F90 -o fms/fms.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c mosaic/mosaic.F90 -o mosaic/mosaic.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c fms/test_fms_io.F90 -o fms/test_fms_io.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c time_manager/time_manager.F90 -o time_manager/time_manager.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c horiz_interp/horiz_interp_bicubic.F90 -o horiz_interp/horiz_interp_bicubic.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c horiz_interp/horiz_interp_spherical.F90 -o horiz_interp/horiz_interp_spherical.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c horiz_interp/horiz_interp_conserve.F90 -o horiz_interp/horiz_interp_conserve.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c horiz_interp/horiz_interp_bilinear.F90 -o horiz_interp/horiz_interp_bilinear.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c axis_utils/axis_utils.F90 -o axis_utils/axis_utils.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c field_manager/field_manager.F90 -o field_manager/field_manager.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c diag_manager/diag_grid.F90 -o diag_manager/diag_grid.o
+Using 8-byte addressing
+Using PURE
+Converting pointers to allocatable components
+Using 8-byte addressing
+Using PURE
+Converting pointers to allocatable components
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c coupler/ensemble_manager.F90 -o coupler/ensemble_manager.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c fft/fft.F90 -o fft/fft.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c mosaic/grid.F90 -o mosaic/grid.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c sat_vapor_pres/sat_vapor_pres.F90 -o sat_vapor_pres/sat_vapor_pres.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c topography/gaussian_topog.F90 -o topography/gaussian_topog.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c oda_tools/oda_types.F90 -o oda_tools/oda_types.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c time_manager/get_cal_time.F90 -o time_manager/get_cal_time.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c horiz_interp/horiz_interp.F90 -o horiz_interp/horiz_interp.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c time_interp/time_interp.F90 -o time_interp/time_interp.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c astronomy/astronomy.F90 -o astronomy/astronomy.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c column_diagnostics/column_diagnostics.F90 -o column_diagnostics/column_diagnostics.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c diag_manager/diag_data.F90 -o diag_manager/diag_data.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c field_manager/fm_util.F90 -o field_manager/fm_util.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c oda_tools/write_ocean_data.F90 -o oda_tools/write_ocean_data.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c random_numbers/random_numbers.F90 -o random_numbers/random_numbers.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c tracer_manager/tracer_manager.F90 -o tracer_manager/tracer_manager.o
+Using 8-byte addressing
+Using PURE
+Converting pointers to allocatable components
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c oda_tools/xbt_drop_rate_adjust.f90 -o oda_tools/xbt_drop_rate_adjust.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c diag_manager/diag_axis.F90 -o diag_manager/diag_axis.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c amip_interp/amip_interp.F90 -o amip_interp/amip_interp.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c time_interp/time_interp_external.F90 -o time_interp/time_interp_external.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c horiz_interp/test_horiz_interp.F90 -o horiz_interp/test_horiz_interp.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c oda_tools/oda_core.F90 -o oda_tools/oda_core.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c topography/topography.F90 -o topography/topography.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c oda_tools/oda_core_ecda.F90 -o oda_tools/oda_core_ecda.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c diag_manager/diag_output.F90 -o diag_manager/diag_output.o
+Using 8-byte addressing
+Using PURE
+Converting pointers to allocatable components
+Using 8-byte addressing
+Using PURE
+Converting pointers to allocatable components
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c diag_manager/diag_util.F90 -o diag_manager/diag_util.o
+Using 8-byte addressing
+Using PURE
+Converting pointers to allocatable components
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c diag_manager/diag_table.F90 -o diag_manager/diag_table.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c diag_manager/diag_manager.F90 -o diag_manager/diag_manager.o
+Using 8-byte addressing
+Using PURE
+Converting pointers to allocatable components
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c coupler/coupler_types.F90 -o coupler/coupler_types.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c data_override/data_override.F90 -o data_override/data_override.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c exchange/stock_constants.F90 -o exchange/stock_constants.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c interpolator/interpolator.F90 -o interpolator/interpolator.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c station_data/station_data.F90 -o station_data/station_data.o
+Using 8-byte addressing
+Using PURE
+Converting pointers to allocatable components
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c exchange/xgrid.F90 -o exchange/xgrid.o
+Using 8-byte addressing
+Using PURE
+Converting pointers to allocatable components
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c coupler/atmos_ocean_fluxes.F90 -o coupler/atmos_ocean_fluxes.o
+Using 8-byte addressing
+Using PURE
+Converting pointers to allocatable components
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c exchange/test_xgrid.F90 -o exchange/test_xgrid.o
+ar rv libfms.a oda_tools/xbt_drop_rate_adjust.o amip_interp/amip_interp.o astronomy/astronomy.o axis_utils/axis_utils.o block_control/block_control.o column_diagnostics/column_diagnostics.o constants/constants.o coupler/atmos_ocean_fluxes.o coupler/coupler_types.o coupler/ensemble_manager.o data_override/data_override.o diag_manager/diag_axis.o diag_manager/diag_data.o diag_manager/diag_grid.o diag_manager/diag_manager.o diag_manager/diag_output.o diag_manager/diag_table.o diag_manager/diag_util.o drifters/cloud_interpolator.o drifters/drifters.o drifters/drifters_comm.o drifters/drifters_core.o drifters/drifters_input.o drifters/drifters_io.o drifters/quicksort.o exchange/stock_constants.o exchange/test_xgrid.o exchange/xgrid.o fft/fft.o fft/fft99.o field_manager/field_manager.o field_manager/fm_util.o fms/fms.o fms/fms_io.o fms/test_fms_io.o horiz_interp/horiz_interp.o horiz_interp/horiz_interp_bicubic.o horiz_interp/horiz_interp_bilinear.o horiz_interp/horiz_interp_conserve.o horiz_interp/horiz_interp_spherical.o horiz_interp/horiz_interp_type.o horiz_interp/test_horiz_interp.o interpolator/interpolator.o memutils/memutils.o mosaic/gradient.o mosaic/grid.o mosaic/mosaic.o mpp/mpp.o mpp/mpp_data.o mpp/mpp_domains.o mpp/mpp_efp.o mpp/mpp_io.o mpp/mpp_memutils.o mpp/mpp_parameter.o mpp/mpp_pset.o mpp/mpp_utilities.o mpp/test_mpp.o mpp/test_mpp_domains.o mpp/test_mpp_io.o mpp/test_mpp_pset.o oda_tools/oda_core.o oda_tools/oda_core_ecda.o oda_tools/oda_types.o oda_tools/write_ocean_data.o platform/platform.o random_numbers/MersenneTwister.o random_numbers/random_numbers.o sat_vapor_pres/sat_vapor_pres.o sat_vapor_pres/sat_vapor_pres_k.o station_data/station_data.o time_interp/time_interp.o time_interp/time_interp_external.o time_manager/get_cal_time.o time_manager/time_manager.o topography/gaussian_topog.o topography/topography.o tracer_manager/tracer_manager.o tridiagonal/tridiagonal.o memutils/memuse.o mosaic/create_xgrid.o mosaic/gradient_c2l.o mosaic/interp.o mosaic/mosaic_util.o mosaic/read_mosaic.o mpp/affinity.o mpp/nsclock.o mpp/threadloc.o
+ar: creating libfms.a
+a - oda_tools/xbt_drop_rate_adjust.o
+a - amip_interp/amip_interp.o
+a - astronomy/astronomy.o
+a - axis_utils/axis_utils.o
+a - block_control/block_control.o
+a - column_diagnostics/column_diagnostics.o
+a - constants/constants.o
+a - coupler/atmos_ocean_fluxes.o
+a - coupler/coupler_types.o
+a - coupler/ensemble_manager.o
+a - data_override/data_override.o
+a - diag_manager/diag_axis.o
+a - diag_manager/diag_data.o
+a - diag_manager/diag_grid.o
+a - diag_manager/diag_manager.o
+a - diag_manager/diag_output.o
+a - diag_manager/diag_table.o
+a - diag_manager/diag_util.o
+a - drifters/cloud_interpolator.o
+a - drifters/drifters.o
+a - drifters/drifters_comm.o
+a - drifters/drifters_core.o
+a - drifters/drifters_input.o
+a - drifters/drifters_io.o
+a - drifters/quicksort.o
+a - exchange/stock_constants.o
+a - exchange/test_xgrid.o
+a - exchange/xgrid.o
+a - fft/fft.o
+a - fft/fft99.o
+a - field_manager/field_manager.o
+a - field_manager/fm_util.o
+a - fms/fms.o
+a - fms/fms_io.o
+a - fms/test_fms_io.o
+a - horiz_interp/horiz_interp.o
+a - horiz_interp/horiz_interp_bicubic.o
+a - horiz_interp/horiz_interp_bilinear.o
+a - horiz_interp/horiz_interp_conserve.o
+a - horiz_interp/horiz_interp_spherical.o
+a - horiz_interp/horiz_interp_type.o
+a - horiz_interp/test_horiz_interp.o
+a - interpolator/interpolator.o
+a - memutils/memutils.o
+a - mosaic/gradient.o
+a - mosaic/grid.o
+a - mosaic/mosaic.o
+a - mpp/mpp.o
+a - mpp/mpp_data.o
+a - mpp/mpp_domains.o
+a - mpp/mpp_efp.o
+a - mpp/mpp_io.o
+a - mpp/mpp_memutils.o
+a - mpp/mpp_parameter.o
+a - mpp/mpp_pset.o
+a - mpp/mpp_utilities.o
+a - mpp/test_mpp.o
+a - mpp/test_mpp_domains.o
+a - mpp/test_mpp_io.o
+a - mpp/test_mpp_pset.o
+a - oda_tools/oda_core.o
+a - oda_tools/oda_core_ecda.o
+a - oda_tools/oda_types.o
+a - oda_tools/write_ocean_data.o
+a - platform/platform.o
+a - random_numbers/MersenneTwister.o
+a - random_numbers/random_numbers.o
+a - sat_vapor_pres/sat_vapor_pres.o
+a - sat_vapor_pres/sat_vapor_pres_k.o
+a - station_data/station_data.o
+a - time_interp/time_interp.o
+a - time_interp/time_interp_external.o
+a - time_manager/get_cal_time.o
+a - time_manager/time_manager.o
+a - topography/gaussian_topog.o
+a - topography/topography.o
+a - tracer_manager/tracer_manager.o
+a - tridiagonal/tridiagonal.o
+a - memutils/memuse.o
+a - mosaic/create_xgrid.o
+a - mosaic/gradient_c2l.o
+a - mosaic/interp.o
+a - mosaic/mosaic_util.o
+a - mosaic/read_mosaic.o
+a - mpp/affinity.o
+a - mpp/nsclock.o
+a - mpp/threadloc.o
+gmake[1]: Leaving directory `/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/fms'
+gmake -C gfsphys  --jobserver-fds=3,4 -j 32BIT=N  # force gfs physics to 64bit
+
+Build standalone FV3 gfsphys ...
+
+gmake[1]: Entering directory `/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/gfsphys'
+Building dependencies ...
+gmake[1]: Leaving directory `/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/gfsphys'
+
+Build standalone FV3 gfsphys ...
+
+gmake[1]: Entering directory `/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/gfsphys'
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c machine.F -o machine.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c co2hc.f -o co2hc.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c efield.f -o efield.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c gocart_tracer_config_stub.f -o gocart_tracer_config_stub.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c iounitdef.f -o iounitdef.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c mersenne_twister.f -o mersenne_twister.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c h2oc.f -o h2oc.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c h2ohdc.f -o h2ohdc.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c ideaca.f -o ideaca.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c idea_composition.f -o idea_composition.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c namelist_soilveg.f -o namelist_soilveg.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c progtm_module.f -o progtm_module.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c rayleigh_damp.f -o rayleigh_damp.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c rayleigh_damp_mesopause.f -o rayleigh_damp_mesopause.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c sfcsub.f -o sfcsub.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c tridi2t3.f -o tridi2t3.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c gwdc.F -o gwdc.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c num_parthds.F -o num_parthds.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c cnvc90.f -o cnvc90.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c date_def.f -o date_def.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c physcons.f90 -o physcons.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c gfs_phy_tracer_config.f -o gfs_phy_tracer_config.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c physparam.f -o physparam.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c ozne_def.f -o ozne_def.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c gwdps.f -o gwdps.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c progt2.f -o progt2.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c set_soilveg.f -o set_soilveg.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c module_nst_parameters.f90 -o module_nst_parameters.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c sflx.f -o sflx.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c shalcv.f -o shalcv.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c shalcv_opr.f -o shalcv_opr.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c get_prs_fv3.f90 -o get_prs_fv3.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c ozinterp.f90 -o ozinterp.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c dcyc2.f -o dcyc2.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c dcyc2.pre.rad.f -o dcyc2.pre.rad.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c tracer_const_h.f -o tracer_const_h.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c radsw_param.f -o radsw_param.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c funcphys.f90 -o funcphys.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -xCORE-AVX-I -c radiation_astronomy.f -o radiation_astronomy.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c radlw_param.f -o radlw_param.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c radiation_surface.f -o radiation_surface.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c idea_co2.f -o idea_co2.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c idea_dissipation.f -o idea_dissipation.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c idea_h2o.f -o idea_h2o.o
+ifort: command line warning #10121: overriding '-xCORE-AVX2' with '-xCORE-AVX-I'
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c idea_ion.f -o idea_ion.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c idea_o2_o3.f -o idea_o2_o3.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c idea_phys.f -o idea_phys.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c idea_solar_heating.f -o idea_solar_heating.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c idea_tracer.f -o idea_tracer.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c lrgsclr.f -o lrgsclr.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c mfpbl.f -o mfpbl.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c moninedmf.f -o moninedmf.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c moninp1.f -o moninp1.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c moninp.f -o moninp.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c moninq1.f -o moninq1.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c moninq.f -o moninq.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c moninshoc.f -o moninshoc.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c mstadb.f -o mstadb.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c mstadbtn.f -o mstadbtn.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c mstcnv.f -o mstcnv.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c ozphys.f -o ozphys.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c precpd.f -o precpd.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c precpdp.f -o precpdp.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c precpd_shoc.f -o precpd_shoc.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c rascnvv2.f -o rascnvv2.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c sascnv.f -o sascnv.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c sascnvn.f -o sascnvn.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c sfc_diag.f -o sfc_diag.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c sfc_diff.f -o sfc_diff.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c sfc_drv.f -o sfc_drv.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c sfc_land.f -o sfc_land.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c module_nst_water_prop.f90 -o module_nst_water_prop.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c sfc_ocean.f -o sfc_ocean.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c sfc_sice.f -o sfc_sice.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c shalcnv.f -o shalcnv.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c calpreciptype.f90 -o calpreciptype.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c cs_conv.f90 -o cs_conv.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c gcm_shoc.f90 -o gcm_shoc.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c get_prs.f -o get_prs.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c module_bfmicrophysics.f -o module_bfmicrophysics.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c radlw_datatb.f -o radlw_datatb.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -msse3 -c radiation_aerosols.f -o radiation_aerosols.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c radiation_gases.f -o radiation_gases.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c radsw_datatb.f -o radsw_datatb.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c gscond.f -o gscond.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c gscondp.f -o gscondp.o
+ifort: command line warning #10120: overriding '-xCORE-AVX2' with '-msse3'
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c module_nst_model.f90 -o module_nst_model.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c radiation_clouds.f -o radiation_clouds.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c gsmddrive.f -o gsmddrive.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c gbphys.F -o gbphys.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c sfc_nst.f -o sfc_nst.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c radsw_main.f -o radsw_main.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c radlw_main.f -o radlw_main.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c grrad.f -o grrad.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c rad_initialize.f -o rad_initialize.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c nuopc_physics.F90 -o nuopc_physics.o
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c gcycle.f90 -o gcycle.o
+ar rv libgfsphys.a cnvc90.o co2hc.o date_def.o dcyc2.o dcyc2.pre.rad.o efield.o get_prs.o gfs_phy_tracer_config.o gocart_tracer_config_stub.o grrad.o gscond.o gscondp.o gsmddrive.o gwdps.o h2oc.o h2ohdc.o ideaca.o idea_co2.o idea_composition.o idea_dissipation.o idea_h2o.o idea_ion.o idea_o2_o3.o idea_phys.o idea_solar_heating.o idea_tracer.o iounitdef.o lrgsclr.o mersenne_twister.o mfpbl.o module_bfmicrophysics.o moninedmf.o moninp1.o moninp.o moninq1.o moninq.o moninshoc.o mstadb.o mstadbtn.o mstcnv.o namelist_soilveg.o ozne_def.o ozphys.o physparam.o precpd.o precpdp.o precpd_shoc.o progt2.o progtm_module.o radiation_aerosols.o radiation_astronomy.o radiation_clouds.o radiation_gases.o radiation_surface.o rad_initialize.o radlw_datatb.o radlw_main.o radlw_param.o radsw_datatb.o radsw_main.o radsw_param.o rascnvv2.o rayleigh_damp.o rayleigh_damp_mesopause.o sascnv.o sascnvn.o set_soilveg.o sfc_diag.o sfc_diff.o sfc_drv.o sfc_land.o sfc_nst.o sfc_ocean.o sfc_sice.o sfcsub.o sflx.o shalcnv.o shalcv.o shalcv_opr.o tracer_const_h.o tridi2t3.o calpreciptype.o cs_conv.o funcphys.o gcm_shoc.o gcycle.o get_prs_fv3.o module_nst_model.o module_nst_parameters.o module_nst_water_prop.o ozinterp.o physcons.o gwdc.o gbphys.o machine.o num_parthds.o nuopc_physics.o
+ar: creating libgfsphys.a
+a - cnvc90.o
+a - co2hc.o
+a - date_def.o
+a - dcyc2.o
+a - dcyc2.pre.rad.o
+a - efield.o
+a - get_prs.o
+a - gfs_phy_tracer_config.o
+a - gocart_tracer_config_stub.o
+a - grrad.o
+a - gscond.o
+a - gscondp.o
+a - gsmddrive.o
+a - gwdps.o
+a - h2oc.o
+a - h2ohdc.o
+a - ideaca.o
+a - idea_co2.o
+a - idea_composition.o
+a - idea_dissipation.o
+a - idea_h2o.o
+a - idea_ion.o
+a - idea_o2_o3.o
+a - idea_phys.o
+a - idea_solar_heating.o
+a - idea_tracer.o
+a - iounitdef.o
+a - lrgsclr.o
+a - mersenne_twister.o
+a - mfpbl.o
+a - module_bfmicrophysics.o
+a - moninedmf.o
+a - moninp1.o
+a - moninp.o
+a - moninq1.o
+a - moninq.o
+a - moninshoc.o
+a - mstadb.o
+a - mstadbtn.o
+a - mstcnv.o
+a - namelist_soilveg.o
+a - ozne_def.o
+a - ozphys.o
+a - physparam.o
+a - precpd.o
+a - precpdp.o
+a - precpd_shoc.o
+a - progt2.o
+a - progtm_module.o
+a - radiation_aerosols.o
+a - radiation_astronomy.o
+a - radiation_clouds.o
+a - radiation_gases.o
+a - radiation_surface.o
+a - rad_initialize.o
+a - radlw_datatb.o
+a - radlw_main.o
+a - radlw_param.o
+a - radsw_datatb.o
+a - radsw_main.o
+a - radsw_param.o
+a - rascnvv2.o
+a - rayleigh_damp.o
+a - rayleigh_damp_mesopause.o
+a - sascnv.o
+a - sascnvn.o
+a - set_soilveg.o
+a - sfc_diag.o
+a - sfc_diff.o
+a - sfc_drv.o
+a - sfc_land.o
+a - sfc_nst.o
+a - sfc_ocean.o
+a - sfc_sice.o
+a - sfcsub.o
+a - sflx.o
+a - shalcnv.o
+a - shalcv.o
+a - shalcv_opr.o
+a - tracer_const_h.o
+a - tridi2t3.o
+a - calpreciptype.o
+a - cs_conv.o
+a - funcphys.o
+a - gcm_shoc.o
+a - gcycle.o
+a - get_prs_fv3.o
+a - module_nst_model.o
+a - module_nst_parameters.o
+a - module_nst_water_prop.o
+a - ozinterp.o
+a - physcons.o
+a - gwdc.o
+a - gbphys.o
+a - machine.o
+a - num_parthds.o
+a - nuopc_physics.o
+gmake[1]: Leaving directory `/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/gfsphys'
+gmake -C fv3core  --jobserver-fds=3,4 -j
+
+Build standalone FV3 fv3core ...
+
+gmake[1]: Entering directory `/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/fv3core'
+Building dependencies ...
+gmake[1]: Leaving directory `/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/fv3core'
+
+Build standalone FV3 fv3core ...
+
+gmake[1]: Entering directory `/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/fv3core'
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/model/fv_arrays.F90 -o atmos_cubed_sphere/model/fv_arrays.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/tools/external_sst.F90 -o atmos_cubed_sphere/tools/external_sst.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/lin_cloud_microphys/lin_cloud_microphys.F90 -o atmos_cubed_sphere/lin_cloud_microphys/lin_cloud_microphys.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/tools/sorted_index.F90 -o atmos_cubed_sphere/tools/sorted_index.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/model/fv_fill.F90 -o atmos_cubed_sphere/model/fv_fill.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/tools/sim_nc_mod.F90 -o atmos_cubed_sphere/tools/sim_nc_mod.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c gfsphys_driver/gfs_physics_driver.F90 -o gfsphys_driver/gfs_physics_driver.o
+cc -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE  -D__IFC -sox -fp-model source -O2 -debug minimal -qopenmp   -c avec_timer/avec_timer_lib.c -o avec_timer/avec_timer_lib.o
+Using 8-byte addressing
+Using PURE
+Converting pointers to allocatable components
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/tools/fv_mp_mod.F90 -o atmos_cubed_sphere/tools/fv_mp_mod.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/model/fv_current_grid.F90 -o atmos_cubed_sphere/model/fv_current_grid.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/tools/fv_timing.F90 -o atmos_cubed_sphere/tools/fv_timing.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/tools/fv_eta.F90 -o atmos_cubed_sphere/tools/fv_eta.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/model/boundary.F90 -o atmos_cubed_sphere/model/boundary.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/model/fv_sg.F90 -o atmos_cubed_sphere/model/fv_sg.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/model/fv_grid_utils.F90 -o atmos_cubed_sphere/model/fv_grid_utils.o
+Using 8-byte addressing
+Using PURE
+Converting pointers to allocatable components
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/model/a2b_edge.F90 -o atmos_cubed_sphere/model/a2b_edge.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/model/tp_core.F90 -o atmos_cubed_sphere/model/tp_core.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/tools/fv_grid_tools.F90 -o atmos_cubed_sphere/tools/fv_grid_tools.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/tools/fv_surf_map.F90 -o atmos_cubed_sphere/tools/fv_surf_map.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/tools/init_hydro.F90 -o atmos_cubed_sphere/tools/init_hydro.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -fast-transcendentals -c atmos_cubed_sphere/model/fv_mapz.F90 -o atmos_cubed_sphere/model/fv_mapz.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/model/fv_tracer2d.F90 -o atmos_cubed_sphere/model/fv_tracer2d.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/tools/fv_diagnostics.F90 -o atmos_cubed_sphere/tools/fv_diagnostics.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/tools/fv_io.F90 -o atmos_cubed_sphere/tools/fv_io.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/tools/test_cases.F90 -o atmos_cubed_sphere/tools/test_cases.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/tools/fv_nudge.F90 -o atmos_cubed_sphere/tools/fv_nudge.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/tools/fv_nggps_diag.F90 -o atmos_cubed_sphere/tools/fv_nggps_diag.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/model/fv_update_phys.F90 -o atmos_cubed_sphere/model/fv_update_phys.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/model/sw_core.F90 -o atmos_cubed_sphere/model/sw_core.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/tools/external_ic.F90 -o atmos_cubed_sphere/tools/external_ic.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/tools/fv_restart.F90 -o atmos_cubed_sphere/tools/fv_restart.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -fast-transcendentals -c atmos_cubed_sphere/model_nh/nh_utils.F90 -o atmos_cubed_sphere/model_nh/nh_utils.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/model/fv_control.F90 -o atmos_cubed_sphere/model/fv_control.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/model/fv_nesting.F90 -o atmos_cubed_sphere/model/fv_nesting.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/model_nh/nh_core.F90 -o atmos_cubed_sphere/model_nh/nh_core.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/model/dyn_core.F90 -o atmos_cubed_sphere/model/dyn_core.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/model/fv_dynamics.F90 -o atmos_cubed_sphere/model/fv_dynamics.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/driver/coupled/atmosphere.F90 -o atmos_cubed_sphere/driver/coupled/atmosphere.o
+Using 8-byte addressing
+Using PURE
+Converting pointers to allocatable components
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_drivers/coupled/atmos_model.F90 -o atmos_drivers/coupled/atmos_model.o
+ar rv libfv3core.a atmos_cubed_sphere/model/a2b_edge.o atmos_cubed_sphere/model/boundary.o atmos_cubed_sphere/model/dyn_core.o atmos_cubed_sphere/model/fv_arrays.o atmos_cubed_sphere/model/fv_control.o atmos_cubed_sphere/model/fv_current_grid.o atmos_cubed_sphere/model/fv_dynamics.o atmos_cubed_sphere/model/fv_fill.o atmos_cubed_sphere/model/fv_grid_utils.o atmos_cubed_sphere/model/fv_mapz.o atmos_cubed_sphere/model/fv_nesting.o atmos_cubed_sphere/model/fv_sg.o atmos_cubed_sphere/model/fv_tracer2d.o atmos_cubed_sphere/model/fv_update_phys.o atmos_cubed_sphere/model/sw_core.o atmos_cubed_sphere/model/tp_core.o atmos_cubed_sphere/model_nh/nh_core.o atmos_cubed_sphere/model_nh/nh_utils.o atmos_cubed_sphere/tools/external_ic.o atmos_cubed_sphere/tools/external_sst.o atmos_cubed_sphere/tools/fv_diagnostics.o atmos_cubed_sphere/tools/fv_eta.o atmos_cubed_sphere/tools/fv_grid_tools.o atmos_cubed_sphere/tools/fv_io.o atmos_cubed_sphere/tools/fv_mp_mod.o atmos_cubed_sphere/tools/fv_nggps_diag.o atmos_cubed_sphere/tools/fv_nudge.o atmos_cubed_sphere/tools/fv_restart.o atmos_cubed_sphere/tools/fv_surf_map.o atmos_cubed_sphere/tools/fv_timing.o atmos_cubed_sphere/tools/init_hydro.o atmos_cubed_sphere/tools/sim_nc_mod.o atmos_cubed_sphere/tools/sorted_index.o atmos_cubed_sphere/tools/test_cases.o atmos_cubed_sphere/driver/coupled/atmosphere.o atmos_cubed_sphere/lin_cloud_microphys/lin_cloud_microphys.o atmos_drivers/coupled/atmos_model.o gfsphys_driver/gfs_physics_driver.o avec_timer/avec_timer_lib.o
+ar: creating libfv3core.a
+a - atmos_cubed_sphere/model/a2b_edge.o
+a - atmos_cubed_sphere/model/boundary.o
+a - atmos_cubed_sphere/model/dyn_core.o
+a - atmos_cubed_sphere/model/fv_arrays.o
+a - atmos_cubed_sphere/model/fv_control.o
+a - atmos_cubed_sphere/model/fv_current_grid.o
+a - atmos_cubed_sphere/model/fv_dynamics.o
+a - atmos_cubed_sphere/model/fv_fill.o
+a - atmos_cubed_sphere/model/fv_grid_utils.o
+a - atmos_cubed_sphere/model/fv_mapz.o
+a - atmos_cubed_sphere/model/fv_nesting.o
+a - atmos_cubed_sphere/model/fv_sg.o
+a - atmos_cubed_sphere/model/fv_tracer2d.o
+a - atmos_cubed_sphere/model/fv_update_phys.o
+a - atmos_cubed_sphere/model/sw_core.o
+a - atmos_cubed_sphere/model/tp_core.o
+a - atmos_cubed_sphere/model_nh/nh_core.o
+a - atmos_cubed_sphere/model_nh/nh_utils.o
+a - atmos_cubed_sphere/tools/external_ic.o
+a - atmos_cubed_sphere/tools/external_sst.o
+a - atmos_cubed_sphere/tools/fv_diagnostics.o
+a - atmos_cubed_sphere/tools/fv_eta.o
+a - atmos_cubed_sphere/tools/fv_grid_tools.o
+a - atmos_cubed_sphere/tools/fv_io.o
+a - atmos_cubed_sphere/tools/fv_mp_mod.o
+a - atmos_cubed_sphere/tools/fv_nggps_diag.o
+a - atmos_cubed_sphere/tools/fv_nudge.o
+a - atmos_cubed_sphere/tools/fv_restart.o
+a - atmos_cubed_sphere/tools/fv_surf_map.o
+a - atmos_cubed_sphere/tools/fv_timing.o
+a - atmos_cubed_sphere/tools/init_hydro.o
+a - atmos_cubed_sphere/tools/sim_nc_mod.o
+a - atmos_cubed_sphere/tools/sorted_index.o
+a - atmos_cubed_sphere/tools/test_cases.o
+a - atmos_cubed_sphere/driver/coupled/atmosphere.o
+a - atmos_cubed_sphere/lin_cloud_microphys/lin_cloud_microphys.o
+a - atmos_drivers/coupled/atmos_model.o
+a - gfsphys_driver/gfs_physics_driver.o
+a - avec_timer/avec_timer_lib.o
+gmake[1]: Leaving directory `/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/fv3core'
+gmake libfv3cap.a  --jobserver-fds=3,4 -j
+gmake[1]: Entering directory `/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3'
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE  -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -Ifms -Igfsphys -Ifv3core   -I/usrx/local/dev/esmf/7_0_0/intel/haswell/src/mod/modO/Unicos.intel.64.mpi.default -I/usrx/local/dev/esmf/7_0_0/intel/haswell/src/src/include  -c time_utils.F90
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -Duse_LARGEFILE  -fpp -Wp,-w -I/opt/cray/netcdf/4.3.2/INTEL/140/include -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -Ifms -Igfsphys -Ifv3core   -I/usrx/local/dev/esmf/7_0_0/intel/haswell/src/mod/modO/Unicos.intel.64.mpi.default -I/usrx/local/dev/esmf/7_0_0/intel/haswell/src/src/include  -c fv3_cap.F90
+ar rv libfv3cap.a time_utils.o fv3_cap.o
+ar: creating libfv3cap.a
+a - time_utils.o
+a - fv3_cap.o
+gmake[1]: Leaving directory `/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3'
+gmake esmf_make_fragment
+gmake[1]: Entering directory `/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3'
+
+Finished generating ESMF self-describing build dependency makefile fragment: fv3.mk
+
+gmake[1]: Leaving directory `/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3'
+Installation into "/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/FV3_INSTALL" complete!
+
++ cd /gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/../NEMS/src
++ touch conf/externals.nems
++ cp ESMFVersionDefine_ESMF_NUOPC.h ESMFVersionDefine.h
++ export COMP=FV3
++ COMP=FV3
++ export COMP_SRCDIR=/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3
++ COMP_SRCDIR=/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3
++ export COMP_BINDIR=/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/FV3_INSTALL
++ COMP_BINDIR=/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/FV3_INSTALL
++ gmake nems COMP=,fv3, FV3_DIR=/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/FV3_INSTALL
+cd ENS_Cpl             && gmake stub
+gmake[1]: Entering directory `/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/NEMS/src/ENS_Cpl'
+makefile:124: depend: No such file or directory
+cc -E -traditional Lib_ESMFStateAddGetMod.f > Lib_ESMFStateAddGetMod.f90
+cc -E -traditional machine.f > machine.f90
+cc -E -traditional ENS_Cpl_InternalState_ESMFMod.f > ENS_Cpl_InternalState_ESMFMod.f90
+cc -E -traditional ENS_bcst_global.f > ENS_bcst_global.f90
+cc -E -traditional ENS_Sto_Per_Scheme_Step2.f > ENS_Sto_Per_Scheme_Step2.f90
+cc -E -traditional DistributeForStep1.f > DistributeForStep1.f90
+cc -E -traditional ENS_CplState_ESMFMod.f > ENS_CplState_ESMFMod.f90
+cc -E -traditional ENS_Cpl_Run_ESMFMod.f > ENS_Cpl_Run_ESMFMod.f90
+cc -E -traditional ENS_Cpl_ESMFMod.f > ENS_Cpl_ESMFMod.f90
+cc -E -traditional ENS_GetParameterFromStateMod.f > ENS_GetParameterFromStateMod.f90
+cc -E -traditional ENS_CplComp_ESMFMod.f > ENS_CplComp_ESMFMod.f90
+cc -E -traditional ENS_Sto_Per_Scheme_Step1.f > ENS_Sto_Per_Scheme_Step1.f90
+cc -E -traditional kinds.f > kinds.f90
+cc -E -traditional peuc.f > peuc.f90
+cc -E -traditional pran.f > pran.f90
+cc -E -traditional prana.f > prana.f90
+cc -E -traditional Cal_Sto_Coef.f > Cal_Sto_Coef.f90
+ls -1 Lib_ESMFStateAddGetMod.f90 machine.f90 ENS_Cpl_InternalState_ESMFMod.f90 ENS_bcst_global.f90 ENS_Sto_Per_Scheme_Step2.f90 DistributeForStep1.f90 ENS_CplState_ESMFMod.f90 ENS_Cpl_Run_ESMFMod.f90 ENS_Cpl_ESMFMod.f90 ENS_GetParameterFromStateMod.f90 ENS_CplComp_ESMFMod.f90 ENS_Sto_Per_Scheme_Step1.f90 kinds.f90 peuc.f90 pran.f90 prana.f90 Cal_Sto_Coef.f90 > Srcfiles
+echo "." > Filepath
+../../exe/mkDepends.pl -m Filepath Srcfiles > depend
+rm -f -f Filepath Srcfiles
+gmake[1]: Leaving directory `/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/NEMS/src/ENS_Cpl'
+gmake[1]: Entering directory `/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/NEMS/src/ENS_Cpl'
+cc -E -traditional ENS_CplComp_ESMFMod_STUB.F90 > ENS_CplComp_ESMFMod_STUB.f90
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/usrx/local/dev/esmf/7_0_0/intel/haswell/src/mod/modO/Unicos.intel.64.mpi.default -I/usrx/local/dev/esmf/7_0_0/intel/haswell/src/src/include  -c ENS_CplComp_ESMFMod_STUB.f90
+ar rv ENS_Cpl.a ENS_CplComp_ESMFMod_STUB.o
+ar: creating ENS_Cpl.a
+a - ENS_CplComp_ESMFMod_STUB.o
+gmake[1]: Leaving directory `/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/NEMS/src/ENS_Cpl'
+cc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -D'SVN_INFO="(Jun.Wang) Thu Jan 26 01:56:13 UTC 2017 r87296 https://svnemc.ncep.noaa.gov/projects/nems/trunk/src"' -D'CMP_YEAR=2017' -D'CMP_JD=026' module_NEMS_UTILS.F90 > module_NEMS_UTILS.f90
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/usrx/local/dev/esmf/7_0_0/intel/haswell/src/mod/modO/Unicos.intel.64.mpi.default -I/usrx/local/dev/esmf/7_0_0/intel/haswell/src/src/include  -IENS_Cpl -I.  -I/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/FV3_INSTALL -c module_NEMS_UTILS.f90
+rm -f module_NEMS_UTILS.f90
+cc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -D'SVN_INFO="(Jun.Wang) Thu Jan 26 01:56:13 UTC 2017 r87296 https://svnemc.ncep.noaa.gov/projects/nems/trunk/src"' -D'CMP_YEAR=2017' -D'CMP_JD=026' module_MEDIATOR_methods.F90 > module_MEDIATOR_methods.f90
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/usrx/local/dev/esmf/7_0_0/intel/haswell/src/mod/modO/Unicos.intel.64.mpi.default -I/usrx/local/dev/esmf/7_0_0/intel/haswell/src/src/include  -IENS_Cpl -I.  -I/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/FV3_INSTALL -c module_MEDIATOR_methods.f90
+rm -f module_MEDIATOR_methods.f90
+cc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -D'SVN_INFO="(Jun.Wang) Thu Jan 26 01:56:13 UTC 2017 r87296 https://svnemc.ncep.noaa.gov/projects/nems/trunk/src"' -D'CMP_YEAR=2017' -D'CMP_JD=026' module_MEDIATOR.F90 > module_MEDIATOR.f90
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/usrx/local/dev/esmf/7_0_0/intel/haswell/src/mod/modO/Unicos.intel.64.mpi.default -I/usrx/local/dev/esmf/7_0_0/intel/haswell/src/src/include  -IENS_Cpl -I.  -I/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/FV3_INSTALL -c module_MEDIATOR.f90
+rm -f module_MEDIATOR.f90
+cc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -D'SVN_INFO="(Jun.Wang) Thu Jan 26 01:56:13 UTC 2017 r87296 https://svnemc.ncep.noaa.gov/projects/nems/trunk/src"' -D'CMP_YEAR=2017' -D'CMP_JD=026' module_MEDIATOR_SpaceWeather.F90 > module_MEDIATOR_SpaceWeather.f90
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/usrx/local/dev/esmf/7_0_0/intel/haswell/src/mod/modO/Unicos.intel.64.mpi.default -I/usrx/local/dev/esmf/7_0_0/intel/haswell/src/src/include  -IENS_Cpl -I.  -I/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/FV3_INSTALL -c module_MEDIATOR_SpaceWeather.f90
+rm -f module_MEDIATOR_SpaceWeather.f90
+cc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -D'SVN_INFO="(Jun.Wang) Thu Jan 26 01:56:13 UTC 2017 r87296 https://svnemc.ncep.noaa.gov/projects/nems/trunk/src"' -D'CMP_YEAR=2017' -D'CMP_JD=026' module_EARTH_INTERNAL_STATE.F90 > module_EARTH_INTERNAL_STATE.f90
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/usrx/local/dev/esmf/7_0_0/intel/haswell/src/mod/modO/Unicos.intel.64.mpi.default -I/usrx/local/dev/esmf/7_0_0/intel/haswell/src/src/include  -IENS_Cpl -I.  -I/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/FV3_INSTALL -c module_EARTH_INTERNAL_STATE.f90
+rm -f module_EARTH_INTERNAL_STATE.f90
+cc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -D'SVN_INFO="(Jun.Wang) Thu Jan 26 01:56:13 UTC 2017 r87296 https://svnemc.ncep.noaa.gov/projects/nems/trunk/src"' -D'CMP_YEAR=2017' -D'CMP_JD=026' module_EARTH_GRID_COMP.F90 > module_EARTH_GRID_COMP.f90
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/usrx/local/dev/esmf/7_0_0/intel/haswell/src/mod/modO/Unicos.intel.64.mpi.default -I/usrx/local/dev/esmf/7_0_0/intel/haswell/src/src/include  -IENS_Cpl -I.  -I/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/FV3_INSTALL -c module_EARTH_GRID_COMP.f90
+rm -f module_EARTH_GRID_COMP.f90
+cc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -D'SVN_INFO="(Jun.Wang) Thu Jan 26 01:56:13 UTC 2017 r87296 https://svnemc.ncep.noaa.gov/projects/nems/trunk/src"' -D'CMP_YEAR=2017' -D'CMP_JD=026' module_NEMS_INTERNAL_STATE.F90 > module_NEMS_INTERNAL_STATE.f90
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/usrx/local/dev/esmf/7_0_0/intel/haswell/src/mod/modO/Unicos.intel.64.mpi.default -I/usrx/local/dev/esmf/7_0_0/intel/haswell/src/src/include  -IENS_Cpl -I.  -I/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/FV3_INSTALL -c module_NEMS_INTERNAL_STATE.f90
+rm -f module_NEMS_INTERNAL_STATE.f90
+cc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -D'SVN_INFO="(Jun.Wang) Thu Jan 26 01:56:13 UTC 2017 r87296 https://svnemc.ncep.noaa.gov/projects/nems/trunk/src"' -D'CMP_YEAR=2017' -D'CMP_JD=026' module_NEMS_GRID_COMP.F90 > module_NEMS_GRID_COMP.f90
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/usrx/local/dev/esmf/7_0_0/intel/haswell/src/mod/modO/Unicos.intel.64.mpi.default -I/usrx/local/dev/esmf/7_0_0/intel/haswell/src/src/include  -IENS_Cpl -I.  -I/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/FV3_INSTALL -c module_NEMS_GRID_COMP.f90
+rm -f module_NEMS_GRID_COMP.f90
+cc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -D'SVN_INFO="(Jun.Wang) Thu Jan 26 01:56:13 UTC 2017 r87296 https://svnemc.ncep.noaa.gov/projects/nems/trunk/src"' -D'CMP_YEAR=2017' -D'CMP_JD=026' module_NEMS_Rusage.F90 > module_NEMS_Rusage.f90
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/usrx/local/dev/esmf/7_0_0/intel/haswell/src/mod/modO/Unicos.intel.64.mpi.default -I/usrx/local/dev/esmf/7_0_0/intel/haswell/src/src/include  -IENS_Cpl -I.  -I/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/FV3_INSTALL -c module_NEMS_Rusage.f90
+rm -f module_NEMS_Rusage.f90
+cc -c nems_c_rusage.c
+cc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -D'SVN_INFO="(Jun.Wang) Thu Jan 26 01:56:13 UTC 2017 r87296 https://svnemc.ncep.noaa.gov/projects/nems/trunk/src"' -D'CMP_YEAR=2017' -D'CMP_JD=026' MAIN_NEMS.F90 > MAIN_NEMS.f90
+ftn -I/opt/cray/netcdf/4.3.2/INTEL/140/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/usrx/local/dev/esmf/7_0_0/intel/haswell/src/mod/modO/Unicos.intel.64.mpi.default -I/usrx/local/dev/esmf/7_0_0/intel/haswell/src/src/include  -IENS_Cpl -I.  -I/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/FV3_INSTALL -c MAIN_NEMS.f90
+rm -f MAIN_NEMS.f90
+echo libgocart is 
+libgocart is
+ftn  -o ../exe/NEMS.x MAIN_NEMS.o module_NEMS_UTILS.o module_MEDIATOR_methods.o module_MEDIATOR.o module_MEDIATOR_SpaceWeather.o module_EARTH_INTERNAL_STATE.o module_EARTH_GRID_COMP.o module_NEMS_INTERNAL_STATE.o module_NEMS_GRID_COMP.o module_NEMS_Rusage.o nems_c_rusage.o  /gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/FV3_INSTALL/libfv3cap.a /gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/FV3_INSTALL/libfv3core.a /gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/FV3_INSTALL/libgfsphys.a /gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/FV3_INSTALL/libfms.a ENS_Cpl/ENS_Cpl.a /gpfs/hps/nco/ops/nwprod/lib/bacio/v2.0.1/intel/libbacio_v2.0.1_4.a /gpfs/hps/nco/ops/nwprod/lib/sp/v2.0.2/intel/libsp_v2.0.2_d.a /gpfs/hps/nco/ops/nwprod/lib/w3emc/v2.2.0/intel/libw3emc_v2.2.0_d.a /gpfs/hps/nco/ops/nwprod/lib/w3nco/v2.0.6/intel/libw3nco_v2.0.6_d.a -L/usrx/local/dev/esmf/7_0_0/intel/haswell/src/lib/libO/Unicos.intel.64.mpi.default -lesmf   -lAtpSigHandler -lAtpSigHCommData -lpthread -lsci_intel -limf -lm -ldl -lrt -lugni -lpthread -lpmi -limf -lm -ldl -lpmi -lpthread -lalpslli -lpthread -lwlm_detect -lalpsutil -lpthread -lrca -lxpmem -lugni -lpthread -ludreg -lsci_intel -limf -lm -ldl -limf -lm -lifport -lpthread -limf -lsvml -lirng -lm -lipgo -ldecimal -lstdc++ -lgcc -lgcc_eh -lirc -lsvml -lgcc -lgcc_eh -lirc_s -ldl -lrt -ldl  -qopenmp  -L/opt/intel/compilers_and_libraries_2016.3.210/linux/16.0/3.210/lib/intel64 -lifcoremt -lnetcdff -lnetcdf -lhdf5_hl -lhdf5 -lz  
+/opt/cray/hdf5/1.8.13/INTEL/140/lib/libhdf5.a(H5PL.o): In function `H5PL_load':
+H5PL.c:(.text+0x3b7): warning: Using 'dlopen' in statically linked applications requires at runtime the shared libraries from the glibc version used for linking
+/usrx/local/dev/esmf/7_0_0/intel/haswell/src/lib/libO/Unicos.intel.64.mpi.default/libesmf.a(ESMCI_VMKernel.o): In function `ESMCI::socketClient()':
+ESMCI_VMKernel.C:(.text+0x104c3): warning: Using 'gethostbyname' in statically linked applications requires at runtime the shared libraries from the glibc version used for linking
+../exe/NEMS.x is created.
++ cp ../exe/NEMS.x /gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/../tests/fv3_1.exe
++ cp /gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/conf/modules.fv3 /gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/../tests/modules.fv3_1
++ gmake clean
+rm -f -f *.f90 *.lst *.o *.mod lm map ../exe/NEMS.x
+cd ENS_Cpl             && gmake clean
+gmake[1]: Entering directory `/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/NEMS/src/ENS_Cpl'
+rm -f -f ENS_Cpl.a *.f90 *.o *.mod *.lst lm map depend
+gmake[1]: Leaving directory `/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/NEMS/src/ENS_Cpl'
++ cd /gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3
++ gmake cleanall
+Cleaning ... 
+
+(cd fms            && make clean)
+
+Build standalone FV3 fms ...
+
+make[1]: Entering directory `/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/fms'
+Cleaning fms ... 
+
+rm -f -f libfms.a *__genmod.f90 *.o */*.o *.mod *.lst *.i depend
+make[1]: Leaving directory `/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/fms'
+(cd gfsphys        && make clean)
+
+Build standalone FV3 gfsphys ...
+
+make[1]: Entering directory `/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/gfsphys'
+Cleaning gfsphys ... 
+
+rm -f -f libgfsphys.a *__genmod.f90 *.o */*.o *.mod *.lst *.i depend
+make[1]: Leaving directory `/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/gfsphys'
+(cd fv3core        && make clean)
+
+Build standalone FV3 fv3core ...
+
+make[1]: Entering directory `/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/fv3core'
+Cleaning fv3core ... 
+
+rm -f -f libfv3core.a *__genmod.f90 *.o */*.o */*/*.o *.mod *.lst *.i depend
+make[1]: Leaving directory `/gpfs/hps/emc/global/noscrub/Jun.Wang/nems/20170122/nemsfv3_capv2/FV3/fv3core'
+rm -f -f fv3.exe libfv3cap.a *.o *.mod *.lst depend 
+rm -f -rf nems_dir fv3.mk FV3_INSTALL
+rm -f -f conf/modules.fv3
+rm -f -f conf/configure.fv3
++ elapsed=598
++ echo 'Elapsed time 598 seconds. Compiling  finished'
+Elapsed time 598 seconds. Compiling  finished
