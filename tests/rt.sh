@@ -172,8 +172,7 @@ while getopts ":cfsl:mreh" opt; do
   esac
 done
 
-#RTPWD=${RTPWD:-${DISKNM}/noscrub/Jun.Wang/FV3_RT/REGRESSION_TEST}
-RTPWD=${RTPWD:-/gpfs/hps/ptmp/Jun.Wang/FV3_RT/REGRESSION_TEST}
+RTPWD=${RTPWD:-${DISKNM}/noscrub/Jun.Wang/FV3_RT/REGRESSION_TEST}
 
 shift $((OPTIND-1))
 [[ $# -gt 0 ]] && usage
