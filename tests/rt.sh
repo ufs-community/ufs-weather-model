@@ -105,12 +105,13 @@ elif [[ $MACHINE_ID = theia ]]; then
   ECFLOW_START=/scratch4/NCEPDEV/meso/save/Dusan.Jovic/ecflow/bin/ecflow_start.sh
   QUEUE=debug
   dprefix=/scratch4/NCEPDEV
-  DISKNM=$dprefix/global
+  DISKNM=$dprefix/nems
   STMP=$dprefix/stmp4
   PTMP=$dprefix/stmp3
   SCHEDULER=pbs
   MPIEXEC=mpirun
   MPIEXECOPTS=
+  cp fv3_conf/fv3_qsub.IN_theia fv3_conf/fv3_qsub.IN
 
 else
   die "Unknown machine ID, please edit detect_machine.sh file"
