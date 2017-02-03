@@ -1,0 +1,30 @@
+#!/bin/sh -l
+#PBS -o out
+#PBS -e err
+#PBS -N @[JBNME]
+#PBS -A @[ACCNR]
+#PBS -q @[QUEUE]
+#PBS -d .
+#PBS -l nodes=@[NODES]:ppn=@[TPN]
+#PBS -l walltime=00:@[WLCLK]:00
+
+set -eux
+
+set +x
+source /apps/lmod/lmod/init/sh
+source ./modules.fv3
+module list
+set -x
+
+echo "Model started:  " `date`
+
+export MPI_TYPE_DEPTH=20
+export OMP_STACKSIZE=512M
+export OMP_NUM_THREADS=@[THRD]
+export ESMF_RUNTIME_COMPLIANCECHECK=OFF:depth=4
+
+mpirun -prepend-rank -np $PBS_NP ./fv3.exe
+
+echo "Model ended:    " `date`
+
+exit
