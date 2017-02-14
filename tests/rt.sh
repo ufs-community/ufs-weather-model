@@ -389,6 +389,7 @@ fi
 ##
 ## regression test is either failed or successful
 ##
+set +e
 cat ${LOG_DIR}/compile_*.log                   >  ${COMPILE_LOG}
 cat ${LOG_DIR}/rt_*.log                        >> ${REGRESSIONTEST_LOG}
 if [[ -e fail_test ]]; then

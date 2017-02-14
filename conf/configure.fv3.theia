@@ -1,3 +1,34 @@
+## NEMS configuration file
+##
+## Platform: Theia
+## Compiler: Intel with IntelMPI
+
+SHELL=/bin/sh
+
+################################################################################
+## Include the common configuration parts
+
+include $(TOP)/conf/configure.nems.NUOPC
+
+###################### PHYS_MODE ##### CHEM_MODE ###############################
+#
+#
+#
+
+PHYS_MODE       =compile
+CHEM_MODE       =compile
+ifeq ($(PHYS_MODE),compile)
+       PHYS_LIB = $(TOP)/atmos/gsm/gsmphys
+       PHYS_INC = $(TOP)/atmos/gsm/gsmphys
+       PHYS_DIR = $(TOP)/atmos/gsm/gsmphys
+endif
+ifeq ($(CHEM_MODE),compile)
+        CHEM_LIB = $(TOP)/chem
+        CHEM_INC = $(TOP)/chem/gocart/src/Config/
+        CHEM_DIR = $(TOP)/chem
+       CHEM_MOD = $(TOP)/chem/gocart/${ARCH}/include
+      ESMADIR = chem/gocart
+endif
 
 ############
 # commands #
@@ -34,6 +65,12 @@ endif
 
 NETCDF_ROOT = $(NETCDF)
 INCLUDE = -I$(NETCDF_ROOT)/include
+NETCDF_INC = -I$(NETCDF_ROOT)/include
+ifneq ($(findstring netcdf/4,$(LOADEDMODULES)),)
+  NETCDF_LIB += -L$(NETCDF)/lib -lnetcdff -lnetcdf
+else
+  NETCDF_LIB += -L$(NETCDF)/lib -lnetcdff -lnetcdf
+endif
 
 FPPFLAGS := -fpp -Wp,-w $(INCLUDE)
 CFLAGS := $(INCLUDE)
@@ -120,10 +157,8 @@ FFLAGS += $(FFLAGS_VERBOSE)
 LDFLAGS += $(LDFLAGS_VERBOSE)
 endif
 
-ifneq ($(findstring netcdf/4,$(LOADEDMODULES)),)
-  LIBS += -L$(NETCDF)/lib -lnetcdff -lnetcdf
-else
-  LIBS += -L$(NETCDF)/lib -lnetcdff -lnetcdf
-endif
-
 LDFLAGS += $(LIBS)
+
+FFLAGS += $(ESMF_INC)
+CPPFLAGS += -traditional
+EXTLIBS = $(NCEPLIBS) $(ESMF_LIB) $(LDFLAGS) $(NETCDF_LIB)

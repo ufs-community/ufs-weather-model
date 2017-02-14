@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu
+set -eux
 
 source rt_utils.sh
 source atparse.bash
@@ -11,8 +11,14 @@ cd $RUNDIR
 # Make configure and run files
 ###############################################################################
 
-cp ${PATHRT}/$FV3X                       fv3.exe
-cp ${PATHRT}/modules.fv3_${COMPILE_NR}   modules.fv3
+# FV3 executable:
+cp ${PATHRT}/$FV3X                                 fv3.exe
+
+# modulefile for FV3 prerequisites:
+cp ${PATHRT}/modules.fv3_${COMPILE_NR}             modules.fv3
+
+# Get the shell file that loads the "module" command and purges modules:
+cp ${PATHRT}/../NEMS/src/conf/module-setup.sh.inc  module-setup.sh
 
 SRCD="${PATHTR}"
 RUND="${RUNDIR}"

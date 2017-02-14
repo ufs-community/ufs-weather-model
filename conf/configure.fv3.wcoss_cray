@@ -1,3 +1,4 @@
+include $(TOP)/conf/configure.nems.NUOPC
 
 ############
 # commands #
@@ -129,3 +130,7 @@ else
 endif
 
 LDFLAGS += $(LIBS)
+
+FFLAGS += $(ESMF_INC)
+CPPFLAGS += -traditional
+EXTLIBS = $(NCEPLIBS) $(ESMF_LIB) $(LDFLAGS)

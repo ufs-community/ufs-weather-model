@@ -12,8 +12,9 @@
 set -eux
 
 set +x
-source /opt/modules/default/init/bash
-source ./modules.fv3
+source ./module-setup.sh
+module use $( pwd -P )
+module load modules.fv3
 module load alps/5.2.3-2.0502.9295.14.14.ari
 module list
 set -x
