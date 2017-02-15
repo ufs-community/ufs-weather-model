@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu
+set -eux
 
 hostname
 
@@ -289,6 +289,7 @@ while read -r line; do
 
   if [[ $line == COMPILE* ]] ; then
 
+      unset APP
       NEMS_VER=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
       SET=$(     echo $line | cut -d'|' -f3)
       MACHINES=$(echo $line | cut -d'|' -f4 | sed -e 's/^ *//' -e 's/ *$//')
@@ -309,6 +310,33 @@ while read -r line; do
       fi
 
     continue
+
+  elif [[ $line == APPBUILD* ]] ; then
+
+      unset NEMS_VER
+      APP=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
+      SET=$(     echo $line | cut -d'|' -f3)
+      MACHINES=$(echo $line | cut -d'|' -f4 | sed -e 's/^ *//' -e 's/ *$//')
+
+      [[ $SET_ID != ' ' && $SET != *${SET_ID}* ]] && continue
+      [[ $MACHINES != ' ' && $MACHINES != "${MACHINE_ID}" ]] && continue
+
+      COMPILE_NR_DEP=${COMPILE_NR}
+      (( COMPILE_NR += 1 ))
+
+      if [[ $ROCOTO == true ]]; then
+        rocoto_create_compile_task
+      elif [[ $ECFLOW == true ]]; then
+        ecflow_create_compile_task
+      else
+          echo test  > "${LOG_DIR}/compile_${COMPILE_NR}.log" 2>&1
+          test -s ./appbuild.sh
+          test -x ./appbuild.sh
+        ./appbuild.sh "$PATHTR/FV3" "$APP" "$COMPILE_NR" 2>&1 | tee "${LOG_DIR}/compile_${COMPILE_NR}.log"
+        echo " bash NEMSAppBuilder is done"
+      fi
+
+      unset APP
 
   elif [[ $line == RUN* ]] ; then
 
