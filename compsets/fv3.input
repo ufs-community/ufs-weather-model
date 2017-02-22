@@ -1,0 +1,207 @@
+load 'platforms.input'
+load 'nemscommon.input'
+
+########################################################################
+
+# Common prep step at the top of all fv3 tests:
+
+embed bash fv3_prep(RUNDIR,modules,CNTL) [[[
+        mkdir -p "$RUNDIR" "$CNTL"
+        cd @[RUNDIR]
+
+        set +e
+
+        source @[plat%SRCnems]/conf/module-setup.sh.inc
+        module purge
+        module use $( dirname $modules )
+        module load $( basename $modules )
+
+        mkdir RESTART INPUT
+
+        export MPI_TYPE_DEPTH=20
+        export OMP_STACKSIZE=512M
+        export ESMF_RUNTIME_COMPLIANCECHECK=OFF:depth=4
+]]]
+
+########################################################################
+
+# Builds for the fv3:
+
+build fv3.exe {
+    use plat
+    NEMS.x="@[plat%EXECrt]/fv3.exe"
+    modules.nems="@[plat%INCrt]/modules.fv3"
+    md5sum="@[NEMS.x].md5"
+    target="@[NEMS.x]"
+    build=NEMSAppBuilder(NEMS.x="@[NEMS.x]",modules.nems="@[modules.nems]",
+                         OPTS="app=standaloneFV3",md5sum="@[md5sum]")
+}
+
+########################################################################
+
+# Common variables used by many tests and input files:
+
+fv3_defaults = {
+    WARM_START='.F.'
+    NGGPS_IC='.T.'
+    EXTERNAL_IC='.T.'
+    MAKE_NH='.T.'
+    MOUNTAIN='.F.'
+    NA_INIT='1'
+    FDIAG='0,1,2,3,4,5,6,7,8,9,10,11,12,18,24'
+
+    ENS_NUM='1'
+    SYEAR='2016'
+    SMONTH='10'
+    SDAY='03'
+    SHOUR='00'
+    DT_ATMOS='225'
+
+    DAYS='1'
+    FHMAX='24'
+
+    walltime=900 # seconds
+}
+
+########################################################################
+
+test fv3_control: fv3.exe {
+    use plat
+    use plat%default_resources
+    use fv3_defaults
+
+    TEST_DESCR="Compare FV3 control results with previous trunk version"
+    CNTL_NAME='fv3_control'
+
+    COM="@[plat%COMrt]/@[TEST_NAME]"          # Test result area
+    RUNDIR_ROOT="@[plat%TMPrt]"
+    RUNDIR="@[RUNDIR_ROOT]/@[TEST_NAME]"      # Test work area
+    CNTL="@[plat%BASELINE]/@[CNTL_NAME]"      # Control baseline area
+    FV3_input_data="@[plat%INPUTS]/FV3_input_data"
+
+    prep=fv3_prep(
+        RUNDIR="@[RUNDIR]",modules="@[fv3.exe%modules.nems]",
+        CNTL="@[CNTL]")
+
+    # Specify input files.
+    filters input {
+      #    WORK FILE  <=filter=   SOURCE FILE
+          'input.nml' <=atparse=  "@[PARMnems]/input.nml.IN"
+    'model_configure' <=atparse=  "@[PARMnems]/model_configure.IN"
+               '*grb' <=copyfrom= "@[FV3_input_data]"
+            '*_table' <=copyfrom= "@[FV3_input_data]"
+         '*configure' <=copyfrom= "@[FV3_input_data]"
+              'INPUT' <=copy=     "@[FV3_input_data]/INPUT"
+    }
+
+    # Specify output files:
+    criteria output {
+        # WORKFILE                            .comparison. TARGET
+        '20161003000000.atmos_4xdaily.tile1.nc' .bitcmp. "@[CNTL]"
+        '20161003000000.atmos_4xdaily.tile2.nc' .bitcmp. "@[CNTL]"
+        '20161003000000.atmos_4xdaily.tile3.nc' .bitcmp. "@[CNTL]"
+        '20161003000000.atmos_4xdaily.tile4.nc' .bitcmp. "@[CNTL]"
+        '20161003000000.atmos_4xdaily.tile5.nc' .bitcmp. "@[CNTL]"
+        '20161003000000.atmos_4xdaily.tile6.nc' .bitcmp. "@[CNTL]"
+        '20161003000000.nggps2d.tile1.nc'       .bitcmp. "@[CNTL]"
+        '20161003000000.nggps2d.tile2.nc'       .bitcmp. "@[CNTL]"
+        '20161003000000.nggps2d.tile3.nc'       .bitcmp. "@[CNTL]"
+        '20161003000000.nggps2d.tile4.nc'       .bitcmp. "@[CNTL]"
+        '20161003000000.nggps2d.tile5.nc'       .bitcmp. "@[CNTL]"
+        '20161003000000.nggps2d.tile6.nc'       .bitcmp. "@[CNTL]"
+        '20161003000000.nggps3d.tile1.nc'       .bitcmp. "@[CNTL]"
+        '20161003000000.nggps3d.tile2.nc'       .bitcmp. "@[CNTL]"
+        '20161003000000.nggps3d.tile3.nc'       .bitcmp. "@[CNTL]"
+        '20161003000000.nggps3d.tile4.nc'       .bitcmp. "@[CNTL]"
+        '20161003000000.nggps3d.tile5.nc'       .bitcmp. "@[CNTL]"
+        '20161003000000.nggps3d.tile6.nc'       .bitcmp. "@[CNTL]"
+        'RESTART/coupler.res'                   .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_core.res.nc'                .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_core.res.tile1.nc'          .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_core.res.tile2.nc'          .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_core.res.tile3.nc'          .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_core.res.tile4.nc'          .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_core.res.tile5.nc'          .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_core.res.tile6.nc'          .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_srf_wnd.res.tile1.nc'       .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_srf_wnd.res.tile2.nc'       .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_srf_wnd.res.tile3.nc'       .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_srf_wnd.res.tile4.nc'       .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_srf_wnd.res.tile5.nc'       .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_srf_wnd.res.tile6.nc'       .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_tracer.res.tile1.nc'        .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_tracer.res.tile2.nc'        .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_tracer.res.tile3.nc'        .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_tracer.res.tile4.nc'        .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_tracer.res.tile5.nc'        .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_tracer.res.tile6.nc'        .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/sfc_data.tile1.nc'             .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/sfc_data.tile2.nc'             .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/sfc_data.tile3.nc'             .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/sfc_data.tile4.nc'             .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/sfc_data.tile5.nc'             .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/sfc_data.tile6.nc'             .bitcmp. "@[CNTL]/RESTART/"
+
+      # Executable validation.  This makes an MD5 sum of the fv3.exe
+      # for comparison against the MD5 sum made in the build job.
+      # This is to ensure the executable did not change during the
+      # test suite.
+        "@[fv3.exe%target]" .md5cmp. "@[fv3.exe%md5sum]"
+    }
+
+    spawn execute {
+        {"@[fv3.exe%target]", ranks="@[TASKS]" }
+    }
+}
+
+########################################################################
+
+test fv3_2threads: fv3.exe {
+    use fv3_control
+    use plat%default_threaded_resources
+
+    TEST_DESCR="Compare FV3 2 threads results with previous trunk version"
+    CNTL_NAME='fv3_control'
+
+    spawn execute {
+        {"@[fv3.exe%target]", ranks="@[TASKS]", threads="@[THRD]" }
+    }
+}
+
+########################################################################
+
+test fv3_decomp: fv3.exe {
+    use fv3_control
+    TEST_DESCR="Compare FV3 decomp results with previous trunk version"
+    CNTL_NAME='fv3_control'
+    INPES='6'
+    JNPES='4'
+}
+
+########################################################################
+
+test fv3_restart: fv3.exe {
+    use fv3_control
+    TEST_DESCR="Compare FV3 restart results with previous trunk version"
+    CNTL_NAME='fv3_restart'
+    
+    WARM_START='.T.'
+    NGGPS_IC='.F.'
+    EXTERNAL_IC='.F.'
+    MAKE_NH='.F.'
+    MOUNTAIN='.T.'
+    NA_INIT='0'
+    FHMAX='48'
+    FDIAG='6'
+
+    # Specify input files.
+    filters input {
+      #    WORK FILE  <=filter=   SOURCE FILE
+          'input.nml' <=atparse=  "@[PARMnems]/input.nml.IN"
+    'model_configure' <=atparse=  "@[PARMnems]/model_configure.IN"
+               '*grb' <=copyfrom= "@[FV3_input_data]"
+            '*_table' <=copyfrom= "@[FV3_input_data]"
+         '*configure' <=copyfrom= "@[FV3_input_data]"
+            'RESTART' <=copy=     "@[FV3_input_data]/INPUT"
+    }
+}

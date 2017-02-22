@@ -1,0 +1,250 @@
+# DEFAULTS VALUES OVERRIDDEN BY PLATFORMS
+
+platform.defaults={
+    BUILD_WALLTIME=3600 # Wallclock limit in seconds for build jobs
+    DEFAULT_TEST_WALLTIME=1800 # Default wallclock limit in seconds for test jobs
+
+    SRCnems="@[HOMEnems]/NEMS/src"
+    PARMnems="@[HOMEnems]/parm"
+
+    SRCrt="@[HOMErt]/src"
+    EXECrt="@[HOMErt]/exec"
+    INCrt="@[HOMErt]/include"
+
+    # The TMPrt is the scrub area for running regression tests.
+    TMPrt="@[RT_SCRATCH_DIR]/tmp"
+
+    # The COMrt is the output area for files to be verified.
+    COMrt="@[HOMErt]/com"
+
+    # The BASELINE directory contains the "last known good" baseline
+    # to compare to COMrt in verification mode.  In baseline mode,
+    # files are installed to the BASELINE directory, and this variable
+    # is overridden with some temporary directory.
+    BASELINE="@[INPUTS]" # Baseline input or output directory
+}
+
+
+########################################################################
+
+# WCOSS PLATFORMS
+
+wcoss.common={   # Common resources for all WCOSSes
+    use platform.defaults
+    MACHINE_ID='wcoss'
+
+    HOMEnems=PWD_UP5
+    HOMErt=OUTPUT_PATH
+    BASELINE="/nems/noscrub/emc.nemspara/RT/NEMSGSM/trunk-2017011116/data"
+    BASELINE_TEMPLATE="/nems/noscrub/emc.nemspara/RT/NEMSGSM/trunk-2017011116/template"
+    INPUTS="@[BASELINE]"
+#    INPUTS='/meso/noscrub/wx20rv/REGRESSION_TEST'
+}
+
+platform wcoss.phase2 {
+    use wcoss.common
+    CPU_ACCOUNT='GFS-T2O'
+    pex='1'
+    cores_per_node=32
+    MPI='LSF'
+    SHORT_TEST_QUEUE='&SHORTQ;'
+    LONG_TEST_QUEUE='&LONGQ;'
+    BUILD_QUEUE='&BUILDQ;'
+
+    default_resources={
+        TASKS=144
+        TPN=16
+        INPES=3
+        JNPES=8
+        THRD=1
+    }
+
+    embed bash detect [[[
+        # This function is used at PARSE TIME to detect whether we are
+        # on WCOSS Phase 2.  It must be very fast and low resource
+        # usage since the parser runs it.
+        if [[ -d /usrx && -d /global && -e /etc/redhat-release && \
+              -e /etc/prod ]] ; then
+            # We are on WCOSS Phase 1 or 2.
+            if ( cat /proc/cpuinfo |grep 'processor.*32' ) ; then
+                # More than 32 fake (hyperthreading) cpus, so Phase 0.
+                exit 0
+            fi
+        fi
+        exit 1
+    ]]]
+
+    # ROCOTO SUPPORT ---------------------------------------------------
+    rocoto={
+        install_dir="@[HOMErt]"
+        log_dir="@[TMPrt]/log"
+        scheduler="lsf"
+        entities=[[[
+  <!ENTITY SHORTQ "dev">
+  <!ENTITY LONGQ "dev">
+  <!ENTITY BUILDQ "dev_shared">
+]]]
+        build_resources=[[[
+      <!-- Build job resources minus wallclock -->
+      <queue>@[BUILD_QUEUE]</queue>
+      <memory>4G</memory>
+      <cores>1</cores>
+      <native>-R 'affinity[core(1)]'</native>
+]]]
+        short_test_resources=[[[
+    <!-- Short test job -->
+    <queue>@[SHORT_TEST_QUEUE]</queue>
+    <memory></memory> <!-- Unlimited memory -->
+    <native>-a poe</native>
+]]]
+        long_test_resources=[[[
+    <!-- Long test job -->
+    <queue>@[LONG_TEST_QUEUE]</queue>
+    <memory></memory> <!-- Unlimited memory -->
+    <native>-a poe</native>
+]]]
+    }
+
+}
+
+platform wcoss.cray {
+    # FIXME: WCOSS CRAY SUPPORT DOES NOT WORK YET
+    use platform.defaults
+    MACHINE_ID='wcoss'
+    pex='cray'
+    BUILD_QUEUE='dev'
+    SHORT_TEST_QUEUE='dev'
+    LONG_TEST_QUEUE='dev'
+    MPI='LSFCray'
+
+    # The *nems locations are in NEMS checkout areas.
+    HOMEnems="FIXME"
+
+    # The *rt locations are auto-generated areas.
+    HOMErt="FIXME"
+
+    # INPUTS is the input directory, which should contain fix and parm
+    # files, plus any restarts or other inputs.
+    INPUTS="FIXME"
+
+    default_resources={
+        TASKS=144
+        TPN=24
+        INPES=3
+        JNPES=8
+        THRD=1
+    }
+    default_threaded_resources={
+        TASKS=72
+        TPN=12
+        INPES=3
+        JNPES=4
+        THRD=2
+    }
+
+    rocoto={
+        ## FIXME: INSERT TEXT HERE
+    }
+
+    embed bash detect [[[
+        # This function is used at PARSE TIME to detect whether we are
+        # on WCOSS Cray.  It must be very fast and low resource usage
+        # since the parser runs it.
+        if [[ -d /gpfs/hps && -e /etc/SuSE-release && -d /usrx ]] ; then
+            exit 0
+        fi
+        exit 1
+    ]]]
+}
+
+########################################################################
+
+# THEIA SUPPORT
+
+platform theia {
+    use platform.defaults
+    MACHINE_ID='theia' # Name of this platform.
+
+    MPI='MPICH'
+
+    CPU_ACCOUNT='nems'
+    BUILD_QUEUE='&BUILDQ;' # Queue to use for compilation jobs
+    SHORT_TEST_QUEUE='&SHORTQ;' # Queue to use for short test jobs
+    LONG_TEST_QUEUE='&LONGQ;' # Queue to use for long test jobs
+
+    cores_per_node=24 # Number of cores per node on compute nodes
+
+    # The *nems locations are in NEMS checkout areas.
+    HOMEnems=PWD_UP5
+
+    # The *rt locations are auto-generated areas.
+    HOMErt=OUTPUT_PATH
+
+    # INPUTS is the input directory, which should contain fix and parm
+    # files, plus any restarts or other inputs.
+    BASELINE="/scratch4/NCEPDEV/nems/noscrub/Jun.Wang/FV3_RT/REGRESSION_TEST"
+    BASELINE_TEMPLATE="/scratch4/NCEPDEV/nems/noscrub/Jun.Wang/FV3_RT/REGRESSION_TEST_ICs"
+    INPUTS="@[BASELINE]"
+
+    default_resources={
+        TASKS=144
+        TPN=24
+        INPES=3
+        JNPES=8
+        THRD=1
+    }
+    default_threaded_resources={
+        TASKS=72
+        TPN=12
+        INPES=3
+        JNPES=4
+        THRD=2
+    }
+
+    # PLATFORM DETECTION -----------------------------------------------
+    embed bash detect [[[
+        # This function is used at PARSE TIME to detect whether we are
+        # on NOAA Theia.  It must be very fast and low resource usage
+        # since the parser runs it.
+        if [[ -d /scratch3 && -d /scratch4 && -d /contrib ]] ; then
+            exit 0
+        fi
+        exit 1
+    ]]]
+
+    # ROCOTO SUPPORT ---------------------------------------------------
+    rocoto={
+        install_dir="@[HOMErt]"
+        log_dir="@[TMPrt]/log"
+        scheduler="moabtorque"
+        entities=[[[
+  <!ENTITY SHORTQ "batch">
+  <!ENTITY LONGQ "batch">
+  <!ENTITY BUILDQ "service">
+]]]
+        build_resources=[[[
+      <!-- Build job resources minus wallclock -->
+      <queue>@[BUILD_QUEUE]</queue>
+      <memory>4G</memory>
+      <cores>1</cores>
+]]]
+        short_test_resources=[[[
+    <!-- Short test job -->
+    <queue>@[SHORT_TEST_QUEUE]</queue>
+    <memory></memory> <!-- Unlimited memory -->
+]]]
+        long_test_resources=[[[
+    <!-- Long test job -->
+    <queue>@[LONG_TEST_QUEUE]</queue>
+    <memory></memory> <!-- Unlimited memory -->
+]]]
+    }
+
+}
+
+########################################################################
+
+# Autodetection of available platforms.  Calls the "detect" function
+# from each of the listed platforms.
+
+autodetect plat (/ wcoss.cray, theia /)
