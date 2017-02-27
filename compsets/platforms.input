@@ -108,24 +108,17 @@ platform wcoss.phase2 {
 }
 
 platform wcoss.cray {
-    # FIXME: WCOSS CRAY SUPPORT DOES NOT WORK YET
-    use platform.defaults
-    MACHINE_ID='wcoss'
+    use wcoss.common
+    MACHINE_ID='wcoss.cray'
     pex='cray'
-    BUILD_QUEUE='dev'
-    SHORT_TEST_QUEUE='dev'
-    LONG_TEST_QUEUE='dev'
-    MPI='LSFCray'
+    cores_per_node='24'
+    MPI='lsf_cray_intel'
+    SHORT_TEST_QUEUE='&SHORTQ;'
+    LONG_TEST_QUEUE='&LONGQ;'
+    BUILD_QUEUE='&BUILDQ;'
 
-    # The *nems locations are in NEMS checkout areas.
-    HOMEnems="FIXME"
-
-    # The *rt locations are auto-generated areas.
-    HOMErt="FIXME"
-
-    # INPUTS is the input directory, which should contain fix and parm
-    # files, plus any restarts or other inputs.
-    INPUTS="FIXME"
+    BASELINE="/gpfs/hps/emc/global/noscrub/Jun.Wang/FV3_RT/REGRESSION_TEST"
+    BASELINE_TEMPLATE="/gpfs/hps/emc/global/noscrub/Jun.Wang/FV3_RT/REGRESSION_TEST_ICs"
 
     default_resources={
         TASKS=144
@@ -142,10 +135,6 @@ platform wcoss.cray {
         THRD=2
     }
 
-    rocoto={
-        ## FIXME: INSERT TEXT HERE
-    }
-
     embed bash detect [[[
         # This function is used at PARSE TIME to detect whether we are
         # on WCOSS Cray.  It must be very fast and low resource usage
@@ -155,6 +144,34 @@ platform wcoss.cray {
         fi
         exit 1
     ]]]
+
+    # ROCOTO SUPPORT ---------------------------------------------------
+    rocoto={
+        install_dir="@[HOMErt]"
+        log_dir="@[TMPrt]/log"
+        scheduler="lsfcray"
+        entities=[[[
+  <!ENTITY SHORTQ "dev">
+  <!ENTITY LONGQ "dev">
+  <!ENTITY BUILDQ "dev_transfer">
+]]]
+        build_resources=[[[
+      <!-- Build job resources minus wallclock -->
+      <queue>@[BUILD_QUEUE]</queue>
+      <cores>1</cores>
+      <shared></shared>
+]]]
+        short_test_resources=[[[
+    <!-- Short test job -->
+    <queue>@[SHORT_TEST_QUEUE]</queue>
+    <exclusive></exclusive>
+]]]
+        long_test_resources=[[[
+    <!-- Long test job -->
+    <queue>@[LONG_TEST_QUEUE]</queue>
+    <exclusive></exclusive>
+]]]
+    }
 }
 
 ########################################################################
