@@ -55,6 +55,7 @@ gmake cleanall
 # A few things that "cleanall" doesn't clean:
 rm -rf FV3_INSTALL
 rm -rf nems_dir
+find $COMP_SRCDIR/fms/ -name '*.o' -o -name '*.mod'
 
 elapsed=$SECONDS
 echo "Elapsed time $elapsed seconds. Compiling ${MAKE_OPT} finished"
