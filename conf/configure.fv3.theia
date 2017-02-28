@@ -8,7 +8,9 @@ SHELL=/bin/sh
 ################################################################################
 ## Include the common configuration parts
 
+ifdef InNemsMakefile
 include $(TOP)/conf/configure.nems.NUOPC
+endif
 
 ###################### PHYS_MODE ##### CHEM_MODE ###############################
 #
@@ -159,6 +161,8 @@ endif
 
 LDFLAGS += $(LIBS)
 
+ifdef InNemsMakefile
 FFLAGS += $(ESMF_INC)
 CPPFLAGS += -traditional
 EXTLIBS = $(NCEPLIBS) $(ESMF_LIB) $(LDFLAGS) $(NETCDF_LIB)
+endif

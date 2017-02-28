@@ -1,4 +1,6 @@
+ifdef InNemsMakefile
 include $(TOP)/conf/configure.nems.NUOPC
+endif
 
 ############
 # commands #
@@ -131,6 +133,8 @@ endif
 
 LDFLAGS += $(LIBS)
 
+ifdef InNemsMakefile
 FFLAGS += $(ESMF_INC)
 CPPFLAGS += -traditional
 EXTLIBS = $(NCEPLIBS) $(ESMF_LIB) $(LDFLAGS)
+endif
