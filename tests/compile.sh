@@ -20,10 +20,6 @@ hostname
 
 echo "Compiling ${MAKE_OPT} into $BUILD_NAME.exe on $MACHINE_ID"
 
-# Configure FV3
-cd ${PATHTR}
-./configure ${MACHINE_ID}
-
 # Configure NEMS
 cd $PATHNEMS
 src/configure configure.fv3.$MACHINE_ID \
@@ -32,6 +28,10 @@ src/configure configure.fv3.$MACHINE_ID \
 # Load the "module" command, purge modules, and load modules
 source $PATHNEMS/src/conf/modules.nems.sh
 module list
+
+# Copy configuration to FV3:
+cp -fp $PATHNEMS/src/conf/configure.nems $PATHTR/conf/configure.fv3
+cp -fp $PATHNEMS/src/conf/modules.nems $PATHTR/conf/modules.fv3
 
 # Build FV3
 cd $PATHTR
