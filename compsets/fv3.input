@@ -7,6 +7,7 @@ load 'nemscommon.input'
 
 embed bash fv3_prep(RUNDIR,modules,CNTL) [[[
         mkdir -p "$RUNDIR" "$CNTL"
+        mkdir -p "@[plat%EXECrt]" "@[plat%INCrt]"
         cd @[RUNDIR]
 
         set +e
@@ -23,17 +24,52 @@ embed bash fv3_prep(RUNDIR,modules,CNTL) [[[
         export ESMF_RUNTIME_COMPLIANCECHECK=OFF:depth=4
 ]]]
 
+# Function that uses compile.sh to build.  Note the defaults are no
+# make options and no build name.  No build name creates fv3.exe and
+# modules.fv3.
+embed bash compile.sh(MAKE_OPTS=' ',BUILD_NR='',fv3,modules) [[[
+	cd @[plat%HOMEnems]/tests/
+	# Run the compile.sh.  Convert wcoss.cray to wcoss_cray to
+	# make the FV3 happy.
+	rm -f @[fv3] @[modules]
+	./compile.sh "@[plat%HOMEnems]/FV3" \
+	    $( echo @[plat%MACHINE_ID] | sed 's,\.,_,g' ) \
+	    @[MAKE_OPTS] $BUILD_NR
+	cp -fp ./fv3.exe @[fv3]
+	cp -fp ./modules.fv3 @[modules]
+]]]
+
 ########################################################################
 
-# Builds for the fv3:
+# Builds for the fv3.  Presently there is only one build, but with two
+# different build systems.  Results should be identical.
 
 build fv3.exe {
     use plat
-    NEMS.x="@[plat%EXECrt]/fv3.exe"
-    modules.nems="@[plat%INCrt]/modules.fv3"
-    md5sum="@[NEMS.x].md5"
-    target="@[NEMS.x]"
-    build=NEMSAppBuilder(NEMS.x="@[NEMS.x]",modules.nems="@[modules.nems]",
+
+    # Note:
+    #  plat%EXECrt = temporary directory for executables and md5 sums
+    #  plat%INCrt  = temporary directory for modulefiles
+    target="@[plat%EXECrt]/fv3.exe"   # NEMS.x installation location
+    modules.nems="@[plat%INCrt]/modules.fv3"  # modulefile for this NEMS.x
+    md5sum="@[target].md5"            # MD5SUM for this NEMS.x
+
+    # build: script to build the NEMS.x.  For now, this is an embedded
+    # bash script.
+    build=compile.sh(fv3="@[target]",modules="@[modules.nems]")
+}
+
+build fv3_appbuilder.exe {
+    # This block is similar to the fv3.exe block, but uses the
+    # NEMSAppBuilder.  We do this for one compset, just to make sure
+    # the NEMSAppBuilder does not break.
+    use plat
+    target="@[plat%EXECrt]/fv3_appbuilder.exe"
+    modules.nems="@[plat%INCrt]/modules_appbuilder.fv3"
+    md5sum="@[target].md5"
+
+    # The NEMSAppBuilder is another embedded bash script in nemscommon.input
+    build=NEMSAppBuilder(NEMS.x="@[target]",modules.nems="@[modules.nems]",
                          OPTS="app=standaloneFV3",md5sum="@[md5sum]")
 }
 
@@ -74,10 +110,13 @@ test fv3_control: fv3.exe {
     CNTL_NAME='fv3_control'
 
     COM="@[plat%COMrt]/@[TEST_NAME]"          # Test result area
-    RUNDIR_ROOT="@[plat%TMPrt]"
-    RUNDIR="@[RUNDIR_ROOT]/@[TEST_NAME]"      # Test work area
+    RUNDIR="@[plat%TMPrt]/@[TEST_NAME]"       # Test work area
     CNTL="@[plat%BASELINE]/@[CNTL_NAME]"      # Control baseline area
     FV3_input_data="@[plat%INPUTS]/FV3_input_data"
+
+    # The build variable is the fv3.exe or fv3_appbuild.fv3, which
+    # provides the path to the build target, md5 sum, and modulefile.
+    build=fv3.exe
 
     prep=fv3_prep(
         RUNDIR="@[RUNDIR]",modules="@[fv3.exe%modules.nems]",
@@ -146,11 +185,28 @@ test fv3_control: fv3.exe {
       # for comparison against the MD5 sum made in the build job.
       # This is to ensure the executable did not change during the
       # test suite.
-        "@[fv3.exe%target]" .md5cmp. "@[fv3.exe%md5sum]"
+        "@[build%target]" .md5cmp. "@[fv3.exe%md5sum]"
     }
 
     spawn execute {
-        {"@[fv3.exe%target]", ranks="@[TASKS]" }
+	# Run the 
+        {"@[build%target]", ranks="@[TASKS]" }
+    }
+}
+
+########################################################################
+
+test fv3_appbuilder: fv3_appbuilder.exe {
+    use fv3_control
+    use plat%default_threaded_resources
+
+    build=fv3_appbuilder.exe
+
+    TEST_DESCR="Compare FV3 with the NEMSAppBuilder against the previous trunk version"
+    CNTL_NAME='fv3_control'
+
+    spawn execute {
+        {"@[build%target]", ranks="@[TASKS]", threads="@[THRD]" }
     }
 }
 
@@ -161,10 +217,9 @@ test fv3_2threads: fv3.exe {
     use plat%default_threaded_resources
 
     TEST_DESCR="Compare FV3 2 threads results with previous trunk version"
-    CNTL_NAME='fv3_control'
 
     spawn execute {
-        {"@[fv3.exe%target]", ranks="@[TASKS]", threads="@[THRD]" }
+        {"@[build%target]", ranks="@[TASKS]", threads="@[THRD]" }
     }
 }
 
@@ -173,7 +228,7 @@ test fv3_2threads: fv3.exe {
 test fv3_decomp: fv3.exe {
     use fv3_control
     TEST_DESCR="Compare FV3 decomp results with previous trunk version"
-    CNTL_NAME='fv3_control'
+
     INPES='6'
     JNPES='4'
 }
