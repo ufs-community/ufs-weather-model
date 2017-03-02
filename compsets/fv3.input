@@ -26,7 +26,7 @@ embed bash fv3_prep(RUNDIR,modules,CNTL) [[[
 # Function that uses compile.sh to build.  Note the defaults are no
 # make options and no build name.  No build name creates fv3.exe and
 # modules.fv3.
-embed bash compile.sh(MAKE_OPTS=' ',BUILD_NR='',fv3,modules) [[[
+embed bash compile.sh(MAKE_OPTS=' ',BUILD_NR='',fv3,modules,md5) [[[
 	cd @[plat%HOMEnems]/tests/
 	# Run the compile.sh.  Convert wcoss.cray to wcoss_cray to
 	# make the FV3 happy.
@@ -37,6 +37,7 @@ embed bash compile.sh(MAKE_OPTS=' ',BUILD_NR='',fv3,modules) [[[
         mkdir -p "@[plat%EXECrt]" "@[plat%INCrt]"
 	cp -fp ./fv3.exe @[fv3]
 	cp -fp ./modules.fv3 @[modules]
+	md5sum ./fv3.exe > @[md5]
 ]]]
 
 ########################################################################
@@ -56,7 +57,7 @@ build fv3.exe {
 
     # build: script to build the NEMS.x.  For now, this is an embedded
     # bash script.
-    build=compile.sh(fv3="@[target]",modules="@[modules.nems]")
+    build=compile.sh(fv3="@[target]",modules="@[modules.nems]",md5="@[md5sum]")
 }
 
 build fv3_appbuilder.exe {
