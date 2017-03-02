@@ -1,4 +1,4 @@
-WORKFLOW STARTED AT Wed Feb 22 21:07:30 2017 (+1487797650)
+WORKFLOW STARTED AT Thu Mar  2 21:52:28 2017 (+1488491548)
 Repository information:
 
 
@@ -9,12 +9,12 @@ URL: https://svnemc.ncep.noaa.gov/projects/nems/apps/NEMSfv3gfs/branches/appify
 Relative URL: ^/nems/apps/NEMSfv3gfs/branches/appify
 Repository Root: https://svnemc.ncep.noaa.gov/projects
 Repository UUID: 281fb692-3a18-0410-826d-9e847983f365
-Revision: 88553
+Revision: 89074
 Node Kind: directory
 Schedule: normal
 Last Changed Author: samuel.trahan@noaa.gov
-Last Changed Rev: 88486
-Last Changed Date: 2017-02-17 22:26:21 +0000 (Fri, 17 Feb 2017)
+Last Changed Rev: 89074
+Last Changed Date: 2017-03-02 21:51:51 +0000 (Thu, 02 Mar 2017)
 
 
 EXTERNAL /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3:
@@ -39,34 +39,35 @@ URL: https://svnemc.ncep.noaa.gov/projects/nems/branches/appify-fv3
 Relative URL: ^/nems/branches/appify-fv3
 Repository Root: https://svnemc.ncep.noaa.gov/projects
 Repository UUID: 281fb692-3a18-0410-826d-9e847983f365
-Revision: 88553
+Revision: 89074
 Node Kind: directory
 Schedule: normal
 Last Changed Author: samuel.trahan@noaa.gov
-Last Changed Rev: 88552
-Last Changed Date: 2017-02-22 15:03:32 +0000 (Wed, 22 Feb 2017)
+Last Changed Rev: 89070
+Last Changed Date: 2017-03-02 20:25:00 +0000 (Thu, 02 Mar 2017)
 
 
 EXTERNAL /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/tests/produtil:
 Path: NEMS/tests/produtil
 Working Copy Root Path: /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/tests/produtil
-URL: https://svnemc.ncep.noaa.gov/projects/nceplibs/produtil/branches/regtests
-Relative URL: ^/nceplibs/produtil/branches/regtests
+URL: https://svnemc.ncep.noaa.gov/projects/nceplibs/produtil/branches/regtests-run
+Relative URL: ^/nceplibs/produtil/branches/regtests-run
 Repository Root: https://svnemc.ncep.noaa.gov/projects
 Repository UUID: 281fb692-3a18-0410-826d-9e847983f365
-Revision: 88560
+Revision: 89074
 Node Kind: directory
 Schedule: normal
 Last Changed Author: samuel.trahan@noaa.gov
-Last Changed Rev: 88546
-Last Changed Date: 2017-02-21 22:29:46 +0000 (Tue, 21 Feb 2017)
+Last Changed Rev: 89071
+Last Changed Date: 2017-03-02 20:25:37 +0000 (Thu, 02 Mar 2017)
 
 
 BUILD fv3.exe: SUCCEEDED
+BUILD fv3_appbuilder.exe: SUCCEEDED
 
 TEST #1: PASS
-  Test fv3_control starting at Wed Feb 22 21:29:20 UTC 2017 (Compare FV3 control results with previous trunk version)
-  Wed Feb 22 21:29:20 UTC 2017
+  Test fv3_control starting at Thu Mar 2 22:05:57 UTC 2017 (Compare FV3 control results with previous trunk version)
+  Thu Mar  2 22:05:57 UTC 2017
   20161003000000.atmos_4xdaily.tile1.nc: bit-for-bit identical
   20161003000000.atmos_4xdaily.tile2.nc: bit-for-bit identical
   20161003000000.atmos_4xdaily.tile3.nc: bit-for-bit identical
@@ -99,21 +100,31 @@ TEST #1: PASS
   RESTART/sfc_data.tile4.nc: bit-for-bit identical
   RESTART/sfc_data.tile6.nc: bit-for-bit identical
   Executable did not change during test suite:
-    File: /scratch4/NCEPDEV/stmp3/Samuel.Trahan/rtgen.70021/exec/fv3.exe
-    Expected md5sum: 2353b7964fa2e1a017ea95beb7faaa39
-    Actual md5sum: 2353b7964fa2e1a017ea95beb7faaa39
-  TEST PASSED AT Wed Feb 22 21:32:55 UTC 2017
-  FAIL: job state is DEAD
+    File: ./fv3.exe
+    Expected md5sum: 9ec2ab91b1497313bea4bc4d2d270b1b
+    Actual md5sum: 9ec2ab91b1497313bea4bc4d2d270b1b
+  TEST PASSED AT Thu Mar  2 22:09:43 UTC 2017
 
-TEST #2: FAIL
-  Test fv3_2threads starting at Wed Feb 22 21:32:04 UTC 2017 (Compare FV3 2 threads results with previous trunk version)
-  Wed Feb 22 21:32:04 UTC 2017
+TEST #2: PASS
+  Test fv3_2threads starting at Thu Mar 2 22:05:58 UTC 2017 (Compare FV3 2 threads results with previous trunk version)
+  Thu Mar  2 22:05:58 UTC 2017
+  TEST PASSED AT Thu Mar  2 22:09:13 UTC 2017
 
 TEST #3: PASS
-  Test fv3_decomp starting at Wed Feb 22 21:32:41 UTC 2017 (Compare FV3 decomp results with previous trunk version)
-  Wed Feb 22 21:32:41 UTC 2017
-  TEST PASSED AT Wed Feb 22 21:35:56 UTC 2017
-WORKFLOW REPORT AT Wed Feb 22 21:38:29 2017 (+1487799509)
-Tests: 1 failed, 2 passed out of 3
-Builds: 0 failed, 1 passed out of 1
-REGRESSION TEST FAILED
+  Test fv3_decomp starting at Thu Mar 2 22:06:31 UTC 2017 (Compare FV3 decomp results with previous trunk version)
+  Thu Mar  2 22:06:31 UTC 2017
+  TEST PASSED AT Thu Mar  2 22:09:49 UTC 2017
+
+TEST #4: PASS
+  Test fv3_restart starting at Thu Mar 2 22:07:05 UTC 2017 (Compare FV3 restart results with previous trunk version)
+  Thu Mar  2 22:07:05 UTC 2017
+  TEST PASSED AT Thu Mar  2 22:10:20 UTC 2017
+
+TEST #5: PASS
+  Test fv3_appbuilder starting at Thu Mar 2 22:11:44 UTC 2017 (Compare FV3 with the NEMSAppBuilder against the previous trunk version)
+  Thu Mar  2 22:11:44 UTC 2017
+  TEST PASSED AT Thu Mar  2 22:14:57 UTC 2017
+WORKFLOW REPORT AT Thu Mar  2 22:16:34 2017 (+1488492994)
+Tests: 0 failed, 5 passed out of 5
+Builds: 0 failed, 2 passed out of 2
+REGRESSION TEST WAS SUCCESSFUL

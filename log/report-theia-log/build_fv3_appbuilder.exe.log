@@ -1,7 +1,7 @@
-Start Prologue v3.2-ad-2016.04.05 Thu Mar  2 21:52:38 UTC 2017 on Mother Superior(head node): tfe01
+Start Prologue v3.2-ad-2016.04.05 Thu Mar  2 22:01:47 UTC 2017 on Mother Superior(head node): tfe02
 Node Access Status = SHARED
-Job 19227285.bqs3 started for user Samuel.Trahan in queue service
-End Prologue v3.1-ad-2016.04.05 Thu Mar  2 21:52:38 UTC 2017 
+Job 19227963.bqs3 started for user Samuel.Trahan in queue service
+End Prologue v3.1-ad-2016.04.05 Thu Mar  2 22:01:49 UTC 2017 
 _______________________________________________________________
 
 Welcome to Theia
@@ -25,37 +25,307 @@ type:
   for various Available Modules
 
 _______________________________________________________
-+ sh -c 'cd /scratch4/NCEPDEV/stmp4/Samuel.Trahan/rtgen.88842/src ; ./install.sh fv3.exe'
-+ [[ fv3.exe == fv3.exe ]]
-+ rm -f /scratch4/NCEPDEV/stmp4/Samuel.Trahan/rtgen.88842/exec/fv3.exe
-+ modules=/scratch4/NCEPDEV/stmp4/Samuel.Trahan/rtgen.88842/include/modules.fv3
-+ BUILD_NR=
-+ fv3=/scratch4/NCEPDEV/stmp4/Samuel.Trahan/rtgen.88842/exec/fv3.exe
-+ MAKE_OPTS=' '
-+ md5=/scratch4/NCEPDEV/stmp4/Samuel.Trahan/rtgen.88842/exec/fv3.exe.md5
-+ cd /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/tests/
-+ rm -f /scratch4/NCEPDEV/stmp4/Samuel.Trahan/rtgen.88842/exec/fv3.exe /scratch4/NCEPDEV/stmp4/Samuel.Trahan/rtgen.88842/include/modules.fv3
-++ echo theia
-++ sed 's,\.,_,g'
-+ ./compile.sh /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3 theia
-+ SECONDS=0
-+ [[ 2 -lt 2 ]]
-+ readonly PATHTR=/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3
-+ PATHTR=/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3
-+ readonly MACHINE_ID=theia
++ sh -c 'cd /scratch4/NCEPDEV/stmp4/Samuel.Trahan/rtgen.88842/src ; ./install.sh fv3_appbuilder.exe'
++ [[ fv3_appbuilder.exe == fv3.exe ]]
++ [[ fv3_appbuilder.exe == fv3_appbuilder.exe ]]
++ rm -f /scratch4/NCEPDEV/stmp4/Samuel.Trahan/rtgen.88842/exec/fv3_appbuilder.exe
++ md5sum=/scratch4/NCEPDEV/stmp4/Samuel.Trahan/rtgen.88842/exec/fv3_appbuilder.exe.md5
++ OPTS=app=standaloneFV3
++ mkdir -p /scratch4/NCEPDEV/stmp4/Samuel.Trahan/rtgen.88842/exec /scratch4/NCEPDEV/stmp4/Samuel.Trahan/rtgen.88842/include
++ rm -f /scratch4/NCEPDEV/stmp4/Samuel.Trahan/rtgen.88842/exec/fv3_appbuilder.exe /scratch4/NCEPDEV/stmp4/Samuel.Trahan/rtgen.88842/include/modules_appbuilder.fv3
++ cd /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify
++ ./NEMS/NEMSAppBuilder rebuild app=standaloneFV3
++ PATH=/usr/lib64/qt-3.3/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/apps/moab/default/tools:/apps/moab/default/bin:/apps/moab/default/sbin:/apps/torque/default/bin:/apps/torque/default/sbin:/apps/mam/default/bin:/apps/mam/default/sbin:/apps/local/bin:/apps/local/sbin:/scratch4/NCEPDEV/nems/save/Gerhard.Theurich/bin:/glade/p/work/theurich/bin
++ global_name=NEMSAppBuilder
++ global_version='version 1.1.0'
++ global_capabilities='autobuild dialog whiptail FV3 HYCOM MOM5 CICE IPE WRFHYDRO WW3 LIS IMP GSM NMMB KISS NOAH NOAHMP LegacyGSM LegacyNMM'
++ read dialog
+++ which dialog
++ read whiptail
+++ which whiptail
++ [[ 2 -gt 0 ]]
++ tool=autobuild
++ toolflag=autobuild
++ [[ autobuild != autobuild ]]
++ [[ -e /gpfs/hps ]]
++ [[ -e /scratch4 ]]
++ [[ -e /scratch3 ]]
++ FULL_MACHINE_ID=theia
 + MACHINE_ID=theia
-+ readonly 'MAKE_OPT= '
-+ MAKE_OPT=' '
-+ readonly BUILD_NAME=fv3
-+ BUILD_NAME=fv3
-+ readonly PATHNEMS=/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/../NEMS
-+ PATHNEMS=/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/../NEMS
-+ hostname
-tfe01
-+ echo 'Compiling   into fv3.exe on theia'
-Compiling   into fv3.exe on theia
-+ cd /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/../NEMS
-+ src/configure configure.fv3.theia theia/fv3
++ [[ theia == yellowstone ]]
++ [[ theia == gaea ]]
++ echo 'MACHINE_ID=theia FULL_MACHINE_ID=theia'
+MACHINE_ID=theia FULL_MACHINE_ID=theia
++ unspecified='**UNSPECIFIED**'
++ auto__ask=
++ auto__components=
++ auto__app=unspecified
++ global_backtitle='NEMS Application Builder'
++ autobuild_init rebuild app=standaloneFV3
++ local opt
++ local app=unspecified
++ local confopt=unspecified
++ local makeopt=unspecified
++ local asklist=
++ local components=
++ local bad=no
++ local should_exit=no
++ for opt in '"$@"'
++ [[ rebuild == \-\-\h\e\l\p ]]
++ [[ rebuild == \-\-\v\e\r\s\i\o\n ]]
++ [[ rebuild =~ ^app=.+ ]]
++ [[ rebuild =~ ^confopt=.+ ]]
++ [[ rebuild =~ ^makeopt=.+ ]]
++ [[ rebuild =~ ^(.+):(yes|no|true|false)$ ]]
++ [[ rebuild =~ \+(.+) ]]
++ [[ rebuild == auto ]]
++ [[ rebuild == rebuild ]]
++ asklist[${#asklist[*]}]=rebuild:yes
++ asklist[${#asklist[*]}]=reuse:no
++ for opt in '"$@"'
++ [[ app=standaloneFV3 == \-\-\h\e\l\p ]]
++ [[ app=standaloneFV3 == \-\-\v\e\r\s\i\o\n ]]
++ [[ app=standaloneFV3 =~ ^app=.+ ]]
++ app=standaloneFV3
++ [[ no == yes ]]
++ [[ no == yes ]]
++ echo 'Autobuild mode; will run without GUI.'
+Autobuild mode; will run without GUI.
++ auto__ask=("${asklist[@]}")
++ auto__app=standaloneFV3
++ [[ unspecified != unspecified ]]
++ unset auto__confopt
++ [[ unspecified != unspecified ]]
++ unset auto__makeopt
++ auto__components=("${components[@]}")
++ local item
++ echo 'asklist=('
+asklist=(
++ for item in '"${asklist[@]}"'
++ echo ''
+
++ for item in '"${asklist[@]}"'
++ echo rebuild:yes
+rebuild:yes
++ for item in '"${asklist[@]}"'
++ echo reuse:no
+reuse:no
++ echo 'auto__ask=('
+auto__ask=(
++ for item in '"${auto__ask[@]}"'
++ echo ''
+
++ for item in '"${auto__ask[@]}"'
++ echo rebuild:yes
+rebuild:yes
++ for item in '"${auto__ask[@]}"'
++ echo reuse:no
+reuse:no
++ trap deletetempfiles EXIT
+++ pwd
++ ROOTDIR=/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify
++ LOGDIR=/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/log
++ [[ ! -e NEMS ]]
++ LOGFILE=/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/log/appBuilder.log.25379
++++ dirname ./NEMS/NEMSAppBuilder
+++ cd ./NEMS
+++ pwd
++ NEMSDIR=/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS
++ appCounter=0
++ shopt -s nullglob
++ for i in '"$ROOTDIR"/*.appBuilder'
++ '[' x/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/standaloneFV3.appBuilder '!=' x ']'
++ let appCounter++
+++ head -1 /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/standaloneFV3.appBuilder
++ title='# Standalone GSM'
++ title=' Standalone GSM'
++ title='Standalone GSM'
++ appbuilderlist=("${appbuilderlist[@]}" $i)
++ appnames=("${appnames[@]}" $( basename $i ))
+++ basename /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/standaloneFV3.appBuilder
++ i=standaloneFV3.appBuilder
++ i=standaloneFV3
++ '[' 1 == 1 ']'
++ radiolist=("${radiolist[@]}" $i "$title" on)
++ autonote 'App names: standaloneFV3.appBuilder'
++ [[ autobuild == autobuild ]]
++ note 'App names: standaloneFV3.appBuilder' 0 0
++ logimpl NOTE 'App names: standaloneFV3.appBuilder' 0 0
++ local level=NOTE
++ local 'infobox=App names: standaloneFV3.appBuilder'
++ local 'backtitle=NEMS Application Builder'
++ local title=NOTE
++ local loc1=0
++ local loc2=0
++ local widget=--msgbox
++ [[ autobuild == autobuild ]]
++ echo 'NOTE: App names: standaloneFV3.appBuilder'
+NOTE: App names: standaloneFV3.appBuilder
++ return 0
++ echo 'radiolist=standaloneFV3 Standalone GSM on, appCounter=1'
+radiolist=standaloneFV3 Standalone GSM on, appCounter=1
++ APPLEVELUSE=true
++ [[ 1 != 1 ]]
++ '[' 1 == 0 ']'
++ [[ 1 > 1 ]]
++ [[ 1 == 1 ]]
++ [[ autobuild == autobuild ]]
++ [[ autobuild == autobuild ]]
+++ autoapp
+++ echo standaloneFV3
+++ return 0
++ APP=standaloneFV3
++ autonote 'APP from autoapp is standaloneFV3'
++ [[ autobuild == autobuild ]]
++ note 'APP from autoapp is standaloneFV3' 0 0
++ logimpl NOTE 'APP from autoapp is standaloneFV3' 0 0
++ local level=NOTE
++ local 'infobox=APP from autoapp is standaloneFV3'
++ local 'backtitle=NEMS Application Builder'
++ local title=NOTE
++ local loc1=0
++ local loc2=0
++ local widget=--msgbox
++ [[ autobuild == autobuild ]]
++ echo 'NOTE: APP from autoapp is standaloneFV3'
+NOTE: APP from autoapp is standaloneFV3
++ return 0
++ echo standaloneFV3
++ bailFlag=false
++ echo logfile=/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/log/appBuilder.log.25379
+logfile=/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/log/appBuilder.log.25379
++ echo
+++ head -1 /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/log/appBuilder.log.25379
++ APP=standaloneFV3
++ autonote 'Chosen app is standaloneFV3'
++ [[ autobuild == autobuild ]]
++ note 'Chosen app is standaloneFV3' 0 0
++ logimpl NOTE 'Chosen app is standaloneFV3' 0 0
++ local level=NOTE
++ local 'infobox=Chosen app is standaloneFV3'
++ local 'backtitle=NEMS Application Builder'
++ local title=NOTE
++ local loc1=0
++ local loc2=0
++ local widget=--msgbox
++ [[ autobuild == autobuild ]]
++ echo 'NOTE: Chosen app is standaloneFV3'
+NOTE: Chosen app is standaloneFV3
++ return 0
++ case "$APP" in
++ FOUNDAPP=false
++ for i in '"${appbuilderlist[@]}"'
+++ basename /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/standaloneFV3.appBuilder
++ [[ standaloneFV3.appBuilder =~ standaloneFV3 ]]
++ source /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/standaloneFV3.appBuilder
+++ COMPONENTS=(FV3)
+++ FV3_SRCDIR=/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3
+++ FV3_BINDIR=/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL
+++ CHOSEN_MODULE=theia/fv3
+++ CONFOPT=configure.fv3.theia
++ echo FV3
++ FOUNDAPP=true
++ autonote 'FOUND APP FROM /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/standaloneFV3.appBuilder COMPONENTS FV3'
++ [[ autobuild == autobuild ]]
++ note 'FOUND APP FROM /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/standaloneFV3.appBuilder COMPONENTS FV3' 0 0
++ logimpl NOTE 'FOUND APP FROM /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/standaloneFV3.appBuilder COMPONENTS FV3' 0 0
++ local level=NOTE
++ local 'infobox=FOUND APP FROM /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/standaloneFV3.appBuilder COMPONENTS FV3'
++ local 'backtitle=NEMS Application Builder'
++ local title=NOTE
++ local loc1=0
++ local loc2=0
++ local widget=--msgbox
++ [[ autobuild == autobuild ]]
++ echo 'NOTE: FOUND APP FROM /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/standaloneFV3.appBuilder COMPONENTS FV3'
+NOTE: FOUND APP FROM /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/standaloneFV3.appBuilder COMPONENTS FV3
++ return 0
++ break
++ [[ true != true ]]
++ '[' 1 == 1 ']'
++ bailFlag=true
++ '[' true == true ']'
++ bailFlag=false
++ [[ autobuild == autobuild ]]
++ break
++ autobuild --backtitle 'NEMS Application Builder' --title Info --infobox 'Determine platform...' 6 25
++ echo Ignoring command: '$tool' --backtitle 'NEMS Application Builder' --title Info --infobox 'Determine platform...' 6 25
+Ignoring command: $tool --backtitle NEMS Application Builder --title Info --infobox Determine platform... 6 25
++ bailFlag=true
++ '[' true == true ']'
++ bailFlag=false
++ '[' theiax == x ']'
++ '[' false == true ']'
++ note 'Determine platform...theia' 10 35 Info
++ logimpl NOTE 'Determine platform...theia' 10 35 Info
++ local level=NOTE
++ local 'infobox=Determine platform...theia'
++ local 'backtitle=NEMS Application Builder'
++ local title=Info
++ local loc1=10
++ local loc2=35
++ local widget=--msgbox
++ [[ autobuild == autobuild ]]
++ echo 'NOTE: Determine platform...theia'
+NOTE: Determine platform...theia
++ return 0
++ '[' theia = linux_gnu ']'
++ COMPILER=intel_
++ cd /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src
++ autonote 'CONFOPT=configure.fv3.theia MAKEOPT='
++ [[ autobuild == autobuild ]]
++ note 'CONFOPT=configure.fv3.theia MAKEOPT=' 0 0
++ logimpl NOTE 'CONFOPT=configure.fv3.theia MAKEOPT=' 0 0
++ local level=NOTE
++ local 'infobox=CONFOPT=configure.fv3.theia MAKEOPT='
++ local 'backtitle=NEMS Application Builder'
++ local title=NOTE
++ local loc1=0
++ local loc2=0
++ local widget=--msgbox
++ [[ autobuild == autobuild ]]
++ echo 'NOTE: CONFOPT=configure.fv3.theia MAKEOPT='
+NOTE: CONFOPT=configure.fv3.theia MAKEOPT=
++ return 0
+++ autoconfopt
+++ echo ''
+++ return 0
++ AUTOCONFOPT=
++ [[ Q == Q ]]
++ [[ configure.fv3.theiaQ == Q ]]
++ conf_mode=user-specified
++ autonote 'Configure using user-specified mode.'
++ [[ autobuild == autobuild ]]
++ note 'Configure using user-specified mode.' 0 0
++ logimpl NOTE 'Configure using user-specified mode.' 0 0
++ local level=NOTE
++ local 'infobox=Configure using user-specified mode.'
++ local 'backtitle=NEMS Application Builder'
++ local title=NOTE
++ local loc1=0
++ local loc2=0
++ local widget=--msgbox
++ [[ autobuild == autobuild ]]
++ echo 'NOTE: Configure using user-specified mode.'
+NOTE: Configure using user-specified mode.
++ return 0
++ autonote 'Command: ./configure configure.fv3.theia theia/fv3'
++ [[ autobuild == autobuild ]]
++ note 'Command: ./configure configure.fv3.theia theia/fv3' 0 0
++ logimpl NOTE 'Command: ./configure configure.fv3.theia theia/fv3' 0 0
++ local level=NOTE
++ local 'infobox=Command: ./configure configure.fv3.theia theia/fv3'
++ local 'backtitle=NEMS Application Builder'
++ local title=NOTE
++ local loc1=0
++ local loc2=0
++ local widget=--msgbox
++ [[ autobuild == autobuild ]]
++ echo 'NOTE: Command: ./configure configure.fv3.theia theia/fv3'
+NOTE: Command: ./configure configure.fv3.theia theia/fv3
++ return 0
++ tee /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/log/appBuilder.NEMS.log.25379
++ ./configure configure.fv3.theia theia/fv3
 + CONF_OPTION=configure.fv3.theia
 + unset CONF_FILE
 + CHOSEN_MODULE=theia/fv3
@@ -63,7 +333,7 @@ Compiling   into fv3.exe on theia
 + ESMF_VERSION_DEFINE=''
 + [[ -d NEMS/src/conf ]]
 + [[ -d src/conf ]]
-+ cd src
++ [[ -d ../conf ]]
 + [[ ! -d conf ]]
 + [[ -z configure.fv3.theia ]]
 + [[ -z theia/fv3 ]]
@@ -112,14 +382,127 @@ EOF
 + 1> /dev/null 2>& 1
 + echo 'confirmed ESMFVersionDefine.h'
 confirmed ESMFVersionDefine.h
-+ source /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/../NEMS/src/conf/modules.nems.sh
++ echo
++ cd /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify
++ envir=environment_theia
++ loaded_envir=yes
+++ type -t environment_theia
++ '[' '' == function ']'
++ [[ Qtheia/fv3 == \Q ]]
++ [[ -f /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/conf/modules.nems ]]
++ ask --clear use_nems_modules yes 'Source the NEMS provided module file to set up the build environment?\n\nSelect <Yes> to overwrite the build environment of the current shell (purge modules) and to replace it with the NEMS provided setting.\n\nSelect <No> to retain and use the build environment of the current shell.' 16 40 'Build environment'
++ local 'clear= '
++ [[ --clear == --clear ]]
++ clear=--clear
++ shift
++ local question_id=use_nems_modules
++ local defval=yes
++ local 'yesno=Source the NEMS provided module file to set up the build environment?\n\nSelect <Yes> to overwrite the build environment of the current shell (purge modules) and to replace it with the NEMS provided setting.\n\nSelect <No> to retain and use the build environment of the current shell.'
++ local 'backtitle=NEMS Application Builder'
++ local 'title=Build environment'
++ local loc1=16
++ local loc2=40
++ [[ autobuild == autobuild ]]
++ echo 'Question id "use_nems_modules" text "Source the NEMS provided module file to set up the build environment?\n\nSelect <Yes> to overwrite the build environment of the current shell (purge modules) and to replace it with the NEMS provided setting.\n\nSelect <No> to retain and use the build environment of the current shell." ??? (yes/no)'
+Question id "use_nems_modules" text "Source the NEMS provided module file to set up the build environment?\n\nSelect <Yes> to overwrite the build environment of the current shell (purge modules) and to replace it with the NEMS provided setting.\n\nSelect <No> to retain and use the build environment of the current shell." ??? (yes/no)
++ autoask use_nems_modules yes
++ local question_id=use_nems_modules
++ local default_answer=yes
++ local answer=mu
++ local optval
++ local opt
++ local val
++ for optval in '"${auto__ask[@]}"'
++ [[ x == x ]]
++ continue
++ for optval in '"${auto__ask[@]}"'
++ [[ rebuild:yesx == x ]]
++ [[ rebuild:yes =~ ^(.*):(yes|no|true|false)$ ]]
++ opt=rebuild
++ val=yes
++ case "$question_id" in
++ autonote 'GLOB MISMATCH: rebuild from rebuild:yes for use_nems_modules'
++ [[ autobuild == autobuild ]]
++ note 'GLOB MISMATCH: rebuild from rebuild:yes for use_nems_modules' 0 0
++ logimpl NOTE 'GLOB MISMATCH: rebuild from rebuild:yes for use_nems_modules' 0 0
++ local level=NOTE
++ local 'infobox=GLOB MISMATCH: rebuild from rebuild:yes for use_nems_modules'
++ local 'backtitle=NEMS Application Builder'
++ local title=NOTE
++ local loc1=0
++ local loc2=0
++ local widget=--msgbox
++ [[ autobuild == autobuild ]]
++ echo 'NOTE: GLOB MISMATCH: rebuild from rebuild:yes for use_nems_modules'
+NOTE: GLOB MISMATCH: rebuild from rebuild:yes for use_nems_modules
++ return 0
++ continue
++ for optval in '"${auto__ask[@]}"'
++ [[ reuse:nox == x ]]
++ [[ reuse:no =~ ^(.*):(yes|no|true|false)$ ]]
++ opt=reuse
++ val=no
++ case "$question_id" in
++ autonote 'GLOB MISMATCH: reuse from reuse:no for use_nems_modules'
++ [[ autobuild == autobuild ]]
++ note 'GLOB MISMATCH: reuse from reuse:no for use_nems_modules' 0 0
++ logimpl NOTE 'GLOB MISMATCH: reuse from reuse:no for use_nems_modules' 0 0
++ local level=NOTE
++ local 'infobox=GLOB MISMATCH: reuse from reuse:no for use_nems_modules'
++ local 'backtitle=NEMS Application Builder'
++ local title=NOTE
++ local loc1=0
++ local loc2=0
++ local widget=--msgbox
++ [[ autobuild == autobuild ]]
++ echo 'NOTE: GLOB MISMATCH: reuse from reuse:no for use_nems_modules'
+NOTE: GLOB MISMATCH: reuse from reuse:no for use_nems_modules
++ return 0
++ continue
++ [[ mu == yes ]]
++ [[ mu == no ]]
++ [[ yes == yes ]]
++ autonote 'QUESTION use_nems_modules? YES: from default'
++ [[ autobuild == autobuild ]]
++ note 'QUESTION use_nems_modules? YES: from default' 0 0
++ logimpl NOTE 'QUESTION use_nems_modules? YES: from default' 0 0
++ local level=NOTE
++ local 'infobox=QUESTION use_nems_modules? YES: from default'
++ local 'backtitle=NEMS Application Builder'
++ local title=NOTE
++ local loc1=0
++ local loc2=0
++ local widget=--msgbox
++ [[ autobuild == autobuild ]]
++ echo 'NOTE: QUESTION use_nems_modules? YES: from default'
+NOTE: QUESTION use_nems_modules? YES: from default
++ return 0
++ return 0
++ return 0
++ [[ 0 == \0 ]]
++ autonote 'Load /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/conf/modules.nems'
++ [[ autobuild == autobuild ]]
++ note 'Load /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/conf/modules.nems' 0 0
++ logimpl NOTE 'Load /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/conf/modules.nems' 0 0
++ local level=NOTE
++ local 'infobox=Load /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/conf/modules.nems'
++ local 'backtitle=NEMS Application Builder'
++ local title=NOTE
++ local loc1=0
++ local loc2=0
++ local widget=--msgbox
++ [[ autobuild == autobuild ]]
++ echo 'NOTE: Load /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/conf/modules.nems'
+NOTE: Load /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/conf/modules.nems
++ return 0
++ source /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/conf/modules.nems.sh
 ++ source /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/conf/module-setup.sh.inc
-+++ __ms_function_name=setup__test_function__68560
-+++ eval 'setup__test_function__68560() { /bin/true ; }'
++++ __ms_function_name=setup__test_function__25379
++++ eval 'setup__test_function__25379() { /bin/true ; }'
 ++++ eval '__text="text" ; if [[ $__text =~ ^(t).* ]] ; then printf "%s" ${.sh.match[1]} ; fi'
 ++++ cat
 +++ __ms_ksh_test=
-++++ eval 'if ( set | grep setup__test_function__68560 | grep -v name > /dev/null 2>&1 ) ; then echo t ; fi '
+++++ eval 'if ( set | grep setup__test_function__25379 | grep -v name > /dev/null 2>&1 ) ; then echo t ; fi '
 ++++ cat
 +++ __ms_bash_test=t
 +++ [[ ! -z '' ]]
@@ -151,7 +534,7 @@ confirmed ESMFVersionDefine.h
 +++ unset __ms_shell
 +++ unset __ms_ksh_test
 +++ unset __ms_bash_test
-+++ unset setup__test_function__68560
++++ unset setup__test_function__25379
 +++ unset __ms_function_name
 ++ module use /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/conf
 +++ /apps/lmod/lmod/libexec/lmod bash use /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/conf
@@ -175,7 +558,7 @@ confirmed ESMFVersionDefine.h
 ++ eval
 ++ module load modules.nems
 +++ /apps/lmod/lmod/libexec/lmod bash load modules.nems
-++ eval 'LMOD_DEFAULT_MODULEPATH="/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/conf:/apps/lmod/lmod/modulefiles/Core:/apps/modules/modulefiles/Linux:/apps/modules/modulefiles";' export 'LMOD_DEFAULT_MODULEPATH;' 'MODULEPATH="/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/conf:/apps/lmod/lmod/modulefiles/Core:/apps/modules/modulefiles/Linux:/apps/modules/modulefiles";' export 'MODULEPATH;' 'BACIO_INC4="' '";' export 'BACIO_INC4;' 'BACIO_INC8="' '";' export 'BACIO_INC8;' 'BACIO_INCd="' '";' export 'BACIO_INCd;' 'BACIO_LIB4="/scratch3/NCEPDEV/nwprod/lib/bacio/v2.0.1/libbacio_v2.0.1_4.a";' export 'BACIO_LIB4;' 'BACIO_LIB8="/scratch3/NCEPDEV/nwprod/lib/bacio/v2.0.1/libbacio_v2.0.1_8.a";' export 'BACIO_LIB8;' 'BACIO_SRC="/scratch3/NCEPDEV/nwprod/lib/bacio/v2.0.1/sorc";' export 'BACIO_SRC;' 'BACIO_VER="v2.0.1";' export 'BACIO_VER;' 'CAPTH="/apps/intel/composer_xe_2015.1.133/mkl/include";' export 'CAPTH;' 'CPATH="/apps/intel/composer_xe_2015.1.133/ipp/include:/apps/intel/composer_xe_2015.1.133/tbb/include";' export 'CPATH;' 'ESMFMKFILE="/apps/esmf/7.0.0/intel/intelmpi/lib/libO/Linux.intel.64.intelmpi.default/esmf.mk";' export 'ESMFMKFILE;' 'ESMF_DIR="/apps/esmf/7.0.0/intel/intelmpi";' export 'ESMF_DIR;' 'ESMF_INC="/apps/esmf/7.0.0/intel/intelmpi/include";' export 'ESMF_INC;' 'ESMF_LIB="/apps/esmf/7.0.0/intel/intelmpi/lib/libO/Linux.intel.64.intelmpi.default";' export 'ESMF_LIB;' 'ESMF_MOD="/apps/esmf/7.0.0/intel/intelmpi/mod/modO/Linux.intel.64.intelmpi.default";' export 'ESMF_MOD;' 'GDB_CROSS="/apps/intel/composer_xe_2015.1.133/debugger/gdb/intel64_mic/py27/bin/gdb-mic";' export 'GDB_CROSS;' 'GDB_SERVERMIC="/apps/intel/composer_xe_2015.1.133/debugger/gdb/target/mic/bin/gdbserver";' export 'GDB_SERVERMIC;' 'IDB_HOME="/apps/intel/composer_xe_2015.1.133/bin/intel64";' export 'IDB_HOME;' 'INCLUDE="/apps/intel/composer_xe_2015.1.133/mkl/include";' export 'INCLUDE;' 'INTEL_LICENSE_FILE="/apps/intel/composer_xe_2015.1.133/licenses";' export 'INTEL_LICENSE_FILE;' 'IPATH_NO_BACKTRACE="1";' export 'IPATH_NO_BACKTRACE;' 'IP_INC4="' '";' export 'IP_INC4;' 'IP_INC8="' '";' export 'IP_INC8;' 'IP_INCd="' '";' export 'IP_INCd;' 'IP_LIB4="/scratch3/NCEPDEV/nwprod/lib/ip/v2.0.0/libip_v2.0.0_4.a";' export 'IP_LIB4;' 'IP_LIB8="/scratch3/NCEPDEV/nwprod/lib/ip/v2.0.0/libip_v2.0.0_8.a";' export 'IP_LIB8;' 'IP_LIBd="/scratch3/NCEPDEV/nwprod/lib/ip/v2.0.0/libip_v2.0.0_d.a";' export 'IP_LIBd;' 'IP_SRC="/scratch3/NCEPDEV/nwprod/lib/sorc/ip_v2.0.0";' export 'IP_SRC;' 'IP_VER="v2.0.0";' export 'IP_VER;' 'I_MPI_FABRICS="shm:tmi";' export 'I_MPI_FABRICS;' 'I_MPI_HYDRA_BRANCH_COUNT="128";' export 'I_MPI_HYDRA_BRANCH_COUNT;' 'I_MPI_HYDRA_PMI_CONNECT="alltoall";' export 'I_MPI_HYDRA_PMI_CONNECT;' 'I_MPI_ROOT="/apps/intel/impi/5.0.3.048";' export 'I_MPI_ROOT;' 'I_MPI_TMI_PROVIDER="psm";' export 'I_MPI_TMI_PROVIDER;' 'LANGUAGE_TERRITORY="en_US";' export 'LANGUAGE_TERRITORY;' 'LD_LIBRARY_PATH="/apps/esmf/7.0.0/intel/intelmpi/lib/libO/Linux.intel.64.intelmpi.default:/apps/netcdf/4.3.0-intel/lib:/apps/intel/impi/5.0.3.048/intel64/lib:/apps/intel/composer_xe_2015.1.133/mpirt/lib/intel64:/apps/intel/composer_xe_2015.1.133/compiler/lib/intel64:/apps/intel/composer_xe_2015.1.133/compiler/lib/intel64:/apps/intel/composer_xe_2015.1.133/ipp/lib/intel64:/apps/intel/composer_xe_2015.1.133/mkl/lib/intel64:/apps/intel/composer_xe_2015.1.133/compiler/lib/intel64:/apps/intel/composer_xe_2015.1.133/tbb/lib/intel64/gcc4.4";' export 'LD_LIBRARY_PATH;' 'LIBRARY_PATH="/apps/intel/composer_xe_2015.1.133/compiler/lib/intel64:/apps/intel/composer_xe_2015.1.133/compiler/lib/intel64:/apps/intel/composer_xe_2015.1.133/ipp/intel64:/apps/intel/composer_xe_2015.1.133/mkl/lib/intel64:/apps/intel/composer_xe_2015.1.133/compiler/lib/intel64:/apps/intel/composer_xe_2015.1.133/tbb/lib/intel64/gcc4.4";' export 'LIBRARY_PATH;' 'LIB_NAME="W3EMC";' export 'LIB_NAME;' 'LMOD_DEFAULT_MODULEPATH="/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/conf:/apps/lmod/lmod/modulefiles/Core:/apps/modules/modulefiles/Linux:/apps/modules/modulefiles";' export 'LMOD_DEFAULT_MODULEPATH;' 'LMOD_FAMILY_COMPILER="intel";' export 'LMOD_FAMILY_COMPILER;' 'LMOD_FAMILY_MPI="impi";' export 'LMOD_FAMILY_MPI;' 'LOADEDMODULES="intel/15.1.133:impi/5.0.3.048:netcdf/4.3.0:esmf/7.0.0:bacio/v2.0.1:sp/v2.0.2:ip/v2.0.0:w3nco/v2.0.6:w3emc/v2.0.5:modules.nems";' export 'LOADEDMODULES;' 'MANPATH="/apps/netcdf/4.3.0-intel/share/man:/apps/intel/impi/5.0.3.048/man:/apps/intel/composer_xe_2015.1.133/man/en_US:/apps/intel/composer_xe_2015.1.133/man/en_US:/apps/lmod/lmod/share/man::/apps/moab/default/share/man:/apps/torque/default/share/man:/apps/local/man";' export 'MANPATH;' 'MIC_LD_LIBRARY_PATH="/apps/intel/composer_xe_2015.1.133/mpirt/lib/mic:/apps/intel/composer_xe_2015.1.133/compiler.lib/mic:/apps/intel/composer_xe_2015.1.133/mkl/lib/mic:/apps/intel/composer_xe_2015.1.133/compiler/lib/mic:/apps/intel/composer_xe_2015.1.133/tbb/lib/mic";' export 'MIC_LD_LIBRARY_PATH;' 'MIC_LIBRARY_PATH="/apps/intel/composer_xe_2015.1.133/tbb/lib/mic";' export 'MIC_LIBRARY_PATH;' 'MKLROOT="/apps/intel/composer_xe_2015.1.133/mkl";' export 'MKLROOT;' 'MKL_MIC_ARCH="mic";' export 'MKL_MIC_ARCH;' 'MKL_TARGET_ARCH="intel64";' export 'MKL_TARGET_ARCH;' 'MODULEPATH="/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/conf:/apps/lmod/lmod/modulefiles/Core:/apps/modules/modulefiles/Linux:/apps/modules/modulefiles:/apps/modules/modulefamilies/intel:/apps/modules/modulefamilies/intel_impi:/scratch3/NCEPDEV/nwprod/lib/modulefiles";' export 'MODULEPATH;' 'NETCDF="/apps/netcdf/4.3.0-intel";' export 'NETCDF;' 'NLSPATH="/apps/intel/composer_xe_2015.1.133/compiler/lib/intel64/locale/%l_%t/%N:/apps/intel/composer_xe_2015.1.133/ipp/lib/intel64/locale/%l_%t/%N:/apps/intel/composer_xe_2015.1.133/mkl/lib/intel64/locale/%l_%t/%N:/apps/intel/composer_xe_2015.1.133/mkl/lib/intel64/locale/%l_%t/%N:/apps/intel/composer_xe_2015.1.133/debugger/gdb/intel64/py27/share/locale/%l_%t/%N:/apps/intel/composer_xe_2015.1.133/debugger/intel64/locale/%l_%t/%N";' export 'NLSPATH;' 'PATH="/apps/esmf/7.0.0/intel/intelmpi/bin/binO/Linux.intel.64.intelmpi.default:/apps/netcdf/4.3.0-intel/bin:/apps/intel/impi/5.0.3.048/intel64/bin:/apps/intel/composer_xe_2015.1.133/mpirt/bin/intel64:/apps/intel/composer_xe_2015.1.133/bin/intel64:/apps/intel/composer_xe_2015.1.133/debugger/gdb/intel64_mic/py27/py27/bin:/apps/intel/composer_xe_2015.1.133/debugger/gdb/intel64/py27/bin:/apps/intel/composer_xe_2015.1.133/debugger/gui/intel64:/apps/intel/composer_xe_2015.1.133/bin/intel64_mic:/apps/intel/composer_xe_2015.1.133/bin/intel64:/usr/lib64/qt-3.3/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/apps/moab/default/tools:/apps/moab/default/bin:/apps/moab/default/sbin:/apps/torque/default/bin:/apps/torque/default/sbin:/apps/mam/default/bin:/apps/mam/default/sbin:/apps/local/bin:/apps/local/sbin";' export 'PATH;' 'SP_INC4="' '";' export 'SP_INC4;' 'SP_INC8="' '";' export 'SP_INC8;' 'SP_INCd="' '";' export 'SP_INCd;' 'SP_LIB4="/scratch3/NCEPDEV/nwprod/lib/sp/v2.0.2/libsp_v2.0.2_4.a";' export 'SP_LIB4;' 'SP_LIB8="/scratch3/NCEPDEV/nwprod/lib/sp/v2.0.2/libsp_v2.0.2_8.a";' export 'SP_LIB8;' 'SP_LIBd="/scratch3/NCEPDEV/nwprod/lib/sp/v2.0.2/libsp_v2.0.2_d.a";' export 'SP_LIBd;' 'SP_SRC="/scratch3/NCEPDEV/nwprod/lib/sp/v2.0.2/sorc";' export 'SP_SRC;' 'SP_VER="v2.0.2";' export 'SP_VER;' 'TACC_FAMILY_COMPILER="intel";' export 'TACC_FAMILY_COMPILER;' 'TACC_FAMILY_MPI="impi";' export 'TACC_FAMILY_MPI;' 'TBBROOT="/apps/intel/composer_xe_2015.1.133/tbb";' export 'TBBROOT;' 'W3EMC_INC4="/scratch3/NCEPDEV/nwprod/lib/w3emc/v2.0.5/incmod/w3emc_v2.0.5_4";' export 'W3EMC_INC4;' 'W3EMC_INC8="/scratch3/NCEPDEV/nwprod/lib/w3emc/v2.0.5/incmod/w3emc_v2.0.5_8";' export 'W3EMC_INC8;' 'W3EMC_INCd="/scratch3/NCEPDEV/nwprod/lib/w3emc/v2.0.5/incmod/w3emc_v2.0.5_d";' export 'W3EMC_INCd;' 'W3EMC_LIB4="/scratch3/NCEPDEV/nwprod/lib/w3emc/v2.0.5/libw3emc_v2.0.5_4.a";' export 'W3EMC_LIB4;' 'W3EMC_LIB8="/scratch3/NCEPDEV/nwprod/lib/w3emc/v2.0.5/libw3emc_v2.0.5_8.a";' export 'W3EMC_LIB8;' 'W3EMC_LIBd="/scratch3/NCEPDEV/nwprod/lib/w3emc/v2.0.5/libw3emc_v2.0.5_d.a";' export 'W3EMC_LIBd;' 'W3EMC_SRC="/scratch3/NCEPDEV/nwprod/lib/w3emc/v2.0.5/sorc/w3emc_v2.0.5";' export 'W3EMC_SRC;' 'W3EMC_VER="v2.0.5";' export 'W3EMC_VER;' 'W3NCO_LIB4="/scratch3/NCEPDEV/nwprod/lib/w3nco/v2.0.6/libw3nco_v2.0.6_4.a";' export 'W3NCO_LIB4;' 'W3NCO_LIB8="/scratch3/NCEPDEV/nwprod/lib/w3nco/v2.0.6/libw3nco_v2.0.6_8.a";' export 'W3NCO_LIB8;' 'W3NCO_LIBd="/scratch3/NCEPDEV/nwprod/lib/w3nco/v2.0.6/libw3nco_v2.0.6_d.a";' export 'W3NCO_LIBd;' 'W3NCO_SRC="/scratch3/NCEPDEV/nwprod/lib/w3nco/v2.0.6/sorc/w3nco_v2.0.6";' export 'W3NCO_SRC;' 'W3NCO_VER="v2.0.6";' export 'W3NCO_VER;' '_LMFILES_="/apps/modules/modulefiles/intel/15.1.133:/apps/modules/modulefamilies/intel/impi/5.0.3.048:/apps/modules/modulefamilies/intel/netcdf/4.3.0:/apps/modules/modulefamilies/intel_impi/esmf/7.0.0:/scratch3/NCEPDEV/nwprod/lib/modulefiles/bacio/v2.0.1:/scratch3/NCEPDEV/nwprod/lib/modulefiles/sp/v2.0.2:/scratch3/NCEPDEV/nwprod/lib/modulefiles/ip/v2.0.0:/scratch3/NCEPDEV/nwprod/lib/modulefiles/w3nco/v2.0.6:/scratch3/NCEPDEV/nwprod/lib/modulefiles/w3emc/v2.0.5:/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/conf/modules.nems";' export '_LMFILES_;' '_ModuleTable001_="X01vZHVsZVRhYmxlXz17WyJhY3RpdmVTaXplIl09MTAsYmFzZU1wYXRoQT17Ii9zY3JhdGNoNC9OQ0VQREVWL25lbXMvc2F2ZS9TYW11ZWwuVHJhaGFuL2FwcGlmeS9ORU1TL3NyYy9jb25mIiwiL2FwcHMvbG1vZC9sbW9kL21vZHVsZWZpbGVzL0NvcmUiLCIvYXBwcy9tb2R1bGVzL21vZHVsZWZpbGVzL0xpbnV4IiwiL2FwcHMvbW9kdWxlcy9tb2R1bGVmaWxlcyIsfSxbImNfcmVidWlsZFRpbWUiXT1mYWxzZSxbImNfc2hvcnRUaW1lIl09ZmFsc2UsZmFtaWx5PXtbImNvbXBpbGVyIl09ImludGVsIixbIm1waSJdPSJpbXBpIix9LGluYWN0aXZlPXt9LG1UPXtiYWNpbz17WyJGTiJdPSIvc2NyYXRjaDMvTkNFUERFVi9ud3Byb2QvbGliL21vZHVsZWZpbGVzL2JhY2lvL3YyLjAu";' export '_ModuleTable001_;' '_ModuleTable002_="MSIsWyJkZWZhdWx0Il09MCxbImZ1bGxOYW1lIl09ImJhY2lvL3YyLjAuMSIsWyJsb2FkT3JkZXIiXT01LHByb3BUPXt9LFsic2hvcnQiXT0iYmFjaW8iLFsic3RhdHVzIl09ImFjdGl2ZSIsfSxlc21mPXtbIkZOIl09Ii9hcHBzL21vZHVsZXMvbW9kdWxlZmFtaWxpZXMvaW50ZWxfaW1waS9lc21mLzcuMC4wIixbImRlZmF1bHQiXT0wLFsiZnVsbE5hbWUiXT0iZXNtZi83LjAuMCIsWyJsb2FkT3JkZXIiXT00LHByb3BUPXt9LFsic2hvcnQiXT0iZXNtZiIsWyJzdGF0dXMiXT0iYWN0aXZlIix9LGltcGk9e1siRk4iXT0iL2FwcHMvbW9kdWxlcy9tb2R1bGVmYW1pbGllcy9pbnRlbC9pbXBpLzUuMC4zLjA0OCIsWyJkZWZhdWx0Il09MCxbImZ1bGxOYW1lIl09ImltcGkvNS4wLjMu";' export '_ModuleTable002_;' '_ModuleTable003_="MDQ4IixbImxvYWRPcmRlciJdPTIscHJvcFQ9e30sWyJzaG9ydCJdPSJpbXBpIixbInN0YXR1cyJdPSJhY3RpdmUiLH0saW50ZWw9e1siRk4iXT0iL2FwcHMvbW9kdWxlcy9tb2R1bGVmaWxlcy9pbnRlbC8xNS4xLjEzMyIsWyJkZWZhdWx0Il09MCxbImZ1bGxOYW1lIl09ImludGVsLzE1LjEuMTMzIixbImxvYWRPcmRlciJdPTEscHJvcFQ9e30sWyJzaG9ydCJdPSJpbnRlbCIsWyJzdGF0dXMiXT0iYWN0aXZlIix9LGlwPXtbIkZOIl09Ii9zY3JhdGNoMy9OQ0VQREVWL253cHJvZC9saWIvbW9kdWxlZmlsZXMvaXAvdjIuMC4wIixbImRlZmF1bHQiXT0wLFsiZnVsbE5hbWUiXT0iaXAvdjIuMC4wIixbImxvYWRPcmRlciJdPTcscHJvcFQ9e30sWyJzaG9ydCJdPSJpcCIsWyJzdGF0";' export '_ModuleTable003_;' '_ModuleTable004_="dXMiXT0iYWN0aXZlIix9LFsibW9kdWxlcy5uZW1zIl09e1siRk4iXT0iL3NjcmF0Y2g0L05DRVBERVYvbmVtcy9zYXZlL1NhbXVlbC5UcmFoYW4vYXBwaWZ5L05FTVMvc3JjL2NvbmYvbW9kdWxlcy5uZW1zIixbImRlZmF1bHQiXT0wLFsiZnVsbE5hbWUiXT0ibW9kdWxlcy5uZW1zIixbImxvYWRPcmRlciJdPTEwLHByb3BUPXt9LFsic2hvcnQiXT0ibW9kdWxlcy5uZW1zIixbInN0YXR1cyJdPSJhY3RpdmUiLH0sbmV0Y2RmPXtbIkZOIl09Ii9hcHBzL21vZHVsZXMvbW9kdWxlZmFtaWxpZXMvaW50ZWwvbmV0Y2RmLzQuMy4wIixbImRlZmF1bHQiXT0wLFsiZnVsbE5hbWUiXT0ibmV0Y2RmLzQuMy4wIixbImxvYWRPcmRlciJdPTMscHJvcFQ9e30sWyJzaG9ydCJdPSJuZXRjZGYi";' export '_ModuleTable004_;' '_ModuleTable005_="LFsic3RhdHVzIl09ImFjdGl2ZSIsfSxzcD17WyJGTiJdPSIvc2NyYXRjaDMvTkNFUERFVi9ud3Byb2QvbGliL21vZHVsZWZpbGVzL3NwL3YyLjAuMiIsWyJkZWZhdWx0Il09MCxbImZ1bGxOYW1lIl09InNwL3YyLjAuMiIsWyJsb2FkT3JkZXIiXT02LHByb3BUPXt9LFsic2hvcnQiXT0ic3AiLFsic3RhdHVzIl09ImFjdGl2ZSIsfSx3M2VtYz17WyJGTiJdPSIvc2NyYXRjaDMvTkNFUERFVi9ud3Byb2QvbGliL21vZHVsZWZpbGVzL3czZW1jL3YyLjAuNSIsWyJkZWZhdWx0Il09MCxbImZ1bGxOYW1lIl09InczZW1jL3YyLjAuNSIsWyJsb2FkT3JkZXIiXT05LHByb3BUPXt9LFsic2hvcnQiXT0idzNlbWMiLFsic3RhdHVzIl09ImFjdGl2ZSIsfSx3M25jbz17WyJGTiJdPSIvc2Ny";' export '_ModuleTable005_;' '_ModuleTable006_="YXRjaDMvTkNFUERFVi9ud3Byb2QvbGliL21vZHVsZWZpbGVzL3czbmNvL3YyLjAuNiIsWyJkZWZhdWx0Il09MCxbImZ1bGxOYW1lIl09InczbmNvL3YyLjAuNiIsWyJsb2FkT3JkZXIiXT04LHByb3BUPXt9LFsic2hvcnQiXT0idzNuY28iLFsic3RhdHVzIl09ImFjdGl2ZSIsfSx9LG1wYXRoQT17Ii9zY3JhdGNoNC9OQ0VQREVWL25lbXMvc2F2ZS9TYW11ZWwuVHJhaGFuL2FwcGlmeS9ORU1TL3NyYy9jb25mIiwiL2FwcHMvbG1vZC9sbW9kL21vZHVsZWZpbGVzL0NvcmUiLCIvYXBwcy9tb2R1bGVzL21vZHVsZWZpbGVzL0xpbnV4IiwiL2FwcHMvbW9kdWxlcy9tb2R1bGVmaWxlcyIsIi9hcHBzL21vZHVsZXMvbW9kdWxlZmFtaWxpZXMvaW50ZWwiLCIvYXBwcy9tb2R1bGVzL21v";' export '_ModuleTable006_;' '_ModuleTable007_="ZHVsZWZhbWlsaWVzL2ludGVsX2ltcGkiLCIvc2NyYXRjaDMvTkNFUERFVi9ud3Byb2QvbGliL21vZHVsZWZpbGVzIix9LFsic3lzdGVtQmFzZU1QQVRIIl09Ii9hcHBzL2xtb2QvbG1vZC9tb2R1bGVmaWxlcy9Db3JlOi9hcHBzL21vZHVsZXMvbW9kdWxlZmlsZXMvTGludXg6L2FwcHMvbW9kdWxlcy9tb2R1bGVmaWxlcyIsWyJ2ZXJzaW9uIl09Mix9";' export '_ModuleTable007_;' '_ModuleTable_Sz_="7";' export '_ModuleTable_Sz_;'
+++ eval 'LMOD_DEFAULT_MODULEPATH="/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/conf:/apps/lmod/lmod/modulefiles/Core:/apps/modules/modulefiles/Linux:/apps/modules/modulefiles";' export 'LMOD_DEFAULT_MODULEPATH;' 'MODULEPATH="/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/conf:/apps/lmod/lmod/modulefiles/Core:/apps/modules/modulefiles/Linux:/apps/modules/modulefiles";' export 'MODULEPATH;' 'BACIO_INC4="' '";' export 'BACIO_INC4;' 'BACIO_INC8="' '";' export 'BACIO_INC8;' 'BACIO_INCd="' '";' export 'BACIO_INCd;' 'BACIO_LIB4="/scratch3/NCEPDEV/nwprod/lib/bacio/v2.0.1/libbacio_v2.0.1_4.a";' export 'BACIO_LIB4;' 'BACIO_LIB8="/scratch3/NCEPDEV/nwprod/lib/bacio/v2.0.1/libbacio_v2.0.1_8.a";' export 'BACIO_LIB8;' 'BACIO_SRC="/scratch3/NCEPDEV/nwprod/lib/bacio/v2.0.1/sorc";' export 'BACIO_SRC;' 'BACIO_VER="v2.0.1";' export 'BACIO_VER;' 'CAPTH="/apps/intel/composer_xe_2015.1.133/mkl/include";' export 'CAPTH;' 'CPATH="/apps/intel/composer_xe_2015.1.133/ipp/include:/apps/intel/composer_xe_2015.1.133/tbb/include";' export 'CPATH;' 'ESMFMKFILE="/apps/esmf/7.0.0/intel/intelmpi/lib/libO/Linux.intel.64.intelmpi.default/esmf.mk";' export 'ESMFMKFILE;' 'ESMF_DIR="/apps/esmf/7.0.0/intel/intelmpi";' export 'ESMF_DIR;' 'ESMF_INC="/apps/esmf/7.0.0/intel/intelmpi/include";' export 'ESMF_INC;' 'ESMF_LIB="/apps/esmf/7.0.0/intel/intelmpi/lib/libO/Linux.intel.64.intelmpi.default";' export 'ESMF_LIB;' 'ESMF_MOD="/apps/esmf/7.0.0/intel/intelmpi/mod/modO/Linux.intel.64.intelmpi.default";' export 'ESMF_MOD;' 'GDB_CROSS="/apps/intel/composer_xe_2015.1.133/debugger/gdb/intel64_mic/py27/bin/gdb-mic";' export 'GDB_CROSS;' 'GDB_SERVERMIC="/apps/intel/composer_xe_2015.1.133/debugger/gdb/target/mic/bin/gdbserver";' export 'GDB_SERVERMIC;' 'IDB_HOME="/apps/intel/composer_xe_2015.1.133/bin/intel64";' export 'IDB_HOME;' 'INCLUDE="/apps/intel/composer_xe_2015.1.133/mkl/include";' export 'INCLUDE;' 'INTEL_LICENSE_FILE="/apps/intel/composer_xe_2015.1.133/licenses";' export 'INTEL_LICENSE_FILE;' 'IPATH_NO_BACKTRACE="1";' export 'IPATH_NO_BACKTRACE;' 'IP_INC4="' '";' export 'IP_INC4;' 'IP_INC8="' '";' export 'IP_INC8;' 'IP_INCd="' '";' export 'IP_INCd;' 'IP_LIB4="/scratch3/NCEPDEV/nwprod/lib/ip/v2.0.0/libip_v2.0.0_4.a";' export 'IP_LIB4;' 'IP_LIB8="/scratch3/NCEPDEV/nwprod/lib/ip/v2.0.0/libip_v2.0.0_8.a";' export 'IP_LIB8;' 'IP_LIBd="/scratch3/NCEPDEV/nwprod/lib/ip/v2.0.0/libip_v2.0.0_d.a";' export 'IP_LIBd;' 'IP_SRC="/scratch3/NCEPDEV/nwprod/lib/sorc/ip_v2.0.0";' export 'IP_SRC;' 'IP_VER="v2.0.0";' export 'IP_VER;' 'I_MPI_FABRICS="shm:tmi";' export 'I_MPI_FABRICS;' 'I_MPI_HYDRA_BRANCH_COUNT="128";' export 'I_MPI_HYDRA_BRANCH_COUNT;' 'I_MPI_HYDRA_PMI_CONNECT="alltoall";' export 'I_MPI_HYDRA_PMI_CONNECT;' 'I_MPI_ROOT="/apps/intel/impi/5.0.3.048";' export 'I_MPI_ROOT;' 'I_MPI_TMI_PROVIDER="psm";' export 'I_MPI_TMI_PROVIDER;' 'LANGUAGE_TERRITORY="en_US";' export 'LANGUAGE_TERRITORY;' 'LD_LIBRARY_PATH="/apps/esmf/7.0.0/intel/intelmpi/lib/libO/Linux.intel.64.intelmpi.default:/apps/netcdf/4.3.0-intel/lib:/apps/intel/impi/5.0.3.048/intel64/lib:/apps/intel/composer_xe_2015.1.133/mpirt/lib/intel64:/apps/intel/composer_xe_2015.1.133/compiler/lib/intel64:/apps/intel/composer_xe_2015.1.133/compiler/lib/intel64:/apps/intel/composer_xe_2015.1.133/ipp/lib/intel64:/apps/intel/composer_xe_2015.1.133/mkl/lib/intel64:/apps/intel/composer_xe_2015.1.133/compiler/lib/intel64:/apps/intel/composer_xe_2015.1.133/tbb/lib/intel64/gcc4.4";' export 'LD_LIBRARY_PATH;' 'LIBRARY_PATH="/apps/intel/composer_xe_2015.1.133/compiler/lib/intel64:/apps/intel/composer_xe_2015.1.133/compiler/lib/intel64:/apps/intel/composer_xe_2015.1.133/ipp/intel64:/apps/intel/composer_xe_2015.1.133/mkl/lib/intel64:/apps/intel/composer_xe_2015.1.133/compiler/lib/intel64:/apps/intel/composer_xe_2015.1.133/tbb/lib/intel64/gcc4.4";' export 'LIBRARY_PATH;' 'LIB_NAME="W3EMC";' export 'LIB_NAME;' 'LMOD_DEFAULT_MODULEPATH="/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/conf:/apps/lmod/lmod/modulefiles/Core:/apps/modules/modulefiles/Linux:/apps/modules/modulefiles";' export 'LMOD_DEFAULT_MODULEPATH;' 'LMOD_FAMILY_COMPILER="intel";' export 'LMOD_FAMILY_COMPILER;' 'LMOD_FAMILY_MPI="impi";' export 'LMOD_FAMILY_MPI;' 'LOADEDMODULES="intel/15.1.133:impi/5.0.3.048:netcdf/4.3.0:esmf/7.0.0:bacio/v2.0.1:sp/v2.0.2:ip/v2.0.0:w3nco/v2.0.6:w3emc/v2.0.5:modules.nems";' export 'LOADEDMODULES;' 'MANPATH="/apps/netcdf/4.3.0-intel/share/man:/apps/intel/impi/5.0.3.048/man:/apps/intel/composer_xe_2015.1.133/man/en_US:/apps/intel/composer_xe_2015.1.133/man/en_US:/apps/lmod/lmod/share/man::/apps/moab/default/share/man:/apps/torque/default/share/man:/apps/local/man";' export 'MANPATH;' 'MIC_LD_LIBRARY_PATH="/apps/intel/composer_xe_2015.1.133/mpirt/lib/mic:/apps/intel/composer_xe_2015.1.133/compiler.lib/mic:/apps/intel/composer_xe_2015.1.133/mkl/lib/mic:/apps/intel/composer_xe_2015.1.133/compiler/lib/mic:/apps/intel/composer_xe_2015.1.133/tbb/lib/mic";' export 'MIC_LD_LIBRARY_PATH;' 'MIC_LIBRARY_PATH="/apps/intel/composer_xe_2015.1.133/tbb/lib/mic";' export 'MIC_LIBRARY_PATH;' 'MKLROOT="/apps/intel/composer_xe_2015.1.133/mkl";' export 'MKLROOT;' 'MKL_MIC_ARCH="mic";' export 'MKL_MIC_ARCH;' 'MKL_TARGET_ARCH="intel64";' export 'MKL_TARGET_ARCH;' 'MODULEPATH="/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/conf:/apps/lmod/lmod/modulefiles/Core:/apps/modules/modulefiles/Linux:/apps/modules/modulefiles:/apps/modules/modulefamilies/intel:/apps/modules/modulefamilies/intel_impi:/scratch3/NCEPDEV/nwprod/lib/modulefiles";' export 'MODULEPATH;' 'NETCDF="/apps/netcdf/4.3.0-intel";' export 'NETCDF;' 'NLSPATH="/apps/intel/composer_xe_2015.1.133/compiler/lib/intel64/locale/%l_%t/%N:/apps/intel/composer_xe_2015.1.133/ipp/lib/intel64/locale/%l_%t/%N:/apps/intel/composer_xe_2015.1.133/mkl/lib/intel64/locale/%l_%t/%N:/apps/intel/composer_xe_2015.1.133/mkl/lib/intel64/locale/%l_%t/%N:/apps/intel/composer_xe_2015.1.133/debugger/gdb/intel64/py27/share/locale/%l_%t/%N:/apps/intel/composer_xe_2015.1.133/debugger/intel64/locale/%l_%t/%N";' export 'NLSPATH;' 'PATH="/apps/esmf/7.0.0/intel/intelmpi/bin/binO/Linux.intel.64.intelmpi.default:/apps/netcdf/4.3.0-intel/bin:/apps/intel/impi/5.0.3.048/intel64/bin:/apps/intel/composer_xe_2015.1.133/mpirt/bin/intel64:/apps/intel/composer_xe_2015.1.133/bin/intel64:/apps/intel/composer_xe_2015.1.133/debugger/gdb/intel64_mic/py27/py27/bin:/apps/intel/composer_xe_2015.1.133/debugger/gdb/intel64/py27/bin:/apps/intel/composer_xe_2015.1.133/debugger/gui/intel64:/apps/intel/composer_xe_2015.1.133/bin/intel64_mic:/apps/intel/composer_xe_2015.1.133/bin/intel64:/usr/lib64/qt-3.3/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/apps/moab/default/tools:/apps/moab/default/bin:/apps/moab/default/sbin:/apps/torque/default/bin:/apps/torque/default/sbin:/apps/mam/default/bin:/apps/mam/default/sbin:/apps/local/bin:/apps/local/sbin:/scratch4/NCEPDEV/nems/save/Gerhard.Theurich/bin:/glade/p/work/theurich/bin";' export 'PATH;' 'SP_INC4="' '";' export 'SP_INC4;' 'SP_INC8="' '";' export 'SP_INC8;' 'SP_INCd="' '";' export 'SP_INCd;' 'SP_LIB4="/scratch3/NCEPDEV/nwprod/lib/sp/v2.0.2/libsp_v2.0.2_4.a";' export 'SP_LIB4;' 'SP_LIB8="/scratch3/NCEPDEV/nwprod/lib/sp/v2.0.2/libsp_v2.0.2_8.a";' export 'SP_LIB8;' 'SP_LIBd="/scratch3/NCEPDEV/nwprod/lib/sp/v2.0.2/libsp_v2.0.2_d.a";' export 'SP_LIBd;' 'SP_SRC="/scratch3/NCEPDEV/nwprod/lib/sp/v2.0.2/sorc";' export 'SP_SRC;' 'SP_VER="v2.0.2";' export 'SP_VER;' 'TACC_FAMILY_COMPILER="intel";' export 'TACC_FAMILY_COMPILER;' 'TACC_FAMILY_MPI="impi";' export 'TACC_FAMILY_MPI;' 'TBBROOT="/apps/intel/composer_xe_2015.1.133/tbb";' export 'TBBROOT;' 'W3EMC_INC4="/scratch3/NCEPDEV/nwprod/lib/w3emc/v2.0.5/incmod/w3emc_v2.0.5_4";' export 'W3EMC_INC4;' 'W3EMC_INC8="/scratch3/NCEPDEV/nwprod/lib/w3emc/v2.0.5/incmod/w3emc_v2.0.5_8";' export 'W3EMC_INC8;' 'W3EMC_INCd="/scratch3/NCEPDEV/nwprod/lib/w3emc/v2.0.5/incmod/w3emc_v2.0.5_d";' export 'W3EMC_INCd;' 'W3EMC_LIB4="/scratch3/NCEPDEV/nwprod/lib/w3emc/v2.0.5/libw3emc_v2.0.5_4.a";' export 'W3EMC_LIB4;' 'W3EMC_LIB8="/scratch3/NCEPDEV/nwprod/lib/w3emc/v2.0.5/libw3emc_v2.0.5_8.a";' export 'W3EMC_LIB8;' 'W3EMC_LIBd="/scratch3/NCEPDEV/nwprod/lib/w3emc/v2.0.5/libw3emc_v2.0.5_d.a";' export 'W3EMC_LIBd;' 'W3EMC_SRC="/scratch3/NCEPDEV/nwprod/lib/w3emc/v2.0.5/sorc/w3emc_v2.0.5";' export 'W3EMC_SRC;' 'W3EMC_VER="v2.0.5";' export 'W3EMC_VER;' 'W3NCO_LIB4="/scratch3/NCEPDEV/nwprod/lib/w3nco/v2.0.6/libw3nco_v2.0.6_4.a";' export 'W3NCO_LIB4;' 'W3NCO_LIB8="/scratch3/NCEPDEV/nwprod/lib/w3nco/v2.0.6/libw3nco_v2.0.6_8.a";' export 'W3NCO_LIB8;' 'W3NCO_LIBd="/scratch3/NCEPDEV/nwprod/lib/w3nco/v2.0.6/libw3nco_v2.0.6_d.a";' export 'W3NCO_LIBd;' 'W3NCO_SRC="/scratch3/NCEPDEV/nwprod/lib/w3nco/v2.0.6/sorc/w3nco_v2.0.6";' export 'W3NCO_SRC;' 'W3NCO_VER="v2.0.6";' export 'W3NCO_VER;' '_LMFILES_="/apps/modules/modulefiles/intel/15.1.133:/apps/modules/modulefamilies/intel/impi/5.0.3.048:/apps/modules/modulefamilies/intel/netcdf/4.3.0:/apps/modules/modulefamilies/intel_impi/esmf/7.0.0:/scratch3/NCEPDEV/nwprod/lib/modulefiles/bacio/v2.0.1:/scratch3/NCEPDEV/nwprod/lib/modulefiles/sp/v2.0.2:/scratch3/NCEPDEV/nwprod/lib/modulefiles/ip/v2.0.0:/scratch3/NCEPDEV/nwprod/lib/modulefiles/w3nco/v2.0.6:/scratch3/NCEPDEV/nwprod/lib/modulefiles/w3emc/v2.0.5:/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/conf/modules.nems";' export '_LMFILES_;' '_ModuleTable001_="X01vZHVsZVRhYmxlXz17WyJhY3RpdmVTaXplIl09MTAsYmFzZU1wYXRoQT17Ii9zY3JhdGNoNC9OQ0VQREVWL25lbXMvc2F2ZS9TYW11ZWwuVHJhaGFuL2FwcGlmeS9ORU1TL3NyYy9jb25mIiwiL2FwcHMvbG1vZC9sbW9kL21vZHVsZWZpbGVzL0NvcmUiLCIvYXBwcy9tb2R1bGVzL21vZHVsZWZpbGVzL0xpbnV4IiwiL2FwcHMvbW9kdWxlcy9tb2R1bGVmaWxlcyIsfSxbImNfcmVidWlsZFRpbWUiXT1mYWxzZSxbImNfc2hvcnRUaW1lIl09ZmFsc2UsZmFtaWx5PXtbImNvbXBpbGVyIl09ImludGVsIixbIm1waSJdPSJpbXBpIix9LGluYWN0aXZlPXt9LG1UPXtiYWNpbz17WyJGTiJdPSIvc2NyYXRjaDMvTkNFUERFVi9ud3Byb2QvbGliL21vZHVsZWZpbGVzL2JhY2lvL3YyLjAu";' export '_ModuleTable001_;' '_ModuleTable002_="MSIsWyJkZWZhdWx0Il09MCxbImZ1bGxOYW1lIl09ImJhY2lvL3YyLjAuMSIsWyJsb2FkT3JkZXIiXT01LHByb3BUPXt9LFsic2hvcnQiXT0iYmFjaW8iLFsic3RhdHVzIl09ImFjdGl2ZSIsfSxlc21mPXtbIkZOIl09Ii9hcHBzL21vZHVsZXMvbW9kdWxlZmFtaWxpZXMvaW50ZWxfaW1waS9lc21mLzcuMC4wIixbImRlZmF1bHQiXT0wLFsiZnVsbE5hbWUiXT0iZXNtZi83LjAuMCIsWyJsb2FkT3JkZXIiXT00LHByb3BUPXt9LFsic2hvcnQiXT0iZXNtZiIsWyJzdGF0dXMiXT0iYWN0aXZlIix9LGltcGk9e1siRk4iXT0iL2FwcHMvbW9kdWxlcy9tb2R1bGVmYW1pbGllcy9pbnRlbC9pbXBpLzUuMC4zLjA0OCIsWyJkZWZhdWx0Il09MCxbImZ1bGxOYW1lIl09ImltcGkvNS4wLjMu";' export '_ModuleTable002_;' '_ModuleTable003_="MDQ4IixbImxvYWRPcmRlciJdPTIscHJvcFQ9e30sWyJzaG9ydCJdPSJpbXBpIixbInN0YXR1cyJdPSJhY3RpdmUiLH0saW50ZWw9e1siRk4iXT0iL2FwcHMvbW9kdWxlcy9tb2R1bGVmaWxlcy9pbnRlbC8xNS4xLjEzMyIsWyJkZWZhdWx0Il09MCxbImZ1bGxOYW1lIl09ImludGVsLzE1LjEuMTMzIixbImxvYWRPcmRlciJdPTEscHJvcFQ9e30sWyJzaG9ydCJdPSJpbnRlbCIsWyJzdGF0dXMiXT0iYWN0aXZlIix9LGlwPXtbIkZOIl09Ii9zY3JhdGNoMy9OQ0VQREVWL253cHJvZC9saWIvbW9kdWxlZmlsZXMvaXAvdjIuMC4wIixbImRlZmF1bHQiXT0wLFsiZnVsbE5hbWUiXT0iaXAvdjIuMC4wIixbImxvYWRPcmRlciJdPTcscHJvcFQ9e30sWyJzaG9ydCJdPSJpcCIsWyJzdGF0";' export '_ModuleTable003_;' '_ModuleTable004_="dXMiXT0iYWN0aXZlIix9LFsibW9kdWxlcy5uZW1zIl09e1siRk4iXT0iL3NjcmF0Y2g0L05DRVBERVYvbmVtcy9zYXZlL1NhbXVlbC5UcmFoYW4vYXBwaWZ5L05FTVMvc3JjL2NvbmYvbW9kdWxlcy5uZW1zIixbImRlZmF1bHQiXT0wLFsiZnVsbE5hbWUiXT0ibW9kdWxlcy5uZW1zIixbImxvYWRPcmRlciJdPTEwLHByb3BUPXt9LFsic2hvcnQiXT0ibW9kdWxlcy5uZW1zIixbInN0YXR1cyJdPSJhY3RpdmUiLH0sbmV0Y2RmPXtbIkZOIl09Ii9hcHBzL21vZHVsZXMvbW9kdWxlZmFtaWxpZXMvaW50ZWwvbmV0Y2RmLzQuMy4wIixbImRlZmF1bHQiXT0wLFsiZnVsbE5hbWUiXT0ibmV0Y2RmLzQuMy4wIixbImxvYWRPcmRlciJdPTMscHJvcFQ9e30sWyJzaG9ydCJdPSJuZXRjZGYi";' export '_ModuleTable004_;' '_ModuleTable005_="LFsic3RhdHVzIl09ImFjdGl2ZSIsfSxzcD17WyJGTiJdPSIvc2NyYXRjaDMvTkNFUERFVi9ud3Byb2QvbGliL21vZHVsZWZpbGVzL3NwL3YyLjAuMiIsWyJkZWZhdWx0Il09MCxbImZ1bGxOYW1lIl09InNwL3YyLjAuMiIsWyJsb2FkT3JkZXIiXT02LHByb3BUPXt9LFsic2hvcnQiXT0ic3AiLFsic3RhdHVzIl09ImFjdGl2ZSIsfSx3M2VtYz17WyJGTiJdPSIvc2NyYXRjaDMvTkNFUERFVi9ud3Byb2QvbGliL21vZHVsZWZpbGVzL3czZW1jL3YyLjAuNSIsWyJkZWZhdWx0Il09MCxbImZ1bGxOYW1lIl09InczZW1jL3YyLjAuNSIsWyJsb2FkT3JkZXIiXT05LHByb3BUPXt9LFsic2hvcnQiXT0idzNlbWMiLFsic3RhdHVzIl09ImFjdGl2ZSIsfSx3M25jbz17WyJGTiJdPSIvc2Ny";' export '_ModuleTable005_;' '_ModuleTable006_="YXRjaDMvTkNFUERFVi9ud3Byb2QvbGliL21vZHVsZWZpbGVzL3czbmNvL3YyLjAuNiIsWyJkZWZhdWx0Il09MCxbImZ1bGxOYW1lIl09InczbmNvL3YyLjAuNiIsWyJsb2FkT3JkZXIiXT04LHByb3BUPXt9LFsic2hvcnQiXT0idzNuY28iLFsic3RhdHVzIl09ImFjdGl2ZSIsfSx9LG1wYXRoQT17Ii9zY3JhdGNoNC9OQ0VQREVWL25lbXMvc2F2ZS9TYW11ZWwuVHJhaGFuL2FwcGlmeS9ORU1TL3NyYy9jb25mIiwiL2FwcHMvbG1vZC9sbW9kL21vZHVsZWZpbGVzL0NvcmUiLCIvYXBwcy9tb2R1bGVzL21vZHVsZWZpbGVzL0xpbnV4IiwiL2FwcHMvbW9kdWxlcy9tb2R1bGVmaWxlcyIsIi9hcHBzL21vZHVsZXMvbW9kdWxlZmFtaWxpZXMvaW50ZWwiLCIvYXBwcy9tb2R1bGVzL21v";' export '_ModuleTable006_;' '_ModuleTable007_="ZHVsZWZhbWlsaWVzL2ludGVsX2ltcGkiLCIvc2NyYXRjaDMvTkNFUERFVi9ud3Byb2QvbGliL21vZHVsZWZpbGVzIix9LFsic3lzdGVtQmFzZU1QQVRIIl09Ii9hcHBzL2xtb2QvbG1vZC9tb2R1bGVmaWxlcy9Db3JlOi9hcHBzL21vZHVsZXMvbW9kdWxlZmlsZXMvTGludXg6L2FwcHMvbW9kdWxlcy9tb2R1bGVmaWxlcyIsWyJ2ZXJzaW9uIl09Mix9";' export '_ModuleTable007_;' '_ModuleTable_Sz_="7";' export '_ModuleTable_Sz_;'
 +++ LMOD_DEFAULT_MODULEPATH=/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/conf:/apps/lmod/lmod/modulefiles/Core:/apps/modules/modulefiles/Linux:/apps/modules/modulefiles
 +++ export LMOD_DEFAULT_MODULEPATH
 +++ MODULEPATH=/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/conf:/apps/lmod/lmod/modulefiles/Core:/apps/modules/modulefiles/Linux:/apps/modules/modulefiles
@@ -280,7 +663,7 @@ confirmed ESMFVersionDefine.h
 +++ export NETCDF
 +++ NLSPATH=/apps/intel/composer_xe_2015.1.133/compiler/lib/intel64/locale/%l_%t/%N:/apps/intel/composer_xe_2015.1.133/ipp/lib/intel64/locale/%l_%t/%N:/apps/intel/composer_xe_2015.1.133/mkl/lib/intel64/locale/%l_%t/%N:/apps/intel/composer_xe_2015.1.133/mkl/lib/intel64/locale/%l_%t/%N:/apps/intel/composer_xe_2015.1.133/debugger/gdb/intel64/py27/share/locale/%l_%t/%N:/apps/intel/composer_xe_2015.1.133/debugger/intel64/locale/%l_%t/%N
 +++ export NLSPATH
-+++ PATH=/apps/esmf/7.0.0/intel/intelmpi/bin/binO/Linux.intel.64.intelmpi.default:/apps/netcdf/4.3.0-intel/bin:/apps/intel/impi/5.0.3.048/intel64/bin:/apps/intel/composer_xe_2015.1.133/mpirt/bin/intel64:/apps/intel/composer_xe_2015.1.133/bin/intel64:/apps/intel/composer_xe_2015.1.133/debugger/gdb/intel64_mic/py27/py27/bin:/apps/intel/composer_xe_2015.1.133/debugger/gdb/intel64/py27/bin:/apps/intel/composer_xe_2015.1.133/debugger/gui/intel64:/apps/intel/composer_xe_2015.1.133/bin/intel64_mic:/apps/intel/composer_xe_2015.1.133/bin/intel64:/usr/lib64/qt-3.3/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/apps/moab/default/tools:/apps/moab/default/bin:/apps/moab/default/sbin:/apps/torque/default/bin:/apps/torque/default/sbin:/apps/mam/default/bin:/apps/mam/default/sbin:/apps/local/bin:/apps/local/sbin
++++ PATH=/apps/esmf/7.0.0/intel/intelmpi/bin/binO/Linux.intel.64.intelmpi.default:/apps/netcdf/4.3.0-intel/bin:/apps/intel/impi/5.0.3.048/intel64/bin:/apps/intel/composer_xe_2015.1.133/mpirt/bin/intel64:/apps/intel/composer_xe_2015.1.133/bin/intel64:/apps/intel/composer_xe_2015.1.133/debugger/gdb/intel64_mic/py27/py27/bin:/apps/intel/composer_xe_2015.1.133/debugger/gdb/intel64/py27/bin:/apps/intel/composer_xe_2015.1.133/debugger/gui/intel64:/apps/intel/composer_xe_2015.1.133/bin/intel64_mic:/apps/intel/composer_xe_2015.1.133/bin/intel64:/usr/lib64/qt-3.3/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/apps/moab/default/tools:/apps/moab/default/bin:/apps/moab/default/sbin:/apps/torque/default/bin:/apps/torque/default/sbin:/apps/mam/default/bin:/apps/mam/default/sbin:/apps/local/bin:/apps/local/sbin:/scratch4/NCEPDEV/nems/save/Gerhard.Theurich/bin:/glade/p/work/theurich/bin
 +++ export PATH
 +++ SP_INC4=' '
 +++ export SP_INC4
@@ -351,6 +734,8 @@ confirmed ESMFVersionDefine.h
 ++ '[' 0 = 0 ']'
 +++ : -s sh
 ++ eval
++ echo =============================================
+=============================================
 + module list
 ++ /apps/lmod/lmod/libexec/lmod bash list
 + eval 'LMOD_DEFAULT_MODULEPATH="/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/conf:/apps/lmod/lmod/modulefiles/Core:/apps/modules/modulefiles/Linux:/apps/modules/modulefiles";' export 'LMOD_DEFAULT_MODULEPATH;' 'MODULEPATH="/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/conf:/apps/lmod/lmod/modulefiles/Core:/apps/modules/modulefiles/Linux:/apps/modules/modulefiles:/apps/modules/modulefamilies/intel:/apps/modules/modulefamilies/intel_impi:/scratch3/NCEPDEV/nwprod/lib/modulefiles";' export 'MODULEPATH;' echo ''\'''\'';' echo ''\''Currently'\''' ''\''Loaded'\''' ''\''Modules:'\'';' echo ''\'''\''' ''\'''\''' ''\''1)'\''' ''\''intel/15.1.133'\''' ''\'''\''' ''\'''\''' ''\''4)'\''' ''\''esmf/7.0.0'\''' ''\'''\''' ''\'''\''' ''\'''\''' ''\'''\''' ''\''7)'\''' ''\''ip/v2.0.0'\''' ''\'''\''' ''\'''\''' ''\'''\''' ''\'''\''' ''\''10)'\''' ''\''modules.nems'\'';' echo ''\'''\''' ''\'''\''' ''\''2)'\''' ''\''impi/5.0.3.048'\''' ''\'''\''' ''\'''\''' ''\''5)'\''' ''\''bacio/v2.0.1'\''' ''\'''\''' ''\'''\''' ''\''8)'\''' ''\''w3nco/v2.0.6'\'';' echo ''\'''\''' ''\'''\''' ''\''3)'\''' ''\''netcdf/4.3.0'\''' ''\'''\''' ''\'''\''' ''\'''\''' ''\'''\''' ''\''6)'\''' ''\''sp/v2.0.2'\''' ''\'''\''' ''\'''\''' ''\'''\''' ''\'''\''' ''\'''\''' ''\''9)'\''' ''\''w3emc/v2.0.5'\'';' echo ''\'''\'';' 'LMOD_DEFAULT_MODULEPATH="/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/conf:/apps/lmod/lmod/modulefiles/Core:/apps/modules/modulefiles/Linux:/apps/modules/modulefiles";' export 'LMOD_DEFAULT_MODULEPATH;' 'MODULEPATH="/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/conf:/apps/lmod/lmod/modulefiles/Core:/apps/modules/modulefiles/Linux:/apps/modules/modulefiles:/apps/modules/modulefamilies/intel:/apps/modules/modulefamilies/intel_impi:/scratch3/NCEPDEV/nwprod/lib/modulefiles";' export 'MODULEPATH;' '_ModuleTable001_="X01vZHVsZVRhYmxlXz17WyJhY3RpdmVTaXplIl09MTAsYmFzZU1wYXRoQT17Ii9zY3JhdGNoNC9OQ0VQREVWL25lbXMvc2F2ZS9TYW11ZWwuVHJhaGFuL2FwcGlmeS9ORU1TL3NyYy9jb25mIiwiL2FwcHMvbG1vZC9sbW9kL21vZHVsZWZpbGVzL0NvcmUiLCIvYXBwcy9tb2R1bGVzL21vZHVsZWZpbGVzL0xpbnV4IiwiL2FwcHMvbW9kdWxlcy9tb2R1bGVmaWxlcyIsfSxbImNfcmVidWlsZFRpbWUiXT1mYWxzZSxbImNfc2hvcnRUaW1lIl09ZmFsc2UsZmFtaWx5PXtbImNvbXBpbGVyIl09ImludGVsIixbIm1waSJdPSJpbXBpIix9LGluYWN0aXZlPXt9LG1UPXtiYWNpbz17WyJGTiJdPSIvc2NyYXRjaDMvTkNFUERFVi9ud3Byb2QvbGliL21vZHVsZWZpbGVzL2JhY2lvL3YyLjAu";' export '_ModuleTable001_;' '_ModuleTable002_="MSIsWyJkZWZhdWx0Il09MCxbImZ1bGxOYW1lIl09ImJhY2lvL3YyLjAuMSIsWyJsb2FkT3JkZXIiXT01LHByb3BUPXt9LFsic2hvcnQiXT0iYmFjaW8iLFsic3RhdHVzIl09ImFjdGl2ZSIsfSxlc21mPXtbIkZOIl09Ii9hcHBzL21vZHVsZXMvbW9kdWxlZmFtaWxpZXMvaW50ZWxfaW1waS9lc21mLzcuMC4wIixbImRlZmF1bHQiXT0wLFsiZnVsbE5hbWUiXT0iZXNtZi83LjAuMCIsWyJsb2FkT3JkZXIiXT00LHByb3BUPXt9LFsic2hvcnQiXT0iZXNtZiIsWyJzdGF0dXMiXT0iYWN0aXZlIix9LGltcGk9e1siRk4iXT0iL2FwcHMvbW9kdWxlcy9tb2R1bGVmYW1pbGllcy9pbnRlbC9pbXBpLzUuMC4zLjA0OCIsWyJkZWZhdWx0Il09MCxbImZ1bGxOYW1lIl09ImltcGkvNS4wLjMu";' export '_ModuleTable002_;' '_ModuleTable003_="MDQ4IixbImxvYWRPcmRlciJdPTIscHJvcFQ9e30sWyJzaG9ydCJdPSJpbXBpIixbInN0YXR1cyJdPSJhY3RpdmUiLH0saW50ZWw9e1siRk4iXT0iL2FwcHMvbW9kdWxlcy9tb2R1bGVmaWxlcy9pbnRlbC8xNS4xLjEzMyIsWyJkZWZhdWx0Il09MCxbImZ1bGxOYW1lIl09ImludGVsLzE1LjEuMTMzIixbImxvYWRPcmRlciJdPTEscHJvcFQ9e30sWyJzaG9ydCJdPSJpbnRlbCIsWyJzdGF0dXMiXT0iYWN0aXZlIix9LGlwPXtbIkZOIl09Ii9zY3JhdGNoMy9OQ0VQREVWL253cHJvZC9saWIvbW9kdWxlZmlsZXMvaXAvdjIuMC4wIixbImRlZmF1bHQiXT0wLFsiZnVsbE5hbWUiXT0iaXAvdjIuMC4wIixbImxvYWRPcmRlciJdPTcscHJvcFQ9e30sWyJzaG9ydCJdPSJpcCIsWyJzdGF0";' export '_ModuleTable003_;' '_ModuleTable004_="dXMiXT0iYWN0aXZlIix9LFsibW9kdWxlcy5uZW1zIl09e1siRk4iXT0iL3NjcmF0Y2g0L05DRVBERVYvbmVtcy9zYXZlL1NhbXVlbC5UcmFoYW4vYXBwaWZ5L05FTVMvc3JjL2NvbmYvbW9kdWxlcy5uZW1zIixbImRlZmF1bHQiXT0wLFsiZnVsbE5hbWUiXT0ibW9kdWxlcy5uZW1zIixbImxvYWRPcmRlciJdPTEwLHByb3BUPXt9LFsic2hvcnQiXT0ibW9kdWxlcy5uZW1zIixbInN0YXR1cyJdPSJhY3RpdmUiLH0sbmV0Y2RmPXtbIkZOIl09Ii9hcHBzL21vZHVsZXMvbW9kdWxlZmFtaWxpZXMvaW50ZWwvbmV0Y2RmLzQuMy4wIixbImRlZmF1bHQiXT0wLFsiZnVsbE5hbWUiXT0ibmV0Y2RmLzQuMy4wIixbImxvYWRPcmRlciJdPTMscHJvcFQ9e30sWyJzaG9ydCJdPSJuZXRjZGYi";' export '_ModuleTable004_;' '_ModuleTable005_="LFsic3RhdHVzIl09ImFjdGl2ZSIsfSxzcD17WyJGTiJdPSIvc2NyYXRjaDMvTkNFUERFVi9ud3Byb2QvbGliL21vZHVsZWZpbGVzL3NwL3YyLjAuMiIsWyJkZWZhdWx0Il09MCxbImZ1bGxOYW1lIl09InNwL3YyLjAuMiIsWyJsb2FkT3JkZXIiXT02LHByb3BUPXt9LFsic2hvcnQiXT0ic3AiLFsic3RhdHVzIl09ImFjdGl2ZSIsfSx3M2VtYz17WyJGTiJdPSIvc2NyYXRjaDMvTkNFUERFVi9ud3Byb2QvbGliL21vZHVsZWZpbGVzL3czZW1jL3YyLjAuNSIsWyJkZWZhdWx0Il09MCxbImZ1bGxOYW1lIl09InczZW1jL3YyLjAuNSIsWyJsb2FkT3JkZXIiXT05LHByb3BUPXt9LFsic2hvcnQiXT0idzNlbWMiLFsic3RhdHVzIl09ImFjdGl2ZSIsfSx3M25jbz17WyJGTiJdPSIvc2Ny";' export '_ModuleTable005_;' '_ModuleTable006_="YXRjaDMvTkNFUERFVi9ud3Byb2QvbGliL21vZHVsZWZpbGVzL3czbmNvL3YyLjAuNiIsWyJkZWZhdWx0Il09MCxbImZ1bGxOYW1lIl09InczbmNvL3YyLjAuNiIsWyJsb2FkT3JkZXIiXT04LHByb3BUPXt9LFsic2hvcnQiXT0idzNuY28iLFsic3RhdHVzIl09ImFjdGl2ZSIsfSx9LG1wYXRoQT17Ii9zY3JhdGNoNC9OQ0VQREVWL25lbXMvc2F2ZS9TYW11ZWwuVHJhaGFuL2FwcGlmeS9ORU1TL3NyYy9jb25mIiwiL2FwcHMvbG1vZC9sbW9kL21vZHVsZWZpbGVzL0NvcmUiLCIvYXBwcy9tb2R1bGVzL21vZHVsZWZpbGVzL0xpbnV4IiwiL2FwcHMvbW9kdWxlcy9tb2R1bGVmaWxlcyIsIi9hcHBzL21vZHVsZXMvbW9kdWxlZmFtaWxpZXMvaW50ZWwiLCIvYXBwcy9tb2R1bGVzL21v";' export '_ModuleTable006_;' '_ModuleTable007_="ZHVsZWZhbWlsaWVzL2ludGVsX2ltcGkiLCIvc2NyYXRjaDMvTkNFUERFVi9ud3Byb2QvbGliL21vZHVsZWZpbGVzIix9LFsic3lzdGVtQmFzZU1QQVRIIl09Ii9hcHBzL2xtb2QvbG1vZC9tb2R1bGVmaWxlcy9Db3JlOi9hcHBzL21vZHVsZXMvbW9kdWxlZmlsZXMvTGludXg6L2FwcHMvbW9kdWxlcy9tb2R1bGVmaWxlcyIsWyJ2ZXJzaW9uIl09Mix9";' export '_ModuleTable007_;' '_ModuleTable_Sz_="7";' export '_ModuleTable_Sz_;'
@@ -393,9 +778,298 @@ Currently Loaded Modules:
 + '[' 0 = 0 ']'
 ++ : -s sh
 + eval
-+ cp -fp /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/../NEMS/src/conf/configure.nems /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/conf/configure.fv3
-+ cp -fp /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/../NEMS/src/conf/modules.nems /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/conf/modules.fv3
++ echo =============================================
+=============================================
++ which mpiifort
+/apps/intel/impi/5.0.3.048/intel64/bin/mpiifort
++ autonote 'Loaded /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/conf/modules.nems'
++ [[ autobuild == autobuild ]]
++ note 'Loaded /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/conf/modules.nems' 0 0
++ logimpl NOTE 'Loaded /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/conf/modules.nems' 0 0
++ local level=NOTE
++ local 'infobox=Loaded /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/conf/modules.nems'
++ local 'backtitle=NEMS Application Builder'
++ local title=NOTE
++ local loc1=0
++ local loc2=0
++ local widget=--msgbox
++ [[ autobuild == autobuild ]]
++ echo 'NOTE: Loaded /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/conf/modules.nems'
+NOTE: Loaded /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/conf/modules.nems
++ return 0
++ loaded_envir=yes
++ source /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/conf/externals.nems
++ gocartFlag=false
++ for i in '"${COMPONENTS[@]}"'
++ i=FV3
++ COMP=FV3
++ IFS=%
++ read -ra COMPOS
++ autonote 'pos 0 = FV3 1 = '
++ [[ autobuild == autobuild ]]
++ note 'pos 0 = FV3 1 = ' 0 0
++ logimpl NOTE 'pos 0 = FV3 1 = ' 0 0
++ local level=NOTE
++ local 'infobox=pos 0 = FV3 1 = '
++ local 'backtitle=NEMS Application Builder'
++ local title=NOTE
++ local loc1=0
++ local loc2=0
++ local widget=--msgbox
++ [[ autobuild == autobuild ]]
++ echo 'NOTE: pos 0 = FV3 1 = '
+NOTE: pos 0 = FV3 1 = 
++ return 0
++ [[ '' == \g\o\c\a\r\t ]]
++ autonote 'not gocart '
++ [[ autobuild == autobuild ]]
++ note 'not gocart ' 0 0
++ logimpl NOTE 'not gocart ' 0 0
++ local level=NOTE
++ local 'infobox=not gocart '
++ local 'backtitle=NEMS Application Builder'
++ local title=NOTE
++ local loc1=0
++ local loc2=0
++ local widget=--msgbox
++ [[ autobuild == autobuild ]]
++ echo 'NOTE: not gocart '
+NOTE: not gocart 
++ return 0
++ [[ true == \t\r\u\e ]]
++ for i in '"${COMPONENTS[@]}"'
++ i=FV3
++ COMP=FV3
++ IFS=%
++ read -ra COMPOS
++ [[ FV3 != \L\e\g\a\c\y\G\S\M ]]
++ [[ FV3 != \L\e\g\a\c\y\N\M\M\B ]]
++ envir=environment_theia_FV3
+++ type -t environment_theia_FV3
++ '[' '' == function ']'
++ [[ FV3 == \G\S\M ]]
++ [[ FV3 == \F\V\3 ]]
++ BUILD_FUNC=build_fv3
++ build_checkloop
++ eval 'COMP_DIR=${FV3_DIR}'
+++ COMP_DIR=
++ eval 'COMP_SRCDIR=${FV3_SRCDIR}'
+++ COMP_SRCDIR=/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3
++ eval 'COMP_BINDIR=${FV3_BINDIR}'
+++ COMP_BINDIR=/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL
++ [[ FV3 == GSM ]]
++ [[ FV3 == NMM ]]
++ [[ FV3 == FV3 ]]
++ reuse=true
++ [[ true == \t\r\u\e ]]
++ ask --clear reuse:FV3 no 'Looks like the FV3 component has been installed.      \n\nUse previous installation <Yes>, or re-install <No>.' 12 40 Alert
++ local 'clear= '
++ [[ --clear == --clear ]]
++ clear=--clear
++ shift
++ local question_id=reuse:FV3
++ local defval=no
++ local 'yesno=Looks like the FV3 component has been installed.      \n\nUse previous installation <Yes>, or re-install <No>.'
++ local 'backtitle=NEMS Application Builder'
++ local title=Alert
++ local loc1=12
++ local loc2=40
++ [[ autobuild == autobuild ]]
++ echo 'Question id "reuse:FV3" text "Looks like the FV3 component has been installed.      \n\nUse previous installation <Yes>, or re-install <No>." ??? (yes/no)'
+Question id "reuse:FV3" text "Looks like the FV3 component has been installed.      \n\nUse previous installation <Yes>, or re-install <No>." ??? (yes/no)
++ autoask reuse:FV3 no
++ local question_id=reuse:FV3
++ local default_answer=no
++ local answer=mu
++ local optval
++ local opt
++ local val
++ for optval in '"${auto__ask[@]}"'
++ [[ x == x ]]
++ continue
++ for optval in '"${auto__ask[@]}"'
++ [[ rebuild:yesx == x ]]
++ [[ rebuild:yes =~ ^(.*):(yes|no|true|false)$ ]]
++ opt=rebuild
++ val=yes
++ case "$question_id" in
++ autonote 'GLOB MISMATCH: rebuild from rebuild:yes for reuse:FV3'
++ [[ autobuild == autobuild ]]
++ note 'GLOB MISMATCH: rebuild from rebuild:yes for reuse:FV3' 0 0
++ logimpl NOTE 'GLOB MISMATCH: rebuild from rebuild:yes for reuse:FV3' 0 0
++ local level=NOTE
++ local 'infobox=GLOB MISMATCH: rebuild from rebuild:yes for reuse:FV3'
++ local 'backtitle=NEMS Application Builder'
++ local title=NOTE
++ local loc1=0
++ local loc2=0
++ local widget=--msgbox
++ [[ autobuild == autobuild ]]
++ echo 'NOTE: GLOB MISMATCH: rebuild from rebuild:yes for reuse:FV3'
+NOTE: GLOB MISMATCH: rebuild from rebuild:yes for reuse:FV3
++ return 0
++ continue
++ for optval in '"${auto__ask[@]}"'
++ [[ reuse:nox == x ]]
++ [[ reuse:no =~ ^(.*):(yes|no|true|false)$ ]]
++ opt=reuse
++ val=no
++ case "$question_id" in
++ autonote ' MATCH: reuse from reuse:no for reuse:FV3'
++ [[ autobuild == autobuild ]]
++ note ' MATCH: reuse from reuse:no for reuse:FV3' 0 0
++ logimpl NOTE ' MATCH: reuse from reuse:no for reuse:FV3' 0 0
++ local level=NOTE
++ local 'infobox= MATCH: reuse from reuse:no for reuse:FV3'
++ local 'backtitle=NEMS Application Builder'
++ local title=NOTE
++ local loc1=0
++ local loc2=0
++ local widget=--msgbox
++ [[ autobuild == autobuild ]]
++ echo 'NOTE:  MATCH: reuse from reuse:no for reuse:FV3'
+NOTE:  MATCH: reuse from reuse:no for reuse:FV3
++ return 0
++ [[ no == yes ]]
++ [[ no == true ]]
++ [[ no == no ]]
++ autonote 'QUESTION reuse:FV3? NO: from reuse:no'
++ [[ autobuild == autobuild ]]
++ note 'QUESTION reuse:FV3? NO: from reuse:no' 0 0
++ logimpl NOTE 'QUESTION reuse:FV3? NO: from reuse:no' 0 0
++ local level=NOTE
++ local 'infobox=QUESTION reuse:FV3? NO: from reuse:no'
++ local 'backtitle=NEMS Application Builder'
++ local title=NOTE
++ local loc1=0
++ local loc2=0
++ local widget=--msgbox
++ [[ autobuild == autobuild ]]
++ echo 'NOTE: QUESTION reuse:FV3? NO: from reuse:no'
+NOTE: QUESTION reuse:FV3? NO: from reuse:no
++ return 0
++ answer=no
++ [[ no == yes ]]
++ [[ no == no ]]
++ return 1
++ return 1
++ [[ 1 != \0 ]]
++ rm -rf /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL
++ ask --clear rebuild:FV3 yes 'Clean the FV3 component and build from scratch?' 10 40
++ local 'clear= '
++ [[ --clear == --clear ]]
++ clear=--clear
++ shift
++ local question_id=rebuild:FV3
++ local defval=yes
++ local 'yesno=Clean the FV3 component and build from scratch?'
++ local 'backtitle=NEMS Application Builder'
++ local 'title=Question rebuild:FV3'
++ local loc1=10
++ local loc2=40
++ [[ autobuild == autobuild ]]
++ echo 'Question id "rebuild:FV3" text "Clean the FV3 component and build from scratch?" ??? (yes/no)'
+Question id "rebuild:FV3" text "Clean the FV3 component and build from scratch?" ??? (yes/no)
++ autoask rebuild:FV3 yes
++ local question_id=rebuild:FV3
++ local default_answer=yes
++ local answer=mu
++ local optval
++ local opt
++ local val
++ for optval in '"${auto__ask[@]}"'
++ [[ x == x ]]
++ continue
++ for optval in '"${auto__ask[@]}"'
++ [[ rebuild:yesx == x ]]
++ [[ rebuild:yes =~ ^(.*):(yes|no|true|false)$ ]]
++ opt=rebuild
++ val=yes
++ case "$question_id" in
++ autonote ' MATCH: rebuild from rebuild:yes for rebuild:FV3'
++ [[ autobuild == autobuild ]]
++ note ' MATCH: rebuild from rebuild:yes for rebuild:FV3' 0 0
++ logimpl NOTE ' MATCH: rebuild from rebuild:yes for rebuild:FV3' 0 0
++ local level=NOTE
++ local 'infobox= MATCH: rebuild from rebuild:yes for rebuild:FV3'
++ local 'backtitle=NEMS Application Builder'
++ local title=NOTE
++ local loc1=0
++ local loc2=0
++ local widget=--msgbox
++ [[ autobuild == autobuild ]]
++ echo 'NOTE:  MATCH: rebuild from rebuild:yes for rebuild:FV3'
+NOTE:  MATCH: rebuild from rebuild:yes for rebuild:FV3
++ return 0
++ [[ yes == yes ]]
++ autonote 'QUESTION rebuild:FV3? YES: from rebuild:yes'
++ [[ autobuild == autobuild ]]
++ note 'QUESTION rebuild:FV3? YES: from rebuild:yes' 0 0
++ logimpl NOTE 'QUESTION rebuild:FV3? YES: from rebuild:yes' 0 0
++ local level=NOTE
++ local 'infobox=QUESTION rebuild:FV3? YES: from rebuild:yes'
++ local 'backtitle=NEMS Application Builder'
++ local title=NOTE
++ local loc1=0
++ local loc2=0
++ local widget=--msgbox
++ [[ autobuild == autobuild ]]
++ echo 'NOTE: QUESTION rebuild:FV3? YES: from rebuild:yes'
+NOTE: QUESTION rebuild:FV3? YES: from rebuild:yes
++ return 0
++ answer=yes
++ for optval in '"${auto__ask[@]}"'
++ [[ reuse:nox == x ]]
++ [[ reuse:no =~ ^(.*):(yes|no|true|false)$ ]]
++ opt=reuse
++ val=no
++ case "$question_id" in
++ autonote 'GLOB MISMATCH: reuse from reuse:no for rebuild:FV3'
++ [[ autobuild == autobuild ]]
++ note 'GLOB MISMATCH: reuse from reuse:no for rebuild:FV3' 0 0
++ logimpl NOTE 'GLOB MISMATCH: reuse from reuse:no for rebuild:FV3' 0 0
++ local level=NOTE
++ local 'infobox=GLOB MISMATCH: reuse from reuse:no for rebuild:FV3'
++ local 'backtitle=NEMS Application Builder'
++ local title=NOTE
++ local loc1=0
++ local loc2=0
++ local widget=--msgbox
++ [[ autobuild == autobuild ]]
++ echo 'NOTE: GLOB MISMATCH: reuse from reuse:no for rebuild:FV3'
+NOTE: GLOB MISMATCH: reuse from reuse:no for rebuild:FV3
++ return 0
++ continue
++ [[ yes == yes ]]
++ return 0
++ return 0
++ [[ 0 == \0 ]]
++ [[ autobuild == \d\i\a\l\o\g ]]
++ tee /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/log/appBuilder.FV3.log.25379
++ build_fv3 clean
++ [[ clean == \c\l\e\a\n ]]
++ echo 'Cleaning FV3...'
+Cleaning FV3...
 + cd /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3
++ gmake cleanall
+makefile:3: conf/configure.fv3: No such file or directory
+gmake: *** No rule to make target `conf/configure.fv3'.  Stop.
++ rm -rf nems_dir
++ rm -rf FV3_INSTALL
++ rm -rf nems_dir
++ find /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/fms/ -name '*.o' -o -name '*.mod'
++ echo '...done cleaning FV3.'
+...done cleaning FV3.
++ [[ ! -d /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL ]]
++ [[ autobuild == \d\i\a\l\o\g ]]
++ tee /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/log/appBuilder.FV3.log.25379
++ build_fv3
++ [[ '' == \c\l\e\a\n ]]
++ echo 'Building FV3... 64 bits by default'
+Building FV3... 64 bits by default
++ cd /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3
++ cp -fp /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/conf/configure.nems /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/conf/configure.fv3
++ cp -fp /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/conf/modules.nems /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/conf/modules.fv3
 + gmake clean
 Cleaning ... 
 
@@ -448,11 +1122,14 @@ mpiifort -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEF
 mpiifort -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -fpp -Wp,-w -I/apps/netcdf/4.3.0-intel/include -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c drifters/drifters_input.F90 -o drifters/drifters_input.o
 mpiifort -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -fpp -Wp,-w -I/apps/netcdf/4.3.0-intel/include -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c drifters/drifters_io.F90 -o drifters/drifters_io.o
 mpiifort -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -fpp -Wp,-w -I/apps/netcdf/4.3.0-intel/include -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c drifters/quicksort.F90 -o drifters/quicksort.o
-mpiifort -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -fpp -Wp,-w -I/apps/netcdf/4.3.0-intel/include -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c random_numbers/MersenneTwister.F90 -o random_numbers/MersenneTwister.o
 Using 8-byte addressing
 Using PURE
 Converting pointers to allocatable components
+mpiifort -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -fpp -Wp,-w -I/apps/netcdf/4.3.0-intel/include -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c random_numbers/MersenneTwister.F90 -o random_numbers/MersenneTwister.o
 mpiifort -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -fpp -Wp,-w -I/apps/netcdf/4.3.0-intel/include -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c sat_vapor_pres/sat_vapor_pres_k.F90 -o sat_vapor_pres/sat_vapor_pres_k.o
+Using 8-byte addressing
+Using PURE
+Converting pointers to allocatable components
 Using 8-byte addressing
 Using PURE
 Converting pointers to allocatable components
@@ -460,13 +1137,10 @@ mpiifort -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEF
 Using 8-byte addressing
 Using PURE
 Converting pointers to allocatable components
+Using 8-byte addressing
+Using PURE
+Converting pointers to allocatable components
 mpiicc -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX  -I/apps/netcdf/4.3.0-intel/include -xCORE-AVX2 -qno-opt-dynamic-align -D__IFC -sox -fp-model source -O2 -debug minimal -qopenmp   -c memutils/memuse.c -o memutils/memuse.o
-Using 8-byte addressing
-Using PURE
-Converting pointers to allocatable components
-Using 8-byte addressing
-Using PURE
-Converting pointers to allocatable components
 mpiicc -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX  -I/apps/netcdf/4.3.0-intel/include -xCORE-AVX2 -qno-opt-dynamic-align -D__IFC -sox -fp-model source -O2 -debug minimal -qopenmp   -c mosaic/create_xgrid.c -o mosaic/create_xgrid.o
 mpiicc -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX  -I/apps/netcdf/4.3.0-intel/include -xCORE-AVX2 -qno-opt-dynamic-align -D__IFC -sox -fp-model source -O2 -debug minimal -qopenmp   -c mosaic/gradient_c2l.c -o mosaic/gradient_c2l.o
 mpiicc -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX  -I/apps/netcdf/4.3.0-intel/include -xCORE-AVX2 -qno-opt-dynamic-align -D__IFC -sox -fp-model source -O2 -debug minimal -qopenmp   -c mosaic/interp.c -o mosaic/interp.o
@@ -575,10 +1249,10 @@ mpiifort -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEF
 mpiifort -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -fpp -Wp,-w -I/apps/netcdf/4.3.0-intel/include -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c amip_interp/amip_interp.F90 -o amip_interp/amip_interp.o
 mpiifort -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -fpp -Wp,-w -I/apps/netcdf/4.3.0-intel/include -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c time_interp/time_interp_external.F90 -o time_interp/time_interp_external.o
 mpiifort -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -fpp -Wp,-w -I/apps/netcdf/4.3.0-intel/include -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c horiz_interp/test_horiz_interp.F90 -o horiz_interp/test_horiz_interp.o
-mpiifort -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -fpp -Wp,-w -I/apps/netcdf/4.3.0-intel/include -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c topography/topography.F90 -o topography/topography.o
 Using 8-byte addressing
 Using PURE
 Converting pointers to allocatable components
+mpiifort -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -fpp -Wp,-w -I/apps/netcdf/4.3.0-intel/include -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include  -c topography/topography.F90 -o topography/topography.o
 Using 8-byte addressing
 Using PURE
 Converting pointers to allocatable components
@@ -756,17 +1430,13 @@ mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz
 mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -xCORE-AVX-I -c radiation_astronomy.f -o radiation_astronomy.o
 mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c radlw_param.f -o radlw_param.o
 mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c radiation_surface.f -o radiation_surface.o
-mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c radsw_datatb.f -o radsw_datatb.o
 mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c idea_ion.f -o idea_ion.o
 mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c idea_phys.f -o idea_phys.o
 ifort: command line warning #10121: overriding '-xCORE-AVX2' with '-xCORE-AVX-I'
 mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c module_nst_water_prop.f90 -o module_nst_water_prop.o
 mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c get_prs.f -o get_prs.o
 mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c radlw_datatb.f -o radlw_datatb.o
-mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c module_bfmicrophysics.f -o module_bfmicrophysics.o
-mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -msse3 -c radiation_aerosols.f -o radiation_aerosols.o
-mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c radiation_gases.f -o radiation_gases.o
-ifort: command line warning #10120: overriding '-xCORE-AVX2' with '-msse3'
+mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c radsw_datatb.f -o radsw_datatb.o
 mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c gscond.f -o gscond.o
 mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c gscondp.f -o gscondp.o
 mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c lrgsclr.f -o lrgsclr.o
@@ -794,11 +1464,15 @@ mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz
 mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c calpreciptype.f90 -o calpreciptype.o
 mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c cs_conv.f90 -o cs_conv.o
 mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c gcm_shoc.f90 -o gcm_shoc.o
-mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c radiation_clouds.f -o radiation_clouds.o
+mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c module_bfmicrophysics.f -o module_bfmicrophysics.o
 mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c radlw_main.f -o radlw_main.o
+mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -msse3 -c radiation_aerosols.f -o radiation_aerosols.o
+mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c radiation_gases.f -o radiation_gases.o
+ifort: command line warning #10120: overriding '-xCORE-AVX2' with '-msse3'
 mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c radsw_main.f -o radsw_main.o
 mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c gsmddrive.f -o gsmddrive.o
 mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c sfc_nst.f -o sfc_nst.o
+mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c radiation_clouds.f -o radiation_clouds.o
 mpiifort -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -fpp -Wp,-w -I/apps/netcdf/4.3.0-intel/include -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c gbphys.F -o gbphys.o
 mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c grrad.f -o grrad.o
 mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include  -c rad_initialize.f -o rad_initialize.o
@@ -952,8 +1626,8 @@ mpiifort -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEF
 mpiifort -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -fpp -Wp,-w -I/apps/netcdf/4.3.0-intel/include -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/model/sw_core.F90 -o atmos_cubed_sphere/model/sw_core.o
 mpiifort -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -fpp -Wp,-w -I/apps/netcdf/4.3.0-intel/include -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/tools/external_ic.F90 -o atmos_cubed_sphere/tools/external_ic.o
 mpiifort -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -fpp -Wp,-w -I/apps/netcdf/4.3.0-intel/include -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/tools/fv_restart.F90 -o atmos_cubed_sphere/tools/fv_restart.o
-mpiifort -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -fpp -Wp,-w -I/apps/netcdf/4.3.0-intel/include -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -fast-transcendentals -c atmos_cubed_sphere/model_nh/nh_utils.F90 -o atmos_cubed_sphere/model_nh/nh_utils.o
 mpiifort -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -fpp -Wp,-w -I/apps/netcdf/4.3.0-intel/include -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/model/fv_control.F90 -o atmos_cubed_sphere/model/fv_control.o
+mpiifort -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -fpp -Wp,-w -I/apps/netcdf/4.3.0-intel/include -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -fast-transcendentals -c atmos_cubed_sphere/model_nh/nh_utils.F90 -o atmos_cubed_sphere/model_nh/nh_utils.o
 mpiifort -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -fpp -Wp,-w -I/apps/netcdf/4.3.0-intel/include -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/model/fv_nesting.F90 -o atmos_cubed_sphere/model/fv_nesting.o
 mpiifort -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -fpp -Wp,-w -I/apps/netcdf/4.3.0-intel/include -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/model_nh/nh_core.F90 -o atmos_cubed_sphere/model_nh/nh_core.o
 mpiifort -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -DNEW_TAUCTMAX -fpp -Wp,-w -I/apps/netcdf/4.3.0-intel/include -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../gfsphys  -c atmos_cubed_sphere/model/dyn_core.F90 -o atmos_cubed_sphere/model/dyn_core.o
@@ -1022,14 +1696,205 @@ Finished generating ESMF self-describing build dependency makefile fragment: fv3
 gmake[1]: Leaving directory `/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3'
 Installation into "/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL" complete!
 
-+ cd /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/../NEMS/src
-+ export COMP=FV3
-+ COMP=FV3
-+ export COMP_SRCDIR=/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3
-+ COMP_SRCDIR=/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3
-+ export COMP_BINDIR=/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL
-+ COMP_BINDIR=/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL
-+ gmake nems COMP=,fv3, FV3_DIR=/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3
++ '[' '!' -d /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL ']'
++ echo '...done building FV3.'
+...done building FV3.
++ '[' '!' -d /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL ']'
++ [[ ! -d /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL ]]
++ '[' -d /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL ']'
++ md5sum /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL/fv3gfs_cap_mod.mod /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL/fv3.mk /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL/libfms.a /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL/libfv3cap.a /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL/libfv3core.a /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL/libgfsphys.a
++ cd /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src
++ [[ true == \f\a\l\s\e ]]
++ COMP=
++ COMPDIRS=
++ legacyGsmFlag=false
++ legacyNmmFlag=false
++ for i in '"${COMPONENTS[@]}"'
++ i=FV3
++ COMPO=FV3
++ IFS=%
++ read -ra COMPOS
++ [[ FV3 == \L\e\g\a\c\y\G\S\M ]]
++ [[ FV3 == \L\e\g\a\c\y\N\M\M\B ]]
++ [[ FV3 == \G\S\M ]]
++ [[ FV3 == \F\V\3 ]]
++ COMP=,fv3
++ COMPDIRS=' FV3_DIR=/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL'
++ echo 'COMP=,fv3,COMPDIRS= FV3_DIR=/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL'
+COMP=,fv3,COMPDIRS= FV3_DIR=/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL
++ TARGET=nems
++ [[ false == \t\r\u\e ]]
++ [[ false == \t\r\u\e ]]
++ [[ x,fv3 != \x ]]
++ COMPOPT=COMP=,fv3,
++ MAKEOPT='nems  COMP=,fv3, FV3_DIR=/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL'
++ [[ false == true ]]
++ echo 'start to build TARGET=nems,COMPOPT=COMP=,fv3,,COMPDIRS= FV3_DIR=/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL'
+start to build TARGET=nems,COMPOPT=COMP=,fv3,,COMPDIRS= FV3_DIR=/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL
++ echo '         with MAKEOPT=nems  COMP=,fv3, FV3_DIR=/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL'
+         with MAKEOPT=nems  COMP=,fv3, FV3_DIR=/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL
++ msgbox 'make nems  COMP=,fv3, FV3_DIR=/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL   \n\nProceed with <Enter>, exit with <Esc>.' 20 100 'Ready to build NEMS executable:'
++ logimpl MSGBOX 'make nems  COMP=,fv3, FV3_DIR=/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL   \n\nProceed with <Enter>, exit with <Esc>.' 20 100 'Ready to build NEMS executable:'
++ local level=MSGBOX
++ local 'infobox=make nems  COMP=,fv3, FV3_DIR=/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL   \n\nProceed with <Enter>, exit with <Esc>.'
++ local 'backtitle=NEMS Application Builder'
++ local 'title=Ready to build NEMS executable:'
++ local loc1=20
++ local loc2=100
++ local widget=--msgbox
++ [[ autobuild == autobuild ]]
++ echo 'MSGBOX: make nems  COMP=,fv3, FV3_DIR=/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL   \n\nProceed with <Enter>, exit with <Esc>.'
+MSGBOX: make nems  COMP=,fv3, FV3_DIR=/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL   \n\nProceed with <Enter>, exit with <Esc>.
++ return 0
++ '[' 0 '!=' 0 ']'
++ export NEMSAppBuilder
++ CLEAN_FIRST=NO
++ autoask rebuild no
++ local question_id=rebuild
++ local default_answer=no
++ local answer=mu
++ local optval
++ local opt
++ local val
++ for optval in '"${auto__ask[@]}"'
++ [[ x == x ]]
++ continue
++ for optval in '"${auto__ask[@]}"'
++ [[ rebuild:yesx == x ]]
++ [[ rebuild:yes =~ ^(.*):(yes|no|true|false)$ ]]
++ opt=rebuild
++ val=yes
++ case "$question_id" in
++ autonote ' MATCH: rebuild from rebuild:yes for rebuild'
++ [[ autobuild == autobuild ]]
++ note ' MATCH: rebuild from rebuild:yes for rebuild' 0 0
++ logimpl NOTE ' MATCH: rebuild from rebuild:yes for rebuild' 0 0
++ local level=NOTE
++ local 'infobox= MATCH: rebuild from rebuild:yes for rebuild'
++ local 'backtitle=NEMS Application Builder'
++ local title=NOTE
++ local loc1=0
++ local loc2=0
++ local widget=--msgbox
++ [[ autobuild == autobuild ]]
++ echo 'NOTE:  MATCH: rebuild from rebuild:yes for rebuild'
+NOTE:  MATCH: rebuild from rebuild:yes for rebuild
++ return 0
++ [[ yes == yes ]]
++ autonote 'QUESTION rebuild? YES: from rebuild:yes'
++ [[ autobuild == autobuild ]]
++ note 'QUESTION rebuild? YES: from rebuild:yes' 0 0
++ logimpl NOTE 'QUESTION rebuild? YES: from rebuild:yes' 0 0
++ local level=NOTE
++ local 'infobox=QUESTION rebuild? YES: from rebuild:yes'
++ local 'backtitle=NEMS Application Builder'
++ local title=NOTE
++ local loc1=0
++ local loc2=0
++ local widget=--msgbox
++ [[ autobuild == autobuild ]]
++ echo 'NOTE: QUESTION rebuild? YES: from rebuild:yes'
+NOTE: QUESTION rebuild? YES: from rebuild:yes
++ return 0
++ answer=yes
++ for optval in '"${auto__ask[@]}"'
++ [[ reuse:nox == x ]]
++ [[ reuse:no =~ ^(.*):(yes|no|true|false)$ ]]
++ opt=reuse
++ val=no
++ case "$question_id" in
++ autonote 'GLOB MISMATCH: reuse from reuse:no for rebuild'
++ [[ autobuild == autobuild ]]
++ note 'GLOB MISMATCH: reuse from reuse:no for rebuild' 0 0
++ logimpl NOTE 'GLOB MISMATCH: reuse from reuse:no for rebuild' 0 0
++ local level=NOTE
++ local 'infobox=GLOB MISMATCH: reuse from reuse:no for rebuild'
++ local 'backtitle=NEMS Application Builder'
++ local title=NOTE
++ local loc1=0
++ local loc2=0
++ local widget=--msgbox
++ [[ autobuild == autobuild ]]
++ echo 'NOTE: GLOB MISMATCH: reuse from reuse:no for rebuild'
+NOTE: GLOB MISMATCH: reuse from reuse:no for rebuild
++ return 0
++ continue
++ [[ yes == yes ]]
++ return 0
++ CLEAN_FIRST=YES
++ [[ YES == YES ]]
++ autonote 'Should clean first'
++ [[ autobuild == autobuild ]]
++ note 'Should clean first' 0 0
++ logimpl NOTE 'Should clean first' 0 0
++ local level=NOTE
++ local 'infobox=Should clean first'
++ local 'backtitle=NEMS Application Builder'
++ local title=NOTE
++ local loc1=0
++ local loc2=0
++ local widget=--msgbox
++ [[ autobuild == autobuild ]]
++ echo 'NOTE: Should clean first'
+NOTE: Should clean first
++ return 0
++ [[ autobuild == \d\i\a\l\o\g ]]
++ autonote 'Simple clean.'
++ [[ autobuild == autobuild ]]
++ note 'Simple clean.' 0 0
++ logimpl NOTE 'Simple clean.' 0 0
++ local level=NOTE
++ local 'infobox=Simple clean.'
++ local 'backtitle=NEMS Application Builder'
++ local title=NOTE
++ local loc1=0
++ local loc2=0
++ local widget=--msgbox
++ [[ autobuild == autobuild ]]
++ echo 'NOTE: Simple clean.'
+NOTE: Simple clean.
++ return 0
++ tee -a /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/log/appBuilder.NEMS.log.25379
++ make clean
+rm -f -f *.f90 *.lst *.o *.mod lm map ../exe/NEMS.x
+cd ENS_Cpl             && gmake clean
+gmake[1]: Entering directory `/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/ENS_Cpl'
+makefile:124: depend: No such file or directory
+mpiicc -E -traditional Lib_ESMFStateAddGetMod.f > Lib_ESMFStateAddGetMod.f90
+mpiicc -E -traditional machine.f > machine.f90
+mpiicc -E -traditional ENS_Cpl_InternalState_ESMFMod.f > ENS_Cpl_InternalState_ESMFMod.f90
+mpiicc -E -traditional ENS_bcst_global.f > ENS_bcst_global.f90
+mpiicc -E -traditional ENS_Sto_Per_Scheme_Step2.f > ENS_Sto_Per_Scheme_Step2.f90
+mpiicc -E -traditional DistributeForStep1.f > DistributeForStep1.f90
+mpiicc -E -traditional ENS_CplState_ESMFMod.f > ENS_CplState_ESMFMod.f90
+mpiicc -E -traditional ENS_Cpl_Run_ESMFMod.f > ENS_Cpl_Run_ESMFMod.f90
+mpiicc -E -traditional ENS_Cpl_ESMFMod.f > ENS_Cpl_ESMFMod.f90
+mpiicc -E -traditional ENS_GetParameterFromStateMod.f > ENS_GetParameterFromStateMod.f90
+mpiicc -E -traditional ENS_CplComp_ESMFMod.f > ENS_CplComp_ESMFMod.f90
+mpiicc -E -traditional ENS_Sto_Per_Scheme_Step1.f > ENS_Sto_Per_Scheme_Step1.f90
+mpiicc -E -traditional kinds.f > kinds.f90
+mpiicc -E -traditional peuc.f > peuc.f90
+mpiicc -E -traditional pran.f > pran.f90
+mpiicc -E -traditional prana.f > prana.f90
+mpiicc -E -traditional Cal_Sto_Coef.f > Cal_Sto_Coef.f90
+ls -1 Lib_ESMFStateAddGetMod.f90 machine.f90 ENS_Cpl_InternalState_ESMFMod.f90 ENS_bcst_global.f90 ENS_Sto_Per_Scheme_Step2.f90 DistributeForStep1.f90 ENS_CplState_ESMFMod.f90 ENS_Cpl_Run_ESMFMod.f90 ENS_Cpl_ESMFMod.f90 ENS_GetParameterFromStateMod.f90 ENS_CplComp_ESMFMod.f90 ENS_Sto_Per_Scheme_Step1.f90 kinds.f90 peuc.f90 pran.f90 prana.f90 Cal_Sto_Coef.f90 > Srcfiles
+echo "." > Filepath
+../../exe/mkDepends.pl -m Filepath Srcfiles > depend
+rm -f -f Filepath Srcfiles
+gmake[1]: Leaving directory `/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/ENS_Cpl'
+gmake[1]: Entering directory `/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/ENS_Cpl'
+rm -f -f ENS_Cpl.a *.f90 *.o *.mod *.lst lm map depend
+gmake[1]: Leaving directory `/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/ENS_Cpl'
++ rm -f ../exe/NEMS.x
++ echo 'Passed clean loop.  Now start to build nems.x.'
+Passed clean loop.  Now start to build nems.x.
++ [[ ! -f ../exe/NEMS.x ]]
++ echo 'make nems  COMP=,fv3, FV3_DIR=/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL'
++ echo
++ [[ autobuild == \d\i\a\l\o\g ]]
++ set -x
++ tee /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/log/appBuilder.NEMS.log.25379
++ make nems COMP=,fv3, FV3_DIR=/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL
 cd ENS_Cpl             && gmake stub
 gmake[1]: Entering directory `/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/ENS_Cpl'
 makefile:124: depend: No such file or directory
@@ -1062,110 +1927,60 @@ ar rv ENS_Cpl.a ENS_CplComp_ESMFMod_STUB.o
 ar: creating ENS_Cpl.a
 a - ENS_CplComp_ESMFMod_STUB.o
 gmake[1]: Leaving directory `/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/ENS_Cpl'
-mpiicc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -D'SVN_INFO="(Samuel.Trahan) Thu Mar  2 21:59:44 UTC 2017 r89074 https://svnemc.ncep.noaa.gov/projects/nems/branches/appify-fv3/src URL:"' -D'CMP_YEAR=2017' -D'CMP_JD=061' module_NEMS_UTILS.F90 > module_NEMS_UTILS.f90
-mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/apps/esmf/7.0.0/intel/intelmpi/mod/modO/Linux.intel.64.intelmpi.default -I/apps/esmf/7.0.0/intel/intelmpi/include -I/apps/netcdf/4.3.0-intel/include -IENS_Cpl -I.  -I/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/nems_dir -c module_NEMS_UTILS.f90
+mpiicc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -D'SVN_INFO="(Samuel.Trahan) Thu Mar  2 22:08:58 UTC 2017 r89074 https://svnemc.ncep.noaa.gov/projects/nems/branches/appify-fv3/src URL:"' -D'CMP_YEAR=2017' -D'CMP_JD=061' module_NEMS_UTILS.F90 > module_NEMS_UTILS.f90
+mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/apps/esmf/7.0.0/intel/intelmpi/mod/modO/Linux.intel.64.intelmpi.default -I/apps/esmf/7.0.0/intel/intelmpi/include -I/apps/netcdf/4.3.0-intel/include -IENS_Cpl -I.  -I/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL -c module_NEMS_UTILS.f90
 rm -f module_NEMS_UTILS.f90
-mpiicc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -D'SVN_INFO="(Samuel.Trahan) Thu Mar  2 21:59:44 UTC 2017 r89074 https://svnemc.ncep.noaa.gov/projects/nems/branches/appify-fv3/src URL:"' -D'CMP_YEAR=2017' -D'CMP_JD=061' module_MEDIATOR_methods.F90 > module_MEDIATOR_methods.f90
-mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/apps/esmf/7.0.0/intel/intelmpi/mod/modO/Linux.intel.64.intelmpi.default -I/apps/esmf/7.0.0/intel/intelmpi/include -I/apps/netcdf/4.3.0-intel/include -IENS_Cpl -I.  -I/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/nems_dir -c module_MEDIATOR_methods.f90
+mpiicc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -D'SVN_INFO="(Samuel.Trahan) Thu Mar  2 22:08:58 UTC 2017 r89074 https://svnemc.ncep.noaa.gov/projects/nems/branches/appify-fv3/src URL:"' -D'CMP_YEAR=2017' -D'CMP_JD=061' module_MEDIATOR_methods.F90 > module_MEDIATOR_methods.f90
+mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/apps/esmf/7.0.0/intel/intelmpi/mod/modO/Linux.intel.64.intelmpi.default -I/apps/esmf/7.0.0/intel/intelmpi/include -I/apps/netcdf/4.3.0-intel/include -IENS_Cpl -I.  -I/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL -c module_MEDIATOR_methods.f90
 rm -f module_MEDIATOR_methods.f90
-mpiicc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -D'SVN_INFO="(Samuel.Trahan) Thu Mar  2 21:59:44 UTC 2017 r89074 https://svnemc.ncep.noaa.gov/projects/nems/branches/appify-fv3/src URL:"' -D'CMP_YEAR=2017' -D'CMP_JD=061' module_MEDIATOR.F90 > module_MEDIATOR.f90
-mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/apps/esmf/7.0.0/intel/intelmpi/mod/modO/Linux.intel.64.intelmpi.default -I/apps/esmf/7.0.0/intel/intelmpi/include -I/apps/netcdf/4.3.0-intel/include -IENS_Cpl -I.  -I/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/nems_dir -c module_MEDIATOR.f90
+mpiicc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -D'SVN_INFO="(Samuel.Trahan) Thu Mar  2 22:08:58 UTC 2017 r89074 https://svnemc.ncep.noaa.gov/projects/nems/branches/appify-fv3/src URL:"' -D'CMP_YEAR=2017' -D'CMP_JD=061' module_MEDIATOR.F90 > module_MEDIATOR.f90
+mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/apps/esmf/7.0.0/intel/intelmpi/mod/modO/Linux.intel.64.intelmpi.default -I/apps/esmf/7.0.0/intel/intelmpi/include -I/apps/netcdf/4.3.0-intel/include -IENS_Cpl -I.  -I/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL -c module_MEDIATOR.f90
 rm -f module_MEDIATOR.f90
-mpiicc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -D'SVN_INFO="(Samuel.Trahan) Thu Mar  2 21:59:44 UTC 2017 r89074 https://svnemc.ncep.noaa.gov/projects/nems/branches/appify-fv3/src URL:"' -D'CMP_YEAR=2017' -D'CMP_JD=061' module_MEDIATOR_SpaceWeather.F90 > module_MEDIATOR_SpaceWeather.f90
-mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/apps/esmf/7.0.0/intel/intelmpi/mod/modO/Linux.intel.64.intelmpi.default -I/apps/esmf/7.0.0/intel/intelmpi/include -I/apps/netcdf/4.3.0-intel/include -IENS_Cpl -I.  -I/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/nems_dir -c module_MEDIATOR_SpaceWeather.f90
+mpiicc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -D'SVN_INFO="(Samuel.Trahan) Thu Mar  2 22:08:58 UTC 2017 r89074 https://svnemc.ncep.noaa.gov/projects/nems/branches/appify-fv3/src URL:"' -D'CMP_YEAR=2017' -D'CMP_JD=061' module_MEDIATOR_SpaceWeather.F90 > module_MEDIATOR_SpaceWeather.f90
+mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/apps/esmf/7.0.0/intel/intelmpi/mod/modO/Linux.intel.64.intelmpi.default -I/apps/esmf/7.0.0/intel/intelmpi/include -I/apps/netcdf/4.3.0-intel/include -IENS_Cpl -I.  -I/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL -c module_MEDIATOR_SpaceWeather.f90
 rm -f module_MEDIATOR_SpaceWeather.f90
-mpiicc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -D'SVN_INFO="(Samuel.Trahan) Thu Mar  2 21:59:44 UTC 2017 r89074 https://svnemc.ncep.noaa.gov/projects/nems/branches/appify-fv3/src URL:"' -D'CMP_YEAR=2017' -D'CMP_JD=061' module_EARTH_INTERNAL_STATE.F90 > module_EARTH_INTERNAL_STATE.f90
-mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/apps/esmf/7.0.0/intel/intelmpi/mod/modO/Linux.intel.64.intelmpi.default -I/apps/esmf/7.0.0/intel/intelmpi/include -I/apps/netcdf/4.3.0-intel/include -IENS_Cpl -I.  -I/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/nems_dir -c module_EARTH_INTERNAL_STATE.f90
+mpiicc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -D'SVN_INFO="(Samuel.Trahan) Thu Mar  2 22:08:58 UTC 2017 r89074 https://svnemc.ncep.noaa.gov/projects/nems/branches/appify-fv3/src URL:"' -D'CMP_YEAR=2017' -D'CMP_JD=061' module_EARTH_INTERNAL_STATE.F90 > module_EARTH_INTERNAL_STATE.f90
+mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/apps/esmf/7.0.0/intel/intelmpi/mod/modO/Linux.intel.64.intelmpi.default -I/apps/esmf/7.0.0/intel/intelmpi/include -I/apps/netcdf/4.3.0-intel/include -IENS_Cpl -I.  -I/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL -c module_EARTH_INTERNAL_STATE.f90
 rm -f module_EARTH_INTERNAL_STATE.f90
-mpiicc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -D'SVN_INFO="(Samuel.Trahan) Thu Mar  2 21:59:44 UTC 2017 r89074 https://svnemc.ncep.noaa.gov/projects/nems/branches/appify-fv3/src URL:"' -D'CMP_YEAR=2017' -D'CMP_JD=061' module_EARTH_GRID_COMP.F90 > module_EARTH_GRID_COMP.f90
-mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/apps/esmf/7.0.0/intel/intelmpi/mod/modO/Linux.intel.64.intelmpi.default -I/apps/esmf/7.0.0/intel/intelmpi/include -I/apps/netcdf/4.3.0-intel/include -IENS_Cpl -I.  -I/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/nems_dir -c module_EARTH_GRID_COMP.f90
+mpiicc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -D'SVN_INFO="(Samuel.Trahan) Thu Mar  2 22:08:58 UTC 2017 r89074 https://svnemc.ncep.noaa.gov/projects/nems/branches/appify-fv3/src URL:"' -D'CMP_YEAR=2017' -D'CMP_JD=061' module_EARTH_GRID_COMP.F90 > module_EARTH_GRID_COMP.f90
+mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/apps/esmf/7.0.0/intel/intelmpi/mod/modO/Linux.intel.64.intelmpi.default -I/apps/esmf/7.0.0/intel/intelmpi/include -I/apps/netcdf/4.3.0-intel/include -IENS_Cpl -I.  -I/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL -c module_EARTH_GRID_COMP.f90
 rm -f module_EARTH_GRID_COMP.f90
-mpiicc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -D'SVN_INFO="(Samuel.Trahan) Thu Mar  2 21:59:44 UTC 2017 r89074 https://svnemc.ncep.noaa.gov/projects/nems/branches/appify-fv3/src URL:"' -D'CMP_YEAR=2017' -D'CMP_JD=061' module_NEMS_INTERNAL_STATE.F90 > module_NEMS_INTERNAL_STATE.f90
-mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/apps/esmf/7.0.0/intel/intelmpi/mod/modO/Linux.intel.64.intelmpi.default -I/apps/esmf/7.0.0/intel/intelmpi/include -I/apps/netcdf/4.3.0-intel/include -IENS_Cpl -I.  -I/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/nems_dir -c module_NEMS_INTERNAL_STATE.f90
+mpiicc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -D'SVN_INFO="(Samuel.Trahan) Thu Mar  2 22:08:58 UTC 2017 r89074 https://svnemc.ncep.noaa.gov/projects/nems/branches/appify-fv3/src URL:"' -D'CMP_YEAR=2017' -D'CMP_JD=061' module_NEMS_INTERNAL_STATE.F90 > module_NEMS_INTERNAL_STATE.f90
+mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/apps/esmf/7.0.0/intel/intelmpi/mod/modO/Linux.intel.64.intelmpi.default -I/apps/esmf/7.0.0/intel/intelmpi/include -I/apps/netcdf/4.3.0-intel/include -IENS_Cpl -I.  -I/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL -c module_NEMS_INTERNAL_STATE.f90
 rm -f module_NEMS_INTERNAL_STATE.f90
-mpiicc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -D'SVN_INFO="(Samuel.Trahan) Thu Mar  2 21:59:44 UTC 2017 r89074 https://svnemc.ncep.noaa.gov/projects/nems/branches/appify-fv3/src URL:"' -D'CMP_YEAR=2017' -D'CMP_JD=061' module_NEMS_GRID_COMP.F90 > module_NEMS_GRID_COMP.f90
-mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/apps/esmf/7.0.0/intel/intelmpi/mod/modO/Linux.intel.64.intelmpi.default -I/apps/esmf/7.0.0/intel/intelmpi/include -I/apps/netcdf/4.3.0-intel/include -IENS_Cpl -I.  -I/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/nems_dir -c module_NEMS_GRID_COMP.f90
+mpiicc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -D'SVN_INFO="(Samuel.Trahan) Thu Mar  2 22:08:58 UTC 2017 r89074 https://svnemc.ncep.noaa.gov/projects/nems/branches/appify-fv3/src URL:"' -D'CMP_YEAR=2017' -D'CMP_JD=061' module_NEMS_GRID_COMP.F90 > module_NEMS_GRID_COMP.f90
+mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/apps/esmf/7.0.0/intel/intelmpi/mod/modO/Linux.intel.64.intelmpi.default -I/apps/esmf/7.0.0/intel/intelmpi/include -I/apps/netcdf/4.3.0-intel/include -IENS_Cpl -I.  -I/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL -c module_NEMS_GRID_COMP.f90
 rm -f module_NEMS_GRID_COMP.f90
-mpiicc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -D'SVN_INFO="(Samuel.Trahan) Thu Mar  2 21:59:44 UTC 2017 r89074 https://svnemc.ncep.noaa.gov/projects/nems/branches/appify-fv3/src URL:"' -D'CMP_YEAR=2017' -D'CMP_JD=061' module_NEMS_Rusage.F90 > module_NEMS_Rusage.f90
-mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/apps/esmf/7.0.0/intel/intelmpi/mod/modO/Linux.intel.64.intelmpi.default -I/apps/esmf/7.0.0/intel/intelmpi/include -I/apps/netcdf/4.3.0-intel/include -IENS_Cpl -I.  -I/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/nems_dir -c module_NEMS_Rusage.f90
+mpiicc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -D'SVN_INFO="(Samuel.Trahan) Thu Mar  2 22:08:58 UTC 2017 r89074 https://svnemc.ncep.noaa.gov/projects/nems/branches/appify-fv3/src URL:"' -D'CMP_YEAR=2017' -D'CMP_JD=061' module_NEMS_Rusage.F90 > module_NEMS_Rusage.f90
+mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/apps/esmf/7.0.0/intel/intelmpi/mod/modO/Linux.intel.64.intelmpi.default -I/apps/esmf/7.0.0/intel/intelmpi/include -I/apps/netcdf/4.3.0-intel/include -IENS_Cpl -I.  -I/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL -c module_NEMS_Rusage.f90
 rm -f module_NEMS_Rusage.f90
 mpiicc -c nems_c_rusage.c
-mpiicc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -D'SVN_INFO="(Samuel.Trahan) Thu Mar  2 21:59:44 UTC 2017 r89074 https://svnemc.ncep.noaa.gov/projects/nems/branches/appify-fv3/src URL:"' -D'CMP_YEAR=2017' -D'CMP_JD=061' MAIN_NEMS.F90 > MAIN_NEMS.f90
-mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/apps/esmf/7.0.0/intel/intelmpi/mod/modO/Linux.intel.64.intelmpi.default -I/apps/esmf/7.0.0/intel/intelmpi/include -I/apps/netcdf/4.3.0-intel/include -IENS_Cpl -I.  -I/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/nems_dir -c MAIN_NEMS.f90
+mpiicc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -D'SVN_INFO="(Samuel.Trahan) Thu Mar  2 22:08:58 UTC 2017 r89074 https://svnemc.ncep.noaa.gov/projects/nems/branches/appify-fv3/src URL:"' -D'CMP_YEAR=2017' -D'CMP_JD=061' MAIN_NEMS.F90 > MAIN_NEMS.f90
+mpiifort -I/apps/netcdf/4.3.0-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/apps/esmf/7.0.0/intel/intelmpi/mod/modO/Linux.intel.64.intelmpi.default -I/apps/esmf/7.0.0/intel/intelmpi/include -I/apps/netcdf/4.3.0-intel/include -IENS_Cpl -I.  -I/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL -c MAIN_NEMS.f90
 rm -f MAIN_NEMS.f90
 echo libgocart is 
 libgocart is
 echo extlibs is /scratch3/NCEPDEV/nwprod/lib/bacio/v2.0.1/libbacio_v2.0.1_4.a /scratch3/NCEPDEV/nwprod/lib/sp/v2.0.2/libsp_v2.0.2_d.a /scratch3/NCEPDEV/nwprod/lib/w3emc/v2.0.5/libw3emc_v2.0.5_d.a /scratch3/NCEPDEV/nwprod/lib/w3nco/v2.0.6/libw3nco_v2.0.6_d.a -L/apps/esmf/7.0.0/intel/intelmpi/lib/libO/Linux.intel.64.intelmpi.default -lesmf  -ldl -lrt -lpthread -limf -lsvml -lirng -lm -lipgo -ldecimal -liomp5 -lcilkrts -lstdc++ -lgcc -lgcc_s -lirc -lpthread -lsvml -lgcc -lgcc_s -lirc_s -ldl -lrt -ldl -lnetcdff -lnetcdf  -qopenmp  -L/apps/netcdf/4.3.0-intel/lib -lnetcdff -lnetcdf
 extlibs is /scratch3/NCEPDEV/nwprod/lib/bacio/v2.0.1/libbacio_v2.0.1_4.a /scratch3/NCEPDEV/nwprod/lib/sp/v2.0.2/libsp_v2.0.2_d.a /scratch3/NCEPDEV/nwprod/lib/w3emc/v2.0.5/libw3emc_v2.0.5_d.a /scratch3/NCEPDEV/nwprod/lib/w3nco/v2.0.6/libw3nco_v2.0.6_d.a -L/apps/esmf/7.0.0/intel/intelmpi/lib/libO/Linux.intel.64.intelmpi.default -lesmf -ldl -lrt -lpthread -limf -lsvml -lirng -lm -lipgo -ldecimal -liomp5 -lcilkrts -lstdc++ -lgcc -lgcc_s -lirc -lpthread -lsvml -lgcc -lgcc_s -lirc_s -ldl -lrt -ldl -lnetcdff -lnetcdf -qopenmp -L/apps/netcdf/4.3.0-intel/lib -lnetcdff -lnetcdf
-mpiifort  -o ../exe/NEMS.x MAIN_NEMS.o module_NEMS_UTILS.o module_MEDIATOR_methods.o module_MEDIATOR.o module_MEDIATOR_SpaceWeather.o module_EARTH_INTERNAL_STATE.o module_EARTH_GRID_COMP.o module_NEMS_INTERNAL_STATE.o module_NEMS_GRID_COMP.o module_NEMS_Rusage.o nems_c_rusage.o  /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/nems_dir/libfv3cap.a /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/nems_dir/libfv3core.a /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/nems_dir/libgfsphys.a /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/nems_dir/libfms.a ENS_Cpl/ENS_Cpl.a /scratch3/NCEPDEV/nwprod/lib/bacio/v2.0.1/libbacio_v2.0.1_4.a /scratch3/NCEPDEV/nwprod/lib/sp/v2.0.2/libsp_v2.0.2_d.a /scratch3/NCEPDEV/nwprod/lib/w3emc/v2.0.5/libw3emc_v2.0.5_d.a /scratch3/NCEPDEV/nwprod/lib/w3nco/v2.0.6/libw3nco_v2.0.6_d.a -L/apps/esmf/7.0.0/intel/intelmpi/lib/libO/Linux.intel.64.intelmpi.default -lesmf  -ldl -lrt -lpthread -limf -lsvml -lirng -lm -lipgo -ldecimal -liomp5 -lcilkrts -lstdc++ -lgcc -lgcc_s -lirc -lpthread -lsvml -lgcc -lgcc_s -lirc_s -ldl -lrt -ldl -lnetcdff -lnetcdf  -qopenmp  -L/apps/netcdf/4.3.0-intel/lib -lnetcdff -lnetcdf 
+mpiifort  -o ../exe/NEMS.x MAIN_NEMS.o module_NEMS_UTILS.o module_MEDIATOR_methods.o module_MEDIATOR.o module_MEDIATOR_SpaceWeather.o module_EARTH_INTERNAL_STATE.o module_EARTH_GRID_COMP.o module_NEMS_INTERNAL_STATE.o module_NEMS_GRID_COMP.o module_NEMS_Rusage.o nems_c_rusage.o  /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL/libfv3cap.a /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL/libfv3core.a /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL/libgfsphys.a /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/FV3_INSTALL/libfms.a ENS_Cpl/ENS_Cpl.a /scratch3/NCEPDEV/nwprod/lib/bacio/v2.0.1/libbacio_v2.0.1_4.a /scratch3/NCEPDEV/nwprod/lib/sp/v2.0.2/libsp_v2.0.2_d.a /scratch3/NCEPDEV/nwprod/lib/w3emc/v2.0.5/libw3emc_v2.0.5_d.a /scratch3/NCEPDEV/nwprod/lib/w3nco/v2.0.6/libw3nco_v2.0.6_d.a -L/apps/esmf/7.0.0/intel/intelmpi/lib/libO/Linux.intel.64.intelmpi.default -lesmf  -ldl -lrt -lpthread -limf -lsvml -lirng -lm -lipgo -ldecimal -liomp5 -lcilkrts -lstdc++ -lgcc -lgcc_s -lirc -lpthread -lsvml -lgcc -lgcc_s -lirc_s -ldl -lrt -ldl -lnetcdff -lnetcdf  -qopenmp  -L/apps/netcdf/4.3.0-intel/lib -lnetcdff -lnetcdf 
 ../exe/NEMS.x is created.
-+ cp ../exe/NEMS.x /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/../tests/fv3.exe
-+ cp /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/../NEMS/src/conf/modules.nems /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/../tests/modules.fv3
-+ gmake clean
-rm -f -f *.f90 *.lst *.o *.mod lm map ../exe/NEMS.x
-cd ENS_Cpl             && gmake clean
-gmake[1]: Entering directory `/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/ENS_Cpl'
-rm -f -f ENS_Cpl.a *.f90 *.o *.mod *.lst lm map depend
-gmake[1]: Leaving directory `/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src/ENS_Cpl'
-+ cd /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3
-+ gmake cleanall
-Cleaning ... 
-
-(cd fms            && make clean)
-
-Build standalone FV3 fms ...
-
-make[1]: Entering directory `/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/fms'
-Cleaning fms ... 
-
-rm -f -f libfms.a *__genmod.f90 *.o */*.o *.mod *.lst *.i depend
-make[1]: Leaving directory `/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/fms'
-(cd gfsphys        && make clean)
-
-Build standalone FV3 gfsphys ...
-
-make[1]: Entering directory `/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/gfsphys'
-Cleaning gfsphys ... 
-
-rm -f -f libgfsphys.a *__genmod.f90 *.o */*.o *.mod *.lst *.i depend
-make[1]: Leaving directory `/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/gfsphys'
-(cd fv3core        && make clean)
-
-Build standalone FV3 fv3core ...
-
-make[1]: Entering directory `/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/fv3core'
-Cleaning fv3core ... 
-
-rm -f -f libfv3core.a *__genmod.f90 *.o */*.o */*/*.o *.mod *.lst *.i depend
-make[1]: Leaving directory `/scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/fv3core'
-rm -f -f fv3.exe libfv3cap.a *.o *.mod *.lst depend
-rm -f -rf nems_dir fv3.mk FV3_INSTALL
-rm -f -f conf/modules.fv3
-rm -f -f conf/configure.fv3
-+ rm -rf FV3_INSTALL
-+ rm -rf nems_dir
-+ find /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/FV3/fms/ -name '*.o' -o -name '*.mod'
-+ elapsed=464
-+ echo 'Elapsed time 464 seconds. Compiling   finished'
-Elapsed time 464 seconds. Compiling   finished
-+ mkdir -p /scratch4/NCEPDEV/stmp4/Samuel.Trahan/rtgen.88842/exec /scratch4/NCEPDEV/stmp4/Samuel.Trahan/rtgen.88842/include
-+ cp -fp ./fv3.exe /scratch4/NCEPDEV/stmp4/Samuel.Trahan/rtgen.88842/exec/fv3.exe
-+ cp -fp ./modules.fv3 /scratch4/NCEPDEV/stmp4/Samuel.Trahan/rtgen.88842/include/modules.fv3
-+ md5sum ./fv3.exe
-+ unset modules
-+ unset BUILD_NR
-+ unset fv3
-+ unset MAKE_OPTS
-+ unset md5
++ set +x
+NOTE: Success!
++ cd /scratch4/NCEPDEV/nems/save/Samuel.Trahan/appify/NEMS/src
++ cp -fp ../exe/NEMS.x /scratch4/NCEPDEV/stmp4/Samuel.Trahan/rtgen.88842/exec/fv3_appbuilder.exe
++ cp -fp conf/modules.nems /scratch4/NCEPDEV/stmp4/Samuel.Trahan/rtgen.88842/include/modules_appbuilder.fv3
++ md5sum /scratch4/NCEPDEV/stmp4/Samuel.Trahan/rtgen.88842/exec/fv3_appbuilder.exe
++ unset md5sum
++ unset OPTS
 + set -xe
 + set -xe
-+ test -s /scratch4/NCEPDEV/stmp4/Samuel.Trahan/rtgen.88842/exec/fv3.exe
-+ test -x /scratch4/NCEPDEV/stmp4/Samuel.Trahan/rtgen.88842/exec/fv3.exe
++ test -s /scratch4/NCEPDEV/stmp4/Samuel.Trahan/rtgen.88842/exec/fv3_appbuilder.exe
++ test -x /scratch4/NCEPDEV/stmp4/Samuel.Trahan/rtgen.88842/exec/fv3_appbuilder.exe
 _______________________________________________________________
-Start Epilogue v3.4-ad-2016.08.08 Thu Mar  2 22:00:23 UTC 2017 
-Job 19227285.bqs3 finished for user Samuel.Trahan in queue service with exit code 0
+Start Epilogue v3.4-ad-2016.08.08 Thu Mar  2 22:09:43 UTC 2017 
+Job 19227963.bqs3 finished for user Samuel.Trahan in queue service with exit code 0
 Node Access Status = SHARED
 No OOM errors or BUG(s) found. Node OK.
-Statistics  cput=00:12:33,energy_used=0,mem=655896kb,vmem=3694160kb,walltime=00:07:44
-End Epilogue v3.1-ad-2016.04.05 Thu Mar  2 22:00:23 UTC 2017
+Statistics  cput=00:12:25,energy_used=0,mem=658260kb,vmem=3930416kb,walltime=00:07:56
+End Epilogue v3.1-ad-2016.04.05 Thu Mar  2 22:09:43 UTC 2017
 _______________________________________________________________
