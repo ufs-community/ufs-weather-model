@@ -41,7 +41,7 @@ trap '{ echo "rt.sh error on line $LINENO"; rt_trap ; }' ERR
 trap '{ echo "rt.sh finished"; cleanup ; }' EXIT
 
 # PATHRT - Path to regression tests directory
-readonly PATHRT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+readonly PATHRT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P )"
 cd ${PATHRT}
 
 # PATHTR - Path to nmmb trunk directory
@@ -61,7 +61,8 @@ source rt_utils.sh
 
 if [[ $MACHINE_ID = wcoss ]]; then
 
-  source /usrx/local/Modules/default/init/sh
+  source $PATHTR/NEMS/src/conf/module-setup.sh.inc
+
   set +u
   source /usrx/local/ecflow/setup.sh
   ECFLOW_START=/usrx/local/ecflow/bin/ecflow_start.sh
@@ -80,7 +81,8 @@ if [[ $MACHINE_ID = wcoss ]]; then
 
 elif [[ $MACHINE_ID = wcoss_cray ]]; then
 
-  source /opt/modules/default/init/sh
+  source $PATHTR/NEMS/src/conf/module-setup.sh.inc
+
   export PATH=/gpfs/hps/nco/ops/ecf/ecfdir/ecflow.v4.1.0.intel/bin:$PATH
   export PYTHONPATH=/gpfs/hps/nco/ops/ecf/ecfdir/ecflow.v4.1.0.intel/lib/python2.6/site-packages
   ECFLOW_START=/gpfs/hps/nco/ops/ecf/ecfdir/ecflow.v4.1.0.intel/bin/ecflow_start.sh
@@ -96,7 +98,8 @@ elif [[ $MACHINE_ID = wcoss_cray ]]; then
 
 elif [[ $MACHINE_ID = theia ]]; then
 
-  source /apps/lmod/lmod/init/sh
+  source $PATHTR/NEMS/src/conf/module-setup.sh.inc
+
   module load rocoto
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
