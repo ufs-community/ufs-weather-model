@@ -7,7 +7,6 @@ load 'nemscommon.input'
 
 embed bash fv3_prep(RUNDIR,modules,CNTL) [[[
         mkdir -p "$RUNDIR" "$CNTL"
-        mkdir -p "@[plat%EXECrt]" "@[plat%INCrt]"
         cd @[RUNDIR]
 
         set +e
@@ -35,6 +34,7 @@ embed bash compile.sh(MAKE_OPTS=' ',BUILD_NR='',fv3,modules) [[[
 	./compile.sh "@[plat%HOMEnems]/FV3" \
 	    $( echo @[plat%MACHINE_ID] | sed 's,\.,_,g' ) \
 	    @[MAKE_OPTS] $BUILD_NR
+        mkdir -p "@[plat%EXECrt]" "@[plat%INCrt]"
 	cp -fp ./fv3.exe @[fv3]
 	cp -fp ./modules.fv3 @[modules]
 ]]]
