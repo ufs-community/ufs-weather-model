@@ -82,6 +82,7 @@ if [[ $MACHINE_ID = wcoss ]]; then
 elif [[ $MACHINE_ID = wcoss_cray ]]; then
 
   source $PATHTR/NEMS/src/conf/module-setup.sh.inc
+  module load xt-lsfhpc
 
   export PATH=/gpfs/hps/nco/ops/ecf/ecfdir/ecflow.v4.1.0.intel/bin:$PATH
   export PYTHONPATH=/gpfs/hps/nco/ops/ecf/ecfdir/ecflow.v4.1.0.intel/lib/python2.6/site-packages
