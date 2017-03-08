@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu
+set -eux
 
 hostname
 
@@ -41,7 +41,7 @@ trap '{ echo "rt.sh error on line $LINENO"; rt_trap ; }' ERR
 trap '{ echo "rt.sh finished"; cleanup ; }' EXIT
 
 # PATHRT - Path to regression tests directory
-readonly PATHRT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+readonly PATHRT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P )"
 cd ${PATHRT}
 
 # PATHTR - Path to nmmb trunk directory
@@ -61,7 +61,8 @@ source rt_utils.sh
 
 if [[ $MACHINE_ID = wcoss ]]; then
 
-  source /usrx/local/Modules/default/init/sh
+  source $PATHTR/NEMS/src/conf/module-setup.sh.inc
+
   set +u
   source /usrx/local/ecflow/setup.sh
   ECFLOW_START=/usrx/local/ecflow/bin/ecflow_start.sh
@@ -80,11 +81,13 @@ if [[ $MACHINE_ID = wcoss ]]; then
 
 elif [[ $MACHINE_ID = wcoss_cray ]]; then
 
-  source /opt/modules/default/init/sh
+  source $PATHTR/NEMS/src/conf/module-setup.sh.inc
+  module load xt-lsfhpc
+
   export PATH=/gpfs/hps/nco/ops/ecf/ecfdir/ecflow.v4.1.0.intel/bin:$PATH
   export PYTHONPATH=/gpfs/hps/nco/ops/ecf/ecfdir/ecflow.v4.1.0.intel/lib/python2.6/site-packages
   ECFLOW_START=/gpfs/hps/nco/ops/ecf/ecfdir/ecflow.v4.1.0.intel/bin/ecflow_start.sh
-  DISKNM=/gpfs/hps/emc/global
+  DISKNM=/gpfs/hps/emc/nems/noscrub/emc.nemspara/RT
   QUEUE=debug
   ACCNR=dev
   STMP=/gpfs/hps/stmp
@@ -96,7 +99,8 @@ elif [[ $MACHINE_ID = wcoss_cray ]]; then
 
 elif [[ $MACHINE_ID = theia ]]; then
 
-  source /apps/lmod/lmod/init/sh
+  source $PATHTR/NEMS/src/conf/module-setup.sh.inc
+
   module load rocoto
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
@@ -105,7 +109,7 @@ elif [[ $MACHINE_ID = theia ]]; then
   ECFLOW_START=/scratch4/NCEPDEV/meso/save/Dusan.Jovic/ecflow/bin/ecflow_start.sh
   QUEUE=debug
   dprefix=/scratch4/NCEPDEV
-  DISKNM=$dprefix/nems
+  DISKNM=$dprefix/nems/noscrub/emc.nemspara/RT
   STMP=$dprefix/stmp4
   PTMP=$dprefix/stmp3
   SCHEDULER=pbs
@@ -173,7 +177,7 @@ while getopts ":cfsl:mreh" opt; do
   esac
 done
 
-RTPWD=${RTPWD:-${DISKNM}/noscrub/Jun.Wang/FV3_RT/REGRESSION_TEST}
+RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/trunk-20170307}
 
 shift $((OPTIND-1))
 [[ $# -gt 0 ]] && usage
@@ -182,10 +186,10 @@ if [[ $CREATE_BASELINE == true ]]; then
   #
   # prepare new regression test directory
   #
-  rm -rf ${NEW_BASELINE}
-  mkdir -p $( dirname ${NEW_BASELINE} )
+  rm -rf "${NEW_BASELINE}"
+  mkdir -p "${NEW_BASELINE}"
   echo "copy REGRESSION_TEST_baselines"
-  cp -r ${DISKNM}/noscrub/Jun.Wang/FV3_RT/REGRESSION_TEST_ICs ${NEW_BASELINE}
+  cp -r "$RTPWD" "$NEW_BASELINE"
 
 fi
 
@@ -289,6 +293,7 @@ while read -r line; do
 
   if [[ $line == COMPILE* ]] ; then
 
+      unset APP
       NEMS_VER=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
       SET=$(     echo $line | cut -d'|' -f3)
       MACHINES=$(echo $line | cut -d'|' -f4 | sed -e 's/^ *//' -e 's/ *$//')
@@ -309,6 +314,33 @@ while read -r line; do
       fi
 
     continue
+
+  elif [[ $line == APPBUILD* ]] ; then
+
+      unset NEMS_VER
+      APP=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
+      SET=$(     echo $line | cut -d'|' -f3)
+      MACHINES=$(echo $line | cut -d'|' -f4 | sed -e 's/^ *//' -e 's/ *$//')
+
+      [[ $SET_ID != ' ' && $SET != *${SET_ID}* ]] && continue
+      [[ $MACHINES != ' ' && $MACHINES != "${MACHINE_ID}" ]] && continue
+
+      COMPILE_NR_DEP=${COMPILE_NR}
+      (( COMPILE_NR += 1 ))
+
+      if [[ $ROCOTO == true ]]; then
+        rocoto_create_compile_task
+      elif [[ $ECFLOW == true ]]; then
+        ecflow_create_compile_task
+      else
+          echo test  > "${LOG_DIR}/compile_${COMPILE_NR}.log" 2>&1
+          test -s ./appbuild.sh
+          test -x ./appbuild.sh
+        ./appbuild.sh "$PATHTR/FV3" "$APP" "$COMPILE_NR" 2>&1 | tee "${LOG_DIR}/compile_${COMPILE_NR}.log"
+        echo " bash NEMSAppBuilder is done"
+      fi
+
+      unset APP
 
   elif [[ $line == RUN* ]] ; then
 
@@ -389,6 +421,7 @@ fi
 ##
 ## regression test is either failed or successful
 ##
+set +e
 cat ${LOG_DIR}/compile_*.log                   >  ${COMPILE_LOG}
 cat ${LOG_DIR}/rt_*.log                        >> ${REGRESSIONTEST_LOG}
 if [[ -e fail_test ]]; then

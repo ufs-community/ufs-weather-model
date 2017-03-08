@@ -265,11 +265,18 @@ rocoto_create_compile_task() {
     in_metatask=false
     echo "  </metatask>" >> $ROCOTO_XML
   fi
+
+  if [[ "Q$APP" != Q ]] ; then
+      rocoto_cmd="&PATHRT;/appbuild.sh &PATHTR; $APP $COMPILE_NR"
+  else
+      rocoto_cmd='&PATHRT;/compile.sh &PATHTR; $MACHINE_ID "${NEMS_VER}" $COMPILE_NR'
+  fi
+
   if [[ ${COMPILE_NR_DEP} -gt 0 ]]; then
     cat << EOF >> $ROCOTO_XML
   <task name="compile_${COMPILE_NR}" maxtries="1">
     <dependency> <taskdep task="compile_${COMPILE_NR_DEP}"/> </dependency>
-    <command>&PATHRT;/compile.sh &PATHTR; $MACHINE_ID "${NEMS_VER}" $COMPILE_NR</command>
+    <command>$rocoto_cmd</command>
     <jobname>compile_${COMPILE_NR}</jobname>
     <account>${ACCNR}</account>
     <queue>${COMPILE_QUEUE}</queue>
@@ -283,7 +290,7 @@ EOF
   else
     cat << EOF >> $ROCOTO_XML
   <task name="compile_${COMPILE_NR}" maxtries="1">
-    <command>&PATHRT;/compile.sh &PATHTR; $MACHINE_ID "${NEMS_VER}" $COMPILE_NR</command>
+    <command>$rocoto_cmd</command>
     <jobname>compile_${COMPILE_NR}</jobname>
     <account>${ACCNR}</account>
     <queue>${COMPILE_QUEUE}</queue>
@@ -351,6 +358,13 @@ rocoto_run() {
 ecflow_create_compile_task() {
 
   new_compile=true
+
+  if [[ "Q$APP" != Q ]] ; then
+      ecflow_cmd="$PATHRT/appbuild.sh $PATHTR $APP $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1"
+  else
+      ecflow_cmd="$PATHRT/compile.sh $PATHTR $MACHINE_ID \"${NEMS_VER}\" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1"
+  fi
+
   cat << EOF > ${ECFLOW_RUN}/regtest/compile_${COMPILE_NR}.ecf
 %include <head.h>
 $PATHRT/compile.sh $PATHTR $MACHINE_ID "${NEMS_VER}" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1

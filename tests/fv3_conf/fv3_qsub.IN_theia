@@ -11,8 +11,9 @@
 set -eux
 
 set +x
-source /apps/lmod/lmod/init/sh
-source ./modules.fv3
+source ./module-setup.sh
+module use $( pwd -P )
+module load modules.fv3
 module list
 set -x
 

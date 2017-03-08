@@ -1,0 +1,36 @@
+
+# NEMS mediator variables.  These are not used yet because the values
+# are hard-coded in model.configure.  This block is a placeholder for
+# future coupling support:
+nems_vars={
+    atm_model='none'
+    atm_petlist_bounds="-1 -1"
+    ocn_model='none'
+    ocn_petlist_bounds="-1 -1"
+    ice_model='none'
+    ice_petlist_bounds="-1 -1"
+    med_model='nems'
+    med_petlist_bounds="-1 -1"
+    med_atm_coupling_interval_sec='-1'
+    med_ocn_coupling_interval_sec='-1'
+}
+
+########################################################################
+
+# NEMSAppBuilder build system.  Note $OPTS must use $ not @ since
+# shell metacharacters should be expanded, especially spaces.
+
+embed bash NEMSAppBuilder(NEMS.x,modules.nems,OPTS,md5sum)
+[[[
+        mkdir -p "@[plat%EXECrt]" "@[plat%INCrt]"
+        rm -f "@[NEMS.x]" "@[modules.nems]"
+        cd @[plat%HOMEnems]
+
+        # NOTE: Replace "rebuild" with "norebuild" to disable "gmake clean"
+        ./NEMS/NEMSAppBuilder rebuild $OPTS
+
+        cd @[plat%SRCnems]
+        cp -fp ../exe/NEMS.x "@[NEMS.x]"
+        cp -fp conf/modules.nems "@[modules.nems]"
+        md5sum "@[NEMS.x]" > "@[md5sum]"
+]]]
