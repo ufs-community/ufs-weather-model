@@ -97,28 +97,28 @@ endif
 FFLAGS += -axavx 
 CFLAGS += -axavx 
 
-FFLAGS_OPT = -O2 -debug minimal -fp-model source
-FFLAGS_REPRO = -O2 -debug minimal -fp-model source -g -traceback
+FFLAGS_OPT = -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3
+FFLAGS_REPRO = -O2 -debug minimal -fp-model source -qoverride-limits -g -traceback
 FFLAGS_DEBUG = -g -O0 -check -check noarg_temp_created -check nopointer -warn -warn noerrors -fp-stack-check -fstack-protector-all -fpe0 -debug -traceback -ftrapuv
 
 TRANSCENDENTALS := -fast-transcendentals
-FFLAGS_OPENMP = -openmp
+FFLAGS_OPENMP = -qopenmp
 FFLAGS_VERBOSE = -v -V -what
 
 CFLAGS += -D__IFC -sox -fp-model source
 
 CFLAGS_OPT = -O2 -debug minimal
 CFLAGS_REPRO = -O2 -debug minimal
-CFLAGS_OPENMP = -openmp
+CFLAGS_OPENMP = -qopenmp
 CFLAGS_DEBUG = -O0 -g -ftrapuv -traceback
 
 # Optional Testing compile flags.  Mutually exclusive from DEBUG, REPRO, and OPT
 # *_TEST will match the production if no new option(s) is(are) to be tested.
-FFLAGS_TEST = -O3 -debug minimal -fp-model source 
+FFLAGS_TEST = -O3 -debug minimal -fp-model source -qoverride-limits
 CFLAGS_TEST = -O2
 
 LDFLAGS :=
-LDFLAGS_OPENMP := -openmp
+LDFLAGS_OPENMP := -qopenmp
 LDFLAGS_VERBOSE := -Wl,-V,--verbose,-cref,-M
 
 # start with blank LIBS
