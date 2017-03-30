@@ -24,6 +24,90 @@ platform.defaults={
     BASELINE="@[INPUTS]" # Baseline input or output directory
 }
 
+########################################################################
+
+jet.common= {
+    use platform.defaults
+    MACHINE_ID='jet'
+    HOMEnems=PWD_UP5
+    HOMErt=OUTPUT_PATH
+    BASELINE="/lfs3/projects/hfv3gfs/emc.nemspara/RT/NEMSfv3gfs/trunk-20170307/data"
+    BASELINE_TEMPLATE="/lfs3/projects/hfv3gfs/emc.nemspara/RT/NEMSfv3gfs/trunk-20170307/data"
+    INPUTS="@[BASELINE]"
+
+    embed bash detect [[[
+        if [[ -d /lfs3 && -d /pan2 ]] ; then
+            exit 0
+        fi
+        exit 1
+    ]]]
+}
+
+platform xjet {
+    use jet.common
+    PARTITION='xjet'
+    cores_per_node=24
+    MPI='mvapich2'
+    SHORT_TEST_QUEUE='&SHORTQ;'
+    LONG_TEST_QUEUE='&LONGQ;'
+    BUILD_QUEUE='&BUILDQ;'
+
+    default_resources={
+        TASKS=144
+        TPN=12
+        INPES=3
+        JNPES=8
+        THRD=1
+    }
+    default_threaded_resources={
+        TASKS=72
+        TPN=6
+        INPES=3
+        JNPES=4
+        THRD=2
+    }
+
+    embed bash detect [[[
+        # This function is used at PARSE TIME to detect whether we are
+        # on Jet.  It must be very fast and low resource usage since
+        # the parser runs it.
+        if [[ -d /lfs3 && -d /pan2 ]] ; then
+            exit 0
+        fi
+        exit 1
+    ]]]
+
+    rocoto={
+        install_dir="@[HOMErt]"
+        log_dir="@[TMPrt]/log"
+        scheduler="moabtorque"
+        entities=[[[
+  <!ENTITY SHORTQ "batch">
+  <!ENTITY LONGQ "batch">
+  <!ENTITY BUILDQ "service">
+]]]
+        build_resources=[[[
+      <!-- Build job resources minus wallclock -->
+      <queue>@[BUILD_QUEUE]</queue>
+      <memory>4G</memory>
+      <cores>1</cores>
+      <native>-l partition=service</native>
+]]]
+        short_test_resources=[[[
+    <!-- Short test job -->
+    <queue>@[SHORT_TEST_QUEUE]</queue>
+    <native>-l partition=@[PARTITION]</native>
+    <memory></memory> <!-- Unlimited memory -->
+]]]
+        long_test_resources=[[[
+    <!-- Long test job -->
+    <queue>@[LONG_TEST_QUEUE]</queue>
+    <native>-l partition=@[PARTITION]</native>
+    <memory></memory> <!-- Unlimited memory -->
+]]]
+    }
+}
+
 
 ########################################################################
 
@@ -45,7 +129,7 @@ platform wcoss.phase2 {
     use wcoss.common
     CPU_ACCOUNT='GFS-T2O'
     pex='1'
-    cores_per_node=32
+    cores_per_node='32'
     MPI='LSF'
     SHORT_TEST_QUEUE='&SHORTQ;'
     LONG_TEST_QUEUE='&LONGQ;'
@@ -60,16 +144,8 @@ platform wcoss.phase2 {
     }
 
     embed bash detect [[[
-        # This function is used at PARSE TIME to detect whether we are
-        # on WCOSS Phase 2.  It must be very fast and low resource
-        # usage since the parser runs it.
-        if [[ -d /usrx && -d /global && -e /etc/redhat-release && \
-              -e /etc/prod ]] ; then
-            # We are on WCOSS Phase 1 or 2.
-            if ( cat /proc/cpuinfo |grep 'processor.*32' ) ; then
-                # More than 32 fake (hyperthreading) cpus, so Phase 0.
-                exit 0
-            fi
+        if [[ -d /ptmpp1 && -f /etc/redhat-release && -d /usrx/local ]] ; then
+            exit 0
         fi
         exit 1
     ]]]
@@ -265,4 +341,4 @@ platform theia {
 # Autodetection of available platforms.  Calls the "detect" function
 # from each of the listed platforms.
 
-autodetect plat (/ wcoss.cray, theia /)
+autodetect plat (/ xjet, wcoss.cray, theia /)
