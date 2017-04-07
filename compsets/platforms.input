@@ -193,6 +193,9 @@ platform wcoss.cray {
     LONG_TEST_QUEUE='&LONGQ;'
     BUILD_QUEUE='&BUILDQ;'
 
+    TASK_THROTTLE='1'
+    BUILD_WALLTIME="1800"
+
     BASELINE="/gpfs/hps/emc/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20170316"
     BASELINE_TEMPLATE="/gpfs/hps/emc/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20170316"
 
@@ -227,16 +230,15 @@ platform wcoss.cray {
         log_dir="@[TMPrt]/log"
         scheduler="lsfcray"
         entities=[[[
-  <!ENTITY SHORTQ "dev">
+  <!ENTITY SHORTQ "debug">
   <!ENTITY LONGQ "dev">
-  <!ENTITY BUILDQ "dev_shared">
+  <!ENTITY BUILDQ "debug">
 ]]]
         build_resources=[[[
       <!-- Build job resources minus wallclock -->
       <queue>@[BUILD_QUEUE]</queue>
       <cores>1</cores>
       <shared></shared>
-      <memory>4G</memory>
 ]]]
         short_test_resources=[[[
     <!-- Short test job -->

@@ -31,9 +31,16 @@ embed bash compile.sh(MAKE_OPTS=' ',BUILD_NR='',fv3,modules,md5) [[[
 	# Run the compile.sh.  Convert wcoss.cray to wcoss_cray to
 	# make the FV3 happy.
 	rm -f @[fv3] @[modules]
-	./compile.sh "@[plat%HOMEnems]/FV3" \
-	    $( echo @[plat%MACHINE_ID] | sed 's,\.,_,g' ) \
-	    @[MAKE_OPTS] @[BUILD_NR]
+        if ( which aprun ) && [[ @[plat%PLATFORM_NAME] == wcoss.cray ]] ; then
+       	    aprun -n 1 -j 1 -N 1 -d 24 \
+		./compile.sh "@[plat%HOMEnems]/FV3" \
+		$( echo @[plat%MACHINE_ID] | sed 's,\.,_,g' ) \
+		@[MAKE_OPTS] @[BUILD_NR]
+	else
+	    ./compile.sh "@[plat%HOMEnems]/FV3" \
+		$( echo @[plat%MACHINE_ID] | sed 's,\.,_,g' ) \
+		@[MAKE_OPTS] @[BUILD_NR]
+	fi
         mkdir -p "@[plat%EXECrt]" "@[plat%INCrt]"
 	cp -fp ./fv3.exe @[fv3]
 	cp -fp ./modules.fv3 @[modules]
