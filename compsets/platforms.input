@@ -157,12 +157,15 @@ platform wcoss.cray {
   <!ENTITY SHORTQ "debug">
   <!ENTITY LONGQ "dev">
   <!ENTITY BUILDQ "debug">
+  <!-- NOTE: If you change the build queue to shared, you will need
+       to edit the build_resources to have one core and use the
+       <shared></shared> tag instead of <exclusive></exclusive>. -->
 ]]]
         build_resources=[[[
       <!-- Build job resources minus wallclock -->
       <queue>@[BUILD_QUEUE]</queue>
-      <cores>1</cores>
-      <shared></shared>
+      <cores>24</cores>
+      <exclusive></exclusive>
 ]]]
         short_test_resources=[[[
     <!-- Short test job -->
