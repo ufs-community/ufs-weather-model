@@ -120,8 +120,8 @@ platform wcoss.cray {
     TASK_THROTTLE='1'
     BUILD_WALLTIME="1800"
 
-    BASELINE="/gpfs/hps/emc/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20170316"
-    BASELINE_TEMPLATE="/gpfs/hps/emc/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20170316"
+    BASELINE="/gpfs/hps/emc/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/nesttest"
+    BASELINE_TEMPLATE="/gpfs/hps/emc/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/nesttest"
 
     default_resources={
         TASKS=144
@@ -130,12 +130,16 @@ platform wcoss.cray {
         JNPES=8
         THRD=1
     }
-    default_nested_resources={
-        TASKS=96
+    default_stretched_resources={
+        TASKS=48
         TPN=12
         INPES=2
         JNPES=4
         THRD=2
+    }
+    default_nested_resources={
+	use default_stretched_resources
+        TASKS=96
     }
     default_threaded_resources={
         TASKS=72
