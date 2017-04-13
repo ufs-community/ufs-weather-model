@@ -1,0 +1,249 @@
+ &amip_interp_nml
+     interp_oi_sst = .true.
+     use_ncep_sst = .true.
+     use_ncep_ice = .false.
+     no_anom_sst = .false.
+     data_set = 'reynolds_oi',
+     date_out_of_range = 'climo',
+/
+
+ &atmos_model_nml
+     blocksize = 32
+     chksum_debug = .false.
+     dycore_only = .false.
+/
+
+&diag_manager_nml
+!conserve_water = .false.
+           prepend_date = .F.
+/
+
+ &fms_io_nml
+       checksum_required   = .false.
+       max_files_r = 100,
+       max_files_w = 100,
+/
+
+ &fms_nml
+       clock_grain = 'ROUTINE',
+       domains_stack_size = 115200,
+       print_memory_usage = .F.
+/
+
+ &fv_grid_nml
+       !grid_file = 'INPUT/grid_spec.nc'
+/
+
+ &fv_core_nml
+       layout   = @[INPES_NEST],@[JNPES_NEST]
+       io_layout = 1,1
+       npx      = 97
+       npy      = 97
+       ntiles   = 6,
+       npz    = 63
+       !grid_type = -1
+       make_nh = .F. ! .T.
+       fv_debug = .F.
+       range_warn = .F.
+       reset_eta = .F.
+       n_sponge = 20
+       tau = 3.
+       rf_cutoff = 10.e2
+       d2_bg_k1 = 0.16
+       d2_bg_k2 = 0.02
+       kord_tm = -10
+       kord_mt =  10
+       kord_wz =  10
+       kord_tr =  10
+       hydrostatic = .F.
+       phys_hydrostatic = .F.
+       use_hydro_pressure = .F.
+       beta = 0.
+       a_imp = 1.
+       p_fac = 0.1
+       k_split  = 2
+       n_split  = 6
+       nwat = 2
+       na_init = @[NA_INIT]
+       d_ext = 0.0
+       dnats = 0
+       fv_sg_adj = 450
+       d2_bg = 0.
+       nord =  3
+       dddmp = 0.1
+       d4_bg = 0.08
+       vtdm4 = 0.0
+       ke_bg = 0.
+       do_vort_damp = .T.
+       external_ic = .T.
+       gfs_phil = .false.
+       nggps_ic = @[NGGPS_IC]
+       mountain = @[MOUNTAIN]
+       ncep_ic = .F.
+       d_con = 1.0
+       hord_mt = 6
+       hord_vt = -5
+       hord_tm = -5
+       hord_dp = -5
+       hord_tr = -8
+       adjust_dry_mass = .F.
+       consv_te = 0.
+       do_sat_adj = .F.
+       consv_am = .F.
+       fill = .T.
+       dwind_2d = .F.
+       print_freq = 6
+       warm_start = @[WARM_START]
+       no_dycore = .false.
+
+       nested = .true.
+       twowaynest = .true.
+       parent_grid_num = 1
+       parent_tile = 6
+       refinement = 3
+       ioffset = 14
+       joffset = 19
+       nestupdate = 7
+
+       !full_zs_filter = .T. !unreleased feature
+
+       nord_zs_filter = 4
+       n_zs_filter = 1 ! safety
+/
+
+&nest_nml
+    ntiles = 2
+    nest_pes = 48,48
+    p_split = 1
+/
+
+&surf_map_nml
+    zero_ocean = .F.
+    cd4 = 0.12
+    cd2 = -1
+    n_del2_strong = 0
+    n_del2_weak = 2
+    n_del4 = 1
+    max_slope = 0.4
+    peak_fac = 1.
+/
+
+
+
+# &coupler_nml
+#       months = 0
+#       days  = 2
+#       hours = 0
+#       seconds = 0
+#       dt_atmos = 450
+#       dt_ocean = 450
+#       current_date =  2017,03,01,00,0,0
+#       calendar = 'julian'
+#       memuse_verbose = .false.
+#       atmos_nthreads = 2
+#       use_hyper_thread = .false.
+#       ncores_per_node = 24
+#/
+
+ &external_ic_nml 
+       filtered_terrain = .true.
+       ncep_plevels = .false.
+       levp = 64
+       gfs_dwinds = .true.
+       checker_tr = .F.
+       nt_checker = 0
+/
+
+ &gfs_physics_nml
+       fhzero         = 6.
+       ldiag3d        = .false.
+       fhcyc          = 24.
+       nst_anl        = .true.
+       use_ufo        = .true.
+       pre_rad        = .false.
+       ncld           = 1
+       zhao_mic       = .true.
+       pdfcld         = .false.
+       fhswr          = 3600.
+       fhlwr          = 3600.
+       ialb           = 1
+       iems           = 1
+       IAER           = 111
+       ico2           = 2
+       isubc_sw       = 2
+       isubc_lw       = 2
+       isol           = 2
+       lwhtr          = .true.
+       swhtr          = .true.
+       cnvgwd         = .true.
+       shal_cnv       = .true.
+       cal_pre        = .true.
+       redrag         = .true.
+       dspheat        = .true.
+       hybedmf        = .true.
+       random_clds    = .true.
+       trans_trac     = .true.
+       cnvcld         = .true.
+       imfshalcnv     = 2
+       imfdeepcnv     = 2
+       cdmbgwd        = 2.0, 0.25       ! NCEP default
+       prslrd0        = 0.
+       ivegsrc        = 1
+       isot           = 1
+       debug          = .false.
+       cdmbgwd = 3.5,0.25
+       dspheat = .T.
+       hybedmf = .F.
+       shal_cnv = .T. !Shallow convection
+/
+
+&nggps_diag_nml
+       fdiag = @[FDIAG]
+/
+
+  &interpolator_nml
+       interp_method = 'conserve_great_circle'
+/
+
+&namsfc
+       FNGLAC   = "/gpfs/hps/emc/global/noscrub/emc.glopara/svn/fv3gfs/trunk/global_shared.v15.0.0/fix/fix_am/global_glacier.2x2.grb",
+       FNMXIC   = "/gpfs/hps/emc/global/noscrub/emc.glopara/svn/fv3gfs/trunk/global_shared.v15.0.0/fix/fix_am/global_maxice.2x2.grb",
+       FNTSFC   = "/gpfs/hps/emc/global/noscrub/emc.glopara/svn/fv3gfs/trunk/global_shared.v15.0.0/fix/fix_am/RTGSST.1982.2012.monthly.clim.grb",
+       FNSNOC   = "/gpfs/hps/emc/global/noscrub/emc.glopara/svn/fv3gfs/trunk/global_shared.v15.0.0/fix/fix_am/global_snoclim.1.875.grb",
+       FNZORC   = "igbp"
+!       FNZORC   = "/gpfs/hps/emc/global/noscrub/emc.glopara/svn/fv3gfs/trunk/global_shared.v15.0.0/fix/fix_am/global_zorclim.1x1.grb",
+       FNALBC   = "/gpfs/hps/emc/global/noscrub/emc.glopara/svn/fv3gfs/trunk/global_shared.v15.0.0/fix/fix_am/global_snowfree_albedo.bosu.t126.384.190.rg.grb",
+       FNALBC2  = "/gpfs/hps/emc/global/noscrub/emc.glopara/svn/fv3gfs/trunk/global_shared.v15.0.0/fix/fix_am/global_albedo4.1x1.grb",
+       FNAISC   = "/gpfs/hps/emc/global/noscrub/emc.glopara/svn/fv3gfs/trunk/global_shared.v15.0.0/fix/fix_am/CFSR.SEAICE.1982.2012.monthly.clim.grb",
+       FNTG3C   = "/gpfs/hps/emc/global/noscrub/emc.glopara/svn/fv3gfs/trunk/global_shared.v15.0.0/fix/fix_am/global_tg3clim.2.6x1.5.grb",
+       FNVEGC   = "/gpfs/hps/emc/global/noscrub/emc.glopara/svn/fv3gfs/trunk/global_shared.v15.0.0/fix/fix_am/global_vegfrac.0.144.decpercent.grb",
+       FNVETC   = "/gpfs/hps/emc/global/noscrub/emc.glopara/svn/fv3gfs/trunk/global_shared.v15.0.0/fix/fix_am/global_vegtype.igbp.t126.384.190.rg.grb",
+       FNSOTC   = "/gpfs/hps/emc/global/noscrub/emc.glopara/svn/fv3gfs/trunk/global_shared.v15.0.0/fix/fix_am/global_soiltype.statsgo.t126.384.190.rg.grb",
+       FNSMCC   = "/gpfs/hps/emc/global/noscrub/emc.glopara/svn/fv3gfs/trunk/global_shared.v15.0.0/fix/fix_am/global_soilmgldas.t126.384.190.grb",
+       FNMSKH   = "/gpfs/hps/emc/global/noscrub/emc.glopara/svn/fv3gfs/trunk/global_shared.v15.0.0/fix/fix_am/seaice_newland.grb",
+       FNTSFA   = "",
+       FNACNA   = "",
+       FNSNOA   = "",
+       FNVMNC   = "/gpfs/hps/emc/global/noscrub/emc.glopara/svn/fv3gfs/trunk/global_shared.v15.0.0/fix/fix_am/global_shdmin.0.144x0.144.grb",
+       FNVMXC   = "/gpfs/hps/emc/global/noscrub/emc.glopara/svn/fv3gfs/trunk/global_shared.v15.0.0/fix/fix_am/global_shdmax.0.144x0.144.grb",
+       FNSLPC   = "/gpfs/hps/emc/global/noscrub/emc.glopara/svn/fv3gfs/trunk/global_shared.v15.0.0/fix/fix_am/global_slope.1x1.grb",
+       FNABSC   = "/gpfs/hps/emc/global/noscrub/emc.glopara/svn/fv3gfs/trunk/global_shared.v15.0.0/fix/fix_am/global_mxsnoalb.uariz.t126.384.190.rg.grb",
+       LDEBUG   =.false.,
+       FSMCL(2) = 99999
+       FSMCL(3) = 99999
+       FSMCL(4) = 99999
+       FTSFS    = 90
+       FAISS    = 99999
+       FSNOL    = 99999
+       FSICL    = 99999
+       FTSFL    = 99999,
+       FAISL    = 99999,
+       FVETL    = 99999,
+       FSOTL    = 99999,
+       FvmnL    = 99999,
+       FvmxL    = 99999,
+       FSLPL    = 99999,
+       FABSL    = 99999,
+       FSNOS    = 99999,
+       FSICS    = 99999,
+/

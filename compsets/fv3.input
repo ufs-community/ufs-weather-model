@@ -67,6 +67,24 @@ build fv3.exe {
     build=compile.sh(fv3="@[target]",modules="@[modules.nems]",md5="@[md5sum]")
 }
 
+ 
+build fv3_32bit.exe {
+    # This block builds the FV3 in 32 bit mode.  It is otherwise
+    # identical to the fv3.exe block.
+    use plat
+
+    # Note:
+    #  plat%EXECrt = temporary directory for executables and md5 sums
+    #  plat%INCrt  = temporary directory for modulefiles
+    target="@[plat%EXECrt]/fv3_32bit.exe"   # NEMS.x installation location
+    modules.nems="@[plat%INCrt]/modules.fv3_32bit"  # modulefile for this NEMS.x
+    md5sum="@[target].md5"            # MD5SUM for this NEMS.x
+
+    # build: script to build the NEMS.x.  For now, this is an embedded
+    # bash script.
+    build=compile.sh(fv3="@[target]",modules="@[modules.nems]",md5="@[md5sum]")
+}
+
 build fv3_appbuilder.exe {
     # This block is similar to the fv3.exe block, but uses the
     # NEMSAppBuilder.  We do this for one compset, just to make sure
@@ -338,5 +356,65 @@ test fv3_restart: fv3.exe {
       # This is to ensure the executable did not change during the
       # test suite.
         "@[build%target]" .md5cmp. "@[fv3.exe%md5sum]"
+    }
+}
+
+########################################################################
+
+
+test fv3_stretched_nest: fv3_32bit.exe {
+    use fv3_control
+    use plat%default_nested_resources
+
+    TEST_DESCR="Stretched grid with nest; compare against previous baseline"
+    CNTL_NAME='fv3_stretch'
+    
+    build=fv3_32bit.exe
+
+    COM="@[plat%COMrt]/@[TEST_NAME]"          # Test result area
+    RUNDIR="@[plat%TMPrt]/@[TEST_NAME]"       # Test work area
+
+    # Override settings from control
+    INPES='2'
+    JNPES='4'
+    MAKE_NH='.T.'
+    NA_INIT='1'
+    EXTERNAL_IC='.T.'
+    NGGPS_IC='.T.'
+    MOUNTAIN='.F.'
+    WARM_START='.F.'
+    FDIAG='3'
+
+    INPES_NEST='6'
+    JNPES_NEST='8'
+    MAKE_NH_NEST='.F.'
+
+    SYEAR="2017"
+    SMONTH="03"
+    SDAY="28"
+    SHOUR="00"
+    FHMAX="48"
+    DT_ATMOS="450"
+
+    filters input {
+       #    WORK FILE  <=filter=   SOURCE FILE
+           'input.nml' <=atparse=  "@[PARMnems]/stretched-nest-input.nml.IN"
+    'input_nest02.nml' <=atparse=  "@[PARMnems]/input_nest02.nml.IN"
+     'model_configure' <=atparse=  "@[PARMnems]/stretched-nest-model_configure.IN"
+                  '*'  <=copyfrom= "@[plat%INPUTS]/FV3_nest_input_data"
+              'INPUT'  <=copy=     "@[plat%INPUTS]/@[TEST_NAME]/INPUT"
+    }
+
+    criteria output {
+	use fv3_control%output
+        'atmos_4xdaily.nest02.nc'   .bitcmp. "@[CNTL]"
+        'atmos_static.nest02.nc'    .bitcmp. "@[CNTL]"
+        'grid_spec.nest02.nc'       .bitcmp. "@[CNTL]"
+        'nggps2d.nest02.nc'         .bitcmp. "@[CNTL]"
+        'nggps3d_4xdaily.nest02.nc' .bitcmp. "@[CNTL]"
+    }
+
+    spawn execute {
+        {"@[build%target]", ranks="@[TASKS]", threads="@[THRD]", ppn="@[TPN]" }
     }
 }

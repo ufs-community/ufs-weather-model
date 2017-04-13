@@ -130,6 +130,13 @@ platform wcoss.cray {
         JNPES=8
         THRD=1
     }
+    default_nested_resources={
+        TASKS=96
+        TPN=12
+        INPES=2
+        JNPES=4
+        THRD=2
+    }
     default_threaded_resources={
         TASKS=72
         TPN=12
@@ -161,8 +168,8 @@ platform wcoss.cray {
         build_resources=[[[
       <!-- Build job resources minus wallclock -->
       <queue>@[BUILD_QUEUE]</queue>
-      <cores>1</cores>
-      <shared></shared>
+      <cores>24</cores>
+      <exclusive></exclusive>
 ]]]
         short_test_resources=[[[
     <!-- Short test job -->
