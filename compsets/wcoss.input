@@ -61,9 +61,9 @@ platform wcoss.phase2 {
         log_dir="@[TMPrt]/log"
         scheduler="lsf"
         entities=[[[
-  <!ENTITY SHORTQ "dev">
-  <!ENTITY LONGQ "dev">
-  <!ENTITY BUILDQ "dev_shared">
+  <!ENTITY SHORTQ "dev2">
+  <!ENTITY LONGQ "dev2">
+  <!ENTITY BUILDQ "dev2_shared">
 ]]]
         build_resources=[[[
       <!-- Build job resources minus wallclock -->
@@ -83,6 +83,57 @@ platform wcoss.phase2 {
     <queue>@[LONG_TEST_QUEUE]</queue>
     <memory></memory> <!-- Unlimited memory -->
     <native>-a poe</native>
+]]]
+    }
+
+}
+
+platform wcoss.phase1 {
+    # Implement phase 1 support as a trivial extension of phase 2
+    # 16 cores per node instead of 24, use dev queue instead of dev2
+    use wcoss.phase2
+    pex='1'
+    cores_per_node=16
+    cpus_per_core=2
+    MACHINE_ID='wcoss.phase1'
+
+    default_resources={
+        TASKS=144
+        TPN=8
+        INPES=3
+        JNPES=8
+        THRD=1
+    }
+    default_threaded_resources={
+        TASKS=72
+        TPN=4
+        INPES=3
+        JNPES=4
+        THRD=2
+    }
+
+    embed bash detect [[[
+        # This function is used at PARSE TIME to detect whether we are
+        # on WCOSS Phase 2.  It must be very fast and low resource
+        # usage since the parser runs it.
+        if [[ -d /usrx && -d /global && -e /etc/redhat-release && \
+              -e /etc/prod ]] ; then
+            # We are on WCOSS Phase 1 or 2.
+            if ( cat /proc/cpuinfo |grep 'processor.*32' ) ; then
+                # Not 32 fake (hyperthreading) cpus, so Phase 2.
+                exit 1
+            fi
+        fi
+        exit 0
+    ]]]
+
+    # ROCOTO SUPPORT ---------------------------------------------------
+    rocoto={
+        use wcoss.phase2%rocoto
+        entities=[[[
+  <!ENTITY SHORTQ "dev">
+  <!ENTITY LONGQ "dev">
+  <!ENTITY BUILDQ "dev_shared">
 ]]]
     }
 
