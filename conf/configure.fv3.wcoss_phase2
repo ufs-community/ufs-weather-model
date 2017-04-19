@@ -115,8 +115,6 @@ ifneq ($(OPENMP),)
 CFLAGS += $(CFLAGS_OPENMP)
 FFLAGS += $(FFLAGS_OPENMP)
 LDFLAGS += $(LDFLAGS_OPENMP)
-# to correct a loader bug on gaea: envars below set by module load intel
-LIBS += -L$(INTEL_PATH)/$(INTEL_MAJOR_VERSION)/$(INTEL_MINOR_VERSION)/lib/intel64 -lifcoremt
 endif
 
 ifneq ($(VERBOSE),)
@@ -124,6 +122,8 @@ CFLAGS += $(CFLAGS_VERBOSE)
 FFLAGS += $(FFLAGS_VERBOSE)
 LDFLAGS += $(LDFLAGS_VERBOSE)
 endif
+
+LDFLAGS += -L$(NETCDF_ROOT)/lib
 
 ifneq ($(findstring netcdf/4,$(LOADEDMODULES)),)
   LIBS += -lnetcdff -lnetcdf -lhdf5_hl -lhdf5 -lz
