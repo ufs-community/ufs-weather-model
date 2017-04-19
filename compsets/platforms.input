@@ -24,6 +24,9 @@ platform.defaults={
     BASELINE="@[INPUTS]" # Baseline input or output directory
 }
 
+# WCOSS support was getting too long, so it is now in wcoss.input.
+load 'wcoss.input'
+
 ########################################################################
 
 jet.common= {
@@ -47,6 +50,7 @@ platform xjet {
     use jet.common
     PARTITION='xjet'
     cores_per_node=24
+    cpus_per_core=2
     MPI='mvapich2'
     SHORT_TEST_QUEUE='&SHORTQ;'
     LONG_TEST_QUEUE='&LONGQ;'
@@ -108,151 +112,6 @@ platform xjet {
     }
 }
 
-
-########################################################################
-
-# WCOSS PLATFORMS
-
-wcoss.common={   # Common resources for all WCOSSes
-    use platform.defaults
-    MACHINE_ID='wcoss'
-
-    HOMEnems=PWD_UP5
-    HOMErt=OUTPUT_PATH
-    BASELINE="/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20170307/data"
-    BASELINE_TEMPLATE="/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20170307/data"
-    INPUTS="@[BASELINE]"
-#    INPUTS='/meso/noscrub/wx20rv/REGRESSION_TEST'
-}
-
-platform wcoss.phase2 {
-    use wcoss.common
-    CPU_ACCOUNT='GFS-T2O'
-    pex='1'
-    cores_per_node='32'
-    MPI='LSF'
-    SHORT_TEST_QUEUE='&SHORTQ;'
-    LONG_TEST_QUEUE='&LONGQ;'
-    BUILD_QUEUE='&BUILDQ;'
-
-    default_resources={
-        TASKS=144
-        TPN=16
-        INPES=3
-        JNPES=8
-        THRD=1
-    }
-
-    embed bash detect [[[
-        if [[ -d /ptmpp1 && -f /etc/redhat-release && -d /usrx/local ]] ; then
-            exit 0
-        fi
-        exit 1
-    ]]]
-
-    # ROCOTO SUPPORT ---------------------------------------------------
-    rocoto={
-        install_dir="@[HOMErt]"
-        log_dir="@[TMPrt]/log"
-        scheduler="lsf"
-        entities=[[[
-  <!ENTITY SHORTQ "dev">
-  <!ENTITY LONGQ "dev">
-  <!ENTITY BUILDQ "dev_shared">
-]]]
-        build_resources=[[[
-      <!-- Build job resources minus wallclock -->
-      <queue>@[BUILD_QUEUE]</queue>
-      <memory>4G</memory>
-      <cores>1</cores>
-      <native>-R 'affinity[core(1)]'</native>
-]]]
-        short_test_resources=[[[
-    <!-- Short test job -->
-    <queue>@[SHORT_TEST_QUEUE]</queue>
-    <memory></memory> <!-- Unlimited memory -->
-    <native>-a poe</native>
-]]]
-        long_test_resources=[[[
-    <!-- Long test job -->
-    <queue>@[LONG_TEST_QUEUE]</queue>
-    <memory></memory> <!-- Unlimited memory -->
-    <native>-a poe</native>
-]]]
-    }
-
-}
-
-platform wcoss.cray {
-    use wcoss.common
-    MACHINE_ID='wcoss.cray'
-    pex='cray'
-    cores_per_node='24'
-    MPI='lsf_cray_intel'
-    SHORT_TEST_QUEUE='&SHORTQ;'
-    LONG_TEST_QUEUE='&LONGQ;'
-    BUILD_QUEUE='&BUILDQ;'
-
-    TASK_THROTTLE='1'
-    BUILD_WALLTIME="1800"
-
-    BASELINE="/gpfs/hps/emc/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20170316"
-    BASELINE_TEMPLATE="/gpfs/hps/emc/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20170316"
-
-    default_resources={
-        TASKS=144
-        TPN=24
-        INPES=3
-        JNPES=8
-        THRD=1
-    }
-    default_threaded_resources={
-        TASKS=72
-        TPN=12
-        INPES=3
-        JNPES=4
-        THRD=2
-    }
-
-    embed bash detect [[[
-        # This function is used at PARSE TIME to detect whether we are
-        # on WCOSS Cray.  It must be very fast and low resource usage
-        # since the parser runs it.
-        if [[ -d /gpfs/hps && -e /etc/SuSE-release && -d /usrx ]] ; then
-            exit 0
-        fi
-        exit 1
-    ]]]
-
-    # ROCOTO SUPPORT ---------------------------------------------------
-    rocoto={
-        install_dir="@[HOMErt]"
-        log_dir="@[TMPrt]/log"
-        scheduler="lsfcray"
-        entities=[[[
-  <!ENTITY SHORTQ "debug">
-  <!ENTITY LONGQ "dev">
-  <!ENTITY BUILDQ "debug">
-]]]
-        build_resources=[[[
-      <!-- Build job resources minus wallclock -->
-      <queue>@[BUILD_QUEUE]</queue>
-      <cores>1</cores>
-      <shared></shared>
-]]]
-        short_test_resources=[[[
-    <!-- Short test job -->
-    <queue>@[SHORT_TEST_QUEUE]</queue>
-    <exclusive></exclusive>
-]]]
-        long_test_resources=[[[
-    <!-- Long test job -->
-    <queue>@[LONG_TEST_QUEUE]</queue>
-    <exclusive></exclusive>
-]]]
-    }
-}
-
 ########################################################################
 
 # THEIA SUPPORT
@@ -269,6 +128,7 @@ platform theia {
     LONG_TEST_QUEUE='&LONGQ;' # Queue to use for long test jobs
 
     cores_per_node=24 # Number of cores per node on compute nodes
+    cpus_per_core=2
 
     # The *nems locations are in NEMS checkout areas.
     HOMEnems=PWD_UP5
@@ -343,4 +203,4 @@ platform theia {
 # Autodetection of available platforms.  Calls the "detect" function
 # from each of the listed platforms.
 
-autodetect plat (/ xjet, wcoss.cray, theia /)
+autodetect plat (/ xjet, wcoss.cray, theia, wcoss.phase2 /)
