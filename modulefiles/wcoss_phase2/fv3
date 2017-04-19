@@ -1,0 +1,33 @@
+#%Module######################################################################
+##
+##    NEMS FV3 Prerequisites: Surge and Luna (WCOSS Cray)
+
+proc ModulesHelp {} {
+  puts stderr "\tcit - loads modules required for building and running FV3 under NEMS on the Cray side of WCOSS"
+}
+
+module-whatis "loads NEMS FV3 prerequisites on Surge and Luna"
+
+# NOTE: the "module purge" and loading of the module command are
+# handled by the module-setup.sh (or .csh) script.
+
+
+module use /usrx/local/dev/modulefiles/
+
+##
+## load programming environment
+## this typically includes compiler, MPI and job scheduler
+##
+module load ics/16.0.3
+module load ibmpe
+module load ESMF/700-ics1603
+module load NetCDF
+
+##
+## load nwprod libraries
+##
+module load bacio/v2.0.1
+module load ip/v2.0.0
+module load sp/v2.0.2
+module load w3nco/v2.0.6
+module load w3emc/v2.2.0
