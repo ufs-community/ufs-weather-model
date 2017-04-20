@@ -87,6 +87,7 @@ FFLAGS_TEST = -O3 -debug minimal -fp-model source -qoverride-limits
 CFLAGS_TEST = -O2
 
 LDFLAGS :=
+LDFLAGS += -L$(NETCDF_ROOT)/lib -L$(HDF5)/lib
 LDFLAGS_OPENMP := -qopenmp
 LDFLAGS_VERBOSE := -Wl,-V,--verbose,-cref,-M
 
@@ -123,10 +124,8 @@ FFLAGS += $(FFLAGS_VERBOSE)
 LDFLAGS += $(LDFLAGS_VERBOSE)
 endif
 
-LDFLAGS += -L$(NETCDF_ROOT)/lib
-
-ifneq ($(findstring netcdf/4,$(LOADEDMODULES)),)
-  LIBS += -lnetcdff -lnetcdf -lhdf5_hl -lhdf5 -lz
+ifneq ($(findstring NetCDF/4,$(LOADEDMODULES)),)
+  LIBS += -lnetcdff -lhdf5 $(Z_LIB)
 else
   LIBS += -lnetcdf
 endif

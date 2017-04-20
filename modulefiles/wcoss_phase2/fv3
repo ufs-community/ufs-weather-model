@@ -23,6 +23,10 @@ module load ibmpe
 module load ESMF/700-ics1603
 module load NetCDF
 
+# Build scripts want static linking, but the /usr version of libz is
+# only dynamic.  We'll use the nwprod version instead.
+module load z
+
 ##
 ## load nwprod libraries
 ##
