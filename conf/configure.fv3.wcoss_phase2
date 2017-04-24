@@ -13,12 +13,10 @@ LD = mpiifort
 #########
 # flags #
 #########
-# default is 64-bit OpenMP non-hydrostatic build using AVX2
 DEBUG =
 REPRO =
 VERBOSE =
 OPENMP = Y
-AVX2 = Y
 HYDRO = N
 
 include       $(ESMFMKFILE)
@@ -58,13 +56,8 @@ else
 FFLAGS += -i4 -real-size 64 -no-prec-div -no-prec-sqrt
 endif
 
-ifeq ($(AVX2),Y)
-FFLAGS += -xCORE-AVX2 -qno-opt-dynamic-align
-CFLAGS += -xCORE-AVX2 -qno-opt-dynamic-align
-else
 FFLAGS += -xHOST -qno-opt-dynamic-align
 CFLAGS += -xHOST -qno-opt-dynamic-align
-endif
 
 FFLAGS_OPT = -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3
 FFLAGS_REPRO = -O2 -debug minimal -fp-model source -qoverride-limits -g -traceback
