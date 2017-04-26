@@ -22,8 +22,8 @@ platform wcoss.phase2 {
     LONG_TEST_QUEUE='&LONGQ;'
     BUILD_QUEUE='&BUILDQ;'
     MACHINE_ID='wcoss.phase2'
-    BASELINE="/nems2/noscrub/emc.nemspara/RT/NEMSfv3gfs/nesttest"
-    BASELINE_TEMPLATE="/nems2/noscrub/emc.nemspara/RT/NEMSfv3gfs/nesttest"
+    BASELINE="/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/nesttest"
+    BASELINE_TEMPLATE="/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/nesttest"
 
     default_resources={
         TASKS=144
@@ -31,6 +31,17 @@ platform wcoss.phase2 {
         INPES=3
         JNPES=8
         THRD=1
+    }
+    default_stretched_resources={
+        TASKS=48
+        TPN=12
+        INPES=2
+        JNPES=4
+        THRD=2
+    }
+    default_nested_resources={
+	use default_stretched_resources
+        TASKS=96
     }
     default_threaded_resources={
         TASKS=72
@@ -105,6 +116,17 @@ platform wcoss.phase1 {
         INPES=3
         JNPES=8
         THRD=1
+    }
+    default_stretched_resources={
+        TASKS=48
+        TPN=8
+        INPES=2
+        JNPES=4
+        THRD=2
+    }
+    default_nested_resources={
+	use default_stretched_resources
+        TASKS=96
     }
     default_threaded_resources={
         TASKS=72
