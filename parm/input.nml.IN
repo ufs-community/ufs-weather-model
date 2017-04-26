@@ -114,7 +114,7 @@
 
 &external_ic_nml
        filtered_terrain = .true.
-       ncep_plevels = .false.
+       ncep_plevels = .true.
        levp = 64
        gfs_dwinds = .true.
        checker_tr = .F.
@@ -153,11 +153,12 @@
        cnvcld         = .true.
        imfshalcnv     = 2
        imfdeepcnv     = 2
-       cdmbgwd        = 2.0, 0.25       ! NCEP default
+       cdmbgwd        = 3.5,0.25
        prslrd0        = 0.
        ivegsrc        = 1
        isot           = 1
        debug          = .false.
+       nstf_name      = @[NSTF_NAME]
 /
 
 &nggps_diag_nml

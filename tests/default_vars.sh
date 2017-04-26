@@ -40,6 +40,7 @@ export MOUNTAIN=.F.
 export NA_INIT=1
 export DAYS=1
 export FDIAG=0,1,2,3,4,5,6,7,8,9,10,11,12,18,24
+export NSTF_NAME=2,1,1,0,5
 
 
 export ENS_NUM=1
@@ -48,6 +49,6 @@ export SMONTH=10
 export SDAY=03
 export SHOUR=00
 export FHMAX=`expr $DAYS \* 24`
-export DT_ATMOS=225
+export DT_ATMOS=1800
 
 }
