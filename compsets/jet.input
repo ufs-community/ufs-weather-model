@@ -29,7 +29,7 @@ platform xjet {
     BUILD_QUEUE='&BUILDQ;'
 
     TASK_THROTTLE='1'
-    BUILD_WALLTIME="2700"
+    BUILD_WALLTIME="3600"
 
     default_resources={
         TASKS=144
@@ -79,7 +79,7 @@ platform xjet {
         build_resources=[[[
       <!-- Build job resources minus wallclock -->
       <queue>@[BUILD_QUEUE]</queue>
-      <cores>2</cores> <!-- 2 cores ensures exclusive access on Jet -->
+      <cores>24</cores> <!-- 2 cores ensures exclusive access on Jet -->
       <native>-l partition=@[PARTITION]</native>
 ]]]
         short_test_resources=[[[
