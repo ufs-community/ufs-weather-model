@@ -1,0 +1,10 @@
+
+rsync -arv @[RTPWD]/FV3_nest_input_data/. .
+rm -rf INPUT RESTART
+mkdir  INPUT RESTART
+
+if [ $WARM_START = .F. ]; then
+    rsync -arv @[RTPWD]/@[CNTL_DIR]/INPUT/. INPUT/.
+else
+    rsync -arv @[RTPWD]/@[CNTL_DIR]/RESTART/. INPUT/.
+fi
