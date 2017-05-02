@@ -1,0 +1,6 @@
+#!/bin/csh -f
+
+source $MODULESHOME/init/csh
+source ${PWD}/../../../../modulefiles/fv3gfs/fre-nctools.theia
+
+ifort -o filter_topo -I${NETCDF}/include -fltconsistency -fno-alias -stack_temps -safe_cray_ptr -ftz -assume byterecl -g -O2 -i4 -real_size 64 -traceback filter_topo.F90 -L${NETCDF}/lib -L${HDF5}/lib -lnetcdf -lnetcdff -lhdf5_hl -lhdf5
