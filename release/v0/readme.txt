@@ -9,7 +9,10 @@ Note: The workflow has only been tested on WCOSS Cray.  Options need to be added
       and tested for running the model on Theia and other machines
 
 1.  check out  https://svnemc.ncep.noaa.gov/projects/nems/apps/NEMSfv3gfs/trunk, 
-    and use ?? to compile the model.  
+    and use release/v0/exp/build.sh to compile the model.  
+    %svn co https://svnemc.ncep.noaa.gov/projects/nems/apps/NEMSfv3gfs/tags/fv3_release.v0
+    %cd release/v0/exp
+    %./build.sh machine_name(wcoss_crayr, theia, or jet)
     Four executable files will be created under ./trunk/NEMS/exe
       fv3_gfs_hydro.prod.32bit.x*  
       fv3_gfs_hydro.prod.64bit.x*  

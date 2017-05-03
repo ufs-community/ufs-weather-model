@@ -22,9 +22,9 @@ export PSLOT=fv3gfs               ;#user-defined experiment name
 export CASE=C384                  ;#resolution, C96, C382 or C768
 export CDATE=2016092900           ;#initial condition dates  2016092900 2016011812 2016081200               
 
-export BASE_GSM=/gpfs/hps/emc/global/noscrub/$LOGNAME/svn/FV3GFS_V0_RELEASE   ;# source directory
-export FIX_FV3=$BASE_GSM/fix/fix_fv3                  ;#model fixed fields
-export IC_DIR=$BASE_GSM/ICs                           ;#forecast initial conditions 
+export BASE_DATA=/gpfs/hps/emc/global/noscrub/$LOGNAME/svn/FV3GFS_V0_RELEASE   ;# source directory
+export FIX_FV3=$BASE_DATA/fix/fix_fv3                  ;#model fixed fields
+export IC_DIR=$BASE_DATA/ICs                           ;#forecast initial conditions 
 
 # temporary running directory
 export DATA=/gpfs/hps/stmp/$LOGNAME/${CASE}${PSLOT}${CDATE}     
@@ -33,23 +33,28 @@ if [ -d $DATA ]; then rm -rf $DATA ; fi
 # directory to save output
 export ROTDIR=/gpfs/hps/ptmp/$LOGNAME/$PSLOT/$CASE                    
 
-# NEMS FV3GFS forecast executable directory
-export FCSTEXECDIR=/gpfs/hps/emc/global/noscrub/Fanglin.Yang/svn/fv3gfs/NEMSfv3gfs/trunk/NEMS/exe
+# NEMS FV3 directory, fv3 release directory  and forecast excutable directory
+export FV3DIR=`pwd`/../../..
+export FV3DIR_RELEASE=`pwd`/..
+export FCSTEXECDIR=$FV3DIR/trunk/NEMS/exe
 
 export FHMAX=240                                      ;#maximum forecast hours
 export FHOUT=3                                        ;#forecast output frequency in hours
 #---------------------------------------------------------
 #---------------------------------------------------------
 case $CASE in
-  C96)  export DELTIM=1800; export layout_x=4; export layout_y=8;  export NODES=16  ;;
-  C384) export DELTIM=450 ; export layout_x=4; export layout_y=8;  export NODES=16 ;;
+  C96)  export DELTIM=1800; export layout_x=4; export layout_y=8;  export NODES=16;
+        export master_grid=1deg;   export REMAP_TASKS=48 ;;
+  C384) export DELTIM=450 ; export layout_x=4; export layout_y=8;  export NODES=16;
+        export master_grid=0p5deg; export REMAP_TASKS=96 ;;
   C768) export DELTIM=225 ; export layout_x=8; export layout_y=16; export NODES=64;;
+        export master_grid=0p25deg; export REMAP_TASKS=384 ;;
   *)    echo "grid $CASE not supported, exit"
         exit ;;
 esac
 
-export PARM_FV3DIAG=$BASE_GSM/parm/parm_fv3diag
-export FORECASTSH=$BASE_GSM/scripts/exglobal_fcst_nemsfv3gfs.sh         
+export PARM_FV3DIAG=$FV3DIR_RELEASE/parm/parm_fv3diag
+export FORECASTSH=$FV3DIR_RELEASE/scripts/exglobal_fcst_nemsfv3gfs.sh         
 
 #---determine task configuration
 export nth_f=2                             # number of threads 
@@ -71,14 +76,14 @@ else
 fi
 
 export FCSTEXEC=fv3_gfs_${TYPE}.${COMP}.${MODE}.x
-export APRUN="aprun -n $tasks -N $task_per_node -d $nth_f $j_opt -cc depth" 
+export FCST_LUNCHER="aprun -n $tasks -N $task_per_node -d $nth_f $j_opt -cc depth" 
 #--------------------------------------------------------------------------
 
 #--NSST optins
 export nstf_name="2,0,1,0,5"
 
 #--execute the forecast
-$BASE_GSM/scripts/exglobal_fcst_nemsfv3gfs.sh
+$FORECASTSH
 if [ $? != 0 ]; then echo "forecast failed, exit"; exit; fi
 
 
@@ -88,12 +93,12 @@ ymd=`echo $CDATE |cut -c 1-8`
 cyc=`echo $CDATE |cut -c 9-10`
 export DATA=$ROTDIR/gfs.$ymd/$cyc
 export IPD4=YES
-export REMAPSH=$BASE_GSM/ush/fv3gfs_remap.sh            #remap 6-tile output to global array in netcdf
-export REMAPEXE=$BASE_GSM/exec/fregrid_parallel
-export master_grid=0p25deg                              #1deg 0p5deg 0p25deg 0p125deg etc
-export APRUN_REMAP="aprun -n 48 -N 12 -j 1 -d 2 -cc depth"
+export REMAPSH=$FV3DIR_RELEASE/ush/fv3gfs_remap.sh            #remap 6-tile output to global array in netcdf
+export REMAPEXE=$FV3DIR_RELEASE/exec/fregrid_parallel
+#export master_grid=0p25deg                              #1deg 0p5deg 0p25deg 0p125deg etc
+export REMAP_LUNCHER="aprun -n 48 -N 12 -j 1 -d 2 -cc depth"
 
-$BASE_GSM/ush/fv3gfs_remap.sh
+$REMAPSH
 
 
 exit

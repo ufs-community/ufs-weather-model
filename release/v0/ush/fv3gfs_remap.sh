@@ -13,8 +13,8 @@ export GG=${master_grid:-"0p25deg"}   # 1deg 0p5deg 0p25deg 0p125deg
 pwd=$(pwd)
 export DATA=${DATA:-$pwd}
 export NWPROD=${NWPROD:-$pwd}
-export BASE_GSM=${BASE_GSM:-$NWPROD}
-export REMAPEXE=${REMAPEXE:-$BASE_GSM/exec/fregrid_parallel}
+export BASE_DATA=${BASE_DATA:-$NWPROD}
+export REMAPEXE=${REMAPEXE:-$BASE_DATA/exec/fregrid_parallel}
 export IPD4=${IPD4:-NO}
 
 cycn=`echo $CDATE | cut -c 9-10`
@@ -23,11 +23,11 @@ export CDUMP=${CDUMP:-gfs}
 export PREFIX=${PREFIX:-${CDUMP}${TCYC}}
 
 #--------------------------------------------------
-export FIX_FV3=${FIX_FV3:-$BASE_GSM/fix/fix_fv3}
+export FIX_FV3=${FIX_FV3:-$BASE_DATA/fix/fix_fv3}
 export grid_loc=$FIX_FV3/$CASE/${CASE}_mosaic.nc
 export weight_file=$FIX_FV3/$CASE/remap_weights_${CASE}_${GG}.nc
 
-export APRUN_REMAP=${APRUN_REMAP:-${APRUN:-""}}
+export REMAP_LAUNCHER=${REMAP_LAUNCHER:-${APRUN:-""}}
 export NTHREADS_REMAP=${NTHREADS_REMAP:-${NTHREADS:-1}}
 
 #--------------------------------------------------
@@ -100,7 +100,7 @@ for type in atmos_4xdaily nggps2d nggps3d ; do
     export fld=$(eval echo \${${type}_hy})
   fi
 
-  $APRUN_REMAP $REMAPEXE --input_dir $DATA \
+  $REMAP_LAUNCHER $REMAPEXE --input_dir $DATA \
                          --input_file $in_file \
                          --output_dir $DATA \
                          --output_file $out_file \

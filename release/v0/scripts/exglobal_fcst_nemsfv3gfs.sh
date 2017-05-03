@@ -57,8 +57,8 @@ export FHCYC=${FHCYC:-24}
 export PTMP=${PTMP:-/gpfs/hps/ptmp}
 export STMP=${STMP:-/gpfs/hps/stmp}
 export NWPROD=${NWPROD:-${NWROOT:-/nwprod}}
-export BASE_GSM=${BASE_GSM:-$NWPROD}
-export FIX_DIR=${FIX_DIR:-$BASE_GSM/fix}
+export BASE_DATA=${BASE_DATA:-$NWPROD}
+export FIX_DIR=${FIX_DIR:-$BASE_DATA/fix}
 export FIX_AM=${FIX_AM:-$FIX_DIR/fix_am}
 export FIX_FV3=${FIX_FV3:-$FIX_DIR/fix_fv3}
 export DATA=${DATA:-$STMP/$LOGNAME/pr${PSLOT}${CASE}_${CDATE}}    #temporary running directory
@@ -83,12 +83,12 @@ export MEMBER=${MEMBER:-"-1"} # -1: control, 0: ensemble mean, >0: ensemble memb
 export ENS_NUM=${ENS_NUM:-1}
 
 # Model specific stuff
-export FCSTEXECDIR=${FCSTEXECDIR:-${EXECDIR:-$BASE_GSM/sorc/fv3gfs.fd/BUILD/bin}}
+export FCSTEXECDIR=${FCSTEXECDIR:-${EXECDIR:-$BASE_DATA/sorc/fv3gfs.fd/BUILD/bin}}
 export FCSTEXEC=${FCSTEXEC:-fv3_gfs.x}
-export PARM_FV3DIAG=${PARM_FV3DIAG:-$BASE_GSM/parm/parm_fv3diag}
+export PARM_FV3DIAG=${PARM_FV3DIAG:-$FV3DIR_RELREASE/parm/parm_fv3diag}
 
 # Model config options
-export APRUN=${APRUN:-""}
+export FCST_LAUNCHER=${FCST_LAUNCHER:-${APRUN:-""}}
 export tasks=${tasks:-$((6*layout_x*layout_y))}
 export nthreads=${nthreads:-${nth_f:-1}}
 export cores_per_node=${cores_per_node:-${npe_node_f:-24}}
@@ -212,7 +212,7 @@ export FNABSC=${FNABSC:-"$FIX_AM/global_mxsnoalb.uariz.t1534.3072.1536.rg.grb"}
 # nstf_name(4) : zsea1 in mm
 # nstf_name(5) : zsea2 in mm
 # nst_anl      : .true. or .false., NSST analysis over lake                       
-export nstf_name=${nstf_name:-"0,0,0,0,5"}
+export nstf_name=${nstf_name:-"2,0,1,0,5"}
 
 
 #------------------------------------------------------------------
@@ -651,7 +651,7 @@ fi
 # run the executable
 cd $DATA
 $NCP $FCSTEXECDIR/$FCSTEXEC $DATA/.
-$APRUN $FCSTEXEC 1>&1 2>&2
+$FCST_LAUNCHER ./$FCSTEXEC 1>&1 2>&2
 
 export ERR=$?
 export err=$ERR
