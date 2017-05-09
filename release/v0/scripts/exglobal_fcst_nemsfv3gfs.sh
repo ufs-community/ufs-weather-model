@@ -27,21 +27,6 @@ if [ $VERBOSE = YES ] ; then
   set -x
 fi
 
-export machine=${machine:-WCOSS_C}
-export machine=$(echo $machine|tr '[a-z]' '[A-Z]')
-if [ $machine = WCOSS_C ] ; then
- . $MODULESHOME/init/sh 2>/dev/null
- export PRGENV=${PRGENV:-intel}
- export HUGEPAGES=${HUGEPAGES:-hugepages4M}
- module  unload prod_util iobuf PrgEnv-$PRGENV craype-$HUGEPAGES 2>/dev/null
- module  load   prod_util iobuf PrgEnv-$PRGENV craype-$HUGEPAGES 2>/dev/null
- module  use /usrx/local/dev/modulefiles
- module  load ESMF-intel-haswell/7_0_0 2>/dev/null
- export IOBUF_PARAMS=${IOBUF_PARAMS:-'*:size=8M:verbose'}
- export MPICH_GNI_COLL_OPT_OFF=${MPICH_GNI_COLL_OPT_OFF:-MPI_Alltoallv}
- export MKL_CBWR=AVX2
-fi
-
 # Cycling and forecast hour specific parameters
 export PSLOT=${PSLOT:-fv3gfs}
 export CASE=${CASE:-C768}
@@ -91,7 +76,7 @@ export PARM_FV3DIAG=${PARM_FV3DIAG:-$FV3DIR_RELREASE/parm/parm_fv3diag}
 export FCST_LAUNCHER=${FCST_LAUNCHER:-${APRUN:-""}}
 export tasks=${tasks:-$((6*layout_x*layout_y))}
 export nthreads=${nthreads:-${nth_f:-1}}
-export cores_per_node=${cores_per_node:-${npe_node_f:-24}}
+export cores_per_node=${cores_per_node:-${task_per_node:-24}}
 export ntiles=${ntiles:-6}
 export TYPE=${TYPE:-nh}                  # choices:  nh, hydro
 export MONO=${MONO:-non-mono}            # choices:  mono, non-mono

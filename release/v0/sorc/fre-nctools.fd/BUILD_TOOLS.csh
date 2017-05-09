@@ -35,7 +35,7 @@ echo "//////////////////////////////////////////////////////////////////////////
 #Original setup is for cray so for now require input only on a different platform.
 set system_site = ${1}
 if ( "$system_site" == "" ) then
-  echo "Usage: BUILD_TOOLS.csh cray or theia"
+  echo "Usage: BUILD_TOOLS.csh wcoss_cray or theia"
   exit 1
 else
 

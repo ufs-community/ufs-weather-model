@@ -1,13 +1,13 @@
 #!/bin/sh --login
 #BSUB -L /bin/sh
 #BSUB -P FV3GFS-T2O
-#BSUB -e fcst.err                                         
-#BSUB -o fcst.out
+#BSUB -e err_cray                                        
+#BSUB -o out_cray
 #BSUB -J fv3gfs
-#BSUB -q dev
+#BSUB -q debug
 #BSUB -M 256
-#BSUB -extsched 'CRAYLINUX[]' 
-#BSUB -W 10:00
+#BSUB -extsched 'CRAYLINUX[]'
+#BSUB -W 00:30
 set -x
 
 #--------------------------------------------
@@ -19,10 +19,10 @@ set -x
 
 export machine=WCOSS_C            ;#WCOSS_C, THEIA, etc
 export PSLOT=fv3gfs               ;#user-defined experiment name
-export CASE=C384                  ;#resolution, C96, C382 or C768
+export CASE=C96                   ;#resolution, C96, C384 or C768
 export CDATE=2016092900           ;#initial condition dates  2016092900 2016011812 2016081200               
 
-export BASE_DATA=/gpfs/hps/emc/global/noscrub/$LOGNAME/svn/FV3GFS_V0_RELEASE   ;# source directory
+export BASE_DATA=/gpfs/hps/emc/nems/noscrub/emc.nemspara/FV3GFS_V0_RELEASE   ;# source directory
 export FIX_FV3=$BASE_DATA/fix/fix_fv3                  ;#model fixed fields
 export IC_DIR=$BASE_DATA/ICs                           ;#forecast initial conditions 
 
@@ -36,9 +36,9 @@ export ROTDIR=/gpfs/hps/ptmp/$LOGNAME/$PSLOT/$CASE
 # NEMS FV3 directory, fv3 release directory  and forecast excutable directory
 export FV3DIR=`pwd`/../../..
 export FV3DIR_RELEASE=`pwd`/..
-export FCSTEXECDIR=$FV3DIR/trunk/NEMS/exe
+export FCSTEXECDIR=$FV3DIR/NEMS/exe
 
-export FHMAX=240                                      ;#maximum forecast hours
+export FHMAX=48                                       ;#maximum forecast hours
 export FHOUT=3                                        ;#forecast output frequency in hours
 #---------------------------------------------------------
 #---------------------------------------------------------
@@ -47,8 +47,8 @@ case $CASE in
         export master_grid=1deg;   export REMAP_TASKS=48 ;;
   C384) export DELTIM=450 ; export layout_x=4; export layout_y=8;  export NODES=16;
         export master_grid=0p5deg; export REMAP_TASKS=96 ;;
-  C768) export DELTIM=225 ; export layout_x=8; export layout_y=16; export NODES=64;;
-        export master_grid=0p25deg; export REMAP_TASKS=384 ;;
+  C768) export DELTIM=225 ; export layout_x=8; export layout_y=16; export NODES=64;
+        export master_grid=0p5deg; export REMAP_TASKS=192 ;;
   *)    echo "grid $CASE not supported, exit"
         exit ;;
 esac
@@ -76,8 +76,19 @@ else
 fi
 
 export FCSTEXEC=fv3_gfs_${TYPE}.${COMP}.${MODE}.x
-export FCST_LUNCHER="aprun -n $tasks -N $task_per_node -d $nth_f $j_opt -cc depth" 
+export FCST_LAUNCHER="aprun -n $tasks -N $task_per_node -d $nth_f $j_opt -cc depth" 
 #--------------------------------------------------------------------------
+. $MODULESHOME/init/sh 2>/dev/null
+cp $FV3DIR/NEMS/src/conf/module-setup.sh.inc module-setup.sh
+cp $FV3DIR/NEMS/src/conf/modules.nems modules.fv3
+source ./module-setup.sh
+module use $( pwd -P )
+module load modules.fv3
+export IOBUF_PARAMS=${IOBUF_PARAMS:-'*:size=8M:verbose'}
+export MPICH_GNI_COLL_OPT_OFF=${MPICH_GNI_COLL_OPT_OFF:-MPI_Alltoallv}
+export MKL_CBWR=AVX2
+module list
+
 
 #--NSST optins
 export nstf_name="2,0,1,0,5"
@@ -96,7 +107,7 @@ export IPD4=YES
 export REMAPSH=$FV3DIR_RELEASE/ush/fv3gfs_remap.sh            #remap 6-tile output to global array in netcdf
 export REMAPEXE=$FV3DIR_RELEASE/exec/fregrid_parallel
 #export master_grid=0p25deg                              #1deg 0p5deg 0p25deg 0p125deg etc
-export REMAP_LUNCHER="aprun -n 48 -N 12 -j 1 -d 2 -cc depth"
+export REMAP_LAUNCHER="aprun -n 48 -N 12 -j 1 -d 2 -cc depth"
 
 $REMAPSH
 

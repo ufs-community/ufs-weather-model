@@ -1,11 +1,11 @@
 #!/bin/sh -l
-#PBS -o out
-#PBS -e err
+#PBS -o out_theia
+#PBS -e err_theia
 #PBS -N fv3gfs
 #PBS -A nems
 ###PBS -q dev
 #PBS -d .
-#PBS -l nodes=192:ppn=12
+#PBS -l nodes=24:ppn=12
 #PBS -l walltime=04:00:00
 
 set -x
@@ -30,7 +30,7 @@ set -x
 
 export machine=theia              ;#WCOSS_C, theia, etc
 export PSLOT=fv3gfs               ;#user-defined experiment name
-export CASE=C768                  ;#resolution, C96, C384 or C768
+export CASE=C96                   ;#resolution, C96, C384 or C768
 export CDATE=2016092900           ;#initial condition dates  2016092900 2016011812 2016081200               
 
 export BASE_DATA=/scratch4/NCEPDEV/nems/noscrub/emc.nemspara/FV3GFS_V0_RELEASE ;# data directory
