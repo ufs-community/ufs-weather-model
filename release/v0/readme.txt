@@ -189,7 +189,7 @@ A6: External libraries used in this release include:
      questions: esmf_support@list.woc.noaa.gov
 
 Q7: Where to get help for fv3 dycore questions?
-A7: GFDL fv3 team
+A7: GFDL fv3 team at: oar.gfdl.fvgfs_support@noaa.gov
 
 Q8: Where to get help for gfs physics  questions?
 A8: GFS physics team
