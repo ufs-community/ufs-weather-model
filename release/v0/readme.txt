@@ -1,19 +1,16 @@
 ---------------------------------------------------------------------
 Instruction for Building and Running FV3GFS v0 release Forecast Experiments  
 ---------------------------------------------------------------------
-Revision History
-04/30/2017 -- Fanglin Yang, First version.
-05/05/2017 -- Jun Wang,     Reorganized into two sections
 
 Section 1: How to get code, compile and run experiment
 
 Note: The workflow has only been tested on WCOSS Cray, theia and jet.
 
 1.  check out release version at:
-      https://svnemc.ncep.noaa.gov/projects/nems/apps/NEMSfv3gfs/tags/fv3_release.v0, 
+      https://svnemc.ncep.noaa.gov/projects/nems/apps/NEMSfv3gfs/tags/fv3gfs.v0beta 
 
-    %svn co https://svnemc.ncep.noaa.gov/projects/nems/apps/NEMSfv3gfs/tags/fv3_release.v0
-    %cd fv3_release.v0
+    %svn co https://svnemc.ncep.noaa.gov/projects/nems/apps/NEMSfv3gfs/tags/fv3gfs.v0beta
+    %cd fv3gfs.v0beta
 
 2.  Compile source code:
     a) compile nems fv3 forecast the model.  
@@ -54,7 +51,16 @@ Note: The workflow has only been tested on WCOSS Cray, theia and jet.
        run directory is at: /gpfs/hps/stmp/$LOGNAME/C96fv3gfs2016092900
        results are saved at: /gpfs/hps/ptmp/$LOGNAME/fv3gfs/C96/gfs.20160929/00
 
-        on theia:
+        on theia: 
+       If you do not belong to nems group, please change the job account from nems to your account, 
+        change runjob_theia.sh line 5:
+
+          #PBS -A nems
+
+        to find your account on theia, please issue following command in iany of your local directory:
+          % account_params
+       
+       to submit a job on theia:
       % qsub runjob_theia.sh
        job error file: err_theia, output print file: out_theia
        run directory is at: /scratch4/NCEPDEV/stmp3/$LOGNAME/C96fv3gfs2016092900
@@ -64,7 +70,7 @@ Note: The workflow has only been tested on WCOSS Cray, theia and jet.
    A baseline for default experiment is set up on supported platforms.  To compare with baseline:
   
      % cd .
-     fv3_release.v0/release/v0/exp
+     current dirctory is now: fv3_release.v0/release/v0/exp
      % ./diff_baseline.sh   
    
    A message will be given at the end of the script.
@@ -78,8 +84,8 @@ Note: The workflow has only been tested on WCOSS Cray, theia and jet.
 
 Section 2: Questions and Answers:
     
-Q1: Where are the fixed files?
-A1: Fixed fields (binary files) are located on WCOSS Surgei/Luna, Theia and jet
+Q1: Where are the fix files?
+A1: The fix files (binary files) are located on WCOSS Surgei/Luna, Theia and jet
    a) wcoss_cray:
    /gpfs/hps/emc/nems/noscrub/emc.nemspara/FV3GFS_V0_RELEASE/fix
    b) theia:
