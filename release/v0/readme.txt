@@ -17,7 +17,7 @@ Note: The workflow has only been tested on WCOSS Cray, theia and jet.
 
       %cd release/v0/exp
       %./build.sh machine_name(wcoss_cray, theia, or jet)
-      Four executable files will be created under fv3_release.v0/trunk/NEMS/exe:
+      Four executable files will be created under fv3gfs.v0beta/trunk/NEMS/exe:
         fv3_gfs_hydro.prod.32bit.x*  
         fv3_gfs_hydro.prod.64bit.x*  
         fv3_gfs_nh.prod.32bit.x*  
@@ -27,9 +27,9 @@ Note: The workflow has only been tested on WCOSS Cray, theia and jet.
    b) compile remap source code
     
       %cd ../sorc/fre-nctools.fd
-       now the current directory is: fv3_release.v0/release/v0/sorc/fre-nctools.fd
+       now the current directory is: fv3gfs.v0beta/release/v0/sorc/fre-nctools.fd
       % ./BUILD_TOOLS.csh machine_name (wcoss_cray, theiai or jet)
-        Six executables will be shown under:  fv3_release.v0/release/v0/exec
+        Six executables will be shown under:  fv3gfs.v0beta/release/v0/exec
           filter_topo
           fregrid
           fregrid_parallel
@@ -43,7 +43,7 @@ Note: The workflow has only been tested on WCOSS Cray, theia and jet.
     the outputs are then remapped to 1 degree global lat-lon grid in netcdf format)
 
       %cd ../../exp 
-       now the current directory is: fv3_release.v0/release/v0/exp
+       now the current directory is: fv3gfs.v0beta/release/v0/exp
 
         on wcoss cray:
       % bsub < runjob_cray.sh
@@ -70,7 +70,7 @@ Note: The workflow has only been tested on WCOSS Cray, theia and jet.
    A baseline for default experiment is set up on supported platforms.  To compare with baseline:
   
      % cd .
-     current dirctory is now: fv3_release.v0/release/v0/exp
+     current dirctory is now: fv3gfs.v0beta/release/v0/exp
      % ./diff_baseline.sh   
    
    A message will be given at the end of the script.
@@ -106,7 +106,7 @@ A2: Initial conditions from WCOSS Surge are in a fixed location on WCOSS Surge/L
  
 Q3: How to run a non-default experiment?
 A4: First view the job card to see how to submit forecast batch jobs on WCOSS Cray.
-      https://svnemc.ncep.noaa.gov/projects/nems/apps/NEMSfv3gfs/tags/fv3_release.v0/release/v0/exp
+      https://svnemc.ncep.noaa.gov/projects/nems/apps/NEMSfv3gfs/tags/fv3gfs.v0beta/release/v0/exp
       runjob_cray.sh    runjob_theia.sh   runjob_jet.sh
     
     a) run different resolution:
