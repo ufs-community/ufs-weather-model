@@ -49,7 +49,7 @@ FV3DIR=${1:-`pwd`/../../..}
 FV3DIR_RELEASE=${1:-`pwd`/..}
 export FCSTEXECDIR=$FV3DIR/NEMS/exe
 
-export FHMAX=240                                      ;#maximum forecast hours
+export FHMAX=48                                       ;#maximum forecast hours
 export FHOUT=3                                        ;#forecast output frequency in hours
 #---------------------------------------------------------
 #---------------------------------------------------------
