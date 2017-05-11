@@ -17,7 +17,7 @@ Note: The workflow has only been tested on WCOSS Cray, theia and jet.
 
       %cd release/v0/exp
       %./build.sh machine_name(wcoss_cray, theia, or jet)
-      Four executable files will be created under fv3gfs.v0beta/trunk/NEMS/exe:
+      Four executable files will be created under fv3gfs.v0beta/NEMS/exe:
         fv3_gfs_hydro.prod.32bit.x*  
         fv3_gfs_hydro.prod.64bit.x*  
         fv3_gfs_nh.prod.32bit.x*  
@@ -59,6 +59,11 @@ Note: The workflow has only been tested on WCOSS Cray, theia and jet.
 
         to find your account on theia, please issue following command in iany of your local directory:
           % account_params
+       If you are Non-NCEPDEV people, please change directories DATA and ROTDIR to an area they can write to
+        change runjob_theia.sh line 41 and 45:
+          export DATA=/scratch4/NCEPDEV/stmp3/$LOGNAME/${CASE}${PSLOT}${CDATE}
+          export ROTDIR=/scratch4/NCEPDEV/stmp3/$LOGNAME/$PSLOT/$CASE
+
        
        to submit a job on theia:
       % qsub runjob_theia.sh
@@ -71,7 +76,13 @@ Note: The workflow has only been tested on WCOSS Cray, theia and jet.
   
      % cd .
      current dirctory is now: fv3gfs.v0beta/release/v0/exp
-     % ./diff_baseline.sh   
+     % ./diff_baseline.sh machine_name(wcoss_cray, theia, or jet) case(C96, C384, C768)
+       default: ./diff_baseline.sh will compare results on wcoss_cray for C96 
+     
+     on theia:
+        If you are Non-NCEPDEV people, please change directory dir1 to location of their output
+        change diff_baseline.sh line 13
+          dir1=/scratch4/NCEPDEV/stmp3/${LOGNAME}/fv3gfs/${CASE}/gfs.20160929/00
    
    A message will be given at the end of the script.
  

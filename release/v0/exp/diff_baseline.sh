@@ -4,8 +4,8 @@
 # 20170505  Jun Wang
 #
 
-CASE=${1:-C96}
-machine=${2:-wcoss_cray}
+machine=${1:-wcoss_cray}
+CASE=${2:-C96}
 if [ $machine = "wcoss_cray" ]; then
   dir1=/gpfs/hps/ptmp/$LOGNAME/fv3gfs/C96/gfs.20160929/00
   dir2=/gpfs/hps/emc/nems/noscrub/emc.nemspara/FV3GFS_V0_RELEASE/baseline/fv3gfs_nh_32bit/${CASE}/gfs.20160929/00

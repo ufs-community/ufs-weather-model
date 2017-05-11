@@ -121,7 +121,7 @@ export REMAPSH=$FV3DIR_RELEASE/ush/fv3gfs_remap.sh            #remap 6-tile outp
 export REMAPEXE=$FV3DIR_RELEASE/exec/fregrid_parallel
 export REMAP_LAUNCHER="mpirun -prepend-rank -np $REMAP_TASKS"
 
-$FV3DIR_RELEASE/modulefiles/fv3gfs/fre-nctools.${machine} module.fre-nctools
+cp $FV3DIR_RELEASE/modulefiles/fv3gfs/fre-nctools.${machine} module.fre-nctools
 module load module.fre-nctools
 module list
 
