@@ -28,14 +28,14 @@ set -x
 #
 #------------------------------------------------------------------
 
-export machine=theia              ;#WCOSS_C, theia, etc
-export PSLOT=fv3gfs               ;#user-defined experiment name
-export CASE=C96                   ;#resolution, C96, C384 or C768
-export CDATE=2016092900           ;#initial condition dates  2016092900 2016011812 2016081200               
+export machine=theia              #WCOSS_C, theia, etc
+export PSLOT=fv3gfs               #user-defined experiment name
+export CASE=C96                   #resolution, C96, C384 or C768
+export CDATE=2016092900           #initial condition dates  2016092900 2016011812 2016081200               
 
 export BASE_DATA=/scratch4/NCEPDEV/nems/noscrub/emc.nemspara/FV3GFS_V0_RELEASE ;# data directory
-export FIX_FV3=$BASE_DATA/fix/fix_fv3                 ;#model fixed fields
-export IC_DIR=$BASE_DATA/ICs                          ;#forecast initial conditions 
+export FIX_FV3=$BASE_DATA/fix/fix_fv3                 #model fixed fields
+export IC_DIR=$BASE_DATA/ICs                          #forecast initial conditions 
 
 # temporary running directory
 export DATA=/scratch4/NCEPDEV/stmp3/$LOGNAME/${CASE}${PSLOT}${CDATE}     
@@ -49,8 +49,8 @@ FV3DIR=${1:-`pwd`/../../..}
 FV3DIR_RELEASE=${1:-`pwd`/..}
 export FCSTEXECDIR=$FV3DIR/NEMS/exe
 
-export FHMAX=48                                       ;#maximum forecast hours
-export FHOUT=3                                        ;#forecast output frequency in hours
+export FHMAX=48                                       #maximum forecast hours
+export FHOUT=3                                        #forecast output frequency in hours
 #---------------------------------------------------------
 #---------------------------------------------------------
 case $CASE in
@@ -87,16 +87,16 @@ else
    export j_opt="-j 1"
 fi
 
-export FCSTEXEC=fv3_gfs_${TYPE}.${COMP}.${MODE}.x
-export mpiexec=`which mpirun`
-export FCST_LAUNCHER="$mpiexec -prepend-rank -np $PBS_NP"
-
 cp $FV3DIR/NEMS/src/conf/module-setup.sh.inc module-setup.sh
 cp $FV3DIR/NEMS/src/conf/modules.nems modules.fv3
 source ./module-setup.sh
 module use $( pwd -P )
 module load modules.fv3
 module list
+
+export FCSTEXEC=fv3_gfs_${TYPE}.${COMP}.${MODE}.x
+export mpiexec=`which mpirun`
+export FCST_LAUNCHER="$mpiexec -prepend-rank -np $PBS_NP"
 
 echo "Model started:  " `date`
 export MPI_TYPE_DEPTH=20
