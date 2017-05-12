@@ -8,7 +8,7 @@
 #BSUB -M 256
 #BSUB -extsched 'CRAYLINUX[]'
 #BSUB -W 00:30
-set -x
+set -eux
 
 #--------------------------------------------
 #--------------------------------------------
@@ -17,14 +17,14 @@ set -x
 #--------------------------------------------
 #--------------------------------------------
 
-export machine=WCOSS_C            ;#WCOSS_C, THEIA, etc
-export PSLOT=fv3gfs               ;#user-defined experiment name
-export CASE=C96                   ;#resolution, C96, C384 or C768
-export CDATE=2016092900           ;#initial condition dates  2016092900 2016011812 2016081200               
+export machine=WCOSS_C            #WCOSS_C, THEIA, etc
+export PSLOT=fv3gfs               #user-defined experiment name
+export CASE=C96                   #resolution, C96, C384 or C768
+export CDATE=2016092900           #initial condition dates  2016092900 2016011812 2016081200               
 
-export BASE_DATA=/gpfs/hps/emc/nems/noscrub/emc.nemspara/FV3GFS_V0_RELEASE   ;# source directory
-export FIX_FV3=$BASE_DATA/fix/fix_fv3                  ;#model fixed fields
-export IC_DIR=$BASE_DATA/ICs                           ;#forecast initial conditions 
+export BASE_DATA=/gpfs/hps/emc/nems/noscrub/emc.nemspara/FV3GFS_V0_RELEASE   # source directory
+export FIX_FV3=$BASE_DATA/fix/fix_fv3                  #model fixed fields
+export IC_DIR=$BASE_DATA/ICs                           #forecast initial conditions 
 
 # temporary running directory
 export DATA=/gpfs/hps/stmp/$LOGNAME/${CASE}${PSLOT}${CDATE}     
@@ -38,8 +38,8 @@ export FV3DIR=`pwd`/../../..
 export FV3DIR_RELEASE=`pwd`/..
 export FCSTEXECDIR=$FV3DIR/NEMS/exe
 
-export FHMAX=48                                       ;#maximum forecast hours
-export FHOUT=3                                        ;#forecast output frequency in hours
+export FHMAX=48                                       #maximum forecast hours
+export FHOUT=3                                        #forecast output frequency in hours
 #---------------------------------------------------------
 #---------------------------------------------------------
 case $CASE in
@@ -75,8 +75,6 @@ else
    export j_opt="-j 1"
 fi
 
-export FCSTEXEC=fv3_gfs_${TYPE}.${COMP}.${MODE}.x
-export FCST_LAUNCHER="aprun -n $tasks -N $task_per_node -d $nth_f $j_opt -cc depth" 
 #--------------------------------------------------------------------------
 . $MODULESHOME/init/sh 2>/dev/null
 cp $FV3DIR/NEMS/src/conf/module-setup.sh.inc module-setup.sh
@@ -89,6 +87,8 @@ export MPICH_GNI_COLL_OPT_OFF=${MPICH_GNI_COLL_OPT_OFF:-MPI_Alltoallv}
 export MKL_CBWR=AVX2
 module list
 
+export FCSTEXEC=fv3_gfs_${TYPE}.${COMP}.${MODE}.x
+export FCST_LAUNCHER="aprun -n $tasks -N $task_per_node -d $nth_f $j_opt -cc depth" 
 
 #--NSST optins
 export nstf_name="2,0,1,0,5"
