@@ -9,10 +9,25 @@ Note: The workflow has only been tested on WCOSS Cray, theia and jet.
 
 1.  Check out release version at:
 --------------------------------
-      https://svnemc.ncep.noaa.gov/projects/nems/apps/NEMSfv3gfs/tags/fv3gfs.v0beta
+      https://svnemc.ncep.noaa.gov/projects/nems/apps/NEMSfv3gfs/tags/fv3gfs.v0release
 
-     % svn co https://svnemc.ncep.noaa.gov/projects/nems/apps/NEMSfv3gfs/tags/fv3gfs.v0beta
-     % cd fv3gfs.v0beta
+     % svn co https://svnemc.ncep.noaa.gov/projects/nems/apps/NEMSfv3gfs/tags/fv3gfs.v0release
+     % cd fv3gfs.v0release
+
+     Code is also accessible via git at NCEP's VLab.
+
+     Initiate VLab account creation using your noaa.gov credentials via 
+     https://vlab.ncep.noaa.gov/redmine/
+
+     To request access to the fv3gfs git repo, fill in the web form located here
+     https://vlab.ncep.noaa.gov/group/fv3gfs/home
+
+     Clone the fv3gfs repo
+     % git clone https://user.name@vlab.ncep.noaa.gov/git/comfv3
+     % cd comfv3
+     % git submodule init
+     % git submodule update
+
 
 2.  Compile source code:
 ------------------------
@@ -20,7 +35,7 @@ Note: The workflow has only been tested on WCOSS Cray, theia and jet.
 
      % cd release/v0/exp
      % ./build.sh machine_name(wcoss_cray, theia, or jet)
-      Four executable files will be created under fv3gfs.v0beta/NEMS/exe:
+      Four executable files will be created under fv3gfs.v0release/NEMS/exe:
         fv3_gfs_hydro.prod.32bit.x*
         fv3_gfs_hydro.prod.64bit.x*
         fv3_gfs_nh.prod.32bit.x*
@@ -30,9 +45,9 @@ Note: The workflow has only been tested on WCOSS Cray, theia and jet.
    b) compile remap source code
 
      % cd ../sorc/fre-nctools.fd
-      now the current directory is: fv3gfs.v0beta/release/v0/sorc/fre-nctools.fd
+      now the current directory is: fv3gfs.v0release/release/v0/sorc/fre-nctools.fd
      % ./BUILD_TOOLS.csh machine_name (wcoss_cray, theia or jet)
-      Six executables will be located under:  fv3gfs.v0beta/release/v0/exec
+      Six executables will be located under:  fv3gfs.v0release/release/v0/exec
           filter_topo
           fregrid
           fregrid_parallel
@@ -47,7 +62,7 @@ Note: The workflow has only been tested on WCOSS Cray, theia and jet.
     the outputs are then remapped to 1 degree global lat-lon grid in netcdf format)
 
      % cd ../../exp
-       now the current directory is: fv3gfs.v0beta/release/v0/exp
+       now the current directory is: fv3gfs.v0release/release/v0/exp
 
         on wcoss cray:
      % bsub < runjob_cray.sh
@@ -80,7 +95,7 @@ Note: The workflow has only been tested on WCOSS Cray, theia and jet.
    A baseline for default experiment is set up on supported platforms. To compare with baseline:
 
      % cd .
-       current directory is now: fv3gfs.v0beta/release/v0/exp
+       current directory is now: fv3gfs.v0release/release/v0/exp
      % ./diff_baseline.sh machine_name(wcoss_cray, theia, or jet) case(C96, C384, C768)
        default: ./diff_baseline.sh will compare results on wcoss_cray for C96
 
@@ -123,7 +138,7 @@ A2: Initial conditions from WCOSS Surge are in a fixed location on WCOSS Surge/L
 
 Q3: How to run a non-default experiment?
 A4: First view the job card to see how to submit forecast batch jobs on WCOSS Cray.
-      https://svnemc.ncep.noaa.gov/projects/nems/apps/NEMSfv3gfs/tags/fv3gfs.v0beta/release/v0/exp
+      https://svnemc.ncep.noaa.gov/projects/nems/apps/NEMSfv3gfs/tags/fv3gfs.v0release/release/v0/exp
       runjob_cray.sh    runjob_theia.sh   runjob_jet.sh
 
     a) run different resolution:
