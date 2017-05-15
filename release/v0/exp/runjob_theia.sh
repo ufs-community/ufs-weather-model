@@ -86,6 +86,7 @@ else
    export hyperthread=".false."
    export j_opt="-j 1"
 fi
+export FCSTEXEC=fv3_gfs_${TYPE}.${COMP}.${MODE}.x
 
 cp $FV3DIR/NEMS/src/conf/module-setup.sh.inc module-setup.sh
 cp $FV3DIR/NEMS/src/conf/modules.nems modules.fv3
@@ -94,7 +95,6 @@ module use $( pwd -P )
 module load modules.fv3
 module list
 
-export FCSTEXEC=fv3_gfs_${TYPE}.${COMP}.${MODE}.x
 export mpiexec=`which mpirun`
 export FCST_LAUNCHER="$mpiexec -prepend-rank -np $PBS_NP"
 

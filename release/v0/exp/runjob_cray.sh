@@ -75,6 +75,8 @@ else
    export j_opt="-j 1"
 fi
 
+export FCSTEXEC=fv3_gfs_${TYPE}.${COMP}.${MODE}.x
+
 #--------------------------------------------------------------------------
 . $MODULESHOME/init/sh 2>/dev/null
 cp $FV3DIR/NEMS/src/conf/module-setup.sh.inc module-setup.sh
@@ -87,7 +89,6 @@ export MPICH_GNI_COLL_OPT_OFF=${MPICH_GNI_COLL_OPT_OFF:-MPI_Alltoallv}
 export MKL_CBWR=AVX2
 module list
 
-export FCSTEXEC=fv3_gfs_${TYPE}.${COMP}.${MODE}.x
 export FCST_LAUNCHER="aprun -n $tasks -N $task_per_node -d $nth_f $j_opt -cc depth" 
 
 #--NSST optins
