@@ -38,6 +38,7 @@ export JNPES=$JNPES_dflt
 export TASKS=$TASKS_dflt
 export TPN=$TPN_dflt
 export WARM_START=.F.
+export READ_INCREMENT=.F.
 export NGGPS_IC=.T.
 export EXTERNAL_IC=.T.
 export MAKE_NH=.T.

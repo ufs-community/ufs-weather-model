@@ -189,7 +189,7 @@ if [[ $CREATE_BASELINE == true ]]; then
   rm -rf "${NEW_BASELINE}"
   mkdir -p "${NEW_BASELINE}"
   echo "copy REGRESSION_TEST_baselines"
-  cp -r "$RTPWD" "$NEW_BASELINE"
+  cp -rf "$RTPWD"/* "$NEW_BASELINE"/.
 
 fi
 
@@ -352,7 +352,7 @@ while read -r line; do
     [[ -e "tests/$TEST_NAME" ]] || die "run test file tests/$TEST_NAME does not exist"
     [[ $SET_ID != ' ' && $SET != *${SET_ID}* ]] && continue
     [[ $MACHINES != ' ' && $MACHINES != *${MACHINE_ID}* ]] && continue
-    [[ $CREATE_BASELINE == true && $CB != *nmm* ]] && continue
+    [[ $CREATE_BASELINE == true && $CB != *fv3* ]] && continue
 
     if [[ $ROCOTO == true && $new_compile == true ]]; then
       new_compile=false
