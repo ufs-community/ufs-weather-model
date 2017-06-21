@@ -6,6 +6,7 @@ load 'nemscommon.input'
 # Common prep step at the top of all fv3 tests:
 
 embed bash fv3_prep(RUNDIR,modules,CNTL) [[[
+        rm -rf "$RUNDIR"
         mkdir -p "$RUNDIR" "$CNTL"
         cd @[RUNDIR]
 
@@ -23,13 +24,15 @@ embed bash fv3_prep(RUNDIR,modules,CNTL) [[[
         export ESMF_RUNTIME_COMPLIANCECHECK=OFF:depth=4
 
 	# Set the stack limit as high as we can.
-	for try_limit in 20000 18000 12000 9000 6000 3000 1500 1000 800 ; do
-	    if [[ ! ( $( ulimit -s ) -gt $(( try_limit * 1000 )) ) ]] ; then
-		ulimit -s $(( try_limit * 1000 ))
+        if [[ $( ulimit -s ) != unlimited ]] ; then
+	    for try_limit in 20000 18000 12000 9000 6000 3000 1500 1000 800 ; do
+	        if [[ ! ( $( ulimit -s ) -gt $(( try_limit * 1000 )) ) ]] ; then
+		    ulimit -s $(( try_limit * 1000 ))
 	    else
-		break
-	    fi
-	done
+		    break
+	        fi
+	    done
+        fi
 
 	ulimit -a
 ]]]
