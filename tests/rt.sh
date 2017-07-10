@@ -90,8 +90,13 @@ elif [[ $MACHINE_ID = wcoss_cray ]]; then
   DISKNM=/gpfs/hps/emc/nems/noscrub/emc.nemspara/RT
   QUEUE=debug
   ACCNR=dev
-  STMP=/gpfs/hps/stmp
-  PTMP=/gpfs/hps/ptmp
+  if [[ -d /gpfs/hps3/ptmp ]] ; then
+      STMP=/gpfs/hps3/stmp
+      PTMP=/gpfs/hps3/ptmp
+  else
+      STMP=/gpfs/hps/stmp
+      PTMP=/gpfs/hps/ptmp
+  fi
   SCHEDULER=lsf
   MPIEXEC=aprun
   MPIEXECOPTS="\"-j 1 -n @[TASKS] -N @[TPN] -d 1\""
