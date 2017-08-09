@@ -214,11 +214,15 @@ check_results() {
     # --- create baselines
     #
     echo;echo;echo "Moving set ${TEST_NR} files ...."
+    if [[ ! -d ${NEW_BASELINE}/${CNTL_DIR} ]]; then
+      echo " mkdir -p ${NEW_BASELINE}/${CNTL_DIR}" >> ${REGRESSIONTEST_LOG}
+      mkdir -p ${NEW_BASELINE}/${CNTL_DIR}/RESTART
+    fi
 
     for i in ${LIST_FILES} ; do
-      printf %s " Moving " $i " ....."
+      printf %s " Moving " $i " ....."   >> ${REGRESSIONTEST_LOG}
       if [[ -f ${RUNDIR}/$i ]] ; then
-        cp ${RUNDIR}/${i} ${NEW_BASELINE}/${CNTL_DIR}/${i}
+        cp ${RUNDIR}/${i} ${NEW_BASELINE}/${CNTL_DIR}/${i}  
       else
         echo "Missing " ${RUNDIR}/$i " output file"
         echo;echo " Set ${TEST_NR} failed"

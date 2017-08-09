@@ -1,0 +1,278 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>Module grid_mod</title>
+  <link type="text/css" href="http://www.gfdl.noaa.gov/~fms/style/doc.css" rel="stylesheet">
+</head>
+
+<body>
+<a name="TOP"></a><font class="header" size="1"><a href="#PUBLIC INTERFACE">PUBLIC INTERFACE </a>~
+          <a href="#PUBLIC DATA">PUBLIC DATA </a>~
+          <a href="#PUBLIC ROUTINES">PUBLIC ROUTINES </a>~
+          <a href="#NAMELIST">NAMELIST </a>~
+          <a href="#DIAGNOSTIC FIELDS">DIAGNOSTIC FIELDS </a>~
+          <a href="#ERROR MESSAGES">ERROR MESSAGES </a>~
+          <a href="#REFERENCES">REFERENCES </a>~ 
+          <a href="#NOTES">NOTES</a></font>
+
+<hr>
+<h2>Module grid_mod</h2>
+
+<a name="HEADER"></a>
+<div>
+  <b>Contact:&nbsp;</b> <br>
+  <b>Reviewers:&nbsp;</b> <br>
+  <b>Change History:&nbsp;</b> <br>
+  <br>
+</div>
+
+<a name="OVERVIEW"></a>
+<hr>
+<h4>OVERVIEW</h4>
+<!-- BEGIN OVERVIEW -->
+<p class="text">Provides a set of subroutines for reading grid spec files</p>
+
+<a name="DESCRIPTION"></a>
+<div>
+Historically, there are several different formats of the grid specification
+files.  Though all  of them are NetCDF files, they differ in the information
+they contain, and in the way this information is stored. For example, the
+geographical coordinates of ocean grid cells can be stored in differently named variables in
+grid_spec.nc, or the can be in a separate component mosaic file, referred to from grid_spec.nc.
+<p>
+This module aims to isolate a casual user from the complexity of grid spec
+file parsing and to provide a unified interface for access to the grid data.
+
+At the same time, it allows the developers of the grid specifications to keep enhancing the
+internal structure transparently for the users of this module, as long as the
+interfaces of the module subroutines are preserved. 
+</div>
+
+<h4>OTHER MODULES USED</h4>
+<div>
+<pre>  constants_mod 
+        fms_mod
+     mosaic_mod
+mpp_domains_mod </pre>
+</div>
+
+<a name="PUBLIC INTERFACE"></a>
+<hr>
+<h4>PUBLIC INTERFACE</h4>
+<dl>
+<dt><a href="#get_grid_ntiles">get_grid_ntiles</a><dt><dd>returns number of mosaic tiles</dd>
+<dt><a href="#get_grid_size">get_grid_size</a></dt> <dd>returns horizontal size of the grid, or sizes of the mosaic tiles</dd>
+<dt><a href="#get_grid_cell_centers">get_grid_cell_centers</a></dt> <dd>reads arrays of grid cell center point coordinates</dd>
+<dt><a href="#get_grid_cell_vertices">get_grid_cell_vertices</a></dt> <dd>reads arrays of grid cell verices coordinates</dd>
+<dt><a href="#get_grid_cell_area">get_grid_cell_area</a></dt> <dd>reads an array of grid cell areas</dd>
+<dt><a href="#get_grid_comp_area">get_grid_comp_area</a></dt> <dd>reads an array of the areas for a component model</dd>
+</dl>
+
+
+
+<a name="PUBLIC ROUTINES"></a>
+<hr>
+<h4>PUBLIC ROUTINES</h4>
+<!-- BEGIN PUBLIC ROUTINES -->
+<ol type="a">
+
+
+<li> <a name="get_grid_ntiles"></a>
+   <h4>get_grid_ntiles</h4>
+         <pre>subroutine get_grid_ntiles(component,ntiles)</pre>
+   <dl>
+      <dt><b>DESCRIPTION</b></dt><dd>
+         Given a component name, returns the number of mosaic tiles for the component. For
+         pre-mosaic grid spec files returns 1.
+         </dd>
+      <dt><b>INPUT</b></dt><dd>
+<table border="0"> 
+   <tr>
+      <td valign="top"><tt>component</tt></td>
+      <td>A name of the component, 'ATM', 'OCN', or 'LND'<br>
+      <span class="type">[character(len=*)]</span></td>
+   </tr>
+</table>
+         </dd>
+      <dt><b>OUTPUT</b></dt><dd>
+<table border="0"> 
+   <tr>
+      <td valign="top"><tt>ntiles</tt></td><td>number of mosaic tiles for the component<br>
+      <span class="type">[integer]</span></td>
+   </tr>
+</table>
+         </dd>
+   </dl>
+
+
+<li> <a name="get_grid_size"></a>
+   <h4>get_grid_size</h4>
+   <pre>
+subroutine get_grid_size(component,nx,ny)
+subroutine get_grid_size(component,tile,nx,ny)</pre>
+   <dl>
+      <dt><b>DESCRIPTION</b></dt><dd>
+         Given a component name, returns the size of the grid for all mosaic tiles, or for the
+	 specified tile. 
+         </dd>
+      <dt><b>INPUT</b></dt><dd>
+<table border="0"> 
+   <tr>
+      <td valign="top"><tt>component</tt></td><td>A name of the component: 'ATM', 'OCN', or 'LND'<br>
+         <span class="type">[character(len=*)]</span></td>
+   </tr> <tr>
+      <td valign="top"><tt>tile</tt></td><td>Number of mosaic tile<br>
+          <span class="type">[integer]</span></td>
+   </tr>
+</table>
+         </dd>
+      <dt><b>OUTPUT</b></dt><dd>
+<table border="0"> 
+   <tr>
+      <td valign="top"><tt>nx, ny</tt></td>
+      <td>number of grid cell along respective axis, either for all mosaic tiles, 
+          or for a specified mosaic tile<br>
+          <span class="type">[integer]</span><br>
+          <span class="type">[integer, dimension(:)]</span>
+      </td>
+   </tr>
+</table>
+         </dd>
+   </dl>
+
+
+<li> <a name="get_grid_cell_centers"></a>
+   <h4>get_grid_cell_centers</h4>
+         <pre>subroutine get_grid_cell_centers(component,tile,glon,glat)</pre>
+   <dl>
+      <dt><b>DESCRIPTION</b></dt><dd>
+         Given a component name and a mosaic tile number, returns longitudes and latitudes of grid ceneters
+         for the specified mosaic tile.
+      </dd>
+      <dt><b>INPUT</b></dt><dd>
+<table border="0"> 
+   <tr>
+      <td valign="top"><tt>component</tt></td>
+      <td>A name of the component, 'ATM', 'OCN', or 'LND'<br><span class="type">[character(len=*)]</span></td>
+   </tr><tr>
+      <td valign="top"><tt>tile</tt></td><td>Number of mosaic tile<br>
+          <span class="type">[integer]</span></td>
+   </tr>
+</table>
+         </dd>
+      <dt><b>OUTPUT</b></dt><dd>
+<table border="0"> 
+   <tr>
+      <td valign="top"><tt>glon</tt></td>
+      <td>longitudes of grid cell centers, degree<br><span class="type">[real, dimension(:,:)]</span></td>
+   </tr><tr>
+      <td valign="top"><tt>glat</tt></td>
+      <td>latatitdes of grid cell centers, degree<br><span class="type">[real, dimension(:,:)]</span></td>
+   </tr>
+</table>
+         </dd>
+   </dl>
+
+
+<li> <a name="get_grid_cell_vertices"></a>
+   <h4>get_grid_cell_vertices</h4>
+         <pre>subroutine get_grid_cell_vertices(component,tile,glonb,glatb)</pre>
+   <dl>
+      <dt><b>DESCRIPTION</b></dt><dd>
+         Given a component name and a mosaic tile number, returns longitudes and latitudes of grid vertices
+         for the specified mosaic tile.
+      </dd>
+      <dt><b>INPUT</b></dt><dd>
+<table border="0"> 
+   <tr>
+      <td valign="top"><tt>component</tt></td>
+      <td>A name of the component, 'ATM', 'OCN', or 'LND'<br><span class="type">[character(len=*)]</span></td>
+   </tr><tr>
+      <td valign="top"><tt>tile</tt></td><td>Number of mosaic tile<br>
+          <span class="type">[integer]</span></td>
+   </tr>
+</table>
+         </dd>
+      <dt><b>OUTPUT</b></dt><dd>
+<table border="0"> 
+   <tr>
+      <td valign="top"><tt>glonb</tt></td>
+      <td>longitudes of grid cell vertices, degree<br><span class="type">[real, dimension(:,:)]</span></td>
+   </tr><tr>
+      <td valign="top"><tt>glatb</tt></td>
+      <td>latatitdes of grid cell vertices, degree<br><span class="type">[real, dimension(:,:)]</span></td>
+   </tr>
+</table>
+         </dd>
+   </dl>
+
+
+<li> <a name="get_grid_cell_area"></a>
+   <h4>get_grid_cell_area</h4>
+         <pre>subroutine get_grid_cell_area(component,tile,cellarea)</pre>
+   <dl>
+      <dt><b>DESCRIPTION</b></dt><dd>
+         Given a component name and a mosaic tile number, returns an array of areas
+	 for the specified tile. Note that the returnd values are <emph>full</emph>
+	 grid cell areas, so for example for land it will not depend on the fraction of
+	 land actually present in the grid cell.
+      </dd>
+      <dt><b>INPUT</b></dt><dd>
+<table border="0"> 
+   <tr>
+      <td valign="top"><tt>component</tt></td>
+      <td>A name of the component, 'ATM', 'OCN', or 'LND'<br><span class="type">[character(len=*)]</span></td>
+   </tr><tr>
+      <td valign="top"><tt>tile</tt></td><td>Number of mosaic tile<br>
+          <span class="type">[integer]</span></td>
+   </tr>
+</table>
+         </dd>
+      <dt><b>OUTPUT</b></dt><dd>
+<table border="0"> 
+   <tr>
+      <td valign="top"><tt>cellarea</tt></td>
+      <td>array of grid cell areas, m2<br><span class="type">[real, dimension(:,:)]</span></td>
+   </tr>
+</table>
+         </dd>
+   </dl>
+
+
+<li> <a name="get_grid_comp_area"></a>
+   <h4>get_grid_cell_area</h4>
+         <pre>subroutine get_grid_comp_area(component,tile,area)</pre>
+   <dl>
+      <dt><b>DESCRIPTION</b></dt><dd>
+	 Given a component name and a mosaic tile number, returns an array of component
+	 model areas for the specified tile. Note that the returnd values are the areas
+	 for each grid cell that belong to the specified component, so for example for
+	 land it will depend on the fraction of land actually present in the grid cell.
+	 For atmosphere the area returned by this routine is the same as the cell area
+	 area returned by <tt>get_grid_cell_area</tt>
+      </dd>
+      <dt><b>INPUT</b></dt><dd>
+<table border="0"> 
+   <tr>
+      <td valign="top"><tt>component</tt></td>
+      <td>A name of the component, 'ATM', 'OCN', or 'LND'<br><span class="type">[character(len=*)]</span></td>
+   </tr><tr>
+      <td valign="top"><tt>tile</tt></td><td>Number of mosaic tile<br>
+          <span class="type">[integer]</span></td>
+   </tr>
+</table>
+         </dd>
+      <dt><b>OUTPUT</b></dt><dd>
+<table border="0"> 
+   <tr>
+      <td valign="top"><tt>area</tt></td>
+      <td>array of grid cell areas, m2<br><span class="type">[real, dimension(:,:)]</span></td>
+   </tr>
+</table>
+         </dd>
+   </dl>
+
+</ol>
+<hr>
+</body>
+</html>

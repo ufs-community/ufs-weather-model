@@ -1,0 +1,248 @@
+
+# WCOSS PLATFORMS
+
+wcoss.common={   # Common resources for all WCOSSes
+    use platform.defaults
+    MACHINE_ID='wcoss'
+
+    HOMEnems=PWD_UP5
+    HOMErt=OUTPUT_PATH
+    INPUTS="@[BASELINE]"
+#    INPUTS='/meso/noscrub/wx20rv/REGRESSION_TEST'
+}
+
+platform wcoss.phase2 {
+    use wcoss.common
+    CPU_ACCOUNT='GFS-T2O'
+    pex='1'
+    cores_per_node=24
+    cpus_per_core=2
+    MPI='LSF'
+    SHORT_TEST_QUEUE='&SHORTQ;'
+    LONG_TEST_QUEUE='&LONGQ;'
+    BUILD_QUEUE='&BUILDQ;'
+    MACHINE_ID='wcoss.phase2'
+    BASELINE="/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20170629"
+    BASELINE_TEMPLATE="/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20170629"
+
+    default_resources={
+        TASKS=144
+        TPN=12
+        INPES=3
+        JNPES=8
+        THRD=1
+    }
+    default_stretched_resources={
+        TASKS=48
+        TPN=12
+        INPES=2
+        JNPES=4
+        THRD=2
+    }
+    default_nested_resources={
+	use default_stretched_resources
+        TASKS=96
+    }
+    default_threaded_resources={
+        TASKS=72
+        TPN=6
+        INPES=3
+        JNPES=4
+        THRD=2
+    }
+
+    embed bash detect [[[
+        # This function is used at PARSE TIME to detect whether we are
+        # on WCOSS Phase 2.  It must be very fast and low resource
+        # usage since the parser runs it.
+        if [[ -d /usrx && -d /global && -e /etc/redhat-release && \
+              -e /etc/prod ]] ; then
+            # We are on WCOSS Phase 1 or 2.
+            if ( cat /proc/cpuinfo |grep 'processor.*32' > /dev/null ) ; then
+                # Not 32 fake (hyperthreading) cpus, so Phase 2.
+                exit 0
+            fi
+        fi
+        exit 1
+    ]]]
+
+    # ROCOTO SUPPORT ---------------------------------------------------
+    rocoto={
+        install_dir="@[HOMErt]"
+        log_dir="@[TMPrt]/log"
+        scheduler="lsf"
+        entities=[[[
+  <!ENTITY SHORTQ "dev2">
+  <!ENTITY LONGQ "dev2">
+  <!ENTITY BUILDQ "dev2_shared">
+]]]
+        build_resources=[[[
+      <!-- Build job resources minus wallclock -->
+      <queue>@[BUILD_QUEUE]</queue>
+      <memory>4G</memory>
+      <cores>1</cores>
+      <native>-R 'affinity[core(1)]'</native>
+]]]
+        short_test_resources=[[[
+    <!-- Short test job -->
+    <queue>@[SHORT_TEST_QUEUE]</queue>
+    <memory></memory> <!-- Unlimited memory -->
+    <native>-a poe</native>
+]]]
+        long_test_resources=[[[
+    <!-- Long test job -->
+    <queue>@[LONG_TEST_QUEUE]</queue>
+    <memory></memory> <!-- Unlimited memory -->
+    <native>-a poe</native>
+]]]
+    }
+
+}
+
+platform wcoss.phase1 {
+    # Implement phase 1 support as a trivial extension of phase 2
+    # 16 cores per node instead of 24, use dev queue instead of dev2
+    use wcoss.phase2
+    pex='1'
+    cores_per_node=16
+    cpus_per_core=2
+    MACHINE_ID='wcoss.phase1'
+    BASELINE="/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20170629"
+    BASELINE_TEMPLATE="/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20170629"
+
+    default_resources={
+        TASKS=144
+        TPN=8
+        INPES=3
+        JNPES=8
+        THRD=1
+    }
+    default_stretched_resources={
+        TASKS=48
+        TPN=8
+        INPES=2
+        JNPES=4
+        THRD=2
+    }
+    default_nested_resources={
+	use default_stretched_resources
+        TASKS=96
+    }
+    default_threaded_resources={
+        TASKS=72
+        TPN=4
+        INPES=3
+        JNPES=4
+        THRD=2
+    }
+
+    embed bash detect [[[
+        # This function is used at PARSE TIME to detect whether we are
+        # on WCOSS Phase 2.  It must be very fast and low resource
+        # usage since the parser runs it.
+        if [[ -d /usrx && -d /global && -e /etc/redhat-release && \
+              -e /etc/prod ]] ; then
+            # We are on WCOSS Phase 1 or 2.
+            if ( cat /proc/cpuinfo |grep 'processor.*32' > /dev/null ) ; then
+                # Not 32 fake (hyperthreading) cpus, so Phase 2.
+                exit 1
+            fi
+            exit 0
+        fi
+	exit 1
+    ]]]
+
+    # ROCOTO SUPPORT ---------------------------------------------------
+    rocoto={
+        use wcoss.phase2%rocoto
+        entities=[[[
+  <!ENTITY SHORTQ "dev">
+  <!ENTITY LONGQ "dev">
+  <!ENTITY BUILDQ "dev_shared">
+]]]
+    }
+
+}
+
+platform wcoss.cray {
+    use wcoss.common
+    MACHINE_ID='wcoss.cray'
+    pex='cray'
+    cores_per_node=24
+    cpus_per_core=2
+    MPI='lsf_cray_intel'
+    SHORT_TEST_QUEUE='&SHORTQ;'
+    LONG_TEST_QUEUE='&LONGQ;'
+    BUILD_QUEUE='&BUILDQ;'
+
+    TASK_THROTTLE='1'
+    BUILD_WALLTIME="1800"
+
+    BASELINE="/gpfs/hps/emc/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20170629"
+    BASELINE_TEMPLATE="/gpfs/hps/emc/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20170629"
+
+
+    default_resources={
+        TASKS=144
+        TPN=24
+        INPES=3
+        JNPES=8
+        THRD=1
+    }
+    default_stretched_resources={
+        TASKS=48
+        TPN=12
+        INPES=2
+        JNPES=4
+        THRD=2
+    }
+    default_nested_resources={
+	use default_stretched_resources
+        TASKS=96
+    }
+    default_threaded_resources={
+        TASKS=72
+        TPN=12
+        INPES=3
+        JNPES=4
+        THRD=2
+    }
+
+    embed bash detect [[[
+        # This function is used at PARSE TIME to detect whether we are
+        # on WCOSS Cray.  It must be very fast and low resource usage
+        # since the parser runs it.
+        if [[ -d /gpfs/hps && -e /etc/SuSE-release && -d /usrx ]] ; then
+            exit 0
+        fi
+        exit 1
+    ]]]
+
+    # ROCOTO SUPPORT ---------------------------------------------------
+    rocoto={
+        install_dir="@[HOMErt]"
+        log_dir="@[TMPrt]/log"
+        scheduler="lsfcray"
+        entities=[[[
+  <!ENTITY SHORTQ "debug">
+  <!ENTITY LONGQ "dev">
+  <!ENTITY BUILDQ "debug">
+]]]
+        build_resources=[[[
+      <!-- Build job resources minus wallclock -->
+      <queue>@[BUILD_QUEUE]</queue>
+      <cores>24</cores>
+      <exclusive></exclusive>
+]]]
+        short_test_resources=[[[
+    <!-- Short test job -->
+    <queue>@[SHORT_TEST_QUEUE]</queue>
+    <exclusive></exclusive>
+]]]
+        long_test_resources=[[[
+    <!-- Long test job -->
+    <queue>@[LONG_TEST_QUEUE]</queue>
+    <exclusive></exclusive>
+]]]
+    }
+}

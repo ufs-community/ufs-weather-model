@@ -10,16 +10,21 @@
 if [ $MACHINE_ID = wcoss ]; then
 
   TASKS_dflt=144 ; TPN_dflt=16 ; INPES_dflt=3 ; JNPES_dflt=8
+  TASKS_stretch=48 ; TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
+  TASKS_strnest=96 ; TPN_strnest=12 ; INPES_strnest=2 ; JNPES_strnest=4
 
 elif [ $MACHINE_ID = wcoss_cray ]; then
 
   TASKS_dflt=144 ; TPN_dflt=24 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=72  ; TPN_thrd=12 ; INPES_thrd=3 ; JNPES_thrd=4
-
+  TASKS_stretch=48 ; TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
+  TASKS_strnest=96 ; TPN_strnest=12 ; INPES_strnest=2 ; JNPES_strnest=4
 elif [ $MACHINE_ID = theia ]; then
 
   TASKS_dflt=144 ; TPN_dflt=24 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=72  ; TPN_thrd=12 ; INPES_thrd=3 ; JNPES_thrd=4
+  TASKS_stretch=48 ; TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
+  TASKS_strnest=96 ; TPN_strnest=12 ; INPES_strnest=2 ; JNPES_strnest=4
 
 
 fi
@@ -33,6 +38,7 @@ export JNPES=$JNPES_dflt
 export TASKS=$TASKS_dflt
 export TPN=$TPN_dflt
 export WARM_START=.F.
+export READ_INCREMENT=.F.
 export NGGPS_IC=.T.
 export EXTERNAL_IC=.T.
 export MAKE_NH=.T.

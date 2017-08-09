@@ -90,8 +90,13 @@ elif [[ $MACHINE_ID = wcoss_cray ]]; then
   DISKNM=/gpfs/hps/emc/nems/noscrub/emc.nemspara/RT
   QUEUE=debug
   ACCNR=dev
-  STMP=/gpfs/hps/stmp
-  PTMP=/gpfs/hps/ptmp
+  if [[ -d /gpfs/hps3/ptmp ]] ; then
+      STMP=/gpfs/hps3/stmp
+      PTMP=/gpfs/hps3/ptmp
+  else
+      STMP=/gpfs/hps/stmp
+      PTMP=/gpfs/hps/ptmp
+  fi
   SCHEDULER=lsf
   MPIEXEC=aprun
   MPIEXECOPTS="\"-j 1 -n @[TASKS] -N @[TPN] -d 1\""
@@ -177,7 +182,7 @@ while getopts ":cfsl:mreh" opt; do
   esac
 done
 
-RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/trunk-20170421}
+RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/trunk-20170629}
 
 shift $((OPTIND-1))
 [[ $# -gt 0 ]] && usage
@@ -189,7 +194,7 @@ if [[ $CREATE_BASELINE == true ]]; then
   rm -rf "${NEW_BASELINE}"
   mkdir -p "${NEW_BASELINE}"
   echo "copy REGRESSION_TEST_baselines"
-  cp -r "$RTPWD" "$NEW_BASELINE"
+  cp -rf "$RTPWD"/* "$NEW_BASELINE"/.
 
 fi
 
@@ -352,7 +357,7 @@ while read -r line; do
     [[ -e "tests/$TEST_NAME" ]] || die "run test file tests/$TEST_NAME does not exist"
     [[ $SET_ID != ' ' && $SET != *${SET_ID}* ]] && continue
     [[ $MACHINES != ' ' && $MACHINES != *${MACHINE_ID}* ]] && continue
-    [[ $CREATE_BASELINE == true && $CB != *nmm* ]] && continue
+    [[ $CREATE_BASELINE == true && $CB != *fv3* ]] && continue
 
     if [[ $ROCOTO == true && $new_compile == true ]]; then
       new_compile=false
