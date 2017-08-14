@@ -1,15 +1,21 @@
 
+if [ $NPX = 97 ]; then
+  inputdir=FV3_input_data
+elif [ $NPX = 769 ]; then
+  inputdir=FV3_input_data_C768
+fi
+echo "inputdir=$inputdir,NPX=$NPX"
 if [ $WARM_START = .F. ]; then
-  cp -r @[RTPWD]/FV3_input_data/INPUT .
+  cp -r @[RTPWD]/${inputdir}/INPUT .
   mkdir RESTART
 else
   mkdir INPUT RESTART
-  cp -r @[RTPWD]/FV3_input_data/RESTART/* ./INPUT
+  cp -r @[RTPWD]/${inputdir}/RESTART/* ./INPUT
 fi
-cp    @[RTPWD]/FV3_input_data/INPUT/aerosol.dat .
-cp    @[RTPWD]/FV3_input_data/INPUT/co2historicaldata_201*.txt .
-cp    @[RTPWD]/FV3_input_data/INPUT/sfc_emissivity_idx.txt .
-cp    @[RTPWD]/FV3_input_data/INPUT/solarconstant_noaa_an.txt .
-cp    @[RTPWD]/FV3_input_data/*grb .
-cp    @[RTPWD]/FV3_input_data/*_table .
-cp    @[RTPWD]/FV3_input_data/*configure .
+cp    @[RTPWD]/${inputdir}/INPUT/aerosol.dat .
+cp    @[RTPWD]/${inputdir}/INPUT/co2historicaldata_201*.txt .
+cp    @[RTPWD]/${inputdir}/INPUT/sfc_emissivity_idx.txt .
+cp    @[RTPWD]/${inputdir}/INPUT/solarconstant_noaa_an.txt .
+cp    @[RTPWD]/${inputdir}/*grb .
+cp    @[RTPWD]/${inputdir}/*_table .
+cp    @[RTPWD]/${inputdir}/*configure .

@@ -126,7 +126,7 @@ fv3_defaults = {
     MOUNTAIN='.F.'
     NA_INIT='1'
     READ_INCREMENT='.F.'
-    FDIAG='0,1,2,3,4,5,6,7,8,9,10,11,12,18,24'
+    FDIAG='0,1,2,3,4,5,6,7,8,9,10,11,12,15,18,21,24'
     NSTF_NAME='2,1,1,0,5'
 
     ENS_NUM='1'
@@ -138,6 +138,16 @@ fv3_defaults = {
 
     DAYS='1'
     FHMAX='24'
+    NPX='97'
+    NPY='97'
+    NFHOUT='3'
+    NFHMAX_HF='12'
+    NFHOUT_HF='1'
+
+    QUILTING='.true.'
+    WRITE_GROUP=1
+    NUM_FILES=2
+    FILENAME_BASE="'dyn' 'phy'"
 
     walltime=900 # seconds
 }
@@ -189,18 +199,30 @@ test fv3_control: fv3.exe {
         'atmos_4xdaily.tile4.nc' .bitcmp. "@[CNTL]"
         'atmos_4xdaily.tile5.nc' .bitcmp. "@[CNTL]"
         'atmos_4xdaily.tile6.nc' .bitcmp. "@[CNTL]"
-        'nggps2d.tile1.nc'       .bitcmp. "@[CNTL]"
-        'nggps2d.tile2.nc'       .bitcmp. "@[CNTL]"
-        'nggps2d.tile3.nc'       .bitcmp. "@[CNTL]"
-        'nggps2d.tile4.nc'       .bitcmp. "@[CNTL]"
-        'nggps2d.tile5.nc'       .bitcmp. "@[CNTL]"
-        'nggps2d.tile6.nc'       .bitcmp. "@[CNTL]"
-        'nggps3d.tile1.nc'       .bitcmp. "@[CNTL]"
-        'nggps3d.tile2.nc'       .bitcmp. "@[CNTL]"
-        'nggps3d.tile3.nc'       .bitcmp. "@[CNTL]"
-        'nggps3d.tile4.nc'       .bitcmp. "@[CNTL]"
-        'nggps3d.tile5.nc'       .bitcmp. "@[CNTL]"
-        'nggps3d.tile6.nc'       .bitcmp. "@[CNTL]"
+        'phy.f000.tile1.nc'      .bitcmp. "@[CNTL]"
+        'phy.f000.tile2.nc'      .bitcmp. "@[CNTL]"
+        'phy.f000.tile3.nc'      .bitcmp. "@[CNTL]"
+        'phy.f000.tile4.nc'      .bitcmp. "@[CNTL]"
+        'phy.f000.tile5.nc'      .bitcmp. "@[CNTL]"
+        'phy.f000.tile6.nc'      .bitcmp. "@[CNTL]"
+        'phy.f024.tile1.nc'      .bitcmp. "@[CNTL]"
+        'phy.f024.tile2.nc'      .bitcmp. "@[CNTL]"
+        'phy.f024.tile3.nc'      .bitcmp. "@[CNTL]"
+        'phy.f024.tile4.nc'      .bitcmp. "@[CNTL]"
+        'phy.f024.tile5.nc'      .bitcmp. "@[CNTL]"
+        'phy.f024.tile6.nc'      .bitcmp. "@[CNTL]"
+        'dyn.f000.tile1.nc'      .bitcmp. "@[CNTL]"
+        'dyn.f000.tile2.nc'      .bitcmp. "@[CNTL]"
+        'dyn.f000.tile3.nc'      .bitcmp. "@[CNTL]"
+        'dyn.f000.tile4.nc'      .bitcmp. "@[CNTL]"
+        'dyn.f000.tile5.nc'      .bitcmp. "@[CNTL]"
+        'dyn.f000.tile6.nc'      .bitcmp. "@[CNTL]"
+        'dyn.f024.tile1.nc'      .bitcmp. "@[CNTL]"
+        'dyn.f024.tile2.nc'      .bitcmp. "@[CNTL]"
+        'dyn.f024.tile3.nc'      .bitcmp. "@[CNTL]"
+        'dyn.f024.tile4.nc'      .bitcmp. "@[CNTL]"
+        'dyn.f024.tile5.nc'      .bitcmp. "@[CNTL]"
+        'dyn.f024.tile6.nc'      .bitcmp. "@[CNTL]"
         'RESTART/coupler.res'                   .bitcmp. "@[CNTL]/RESTART/"
         'RESTART/fv_core.res.nc'                .bitcmp. "@[CNTL]/RESTART/"
         'RESTART/fv_core.res.tile1.nc'          .bitcmp. "@[CNTL]/RESTART/"
@@ -336,18 +358,30 @@ test fv3_restart: fv3.exe {
         'atmos_4xdaily.tile4.nc' .bitcmp. "@[CNTL]"
         'atmos_4xdaily.tile5.nc' .bitcmp. "@[CNTL]"
         'atmos_4xdaily.tile6.nc' .bitcmp. "@[CNTL]"
-        'nggps2d.tile1.nc'       .bitcmp. "@[CNTL]"
-        'nggps2d.tile2.nc'       .bitcmp. "@[CNTL]"
-        'nggps2d.tile3.nc'       .bitcmp. "@[CNTL]"
-        'nggps2d.tile4.nc'       .bitcmp. "@[CNTL]"
-        'nggps2d.tile5.nc'       .bitcmp. "@[CNTL]"
-        'nggps2d.tile6.nc'       .bitcmp. "@[CNTL]"
-        'nggps3d.tile1.nc'       .bitcmp. "@[CNTL]"
-        'nggps3d.tile2.nc'       .bitcmp. "@[CNTL]"
-        'nggps3d.tile3.nc'       .bitcmp. "@[CNTL]"
-        'nggps3d.tile4.nc'       .bitcmp. "@[CNTL]"
-        'nggps3d.tile5.nc'       .bitcmp. "@[CNTL]"
-        'nggps3d.tile6.nc'       .bitcmp. "@[CNTL]"
+        'phy.f027.tile1.nc'      .bitcmp. "@[CNTL]"
+        'phy.f027.tile2.nc'      .bitcmp. "@[CNTL]"
+        'phy.f027.tile3.nc'      .bitcmp. "@[CNTL]"
+        'phy.f027.tile4.nc'      .bitcmp. "@[CNTL]"
+        'phy.f027.tile5.nc'      .bitcmp. "@[CNTL]"
+        'phy.f027.tile6.nc'      .bitcmp. "@[CNTL]"
+        'phy.f048.tile1.nc'      .bitcmp. "@[CNTL]"
+        'phy.f048.tile2.nc'      .bitcmp. "@[CNTL]"
+        'phy.f048.tile3.nc'      .bitcmp. "@[CNTL]"
+        'phy.f048.tile4.nc'      .bitcmp. "@[CNTL]"
+        'phy.f048.tile5.nc'      .bitcmp. "@[CNTL]"
+        'phy.f048.tile6.nc'      .bitcmp. "@[CNTL]"
+        'dyn.f027.tile1.nc'      .bitcmp. "@[CNTL]"
+        'dyn.f027.tile2.nc'      .bitcmp. "@[CNTL]"
+        'dyn.f027.tile3.nc'      .bitcmp. "@[CNTL]"
+        'dyn.f027.tile4.nc'      .bitcmp. "@[CNTL]"
+        'dyn.f027.tile5.nc'      .bitcmp. "@[CNTL]"
+        'dyn.f027.tile6.nc'      .bitcmp. "@[CNTL]"
+        'dyn.f048.tile1.nc'      .bitcmp. "@[CNTL]"
+        'dyn.f048.tile2.nc'      .bitcmp. "@[CNTL]"
+        'dyn.f048.tile3.nc'      .bitcmp. "@[CNTL]"
+        'dyn.f048.tile4.nc'      .bitcmp. "@[CNTL]"
+        'dyn.f048.tile5.nc'      .bitcmp. "@[CNTL]"
+        'dyn.f048.tile6.nc'      .bitcmp. "@[CNTL]"
         'RESTART/coupler.res'                   .bitcmp. "@[CNTL]/RESTART/"
         'RESTART/fv_core.res.nc'                .bitcmp. "@[CNTL]/RESTART/"
         'RESTART/fv_core.res.tile1.nc'          .bitcmp. "@[CNTL]/RESTART/"
@@ -434,18 +468,30 @@ test fv3_read_inc: fv3.exe {
         'atmos_4xdaily.tile4.nc' .bitcmp. "@[CNTL]"
         'atmos_4xdaily.tile5.nc' .bitcmp. "@[CNTL]"
         'atmos_4xdaily.tile6.nc' .bitcmp. "@[CNTL]"
-        'nggps2d.tile1.nc'       .bitcmp. "@[CNTL]"
-        'nggps2d.tile2.nc'       .bitcmp. "@[CNTL]"
-        'nggps2d.tile3.nc'       .bitcmp. "@[CNTL]"
-        'nggps2d.tile4.nc'       .bitcmp. "@[CNTL]"
-        'nggps2d.tile5.nc'       .bitcmp. "@[CNTL]"
-        'nggps2d.tile6.nc'       .bitcmp. "@[CNTL]"
-        'nggps3d.tile1.nc'       .bitcmp. "@[CNTL]"
-        'nggps3d.tile2.nc'       .bitcmp. "@[CNTL]"
-        'nggps3d.tile3.nc'       .bitcmp. "@[CNTL]"
-        'nggps3d.tile4.nc'       .bitcmp. "@[CNTL]"
-        'nggps3d.tile5.nc'       .bitcmp. "@[CNTL]"
-        'nggps3d.tile6.nc'       .bitcmp. "@[CNTL]"
+        'phy.f027.tile1.nc'      .bitcmp. "@[CNTL]"
+        'phy.f027.tile2.nc'      .bitcmp. "@[CNTL]"
+        'phy.f027.tile3.nc'      .bitcmp. "@[CNTL]"
+        'phy.f027.tile4.nc'      .bitcmp. "@[CNTL]"
+        'phy.f027.tile5.nc'      .bitcmp. "@[CNTL]"
+        'phy.f027.tile6.nc'      .bitcmp. "@[CNTL]"
+        'phy.f048.tile1.nc'      .bitcmp. "@[CNTL]"
+        'phy.f048.tile2.nc'      .bitcmp. "@[CNTL]"
+        'phy.f048.tile3.nc'      .bitcmp. "@[CNTL]"
+        'phy.f048.tile4.nc'      .bitcmp. "@[CNTL]"
+        'phy.f048.tile5.nc'      .bitcmp. "@[CNTL]"
+        'phy.f048.tile6.nc'      .bitcmp. "@[CNTL]"
+        'dyn.f027.tile1.nc'      .bitcmp. "@[CNTL]"
+        'dyn.f027.tile2.nc'      .bitcmp. "@[CNTL]"
+        'dyn.f027.tile3.nc'      .bitcmp. "@[CNTL]"
+        'dyn.f027.tile4.nc'      .bitcmp. "@[CNTL]"
+        'dyn.f027.tile5.nc'      .bitcmp. "@[CNTL]"
+        'dyn.f027.tile6.nc'      .bitcmp. "@[CNTL]"
+        'dyn.f048.tile1.nc'      .bitcmp. "@[CNTL]"
+        'dyn.f048.tile2.nc'      .bitcmp. "@[CNTL]"
+        'dyn.f048.tile3.nc'      .bitcmp. "@[CNTL]"
+        'dyn.f048.tile4.nc'      .bitcmp. "@[CNTL]"
+        'dyn.f048.tile5.nc'      .bitcmp. "@[CNTL]"
+        'dyn.f048.tile6.nc'      .bitcmp. "@[CNTL]"
         'RESTART/coupler.res'                   .bitcmp. "@[CNTL]/RESTART/"
         'RESTART/fv_core.res.nc'                .bitcmp. "@[CNTL]/RESTART/"
         'RESTART/fv_core.res.tile1.nc'          .bitcmp. "@[CNTL]/RESTART/"
@@ -522,6 +568,8 @@ test fv3_stretched: fv3_32bit.exe {
     SHOUR="00"
     FHMAX="48"
     DT_ATMOS="450"
+
+    QUILTING='.false.'
 
     filters input {
        #    WORK FILE  <=filter=   SOURCE FILE
@@ -623,6 +671,8 @@ test fv3_stretched_nest: fv3_32bit.exe {
     SHOUR="00"
     FHMAX="48"
     DT_ATMOS="450"
+
+    QUILTING='.false.'
 
     filters input {
        #    WORK FILE  <=filter=   SOURCE FILE

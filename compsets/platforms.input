@@ -55,16 +55,17 @@ platform theia {
 
     # INPUTS is the input directory, which should contain fix and parm
     # files, plus any restarts or other inputs.
-    BASELINE="/scratch4/NCEPDEV/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20170629"
-    BASELINE_TEMPLATE="/scratch4/NCEPDEV/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20170629"
+    BASELINE="/scratch4/NCEPDEV/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20170714"
+    BASELINE_TEMPLATE="/scratch4/NCEPDEV/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20170714"
     INPUTS="@[BASELINE]"
 
     default_resources={
-        TASKS=144
+        TASKS=150
         TPN=24
         INPES=3
         JNPES=8
         THRD=1
+        WRTTASK_PER_GROUP=6
     }
     default_stretched_resources={
         TASKS=48
@@ -78,11 +79,12 @@ platform theia {
         TASKS=96
     }
     default_threaded_resources={
-        TASKS=72
+        TASKS=84
         TPN=12
         INPES=3
         JNPES=4
-        THRD=1
+        THRD=2
+        WRTTASK_PER_GROUP=12
     }
 
     # PLATFORM DETECTION -----------------------------------------------
