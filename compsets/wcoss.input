@@ -22,11 +22,12 @@ platform wcoss.phase2 {
     LONG_TEST_QUEUE='&LONGQ;'
     BUILD_QUEUE='&BUILDQ;'
     MACHINE_ID='wcoss.phase2'
-    BASELINE="/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20170629"
-    BASELINE_TEMPLATE="/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20170629"
+    BASELINE="/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20170714"
+    BASELINE_TEMPLATE="/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20170714"
 
     default_resources={
-        TASKS=144
+        TASKS=150
+        WRTTASK_PER_GROUP=6
         TPN=12
         INPES=3
         JNPES=8
@@ -44,7 +45,8 @@ platform wcoss.phase2 {
         TASKS=96
     }
     default_threaded_resources={
-        TASKS=72
+        TASKS=84
+        WRTTASK_PER_GROUP=12
         TPN=6
         INPES=3
         JNPES=4
@@ -107,11 +109,12 @@ platform wcoss.phase1 {
     cores_per_node=16
     cpus_per_core=2
     MACHINE_ID='wcoss.phase1'
-    BASELINE="/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20170629"
-    BASELINE_TEMPLATE="/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20170629"
+    BASELINE="/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20170714"
+    BASELINE_TEMPLATE="/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20170714"
 
     default_resources={
-        TASKS=144
+        TASKS=150
+        WRTTASK_PER_GROUP=6
         TPN=8
         INPES=3
         JNPES=8
@@ -129,7 +132,8 @@ platform wcoss.phase1 {
         TASKS=96
     }
     default_threaded_resources={
-        TASKS=72
+        TASKS=84
+        WRTTASK_PER_GROUP=12
         TPN=4
         INPES=3
         JNPES=4
@@ -178,12 +182,13 @@ platform wcoss.cray {
     TASK_THROTTLE='1'
     BUILD_WALLTIME="1800"
 
-    BASELINE="/gpfs/hps/emc/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20170629"
-    BASELINE_TEMPLATE="/gpfs/hps/emc/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20170629"
+    BASELINE="/gpfs/hps/emc/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20170714"
+    BASELINE_TEMPLATE="/gpfs/hps/emc/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20170714"
 
 
     default_resources={
-        TASKS=144
+        TASKS=150
+        WRTTASK_PER_GROUP=6
         TPN=24
         INPES=3
         JNPES=8
@@ -201,7 +206,8 @@ platform wcoss.cray {
         TASKS=96
     }
     default_threaded_resources={
-        TASKS=72
+        TASKS=84
+        WRTTASK_PER_GROUP=12
         TPN=12
         INPES=3
         JNPES=4

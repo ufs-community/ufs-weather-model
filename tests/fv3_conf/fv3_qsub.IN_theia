@@ -5,7 +5,7 @@
 #PBS -A @[ACCNR]
 #PBS -q @[QUEUE]
 #PBS -d .
-#PBS -l nodes=@[NODES]:ppn=@[TPN]
+#PBS -l procs=@[TASKS]
 #PBS -l walltime=00:@[WLCLK]:00
 
 set -eux
@@ -15,6 +15,7 @@ source ./module-setup.sh
 module use $( pwd -P )
 module load modules.fv3
 module list
+
 set -x
 
 echo "Model started:  " `date`
