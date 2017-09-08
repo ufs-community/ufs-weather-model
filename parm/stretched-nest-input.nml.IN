@@ -27,7 +27,7 @@
 
 &fms_nml
        clock_grain = 'ROUTINE',
-       domains_stack_size = 115200,
+       domains_stack_size = 3000000,
        print_memory_usage = .false.
 /
 
@@ -77,6 +77,7 @@
        ke_bg = 0.
        do_vort_damp = .true.
        external_ic = @[EXTERNAL_IC]
+       external_eta = .F.
        gfs_phil = .false.
        nggps_ic = @[NGGPS_IC]
        mountain = @[MOUNTAIN]
@@ -112,7 +113,6 @@
 
 &external_ic_nml
        filtered_terrain = .true.
-       ncep_plevels = .false.
        levp = 64
        gfs_dwinds = .true.
        checker_tr = .F.
