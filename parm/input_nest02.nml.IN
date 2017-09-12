@@ -26,7 +26,7 @@
 
  &fms_nml
        clock_grain = 'ROUTINE',
-       domains_stack_size = 115200,
+       domains_stack_size = 3000000,
        print_memory_usage = .F.
 /
 
@@ -76,6 +76,7 @@
        ke_bg = 0.
        do_vort_damp = .T.
        external_ic = .T.
+       external_eta = .F.
        gfs_phil = .false.
        nggps_ic = @[NGGPS_IC]
        mountain = @[MOUNTAIN]
@@ -147,7 +148,6 @@
 
  &external_ic_nml 
        filtered_terrain = .true.
-       ncep_plevels = .false.
        levp = 64
        gfs_dwinds = .true.
        checker_tr = .F.
@@ -206,28 +206,28 @@
 /
 
 &namsfc
-       FNGLAC   = "/gpfs/hps/emc/global/noscrub/emc.glopara/svn/fv3gfs/trunk/global_shared.v15.0.0/fix/fix_am/global_glacier.2x2.grb",
-       FNMXIC   = "/gpfs/hps/emc/global/noscrub/emc.glopara/svn/fv3gfs/trunk/global_shared.v15.0.0/fix/fix_am/global_maxice.2x2.grb",
-       FNTSFC   = "/gpfs/hps/emc/global/noscrub/emc.glopara/svn/fv3gfs/trunk/global_shared.v15.0.0/fix/fix_am/RTGSST.1982.2012.monthly.clim.grb",
-       FNSNOC   = "/gpfs/hps/emc/global/noscrub/emc.glopara/svn/fv3gfs/trunk/global_shared.v15.0.0/fix/fix_am/global_snoclim.1.875.grb",
+       FNGLAC   = "global_glacier.2x2.grb",
+       FNMXIC   = "global_maxice.2x2.grb",
+       FNTSFC   = "RTGSST.1982.2012.monthly.clim.grb",
+       FNSNOC   = "global_snoclim.1.875.grb",
        FNZORC   = "igbp"
-!       FNZORC   = "/gpfs/hps/emc/global/noscrub/emc.glopara/svn/fv3gfs/trunk/global_shared.v15.0.0/fix/fix_am/global_zorclim.1x1.grb",
-       FNALBC   = "/gpfs/hps/emc/global/noscrub/emc.glopara/svn/fv3gfs/trunk/global_shared.v15.0.0/fix/fix_am/global_snowfree_albedo.bosu.t126.384.190.rg.grb",
-       FNALBC2  = "/gpfs/hps/emc/global/noscrub/emc.glopara/svn/fv3gfs/trunk/global_shared.v15.0.0/fix/fix_am/global_albedo4.1x1.grb",
-       FNAISC   = "/gpfs/hps/emc/global/noscrub/emc.glopara/svn/fv3gfs/trunk/global_shared.v15.0.0/fix/fix_am/CFSR.SEAICE.1982.2012.monthly.clim.grb",
-       FNTG3C   = "/gpfs/hps/emc/global/noscrub/emc.glopara/svn/fv3gfs/trunk/global_shared.v15.0.0/fix/fix_am/global_tg3clim.2.6x1.5.grb",
-       FNVEGC   = "/gpfs/hps/emc/global/noscrub/emc.glopara/svn/fv3gfs/trunk/global_shared.v15.0.0/fix/fix_am/global_vegfrac.0.144.decpercent.grb",
-       FNVETC   = "/gpfs/hps/emc/global/noscrub/emc.glopara/svn/fv3gfs/trunk/global_shared.v15.0.0/fix/fix_am/global_vegtype.igbp.t126.384.190.rg.grb",
-       FNSOTC   = "/gpfs/hps/emc/global/noscrub/emc.glopara/svn/fv3gfs/trunk/global_shared.v15.0.0/fix/fix_am/global_soiltype.statsgo.t126.384.190.rg.grb",
-       FNSMCC   = "/gpfs/hps/emc/global/noscrub/emc.glopara/svn/fv3gfs/trunk/global_shared.v15.0.0/fix/fix_am/global_soilmgldas.t126.384.190.grb",
-       FNMSKH   = "/gpfs/hps/emc/global/noscrub/emc.glopara/svn/fv3gfs/trunk/global_shared.v15.0.0/fix/fix_am/seaice_newland.grb",
+!       FNZORC   = "global_zorclim.1x1.grb",
+       FNALBC   = "global_snowfree_albedo.bosu.t126.384.190.rg.grb",
+       FNALBC2  = "global_albedo4.1x1.grb",
+       FNAISC   = "CFSR.SEAICE.1982.2012.monthly.clim.grb",
+       FNTG3C   = "global_tg3clim.2.6x1.5.grb",
+       FNVEGC   = "global_vegfrac.0.144.decpercent.grb",
+       FNVETC   = "global_vegtype.igbp.t126.384.190.rg.grb",
+       FNSOTC   = "global_soiltype.statsgo.t126.384.190.rg.grb",
+       FNSMCC   = "global_soilmgldas.t126.384.190.grb",
+       FNMSKH   = "seaice_newland.grb",
        FNTSFA   = "",
        FNACNA   = "",
        FNSNOA   = "",
-       FNVMNC   = "/gpfs/hps/emc/global/noscrub/emc.glopara/svn/fv3gfs/trunk/global_shared.v15.0.0/fix/fix_am/global_shdmin.0.144x0.144.grb",
-       FNVMXC   = "/gpfs/hps/emc/global/noscrub/emc.glopara/svn/fv3gfs/trunk/global_shared.v15.0.0/fix/fix_am/global_shdmax.0.144x0.144.grb",
-       FNSLPC   = "/gpfs/hps/emc/global/noscrub/emc.glopara/svn/fv3gfs/trunk/global_shared.v15.0.0/fix/fix_am/global_slope.1x1.grb",
-       FNABSC   = "/gpfs/hps/emc/global/noscrub/emc.glopara/svn/fv3gfs/trunk/global_shared.v15.0.0/fix/fix_am/global_mxsnoalb.uariz.t126.384.190.rg.grb",
+       FNVMNC   = "global_shdmin.0.144x0.144.grb",
+       FNVMXC   = "global_shdmax.0.144x0.144.grb",
+       FNSLPC   = "global_slope.1x1.grb",
+       FNABSC   = "global_mxsnoalb.uariz.t126.384.190.rg.grb",
        LDEBUG   =.false.,
        FSMCL(2) = 99999
        FSMCL(3) = 99999
