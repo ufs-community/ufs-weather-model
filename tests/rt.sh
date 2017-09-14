@@ -92,10 +92,10 @@ elif [[ $MACHINE_ID = wcoss_cray ]]; then
   ACCNR=dev
   if [[ -d /gpfs/hps3/ptmp ]] ; then
       STMP=/gpfs/hps3/stmp
-      PTMP=/gpfs/hps3/ptmp
+      PTMP=/gpfs/hps3/stmp
   else
-      STMP=/gpfs/hps/stmp
-      PTMP=/gpfs/hps/ptmp
+      STMP=/gpfs/hps3/stmp
+      PTMP=/gpfs/hps3/ptmp
   fi
   SCHEDULER=lsf
   MPIEXEC=aprun
@@ -182,7 +182,7 @@ while getopts ":cfsl:mreh" opt; do
   esac
 done
 
-RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/trunk-20170908}
+RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/trunk-20170912}
 
 shift $((OPTIND-1))
 [[ $# -gt 0 ]] && usage
