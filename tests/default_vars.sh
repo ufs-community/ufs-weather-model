@@ -42,6 +42,10 @@ export WRITE_GROUP=1
 export WRTTASK_PER_GROUP=6
 export NUM_FILES=2
 export FILENAME_BASE="'dyn' 'phy'"
+export OUTPUT_GRID="'cubed_sphere_grid'"
+export WRITE_NEMSIOFILE=.false.
+export IMO=384
+export JMO=190
 
 export WARM_START=.F.
 export READ_INCREMENT=.F.
