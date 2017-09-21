@@ -1,0 +1,16 @@
+
+if [ $WARM_START = .F. ]; then
+  cp -r @[RTPWD]/FV3_input_data/INPUT .
+  mkdir RESTART
+else
+  mkdir INPUT RESTART
+  cp -r @[RTPWD]/FV3_input_data/RESTART/* ./INPUT
+fi
+cp    @[RTPWD]/FV3_input_data/INPUT/aerosol.dat .
+cp    @[RTPWD]/FV3_input_data/INPUT/co2historicaldata_201*.txt .
+cp    @[RTPWD]/FV3_input_data/INPUT/sfc_emissivity_idx.txt .
+cp    @[RTPWD]/FV3_input_data/INPUT/solarconstant_noaa_an.txt .
+cp    @[RTPWD]/FV3_input_data/*grb .
+cp    @[RTPWD]/FV3_input_data/*_table .
+cp    @[RTPWD]/FV3_input_data/field_table_gfdlmp field_table
+cp    @[RTPWD]/FV3_input_data/*configure .
