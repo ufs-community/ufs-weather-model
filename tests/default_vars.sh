@@ -73,4 +73,10 @@ export FHMAX=`expr $DAYS \* 24`
 export DT_ATMOS=1800
 
 
+export SKEB=-999.
+export SPPT=-999.
+export SHUM=-999.
+export IAU_INC_FILES="''"
+
+
 }

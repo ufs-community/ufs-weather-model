@@ -92,7 +92,8 @@ submit_and_wait() {
 
     elif [[ $SCHEDULER = 'pbs' ]]; then
 
-      status=$( qstat -u ${USER} -n | grep ${JBNME} | awk '{print $"10"}' ); status=${status:--}
+      #status=$( qstat -u ${USER} -n | grep ${JBNME} | awk '{print $"10"}' ); status=${status:--}  PJP comment out to speed up regression test
+      status=$( qstat -u ${USER} -n | grep ${JBNME} | awk '{print $10}' ); status=${status:--}
       if [[ -f ${RUNDIR}/err ]] ; then FnshHrs=$( tail -100 ${RUNDIR}/err | grep Finished | tail -1 | awk '{ print $9 }' ); fi
       FnshHrs=${FnshHrs:-0}
       if   [[ $status = 'Q' ]];  then echo "$n min. TEST ${TEST_NR} is waiting in a queue, Status: $status jobid ${jobid}"

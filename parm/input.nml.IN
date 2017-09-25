@@ -161,6 +161,9 @@
        isot           = 1
        debug          = .false.
        nstf_name      = @[NSTF_NAME]
+       iau_delthrs    = 6
+       iaufhrs        = 30
+       iau_inc_files  = @[IAU_INC_FILES]
 /
 
 &nggps_diag_nml
@@ -211,4 +214,26 @@
        FABSL    = 99999,
        FSNOS    = 99999,
        FSICS    = 99999,
+/
+&nam_stochy
+  lon_s=768,
+  lat_s=384, 
+  ntrunc=382,
+  SKEBNORM=1,
+  SKEB_NPASS=30,
+  SKEB_VDOF=5,
+  SKEB=@[SKEB],
+  SKEB_TAU=2.16E4,
+  SKEB_LSCALE=1000.E3,
+  SHUM=@[SHUM],
+  SHUM_TAU=21600,
+  SHUM_LSCALE=500000,
+  SPPT=@[SPPT],
+  SPPT_TAU=21600,
+  SPPT_LSCALE=500000,
+  SPPT_LOGIT=.TRUE.,
+  SPPT_SFCLIMIT=.TRUE.,
+  ISEED_SHUM=1,
+  ISEED_SKEB=2,
+  ISEED_SPPT=3,
 /
