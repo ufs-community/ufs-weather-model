@@ -270,7 +270,7 @@ test fv3_control: fv3.exe {
       # for comparison against the MD5 sum made in the build job.
       # This is to ensure the executable did not change during the
       # test suite.
-        "@[build%target]" .md5cmp. "@[fv3.exe%md5sum]"
+        "@[build%target]" .md5cmp. "@[build%md5sum]"
     }
 
     spawn execute {
@@ -290,8 +290,6 @@ test fv3_appbuilder: fv3_appbuilder.exe {
     TEST_DESCR="Compare FV3 with the NEMSAppBuilder against the previous trunk version"
     CNTL_NAME='fv3_control'
 
-    output=fv3_control%output
-
     spawn execute {
         {"@[build%target]", ranks="@[TASKS]", threads="@[THRD]" }
     }
@@ -304,8 +302,6 @@ test fv3_2threads: fv3.exe {
     use plat%default_threaded_resources
 
     TEST_DESCR="Compare FV3 2 threads results with previous trunk version"
-
-    output=fv3_control%output
 
     spawn execute {
         {"@[build%target]", ranks="@[TASKS]", threads="@[THRD]" }
@@ -320,8 +316,6 @@ test fv3_decomp: fv3.exe {
 
     INPES='6'
     JNPES='4'
-
-    output=fv3_control%output
 }
 
 ########################################################################

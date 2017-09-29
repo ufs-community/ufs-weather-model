@@ -87,7 +87,7 @@ elif [[ $MACHINE_ID = wcoss_cray ]]; then
   export PATH=/gpfs/hps/nco/ops/ecf/ecfdir/ecflow.v4.1.0.intel/bin:$PATH
   export PYTHONPATH=/gpfs/hps/nco/ops/ecf/ecfdir/ecflow.v4.1.0.intel/lib/python2.6/site-packages
   ECFLOW_START=/gpfs/hps/nco/ops/ecf/ecfdir/ecflow.v4.1.0.intel/bin/ecflow_start.sh
-  DISKNM=/gpfs/hps/emc/nems/noscrub/emc.nemspara/RT
+  DISKNM=/gpfs/hps3/emc/nems/noscrub/emc.nemspara/RT
   QUEUE=debug
   ACCNR=dev
   if [[ -d /gpfs/hps3/ptmp ]] ; then
