@@ -44,6 +44,7 @@ export NUM_FILES=2
 export FILENAME_BASE="'dyn' 'phy'"
 export OUTPUT_GRID="'cubed_sphere_grid'"
 export WRITE_NEMSIOFILE=.false.
+export WRITE_NEMSIOFLIP=.false.
 export IMO=384
 export JMO=190
 
