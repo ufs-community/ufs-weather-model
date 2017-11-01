@@ -19,13 +19,13 @@ elif [ $MACHINE_ID = wcoss_cray ]; then
   TASKS_thrd=84  ; TPN_thrd=12 ; INPES_thrd=3 ; JNPES_thrd=4
   TASKS_stretch=48 ; TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=12 ; INPES_strnest=2 ; JNPES_strnest=4
+
 elif [ $MACHINE_ID = theia ]; then
 
   TASKS_dflt=150 ; TPN_dflt=24 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=84  ; TPN_thrd=12 ; INPES_thrd=3 ; JNPES_thrd=4
   TASKS_stretch=48 ; TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=12 ; INPES_strnest=2 ; JNPES_strnest=4
-
 
 fi
 
@@ -43,7 +43,7 @@ export WRTTASK_PER_GROUP=6
 export NUM_FILES=2
 export FILENAME_BASE="'dyn' 'phy'"
 export OUTPUT_GRID="'cubed_sphere_grid'"
-export WRITE_NEMSIOFILE=.false.
+export OUTPUT_FILE="'netcdf'"
 export WRITE_NEMSIOFLIP=.false.
 export IMO=384
 export JMO=190
@@ -64,7 +64,6 @@ export NFHOUT=3
 export NFHMAX_HF=12
 export NFHOUT_HF=1
 
-
 export ENS_NUM=1
 export SYEAR=2016
 export SMONTH=10
@@ -73,11 +72,8 @@ export SHOUR=00
 export FHMAX=`expr $DAYS \* 24`
 export DT_ATMOS=1800
 
-
 export SKEB=-999.
 export SPPT=-999.
 export SHUM=-999.
 export IAU_INC_FILES="''"
-
-
 }

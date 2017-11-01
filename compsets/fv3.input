@@ -81,7 +81,7 @@ build fv3.exe {
     build=compile.sh(fv3="@[target]",modules="@[modules.nems]",md5="@[md5sum]")
 }
 
- 
+
 build fv3_32bit.exe {
     # This block builds the FV3 in 32 bit mode.  It is otherwise
     # identical to the fv3.exe block.
@@ -149,7 +149,7 @@ fv3_defaults = {
     NUM_FILES=2
     FILENAME_BASE="'dyn' 'phy'"
     OUTPUT_GRID="'cubed_sphere_grid'"
-    WRITE_NEMSIOFILE='.false.'
+    OUTPUT_FILE="'netcdf'"
     WRITE_NEMSIOFLIP='.false.'
     IMO='384'
     JMO='190'
@@ -275,7 +275,7 @@ test fv3_control: fv3.exe {
     }
 
     spawn execute {
-        # Run the 
+        # Run the
         {"@[build%target]", ranks="@[TASKS]" }
     }
 }
@@ -325,7 +325,7 @@ test fv3_restart: fv3.exe {
     use fv3_control
     TEST_DESCR="Compare FV3 restart results with previous trunk version"
     CNTL_NAME='fv3_restart'
-    
+
     WARM_START='.T.'
     NGGPS_IC='.F.'
     EXTERNAL_IC='.F.'
@@ -434,7 +434,7 @@ test fv3_read_inc: fv3.exe {
     use fv3_control
     TEST_DESCR="Compare FV3 read_inc results with previous trunk version"
     CNTL_NAME='fv3_read_inc'
-    
+
     WARM_START='.T.'
     READ_INCREMENT='.T.'
     NGGPS_IC='.F.'
@@ -653,7 +653,7 @@ test fv3_gfdlmp: fv3.exe {
     }
 
     spawn execute {
-        # Run the 
+        # Run the
         {"@[build%target]", ranks="@[TASKS]" }
     }
 }
@@ -667,7 +667,7 @@ test fv3_wrtGauss_nemsio: fv3.exe {
     CNTL_NAME="fv3_wrtGauss_nemsio"
 
     OUTPUT_GRID="'gaussian_grid'"
-    WRITE_NEMSIOFILE='.true.'
+    OUTPUT_FILE="'nemsio'"
     WRITE_NEMSIOFLIP='.true.'
 
     COM="@[plat%COMrt]/@[TEST_NAME]"          # Test result area
@@ -738,6 +738,7 @@ test fv3_wrtGauss_netcdf: fv3.exe {
     CNTL_NAME="fv3_wrtGauss_netcdf"
 
     OUTPUT_GRID="'gaussian_grid'"
+    OUTPUT_FILE="'netcdf'"
 
     COM="@[plat%COMrt]/@[TEST_NAME]"          # Test result area
     RUNDIR="@[plat%TMPrt]/@[TEST_NAME]"       # Test work area
@@ -799,12 +800,80 @@ test fv3_wrtGauss_netcdf: fv3.exe {
 }
 ########################################################################
 
+test fv3_wrtGauss_netcdf_esmf: fv3.exe {
+    use fv3_control
+
+    TEST_DESCR="Compare FV3 Gaussian grid netcdf output results with previous trunk version"
+    CNTL_NAME="fv3_wrtGauss_netcdf"
+
+    OUTPUT_GRID="'gaussian_grid'"
+    OUTPUT_FILE="'netcdf_esmf'"
+
+    COM="@[plat%COMrt]/@[TEST_NAME]"          # Test result area
+    RUNDIR="@[plat%TMPrt]/@[TEST_NAME]"       # Test work area
+    CNTL="@[plat%BASELINE]/@[CNTL_NAME]"      # Control baseline area
+
+    # Specify output files:
+    criteria output {
+        # WORKFILE                            .comparison. TARGET
+        'atmos_4xdaily.tile1.nc' .bitcmp. "@[CNTL]"
+        'atmos_4xdaily.tile2.nc' .bitcmp. "@[CNTL]"
+        'atmos_4xdaily.tile3.nc' .bitcmp. "@[CNTL]"
+        'atmos_4xdaily.tile4.nc' .bitcmp. "@[CNTL]"
+        'atmos_4xdaily.tile5.nc' .bitcmp. "@[CNTL]"
+        'atmos_4xdaily.tile6.nc' .bitcmp. "@[CNTL]"
+        'phyf000.nc'            .bitcmp. "@[CNTL]"
+        'phyf024.nc'            .bitcmp. "@[CNTL]"
+        'dynf000.nc'            .bitcmp. "@[CNTL]"
+        'dynf024.nc'            .bitcmp. "@[CNTL]"
+        'RESTART/coupler.res'                   .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_core.res.nc'                .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_core.res.tile1.nc'          .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_core.res.tile2.nc'          .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_core.res.tile3.nc'          .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_core.res.tile4.nc'          .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_core.res.tile5.nc'          .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_core.res.tile6.nc'          .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_srf_wnd.res.tile1.nc'       .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_srf_wnd.res.tile2.nc'       .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_srf_wnd.res.tile3.nc'       .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_srf_wnd.res.tile4.nc'       .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_srf_wnd.res.tile5.nc'       .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_srf_wnd.res.tile6.nc'       .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_tracer.res.tile1.nc'        .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_tracer.res.tile2.nc'        .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_tracer.res.tile3.nc'        .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_tracer.res.tile4.nc'        .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_tracer.res.tile5.nc'        .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/fv_tracer.res.tile6.nc'        .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/phy_data.tile1.nc'             .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/phy_data.tile2.nc'             .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/phy_data.tile3.nc'             .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/phy_data.tile4.nc'             .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/phy_data.tile5.nc'             .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/phy_data.tile6.nc'             .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/sfc_data.tile1.nc'             .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/sfc_data.tile2.nc'             .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/sfc_data.tile3.nc'             .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/sfc_data.tile4.nc'             .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/sfc_data.tile5.nc'             .bitcmp. "@[CNTL]/RESTART/"
+        'RESTART/sfc_data.tile6.nc'             .bitcmp. "@[CNTL]/RESTART/"
+
+      # Executable validation.  This makes an MD5 sum of the fv3.exe
+      # for comparison against the MD5 sum made in the build job.
+      # This is to ensure the executable did not change during the
+      # test suite.
+        "@[build%target]" .md5cmp. "@[fv3.exe%md5sum]"
+
+    }
+}
+########################################################################
 test fv3_control_32bit: fv3_32bit.exe {
     use fv3_control
 
     TEST_DESCR="Compare FV3 32bit compile results with previous trunk version"
     CNTL_NAME="fv3_control_32bit"
-    
+
     build=fv3_32bit.exe
 
     COM="@[plat%COMrt]/@[TEST_NAME]"          # Test result area
@@ -886,7 +955,7 @@ test fv3_iau: fv3.exe {
     use fv3_control
     TEST_DESCR="Compare FV3 IAU results with previous trunk version"
     CNTL_NAME='fv3_iau'
-    
+
     WARM_START='.T.'
     NGGPS_IC='.F.'
     EXTERNAL_IC='.F.'
@@ -990,7 +1059,7 @@ test fv3_iau: fv3.exe {
     }
 
     spawn execute {
-        # Run the 
+        # Run the
         {"@[build%target]", ranks="@[TASKS]" }
     }
 }
@@ -1002,7 +1071,7 @@ test fv3_stochy: fv3.exe {
     use fv3_control
     TEST_DESCR="Compare FV3 stochy results with previous trunk version"
     CNTL_NAME='fv3_stochy'
-    
+
     SKEB='0.3'
     SHUM='0.003'
     SPPT='0.2'
@@ -1101,7 +1170,7 @@ test fv3_stochy: fv3.exe {
     }
 
     spawn execute {
-        # Run the 
+        # Run the
         {"@[build%target]", ranks="@[TASKS]" }
     }
 }
@@ -1114,7 +1183,7 @@ test fv3_stretched: fv3_32bit.exe {
 
     TEST_DESCR="Stretched grid; compare against previous baseline"
     CNTL_NAME="fv3_stretched"
-    
+
     build=fv3_32bit.exe
 
     COM="@[plat%COMrt]/@[TEST_NAME]"          # Test result area
@@ -1217,7 +1286,7 @@ test fv3_stretched_nest: fv3_32bit.exe {
 
     TEST_DESCR="Stretched grid with nest; compare against previous baseline"
     CNTL_NAME="fv3_stretched_nest"
-    
+
     build=fv3_32bit.exe
 
     COM="@[plat%COMrt]/@[TEST_NAME]"          # Test result area
@@ -1325,5 +1394,5 @@ test fv3_stretched_nest: fv3_32bit.exe {
 
     spawn execute {
         {"@[build%target]", ranks="@[TASKS]", threads="@[THRD]", ppn="@[TPN]" }
-    }	
+    }
 }

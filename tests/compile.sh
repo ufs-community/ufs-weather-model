@@ -40,8 +40,8 @@ gmake ${MAKE_OPT} -j 8 nemsinstall
 
 # Build NEMS
 cd $PATHNEMS/src
-export COMP=FV3                     
-export COMP_SRCDIR=$PATHTR           
+export COMP=FV3
+export COMP_SRCDIR=$PATHTR
 export COMP_BINDIR=$PATHTR/FV3_INSTALL
 gmake nems COMP=,fv3, FV3_DIR=$PATHTR
 

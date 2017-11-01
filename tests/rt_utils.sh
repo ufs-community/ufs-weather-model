@@ -223,7 +223,7 @@ check_results() {
     for i in ${LIST_FILES} ; do
       printf %s " Moving " $i " ....."   >> ${REGRESSIONTEST_LOG}
       if [[ -f ${RUNDIR}/$i ]] ; then
-        cp ${RUNDIR}/${i} ${NEW_BASELINE}/${CNTL_DIR}/${i}  
+        cp ${RUNDIR}/${i} ${NEW_BASELINE}/${CNTL_DIR}/${i}
       else
         echo "Missing " ${RUNDIR}/$i " output file"
         echo;echo " Set ${TEST_NR} failed"
@@ -431,7 +431,7 @@ ecflow_run() {
   set -e
 
   ECFLOW_RUNNING=true
- 
+
   export ECF_PORT
   export ECF_NODE
 
