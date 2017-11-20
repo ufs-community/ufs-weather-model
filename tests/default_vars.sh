@@ -58,18 +58,26 @@ export NA_INIT=1
 export DAYS=1
 export NPX=97
 export NPY=97
+export NPZ=63
+export NPZP=64
 export NSTF_NAME=2,1,1,0,5
 export FDIAG=0,1,2,3,4,5,6,7,8,9,10,11,12,15,18,21,24
 export NFHOUT=3
 export NFHMAX_HF=12
 export NFHOUT_HF=1
+export FNALBC="'global_snowfree_albedo.bosu.t126.384.190.rg.grb',"
+export FNVETC="'global_vegtype.igbp.t126.384.190.rg.grb',"
+export FNSOTC="'global_soiltype.statsgo.t126.384.190.rg.grb',"
+export FNSMCC="'global_soilmgldas.t126.384.190.grb',"
+export FNABSC="'global_mxsnoalb.uariz.t126.384.190.rg.grb',"
+
 
 export ENS_NUM=1
 export SYEAR=2016
 export SMONTH=10
 export SDAY=03
 export SHOUR=00
-export FHMAX=`expr $DAYS \* 24`
+export FHMAX=${FHMAX:-`expr $DAYS \* 24`}
 export DT_ATMOS=1800
 
 export SKEB=-999.
