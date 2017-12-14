@@ -9,13 +9,11 @@
 
 &atmos_model_nml
        blocksize = 32
-!     surface_debug = .false.
        chksum_debug = .false.
        dycore_only = .false.
 /
 
 &diag_manager_nml
-!conserve_water = .false.
        prepend_date = .F.
 /
 
@@ -32,65 +30,66 @@
 /
 
 &fv_grid_nml
-!       grid_file = 'INPUT/grid_spec.nc'
+       grid_file = 'INPUT/grid_spec.nc'
 /
 
 &fv_core_nml
        layout   = @[INPES],@[JNPES]
        io_layout = 1,1
-       npx      = 97
-       npy      = 97
+       npx      = @[NPX]
+       npy      = @[NPY]
        ntiles   = 6,
-       npz    = 63
-       !grid_type = -1
+       npz    = @[NPZ]
+       grid_type = -1
        make_nh = @[MAKE_NH]
        fv_debug = .F.
        range_warn = .F.
        reset_eta = .F.
-       n_sponge = 20
+       n_sponge = 24
+       nudge_qv = .T.
        tau = 5.
-       rf_cutoff = 10.e2
-       d2_bg_k1 = 0.16
+       rf_cutoff = 7.5e2
+       d2_bg_k1 = 0.15
        d2_bg_k2 = 0.02
-       kord_tm = -10
-       kord_mt =  10
-       kord_wz =  10
-       kord_tr =  10
+       kord_tm = -9
+       kord_mt =  9
+       kord_wz =  9
+       kord_tr =  9
        hydrostatic = .F.
        phys_hydrostatic = .F.
        use_hydro_pressure = .F.
        beta = 0.
        a_imp = 1.
        p_fac = 0.1
-       k_split  = 1
-       n_split  = 5
-       nwat = 2
+       k_split  = 2
+       n_split  = 6
+       nwat = 6
        na_init = @[NA_INIT]
        d_ext = 0.0
        dnats = 0
        fv_sg_adj = 450
        d2_bg = 0.
        nord =  2
-       dddmp = 0.2
-       d4_bg = 0.15 
-       vtdm4 = 0.06
+       dddmp = 0.1
+       d4_bg = 0.12
+       vtdm4 = 0.02
+       delt_max = 0.002
        ke_bg = 0.
        do_vort_damp = .true.
        external_ic = @[EXTERNAL_IC]
-       external_eta = .F.
+       external_eta = .T.
        gfs_phil = .false.
        nggps_ic = @[NGGPS_IC]
        mountain = @[MOUNTAIN]
        ncep_ic = .F.
        d_con = 1.
        hord_mt =  6
-       hord_vt =  -5
-       hord_tm =  -5
-       hord_dp =  -5
-       hord_tr = -8
+       hord_vt =  6
+       hord_tm =  6
+       hord_dp =  6
+       hord_tr = 8
        adjust_dry_mass = .F.
        consv_te = 1.
-       do_sat_adj = .F.
        consv_am = .F.
        fill = .T.
        dwind_2d = .F.
@@ -98,17 +97,27 @@
        warm_start = @[WARM_START]
        no_dycore = .false.
        z_tracer = .T.
-
-       do_schmidt = .true.
-       target_lat = 35.5
-       target_lon = -97.5
-       stretch_fac = 1.5
-
+       read_increment = @[READ_INCREMENT]
+       res_latlon_dynamics = "fv3_increment.nc"
 /
+
+#&coupler_nml
+#       months = 0
+#       days  = 1
+#       hours = 0 
+#       dt_atmos = 225
+#       dt_ocean = 225
+#       current_date =  2016,10,03,00,0,0
+#       calendar = 'julian'
+#       memuse_verbose = .false.
+#       atmos_nthreads = 1
+#       use_hyper_thread = .false.
+#       ncores_per_node = 24
+#/
 
 &external_ic_nml
        filtered_terrain = .true.
-       levp = 64
+       levp = @[NPZP]
        gfs_dwinds = .true.
        checker_tr = .F.
        nt_checker = 0
@@ -121,8 +130,8 @@
        nst_anl        = .true.
        use_ufo        = .true.
        pre_rad        = .false.
-       ncld           = 1
-       imp_physics    = 99
+       ncld           = 2
+       imp_physics    = 8
        pdfcld         = .false.
        fhswr          = 3600.
        fhlwr          = 3600.
@@ -146,15 +155,15 @@
        cnvcld         = .true.
        imfshalcnv     = 2
        imfdeepcnv     = 2
-       cdmbgwd        = 2.0, 0.25       ! NCEP default
+       cdmbgwd        = 3.5,0.25
        prslrd0        = 0.
        ivegsrc        = 1
        isot           = 1
        debug          = .false.
-	   cdmbgwd = 3.5,0.25
-	   dspheat = .T.
-	   hybedmf = .F.
-	   shal_cnv = .T. !Shallow convection
+       nstf_name      = @[NSTF_NAME]
+       iau_delthrs    = 6
+       iaufhrs        = 30
+       iau_inc_files  = @[IAU_INC_FILES]
 /
 
 &nggps_diag_nml
@@ -171,14 +180,14 @@
        FNTSFC   = "RTGSST.1982.2012.monthly.clim.grb",
        FNSNOC   = "global_snoclim.1.875.grb",
        FNZORC   = "igbp",
-       FNALBC   = "global_snowfree_albedo.bosu.t126.384.190.rg.grb",
+       FNALBC   = @[FNALBC]
        FNALBC2  = "global_albedo4.1x1.grb",
        FNAISC   = "CFSR.SEAICE.1982.2012.monthly.clim.grb",
        FNTG3C   = "global_tg3clim.2.6x1.5.grb",
        FNVEGC   = "global_vegfrac.0.144.decpercent.grb",
-       FNVETC   = "global_vegtype.igbp.t126.384.190.rg.grb",
-       FNSOTC   = "global_soiltype.statsgo.t126.384.190.rg.grb",
-       FNSMCC   = "global_soilmgldas.t126.384.190.grb",
+       FNVETC   = @[FNVETC]
+       FNSOTC   = @[FNSOTC] 
+       FNSMCC   = @[FNSMCC]
        FNMSKH   = "seaice_newland.grb",
        FNTSFA   = "",
        FNACNA   = "",
@@ -186,7 +195,7 @@
        FNVMNC   = "global_shdmin.0.144x0.144.grb",
        FNVMXC   = "global_shdmax.0.144x0.144.grb",
        FNSLPC   = "global_slope.1x1.grb",
-       FNABSC   = "global_mxsnoalb.uariz.t126.384.190.rg.grb",
+       FNABSC   = @[FNABSC]
        LDEBUG   =.false.,
        FSMCL(2) = 99999
        FSMCL(3) = 99999
@@ -207,4 +216,24 @@
        FSICS    = 99999,
 /
 &nam_stochy
+  lon_s=768,
+  lat_s=384, 
+  ntrunc=382,
+  SKEBNORM=1,
+  SKEB_NPASS=30,
+  SKEB_VDOF=5,
+  SKEB=@[SKEB],
+  SKEB_TAU=2.16E4,
+  SKEB_LSCALE=1000.E3,
+  SHUM=@[SHUM],
+  SHUM_TAU=21600,
+  SHUM_LSCALE=500000,
+  SPPT=@[SPPT],
+  SPPT_TAU=21600,
+  SPPT_LSCALE=500000,
+  SPPT_LOGIT=.TRUE.,
+  SPPT_SFCLIMIT=.TRUE.,
+  ISEED_SHUM=1,
+  ISEED_SKEB=2,
+  ISEED_SPPT=3,
 /

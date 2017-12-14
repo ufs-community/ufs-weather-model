@@ -45,6 +45,7 @@ export FILENAME_BASE="'dyn' 'phy'"
 export OUTPUT_GRID="'cubed_sphere_grid'"
 export OUTPUT_FILE="'netcdf'"
 export WRITE_NEMSIOFLIP=.false.
+export WRITE_FSYNCFLAG=.false.
 export IMO=384
 export JMO=190
 
