@@ -69,7 +69,8 @@ if [[ $MACHINE_ID = wcoss ]]; then
   set -u
   ROCOTORUN="/u/Christopher.W.Harrop/rocoto/bin/rocotorun"
   ROCOTOSTAT="/u/Christopher.W.Harrop/rocoto/bin/rocotostat"
-  DISKNM=/global
+  DISKNM=/nems/noscrub/emc.nemspara/RT
+  MDISK=/global/noscrub
   QUEUE=debug
   ACCNR=GFS-T2O
   STMP=/ptmpp$pex
@@ -77,7 +78,7 @@ if [[ $MACHINE_ID = wcoss ]]; then
   SCHEDULER=lsf
   MPIEXEC=mpirun.lsf
   MPIEXECOPTS=""
-  cp fv3_conf/fv3_bsub.IN_wcoss fv3_conf/fv3_bsub.IN
+# cp fv3_conf/fv3_bsub.IN_wcoss fv3_conf/fv3_bsub.IN
 
 elif [[ $MACHINE_ID = wcoss_cray ]]; then
 
@@ -88,6 +89,7 @@ elif [[ $MACHINE_ID = wcoss_cray ]]; then
   export PYTHONPATH=/gpfs/hps/nco/ops/ecf/ecfdir/ecflow.v4.1.0.intel/lib/python2.6/site-packages
   ECFLOW_START=/gpfs/hps/nco/ops/ecf/ecfdir/ecflow.v4.1.0.intel/bin/ecflow_start.sh
   DISKNM=/gpfs/hps3/emc/nems/noscrub/emc.nemspara/RT
+  MDISK=/gpfs/hps3/emc/global/noscrub
   QUEUE=debug
   ACCNR=dev
   if [[ -d /gpfs/hps3/ptmp ]] ; then
@@ -129,7 +131,8 @@ fi
 mkdir -p ${STMP}/${USER}
 mkdir -p ${PTMP}/${USER}
 
-NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST
+ NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST
+#NEW_BASELINE=/gpfs/hps3/emc/global/noscrub/Shrinivas.Moorthi/REGRESSION_TEST
 
 RUNDIR_ROOT=${PTMP}/${USER}/FV3_RT/rt_$$
 mkdir -p ${RUNDIR_ROOT}
@@ -182,10 +185,10 @@ while getopts ":cfsl:mreh" opt; do
   esac
 done
 
-RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/trunk-20180214}
+RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/trunk-20180226}
 
 shift $((OPTIND-1))
-[[ $# -gt 0 ]] && usage
+[[ $# -gt 1 ]] && usage
 
 if [[ $CREATE_BASELINE == true ]]; then
   #
@@ -315,7 +318,8 @@ while read -r line; do
         ecflow_create_compile_task
       else
         ./compile.sh $PATHTR/FV3 $MACHINE_ID "${NEMS_VER}" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
-        echo " bash Compilei is done"
+#       ./compile.sh $PATHTR/FV3 $MACHINE_ID DEBUG=Y  $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
+        echo " bash Compile is done"
       fi
 
     continue

@@ -1,12 +1,12 @@
 ###############################################################################
 #
-#  FV3 restart test
+#  FV3 RASMGSHOC test
 #
 ###############################################################################
 
-export TEST_DESCR="Compare FV3 restart results with previous trunk version"
+export TEST_DESCR="Compare FV3 rasmgshoc results with previous trunk version"
 
-export CNTL_DIR=fv3_restart
+export CNTL_DIR=fv3_rasmgshoc
 
 export LIST_FILES="atmos_4xdaily.tile1.nc \
                    atmos_4xdaily.tile2.nc \
@@ -14,30 +14,10 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
                    atmos_4xdaily.tile4.nc \
                    atmos_4xdaily.tile5.nc \
                    atmos_4xdaily.tile6.nc \
-                   phyf027.tile1.nc \
-                   phyf027.tile2.nc \
-                   phyf027.tile3.nc \
-                   phyf027.tile4.nc \
-                   phyf027.tile5.nc \
-                   phyf027.tile6.nc \
-                   phyf048.tile1.nc \
-                   phyf048.tile2.nc \
-                   phyf048.tile3.nc \
-                   phyf048.tile4.nc \
-                   phyf048.tile5.nc \
-                   phyf048.tile6.nc \
-                   dynf027.tile1.nc \
-                   dynf027.tile2.nc \
-                   dynf027.tile3.nc \
-                   dynf027.tile4.nc \
-                   dynf027.tile5.nc \
-                   dynf027.tile6.nc \
-                   dynf048.tile1.nc \
-                   dynf048.tile2.nc \
-                   dynf048.tile3.nc \
-                   dynf048.tile4.nc \
-                   dynf048.tile5.nc \
-                   dynf048.tile6.nc \
+                   phyf000.nemsio \
+                   phyf024.nemsio \
+                   dynf000.nemsio \
+                   dynf024.nemsio \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -69,20 +49,24 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
                    RESTART/sfc_data.tile3.nc \
                    RESTART/sfc_data.tile4.nc \
                    RESTART/sfc_data.tile5.nc \
-                   RESTART/sfc_data.tile6.nc"
+                   RESTART/sfc_data.tile6.nc \
+                   RESTART/phy_data.tile1.nc \
+                   RESTART/phy_data.tile2.nc \
+                   RESTART/phy_data.tile3.nc \
+                   RESTART/phy_data.tile4.nc \
+                   RESTART/phy_data.tile5.nc \
+                   RESTART/phy_data.tile6.nc"
 
 
 export_fv3
 
-export WARM_START=.T.
-export NGGPS_IC=.F.
-export EXTERNAL_IC=.F.
-export MAKE_NH=.F.
-export MOUNTAIN=.T.
-export NA_INIT=0
-export FHMAX=48
-export FDIAG=3
-export NSTF_NAME=2,0,1,0,5
+DT_ATMOS="600"
 
+export INPUT_NML=rasmgshoc.nml.IN
+export FV3_RUN=rasmgshoc_run.IN
+export OUTPUT_GRID="'gaussian_grid'"
+export OUTPUT_FILE="'nemsio'"
+export WRITE_NEMSIOFLIP=.true.
+export WRITE_FSYNCFLAG=.true.
 
 RUN_SCRIPT=rt_fv3.sh
