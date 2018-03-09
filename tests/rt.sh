@@ -72,6 +72,7 @@ if [[ $MACHINE_ID = wcoss ]]; then
   DISKNM=/nems/noscrub/emc.nemspara/RT
   MDISK=/global/noscrub
   QUEUE=debug
+  PARTITION=
   ACCNR=GFS-T2O
   STMP=/ptmpp$pex
   PTMP=/ptmpp$pex
@@ -91,6 +92,7 @@ elif [[ $MACHINE_ID = wcoss_cray ]]; then
   DISKNM=/gpfs/hps3/emc/nems/noscrub/emc.nemspara/RT
   MDISK=/gpfs/hps3/emc/global/noscrub
   QUEUE=debug
+  PARTITION=
   ACCNR=dev
   if [[ -d /gpfs/hps3/ptmp ]] ; then
       STMP=/gpfs/hps3/stmp
@@ -104,6 +106,23 @@ elif [[ $MACHINE_ID = wcoss_cray ]]; then
   MPIEXECOPTS="\"-j 1 -n @[TASKS] -N @[TPN] -d 1\""
   cp fv3_conf/fv3_bsub.IN_wcoss_cray fv3_conf/fv3_bsub.IN
 
+elif [[ $MACHINE_ID = gaea ]]; then
+
+  source $PATHTR/NEMS/src/conf/module-setup.sh.inc
+
+#  export PATH=/gpfs/hps/nco/ops/ecf/ecfdir/ecflow.v4.1.0.intel/bin:$PATH
+  export PYTHONPATH=
+  ECFLOW_START=
+  DISKNM=/lustre/f1/pdata/ncep_shared/emc.nemspara/RT
+  QUEUE=debug
+  PARTITION=c4
+  STMP=/lustre/f1/
+  PTMP=/lustre/f1/
+  SCHEDULER=moab
+  MPIEXEC=aprun
+  MPIEXECOPTS="\"-j 1 -n @[TASKS] -N @[TPN] -d @[THRD]\""
+  cp fv3_conf/fv3_msub.IN_gaea fv3_conf/fv3_msub.IN
+
 elif [[ $MACHINE_ID = theia ]]; then
 
   source $PATHTR/NEMS/src/conf/module-setup.sh.inc
@@ -115,6 +134,7 @@ elif [[ $MACHINE_ID = theia ]]; then
   export PYTHONPATH=/scratch4/NCEPDEV/meso/save/Dusan.Jovic/ecflow/lib/python2.6/site-packages
   ECFLOW_START=/scratch4/NCEPDEV/meso/save/Dusan.Jovic/ecflow/bin/ecflow_start.sh
   QUEUE=debug
+  PARTITION=
   dprefix=/scratch4/NCEPDEV
   DISKNM=$dprefix/nems/noscrub/emc.nemspara/RT
   STMP=$dprefix/stmp4
@@ -185,7 +205,7 @@ while getopts ":cfsl:mreh" opt; do
   esac
 done
 
-RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/trunk-20180226}
+RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/trunk-20180306}
 
 shift $((OPTIND-1))
 [[ $# -gt 1 ]] && usage
@@ -388,6 +408,7 @@ EOF
       export SCHEDULER=${SCHEDULER}
       export ACCNR=${ACCNR}
       export QUEUE=${QUEUE}
+      export PARTITION=${PARTITION}
       export ROCOTO=${ROCOTO}
       export LOG_DIR=${LOG_DIR}
 EOF

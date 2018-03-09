@@ -13,21 +13,21 @@ export LIST_FILES="  atmos_4xdaily.tile1.nc \
                      atmos_4xdaily.tile4.nc \
                      atmos_4xdaily.tile5.nc \
                      atmos_4xdaily.tile6.nc \
-                    atmos_4xdaily.nest02.nc \
+              atmos_4xdaily.nest02.tile7.nc \
                            nggps2d.tile1.nc \
                            nggps2d.tile2.nc \
                            nggps2d.tile3.nc \
                            nggps2d.tile4.nc \
                            nggps2d.tile5.nc \
                            nggps2d.tile6.nc \
-                          nggps2d.nest02.nc \
+                    nggps2d.nest02.tile7.nc \
                    nggps3d_4xdaily.tile1.nc \
                    nggps3d_4xdaily.tile2.nc \
                    nggps3d_4xdaily.tile3.nc \
                    nggps3d_4xdaily.tile4.nc \
                    nggps3d_4xdaily.tile5.nc \
                    nggps3d_4xdaily.tile6.nc \
-                  nggps3d_4xdaily.nest02.nc \
+            nggps3d_4xdaily.nest02.tile7.nc \
                         RESTART/coupler.res \
                      RESTART/fv_core.res.nc \
               RESTART/fv_core.res.nest02.nc \
@@ -75,6 +75,7 @@ INPES=$INPES_strnest
 JNPES=$JNPES_strnest
 TPN=$TPN_strnest
 TASKS=$TASKS_strnest
+export NODES=$(expr $TASKS / $TPN + 1)
 
 export INPES_NEST='6'
 export JNPES_NEST='8'

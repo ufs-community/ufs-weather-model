@@ -1,0 +1,31 @@
+#!/bin/bash -l
+#PBS -S /bin/bash
+#PBS -o out
+#PBS -e err
+#PBS -N @[JBNME]
+#PBS -A @[ACCNR]
+#PBS -q @[QUEUE]
+#PBS -d .
+#PBS -l partition=@[PARTITION]
+#PBS -l size=@[NODES]
+#PBS -l walltime=00:@[WLCLK]:00
+
+set -ux
+
+set +x
+module use $( pwd -P )
+module load modules.fv3
+set -x
+module list
+
+echo "Model started:  " `date`
+
+export OMP_NUM_THREADS=@[THRD]
+export OMP_STACKSIZE=1024M
+export NC_BLKSZ=1M
+
+aprun -n @[TASKS] -d@[THRD] -j1 ./fv3.exe
+
+echo "Model ended:    " `date`
+
+exit
