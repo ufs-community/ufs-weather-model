@@ -299,6 +299,10 @@ test fv3_appbuilder: fv3_appbuilder.exe {
     TEST_DESCR="Compare FV3 with the NEMSAppBuilder against the previous trunk version"
     CNTL_NAME='fv3_control'
 
+    prep=fv3_prep(
+        RUNDIR="@[RUNDIR]",modules="@[fv3_appbuilder.exe%modules.nems]",
+        CNTL="@[CNTL]")
+
     spawn execute {
         {"@[build%target]", ranks="@[TASKS]", threads="@[THRD]" }
     }
@@ -1371,6 +1375,10 @@ test fv3_control_32bit: fv3_32bit.exe {
     RUNDIR="@[plat%TMPrt]/@[TEST_NAME]"       # Test work area
     CNTL="@[plat%BASELINE]/@[CNTL_NAME]"      # Control baseline area
 
+    prep=fv3_prep(
+        RUNDIR="@[RUNDIR]",modules="@[fv3_32bit.exe%modules.nems]",
+        CNTL="@[CNTL]")
+
     # Specify output files:
     criteria output {
         # WORKFILE                            .comparison. TARGET
@@ -1680,6 +1688,10 @@ test fv3_stretched: fv3_32bit.exe {
     COM="@[plat%COMrt]/@[TEST_NAME]"          # Test result area
     RUNDIR="@[plat%TMPrt]/@[TEST_NAME]"       # Test work area
 
+    prep=fv3_prep(
+        RUNDIR="@[RUNDIR]",modules="@[fv3_32bit.exe%modules.nems]",
+        CNTL="@[CNTL]")
+
     # Override settings from control
     INPES='2'
     JNPES='4'
@@ -1782,6 +1794,10 @@ test fv3_stretched_nest: fv3_32bit.exe {
 
     COM="@[plat%COMrt]/@[TEST_NAME]"          # Test result area
     RUNDIR="@[plat%TMPrt]/@[TEST_NAME]"       # Test work area
+
+    prep=fv3_prep(
+        RUNDIR="@[RUNDIR]",modules="@[fv3_32bit.exe%modules.nems]",
+        CNTL="@[CNTL]")
 
     # Override settings from control
     INPES='2'
