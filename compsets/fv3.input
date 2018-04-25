@@ -170,8 +170,6 @@ fv3_defaults = {
 
     CPLFLX='.F.'
     CPL='.false.'
-
-    walltime=1800 # seconds
 }
 
 ########################################################################
@@ -1282,7 +1280,7 @@ test fv3_wrtGauss_nemsio_c768: fv3.exe {
     FNSOTC="'global_soiltype.statsgo.t1534.3072.1536.rg.grb',"
     FNSMCC="'global_soilmgldas.t1534.3072.1536.grb',"
     FNABSC="'global_mxsnoalb.uariz.t1534.3072.1536.rg.grb',"
-    walltime='1800'
+    # probably don't want to do this: walltime='1800'
 
     COM="@[plat%COMrt]/@[TEST_NAME]"          # Test result area
     RUNDIR="@[plat%TMPrt]/@[TEST_NAME]"       # Test work area
