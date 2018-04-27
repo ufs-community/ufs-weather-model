@@ -46,7 +46,7 @@
        fv_debug    = .F.
        range_warn  = .F.
        reset_eta   = .F.
-       n_sponge    = 24
+       n_sponge    = @[NPZ]
        nudge_qv    = .F.
        tau         = 5.
        rf_cutoff   = 7.5e2
@@ -59,12 +59,12 @@
        hydrostatic = .F.
        phys_hydrostatic   = .F.
        use_hydro_pressure = .F.
-       beta      = 0.
-       a_imp     = 1.
+       beta      = 0.0
+       a_imp     = 1.0
        p_fac     = 0.1
        k_split   = 1
        n_split   = 8
-       nwat      = 5
+       nwat      = 6
        na_init   = @[NA_INIT]
        d_ext     = 0.0
        dnats     = 0
@@ -72,7 +72,7 @@
        d2_bg     = 0.
        nord      =  2
        dddmp     = 0.1
-       d4_bg     = 0.12
+       d4_bg     = 0.16
        vtdm4     = 0.02
        delt_max  = 0.002
        ke_bg     = 0.
@@ -92,6 +92,7 @@
        adjust_dry_mass = .F.
        consv_te   = 1.
        consv_am   = .F.
+       do_sat_adj = .false.
        fill       = .T.
        dwind_2d   = .F.
        print_freq = 6
@@ -131,7 +132,7 @@
        nst_anl        = .true.
        use_ufo        = .true.
        pre_rad        = .false.
-       crtrh          = 1.00,1.00,0.95
+       crtrh          = 0.98,0.98,0.90
        ncld           = 2
        imp_physics    = 10
        pdfcld         = .false.
@@ -147,7 +148,7 @@
        lwhtr          = .true.
        swhtr          = .true.
        cnvgwd         = .true.
-       shal_cnv       = .true.
+       shal_cnv       = .false..
        cal_pre        = .false.
        redrag         = .true.
        dspheat        = .fasle.
@@ -155,7 +156,7 @@
        random_clds    = .true.
        trans_trac     = .true.
        cnvcld         = .false.
-       imfshalcnv     = 2
+       imfshalcnv     = -1
        imfdeepcnv     = -1
        cdmbgwd        = 3.5,0.25
        prslrd0        = 0.
@@ -165,10 +166,10 @@
 
        ras            = .false.
        cscnv          = .true.
-       do_shoc        = .false.
+       do_shoc        = .true.
        shoc_parm      = 7000.0,1.0,2.0,0.7,-999.0
        do_aw          = .true.
-       shoc_cld       = .false.
+       shoc_cld       = .true.
        h2o_phys       = .true.
        shcnvcw        = .false.
        xkzm_h         = 0.5
@@ -177,9 +178,10 @@
        ccwf           = 1.0,1.0
        dlqf           = 0.25,0.05
        mg_dcs         = 350.0
-       mg_ts_auto_ice = 360
+       mg_ts_auto_ice = 1800
        mg_qcvar       = 2.0
-       fprcp          = 1
+       fprcp          = 2
+       mg_do_graupel = .true.
        cs_parm        = 8.0,4.0,1.5e3,4.0e3,20.0,1.0,0.0,1.0,0.0,0.0
        ctei_rm        = 0.60,0.23
        max_lon        = 8000
