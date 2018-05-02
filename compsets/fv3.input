@@ -565,6 +565,7 @@ test fv3_thompson: fv3.exe {
     CNTL_NAME='fv3_thompson'
 
     DT_ATMOS='1200'
+    LRADAR='.T.'
 
     COM="@[plat%COMrt]/@[TEST_NAME]"          # Test result area
     RUNDIR="@[plat%TMPrt]/@[TEST_NAME]"       # Test work area
@@ -590,7 +591,7 @@ test fv3_thompson: fv3.exe {
    'solarconstant_noaa_an.txt' <=copyfrom= "@[FV3_input_data]/INPUT"
                         '*grb' <=copyfrom= "@[FV3_input_data]"
                      '*_table' <=copyfrom= "@[FV3_input_data]"
-                 'diag_table'  <=copy= "@[FV3_input_data]/diag_table_mp"
+                 'diag_table'  <=copy= "@[FV3_input_data]/diag_table_thompson"
                  'field_table' <=copy= "@[FV3_input_data]/field_table_thompson"
                   '*configure' <=copyfrom= "@[FV3_input_data]"
                        'INPUT' <=copy=     "@[FV3_input_data]/INPUT"
@@ -687,6 +688,7 @@ test fv3_wsm6: fv3.exe {
     CNTL_NAME='fv3_wsm6'
 
     DT_ATMOS='1200'
+    LRADAR='.T.'
 
     COM="@[plat%COMrt]/@[TEST_NAME]"          # Test result area
     RUNDIR="@[plat%TMPrt]/@[TEST_NAME]"       # Test work area
@@ -712,7 +714,7 @@ test fv3_wsm6: fv3.exe {
    'solarconstant_noaa_an.txt' <=copyfrom= "@[FV3_input_data]/INPUT"
                         '*grb' <=copyfrom= "@[FV3_input_data]"
                      '*_table' <=copyfrom= "@[FV3_input_data]"
-                 'diag_table'  <=copy= "@[FV3_input_data]/diag_table_mp"
+                 'diag_table'  <=copy= "@[FV3_input_data]/diag_table_wsm6"
                  'field_table' <=copy= "@[FV3_input_data]/field_table_wsm6"
                   '*configure' <=copyfrom= "@[FV3_input_data]"
                        'INPUT' <=copy=     "@[FV3_input_data]/INPUT"
@@ -834,7 +836,7 @@ test fv3_gfdlmp: fv3.exe {
    'solarconstant_noaa_an.txt' <=copyfrom= "@[FV3_input_data]/INPUT"
                         '*grb' <=copyfrom= "@[FV3_input_data]"
                      '*_table' <=copyfrom= "@[FV3_input_data]"
-                 'diag_table'  <=copy= "@[FV3_input_data]/diag_table_mp"
+                 'diag_table'  <=copy= "@[FV3_input_data]/diag_table_gfdlmp"
                  'field_table' <=copy= "@[FV3_input_data]/field_table_gfdlmp"
                   '*configure' <=copyfrom= "@[FV3_input_data]"
                        'INPUT' <=copy=     "@[FV3_input_data]/INPUT"
