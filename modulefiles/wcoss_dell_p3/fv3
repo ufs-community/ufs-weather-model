@@ -1,0 +1,38 @@
+#%Module######################################################################
+##
+##    NEMS FV3 Prerequisites: Venus and Mars (WCOSS Dell)
+
+proc ModulesHelp {} {
+  puts stderr "\tcit - loads modules required for building and running FV3 under NEMS on the Dell side of WCOSS"
+}
+
+module-whatis "loads NEMS FV3 prerequisites on Venus and Mars"
+
+# NOTE: the "module purge" and loading of the module command are
+# handled by the module-setup.sh (or .csh) script.
+
+##
+## load programming environment
+## this typically includes compiler, MPI and job scheduler
+##
+module load ips/18.0.1.163
+module load impi/18.0.1
+module load NetCDF/4.5.0
+module load HDF5-serial/1.10.1
+
+module load bacio/2.0.2
+module load ip/3.0.1
+module load sp/2.0.2
+module load w3nco/2.0.6
+module load w3emc/2.3.0
+module load nemsio/2.2.3
+
+module load sfcio/1.0.0
+module load lsf/10.1
+module load impi/18.0.1
+module load bufr/11.2.0
+module load dev/sigio/2.0.2
+module load crtm/2.2.5
+
+module load ESMF/7_1_0r
+

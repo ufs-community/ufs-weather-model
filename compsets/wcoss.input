@@ -19,15 +19,15 @@ platform wcoss.phase2 {
     cpus_per_core=2
 
     # WCOSS Phase 2 has been slow of late.
-    DEFAULT_TEST_WALLTIME=2700
+    DEFAULT_TEST_WALLTIME=1800
 
     MPI='LSF'
     SHORT_TEST_QUEUE='&SHORTQ;'
     LONG_TEST_QUEUE='&LONGQ;'
     BUILD_QUEUE='&BUILDQ;'
     MACHINE_ID='wcoss.phase2'
-    BASELINE="/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20180427"
-    BASELINE_TEMPLATE="/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20180427"
+    BASELINE="/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20180507"
+    BASELINE_TEMPLATE="/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20180507"
 
     default_resources={
         TASKS=156
@@ -78,7 +78,7 @@ platform wcoss.phase2 {
         log_dir="@[TMPrt]/log"
         scheduler="lsf"
         entities=[[[
-  <!ENTITY SHORTQ "dev2">
+  <!ENTITY SHORTQ "debug2">
   <!ENTITY LONGQ "dev2">
   <!ENTITY BUILDQ "dev2_shared">
 ]]]
@@ -113,8 +113,8 @@ platform wcoss.phase1 {
     cores_per_node=16
     cpus_per_core=2
     MACHINE_ID='wcoss.phase1'
-    BASELINE="/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20180427"
-    BASELINE_TEMPLATE="/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20180427"
+    BASELINE="/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20180507"
+    BASELINE_TEMPLATE="/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20180507"
 
     # WCOSS Phase 2 has been slow of late.
     DEFAULT_TEST_WALLTIME=2700
@@ -190,8 +190,8 @@ platform wcoss.cray {
     BUILD_WALLTIME="1800"
     DEFAULT_TEST_WALLTIME=1800
 
-    BASELINE="/gpfs/hps3/emc/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20180427"
-    BASELINE_TEMPLATE="/gpfs/hps3/emc/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20180427"
+    BASELINE="/gpfs/hps3/emc/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20180507"
+    BASELINE_TEMPLATE="/gpfs/hps3/emc/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20180507"
 
     default_resources={
         TASKS=150
