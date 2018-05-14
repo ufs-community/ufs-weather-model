@@ -19,7 +19,7 @@ platform wcoss.phase2 {
     cpus_per_core=2
 
     # WCOSS Phase 2 has been slow of late.
-    DEFAULT_TEST_WALLTIME=1800
+    DEFAULT_TEST_WALLTIME=2400
 
     MPI='LSF'
     SHORT_TEST_QUEUE='&SHORTQ;'
@@ -73,12 +73,17 @@ platform wcoss.phase2 {
     ]]]
 
     # ROCOTO SUPPORT ---------------------------------------------------
+
+    # You MUST reduce the TASK_THROTTLE to 1 if you use a debug queue
+    TASK_THROTTLE='11'
+
     rocoto={
         install_dir="@[HOMErt]"
         log_dir="@[TMPrt]/log"
         scheduler="lsf"
         entities=[[[
-  <!ENTITY SHORTQ "debug2">
+  <!-- You MUST reduce the TASK_THROTTLE to 1 if you use a debug queue -->
+  <!ENTITY SHORTQ "dev2">
   <!ENTITY LONGQ "dev2">
   <!ENTITY BUILDQ "dev2_shared">
 ]]]
@@ -115,6 +120,9 @@ platform wcoss.phase1 {
     MACHINE_ID='wcoss.phase1'
     BASELINE="/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20180507"
     BASELINE_TEMPLATE="/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20180507"
+
+    # WCOSS Phase 2 has been slow of late.
+    DEFAULT_TEST_WALLTIME=2700
 
     # WCOSS Phase 2 has been slow of late.
     DEFAULT_TEST_WALLTIME=2700

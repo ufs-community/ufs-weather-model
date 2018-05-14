@@ -24,6 +24,8 @@ platform.defaults={
     BASELINE="@[INPUTS]" # Baseline input or output directory
 
     walltime="@[DEFAULT_TEST_WALLTIME]"
+
+    C768_PPN="@[cores_per_node]"
 }
 
 # WCOSS and jet support was getting too long, so they have their own files:
@@ -136,4 +138,8 @@ platform theia {
 # Autodetection of available platforms.  Calls the "detect" function
 # from each of the listed platforms.
 
-autodetect plat (/ gaea.c3, gaea.c4, xjet, wcoss.cray, theia, wcoss.phase2, wcoss.phase1 /)
+autodetect plat (/ gaea.c3, gaea.c4, wcoss.cray, theia, wcoss.phase2, wcoss.phase1,
+                   xjet, svjet /)
+
+# NOTE: tujet is defined, but cannot work because libraries need to be
+# recompiled.  Thus it is not in the above list.

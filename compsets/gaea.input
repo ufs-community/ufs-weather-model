@@ -6,33 +6,74 @@ gaea.common= {
     MACHINE_ID='gaea'
     HOMEnems=PWD_UP5
     HOMErt=OUTPUT_PATH
-    BASELINE="/lustre/f1/pdata/ncep_shared/emc.nemspara/RT/NEMSfv3gfs/trunk-20180130"
-    BASELINE_TEMPLATE="/lustre/f1/pdata/ncep_shared/emc.nemspara/RT/NEMSfv3gfs/trunk-20180130"
+    BASELINE="/lustre/f1/pdata/ncep_shared/emc.nemspara/RT/NEMSfv3gfs/trunk-20180507"
+    BASELINE_TEMPLATE="/lustre/f1/pdata/ncep_shared/emc.nemspara/RT/NEMSfv3gfs/trunk-20180507"
     INPUTS="@[BASELINE]"
 
+    SHORT_TEST_QUEUE='&SHORTQ;'
+    LONG_TEST_QUEUE='&LONGQ;'
+    BUILD_QUEUE='&BUILDQ;'
+    MPI='moab_cray'
+
+    TASK_THROTTLE='11'
+    BUILD_WALLTIME="3600"
+
     embed bash detect [[[
-        if [[ -d /lfs3 && -d /pan2 ]] ; then
+        if [[ -d /lustre/f1 ]] ; then
             exit 0
         fi
         exit 1
     ]]]
+
+    embed bash detect [[[
+        # This function is used at PARSE TIME to detect whether we are
+        # on Jet.  It must be very fast and low resource usage since
+        # the parser runs it.
+        if [[ -d /lustre/f1/pdata/ncep_shared && -d /lustre/f1/unswept ]] ; then
+            exit 0
+        fi
+        exit 1
+    ]]]
+
+    rocoto={
+        install_dir="@[HOMErt]"
+        log_dir="@[TMPrt]/log"
+        scheduler="moab"
+        entities=[[[
+  <!ENTITY SHORTQ "batch">
+  <!ENTITY LONGQ "batch">
+  <!ENTITY BUILDQ "eslogin"> <!-- NOTE: If you change this, you must change the partition too -->
+]]]
+        build_resources=[[[
+      <!-- Build job resources minus wallclock -->
+      <queue>@[BUILD_QUEUE]</queue>
+      <cores>2</cores> <!-- 2 cores ensures exclusive access on Jet -->
+      <native>-l partition=es</native>
+]]]
+        short_test_resources=[[[
+    <!-- Short test job -->
+    <queue>@[SHORT_TEST_QUEUE]</queue>
+    <native>-l partition=@[PARTITION]</native>
+]]]
+        long_test_resources=[[[
+    <!-- Long test job -->
+    <queue>@[LONG_TEST_QUEUE]</queue>
+    <native>-l partition=@[PARTITION]</native>
+]]]
+    }
 }
+
+########################################################################
 
 platform gaea.c3 {
     use gaea.common
     PARTITION='c3'
     cores_per_node=32
     cpus_per_core=2
-    MPI='aprun'
-    SHORT_TEST_QUEUE='&SHORTQ;'
-    LONG_TEST_QUEUE='&LONGQ;'
-    BUILD_QUEUE='&BUILDQ;'
-
-    TASK_THROTTLE='11'
-    BUILD_WALLTIME="3600"
 
     default_resources={
         TASKS=150
+        WRTTASK_PER_GROUP=6
         TPN=32
         INPES=3
         JNPES=8
@@ -52,6 +93,7 @@ platform gaea.c3 {
     }
     default_threaded_resources={
         TASKS=84
+        WRTTASK_PER_GROUP=12
         TPN=16
         INPES=3
         JNPES=4
@@ -59,45 +101,9 @@ platform gaea.c3 {
         WRTTASK_PER_GROUP=12
     }
 
-    embed bash detect [[[
-        # This function is used at PARSE TIME to detect whether we are
-        # on Jet.  It must be very fast and low resource usage since
-        # the parser runs it.
-        if [[ -d /lustre/f1/pdata/ncep_shared && -d /lustre/f1/unswept ]] ; then
-            exit 0
-        fi
-        exit 1
-    ]]]
-
-    rocoto={
-        install_dir="@[HOMErt]"
-        log_dir="@[TMPrt]/log"
-        scheduler="moabtorque"
-        entities=[[[
-  <!ENTITY SHORTQ "debug">
-  <!ENTITY LONGQ "batch">
-  <!ENTITY BUILDQ "eslogin"> <!-- NOTE: If you change this, you must change the partition too -->
-]]]
-        build_resources=[[[
-      <!-- Build job resources minus wallclock -->
-      <queue>@[BUILD_QUEUE]</queue>
-      <cores>2</cores> <!-- 2 cores ensures exclusive access on Jet -->
-      <native>-l partition=es</native>
-]]]
-        short_test_resources=[[[
-    <!-- Short test job -->
-    <queue>@[SHORT_TEST_QUEUE]</queue>
-    <native>-l partition=@[PARTITION]</native>
-    <memory></memory> <!-- Unlimited memory -->
-]]]
-        long_test_resources=[[[
-    <!-- Long test job -->
-    <queue>@[LONG_TEST_QUEUE]</queue>
-    <native>-l partition=@[PARTITION]</native>
-    <memory></memory> <!-- Unlimited memory -->
-]]]
-    }
 }
+
+########################################################################
 
 platform gaea.c4 {
     use gaea.common
@@ -105,8 +111,10 @@ platform gaea.c4 {
     cpus_per_core=2
     PARTITION='c4'
 
+    MPI='moab_cray'
     default_resources={
         TASKS=150
+        WRTTASK_PER_GROUP=6
         TPN=36
         INPES=3
         JNPES=8
@@ -125,49 +133,11 @@ platform gaea.c4 {
     }
     default_threaded_resources={
         TASKS=84
+        WRTTASK_PER_GROUP=12
         TPN=18
         INPES=3
         JNPES=4
         THRD=2
-    }
-
-    embed bash detect [[[
-        # This function is used at PARSE TIME to detect whether we are
-        # on Jet.  It must be very fast and low resource usage since
-        # the parser runs it.
-        if [[ -d /lustre/f1/pdata/ncep_shared && -d /lustre/f1/unswept ]] ; then
-            exit 0
-        fi
-        exit 1
-    ]]]
-
-    rocoto={
-        install_dir="@[HOMErt]"
-        log_dir="@[TMPrt]/log"
-        scheduler="moabtorque"
-        entities=[[[
-  <!ENTITY SHORTQ "debug">
-  <!ENTITY LONGQ "batch">
-  <!ENTITY BUILDQ "eslogin-c4"> <!-- NOTE: If you change this, you must change the partition too -->
-]]]
-        build_resources=[[[
-      <!-- Build job resources minus wallclock -->
-      <queue>@[BUILD_QUEUE]</queue>
-      <cores>2</cores> <!-- 2 cores ensures exclusive access on Jet -->
-      <native>-l partition=es</native>
-]]]
-        short_test_resources=[[[
-    <!-- Short test job -->
-    <queue>@[SHORT_TEST_QUEUE]</queue>
-    <native>-l partition=@[PARTITION]</native>
-    <memory></memory> <!-- Unlimited memory -->
-]]]
-        long_test_resources=[[[
-    <!-- Long test job -->
-    <queue>@[LONG_TEST_QUEUE]</queue>
-    <native>-l partition=@[PARTITION]</native>
-    <memory></memory> <!-- Unlimited memory -->
-]]]
     }
 }
 
