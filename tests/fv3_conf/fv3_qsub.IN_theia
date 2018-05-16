@@ -26,6 +26,9 @@ export OMP_NUM_THREADS=@[THRD]
 export ESMF_RUNTIME_COMPLIANCECHECK=OFF:depth=4
 export LD_BIND_NOW=1
 
+# Avoid job errors because of filesystem synchronization delays
+sync && sleep 1
+
 mpirun -prepend-rank -np $PBS_NP ./fv3.exe
 
 echo "Model ended:    " `date`

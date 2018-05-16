@@ -84,7 +84,7 @@ CPPDEFS += -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARG
 CPPDEFS += -DNEW_TAUCTMAX -DINTERNAL_FILE_NML
 
 ifeq ($(HYDRO),Y)
-CPPDEFS += 
+CPPDEFS +=
 else
 CPPDEFS += -DMOIST_CAPPA -DUSE_COND
 endif
@@ -131,15 +131,15 @@ LDFLAGS_VERBOSE := -Wl,-V,--verbose,-cref,-M
 # start with blank LIBS
 LIBS :=
 
-ifneq ($(REPRO),)
+ifeq ($(REPRO),Y)
 CFLAGS += $(CFLAGS_REPRO)
 FFLAGS += $(FFLAGS_REPRO)
 FAST :=
-else ifneq ($(DEBUG),)
+else ifeq ($(DEBUG),Y)
 CFLAGS += $(CFLAGS_DEBUG)
 FFLAGS += $(FFLAGS_DEBUG)
 FAST :=
-else ifneq ($(TEST),)
+else ifeq ($(TEST),Y)
 CFLAGS += $(CFLAGS_TEST)
 FFLAGS += $(FFLAGS_TEST)
 FAST :=
@@ -149,13 +149,13 @@ FFLAGS += $(FFLAGS_OPT)
 FAST := $(TRANSCENDENTALS)
 endif
 
-ifneq ($(OPENMP),)
+ifeq ($(OPENMP),Y)
 CFLAGS += $(CFLAGS_OPENMP)
 FFLAGS += $(FFLAGS_OPENMP)
 LDFLAGS += $(LDFLAGS_OPENMP)
 endif
 
-ifneq ($(VERBOSE),)
+ifeq ($(VERBOSE),Y)
 CFLAGS += $(CFLAGS_VERBOSE)
 FFLAGS += $(FFLAGS_VERBOSE)
 LDFLAGS += $(LDFLAGS_VERBOSE)

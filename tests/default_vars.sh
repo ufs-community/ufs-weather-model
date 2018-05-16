@@ -20,7 +20,7 @@ elif [ $MACHINE_ID = wcoss_cray ]; then
   TASKS_stretch=48 ; TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=12 ; INPES_strnest=2 ; JNPES_strnest=4
 
-elif [ $MACHINE_ID = theia ]; then
+elif [[ $MACHINE_ID = theia.* ]]; then
 
   TASKS_dflt=150 ; TPN_dflt=24 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=84  ; TPN_thrd=12 ; INPES_thrd=3 ; JNPES_thrd=4
@@ -34,12 +34,32 @@ elif [ $MACHINE_ID = gaea ]; then
   TASKS_stretch=48 ; TPN_stretch=18 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=18 ; INPES_strnest=2 ; JNPES_strnest=4
 
+elif [[ $MACHINE_ID = cheyenne.* ]]; then
+
+  TASKS_dflt=150 ; TPN_dflt=36 ; INPES_dflt=3 ; JNPES_dflt=8
+  TASKS_thrd=84  ; TPN_thrd=18 ; INPES_thrd=3 ; JNPES_thrd=4
+  TASKS_stretch=48 ; TPN_stretch=18 ; INPES_stretch=2 ; JNPES_stretch=4
+  TASKS_strnest=96 ; TPN_strnest=18 ; INPES_strnest=2 ; JNPES_strnest=4
+else
+
+  echo "Unknown MACHINE_ID ${MACHINE_ID}"
+  exit 1
+
+fi
+
+# Re-instantiate COMPILER in case it gets deleted by module purge
+COMPILER=${NEMS_COMPILER:-intel}
+# Longer default walltime for GNU and PGI
+if [[ $COMPILER = gnu ]] || [[ $COMPILER = pgi ]]; then
+    WLCLK_dflt=30
+else
+    WLCLK_dflt=15
 fi
 
 export_fv3 ()
 {
 export THRD=1
-export WLCLK=15
+export WLCLK=$WLCLK_dflt
 export INPES=$INPES_dflt
 export JNPES=$JNPES_dflt
 export TASKS=$TASKS_dflt

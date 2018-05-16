@@ -1,0 +1,57 @@
+#%Module######################################################################
+##
+##    NEMS FV3 Prerequisites: Theia/GNU
+
+proc ModulesHelp {} {
+  puts stderr "\tcit - loads modules required for building and running FV3 under NEMS on Theia/GNU"
+}
+
+module-whatis "loads NEMS FV3 prerequisites for Theia/GNU"
+
+# NOTE: the "module purge" and loading of the module command are
+# handled by the module-setup.sh (or .csh) script.
+
+##
+## load programming environment
+## this typically includes compiler, MPI and job scheduler
+##
+module load gcc/6.2.0
+# mvapich2-2.2, compiled with gnu/6.2.0
+prepend-path PATH            /scratch4/BMC/gmtb/mvapich2-2.2/gnu-6.2.0/bin
+prepend-path LD_LIBRARY_PATH /scratch4/BMC/gmtb/mvapich2-2.2/gnu-6.2.0/lib
+setenv MV2_ENABLE_AFFINITY 0
+# netcdf-4.5.0, compiled with gnu/6.2.0 and mvapich2-2.2, and its dependencies
+prepend-path PATH            /scratch4/BMC/gmtb/zlib-1.2.11/gnu-6.2.0/bin
+prepend-path PATH            /scratch4/BMC/gmtb/szip-2.1.1/gnu-6.2.0/bin
+prepend-path PATH            /scratch4/BMC/gmtb/hdf5-1.8.20/gnu-6.2.0/mvapich2-2.2/bin
+prepend-path PATH            /scratch4/BMC/gmtb/parallel-netcdf-1.8.1/gnu-6.2.0/mvapich2-2.2/bin
+prepend-path PATH            /scratch4/BMC/gmtb/netcdf-4.5.0/gnu-6.2.0/mvapich2-2.2/bin
+prepend-path LD_LIBRARY_PATH /scratch4/BMC/gmtb/zlib-1.2.11/gnu-6.2.0/lib
+prepend-path LD_LIBRARY_PATH /scratch4/BMC/gmtb/szip-2.1.1/gnu-6.2.0/lib
+prepend-path LD_LIBRARY_PATH /scratch4/BMC/gmtb/hdf5-1.8.20/gnu-6.2.0/mvapich2-2.2/lib
+prepend-path LD_LIBRARY_PATH /scratch4/BMC/gmtb/parallel-netcdf-1.8.1/gnu-6.2.0/mvapich2-2.2/lib
+prepend-path LD_LIBRARY_PATH /scratch4/BMC/gmtb/netcdf-4.5.0/gnu-6.2.0/mvapich2-2.2/lib
+setenv NETCDF /scratch4/BMC/gmtb/netcdf-4.5.0/gnu-6.2.0/mvapich2-2.2
+
+##
+## use pre-compiled EMSF library for above compiler / MPI combination
+##
+setenv ESMF_DIR              /scratch4/BMC/gmtb/esmf-7.1.0r/gnu-6.2.0/mvapich2-2.2
+setenv ESMF_INC              /scratch4/BMC/gmtb/esmf-7.1.0r/gnu-6.2.0/mvapich2-2.2/include
+setenv ESMF_BIN              /scratch4/BMC/gmtb/esmf-7.1.0r/gnu-6.2.0/mvapich2-2.2/bin/binO/Linux.gfortran.64.mvapich2.default/
+setenv ESMF_LIB              /scratch4/BMC/gmtb/esmf-7.1.0r/gnu-6.2.0/mvapich2-2.2/lib/libO/Linux.gfortran.64.mvapich2.default
+setenv ESMF_MOD              /scratch4/BMC/gmtb/esmf-7.1.0r/gnu-6.2.0/mvapich2-2.2/mod/modO/Linux.gfortran.64.mvapich2.default
+setenv ESMFMKFILE            /scratch4/BMC/gmtb/esmf-7.1.0r/gnu-6.2.0/mvapich2-2.2/lib/libO/Linux.gfortran.64.mvapich2.default/esmf.mk
+prepend-path PATH            /scratch4/BMC/gmtb/esmf-7.1.0r/gnu-6.2.0/mvapich2-2.2/bin/binO/Linux.gfortran.64.mvapich2.default
+prepend-path LD_LIBRARY_PATH /scratch4/BMC/gmtb/esmf-7.1.0r/gnu-6.2.0/mvapich2-2.2/lib/libO/Linux.gfortran.64.mvapich2.default
+
+##
+## NCEP libraries (download and build manually for the time being; https://github.com/climbfuji/NCEPlibs)
+##
+set NCEPLIBS_DIR /scratch4/home/Dom.Heinzeller/NEMSfv3gfs_vlab_portability/NCEPlibs-gnu-20180420
+setenv NEMSIO_INC  ${NCEPLIBS_DIR}/include
+setenv NEMSIO_LIB  ${NCEPLIBS_DIR}/lib/libnemsio_d.a
+setenv BACIO_LIB4  ${NCEPLIBS_DIR}/lib/libbacio_4.a
+setenv SP_LIBd     ${NCEPLIBS_DIR}/lib/libsp_v2.0.2_d.a
+setenv W3EMC_LIBd  ${NCEPLIBS_DIR}/lib/libw3emc_d.a
+setenv W3NCO_LIBd  ${NCEPLIBS_DIR}/lib/libw3nco_d.a

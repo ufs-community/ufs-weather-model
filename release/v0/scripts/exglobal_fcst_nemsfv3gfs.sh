@@ -54,7 +54,7 @@ export IC_DIR=${IC_DIR:-$PTMP/$LOGNAME/ICs}                       #cold start in
 export DELTIM=${DELTIM:-225}
 export layout_x=${layout_x:-8}
 export layout_y=${layout_y:-16}
-export LEVS=${LEVS:-64}
+export LEVS=${LEVS:-65}
 
 # Utilities
 export NCP=${NCP:-"/bin/cp -p"}
@@ -163,6 +163,7 @@ if [ $ico2 -gt 0 ]; then
     $NLN $file $DATA/$(echo $(basename $file) | sed -e "s/global_//g")
   done
 fi
+$NLN $FIX_AM/co2historicaldata_????.txt        $DATA/
 
 $NLN $FIX_AM/global_climaeropac_global.txt     $DATA/aerosol.dat
 if [ $iaer -gt 0 ] ; then
@@ -197,7 +198,7 @@ export FNABSC=${FNABSC:-"$FIX_AM/global_mxsnoalb.uariz.t1534.3072.1536.rg.grb"}
 # nstf_name(4) : zsea1 in mm
 # nstf_name(5) : zsea2 in mm
 # nst_anl      : .true. or .false., NSST analysis over lake                       
-export nstf_name=${nstf_name:-"2,0,1,0,5"}
+export nstf_name=${nstf_name:-"0,0,1,0,5"}
 
 
 #------------------------------------------------------------------
@@ -225,7 +226,6 @@ export na_init=${na_init:-1}
 
 # variables for controlling initialization of NCEP/NGGPS ICs
 export filtered_terrain=${filtered_terrain:-".true."}
-export ncep_plevels=${ncep_plevels:-".true."}
 export gfs_dwinds=${gfs_dwinds:-".true."}
 
 # determines whether FV3 or GFS physics calculate geopotential
@@ -296,11 +296,13 @@ fi
 
 if [ $warm_start = ".false." ]; then # CHGRES'd GFS analyses
   export external_ic=".true."
+  export external_eta=".true."
   export mountain=".false."
   export read_increment=".false."
   export res_latlon_dynamics='""'
 else # warm start from restart file
   export external_ic=".false."
+  export external_eta=".false."
   export mountain=".true."
   export make_nh=".false."
   export na_init=0                
@@ -365,6 +367,8 @@ cat > model_configure <<EOF
   use_hyper_thread:        ${hyperthread:-".false."}
   ncores_per_node:         $cores_per_node
   restart_interval:        ${restart_interval:-0}
+  
+  quilting:                .false.
 EOF
 
 #&coupler_nml
@@ -398,10 +402,11 @@ cat > input.nml <<EOF
   blocksize = $blocksize
   chksum_debug = $chksum_debug
   dycore_only = $dycore_only
+  fdiag = ${fdiag:-$FHOUT}
 /
 
 &diag_manager_nml
-  prepend_date = .F.   
+  prepend_date = .F.
 /
 
 &fms_io_nml
@@ -412,7 +417,7 @@ cat > input.nml <<EOF
 
 &fms_nml
   clock_grain = 'ROUTINE'
-  domains_stack_size = ${domains_stack_size:-115200}
+  domains_stack_size = ${domains_stack_size:-2048000}
   print_memory_usage = ${print_memory_usage:-".false."}
 /
 
@@ -464,6 +469,7 @@ cat > input.nml <<EOF
   ke_bg = 0.
   do_vort_damp = $do_vort_damp
   external_ic = $external_ic
+  external_eta = $external_eta
   gfs_phil = $gfs_phil
   nggps_ic = ${nggps_ic:-".true."}
   mountain = $mountain
@@ -483,63 +489,59 @@ cat > input.nml <<EOF
   warm_start = $warm_start
   no_dycore = $no_dycore
   z_tracer = .true.
+  read_increment = $read_increment
+  res_latlon_dynamics = $res_latlon_dynamics
 /
-##  res_latlon_dynamics = $res_latlon_dynamics    ###DA
-##  read_increment = $read_increment              ###DA
 
 &external_ic_nml
   filtered_terrain = $filtered_terrain
-  ncep_plevels = $ncep_plevels
   levp = $LEVS
   gfs_dwinds = $gfs_dwinds
   checker_tr = .false.
   nt_checker = 0
 /
 
-##  ntoz        = ${ntoz:-2}
-##  ntcw        = ${ntcw:-3}
 &gfs_physics_nml
-  fhzero      = $FHZER
-  ldiag3d     = ${ldiag3d:-.false.}
-  fhcyc       = $FHCYC
-  nst_anl     = ${nst_anl:-".true."}
-  use_ufo     = ${use_ufo:-".true."}
-  pre_rad     = ${pre_rad:-".false."}
-  ncld        = ${ncld:-1}
-  zhao_mic    = ${zhao_mic:-".true."}
-  pdfcld      = ${pdfcld:-".flase."}
-  fhswr       = ${fhswr:-3600.}
-  fhlwr       = ${fhlwr:-3600.}
-  ialb        = ${ialb:-1}
-  iems        = ${iems:-1}
-  IAER        = ${iaer:-111}
-  ico2        = ${ico2:-2}
-  isubc_sw    = ${isubc_sw:-2}
-  isubc_lw    = ${isubc_lw:-2}
-  isol        = ${isol:-2}
-  lwhtr       = ${lwhtr:-.true.}
-  swhtr       = ${swhtr:-.true.}
-  cnvgwd      = ${cnvgwd:-.true.}
-  shal_cnv    = ${shal_cnv:-.true.}
-  cal_pre     = ${cal_pre:-.true.}
-  redrag      = ${redrag:-.true.}
-  dspheat     = ${dspheat:-.true.}
-  hybedmf     = ${hybedmf:-.true.}
-  random_clds = ${random_clds:-.true.}
-  trans_trac  = ${trans_trac:-.true.}
-  cnvcld      = ${cnvcld:-.true.}
-  imfshalcnv  = ${imfshalcnv:-2}
-  imfdeepcnv  = ${imfdeepcnv:-2}
-  cdmbgwd     = ${cdmbgwd:-"3.5,0.25"}
-  prslrd0     = ${prslrd0:-0.}
-  ivegsrc     = ${ivegsrc:-1}
-  isot        = ${isot:-1}
-  debug       = ${gfs_phys_debug:-".false."}
-  nstf_name   = $nstf_name
-/
-
-&nggps_diag_nml
-  fdiag = ${fdiag:-$FHOUT}
+  fhzero         = $FHZER
+  ldiag3d        = ${ldiag3d:-.false.}
+  fhcyc          = $FHCYC
+  nst_anl        = ${nst_anl:-".true."}
+  use_ufo        = ${use_ufo:-".true."}
+  pre_rad        = ${pre_rad:-".false."}
+  ncld           = ${ncld:-1}
+  imp_physics    = ${imp_physics:-99}
+  pdfcld         = ${pdfcld:-".false."}
+  fhswr          = ${fhswr:-3600.}
+  fhlwr          = ${fhlwr:-3600.}
+  ialb           = ${ialb:-1}
+  iems           = ${iems:-1}
+  IAER           = ${iaer:-111}
+  ico2           = ${ico2:-2}
+  isubc_sw       = ${isubc_sw:-2}
+  isubc_lw       = ${isubc_lw:-2}
+  isol           = ${isol:-2}
+  lwhtr          = ${lwhtr:-.true.}
+  swhtr          = ${swhtr:-.true.}
+  cnvgwd         = ${cnvgwd:-.true.}
+  shal_cnv       = ${shal_cnv:-.true.}
+  cal_pre        = ${cal_pre:-.true.}
+  redrag         = ${redrag:-.true.}
+  dspheat        = ${dspheat:-.true.}
+  hybedmf        = ${hybedmf:-.true.}
+  random_clds    = ${random_clds:-.true.}
+  trans_trac     = ${trans_trac:-.true.}
+  cnvcld         = ${cnvcld:-.true.}
+  imfshalcnv     = ${imfshalcnv:-2}
+  imfdeepcnv     = ${imfdeepcnv:-2}
+  cdmbgwd        = ${cdmbgwd:-"3.5,0.25"}
+  prslrd0        = ${prslrd0:-0.}
+  ivegsrc        = ${ivegsrc:-1}
+  isot           = ${isot:-1}
+  debug          = ${gfs_phys_debug:-".false."}
+  nstf_name      = ${nstf_name:-"0,0,1,0,5"}
+  iau_delthrs    = ${iau_delthrs:-0}
+  iaufhrs        = ${iaufhrs:-0}
+  iau_inc_files  = ${iau_inc_files:-"''"}
 /
 
 &interpolator_nml

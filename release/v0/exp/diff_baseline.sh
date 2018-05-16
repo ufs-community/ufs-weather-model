@@ -3,16 +3,21 @@
 # compare test results wih baseline
 #
 
-machine=${1:-wcoss_cray}
-CASE=${2:-C96}
-if [ $machine = "wcoss_cray" ]; then
-  dir1=/gpfs/hps/ptmp/$LOGNAME/fv3gfs/C96/gfs.20160929/00
-  dir2=/gpfs/hps/emc/nems/noscrub/emc.nemspara/FV3GFS_V0_RELEASE/baseline/fv3gfs_nh_32bit/${CASE}/gfs.20160929/00
+MACHINE=${1:-wcoss_cray}
+COMPILER=${2:-intel}
+CASE=${3:-C96}
+if [ $MACHINE = "wcoss_cray" ]; then
+  dir1=/gpfs/hps/ptmp/$LOGNAME/fv3gfs/C96/gfs.20161003/00
+  dir2=/gpfs/hps/emc/nems/noscrub/emc.nemspara/FV3GFS_V0_RELEASE/baseline/fv3gfs_nh_32bit/${CASE}/gfs.20161003/00
   nccmp=/gpfs/hps/emc/nems/noscrub/emc.nemspara/FV3GFS_V0_RELEASE/util/nccmp
-elif [ $machine = "theia" ]; then
-  dir1=/scratch4/NCEPDEV/stmp3/${LOGNAME}/fv3gfs/${CASE}/gfs.20160929/00
-  dir2=/scratch4/NCEPDEV/nems/noscrub/emc.nemspara/FV3GFS_V0_RELEASE/baseline/fv3gfs_nh_32bit/${CASE}/gfs.20160929/00
+elif [ $MACHINE = "theia" ]; then
+  dir1=/scratch4/BMC/gmtb/${LOGNAME}/${COMPILER}/fv3gfs/${CASE}/gfs.20161003/00
+  dir2=/scratch4/BMC/gmtb/${LOGNAME}/reference/fv3gfs/${CASE}/gfs.20161003/00
   nccmp=/apps/nccmp/1.8.2-gcc/bin/nccmp
+elif [ $MACHINE = "cheyenne" ]; then
+  dir1=/glade/scratch/${LOGNAME}/${COMPILER}/fv3gfs/C96/gfs.20161003/00
+  dir2=/glade/scratch/${LOGNAME}/reference/fv3gfs/C96/gfs.20161003/00
+  nccmp=/glade/p/ral/jnt/tools/nccmp-1.8.2.1/nccmp
 else
    echo "Platform are not supported!"
    exit 0

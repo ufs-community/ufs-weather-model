@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Default account "nems"
 export ACCNR=${ACCNR:-nems}
 
 case $(hostname -f) in
@@ -56,24 +57,26 @@ case $(hostname -f) in
   tfe09)                   MACHINE_ID=theia ;; ### theia09
   tfe10)                   MACHINE_ID=theia ;; ### theia10
 
-  yslogin1)                MACHINE_ID=yellowstone ;;
-  yslogin2)                MACHINE_ID=yellowstone ;;
-  yslogin3)                MACHINE_ID=yellowstone ;;
-  yslogin4)                MACHINE_ID=yellowstone ;;
-  yslogin5)                MACHINE_ID=yellowstone ;;
-  yslogin6)                MACHINE_ID=yellowstone ;;
-  yslogin7)                MACHINE_ID=yellowstone ;;
-  yslogin8)                MACHINE_ID=yellowstone ;;
-  yslogin9)                MACHINE_ID=yellowstone ;;
-  yslogin10)               MACHINE_ID=yellowstone ;;
+  cheyenne1.ib0.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne1
+  cheyenne2.ib0.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne2
+  cheyenne3.ib0.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne3
+  cheyenne4.ib0.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne4
+  cheyenne5.ib0.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne5
+  cheyenne6.ib0.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne6
 
 esac
+
+# For Theia and Cheyenne, append compiler
+if [ $MACHINE_ID = theia ] || [ $MACHINE_ID = cheyenne ] ; then
+    MACHINE_ID=${MACHINE_ID}.${COMPILER}
+fi
 
 echo "Machine: " $MACHINE_ID "    Account: " $ACCNR
 
 # --- for Theia, find available account ID
 #if [[ $1"" != "machineonly" ]] ; then
-  if [ ${MACHINE_ID} = theia ]; then
+  if [[ ${MACHINE_ID} = theia.* ]]; then
+
     AP=account_params          # Account info
     if [ ${ACCNR:-null} = null ]; then
 

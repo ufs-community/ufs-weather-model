@@ -1,12 +1,12 @@
 #%Module######################################################################
 ##
-##    NEMS FV3 Prerequisites: Theia
+##    NEMS FV3 Prerequisites: Theia/Intel
 
 proc ModulesHelp {} {
-  puts stderr "\tcit - loads modules required for building and running FV3 under NEMS on Theia"
+  puts stderr "\tcit - loads modules required for building and running FV3 under NEMS on Theia/Intel"
 }
 
-module-whatis "loads NEMS FV3 prerequisites for Theia"
+module-whatis "loads NEMS FV3 prerequisites for Theia/Intel"
 
 # NOTE: the "module purge" and loading of the module command are
 # handled by the module-setup.sh (or .csh) script.
@@ -31,5 +31,8 @@ module load w3nco/v2.0.6
 module load w3emc/v2.0.5
 module load nemsio/v2.2.3
 
+##
+## load ESMF library for above compiler / MPI combination
+##
 module use /scratch4/NCEPDEV/nems/noscrub/emc.nemspara/soft/modulefiles
 module load esmf/7.1.0r

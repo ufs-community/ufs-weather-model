@@ -1,0 +1,45 @@
+#%Module######################################################################
+##
+##    NEMS FV3 Prerequisites: Cheyenne/Intel
+
+proc ModulesHelp {} {
+  puts stderr "\tcit - loads modules required for building and running FV3 under NEMS on Cheyenne/Intel"
+}
+
+module-whatis "loads NEMS FV3 prerequisites for Cheyenne/Intel"
+
+# NOTE: the "module purge" and loading of the module command are
+# handled by the module-setup.sh (or .csh) script.
+
+##
+## load programming environment
+## this typically includes compiler, MPI and job scheduler
+##
+module load ncarenv/1.2
+module load intel/17.0.1
+module load mpt/2.15f
+module load ncarcompilers/0.4.1
+module load netcdf/4.4.1.1
+
+##
+## use pre-compiled EMSF library for above compiler / MPI combination
+##
+setenv ESMF_DIR              /glade/p/work/heinzell/fv3/esmf-7.1.0r/intel-17.0.1/mpt-2.15f
+setenv ESMF_INC              /glade/p/work/heinzell/fv3/esmf-7.1.0r/intel-17.0.1/mpt-2.15f/include
+setenv ESMF_BIN              /glade/p/work/heinzell/fv3/esmf-7.1.0r/intel-17.0.1/mpt-2.15f/bin/binO/Linux.intel.64.mpi.default
+setenv ESMF_LIB              /glade/p/work/heinzell/fv3/esmf-7.1.0r/intel-17.0.1/mpt-2.15f/lib/libO/Linux.intel.64.mpi.default
+setenv ESMF_MOD              /glade/p/work/heinzell/fv3/esmf-7.1.0r/intel-17.0.1/mpt-2.15f/mod/modO/Linux.intel.64.mpi.default
+setenv ESMFMKFILE            /glade/p/work/heinzell/fv3/esmf-7.1.0r/intel-17.0.1/mpt-2.15f/lib/libO/Linux.intel.64.mpi.default/esmf.mk
+prepend-path PATH            /glade/p/work/heinzell/fv3/esmf-7.1.0r/intel-17.0.1/mpt-2.15f/bin/binO/Linux.intel.64.mpi.default
+prepend-path LD_LIBRARY_PATH /glade/p/work/heinzell/fv3/esmf-7.1.0r/intel-17.0.1/mpt-2.15f/lib/libO/Linux.intel.64.mpi.default
+
+##
+## NCEP libraries (download and build manually for the time being; https://github.com/climbfuji/NCEPlibs)
+##
+set NCEPLIBS_DIR /glade/p/work/heinzell/fv3/NEMSfv3gfs_vlab_portability/NCEPlibs-intel-20180420
+setenv NEMSIO_INC  ${NCEPLIBS_DIR}/include
+setenv NEMSIO_LIB  ${NCEPLIBS_DIR}/lib/libnemsio_d.a
+setenv BACIO_LIB4  ${NCEPLIBS_DIR}/lib/libbacio_4.a
+setenv SP_LIBd     ${NCEPLIBS_DIR}/lib/libsp_v2.0.2_d.a
+setenv W3EMC_LIBd  ${NCEPLIBS_DIR}/lib/libw3emc_d.a
+setenv W3NCO_LIBd  ${NCEPLIBS_DIR}/lib/libw3nco_d.a

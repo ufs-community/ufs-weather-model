@@ -22,6 +22,9 @@ submit_and_wait() {
     re='^([0-9]+\.[a-zA-Z0-9]+)$'
     qsub_id=0
     [[ "${qsubout}" =~ $re ]] && qsub_id=${BASH_REMATCH[1]}
+    if [[ ${MACHINE_ID} = cheyenne.* ]]; then
+      qsub_id="${qsub_id%.chadm*}"
+    fi
   elif [[ $SCHEDULER = 'lsf' ]]; then
     bsubout=$( bsub < $job_card )
     re='Job <([0-9]+)> is submitted to queue <(.+)>.'
@@ -38,7 +41,11 @@ submit_and_wait() {
     if [[ $SCHEDULER = 'moab' ]]; then
       job_running=$( showq -u ${USER} -n | grep ${JBNME} | wc -l); sleep 5
     elif [[ $SCHEDULER = 'pbs' ]]; then
-      job_running=$( qstat -u ${USER} -n | grep ${JBNME} | wc -l); sleep 5
+      if [[ ${MACHINE_ID} = cheyenne.* ]]; then
+        job_running=$( qstat ${qsub_id} | grep ${qsub_id} | wc -l); sleep 5
+      else
+        job_running=$( qstat -u ${USER} -n | grep ${JBNME} | wc -l); sleep 5
+      fi
     elif [[ $SCHEDULER = 'lsf' ]]; then
       job_running=$( bjobs -u ${USER} -J ${JBNME} 2>/dev/null | grep ${QUEUE} | wc -l); sleep 5
     fi
@@ -50,7 +57,12 @@ submit_and_wait() {
   if [[ $SCHEDULER = 'moab' ]]; then
      :
   elif [[ $SCHEDULER = 'pbs' ]]; then
-    jobid=$( qstat -u ${USER} | grep ${JBNME} | awk '{print $1}' )
+    if [[ ${MACHINE_ID} = cheyenne.* ]]; then
+      jobid=$( qstat ${qsub_id} | grep ${qsub_id} | awk '{print $1}' )
+      jobid="${jobid%.chadm*}"
+    else
+      jobid=$( qstat -u ${USER} | grep ${JBNME} | awk '{print $1}' )
+    fi
     trap 'echo "Job ${jobid} killed"; qdel ${jobid}; trap 0; exit' 1 2 3 4 5 6 7 8 10 12 13 15
     if [[ ${qsub_id} != ${jobid} ]]; then
       echo "Warning: qsub_id is not equal to jobid"
@@ -73,7 +85,11 @@ submit_and_wait() {
     if [[ $SCHEDULER = 'moab' ]]; then
       job_running=$( showq -u ${USER} -n | grep ${JBNME} | wc -l)
     elif [[ $SCHEDULER = 'pbs' ]]; then
-      job_running=$( qstat -u ${USER} -n | grep ${JBNME} | wc -l)
+      if [[ ${MACHINE_ID} = cheyenne.* ]]; then
+        job_running=$( qstat ${qsub_id} | grep ${qsub_id} | wc -l); sleep 5
+      else
+        job_running=$( qstat -u ${USER} -n | grep ${JBNME} | wc -l)
+      fi
     elif [[ $SCHEDULER = 'lsf' ]]; then
       job_running=$( bjobs -u ${USER} -J ${JBNME} 2>/dev/null | wc -l)
     fi
@@ -93,15 +109,23 @@ submit_and_wait() {
     elif [[ $SCHEDULER = 'pbs' ]]; then
 
       #status=$( qstat -u ${USER} -n | grep ${JBNME} | awk '{print $"10"}' ); status=${status:--}  PJP comment out to speed up regression test
-      status=$( qstat -u ${USER} -n | grep ${JBNME} | awk '{print $10}' ); status=${status:--}
+      if [[ ${MACHINE_ID} = cheyenne.* ]]; then
+        status=$( qstat ${qsub_id} | grep ${qsub_id} | awk '{print $5}' ); status=${status:--}
+      else
+        status=$( qstat -u ${USER} -n | grep ${JBNME} | awk '{print $10}' ); status=${status:--}
+      fi
       if [[ -f ${RUNDIR}/err ]] ; then FnshHrs=$( tail -100 ${RUNDIR}/err | grep Finished | tail -1 | awk '{ print $9 }' ); fi
       FnshHrs=${FnshHrs:-0}
       if   [[ $status = 'Q' ]];  then echo "$n min. TEST ${TEST_NR} is waiting in a queue, Status: $status jobid ${jobid}"
       elif [[ $status = 'H' ]];  then echo "$n min. TEST ${TEST_NR} is held in a queue,    Status: $status"
       elif [[ $status = 'R' ]];  then echo "$n min. TEST ${TEST_NR} is running,            Status: $status , Finished $FnshHrs hours"
       elif [[ $status = 'E' ]] || [[ $status = 'C' ]];  then
-        jobid=$( qstat -u ${USER} | grep ${JBNME} | awk '{print $1}')
-        exit_status=$( qstat ${jobid} -f | grep exit_status | awk '{print $3}')
+        if [[ ${MACHINE_ID} = cheyenne.* ]]; then
+          exit_status=$( qstat ${jobid} -x -f | grep Exit_status | awk '{print $3}')
+        else
+          jobid=$( qstat -u ${USER} | grep ${JBNME} | awk '{print $1}')
+          exit_status=$( qstat ${jobid} -f | grep exit_status | awk '{print $3}')
+        fi
         if [[ $exit_status != 0 ]]; then
           echo "Test ${TEST_NR} FAIL" >> ${REGRESSIONTEST_LOG}
           echo                        >> ${REGRESSIONTEST_LOG}
@@ -159,6 +183,9 @@ check_results() {
 
   ROCOTO=${ROCOTO:-false}
 
+  # Default compiler "intel"
+  export COMPILER=${NEMS_COMPILER:-intel}
+
   local test_status='PASS'
 
   # Give one minute for data to show up on file system
@@ -192,6 +219,22 @@ check_results() {
         echo ".......MISSING baseline" >> ${REGRESSIONTEST_LOG}
         echo ".......MISSING baseline"
         test_status='FAIL'
+
+      elif [[ ( $COMPILER == "gnu" || $COMPILER == "pgi" ) && $i == "RESTART/fv_core.res.nc" ]] ; then
+
+        # Although identical in ncdiff, RESTART/fv_core.res.nc differs in byte 469, line 3,
+        # for the fv3_control_32bit test between each run (without changing the source code)
+        # for GNU and PGI compilers - skip comparison.
+        echo ".......SKIP for gnu/pgi compilers" >> ${REGRESSIONTEST_LOG}
+        echo ".......SKIP for gnu/pgi compilers"
+
+      elif [[ $COMPILER == "pgi"  && ( $i == "RESTART/fv_BC_sw.res.nest02.nc" || $i == "RESTART/fv_BC_ne.res.nest02.nc" ) ]] ; then
+
+        # Although identical in ncdiff, RESTART/fv_BC_sw.res.nest02.nc differs in byte 6897, line 17
+        # (similar for fv_BC_ne.res.nest02.nc) for the fv3_stretched_nest test between each run
+        # (without changing the source code) for the PGI compiler - skip comparison.
+        echo ".......SKIP for pgi compiler" >> ${REGRESSIONTEST_LOG}
+        echo ".......SKIP for pgi compiler"
 
       else
 

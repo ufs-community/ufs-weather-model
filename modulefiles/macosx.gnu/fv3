@@ -1,0 +1,56 @@
+#!/bin/bash
+
+#%Module######################################################################
+##
+##    NEMS FV3 Prerequisites: MACOSX with clang/gfortran compilers
+
+echo "Setting environment variables for NEMSfv3gfs on MACOSX with clang/gfortran"
+
+##
+## load programming environment: compiler, flags, paths
+##
+export CC=/usr/local/bin/mpicc
+export CXX=/usr/local/bin/mpicxx
+export F77=/usr/local/bin/mpif77
+export F90=/usr/local/bin/mpif90
+export FC=/usr/local/bin/mpif90
+export CPP="/usr/local/bin/mpif90 -E -x f95-cpp-input"
+export LDFLAGS="-L/usr/local/opt/zlib/lib -L/usr/local/opt/llvm/lib"
+export CPPFLAGS="-I/usr/local/opt/zlib/include -I/usr/local/opt/llvm/include"
+export CFLAGS="-I/usr/local/opt/zlib/include -I/usr/local/opt/llvm/include"
+export CXXFLAGS="-I/usr/local/opt/zlib/include -I/usr/local/opt/llvm/include"
+export FFLAGS="-I/usr/local/opt/zlib/include -I/usr/local/opt/llvm/include"
+export FCFLAGS="-I/usr/local/opt/zlib/include -I/usr/local/opt/llvm/include"
+export PATH="/usr/local/opt/llvm/bin${PATH:+:$PATH}"
+export LD_LIBRARY_PATH="/usr/local/opt/zlib/lib:/usr/local/opt/llvm/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+export DYLD_LIBRARY_PATH="/usr/local/opt/zlib/lib:/usr/local/opt/llvm/lib:${DYLD_LIBRARY_PATH:+:$DYLD_LIBRARY_PATH}"
+
+##
+## use homebrew NetCDF library
+##
+export NETCDF=/usr/local
+
+##
+## use pre-compiled EMSF library for above compiler / MPI combination
+##
+ESMF_VERSION=esmf-7.1.0r
+export ESMF_DIR=/usr/local/${ESMF_VERSION}/
+export ESMF_INC=/usr/local/${ESMF_VERSION}/include
+export ESMF_BIN=/usr/local/${ESMF_VERSION}/bin/binO/Darwin.gfortranclang.64.mpich.default
+export ESMF_LIB=/usr/local/${ESMF_VERSION}/lib/libO/Darwin.gfortranclang.64.mpich.default
+export ESMF_MOD=/usr/local/${ESMF_VERSION}/mod/modO/Darwin.gfortranclang.64.mpich.default
+export ESMFMKFILE=/usr/local/${ESMF_VERSION}/lib/libO/Darwin.gfortranclang.64.mpich.default/esmf.mk
+export PATH="/usr/local/${ESMF_VERSION}/bin/binO/Darwin.gfortranclang.64.mpich.default${PATH:+:$PATH}"
+export LD_LIBRARY_PATH="/usr/local/${ESMF_VERSION}/lib/libO/Darwin.gfortranclang.64.mpich.default${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+export DYLD_LIBRARY_PATH="/usr/local/${ESMF_VERSION}/lib/libO/Darwin.gfortranclang.64.mpich.default${DYLD_LIBRARY_PATH:+:$DYLD_LIBRARY_PATH}"
+
+##
+## NCEP libraries (need to download and build manually, see doc/README_MACOSX.txt and https://github.com/climbfuji/NCEPlibs)
+##
+export NCEPLIBS_DIR=/usr/local/NCEPlibs-20180401
+export NEMSIO_INC=${NCEPLIBS_DIR}/include
+export BACIO_LIB4=${NCEPLIBS_DIR}/lib/libbacio_4.a
+export SP_LIBd=${NCEPLIBS_DIR}/lib/libsp_v2.0.2_d.a
+export W3EMC_LIBd=${NCEPLIBS_DIR}/lib/libw3emc_d.a
+export W3NCO_LIBd=${NCEPLIBS_DIR}/lib/libw3nco_d.a
+export NEMSIO_LIB=${NCEPLIBS_DIR}/lib/libnemsio_d.a
