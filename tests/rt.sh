@@ -234,7 +234,7 @@ while getopts ":cfsl:mreh" opt; do
   esac
 done
 
-RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/trunk-20180524}
+RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/trunk-20180605}
 
 shift $((OPTIND-1))
 [[ $# -gt 1 ]] && usage
