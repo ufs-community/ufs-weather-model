@@ -96,8 +96,8 @@ else
 FFLAGS += -i4 -real-size 64 -no-prec-div -no-prec-sqrt
 endif
 
-FFLAGS += -axavx 
-CFLAGS += -axavx 
+FFLAGS += -axSSE4.2,AVX,CORE-AVX2
+CFLAGS += -axSSE4.2,AVX,CORE-AVX2
 
 FFLAGS_OPT = -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3
 FFLAGS_REPRO = -O2 -debug minimal -fp-model source -qoverride-limits -g -traceback
