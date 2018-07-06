@@ -118,10 +118,12 @@ elif [[ $MACHINE_ID = gaea ]]; then
   ECFLOW_START=
   DISKNM=/lustre/f1/pdata/ncep_shared/emc.nemspara/RT
   QUEUE=debug
-  ACCNR=cmp
+#  DO NOT SET AN ACCOUNT EVERYONE IS NOT A MEMBER OF
+#  USE AN ENVIRONMENT VARIABLE TO SET ACCOUNT
+#  ACCNR=cmp
   PARTITION=c4
-  STMP=/lustre/f1/ncep/
-  PTMP=/lustre/f1/ncep/
+  STMP=/lustre/f1/
+  PTMP=/lustre/f1/
   SCHEDULER=moab
   MPIEXEC=aprun
   MPIEXECOPTS="\"-j 1 -n @[TASKS] -N @[TPN] -d @[THRD]\""
