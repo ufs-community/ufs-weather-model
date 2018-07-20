@@ -3,7 +3,7 @@
 ################################################################################
 
 # OFFICIAL BASELINE
-# /scratch4/NCEPDEV/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20180330
+# /scratch4/NCEPDEV/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20180524
 
 # OWN BASELINE
 # /scratch4/NCEPDEV/stmp4/$USER/FV3_RT/REGRESSION_TEST_INTEL

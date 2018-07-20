@@ -35,9 +35,20 @@ prepend-path LD_LIBRARY_PATH /scratch4/BMC/gmtb/esmf-7.1.0r/pgi-17.7/mvapich2-2.
 ## NCEP libraries (download and build manually for the time being; https://github.com/climbfuji/NCEPlibs)
 ##
 set NCEPLIBS_DIR /scratch4/home/Dom.Heinzeller/NEMSfv3gfs_vlab_portability/NCEPlibs-pgi-20180420
-setenv NEMSIO_INC  ${NCEPLIBS_DIR}/include
-setenv NEMSIO_LIB  ${NCEPLIBS_DIR}/lib/libnemsio_d.a
-setenv BACIO_LIB4  ${NCEPLIBS_DIR}/lib/libbacio_4.a
-setenv SP_LIBd     ${NCEPLIBS_DIR}/lib/libsp_v2.0.2_d.a
-setenv W3EMC_LIBd  ${NCEPLIBS_DIR}/lib/libw3emc_d.a
-setenv W3NCO_LIBd  ${NCEPLIBS_DIR}/lib/libw3nco_d.a
+setenv NCEPLIBS_DIR ${NCEPLIBS_DIR}
+setenv NEMSIO_INC   ${NCEPLIBS_DIR}/include
+setenv NEMSIO_LIB   ${NCEPLIBS_DIR}/lib/libnemsio_d.a
+setenv BACIO_LIB4   ${NCEPLIBS_DIR}/lib/libbacio_4.a
+setenv SP_LIBd      ${NCEPLIBS_DIR}/lib/libsp_v2.0.2_d.a
+setenv W3EMC_LIBd   ${NCEPLIBS_DIR}/lib/libw3emc_d.a
+setenv W3NCO_LIBd   ${NCEPLIBS_DIR}/lib/libw3nco_d.a
+
+##
+## Set compiler environment variables for CCPP
+##
+setenv CPP "mpicc -E"
+setenv CC  mpicc
+setenv CXX mpic++
+setenv FC  mpif90
+setenv F77 mpif77
+setenv F90 mpif90

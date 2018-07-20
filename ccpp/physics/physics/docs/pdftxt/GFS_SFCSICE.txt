@@ -1,0 +1,41 @@
+/**
+\page GFS_SFCSICE GFS Sea Ice Scheme
+\section des_sice Description
+ Sea ice is a thin skin of frozen water covering the polar oceans.  The sea ice strongly 
+ interacts with both the atmosphere above and the ocean underneath in the high
+ latitudes. In a coupled weather/climate system, changes in sea ice extent, thickness and concentration
+ regionally or globally would influence oceanic and atmospheric conditions, which in turn affect the
+ sea ice distribution. The physical and dynamical processes affecting the weather and climate are
+ considered as follows:
+ + The high albedo of the sea ice reflects more solar radiation back to the space. The feedbacks are
+ considered as positive. The broader the sea ice cover, the higher the surface albedo, which result
+ in less amount of solar radiation absorbed at the Earth's surface. A cooler surface would favor more
+ sea ice to form. The process would be reversed in less sea ice situation.
+ + The sea ice restricts the heat/water exchange between the air and ocean. The presence of extensive
+ areas of sea ice would suppress the heat loss in winter and the heat gain in summer by the ocean.
+ Even a thin ice cover influences the turbulent heat transfer significantly between ocean and
+ atmosphere. The surface fluxes of sensible and latent heat can be greater by up to two orders of magnitude
+ at the open water surface of a lead or polynya than that through (snow covered) pack ice.
+ + The sea ice modifies air/sea momentum transfer, ocean fresh water balance and ocean circulation.
+ The freezing and melting of the ocean surface and the associated fluxes of salt and heat produce major
+ changes in the density structure of the polar water. Formation of sea ice injects salt into the ocean
+ makes the water heavier and more convectively unstable, conversely when melting occurs, stable and fresh
+ layers can prevent deep covective activity.
+
+ A sea ice model, in general, may contain subcomponents treating 1) dynamics (ice motion),
+ 2) ice transport, 3) multiple ice thickness categories (including leads), 4) surface albedo,
+ and 5) vertical thermodynamics. GFS sea ice scheme is concerned with a scheme for the
+ last of these processes. A three-layer thermodynamic sea ice model (\cite winton_2000) 
+ has been coupled to GFS. It predicts sea ice/snow thickness,
+ the surface temperature and ice temperature structure. In each model grid box, the heat and moisture
+ fluxes and albedo are treated separately for the ice and the open water.
+
+\section intra_sice Intraphysics Communication
++ GFS Sea Ice Driver(\ref arg_table_sfc_sice_run)
++ Three-layer Thermodynamics Sea Ice Model (ice3lay()) \cite winton_2000
+
+\section gen_sice General Algorithm 
++ \ref general_sice_run
++ \ref gen_ice3lay
+
+*/

@@ -37,9 +37,19 @@ prepend-path LD_LIBRARY_PATH /glade/p/work/heinzell/fv3/esmf-7.1.0r/intel-17.0.1
 ## NCEP libraries (download and build manually for the time being; https://github.com/climbfuji/NCEPlibs)
 ##
 set NCEPLIBS_DIR /glade/p/work/heinzell/fv3/NEMSfv3gfs_vlab_portability/NCEPlibs-intel-20180420
-setenv NEMSIO_INC  ${NCEPLIBS_DIR}/include
-setenv NEMSIO_LIB  ${NCEPLIBS_DIR}/lib/libnemsio_d.a
-setenv BACIO_LIB4  ${NCEPLIBS_DIR}/lib/libbacio_4.a
-setenv SP_LIBd     ${NCEPLIBS_DIR}/lib/libsp_v2.0.2_d.a
-setenv W3EMC_LIBd  ${NCEPLIBS_DIR}/lib/libw3emc_d.a
-setenv W3NCO_LIBd  ${NCEPLIBS_DIR}/lib/libw3nco_d.a
+setenv NCEPLIBS_DIR ${NCEPLIBS_DIR}
+setenv NEMSIO_INC   ${NCEPLIBS_DIR}/include
+setenv NEMSIO_LIB   ${NCEPLIBS_DIR}/lib/libnemsio_d.a
+setenv BACIO_LIB4   ${NCEPLIBS_DIR}/lib/libbacio_4.a
+setenv SP_LIBd      ${NCEPLIBS_DIR}/lib/libsp_v2.0.2_d.a
+setenv W3EMC_LIBd   ${NCEPLIBS_DIR}/lib/libw3emc_d.a
+setenv W3NCO_LIBd   ${NCEPLIBS_DIR}/lib/libw3nco_d.a
+
+##
+## Set compiler environment variables for CCPP
+##
+setenv CC  mpicc
+setenv CXX mpicxx
+setenv FC  mpif90
+setenv F77 mpif77
+setenv F90 mpif90

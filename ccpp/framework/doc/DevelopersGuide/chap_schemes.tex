@@ -1,0 +1,122 @@
+\chapter{CCPP-compliant physics schemes}
+\label{chap_schemes}
+\setlength{\parskip}{12pt}
+
+\section{Writing a CCPP-compliant physics scheme}
+\label{sec_writescheme}
+The rules for writing a CCPP-compliant scheme are summarized in the following. Listing~\ref{lst_scheme_template} contains a Fortran template for a CCPP-compliant scheme, which can also be found in \execout{ccpp-framework/doc/DevelopersGuide/scheme\_template.F90}.
+
+General rules:
+\begin{itemize}
+\item Scheme must be in its own module (module name $=$ scheme name) and must have three entry points (subroutines) starting with the name of the module: module \execout{scheme\_template} $\rightarrow$ subroutines \execout{scheme\_template\_\{init,finalize,run\}}. Note: at present, the \execout{\_init} and \execout{\_finalize} routines can not be used, and are simply placeholders (c.\,f. listing~\ref{lst_scheme_template})
+\item Empty schemes (e.\,g. \execout{scheme\_template\_init} in listing~\ref{lst_scheme_template}) need no argument table.
+\item Schemes in use require an argument table as below, the order of arguments in the table must be the same as in the argument list of the subroutine.
+\item An argument table must precede the subroutine, and must start with
+\begin{lstlisting}[language=Fortran]
+!> \section arg_table_subroutine_name Argument Table
+\end{lstlisting}
+and end with a line containing only
+\begin{lstlisting}[language=Fortran]
+!!
+\end{lstlisting}
+\item All external information required by the scheme must be passed in via the argument list, i.e. no external modules (except if defined in the Fortran standards 95--2003).
+\item If the width of an argument table exceeds 250 characters, wrap the argument table in CPP preprocessor directives:
+\begin{lstlisting}[language=Fortran]
+#if 0
+!> \section arg_table_scheme_template_run Argument Table
+...
+!!
+#endif
+\end{lstlisting}
+\item Module names, scheme names and subroutine names are case sensitive.
+\item For better readability, it is suggested to align the columns in the metadata table.
+\end{itemize}
+
+Input/output variable (argument) rules:
+\begin{itemize}
+\item Variables available for CCPP physics schemes are identified by their unique \execout{standard\_name}. While an effort is made to comply with existing \execout{standard\_name} definitions of the CF conventions (\url{http://cfconventions.org}), additional names are introduced by CCPP (see below for further information).
+\item A \execout{standard\_name} cannot be assigned to more than one local variable (\execout{local\_name}).
+\item All information (units, rank) must match the specifications on the host model side.
+\end{itemize}
+
+Coding rules:
+\begin{itemize}
+\item Code must comply to modern Fortran standards (Fortran 90/95/2003)
+\item Use labeled \execout{end} statements for modules, subroutines and functions, example:\\
+\execout{module scheme\_template} $\rightarrow$ \execout{end module scheme\_template}.
+\item Use \execout{implicit none}.
+\item All \execout{intent(out)} variables must be initialized properly inside the subroutine.
+\item No permanent state inside the module, i.\,e. no variables carrying the \execout{save} attribute.
+\item No \execout{goto} statements.
+\item Errors are handled by the host model using the two mandatory arguments \execout{errmsg} and \execout{errflg}. In the event of an error, assign a meaningful error message to \execout{errmsg} and set \execout{errflg} to a value other than 0.
+\item Schemes are not allowed to abort/stop the program.
+\item Schemes are not allowed to perform I/O operations (except for reading lookup tables or other information needed to initialize the scheme)
+\item Line lengths of 120 characters are suggested for better readibility (exception: CCPP metadata argument tables).
+\end{itemize}
+Parallel programming rules:
+\begin{itemize}
+\item If OpenMP is used, the number of allowed threads must be provided by the
+  host model as an \execout{intent(in)} argument in the argument list.
+\item If MPI is used, it is restricted to global communications: {barrier}, {broadcast}, {gather}, {scatter}, {reduce}; the MPI communicator must be provided by the host model as an \execout{intent(in)} argument in the argument list.
+\item If Fortran coarrays are used, consult with the GMTB helpdesk at (\url{gmtb-help@ucar.edu}).
+\end{itemize}
+Scientific Documentation rules:
+\begin{itemize}
+\item Scientific documentation is not technically needed for a parameterization to work with the CCPP. However, inclusion of inline scientific documentation is highly recommended and necessary before a parameterization is submitted for inclusion in the CCPP. 
+\item Scientific documentation for CCPP parameterizations should be inline within the Fortran code using markups according to the Doxygen software. Reviewing the documentation for CCPP v1.0 parameterizations is a good way of getting started in writing documentation for a new scheme.
+\item The CCPP Scientific Documentation can be converted to html format (see \url{https://dtcenter.org/gmtb/users/ccpp/docs/sci_doc/}.
+\item For precise instructions on creating the scientific documentation, contact the GMTB helpdesk at \url{gmtb-help@ucar.edu}.
+\end{itemize}
+\begin{sidewaysfigure}
+\lstinputlisting[language=Fortran,
+                 %basicstyle=\scriptsize\fontfamily{qcr}\fontshape{n}\fontseries{l}\selectfont
+                 basicstyle=\scriptsize\ttfamily,
+                 label=lst_scheme_template,
+                 caption=Fortran template for a CCPP-compliant scheme,
+                 firstline=78]{./scheme_template.F90}
+\end{sidewaysfigure}
+
+\section{Adding a new scheme to the CCPP pool}
+\label{sec_addscheme}
+This section describes briefly how to add a new scheme to the CCPP pool and use it with a host model that already supports the CCPP.
+\begin{enumerate}
+\item Identify the required variables for your target host model: for a list of variables available for host model \execsub{XYZ} (currently \execout{SCM} and \execout{FV3}), see \execout{ccpp-framework/doc/DevelopersGuide/CCPP\_VARIABLES\_XYZ.pdf}. Contact the GMTB helpdesk at \url{gmtb-help@ucar.edu} if you need additional variables that you believe should be provided by the host model or as part of a pre-/post-scheme (interstitial scheme) instead of being calculated from existing variables inside your scheme.
+\item Identify if your new scheme requires additional interstitial code that must be run before/after the scheme and that cannot be part of the scheme itself, for example because of dependencies on other schemes and/or the order the scheme is run in the suite definition file. As of now, interstitial schemes should be created in cooperation with the GMTB helpdesk.
+\item Follow the guidelines outlined in the previous section to make your scheme CCPP-compliant. Make sure to use an uppercase suffix \execout{.F90} to enable CPP preprocessing.
+\item Locate the CCPP prebuild configuration files for the target host model, for example:
+\begin{lstlisting}[language=Python]
+ccpp-framework/scripts/ccpp_prebuild_config_FV3.py # for GFDL FV3
+ccpp-framework/scripts/ccpp_prebuild_config_SCM.py # FOR GMTB SCM
+\end{lstlisting}
+\item Add the new scheme to the list of schemes using the same path as the existing schemes:
+\begin{samepage}
+\begin{lstlisting}[language=Python]
+SCHEME_FILES = [
+    ...
+    '../some_relative_path/existing_scheme.F90',
+    '../some_relative_path/new_scheme.F90',
+    ...
+    ]
+\end{lstlisting}
+\end{samepage}
+\item If the new scheme uses optional arguments, add information on which ones to use further down in the configuration file. See existing entries and documentation in the configuration file for the possible options:
+\begin{lstlisting}[language=Python]
+OPTIONAL_ARGUMENTS = {
+    'SCHEME_NAME' : {
+        'SCHEME_NAME_run' : [
+            # list of all optional arguments in use for this model, by standard_name
+            ],
+            # instead of list [...], can also say 'all' or 'none'
+        },
+    }
+\end{lstlisting}
+\item Place new scheme in the same location as existing schemes in the CCPP directory structure, e.\,g. \execout{../some\_relative\_path/new\_scheme.F90}.
+\item Edit the runtime suite definition file (see, for example, GMTB Single Column Model Technical Guide v1.0, chapter 6.1.3, \url{https://dtcenter.org/gmtb/users/ccpp/docs}) and add the new scheme at the place it should be run.
+\item \textbf{Temporary:} The current build systems for SCM and FV3 do not make full use of the makefile snippets auto-generated by \execout{ccpp\_prebuild.py}. The SCM uses hardcoded lists of physics schemes and physics scheme caps, while FV3GFS makes use of the auto-generated list of physics scheme caps but uses a hardcoded list of physics scheme files. This is also due to the fact that script \execout{ccpp\_prebuild.py} at the moment only produces traditional \execout{makefile} snippets (e.\,g. \execout{CCPP\_SCHEMES.mk} and \execout{CCPP\_CAPS.mk}). Work is underway to create include files suitable for cmake for both schemes and caps, and to integrate these into the build systems for SCM and FV3. \emph{As a temporary measure, developers adding a new scheme must also update the following files} (relative to top-level directory for SCM; for FV3, replace \exec{ccpp-physics/} with \exec{FV3/gfsphysics/}):
+\begin{itemize}
+\item \exec{ccpp-physics/CMakeLists.txt} (for SCM): Add the name of the new physics scheme file and the name of the auto-generated cap for it to the \execout{SOURCES} list. Refer to the existing entries for the correct relative path.
+\item \exec{ccpp-physics/makefile} (for FV3): Add the name of the new physics scheme file to \exec{SRCS\_f}, \exec{SRCS\_f90}, \exec{SRCS\_F} or \exec{SRCS\_F90}, depending on the suffix of your scheme file. Refer to the existing entries for the correct relative path. For FV3, the auto-generated cap is automatically included, i.\,e. unlike for SCM, there is no need to add the name of the auto-generated cap to the makefile.
+\end{itemize}
+\item Done!
+\end{enumerate}
+\textbf{Note:} Making a scheme CCPP-compliant is a necessary step for acceptance of the scheme in the pool of supported CCPP physics schemes, but does not guarantee it. Acceptance is subject to approval by a Governance committee and depends on scientific innovation, demonstrated added value, and compliance with the above rules. The criteria for acceptance of innovations into the CCPP is under development. For further information, please contact the GMTB helpdesk at \url{gmtb-help@ucar.edu}.

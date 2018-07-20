@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<xs:schema elementFormDefault="qualified"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:element name="var">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element name="name"  type="xs:string"/>
+      <xs:element name="units" type="xs:string"/>
+      <xs:element name="id"    type="xs:string"/>
+      <xs:element name="rank"  type="xs:nonNegativeInteger"/>
+      <xs:element name="type"  type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="subroutine">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="var" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string"/>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="scheme">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="subroutine" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="module" type="xs:string"/>
+  </xs:complexType>
+</xs:element>
+
+</xs:schema>

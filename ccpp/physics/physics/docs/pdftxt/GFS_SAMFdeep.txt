@@ -1,0 +1,58 @@
+/**
+\page GFS_SAMFdeep GFS Scale-Aware Mass-Flux Deep Convection Scheme
+\section des_deep Description
+ The scale-aware mass-flux (SAMF) deep convection scheme is an
+ updated version of the previous Simplified Arakawa-Schubert (SAS) scheme
+ with scale and aerosol awareness and parameterizes the effect of deep
+ convection on the environment (represented by the model state variables)
+ in the following way. First, a simple cloud model is used to determine
+ the change in model state variables due to one entraining/detraining cloud
+ type, per unit cloud-base mass flux. Next, the total change in state variables
+ is retrieved by determining the actual cloud base mass flux using the
+ quasi-equilibrium assumption (for grid sizes larger than a threshold value
+ [currently set to 8 km]) or a mean updraft velocity (for grid sizes smaller
+ than the threshold value). With a scale-aware parameterization, the
+ cloud mass flux decreases with increasing grid resolution. A simple
+ aerosol-aware parameterization is employed, where rain conversion in
+ the convective updraft is modified by aerosol number concentration.
+ The name SAS is replaced with SAMF as for the smaller grid sizes,
+ the parameterization does not use Arakawa-Schubert's quasi-equilibrium
+ assumption any longer where the cloud work function (interpreted as
+ entrainment-moderated convective available potential energy [CAPE])
+ by the large scale dynamics is in balance with the consumption of the
+ cloud work function by the convection.
+
+ The SAS scheme uses the working concepts put forth 
+ in \cite arakawa_and_schubert_1974 but includes modifications
+ and simplifications from \cite grell_1993 such as saturated
+ downdrafts and only one cloud type (the deepest possible), rather than
+ a spectrum based on cloud top heights or assumed entrainment rates.
+ The scheme was implemented for the GFS in 1995 by \cite pan_and_wu_1995, 
+ with further modifications discussed in \cite han_and_pan_2011 , including the calculation
+ of cloud top, a greater CFL-criterion-based maximum cloud base mass flux,
+ updated cloud model entrainment and detrainment, improved convective
+ transport of horizontal momentum, a more general triggering function,
+ and the inclusion of convective overshooting.
+
+ The SAMF scheme updates the SAS scheme with scale- and aerosol-aware
+ parameterizations from \cite han_et_al_2017 based on
+ the studies by \cite arakawa_and_wu_2013 and \cite grell_and_freitas_2014 for scale awareness
+ and by \cite lim_2011 for aerosol awareness. The ratio of
+ advective time to convective turnover time is also taken into account
+ for the scale-aware parameterization. Along with the scale- and aerosol-aware
+ parameterizations, more changes are made to the SAMF scheme. The cloud
+ base mass-flux computation is modified to use convective turnover time
+ as the convective adjustment time scale. The rain conversion rate is
+ modified to decrease with decreasing air temperature above the freezing
+ level. Convective inhibition in the sub-cloud layer is used as an additional
+ trigger condition. Convective cloudiness is enhanced by considering suspended
+ cloud condensate in the updraft. The lateral entrainment is also enhanced
+ to more strongly suppress convection in a drier environment.
+
+\section intra_deep  Intraphysics Communication
+\ref arg_table_sasas_deep_run
+
+\section gen_al_deep General Algorithm
+\ref general_mfdeep
+
+*/

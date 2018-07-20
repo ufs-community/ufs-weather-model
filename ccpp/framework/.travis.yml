@@ -1,0 +1,93 @@
+#======================================================================
+# Project settings
+#======================================================================
+# Only build master.
+branches:
+  only:
+      - master
+      - develop
+
+language: fortran
+
+#======================================================================
+# Environment
+#======================================================================
+
+# Code is Fortran. While docs need doxygen and graphviz to build
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - cmake
+      - gcc-6
+      - gfortran-6
+      - g++-6
+      - doxygen
+      - graphviz
+      - lcov
+
+#======================================================================
+# Build Matrix
+#======================================================================
+matrix:
+   include:
+     - os: linux
+       compiler: gcc
+       sudo: false
+       dist: trusty
+# DH commented out 03/27/2018 because travis has problems with brew
+# todo: fix (maybe below brew install gcc@6?)
+#     - os: osx
+#       compiler: gcc
+
+#======================================================================
+# Building
+#======================================================================
+before_install:
+  - |
+      if [[ "$TRAVIS_OS_NAME" == "osx" ]] ; then
+          brew update
+          brew install gcc@6
+      fi
+  - |
+      if [[ "$TRAVIS_OS_NAME" == "linux" ]] ; then
+          pip install --user cpp-coveralls
+      fi
+
+before_script:
+  - export CC="gcc-6" FC="gfortran-6" CXX="g++-6" ;
+
+script:
+  - mkdir build && cd build && cmake .. && make
+  - |
+      if [[ "$TRAVIS_OS_NAME" == "linux" ]] ; then
+          export LD_LIBRARY_PATH=${PWD}/schemes/check/src/check-build
+          make test
+      fi
+  - |
+      if [[ "$TRAVIS_OS_NAME" == "osx" ]] ; then
+          export DYLD_LIBRARY_PATH=${PWD}/schemes/check/src/check-build
+          ctest
+      fi
+  - |
+      if [[ "$TRAVIS_OS_NAME" == "linux" ]] ; then
+          make clean
+          alias gcov="/usr/bin/gcov-6"
+          cmake -DCMAKE_BUILD_TYPE=Coverage .. && make coverage
+      fi
+
+after_success:
+  - |
+      if [[ "$TRAVIS_OS_NAME" == "linux" ]] ; then
+          bash <(curl -s https://codecov.io/bash)
+      fi
+
+#======================================================================
+# Notifications
+#======================================================================
+notifications:
+  email:
+    recipients: dom.heinzeller@noaa.gov
+    on_success: change
+    on_failure: always

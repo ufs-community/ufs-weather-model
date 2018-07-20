@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<suite name="GFS_operational_2017" lib="ccppphys" ver="1.0.0">
+  <init>GFS_initialize_scm_run</init>
+  <group name="time_vary">
+    <subcycle loop="1">
+      <scheme>GFS_phys_time_vary_1_run</scheme>
+      <scheme>GFS_rad_time_vary_run</scheme>
+      <scheme>GFS_phys_time_vary_2_run</scheme>
+      <!-- <scheme>GFS_diagtoscreen_run</scheme> -->
+    </subcycle>
+  </group>
+  <group name="radiation">
+    <subcycle loop="1">
+      <scheme>GFS_suite_interstitial_rad_reset_run</scheme>
+      <scheme>GFS_rrtmg_pre_run</scheme>
+      <scheme>rrtmg_sw_pre_run</scheme>
+      <scheme>rrtmg_sw_run</scheme>
+      <scheme>rrtmg_sw_post_run</scheme>
+      <scheme>rrtmg_lw_pre_run</scheme>
+      <scheme>rrtmg_lw_run</scheme>
+      <scheme>rrtmg_lw_post_run</scheme>
+      <scheme>GFS_rrtmg_post_run</scheme>
+      <!-- <scheme>GFS_diagtoscreen_run</scheme> -->
+      <!-- <scheme>GFS_interstitialtoscreen_run</scheme> -->
+    </subcycle>
+  </group>
+  <group name="physics">
+    <subcycle loop="1">
+      <scheme>GFS_suite_interstitial_phys_reset_run</scheme>
+      <scheme>get_prs_fv3_run</scheme>
+      <scheme>GFS_suite_interstitial_1_run</scheme>
+      <scheme>sfc_sice_pre_run</scheme>
+      <scheme>dcyc2t3_run</scheme>
+      <scheme>GFS_suite_interstitial_2_run</scheme>
+      <scheme>GFS_surface_generic_pre_run</scheme>
+      <scheme>GFS_PBL_generic_pre_run</scheme>
+      <scheme>lsm_noah_pre_run</scheme>
+      <!-- DH* TODO - turn into a subsycle loop="2" construct? -->
+      <!-- Surface iteration loop 1 -->
+      <scheme>GFS_surface_loop_control_part0_run</scheme>
+      <scheme>sfc_ex_coef_run</scheme>
+      <scheme>GFS_surface_loop_control_part1_run</scheme>
+      <scheme>sfc_nst_pre_run</scheme>
+      <scheme>sfc_nst_run</scheme>
+      <scheme>sfc_nst_post_run</scheme>
+      <scheme>lsm_noah_run</scheme>
+      <scheme>sfc_sice_run</scheme>
+      <scheme>GFS_surface_loop_control_part2_run</scheme>
+      <!-- Surface iteration loop 2 -->
+      <scheme>GFS_surface_loop_control_part0_run</scheme>
+      <scheme>sfc_ex_coef_run</scheme>
+      <scheme>GFS_surface_loop_control_part1_run</scheme>
+      <scheme>sfc_nst_pre_run</scheme>
+      <scheme>sfc_nst_run</scheme>
+      <scheme>sfc_nst_post_run</scheme>
+      <scheme>lsm_noah_run</scheme>
+      <scheme>sfc_sice_run</scheme>
+      <scheme>GFS_surface_loop_control_part2_run</scheme>
+      <!-- End of surface iteration loop -->
+      <scheme>dcyc2t3_post_run</scheme>
+      <scheme>sfc_diag_run</scheme>
+      <scheme>GFS_surface_generic_post_run</scheme>
+      <scheme>edmf_run</scheme>
+      <scheme>GFS_PBL_generic_post_run</scheme>
+      <scheme>gwdps_pre_run</scheme>
+      <scheme>gwdps_run</scheme>
+      <scheme>gwdps_post_run</scheme>
+      <scheme>rayleigh_damp_run</scheme>
+      <scheme>GFS_suite_update_stateout_run</scheme>
+      <scheme>ozphys_run</scheme>
+      <scheme>ozphys_post_run</scheme>
+      <scheme>GFS_DCNV_generic_pre_run</scheme>
+      <scheme>get_phi_fv3_run</scheme>
+      <scheme>GFS_suite_interstitial_3_run</scheme>
+      <scheme>GFS_zhao_carr_pre_run</scheme>
+      <scheme>sasas_deep_run</scheme>
+      <scheme>GFS_DCNV_generic_post_run</scheme>
+      <scheme>gwdc_pre_run</scheme>
+      <scheme>gwdc_run</scheme>
+      <scheme>gwdc_post_run</scheme>
+      <scheme>GFS_SCNV_generic_pre_run</scheme>
+      <scheme>sasas_shal_run</scheme>
+      <scheme>sasas_shal_post_run</scheme>
+      <scheme>GFS_SCNV_generic_post_run</scheme>
+      <scheme>cnvc90_run</scheme>
+      <scheme>GFS_MP_generic_pre_run</scheme>
+      <scheme>zhaocarr_gscond_run</scheme>
+      <scheme>zhaocarr_precpd_run</scheme>
+      <scheme>GFS_calpreciptype_run</scheme>
+      <scheme>GFS_MP_generic_post_run</scheme>
+      <scheme>sfc_diag_run</scheme>
+      <scheme>lsm_noah_post_run</scheme>
+      <scheme>sfc_sice_post_run</scheme>
+      <!-- <scheme>GFS_diagtoscreen_run</scheme> -->
+      <!-- <scheme>GFS_interstitialtoscreen_run</scheme> -->
+    </subcycle>
+  </group>
+  <finalize>GFS_finalize_scm_run</finalize> <!-- need to add this one? -->
+</suite>

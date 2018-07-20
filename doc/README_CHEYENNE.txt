@@ -3,7 +3,7 @@
 ################################################################################
 
 # OFFICIAL BASELINE
-# /glade/p/work/heinzell/fv3/RT/NEMSfv3gfs/trunk-20180507
+# /glade/p/work/heinzell/fv3/RT/NEMSfv3gfs/trunk-20180524
 
 # OWN BASELINE
 # /glade/scratch/$USER/FV3_RT/REGRESSION_TEST_INTEL

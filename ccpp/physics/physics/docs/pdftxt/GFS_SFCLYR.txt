@@ -1,0 +1,52 @@
+/**
+\page GFS_SFCLYR GFS Surface Layer Scheme
+\section des_rough  Description
+ It is the surface roughness length calculation based on
+ the surface sublayer scheme from \cite zeng_and_dickinson_1998.
+ \ref Noah_LSM are largely responsible for the quality
+ of model forecasts produced for near-surface weather parameters, such
+ as 2-meter air temperature (\f$T_{2m}\f$) and surface skin temperature
+ (\f$LST\f$). \f$LST\f$ is derived from the surface energy budget, and is
+ particularly important to remote sensing and data  assimilation. How
+ precise these two parameters can be simulated by the model strongly
+ depends on how accurate the surface heat fluxes are parameterized,
+ particularly the surface sensible heat flux (\f$SH\f$). The surface
+ thermal roughness length is a key parameter to determine \f$SH\f$.
+ Previous GFS version do not distinguish between the roughness length
+ for heat and momentum. The aerodynamic roughness \f$Z_{0m}\f$ is used
+ for wind, while the thermal roughness \f$Z_{0t}\f$ is used for heat and
+ water vapor. In general, \f$Z_{0m}\f$ is different from \f$Z_{0t}\f$,
+ because the transfer of momentum is affected by pressure fluctuations
+ in the turbulent waves behind the roughness elements, while for heat
+ and water vapor transfer no such dynamical mechanism exists. \cite zeng_and_dickinson_1998 found that the surface
+ skin temperature can be at least 10 K higher when considering the surface
+ sublayer (or the variable ratio of the \f$Z_{0m}/Z_{0t}\f$ ) than without
+ in the desert summer afternoon.
+ In May 2011, the new vegetation-dependent formulations of
+  thermal roughness formulation (\cite zheng_et_al_2009; \cite zheng_et_al_2012 )
+ was implemented to deal with the cold \f$LST\f$ bias
+ over the arid western continental United States
+ (CONUS) during daytime. This \f$LST\f$ bias contributes to large errors in
+ simulated satellite brightness temperatures over land by the Community
+ Radiative Transfer Model (CRTM) and hence the rejection of satellite
+ data in the NCEP Gridpoint Statistical Interpolation (GSI) system,
+ especially for surface-sensitive satellite channels.
+
+ Figure 1 show the 3 day average land surface skin temperature predicted
+ by the GFS and comparison with the GOES-derived satellite measurements.
+ At 18:00 UTC (midday in local time over the central United States) in
+ the control run (Figure 1a), a substantial cold bias can be found over
+ the west half of CONUS (i.e., arid or semiarid regions). The new roughness
+ length formulations significantly reduce the cold bias in the western
+ CONUS, while the \f$LST\f$ in the eastern CONUS, where the bias is small in
+ the control run, is not much affected.
+\image html roughness_length_fig1.png "Figure 1: Comparison of LST simulated in GFS and verification with the observations. (a) Difference between GFS and GOES in the control run at 18:00 UTC; (b) Difference between GFS and GOES with the new formulation run at 18:00 UTC, averaged from 1 to 3 July 2007" width=10cm
+\image latex roughness_length_fig1.eps "Comparison of LST simulated in GFS and verification with the observations. (a) Difference between GFS and GOES in the control run at 18:00 UTC; (b) Difference between GFS and GOES with the new formulation run at 18:00 UTC, averaged from 1 to 3 July 2007" width=10cm
+
+\section intra_rough Intraphysics Communication
+\ref arg_table_sfc_ex_coef_run
+
+\section gen_rough  General Algorithm
+\ref general_diff
+
+*/
