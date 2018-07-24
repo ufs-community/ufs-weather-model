@@ -1,7 +1,7 @@
 ## NEMS configuration file
 ##
-## Platform: Theia
-## Compiler: Intel with IntelMPI
+## Platform: Odin
+## Compiler: Intel with MVAPICH2
 
 SHELL=/bin/sh
 
@@ -35,10 +35,10 @@ endif
 ############
 # commands #
 ############
-FC = mpiifort
-CC = mpiicc
-CXX = mpiicpc
-LD = mpiifort -mkl=sequential
+FC = ftn
+CC = cc
+CXX = CC
+LD = ftn -mkl=sequential
 
 #########
 # flags #
@@ -50,7 +50,6 @@ VERBOSE =
 OPENMP = Y
 AVX2 = Y
 HYDRO = N
-CCPP = N
 
 include       $(ESMFMKFILE)
 ESMF_INC    = $(ESMF_F90COMPILEPATHS)
@@ -67,32 +66,27 @@ ifneq ($(need),$(ok))
 $(error Need at least make version $(need).  Load module gmake/3.81)
 endif
 
-NETCDF_ROOT = $(NETCDF)
+NETCDF_ROOT = $(NETCDF4)
 INCLUDE = -I$(NETCDF_ROOT)/include
 NETCDF_INC = -I$(NETCDF_ROOT)/include
 ifneq ($(findstring netcdf/4,$(LOADEDMODULES)),)
-  NETCDF_LIB += -L$(NETCDF)/lib -lnetcdff -lnetcdf
+  NETCDF_LIB += -L$(NETCDF4)/lib -lnetcdff -lnetcdf
 else
-  NETCDF_LIB += -L$(NETCDF)/lib -lnetcdff -lnetcdf
+  NETCDF_LIB += -L$(NETCDF4)/lib -lnetcdff -lnetcdf
 endif
 
 FPPFLAGS := -fpp -Wp,-w $(INCLUDE)
 CFLAGS := $(INCLUDE)
 
-FFLAGS := $(INCLUDE) -fno-alias -auto -safe-cray-ptr -save-temps -ftz -assume byterecl -nowarn -sox -align array64byte
-
-CPPDEFS += -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP
-CPPDEFS += -DNEW_TAUCTMAX -DINTERNAL_FILE_NML
+FFLAGS := $(INCLUDE) -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte
 
 ifeq ($(HYDRO),Y)
-CPPDEFS +=
+CPPDEFS += -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP
 else
-CPPDEFS += -DMOIST_CAPPA -DUSE_COND
+CPPDEFS += -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -Duse_WRTCOMP
 endif
 
-ifeq ($(NAM_phys),Y)
-CPPDEFS += -DNAM_phys
-endif
+CPPDEFS += -DNEW_TAUCTMAX -DINTERNAL_FILE_NML
 
 ifeq ($(32BIT),Y)
 CPPDEFS += -DOVERLOAD_R4 -DOVERLOAD_R8
@@ -101,17 +95,13 @@ else
 FFLAGS += -i4 -real-size 64 -no-prec-div -no-prec-sqrt
 endif
 
-ifeq ($(AVX2),Y)
-FFLAGS += -xCORE-AVX2 -qno-opt-dynamic-align
-CFLAGS += -xCORE-AVX2 -qno-opt-dynamic-align
-else
-FFLAGS += -xHOST -qno-opt-dynamic-align
-CFLAGS += -xHOST -qno-opt-dynamic-align
-endif
+FFLAGS += -xCORE-AVX-I #-axavx 
+CFLAGS += -xCORE-AVX-I #-axavx 
 
 FFLAGS_OPT = -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3
 FFLAGS_REPRO = -O2 -debug minimal -fp-model source -qoverride-limits -g -traceback
-FFLAGS_DEBUG = -g -O0 -check all -check noarg_temp_created -check nopointer -warn -warn noerrors -fp-stack-check -fstack-protector-all -fpe0 -debug -traceback -ftrapuv
+#FFLAGS_DEBUG = -g -O0 -check bounds -check -check noarg_temp_created -check nopointer -warn -warn noerrors -fp-stack-check -fstack-protector-all -fpe0 -debug -traceback -ftrapuv
+FFLAGS_DEBUG = -g -O0 -check bounds -traceback 
 
 TRANSCENDENTALS := -fast-transcendentals
 FFLAGS_OPENMP = -qopenmp
@@ -136,42 +126,34 @@ LDFLAGS_VERBOSE := -Wl,-V,--verbose,-cref,-M
 # start with blank LIBS
 LIBS :=
 
-ifeq ($(REPRO),Y)
-CFLAGS += $(CFLAGS_REPRO)
-FFLAGS += $(FFLAGS_REPRO)
-FAST :=
-else ifeq ($(DEBUG),Y)
+#ifneq ($(REPRO),)
+#CFLAGS += $(CFLAGS_REPRO)
+#FFLAGS += $(FFLAGS_REPRO)
+#FAST :=
+#else ifneq ($(DEBUG),)
 CFLAGS += $(CFLAGS_DEBUG)
 FFLAGS += $(FFLAGS_DEBUG)
 FAST :=
-else ifeq ($(TEST),Y)
-CFLAGS += $(CFLAGS_TEST)
-FFLAGS += $(FFLAGS_TEST)
-FAST :=
-else
-CFLAGS += $(CFLAGS_OPT)
-FFLAGS += $(FFLAGS_OPT)
-FAST := $(TRANSCENDENTALS)
-endif
+#else ifneq ($(TEST),)
+#CFLAGS += $(CFLAGS_TEST)
+#FFLAGS += $(FFLAGS_TEST)
+#FAST :=
+#else
+#CFLAGS += $(CFLAGS_OPT)
+#FFLAGS += $(FFLAGS_OPT)
+#FAST := $(TRANSCENDENTALS)
+#endif
 
-ifeq ($(OPENMP),Y)
-CPPDEFS += -DOPENMP
+ifneq ($(OPENMP),)
 CFLAGS += $(CFLAGS_OPENMP)
 FFLAGS += $(FFLAGS_OPENMP)
 LDFLAGS += $(LDFLAGS_OPENMP)
 endif
 
-ifeq ($(VERBOSE),Y)
+ifneq ($(VERBOSE),)
 CFLAGS += $(CFLAGS_VERBOSE)
 FFLAGS += $(FFLAGS_VERBOSE)
 LDFLAGS += $(LDFLAGS_VERBOSE)
-endif
-
-ifeq ($(CCPP),Y)
-CPPDEFS += -DCCPP
-CFLAGS += -I$(PATH_CCPP)/include
-FFLAGS += -I$(PATH_CCPP)/include
-LDFLAGS += -L$(PATH_CCPP)/lib -lccpp
 endif
 
 LDFLAGS += $(LIBS)

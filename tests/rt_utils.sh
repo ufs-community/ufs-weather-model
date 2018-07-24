@@ -1,4 +1,4 @@
-set -ex
+set -eu
 
 if [[ "$0" = "${BASH_SOURCE[0]}" ]]; then
   echo "$0 must be sourced"

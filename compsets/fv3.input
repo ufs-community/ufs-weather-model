@@ -23,18 +23,18 @@ embed bash fv3_prep(RUNDIR,modules,CNTL) [[[
         export OMP_STACKSIZE=512M
         export ESMF_RUNTIME_COMPLIANCECHECK=OFF:depth=4
 
-	# Set the stack limit as high as we can.
+        # Set the stack limit as high as we can.
         if [[ $( ulimit -s ) != unlimited ]] ; then
-	    for try_limit in 20000 18000 12000 9000 6000 3000 1500 1000 800 ; do
-	        if [[ ! ( $( ulimit -s ) -gt $(( try_limit * 1000 )) ) ]] ; then
-		    ulimit -s $(( try_limit * 1000 ))
-	    else
-		    break
-	        fi
-	    done
+        for try_limit in 20000 18000 12000 9000 6000 3000 1500 1000 800 ; do
+            if [[ ! ( $( ulimit -s ) -gt $(( try_limit * 1000 )) ) ]] ; then
+            ulimit -s $(( try_limit * 1000 ))
+        else
+            break
+            fi
+        done
         fi
 
-	ulimit -a
+        ulimit -a
 ]]]
 
 # Function that uses compile.sh to build.  Note the defaults are no
@@ -104,6 +104,24 @@ build fv3_32bit.exe {
     # bash script.
     build=compile.sh(fv3="@[target]",modules="@[modules.nems]",md5="@[md5sum]",
                     MAKE_OPTS='32BIT=Y')
+}
+
+build fv3_32bit_debug.exe {
+    # This block builds the FV3 in 32 bit debug mode.  It is otherwise
+    # identical to the fv3.exe block.
+    use plat
+
+    # Note:
+    #  plat%EXECrt = temporary directory for executables and md5 sums
+    #  plat%INCrt  = temporary directory for modulefiles
+    target="@[plat%EXECrt]/fv3_32bit_debug.exe"   # NEMS.x installation location
+    modules.nems="@[plat%INCrt]/modules.fv3_32bit_debug"  # modulefile for this NEMS.x
+    md5sum="@[target].md5"            # MD5SUM for this NEMS.x
+
+    # build: script to build the NEMS.x.  For now, this is an embedded
+    # bash script.
+    build=compile.sh(fv3="@[target]",modules="@[modules.nems]",md5="@[md5sum]",
+                    MAKE_OPTS="\'32BIT=Y DEBUG=Y\'")
 }
 
 build fv3_appbuilder.exe {
@@ -2055,6 +2073,286 @@ test fv3_stretched_nest: fv3_32bit.exe {
 }
 
 ########################################################################
+
+test fv3_regional_control: fv3_32bit.exe {
+
+    use fv3_control
+
+    TEST_DESCR="Compare FV3 regional control results with previous trunk version"
+    CNTL_NAME="fv3_regional_control"
+
+    build=fv3_32bit.exe
+
+    COM="@[plat%COMrt]/@[TEST_NAME]"          # Test result area
+    RUNDIR="@[plat%TMPrt]/@[TEST_NAME]"       # Test work area
+
+    prep=fv3_prep(
+        RUNDIR="@[RUNDIR]",modules="@[fv3_32bit.exe%modules.nems]",
+        CNTL="@[CNTL]")
+
+    # Override settings from control
+    TASKS='24'
+
+    filters input {
+       #    WORK FILE  <=filter=   SOURCE FILE
+                   '*' <=copyfrom= "@[plat%INPUTS]/FV3_regional_input_data"
+     'model_configure' <=copy=     "@[plat%INPUTS]/@[TEST_NAME]/model_configure"
+           'input.nml' <=copy=     "@[plat%INPUTS]/@[TEST_NAME]/input.nml"
+               'INPUT' <=copy=     "@[plat%INPUTS]/@[TEST_NAME]/INPUT"
+    }
+
+    criteria output {
+                     'atmos_4xdaily.nc' .bitcmp. "@[CNTL]/atmos_4xdaily.nc"
+                     'fv3_history2d.nc' .bitcmp. "@[CNTL]/fv3_history2d.nc"
+                       'fv3_history.nc' .bitcmp. "@[CNTL]/fv3_history.nc"
+    }
+
+    spawn execute {
+        {"@[build%target]", ranks="@[TASKS]", threads="@[THRD]", ppn="@[TPN]" }
+    }
+}
+
+########################################################################
+
+test fv3_regional_restart: fv3_regional_control {
+
+    use fv3_control
+
+    TEST_DESCR="Compare FV3 regional restart results with previous trunk version"
+    CNTL_NAME="fv3_regional_restart"
+
+    build=fv3_32bit.exe
+
+    COM="@[plat%COMrt]/@[TEST_NAME]"          # Test result area
+    RUNDIR="@[plat%TMPrt]/@[TEST_NAME]"       # Test work area
+
+    prep=fv3_prep(
+        RUNDIR="@[RUNDIR]",modules="@[fv3_32bit.exe%modules.nems]",
+        CNTL="@[CNTL]")
+
+    # Override settings from control
+    TASKS='24'
+    WARM_START='.T.'
+
+    filters input {
+                      #    WORK FILE  <=filter=   SOURCE FILE
+                                  '*' <=copyfrom= "@[plat%INPUTS]/FV3_regional_input_data"
+                    'model_configure' <=copy=     "@[plat%INPUTS]/@[TEST_NAME]/model_configure"
+                          'input.nml' <=copy=     "@[plat%INPUTS]/@[TEST_NAME]/input.nml"
+                              'INPUT' <=copy=     "@[plat%INPUTS]/@[TEST_NAME]/INPUT"
+                  'INPUT/coupler.res' <=copy=     '../fv3_regional_control/RESTART/20180329.120000.coupler.res'
+               'INPUT/fv_core.res.nc' <=copy=     '../fv3_regional_control/RESTART/20180329.120000.fv_core.res.nc'
+         'INPUT/fv_core.res.tile1.nc' <=copy=     '../fv3_regional_control/RESTART/20180329.120000.fv_core.res.tile1.nc'
+      'INPUT/fv_srf_wnd.res.tile1.nc' <=copy=     '../fv3_regional_control/RESTART/20180329.120000.fv_srf_wnd.res.tile1.nc'
+       'INPUT/fv_tracer.res.tile1.nc' <=copy=     '../fv3_regional_control/RESTART/20180329.120000.fv_tracer.res.tile1.nc'
+                  'INPUT/phy_data.nc' <=copy=     '../fv3_regional_control/RESTART/20180329.120000.phy_data.nc'
+                  'INPUT/sfc_data.nc' <=copy=     '../fv3_regional_control/RESTART/20180329.120000.sfc_data.nc'
+    }
+
+    criteria output {
+                     'atmos_4xdaily.nc' .bitcmp. "@[CNTL]/atmos_4xdaily.nc"
+                     'fv3_history2d.nc' .bitcmp. "@[CNTL]/fv3_history2d.nc"
+                       'fv3_history.nc' .bitcmp. "@[CNTL]/fv3_history.nc"
+    }
+
+    spawn execute {
+        {"@[build%target]", ranks="@[TASKS]", threads="@[THRD]", ppn="@[TPN]" }
+    }
+}
+
+########################################################################
+
+test fv3_regional_quilt: fv3_32bit.exe {
+
+    use fv3_control
+
+    TEST_DESCR="Compare FV3 regional quilt results with previous trunk version"
+    CNTL_NAME="fv3_regional_quilt"
+
+    build=fv3_32bit.exe
+
+    COM="@[plat%COMrt]/@[TEST_NAME]"          # Test result area
+    RUNDIR="@[plat%TMPrt]/@[TEST_NAME]"       # Test work area
+
+    prep=fv3_prep(
+        RUNDIR="@[RUNDIR]",modules="@[fv3_32bit.exe%modules.nems]",
+        CNTL="@[CNTL]")
+
+    # Override settings from control
+    TASKS='28'
+
+    filters input {
+       #    WORK FILE  <=filter=   SOURCE FILE
+                   '*' <=copyfrom= "@[plat%INPUTS]/FV3_regional_input_data"
+     'model_configure' <=copy=     "@[plat%INPUTS]/@[TEST_NAME]/model_configure"
+           'input.nml' <=copy=     "@[plat%INPUTS]/@[TEST_NAME]/input.nml"
+               'INPUT' <=copy=     "@[plat%INPUTS]/@[TEST_NAME]/INPUT"
+    }
+
+    criteria output {
+                     'atmos_4xdaily.nc' .bitcmp. "@[CNTL]/atmos_4xdaily.nc"
+                           'dynf000.nc' .bitcmp. "@[CNTL]/dynf000.nc"
+                           'dynf024.nc' .bitcmp. "@[CNTL]/dynf024.nc"
+                           'phyf000.nc' .bitcmp. "@[CNTL]/phyf000.nc"
+                           'phyf024.nc' .bitcmp. "@[CNTL]/phyf024.nc"
+    }
+
+    spawn execute {
+        {"@[build%target]", ranks="@[TASKS]", threads="@[THRD]", ppn="@[TPN]" }
+    }
+}
+
+########################################################################
+
+test fv3_regional_c768: fv3_32bit.exe {
+
+    use fv3_control
+
+    TEST_DESCR="Compare FV3 regional c768 results with previous trunk version"
+    CNTL_NAME="fv3_regional_c768"
+
+    build=fv3_32bit.exe
+
+    COM="@[plat%COMrt]/@[TEST_NAME]"          # Test result area
+    RUNDIR="@[plat%TMPrt]/@[TEST_NAME]"       # Test work area
+
+    prep=fv3_prep(
+        RUNDIR="@[RUNDIR]",modules="@[fv3_32bit.exe%modules.nems]",
+        CNTL="@[CNTL]")
+
+    # Override settings from control
+    TASKS='480'
+    WLCLK='30'
+
+    filters input {
+       #    WORK FILE  <=filter=   SOURCE FILE
+                   '*' <=copyfrom= "@[plat%INPUTS]/FV3_regional_input_data"
+     'model_configure' <=copy=     "@[plat%INPUTS]/@[TEST_NAME]/model_configure"
+           'input.nml' <=copy=     "@[plat%INPUTS]/@[TEST_NAME]/input.nml"
+               'INPUT' <=copy=     "@[plat%INPUTS]/@[TEST_NAME]/INPUT"
+    }
+
+    criteria output {
+                     'atmos_4xdaily.nc' .bitcmp. "@[CNTL]/atmos_4xdaily.nc"
+                     'fv3_history2d.nc' .bitcmp. "@[CNTL]/fv3_history2d.nc"
+                       'fv3_history.nc' .bitcmp. "@[CNTL]/fv3_history.nc"
+    }
+
+    spawn execute {
+        {"@[build%target]", ranks="@[TASKS]", threads="@[THRD]", ppn="@[TPN]" }
+    }
+}
+
+########################################################################
+
+test fv3_control_debug: fv3_32bit_debug.exe {
+
+    use fv3_control
+
+    TEST_DESCR="Compare FV3 control/debug results with previous trunk version"
+    CNTL_NAME="fv3_control"
+
+    FHMAX="06"
+
+    build=fv3_32bit_debug.exe
+
+    COM="@[plat%COMrt]/@[TEST_NAME]"          # Test result area
+    RUNDIR="@[plat%TMPrt]/@[TEST_NAME]"       # Test work area
+
+    prep=fv3_prep(
+        RUNDIR="@[RUNDIR]",modules="@[fv3_32bit_debug.exe%modules.nems]",
+        CNTL="@[CNTL]")
+
+    # Override settings from control
+
+    # Specify input files.
+    filters input {
+               #    WORK FILE  <=filter=   SOURCE FILE
+                   'input.nml' <=atparse=  "@[PARMnems]/input.nml.IN"
+             'model_configure' <=atparse=  "@[PARMnems]/model_configure.IN"
+                 'aerosol.dat' <=copyfrom= "@[FV3_input_data]/INPUT"
+  'co2historicaldata_201*.txt' <=copyfrom= "@[FV3_input_data]/INPUT"
+      'sfc_emissivity_idx.txt' <=copyfrom= "@[FV3_input_data]/INPUT"
+   'solarconstant_noaa_an.txt' <=copyfrom= "@[FV3_input_data]/INPUT"
+                        '*grb' <=copyfrom= "@[FV3_input_data]"
+                     '*_table' <=copyfrom= "@[FV3_input_data]"
+                  '*configure' <=copyfrom= "@[FV3_input_data]"
+                       'INPUT' <=copy=     "@[FV3_input_data]/INPUT"
+         'global_o3prdlos.f77' <=copy=     "@[FV3_input_data]/INPUT/global_o3prdlos.f77"
+    }
+
+    criteria output {
+                  'global_o3prdlos.f77' .bitcmp. "@[FV3_input_data]/INPUT/global_o3prdlos.f77"
+    }
+
+    spawn execute {
+        {"@[build%target]", ranks="@[TASKS]", threads="@[THRD]", ppn="@[TPN]" }
+    }
+}
+
+########################################################################
+
+test fv3_stretched_nest_debug: fv3_32bit_debug.exe {
+    use fv3_stretched
+    use plat%default_nested_resources
+
+    TEST_DESCR="Stretched grid with nest - debug; compare against previous baseline"
+    CNTL_NAME="fv3_stretched_nest"
+
+    build=fv3_32bit.exe
+
+    COM="@[plat%COMrt]/@[TEST_NAME]"          # Test result area
+    RUNDIR="@[plat%TMPrt]/@[TEST_NAME]"       # Test work area
+
+    prep=fv3_prep(
+        RUNDIR="@[RUNDIR]",modules="@[fv3_32bit.exe%modules.nems]",
+        CNTL="@[CNTL]")
+
+    # Override settings from control
+    INPES='2'
+    JNPES='4'
+    MAKE_NH='.T.'
+    NA_INIT='1'
+    EXTERNAL_IC='.T.'
+    NGGPS_IC='.T.'
+    MOUNTAIN='.F.'
+    WARM_START='.F.'
+    FDIAG='3'
+
+    INPES_NEST='6'
+    JNPES_NEST='8'
+    MAKE_NH_NEST='.F.'
+
+    SYEAR="2017"
+    SMONTH="03"
+    SDAY="28"
+    SHOUR="00"
+    FHMAX="48"
+    DT_ATMOS="450"
+
+    QUILTING='.false.'
+
+    filters input {
+       #    WORK FILE  <=filter=   SOURCE FILE
+           'input.nml' <=atparse=  "@[PARMnems]/stretched-nest-input.nml.IN"
+    'input_nest02.nml' <=atparse=  "@[PARMnems]/input_nest02.nml.IN"
+     'model_configure' <=atparse=  "@[PARMnems]/stretched-nest-model_configure.IN"
+                   '*' <=copyfrom= "@[plat%INPUTS]/FV3_nest_input_data"
+               'INPUT' <=copy=     "@[plat%INPUTS]/fv3_stretched_nest/INPUT"
+ 'global_o3prdlos.f77' <=copy=     "@[FV3_input_data]/INPUT/global_o3prdlos.f77"
+    }
+
+    criteria output {
+                  'global_o3prdlos.f77' .bitcmp. "@[FV3_input_data]/INPUT/global_o3prdlos.f77"
+    }
+
+    spawn execute {
+        {"@[build%target]", ranks="@[TASKS]", threads="@[THRD]", ppn="@[TPN]" }
+    }
+}
+
+########################################################################
+
 
 test fv3_csawmgshoc: fv3.exe {
     use plat
