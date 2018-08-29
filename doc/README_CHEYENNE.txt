@@ -3,7 +3,7 @@
 ################################################################################
 
 # OFFICIAL BASELINE
-# /glade/p/work/heinzell/fv3/RT/NEMSfv3gfs/trunk-20180524
+# /glade/p/ral/jntp/GMTB/NEMSfv3gfs/RT/20180727/INTEL
 
 # OWN BASELINE
 # /glade/scratch/$USER/FV3_RT/REGRESSION_TEST_INTEL
@@ -28,7 +28,7 @@ cd tests
 ################################################################################
 
 # OFFICIAL BASELINE
-# N/A
+# /glade/p/ral/jntp/GMTB/NEMSfv3gfs/RT/trunk-20180727/GNU
 
 # OWN BASELINE
 # /glade/scratch/$USER/FV3_RT/REGRESSION_TEST_GNU
@@ -56,7 +56,7 @@ cd tests
 ################################################################################
 
 # OFFICIAL BASELINE
-# N/A
+# /glade/p/ral/jntp/GMTB/NEMSfv3gfs/RT/trunk-20180727/PGI
 
 # OWN BASELINE
 # /glade/scratch/$USER/FV3_RT/REGRESSION_TEST_PGI

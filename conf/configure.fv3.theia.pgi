@@ -91,6 +91,10 @@ else
 CPPDEFS += -DMOIST_CAPPA -DUSE_COND
 endif
 
+ifeq ($(NAM_phys),Y)
+CPPDEFS += -DNAM_phys
+endif
+
 ifeq ($(32BIT),Y)
 CPPDEFS += -DOVERLOAD_R4 -DOVERLOAD_R8
 FFLAGS += -i4 -r4
@@ -103,17 +107,8 @@ ifeq ($(32BIT),Y)
 FFLAGS += -tp=haswell
 CFLAGS += -tp=haswell
 else
-FFLAGS += -tp=haswell-64
-CFLAGS += -tp=haswell-64
-endif
-else
-ifeq ($(32BIT),Y)
-FFLAGS += -tp=ivybridge
-CFLAGS += -tp=ivybridge
-else
-FFLAGS += -tp=ivybridge-64
-CFLAGS += -tp=ivybridge-64
-endif
+FFLAGS += -tp=x64
+CFLAGS += -tp=x64
 endif
 
 FFLAGS_OPT = -O1

@@ -24,19 +24,20 @@ module load netcdf/4.4.1.1
 ##
 ## use pre-compiled EMSF library for above compiler / MPI combination
 ##
-setenv ESMF_DIR              /glade/p/work/heinzell/fv3/esmf-7.1.0r/gnu-6.3.0/mpt-2.15f
-setenv ESMF_INC              /glade/p/work/heinzell/fv3/esmf-7.1.0r/gnu-6.3.0/mpt-2.15f/include
-setenv ESMF_BIN              /glade/p/work/heinzell/fv3/esmf-7.1.0r/gnu-6.3.0/mpt-2.15f/bin/binO/Linux.gfortran.64.mpi.default
-setenv ESMF_LIB              /glade/p/work/heinzell/fv3/esmf-7.1.0r/gnu-6.3.0/mpt-2.15f/lib/libO/Linux.gfortran.64.mpi.default
-setenv ESMF_MOD              /glade/p/work/heinzell/fv3/esmf-7.1.0r/gnu-6.3.0/mpt-2.15f/mod/modO/Linux.gfortran.64.mpi.default
-setenv ESMFMKFILE            /glade/p/work/heinzell/fv3/esmf-7.1.0r/gnu-6.3.0/mpt-2.15f/lib/libO/Linux.gfortran.64.mpi.default/esmf.mk
-prepend-path PATH            /glade/p/work/heinzell/fv3/esmf-7.1.0r/gnu-6.3.0/mpt-2.15f/bin/binO/Linux.gfortran.64.mpi.default
-prepend-path LD_LIBRARY_PATH /glade/p/work/heinzell/fv3/esmf-7.1.0r/gnu-6.3.0/mpt-2.15f/lib/libO/Linux.gfortran.64.mpi.default
+set ESMF_DIR /glade/p/ral/jntp/GMTB/tools/esmf-7.1.0r/gnu-6.3.0/mpt-2.15f
+setenv ESMF_DIR              ${ESMF_DIR}
+setenv ESMF_INC              ${ESMF_DIR}/include
+setenv ESMF_BIN              ${ESMF_DIR}/bin/binO/Linux.gfortran.64.mpi.default
+setenv ESMF_LIB              ${ESMF_DIR}/lib/libO/Linux.gfortran.64.mpi.default
+setenv ESMF_MOD              ${ESMF_DIR}/mod/modO/Linux.gfortran.64.mpi.default
+setenv ESMFMKFILE            ${ESMF_DIR}/lib/libO/Linux.gfortran.64.mpi.default/esmf.mk
+prepend-path PATH            ${ESMF_DIR}/bin/binO/Linux.gfortran.64.mpi.default
+prepend-path LD_LIBRARY_PATH ${ESMF_DIR}/lib/libO/Linux.gfortran.64.mpi.default
 
 ##
 ## NCEP libraries (download and build manually for the time being; https://github.com/climbfuji/NCEPlibs)
 ##
-set NCEPLIBS_DIR /glade/p/work/heinzell/fv3/NEMSfv3gfs_vlab_portability/NCEPlibs-gnu-20180420
+set NCEPLIBS_DIR /glade/p/ral/jntp/GMTB/tools/NCEPlibs/20180717/gnu-6.3.0
 setenv NCEPLIBS_DIR ${NCEPLIBS_DIR}
 setenv NEMSIO_INC   ${NCEPLIBS_DIR}/include
 setenv NEMSIO_LIB   ${NCEPLIBS_DIR}/lib/libnemsio_d.a
