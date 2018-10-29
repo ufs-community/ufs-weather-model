@@ -1,7 +1,7 @@
 ## NEMS configuration file
 ##
-## Platform: Darwin Mac OS X
-## Compiler: GNU (clang/gfortran) with MPICH
+## Platform: Linux
+## Compiler: GNU (gcc/gfortran) with MPICH
 
 SHELL=/bin/sh
 
@@ -36,10 +36,10 @@ endif
 # commands #
 ############
 SFC             =       gfortran
-SCC             =       /usr/local/opt/llvm/bin/clang
-CCOMP           =       /usr/local/opt/llvm/bin/clang
+SCC             =       gcc
+CCOMP           =       gcc
 DM_FC           =       mpif90
-DM_CC           =       mpicc -cc=/usr/local/opt/llvm/bin/clang -DMPI2_SUPPORT
+DM_CC           =       mpicc -DMPI2_SUPPORT
 FC              =       $(DM_FC)
 CC              =       $(DM_CC) -DFSEEKO64_OK
 LD              =       $(FC)
@@ -84,7 +84,7 @@ CFLAGS := $(INCLUDE)
 
 FFLAGS := $(INCLUDE) -fcray-pointer -ffree-line-length-none -fno-range-check -fbacktrace
 
-CPPDEFS += -DMACOSX -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP
+CPPDEFS += -DLINUX -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP
 CPPDEFS += -DNEW_TAUCTMAX -DINTERNAL_FILE_NML
 
 ifeq ($(HYDRO),Y)
@@ -129,7 +129,7 @@ FFLAGS_TEST = -O3
 CFLAGS_TEST = -O2
 
 LDFLAGS :=
-LDFLAGS_OPENMP := -fopenmp -L/usr/local/Cellar/llvm/lib -lomp
+LDFLAGS_OPENMP := -fopenmp
 LDFLAGS_VERBOSE := -Wl,-V,--verbose,-cref,-M
 
 # start with blank LIBS

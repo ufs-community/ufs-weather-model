@@ -2675,12 +2675,13 @@
       real (kind=kind_io8), allocatable :: data8(:)
       real (kind=kind_io4), allocatable :: data4(:)
 !
-      logical*1 lbms(mdata)
+      logical, allocatable :: lbms(:)
 !
       integer kpds(200),kgds(200)
       integer jpds(200),jgds(200), kpds0(200)
 !
       allocate(data8(1:idim*jdim))
+      allocate(lbms(1:mdata))
       kpds = 0
       kgds = 0
       jpds = 0
@@ -2770,6 +2771,7 @@
       endif
 !
       deallocate(data8)
+      deallocate(lbms)
       return
       end
       subroutine getarea(kgds,dlat,dlon,rslat,rnlat,wlon,elon,ijordr
@@ -7902,7 +7904,7 @@ cjfe
       real (kind=kind_io8), allocatable :: rlngrb(:), rltgrb(:)
 !
       logical lmask, yr2kc, gaus, ijordr
-      logical*1 lbms(mdata)
+      logical, allocatable :: lbms(:)
 !
       integer, intent(in) :: kpds7
       integer kpds(1000),kgds(1000)
@@ -7910,6 +7912,7 @@ cjfe
       real (kind=kind_io8) outlat(len), outlon(len)
 !
       allocate(data8(1:mdata))
+      allocate(lbms(mdata))
 !
 !     integer imax_sv, jmax_sv, wlon_sv, rnlat_sv, kpds1_sv
 !     date imax_sv/0/, jmax_sv/0/, wlon_sv/999.0/, rnlat_sv/999.0/
@@ -8045,6 +8048,7 @@ cjfe
       call baclose(lugb,iret)
 !
       deallocate(data8)
+      deallocate(lbms)
       return
       end subroutine fixrdc
       subroutine fixrda(lugb,fngrib,kpds5,slmask,

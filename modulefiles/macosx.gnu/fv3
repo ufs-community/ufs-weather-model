@@ -9,8 +9,8 @@ echo "Setting environment variables for NEMSfv3gfs on MACOSX with clang/gfortran
 ##
 ## load programming environment: compiler, flags, paths
 ##
-export CC=/usr/local/bin/mpicc
-export CXX=/usr/local/bin/mpicxx
+export CC="mpicc -cc=/usr/local/opt/llvm/bin/clang"
+export CXX="mpicxx -cxx=/usr/local/opt/llvm/bin/clang++"
 export F77=/usr/local/bin/mpif77
 export F90=/usr/local/bin/mpif90
 export FC=/usr/local/bin/mpif90
@@ -47,7 +47,8 @@ export DYLD_LIBRARY_PATH="/usr/local/${ESMF_VERSION}/lib/libO/Darwin.gfortrancla
 ##
 ## NCEP libraries (need to download and build manually, see doc/README_MACOSX.txt and https://github.com/climbfuji/NCEPlibs)
 ##
-export NCEPLIBS_DIR=/usr/local/NCEPlibs-20180401
+NCEPLIBS_DIR=/usr/local/NCEPlibs-20180401
+export NCEPLIBS_DIR=${NCEPLIBS_DIR}
 export NEMSIO_INC=${NCEPLIBS_DIR}/include
 export BACIO_LIB4=${NCEPLIBS_DIR}/lib/libbacio_4.a
 export SP_LIBd=${NCEPLIBS_DIR}/lib/libsp_v2.0.2_d.a

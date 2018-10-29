@@ -1,13 +1,38 @@
-# Dom Heinzeller (dom.heinzeller@noaa.gov), 05/18/2018
+# Dom Heinzeller (dom.heinzeller@noaa.gov), 08/02/2018
 
-In order to build and run the FV3 trunk (May 2018) on Mac OS X, the following installation steps are recommended.
-The version numbers for the "brew" correspond to the default versions in April/May 2018 and will change to newer versions
-in the future. Unless problems occur during the manual builds in steps 10-12, these differences can be ignored.
+In order to build and run the FV3 trunk (August 2018) with possible CCPP extensions by GMTB on Mac OS X,
+the following installation steps are recommended. The version numbers for the "brew" correspond to the default versions
+in April/May 2018 and will change to newer versions in the future. Unless problems occur during the manual builds in
+steps 12-15, these differences can be ignored. It is also assumed that the bash shell is used in the following.
 
-1. install homebrew (enter sudo password when requested)
+1. Create a shell setup script ~/setenv_develop.sh to set the required paths for compiling. Contents:
+
+    ####################################################################################
+    #!/bin/bash
+
+    echo "Setting environment variables for DEVELOP"
+
+    export LDFLAGS="-fPIC -L/usr/local/opt/zlib/lib -L/usr/local/opt/llvm/lib"
+    export CPPFLAGS="-fPIC -I/usr/local/opt/zlib/include -I/usr/local/opt/llvm/include"
+    export CFLAGS="-fPIC -I/usr/local/opt/zlib/include -I/usr/local/opt/llvm/include"
+    export CXXFLAGS="-fPIC -I/usr/local/opt/zlib/include -I/usr/local/opt/llvm/include"
+    export FFLAGS="-fPIC -I/usr/local/opt/zlib/include -I/usr/local/opt/llvm/include"
+    export FCFLAGS="-fPIC -I/usr/local/opt/zlib/include -I/usr/local/opt/llvm/include"
+    export PATH="/usr/local/opt/llvm/bin${PATH:+:$PATH}"
+    export LD_LIBRARY_PATH="/usr/local/opt/zlib/lib:/usr/local/opt/llvm/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+    export DYLD_LIBRARY_PATH="/usr/local/opt/zlib/lib:/usr/local/opt/llvm/lib:${DYLD_LIBRARY_PATH:+:$DYLD_LIBRARY_PATH}"
+
+    export HDF5=/usr/local
+    export PHDF5=/usr/local
+    export PNETCDF=/usr/local
+    export NETCDF=/usr/local
+    export SIONLIB=/usr/local/sionlib-1.7.2-debug
+    ####################################################################################
+
+2. Install homebrew (enter sudo password when requested)
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
-2. sudo-create /usr/local/src, /usr/local/esmf-7.1.0r and /usr/local/NCEPlibs-20180401. Change permissions to your user name / user group
+3. Create /usr/local/src, /usr/local/esmf-7.1.0r and /usr/local/NCEPlibs-20180401. Change permissions to your user name / user group
     # /usr/local/src
     sudo mkdir /usr/local/src
     sudo chown YOUR_USERNAME /usr/local/src
@@ -21,28 +46,33 @@ in the future. Unless problems occur during the manual builds in steps 10-12, th
     sudo chown YOUR_USERNAME /usr/local/NCEPlibs-20180401
     sudo chgrp YOUR_GROUPNAME /usr/local/NCEPlibs-20180401
 
-3. Install gcc-7.2.0, gfortran-7.2.0
+4. Install gcc-7.2.0, gfortran-7.2.0
     brew install gcc --verbose --without-multilib
 
-4. Install clang-5.0.0 with openmp support
+5. Install clang-5.0.0 with openmp support
     brew install llvm
+    cd /usr/local/Cellar/llvm
+    ln -sf 5.0.0/lib .
 
-5. Install mpich-3.2.1
+6. Install mpich-3.2.1
     brew install mpich
 
-6. Install netCDF library
+7. Install netCDF library
     brew install -v netcdf
 
-7. Install libpng-1.6.34
+8. Install libpng-1.6.34
     brew install libpng
 
-8. Install udunits-2.2.25
+9. Install udunits-2.2.25
     brew install udunits
 
-9. Install ncview-2.1.7
+10. Install ncview-2.1.7
     brew install ncview
 
-10. Install ESMF 7.1.0r
+11. Source the setenv_develop.sh script
+    . ~/setenv_develop.sh
+
+12. Install ESMF 7.1.0r
 
     # Download esmf_7_1_0r_src.tar.gz from https://www.earthsystemcog.org/projects/esmf/download/ to /usr/local/src
 
@@ -112,7 +142,7 @@ in the future. Unless problems occur during the manual builds in steps 10-12, th
     export -n NETCDF
     export -n LDFLAGS
 
-11. Build external NCEP libraries (use date tag 20180401 to allow for different versions in the future)
+13. Build external NCEP libraries (use date tag 20180401 to allow for different versions in the future)
 
     # Obtain source code from gitub and build in /usr/local/src
     cd /usr/local/src
@@ -120,16 +150,16 @@ in the future. Unless problems occur during the manual builds in steps 10-12, th
     cd NCEPlibs
     ./make_ncep_libs.sh -s macosx -c gnu -d /usr/local/NCEPlibs-20180401 -o 1 2>&1 | tee log.make
 
-12. Build model. Change to top-level directory of NEMSfv3gfs.
+14. Download and install Intel Math Kernel Library MKL to /usr/local/mkl using the installer script
 
-    # Set environment variables for MACOSX with clang/gfortran
-    . modulefiles/macosx.gnu/fv3
+15. Build model. Change to top-level directory of NEMSfv3gfs.
 
     # Build model
     cd tests
-    ./compile.sh $PWD/../FV3 macosx.gnu 2>&1 | tee log.compile
+    ./compile.sh $PWD/../FV3 macosx.gnu 'CCPP=N'          2>&1 | tee log.compile # without CCPP
+    ./compile.sh $PWD/../FV3 macosx.gnu 'CCPP=Y'          2>&1 | tee log.compile # with CCPP, hybrid mode
 
-13. Set up the run directory using the template on Theia or Cheyenne at some location on your machine:
+16. Set up the run directory using the template on Theia or Cheyenne at some location on your machine:
 
     a) copy the contents of the run directory templates to where you want to run the model, change to this directory
        (these folders are read-only, i.e. users might have to add the write-flag after copying/rsyncing them)
@@ -137,7 +167,7 @@ in the future. Unless problems occur during the manual builds in steps 10-12, th
         theia:    /scratch4/BMC/gmtb/Dom.Heinzeller/macosx_rundirs/C96_trunk_20180427/gnu/
         cheyenne: /glade/p/work/heinzell/fv3/macosx_rundirs/C96_trunk_20180427/gnu/
 
-    b) edit run_macosx.sh in change the variable FV3_BUILD_DIR to the top-level directory of your FV3-build
+    b) edit run_macosx.sh in the run directory and change the variable FV3_BUILD_DIR to the top-level directory of your FV3-build
 
     c) source the setenv_develop.sh script and execute the model run using the wrapper run_macosx.sh
         ./run_macosx.sh 2>&1 | tee run_macosx.log
