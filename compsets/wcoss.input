@@ -183,6 +183,103 @@ platform wcoss.phase1 {
 
 }
 
+platform wcoss_dell_p3 {
+    # Implement phase 1 support as a trivial extension of phase 2
+    # 16 cores per node instead of 24, use dev queue instead of dev2
+    use wcoss.common
+    CPU_ACCOUNT='GFS-T2O'
+    pex='3'
+    cores_per_node=28
+    cpus_per_core=2
+
+    DEFAULT_TEST_WALLTIME=1800
+
+    MPI='LSF_IMPI'
+    MACHINE_ID='wcoss_dell_p3'
+    SHORT_TEST_QUEUE='&SHORTQ;'
+    LONG_TEST_QUEUE='&LONGQ;'
+    BUILD_QUEUE='&BUILDQ;'
+
+    BASELINE="/gpfs/dell2/emc/modeling/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20181105"
+    BASELINE_TEMPLATE="/gpfs/dell2/emc/modeling/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20181105"
+
+    default_resources={
+        TASKS=156
+        WRTTASK_PER_GROUP=12
+        TPN=8
+        INPES=3
+        JNPES=8
+        THRD=1
+    }
+    default_stretched_resources={
+        TASKS=48
+        TPN=8
+        INPES=2
+        JNPES=4
+        THRD=2
+    }
+    default_nested_resources={
+	use default_stretched_resources
+        TASKS=96
+    }
+    default_threaded_resources={
+        TASKS=84
+        WRTTASK_PER_GROUP=12
+        TPN=4
+        INPES=3
+        JNPES=4
+        THRD=2
+    }
+
+    embed bash detect [[[
+        # This function is used at PARSE TIME to detect whether we are
+        # on WCOSS Phase 2.  It must be very fast and low resource
+        # usage since the parser runs it.
+        if [[ -d /usrx ]] ; then
+            if ( readlink /usrx | grep dell 2>&1 ) ; then
+                exit 0
+            fi
+        fi
+	exit 1
+    ]]]
+
+
+    # ROCOTO SUPPORT ---------------------------------------------------
+
+    # You MUST reduce the TASK_THROTTLE to 1 if you use a debug queue
+    TASK_THROTTLE='11'
+
+    rocoto={
+        install_dir="@[HOMErt]"
+        log_dir="@[TMPrt]/log"
+        scheduler="lsf"
+        entities=[[[
+  <!-- You MUST reduce the TASK_THROTTLE to 1 if you use a debug queue -->
+  <!ENTITY SHORTQ "dev">
+  <!ENTITY LONGQ "dev">
+  <!ENTITY BUILDQ "dev_transfer">
+]]]
+        build_resources=[[[
+      <!-- Build job resources minus wallclock -->
+      <queue>@[BUILD_QUEUE]</queue>
+      <memory>4G</memory>
+      <cores>1</cores>
+      <native>-R 'affinity[core(1)]'</native>
+]]]
+        short_test_resources=[[[
+    <!-- Short test job -->
+    <queue>@[SHORT_TEST_QUEUE]</queue>
+    <memory></memory> <!-- Unlimited memory -->
+]]]
+        long_test_resources=[[[
+    <!-- Long test job -->
+    <queue>@[LONG_TEST_QUEUE]</queue>
+    <memory></memory> <!-- Unlimited memory -->
+]]]
+    }
+
+}
+
 platform wcoss.cray {
     use wcoss.common
     MACHINE_ID='wcoss.cray'

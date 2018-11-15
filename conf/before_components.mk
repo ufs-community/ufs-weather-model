@@ -16,7 +16,7 @@
 
 CHOSEN_MODULE=$(BUILD_TARGET)/fv3
 
-ifneq (,$(or $(findstring CCPP,$(COMPONENTS)),$(findstring CCPP,$(FV3_MAKEOPT)),$(findstring CCPP,$(FV3_MAKEOPT))))
+ifneq (,$(or $(findstring CCPP=Y,$(COMPONENTS)),$(findstring CCPP=Y,$(FV3_MAKEOPT)),$(findstring CCPP=Y,$(FV3_MAKEOPT))))
   ifeq ($(CHOSEN_MODULE),theia.intel/fv3)
     override CHOSEN_MODULE=$(BUILD_TARGET)/fv3.intel-18.0.1.163
     $(warning Overriding CHOSEN_MODULE with $(CHOSEN_MODULE) because CCPP does not work on NOAA Theia with versions of the Intel compiler earlier than 18)
