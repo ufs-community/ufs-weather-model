@@ -73,15 +73,12 @@ if [[ $MACHINE_ID = wcoss ]]; then
   ROCOTORUN="/u/Christopher.W.Harrop/rocoto/bin/rocotorun"
   ROCOTOSTAT="/u/Christopher.W.Harrop/rocoto/bin/rocotostat"
   DISKNM=/nems/noscrub/emc.nemspara/RT
-  MDISK=/global/noscrub
   QUEUE=debug
   PARTITION=
   ACCNR=GFS-T2O
   STMP=/ptmpp$pex
   PTMP=/ptmpp$pex
   SCHEDULER=lsf
-  MPIEXEC=mpirun.lsf
-  MPIEXECOPTS=""
 # cp fv3_conf/fv3_bsub.IN_wcoss fv3_conf/fv3_bsub.IN
 
 elif [[ $MACHINE_ID = wcoss_cray ]]; then
@@ -93,7 +90,6 @@ elif [[ $MACHINE_ID = wcoss_cray ]]; then
   export PYTHONPATH=/gpfs/hps/nco/ops/ecf/ecfdir/ecflow.v4.1.0.intel/lib/python2.6/site-packages
   ECFLOW_START=/gpfs/hps/nco/ops/ecf/ecfdir/ecflow.v4.1.0.intel/bin/ecflow_start.sh
   DISKNM=/gpfs/hps3/emc/nems/noscrub/emc.nemspara/RT
-  MDISK=/gpfs/hps3/emc/global/noscrub
   QUEUE=debug
   PARTITION=
   ACCNR=dev
@@ -105,9 +101,21 @@ elif [[ $MACHINE_ID = wcoss_cray ]]; then
       PTMP=/gpfs/hps3/ptmp
   fi
   SCHEDULER=lsf
-  MPIEXEC=aprun
-  MPIEXECOPTS="\"-j 1 -n @[TASKS] -N @[TPN] -d 1\""
   cp fv3_conf/fv3_bsub.IN_wcoss_cray fv3_conf/fv3_bsub.IN
+
+elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
+
+  source $PATHTR/NEMS/src/conf/module-setup.sh.inc
+  module load lsf/10.1
+
+  DISKNM=/gpfs/dell2/emc/modeling/noscrub/emc.nemspara/RT
+  QUEUE=debug
+  PARTITION=
+  ACCNR=dev
+  STMP=/gpfs/dell2/stmp
+  PTMP=/gpfs/dell2/ptmp
+  SCHEDULER=lsf
+  cp fv3_conf/fv3_bsub.IN_wcoss_dell_p3 fv3_conf/fv3_bsub.IN
 
 elif [[ $MACHINE_ID = gaea ]]; then
 
@@ -125,8 +133,6 @@ elif [[ $MACHINE_ID = gaea ]]; then
   STMP=/lustre/f1/
   PTMP=/lustre/f1/
   SCHEDULER=moab
-  MPIEXEC=aprun
-  MPIEXECOPTS="\"-j 1 -n @[TASKS] -N @[TPN] -d @[THRD]\""
   cp fv3_conf/fv3_msub.IN_gaea fv3_conf/fv3_msub.IN
 
 elif [[ $MACHINE_ID = theia.* ]]; then
@@ -149,8 +155,6 @@ elif [[ $MACHINE_ID = theia.* ]]; then
   STMP=$dprefix/stmp4
   PTMP=$dprefix/stmp3
   SCHEDULER=pbs
-  MPIEXEC=mpirun
-  MPIEXECOPTS=
   cp fv3_conf/fv3_qsub.IN_theia fv3_conf/fv3_qsub.IN
 
 elif [[ $MACHINE_ID = cheyenne.* ]]; then
@@ -168,8 +172,6 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
   STMP=$dprefix
   PTMP=$dprefix
   SCHEDULER=pbs
-  MPIEXEC=mpiexec_mpt
-  MPIEXECOPTS=
   cp fv3_conf/fv3_qsub.IN_cheyenne fv3_conf/fv3_qsub.IN
 
 else
@@ -437,8 +439,6 @@ EOF
       export PATHRT=${PATHRT}
       export PATHTR=${PATHTR}
       export NEW_BASELINE=${NEW_BASELINE}
-      export MPIEXEC=${MPIEXEC}
-      export MPIEXECOPTS=${MPIEXECOPTS}
       export CREATE_BASELINE=${CREATE_BASELINE}
       export SCHEDULER=${SCHEDULER}
       export ACCNR=${ACCNR}

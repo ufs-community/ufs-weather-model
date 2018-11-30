@@ -44,6 +44,9 @@ elif [[ $SCHEDULER = 'pbs' ]]; then
   fi
   atparse < $PATHRT/fv3_conf/fv3_qsub.IN > job_card
 elif [[ $SCHEDULER = 'lsf' ]]; then
+  if (( TASKS < TPN )); then
+    TPN=${TASKS}
+  fi
   atparse < $PATHRT/fv3_conf/fv3_bsub.IN > job_card
 fi
 

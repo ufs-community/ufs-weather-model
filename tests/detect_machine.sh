@@ -37,6 +37,13 @@ case $(hostname -f) in
   slogin2)                 MACHINE_ID=wcoss_cray ;; ### surge
   slogin3)                 MACHINE_ID=wcoss_cray ;; ### surge
 
+  v71a1.ncep.noaa.gov)     MACHINE_ID=wcoss_dell_p3 ;; ### venus
+  v71a2.ncep.noaa.gov)     MACHINE_ID=wcoss_dell_p3 ;; ### venus
+  v71a3.ncep.noaa.gov)     MACHINE_ID=wcoss_dell_p3 ;; ### venus
+  v72a1.ncep.noaa.gov)     MACHINE_ID=wcoss_dell_p3 ;; ### venus
+  v72a2.ncep.noaa.gov)     MACHINE_ID=wcoss_dell_p3 ;; ### venus
+  v72a3.ncep.noaa.gov)     MACHINE_ID=wcoss_dell_p3 ;; ### venus
+
   gaea9)                   MACHINE_ID=gaea ;; ### gaea9
   gaea10)                  MACHINE_ID=gaea ;; ### gaea10
   gaea11)                  MACHINE_ID=gaea ;; ### gaea11
