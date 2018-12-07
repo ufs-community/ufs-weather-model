@@ -15,6 +15,7 @@ INPES=$INPES_strnest
 JNPES=$JNPES_strnest
 TPN=$TPN_strnest
 TASKS=$TASKS_strnest
+export NODES=$(expr $TASKS / $TPN + 1)
 
 export INPES_NEST='6'
 export JNPES_NEST='8'
@@ -28,17 +29,17 @@ export MOUNTAIN='.F.'
 export WARM_START='.F.'
 export FDIAG='3'
 
-export SYEAR="2017"
-export SMONTH="03"
-export SDAY="28"
+export SYEAR="2018"
+export SMONTH="10"
+export SDAY="15"
 export SHOUR="00"
 export FHMAX="03"
 export DT_ATMOS="450"
+QUILTING=.false.
 
 export WLCLK=30
 
 export INPUT_NML=stretched-nest-input.nml.IN
 export INPUT_NEST02_NML=input_nest02.nml.IN
-export MODEL_CONFIGURE=stretched-nest-model_configure.IN
 export RUN_SCRIPT=rt_fv3.sh
 export FV3_RUN=fv3_stretched_run.IN
