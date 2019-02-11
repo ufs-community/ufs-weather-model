@@ -17,6 +17,8 @@ embed bash fv3_prep(RUNDIR,modules,CNTL) [[[
         module use $( dirname $modules )
         module load $( basename $modules )
 
+        @[plat%execution_time_modules]
+
         mkdir RESTART INPUT
 
         export MPI_TYPE_DEPTH=20

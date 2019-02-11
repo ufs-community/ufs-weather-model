@@ -11,13 +11,18 @@ run fv3_wsm6                    @ fv3, standard, baseline
 run fv3_csawmgshoc              @ fv3, standard, baseline
 run fv3_rasmgshoc               @ fv3, standard, baseline
 run fv3_csawmg                  @ fv3, standard, baseline
-run fv3_csawmg3shoc127          @ fv3,           baseline, plat==wcoss.cray,plat==theia.intel,plat==wcoss_dell_p3
+run fv3_csawmg3shoc127          @ fv3,           baseline, plat==wcoss.cray,plat==theia.intel,plat==theia.slurm.intel,plat==wcoss_dell_p3
 run fv3_satmedmf                @ fv3, standard, baseline
 run fv3_lheatstrg               @ fv3, standard, baseline
 run fv3_wrtGauss_netcdf_esmf    @ fv3, standard, baseline
 run fv3_wrtGauss_netcdf         @ fv3, standard, baseline
 run fv3_wrtGauss_nemsio         @ fv3, standard, baseline
-run fv3_wrtGauss_nemsio_c768    @ fv3,           baseline, plat==theia.intel, plat==xjet, plat==svjet, plat==tujet
+
+# Jet SLURM Note: fv3_wrtGauss_nemsio_c768 fails on uJet SLURM,
+# possibly due to an issue with the uJet nodes that have been assigned
+# to SLURM.  For now, that test is disabled under SLURM.
+
+run fv3_wrtGauss_nemsio_c768    @ fv3,           baseline, plat==theia.intel, plat==theia.slurm.intel, plat==xjet, plat==svjet, plat==tujet
 run fv3_wrtGauss_nemsio_c192    @ fv3, standard, baseline
 run fv3_stochy                  @ fv3, standard, baseline
 run fv3_iau                     @ fv3, standard, baseline
@@ -33,7 +38,7 @@ run fv3_regional_restart        @ fv3, standard, baseline
 run fv3_regional_quilt          @ fv3, standard, baseline
 run fv3_regional_c768           @ fv3, standard, baseline
 
-run fv3_control_debug           @ fv3, standard,           plat==theia.intel
-run fv3_stretched_nest_debug    @ fv3, standard,           plat==theia.intel
+run fv3_control_debug           @ fv3, standard,           plat==theia.intel, plat==theia.slurm.intel
+run fv3_stretched_nest_debug    @ fv3, standard,           plat==theia.intel, plat==theia.slurm.intel
 
-run fv3_NAM_phys                @ fv3, standard, baseline, plat==theia.intel
+run fv3_NAM_phys                @ fv3, standard, baseline, plat==theia.intel, plat==theia.slurm.intel
