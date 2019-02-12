@@ -141,6 +141,7 @@ elif [[ $MACHINE_ID = theia.* ]]; then
   # Re-instantiate COMPILER in case it gets deleted by module purge
   COMPILER=${NEMS_COMPILER:-intel}
 
+  module load slurm
   module load rocoto
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
@@ -154,6 +155,12 @@ elif [[ $MACHINE_ID = theia.* ]]; then
   DISKNM=$dprefix/nems/noscrub/emc.nemspara/RT
   STMP=$dprefix/stmp4
   PTMP=$dprefix/stmp3
+
+  # uncomment after SLURM becomes default scheduler on Theia
+  #SCHEDULER=slurm
+  #cp fv3_conf/fv3_slurm.IN_theia fv3_conf/fv3_slurm.IN
+
+  # temporary. while we transition from Moab/Torque to SLURM
   SCHEDULER=pbs
   cp fv3_conf/fv3_qsub.IN_theia fv3_conf/fv3_qsub.IN
 

@@ -16,7 +16,7 @@ gnu_make=gmake
 if ( ! which $gnu_make ) ; then
     echo WARNING: Cannot find gmake in \$PATH.  I will use \"make\" instead.
     gnu_make=make
-    if ( ! $gnu_make --version 2>&1 | grep -i gnu > /dev/null 2>&1 ) ; then 
+    if ( ! $gnu_make --version 2>&1 | grep -i gnu > /dev/null 2>&1 ) ; then
        echo WARNING: The build system requires GNU Make. Things may break.
     fi
 fi
@@ -68,7 +68,7 @@ fi
 #   COMPONENTS = list of components to build
 #   BUILD_ENV = theia.intel, wcoss_dell_p3, etc.
 #   FV3_MAKEOPT = build options to send to FV3, CCPP, and FMS
-#   TEST_BUILD_NAME = requests copying of modules.nems and 
+#   TEST_BUILD_NAME = requests copying of modules.nems and
 #      NEMS.x into the tests/ directory using the given build name.
 
 # FIXME: add -j $MAKE_THREADS once FV3 bug is fixed

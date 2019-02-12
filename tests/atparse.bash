@@ -1,5 +1,8 @@
 #! /usr/bin/env bash
 function atparse {
+    local __set_x
+    [ -o xtrace ] && __set_x='set -x' || __set_x='set +x'
+    set +x
     # Use __ in names to avoid clashing with variables in {var} blocks.
     local __text __before __after __during
     for __text in "$@" ; do
@@ -33,6 +36,7 @@ function atparse {
         done
         printf '%s\n' "$__text"
     done
+    eval "$__set_x"
 }
 
 function test_atparse {

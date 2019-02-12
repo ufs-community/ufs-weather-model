@@ -43,6 +43,8 @@ elif [[ $SCHEDULER = 'pbs' ]]; then
     NODES=$(( NODES + 1 ))
   fi
   atparse < $PATHRT/fv3_conf/fv3_qsub.IN > job_card
+elif [[ $SCHEDULER = 'slurm' ]]; then
+  atparse < $PATHRT/fv3_conf/fv3_slurm.IN > job_card
 elif [[ $SCHEDULER = 'lsf' ]]; then
   if (( TASKS < TPN )); then
     TPN=${TASKS}

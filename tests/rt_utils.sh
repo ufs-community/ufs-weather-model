@@ -9,6 +9,9 @@ submit_and_wait() {
 
   [[ -z $1 ]] && exit 1
 
+  [ -o xtrace ] && set_x='set -x' || set_x='set +x'
+  set +x
+
   local -r job_card=$1
 
   ROCOTO=${ROCOTO:-false}
@@ -25,11 +28,19 @@ submit_and_wait() {
     if [[ ${MACHINE_ID} = cheyenne.* ]]; then
       qsub_id="${qsub_id%.chadm*}"
     fi
+  elif [[ $SCHEDULER = 'slurm' ]]; then
+    slurmout=$( sbatch $job_card )
+    re='Submitted batch job ([0-9]+)'
+    slurm_id=0
+    [[ "${slurmout}" =~ $re ]] && slurm_id=${BASH_REMATCH[1]}
   elif [[ $SCHEDULER = 'lsf' ]]; then
     bsubout=$( bsub < $job_card )
     re='Job <([0-9]+)> is submitted to queue <(.+)>.'
     bsub_id=0
     [[ "${bsubout}" =~ $re ]] && bsub_id=${BASH_REMATCH[1]}
+  else
+    echo "Unknown SCHEDULER $SCHEDULER"
+    exit 1
   fi
 
   # wait for the job to enter the queue
@@ -37,7 +48,7 @@ submit_and_wait() {
   local job_running=0
   until [[ $job_running -eq 1 ]]
   do
-    echo "TEST is waiting to enter the queue"
+    echo "TEST ${TEST_NR} ${TEST_NAME} is waiting to enter the queue"
     if [[ $SCHEDULER = 'moab' ]]; then
       job_running=$( showq -u ${USER} -n | grep ${JBNME} | wc -l); sleep 5
     elif [[ $SCHEDULER = 'pbs' ]]; then
@@ -46,8 +57,13 @@ submit_and_wait() {
       else
         job_running=$( qstat -u ${USER} -n | grep ${JBNME} | wc -l); sleep 5
       fi
+    elif [[ $SCHEDULER = 'slurm' ]]; then
+      job_running=$( squeue -u ${USER} -j ${slurm_id} | grep ${slurm_id} | wc -l); sleep 5
     elif [[ $SCHEDULER = 'lsf' ]]; then
       job_running=$( bjobs -u ${USER} -J ${JBNME} 2>/dev/null | grep ${QUEUE} | wc -l); sleep 5
+    else
+      echo "Unknown SCHEDULER $SCHEDULER"
+      exit 1
     fi
     (( count=count+1 ))
     if [[ $count -eq 13 ]]; then echo "No job in queue after one minute, exiting..."; exit 2; fi
@@ -67,12 +83,17 @@ submit_and_wait() {
     if [[ ${qsub_id} != ${jobid} ]]; then
       echo "Warning: qsub_id is not equal to jobid"
     fi
+  elif [[ $SCHEDULER = 'slurm' ]]; then
+    jobid=${slurm_id}
   elif [[ $SCHEDULER = 'lsf' ]]; then
     jobid=$( bjobs -u ${USER} -J ${JBNME} -noheader -o "jobid" )
     trap 'echo "Job ${jobid} killed"; bkill ${jobid}; trap 0; exit' 1 2 3 4 5 6 7 8 10 12 13 15
     if [[ ${bsub_id} -ne ${jobid} ]]; then
       echo "Warning: bsub_id is not equal to jobid"
     fi
+  else
+    echo "Unknown SCHEDULER $SCHEDULER"
+    exit 1
   fi
 
   # wait for the job to finish and compare results
@@ -82,6 +103,7 @@ submit_and_wait() {
   do
 
     sleep 60 & wait $!
+
     if [[ $SCHEDULER = 'moab' ]]; then
       job_running=$( showq -u ${USER} -n | grep ${JBNME} | wc -l)
     elif [[ $SCHEDULER = 'pbs' ]]; then
@@ -90,8 +112,13 @@ submit_and_wait() {
       else
         job_running=$( qstat -u ${USER} -n | grep ${JBNME} | wc -l)
       fi
+    elif [[ $SCHEDULER = 'slurm' ]]; then
+      job_running=$( squeue -u ${USER} -j ${slurm_id} | grep ${slurm_id} | wc -l)
     elif [[ $SCHEDULER = 'lsf' ]]; then
       job_running=$( bjobs -u ${USER} -J ${JBNME} 2>/dev/null | wc -l)
+    else
+      echo "Unknown SCHEDULER $SCHEDULER"
+      exit 1
     fi
 
     if [[ $SCHEDULER = 'moab' ]]; then
@@ -99,11 +126,11 @@ submit_and_wait() {
       status=$( showq -u ${USER} -n | grep ${JBNME} | awk '{print $3}'); status=${status:--}
       if [[ -f ${RUNDIR}/err ]] ; then FnshHrs=$( grep Finished ${RUNDIR}/err | tail -1 | awk '{ print $9 }'); fi
       FnshHrs=${FnshHrs:-0}
-      if   [[ $status = 'Idle' ]];       then echo "$n min. TEST ${TEST_NR} is waiting in a queue, Status: $status"
-      elif [[ $status = 'Running' ]];    then echo "$n min. TEST ${TEST_NR} is running,            Status: $status , Finished $FnshHrs hours"
-      elif [[ $status = 'Starting' ]];   then echo "$n min. TEST ${TEST_NR} is ready to run,       Status: $status , Finished $FnshHrs hours"
-      elif [[ $status = 'Completed' ]];  then echo "$n min. TEST ${TEST_NR} is finished,           Status: $status" ; job_running=0
-      else                                    echo "$n min. TEST ${TEST_NR} is finished,           Status: $status , Finished $FnshHrs hours"
+      if   [[ $status = 'Idle' ]];       then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is waiting in a queue, Status: $status"
+      elif [[ $status = 'Running' ]];    then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is running,            Status: $status , Finished $FnshHrs hours"
+      elif [[ $status = 'Starting' ]];   then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is ready to run,       Status: $status , Finished $FnshHrs hours"
+      elif [[ $status = 'Completed' ]];  then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is finished,           Status: $status" ; job_running=0
+      else                                    echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is finished,           Status: $status , Finished $FnshHrs hours"
       fi
 
     elif [[ $SCHEDULER = 'pbs' ]]; then
@@ -116,9 +143,9 @@ submit_and_wait() {
       fi
       if [[ -f ${RUNDIR}/err ]] ; then FnshHrs=$( tail -100 ${RUNDIR}/err | grep Finished | tail -1 | awk '{ print $9 }' ); fi
       FnshHrs=${FnshHrs:-0}
-      if   [[ $status = 'Q' ]];  then echo "$n min. TEST ${TEST_NR} is waiting in a queue, Status: $status jobid ${jobid}"
-      elif [[ $status = 'H' ]];  then echo "$n min. TEST ${TEST_NR} is held in a queue,    Status: $status"
-      elif [[ $status = 'R' ]];  then echo "$n min. TEST ${TEST_NR} is running,            Status: $status , Finished $FnshHrs hours"
+      if   [[ $status = 'Q' ]];  then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is waiting in a queue, Status: $status jobid ${jobid}"
+      elif [[ $status = 'H' ]];  then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is held in a queue,    Status: $status"
+      elif [[ $status = 'R' ]];  then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is running,            Status: $status , Finished $FnshHrs hours"
       elif [[ $status = 'E' ]] || [[ $status = 'C' ]];  then
         if [[ ${MACHINE_ID} = cheyenne.* ]]; then
           exit_status=$( qstat ${jobid} -x -f | grep Exit_status | awk '{print $3}')
@@ -127,17 +154,34 @@ submit_and_wait() {
           exit_status=$( qstat ${jobid} -f | grep exit_status | awk '{print $3}')
         fi
         if [[ $exit_status != 0 ]]; then
-          echo "Test ${TEST_NR} FAIL" >> ${REGRESSIONTEST_LOG}
-          echo                        >> ${REGRESSIONTEST_LOG}
-          echo "Test ${TEST_NR} FAIL"
+          echo "Test ${TEST_NR} ${TEST_NAME} FAIL" >> ${REGRESSIONTEST_LOG}
+          echo                                     >> ${REGRESSIONTEST_LOG}
+          echo "Test ${TEST_NR} ${TEST_NAME} FAIL"
           echo
           test_status='FAIL'
           break
         fi
-        echo "$n min. TEST ${TEST_NR} is finished,           Status: $status"
+        echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is finished,           Status: $status"
         job_running=0
-      elif [[ $status = 'C' ]];  then echo "$n min. TEST ${TEST_NR} is finished,           Status: $status" ; job_running=0
-      else                            echo "$n min. TEST ${TEST_NR} is finished,           Status: $status , Finished $FnshHrs hours"
+      elif [[ $status = 'C' ]];  then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is finished,           Status: $status" ; job_running=0
+      else                            echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is finished,           Status: $status , Finished $FnshHrs hours"
+      fi
+
+    elif [[ $SCHEDULER = 'slurm' ]]; then
+
+      status=$( squeue -u ${USER} -j ${slurm_id} 2>/dev/null | grep ${slurm_id} | awk '{print $5}' ); status=${status:--}
+      if [[ $status = 'R' ]];  then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is running,            Status: $status"
+      elif [[ $status = 'F' ]];  then
+        echo "Test ${TEST_NR} ${TEST_NAME} FAIL" >> ${REGRESSIONTEST_LOG}
+        echo                                     >> ${REGRESSIONTEST_LOG}
+        echo "Test ${TEST_NR} ${TEST_NAME} FAIL"
+        echo
+        echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is failed,             Status: $status"
+        job_running=0
+      elif [[ $status = 'C' ]];  then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is finished,           Status: $status" ; job_running=0
+      else
+        state=$( sacct -n -j ${slurm_id}.batch --format=JobID,state,Jobname | grep ${slurm_id} | awk '{print $2}' )
+        echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is ${state}"
       fi
 
     elif [[ $SCHEDULER = 'lsf' ]]; then
@@ -145,26 +189,30 @@ submit_and_wait() {
       status=$( bjobs -u ${USER} -J ${JBNME} 2>/dev/null | grep ${QUEUE} | awk '{print $3}' ); status=${status:--}
       if [[ -f ${RUNDIR}/err ]] ; then FnshHrs=$( grep Finished ${RUNDIR}/err | tail -1 | awk '{ print $9 }' ) ; fi
       FnshHrs=${FnshHrs:-0}
-      if   [[ $status = 'PEND' ]];  then echo "$n min. TEST ${TEST_NR} is waiting in a queue, Status: $status"
-      elif [[ $status = 'RUN'  ]];  then echo "$n min. TEST ${TEST_NR} is running,            Status: $status , Finished $FnshHrs hours"
+      if   [[ $status = 'PEND' ]];  then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is waiting in a queue, Status: $status"
+      elif [[ $status = 'RUN'  ]];  then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is running,            Status: $status , Finished $FnshHrs hours"
       elif [[ $status = 'EXIT' ]];  then
-        echo "Test ${TEST_NR} FAIL" >> ${REGRESSIONTEST_LOG}
-        echo;echo;echo              >> ${REGRESSIONTEST_LOG}
-        echo "Test ${TEST_NR} FAIL"
+        echo "Test ${TEST_NR} ${TEST_NAME} FAIL" >> ${REGRESSIONTEST_LOG}
+        echo;echo;echo                           >> ${REGRESSIONTEST_LOG}
+        echo "Test ${TEST_NR} ${TEST_NAME} FAIL"
         echo;echo;echo
         test_status='FAIL'
         break
-      else                               echo "$n min. TEST ${TEST_NR} is finished,           Status: $status , Finished $FnshHrs hours"
+      else                               echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is finished,           Status: $status , Finished $FnshHrs hours"
         exit_status=$( bjobs -u ${USER} -J ${JBNME} -a 2>/dev/null | grep $QUEUE | awk '{print $3}' )
         if [[ $exit_status = 'EXIT' ]];  then
-          echo "Test ${TEST_NR} FAIL" >> ${REGRESSIONTEST_LOG}
-          echo;echo;echo              >> ${REGRESSIONTEST_LOG}
-          echo "Test ${TEST_NR} FAIL"
+          echo "Test ${TEST_NR} ${TEST_NAME} FAIL" >> ${REGRESSIONTEST_LOG}
+          echo;echo;echo                           >> ${REGRESSIONTEST_LOG}
+          echo "Test ${TEST_NR} ${TEST_NAME} FAIL"
           echo;echo;echo
           test_status='FAIL'
           break
         fi
       fi
+
+    else
+      echo "Unknown SCHEDULER $SCHEDULER"
+      exit 1
 
     fi
     (( n=n+1 ))
@@ -177,9 +225,13 @@ submit_and_wait() {
     fi
   fi
 
+  eval "$set_x"
 }
 
 check_results() {
+
+  [ -o xtrace ] && set_x='set -x' || set_x='set +x'
+  set +x
 
   ROCOTO=${ROCOTO:-false}
 
@@ -191,14 +243,14 @@ check_results() {
   # Give one minute for data to show up on file system
   #sleep 60
 
-  echo                                          >> ${REGRESSIONTEST_LOG}
-  echo "baseline dir = ${RTPWD}/${CNTL_DIR}"    >> ${REGRESSIONTEST_LOG}
-  echo "working dir  = ${RUNDIR}"               >> ${REGRESSIONTEST_LOG}
-  echo "Checking test ${TEST_NR} results ...."  >> ${REGRESSIONTEST_LOG}
+  echo                                                       >> ${REGRESSIONTEST_LOG}
+  echo "baseline dir = ${RTPWD}/${CNTL_DIR}"                 >> ${REGRESSIONTEST_LOG}
+  echo "working dir  = ${RUNDIR}"                            >> ${REGRESSIONTEST_LOG}
+  echo "Checking test ${TEST_NR} ${TEST_NAME} results ...."  >> ${REGRESSIONTEST_LOG}
   echo
   echo "baseline dir = ${RTPWD}/${CNTL_DIR}"
   echo "working dir  = ${RUNDIR}"
-  echo "Checking test ${TEST_NR} results ...."
+  echo "Checking test ${TEST_NR} ${TEST_NAME} results ...."
 
   if [[ ${CREATE_BASELINE} = false ]]; then
     #
@@ -257,7 +309,7 @@ check_results() {
     #
     # --- create baselines
     #
-    echo;echo;echo "Moving set ${TEST_NR} files ...."
+    echo;echo;echo "Moving set ${TEST_NR} ${TEST_NAME} files ...."
     if [[ ! -d ${NEW_BASELINE}/${CNTL_DIR} ]]; then
       echo " mkdir -p ${NEW_BASELINE}/${CNTL_DIR}" >> ${REGRESSIONTEST_LOG}
       mkdir -p ${NEW_BASELINE}/${CNTL_DIR}/RESTART
@@ -269,16 +321,16 @@ check_results() {
         cp ${RUNDIR}/${i} ${NEW_BASELINE}/${CNTL_DIR}/${i}
       else
         echo "Missing " ${RUNDIR}/$i " output file"
-        echo;echo " Set ${TEST_NR} failed"
+        echo;echo " Set ${TEST_NR} ${TEST_NAME} failed"
         test_status='FAIL'
       fi
     done
 
   fi
 
-  echo "Test ${TEST_NR} ${test_status}" >> ${REGRESSIONTEST_LOG}
-  echo                                  >> ${REGRESSIONTEST_LOG}
-  echo "Test ${TEST_NR} ${test_status}"
+  echo "Test ${TEST_NR} ${TEST_NAME} ${test_status}" >> ${REGRESSIONTEST_LOG}
+  echo                                               >> ${REGRESSIONTEST_LOG}
+  echo "Test ${TEST_NR} ${TEST_NAME} ${test_status}"
   echo
 
   if [[ $test_status = 'FAIL' ]]; then
@@ -288,6 +340,7 @@ check_results() {
     fi
   fi
 
+  eval "$set_x"
 }
 
 kill_job() {
