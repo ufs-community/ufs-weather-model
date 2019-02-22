@@ -47,6 +47,8 @@ embed bash compile.sh(MAKE_OPTS=' ',BUILD_NR='',fv3,modules,md5) [[[
         # Run the compile.sh.  Convert wcoss.cray to wcoss_cray to
         # make the FV3 happy.
         rm -f @[fv3] @[modules]
+        
+        @[plat%execution_time_modules]
         if ( which aprun ) && [[ @[plat%PLATFORM_NAME] == wcoss.cray ]] ; then
             aprun -n 1 -j 1 -N 1 -d 24 \
                 ./compile.sh "@[plat%HOMEnems]/FV3" \
@@ -171,6 +173,8 @@ fv3_defaults = {
     SATMEDMF='.F.'
     HYBEDMF='.T.'
     LHEATSTRG='.F.'
+    LGFDLMPRAD='.F.'
+    EFFR_IN='.F.'
     NA_INIT='1'
     READ_INCREMENT='.F.'
     FDIAG='0,1,2,3,4,5,6,7,8,9,10,11,12,15,18,21,24'
@@ -969,6 +973,19 @@ test fv3_gfdlmp: fv3.exe {
         # Run the
         {"@[build%target]", ranks="@[TASKS]" }
     }
+}
+
+########################################################################
+
+test fv3_gfdlmprad: fv3.exe {
+    use fv3_gfdlmp
+
+    TEST_DESCR="Compare FV3 GFDL mircrophysics radiation change results  with previous trunk version"
+    CNTL_NAME='fv3_gfdlmprad'
+
+    LGFDLMPRAD='.true.'
+    EFFR_IN='.true.'
+
 }
 
 ########################################################################
