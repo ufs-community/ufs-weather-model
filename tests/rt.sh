@@ -124,14 +124,14 @@ elif [[ $MACHINE_ID = gaea ]]; then
 #  export PATH=/gpfs/hps/nco/ops/ecf/ecfdir/ecflow.v4.1.0.intel/bin:$PATH
   export PYTHONPATH=
   ECFLOW_START=
-  DISKNM=/lustre/f1/pdata/ncep_shared/emc.nemspara/RT
+  DISKNM=/lustre/f2/pdata/ncep_shared/emc.nemspara/RT
   QUEUE=debug
 #  DO NOT SET AN ACCOUNT EVERYONE IS NOT A MEMBER OF
 #  USE AN ENVIRONMENT VARIABLE TO SET ACCOUNT
 #  ACCNR=cmp
   PARTITION=c4
-  STMP=/lustre/f1/
-  PTMP=/lustre/f1/
+  STMP=/lustre/f2/
+  PTMP=/lustre/f2/
   SCHEDULER=moab
   cp fv3_conf/fv3_msub.IN_gaea fv3_conf/fv3_msub.IN
 

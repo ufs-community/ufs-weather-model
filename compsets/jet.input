@@ -26,7 +26,7 @@ jet.common= {
         # This function is used at PARSE TIME to detect whether we are
         # on Jet.  It must be very fast and low resource usage since
         # the parser runs it.
-        if ( which sbatch > /dev/null ) ; then
+        if ( which sbatch > /dev/null 2>&1 ) ; then
             exit 1
         fi
         if [[ -d /lfs3 && -d /pan2 ]] ; then
@@ -207,14 +207,14 @@ platform ujet.slurm {
     C768_PPN=10
     cpus_per_core=2
     PARTITION='ujet'
-    execution_time_modules="module load slurm"
+    execution_time_modules="module load slurm/default"
     MPI='srun'
 
     BASELINE="/lfs3/projects/hfv3gfs/emc.nemspara/RT/NEMSfv3gfs/trunk-20190225-tujet"
     BASELINE_TEMPLATE="/lfs3/projects/hfv3gfs/emc.nemspara/RT/NEMSfv3gfs/trunk-20190225-tujet"
 
     embed bash detect [[[
-        if ( ! which sbatch > /dev/null ) ; then
+        if ( ! which sbatch > /dev/null 2>&1 ) ; then
             exit 1
         fi
         if [[ -d /lfs3 && -d /pan2 ]] ; then

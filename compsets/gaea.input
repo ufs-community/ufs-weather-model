@@ -6,8 +6,8 @@ gaea.common= {
     MACHINE_ID='gaea'
     HOMEnems=PWD_UP5
     HOMErt=OUTPUT_PATH
-    BASELINE="/lustre/f1/pdata/ncep_shared/emc.nemspara/RT/NEMSfv3gfs/trunk-20180925"
-    BASELINE_TEMPLATE="/lustre/f1/pdata/ncep_shared/emc.nemspara/RT/NEMSfv3gfs/trunk-20180925"
+    BASELINE="/lustre/f2/pdata/ncep_shared/emc.nemspara/RT/NEMSfv3gfs/trunk-20190225"
+    BASELINE_TEMPLATE="/lustre/f2/pdata/ncep_shared/emc.nemspara/RT/NEMSfv3gfs/trunk-20190225"
     INPUTS="@[BASELINE]"
 
     SHORT_TEST_QUEUE='&SHORTQ;'
@@ -19,17 +19,10 @@ gaea.common= {
     BUILD_WALLTIME="3600"
 
     embed bash detect [[[
-        if [[ -d /lustre/f1 ]] ; then
-            exit 0
-        fi
-        exit 1
-    ]]]
-
-    embed bash detect [[[
         # This function is used at PARSE TIME to detect whether we are
         # on Jet.  It must be very fast and low resource usage since
         # the parser runs it.
-        if [[ -d /lustre/f1/pdata/ncep_shared && -d /lustre/f1/unswept ]] ; then
+        if [[ -d /lustre/f2/pdata/ncep_shared ]] ; then
             exit 0
         fi
         exit 1
