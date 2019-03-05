@@ -85,14 +85,17 @@ elif [[ $MACHINE_ID = wcoss_cray ]]; then
 
   source $PATHTR/NEMS/src/conf/module-setup.sh.inc
   module load xt-lsfhpc
-
-  export PATH=/gpfs/hps/nco/ops/ecf/ecfdir/ecflow.v4.1.0.intel/bin:$PATH
-  export PYTHONPATH=/gpfs/hps/nco/ops/ecf/ecfdir/ecflow.v4.1.0.intel/lib/python2.6/site-packages
-  ECFLOW_START=/gpfs/hps/nco/ops/ecf/ecfdir/ecflow.v4.1.0.intel/bin/ecflow_start.sh
+  module use /usrx/local/emc_rocoto/modulefiles
+  module load rocoto/1.2.4-RC3
+  ROCOTORUN=$(which rocotorun)
+  ROCOTOSTAT=$(which rocotostat)
+  module load ecflow/intel/4.7.1
+  ECFLOW_START=${ECF_ROOT}/intel/bin/ecflow_start.sh
+  ECF_PORT=$(grep $USER /usrx/local/sys/ecflow/assigned_ports.txt | awk '{print $2}')
   DISKNM=/gpfs/hps3/emc/nems/noscrub/emc.nemspara/RT
   QUEUE=debug
   PARTITION=
-  ACCNR=dev
+  ACCNR=GFS-T2O
   if [[ -d /gpfs/hps3/ptmp ]] ; then
       STMP=/gpfs/hps3/stmp
       PTMP=/gpfs/hps3/stmp
@@ -107,11 +110,18 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
 
   source $PATHTR/NEMS/src/conf/module-setup.sh.inc
   module load lsf/10.1
-
+  module use /usrx/local/dev/emc_rocoto/modulefiles
+  module load ruby/2.5.1 rocoto/complete
+  ROCOTORUN=$(which rocotorun)
+  ROCOTOSTAT=$(which rocotostat)
+  module load ips/18.0.1.163
+  module load ecflow/4.7.1
+  ECFLOW_START=${ECF_ROOT}/intel/bin/ecflow_start.sh
+  ECF_PORT=$(grep $USER /usrx/local/sys/ecflow/assigned_ports.txt | awk '{print $2}')
   DISKNM=/gpfs/dell2/emc/modeling/noscrub/emc.nemspara/RT
   QUEUE=debug
   PARTITION=
-  ACCNR=dev
+  ACCNR=FV3GFS-T2O
   STMP=/gpfs/dell2/stmp
   PTMP=/gpfs/dell2/ptmp
   SCHEDULER=lsf
@@ -146,8 +156,9 @@ elif [[ $MACHINE_ID = theia.* ]]; then
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   export PATH=/scratch4/NCEPDEV/meso/save/Dusan.Jovic/ecflow/bin:$PATH
-  export PYTHONPATH=/scratch4/NCEPDEV/meso/save/Dusan.Jovic/ecflow/lib/python2.6/site-packages
+  export PYTHONPATH=/scratch4/NCEPDEV/meso/save/Dusan.Jovic/ecflow/lib/python2.7/site-packages
   ECFLOW_START=/scratch4/NCEPDEV/meso/save/Dusan.Jovic/ecflow/bin/ecflow_start.sh
+  ECF_PORT=$(( $(id -u) + 1500 ))
   QUEUE=debug
 #  ACCNR=fv3-cpu
   PARTITION=
@@ -246,9 +257,9 @@ while getopts ":cfsl:mreh" opt; do
 done
 
 if [[ $MACHINE_ID = cheyenne.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/trunk-20190225/${COMPILER^^}}
+  RTPWD=${RTPWD:-$DISKNM/trunk-20190227/${COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/trunk-20190225}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/trunk-20190227}
 fi
 
 shift $((OPTIND-1))
@@ -294,6 +305,14 @@ if [[ $ROCOTO == true ]]; then
   if [[ $MACHINE_ID = wcoss ]]; then
     QUEUE=dev
     COMPILE_QUEUE=dev
+    ROCOTO_SCHEDULER=lsf
+  elif [[ $MACHINE_ID = wcoss_cray ]]; then
+    QUEUE=dev
+    COMPILE_QUEUE=dev
+    ROCOTO_SCHEDULER=lsfcray
+  elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
+    QUEUE=dev
+    COMPILE_QUEUE=dev_transfer
     ROCOTO_SCHEDULER=lsf
   elif [[ $MACHINE_ID = theia.* ]]; then
     QUEUE=batch
@@ -341,6 +360,8 @@ EOF
     QUEUE=dev
   elif [[ $MACHINE_ID = wcoss_cray ]]; then
     QUEUE=dev
+  elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
+    QUEUE=dev
   elif [[ $MACHINE_ID = theia.* ]]; then
     QUEUE=batch
   else
@@ -365,7 +386,7 @@ while read -r line; do
 
   if [[ $line == COMPILE* ]] ; then
 
-      unset APP
+      APP=''
       NEMS_VER=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
       SET=$(     echo $line | cut -d'|' -f3)
       MACHINES=$(echo $line | cut -d'|' -f4 | sed -e 's/^ *//' -e 's/ *$//')
@@ -390,7 +411,6 @@ while read -r line; do
 
   elif [[ $line == APPBUILD* ]] ; then
 
-      unset NEMS_VER
       APP=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
       SET=$(     echo $line | cut -d'|' -f3)
       MACHINES=$(echo $line | cut -d'|' -f4 | sed -e 's/^ *//' -e 's/ *$//')
@@ -414,6 +434,7 @@ while read -r line; do
       fi
 
       unset APP
+    continue
 
   elif [[ $line == RUN* ]] ; then
 

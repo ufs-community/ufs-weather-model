@@ -368,9 +368,14 @@ rocoto_create_compile_task() {
   fi
 
   if [[ "Q$APP" != Q ]] ; then
-      rocoto_cmd="&PATHRT;/appbuild.sh &PATHTR; $APP $COMPILE_NR"
+      rocoto_cmd="&PATHRT;/appbuild.sh &PATHTR;/FV3 $APP $COMPILE_NR"
   else
-      rocoto_cmd='&PATHRT;/compile.sh &PATHTR; $MACHINE_ID "${NEMS_VER}" $COMPILE_NR'
+      rocoto_cmd="&PATHRT;/compile.sh &PATHTR;/FV3 $MACHINE_ID \"${NEMS_VER}\" $COMPILE_NR"
+  fi
+
+  NATIVE=""
+  if [[ ${MACHINE_ID} == wcoss_dell_p3 ]]; then
+    NATIVE="<memory>6G</memory> <native>-R 'affinity[core(1)]'</native>"
   fi
 
   if [[ ${COMPILE_NR_DEP} -gt 0 ]]; then
@@ -382,10 +387,9 @@ rocoto_create_compile_task() {
     <account>${ACCNR}</account>
     <queue>${COMPILE_QUEUE}</queue>
     <cores>1</cores>
-    <memory>10G</memory>
     <walltime>01:00:00</walltime>
     <join>&LOG;/compile_${COMPILE_NR}.log</join>
-    <envar> <name>SITE</name> <value>${MACHINE_ID}</value> </envar>
+    ${NATIVE}
   </task>
 EOF
   else
@@ -395,11 +399,10 @@ EOF
     <jobname>compile_${COMPILE_NR}</jobname>
     <account>${ACCNR}</account>
     <queue>${COMPILE_QUEUE}</queue>
-    <memory>10G</memory>
     <cores>1</cores>
     <walltime>01:00:00</walltime>
     <join>&LOG;/compile_${COMPILE_NR}.log</join>
-    <envar> <name>SITE</name> <value>${MACHINE_ID}</value> </envar>
+    ${NATIVE}
   </task>
 EOF
   fi
@@ -414,9 +417,20 @@ rocoto_create_run_task() {
     DEP_STRING="<taskdep task=\"compile_${COMPILE_NR}\"/>"
   fi
 
+  CORES=$(( ${TASKS} * ${THRD} ))
+  if (( TPN > CORES )); then
+    TPN=$CORES
+  fi
+
   NATIVE=""
   if [[ ${MACHINE_ID} == wcoss ]]; then
     NATIVE="<native>-a poe -R span[ptile=${TPN}]</native>"
+  fi
+  if [[ ${MACHINE_ID} == wcoss_dell_p3 ]]; then
+    NATIVE="<native>-R span[ptile=${TPN}]</native>"
+  fi
+  if [[ ${MACHINE_ID} == wcoss_cray ]]; then
+    NATIVE="<exclusive></exclusive>"
   fi
 
   cat << EOF >> $ROCOTO_XML
@@ -426,8 +440,7 @@ rocoto_create_run_task() {
       <jobname>${TEST_NAME}</jobname>
       <account>${ACCNR}</account>
       <queue>${QUEUE}</queue>
-      <memory></memory>
-      <cores>${TASKS}</cores>
+      <cores>${CORES}</cores>
       <walltime>00:${WLCLK}:00</walltime>
       <join>&LOG;/run_${TEST_NAME}.log</join>
       ${NATIVE}
@@ -461,14 +474,14 @@ ecflow_create_compile_task() {
   new_compile=true
 
   if [[ "Q$APP" != Q ]] ; then
-      ecflow_cmd="$PATHRT/appbuild.sh $PATHTR $APP $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1"
+      ecflow_cmd="$PATHRT/appbuild.sh ${PATHTR}/FV3 $APP $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1"
   else
-      ecflow_cmd="$PATHRT/compile.sh $PATHTR $MACHINE_ID \"${NEMS_VER}\" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1"
+      ecflow_cmd="$PATHRT/compile.sh ${PATHTR}/FV3 $MACHINE_ID \"${NEMS_VER}\" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1"
   fi
 
   cat << EOF > ${ECFLOW_RUN}/regtest/compile_${COMPILE_NR}.ecf
 %include <head.h>
-$PATHRT/compile.sh $PATHTR $MACHINE_ID "${NEMS_VER}" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
+$ecflow_cmd
 %include <tail.h>
 EOF
 
@@ -498,24 +511,23 @@ EOF
 
 ecflow_run() {
 
-  ECF_PORT=$(( $(id -u) + 1500 ))
   # in rare instances when UID is greater then 58500 (like Ratko's UID on theia)
   [[ $ECF_PORT -ge 60000 ]] && ECF_PORT=12179
 
-  ECF_NODE=$( hostname )
+  ECF_HOST=$( hostname )
 
   set +e
   i=0
   max_atempts=5
   while [[ $i -lt $max_atempts ]]; do
-    ecflow_client --ping --host=${ECF_NODE} --port=${ECF_PORT}
+    ecflow_client --ping --host=${ECF_HOST} --port=${ECF_PORT}
     not_running=$?
     if [[ $not_running -eq 1 ]]; then
-      echo "ecflow_server is NOT running on ${ECF_NODE}:${ECF_PORT}"
+      echo "ecflow_server is NOT running on ${ECF_HOST}:${ECF_PORT}"
       sh ${ECFLOW_START} -d ${ECFLOW_RUN} -p ${ECF_PORT} >> ${ECFLOW_RUN}/ecflow.log 2>&1
       break
     else
-      echo "ecflow_server is already running on ${ECF_NODE}:${ECF_PORT}"
+      echo "ecflow_server is already running on ${ECF_HOST}:${ECF_PORT}"
       ECF_PORT=$(( ECF_PORT + 1 ))
     fi
     i=$(( i + 1 ))
@@ -529,7 +541,7 @@ ecflow_run() {
   ECFLOW_RUNNING=true
 
   export ECF_PORT
-  export ECF_NODE
+  export ECF_HOST
 
   ecflow_client --load=${ECFLOW_RUN}/regtest.def            >> ${ECFLOW_RUN}/ecflow.log 2>&1
   ecflow_client --begin=regtest                             >> ${ECFLOW_RUN}/ecflow.log 2>&1

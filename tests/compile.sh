@@ -1,4 +1,5 @@
 #!/bin/bash
+set -eux
 
 SECONDS=0
 
@@ -8,6 +9,23 @@ if [[ $# -lt 2 ]]; then
   echo $( ls -1 ../conf/configure.fv3.* | sed s,.*fv3\.,,g ) | fold -sw72
   exit 1
 fi
+
+# ----------------------------------------------------------------------
+# Parse arguments.
+
+readonly PATHTR=$1
+readonly BUILD_TARGET=$2
+readonly MAKE_OPT=${3:-}
+readonly BUILD_NAME=fv3${4:+_$4}
+
+readonly clean_before=${5:-YES}
+readonly clean_after=${6:-YES}
+
+hostname
+
+# ----------------------------------------------------------------------
+
+echo "Compiling ${MAKE_OPT} into $BUILD_NAME.exe on $BUILD_TARGET"
 
 # ----------------------------------------------------------------------
 # Make sure we have a "make" and reasonable threads.
@@ -32,26 +50,6 @@ if [[ "$MAKE_THREADS" -gt 1 ]] ; then
     echo Consider reducing \$MAKE_THREADS if you hit memory or process limits.
     gnu_make="$gnu_make -j $MAKE_THREADS"
 fi
-
-# ----------------------------------------------------------------------
-# Parse arguments.
-
-set -xeu
-
-readonly PATHTR=$1
-readonly BUILD_TARGET=$2
-readonly MAKE_OPT=${3:-}
-readonly BUILD_NAME=fv3${4:+_$4}
-
-clean_before=${5:-YES}
-clean_after=${6:-YES}
-
-#set +x
-hostname
-
-# ----------------------------------------------------------------------
-
-echo "Compiling ${MAKE_OPT} into $BUILD_NAME.exe on $BUILD_TARGET"
 
 # ----------------------------------------------------------------------
 # Configure NEMS and components

@@ -7,7 +7,7 @@ set -x # echo script lines as they are executed
 
 # Defines the variables that are needed for any communication with ECF
 export ECF_PORT=%ECF_PORT%    # The server port number
-export ECF_NODE=%ECF_NODE%    # The name of ecf host that issued this task
+export ECF_HOST=%ECF_HOST%    # The name of ecf host that issued this task
 export ECF_NAME=%ECF_NAME%    # The name of this current task
 export ECF_PASS=%ECF_PASS%    # A unique password
 export ECF_TRYNO=%ECF_TRYNO%  # Current try number of the task
@@ -28,7 +28,7 @@ ERROR() {
    kill $(jobs -p)
    wait                        # wait for background process to stop
 
-   ecflow_client --ping --host=${ECF_NODE} --port=${ECF_PORT}
+   ecflow_client --ping --host=${ECF_HOST} --port=${ECF_PORT}
    not_running=$?
    if [[ $not_running -eq 0 ]]; then
      export ECF_TIMEOUT=5
