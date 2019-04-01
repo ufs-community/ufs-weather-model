@@ -1725,6 +1725,7 @@ topography/topography.F90(857): (col. 13) remark: topography_mod_mp_determine_oc
 time_interp/time_interp_external.F90(705): (col. 16) remark: time_interp_external_mod_mp_time_interp_external_3d_ has been targeted for automatic cpu dispatch
 topography/topography.F90(469): (col. 11) remark: topography_mod_mp_get_ocean_mask_2d_ has been targeted for automatic cpu dispatch
 topography/topography.F90(608): (col. 11) remark: topography_mod_mp_get_water_mask_1d_ has been targeted for automatic cpu dispatch
+oda_tools/oda_core.F90(1343): (col. 14) remark: oda_core_mod_mp_adjust_obs_error_profile_ has been targeted for automatic cpu dispatch
 topography/topography.F90(635): (col. 11) remark: topography_mod_mp_get_water_mask_2d_ has been targeted for automatic cpu dispatch
 diag_manager/diag_manager.F90(3181): (col. 20) remark: diag_manager_mod_mp_send_tile_averaged_data1d_ has been targeted for automatic cpu dispatch
 topography/topography.F90(697): (col. 13) remark: topography_mod_mp_interp_topog_1d_ has been targeted for automatic cpu dispatch
@@ -1750,8 +1751,8 @@ amip_interp/amip_interp.F90(1380): (col. 15) remark: amip_interp_mod_mp_get_sst_
 amip_interp/amip_interp.F90(1143): (col. 15) remark: amip_interp_mod_mp_set_sst_grid_edges_oi_ has been targeted for automatic cpu dispatch
 amip_interp/amip_interp.F90(942): (col. 13) remark: amip_interp_mod_mp_amip_interp_init_ has been targeted for automatic cpu dispatch
 oda_tools/oda_core_ecda.F90(1135): (col. 14) remark: oda_core_ecda_mod_mp_open_profile_dataset_argo_ has been targeted for automatic cpu dispatch
-oda_tools/oda_core_ecda.F90(2119): (col. 14) remark: oda_core_ecda_mod_mp_open_profile_dataset_woa05t_ has been targeted for automatic cpu dispatch
 diag_manager/diag_manager.F90(1659): (col. 20) remark: diag_manager_mod_mp_send_data_3d_ has been targeted for automatic cpu dispatch
+oda_tools/oda_core_ecda.F90(2119): (col. 14) remark: oda_core_ecda_mod_mp_open_profile_dataset_woa05t_ has been targeted for automatic cpu dispatch
 oda_tools/oda_core_ecda.F90(2484): (col. 14) remark: oda_core_ecda_mod_mp_open_profile_dataset_woa05s_ has been targeted for automatic cpu dispatch
 oda_tools/oda_core_ecda.F90(121): (col. 14) remark: oda_core_ecda_mod_mp_init_observations_ has been targeted for automatic cpu dispatch
 diag_manager/diag_manager.F90(3266): (col. 20) remark: diag_manager_mod_mp_send_tile_averaged_data2d_ has been targeted for automatic cpu dispatch
@@ -1782,8 +1783,8 @@ Using PURE
 Converting pointers to allocatable components
 data_override/data_override.F90(1267): (col. 12) remark: data_override_mod_mp_get_grid_version_1_ has been targeted for automatic cpu dispatch
 station_data/station_data.F90(1019): (col. 12) remark: station_data_mod_mp_send_station_data_3d_ has been targeted for automatic cpu dispatch
-interpolator/interpolator.F90(1812): (col. 12) remark: interpolator_mod_mp_interpolator_4d_ has been targeted for automatic cpu dispatch
 station_data/station_data.F90(1170): (col. 12) remark: station_data_mod_mp_station_data_end_ has been targeted for automatic cpu dispatch
+interpolator/interpolator.F90(1812): (col. 12) remark: interpolator_mod_mp_interpolator_4d_ has been targeted for automatic cpu dispatch
 data_override/data_override.F90(670): (col. 12) remark: data_override_mod_mp_data_override_3d_ has been targeted for automatic cpu dispatch
 interpolator/interpolator.F90(3742): (col. 13) remark: interpolator_mod_mp_interp_weighted_scalar_2d_ has been targeted for automatic cpu dispatch
 mpiifort -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DMOIST_CAPPA -DUSE_COND -fpp -Wp,-w -I/apps/netcdf/4.2.1.1-intel/include -I/apps/netcdf/4.2.1.1-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -axSSE4.2,AVX,CORE-AVX2 -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include -I./fms  -c coupler/coupler_types.F90 -o coupler/coupler_types.o
@@ -2361,6 +2362,7 @@ physics/gfdl_cloud_microphys.F90(4157): (col. 12) remark: gfdl_cloud_microphys_m
 physics/gfdl_cloud_microphys.F90(4207): (col. 12) remark: gfdl_cloud_microphys_mod_mp_qs_table3_ has been targeted for automatic cpu dispatch
 physics/gfdl_cloud_microphys.F90(4271): (col. 15) remark: gfdl_cloud_microphys_mod_mp_qs_blend_ has been targeted for automatic cpu dispatch
 physics/gfdl_cloud_microphys.F90(4295): (col. 12) remark: gfdl_cloud_microphys_mod_mp_qs_table_ has been targeted for automatic cpu dispatch
+physics/module_mp_thompson_gfs.F90(2916): (col. 18) remark: module_mp_thompson_mp_qr_acr_qg_ has been targeted for automatic cpu dispatch
 physics/gfdl_cloud_microphys.F90(4360): (col. 12) remark: gfdl_cloud_microphys_mod_mp_qsmith_ has been targeted for automatic cpu dispatch
 physics/sfcsub.F(2781): (col. 18) remark: getarea_ has been targeted for automatic cpu dispatch
 physics/radlw_main.f(456): (col. 18) remark: module_radlw_main_mp_lwrad_ has been targeted for automatic cpu dispatch
@@ -2432,15 +2434,19 @@ physics/sfcsub.F(8062): (col. 18) remark: fixrda_ has been targeted for automati
 physics/samfdeepcnv.f(82): (col. 18) remark: samfdeepcnv_ has been targeted for automatic cpu dispatch
 physics/sfcsub.F(6773): (col. 18) remark: anomint_ has been targeted for automatic cpu dispatch
 physics/sfcsub.F(5248): (col. 18) remark: setlsi_ has been targeted for automatic cpu dispatch
+physics/radiation_clouds.f(983): (col. 18) remark: module_radiation_clouds_mp_progcld2_ has been targeted for automatic cpu dispatch
 physics/sfcsub.F(4502): (col. 18) remark: snodpth_ has been targeted for automatic cpu dispatch
+mpiifort -I/apps/netcdf/4.2.1.1-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -axavx  -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../cpl  -c physics/samfdeepcnv.f -o physics/samfdeepcnv.o
 physics/sfcsub.F(5705): (col. 18) remark: getscv_ has been targeted for automatic cpu dispatch
 physics/sfcsub.F(8381): (col. 18) remark: snodpth2_ has been targeted for automatic cpu dispatch
 physics/sfcsub.F(5103): (col. 18) remark: qcsnow_ has been targeted for automatic cpu dispatch
+physics/rascnvv2.f(994): (col. 18) remark: cloud_ has been targeted for automatic cpu dispatch
 physics/sfcsub.F(5751): (col. 18) remark: getsmc_ has been targeted for automatic cpu dispatch
 physics/sfcsub.F(5718): (col. 18) remark: getstc_ has been targeted for automatic cpu dispatch
 physics/sfcsub.F(5816): (col. 18) remark: albocn_ has been targeted for automatic cpu dispatch
 physics/sfcsub.F(5852): (col. 18) remark: qcsli_ has been targeted for automatic cpu dispatch
 physics/sfcsub.F(5769): (col. 18) remark: usesgt_ has been targeted for automatic cpu dispatch
+physics/radsw_main.f(2296): (col. 18) remark: module_radsw_main_mp_spcvrtc_ has been targeted for automatic cpu dispatch
 physics/sfcsub.F(5915): (col. 18) remark: qcbyfc_ has been targeted for automatic cpu dispatch
 physics/rascnvv2.f(4245): (col. 18) remark: qrabf_ has been targeted for automatic cpu dispatch
 physics/rascnvv2.f(4227): (col. 16) remark: qrpf_ has been targeted for automatic cpu dispatch
@@ -2483,6 +2489,9 @@ physics/cs_conv.f90(3536): (col. 18) remark: cs_conv_mp_cumfxr_ has been targete
 physics/sfc_cice.f(2): (col. 18) remark: sfc_cice_ has been targeted for automatic cpu dispatch
 mpiifort -I/apps/netcdf/4.2.1.1-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -axSSE4.2,AVX,CORE-AVX2 -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../cpl  -c physics/sfc_diag.f -o physics/sfc_diag.o
 physics/cs_conv.f90(3483): (col. 18) remark: cs_conv_mp_cumsbr_ has been targeted for automatic cpu dispatch
+physics/sascnvn.f(56): (col. 18) remark: sascnvn_ has been targeted for automatic cpu dispatch
+physics/satmedmfvdif.f(17): (col. 18) remark: satmedmfvdif_ has been targeted for automatic cpu dispatch
+mpiifort -I/apps/netcdf/4.2.1.1-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -axavx  -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../cpl  -c physics/sfc_land.f -o physics/sfc_land.o
 physics/cs_conv.f90(3627): (col. 18) remark: cs_conv_mp_cumfxr1_ has been targeted for automatic cpu dispatch
 physics/sfc_diag.f(1): (col. 18) remark: sfc_diag_ has been targeted for automatic cpu dispatch
 mpiifort -I/apps/netcdf/4.2.1.1-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -axSSE4.2,AVX,CORE-AVX2 -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../cpl  -c physics/sfc_diff.f -o physics/sfc_diff.o
