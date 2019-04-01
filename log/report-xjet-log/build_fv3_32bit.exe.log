@@ -951,6 +951,7 @@ Converting pointers to allocatable components
 mpiifort -I/apps/netcdf/4.2.1.1-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 32 -axSSE4.2,AVX,CORE-AVX2 -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include -I./fms  -c oda_tools/xbt_drop_rate_adjust.f90 -o oda_tools/xbt_drop_rate_adjust.o
 mpiifort -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DMOIST_CAPPA -DUSE_COND -DOVERLOAD_R4 -DOVERLOAD_R8 -fpp -Wp,-w -I/apps/netcdf/4.2.1.1-intel/include -I/apps/netcdf/4.2.1.1-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 32 -axSSE4.2,AVX,CORE-AVX2 -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include -I./fms  -c diag_manager/diag_axis.F90 -o diag_manager/diag_axis.o
 sat_vapor_pres/sat_vapor_pres.F90(2438): (col. 11) remark: sat_vapor_pres_mod_mp_check_1d_ has been targeted for automatic cpu dispatch
+fft/fft.F90(796): (col. 11) remark: fft_mod_mp_fft_fourier_to_grid_double_3d_ has been targeted for automatic cpu dispatch
 sat_vapor_pres/sat_vapor_pres.F90(2452): (col. 11) remark: sat_vapor_pres_mod_mp_check_2d_ has been targeted for automatic cpu dispatch
 mpiifort -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DMOIST_CAPPA -DUSE_COND -DOVERLOAD_R4 -DOVERLOAD_R8 -fpp -Wp,-w -I/apps/netcdf/4.2.1.1-intel/include -I/apps/netcdf/4.2.1.1-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 32 -axSSE4.2,AVX,CORE-AVX2 -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include -I./fms  -c diag_manager/diag_manifest.F90 -o diag_manager/diag_manifest.o
 column_diagnostics/column_diagnostics.F90(183): (col. 12) remark: column_diagnostics_mod_mp_initialize_diagnostic_columns_ has been targeted for automatic cpu dispatch
@@ -1282,6 +1283,7 @@ physics/ideaca.f(132): (col. 18) remark: ideaca_up_ has been targeted for automa
 physics/h2ohdc.f(1): (col. 18) remark: h2ohdc_ has been targeted for automatic cpu dispatch
 physics/co2hc.f(444): (col. 18) remark: qnir_mod_mp_lint1_ has been targeted for automatic cpu dispatch
 physics/co2hc.f(483): (col. 18) remark: co2pro_pre_ has been targeted for automatic cpu dispatch
+physics/h2ohdc.f(1): (col. 18) remark: h2ohdc_ has been targeted for automatic cpu dispatch
 physics/efield.f(234): (col. 18) remark: efield_mp_get_efield_ has been targeted for automatic cpu dispatch
 physics/idea_composition.f(123): (col. 18) remark: idea_composition_init_ has been targeted for automatic cpu dispatch
 physics/ideaca.f(72): (col. 18) remark: ideaca_init_ has been targeted for automatic cpu dispatch
@@ -1321,6 +1323,7 @@ physics/mersenne_twister.f(397): (col. 20) remark: mersenne_twister_mp_random_ga
 physics/h2oc.f(704): (col. 18) remark: wvrefm_ has been targeted for automatic cpu dispatch
 physics/rayleigh_damp_mesopause.f(1): (col. 18) remark: rayleigh_damp_mesopause_ has been targeted for automatic cpu dispatch
 physics/module_mp_radar.F90(531): (col. 27) remark: module_mp_radar_mp_m_complex_maxwellgarnett_ has been targeted for automatic cpu dispatch
+mpiifort -I/apps/netcdf/4.2.1.1-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -axavx  -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../cpl  -c physics/tridi2t3.f -o physics/tridi2t3.o
 physics/module_mp_radar.F90(490): (col. 27) remark: module_mp_radar_mp_get_m_mix_ has been targeted for automatic cpu dispatch
 physics/mersenne_twister.f(452): (col. 18) remark: mersenne_twister_mp_random_index_f_ has been targeted for automatic cpu dispatch
 mpiifort -I/apps/netcdf/4.2.1.1-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -axSSE4.2,AVX,CORE-AVX2 -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../cpl  -c physics/tridi2t3.f -o physics/tridi2t3.o
@@ -1468,6 +1471,7 @@ mpiifort -I/apps/netcdf/4.2.1.1-intel/include -fno-alias -auto -safe-cray-ptr -f
 physics/radiation_surface.f(1036): (col. 18) remark: module_radiation_surface_mp_gmln_ has been targeted for automatic cpu dispatch
 mpiifort -I/apps/netcdf/4.2.1.1-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -axSSE4.2,AVX,CORE-AVX2 -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../cpl  -c physics/radlw_datatb.f -o physics/radlw_datatb.o
 physics/module_mp_thompson_gfs.F90(761): (col. 18) remark: module_mp_thompson_mp_mp_gt_driver_ has been targeted for automatic cpu dispatch
+mpiifort -I/apps/netcdf/4.2.1.1-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -axavx  -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../fms -I../fms/include -I../cpl  -c physics/radlw_datatb.f -o physics/radlw_datatb.o
 physics/module_mp_wsm6_fv3.F90(74): (col. 14) remark: module_mp_wsm6_mp_wsm6_ has been targeted for automatic cpu dispatch
 physics/module_mp_wsm6_fv3.F90(2526): (col. 17) remark: module_mp_wsm6_mp_effectrad_wsm6_ has been targeted for automatic cpu dispatch
 physics/module_mp_thompson_gfs.F90(4058): (col. 18) remark: module_mp_thompson_mp_calc_effectrad_ has been targeted for automatic cpu dispatch
@@ -1742,7 +1746,9 @@ physics/radiation_aerosols.f(4542): (col. 18) remark: module_radiation_aerosolsg
 physics/sfcsub.F(8062): (col. 18) remark: fixrda_ has been targeted for automatic cpu dispatch
 physics/sfcsub.F(6773): (col. 18) remark: anomint_ has been targeted for automatic cpu dispatch
 physics/sfcsub.F(5248): (col. 18) remark: setlsi_ has been targeted for automatic cpu dispatch
+physics/radsw_main.f(2296): (col. 18) remark: module_radsw_main_mp_spcvrtc_ has been targeted for automatic cpu dispatch
 physics/sfcsub.F(4502): (col. 18) remark: snodpth_ has been targeted for automatic cpu dispatch
+physics/radiation_aerosols.f(2180): (col. 18) remark: module_radiation_aerosols_mp_setaer_ has been targeted for automatic cpu dispatch
 physics/sfcsub.F(5705): (col. 18) remark: getscv_ has been targeted for automatic cpu dispatch
 physics/sfcsub.F(8381): (col. 18) remark: snodpth2_ has been targeted for automatic cpu dispatch
 physics/sfcsub.F(5103): (col. 18) remark: qcsnow_ has been targeted for automatic cpu dispatch
@@ -2658,6 +2664,8 @@ mpiifort -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEF
 mpiifort -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DMOIST_CAPPA -DUSE_COND -fpp -Wp,-w -I/apps/netcdf/4.2.1.1-intel/include -I/apps/netcdf/4.2.1.1-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -axSSE4.2,AVX,CORE-AVX2 -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include -I../gfsphysics/ -I../atmos_cubed_sphere -I../fms/  -I../namphysics  -c initialize_spectral_mod.F90 -o initialize_spectral_mod.o
 sumfln_stochy.f(1): (col. 18) remark: sumfln_stochy_ has been targeted for automatic cpu dispatch
 dozeuv_stochy.f(1): (col. 18) remark: dozeuv_stochy_ has been targeted for automatic cpu dispatch
+mpiifort -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DMOIST_CAPPA -DUSE_COND -fpp -Wp,-w -I/apps/netcdf/4.2.1.1-intel/include -I/apps/netcdf/4.2.1.1-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -axavx  -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include -I../gfsphysics/ -I../atmos_cubed_sphere -I../fms/   -c getcon_spectral.F90 -o getcon_spectral.o
+mpiifort -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DMOIST_CAPPA -DUSE_COND -fpp -Wp,-w -I/apps/netcdf/4.2.1.1-intel/include -I/apps/netcdf/4.2.1.1-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -axavx  -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include -I../gfsphysics/ -I../atmos_cubed_sphere -I../fms/   -c initialize_spectral_mod.F90 -o initialize_spectral_mod.o
 dezouv_stochy.f(1): (col. 18) remark: dezouv_stochy_ has been targeted for automatic cpu dispatch
 compns_stochy.F90(2): (col. 18) remark: compns_stochy_ has been targeted for automatic cpu dispatch
 stochy_patterngenerator.F90(174): (col. 13) remark: stochy_patterngenerator_mp_computevarspec_ has been targeted for automatic cpu dispatch
@@ -2666,6 +2674,7 @@ stochy_patterngenerator.F90(240): (col. 13) remark: stochy_patterngenerator_mp_p
 getcon_spectral.F90(1): (col. 18) remark: getcon_spectral_ has been targeted for automatic cpu dispatch
 stochy_patterngenerator.F90(316): (col. 13) remark: stochy_patterngenerator_mp_chgres_pattern_ has been targeted for automatic cpu dispatch
 stochy_patterngenerator.F90(272): (col. 13) remark: stochy_patterngenerator_mp_setvarspect_ has been targeted for automatic cpu dispatch
+getcon_spectral.F90(1): (col. 18) remark: getcon_spectral_ has been targeted for automatic cpu dispatch
 stochy_patterngenerator.F90(37): (col. 13) remark: stochy_patterngenerator_mp_patterngenerator_init_ has been targeted for automatic cpu dispatch
 mpiifort -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DMOIST_CAPPA -DUSE_COND -fpp -Wp,-w -I/apps/netcdf/4.2.1.1-intel/include -I/apps/netcdf/4.2.1.1-intel/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -axSSE4.2,AVX,CORE-AVX2 -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I./include -I./mpp/include -I../gfsphysics/ -I../atmos_cubed_sphere -I../fms/  -I../namphysics  -c stochy_data_mod.F90 -o stochy_data_mod.o
 stochy_data_mod.F90(329): (col. 12) remark: stochy_data_mod_mp_read_pattern_ has been targeted for automatic cpu dispatch
