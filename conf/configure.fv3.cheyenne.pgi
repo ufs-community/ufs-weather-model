@@ -114,6 +114,10 @@ FFLAGS += -tp=x64
 CFLAGS += -tp=x64
 endif
 
+ifeq ($(MULTI_GASES),Y)
+CPPDEFS += -DMULTI_GASES
+endif
+
 FFLAGS_OPT = -O1
 FFLAGS_REPRO = -O1 -g -traceback
 FFLAGS_DEBUG = -g -O0 -Ktrap=fp -Mbounds -traceback

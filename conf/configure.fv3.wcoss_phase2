@@ -58,6 +58,10 @@ else
 FFLAGS += -i4 -real-size 64 -no-prec-div -no-prec-sqrt
 endif
 
+ifeq ($(MULTI_GASES),Y)
+CPPDEFS += -DMULTI_GASES
+endif
+
 FFLAGS += -xHOST -qno-opt-dynamic-align
 CFLAGS += -xHOST -qno-opt-dynamic-align
 
