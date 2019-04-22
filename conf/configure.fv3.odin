@@ -98,6 +98,10 @@ endif
 FFLAGS += -xCORE-AVX-I #-axavx 
 CFLAGS += -xCORE-AVX-I #-axavx 
 
+ifeq ($(MULTI_GASES),Y)
+CPPDEFS += -DMULTI_GASES
+endif
+
 FFLAGS_OPT = -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3
 FFLAGS_REPRO = -O2 -debug minimal -fp-model source -qoverride-limits -g -traceback
 #FFLAGS_DEBUG = -g -O0 -check bounds -check -check noarg_temp_created -check nopointer -warn -warn noerrors -fp-stack-check -fstack-protector-all -fpe0 -debug -traceback -ftrapuv

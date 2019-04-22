@@ -113,6 +113,10 @@ FFLAGS +=
 CFLAGS +=
 endif
 
+ifeq ($(MULTI_GASES),Y)
+CPPDEFS += -DMULTI_GASES
+endif
+
 FFLAGS_OPT = -O2 -fno-range-check
 FFLAGS_REPRO = -O2 -g -fbacktrace -fno-range-check
 FFLAGS_DEBUG = -g -O0 -fno-unsafe-math-optimizations -frounding-math -fsignaling-nans -ffpe-trap=invalid,zero,overflow -fbounds-check -fbacktrace -fno-range-check
