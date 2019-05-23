@@ -1,12 +1,12 @@
 ###############################################################################
 #
-#  FV3 GFDL-MP test
+#  FV3 GFDL-MPrad test
 #
 ###############################################################################
 
-export TEST_DESCR="Compare FV3 GFDL-MP results with previous trunk version"
+export TEST_DESCR="Compare FV3 GFDL-MP radiation interaction option and gravity wve drag with the control"
 
-export CNTL_DIR=fv3_gfdlmp
+export CNTL_DIR=fv3_gfdlmprad_gwd
 
 export LIST_FILES="atmos_4xdaily.tile1.nc \
                    atmos_4xdaily.tile2.nc \
@@ -56,6 +56,11 @@ export_fv3
 export NODES=$(expr $TASKS / $TPN + 1)
 
 DT_ATMOS="1200"
+export LGFDLMPRAD=.true.
+export EFFR_IN=.true.
+export DO_UGWP=.true.
+export DO_TOFD=.true.
+
 export OUTPUT_GRID="'gaussian_grid'"
 export OUTPUT_FILE="'nemsio'"
 export WRITE_NEMSIOFLIP=.true.

@@ -104,20 +104,6 @@
        z_tracer = .T.
 /
 
-#&coupler_nml
-#       months = 0
-#       days  = 1
-#       hours = 0
-#       dt_atmos = 1200
-#       dt_ocean = 1200
-#       current_date =  2016,10,03,00,0,0
-#       calendar = 'julian'
-#       memuse_verbose = .false.
-#       atmos_nthreads = 1
-#       use_hyper_thread = .false.
-#       ncores_per_node = 24
-#/
-
 &external_ic_nml
        filtered_terrain = .true.
        levp = @[NPZP]
@@ -129,6 +115,9 @@
 &gfs_physics_nml
        fhzero         = 6.
        ldiag3d        = .false.
+       ldiag_ugwp     = @[LDIAG_UGWP]
+       do_ugwp        = @[DO_UGWP]
+       do_tofd        = @[DO_TOFD]
        fhcyc          = 24.
        nst_anl        = .true.
        use_ufo        = .true.
@@ -221,6 +210,21 @@
        fix_negative = .true.
        icloud_f = 1
        mp_time = 150.
+/
+
+&cires_ugwp_nml
+       knob_ugwp_solver  = 2
+       knob_ugwp_source  = 1,1,0,0
+       knob_ugwp_wvspec  = 1,25,25,25
+       knob_ugwp_azdir   = 2,4,4,4
+       knob_ugwp_stoch   = 0,0,0,0
+       knob_ugwp_effac   = 1,1,1,1
+       knob_ugwp_doaxyz  = 1
+       knob_ugwp_doheat  = 1
+       knob_ugwp_dokdis  = 1
+       knob_ugwp_ndx4lh  = 1
+       knob_ugwp_version = 0
+       launch_level      = 25
 /
 
 &interpolator_nml
