@@ -175,6 +175,9 @@ fv3_defaults = {
     LHEATSTRG='.F.'
     LGFDLMPRAD='.F.'
     EFFR_IN='.F.'
+    LDIAG_UGWP='.F.'
+    DO_UGWP='.F.'
+    DO_TOFD='.F.'
     NA_INIT='1'
     READ_INCREMENT='.F.'
     FDIAG='0,1,2,3,4,5,6,7,8,9,10,11,12,15,18,21,24'
@@ -864,6 +867,10 @@ test fv3_gfdlmp: fv3.exe {
     CNTL_NAME='fv3_gfdlmp'
 
     DT_ATMOS='1200'
+    OUTPUT_GRID="'gaussian_grid'"
+    OUTPUT_FILE="'nemsio'"
+    WRITE_NEMSIOFLIP='.true.'
+    WRITE_FSYNCFLAG='.true.'
 
     COM="@[plat%COMrt]/@[TEST_NAME]"          # Test result area
     RUNDIR="@[plat%TMPrt]/@[TEST_NAME]"       # Test work area
@@ -905,30 +912,10 @@ test fv3_gfdlmp: fv3.exe {
         'atmos_4xdaily.tile4.nc' .bitcmp. "@[CNTL]"
         'atmos_4xdaily.tile5.nc' .bitcmp. "@[CNTL]"
         'atmos_4xdaily.tile6.nc' .bitcmp. "@[CNTL]"
-        'phyf000.tile1.nc'       .bitcmp. "@[CNTL]"
-        'phyf000.tile2.nc'       .bitcmp. "@[CNTL]"
-        'phyf000.tile3.nc'       .bitcmp. "@[CNTL]"
-        'phyf000.tile4.nc'       .bitcmp. "@[CNTL]"
-        'phyf000.tile5.nc'       .bitcmp. "@[CNTL]"
-        'phyf000.tile6.nc'       .bitcmp. "@[CNTL]"
-        'phyf024.tile1.nc'       .bitcmp. "@[CNTL]"
-        'phyf024.tile2.nc'       .bitcmp. "@[CNTL]"
-        'phyf024.tile3.nc'       .bitcmp. "@[CNTL]"
-        'phyf024.tile4.nc'       .bitcmp. "@[CNTL]"
-        'phyf024.tile5.nc'       .bitcmp. "@[CNTL]"
-        'phyf024.tile6.nc'       .bitcmp. "@[CNTL]"
-        'dynf000.tile1.nc'       .bitcmp. "@[CNTL]"
-        'dynf000.tile2.nc'       .bitcmp. "@[CNTL]"
-        'dynf000.tile3.nc'       .bitcmp. "@[CNTL]"
-        'dynf000.tile4.nc'       .bitcmp. "@[CNTL]"
-        'dynf000.tile5.nc'       .bitcmp. "@[CNTL]"
-        'dynf000.tile6.nc'       .bitcmp. "@[CNTL]"
-        'dynf024.tile1.nc'       .bitcmp. "@[CNTL]"
-        'dynf024.tile2.nc'       .bitcmp. "@[CNTL]"
-        'dynf024.tile3.nc'       .bitcmp. "@[CNTL]"
-        'dynf024.tile4.nc'       .bitcmp. "@[CNTL]"
-        'dynf024.tile5.nc'       .bitcmp. "@[CNTL]"
-        'dynf024.tile6.nc'       .bitcmp. "@[CNTL]"
+        'phyf000.nemsio'         .bitcmp. "@[CNTL]"
+        'phyf024.nemsio'         .bitcmp. "@[CNTL]"
+        'dynf000.nemsio'         .bitcmp. "@[CNTL]"
+        'dynf024.nemsio'         .bitcmp. "@[CNTL]"
         'RESTART/coupler.res'                   .bitcmp. "@[CNTL]/RESTART/"
         'RESTART/fv_core.res.nc'                .bitcmp. "@[CNTL]/RESTART/"
         'RESTART/fv_core.res.tile1.nc'          .bitcmp. "@[CNTL]/RESTART/"
@@ -985,6 +972,18 @@ test fv3_gfdlmprad: fv3.exe {
 
     LGFDLMPRAD='.true.'
     EFFR_IN='.true.'
+}
+
+test fv3_gfdlmprad_gwd: fv3.exe {
+    use fv3_gfdlmp
+
+    TEST_DESCR="Compare FV3 GFDL radiation interaction option and gravity wve drag results with previous trunk version"
+    CNTL_NAME='fv3_gfdlmprad_gwd'
+
+    LGFDLMPRAD='.true.'
+    EFFR_IN='.true.'
+    DO_UGWP='.true.'
+    DO_TOFD='.true.'
 
 }
 
