@@ -97,6 +97,7 @@ export EFFR_IN=.F.
 export LDIAG_UGWP=.F.
 export DO_UGWP=.F.
 export DO_TOFD=.F.
+export LSM=1
 export NA_INIT=1
 export CPL=.F.
 export CPLFLX=.F.

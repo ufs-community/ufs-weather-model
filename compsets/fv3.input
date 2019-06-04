@@ -178,6 +178,7 @@ fv3_defaults = {
     LDIAG_UGWP='.F.'
     DO_UGWP='.F.'
     DO_TOFD='.F.'
+    LSM='1'
     NA_INIT='1'
     READ_INCREMENT='.F.'
     FDIAG='0,1,2,3,4,5,6,7,8,9,10,11,12,15,18,21,24'
@@ -984,6 +985,18 @@ test fv3_gfdlmprad_gwd: fv3.exe {
     EFFR_IN='.true.'
     DO_UGWP='.true.'
     DO_TOFD='.true.'
+
+}
+
+test fv3_gfdlmprad_noahmp: fv3.exe {
+    use fv3_gfdlmp
+
+    TEST_DESCR="Compare FV3 GFDL radiation interaction option and Noah MP results with previous trunk version"
+    CNTL_NAME='fv3_gfdlmprad_noahmp'
+
+    LGFDLMPRAD='.true.'
+    EFFR_IN='.true.'
+    LSM='2'  
 
 }
 

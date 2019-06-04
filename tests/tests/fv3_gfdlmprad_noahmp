@@ -1,12 +1,12 @@
 ###############################################################################
 #
-#  FV3 GFDL-MPrad gravity wve drag test
+#  FV3 GFDL-MPrad Noah MP test
 #
 ###############################################################################
 
-export TEST_DESCR="Compare FV3 GFDL-MP radiation interaction option and gravity wve drag with the control"
+export TEST_DESCR="Compare FV3 GFDL-MP radiation interaction and Noah MP with the control"
 
-export CNTL_DIR=fv3_gfdlmprad_gwd
+export CNTL_DIR=fv3_gfdlmprad_noahmp
 
 export LIST_FILES="atmos_4xdaily.tile1.nc \
                    atmos_4xdaily.tile2.nc \
@@ -58,13 +58,13 @@ export NODES=$(expr $TASKS / $TPN + 1)
 DT_ATMOS="1200"
 export LGFDLMPRAD=.true.
 export EFFR_IN=.true.
-export DO_UGWP=.true.
-export DO_TOFD=.true.
+export LSM=2
 
 export OUTPUT_GRID="'gaussian_grid'"
 export OUTPUT_FILE="'nemsio'"
 export WRITE_NEMSIOFLIP=.true.
 export WRITE_FSYNCFLAG=.true.
+
 
 export INPUT_NML=gfdlmp.nml.IN
 export FV3_RUN=gfdlmp_run.IN
