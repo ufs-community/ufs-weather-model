@@ -1,0 +1,40 @@
+#%Module######################################################################
+##
+##    NEMS FV3 Prerequisites: Gaea/Intel
+
+proc ModulesHelp {} {
+  puts stderr "\tcit - loads modules required for building and running FV3 under NEMS on Gaea/Intel"
+}
+
+module-whatis "loads NEMS FV3 prerequisites for Gaea/Intel"
+
+# NOTE: the "module purge" and loading of the module command are
+# handled by the module-setup.sh (or .csh) script.
+
+##
+## load programming environment
+## this typically includes compiler, MPI and job scheduler
+##
+module load PrgEnv-intel/6.0.3
+module rm intel
+module load intel/16.0.3.210
+module load cray-netcdf
+##
+## load nwprod libraries
+## 
+set nceplibs /lustre/f2/pdata/ncep_shared/NCEPLIBS/lib/
+setenv NCEPLIBS ${nceplibs}
+module use ${nceplibs}/modulefiles
+module load bacio-intel-sandybridge/2.0.1
+module load ip-intel-sandybridge/2.0.0
+module load sp-intel-sandybridge/2.0.2
+module load w3nco-intel-sandybridge/2.0.6
+module load w3emc-intel-sandybridge/2.2.0
+module load nemsio-intel-sandybridge/2.2.3
+##
+## set esmf variables while waiting to get 7.1.39rb
+##
+module load esmflocal/7_1_0r
+
+# Needed at runtime:
+module load alps

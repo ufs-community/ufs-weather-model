@@ -1,0 +1,54 @@
+#!/bin/bash
+
+#%Module######################################################################
+##
+##    NEMS FV3 Prerequisites: Intel Endeavor with Intel icc/ifort compilers
+
+echo "Setting environment variables for NEMSfv3gfs on Endeavor with icc/ifort"
+
+##
+## load programming environment: compiler, flags, paths
+##
+. /opt/intel/compiler/2019u1/bin/ifortvars.sh intel64
+. /opt/intel/impi/5.1.3.181/bin/compilervars.sh intel64
+export PATH=/global/panfs/users/Xdheinz/thirdparty/bin:$PATH
+export LD_LIBRARY_PATH=/global/panfs/users/Xdheinz/thirdparty/lib:$LD_LIBRARY_PATH
+export SIONLIB=/global/panfs/users/Xdheinz/thirdparty/sionlib-1.7.2
+
+##
+## use own NetCDF library
+##
+export NETCDF=/global/panfs/users/Xdheinz/thirdparty
+
+##
+## use SIONlib library if installed and environment variable is set
+##
+SIONLIB=/global/panfs/users/Xdheinz/thirdparty/sionlib-1.7.2
+export SIONLIB=${SIONLIB}
+export SIONLIB_INC="-I${SIONLIB}/include -I${SIONLIB}/include/mod_64"
+export SIONLIB_LIB="-L${SIONLIB}/lib -lsionmpi_f90_64 -lsionser_f90_64 -lsionmpi_64 -lsiongen_64 -lsionser_64 -lsioncom_64 -lsioncom_64_lock_none"
+
+##
+## use pre-compiled EMSF library for above compiler / MPI combination
+##
+ESMF_VERSION=esmf-7.1.0r
+export ESMF_DIR=/global/panfs/users/Xdheinz/thirdparty/${ESMF_VERSION}
+export ESMF_INC=${ESMF_DIR}/include
+export ESMF_BIN=${ESMF_DIR}/bin
+export ESMF_LIB=${ESMF_DIR}/lib
+export ESMF_MOD=${ESMF_DIR}/mod
+export ESMFMKFILE=${ESMF_DIR}/lib/esmf.mk
+export PATH="${ESMF_BIN}${PATH:+:$PATH}"
+export LD_LIBRARY_PATH="${ESMF_LIB}${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+
+##
+## NCEP libraries (need to download and build manually, see doc/README_{UBUNTU,CENTOS,...}.txt and https://github.com/NCAR/NCEPlibs)
+##
+NCEPLIBS_DIR=/global/panfs/users/Xdheinz/thirdparty/NCEPlibs-20181105
+export NCEPLIBS_DIR=${NCEPLIBS_DIR}
+export NEMSIO_INC=${NCEPLIBS_DIR}/include
+export BACIO_LIB4=${NCEPLIBS_DIR}/lib/libbacio_4.a
+export SP_LIBd=${NCEPLIBS_DIR}/lib/libsp_v2.0.2_d.a
+export W3EMC_LIBd=${NCEPLIBS_DIR}/lib/libw3emc_d.a
+export W3NCO_LIBd=${NCEPLIBS_DIR}/lib/libw3nco_d.a
+export NEMSIO_LIB=${NCEPLIBS_DIR}/lib/libnemsio_d.a

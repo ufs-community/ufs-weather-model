@@ -3,8 +3,16 @@ rsync -arv @[RTPWD]/FV3_nest_input_data/. .
 rm -rf INPUT RESTART
 mkdir  INPUT RESTART
 
-if [ $WARM_START = .F. ]; then
-    rsync -arv @[RTPWD]/@[CNTL_DIR]/INPUT/. INPUT/.
-else
-    rsync -arv @[RTPWD]/@[CNTL_DIR]/RESTART/. INPUT/.
-fi
+# DH* 20190528
+# This doesn't work with the current logic to copy
+# input data from a common INPUT_DIR instead of
+# CNTL_DIR (which may have _prod or _repro appended);
+# see fv3_regional_run.IN for a working example
+# if this is needed in the future (not needed now)
+#if [ $WARM_START = .F. ]; then
+#    rsync -arv @[RTPWD]/@[CNTL_DIR]/INPUT/. INPUT/.
+#else
+#    rsync -arv @[RTPWD]/@[CNTL_DIR]/RESTART/. INPUT/.
+#fi
+rsync -arv @[RTPWD]/@[INPUT_DIR]/INPUT/. INPUT/.
+# *DH 20190528

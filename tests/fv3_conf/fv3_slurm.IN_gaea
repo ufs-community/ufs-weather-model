@@ -1,0 +1,33 @@
+#!/bin/bash -l
+#SBATCH -e err
+#SBATCH -o out
+#SBATCH --job-name="@[JBNME]"
+#SBATCH --account=@[ACCNR]
+#SBATCH --qos=@[QUEUE]
+#SBATCH --clusters=@[PARTITION]
+#SBATCH --ntasks=@[TASKS]
+#SBATCH --time=@[WLCLK]
+
+set -ux
+
+set +x
+source ./module-setup.sh
+module use $( pwd -P )
+module load modules.fv3
+set -x
+module list
+
+echo "Model started:  " `date`
+
+export OMP_NUM_THREADS=@[THRD]
+export OMP_STACKSIZE=1024M
+export NC_BLKSZ=1M
+
+# Avoid job errors because of filesystem synchronization delays
+sync && sleep 1
+
+srun ./fv3.exe
+
+echo "Model ended:    " `date`
+
+exit

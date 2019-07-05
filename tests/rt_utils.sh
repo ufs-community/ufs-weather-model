@@ -1,3 +1,6 @@
+#
+# DH* TODO - COMBINE SBATCH AND SLURM?
+#
 set -eu
 
 if [[ "$0" = "${BASH_SOURCE[0]}" ]]; then
@@ -28,6 +31,14 @@ submit_and_wait() {
     if [[ ${MACHINE_ID} = cheyenne.* ]]; then
       qsub_id="${qsub_id%.chadm*}"
     fi
+  elif [[ $SCHEDULER = 'sbatch' ]]; then
+    qsubout=$( sbatch $job_card )
+    re='^([0-9]+\.[a-zA-Z0-9]+)$'
+    qsub_id=0
+    [[ "${qsubout}" =~ $re ]] && qsub_id=${BASH_REMATCH[1]}
+    if [[ ${MACHINE_ID} = stampede.* ]]; then
+      qsub_id="${qsub_id}"
+    fi
   elif [[ $SCHEDULER = 'slurm' ]]; then
     slurmout=$( sbatch $job_card )
     re='Submitted batch job ([0-9]+)'
@@ -57,6 +68,12 @@ submit_and_wait() {
       else
         job_running=$( qstat -u ${USER} -n | grep ${JBNME} | wc -l); sleep 5
       fi
+    elif [[ $SCHEDULER = 'sbatch' ]]; then
+      if [[ ${MACHINE_ID} = stampede.* ]]; then
+        job_running=$( squeue ${qsub_id} | grep ${qsub_id} | wc -l); sleep 5
+      else
+        job_running=$( squeue -u ${USER} -n | grep ${JBNME} | wc -l); sleep 5
+      fi
     elif [[ $SCHEDULER = 'slurm' ]]; then
       job_running=$( squeue -u ${USER} -j ${slurm_id} | grep ${slurm_id} | wc -l); sleep 5
     elif [[ $SCHEDULER = 'lsf' ]]; then
@@ -78,6 +95,17 @@ submit_and_wait() {
       jobid="${jobid%.chadm*}"
     else
       jobid=$( qstat -u ${USER} | grep ${JBNME} | awk '{print $1}' )
+    fi
+    trap 'echo "Job ${jobid} killed"; qdel ${jobid}; trap 0; exit' 1 2 3 4 5 6 7 8 10 12 13 15
+    if [[ ${qsub_id} != ${jobid} ]]; then
+      echo "Warning: qsub_id is not equal to jobid"
+    fi
+  elif [[ $SCHEDULER = 'sbatch' ]]; then
+    if [[ ${MACHINE_ID} = stampede.* ]]; then
+      jobid=$( squeue ${qsub_id} | grep ${qsub_id} | awk '{print $1}' )
+      jobid="${jobid}"
+    else
+      jobid=$( squeue -u ${USER} | grep ${JBNME} | awk '{print $1}' )
     fi
     trap 'echo "Job ${jobid} killed"; qdel ${jobid}; trap 0; exit' 1 2 3 4 5 6 7 8 10 12 13 15
     if [[ ${qsub_id} != ${jobid} ]]; then
@@ -111,6 +139,12 @@ submit_and_wait() {
         job_running=$( qstat ${qsub_id} | grep ${qsub_id} | wc -l); sleep 5
       else
         job_running=$( qstat -u ${USER} -n | grep ${JBNME} | wc -l)
+      fi
+    elif [[ $SCHEDULER = 'sbatch' ]]; then
+      if [[ ${MACHINE_ID} = stampede.* ]]; then
+        job_running=$( squeue ${qsub_id} | grep ${qsub_id} | wc -l); sleep 5
+      else
+        job_running=$( squeue -u ${USER} -n | grep ${JBNME} | wc -l)
       fi
     elif [[ $SCHEDULER = 'slurm' ]]; then
       job_running=$( squeue -u ${USER} -j ${slurm_id} | grep ${slurm_id} | wc -l)
@@ -182,6 +216,40 @@ submit_and_wait() {
       else
         state=$( sacct -n -j ${slurm_id}.batch --format=JobID,state,Jobname | grep ${slurm_id} | awk '{print $2}' )
         echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is ${state}"
+      fi
+    
+    elif [[ $SCHEDULER = 'sbatch' ]]; then
+
+      #status=$( qstat -u ${USER} -n | grep ${JBNME} | awk '{print $"10"}' ); status=${status:--}  PJP comment out to speed up regression test
+      if [[ ${MACHINE_ID} = stampede.* ]]; then
+        status=$( squeue ${qsub_id} | grep ${qsub_id} | awk '{print $5}' ); status=${status:--}
+      else
+        status=$( squeue -u ${USER} -n | grep ${JBNME} | awk '{print $10}' ); status=${status:--}
+      fi
+      if [[ -f ${RUNDIR}/err ]] ; then FnshHrs=$( tail -100 ${RUNDIR}/err | grep Finished | tail -1 | awk '{ print $9 }' ); fi
+      FnshHrs=${FnshHrs:-0}
+      if   [[ $status = 'Q' ]];  then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is waiting in a queue, Status: $status jobid ${jobid}"
+      elif [[ $status = 'H' ]];  then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is held in a queue,    Status: $status"
+      elif [[ $status = 'R' ]];  then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is running,            Status: $status , Finished $FnshHrs hours"
+      elif [[ $status = 'E' ]] || [[ $status = 'C' ]];  then
+        if [[ ${MACHINE_ID} = stampede.* ]]; then
+          exit_status=$( squeue ${jobid} -x -f | grep Exit_status | awk '{print $3}')
+        else
+          jobid=$( squeue -u ${USER} | grep ${JBNME} | awk '{print $1}')
+          exit_status=$( qstat ${jobid} -f | grep exit_status | awk '{print $3}')
+        fi
+        if [[ $exit_status != 0 ]]; then
+          echo "Test ${TEST_NR}  ${TEST_NAME} FAIL" >> ${REGRESSIONTEST_LOG}
+          echo                                      >> ${REGRESSIONTEST_LOG}
+          echo "Test ${TEST_NR}  ${TEST_NAME} FAIL"
+          echo
+          test_status='FAIL'
+          break
+        fi
+        echo "$n min. TEST ${TEST_NR}  ${TEST_NAME} is finished,           Status: $status"
+        job_running=0
+      elif [[ $status = 'C' ]];  then echo "$n min. TEST ${TEST_NR}  ${TEST_NAME} is finished,           Status: $status" ; job_running=0
+      else                            echo "$n min. TEST ${TEST_NR}  ${TEST_NAME} is finished,           Status: $status , Finished $FnshHrs hours"
       fi
 
     elif [[ $SCHEDULER = 'lsf' ]]; then

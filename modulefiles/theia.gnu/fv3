@@ -34,21 +34,9 @@ prepend-path LD_LIBRARY_PATH /scratch4/BMC/gmtb/netcdf-4.5.0/gnu-6.2.0/mpich-3.2
 setenv NETCDF /scratch4/BMC/gmtb/netcdf-4.5.0/gnu-6.2.0/mpich-3.2.1
 
 ##
-## use pre-compiled EMSF library for above compiler / MPI combination
+## NCEP libraries (download and build manually for the time being; https://github.com/NCAR/NCEPlibs)
 ##
-setenv ESMF_DIR              /scratch4/BMC/gmtb/esmf-7.1.0r/gnu-6.2.0/mpich-3.2.1
-setenv ESMF_INC              /scratch4/BMC/gmtb/esmf-7.1.0r/gnu-6.2.0/mpich-3.2.1/include
-setenv ESMF_BIN              /scratch4/BMC/gmtb/esmf-7.1.0r/gnu-6.2.0/mpich-3.2.1/bin/binO/Linux.gfortran.64.mpich3.default/
-setenv ESMF_LIB              /scratch4/BMC/gmtb/esmf-7.1.0r/gnu-6.2.0/mpich-3.2.1/lib/libO/Linux.gfortran.64.mpich3.default
-setenv ESMF_MOD              /scratch4/BMC/gmtb/esmf-7.1.0r/gnu-6.2.0/mpich-3.2.1/mod/modO/Linux.gfortran.64.mpich3.default
-setenv ESMFMKFILE            /scratch4/BMC/gmtb/esmf-7.1.0r/gnu-6.2.0/mpich-3.2.1/lib/libO/Linux.gfortran.64.mpich3.default/esmf.mk
-prepend-path PATH            /scratch4/BMC/gmtb/esmf-7.1.0r/gnu-6.2.0/mpich-3.2.1/bin/binO/Linux.gfortran.64.mpich3.default
-prepend-path LD_LIBRARY_PATH /scratch4/BMC/gmtb/esmf-7.1.0r/gnu-6.2.0/mpich-3.2.1/lib/libO/Linux.gfortran.64.mpich3.default
-
-##
-## NCEP libraries (download and build manually for the time being; https://github.com/climbfuji/NCEPlibs)
-##
-set NCEPLIBS_DIR /scratch4/home/Dom.Heinzeller/NEMSfv3gfs_vlab_portability/NCEPlibs-gnu-20180420
+set NCEPLIBS_DIR /scratch4/home/Dom.Heinzeller/NEMSfv3gfs_vlab_portability/NCEPlibs-gnu-20181105
 setenv NCEPLIBS_DIR ${NCEPLIBS_DIR}
 setenv NEMSIO_INC   ${NCEPLIBS_DIR}/include
 setenv NEMSIO_LIB   ${NCEPLIBS_DIR}/lib/libnemsio_d.a
@@ -58,10 +46,13 @@ setenv W3EMC_LIBd   ${NCEPLIBS_DIR}/lib/libw3emc_d.a
 setenv W3NCO_LIBd   ${NCEPLIBS_DIR}/lib/libw3nco_d.a
 
 ##
-## Set compiler environment variables for CCPP
+## use pre-compiled EMSF library for above compiler / MPI combination
 ##
-setenv CC  mpicc
-setenv CXX mpicxx
-setenv FC  mpif90
-setenv F77 mpif77
-setenv F90 mpif90
+setenv ESMF_DIR              /scratch4/BMC/gmtb/esmf-8.0.0_bs21/gnu-6.2.0/mpich-3.2.1
+setenv ESMF_INC              /scratch4/BMC/gmtb/esmf-8.0.0_bs21/gnu-6.2.0/mpich-3.2.1/include
+setenv ESMF_BIN              /scratch4/BMC/gmtb/esmf-8.0.0_bs21/gnu-6.2.0/mpich-3.2.1/bin
+setenv ESMF_LIB              /scratch4/BMC/gmtb/esmf-8.0.0_bs21/gnu-6.2.0/mpich-3.2.1/lib
+setenv ESMF_MOD              /scratch4/BMC/gmtb/esmf-8.0.0_bs21/gnu-6.2.0/mpich-3.2.1/mod
+setenv ESMFMKFILE            /scratch4/BMC/gmtb/esmf-8.0.0_bs21/gnu-6.2.0/mpich-3.2.1/lib/esmf.mk
+prepend-path PATH            /scratch4/BMC/gmtb/esmf-8.0.0_bs21/gnu-6.2.0/mpich-3.2.1/bin
+prepend-path LD_LIBRARY_PATH /scratch4/BMC/gmtb/esmf-8.0.0_bs21/gnu-6.2.0/mpich-3.2.1/lib

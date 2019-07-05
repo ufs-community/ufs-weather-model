@@ -54,6 +54,9 @@ VERBOSE =
 OPENMP = Y
 AVX2 = Y
 HYDRO = N
+CCPP = N
+STATIC = N
+SION = N
 
 include       $(ESMFMKFILE)
 ESMF_INC    = $(ESMF_F90COMPILEPATHS)
@@ -93,6 +96,10 @@ else
 CPPDEFS += -DMOIST_CAPPA -DUSE_COND
 endif
 
+ifeq ($(NAM_phys),Y)
+CPPDEFS += -DNAM_phys
+endif
+
 ifeq ($(32BIT),Y)
 CPPDEFS += -DOVERLOAD_R4 -DOVERLOAD_R8
 FFLAGS +=
@@ -114,7 +121,7 @@ endif
 
 FFLAGS_OPT = -O2 -fno-range-check
 FFLAGS_REPRO = -O2 -g -fbacktrace -fno-range-check
-FFLAGS_DEBUG = -g -O0 -fno-unsafe-math-optimizations -frounding-math -fsignaling-nans -ffpe-trap=invalid,zero,overflow -fbounds-check -fbacktrace -fno-range-check
+FFLAGS_DEBUG = -g -O0 -ggdb -fno-unsafe-math-optimizations -frounding-math -fsignaling-nans -ffpe-trap=invalid,zero,overflow -fbounds-check -fbacktrace -fno-range-check
 
 TRANSCENDENTALS :=
 FFLAGS_OPENMP = -fopenmp
@@ -140,10 +147,12 @@ LDFLAGS_VERBOSE := -Wl,-V,--verbose,-cref,-M
 LIBS :=
 
 ifeq ($(REPRO),Y)
+CPPDEFS += -DREPRO
 CFLAGS += $(CFLAGS_REPRO)
 FFLAGS += $(FFLAGS_REPRO)
 FAST :=
 else ifeq ($(DEBUG),Y)
+CPPDEFS += -DDEBUG
 CFLAGS += $(CFLAGS_DEBUG)
 FFLAGS += $(FFLAGS_DEBUG)
 FAST :=
@@ -158,6 +167,7 @@ FAST := $(TRANSCENDENTALS)
 endif
 
 ifeq ($(OPENMP),Y)
+CPPDEFS += -DOPENMP
 CFLAGS += $(CFLAGS_OPENMP)
 FFLAGS += $(FFLAGS_OPENMP)
 LDFLAGS += $(LDFLAGS_OPENMP)
@@ -173,7 +183,18 @@ ifeq ($(CCPP),Y)
 CPPDEFS += -DCCPP
 CFLAGS += -I$(PATH_CCPP)/include
 FFLAGS += -I$(PATH_CCPP)/include
+ifeq ($(STATIC),Y)
+CPPDEFS += -DSTATIC
+LDFLAGS += -L$(PATH_CCPP)/lib -lccppphys -lccpp $(NCEPLIBS) -lxml2
+else
 LDFLAGS += -L$(PATH_CCPP)/lib -lccpp
+endif
+endif
+
+ifeq ($(SION),Y)
+CPPDEFS += -DSION
+CFLAGS += $(SIONLIB_INC)
+FFLAGS += $(SIONLIB_INC)
 endif
 
 LDFLAGS += $(LIBS)
@@ -181,5 +202,5 @@ LDFLAGS += $(LIBS)
 ifdef InNemsMakefile
 FFLAGS += $(ESMF_INC)
 CPPFLAGS += -cpp -traditional
-EXTLIBS = $(NCEPLIBS) $(ESMF_LIB) $(LDFLAGS) $(NETCDF_LIB)
+EXTLIBS = $(NCEPLIBS) $(ESMF_LIB) $(LDFLAGS) $(NETCDF_LIB) $(SIONLIB_LIB)
 endif

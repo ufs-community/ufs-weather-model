@@ -20,21 +20,9 @@ module load mvapich2/2.1a
 module load netcdf/4.4.0
 
 ##
-## use pre-compiled EMSF library for above compiler / MPI combination
+## NCEP libraries (download and build manually for the time being; https://github.com/NCAR/NCEPlibs)
 ##
-setenv ESMF_DIR              /scratch4/BMC/gmtb/esmf-7.1.0r/pgi-17.7/mvapich2-2.1a
-setenv ESMF_INC              /scratch4/BMC/gmtb/esmf-7.1.0r/pgi-17.7/mvapich2-2.1a/include
-setenv ESMF_BIN              /scratch4/BMC/gmtb/esmf-7.1.0r/pgi-17.7/mvapich2-2.1a/bin/binO/Linux.pgi.64.mvapich2.default
-setenv ESMF_LIB              /scratch4/BMC/gmtb/esmf-7.1.0r/pgi-17.7/mvapich2-2.1a/lib/libO/Linux.pgi.64.mvapich2.default
-setenv ESMF_MOD              /scratch4/BMC/gmtb/esmf-7.1.0r/pgi-17.7/mvapich2-2.1a/mod/modO/Linux.pgi.64.mvapich2.default
-setenv ESMFMKFILE            /scratch4/BMC/gmtb/esmf-7.1.0r/pgi-17.7/mvapich2-2.1a/lib/libO/Linux.pgi.64.mvapich2.default/esmf.mk
-prepend-path PATH            /scratch4/BMC/gmtb/esmf-7.1.0r/pgi-17.7/mvapich2-2.1a/bin/binO/Linux.pgi.64.mvapich2.default
-prepend-path LD_LIBRARY_PATH /scratch4/BMC/gmtb/esmf-7.1.0r/pgi-17.7/mvapich2-2.1a/lib/libO/Linux.pgi.64.mvapich2.default
-
-##
-## NCEP libraries (download and build manually for the time being; https://github.com/climbfuji/NCEPlibs)
-##
-set NCEPLIBS_DIR /scratch4/home/Dom.Heinzeller/NEMSfv3gfs_vlab_portability/NCEPlibs-pgi-20180420
+set NCEPLIBS_DIR /scratch4/home/Dom.Heinzeller/NEMSfv3gfs_vlab_portability/NCEPlibs-pgi-20181105
 setenv NCEPLIBS_DIR ${NCEPLIBS_DIR}
 setenv NEMSIO_INC   ${NCEPLIBS_DIR}/include
 setenv NEMSIO_LIB   ${NCEPLIBS_DIR}/lib/libnemsio_d.a
@@ -44,11 +32,13 @@ setenv W3EMC_LIBd   ${NCEPLIBS_DIR}/lib/libw3emc_d.a
 setenv W3NCO_LIBd   ${NCEPLIBS_DIR}/lib/libw3nco_d.a
 
 ##
-## Set compiler environment variables for CCPP
+## use pre-compiled EMSF library for above compiler / MPI combination
 ##
-setenv CPP "mpicc -E"
-setenv CC  mpicc
-setenv CXX mpic++
-setenv FC  mpif90
-setenv F77 mpif77
-setenv F90 mpif90
+setenv ESMF_DIR              /scratch4/BMC/gmtb/esmf-8.0.0_bs21/pgi-17.7/mvapich2-2.1a
+setenv ESMF_INC              /scratch4/BMC/gmtb/esmf-8.0.0_bs21/pgi-17.7/mvapich2-2.1a/include
+setenv ESMF_BIN              /scratch4/BMC/gmtb/esmf-8.0.0_bs21/pgi-17.7/mvapich2-2.1a/bin
+setenv ESMF_LIB              /scratch4/BMC/gmtb/esmf-8.0.0_bs21/pgi-17.7/mvapich2-2.1a/lib
+setenv ESMF_MOD              /scratch4/BMC/gmtb/esmf-8.0.0_bs21/pgi-17.7/mvapich2-2.1a/mod
+setenv ESMFMKFILE            /scratch4/BMC/gmtb/esmf-8.0.0_bs21/pgi-17.7/mvapich2-2.1a/lib/esmf.mk
+prepend-path PATH            /scratch4/BMC/gmtb/esmf-8.0.0_bs21/pgi-17.7/mvapich2-2.1a/bin
+prepend-path LD_LIBRARY_PATH /scratch4/BMC/gmtb/esmf-8.0.0_bs21/pgi-17.7/mvapich2-2.1a/lib

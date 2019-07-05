@@ -39,7 +39,7 @@ if ( ! which $gnu_make ) ; then
     fi
 fi
 
-if [[ $BUILD_TARGET == cheyenne.* ]] ; then
+if [[ $BUILD_TARGET == cheyenne.* || $BUILD_TARGET == stampede.* ]] ; then
     MAKE_THREADS=${MAKE_THREADS:-3}
 fi
 

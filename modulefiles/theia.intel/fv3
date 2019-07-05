@@ -15,24 +15,24 @@ module-whatis "loads NEMS FV3 prerequisites for Theia/Intel"
 ## load programming environment
 ## this typically includes compiler, MPI and job scheduler
 ##
-module load intel/15.1.133
-module load impi/5.1.1.109
+module load intel/18.0.1.163
+module load impi/5.1.2.150
 module load netcdf/4.3.0
-module load pnetcdf
+module load pnetcdf/1.5.0-impi
 
 ##
-## load nwprod libraries
+## NCEP libraries (temporary version to match the CCPP requirements)
 ##
-module use -a /scratch3/NCEPDEV/nwprod/lib/modulefiles
-module load bacio/v2.0.1
-module load sp/v2.0.2
-module load ip/v2.0.0
-module load w3nco/v2.0.6
-module load w3emc/v2.0.5
-module load nemsio/v2.2.3
+module use -a /scratch3/NCEPDEV/nwprod/NCEPLIBS_CCPP/modulefiles
+module load bacio/9.9.9
+module load ip/9.9.9
+module load nemsio/9.9.9
+module load sp/2.0.2
+module load w3emc/9.9.9
+module load w3nco/9.9.9
 
 ##
-## load ESMF library for above compiler / MPI combination
+## use pre-compiled EMSF library for above compiler / MPI combination
 ##
-module use /scratch4/NCEPDEV/nems/noscrub/emc.nemspara/soft/modulefiles
-module load esmf/8.0.0bs21
+module use -a /scratch4/NCEPDEV/nems/noscrub/emc.nemspara/soft/modulefiles
+module load esmf/8.0.0bs21-intel18

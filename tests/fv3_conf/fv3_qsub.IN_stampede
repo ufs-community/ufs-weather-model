@@ -1,0 +1,36 @@
+#!/bin/bash -l
+#SBATCH -o out
+#SBATCH -e err
+#SBATCH -N 4
+#SBATCH -A @[ACCNR]
+#SBATCH -p skx-dev
+#SBATCH -n @[TASKS]
+#SBATCH -t 00:@[WLCLK]:00
+
+set -eux
+
+set +x
+source ./module-setup.sh
+module use $( pwd -P )
+module load modules.fv3
+module list
+
+set -x
+
+echo "Model started:  " `date`
+
+export MPI_TYPE_DEPTH=20
+export OMP_STACKSIZE=512M
+export OMP_NUM_THREADS=@[THRD]
+export ESMF_RUNTIME_COMPLIANCECHECK=OFF:depth=4
+export LD_BIND_NOW=1
+
+# Avoid job errors because of filesystem synchronization delays
+#sync && sleep 1
+
+#mpirun -prepend-rank -np $SBATCH_NP ./fv3.exe
+ibrun   ./fv3.exe
+
+echo "Model ended:    " `date`
+
+exit

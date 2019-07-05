@@ -12,7 +12,7 @@
        chksum_debug = .false.
        dycore_only = .false.
        fdiag = @[FDIAG]
-       ccpp_suite = 'ccpp_suite.xml'
+       ccpp_suite = '@[CCPP_SUITE]'
 /
 
 &diag_manager_nml
@@ -159,6 +159,7 @@
        cnvcld         = .true.
        imfshalcnv     = 2
        imfdeepcnv     = 2
+       isatmedmf      = 0
        cdmbgwd        = 3.5,0.25
        prslrd0        = 0.
        ivegsrc        = 1
@@ -177,11 +178,32 @@
        iopt_tbot      = 2
        iopt_stc       = 1
        debug          = .false.
+       oz_phys        = @[OZ_PHYS_OLD]
+       oz_phys_2015   = @[OZ_PHYS_NEW]
+       h2o_phys       = @[H2O_PHYS]
        nstf_name      = @[NSTF_NAME]
        cplflx         = @[CPLFLX]
+       cplwav         = @[CPLWAV]
        iau_delthrs    = 6
        iaufhrs        = 30
        iau_inc_files  = @[IAU_INC_FILES]
+       do_sppt        = @[DO_SPPT]
+       do_shum        = @[DO_SHUM]
+       do_skeb        = @[DO_SKEB]
+       do_sfcperts    = @[DO_SFCPERTS]
+       nca            = 1
+       ncells         = 5
+       nfracseed      = 0.5
+       nlives         = 30
+       nthresh        = 0.5
+       nseed          = 100000
+       do_ca          = .false.
+       ca_global      = .false.
+       ca_sgs         = .true.
+       ca_smooth      = .false.
+       nspinup        = 1000
+       iseed_ca       = 0
+       isppt_deep     = .false.
 /
 
 &interpolator_nml
