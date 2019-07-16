@@ -130,6 +130,7 @@ export IMFDEEPCNV=2
 # LSM
 export LSM=1
 export LSOIL_LSM=4
+export LANDICE=.T.
 
 # Ozone / stratospheric H2O
 export OZ_PHYS_OLD=.T.
