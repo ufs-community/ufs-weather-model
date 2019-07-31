@@ -6,6 +6,7 @@
 #SBATCH --ntasks=@[TASKS]
 #SBATCH --time=@[WLCLK]
 #SBATCH --job-name="@[JBNME]"
+#SBATCH --exclusive
 
 set -eux
 
@@ -23,6 +24,8 @@ export MPI_TYPE_DEPTH=20
 export OMP_STACKSIZE=512M
 export OMP_NUM_THREADS=@[THRD]
 export ESMF_RUNTIME_COMPLIANCECHECK=OFF:depth=4
+export PSM_RANKS_PER_CONTEXT=4
+export PSM_SHAREDCONTEXTS=1
 
 # Avoid job errors because of filesystem synchronization delays
 sync && sleep 1

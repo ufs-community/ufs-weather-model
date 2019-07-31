@@ -1,0 +1,60 @@
+#%Module######################################################################
+##
+##    NEMS FV3 Prerequisites: SuperMUC Phase 2
+
+proc ModulesHelp {} {
+  puts stderr "\tcit - loads modules required for building and running FV3 under NEMS on SuperMUC Phase2"
+}
+
+module-whatis "loads NEMS FV3 prerequisites for SuperMUC Phase 2"
+
+# NOTE: the "module purge" and loading of the module command are
+# handled by the module-setup.sh (or .csh) script.
+
+##
+## load programming environment
+## this typically includes compiler, MPI and job scheduler
+##
+module unload mpi.ibm
+module load mpi.intel/2017
+module load python/2.7_intel
+module load cmake
+module load endian/big
+module load pnetcdf/1.6 netcdf/serial/4.3
+
+# Set environment variable NETCDF to predefined environment variable NETCDF_BASE
+set NETCDF $::env(NETCDF_BASE)
+setenv NETCDF ${NETCDF}
+
+##
+## NCEP libraries (download and build manually for the time being; https://github.com/NCAR/NCEPlibs)
+##
+set NCEPLIBS_DIR /gpfs/work/pr94mi/di73bim2/fv3/NCEPlibs/intel-17.0.6.256/impi-2017.4.256
+setenv NCEPLIBS_DIR ${NCEPLIBS_DIR}
+setenv NEMSIO_INC   ${NCEPLIBS_DIR}/include
+setenv NEMSIO_LIB   ${NCEPLIBS_DIR}/lib/libnemsio_d.a
+setenv BACIO_LIB4   ${NCEPLIBS_DIR}/lib/libbacio_4.a
+setenv SP_LIBd      ${NCEPLIBS_DIR}/lib/libsp_v2.0.2_d.a
+setenv W3EMC_LIBd   ${NCEPLIBS_DIR}/lib/libw3emc_d.a
+setenv W3NCO_LIBd   ${NCEPLIBS_DIR}/lib/libw3nco_d.a
+
+##
+## SIONlib library
+##
+set    SIONLIB     /gpfs/work/pr94mi/di73bim2/fv3/sionlib-1.7.2/intel-17.0.6.256/impi-2017.4.256
+setenv SIONLIB     ${SIONLIB}
+setenv SIONLIB_INC "-I${SIONLIB}/include -I${SIONLIB}/include/mod_64"
+setenv SIONLIB_LIB "-L${SIONLIB}/lib -lsionmpi_f90_64 -lsionser_f90_64 -lsionmpi_64 -lsiongen_64 -lsionser_64 -lsioncom_64 -lsioncom_64_lock_none"
+
+##
+## use pre-compiled EMSF library for above compiler / MPI combination
+##
+set    ESMF_DIR              /gpfs/work/pr94mi/di73bim2/fv3/esmf-8.0.0_bs21/intel-17.0.6.256/impi-2017.4.256
+setenv ESMF_DIR              ${ESMF_DIR}
+setenv ESMF_INC              ${ESMF_DIR}/include
+setenv ESMF_BIN              ${ESMF_DIR}/bin
+setenv ESMF_LIB              ${ESMF_DIR}/lib
+setenv ESMF_MOD              ${ESMF_DIR}/mod
+setenv ESMFMKFILE            ${ESMF_DIR}/lib/esmf.mk
+prepend-path PATH            ${ESMF_DIR}/bin
+prepend-path LD_LIBRARY_PATH ${ESMF_DIR}/lib

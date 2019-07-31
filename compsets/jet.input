@@ -1,7 +1,7 @@
 
 jet.common= {
     use platform.defaults
-    MACHINE_ID='jet'
+    MACHINE_ID='jet.intel'
     HOMEnems=PWD_UP5
     HOMErt=OUTPUT_PATH
     INPUTS="@[BASELINE]"
@@ -9,7 +9,7 @@ jet.common= {
     MPI='impi'
 
     embed bash detect [[[
-        if [[ -d /lfs3 && -d /pan2 ]] ; then
+        if [[ -d /lfs3 && -d /lfs1 ]] ; then
             exit 0
         fi
         exit 1
@@ -29,7 +29,7 @@ jet.common= {
         if ( which sbatch > /dev/null 2>&1 ) ; then
             exit 1
         fi
-        if [[ -d /lfs3 && -d /pan2 ]] ; then
+        if [[ -d /lfs3 && -d /lfs1 ]] ; then
             exit 0
         fi
         exit 1
@@ -78,8 +78,8 @@ platform xjet {
     cores_per_node=24
     cpus_per_core=2
 
-    BASELINE="/lfs3/projects/hfv3gfs/emc.nemspara/RT/NEMSfv3gfs/trunk-20190315-xjet"
-    BASELINE_TEMPLATE="/lfs3/projects/hfv3gfs/emc.nemspara/RT/NEMSfv3gfs/trunk-20190315-xjet"
+    BASELINE="/lfs3/projects/hfv3gfs/emc.nemspara/RT/NEMSfv3gfs/trunk-20190613-xjet"
+    BASELINE_TEMPLATE="/lfs3/projects/hfv3gfs/emc.nemspara/RT/NEMSfv3gfs/trunk-20190613-xjet"
 
     default_resources={
         TASKS=150
@@ -122,8 +122,8 @@ platform svjet {
     cpus_per_core=2
     PARTITION='sjet:vjet'
 
-    BASELINE="/lfs3/projects/hfv3gfs/emc.nemspara/RT/NEMSfv3gfs/trunk-20190315-svjet"
-    BASELINE_TEMPLATE="/lfs3/projects/hfv3gfs/emc.nemspara/RT/NEMSfv3gfs/trunk-20190315-svjet"
+    BASELINE="/lfs3/projects/hfv3gfs/emc.nemspara/RT/NEMSfv3gfs/trunk-20190613-svjet"
+    BASELINE_TEMPLATE="/lfs3/projects/hfv3gfs/emc.nemspara/RT/NEMSfv3gfs/trunk-20190613-svjet"
 
     default_resources={
         TASKS=150
@@ -165,8 +165,8 @@ platform tujet {
     cpus_per_core=2
     PARTITION='ujet:tjet'
 
-    BASELINE="/lfs3/projects/hfv3gfs/emc.nemspara/RT/NEMSfv3gfs/trunk-20190315-tujet"
-    BASELINE_TEMPLATE="/lfs3/projects/hfv3gfs/emc.nemspara/RT/NEMSfv3gfs/trunk-20190315-tujet"
+    BASELINE="/lfs3/projects/hfv3gfs/emc.nemspara/RT/NEMSfv3gfs/trunk-20190613-tujet"
+    BASELINE_TEMPLATE="/lfs3/projects/hfv3gfs/emc.nemspara/RT/NEMSfv3gfs/trunk-20190613-tujet"
 
     default_resources={
         TASKS=150
@@ -207,11 +207,10 @@ platform ujet.slurm {
     C768_PPN=10
     cpus_per_core=2
     PARTITION='ujet'
-    execution_time_modules="module load slurm/default"
     MPI='srun'
 
-    BASELINE="/lfs3/projects/hfv3gfs/emc.nemspara/RT/NEMSfv3gfs/trunk-20190315-tujet"
-    BASELINE_TEMPLATE="/lfs3/projects/hfv3gfs/emc.nemspara/RT/NEMSfv3gfs/trunk-20190315-tujet"
+    BASELINE="/lfs3/projects/hfv3gfs/emc.nemspara/RT/NEMSfv3gfs/trunk-20190613-tujet"
+    BASELINE_TEMPLATE="/lfs3/projects/hfv3gfs/emc.nemspara/RT/NEMSfv3gfs/trunk-20190613-tujet"
 
     embed bash detect [[[
         if ( ! which sbatch > /dev/null 2>&1 ) ; then

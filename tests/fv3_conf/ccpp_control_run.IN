@@ -20,12 +20,19 @@ cp    @[RTPWD]/${inputdir}/INPUT/aerosol.dat .
 cp    @[RTPWD]/${inputdir}/INPUT/co2historicaldata_201*.txt .
 cp    @[RTPWD]/${inputdir}/INPUT/sfc_emissivity_idx.txt .
 cp    @[RTPWD]/${inputdir}/INPUT/solarconstant_noaa_an.txt .
-cp    @[RTPWD]/${inputdir}/INPUT/global_o3prdlos.f77 .
+if [ $OZ_PHYS_NEW = .T. ]; then
+  cp  @[RTPWD]/${inputdir}/ozprdlos_2015_new_sbuvO3_tclm15_nuchem.f77 ./global_o3prdlos.f77
+elif [ $OZ_PHYS_OLD = .T. ]; then
+  cp  @[RTPWD]/${inputdir}/INPUT/global_o3prdlos.f77 .
+fi
+if [ $H2O_PHYS = .T. ]; then
+  cp  @[RTPWD]/FV3_input_data/global_h2o_pltc.f77 ./global_h2oprdlos.f77
+fi
 cp    @[RTPWD]/${inputdir}/*grb .
 cp    @[RTPWD]/${inputdir}/*_table .
 cp    @[RTPWD]/${inputdir}/*configure .
 
-cp ${PATHRT}/../${CCPP_SDF}                      ccpp_suite.xml
+cp ${PATHRT}/../ccpp/suites/suite_${CCPP_SUITE}.xml suite_${CCPP_SUITE}.xml
 
 # Add path to libccpp.so and libccpphys.so to LD_LIBRARY_PATH, append to module-setup.sh
 echo " " >> module-setup.sh

@@ -12,7 +12,7 @@
        chksum_debug = .false.
        dycore_only = .false.
        fdiag = @[FDIAG]
-       ccpp_suite = 'ccpp_suite.xml'
+       ccpp_suite = '@[CCPP_SUITE]'
 /
 
 &diag_manager_nml
@@ -105,20 +105,6 @@
        z_tracer = .T.
 /
 
-#&coupler_nml
-#       months = 0
-#       days  = 1
-#       hours = 0
-#       dt_atmos = 1200
-#       dt_ocean = 1200
-#       current_date =  2016,10,03,00,0,0
-#       calendar = 'julian'
-#       memuse_verbose = .false.
-#       atmos_nthreads = 1
-#       use_hyper_thread = .false.
-#       ncores_per_node = 24
-#/
-
 &external_ic_nml
        filtered_terrain = .true.
        levp = @[NPZP]
@@ -130,6 +116,9 @@
 &gfs_physics_nml
        fhzero         = 6.
        ldiag3d        = .false.
+       ldiag_ugwp     = @[LDIAG_UGWP]
+       do_ugwp        = @[DO_UGWP]
+       do_tofd        = @[DO_TOFD]
        fhcyc          = 24.
        nst_anl        = .true.
        use_ufo        = .true.
@@ -155,21 +144,45 @@
        dspheat        = .true.
        hybedmf        = @[HYBEDMF]
        satmedmf       = @[SATMEDMF]
+       shinhong       = @[SHINHONG]
+       do_ysu         = @[DO_YSU]
        lheatstrg      = @[LHEATSTRG]
+       lgfdlmprad     = @[LGFDLMPRAD]
+       effr_in        = @[EFFR_IN]
        random_clds    = .false.
        trans_trac     = .false.
        cnvcld         = .true.
-       imfshalcnv     = 2
-       imfdeepcnv     = 2
+       imfshalcnv     = @[IMFSHALCNV]
+       imfdeepcnv     = @[IMFDEEPCNV]
        cdmbgwd        = 3.5,0.25
        prslrd0        = 0.
        ivegsrc        = 1
        isot           = 1
+       lsm            = @[LSM]
+       iopt_dveg      = 2
+       iopt_crs       = 1
+       iopt_btr       = 1
+       iopt_run       = 1
+       iopt_sfc       = 1
+       iopt_frz       = 1
+       iopt_inf       = 1
+       iopt_rad       = 1
+       iopt_alb       = 2
+       iopt_snf       = 4
+       iopt_tbot      = 2
+       iopt_stc       = 1
        debug          = .false.
+       oz_phys        = @[OZ_PHYS_OLD]
+       oz_phys_2015   = @[OZ_PHYS_NEW]
+       h2o_phys       = @[H2O_PHYS]
        nstf_name      = @[NSTF_NAME]
        xkzminv        = 0.3
        xkzm_m         = 1.0
        xkzm_h         = 1.0
+       do_sppt        = @[DO_SPPT]
+       do_shum        = @[DO_SHUM]
+       do_skeb        = @[DO_SKEB]
+       do_sfcperts    = @[DO_SFCPERTS]
 /
 
 &gfdl_cloud_microphysics_nml
@@ -220,6 +233,21 @@
        fix_negative = .true.
        icloud_f = 1
        mp_time = 150.
+/
+
+&cires_ugwp_nml
+       knob_ugwp_solver  = 2
+       knob_ugwp_source  = 1,1,0,0
+       knob_ugwp_wvspec  = 1,25,25,25
+       knob_ugwp_azdir   = 2,4,4,4
+       knob_ugwp_stoch   = 0,0,0,0
+       knob_ugwp_effac   = 1,1,1,1
+       knob_ugwp_doaxyz  = 1
+       knob_ugwp_doheat  = 1
+       knob_ugwp_dokdis  = 1
+       knob_ugwp_ndx4lh  = 1
+       knob_ugwp_version = 0
+       launch_level      = 25
 /
 
 &interpolator_nml

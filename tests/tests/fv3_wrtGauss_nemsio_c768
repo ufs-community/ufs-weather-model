@@ -52,7 +52,11 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
 
 export_fv3
 export TASKS=1728
-export TPN=12
+if [[ $MACHINE_ID = cheyenne.* ]]; then
+  export TPN=36
+else
+  export TPN=12
+fi
 export INPES=16
 export JNPES=16
 export NPX=769

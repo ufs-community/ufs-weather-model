@@ -34,7 +34,14 @@ elif [[ $MACHINE_ID = theia.* ]]; then
   TASKS_stretch=48 ; TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=12 ; INPES_strnest=2 ; JNPES_strnest=4
 
-elif [ $MACHINE_ID = gaea ]; then
+elif [[ $MACHINE_ID = jet.* ]]; then
+
+  TASKS_dflt=150 ; TPN_dflt=24 ; INPES_dflt=3 ; JNPES_dflt=8
+  TASKS_thrd=84  ; TPN_thrd=12 ; INPES_thrd=3 ; JNPES_thrd=4
+  TASKS_stretch=48 ; TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
+  TASKS_strnest=96 ; TPN_strnest=12 ; INPES_strnest=2 ; JNPES_strnest=4
+
+elif [[ $MACHINE_ID = gaea.* ]]; then
 
   TASKS_dflt=150 ; TPN_dflt=36 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=84  ; TPN_thrd=18 ; INPES_thrd=3 ; JNPES_thrd=4
@@ -47,6 +54,13 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
   TASKS_thrd=84  ; TPN_thrd=18 ; INPES_thrd=3 ; JNPES_thrd=4
   TASKS_stretch=48 ; TPN_stretch=18 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=18 ; INPES_strnest=2 ; JNPES_strnest=4
+
+elif [[ $MACHINE_ID = stampede.* ]]; then
+
+  TASKS_dflt=150 ; TPN_dflt=48 ; INPES_dflt=3 ; JNPES_dflt=8
+  TASKS_thrd=84  ; TPN_thrd=24 ; INPES_thrd=3 ; JNPES_thrd=4
+  TASKS_stretch=48 ; TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
+
 else
 
   echo "Unknown MACHINE_ID ${MACHINE_ID}"
@@ -83,21 +97,46 @@ export WRITE_FSYNCFLAG=.false.
 export IMO=384
 export JMO=190
 
+# Coldstart/warmstart
 export WARM_START=.F.
 export READ_INCREMENT=.F.
 export NGGPS_IC=.T.
 export EXTERNAL_IC=.T.
 export MAKE_NH=.T.
 export MOUNTAIN=.F.
-export SATMEDMF=.F.
-export HYBEDMF=.T.
+export NA_INIT=1
+
+# Microphysics
 export LHEATSTRG=.F.
 export LGFDLMPRAD=.F.
 export EFFR_IN=.F.
+
+# GWD
 export LDIAG_UGWP=.F.
 export DO_UGWP=.F.
 export DO_TOFD=.F.
-export NA_INIT=1
+
+# PBL
+export SATMEDMF=.F.
+export HYBEDMF=.T.
+export SHINHONG=.F.
+export DO_YSU=.F.
+export DO_MYNNEDMF=.F.
+
+# Shallow/deep convection
+export IMFSHALCNV=2
+export IMFDEEPCNV=2
+
+# LSM
+export LSM=1
+export LSOIL_LSM=4
+export LANDICE=.T.
+
+# Ozone / stratospheric H2O
+export OZ_PHYS_OLD=.T.
+export OZ_PHYS_NEW=.F.
+export H2O_PHYS=.F.
+
 export CPL=.F.
 export CPLFLX=.F.
 export CPLWAV=.F.
@@ -125,7 +164,13 @@ export SDAY=03
 export SHOUR=00
 export FHMAX=${FHMAX:-`expr $DAYS \* 24`}
 export DT_ATMOS=1800
+export FHCYC=24
 
+# Stochastic physics
+export DO_SPPT=.F.
+export DO_SHUM=.F.
+export DO_SKEB=.F.
+export DO_SFCPERTS=.F.
 export SKEB=-999.
 export SPPT=-999.
 export SHUM=-999.

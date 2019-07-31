@@ -14,30 +14,10 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
                    atmos_4xdaily.tile4.nc \
                    atmos_4xdaily.tile5.nc \
                    atmos_4xdaily.tile6.nc \
-                   phyf000.tile1.nc \
-                   phyf000.tile2.nc \
-                   phyf000.tile3.nc \
-                   phyf000.tile4.nc \
-                   phyf000.tile5.nc \
-                   phyf000.tile6.nc \
-                   phyf024.tile1.nc \
-                   phyf024.tile2.nc \
-                   phyf024.tile3.nc \
-                   phyf024.tile4.nc \
-                   phyf024.tile5.nc \
-                   phyf024.tile6.nc \
-                   dynf000.tile1.nc \
-                   dynf000.tile2.nc \
-                   dynf000.tile3.nc \
-                   dynf000.tile4.nc \
-                   dynf000.tile5.nc \
-                   dynf000.tile6.nc \
-                   dynf024.tile1.nc \
-                   dynf024.tile2.nc \
-                   dynf024.tile3.nc \
-                   dynf024.tile4.nc \
-                   dynf024.tile5.nc \
-                   dynf024.tile6.nc \
+                   phyf000.nemsio   \
+                   phyf024.nemsio   \
+                   dynf000.nemsio   \
+                   dynf024.nemsio   \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -76,9 +56,13 @@ export_fv3
 export NODES=$(expr $TASKS / $TPN + 1)
 
 DT_ATMOS="1200"
+export OUTPUT_GRID="'gaussian_grid'"
+export OUTPUT_FILE="'nemsio'"
+export WRITE_NEMSIOFLIP=.true.
+export WRITE_FSYNCFLAG=.true.
 
 export FV3_RUN=ccpp_gfdlmp_run.IN
-export CCPP_SDF=ccpp/framework/examples/suite_FV3_test.xml
+export CCPP_SUITE=FV3_GFS_2017_gfdlmp
 export CCPP_LIB_DIR=ccpp/lib
 export INPUT_NML=ccpp_gfdlmp.nml.IN
 

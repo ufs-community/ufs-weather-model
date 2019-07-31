@@ -1,0 +1,59 @@
+###############################################################################
+#
+#  FV3 CCPP GSD (GF CU + Thompson MP + MYNN PBL + RUC LSM) coldstart (0-24h) test
+#
+###############################################################################
+
+export TEST_DESCR="Compare FV3 CCPP GSD results with previous trunk version"
+
+export CNTL_DIR=fv3_gsd
+
+export LIST_FILES="phyf000.tile1.nc \
+                   phyf000.tile2.nc \
+                   phyf000.tile3.nc \
+                   phyf000.tile4.nc \
+                   phyf000.tile5.nc \
+                   phyf000.tile6.nc \
+                   phyf024.tile1.nc \
+                   phyf024.tile2.nc \
+                   phyf024.tile3.nc \
+                   phyf024.tile4.nc \
+                   phyf024.tile5.nc \
+                   phyf024.tile6.nc \
+                   dynf000.tile1.nc \
+                   dynf000.tile2.nc \
+                   dynf000.tile3.nc \
+                   dynf000.tile4.nc \
+                   dynf000.tile5.nc \
+                   dynf000.tile6.nc \
+                   dynf024.tile1.nc \
+                   dynf024.tile2.nc \
+                   dynf024.tile3.nc \
+                   dynf024.tile4.nc \
+                   dynf024.tile5.nc \
+                   dynf024.tile6.nc"
+
+export_fv3
+export NODES=$(expr $TASKS / $TPN + 1)
+
+export FHMAX=24
+export FDIAG=3
+
+export DT_ATMOS="1200"
+export LRADAR=.T.
+export LTAEROSOL=.T.
+
+export FV3_RUN=ccpp_gsd_run.IN
+export CCPP_SUITE=FV3_GSD_v0
+export CCPP_LIB_DIR=ccpp/lib
+export INPUT_NML=ccpp_gsd.nml.IN
+
+export HYBEDMF=.F.
+export DO_MYNNEDMF=.T.
+export IMFSHALCNV=3
+export IMFDEEPCNV=3
+export FHCYC=0
+export LSM=3
+export LSOIL_LSM=9
+
+RUN_SCRIPT=rt_fv3.sh

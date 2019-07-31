@@ -1,0 +1,39 @@
+#!/bin/sh -l
+#PBS -o out
+#PBS -e err
+#PBS -N @[JBNME]
+#PBS -A @[ACCNR]
+#PBS -q @[QUEUE]
+#PBS -d .
+#PBS -l procs=@[TASKS]
+#PBS -l walltime=00:@[WLCLK]:00
+#PBS -l partition=xjet
+
+set -eux
+
+set +x
+source ./module-setup.sh
+module use $( pwd -P )
+module load modules.fv3
+module list
+
+set -x
+
+echo "Model started:  " `date`
+
+export MPI_TYPE_DEPTH=20
+export OMP_STACKSIZE=512M
+export OMP_NUM_THREADS=@[THRD]
+export ESMF_RUNTIME_COMPLIANCECHECK=OFF:depth=4
+export LD_BIND_NOW=1
+
+# Avoid job errors because of filesystem synchronization delays
+sync && sleep 1
+
+ulimit -s 12000000
+
+mpirun -prepend-rank -np $PBS_NP ./fv3.exe
+
+echo "Model ended:    " `date`
+
+exit

@@ -1,6 +1,6 @@
-# Dom Heinzeller (dom.heinzeller@noaa.gov), 08/30/2018
+# Dom Heinzeller (dom.heinzeller@noaa.gov), 11/05/2018
 
-In order to build and run the FV3 trunk (August 2018) with possible CCPP extensions by GMTB on Ubuntu Linux,
+In order to build and run the FV3 trunk (November 2018) with possible CCPP extensions by GMTB on Ubuntu Linux,
 the following installation steps are recommended. The version numbers correspond to the default versions in
 August 2018 and will change to newer versions in the future. Unless problems occur during the manual builds in
 step 4, these differences can be ignored. It is also assumed that the bash shell is used in the following.
@@ -115,7 +115,7 @@ step 4, these differences can be ignored. It is also assumed that the bash shell
     make 2>&1 | tee log.make
     make install 2>&1 | tee log.install
     cd ..
-    rm -fr parallel-netcdf-1.9.0
+    rm -fr parallel-netcdf-1.8.1
 
     # netcdf-4.6.1
     tar -xvf netcdf-4.6.1.tar.gz 
@@ -160,12 +160,12 @@ step 4, these differences can be ignored. It is also assumed that the bash shell
 
     # NCEP libraries
     git clone https://github.com/climbfuji/NCEPlibs.git
-    mv NCEPlibs NCEPlibs-20180828
-    cd NCEPlibs-20180828
-    mkdir /usr/local/NCEPlibs-gnu-20180828
-    ./make_ncep_libs.sh -s linux -c gnu -d /usr/local/NCEPlibs-gnu-20180828 -o 1
+    mv NCEPlibs NCEPlibs-20181105
+    cd NCEPlibs-20181105
+    mkdir /usr/local/NCEPlibs-gnu-20181105
+    ./make_ncep_libs.sh -s linux -c gnu -d /usr/local/NCEPlibs-gnu-20181105 -o 1
     cd ..
-    rm -fr NCEPlibs-20180828
+    rm -fr NCEPlibs-20181105
 
     # Download esmf-7.1.0r to /usr/local/src
     tar -xvzf esmf_7_1_0r_src.tar.gz
@@ -214,19 +214,20 @@ step 4, these differences can be ignored. It is also assumed that the bash shell
     cd ~/scratch/NEMSfv3gfs/tests
 
     ./compile.sh $PWD/../FV3 linux.gnu 'CCPP=N'          2>&1 | tee log.compile # without CCPP
-    ./compile.sh $PWD/../FV3 linux.gnu 'CCPP=Y'          2>&1 | tee log.compile # with CCPP, hybrid mode
+    ./compile.sh $PWD/../FV3 linux.gnu 'CCPP=Y'          2>&1 | tee log.compile # with CCPP, dynamic mode
 
 5. Set up the run directory using the template on Theia or Cheyenne at some location on your machine:
 
     a) copy the contents of the run directory templates to where you want to run the model, change to this directory
        (these folders are read-only, i.e. users might have to add the write-flag after copying/rsyncing them)
 
-        theia:    /scratch4/BMC/gmtb/Dom.Heinzeller/macosx_rundirs/C96_trunk_20180427/gnu/
-        cheyenne: /glade/p/work/heinzell/fv3/macosx_rundirs/C96_trunk_20180427/gnu/
+        theia:    /scratch4/BMC/gmtb/Dom.Heinzeller/linux_rundirs/C96_trunk_20180831/gnu/
+        cheyenne: /glade/p/ral/jntp/GMTB/NEMSfv3gfs/linux_rundirs/C96_trunk_20180831/gnu/
 
-    b) copy run_macosx.sh to run_linux.sh, remove MacOSX-specific entries (or replace with Linux equivalent),
-       and change the variable FV3_BUILD_DIR to the top-level directory of your FV3-build
+    b) edit run_linux_no_ccpp.sh/run_linux_ccpp.sh in change the variable FV3_BUILD_DIR to the top-level directory of your FV3-build
 
-    c) start up the model using "OMP_NUM_THREADS=X ./run_linux.sh 2>&1 | tee run_linux.log"
+    c) edit model_configure to adjust the number of MPI tasks used (PE_MEMBER01 and ncores_per_node)
 
-    d) go and get yourself a cup of coffee ...
+    d) edit input_no_ccpp.nml/input_ccpp.nml to adjust the splitting of the tile across the MPI tasks (parameter layout)
+
+    e) start up the model using "OMP_NUM_THREADS=X ./run_linux_no_ccpp.sh 2>&1 | tee run_linux.log" (X=1,2,..; identical for  (run_linux_ccpp.sh)

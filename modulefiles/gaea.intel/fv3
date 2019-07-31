@@ -1,15 +1,16 @@
 #%Module######################################################################
 ##
-##    NEMS FV3 Prerequisites: Surge and Luna (WCOSS Cray)
+##    NEMS FV3 Prerequisites: Gaea/Intel
 
 proc ModulesHelp {} {
-  puts stderr "\tcit - loads modules required for building and running FV3 under NEMS on gaea"
+  puts stderr "\tcit - loads modules required for building and running FV3 under NEMS on Gaea/Intel"
 }
 
-module-whatis "loads NEMS FV3 prerequisites on Surge and Luna"
+module-whatis "loads NEMS FV3 prerequisites for Gaea/Intel"
 
 # NOTE: the "module purge" and loading of the module command are
 # handled by the module-setup.sh (or .csh) script.
+
 ##
 ## load programming environment
 ## this typically includes compiler, MPI and job scheduler
@@ -20,7 +21,7 @@ module load intel/16.0.3.210
 module load cray-netcdf
 ##
 ## load nwprod libraries
-##
+## 
 set nceplibs /lustre/f2/pdata/ncep_shared/NCEPLIBS/lib/
 setenv NCEPLIBS ${nceplibs}
 module use ${nceplibs}/modulefiles

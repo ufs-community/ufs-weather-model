@@ -1,8 +1,8 @@
-# Dom Heinzeller (dom.heinzeller@noaa.gov), 08/02/2018
+# Dom Heinzeller (dom.heinzeller@noaa.gov), 06/14/2019
 
-In order to build and run the FV3 trunk (August 2018) with possible CCPP extensions by GMTB on Mac OS X,
+In order to build and run the FV3 trunk (June 2019) with possible CCPP extensions by GMTB on macOS,
 the following installation steps are recommended. The version numbers for the "brew" correspond to the default versions
-in April/May 2018 and will change to newer versions in the future. Unless problems occur during the manual builds in
+in November 2018 and will change to newer versions in the future. Unless problems occur during the manual builds in
 steps 12-15, these differences can be ignored. It is also assumed that the bash shell is used in the following.
 
 1. Create a shell setup script ~/setenv_develop.sh to set the required paths for compiling. Contents:
@@ -26,7 +26,6 @@ steps 12-15, these differences can be ignored. It is also assumed that the bash 
     export PHDF5=/usr/local
     export PNETCDF=/usr/local
     export NETCDF=/usr/local
-    export SIONLIB=/usr/local/sionlib-1.7.2-debug
     ####################################################################################
 
 2. Install homebrew (enter sudo password when requested)
@@ -37,22 +36,22 @@ steps 12-15, these differences can be ignored. It is also assumed that the bash 
     sudo mkdir /usr/local/src
     sudo chown YOUR_USERNAME /usr/local/src
     sudo chgrp YOUR_GROUPNAME /usr/local/src
-    # /usr/local/esmf-7.1.0r
-    sudo mkdir /usr/local/esmf-7.1.0r
-    sudo chown YOUR_USERNAME /usr/local/esmf-7.1.0r
-    sudo chgrp YOUR_GROUPNAME /usr/local/esmf-7.1.0r
+    # /usr/local/esmf-8.0.0_bs21
+    sudo mkdir /usr/local/esmf-8.0.0_bs21
+    sudo chown YOUR_USERNAME /usr/local/esmf-8.0.0_bs21
+    sudo chgrp YOUR_GROUPNAME /usr/local/esmf-8.0.0_bs21
     # /usr/local/NCEPlibs-20180401
     sudo mkdir /usr/local/NCEPlibs-20180401
     sudo chown YOUR_USERNAME /usr/local/NCEPlibs-20180401
     sudo chgrp YOUR_GROUPNAME /usr/local/NCEPlibs-20180401
 
-4. Install gcc-7.2.0, gfortran-7.2.0
+4. Install gcc-8.1.0, gfortran-8.1.0
     brew install gcc --verbose --without-multilib
 
-5. Install clang-5.0.0 with openmp support
+5. Install clang-6.0.0 with openmp support
     brew install llvm
     cd /usr/local/Cellar/llvm
-    ln -sf 5.0.0/lib .
+    ln -sf 6.0.0/lib .
 
 6. Install mpich-3.2.1
     brew install mpich
@@ -63,7 +62,7 @@ steps 12-15, these differences can be ignored. It is also assumed that the bash 
 8. Install libpng-1.6.34
     brew install libpng
 
-9. Install udunits-2.2.25
+9. Install udunits-2.2.26
     brew install udunits
 
 10. Install ncview-2.1.7
@@ -72,16 +71,16 @@ steps 12-15, these differences can be ignored. It is also assumed that the bash 
 11. Source the setenv_develop.sh script
     . ~/setenv_develop.sh
 
-12. Install ESMF 7.1.0r
+12. Install ESMF 8.0.0_bs21
 
-    # Download esmf_7_1_0r_src.tar.gz from https://www.earthsystemcog.org/projects/esmf/download/ to /usr/local/src
+    # Download esmf-8.0.0_bs21.tar.gz from https://www.earthsystemcog.org/projects/esmf/download/ to /usr/local/src
 
     cd /usr/local/src
-    tar -xvf esmf_7_1_0r_src.tar.gz
-    cd esmf
+    tar -xvf esmf-8.0.0_bs21.tar.gz
+    cd esmf-8.0.0_bs21
     export NETCDF=/usr/local
     export ESMF_DIR=`pwd`
-    export ESMF_INSTALL_PREFIX=/usr/local/esmf-7.1.0r
+    export ESMF_INSTALL_PREFIX=/usr/local/esmf-8.0.0_bs21
     export ESMF_COMPILER=gfortranclang
     export ESMF_CXXCOMPILER=mpicxx
     export ESMF_CXXLINKER=mpicxx
@@ -97,7 +96,7 @@ steps 12-15, these differences can be ignored. It is also assumed that the bash 
     export ESMF_NETCDF=split
     export LDFLAGS="-Wl,-no_compact_unwind"
     make info 2>&1 | tee log.info
-    # Ignore warnings of type "ld: warning: could not create compact unwind for ... stack subq instruction is too different from dwarf stack size"
+    # Ignore warnings of type "ld: warning: could not create compact unwind for ... "
     make 2>&1 | tee log.make
     make check 2>&1 | tee log.check
     # Found 40 multi-processor system tests, 40 passed and 0 failed.
@@ -142,13 +141,13 @@ steps 12-15, these differences can be ignored. It is also assumed that the bash 
     export -n NETCDF
     export -n LDFLAGS
 
-13. Build external NCEP libraries (use date tag 20180401 to allow for different versions in the future)
+13. Build external NCEP libraries (use date tag 20181105 to allow for different versions in the future)
 
     # Obtain source code from gitub and build in /usr/local/src
     cd /usr/local/src
     git clone https://github.com/climbfuji/NCEPlibs.git
     cd NCEPlibs
-    ./make_ncep_libs.sh -s macosx -c gnu -d /usr/local/NCEPlibs-20180401 -o 1 2>&1 | tee log.make
+    ./make_ncep_libs.sh -s macosx -c gnu -d /usr/local/NCEPlibs-20181105 -o 1 2>&1 | tee log.make
 
 14. Download and install Intel Math Kernel Library MKL to /usr/local/mkl using the installer script
 
@@ -157,21 +156,22 @@ steps 12-15, these differences can be ignored. It is also assumed that the bash 
     # Build model
     cd tests
     ./compile.sh $PWD/../FV3 macosx.gnu 'CCPP=N'          2>&1 | tee log.compile # without CCPP
-    ./compile.sh $PWD/../FV3 macosx.gnu 'CCPP=Y'          2>&1 | tee log.compile # with CCPP, hybrid mode
+    ./compile.sh $PWD/../FV3 macosx.gnu 'CCPP=Y'          2>&1 | tee log.compile # with CCPP, dynamic mode
 
 16. Set up the run directory using the template on Theia or Cheyenne at some location on your machine:
 
     a) copy the contents of the run directory templates to where you want to run the model, change to this directory
        (these folders are read-only, i.e. users might have to add the write-flag after copying/rsyncing them)
 
-        theia:    /scratch4/BMC/gmtb/Dom.Heinzeller/macosx_rundirs/C96_trunk_20180427/gnu/
-        cheyenne: /glade/p/work/heinzell/fv3/macosx_rundirs/C96_trunk_20180427/gnu/
+        theia:    /scratch4/BMC/gmtb/Dom.Heinzeller/macosx_rundirs/C96_trunk_20180831/gnu/
+        cheyenne: /glade/p/ral/jntp/GMTB/NEMSfv3gfs/macosx_rundirs/C96_trunk_20180831/gnu/
 
-    b) edit run_macosx.sh in the run directory and change the variable FV3_BUILD_DIR to the top-level directory of your FV3-build
+    b) edit run_macosx_no_ccpp.sh/run_macosx_ccpp.sh and change the variable FV3_BUILD_DIR to the top-level directory of your FV3-build
 
-    c) source the setenv_develop.sh script and execute the model run using the wrapper run_macosx.sh
-        ./run_macosx.sh 2>&1 | tee run_macosx.log
+    c) source ~/setenv_develop.sh script and execute the model run using the wrapper run_macosx_no_ccpp.sh (same for run_macosx_ccpp.sh)
+        . ~/setenv_develop.sh
+        ./run_macosx_no_ccpp.sh 2>&1 | tee run_macosx.log
         # or, with X OpenMP threads
-        OMP_NUM_THREADS=X ./run_macosx.sh 2>&1 | tee run_macosx.log
+        OMP_NUM_THREADS=X ./run_macosx_no_ccpp.sh 2>&1 | tee run_macosx.log
 
     d) go and get yourself a cup of coffee ...

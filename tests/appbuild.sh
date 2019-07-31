@@ -22,7 +22,16 @@ cd ${PATHTR}/..
 rm -f $PATHTR/../NEMS/exe/NEMS.x
 rm -f $PATHTR/../NEMS/src/conf/modules.nems
 
+set +e
 ./NEMS/NEMSAppBuilder app="$APP"
+RC=$?
+set -e
+cd ${PATHTR}/..
+
+if [[ $RC -ne 0 ]]; then
+  echo "ERROR in './NEMS/NEMSAppBuilder app=$APP'"
+  exit $RC
+fi
 
 cp $PATHTR/../NEMS/exe/NEMS.x ${PATHTR}/../tests/$BUILD_NAME.exe
 cp $PATHTR/../NEMS/src/conf/modules.nems ${PATHTR}/../tests/modules.$BUILD_NAME

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<suite name="FV3_GFS_2017_stretched" lib="ccppphys" ver="3">
+  <!-- <init></init> -->
+  <group name="fast_physics">
+    <subcycle loop="1">
+      <scheme>fv_sat_adj</scheme>
+    </subcycle>
+  </group>
+  <group name="time_vary">
+    <subcycle loop="1">
+      <scheme>GFS_time_vary_pre</scheme>
+      <scheme>GFS_rrtmg_setup</scheme>
+      <scheme>GFS_rad_time_vary</scheme>
+      <scheme>GFS_phys_time_vary</scheme>
+      <scheme>stochastic_physics</scheme>
+      <scheme>stochastic_physics_sfc</scheme>
+    </subcycle>
+  </group>
+  <group name="radiation">
+    <subcycle loop="1">
+      <scheme>GFS_suite_interstitial_rad_reset</scheme>
+      <scheme>GFS_rrtmg_pre</scheme>
+      <scheme>rrtmg_sw_pre</scheme>
+      <scheme>rrtmg_sw</scheme>
+      <scheme>rrtmg_sw_post</scheme>
+      <scheme>rrtmg_lw_pre</scheme>
+      <scheme>rrtmg_lw</scheme>
+      <scheme>rrtmg_lw_post</scheme>
+      <scheme>GFS_rrtmg_post</scheme>
+    </subcycle>
+  </group>
+  <group name="physics">
+    <subcycle loop="1">
+      <scheme>GFS_suite_interstitial_phys_reset</scheme>
+      <scheme>GFS_suite_stateout_reset</scheme>
+      <scheme>get_prs_fv3</scheme>
+      <scheme>GFS_suite_interstitial_1</scheme>
+      <scheme>dcyc2t3</scheme>
+      <scheme>GFS_surface_generic_pre</scheme>
+      <scheme>GFS_surface_composites_pre</scheme>
+      <scheme>GFS_suite_interstitial_2</scheme>
+    </subcycle>
+    <!-- Surface iteration loop -->
+    <subcycle loop="2">
+      <scheme>sfc_diff</scheme>
+      <scheme>GFS_surface_loop_control_part1</scheme>
+      <scheme>sfc_nst_pre</scheme>
+      <scheme>sfc_nst</scheme>
+      <scheme>sfc_nst_post</scheme>
+      <scheme>lsm_noah</scheme>
+      <scheme>sfc_sice</scheme>
+      <scheme>GFS_surface_loop_control_part2</scheme>
+    </subcycle>
+    <!-- End of surface iteration loop -->
+    <subcycle loop="1">
+      <scheme>GFS_surface_composites_post</scheme>
+      <scheme>dcyc2t3_post</scheme>
+      <scheme>sfc_diag</scheme>
+      <scheme>sfc_diag_post</scheme>
+      <scheme>GFS_surface_generic_post</scheme>
+      <scheme>GFS_PBL_generic_pre</scheme>
+      <scheme>hedmf</scheme>
+      <scheme>GFS_PBL_generic_post</scheme>
+      <scheme>gwdps_pre</scheme>
+      <scheme>gwdps</scheme>
+      <scheme>gwdps_post</scheme>
+      <scheme>GFS_suite_stateout_update</scheme>
+      <scheme>ozphys</scheme>
+      <scheme>GFS_DCNV_generic_pre</scheme>
+      <scheme>get_phi_fv3</scheme>
+      <scheme>GFS_suite_interstitial_3</scheme>
+      <scheme>samfdeepcnv</scheme>
+      <scheme>GFS_DCNV_generic_post</scheme>
+      <scheme>gwdc_pre</scheme>
+      <scheme>gwdc</scheme>
+      <scheme>gwdc_post</scheme>
+      <scheme>GFS_SCNV_generic_pre</scheme>
+      <scheme>samfshalcnv</scheme>
+      <scheme>samfshalcnv_post</scheme>
+      <scheme>GFS_SCNV_generic_post</scheme>
+      <scheme>GFS_suite_interstitial_4</scheme>
+      <scheme>cnvc90</scheme>
+      <scheme>GFS_MP_generic_pre</scheme>
+      <scheme>gfdl_cloud_microphys</scheme>
+      <scheme>GFS_MP_generic_post</scheme>
+      <scheme>maximum_hourly_diagnostics</scheme>
+    </subcycle>
+  </group>
+  <group name="stochastics">
+    <subcycle loop="1">
+      <scheme>GFS_stochastics</scheme>
+    </subcycle>
+  </group>
+  <!-- <finalize></finalize> -->
+</suite>

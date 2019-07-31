@@ -10,7 +10,7 @@ DEBUG=0
 OPENMP=1
 
 # List of valid/tested machines
-valid_machines=(theia cheyenne macosx wcoss_cray wcoss_phase1 wcoss_phase2 jet gaea)
+valid_machines=(theia cheyenne macosx linux wcoss_cray wcoss_phase1 wcoss_phase2 jet gaea)
 valid_compilers=(intel pgi gnu)
 
 function usage   {
@@ -33,7 +33,7 @@ if [[ $1 = "help" ]] ; then usage; fi
 if [[ $# -lt 2 ]];  then usage; fi
 machine=${1}
 compiler=${2}
-if [[ ${machine} == theia || ${machine} == cheyenne || ${machine} == macosx ]]; then
+if [[ ${machine} == theia || ${machine} == cheyenne || ${machine} == macosx || ${machine} == linux ]]; then
   arch=${machine}.${compiler}
 elif [[ ${machine} == wcoss_cray || ${machine} == wcoss_phase1 || ${machine} == wcoss_phase2 || ${machine} == jet || ${machine} == gaea ]]; then
   if [[ ${compiler} == intel ]]; then
