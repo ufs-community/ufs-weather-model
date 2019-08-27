@@ -62,6 +62,10 @@ if [[ "${MAKE_OPT}" == *"CCPP=Y"* ]]; then
   COMPONENTS="CCPP,$COMPONENTS"
 fi
 
+if [[ "${MAKE_OPT}" == *"WW3=Y"* ]]; then
+  COMPONENTS="WW3,$COMPONENTS"
+fi
+
 # Make variables:
 #   COMPONENTS = list of components to build
 #   BUILD_ENV = theia.intel, wcoss_dell_p3, etc.
