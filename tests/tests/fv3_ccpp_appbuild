@@ -4,15 +4,8 @@
 #
 ###############################################################################
 
-# Until there is a way to pass the REPRO=Y flag to NEMSAppBuilder, need separate
-# control directory for Cheyenne/Intel (as fv3_control, but with REPRO=N)
-if [[ $MACHINE_ID = cheyenne.intel ]]; then
-export TEST_DESCR="Compare FV3 CCPP appbuild results (fv3_control with REPRO=N) with previous trunk version using NEMSAppBuilder"
-export CNTL_DIR=fv3_appbuild
-else
 export TEST_DESCR="Compare FV3 CCPP control results with previous trunk version using NEMSAppBuilder"
 export CNTL_DIR=fv3_control
-fi
 
 export LIST_FILES="atmos_4xdaily.tile1.nc \
                    atmos_4xdaily.tile2.nc \

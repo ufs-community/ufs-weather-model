@@ -24,9 +24,9 @@ ifeq ($(BUILD_TARGET),gaea.intel)
   $(error NEMSfv3gfs currently not supported on $(BUILD_TARGET))
 else ifeq ($(BUILD_TARGET),jet.intel)
   $(error NEMSfv3gfs currently not supported on $(BUILD_TARGET))
-else ifeq ($(BUILD_TARGET),theia.gnu)
-  $(error NEMSfv3gfs currently not supported on $(BUILD_TARGET))
 else ifeq ($(BUILD_TARGET),theia.pgi)
+  $(error NEMSfv3gfs currently not supported on $(BUILD_TARGET))
+else ifeq ($(BUILD_TARGET),cheyenne.pgi)
   $(error NEMSfv3gfs currently not supported on $(BUILD_TARGET))
 endif
 

@@ -26,24 +26,25 @@ module load NetCDF
 # only dynamic.  We'll use the nwprod version instead.
 module load z
 
-##
-## load nwprod libraries
-##
-module load bacio/v2.0.1
-module load ip/v2.0.0
-module load sp/v2.0.2
-module load w3nco/v2.0.6
-module load w3emc/v2.2.0
-module load nemsio/v2.2.3
-
-# WW3 grib 
-module load g2/v2.5.0
-module load jasper/v1.900.1
-module load png/v1.2.44
-
 # Execution requirements
 module load lsf
 
+# WW3 grib 
+module load jasper/v1.900.1
+module load png/v1.2.44
+
+module use -a /nceplibs/NCEPLIBS/modulefiles
+module load g2/3.1.1
+##
+### load nceplibs libraries
+###
+module load bacio/2.0.3
+module load ip/3.0.2
+module load sp/2.0.3
+module load w3nco/2.0.7
+module load w3emc/2.3.1
+module load nemsio/2.2.4
+
 #ESMF lib
 module use /nems/noscrub/emc.nemspara/soft/modulefiles
-module load esmf/8.0.0bs47
+module load esmf/8.0.0bs48

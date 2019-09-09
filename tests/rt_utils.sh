@@ -25,7 +25,11 @@ submit_and_wait() {
     msub $job_card
   elif [[ $SCHEDULER = 'pbs' ]]; then
     qsubout=$( qsub $job_card )
-    re='^([0-9]+\.[a-zA-Z0-9]+)$'
+    if [[ ${MACHINE_ID} = cheyenne.* ]]; then
+      re='^([0-9]+\.[a-zA-Z0-9\.]+)$'
+    else
+      re='^([0-9]+\.[a-zA-Z0-9]+)$'
+    fi
     qsub_id=0
     [[ "${qsubout}" =~ $re ]] && qsub_id=${BASH_REMATCH[1]}
     if [[ ${MACHINE_ID} = cheyenne.* ]]; then

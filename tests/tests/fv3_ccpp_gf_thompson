@@ -75,11 +75,14 @@ export_fv3
 export NODES=$(expr $TASKS / $TPN + 1)
 
 export DT_ATMOS="1200"
+export IMP_PHYSICS=8
+export DNATS=0
+export DO_SAT_ADJ=.F.
 export LRADAR=.T.
 export LTAEROSOL=.T.
 
-export FV3_RUN=ccpp_gf_thompson_run.IN
-export CCPP_SUITE=FV3_GFS_2017_gf_thompson
+export FV3_RUN=ccpp_gsd_run.IN
+export CCPP_SUITE=FV3_GFS_v15_gf_thompson
 export CCPP_LIB_DIR=ccpp/lib
 export INPUT_NML=ccpp_gsd.nml.IN
 
@@ -89,7 +92,3 @@ export IMFSHALCNV=3
 export IMFDEEPCNV=3
 
 RUN_SCRIPT=rt_fv3.sh
-
-if [[ $MACHINE_ID = cheyenne.intel ]]; then
-  export WLCLK=30
-fi
