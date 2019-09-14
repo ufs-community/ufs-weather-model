@@ -7,14 +7,12 @@ proc ModulesHelp {} {
      puts stderr "The prerequisites for compiling or running FV3 on Jet. "
 }
 
-module load intel/15.0.3.187
-module load impi
-module load szip
-module load hdf5
-module unload netcdf/4.2.1.1
-module unload netcdf4/4.2.1.1
-module load netcdf4/4.2.1.1
+module load intel/18.0.5.274
+module load impi/2018.4.274
+module load szip/2.1
+module load hdf5/1.8.9
 module load netcdf/4.2.1.1
+module load contrib anaconda
 
 set libdir /mnt/lfs3/projects/hfv3gfs/gwv/ljtjet/lib
 
@@ -31,5 +29,8 @@ module load nemsio-intel-sandybridge/2.2.2
 #module use /lfs3/projects/hfv3gfs/emc.nemspara/soft/modulefiles
 #module load esmf/8.0.0bs21
 #
-module use /mnt/lfs3/projects/hfv3gfs/gwv/ltmp2/lib//modulefiles
-module load esmflocal/8.1.21b
+#module use /mnt/lfs3/projects/hfv3gfs/gwv/ltmp2/lib//modulefiles
+#module load esmflocal/8.1.21b
+#
+module use /lfs3/projects/hfv3gfs/emc.nemspara/soft/modulefiles/esmf
+module load esmf/8.0.0bs48
