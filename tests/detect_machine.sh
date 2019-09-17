@@ -79,6 +79,19 @@ case $(hostname -f) in
   tfe09)                   MACHINE_ID=theia ;; ### theia09
   tfe10)                   MACHINE_ID=theia ;; ### theia10
 
+  hfe01)                   MACHINE_ID=hera ;; ### hera01
+  hfe02)                   MACHINE_ID=hera ;; ### hera02
+  hfe03)                   MACHINE_ID=hera ;; ### hera03
+  hfe04)                   MACHINE_ID=hera ;; ### hera04
+  hfe05)                   MACHINE_ID=hera ;; ### hera05
+  hfe06)                   MACHINE_ID=hera ;; ### hera06
+  hfe07)                   MACHINE_ID=hera ;; ### hera07
+  hfe08)                   MACHINE_ID=hera ;; ### hera08
+  hfe09)                   MACHINE_ID=hera ;; ### hera09
+  hfe10)                   MACHINE_ID=hera ;; ### hera10
+  hfe11)                   MACHINE_ID=hera ;; ### hera11
+  hfe12)                   MACHINE_ID=hera ;; ### hera12
+
   fe1)                     MACHINE_ID=jet ;; ### jet01
   fe2)                     MACHINE_ID=jet ;; ### jet02
   fe3)                     MACHINE_ID=jet ;; ### jet03
@@ -105,14 +118,13 @@ case $(hostname -f) in
 esac
 
 # For Theia and Cheyenne, append compiler
-if [ $MACHINE_ID = theia ] || [ $MACHINE_ID = cheyenne ] || [ $MACHINE_ID = jet ] || [ $MACHINE_ID = gaea ] || [ $MACHINE_ID = stampede ] ; then
+if [ $MACHINE_ID = theia ] || [ $MACHINE_ID = hera ] || [ $MACHINE_ID = cheyenne ] || [ $MACHINE_ID = jet ] || [ $MACHINE_ID = gaea ] || [ $MACHINE_ID = stampede ] ; then
     MACHINE_ID=${MACHINE_ID}.${COMPILER}
 fi
 
 echo "Machine: " $MACHINE_ID "    Account: " $ACCNR
 
 # --- for Theia, find available account ID
-#if [[ $1"" != "machineonly" ]] ; then
   if [[ ${MACHINE_ID} = theia.* ]]; then
 
     AP=account_params          # Account info

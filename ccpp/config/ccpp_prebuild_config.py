@@ -13,10 +13,50 @@ HOST_MODEL_IDENTIFIER = "FV3"
 # relative to basedir = top-level directory of host model
 VARIABLE_DEFINITION_FILES = [
     'ccpp/physics/physics/machine.F',
+    'ccpp/physics/physics/radsw_param.f',
+    'ccpp/physics/physics/radlw_param.f',
     'FV3/gfsphysics/CCPP_layer/CCPP_typedefs.F90',
     'FV3/gfsphysics/GFS_layer/GFS_typedefs.F90',
     'FV3/gfsphysics/CCPP_layer/CCPP_data.F90',
     ]
+
+TYPEDEFS_NEW_METADATA = {
+    'ccpp_types' : {
+        'ccpp_types' : '',
+        'ccpp_t' : 'cdata',
+        },
+    'machine' : {
+        'machine' : '',
+        },
+    'module_radlw_parameters' : {
+        'module_radsw_parameters' : '',
+        },
+    'module_radlw_parameters' : {
+        'module_radlw_parameters' : '',
+        },
+    'CCPP_typedefs' : {
+        'CCPP_interstitial_type' : 'CCPP_interstitial',
+        'CCPP_typedefs' : '',
+        },
+    'CCPP_data' : {
+        'CCPP_data' : '',
+        },
+    'GFS_typedefs' : {
+        'GFS_control_type'      : 'GFS_Control',
+        'GFS_interstitial_type' : 'GFS_Interstitial(cdata%thrd_no)',
+        'GFS_data_type'         : 'GFS_Data(cdata%blk_no)',
+        'GFS_diag_type'         : 'GFS_Data(cdata%blk_no)%Intdiag',
+        'GFS_tbd_type'          : 'GFS_Data(cdata%blk_no)%Tbd',
+        'GFS_sfcprop_type'      : 'GFS_Data(cdata%blk_no)%Sfcprop',
+        'GFS_coupling_type'     : 'GFS_Data(cdata%blk_no)%Coupling',
+        'GFS_statein_type'      : 'GFS_Data(cdata%blk_no)%Statein',
+        'GFS_cldprop_type'      : 'GFS_Data(cdata%blk_no)%Cldprop',
+        'GFS_radtend_type'      : 'GFS_Data(cdata%blk_no)%Radtend',
+        'GFS_grid_type'         : 'GFS_Data(cdata%blk_no)%Grid',
+        'GFS_stateout_type'     : 'GFS_Data(cdata%blk_no)%Stateout',
+        'GFS_typedefs' : '',
+        },
+    }
 
 # Add all physics scheme dependencies relative to basedir - note that the CCPP
 # rules stipulate that dependencies are not shared between the schemes!
@@ -55,6 +95,16 @@ SCHEME_FILES_DEPENDENCIES = [
     'ccpp/physics/physics/module_mp_thompson_make_number_concentrations.F90',
     'ccpp/physics/physics/module_bl_mynn.F90',
     'ccpp/physics/physics/module_sf_mynn.F90',
+    'ccpp/physics/physics/cires_ugwp_module.F90',
+    'ccpp/physics/physics/ugwp_driver_v0.f',
+    'ccpp/physics/physics/cires_ugwp_triggers.F90',
+    'ccpp/physics/physics/cires_ugwp_initialize.F90',
+    'ccpp/physics/physics/cires_ugwp_solvers.F90',
+    'ccpp/physics/physics/cires_ugwp_utils.F90',
+    'ccpp/physics/physics/cires_orowam2017.f',
+    'ccpp/physics/physics/cires_vert_lsatdis.F90',
+    'ccpp/physics/physics/cires_vert_orodis.F90',
+    'ccpp/physics/physics/cires_vert_wmsdis.F90',
     'ccpp/physics/physics/namelist_soilveg.f',
     'ccpp/physics/physics/mfpblt.f',
     'ccpp/physics/physics/mfscu.f',
@@ -73,6 +123,7 @@ SCHEME_FILES_DEPENDENCIES = [
     'ccpp/physics/physics/radlw_param.f',
     'ccpp/physics/physics/radsw_datatb.f',
     'ccpp/physics/physics/radsw_param.f',
+    'ccpp/physics/physics/samfaerosols.F',
     'ccpp/physics/physics/sfcsub.F',
     'ccpp/physics/physics/sflx.f',
     'ccpp/physics/physics/set_soilveg.f',
@@ -85,33 +136,6 @@ SCHEME_FILES_DEPENDENCIES = [
     'ccpp/physics/physics/namelist_soilveg_ruc.F90',
     'ccpp/physics/physics/set_soilveg_ruc.F90',
     'ccpp/physics/physics/module_soil_pre.F90',
-    # stochastic physics
-    'ccpp/physics/stochastic_physics/spectral_layout.f',
-    'ccpp/physics/stochastic_physics/stochy_gg_def.f',
-    'ccpp/physics/stochastic_physics/stochy_resol_def.f',
-    'ccpp/physics/stochastic_physics/stochy_layout_lag.f',
-    'ccpp/physics/stochastic_physics/four_to_grid_stochy.F',
-    'ccpp/physics/stochastic_physics/glats_stochy.f',
-    'ccpp/physics/stochastic_physics/sumfln_stochy.f',
-    'ccpp/physics/stochastic_physics/gozrineo_stochy.f',
-    'ccpp/physics/stochastic_physics/get_ls_node_stochy.f',
-    'ccpp/physics/stochastic_physics/get_lats_node_a_stochy.f',
-    'ccpp/physics/stochastic_physics/setlats_a_stochy.f',
-    'ccpp/physics/stochastic_physics/setlats_lag_stochy.f',
-    'ccpp/physics/stochastic_physics/epslon_stochy.f',
-    'ccpp/physics/stochastic_physics/getcon_lag_stochy.f',
-    'ccpp/physics/stochastic_physics/pln2eo_stochy.f',
-    'ccpp/physics/stochastic_physics/dozeuv_stochy.f',
-    'ccpp/physics/stochastic_physics/dezouv_stochy.f',
-    'ccpp/physics/stochastic_physics/getcon_spectral.F90',
-    'ccpp/physics/stochastic_physics/stochy_namelist_def.F90',
-    'ccpp/physics/stochastic_physics/compns_stochy.F90',
-    'ccpp/physics/stochastic_physics/stochy_internal_state_mod.F90',
-    'ccpp/physics/stochastic_physics/stochy_patterngenerator.F90',
-    'ccpp/physics/stochastic_physics/stochy_data_mod.F90',
-    'ccpp/physics/stochastic_physics/get_stochy_pattern.F90',
-    'ccpp/physics/stochastic_physics/initialize_spectral_mod.F90',
-    'ccpp/physics/stochastic_physics/stochy_ccpp.F90',
     # derived data type definitions
     'FV3/gfsphysics/GFS_layer/GFS_typedefs.F90',
     'FV3/gfsphysics/CCPP_layer/CCPP_typedefs.F90',
@@ -123,6 +147,7 @@ SCHEME_FILES = {
     # current restrictions are that each scheme can only belong to one physics set, and all schemes within one group in the
     # suite definition file have to belong to the same physics set
     'ccpp/physics/physics/GFS_DCNV_generic.F90'              : [ 'slow_physics' ],
+    'ccpp/physics/physics/GFS_GWD_generic.F90'               : [ 'slow_physics' ],
     'ccpp/physics/physics/GFS_MP_generic.F90'                : [ 'slow_physics' ],
     'ccpp/physics/physics/GFS_PBL_generic.F90'               : [ 'slow_physics' ],
     'ccpp/physics/physics/GFS_SCNV_generic.F90'              : [ 'slow_physics' ],
@@ -138,6 +163,8 @@ SCHEME_FILES = {
     'ccpp/physics/physics/GFS_surface_composites.F90'        : [ 'slow_physics' ],
     'ccpp/physics/physics/GFS_surface_loop_control.F90'      : [ 'slow_physics' ],
     'ccpp/physics/physics/GFS_time_vary_pre.fv3.F90'         : [ 'slow_physics' ],
+    'ccpp/physics/physics/cires_ugwp.F90'                    : [ 'slow_physics' ],
+    'ccpp/physics/physics/cires_ugwp_post.F90'               : [ 'slow_physics' ],
     'ccpp/physics/physics/cnvc90.f'                          : [ 'slow_physics' ],
     'ccpp/physics/physics/cs_conv.F90'                       : [ 'slow_physics' ],
     'ccpp/physics/physics/cs_conv_aw_adj.F90'                : [ 'slow_physics' ],
@@ -186,13 +213,13 @@ SCHEME_FILES = {
     'ccpp/physics/physics/sfc_diag.f'                        : [ 'slow_physics' ],
     'ccpp/physics/physics/sfc_diag_post.F90'                 : [ 'slow_physics' ],
     'ccpp/physics/physics/sfc_drv_ruc.F90'                   : [ 'slow_physics' ],
+    'ccpp/physics/physics/lsm_ruc_sfc_sice_interstitial.F90' : [ 'slow_physics' ],
+    'ccpp/physics/physics/sfc_cice.f'                        : [ 'slow_physics' ],
     'ccpp/physics/physics/sfc_diff.f'                        : [ 'slow_physics' ],
     'ccpp/physics/physics/sfc_drv.f'                         : [ 'slow_physics' ],
     'ccpp/physics/physics/sfc_nst.f'                         : [ 'slow_physics' ],
     'ccpp/physics/physics/sfc_ocean.F'                       : [ 'slow_physics' ],
     'ccpp/physics/physics/sfc_sice.f'                        : [ 'slow_physics' ],
-    # stochastic physics
-    'ccpp/physics/stochastic_physics/stochastic_physics.F90' : [ 'slow_physics' ],
     # for testing the <init> and <finalize> sections
     'ccpp/physics/physics/GFS_suite_init_finalize_test.F90'  : [ 'slow_physics' ],
     }

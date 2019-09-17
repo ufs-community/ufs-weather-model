@@ -35,11 +35,11 @@ endif
 ############
 # commands #
 ############
-SFC             =       gfortran
-SCC             =       /usr/local/opt/llvm/bin/clang
-CCOMP           =       /usr/local/opt/llvm/bin/clang
-DM_FC           =       mpif90
-DM_CC           =       mpicc -cc=/usr/local/opt/llvm/bin/clang -DMPI2_SUPPORT
+SFC             =       $(F90)
+SCC             =       $(CC)
+CCOMP           =       $(CC)
+DM_FC           =       $(MPIF90)
+DM_CC           =       $(MPICC) -DMPI2_SUPPORT
 FC              =       $(DM_FC)
 CC              =       $(DM_CC) -DFSEEKO64_OK
 LD              =       $(FC)
@@ -142,7 +142,7 @@ FFLAGS_TEST = -O3
 CFLAGS_TEST = -O2
 
 LDFLAGS :=
-LDFLAGS_OPENMP := -fopenmp -L/usr/local/Cellar/llvm/lib -lomp
+LDFLAGS_OPENMP := -fopenmp $(LIBS_OPENMP)
 LDFLAGS_VERBOSE := -Wl,-V,--verbose,-cref,-M
 
 # start with blank LIBS

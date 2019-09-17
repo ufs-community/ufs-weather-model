@@ -9,16 +9,16 @@ echo "Setting environment variables for NEMSfv3gfs on Linux with gcc/gfortran"
 ##
 ## load programming environment: compiler, flags, paths
 ##
-export CC=/usr/local/bin/mpicc
-export CXX=/usr/local/bin/mpicxx
-export F77=/usr/local/bin/mpif77
-export F90=/usr/local/bin/mpif90
-export FC=/usr/local/bin/mpif90
+export CC=${CC:-mpicc}
+export CXX=${CXX:-mpicxx}
+export F77=${F77:-mpif77}
+export F90=${F90:-mpif90}
+export FC=${FC:-mpif90}
 
 ##
 ## use own NetCDF library
 ##
-export NETCDF=/usr/local
+export NETCDF=${NETCDF:-/usr/local}
 
 ##
 ## use SIONlib library if installed and environment variable is set
@@ -33,21 +33,13 @@ fi
 ##
 ## use pre-compiled EMSF library for above compiler / MPI combination
 ##
-ESMF_VERSION=esmf-7.1.0r
-export ESMF_DIR=/usr/local/${ESMF_VERSION}/
-export ESMF_INC=/usr/local/${ESMF_VERSION}/include
-export ESMF_BIN=/usr/local/${ESMF_VERSION}/bin/binO/Linux.gfortran.64.mpich3.default
-export ESMF_LIB=/usr/local/${ESMF_VERSION}/lib/libO/Linux.gfortran.64.mpich3.default
-export ESMF_MOD=/usr/local/${ESMF_VERSION}/mod/modO/Linux.gfortran.64.mpich3.default
-export ESMFMKFILE=/usr/local/${ESMF_VERSION}/lib/libO/Linux.gfortran.64.mpich3.default/esmf.mk
-export PATH="/usr/local/${ESMF_VERSION}/bin/binO/Linux.gfortran.64.mpich3.default${PATH:+:$PATH}"
-export LD_LIBRARY_PATH="/usr/local/${ESMF_VERSION}/lib/libO/Linux.gfortran.64.mpich3.default${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+ESMF_VERSION=8.0.0_bs40
+export ESMFMKFILE=${ESMFMKFILE:-/usr/local/${ESMF_VERSION}/lib/esmf.mk}
 
 ##
 ## NCEP libraries (need to download and build manually, see doc/README_{UBUNTU,CENTOS,...}.txt and https://github.com/NCAR/NCEPlibs)
 ##
-NCEPLIBS_DIR=/usr/local/NCEPlibs-gnu-20181105
-export NCEPLIBS_DIR=${NCEPLIBS_DIR}
+export NCEPLIBS_DIR=${NCEPLIBS_DIR:-/usr/local/NCEPlibs-20190820}
 export NEMSIO_INC=${NCEPLIBS_DIR}/include
 export BACIO_LIB4=${NCEPLIBS_DIR}/lib/libbacio_4.a
 export SP_LIBd=${NCEPLIBS_DIR}/lib/libsp_v2.0.2_d.a

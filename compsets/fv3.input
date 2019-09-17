@@ -54,7 +54,7 @@ embed bash compile.sh(MAKE_OPTS=' ',BUILD_NR='',fv3,modules,md5) [[[
                 ./compile.sh "@[plat%HOMEnems]/FV3" \
                 $( echo @[plat%MACHINE_ID] | sed 's,\.,_,g' ) \
                 @[MAKE_OPTS] @[BUILD_NR]
-        elif [[ @[plat%PLATFORM_NAME] == theia* || @[plat%PLATFORM_NAME] == cheyenne* || @[plat%PLATFORM_NAME] == gaea* || @[plat%PLATFORM_NAME] == jet* ]] ; then
+        elif [[ @[plat%PLATFORM_NAME] == hera* || @[plat%PLATFORM_NAME] == theia* || @[plat%PLATFORM_NAME] == cheyenne* || @[plat%PLATFORM_NAME] == gaea* || @[plat%PLATFORM_NAME] == jet* ]] ; then
             # Don't substitute the . with a _ on Theia/Cheyenne
             echo "DON'T SUBSTITUTE _ for . on @[plat%PLATFORM_NAME]"
             ./compile.sh "@[plat%HOMEnems]/FV3" \
@@ -2100,6 +2100,10 @@ test fv3_stochy: fv3.exe {
     TEST_DESCR="Compare FV3 stochy results with previous trunk version"
     CNTL_NAME='fv3_stochy'
 
+    DO_SPPT='.T.'
+    DO_SHUM='.T.'
+    DO_SKEB='.T.'
+    DO_SFCPERTS='.F.'
     SKEB='0.3'
     SHUM='0.003'
     SPPT='0.2'
@@ -3303,6 +3307,7 @@ test fv3_NAM_phys: fv3_NAM_phys.exe {
     RUNDIR="@[plat%TMPrt]/@[TEST_NAME]"       # Test work area
     CNTL="@[plat%BASELINE]/@[CNTL_NAME]"      # Control baseline area
     FV3_input_data="@[plat%INPUTS]/FV3_input_data"
+    FHMAX='12'
 
     # The build variable is the fv3.exe or fv3_appbuild.fv3, which
     # provides the path to the build target, md5 sum, and modulefile.
@@ -3348,24 +3353,24 @@ test fv3_NAM_phys: fv3_NAM_phys.exe {
         'phyf000.tile4.nc'      .bitcmp. "@[CNTL]"
         'phyf000.tile5.nc'      .bitcmp. "@[CNTL]"
         'phyf000.tile6.nc'      .bitcmp. "@[CNTL]"
-        'phyf024.tile1.nc'      .bitcmp. "@[CNTL]"
-        'phyf024.tile2.nc'      .bitcmp. "@[CNTL]"
-        'phyf024.tile3.nc'      .bitcmp. "@[CNTL]"
-        'phyf024.tile4.nc'      .bitcmp. "@[CNTL]"
-        'phyf024.tile5.nc'      .bitcmp. "@[CNTL]"
-        'phyf024.tile6.nc'      .bitcmp. "@[CNTL]"
+        'phyf012.tile1.nc'      .bitcmp. "@[CNTL]"
+        'phyf012.tile2.nc'      .bitcmp. "@[CNTL]"
+        'phyf012.tile3.nc'      .bitcmp. "@[CNTL]"
+        'phyf012.tile4.nc'      .bitcmp. "@[CNTL]"
+        'phyf012.tile5.nc'      .bitcmp. "@[CNTL]"
+        'phyf012.tile6.nc'      .bitcmp. "@[CNTL]"
         'dynf000.tile1.nc'      .bitcmp. "@[CNTL]"
         'dynf000.tile2.nc'      .bitcmp. "@[CNTL]"
         'dynf000.tile3.nc'      .bitcmp. "@[CNTL]"
         'dynf000.tile4.nc'      .bitcmp. "@[CNTL]"
         'dynf000.tile5.nc'      .bitcmp. "@[CNTL]"
         'dynf000.tile6.nc'      .bitcmp. "@[CNTL]"
-        'dynf024.tile1.nc'      .bitcmp. "@[CNTL]"
-        'dynf024.tile2.nc'      .bitcmp. "@[CNTL]"
-        'dynf024.tile3.nc'      .bitcmp. "@[CNTL]"
-        'dynf024.tile4.nc'      .bitcmp. "@[CNTL]"
-        'dynf024.tile5.nc'      .bitcmp. "@[CNTL]"
-        'dynf024.tile6.nc'      .bitcmp. "@[CNTL]"
+        'dynf012.tile1.nc'      .bitcmp. "@[CNTL]"
+        'dynf012.tile2.nc'      .bitcmp. "@[CNTL]"
+        'dynf012.tile3.nc'      .bitcmp. "@[CNTL]"
+        'dynf012.tile4.nc'      .bitcmp. "@[CNTL]"
+        'dynf012.tile5.nc'      .bitcmp. "@[CNTL]"
+        'dynf012.tile6.nc'      .bitcmp. "@[CNTL]"
         'RESTART/coupler.res'                   .bitcmp. "@[CNTL]/RESTART/"
         'RESTART/fv_core.res.nc'                .bitcmp. "@[CNTL]/RESTART/"
         'RESTART/fv_core.res.tile1.nc'          .bitcmp. "@[CNTL]/RESTART/"
