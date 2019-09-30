@@ -47,7 +47,7 @@ embed bash compile.sh(MAKE_OPTS=' ',BUILD_NR='',fv3,modules,md5) [[[
         # Run the compile.sh.  Convert wcoss.cray to wcoss_cray to
         # make the FV3 happy.
         rm -f @[fv3] @[modules]
-        
+
         @[plat%execution_time_modules]
         if ( which aprun ) && [[ @[plat%PLATFORM_NAME] == wcoss.cray ]] ; then
             aprun -n 1 -j 1 -N 1 -d 24 \
@@ -178,13 +178,13 @@ build fv3_NAM_phys.exe {
 }
 
 build fv3_ww3.exe {
-    # This block builds the FV3 32 bit coupled with WW3 
+    # This block builds the FV3 32 bit coupled with WW3
     use plat
     target="@[plat%EXECrt]/fv3_ww3.exe"
     modules.nems="@[plat%INCrt]/modules_fv3_ww3"
     md5sum="@[target].md5"
 
-    # The NEMSAppBuilder is another embedded bash script in nemscommon.input 
+    # The NEMSAppBuilder is another embedded bash script in nemscommon.input
     build=NEMSAppBuilder(NEMS.x="@[target]",modules.nems="@[modules.nems]",
                          OPTS="app=coupledFV3_WW3",md5sum="@[md5sum]")
 }
@@ -1240,7 +1240,7 @@ test fv3_gfdlmprad_noahmp: fv3.exe {
 
     LGFDLMPRAD='.true.'
     EFFR_IN='.true.'
-    LSM='2'  
+    LSM='2'
     LANDICE='.false.'
 
 }
@@ -1569,7 +1569,7 @@ test fv3_wrtGauss_netcdf_esmf: fv3.exe {
     use fv3_control
 
     TEST_DESCR="Compare FV3 Gaussian grid netcdf output results with previous trunk version"
-    CNTL_NAME="fv3_wrtGauss_netcdf"
+    CNTL_NAME="fv3_wrtGauss_netcdf_esmf"
 
     OUTPUT_GRID="'gaussian_grid'"
     OUTPUT_FILE="'netcdf_esmf'"
@@ -1806,7 +1806,7 @@ test fv3_wrtGauss_nemsio_c768: fv3_ww3.exe {
     atm_petlist_bounds="0 1727"
     wav_model='ww3'
     wav_petlist_bounds="1728 1751"
-    coupling_interval_sec=1800.0  # 30min coupling, fv3 time step 
+    coupling_interval_sec=1800.0  # 30min coupling, fv3 time step
 
     # The build variable is the fv3_ww3.exe, which
     # provides the path to the build target, md5 sum, and modulefile.
