@@ -356,6 +356,7 @@ if [[ $CREATE_BASELINE == true ]]; then
   echo "                     to:   ${NEW_BASELINE}"
 
   rsync -a "${RTPWD}"/FV3_* "${NEW_BASELINE}"/
+  rsync -a "${RTPWD}"/WW3_* "${NEW_BASELINE}"/
 
   # FIXME: move these namelist files to parm directory
   rsync -a "${RTPWD}"/fv3_regional_control/input.nml "${NEW_BASELINE}"/fv3_regional_control/
