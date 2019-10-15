@@ -20,7 +20,7 @@ module load impi/5.1.2.150
 module load netcdf/4.3.0
 
 ##
-## NCEP libraries 
+## NCEP libraries
 ##
 module use -a /scratch3/NCEPDEV/nwprod/NCEPLIBS/modulefiles
 module load bacio/2.0.3
@@ -34,8 +34,8 @@ module load g2/3.1.1
 ##
 ## load modules for WW3 grib
 ##
-module load jasper/1.900.1 
-module load png/1.2.44 
+module load jasper/1.900.1
+module load png/1.2.44
 module load z/1.2.6
 
 ##
@@ -44,3 +44,13 @@ module load z/1.2.6
 ##
 module use -a /scratch4/NCEPDEV/nems/noscrub/emc.nemspara/soft/modulefiles
 module load esmf/8.0.0bs48
+
+##
+## load cmake
+##
+module use /contrib/modulefiles
+module load cmake/3.9.0
+setenv CMAKE_C_COMPILER mpiicc
+setenv CMAKE_CXX_COMPILER mpiicpc
+setenv CMAKE_Fortran_COMPILER mpiifort
+setenv CMAKE_Platform theia.intel

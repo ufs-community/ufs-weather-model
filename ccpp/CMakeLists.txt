@@ -29,10 +29,10 @@ endif()
 
 #------------------------------------------------------------------------------
 # Set include directories for make, also set CCPP_... for external projects
-INCLUDE_DIRECTORIES(${CMAKE_BINARY_DIR}/framework/src)
-INCLUDE_DIRECTORIES(${CMAKE_BINARY_DIR}/physics)
-SET(CCPP_INCLUDE_DIRS "${CMAKE_BINARY_DIR}/framework/src;${CMAKE_BINARY_DIR}/physics")
-SET(CCPP_LIB_DIRS "${CMAKE_BINARY_DIR}/framework/src;${CMAKE_BINARY_DIR}/physics")
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR}/framework/src)
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR}/physics)
+SET(CCPP_INCLUDE_DIRS "${CMAKE_CURRENT_BINARY_DIR}/framework/src;${CMAKE_CURRENT_BINARY_DIR}/physics")
+SET(CCPP_LIB_DIRS "${CMAKE_CURRENT_BINARY_DIR}/framework/src;${CMAKE_CURRENT_BINARY_DIR}/physics")
 
 #------------------------------------------------------------------------------
 # Generate Compiler flags for C/CXX/Fortran - set to match NEMSfv3gfs flags
@@ -287,11 +287,11 @@ endif(MULTI_GASES)
 #------------------------------------------------------------------------------
 # Build CCPP framework and physics
 
-SET(CCPP_FRAMEWORK_SRC ${CMAKE_SOURCE_DIR}/framework)
-ADD_SUBDIRECTORY(${CCPP_FRAMEWORK_SRC} ${CMAKE_BINARY_DIR}/framework)
+SET(CCPP_FRAMEWORK_SRC ${PROJECT_SOURCE_DIR}/framework)
+ADD_SUBDIRECTORY(${CCPP_FRAMEWORK_SRC} ${CMAKE_CURRENT_BINARY_DIR}/framework)
 
 # Add directory containing compiled CCPP Fortran modules to included directories for physics
-set (CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -I${CMAKE_BINARY_DIR}/framework/src")
+set (CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -I${CMAKE_CURRENT_BINARY_DIR}/framework/src")
 
-SET(CCPP_PHYSICS_SRC ${CMAKE_SOURCE_DIR}/physics)
-ADD_SUBDIRECTORY(${CCPP_PHYSICS_SRC} ${CMAKE_BINARY_DIR}/physics)
+SET(CCPP_PHYSICS_SRC ${PROJECT_SOURCE_DIR}/physics)
+ADD_SUBDIRECTORY(${CCPP_PHYSICS_SRC} ${CMAKE_CURRENT_BINARY_DIR}/physics)

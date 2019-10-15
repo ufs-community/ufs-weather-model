@@ -103,7 +103,6 @@ case $(hostname -f) in
   tfe1)                    MACHINE_ID=jet ;; ### jet09
   tfe2)                    MACHINE_ID=jet ;; ### jet10
 
-
   cheyenne1.ib0.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne1
   cheyenne2.ib0.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne2
   cheyenne3.ib0.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne3
