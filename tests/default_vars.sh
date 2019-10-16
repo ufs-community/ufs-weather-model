@@ -131,6 +131,7 @@ export LTAEROSOL=.T.
 export LDIAG_UGWP=.F.
 export DO_UGWP=.F.
 export DO_TOFD=.F.
+export GWD_OPT=1
 
 # PBL
 export SATMEDMF=.F.
@@ -138,10 +139,14 @@ export HYBEDMF=.T.
 export SHINHONG=.F.
 export DO_YSU=.F.
 export DO_MYNNEDMF=.F.
+export DO_MYJPBL=.F.
 
 # Shallow/deep convection
 export IMFSHALCNV=2
 export IMFDEEPCNV=2
+
+# SFC
+export DO_MYJSFC=.F.
 
 # LSM
 export LSM=1

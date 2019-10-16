@@ -139,7 +139,10 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
 #  export PATH=/gpfs/hps/nco/ops/ecf/ecfdir/ecflow.v4.1.0.intel/bin:$PATH
   export PYTHONPATH=
   ECFLOW_START=
-  DISKNM=/lustre/f2/pdata/ncep_shared/emc.nemspara/RT
+  # DH* 20190717 temporary
+  #DISKNM=/lustre/f2/pdata/ncep_shared/emc.nemspara/RT
+  DISKNM=/lustre/f2/pdata/esrl/gsd/gmtb/NEMSfv3gfs/RT
+  # *DH 20190717
   QUEUE=debug
 #  DO NOT SET AN ACCOUNT EVERYONE IS NOT A MEMBER OF
 #  USE AN ENVIRONMENT VARIABLE TO SET ACCOUNT
@@ -217,15 +220,15 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   ECFLOW_START=/scratch4/NCEPDEV/meso/save/Dusan.Jovic/ecflow/bin/ecflow_start.sh
   QUEUE=debug
 #  ACCNR=fv3-cpu
-  PARTITION=
-  DISKNM=/mnt/lfs3/projects/hfv3gfs/GMTB/RT
-  dprefix=/mnt/lfs3/projects/hfv3gfs/$USER
+  PARTITION=xjet
+  DISKNM=/lfs3/projects/hfv3gfs/GMTB/RT
+  dprefix=/lfs3/projects/hfv3gfs/$USER
   STMP=$dprefix/RT_BASELINE
   PTMP=$dprefix/RT_RUNDIRS
-  SCHEDULER=pbs
-  MPIEXEC=mpirun
-  MPIEXECOPTS=
-  cp fv3_conf/fv3_qsub.IN_jet fv3_conf/fv3_qsub.IN
+
+  # default scheduler on Jet
+  SCHEDULER=slurm
+  cp fv3_conf/fv3_slurm.IN_jet fv3_conf/fv3_slurm.IN
 
 elif [[ $MACHINE_ID = cheyenne.* ]]; then
 
@@ -285,8 +288,8 @@ ECFLOW=false
 KEEP_RUNDIR=false
 
 TESTS_FILE='rt.conf'
-# Switch to special regression test config on wcoss_cray:
-# don't run the IPD and CCPP tests in REPRO mode.
+## Switch to special regression test config on wcoss_cray:
+## don't run the IPD and CCPP tests in REPRO mode.
 if [[ $MACHINE_ID = wcoss_cray ]]; then
   TESTS_FILE='rt_wcoss_cray.conf'
 fi
@@ -338,9 +341,9 @@ while getopts ":cfsl:mkreh" opt; do
 done
 
 if [[ $MACHINE_ID = cheyenne.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/trunk-20190925/${COMPILER^^}}
+  RTPWD=${RTPWD:-$DISKNM/trunk-20191021/${COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/trunk-20190925}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/trunk-20191021}
 fi
 
 shift $((OPTIND-1))
@@ -524,12 +527,8 @@ while read -r line; do
       fi
 
       # Set RT_SUFFIX (regression test run directories and log files) and BL_SUFFIX
-      # (regression test baseline directories) for REPRO (IPD, CCPP) or PROD (CCPP) runs;
-      # avoid adding any suffices for TRANSITION tests (compare CCPP PROD against IPD PROD)
-      if [[ ${NEMS_VER^^} =~ "TRANSITION=Y" ]]; then
-        RT_SUFFIX=""
-        BL_SUFFIX=""
-      elif [[ ${NEMS_VER^^} =~ "REPRO=Y" ]]; then
+      # (regression test baseline directories) for REPRO (IPD, CCPP) or PROD (CCPP) runs
+      if [[ ${NEMS_VER^^} =~ "REPRO=Y" ]]; then
         RT_SUFFIX="_repro"
         BL_SUFFIX="_repro"
       elif [[ ${NEMS_VER^^} =~ "CCPP=Y" ]]; then
@@ -566,12 +565,8 @@ while read -r line; do
       fi
 
       # Set RT_SUFFIX (regression test run directories and log files) and BL_SUFFIX
-      # (regression test baseline directories) for REPRO (IPD, CCPP) or PROD (CCPP) runs;
-      # avoid adding any suffices for TRANSITION tests (compare CCPP PROD against IPD PROD)
-      if [[ ${NEMS_VER^^} =~ "TRANSITION=Y" ]]; then
-        RT_SUFFIX=""
-        BL_SUFFIX=""
-      elif [[ ${NEMS_VER^^} =~ "REPRO=Y" ]]; then
+      # (regression test baseline directories) for REPRO (IPD, CCPP) or PROD (CCPP) runs
+      if [[ ${NEMS_VER^^} =~ "REPRO=Y" ]]; then
         RT_SUFFIX="_repro"
         BL_SUFFIX="_repro"
       elif [[ ${NEMS_VER^^} =~ "CCPP=Y" ]]; then

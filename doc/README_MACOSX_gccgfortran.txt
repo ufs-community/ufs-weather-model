@@ -10,7 +10,7 @@ steps 6-11, these differences can be ignored. It is also assumed that the bash s
 1. Install homebrew (enter sudo password when requested)
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
-2. Create /usr/local/src, /usr/local/esmf-8.0.0_bs40 and /usr/local/NCEPlibs-20190811. Change permissions to your user name / user group
+2. Create /usr/local/src, /usr/local/esmf-8.0.0_bs50 and /usr/local/NCEPlibs-20190811. Change permissions to your user name / user group
 
     # change to root mode
     sudo su
@@ -18,10 +18,10 @@ steps 6-11, these differences can be ignored. It is also assumed that the bash s
     mkdir /usr/local/src
     chown YOUR_USERNAME /usr/local/src
     chgrp YOUR_GROUPNAME /usr/local/src
-    # /usr/local/esmf-8.0.0_bs40
-    mkdir /usr/local/esmf-8.0.0_bs40
-    chown YOUR_USERNAME /usr/local/esmf-8.0.0_bs40
-    chgrp YOUR_GROUPNAME /usr/local/esmf-8.0.0_bs40
+    # /usr/local/esmf-8.0.0_bs50
+    mkdir /usr/local/esmf-8.0.0_bs50
+    chown YOUR_USERNAME /usr/local/esmf-8.0.0_bs50
+    chgrp YOUR_GROUPNAME /usr/local/esmf-8.0.0_bs50
     # /usr/local/NCEPlibs-20190811
     mkdir /usr/local/NCEPlibs-20190811
     chown YOUR_USERNAME /usr/local/NCEPlibs-20190811
@@ -76,7 +76,7 @@ export MPIF90="mpif90 -fc=$F90"
 
 export HDF5=/usr/local
 export NETCDF=/usr/local
-export ESMFMKFILE=/usr/local/esmf-8.0.0_bs40/lib/esmf.mk
+export ESMFMKFILE=/usr/local/esmf-8.0.0_bs50/lib/esmf.mk
 export NCEPLIBS_DIR=/usr/local/NCEPlibs-20190811
 export MKL_DIR=/opt/intel/compilers_and_libraries_2019.4.233/mac/mkl
 
@@ -85,17 +85,17 @@ export MKL_DIR=/opt/intel/compilers_and_libraries_2019.4.233/mac/mkl
 5. Source this shell script for compiling the libraries and the model below
     . ~/setenv_develop_nemsfv3gfs.sh
 
-6. Install ESMF 8.0.0_bs40
+6. Install ESMF 8.0.0_bs50
 
-    # Download ESMF_8_0_0_beta_snapshot_40 from https://sourceforge.net/p/esmf/esmf/ref/master/tags/
-    # to /usr/local/src (creates a directory esmf-esmf-...), rename it to esmf-8.0.0_bs40 and tar it
+    # Download ESMF_8_0_0_beta_snapshot_50 from https://sourceforge.net/p/esmf/esmf/ref/master/tags/
+    # to /usr/local/src (creates a directory esmf-esmf-...), rename it to esmf-8.0.0_bs50 and tar it
     # up for later use
     cd /usr/local/src
-    mv esmf-esmf-... esmf-8.0.0_bs40
-    tar -cvzf esmf-8.0.0_bs40.tar.gz esmf-8.0.0_bs40
+    mv esmf-esmf-... esmf-8.0.0_bs50
+    tar -cvzf esmf-8.0.0_bs50.tar.gz esmf-8.0.0_bs50
 
     # Compile and install ESMF
-    cd esmf-8.0.0_bs40
+    cd esmf-8.0.0_bs50
     export ESMF_DIR=`pwd`
     export ESMF_COMPILER=gfortran
     export ESMF_CXXCOMPILER=$MPICXX
@@ -111,7 +111,7 @@ export MKL_DIR=/opt/intel/compilers_and_libraries_2019.4.233/mac/mkl
     export ESMF_NETCDF_LIBPATH=$NETCDF/lib
     export ESMF_NETCDF_LIBS="-lnetcdff -lnetcdf -lmpichf90"
     export ESMF_NETCDF=split
-    export ESMF_INSTALL_PREFIX=/usr/local/esmf-8.0.0_bs40
+    export ESMF_INSTALL_PREFIX=/usr/local/esmf-8.0.0_bs50
     export ESMF_INSTALL_BINDIR=bin
     export ESMF_INSTALL_LIBDIR=lib
     export ESMF_INSTALL_MODDIR=mod
@@ -146,7 +146,7 @@ export MKL_DIR=/opt/intel/compilers_and_libraries_2019.4.233/mac/mkl
     #
     # Clean up
     cd /usr/local/src
-    rm -fr esmf-8.0.0_bs40
+    rm -fr esmf-8.0.0_bs50
     export -n ESMF_DIR
     export -n ESMF_COMPILER
     export -n ESMF_CXXCOMPILER
