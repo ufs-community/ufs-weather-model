@@ -205,6 +205,7 @@ SCHEME_FILES = {
     'ccpp/physics/physics/precpd.f'                          : [ 'slow_physics' ],
     'ccpp/physics/physics/radlw_main.f'                      : [ 'slow_physics' ],
     'ccpp/physics/physics/radsw_main.f'                      : [ 'slow_physics' ],
+    'ccpp/physics/physics/rascnv.F90'                        : [ 'slow_physics' ],
     'ccpp/physics/physics/rayleigh_damp.f'                   : [ 'slow_physics' ],
     'ccpp/physics/physics/rrtmg_lw_post.F90'                 : [ 'slow_physics' ],
     'ccpp/physics/physics/rrtmg_lw_pre.F90'                  : [ 'slow_physics' ],
