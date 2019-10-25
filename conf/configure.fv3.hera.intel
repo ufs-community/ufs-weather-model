@@ -12,26 +12,6 @@ ifdef InNemsMakefile
 include $(TOP)/conf/configure.nems.NUOPC
 endif
 
-###################### PHYS_MODE ##### CHEM_MODE ###############################
-#
-#
-#
-
-PHYS_MODE       =compile
-CHEM_MODE       =compile
-ifeq ($(PHYS_MODE),compile)
-       PHYS_LIB = $(TOP)/atmos/gsm/gsmphys
-       PHYS_INC = $(TOP)/atmos/gsm/gsmphys
-       PHYS_DIR = $(TOP)/atmos/gsm/gsmphys
-endif
-ifeq ($(CHEM_MODE),compile)
-        CHEM_LIB = $(TOP)/chem
-        CHEM_INC = $(TOP)/chem/gocart/src/Config/
-        CHEM_DIR = $(TOP)/chem
-       CHEM_MOD = $(TOP)/chem/gocart/${ARCH}/include
-      ESMADIR = chem/gocart
-endif
-
 ############
 # commands #
 ############
@@ -58,7 +38,7 @@ include       $(ESMFMKFILE)
 ESMF_INC    = $(ESMF_F90COMPILEPATHS)
 
 NEMSIOINC = -I$(NEMSIO_INC)
-NCEPLIBS = $(NEMSIO_LIB) $(BACIO_LIB4) $(SP_LIBd) $(W3EMC_LIBd) $(W3NCO_LIBd)
+NCEPLIBS = $(POST_LIB) $(NEMSIO_LIB) $(G2_LIB4) $(G2TMPL_LIB) $(BACIO_LIB4) $(SP_LIBd) $(W3EMC_LIBd) $(W3NCO_LIBd) $(CRTM_LIB) $(PNG_LIB) $(JASPER_LIB) $(Z_LIB)
 
 ##############################################
 # Need to use at least GNU Make version 3.81 #
@@ -83,7 +63,7 @@ CFLAGS := $(INCLUDE)
 
 FFLAGS := $(INCLUDE) -fno-alias -auto -safe-cray-ptr -save-temps -ftz -assume byterecl -nowarn -sox -align array64byte
 
-CPPDEFS += -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP
+CPPDEFS += -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP
 CPPDEFS += -DNEW_TAUCTMAX -DINTERNAL_FILE_NML
 
 ifeq ($(HYDRO),Y)

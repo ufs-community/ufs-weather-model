@@ -3,11 +3,11 @@ load 'fv3.input'
 run fv3_control                 @ fv3, standard, baseline, ccpptrans
 run fv3_decomp                  @ fv3, standard
 run fv3_2threads                @ fv3, standard
-run fv3_ccpp_control            @ fv3, standard, ccpptrans, plat==theia.intel,plat==theia.slurm.intel,plat==hera.intel
+run fv3_ccpp_control            @ fv3, standard, ccpptrans, plat==hera.intel
 run fv3_restart                 @ fv3, standard, baseline
 run fv3_read_inc                @ fv3, standard, baseline
 run fv3_gfdlmp                  @ fv3, standard, baseline
-run fv3_gfdlmprad               @ fv3, standard, baseline, ww3, plat==theia.intel,plat==theia.slurm.intel,plat==wcoss_dell_p3,plat==wcoss.cray
+run fv3_gfdlmprad               @ fv3, standard, baseline, ww3, plat==wcoss_dell_p3,plat==wcoss.cray
 run fv3_gfdlmprad_gwd           @ fv3, standard, baseline
 run fv3_gfdlmprad_noahmp        @ fv3, standard, baseline
 run fv3_thompson                @ fv3, standard, baseline
@@ -15,7 +15,7 @@ run fv3_wsm6                    @ fv3, standard, baseline
 run fv3_csawmgshoc              @ fv3, standard, baseline
 run fv3_rasmgshoc               @ fv3, standard, baseline
 run fv3_csawmg                  @ fv3, standard, baseline
-run fv3_csawmg3shoc127          @ fv3,           baseline, plat==wcoss.cray,plat==theia.intel,plat==theia.slurm.intel,plat==wcoss_dell_p3,plat==hera.intel
+run fv3_csawmg3shoc127          @ fv3,           baseline, plat==wcoss.cray,plat==wcoss_dell_p3,plat==hera.intel
 run fv3_satmedmf                @ fv3, standard, baseline
 run fv3_lheatstrg               @ fv3, standard, baseline
 run fv3_wrtGauss_netcdf_esmf    @ fv3, standard, baseline
@@ -26,7 +26,7 @@ run fv3_wrtGauss_nemsio         @ fv3, standard, baseline
 # possibly due to an issue with the uJet nodes that have been assigned
 # to SLURM.  For now, that test is disabled under SLURM.
 
-run fv3_wrtGauss_nemsio_c768    @ fv3,           baseline, ww3, plat==theia.intel, plat==theia.slurm.intel, plat==xjet, plat==svjet, plat==tujet, plat==wcoss.cray
+run fv3_wrtGauss_nemsio_c768    @ fv3,           baseline, ww3, plat==xjet, plat==svjet, plat==tujet, plat==wcoss.cray
 run fv3_wrtGauss_nemsio_c192    @ fv3, standard, baseline
 run fv3_stochy                  @ fv3, standard, baseline
 run fv3_iau                     @ fv3, standard, baseline
@@ -34,17 +34,15 @@ run fv3_iau                     @ fv3, standard, baseline
 run fv3_appbuilder              @ fv3, standard
 
 run fv3_control_32bit           @ fv3, standard, baseline
+run fv3_gfdlmprad_32bit_post    @ fv3, standard, baseline, plat==wcoss_dell_p3,plat==wcoss.cray,plat==hera.intel
 run fv3_stretched               @ fv3, standard, baseline
 run fv3_stretched_nest          @ fv3, standard, baseline
-run fv3_stretched_nest_quilt    @ fv3, standard, baseline, plat==theia.intel, plat==theia.slurm.intel, plat==tujet, plat==wcoss.cray, plat==wcoss_dell_p3, plat==wcoss.phase1, plat==wcoss.phase2,plat==hera.intel
+run fv3_stretched_nest_quilt    @ fv3, standard, baseline, plat==tujet, plat==wcoss.cray, plat==wcoss_dell_p3, plat==wcoss.phase1, plat==wcoss.phase2,plat==hera.intel
 
 run fv3_regional_control        @ fv3, standard, baseline
 run fv3_regional_restart        @ fv3, standard, baseline
 run fv3_regional_quilt          @ fv3, standard, baseline
 run fv3_regional_c768           @ fv3, standard, baseline
 
-run fv3_control_debug           @ fv3, standard,           plat==theia.intel, plat==theia.slurm.intel,plat==hera.intel
-run fv3_stretched_nest_debug    @ fv3, standard,           plat==theia.intel, plat==theia.slurm.intel,plat==hera.intel
-
-run fv3_NAM_phys                @ fv3, standard, baseline, plat==theia.intel, plat==theia.slurm.intel,plat==hera.intel
-
+run fv3_control_debug           @ fv3, standard,           plat==hera.intel
+run fv3_stretched_nest_debug    @ fv3, standard,           plat==hera.intel
