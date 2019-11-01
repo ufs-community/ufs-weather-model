@@ -78,7 +78,7 @@ The Earth System Modeling Framework (ESMF), the SIONlib, the NCEPlibs, and the n
 Building the UFS Atmosphere
 ---------------------------
 
-A complete listing and description of the FV3 build options were discussed in :numref:`Chapter %s <ConfigBuildOptions>` and are shown in :numref:`Figure %s <ccpp_build_option>`. This section will describe the commands needed to build the different options using the script ``compile.sh`` provided in the NEMSfv3gfs distribution. This script calls ``ccpp_prebuild.py``, so users do not need to run the *prebuild* step manually. All builds using ``compile.sh`` are made from the ``./tests`` directory of NEMSfv3gfs and follow the basic command:
+A complete listing and description of the FV3 build options were discussed elsewhere. This section will describe the commands needed to build the different options using the script ``compile.sh`` provided in the NEMSfv3gfs distribution. This script calls ``ccpp_prebuild.py``, so users do not need to run the *prebuild* step manually. All builds using ``compile.sh`` are made from the ``./tests`` directory of NEMSfv3gfs and follow the basic command:
 
 .. code-block:: console
 
