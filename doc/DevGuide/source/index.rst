@@ -1,0 +1,15 @@
+.. UFS Weather Model Developers Guide, created by
+   sphinx-quickstart on Tue Oct 29 09:07:29 2019.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Welcome to the UFS Weather Model Developers Guide!
+========================================================
+
+.. toctree::
+   :numbered:
+   :maxdepth: 3
+
+   Introduction
+   BuildRun
+   Glossary
