@@ -139,18 +139,6 @@ set_target_properties(fms PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BI
 set_target_properties(fms PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/FMS/mod)
 target_include_directories(fms PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/FMS/mod)
 
-
-###############################################################################
-### ccpp
-###############################################################################
-if(CCPP)
-  add_subdirectory(ccpp)
-  add_definitions(-DCCPP)
-  if(STATIC)
-    add_definitions(-DSTATIC)
-  endif()
-endif()
-
 ###############################################################################
 ### FV3
 ###############################################################################
@@ -225,25 +213,22 @@ endif()
 
 if(CCPP)
     set(CCPP_LIBRARIES ccppdriver ccppphys ccpp)
-    add_dependencies(${PHYS}physics ccpp ccppphys)
-    add_dependencies(ccppdriver ccpp ccppphys)
-    add_dependencies(ccppphys ccpp)
 else()
     set(IPD_LIBRARIES ipd)
 endif()
 
 target_link_libraries(NEMS.exe
-                        fv3cap
-                        fv3core
-                        io
-                        ${IPD_LIBRARIES}
-                        ${PHYS}physics
-                        ${CCPP_LIBRARIES}
-                        fv3cpl
-                        stochastic_physics
-                        fms
-                        ${WW3_LIBS}
-                        ${NCEP_LIBS} ${ESMF_LIBS} ${NETCDF_LIBS})
+                      fv3cap
+                      fv3core
+                      io
+                      ${IPD_LIBRARIES}
+                      ${PHYS}physics
+                      ${CCPP_LIBRARIES}
+                      fv3cpl
+                      stochastic_physics
+                      fms
+                      ${WW3_LIBS}
+                      ${NCEP_LIBS} ${ESMF_LIBS} ${NETCDF_LIBS})
 
 ###############################################################################
 ### done
