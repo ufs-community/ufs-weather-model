@@ -54,7 +54,7 @@ embed bash compile.sh(MAKE_OPTS=' ',BUILD_NR='',fv3,modules,md5) [[[
                 ./compile.sh "@[plat%HOMEnems]/FV3" \
                 $( echo @[plat%MACHINE_ID] | sed 's,\.,_,g' ) \
                 @[MAKE_OPTS] @[BUILD_NR]
-        elif [[ @[plat%PLATFORM_NAME] == hera* || @[plat%PLATFORM_NAME] == cheyenne* || @[plat%PLATFORM_NAME] == gaea* || @[plat%PLATFORM_NAME] == jet* ]] ; then
+        elif [[ @[plat%PLATFORM_NAME] == hera* || @[plat%PLATFORM_NAME] == cheyenne* || @[plat%PLATFORM_NAME] == gaea* || @[plat%PLATFORM_NAME] == *jet* ]] ; then
             # Don't substitute the . with a _ on Cheyenne
             echo "DON'T SUBSTITUTE _ for . on @[plat%PLATFORM_NAME]"
             ./compile.sh "@[plat%HOMEnems]/FV3" \
@@ -468,7 +468,6 @@ test fv3_ccpp_control: fv3_ccpp_control.exe {
            '*configure' <=copyfrom= "@[FV3_input_data]"
                 'INPUT' <=copy=     "@[FV3_input_data]/INPUT"
   'global_o3prdlos.f77' <=copy= "@[FV3_input_data]/INPUT/global_o3prdlos.f77"
-       'ccpp_suite.xml' <=copy= "@[HOMEnems]/ccpp/suites/suite_FV3_GFS_2017.xml"
     }
 
     # Specify output files:
