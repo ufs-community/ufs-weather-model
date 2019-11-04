@@ -383,7 +383,7 @@ check_results() {
     #
     echo;echo;echo "Moving set ${TEST_NR} ${TEST_NAME} files ...."
     if [[ ! -d ${NEW_BASELINE}/${CNTL_DIR}/RESTART ]] ; then
-      echo " mkdir -p ${NEW_BASELINE}/${CNTL_DIR}" >> ${REGRESSIONTEST_LOG}
+      echo " mkdir -p ${NEW_BASELINE}/${CNTL_DIR}/RESTART" >> ${REGRESSIONTEST_LOG}
       mkdir -p ${NEW_BASELINE}/${CNTL_DIR}/RESTART
     fi
 

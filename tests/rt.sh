@@ -157,7 +157,10 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
 #  export PATH=/gpfs/hps/nco/ops/ecf/ecfdir/ecflow.v4.1.0.intel/bin:$PATH
   export PYTHONPATH=
   ECFLOW_START=
-  DISKNM=/lustre/f2/pdata/ncep_shared/emc.nemspara/RT
+  # DH* 20190717 temporary
+  #DISKNM=/lustre/f2/pdata/ncep_shared/emc.nemspara/RT
+  DISKNM=/lustre/f2/pdata/esrl/gsd/gmtb/NEMSfv3gfs/RT
+  # *DH 20190717
   QUEUE=debug
 #  DO NOT SET AN ACCOUNT EVERYONE IS NOT A MEMBER OF
 #  USE AN ENVIRONMENT VARIABLE TO SET ACCOUNT
@@ -240,19 +243,18 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
 
-  #export PATH=/scratch4/NCEPDEV/meso/save/Dusan.Jovic/ecflow/bin:$PATH
-  #export PYTHONPATH=/scratch4/NCEPDEV/meso/save/Dusan.Jovic/ecflow/lib/python2.7/site-packages
-  #ECFLOW_START=/scratch4/NCEPDEV/meso/save/Dusan.Jovic/ecflow/bin/ecflow_start.sh
-  #ECF_PORT=$(( $(id -u) + 1500 ))
-  QUEUE=normal
-#  ACCNR= # detected in detect_machine.sh
-  ACCNR=hfv3gfs
-  PARTITION=ujet
-  dprefix=/mnt/lfs3/projects/hfv3gfs
-  DISKNM=$dprefix/emc.nemspara/RT
-  STMP=$dprefix/${USER}/stmp4
-  PTMP=$dprefix/${USER}/stmp3
+  export PATH=/scratch4/NCEPDEV/meso/save/Dusan.Jovic/ecflow/bin:$PATH
+  export PYTHONPATH=/scratch4/NCEPDEV/meso/save/Dusan.Jovic/ecflow/lib/python2.6/site-packages
+  ECFLOW_START=/scratch4/NCEPDEV/meso/save/Dusan.Jovic/ecflow/bin/ecflow_start.sh
+  QUEUE=debug
+#  ACCNR=fv3-cpu
+  PARTITION=xjet
+  DISKNM=/lfs3/projects/hfv3gfs/GMTB/RT
+  dprefix=/lfs3/projects/hfv3gfs/$USER
+  STMP=$dprefix/RT_BASELINE
+  PTMP=$dprefix/RT_RUNDIRS
 
+  # default scheduler on Jet
   SCHEDULER=slurm
   cp fv3_conf/fv3_slurm.IN_jet fv3_conf/fv3_slurm.IN
 
@@ -314,8 +316,8 @@ ECFLOW=false
 KEEP_RUNDIR=false
 
 TESTS_FILE='rt.conf'
-# Switch to special regression test config on wcoss_cray:
-# don't run the IPD and CCPP tests in REPRO mode.
+## Switch to special regression test config on wcoss_cray:
+## don't run the IPD and CCPP tests in REPRO mode.
 if [[ $MACHINE_ID = wcoss_cray ]]; then
   TESTS_FILE='rt_wcoss_cray.conf'
 fi
@@ -367,19 +369,9 @@ while getopts ":cfsl:mkreh" opt; do
 done
 
 if [[ $MACHINE_ID = cheyenne.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/trunk-20190912/${COMPILER^^}}
-elif [[ $MACHINE_ID = jet ]]; then
-  if [[ $PARTITION = tjet ]] || [[ $PARTITION = ujet ]]; then
-    RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/trunk-20190315-tujet}
-  elif [[ $PARTITION = sjet ]] || [[ $PARTITION = vjet ]]; then
-    RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/trunk-20190315-svjet}
-  elif [[ $PARTITION = xjet ]]; then
-    RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/trunk-20190315-xjet}
-  else
-    die "Unknown jet partition ${PARTITION}"
-  fi
+  RTPWD=${RTPWD:-$DISKNM/trunk-20191021/${COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/trunk-20190925}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/trunk-20191021}
 fi
 
 shift $((OPTIND-1))
@@ -565,12 +557,8 @@ while read -r line; do
       fi
 
       # Set RT_SUFFIX (regression test run directories and log files) and BL_SUFFIX
-      # (regression test baseline directories) for REPRO (IPD, CCPP) or PROD (CCPP) runs;
-      # avoid adding any suffices for TRANSITION tests (compare CCPP PROD against IPD PROD)
-      if [[ ${NEMS_VER^^} =~ "TRANSITION=Y" ]]; then
-        RT_SUFFIX=""
-        BL_SUFFIX=""
-      elif [[ ${NEMS_VER^^} =~ "REPRO=Y" ]]; then
+      # (regression test baseline directories) for REPRO (IPD, CCPP) or PROD (CCPP) runs
+      if [[ ${NEMS_VER^^} =~ "REPRO=Y" ]]; then
         RT_SUFFIX="_repro"
         BL_SUFFIX="_repro"
       elif [[ ${NEMS_VER^^} =~ "CCPP=Y" ]]; then
@@ -608,12 +596,8 @@ while read -r line; do
       fi
 
       # Set RT_SUFFIX (regression test run directories and log files) and BL_SUFFIX
-      # (regression test baseline directories) for REPRO (IPD, CCPP) or PROD (CCPP) runs;
-      # avoid adding any suffices for TRANSITION tests (compare CCPP PROD against IPD PROD)
-      if [[ ${NEMS_VER^^} =~ "TRANSITION=Y" ]]; then
-        RT_SUFFIX=""
-        BL_SUFFIX=""
-      elif [[ ${NEMS_VER^^} =~ "REPRO=Y" ]]; then
+      # (regression test baseline directories) for REPRO (IPD, CCPP) or PROD (CCPP) runs
+      if [[ ${NEMS_VER^^} =~ "REPRO=Y" ]]; then
         RT_SUFFIX="_repro"
         BL_SUFFIX="_repro"
       elif [[ ${NEMS_VER^^} =~ "CCPP=Y" ]]; then
