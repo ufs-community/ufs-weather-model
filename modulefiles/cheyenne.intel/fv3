@@ -21,31 +21,19 @@ module load mpt/2.19
 module load ncarcompilers/0.5.0
 module load netcdf/4.6.3
 
+module use -a /glade/p/ral/jntp/GMTB/tools/modulefiles/intel-19.0.2/mpt-2.19
+
 ##
 ## use pre-compiled EMSF library for above compiler / MPI combination
 ##
-set ESMF_DIR /glade/p/ral/jntp/GMTB/tools/esmf-8.0.0_bs40/intel-19.0.2/mpt-2.19
-setenv ESMF_DIR              ${ESMF_DIR}
-setenv ESMFMKFILE            ${ESMF_DIR}/lib/esmf.mk
-prepend-path PATH            ${ESMF_DIR}/bin
-prepend-path LD_LIBRARY_PATH ${ESMF_DIR}/lib
+module load esmf/8.0.0
 
 ##
 ## NCEP libraries (download and build manually for the time being; https://github.com/NCAR/NCEPlibs)
 ##
-set NCEPLIBS_DIR /glade/p/ral/jntp/GMTB/tools/NCEPlibs/20190703/intel-19.0.2/mpt-2.19
-setenv NCEPLIBS_DIR ${NCEPLIBS_DIR}
-setenv NEMSIO_INC   ${NCEPLIBS_DIR}/include
-setenv NEMSIO_LIB   ${NCEPLIBS_DIR}/lib/libnemsio_d.a
-setenv BACIO_LIB4   ${NCEPLIBS_DIR}/lib/libbacio_4.a
-setenv SP_LIBd      ${NCEPLIBS_DIR}/lib/libsp_v2.0.2_d.a
-setenv W3EMC_LIBd   ${NCEPLIBS_DIR}/lib/libw3emc_d.a
-setenv W3NCO_LIBd   ${NCEPLIBS_DIR}/lib/libw3nco_d.a
+module load NCEPlibs/9.9.9
 
 ##
 ## SIONlib library
 ##
-set    SIONLIB     /glade/p/ral/jntp/GMTB/tools/sionlib-1.7.4/intel-19.0.2/mpt-2.19
-setenv SIONLIB     ${SIONLIB}
-setenv SIONLIB_INC "-I${SIONLIB}/include -I${SIONLIB}/include/mod_64"
-setenv SIONLIB_LIB "-L${SIONLIB}/lib -lsionmpi_f90_64 -lsionser_f90_64 -lsionmpi_64 -lsiongen_64 -lsionser_64 -lsioncom_64 -lsioncom_64_lock_none"
+module load SIONlib/1.7.4

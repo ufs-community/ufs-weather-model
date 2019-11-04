@@ -17,24 +17,25 @@ module-whatis "loads NEMS FV3 prerequisites for Gaea/Intel"
 ##
 module load PrgEnv-intel/6.0.3
 module rm intel
-module load intel/16.0.3.210
+module load intel/18.0.3.222
 module load cray-netcdf
+
+module use -a /lustre/f2/pdata/esrl/gsd/gmtb/NEMSfv3gfs/modules/modulefiles/intel-18.0.3.222
+
 ##
-## load nwprod libraries
-## 
-set nceplibs /lustre/f2/pdata/ncep_shared/NCEPLIBS/lib/
-setenv NCEPLIBS ${nceplibs}
-module use ${nceplibs}/modulefiles
-module load bacio-intel-sandybridge/2.0.1
-module load ip-intel-sandybridge/2.0.0
-module load sp-intel-sandybridge/2.0.2
-module load w3nco-intel-sandybridge/2.0.6
-module load w3emc-intel-sandybridge/2.2.0
-module load nemsio-intel-sandybridge/2.2.3
+## Libxml2 - compiled manually because of issues with linking the code
 ##
-## set esmf variables while waiting to get 7.1.39rb
+module load libxml2/2.9.9
+
 ##
-module load esmflocal/7_1_0r
+## NCEP libraries (download and build manually for the time being; https://github.com/NCAR/NCEPlibs)
+##
+module load NCEPlibs/9.9.9
+
+##
+## use pre-compiled EMSF library for above compiler / MPI combination
+##
+module load esmf/8.0.0
 
 # Needed at runtime:
 module load alps

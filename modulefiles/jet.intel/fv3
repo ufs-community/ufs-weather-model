@@ -8,34 +8,26 @@ proc ModulesHelp {} {
 }
 
 module purge
+
+##
+## load contrib environment
+## load slurm utils (arbitrary.pl  layout.pl)
+##
+module load contrib sutils
+
 module load intel/18.0.5.274
 module load impi/2018.4.274
-module load szip/2.1
-module load hdf5/1.8.9
-module load netcdf/4.2.1.1
-module load contrib anaconda
+module load hdf5/1.10.4
+module load netcdf/4.6.1
+
+module use -a /lfs3/projects/hfv3gfs/GMTB/modulefiles/intel-18.0.5.274
 
 ##
 ### NCEP libraries (download and build manually for the time being; https://github.com/NCAR/NCEPlibs)
 ###
-set NCEPLIBS_DIR /lfs3/projects/hfv3gfs/GMTB/NCEPlibs/20190402/intel-18.0.5.274/impi-2018.4.274
-setenv NCEPLIBS_DIR ${NCEPLIBS_DIR}
-setenv NEMSIO_INC   ${NCEPLIBS_DIR}/include
-setenv NEMSIO_LIB   ${NCEPLIBS_DIR}/lib/libnemsio_d.a
-setenv BACIO_LIB4   ${NCEPLIBS_DIR}/lib/libbacio_4.a
-setenv SP_LIBd      ${NCEPLIBS_DIR}/lib/libsp_v2.0.2_d.a
-setenv W3EMC_LIBd   ${NCEPLIBS_DIR}/lib/libw3emc_d.a
-setenv W3NCO_LIBd   ${NCEPLIBS_DIR}/lib/libw3nco_d.a
+module load  NCEPlibs/9.9.9
 
 ##
 ### use pre-compiled EMSF library for above compiler / MPI combination
 ##
-set ESMF_DIR /lfs3/projects/hfv3gfs/GMTB/esmf-8.0.0_bs21/intel-18.0.5.274/impi-2018.4.274
-setenv ESMF_DIR              ${ESMF_DIR}
-setenv ESMF_INC              ${ESMF_DIR}/include
-setenv ESMF_BIN              ${ESMF_DIR}/bin
-setenv ESMF_LIB              ${ESMF_DIR}/lib
-setenv ESMF_MOD              ${ESMF_DIR}/mod
-setenv ESMFMKFILE            ${ESMF_DIR}/lib/esmf.mk
-prepend-path PATH            ${ESMF_DIR}/bin
-prepend-path LD_LIBRARY_PATH ${ESMF_DIR}/lib
+module load esmf/8.0.0

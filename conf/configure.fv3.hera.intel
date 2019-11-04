@@ -31,7 +31,6 @@ OPENMP = Y
 AVX2 = Y
 HYDRO = N
 CCPP = N
-TRANSITION = N
 STATIC = N
 
 include       $(ESMFMKFILE)
@@ -177,10 +176,6 @@ LDFLAGS += -L$(PATH_CCPP)/lib -lccppphys -lccpp $(NCEPLIBS) -lxml2
 else
 LDFLAGS += -L$(PATH_CCPP)/lib -lccpp
 endif
-endif
-
-ifeq ($(TRANSITION),Y)
-CPPDEFS += -DTRANSITION
 endif
 
 LDFLAGS += $(LIBS)

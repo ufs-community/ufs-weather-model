@@ -140,18 +140,18 @@ step 4, these differences can be ignored. It is also assumed that the bash shell
 
     export NCEPLIBS_DIR=/usr/local/NCEPlibs-20190820
 
-    # Download ESMF_8_0_0_beta_snapshot_40 from https://sourceforge.net/p/esmf/esmf/ref/master/tags/
-    # to /home/ubuntu/src (creates a directory esmf-esmf-...), rename it to esmf-8.0.0_bs40 and tar it
+    # Download ESMF_8_0_0_beta_snapshot_50 from https://sourceforge.net/p/esmf/esmf/ref/master/tags/
+    # to /home/ubuntu/src (creates a directory esmf-esmf-...), rename it to esmf-8.0.0_bs50 and tar it
     # up for later use
     cd /usr/local/src
-    mv esmf-esmf-... esmf-8.0.0_bs40
-    tar -cvzf esmf-8.0.0_bs40.tar.gz esmf-8.0.0_bs40
+    mv esmf-esmf-... esmf-8.0.0_bs50
+    tar -cvzf esmf-8.0.0_bs50.tar.gz esmf-8.0.0_bs50
     #
-    # Install esmf-8.0.0_bs40
-    tar -xvzf esmf-8.0.0_bs40.tar.gz
-    cd esmf-8.0.0_bs40
+    # Install esmf-8.0.0_bs50
+    tar -xvzf esmf-8.0.0_bs50.tar.gz
+    cd esmf-8.0.0_bs50
     export ESMF_DIR=`pwd`
-    export ESMF_INSTALL_PREFIX=/usr/local/esmf-8.0.0_bs40
+    export ESMF_INSTALL_PREFIX=/usr/local/esmf-8.0.0_bs50
     export ESMF_CXXCOMPILER=mpicxx
     export ESMF_CXXLINKER=mpicxx
     export ESMF_F90COMPILER=mpif90
@@ -174,7 +174,7 @@ step 4, these differences can be ignored. It is also assumed that the bash shell
     make install 2>&1 | tee log.install
     make installcheck 2>&1 | tee log.installcheck
     cd ..
-    rm -fr esmf-8.0.0_bs40
+    rm -fr esmf-8.0.0_bs50
     export -n ESMF_DIR
     export -n ESMF_INSTALL_PREFIX
     export -n ESMF_CXXCOMPILER
@@ -188,7 +188,7 @@ step 4, these differences can be ignored. It is also assumed that the bash shell
     export -n ESMF_INSTALL_LIBDIR
     export -n ESMF_INSTALL_MODDIR
 
-    export ESMFMKFILE=/usr/local/esmf-8.0.0_bs40/lib/esmf.mk
+    export ESMFMKFILE=/usr/local/esmf-8.0.0_bs50/lib/esmf.mk
 
 4. Compile NEMSfv3gfs as normal user
 
@@ -201,7 +201,7 @@ step 4, these differences can be ignored. It is also assumed that the bash shell
     export LD_LIBRARY_PATH="/usr/local/lib:/usr/local/lib64:$LD_LIBRARY_PATH"
     export NCEPLIBS_DIR=/usr/local/NCEPlibs-20190820
     export NETCDF=/usr/local
-    export ESMFMKFILE=/usr/local/esmf-8.0.0_bs40/lib/esmf.mk
+    export ESMFMKFILE=/usr/local/esmf-8.0.0_bs50/lib/esmf.mk
     export CC=mpicc
     export CXX=mpicxx
     export F77=mpif77
@@ -226,7 +226,7 @@ step 4, these differences can be ignored. It is also assumed that the bash shell
 
        export NCEPLIBS_DIR=/usr/local/NCEPlibs-20190820
        export NETCDF=/usr/local
-       export ESMFMKFILE=/usr/local/esmf-8.0.0_bs40/lib/esmf.mk
+       export ESMFMKFILE=/usr/local/esmf-8.0.0_bs50/lib/esmf.mk
 
        ./run_linux.sh 2>&1 | tee run_linux.log
        # or, with N OpenMP threads (use N=1 for the dynamic CCPP build)
