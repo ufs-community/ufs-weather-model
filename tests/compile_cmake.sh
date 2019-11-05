@@ -43,6 +43,7 @@ else
   clean_before=${5:-YES}
   clean_after=${6:-YES}
 fi
+BUILD_DIR=build_${BUILD_NAME}
 
 # ----------------------------------------------------------------------
 # Make sure we have reasonable number of threads.
@@ -64,8 +65,10 @@ cd ${PATHTR}/tests
 echo "Compiling ${MAKE_OPT} into $BUILD_NAME.exe on $MACHINE_ID"
 
 if [ $clean_before = YES ] ; then
-  rm -rf build_${BUILD_NAME}
+  rm -rf ${BUILD_DIR}
 fi
+
+mkdir -p ${BUILD_DIR}
 
 # set CCPP_CMAKE_FLAGS based on $MAKE_OPT
 
@@ -117,6 +120,7 @@ if [[ "${MAKE_OPT}" == *"CCPP=Y"* ]]; then
   if [[ "${MAKE_OPT}" == *"STATIC=Y"* ]]; then
     CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DSTATIC=ON"
   else
+    echo "Error, cmake build not compatible with dynamic CCPP"
     exit 1
   fi
 
@@ -129,34 +133,37 @@ if [[ "${MAKE_OPT}" == *"CCPP=Y"* ]]; then
   (
     SUITES=$( echo $MAKE_OPT | sed 's/.* SUITES=//' | sed 's/ .*//' )
     cd ${PATHTR}
-    ./ccpp/framework/scripts/ccpp_prebuild.py --config=ccpp/config/ccpp_prebuild_config.py --static --suites=${SUITES}
+    ./FV3/ccpp/framework/scripts/ccpp_prebuild.py --config=FV3/ccpp/config/ccpp_prebuild_config.py --static --suites=${SUITES} --builddir=tests/${BUILD_DIR}/FV3
   )
 
-fi
+  # Read list of schemes, caps, and static API
+  source ${BUILD_DIR}/FV3/ccpp/physics/CCPP_SCHEMES.sh
+  source ${BUILD_DIR}/FV3/ccpp/physics/CCPP_CAPS.sh
+  source ${BUILD_DIR}/FV3/ccpp/physics/CCPP_STATIC_API.sh
+
+ fi
 
 if [[ "${MAKE_OPT}" == *"NAM_phys=Y"* ]]; then
     CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DPHYS=nam"
 fi
 CCPP_CMAKE_FLAGS=$(trim "${CCPP_CMAKE_FLAGS}")
 
-mkdir -p build_${BUILD_NAME}
-
 (
   source $PATHTR/NEMS/src/conf/module-setup.sh.inc
   module use $PATHTR/modulefiles/${MACHINE_ID}
   module load fv3
 
-  cd build_${BUILD_NAME}
+  cd ${BUILD_DIR}
 
   cmake ${PATHTR} ${CCPP_CMAKE_FLAGS}
-  make -j ${MAKE_THREADS} VERBOSE=1
+  make -j ${MAKE_THREADS}
   mv NEMS.exe ../${BUILD_NAME}.exe
   cp ${PATHTR}/modulefiles/${MACHINE_ID}/fv3 ../modules.${BUILD_NAME}
   cd ..
 )
 
 if [ $clean_after = YES ] ; then
-  rm -rf build_${BUILD_NAME}
+  rm -rf ${BUILD_DIR}
 fi
 
 elapsed=$SECONDS

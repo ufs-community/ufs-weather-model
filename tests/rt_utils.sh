@@ -465,12 +465,12 @@ rocoto_create_compile_task() {
 
   # serialize CCPP builds. FIXME
   DEP_STRING=""
-  if [[ ${NEMS_VER^^} =~ "CCPP=Y" && ${COMPILE_NR_DEP} != '' ]]; then
-    DEP_STRING="<dependency><taskdep task=\"compile_${COMPILE_NR_DEP}\"/></dependency>"
-  fi
+  #if [[ ${NEMS_VER^^} =~ "CCPP=Y" && ${COMPILE_NR_DEP} != '' ]]; then
+  #  DEP_STRING="<dependency><taskdep task=\"compile_${COMPILE_NR_DEP}\"/></dependency>"
+  #fi
 
   cat << EOF >> $ROCOTO_XML
-  <task name="compile_${COMPILE_NR}" maxtries="1">
+  <task name="compile_${COMPILE_NR}" maxtries="3">
     ${DEP_STRING}
     <command>$rocoto_cmd</command>
     <jobname>compile_${COMPILE_NR}</jobname>
@@ -569,9 +569,9 @@ EOF
   echo "  task compile_${COMPILE_NR}" >> ${ECFLOW_RUN}/regtest.def
   echo "      inlimit max_builds" >> ${ECFLOW_RUN}/regtest.def
   # serialize CCPP builds. FIXME
-  if [[ ${NEMS_VER^^} =~ "CCPP=Y" && ${COMPILE_NR_DEP} != '' ]]; then
-    echo "    trigger compile_${COMPILE_NR_DEP} == complete"  >> ${ECFLOW_RUN}/regtest.def
-  fi
+  #if [[ ${NEMS_VER^^} =~ "CCPP=Y" && ${COMPILE_NR_DEP} != '' ]]; then
+  #  echo "    trigger compile_${COMPILE_NR_DEP} == complete"  >> ${ECFLOW_RUN}/regtest.def
+  #fi
 
 }
 
