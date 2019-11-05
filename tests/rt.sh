@@ -172,10 +172,10 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   QUEUE=debug
 #  ACCNR=fv3-cpu
   PARTITION=
-  dprefix=/scratch1/NCEPDEV
-  DISKNM=$dprefix/nems/emc.nemspara/RT
-  STMP=$dprefix/stmp4
-  PTMP=$dprefix/stmp2
+  dprefix=/scratch1/BMC/gmtb
+  DISKNM=$dprefix/ufs-weather-model/RT
+  STMP=$dprefix
+  PTMP=$dprefix
 
   # default scheduler on Hera
   SCHEDULER=slurm
@@ -288,8 +288,8 @@ ECFLOW=false
 KEEP_RUNDIR=false
 
 TESTS_FILE='rt.conf'
-## Switch to special regression test config on wcoss_cray:
-## don't run the IPD and CCPP tests in REPRO mode.
+# Switch to special regression test config on wcoss_cray:
+# don't run the IPD and CCPP tests in REPRO mode.
 if [[ $MACHINE_ID = wcoss_cray ]]; then
   TESTS_FILE='rt_wcoss_cray.conf'
 fi
