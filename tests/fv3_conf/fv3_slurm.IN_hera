@@ -3,7 +3,9 @@
 #SBATCH -o out
 #SBATCH --account=@[ACCNR]
 #SBATCH --qos=@[QUEUE]
-#SBATCH --ntasks=@[TASKS]
+### #SBATCH --ntasks=@[TASKS]
+#SBATCH --nodes=@[NODES]
+#SBATCH --ntasks-per-node=@[TPN]
 #SBATCH --time=@[WLCLK]
 #SBATCH --job-name="@[JBNME]"
 #SBATCH --exclusive
@@ -30,7 +32,7 @@ export PSM_SHAREDCONTEXTS=1
 # Avoid job errors because of filesystem synchronization delays
 sync && sleep 1
 
-srun --label ./fv3.exe
+srun --label -n @[TASKS] ./fv3.exe
 
 echo "Model ended:    " `date`
 

@@ -32,6 +32,8 @@ atparse < ${PATHTR}/parm/${INPUT_NML:-input.nml.IN} > input.nml
 
 atparse < ${PATHTR}/parm/${MODEL_CONFIGURE:-model_configure.IN} > model_configure
 
+atparse < ${PATHTR}/parm/${NEMS_CONFIGURE:-nems.configure} > nems.configure
+
 if [[ "Q${INPUT_NEST02_NML:-}" != Q ]] ; then
     atparse < ${PATHTR}/parm/${INPUT_NEST02_NML} > input_nest02.nml
 fi
@@ -69,6 +71,8 @@ elif [[ $SCHEDULER = 'lsf' ]]; then
   fi
   atparse < $PATHRT/fv3_conf/fv3_bsub.IN > job_card
 fi
+
+atparse < ${PATHTR}/parm/${NEMS_CONFIGURE:-nems.configure} > nems.configure
 
 ################################################################################
 # Submit test
