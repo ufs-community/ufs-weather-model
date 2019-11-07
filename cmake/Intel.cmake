@@ -51,37 +51,42 @@ if(OPENMP)
 endif()
 
 
-
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D__IFC -sox -fp-model source")
 
 # print build options
 
 if(DEBUG)
-    message("DEBUG  is ENABLED")
+    message("DEBUG  is      ENABLED")
 else()
-    message("DEBUG  is disabled")
+    message("DEBUG  is      disabled")
 endif()
 
 if(REPRO)
-    message("REPRO  is ENABLED")
+    message("REPRO  is      ENABLED")
 else()
-    message("REPRO  is disabled")
+    message("REPRO  is      disabled")
 endif()
 
 if(32BIT)
-    message("32BIT  is ENABLED")
+    message("32BIT  is      ENABLED")
 else()
-    message("32BIT  is disabled")
+    message("32BIT  is      disabled")
 endif()
 
 if(OPENMP)
-    message("OPENMP is ENABLED")
+    message("OPENMP is      ENABLED")
 else()
-    message("OPENMP is disabled")
+    message("OPENMP is      disabled")
 endif()
 
 
 if(AVX2)
-    message("AVX2 is   ENABLED")
+    message("AVX2 is        ENABLED")
 endif()
 
+
+if(INLINE_POST)
+    message("INLINE_POST is ENABLED")
+else()
+    message("INLINE_POST is disabled")
+endif()
