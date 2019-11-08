@@ -17,6 +17,8 @@ option(32BIT   "Enable 32BIT (single precision arithmetic in dycore)" OFF)
 option(OPENMP  "Enable OpenMP threading" ON)
 option(AVX2    "Enable AVX2 instruction set" OFF)
 
+option(INLINE_POST "Enable inline post" ON)
+
 include( cmake/${CMAKE_Fortran_COMPILER_ID}.cmake )
 
 set(NEMSIO_INC $ENV{NEMSIO_INC})

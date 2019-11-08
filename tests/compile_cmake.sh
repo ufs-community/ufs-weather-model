@@ -22,7 +22,6 @@ readonly ARGC=$#
 cd ${MYDIR}
 
 if [[ $ARGC -eq 0 ]]; then
-  echo "no argc"
   COMPILER=intel
   . detect_machine.sh
   PATHTR=$(cd -P ${MYDIR}/.. && pwd)

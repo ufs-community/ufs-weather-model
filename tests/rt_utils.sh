@@ -476,6 +476,7 @@ rocoto_create_compile_task() {
     <jobname>compile_${COMPILE_NR}</jobname>
     <account>${ACCNR}</account>
     <queue>${COMPILE_QUEUE}</queue>
+    <partition>${PARTITION}</partition>
     <cores>${BUILD_CORES}</cores>
     <walltime>${BUILD_WALLTIME}</walltime>
     <join>&LOG;/compile_${COMPILE_NR}.log</join>
@@ -516,6 +517,7 @@ rocoto_create_run_task() {
       <jobname>${TEST_NAME}${RT_SUFFIX}</jobname>
       <account>${ACCNR}</account>
       <queue>${QUEUE}</queue>
+      <partition>${PARTITION}</partition>
       <cores>${CORES}</cores>
       <walltime>00:${WLCLK}:00</walltime>
       <join>&LOG;/run_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log</join>
@@ -537,7 +539,7 @@ rocoto_run() {
   state="Active"
   while [[ $state != "Done" ]]
   do
-    $ROCOTORUN -w $ROCOTO_XML -d $ROCOTO_DB
+    $ROCOTORUN -v 10 -w $ROCOTO_XML -d $ROCOTO_DB
     sleep 10 & wait $!
     state=$($ROCOTOSTAT -w $ROCOTO_XML -d $ROCOTO_DB -s | grep 197001010000 | awk -F" " '{print $2}')
     dead_compile=$($ROCOTOSTAT -w $ROCOTO_XML -d $ROCOTO_DB | grep compile_ | grep DEAD | head -1 | awk -F" " '{print $2}')
