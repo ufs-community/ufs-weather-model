@@ -7,30 +7,27 @@ proc ModulesHelp {} {
      puts stderr "The prerequisites for compiling or running FV3 on Jet. "
 }
 
+module purge
+
+##
+## load contrib environment
+## load slurm utils (arbitrary.pl  layout.pl)
+##
+module load contrib sutils
+
 module load intel/18.0.5.274
 module load impi/2018.4.274
-module load szip/2.1
-module load hdf5/1.8.9
-module load netcdf/4.2.1.1
-module load contrib anaconda
+module load hdf5/1.10.4
+module load netcdf/4.6.1
 
-set libdir /mnt/lfs3/projects/hfv3gfs/gwv/ljtjet/lib
+module use -a /lfs3/projects/hfv3gfs/GMTB/modulefiles/intel-18.0.5.274
 
-setenv NCEPLIBS /mnt/lfs3/projects/hfv3gfs/gwv/ljtjet/lib
-module use /mnt/lfs3/projects/hfv3gfs/gwv/ljtjet/lib/modulefiles
+##
+### NCEP libraries (download and build manually for the time being; https://github.com/NCAR/NCEPlibs)
+###
+module load  NCEPlibs/9.9.9
 
-module load bacio-intel-sandybridge/2.0.2
-module load sp-intel-sandybridge/2.0.2
-module load ip-intel-sandybridge/2.0.0
-module load w3nco-intel-sandybridge/2.0.6
-module load w3emc-intel-sandybridge/2.2.0
-module load nemsio-intel-sandybridge/2.2.2
-
-#module use /lfs3/projects/hfv3gfs/emc.nemspara/soft/modulefiles
-#module load esmf/8.0.0bs21
-#
-#module use /mnt/lfs3/projects/hfv3gfs/gwv/ltmp2/lib//modulefiles
-#module load esmflocal/8.1.21b
-#
-module use /lfs3/projects/hfv3gfs/emc.nemspara/soft/modulefiles
-module load esmf/8.0.0bs48
+##
+### use pre-compiled EMSF library for above compiler / MPI combination
+##
+module load esmf/8.0.0

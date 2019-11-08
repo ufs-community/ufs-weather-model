@@ -16,15 +16,18 @@
 
 CHOSEN_MODULE=$(BUILD_TARGET)/fv3
 
+ifneq (,$(findstring INTEL16=Y,$(FV3_MAKEOPT)))
+  ifeq ($(CHOSEN_MODULE),gaea.intel/fv3)
+    override CHOSEN_MODULE=$(BUILD_TARGET)/fv3.intel-16.0.3.210
+    $(warning Overriding CHOSEN_MODULE with $(CHOSEN_MODULE) as requested per MAKEOPT)
+  endif
+endif
+
 CONFIGURE_NEMS_FILE=configure.fv3.$(BUILD_TARGET)
 
 # ----------------------------------------------------------------------
 # Exit for systems that are currently not supported
-ifeq ($(BUILD_TARGET),gaea.intel)
-  $(error NEMSfv3gfs currently not supported on $(BUILD_TARGET))
-#else ifeq ($(BUILD_TARGET),jet.intel)
-#  $(error NEMSfv3gfs currently not supported on $(BUILD_TARGET))
-else ifeq ($(BUILD_TARGET),theia.pgi)
+ifeq ($(BUILD_TARGET),theia.pgi)
   $(error NEMSfv3gfs currently not supported on $(BUILD_TARGET))
 else ifeq ($(BUILD_TARGET),cheyenne.pgi)
   $(error NEMSfv3gfs currently not supported on $(BUILD_TARGET))
