@@ -64,6 +64,10 @@ elif [[ $SCHEDULER = 'sbatch' ]]; then
   fi
   atparse < $PATHRT/fv3_conf/fv3_qsub.IN > job_card
 elif [[ $SCHEDULER = 'slurm' ]]; then
+  NODES=$(( TASKS / TPN ))
+  if (( NODES * TPN < TASKS )); then
+    NODES=$(( NODES + 1 ))
+  fi
   atparse < $PATHRT/fv3_conf/fv3_slurm.IN > job_card
 elif [[ $SCHEDULER = 'lsf' ]]; then
   if (( TASKS < TPN )); then
