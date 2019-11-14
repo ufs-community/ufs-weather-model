@@ -1211,8 +1211,6 @@ test fv3_gfdlmprad: fv3_ww3.exe {
         'RESTART/sfc_data.tile5.nc'             .bitcmp. "@[CNTL]/RESTART/"
         'RESTART/sfc_data.tile6.nc'             .bitcmp. "@[CNTL]/RESTART/"
         'out_grd.glo_30m'                       .bitcmp. "@[CNTL]"
-        'weightmatrix_ATM-TO-WAV_inst_merid_wind_height10m.nc' .bitcmp. "@[CNTL]"
-        'weightmatrix_ATM-TO-WAV_inst_zonal_wind_height10m.nc' .bitcmp. "@[CNTL]"
         "@[build%target]" .md5cmp. "@[fv3_ww3.exe%md5sum]"
     }
 
@@ -1879,8 +1877,6 @@ test fv3_wrtGauss_nemsio_c768: fv3_ww3.exe {
         'RESTART/sfc_data.tile5.nc'             .bitcmp. "@[CNTL]/RESTART/"
         'RESTART/sfc_data.tile6.nc'             .bitcmp. "@[CNTL]/RESTART/"
         'out_grd.glo_30m'                       .bitcmp. "@[CNTL]"
-        'weightmatrix_ATM-TO-WAV_inst_merid_wind_height10m.nc' .bitcmp. "@[CNTL]"
-        'weightmatrix_ATM-TO-WAV_inst_zonal_wind_height10m.nc' .bitcmp. "@[CNTL]"
       # Executable validation.  This makes an MD5 sum of the fv3.exe
       # for comparison against the MD5 sum made in the build job.
       # This is to ensure the executable did not change during the
