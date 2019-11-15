@@ -16,3 +16,8 @@ cp    @[RTPWD]/FV3_input_data/*_table .
 cp    @[RTPWD]/FV3_input_data/diag_table_gfdlmp diag_table
 cp    @[RTPWD]/FV3_input_data/field_table_gfdlmp field_table
 cp    @[RTPWD]/FV3_input_data/*configure .
+
+if [ $CPLWAV = .T. ]; then
+cp    @[RTPWD]/WW3_input_data/mod_def.* .
+cp    @[RTPWD]/WW3_input_data/@[SYEAR]@[SMONTH]@[SDAY]/ww3_multi.inp .
+fi
