@@ -1,58 +1,52 @@
 Run rocotostat...
 Generate report...
-WORKFLOW STARTED AT Sun Oct 27 22:44:33 2019 (+1572216273)
+WORKFLOW STARTED AT Tue Nov 12 23:15:33 2019 (+1573600533)
 Repository information:
 
 
 REPO TOP:
-develop                                                                7be9dcd [noaa-emc/develop: ahead 1321] Merge branch 'gmtb/develop' of https://github.com/NCAR/NEMSfv3gfs into develop
-Fetch URL: origin
- M compsets/all.input
+PR9     cceca42 FV3 is updated with comments for write grid comp idate change when iau is enabled
+Fetch URL: https://github.com/ufs-community/ufs-weather-model
+ M compsets/hera.input
  M log/report-hera.intel-log/build_fv3.exe.log
  M log/report-hera.intel-log/build_fv3_32bit.exe.log
  M log/report-hera.intel-log/build_fv3_32bit_debug.exe.log
  M log/report-hera.intel-log/build_fv3_appbuilder.exe.log
  M log/report-hera.intel-log/build_fv3_ccpp_control.exe.log
  M log/report-hera.intel-log/rtreport.txt
+ M tests/rt.sh
 
 Entering 'FMS'
-(HEAD detached at noaa-emc/GFS-FMS) 46014b4 Merge pull request #8 from DusanJovic-NOAA/GFS-FMS
+(HEAD detached at 46014b4) 46014b4 Merge pull request #8 from DusanJovic-NOAA/GFS-FMS
 Fetch URL: https://github.com/NOAA-EMC/FMS
 
 Entering 'FV3'
-develop                                                     f858295 [noaa-emc/develop] FV3: this commits #refs 66932, inline post
-Fetch URL: https://github.com/climbfuji/fv3atm
+(HEAD detached at 248196c) 248196c add comments for write grid comp idate change when iau is enabled
+Fetch URL: https://github.com/junwang-noaa/fv3atm
 
 Entering 'NEMS'
-develop                     ba1ddf7 [noaa-emc/develop: behind 1] Remove Theia (#10)
+(HEAD detached at 22be22b) 22be22b Re-apply PR 11 (#15)
 Fetch URL: https://github.com/NOAA-EMC/NEMS
 
 Entering 'WW3'
-(HEAD detached at 3063a4cd) 3063a4cd Fb esmf makefile (#53)
+(HEAD detached at 5ab43010) 5ab43010 Update ww3_ounf.ftn
 Fetch URL: https://github.com/NOAA-EMC/WW3
 
 Entering 'stochastic_physics'
-(HEAD detached at noaa-psd/master) 25c3321 Merge pull request #2 from climbfuji/remove_transition_mode
+(HEAD detached at 25c3321) 25c3321 Merge pull request #2 from climbfuji/remove_transition_mode
 Fetch URL: https://github.com/noaa-psd/stochastic_physics
 
 
-BUILD fv3_32bit.exe: SUCCEEDED
 BUILD fv3.exe: SUCCEEDED
 BUILD fv3_ccpp_control.exe: SUCCEEDED
+BUILD fv3_32bit.exe: SUCCEEDED
 BUILD fv3_32bit_debug.exe: SUCCEEDED
+BUILD fv3_ww3.exe: SUCCEEDED
 BUILD fv3_appbuilder.exe: SUCCEEDED
 
 TEST #1: PASS
-  Test fv3_regional_c768 starting at Sun Oct 27 22:55:31 UTC 2019 (Compare FV3 regional c768 results with previous trunk version)
-  Sun Oct 27 22:55:31 UTC 2019
-  atmos_4xdaily.nc: bit-for-bit identical
-  fv3_history2d.nc: bit-for-bit identical
-  fv3_history.nc: bit-for-bit identical
-  TEST PASSED AT Sun Oct 27 23:06:20 UTC 2019
-
-TEST #2: PASS
-  Test fv3_lheatstrg starting at Sun Oct 27 23:34:52 UTC 2019 (Compare FV3 control with lheatstrg on Gaussian grid nemsio output results with previous trunk version)
-  Sun Oct 27 23:34:52 UTC 2019
+  Test fv3_wrtGauss_nemsio starting at Tue Nov 12 23:26:11 UTC 2019 (Compare FV3 Gaussian grid nemsio output results with previous trunk version)
+  Tue Nov 12 23:26:11 UTC 2019
   atmos_4xdaily.tile1.nc: bit-for-bit identical
   atmos_4xdaily.tile2.nc: bit-for-bit identical
   atmos_4xdaily.tile3.nc: bit-for-bit identical
@@ -97,13 +91,64 @@ TEST #2: PASS
   RESTART/sfc_data.tile6.nc: bit-for-bit identical
   Executable did not change during test suite:
     File: ./fv3.exe
-    Expected md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-    Actual md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-  TEST PASSED AT Sun Oct 27 23:36:03 UTC 2019
+    Expected md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+    Actual md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+  TEST PASSED AT Tue Nov 12 23:27:18 UTC 2019
+
+TEST #2: PASS
+  Test fv3_lheatstrg starting at Tue Nov 12 23:26:12 UTC 2019 (Compare FV3 control with lheatstrg on Gaussian grid nemsio output results with previous trunk version)
+  Tue Nov 12 23:26:12 UTC 2019
+  atmos_4xdaily.tile1.nc: bit-for-bit identical
+  atmos_4xdaily.tile2.nc: bit-for-bit identical
+  atmos_4xdaily.tile3.nc: bit-for-bit identical
+  atmos_4xdaily.tile4.nc: bit-for-bit identical
+  atmos_4xdaily.tile5.nc: bit-for-bit identical
+  atmos_4xdaily.tile6.nc: bit-for-bit identical
+  phyf000.nemsio: bit-for-bit identical
+  phyf024.nemsio: bit-for-bit identical
+  dynf000.nemsio: bit-for-bit identical
+  dynf024.nemsio: bit-for-bit identical
+  RESTART/coupler.res: bit-for-bit identical
+  RESTART/fv_core.res.nc: bit-for-bit identical
+  RESTART/fv_core.res.tile1.nc: bit-for-bit identical
+  RESTART/fv_core.res.tile2.nc: bit-for-bit identical
+  RESTART/fv_core.res.tile3.nc: bit-for-bit identical
+  RESTART/fv_core.res.tile4.nc: bit-for-bit identical
+  RESTART/fv_core.res.tile5.nc: bit-for-bit identical
+  RESTART/fv_core.res.tile6.nc: bit-for-bit identical
+  RESTART/fv_srf_wnd.res.tile1.nc: bit-for-bit identical
+  RESTART/fv_srf_wnd.res.tile2.nc: bit-for-bit identical
+  RESTART/fv_srf_wnd.res.tile3.nc: bit-for-bit identical
+  RESTART/fv_srf_wnd.res.tile4.nc: bit-for-bit identical
+  RESTART/fv_srf_wnd.res.tile5.nc: bit-for-bit identical
+  RESTART/fv_srf_wnd.res.tile6.nc: bit-for-bit identical
+  RESTART/fv_tracer.res.tile1.nc: bit-for-bit identical
+  RESTART/fv_tracer.res.tile2.nc: bit-for-bit identical
+  RESTART/fv_tracer.res.tile3.nc: bit-for-bit identical
+  RESTART/fv_tracer.res.tile4.nc: bit-for-bit identical
+  RESTART/fv_tracer.res.tile5.nc: bit-for-bit identical
+  RESTART/fv_tracer.res.tile6.nc: bit-for-bit identical
+  RESTART/phy_data.tile1.nc: bit-for-bit identical
+  RESTART/phy_data.tile2.nc: bit-for-bit identical
+  RESTART/phy_data.tile3.nc: bit-for-bit identical
+  RESTART/phy_data.tile4.nc: bit-for-bit identical
+  RESTART/phy_data.tile5.nc: bit-for-bit identical
+  RESTART/phy_data.tile6.nc: bit-for-bit identical
+  RESTART/sfc_data.tile1.nc: bit-for-bit identical
+  RESTART/sfc_data.tile2.nc: bit-for-bit identical
+  RESTART/sfc_data.tile3.nc: bit-for-bit identical
+  RESTART/sfc_data.tile4.nc: bit-for-bit identical
+  RESTART/sfc_data.tile5.nc: bit-for-bit identical
+  RESTART/sfc_data.tile6.nc: bit-for-bit identical
+  Executable did not change during test suite:
+    File: ./fv3.exe
+    Expected md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+    Actual md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+  TEST PASSED AT Tue Nov 12 23:27:25 UTC 2019
 
 TEST #3: PASS
-  Test fv3_ccpp_control starting at Sun Oct 27 23:39:46 UTC 2019 (Compare FV3 CCPP control results with previous trunk version)
-  Sun Oct 27 23:39:46 UTC 2019
+  Test fv3_ccpp_control starting at Tue Nov 12 23:42:01 UTC 2019 (Compare FV3 CCPP control results with previous trunk version)
+  Tue Nov 12 23:42:01 UTC 2019
   atmos_4xdaily.tile1.nc: bit-for-bit identical
   atmos_4xdaily.tile2.nc: bit-for-bit identical
   atmos_4xdaily.tile3.nc: bit-for-bit identical
@@ -168,13 +213,13 @@ TEST #3: PASS
   RESTART/sfc_data.tile6.nc: bit-for-bit identical
   Executable did not change during test suite:
     File: ./fv3.exe
-    Expected md5sum: 46bd4c75f94e9d4b455b0677da375416
-    Actual md5sum: 46bd4c75f94e9d4b455b0677da375416
-  TEST PASSED AT Sun Oct 27 23:40:59 UTC 2019
+    Expected md5sum: e6a52fb1dc952e82cd8ef03ba06aba78
+    Actual md5sum: e6a52fb1dc952e82cd8ef03ba06aba78
+  TEST PASSED AT Tue Nov 12 23:43:24 UTC 2019
 
 TEST #4: PASS
-  Test fv3_iau starting at Sun Oct 27 23:34:53 UTC 2019 (Compare FV3 IAU results with previous trunk version)
-  Sun Oct 27 23:34:53 UTC 2019
+  Test fv3_iau starting at Tue Nov 12 23:26:10 UTC 2019 (Compare FV3 IAU results with previous trunk version)
+  Tue Nov 12 23:26:10 UTC 2019
   atmos_4xdaily.tile1.nc: bit-for-bit identical
   atmos_4xdaily.tile2.nc: bit-for-bit identical
   atmos_4xdaily.tile3.nc: bit-for-bit identical
@@ -239,13 +284,13 @@ TEST #4: PASS
   RESTART/sfc_data.tile6.nc: bit-for-bit identical
   Executable did not change during test suite:
     File: ./fv3.exe
-    Expected md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-    Actual md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-  TEST PASSED AT Sun Oct 27 23:36:04 UTC 2019
+    Expected md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+    Actual md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+  TEST PASSED AT Tue Nov 12 23:27:20 UTC 2019
 
 TEST #5: PASS
-  Test fv3_stretched_nest_quilt starting at Sun Oct 27 22:55:31 UTC 2019 (Stretched grid with nest using quilting; compare against previous baseline)
-  Sun Oct 27 22:55:31 UTC 2019
+  Test fv3_stretched_nest_quilt starting at Tue Nov 12 23:53:07 UTC 2019 (Stretched grid with nest using quilting; compare against previous baseline)
+  Tue Nov 12 23:53:07 UTC 2019
   atmos_4xdaily.tile1.nc: bit-for-bit identical
   atmos_4xdaily.tile2.nc: bit-for-bit identical
   atmos_4xdaily.tile3.nc: bit-for-bit identical
@@ -305,11 +350,11 @@ TEST #5: PASS
   RESTART/sfc_data.tile5.nc: bit-for-bit identical
   RESTART/sfc_data.tile6.nc: bit-for-bit identical
   RESTART/sfc_data.nest02.tile7.nc: bit-for-bit identical
-  TEST PASSED AT Sun Oct 27 23:00:15 UTC 2019
+  TEST PASSED AT Tue Nov 12 23:57:48 UTC 2019
 
 TEST #6: PASS
-  Test fv3_stretched_nest starting at Sun Oct 27 22:55:31 UTC 2019 (Stretched grid with nest; compare against previous baseline)
-  Sun Oct 27 22:55:31 UTC 2019
+  Test fv3_stretched_nest starting at Tue Nov 12 23:53:06 UTC 2019 (Stretched grid with nest; compare against previous baseline)
+  Tue Nov 12 23:53:06 UTC 2019
   atmos_4xdaily.tile1.nc: bit-for-bit identical
   atmos_4xdaily.tile2.nc: bit-for-bit identical
   atmos_4xdaily.tile3.nc: bit-for-bit identical
@@ -371,11 +416,11 @@ TEST #6: PASS
   RESTART/fv_tracer.res.nest02.tile7.nc: bit-for-bit identical
   RESTART/phy_data.nest02.tile7.nc: bit-for-bit identical
   RESTART/sfc_data.nest02.tile7.nc: bit-for-bit identical
-  TEST PASSED AT Sun Oct 27 23:00:53 UTC 2019
+  TEST PASSED AT Tue Nov 12 23:58:22 UTC 2019
 
 TEST #7: PASS
-  Test fv3_csawmgshoc starting at Sun Oct 27 23:34:52 UTC 2019 (Compare FV3 with CSAW MG2 and SHOC results  with previous trunk version)
-  Sun Oct 27 23:34:52 UTC 2019
+  Test fv3_csawmgshoc starting at Tue Nov 12 23:26:11 UTC 2019 (Compare FV3 with CSAW MG2 and SHOC results  with previous trunk version)
+  Tue Nov 12 23:26:11 UTC 2019
   atmos_4xdaily.tile1.nc: bit-for-bit identical
   atmos_4xdaily.tile2.nc: bit-for-bit identical
   atmos_4xdaily.tile3.nc: bit-for-bit identical
@@ -420,21 +465,21 @@ TEST #7: PASS
   RESTART/sfc_data.tile6.nc: bit-for-bit identical
   Executable did not change during test suite:
     File: ./fv3.exe
-    Expected md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-    Actual md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-  TEST PASSED AT Sun Oct 27 23:37:20 UTC 2019
+    Expected md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+    Actual md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+  TEST PASSED AT Tue Nov 12 23:28:42 UTC 2019
 
 TEST #8: PASS
-  Test fv3_regional_control starting at Sun Oct 27 22:55:31 UTC 2019 (Compare FV3 regional control results with previous trunk version)
-  Sun Oct 27 22:55:31 UTC 2019
+  Test fv3_regional_control starting at Tue Nov 12 23:53:06 UTC 2019 (Compare FV3 regional control results with previous trunk version)
+  Tue Nov 12 23:53:06 UTC 2019
   atmos_4xdaily.nc: bit-for-bit identical
   fv3_history2d.nc: bit-for-bit identical
   fv3_history.nc: bit-for-bit identical
-  TEST PASSED AT Sun Oct 27 23:01:45 UTC 2019
+  TEST PASSED AT Tue Nov 12 23:59:20 UTC 2019
 
 TEST #9: PASS
-  Test fv3_wrtGauss_netcdf starting at Sun Oct 27 23:34:52 UTC 2019 (Compare FV3 Gaussian grid netcdf output results with previous trunk version)
-  Sun Oct 27 23:34:52 UTC 2019
+  Test fv3_wrtGauss_netcdf starting at Tue Nov 12 23:26:11 UTC 2019 (Compare FV3 Gaussian grid netcdf output results with previous trunk version)
+  Tue Nov 12 23:26:11 UTC 2019
   atmos_4xdaily.tile1.nc: bit-for-bit identical
   atmos_4xdaily.tile2.nc: bit-for-bit identical
   atmos_4xdaily.tile3.nc: bit-for-bit identical
@@ -479,13 +524,13 @@ TEST #9: PASS
   RESTART/sfc_data.tile6.nc: bit-for-bit identical
   Executable did not change during test suite:
     File: ./fv3.exe
-    Expected md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-    Actual md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-  TEST PASSED AT Sun Oct 27 23:36:06 UTC 2019
+    Expected md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+    Actual md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+  TEST PASSED AT Tue Nov 12 23:27:22 UTC 2019
 
 TEST #10: PASS
-  Test fv3_thompson starting at Sun Oct 27 23:34:52 UTC 2019 (Compare FV3 GFDL mircrophysics results  with previous trunk version)
-  Sun Oct 27 23:34:52 UTC 2019
+  Test fv3_thompson starting at Wed Nov 13 00:19:45 UTC 2019 (Compare FV3 GFDL mircrophysics results  with previous trunk version)
+  Wed Nov 13 00:19:45 UTC 2019
   atmos_4xdaily.tile1.nc: bit-for-bit identical
   atmos_4xdaily.tile2.nc: bit-for-bit identical
   atmos_4xdaily.tile3.nc: bit-for-bit identical
@@ -550,19 +595,19 @@ TEST #10: PASS
   RESTART/sfc_data.tile6.nc: bit-for-bit identical
   Executable did not change during test suite:
     File: ./fv3.exe
-    Expected md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-    Actual md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-  TEST PASSED AT Sun Oct 27 23:39:21 UTC 2019
+    Expected md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+    Actual md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+  TEST PASSED AT Wed Nov 13 00:24:19 UTC 2019
 
 TEST #11: PASS
-  Test fv3_control_debug starting at Sun Oct 27 23:44:58 UTC 2019 (Compare FV3 control/debug results with previous trunk version)
-  Sun Oct 27 23:44:58 UTC 2019
+  Test fv3_control_debug starting at Tue Nov 12 23:56:50 UTC 2019 (Compare FV3 control/debug results with previous trunk version)
+  Tue Nov 12 23:56:50 UTC 2019
   global_o3prdlos.f77: bit-for-bit identical
-  TEST PASSED AT Sun Oct 27 23:47:09 UTC 2019
+  TEST PASSED AT Tue Nov 12 23:59:09 UTC 2019
 
 TEST #12: PASS
-  Test fv3_gfdlmprad_gwd starting at Sun Oct 27 23:34:52 UTC 2019 (Compare FV3 GFDL radiation interaction option and gravity wve drag results with previous trunk version)
-  Sun Oct 27 23:34:52 UTC 2019
+  Test fv3_gfdlmprad_gwd starting at Tue Nov 12 23:26:12 UTC 2019 (Compare FV3 GFDL radiation interaction option and gravity wve drag results with previous trunk version)
+  Tue Nov 12 23:26:12 UTC 2019
   atmos_4xdaily.tile1.nc: bit-for-bit identical
   atmos_4xdaily.tile2.nc: bit-for-bit identical
   atmos_4xdaily.tile3.nc: bit-for-bit identical
@@ -607,13 +652,13 @@ TEST #12: PASS
   RESTART/sfc_data.tile6.nc: bit-for-bit identical
   Executable did not change during test suite:
     File: ./fv3.exe
-    Expected md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-    Actual md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-  TEST PASSED AT Sun Oct 27 23:36:12 UTC 2019
+    Expected md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+    Actual md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+  TEST PASSED AT Tue Nov 12 23:27:35 UTC 2019
 
 TEST #13: PASS
-  Test fv3_stochy starting at Sun Oct 27 23:34:53 UTC 2019 (Compare FV3 stochy results with previous trunk version)
-  Sun Oct 27 23:34:53 UTC 2019
+  Test fv3_stochy starting at Tue Nov 12 23:26:11 UTC 2019 (Compare FV3 stochy results with previous trunk version)
+  Tue Nov 12 23:26:11 UTC 2019
   atmos_4xdaily.tile1.nc: bit-for-bit identical
   atmos_4xdaily.tile2.nc: bit-for-bit identical
   atmos_4xdaily.tile3.nc: bit-for-bit identical
@@ -678,13 +723,75 @@ TEST #13: PASS
   RESTART/sfc_data.tile6.nc: bit-for-bit identical
   Executable did not change during test suite:
     File: ./fv3.exe
-    Expected md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-    Actual md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-  TEST PASSED AT Sun Oct 27 23:36:14 UTC 2019
+    Expected md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+    Actual md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+  TEST PASSED AT Tue Nov 12 23:27:39 UTC 2019
 
 TEST #14: PASS
-  Test fv3_appbuilder starting at Mon Oct 28 00:00:34 UTC 2019 (Compare FV3 with the NEMSAppBuilder against the previous trunk version)
-  Mon Oct 28 00:00:34 UTC 2019
+  Test fv3_regional_c768 starting at Tue Nov 12 23:53:07 UTC 2019 (Compare FV3 regional c768 results with previous trunk version)
+  Tue Nov 12 23:53:07 UTC 2019
+  atmos_4xdaily.nc: bit-for-bit identical
+  fv3_history2d.nc: bit-for-bit identical
+  fv3_history.nc: bit-for-bit identical
+  TEST PASSED AT Wed Nov 13 00:04:02 UTC 2019
+
+TEST #15: PASS
+  Test fv3_gfdlmprad starting at Wed Nov 13 00:22:01 UTC 2019 (Compare FV3 GFDL mircrophysics radiation change with WW3 results with previous trunk version)
+  Wed Nov 13 00:22:01 UTC 2019
+  atmos_4xdaily.tile1.nc: bit-for-bit identical
+  atmos_4xdaily.tile2.nc: bit-for-bit identical
+  atmos_4xdaily.tile3.nc: bit-for-bit identical
+  atmos_4xdaily.tile4.nc: bit-for-bit identical
+  atmos_4xdaily.tile5.nc: bit-for-bit identical
+  atmos_4xdaily.tile6.nc: bit-for-bit identical
+  phyf000.nemsio: bit-for-bit identical
+  phyf024.nemsio: bit-for-bit identical
+  dynf000.nemsio: bit-for-bit identical
+  dynf024.nemsio: bit-for-bit identical
+  RESTART/coupler.res: bit-for-bit identical
+  RESTART/fv_core.res.nc: bit-for-bit identical
+  RESTART/fv_core.res.tile1.nc: bit-for-bit identical
+  RESTART/fv_core.res.tile2.nc: bit-for-bit identical
+  RESTART/fv_core.res.tile3.nc: bit-for-bit identical
+  RESTART/fv_core.res.tile4.nc: bit-for-bit identical
+  RESTART/fv_core.res.tile5.nc: bit-for-bit identical
+  RESTART/fv_core.res.tile6.nc: bit-for-bit identical
+  RESTART/fv_srf_wnd.res.tile1.nc: bit-for-bit identical
+  RESTART/fv_srf_wnd.res.tile2.nc: bit-for-bit identical
+  RESTART/fv_srf_wnd.res.tile3.nc: bit-for-bit identical
+  RESTART/fv_srf_wnd.res.tile4.nc: bit-for-bit identical
+  RESTART/fv_srf_wnd.res.tile5.nc: bit-for-bit identical
+  RESTART/fv_srf_wnd.res.tile6.nc: bit-for-bit identical
+  RESTART/fv_tracer.res.tile1.nc: bit-for-bit identical
+  RESTART/fv_tracer.res.tile2.nc: bit-for-bit identical
+  RESTART/fv_tracer.res.tile3.nc: bit-for-bit identical
+  RESTART/fv_tracer.res.tile4.nc: bit-for-bit identical
+  RESTART/fv_tracer.res.tile5.nc: bit-for-bit identical
+  RESTART/fv_tracer.res.tile6.nc: bit-for-bit identical
+  RESTART/phy_data.tile1.nc: bit-for-bit identical
+  RESTART/phy_data.tile2.nc: bit-for-bit identical
+  RESTART/phy_data.tile3.nc: bit-for-bit identical
+  RESTART/phy_data.tile4.nc: bit-for-bit identical
+  RESTART/phy_data.tile5.nc: bit-for-bit identical
+  RESTART/phy_data.tile6.nc: bit-for-bit identical
+  RESTART/sfc_data.tile1.nc: bit-for-bit identical
+  RESTART/sfc_data.tile2.nc: bit-for-bit identical
+  RESTART/sfc_data.tile3.nc: bit-for-bit identical
+  RESTART/sfc_data.tile4.nc: bit-for-bit identical
+  RESTART/sfc_data.tile5.nc: bit-for-bit identical
+  RESTART/sfc_data.tile6.nc: bit-for-bit identical
+  out_grd.glo_30m: bit-for-bit identical
+  weightmatrix_ATM-TO-WAV_inst_merid_wind_height10m.nc: bit-for-bit identical
+  weightmatrix_ATM-TO-WAV_inst_zonal_wind_height10m.nc: bit-for-bit identical
+  Executable did not change during test suite:
+    File: /scratch1/NCEPDEV/stmp2/Dusan.Jovic/scrub/rtgen.275615/exec/fv3_ww3.exe
+    Expected md5sum: f790ad64595dc74a0af51dd50bf05041
+    Actual md5sum: f790ad64595dc74a0af51dd50bf05041
+  TEST PASSED AT Wed Nov 13 00:25:43 UTC 2019
+
+TEST #16: PASS
+  Test fv3_appbuilder starting at Wed Nov 13 00:36:18 UTC 2019 (Compare FV3 with the NEMSAppBuilder against the previous trunk version)
+  Wed Nov 13 00:36:18 UTC 2019
   atmos_4xdaily.tile1.nc: bit-for-bit identical
   atmos_4xdaily.tile2.nc: bit-for-bit identical
   atmos_4xdaily.tile3.nc: bit-for-bit identical
@@ -748,14 +855,14 @@ TEST #14: PASS
   RESTART/sfc_data.tile5.nc: bit-for-bit identical
   RESTART/sfc_data.tile6.nc: bit-for-bit identical
   Executable did not change during test suite:
-    File: /scratch1/BMC/gmtb/Dom.Heinzeller/FV3_RT/rtgen.114532/exec/fv3_appbuilder.exe
-    Expected md5sum: 0e77511fcc56d905d7efb7c41ecf6d49
-    Actual md5sum: 0e77511fcc56d905d7efb7c41ecf6d49
-  TEST PASSED AT Mon Oct 28 00:01:57 UTC 2019
+    File: /scratch1/NCEPDEV/stmp2/Dusan.Jovic/scrub/rtgen.275615/exec/fv3_appbuilder.exe
+    Expected md5sum: 8028bb653bece24b89fdfd6b2b434ade
+    Actual md5sum: 8028bb653bece24b89fdfd6b2b434ade
+  TEST PASSED AT Wed Nov 13 00:37:45 UTC 2019
 
-TEST #15: PASS
-  Test fv3_restart starting at Sun Oct 27 23:34:52 UTC 2019 (Compare FV3 restart results with previous trunk version)
-  Sun Oct 27 23:34:52 UTC 2019
+TEST #17: PASS
+  Test fv3_restart starting at Tue Nov 12 23:26:11 UTC 2019 (Compare FV3 restart results with previous trunk version)
+  Tue Nov 12 23:26:11 UTC 2019
   atmos_4xdaily.tile1.nc: bit-for-bit identical
   atmos_4xdaily.tile2.nc: bit-for-bit identical
   atmos_4xdaily.tile3.nc: bit-for-bit identical
@@ -820,21 +927,21 @@ TEST #15: PASS
   RESTART/sfc_data.tile6.nc: bit-for-bit identical
   Executable did not change during test suite:
     File: ./fv3.exe
-    Expected md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-    Actual md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-  TEST PASSED AT Sun Oct 27 23:36:00 UTC 2019
+    Expected md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+    Actual md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+  TEST PASSED AT Tue Nov 12 23:27:22 UTC 2019
 
-TEST #16: PASS
-  Test fv3_regional_restart starting at Sun Oct 27 23:13:07 UTC 2019 (Compare FV3 regional restart results with previous trunk version)
-  Sun Oct 27 23:13:07 UTC 2019
+TEST #18: PASS
+  Test fv3_regional_restart starting at Wed Nov 13 00:00:31 UTC 2019 (Compare FV3 regional restart results with previous trunk version)
+  Wed Nov 13 00:00:31 UTC 2019
   atmos_4xdaily.nc: bit-for-bit identical
   fv3_history2d.nc: bit-for-bit identical
   fv3_history.nc: bit-for-bit identical
-  TEST PASSED AT Sun Oct 27 23:16:25 UTC 2019
+  TEST PASSED AT Wed Nov 13 00:03:51 UTC 2019
 
-TEST #17: PASS
-  Test fv3_decomp starting at Sun Oct 27 23:37:33 UTC 2019 (Compare FV3 decomp results with previous trunk version)
-  Sun Oct 27 23:37:33 UTC 2019
+TEST #19: PASS
+  Test fv3_decomp starting at Tue Nov 12 23:26:11 UTC 2019 (Compare FV3 decomp results with previous trunk version)
+  Tue Nov 12 23:26:11 UTC 2019
   atmos_4xdaily.tile1.nc: bit-for-bit identical
   atmos_4xdaily.tile2.nc: bit-for-bit identical
   atmos_4xdaily.tile3.nc: bit-for-bit identical
@@ -899,33 +1006,31 @@ TEST #17: PASS
   RESTART/sfc_data.tile6.nc: bit-for-bit identical
   Executable did not change during test suite:
     File: ./fv3.exe
-    Expected md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-    Actual md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-  TEST PASSED AT Sun Oct 27 23:38:45 UTC 2019
+    Expected md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+    Actual md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+  TEST PASSED AT Tue Nov 12 23:27:26 UTC 2019
 
-TEST #18: PASS
-  Test fv3_regional_quilt starting at Sun Oct 27 22:55:31 UTC 2019 (Compare FV3 regional quilt results with previous trunk version)
-  Sun Oct 27 22:55:31 UTC 2019
+TEST #20: PASS
+  Test fv3_regional_quilt starting at Tue Nov 12 23:53:07 UTC 2019 (Compare FV3 regional quilt results with previous trunk version)
+  Tue Nov 12 23:53:07 UTC 2019
   atmos_4xdaily.nc: bit-for-bit identical
   dynf000.nc: bit-for-bit identical
   dynf024.nc: bit-for-bit identical
   phyf000.nc: bit-for-bit identical
   phyf024.nc: bit-for-bit identical
-  TEST PASSED AT Sun Oct 27 23:01:59 UTC 2019
+  TEST PASSED AT Tue Nov 12 23:59:33 UTC 2019
 
-TEST #19: PASS
-  Test fv3_wrtGauss_nemsio starting at Sun Oct 27 23:38:05 UTC 2019 (Compare FV3 Gaussian grid nemsio output results with previous trunk version)
-  Sun Oct 27 23:38:05 UTC 2019
+TEST #21: PASS
+  Test fv3_wrtGauss_nemsio_c768 starting at Wed Nov 13 00:23:19 UTC 2019 (Compare c768 FV3-WW3 Gaussian grid nemsio output results with previous trunk version)
+  Wed Nov 13 00:23:19 UTC 2019
   atmos_4xdaily.tile1.nc: bit-for-bit identical
   atmos_4xdaily.tile2.nc: bit-for-bit identical
   atmos_4xdaily.tile3.nc: bit-for-bit identical
   atmos_4xdaily.tile4.nc: bit-for-bit identical
   atmos_4xdaily.tile5.nc: bit-for-bit identical
   atmos_4xdaily.tile6.nc: bit-for-bit identical
-  phyf000.nemsio: bit-for-bit identical
-  phyf024.nemsio: bit-for-bit identical
-  dynf000.nemsio: bit-for-bit identical
-  dynf024.nemsio: bit-for-bit identical
+  phyf006.nemsio: bit-for-bit identical
+  dynf006.nemsio: bit-for-bit identical
   RESTART/coupler.res: bit-for-bit identical
   RESTART/fv_core.res.nc: bit-for-bit identical
   RESTART/fv_core.res.tile1.nc: bit-for-bit identical
@@ -958,15 +1063,18 @@ TEST #19: PASS
   RESTART/sfc_data.tile4.nc: bit-for-bit identical
   RESTART/sfc_data.tile5.nc: bit-for-bit identical
   RESTART/sfc_data.tile6.nc: bit-for-bit identical
+  out_grd.glo_30m: bit-for-bit identical
+  weightmatrix_ATM-TO-WAV_inst_merid_wind_height10m.nc: bit-for-bit identical
+  weightmatrix_ATM-TO-WAV_inst_zonal_wind_height10m.nc: bit-for-bit identical
   Executable did not change during test suite:
-    File: ./fv3.exe
-    Expected md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-    Actual md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-  TEST PASSED AT Sun Oct 27 23:39:11 UTC 2019
+    File: /scratch1/NCEPDEV/stmp2/Dusan.Jovic/scrub/rtgen.275615/exec/fv3_ww3.exe
+    Expected md5sum: f790ad64595dc74a0af51dd50bf05041
+    Actual md5sum: f790ad64595dc74a0af51dd50bf05041
+  TEST PASSED AT Wed Nov 13 00:34:23 UTC 2019
 
-TEST #20: PASS
-  Test fv3_control_32bit starting at Sun Oct 27 22:55:31 UTC 2019 (Compare FV3 32bit compile results with previous trunk version)
-  Sun Oct 27 22:55:32 UTC 2019
+TEST #22: PASS
+  Test fv3_control_32bit starting at Tue Nov 12 23:53:06 UTC 2019 (Compare FV3 32bit compile results with previous trunk version)
+  Tue Nov 12 23:53:06 UTC 2019
   atmos_4xdaily.tile1.nc: bit-for-bit identical
   atmos_4xdaily.tile2.nc: bit-for-bit identical
   atmos_4xdaily.tile3.nc: bit-for-bit identical
@@ -1029,11 +1137,11 @@ TEST #20: PASS
   RESTART/sfc_data.tile4.nc: bit-for-bit identical
   RESTART/sfc_data.tile5.nc: bit-for-bit identical
   RESTART/sfc_data.tile6.nc: bit-for-bit identical
-  TEST PASSED AT Sun Oct 27 22:56:39 UTC 2019
+  TEST PASSED AT Tue Nov 12 23:54:11 UTC 2019
 
-TEST #21: PASS
-  Test fv3_gfdlmprad_32bit_post starting at Sun Oct 27 22:55:31 UTC 2019 (Compare FV3 GFDL mircrophysics radiation change with inline post results with previous trunk version)
-  Sun Oct 27 22:55:31 UTC 2019
+TEST #23: PASS
+  Test fv3_gfdlmprad_32bit_post starting at Tue Nov 12 23:53:06 UTC 2019 (Compare FV3 GFDL mircrophysics radiation change with inline post results with previous trunk version)
+  Tue Nov 12 23:53:06 UTC 2019
   atmos_4xdaily.tile1.nc: bit-for-bit identical
   atmos_4xdaily.tile2.nc: bit-for-bit identical
   atmos_4xdaily.tile3.nc: bit-for-bit identical
@@ -1078,11 +1186,11 @@ TEST #21: PASS
   RESTART/sfc_data.tile4.nc: bit-for-bit identical
   RESTART/sfc_data.tile5.nc: bit-for-bit identical
   RESTART/sfc_data.tile6.nc: bit-for-bit identical
-  TEST PASSED AT Sun Oct 27 22:57:21 UTC 2019
+  TEST PASSED AT Tue Nov 12 23:55:15 UTC 2019
 
-TEST #22: PASS
-  Test fv3_csawmg3shoc127 starting at Sun Oct 27 23:34:53 UTC 2019 (Compare 127 L FV3 with CSAW MG3 and SHOC results with previous trunk version)
-  Sun Oct 27 23:34:53 UTC 2019
+TEST #24: PASS
+  Test fv3_csawmg3shoc127 starting at Tue Nov 12 23:26:11 UTC 2019 (Compare 127 L FV3 with CSAW MG3 and SHOC results with previous trunk version)
+  Tue Nov 12 23:26:11 UTC 2019
   atmos_4xdaily.tile1.nc: bit-for-bit identical
   atmos_4xdaily.tile2.nc: bit-for-bit identical
   atmos_4xdaily.tile3.nc: bit-for-bit identical
@@ -1127,13 +1235,13 @@ TEST #22: PASS
   RESTART/sfc_data.tile6.nc: bit-for-bit identical
   Executable did not change during test suite:
     File: ./fv3.exe
-    Expected md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-    Actual md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-  TEST PASSED AT Sun Oct 27 23:39:55 UTC 2019
+    Expected md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+    Actual md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+  TEST PASSED AT Tue Nov 12 23:31:14 UTC 2019
 
-TEST #23: PASS
-  Test fv3_read_inc starting at Sun Oct 27 23:38:07 UTC 2019 (Compare FV3 read_inc results with previous trunk version)
-  Sun Oct 27 23:38:07 UTC 2019
+TEST #25: PASS
+  Test fv3_read_inc starting at Tue Nov 12 23:26:11 UTC 2019 (Compare FV3 read_inc results with previous trunk version)
+  Tue Nov 12 23:26:11 UTC 2019
   atmos_4xdaily.tile1.nc: bit-for-bit identical
   atmos_4xdaily.tile2.nc: bit-for-bit identical
   atmos_4xdaily.tile3.nc: bit-for-bit identical
@@ -1198,243 +1306,64 @@ TEST #23: PASS
   RESTART/sfc_data.tile6.nc: bit-for-bit identical
   Executable did not change during test suite:
     File: ./fv3.exe
-    Expected md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-    Actual md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-  TEST PASSED AT Sun Oct 27 23:39:16 UTC 2019
-
-TEST #24: PASS
-  Test fv3_satmedmf starting at Sun Oct 27 23:39:44 UTC 2019 (Compare FV3 control with satmedmf on Gaussian grid nemsio output results with previous trunk version)
-  Sun Oct 27 23:39:44 UTC 2019
-  atmos_4xdaily.tile1.nc: bit-for-bit identical
-  atmos_4xdaily.tile2.nc: bit-for-bit identical
-  atmos_4xdaily.tile3.nc: bit-for-bit identical
-  atmos_4xdaily.tile4.nc: bit-for-bit identical
-  atmos_4xdaily.tile5.nc: bit-for-bit identical
-  atmos_4xdaily.tile6.nc: bit-for-bit identical
-  phyf000.nemsio: bit-for-bit identical
-  phyf024.nemsio: bit-for-bit identical
-  dynf000.nemsio: bit-for-bit identical
-  dynf024.nemsio: bit-for-bit identical
-  RESTART/coupler.res: bit-for-bit identical
-  RESTART/fv_core.res.nc: bit-for-bit identical
-  RESTART/fv_core.res.tile1.nc: bit-for-bit identical
-  RESTART/fv_core.res.tile2.nc: bit-for-bit identical
-  RESTART/fv_core.res.tile3.nc: bit-for-bit identical
-  RESTART/fv_core.res.tile4.nc: bit-for-bit identical
-  RESTART/fv_core.res.tile5.nc: bit-for-bit identical
-  RESTART/fv_core.res.tile6.nc: bit-for-bit identical
-  RESTART/fv_srf_wnd.res.tile1.nc: bit-for-bit identical
-  RESTART/fv_srf_wnd.res.tile2.nc: bit-for-bit identical
-  RESTART/fv_srf_wnd.res.tile3.nc: bit-for-bit identical
-  RESTART/fv_srf_wnd.res.tile4.nc: bit-for-bit identical
-  RESTART/fv_srf_wnd.res.tile5.nc: bit-for-bit identical
-  RESTART/fv_srf_wnd.res.tile6.nc: bit-for-bit identical
-  RESTART/fv_tracer.res.tile1.nc: bit-for-bit identical
-  RESTART/fv_tracer.res.tile2.nc: bit-for-bit identical
-  RESTART/fv_tracer.res.tile3.nc: bit-for-bit identical
-  RESTART/fv_tracer.res.tile4.nc: bit-for-bit identical
-  RESTART/fv_tracer.res.tile5.nc: bit-for-bit identical
-  RESTART/fv_tracer.res.tile6.nc: bit-for-bit identical
-  RESTART/phy_data.tile1.nc: bit-for-bit identical
-  RESTART/phy_data.tile2.nc: bit-for-bit identical
-  RESTART/phy_data.tile3.nc: bit-for-bit identical
-  RESTART/phy_data.tile4.nc: bit-for-bit identical
-  RESTART/phy_data.tile5.nc: bit-for-bit identical
-  RESTART/phy_data.tile6.nc: bit-for-bit identical
-  RESTART/sfc_data.tile1.nc: bit-for-bit identical
-  RESTART/sfc_data.tile2.nc: bit-for-bit identical
-  RESTART/sfc_data.tile3.nc: bit-for-bit identical
-  RESTART/sfc_data.tile4.nc: bit-for-bit identical
-  RESTART/sfc_data.tile5.nc: bit-for-bit identical
-  RESTART/sfc_data.tile6.nc: bit-for-bit identical
-  Executable did not change during test suite:
-    File: ./fv3.exe
-    Expected md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-    Actual md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-  TEST PASSED AT Sun Oct 27 23:40:50 UTC 2019
-
-TEST #25: PASS
-  Test fv3_control starting at Sun Oct 27 23:39:44 UTC 2019 (Compare FV3 control results with previous trunk version)
-  Sun Oct 27 23:39:44 UTC 2019
-  atmos_4xdaily.tile1.nc: bit-for-bit identical
-  atmos_4xdaily.tile2.nc: bit-for-bit identical
-  atmos_4xdaily.tile3.nc: bit-for-bit identical
-  atmos_4xdaily.tile4.nc: bit-for-bit identical
-  atmos_4xdaily.tile5.nc: bit-for-bit identical
-  atmos_4xdaily.tile6.nc: bit-for-bit identical
-  phyf000.tile1.nc: bit-for-bit identical
-  phyf000.tile2.nc: bit-for-bit identical
-  phyf000.tile3.nc: bit-for-bit identical
-  phyf000.tile4.nc: bit-for-bit identical
-  phyf000.tile5.nc: bit-for-bit identical
-  phyf000.tile6.nc: bit-for-bit identical
-  phyf024.tile1.nc: bit-for-bit identical
-  phyf024.tile2.nc: bit-for-bit identical
-  phyf024.tile3.nc: bit-for-bit identical
-  phyf024.tile4.nc: bit-for-bit identical
-  phyf024.tile5.nc: bit-for-bit identical
-  phyf024.tile6.nc: bit-for-bit identical
-  dynf000.tile1.nc: bit-for-bit identical
-  dynf000.tile2.nc: bit-for-bit identical
-  dynf000.tile3.nc: bit-for-bit identical
-  dynf000.tile4.nc: bit-for-bit identical
-  dynf000.tile5.nc: bit-for-bit identical
-  dynf000.tile6.nc: bit-for-bit identical
-  dynf024.tile1.nc: bit-for-bit identical
-  dynf024.tile2.nc: bit-for-bit identical
-  dynf024.tile3.nc: bit-for-bit identical
-  dynf024.tile4.nc: bit-for-bit identical
-  dynf024.tile5.nc: bit-for-bit identical
-  dynf024.tile6.nc: bit-for-bit identical
-  RESTART/coupler.res: bit-for-bit identical
-  RESTART/fv_core.res.nc: bit-for-bit identical
-  RESTART/fv_core.res.tile1.nc: bit-for-bit identical
-  RESTART/fv_core.res.tile2.nc: bit-for-bit identical
-  RESTART/fv_core.res.tile3.nc: bit-for-bit identical
-  RESTART/fv_core.res.tile4.nc: bit-for-bit identical
-  RESTART/fv_core.res.tile5.nc: bit-for-bit identical
-  RESTART/fv_core.res.tile6.nc: bit-for-bit identical
-  RESTART/fv_srf_wnd.res.tile1.nc: bit-for-bit identical
-  RESTART/fv_srf_wnd.res.tile2.nc: bit-for-bit identical
-  RESTART/fv_srf_wnd.res.tile3.nc: bit-for-bit identical
-  RESTART/fv_srf_wnd.res.tile4.nc: bit-for-bit identical
-  RESTART/fv_srf_wnd.res.tile5.nc: bit-for-bit identical
-  RESTART/fv_srf_wnd.res.tile6.nc: bit-for-bit identical
-  RESTART/fv_tracer.res.tile1.nc: bit-for-bit identical
-  RESTART/fv_tracer.res.tile2.nc: bit-for-bit identical
-  RESTART/fv_tracer.res.tile3.nc: bit-for-bit identical
-  RESTART/fv_tracer.res.tile4.nc: bit-for-bit identical
-  RESTART/fv_tracer.res.tile5.nc: bit-for-bit identical
-  RESTART/fv_tracer.res.tile6.nc: bit-for-bit identical
-  RESTART/phy_data.tile1.nc: bit-for-bit identical
-  RESTART/phy_data.tile2.nc: bit-for-bit identical
-  RESTART/phy_data.tile3.nc: bit-for-bit identical
-  RESTART/phy_data.tile4.nc: bit-for-bit identical
-  RESTART/phy_data.tile5.nc: bit-for-bit identical
-  RESTART/phy_data.tile6.nc: bit-for-bit identical
-  RESTART/sfc_data.tile1.nc: bit-for-bit identical
-  RESTART/sfc_data.tile2.nc: bit-for-bit identical
-  RESTART/sfc_data.tile3.nc: bit-for-bit identical
-  RESTART/sfc_data.tile4.nc: bit-for-bit identical
-  RESTART/sfc_data.tile5.nc: bit-for-bit identical
-  RESTART/sfc_data.tile6.nc: bit-for-bit identical
-  Executable did not change during test suite:
-    File: ./fv3.exe
-    Expected md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-    Actual md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-  TEST PASSED AT Sun Oct 27 23:40:51 UTC 2019
+    Expected md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+    Actual md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+  TEST PASSED AT Tue Nov 12 23:27:26 UTC 2019
 
 TEST #26: PASS
-  Test fv3_stretched_nest_debug starting at Sun Oct 27 23:44:58 UTC 2019 (Stretched grid with nest - debug; compare against previous baseline)
-  Sun Oct 27 23:44:58 UTC 2019
-  global_o3prdlos.f77: bit-for-bit identical
-  TEST PASSED AT Sun Oct 27 23:49:21 UTC 2019
+  Test fv3_satmedmf starting at Tue Nov 12 23:26:12 UTC 2019 (Compare FV3 control with satmedmf on Gaussian grid nemsio output results with previous trunk version)
+  Tue Nov 12 23:26:12 UTC 2019
+  atmos_4xdaily.tile1.nc: bit-for-bit identical
+  atmos_4xdaily.tile2.nc: bit-for-bit identical
+  atmos_4xdaily.tile3.nc: bit-for-bit identical
+  atmos_4xdaily.tile4.nc: bit-for-bit identical
+  atmos_4xdaily.tile5.nc: bit-for-bit identical
+  atmos_4xdaily.tile6.nc: bit-for-bit identical
+  phyf000.nemsio: bit-for-bit identical
+  phyf024.nemsio: bit-for-bit identical
+  dynf000.nemsio: bit-for-bit identical
+  dynf024.nemsio: bit-for-bit identical
+  RESTART/coupler.res: bit-for-bit identical
+  RESTART/fv_core.res.nc: bit-for-bit identical
+  RESTART/fv_core.res.tile1.nc: bit-for-bit identical
+  RESTART/fv_core.res.tile2.nc: bit-for-bit identical
+  RESTART/fv_core.res.tile3.nc: bit-for-bit identical
+  RESTART/fv_core.res.tile4.nc: bit-for-bit identical
+  RESTART/fv_core.res.tile5.nc: bit-for-bit identical
+  RESTART/fv_core.res.tile6.nc: bit-for-bit identical
+  RESTART/fv_srf_wnd.res.tile1.nc: bit-for-bit identical
+  RESTART/fv_srf_wnd.res.tile2.nc: bit-for-bit identical
+  RESTART/fv_srf_wnd.res.tile3.nc: bit-for-bit identical
+  RESTART/fv_srf_wnd.res.tile4.nc: bit-for-bit identical
+  RESTART/fv_srf_wnd.res.tile5.nc: bit-for-bit identical
+  RESTART/fv_srf_wnd.res.tile6.nc: bit-for-bit identical
+  RESTART/fv_tracer.res.tile1.nc: bit-for-bit identical
+  RESTART/fv_tracer.res.tile2.nc: bit-for-bit identical
+  RESTART/fv_tracer.res.tile3.nc: bit-for-bit identical
+  RESTART/fv_tracer.res.tile4.nc: bit-for-bit identical
+  RESTART/fv_tracer.res.tile5.nc: bit-for-bit identical
+  RESTART/fv_tracer.res.tile6.nc: bit-for-bit identical
+  RESTART/phy_data.tile1.nc: bit-for-bit identical
+  RESTART/phy_data.tile2.nc: bit-for-bit identical
+  RESTART/phy_data.tile3.nc: bit-for-bit identical
+  RESTART/phy_data.tile4.nc: bit-for-bit identical
+  RESTART/phy_data.tile5.nc: bit-for-bit identical
+  RESTART/phy_data.tile6.nc: bit-for-bit identical
+  RESTART/sfc_data.tile1.nc: bit-for-bit identical
+  RESTART/sfc_data.tile2.nc: bit-for-bit identical
+  RESTART/sfc_data.tile3.nc: bit-for-bit identical
+  RESTART/sfc_data.tile4.nc: bit-for-bit identical
+  RESTART/sfc_data.tile5.nc: bit-for-bit identical
+  RESTART/sfc_data.tile6.nc: bit-for-bit identical
+  Executable did not change during test suite:
+    File: ./fv3.exe
+    Expected md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+    Actual md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+  TEST PASSED AT Tue Nov 12 23:27:22 UTC 2019
 
 TEST #27: PASS
-  Test fv3_gfdlmp starting at Sun Oct 27 23:39:44 UTC 2019 (Compare FV3 GFDL mircrophysics results  with previous trunk version)
-  Sun Oct 27 23:39:44 UTC 2019
-  atmos_4xdaily.tile1.nc: bit-for-bit identical
-  atmos_4xdaily.tile2.nc: bit-for-bit identical
-  atmos_4xdaily.tile3.nc: bit-for-bit identical
-  atmos_4xdaily.tile4.nc: bit-for-bit identical
-  atmos_4xdaily.tile5.nc: bit-for-bit identical
-  atmos_4xdaily.tile6.nc: bit-for-bit identical
-  phyf000.nemsio: bit-for-bit identical
-  phyf024.nemsio: bit-for-bit identical
-  dynf000.nemsio: bit-for-bit identical
-  dynf024.nemsio: bit-for-bit identical
-  RESTART/coupler.res: bit-for-bit identical
-  RESTART/fv_core.res.nc: bit-for-bit identical
-  RESTART/fv_core.res.tile1.nc: bit-for-bit identical
-  RESTART/fv_core.res.tile2.nc: bit-for-bit identical
-  RESTART/fv_core.res.tile3.nc: bit-for-bit identical
-  RESTART/fv_core.res.tile4.nc: bit-for-bit identical
-  RESTART/fv_core.res.tile5.nc: bit-for-bit identical
-  RESTART/fv_core.res.tile6.nc: bit-for-bit identical
-  RESTART/fv_srf_wnd.res.tile1.nc: bit-for-bit identical
-  RESTART/fv_srf_wnd.res.tile2.nc: bit-for-bit identical
-  RESTART/fv_srf_wnd.res.tile3.nc: bit-for-bit identical
-  RESTART/fv_srf_wnd.res.tile4.nc: bit-for-bit identical
-  RESTART/fv_srf_wnd.res.tile5.nc: bit-for-bit identical
-  RESTART/fv_srf_wnd.res.tile6.nc: bit-for-bit identical
-  RESTART/fv_tracer.res.tile1.nc: bit-for-bit identical
-  RESTART/fv_tracer.res.tile2.nc: bit-for-bit identical
-  RESTART/fv_tracer.res.tile3.nc: bit-for-bit identical
-  RESTART/fv_tracer.res.tile4.nc: bit-for-bit identical
-  RESTART/fv_tracer.res.tile5.nc: bit-for-bit identical
-  RESTART/fv_tracer.res.tile6.nc: bit-for-bit identical
-  RESTART/phy_data.tile1.nc: bit-for-bit identical
-  RESTART/phy_data.tile2.nc: bit-for-bit identical
-  RESTART/phy_data.tile3.nc: bit-for-bit identical
-  RESTART/phy_data.tile4.nc: bit-for-bit identical
-  RESTART/phy_data.tile5.nc: bit-for-bit identical
-  RESTART/phy_data.tile6.nc: bit-for-bit identical
-  RESTART/sfc_data.tile1.nc: bit-for-bit identical
-  RESTART/sfc_data.tile2.nc: bit-for-bit identical
-  RESTART/sfc_data.tile3.nc: bit-for-bit identical
-  RESTART/sfc_data.tile4.nc: bit-for-bit identical
-  RESTART/sfc_data.tile5.nc: bit-for-bit identical
-  RESTART/sfc_data.tile6.nc: bit-for-bit identical
-  Executable did not change during test suite:
-    File: ./fv3.exe
-    Expected md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-    Actual md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-  TEST PASSED AT Sun Oct 27 23:40:59 UTC 2019
-
-TEST #28: PASS
-  Test fv3_gfdlmprad_noahmp starting at Sun Oct 27 23:39:44 UTC 2019 (Compare FV3 GFDL radiation interaction option and Noah MP results with previous trunk version)
-  Sun Oct 27 23:39:45 UTC 2019
-  atmos_4xdaily.tile1.nc: bit-for-bit identical
-  atmos_4xdaily.tile2.nc: bit-for-bit identical
-  atmos_4xdaily.tile3.nc: bit-for-bit identical
-  atmos_4xdaily.tile4.nc: bit-for-bit identical
-  atmos_4xdaily.tile5.nc: bit-for-bit identical
-  atmos_4xdaily.tile6.nc: bit-for-bit identical
-  phyf000.nemsio: bit-for-bit identical
-  phyf024.nemsio: bit-for-bit identical
-  dynf000.nemsio: bit-for-bit identical
-  dynf024.nemsio: bit-for-bit identical
-  RESTART/coupler.res: bit-for-bit identical
-  RESTART/fv_core.res.nc: bit-for-bit identical
-  RESTART/fv_core.res.tile1.nc: bit-for-bit identical
-  RESTART/fv_core.res.tile2.nc: bit-for-bit identical
-  RESTART/fv_core.res.tile3.nc: bit-for-bit identical
-  RESTART/fv_core.res.tile4.nc: bit-for-bit identical
-  RESTART/fv_core.res.tile5.nc: bit-for-bit identical
-  RESTART/fv_core.res.tile6.nc: bit-for-bit identical
-  RESTART/fv_srf_wnd.res.tile1.nc: bit-for-bit identical
-  RESTART/fv_srf_wnd.res.tile2.nc: bit-for-bit identical
-  RESTART/fv_srf_wnd.res.tile3.nc: bit-for-bit identical
-  RESTART/fv_srf_wnd.res.tile4.nc: bit-for-bit identical
-  RESTART/fv_srf_wnd.res.tile5.nc: bit-for-bit identical
-  RESTART/fv_srf_wnd.res.tile6.nc: bit-for-bit identical
-  RESTART/fv_tracer.res.tile1.nc: bit-for-bit identical
-  RESTART/fv_tracer.res.tile2.nc: bit-for-bit identical
-  RESTART/fv_tracer.res.tile3.nc: bit-for-bit identical
-  RESTART/fv_tracer.res.tile4.nc: bit-for-bit identical
-  RESTART/fv_tracer.res.tile5.nc: bit-for-bit identical
-  RESTART/fv_tracer.res.tile6.nc: bit-for-bit identical
-  RESTART/phy_data.tile1.nc: bit-for-bit identical
-  RESTART/phy_data.tile2.nc: bit-for-bit identical
-  RESTART/phy_data.tile3.nc: bit-for-bit identical
-  RESTART/phy_data.tile4.nc: bit-for-bit identical
-  RESTART/phy_data.tile5.nc: bit-for-bit identical
-  RESTART/phy_data.tile6.nc: bit-for-bit identical
-  RESTART/sfc_data.tile1.nc: bit-for-bit identical
-  RESTART/sfc_data.tile2.nc: bit-for-bit identical
-  RESTART/sfc_data.tile3.nc: bit-for-bit identical
-  RESTART/sfc_data.tile4.nc: bit-for-bit identical
-  RESTART/sfc_data.tile5.nc: bit-for-bit identical
-  RESTART/sfc_data.tile6.nc: bit-for-bit identical
-  Executable did not change during test suite:
-    File: ./fv3.exe
-    Expected md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-    Actual md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-  TEST PASSED AT Sun Oct 27 23:41:00 UTC 2019
-
-TEST #29: PASS
-  Test fv3_2threads starting at Sun Oct 27 23:39:43 UTC 2019 (Compare FV3 2 threads results with previous trunk version)
-  Sun Oct 27 23:39:43 UTC 2019
+  Test fv3_control starting at Tue Nov 12 23:26:11 UTC 2019 (Compare FV3 control results with previous trunk version)
+  Tue Nov 12 23:26:11 UTC 2019
   atmos_4xdaily.tile1.nc: bit-for-bit identical
   atmos_4xdaily.tile2.nc: bit-for-bit identical
   atmos_4xdaily.tile3.nc: bit-for-bit identical
@@ -1499,13 +1428,192 @@ TEST #29: PASS
   RESTART/sfc_data.tile6.nc: bit-for-bit identical
   Executable did not change during test suite:
     File: ./fv3.exe
-    Expected md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-    Actual md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-  TEST PASSED AT Sun Oct 27 23:40:58 UTC 2019
+    Expected md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+    Actual md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+  TEST PASSED AT Tue Nov 12 23:27:20 UTC 2019
+
+TEST #28: PASS
+  Test fv3_stretched_nest_debug starting at Tue Nov 12 23:56:53 UTC 2019 (Stretched grid with nest - debug; compare against previous baseline)
+  Tue Nov 12 23:56:53 UTC 2019
+  global_o3prdlos.f77: bit-for-bit identical
+  TEST PASSED AT Wed Nov 13 00:01:16 UTC 2019
+
+TEST #29: PASS
+  Test fv3_gfdlmp starting at Tue Nov 12 23:26:11 UTC 2019 (Compare FV3 GFDL mircrophysics results  with previous trunk version)
+  Tue Nov 12 23:26:11 UTC 2019
+  atmos_4xdaily.tile1.nc: bit-for-bit identical
+  atmos_4xdaily.tile2.nc: bit-for-bit identical
+  atmos_4xdaily.tile3.nc: bit-for-bit identical
+  atmos_4xdaily.tile4.nc: bit-for-bit identical
+  atmos_4xdaily.tile5.nc: bit-for-bit identical
+  atmos_4xdaily.tile6.nc: bit-for-bit identical
+  phyf000.nemsio: bit-for-bit identical
+  phyf024.nemsio: bit-for-bit identical
+  dynf000.nemsio: bit-for-bit identical
+  dynf024.nemsio: bit-for-bit identical
+  RESTART/coupler.res: bit-for-bit identical
+  RESTART/fv_core.res.nc: bit-for-bit identical
+  RESTART/fv_core.res.tile1.nc: bit-for-bit identical
+  RESTART/fv_core.res.tile2.nc: bit-for-bit identical
+  RESTART/fv_core.res.tile3.nc: bit-for-bit identical
+  RESTART/fv_core.res.tile4.nc: bit-for-bit identical
+  RESTART/fv_core.res.tile5.nc: bit-for-bit identical
+  RESTART/fv_core.res.tile6.nc: bit-for-bit identical
+  RESTART/fv_srf_wnd.res.tile1.nc: bit-for-bit identical
+  RESTART/fv_srf_wnd.res.tile2.nc: bit-for-bit identical
+  RESTART/fv_srf_wnd.res.tile3.nc: bit-for-bit identical
+  RESTART/fv_srf_wnd.res.tile4.nc: bit-for-bit identical
+  RESTART/fv_srf_wnd.res.tile5.nc: bit-for-bit identical
+  RESTART/fv_srf_wnd.res.tile6.nc: bit-for-bit identical
+  RESTART/fv_tracer.res.tile1.nc: bit-for-bit identical
+  RESTART/fv_tracer.res.tile2.nc: bit-for-bit identical
+  RESTART/fv_tracer.res.tile3.nc: bit-for-bit identical
+  RESTART/fv_tracer.res.tile4.nc: bit-for-bit identical
+  RESTART/fv_tracer.res.tile5.nc: bit-for-bit identical
+  RESTART/fv_tracer.res.tile6.nc: bit-for-bit identical
+  RESTART/phy_data.tile1.nc: bit-for-bit identical
+  RESTART/phy_data.tile2.nc: bit-for-bit identical
+  RESTART/phy_data.tile3.nc: bit-for-bit identical
+  RESTART/phy_data.tile4.nc: bit-for-bit identical
+  RESTART/phy_data.tile5.nc: bit-for-bit identical
+  RESTART/phy_data.tile6.nc: bit-for-bit identical
+  RESTART/sfc_data.tile1.nc: bit-for-bit identical
+  RESTART/sfc_data.tile2.nc: bit-for-bit identical
+  RESTART/sfc_data.tile3.nc: bit-for-bit identical
+  RESTART/sfc_data.tile4.nc: bit-for-bit identical
+  RESTART/sfc_data.tile5.nc: bit-for-bit identical
+  RESTART/sfc_data.tile6.nc: bit-for-bit identical
+  Executable did not change during test suite:
+    File: ./fv3.exe
+    Expected md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+    Actual md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+  TEST PASSED AT Tue Nov 12 23:27:28 UTC 2019
 
 TEST #30: PASS
-  Test fv3_wrtGauss_netcdf_esmf starting at Sun Oct 27 23:39:43 UTC 2019 (Compare FV3 Gaussian grid netcdf output results with previous trunk version)
-  Sun Oct 27 23:39:43 UTC 2019
+  Test fv3_gfdlmprad_noahmp starting at Tue Nov 12 23:26:11 UTC 2019 (Compare FV3 GFDL radiation interaction option and Noah MP results with previous trunk version)
+  Tue Nov 12 23:26:11 UTC 2019
+  atmos_4xdaily.tile1.nc: bit-for-bit identical
+  atmos_4xdaily.tile2.nc: bit-for-bit identical
+  atmos_4xdaily.tile3.nc: bit-for-bit identical
+  atmos_4xdaily.tile4.nc: bit-for-bit identical
+  atmos_4xdaily.tile5.nc: bit-for-bit identical
+  atmos_4xdaily.tile6.nc: bit-for-bit identical
+  phyf000.nemsio: bit-for-bit identical
+  phyf024.nemsio: bit-for-bit identical
+  dynf000.nemsio: bit-for-bit identical
+  dynf024.nemsio: bit-for-bit identical
+  RESTART/coupler.res: bit-for-bit identical
+  RESTART/fv_core.res.nc: bit-for-bit identical
+  RESTART/fv_core.res.tile1.nc: bit-for-bit identical
+  RESTART/fv_core.res.tile2.nc: bit-for-bit identical
+  RESTART/fv_core.res.tile3.nc: bit-for-bit identical
+  RESTART/fv_core.res.tile4.nc: bit-for-bit identical
+  RESTART/fv_core.res.tile5.nc: bit-for-bit identical
+  RESTART/fv_core.res.tile6.nc: bit-for-bit identical
+  RESTART/fv_srf_wnd.res.tile1.nc: bit-for-bit identical
+  RESTART/fv_srf_wnd.res.tile2.nc: bit-for-bit identical
+  RESTART/fv_srf_wnd.res.tile3.nc: bit-for-bit identical
+  RESTART/fv_srf_wnd.res.tile4.nc: bit-for-bit identical
+  RESTART/fv_srf_wnd.res.tile5.nc: bit-for-bit identical
+  RESTART/fv_srf_wnd.res.tile6.nc: bit-for-bit identical
+  RESTART/fv_tracer.res.tile1.nc: bit-for-bit identical
+  RESTART/fv_tracer.res.tile2.nc: bit-for-bit identical
+  RESTART/fv_tracer.res.tile3.nc: bit-for-bit identical
+  RESTART/fv_tracer.res.tile4.nc: bit-for-bit identical
+  RESTART/fv_tracer.res.tile5.nc: bit-for-bit identical
+  RESTART/fv_tracer.res.tile6.nc: bit-for-bit identical
+  RESTART/phy_data.tile1.nc: bit-for-bit identical
+  RESTART/phy_data.tile2.nc: bit-for-bit identical
+  RESTART/phy_data.tile3.nc: bit-for-bit identical
+  RESTART/phy_data.tile4.nc: bit-for-bit identical
+  RESTART/phy_data.tile5.nc: bit-for-bit identical
+  RESTART/phy_data.tile6.nc: bit-for-bit identical
+  RESTART/sfc_data.tile1.nc: bit-for-bit identical
+  RESTART/sfc_data.tile2.nc: bit-for-bit identical
+  RESTART/sfc_data.tile3.nc: bit-for-bit identical
+  RESTART/sfc_data.tile4.nc: bit-for-bit identical
+  RESTART/sfc_data.tile5.nc: bit-for-bit identical
+  RESTART/sfc_data.tile6.nc: bit-for-bit identical
+  Executable did not change during test suite:
+    File: ./fv3.exe
+    Expected md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+    Actual md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+  TEST PASSED AT Tue Nov 12 23:27:38 UTC 2019
+
+TEST #31: PASS
+  Test fv3_2threads starting at Tue Nov 12 23:26:15 UTC 2019 (Compare FV3 2 threads results with previous trunk version)
+  Tue Nov 12 23:26:15 UTC 2019
+  atmos_4xdaily.tile1.nc: bit-for-bit identical
+  atmos_4xdaily.tile2.nc: bit-for-bit identical
+  atmos_4xdaily.tile3.nc: bit-for-bit identical
+  atmos_4xdaily.tile4.nc: bit-for-bit identical
+  atmos_4xdaily.tile5.nc: bit-for-bit identical
+  atmos_4xdaily.tile6.nc: bit-for-bit identical
+  phyf000.tile1.nc: bit-for-bit identical
+  phyf000.tile2.nc: bit-for-bit identical
+  phyf000.tile3.nc: bit-for-bit identical
+  phyf000.tile4.nc: bit-for-bit identical
+  phyf000.tile5.nc: bit-for-bit identical
+  phyf000.tile6.nc: bit-for-bit identical
+  phyf024.tile1.nc: bit-for-bit identical
+  phyf024.tile2.nc: bit-for-bit identical
+  phyf024.tile3.nc: bit-for-bit identical
+  phyf024.tile4.nc: bit-for-bit identical
+  phyf024.tile5.nc: bit-for-bit identical
+  phyf024.tile6.nc: bit-for-bit identical
+  dynf000.tile1.nc: bit-for-bit identical
+  dynf000.tile2.nc: bit-for-bit identical
+  dynf000.tile3.nc: bit-for-bit identical
+  dynf000.tile4.nc: bit-for-bit identical
+  dynf000.tile5.nc: bit-for-bit identical
+  dynf000.tile6.nc: bit-for-bit identical
+  dynf024.tile1.nc: bit-for-bit identical
+  dynf024.tile2.nc: bit-for-bit identical
+  dynf024.tile3.nc: bit-for-bit identical
+  dynf024.tile4.nc: bit-for-bit identical
+  dynf024.tile5.nc: bit-for-bit identical
+  dynf024.tile6.nc: bit-for-bit identical
+  RESTART/coupler.res: bit-for-bit identical
+  RESTART/fv_core.res.nc: bit-for-bit identical
+  RESTART/fv_core.res.tile1.nc: bit-for-bit identical
+  RESTART/fv_core.res.tile2.nc: bit-for-bit identical
+  RESTART/fv_core.res.tile3.nc: bit-for-bit identical
+  RESTART/fv_core.res.tile4.nc: bit-for-bit identical
+  RESTART/fv_core.res.tile5.nc: bit-for-bit identical
+  RESTART/fv_core.res.tile6.nc: bit-for-bit identical
+  RESTART/fv_srf_wnd.res.tile1.nc: bit-for-bit identical
+  RESTART/fv_srf_wnd.res.tile2.nc: bit-for-bit identical
+  RESTART/fv_srf_wnd.res.tile3.nc: bit-for-bit identical
+  RESTART/fv_srf_wnd.res.tile4.nc: bit-for-bit identical
+  RESTART/fv_srf_wnd.res.tile5.nc: bit-for-bit identical
+  RESTART/fv_srf_wnd.res.tile6.nc: bit-for-bit identical
+  RESTART/fv_tracer.res.tile1.nc: bit-for-bit identical
+  RESTART/fv_tracer.res.tile2.nc: bit-for-bit identical
+  RESTART/fv_tracer.res.tile3.nc: bit-for-bit identical
+  RESTART/fv_tracer.res.tile4.nc: bit-for-bit identical
+  RESTART/fv_tracer.res.tile5.nc: bit-for-bit identical
+  RESTART/fv_tracer.res.tile6.nc: bit-for-bit identical
+  RESTART/phy_data.tile1.nc: bit-for-bit identical
+  RESTART/phy_data.tile2.nc: bit-for-bit identical
+  RESTART/phy_data.tile3.nc: bit-for-bit identical
+  RESTART/phy_data.tile4.nc: bit-for-bit identical
+  RESTART/phy_data.tile5.nc: bit-for-bit identical
+  RESTART/phy_data.tile6.nc: bit-for-bit identical
+  RESTART/sfc_data.tile1.nc: bit-for-bit identical
+  RESTART/sfc_data.tile2.nc: bit-for-bit identical
+  RESTART/sfc_data.tile3.nc: bit-for-bit identical
+  RESTART/sfc_data.tile4.nc: bit-for-bit identical
+  RESTART/sfc_data.tile5.nc: bit-for-bit identical
+  RESTART/sfc_data.tile6.nc: bit-for-bit identical
+  Executable did not change during test suite:
+    File: ./fv3.exe
+    Expected md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+    Actual md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+  TEST PASSED AT Tue Nov 12 23:27:33 UTC 2019
+
+TEST #32: PASS
+  Test fv3_wrtGauss_netcdf_esmf starting at Tue Nov 12 23:26:12 UTC 2019 (Compare FV3 Gaussian grid netcdf output results with previous trunk version)
+  Tue Nov 12 23:26:12 UTC 2019
   atmos_4xdaily.tile1.nc: bit-for-bit identical
   atmos_4xdaily.tile2.nc: bit-for-bit identical
   atmos_4xdaily.tile3.nc: bit-for-bit identical
@@ -1550,13 +1658,13 @@ TEST #30: PASS
   RESTART/sfc_data.tile6.nc: bit-for-bit identical
   Executable did not change during test suite:
     File: ./fv3.exe
-    Expected md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-    Actual md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-  TEST PASSED AT Sun Oct 27 23:42:00 UTC 2019
+    Expected md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+    Actual md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+  TEST PASSED AT Tue Nov 12 23:28:32 UTC 2019
 
-TEST #31: PASS
-  Test fv3_csawmg starting at Sun Oct 27 23:39:43 UTC 2019 (Compare FV3 with CSAW and MG2 results  with previous trunk version)
-  Sun Oct 27 23:39:43 UTC 2019
+TEST #33: PASS
+  Test fv3_csawmg starting at Tue Nov 12 23:26:11 UTC 2019 (Compare FV3 with CSAW and MG2 results  with previous trunk version)
+  Tue Nov 12 23:26:11 UTC 2019
   atmos_4xdaily.tile1.nc: bit-for-bit identical
   atmos_4xdaily.tile2.nc: bit-for-bit identical
   atmos_4xdaily.tile3.nc: bit-for-bit identical
@@ -1601,13 +1709,13 @@ TEST #31: PASS
   RESTART/sfc_data.tile6.nc: bit-for-bit identical
   Executable did not change during test suite:
     File: ./fv3.exe
-    Expected md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-    Actual md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-  TEST PASSED AT Sun Oct 27 23:42:06 UTC 2019
+    Expected md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+    Actual md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+  TEST PASSED AT Tue Nov 12 23:28:37 UTC 2019
 
-TEST #32: PASS
-  Test fv3_wsm6 starting at Sun Oct 27 23:39:44 UTC 2019 (Compare FV3 GFDL mircrophysics results  with previous trunk version)
-  Sun Oct 27 23:39:44 UTC 2019
+TEST #34: PASS
+  Test fv3_wsm6 starting at Tue Nov 12 23:26:11 UTC 2019 (Compare FV3 GFDL mircrophysics results  with previous trunk version)
+  Tue Nov 12 23:26:11 UTC 2019
   atmos_4xdaily.tile1.nc: bit-for-bit identical
   atmos_4xdaily.tile2.nc: bit-for-bit identical
   atmos_4xdaily.tile3.nc: bit-for-bit identical
@@ -1672,13 +1780,13 @@ TEST #32: PASS
   RESTART/sfc_data.tile6.nc: bit-for-bit identical
   Executable did not change during test suite:
     File: ./fv3.exe
-    Expected md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-    Actual md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-  TEST PASSED AT Sun Oct 27 23:41:19 UTC 2019
+    Expected md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+    Actual md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+  TEST PASSED AT Tue Nov 12 23:27:49 UTC 2019
 
-TEST #33: PASS
-  Test fv3_stretched starting at Sun Oct 27 22:55:31 UTC 2019 (Stretched grid; compare against previous baseline)
-  Sun Oct 27 22:55:31 UTC 2019
+TEST #35: PASS
+  Test fv3_stretched starting at Tue Nov 12 23:53:06 UTC 2019 (Stretched grid; compare against previous baseline)
+  Tue Nov 12 23:53:06 UTC 2019
   atmos_4xdaily.tile1.nc: bit-for-bit identical
   atmos_4xdaily.tile2.nc: bit-for-bit identical
   atmos_4xdaily.tile3.nc: bit-for-bit identical
@@ -1729,11 +1837,11 @@ TEST #33: PASS
   RESTART/sfc_data.tile4.nc: bit-for-bit identical
   RESTART/sfc_data.tile5.nc: bit-for-bit identical
   RESTART/sfc_data.tile6.nc: bit-for-bit identical
-  TEST PASSED AT Sun Oct 27 23:00:03 UTC 2019
+  TEST PASSED AT Tue Nov 12 23:57:41 UTC 2019
 
-TEST #34: PASS
-  Test fv3_wrtGauss_nemsio_c192 starting at Sun Oct 27 23:34:53 UTC 2019 (Compare c192 FV3 Gaussian grid nemsio output results with previous trunk version)
-  Sun Oct 27 23:34:53 UTC 2019
+TEST #36: PASS
+  Test fv3_wrtGauss_nemsio_c192 starting at Tue Nov 12 23:26:11 UTC 2019 (Compare c192 FV3 Gaussian grid nemsio output results with previous trunk version)
+  Tue Nov 12 23:26:11 UTC 2019
   atmos_4xdaily.tile1.nc: bit-for-bit identical
   atmos_4xdaily.tile2.nc: bit-for-bit identical
   atmos_4xdaily.tile3.nc: bit-for-bit identical
@@ -1778,13 +1886,13 @@ TEST #34: PASS
   RESTART/sfc_data.tile6.nc: bit-for-bit identical
   Executable did not change during test suite:
     File: ./fv3.exe
-    Expected md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-    Actual md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-  TEST PASSED AT Sun Oct 27 23:37:30 UTC 2019
+    Expected md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+    Actual md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+  TEST PASSED AT Tue Nov 12 23:28:52 UTC 2019
 
-TEST #35: PASS
-  Test fv3_rasmgshoc starting at Sun Oct 27 23:39:43 UTC 2019 (Compare FV3 with RAS MG2 and SHOC results  with previous trunk version)
-  Sun Oct 27 23:39:43 UTC 2019
+TEST #37: PASS
+  Test fv3_rasmgshoc starting at Tue Nov 12 23:26:11 UTC 2019 (Compare FV3 with RAS MG2 and SHOC results  with previous trunk version)
+  Tue Nov 12 23:26:11 UTC 2019
   atmos_4xdaily.tile1.nc: bit-for-bit identical
   atmos_4xdaily.tile2.nc: bit-for-bit identical
   atmos_4xdaily.tile3.nc: bit-for-bit identical
@@ -1829,10 +1937,10 @@ TEST #35: PASS
   RESTART/sfc_data.tile6.nc: bit-for-bit identical
   Executable did not change during test suite:
     File: ./fv3.exe
-    Expected md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-    Actual md5sum: 8f435e8dc56544cb5011e6e6fde18e58
-  TEST PASSED AT Sun Oct 27 23:42:17 UTC 2019
-WORKFLOW REPORT AT Mon Oct 28 00:02:33 2019 (+1572220953)
-Tests: 0 failed, 35 passed out of 35
-Builds: 0 failed, 5 passed out of 5
+    Expected md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+    Actual md5sum: 5fd0ce6f4cde448c7e2d079d8807471e
+  TEST PASSED AT Tue Nov 12 23:28:44 UTC 2019
+WORKFLOW REPORT AT Wed Nov 13 00:39:13 2019 (+1573605553)
+Tests: 0 failed, 37 passed out of 37
+Builds: 0 failed, 6 passed out of 6
 REGRESSION TEST WAS SUCCESSFUL
