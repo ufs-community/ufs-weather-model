@@ -122,6 +122,9 @@ case $(hostname -f) in
   login4.stampede2.tacc.utexas.edu) MACHINE_ID=stampede ;; ### stampede4
 esac
 
+# Overwrite auto-detect with NEMS_MACHINE if set
+MACHINE_ID=${NEMS_MACHINE:-${MACHINE_ID}}
+
 # For Theia and Cheyenne, append compiler
 if [ $MACHINE_ID = theia ] || [ $MACHINE_ID = hera ] || [ $MACHINE_ID = cheyenne ] || [ $MACHINE_ID = jet ] || [ $MACHINE_ID = gaea ] || [ $MACHINE_ID = stampede ] ; then
     MACHINE_ID=${MACHINE_ID}.${COMPILER}
