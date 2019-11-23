@@ -23,8 +23,8 @@ else()
         set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -xCORE-AVX2 -qno-opt-dynamic-align")
         set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -xCORE-AVX2 -qno-opt-dynamic-align")
     else()
-        set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -xHOST -qno-opt-dynamic-align")
-        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -xHOST -qno-opt-dynamic-align")
+        set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -qno-opt-dynamic-align")
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -qno-opt-dynamic-align")
     endif()
 endif()
 
@@ -79,11 +79,11 @@ else()
     message("OPENMP is      disabled")
 endif()
 
-
 if(AVX2)
     message("AVX2 is        ENABLED")
+else()
+    message("AVX2 is        disabled")
 endif()
-
 
 if(INLINE_POST)
     message("INLINE_POST is ENABLED")

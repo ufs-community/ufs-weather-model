@@ -41,7 +41,6 @@ else()
     message("OPENMP is      disabled")
 endif()
 
-
 if(AVX2)
     message("AVX2 is        ENABLED")
     set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS}")
