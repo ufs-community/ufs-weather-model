@@ -148,8 +148,8 @@ add_subdirectory(FV3)
 ### WW3
 ###############################################################################
 if(WW3)
-  if(${CMAKE_Platform} STREQUAL "theia.intel")
-    set(WW3_COMP "theia")
+  if(${CMAKE_Platform} STREQUAL "hera.intel")
+    set(WW3_COMP "hera")
   else()
     message(FATAL_ERROR "Platform ${CMAKE_Platform} is not supported in WW3")
   endif()
