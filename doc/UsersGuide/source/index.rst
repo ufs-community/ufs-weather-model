@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to the UFS Weather Model Developers Guide!
+Welcome to the UFS Weather Model User's Guide
 ========================================================
 
 .. toctree::
