@@ -1,15 +1,25 @@
-.. _BuildingRunningHostModels:
+.. _RegTests:
   
-****************************************
-Building and Running the UFS Weather Model
-****************************************
+******************************************
+Regression Tests for Development
+******************************************
 
-.. _UFSAtmo:
+* Motivation
 
-UFS Atmosphere
-====================
+* Description of the default tests
 
-Another option for a CCPP host model is the UFS Atmosphere, located in the umbrella repository NEMSfv3gfs.
+* Directory structure for inputs and outputs
+
+* How to run a subset of tests
+
+* Baselines: existing baselines, creating new baselines, comparing against a new baseline
+
+* Running regression tests
+
+* Checking the results
+
+* Adding a regression test
+
 
 System Requirements, Libraries, and Compilers
 ---------------------------------------------
