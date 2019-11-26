@@ -221,7 +221,7 @@ submit_and_wait() {
         state=$( sacct -n -j ${slurm_id}.batch --format=JobID,state,Jobname | grep ${slurm_id} | awk '{print $2}' )
         echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is ${state}"
       fi
-    
+
     elif [[ $SCHEDULER = 'sbatch' ]]; then
 
       #status=$( qstat -u ${USER} -n | grep ${JBNME} | awk '{print $"10"}' ); status=${status:--}  PJP comment out to speed up regression test
@@ -315,7 +315,7 @@ check_results() {
   # Give one minute for data to show up on file system
   #sleep 60
 
-  echo                                                       >> ${REGRESSIONTEST_LOG}
+  echo                                                       >  ${REGRESSIONTEST_LOG}
   echo "baseline dir = ${RTPWD}/${CNTL_DIR}"                 >> ${REGRESSIONTEST_LOG}
   echo "working dir  = ${RUNDIR}"                            >> ${REGRESSIONTEST_LOG}
   echo "Checking test ${TEST_NR} ${TEST_NAME} results ...."  >> ${REGRESSIONTEST_LOG}
@@ -425,6 +425,8 @@ kill_job() {
      :
   elif [[ $SCHEDULER = 'pbs' ]]; then
     qdel ${jobid}
+  elif [[ $SCHEDULER = 'slurm' ]]; then
+    scancel ${jobid}
   elif [[ $SCHEDULER = 'lsf' ]]; then
     bkill ${jobid}
   fi
@@ -442,49 +444,52 @@ rocoto_create_compile_task() {
   if [[ "Q$APP" != Q ]] ; then
       rocoto_cmd="&PATHRT;/appbuild.sh &PATHTR;/FV3 $APP $COMPILE_NR"
   else
-      rocoto_cmd="&PATHRT;/compile.sh &PATHTR;/FV3 $MACHINE_ID \"${NEMS_VER}\" $COMPILE_NR"
+      rocoto_cmd="&PATHRT;/compile_cmake.sh &PATHTR; $MACHINE_ID \"${NEMS_VER}\" $COMPILE_NR"
   fi
 
   NATIVE=""
+  BUILD_CORES=8
   if [[ ${MACHINE_ID} == wcoss_dell_p3 ]]; then
-    NATIVE="<memory>6G</memory> <native>-R 'affinity[core(1)]'</native>"
+    BUILD_CORES=1
+    NATIVE="<memory>8G</memory> <native>-R 'affinity[core(1)]'</native>"
+  fi
+  if [[ ${MACHINE_ID} == wcoss_cray ]]; then
+    BUILD_CORES=24
+    rocoto_cmd="aprun -n 1 -j 1 -N 1 -d $BUILD_CORES $rocoto_cmd"
+    NATIVE="<exclusive></exclusive>"
+  fi
+  BUILD_WALLTIME="00:30:00"
+  if [[ ${MACHINE_ID} == jet ]]; then
+    BUILD_WALLTIME="01:00:00"
   fi
 
-  if [[ ${COMPILE_NR_DEP} -gt 0 ]]; then
-    cat << EOF >> $ROCOTO_XML
-  <task name="compile_${COMPILE_NR}" maxtries="1">
-    <dependency> <taskdep task="compile_${COMPILE_NR_DEP}"/> </dependency>
-    <command>$rocoto_cmd</command>
-    <jobname>compile_${COMPILE_NR}</jobname>
-    <account>${ACCNR}</account>
-    <queue>${COMPILE_QUEUE}</queue>
-    <cores>1</cores>
-    <walltime>01:00:00</walltime>
-    <join>&LOG;/compile_${COMPILE_NR}.log</join>
-    ${NATIVE}
-  </task>
-EOF
-  else
-    cat << EOF >> $ROCOTO_XML
-  <task name="compile_${COMPILE_NR}" maxtries="1">
-    <command>$rocoto_cmd</command>
-    <jobname>compile_${COMPILE_NR}</jobname>
-    <account>${ACCNR}</account>
-    <queue>${COMPILE_QUEUE}</queue>
-    <cores>1</cores>
-    <walltime>01:00:00</walltime>
-    <join>&LOG;/compile_${COMPILE_NR}.log</join>
-    ${NATIVE}
-  </task>
-EOF
+  DEP_STRING=""
+  # serialize WW3 builds. FIXME
+  if [[ ${NEMS_VER^^} =~ "WW3=Y" && ${COMPILE_PREV_WW3_NR} != '' ]]; then
+    DEP_STRING="<dependency><taskdep task=\"compile_${COMPILE_PREV_WW3_NR}\"/></dependency>"
   fi
+
+  cat << EOF >> $ROCOTO_XML
+  <task name="compile_${COMPILE_NR}" maxtries="3">
+    ${DEP_STRING}
+    <command>$rocoto_cmd</command>
+    <jobname>compile_${COMPILE_NR}</jobname>
+    <account>${ACCNR}</account>
+    <queue>${COMPILE_QUEUE}</queue>
+    <partition>${PARTITION}</partition>
+    <cores>${BUILD_CORES}</cores>
+    <walltime>${BUILD_WALLTIME}</walltime>
+    <join>&LOG;/compile_${COMPILE_NR}.log</join>
+    ${NATIVE}
+  </task>
+EOF
 }
 
 
 rocoto_create_run_task() {
 
   if [[ $DEP_RUN != '' ]]; then
-    DEP_STRING="<and> <taskdep task=\"compile_${COMPILE_NR}\"/> <taskdep task=\"${DEP_RUN}\"/> </and>"
+    DEP_STRING="<and> <taskdep task=\"compile_${COMPILE_NR}\"/> <taskdep task=\"${DEP_RUN}${RT_SUFFIX}\"/> </and>"
   else
     DEP_STRING="<taskdep task=\"compile_${COMPILE_NR}\"/>"
   fi
@@ -506,15 +511,16 @@ rocoto_create_run_task() {
   fi
 
   cat << EOF >> $ROCOTO_XML
-    <task name="${TEST_NAME}" maxtries="1">
+    <task name="${TEST_NAME}${RT_SUFFIX}" maxtries="1">
       <dependency> $DEP_STRING </dependency>
       <command>&PATHRT;/run_test.sh &PATHRT; &RUNDIR_ROOT; ${TEST_NAME} ${TEST_NR} ${COMPILE_NR} </command>
-      <jobname>${TEST_NAME}</jobname>
+      <jobname>${TEST_NAME}${RT_SUFFIX}</jobname>
       <account>${ACCNR}</account>
       <queue>${QUEUE}</queue>
+      <partition>${PARTITION}</partition>
       <cores>${CORES}</cores>
       <walltime>00:${WLCLK}:00</walltime>
-      <join>&LOG;/run_${TEST_NAME}.log</join>
+      <join>&LOG;/run_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log</join>
       ${NATIVE}
     </task>
 EOF
@@ -533,9 +539,14 @@ rocoto_run() {
   state="Active"
   while [[ $state != "Done" ]]
   do
-    $ROCOTORUN -w $ROCOTO_XML -d $ROCOTO_DB
+    $ROCOTORUN -v 10 -w $ROCOTO_XML -d $ROCOTO_DB
     sleep 10 & wait $!
     state=$($ROCOTOSTAT -w $ROCOTO_XML -d $ROCOTO_DB -s | grep 197001010000 | awk -F" " '{print $2}')
+    dead_compile=$($ROCOTOSTAT -w $ROCOTO_XML -d $ROCOTO_DB | grep compile_ | grep DEAD | head -1 | awk -F" " '{print $2}')
+    if [[ ! -z ${dead_compile} ]]; then
+      echo "y" | ${ROCOTOCOMPLETE} -w $ROCOTO_XML -d $ROCOTO_DB -m ${dead_compile}_tasks
+      ${ROCOTOCOMPLETE} -w $ROCOTO_XML -d $ROCOTO_DB -t ${dead_compile}
+    fi
     sleep 20 & wait $!
   done
 
@@ -548,7 +559,7 @@ ecflow_create_compile_task() {
   if [[ "Q$APP" != Q ]] ; then
       ecflow_cmd="$PATHRT/appbuild.sh ${PATHTR}/FV3 $APP $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1"
   else
-      ecflow_cmd="$PATHRT/compile.sh ${PATHTR}/FV3 $MACHINE_ID \"${NEMS_VER}\" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1"
+      ecflow_cmd="$PATHRT/compile_cmake.sh ${PATHTR} $MACHINE_ID \"${NEMS_VER}\" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1"
   fi
 
   cat << EOF > ${ECFLOW_RUN}/regtest/compile_${COMPILE_NR}.ecf
@@ -558,24 +569,25 @@ $ecflow_cmd
 EOF
 
   echo "  task compile_${COMPILE_NR}" >> ${ECFLOW_RUN}/regtest.def
-  if [[ ${COMPILE_NR_DEP} -gt 0 ]]; then
-    echo "    trigger compile_${COMPILE_NR_DEP} == complete"  >> ${ECFLOW_RUN}/regtest.def
+  echo "      inlimit max_builds" >> ${ECFLOW_RUN}/regtest.def
+  # serialize WW3 builds. FIXME
+  if [[ ${NEMS_VER^^} =~ "WW3=Y" && ${COMPILE_PREV_WW3_NR} != '' ]]; then
+    echo "    trigger compile_${COMPILE_PREV_WW3_NR} == complete"  >> ${ECFLOW_RUN}/regtest.def
   fi
-
 }
 
 ecflow_create_run_task() {
 
-  cat << EOF > ${ECFLOW_RUN}/regtest/${TEST_NAME}.ecf
+  cat << EOF > ${ECFLOW_RUN}/regtest/${TEST_NAME}${RT_SUFFIX}.ecf
 %include <head.h>
-$PATHRT/run_test.sh ${PATHRT} ${RUNDIR_ROOT} ${TEST_NAME} ${TEST_NR} ${COMPILE_NR} > ${LOG_DIR}/run_${TEST_NAME}.log 2>&1 &
+$PATHRT/run_test.sh ${PATHRT} ${RUNDIR_ROOT} ${TEST_NAME} ${TEST_NR} ${COMPILE_NR} > ${LOG_DIR}/run_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log 2>&1 &
 %include <tail.h>
 EOF
 
-  echo "    task ${TEST_NAME}" >> ${ECFLOW_RUN}/regtest.def
+  echo "    task ${TEST_NAME}${RT_SUFFIX}" >> ${ECFLOW_RUN}/regtest.def
   echo "      inlimit max_jobs" >> ${ECFLOW_RUN}/regtest.def
   if [[ $DEP_RUN != '' ]]; then
-    echo "      trigger compile_${COMPILE_NR} == complete and ${DEP_RUN} == complete" >> ${ECFLOW_RUN}/regtest.def
+    echo "      trigger compile_${COMPILE_NR} == complete and ${DEP_RUN}${RT_SUFFIX} == complete" >> ${ECFLOW_RUN}/regtest.def
   else
     echo "      trigger compile_${COMPILE_NR} == complete" >> ${ECFLOW_RUN}/regtest.def
   fi
@@ -584,31 +596,33 @@ EOF
 ecflow_run() {
 
   # in rare instances when UID is greater then 58500 (like Ratko's UID on theia)
-  [[ $ECF_PORT -ge 60000 ]] && ECF_PORT=12179
+  [[ $ECF_PORT -gt 49151 ]] && ECF_PORT=12179
 
   ECF_HOST=$( hostname )
 
-  set +e
-  i=0
-  max_atempts=5
-  while [[ $i -lt $max_atempts ]]; do
-    ecflow_client --ping --host=${ECF_HOST} --port=${ECF_PORT}
-    not_running=$?
-    if [[ $not_running -eq 1 ]]; then
-      echo "ecflow_server is NOT running on ${ECF_HOST}:${ECF_PORT}"
-      sh ${ECFLOW_START} -d ${ECFLOW_RUN} -p ${ECF_PORT} >> ${ECFLOW_RUN}/ecflow.log 2>&1
-      break
-    else
-      echo "ecflow_server is already running on ${ECF_HOST}:${ECF_PORT}"
-      ECF_PORT=$(( ECF_PORT + 1 ))
-    fi
-    i=$(( i + 1 ))
-    if [[ $i -eq $max_atempts ]]; then
-       echo "You already have $max_atempts ecFlow servers running on this node"
-       exit 1
-    fi
-  done
-  set -e
+  sh ${ECFLOW_START} -d ${ECFLOW_RUN} -p ${ECF_PORT} >> ${ECFLOW_RUN}/ecflow.log 2>&1
+
+#  set +e
+#  i=0
+#  max_atempts=5
+#  while [[ $i -lt $max_atempts ]]; do
+#    ecflow_client --ping --host=${ECF_HOST} --port=${ECF_PORT}
+#    not_running=$?
+#    if [[ $not_running -eq 1 ]]; then
+#      echo "ecflow_server is NOT running on ${ECF_HOST}:${ECF_PORT}"
+#      sh ${ECFLOW_START} -d ${ECFLOW_RUN} -p ${ECF_PORT} >> ${ECFLOW_RUN}/ecflow.log 2>&1
+#      break
+#    else
+#      echo "ecflow_server is already running on ${ECF_HOST}:${ECF_PORT}"
+#      ECF_PORT=$(( ECF_PORT + 1 ))
+#    fi
+#    i=$(( i + 1 ))
+#    if [[ $i -eq $max_atempts ]]; then
+#       echo "You already have $max_atempts ecFlow servers running on this node"
+#       exit 1
+#    fi
+#  done
+#  set -e
 
   ECFLOW_RUNNING=true
 
@@ -625,6 +639,7 @@ ecflow_run() {
     active_tasks=$( ecflow_client --get_state /regtest | grep "task " | grep -E 'state:active|state:submitted|state:queued' | wc -l )
     ${PATHRT}/abort_dep_tasks.py
   done
+  sleep 65 # wait one ECF_INTERVAL plus 5 seconds
 }
 
 ecflow_kill() {
