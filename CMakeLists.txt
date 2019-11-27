@@ -148,10 +148,9 @@ add_subdirectory(FV3)
 ### WW3
 ###############################################################################
 if(WW3)
+  set(WW3_COMP ${CMAKE_Platform})
   if(${CMAKE_Platform} STREQUAL "hera.intel")
     set(WW3_COMP "hera")
-  else()
-    message(FATAL_ERROR "Platform ${CMAKE_Platform} is not supported in WW3")
   endif()
   message("Build WW3:")
   message("   run: ${CMAKE_BUILD_TOOL} WW3_PARCOMPN=4 WW3_COMP=${WW3_COMP} ww3_nems")

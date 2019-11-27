@@ -425,6 +425,7 @@ source default_vars.sh
 
 TEST_NR=0
 COMPILE_NR=0
+COMPILE_PREV_WW3_NR=''
 rm -f fail_test
 
 LOG_DIR=${PATHRT}/log_$MACHINE_ID
@@ -557,8 +558,8 @@ while read -r line; do
       elif [[ $ECFLOW == true ]]; then
         ecflow_create_compile_task
       else
-        #./compile.sh $PATHTR/FV3 $MACHINE_ID "${NEMS_VER}" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
-        ./compile_cmake.sh $PATHTR $MACHINE_ID "${NEMS_VER}" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
+        ./compile.sh $PATHTR/FV3 $MACHINE_ID "${NEMS_VER}" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
+        #./compile_cmake.sh $PATHTR $MACHINE_ID "${NEMS_VER}" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
         echo " bash Compile is done"
       fi
 
