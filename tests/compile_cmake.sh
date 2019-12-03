@@ -83,6 +83,10 @@ if [[ "${MAKE_OPT}" == *"32BIT=Y"* ]]; then
   CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -D32BIT=Y"
 fi
 
+if [[ "${MAKE_OPT}" == *"OPENMP=N"* ]]; then
+  CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DOPENMP=OFF"
+fi
+
 if [[ "${MAKE_OPT}" == *"CCPP=Y"* ]]; then
 
   # Account for inconsistencies in HPC modules: if environment variable
@@ -102,12 +106,6 @@ if [[ "${MAKE_OPT}" == *"CCPP=Y"* ]]; then
     if [[ "${MACHINE_ID}" == "jet.intel" ]]; then
       CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DSIMDMULTIARCH=ON"
     fi
-  fi
-
-  if [[ "${MAKE_OPT}" == *"OPENMP=N"* ]]; then
-    CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DOPENMP=OFF"
-  else
-    CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DOPENMP=ON"
   fi
 
   if [[ "${MAKE_OPT}" == *"32BIT=Y"* ]]; then
@@ -149,8 +147,12 @@ CCPP_CMAKE_FLAGS=$(trim "${CCPP_CMAKE_FLAGS}")
 
 (
   source $PATHTR/NEMS/src/conf/module-setup.sh.inc
-  module use $PATHTR/modulefiles/${MACHINE_ID}
-  module load fv3
+  if [[ $MACHINE_ID == macosx.* ]] || [[ $MACHINE_ID == linux.* ]]; then
+    source $PATHTR/modulefiles/${MACHINE_ID}/fv3
+  else
+    module use $PATHTR/modulefiles/${MACHINE_ID}
+    module load fv3
+  fi
 
   cd ${BUILD_DIR}
 

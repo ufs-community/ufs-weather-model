@@ -228,7 +228,7 @@ target_link_libraries(NEMS.exe
                       stochastic_physics
                       fms
                       ${WW3_LIBS}
-                      ${NCEP_LIBS} ${ESMF_LIBS} ${NETCDF_LIBS})
+                      ${NCEP_LIBS} ${ESMF_LIBS} ${NETCDF_LIBS} ${MKL_LIB})
 
 ###############################################################################
 ### done
