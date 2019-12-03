@@ -10,7 +10,7 @@ DEBUG=0
 OPENMP=1
 
 # List of valid/tested machines
-valid_machines=(theia cheyenne macosx linux wcoss_cray wcoss_phase1 wcoss_phase2 jet gaea)
+valid_machines=(hera theia cheyenne macosx linux wcoss_cray wcoss_phase1 wcoss_phase2 jet gaea)
 valid_compilers=(intel pgi gnu)
 
 function usage   {
@@ -33,7 +33,7 @@ if [[ $1 = "help" ]] ; then usage; fi
 if [[ $# -lt 2 ]];  then usage; fi
 machine=${1}
 compiler=${2}
-if [[ ${machine} == theia || ${machine} == cheyenne || ${machine} == macosx || ${machine} == linux ]]; then
+if [[ ${machine} == hera || ${machine} == theia || ${machine} == cheyenne || ${machine} == macosx || ${machine} == linux ]]; then
   arch=${machine}.${compiler}
 elif [[ ${machine} == wcoss_cray || ${machine} == wcoss_phase1 || ${machine} == wcoss_phase2 || ${machine} == jet || ${machine} == gaea ]]; then
   if [[ ${compiler} == intel ]]; then
@@ -75,31 +75,31 @@ cp $homedir/tests/fv3_1.exe ../NEMS/exe/fv3_gfs_${hydro}.${mode}.${precision}.${
 rm $homedir/tests/fv3_1.exe
 
 # 32-bit hydrostatic
-precision_option="32BIT=Y"
-precision="32bit"
-hydro_option="HYDRO=Y"
-hydro="hydro"
-compile_option="$debug_compile_option $openmp_compile_option $hydro_option $precision_option"
-./compile.sh $homedir/FV3 $arch "$compile_option" 1
-cp $homedir/tests/fv3_1.exe ../NEMS/exe/fv3_gfs_${hydro}.${mode}.${precision}.${compiler}.x
-rm $homedir/tests/fv3_1.exe
+#precision_option="32BIT=Y"
+#precision="32bit"
+#hydro_option="HYDRO=Y"
+#hydro="hydro"
+#compile_option="$debug_compile_option $openmp_compile_option $hydro_option $precision_option"
+#./compile.sh $homedir/FV3 $arch "$compile_option" 1
+#cp $homedir/tests/fv3_1.exe ../NEMS/exe/fv3_gfs_${hydro}.${mode}.${precision}.${compiler}.x
+#rm $homedir/tests/fv3_1.exe
 
 # 64-bit non-hydrostatic
-precision_option="32BIT=N"
-precision="64bit"
-hydro_option="HYDRO=N"
-hydro="nh"
-compile_option="$debug_compile_option $openmp_compile_option $hydro_option $precision_option"
-./compile.sh $homedir/FV3 $arch "$compile_option" 1
-cp $homedir/tests/fv3_1.exe ../NEMS/exe/fv3_gfs_${hydro}.${mode}.${precision}.${compiler}.x
-rm $homedir/tests/fv3_1.exe
+#precision_option="32BIT=N"
+#precision="64bit"
+#hydro_option="HYDRO=N"
+#hydro="nh"
+#compile_option="$debug_compile_option $openmp_compile_option $hydro_option $precision_option"
+#./compile.sh $homedir/FV3 $arch "$compile_option" 1
+#cp $homedir/tests/fv3_1.exe ../NEMS/exe/fv3_gfs_${hydro}.${mode}.${precision}.${compiler}.x
+#rm $homedir/tests/fv3_1.exe
 
 # 64-bit hydrostatic
-precision_option="32BIT=N"
-precision="64bit"
-hydro_option="HYDRO=Y"
-hydro="hydro"
-compile_option="$debug_compile_option $openmp_compile_option $hydro_option $precision_option"
-./compile.sh $homedir/FV3 $arch "$compile_option" 1
-cp $homedir/tests/fv3_1.exe ../NEMS/exe/fv3_gfs_${hydro}.${mode}.${precision}.${compiler}.x
-rm $homedir/tests/fv3_1.exe
+#precision_option="32BIT=N"
+#precision="64bit"
+##hydro_option="HYDRO=Y"
+#hydro="hydro"
+#compile_option="$debug_compile_option $openmp_compile_option $hydro_option $precision_option"
+#./compile.sh $homedir/FV3 $arch "$compile_option" 1
+#cp $homedir/tests/fv3_1.exe ../NEMS/exe/fv3_gfs_${hydro}.${mode}.${precision}.${compiler}.x
+#rm $homedir/tests/fv3_1.exe
