@@ -463,15 +463,8 @@ rocoto_create_compile_task() {
     BUILD_WALLTIME="01:00:00"
   fi
 
-  DEP_STRING=""
-  # serialize WW3 builds. FIXME
-  if [[ ${NEMS_VER^^} =~ "WW3=Y" && ${COMPILE_PREV_WW3_NR} != '' ]]; then
-    DEP_STRING="<dependency><taskdep task=\"compile_${COMPILE_PREV_WW3_NR}\"/></dependency>"
-  fi
-
   cat << EOF >> $ROCOTO_XML
   <task name="compile_${COMPILE_NR}" maxtries="3">
-    ${DEP_STRING}
     <command>$rocoto_cmd</command>
     <jobname>compile_${COMPILE_NR}</jobname>
     <account>${ACCNR}</account>
