@@ -66,6 +66,10 @@ if [[ "${MAKE_OPT}" == *"WW3=Y"* ]]; then
   COMPONENTS="WW3,$COMPONENTS"
 fi
 
+if [[ "${MAKE_OPT}" == *"HYCOM=Y"* ]]; then
+  COMPONENTS="HYCOM,$COMPONENTS"
+fi
+
 # Make variables:
 #   COMPONENTS = list of components to build
 #   BUILD_ENV = theia.intel, wcoss_dell_p3, etc.
