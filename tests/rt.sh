@@ -238,7 +238,7 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
 
   export PYTHONPATH=
   ECFLOW_START=
-  QUEUE=premium
+  QUEUE=economy
   PARTITION=
   dprefix=/glade/scratch
   DISKNM=/glade/p/ral/jntp/GMTB/NEMSfv3gfs/RT
@@ -341,9 +341,9 @@ while getopts ":cfsl:mkreh" opt; do
 done
 
 if [[ $MACHINE_ID = cheyenne.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/trunk-20191021/${COMPILER^^}}
+  RTPWD=${RTPWD:-$DISKNM/trunk-20191121/${COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/trunk-20191021}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/trunk-20191121}
 fi
 
 shift $((OPTIND-1))

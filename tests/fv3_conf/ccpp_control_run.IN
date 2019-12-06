@@ -32,6 +32,11 @@ cp    @[RTPWD]/${inputdir}/*grb .
 cp    @[RTPWD]/${inputdir}/*_table .
 cp    @[RTPWD]/${inputdir}/*configure .
 
+if [ $CPLWAV = .T. ]; then
+cp    @[RTPWD]/WW3_input_data/mod_def.* .
+cp    @[RTPWD]/WW3_input_data/@[SYEAR]@[SMONTH]@[SDAY]/ww3_multi.inp .
+fi
+
 cp ${PATHRT}/../FV3/ccpp/suites/suite_${CCPP_SUITE}.xml suite_${CCPP_SUITE}.xml
 
 # Add path to libccpp.so and libccpphys.so to LD_LIBRARY_PATH, append to module-setup.sh
