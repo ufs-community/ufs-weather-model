@@ -7,7 +7,6 @@
   date_out_of_range = 'climo'
 /
 
-
 &atmos_model_nml
   blocksize = 32
   chksum_debug = .false.
@@ -20,11 +19,9 @@
   ccpp_suite = 'FV3_GFS_v15.2'
 /
 
-
 &diag_manager_nml
   prepend_date = .false.
 /
-
 
 &fms_io_nml
   checksum_required = .false.
@@ -32,13 +29,11 @@
   max_files_w = 100
 /
 
-
 &fms_nml
   clock_grain = 'ROUTINE'
   domains_stack_size = 3000000
   print_memory_usage = .false.
 /
-
 
 &fv_core_nml
   layout = 3,8
@@ -77,7 +72,7 @@
   dnats = 1
   fv_sg_adj = 450
   d2_bg = 0.
- nord = 2
+  nord = 2
   dddmp = 0.1
   d4_bg = 0.12
   vtdm4 = 0.02
@@ -111,7 +106,6 @@
   res_latlon_dynamics = ""
 /
 
-
 &external_ic_nml
   filtered_terrain = .true.
   levp = 65
@@ -119,7 +113,6 @@
   checker_tr = .false.
   nt_checker = 0
 /
-
 
 &gfs_physics_nml
   fhzero       = 6
@@ -172,7 +165,6 @@
   do_sfcperts    = .F.
 /
 
-
 &gfdl_cloud_microphysics_nml
   sedi_transport = .true.
   do_sedi_heat = .false.
@@ -222,49 +214,47 @@
   mp_time = 150.
 /
 
-
 &interpolator_nml
   interp_method = 'conserve_great_circle'
 /
 
-
 &namsfc
-       FNGLAC   = "global_glacier.2x2.grb",
-       FNMXIC   = "global_maxice.2x2.grb",
-       FNTSFC   = "RTGSST.1982.2012.monthly.clim.grb",
-       FNSNOC   = "global_snoclim.1.875.grb",
-       FNZORC   = "igbp",
-       FNALBC   = "global_snowfree_albedo.bosu.t126.384.190.rg.grb",
-       FNALBC2  = "global_albedo4.1x1.grb",
-       FNAISC   = "CFSR.SEAICE.1982.2012.monthly.clim.grb",
-       FNTG3C   = "global_tg3clim.2.6x1.5.grb",
-       FNVEGC   = "global_vegfrac.0.144.decpercent.grb",
-       FNVETC   = "global_vegtype.igbp.t126.384.190.rg.grb",
-       FNSOTC   = "global_soiltype.statsgo.t126.384.190.rg.grb",
-       FNSMCC   = "global_soilmgldas.t126.384.190.grb",
-       FNMSKH   = "seaice_newland.grb",
-       FNTSFA   = "",
-       FNACNA   = "",
-       FNSNOA   = "",
-       FNVMNC   = "global_shdmin.0.144x0.144.grb",
-       FNVMXC   = "global_shdmax.0.144x0.144.grb",
-       FNSLPC   = "global_slope.1x1.grb",
-       FNABSC   = "global_mxsnoalb.uariz.t126.384.190.rg.grb",
-       LDEBUG   =.false.,
-       FSMCL(2) = 99999
-       FSMCL(3) = 99999
-       FSMCL(4) = 99999
-       FTSFS    = 90
-       FSNOL    = 99999
-       FSICL    = 99999
-       FTSFL    = 99999,
-       FAISL    = 99999,
-       FVETL    = 99999,
-       FSOTL    = 99999,
-       FvmnL    = 99999,
-       FvmxL    = 99999,
-       FSLPL    = 99999,
-       FABSL    = 99999,
+  FNGLAC   = 'global_glacier.2x2.grb'
+  FNMXIC   = 'global_maxice.2x2.grb'
+  FNTSFC   = 'RTGSST.1982.2012.monthly.clim.grb'
+  FNSNOC   = 'global_snoclim.1.875.grb'
+  FNZORC   = 'igbp'
+  FNALBC   = 'global_snowfree_albedo.bosu.t126.384.190.rg.grb'
+  FNALBC2  = 'global_albedo4.1x1.grb'
+  FNAISC   = 'CFSR.SEAICE.1982.2012.monthly.clim.grb'
+  FNTG3C   = 'global_tg3clim.2.6x1.5.grb'
+  FNVEGC   = 'global_vegfrac.0.144.decpercent.grb'
+  FNVETC   = 'global_vegtype.igbp.t126.384.190.rg.grb'
+  FNSOTC   = 'global_soiltype.statsgo.t126.384.190.rg.grb'
+  FNSMCC   = 'global_soilmgldas.t126.384.190.grb'
+  FNMSKH   = 'seaice_newland.grb'
+  FNTSFA   = ''
+  FNACNA   = ''
+  FNSNOA   = ''
+  FNVMNC   = 'global_shdmin.0.144x0.144.grb'
+  FNVMXC   = 'global_shdmax.0.144x0.144.grb'
+  FNSLPC   = 'global_slope.1x1.grb'
+  FNABSC   = 'global_mxsnoalb.uariz.t126.384.190.rg.grb'
+  LDEBUG   = .false.
+  FSMCL(2) = 99999
+  FSMCL(3) = 99999
+  FSMCL(4) = 99999
+  FTSFS    = 90
+  FSNOL    = 99999
+  FSICL    = 99999
+  FTSFL    = 99999
+  FAISL    = 99999
+  FVETL    = 99999
+  FSOTL    = 99999
+  FvmnL    = 99999
+  FvmxL    = 99999
+  FSLPL    = 99999
+  FABSL    = 99999
 /
 
 &fv_grid_nml
@@ -299,5 +289,17 @@
 /
 
 &cires_ugwp_nml
+  knob_ugwp_solver  = 2
+  knob_ugwp_source  = 1,1,0,0
+  knob_ugwp_wvspec  = 1,25,25,25
+  knob_ugwp_azdir   = 2,4,4,4
+  knob_ugwp_stoch   = 0,0,0,0
+  knob_ugwp_effac   = 1,1,1,1
+  knob_ugwp_doaxyz  = 1
+  knob_ugwp_doheat  = 1
+  knob_ugwp_dokdis  = 1
+  knob_ugwp_ndx4lh  = 1
+  knob_ugwp_version = 0
+  launch_level      = 25
 /
 
