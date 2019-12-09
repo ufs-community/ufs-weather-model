@@ -125,7 +125,7 @@ add_library(
     FMS/mosaic/interp.c
     FMS/mosaic/mosaic_util.c
     FMS/mosaic/read_mosaic.c
-    FMS/mpp/affinity.c
+    FMS/affinity/affinity.c
     FMS/mpp/nsclock.c
     FMS/mpp/threadloc.c
 )
