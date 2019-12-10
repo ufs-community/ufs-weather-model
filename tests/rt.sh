@@ -271,7 +271,7 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
 
   export PYTHONPATH=
   ECFLOW_START=
-  QUEUE=premium
+  QUEUE=economy
   PARTITION=
   dprefix=/glade/scratch
   DISKNM=/glade/p/ral/jntp/GMTB/NEMSfv3gfs/RT
@@ -321,8 +321,8 @@ ECFLOW=false
 KEEP_RUNDIR=false
 
 TESTS_FILE='rt.conf'
-## Switch to special regression test config on wcoss_cray:
-## don't run the IPD and CCPP tests in REPRO mode.
+# Switch to special regression test config on wcoss_cray:
+# don't run the IPD and CCPP tests in REPRO mode.
 if [[ $MACHINE_ID = wcoss_cray ]]; then
   TESTS_FILE='rt_wcoss_cray.conf'
 fi
