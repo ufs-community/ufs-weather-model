@@ -41,7 +41,6 @@ module load crtm/2.2.6
 module load jasper/1.900.1
 module load png/1.2.44
 module load z/1.2.11
-
 ## load modules for nceppost grib
 module load post/8.0.0
 
@@ -51,3 +50,13 @@ module load post/8.0.0
 ##
 module use -a /scratch1/NCEPDEV/nems/emc.nemspara/soft/modulefiles
 module load esmf/8.0.0
+
+##
+## load cmake
+##
+module use /contrib/modulefiles
+module load cmake/3.9.0
+setenv CMAKE_C_COMPILER mpiicc
+setenv CMAKE_CXX_COMPILER mpiicpc
+setenv CMAKE_Fortran_COMPILER mpiifort
+setenv CMAKE_Platform hera.intel
