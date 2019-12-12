@@ -89,13 +89,7 @@ fi
 
 if [[ "${MAKE_OPT}" == *"CCPP=Y"* ]]; then
 
-  # Account for inconsistencies in HPC modules: if environment variable
-  # NETCDF is undefined, try to set from NETCDF_DIR, NETCDF_ROOT, ...
-  if [[ "${MACHINE_ID}" == "wcoss_cray" ]]; then
-    NETCDF=${NETCDF:-${NETCDF_DIR}}
-  fi
-
-  CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DNETCDF_DIR=${NETCDF} -DCCPP=ON -DMPI=ON"
+  CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DCCPP=ON -DMPI=ON"
 
   if [[ "${MAKE_OPT}" == *"DEBUG=Y"* ]]; then
     CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DCMAKE_BUILD_TYPE=Debug"
@@ -152,6 +146,7 @@ CCPP_CMAKE_FLAGS=$(trim "${CCPP_CMAKE_FLAGS}")
   else
     module use $PATHTR/modulefiles/${MACHINE_ID}
     module load fv3
+    module list
   fi
 
   cd ${BUILD_DIR}

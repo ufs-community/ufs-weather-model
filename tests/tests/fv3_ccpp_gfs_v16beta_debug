@@ -1,0 +1,24 @@
+###############################################################################
+#
+#  FV3 CCPP GFS v16beta compiled with 32-bit dynamics test in DEBUG mode
+#
+###############################################################################
+
+export TEST_DESCR="Run FV3 32bit CCPP GFS v16beta in DEBUG mode"
+
+export CNTL_DIR=fv3_gfs_v16beta
+
+export LIST_FILES=""
+
+export_fv3
+export NODES=$(expr $TASKS / $TPN + 1)
+
+export FHMAX="06"
+DT_ATMOS="1200"
+
+export FV3_RUN=ccpp_gfs_v15_run.IN
+export CCPP_SUITE=FV3_GFS_v16beta
+export CCPP_LIB_DIR=ccpp/lib
+export INPUT_NML=ccpp_v16beta_c96.nml.IN
+
+RUN_SCRIPT=rt_fv3.sh
