@@ -22,7 +22,7 @@ BUILD_DIR=${MYDIR}/build
 rm -rf ${BUILD_DIR}
 mkdir ${BUILD_DIR}
 
-CCPP_SUITES="${CCPP_SUITES:-FV3_GFS_2017_gfdlmp}"
+CCPP_SUITES="${CCPP_SUITES:-FV3_GFS_v15p2}"
 
 ./FV3/ccpp/framework/scripts/ccpp_prebuild.py \
     --config=FV3/ccpp/config/ccpp_prebuild_config.py \

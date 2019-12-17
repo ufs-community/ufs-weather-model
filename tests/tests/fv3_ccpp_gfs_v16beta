@@ -1,12 +1,12 @@
 ###############################################################################
 #
-#  FV3 CCPP YSU test
+#  FV3 CCPP GFS v16beta compiled with 32-bit dynamics test
 #
 ###############################################################################
 
-export TEST_DESCR="Compare FV3 CCPP YSU results with previous trunk version"
+export TEST_DESCR="Compare FV3 32bit CCPP GFS v16beta results with previous trunk version"
 
-export CNTL_DIR=fv3_ysu
+export CNTL_DIR=fv3_gfs_v16beta
 
 export LIST_FILES="atmos_4xdaily.tile1.nc \
                    atmos_4xdaily.tile2.nc \
@@ -75,14 +75,11 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
 export_fv3
 export NODES=$(expr $TASKS / $TPN + 1)
 
-DT_ATMOS="600"
+DT_ATMOS="1200"
 
-export FV3_RUN=ccpp_gfdlmp_run.IN
-export CCPP_SUITE=FV3_GFS_2017_ysu
+export FV3_RUN=ccpp_gfs_v15_run.IN
+export CCPP_SUITE=FV3_GFS_v16beta
 export CCPP_LIB_DIR=ccpp/lib
-export INPUT_NML=ccpp_gfdlmp.nml.IN
+export INPUT_NML=ccpp_v16beta_c96.nml.IN
 
 RUN_SCRIPT=rt_fv3.sh
-
-export HYBEDMF=.F.
-export DO_YSU=.T.
