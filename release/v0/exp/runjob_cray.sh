@@ -1,6 +1,6 @@
 #!/bin/sh --login
 #BSUB -L /bin/sh
-#BSUB -P FV3GFS-T2O
+#BSUB -P GFS-DEV
 #BSUB -e err_cray                                        
 #BSUB -o out_cray
 #BSUB -J fv3gfs
