@@ -203,35 +203,6 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   SCHEDULER=slurm
   cp fv3_conf/fv3_slurm.IN_hera fv3_conf/fv3_slurm.IN
 
-elif [[ $MACHINE_ID = theia.* ]]; then
-
-  source $PATHTR/NEMS/src/conf/module-setup.sh.inc
-
-  module use $PATHTR/modulefiles/${MACHINE_ID}
-  module load fv3
-
-  # Re-instantiate COMPILER in case it gets deleted by module purge
-  COMPILER=${NEMS_COMPILER:-intel}
-
-  module load rocoto/1.3.0
-  ROCOTORUN=$(which rocotorun)
-  ROCOTOSTAT=$(which rocotostat)
-  ROCOTOCOMPLETE=$(which rocotocomplete)
-  export PATH=/scratch4/NCEPDEV/meso/save/Dusan.Jovic/ecflow/bin:$PATH
-  export PYTHONPATH=/scratch4/NCEPDEV/meso/save/Dusan.Jovic/ecflow/lib/python2.7/site-packages
-  ECFLOW_START=/scratch4/NCEPDEV/meso/save/Dusan.Jovic/ecflow/bin/ecflow_start.sh
-  ECF_PORT=$(( $(id -u) + 1500 ))
-  QUEUE=debug
-#  ACCNR= # detected in detect_machine.sh
-  PARTITION=
-  dprefix=/scratch4/NCEPDEV
-  DISKNM=$dprefix/nems/noscrub/emc.nemspara/RT
-  STMP=$dprefix/stmp4
-  PTMP=$dprefix/stmp3
-
-  SCHEDULER=slurm
-  cp fv3_conf/fv3_slurm.IN_theia fv3_conf/fv3_slurm.IN
-
 elif [[ $MACHINE_ID = jet.* ]]; then
 
   source $PATHTR/NEMS/src/conf/module-setup.sh.inc
@@ -305,9 +276,9 @@ fi
 
 mkdir -p ${STMP}/${USER}
 
-# Different own baseline directories for different compilers on Theia/Cheyenne
+# Different own baseline directories for different compilers on Hera/Cheyenne
 NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST
-if [[ $MACHINE_ID = theia.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = jet.* ]] || [[ $MACHINE_ID = gaea.* ]]; then
+if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = jet.* ]] || [[ $MACHINE_ID = gaea.* ]]; then
     NEW_BASELINE=${NEW_BASELINE}_${COMPILER^^}
 fi
 
@@ -437,10 +408,6 @@ if [[ $ROCOTO == true ]]; then
     QUEUE=batch
     COMPILE_QUEUE=batch
     ROCOTO_SCHEDULER=slurm
-  elif [[ $MACHINE_ID = theia.* ]]; then
-    QUEUE=batch
-    COMPILE_QUEUE=batch
-    ROCOTO_SCHEDULER=slurm
   elif [[ $MACHINE_ID = jet.* ]]; then
     QUEUE=batch
     COMPILE_QUEUE=batch
@@ -492,8 +459,6 @@ EOF
   elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
     QUEUE=dev
   elif [[ $MACHINE_ID = hera.* ]]; then
-    QUEUE=batch
-  elif [[ $MACHINE_ID = theia.* ]]; then
     QUEUE=batch
   elif [[ $MACHINE_ID = jet.* ]]; then
     QUEUE=batch

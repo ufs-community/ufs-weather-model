@@ -27,9 +27,7 @@ CONFIGURE_NEMS_FILE=configure.fv3.$(BUILD_TARGET)
 
 # ----------------------------------------------------------------------
 # Exit for systems that are currently not supported
-ifeq ($(BUILD_TARGET),theia.pgi)
-  $(error NEMSfv3gfs currently not supported on $(BUILD_TARGET))
-else ifeq ($(BUILD_TARGET),cheyenne.pgi)
+ifeq ($(BUILD_TARGET),cheyenne.pgi)
   $(error NEMSfv3gfs currently not supported on $(BUILD_TARGET))
 endif
 

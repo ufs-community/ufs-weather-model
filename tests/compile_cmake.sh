@@ -134,9 +134,6 @@ if [[ "${MAKE_OPT}" == *"CCPP=Y"* ]]; then
 
  fi
 
-if [[ "${MAKE_OPT}" == *"NAM_phys=Y"* ]]; then
-    CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DPHYS=nam"
-fi
 CCPP_CMAKE_FLAGS=$(trim "${CCPP_CMAKE_FLAGS}")
 
 (
