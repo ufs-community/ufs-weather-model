@@ -74,7 +74,7 @@ fi
 
 # Make variables:
 #   COMPONENTS = list of components to build
-#   BUILD_ENV = theia.intel, wcoss_dell_p3, etc.
+#   BUILD_ENV = hera.intel, wcoss_dell_p3, etc.
 #   FV3_MAKEOPT = build options to send to FV3, CCPP, and FMS
 #   TEST_BUILD_NAME = requests copying of modules.nems and
 #      NEMS.x into the tests/ directory using the given build name.

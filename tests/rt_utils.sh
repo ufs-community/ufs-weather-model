@@ -584,7 +584,7 @@ EOF
 
 ecflow_run() {
 
-  # in rare instances when UID is greater then 58500 (like Ratko's UID on theia)
+  # in rare instances when UID is greater then 58500 (like Ratko's UID on hera)
   [[ $ECF_PORT -gt 49151 ]] && ECF_PORT=12179
 
   ECF_HOST=$( hostname )
