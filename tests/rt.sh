@@ -271,7 +271,7 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
 
   export PYTHONPATH=
   ECFLOW_START=
-  QUEUE=economy
+  QUEUE=premium
   PARTITION=
   dprefix=/glade/scratch
   DISKNM=/glade/p/ral/jntp/GMTB/NEMSfv3gfs/RT
