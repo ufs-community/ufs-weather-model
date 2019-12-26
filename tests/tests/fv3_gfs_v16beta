@@ -1,12 +1,12 @@
 ###############################################################################
 #
-#  FV3 lheatstrg test
+#  FV3 GFS v16beta compiled with 32-bit dynamics test
 #
 ###############################################################################
 
-export TEST_DESCR="Compare FV3 control with lheatstrg on Gaussian grid nemsio output results with previous trunk version"
+export TEST_DESCR="Compare FV3 32bit GFS v16beta results with previous trunk version"
 
-export CNTL_DIR=fv3_lheatstrg
+export CNTL_DIR=fv3_gfs_v16beta
 
 export LIST_FILES="atmos_4xdaily.tile1.nc \
                    atmos_4xdaily.tile2.nc \
@@ -14,10 +14,30 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
                    atmos_4xdaily.tile4.nc \
                    atmos_4xdaily.tile5.nc \
                    atmos_4xdaily.tile6.nc \
-                   phyf000.nemsio \
-                   phyf024.nemsio \
-                   dynf000.nemsio \
-                   dynf024.nemsio \
+                   phyf000.tile1.nc \
+                   phyf000.tile2.nc \
+                   phyf000.tile3.nc \
+                   phyf000.tile4.nc \
+                   phyf000.tile5.nc \
+                   phyf000.tile6.nc \
+                   phyf024.tile1.nc \
+                   phyf024.tile2.nc \
+                   phyf024.tile3.nc \
+                   phyf024.tile4.nc \
+                   phyf024.tile5.nc \
+                   phyf024.tile6.nc \
+                   dynf000.tile1.nc \
+                   dynf000.tile2.nc \
+                   dynf000.tile3.nc \
+                   dynf000.tile4.nc \
+                   dynf000.tile5.nc \
+                   dynf000.tile6.nc \
+                   dynf024.tile1.nc \
+                   dynf024.tile2.nc \
+                   dynf024.tile3.nc \
+                   dynf024.tile4.nc \
+                   dynf024.tile5.nc \
+                   dynf024.tile6.nc \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -38,27 +58,26 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
                    RESTART/fv_tracer.res.tile4.nc \
                    RESTART/fv_tracer.res.tile5.nc \
                    RESTART/fv_tracer.res.tile6.nc \
-                   RESTART/phy_data.tile1.nc \
-                   RESTART/phy_data.tile2.nc \
-                   RESTART/phy_data.tile3.nc \
-                   RESTART/phy_data.tile4.nc \
-                   RESTART/phy_data.tile5.nc \
-                   RESTART/phy_data.tile6.nc \
                    RESTART/sfc_data.tile1.nc \
                    RESTART/sfc_data.tile2.nc \
                    RESTART/sfc_data.tile3.nc \
                    RESTART/sfc_data.tile4.nc \
                    RESTART/sfc_data.tile5.nc \
-                   RESTART/sfc_data.tile6.nc"
+                   RESTART/sfc_data.tile6.nc \
+                   RESTART/phy_data.tile1.nc \
+                   RESTART/phy_data.tile2.nc \
+                   RESTART/phy_data.tile3.nc \
+                   RESTART/phy_data.tile4.nc \
+                   RESTART/phy_data.tile5.nc \
+                   RESTART/phy_data.tile6.nc"
 
 
 export_fv3
 export NODES=$(expr $TASKS / $TPN + 1)
 
-export LHEATSTRG=.T.
-export OUTPUT_GRID="'gaussian_grid'"
-export OUTPUT_FILE="'nemsio'"
-export WRITE_NEMSIOFLIP=.true.
-export WRITE_FSYNCFLAG=.true.
+DT_ATMOS="1200"
+
+export FV3_RUN=gfs_v16_run.IN
+export INPUT_NML=v16beta_c96.nml.IN
 
 RUN_SCRIPT=rt_fv3.sh

@@ -1,7 +1,7 @@
 ## NEMS configuration file
 ##
 ## Platform: Darwin Mac OS X
-## Compiler: GNU (clang/gfortran) with MPICH
+## Compiler: GNU (gcc/clang+gfortran) with MPICH
 
 SHELL=/bin/sh
 
