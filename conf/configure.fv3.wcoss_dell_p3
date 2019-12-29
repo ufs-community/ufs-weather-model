@@ -76,6 +76,10 @@ ifeq ($(MULTI_GASES),Y)
 CPPDEFS += -DMULTI_GASES
 endif
 
+ifeq ($(NO_INLINE_POST),Y)
+CPPDEFS += -DNO_INLINE_POST
+endif
+
 FFLAGS_OPT = -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3
 FFLAGS_REPRO = -O2 -debug minimal -fp-model consistent -qoverride-limits -g -traceback
 FFLAGS_DEBUG = -g -O0 -check -check noarg_temp_created -check nopointer -warn -warn noerrors -fp-stack-check -fstack-protector-all -fpe0 -debug -traceback -ftrapuv
