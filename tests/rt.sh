@@ -80,7 +80,7 @@ if [[ $MACHINE_ID = wcoss ]]; then
   DISKNM=/nems/noscrub/emc.nemspara/RT
   QUEUE=debug
   PARTITION=
-  ACCNR=GFS-T2O
+  ACCNR=GFS-DEV
   STMP=/ptmpp$pex
   PTMP=/ptmpp$pex
   SCHEDULER=lsf
@@ -109,7 +109,7 @@ elif [[ $MACHINE_ID = wcoss_cray ]]; then
   DISKNM=/gpfs/hps3/emc/nems/noscrub/emc.nemspara/RT
   QUEUE=debug
   PARTITION=
-  ACCNR=GFS-T2O
+  ACCNR=GFS-DEV
   if [[ -d /gpfs/hps3/ptmp ]] ; then
       STMP=/gpfs/hps3/stmp
       PTMP=/gpfs/hps3/stmp
@@ -144,7 +144,7 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
   DISKNM=/gpfs/dell2/emc/modeling/noscrub/emc.nemspara/RT
   QUEUE=debug
   PARTITION=
-  ACCNR=FV3GFS-T2O
+  ACCNR=GFS-DEV
   STMP=/gpfs/dell2/stmp
   PTMP=/gpfs/dell2/ptmp
   SCHEDULER=lsf
@@ -374,9 +374,9 @@ while getopts ":cfsl:mkreh" opt; do
 done
 
 if [[ $MACHINE_ID = cheyenne.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/trunk-20191127/${COMPILER^^}}
+  RTPWD=${RTPWD:-$DISKNM/develop-20191217/${COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/trunk-20191127}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20191217}
 fi
 
 shift $((OPTIND-1))
