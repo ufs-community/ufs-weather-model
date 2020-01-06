@@ -64,5 +64,16 @@ export WRITE_NEMSIOFLIP=.true.
 export WRITE_FSYNCFLAG=.true.
 
 export NODES=$(expr $TASKS / $TPN + 1)
+if [[ $MACHINE_ID = hera.* ]]; then
+  export FIX_AER="/scratch2/NCEPDEV/climate/Anning.Cheng/MERRA2"
+  export FIX_LUT="/scratch2/NCEPDEV/climate/Anning.Cheng/aer_data/LUTS"
+  export FIX_CCN="/scratch2/NCEPDEV/climate/Anning.Cheng/mg2_IN_CCN"
+  export FIX_DIAG="/scratch2/NCEPDEV/climate/Anning.Cheng/aer_data"
+else
+  export FIX_AER="/gpfs/dell2/emc/modeling/noscrub/Anning.Cheng/MERRA2"
+  export FIX_LUT="/gpfs/dell2/emc/modeling/noscrub/Anning.Cheng/aer_data/LUTS"
+  export FIX_CCN="/gpfs/dell2/emc/modeling/noscrub/Anning.Cheng/mg2_IN_CCN"
+  export FIX_DIAG="/gpfs/dell2/emc/modeling/noscrub/Anning.Cheng/aer_data"
+fi
 
 RUN_SCRIPT=rt_fv3.sh

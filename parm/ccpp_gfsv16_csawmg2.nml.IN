@@ -47,7 +47,7 @@
        fv_debug    = .F.
        range_warn  = .F.
        reset_eta   = .F.
-       n_sponge    = @[NPZ]
+       n_sponge    = 24
        nudge_qv    = .F.
        tau         = 5.
        rf_cutoff   = 7.5e2
@@ -60,11 +60,11 @@
        hydrostatic = .F.
        phys_hydrostatic   = .F.
        use_hydro_pressure = .F.
-       beta      = 0.0
-       a_imp     = 1.0
+       beta      = 0.
+       a_imp     = 1.
        p_fac     = 0.1
-       k_split   = 1
-       n_split   = 8
+       k_split   = 2
+       n_split   = 6
        nwat      = 6
        na_init   = @[NA_INIT]
        d_ext     = 0.0
@@ -73,7 +73,7 @@
        d2_bg     = 0.
        nord      =  2
        dddmp     = 0.1
-       d4_bg     = 0.16
+       d4_bg     = 0.12
        vtdm4     = 0.02
        delt_max  = 0.002
        ke_bg     = 0.
@@ -88,12 +88,11 @@
        hord_mt  =  6
        hord_vt  =  6
        hord_tm  =  6
-       hord_dp  =  6
+       hord_dp  = -6
        hord_tr  = 13
        adjust_dry_mass = .F.
        consv_te   = 1.
        consv_am   = .F.
-       do_sat_adj = .false.
        fill       = .T.
        dwind_2d   = .F.
        print_freq = 6
@@ -102,6 +101,7 @@
        z_tracer   = .T.
        read_increment = @[READ_INCREMENT]
        res_latlon_dynamics = "fv3_increment.nc"
+
 /
 
 #&coupler_nml
@@ -133,7 +133,7 @@
        nst_anl        = .true.
        use_ufo        = .true.
        pre_rad        = .false.
-       crtrh          = 0.98,0.98,0.90
+       crtrh          = 0.93,0.90,0.95
        ncld           = 2
        imp_physics    = 10
        pdfcld         = .false.
@@ -149,17 +149,17 @@
        lwhtr          = .true.
        swhtr          = .true.
        cnvgwd         = .true.
-       shal_cnv       = .false..
+       shal_cnv       = .true.
        cal_pre        = .false.
        redrag         = .true.
-       dspheat        = .fasle.
+       dspheat        = .false.
        hybedmf        = .false.
-       satmedmf       = .false.
+       satmedmf       = .true.
        lheatstrg      = @[LHEATSTRG]
        random_clds    = .true.
        trans_trac     = .true.
        cnvcld         = .false.
-       imfshalcnv     = -1
+       imfshalcnv     = 2
        imfdeepcnv     = -1
        cdmbgwd        = 3.5,0.25
        prslrd0        = 0.
@@ -178,14 +178,16 @@
        iopt_snf       = 4
        iopt_tbot      = 2
        iopt_stc       = 1
+       oz_phys        = .false.
+       oz_phys_2015   = .true.
        debug          = .false.
 
        ras            = .false.
        cscnv          = .true.
-       do_shoc        = .true.
+       do_shoc        = .false.
        shoc_parm      = 7000.0,1.0,2.0,0.7,-999.0
        do_aw          = .true.
-       shoc_cld       = .true.
+       shoc_cld       = .false.
        h2o_phys       = .true.
        shcnvcw        = .false.
        xkzm_h         = 0.5
@@ -198,8 +200,8 @@
        mg_qcvar       = 1.0
        fprcp          = 2
        pdfflag        = 4
-       iccn           = 0
-       mg_do_graupel = .true.
+       iccn           = 2
+       mg_do_graupel  = .true.
        mg_do_hail     = .false.
        do_sb_physics  = .true.
        mg_do_ice_gmao = .false.
@@ -210,8 +212,6 @@
        max_lat        = 4000
        rhcmax         = 0.9999999
        effr_in        = .true.
-       oz_phys        = .false.
-       oz_phys_2015   = .true.
 
        nstf_name      = @[NSTF_NAME]
        iau_delthrs    = 6

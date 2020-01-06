@@ -1,0 +1,52 @@
+#######################################################################################################################################################################################
+# IPD PROD tests                                                                                                                                                                      #
+#######################################################################################################################################################################################
+
+COMPILE |                                                                                                                                | standard    | wcoss_cray     | fv3         |
+COMPILE |                                                                                                                                | standard    | wcoss_dell_p3  | fv3         |
+COMPILE |                                                                                                                                | standard    | theia.intel    | fv3         |
+COMPILE |                                                                                                                                | standard    | hera.intel     | fv3         |
+COMPILE |                                                                                                                                | standard    | cheyenne.intel | fv3         |
+COMPILE |                                                                                                                                | standard    | gaea.intel     | fv3         |
+COMPILE |                                                                                                                                | standard    | jet.intel      | fv3         |
+
+# Run most tests using the compile.sh version of fv3:
+RUN     | fv3_csawmg                                                                                                                     | standard    |                | fv3         |
+RUN     | fv3_gfsv16_csawmg                                                                                                                     | standard    |                | fv3         |
+
+# IPD REPRO tests                                                                                                                                                                     #
+#######################################################################################################################################################################################
+
+COMPILE | REPRO=Y                                                                                                                        | standard    | wcoss_cray     | fv3         |
+COMPILE | REPRO=Y                                                                                                                        | standard    | wcoss_dell_p3  | fv3         |
+COMPILE | REPRO=Y                                                                                                                        | standard    | hera.intel     | fv3         |
+COMPILE | REPRO=Y                                                                                                                        | standard    | cheyenne.intel | fv3         |
+COMPILE | REPRO=Y                                                                                                                        | standard    | gaea.intel     | fv3         |
+COMPILE | REPRO=Y                                                                                                                        | standard    | jet.intel      | fv3         |
+
+RUN     | fv3_csawmg                                                                                                                     | standard    |                | fv3         |
+RUN     | fv3_gfsv16_csawmg                                                                                                                     | standard    |                | fv3         |
+#######################################################################################################################################################################################
+
+COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_2017_csawmgshoc,FV3_GFS_2017_csawmg,FV3_GFS_2017_satmedmf                               | standard    | wcoss_cray     |             |
+COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_2017_csawmgshoc,FV3_GFS_2017_csawmg,FV3_GFS_2017_satmedmf                               | standard    | wcoss_dell_p3  |             |
+COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_2017_csawmgshoc,FV3_GFS_2017_csawmg,FV3_GFS_2017_satmedmf                               | standard    | theia.intel    |             |
+COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_2017_csawmgshoc,FV3_GFS_2017_csawmg,FV3_GFS_2017_satmedmf                               | standard    | hera.intel     |             |
+COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_2017_csawmgshoc,FV3_GFS_2017_csawmg,FV3_GFS_2017_satmedmf                               | standard    | cheyenne.intel |             |
+COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_2017_csawmgshoc,FV3_GFS_2017_csawmg,FV3_GFS_2017_satmedmf                               | standard    | gaea.intel     |             |
+COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_2017_csawmgshoc,FV3_GFS_2017_csawmg,FV3_GFS_2017_satmedmf                               | standard    | jet.intel      |             |
+
+RUN     | fv3_ccpp_csawmg                                                                                                                | standard    |                |             |
+#######################################################################################################################################################################################
+#######################################################################################################################################################################################
+
+COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_v16_csawmg                               | standard    | wcoss_cray     |             |
+COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_v16_csawmg                               | standard    | wcoss_dell_p3  |             |
+COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_v16_csawmg                               | standard    | theia.intel    |             |
+COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_v16_csawmg                               | standard    | hera.intel     |             |
+COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_v16_csawmg                               | standard    | cheyenne.intel |             |
+COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_v16_csawmg                               | standard    | gaea.intel     |             |
+COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_v16_csawmg                               | standard    | jet.intel      |             |
+
+RUN     | fv3_ccpp_gfsv16_csawmg                                                                                                                | standard    |                |             |
+

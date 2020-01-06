@@ -4,9 +4,9 @@
 #
 ###############################################################################
 
-export TEST_DESCR="Compare FV3 CCPP csawmgshoc results with previous trunk version"
+export TEST_DESCR="Compare FV3 CCPP v16_csawmg results with previous trunk version"
 
-export CNTL_DIR=fv3_csawmgshoc
+export CNTL_DIR=fv3_gfsv16_csawmg
 
 export LIST_FILES="atmos_4xdaily.tile1.nc \
                    atmos_4xdaily.tile2.nc \
@@ -56,14 +56,14 @@ export_fv3
 
 DT_ATMOS="600"
 
-export INPUT_NML=ccpp_csawmgshoc.nml.IN
-export FV3_RUN=ccpp_csawmgshoc_run.IN
+export INPUT_NML=ccpp_gfsv16_csawmg.nml.IN
+export FV3_RUN=ccpp_gfsv16_csawmg_run.IN
 export OUTPUT_GRID="'gaussian_grid'"
 export OUTPUT_FILE="'nemsio'"
 export WRITE_NEMSIOFLIP=.true.
 export WRITE_FSYNCFLAG=.true.
 
-export CCPP_SUITE=FV3_GFS_2017_csawmgshoc
+export CCPP_SUITE=FV3_GFS_v16_csawmg
 export CCPP_LIB_DIR=ccpp/lib
 
 export NODES=$(expr $TASKS / $TPN + 1)
