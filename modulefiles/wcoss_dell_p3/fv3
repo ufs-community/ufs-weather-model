@@ -17,6 +17,7 @@ module-whatis "loads NEMS FV3 prerequisites on Venus and Mars"
 ##
 module load ips/18.0.1.163
 module load impi/18.0.1
+module load lsf/10.1
 module load NetCDF/4.5.0
 module load HDF5-serial/1.10.1
 module load cmake/3.10.0
@@ -32,7 +33,7 @@ module load w3nco/2.0.7
 module load w3emc/2.3.1
 module load nemsio/2.2.4
 module load g2/3.1.1
-module load g2tmpl/1.5.1
+module load g2tmpl/1.6.0
 module load crtm/2.2.6
 
 # WW3 grib encoding
@@ -41,7 +42,16 @@ module load libpng/1.2.59
 module load zlib/1.2.11
 
 # load post lib
-module load post/8.0.0
+module load post/8.0.1
 
 module use /gpfs/dell2/emc/modeling/noscrub/emc.nemspara/soft/modulefiles
 module load esmf/8.0.0
+
+##
+## load cmake
+##
+module load cmake/3.10.0
+setenv CMAKE_C_COMPILER mpiicc
+setenv CMAKE_CXX_COMPILER mpiicpc
+setenv CMAKE_Fortran_COMPILER mpiifort
+setenv CMAKE_Platform wcoss_dell_p3

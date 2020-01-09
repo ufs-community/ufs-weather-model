@@ -35,7 +35,7 @@ module load crtm-intel/2.2.6
 
 module use /gpfs/hps/usrx/local/nceplibs/NCEPLIBS/modulefiles
 module load g2/3.1.1
-module load g2tmpl/1.5.1
+module load g2tmpl/1.6.0
 ##
 ## load ncelibs libraries
 ##
@@ -47,7 +47,7 @@ module load w3emc/2.3.1
 module load nemsio/2.2.4
 
 #post lib
-module load post/8.0.0
+module load post/8.0.1
 
 ## WCOSS Cray execution prereqs:
 module load rca
@@ -61,3 +61,12 @@ module use /gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/modulefiles
 module load esmf/8.0.0
 
 module swap pmi pmi/5.0.11
+
+##
+## load cmake
+##
+module load cmake/3.6.2
+setenv CMAKE_C_COMPILER cc
+setenv CMAKE_CXX_COMPILER CC
+setenv CMAKE_Fortran_COMPILER ftn
+setenv CMAKE_Platform wcoss_cray

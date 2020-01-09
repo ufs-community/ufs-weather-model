@@ -16,7 +16,7 @@ export COMPILE_NR=$5
 
 cd ${PATHRT}
 
-[[ -e run_test.env ]] && source run_test.env
+[[ -e ${RUNDIR_ROOT}/run_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
 source default_vars.sh
 source tests/$TEST_NAME
 
