@@ -159,7 +159,7 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
   ECFLOW_START=
   # DH* 20190717 temporary
   #DISKNM=/lustre/f2/pdata/ncep_shared/emc.nemspara/RT
-  DISKNM=/lustre/f2/pdata/esrl/gsd/gmtb/NEMSfv3gfs/RT
+  DISKNM=/lustre/f2/pdata/esrl/gsd/ufs/ufs-weather-model/RT
   # *DH 20190717
   QUEUE=debug
 #  DO NOT SET AN ACCOUNT EVERYONE IS NOT A MEMBER OF
@@ -321,8 +321,8 @@ ECFLOW=false
 KEEP_RUNDIR=false
 
 TESTS_FILE='rt.conf'
-## Switch to special regression test config on wcoss_cray:
-## don't run the IPD and CCPP tests in REPRO mode.
+# Switch to special regression test config on wcoss_cray:
+# don't run the IPD and CCPP tests in REPRO mode.
 if [[ $MACHINE_ID = wcoss_cray ]]; then
   TESTS_FILE='rt_wcoss_cray.conf'
 fi
@@ -374,9 +374,9 @@ while getopts ":cfsl:mkreh" opt; do
 done
 
 if [[ $MACHINE_ID = cheyenne.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/develop-20191217/${COMPILER^^}}
+  RTPWD=${RTPWD:-$DISKNM/develop-20191230/${COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20191217}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20191230}
 fi
 
 shift $((OPTIND-1))
