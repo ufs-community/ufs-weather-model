@@ -4,7 +4,7 @@
 ##
 ##    NEMS FV3 Prerequisites: MACOSX with clang/gfortran compilers
 
-echo "Setting environment variables for NEMSfv3gfs on MACOSX with clang/gfortran"
+echo "Setting environment variables for NEMSfv3gfs on MACOSX with gcc/gfortran or clang/gfortran"
 
 ##
 ## load programming environment: compiler, flags, paths
@@ -17,6 +17,14 @@ export FC=${MPIFORT:-mpifort}
 export CPP=${CPP:-"${F90} -E -x f95-cpp-input"}
 export MPICC=${MPICC:-mpicc}
 export MPIF90=${MPIF90:-mpif90}
+
+##
+## load cmake
+##
+export CMAKE_C_COMPILER=${CC}
+export CMAKE_CXX_COMPILER=${CXX}
+export CMAKE_Fortran_COMPILER=${FC}
+export CMAKE_Platform=macosx.gnu
 
 ##
 ## use homebrew NetCDF library
@@ -36,7 +44,8 @@ fi
 ##
 ## use pre-compiled EMSF library for above compiler / MPI combination
 ##
-export ESMFMKFILE=${ESMFMKFILE:-/usr/local/esmf-8.0.0_bs40/lib/esmf.mk}
+ESMF_VERSION=8.0.0
+export ESMFMKFILE=${ESMFMKFILE:-/usr/local/esmf-${ESMF_VERSION}/lib/esmf.mk}
 
 ##
 ## NCEP libraries (need to download and build manually, see doc/README_MACOSX.txt and https://github.com/NCAR/NCEPlibs)

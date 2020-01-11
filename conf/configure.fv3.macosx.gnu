@@ -90,7 +90,7 @@ CFLAGS := $(INCLUDE)
 FFLAGS := $(INCLUDE) -fcray-pointer -ffree-line-length-none -fno-range-check -fbacktrace
 
 CPPDEFS += -DMACOSX -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP
-CPPDEFS += -DNEW_TAUCTMAX -DINTERNAL_FILE_NML
+CPPDEFS += -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_INLINE_POST
 
 ifeq ($(HYDRO),Y)
 CPPDEFS +=
@@ -122,8 +122,8 @@ CPPDEFS += -DMULTI_GASES
 endif
 
 FFLAGS_OPT = -O2 -g -fno-range-check
-FFLAGS_REPRO = -O2 -g -fbacktrace -fno-range-check
-FFLAGS_DEBUG = -g -O0 -ggdb -fno-unsafe-math-optimizations -frounding-math -fsignaling-nans -Wuninitialized -ffpe-trap=invalid,zero,overflow -fbounds-check -fbacktrace -fno-range-check
+FFLAGS_REPRO = -O0 -g -fbacktrace -fno-range-check
+FFLAGS_DEBUG = -g -O0 -ggdb -fno-unsafe-math-optimizations -frounding-math -fsignaling-nans -ffpe-trap=invalid,zero,overflow -fbounds-check -fbacktrace -fno-range-check -Wall
 
 TRANSCENDENTALS :=
 FFLAGS_OPENMP = -fopenmp
