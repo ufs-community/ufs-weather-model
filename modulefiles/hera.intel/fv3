@@ -36,14 +36,13 @@ module load sp/2.0.3
 module load w3emc/2.3.1
 module load w3nco/2.0.7
 module load g2/3.1.1
-module load g2tmpl/1.5.1
+module load g2tmpl/1.6.0
 module load crtm/2.2.6
 module load jasper/1.900.1
 module load png/1.2.44
 module load z/1.2.11
-
 ## load modules for nceppost grib
-module load post/8.0.0
+module load post/8.0.1
 
 ##
 ## load ESMF library for above compiler / MPI combination
@@ -51,3 +50,13 @@ module load post/8.0.0
 ##
 module use -a /scratch1/NCEPDEV/nems/emc.nemspara/soft/modulefiles
 module load esmf/8.0.0
+
+##
+## load cmake
+##
+module use /contrib/modulefiles
+module load cmake/3.9.0
+setenv CMAKE_C_COMPILER mpiicc
+setenv CMAKE_CXX_COMPILER mpiicpc
+setenv CMAKE_Fortran_COMPILER mpiifort
+setenv CMAKE_Platform hera.intel
