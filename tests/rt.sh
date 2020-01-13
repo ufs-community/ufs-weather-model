@@ -159,7 +159,7 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
   ECFLOW_START=
   # DH* 20190717 temporary
   #DISKNM=/lustre/f2/pdata/ncep_shared/emc.nemspara/RT
-  DISKNM=/lustre/f2/pdata/esrl/gsd/gmtb/NEMSfv3gfs/RT
+  DISKNM=/lustre/f2/pdata/esrl/gsd/ufs/ufs-weather-model/RT
   # *DH 20190717
   QUEUE=debug
 #  DO NOT SET AN ACCOUNT EVERYONE IS NOT A MEMBER OF
@@ -242,7 +242,7 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
 
   export PYTHONPATH=
   ECFLOW_START=
-  QUEUE=economy
+  QUEUE=premium
   PARTITION=
   dprefix=/glade/scratch
   DISKNM=/glade/p/ral/jntp/GMTB/NEMSfv3gfs/RT
@@ -345,9 +345,9 @@ while getopts ":cfsl:mkreh" opt; do
 done
 
 if [[ $MACHINE_ID = cheyenne.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/ufs-public-release-20191227/${COMPILER^^}}
+  RTPWD=${RTPWD:-$DISKNM/ufs-public-release-20200109/${COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/ufs-public-release-20191227}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/ufs-public-release-20200109}
 fi
 
 shift $((OPTIND-1))

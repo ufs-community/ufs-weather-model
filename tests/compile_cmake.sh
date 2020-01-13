@@ -111,7 +111,7 @@ if [[ "${MAKE_OPT}" == *"CCPP=Y"* ]]; then
   if [[ "${MAKE_OPT}" == *"STATIC=Y"* ]]; then
     CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DSTATIC=ON"
   else
-    echo "Error, cmake build not compatible with dynamic CCPP"
+    echo "Error, dynamic CCPP build not supported"
     exit 1
   fi
 
