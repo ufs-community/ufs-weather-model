@@ -1,4 +1,4 @@
-
+macro(setInte)
 set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fpp -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte")
 set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -qno-opt-dynamic-align")
 
@@ -90,3 +90,4 @@ if(INLINE_POST)
 else()
     message("INLINE_POST is disabled")
 endif()
+endmacro()
