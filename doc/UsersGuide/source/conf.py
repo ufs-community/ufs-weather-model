@@ -20,7 +20,7 @@ sys.path.insert(0, os.path.abspath('.'))
 # -- Project information -----------------------------------------------------
 
 project = 'UFS Weather Model Developers Guide'
-copyright = '2019'
+copyright = '2020'
 author = ' '
 
 # The short X.Y version
@@ -140,14 +140,14 @@ latex_elements = {
     # Latex figure (float) alignment
     #
     # 'figure_align': 'htbp',
-    #  'maketitle': r'\newcommand\sphinxbackoftitlepage{For referencing this document please use: \newline \break Schramm, J., L. Bernardet, L. Carson, G. Firl, D. Heinzeller, L. Pan, and M. Zhang, 2019. CCPP Technical Documentation Release v3.0.0. 91pp. Available at https://dtcenter.org/GMTB/v3.0/ccpp\_tech\_guide.pdf.}\sphinxmaketitle'
+    #  'maketitle': r'\newcommand\sphinxbackoftitlepage{For referencing this document please use: \newline \break Schramm, J., L. Bernardet, L. Carson, G. Firl, D. Heinzeller, L. Pan, and M. Zhang, 2020. UFS Weather Model User's Guide Release v1.0.0. Npp. Available at https://dtcenter.org.}\sphinxmaketitle'
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'CCPPtechnical.tex', 'CCPP Technical Documentation',
+    (master_doc, 'UFS_WM_Users_Guide.tex', 'UFS Weather Model Users Guide',
      author,'manual'),
 ]
 
@@ -157,7 +157,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'CCPPtechnical', 'CCPP Technical Documentation',
+    (master_doc, 'UFS_WM_Users_Guide', 'UFS Weather Model Users Guide',
      [author], 1)
 ]
 
@@ -168,8 +168,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'CCPPtechnical', 'CCPP Technical Documentation',
-     author, 'CCPPtechnical', 'One line description of project.',
+    (master_doc, 'UFS_WM_Users_guide', 'UFS Weather Model Users Guide',
+     author, 'UFS_WM_Users_Guide', 'One line description of project.',
      'Miscellaneous'),
 ]
 
