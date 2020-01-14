@@ -18,6 +18,5 @@ Welcome to the UFS Weather Model User's Guide
    ContributingDevelopment
    CompilingCodeWithoutApp
    RegTests
-   GitGitHub
-   Glossary
    Acronyms
+   Glossary

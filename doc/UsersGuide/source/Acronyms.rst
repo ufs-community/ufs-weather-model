@@ -10,6 +10,9 @@ Acronyms
    +----------------+---------------------------------------------------+
    | Abbreviation   | Explanation                                       |
    +================+===================================================+
+   | AOML           | NOAA's Atlantic Oceanographic and Meteorological  |
+   |                | Laboratory                                        |
+   +----------------+---------------------------------------------------+
    | API            | Application Programming Interface                 |
    +----------------+---------------------------------------------------+
    | b4b            | Bit-for-bit                                       |
@@ -25,6 +28,8 @@ Acronyms
    | EMC            | Environmental Modeling Center                     |
    +----------------+---------------------------------------------------+
    | ESMF           | The Earth System Modeling Framework               |
+   +----------------+---------------------------------------------------+
+   | ESRL           | NOAA Earth System Research Laboratory             |
    +----------------+---------------------------------------------------+
    | FMS            | Flexible Modeling System                          |
    +----------------+---------------------------------------------------+
@@ -44,10 +49,14 @@ Acronyms
    +----------------+---------------------------------------------------+
    | NCAR           | National Center for Atmospheric Research          |
    +----------------+---------------------------------------------------+
+   | NCEP           | National Centers for Environmental Predicction    |
+   +----------------+---------------------------------------------------+
    | NEMS           | National Oceanic and Atmospheric Administration   |
    |                | (NOAA) Environmental Modeling System              |
    +----------------+---------------------------------------------------+
    | NOAA           | National Oceanic and Atmospheric Administration   |
+   +----------------+---------------------------------------------------+
+   | NSSL           | National Severe Storms Laboratory                 |
    +----------------+---------------------------------------------------+
    | OpenMP         | Open Multi-Processing                             |
    +----------------+---------------------------------------------------+
