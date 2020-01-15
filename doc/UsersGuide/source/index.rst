@@ -11,7 +11,6 @@ Welcome to the UFS Weather Model User's Guide
    :maxdepth: 3
 
    Introduction
-   PlatformSupport
    CodeOverview
    InputsOutputs
    SDFandNamelistExamplePractices
@@ -19,6 +18,5 @@ Welcome to the UFS Weather Model User's Guide
    ContributingDevelopment
    CompilingCodeWithoutApp
    RegTests
-   GitGitHub
-   TransitioningFromVLAB
+   Acronyms
    Glossary
