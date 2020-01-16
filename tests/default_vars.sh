@@ -135,6 +135,7 @@ export GWD_OPT=1
 
 # PBL
 export SATMEDMF=.F.
+export ISATMEDMF=0
 export HYBEDMF=.T.
 export SHINHONG=.F.
 export DO_YSU=.F.
