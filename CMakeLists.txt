@@ -55,6 +55,10 @@ find_package(MPI REQUIRED)
 #set(CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
 #set(CMAKE_Fortran_COMPILER ${MPI_Fortran_COMPILER})
 find_package(ESMF REQUIRED)
+#set(ESMF_MOD ${ESMF_F90COMPILEPATHS})
+#set(ESMF_LIB ${ESMF_LIBSDIR}/libesmf.so)
+
+find_package(NetCDF REQUIRED)
 find_package(BACIO)
 find_package(NEMSIO)
 find_package(SP)
@@ -68,21 +72,25 @@ endif()
 find_package( PythonInterp 2.7 REQUIRED )
 find_package( PythonLibs 2.7 REQUIRED )
 
-message("running custom command")
-set( prebuildcommand  ${PYTHON_EXECUTABLE} ${PROJECT_SOURCE_DIR}/FV3/ccpp/framework/scripts/ccpp_prebuild.py --config=./FV3/ccpp/config/ccpp_prebuild_config.py --static --suites=${CCPP_SUITES} --builddir=${CMAKE_CURRENT_BINARY_DIR}/FV3 >  ${CMAKE_CURRENT_BINARY_DIR}/ccpp_prebuild.log)
+#set( prebuildcommand  ${PYTHON_EXECUTABLE} ${PROJECT_SOURCE_DIR}/FV3/ccpp/framework/scripts/ccpp_prebuild.py --config=./FV3/ccpp/config/ccpp_prebuild_config.py --static --suites=${CCPP_SUITES} --builddir=${CMAKE_CURRENT_BINARY_DIR}/FV3 >  ${CMAKE_CURRENT_BINARY_DIR}/ccpp_prebuild.log)
+set( prebuildcommand ${PROJECT_SOURCE_DIR}/build.sh )
 message("${prebuildcommand}")
+execute_process(COMMAND ${prebuildcommand} WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
 
-set( CCPPLOG ${CMAKE_CURRENT_BINARY_DIR}/ccpp_prebuild.log )
-ADD_CUSTOM_COMMAND( OUTPUT ${CCPPLOG}
-    PRE_BUILD
-    COMMAND ${prebuildcommand}
-    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-    COMMENT "HEY! running ccpp_prebuild"
-    DEPENDS ${CCPPLOG}
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/FV3/ccpp/framework/scripts/ccpp_prebuild.py
-)
-add_custom_target(ccpp_prebuild ALL DEPENDS ${CCPPLOG} )
-
+#set( CCPPLOG ${CMAKE_CURRENT_BINARY_DIR}/ccpp_prebuild.log )
+#ADD_CUSTOM_COMMAND( OUTPUT ${CCPPLOG}
+#    PRE_BUILD
+#    COMMAND ${prebuildcommand}
+#    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+#    COMMENT "HEY! running ccpp_prebuild"
+#    DEPENDS ${CCPPLOG}
+#    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/FV3/ccpp/framework/scripts/ccpp_prebuild.py
+#)
+#add_custom_target(ccpp_prebuild ALL DEPENDS ${CCPPLOG} )
+set(CCPP ON)
+set(STATIC ON)
+set(SUITES ${CCPP_SUITES})
+set(NETCDF_DIR ${NETCDF})
 if(NOT DEFINED PHYS)
   set(PHYS gfs)
 endif()
@@ -90,15 +98,15 @@ message("")
 message("Selected physics package: ${PHYS}")
 message("")
 
-if(${OS} STREQUAL "gnu")
+if(${COMPILER_TYPE} STREQUAL "gnu")
   include(${CMAKE_SOURCE_DIR}/cmake/GNU.cmake)
   setGNU()
 endif()
-if(${OS} STREQUAL "intel")
+if(${COMPILER_TYPE} STREQUAL "intel")
   include(${CMAKE_SOURCE_DIR}/cmake/Intel.cmake)
   setIntel()
 endif()
-
+message("HEY fort flags are ${CMAKE_Fortran_FLAGS}")
 add_definitions(-Duse_libMPI)
 add_definitions(-Duse_netCDF)
 add_definitions(-Duse_WRTCOMP)
@@ -199,12 +207,13 @@ add_library(
     FMS/mpp/nsclock.c
     FMS/mpp/threadloc.c
 )
-add_dependencies(fms run )
-add_dependencies( fms ccpp_prebuild )
+#add_dependencies(fms run )
+#add_dependencies( fms ccpp_prebuild )
 # stupid cmake can not figure out dependency of fft.F90 on fft99.F90 because 'use fft99_mod' is inside ifdefs
 set_property(SOURCE FMS/fft/fft.F90 APPEND_STRING PROPERTY COMPILE_FLAGS "-DSGICRAY=0 -DNAGFFT=0")
 
 target_include_directories(fms PUBLIC ${PROJECT_SOURCE_DIR}/FMS/include FMS/include FMS/fms FMS/mpp/include)
+set(NETCDF_INC_DIR ${NETCDF_INCLUDES})
 #target_include_directories(fms PRIVATE ${NETCDF_INC_DIR})
 add_definitions(${MPI_Fortran_COMPILE_FLAGS})
 target_include_directories(fms PRIVATE ${NETCDF_INC_DIR} ${MPI_Fortran_INCLUDE_DIRS} ${MPI_INCLUDE_PATH} "./" ${CMAKE_INCLUDE_OUTPUT_DIRECTORY})
@@ -214,109 +223,125 @@ set_target_properties(fms PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BI
 set_target_properties(fms PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/FMS/mod)
 target_include_directories(fms PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/FMS/mod)
 
-file(READ ${PROJECT_BINARY_DIR}//FV3/ccpp/physics/CCPP_SCHEMES.sh CCPP_CAPS_FILE)
-message("${CCPP_CAPS_FILE}")
 set(delim "=")
-message("delim is ${delim}")
-#string(REPLACE 
-#       <replace_string> <output_variable>
-#       <input> 
+file(READ ${PROJECT_BINARY_DIR}//FV3/ccpp/physics/CCPP_SCHEMES.sh CCPP_SCHEMES_FILE)
+string(FIND "${CCPP_SCHEMES_FILE}" "${delim}" SPLIT_POS)
+string(LENGTH "${CCPP_SCHEMES_FILE}" FILE_LEN)
+MATH(EXPR SPLIT_POS "${SPLIT_POS}+2")
+MATH(EXPR LINE_LEN "${FILE_LEN}-${SPLIT_POS} -2")
+string(SUBSTRING "${CCPP_SCHEMES_FILE}" ${SPLIT_POS} ${LINE_LEN} CCPP_FILES)
+set(ENV{CCPP_SCHEMES} "${CCPP_FILES}")
+file(READ ${PROJECT_BINARY_DIR}//FV3/ccpp/physics/CCPP_CAPS.sh CCPP_CAPS_FILE)
 string(FIND "${CCPP_CAPS_FILE}" "${delim}" SPLIT_POS)
 string(LENGTH "${CCPP_CAPS_FILE}" FILE_LEN)
 MATH(EXPR SPLIT_POS "${SPLIT_POS}+2")
 MATH(EXPR LINE_LEN "${FILE_LEN}-${SPLIT_POS} -2")
 string(SUBSTRING "${CCPP_CAPS_FILE}" ${SPLIT_POS} ${LINE_LEN} CCPP_FILES)
-message("${CCPP_FILES}")
-################################################################################
-#### FV3
-################################################################################
-#add_subdirectory(FV3)
-#
-################################################################################
-#### WW3
-################################################################################
-#if(WW3)
-#  set(WW3_COMP ${CMAKE_Platform})
-#  if(${CMAKE_Platform} STREQUAL "hera.intel")
-#    set(WW3_COMP "hera")
-#  endif()
-#  message("Build WW3:")
-#  message("   run: ${CMAKE_BUILD_TOOL} WW3_PARCOMPN=4 WW3_COMP=${WW3_COMP} ww3_nems")
-#  message("   in:  ${PROJECT_SOURCE_DIR}/WW3/model/esmf")
-#  message("")
-#
-#  add_custom_target(ww3_nems
-#    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/WW3/model/esmf
-#    COMMAND ${CMAKE_BUILD_TOOL} WW3_PARCOMPN=4 WW3_COMP=${WW3_COMP} ww3_nems > make.log 2>&1
-#  )
-#endif()
-#
-################################################################################
-#### NEMS
-################################################################################
-#configure_file(${PROJECT_SOURCE_DIR}/NEMS/src/ESMFVersionDefine_ESMF_NUOPC.h
-#               ${PROJECT_BINARY_DIR}/NEMS/src/ESMFVersionDefine.h
-#               COPYONLY)
-## until we remove "../ESMFVersionDefine.h" from ENS_Cpl/ENS_CplComp_ESMFMod_STUB.F90
-#configure_file(${PROJECT_SOURCE_DIR}/NEMS/src/ESMFVersionDefine_ESMF_NUOPC.h
-#               ${PROJECT_BINARY_DIR}/NEMS/ESMFVersionDefine.h
-#               COPYONLY)
-#configure_file(${PROJECT_SOURCE_DIR}/NEMS/src/ESMFConvenienceMacros.h
-#               ${PROJECT_BINARY_DIR}/NEMS/src/ESMFConvenienceMacros.h
-#               COPYONLY)
-#
-#add_executable(
-#    NEMS.exe
-#
-#    NEMS/src/MAIN_NEMS.F90
-#    NEMS/src/module_NEMS_UTILS.F90
-#    NEMS/src/module_MEDIATOR_methods.F90
-#    NEMS/src/module_MEDIATOR.F90
-#    NEMS/src/module_MEDIATOR_SpaceWeather.F90
-#    NEMS/src/module_EARTH_INTERNAL_STATE.F90
-#    NEMS/src/module_EARTH_GRID_COMP.F90
-#    NEMS/src/module_NEMS_INTERNAL_STATE.F90
-#    NEMS/src/module_NEMS_GRID_COMP.F90
-#    NEMS/src/module_NEMS_Rusage.F90
-#    NEMS/src/nems_c_rusage.c
-#    NEMS/src/ENS_Cpl/ENS_CplComp_ESMFMod_STUB.F90
-#)
-#
-#target_compile_definitions(NEMS.exe PRIVATE -DESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR})
-#target_compile_definitions(NEMS.exe PRIVATE -DFRONT_FMS)
-#target_compile_definitions(NEMS.exe PRIVATE -DFRONT_FV3=fv3gfs_cap_mod)
-#
-#target_include_directories(NEMS.exe PRIVATE ${ESMF_MOD} )
-#target_include_directories(NEMS.exe PRIVATE ${PROJECT_BINARY_DIR}/NEMS/src)
-#
-#set_target_properties(NEMS.exe PROPERTIES Fortran_MODULE_DIRECTORY ${PROJECT_BINARY_DIR}/NEMS/mod)
-#
-#if(WW3)
-#    target_compile_definitions(NEMS.exe PRIVATE -DFRONT_WW3=WMESMFMD)
-#    set_target_properties(NEMS.exe PROPERTIES Fortran_MODULE_DIRECTORY ${PROJECT_SOURCE_DIR}/WW3/model/mod)
-#    set(WW3_LIBS ${PROJECT_SOURCE_DIR}/WW3/model/obj/libww3_multi_esmf.a)
-#    add_dependencies(NEMS.exe ww3_nems)
-#endif()
-#
-#if(CCPP)
-#    set(CCPP_LIBRARIES ccppdriver ccppphys ccpp)
-#else()
-#    set(IPD_LIBRARIES ipd)
-#endif()
-#
-#target_link_libraries(NEMS.exe
-#                      fv3cap
-#                      fv3core
-#                      io
-#                      ${IPD_LIBRARIES}
-#                      ${PHYS}physics
-#                      ${CCPP_LIBRARIES}
-#                      fv3cpl
-#                      stochastic_physics
-#                      fms
-#                      ${WW3_LIBS}
-#                      ${NCEP_LIBS} ${ESMF_LIBS} ${NETCDF_LIBS} ${MKL_LIB})
-#
-################################################################################
-#### done
-################################################################################
+set(ENV{CCPP_CAPS} "${CCPP_FILES}")
+file(READ ${PROJECT_BINARY_DIR}//FV3/ccpp/physics/CCPP_STATIC_API.sh CCPP_API_FILE)
+string(FIND "${CCPP_API_FILE}" "${delim}" SPLIT_POS)
+string(LENGTH "${CCPP_API_FILE}" FILE_LEN)
+MATH(EXPR SPLIT_POS "${SPLIT_POS}+2")
+MATH(EXPR LINE_LEN "${FILE_LEN}-${SPLIT_POS} -2")
+string(SUBSTRING "${CCPP_API_FILE}" ${SPLIT_POS} ${LINE_LEN} CCPP_API)
+set(ENV{CCPP_STATIC_API} "${CCPP_API}")
+###############################################################################
+### FV3
+###############################################################################
+
+add_subdirectory(FV3)
+
+###############################################################################
+### WW3
+###############################################################################
+if(WW3)
+  set(WW3_COMP ${CMAKE_Platform})
+  if(${CMAKE_Platform} STREQUAL "hera.intel")
+    set(WW3_COMP "hera")
+  endif()
+  message("Build WW3:")
+  message("   run: ${CMAKE_BUILD_TOOL} WW3_PARCOMPN=4 WW3_COMP=${WW3_COMP} ww3_nems")
+  message("   in:  ${PROJECT_SOURCE_DIR}/WW3/model/esmf")
+  message("")
+
+  add_custom_target(ww3_nems
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/WW3/model/esmf
+    COMMAND ${CMAKE_BUILD_TOOL} WW3_PARCOMPN=4 WW3_COMP=${WW3_COMP} ww3_nems > make.log 2>&1
+  )
+endif()
+
+###############################################################################
+### NEMS
+###############################################################################
+configure_file(${PROJECT_SOURCE_DIR}/NEMS/src/ESMFVersionDefine_ESMF_NUOPC.h
+               ${PROJECT_BINARY_DIR}/NEMS/src/ESMFVersionDefine.h
+               COPYONLY)
+# until we remove "../ESMFVersionDefine.h" from ENS_Cpl/ENS_CplComp_ESMFMod_STUB.F90
+configure_file(${PROJECT_SOURCE_DIR}/NEMS/src/ESMFVersionDefine_ESMF_NUOPC.h
+               ${PROJECT_BINARY_DIR}/NEMS/ESMFVersionDefine.h
+               COPYONLY)
+configure_file(${PROJECT_SOURCE_DIR}/NEMS/src/ESMFConvenienceMacros.h
+               ${PROJECT_BINARY_DIR}/NEMS/src/ESMFConvenienceMacros.h
+               COPYONLY)
+
+add_executable(
+    NEMS.exe
+
+    NEMS/src/MAIN_NEMS.F90
+    NEMS/src/module_NEMS_UTILS.F90
+    NEMS/src/module_MEDIATOR_methods.F90
+    NEMS/src/module_MEDIATOR.F90
+    NEMS/src/module_MEDIATOR_SpaceWeather.F90
+    NEMS/src/module_EARTH_INTERNAL_STATE.F90
+    NEMS/src/module_EARTH_GRID_COMP.F90
+    NEMS/src/module_NEMS_INTERNAL_STATE.F90
+    NEMS/src/module_NEMS_GRID_COMP.F90
+    NEMS/src/module_NEMS_Rusage.F90
+    NEMS/src/nems_c_rusage.c
+    NEMS/src/ENS_Cpl/ENS_CplComp_ESMFMod_STUB.F90
+)
+
+target_compile_definitions(NEMS.exe PRIVATE -DESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR})
+target_compile_definitions(NEMS.exe PRIVATE -DFRONT_FMS)
+target_compile_definitions(NEMS.exe PRIVATE -DFRONT_FV3=fv3gfs_cap_mod)
+
+target_include_directories(NEMS.exe PRIVATE ${ESMF_MOD} )
+target_include_directories(NEMS.exe PRIVATE ${MPI_Fortran_INCLUDE_DIRS} )
+target_include_directories(NEMS.exe PRIVATE ${CMAKE_INSTALL_PREFIX}/include )
+target_include_directories(NEMS.exe PRIVATE ${CMAKE_INSTALL_PREFIX}/mod )
+target_include_directories(NEMS.exe PRIVATE ${PROJECT_BINARY_DIR}/NEMS/src)
+
+set_target_properties(NEMS.exe PROPERTIES Fortran_MODULE_DIRECTORY ${PROJECT_BINARY_DIR}/NEMS/mod)
+
+if(WW3)
+    target_compile_definitions(NEMS.exe PRIVATE -DFRONT_WW3=WMESMFMD)
+    set_target_properties(NEMS.exe PROPERTIES Fortran_MODULE_DIRECTORY ${PROJECT_SOURCE_DIR}/WW3/model/mod)
+    set(WW3_LIBS ${PROJECT_SOURCE_DIR}/WW3/model/obj/libww3_multi_esmf.a)
+    add_dependencies(NEMS.exe ww3_nems)
+endif()
+
+if(CCPP)
+    set(CCPP_LIBRARIES ccppdriver ccppphys ccpp)
+else()
+    set(IPD_LIBRARIES ipd)
+endif()
+set(NCEP_LIBS ${NEMSIO_LIB};${BACIO_LIB4};${SP_LIBd};${W3EMC_LIBd};${W3NCO_LIBd})
+message("ncep libs are ${NCEP_LIBS}")
+#set(ESMF_LIB ${CMAKE_INSTALL_PREFIX}/lib/libesmf_fullylinked.so)
+target_link_libraries(NEMS.exe
+                      fv3cap
+                      fv3core
+                      io
+                      ${IPD_LIBRARIES}
+                      ${PHYS}physics
+                      ${CCPP_LIBRARIES}
+                      fv3cpl
+                      stochastic_physics
+                      fms
+                      ${WW3_LIBS}
+                      ${NEMSIO_LIB} 
+                      ${NCEP_LIBS} ${ESMF_LIB} ${NETCDF_LIBRARIES} ${MPI_Fortran_LIBRARIES} ${MKL_LIB})
+
+###############################################################################
+### done
+###############################################################################

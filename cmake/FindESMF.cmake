@@ -34,6 +34,13 @@ if(ESMF_VERSION_MAJOR AND
 else()
   message("One of the ESMF_ variables is not defined")
 endif()
+find_library( ESMF_LIB
+      NAMES libesmf.so libesmf_fullylinked.so
+      HINTS 
+         ${ESMF_LIBSDIR}
+         ${CMAKE_INSTALL_PREFIX}/lib
+)
+set(ESMF_MOD ${ESMF_F90COMPILEPATHS})
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(ESMF

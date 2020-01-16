@@ -1,5 +1,5 @@
 macro(setGNU)
-set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fcray-pointer -ffree-line-length-none -fno-range-check -fbacktrace")
+set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fcray-pointer -ffree-line-length-none -fno-range-check -fbacktrace ")
 
 if(DEBUG)
     message("DEBUG is       ENABLED")
