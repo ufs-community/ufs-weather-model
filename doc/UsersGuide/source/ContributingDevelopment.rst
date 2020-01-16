@@ -18,9 +18,9 @@ Contributing Development
  ufs-community/ufs-weather-model
 ================================
 
------------------------
+------------------------------
  Prerequisite libraries:
------------------------
+------------------------------
 
 Below is the list of libraries that are required to compile the model and run regression tests:
 
@@ -96,9 +96,9 @@ Compiler:
 +--------------------+------------------------------------------------------------------+
 |Compiler name       |    Branch name                                                   |
 +====================+==================================================================+
-| Intel              |   16.0.3.210,16.3.210,18.0.1.163, 18.0.3.222,18.0.5.274, 19.0.2  |
+| Intel              |  16.0.3.210,16.3.210,18.0.1.163, 18.0.3.222,18.0.5.274, 19.0.2   |
 +--------------------+------------------------------------------------------------------+
-|impi                |   2018.0.4, 2018.4.274,18.0.1, 2019.2.187                                                        |
+|impi                |  2018.0.4, 2018.4.274,18.0.1, 2019.2.187                         |
 +--------------------+------------------------------------------------------------------+
 
 
@@ -106,9 +106,9 @@ These libraries are available on several platforms including Hera, Cheyenne and 
 
 In addition to these libraries, other software is required such as a compiler (Intel or GNU), MPI library (impi), HDF5, cmake, Python, Perl and Ruby to compile the model and run regression tests.
 
------------------------
+--------------------------------------------
 Making code changes using a forking workflow
------------------------
+--------------------------------------------
 
 If developers would like to make code changes, they need to make a personal fork, set up upstream remote (for merging with the original ufs-weather-model), and create a branch for ufs-weather-model and each of the subcomponent repositories they want to change. They can then make code changes, perform testing and commit the changes to the branch in their personal fork. It is suggested that they merge their branch with the develop branch of the original repositories periodically to get the latest updates and bug fixes.
 
@@ -126,17 +126,17 @@ If developers would like to get their code committed back to the original reposi
 
 It is suggested that the developers inform all the related code managers as the hierarchy structure of the ufs-weather-model repository may require collaboration among the code managers.
 
------------------------
+-----------------------------------
 Engaging in the code review process
------------------------
+-----------------------------------
 
 When code managers receive a pull request to commit the code changes, it is recommended that they add at least two code reviewers to review the code. The reviewers will write comments about the code changes and give a recommendation as to whether the code changes can be committed. What kinds of code changes will be accepted in the repository is beyond the scope of this document; future ufs-weather-model code management may have detailed answer for that.
 
 Reviewers may suggest some code changes during the review process. Developers need to respond to these comments in order to get code changes committed. If developers make further changes to their branch, reviewers need to check the code changes again. When both reviewers give recommendation to commit the code, code managers will merge the changes into the repository.
 
------------------------
+---------------------------
 Conducting regression tests
------------------------
+---------------------------
 
 Only developers that are running on a limited set of platforms (Hera, Cheyenne, WCOSS) can compile and run regression tests using the ufs-weather-model.
 
@@ -177,9 +177,9 @@ The value of ${PLATFORM} can be found in ufs-weather-model/compsets/platforms.in
 
 Developers need to commit the regression test log files to their branch before making pull request.
 
------------------------
+-------------------------------------
 Compiling the code and running a test
------------------------
+-------------------------------------
 
 Currently developers running on Hera, Cheyenne or WCOSS can compile and run tests using the ufs-weather-model. In the document below, ufs-weather-model directory points to a branch in the developer’s personal fork.
 
