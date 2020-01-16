@@ -14,11 +14,15 @@ cp    @[RTPWD]/FV3_input_data/ozprdlos_2015_new_sbuvO3_tclm15_nuchem.f77 ./globa
 cp    @[RTPWD]/FV3_input_data/global_h2o_pltc.f77 ./global_h2oprdlos.f77
 cp    @[RTPWD]/FV3_input_data/*grb . 
 cp    @[RTPWD]/FV3_input_data/*_table .
-cp    @[RTPWD]/FV3_input_data/diag_table_mgrs    diag_table
+#cp    @[RTPWD]/FV3_input_data/diag_table_mgrs    diag_table
+cp    @[FIX_AER]/diag_table_aod diag_table
 #cp   @[RTPWD]/FV3_input_data/field_table_mgrs   field_table
 cp    @[RTPWD]/FV3_input_data/field_table_csawmgshoc field_table
 cp    @[RTPWD]/FV3_input_data/*configure .
 cp    @[FIX_AER]/merra2C.aerclim.2003-2014.*nc .
+for n in 01 02 03 04 05 06 07 08 09 10 11 12; do
+ln -sf merra2C.aerclim.2003-2014.m${n}.nc  aeroclim.m${n}.nc
+done
 cp    @[FIX_CCN]/cam5_4_143_NAAI_monclimo2.nc cam5_4_143_NAAI_monclimo2.nc
 cp    @[FIX_CCN]/cam5_4_143_NPCCN_monclimo2.nc cam5_4_143_NPCCN_monclimo2.nc
 cp    @[FIX_LUT]/optics_BC.v1_3.dat  optics_BC.dat
