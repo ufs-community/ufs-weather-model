@@ -47,16 +47,22 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
                    RESTART/sfc_data.tile3.nc \
                    RESTART/sfc_data.tile4.nc \
                    RESTART/sfc_data.tile5.nc \
-                   RESTART/sfc_data.tile6.nc"
+                   RESTART/sfc_data.tile6.nc \
+                   out_grd.glo_30m"
 
 
 export_fv3
-export TASKS=1728
+
+export TASKS=1752
 if [[ $MACHINE_ID = cheyenne.* ]]; then
   export TPN=36
+elif [[ $MACHINE_ID = hera.* ]]; then
+  export TPN=30
 else
   export TPN=12
 fi
+export NODES=$(expr $TASKS / $TPN + 1)
+
 export INPES=16
 export JNPES=16
 export NPX=769
@@ -83,7 +89,15 @@ export FNVETC="'global_vegtype.igbp.t1534.3072.1536.rg.grb',"
 export FNSOTC="'global_soiltype.statsgo.t1534.3072.1536.rg.grb',"
 export FNSMCC="'global_soilmgldas.t1534.3072.1536.grb',"
 export FNABSC="'global_mxsnoalb.uariz.t1534.3072.1536.rg.grb',"
-export NODES=$(expr $TASKS / $TPN + 1)
+
+export CPL=.true.
+export CPLWAV=.T.
+export atm_model='fv3'
+export atm_petlist_bounds="0 1727"
+export wav_model='ww3'
+export wav_petlist_bounds="1728 1751"
+export coupling_interval_sec=1800.0  #coupling time step, want it to be multiple of 1800 and FV3 time step
+export NEMS_CONFIGURE="nems.configure.blocked_atm_wav.IN"
 
 export FV3_RUN=ccpp_control_run.IN
 export CCPP_SUITE=FV3_GFS_2017
