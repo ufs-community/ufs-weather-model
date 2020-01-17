@@ -1,6 +1,6 @@
 ###############################################################################
 #
-#  FV3 CCPP GOCART_CLIM test
+#  FV3 CCPP GFDL-MP test
 #
 ###############################################################################
 
@@ -14,10 +14,10 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
                    atmos_4xdaily.tile4.nc \
                    atmos_4xdaily.tile5.nc \
                    atmos_4xdaily.tile6.nc \
-                   phyf000.nemsio \
-                   phyf024.nemsio \
-                   dynf000.nemsio \
-                   dynf024.nemsio \
+                   phyf000.nemsio   \
+                   phyf024.nemsio   \
+                   dynf000.nemsio   \
+                   dynf024.nemsio   \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -38,44 +38,35 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
                    RESTART/fv_tracer.res.tile4.nc \
                    RESTART/fv_tracer.res.tile5.nc \
                    RESTART/fv_tracer.res.tile6.nc \
-                   RESTART/phy_data.tile1.nc \
-                   RESTART/phy_data.tile2.nc \
-                   RESTART/phy_data.tile3.nc \
-                   RESTART/phy_data.tile4.nc \
-                   RESTART/phy_data.tile5.nc \
-                   RESTART/phy_data.tile6.nc \
                    RESTART/sfc_data.tile1.nc \
                    RESTART/sfc_data.tile2.nc \
                    RESTART/sfc_data.tile3.nc \
                    RESTART/sfc_data.tile4.nc \
                    RESTART/sfc_data.tile5.nc \
-                   RESTART/sfc_data.tile6.nc"
+                   RESTART/sfc_data.tile6.nc \
+                   RESTART/phy_data.tile1.nc \
+                   RESTART/phy_data.tile2.nc \
+                   RESTART/phy_data.tile3.nc \
+                   RESTART/phy_data.tile4.nc \
+                   RESTART/phy_data.tile5.nc \
+                   RESTART/phy_data.tile6.nc"
 
 
 export_fv3
+export NODES=$(expr $TASKS / $TPN + 1)
 
-DT_ATMOS="600"
-
-export INPUT_NML=ccpp.gocart.nml.IN
-export FV3_RUN=ccpp_gocart.IN
-
+DT_ATMOS="1200"
 export OUTPUT_GRID="'gaussian_grid'"
 export OUTPUT_FILE="'nemsio'"
 export WRITE_NEMSIOFLIP=.true.
 export WRITE_FSYNCFLAG=.true.
 export IAER=1111
+export HYBEDMF=.false.
+export SATMEDMF=.true.
 
-export NODES=$(expr $TASKS / $TPN + 1)
-if [[ $MACHINE_ID = hera.* ]]; then
-  export FIX_AER="/scratch2/NCEPDEV/climate/Anning.Cheng/MERRA2"
-  export FIX_LUT="/scratch2/NCEPDEV/climate/Anning.Cheng/aer_data/LUTS"
-  export FIX_CCN="/scratch2/NCEPDEV/climate/Anning.Cheng/mg2_IN_CCN"
-  export FIX_DIAG="/scratch2/NCEPDEV/climate/Anning.Cheng/aer_data"
-else
-  export FIX_AER="/gpfs/dell2/emc/modeling/noscrub/Anning.Cheng/MERRA2"
-  export FIX_LUT="/gpfs/dell2/emc/modeling/noscrub/Anning.Cheng/aer_data/LUTS"
-  export FIX_CCN="/gpfs/dell2/emc/modeling/noscrub/Anning.Cheng/mg2_IN_CCN"
-  export FIX_DIAG="/gpfs/dell2/emc/modeling/noscrub/Anning.Cheng/aer_data"
-fi
+export FV3_RUN=ccpp_gocart.IN
+export CCPP_SUITE=FV3_GFS_2017_gfdlmp
+export CCPP_LIB_DIR=ccpp/lib
+export INPUT_NML=ccpp.gocart.nml.IN
 
 RUN_SCRIPT=rt_fv3.sh
