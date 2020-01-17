@@ -18,7 +18,8 @@ MYDIR=$(cd "$(dirname "$(readlink -f -n "${BASH_SOURCE[0]}" )" )" && pwd -P)
 #export NETCDF=${NETCDF:?"Please set NETCDF environment variable"}
 #export ESMFMKFILE=${ESMFMKFILE:?"Please set ESMFMKFILE environment variable"}
 
-BUILD_DIR=${MYDIR}/build
+#BUILD_DIR=${MYDIR}/build
+BUILD_DIR=${1:-${MYDIR}/build}
 #rm -rf ${BUILD_DIR}
 #mkdir ${BUILD_DIR}
 
