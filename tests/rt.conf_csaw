@@ -13,6 +13,8 @@ COMPILE |                                                                       
 # Run most tests using the compile.sh version of fv3:
 RUN     | fv3_csawmg                                                                                                                     | standard    |                | fv3         |
 RUN     | fv3_gfsv16_csawmg                                                                                                                     | standard    |                | fv3         |
+RUN     | fv3_gocart_clm                                                                                                                 | standard    |                | fv3         |
+RUN     | fv3_gfsv16_csawmgt                                                                                                                    | standard    |                | fv3         |
 
 # IPD REPRO tests                                                                                                                                                                     #
 #######################################################################################################################################################################################
@@ -26,6 +28,8 @@ COMPILE | REPRO=Y                                                               
 
 RUN     | fv3_csawmg                                                                                                                     | standard    |                | fv3         |
 RUN     | fv3_gfsv16_csawmg                                                                                                                     | standard    |                | fv3         |
+RUN     | fv3_gocart_clm                                                                                                                 | standard    |                | fv3         |
+RUN     | fv3_gfsv16_csawmgt                                                                                                                    | standard    |                | fv3         |
 #######################################################################################################################################################################################
 
 COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_2017_csawmgshoc,FV3_GFS_2017_csawmg,FV3_GFS_2017_satmedmf                               | standard    | wcoss_cray     |             |
@@ -49,4 +53,15 @@ COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_v16_csawmg                     
 COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_v16_csawmg                               | standard    | jet.intel      |             |
 
 RUN     | fv3_ccpp_gfsv16_csawmg                                                                                                                | standard    |                |             |
+RUN     | fv3_ccpp_gfsv16_csawmgt                                                                                                               | standard    |                |             |
+#######################################################################################################################################################################################
+
+COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_2017                                                                                    | standard    | wcoss_cray     |             |
+COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_2017                                                                                    | standard    | wcoss_dell_p3  |             |
+COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_2017                                                                                    | standard    | hera.intel     |             |
+COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_2017                                                                                    | standard    | cheyenne.intel |             |
+COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_2017                                                                                    | standard    | gaea.intel     |             |
+COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_2017                                                                                    | standard    | jet.intel      |             |
+
+RUN     | fv3_ccpp_gocart_clm                                                                                                            | standard    |                |             |
 

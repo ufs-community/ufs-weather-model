@@ -1,17 +1,17 @@
 &amip_interp_nml
        interp_oi_sst = .true.
-       use_ncep_sst  = .true.
-       use_ncep_ice  = .false.
-       no_anom_sst   = .false.
-       data_set      = 'reynolds_oi',
+       use_ncep_sst = .true.
+       use_ncep_ice = .false.
+       no_anom_sst = .false.
+       data_set = 'reynolds_oi',
        date_out_of_range = 'climo',
 /
 
 &atmos_model_nml
-       blocksize    = 32
+       blocksize = 32
        chksum_debug = .false.
-       dycore_only  = .false.
-       fdiag        = @[FDIAG]
+       dycore_only = .false.
+       fdiag = @[FDIAG]
        ccpp_suite = '@[CCPP_SUITE]'
 /
 
@@ -36,78 +36,77 @@
 /
 
 &fv_core_nml
-       layout      = @[INPES],@[JNPES]
-       io_layout   = 1,1
-       npx         = @[NPX]
-       npy         = @[NPY]
-       ntiles      = 6
-       npz         = @[NPZ]
-       grid_type   = -1
-       make_nh     = @[MAKE_NH]
-       fv_debug    = .F.
-       range_warn  = .F.
-       reset_eta   = .F.
-       n_sponge    = 24
-       nudge_qv    = .F.
-       tau         = 5.
-       rf_cutoff   = 7.5e2
-       d2_bg_k1    = 0.15
-       d2_bg_k2    = 0.02
-       kord_tm     = -9
-       kord_mt     =  9
-       kord_wz     =  9
-       kord_tr     =  9
+       layout   = @[INPES],@[JNPES]
+       io_layout = 1,1
+       npx      = @[NPX]
+       npy      = @[NPY]
+       ntiles   = 6,
+       npz    = @[NPZ]
+       grid_type = -1
+       make_nh = @[MAKE_NH]
+       fv_debug = .F.
+       range_warn = .F.
+       reset_eta = .F.
+       n_sponge = 24
+       nudge_qv = .T.
+       tau = 5.
+       rf_cutoff = 7.5e2
+       d2_bg_k1 = 0.15
+       d2_bg_k2 = 0.02
+       kord_tm = -9
+       kord_mt =  9
+       kord_wz =  9
+       kord_tr =  9
        hydrostatic = .F.
-       phys_hydrostatic   = .F.
+       phys_hydrostatic = .F.
        use_hydro_pressure = .F.
-       beta      = 0.
-       a_imp     = 1.
-       p_fac     = 0.1
-       k_split   = 2
-       n_split   = 6
-       nwat      = 6
-       na_init   = @[NA_INIT]
-       d_ext     = 0.0
-       dnats     = 0
+       beta = 0.
+       a_imp = 1.
+       p_fac = 0.1
+       k_split  = 2
+       n_split  = 6
+       nwat = 2
+       na_init = @[NA_INIT]
+       d_ext = 0.0
+       dnats = 0
        fv_sg_adj = 450
-       d2_bg     = 0.
-       nord      =  2
-       dddmp     = 0.1
-       d4_bg     = 0.12
-       vtdm4     = 0.02
-       delt_max  = 0.002
-       ke_bg     = 0.
+       d2_bg = 0.
+       nord =  2
+       dddmp = 0.1
+       d4_bg = 0.12
+       vtdm4 = 0.02
+       delt_max = 0.002
+       ke_bg = 0.
        do_vort_damp = .true.
-       external_ic  = @[EXTERNAL_IC]
+       external_ic = @[EXTERNAL_IC]
        external_eta = .T.
        gfs_phil = .false.
        nggps_ic = @[NGGPS_IC]
        mountain = @[MOUNTAIN]
-       ncep_ic  = .F.
-       d_con    = 1.
-       hord_mt  =  6
-       hord_vt  =  6
-       hord_tm  =  6
-       hord_dp  = -6
-       hord_tr  = 13
+       ncep_ic = .F.
+       d_con = 1.
+       hord_mt =  6
+       hord_vt =  6
+       hord_tm =  6
+       hord_dp =  6
+       hord_tr = 8
        adjust_dry_mass = .F.
-       consv_te   = 1.
-       consv_am   = .F.
-       fill       = .T.
-       dwind_2d   = .F.
+       consv_te = 1.
+       consv_am = .F.
+       fill = .T.
+       dwind_2d = .F.
        print_freq = 6
        warm_start = @[WARM_START]
-       no_dycore  = .false.
-       z_tracer   = .T.
+       no_dycore = .false.
+       z_tracer = .T.
        read_increment = @[READ_INCREMENT]
        res_latlon_dynamics = "fv3_increment.nc"
-
 /
 
 #&coupler_nml
-#       months   = 0
-#       days     = 1
-#       hours    = 0
+#       months = 0
+#       days  = 1
+#       hours = 0
 #       dt_atmos = 225
 #       dt_ocean = 225
 #       current_date =  2016,10,03,00,0,0
@@ -120,7 +119,7 @@
 
 &external_ic_nml
        filtered_terrain = .true.
-       levp       = @[NPZP]
+       levp = @[NPZP]
        gfs_dwinds = .true.
        checker_tr = .F.
        nt_checker = 0
@@ -133,9 +132,8 @@
        nst_anl        = .true.
        use_ufo        = .true.
        pre_rad        = .false.
-       crtrh          = 0.93,0.90,0.95
-       ncld           = 2
-       imp_physics    = 10
+       ncld           = 1
+       imp_physics    = 99
        pdfcld         = .false.
        fhswr          = 3600.
        fhlwr          = 3600.
@@ -150,17 +148,17 @@
        swhtr          = .true.
        cnvgwd         = .true.
        shal_cnv       = .true.
-       cal_pre        = .false.
+       cal_pre        = .true.
        redrag         = .true.
-       dspheat        = .false.
+       dspheat        = .true.
        hybedmf        = .false.
        satmedmf       = .true.
        lheatstrg      = @[LHEATSTRG]
        random_clds    = .true.
-       trans_trac     = .true.
-       cnvcld         = .false.
+       trans_trac     = .false.
+       cnvcld         = .true.
        imfshalcnv     = 2
-       imfdeepcnv     = -1
+       imfdeepcnv     = 2
        cdmbgwd        = 3.5,0.25
        prslrd0        = 0.
        ivegsrc        = 1
@@ -178,45 +176,33 @@
        iopt_snf       = 4
        iopt_tbot      = 2
        iopt_stc       = 1
-       oz_phys        = .false.
-       oz_phys_2015   = .true.
        debug          = .false.
-
-       ras            = .false.
-       cscnv          = .true.
-       do_shoc        = .false.
-       shoc_parm      = 7000.0,1.0,2.0,0.7,-999.0
-       do_aw          = .true.
-       shoc_cld       = .false.
-       h2o_phys       = .true.
-       shcnvcw        = .false.
-       xkzm_h         = 0.5
-       xkzm_m         = 0.5
-       xkzm_s         = 1.0
-       ccwf           = 1.0,1.0
-       dlqf           = 0.25,0.05
-       mg_dcs         = 200.0
-       mg_ts_auto_ice = 180.0,900.0
-       mg_qcvar       = 1.0
-       fprcp          = 2
-       pdfflag        = 4
-       iccn           = 2
-       mg_do_graupel  = .true.
-       mg_do_hail     = .false.
-       do_sb_physics  = .true.
-       mg_do_ice_gmao = .false.
-       mg_do_liq_liu  = .true.
-       cs_parm        = 8.0,4.0,1.0e3,3.5e3,20.0,1.0,0.0,1.0,0.6,0.0
-       ctei_rm        = 0.60,0.23
-       max_lon        = 8000
-       max_lat        = 4000
-       rhcmax         = 0.9999999
-       effr_in        = .true.
-
+       oz_phys        = @[OZ_PHYS_OLD]
+       oz_phys_2015   = @[OZ_PHYS_NEW]
+       h2o_phys       = @[H2O_PHYS]
        nstf_name      = @[NSTF_NAME]
+       cplflx         = @[CPLFLX]
+       cplwav         = @[CPLWAV]
        iau_delthrs    = 6
        iaufhrs        = 30
        iau_inc_files  = @[IAU_INC_FILES]
+       do_sppt        = @[DO_SPPT]
+       do_shum        = @[DO_SHUM]
+       do_skeb        = @[DO_SKEB]
+       do_sfcperts    = @[DO_SFCPERTS]
+       nca            = 1
+       ncells         = 5
+       nfracseed      = 0.5
+       nlives         = 30
+       nthresh        = 0.5
+       nseed          = 100000
+       do_ca          = .false.
+       ca_global      = .false.
+       ca_sgs         = .true.
+       ca_smooth      = .false.
+       nspinup        = 1000
+       iseed_ca       = 0
+       isppt_deep     = .false.
 /
 
 &interpolator_nml
@@ -287,6 +273,17 @@
   ISEED_SPPT=3,
 /
 &nam_sfcperts
+  NSFCPERT=6,
+  PERTZ0=-999.,
+  PERTSHC=-999.,
+  PERTZT=-999.,
+  PERTLAI=-999.,
+  PERTVEGF=-999.,
+  PERTALB=-999.,
+  SFC_TAU=21600,
+  SFC_LSCALE=500000,
+  ISEED_SFC=0,
+  SPPT_LAND=.FALSE.,
 /
 
 &cires_ugwp_nml

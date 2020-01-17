@@ -1,12 +1,12 @@
 ###############################################################################
 #
-#  FV3 CCPP CSAWMGSHOC test
+#  FV3 CCPP GOCART_CLIM test
 #
 ###############################################################################
 
-export TEST_DESCR="Compare FV3 CCPP v16_csawmg results with previous trunk version"
+export TEST_DESCR="Compare FV3 CCPP gocart_clm results with previous trunk version"
 
-export CNTL_DIR=fv3_gfsv16_csawmg
+export CNTL_DIR=fv3_gocart_clm
 
 export LIST_FILES="atmos_4xdaily.tile1.nc \
                    atmos_4xdaily.tile2.nc \
@@ -55,16 +55,15 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
 export_fv3
 
 DT_ATMOS="600"
-export INPUT_NML=ccpp_gfsv16_csawmg.nml.IN
-export FV3_RUN=ccpp_gfsv16_csawmg_run.IN
+
+export INPUT_NML=ccpp.gocart.nml.IN
+export FV3_RUN=ccpp_gocart.IN
+
 export OUTPUT_GRID="'gaussian_grid'"
 export OUTPUT_FILE="'nemsio'"
 export WRITE_NEMSIOFLIP=.true.
 export WRITE_FSYNCFLAG=.true.
 export IAER=1111
-
-export CCPP_SUITE=FV3_GFS_v16_csawmg
-export CCPP_LIB_DIR=ccpp/lib
 
 export NODES=$(expr $TASKS / $TPN + 1)
 if [[ $MACHINE_ID = hera.* ]]; then
