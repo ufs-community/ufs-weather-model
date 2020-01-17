@@ -58,7 +58,8 @@ find_package(ESMF REQUIRED)
 #set(ESMF_MOD ${ESMF_F90COMPILEPATHS})
 #set(ESMF_LIB ${ESMF_LIBSDIR}/libesmf.so)
 
-find_package(NetCDF REQUIRED)
+set(NETCDF_F90 YES)
+find_package(NetCDF REQUIRED )
 find_package(BACIO)
 find_package(NEMSIO)
 find_package(SP)
@@ -73,9 +74,10 @@ find_package( PythonInterp 2.7 REQUIRED )
 find_package( PythonLibs 2.7 REQUIRED )
 
 #set( prebuildcommand  ${PYTHON_EXECUTABLE} ${PROJECT_SOURCE_DIR}/FV3/ccpp/framework/scripts/ccpp_prebuild.py --config=./FV3/ccpp/config/ccpp_prebuild_config.py --static --suites=${CCPP_SUITES} --builddir=${CMAKE_CURRENT_BINARY_DIR}/FV3 >  ${CMAKE_CURRENT_BINARY_DIR}/ccpp_prebuild.log)
-set( prebuildcommand ${PROJECT_SOURCE_DIR}/build.sh )
+set( prebuildcommand ${PROJECT_SOURCE_DIR}/build.sh ${PROJECT_BINARY_DIR} )
 message("${prebuildcommand}")
-execute_process(COMMAND ${prebuildcommand} WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} )
+execute_process(COMMAND ${prebuildcommand} WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} OUTPUT_VARIABLE STDOUT )
+message("preprocess output was ${STDOUT}")
 
 #set( CCPPLOG ${CMAKE_CURRENT_BINARY_DIR}/ccpp_prebuild.log )
 #ADD_CUSTOM_COMMAND( OUTPUT ${CCPPLOG}
@@ -327,6 +329,7 @@ else()
 endif()
 set(NCEP_LIBS ${NEMSIO_LIB};${BACIO_LIB4};${SP_LIBd};${W3EMC_LIBd};${W3NCO_LIBd})
 message("ncep libs are ${NCEP_LIBS}")
+message("netcdf libs are ${NETCDF_LIBRARIES}")
 #set(ESMF_LIB ${CMAKE_INSTALL_PREFIX}/lib/libesmf_fullylinked.so)
 target_link_libraries(NEMS.exe
                       fv3cap
