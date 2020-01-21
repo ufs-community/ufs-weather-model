@@ -53,13 +53,18 @@ if(DEFINED ${ESMFMKFILE} )
   set(ENV{ESMFMKFILE} ${ESMFMKFILE})
 else()
    if( DEFINED NCEPLIBS_INSTALL_DIR )
-      message("setting esmf mk file to point to nceplibs install")
-      set(ENV{ESMFMKFILE} ${NCEPLIBS_INSTALL_DIR}/lib/esmf.mk)
+      message("setting esmf mk file to point to nceplibs install ")
+      if(EXISTS "${CMAKE_INSTALL_LIBDIR}/lib/esmf.mk" )
+        set(ENV{ESMFMKFILE} ${NCEPLIBS_INSTALL_DIR}/lib/esmf.mk)
+      else()
+        set(ENV{ESMFMKFILE} ${NCEPLIBS_INSTALL_DIR}/lib64/esmf.mk)
+      endif()  
    endif()  
 endif()  
 if(DEFINED ENV{NETCDF})
   message("netcdf is defined")
-  set(NETCDF_DIR ${NETCDF})
+  set(NETCDF_DIR $ENV{NETCDF})
+  message("netcdf is defined as ${NETCDF_DIR}")
 else()
    message("netcdf is NOT defined")
    if( NCEPLIBS_INSTALL_DIR )
@@ -70,11 +75,12 @@ else()
    endif()  
 endif()
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/../cmake/Modules/")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMakeModules/Modules/")
 
 message("HEY system name is ${CMAKE_SYSTEM_NAME}")
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 find_package(MPI REQUIRED)
+find_package(POST)
 #set(CMAKE_C_COMPILER ${MPI_C_COMPILER})
 #set(CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
 #set(CMAKE_Fortran_COMPILER ${MPI_Fortran_COMPILER})
@@ -83,7 +89,6 @@ find_package(ESMF REQUIRED)
 #set(ESMF_LIB ${ESMF_LIBSDIR}/libesmf.so)
 
 set(NETCDF_F90 YES)
-set(NETCDF_C YES)
 find_package(NetCDF REQUIRED )
 find_package(BACIO)
 find_package(NEMSIO)
@@ -95,28 +100,20 @@ find_package(W3NCO)
 if(NOT DEFINED CCPP_SUITES)
   set(CCPP_SUITES FV3_GFS_2017_gfdlmp)
 endif()
-find_package( PythonInterp 2.7 REQUIRED )
-find_package( PythonLibs 2.7 REQUIRED )
 
-#set( prebuildcommand  ${PYTHON_EXECUTABLE} ${PROJECT_SOURCE_DIR}/FV3/ccpp/framework/scripts/ccpp_prebuild.py --config=./FV3/ccpp/config/ccpp_prebuild_config.py --static --suites=${CCPP_SUITES} --builddir=${CMAKE_CURRENT_BINARY_DIR}/FV3 >  ${CMAKE_CURRENT_BINARY_DIR}/ccpp_prebuild.log)
 set( prebuildcommand ${PROJECT_SOURCE_DIR}/genCCPP.sh ${PROJECT_BINARY_DIR} )
 message("${prebuildcommand}")
 execute_process(COMMAND ${prebuildcommand} WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} OUTPUT_VARIABLE STDOUT )
-message("preprocess output was ${STDOUT}")
 
-#set( CCPPLOG ${CMAKE_CURRENT_BINARY_DIR}/ccpp_prebuild.log )
-#ADD_CUSTOM_COMMAND( OUTPUT ${CCPPLOG}
-#    PRE_BUILD
-#    COMMAND ${prebuildcommand}
-#    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-#    COMMENT "HEY! running ccpp_prebuild"
-#    DEPENDS ${CCPPLOG}
-#    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/FV3/ccpp/framework/scripts/ccpp_prebuild.py
-#)
-#add_custom_target(ccpp_prebuild ALL DEPENDS ${CCPPLOG} )
-set(CCPP ON)
-set(STATIC ON)
-set(SUITES ${CCPP_SUITES})
+if(NOT DEFINED CCPP)
+  set(CCPP ON)
+endif()
+if(NOT DEFINED STATIC)
+  set(STATIC ON)
+endif()
+if(NOT DEFINED CCPP_SUITES)
+  set(SUITES ${CCPP_SUITES})
+endif()
 if(NOT DEFINED PHYS)
   set(PHYS gfs)
 endif()
@@ -132,7 +129,6 @@ if(${COMPILER_TYPE} STREQUAL "intel")
   include(${CMAKE_SOURCE_DIR}/cmake/Intel.cmake)
   setIntel()
 endif()
-message("HEY fort flags are ${CMAKE_Fortran_FLAGS}")
 add_definitions(-Duse_libMPI)
 add_definitions(-Duse_netCDF)
 add_definitions(-Duse_WRTCOMP)
@@ -277,6 +273,7 @@ set(ENV{CCPP_INCLUDE_DIRS} "${NETCDF_INCLUDES}")
 ### FV3
 ###############################################################################
 
+option(INLINE_POST "Build with inline post" OFF)
 add_subdirectory(FV3)
 
 ###############################################################################
@@ -354,6 +351,7 @@ else()
     set(IPD_LIBRARIES ipd)
 endif()
 set(NCEP_LIBS ${NEMSIO_LIB};${BACIO_LIB4};${SP_LIBd};${W3EMC_LIBd};${W3NCO_LIBd})
+message("esmf lib is ${ESMF_LIB} and ncdf are ${NETCDF_LIBRARIES} and  ${NETCDF_LIBRARIES_F90}")
 target_link_libraries(NEMS.exe
                       fv3cap
                       fv3core
@@ -366,7 +364,7 @@ target_link_libraries(NEMS.exe
                       fms
                       ${WW3_LIBS}
                       ${NEMSIO_LIB} 
-                      ${NCEP_LIBS} ${ESMF_LIB} ${NETCDF_LIBRARIES} ${NETCDF_LIBRARIES_F90} ${MPI_Fortran_LIBRARIES} ${MKL_LIB})
+                      ${NCEP_LIBS} ${ESMF_LIB} ${NETCDF_LIBRARIES} ${MPI_Fortran_LIBRARIES} ${MKL_LIB})
 
 ###############################################################################
 ### done

@@ -38,5 +38,5 @@ CMAKE_FLAGS+=" -DCCPP=ON -DSTATIC=ON -DSUITES=${CCPP_SUITES} -DNETCDF_DIR=${NETC
 
 cd ${BUILD_DIR}
 cmake .. ${CMAKE_FLAGS}
-make -j ${BUILD_JOBS:-4}
+make VERBOSE=1 -j ${BUILD_JOBS:-12}
 cp NEMS.exe ${MYDIR}/ufs_weather_model
