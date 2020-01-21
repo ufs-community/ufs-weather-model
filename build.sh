@@ -3,8 +3,10 @@ set -eu
 
 MYDIR=$(cd "$(dirname "$(readlink -f -n "${BASH_SOURCE[0]}" )" )" && pwd -P)
 
-export COMPILER=${COMPILER:?"Please set COMPILER environment variable [gnu|intel]"}
-export CMAKE_Platform=linux.${COMPILER}
+if [ -z ${CMAKE_Platform+x} ]; then
+  export COMPILER=${COMPILER:?"Please set COMPILER environment variable [gnu|intel]"}
+  export CMAKE_Platform=${CMAKE_Platform:-linux.${COMPILER}}
+fi
 export CMAKE_C_COMPILER=${CMAKE_C_COMPILER:-mpicc}
 export CMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER:-mpicxx}
 export CMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER:-mpif90}
