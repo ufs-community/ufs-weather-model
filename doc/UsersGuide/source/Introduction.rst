@@ -26,7 +26,8 @@ for those elements, are listed below:
 
 - The stochastic physics capability, including the Stochastic Kinetic Backscatter Scheme (SKEBS),
   the Stochastically Perturbed Parameterization Tendencies (SPPT) scheme, the perturbed boundary
-  layer humidity (SHUM) scheme, and the cellular automata method (https://stochastic-  physics.readthedocs.io/en/ufs_public_release/).
+  layer humidity (SHUM) scheme, and the cellular automata method 
+  (https://stochastic-physics.readthedocs.io/en/ufs_public_release/).
 
 - The NOAA Environmental Modeling System (:term:`NEMS`) model driver used to create the main program
   (https://docs.google.com/document/d/1-kFhPBf7GBTUd5SaB5D_3OUGX_93pWKP21QgTh4y6ok/edit#heading=h.dah4y9bxn10l).
