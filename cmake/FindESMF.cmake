@@ -35,7 +35,7 @@ else()
   message("One of the ESMF_ variables is not defined")
 endif()
 find_library( ESMF_LIB
-      NAMES libesmf.so libesmf_fullylinked.so
+      NAMES libesmf.so libesmf_fullylinked.so libesmf.dylib
       HINTS 
          ${ESMF_LIBSDIR}
          ${CMAKE_INSTALL_PREFIX}/lib
