@@ -14,7 +14,7 @@ development. More information about the UFS can be found in its portal at https:
 Key architectural elements of the UFS WM, along with links to external detailed documentation
 for those elements, are listed below:
 
-- The Finite-Volume Cubed-Sphere (FV3) dynamical core.
+- The Finite-Volume Cubed-Sphere (FV3) dynamical core (https://noaa-emc.github.io/FV3_Dycore/html/index.html).
 
 - The Flexible Modeling System (:term:`FMS`), a software infrastructure used for functions such as
   parallelization (https://www.gfdl.noaa.gov/fms/).
@@ -26,7 +26,7 @@ for those elements, are listed below:
 
 - The stochastic physics capability, including the Stochastic Kinetic Backscatter Scheme (SKEBS),
   the Stochastically Perturbed Parameterization Tendencies (SPPT) scheme, the perturbed boundary
-  layer humidity (SHUM) scheme, and the cellular automata method.
+  layer humidity (SHUM) scheme, and the cellular automata method (https://stochastic-  physics.readthedocs.io/en/ufs_public_release/).
 
 - The NOAA Environmental Modeling System (:term:`NEMS`) model driver used to create the main program
   (https://docs.google.com/document/d/1-kFhPBf7GBTUd5SaB5D_3OUGX_93pWKP21QgTh4y6ok/edit#heading=h.dah4y9bxn10l).
@@ -51,9 +51,9 @@ For the UFS WM v1.0 release, the following aspects are supported:
  
 - Ability to run with or without SKEBS, SPPT, and SHUM.
  
-- **Ability to initialize from GFS files in Gridded Binary v2 (GRIB2) format for past dates, 
+- Ability to initialize from GFS files in Gridded Binary v2 (GRIB2) format for past dates, 
   starting January 1, 2018, when the preprocessing utility chgres is employed. Dates before
-  that may work, but are not guaranteed.**
+  that may work, but are not guaranteed.
  
 - Output files in Network Common Data Form (NetCDF) format.
 
@@ -91,8 +91,8 @@ The next three chapters:
 - :numref:`Chapter %s <RegTests>` (Regression tests for development)
 
 go beyond the capabilities supported in the public release to cover code management for conducting
-development and proposing contributions back to the authoritative code repositories. Finally,
-:numref:`Chapters %s <Acronyms>` and :numref:`%s <Glossary>` contain a list of acronyms and a glossary.
+development and proposing contributions back to the authoritative code repositories. It should be noted that the regression tests described here are mandatory for committing code back to the ufs-weather-model authoritative code repository. These regressions tests differ from those distributed with the workflows for UFS applications, which are intended for application users and developers to assess the quality of their installations and the impact of their code changes. Finally,
+:numref:`Chapters %s <Acronyms>` and :numref:`%s <Glossary>` contain a list of acronyms and a glossary, respectively.
 
 .. This is how you cite a reference :cite:`Bernardet2018`.
 
