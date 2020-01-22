@@ -74,9 +74,9 @@ In order to have one or more CCPP physics suites available at runtime, you need 
 
 ..  code-block:: console
 
-    $ export CCPP_SUITES=’FV3_GFS_2017_gfdlmp,FV3_GFS_v15’
+    $ export CCPP_SUITES=’FV3_GFS_v15p2,FV3_GFS_v16beta’
 
-If ``CCPP_SUITES`` is not set, the default is ``‘FV3_GFS_2017_gfdlmp’``.
+If ``CCPP_SUITES`` is not set, the default is ``‘FV3_GFS_v15p2’``.
 
 After setting all the environment variables, you can build the model using
 
