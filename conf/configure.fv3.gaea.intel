@@ -66,6 +66,10 @@ else
 CPPDEFS += -DMOIST_CAPPA -DUSE_COND
 endif
 
+ifeq ($(NAM_phys),Y)
+CPPDEFS += -DNAM_phys
+endif
+
 ifeq ($(32BIT),Y)
 CPPDEFS += -DOVERLOAD_R4 -DOVERLOAD_R8
 FFLAGS += -i4 -real-size 32
