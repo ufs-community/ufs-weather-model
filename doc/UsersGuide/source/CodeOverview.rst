@@ -21,7 +21,7 @@ The ufs-weather-model repository supports the short- and medium-range UFS applic
   * - Umbrella repository for the UFS Weather Model
     - https://github.com/ufs-community/ufs-weather-model
   * - Infrastructure: Flexible Modeling System 
-    - https://github.com/NOAA-EMC/FMS
+    - https://github.com/NOAA-GFDL/FMS
   * - Infrastructure: NOAA Environmental Modeling System
     - https://github.com/NOAA-EMC/NEMS
   * - Infrastructure: add description
@@ -68,7 +68,7 @@ When the ufs-weather-model is cloned, the basic directory structure will be simi
    ufs-weather-model/
    ├── cmake               --------- cmake configuration files
    ├── compsets            --------- configurations used by some regression tests
-   ├── conf                --------- unused
+   ├── conf                --------- compile options for Tier 1 and 2 platforms
    ├── doc                 --------- READMEs with build, reg-test hints
    ├── FMS                 --------- The Flexible Modeling System (FMS),a software framework
    ├── FV3                 --------- FV3 atmosphere model
@@ -84,13 +84,12 @@ When the ufs-weather-model is cloned, the basic directory structure will be simi
    │   │   ├── physics      -------- CCPP compliant physics schemes
    │   │   └── suites       -------- CCPP physics suite definition files (SDFs)
    │   ├── cpl              -------- Coupling field data structures
-   │   ├── gfsphysics       -------- unused - IPD version of physics codes
+   │   ├── gfsphysics 
    │   │   ├── CCPP_layer
    │   │   ├── GFS_layer
-   │   │   └── physics
-   │   ├── io              --------- nemsio code
+   │   │   └── physics     --------- unused - IPD version of physics codes
+   │   ├── io              --------- FV3 write grid comp code
    │   ├── ipd             --------- unused - IPD driver/interfaces
-   │   ├── test            --------- unused
    ├── log                 --------- log files from NEMS compset regression tests
    ├── modulefile          --------- system module files for supported HPC systems
    ├── NEMS                --------- NOAA Earth Modeling System framework
