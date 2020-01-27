@@ -17,6 +17,5 @@ Welcome to the UFS Weather Model User's Guide
    FAQforModelConfiguration
    ContributingDevelopment
    CompilingCodeWithoutApp
-   RegTests
    Acronyms
    Glossary
