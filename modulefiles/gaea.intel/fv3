@@ -20,7 +20,7 @@ module rm intel
 module load intel/18.0.3.222
 module load cray-netcdf
 
-module use -a /lustre/f2/pdata/esrl/gsd/gmtb/NEMSfv3gfs/modules/modulefiles/intel-18.0.3.222
+module use -a /lustre/f2/pdata/esrl/gsd/ufs/modules/modulefiles/intel-18.0.3.222
 
 ##
 ## Libxml2 - compiled manually because of issues with linking the code
@@ -39,3 +39,11 @@ module load esmf/8.0.0
 
 # Needed at runtime:
 module load alps
+
+##
+## load cmake
+##
+setenv CMAKE_C_COMPILER cc
+setenv CMAKE_CXX_COMPILER CC
+setenv CMAKE_Fortran_COMPILER ftn
+setenv CMAKE_Platform gaea.intel
