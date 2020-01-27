@@ -1,7 +1,20 @@
-cmake_minimum_required(VERSION 2.8.12)
-
-# disable in source builds to protect against overwriting other Makefiles
+cmake_minimum_required(VERSION 3.15)
 set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
+
+cmake_policy(SET CMP0048 NEW)
+
+#Set cmake policies
+if(POLICY CMP0009)
+  cmake_policy(SET CMP0009 NEW)
+endif()
+if(POLICY CMP0046)
+  cmake_policy(SET CMP0046 NEW)
+endif()
+if(POLICY CMP0074)
+  cmake_policy(SET CMP0074 NEW)
+endif()
+
+
 if( NOT DEFINED ENV{CC} )
   find_path( crayComp "ftn" )
   find_path( wcossIntel "mpfort" )
@@ -33,6 +46,45 @@ if( NOT DEFINED ENV{CC} )
 endif()
 
 project(NEMSfv3gfs C CXX Fortran)
+cmake_minimum_required(VERSION 3.15)
+enable_language(Fortran)
+
+
+# set default install path if not prov ided
+if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+  set (CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install" CACHE PATH "default install path" FORCE )
+endif()
+
+#Set up module and lib paths for build
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMakeModules/Modules/")
+
+# make sure that the default is a RELEASE
+if (NOT CMAKE_BUILD_TYPE)
+  set (CMAKE_BUILD_TYPE RELEASE CACHE STRING
+    "Choose the type of build, options are: PRODUCTION Debug Release."
+    FORCE)
+endif (NOT CMAKE_BUILD_TYPE)
+
+STRING(COMPARE EQUAL ${CMAKE_BUILD_TYPE} "RelWithDebInfo" BUILD_RELEASE)
+if(NOT BUILD_RELEASE)
+  STRING(COMPARE EQUAL ${CMAKE_BUILD_TYPE} "RELEASE" BUILD_RELEASE)
+endif()
+STRING(COMPARE EQUAL ${CMAKE_BUILD_TYPE} "PRODUCTION" BUILD_PRODUCTION)
+STRING(COMPARE EQUAL ${CMAKE_BUILD_TYPE} "PROFILE" BUILD_PROFILE)
+if( BUILD_PRODUCTION )
+  set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/exec )
+endif()
+
+if(DEFINED EXTERNAL_LIBS_DIR)
+  set(Jasper_ROOT ${EXTERNAL_LIBS_DIR})
+  set(PNG_ROOT ${EXTERNAL_LIBS_DIR})
+  set(ZLIB_ROOT ${EXTERNAL_LIBS_DIR})
+  set(ENV{ESMFMKFILE} "${EXTERNAL_LIBS_DIR}/lib/esmf.mk")
+  set(HDF5_ROOT ${EXTERNAL_LIBS_DIR})
+  set(NETCDF ${EXTERNAL_LIBS_DIR})
+endif()
+
+
 if( DEFINED ENV{CMAKE_Platform} )
   set(CMAKE_Platform $ENV{CMAKE_Platform})
   string(TOLOWER ${CMAKE_Fortran_COMPILER_ID} COMPILER_TYPE)  
@@ -52,40 +104,46 @@ if(POLICY CMP0072)
   cmake_policy(SET CMP0072 NEW)
 endif()
 
-if(DEFINED ${ESMFMKFILE} )
-  message("setting esmf mk file via env variable")
-  set(ENV{ESMFMKFILE} ${ESMFMKFILE})
-else()
-   if( DEFINED NCEPLIBS_INSTALL_DIR )
-      find_path( esmfmkpath NAME esmf.mk HINTS ${NCEPLIBS_INSTALL_DIR}/lib ${NCEPLIBS_INSTALL_DIR}/lib64 )
-      set(ENV{ESMFMKFILE} ${esmfmkpath}/esmf.mk)
-      message("setting esmf mk file to point to nceplibs install ${ESMFMKFILE} ")
-   endif()  
-endif()  
-if(DEFINED ENV{NETCDF})
-  message("netcdf is defined")
-  set(NETCDF_DIR $ENV{NETCDF})
-  message("netcdf is defined as ${NETCDF_DIR}")
-else()
-   message("netcdf is NOT defined")
-   if( NCEPLIBS_INSTALL_DIR )
-      message("setting NETCDF dir to point to nceplibs install")
-      set(NETCDF_DIR ${NCEPLIBS_INSTALL_DIR})
-      set(ENV{NETCDF_DIR} ${NCEPLIBS_INSTALL_DIR})
-      message("HEY!! before find netcdf ${NETCDF_DIR}")
-   endif()  
-endif()
+#if(DEFINED ${ESMFMKFILE} )
+#  message("setting esmf mk file via env variable")
+#  set(ENV{ESMFMKFILE} ${ESMFMKFILE})
+#else()
+#   if( DEFINED NCEPLIBS_INSTALL_DIR )
+#      find_path( esmfmkpath NAME esmf.mk HINTS ${NCEPLIBS_INSTALL_DIR}/lib ${NCEPLIBS_INSTALL_DIR}/lib64 )
+#      set(ENV{ESMFMKFILE} ${esmfmkpath}/esmf.mk)
+#      message("setting esmf mk file to point to nceplibs install ${ESMFMKFILE} ")
+#   endif()  
+#endif()  
+#if(DEFINED ENV{NETCDF})
+#  message("netcdf is defined")
+#  set(NETCDF_DIR $ENV{NETCDF})
+#  message("netcdf is defined as ${NETCDF_DIR}")
+#else()
+#   message("netcdf is NOT defined")
+#   if( NCEPLIBS_INSTALL_DIR )
+#      message("setting NETCDF dir to point to nceplibs install")
+#      set(NETCDF_DIR ${NCEPLIBS_INSTALL_DIR})
+#      set(ENV{NETCDF_DIR} ${NCEPLIBS_INSTALL_DIR})
+#      message("HEY!! before find netcdf ${NETCDF_DIR}")
+#   endif()  
+#endif()
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMakeModules/Modules/")
 
 message("HEY system name is ${CMAKE_SYSTEM_NAME}")
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+set(CMAKE_APPBUNDLE_PATH ${NCEPLIBS_INSTALL_DIR})
+set(CMAKE_FIND_PACKAGE_PREFER_CONFIG true)
 find_package(MPI REQUIRED)
 find_package(POST)
 #set(CMAKE_C_COMPILER ${MPI_C_COMPILER})
 #set(CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
 #set(CMAKE_Fortran_COMPILER ${MPI_Fortran_COMPILER})
+
 find_package(ESMF REQUIRED)
+set(ESMF_DIR ${ESMF_LIBSDIR} CACHE STRING "path to esmf directory")
+message("HEY!!!! ESMF_LIBSDIR is ${ESMF_LIBSDIR}")
+message("HEY!!!! ESMF_DIR is ${ESMF_DIR}")
+
 #set(ESMF_MOD ${ESMF_F90COMPILEPATHS})
 #set(ESMF_LIB ${ESMF_LIBSDIR}/libesmf.so)
 
@@ -94,6 +152,7 @@ find_package(NetCDF REQUIRED )
 find_package(BACIO)
 find_package(NEMSIO)
 find_package(SP)
+find_package(SIGIO)
 find_package(W3EMC)
 find_package(W3NCO)
 
@@ -331,7 +390,7 @@ target_compile_definitions(NEMS.exe PRIVATE -DESMF_VERSION_MAJOR=${ESMF_VERSION_
 target_compile_definitions(NEMS.exe PRIVATE -DFRONT_FMS)
 target_compile_definitions(NEMS.exe PRIVATE -DFRONT_FV3=fv3gfs_cap_mod)
 
-target_include_directories(NEMS.exe PRIVATE ${ESMF_MOD} )
+target_include_directories(NEMS.exe PRIVATE ${ESMF_F90COMPILEPATHS} )
 target_include_directories(NEMS.exe PRIVATE ${MPI_Fortran_INCLUDE_DIRS} )
 target_include_directories(NEMS.exe PRIVATE ${NCEPLIBS_INSTALL_DIR}/include )
 target_include_directories(NEMS.exe PRIVATE ${NCEPLIBS_INSTALL_DIR}/mod )
@@ -351,7 +410,7 @@ if(CCPP)
 else()
     set(IPD_LIBRARIES ipd)
 endif()
-set(NCEP_LIBS ${NEMSIO_LIB};${BACIO_LIB4};${SP_LIBd};${W3EMC_LIBd};${W3NCO_LIBd})
+set(NCEP_LIBS nemsio;bacio_4;sp_d;w3emc_d;w3nco_d)
 message("esmf lib is ${ESMF_LIB} and ncdf are ${NETCDF_LIBRARIES} and  ${NETCDF_LIBRARIES_F90}")
 target_link_libraries(NEMS.exe
                       fv3cap
@@ -364,8 +423,8 @@ target_link_libraries(NEMS.exe
                       stochastic_physics
                       fms
                       ${WW3_LIBS}
-                      ${NEMSIO_LIB} 
-                      ${NCEP_LIBS} ${ESMF_LIB} ${NETCDF_LIBRARIES} ${MPI_Fortran_LIBRARIES} ${MKL_LIB})
+                      nemsio bacio_4 sp_d w3emc_d w3nco_d sigio
+                      ${ESMF_F90LINKPATHS} ${ESMF_F90ESMFLINKLIBS} ${NETCDF_LIBRARIES} ${MPI_Fortran_LIBRARIES} ${MKL_LIB})
 
 ###############################################################################
 ### done
