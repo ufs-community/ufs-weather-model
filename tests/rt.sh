@@ -80,7 +80,7 @@ if [[ $MACHINE_ID = wcoss ]]; then
   DISKNM=/nems/noscrub/emc.nemspara/RT
   QUEUE=debug
   PARTITION=
-  ACCNR=GFS-T2O
+  ACCNR=GFS-DEV
   STMP=/ptmpp$pex
   PTMP=/ptmpp$pex
   SCHEDULER=lsf
@@ -109,7 +109,7 @@ elif [[ $MACHINE_ID = wcoss_cray ]]; then
   DISKNM=/gpfs/hps3/emc/nems/noscrub/emc.nemspara/RT
   QUEUE=debug
   PARTITION=
-  ACCNR=GFS-T2O
+  ACCNR=GFS-DEV
   if [[ -d /gpfs/hps3/ptmp ]] ; then
       STMP=/gpfs/hps3/stmp
       PTMP=/gpfs/hps3/stmp
@@ -144,7 +144,7 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
   DISKNM=/gpfs/dell2/emc/modeling/noscrub/emc.nemspara/RT
   QUEUE=debug
   PARTITION=
-  ACCNR=FV3GFS-T2O
+  ACCNR=GFS-DEV
   STMP=/gpfs/dell2/stmp
   PTMP=/gpfs/dell2/ptmp
   SCHEDULER=lsf
@@ -159,7 +159,7 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
   ECFLOW_START=
   # DH* 20190717 temporary
   #DISKNM=/lustre/f2/pdata/ncep_shared/emc.nemspara/RT
-  DISKNM=/lustre/f2/pdata/esrl/gsd/gmtb/NEMSfv3gfs/RT
+  DISKNM=/lustre/f2/pdata/esrl/gsd/ufs/ufs-weather-model/RT
   # *DH 20190717
   QUEUE=debug
 #  DO NOT SET AN ACCOUNT EVERYONE IS NOT A MEMBER OF
@@ -195,10 +195,16 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   QUEUE=debug
 #  ACCNR=fv3-cpu
   PARTITION=
-  dprefix=/scratch1/BMC/gmtb
-  DISKNM=$dprefix/ufs-weather-model/RT
-  STMP=$dprefix
-  PTMP=$dprefix
+  # DH* 20200127 - use EMC baseline
+  # dprefix=/scratch1/BMC/gmtb
+  # DISKNM=$dprefix/ufs-weather-model/RT
+  # STMP=$dprefix
+  # PTMP=$dprefix
+  dprefix=/scratch1/NCEPDEV
+  DISKNM=$dprefix/nems/emc.nemspara/RT
+  STMP=$dprefix/stmp4
+  PTMP=$dprefix/stmp2
+  # *DH
 
   SCHEDULER=slurm
   cp fv3_conf/fv3_slurm.IN_hera fv3_conf/fv3_slurm.IN
@@ -374,9 +380,9 @@ while getopts ":cfsl:mkreh" opt; do
 done
 
 if [[ $MACHINE_ID = cheyenne.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/trunk-20191217/${COMPILER^^}}
+  RTPWD=${RTPWD:-$DISKNM/develop-20200115/${COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/trunk-20191217}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200115}
 fi
 
 shift $((OPTIND-1))
