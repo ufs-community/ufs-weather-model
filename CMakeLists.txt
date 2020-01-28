@@ -294,7 +294,7 @@ add_library(
 # stupid cmake can not figure out dependency of fft.F90 on fft99.F90 because 'use fft99_mod' is inside ifdefs
 set_property(SOURCE FMS/fft/fft.F90 APPEND_STRING PROPERTY COMPILE_FLAGS "-DSGICRAY=0 -DNAGFFT=0")
 
-target_include_directories(fms PUBLIC ${PROJECT_SOURCE_DIR}/FMS/include FMS/include FMS/fms FMS/mpp/include)
+target_include_directories(fms PUBLIC ${NETCDF_INCLUDES} ${PROJECT_SOURCE_DIR}/FMS/include FMS/include FMS/fms FMS/mpp/include)
 #set(NETCDF_INC_DIR ${NETCDF_INCLUDES})
 message("HEY, netcdf includes are ${NETCDF_INCLUDES_F90} and ${NETCDF_INCLUDES}")
 #target_include_directories(fms PRIVATE ${NETCDF_INC_DIR})
