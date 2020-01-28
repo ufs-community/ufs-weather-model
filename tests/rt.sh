@@ -195,16 +195,18 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   QUEUE=debug
 #  ACCNR=fv3-cpu
   PARTITION=
-  # DH* 20200127 - use EMC baseline
-  # dprefix=/scratch1/BMC/gmtb
-  # DISKNM=$dprefix/ufs-weather-model/RT
-  # STMP=$dprefix
-  # PTMP=$dprefix
-  dprefix=/scratch1/NCEPDEV
-  DISKNM=$dprefix/nems/emc.nemspara/RT
-  STMP=$dprefix/stmp4
-  PTMP=$dprefix/stmp2
-  # *DH
+  #
+  # DTC baseline
+  dprefix=/scratch1/BMC/gmtb
+  DISKNM=$dprefix/ufs-weather-model/RT
+  STMP=$dprefix
+  PTMP=$dprefix
+  # EMC baseline
+  #dprefix=/scratch1/NCEPDEV
+  #DISKNM=$dprefix/nems/emc.nemspara/RT
+  #STMP=$dprefix/stmp4
+  #PTMP=$dprefix/stmp2
+  #
 
   SCHEDULER=slurm
   cp fv3_conf/fv3_slurm.IN_hera fv3_conf/fv3_slurm.IN
