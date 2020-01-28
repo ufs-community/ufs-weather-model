@@ -60,6 +60,12 @@ cd "$PATHTR/../NEMS"
 COMPONENTS="FMS,FV3"
 if [[ "${MAKE_OPT}" == *"CCPP=Y"* ]]; then
   COMPONENTS="CCPP,$COMPONENTS"
+  # FIXME - create CCPP include directory before building FMS to avoid
+  # gfortran warnings of non-existent include directory (adding
+  # -Wno-missing-include-dirs) to the GNU compiler flags does not work,
+  # see also https://gcc.gnu.org/bugzilla/show_bug.cgi?id=55534);
+  # this line can be removed once FMS becomes a pre-installed library
+  mkdir -p $PATHTR/ccpp/include
 fi
 
 if [[ "${MAKE_OPT}" == *"WW3=Y"* ]]; then
@@ -75,20 +81,32 @@ fi
 
 # FIXME: add -j $MAKE_THREADS once FV3 bug is fixed
 
+# Pass DEBUG or REPRO flags to NEMS
+if [[ "${MAKE_OPT}" == *"DEBUG=Y"* && "${MAKE_OPT}" == *"REPRO=Y"* ]]; then
+  echo "ERROR in compile.sh: options DEBUG=Y and REPRO=Y are mutually exclusive"
+  exit 1
+elif [[ "${MAKE_OPT}" == *"DEBUG=Y"* ]]; then
+  NEMS_BUILDOPT="DEBUG=Y"
+elif [[ "${MAKE_OPT}" == *"REPRO=Y"* ]]; then
+  NEMS_BUILDOPT="REPRO=Y"
+else
+  NEMS_BUILDOPT=""
+fi
+
 if [ $clean_before = YES ] ; then
   $gnu_make -k COMPONENTS="$COMPONENTS" TEST_BUILD_NAME="$BUILD_NAME" \
            BUILD_ENV="$BUILD_TARGET" FV3_MAKEOPT="$MAKE_OPT" \
-           distclean
+           NEMS_BUILDOPT="$NEMS_BUILDOPT" distclean
 fi
 
   $gnu_make -k COMPONENTS="$COMPONENTS" TEST_BUILD_NAME="$BUILD_NAME" \
            BUILD_ENV="$BUILD_TARGET" FV3_MAKEOPT="$MAKE_OPT" \
-           build
+           NEMS_BUILDOPT="$NEMS_BUILDOPT" build
 
 if [ $clean_after = YES ] ; then
   $gnu_make -k COMPONENTS="$COMPONENTS" TEST_BUILD_NAME="$BUILD_NAME" \
            BUILD_ENV="$BUILD_TARGET" FV3_MAKEOPT="$MAKE_OPT" \
-           clean
+           NEMS_BUILDOPT="$NEMS_BUILDOPT" clean
 fi
 
 elapsed=$SECONDS

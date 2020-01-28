@@ -41,7 +41,7 @@ CCOMP           =       gcc
 DM_FC           =       mpif90 -f90=$(SFC)
 DM_CC           =       mpicc -cc=$(SCC) -DMPI2_SUPPORT
 FC              =       $(DM_FC)
-CC              =       $(DM_CC) -DFSEEKO64_OK 
+CC              =       $(DM_CC) -DFSEEKO64_OK
 LD              =       $(FC)
 
 #########
@@ -88,7 +88,7 @@ CFLAGS := $(INCLUDE)
 FFLAGS := $(INCLUDE) -fcray-pointer -ffree-line-length-none -fno-range-check -fbacktrace
 
 CPPDEFS += -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP
-CPPDEFS += -DNEW_TAUCTMAX -DINTERNAL_FILE_NML
+CPPDEFS += -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_INLINE_POST
 
 ifeq ($(HYDRO),Y)
 CPPDEFS +=
@@ -121,7 +121,7 @@ endif
 
 FFLAGS_OPT = -O2 -fno-range-check
 FFLAGS_REPRO = -O2 -g -fbacktrace -fno-range-check
-FFLAGS_DEBUG = -g -O0 -fno-unsafe-math-optimizations -frounding-math -fsignaling-nans -ffpe-trap=invalid,zero,overflow -fbounds-check -fbacktrace -fno-range-check
+FFLAGS_DEBUG = -g -O0 -fno-unsafe-math-optimizations -frounding-math -fsignaling-nans -ffpe-trap=invalid,zero,overflow -fbounds-check -fbacktrace -fno-range-check -Wall
 
 TRANSCENDENTALS :=
 FFLAGS_OPENMP = -fopenmp
