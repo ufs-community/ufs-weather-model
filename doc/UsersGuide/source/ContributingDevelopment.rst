@@ -90,7 +90,7 @@ Compiler:
 +--------------------+------------------------------------------------------------------+
 
 
-These libraries are available on several platforms including Hera, Cheyenne and WCOSS. Installing these libraries on jet and gaea is a work in progress. Users who need to build the libraries. [https://github.com/NOAA-EMC/NCEPLIBS/wiki/Cloning-and-Compiling-NCEPLIBS]
+These libraries are available on several platforms including Hera, Cheyenne and WCOSS. Installing these libraries on jet and gaea is a work in progress. Information how to build the libraries can be found at [https://github.com/NOAA-EMC/NCEPLIBS/wiki/Cloning-and-Compiling-NCEPLIBS]
 
 In addition to these libraries, other software is required such as a compiler (Intel or GNU), MPI library (impi), HDF5, cmake, Python, Perl and Ruby to compile the model and run regression tests.
 
@@ -98,7 +98,7 @@ In addition to these libraries, other software is required such as a compiler (I
 Making code changes using a forking workflow
 ---------------------------------------------
 
-If developers would like to make code changes, they need to make a personal fork, set up upstream remote (for merging with the original ufs-weather-model), and create a branch for ufs-weather-model and each of the subcomponent repositories they want to change. They can then make code changes, perform testing and commit the changes to the branch in their personal fork. It is suggested that they merge their branch with the develop branch of the original repositories periodically to get the latest updates and bug fixes.
+If developers would like to make code changes, they need to make a personal fork, set up upstream remote (for merging with the original ufs-weather-model), and create a branch for ufs-weather-model and each of the subcomponent repositories they want to change. They can then make code changes, perform testing and commit the changes to the branch in their personal fork. It is suggested that they update their branch by merging the develop branch with the develop branch of the original repositories periodically to get the latest updates and bug fixes.
 
 If developers would like to get their code committed back to the original repository, it is suggested to follow the steps below:
 
@@ -141,7 +141,7 @@ It is suggested that the developers inform all the related code managers as the 
 Engaging in the code review process
 -----------------------------------
 
-When code managers receive a pull request to commit the code changes, it is recommended that they add at least two code reviewers to review the code and at least one of the reviewers has write permission. The reviewers will write comments about the code changes and give a recommendation as to whether the code changes can be committed. What kinds of code changes will be accepted in the repository is beyond the scope of this document; future ufs-weather-model code management may have detailed answer for that.
+When code managers receive a pull request to commit the code changes, it is recommended that they add at least two code reviewers to review the code and at least one of the reviewers has write permission. The reviewers will write comments about the code changes and give a recommendation as to whether the code changes can be committed. What kinds of code changes will be accepted in the repository is beyond the scope of this document; future ufs-weather-model code management documents may have a detailed answer for that.
 
 Reviewers may suggest some code changes during the review process. Developers need to respond to these comments in order to get code changes committed. If developers make further changes to their branch, reviewers need to check the code changes again. When both reviewers give recommendation to commit the code, code managers will merge the changes into the repository.
 
@@ -149,7 +149,8 @@ Reviewers may suggest some code changes during the review process. Developers ne
 Conducting regression tests
 ----------------------------
 
-Only developers that are running on a limited set of platforms (Hera, Cheyenne, WCOSS) can compile and run regression tests using the ufs-weather-model.
+Only developers using Tier 1 and 2 platforms can run the ufs-weather-model regression tests. Other developers need to work with the code managers to assure completion of the regression tests.
+
 
 To run regression test using rt.sh
 
@@ -172,7 +173,20 @@ rt.sh is a bash shell file to run the RT and has the following options:
    % cd ufs-weather-model/tests
    % ./rt.sh -f
 
+This command can only be used on a NOAA machine using the Intel compiler, where an official baseline is available. For information on testing the CCPP code, or using alternate computational platforms, see the following sections.
+
+This command and all others below produce log output in ./tests/log_machine.compiler. These log files contain information on the location of the run directories that can be used as templates for the user. Each rt*.conf contains one or more compile commands preceding a number of tests.
+
 Regression test log files (ufs-weather-model/tests/Compile_$(MACHINE_ID).log and ufs-weather-model/tests/RegressionTests_$(MACHINE_ID).log ) will be updated.
+
+Regression testing is only possible on machines for which baselines exist, that is Tier 1 and 2 platforms.
+
+When porting the code to a new machine, it is useful to start by establishing a personal baseline. Future runs of the RT can then be compared against the personal baseline to ascertain that the results have not been inadvertently affected by code developments. The rt.sh -c option is used to create a personal baseline.
+
+./rt.sh -l rt.conf -c fv3 # create own reg. test baseline
+Once the personal baseline has been created, future runs of the RT should be compared against the personal baseline using the -m option.
+
+./rt.sh -l rt.conf -m # compare against own baseline
 
 To create new baseline:
 
