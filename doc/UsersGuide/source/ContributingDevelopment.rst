@@ -112,7 +112,7 @@ If developers would like to get their code committed back to the original reposi
 
       * Merge developer’s branch to the latest ufs-weather-model develop branch in authoritative repository. If changes are made in model sub-components, developers need to merge their branches to branches with the corresponding authoritative repository (or original repository for some components). For this, code management practices of the subcomponents need to be followed.
 
-      * Regression tests associated with the ufs-weather-model are available in Tier 1 and Tier 2 platforms as described in https://github.com/ufs-community/ufs-weather-model/wiki/Weather-Model-Platform-and-Compiler-Support. If the developer has access to these platforms, the developer should pass the regression test on at least one supported platform. If the developer does not have access to these platforms, this should be stated in the PR so the code manager(s) can conduct the tests.
+      * Regression tests associated with the ufs-weather-model are available on Tier 1 and Tier 2 platforms as described in https://github.com/ufs-community/ufs-weather-model/wiki/Weather-Model-Platform-and-Compiler-Support. If the developer has access to these platforms, the developer should pass the regression test on at least one supported platform. If the developer does not have access to these platforms, this should be stated in the PR so the code manager(s) can conduct the tests.
 
       * For each component branch where developers make changes, developers need to go to their personal fork on GitHub and click on the “New pull request” button. When a new page “Compare changes” appears, developers will choose the branch in their fork with code changes to commit and the branch in upstream repository that the changes will be committed to. Also developers in the commit comment must add the github issue title and number created in 1) in the comment box. The code differences between the two branches will be displayed. Developers can review the differences and click on “submit pull request” to make the pull request. After code changes are committed to the component repository, developers will make pull requests to ufs-weather-model repository.
 
@@ -155,7 +155,6 @@ Conducting regression tests
 
 Only developers using Tier 1 and 2 platforms can run the ufs-weather-model regression tests. Other developers need to work with the code managers to assure completion of the regression tests.
 
-
 To run regression test using rt.sh
 
 rt.sh is a bash shell file to run the RT and has the following options:
@@ -177,17 +176,16 @@ rt.sh is a bash shell file to run the RT and has the following options:
    % cd ufs-weather-model/tests
    % ./rt.sh -f
 
-This command can only be used on a NOAA machine using the Intel compiler, where an official baseline is available. For information on testing the CCPP code, or using alternate computational platforms, see the following sections.
+This command can only be used on platforms that have been configured for regression testing (Tier 1 and Tier 2 platforms as described in https://github.com/ufs-community/ufs-weather-model/wiki/Weather-Model-Platform-and-Compiler-Support). For information on testing the CCPP code, or using alternate computational platforms, see the following sections.
 
 This command and all others below produce log output in ./tests/log_machine.compiler. These log files contain information on the location of the run directories that can be used as templates for the user. Each rt*.conf contains one or more compile commands preceding a number of tests.
 
 Regression test log files (ufs-weather-model/tests/Compile_$(MACHINE_ID).log and ufs-weather-model/tests/RegressionTests_$(MACHINE_ID).log ) will be updated.
 
-Regression testing is only possible on machines for which baselines exist, that is Tier 1 and 2 platforms.
+If developers wish to contribute code that changes the results of the regression tests (because of updates to the physics, for example), it is useful to run rt.sh as described above to make sure that the test failures are as expected. It is then useful to establish a new personal baseline:
 
-When porting the code to a new machine, it is useful to start by establishing a personal baseline. Future runs of the RT can then be compared against the personal baseline to ascertain that the results have not been inadvertently affected by code developments. The rt.sh -c option is used to create a personal baseline.
+./rt.sh -l rt.conf -c # create own reg. test baseline
 
-./rt.sh -l rt.conf -c fv3 # create own reg. test baseline
 Once the personal baseline has been created, future runs of the RT should be compared against the personal baseline using the -m option.
 
 ./rt.sh -l rt.conf -m # compare against own baseline
@@ -199,12 +197,12 @@ To create new baseline:
    % cd ufs-weather-model/tests
    % ./rt.sh -f -c
 
-      * To run regression test using NEMSCompsetRun
+An alternative/complementary regression test system is using NEMSCompsetRun, which focuses more on coupled model configurations than testing features of the standalone ufs-weather-model. To run regression test using NEMSCompsetRun:
 
 .. code-block:: console
 
    % cd ufs-weather-model
-   % ./NEMS/NEMSCompsetRun -f 
+   % ./NEMS/NEMSCompsetRun -f
 
 Regression test log files (ufs-weather-model/log/$MACHINE_ID/* ) will be updated.
 
@@ -213,8 +211,7 @@ To create new baseline:
 .. code-block:: console
 
    % cd ufs-weather-model
-   % ./NEMS/NEMSCompsetRun--baseline fv3 --platform=${PLATFORM}
-
+   % ./NEMS/NEMSCompsetRun --baseline fv3 --platform=${PLATFORM}
 
 The value of ${PLATFORM} can be found in ufs-weather-model/compsets/platforms.input.
 
