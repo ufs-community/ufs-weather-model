@@ -149,7 +149,9 @@ message("HEY!!!! ESMF_DIR is ${ESMF_DIR}")
 
 set(NETCDF_F90 YES)
 find_package(NetCDF REQUIRED )
-find_package(BACIO)
+set(NETCDF_DIR $ENV{NETCDF})
+message("looking for bacio")
+find_package(BACIO REQUIRED)
 find_package(NEMSIO)
 find_package(SP)
 find_package(SIGIO)
@@ -158,7 +160,8 @@ find_package(W3NCO)
 
 
 if(NOT DEFINED CCPP_SUITES)
-  set(CCPP_SUITES FV3_GFS_2017_gfdlmp)
+  set(CCPP_SUITES "FV3_GFS_v15p2,FV3_GFS_v16beta")
+  set(ENV{CCPP_SUITES} ${CCPP_SUITES})
 endif()
 
 set( prebuildcommand ${PROJECT_SOURCE_DIR}/genCCPP.sh ${PROJECT_BINARY_DIR} )
@@ -171,14 +174,12 @@ endif()
 if(NOT DEFINED STATIC)
   set(STATIC ON)
 endif()
-if(NOT DEFINED CCPP_SUITES)
-  set(SUITES ${CCPP_SUITES})
-endif()
 if(NOT DEFINED PHYS)
   set(PHYS gfs)
 endif()
 message("")
 message("Selected physics package: ${PHYS}")
+message("Selected CCPP_SUITES : ${CCPP_SUITES}")
 message("")
 
 if(${COMPILER_TYPE} STREQUAL "gnu")
@@ -411,6 +412,7 @@ else()
     set(IPD_LIBRARIES ipd)
 endif()
 set(NCEP_LIBS nemsio;bacio_4;sp_d;w3emc_d;w3nco_d)
+message("ncep libs  ${NCEP_LIBS} ")
 message("esmf lib is ${ESMF_LIB} and ncdf are ${NETCDF_LIBRARIES} and  ${NETCDF_LIBRARIES_F90}")
 target_link_libraries(NEMS.exe
                       fv3cap
@@ -423,7 +425,7 @@ target_link_libraries(NEMS.exe
                       stochastic_physics
                       fms
                       ${WW3_LIBS}
-                      nemsio bacio_4 sp_d w3emc_d w3nco_d sigio
+                      nemsio bacio_4 sp_d sigio ${NEMSIO_LIB} ${BACIO_LIB4} ${SP_LIBd} ${W3EMC_LIBd} ${W3NCO_LIBd} w3nco_d
                       ${ESMF_F90LINKPATHS} ${ESMF_F90ESMFLINKLIBS} ${NETCDF_LIBRARIES} ${MPI_Fortran_LIBRARIES} ${MKL_LIB})
 
 ###############################################################################
