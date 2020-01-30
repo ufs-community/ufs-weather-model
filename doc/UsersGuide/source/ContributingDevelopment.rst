@@ -161,7 +161,7 @@ rt.sh is a bash shell file to run the RT and has the following options:
 
 .. code-block:: console
 
-   Usage: $0 -c <model> | -f | -s | -l <file> | -m | -r | -e | -h
+   Usage: ./rt.sh -c | -f | -s | -l <file> | -m | -r | -e | -h
    -c create new baseline results for <model>
    -f run full suite of regression tests
    -s run standard suite of regression tests
