@@ -161,12 +161,13 @@ rt.sh is a bash shell file to run the RT and has the following options:
 
 .. code-block:: console
 
-   Usage: ./rt.sh -c | -f | -s | -l <file> | -m | -r | -e | -h
+   Usage: ./rt.sh -c | -f | -s | -l <file> | -m | -k | -r | -e | -h
    -c create new baseline results for <model>
    -f run full suite of regression tests
    -s run standard suite of regression tests
    -l run test specified in <file>
    -m compare against new baseline results
+   -k  keep run directory (automatically deleted otherwise if all tests pass)
    -r use Rocoto workflow manager
    -e use ecFlow workflow manager
    -h display this help
