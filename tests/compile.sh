@@ -59,6 +59,11 @@ cd "$PATHTR/../NEMS"
 
 COMPONENTS="FMS,FV3"
 if [[ "${MAKE_OPT}" == *"CCPP=Y"* ]]; then
+  # Disable CCPP dynamic build
+  if [[ ! "${MAKE_OPT}" == *"STATIC=Y"* ]]; then
+    echo "Error, dynamic CCPP build not supported"
+    exit 1
+  fi
   COMPONENTS="CCPP,$COMPONENTS"
   # FIXME - create CCPP include directory before building FMS to avoid
   # gfortran warnings of non-existent include directory (adding
@@ -74,7 +79,7 @@ fi
 
 # Make variables:
 #   COMPONENTS = list of components to build
-#   BUILD_ENV = theia.intel, wcoss_dell_p3, etc.
+#   BUILD_ENV = hera.intel, wcoss_dell_p3, etc.
 #   FV3_MAKEOPT = build options to send to FV3, CCPP, and FMS
 #   TEST_BUILD_NAME = requests copying of modules.nems and
 #      NEMS.x into the tests/ directory using the given build name.

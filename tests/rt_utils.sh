@@ -563,10 +563,6 @@ EOF
 
   echo "  task compile_${COMPILE_NR}" >> ${ECFLOW_RUN}/regtest.def
   echo "      inlimit max_builds" >> ${ECFLOW_RUN}/regtest.def
-  # serialize WW3 builds. FIXME
-  if [[ ${NEMS_VER^^} =~ "WW3=Y" && ${COMPILE_PREV_WW3_NR} != '' ]]; then
-    echo "    trigger compile_${COMPILE_PREV_WW3_NR} == complete"  >> ${ECFLOW_RUN}/regtest.def
-  fi
 }
 
 ecflow_create_run_task() {
@@ -588,7 +584,7 @@ EOF
 
 ecflow_run() {
 
-  # in rare instances when UID is greater then 58500 (like Ratko's UID on theia)
+  # in rare instances when UID is greater then 58500 (like Ratko's UID on hera)
   [[ $ECF_PORT -gt 49151 ]] && ECF_PORT=12179
 
   ECF_HOST=$( hostname )

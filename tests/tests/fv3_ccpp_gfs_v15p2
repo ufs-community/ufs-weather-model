@@ -1,6 +1,6 @@
 ###############################################################################
 #
-#  FV3 CCPP GFS v15.2 compiled with 32-bit dynamics test
+#  FV3 CCPP GFS v15.2 compiled with 32-bit dynamics full (0-48h) test
 #
 ###############################################################################
 
@@ -26,6 +26,18 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
                    phyf024.tile4.nc \
                    phyf024.tile5.nc \
                    phyf024.tile6.nc \
+                   phyf027.tile1.nc \
+                   phyf027.tile2.nc \
+                   phyf027.tile3.nc \
+                   phyf027.tile4.nc \
+                   phyf027.tile5.nc \
+                   phyf027.tile6.nc \
+                   phyf048.tile1.nc \
+                   phyf048.tile2.nc \
+                   phyf048.tile3.nc \
+                   phyf048.tile4.nc \
+                   phyf048.tile5.nc \
+                   phyf048.tile6.nc \
                    dynf000.tile1.nc \
                    dynf000.tile2.nc \
                    dynf000.tile3.nc \
@@ -38,6 +50,18 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
                    dynf024.tile4.nc \
                    dynf024.tile5.nc \
                    dynf024.tile6.nc \
+                   dynf027.tile1.nc \
+                   dynf027.tile2.nc \
+                   dynf027.tile3.nc \
+                   dynf027.tile4.nc \
+                   dynf027.tile5.nc \
+                   dynf027.tile6.nc \
+                   dynf048.tile1.nc \
+                   dynf048.tile2.nc \
+                   dynf048.tile3.nc \
+                   dynf048.tile4.nc \
+                   dynf048.tile5.nc \
+                   dynf048.tile6.nc \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -75,11 +99,13 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
 export_fv3
 export NODES=$(expr $TASKS / $TPN + 1)
 
+export FHMAX=48
+export FDIAG=3
+
 DT_ATMOS="1200"
 
-export FV3_RUN=ccpp_gfs_v15_run.IN
+export FV3_RUN=gfs_v15_run.IN
 export CCPP_SUITE=FV3_GFS_v15p2
-export CCPP_LIB_DIR=ccpp/lib
 export INPUT_NML=ccpp_v15p2_c96.nml.IN
 
 RUN_SCRIPT=rt_fv3.sh

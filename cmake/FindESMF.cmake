@@ -34,6 +34,7 @@ if(ESMF_VERSION_MAJOR AND
 else()
   message("One of the ESMF_ variables is not defined")
 endif()
+<<<<<<< HEAD
 find_library( ESMF_LIB
       NAMES libesmf.so libesmf_fullylinked.so libesmf.dylib
       HINTS 
@@ -41,6 +42,8 @@ find_library( ESMF_LIB
          ${CMAKE_INSTALL_PREFIX}/lib
 )
 set(ESMF_MOD ${ESMF_F90COMPILEPATHS})
+=======
+>>>>>>> noaa-head
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(ESMF

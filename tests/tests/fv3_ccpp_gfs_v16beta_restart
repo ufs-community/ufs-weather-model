@@ -1,6 +1,6 @@
 ###############################################################################
 #
-#  FV3 CCPP GFS v16beta compiled with 32-bit dynamics full (0-48h) test
+#  FV3 CCPP GFS v16beta compiled with 32-bit dynamics restart (24-48h) test
 #
 ###############################################################################
 
@@ -8,25 +8,7 @@ export TEST_DESCR="Compare FV3 32bit CCPP GFS v16beta results with previous trun
 
 export CNTL_DIR=fv3_gfs_v16beta
 
-export LIST_FILES="atmos_4xdaily.tile1.nc \
-                   atmos_4xdaily.tile2.nc \
-                   atmos_4xdaily.tile3.nc \
-                   atmos_4xdaily.tile4.nc \
-                   atmos_4xdaily.tile5.nc \
-                   atmos_4xdaily.tile6.nc \
-                   phyf000.tile1.nc \
-                   phyf000.tile2.nc \
-                   phyf000.tile3.nc \
-                   phyf000.tile4.nc \
-                   phyf000.tile5.nc \
-                   phyf000.tile6.nc \
-                   phyf024.tile1.nc \
-                   phyf024.tile2.nc \
-                   phyf024.tile3.nc \
-                   phyf024.tile4.nc \
-                   phyf024.tile5.nc \
-                   phyf024.tile6.nc \
-                   phyf027.tile1.nc \
+export LIST_FILES="phyf027.tile1.nc \
                    phyf027.tile2.nc \
                    phyf027.tile3.nc \
                    phyf027.tile4.nc \
@@ -38,18 +20,6 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
                    phyf048.tile4.nc \
                    phyf048.tile5.nc \
                    phyf048.tile6.nc \
-                   dynf000.tile1.nc \
-                   dynf000.tile2.nc \
-                   dynf000.tile3.nc \
-                   dynf000.tile4.nc \
-                   dynf000.tile5.nc \
-                   dynf000.tile6.nc \
-                   dynf024.tile1.nc \
-                   dynf024.tile2.nc \
-                   dynf024.tile3.nc \
-                   dynf024.tile4.nc \
-                   dynf024.tile5.nc \
-                   dynf024.tile6.nc \
                    dynf027.tile1.nc \
                    dynf027.tile2.nc \
                    dynf027.tile3.nc \
@@ -98,6 +68,15 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
 
 export_fv3
 export NODES=$(expr $TASKS / $TPN + 1)
+
+export WARM_START=.T.
+export NGGPS_IC=.F.
+export EXTERNAL_IC=.F.
+export MAKE_NH=.F.
+export MOUNTAIN=.T.
+export NA_INIT=0
+#export NSTF_NAME=2,0,0,0,0
+export NSTF_NAME=2,0,1,0,5
 
 export FHMAX=48
 export FDIAG=3

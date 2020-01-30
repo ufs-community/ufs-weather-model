@@ -111,7 +111,7 @@ if [[ "${MAKE_OPT}" == *"CCPP=Y"* ]]; then
   if [[ "${MAKE_OPT}" == *"STATIC=Y"* ]]; then
     CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DSTATIC=ON"
   else
-    echo "Error, cmake build not compatible with dynamic CCPP"
+    echo "Error, dynamic CCPP build not supported"
     exit 1
   fi
 
@@ -133,14 +133,6 @@ if [[ "${MAKE_OPT}" == *"CCPP=Y"* ]]; then
   source ${BUILD_DIR}/FV3/ccpp/physics/CCPP_STATIC_API.sh
 
  fi
-
-if [[ "${MAKE_OPT}" == *"NAM_phys=Y"* ]]; then
-    CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DPHYS=nam"
-fi
-
-if [[ "${MAKE_OPT}" == *"WW3=Y"* ]]; then
-    CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DWW3=Y"
-fi
 
 CCPP_CMAKE_FLAGS=$(trim "${CCPP_CMAKE_FLAGS}")
 

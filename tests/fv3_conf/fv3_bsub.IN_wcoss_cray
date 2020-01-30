@@ -5,7 +5,7 @@
 #BSUB -J @[JBNME]
 #BSUB -W 00:@[WLCLK]
 #BSUB -q @[QUEUE]
-#BSUB -P GFS-DEV
+#BSUB -P FV3GFS-T2O
 #BSUB -extsched "CRAYLINUX[]" -R "1*{select[craylinux && !vnode]} + @[TASKS]*{select[craylinux && vnode] span [ptile=@[TPN]]}"
 #BSUB -M 500
 

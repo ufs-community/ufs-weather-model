@@ -96,10 +96,6 @@ else
 CPPDEFS += -DMOIST_CAPPA -DUSE_COND
 endif
 
-ifeq ($(NAM_phys),Y)
-CPPDEFS += -DNAM_phys
-endif
-
 ifeq ($(32BIT),Y)
 CPPDEFS += -DOVERLOAD_R4 -DOVERLOAD_R8
 FFLAGS +=
@@ -121,7 +117,7 @@ endif
 
 FFLAGS_OPT = -O2 -fno-range-check
 FFLAGS_REPRO = -O2 -g -fbacktrace -fno-range-check
-FFLAGS_DEBUG = -g -O0 -fno-unsafe-math-optimizations -frounding-math -fsignaling-nans -ffpe-trap=invalid,zero,overflow -fbounds-check -fbacktrace -fno-range-check -Wall
+FFLAGS_DEBUG = -g -O0 -fno-unsafe-math-optimizations -frounding-math -fsignaling-nans -Wall -ffpe-trap=invalid,zero,overflow -fbounds-check -fbacktrace -fno-range-check
 
 TRANSCENDENTALS :=
 FFLAGS_OPENMP = -fopenmp

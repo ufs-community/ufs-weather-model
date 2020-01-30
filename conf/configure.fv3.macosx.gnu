@@ -1,7 +1,7 @@
 ## NEMS configuration file
 ##
 ## Platform: Darwin Mac OS X
-## Compiler: GNU (clang/gfortran) with MPICH
+## Compiler: GNU (gcc/clang+gfortran) with MPICH
 
 SHELL=/bin/sh
 
@@ -98,10 +98,6 @@ else
 CPPDEFS += -DMOIST_CAPPA -DUSE_COND
 endif
 
-ifeq ($(NAM_phys),Y)
-CPPDEFS += -DNAM_phys
-endif
-
 ifeq ($(32BIT),Y)
 CPPDEFS += -DOVERLOAD_R4 -DOVERLOAD_R8
 FFLAGS +=
@@ -123,7 +119,7 @@ endif
 
 FFLAGS_OPT = -O2 -g -fno-range-check
 FFLAGS_REPRO = -O0 -g -fbacktrace -fno-range-check
-FFLAGS_DEBUG = -g -O0 -ggdb -fno-unsafe-math-optimizations -frounding-math -fsignaling-nans -ffpe-trap=invalid,zero,overflow -fbounds-check -fbacktrace -fno-range-check -Wall
+FFLAGS_DEBUG = -g -O0 -ggdb -fno-unsafe-math-optimizations -frounding-math -fsignaling-nans -Wall -ffpe-trap=invalid,zero,overflow -fbounds-check -fbacktrace -fno-range-check
 
 TRANSCENDENTALS :=
 FFLAGS_OPENMP = -fopenmp
