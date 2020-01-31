@@ -9,9 +9,9 @@ die() { echo "$@" >&2; exit 1; }
 usage() {
   set +x
   echo
-  echo "Usage: $0 -c <model> | -f | -s | -l <file> | -m | -k | -r | -e | -h"
+  echo "Usage: $0 -c | -f | -s | -l <file> | -m | -k | -r | -e | -h"
   echo
-  echo "  -c  create new baseline results for <model>"
+  echo "  -c  create new baseline results"
   echo "  -f  run full suite of regression tests"
   echo "  -s  run standard suite of regression tests"
   echo "  -l  runs test specified in <file>"
