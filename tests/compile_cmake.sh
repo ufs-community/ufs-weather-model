@@ -69,6 +69,14 @@ fi
 
 mkdir -p ${BUILD_DIR}
 
+# sanity check
+
+# Use either DEBUG or REPRO flags, not both
+if [[ "${MAKE_OPT}" == *"DEBUG=Y"* && "${MAKE_OPT}" == *"REPRO=Y"* ]]; then
+  echo "ERROR in compile_cmake.sh: options DEBUG=Y and REPRO=Y are mutually exclusive"
+  exit 1
+fi
+
 # set CCPP_CMAKE_FLAGS based on $MAKE_OPT
 
 CCPP_CMAKE_FLAGS=""
