@@ -21,6 +21,7 @@ cp ${PATHRT}/modules.fv3_${COMPILE_NR}             modules.fv3
 cp ${PATHRT}/../NEMS/src/conf/module-setup.sh.inc  module-setup.sh
 cp ${PATHTR}/parm/post_itag itag
 cp ${PATHTR}/parm/postxconfig-NT.txt postxconfig-NT.txt
+cp ${PATHTR}/parm/postxconfig-NT_FH00.txt postxconfig-NT_FH00.txt
 cp ${PATHTR}/parm/params_grib2_tbl_new params_grib2_tbl_new
 
 SRCD="${PATHTR}"
