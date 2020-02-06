@@ -79,8 +79,8 @@ if [[ $MACHINE_ID = wcoss ]]; then
   QUEUE=debug
   PARTITION=
   ACCNR=GFS-T2O
-  STMP=/ptmpp$pex
-  PTMP=/ptmpp$pex
+  STMP=${STMP:-/ptmpp$pex}
+  PTMP=${PTMP:-/ptmpp$pex}
   SCHEDULER=lsf
 # cp fv3_conf/fv3_bsub.IN_wcoss fv3_conf/fv3_bsub.IN
 
@@ -101,11 +101,11 @@ elif [[ $MACHINE_ID = wcoss_cray ]]; then
   PARTITION=
   ACCNR=GFS-T2O
   if [[ -d /gpfs/hps3/ptmp ]] ; then
-      STMP=/gpfs/hps3/stmp
-      PTMP=/gpfs/hps3/stmp
+      STMP=${STMP:-/gpfs/hps3/stmp}
+      PTMP=${PTMP:-/gpfs/hps3/stmp}
   else
-      STMP=/gpfs/hps3/stmp
-      PTMP=/gpfs/hps3/ptmp
+      STMP=${STMP:-/gpfs/hps3/stmp}
+      PTMP=${PTMP:-/gpfs/hps3/ptmp}
   fi
   SCHEDULER=lsf
   cp fv3_conf/fv3_bsub.IN_wcoss_cray fv3_conf/fv3_bsub.IN
@@ -127,8 +127,8 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
   QUEUE=debug
   PARTITION=
   ACCNR=FV3GFS-T2O
-  STMP=/gpfs/dell2/stmp
-  PTMP=/gpfs/dell2/ptmp
+  STMP=${STMP:-/gpfs/dell2/stmp}
+  PTMP=${PTMP:-/gpfs/dell2/ptmp}
   SCHEDULER=lsf
   cp fv3_conf/fv3_bsub.IN_wcoss_dell_p3 fv3_conf/fv3_bsub.IN
 
@@ -148,8 +148,8 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
 #  USE AN ENVIRONMENT VARIABLE TO SET ACCOUNT
 #  ACCNR=cmp
   PARTITION=c4
-  STMP=/lustre/f2/scratch
-  PTMP=/lustre/f2/scratch
+  STMP=${STMP:-/lustre/f2/scratch}
+  PTMP=${PTMP:-/lustre/f2/scratch}
 
   # default scheduler on Gaea
   SCHEDULER=slurm
@@ -174,8 +174,8 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   PARTITION=
   dprefix=/scratch1/BMC/gmtb
   DISKNM=$dprefix/ufs-weather-model/RT
-  STMP=$dprefix
-  PTMP=$dprefix
+  STMP=${STMP:-$dprefix}
+  PTMP=${PTMP:-$dprefix}
 
   # default scheduler on Hera
   SCHEDULER=slurm
@@ -199,8 +199,8 @@ elif [[ $MACHINE_ID = theia.* ]]; then
   PARTITION=
   dprefix=/scratch4/NCEPDEV
   DISKNM=$dprefix/nems/noscrub/emc.nemspara/RT
-  STMP=$dprefix/stmp4
-  PTMP=$dprefix/stmp3
+  STMP=${STMP:-$dprefix/stmp4}
+  PTMP=${PTMP:-$dprefix/stmp3}
 
   # default scheduler on Theia
   SCHEDULER=slurm
@@ -223,8 +223,8 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   PARTITION=xjet
   DISKNM=/lfs3/projects/hfv3gfs/GMTB/RT
   dprefix=/lfs3/projects/hfv3gfs/$USER
-  STMP=$dprefix/RT_BASELINE
-  PTMP=$dprefix/RT_RUNDIRS
+  STMP=${STMP:-$dprefix/RT_BASELINE}
+  PTMP=${PTMP:-$dprefix/RT_RUNDIRS}
 
   # default scheduler on Jet
   SCHEDULER=slurm
@@ -242,8 +242,8 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
   PARTITION=
   dprefix=/glade/scratch
   DISKNM=/glade/p/ral/jntp/GMTB/NEMSfv3gfs/RT
-  STMP=$dprefix
-  PTMP=$dprefix
+  STMP=${STMP:-$dprefix}
+  PTMP=${PTMP:-$dprefix}
   SCHEDULER=pbs
   cp fv3_conf/fv3_qsub.IN_cheyenne fv3_conf/fv3_qsub.IN
 
@@ -259,8 +259,8 @@ elif [[ $MACHINE_ID = stampede.* ]]; then
   PARTITION=
   dprefix=$WORK/NEMSfv3gfs/run
   DISKNM=$WORK/NEMSfv3gfs/RT
-  STMP=$dprefix/stmp4
-  PTMP=$dprefix/stmp3
+  STMP=${STMP:-$dprefix/stmp4}
+  PTMP=${PTMP:-$dprefix/stmp3}
   SCHEDULER=sbatch
   MPIEXEC=ibrun
   MPIEXECOPTS=
@@ -678,10 +678,12 @@ else
    echo ; echo REGRESSION TEST WAS SUCCESSFUL
   (echo ; echo REGRESSION TEST WAS SUCCESSFUL) >> ${REGRESSIONTEST_LOG}
 
-  rm -f fv3_*.x fv3_*.exe modules.fv3_* run_test.env
-  [[ ${KEEP_RUNDIR} == false ]] && rm -rf ${RUNDIR_ROOT}
-  [[ ${ROCOTO:-false} == true ]] && rm -f ${ROCOTO_XML} ${ROCOTO_DB}
-  [[ ${ECFLOW:-false} == true ]] && rm -rf ${ECFLOW_RUN}
+  if [[ "${ANNIHILATE_EVERYTHING:-YES}" == YES ]] ; then
+      rm -f fv3_*.x fv3_*.exe modules.fv3_* run_test.env
+      [[ ${KEEP_RUNDIR} == false ]] && rm -rf ${RUNDIR_ROOT}
+      [[ ${ROCOTO:-false} == true ]] && rm -f ${ROCOTO_XML} ${ROCOTO_DB}
+      [[ ${ECFLOW:-false} == true ]] && rm -rf ${ECFLOW_RUN}
+  fi
 fi
 
 date >> ${REGRESSIONTEST_LOG}
