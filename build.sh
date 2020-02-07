@@ -23,11 +23,18 @@ mkdir ${BUILD_DIR}
 
 CCPP_SUITES="${CCPP_SUITES:-FV3_GFS_v15p2}"
 
+set +e
+echo "Calling ccpp_prebuild.py ..."
 ./FV3/ccpp/framework/scripts/ccpp_prebuild.py \
     --config=FV3/ccpp/config/ccpp_prebuild_config.py \
     --static \
     --suites=${CCPP_SUITES} \
     --builddir=${BUILD_DIR}/FV3 > ${BUILD_DIR}/ccpp_prebuild.log 2>&1
+if [ $? -ne 0 ]; then
+  echo "Call to ccpp_prebuild.py failed, check ${BUILD_DIR}/ccpp_prebuild.log"
+  exit 1
+fi
+set -e
 
 source ${BUILD_DIR}/FV3/ccpp/physics/CCPP_SCHEMES.sh
 source ${BUILD_DIR}/FV3/ccpp/physics/CCPP_CAPS.sh
@@ -38,4 +45,4 @@ CMAKE_FLAGS+=" -DCCPP=ON -DSTATIC=ON -DSUITES=${CCPP_SUITES} -DNETCDF_DIR=${NETC
 cd ${BUILD_DIR}
 cmake .. ${CMAKE_FLAGS}
 make -j ${BUILD_JOBS:-4}
-cp NEMS.exe ${MYDIR}/ufs_weather_model
+cp -v NEMS.exe ${MYDIR}/ufs_weather_model
