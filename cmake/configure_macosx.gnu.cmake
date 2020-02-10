@@ -14,7 +14,12 @@ option(DEBUG   "Enable DEBUG mode" OFF)
 option(REPRO   "Enable REPRO mode" OFF)
 option(VERBOSE "Enable VERBOSE mode" OFF)
 option(32BIT   "Enable 32BIT (single precision arithmetic in dycore)" OFF)
-option(OPENMP  "Enable OpenMP threading" ON)
+# OpenMP broken for clang compiler
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang*")
+  option(OPENMP  "Enable OpenMP threading" OFF)
+else()
+  option(OPENMP  "Enable OpenMP threading" ON)
+endif()
 option(AVX2    "Enable AVX2 instruction set" OFF)
 
 option(INLINE_POST "Enable inline post" OFF)
@@ -35,5 +40,8 @@ set(NETCDF_LIBS -L$ENV{NETCDF}/lib -lnetcdff -lnetcdf)
 set(MKL_DIR $ENV{MKL_DIR})
 set(MKL_INC $ENV{MKL_INC})
 set(MKL_LIB $ENV{MKL_LIB})
+
+# Workaround for rpath in netCDF
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-rpath ${NETCDF_LIBDIR}")
 
 message("")
