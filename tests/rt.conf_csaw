@@ -31,35 +31,30 @@ RUN     | fv3_gfsv16_csawmg                                                     
 RUN     | fv3_gocart_clm                                                                                                                 | standard    |                | fv3         |
 RUN     | fv3_gfsv16_csawmgt                                                                                                                    | standard    |                | fv3         |
 #######################################################################################################################################################################################
-
-COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_2017_csawmgshoc,FV3_GFS_2017_csawmg,FV3_GFS_2017_satmedmf                               | standard    | wcoss_cray     |             |
-COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_2017_csawmgshoc,FV3_GFS_2017_csawmg,FV3_GFS_2017_satmedmf                               | standard    | wcoss_dell_p3  |             |
-COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_2017_csawmgshoc,FV3_GFS_2017_csawmg,FV3_GFS_2017_satmedmf                               | standard    | theia.intel    |             |
-COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_2017_csawmgshoc,FV3_GFS_2017_csawmg,FV3_GFS_2017_satmedmf                               | standard    | hera.intel     |             |
-COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_2017_csawmgshoc,FV3_GFS_2017_csawmg,FV3_GFS_2017_satmedmf                               | standard    | cheyenne.intel |             |
-COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_2017_csawmgshoc,FV3_GFS_2017_csawmg,FV3_GFS_2017_satmedmf                               | standard    | gaea.intel     |             |
-COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_2017_csawmgshoc,FV3_GFS_2017_csawmg,FV3_GFS_2017_satmedmf                               | standard    | jet.intel      |             |
-
-RUN     | fv3_ccpp_csawmg                                                                                                                | standard    |                |             |
+COMPILE | CCPP=Y STATIC=Y SUITES=FV3_GFS_2017_csawmgshoc,FV3_GFS_2017_csawmg,FV3_GFS_2017_satmedmf                                       | standard    | wcoss_cray     | fv3         |
+COMPILE | CCPP=Y STATIC=Y SUITES=FV3_GFS_2017_csawmgshoc,FV3_GFS_2017_csawmg,FV3_GFS_2017_satmedmf                                       | standard    | wcoss_dell_p3  | fv3         |
+COMPILE | CCPP=Y STATIC=Y SUITES=FV3_GFS_2017_csawmgshoc,FV3_GFS_2017_csawmg,FV3_GFS_2017_satmedmf                                       | standard    | hera.intel     | fv3         |
+COMPILE | CCPP=Y STATIC=Y SUITES=FV3_GFS_2017_csawmgshoc,FV3_GFS_2017_csawmg,FV3_GFS_2017_satmedmf                                       | standard    | cheyenne.intel | fv3         |
+COMPILE | CCPP=Y STATIC=Y SUITES=FV3_GFS_2017_csawmgshoc,FV3_GFS_2017_csawmg,FV3_GFS_2017_satmedmf                                       | standard    | gaea.intel     | fv3         |
+COMPILE | CCPP=Y STATIC=Y SUITES=FV3_GFS_2017_csawmgshoc,FV3_GFS_2017_csawmg,FV3_GFS_2017_satmedmf                                       | standard    | jet.intel      | fv3         |
+RUN     | fv3_ccpp_csawmg                                                                                                                | standard    |                | fv3         |
 #######################################################################################################################################################################################
 #######################################################################################################################################################################################
+COMPILE | CCPP=Y STATIC=Y SUITES=FV3_GFS_v16_csawmg                                       | standard    | wcoss_cray     | fv3         |
+COMPILE | CCPP=Y STATIC=Y SUITES=FV3_GFS_v16_csawmg                                       | standard    | wcoss_dell_p3  | fv3         |
+COMPILE | CCPP=Y STATIC=Y SUITES=FV3_GFS_v16_csawmg                                       | standard    | hera.intel     | fv3         |
+COMPILE | CCPP=Y STATIC=Y SUITES=FV3_GFS_v16_csawmg                                       | standard    | cheyenne.intel | fv3         |
+COMPILE | CCPP=Y STATIC=Y SUITES=FV3_GFS_v16_csawmg                                       | standard    | gaea.intel     | fv3         |
+COMPILE | CCPP=Y STATIC=Y SUITES=FV3_GFS_v16_csawmg                                       | standard    | jet.intel      | fv3         |
 
-COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_v16_csawmg                               | standard    | wcoss_cray     |             |
-COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_v16_csawmg                               | standard    | wcoss_dell_p3  |             |
-COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_v16_csawmg                               | standard    | theia.intel    |             |
-COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_v16_csawmg                               | standard    | hera.intel     |             |
-COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_v16_csawmg                               | standard    | cheyenne.intel |             |
-COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_v16_csawmg                               | standard    | gaea.intel     |             |
-COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_v16_csawmg                               | standard    | jet.intel      |             |
-
-RUN     | fv3_ccpp_gfsv16_csawmg                                                                                                                | standard    |                |             |
-RUN     | fv3_ccpp_gfsv16_csawmgt                                                                                                               | standard    |                |             |
+RUN     | fv3_ccpp_gfsv16_csawmg                                                                                                         | standard    |                | fv3         |
+RUN     | fv3_ccpp_gfsv16_csawmgt                                                                                                        | standard    |                | fv3         |
 #######################################################################################################################################################################################
-COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_2017_gfdlmp,FV3_GFS_2017_gfdlmp_noahmp                                                  | standard    | wcoss_cray     |             |
-COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_2017_gfdlmp,FV3_GFS_2017_gfdlmp_noahmp                                                  | standard    | wcoss_dell_p3  |             |
-COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_2017_gfdlmp,FV3_GFS_2017_gfdlmp_noahmp                                                  | standard    | hera.intel     |             |
-COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_2017_gfdlmp,FV3_GFS_2017_gfdlmp_noahmp                                                  | standard    | cheyenne.intel |             |
-COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_2017_gfdlmp,FV3_GFS_2017_gfdlmp_noahmp                                                  | standard    | gaea.intel     |             |
-COMPILE | REPRO=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_2017_gfdlmp,FV3_GFS_2017_gfdlmp_noahmp                                                  | standard    | jet.intel      |             |
-RUN     | fv3_ccpp_gocart_clm                                                                                                            | standard    |                |             |
+COMPILE | CCPP=Y STATIC=Y SUITES=FV3_GFS_2017_gfdlmp,FV3_GFS_2017_gfdlmp_noahmp                                                          | standard    | wcoss_cray     | fv3         |
+COMPILE | CCPP=Y STATIC=Y SUITES=FV3_GFS_2017_gfdlmp,FV3_GFS_2017_gfdlmp_noahmp                                                          | standard    | wcoss_dell_p3  | fv3         |
+COMPILE | CCPP=Y STATIC=Y SUITES=FV3_GFS_2017_gfdlmp,FV3_GFS_2017_gfdlmp_noahmp                                                          | standard    | hera.intel     | fv3         |
+COMPILE | CCPP=Y STATIC=Y SUITES=FV3_GFS_2017_gfdlmp,FV3_GFS_2017_gfdlmp_noahmp                                                          | standard    | cheyenne.intel | fv3         |
+COMPILE | CCPP=Y STATIC=Y SUITES=FV3_GFS_2017_gfdlmp,FV3_GFS_2017_gfdlmp_noahmp                                                          | standard    | gaea.intel     | fv3         |
+COMPILE | CCPP=Y STATIC=Y SUITES=FV3_GFS_2017_gfdlmp,FV3_GFS_2017_gfdlmp_noahmp                                                          | standard    | jet.intel      | fv3         |
 
+RUN     | fv3_ccpp_gocart_clm                                                                                                           | standard    |                | fv3         |
