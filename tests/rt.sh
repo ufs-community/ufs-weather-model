@@ -374,9 +374,9 @@ while getopts ":cfsl:mkreh" opt; do
 done
 
 if [[ $MACHINE_ID = cheyenne.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/develop-20200202/${COMPILER^^}}
+  RTPWD=${RTPWD:-$DISKNM/develop-20200210/${COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200202}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200210}
 fi
 
 shift $((OPTIND-1))
