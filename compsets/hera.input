@@ -16,8 +16,13 @@ platform hera.intel {
 
     cores_per_node=40 # Number of cores per node on compute nodes
     cpus_per_core=2
+    C768_PPN=10
+    C768_THRD=1
 
-    # The *nems locations are in NEMS checkout areas.
+ # hera testing: using longer run time
+    DEFAULT_TEST_WALLTIME=3000
+
+ #  The *nems locations are in NEMS checkout areas.
     HOMEnems=PWD_UP5
 
     # The *rt locations are auto-generated areas.
@@ -26,8 +31,8 @@ platform hera.intel {
     # INPUTS is the input directory, which should contain fix and parm
     # files, plus any restarts or other inputs.
 
-    BASELINE="/scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/trunk-20190925"
-    BASELINE_TEMPLATE="/scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/trunk-20190925"
+    BASELINE="/scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20200202"
+    BASELINE_TEMPLATE="/scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20200202"
     INPUTS="@[BASELINE]"
 
     default_resources={

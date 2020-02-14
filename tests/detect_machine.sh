@@ -103,7 +103,12 @@ case $(hostname -f) in
   tfe1)                    MACHINE_ID=jet ;; ### jet09
   tfe2)                    MACHINE_ID=jet ;; ### jet10
 
-
+  cheyenne1.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne1
+  cheyenne2.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne2
+  cheyenne3.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne3
+  cheyenne4.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne4
+  cheyenne5.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne5
+  cheyenne6.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne6
   cheyenne1.ib0.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne1
   cheyenne2.ib0.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne2
   cheyenne3.ib0.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne3
@@ -116,6 +121,9 @@ case $(hostname -f) in
   login3.stampede2.tacc.utexas.edu) MACHINE_ID=stampede ;; ### stampede3
   login4.stampede2.tacc.utexas.edu) MACHINE_ID=stampede ;; ### stampede4
 esac
+
+# Overwrite auto-detect with NEMS_MACHINE if set
+MACHINE_ID=${NEMS_MACHINE:-${MACHINE_ID}}
 
 # For Theia and Cheyenne, append compiler
 if [ $MACHINE_ID = theia ] || [ $MACHINE_ID = hera ] || [ $MACHINE_ID = cheyenne ] || [ $MACHINE_ID = jet ] || [ $MACHINE_ID = gaea ] || [ $MACHINE_ID = stampede ] ; then
