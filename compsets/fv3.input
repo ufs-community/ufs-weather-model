@@ -264,6 +264,7 @@ fv3_defaults = {
     SKEB='-999.0'
 
     IAU_INC_FILES="''"
+    IAU_DRYMASSFIXER='.false.'
 
     CPLFLX='.F.'
     CPLWAV='.F.'
@@ -1764,11 +1765,11 @@ test fv3_wrtGauss_nemsio_c768: fv3_ww3.exe {
     TEST_DESCR="Compare c768 FV3-WW3 Gaussian grid nemsio output results with previous trunk version"
     CNTL_NAME="fv3_wrtGauss_nemsio_c768"
 
-    TASKS='1470'
+    TASKS='640'
     PPN="@[plat%C768_PPN]"
     THRD="@[plat%C768_THRD]"
-    INPES='16'
-    JNPES='12'
+    INPES='8'
+    JNPES='8'
     NPX='769'
     NPY='769'
     NPZ='64'
@@ -1780,7 +1781,7 @@ test fv3_wrtGauss_nemsio_c768: fv3_ww3.exe {
     FHMAX='06'
     WLCLK='30'
     WRITE_GROUP='3'
-    WRTTASK_PER_GROUP='36'
+    WRTTASK_PER_GROUP='12'
     FDIAG='0,1,2,3,4,5,6,7,8,9,10,11,12'
     OUTPUT_GRID="'gaussian_grid'"
     OUTPUT_FILE="'nemsio'"
@@ -1806,9 +1807,9 @@ test fv3_wrtGauss_nemsio_c768: fv3_ww3.exe {
 
     nems_configure="blocked_atm_wav"
     atm_model='fv3'
-    atm_petlist_bounds="0 1259"
+    atm_petlist_bounds="0 419"
     wav_model='ww3'
-    wav_petlist_bounds="1260 1469"
+    wav_petlist_bounds="420 639"
     coupling_interval_sec=1800.0  # 30min coupling, fv3 time step
 
     # The build variable is the fv3_ww3.exe, which
@@ -2096,6 +2097,7 @@ test fv3_iau: fv3.exe {
     FDIAG='3'
     NSTF_NAME='2,0,1,0,5'
     IAU_INC_FILES='fv3_increment.nc'
+    IAU_DRYMASSFIXER='.true.'
 
     CNTL="@[plat%BASELINE]/@[CNTL_NAME]"      # Control baseline area
 
