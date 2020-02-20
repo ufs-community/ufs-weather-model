@@ -197,5 +197,8 @@ export DO_SFCPERTS=.F.
 export SKEB=-999.
 export SPPT=-999.
 export SHUM=-999.
+
+#IAU
 export IAU_INC_FILES="''"
+export IAU_DRYMASSFIXER=.false.
 }
