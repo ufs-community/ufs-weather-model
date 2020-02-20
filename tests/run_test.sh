@@ -17,8 +17,11 @@ export COMPILE_NR=$5
 cd ${PATHRT}
 
 [[ -e ${RUNDIR_ROOT}/run_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
-source default_vars.sh
-source tests/$TEST_NAME
+UNIT_TEST=${UNIT_TEST:-false}
+if [[ ${UNIT_TEST} == false ]]; then
+  source default_vars.sh
+  source tests/$TEST_NAME
+fi
 
 # Save original CNTL_DIR name as INPUT_DIR for regression
 # tests that try to copy input data from CNTL_DIR
