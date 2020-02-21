@@ -100,61 +100,61 @@ export IMO=384
 export JMO=190
 
 # Coldstart/warmstart
-export WARM_START=.F.
-export READ_INCREMENT=.F.
-export NGGPS_IC=.T.
-export EXTERNAL_IC=.T.
-export MAKE_NH=.T.
-export MOUNTAIN=.F.
+export WARM_START=.false.
+export READ_INCREMENT=.false.
+export NGGPS_IC=.true.
+export EXTERNAL_IC=.true.
+export MAKE_NH=.true.
+export MOUNTAIN=.false.
 export NA_INIT=1
 
 # Microphysics
 export IMP_PHYSICS=11
 # GFDL MP
 export DNATS=1
-export DO_SAT_ADJ=.T.
-export LHEATSTRG=.F.
-export LGFDLMPRAD=.F.
-export EFFR_IN=.F.
+export DO_SAT_ADJ=.true.
+export LHEATSTRG=.false.
+export LGFDLMPRAD=.false.
+export EFFR_IN=.false.
 # Thompson MP
-export LRADAR=.T.
-export LTAEROSOL=.T.
+export LRADAR=.true.
+export LTAEROSOL=.true.
 
 # GWD
-export LDIAG_UGWP=.F.
-export DO_UGWP=.F.
-export DO_TOFD=.F.
+export LDIAG_UGWP=.false.
+export DO_UGWP=.false.
+export DO_TOFD=.false.
 export GWD_OPT=1
 
 # PBL
-export SATMEDMF=.F.
+export SATMEDMF=.false.
 export ISATMEDMF=0
-export HYBEDMF=.T.
-export SHINHONG=.F.
-export DO_YSU=.F.
-export DO_MYNNEDMF=.F.
-export DO_MYJPBL=.F.
+export HYBEDMF=.true.
+export SHINHONG=.false.
+export DO_YSU=.false.
+export DO_MYNNEDMF=.false.
+export DO_MYJPBL=.false.
 
 # Shallow/deep convection
 export IMFSHALCNV=2
 export IMFDEEPCNV=2
 
 # SFC
-export DO_MYJSFC=.F.
+export DO_MYJSFC=.false.
 
 # LSM
 export LSM=1
 export LSOIL_LSM=4
-export LANDICE=.T.
+export LANDICE=.true.
 
 # Ozone / stratospheric H2O
-export OZ_PHYS_OLD=.T.
-export OZ_PHYS_NEW=.F.
-export H2O_PHYS=.F.
+export OZ_PHYS_OLD=.true.
+export OZ_PHYS_NEW=.false.
+export H2O_PHYS=.false.
 
-export CPL=.F.
-export CPLFLX=.F.
-export CPLWAV=.F.
+export CPL=.false.
+export CPLFLX=.false.
+export CPLWAV=.false.
 export DAYS=1
 export NPX=97
 export NPY=97
@@ -182,10 +182,10 @@ export DT_ATMOS=1800
 export FHCYC=24
 
 # Stochastic physics
-export DO_SPPT=.F.
-export DO_SHUM=.F.
-export DO_SKEB=.F.
-export DO_SFCPERTS=.F.
+export DO_SPPT=.false.
+export DO_SHUM=.false.
+export DO_SKEB=.false.
+export DO_SFCPERTS=.false.
 export SKEB=-999.
 export SPPT=-999.
 export SHUM=-999.
