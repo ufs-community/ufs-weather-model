@@ -1,4 +1,4 @@
-dmessage("")
+message("")
 message("Setting configuration for $ENV{CMAKE_Platform}")
 message("")
 
