@@ -197,4 +197,10 @@ export SKEB=-999.
 export SPPT=-999.
 export SHUM=-999.
 export IAU_INC_FILES="''"
+
+#Cellular automata
+export DO_CA=.F.
+export CA_SGS=.F.
+export CA_GLOBAL=.F.
+
 }
