@@ -21,7 +21,7 @@ option(INLINE_POST "Enable inline post" OFF)
 
 include( cmake/${CMAKE_Fortran_COMPILER_ID}.cmake )
 
-message("AVX2 is   ENABLED on Jet (multi-tagret executable)")
+message("AVX2 is   ENABLED on Jet (multi-target executable)")
 string (REPLACE "-xHOST" "-axSSE4.2,AVX,CORE-AVX2" CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS}")
 string (REPLACE "-xHOST" "-axSSE4.2,AVX,CORE-AVX2" CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
 
