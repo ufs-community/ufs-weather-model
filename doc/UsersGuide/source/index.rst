@@ -12,10 +12,9 @@ Welcome to the UFS Weather Model User's Guide
 
    Introduction
    CodeOverview
+   BuildingAndRunning
    InputsOutputs
    SDFandNamelistExamplePractices
-   FAQforModelConfiguration
    ContributingDevelopment
-   CompilingCodeWithoutApp
    Acronyms
    Glossary
