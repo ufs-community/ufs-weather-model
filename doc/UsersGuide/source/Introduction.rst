@@ -75,6 +75,8 @@ This WM User’s Guide is organized as follows:
 - :numref:`Chapter %s <CodeOverview>` (Code Overview) provides a description of the various
   code repositories from which source code is pulled and an overview of the directory structure. 
 
+- :numref:`Chapter %s <BuildingAndRunning>` (Building and Running the WM)
+
 - :numref:`Chapter %s <InputsOutputs>` (Inputs and Outputs) lists the model inputs and outputs
   and has a description of the key files.
 
@@ -82,14 +84,9 @@ This WM User’s Guide is organized as follows:
   contains a description of the :term:`Suite Definition File (SDF)` and namelists needed to configure the model
   for running with the GFS v15.2 and GFS v16beta physics suites. 
 
-- :numref:`Chapter %s <FAQforModelConfiguration>` (FAQ on model configuration) contains information on
-  miscellaneous topics pertaining to using the model in configurations that differ from the default. 
-
-The next three chapters:
+The next chapter:
 
 - :numref:`Chapter %s <ContributingDevelopment>` (Contributing development)
-- :numref:`Chapter %s <CompilingCodeWithoutApp>` (Compiling the WM code without an application)
-- :numref:`Chapter %s <RegTests>` (Regression tests for development)
 
 go beyond the capabilities supported in the public release to cover code management for conducting
 development and proposing contributions back to the authoritative code repositories. It should be noted that the regression tests described here are mandatory for committing code back to the ufs-weather-model authoritative code repository. These regressions tests differ from those distributed with the workflows for UFS applications, which are intended for application users and developers to assess the quality of their installations and the impact of their code changes. Finally,
