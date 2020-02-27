@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eux
+set -eu
 SECONDS=0
 hostname
 
@@ -10,7 +10,7 @@ error() {
 }
 
 usage() {
-  set +x
+  #set +x
   echo
   echo "Usage: $program -n <test-name> [ -c <baseline-cases> | -r <unit-test-cases> ] [-k] [-h]"
   echo
@@ -41,7 +41,7 @@ usage() {
   echo "      'utest -n fv3_control -r thread,decomp' runs thread,decomp for fv3_control"
   echo "      'utest -n fv3_stochy -r restart' runs restart for fv3_stochy"
   echo
-  set -x
+  #set -x
 }
 
 usage_and_exit() {
@@ -62,10 +62,18 @@ run_utests() {
     source ${PATHRT}/tests/$TEST_NAME
     export RUN_SCRIPT
 
+    # If TEST_NAME specifies WARM_START true, error and exit
+    if [[ ${WARM_START} == .T. ]]; then
+      error "test-name cannot be a restart run; i.e., WARM_START=.T."
+    fi
+    # Date and time setup of restart files for restart run
+    RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( SHOUR + FHMAX/2  )))0000"
+    export RESTART_FILE_PREFIX
+
     comp_nm=std
     case $rc in
       std)
-        RESTART_INTERVAL=12
+        RESTART_INTERVAL=$(( FHMAX/2 ))
         ;;
       thread)
         THRD=2
@@ -77,6 +85,8 @@ run_utests() {
         ;;
       mpi)
         JNPES=$(( JNPES/2 ))
+        WRITE_GROUP=2
+        WRTTASK_PER_GROUP=12
         TASKS=$(( INPES*JNPES*6 + WRITE_GROUP*WRTTASK_PER_GROUP ))
         NODES=$(( TASKS/TPN + 1 ))
         ;;
@@ -110,12 +120,22 @@ run_utests() {
                     RESTART/sfc_data.tile2.nc RESTART/sfc_data.tile3.nc RESTART/sfc_data.tile4.nc \
                     RESTART/sfc_data.tile5.nc RESTART/sfc_data.tile6.nc"
 
-        if [[ $OUTPUT_FILE == "'netcdf'" ]]; then
-          LIST_FILES="phyf024.tile1.nc phyf024.tile2.nc phyf024.tile3.nc phyf024.tile4.nc \
-                      phyf024.tile5.nc phyf024.tile6.nc dynf024.tile1.nc dynf024.tile2.nc \
-                      dynf024.tile3.nc dynf024.tile4.nc dynf024.tile5.nc dynf024.tile6.nc ${LIST_FILES}"
-        elif [[ $OUTPUT_FILE == "'nemsio'" ]]; then
-          LIST_FILES="phyf024.nemsio dynf024.nemsio ${LIST_FILES}"
+        comp_hr=$(printf "%03d" $(( SHOUR + FHMAX )))
+        if [[ $OUTPUT_GRID == "'cubed_sphere_grid'" ]]; then
+          LIST_FILES="phyf${comp_hr}.tile1.nc phyf${comp_hr}.tile2.nc phyf${comp_hr}.tile3.nc \
+                      phyf${comp_hr}.tile4.nc phyf${comp_hr}.tile5.nc phyf${comp_hr}.tile6.nc \
+                      dynf${comp_hr}.tile1.nc dynf${comp_hr}.tile2.nc dynf${comp_hr}.tile3.nc \
+                      dynf${comp_hr}.tile4.nc dynf${comp_hr}.tile5.nc dynf${comp_hr}.tile6.nc ${LIST_FILES}"
+        elif [[ $OUTPUT_GRID == "'gaussian_grid'" ]]; then
+          if [[ $OUTPUT_FILE == "'netcdf'" || $OUTPUT_FILE == "'netcdf_esmf'" ]]; then
+            LIST_FILES="phyf${comp_hr}.nc dynf${comp_hr}.nc ${LIST_FILES}"
+          elif [[ $OUTPUT_FILE == "'nemsio'" ]]; then
+            LIST_FILES="phyf${comp_hr}.nemsio dynf${comp_hr}.nemsio ${LIST_FILES}"
+          else
+            error "Unrecognized OUTPUT_FILE ${OUTPUT_FILE}"
+          fi
+        else
+          error "Unrecognized OUTPUT_GRID ${OUTPUT_GRID}"
         fi
         ;;
       32bit)
@@ -177,7 +197,7 @@ cd $PATHRT
 readonly PATHTR=$(cd ${PATHRT}/.. && pwd)
 
 # make sure only one instance of utest is running
-readonly lockdir=${PATHRT}/lock
+readonly lockdir=${PATHRT}/lock_ut
 if mkdir $lockdir 2>/dev/null; then
   echo $(hostname) $$ > ${lockdir}/PID
 else

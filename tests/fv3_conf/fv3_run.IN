@@ -26,9 +26,9 @@ else
     rm -f INPUT/fv_tracer.res.*
     rm -f INPUT/phy_data.*c
     rm -f INPUT/srf_data.*
-    for RFILE in ../${TEST_NAME}${BL_SUFFIX}/RESTART/20161003.120000.*; do
+    for RFILE in ../${TEST_NAME}${BL_SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.*; do
       RFILE_OLD=$(basename $RFILE)
-      RFILE_NEW="${RFILE_OLD//20161003.120000./}"
+      RFILE_NEW="${RFILE_OLD//${RESTART_FILE_PREFIX}./}"
       cp $RFILE INPUT/${RFILE_NEW}
     done
   fi
