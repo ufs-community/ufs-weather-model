@@ -66,9 +66,6 @@ run_utests() {
     if [[ ${WARM_START} == .T. ]]; then
       error "test-name cannot be a restart run; i.e., WARM_START=.T."
     fi
-    # Date and time setup of restart files for restart run
-    RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( SHOUR + FHMAX/2  )))0000"
-    export RESTART_FILE_PREFIX
 
     comp_nm=std
     case $rc in
@@ -96,6 +93,10 @@ run_utests() {
         JNPES=$temp
         ;;
       restart)
+        # Date and time setup of restart files for restart run
+        RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( SHOUR + FHMAX/2  )))0000"
+        export RESTART_FILE_PREFIX
+
         # These parameters are different for regional restart, and won't work
         WARM_START=.T.
         NGGPS_IC=.F.
@@ -147,8 +148,6 @@ run_utests() {
         ;;
     esac
 
-    echo "case: $rc; THRD: $THRD; INPES: $INPES; JNPES: $JNPES; TASKS: $TASKS; TPN: $TPN; NODES: $NODES"
-
     RT_SUFFIX="_$rc"
     BL_SUFFIX="_$comp_nm"
 
@@ -168,6 +167,8 @@ run_utests() {
 		export LOG_DIR=${LOG_DIR}
 		EOF
 
+    echo "Running test for $rc with"
+    echo "    THRD: $THRD; INPES: $INPES; JNPES: $JNPES; TASKS: $TASKS; TPN: $TPN; NODES: $NODES"
     ./run_test.sh $PATHRT $RUNDIR_ROOT $TEST_NAME $rc $comp_nm > $LOG_DIR/run_${TEST_NAME}_$rc.log 2>&1
   done
 }
@@ -274,7 +275,7 @@ while getopts :c:r:n:kh opt; do
       ;;
     n)
       TEST_NAME=$OPTARG
-      #echo "test-name = $TEST_NAME"
+      echo "Test name: ${TEST_NAME}"
       ;;
     k)
       keep_rundir=true
@@ -299,8 +300,8 @@ if [[ $CREATE_BASELINE == true && $run_unit_test == true ]]; then
   unit_test_cases=std,thread,mpi,decomp,restart,32bit,debug
 fi
 
-echo "baseline_cases = $baseline_cases"
-echo "unit_test_cases = $unit_test_cases"
+#echo "baseline_cases = $baseline_cases"
+#echo "unit_test_cases = $unit_test_cases"
 
 # Fill in ut_compile_cases & ut_run_cases based on baseline_cases & unit_test_cases
 # Cases are sorted in the order: std,thread,mpi,decomp,restart,32bit,debug
@@ -367,8 +368,8 @@ ut_run_cases=$(echo $ut_run_cases | sed -e 's/^[0-9]//g' -e 's/ [0-9]/ /g')
 if [[ ! $ut_run_cases =~ ^std && $ut_run_cases =~ restart ]]; then
   ut_run_cases="std ${ut_run_cases}"
 fi
-echo "ut_compile_cases are $ut_compile_cases"
-echo "ut_run_cases are $ut_run_cases"
+echo "Cases to compile: $ut_compile_cases"
+echo "Cases to run    : $ut_run_cases"
 
 ########################################################################
 ####                            COMPILE                             ####
@@ -413,11 +414,12 @@ for name in $ut_compile_cases; do
       ;;
   esac
   NEMS_VER=$(echo ${NEMS_VER} | sed -e 's/^ *//' -e 's/ *$//')
-  echo "compile case: $name"
-  echo "NEMS_VER: $NEMS_VER"
+  #echo "compile case: $name"
+  #echo "NEMS_VER: $NEMS_VER"
 
+  echo "Compiling for ${name} with compile option ${NEMS_VER}"
   ./compile.sh $PATHTR/FV3 $MACHINE_ID "${NEMS_VER}" $name >${LOG_DIR}/compile_${TEST_NAME}_$name.log 2>&1
-  echo "bash compile is done for ${model} ${name} with ${NEMS_VER}"
+  echo "Compiling done for ${name} with compile option ${NEMS_VER}"
 done
 
 ########################################################################
