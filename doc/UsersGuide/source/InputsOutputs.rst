@@ -476,10 +476,6 @@ shows the following parameters that can be set in *model_configure* at run-time.
      - start second of model integration
      - integer 
      - 0
-   * - fhrot
-     - forecast hour at restart for nems/earth grid component clock in coupled model
-     - integer
-     - 0
    * - nhours_fcst
      - total forecast length
      - integer
@@ -500,14 +496,6 @@ shows the following parameters that can be set in *model_configure* at run-time.
      - number of threads for atmosphere
      - integer
      - 4
-   * - use_hyper_thread
-     - flag to use hyper threads
-     - logical
-     - .false.
-   * - ncores_per_node
-     - number of cores per node 
-     - integer
-     - 24
    * - restart_interval
      - frequency to output restart file 
      - integer
@@ -597,7 +585,11 @@ are not usually changed.
    * - calendar
      - type of calendar year
      - character(*)
-     - 'julian'
+     - 'gregorian'
+   * - fhrot
+     - forecast hour at restart for nems/earth grid component clock in coupled model
+     - integer
+     - 0
    * - cpl
      - flag for coupling with MOM6/CICE5
      - logical
@@ -653,11 +645,11 @@ corresponding to the six tiles of the model grid):
 
 - *atmos_4xdaily.tile[1-6].nc*
 - *atmos_static.tile[1-6].nc*
-- *phyfHHH.tile[1-6].nc*
-- *dynfHHH.tile[1-6].nc*
+- *sfcfHHH.nc*
+- *atmfHHH.nc*
 - *grid_spec.tile[1-6].nc*
 
-The specifications of the output files (type, projection, etc) may be overridden in the *model_configure* input file.
+Note that the sfcf* and atmf* files are not output on the 6 tiles, but instead as a single global gaussian grid file.  The specifications of the output files (type, projection, etc) may be overridden in the *model_configure* input file.
 
 Standard output files are *logf???*, and out and err as specified by the job submission. ESMF may also produce log
 files (controlled by variable print_esmf in the *model_configure* file), called *PET???.ESMF_LogFile*.
