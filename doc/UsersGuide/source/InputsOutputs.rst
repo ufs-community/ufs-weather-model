@@ -417,12 +417,15 @@ several Fortran namelist records, some of which are always required, others of w
 physics options are chosen.
 
 The following link describes the various physics-related namelist records:
-https://dtcenter.org/GMTB/v3.0/sci_doc/GFSsuite_nml.html
+
+https://dtcenter.org/GMTB/UFS/sci_doc/CCPPsuite_nml_desp.html
 
 The following link describes the stochastic physics namelist records
+
 https://stochastic-physics.readthedocs.io/en/ufs_public_release/namelist_options.html
 
 The following link describes some of the other namelist records (dynamics, grid, etc):
+
 https://www.gfdl.noaa.gov/wp-content/uploads/2017/09/fv3_namelist_Feb2017.pdf
 
 The namelist section relating to the FMS diagnostic manager is described in the last section of this chapter.

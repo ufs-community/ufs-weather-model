@@ -8,15 +8,15 @@ The public release of the medium-range weather app includes two supported physic
 GFSv15p2 and GFSv16beta. You will find the Suite Definition Files (SDFs) for these suites
 in
 
-https://github.com/NOAA-EMC/fv3atm/tree/ufs_public_release/ccpp/suites
+https://github.com/NOAA-EMC/fv3atm/tree/release/public-v1/ccpp/suites
 
 (no other SDFs are available with this release). You will find the namelists for the C96 configuration here:
 
-https://github.com/ufs-community/ufs-weather-model/blob/ufs_public_release/parm/ccpp_v15p2_c96.nml.IN
+https://github.com/ufs-community/ufs-weather-model/tree/release/public-v1/parm/ccpp_v15p2_c96.nml.IN
 
 and
 
-https://github.com/ufs-community/ufs-weather-model/blob/ufs_public_release/parm/ccpp_v16beta_c96.nml.IN
+https://github.com/ufs-community/ufs-weather-model/tree/release/public-v1/parm/ccpp_v16beta_c96.nml.IN
 
 The two CCPP suites for the medium-range weather app release are supported in four grid resolutions:
 C96, C192, C384, and C768, with 64 vertical levels.
