@@ -36,8 +36,6 @@ The ufs-weather-model repository supports the short- and medium-range UFS applic
     - https://github.com/NOAA-EMC/GFDL_atmos_cubed_sphere
   * - Stochastic physics pattern generator  
     - https://github.com/noaa-psd/stochastic_physics
-  * - WAVEWATCH 3 wave model 
-    - https://github.com/NOAA-EMC/WW3
 
 In the table, the left column contains a description of each repository, and the right column shows the component repositories which are pointing to (or will point to) the authoritative repositories. The ufs-weather-model currently uses git submodule to manage the sub-components. 
 
@@ -55,7 +53,6 @@ The umbrella repository for the UFS Weather Model is named ufs-weather-model.  U
    ├── NEMS                                    https://github.com/NCAR/NEMS
    │   └── tests/produtil/NCEPLIBS-pyprodutil  https://github.com/NOAA-EMC/NCEPLIBS-pyprodutil
    ├── stochastic_physics                      https://github.com/noaa-psd/stochastic_physics
-   └── WW3                                     https://github.com/NOAA-EMC/WW3
  
 ===================
 Directory Structure 
@@ -90,17 +87,16 @@ When the ufs-weather-model is cloned, the basic directory structure will be simi
    │   │   └── physics     --------- unused - IPD version of physics codes
    │   ├── io              --------- FV3 write grid comp code
    │   ├── ipd             --------- unused - IPD driver/interfaces
+   |   ├── stochastic_physics  ----- Cmakefile for stochastic physics code
    ├── log                 --------- log files from NEMS compset regression tests
-   ├── modulefile          --------- system module files for supported HPC systems
+   ├── modulefiles         --------- system module files for supported HPC systems
    ├── NEMS                --------- NOAA Earth Modeling System framework
    │   ├── exe
    │   ├── src
    │   └── test
    ├── parm                --------- regression test configurations
-   ├── release             --------- unused
    ├── stochastic_physics   -------- stochastic physics pattern generator
    ├── tests               --------- regression test scripts
-   └── WW3                 --------- WAVEWATCH III (wave component)
 
 The physics subdirectory in the *gfsphysics* directory  is not used or supported as part of this release (all physics is available through the :term:`CCPP`).
 

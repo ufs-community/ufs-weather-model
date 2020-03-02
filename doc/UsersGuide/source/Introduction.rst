@@ -14,7 +14,7 @@ development. More information about the UFS can be found in its portal at https:
 Key architectural elements of the UFS WM, along with links to external detailed documentation
 for those elements, are listed below:
 
-- The Finite-Volume Cubed-Sphere (FV3) dynamical core (https://noaa-emc.github.io/FV3_Dycore/html/index.html).
+- The Finite-Volume Cubed-Sphere (FV3) dynamical core (https://noaa-emc.github.io/FV3_Dycore_v1.0/html/index.html).
 
 - The Flexible Modeling System (:term:`FMS`), a software infrastructure used for functions such as
   parallelization (https://www.gfdl.noaa.gov/fms/).
@@ -30,7 +30,7 @@ for those elements, are listed below:
   (https://stochastic-physics.readthedocs.io/en/ufs_public_release/).
 
 - The NOAA Environmental Modeling System (:term:`NEMS`) model driver used to create the main program
-  (https://docs.google.com/document/d/1-kFhPBf7GBTUd5SaB5D_3OUGX_93pWKP21QgTh4y6ok/edit#heading=h.dah4y9bxn10l).
+  (https://noaa-emc.github.io/NEMS_doc/index.html).
 
 - The libraries needed to build the system, such as: 
     - National Centers for Environmental Prediction (NCEP) Libraries 
@@ -88,7 +88,7 @@ The next chapter:
 
 - :numref:`Chapter %s <ContributingDevelopment>` (Contributing development)
 
-go beyond the capabilities supported in the public release to cover code management for conducting
+goes beyond the capabilities supported in the public release to cover code management for conducting
 development and proposing contributions back to the authoritative code repositories. It should be noted that the regression tests described here are mandatory for committing code back to the ufs-weather-model authoritative code repository. These regressions tests differ from those distributed with the workflows for UFS applications, which are intended for application users and developers to assess the quality of their installations and the impact of their code changes. Finally,
 :numref:`Chapters %s <Acronyms>` and :numref:`%s <Glossary>` contain a list of acronyms and a glossary, respectively.
 
