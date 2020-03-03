@@ -290,8 +290,14 @@ submit_and_wait() {
     (( n=n+1 ))
   done
 
+  UNIT_TEST=${UNIT_TEST:-false}
   if [[ $test_status = 'FAIL' ]]; then
-    echo $TEST_NAME >> $PATHRT/fail_test
+    if [[ ${UNIT_TEST} == false ]]; then
+      echo $TEST_NAME >> $PATHRT/fail_test
+    else
+      echo ${TEST_NR} $TEST_NAME >> $PATHRT/fail_unit_test
+    fi
+
     if [[ $ROCOTO == true ]]; then
       exit 2
     fi
@@ -405,8 +411,14 @@ check_results() {
   echo "Test ${TEST_NR} ${TEST_NAME} ${test_status}"
   echo
 
+  UNIT_TEST=${UNIT_TEST:-false}
   if [[ $test_status = 'FAIL' ]]; then
-    echo $TEST_NAME >> $PATHRT/fail_test
+    if [[ ${UNIT_TEST} == false ]]; then
+      echo $TEST_NAME >> $PATHRT/fail_test
+    else
+      echo ${TEST_NR} $TEST_NAME >> $PATHRT/fail_unit_test
+    fi
+
     if [[ $ROCOTO = true ]]; then
       exit 2
     fi

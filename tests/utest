@@ -36,7 +36,7 @@ usage() {
   echo "      'utest -n fv3_iau -c std,debug' creates std, debug for fv3_iau"
   echo "      'utest -n fv3_gfdlmprad_gws -c 32bit' creates 32bit for fv3_gfdlmprad_gws"
   echo
-  echo "    To run unit tests only:"
+  echo "    To run unit tests only (baselines should exist to compare results against):"
   echo "      'utest -n fv3_cpt -r all' runs std,thread,mpi,decomp,restart,32bit,debug for fv3_cpt"
   echo "      'utest -n fv3_control -r thread,decomp' runs thread,decomp for fv3_control"
   echo "      'utest -n fv3_stochy -r restart' runs restart for fv3_stochy"
@@ -205,14 +205,6 @@ else
   error "Only one instance of utest can be running at a time"
 fi
 
-# Log directory
-LOG_DIR=${PATHRT}/log_ut_$MACHINE_ID
-rm -rf ${LOG_DIR}
-mkdir ${LOG_DIR}
-# ROCOTO, ECFLOW not used, but defined for compatibility with rt_fv3.sh
-ROCOTO=false
-ECFLOW=false
-
 # Machine-dependent libraries, modules, variables, etc.
 if [[ $MACHINE_ID = hera.* ]]; then
   export NCEPLIBS=/scratch1/NCEPDEV/global/gwv/l819/lib
@@ -371,6 +363,14 @@ fi
 echo "Cases to compile: $ut_compile_cases"
 echo "Cases to run    : $ut_run_cases"
 
+# Log directory
+LOG_DIR=${PATHRT}/log_ut_$MACHINE_ID
+rm -rf ${LOG_DIR}
+mkdir ${LOG_DIR}
+# ROCOTO, ECFLOW not used, but defined for compatibility with rt_fv3.sh
+ROCOTO=false
+ECFLOW=false
+
 ########################################################################
 ####                            COMPILE                             ####
 ########################################################################
@@ -442,21 +442,21 @@ mkdir -p ${RUNDIR_ROOT}
 # unittest_log is different from REGRESSIONTEST_LOG
 # defined in run_test.sh and passed onto rt_utils.sh
 unittest_log=${PATHRT}/UnitTests_$MACHINE_ID.log
-rm -f fail_test ${unittest_log}
+rm -f fail_unit_test ${unittest_log}
 
 if [[ $CREATE_BASELINE == true && $run_unit_test == true ]]; then
   # Run to create baseline
   ut_run_cases='std 32bit debug'
   run_utests
   rm -rf ${RUNDIR_ROOT}/*
-  rm -f ${LOG_DIR}/run_* ${LOG_DIR}/rt_*
+  rm -f ${LOG_DIR}/run_* ${LOG_DIR}/ut_*
   # Run to compare with baseline
   ut_run_cases='std thread mpi decomp restart 32bit debug'
   CREATE_BASELINE=false
   RTPWD=${NEW_BASELINE}
   run_utests
 elif [[ $CREATE_BASELINE == true && $run_unit_test == false ]]; then
-  # Run to create baselind
+  # Run to create baseline
   run_utests
 elif [[ $CREATE_BASELINE == false && $run_unit_test == true ]]; then
   # Run to compare with baseline
@@ -472,14 +472,14 @@ fi
 ########################################################################
 set +e
 cat ${LOG_DIR}/compile_*.log > ${compile_log}
-cat ${LOG_DIR}/rt_*.log >> ${unittest_log}
+cat ${LOG_DIR}/ut_*.log >> ${unittest_log}
 
-if [[ -e fail_test ]]; then
+if [[ -e fail_unit_test ]]; then
   echo "FAILED TESTS: " | tee -a ${unittest_log}
   while read -r failed_test_name
   do
     echo "Test ${failed_test_name} failed " | tee -a ${unittest_log}
-  done < fail_test
+  done < fail_unit_test
   echo "UNIT TEST FAILED" | tee -a ${unittest_log}
 else
   echo "UNIT TEST WAS SUCCESSFUL" | tee -a ${unittest_log}

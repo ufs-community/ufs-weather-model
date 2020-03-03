@@ -1,11 +1,29 @@
 rm -fr INPUT RESTART
+
+UNIT_TEST=${UNIT_TEST:-false}
 if [ $WARM_START = .F. ]; then
   cp -r @[RTPWD]/FV3_input_data/INPUT .
   mkdir RESTART
 else
   mkdir INPUT RESTART
-  cp -r @[RTPWD]/FV3_input_data/RESTART/* ./INPUT
+
+  if [[ ${UNIT_TEST} == false ]]; then
+    cp -r @[RTPWD]/FV3_input_data/RESTART/* ./INPUT
+  else
+    cp -r @[RTPWD]/FV3_input_data/RESTART/* ./INPUT
+    rm -f INPUT/fv_core.res.*
+    rm -f INPUT/fv_srf_wnd.res.*
+    rm -f INPUT/fv_tracer.res.*
+    rm -f INPUT/phy_data.*c
+    rm -f INPUT/srf_data.*
+    for RFILE in ../${TEST_NAME}${BL_SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.*; do
+      RFILE_OLD=$(basename $RFILE)
+      RFILE_NEW="${RFILE_OLD//${RESTART_FILE_PREFIX}./}"
+      cp $RFILE INPUT/${RFILE_NEW}
+    done
+  fi
 fi
+
 cp    @[RTPWD]/FV3_input_data/INPUT/aerosol.dat .
 cp    @[RTPWD]/FV3_input_data/INPUT/co2historicaldata_201*.txt .
 cp    @[RTPWD]/FV3_input_data/INPUT/sfc_emissivity_idx.txt .
