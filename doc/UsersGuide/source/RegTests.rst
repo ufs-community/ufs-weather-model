@@ -242,4 +242,4 @@ Compatibility between the Code Base, the SDF, and the Namelist in the UFS Atmosp
 
 The variable ``suite_name`` within the ``namelist.input`` file used in the UFS Atmosphere determines which suite will be employed at run time (e.g., ``suite_name=FV3_GFS_v15``). It is the user’s responsibility to ascertain that the other variables in ``namelist.input`` are compatible with the chosen suite. When runs are executed using the RT framework described in the preceding sections, compatibility is assured. For new experiments, users are responsible for modifying the two files (``SDF`` and ``namelist.input``) consistently, since limited checks are in place.
 
-Information about the UFS Atmosphere physics namelist can be found with the CCPP Scientific Documentation at https://dtcenter.org/GMTB/v3.0/sci_doc/.
+Information about the UFS Atmosphere physics namelist can be found with the CCPP Scientific Documentation at https://dtcenter.org/GMTB/v4.0/sci_doc/.
