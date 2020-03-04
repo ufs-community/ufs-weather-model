@@ -422,7 +422,7 @@ https://dtcenter.org/GMTB/UFS/sci_doc/CCPPsuite_nml_desp.html
 
 The following link describes the stochastic physics namelist records
 
-https://stochastic-physics.readthedocs.io/en/ufs_public_release/namelist_options.html
+https://stochastic-physics.readthedocs.io/en/ufs-v1.0.0/namelist_options.html
 
 The following link describes some of the other namelist records (dynamics, grid, etc):
 
