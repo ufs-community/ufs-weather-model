@@ -20,13 +20,13 @@ The ufs-weather-model repository supports the short- and medium-range UFS applic
     - Authoritative repository URL
   * - Umbrella repository for the UFS Weather Model
     - https://github.com/ufs-community/ufs-weather-model
-  * - Infrastructure: Flexible Modeling System 
+  * - Infrastructure: Flexible Modeling System
     - https://github.com/NOAA-GFDL/FMS
   * - Infrastructure: NOAA Environmental Modeling System
     - https://github.com/NOAA-EMC/NEMS
-  * - Infrastructure: add description
+  * - Infrastructure: Utilities
     - https://github.com/NOAA-EMC/NCEPLIBS-pyprodutil
-  * - Framework to connect the CCPP library to a host model 
+  * - Framework to connect the CCPP library to a host model
     - https://github.com/NCAR/ccpp-framework
   * - CCPP library of physical parameterizations
     - https://github.com/NCAR/ccpp-physics
@@ -34,10 +34,10 @@ The ufs-weather-model repository supports the short- and medium-range UFS applic
     - https://github.com/NOAA-EMC/fv3atm
   * - FV3 dynamical core
     - https://github.com/NOAA-EMC/GFDL_atmos_cubed_sphere
-  * - Stochastic physics pattern generator  
+  * - Stochastic physics pattern generator
     - https://github.com/noaa-psd/stochastic_physics
 
-In the table, the left column contains a description of each repository, and the right column shows the component repositories which are pointing to (or will point to) the authoritative repositories. The ufs-weather-model currently uses git submodule to manage the sub-components. 
+In the table, the left column contains a description of each repository, and the right column shows the component repositories which are pointing to (or will point to) the authoritative repositories. The ufs-weather-model currently uses git submodule to manage the sub-components.
 
 The umbrella repository for the UFS Weather Model is named ufs-weather-model.  Under this repository reside a number of submodules that are nested in specific directories under the parent repository’s working directory.  When the ufs-weather-model repository is cloned, the *.gitmodules* file creates the following directories:
 
@@ -53,9 +53,9 @@ The umbrella repository for the UFS Weather Model is named ufs-weather-model.  U
    ├── NEMS                                    https://github.com/NCAR/NEMS
    │   └── tests/produtil/NCEPLIBS-pyprodutil  https://github.com/NOAA-EMC/NCEPLIBS-pyprodutil
    ├── stochastic_physics                      https://github.com/noaa-psd/stochastic_physics
- 
+
 ===================
-Directory Structure 
+Directory Structure
 ===================
 
 When the ufs-weather-model is cloned, the basic directory structure will be similar to the example below. Files and some directories have been removed for brevity.
@@ -81,7 +81,7 @@ When the ufs-weather-model is cloned, the basic directory structure will be simi
    │   │   ├── physics      -------- CCPP compliant physics schemes
    │   │   └── suites       -------- CCPP physics suite definition files (SDFs)
    │   ├── cpl              -------- Coupling field data structures
-   │   ├── gfsphysics 
+   │   ├── gfsphysics
    │   │   ├── CCPP_layer
    │   │   ├── GFS_layer
    │   │   └── physics     --------- unused - IPD version of physics codes
@@ -98,5 +98,6 @@ When the ufs-weather-model is cloned, the basic directory structure will be simi
    ├── stochastic_physics   -------- stochastic physics pattern generator
    ├── tests               --------- regression test scripts
 
-The physics subdirectory in the *gfsphysics* directory  is not used or supported as part of this release (all physics is available through the :term:`CCPP`).
-
+The physics subdirectory in the *gfsphysics* directory  is not used or supported
+as part of this release (all physics is available through the :term:`CCPP` using
+the repository described in :numref:`Table %s <Repo_Structure>`).
