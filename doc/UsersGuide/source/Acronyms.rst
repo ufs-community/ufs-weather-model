@@ -8,7 +8,7 @@ Acronyms
    :widths: 20 80
 
    +----------------+---------------------------------------------------+
-   | Abbreviation   | Explanation                                       |
+   | Acronyms       | Explanation                                       |
    +================+===================================================+
    | AOML           | NOAA's Atlantic Oceanographic and Meteorological  |
    |                | Laboratory                                        |
@@ -19,8 +19,6 @@ Acronyms
    +----------------+---------------------------------------------------+
    | CCPP           | Common Community Physics Package                  |
    +----------------+---------------------------------------------------+
-   | CPP            | C preprocessor                                    |
-   +----------------+---------------------------------------------------+
    | dycore         | Dynamical core                                    |
    +----------------+---------------------------------------------------+
    | EDMF           | Eddy-Diffusivity Mass Flux                        |
@@ -29,13 +27,13 @@ Acronyms
    +----------------+---------------------------------------------------+
    | ESMF           | The Earth System Modeling Framework               |
    +----------------+---------------------------------------------------+
-   | ESRL           | NOAA Earth System Research Laboratory             |
+   | ESRL           | NOAA Earth System Research Laboratories           |
    +----------------+---------------------------------------------------+
    | FMS            | Flexible Modeling System                          |
    +----------------+---------------------------------------------------+
    | FV3            | Finite-Volume Cubed Sphere                        |
    +----------------+---------------------------------------------------+
-   | GFDL           | Geophysical Fluid Dynamics Laboratory             |
+   | GFDL           | NOAA Geophysical Fluid Dynamics Laboratory        |
    +----------------+---------------------------------------------------+
    | GFS            | Global Forecast System                            |
    +----------------+---------------------------------------------------+
@@ -51,25 +49,15 @@ Acronyms
    +----------------+---------------------------------------------------+
    | NCEP           | National Centers for Environmental Predicction    |
    +----------------+---------------------------------------------------+
-   | NEMS           | National Oceanic and Atmospheric Administration   |
-   |                | (NOAA) Environmental Modeling System              |
+   | NEMS           | NOAA Environmental Modeling System                |
    +----------------+---------------------------------------------------+
    | NOAA           | National Oceanic and Atmospheric Administration   |
    +----------------+---------------------------------------------------+
    | NSSL           | National Severe Storms Laboratory                 |
    +----------------+---------------------------------------------------+
-   | OpenMP         | Open Multi-Processing                             |
-   +----------------+---------------------------------------------------+
    | PBL            | Planetary Boundary Layer                          |
    +----------------+---------------------------------------------------+
-   | png            | Portable Network Graphic                          |
-   +----------------+---------------------------------------------------+
    | PR             | Pull request                                      |
-   +----------------+---------------------------------------------------+
-   | PROD           | Compiler optimization flags for production mode   |
-   +----------------+---------------------------------------------------+
-   | REPRO          | Compiler optimization flags for reproduction mode |
-   |                | (bit-for-bit testing)                             |
    +----------------+---------------------------------------------------+
    | RRTMG          | Rapid Radiative Transfer Model for Global         |
    |                | Circulation Models                                |
@@ -91,8 +79,6 @@ Acronyms
    | TKE            | Turbulent Kinetic Energy                          |
    +----------------+---------------------------------------------------+
    | UFS            | Unified Forecast System                           |
-   +----------------+---------------------------------------------------+
-   | VLab           | Virtual Laboratory                                |
    +----------------+---------------------------------------------------+
    | WM             | Weather Model                                     |
    +----------------+---------------------------------------------------+

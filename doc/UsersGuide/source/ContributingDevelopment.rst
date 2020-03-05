@@ -1,5 +1,5 @@
 .. _ContributingDevelopment:
-  
+
 *************************
 Contributing Development
 *************************
@@ -20,7 +20,7 @@ If developers would like to get their code committed back to the original reposi
 
       * Merge developer’s branch to the latest ufs-weather-model develop branch in authoritative repository. If changes are made in model sub-components, developers need to merge their branches to branches with the corresponding authoritative repository (or original repository for some components). For this, code management practices of the subcomponents need to be followed.
 
-      * Regression tests associated with the ufs-weather-model are available on Tier 1 and Tier 2 platforms as described in https://github.com/ufs-community/ufs-weather-model/wiki/Weather-Model-Platform-and-Compiler-Support. If the developer has access to these platforms, the developer should pass the regression test on at least one supported platform. If the developer does not have access to these platforms, this should be stated in the PR so the code manager(s) can conduct the tests.
+      * Regression tests associated with the ufs-weather-model are available on Tier 1 and Tier 2 platforms as described in https://github.com/ufs-community/ufs-weather-model/wiki/Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers. If the developer has access to these platforms, the developer should pass the regression test on at least one supported platform. If the developer does not have access to these platforms, this should be stated in the PR so the code manager(s) can conduct the tests.
 
       * For each component branch where developers make changes, developers need to go to their personal fork on GitHub and click on the “New pull request” button. When a new page “Compare changes” appears, developers will choose the branch in their fork with code changes to commit and the branch in upstream repository that the changes will be committed to. Also developers in the commit comment must add the github issue title and number created in 1) in the comment box. The code differences between the two branches will be displayed. Developers can review the differences and click on “submit pull request” to make the pull request. After code changes are committed to the component repository, developers will make pull requests to ufs-weather-model repository.
 
@@ -85,7 +85,7 @@ rt.sh is a bash shell file to run the RT and has the following options:
    % cd ufs-weather-model/tests
    % ./rt.sh -f
 
-This command can only be used on platforms that have been configured for regression testing (Tier 1 and Tier 2 platforms as described in https://github.com/ufs-community/ufs-weather-model/wiki/Weather-Model-Platform-and-Compiler-Support). For information on testing the CCPP code, or using alternate computational platforms, see the following sections.
+This command can only be used on platforms that have been configured for regression testing (Tier 1 and Tier 2 platforms as described in https://github.com/ufs-community/ufs-weather-model/wiki/Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers). For information on testing the CCPP code, or using alternate computational platforms, see the following sections.
 
 This command and all others below produce log output in ./tests/log_machine.compiler. These log files contain information on the location of the run directories that can be used as templates for the user. Each rt*.conf contains one or more compile commands preceding a number of tests.
 

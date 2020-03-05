@@ -1,5 +1,5 @@
 .. _BuildingAndRunning:
-  
+
 ******************************************
 Building and Running the UFS Weather Model
 ******************************************
@@ -15,8 +15,8 @@ There are two categories of libraries that are needed:
    Most have an NCEPLIBS prefix in the repository, e.g. NCEPLIBS-bacio. Select tools from the UFS
    Utilities repository (UFS-UTILS) are also included in this category. A list of the bundled
    libraries tested with this WM release is in the top-level ``README`` of the `NCEPLIBS repository
-   <https://github.com/NOAA-EMC/NCEPLIBS>`_. Be sure to look at the tag in that repository that
-   matches the tag on this WM release.
+   <https://github.com/NOAA-EMC/NCEPLIBS>`_ (**be sure to look at the tag in that repository that
+   matches the tag on this WM release**).
 
 #. Third-party libraries (NCEPLIBS-external). These are libraries that were developed external to
    the UFS Weather Model. They are general software packages that are also used by other models in
@@ -42,7 +42,7 @@ WORK directory path before you get started.
 
 If your platform is not included in these platform- and compiler-specific ``README`` files, there is a more
 generic set of instructions in the ``README`` file at the top level of the `NCEPLIBS-external repository
-<https://github.com/NOAA-EMC/NCEPLIBS-external>`_, and at the top level of the `NCEPLIBS repository 
+<https://github.com/NOAA-EMC/NCEPLIBS-external>`_, and at the top level of the `NCEPLIBS repository
 <https://github.com/NOAA-EMC/NCEPLIBS>`_. It may still be a good idea to look at some of the platform-
 and compiler-specific ``README`` files as a guide. Again, be sure to use the tag that corresponds to this version of the WM.
 
@@ -62,7 +62,7 @@ You will need to make sure that the WM has the paths to the libraries that it re
 that, these environment variables need to be set, as shown in :numref:`Table %s <ReqLibEnvVar>` and
 :numref:`Table %s <ReqLibEnvVar2>` for the bash shell.
 
-.. _ReqLibEnvVar: 
+.. _ReqLibEnvVar:
 
 .. table:: *Bundled libraries (NCEPLIBS) required for the Weather Model*
 
@@ -84,7 +84,7 @@ that, these environment variables need to be set, as shown in :numref:`Table %s 
 
 |
 
-.. _ReqLibEnvVar2: 
+.. _ReqLibEnvVar2:
 
 .. table:: *Third-party libraries (NCEPLIBS-external) required for the Weather Model*
 
@@ -110,11 +110,11 @@ load the modules, for example on hera, run:
     cd ../..
 
 If you are not running on one of the pre-configured platforms, you will need to set the environment variables
-in a different way. 
+in a different way.
 
 If you used one of the platform- and compiler-specific ``README`` files in the ``doc/`` directory of NCEPLIBS-external
 to build the prerequisite libraries, there is a script in the ``NCEPLIBS-ufs-v1.0.0/bin`` directory called
-``setenv_nceplibs.sh`` that will set the NCEPLIBS-external variables for you. 
+``setenv_nceplibs.sh`` that will set the NCEPLIBS-external variables for you.
 
 Of course, you can also set the values of these variables yourself if you know where the paths are on your system.
 
@@ -122,14 +122,14 @@ Of course, you can also set the values of these variables yourself if you know w
 Setting other environment variables
 -----------------------------------
 You will also need to set the ``CMAKE_Platform`` environment variable.
-See the ``README`` files in the ``doc/`` directories of the NCEPLIBS-external repository for recognized values. 
+See the ``README`` files in the ``doc/`` directories of the NCEPLIBS-external repository for recognized values.
 
 The default value is:
 
 .. code-block:: console
 
     export CMAKE_Platform=linux.<compiler>
-  
+
 Where <compiler> is either Intel or GNU.  You may also wish to set the following environment variables:
 
   * ``CMAKE_Platform``: if not set the default is linux.${COMPILER}
@@ -151,7 +151,7 @@ If ``CCPP_SUITES`` is not set, the default is ``‘FV3_GFS_v15p2’``.
 Building the model
 ------------------
 The UFS Weather Model uses the cmake build system.  There is a build script called ``build.sh`` in the
-top-level directory of the WM repository that ensures all necessary variables are actually set. 
+top-level directory of the WM repository that ensures all necessary variables are actually set.
 
 After setting all the environment variables, you can build the model using
 
@@ -168,5 +168,4 @@ set up specifically for issues related to the Weather Model.
 Running the model
 =================
 The `UFS Weather Model wiki <https://github.com/ufs-community/ufs-weather-model/wiki>`_ includes a simple
-test case that illustrates how the model can be run. 
-
+test case that illustrates how the model can be run.
