@@ -1,10 +1,10 @@
 .. _InputsOutputs:
-  
+
 *************************
 Inputs and Outputs
 *************************
 
-This chapter describes the input and output files needed for executing the model in the various supported configurations. 
+This chapter describes the input and output files needed for executing the model in the various supported configurations.
 
 =============
 Input files
@@ -44,7 +44,7 @@ The static input files are listed and described in :numref:`Table %s <FixFiles>`
    * - global_mxsnoalb.uariz.t126.384.190.rg.grb
      - Climatological maximum snow albedo
    * - global_o3prdlos.f77
-     - Monthly mean ozone coefficients 
+     - Monthly mean ozone coefficients
    * - global_shdmax.0.144x0.144.grb
      - Climatological maximum vegetation cover
    * - global_shdmin.0.144x0.144.grb
@@ -92,7 +92,7 @@ The input files containing grid information and the initial conditions are liste
      - Date-dependent
    * - C96_grid.tile[1-6].nc
      - C96 grid information for tiles 1-6
-     - 
+     -
    * - gfs_ctrl.nc
      - NCEP NGGPS tracers, ak, and bk
      - ✔
@@ -101,7 +101,7 @@ The input files containing grid information and the initial conditions are liste
      - ✔
    * - oro_data.tile[1-6].nc
      - Model terrain (topographic/orographic information) for grid tiles 1-6
-     - 
+     -
    * - sfc_ctrl.nc
      - Control parameters for surface input: forecast hour, date, number of soil levels
      -
@@ -144,7 +144,7 @@ The File Description lines are used to specify the name of the file(s) to which 
 contain one or more sets of six required and five optional fields (optional fields are denoted by square brackets
 ``[ ]``).  The lines containing File Descriptions can be intermixed with the lines containing Field Descriptions as
 long as files are defined before fields that are to be written them.  File entries have the following format:
- 
+
 .. code-block:: console
 
    "file_name", output_freq, "output_freq_units", file_format, "time_axis_units", "time_axis_name"
@@ -193,7 +193,7 @@ These file line entries are described in :numref:`Table %s <FileDescription>`.
        NOTE: If the new_file_freq field is present, then this field must also be present.
    * - start_time
      - CHARACTER(len=25), OPTIONAL
-     - Time to start the file for the first time.  The format of this string is the same as the global date.    
+     - Time to start the file for the first time.  The format of this string is the same as the global date.
        NOTE: The new_file_freq and the new_file_freq_units fields must be present to use this field.
    * - file_duration
      - INTEGER, OPTIONAL
@@ -209,26 +209,26 @@ These file line entries are described in :numref:`Table %s <FileDescription>`.
 
 The field section of the diag_table specifies the fields to be output at run time.  Only fields registered
 with ``register_diag_field()``, which is an API in the FMS ``diag_manager`` routine, can be used in the *diag_table*.
- 
-Registration of diagnostic fields is done using the following syntax 
+
+Registration of diagnostic fields is done using the following syntax
 
 .. code-block:: console
 
    diag_id = register_diag_field(module_name, diag_name, axes, ...)
- 
+
 in file ``FV3/atmos_cubed_sphere/tools/fv_diagnostics.F90``.  As an example, the sea level pressure is registered as:
- 
+
 .. code-block:: console
 
    id_slp = register_diag_field (trim(field), 'slp', axes(1:2), &   Time, 'sea-level pressure', 'mb', missing_value=missing_value, range=slprange )
- 
+
 All data written out by ``diag_manager`` is controlled via the *diag_table*.  A line in the field section of the
 *diag_table* file contains eight variables with the following format:
- 
+
 .. code-block:: console
 
    "module_name", "field_name", "output_name", "file_name", "time_sampling", "reduction_method", "regional_section", packing
- 
+
 These field section entries are described in :numref:`Table %s <FieldDescription>`.
 
 .. _FieldDescription:
@@ -260,26 +260,26 @@ These field section entries are described in :numref:`Table %s <FieldDescription
      - The data reduction method to perform prior to writing data to disk.  Current supported option is .false..  See ``FMS/diag_manager/diag_table.F90`` for more information.
    * - regional_section
      - CHARACTER(len=50)
-     - Bounds of the regional section to capture. Current supported option is “none”. See ``FMS/diag_manager/diag_table.F90`` for more information. 
+     - Bounds of the regional section to capture. Current supported option is “none”. See ``FMS/diag_manager/diag_table.F90`` for more information.
    * - packing
      - INTEGER
      - Fortran number KIND of the data written.  Valid values:  1=double precision, 2=float, 4=packed 16-bit integers, 8=packed 1-byte (not tested).
 
 Comments can be added to the diag_table using the hash symbol (``#``).
- 
+
 A brief example of the diag_table is shown below.  ``“...”`` denote where lines have been removed.
 
 .. code-block:: console
 
    20161003.00Z.C96.64bit.non-mono
    2016 10 03 00 0 0
- 
+
    "grid_spec",     -1,  "months",   1, "days",  "time"
    "atmos_4xdaily",  6,  "hours",    1, "days",  "time"
    "atmos_static"   -1,  "hours",    1, "hours", "time"
    "fv3_history",    0,  "hours",    1, "hours", "time"
    "fv3_history2d",  0,  "hours",    1, "hours", "time"
- 
+
    #
    #=======================
    # ATMOSPHERE DIAGNOSTICS
@@ -337,7 +337,7 @@ A brief example of the diag_table is shown below.  ``“...”`` denote where li
    "gfs_sfc",   "f10m",    "f10m",     "fv3_history2d",  "all",  .false.,  "none",  2
   ...
 
-More information on the content of this file can be found in ``FMS/diag_manager/diag_table.F90``.  
+More information on the content of this file can be found in ``FMS/diag_manager/diag_table.F90``.
 
 .. note:: None of the lines in the *diag_table* can span multiple lines.
 
@@ -346,21 +346,21 @@ More information on the content of this file can be found in ``FMS/diag_manager/
 The FMS field and tracer managers are used to manage tracers and specify tracer options.  All tracers
 advected by the model must be registered in an ASCII table called *field_table*.  The field table consists
 of entries in the following format:
- 
+
 The first line of an entry should consist of three quoted strings:
  - The first quoted string will tell the field manager what type of field it is. The string ``“TRACER”`` is used to
-   declare a field entry. 
+   declare a field entry.
  - The second quoted string will tell the field manager which model the field is being applied to.  The supported
-   type at present is ``“atmos_mod”`` for the atmosphere model. 
+   type at present is ``“atmos_mod”`` for the atmosphere model.
  - The third quoted string should be a unique tracer name that the model will recognize.
- 
+
 The second and following lines are called ``methods``.  These lines can consist of two or three quoted strings.
 The first string will be an identifier that the querying module will ask for. The second string will be a name
 that the querying module can use to set up values for the module. The third string, if present, can supply
-parameters to the calling module that can be parsed and used to further modify values. 
- 
+parameters to the calling module that can be parsed and used to further modify values.
+
 An entry is ended with a  forward slash (/) as the final character in a row.  Comments can be inserted in the field table by having a hash symbol (#) as the first character in the line.
- 
+
 Below is an example of a field table entry for the tracer called ``“sphum”``:
 
 .. code-block:: console
@@ -377,7 +377,7 @@ to "kg/kg". Finally a field named "profile_type" will be given a child field cal
 will be given a field called "surface_value" with a real value of 3.E-6.  The “profile_type” options are listed
 in :numref:`Table %s <TracerTable>`.  If the profile type is “fixed” then the tracer field values are set equal
 to the surface value.  If the profile type is “profile” then the top/bottom of model and surface values are read
-and an exponential profile is calculated, with the profile being dependent on the number of levels in the component model. 
+and an exponential profile is calculated, with the profile being dependent on the number of levels in the component model.
 
 .. _TracerTable:
 
@@ -396,11 +396,11 @@ and an exponential profile is calculated, with the profile being dependent on th
      - surface_value = X, top_value = Y (atmosphere)
 
 For the case of
- 
+
 .. code-block:: console
 
    "profile_type","profile","surface_value = 1e-12, top_value = 1e-15"
-  
+
 in a 15 layer model this would return values of surf_value = 1e-12 and multiplier = 0.6309573,  i.e 1e-15 = 1e-12*(0.6309573^15).
 
 A ``method`` is a way to allow a component module to alter the parameters it needs for various tracers. In essence,
@@ -412,13 +412,13 @@ See ``FMS/field_manager/field_manager.F90`` for more information.
 *input.nml* file
 ------------------------------------
 
-The atmosphere model reads many parameters from a Fortran namelist file, named *input.nml*.  This file contains 
+The atmosphere model reads many parameters from a Fortran namelist file, named *input.nml*.  This file contains
 several Fortran namelist records, some of which are always required, others of which are only used when selected
 physics options are chosen.
 
 The following link describes the various physics-related namelist records:
 
-https://dtcenter.org/GMTB/UFS/sci_doc/CCPPsuite_nml_desp.html
+https://dtcenter.org/GMTB/v4.0/sci_doc/CCPPsuite_nml_desp.html
 
 The following link describes the stochastic physics namelist records
 
@@ -467,9 +467,9 @@ shows the following parameters that can be set in *model_configure* at run-time.
      - start day of model integration
      - integer
      - 12
-   * - start_hour  
-     - start hour of model integration 
-     - integer 
+   * - start_hour
+     - start hour of model integration
+     - integer
      - 00
    * - start_minute
      - start minute of model integration
@@ -477,7 +477,7 @@ shows the following parameters that can be set in *model_configure* at run-time.
      - 0
    * - start_second
      - start second of model integration
-     - integer 
+     - integer
      - 0
    * - nhours_fcst
      - total forecast length
@@ -500,10 +500,10 @@ shows the following parameters that can be set in *model_configure* at run-time.
      - integer
      - 4
    * - restart_interval
-     - frequency to output restart file 
+     - frequency to output restart file
      - integer
      - 0 (write restart file at the end of integration)
-   * - quilting 
+   * - quilting
      - flag to turn on quilt
      - logical
      - .true.
@@ -519,16 +519,16 @@ shows the following parameters that can be set in *model_configure* at run-time.
      - flag to output history files
      - logical
      - .true.
-   * - num_files 
-     - number of output files 
+   * - num_files
+     - number of output files
      - integer
      - 2
    * - filename_base
-     - file name base for the output files 
-     - character(255)  
+     - file name base for the output files
+     - character(255)
      - 'atm' 'sfc'
-   * - output_grid 
-     - output grid 
+   * - output_grid
+     - output grid
      - character(255)
      - gaussian_grid
    * - output_file
@@ -536,7 +536,7 @@ shows the following parameters that can be set in *model_configure* at run-time.
      - character(255)
      - nemsio
    * - imo
-     - i-dimension for output grid 
+     - i-dimension for output grid
      - integer
      - 384
    * - jmo
@@ -544,7 +544,7 @@ shows the following parameters that can be set in *model_configure* at run-time.
      - integer
      - 190
    * - nfhout
-     - history file output frequency 
+     - history file output frequency
      - integer
      - 3
    * - nfhmax_hf
@@ -578,11 +578,11 @@ are not usually changed.
      - integer
      - 1
    * - RUN_CONTINUE
-     - Flag for more than one NEMS run 
-     - logical 
+     - Flag for more than one NEMS run
+     - logical
      - .false.
    * - ENS_SPS
-     - flag for the ensemble stochastic coupling flag 
+     - flag for the ensemble stochastic coupling flag
      - logical
      - .false.
    * - calendar
@@ -598,11 +598,11 @@ are not usually changed.
      - logical
      - .false.
    * - write_dopost
-     - flag to do post on write grid component 
+     - flag to do post on write grid component
      - logical
      - .false.
    * - ideflate
-     - lossless compression level 
+     - lossless compression level
      - integer
      - 1 (0:no compression, range 1-9)
    * - nbits
@@ -618,7 +618,7 @@ are not usually changed.
      - logical
      - .true.
    * - iau_offset
-     - IAU offset lengdth 
+     - IAU offset lengdth
      - integer
      - 0
 
@@ -663,14 +663,14 @@ Additional Information about the FMS Diagnostic Manager
 
 The UFS Weather Model output is managed through the FMS (Flexible Modeling System) diagnostic manager (``FMS/diag_manager``)
 and is configured using the *diag_table* file. Data can be written at any number of sampling and/or averaging intervals
-specified at run-time.  More information about the FMS diagnostic manager can be found at: 
+specified at run-time.  More information about the FMS diagnostic manager can be found at:
 https://data1.gfdl.noaa.gov/summer-school/Lectures/July16/03_Seth1_DiagManager.pdf
 
 ------------------------------
 Diagnostic Manager namelist
 ------------------------------
 The ``diag_manager_nml`` namelist contains values to control the behavior of the diagnostic manager.   Some
-of the more common namelist options are described in :numref:`Table %s <DiagManager>`.  See 
+of the more common namelist options are described in :numref:`Table %s <DiagManager>`.  See
 ``FMS/diag_manager/diag_manager.F90`` for the complete list.
 
 .. _DiagManager:
@@ -727,4 +727,3 @@ This release of the UFS Weather Model uses the following namelist:
    &diag_manager_nml
      prepend_date = .false.
    /
-
