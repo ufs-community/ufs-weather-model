@@ -53,8 +53,9 @@ For the UFS WM v1.0 release, the following aspects are supported:
 
 - Ability to run with or without SKEBS, SPPT, and SHUM.
 
-- Ability to initialize from GFS files in Gridded Binary v2 (GRIB2) format for past dates,
-  starting January 1, 2018, when the preprocessing utility chgres is employed. Dates before
+- Ability to initialize from GFS files in Gridded Binary v2 (GRIB2) or NEMS
+  Input/Output (NEMSIO) format for past dates,
+  starting January 1, 2018, when the preprocessing utility chgres_cube is employed. Dates before
   that may work, but are not guaranteed.
 
 - Output files in Network Common Data Form (NetCDF) format.
@@ -98,8 +99,6 @@ This WM User’s Guide is organized as follows:
 - :numref:`Chapter %s <SDFandNamelistExamplePractices>` (SDF and namelist samples and best practices)
   contains a description of the :term:`Suite Definition File (SDF)` and namelists needed to configure the model
   for running with the GFS v15.2 and GFS v16beta physics suites.
-
-The next chapter:
 
 - :numref:`Chapter %s <ContributingDevelopment>` (Contributing development) goes beyond the capabilities supported in the public release to cover code management for conducting development and proposing contributions back to the authoritative code repositories. It should be noted that the regression tests described here are mandatory for committing code back to the ufs-weather-model authoritative code repository. These regressions tests differ from those distributed with the workflows for UFS applications, which are intended for application users and developers to assess the quality of their installations and the impact of their code changes.
 
