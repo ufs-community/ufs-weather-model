@@ -14,28 +14,24 @@ development. More information about the UFS can be found in its portal at https:
 Key architectural elements of the UFS WM, along with links to external detailed documentation
 for those elements, are listed below:
 
-- The Finite-Volume Cubed-Sphere (FV3) dynamical core (https://noaa-emc.github.io/FV3_Dycore_v1.0/html/index.html).
+- `The Finite-Volume Cubed-Sphere (FV3) dynamical core <https://noaa-emc.github.io/FV3_Dycore_ufs-v1.0.0/html/index.html>`_.
 
-- The Flexible Modeling System (:term:`FMS`), a software infrastructure used for functions such as
-  parallelization (https://www.gfdl.noaa.gov/fms/).
+- `The Flexible Modeling System <https://www.gfdl.noaa.gov/fms/>`_ (:term:`FMS`), a software infrastructure used for functions such as
+  parallelization.
 
-- The Common-Community Physics Package (:term:`CCPP`) library of
-  physical parameterizations (:term:`Parameterization or physics scheme`) and the
-  framework to use it with the model
-  (https://dtcenter.org/community-code/common-community-physics-package-ccpp).
+- `The Common-Community Physics Package <https://dtcenter.org/community-code/common-community-physics-package-ccpp>`_ (:term:`CCPP`), a library of
+  physical parameterizations and the framework to use it with the model. :term:`Parameterization or physics scheme` is defined here.
 
-- The stochastic physics capability, including the Stochastic Kinetic Backscatter Scheme (SKEBS),
+- `The stochastic physics capability <https://stochastic-physics.readthedocs.io/en/ufs-v1.0.0/>`_, including the Stochastic Kinetic Backscatter Scheme (SKEBS),
   the Stochastically Perturbed Parameterization Tendencies (SPPT) scheme, the perturbed boundary
-  layer humidity (SHUM) scheme, and the cellular automata method
-  (https://stochastic-physics.readthedocs.io/en/ufs-v1.0.0/).
+  layer humidity (SHUM) scheme, and the cellular automata method.
 
-- The NOAA Environmental Modeling System (:term:`NEMS`) model driver used to create the main program
-  (https://noaa-emc.github.io/NEMS_doc/index.html).
+- `The NOAA Environmental Modeling System <https://noaa-emc.github.io/NEMS_doc_ufs-v1.0.0/index.html>`_ (:term:`NEMS`) model driver used to create the main program.
 
 - The libraries needed to build the system, such as:
-    - National Centers for Environmental Prediction (NCEP) Libraries
-    - Earth System Modeling Framework (ESMF; https://www.earthsystemcog.org/projects/esmf/)
-    - System libraries
+    - `National Centers for Environmental Prediction (NCEP) Libraries <https://github.com/NOAA-EMC/NCEPLIBS/wiki>`_
+    - `Earth System Modeling Framework (ESMF) <https://www.earthsystemcog.org/projects/esmf/>`_
+    - `External libraries <https://github.com/NOAA-EMC/NCEPLIBS-external/wiki>`_
 
 - The build system used to compile the code and generate the executable.
 
