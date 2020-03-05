@@ -18,26 +18,24 @@ module-whatis "loads NEMS FV3 prerequisites for Gaea/Intel"
 module load PrgEnv-intel/6.0.3
 module rm intel
 module load intel/18.0.3.222
-module load cray-netcdf
+module unload cray-mpich/7.4.0
+module load cray-mpich/7.7.3
+module unload cray-netcdf
 
+##
+## use pre-compiled EMSF library and NCEP libraries for above compiler / MPI combination
+##
 module use -a /lustre/f2/pdata/esrl/gsd/ufs/modules/modulefiles/intel-18.0.3.222
+module load NCEPlibs/1.0.0
 
-##
-## NCEP libraries (download and build manually for the time being; https://github.com/NCAR/NCEPlibs)
-##
-module load NCEPlibs/9.9.9
-
-##
-## use pre-compiled EMSF library for above compiler / MPI combination
-##
-module load esmf/8.0.0
-
-# Needed at runtime:
+## Needed at runtime:
 module load alps
 
 ##
 ## load cmake
 ##
+module use -a /lustre/f2/pdata/esrl/gsd/ufs/modules/modulefiles/generic
+module load cmake/3.16.4
 setenv CMAKE_C_COMPILER cc
 setenv CMAKE_CXX_COMPILER CC
 setenv CMAKE_Fortran_COMPILER ftn

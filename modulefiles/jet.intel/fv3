@@ -14,27 +14,21 @@ module purge
 ## load slurm utils (arbitrary.pl  layout.pl)
 ##
 module load contrib sutils
-
 module load intel/18.0.5.274
 module load impi/2018.4.274
-module load hdf5/1.10.4
-module load netcdf/4.6.1
-
-module use -a /lfs3/projects/hfv3gfs/GMTB/modulefiles/intel-18.0.5.274
+module load netcdf/4.7.0
 
 ##
-### NCEP libraries (download and build manually for the time being; https://github.com/NCAR/NCEPlibs)
-###
-module load  NCEPlibs/9.9.9
-
+## use pre-compiled EMSF library and NCEP libraries for above compiler / MPI combination
 ##
-### use pre-compiled EMSF library for above compiler / MPI combination
-##
-module load esmf/8.0.0
+module use -a /lfs3/projects/hfv3gfs/GMTB/modulefiles/intel-18.0.5.274/impi-2018.4.274
+module load NCEPlibs/1.0.0
 
 ##
 ## load cmake
 ##
+module use -a /lfs3/projects/hfv3gfs/GMTB/modulefiles/generic
+module load cmake/3.16.4
 setenv CMAKE_C_COMPILER mpiicc
 setenv CMAKE_CXX_COMPILER mpiicpc
 setenv CMAKE_Fortran_COMPILER mpiifort
