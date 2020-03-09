@@ -51,6 +51,21 @@ The top-level ``README`` in the NCEPLIBS-external repository includes a troubles
 You can also get expert help through a `user support forum <https://forums.ufscommunity.org/forum/build-dependencies>`_
 set up specifically for issues related to build dependencies.
 
+==================================
+Downloading the Weather Model Code
+==================================
+
+To clone the ufs-weather-model repository for this v1.0.0 release, execute the following commands:
+
+.. code-block:: console
+
+  git clone https://github.com/ufs-community/ufs-weather-model.git ufs-weather-model
+  cd ufs-weather-model
+  git checkout ufs-v1.0.0
+  git submodule update --init --recursive
+
+Compiling the model will take place within the `ufs-weather-model` directory you just created.
+
 ==========================
 Building the Weather Model
 ==========================
