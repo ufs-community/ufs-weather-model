@@ -168,11 +168,11 @@ Building the model
 The UFS Weather Model uses the cmake build system.  There is a build script called ``build.sh`` in the
 top-level directory of the WM repository that ensures all necessary variables are actually set.
 
-After setting all the environment variables, you can build the model using
+After setting all the environment variables, you can build the model by running the following from the `ufs-weather-model` directory:
 
 .. code-block:: console
 
-    ./build.sh
+   ./build.sh
 
 Once ``build.sh`` is finished, you should see the executable, named ``ufs_weather_model``, in the top-level directory.
 
