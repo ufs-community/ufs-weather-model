@@ -15,14 +15,14 @@ There are two categories of libraries that are needed:
    Most have an NCEPLIBS prefix in the repository, e.g. NCEPLIBS-bacio. Select tools from the UFS
    Utilities repository (UFS-UTILS) are also included in this category. A list of the bundled
    libraries tested with this WM release is in the top-level ``README`` of the `NCEPLIBS repository
-   <https://github.com/NOAA-EMC/NCEPLIBS>`_ (**be sure to look at the tag in that repository that
+   <https://github.com/NOAA-EMC/NCEPLIBS/tree/ufs-v1.0.0>`_ (**be sure to look at the tag in that repository that
    matches the tag on this WM release**).
 
 #. Third-party libraries (NCEPLIBS-external). These are libraries that were developed external to
    the UFS Weather Model. They are general software packages that are also used by other models in
    the community. Building these is optional, since existing builds of these libraries can be pointed
    to instead. A list of the external libraries tested with this WM release is in the top-level ``README``
-   of the `NCEPLIBS-external repository <https://github.com/NOAA-EMC/NCEPLIBS-external>`_. Again, be
+   of the `NCEPLIBS-external repository <https://github.com/NOAA-EMC/NCEPLIBS-external/tree/ufs-v1.0.0>`_. Again, be
    sure to look at the tag in that repository that matches the tag on this WM release.
 
 .. note::
@@ -34,7 +34,7 @@ to build NCEPLIBS and NCEPLIBS-external or are working on a system that is alrea
 pre-configured platforms, the libraries are already available.
 
 If you do have to build the libraries, it is a good idea to check the platform- and compiler-specific
-``README`` files in the doc/ directory of the `NCEPLIBS-external repository <https://github.com/NOAA-EMC/NCEPLIBS-external>`_
+``README`` files in the doc/ directory of the `NCEPLIBS-external repository <https://github.com/NOAA-EMC/NCEPLIBS-external/tree/ufs-v 1.0.0>`_
 as a first step, to see if your system or one similar to it is included. These files have detailed
 instructions for building NCEPLIBS-external, NCEPLIBS, and the UFS Weather Model. They may be all the
 documentation you need. Be sure to use the tag that corresponds to this version of the WM, and define a
@@ -42,8 +42,8 @@ WORK directory path before you get started.
 
 If your platform is not included in these platform- and compiler-specific ``README`` files, there is a more
 generic set of instructions in the ``README`` file at the top level of the `NCEPLIBS-external repository
-<https://github.com/NOAA-EMC/NCEPLIBS-external>`_, and at the top level of the `NCEPLIBS repository
-<https://github.com/NOAA-EMC/NCEPLIBS>`_. It may still be a good idea to look at some of the platform-
+<https://github.com/NOAA-EMC/NCEPLIBS-external/tree/ufs-v 1.0.0>`_, and at the top level of the `NCEPLIBS repository
+<https://github.com/NOAA-EMC/NCEPLIBS/tree/ufs-v 1.0.0>`_. It may still be a good idea to look at some of the platform-
 and compiler-specific ``README`` files as a guide. Again, be sure to use the tag that corresponds to this version of the WM.
 
 The top-level ``README`` in the NCEPLIBS-external repository includes a troubleshooting section that may be helpful.
