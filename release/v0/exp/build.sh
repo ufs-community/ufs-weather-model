@@ -71,7 +71,7 @@ hydro_option="HYDRO=N"
 hydro="nh"
 ccpp="CCPP=Y"
 compile_option="$ccpp $debug_compile_option $openmp_compile_option $hydro_option $precision_option"
-./compile.sh $homedir/FV3 $arch "$compile_option" 1 NO NO 
+./compile.sh $homedir/FV3 $arch "$compile_option" 1 NO NO
 cp $homedir/tests/fv3_1.exe ../NEMS/exe/fv3_gfs_${hydro}.${mode}.${precision}.${compiler}.x
 rm $homedir/tests/fv3_1.exe
 
