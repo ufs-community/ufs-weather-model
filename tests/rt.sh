@@ -195,18 +195,10 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   QUEUE=debug
 #  ACCNR=fv3-cpu
   PARTITION=
-  #
-  # DTC baseline
-  dprefix=/scratch1/BMC/gmtb
-  DISKNM=$dprefix/ufs-weather-model/RT
-  STMP=$dprefix
-  PTMP=$dprefix
-  # EMC baseline
-  #dprefix=/scratch1/NCEPDEV
-  #DISKNM=$dprefix/nems/emc.nemspara/RT
-  #STMP=$dprefix/stmp4
-  #PTMP=$dprefix/stmp2
-  #
+  dprefix=/scratch1/NCEPDEV
+  DISKNM=$dprefix/nems/emc.nemspara/RT
+  STMP=$dprefix/stmp4
+  PTMP=$dprefix/stmp2
 
   SCHEDULER=slurm
   cp fv3_conf/fv3_slurm.IN_hera fv3_conf/fv3_slurm.IN
@@ -315,7 +307,7 @@ mkdir -p ${STMP}/${USER}
 
 # Different own baseline directories for different compilers on Theia/Cheyenne
 NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST
-if [[ $MACHINE_ID = theia.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = jet.* ]] || [[ $MACHINE_ID = gaea.* ]]; then
+if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = cheyenne.* ]]; then
     NEW_BASELINE=${NEW_BASELINE}_${COMPILER^^}
 fi
 
@@ -381,10 +373,13 @@ while getopts ":cfsl:mkreh" opt; do
   esac
 done
 
-if [[ $MACHINE_ID = cheyenne.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/develop-20200313/${COMPILER^^}}
+# Fix me - make those definitions and DISKNM consistent
+if [[ $MACHINE_ID = hera.* ]]; then
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200317/${COMPILER^^}}
+elif [[ $MACHINE_ID = cheyenne.* ]]; then
+  RTPWD=${RTPWD:-$DISKNM/develop-20200317/${COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200313}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200317}
 fi
 
 shift $((OPTIND-1))
@@ -552,11 +547,11 @@ while read -r line; do
       APP=''
       NEMS_VER=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
       SET=$(     echo $line | cut -d'|' -f3)
-      MACHINES=$(echo $line | cut -d'|' -f4 | sed -e 's/^ *//' -e 's/ *$//')
+      MACHINES=$(echo $line | cut -d'|' -f4)
       CB=$(      echo $line | cut -d'|' -f5)
 
       [[ $SET_ID != ' ' && $SET != *${SET_ID}* ]] && continue
-      [[ $MACHINES != ' ' && $MACHINES != "${MACHINE_ID}" ]] && continue
+      [[ $MACHINES != ' ' && $MACHINES != *${MACHINE_ID}* ]] && continue
       [[ $CREATE_BASELINE == true && $CB != *fv3* ]] && continue
 
       (( COMPILE_NR += 1 ))
@@ -591,11 +586,11 @@ while read -r line; do
 
       APP=$(     echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
       SET=$(     echo $line | cut -d'|' -f3)
-      MACHINES=$(echo $line | cut -d'|' -f4 | sed -e 's/^ *//' -e 's/ *$//')
+      MACHINES=$(echo $line | cut -d'|' -f4)
       CB=$(      echo $line | cut -d'|' -f5)
 
       [[ $SET_ID != ' ' && $SET != *${SET_ID}* ]] && continue
-      [[ $MACHINES != ' ' && $MACHINES != "${MACHINE_ID}" ]] && continue
+      [[ $MACHINES != ' ' && $MACHINES != *${MACHINE_ID}* ]] && continue
       [[ $CREATE_BASELINE == true && $CB != *fv3* ]] && continue
       [[ ${ROCOTO} == true || ${ECFLOW} == true ]] && continue
 
