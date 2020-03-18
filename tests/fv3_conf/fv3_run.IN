@@ -27,6 +27,7 @@ else
     rm -f INPUT/phy_data.*c
     rm -f INPUT/srf_data.*
     for RFILE in ../${TEST_NAME}${BL_SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.*; do
+      [ -e $RFILE ] || exit 1
       RFILE_OLD=$(basename $RFILE)
       RFILE_NEW="${RFILE_OLD//${RESTART_FILE_PREFIX}./}"
       cp $RFILE INPUT/${RFILE_NEW}

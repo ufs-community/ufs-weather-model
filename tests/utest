@@ -12,7 +12,7 @@ error() {
 usage() {
   #set +x
   echo
-  echo "Usage: $program -n <test-name> [ -c <baseline-cases> | -r <unit-test-cases> ] [-k] [-h]"
+  echo "Usage: $program -n <test-name> [ -c <baseline-cases> | -r <unit-test-cases> ] [-e] [-k] [-h]"
   echo
   echo "  -n  specify <test-name>"
   echo
@@ -22,8 +22,8 @@ usage() {
   echo "  -r  run unit tests. <unit-test-cases> is either 'all' or any combination"
   echo "      of 'std','thread','mpi','decomp','restart','32bit','debug'"
   echo
+  echo "  -e  use ecflow workflow manager"
   echo "  -k  keep run directory"
-  echo
   echo "  -h  display this help and exit"
   echo
   echo "  Examples"
@@ -51,6 +51,7 @@ usage_and_exit() {
 
 cleanup() {
   rm -rf ${lockdir}
+  [[ ${ECFLOW:-false} == true ]] && ecflow_stop
   trap 0
   exit
 }
@@ -60,7 +61,6 @@ run_utests() {
     # Load namelist default and override values
     source default_vars.sh
     source ${PATHRT}/tests/$TEST_NAME
-    export RUN_SCRIPT
 
     # If TEST_NAME specifies WARM_START true, error and exit
     if [[ ${WARM_START} == .T. ]]; then
@@ -68,9 +68,19 @@ run_utests() {
     fi
 
     comp_nm=std
+
+    if [[ ${create_flag} == true ]]; then
+      RT_SUFFIX="_${rc}_base"
+    else
+      RT_SUFFIX="_${rc}"
+    fi
+
     case $rc in
       std)
-        RESTART_INTERVAL=$(( FHMAX/2 ))
+        cat <<-EOF > ${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
+					export UNIT_TEST=true
+					export RESTART_INTERVAL=$(( FHMAX/2 ))
+					EOF
         ;;
       thread)
         THRD=2
@@ -79,6 +89,14 @@ run_utests() {
         TASKS=$(( INPES*JNPES*6 + WRITE_GROUP*WRTTASK_PER_GROUP ))
         TPN=$(( TPN/THRD ))
         NODES=$(( TASKS/TPN + 1 ))
+        cat <<-EOF > ${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
+					export UNIT_TEST=true
+					export THRD=${THRD}
+					export JNPES=${JNPES}
+					export TASKS=${TASKS}
+					export TPN=${TPN}
+					export NODES=${NODES}
+					EOF
         ;;
       mpi)
         JNPES=$(( JNPES/2 ))
@@ -86,18 +104,30 @@ run_utests() {
         WRTTASK_PER_GROUP=12
         TASKS=$(( INPES*JNPES*6 + WRITE_GROUP*WRTTASK_PER_GROUP ))
         NODES=$(( TASKS/TPN + 1 ))
+        cat <<-EOF > ${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
+					export UNIT_TEST=true
+					export JNPES=${JNPES}
+					export WRITE_GROUP=${WRITE_GROUP}
+					export WRTTASK_PER_GROUP=${WRTTASK_PER_GROUP}
+					export TASKS=${TASKS}
+					export NODES=${NODES}
+					EOF
         ;;
       decomp)
         temp=$INPES
         INPES=$JNPES
         JNPES=$temp
+        cat <<-EOF >${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
+					export UNIT_TEST=true
+					export INPES=${INPES}
+					export JNPES=${JNPES}
+					EOF
         ;;
-      restart)
-        # Date and time setup of restart files for restart run
+      restart) # this is not going to work for regional model
+        # Set up date and time of restart files for restart run
         RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( SHOUR + FHMAX/2  )))0000"
         export RESTART_FILE_PREFIX
 
-        # These parameters are different for regional restart, and won't work
         WARM_START=.T.
         NGGPS_IC=.F.
         EXTERNAL_IC=.F.
@@ -138,20 +168,39 @@ run_utests() {
         else
           error "Unrecognized OUTPUT_GRID ${OUTPUT_GRID}"
         fi
+
+        cat <<-EOF >${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
+					export UNIT_TEST=true
+					export RESTART_FILE_PREFIX=${RESTART_FILE_PREFIX}
+					export WARM_START=${WARM_START}
+					export NGGPS_IC=${NGGPS_IC}
+					export EXTERNAL_IC=${EXTERNAL_IC}
+					export MAKE_NH=${MAKE_NH}
+					export MOUNTAIN=${MOUNTAIN}
+					export NA_INIT=${NA_INIT}
+					export NSTF_NAME=${NSTF_NAME}
+					export LIST_FILES="${LIST_FILES}"
+					EOF
         ;;
       32bit)
         comp_nm=$rc
+        cat <<-EOF >${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
+					export UNIT_TEST=true
+					EOF
         ;;
       debug)
         comp_nm=$rc
         WLCLK=30
+        cat <<-EOF >${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
+					export UNIT_TEST=true
+					export WLCLK=${WLCLK}
+					EOF
         ;;
     esac
 
-    RT_SUFFIX="_$rc"
     BL_SUFFIX="_$comp_nm"
 
-    cat <<- EOF > ${RUNDIR_ROOT}/run_test_$rc.env
+    cat <<- EOF > ${RUNDIR_ROOT}/run_test${RT_SUFFIX}.env
 		export MACHINE_ID=${MACHINE_ID}
 		export RTPWD=${RTPWD}
 		export PATHRT=${PATHRT}
@@ -167,9 +216,35 @@ run_utests() {
 		export LOG_DIR=${LOG_DIR}
 		EOF
 
-    echo "Running test for $rc with"
-    echo "    THRD: $THRD; INPES: $INPES; JNPES: $JNPES; TASKS: $TASKS; TPN: $TPN; NODES: $NODES"
-    ./run_test.sh $PATHRT $RUNDIR_ROOT $TEST_NAME $rc $comp_nm > $LOG_DIR/run_${TEST_NAME}_$rc.log 2>&1
+    if [[ $ECFLOW == true ]]; then
+      TEST_NR=${RT_SUFFIX:1}
+      COMPILE_NR=$comp_nm
+      DEP_RUN=
+      if [[ ${dependency_flag} == all ]]; then
+        if [[ ${RT_SUFFIX} == _std || ${RT_SUFFIX} == _thread || ${RT_SUFFIX} == _mpi || ${RT_SUFFIX} == _decomp ]]; then
+         DEP_RUN="${TEST_NAME}_std_base"
+       elif [[ ${RT_SUFFIX} == _restart ]]; then
+         DEP_RUN="${TEST_NAME}_std"
+       elif [[ ${RT_SUFFIX} == _32bit ]]; then
+         DEP_RUN="${TEST_NAME}_32bit_base"
+       elif [[ ${RT_SUFFIX} == _debug ]]; then
+         DEP_RUN="${TEST_NAME}_debug_base"
+       fi
+      elif [[ ${dependency_flag} == restart ]]; then
+       if [[ ${RT_SUFFIX} == _restart ]]; then
+         DEP_RUN="${TEST_NAME}_std"
+       fi
+      else
+        DEP_RUN=''
+      fi
+      ecflow_create_run_task
+    else
+      echo "Running test for $rc with"
+      echo "    THRD: $THRD; INPES: $INPES; JNPES: $JNPES; TASKS: $TASKS; TPN: $TPN; NODES: $NODES"
+      TEST_NR=${RT_SUFFIX:1}
+      ./run_test.sh $PATHRT $RUNDIR_ROOT $TEST_NAME $TEST_NR $comp_nm > $LOG_DIR/run_${TEST_NAME}_${TEST_NR}.log 2>&1
+    fi
+
   done
 }
 
@@ -178,7 +253,14 @@ trap 'echo utest interrupted; cleanup' INT
 trap 'echo utest quit; cleanup' QUIT
 trap 'echo utest terminated; cleanup' TERM
 trap 'echo utest error on line $LINENO; cleanup' ERR
-trap 'echo utest finished; cleanup' EXIT
+trap '
+  ret=$?
+  if [ "$ret" -ne 0 ]; then
+    echo >&2 "Died with error code $ret"
+  else
+    echo >&2 "utest finished"
+  fi
+  cleanup' EXIT
 
 ########################################################################
 ####                       PROGRAM STARTS                           ####
@@ -191,6 +273,8 @@ export UNIT_TEST=true
 export COMPILER=${NEMS_COMPILER:-intel}
 # detect_machine sets ACCNR and MACHINE_ID
 source detect_machine.sh
+# utility functions in rt_utils need to be able to see variables in utest
+source rt_utils.sh
 # PATHRT - Path to unit tests directory
 readonly PATHRT=$(cd $(dirname $0) && pwd -P)
 cd $PATHRT
@@ -213,6 +297,12 @@ if [[ $MACHINE_ID = hera.* ]]; then
   module load fv3
 
   COMPILER=${NEMS_COMPILER:-intel} # in case compiler gets deleted by module purge
+
+  export PATH=/scratch2/NCEPDEV/fv3-cam/Dusan.Jovic/ecflow/bin:$PATH
+  export PYTHONPATH=/scratch2/NCEPDEV/fv3-cam/Dusan.Jovic/ecflow/lib/python2.7/site-packages
+  ECFLOW_START=/scratch2/NCEPDEV/fv3-cam/Dusan.Jovic/ecflow/bin/ecflow_start.sh
+  ECF_PORT=$(( $(id -u) + 1500 ))
+
   QUEUE=debug
   dprefix=/scratch1/NCEPDEV
   DISKNM=$dprefix/nems/emc.nemspara/RT
@@ -230,9 +320,11 @@ run_unit_test=true
 unit_test_cases=
 TEST_NAME=
 keep_rundir=false
+ROCOTO=false
+ECFLOW=false
 
 # Parse command line arguments
-while getopts :c:r:n:kh opt; do
+while getopts :c:r:n:ekh opt; do
   case $opt in
     c)
       run_unit_test=false
@@ -268,6 +360,9 @@ while getopts :c:r:n:kh opt; do
     n)
       TEST_NAME=$OPTARG
       echo "Test name: ${TEST_NAME}"
+      ;;
+    e)
+      ECFLOW=true
       ;;
     k)
       keep_rundir=true
@@ -367,9 +462,34 @@ echo "Cases to run    : $ut_run_cases"
 LOG_DIR=${PATHRT}/log_ut_$MACHINE_ID
 rm -rf ${LOG_DIR}
 mkdir ${LOG_DIR}
-# ROCOTO, ECFLOW not used, but defined for compatibility with rt_fv3.sh
-ROCOTO=false
-ECFLOW=false
+
+# Directory where all simulations are run
+RUNDIR_ROOT=${RUNDIR_ROOT:-${PTMP}/${USER}}/FV3_UT/ut_$$
+mkdir -p ${RUNDIR_ROOT}
+
+if [[ $ECFLOW == true ]]; then
+  ECFLOW_RUN=${PATHRT}/ecflow_ut_run
+  ECFLOW_SUITE=unittest
+  rm -rf ${ECFLOW_RUN}
+  mkdir -p ${ECFLOW_RUN}/${ECFLOW_SUITE}
+  cp head.h tail.h ${ECFLOW_RUN}
+  > ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+  cat << EOF >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+suite ${ECFLOW_SUITE}
+  edit ECF_HOME '${ECFLOW_RUN}'
+  edit ECF_INCLUDE '${ECFLOW_RUN}'
+  edit ECF_KILL_CMD kill -15 %ECF_RID% > %ECF_JOB%.kill 2>&1
+  edit ECF_TRIES 1
+  label rundir_root '${RUNDIR_ROOT}'
+  limit max_builds 6
+  limit max_jobs 30
+EOF
+  if [[ $MACHINE_ID == hera.* ]]; then
+    QUEUE=debug
+  else
+    error "ecflow is not supported on this machine $MACHINE_ID"
+  fi
+fi
 
 ########################################################################
 ####                            COMPILE                             ####
@@ -414,12 +534,16 @@ for name in $ut_compile_cases; do
       ;;
   esac
   NEMS_VER=$(echo ${NEMS_VER} | sed -e 's/^ *//' -e 's/ *$//')
-  #echo "compile case: $name"
-  #echo "NEMS_VER: $NEMS_VER"
 
-  echo "Compiling for ${name} with compile option ${NEMS_VER}"
-  ./compile.sh $PATHTR/FV3 $MACHINE_ID "${NEMS_VER}" $name >${LOG_DIR}/compile_${TEST_NAME}_$name.log 2>&1
-  echo "Compiling done for ${name} with compile option ${NEMS_VER}"
+  if [[ $ECFLOW == true ]]; then
+    COMPILE_NR=$name
+    APP=''
+    ecflow_create_compile_task
+  else
+    echo "Compiling for ${name} with compile option ${NEMS_VER}"
+    ./compile.sh $PATHTR/FV3 $MACHINE_ID "${NEMS_VER}" $name >${LOG_DIR}/compile_${TEST_NAME}_$name.log 2>&1
+    echo "Compiling done for ${name}"
+  fi
 done
 
 ########################################################################
@@ -436,35 +560,45 @@ if [[ $CREATE_BASELINE == true ]]; then
   rsync -a "${RTPWD}"/WW3_* "${NEW_BASELINE}"/
 fi
 
-# Directory where all simulations are run
-RUNDIR_ROOT=${RUNDIR_ROOT:-${PTMP}/${USER}}/FV3_UT/ut_$$
-mkdir -p ${RUNDIR_ROOT}
 # unittest_log is different from REGRESSIONTEST_LOG
 # defined in run_test.sh and passed onto rt_utils.sh
 unittest_log=${PATHRT}/UnitTests_$MACHINE_ID.log
 rm -f fail_unit_test ${unittest_log}
+create_flag=
+dependency_flag=
 
 if [[ $CREATE_BASELINE == true && $run_unit_test == true ]]; then
   # Run to create baseline
+  create_flag=true
+  dependency_flag=none
   ut_run_cases='std 32bit debug'
   run_utests
-  rm -rf ${RUNDIR_ROOT}/*
-  rm -f ${LOG_DIR}/run_* ${LOG_DIR}/ut_*
   # Run to compare with baseline
+  create_flag=false
+  dependency_flag=all
   ut_run_cases='std thread mpi decomp restart 32bit debug'
   CREATE_BASELINE=false
   RTPWD=${NEW_BASELINE}
   run_utests
 elif [[ $CREATE_BASELINE == true && $run_unit_test == false ]]; then
   # Run to create baseline
+  create_flag=true
+  dependency_flag=none
   run_utests
 elif [[ $CREATE_BASELINE == false && $run_unit_test == true ]]; then
   # Run to compare with baseline
+  create_flag=false
+  dependency_flag=restart
   if [[ ! -d $NEW_BASELINE ]]; then
     error "There is no baseline to run unit tests against. Create baselines first."
   fi
   RTPWD=${NEW_BASELINE}
   run_utests
+fi
+
+if [[ $ECFLOW == true ]]; then
+  echo "endsuite" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+  ecflow_run
 fi
 
 ########################################################################

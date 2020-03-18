@@ -8,6 +8,8 @@ if [[ "$0" = "${BASH_SOURCE[0]}" ]]; then
   exit 1
 fi
 
+UNIT_TEST=${UNIT_TEST:-false}
+
 submit_and_wait() {
 
   [[ -z $1 ]] && exit 1
@@ -290,7 +292,6 @@ submit_and_wait() {
     (( n=n+1 ))
   done
 
-  UNIT_TEST=${UNIT_TEST:-false}
   if [[ $test_status = 'FAIL' ]]; then
     if [[ ${UNIT_TEST} == false ]]; then
       echo $TEST_NAME >> $PATHRT/fail_test
@@ -411,7 +412,6 @@ check_results() {
   echo "Test ${TEST_NR} ${TEST_NAME} ${test_status}"
   echo
 
-  UNIT_TEST=${UNIT_TEST:-false}
   if [[ $test_status = 'FAIL' ]]; then
     if [[ ${UNIT_TEST} == false ]]; then
       echo $TEST_NAME >> $PATHRT/fail_test
@@ -567,34 +567,38 @@ ecflow_create_compile_task() {
       ecflow_cmd="$PATHRT/compile_cmake.sh ${PATHTR} $MACHINE_ID \"${NEMS_VER}\" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1"
   fi
 
-  cat << EOF > ${ECFLOW_RUN}/regtest/compile_${COMPILE_NR}.ecf
+  cat << EOF > ${ECFLOW_RUN}/${ECFLOW_SUITE}/compile_${COMPILE_NR}.ecf
 %include <head.h>
 $ecflow_cmd
 %include <tail.h>
 EOF
 
-  echo "  task compile_${COMPILE_NR}" >> ${ECFLOW_RUN}/regtest.def
-  echo "      inlimit max_builds" >> ${ECFLOW_RUN}/regtest.def
+  echo "  task compile_${COMPILE_NR}" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+  echo "      inlimit max_builds" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   # serialize WW3 builds. FIXME
   if [[ ${NEMS_VER^^} =~ "WW3=Y" && ${COMPILE_PREV_WW3_NR} != '' ]]; then
-    echo "    trigger compile_${COMPILE_PREV_WW3_NR} == complete"  >> ${ECFLOW_RUN}/regtest.def
+    echo "    trigger compile_${COMPILE_PREV_WW3_NR} == complete"  >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   fi
 }
 
 ecflow_create_run_task() {
 
-  cat << EOF > ${ECFLOW_RUN}/regtest/${TEST_NAME}${RT_SUFFIX}.ecf
+  cat << EOF > ${ECFLOW_RUN}/${ECFLOW_SUITE}/${TEST_NAME}${RT_SUFFIX}.ecf
 %include <head.h>
-$PATHRT/run_test.sh ${PATHRT} ${RUNDIR_ROOT} ${TEST_NAME} ${TEST_NR} ${COMPILE_NR} > ${LOG_DIR}/run_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log 2>&1 &
+$PATHRT/run_test.sh ${PATHRT} ${RUNDIR_ROOT} ${TEST_NAME} ${TEST_NR} ${COMPILE_NR} > ${LOG_DIR}/run_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log 2>&1
 %include <tail.h>
 EOF
 
-  echo "    task ${TEST_NAME}${RT_SUFFIX}" >> ${ECFLOW_RUN}/regtest.def
-  echo "      inlimit max_jobs" >> ${ECFLOW_RUN}/regtest.def
+  echo "    task ${TEST_NAME}${RT_SUFFIX}" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+  echo "      inlimit max_jobs" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   if [[ $DEP_RUN != '' ]]; then
-    echo "      trigger compile_${COMPILE_NR} == complete and ${DEP_RUN}${RT_SUFFIX} == complete" >> ${ECFLOW_RUN}/regtest.def
+    if [[ ${UNIT_TEST} == false ]]; then
+      echo "      trigger compile_${COMPILE_NR} == complete and ${DEP_RUN}${RT_SUFFIX} == complete" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+    else
+      echo "      trigger compile_${COMPILE_NR} == complete and ${DEP_RUN} == complete" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+    fi
   else
-    echo "      trigger compile_${COMPILE_NR} == complete" >> ${ECFLOW_RUN}/regtest.def
+    echo "      trigger compile_${COMPILE_NR} == complete" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   fi
 }
 
@@ -634,14 +638,15 @@ ecflow_run() {
   export ECF_PORT
   export ECF_HOST
 
-  ecflow_client --load=${ECFLOW_RUN}/regtest.def            >> ${ECFLOW_RUN}/ecflow.log 2>&1
-  ecflow_client --begin=regtest                             >> ${ECFLOW_RUN}/ecflow.log 2>&1
+  ecflow_client --load=${ECFLOW_RUN}/${ECFLOW_SUITE}.def            >> ${ECFLOW_RUN}/ecflow.log 2>&1
+  ecflow_client --begin=${ECFLOW_SUITE}                             >> ${ECFLOW_RUN}/ecflow.log 2>&1
 
   active_tasks=1
   while [[ $active_tasks -ne 0 ]]
   do
     sleep 10 & wait $!
-    active_tasks=$( ecflow_client --get_state /regtest | grep "task " | grep -E 'state:active|state:submitted|state:queued' | wc -l )
+    active_tasks=$( ecflow_client --get_state /${ECFLOW_SUITE} | grep "task " | grep -E 'state:active|state:submitted|state:queued' | wc -l )
+    echo "ecflow tasks remaining: ${active_tasks}"
     ${PATHRT}/abort_dep_tasks.py
   done
   sleep 65 # wait one ECF_INTERVAL plus 5 seconds
@@ -651,7 +656,7 @@ ecflow_kill() {
    [[ ${ECFLOW_RUNNING:-false} == true ]] || return
    set +e
    wait
-   ecflow_client --kill /regtest
+   ecflow_client --kill /${ECFLOW_SUITE}
    sleep 10
 }
 
