@@ -81,7 +81,7 @@ submit_and_wait() {
     elif [[ $SCHEDULER = 'slurm' ]]; then
       job_running=$( squeue -u ${USER} -j ${slurm_id} | grep ${slurm_id} | wc -l); sleep 5
     elif [[ $SCHEDULER = 'lsf' ]]; then
-      job_running=$( bjobs -u ${USER} -J ${JBNME} 2>/dev/null | grep ${QUEUE} | wc -l); sleep 5
+      job_running=$( bjobs ${bsub_id} | grep ${bsub_id} | wc -l); sleep 5
     else
       echo "Unknown SCHEDULER $SCHEDULER"
       exit 1
@@ -118,11 +118,7 @@ submit_and_wait() {
   elif [[ $SCHEDULER = 'slurm' ]]; then
     jobid=${slurm_id}
   elif [[ $SCHEDULER = 'lsf' ]]; then
-    jobid=$( bjobs -u ${USER} -J ${JBNME} -noheader -o "jobid" )
-    trap 'echo "Job ${jobid} killed"; bkill ${jobid}; trap 0; exit' 1 2 3 4 5 6 7 8 10 12 13 15
-    if [[ ${bsub_id} -ne ${jobid} ]]; then
-      echo "Warning: bsub_id is not equal to jobid"
-    fi
+    jobid=${bsub_id}
   else
     echo "Unknown SCHEDULER $SCHEDULER"
     exit 1
@@ -153,7 +149,7 @@ submit_and_wait() {
     elif [[ $SCHEDULER = 'slurm' ]]; then
       job_running=$( squeue -u ${USER} -j ${slurm_id} | grep ${slurm_id} | wc -l)
     elif [[ $SCHEDULER = 'lsf' ]]; then
-      job_running=$( bjobs -u ${USER} -J ${JBNME} 2>/dev/null | wc -l)
+      job_running=$( bjobs ${bsub_id} | grep ${bsub_id} | wc -l); sleep 5
     else
       echo "Unknown SCHEDULER $SCHEDULER"
       exit 1
@@ -162,13 +158,11 @@ submit_and_wait() {
     if [[ $SCHEDULER = 'moab' ]]; then
 
       status=$( showq -u ${USER} -n | grep ${JBNME} | awk '{print $3}'); status=${status:--}
-      if [[ -f ${RUNDIR}/err ]] ; then FnshHrs=$( grep Finished ${RUNDIR}/err | tail -1 | awk '{ print $9 }'); fi
-      FnshHrs=${FnshHrs:-0}
       if   [[ $status = 'Idle' ]];       then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is waiting in a queue, Status: $status"
-      elif [[ $status = 'Running' ]];    then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is running,            Status: $status , Finished $FnshHrs hours"
-      elif [[ $status = 'Starting' ]];   then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is ready to run,       Status: $status , Finished $FnshHrs hours"
+      elif [[ $status = 'Running' ]];    then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is running,            Status: $status"
+      elif [[ $status = 'Starting' ]];   then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is ready to run,       Status: $status"
       elif [[ $status = 'Completed' ]];  then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is finished,           Status: $status" ; job_running=0
-      else                                    echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is finished,           Status: $status , Finished $FnshHrs hours"
+      else                                    echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is finished,           Status: $status"
       fi
 
     elif [[ $SCHEDULER = 'pbs' ]]; then
@@ -179,11 +173,9 @@ submit_and_wait() {
       else
         status=$( qstat -u ${USER} -n | grep ${JBNME} | awk '{print $10}' ); status=${status:--}
       fi
-      if [[ -f ${RUNDIR}/err ]] ; then FnshHrs=$( tail -100 ${RUNDIR}/err | grep Finished | tail -1 | awk '{ print $9 }' ); fi
-      FnshHrs=${FnshHrs:-0}
       if   [[ $status = 'Q' ]];  then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is waiting in a queue, Status: $status jobid ${jobid}"
       elif [[ $status = 'H' ]];  then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is held in a queue,    Status: $status"
-      elif [[ $status = 'R' ]];  then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is running,            Status: $status , Finished $FnshHrs hours"
+      elif [[ $status = 'R' ]];  then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is running,            Status: $status"
       elif [[ $status = 'E' ]] || [[ $status = 'C' ]];  then
         if [[ ${MACHINE_ID} = cheyenne.* ]]; then
           exit_status=$( qstat ${jobid} -x -f | grep Exit_status | awk '{print $3}')
@@ -202,7 +194,7 @@ submit_and_wait() {
         echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is finished,           Status: $status"
         job_running=0
       elif [[ $status = 'C' ]];  then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is finished,           Status: $status" ; job_running=0
-      else                            echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is finished,           Status: $status , Finished $FnshHrs hours"
+      else                            echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is finished,           Status: $status"
       fi
 
     elif [[ $SCHEDULER = 'slurm' ]]; then
@@ -230,11 +222,9 @@ submit_and_wait() {
       else
         status=$( squeue -u ${USER} -n | grep ${JBNME} | awk '{print $10}' ); status=${status:--}
       fi
-      if [[ -f ${RUNDIR}/err ]] ; then FnshHrs=$( tail -100 ${RUNDIR}/err | grep Finished | tail -1 | awk '{ print $9 }' ); fi
-      FnshHrs=${FnshHrs:-0}
       if   [[ $status = 'Q' ]];  then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is waiting in a queue, Status: $status jobid ${jobid}"
       elif [[ $status = 'H' ]];  then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is held in a queue,    Status: $status"
-      elif [[ $status = 'R' ]];  then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is running,            Status: $status , Finished $FnshHrs hours"
+      elif [[ $status = 'R' ]];  then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is running,            Status: $status"
       elif [[ $status = 'E' ]] || [[ $status = 'C' ]];  then
         if [[ ${MACHINE_ID} = stampede.* ]]; then
           exit_status=$( squeue ${jobid} -x -f | grep Exit_status | awk '{print $3}')
@@ -253,16 +243,14 @@ submit_and_wait() {
         echo "$n min. TEST ${TEST_NR}  ${TEST_NAME} is finished,           Status: $status"
         job_running=0
       elif [[ $status = 'C' ]];  then echo "$n min. TEST ${TEST_NR}  ${TEST_NAME} is finished,           Status: $status" ; job_running=0
-      else                            echo "$n min. TEST ${TEST_NR}  ${TEST_NAME} is finished,           Status: $status , Finished $FnshHrs hours"
+      else                            echo "$n min. TEST ${TEST_NR}  ${TEST_NAME} is finished,           Status: $status"
       fi
 
     elif [[ $SCHEDULER = 'lsf' ]]; then
 
-      status=$( bjobs -u ${USER} -J ${JBNME} 2>/dev/null | grep ${QUEUE} | awk '{print $3}' ); status=${status:--}
-      if [[ -f ${RUNDIR}/err ]] ; then FnshHrs=$( grep Finished ${RUNDIR}/err | tail -1 | awk '{ print $9 }' ) ; fi
-      FnshHrs=${FnshHrs:-0}
+      status=$( bjobs ${bsub_id} 2>/dev/null | grep ${bsub_id} | awk '{print $3}' ); status=${status:--}
       if   [[ $status = 'PEND' ]];  then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is waiting in a queue, Status: $status"
-      elif [[ $status = 'RUN'  ]];  then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is running,            Status: $status , Finished $FnshHrs hours"
+      elif [[ $status = 'RUN'  ]];  then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is running,            Status: $status"
       elif [[ $status = 'EXIT' ]];  then
         echo "Test ${TEST_NR} ${TEST_NAME} FAIL" >> ${REGRESSIONTEST_LOG}
         echo;echo;echo                           >> ${REGRESSIONTEST_LOG}
@@ -270,16 +258,17 @@ submit_and_wait() {
         echo;echo;echo
         test_status='FAIL'
         break
-      else                               echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is finished,           Status: $status , Finished $FnshHrs hours"
-        exit_status=$( bjobs -u ${USER} -J ${JBNME} -a 2>/dev/null | grep $QUEUE | awk '{print $3}' )
+      else
+        echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is finished,           Status: $status"
+        exit_status=$( bjobs ${bsub_id} 2>/dev/null | grep ${bsub_id} | awk '{print $3}' ); status=${status:--}
         if [[ $exit_status = 'EXIT' ]];  then
           echo "Test ${TEST_NR} ${TEST_NAME} FAIL" >> ${REGRESSIONTEST_LOG}
           echo;echo;echo                           >> ${REGRESSIONTEST_LOG}
           echo "Test ${TEST_NR} ${TEST_NAME} FAIL"
           echo;echo;echo
           test_status='FAIL'
-          break
         fi
+        break
       fi
 
     else
@@ -511,7 +500,7 @@ rocoto_create_run_task() {
       <account>${ACCNR}</account>
       <queue>${QUEUE}</queue>
       <partition>${PARTITION}</partition>
-      <cores>${CORES}</cores>
+      <nodes>${NODES}:ppn=${TPN}</nodes>
       <walltime>00:${WLCLK}:00</walltime>
       <join>&LOG;/run_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log</join>
       ${NATIVE}
@@ -549,15 +538,10 @@ ecflow_create_compile_task() {
 
   new_compile=true
 
-  if [[ "Q$APP" != Q ]] ; then
-      ecflow_cmd="$PATHRT/appbuild.sh ${PATHTR}/FV3 $APP $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1"
-  else
-      ecflow_cmd="$PATHRT/compile_cmake.sh ${PATHTR} $MACHINE_ID \"${NEMS_VER}\" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1"
-  fi
 
   cat << EOF > ${ECFLOW_RUN}/regtest/compile_${COMPILE_NR}.ecf
 %include <head.h>
-$ecflow_cmd
+$PATHRT/run_compile.sh ${PATHRT} ${RUNDIR_ROOT} \"${NEMS_VER}\" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1 &
 %include <tail.h>
 EOF
 

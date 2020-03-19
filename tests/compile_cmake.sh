@@ -19,8 +19,6 @@ readonly MYDIR=$( dirname $(readlink -f $0) )
 
 readonly ARGC=$#
 
-cd ${MYDIR}
-
 if [[ $ARGC -eq 0 ]]; then
   COMPILER=intel
   . detect_machine.sh
@@ -56,8 +54,6 @@ fi
 MAKE_THREADS=${MAKE_THREADS:-8}
 
 hostname
-
-cd ${PATHTR}/tests
 
 # ----------------------------------------------------------------------
 
@@ -158,8 +154,8 @@ CCPP_CMAKE_FLAGS=$(trim "${CCPP_CMAKE_FLAGS}")
 
   cmake ${PATHTR} ${CCPP_CMAKE_FLAGS}
   make -j ${MAKE_THREADS}
-  mv NEMS.exe ../${BUILD_NAME}.exe
-  cp ${PATHTR}/modulefiles/${MACHINE_ID}/fv3 ../modules.${BUILD_NAME}
+  mv NEMS.exe ${PATHTR}/tests/${BUILD_NAME}.exe
+  cp ${PATHTR}/modulefiles/${MACHINE_ID}/fv3 ${PATHTR}/tests/modules.${BUILD_NAME}
   cd ..
 )
 

@@ -67,26 +67,7 @@ export COMPILER=${NEMS_COMPILER:-intel}
 source detect_machine.sh
 source rt_utils.sh
 
-if [[ $MACHINE_ID = wcoss ]]; then
-
-  source $PATHTR/NEMS/src/conf/module-setup.sh.inc
-
-  set +u
-  source /usrx/local/ecflow/setup.sh
-  ECFLOW_START=/usrx/local/ecflow/bin/ecflow_start.sh
-  set -u
-  ROCOTORUN="/u/Christopher.W.Harrop/rocoto/bin/rocotorun"
-  ROCOTOSTAT="/u/Christopher.W.Harrop/rocoto/bin/rocotostat"
-  DISKNM=/nems/noscrub/emc.nemspara/RT
-  QUEUE=debug
-  PARTITION=
-  ACCNR=GFS-DEV
-  STMP=/ptmpp$pex
-  PTMP=/ptmpp$pex
-  SCHEDULER=lsf
-# cp fv3_conf/fv3_bsub.IN_wcoss fv3_conf/fv3_bsub.IN
-
-elif [[ $MACHINE_ID = wcoss_cray ]]; then
+if [[ $MACHINE_ID = wcoss_cray ]]; then
 
   source $PATHTR/NEMS/src/conf/module-setup.sh.inc
   module load xt-lsfhpc
@@ -101,6 +82,7 @@ elif [[ $MACHINE_ID = wcoss_cray ]]; then
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
+  ROCOTO_SCHEDULER=lsfcray
 
   module load ecflow/intel/4.7.1
   ECFLOW_START=${ECF_ROOT}/intel/bin/ecflow_start.sh
@@ -108,6 +90,7 @@ elif [[ $MACHINE_ID = wcoss_cray ]]; then
 
   DISKNM=/gpfs/hps3/emc/nems/noscrub/emc.nemspara/RT
   QUEUE=debug
+  COMPILE_QUEUE=dev
   PARTITION=
   ACCNR=GFS-DEV
   if [[ -d /gpfs/hps3/ptmp ]] ; then
@@ -119,6 +102,7 @@ elif [[ $MACHINE_ID = wcoss_cray ]]; then
   fi
   SCHEDULER=lsf
   cp fv3_conf/fv3_bsub.IN_wcoss_cray fv3_conf/fv3_bsub.IN
+  cp fv3_conf/compile_bsub.IN_wcoss_cray fv3_conf/compile_bsub.IN
 
 elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
 
@@ -135,6 +119,7 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
+  ROCOTO_SCHEDULER=lsf
 
   module load ips/18.0.1.163
   module load ecflow/4.7.1
@@ -143,12 +128,14 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
 
   DISKNM=/gpfs/dell2/emc/modeling/noscrub/emc.nemspara/RT
   QUEUE=debug
+  COMPILE_QUEUE=dev_transfer
   PARTITION=
   ACCNR=GFS-DEV
   STMP=/gpfs/dell2/stmp
   PTMP=/gpfs/dell2/ptmp
   SCHEDULER=lsf
   cp fv3_conf/fv3_bsub.IN_wcoss_dell_p3 fv3_conf/fv3_bsub.IN
+  cp fv3_conf/compile_bsub.IN_wcoss_dell_p3 fv3_conf/compile_bsub.IN
 
 elif [[ $MACHINE_ID = gaea.* ]]; then
 
@@ -188,11 +175,16 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
+  ROCOTO_SCHEDULER=slurm
+
   export PATH=/scratch2/NCEPDEV/fv3-cam/Dusan.Jovic/ecflow/bin:$PATH
   export PYTHONPATH=/scratch2/NCEPDEV/fv3-cam/Dusan.Jovic/ecflow/lib/python2.7/site-packages
   ECFLOW_START=/scratch2/NCEPDEV/fv3-cam/Dusan.Jovic/ecflow/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
+
   QUEUE=debug
+  COMPILE_QUEUE=debug
+
 #  ACCNR=fv3-cpu
   PARTITION=
   dprefix=/scratch1/NCEPDEV
@@ -202,35 +194,7 @@ elif [[ $MACHINE_ID = hera.* ]]; then
 
   SCHEDULER=slurm
   cp fv3_conf/fv3_slurm.IN_hera fv3_conf/fv3_slurm.IN
-
-elif [[ $MACHINE_ID = theia.* ]]; then
-
-  source $PATHTR/NEMS/src/conf/module-setup.sh.inc
-
-  module use $PATHTR/modulefiles/${MACHINE_ID}
-  module load fv3
-
-  # Re-instantiate COMPILER in case it gets deleted by module purge
-  COMPILER=${NEMS_COMPILER:-intel}
-
-  module load rocoto/1.3.0
-  ROCOTORUN=$(which rocotorun)
-  ROCOTOSTAT=$(which rocotostat)
-  ROCOTOCOMPLETE=$(which rocotocomplete)
-  export PATH=/scratch4/NCEPDEV/meso/save/Dusan.Jovic/ecflow/bin:$PATH
-  export PYTHONPATH=/scratch4/NCEPDEV/meso/save/Dusan.Jovic/ecflow/lib/python2.7/site-packages
-  ECFLOW_START=/scratch4/NCEPDEV/meso/save/Dusan.Jovic/ecflow/bin/ecflow_start.sh
-  ECF_PORT=$(( $(id -u) + 1500 ))
-  QUEUE=debug
-#  ACCNR= # detected in detect_machine.sh
-  PARTITION=
-  dprefix=/scratch4/NCEPDEV
-  DISKNM=$dprefix/nems/noscrub/emc.nemspara/RT
-  STMP=$dprefix/stmp4
-  PTMP=$dprefix/stmp3
-
-  SCHEDULER=slurm
-  cp fv3_conf/fv3_slurm.IN_theia fv3_conf/fv3_slurm.IN
+  cp fv3_conf/compile_slurm.IN_hera fv3_conf/compile_slurm.IN
 
 elif [[ $MACHINE_ID = jet.* ]]; then
 
@@ -246,12 +210,14 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
+  ROCOTO_SCHEDULER=slurm
 
   export PATH=/mnt/lfs3/projects/hfv3gfs/Dusan.Jovic/ecflow/bin:$PATH
   export PYTHONPATH=/mnt/lfs3/projects/hfv3gfs/Dusan.Jovic/ecflow/lib/python2.7/site-packages
   ECFLOW_START=/mnt/lfs3/projects/hfv3gfs/Dusan.Jovic/ecflow/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
   QUEUE=debug
+  COMPILE_QUEUE=batch
   ACCNR=hfv3gfs
   PARTITION=xjet
   DISKNM=/lfs3/projects/hfv3gfs/GMTB/RT
@@ -432,42 +398,12 @@ LOG_DIR=${PATHRT}/log_$MACHINE_ID
 rm -rf ${LOG_DIR}
 mkdir ${LOG_DIR}
 
-rm -f ../fv3.exe
-
 if [[ $ROCOTO == true ]]; then
 
   ROCOTO_XML=${PATHRT}/rocoto_workflow.xml
   ROCOTO_DB=${PATHRT}/rocoto_workflow.db
 
   rm -f $ROCOTO_XML $ROCOTO_DB *_lock.db
-
-  if [[ $MACHINE_ID = wcoss ]]; then
-    QUEUE=dev
-    COMPILE_QUEUE=dev
-    ROCOTO_SCHEDULER=lsf
-  elif [[ $MACHINE_ID = wcoss_cray ]]; then
-    QUEUE=dev
-    COMPILE_QUEUE=dev
-    ROCOTO_SCHEDULER=lsfcray
-  elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
-    QUEUE=dev
-    COMPILE_QUEUE=dev_transfer
-    ROCOTO_SCHEDULER=lsf
-  elif [[ $MACHINE_ID = hera.* ]]; then
-    QUEUE=batch
-    COMPILE_QUEUE=batch
-    ROCOTO_SCHEDULER=slurm
-  elif [[ $MACHINE_ID = theia.* ]]; then
-    QUEUE=batch
-    COMPILE_QUEUE=batch
-    ROCOTO_SCHEDULER=slurm
-  elif [[ $MACHINE_ID = jet.* ]]; then
-    QUEUE=batch
-    COMPILE_QUEUE=batch
-    ROCOTO_SCHEDULER=slurm
-  else
-    die "Rocoto is not supported on this machine $MACHINE_ID"
-  fi
 
   cat << EOF > $ROCOTO_XML
 <?xml version="1.0"?>
@@ -484,6 +420,20 @@ if [[ $ROCOTO == true ]]; then
   <cycledef>197001010000 197001010000 01:00:00</cycledef>
   <log>&LOG;/workflow.log</log>
 EOF
+
+  if [[ $MACHINE_ID = wcoss ]]; then
+    QUEUE=dev
+  elif [[ $MACHINE_ID = wcoss_cray ]]; then
+    QUEUE=dev
+  elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
+    QUEUE=dev
+  elif [[ $MACHINE_ID = hera.* ]]; then
+    QUEUE=batch
+  elif [[ $MACHINE_ID = jet.* ]]; then
+    QUEUE=batch
+  else
+    die "Rocoto is not supported on this machine $MACHINE_ID"
+  fi
 
 fi
 
@@ -512,8 +462,6 @@ EOF
   elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
     QUEUE=dev
   elif [[ $MACHINE_ID = hera.* ]]; then
-    QUEUE=batch
-  elif [[ $MACHINE_ID = theia.* ]]; then
     QUEUE=batch
   elif [[ $MACHINE_ID = jet.* ]]; then
     QUEUE=batch
@@ -552,6 +500,18 @@ while read -r line; do
       [[ $CREATE_BASELINE == true && $CB != *fv3* ]] && continue
 
       (( COMPILE_NR += 1 ))
+
+      cat << EOF > ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env
+      export MACHINE_ID=${MACHINE_ID}
+      export PATHRT=${PATHRT}
+      export PATHTR=${PATHTR}
+      export SCHEDULER=${SCHEDULER}
+      export ACCNR=${ACCNR}
+      export QUEUE=${COMPILE_QUEUE}
+      export PARTITION=${PARTITION}
+      export ROCOTO=${ROCOTO}
+      export LOG_DIR=${LOG_DIR}
+EOF
 
       if [[ $ROCOTO == true ]]; then
         rocoto_create_compile_task
