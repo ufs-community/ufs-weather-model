@@ -148,6 +148,7 @@ export IMFDEEPCNV=2
 
 # SFC
 export DO_MYJSFC=.F.
+export DO_MYNNSFCLAY=.F.
 
 # LSM
 export LSM=1
