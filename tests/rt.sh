@@ -454,7 +454,7 @@ suite regtest
     edit ECF_KILL_CMD kill -15 %ECF_RID% > %ECF_JOB%.kill 2>&1
     edit ECF_TRIES 1
     label rundir_root '${RUNDIR_ROOT}'
-    limit max_builds 6
+    limit max_builds 10
     limit max_jobs 30
 EOF
 
@@ -513,6 +513,8 @@ while read -r line; do
       export QUEUE=${COMPILE_QUEUE}
       export PARTITION=${PARTITION}
       export ROCOTO=${ROCOTO}
+      export ECFLOW=${ECFLOW}
+      export REGRESSIONTEST_LOG=${REGRESSIONTEST_LOG}
       export LOG_DIR=${LOG_DIR}
 EOF
 
@@ -624,6 +626,11 @@ EOF
     (
       source ${PATHRT}/tests/$TEST_NAME
 
+      NODES=$(( TASKS / TPN ))
+      if (( NODES * TPN < TASKS )); then
+        NODES=$(( NODES + 1 ))
+      fi
+
       cat << EOF > ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
       export MACHINE_ID=${MACHINE_ID}
       export RTPWD=${RTPWD}
@@ -638,6 +645,8 @@ EOF
       export QUEUE=${QUEUE}
       export PARTITION=${PARTITION}
       export ROCOTO=${ROCOTO}
+      export ECFLOW=${ECFLOW}
+      export REGRESSIONTEST_LOG=${REGRESSIONTEST_LOG}
       export LOG_DIR=${LOG_DIR}
 EOF
 

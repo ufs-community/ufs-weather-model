@@ -66,6 +66,10 @@ elif [[ $SCHEDULER = 'lsf' ]]; then
   if (( TASKS < TPN )); then
     TPN=${TASKS}
   fi
+  NODES=$(( TASKS / TPN ))
+  if (( NODES * TPN < TASKS )); then
+    NODES=$(( NODES + 1 ))
+  fi
   atparse < $PATHRT/fv3_conf/fv3_bsub.IN > job_card
 fi
 

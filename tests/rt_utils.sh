@@ -18,6 +18,7 @@ submit_and_wait() {
   local -r job_card=$1
 
   ROCOTO=${ROCOTO:-false}
+  ECFLOW=${ECFLOW:-false}
 
   local test_status='PASS'
 
@@ -65,27 +66,28 @@ submit_and_wait() {
   do
     echo "TEST ${TEST_NR} ${TEST_NAME} is waiting to enter the queue"
     if [[ $SCHEDULER = 'moab' ]]; then
-      job_running=$( showq -u ${USER} -n | grep ${JBNME} | wc -l); sleep 5
+      job_running=$( showq -u ${USER} -n | grep ${JBNME} | wc -l)
     elif [[ $SCHEDULER = 'pbs' ]]; then
       if [[ ${MACHINE_ID} = cheyenne.* ]]; then
-        job_running=$( qstat ${qsub_id} | grep ${qsub_id} | wc -l); sleep 5
+        job_running=$( qstat ${qsub_id} | grep ${qsub_id} | wc -l)
       else
-        job_running=$( qstat -u ${USER} -n | grep ${JBNME} | wc -l); sleep 5
+        job_running=$( qstat -u ${USER} -n | grep ${JBNME} | wc -l)
       fi
     elif [[ $SCHEDULER = 'sbatch' ]]; then
       if [[ ${MACHINE_ID} = stampede.* ]]; then
-        job_running=$( squeue ${qsub_id} | grep ${qsub_id} | wc -l); sleep 5
+        job_running=$( squeue ${qsub_id} | grep ${qsub_id} | wc -l)
       else
-        job_running=$( squeue -u ${USER} -n | grep ${JBNME} | wc -l); sleep 5
+        job_running=$( squeue -u ${USER} -n | grep ${JBNME} | wc -l)
       fi
     elif [[ $SCHEDULER = 'slurm' ]]; then
-      job_running=$( squeue -u ${USER} -j ${slurm_id} | grep ${slurm_id} | wc -l); sleep 5
+      job_running=$( squeue -u ${USER} -j ${slurm_id} | grep ${slurm_id} | wc -l)
     elif [[ $SCHEDULER = 'lsf' ]]; then
-      job_running=$( bjobs ${bsub_id} | grep ${bsub_id} | wc -l); sleep 5
+      job_running=$( bjobs ${bsub_id} | grep ${bsub_id} | wc -l)
     else
       echo "Unknown SCHEDULER $SCHEDULER"
       exit 1
     fi
+    sleep 5
     (( count=count+1 ))
     if [[ $count -eq 13 ]]; then echo "No job in queue after one minute, exiting..."; exit 2; fi
   done
@@ -136,20 +138,20 @@ submit_and_wait() {
       job_running=$( showq -u ${USER} -n | grep ${JBNME} | wc -l)
     elif [[ $SCHEDULER = 'pbs' ]]; then
       if [[ ${MACHINE_ID} = cheyenne.* ]]; then
-        job_running=$( qstat ${qsub_id} | grep ${qsub_id} | wc -l); sleep 5
+        job_running=$( qstat ${qsub_id} | grep ${qsub_id} | wc -l)
       else
         job_running=$( qstat -u ${USER} -n | grep ${JBNME} | wc -l)
       fi
     elif [[ $SCHEDULER = 'sbatch' ]]; then
       if [[ ${MACHINE_ID} = stampede.* ]]; then
-        job_running=$( squeue ${qsub_id} | grep ${qsub_id} | wc -l); sleep 5
+        job_running=$( squeue ${qsub_id} | grep ${qsub_id} | wc -l)
       else
         job_running=$( squeue -u ${USER} -n | grep ${JBNME} | wc -l)
       fi
     elif [[ $SCHEDULER = 'slurm' ]]; then
       job_running=$( squeue -u ${USER} -j ${slurm_id} | grep ${slurm_id} | wc -l)
     elif [[ $SCHEDULER = 'lsf' ]]; then
-      job_running=$( bjobs ${bsub_id} | grep ${bsub_id} | wc -l); sleep 5
+      job_running=$( bjobs ${bsub_id} | grep ${bsub_id} | wc -l)
     else
       echo "Unknown SCHEDULER $SCHEDULER"
       exit 1
@@ -280,9 +282,9 @@ submit_and_wait() {
   done
 
   if [[ $test_status = 'FAIL' ]]; then
-    echo $TEST_NAME >> $PATHRT/fail_test
-    if [[ $ROCOTO == true ]]; then
-      exit 2
+    echo "${TEST_NAME} ${TEST_NR}" >> $PATHRT/fail_test
+    if [[ $ROCOTO == true || $ECFLOW == true ]]; then
+      exit 1
     fi
   fi
 
@@ -295,6 +297,7 @@ check_results() {
   set +x
 
   ROCOTO=${ROCOTO:-false}
+  ECFLOW=${ECFLOW:-false}
 
   # Default compiler "intel"
   export COMPILER=${NEMS_COMPILER:-intel}
@@ -396,8 +399,8 @@ check_results() {
 
   if [[ $test_status = 'FAIL' ]]; then
     echo $TEST_NAME >> $PATHRT/fail_test
-    if [[ $ROCOTO = true ]]; then
-      exit 2
+    if [[ $ROCOTO = true || $ECFLOW == true ]]; then
+      exit 1
     fi
   fi
 
@@ -436,6 +439,12 @@ rocoto_create_compile_task() {
       rocoto_cmd="&PATHRT;/compile_cmake.sh &PATHTR; $MACHINE_ID \"${NEMS_VER}\" $COMPILE_NR"
   fi
 
+  # serialize WW3 builds. FIXME
+  DEP_STRING=""
+  if [[ ${NEMS_VER^^} =~ "WW3=Y" && ${COMPILE_PREV_WW3_NR} != '' ]]; then
+    DEP_STRING="<dependency><taskdep task=\"compile_${COMPILE_PREV_WW3_NR}\"/></dependency>"
+  fi
+
   NATIVE=""
   BUILD_CORES=8
   if [[ ${MACHINE_ID} == wcoss_dell_p3 ]]; then
@@ -454,6 +463,7 @@ rocoto_create_compile_task() {
 
   cat << EOF >> $ROCOTO_XML
   <task name="compile_${COMPILE_NR}" maxtries="3">
+    $DEP_STRING
     <command>$rocoto_cmd</command>
     <jobname>compile_${COMPILE_NR}</jobname>
     <account>${ACCNR}</account>
@@ -482,11 +492,8 @@ rocoto_create_run_task() {
   fi
 
   NATIVE=""
-  if [[ ${MACHINE_ID} == wcoss ]]; then
-    NATIVE="<native>-a poe -R span[ptile=${TPN}]</native>"
-  fi
   if [[ ${MACHINE_ID} == wcoss_dell_p3 ]]; then
-    NATIVE="<native>-R span[ptile=${TPN}]</native>"
+    NATIVE="<nodesize>28</nodesize><native>-R 'affinity[core(${THRD})]'</native>"
   fi
   if [[ ${MACHINE_ID} == wcoss_cray ]]; then
     NATIVE="<exclusive></exclusive>"
@@ -541,7 +548,7 @@ ecflow_create_compile_task() {
 
   cat << EOF > ${ECFLOW_RUN}/regtest/compile_${COMPILE_NR}.ecf
 %include <head.h>
-$PATHRT/run_compile.sh ${PATHRT} ${RUNDIR_ROOT} \"${NEMS_VER}\" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1 &
+$PATHRT/run_compile.sh ${PATHRT} ${RUNDIR_ROOT} "${NEMS_VER}" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
 %include <tail.h>
 EOF
 
@@ -557,7 +564,7 @@ ecflow_create_run_task() {
 
   cat << EOF > ${ECFLOW_RUN}/regtest/${TEST_NAME}${RT_SUFFIX}.ecf
 %include <head.h>
-$PATHRT/run_test.sh ${PATHRT} ${RUNDIR_ROOT} ${TEST_NAME} ${TEST_NR} ${COMPILE_NR} > ${LOG_DIR}/run_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log 2>&1 &
+$PATHRT/run_test.sh ${PATHRT} ${RUNDIR_ROOT} ${TEST_NAME} ${TEST_NR} ${COMPILE_NR} > ${LOG_DIR}/run_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log 2>&1
 %include <tail.h>
 EOF
 

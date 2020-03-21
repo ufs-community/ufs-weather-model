@@ -19,16 +19,8 @@ readonly MYDIR=$( dirname $(readlink -f $0) )
 
 readonly ARGC=$#
 
-if [[ $ARGC -eq 0 ]]; then
-  COMPILER=intel
-  . detect_machine.sh
-  PATHTR=$(cd -P ${MYDIR}/.. && pwd)
-  MAKE_OPT=''
-  BUILD_NAME=fv3
-  clean_before=YES
-  clean_after=YES
-elif [[ $ARGC -lt 2 ]]; then
-  echo "Usage: $0 PATHTR MACHINE_ID [ MAKE_OPT [ BUILD_NR ] [ clean_before ] [ clean_after ]  ]"
+if [[ $ARGC -lt 2 ]]; then
+  echo "Usage: $0 PATHTR MACHINE_ID [ MAKE_OPT [ BUILD_NR ] [ clean_before ] [ clean_after ] ]"
   echo Valid MACHINE_IDs:
   echo $( ls -1 ../conf/configure.fv3.* | sed s,.*fv3\.,,g ) | fold -sw72
   exit 1
@@ -40,7 +32,8 @@ else
   clean_before=${5:-YES}
   clean_after=${6:-YES}
 fi
-BUILD_DIR=build_${BUILD_NAME}
+
+BUILD_DIR=$(pwd)/build_${BUILD_NAME}
 
 # ----------------------------------------------------------------------
 # Make sure we have reasonable number of threads.
@@ -48,7 +41,7 @@ BUILD_DIR=build_${BUILD_NAME}
 if [[ $MACHINE_ID == cheyenne.* ]] ; then
     MAKE_THREADS=${MAKE_THREADS:-3}
 elif [[ $MACHINE_ID == wcoss_dell_p3 ]] ; then
-    MAKE_THREADS=${MAKE_THREADS:-4}
+    MAKE_THREADS=${MAKE_THREADS:-1}
 fi
 
 MAKE_THREADS=${MAKE_THREADS:-8}
@@ -120,7 +113,7 @@ if [[ "${MAKE_OPT}" == *"CCPP=Y"* ]]; then
   (
     SUITES=$( echo $MAKE_OPT | sed 's/.* SUITES=//' | sed 's/ .*//' )
     cd ${PATHTR}
-    ./FV3/ccpp/framework/scripts/ccpp_prebuild.py --config=FV3/ccpp/config/ccpp_prebuild_config.py --static --suites=${SUITES} --builddir=tests/${BUILD_DIR}/FV3
+    ./FV3/ccpp/framework/scripts/ccpp_prebuild.py --config=FV3/ccpp/config/ccpp_prebuild_config.py --static --suites=${SUITES} --builddir=${BUILD_DIR}/FV3
   )
 
   # Read list of schemes, caps, and static API
