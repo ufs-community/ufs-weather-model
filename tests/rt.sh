@@ -162,7 +162,6 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
 
 elif [[ $MACHINE_ID = hera.* ]]; then
 
-  export NCEPLIBS=/scratch1/NCEPDEV/global/gwv/l819/lib
   source $PATHTR/NEMS/src/conf/module-setup.sh.inc
 
   module use $PATHTR/modulefiles/${MACHINE_ID}
