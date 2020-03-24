@@ -49,11 +49,13 @@ submit_and_wait() {
     re='Submitted batch job ([0-9]+)'
     slurm_id=0
     [[ "${slurmout}" =~ $re ]] && slurm_id=${BASH_REMATCH[1]}
+    echo "Job id ${slurm_id}"
   elif [[ $SCHEDULER = 'lsf' ]]; then
     bsubout=$( bsub < $job_card )
     re='Job <([0-9]+)> is submitted to queue <(.+)>.'
     bsub_id=0
     [[ "${bsubout}" =~ $re ]] && bsub_id=${BASH_REMATCH[1]}
+    echo "Job id ${bsub_id}"
   else
     echo "Unknown SCHEDULER $SCHEDULER"
     exit 1
@@ -203,6 +205,7 @@ submit_and_wait() {
 
       status=$( squeue -u ${USER} -j ${slurm_id} 2>/dev/null | grep ${slurm_id} | awk '{print $5}' ); status=${status:--}
       if [[ $status = 'R' ]];  then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is running,            Status: $status"
+      elif [[ $status = 'PD' ]];  then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is pending,            Status: $status"
       elif [[ $status = 'F' ]];  then
         echo "Test ${TEST_NR} ${TEST_NAME} FAIL" >> ${REGRESSIONTEST_LOG}
         echo                                     >> ${REGRESSIONTEST_LOG}
@@ -212,7 +215,9 @@ submit_and_wait() {
         job_running=0
       elif [[ $status = 'C' ]];  then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is finished,           Status: $status" ; job_running=0
       else
-        state=$( sacct -n -j ${slurm_id}.batch --format=JobID,state,Jobname | grep ${slurm_id} | awk '{print $2}' )
+        echo "Slurm unknown status ${status}. Check sacct ..."
+        sacct -n -j ${slurm_id} --format=JobID,state,Jobname
+        state=$( sacct -n -j ${slurm_id} --format=JobID,state,Jobname | grep ${slurm_id} | awk '{print $2}' )
         echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is ${state}"
       fi
 
