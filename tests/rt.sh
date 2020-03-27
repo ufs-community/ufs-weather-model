@@ -377,9 +377,9 @@ done
 if [[ $MACHINE_ID = hera.* ]]; then
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200323/${COMPILER^^}}
 elif [[ $MACHINE_ID = cheyenne.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/develop-20200317/${COMPILER^^}}
+  RTPWD=${RTPWD:-$DISKNM/develop-20200323/${COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200317}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200323}
 fi
 
 shift $((OPTIND-1))
