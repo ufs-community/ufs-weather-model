@@ -264,9 +264,11 @@ fv3_defaults = {
     SKEB='-999.0'
 
     IAU_INC_FILES="''"
+    IAU_DRYMASSFIXER='.false.'
 
     CPLFLX='.F.'
     CPLWAV='.F.'
+    CPLWAV2ATM='.F.'
     CPL='.false.'
 }
 
@@ -1223,6 +1225,35 @@ test fv3_gfdlmprad: fv3_ww3.exe {
 
 }
 
+test fv3_gfdlmprad_atmwav: fv3_ww3.exe {
+    use fv3_gfdlmprad
+
+    TEST_DESCR="Compare FV3 GFDL mircrophysics radiation change with 2 way WW3 results with previous trunk version"
+    CNTL_NAME='fv3_gfdlmprad_atmwav'
+
+    CPLWAV2ATM='.true.'
+    coupling_interval_sec=1200.0  #coupling time step, want it to be multiple of 1800 and FV3 time step
+
+    filters input {
+          'input.nml' <=atparse=  "@[PARMnems]/gfdlmp.nml.IN"
+    'model_configure' <=atparse=  "@[PARMnems]/model_configure.IN"
+                 'aerosol.dat' <=copyfrom= "@[FV3_input_data]/INPUT"
+  'co2historicaldata_201*.txt' <=copyfrom= "@[FV3_input_data]/INPUT"
+      'sfc_emissivity_idx.txt' <=copyfrom= "@[FV3_input_data]/INPUT"
+   'solarconstant_noaa_an.txt' <=copyfrom= "@[FV3_input_data]/INPUT"
+                        '*grb' <=copyfrom= "@[FV3_input_data]"
+                     '*_table' <=copyfrom= "@[FV3_input_data]"
+                 'diag_table'  <=copy= "@[FV3_input_data]/diag_table_gfdlmp"
+                 'field_table' <=copy= "@[FV3_input_data]/field_table_gfdlmp"
+                       'INPUT' <=copy=     "@[FV3_input_data]/INPUT"
+         'global_o3prdlos.f77' <=copy= "@[FV3_input_data]/INPUT/global_o3prdlos.f77"
+    'model_configure' <=atparse=  "@[PARMnems]/model_configure.IN"
+     'nems.configure' <=atparse=  "@[PARMnems]/nems.configure.blocked_atm_wav_2way.IN"
+         'mod_def.*'  <=copyfrom=  "@[WW3_input_data]"
+      'ww3_multi.inp' <=copyfrom=  "@[WW3_input_data]/@[SYEAR]@[SMONTH]@[SDAY]"
+    }
+
+}
 test fv3_gfdlmprad_gwd: fv3.exe {
     use fv3_gfdlmp
 
@@ -1764,11 +1795,11 @@ test fv3_wrtGauss_nemsio_c768: fv3_ww3.exe {
     TEST_DESCR="Compare c768 FV3-WW3 Gaussian grid nemsio output results with previous trunk version"
     CNTL_NAME="fv3_wrtGauss_nemsio_c768"
 
-    TASKS='1470'
+    TASKS='640'
     PPN="@[plat%C768_PPN]"
     THRD="@[plat%C768_THRD]"
-    INPES='16'
-    JNPES='12'
+    INPES='8'
+    JNPES='8'
     NPX='769'
     NPY='769'
     NPZ='64'
@@ -1780,7 +1811,7 @@ test fv3_wrtGauss_nemsio_c768: fv3_ww3.exe {
     FHMAX='06'
     WLCLK='30'
     WRITE_GROUP='3'
-    WRTTASK_PER_GROUP='36'
+    WRTTASK_PER_GROUP='12'
     FDIAG='0,1,2,3,4,5,6,7,8,9,10,11,12'
     OUTPUT_GRID="'gaussian_grid'"
     OUTPUT_FILE="'nemsio'"
@@ -1806,9 +1837,9 @@ test fv3_wrtGauss_nemsio_c768: fv3_ww3.exe {
 
     nems_configure="blocked_atm_wav"
     atm_model='fv3'
-    atm_petlist_bounds="0 1259"
+    atm_petlist_bounds="0 419"
     wav_model='ww3'
-    wav_petlist_bounds="1260 1469"
+    wav_petlist_bounds="420 639"
     coupling_interval_sec=1800.0  # 30min coupling, fv3 time step
 
     # The build variable is the fv3_ww3.exe, which
@@ -2096,6 +2127,7 @@ test fv3_iau: fv3.exe {
     FDIAG='3'
     NSTF_NAME='2,0,1,0,5'
     IAU_INC_FILES='fv3_increment.nc'
+    IAU_DRYMASSFIXER='.true.'
 
     CNTL="@[plat%BASELINE]/@[CNTL_NAME]"      # Control baseline area
 
