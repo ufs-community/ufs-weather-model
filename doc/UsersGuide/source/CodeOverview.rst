@@ -46,7 +46,7 @@ The umbrella repository for the UFS Weather Model is named ufs-weather-model.  U
    ufs-weather-model/
    ├── FMS                                     https://github.com/NOAA-GFDL/FMS
    ├── FV3                                     https://github.com/NOAA-EMC/fv3atm
-   │   ├── atmos_cubed_sphere                  https://github.com/NOAA-EMC/GFDL_atmos_cubed_sphere
+   │   ├── atmos_cubed_sphere                  https://github.com/NOAA-GFDL/GFDL_atmos_cubed_sphere
    │   ├── ccpp
    │   │   ├── framework                       https://github.com/NCAR/ccpp-framework
    │   │   ├── physics                         https://github.com/NCAR/ccpp-physics
