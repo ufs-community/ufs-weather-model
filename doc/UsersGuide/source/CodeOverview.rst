@@ -33,7 +33,7 @@ The ufs-weather-model repository supports the short- and medium-range UFS applic
   * - Umbrella repository for the physics and dynamics of the atmospheric model
     - https://github.com/NOAA-EMC/fv3atm
   * - FV3 dynamical core
-    - https://github.com/NOAA-EMC/GFDL_atmos_cubed_sphere
+    - https://github.com/NOAA-GFDL/GFDL_atmos_cubed_sphere
   * - Stochastic physics pattern generator
     - https://github.com/noaa-psd/stochastic_physics
 
