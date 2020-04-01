@@ -144,7 +144,9 @@ export DO_MYJPBL=.F.
 
 # Shallow/deep convection
 export IMFSHALCNV=2
+export HWRF_SAMFSHAL=.F.
 export IMFDEEPCNV=2
+export HWRF_SAMFDEEP=.F.
 
 # SFC
 export DO_MYJSFC=.F.
