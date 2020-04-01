@@ -33,7 +33,7 @@ The ufs-weather-model repository supports the short- and medium-range UFS applic
   * - Umbrella repository for the physics and dynamics of the atmospheric model
     - https://github.com/NOAA-EMC/fv3atm
   * - FV3 dynamical core
-    - https://github.com/NOAA-EMC/GFDL_atmos_cubed_sphere
+    - https://github.com/NOAA-GFDL/GFDL_atmos_cubed_sphere
   * - Stochastic physics pattern generator
     - https://github.com/noaa-psd/stochastic_physics
 
@@ -45,12 +45,12 @@ The umbrella repository for the UFS Weather Model is named ufs-weather-model.  U
 
    ufs-weather-model/
    ├── FMS                                     https://github.com/NOAA-GFDL/FMS
-   ├── FV3                                     https://github.com/NCAR/fv3atm
-   │   ├── atmos_cubed_sphere                  https://github.com/NCAR/GFDL_atmos_cubed_sphere
+   ├── FV3                                     https://github.com/NOAA-EMC/fv3atm
+   │   ├── atmos_cubed_sphere                  https://github.com/NOAA-GFDL/GFDL_atmos_cubed_sphere
    │   ├── ccpp
    │   │   ├── framework                       https://github.com/NCAR/ccpp-framework
    │   │   ├── physics                         https://github.com/NCAR/ccpp-physics
-   ├── NEMS                                    https://github.com/NCAR/NEMS
+   ├── NEMS                                    https://github.com/NOAA-EMC/NEMS
    │   └── tests/produtil/NCEPLIBS-pyprodutil  https://github.com/NOAA-EMC/NCEPLIBS-pyprodutil
    ├── stochastic_physics                      https://github.com/noaa-psd/stochastic_physics
 
