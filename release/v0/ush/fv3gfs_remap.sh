@@ -70,7 +70,7 @@ export nggps2d_nh="ALBDOsfc, CPRATsfc, PRATEsfc, DLWRFsfc, ULWRFsfc,\
         SOILT1, SOILT2, SOILT3, SOILT4,\
         TMP2m, TMPsfc, UGWDsfc, VGWDsfc, UFLXsfc,\
         VFLXsfc, UGRD10m, VGRD10m, WEASDsfc, SNODsfc,\
-        ZORLsfc, VFRACsfc, F10Msfc, VTYPEsfc, STYPEsfc, CA1"
+        ZORLsfc, VFRACsfc, F10Msfc, VTYPEsfc, STYPEsfc"
 export nggps2d_hy="$nggps2d_nh"
 
 export nggps3d_nh="ucomp, vcomp, temp, delp, sphum, o3mr, clwmr, nhpres, w, delz"     #for non-hydrostatic case
