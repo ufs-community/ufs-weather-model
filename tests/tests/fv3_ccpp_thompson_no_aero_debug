@@ -1,12 +1,12 @@
-##########################################################################################
+###############################################################################
 #
-#  FV3 CCPP GSD (GF CU + Thompson MP + MYNN PBL + RUC LSM) 24h test in DEBUG mode
+#  FV3 CCPP Thompson MP without aerosols debug test
 #
-##########################################################################################
+###############################################################################
 
-export TEST_DESCR="Compare FV3 CCPP GSD DEBUG results with previous trunk version"
+export TEST_DESCR="Compare FV3 CCPP Thompson MP without aerosols debug results with previous trunk version"
 
-export CNTL_DIR=fv3_gsd_debug
+export CNTL_DIR=fv3_thompson_no_aero_debug
 
 export LIST_FILES="atmos_4xdaily.tile1.nc \
                    atmos_4xdaily.tile2.nc \
@@ -82,21 +82,16 @@ export IMP_PHYSICS=8
 export DNATS=0
 export DO_SAT_ADJ=.F.
 export LRADAR=.T.
-export LTAEROSOL=.T.
+export LTAEROSOL=.F.
 
 export FV3_RUN=ccpp_gsd_run.IN
-export CCPP_SUITE=FV3_GSD_v0
+export CCPP_SUITE=FV3_GFS_v15_thompson
 export CCPP_LIB_DIR=ccpp/lib
 export INPUT_NML=ccpp_gsd.nml.IN
 
-export HYBEDMF=.F.
-export DO_MYNNEDMF=.T.
-export IMFSHALCNV=3
-export IMFDEEPCNV=3
-export FHCYC=0
-export LSM=3
-export LSOIL_LSM=9
+export HYBEDMF=.T.
+export DO_MYNNEDMF=.F.
+export IMFSHALCNV=2
+export IMFDEEPCNV=2
 
 RUN_SCRIPT=rt_fv3.sh
-
-export WLCLK=30
