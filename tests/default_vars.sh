@@ -141,6 +141,8 @@ export SHINHONG=.F.
 export DO_YSU=.F.
 export DO_MYNNEDMF=.F.
 export DO_MYJPBL=.F.
+export HURR_PBL=.F.
+export MONINQ_FAC=1.0
 
 # Shallow/deep convection
 export IMFSHALCNV=2
