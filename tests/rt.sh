@@ -195,10 +195,18 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   QUEUE=debug
 #  ACCNR=fv3-cpu
   PARTITION=
-  dprefix=/scratch1/NCEPDEV
-  DISKNM=$dprefix/nems/emc.nemspara/RT
-  STMP=$dprefix/stmp4
-  PTMP=$dprefix/stmp2
+  #
+  # DTC HWRF baseline
+  dprefix=/scratch1/BMC/gmtb
+  DISKNM=$dprefix/ufs-weather-model/RT
+  STMP=$dprefix
+  PTMP=$dprefix
+  # EMC baseline
+  #dprefix=/scratch1/NCEPDEV
+  #DISKNM=$dprefix/nems/emc.nemspara/RT
+  #STMP=$dprefix/stmp4
+  #PTMP=$dprefix/stmp2
+  #
 
   SCHEDULER=slurm
   cp fv3_conf/fv3_slurm.IN_hera fv3_conf/fv3_slurm.IN
@@ -375,11 +383,11 @@ done
 
 # Fix me - make those definitions and DISKNM consistent
 if [[ $MACHINE_ID = hera.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200317/${COMPILER^^}}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/hwrf-physics-20200317/${COMPILER^^}}
 elif [[ $MACHINE_ID = cheyenne.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/develop-20200317/${COMPILER^^}}
+  RTPWD=${RTPWD:-$DISKNM/hwrf-physics-20200317/${COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200317}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/hwrf-physics-20200317}
 fi
 
 shift $((OPTIND-1))
