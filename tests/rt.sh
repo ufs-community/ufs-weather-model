@@ -329,11 +329,6 @@ ECFLOW=false
 KEEP_RUNDIR=false
 
 TESTS_FILE='rt.conf'
-# Switch to special regression test config on wcoss_cray:
-# don't run the IPD and CCPP tests in REPRO mode.
-if [[ $MACHINE_ID = wcoss_cray ]]; then
-  TESTS_FILE='rt_wcoss_cray.conf'
-fi
 
 SET_ID='standard'
 while getopts ":cfsl:mkreh" opt; do
@@ -651,13 +646,6 @@ while read -r line; do
     # Avoid uninitialized RT_SUFFIX/BL_SUFFIX (see definition above)
     RT_SUFFIX=${RT_SUFFIX:-""}
     BL_SUFFIX=${BL_SUFFIX:-""}
-
-    if [[ $MACHINE_ID = wcoss_cray ]]; then
-    if [[ $RT_SUFFIX != "" || $BL_SUFFIX != "" ]]; then
-      # skip all REPRO and/or CCPP runs on wcoss_cray. FIXME
-      continue
-    fi
-    fi
 
     if [[ $ROCOTO == true && $new_compile == true ]]; then
       new_compile=false
