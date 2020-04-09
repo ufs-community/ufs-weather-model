@@ -18,8 +18,14 @@ fi
 cp    @[RTPWD]/FV3_input_data/DETAMPNEW_DATA* .
 cp    @[RTPWD]/FV3_input_data/*grb .
 cp    @[RTPWD]/FV3_input_data/*_table .
-cp    /scratch1/BMC/gmtb/ufs-weather-model/RT/NEMSfv3gfs/FV3_input_data_temporary_hafs/diag_table_FA diag_table
-cp    /scratch1/BMC/gmtb/ufs-weather-model/RT/NEMSfv3gfs/FV3_input_data_temporary_hafs/field_table_FA_nwat4 field_table
+# Copy diag table for HWRF RRTMG or GFS RRTMG
+if [ $IOVR_LW = 4 ] && [ $IOVR_SW = 4 ]; then
+    cp @[RTPWD]/FV3_input_data_hafs/diag_table_FA_HWRF diag_table
+else
+    cp @[RTPWD]/FV3_input_data_hafs/diag_table_FA diag_table
+fi
+# Copy field table for Ferrier-Aligo MP
+cp @[RTPWD]/FV3_input_data_hafs/field_table_FA_nwat4 field_table
 
 cp ${PATHRT}/../FV3/ccpp/suites/suite_${CCPP_SUITE}.xml suite_${CCPP_SUITE}.xml
 

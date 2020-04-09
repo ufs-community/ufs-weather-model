@@ -115,6 +115,11 @@ export MAKE_NH=.T.
 export MOUNTAIN=.F.
 export NA_INIT=1
 
+# Radiation
+export ICLOUD=0
+export IOVR_LW=1
+export IOVR_SW=1
+
 # Microphysics
 export IMP_PHYSICS=11
 # GFDL MP
