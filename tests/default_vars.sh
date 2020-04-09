@@ -204,4 +204,7 @@ export SHUM=-999.
 #IAU
 export IAU_INC_FILES="''"
 export IAU_DRYMASSFIXER=.false.
+
+# Regional
+export WRITE_RESTART_WITH_BCS=.false.
 }
