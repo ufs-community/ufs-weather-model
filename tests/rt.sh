@@ -282,7 +282,7 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
   QUEUE=premium
   PARTITION=
   dprefix=/glade/scratch
-  DISKNM=/glade/p/ral/jntp/GMTB/NEMSfv3gfs/RT
+  DISKNM=/glade/p/ral/jntp/GMTB/ufs-weather-model/RT
   STMP=$dprefix
   PTMP=$dprefix
   SCHEDULER=pbs
@@ -376,13 +376,10 @@ while getopts ":cfsl:mkreh" opt; do
   esac
 done
 
-# Fix me - make those definitions and DISKNM consistent
-if [[ $MACHINE_ID = hera.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200319/${COMPILER^^}}
-elif [[ $MACHINE_ID = cheyenne.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/develop-20200319/${COMPILER^^}}
+if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = cheyenne.* ]]; then
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/dtc-develop-20200409/${COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200319}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/dtc-develop-20200409}
 fi
 
 shift $((OPTIND-1))
