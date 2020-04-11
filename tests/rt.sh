@@ -340,11 +340,11 @@ done
 
 # Fix me - make those definitions and DISKNM consistent
 if [[ $MACHINE_ID = hera.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200317/${COMPILER^^}}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200323/${COMPILER^^}}
 elif [[ $MACHINE_ID = cheyenne.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/develop-20200317/${COMPILER^^}}
+  RTPWD=${RTPWD:-$DISKNM/develop-20200323/${COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200317}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200323}
 fi
 
 shift $((OPTIND-1))
@@ -522,7 +522,7 @@ EOF
       elif [[ $ECFLOW == true ]]; then
         ecflow_create_compile_task
       else
-        ./compile.sh $PATHTR/FV3 $MACHINE_ID "${NEMS_VER}" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
+        ./compile.sh $PATHTR/FV3 $MACHINE_ID "${NEMS_VER}"  $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
         #./compile_cmake.sh $PATHTR $MACHINE_ID "${NEMS_VER}" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
         echo " bash Compile is done"
       fi
