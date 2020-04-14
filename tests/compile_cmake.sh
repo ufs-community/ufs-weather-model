@@ -128,6 +128,7 @@ if [[ "${MAKE_OPT}" == *"CCPP=Y"* ]]; then
   )
 
   # Read list of schemes, caps, and static API
+  source ${BUILD_DIR}/FV3/ccpp/physics/CCPP_TYPEDEFS.sh
   source ${BUILD_DIR}/FV3/ccpp/physics/CCPP_SCHEMES.sh
   source ${BUILD_DIR}/FV3/ccpp/physics/CCPP_CAPS.sh
   source ${BUILD_DIR}/FV3/ccpp/physics/CCPP_STATIC_API.sh
