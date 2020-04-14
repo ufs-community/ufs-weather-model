@@ -195,18 +195,10 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   QUEUE=debug
 #  ACCNR=fv3-cpu
   PARTITION=
-  #
-  # DTC baseline
-  dprefix=/scratch1/BMC/gmtb
-  DISKNM=$dprefix/ufs-weather-model/RT
-  STMP=$dprefix
-  PTMP=$dprefix
-  # EMC baseline
-  #dprefix=/scratch1/NCEPDEV
-  #DISKNM=$dprefix/nems/emc.nemspara/RT
-  #STMP=$dprefix/stmp4
-  #PTMP=$dprefix/stmp2
-  #
+  dprefix=/scratch1/NCEPDEV
+  DISKNM=$dprefix/nems/emc.nemspara/RT
+  STMP=$dprefix/stmp4
+  PTMP=$dprefix/stmp2
 
   SCHEDULER=slurm
   cp fv3_conf/fv3_slurm.IN_hera fv3_conf/fv3_slurm.IN
@@ -381,16 +373,6 @@ if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = cheyenne.* ]]; then
 else
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/dtc-develop-20200413}
 fi
-# DH* temporarily - remove before final merge to dtc/develop
-## Fix me - make those definitions and DISKNM consistent
-#if [[ $MACHINE_ID = hera.* ]]; then
-#  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200323/${COMPILER^^}}
-#elif [[ $MACHINE_ID = cheyenne.* ]]; then
-#  RTPWD=${RTPWD:-$DISKNM/develop-20200323/${COMPILER^^}}
-#else
-#  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200323}
-#fi
-# *DH
 
 shift $((OPTIND-1))
 [[ $# -gt 1 ]] && usage
