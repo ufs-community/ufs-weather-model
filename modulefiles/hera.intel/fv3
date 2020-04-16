@@ -23,7 +23,6 @@ module load contrib sutils
 ##
 module load intel/18.0.5.274
 module load impi/2018.0.4
-module load netcdf/4.7.0
 
 ##
 ## NCEP libraries (temporary version to match the CCPP requirements)
@@ -42,14 +41,16 @@ module load jasper/1.900.1
 module load png/1.2.44
 module load z/1.2.11
 ## load modules for nceppost grib
-module load post/8.0.1
+module load post/8.0.5
 
 ##
 ## load ESMF library for above compiler / MPI combination
 ## use pre-compiled EMSF library for above compiler / MPI combination
 ##
 module use -a /scratch1/NCEPDEV/nems/emc.nemspara/soft/modulefiles
-module load esmf/8.0.0
+module load hdf5_parallel/1.10.6
+module load netcdf_parallel/4.7.4
+module load esmf/8.0.0_ParallelNetCDF
 
 ##
 ## load cmake
