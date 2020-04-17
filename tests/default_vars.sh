@@ -115,6 +115,9 @@ export MAKE_NH=.T.
 export MOUNTAIN=.F.
 export NA_INIT=1
 
+# Radiation
+export DO_RRTMGP=.F.
+
 # Microphysics
 export IMP_PHYSICS=11
 # GFDL MP
