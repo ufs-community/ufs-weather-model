@@ -67,7 +67,26 @@ export COMPILER=${NEMS_COMPILER:-intel}
 source detect_machine.sh
 source rt_utils.sh
 
-if [[ $MACHINE_ID = wcoss_cray ]]; then
+if [[ $MACHINE_ID = wcoss ]]; then
+
+  source $PATHTR/NEMS/src/conf/module-setup.sh.inc
+
+  set +u
+  source /usrx/local/ecflow/setup.sh
+  ECFLOW_START=/usrx/local/ecflow/bin/ecflow_start.sh
+  set -u
+  ROCOTORUN="/u/Christopher.W.Harrop/rocoto/bin/rocotorun"
+  ROCOTOSTAT="/u/Christopher.W.Harrop/rocoto/bin/rocotostat"
+  DISKNM=/nems/noscrub/emc.nemspara/RT
+  QUEUE=debug
+  PARTITION=
+  ACCNR=GFS-DEV
+  STMP=/ptmpp$pex
+  PTMP=/ptmpp$pex
+  SCHEDULER=lsf
+# cp fv3_conf/fv3_bsub.IN_wcoss fv3_conf/fv3_bsub.IN
+
+elif [[ $MACHINE_ID = wcoss_cray ]]; then
 
   source $PATHTR/NEMS/src/conf/module-setup.sh.inc
   module load xt-lsfhpc
