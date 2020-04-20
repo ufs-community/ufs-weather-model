@@ -188,6 +188,8 @@ export SHOUR=00
 export FHMAX=${FHMAX:-`expr $DAYS \* 24`}
 export DT_ATMOS=1800
 export FHCYC=24
+export LDIAG3D=.F.
+export QDIAG3D=.F.
 
 # Stochastic physics
 export DO_SPPT=.F.
