@@ -190,6 +190,7 @@ export DT_ATMOS=1800
 export FHCYC=24
 export LDIAG3D=.F.
 export QDIAG3D=.F.
+export MAX_OUTPUT_FIELDS=300
 
 # Stochastic physics
 export DO_SPPT=.F.
