@@ -54,7 +54,7 @@ NETCDF_INC = -I$(NETCDF_ROOT)/include
 ifneq ($(findstring netcdf/4,$(LOADEDMODULES)),)
   NETCDF_LIB += -L$(NETCDF)/lib -lnetcdff -lnetcdf
 else
-  NETCDF_LIB += -L$(NETCDF)/lib -lnetcdff -lnetcdf
+  NETCDF_LIB = -L$(NETCDF)/lib -lnetcdff -lnetcdf
 endif
 
 FPPFLAGS := -fpp -Wp,-w $(INCLUDE)

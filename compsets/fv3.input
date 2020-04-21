@@ -264,9 +264,11 @@ fv3_defaults = {
     SKEB='-999.0'
 
     IAU_INC_FILES="''"
+    IAU_DRYMASSFIXER='.false.'
 
     CPLFLX='.F.'
     CPLWAV='.F.'
+    CPLWAV2ATM='.F.'
     CPL='.false.'
 }
 
@@ -1223,6 +1225,35 @@ test fv3_gfdlmprad: fv3_ww3.exe {
 
 }
 
+test fv3_gfdlmprad_atmwav: fv3_ww3.exe {
+    use fv3_gfdlmprad
+
+    TEST_DESCR="Compare FV3 GFDL mircrophysics radiation change with 2 way WW3 results with previous trunk version"
+    CNTL_NAME='fv3_gfdlmprad_atmwav'
+
+    CPLWAV2ATM='.true.'
+    coupling_interval_sec=1200.0  #coupling time step, want it to be multiple of 1800 and FV3 time step
+
+    filters input {
+          'input.nml' <=atparse=  "@[PARMnems]/gfdlmp.nml.IN"
+    'model_configure' <=atparse=  "@[PARMnems]/model_configure.IN"
+                 'aerosol.dat' <=copyfrom= "@[FV3_input_data]/INPUT"
+  'co2historicaldata_201*.txt' <=copyfrom= "@[FV3_input_data]/INPUT"
+      'sfc_emissivity_idx.txt' <=copyfrom= "@[FV3_input_data]/INPUT"
+   'solarconstant_noaa_an.txt' <=copyfrom= "@[FV3_input_data]/INPUT"
+                        '*grb' <=copyfrom= "@[FV3_input_data]"
+                     '*_table' <=copyfrom= "@[FV3_input_data]"
+                 'diag_table'  <=copy= "@[FV3_input_data]/diag_table_gfdlmp"
+                 'field_table' <=copy= "@[FV3_input_data]/field_table_gfdlmp"
+                       'INPUT' <=copy=     "@[FV3_input_data]/INPUT"
+         'global_o3prdlos.f77' <=copy= "@[FV3_input_data]/INPUT/global_o3prdlos.f77"
+    'model_configure' <=atparse=  "@[PARMnems]/model_configure.IN"
+     'nems.configure' <=atparse=  "@[PARMnems]/nems.configure.blocked_atm_wav_2way.IN"
+         'mod_def.*'  <=copyfrom=  "@[WW3_input_data]"
+      'ww3_multi.inp' <=copyfrom=  "@[WW3_input_data]/@[SYEAR]@[SMONTH]@[SDAY]"
+    }
+
+}
 test fv3_gfdlmprad_gwd: fv3.exe {
     use fv3_gfdlmp
 
@@ -1764,10 +1795,11 @@ test fv3_wrtGauss_nemsio_c768: fv3_ww3.exe {
     TEST_DESCR="Compare c768 FV3-WW3 Gaussian grid nemsio output results with previous trunk version"
     CNTL_NAME="fv3_wrtGauss_nemsio_c768"
 
-    TASKS='1752'
+    TASKS='640'
     PPN="@[plat%C768_PPN]"
-    INPES='16'
-    JNPES='16'
+    THRD="@[plat%C768_THRD]"
+    INPES='8'
+    JNPES='8'
     NPX='769'
     NPY='769'
     NPZ='64'
@@ -1779,7 +1811,7 @@ test fv3_wrtGauss_nemsio_c768: fv3_ww3.exe {
     FHMAX='06'
     WLCLK='30'
     WRITE_GROUP='3'
-    WRTTASK_PER_GROUP='64'
+    WRTTASK_PER_GROUP='12'
     FDIAG='0,1,2,3,4,5,6,7,8,9,10,11,12'
     OUTPUT_GRID="'gaussian_grid'"
     OUTPUT_FILE="'nemsio'"
@@ -1805,9 +1837,9 @@ test fv3_wrtGauss_nemsio_c768: fv3_ww3.exe {
 
     nems_configure="blocked_atm_wav"
     atm_model='fv3'
-    atm_petlist_bounds="0 1727"
+    atm_petlist_bounds="0 419"
     wav_model='ww3'
-    wav_petlist_bounds="1728 1751"
+    wav_petlist_bounds="420 639"
     coupling_interval_sec=1800.0  # 30min coupling, fv3 time step
 
     # The build variable is the fv3_ww3.exe, which
@@ -1834,6 +1866,7 @@ test fv3_wrtGauss_nemsio_c768: fv3_ww3.exe {
      'nems.configure' <=atparse=   "@[PARMnems]/nems.configure.@[nems_configure].IN"
           'mod_def.*' <=copyfrom=  "@[WW3_input_data]"
       'ww3_multi.inp' <=copyfrom=  "@[WW3_input_data]/@[SYEAR]@[SMONTH]@[SDAY]"
+      'rmp_src*' <=copyfrom=  "@[WW3_input_data]/@[SYEAR]@[SMONTH]@[SDAY]"
     }
 
     # Specify output files:
@@ -1879,7 +1912,9 @@ test fv3_wrtGauss_nemsio_c768: fv3_ww3.exe {
         'RESTART/sfc_data.tile4.nc'             .bitcmp. "@[CNTL]/RESTART/"
         'RESTART/sfc_data.tile5.nc'             .bitcmp. "@[CNTL]/RESTART/"
         'RESTART/sfc_data.tile6.nc'             .bitcmp. "@[CNTL]/RESTART/"
-        'out_grd.glo_30m'                       .bitcmp. "@[CNTL]"
+        'out_grd.glo_10m'                       .bitcmp. "@[CNTL]"
+        'out_grd.ant_9km'                       .bitcmp. "@[CNTL]"
+        'out_grd.aoc_9km'                       .bitcmp. "@[CNTL]"
       # Executable validation.  This makes an MD5 sum of the fv3.exe
       # for comparison against the MD5 sum made in the build job.
       # This is to ensure the executable did not change during the
@@ -1888,7 +1923,7 @@ test fv3_wrtGauss_nemsio_c768: fv3_ww3.exe {
     }
 
     spawn execute {
-        {"@[build%target]", ranks="@[TASKS]", ppn="@[PPN]" }
+        {"@[build%target]", ranks="@[TASKS]", threads="@[THRD]", ppn="@[PPN]" }
     }
 }
 
@@ -2006,6 +2041,7 @@ test fv3_gfdlmprad_32bit_post: fv3_32bit.exe {
          'model_configure' <=atparse=  "@[PARMnems]/model_configure.IN"
                     'itag' <=atparse=  "@[PARMnems]/post_itag"
       'postxconfig-NT.txt' <=atparse=  "@[PARMnems]/postxconfig-NT.txt"
+      'postxconfig-NT_FH00.txt' <=atparse=  "@[PARMnems]/postxconfig-NT_FH00.txt"
     'params_grib2_tbl_new' <=atparse=  "@[PARMnems]/params_grib2_tbl_new"
                        'aerosol.dat' <=copyfrom= "@[FV3_input_data]/INPUT"
         'co2historicaldata_201*.txt' <=copyfrom= "@[FV3_input_data]/INPUT"
@@ -2033,7 +2069,9 @@ test fv3_gfdlmprad_32bit_post: fv3_32bit.exe {
         'phyf024.nemsio'         .bitcmp. "@[CNTL]"
         'dynf000.nemsio'         .bitcmp. "@[CNTL]"
         'dynf024.nemsio'         .bitcmp. "@[CNTL]"
+        'GFSFLX.GrbF00'          .bitcmp. "@[CNTL]"
         'GFSPRS.GrbF00'          .bitcmp. "@[CNTL]"
+        'GFSFLX.GrbF24'          .bitcmp. "@[CNTL]"
         'GFSPRS.GrbF24'          .bitcmp. "@[CNTL]"
         'RESTART/coupler.res'                   .bitcmp. "@[CNTL]/RESTART/"
         'RESTART/fv_core.res.nc'                .bitcmp. "@[CNTL]/RESTART/"
@@ -2089,6 +2127,7 @@ test fv3_iau: fv3.exe {
     FDIAG='3'
     NSTF_NAME='2,0,1,0,5'
     IAU_INC_FILES='fv3_increment.nc'
+    IAU_DRYMASSFIXER='.true.'
 
     CNTL="@[plat%BASELINE]/@[CNTL_NAME]"      # Control baseline area
 
@@ -3172,6 +3211,7 @@ test fv3_csawmg: fv3.exe {
     RUNDIR="@[plat%TMPrt]/@[TEST_NAME]"       # Test work area
     CNTL="@[plat%BASELINE]/@[CNTL_NAME]"      # Control baseline area
     FV3_input_data="@[plat%INPUTS]/FV3_input_data"
+    FV3_input_iccn="@[plat%INPUTS]/FV3_input_data_INCCN_aeroclim"
 
     # The build variable is the fv3.exe or fv3_appbuild.fv3, which
     # provides the path to the build target, md5 sum, and modulefile.
@@ -3188,6 +3228,7 @@ test fv3_csawmg: fv3.exe {
     'model_configure' <=atparse=  "@[PARMnems]/model_configure.IN"
                  'aerosol.dat' <=copyfrom= "@[FV3_input_data]/INPUT"
   'co2historicaldata_201*.txt' <=copyfrom= "@[FV3_input_data]/INPUT"
+      'cam5*.nc' <=copyfrom= "@[FV3_input_iccn]/mg2_IN_CCN"
       'sfc_emissivity_idx.txt' <=copyfrom= "@[FV3_input_data]/INPUT"
    'solarconstant_noaa_an.txt' <=copyfrom= "@[FV3_input_data]/INPUT"
                '*grb'          <=copyfrom= "@[FV3_input_data]"

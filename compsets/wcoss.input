@@ -17,6 +17,8 @@ platform wcoss.phase2 {
     pex='1'
     cores_per_node=24
     cpus_per_core=2
+    C768_PPN=6
+    C768_THRD=1
 
     # WCOSS Phase 2 has been slow of late.
     DEFAULT_TEST_WALLTIME=3000
@@ -26,8 +28,8 @@ platform wcoss.phase2 {
     LONG_TEST_QUEUE='&LONGQ;'
     BUILD_QUEUE='&BUILDQ;'
     MACHINE_ID='wcoss.phase2'
-    BASELINE="/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20191121"
-    BASELINE_TEMPLATE="/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20191121"
+    BASELINE="/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/develop-20200323"
+    BASELINE_TEMPLATE="/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/develop-20200323"
 
     default_resources={
         TASKS=156
@@ -120,9 +122,12 @@ platform wcoss.phase1 {
     pex='1'
     cores_per_node=16
     cpus_per_core=2
+    C768_PPN=6
+    C768_THRD=4
+
     MACHINE_ID='wcoss.phase1'
-    BASELINE="/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20191121"
-    BASELINE_TEMPLATE="/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20191121"
+    BASELINE="/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/develop-20200323"
+    BASELINE_TEMPLATE="/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/develop-20200323"
 
     # WCOSS Phase 2 has been slow of late.
     DEFAULT_TEST_WALLTIME=2700
@@ -197,8 +202,10 @@ platform wcoss_dell_p3 {
     pex='3'
     cores_per_node=28
     cpus_per_core=2
+    C768_PPN=7
+    C768_THRD=4
 
-    DEFAULT_TEST_WALLTIME=1800
+    DEFAULT_TEST_WALLTIME=3000
 
     MPI='LSF_IMPI'
     MACHINE_ID='wcoss_dell_p3'
@@ -206,16 +213,16 @@ platform wcoss_dell_p3 {
     LONG_TEST_QUEUE='&LONGQ;'
     BUILD_QUEUE='&BUILDQ;'
 
-    BASELINE="/gpfs/dell2/emc/modeling/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20191121"
-    BASELINE_TEMPLATE="/gpfs/dell2/emc/modeling/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20191121"
+    BASELINE="/gpfs/dell2/emc/modeling/noscrub/emc.nemspara/RT/NEMSfv3gfs/develop-20200323/"
+    BASELINE_TEMPLATE="/gpfs/dell2/emc/modeling/noscrub/emc.nemspara/RT/NEMSfv3gfs/develop-20200323/"
 
     default_resources={
         TASKS=156
         WRTTASK_PER_GROUP=12
-        TPN=8
+        TPN=6
         INPES=3
         JNPES=8
-        THRD=1
+        THRD=4
         atm_petlist_bounds="0 155"
         wav_petlist_bounds="156 263"
         CPLTASKS=264
@@ -295,6 +302,9 @@ platform wcoss.cray {
     pex='cray'
     cores_per_node=24
     cpus_per_core=2
+    C768_PPN=6
+    C768_THRD=4
+
     MPI='lsf_cray_intel'
     SHORT_TEST_QUEUE='&SHORTQ;'
     LONG_TEST_QUEUE='&LONGQ;'
@@ -304,8 +314,8 @@ platform wcoss.cray {
     BUILD_WALLTIME="3600"
     DEFAULT_TEST_WALLTIME=1800
 
-    BASELINE="/gpfs/hps3/emc/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20191121"
-    BASELINE_TEMPLATE="/gpfs/hps3/emc/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/trunk-20191121"
+    BASELINE="/gpfs/hps3/emc/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/develop-20200323"
+    BASELINE_TEMPLATE="/gpfs/hps3/emc/nems/noscrub/emc.nemspara/RT/NEMSfv3gfs/develop-20200323"
 
     execution_time_modules=[[[
       module load alps
@@ -319,8 +329,8 @@ platform wcoss.cray {
         JNPES=8
         THRD=1
         atm_petlist_bounds="0 149"
-        wav_petlist_bounds="150 263"
-        CPLTASKS=264
+        wav_petlist_bounds="150 191"
+        CPLTASKS=192
     }
     default_stretched_resources={
         TASKS=48
