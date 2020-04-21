@@ -269,8 +269,11 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
   # Re-instantiate COMPILER in case it gets deleted by module purge
   COMPILER=${NEMS_COMPILER:-intel}
 
-  export PYTHONPATH=
-  ECFLOW_START=
+  module load python/2.7.16
+  export PATH=/glade/p/ral/jntp/tools/ecFlow-5.3.1/bin:$PATH
+  export PYTHONPATH=/glade/p/ral/jntp/tools/ecFlow-5.3.1/lib/python2.7/site-packages
+  ECFLOW_START=/glade/p/ral/jntp/tools/ecFlow-5.3.1/bin/ecflow_start.sh
+  ECF_PORT=$(( $(id -u) + 1500 ))
   QUEUE=premium
   PARTITION=
   dprefix=/glade/scratch
@@ -512,6 +515,8 @@ EOF
     QUEUE=batch
   elif [[ $MACHINE_ID = jet.* ]]; then
     QUEUE=batch
+  elif [[ $MACHINE_ID = cheyenne.* ]]; then
+    QUEUE=premium
   else
     die "ecFlow is not supported on this machine $MACHINE_ID"
   fi
