@@ -17,6 +17,7 @@
 
 &diag_manager_nml
        prepend_date = .F.
+       max_output_fields = @[MAX_OUTPUT_FIELDS]
 /
 
 &fms_io_nml
@@ -117,7 +118,8 @@
 &gfs_physics_nml
        fhzero         = 6.
        h2o_phys       = .true.
-       ldiag3d        = .false.
+       ldiag3d        = @[LDIAG3D]
+       qdiag3d        = @[QDIAG3D]
        fhcyc          = @[FHCYC]
        nst_anl        = .true.
        use_ufo        = .true.
