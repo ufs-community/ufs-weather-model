@@ -203,34 +203,35 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   SCHEDULER=slurm
   cp fv3_conf/fv3_slurm.IN_hera fv3_conf/fv3_slurm.IN
 
-elif [[ $MACHINE_ID = theia.* ]]; then
+elif [[ $MACHINE_ID = orion.* ]]; then
 
   source $PATHTR/NEMS/src/conf/module-setup.sh.inc
 
   module use $PATHTR/modulefiles/${MACHINE_ID}
   module load fv3
+  module load gcc/8.3.0
 
   # Re-instantiate COMPILER in case it gets deleted by module purge
   COMPILER=${NEMS_COMPILER:-intel}
 
-  module load rocoto/1.3.0
+  module load rocoto/1.3.1
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
-  export PATH=/scratch4/NCEPDEV/meso/save/Dusan.Jovic/ecflow/bin:$PATH
-  export PYTHONPATH=/scratch4/NCEPDEV/meso/save/Dusan.Jovic/ecflow/lib/python2.7/site-packages
-  ECFLOW_START=/scratch4/NCEPDEV/meso/save/Dusan.Jovic/ecflow/bin/ecflow_start.sh
+  export PATH=/work/noaa/fv3-cam/djovic/ecflow/bin:$PATH
+  export PYTHONPATH=/work/noaa/fv3-cam/djovic/ecflow/lib/python2.7/site-packages
+  ECFLOW_START=/work/noaa/fv3-cam/djovic/ecflow/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
-  QUEUE=debug
+  QUEUE=batch
 #  ACCNR= # detected in detect_machine.sh
-  PARTITION=
-  dprefix=/scratch4/NCEPDEV
-  DISKNM=$dprefix/nems/noscrub/emc.nemspara/RT
-  STMP=$dprefix/stmp4
-  PTMP=$dprefix/stmp3
+  PARTITION=orion
+  dprefix=/work/noaa/stmp/${USER}
+  DISKNM=/work/noaa/fv3-cam/djovic/RT
+  STMP=$dprefix/stmp
+  PTMP=$dprefix/stmp
 
   SCHEDULER=slurm
-  cp fv3_conf/fv3_slurm.IN_theia fv3_conf/fv3_slurm.IN
+  cp fv3_conf/fv3_slurm.IN_orion fv3_conf/fv3_slurm.IN
 
 elif [[ $MACHINE_ID = jet.* ]]; then
 
@@ -307,7 +308,7 @@ mkdir -p ${STMP}/${USER}
 
 # Different own baseline directories for different compilers on Theia/Cheyenne
 NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST
-if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = cheyenne.* ]]; then
+if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]]; then
     NEW_BASELINE=${NEW_BASELINE}_${COMPILER^^}
 fi
 
@@ -321,6 +322,11 @@ ECFLOW=false
 KEEP_RUNDIR=false
 
 TESTS_FILE='rt.conf'
+
+if [[ $MACHINE_ID = orion.* ]]; then                                          
+  TESTS_FILE='rt_orion.conf'                                                
+fi
+
 
 SET_ID='standard'
 while getopts ":cfsl:mkreh" opt; do
@@ -368,7 +374,7 @@ while getopts ":cfsl:mkreh" opt; do
   esac
 done
 
-if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = cheyenne.* ]]; then
+if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]]; then
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200413/${COMPILER^^}}
 else
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200413}
@@ -452,7 +458,7 @@ if [[ $ROCOTO == true ]]; then
     QUEUE=batch
     COMPILE_QUEUE=batch
     ROCOTO_SCHEDULER=slurm
-  elif [[ $MACHINE_ID = theia.* ]]; then
+  elif [[ $MACHINE_ID = orion.* ]]; then
     QUEUE=batch
     COMPILE_QUEUE=batch
     ROCOTO_SCHEDULER=slurm
@@ -508,7 +514,7 @@ EOF
     QUEUE=dev
   elif [[ $MACHINE_ID = hera.* ]]; then
     QUEUE=batch
-  elif [[ $MACHINE_ID = theia.* ]]; then
+  elif [[ $MACHINE_ID = orion.* ]]; then
     QUEUE=batch
   elif [[ $MACHINE_ID = jet.* ]]; then
     QUEUE=batch
@@ -553,7 +559,7 @@ while read -r line; do
       elif [[ $ECFLOW == true ]]; then
         ecflow_create_compile_task
       else
-        ./compile.sh $PATHTR/FV3 $MACHINE_ID "${NEMS_VER}"  $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
+        ./compile.sh $PATHTR/FV3 $MACHINE_ID "${NEMS_VER}" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
         #./compile_cmake.sh $PATHTR $MACHINE_ID "${NEMS_VER}" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
         echo " bash Compile is done"
       fi
