@@ -323,8 +323,8 @@ KEEP_RUNDIR=false
 
 TESTS_FILE='rt.conf'
 
-if [[ $MACHINE_ID = orion.* ]]; then                                          
-  TESTS_FILE='rt_orion.conf'                                                
+if [[ $MACHINE_ID = orion.* ]]; then
+  TESTS_FILE='rt_orion.conf'
 fi
 
 
@@ -375,9 +375,9 @@ while getopts ":cfsl:mkreh" opt; do
 done
 
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200413/${COMPILER^^}}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200422/${COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200413}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200422}
 fi
 
 shift $((OPTIND-1))
