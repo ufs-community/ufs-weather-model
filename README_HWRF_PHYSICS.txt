@@ -40,6 +40,15 @@ ccpp-physics
     git cherry-pick 298d1aed7b2f29ccf624a71be7d9f804eaf9e8ab
     git cherry-pick 5404462a72fe10477595c25baab0ae28fe667f0f
 
+04/13/2020 SAS https://github.com/NCAR/ccpp-physics/pull/423 -> https://github.com/NCAR/ccpp-physics/pull/433
+    (entire PR)
+    --> this PR and other SAS PRs below need to be merged separately
+    into the authoritative repositories, because the answer of some
+    of the IPD and CCPP prod tests change (kept PRs open)
+
+04/16/2020 FA MP updates https://github.com/NCAR/ccpp-physics/pull/405 -> https://github.com/NCAR/ccpp-physics/pull/435
+    (entire PR)
+
 fv3atm
 ------
 
@@ -52,6 +61,12 @@ fv3atm
     git cherry-pick f1cad8833735ce833bc2ed08a318b77c04e3f536
     git cherry-pick d9841c8d353c262c5aa8e0394ab3ed02542ca8f6
     git cherry-pick 3c64b5a3eaa7608edef1d7c91066d4265e442b27
+
+04/13/2020 SAS https://github.com/NOAA-EMC/fv3atm/pull/93 -> https://github.com/NCAR/fv3atm/pull/41
+    (entire PR)
+
+04/16/2020 FA MP updates https://github.com/NCAR/fv3atm/pull/28 -> https://github.com/NCAR/fv3atm/pull/43
+    (entire PR)
 
 ufs-weather-model
 -----------------
@@ -68,3 +83,9 @@ ufs-weather-model
     git cherry-pick c6f51f5090411c737a8d79a27bbf08b8d9b00c28
     git cherry-pick 2a43ab170916fbe60c3d918ff16a510928964e51
     git cherry-pick 73f5dcbc93ae297a6a9880988a8f7a7109f99c2e
+
+04/13/2020 SAS https://github.com/ufs-community/ufs-weather-model/pull/94 -> https://github.com/NCAR/ufs-weather-model/pull/39
+    (entire PR)
+
+04/16/2020 FA MP updates https://github.com/NCAR/ufs-weather-model/pull/41 (replaced https://github.com/NCAR/ufs-weather-model/pull/25)
+
