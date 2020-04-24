@@ -68,6 +68,11 @@ case $(hostname -f) in
   tfe1)                    MACHINE_ID=jet ;; ### jet09
   tfe2)                    MACHINE_ID=jet ;; ### jet10
 
+  Orion-login-1.HPC.MsState.Edu) MACHINE_ID=orion ;; ### orion1
+  Orion-login-2.HPC.MsState.Edu) MACHINE_ID=orion ;; ### orion2
+  Orion-login-3.HPC.MsState.Edu) MACHINE_ID=orion ;; ### orion3
+  Orion-login-4.HPC.MsState.Edu) MACHINE_ID=orion ;; ### orion4
+
   cheyenne1.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne1
   cheyenne2.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne2
   cheyenne3.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne3
@@ -90,8 +95,8 @@ esac
 # Overwrite auto-detect with NEMS_MACHINE if set
 MACHINE_ID=${NEMS_MACHINE:-${MACHINE_ID}}
 
-# For Theia and Cheyenne, append compiler
-if [ $MACHINE_ID = hera ] || [ $MACHINE_ID = cheyenne ] || [ $MACHINE_ID = jet ] || [ $MACHINE_ID = gaea ] || [ $MACHINE_ID = stampede ] ; then
+# Append compiler
+if [ $MACHINE_ID = orion ] || [ $MACHINE_ID = hera ] || [ $MACHINE_ID = cheyenne ] || [ $MACHINE_ID = jet ] || [ $MACHINE_ID = gaea ] || [ $MACHINE_ID = stampede ] ; then
     MACHINE_ID=${MACHINE_ID}.${COMPILER}
 fi
 

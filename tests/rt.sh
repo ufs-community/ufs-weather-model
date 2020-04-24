@@ -195,6 +195,36 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   cp fv3_conf/fv3_slurm.IN_hera fv3_conf/fv3_slurm.IN
   cp fv3_conf/compile_slurm.IN_hera fv3_conf/compile_slurm.IN
 
+elif [[ $MACHINE_ID = orion.* ]]; then
+
+  source $PATHTR/NEMS/src/conf/module-setup.sh.inc
+
+  module use $PATHTR/modulefiles/${MACHINE_ID}
+  module load fv3
+  module load gcc/8.3.0
+
+  # Re-instantiate COMPILER in case it gets deleted by module purge
+  COMPILER=${NEMS_COMPILER:-intel}
+
+  module load rocoto/1.3.1
+  ROCOTORUN=$(which rocotorun)
+  ROCOTOSTAT=$(which rocotostat)
+  ROCOTOCOMPLETE=$(which rocotocomplete)
+  export PATH=/work/noaa/fv3-cam/djovic/ecflow/bin:$PATH
+  export PYTHONPATH=/work/noaa/fv3-cam/djovic/ecflow/lib/python2.7/site-packages
+  ECFLOW_START=/work/noaa/fv3-cam/djovic/ecflow/bin/ecflow_start.sh
+  ECF_PORT=$(( $(id -u) + 1500 ))
+  QUEUE=batch
+#  ACCNR= # detected in detect_machine.sh
+  PARTITION=orion
+  dprefix=/work/noaa/stmp/${USER}
+  DISKNM=/work/noaa/fv3-cam/djovic/RT
+  STMP=$dprefix/stmp
+  PTMP=$dprefix/stmp
+
+  SCHEDULER=slurm
+  cp fv3_conf/fv3_slurm.IN_orion fv3_conf/fv3_slurm.IN
+
 elif [[ $MACHINE_ID = jet.* ]]; then
 
   source $PATHTR/NEMS/src/conf/module-setup.sh.inc
@@ -272,7 +302,7 @@ mkdir -p ${STMP}/${USER}
 
 # Different own baseline directories for different compilers on Theia/Cheyenne
 NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST
-if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = cheyenne.* ]]; then
+if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]]; then
     NEW_BASELINE=${NEW_BASELINE}_${COMPILER^^}
 fi
 
@@ -286,6 +316,11 @@ ECFLOW=false
 KEEP_RUNDIR=false
 
 TESTS_FILE='rt.conf'
+
+if [[ $MACHINE_ID = orion.* ]]; then
+  TESTS_FILE='rt_orion.conf'
+fi
+
 
 SET_ID='standard'
 while getopts ":cfsl:mkreh" opt; do
@@ -333,10 +368,10 @@ while getopts ":cfsl:mkreh" opt; do
   esac
 done
 
-if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = cheyenne.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200413/${COMPILER^^}}
+if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]]; then
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200422/${COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200413}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200422}
 fi
 
 shift $((OPTIND-1))
@@ -399,6 +434,34 @@ if [[ $ROCOTO == true ]]; then
 
   rm -f $ROCOTO_XML $ROCOTO_DB *_lock.db
 
+  if [[ $MACHINE_ID = wcoss ]]; then
+    QUEUE=dev
+    COMPILE_QUEUE=dev
+    ROCOTO_SCHEDULER=lsf
+  elif [[ $MACHINE_ID = wcoss_cray ]]; then
+    QUEUE=dev
+    COMPILE_QUEUE=dev
+    ROCOTO_SCHEDULER=lsfcray
+  elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
+    QUEUE=dev
+    COMPILE_QUEUE=dev_transfer
+    ROCOTO_SCHEDULER=lsf
+  elif [[ $MACHINE_ID = hera.* ]]; then
+    QUEUE=batch
+    COMPILE_QUEUE=batch
+    ROCOTO_SCHEDULER=slurm
+  elif [[ $MACHINE_ID = orion.* ]]; then
+    QUEUE=batch
+    COMPILE_QUEUE=batch
+    ROCOTO_SCHEDULER=slurm
+  elif [[ $MACHINE_ID = jet.* ]]; then
+    QUEUE=batch
+    COMPILE_QUEUE=batch
+    ROCOTO_SCHEDULER=slurm
+  else
+    die "Rocoto is not supported on this machine $MACHINE_ID"
+  fi
+
   cat << EOF > $ROCOTO_XML
 <?xml version="1.0"?>
 <!DOCTYPE workflow
@@ -414,20 +477,6 @@ if [[ $ROCOTO == true ]]; then
   <cycledef>197001010000 197001010000 01:00:00</cycledef>
   <log>&LOG;/workflow.log</log>
 EOF
-
-  if [[ $MACHINE_ID = wcoss ]]; then
-    QUEUE=dev
-  elif [[ $MACHINE_ID = wcoss_cray ]]; then
-    QUEUE=dev
-  elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
-    QUEUE=dev
-  elif [[ $MACHINE_ID = hera.* ]]; then
-    QUEUE=batch
-  elif [[ $MACHINE_ID = jet.* ]]; then
-    QUEUE=batch
-  else
-    die "Rocoto is not supported on this machine $MACHINE_ID"
-  fi
 
 fi
 
@@ -456,6 +505,8 @@ EOF
   elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
     QUEUE=dev
   elif [[ $MACHINE_ID = hera.* ]]; then
+    QUEUE=batch
+  elif [[ $MACHINE_ID = orion.* ]]; then
     QUEUE=batch
   elif [[ $MACHINE_ID = jet.* ]]; then
     QUEUE=batch
@@ -514,7 +565,7 @@ EOF
       elif [[ $ECFLOW == true ]]; then
         ecflow_create_compile_task
       else
-        ./compile.sh $PATHTR/FV3 $MACHINE_ID "${NEMS_VER}"  $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
+        ./compile.sh $PATHTR/FV3 $MACHINE_ID "${NEMS_VER}" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
         #./compile_cmake.sh $PATHTR $MACHINE_ID "${NEMS_VER}" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
         echo " bash Compile is done"
       fi
