@@ -29,11 +29,11 @@ usage() {
 
 rt_trap() {
   [[ ${ROCOTO:-false} == true ]] && rocoto_kill
+  [[ ${ECFLOW:-false} == true ]] && ecflow_stop
   cleanup
 }
 
 cleanup() {
-  [[ ${ECFLOW:-false} == true ]] && ecflow_stop
   rm -rf ${LOCKDIR}
   trap 0
   exit
@@ -215,6 +215,7 @@ elif [[ $MACHINE_ID = orion.* ]]; then
   ECFLOW_START=/work/noaa/fv3-cam/djovic/ecflow/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
   QUEUE=batch
+  COMPILE_QUEUE=batch
 #  ACCNR= # detected in detect_machine.sh
   PARTITION=orion
   dprefix=/work/noaa/stmp/${USER}
@@ -224,6 +225,7 @@ elif [[ $MACHINE_ID = orion.* ]]; then
 
   SCHEDULER=slurm
   cp fv3_conf/fv3_slurm.IN_orion fv3_conf/fv3_slurm.IN
+  cp fv3_conf/compile_slurm.IN_orion fv3_conf/compile_slurm.IN
 
 elif [[ $MACHINE_ID = jet.* ]]; then
 

@@ -125,7 +125,7 @@ if [[ "${MAKE_OPT}" == *"CCPP=Y"* ]]; then
     echo "Compiling suites ${SUITES}"
     set -ex
     cd ${PATHTR}
-    ./FV3/ccpp/framework/scripts/ccpp_prebuild.py --config=FV3/ccpp/config/ccpp_prebuild_config.py --suites=${SUITES} --builddir=tests/${BUILD_DIR}/FV3
+    ./FV3/ccpp/framework/scripts/ccpp_prebuild.py --config=FV3/ccpp/config/ccpp_prebuild_config.py --suites=${SUITES} --builddir=${BUILD_DIR}/FV3
   )
 
   # Read list of schemes, caps, and static API
