@@ -1,6 +1,6 @@
 ## NEMS configuration file
 ##
-## Platform: SuperMUC Phase2
+## Platform: Hera
 ## Compiler: Intel with IntelMPI
 
 SHELL=/bin/sh
@@ -10,26 +10,6 @@ SHELL=/bin/sh
 
 ifdef InNemsMakefile
 include $(TOP)/conf/configure.nems.NUOPC
-endif
-
-###################### PHYS_MODE ##### CHEM_MODE ###############################
-#
-#
-#
-
-PHYS_MODE       =compile
-CHEM_MODE       =compile
-ifeq ($(PHYS_MODE),compile)
-       PHYS_LIB = $(TOP)/atmos/gsm/gsmphys
-       PHYS_INC = $(TOP)/atmos/gsm/gsmphys
-       PHYS_DIR = $(TOP)/atmos/gsm/gsmphys
-endif
-ifeq ($(CHEM_MODE),compile)
-        CHEM_LIB = $(TOP)/chem
-        CHEM_INC = $(TOP)/chem/gocart/src/Config/
-        CHEM_DIR = $(TOP)/chem
-       CHEM_MOD = $(TOP)/chem/gocart/${ARCH}/include
-      ESMADIR = chem/gocart
 endif
 
 ############
@@ -52,13 +32,12 @@ AVX2 = Y
 HYDRO = N
 CCPP = N
 STATIC = N
-SION = N
 
 include       $(ESMFMKFILE)
 ESMF_INC    = $(ESMF_F90COMPILEPATHS)
 
 NEMSIOINC = -I$(NEMSIO_INC)
-NCEPLIBS = $(NEMSIO_LIB) $(BACIO_LIB4) $(SP_LIBd) $(W3EMC_LIBd) $(W3NCO_LIBd)
+NCEPLIBS = $(POST_LIB) $(NEMSIO_LIB) $(G2_LIB4) $(G2TMPL_LIB) $(BACIO_LIB4) $(SP_LIBd) $(W3EMC_LIBd) $(W3NCO_LIBd) $(CRTM_LIB) $(PNG_LIB) $(JASPER_LIB) $(Z_LIB)
 
 ##############################################
 # Need to use at least GNU Make version 3.81 #
@@ -69,18 +48,22 @@ ifneq ($(need),$(ok))
 $(error Need at least make version $(need).  Load module gmake/3.81)
 endif
 
-NETCDF_ROOT = $(NETCDF_BASE)
-# NETCDF_INC defined by module
-INCLUDE = $(NETCDF_INC)
-NETCDF_LIB += $(NETCDF_F90_SHLIB)
+NETCDF_ROOT = $(NETCDF)
+INCLUDE = -I$(NETCDF_ROOT)/include
+NETCDF_INC = -I$(NETCDF_ROOT)/include
+ifneq ($(findstring netcdf/4,$(LOADEDMODULES)),)
+  NETCDF_LIB += -L$(NETCDF)/lib -lnetcdff -lnetcdf
+else
+  NETCDF_LIB = -L$(NETCDF)/lib -lnetcdff -lnetcdf
+endif
 
 FPPFLAGS := -fpp -Wp,-w $(INCLUDE)
-CFLAGS := $(INCLUDE) -g -traceback
+CFLAGS := $(INCLUDE)
 
-FFLAGS := $(INCLUDE) -fno-alias -auto -safe-cray-ptr -save-temps -ftz -assume byterecl -nowarn -sox -align array64byte -g -traceback
+FFLAGS := $(INCLUDE) -fno-alias -auto -safe-cray-ptr -save-temps -ftz -assume byterecl -nowarn -sox -align array64byte
 
-CPPDEFS += -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP
-CPPDEFS += -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_INLINE_POST
+CPPDEFS += -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP
+CPPDEFS += -DNEW_TAUCTMAX -DINTERNAL_FILE_NML
 
 ifeq ($(HYDRO),Y)
 CPPDEFS +=
@@ -108,12 +91,19 @@ FFLAGS += -qno-opt-dynamic-align
 CFLAGS += -qno-opt-dynamic-align
 else
 ifeq ($(AVX2),Y)
+# Don't use the AVX512 flags yet on hera
+#FFLAGS += -axSSE4.2,AVX,CORE-AVX2,CORE-AVX512 -qno-opt-dynamic-align
+#CFLAGS += -axSSE4.2,AVX,CORE-AVX2,CORE-AVX512 -qno-opt-dynamic-align
 FFLAGS += -xCORE-AVX2 -qno-opt-dynamic-align
 CFLAGS += -xCORE-AVX2 -qno-opt-dynamic-align
 else
-FFLAGS += -xHOST -qno-opt-dynamic-align
-CFLAGS += -xHOST -qno-opt-dynamic-align
+FFLAGS += -qno-opt-dynamic-align
+CFLAGS += -qno-opt-dynamic-align
 endif
+endif
+
+ifeq ($(MULTI_GASES),Y)
+CPPDEFS += -DMULTI_GASES
 endif
 
 FFLAGS_OPT = -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3
@@ -188,16 +178,10 @@ LDFLAGS += -L$(PATH_CCPP)/lib -lccpp
 endif
 endif
 
-ifeq ($(SION),Y)
-CPPDEFS += -DSION
-CFLAGS += $(SIONLIB_INC)
-FFLAGS += $(SIONLIB_INC)
-endif
-
 LDFLAGS += $(LIBS)
 
 ifdef InNemsMakefile
 FFLAGS += $(ESMF_INC)
 CPPFLAGS += -traditional
-EXTLIBS = $(NCEPLIBS) $(ESMF_LIB) $(LDFLAGS) $(NETCDF_LIB) $(SIONLIB_LIB)
+EXTLIBS = $(NCEPLIBS) $(ESMF_LIB) $(LDFLAGS) $(NETCDF_LIB)
 endif

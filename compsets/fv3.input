@@ -92,7 +92,7 @@ build fv3.exe {
 }
 
 build fv3_ccpp_control.exe {
-    # This block builds the FV3 with CCPP in static mode for the control setup.
+    # This block builds the FV3 with CCPP for the control setup.
     # It is otherwise identical to the fv3.exe block.
     use plat
 
@@ -106,7 +106,7 @@ build fv3_ccpp_control.exe {
     # build: script to build the NEMS.x.  For now, this is an embedded
     # bash script.
     build=compile.sh(fv3="@[target]",modules="@[modules.nems]",md5="@[md5sum]",
-                     MAKE_OPTS="\'CCPP=Y STATIC=Y SUITES=FV3_GFS_2017\'")
+                     MAKE_OPTS="\'CCPP=Y SUITES=FV3_GFS_2017\'")
 }
 
 build fv3_32bit.exe {
@@ -3211,6 +3211,7 @@ test fv3_csawmg: fv3.exe {
     RUNDIR="@[plat%TMPrt]/@[TEST_NAME]"       # Test work area
     CNTL="@[plat%BASELINE]/@[CNTL_NAME]"      # Control baseline area
     FV3_input_data="@[plat%INPUTS]/FV3_input_data"
+    FV3_input_iccn="@[plat%INPUTS]/FV3_input_data_INCCN_aeroclim"
 
     # The build variable is the fv3.exe or fv3_appbuild.fv3, which
     # provides the path to the build target, md5 sum, and modulefile.
@@ -3227,6 +3228,7 @@ test fv3_csawmg: fv3.exe {
     'model_configure' <=atparse=  "@[PARMnems]/model_configure.IN"
                  'aerosol.dat' <=copyfrom= "@[FV3_input_data]/INPUT"
   'co2historicaldata_201*.txt' <=copyfrom= "@[FV3_input_data]/INPUT"
+      'cam5*.nc' <=copyfrom= "@[FV3_input_iccn]/mg2_IN_CCN"
       'sfc_emissivity_idx.txt' <=copyfrom= "@[FV3_input_data]/INPUT"
    'solarconstant_noaa_an.txt' <=copyfrom= "@[FV3_input_data]/INPUT"
                '*grb'          <=copyfrom= "@[FV3_input_data]"

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.0)
 
 foreach(env_var IN ITEMS
          CMAKE_C_COMPILER CMAKE_CXX_COMPILER CMAKE_Fortran_COMPILER
@@ -13,7 +13,9 @@ set(CMAKE_CXX_COMPILER $ENV{CMAKE_CXX_COMPILER})
 set(CMAKE_Fortran_COMPILER $ENV{CMAKE_Fortran_COMPILER})
 set(CMAKE_Platform $ENV{CMAKE_Platform})
 
-project(NEMSfv3gfs C CXX Fortran)
+project(ufs-weather-model
+        VERSION 1.0
+        LANGUAGES C CXX Fortran)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 find_package(MPI REQUIRED)
@@ -151,6 +153,9 @@ if(WW3)
   set(WW3_COMP ${CMAKE_Platform})
   if(${CMAKE_Platform} STREQUAL "hera.intel")
     set(WW3_COMP "hera")
+  endif()
+  if(${CMAKE_Platform} STREQUAL "orion.intel")
+    set(WW3_COMP "orion")
   endif()
   message("Build WW3:")
   message("   run: ${CMAKE_BUILD_TOOL} WW3_PARCOMPN=4 WW3_COMP=${WW3_COMP} ww3_nems")
