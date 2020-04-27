@@ -43,6 +43,30 @@ add_definitions(-DUSE_COND)
 add_definitions(-DNEW_TAUCTMAX)
 add_definitions(-DINTERNAL_FILE_NML)
 
+if(CCPP)
+
+    if(NOT DEFINED CCPP_SUITES)
+      set(CCPP_SUITES "FV3_GFS_2017_gfdlmp")
+    endif()
+    message("Configuring CCPP for SUITES = ${CCPP_SUITES}")
+
+    execute_process(COMMAND FV3/ccpp/framework/scripts/ccpp_prebuild.py
+                            "--config=FV3/ccpp/config/ccpp_prebuild_config.py"
+                            "--suites=${CCPP_SUITES}"
+                            "--builddir=${PROJECT_BINARY_DIR}/FV3"
+                    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+                   )
+
+    include(${PROJECT_BINARY_DIR}/FV3/ccpp/physics/CCPP_SCHEMES.cmake)
+    include(${PROJECT_BINARY_DIR}/FV3/ccpp/physics/CCPP_CAPS.cmake)
+    include(${PROJECT_BINARY_DIR}/FV3/ccpp/physics/CCPP_TYPEDEFS.cmake)
+
+    set(ENV{CCPP_SCHEMES} "${SCHEMES}")
+    set(ENV{CCPP_CAPS} "${CAPS}")
+    set(ENV{CCPP_TYPEDEFS} "${TYPEDEFS}")
+
+endif()
+
 ###############################################################################
 ### FMS
 ###############################################################################
