@@ -1422,6 +1422,19 @@ test fv3_wrtGauss_netcdf: fv3.exe {
     }
 }
 
+test fv3_wrtGlatlon_netcdf: fv3.exe {
+    use fv3_wrtGauss_netcdf
+
+    TEST_DESCR="Compare FV3 global latlon grid netcdf output results with previous trunk version"
+    CNTL_NAME="fv3_wrtGlatlon_netcdf"
+
+    OUTPUT_GRID="'global_latlon'"
+
+    COM="@[plat%COMrt]/@[TEST_NAME]"          # Test result area
+    RUNDIR="@[plat%TMPrt]/@[TEST_NAME]"       # Test work area
+    CNTL="@[plat%BASELINE]/@[CNTL_NAME]"      # Control baseline area
+}
+
 ########################################################################
 
 test fv3_satmedmf: fv3.exe {
@@ -1432,6 +1445,7 @@ test fv3_satmedmf: fv3.exe {
 
     SATMEDMF='.true.'
     HYBEDMF='.false.'
+    DT_ATMOS=1200
     OUTPUT_GRID="'gaussian_grid'"
     OUTPUT_FILE="'nemsio'"
     WRITE_NEMSIOFLIP='.true.'
