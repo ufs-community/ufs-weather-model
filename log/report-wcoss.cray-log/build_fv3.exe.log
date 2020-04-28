@@ -1,14 +1,14 @@
-Apr 26 04:26:57 2020 27005 7 9.1.3 jobSetupStatus: job additionalInfo reservation_id=727647
+Apr 27 18:06:26 2020 37967 7 9.1.3 jobSetupStatus: job additionalInfo reservation_id=744317
 + [[ fv3.exe == fv3_ww3.exe ]]
 + [[ fv3.exe == fv3.exe ]]
-+ rm -f /gpfs/hps/ptmp/Jun.Wang/rtgen.3015/exec/fv3.exe
-+ modules=/gpfs/hps/ptmp/Jun.Wang/rtgen.3015/include/modules.fv3
++ rm -f /gpfs/hps/ptmp/Jun.Wang/rtgen.47734/exec/fv3.exe
++ modules=/gpfs/hps/ptmp/Jun.Wang/rtgen.47734/include/modules.fv3
 + BUILD_NR=
-+ fv3=/gpfs/hps/ptmp/Jun.Wang/rtgen.3015/exec/fv3.exe
++ fv3=/gpfs/hps/ptmp/Jun.Wang/rtgen.47734/exec/fv3.exe
 + MAKE_OPTS=' '
-+ md5=/gpfs/hps/ptmp/Jun.Wang/rtgen.3015/exec/fv3.exe.md5
++ md5=/gpfs/hps/ptmp/Jun.Wang/rtgen.47734/exec/fv3.exe.md5
 + cd /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/tests/
-+ rm -f /gpfs/hps/ptmp/Jun.Wang/rtgen.3015/exec/fv3.exe /gpfs/hps/ptmp/Jun.Wang/rtgen.3015/include/modules.fv3
++ rm -f /gpfs/hps/ptmp/Jun.Wang/rtgen.47734/exec/fv3.exe /gpfs/hps/ptmp/Jun.Wang/rtgen.47734/include/modules.fv3
 + module load alps
 ++ /opt/modules/3.2.10.3/bin/modulecmd bash load alps
 + eval CRAY_ALPS_INCLUDE_OPTS=-I/opt/cray/alps/5.2.4-2.0502.9822.32.1.ari/include ';export' 'CRAY_ALPS_INCLUDE_OPTS;CRAY_ALPS_POST_LINK_OPTS=-L/opt/cray/alps/5.2.4-2.0502.9822.32.1.ari/lib64' ';export' 'CRAY_ALPS_POST_LINK_OPTS;CRAY_LD_LIBRARY_PATH=/opt/cray/alps/5.2.4-2.0502.9822.32.1.ari/lib64' ';export' 'CRAY_LD_LIBRARY_PATH;LOADEDMODULES=xt-lsfhpc/9.1.3:rocoto/1.3.0rc2:emc-utils/1.0.0:alps/5.2.4-2.0502.9822.32.1.ari' ';export' 'LOADEDMODULES;MANPATH=/opt/cray/alps/5.2.4-2.0502.9822.32.1.ari/man:/gpfs/hps/usrx/local/emc_rocoto/1.3.0rc2/man:/gpfs/slsf/xt-lsfhpc/9.1/man:/opt/cray/share/man:/usr/local/man:/usr/share/man:/opt/cray/share/man:/cm/local/apps/environment-modules/current/share/man' ';export' 'MANPATH;PATH=/opt/cray/alps/5.2.4-2.0502.9822.32.1.ari/sbin:/opt/cray/alps/5.2.4-2.0502.9822.32.1.ari/bin:/gpfs/slsf/xt-lsfhpc/9.1/linux2.6-glibc2.3-x86_64-cray/bin:/gpfs/hps3/emc/hwrf/noscrub/soft/emc-utils/bin:/gpfs/hps/usrx/local/emc_rocoto/1.3.0rc2/bin:/gpfs/slsf/xt-lsfhpc/9.1/linux2.6-glibc2.3-x86_64-cray/etc:/u/Jun.Wang/bin:/usr/local/bin:/usr/bin:/bin:/usr/bin/X11:/usr/X11R6/bin:/usr/games:/opt/bin:/usr/lib/mit/bin:/usr/lib/mit/sbin:/sbin:/usr/sbin:.:/usr/lib/qt3/bin:.:/gpfs/gd1/emc/global/save/Jun.Wang:/gpfs/gd1/emc/nems/save/Jun.Wang:/gpfs/gd1/emc/global/save/Jun.Wang/CCS/grdscr:/usrx/local/intel/mkl/lib/intel64:/nwprod/util/exec:/u/Jun.Wang/bin/nemsio_util:/gpfs/hps/nco/ops/nwprod/grib_util.v1.0.2:/u/Jun.Wang/bin/wgrib2/grib2/wgrib2' ';export' 'PATH;PE_PRODUCT_LIST=CRAY_ALPS' ';export' 'PE_PRODUCT_LIST;PKG_CONFIG_PATH=/opt/cray/alps/5.2.4-2.0502.9822.32.1.ari/lib64/pkgconfig' ';export' 'PKG_CONFIG_PATH;_LMFILES_=/opt/modulefiles/xt-lsfhpc/9.1.3:/usrx/local/emc_rocoto/modulefiles/rocoto/1.3.0rc2:/gpfs/hps3/emc/hwrf/noscrub/soft/modulefiles/emc-utils/1.0.0:/opt/cray/ari/modulefiles/alps/5.2.4-2.0502.9822.32.1.ari' ';export' '_LMFILES_;'
@@ -50,15 +50,20 @@ Apr 26 04:26:57 2020 27005 7 9.1.3 jobSetupStatus: job additionalInfo reservatio
 + readonly clean_after=YES
 + clean_after=YES
 + hostname
+nid00604
 + echo 'Compiling  into fv3.exe on wcoss_cray'
 + gnu_make=gmake
+Compiling  into fv3.exe on wcoss_cray
 + which gmake
+/usr/bin/gmake
 + [[ wcoss_cray == cheyenne.* ]]
 + [[ wcoss_cray == stampede.* ]]
 + MAKE_THREADS=8
 + [[ 8 -gt 1 ]]
 + echo Using '$MAKE_THREADS=8' threads to build FV3 and FMS.
 + echo Consider reducing '$MAKE_THREADS' if you hit memory or process limits.
+Using $MAKE_THREADS=8 threads to build FV3 and FMS.
+Consider reducing $MAKE_THREADS if you hit memory or process limits.
 + gnu_make='gmake -j 8'
 + cd /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/../NEMS
 + COMPONENTS=FMS,FV3
@@ -70,14 +75,10 @@ Apr 26 04:26:57 2020 27005 7 9.1.3 jobSetupStatus: job additionalInfo reservatio
 + NEMS_BUILDOPT=
 + '[' YES = YES ']'
 + gmake -j 8 -k COMPONENTS=FMS,FV3 TEST_BUILD_NAME=fv3 BUILD_ENV=wcoss_cray FV3_MAKEOPT= NEMS_BUILDOPT= distclean
-nid00058
-Compiling  into fv3.exe on wcoss_cray
-/usr/bin/gmake
-Using $MAKE_THREADS=8 threads to build FV3 and FMS.
-Consider reducing $MAKE_THREADS if you hit memory or process limits.
 Will copy modules.nems and NEMS.x as fv3 under tests/
 NOTE: Skipping appbuilder.mk creation; no appbuilder file in use.
 echo 'FMS FV3' > "/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/NEMS/src/conf/components.mk"
+NEMS_BUILDOPT IS 
 Adding FV3 makeopts to FMS makeopts
 cat /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/fv3gfs/makefile | sed 's,^include,#include,g'   \
 	  > /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/fv3gfs/makefile.temp.clean
@@ -207,6 +208,7 @@ rm -f /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather
 Will copy modules.nems and NEMS.x as fv3 under tests/
 NOTE: Skipping appbuilder.mk creation; no appbuilder file in use.
 echo 'FMS FV3' > "/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/NEMS/src/conf/components.mk"
+NEMS_BUILDOPT IS 
 Adding FV3 makeopts to FMS makeopts
 cp /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/modulefiles/wcoss_cray/fv3 /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/NEMS/src/conf/modules.nems
 set -xe ; cp "/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/NEMS/src/conf/modules.nems" "/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/tests/modules.fv3"
@@ -292,17 +294,17 @@ Using 8-byte addressing
 Using pure routines.
 Using allocatable derived type array members.
 Using 8-byte addressing
+Using pure routines.
 Using cray pointers.
+Using allocatable derived type array members.
+Using cray pointers.
+Using 8-byte addressing
 Using pure routines.
 Using allocatable derived type array members.
 Using cray pointers.
 Using 8-byte addressing
-Using 8-byte addressing
-Using pure routines.
 Using pure routines.
 Using allocatable derived type array members.
-Using allocatable derived type array members.
-Using cray pointers.
 Using cray pointers.
 Using 8-byte addressing
 Using pure routines.
@@ -421,30 +423,30 @@ Using pure routines.
 Using allocatable derived type array members.
 Using cray pointers.
 ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../include -I../mpp/include -I../fms  -c ../random_numbers/random_numbers.F90 -o ../random_numbers/random_numbers.o
-ftn -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../include -I../mpp/include -I../fms  -c ../oda_tools/xbt_drop_rate_adjust.f90 -o ../oda_tools/xbt_drop_rate_adjust.o
 Using 8-byte addressing
 Using pure routines.
 Using allocatable derived type array members.
 Using cray pointers.
+ftn -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../include -I../mpp/include -I../fms  -c ../oda_tools/xbt_drop_rate_adjust.f90 -o ../oda_tools/xbt_drop_rate_adjust.o
 ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../include -I../mpp/include -I../fms  -c ../horiz_interp/horiz_interp.F90 -o ../horiz_interp/horiz_interp.o
 ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../include -I../mpp/include -I../fms  -c ../diag_manager/diag_manifest.F90 -o ../diag_manager/diag_manifest.o
 ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../include -I../mpp/include -I../fms  -c ../diag_manager/diag_axis.F90 -o ../diag_manager/diag_axis.o
-ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../include -I../mpp/include -I../fms  -c ../field_manager/fm_util.F90 -o ../field_manager/fm_util.o
-ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../include -I../mpp/include -I../fms  -c ../oda_tools/oda_core.F90 -o ../oda_tools/oda_core.o
-ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../include -I../mpp/include -I../fms  -c ../tracer_manager/tracer_manager.F90 -o ../tracer_manager/tracer_manager.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../include -I../mpp/include -I../fms  -c ../oda_tools/oda_core_ecda.F90 -o ../oda_tools/oda_core_ecda.o
 Using 8-byte addressing
 Using pure routines.
 Using allocatable derived type array members.
 Using cray pointers.
-ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../include -I../mpp/include -I../fms  -c ../oda_tools/oda_core_ecda.F90 -o ../oda_tools/oda_core_ecda.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../include -I../mpp/include -I../fms  -c ../field_manager/fm_util.F90 -o ../field_manager/fm_util.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../include -I../mpp/include -I../fms  -c ../oda_tools/oda_core.F90 -o ../oda_tools/oda_core.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../include -I../mpp/include -I../fms  -c ../tracer_manager/tracer_manager.F90 -o ../tracer_manager/tracer_manager.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../include -I../mpp/include -I../fms  -c ../amip_interp/amip_interp.F90 -o ../amip_interp/amip_interp.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../include -I../mpp/include -I../fms  -c ../time_interp/time_interp_external.F90 -o ../time_interp/time_interp_external.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../include -I../mpp/include -I../fms  -c ../topography/topography.F90 -o ../topography/topography.o
 ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../include -I../mpp/include -I../fms  -c ../diag_manager/diag_output.F90 -o ../diag_manager/diag_output.o
 Using 8-byte addressing
 Using pure routines.
 Using allocatable derived type array members.
 Using cray pointers.
-ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../include -I../mpp/include -I../fms  -c ../amip_interp/amip_interp.F90 -o ../amip_interp/amip_interp.o
-ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../include -I../mpp/include -I../fms  -c ../time_interp/time_interp_external.F90 -o ../time_interp/time_interp_external.o
-ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../include -I../mpp/include -I../fms  -c ../topography/topography.F90 -o ../topography/topography.o
 Using 8-byte addressing
 Using pure routines.
 Using allocatable derived type array members.
@@ -783,22 +785,22 @@ ftn -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-pt
 ftn -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -I../cpl  -c physics/module_nst_model.f90 -o physics/module_nst_model.o
 ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -DNEW_TAUCTMAX -DSMALL_PE -DNEMS_GSM -DINTERNAL_FILE_NML -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -I../cpl  -c physics/cldmacro.F -o physics/cldmacro.o
 ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -DNEW_TAUCTMAX -DSMALL_PE -DNEMS_GSM -DINTERNAL_FILE_NML -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -I../cpl  -c physics/cldwat2m_micro.F -o physics/cldwat2m_micro.o
-ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -DNEW_TAUCTMAX -DSMALL_PE -DNEMS_GSM -DINTERNAL_FILE_NML -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -I../cpl  -c physics/cires_ugwp_solvers.F90 -o physics/cires_ugwp_solvers.o
-ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -DNEW_TAUCTMAX -DSMALL_PE -DNEMS_GSM -DINTERNAL_FILE_NML -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -I../cpl  -c physics/cires_vert_lsatdis.F90 -o physics/cires_vert_lsatdis.o
-ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -DNEW_TAUCTMAX -DSMALL_PE -DNEMS_GSM -DINTERNAL_FILE_NML -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -I../cpl  -c physics/cires_vert_orodis.F90 -o physics/cires_vert_orodis.o
-ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -DNEW_TAUCTMAX -DSMALL_PE -DNEMS_GSM -DINTERNAL_FILE_NML -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -I../cpl  -c physics/cires_vert_wmsdis.F90 -o physics/cires_vert_wmsdis.o
 ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -DNEW_TAUCTMAX -DSMALL_PE -DNEMS_GSM -DINTERNAL_FILE_NML -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -I../cpl  -c physics/micro_mg2_0.F90 -o physics/micro_mg2_0.o
 ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -DNEW_TAUCTMAX -DSMALL_PE -DNEMS_GSM -DINTERNAL_FILE_NML -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -I../cpl  -c physics/micro_mg3_0.F90 -o physics/micro_mg3_0.o
 ftn -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -I../cpl  -c physics/ugwp_driver_v0.f -o physics/ugwp_driver_v0.o
 ftn -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -I../cpl  -c physics/sfc_nst.f -o physics/sfc_nst.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -DNEW_TAUCTMAX -DSMALL_PE -DNEMS_GSM -DINTERNAL_FILE_NML -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -I../cpl  -c physics/cires_ugwp_solvers.F90 -o physics/cires_ugwp_solvers.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -DNEW_TAUCTMAX -DSMALL_PE -DNEMS_GSM -DINTERNAL_FILE_NML -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -I../cpl  -c physics/cires_vert_lsatdis.F90 -o physics/cires_vert_lsatdis.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -DNEW_TAUCTMAX -DSMALL_PE -DNEMS_GSM -DINTERNAL_FILE_NML -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -I../cpl  -c physics/cires_vert_orodis.F90 -o physics/cires_vert_orodis.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -DNEW_TAUCTMAX -DSMALL_PE -DNEMS_GSM -DINTERNAL_FILE_NML -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -I../cpl  -c physics/cires_vert_wmsdis.F90 -o physics/cires_vert_wmsdis.o
 ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -DNEW_TAUCTMAX -DSMALL_PE -DNEMS_GSM -DINTERNAL_FILE_NML -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -I../cpl  -c physics/m_micro_driver.F90 -o physics/m_micro_driver.o
 cc -E -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -DNEW_TAUCTMAX -DSMALL_PE -DNEMS_GSM -DINTERNAL_FILE_NML  GFS_layer/GFS_radiation_driver.F90 > GFS_layer/GFS_radiation_driver.tmp.f90
 ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -DNEW_TAUCTMAX -DSMALL_PE -DNEMS_GSM -DINTERNAL_FILE_NML -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -I../cpl  -c physics/gcycle.F90 -o physics/gcycle.o
 ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -DNEW_TAUCTMAX -DSMALL_PE -DNEMS_GSM -DINTERNAL_FILE_NML -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -I../cpl  -c physics/GFS_debug.F90 -o physics/GFS_debug.o
 ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -DNEW_TAUCTMAX -DSMALL_PE -DNEMS_GSM -DINTERNAL_FILE_NML -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -I../cpl  -O0 -c GFS_layer/GFS_diagnostics.F90 -o GFS_layer/GFS_diagnostics.o
 cc -E -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -DNEW_TAUCTMAX -DSMALL_PE -DNEMS_GSM -DINTERNAL_FILE_NML  GFS_layer/GFS_physics_driver.F90 > GFS_layer/GFS_physics_driver.tmp.f90
-ftn -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -I../cpl  -c GFS_layer/GFS_physics_driver.tmp.f90 -o GFS_layer/GFS_physics_driver.o
 ftn -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -I../cpl  -c GFS_layer/GFS_radiation_driver.tmp.f90 -o GFS_layer/GFS_radiation_driver.o
+ftn -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -I../cpl  -c GFS_layer/GFS_physics_driver.tmp.f90 -o GFS_layer/GFS_physics_driver.o
 ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -DNEW_TAUCTMAX -DSMALL_PE -DNEMS_GSM -DINTERNAL_FILE_NML -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -I../cpl  -c GFS_layer/GFS_restart.F90 -o GFS_layer/GFS_restart.o
 ftn -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -I../cpl  -c physics/rad_initialize.f -o physics/rad_initialize.o
 cc -E -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -DNEW_TAUCTMAX -DSMALL_PE -DNEMS_GSM -DINTERNAL_FILE_NML  GFS_layer/GFS_driver.F90 > GFS_layer/GFS_driver.tmp.f90
@@ -963,8 +965,8 @@ gmake -C ipd                  FMS_DIR=/gpfs/hps3/emc/global/noscrub/Jun.Wang/nem
 
 Build standalone FV3 gfsphysics ...
 
-makefile:54: depend: No such file or directory
 gmake[2]: Entering directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/ipd'
+makefile:54: depend: No such file or directory
 Building dependencies ...
 gmake[2]: Leaving directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/ipd'
 
@@ -1124,8 +1126,8 @@ gmake -C ../stochastic_physics   FMS_DIR=/gpfs/hps3/emc/global/noscrub/Jun.Wang/
 
 Build standalone FV3 stochastic_physics ...
 
-makefile:86: depend: No such file or directory
 gmake[2]: Entering directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/stochastic_physics'
+makefile:86: depend: No such file or directory
 Building dependencies ...
 gmake[2]: Leaving directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/stochastic_physics'
 
@@ -1159,8 +1161,8 @@ ftn -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-pt
 ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../FV3/gfsphysics/ -I../FV3/atmos_cubed_sphere -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -I../FV3/namphysics  -c getcon_spectral.F90 -o getcon_spectral.o
 ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../FV3/gfsphysics/ -I../FV3/atmos_cubed_sphere -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -I../FV3/namphysics  -c initialize_spectral_mod.F90 -o initialize_spectral_mod.o
 ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../FV3/gfsphysics/ -I../FV3/atmos_cubed_sphere -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -I../FV3/namphysics  -c stochy_data_mod.F90 -o stochy_data_mod.o
-ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../FV3/gfsphysics/ -I../FV3/atmos_cubed_sphere -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -I../FV3/namphysics  -c get_stochy_pattern.F90 -o get_stochy_pattern.o
 ftn -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../FV3/gfsphysics/ -I../FV3/atmos_cubed_sphere -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -I../FV3/namphysics  -c cellular_automata.f90 -o cellular_automata.o
+ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../FV3/gfsphysics/ -I../FV3/atmos_cubed_sphere -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -I../FV3/namphysics  -c get_stochy_pattern.F90 -o get_stochy_pattern.o
 ftn -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF -DMOIST_CAPPA -DUSE_COND -DOPENMP -fpp -Wp,-w -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I../FV3/gfsphysics/ -I../FV3/atmos_cubed_sphere -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -I../FV3/namphysics  -c stochastic_physics.F90 -o stochastic_physics.o
 ar rv libstochastic_physics.a stochy_gg_def.o stochy_resol_def.o stochy_layout_lag.o four_to_grid_stochy.o glats_stochy.o sumfln_stochy.o gozrineo_stochy.o num_parthds_stochy.o get_ls_node_stochy.o get_lats_node_a_stochy.o setlats_a_stochy.o setlats_lag_stochy.o epslon_stochy.o getcon_lag_stochy.o pln2eo_stochy.o dozeuv_stochy.o dezouv_stochy.o cellular_automata.o update_ca.o plumes.o spectral_layout.o getcon_spectral.o stochy_namelist_def.o compns_stochy.o stochy_internal_state_mod.o stochastic_physics.o stochy_patterngenerator.o stochy_data_mod.o get_stochy_pattern.o initialize_spectral_mod.o
 ar: creating libstochastic_physics.a
@@ -1295,44 +1297,44 @@ ar rv ENS_Cpl.a ENS_CplComp_ESMFMod_STUB.o
 ar: creating ENS_Cpl.a
 a - ENS_CplComp_ESMFMod_STUB.o
 gmake[2]: Leaving directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/NEMS/src/ENS_Cpl'
-cc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Sun Apr 26 04:37:04 UTC 2020 racb09c47d7f8 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=117' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" module_NEMS_UTILS.F90 > module_NEMS_UTILS.tmp.f90
+cc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Mon Apr 27 18:17:12 UTC 2020 ra7ddee446a20 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=118' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" module_NEMS_UTILS.F90 > module_NEMS_UTILS.tmp.f90
 ftn -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/mod -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -IENS_Cpl -I.  -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3 -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/FV3_INSTALL -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/atmos_cubed_sphere -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/io -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/gfsphysics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/cpl -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/ipd -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/../stochastic_physics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -c module_NEMS_UTILS.tmp.f90
 mv -v module_NEMS_UTILS.tmp.o module_NEMS_UTILS.o
 `module_NEMS_UTILS.tmp.o' -> `module_NEMS_UTILS.o'
-cc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Sun Apr 26 04:37:04 UTC 2020 racb09c47d7f8 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=117' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" module_MEDIATOR_methods.F90 > module_MEDIATOR_methods.tmp.f90
+cc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Mon Apr 27 18:17:12 UTC 2020 ra7ddee446a20 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=118' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" module_MEDIATOR_methods.F90 > module_MEDIATOR_methods.tmp.f90
 ftn -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/mod -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -IENS_Cpl -I.  -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3 -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/FV3_INSTALL -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/atmos_cubed_sphere -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/io -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/gfsphysics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/cpl -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/ipd -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/../stochastic_physics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -c module_MEDIATOR_methods.tmp.f90
 mv -v module_MEDIATOR_methods.tmp.o module_MEDIATOR_methods.o
 `module_MEDIATOR_methods.tmp.o' -> `module_MEDIATOR_methods.o'
-cc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Sun Apr 26 04:37:04 UTC 2020 racb09c47d7f8 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=117' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" module_MEDIATOR.F90 > module_MEDIATOR.tmp.f90
+cc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Mon Apr 27 18:17:12 UTC 2020 ra7ddee446a20 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=118' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" module_MEDIATOR.F90 > module_MEDIATOR.tmp.f90
 ftn -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/mod -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -IENS_Cpl -I.  -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3 -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/FV3_INSTALL -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/atmos_cubed_sphere -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/io -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/gfsphysics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/cpl -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/ipd -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/../stochastic_physics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -c module_MEDIATOR.tmp.f90
 mv -v module_MEDIATOR.tmp.o module_MEDIATOR.o
 `module_MEDIATOR.tmp.o' -> `module_MEDIATOR.o'
-cc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Sun Apr 26 04:37:04 UTC 2020 racb09c47d7f8 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=117' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" module_MEDIATOR_SpaceWeather.F90 > module_MEDIATOR_SpaceWeather.tmp.f90
+cc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Mon Apr 27 18:17:12 UTC 2020 ra7ddee446a20 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=118' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" module_MEDIATOR_SpaceWeather.F90 > module_MEDIATOR_SpaceWeather.tmp.f90
 ftn -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/mod -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -IENS_Cpl -I.  -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3 -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/FV3_INSTALL -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/atmos_cubed_sphere -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/io -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/gfsphysics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/cpl -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/ipd -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/../stochastic_physics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -c module_MEDIATOR_SpaceWeather.tmp.f90
 mv -v module_MEDIATOR_SpaceWeather.tmp.o module_MEDIATOR_SpaceWeather.o
 `module_MEDIATOR_SpaceWeather.tmp.o' -> `module_MEDIATOR_SpaceWeather.o'
-cc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Sun Apr 26 04:37:04 UTC 2020 racb09c47d7f8 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=117' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" module_EARTH_INTERNAL_STATE.F90 > module_EARTH_INTERNAL_STATE.tmp.f90
+cc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Mon Apr 27 18:17:12 UTC 2020 ra7ddee446a20 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=118' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" module_EARTH_INTERNAL_STATE.F90 > module_EARTH_INTERNAL_STATE.tmp.f90
 ftn -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/mod -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -IENS_Cpl -I.  -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3 -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/FV3_INSTALL -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/atmos_cubed_sphere -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/io -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/gfsphysics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/cpl -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/ipd -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/../stochastic_physics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -c module_EARTH_INTERNAL_STATE.tmp.f90
 mv -v module_EARTH_INTERNAL_STATE.tmp.o module_EARTH_INTERNAL_STATE.o
 `module_EARTH_INTERNAL_STATE.tmp.o' -> `module_EARTH_INTERNAL_STATE.o'
-cc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Sun Apr 26 04:37:04 UTC 2020 racb09c47d7f8 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=117' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" module_EARTH_GRID_COMP.F90 > module_EARTH_GRID_COMP.tmp.f90
+cc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Mon Apr 27 18:17:12 UTC 2020 ra7ddee446a20 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=118' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" module_EARTH_GRID_COMP.F90 > module_EARTH_GRID_COMP.tmp.f90
 ftn -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/mod -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -IENS_Cpl -I.  -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3 -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/FV3_INSTALL -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/atmos_cubed_sphere -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/io -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/gfsphysics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/cpl -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/ipd -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/../stochastic_physics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -c module_EARTH_GRID_COMP.tmp.f90
 mv -v module_EARTH_GRID_COMP.tmp.o module_EARTH_GRID_COMP.o
 `module_EARTH_GRID_COMP.tmp.o' -> `module_EARTH_GRID_COMP.o'
-cc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Sun Apr 26 04:37:04 UTC 2020 racb09c47d7f8 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=117' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" module_NEMS_INTERNAL_STATE.F90 > module_NEMS_INTERNAL_STATE.tmp.f90
+cc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Mon Apr 27 18:17:12 UTC 2020 ra7ddee446a20 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=118' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" module_NEMS_INTERNAL_STATE.F90 > module_NEMS_INTERNAL_STATE.tmp.f90
 ftn -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/mod -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -IENS_Cpl -I.  -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3 -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/FV3_INSTALL -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/atmos_cubed_sphere -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/io -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/gfsphysics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/cpl -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/ipd -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/../stochastic_physics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -c module_NEMS_INTERNAL_STATE.tmp.f90
 mv -v module_NEMS_INTERNAL_STATE.tmp.o module_NEMS_INTERNAL_STATE.o
 `module_NEMS_INTERNAL_STATE.tmp.o' -> `module_NEMS_INTERNAL_STATE.o'
-cc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Sun Apr 26 04:37:04 UTC 2020 racb09c47d7f8 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=117' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" module_NEMS_GRID_COMP.F90 > module_NEMS_GRID_COMP.tmp.f90
+cc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Mon Apr 27 18:17:12 UTC 2020 ra7ddee446a20 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=118' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" module_NEMS_GRID_COMP.F90 > module_NEMS_GRID_COMP.tmp.f90
 ftn -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/mod -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -IENS_Cpl -I.  -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3 -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/FV3_INSTALL -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/atmos_cubed_sphere -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/io -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/gfsphysics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/cpl -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/ipd -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/../stochastic_physics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -c module_NEMS_GRID_COMP.tmp.f90
 mv -v module_NEMS_GRID_COMP.tmp.o module_NEMS_GRID_COMP.o
 `module_NEMS_GRID_COMP.tmp.o' -> `module_NEMS_GRID_COMP.o'
-cc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Sun Apr 26 04:37:04 UTC 2020 racb09c47d7f8 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=117' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" module_NEMS_Rusage.F90 > module_NEMS_Rusage.tmp.f90
+cc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Mon Apr 27 18:17:12 UTC 2020 ra7ddee446a20 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=118' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" module_NEMS_Rusage.F90 > module_NEMS_Rusage.tmp.f90
 ftn -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/mod -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -IENS_Cpl -I.  -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3 -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/FV3_INSTALL -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/atmos_cubed_sphere -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/io -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/gfsphysics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/cpl -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/ipd -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/../stochastic_physics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -c module_NEMS_Rusage.tmp.f90
 mv -v module_NEMS_Rusage.tmp.o module_NEMS_Rusage.o
 `module_NEMS_Rusage.tmp.o' -> `module_NEMS_Rusage.o'
 cc -c nems_c_rusage.c
-cc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Sun Apr 26 04:37:04 UTC 2020 racb09c47d7f8 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=117' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" MAIN_NEMS.F90 > MAIN_NEMS.tmp.f90
+cc -E -traditional  -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Mon Apr 27 18:17:12 UTC 2020 ra7ddee446a20 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=118' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" MAIN_NEMS.F90 > MAIN_NEMS.tmp.f90
 ftn -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/mod -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -IENS_Cpl -I.  -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3 -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/FV3_INSTALL -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/atmos_cubed_sphere -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/io -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/gfsphysics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/cpl -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/ipd -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/../stochastic_physics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -c MAIN_NEMS.tmp.f90
 mv -v MAIN_NEMS.tmp.o MAIN_NEMS.o
 `MAIN_NEMS.tmp.o' -> `MAIN_NEMS.o'
@@ -1356,6 +1358,7 @@ set -xe ; cp "/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs
 Will copy modules.nems and NEMS.x as fv3 under tests/
 NOTE: Skipping appbuilder.mk creation; no appbuilder file in use.
 echo 'FMS FV3' > "/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/NEMS/src/conf/components.mk"
+NEMS_BUILDOPT IS 
 Adding FV3 makeopts to FMS makeopts
 cat /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/fv3gfs/makefile | sed 's,^include,#include,g'   \
 	  > /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/fv3gfs/makefile.temp.clean
@@ -1389,8 +1392,8 @@ make[2]: Leaving directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/202
 
 Build CCPP layer ...
 
-makefile:67: depend: No such file or directory
 make[2]: Entering directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/ccpp/driver'
+makefile:67: depend: No such file or directory
 Building dependencies ...
 make[2]: Leaving directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/ccpp/driver'
 
@@ -1465,8 +1468,8 @@ if ! test -f /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-
 	fi
 Components in linker order: FV3 FMS
 FV3: include /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/FV3_INSTALL/fv3.mk
-GNUmakefile:70: /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/FV3_INSTALL/fv3.mk: component FV3 makefile fragment is missing
 gmake[1]: Entering directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/NEMS/src'
+GNUmakefile:70: /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/FV3_INSTALL/fv3.mk: component FV3 makefile fragment is missing
 FMS: include /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL/fms.mk
 GNUmakefile:70: /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL/fms.mk: component FMS makefile fragment is missing
 rm -f -f *.tmp.f90 *.lst *.o *.mod lm map
@@ -1475,13 +1478,13 @@ gmake[2]: Entering directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/2
 rm -f -f ENS_Cpl.a *.f90 *.o *.mod *.lst lm map depend
 gmake[2]: Leaving directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/NEMS/src/ENS_Cpl'
 gmake[1]: Leaving directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/NEMS/src'
-+ elapsed=696
-+ echo 'Elapsed time 696 seconds. Compiling  finished'
-Elapsed time 696 seconds. Compiling  finished
-Application 10189314 resources: utime ~912s, stime ~86s, Rss ~5428512, inblocks ~266822401, outblocks ~1359131
-+ mkdir -p /gpfs/hps/ptmp/Jun.Wang/rtgen.3015/exec /gpfs/hps/ptmp/Jun.Wang/rtgen.3015/include
-+ cp -fp ./fv3.exe /gpfs/hps/ptmp/Jun.Wang/rtgen.3015/exec/fv3.exe
-+ cp -fp ./modules.fv3 /gpfs/hps/ptmp/Jun.Wang/rtgen.3015/include/modules.fv3
++ elapsed=759
++ echo 'Elapsed time 759 seconds. Compiling  finished'
+Elapsed time 759 seconds. Compiling  finished
+Application 10365108 resources: utime ~912s, stime ~86s, Rss ~5428512, inblocks ~266822395, outblocks ~1359123
++ mkdir -p /gpfs/hps/ptmp/Jun.Wang/rtgen.47734/exec /gpfs/hps/ptmp/Jun.Wang/rtgen.47734/include
++ cp -fp ./fv3.exe /gpfs/hps/ptmp/Jun.Wang/rtgen.47734/exec/fv3.exe
++ cp -fp ./modules.fv3 /gpfs/hps/ptmp/Jun.Wang/rtgen.47734/include/modules.fv3
 + md5sum ./fv3.exe
 + unset modules
 + unset BUILD_NR
@@ -1490,34 +1493,34 @@ Application 10189314 resources: utime ~912s, stime ~86s, Rss ~5428512, inblocks 
 + unset md5
 + set -xe
 + set -xe
-+ test -s /gpfs/hps/ptmp/Jun.Wang/rtgen.3015/exec/fv3.exe
-+ test -x /gpfs/hps/ptmp/Jun.Wang/rtgen.3015/exec/fv3.exe
++ test -s /gpfs/hps/ptmp/Jun.Wang/rtgen.47734/exec/fv3.exe
++ test -x /gpfs/hps/ptmp/Jun.Wang/rtgen.47734/exec/fv3.exe
 
 ------------------------------------------------------------
-Sender: LSF System <lsfadmin@nid00188>
-Subject: Job 260552: <rt_build_fv3.exe> in cluster <NCEP-ORLANDO> Done
+Sender: LSF System <lsfadmin@nid00572>
+Subject: Job 287830: <rt_build_fv3.exe> in cluster <NCEP-ORLANDO> Done
 
-Job <rt_build_fv3.exe> was submitted from host <slogin1> by user <Jun.Wang> in cluster <NCEP-ORLANDO> at Sun Apr 26 04:26:55 2020.
-Job was executed on host(s) <1*nid00188>, in queue <dev>, as user <Jun.Wang> in cluster <NCEP-ORLANDO> at Sun Apr 26 04:26:56 2020.
-                            <24*nid00058>
+Job <rt_build_fv3.exe> was submitted from host <slogin1> by user <Jun.Wang> in cluster <NCEP-ORLANDO> at Mon Apr 27 18:06:24 2020.
+Job was executed on host(s) <1*nid00572>, in queue <dev>, as user <Jun.Wang> in cluster <NCEP-ORLANDO> at Mon Apr 27 18:06:24 2020.
+                            <24*nid00604>
 </u/Jun.Wang> was used as the home directory.
-</gpfs/hps/ptmp/Jun.Wang/rtgen.3015/rocoto> was used as the working directory.
-Started at Sun Apr 26 04:26:56 2020.
-Terminated at Sun Apr 26 04:39:39 2020.
-Results reported at Sun Apr 26 04:39:39 2020.
+</gpfs/hps/ptmp/Jun.Wang/rtgen.47734/rocoto> was used as the working directory.
+Started at Mon Apr 27 18:06:24 2020.
+Terminated at Mon Apr 27 18:20:11 2020.
+Results reported at Mon Apr 27 18:20:11 2020.
 
 Your job looked like:
 
 ------------------------------------------------------------
 # LSBATCH: User input
-/gpfs/hps/usrx/local/emc_rocoto/1.3.0rc2/sbin/lsfcraywrapper.sh sh -c "cd /gpfs/hps/ptmp/Jun.Wang/rtgen.3015/src ; ./install.sh fv3.exe"
+/gpfs/hps/usrx/local/emc_rocoto/1.3.0rc2/sbin/lsfcraywrapper.sh sh -c "cd /gpfs/hps/ptmp/Jun.Wang/rtgen.47734/src ; ./install.sh fv3.exe"
 ------------------------------------------------------------
 
 Successfully completed.
 
 Resource usage summary:
 
-    CPU time :                                   0.88 sec.
+    CPU time :                                   0.86 sec.
     Max Memory :                                 24 MB
     Average Memory :                             21.00 MB
     Total Requested Memory :                     2000.00 MB
@@ -1525,48 +1528,48 @@ Resource usage summary:
     Max Swap :                                   -
     Max Processes :                              5
     Max Threads :                                6
-    Run time :                                   701 sec.
-    Turnaround time :                            764 sec.
+    Run time :                                   765 sec.
+    Turnaround time :                            827 sec.
 
 The output (if any) is above this job summary.
 
-Data collected from /ufs/RUR/output/rur.output.NCEP-ORLANDO@260552
+Data collected from /ufs/RUR/output/rur.output.NCEP-ORLANDO@287830
 ------------------------------------------------------------------------
 
-ALPS Resource Utilization Report (RUR) Summary for LSF Job: 260552
+ALPS Resource Utilization Report (RUR) Summary for LSF Job: 287830
 
 STATUS:
 
 
-          APP START:                 2020-04-26:04:27:00 UTC
-          APP STOP:                  2020-04-26:04:38:37 UTC
+          APP START:                 2020-04-27:18:06:28 UTC
+          APP STOP:                  2020-04-27:18:19:09 UTC
           exit codes:                0 
           core files:                0
 
 CPU:
 
 
-          stime:                    102.356000 s
-          utime:                    919.928000 s
+          stime:                    102.416000 s
+          utime:                    918.836000 s
 
 MEMORY:
 
 
           max_rss:                  5301.28 MiB
           accumulated max_rss:      5301.28 MiB
-          active(anon):             25.87 MiB
-          active(file):             1.36 MiB
-          inactive(anon):           1.97 MiB
-          inactive(file):           7.67 MiB
-          majfaults:                986
-          minfaults:                29763624
+          active(anon):             27.62 MiB
+          active(file):             1.35 MiB
+          inactive(anon):           1.76 MiB
+          inactive(file):           7.66 MiB
+          majfaults:                1200
+          minfaults:                29763529
           pageswpcnt:               0
 
 I/O: 
 
 
-          rcalls:                   3755774
-          wcalls:                   90240
+          rcalls:                   3755773
+          wcalls:                   90243
           rchar:                    130288.62 MiB
           wchar:                    664.55 MiB
-          bkiowait:                 0.7768599050 s
+          bkiowait:                 4.1333372330 s

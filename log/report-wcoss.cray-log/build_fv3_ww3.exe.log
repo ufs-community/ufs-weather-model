@@ -1,10 +1,10 @@
-Apr 26 03:56:08 2020 30347 7 9.1.3 jobSetupStatus: job additionalInfo reservation_id=727463
+Apr 27 17:34:35 2020 32889 7 9.1.3 jobSetupStatus: job additionalInfo reservation_id=744071
 + [[ fv3_ww3.exe == fv3_ww3.exe ]]
-+ rm -f /gpfs/hps/ptmp/Jun.Wang/rtgen.3015/exec/fv3_ww3.exe
-+ md5sum=/gpfs/hps/ptmp/Jun.Wang/rtgen.3015/exec/fv3_ww3.exe.md5
++ rm -f /gpfs/hps/ptmp/Jun.Wang/rtgen.47734/exec/fv3_ww3.exe
++ md5sum=/gpfs/hps/ptmp/Jun.Wang/rtgen.47734/exec/fv3_ww3.exe.md5
 + OPTS=app=coupledFV3_WW3
-+ mkdir -p /gpfs/hps/ptmp/Jun.Wang/rtgen.3015/exec /gpfs/hps/ptmp/Jun.Wang/rtgen.3015/include
-+ rm -f /gpfs/hps/ptmp/Jun.Wang/rtgen.3015/exec/fv3_ww3.exe /gpfs/hps/ptmp/Jun.Wang/rtgen.3015/include/modules_fv3_ww3
++ mkdir -p /gpfs/hps/ptmp/Jun.Wang/rtgen.47734/exec /gpfs/hps/ptmp/Jun.Wang/rtgen.47734/include
++ rm -f /gpfs/hps/ptmp/Jun.Wang/rtgen.47734/exec/fv3_ww3.exe /gpfs/hps/ptmp/Jun.Wang/rtgen.47734/include/modules_fv3_ww3
 + cd /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model
 + module load alps
 ++ /opt/modules/3.2.10.3/bin/modulecmd bash load alps
@@ -37,6 +37,7 @@ Convert /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weath
 ...into /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/coupledFV3_WW3.appBuilder.mk
 Include /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/coupledFV3_WW3.appBuilder.mk
 echo 'FMS FV3 WW3' > "/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/NEMS/src/conf/components.mk"
+NEMS_BUILDOPT IS 
 Adding FV3 makeopts to FMS makeopts
 cat /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/fv3gfs/makefile | sed 's,^include,#include,g'   \
 	  > /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/fv3gfs/makefile.temp.clean
@@ -49,6 +50,10 @@ cd .. ; \
 	ls -1 */*.a */*.o */*.mod */depend \
 	  | grep -vE 'INSTALL|\.git' | xargs rm -f || true ; \
 	rm -rf FMS_INSTALL || true
+ls: cannot access */*.a: No such file or directory
+ls: cannot access */*.o: No such file or directory
+ls: cannot access */*.mod: No such file or directory
+ls: cannot access */depend: No such file or directory
 make[1]: Leaving directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/fv3gfs'
 rm -rf /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL/fms.mk /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/fv3gfs/makefile.temp.clean
 cat /dev/null > /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/conf/configure.fv3
@@ -59,6 +64,13 @@ make[1]: Entering directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20
 Cleaning ... 
 
 (cd gfsphysics     && make clean)
+
+Build standalone FV3 gfsphysics ...
+
+makefile:269: depend: No such file or directory
+make[2]: Entering directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/gfsphysics'
+Building dependencies ...
+make[2]: Leaving directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/gfsphysics'
 
 Build standalone FV3 gfsphysics ...
 
@@ -87,12 +99,27 @@ make[2]: Leaving directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/202
 
 Build standalone FV3 gfsphysics ...
 
+makefile:54: depend: No such file or directory
+make[2]: Entering directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/ipd'
+Building dependencies ...
+make[2]: Leaving directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/ipd'
+
+Build standalone FV3 gfsphysics ...
+
 make[2]: Entering directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/ipd'
 Cleaning ipd  ... 
 
 rm -f -f libipd.a *__genmod.f90 *.o */*.o *.mod *.i90 *.lst *.i depend
 make[2]: Leaving directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/ipd'
 (cd ../stochastic_physics  && make clean)
+
+Build standalone FV3 stochastic_physics ...
+
+makefile:86: depend: No such file or directory
+make[2]: Entering directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/stochastic_physics'
+cc -E  four_to_grid_stochy.F > four_to_grid_stochy.f
+Building dependencies ...
+make[2]: Leaving directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/stochastic_physics'
 
 Build standalone FV3 stochastic_physics ...
 
@@ -141,42 +168,9 @@ rm -rf /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weathe
 	export COMP_SRCDIR="/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/WW3/model" COMP_BINDIR="/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/WW3/WW3_INSTALL" WW3_COMP="wcoss_cray"                                  ; \
 	export ESMFMKFILE=/dev/null                             ; \
 	exec make distclean
-Currently Loaded Modulefiles:
-  1) craype-network-aries
-  2) craype/2.3.0
-  3) cray-libsci/13.0.3
-  4) pmi/5.0.11
-  5) atp/1.8.1
-  6) PrgEnv-intel/5.2.82
-  7) intel/18.1.163
-  8) cray-netcdf/4.3.3.1
-  9) cray-hdf5/1.8.14
- 10) xt-lsfhpc/9.1.3
- 11) craype-haswell
- 12) python/2.7.14
- 13) cmake/3.16.2
- 14) gcc/4.9.2
- 15) jasper-gnu-sandybridge/1.900.1
- 16) png-intel-sandybridge/1.2.49
- 17) zlib-intel-sandybridge/1.2.7
- 18) crtm-intel/2.2.6
- 19) g2/3.1.1
- 20) g2tmpl/1.6.0
- 21) bacio/2.0.3
- 22) ip/3.0.2
- 23) sp/2.0.3
- 24) w3nco/2.0.7
- 25) w3emc/2.3.1
- 26) nemsio/2.2.4
- 27) post/8.0.6
- 28) rca/1.0.0-2.0502.60530.1.62.ari
- 29) alps/5.2.4-2.0502.9822.32.1.ari
- 30) xpmem/0.1-2.0502.64982.7.25.ari
- 31) gni-headers/4.0-1.0502.10859.9.24.ari
- 32) udreg/2.3.2-1.0502.10518.2.17.ari
- 33) ugni/6.0-1.0502.10863.8.29.ari
- 34) esmf/8.0.0_intel18
- 35) modules.nems
+ModuleCmd_Load.c(226):ERROR:105: Unable to locate a modulefile for 'modules.nems'
+No Modulefiles Currently Loaded.
+which: no nc-config in (/u/Jun.Wang/bin:/usr/local/bin:/usr/bin:/bin:/usr/bin/X11:/usr/X11R6/bin:/usr/games:/opt/bin:/usr/lib/mit/bin:/usr/lib/mit/sbin:/sbin:/usr/sbin:.:/usr/lib/qt3/bin:.:/gpfs/gd1/emc/global/save/Jun.Wang:/gpfs/gd1/emc/nems/save/Jun.Wang:/gpfs/gd1/emc/global/save/Jun.Wang/CCS/grdscr:/usrx/local/intel/mkl/lib/intel64:/nwprod/util/exec:/u/Jun.Wang/bin/nemsio_util:/gpfs/hps/nco/ops/nwprod/grib_util.v1.0.2:/u/Jun.Wang/bin/wgrib2/grib2/wgrib2)
 make[1]: Entering directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/WW3/model/esmf'
 \rm -f /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/WW3/model/exe/ww3_multi_esmf *.o *.mod
 /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/WW3/model/bin/w3_clean -c
@@ -189,15 +183,7 @@ make[1]: Entering directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20
    Clean up /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/WW3/model/bin
    Clean up /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/WW3/model/ftn
    Clean up /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/WW3/model/aux
-   Remove /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/WW3/model/mod
-   Remove /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/WW3/model/mod_HYB
-   Remove /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/WW3/model/mod_SEQ
-   Remove /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/WW3/model/obj
-   Remove /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/WW3/model/obj_HYB
-   Remove /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/WW3/model/obj_SEQ
-   Remove /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/WW3/model/tmp
    Clean up /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/WW3/model/bin
-   Remove /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/WW3/model/exe
    Clean up /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/WW3/model/../regtests
 \rm -fr /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/WW3/model/tmp
 \rm -f /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/WW3/model/bin/wwatch3.env
@@ -218,19 +204,16 @@ if ! test -f /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-
 	if [ "$delete_nuopc" = yes ] ; then                      \
 	  rm -f /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/NEMS/src/conf/configure.nems.NUOPC                 ; \
 	fi
+GNUmakefile:16: /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/NEMS/src/conf/test-results.mk: No such file or directory
+make[1]: Entering directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/NEMS/src'
 Components in linker order: WW3 FV3 FMS
 WW3: include 
-make[1]: Entering directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/NEMS/src'
 GNUmakefile:70: : component WW3 makefile fragment is missing
-FV3: include /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/FV3_INSTALL/fv3.mk
-GNUmakefile:70: /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/FV3_INSTALL/fv3.mk: component FV3 makefile fragment is missing
-FMS: include /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL/fms.mk
-GNUmakefile:70: /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL/fms.mk: component FMS makefile fragment is missing
-rm -f -f *.tmp.f90 *.lst *.o *.mod lm map
-cd ENS_Cpl ; make clean
-make[2]: Entering directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/NEMS/src/ENS_Cpl'
-rm -f -f ENS_Cpl.a *.f90 *.o *.mod *.lst lm map depend
-make[2]: Leaving directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/NEMS/src/ENS_Cpl'
+FV3: include 
+GNUmakefile:70: : component FV3 makefile fragment is missing
+FMS: include 
+GNUmakefile:70: : component FMS makefile fragment is missing
+make[1]: *** No rule to make target `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/NEMS/src/conf/test-results.mk'.  Stop.
 make[1]: Leaving directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/NEMS/src'
 rm -f /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/NEMS/exe/NEMS.x /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/NEMS/src/conf/configure.nems.NUOPC
 rm -f /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/NEMS/src/conf/configure.nems /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/NEMS/src/conf/externals.nems /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/NEMS/src/conf/modules.nems /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/NEMS/src/ESMFVersionDefine.h /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/NEMS/src/conf/modules.nems.sh /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/NEMS/src/conf/modules.nems.csh /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/NEMS/src/conf/test-results.mk
@@ -241,6 +224,7 @@ Convert /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weath
 ...into /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/coupledFV3_WW3.appBuilder.mk
 Include /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/coupledFV3_WW3.appBuilder.mk
 echo 'FMS FV3 WW3' > "/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/NEMS/src/conf/components.mk"
+NEMS_BUILDOPT IS 
 Adding FV3 makeopts to FMS makeopts
 cp /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/conf/configure.fv3.wcoss_cray /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/NEMS/src/conf/configure.nems
 cat /dev/null > /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/NEMS/src/conf/externals.nems
@@ -672,8 +656,8 @@ make -C gfsphysics      FMS_DIR=/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab
 
 Build standalone FV3 gfsphysics ...
 
-makefile:269: depend: No such file or directory
 make[2]: Entering directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/gfsphysics'
+makefile:269: depend: No such file or directory
 Building dependencies ...
 make[2]: Leaving directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/gfsphysics'
 
@@ -1156,8 +1140,8 @@ make -C ../stochastic_physics   FMS_DIR=/gpfs/hps3/emc/global/noscrub/Jun.Wang/n
 
 Build standalone FV3 stochastic_physics ...
 
-make[2]: Entering directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/stochastic_physics'
 makefile:86: depend: No such file or directory
+make[2]: Entering directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/stochastic_physics'
 Building dependencies ...
 make[2]: Leaving directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/stochastic_physics'
 
@@ -1369,17 +1353,17 @@ ad3 : processing w3gsrumd
 ad3 : processing w3gdatmd 
 ad3 : processing w3odatmd 
 ad3 : processing w3idatmd 
-ad3 : processing w3dispmd 
-ad3 : processing w3nmlgridmd 
 ad3 : processing w3adatmd 
+ad3 : processing w3nmlgridmd 
+ad3 : processing w3dispmd 
 ad3 : processing w3timemd 
 ad3 : processing wmmdatmd 
 ad3 : processing w3src4md 
+ad3 : processing w3snl1md 
 ad3 : processing w3triamd 
 ad3 : processing w3parall 
-ad3 : processing w3snl1md 
-ad3 : processing w3iogrmd 
 ad3 : processing w3wdatmd 
+ad3 : processing w3iogrmd 
 ad3 : processing ww3_grid 
       Linking ww3_grid
 make[2]: Leaving directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/WW3/model/ftn'
@@ -1406,9 +1390,9 @@ Shared Object     : No
 Processing ww3_outf
 ---------------------
 make[2]: Entering directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/WW3/model/ftn'
+ad3 : processing w3sbt1md 
 ad3 : processing w3sdb1md 
 ad3 : processing w3iogomd 
-ad3 : processing w3sbt1md 
 ad3 : processing ww3_outf 
       Linking ww3_outf
 make[2]: Leaving directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/WW3/model/ftn'
@@ -1435,10 +1419,10 @@ Shared Object     : No
 Processing ww3_outp
 ---------------------
 make[2]: Entering directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/WW3/model/ftn'
-ad3 : processing w3bullmd 
-ad3 : processing w3partmd 
-ad3 : processing w3flx1md 
 ad3 : processing w3iopomd 
+ad3 : processing w3partmd 
+ad3 : processing w3bullmd 
+ad3 : processing w3flx1md 
 ad3 : processing ww3_outp 
       Linking ww3_outp
 make[2]: Leaving directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/WW3/model/ftn'
@@ -1545,8 +1529,8 @@ Shared Object     : No
 Processing ww3_ounf
 ---------------------
 make[2]: Entering directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/WW3/model/ftn'
-ad3 : processing w3iorsmd 
 ad3 : processing w3nmlounfmd 
+ad3 : processing w3iorsmd 
 ad3 : processing w3initmd 
 ad3 : processing ww3_ounf 
       Linking ww3_ounf
@@ -1658,38 +1642,38 @@ ad3 : processing scrip_iounitsmod [no w3adc]
 ad3 : processing scrip_timers [no w3adc]
 ad3 : processing w3servmd 
 ad3 : processing scrip_errormod [no w3adc]
-ad3 : processing w3cspcmd 
-ad3 : processing w3gsrumd 
 ad3 : processing w3arrymd 
+ad3 : processing w3gsrumd 
+ad3 : processing w3cspcmd 
 ad3 : processing wmunitmd 
 ad3 : processing scrip_netcdfmod [no w3adc]
 ad3 : processing scrip_grids [no w3adc]
 ad3 : processing w3gdatmd 
 ad3 : processing scrip_remap_vars [no w3adc]
-ad3 : processing w3odatmd 
 ad3 : processing w3sbt1md 
 ad3 : processing w3idatmd 
+ad3 : processing w3odatmd 
 ad3 : processing scrip_remap_conservative [no w3adc]
 ad3 : processing scrip_remap_write [no w3adc]
 ad3 : processing scrip_remap_read [no w3adc]
+ad3 : processing w3sdb1md 
+ad3 : processing w3flx1md 
 ad3 : processing w3dispmd 
 ad3 : processing w3timemd 
 ad3 : processing wmmdatmd 
+ad3 : processing scrip_interface 
 ad3 : processing w3adatmd 
 ad3 : processing w3src4md 
-ad3 : processing w3sdb1md 
-ad3 : processing w3flx1md 
+ad3 : processing w3fldsmd 
 ad3 : processing w3partmd 
 ad3 : processing w3nmlmultimd 
-ad3 : processing scrip_interface 
-ad3 : processing wmfinlmd 
-ad3 : processing w3fldsmd 
 ad3 : processing wmscrpmd 
-ad3 : processing w3triamd 
+ad3 : processing wmfinlmd 
 ad3 : processing w3parall 
+ad3 : processing w3triamd 
 ad3 : processing w3snl1md 
-ad3 : processing w3iogrmd 
 ad3 : processing w3wdatmd 
+ad3 : processing w3iogrmd 
 ad3 : processing wmgridmd 
 ad3 : processing w3updtmd 
 ad3 : processing w3iogomd 
@@ -1883,44 +1867,44 @@ ar rv ENS_Cpl.a ENS_CplComp_ESMFMod_STUB.o
 ar: creating ENS_Cpl.a
 a - ENS_CplComp_ESMFMod_STUB.o
 make[2]: Leaving directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/NEMS/src/ENS_Cpl'
-cc -E -traditional  -DFRONT_WW3=WMESMFMD -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Sun Apr 26 04:23:59 UTC 2020 racb09c47d7f8 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=117' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" module_NEMS_UTILS.F90 > module_NEMS_UTILS.tmp.f90
+cc -E -traditional  -DFRONT_WW3=WMESMFMD -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Mon Apr 27 18:03:08 UTC 2020 ra7ddee446a20 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=118' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" module_NEMS_UTILS.F90 > module_NEMS_UTILS.tmp.f90
 ftn -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/mod -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -IENS_Cpl -I.  -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/WW3/model/mod_HYB -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3 -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/FV3_INSTALL -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/atmos_cubed_sphere -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/io -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/gfsphysics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/cpl -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/ipd -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/../stochastic_physics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -c module_NEMS_UTILS.tmp.f90
 mv -v module_NEMS_UTILS.tmp.o module_NEMS_UTILS.o
 `module_NEMS_UTILS.tmp.o' -> `module_NEMS_UTILS.o'
-cc -E -traditional  -DFRONT_WW3=WMESMFMD -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Sun Apr 26 04:23:59 UTC 2020 racb09c47d7f8 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=117' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" module_MEDIATOR_methods.F90 > module_MEDIATOR_methods.tmp.f90
+cc -E -traditional  -DFRONT_WW3=WMESMFMD -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Mon Apr 27 18:03:08 UTC 2020 ra7ddee446a20 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=118' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" module_MEDIATOR_methods.F90 > module_MEDIATOR_methods.tmp.f90
 ftn -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/mod -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -IENS_Cpl -I.  -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/WW3/model/mod_HYB -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3 -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/FV3_INSTALL -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/atmos_cubed_sphere -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/io -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/gfsphysics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/cpl -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/ipd -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/../stochastic_physics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -c module_MEDIATOR_methods.tmp.f90
 mv -v module_MEDIATOR_methods.tmp.o module_MEDIATOR_methods.o
 `module_MEDIATOR_methods.tmp.o' -> `module_MEDIATOR_methods.o'
-cc -E -traditional  -DFRONT_WW3=WMESMFMD -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Sun Apr 26 04:23:59 UTC 2020 racb09c47d7f8 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=117' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" module_MEDIATOR.F90 > module_MEDIATOR.tmp.f90
+cc -E -traditional  -DFRONT_WW3=WMESMFMD -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Mon Apr 27 18:03:08 UTC 2020 ra7ddee446a20 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=118' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" module_MEDIATOR.F90 > module_MEDIATOR.tmp.f90
 ftn -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/mod -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -IENS_Cpl -I.  -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/WW3/model/mod_HYB -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3 -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/FV3_INSTALL -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/atmos_cubed_sphere -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/io -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/gfsphysics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/cpl -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/ipd -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/../stochastic_physics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -c module_MEDIATOR.tmp.f90
 mv -v module_MEDIATOR.tmp.o module_MEDIATOR.o
 `module_MEDIATOR.tmp.o' -> `module_MEDIATOR.o'
-cc -E -traditional  -DFRONT_WW3=WMESMFMD -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Sun Apr 26 04:23:59 UTC 2020 racb09c47d7f8 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=117' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" module_MEDIATOR_SpaceWeather.F90 > module_MEDIATOR_SpaceWeather.tmp.f90
+cc -E -traditional  -DFRONT_WW3=WMESMFMD -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Mon Apr 27 18:03:08 UTC 2020 ra7ddee446a20 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=118' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" module_MEDIATOR_SpaceWeather.F90 > module_MEDIATOR_SpaceWeather.tmp.f90
 ftn -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/mod -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -IENS_Cpl -I.  -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/WW3/model/mod_HYB -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3 -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/FV3_INSTALL -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/atmos_cubed_sphere -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/io -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/gfsphysics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/cpl -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/ipd -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/../stochastic_physics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -c module_MEDIATOR_SpaceWeather.tmp.f90
 mv -v module_MEDIATOR_SpaceWeather.tmp.o module_MEDIATOR_SpaceWeather.o
 `module_MEDIATOR_SpaceWeather.tmp.o' -> `module_MEDIATOR_SpaceWeather.o'
-cc -E -traditional  -DFRONT_WW3=WMESMFMD -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Sun Apr 26 04:23:59 UTC 2020 racb09c47d7f8 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=117' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" module_EARTH_INTERNAL_STATE.F90 > module_EARTH_INTERNAL_STATE.tmp.f90
+cc -E -traditional  -DFRONT_WW3=WMESMFMD -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Mon Apr 27 18:03:08 UTC 2020 ra7ddee446a20 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=118' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" module_EARTH_INTERNAL_STATE.F90 > module_EARTH_INTERNAL_STATE.tmp.f90
 ftn -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/mod -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -IENS_Cpl -I.  -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/WW3/model/mod_HYB -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3 -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/FV3_INSTALL -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/atmos_cubed_sphere -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/io -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/gfsphysics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/cpl -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/ipd -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/../stochastic_physics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -c module_EARTH_INTERNAL_STATE.tmp.f90
 mv -v module_EARTH_INTERNAL_STATE.tmp.o module_EARTH_INTERNAL_STATE.o
 `module_EARTH_INTERNAL_STATE.tmp.o' -> `module_EARTH_INTERNAL_STATE.o'
-cc -E -traditional  -DFRONT_WW3=WMESMFMD -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Sun Apr 26 04:23:59 UTC 2020 racb09c47d7f8 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=117' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" module_EARTH_GRID_COMP.F90 > module_EARTH_GRID_COMP.tmp.f90
+cc -E -traditional  -DFRONT_WW3=WMESMFMD -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Mon Apr 27 18:03:08 UTC 2020 ra7ddee446a20 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=118' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" module_EARTH_GRID_COMP.F90 > module_EARTH_GRID_COMP.tmp.f90
 ftn -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/mod -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -IENS_Cpl -I.  -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/WW3/model/mod_HYB -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3 -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/FV3_INSTALL -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/atmos_cubed_sphere -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/io -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/gfsphysics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/cpl -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/ipd -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/../stochastic_physics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -c module_EARTH_GRID_COMP.tmp.f90
 mv -v module_EARTH_GRID_COMP.tmp.o module_EARTH_GRID_COMP.o
 `module_EARTH_GRID_COMP.tmp.o' -> `module_EARTH_GRID_COMP.o'
-cc -E -traditional  -DFRONT_WW3=WMESMFMD -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Sun Apr 26 04:23:59 UTC 2020 racb09c47d7f8 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=117' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" module_NEMS_INTERNAL_STATE.F90 > module_NEMS_INTERNAL_STATE.tmp.f90
+cc -E -traditional  -DFRONT_WW3=WMESMFMD -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Mon Apr 27 18:03:08 UTC 2020 ra7ddee446a20 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=118' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" module_NEMS_INTERNAL_STATE.F90 > module_NEMS_INTERNAL_STATE.tmp.f90
 ftn -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/mod -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -IENS_Cpl -I.  -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/WW3/model/mod_HYB -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3 -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/FV3_INSTALL -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/atmos_cubed_sphere -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/io -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/gfsphysics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/cpl -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/ipd -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/../stochastic_physics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -c module_NEMS_INTERNAL_STATE.tmp.f90
 mv -v module_NEMS_INTERNAL_STATE.tmp.o module_NEMS_INTERNAL_STATE.o
 `module_NEMS_INTERNAL_STATE.tmp.o' -> `module_NEMS_INTERNAL_STATE.o'
-cc -E -traditional  -DFRONT_WW3=WMESMFMD -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Sun Apr 26 04:23:59 UTC 2020 racb09c47d7f8 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=117' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" module_NEMS_GRID_COMP.F90 > module_NEMS_GRID_COMP.tmp.f90
+cc -E -traditional  -DFRONT_WW3=WMESMFMD -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Mon Apr 27 18:03:08 UTC 2020 ra7ddee446a20 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=118' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" module_NEMS_GRID_COMP.F90 > module_NEMS_GRID_COMP.tmp.f90
 ftn -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/mod -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -IENS_Cpl -I.  -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/WW3/model/mod_HYB -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3 -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/FV3_INSTALL -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/atmos_cubed_sphere -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/io -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/gfsphysics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/cpl -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/ipd -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/../stochastic_physics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -c module_NEMS_GRID_COMP.tmp.f90
 mv -v module_NEMS_GRID_COMP.tmp.o module_NEMS_GRID_COMP.o
 `module_NEMS_GRID_COMP.tmp.o' -> `module_NEMS_GRID_COMP.o'
-cc -E -traditional  -DFRONT_WW3=WMESMFMD -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Sun Apr 26 04:23:59 UTC 2020 racb09c47d7f8 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=117' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" module_NEMS_Rusage.F90 > module_NEMS_Rusage.tmp.f90
+cc -E -traditional  -DFRONT_WW3=WMESMFMD -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Mon Apr 27 18:03:08 UTC 2020 ra7ddee446a20 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=118' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" module_NEMS_Rusage.F90 > module_NEMS_Rusage.tmp.f90
 ftn -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/mod -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -IENS_Cpl -I.  -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/WW3/model/mod_HYB -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3 -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/FV3_INSTALL -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/atmos_cubed_sphere -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/io -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/gfsphysics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/cpl -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/ipd -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/../stochastic_physics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -c module_NEMS_Rusage.tmp.f90
 mv -v module_NEMS_Rusage.tmp.o module_NEMS_Rusage.o
 `module_NEMS_Rusage.tmp.o' -> `module_NEMS_Rusage.o'
 cc -c nems_c_rusage.c
-cc -E -traditional  -DFRONT_WW3=WMESMFMD -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Sun Apr 26 04:23:59 UTC 2020 racb09c47d7f8 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=117' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" MAIN_NEMS.F90 > MAIN_NEMS.tmp.f90
+cc -E -traditional  -DFRONT_WW3=WMESMFMD -DFRONT_FV3=fv3gfs_cap_mod -DFRONT_FMS= -D'SVN_INFO="(Jun.Wang) Mon Apr 27 18:03:08 UTC 2020 ra7ddee446a20 https://github.com/DeniseWorthen/NEMS"' -D'CMP_YEAR=2020' -D'CMP_JD=118' -DESMF_VERSION_STRING_GIT="ESMF_8_0_0" -DESMF_VERSION_PATCHLEVEL="0" -DESMF_VERSION_PUBLIC="'T'" -DESMF_VERSION_BETASNAPSHOT="'F'" -DESMF_VERSION_MINOR="0" -DESMF_VERSION_STRING="8.0.0" -DESMF_VERSION_MAJOR="8" -DESMF_VERSION_REVISION="0" MAIN_NEMS.F90 > MAIN_NEMS.tmp.f90
 ftn -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -i4 -real-size 64 -no-prec-div -no-prec-sqrt -xCORE-AVX2 -qno-opt-dynamic-align -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3 -qopenmp -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/mod -I/gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/esmf/8.0.0_intel18/include -I/opt/cray/netcdf/4.3.3.1/INTEL/14.0/include -IENS_Cpl -I.  -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/WW3/model/mod_HYB -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3 -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/FV3_INSTALL -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/atmos_cubed_sphere -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/io -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/gfsphysics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/cpl -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/ipd -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FV3/../stochastic_physics -I/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/FMS/FMS_INSTALL -c MAIN_NEMS.tmp.f90
 mv -v MAIN_NEMS.tmp.o MAIN_NEMS.o
 `MAIN_NEMS.tmp.o' -> `MAIN_NEMS.o'
@@ -1937,36 +1921,36 @@ H5PL.c:(.text+0x3b7): warning: Using 'dlopen' in statically linked applications 
 ESMCI_VMKernel.C:(.text+0x14b1f): warning: Using 'gethostbyname' in statically linked applications requires at runtime the shared libraries from the glibc version used for linking
 /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/NEMS/exe/NEMS.x is created.
 make[1]: Leaving directory `/gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/NEMS/src'
-Application 10186491 resources: utime ~1285s, stime ~113s, Rss ~5428512, inblocks ~809927703, outblocks ~1943747
+Application 10362368 resources: utime ~1287s, stime ~115s, Rss ~5428512, inblocks ~809969818, outblocks ~1943988
 + cd /gpfs/hps3/emc/global/noscrub/Jun.Wang/nems/vlab/20200422/nems/ufs-weather-model/NEMS/src
-+ cp -fp ../exe/NEMS.x /gpfs/hps/ptmp/Jun.Wang/rtgen.3015/exec/fv3_ww3.exe
-+ cp -fp conf/modules.nems /gpfs/hps/ptmp/Jun.Wang/rtgen.3015/include/modules_fv3_ww3
-+ md5sum /gpfs/hps/ptmp/Jun.Wang/rtgen.3015/exec/fv3_ww3.exe
++ cp -fp ../exe/NEMS.x /gpfs/hps/ptmp/Jun.Wang/rtgen.47734/exec/fv3_ww3.exe
++ cp -fp conf/modules.nems /gpfs/hps/ptmp/Jun.Wang/rtgen.47734/include/modules_fv3_ww3
++ md5sum /gpfs/hps/ptmp/Jun.Wang/rtgen.47734/exec/fv3_ww3.exe
 + unset md5sum
 + unset OPTS
 + set -xe
 + set -xe
-+ test -s /gpfs/hps/ptmp/Jun.Wang/rtgen.3015/exec/fv3_ww3.exe
-+ test -x /gpfs/hps/ptmp/Jun.Wang/rtgen.3015/exec/fv3_ww3.exe
++ test -s /gpfs/hps/ptmp/Jun.Wang/rtgen.47734/exec/fv3_ww3.exe
++ test -x /gpfs/hps/ptmp/Jun.Wang/rtgen.47734/exec/fv3_ww3.exe
 
 ------------------------------------------------------------
-Sender: LSF System <lsfadmin@nid00188>
-Subject: Job 260219: <rt_build_fv3_ww3.exe> in cluster <NCEP-ORLANDO> Done
+Sender: LSF System <lsfadmin@nid00124>
+Subject: Job 287438: <rt_build_fv3_ww3.exe> in cluster <NCEP-ORLANDO> Done
 
-Job <rt_build_fv3_ww3.exe> was submitted from host <slogin1> by user <Jun.Wang> in cluster <NCEP-ORLANDO> at Sun Apr 26 03:56:05 2020.
-Job was executed on host(s) <1*nid00188>, in queue <dev>, as user <Jun.Wang> in cluster <NCEP-ORLANDO> at Sun Apr 26 03:56:06 2020.
-                            <24*nid00058>
+Job <rt_build_fv3_ww3.exe> was submitted from host <slogin1> by user <Jun.Wang> in cluster <NCEP-ORLANDO> at Mon Apr 27 17:34:33 2020.
+Job was executed on host(s) <1*nid00124>, in queue <dev>, as user <Jun.Wang> in cluster <NCEP-ORLANDO> at Mon Apr 27 17:34:33 2020.
+                            <24*nid00011>
 </u/Jun.Wang> was used as the home directory.
-</gpfs/hps/ptmp/Jun.Wang/rtgen.3015/rocoto> was used as the working directory.
-Started at Sun Apr 26 03:56:06 2020.
-Terminated at Sun Apr 26 04:26:33 2020.
-Results reported at Sun Apr 26 04:26:33 2020.
+</gpfs/hps/ptmp/Jun.Wang/rtgen.47734/rocoto> was used as the working directory.
+Started at Mon Apr 27 17:34:33 2020.
+Terminated at Mon Apr 27 18:05:59 2020.
+Results reported at Mon Apr 27 18:05:59 2020.
 
 Your job looked like:
 
 ------------------------------------------------------------
 # LSBATCH: User input
-/gpfs/hps/usrx/local/emc_rocoto/1.3.0rc2/sbin/lsfcraywrapper.sh sh -c "cd /gpfs/hps/ptmp/Jun.Wang/rtgen.3015/src ; ./install.sh fv3_ww3.exe"
+/gpfs/hps/usrx/local/emc_rocoto/1.3.0rc2/sbin/lsfcraywrapper.sh sh -c "cd /gpfs/hps/ptmp/Jun.Wang/rtgen.47734/src ; ./install.sh fv3_ww3.exe"
 ------------------------------------------------------------
 
 Successfully completed.
@@ -1974,55 +1958,55 @@ Successfully completed.
 Resource usage summary:
 
     CPU time :                                   0.96 sec.
-    Max Memory :                                 24 MB
+    Max Memory :                                 25 MB
     Average Memory :                             21.00 MB
     Total Requested Memory :                     2000.00 MB
-    Delta Memory :                               1976.00 MB
+    Delta Memory :                               1975.00 MB
     Max Swap :                                   -
     Max Processes :                              5
     Max Threads :                                6
-    Run time :                                   1765 sec.
-    Turnaround time :                            1828 sec.
+    Run time :                                   1824 sec.
+    Turnaround time :                            1886 sec.
 
 The output (if any) is above this job summary.
 
-Data collected from /ufs/RUR/output/rur.output.NCEP-ORLANDO@260219
+Data collected from /ufs/RUR/output/rur.output.NCEP-ORLANDO@287438
 ------------------------------------------------------------------------
 
-ALPS Resource Utilization Report (RUR) Summary for LSF Job: 260219
+ALPS Resource Utilization Report (RUR) Summary for LSF Job: 287438
 
 STATUS:
 
 
-          APP START:                 2020-04-26:03:56:11 UTC
-          APP STOP:                  2020-04-26:04:25:31 UTC
+          APP START:                 2020-04-27:17:34:37 UTC
+          APP STOP:                  2020-04-27:18:04:57 UTC
           exit codes:                0 
           core files:                0
 
 CPU:
 
 
-          stime:                    213.032000 s
-          utime:                    1311.836000 s
+          stime:                    216.644000 s
+          utime:                    1313.876000 s
 
 MEMORY:
 
 
           max_rss:                  5301.28 MiB
           accumulated max_rss:      5301.28 MiB
-          active(anon):             31.68 MiB
+          active(anon):             33.36 MiB
           active(file):             1.35 MiB
-          inactive(anon):           2.26 MiB
-          inactive(file):           7.26 MiB
-          majfaults:                986
-          minfaults:                62541284
+          inactive(anon):           3.77 MiB
+          inactive(file):           7.23 MiB
+          majfaults:                996
+          minfaults:                62532891
           pageswpcnt:               0
 
 I/O: 
 
 
-          rcalls:                   5867416
-          wcalls:                   234716
-          rchar:                    395490.44 MiB
-          wchar:                    955.07 MiB
-          bkiowait:                 1.0265843180 s
+          rcalls:                   5872215
+          wcalls:                   234672
+          rchar:                    395511.02 MiB
+          wchar:                    955.19 MiB
+          bkiowait:                 1.7290842010 s
