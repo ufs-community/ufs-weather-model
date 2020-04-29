@@ -207,25 +207,7 @@ export IAU_INC_FILES="''"
 #Cellular automata
 export DO_CA=.F.
 export CA_SGS=.F.
-export NCA=1
-export NCELLS=1
-export NLIVES=1
-export NSEED=100
-export NFRACSEED=0.5
-export NTHRESH=8
-export CA_TRIGGER=.F.
-export CA_ENTR=.F.
-export CA_CLOSURE=.F.
 export CA_GLOBAL=.F.
-export NCA_G=1
-export NCELLS_G=1
-export NLIVES_G=1
-export NSEED_G=100
-export CA_SMOOTH=.F.
-export NSPINUP=1
-export ISEED_CA=0
-export NSMOOTH=1
-export CA_AMPLITUDE=0.35
 
 export IAU_DRYMASSFIXER=.false.
 
