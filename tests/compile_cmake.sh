@@ -108,13 +108,6 @@ if [[ "${MAKE_OPT}" == *"CCPP=Y"* ]]; then
     CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DDYN32=OFF"
   fi
 
-  if [[ "${MAKE_OPT}" == *"STATIC=Y"* ]]; then
-    CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DSTATIC=ON"
-  else
-    echo "Error, cmake build not compatible with dynamic CCPP"
-    exit 1
-  fi
-
   if [[ "${MAKE_OPT}" == *"MULTI_GASES=Y"* ]]; then
     CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DMULTI_GASES=ON"
   else
@@ -122,12 +115,32 @@ if [[ "${MAKE_OPT}" == *"CCPP=Y"* ]]; then
   fi
 
   (
-    SUITES=$( echo $MAKE_OPT | sed 's/.* SUITES=//' | sed 's/ .*//' )
+    # Check if suites argument is provided or not
+    set +ex
+    TEST=$( echo $MAKE_OPT | grep -e "SUITES=" )
+    if [[ $? -eq 1 ]]; then
+      echo "No suites argument provided, compiling all available suites ..."
+      # Loop through all available suite definition files and extract suite names
+      SDFS=(../FV3/ccpp/suites/*.xml)
+      SUITES=""
+      for sdf in ${SDFS[@]}; do
+        suite=${sdf#"../FV3/ccpp/suites/suite_"}
+        suite=${suite%".xml"}
+        SUITES="${SUITES},${suite}"
+      done
+      # Remove leading comma
+      SUITES=${SUITES#","}
+    else
+      SUITES=$( echo $MAKE_OPT | sed 's/.* SUITES=//' | sed 's/ .*//' )
+    fi
+    echo "Compiling suites ${SUITES}"
+    set -ex
     cd ${PATHTR}
-    ./FV3/ccpp/framework/scripts/ccpp_prebuild.py --config=FV3/ccpp/config/ccpp_prebuild_config.py --static --suites=${SUITES} --builddir=tests/${BUILD_DIR}/FV3
+    ./FV3/ccpp/framework/scripts/ccpp_prebuild.py --config=FV3/ccpp/config/ccpp_prebuild_config.py --suites=${SUITES} --builddir=tests/${BUILD_DIR}/FV3
   )
 
   # Read list of schemes, caps, and static API
+  source ${BUILD_DIR}/FV3/ccpp/physics/CCPP_TYPEDEFS.sh
   source ${BUILD_DIR}/FV3/ccpp/physics/CCPP_SCHEMES.sh
   source ${BUILD_DIR}/FV3/ccpp/physics/CCPP_CAPS.sh
   source ${BUILD_DIR}/FV3/ccpp/physics/CCPP_STATIC_API.sh
