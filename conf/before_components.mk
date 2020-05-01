@@ -16,13 +16,6 @@
 
 CHOSEN_MODULE=$(BUILD_TARGET)/fv3
 
-ifneq (,$(findstring INTEL16=Y,$(FV3_MAKEOPT)))
-  ifeq ($(CHOSEN_MODULE),gaea.intel/fv3)
-    override CHOSEN_MODULE=$(BUILD_TARGET)/fv3.intel-16.0.3.210
-    $(warning Overriding CHOSEN_MODULE with $(CHOSEN_MODULE) as requested per MAKEOPT)
-  endif
-endif
-
 CONFIGURE_NEMS_FILE=configure.fv3.$(BUILD_TARGET)
 
 # ----------------------------------------------------------------------
