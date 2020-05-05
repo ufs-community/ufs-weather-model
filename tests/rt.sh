@@ -383,11 +383,11 @@ done
 
 # Fix me - make those definitions and DISKNM consistent
 if [[ $MACHINE_ID = hera.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/hwrf-physics-20200415/${COMPILER^^}}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/hwrf-physics-20200504/${COMPILER^^}}
 elif [[ $MACHINE_ID = cheyenne.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/hwrf-physics-20200415/${COMPILER^^}}
+  RTPWD=${RTPWD:-$DISKNM/hwrf-physics-20200504/${COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/hwrf-physics-20200415}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/hwrf-physics-20200504}
 fi
 
 shift $((OPTIND-1))
