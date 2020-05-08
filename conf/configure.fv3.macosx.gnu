@@ -1,7 +1,7 @@
 ## NEMS configuration file
 ##
 ## Platform: Darwin Mac OS X
-## Compiler: GNU (clang/gfortran) with MPICH
+## Compiler: GNU (gcc/clang+gfortran) with MPICH
 
 SHELL=/bin/sh
 
@@ -55,7 +55,6 @@ OPENMP = Y
 AVX2 = Y
 HYDRO = N
 CCPP = N
-STATIC = N
 SION = N
 
 include       $(ESMFMKFILE)
@@ -122,8 +121,8 @@ CPPDEFS += -DMULTI_GASES
 endif
 
 FFLAGS_OPT = -O2 -g -fno-range-check
-FFLAGS_REPRO = -O2 -g -fbacktrace -fno-range-check
-FFLAGS_DEBUG = -g -O0 -ggdb -fno-unsafe-math-optimizations -frounding-math -fsignaling-nans -Wuninitialized -ffpe-trap=invalid,zero,overflow -fbounds-check -fbacktrace -fno-range-check
+FFLAGS_REPRO = -O0 -g -fbacktrace -fno-range-check
+FFLAGS_DEBUG = -g -O0 -ggdb -fno-unsafe-math-optimizations -frounding-math -fsignaling-nans -ffpe-trap=invalid,zero,overflow -fbounds-check -fbacktrace -fno-range-check -Wall
 
 TRANSCENDENTALS :=
 FFLAGS_OPENMP = -fopenmp
@@ -185,12 +184,7 @@ ifeq ($(CCPP),Y)
 CPPDEFS += -DCCPP
 CFLAGS += -I$(PATH_CCPP)/include
 FFLAGS += -I$(PATH_CCPP)/include
-ifeq ($(STATIC),Y)
-CPPDEFS += -DSTATIC
 LDFLAGS += -L$(PATH_CCPP)/lib -lccppphys -lccpp $(NCEPLIBS) -lxml2
-else
-LDFLAGS += -L$(PATH_CCPP)/lib -lccpp
-endif
 endif
 
 ifeq ($(SION),Y)

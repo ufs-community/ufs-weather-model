@@ -15,7 +15,7 @@ fi
 
 readonly PATHTR=$1
 readonly BUILD_TARGET=$2
-readonly MAKE_OPT=${3:-}
+MAKE_OPT=${3:-}
 readonly BUILD_NAME=fv3${4:+_$4}
 
 readonly clean_before=${5:-YES}
@@ -60,6 +60,35 @@ cd "$PATHTR/../NEMS"
 COMPONENTS="FMS,FV3"
 if [[ "${MAKE_OPT}" == *"CCPP=Y"* ]]; then
   COMPONENTS="CCPP,$COMPONENTS"
+
+  # Check if suites argument is provided or not
+  set +ex
+  TEST=$( echo $MAKE_OPT | grep -e "SUITES=" )
+  if [[ $? -eq 1 ]]; then
+    echo "No suites argument provided, compiling all available suites ..."
+    # Loop through all available suite definition files and extract suite names
+    SDFS=(../FV3/ccpp/suites/*.xml)
+    SUITES=""
+    for sdf in ${SDFS[@]}; do
+      suite=${sdf#"../FV3/ccpp/suites/suite_"}
+      suite=${suite%".xml"}
+      SUITES="${SUITES},${suite}"
+    done
+    # Remove leading comma
+    SUITES=${SUITES#","}
+  else
+    SUITES=$( echo $MAKE_OPT | sed 's/.* SUITES=//' | sed 's/ .*//' )
+  fi
+  echo "Compiling suites ${SUITES}"
+  MAKE_OPT="${MAKE_OPT} SUITES=${SUITES}"
+  set -ex
+
+  # FIXME - create CCPP include directory before building FMS to avoid
+  # gfortran warnings of non-existent include directory (adding
+  # -Wno-missing-include-dirs) to the GNU compiler flags does not work,
+  # see also https://gcc.gnu.org/bugzilla/show_bug.cgi?id=55534);
+  # this line can be removed once FMS becomes a pre-installed library
+  mkdir -p $PATHTR/ccpp/include
 fi
 
 if [[ "${MAKE_OPT}" == *"WW3=Y"* ]]; then

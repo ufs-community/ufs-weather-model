@@ -159,7 +159,7 @@
        cnvcld         = .true.
        imfshalcnv     = 2
        imfdeepcnv     = 2
-       isatmedmf      = 0
+       isatmedmf      = @[ISATMEDMF]
        cdmbgwd        = 3.5,0.25
        prslrd0        = 0.
        ivegsrc        = 1
@@ -184,9 +184,11 @@
        nstf_name      = @[NSTF_NAME]
        cplflx         = @[CPLFLX]
        cplwav         = @[CPLWAV]
+       cplwav2atm     = @[CPLWAV2ATM]
        iau_delthrs    = 6
        iaufhrs        = 30
        iau_inc_files  = @[IAU_INC_FILES]
+       iau_drymassfixer = @[IAU_DRYMASSFIXER]
        do_sppt        = @[DO_SPPT]
        do_shum        = @[DO_SHUM]
        do_skeb        = @[DO_SKEB]
@@ -204,6 +206,16 @@
        nspinup        = 1000
        iseed_ca       = 0
        isppt_deep     = .false.
+       do_RRTMGP      = @[DO_RRTMGP]
+       active_gases   = 'h2o_co2_o3_n2o_ch4_o2'
+       ngases         = 6
+       lw_file_gas    = 'rrtmgp-data-lw-g256-2018-12-04.nc'
+       lw_file_clouds = 'rrtmgp-cloud-optics-coeffs-lw.nc'
+       sw_file_gas    = 'rrtmgp-data-sw-g224-2018-12-04.nc'
+       sw_file_clouds = 'rrtmgp-cloud-optics-coeffs-sw.nc'
+       rrtmgp_cld_optics = 0
+       rrtmgp_nrghice    = 3
+       rrtmgp_ngauss_ang = 3
 /
 
 &interpolator_nml

@@ -27,7 +27,7 @@ elif [ $MACHINE_ID = wcoss_dell_p3 ]; then
   TASKS_stretch=48 ; TPN_stretch=28 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=28 ; INPES_strnest=2 ; JNPES_strnest=4
 
-elif [[ $MACHINE_ID = theia.* ]]; then
+elif [[ $MACHINE_ID = orion.* ]]; then
 
   TASKS_dflt=150 ; TPN_dflt=24 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=84  ; TPN_thrd=12 ; INPES_thrd=3 ; JNPES_thrd=4
@@ -115,6 +115,9 @@ export MAKE_NH=.T.
 export MOUNTAIN=.F.
 export NA_INIT=1
 
+# Radiation
+export DO_RRTMGP=.F.
+
 # Microphysics
 export IMP_PHYSICS=11
 # GFDL MP
@@ -135,6 +138,7 @@ export GWD_OPT=1
 
 # PBL
 export SATMEDMF=.F.
+export ISATMEDMF=0
 export HYBEDMF=.T.
 export SHINHONG=.F.
 export DO_YSU=.F.
@@ -161,6 +165,7 @@ export H2O_PHYS=.F.
 export CPL=.F.
 export CPLFLX=.F.
 export CPLWAV=.F.
+export CPLWAV2ATM=.F.
 export DAYS=1
 export NPX=97
 export NPY=97
@@ -195,5 +200,11 @@ export DO_SFCPERTS=.F.
 export SKEB=-999.
 export SPPT=-999.
 export SHUM=-999.
+
+#IAU
 export IAU_INC_FILES="''"
+export IAU_DRYMASSFIXER=.false.
+
+# Regional
+export WRITE_RESTART_WITH_BCS=.false.
 }
