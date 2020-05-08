@@ -31,7 +31,6 @@ OPENMP = Y
 AVX2 = Y
 HYDRO = N
 CCPP = N
-INTEL16 = N
 
 include       $(ESMFMKFILE)
 ESMF_INC    = $(ESMF_F90COMPILEPATHS)
@@ -98,11 +97,7 @@ CPPDEFS += -DMULTI_GASES
 endif
 
 FFLAGS_OPT = -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3
-ifeq ($(INTEL16),Y)
-FFLAGS_REPRO = -O2 -debug minimal -fp-model strict -qoverride-limits -g -traceback
-else
 FFLAGS_REPRO = -O2 -debug minimal -fp-model consistent -qoverride-limits -g -traceback
-endif
 FFLAGS_DEBUG = -g -O0 -check all -check noarg_temp_created -check nopointer -warn -warn noerrors -fp-stack-check -fstack-protector-all -fpe0 -debug -traceback -ftrapuv
 
 TRANSCENDENTALS := -fast-transcendentals
