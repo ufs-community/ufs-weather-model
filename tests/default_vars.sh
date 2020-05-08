@@ -203,6 +203,12 @@ export SHUM=-999.
 
 #IAU
 export IAU_INC_FILES="''"
+
+#Cellular automata
+export DO_CA=.F.
+export CA_SGS=.F.
+export CA_GLOBAL=.F.
+
 export IAU_DRYMASSFIXER=.false.
 
 # Regional

@@ -23,13 +23,6 @@ find_package(ESMF REQUIRED)
 
 include(${PROJECT_SOURCE_DIR}/cmake/configure_${CMAKE_Platform}.cmake)
 
-if(NOT DEFINED PHYS)
-  set(PHYS gfs)
-endif()
-message("")
-message("Selected physics package: ${PHYS}")
-message("")
-
 add_definitions(-Duse_libMPI)
 add_definitions(-Duse_netCDF)
 add_definitions(-Duse_WRTCOMP)
@@ -250,7 +243,7 @@ target_link_libraries(NEMS.exe
                       fv3core
                       io
                       ${IPD_LIBRARIES}
-                      ${PHYS}physics
+                      gfsphysics
                       ${CCPP_LIBRARIES}
                       fv3cpl
                       stochastic_physics
