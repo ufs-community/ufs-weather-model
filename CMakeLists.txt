@@ -38,6 +38,12 @@ add_definitions(-DINTERNAL_FILE_NML)
 
 if(CCPP)
 
+    find_package(Python 3 QUIET COMPONENTS Interpreter)
+    if (NOT Python_Interpreter_FOUND)
+      find_package(Python 2.7 QUIET REQUIRED COMPONENTS Interpreter)
+    endif()
+    message("Found Python: ${Python_EXECUTABLE}")
+
     if(NOT DEFINED CCPP_SUITES)
       set(CCPP_SUITES "FV3_GFS_2017_gfdlmp")
     endif()
@@ -48,7 +54,13 @@ if(CCPP)
                             "--suites=${CCPP_SUITES}"
                             "--builddir=${PROJECT_BINARY_DIR}/FV3"
                     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+                    OUTPUT_FILE ${PROJECT_BINARY_DIR}/ccpp_prebuild.out
+                    ERROR_FILE ${PROJECT_BINARY_DIR}/ccpp_prebuild.err
                    )
+
+    # this should not be necessary; including CCPP_*.cmake here and passing
+    # SCHEMES, CAPS and TYPEDEFS via environment variables to CCPP build.
+    # CCPP should be able to directly include those three .cmake files.
 
     include(${PROJECT_BINARY_DIR}/FV3/ccpp/physics/CCPP_SCHEMES.cmake)
     include(${PROJECT_BINARY_DIR}/FV3/ccpp/physics/CCPP_CAPS.cmake)
