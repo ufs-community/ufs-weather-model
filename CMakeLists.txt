@@ -44,19 +44,35 @@ if(CCPP)
     endif()
     message("Found Python: ${Python_EXECUTABLE}")
 
-    if(NOT DEFINED CCPP_SUITES)
-      set(CCPP_SUITES "FV3_GFS_2017_gfdlmp")
+    if(DEFINED CCPP_SUITES)
+        message("Calling CCPP code generator (ccpp_prebuild.py) for SUITES = ${CCPP_SUITES}")
+        execute_process(COMMAND FV3/ccpp/framework/scripts/ccpp_prebuild.py
+                                "--config=FV3/ccpp/config/ccpp_prebuild_config.py"
+                                "--suites=${CCPP_SUITES}"
+                                "--builddir=${PROJECT_BINARY_DIR}/FV3"
+                        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+                        OUTPUT_FILE ${PROJECT_BINARY_DIR}/ccpp_prebuild.out
+                        ERROR_FILE ${PROJECT_BINARY_DIR}/ccpp_prebuild.err
+                        RESULT_VARIABLE RC
+                       )
+    else()
+        message("Calling CCPP code generator (ccpp_prebuild.py) ...")
+        execute_process(COMMAND FV3/ccpp/framework/scripts/ccpp_prebuild.py
+                                "--config=FV3/ccpp/config/ccpp_prebuild_config.py"
+                                "--builddir=${PROJECT_BINARY_DIR}/FV3"
+                        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+                        OUTPUT_FILE ${PROJECT_BINARY_DIR}/ccpp_prebuild.out
+                        ERROR_FILE ${PROJECT_BINARY_DIR}/ccpp_prebuild.err
+                        RESULT_VARIABLE RC
+                       )
     endif()
-    message("Configuring CCPP for SUITES = ${CCPP_SUITES}")
 
-    execute_process(COMMAND FV3/ccpp/framework/scripts/ccpp_prebuild.py
-                            "--config=FV3/ccpp/config/ccpp_prebuild_config.py"
-                            "--suites=${CCPP_SUITES}"
-                            "--builddir=${PROJECT_BINARY_DIR}/FV3"
-                    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-                    OUTPUT_FILE ${PROJECT_BINARY_DIR}/ccpp_prebuild.out
-                    ERROR_FILE ${PROJECT_BINARY_DIR}/ccpp_prebuild.err
-                   )
+    # Check return code from ccpp_prebuild.py
+    if(RC EQUAL 0)
+        message("")
+    else()
+        message(FATAL_ERROR "An error occured while running ccpp_prebuild.py, check ${PROJECT_BINARY_DIR}/ccpp_prebuild.{out,err}")
+    endif()
 
     # this should not be necessary; including CCPP_*.cmake here and passing
     # SCHEMES, CAPS and TYPEDEFS via environment variables to CCPP build.
