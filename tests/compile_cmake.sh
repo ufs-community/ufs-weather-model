@@ -78,6 +78,13 @@ fi
 
 if [[ "${MAKE_OPT}" == *"CCPP=Y"* ]]; then
 
+  # FIXME - create CCPP include directory before building FMS to avoid
+  # gfortran warnings of non-existent include directory (adding
+  # -Wno-missing-include-dirs) to the GNU compiler flags does not work,
+  # see also https://gcc.gnu.org/bugzilla/show_bug.cgi?id=55534);
+  # this line can be removed once FMS becomes a pre-installed library
+  mkdir -p $PATHTR/FV3/ccpp/include
+
   CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DCCPP=ON -DMPI=ON"
 
   if [[ "${MAKE_OPT}" == *"DEBUG=Y"* ]]; then
@@ -103,38 +110,17 @@ if [[ "${MAKE_OPT}" == *"CCPP=Y"* ]]; then
     CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DMULTI_GASES=OFF"
   fi
 
-  (
     # Check if suites argument is provided or not
-    set +ex
-    TEST=$( echo $MAKE_OPT | grep -e "SUITES=" )
-    if [[ $? -eq 1 ]]; then
-      echo "No suites argument provided, compiling all available suites ..."
-      # Loop through all available suite definition files and extract suite names
-      SDFS=(../FV3/ccpp/suites/*.xml)
-      SUITES=""
-      for sdf in ${SDFS[@]}; do
-        suite=${sdf#"../FV3/ccpp/suites/suite_"}
-        suite=${suite%".xml"}
-        SUITES="${SUITES},${suite}"
-      done
-      # Remove leading comma
-      SUITES=${SUITES#","}
-    else
-      SUITES=$( echo $MAKE_OPT | sed 's/.* SUITES=//' | sed 's/ .*//' )
-    fi
+  set +ex
+  TEST=$( echo $MAKE_OPT | grep -e "SUITES=" )
+  if [[ $? -eq 0 ]]; then
+    SUITES=$( echo $MAKE_OPT | sed 's/.* SUITES=//' | sed 's/ .*//' )
+    CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DCCPP_SUITES=${SUITES}"
     echo "Compiling suites ${SUITES}"
-    set -ex
-    cd ${PATHTR}
-    ./FV3/ccpp/framework/scripts/ccpp_prebuild.py --config=FV3/ccpp/config/ccpp_prebuild_config.py --suites=${SUITES} --builddir=${BUILD_DIR}/FV3
-  )
+  fi
+  set -ex
 
-  # Read list of schemes, caps, and static API
-  source ${BUILD_DIR}/FV3/ccpp/physics/CCPP_TYPEDEFS.sh
-  source ${BUILD_DIR}/FV3/ccpp/physics/CCPP_SCHEMES.sh
-  source ${BUILD_DIR}/FV3/ccpp/physics/CCPP_CAPS.sh
-  source ${BUILD_DIR}/FV3/ccpp/physics/CCPP_STATIC_API.sh
-
- fi
+fi
 
 if [[ "${MAKE_OPT}" == *"WW3=Y"* ]]; then
     CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DWW3=Y"
