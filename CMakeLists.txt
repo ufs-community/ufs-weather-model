@@ -179,12 +179,13 @@ add_library(
 # stupid cmake can not figure out dependency of fft.F90 on fft99.F90 because 'use fft99_mod' is inside ifdefs
 set_property(SOURCE FMS/fft/fft.F90 APPEND_STRING PROPERTY COMPILE_FLAGS "-DSGICRAY=0 -DNAGFFT=0")
 
-target_include_directories(fms PUBLIC ${PROJECT_SOURCE_DIR}/FMS/include FMS/include FMS/fms FMS/mpp/include)
+target_include_directories(fms PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/FMS/include>
+                                      $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/FMS/fms>
+                                      $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/FMS/mpp/include>)
 target_include_directories(fms PRIVATE ${NETCDF_INC_DIR})
 
-set_target_properties(fms PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/FMS)
 set_target_properties(fms PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/FMS/mod)
-target_include_directories(fms PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/FMS/mod)
+target_include_directories(fms PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/FMS/mod>)
 
 ###############################################################################
 ### FV3
@@ -214,23 +215,11 @@ if(WW3)
 endif()
 
 ###############################################################################
-### NEMS
+### NEMS (i.e. ufs-weather-model-lib)
 ###############################################################################
-configure_file(${PROJECT_SOURCE_DIR}/NEMS/src/ESMFVersionDefine_ESMF_NUOPC.h
-               ${PROJECT_BINARY_DIR}/NEMS/src/ESMFVersionDefine.h
-               COPYONLY)
-# until we remove "../ESMFVersionDefine.h" from ENS_Cpl/ENS_CplComp_ESMFMod_STUB.F90
-configure_file(${PROJECT_SOURCE_DIR}/NEMS/src/ESMFVersionDefine_ESMF_NUOPC.h
-               ${PROJECT_BINARY_DIR}/NEMS/ESMFVersionDefine.h
-               COPYONLY)
-configure_file(${PROJECT_SOURCE_DIR}/NEMS/src/ESMFConvenienceMacros.h
-               ${PROJECT_BINARY_DIR}/NEMS/src/ESMFConvenienceMacros.h
-               COPYONLY)
+add_library(
+    ufs-weather-model-lib
 
-add_executable(
-    NEMS.exe
-
-    NEMS/src/MAIN_NEMS.F90
     NEMS/src/module_NEMS_UTILS.F90
     NEMS/src/module_MEDIATOR_methods.F90
     NEMS/src/module_MEDIATOR.F90
@@ -243,15 +232,51 @@ add_executable(
     NEMS/src/nems_c_rusage.c
     NEMS/src/ENS_Cpl/ENS_CplComp_ESMFMod_STUB.F90
 )
+add_dependencies(ufs-weather-model-lib fv3cap)
+
+target_compile_definitions(ufs-weather-model-lib PRIVATE -DESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR})
+target_compile_definitions(ufs-weather-model-lib PRIVATE -DFRONT_FMS)
+target_compile_definitions(ufs-weather-model-lib PRIVATE -DFRONT_FV3=fv3gfs_cap_mod)
+
+target_include_directories(ufs-weather-model-lib PUBLIC ${ESMF_MOD} )
+target_include_directories(ufs-weather-model-lib PRIVATE ${PROJECT_BINARY_DIR}/NEMS/src)
+target_include_directories(ufs-weather-model-lib PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/FV3/mod)
+target_include_directories(ufs-weather-model-lib PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/FMS/mod)
+
+set_target_properties(ufs-weather-model-lib PROPERTIES Fortran_MODULE_DIRECTORY ${PROJECT_BINARY_DIR}/mod)
+target_include_directories(ufs-weather-model-lib PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
+                                       $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/FV3/mod>
+                                       $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/mod>)
+
+configure_file(${PROJECT_SOURCE_DIR}/NEMS/src/ESMFVersionDefine_ESMF_NUOPC.h
+               ${PROJECT_BINARY_DIR}/NEMS/src/ESMFVersionDefine.h
+               COPYONLY)
+# until we remove "../ESMFVersionDefine.h" from ENS_Cpl/ENS_CplComp_ESMFMod_STUB.F90
+configure_file(${PROJECT_SOURCE_DIR}/NEMS/src/ESMFVersionDefine_ESMF_NUOPC.h
+               ${PROJECT_BINARY_DIR}/NEMS/ESMFVersionDefine.h
+               COPYONLY)
+configure_file(${PROJECT_SOURCE_DIR}/NEMS/src/ESMFConvenienceMacros.h
+               ${PROJECT_BINARY_DIR}/NEMS/src/ESMFConvenienceMacros.h
+               COPYONLY)
+
+###############################################################################
+### ufs-weather-model
+###############################################################################
+add_executable(
+    NEMS.exe
+
+    NEMS/src/MAIN_NEMS.F90
+)
+add_dependencies(NEMS.exe ufs-weather-model-lib)
 
 target_compile_definitions(NEMS.exe PRIVATE -DESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR})
 target_compile_definitions(NEMS.exe PRIVATE -DFRONT_FMS)
 target_compile_definitions(NEMS.exe PRIVATE -DFRONT_FV3=fv3gfs_cap_mod)
 
-target_include_directories(NEMS.exe PRIVATE ${ESMF_MOD} )
+target_include_directories(NEMS.exe PUBLIC ${ESMF_MOD} )
 target_include_directories(NEMS.exe PRIVATE ${PROJECT_BINARY_DIR}/NEMS/src)
 
-set_target_properties(NEMS.exe PROPERTIES Fortran_MODULE_DIRECTORY ${PROJECT_BINARY_DIR}/NEMS/mod)
+set_target_properties(NEMS.exe PROPERTIES Fortran_MODULE_DIRECTORY ${PROJECT_BINARY_DIR}/mod)
 
 if(WW3)
     target_compile_definitions(NEMS.exe PRIVATE -DFRONT_WW3=WMESMFMD)
@@ -262,22 +287,50 @@ endif()
 
 if(CCPP)
     set(CCPP_LIBRARIES ccppdriver ccppphys ccpp)
-else()
-    set(IPD_LIBRARIES ipd)
 endif()
+set(IPD ipd)
 
 target_link_libraries(NEMS.exe
+                      ufs-weather-model-lib
                       fv3cap
                       fv3core
                       io
-                      ${IPD_LIBRARIES}
+                      ${IPD}
                       gfsphysics
                       ${CCPP_LIBRARIES}
-                      fv3cpl
+                      cpl
                       stochastic_physics
                       fms
                       ${WW3_LIBS}
                       ${NCEP_LIBS} ${ESMF_LIBS} ${NETCDF_LIBS} ${MKL_LIB})
+
+target_link_libraries(ufs-weather-model-lib INTERFACE
+                      fv3cap
+                      fv3core
+                      io
+                      ${IPD}
+                      gfsphysics
+                      ${CCPP_LIBRARIES}
+                      cpl
+                      stochastic_physics
+                      fms
+                      ${WW3_LIBS}
+                      ${NCEP_LIBS} ${ESMF_LIBS} ${NETCDF_LIBS} ${MKL_LIB})
+
+###############################################################################
+### Install
+###############################################################################
+
+install(
+  TARGETS ufs-weather-model-lib fv3cap fv3core io ${IPD} gfsphysics ${CCPP_LIBRARIES} cpl stochastic_physics fms
+  EXPORT ufs-weather-model-lib-config
+  LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib)
+install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod DESTINATION ${CMAKE_INSTALL_PREFIX})
+
+install(EXPORT ufs-weather-model-lib-config
+  DESTINATION lib/cmake
+)
 
 ###############################################################################
 ### done
