@@ -474,6 +474,9 @@ rocoto_create_compile_task() {
   if [[ ${MACHINE_ID} == jet ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
+  if [[ ${MACHINE_ID} == orion.* ]]; then
+    BUILD_WALLTIME="01:00:00"
+  fi
 
   cat << EOF >> $ROCOTO_XML
   <task name="compile_${COMPILE_NR}" maxtries="3">
