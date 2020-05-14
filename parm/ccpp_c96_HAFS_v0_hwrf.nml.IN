@@ -35,6 +35,10 @@
   print_memory_usage = .false.
 /
 
+&fv_grid_nml
+  grid_file = 'INPUT/grid_spec.nc'
+/
+
 &fv_core_nml
   layout = 3,8
   io_layout = 1,1
@@ -66,7 +70,7 @@
   p_fac = 0.1
   k_split = 2
   n_split = 6
-  nwat = 6
+  nwat = 4
   na_init = 0
   d_ext = 0.
   dnats = 1
@@ -287,10 +291,6 @@
   FvmxL    = 99999
   FSLPL    = 99999
   FABSL    = 99999
-/
-
-&fv_grid_nml
-  grid_file = 'INPUT/grid_spec.nc'
 /
 
 &nam_stochy
