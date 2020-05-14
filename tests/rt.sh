@@ -29,11 +29,11 @@ usage() {
 
 rt_trap() {
   [[ ${ROCOTO:-false} == true ]] && rocoto_kill
-  [[ ${ECFLOW:-false} == true ]] && ecflow_stop
   cleanup
 }
 
 cleanup() {
+  [[ ${ECFLOW:-false} == true ]] && ecflow_stop
   rm -rf ${LOCKDIR}
   trap 0
   exit
@@ -149,6 +149,7 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
   DISKNM=/lustre/f2/pdata/esrl/gsd/ufs/ufs-weather-model/RT
   # *DH 20190717
   QUEUE=debug
+  COMPILE_QUEUE=debug
 #  DO NOT SET AN ACCOUNT EVERYONE IS NOT A MEMBER OF
 #  USE AN ENVIRONMENT VARIABLE TO SET ACCOUNT
 #  ACCNR=cmp
@@ -271,7 +272,8 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
   export PYTHONPATH=/glade/p/ral/jntp/tools/ecFlow-5.3.1/lib/python2.7/site-packages
   ECFLOW_START=/glade/p/ral/jntp/tools/ecFlow-5.3.1/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
-  QUEUE=premium
+  QUEUE=regular
+  COMPILE_QUEUE=regular
   PARTITION=
   dprefix=/glade/scratch
   DISKNM=/glade/p/ral/jntp/GMTB/ufs-weather-model/RT
@@ -279,6 +281,7 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
   PTMP=$dprefix
   SCHEDULER=pbs
   cp fv3_conf/fv3_qsub.IN_cheyenne fv3_conf/fv3_qsub.IN
+  cp fv3_conf/compile_qsub.IN_cheyenne fv3_conf/compile_qsub.IN
 
 elif [[ $MACHINE_ID = stampede.* ]]; then
 
@@ -289,15 +292,16 @@ elif [[ $MACHINE_ID = stampede.* ]]; then
   export PYTHONPATH=
   ECFLOW_START=
   QUEUE=skx-dev
+  COMPILE_QUEUE=skx-dev
   PARTITION=
-  dprefix=$WORK/NEMSfv3gfs/run
-  DISKNM=$WORK/NEMSfv3gfs/RT
-  STMP=$dprefix/stmp4
-  PTMP=$dprefix/stmp3
-  SCHEDULER=sbatch
+  dprefix=$WORK/ufs-weather-model/run
+  DISKNM=$WORK/ufs-weather-model/RT
+  STMP=$dprefix
+  PTMP=$dprefix
+  SCHEDULER=slurm
   MPIEXEC=ibrun
   MPIEXECOPTS=
-  cp fv3_conf/fv3_qsub.IN_stampede fv3_conf/fv3_qsub.IN
+  cp fv3_conf/fv3_slurm.IN_stampede fv3_conf/fv3_slurm.IN
 
 else
   die "Unknown machine ID, please edit detect_machine.sh file"
@@ -516,7 +520,7 @@ EOF
   elif [[ $MACHINE_ID = jet.* ]]; then
     QUEUE=batch
   elif [[ $MACHINE_ID = cheyenne.* ]]; then
-    QUEUE=premium
+    QUEUE=regular
   else
     die "ecFlow is not supported on this machine $MACHINE_ID"
   fi

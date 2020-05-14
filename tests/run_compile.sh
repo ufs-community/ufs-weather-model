@@ -34,6 +34,8 @@ if [[ $SCHEDULER = 'slurm' ]]; then
   atparse < $PATHRT/fv3_conf/compile_slurm.IN > job_card
 elif [[ $SCHEDULER = 'lsf' ]]; then
   atparse < $PATHRT/fv3_conf/compile_bsub.IN > job_card
+elif [[ $SCHEDULER = 'pbs' ]]; then
+  atparse < $PATHRT/fv3_conf/compile_qsub.IN > job_card
 fi
 
 ################################################################################
