@@ -19,8 +19,9 @@ PRs pulled into the dtc/hwrf-physics branches
 The following PRs were pulled into these branches on the given dates
 and with the given hashes (further down is later). Additional commits
 were made by @climbfuji as required for changing the target branch
-(from dtc/develop to dtc/hwrf-physics), bug fixes, cleanup, and as
-a result of the code review processes.
+(from dtc/develop to dtc/hwrf-physics), pulling in updates from
+upstream (i.e. the hafs-community repositories), bug fixes, cleanup,
+and as a result of the code review processes.
 
 ccpp-physics
 ------------
@@ -49,6 +50,15 @@ ccpp-physics
 04/16/2020 FA MP updates https://github.com/NCAR/ccpp-physics/pull/405 -> https://github.com/NCAR/ccpp-physics/pull/435
     (entire PR)
 
+05/04/2020 FA/HWRF RRTMG/HWRF SAS bugfixes https://github.com/NCAR/ccpp-physics/pull/447
+    (entire PR)
+
+05/20/2020 fix FA table initialization https://github.com/NCAR/ccpp-physics/pull/450 -> https://github.com/NCAR/ccpp-physics/pull/453
+    (entire PR)
+
+05/20/2020 update from HAFS community https://github.com/NCAR/ccpp-physics/pull/453
+    (entire PR)
+
 fv3atm
 ------
 
@@ -66,6 +76,15 @@ fv3atm
     (entire PR)
 
 04/16/2020 FA MP updates https://github.com/NCAR/fv3atm/pull/28 -> https://github.com/NCAR/fv3atm/pull/43
+    (entire PR)
+
+05/04/2020 FA/HWRF RRTMG/HWRF SAS bugfixes https://github.com/NCAR/fv3atm/pull/47
+    (entire PR)
+
+05/14/2020 SDFs for HWRF physics test https://github.com/NCAR/fv3atm/pull/44 -> https://github.com/NCAR/fv3atm/pull/50
+    (entire PR)
+
+05/20/2020 update from HAFS community https://github.com/NCAR/fv3atm/pull/50
     (entire PR)
 
 ufs-weather-model
@@ -88,4 +107,10 @@ ufs-weather-model
     (entire PR)
 
 04/16/2020 FA MP updates https://github.com/NCAR/ufs-weather-model/pull/41 (replaced https://github.com/NCAR/ufs-weather-model/pull/25)
+    (entire PR)
 
+05/04/2020 FA/HWRF RRTMG/HWRF SAS bugfixes https://github.com/NCAR/ufs-weather-model/pull/45
+    (entire PR)
+
+05/20/2020 update from HAFS community https://github.com/NCAR/ufs-weather-model/pull/48
+    (entire PR)
