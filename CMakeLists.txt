@@ -18,8 +18,25 @@ project(ufs-weather-model
         LANGUAGES C CXX Fortran)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+
+set(CMAKE_FIND_PACKAGE_PREFER_CONFIG true)
+
+find_package(PNG REQUIRED)
+find_package(ZLIB REQUIRED)
+find_package(Jasper REQUIRED)
+find_package(NetCDF REQUIRED C Fortran)
 find_package(MPI REQUIRED)
-find_package(ESMF REQUIRED)
+set(ESMF_MKGLOBALS "VERSION_MAJOR" "LIBSDIR" "APPSDIR" "F90COMPILEPATHS")
+find_package(ESMF MODULE REQUIRED)
+
+find_package(bacio REQUIRED)
+find_package(w3nco REQUIRED)
+find_package(w3emc REQUIRED)
+find_package(sigio REQUIRED)
+find_package(sp REQUIRED)
+find_package(nemsio REQUIRED)
+find_package(g2 REQUIRED)
+find_package(g2tmpl REQUIRED)
 
 include(${PROJECT_SOURCE_DIR}/cmake/configure_${CMAKE_Platform}.cmake)
 
@@ -182,8 +199,7 @@ set_property(SOURCE FMS/fft/fft.F90 APPEND_STRING PROPERTY COMPILE_FLAGS "-DSGIC
 target_include_directories(fms PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/FMS/include>
                                       $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/FMS/fms>
                                       $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/FMS/mpp/include>)
-target_include_directories(fms PRIVATE ${NETCDF_INC_DIR})
-
+target_link_libraries(fms NetCDF::NetCDF_Fortran)
 set_target_properties(fms PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/FMS/mod)
 target_include_directories(fms PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/FMS/mod>)
 
@@ -233,12 +249,13 @@ add_library(
     NEMS/src/ENS_Cpl/ENS_CplComp_ESMFMod_STUB.F90
 )
 add_dependencies(ufs-weather-model-lib fv3cap)
+target_link_libraries(ufs-weather-model-lib PRIVATE esmf)
 
+message("ESMF_VERSION_MAJOR = ${ESMF_VERSION_MAJOR}")
 target_compile_definitions(ufs-weather-model-lib PRIVATE -DESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR})
 target_compile_definitions(ufs-weather-model-lib PRIVATE -DFRONT_FMS)
 target_compile_definitions(ufs-weather-model-lib PRIVATE -DFRONT_FV3=fv3gfs_cap_mod)
 
-target_include_directories(ufs-weather-model-lib PUBLIC ${ESMF_MOD} )
 target_include_directories(ufs-weather-model-lib PRIVATE ${PROJECT_BINARY_DIR}/NEMS/src)
 target_include_directories(ufs-weather-model-lib PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/FV3/mod)
 target_include_directories(ufs-weather-model-lib PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/FMS/mod)
@@ -273,7 +290,6 @@ target_compile_definitions(NEMS.exe PRIVATE -DESMF_VERSION_MAJOR=${ESMF_VERSION_
 target_compile_definitions(NEMS.exe PRIVATE -DFRONT_FMS)
 target_compile_definitions(NEMS.exe PRIVATE -DFRONT_FV3=fv3gfs_cap_mod)
 
-target_include_directories(NEMS.exe PUBLIC ${ESMF_MOD} )
 target_include_directories(NEMS.exe PRIVATE ${PROJECT_BINARY_DIR}/NEMS/src)
 
 set_target_properties(NEMS.exe PROPERTIES Fortran_MODULE_DIRECTORY ${PROJECT_BINARY_DIR}/mod)
@@ -302,7 +318,10 @@ target_link_libraries(NEMS.exe
                       stochastic_physics
                       fms
                       ${WW3_LIBS}
-                      ${NCEP_LIBS} ${ESMF_LIBS} ${NETCDF_LIBS} ${MKL_LIB})
+                      ${NCEP_LIBS} # just POST
+                      nemsio bacio_4 g2_4 g2tmpl w3emc_d w3nco_d sigio_4 sp_d
+                      ${JASPER_LIBRARIES} ${PNG_LIBRARIES} ${ZLIB_LIBRARIES}
+                      esmf NetCDF::NetCDF_Fortran ${MKL_LIB})
 
 target_link_libraries(ufs-weather-model-lib INTERFACE
                       fv3cap
@@ -315,7 +334,10 @@ target_link_libraries(ufs-weather-model-lib INTERFACE
                       stochastic_physics
                       fms
                       ${WW3_LIBS}
-                      ${NCEP_LIBS} ${ESMF_LIBS} ${NETCDF_LIBS} ${MKL_LIB})
+                      ${NCEP_LIBS} # just POST
+                      nemsio bacio_4 g2_4 g2tmpl w3emc_d w3nco_d sigio_4 sp_d
+                      ${JASPER_LIBRARIES} ${PNG_LIBRARIES} ${ZLIB_LIBRARIES}
+                      esmf NetCDF::NetCDF_Fortran ${MKL_LIB})
 
 ###############################################################################
 ### Install

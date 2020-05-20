@@ -3,18 +3,11 @@ set -eu
 
 MYDIR=$(cd "$(dirname "$(readlink -f -n "${BASH_SOURCE[0]}" )" )" && pwd -P)
 
-export COMPILER=${COMPILER:?"Please set COMPILER environment variable [gnu|intel]"}
-export CMAKE_Platform=linux.${COMPILER}
+export CMAKE_Platform=${CMAKE_Platform:?"Please set the CMAKE_Platform environment variable, e.g. [macosx.gnu|linux.gnu|linux.intel|hera.intel|...]"}
 export CMAKE_C_COMPILER=${CMAKE_C_COMPILER:-mpicc}
 export CMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER:-mpicxx}
 export CMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER:-mpif90}
 
-export BACIO_LIB4=${BACIO_LIB4:?"Please set BACIO_LIB4 environment variable"}
-export NEMSIO_INC=${NEMSIO_INC:?"Please set NEMSIO_INC environment variable"}
-export NEMSIO_LIB=${NEMSIO_LIB:?"Please set NEMSIO_LIB environment variable"}
-export SP_LIBd=${SP_LIBd:?"Please set SP_LIBd environment variable"}
-export W3EMC_LIBd=${W3EMC_LIBd:?"Please set W3EMC_LIBd environment variable"}
-export W3NCO_LIBd=${W3NCO_LIBd:?"Please set W3NCO_LIBd environment variable"}
 export NETCDF=${NETCDF:?"Please set NETCDF environment variable"}
 export ESMFMKFILE=${ESMFMKFILE:?"Please set ESMFMKFILE environment variable"}
 
@@ -24,6 +17,14 @@ mkdir ${BUILD_DIR}
 
 CCPP_SUITES="${CCPP_SUITES:-FV3_GFS_2017_gfdlmp}"
 CMAKE_FLAGS+=" -DCCPP=ON -DSUITES=${CCPP_SUITES} -DNETCDF_DIR=${NETCDF}"
+CMAKE_FLAGS+=" -DCMAKE_BUILD_TYPE=Debug -DDEBUG=YES"
+
+#NCEPLIBS=/scratch2/NCEPDEV/fv3-cam/Dusan.Jovic/nceplibs/local
+#CMAKE_FLAGS+=" -DCMAKE_PREFIX_PATH=${NCEPLIBS}/w3emc_2.5.0;${NCEPLIBS}/w3nco_2.1.0;${NCEPLIBS}/sigio_2.2.0;${NCEPLIBS}/nemsio_2.3.0;${NCEPLIBS}/crtm_2.3.0;${NCEPLIBS}/g2_3.2.0;${NCEPLIBS}/g2tmpl_1.7.0"
+
+#CMAKE_FLAGS+=" -DCMAKE_PREFIX_PATH=/scratch2/NCEPDEV/stmp1/Rahul.Mahajan/opt/intel-18.0.5.274/impi-2018.0.4/nceplibs-ufs/1.0.0"
+
+CMAKE_FLAGS+=" -DCMAKE_PREFIX_PATH=/scratch2/NCEPDEV/fv3-cam/Dusan.Jovic/nceplibs/install"
 
 cd ${BUILD_DIR}
 cmake .. ${CMAKE_FLAGS}
