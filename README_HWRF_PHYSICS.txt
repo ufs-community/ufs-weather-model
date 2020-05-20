@@ -53,7 +53,10 @@ ccpp-physics
 05/04/2020 FA/HWRF RRTMG/HWRF SAS bugfixes https://github.com/NCAR/ccpp-physics/pull/447
     (entire PR)
 
-05/14/2020 FA MP updates https://github.com/NCAR/ccpp-physics/pull/450 -> https://github.com/NCAR/ccpp-physics/pull/453
+05/20/2020 fix FA table initialization https://github.com/NCAR/ccpp-physics/pull/450 -> https://github.com/NCAR/ccpp-physics/pull/453
+    (entire PR)
+
+05/20/2020 update from HAFS community https://github.com/NCAR/ccpp-physics/pull/453
     (entire PR)
 
 fv3atm
@@ -81,6 +84,9 @@ fv3atm
 05/14/2020 SDFs for HWRF physics test https://github.com/NCAR/fv3atm/pull/44 -> https://github.com/NCAR/fv3atm/pull/50
     (entire PR)
 
+05/20/2020 update from HAFS community https://github.com/NCAR/fv3atm/pull/50
+    (entire PR)
+
 ufs-weather-model
 -----------------
 
@@ -104,4 +110,7 @@ ufs-weather-model
     (entire PR)
 
 05/04/2020 FA/HWRF RRTMG/HWRF SAS bugfixes https://github.com/NCAR/ufs-weather-model/pull/45
+    (entire PR)
+
+05/20/2020 update from HAFS community https://github.com/NCAR/ufs-weather-model/pull/48
     (entire PR)
