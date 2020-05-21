@@ -42,7 +42,6 @@ find_package(ZLIB REQUIRED)
 find_package(Jasper REQUIRED)
 find_package(NetCDF REQUIRED C Fortran)
 find_package(MPI REQUIRED)
-set(ESMF_MKGLOBALS "VERSION_MAJOR" "LIBSDIR" "F90COMPILEPATHS")
 find_package(ESMF MODULE REQUIRED)
 
 find_package(bacio REQUIRED)
@@ -203,7 +202,6 @@ add_library(
     FMS/mosaic/interp.c
     FMS/mosaic/mosaic_util.c
     FMS/mosaic/read_mosaic.c
-    FMS/affinity/affinity.c
     FMS/mpp/nsclock.c
     FMS/mpp/threadloc.c
 )
