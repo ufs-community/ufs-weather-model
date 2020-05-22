@@ -17,14 +17,7 @@ mkdir ${BUILD_DIR}
 
 CCPP_SUITES="${CCPP_SUITES:-FV3_GFS_2017_gfdlmp}"
 CMAKE_FLAGS+=" -DCCPP=ON -DSUITES=${CCPP_SUITES} -DNETCDF_DIR=${NETCDF}"
-CMAKE_FLAGS+=" -DCMAKE_BUILD_TYPE=Debug -DDEBUG=YES"
-
-#NCEPLIBS=/scratch2/NCEPDEV/fv3-cam/Dusan.Jovic/nceplibs/local
-#CMAKE_FLAGS+=" -DCMAKE_PREFIX_PATH=${NCEPLIBS}/w3emc_2.5.0;${NCEPLIBS}/w3nco_2.1.0;${NCEPLIBS}/sigio_2.2.0;${NCEPLIBS}/nemsio_2.3.0;${NCEPLIBS}/crtm_2.3.0;${NCEPLIBS}/g2_3.2.0;${NCEPLIBS}/g2tmpl_1.7.0"
-
-#CMAKE_FLAGS+=" -DCMAKE_PREFIX_PATH=/scratch2/NCEPDEV/stmp1/Rahul.Mahajan/opt/intel-18.0.5.274/impi-2018.0.4/nceplibs-ufs/1.0.0"
-
-CMAKE_FLAGS+=" -DCMAKE_PREFIX_PATH=/scratch2/NCEPDEV/fv3-cam/Dusan.Jovic/nceplibs/install"
+CMAKE_FLAGS+=" -DCMAKE_BUILD_TYPE=Debug -DDEBUG=YES -DWW3=ON"
 
 cd ${BUILD_DIR}
 cmake .. ${CMAKE_FLAGS}
