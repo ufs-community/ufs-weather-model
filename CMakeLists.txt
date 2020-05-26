@@ -38,6 +38,8 @@ add_definitions(-DINTERNAL_FILE_NML)
 
 include(CheckFortranSourceCompiles)
 
+# Check to ensure that the Fortran compiler supports the FINDLOC
+# intrinsic, which is used in the code.
 check_fortran_source_compiles("integer, dimension(1):: i; i=FINDLOC([2, 6, 4, 6], VALUE = 6); end" f08findloc
                               SRC_EXT f90)
 if(NOT f08findloc)
