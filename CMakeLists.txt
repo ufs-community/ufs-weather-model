@@ -38,7 +38,7 @@ add_definitions(-DINTERNAL_FILE_NML)
 
 include(CheckFortranSourceCompiles)
 
-check_fortran_source_compiles("integer i; i=FINDLOC ([2, 6, 4, 6], VALUE = 6)" f08findloc
+check_fortran_source_compiles("integer, dimension(1):: i; i=FINDLOC([2, 6, 4, 6], VALUE = 6); end" f08findloc
                               SRC_EXT f90)
 if(NOT f08findloc)
   message(FATAL_ERROR "Fortran must support the FINDLOC intrinsic, which is part of the Fortran 2008 standard.")
