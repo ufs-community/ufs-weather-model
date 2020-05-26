@@ -36,6 +36,14 @@ add_definitions(-DUSE_COND)
 add_definitions(-DNEW_TAUCTMAX)
 add_definitions(-DINTERNAL_FILE_NML)
 
+include(CheckFortranSourceCompiles)
+
+check_fortran_source_compiles("integer i; i=FINDLOC ([2, 6, 4, 6], VALUE = 6)" f08findloc
+                              SRC_EXT f90)
+if(NOT f08findloc)
+  message(FATAL_ERROR "Fortran must support the FINDLOC intrinsic, which is part of the Fortran 2008 standard.")
+endif()
+
 if(CCPP)
 
     find_package(Python 3 QUIET COMPONENTS Interpreter)
