@@ -21,10 +21,13 @@ module list
 
 set -x
 
+ulimit -s unlimited
+
 echo "Model started:  " `date`
 
 #export MPI_TYPE_DEPTH=20
 #export OMP_STACKSIZE=512M
+export KMP_AFFINITY=scatter
 export OMP_NUM_THREADS=@[THRD]
 #export ESMF_RUNTIME_COMPLIANCECHECK=OFF:depth=4
 #export PSM_RANKS_PER_CONTEXT=4
