@@ -19,14 +19,6 @@ CHOSEN_MODULE=$(BUILD_TARGET)/fv3
 CONFIGURE_NEMS_FILE=configure.fv3.$(BUILD_TARGET)
 
 # ----------------------------------------------------------------------
-# Exit for systems that are currently not supported
-ifeq ($(BUILD_TARGET),theia.pgi)
-  $(error NEMSfv3gfs currently not supported on $(BUILD_TARGET))
-else ifeq ($(BUILD_TARGET),cheyenne.pgi)
-  $(error NEMSfv3gfs currently not supported on $(BUILD_TARGET))
-endif
-
-# ----------------------------------------------------------------------
 # Copy the executable and modules.nems files into the tests/ directory
 # if a TEST_BUILD_NAME is specified.
 
