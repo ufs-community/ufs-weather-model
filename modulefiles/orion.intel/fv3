@@ -1,0 +1,61 @@
+#%Module######################################################################
+##
+##    NEMS FV3 Prerequisites: Orion/Intel
+
+proc ModulesHelp {} {
+  puts stderr "\tcit - loads modules required for building and running FV3 under NEMS on Orion/Intel"
+}
+
+module-whatis "loads NEMS FV3 prerequisites for Orion/Intel"
+
+##
+## load contrib environment
+## load noaatools (slurm utils (arbitrary.pl  layout.pl))
+##
+module load contrib noaatools
+
+##
+## load programming environment
+## this typically includes compiler, MPI and job scheduler
+##
+module load intel/2018
+module load impi/2018
+
+##
+## NCEP libraries (temporary version to match the CCPP requirements)
+##
+module use /apps/contrib/NCEPLIBS/orion/modulefiles
+module load bacio/2.0.3
+module load ip/3.0.2
+module load nemsio/2.2.4
+module load sp/2.0.3
+module load w3emc/2.4.0
+module load w3nco/2.0.7
+module load g2/3.1.1
+module load g2tmpl/1.6.0
+module load crtm/2.3.0
+module load jasper/1.900.2
+module load png/1.2.44
+module load z/1.2.6
+
+##
+## load ESMF library for above compiler / MPI combination
+## use pre-compiled EMSF library for above compiler / MPI combination
+##
+module use /apps/contrib/NCEPLIBS/lib/modulefiles 
+module load netcdfp/4.7.4 
+module load esmflocal/8.0.0.para
+module load post-intel-sandybridge/8.0.5
+
+###
+### load Python 3
+#module load python/3.7.5
+
+##
+## load cmake
+##
+module load cmake/3.15.4
+setenv CMAKE_C_COMPILER mpiicc
+setenv CMAKE_CXX_COMPILER mpiicpc
+setenv CMAKE_Fortran_COMPILER mpiifort
+setenv CMAKE_Platform orion.intel

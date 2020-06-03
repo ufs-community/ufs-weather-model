@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.15)
 
 foreach(env_var IN ITEMS
          CMAKE_C_COMPILER CMAKE_CXX_COMPILER CMAKE_Fortran_COMPILER
@@ -13,20 +13,15 @@ set(CMAKE_CXX_COMPILER $ENV{CMAKE_CXX_COMPILER})
 set(CMAKE_Fortran_COMPILER $ENV{CMAKE_Fortran_COMPILER})
 set(CMAKE_Platform $ENV{CMAKE_Platform})
 
-project(NEMSfv3gfs C CXX Fortran)
+project(ufs-weather-model
+        VERSION 1.0
+        LANGUAGES C CXX Fortran)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 find_package(MPI REQUIRED)
 find_package(ESMF REQUIRED)
 
 include(${PROJECT_SOURCE_DIR}/cmake/configure_${CMAKE_Platform}.cmake)
-
-if(NOT DEFINED PHYS)
-  set(PHYS gfs)
-endif()
-message("")
-message("Selected physics package: ${PHYS}")
-message("")
 
 add_definitions(-Duse_libMPI)
 add_definitions(-Duse_netCDF)
@@ -40,6 +35,62 @@ add_definitions(-DMOIST_CAPPA)
 add_definitions(-DUSE_COND)
 add_definitions(-DNEW_TAUCTMAX)
 add_definitions(-DINTERNAL_FILE_NML)
+
+if (CMAKE_Fortran_COMPILER_ID MATCHES "GNU" AND CMAKE_Fortran_COMPILER_VERSION VERSION_LESS 9.0.0)        
+  message(FATAL_ERROR "GNU Compiler >= 9 is required")
+endif()
+
+if(CCPP)
+
+    find_package(Python 3 QUIET COMPONENTS Interpreter)
+    if (NOT Python_Interpreter_FOUND)
+      find_package(Python 2.7 QUIET REQUIRED COMPONENTS Interpreter)
+    endif()
+    message("Found Python: ${Python_EXECUTABLE}")
+
+    if(DEFINED CCPP_SUITES)
+        message("Calling CCPP code generator (ccpp_prebuild.py) for SUITES = ${CCPP_SUITES}")
+        execute_process(COMMAND FV3/ccpp/framework/scripts/ccpp_prebuild.py
+                                "--config=FV3/ccpp/config/ccpp_prebuild_config.py"
+                                "--suites=${CCPP_SUITES}"
+                                "--builddir=${PROJECT_BINARY_DIR}/FV3"
+                        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+                        OUTPUT_FILE ${PROJECT_BINARY_DIR}/ccpp_prebuild.out
+                        ERROR_FILE ${PROJECT_BINARY_DIR}/ccpp_prebuild.err
+                        RESULT_VARIABLE RC
+                       )
+    else()
+        message("Calling CCPP code generator (ccpp_prebuild.py) ...")
+        execute_process(COMMAND FV3/ccpp/framework/scripts/ccpp_prebuild.py
+                                "--config=FV3/ccpp/config/ccpp_prebuild_config.py"
+                                "--builddir=${PROJECT_BINARY_DIR}/FV3"
+                        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+                        OUTPUT_FILE ${PROJECT_BINARY_DIR}/ccpp_prebuild.out
+                        ERROR_FILE ${PROJECT_BINARY_DIR}/ccpp_prebuild.err
+                        RESULT_VARIABLE RC
+                       )
+    endif()
+
+    # Check return code from ccpp_prebuild.py
+    if(RC EQUAL 0)
+        message("")
+    else()
+        message(FATAL_ERROR "An error occured while running ccpp_prebuild.py, check ${PROJECT_BINARY_DIR}/ccpp_prebuild.{out,err}")
+    endif()
+
+    # this should not be necessary; including CCPP_*.cmake here and passing
+    # SCHEMES, CAPS and TYPEDEFS via environment variables to CCPP build.
+    # CCPP should be able to directly include those three .cmake files.
+
+    include(${PROJECT_BINARY_DIR}/FV3/ccpp/physics/CCPP_SCHEMES.cmake)
+    include(${PROJECT_BINARY_DIR}/FV3/ccpp/physics/CCPP_CAPS.cmake)
+    include(${PROJECT_BINARY_DIR}/FV3/ccpp/physics/CCPP_TYPEDEFS.cmake)
+
+    set(ENV{CCPP_SCHEMES} "${SCHEMES}")
+    set(ENV{CCPP_CAPS} "${CAPS}")
+    set(ENV{CCPP_TYPEDEFS} "${TYPEDEFS}")
+
+endif()
 
 ###############################################################################
 ### FMS
@@ -152,6 +203,9 @@ if(WW3)
   if(${CMAKE_Platform} STREQUAL "hera.intel")
     set(WW3_COMP "hera")
   endif()
+  if(${CMAKE_Platform} STREQUAL "orion.intel")
+    set(WW3_COMP "orion")
+  endif()
   message("Build WW3:")
   message("   run: ${CMAKE_BUILD_TOOL} WW3_PARCOMPN=4 WW3_COMP=${WW3_COMP} ww3_nems")
   message("   in:  ${PROJECT_SOURCE_DIR}/WW3/model/esmf")
@@ -221,7 +275,7 @@ target_link_libraries(NEMS.exe
                       fv3core
                       io
                       ${IPD_LIBRARIES}
-                      ${PHYS}physics
+                      gfsphysics
                       ${CCPP_LIBRARIES}
                       fv3cpl
                       stochastic_physics
