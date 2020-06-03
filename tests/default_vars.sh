@@ -92,6 +92,7 @@ export INPES=$INPES_dflt
 export JNPES=$JNPES_dflt
 export TASKS=$TASKS_dflt
 export TPN=$TPN_dflt
+export RESTART_INTERVAL=0
 export QUILTING=.true.
 export WRITE_GROUP=1
 export WRTTASK_PER_GROUP=6
