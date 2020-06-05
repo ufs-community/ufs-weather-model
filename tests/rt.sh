@@ -182,8 +182,8 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   ECFLOW_START=/scratch2/NCEPDEV/fv3-cam/Dusan.Jovic/ecflow/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
-  QUEUE=debug
-  COMPILE_QUEUE=debug
+  QUEUE=batch
+  COMPILE_QUEUE=batch
 
 #  ACCNR=fv3-cpu
   PARTITION=
@@ -378,9 +378,9 @@ while getopts ":cfsl:mkreh" opt; do
 done
 
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200512/${COMPILER^^}}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200603/${COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200512}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200603}
 fi
 
 shift $((OPTIND-1))
@@ -492,12 +492,13 @@ fi
 if [[ $ECFLOW == true ]]; then
 
   ECFLOW_RUN=${PATHRT}/ecflow_run
+  ECFLOW_SUITE=regtest
   rm -rf ${ECFLOW_RUN}
-  mkdir -p ${ECFLOW_RUN}/regtest
+  mkdir -p ${ECFLOW_RUN}/${ECFLOW_SUITE}
   cp head.h tail.h ${ECFLOW_RUN}
-  > ${ECFLOW_RUN}/regtest.def
-  cat << EOF >> ${ECFLOW_RUN}/regtest.def
-suite regtest
+  > ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+  cat << EOF >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+suite ${ECFLOW_SUITE}
     edit ECF_HOME '${ECFLOW_RUN}'
     edit ECF_INCLUDE '${ECFLOW_RUN}'
     edit ECF_KILL_CMD kill -15 %ECF_RID% > %ECF_JOB%.kill 2>&1
@@ -725,7 +726,7 @@ if [[ $ROCOTO == true ]]; then
 fi
 
 if [[ $ECFLOW == true ]]; then
-  echo "endsuite" >> ${ECFLOW_RUN}/regtest.def
+  echo "endsuite" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   # run ecflow workflow until done
   ecflow_run
 fi
