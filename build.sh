@@ -23,16 +23,6 @@ rm -rf ${BUILD_DIR}
 mkdir ${BUILD_DIR}
 
 CCPP_SUITES="${CCPP_SUITES:-FV3_GFS_2017_gfdlmp}"
-
-./FV3/ccpp/framework/scripts/ccpp_prebuild.py \
-    --config=FV3/ccpp/config/ccpp_prebuild_config.py \
-    --suites=${CCPP_SUITES} \
-    --builddir=${BUILD_DIR}/FV3 > ${BUILD_DIR}/ccpp_prebuild.log 2>&1
-
-source ${BUILD_DIR}/FV3/ccpp/physics/CCPP_SCHEMES.sh
-source ${BUILD_DIR}/FV3/ccpp/physics/CCPP_CAPS.sh
-source ${BUILD_DIR}/FV3/ccpp/physics/CCPP_STATIC_API.sh
-
 CMAKE_FLAGS+=" -DCCPP=ON -DSUITES=${CCPP_SUITES} -DNETCDF_DIR=${NETCDF}"
 
 cd ${BUILD_DIR}
