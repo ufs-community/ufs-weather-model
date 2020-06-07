@@ -19,18 +19,8 @@ readonly MYDIR=$( dirname $(readlink -f $0) )
 
 readonly ARGC=$#
 
-cd ${MYDIR}
-
-if [[ $ARGC -eq 0 ]]; then
-  COMPILER=intel
-  . detect_machine.sh
-  PATHTR=$(cd -P ${MYDIR}/.. && pwd)
-  MAKE_OPT=''
-  BUILD_NAME=fv3
-  clean_before=YES
-  clean_after=YES
-elif [[ $ARGC -lt 2 ]]; then
-  echo "Usage: $0 PATHTR MACHINE_ID [ MAKE_OPT [ BUILD_NR ] [ clean_before ] [ clean_after ]  ]"
+if [[ $ARGC -lt 2 ]]; then
+  echo "Usage: $0 PATHTR MACHINE_ID [ MAKE_OPT [ BUILD_NR ] [ clean_before ] [ clean_after ] ]"
   echo Valid MACHINE_IDs:
   echo $( ls -1 ../conf/configure.fv3.* | sed s,.*fv3\.,,g ) | fold -sw72
   exit 1
@@ -42,7 +32,8 @@ else
   clean_before=${5:-YES}
   clean_after=${6:-YES}
 fi
-BUILD_DIR=build_${BUILD_NAME}
+
+BUILD_DIR=$(pwd)/build_${BUILD_NAME}
 
 # ----------------------------------------------------------------------
 # Make sure we have reasonable number of threads.
@@ -50,14 +41,12 @@ BUILD_DIR=build_${BUILD_NAME}
 if [[ $MACHINE_ID == cheyenne.* ]] ; then
     MAKE_THREADS=${MAKE_THREADS:-3}
 elif [[ $MACHINE_ID == wcoss_dell_p3 ]] ; then
-    MAKE_THREADS=${MAKE_THREADS:-4}
+    MAKE_THREADS=${MAKE_THREADS:-1}
 fi
 
 MAKE_THREADS=${MAKE_THREADS:-8}
 
 hostname
-
-cd ${PATHTR}/tests
 
 # ----------------------------------------------------------------------
 
@@ -89,6 +78,13 @@ fi
 
 if [[ "${MAKE_OPT}" == *"CCPP=Y"* ]]; then
 
+  # FIXME - create CCPP include directory before building FMS to avoid
+  # gfortran warnings of non-existent include directory (adding
+  # -Wno-missing-include-dirs) to the GNU compiler flags does not work,
+  # see also https://gcc.gnu.org/bugzilla/show_bug.cgi?id=55534);
+  # this line can be removed once FMS becomes a pre-installed library
+  mkdir -p $PATHTR/FV3/ccpp/include
+
   CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DCCPP=ON -DMPI=ON"
 
   if [[ "${MAKE_OPT}" == *"DEBUG=Y"* ]]; then
@@ -108,35 +104,22 @@ if [[ "${MAKE_OPT}" == *"CCPP=Y"* ]]; then
     CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DDYN32=OFF"
   fi
 
-  if [[ "${MAKE_OPT}" == *"STATIC=Y"* ]]; then
-    CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DSTATIC=ON"
-  else
-    echo "Error, cmake build not compatible with dynamic CCPP"
-    exit 1
-  fi
-
   if [[ "${MAKE_OPT}" == *"MULTI_GASES=Y"* ]]; then
     CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DMULTI_GASES=ON"
   else
     CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DMULTI_GASES=OFF"
   fi
 
-  (
+    # Check if suites argument is provided or not
+  set +ex
+  TEST=$( echo $MAKE_OPT | grep -e "SUITES=" )
+  if [[ $? -eq 0 ]]; then
     SUITES=$( echo $MAKE_OPT | sed 's/.* SUITES=//' | sed 's/ .*//' )
-    cd ${PATHTR}
-    ./FV3/ccpp/framework/scripts/ccpp_prebuild.py --config=FV3/ccpp/config/ccpp_prebuild_config.py --static --suites=${SUITES} --builddir=tests/${BUILD_DIR}/FV3
-  )
+    CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DCCPP_SUITES=${SUITES}"
+    echo "Compiling suites ${SUITES}"
+  fi
+  set -ex
 
-  # Read list of schemes, caps, and static API
-  source ${BUILD_DIR}/FV3/ccpp/physics/CCPP_TYPEDEFS.sh
-  source ${BUILD_DIR}/FV3/ccpp/physics/CCPP_SCHEMES.sh
-  source ${BUILD_DIR}/FV3/ccpp/physics/CCPP_CAPS.sh
-  source ${BUILD_DIR}/FV3/ccpp/physics/CCPP_STATIC_API.sh
-
- fi
-
-if [[ "${MAKE_OPT}" == *"NAM_phys=Y"* ]]; then
-    CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DPHYS=nam"
 fi
 
 if [[ "${MAKE_OPT}" == *"WW3=Y"* ]]; then
@@ -159,8 +142,8 @@ CCPP_CMAKE_FLAGS=$(trim "${CCPP_CMAKE_FLAGS}")
 
   cmake ${PATHTR} ${CCPP_CMAKE_FLAGS}
   make -j ${MAKE_THREADS}
-  mv NEMS.exe ../${BUILD_NAME}.exe
-  cp ${PATHTR}/modulefiles/${MACHINE_ID}/fv3 ../modules.${BUILD_NAME}
+  mv NEMS.exe ${PATHTR}/tests/${BUILD_NAME}.exe
+  cp ${PATHTR}/modulefiles/${MACHINE_ID}/fv3 ${PATHTR}/tests/modules.${BUILD_NAME}
   cd ..
 )
 
