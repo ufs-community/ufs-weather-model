@@ -19,7 +19,7 @@ cp    @[RTPWD]/FV3_input_data/*grb .
 cp    @[RTPWD]/FV3_input_data/*_table .
 
 # Copy diag table file depending on LSM
-if [ $LSM = 1 ]; then
+if [ $LSM = 1 ] || [ $LSM = 2 ]; then
   cp  @[RTPWD]/FV3_input_data_gsd/diag_table_gsd_noah diag_table
 elif [ $LSM = 3 ]; then
   cp  @[RTPWD]/FV3_input_data_gsd/diag_table_gsd_ruc  diag_table
