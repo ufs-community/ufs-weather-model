@@ -15,7 +15,7 @@ fi
 
 readonly PATHTR=$1
 readonly BUILD_TARGET=$2
-readonly MAKE_OPT=${3:-}
+MAKE_OPT=${3:-}
 readonly BUILD_NAME=fv3${4:+_$4}
 
 readonly clean_before=${5:-YES}
@@ -60,12 +60,6 @@ cd "$PATHTR/../NEMS"
 COMPONENTS="FMS,FV3"
 if [[ "${MAKE_OPT}" == *"CCPP=Y"* ]]; then
   COMPONENTS="CCPP,$COMPONENTS"
-  # FIXME - create CCPP include directory before building FMS to avoid
-  # gfortran warnings of non-existent include directory (adding
-  # -Wno-missing-include-dirs) to the GNU compiler flags does not work,
-  # see also https://gcc.gnu.org/bugzilla/show_bug.cgi?id=55534);
-  # this line can be removed once FMS becomes a pre-installed library
-  mkdir -p $PATHTR/ccpp/include
 fi
 
 if [[ "${MAKE_OPT}" == *"WW3=Y"* ]]; then
@@ -97,6 +91,15 @@ if [ $clean_before = YES ] ; then
   $gnu_make -k COMPONENTS="$COMPONENTS" TEST_BUILD_NAME="$BUILD_NAME" \
            BUILD_ENV="$BUILD_TARGET" FV3_MAKEOPT="$MAKE_OPT" \
            NEMS_BUILDOPT="$NEMS_BUILDOPT" distclean
+fi
+
+# FIXME - create CCPP include directory before building FMS to avoid
+# gfortran warnings of non-existent include directory (adding
+# -Wno-missing-include-dirs) to the GNU compiler flags does not work,
+# see also https://gcc.gnu.org/bugzilla/show_bug.cgi?id=55534);
+# this line can be removed once FMS becomes a pre-installed library
+if [[ "${MAKE_OPT}" == *"CCPP=Y"* ]]; then
+  mkdir -p $PATHTR/ccpp/include
 fi
 
   $gnu_make -k COMPONENTS="$COMPONENTS" TEST_BUILD_NAME="$BUILD_NAME" \
