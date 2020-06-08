@@ -36,6 +36,10 @@ add_definitions(-DUSE_COND)
 add_definitions(-DNEW_TAUCTMAX)
 add_definitions(-DINTERNAL_FILE_NML)
 
+if (CMAKE_Fortran_COMPILER_ID MATCHES "GNU" AND CMAKE_Fortran_COMPILER_VERSION VERSION_LESS 9.0.0)        
+  message(FATAL_ERROR "GNU Compiler >= 9 is required")
+endif()
+
 if(CCPP)
 
     find_package(Python 3 QUIET COMPONENTS Interpreter)
