@@ -15,22 +15,15 @@ option(REPRO   "Enable REPRO mode" OFF)
 option(VERBOSE "Enable VERBOSE mode" OFF)
 option(32BIT   "Enable 32BIT (single precision arithmetic in dycore)" OFF)
 option(OPENMP  "Enable OpenMP threading" ON)
-option(AVX2    "Enable AVX2 instruction set" OFF)
+option(AVX2    "Enable AVX2 instruction set" ON)
 
 option(INLINE_POST "Enable inline post" OFF)
 
 include( cmake/${CMAKE_Fortran_COMPILER_ID}.cmake )
 
-message("AVX2 is   ENABLED on Jet (multi-tagret executable)")
-string (REPLACE "-xHOST" "-axSSE4.2,AVX,CORE-AVX2" CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS}")
-string (REPLACE "-xHOST" "-axSSE4.2,AVX,CORE-AVX2" CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
-
-string(REPLACE "-i_dynamic" "-shared-intel"
-       CMAKE_SHARED_LIBRARY_LINK_Fortran_FLAGS
-       "${CMAKE_SHARED_LIBRARY_LINK_Fortran_FLAGS}")
-
 set(NEMSIO_INC $ENV{NEMSIO_INC})
-set(NCEP_LIBS $ENV{NEMSIO_LIB} $ENV{BACIO_LIB4} $ENV{SP_LIBd} $ENV{W3EMC_LIBd} $ENV{W3NCO_LIBd})
+set(POST_INC $ENV{POST_INC})
+set(NCEP_LIBS $ENV{POST_LIB} $ENV{NEMSIO_LIB} $ENV{G2_LIB4} $ENV{G2TMPL_LIB} $ENV{BACIO_LIB4} $ENV{SP_LIBd} $ENV{W3EMC_LIBd} $ENV{W3NCO_LIBd} $ENV{CRTM_LIB} $ENV{PNG_LIB} $ENV{JASPER_LIB} $ENV{Z_LIB})
 
 set(ESMF_MOD ${ESMF_F90COMPILEPATHS})
 set(ESMF_LIBS "${ESMF_F90ESMFLINKRPATHS} ${ESMF_F90ESMFLINKPATHS} ${ESMF_F90ESMFLINKLIBS}")

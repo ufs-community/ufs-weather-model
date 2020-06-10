@@ -5,30 +5,6 @@ export ACCNR=${ACCNR:-nems}
 
 case $(hostname -f) in
 
-  g10a1.ncep.noaa.gov)     MACHINE_ID=wcoss ; export pex=1;; ### gyre 1
-  g10a2.ncep.noaa.gov)     MACHINE_ID=wcoss ; export pex=1;; ### gyre 2
-  g14a1.ncep.noaa.gov)     MACHINE_ID=wcoss ; export pex=1;; ### gyre 3
-  g14a2.ncep.noaa.gov)     MACHINE_ID=wcoss ; export pex=1;; ### gyre 4
-
-  t10a1.ncep.noaa.gov)     MACHINE_ID=wcoss ; export pex=1;; ### tide 1
-  t10a2.ncep.noaa.gov)     MACHINE_ID=wcoss ; export pex=1;; ### tide 2
-  t14a1.ncep.noaa.gov)     MACHINE_ID=wcoss ; export pex=1;; ### tide 3
-  t14a2.ncep.noaa.gov)     MACHINE_ID=wcoss ; export pex=1;; ### tide 4
-
-  g20a1.ncep.noaa.gov)     MACHINE_ID=wcoss ; export pex=2;; ### gyre phase2
-  g20a2.ncep.noaa.gov)     MACHINE_ID=wcoss ; export pex=2;; ### gyre phase2
-  g20a3.ncep.noaa.gov)     MACHINE_ID=wcoss ; export pex=2;; ### gyre phase2
-  g21a1.ncep.noaa.gov)     MACHINE_ID=wcoss ; export pex=2;; ### gyre phase2
-  g21a2.ncep.noaa.gov)     MACHINE_ID=wcoss ; export pex=2;; ### gyre phase2
-  g21a3.ncep.noaa.gov)     MACHINE_ID=wcoss ; export pex=2;; ### gyre phase2
-
-  t20a1.ncep.noaa.gov)     MACHINE_ID=wcoss ; export pex=2;; ### tide phase2
-  t20a2.ncep.noaa.gov)     MACHINE_ID=wcoss ; export pex=2;; ### tide phase2
-  t20a3.ncep.noaa.gov)     MACHINE_ID=wcoss ; export pex=2;; ### tide phase2
-  t21a1.ncep.noaa.gov)     MACHINE_ID=wcoss ; export pex=2;; ### tide phase2
-  t21a2.ncep.noaa.gov)     MACHINE_ID=wcoss ; export pex=2;; ### tide phase2
-  t21a3.ncep.noaa.gov)     MACHINE_ID=wcoss ; export pex=2;; ### tide phase2
-
   llogin1)                 MACHINE_ID=wcoss_cray ;; ### luna
   llogin2)                 MACHINE_ID=wcoss_cray ;; ### luna
   llogin3)                 MACHINE_ID=wcoss_cray ;; ### luna

@@ -8,14 +8,12 @@ proc ModulesHelp {} {
 
 module-whatis "loads NEMS FV3 prerequisites for Hera/Intel"
 
-# NOTE: the "module purge" and loading of the module command are
-# handled by the module-setup.sh (or .csh) script.
-# setenv NCEPLIBS /scratch2/NCEPDEV/nwprod/NCEPLIBS
 ##
 ## load contrib environment
 ## load slurm utils (arbitrary.pl  layout.pl)
 ##
-module load contrib sutils
+module use -a /contrib/sutils/modulefiles
+module load sutils
 
 ##
 ## load programming environment
