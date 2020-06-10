@@ -1,0 +1,17 @@
+#!/bin/sh
+#SBATCH -e err
+#SBATCH -o out
+#SBATCH --account=@[ACCNR]
+#SBATCH --qos=@[QUEUE]
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=8
+#SBATCH --time=30
+#SBATCH --job-name="@[JBNME]"
+
+set -eux
+
+echo "Compile started:  " `date`
+
+@[PATHRT]/compile_cmake.sh @[PATHTR] @[MACHINE_ID] "@[MAKE_OPT]" @[COMPILE_NR]
+
+echo "Compile ended:    " `date`

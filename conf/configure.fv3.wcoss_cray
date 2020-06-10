@@ -21,7 +21,6 @@ OPENMP = Y
 AVX2 = Y
 HYDRO = N
 CCPP = N
-STATIC = N
 
 include       $(ESMFMKFILE)
 ESMF_INC    = $(ESMF_F90COMPILEPATHS)
@@ -84,7 +83,7 @@ CPPDEFS += -DMULTI_GASES
 endif
 
 FFLAGS_OPT = -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3
-FFLAGS_REPRO = -O2 -debug minimal -fp-model strict -qoverride-limits -g -traceback
+FFLAGS_REPRO = -O2 -debug minimal -fp-model consistent -qoverride-limits -g -traceback
 FFLAGS_DEBUG = -g -O0 -check -check noarg_temp_created -check nopointer -warn -warn noerrors -fp-stack-check -fstack-protector-all -fpe0 -debug -traceback -ftrapuv
 
 TRANSCENDENTALS := -fast-transcendentals
@@ -149,12 +148,7 @@ ifeq ($(CCPP),Y)
 CPPDEFS += -DCCPP
 CFLAGS += -I$(PATH_CCPP)/include
 FFLAGS += -I$(PATH_CCPP)/include
-ifeq ($(STATIC),Y)
-CPPDEFS += -DSTATIC
 LDFLAGS += -L$(PATH_CCPP)/lib -lccppphys -lccpp $(NCEPLIBS) -lxml2
-else
-LDFLAGS += -L$(PATH_CCPP)/lib -lccpp
-endif
 endif
 
 ifneq ($(findstring netcdf/4,$(LOADEDMODULES)),)
