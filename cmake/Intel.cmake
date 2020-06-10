@@ -50,6 +50,10 @@ if(OPENMP)
     add_definitions(-DOPENMP)
 endif()
 
+if(QUAD_PRECISION)
+    add_definitions(-DENABLE_QUAD_PRECISION)
+endif()
+
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D__IFC -sox -fp-model source")
 
@@ -89,4 +93,9 @@ if(INLINE_POST)
     message("INLINE_POST is ENABLED")
 else()
     message("INLINE_POST is disabled")
+endif()
+if(QUAD_PRECISION)
+    message("QUAD_PRECISION is ENABLED")
+else()
+    message("QUAD_PRECISION is disabled")
 endif()
