@@ -66,7 +66,7 @@ add_definitions(-DUSE_COND)
 add_definitions(-DNEW_TAUCTMAX)
 add_definitions(-DINTERNAL_FILE_NML)
 
-if (CMAKE_Fortran_COMPILER_ID MATCHES "GNU" AND CMAKE_Fortran_COMPILER_VERSION VERSION_LESS 9.0.0)        
+if (CMAKE_Fortran_COMPILER_ID MATCHES "GNU" AND CMAKE_Fortran_COMPILER_VERSION VERSION_LESS 9.0.0)
   message(FATAL_ERROR "GNU Compiler >= 9 is required")
 endif()
 
@@ -344,7 +344,7 @@ target_link_libraries(NEMS.exe
                       fms
                       ${WW3_LIBS}
                       $ENV{POST_LIB}
-                      nemsio bacio_4 g2_4 g2tmpl w3emc_d w3nco_d sigio_4 sp_d
+                      nemsio::nemsio g2::g2_4 g2tmpl::g2tmpl w3emc_d w3nco::w3nco_d sp::sp_d
                       ${JASPER_LIBRARIES} PNG::PNG ZLIB::ZLIB
                       esmf NetCDF::NetCDF_Fortran ${MKL_LIB})
 
@@ -360,7 +360,7 @@ target_link_libraries(ufs-weather-model-lib INTERFACE
                       fms
                       ${WW3_LIBS}
                       $ENV{POST_LIB}
-                      nemsio bacio_4 g2_4 g2tmpl w3emc_d w3nco_d sigio_4 sp_d
+                      nemsio::nemsio g2::g2_4 g2tmpl::g2tmpl w3emc_d w3nco::w3nco_d sp::sp_d
                       ${JASPER_LIBRARIES} PNG::PNG ZLIB::ZLIB
                       esmf NetCDF::NetCDF_Fortran ${MKL_LIB})
 
