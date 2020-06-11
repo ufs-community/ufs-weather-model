@@ -8,14 +8,12 @@ proc ModulesHelp {} {
 
 module-whatis "loads NEMS FV3 prerequisites for Hera/Intel"
 
-# NOTE: the "module purge" and loading of the module command are
-# handled by the module-setup.sh (or .csh) script.
-setenv NCEPLIBS /scratch2/NCEPDEV/nwprod/NCEPLIBS
 ##
 ## load contrib environment
 ## load slurm utils (arbitrary.pl  layout.pl)
 ##
-module load contrib sutils
+module use -a /contrib/sutils/modulefiles
+module load sutils
 
 ##
 ## load programming environment
@@ -56,8 +54,7 @@ module load esmf/8.1.0bs19_ParallelNetCDF.hafs_couplehycom
 ##
 ## load cmake
 ##
-module use /contrib/modulefiles
-module load cmake/3.9.0
+module load cmake/3.16.1
 setenv CMAKE_C_COMPILER mpiicc
 setenv CMAKE_CXX_COMPILER mpiicpc
 setenv CMAKE_Fortran_COMPILER mpiifort

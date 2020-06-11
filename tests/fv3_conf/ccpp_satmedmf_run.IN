@@ -1,4 +1,6 @@
 rm -fr INPUT RESTART
+
+UNIT_TEST=${UNIT_TEST:-false}
 if [ $NPX = 97 ]; then
   inputdir=FV3_input_data
 elif [ $NPX = 193 ]; then
@@ -14,8 +16,25 @@ if [ $WARM_START = .F. ]; then
   mkdir RESTART
 else
   mkdir INPUT RESTART
-  cp -r @[RTPWD]/${inputdir}/RESTART/* ./INPUT
+
+  if [[ ${UNIT_TEST} == false ]]; then
+    cp -r @[RTPWD]/${inputdir}/RESTART/* ./INPUT
+  else
+    cp -r @[RTPWD]/${inputdir}/RESTART/* ./INPUT
+    rm -f INPUT/fv_core.res.*
+    rm -f INPUT/fv_srf_wnd.res.*
+    rm -f INPUT/fv_tracer.res.*
+    rm -f INPUT/phy_data.*c
+    rm -f INPUT/srf_data.*
+    for RFILE in ../${TEST_NAME}${BL_SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.*; do
+      [ -e $RFILE ] || exit 1
+      RFILE_OLD=$(basename $RFILE)
+      RFILE_NEW="${RFILE_OLD//${RESTART_FILE_PREFIX}./}"
+      cp $RFILE INPUT/${RFILE_NEW}
+    done
+  fi
 fi
+
 cp    @[RTPWD]/${inputdir}/INPUT/aerosol.dat .
 cp    @[RTPWD]/${inputdir}/INPUT/co2historicaldata_201*.txt .
 cp    @[RTPWD]/${inputdir}/INPUT/sfc_emissivity_idx.txt .

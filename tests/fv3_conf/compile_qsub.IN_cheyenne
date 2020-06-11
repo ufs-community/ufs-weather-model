@@ -1,0 +1,16 @@
+#!/bin/sh -l
+#PBS -o out
+#PBS -e err
+#PBS -N @[JBNME]
+#PBS -A @[ACCNR]
+#PBS -q @[QUEUE]
+#PBS -l select=1:ncpus=8:mpiprocs=1
+#PBS -l walltime=00:30:00
+
+set -eux
+
+echo "Compile started:  " `date`
+
+@[PATHRT]/compile_cmake.sh @[PATHTR] @[MACHINE_ID] "@[MAKE_OPT]" @[COMPILE_NR]
+
+echo "Compile ended:    " `date`
