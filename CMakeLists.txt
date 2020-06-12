@@ -45,7 +45,6 @@ find_package(MPI REQUIRED)
 find_package(ESMF MODULE REQUIRED)
 
 find_package(bacio REQUIRED)
-find_package(w3nco REQUIRED)
 find_package(w3emc REQUIRED)
 find_package(sigio REQUIRED)
 find_package(sp REQUIRED)
@@ -344,7 +343,7 @@ target_link_libraries(NEMS.exe
                       fms
                       ${WW3_LIBS}
                       $ENV{POST_LIB}
-                      nemsio::nemsio g2::g2_4 g2tmpl::g2tmpl w3emc::w3emc_d w3nco::w3nco_d sp::sp_d
+                      nemsio::nemsio g2::g2_4 g2tmpl::g2tmpl w3emc::w3emc_d sp::sp_d
                       ${JASPER_LIBRARIES} PNG::PNG ZLIB::ZLIB
                       esmf NetCDF::NetCDF_Fortran ${MKL_LIB})
 
@@ -360,7 +359,7 @@ target_link_libraries(ufs-weather-model-lib INTERFACE
                       fms
                       ${WW3_LIBS}
                       $ENV{POST_LIB}
-                      nemsio::nemsio g2::g2_4 g2tmpl::g2tmpl w3emc::w3emc_d w3nco::w3nco_d sp::sp_d
+                      nemsio::nemsio g2::g2_4 g2tmpl::g2tmpl w3emc::w3emc_d sp::sp_d
                       ${JASPER_LIBRARIES} PNG::PNG ZLIB::ZLIB
                       esmf NetCDF::NetCDF_Fortran ${MKL_LIB})
 
