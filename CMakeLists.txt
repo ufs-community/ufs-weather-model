@@ -242,13 +242,13 @@ if(WW3)
     set(WW3_COMP "orion")
   endif()
   message("Build WW3:")
-  message("   run: ${CMAKE_BUILD_TOOL} WW3_PARCOMPN=4 WW3_COMP=${WW3_COMP} ww3_nems")
+  message("   run: ${CMAKE_BUILD_TOOL} WW3_PARCOMPN=4 WW3_COMP=${WW3_COMP} ww3_nemslibonly")
   message("   in:  ${PROJECT_SOURCE_DIR}/WW3/model/esmf")
   message("")
 
   add_custom_target(ww3_nems
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/WW3/model/esmf
-    COMMAND ${CMAKE_BUILD_TOOL} WW3_PARCOMPN=4 WW3_COMP=${WW3_COMP} ww3_nems > make.log 2>&1
+    COMMAND ${CMAKE_BUILD_TOOL} WW3_PARCOMPN=4 WW3_COMP=${WW3_COMP} ww3_nemslibonly > make.log 2>&1
   )
 
     set(WW3_LIBS ${PROJECT_SOURCE_DIR}/WW3/model/obj/libww3_multi_esmf.a)
@@ -344,7 +344,7 @@ target_link_libraries(NEMS.exe
                       fms
                       ${WW3_LIBS}
                       $ENV{POST_LIB}
-                      nemsio::nemsio g2::g2_4 g2tmpl::g2tmpl w3emc_d w3nco::w3nco_d sp::sp_d
+                      nemsio::nemsio g2::g2_4 g2tmpl::g2tmpl w3emc::w3emc_d w3nco::w3nco_d sp::sp_d
                       ${JASPER_LIBRARIES} PNG::PNG ZLIB::ZLIB
                       esmf NetCDF::NetCDF_Fortran ${MKL_LIB})
 
@@ -360,7 +360,7 @@ target_link_libraries(ufs-weather-model-lib INTERFACE
                       fms
                       ${WW3_LIBS}
                       $ENV{POST_LIB}
-                      nemsio::nemsio g2::g2_4 g2tmpl::g2tmpl w3emc_d w3nco::w3nco_d sp::sp_d
+                      nemsio::nemsio g2::g2_4 g2tmpl::g2tmpl w3emc::w3emc_d w3nco::w3nco_d sp::sp_d
                       ${JASPER_LIBRARIES} PNG::PNG ZLIB::ZLIB
                       esmf NetCDF::NetCDF_Fortran ${MKL_LIB})
 
