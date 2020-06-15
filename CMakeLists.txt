@@ -37,9 +37,6 @@ message("")
 
 set(CMAKE_FIND_PACKAGE_PREFER_CONFIG true)
 
-find_package(PNG REQUIRED)
-find_package(ZLIB REQUIRED)
-find_package(Jasper REQUIRED)
 find_package(NetCDF REQUIRED C Fortran)
 find_package(MPI REQUIRED)
 find_package(ESMF MODULE REQUIRED)
@@ -344,7 +341,6 @@ target_link_libraries(NEMS.exe
                       ${WW3_LIBS}
                       $ENV{POST_LIB}
                       nemsio::nemsio g2::g2_4 g2tmpl::g2tmpl w3emc::w3emc_d sp::sp_d
-                      ${JASPER_LIBRARIES} PNG::PNG ZLIB::ZLIB
                       esmf NetCDF::NetCDF_Fortran ${MKL_LIB})
 
 target_link_libraries(ufs-weather-model-lib INTERFACE
@@ -360,7 +356,6 @@ target_link_libraries(ufs-weather-model-lib INTERFACE
                       ${WW3_LIBS}
                       $ENV{POST_LIB}
                       nemsio::nemsio g2::g2_4 g2tmpl::g2tmpl w3emc::w3emc_d sp::sp_d
-                      ${JASPER_LIBRARIES} PNG::PNG ZLIB::ZLIB
                       esmf NetCDF::NetCDF_Fortran ${MKL_LIB})
 
 ###############################################################################
