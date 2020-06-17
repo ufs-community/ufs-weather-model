@@ -339,7 +339,6 @@ target_link_libraries(NEMS.exe
                       stochastic_physics
                       fms
                       ${WW3_LIBS}
-                      $ENV{POST_LIB}
                       nemsio::nemsio g2::g2_4 g2tmpl::g2tmpl w3emc::w3emc_d sp::sp_d
                       esmf NetCDF::NetCDF_Fortran ${MKL_LIB})
 
@@ -354,7 +353,6 @@ target_link_libraries(ufs-weather-model-lib INTERFACE
                       stochastic_physics
                       fms
                       ${WW3_LIBS}
-                      $ENV{POST_LIB}
                       nemsio::nemsio g2::g2_4 g2tmpl::g2tmpl w3emc::w3emc_d sp::sp_d
                       esmf NetCDF::NetCDF_Fortran ${MKL_LIB})
 
