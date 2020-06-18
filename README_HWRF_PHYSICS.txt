@@ -59,6 +59,9 @@ ccpp-physics
 05/20/2020 update from HAFS community https://github.com/NCAR/ccpp-physics/pull/453
     (entire PR)
 
+06/18/2020 update from HAFS community https://github.com/NCAR/ccpp-physics/pull/463
+    (entire PR)
+
 fv3atm
 ------
 
@@ -87,6 +90,12 @@ fv3atm
 05/20/2020 update from HAFS community https://github.com/NCAR/fv3atm/pull/50
     (entire PR)
 
+06/18/2020 modify HAFS_v0_hwrf_nogwdps SDF https://github.com/NCAR/fv3atm/pull/55
+    (entire PR)
+
+06/18/2020 update from HAFS community https://github.com/NCAR/fv3atm/pull/54
+    (entire PR)
+
 ufs-weather-model
 -----------------
 
@@ -113,4 +122,7 @@ ufs-weather-model
     (entire PR)
 
 05/20/2020 update from HAFS community https://github.com/NCAR/ufs-weather-model/pull/48
+    (entire PR)
+
+06/18/2020 update from HAFS community https://github.com/NCAR/ufs-weather-model/pull/56
     (entire PR)
