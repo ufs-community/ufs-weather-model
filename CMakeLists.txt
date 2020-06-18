@@ -41,13 +41,10 @@ find_package(NetCDF REQUIRED C Fortran)
 find_package(MPI REQUIRED)
 find_package(ESMF MODULE REQUIRED)
 
-find_package(bacio REQUIRED)
-find_package(w3emc REQUIRED)
-find_package(sigio REQUIRED)
-find_package(sp REQUIRED)
 find_package(nemsio REQUIRED)
-find_package(g2 REQUIRED)
-find_package(g2tmpl REQUIRED)
+find_package(sp REQUIRED)
+find_package(w3emc REQUIRED)
+find_package(w3nco REQUIRED)
 
 add_definitions(-Duse_libMPI)
 add_definitions(-Duse_netCDF)
@@ -339,7 +336,7 @@ target_link_libraries(NEMS.exe
                       stochastic_physics
                       fms
                       ${WW3_LIBS}
-                      nemsio::nemsio g2::g2_4 g2tmpl::g2tmpl w3emc::w3emc_d sp::sp_d
+                      nemsio::nemsio w3emc::w3emc_d w3nco::w3nco_d sp::sp_d
                       esmf NetCDF::NetCDF_Fortran ${MKL_LIB})
 
 target_link_libraries(ufs-weather-model-lib INTERFACE
@@ -353,7 +350,7 @@ target_link_libraries(ufs-weather-model-lib INTERFACE
                       stochastic_physics
                       fms
                       ${WW3_LIBS}
-                      nemsio::nemsio g2::g2_4 g2tmpl::g2tmpl w3emc::w3emc_d sp::sp_d
+                      nemsio::nemsio w3emc::w3emc_d w3nco::w3nco_d sp::sp_d
                       esmf NetCDF::NetCDF_Fortran ${MKL_LIB})
 
 ###############################################################################
