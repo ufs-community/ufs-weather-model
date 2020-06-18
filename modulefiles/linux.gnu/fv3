@@ -16,9 +16,17 @@ export F90=${F90:-mpif90}
 export FC=${FC:-mpif90}
 
 ##
-## use own NetCDF library
+## load cmake
 ##
-export NETCDF=${NETCDF:-/usr/local}
+export CMAKE_C_COMPILER=${CC}
+export CMAKE_CXX_COMPILER=${CXX}
+export CMAKE_Fortran_COMPILER=${FC}
+export CMAKE_Platform=linux.gnu
+
+##
+## use pre-compiled NetCDF library for above compiler / MPI combination
+##
+export NETCDF=${NETCDF:?"Please set NETCDF environment variable"}
 
 ##
 ## use SIONlib library if installed and environment variable is set
@@ -33,16 +41,14 @@ fi
 ##
 ## use pre-compiled EMSF library for above compiler / MPI combination
 ##
-ESMF_VERSION=8.0.0
-export ESMFMKFILE=${ESMFMKFILE:-/usr/local/${ESMF_VERSION}/lib/esmf.mk}
+export ESMFMKFILE=${ESMFMKFILE:?"Please set ESMFMKFILE environment variable"}
 
 ##
-## NCEP libraries (need to download and build manually, see doc/README_{UBUNTU,CENTOS,...}.txt and https://github.com/NCAR/NCEPlibs)
+## use pre-compiled NCEP libraries for above compiler / MPI combination
 ##
-export NCEPLIBS_DIR=${NCEPLIBS_DIR:-/usr/local/NCEPlibs-20190820}
-export NEMSIO_INC=${NCEPLIBS_DIR}/include
-export BACIO_LIB4=${NCEPLIBS_DIR}/lib/libbacio_4.a
-export SP_LIBd=${NCEPLIBS_DIR}/lib/libsp_v2.0.2_d.a
-export W3EMC_LIBd=${NCEPLIBS_DIR}/lib/libw3emc_d.a
-export W3NCO_LIBd=${NCEPLIBS_DIR}/lib/libw3nco_d.a
-export NEMSIO_LIB=${NCEPLIBS_DIR}/lib/libnemsio_d.a
+export BACIO_LIB4=${BACIO_LIB4:?"Please set BACIO_LIB4 environment variable"}
+export NEMSIO_INC=${NEMSIO_INC:?"Please set NEMSIO_INC environment variable"}
+export NEMSIO_LIB=${NEMSIO_LIB:?"Please set NEMSIO_LIB environment variable"}
+export SP_LIBd=${SP_LIBd:?"Please set SP_LIBd environment variable"}
+export W3EMC_LIBd=${W3EMC_LIBd:?"Please set W3EMC_LIBd environment variable"}
+export W3NCO_LIBd=${W3NCO_LIBd:?"Please set W3NCO_LIBd environment variable"}
