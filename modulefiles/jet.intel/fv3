@@ -20,8 +20,9 @@ module load intel/18.0.5.274
 module load impi/2018.4.274
 module load hdf5/1.10.4
 module load netcdf/4.6.1
+module load cmake/3.16.1
 
-module use -a /lfs3/projects/hfv3gfs/GMTB/modulefiles/intel-18.0.5.274
+module use -a /lfs4/HFIP/hfv3gfs/software/modulefiles/intel-18.0.5.274/impi-2018.4.274
 
 ##
 ### NCEP libraries (download and build manually for the time being; https://github.com/NCAR/NCEPlibs)
@@ -40,4 +41,4 @@ module load cmake/3.16.1
 setenv CMAKE_C_COMPILER mpiicc
 setenv CMAKE_CXX_COMPILER mpiicpc
 setenv CMAKE_Fortran_COMPILER mpiifort
-setenv CMAKE_Platform jet
+setenv CMAKE_Platform jet.intel
