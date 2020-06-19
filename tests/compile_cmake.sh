@@ -19,18 +19,8 @@ readonly MYDIR=$( dirname $(readlink -f $0) )
 
 readonly ARGC=$#
 
-cd ${MYDIR}
-
-if [[ $ARGC -eq 0 ]]; then
-  COMPILER=intel
-  . detect_machine.sh
-  PATHTR=$(cd -P ${MYDIR}/.. && pwd)
-  MAKE_OPT=''
-  BUILD_NAME=fv3
-  clean_before=YES
-  clean_after=YES
-elif [[ $ARGC -lt 2 ]]; then
-  echo "Usage: $0 PATHTR MACHINE_ID [ MAKE_OPT [ BUILD_NR ] [ clean_before ] [ clean_after ]  ]"
+if [[ $ARGC -lt 2 ]]; then
+  echo "Usage: $0 PATHTR MACHINE_ID [ MAKE_OPT [ BUILD_NR ] [ clean_before ] [ clean_after ] ]"
   echo Valid MACHINE_IDs:
   echo $( ls -1 ../conf/configure.fv3.* | sed s,.*fv3\.,,g ) | fold -sw72
   exit 1
@@ -42,7 +32,8 @@ else
   clean_before=${5:-YES}
   clean_after=${6:-YES}
 fi
-BUILD_DIR=build_${BUILD_NAME}
+
+BUILD_DIR=$(pwd)/build_${BUILD_NAME}
 
 # ----------------------------------------------------------------------
 # Make sure we have reasonable number of threads.
@@ -50,14 +41,12 @@ BUILD_DIR=build_${BUILD_NAME}
 if [[ $MACHINE_ID == cheyenne.* ]] ; then
     MAKE_THREADS=${MAKE_THREADS:-3}
 elif [[ $MACHINE_ID == wcoss_dell_p3 ]] ; then
-    MAKE_THREADS=${MAKE_THREADS:-4}
+    MAKE_THREADS=${MAKE_THREADS:-1}
 fi
 
 MAKE_THREADS=${MAKE_THREADS:-8}
 
 hostname
-
-cd ${PATHTR}/tests
 
 # ----------------------------------------------------------------------
 
@@ -153,8 +142,8 @@ CCPP_CMAKE_FLAGS=$(trim "${CCPP_CMAKE_FLAGS}")
 
   cmake ${PATHTR} ${CCPP_CMAKE_FLAGS}
   make -j ${MAKE_THREADS}
-  mv NEMS.exe ../${BUILD_NAME}.exe
-  cp ${PATHTR}/modulefiles/${MACHINE_ID}/fv3 ../modules.${BUILD_NAME}
+  mv NEMS.exe ${PATHTR}/tests/${BUILD_NAME}.exe
+  cp ${PATHTR}/modulefiles/${MACHINE_ID}/fv3 ${PATHTR}/tests/modules.${BUILD_NAME}
   cd ..
 )
 

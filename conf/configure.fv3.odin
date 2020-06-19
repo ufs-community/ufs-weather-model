@@ -50,6 +50,7 @@ VERBOSE =
 OPENMP = Y
 AVX2 = Y
 HYDRO = N
+QUAD_PRECISION = Y
 
 include       $(ESMFMKFILE)
 ESMF_INC    = $(ESMF_F90COMPILEPATHS)
@@ -100,6 +101,10 @@ CFLAGS += -xCORE-AVX-I #-axavx
 
 ifeq ($(MULTI_GASES),Y)
 CPPDEFS += -DMULTI_GASES
+endif
+
+ifeq ($(QUAD_PRECISION),Y)
+CPPDEFS += -DENABLE_QUAD_PRECISION
 endif
 
 FFLAGS_OPT = -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3

@@ -42,15 +42,7 @@ fi
 # Set up the run directory
 source ./fv3_run
 
-if [[ $SCHEDULER = 'moab' ]]; then
-  atparse < $PATHRT/fv3_conf/fv3_msub.IN > job_card
-elif [[ $SCHEDULER = 'pbs' ]]; then
-  NODES=$(( TASKS / TPN ))
-  if (( NODES * TPN < TASKS )); then
-    NODES=$(( NODES + 1 ))
-  fi
-  atparse < $PATHRT/fv3_conf/fv3_qsub.IN > job_card
-elif [[ $SCHEDULER = 'sbatch' ]]; then
+if [[ $SCHEDULER = 'pbs' ]]; then
   NODES=$(( TASKS / TPN ))
   if (( NODES * TPN < TASKS )); then
     NODES=$(( NODES + 1 ))
@@ -65,6 +57,10 @@ elif [[ $SCHEDULER = 'slurm' ]]; then
 elif [[ $SCHEDULER = 'lsf' ]]; then
   if (( TASKS < TPN )); then
     TPN=${TASKS}
+  fi
+  NODES=$(( TASKS / TPN ))
+  if (( NODES * TPN < TASKS )); then
+    NODES=$(( NODES + 1 ))
   fi
   atparse < $PATHRT/fv3_conf/fv3_bsub.IN > job_card
 fi
