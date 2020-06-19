@@ -187,18 +187,10 @@ elif [[ $MACHINE_ID = hera.* ]]; then
 
 #  ACCNR=fv3-cpu
   PARTITION=
-  #
-  # DTC HWRF baseline
-  dprefix=/scratch1/BMC/gmtb
-  DISKNM=$dprefix/ufs-weather-model/RT
-  STMP=$dprefix
-  PTMP=$dprefix
-  # EMC baseline
-  #dprefix=/scratch1/NCEPDEV
-  #DISKNM=$dprefix/nems/emc.nemspara/RT
-  #STMP=$dprefix/stmp4
-  #PTMP=$dprefix/stmp2
-  #
+  dprefix=/scratch1/NCEPDEV
+  DISKNM=$dprefix/nems/emc.nemspara/RT
+  STMP=$dprefix/stmp4
+  PTMP=$dprefix/stmp2
 
   SCHEDULER=slurm
   cp fv3_conf/fv3_slurm.IN_hera fv3_conf/fv3_slurm.IN
@@ -386,9 +378,9 @@ while getopts ":cfsl:mkreh" opt; do
 done
 
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/hwrf-physics-20200618/${COMPILER^^}}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200603/${COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/hwrf-physics-20200618}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200603}
 fi
 
 shift $((OPTIND-1))
