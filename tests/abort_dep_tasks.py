@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 import ecflow
 import re
 
@@ -33,7 +34,7 @@ class DefsTraverser:
                 task = self.__defs.find_abs_node( self.__suite.get_abs_node_path() + "/" + t)
                 if task.get_state() == ecflow.State.aborted:
                     if node.get_state() != ecflow.State.aborted:
-                        print "Will force aborted state for task", node.get_abs_node_path()
+                        print("Will force aborted state for task", node.get_abs_node_path())
                         self.__ci.force_state(node.get_abs_node_path(), ecflow.State.aborted)
 
 try:
@@ -48,11 +49,11 @@ try:
     server_defs = ci.get_defs()
 
     if server_defs == None :
-        print "The server has no definition"
+        print("The server has no definition")
         exit(1)
 
     traverser = DefsTraverser(server_defs, ci)
     traverser.force_abort()
 
-except RuntimeError, e:
-    print "failed: " + str(e)
+except RuntimeError as e:
+    print("failed: " + str(e))

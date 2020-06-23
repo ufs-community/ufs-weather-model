@@ -1,0 +1,37 @@
+###############################################################################
+#
+#  FV3 CCPP GSD SAR ( Thompson MP + MYNN PBL + NOAH LSM) test
+#
+###############################################################################
+
+export TEST_DESCR="Compare FV3 CCPP GSD SAR v1 results with previous trunk version"
+
+export CNTL_DIR=fv3_gsd_sar_v1
+
+export LIST_FILES="atmos_4xdaily.nc \
+                   dynf000.nc \
+                   dynf003.nc \
+                   phyf000.nc \
+                   phyf003.nc \
+                   RESTART/coupler.res \
+                   RESTART/fv_core.res.nc \
+                   RESTART/fv_core.res.tile1.nc \
+                   RESTART/fv_srf_wnd.res.tile1.nc \
+                   RESTART/fv_tracer.res.tile1.nc \
+                   RESTART/phy_data.nc \
+                   RESTART/sfc_data.nc"
+
+export_fv3
+export TASKS=840
+export NODES=$(expr $TASKS / $TPN + 1)
+
+export MODEL_CONFIGURE=ccpp_gsd_sar-model_configure.IN
+export FV3_RUN=ccpp_gsd_sar_v1_run.IN
+export CCPP_SUITE=FV3_GSD_SAR_v1
+export CCPP_LIB_DIR=ccpp/lib
+export INPUT_NML=ccpp_gsd_sar_v1.nml.IN
+
+RUN_SCRIPT=rt_fv3.sh
+
+export WLCLK=30
+

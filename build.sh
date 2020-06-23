@@ -3,8 +3,7 @@ set -eu
 
 MYDIR=$(cd "$(dirname "$(readlink -f -n "${BASH_SOURCE[0]}" )" )" && pwd -P)
 
-export COMPILER=${COMPILER:?"Please set COMPILER environment variable [gnu|intel]"}
-export CMAKE_Platform=linux.${COMPILER}
+export CMAKE_Platform=${CMAKE_Platform:?"Please set the CMAKE_Platform environment variable, e.g. [macosx.gnu|linux.gnu|linux.intel|hera.intel|...]"}
 export CMAKE_C_COMPILER=${CMAKE_C_COMPILER:-mpicc}
 export CMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER:-mpicxx}
 export CMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER:-mpif90}
@@ -23,18 +22,7 @@ rm -rf ${BUILD_DIR}
 mkdir ${BUILD_DIR}
 
 CCPP_SUITES="${CCPP_SUITES:-FV3_GFS_2017_gfdlmp}"
-
-./FV3/ccpp/framework/scripts/ccpp_prebuild.py \
-    --config=FV3/ccpp/config/ccpp_prebuild_config.py \
-    --static \
-    --suites=${CCPP_SUITES} \
-    --builddir=${BUILD_DIR}/FV3 > ${BUILD_DIR}/ccpp_prebuild.log 2>&1
-
-source ${BUILD_DIR}/FV3/ccpp/physics/CCPP_SCHEMES.sh
-source ${BUILD_DIR}/FV3/ccpp/physics/CCPP_CAPS.sh
-source ${BUILD_DIR}/FV3/ccpp/physics/CCPP_STATIC_API.sh
-
-CMAKE_FLAGS+=" -DCCPP=ON -DSTATIC=ON -DSUITES=${CCPP_SUITES} -DNETCDF_DIR=${NETCDF}"
+CMAKE_FLAGS+=" -DCCPP=ON -DSUITES=${CCPP_SUITES} -DNETCDF_DIR=${NETCDF}"
 
 cd ${BUILD_DIR}
 cmake .. ${CMAKE_FLAGS}
