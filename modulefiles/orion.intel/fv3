@@ -37,15 +37,16 @@ module load crtm/2.3.0
 module load jasper/1.900.2
 module load png/1.2.44
 module load z/1.2.6
+module load post/8.0.9
 
 ##
 ## load ESMF library for above compiler / MPI combination
 ## use pre-compiled EMSF library for above compiler / MPI combination
 ##
-module use /apps/contrib/NCEPLIBS/lib/modulefiles 
-module load netcdfp/4.7.4 
-module load esmflocal/8.0.1.08bs
-module load post-intel-sandybridge/8.0.5
+setenv NCEPLIBS /work/noaa/noaatest/gwv/l530/lib/
+module use /work/noaa/noaatest/gwv/l530/lib/modulefiles
+module load netcdfp/4.7.4
+module load esmflocal/8_0_1
 
 ##
 ## load cmake
