@@ -199,28 +199,6 @@ target_include_directories(fms PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/FMS/mod)
 add_subdirectory(FV3)
 
 ###############################################################################
-### WW3
-###############################################################################
-if(WW3)
-  set(WW3_COMP ${CMAKE_Platform})
-  if(${CMAKE_Platform} STREQUAL "hera.intel")
-    set(WW3_COMP "hera")
-  endif()
-  if(${CMAKE_Platform} STREQUAL "orion.intel")
-    set(WW3_COMP "orion")
-  endif()
-  message("Build WW3:")
-  message("   run: ${CMAKE_BUILD_TOOL} WW3_PARCOMPN=4 WW3_COMP=${WW3_COMP} ww3_nems")
-  message("   in:  ${PROJECT_SOURCE_DIR}/WW3/model/esmf")
-  message("")
-
-  add_custom_target(ww3_nems
-    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/WW3/model/esmf
-    COMMAND ${CMAKE_BUILD_TOOL} WW3_PARCOMPN=4 WW3_COMP=${WW3_COMP} ww3_nems > make.log 2>&1
-  )
-endif()
-
-###############################################################################
 ### NEMS
 ###############################################################################
 configure_file(${PROJECT_SOURCE_DIR}/NEMS/src/ESMFVersionDefine_ESMF_NUOPC.h
@@ -260,11 +238,13 @@ target_include_directories(NEMS.exe PRIVATE ${PROJECT_BINARY_DIR}/NEMS/src)
 
 set_target_properties(NEMS.exe PROPERTIES Fortran_MODULE_DIRECTORY ${PROJECT_BINARY_DIR}/NEMS/mod)
 
+###############################################################################
+### WW3
+###############################################################################
 if(WW3)
+    add_subdirectory(WW3/model/esmf)
     target_compile_definitions(NEMS.exe PRIVATE -DFRONT_WW3=WMESMFMD)
-    set_target_properties(NEMS.exe PROPERTIES Fortran_MODULE_DIRECTORY ${PROJECT_SOURCE_DIR}/WW3/model/mod)
-    set(WW3_LIBS ${PROJECT_SOURCE_DIR}/WW3/model/obj/libww3_multi_esmf.a)
-    add_dependencies(NEMS.exe ww3_nems)
+    target_link_libraries(NEMS.exe ww3_multi_esmf)
 endif()
 
 if(CCPP)
@@ -283,7 +263,6 @@ target_link_libraries(NEMS.exe
                       fv3cpl
                       stochastic_physics
                       fms
-                      ${WW3_LIBS}
                       ${NCEP_LIBS} ${ESMF_LIBS} ${NETCDF_LIBS} ${MKL_LIB})
 
 ###############################################################################
