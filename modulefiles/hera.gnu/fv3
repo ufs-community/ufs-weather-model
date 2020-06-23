@@ -15,27 +15,26 @@ setenv NCEPLIBS /scratch2/NCEPDEV/nwprod/NCEPLIBS
 ## load contrib environment
 ## load slurm utils (arbitrary.pl  layout.pl)
 ##
-module load contrib sutils
+module use -a /contrib/sutils/modulefiles
+module load sutils
 
 ##
 ## load programming environment
 ## this typically includes compiler, MPI and job scheduler
 ##
 module load gnu/9.2.0
-module load openmpi/3.1.4
-module load netcdf/4.7.2
+module use -a /scratch1/BMC/gmtb/software/modulefiles/gnu-9.2.0/mpich-3.3.2
+module load mpich/3.3.2
 
 ##
-## use pre-compiled EMSF library and NCEP libraries for above compiler / MPI combination
+## use pre-compiled netCDF, EMSF library and NCEP libraries for above compiler / MPI combination
 ##
-module use -a /scratch1/BMC/gmtb/software/modulefiles/gnu-9.2.0/openmpi-3.1.4
 module load NCEPlibs/1.0.0
 
 ##
 ## load cmake
 ##
-module use -a /scratch1/BMC/gmtb/software/modulefiles/generic
-module load cmake/3.16.3
+module load cmake/3.16.1
 setenv CMAKE_C_COMPILER mpicc
 setenv CMAKE_CXX_COMPILER mpicxx
 setenv CMAKE_Fortran_COMPILER mpif90

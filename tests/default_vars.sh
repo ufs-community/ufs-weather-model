@@ -92,6 +92,7 @@ export INPES=$INPES_dflt
 export JNPES=$JNPES_dflt
 export TASKS=$TASKS_dflt
 export TPN=$TPN_dflt
+export RESTART_INTERVAL=0
 export QUILTING=.true.
 export WRITE_GROUP=1
 export WRTTASK_PER_GROUP=6
@@ -147,7 +148,9 @@ export DO_MYJPBL=.F.
 
 # Shallow/deep convection
 export IMFSHALCNV=2
+export HWRF_SAMFSHAL=.F.
 export IMFDEEPCNV=2
+export HWRF_SAMFDEEP=.F.
 
 # SFC
 export DO_MYJSFC=.F.
@@ -203,6 +206,12 @@ export SHUM=-999.
 
 #IAU
 export IAU_INC_FILES="''"
+
+#Cellular automata
+export DO_CA=.F.
+export CA_SGS=.F.
+export CA_GLOBAL=.F.
+
 export IAU_DRYMASSFIXER=.false.
 
 # Regional
