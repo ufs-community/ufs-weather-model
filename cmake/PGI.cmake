@@ -67,3 +67,11 @@ if(QUAD_PRECISION)
 else()
     message("QUAD_PRECISION is disabled")
 endif()
+
+if(MULTI_GASES)
+    message("MULTI_GASES is ENABLED")
+    add_definitions(-DMULTI_GASES)
+else()
+    message("MULTI_GASES is disabled")
+endif()
+
