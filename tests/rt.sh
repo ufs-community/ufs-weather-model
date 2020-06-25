@@ -226,7 +226,7 @@ elif [[ $MACHINE_ID = orion.* ]]; then
 #  ACCNR= # detected in detect_machine.sh
   PARTITION=orion
   dprefix=/work/noaa/stmp/${USER}
-  DISKNM=/work/noaa/fv3-cam/djovic/RT
+  DISKNM=/work/noaa/nems/junwang/RT
   STMP=$dprefix/stmp
   PTMP=$dprefix/stmp
 
@@ -328,8 +328,8 @@ if [[ $MACHINE_ID = wcoss_cray ]]; then
   TESTS_FILE='rt_wcoss_cray.conf'
 fi
 
-if [[ $MACHINE_ID = orion.* ]]; then                                          
-  TESTS_FILE='rt_orion.conf'                                                
+if [[ $MACHINE_ID = orion.* ]]; then
+  TESTS_FILE='rt.conf_gfs'
 fi
 
 SET_ID='standard'
@@ -381,7 +381,7 @@ done
 if [[ $MACHINE_ID = cheyenne.* ]]; then
   RTPWD=${RTPWD:-$DISKNM/develop-20200210/${COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200210}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200624}
 fi
 
 shift $((OPTIND-1))
