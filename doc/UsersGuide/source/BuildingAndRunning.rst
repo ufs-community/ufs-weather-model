@@ -51,6 +51,8 @@ The top-level ``README`` in the NCEPLIBS-external repository includes a troubles
 You can also get expert help through a `user support forum <https://forums.ufscommunity.org/forum/build-dependencies>`_
 set up specifically for issues related to build dependencies.
 
+.. _DownloadingWMCode:
+
 ==================================
 Downloading the Weather Model Code
 ==================================
