@@ -27,6 +27,34 @@ usage() {
 
 [[ $# -eq 0 ]] && usage
 
+rt_single() {
+  local compile_line=''
+  local run_line=''
+  while read -r line; do
+    line="${line#"${line%%[![:space:]]*}"}"
+    [[ ${#line} == 0 ]] && continue
+    [[ $line == \#* ]] && continue
+
+    if [[ $line =~ COMPILE && $line =~ ${MACHINE_ID} ]]; then
+      compile_line=$line
+    fi  
+
+    if [[ $line =~ RUN ]]; then
+      tmp_test=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
+      if [[ $SINGLE_NAME == $tmp_test && $compile_line != '' ]]; then
+        echo $compile_line >$TESTS_FILE
+        echo $line >>$TESTS_FILE
+        break
+      fi  
+    fi  
+  done <'rt.conf'
+
+  if [[ ! -f $TESTS_FILE ]]; then
+    echo "$SINGLE_NAME does not exist or cannot be run on $MACHINE_ID"
+    exit 1
+  fi  
+}
+
 rt_trap() {
   [[ ${ROCOTO:-false} == true ]] && rocoto_kill
   cleanup
@@ -323,6 +351,7 @@ CREATE_BASELINE=false
 ROCOTO=false
 ECFLOW=false
 KEEP_RUNDIR=false
+SINGLE_NAME=''
 
 TESTS_FILE='rt.conf'
 
@@ -332,7 +361,7 @@ fi
 
 
 SET_ID='standard'
-while getopts ":cfsl:mkreh" opt; do
+while getopts ":cfsl:mn:kreh" opt; do
   case $opt in
     c)
       CREATE_BASELINE=true
@@ -351,6 +380,12 @@ while getopts ":cfsl:mkreh" opt; do
     m)
       # redefine RTPWD to point to newly created baseline outputs
       RTPWD=${NEW_BASELINE}
+      ;;
+    n)
+      SINGLE_NAME=$OPTARG
+      TESTS_FILE='rt.conf.single'
+      SET_ID=' '
+      rm -f $TESTS_FILE
       ;;
     k)
       KEEP_RUNDIR=true
@@ -376,6 +411,10 @@ while getopts ":cfsl:mkreh" opt; do
       ;;
   esac
 done
+
+if [[ $SINGLE_NAME != '' ]]; then
+  rt_single
+fi
 
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]]; then
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200701/${COMPILER^^}}
