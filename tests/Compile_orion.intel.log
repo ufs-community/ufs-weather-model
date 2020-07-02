@@ -1,26 +1,26 @@
 + SECONDS=0
 + [[ 4 != 4 ]]
-+ export PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ export RUNDIR_ROOT=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187
-+ RUNDIR_ROOT=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187
++ export PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
++ PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
++ export RUNDIR_ROOT=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708
++ RUNDIR_ROOT=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708
 + export 'MAKE_OPT=CCPP=Y SUITES=FV3_GFS_v15p2,FV3_GFS_v16beta,FV3_GFS_2017_RRTMGP DEBUG=Y'
 + MAKE_OPT='CCPP=Y SUITES=FV3_GFS_v15p2,FV3_GFS_v16beta,FV3_GFS_2017_RRTMGP DEBUG=Y'
 + export COMPILE_NR=10
 + COMPILE_NR=10
-+ cd /work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ [[ -e /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_10.env ]]
-+ source /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_10.env
++ cd /work/noaa/stmp/jminsuk/weather-single-test/tests
++ [[ -e /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_10.env ]]
++ source /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_10.env
 ++ export MACHINE_ID=orion.intel
 ++ MACHINE_ID=orion.intel
-++ export PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-++ PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-++ export PATHTR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630
-++ PATHTR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630
+++ export PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
+++ PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
+++ export PATHTR=/work/noaa/stmp/jminsuk/weather-single-test
+++ PATHTR=/work/noaa/stmp/jminsuk/weather-single-test
 ++ export SCHEDULER=slurm
 ++ SCHEDULER=slurm
-++ export ACCNR=gsd-hpcs
-++ ACCNR=gsd-hpcs
+++ export ACCNR=nems
+++ ACCNR=nems
 ++ export QUEUE=batch
 ++ QUEUE=batch
 ++ export PARTITION=orion
@@ -29,10 +29,10 @@
 ++ ROCOTO=false
 ++ export ECFLOW=true
 ++ ECFLOW=true
-++ export REGRESSIONTEST_LOG=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/RegressionTests_orion.intel.log
-++ REGRESSIONTEST_LOG=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/RegressionTests_orion.intel.log
-++ export LOG_DIR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/log_orion.intel
-++ LOG_DIR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/log_orion.intel
+++ export REGRESSIONTEST_LOG=/work/noaa/stmp/jminsuk/weather-single-test/tests/RegressionTests_orion.intel.log
+++ REGRESSIONTEST_LOG=/work/noaa/stmp/jminsuk/weather-single-test/tests/RegressionTests_orion.intel.log
+++ export LOG_DIR=/work/noaa/stmp/jminsuk/weather-single-test/tests/log_orion.intel
+++ LOG_DIR=/work/noaa/stmp/jminsuk/weather-single-test/tests/log_orion.intel
 + source default_vars.sh
 ++ '[' orion.intel = wcoss ']'
 ++ '[' orion.intel = wcoss_cray ']'
@@ -64,15 +64,15 @@
 + TEST_NR=10
 + export JBNME=compile_10
 + JBNME=compile_10
-+ export RUNDIR=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_10
-+ RUNDIR=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_10
++ export RUNDIR=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_10
++ RUNDIR=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_10
 + source rt_utils.sh
 ++ set -eu
-++ [[ /work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/run_compile.sh = \r\t\_\u\t\i\l\s\.\s\h ]]
+++ [[ /work/noaa/stmp/jminsuk/weather-single-test/tests/run_compile.sh = \r\t\_\u\t\i\l\s\.\s\h ]]
 ++ UNIT_TEST=false
 + source atparse.bash
-+ mkdir -p /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_10
-+ cd /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_10
++ mkdir -p /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_10
++ cd /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_10
 + [[ slurm = \s\l\u\r\m ]]
 + atparse
 + local __set_x
@@ -85,48 +85,43 @@
 + '[' -o xtrace ']'
 + set_x='set -x'
 + set +x
-Job id 141726
+Job id 144897
 TEST 10 compile is waiting to enter the queue
 1 min. TEST 10 compile is running,            Status: R
 2 min. TEST 10 compile is running,            Status: R
-3 min. TEST 10 compile is running,            Status: R
-4 min. TEST 10 compile is running,            Status: R
-5 min. TEST 10 compile is running,            Status: R
-6 min. TEST 10 compile is running,            Status: R
-7 min. TEST 10 compile is running,            Status: R
 Slurm unknown status -. Check sacct ...
-141726        COMPLETED compile_10 
-141726.batch  COMPLETED      batch 
-141726.exte+  COMPLETED     extern 
-8 min. TEST 10 compile is COMPLETED
+144897        COMPLETED compile_10 
+144897.batch  COMPLETED      batch 
+144897.exte+  COMPLETED     extern 
+3 min. TEST 10 compile is COMPLETED
 COMPLETED
 COMPLETED
-+ elapsed=486
-+ echo 'Elapsed time 486 seconds. Compile 10'
-Elapsed time 486 seconds. Compile 10
++ elapsed=186
++ echo 'Elapsed time 186 seconds. Compile 10'
+Elapsed time 186 seconds. Compile 10
 + SECONDS=0
 + [[ 4 != 4 ]]
-+ export PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ export RUNDIR_ROOT=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187
-+ RUNDIR_ROOT=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187
++ export PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
++ PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
++ export RUNDIR_ROOT=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708
++ RUNDIR_ROOT=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708
 + export 'MAKE_OPT=CCPP=Y SUITES=FV3_GSD_v0,FV3_GFS_v15_thompson 32BIT=Y DEBUG=Y'
 + MAKE_OPT='CCPP=Y SUITES=FV3_GSD_v0,FV3_GFS_v15_thompson 32BIT=Y DEBUG=Y'
 + export COMPILE_NR=11
 + COMPILE_NR=11
-+ cd /work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ [[ -e /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_11.env ]]
-+ source /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_11.env
++ cd /work/noaa/stmp/jminsuk/weather-single-test/tests
++ [[ -e /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_11.env ]]
++ source /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_11.env
 ++ export MACHINE_ID=orion.intel
 ++ MACHINE_ID=orion.intel
-++ export PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-++ PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-++ export PATHTR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630
-++ PATHTR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630
+++ export PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
+++ PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
+++ export PATHTR=/work/noaa/stmp/jminsuk/weather-single-test
+++ PATHTR=/work/noaa/stmp/jminsuk/weather-single-test
 ++ export SCHEDULER=slurm
 ++ SCHEDULER=slurm
-++ export ACCNR=gsd-hpcs
-++ ACCNR=gsd-hpcs
+++ export ACCNR=nems
+++ ACCNR=nems
 ++ export QUEUE=batch
 ++ QUEUE=batch
 ++ export PARTITION=orion
@@ -135,10 +130,10 @@ Elapsed time 486 seconds. Compile 10
 ++ ROCOTO=false
 ++ export ECFLOW=true
 ++ ECFLOW=true
-++ export REGRESSIONTEST_LOG=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/RegressionTests_orion.intel.log
-++ REGRESSIONTEST_LOG=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/RegressionTests_orion.intel.log
-++ export LOG_DIR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/log_orion.intel
-++ LOG_DIR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/log_orion.intel
+++ export REGRESSIONTEST_LOG=/work/noaa/stmp/jminsuk/weather-single-test/tests/RegressionTests_orion.intel.log
+++ REGRESSIONTEST_LOG=/work/noaa/stmp/jminsuk/weather-single-test/tests/RegressionTests_orion.intel.log
+++ export LOG_DIR=/work/noaa/stmp/jminsuk/weather-single-test/tests/log_orion.intel
+++ LOG_DIR=/work/noaa/stmp/jminsuk/weather-single-test/tests/log_orion.intel
 + source default_vars.sh
 ++ '[' orion.intel = wcoss ']'
 ++ '[' orion.intel = wcoss_cray ']'
@@ -170,15 +165,15 @@ Elapsed time 486 seconds. Compile 10
 + TEST_NR=11
 + export JBNME=compile_11
 + JBNME=compile_11
-+ export RUNDIR=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_11
-+ RUNDIR=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_11
++ export RUNDIR=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_11
++ RUNDIR=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_11
 + source rt_utils.sh
 ++ set -eu
-++ [[ /work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/run_compile.sh = \r\t\_\u\t\i\l\s\.\s\h ]]
+++ [[ /work/noaa/stmp/jminsuk/weather-single-test/tests/run_compile.sh = \r\t\_\u\t\i\l\s\.\s\h ]]
 ++ UNIT_TEST=false
 + source atparse.bash
-+ mkdir -p /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_11
-+ cd /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_11
++ mkdir -p /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_11
++ cd /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_11
 + [[ slurm = \s\l\u\r\m ]]
 + atparse
 + local __set_x
@@ -191,14 +186,14 @@ Elapsed time 486 seconds. Compile 10
 + '[' -o xtrace ']'
 + set_x='set -x'
 + set +x
-Job id 141745
+Job id 144903
 TEST 11 compile is waiting to enter the queue
 1 min. TEST 11 compile is running,            Status: R
 2 min. TEST 11 compile is running,            Status: R
 Slurm unknown status -. Check sacct ...
-141745        COMPLETED compile_11 
-141745.batch  COMPLETED      batch 
-141745.exte+  COMPLETED     extern 
+144903        COMPLETED compile_11 
+144903.batch  COMPLETED      batch 
+144903.exte+  COMPLETED     extern 
 3 min. TEST 11 compile is COMPLETED
 COMPLETED
 COMPLETED
@@ -207,27 +202,27 @@ COMPLETED
 Elapsed time 185 seconds. Compile 11
 + SECONDS=0
 + [[ 4 != 4 ]]
-+ export PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ export RUNDIR_ROOT=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187
-+ RUNDIR_ROOT=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187
++ export PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
++ PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
++ export RUNDIR_ROOT=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708
++ RUNDIR_ROOT=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708
 + export 'MAKE_OPT=CCPP=Y SUITES=FV3_GFS_v16_csawmg'
 + MAKE_OPT='CCPP=Y SUITES=FV3_GFS_v16_csawmg'
 + export COMPILE_NR=12
 + COMPILE_NR=12
-+ cd /work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ [[ -e /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_12.env ]]
-+ source /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_12.env
++ cd /work/noaa/stmp/jminsuk/weather-single-test/tests
++ [[ -e /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_12.env ]]
++ source /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_12.env
 ++ export MACHINE_ID=orion.intel
 ++ MACHINE_ID=orion.intel
-++ export PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-++ PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-++ export PATHTR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630
-++ PATHTR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630
+++ export PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
+++ PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
+++ export PATHTR=/work/noaa/stmp/jminsuk/weather-single-test
+++ PATHTR=/work/noaa/stmp/jminsuk/weather-single-test
 ++ export SCHEDULER=slurm
 ++ SCHEDULER=slurm
-++ export ACCNR=gsd-hpcs
-++ ACCNR=gsd-hpcs
+++ export ACCNR=nems
+++ ACCNR=nems
 ++ export QUEUE=batch
 ++ QUEUE=batch
 ++ export PARTITION=orion
@@ -236,10 +231,10 @@ Elapsed time 185 seconds. Compile 11
 ++ ROCOTO=false
 ++ export ECFLOW=true
 ++ ECFLOW=true
-++ export REGRESSIONTEST_LOG=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/RegressionTests_orion.intel.log
-++ REGRESSIONTEST_LOG=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/RegressionTests_orion.intel.log
-++ export LOG_DIR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/log_orion.intel
-++ LOG_DIR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/log_orion.intel
+++ export REGRESSIONTEST_LOG=/work/noaa/stmp/jminsuk/weather-single-test/tests/RegressionTests_orion.intel.log
+++ REGRESSIONTEST_LOG=/work/noaa/stmp/jminsuk/weather-single-test/tests/RegressionTests_orion.intel.log
+++ export LOG_DIR=/work/noaa/stmp/jminsuk/weather-single-test/tests/log_orion.intel
+++ LOG_DIR=/work/noaa/stmp/jminsuk/weather-single-test/tests/log_orion.intel
 + source default_vars.sh
 ++ '[' orion.intel = wcoss ']'
 ++ '[' orion.intel = wcoss_cray ']'
@@ -271,15 +266,15 @@ Elapsed time 185 seconds. Compile 11
 + TEST_NR=12
 + export JBNME=compile_12
 + JBNME=compile_12
-+ export RUNDIR=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_12
-+ RUNDIR=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_12
++ export RUNDIR=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_12
++ RUNDIR=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_12
 + source rt_utils.sh
 ++ set -eu
-++ [[ /work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/run_compile.sh = \r\t\_\u\t\i\l\s\.\s\h ]]
+++ [[ /work/noaa/stmp/jminsuk/weather-single-test/tests/run_compile.sh = \r\t\_\u\t\i\l\s\.\s\h ]]
 ++ UNIT_TEST=false
 + source atparse.bash
-+ mkdir -p /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_12
-+ cd /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_12
++ mkdir -p /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_12
++ cd /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_12
 + [[ slurm = \s\l\u\r\m ]]
 + atparse
 + local __set_x
@@ -292,7 +287,7 @@ Elapsed time 185 seconds. Compile 11
 + '[' -o xtrace ']'
 + set_x='set -x'
 + set +x
-Job id 141746
+Job id 144910
 TEST 12 compile is waiting to enter the queue
 1 min. TEST 12 compile is running,            Status: R
 2 min. TEST 12 compile is running,            Status: R
@@ -302,38 +297,38 @@ TEST 12 compile is waiting to enter the queue
 6 min. TEST 12 compile is running,            Status: R
 7 min. TEST 12 compile is running,            Status: R
 Slurm unknown status -. Check sacct ...
-141746        COMPLETED compile_12 
-141746.batch  COMPLETED      batch 
-141746.exte+  COMPLETED     extern 
+144910        COMPLETED compile_12 
+144910.batch  COMPLETED      batch 
+144910.exte+  COMPLETED     extern 
 8 min. TEST 12 compile is COMPLETED
 COMPLETED
 COMPLETED
-+ elapsed=486
-+ echo 'Elapsed time 486 seconds. Compile 12'
-Elapsed time 486 seconds. Compile 12
++ elapsed=485
++ echo 'Elapsed time 485 seconds. Compile 12'
+Elapsed time 485 seconds. Compile 12
 + SECONDS=0
 + [[ 4 != 4 ]]
-+ export PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ export RUNDIR_ROOT=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187
-+ RUNDIR_ROOT=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187
++ export PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
++ PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
++ export RUNDIR_ROOT=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708
++ RUNDIR_ROOT=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708
 + export 'MAKE_OPT=CCPP=Y SUITES=FV3_GFS_2017_gfdlmp,FV3_GFS_2017_gfdlmp_noahmp'
 + MAKE_OPT='CCPP=Y SUITES=FV3_GFS_2017_gfdlmp,FV3_GFS_2017_gfdlmp_noahmp'
 + export COMPILE_NR=13
 + COMPILE_NR=13
-+ cd /work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ [[ -e /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_13.env ]]
-+ source /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_13.env
++ cd /work/noaa/stmp/jminsuk/weather-single-test/tests
++ [[ -e /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_13.env ]]
++ source /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_13.env
 ++ export MACHINE_ID=orion.intel
 ++ MACHINE_ID=orion.intel
-++ export PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-++ PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-++ export PATHTR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630
-++ PATHTR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630
+++ export PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
+++ PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
+++ export PATHTR=/work/noaa/stmp/jminsuk/weather-single-test
+++ PATHTR=/work/noaa/stmp/jminsuk/weather-single-test
 ++ export SCHEDULER=slurm
 ++ SCHEDULER=slurm
-++ export ACCNR=gsd-hpcs
-++ ACCNR=gsd-hpcs
+++ export ACCNR=nems
+++ ACCNR=nems
 ++ export QUEUE=batch
 ++ QUEUE=batch
 ++ export PARTITION=orion
@@ -342,10 +337,10 @@ Elapsed time 486 seconds. Compile 12
 ++ ROCOTO=false
 ++ export ECFLOW=true
 ++ ECFLOW=true
-++ export REGRESSIONTEST_LOG=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/RegressionTests_orion.intel.log
-++ REGRESSIONTEST_LOG=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/RegressionTests_orion.intel.log
-++ export LOG_DIR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/log_orion.intel
-++ LOG_DIR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/log_orion.intel
+++ export REGRESSIONTEST_LOG=/work/noaa/stmp/jminsuk/weather-single-test/tests/RegressionTests_orion.intel.log
+++ REGRESSIONTEST_LOG=/work/noaa/stmp/jminsuk/weather-single-test/tests/RegressionTests_orion.intel.log
+++ export LOG_DIR=/work/noaa/stmp/jminsuk/weather-single-test/tests/log_orion.intel
+++ LOG_DIR=/work/noaa/stmp/jminsuk/weather-single-test/tests/log_orion.intel
 + source default_vars.sh
 ++ '[' orion.intel = wcoss ']'
 ++ '[' orion.intel = wcoss_cray ']'
@@ -377,15 +372,15 @@ Elapsed time 486 seconds. Compile 12
 + TEST_NR=13
 + export JBNME=compile_13
 + JBNME=compile_13
-+ export RUNDIR=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_13
-+ RUNDIR=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_13
++ export RUNDIR=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_13
++ RUNDIR=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_13
 + source rt_utils.sh
 ++ set -eu
-++ [[ /work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/run_compile.sh = \r\t\_\u\t\i\l\s\.\s\h ]]
+++ [[ /work/noaa/stmp/jminsuk/weather-single-test/tests/run_compile.sh = \r\t\_\u\t\i\l\s\.\s\h ]]
 ++ UNIT_TEST=false
 + source atparse.bash
-+ mkdir -p /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_13
-+ cd /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_13
++ mkdir -p /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_13
++ cd /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_13
 + [[ slurm = \s\l\u\r\m ]]
 + atparse
 + local __set_x
@@ -398,7 +393,7 @@ Elapsed time 486 seconds. Compile 12
 + '[' -o xtrace ']'
 + set_x='set -x'
 + set +x
-Job id 141747
+Job id 144915
 TEST 13 compile is waiting to enter the queue
 1 min. TEST 13 compile is running,            Status: R
 2 min. TEST 13 compile is running,            Status: R
@@ -406,40 +401,39 @@ TEST 13 compile is waiting to enter the queue
 4 min. TEST 13 compile is running,            Status: R
 5 min. TEST 13 compile is running,            Status: R
 6 min. TEST 13 compile is running,            Status: R
-7 min. TEST 13 compile is running,            Status: R
 Slurm unknown status -. Check sacct ...
-141747        COMPLETED compile_13 
-141747.batch  COMPLETED      batch 
-141747.exte+  COMPLETED     extern 
-8 min. TEST 13 compile is COMPLETED
+144915        COMPLETED compile_13 
+144915.batch  COMPLETED      batch 
+144915.exte+  COMPLETED     extern 
+7 min. TEST 13 compile is COMPLETED
 COMPLETED
 COMPLETED
-+ elapsed=486
-+ echo 'Elapsed time 486 seconds. Compile 13'
-Elapsed time 486 seconds. Compile 13
++ elapsed=425
++ echo 'Elapsed time 425 seconds. Compile 13'
+Elapsed time 425 seconds. Compile 13
 + SECONDS=0
 + [[ 4 != 4 ]]
-+ export PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ export RUNDIR_ROOT=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187
-+ RUNDIR_ROOT=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187
++ export PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
++ PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
++ export RUNDIR_ROOT=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708
++ RUNDIR_ROOT=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708
 + export 'MAKE_OPT=CCPP=Y SUITES=FV3_GFS_2017'
 + MAKE_OPT='CCPP=Y SUITES=FV3_GFS_2017'
 + export COMPILE_NR=1
 + COMPILE_NR=1
-+ cd /work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ [[ -e /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_1.env ]]
-+ source /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_1.env
++ cd /work/noaa/stmp/jminsuk/weather-single-test/tests
++ [[ -e /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_1.env ]]
++ source /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_1.env
 ++ export MACHINE_ID=orion.intel
 ++ MACHINE_ID=orion.intel
-++ export PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-++ PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-++ export PATHTR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630
-++ PATHTR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630
+++ export PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
+++ PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
+++ export PATHTR=/work/noaa/stmp/jminsuk/weather-single-test
+++ PATHTR=/work/noaa/stmp/jminsuk/weather-single-test
 ++ export SCHEDULER=slurm
 ++ SCHEDULER=slurm
-++ export ACCNR=gsd-hpcs
-++ ACCNR=gsd-hpcs
+++ export ACCNR=nems
+++ ACCNR=nems
 ++ export QUEUE=batch
 ++ QUEUE=batch
 ++ export PARTITION=orion
@@ -448,10 +442,10 @@ Elapsed time 486 seconds. Compile 13
 ++ ROCOTO=false
 ++ export ECFLOW=true
 ++ ECFLOW=true
-++ export REGRESSIONTEST_LOG=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/RegressionTests_orion.intel.log
-++ REGRESSIONTEST_LOG=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/RegressionTests_orion.intel.log
-++ export LOG_DIR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/log_orion.intel
-++ LOG_DIR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/log_orion.intel
+++ export REGRESSIONTEST_LOG=/work/noaa/stmp/jminsuk/weather-single-test/tests/RegressionTests_orion.intel.log
+++ REGRESSIONTEST_LOG=/work/noaa/stmp/jminsuk/weather-single-test/tests/RegressionTests_orion.intel.log
+++ export LOG_DIR=/work/noaa/stmp/jminsuk/weather-single-test/tests/log_orion.intel
+++ LOG_DIR=/work/noaa/stmp/jminsuk/weather-single-test/tests/log_orion.intel
 + source default_vars.sh
 ++ '[' orion.intel = wcoss ']'
 ++ '[' orion.intel = wcoss_cray ']'
@@ -483,15 +477,15 @@ Elapsed time 486 seconds. Compile 13
 + TEST_NR=1
 + export JBNME=compile_1
 + JBNME=compile_1
-+ export RUNDIR=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_1
-+ RUNDIR=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_1
++ export RUNDIR=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_1
++ RUNDIR=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_1
 + source rt_utils.sh
 ++ set -eu
-++ [[ /work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/run_compile.sh = \r\t\_\u\t\i\l\s\.\s\h ]]
+++ [[ /work/noaa/stmp/jminsuk/weather-single-test/tests/run_compile.sh = \r\t\_\u\t\i\l\s\.\s\h ]]
 ++ UNIT_TEST=false
 + source atparse.bash
-+ mkdir -p /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_1
-+ cd /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_1
++ mkdir -p /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_1
++ cd /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_1
 + [[ slurm = \s\l\u\r\m ]]
 + atparse
 + local __set_x
@@ -504,7 +498,7 @@ Elapsed time 486 seconds. Compile 13
 + '[' -o xtrace ']'
 + set_x='set -x'
 + set +x
-Job id 141728
+Job id 144890
 TEST 1 compile is waiting to enter the queue
 1 min. TEST 1 compile is running,            Status: R
 2 min. TEST 1 compile is running,            Status: R
@@ -514,9 +508,9 @@ TEST 1 compile is waiting to enter the queue
 6 min. TEST 1 compile is running,            Status: R
 7 min. TEST 1 compile is running,            Status: R
 Slurm unknown status -. Check sacct ...
-141728        COMPLETED  compile_1 
-141728.batch  COMPLETED      batch 
-141728.exte+  COMPLETED     extern 
+144890        COMPLETED  compile_1 
+144890.batch  COMPLETED      batch 
+144890.exte+  COMPLETED     extern 
 8 min. TEST 1 compile is COMPLETED
 COMPLETED
 COMPLETED
@@ -525,27 +519,27 @@ COMPLETED
 Elapsed time 486 seconds. Compile 1
 + SECONDS=0
 + [[ 4 != 4 ]]
-+ export PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ export RUNDIR_ROOT=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187
-+ RUNDIR_ROOT=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187
++ export PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
++ PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
++ export RUNDIR_ROOT=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708
++ RUNDIR_ROOT=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708
 + export 'MAKE_OPT=CCPP=Y SUITES=FV3_GFS_2017,FV3_GFS_2017_gfdlmp WW3=Y'
 + MAKE_OPT='CCPP=Y SUITES=FV3_GFS_2017,FV3_GFS_2017_gfdlmp WW3=Y'
 + export COMPILE_NR=2
 + COMPILE_NR=2
-+ cd /work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ [[ -e /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_2.env ]]
-+ source /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_2.env
++ cd /work/noaa/stmp/jminsuk/weather-single-test/tests
++ [[ -e /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_2.env ]]
++ source /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_2.env
 ++ export MACHINE_ID=orion.intel
 ++ MACHINE_ID=orion.intel
-++ export PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-++ PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-++ export PATHTR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630
-++ PATHTR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630
+++ export PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
+++ PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
+++ export PATHTR=/work/noaa/stmp/jminsuk/weather-single-test
+++ PATHTR=/work/noaa/stmp/jminsuk/weather-single-test
 ++ export SCHEDULER=slurm
 ++ SCHEDULER=slurm
-++ export ACCNR=gsd-hpcs
-++ ACCNR=gsd-hpcs
+++ export ACCNR=nems
+++ ACCNR=nems
 ++ export QUEUE=batch
 ++ QUEUE=batch
 ++ export PARTITION=orion
@@ -554,10 +548,10 @@ Elapsed time 486 seconds. Compile 1
 ++ ROCOTO=false
 ++ export ECFLOW=true
 ++ ECFLOW=true
-++ export REGRESSIONTEST_LOG=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/RegressionTests_orion.intel.log
-++ REGRESSIONTEST_LOG=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/RegressionTests_orion.intel.log
-++ export LOG_DIR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/log_orion.intel
-++ LOG_DIR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/log_orion.intel
+++ export REGRESSIONTEST_LOG=/work/noaa/stmp/jminsuk/weather-single-test/tests/RegressionTests_orion.intel.log
+++ REGRESSIONTEST_LOG=/work/noaa/stmp/jminsuk/weather-single-test/tests/RegressionTests_orion.intel.log
+++ export LOG_DIR=/work/noaa/stmp/jminsuk/weather-single-test/tests/log_orion.intel
+++ LOG_DIR=/work/noaa/stmp/jminsuk/weather-single-test/tests/log_orion.intel
 + source default_vars.sh
 ++ '[' orion.intel = wcoss ']'
 ++ '[' orion.intel = wcoss_cray ']'
@@ -589,15 +583,15 @@ Elapsed time 486 seconds. Compile 1
 + TEST_NR=2
 + export JBNME=compile_2
 + JBNME=compile_2
-+ export RUNDIR=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_2
-+ RUNDIR=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_2
++ export RUNDIR=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_2
++ RUNDIR=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_2
 + source rt_utils.sh
 ++ set -eu
-++ [[ /work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/run_compile.sh = \r\t\_\u\t\i\l\s\.\s\h ]]
+++ [[ /work/noaa/stmp/jminsuk/weather-single-test/tests/run_compile.sh = \r\t\_\u\t\i\l\s\.\s\h ]]
 ++ UNIT_TEST=false
 + source atparse.bash
-+ mkdir -p /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_2
-+ cd /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_2
++ mkdir -p /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_2
++ cd /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_2
 + [[ slurm = \s\l\u\r\m ]]
 + atparse
 + local __set_x
@@ -610,7 +604,7 @@ Elapsed time 486 seconds. Compile 1
 + '[' -o xtrace ']'
 + set_x='set -x'
 + set +x
-Job id 141723
+Job id 144891
 TEST 2 compile is waiting to enter the queue
 1 min. TEST 2 compile is running,            Status: R
 2 min. TEST 2 compile is running,            Status: R
@@ -618,40 +612,39 @@ TEST 2 compile is waiting to enter the queue
 4 min. TEST 2 compile is running,            Status: R
 5 min. TEST 2 compile is running,            Status: R
 6 min. TEST 2 compile is running,            Status: R
-7 min. TEST 2 compile is running,            Status: R
 Slurm unknown status -. Check sacct ...
-141723        COMPLETED  compile_2 
-141723.batch  COMPLETED      batch 
-141723.exte+  COMPLETED     extern 
-8 min. TEST 2 compile is COMPLETED
+144891        COMPLETED  compile_2 
+144891.batch  COMPLETED      batch 
+144891.exte+  COMPLETED     extern 
+7 min. TEST 2 compile is COMPLETED
 COMPLETED
 COMPLETED
-+ elapsed=486
-+ echo 'Elapsed time 486 seconds. Compile 2'
-Elapsed time 486 seconds. Compile 2
++ elapsed=426
++ echo 'Elapsed time 426 seconds. Compile 2'
+Elapsed time 426 seconds. Compile 2
 + SECONDS=0
 + [[ 4 != 4 ]]
-+ export PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ export RUNDIR_ROOT=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187
-+ RUNDIR_ROOT=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187
++ export PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
++ PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
++ export RUNDIR_ROOT=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708
++ RUNDIR_ROOT=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708
 + export 'MAKE_OPT=CCPP=Y SUITES=FV3_GFS_2017,FV3_GFS_2017_stretched 32BIT=Y'
 + MAKE_OPT='CCPP=Y SUITES=FV3_GFS_2017,FV3_GFS_2017_stretched 32BIT=Y'
 + export COMPILE_NR=3
 + COMPILE_NR=3
-+ cd /work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ [[ -e /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_3.env ]]
-+ source /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_3.env
++ cd /work/noaa/stmp/jminsuk/weather-single-test/tests
++ [[ -e /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_3.env ]]
++ source /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_3.env
 ++ export MACHINE_ID=orion.intel
 ++ MACHINE_ID=orion.intel
-++ export PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-++ PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-++ export PATHTR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630
-++ PATHTR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630
+++ export PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
+++ PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
+++ export PATHTR=/work/noaa/stmp/jminsuk/weather-single-test
+++ PATHTR=/work/noaa/stmp/jminsuk/weather-single-test
 ++ export SCHEDULER=slurm
 ++ SCHEDULER=slurm
-++ export ACCNR=gsd-hpcs
-++ ACCNR=gsd-hpcs
+++ export ACCNR=nems
+++ ACCNR=nems
 ++ export QUEUE=batch
 ++ QUEUE=batch
 ++ export PARTITION=orion
@@ -660,10 +653,10 @@ Elapsed time 486 seconds. Compile 2
 ++ ROCOTO=false
 ++ export ECFLOW=true
 ++ ECFLOW=true
-++ export REGRESSIONTEST_LOG=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/RegressionTests_orion.intel.log
-++ REGRESSIONTEST_LOG=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/RegressionTests_orion.intel.log
-++ export LOG_DIR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/log_orion.intel
-++ LOG_DIR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/log_orion.intel
+++ export REGRESSIONTEST_LOG=/work/noaa/stmp/jminsuk/weather-single-test/tests/RegressionTests_orion.intel.log
+++ REGRESSIONTEST_LOG=/work/noaa/stmp/jminsuk/weather-single-test/tests/RegressionTests_orion.intel.log
+++ export LOG_DIR=/work/noaa/stmp/jminsuk/weather-single-test/tests/log_orion.intel
+++ LOG_DIR=/work/noaa/stmp/jminsuk/weather-single-test/tests/log_orion.intel
 + source default_vars.sh
 ++ '[' orion.intel = wcoss ']'
 ++ '[' orion.intel = wcoss_cray ']'
@@ -695,15 +688,15 @@ Elapsed time 486 seconds. Compile 2
 + TEST_NR=3
 + export JBNME=compile_3
 + JBNME=compile_3
-+ export RUNDIR=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_3
-+ RUNDIR=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_3
++ export RUNDIR=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_3
++ RUNDIR=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_3
 + source rt_utils.sh
 ++ set -eu
-++ [[ /work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/run_compile.sh = \r\t\_\u\t\i\l\s\.\s\h ]]
+++ [[ /work/noaa/stmp/jminsuk/weather-single-test/tests/run_compile.sh = \r\t\_\u\t\i\l\s\.\s\h ]]
 ++ UNIT_TEST=false
 + source atparse.bash
-+ mkdir -p /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_3
-+ cd /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_3
++ mkdir -p /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_3
++ cd /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_3
 + [[ slurm = \s\l\u\r\m ]]
 + atparse
 + local __set_x
@@ -716,7 +709,7 @@ Elapsed time 486 seconds. Compile 2
 + '[' -o xtrace ']'
 + set_x='set -x'
 + set +x
-Job id 141730
+Job id 144892
 TEST 3 compile is waiting to enter the queue
 1 min. TEST 3 compile is running,            Status: R
 2 min. TEST 3 compile is running,            Status: R
@@ -725,9 +718,9 @@ TEST 3 compile is waiting to enter the queue
 5 min. TEST 3 compile is running,            Status: R
 6 min. TEST 3 compile is running,            Status: R
 Slurm unknown status -. Check sacct ...
-141730        COMPLETED  compile_3 
-141730.batch  COMPLETED      batch 
-141730.exte+  COMPLETED     extern 
+144892        COMPLETED  compile_3 
+144892.batch  COMPLETED      batch 
+144892.exte+  COMPLETED     extern 
 7 min. TEST 3 compile is COMPLETED
 COMPLETED
 COMPLETED
@@ -736,27 +729,27 @@ COMPLETED
 Elapsed time 426 seconds. Compile 3
 + SECONDS=0
 + [[ 4 != 4 ]]
-+ export PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ export RUNDIR_ROOT=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187
-+ RUNDIR_ROOT=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187
++ export PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
++ PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
++ export RUNDIR_ROOT=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708
++ RUNDIR_ROOT=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708
 + export 'MAKE_OPT=CCPP=Y SUITES=FV3_GFS_2017_gfdlmp_regional,FV3_GFS_2017_gfdlmp_regional_c768 32BIT=Y'
 + MAKE_OPT='CCPP=Y SUITES=FV3_GFS_2017_gfdlmp_regional,FV3_GFS_2017_gfdlmp_regional_c768 32BIT=Y'
 + export COMPILE_NR=4
 + COMPILE_NR=4
-+ cd /work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ [[ -e /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_4.env ]]
-+ source /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_4.env
++ cd /work/noaa/stmp/jminsuk/weather-single-test/tests
++ [[ -e /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_4.env ]]
++ source /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_4.env
 ++ export MACHINE_ID=orion.intel
 ++ MACHINE_ID=orion.intel
-++ export PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-++ PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-++ export PATHTR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630
-++ PATHTR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630
+++ export PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
+++ PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
+++ export PATHTR=/work/noaa/stmp/jminsuk/weather-single-test
+++ PATHTR=/work/noaa/stmp/jminsuk/weather-single-test
 ++ export SCHEDULER=slurm
 ++ SCHEDULER=slurm
-++ export ACCNR=gsd-hpcs
-++ ACCNR=gsd-hpcs
+++ export ACCNR=nems
+++ ACCNR=nems
 ++ export QUEUE=batch
 ++ QUEUE=batch
 ++ export PARTITION=orion
@@ -765,10 +758,10 @@ Elapsed time 426 seconds. Compile 3
 ++ ROCOTO=false
 ++ export ECFLOW=true
 ++ ECFLOW=true
-++ export REGRESSIONTEST_LOG=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/RegressionTests_orion.intel.log
-++ REGRESSIONTEST_LOG=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/RegressionTests_orion.intel.log
-++ export LOG_DIR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/log_orion.intel
-++ LOG_DIR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/log_orion.intel
+++ export REGRESSIONTEST_LOG=/work/noaa/stmp/jminsuk/weather-single-test/tests/RegressionTests_orion.intel.log
+++ REGRESSIONTEST_LOG=/work/noaa/stmp/jminsuk/weather-single-test/tests/RegressionTests_orion.intel.log
+++ export LOG_DIR=/work/noaa/stmp/jminsuk/weather-single-test/tests/log_orion.intel
+++ LOG_DIR=/work/noaa/stmp/jminsuk/weather-single-test/tests/log_orion.intel
 + source default_vars.sh
 ++ '[' orion.intel = wcoss ']'
 ++ '[' orion.intel = wcoss_cray ']'
@@ -800,15 +793,15 @@ Elapsed time 426 seconds. Compile 3
 + TEST_NR=4
 + export JBNME=compile_4
 + JBNME=compile_4
-+ export RUNDIR=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_4
-+ RUNDIR=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_4
++ export RUNDIR=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_4
++ RUNDIR=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_4
 + source rt_utils.sh
 ++ set -eu
-++ [[ /work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/run_compile.sh = \r\t\_\u\t\i\l\s\.\s\h ]]
+++ [[ /work/noaa/stmp/jminsuk/weather-single-test/tests/run_compile.sh = \r\t\_\u\t\i\l\s\.\s\h ]]
 ++ UNIT_TEST=false
 + source atparse.bash
-+ mkdir -p /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_4
-+ cd /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_4
++ mkdir -p /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_4
++ cd /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_4
 + [[ slurm = \s\l\u\r\m ]]
 + atparse
 + local __set_x
@@ -821,7 +814,7 @@ Elapsed time 426 seconds. Compile 3
 + '[' -o xtrace ']'
 + set_x='set -x'
 + set +x
-Job id 141732
+Job id 144899
 TEST 4 compile is waiting to enter the queue
 1 min. TEST 4 compile is running,            Status: R
 2 min. TEST 4 compile is running,            Status: R
@@ -829,46 +822,39 @@ TEST 4 compile is waiting to enter the queue
 4 min. TEST 4 compile is running,            Status: R
 5 min. TEST 4 compile is running,            Status: R
 6 min. TEST 4 compile is running,            Status: R
-7 min. TEST 4 compile is running,            Status: R
-8 min. TEST 4 compile is running,            Status: R
-9 min. TEST 4 compile is running,            Status: R
-10 min. TEST 4 compile is running,            Status: R
-11 min. TEST 4 compile is running,            Status: R
-12 min. TEST 4 compile is running,            Status: R
-13 min. TEST 4 compile is running,            Status: R
 Slurm unknown status -. Check sacct ...
-141732        COMPLETED  compile_4 
-141732.batch  COMPLETED      batch 
-141732.exte+  COMPLETED     extern 
-14 min. TEST 4 compile is COMPLETED
+144899        COMPLETED  compile_4 
+144899.batch  COMPLETED      batch 
+144899.exte+  COMPLETED     extern 
+7 min. TEST 4 compile is COMPLETED
 COMPLETED
 COMPLETED
-+ elapsed=846
-+ echo 'Elapsed time 846 seconds. Compile 4'
-Elapsed time 846 seconds. Compile 4
++ elapsed=426
++ echo 'Elapsed time 426 seconds. Compile 4'
+Elapsed time 426 seconds. Compile 4
 + SECONDS=0
 + [[ 4 != 4 ]]
-+ export PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ export RUNDIR_ROOT=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187
-+ RUNDIR_ROOT=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187
++ export PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
++ PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
++ export RUNDIR_ROOT=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708
++ RUNDIR_ROOT=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708
 + export 'MAKE_OPT=CCPP=Y SUITES=FV3_GFS_2017,FV3_GFS_2017_stretched 32BIT=Y DEBUG=Y'
 + MAKE_OPT='CCPP=Y SUITES=FV3_GFS_2017,FV3_GFS_2017_stretched 32BIT=Y DEBUG=Y'
 + export COMPILE_NR=5
 + COMPILE_NR=5
-+ cd /work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ [[ -e /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_5.env ]]
-+ source /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_5.env
++ cd /work/noaa/stmp/jminsuk/weather-single-test/tests
++ [[ -e /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_5.env ]]
++ source /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_5.env
 ++ export MACHINE_ID=orion.intel
 ++ MACHINE_ID=orion.intel
-++ export PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-++ PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-++ export PATHTR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630
-++ PATHTR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630
+++ export PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
+++ PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
+++ export PATHTR=/work/noaa/stmp/jminsuk/weather-single-test
+++ PATHTR=/work/noaa/stmp/jminsuk/weather-single-test
 ++ export SCHEDULER=slurm
 ++ SCHEDULER=slurm
-++ export ACCNR=gsd-hpcs
-++ ACCNR=gsd-hpcs
+++ export ACCNR=nems
+++ ACCNR=nems
 ++ export QUEUE=batch
 ++ QUEUE=batch
 ++ export PARTITION=orion
@@ -877,10 +863,10 @@ Elapsed time 846 seconds. Compile 4
 ++ ROCOTO=false
 ++ export ECFLOW=true
 ++ ECFLOW=true
-++ export REGRESSIONTEST_LOG=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/RegressionTests_orion.intel.log
-++ REGRESSIONTEST_LOG=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/RegressionTests_orion.intel.log
-++ export LOG_DIR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/log_orion.intel
-++ LOG_DIR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/log_orion.intel
+++ export REGRESSIONTEST_LOG=/work/noaa/stmp/jminsuk/weather-single-test/tests/RegressionTests_orion.intel.log
+++ REGRESSIONTEST_LOG=/work/noaa/stmp/jminsuk/weather-single-test/tests/RegressionTests_orion.intel.log
+++ export LOG_DIR=/work/noaa/stmp/jminsuk/weather-single-test/tests/log_orion.intel
+++ LOG_DIR=/work/noaa/stmp/jminsuk/weather-single-test/tests/log_orion.intel
 + source default_vars.sh
 ++ '[' orion.intel = wcoss ']'
 ++ '[' orion.intel = wcoss_cray ']'
@@ -912,15 +898,15 @@ Elapsed time 846 seconds. Compile 4
 + TEST_NR=5
 + export JBNME=compile_5
 + JBNME=compile_5
-+ export RUNDIR=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_5
-+ RUNDIR=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_5
++ export RUNDIR=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_5
++ RUNDIR=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_5
 + source rt_utils.sh
 ++ set -eu
-++ [[ /work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/run_compile.sh = \r\t\_\u\t\i\l\s\.\s\h ]]
+++ [[ /work/noaa/stmp/jminsuk/weather-single-test/tests/run_compile.sh = \r\t\_\u\t\i\l\s\.\s\h ]]
 ++ UNIT_TEST=false
 + source atparse.bash
-+ mkdir -p /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_5
-+ cd /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_5
++ mkdir -p /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_5
++ cd /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_5
 + [[ slurm = \s\l\u\r\m ]]
 + atparse
 + local __set_x
@@ -933,50 +919,44 @@ Elapsed time 846 seconds. Compile 4
 + '[' -o xtrace ']'
 + set_x='set -x'
 + set +x
-Job id 141729
+Job id 144893
 TEST 5 compile is waiting to enter the queue
 1 min. TEST 5 compile is running,            Status: R
 2 min. TEST 5 compile is running,            Status: R
 3 min. TEST 5 compile is running,            Status: R
-4 min. TEST 5 compile is running,            Status: R
-5 min. TEST 5 compile is running,            Status: R
-6 min. TEST 5 compile is running,            Status: R
-7 min. TEST 5 compile is running,            Status: R
-8 min. TEST 5 compile is running,            Status: R
-9 min. TEST 5 compile is running,            Status: R
 Slurm unknown status -. Check sacct ...
-141729        COMPLETED  compile_5 
-141729.batch  COMPLETED      batch 
-141729.exte+  COMPLETED     extern 
-10 min. TEST 5 compile is COMPLETED
+144893        COMPLETED  compile_5 
+144893.batch  COMPLETED      batch 
+144893.exte+  COMPLETED     extern 
+4 min. TEST 5 compile is COMPLETED
 COMPLETED
 COMPLETED
-+ elapsed=606
-+ echo 'Elapsed time 606 seconds. Compile 5'
-Elapsed time 606 seconds. Compile 5
++ elapsed=246
++ echo 'Elapsed time 246 seconds. Compile 5'
+Elapsed time 246 seconds. Compile 5
 + SECONDS=0
 + [[ 4 != 4 ]]
-+ export PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ export RUNDIR_ROOT=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187
-+ RUNDIR_ROOT=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187
++ export PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
++ PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
++ export RUNDIR_ROOT=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708
++ RUNDIR_ROOT=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708
 + export 'MAKE_OPT=CCPP=Y SUITES=FV3_GFS_2017_gfdlmp,FV3_GFS_2017_gfdlmp_noahmp'
 + MAKE_OPT='CCPP=Y SUITES=FV3_GFS_2017_gfdlmp,FV3_GFS_2017_gfdlmp_noahmp'
 + export COMPILE_NR=6
 + COMPILE_NR=6
-+ cd /work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ [[ -e /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_6.env ]]
-+ source /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_6.env
++ cd /work/noaa/stmp/jminsuk/weather-single-test/tests
++ [[ -e /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_6.env ]]
++ source /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_6.env
 ++ export MACHINE_ID=orion.intel
 ++ MACHINE_ID=orion.intel
-++ export PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-++ PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-++ export PATHTR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630
-++ PATHTR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630
+++ export PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
+++ PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
+++ export PATHTR=/work/noaa/stmp/jminsuk/weather-single-test
+++ PATHTR=/work/noaa/stmp/jminsuk/weather-single-test
 ++ export SCHEDULER=slurm
 ++ SCHEDULER=slurm
-++ export ACCNR=gsd-hpcs
-++ ACCNR=gsd-hpcs
+++ export ACCNR=nems
+++ ACCNR=nems
 ++ export QUEUE=batch
 ++ QUEUE=batch
 ++ export PARTITION=orion
@@ -985,10 +965,10 @@ Elapsed time 606 seconds. Compile 5
 ++ ROCOTO=false
 ++ export ECFLOW=true
 ++ ECFLOW=true
-++ export REGRESSIONTEST_LOG=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/RegressionTests_orion.intel.log
-++ REGRESSIONTEST_LOG=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/RegressionTests_orion.intel.log
-++ export LOG_DIR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/log_orion.intel
-++ LOG_DIR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/log_orion.intel
+++ export REGRESSIONTEST_LOG=/work/noaa/stmp/jminsuk/weather-single-test/tests/RegressionTests_orion.intel.log
+++ REGRESSIONTEST_LOG=/work/noaa/stmp/jminsuk/weather-single-test/tests/RegressionTests_orion.intel.log
+++ export LOG_DIR=/work/noaa/stmp/jminsuk/weather-single-test/tests/log_orion.intel
+++ LOG_DIR=/work/noaa/stmp/jminsuk/weather-single-test/tests/log_orion.intel
 + source default_vars.sh
 ++ '[' orion.intel = wcoss ']'
 ++ '[' orion.intel = wcoss_cray ']'
@@ -1020,15 +1000,15 @@ Elapsed time 606 seconds. Compile 5
 + TEST_NR=6
 + export JBNME=compile_6
 + JBNME=compile_6
-+ export RUNDIR=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_6
-+ RUNDIR=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_6
++ export RUNDIR=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_6
++ RUNDIR=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_6
 + source rt_utils.sh
 ++ set -eu
-++ [[ /work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/run_compile.sh = \r\t\_\u\t\i\l\s\.\s\h ]]
+++ [[ /work/noaa/stmp/jminsuk/weather-single-test/tests/run_compile.sh = \r\t\_\u\t\i\l\s\.\s\h ]]
 ++ UNIT_TEST=false
 + source atparse.bash
-+ mkdir -p /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_6
-+ cd /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_6
++ mkdir -p /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_6
++ cd /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_6
 + [[ slurm = \s\l\u\r\m ]]
 + atparse
 + local __set_x
@@ -1041,7 +1021,7 @@ Elapsed time 606 seconds. Compile 5
 + '[' -o xtrace ']'
 + set_x='set -x'
 + set +x
-Job id 141731
+Job id 144895
 TEST 6 compile is waiting to enter the queue
 1 min. TEST 6 compile is running,            Status: R
 2 min. TEST 6 compile is running,            Status: R
@@ -1050,40 +1030,39 @@ TEST 6 compile is waiting to enter the queue
 5 min. TEST 6 compile is running,            Status: R
 6 min. TEST 6 compile is running,            Status: R
 7 min. TEST 6 compile is running,            Status: R
-8 min. TEST 6 compile is running,            Status: R
 Slurm unknown status -. Check sacct ...
-141731        COMPLETED  compile_6 
-141731.batch  COMPLETED      batch 
-141731.exte+  COMPLETED     extern 
-9 min. TEST 6 compile is COMPLETED
+144895        COMPLETED  compile_6 
+144895.batch  COMPLETED      batch 
+144895.exte+  COMPLETED     extern 
+8 min. TEST 6 compile is COMPLETED
 COMPLETED
 COMPLETED
-+ elapsed=546
-+ echo 'Elapsed time 546 seconds. Compile 6'
-Elapsed time 546 seconds. Compile 6
++ elapsed=486
++ echo 'Elapsed time 486 seconds. Compile 6'
+Elapsed time 486 seconds. Compile 6
 + SECONDS=0
 + [[ 4 != 4 ]]
-+ export PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ export RUNDIR_ROOT=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187
-+ RUNDIR_ROOT=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187
++ export PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
++ PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
++ export RUNDIR_ROOT=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708
++ RUNDIR_ROOT=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708
 + export 'MAKE_OPT=CCPP=Y SUITES=FV3_GFS_2017_csawmgshoc,FV3_GFS_2017_csawmg,FV3_GFS_2017_satmedmf'
 + MAKE_OPT='CCPP=Y SUITES=FV3_GFS_2017_csawmgshoc,FV3_GFS_2017_csawmg,FV3_GFS_2017_satmedmf'
 + export COMPILE_NR=7
 + COMPILE_NR=7
-+ cd /work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ [[ -e /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_7.env ]]
-+ source /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_7.env
++ cd /work/noaa/stmp/jminsuk/weather-single-test/tests
++ [[ -e /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_7.env ]]
++ source /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_7.env
 ++ export MACHINE_ID=orion.intel
 ++ MACHINE_ID=orion.intel
-++ export PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-++ PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-++ export PATHTR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630
-++ PATHTR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630
+++ export PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
+++ PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
+++ export PATHTR=/work/noaa/stmp/jminsuk/weather-single-test
+++ PATHTR=/work/noaa/stmp/jminsuk/weather-single-test
 ++ export SCHEDULER=slurm
 ++ SCHEDULER=slurm
-++ export ACCNR=gsd-hpcs
-++ ACCNR=gsd-hpcs
+++ export ACCNR=nems
+++ ACCNR=nems
 ++ export QUEUE=batch
 ++ QUEUE=batch
 ++ export PARTITION=orion
@@ -1092,10 +1071,10 @@ Elapsed time 546 seconds. Compile 6
 ++ ROCOTO=false
 ++ export ECFLOW=true
 ++ ECFLOW=true
-++ export REGRESSIONTEST_LOG=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/RegressionTests_orion.intel.log
-++ REGRESSIONTEST_LOG=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/RegressionTests_orion.intel.log
-++ export LOG_DIR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/log_orion.intel
-++ LOG_DIR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/log_orion.intel
+++ export REGRESSIONTEST_LOG=/work/noaa/stmp/jminsuk/weather-single-test/tests/RegressionTests_orion.intel.log
+++ REGRESSIONTEST_LOG=/work/noaa/stmp/jminsuk/weather-single-test/tests/RegressionTests_orion.intel.log
+++ export LOG_DIR=/work/noaa/stmp/jminsuk/weather-single-test/tests/log_orion.intel
+++ LOG_DIR=/work/noaa/stmp/jminsuk/weather-single-test/tests/log_orion.intel
 + source default_vars.sh
 ++ '[' orion.intel = wcoss ']'
 ++ '[' orion.intel = wcoss_cray ']'
@@ -1127,15 +1106,15 @@ Elapsed time 546 seconds. Compile 6
 + TEST_NR=7
 + export JBNME=compile_7
 + JBNME=compile_7
-+ export RUNDIR=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_7
-+ RUNDIR=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_7
++ export RUNDIR=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_7
++ RUNDIR=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_7
 + source rt_utils.sh
 ++ set -eu
-++ [[ /work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/run_compile.sh = \r\t\_\u\t\i\l\s\.\s\h ]]
+++ [[ /work/noaa/stmp/jminsuk/weather-single-test/tests/run_compile.sh = \r\t\_\u\t\i\l\s\.\s\h ]]
 ++ UNIT_TEST=false
 + source atparse.bash
-+ mkdir -p /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_7
-+ cd /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_7
++ mkdir -p /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_7
++ cd /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_7
 + [[ slurm = \s\l\u\r\m ]]
 + atparse
 + local __set_x
@@ -1148,7 +1127,7 @@ Elapsed time 546 seconds. Compile 6
 + '[' -o xtrace ']'
 + set_x='set -x'
 + set +x
-Job id 141725
+Job id 144894
 TEST 7 compile is waiting to enter the queue
 1 min. TEST 7 compile is running,            Status: R
 2 min. TEST 7 compile is running,            Status: R
@@ -1156,39 +1135,41 @@ TEST 7 compile is waiting to enter the queue
 4 min. TEST 7 compile is running,            Status: R
 5 min. TEST 7 compile is running,            Status: R
 6 min. TEST 7 compile is running,            Status: R
+7 min. TEST 7 compile is running,            Status: R
+8 min. TEST 7 compile is running,            Status: R
 Slurm unknown status -. Check sacct ...
-141725        COMPLETED  compile_7 
-141725.batch  COMPLETED      batch 
-141725.exte+  COMPLETED     extern 
-7 min. TEST 7 compile is COMPLETED
+144894        COMPLETED  compile_7 
+144894.batch  COMPLETED      batch 
+144894.exte+  COMPLETED     extern 
+9 min. TEST 7 compile is COMPLETED
 COMPLETED
 COMPLETED
-+ elapsed=426
-+ echo 'Elapsed time 426 seconds. Compile 7'
-Elapsed time 426 seconds. Compile 7
++ elapsed=546
++ echo 'Elapsed time 546 seconds. Compile 7'
+Elapsed time 546 seconds. Compile 7
 + SECONDS=0
 + [[ 4 != 4 ]]
-+ export PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ export RUNDIR_ROOT=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187
-+ RUNDIR_ROOT=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187
++ export PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
++ PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
++ export RUNDIR_ROOT=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708
++ RUNDIR_ROOT=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708
 + export 'MAKE_OPT=CCPP=Y SUITES=FV3_GFS_2017_gfdlmp,FV3_CPT_v0,FV3_GSD_v0,FV3_GFS_v15_thompson 32BIT=Y'
 + MAKE_OPT='CCPP=Y SUITES=FV3_GFS_2017_gfdlmp,FV3_CPT_v0,FV3_GSD_v0,FV3_GFS_v15_thompson 32BIT=Y'
 + export COMPILE_NR=8
 + COMPILE_NR=8
-+ cd /work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ [[ -e /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_8.env ]]
-+ source /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_8.env
++ cd /work/noaa/stmp/jminsuk/weather-single-test/tests
++ [[ -e /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_8.env ]]
++ source /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_8.env
 ++ export MACHINE_ID=orion.intel
 ++ MACHINE_ID=orion.intel
-++ export PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-++ PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-++ export PATHTR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630
-++ PATHTR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630
+++ export PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
+++ PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
+++ export PATHTR=/work/noaa/stmp/jminsuk/weather-single-test
+++ PATHTR=/work/noaa/stmp/jminsuk/weather-single-test
 ++ export SCHEDULER=slurm
 ++ SCHEDULER=slurm
-++ export ACCNR=gsd-hpcs
-++ ACCNR=gsd-hpcs
+++ export ACCNR=nems
+++ ACCNR=nems
 ++ export QUEUE=batch
 ++ QUEUE=batch
 ++ export PARTITION=orion
@@ -1197,10 +1178,10 @@ Elapsed time 426 seconds. Compile 7
 ++ ROCOTO=false
 ++ export ECFLOW=true
 ++ ECFLOW=true
-++ export REGRESSIONTEST_LOG=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/RegressionTests_orion.intel.log
-++ REGRESSIONTEST_LOG=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/RegressionTests_orion.intel.log
-++ export LOG_DIR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/log_orion.intel
-++ LOG_DIR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/log_orion.intel
+++ export REGRESSIONTEST_LOG=/work/noaa/stmp/jminsuk/weather-single-test/tests/RegressionTests_orion.intel.log
+++ REGRESSIONTEST_LOG=/work/noaa/stmp/jminsuk/weather-single-test/tests/RegressionTests_orion.intel.log
+++ export LOG_DIR=/work/noaa/stmp/jminsuk/weather-single-test/tests/log_orion.intel
+++ LOG_DIR=/work/noaa/stmp/jminsuk/weather-single-test/tests/log_orion.intel
 + source default_vars.sh
 ++ '[' orion.intel = wcoss ']'
 ++ '[' orion.intel = wcoss_cray ']'
@@ -1232,15 +1213,15 @@ Elapsed time 426 seconds. Compile 7
 + TEST_NR=8
 + export JBNME=compile_8
 + JBNME=compile_8
-+ export RUNDIR=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_8
-+ RUNDIR=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_8
++ export RUNDIR=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_8
++ RUNDIR=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_8
 + source rt_utils.sh
 ++ set -eu
-++ [[ /work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/run_compile.sh = \r\t\_\u\t\i\l\s\.\s\h ]]
+++ [[ /work/noaa/stmp/jminsuk/weather-single-test/tests/run_compile.sh = \r\t\_\u\t\i\l\s\.\s\h ]]
 ++ UNIT_TEST=false
 + source atparse.bash
-+ mkdir -p /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_8
-+ cd /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_8
++ mkdir -p /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_8
++ cd /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_8
 + [[ slurm = \s\l\u\r\m ]]
 + atparse
 + local __set_x
@@ -1253,7 +1234,7 @@ Elapsed time 426 seconds. Compile 7
 + '[' -o xtrace ']'
 + set_x='set -x'
 + set +x
-Job id 141724
+Job id 144898
 TEST 8 compile is waiting to enter the queue
 1 min. TEST 8 compile is running,            Status: R
 2 min. TEST 8 compile is running,            Status: R
@@ -1261,39 +1242,42 @@ TEST 8 compile is waiting to enter the queue
 4 min. TEST 8 compile is running,            Status: R
 5 min. TEST 8 compile is running,            Status: R
 6 min. TEST 8 compile is running,            Status: R
+7 min. TEST 8 compile is running,            Status: R
+8 min. TEST 8 compile is running,            Status: R
+9 min. TEST 8 compile is running,            Status: R
 Slurm unknown status -. Check sacct ...
-141724        COMPLETED  compile_8 
-141724.batch  COMPLETED      batch 
-141724.exte+  COMPLETED     extern 
-7 min. TEST 8 compile is COMPLETED
+144898        COMPLETED  compile_8 
+144898.batch  COMPLETED      batch 
+144898.exte+  COMPLETED     extern 
+10 min. TEST 8 compile is COMPLETED
 COMPLETED
 COMPLETED
-+ elapsed=426
-+ echo 'Elapsed time 426 seconds. Compile 8'
-Elapsed time 426 seconds. Compile 8
++ elapsed=606
++ echo 'Elapsed time 606 seconds. Compile 8'
+Elapsed time 606 seconds. Compile 8
 + SECONDS=0
 + [[ 4 != 4 ]]
-+ export PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ export RUNDIR_ROOT=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187
-+ RUNDIR_ROOT=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187
++ export PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
++ PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
++ export RUNDIR_ROOT=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708
++ RUNDIR_ROOT=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708
 + export 'MAKE_OPT=CCPP=Y SUITES=FV3_GFS_v15p2,FV3_GFS_v16beta,FV3_GFS_2017_RRTMGP'
 + MAKE_OPT='CCPP=Y SUITES=FV3_GFS_v15p2,FV3_GFS_v16beta,FV3_GFS_2017_RRTMGP'
 + export COMPILE_NR=9
 + COMPILE_NR=9
-+ cd /work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-+ [[ -e /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_9.env ]]
-+ source /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_9.env
++ cd /work/noaa/stmp/jminsuk/weather-single-test/tests
++ [[ -e /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_9.env ]]
++ source /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_9.env
 ++ export MACHINE_ID=orion.intel
 ++ MACHINE_ID=orion.intel
-++ export PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-++ PATHRT=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests
-++ export PATHTR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630
-++ PATHTR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630
+++ export PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
+++ PATHRT=/work/noaa/stmp/jminsuk/weather-single-test/tests
+++ export PATHTR=/work/noaa/stmp/jminsuk/weather-single-test
+++ PATHTR=/work/noaa/stmp/jminsuk/weather-single-test
 ++ export SCHEDULER=slurm
 ++ SCHEDULER=slurm
-++ export ACCNR=gsd-hpcs
-++ ACCNR=gsd-hpcs
+++ export ACCNR=nems
+++ ACCNR=nems
 ++ export QUEUE=batch
 ++ QUEUE=batch
 ++ export PARTITION=orion
@@ -1302,10 +1286,10 @@ Elapsed time 426 seconds. Compile 8
 ++ ROCOTO=false
 ++ export ECFLOW=true
 ++ ECFLOW=true
-++ export REGRESSIONTEST_LOG=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/RegressionTests_orion.intel.log
-++ REGRESSIONTEST_LOG=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/RegressionTests_orion.intel.log
-++ export LOG_DIR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/log_orion.intel
-++ LOG_DIR=/work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/log_orion.intel
+++ export REGRESSIONTEST_LOG=/work/noaa/stmp/jminsuk/weather-single-test/tests/RegressionTests_orion.intel.log
+++ REGRESSIONTEST_LOG=/work/noaa/stmp/jminsuk/weather-single-test/tests/RegressionTests_orion.intel.log
+++ export LOG_DIR=/work/noaa/stmp/jminsuk/weather-single-test/tests/log_orion.intel
+++ LOG_DIR=/work/noaa/stmp/jminsuk/weather-single-test/tests/log_orion.intel
 + source default_vars.sh
 ++ '[' orion.intel = wcoss ']'
 ++ '[' orion.intel = wcoss_cray ']'
@@ -1337,15 +1321,15 @@ Elapsed time 426 seconds. Compile 8
 + TEST_NR=9
 + export JBNME=compile_9
 + JBNME=compile_9
-+ export RUNDIR=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_9
-+ RUNDIR=/work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_9
++ export RUNDIR=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_9
++ RUNDIR=/work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_9
 + source rt_utils.sh
 ++ set -eu
-++ [[ /work/noaa/gmtb/dheinzel/ufs-weather-model/ufs-weather-model-update_master_from_gsl_develop_20200630/tests/run_compile.sh = \r\t\_\u\t\i\l\s\.\s\h ]]
+++ [[ /work/noaa/stmp/jminsuk/weather-single-test/tests/run_compile.sh = \r\t\_\u\t\i\l\s\.\s\h ]]
 ++ UNIT_TEST=false
 + source atparse.bash
-+ mkdir -p /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_9
-+ cd /work/noaa/stmp/dheinzel/stmp/dheinzel/FV3_RT/rt_418187/compile_9
++ mkdir -p /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_9
++ cd /work/noaa/stmp/jminsuk/stmp/jminsuk/FV3_RT/rt_138708/compile_9
 + [[ slurm = \s\l\u\r\m ]]
 + atparse
 + local __set_x
@@ -1358,7 +1342,7 @@ Elapsed time 426 seconds. Compile 8
 + '[' -o xtrace ']'
 + set_x='set -x'
 + set +x
-Job id 141727
+Job id 144896
 TEST 9 compile is waiting to enter the queue
 1 min. TEST 9 compile is running,            Status: R
 2 min. TEST 9 compile is running,            Status: R
@@ -1366,13 +1350,16 @@ TEST 9 compile is waiting to enter the queue
 4 min. TEST 9 compile is running,            Status: R
 5 min. TEST 9 compile is running,            Status: R
 6 min. TEST 9 compile is running,            Status: R
+7 min. TEST 9 compile is running,            Status: R
+8 min. TEST 9 compile is running,            Status: R
+9 min. TEST 9 compile is running,            Status: R
 Slurm unknown status -. Check sacct ...
-141727        COMPLETED  compile_9 
-141727.batch  COMPLETED      batch 
-141727.exte+  COMPLETED     extern 
-7 min. TEST 9 compile is COMPLETED
+144896        COMPLETED  compile_9 
+144896.batch  COMPLETED      batch 
+144896.exte+  COMPLETED     extern 
+10 min. TEST 9 compile is COMPLETED
 COMPLETED
 COMPLETED
-+ elapsed=426
-+ echo 'Elapsed time 426 seconds. Compile 9'
-Elapsed time 426 seconds. Compile 9
++ elapsed=606
++ echo 'Elapsed time 606 seconds. Compile 9'
+Elapsed time 606 seconds. Compile 9
