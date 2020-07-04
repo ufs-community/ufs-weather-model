@@ -118,6 +118,9 @@ export NA_INIT=1
 
 # Radiation
 export DO_RRTMGP=.F.
+export ICLOUD=0
+export IOVR_LW=1
+export IOVR_SW=1
 
 # Microphysics
 export IMP_PHYSICS=11
@@ -145,6 +148,8 @@ export SHINHONG=.F.
 export DO_YSU=.F.
 export DO_MYNNEDMF=.F.
 export DO_MYJPBL=.F.
+export HURR_PBL=.F.
+export MONINQ_FAC=1.0
 
 # Shallow/deep convection
 export IMFSHALCNV=2
