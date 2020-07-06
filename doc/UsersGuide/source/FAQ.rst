@@ -12,7 +12,7 @@ An efficient way to build and run the UFS Weather Model is to use the regression
 (``rt.sh``).  This script is widely used by model developers on Tier 1 and 2 platforms
 and is described in :numref:`Section %s <ConductingRegTests>`.  The advantages to this approach are:
 
-- You can bypass the workflow, pre- and post-processing steps.
+- It does not require a workflow, pre- or post-processing steps.
 - The batch submission script is generated.
 - Any required input data is already available for machines used by the regression test.
 - Once the ``rt.sh`` test completes, you will have a working copy in your run directory
@@ -87,9 +87,9 @@ How do I change the length of the model run?
 In your run directory, there is a file named ``model_configure``.  Change the
 variable ``nhours_fcst`` to the desired number of hours.
 
-=====================================================
-How do I change the model output to netcdf or nemsio?
-=====================================================
+========================================================================
+How do I select the file format for the model output (NetCDF or NEMSIO)?
+========================================================================
 In your run directory, there is a file named ``model_configure``.  Change the
 variable ``output_file`` to ``'netcdf'`` or ``'nemsio'``.
 
