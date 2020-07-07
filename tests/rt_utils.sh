@@ -513,37 +513,24 @@ ecflow_run() {
 
   ECF_HOST=$( hostname )
 
-  sh ${ECFLOW_START} -d ${ECFLOW_RUN} -p ${ECF_PORT} >> ${ECFLOW_RUN}/ecflow.log 2>&1
-
-#  set +e
-#  i=0
-#  max_atempts=5
-#  while [[ $i -lt $max_atempts ]]; do
-#    ecflow_client --ping --host=${ECF_HOST} --port=${ECF_PORT}
-#    not_running=$?
-#    if [[ $not_running -eq 1 ]]; then
-#      echo "ecflow_server is NOT running on ${ECF_HOST}:${ECF_PORT}"
-#      sh ${ECFLOW_START} -d ${ECFLOW_RUN} -p ${ECF_PORT} >> ${ECFLOW_RUN}/ecflow.log 2>&1
-#      break
-#    else
-#      echo "ecflow_server is already running on ${ECF_HOST}:${ECF_PORT}"
-#      ECF_PORT=$(( ECF_PORT + 1 ))
-#    fi
-#    i=$(( i + 1 ))
-#    if [[ $i -eq $max_atempts ]]; then
-#       echo "You already have $max_atempts ecFlow servers running on this node"
-#       exit 1
-#    fi
-#  done
-#  set -e
+  set +e
+  ecflow_client --ping --host=${ECF_HOST} --port=${ECF_PORT}
+  not_running=$?
+  if [[ $not_running -eq 1 ]]; then
+    echo "ecflow_server is NOT running on ${ECF_HOST}:${ECF_PORT}"
+    sh ${ECFLOW_START} -p ${ECF_PORT}
+  else
+    echo "ecflow_server is already running on ${ECF_HOST}:${ECF_PORT}"
+  fi
+  set -e
 
   ECFLOW_RUNNING=true
 
   export ECF_PORT
   export ECF_HOST
 
-  ecflow_client --load=${ECFLOW_RUN}/${ECFLOW_SUITE}.def            >> ${ECFLOW_RUN}/ecflow.log 2>&1
-  ecflow_client --begin=${ECFLOW_SUITE}                             >> ${ECFLOW_RUN}/ecflow.log 2>&1
+  ecflow_client --load=${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+  ecflow_client --begin=${ECFLOW_SUITE}
 
   active_tasks=1
   while [[ $active_tasks -ne 0 ]]
@@ -554,6 +541,8 @@ ecflow_run() {
     ${PATHRT}/abort_dep_tasks.py
   done
   sleep 65 # wait one ECF_INTERVAL plus 5 seconds
+  ecflow_client --delete=yes /${ECFLOW_SUITE}
+  sleep 5
 }
 
 ecflow_kill() {
@@ -568,7 +557,11 @@ ecflow_stop() {
    [[ ${ECFLOW_RUNNING:-false} == true ]] || return
    set +e
    wait
-   ecflow_client --halt=yes
-   ecflow_client --check_pt
-   ecflow_client --terminate=yes
+   SUITES=$( ecflow_client --get | grep "^suite" )
+   echo "SUITES=${SUITES}"
+   if [ -z "${SUITES}" ]; then
+     ecflow_client --halt=yes
+     ecflow_client --check_pt
+     ecflow_client --terminate=yes
+   fi
 }
