@@ -54,6 +54,10 @@ if(QUAD_PRECISION)
     add_definitions(-DENABLE_QUAD_PRECISION)
 endif()
 
+if(MULTI_GASES)
+    add_definitions(-DMULTI_GASES)
+endif()
+
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D__IFC -sox -fp-model source")
 
@@ -98,4 +102,9 @@ if(QUAD_PRECISION)
     message("QUAD_PRECISION is ENABLED")
 else()
     message("QUAD_PRECISION is disabled")
+endif()
+if(MULTI_GASES)
+    message("MULTI_GASES is ENABLED")
+else()
+    message("MULTI_GASES is disabled")
 endif()
