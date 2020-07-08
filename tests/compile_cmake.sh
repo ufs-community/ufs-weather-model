@@ -76,6 +76,12 @@ if [[ "${MAKE_OPT}" == *"OPENMP=N"* ]]; then
   CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DOPENMP=OFF"
 fi
 
+if [[ "${MAKE_OPT}" == *"MULTI_GASES=Y"* ]]; then
+    CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DMULTI_GASES=ON"
+else
+    CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DMULTI_GASES=OFF"
+fi
+
 if [[ "${MAKE_OPT}" == *"CCPP=Y"* ]]; then
 
   # FIXME - create CCPP include directory before building FMS to avoid
@@ -102,12 +108,6 @@ if [[ "${MAKE_OPT}" == *"CCPP=Y"* ]]; then
     CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DDYN32=ON"
   else
     CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DDYN32=OFF"
-  fi
-
-  if [[ "${MAKE_OPT}" == *"MULTI_GASES=Y"* ]]; then
-    CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DMULTI_GASES=ON"
-  else
-    CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DMULTI_GASES=OFF"
   fi
 
     # Check if suites argument is provided or not
