@@ -27,7 +27,7 @@ elif [ $MACHINE_ID = wcoss_dell_p3 ]; then
   TASKS_stretch=48 ; TPN_stretch=28 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=28 ; INPES_strnest=2 ; JNPES_strnest=4
 
-elif [[ $MACHINE_ID = theia.* ]]; then
+elif [[ $MACHINE_ID = orion.* ]]; then
 
   TASKS_dflt=150 ; TPN_dflt=24 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=84  ; TPN_thrd=12 ; INPES_thrd=3 ; JNPES_thrd=4
@@ -92,6 +92,7 @@ export INPES=$INPES_dflt
 export JNPES=$JNPES_dflt
 export TASKS=$TASKS_dflt
 export TPN=$TPN_dflt
+export RESTART_INTERVAL=0
 export QUILTING=.true.
 export WRITE_GROUP=1
 export WRTTASK_PER_GROUP=6
@@ -114,6 +115,9 @@ export EXTERNAL_IC=.T.
 export MAKE_NH=.T.
 export MOUNTAIN=.F.
 export NA_INIT=1
+
+# Radiation
+export DO_RRTMGP=.F.
 
 # Microphysics
 export IMP_PHYSICS=11
@@ -144,7 +148,9 @@ export DO_MYJPBL=.F.
 
 # Shallow/deep convection
 export IMFSHALCNV=2
+export HWRF_SAMFSHAL=.F.
 export IMFDEEPCNV=2
+export HWRF_SAMFDEEP=.F.
 
 # SFC
 export DO_MYJSFC=.F.
@@ -201,6 +207,12 @@ export SHUM=-999.
 
 #IAU
 export IAU_INC_FILES="''"
+
+#Cellular automata
+export DO_CA=.F.
+export CA_SGS=.F.
+export CA_GLOBAL=.F.
+
 export IAU_DRYMASSFIXER=.false.
 
 # Regional

@@ -196,17 +196,33 @@
        n_var_lndp     = @[N_VAR_LNDP]
        nca            = 1
        ncells         = 5
-       nfracseed      = 0.5
        nlives         = 30
-       nthresh        = 0.5
-       nseed          = 100000
-       do_ca          = .false.
+       nseed          = 1000000
+       nfracseed      = 0.5
+       nthresh        = 0.
+       ca_trigger     = .true.	
+       ca_entr	      = .false.
+       ca_closure     = .false.
        ca_global      = .false.
-       ca_sgs         = .true.
+       nca_g          = 1
+       ncells_g       = 1
+       nlives_g       = 100
+       nseed_g        = 100
        ca_smooth      = .false.
-       nspinup        = 1000
-       iseed_ca       = 0
-       isppt_deep     = .false.
+       nspinup        = 100
+       iseed_ca       = 1
+       nsmooth        = 1
+       ca_amplitude   = 0.5
+       do_RRTMGP      = @[DO_RRTMGP]
+       active_gases   = 'h2o_co2_o3_n2o_ch4_o2'
+       ngases         = 6
+       lw_file_gas    = 'rrtmgp-data-lw-g256-2018-12-04.nc'
+       lw_file_clouds = 'rrtmgp-cloud-optics-coeffs-lw.nc'
+       sw_file_gas    = 'rrtmgp-data-sw-g224-2018-12-04.nc'
+       sw_file_clouds = 'rrtmgp-cloud-optics-coeffs-sw.nc'
+       rrtmgp_cld_optics = 0
+       rrtmgp_nrghice    = 3
+       rrtmgp_ngauss_ang = 3
 /
 
 &interpolator_nml
