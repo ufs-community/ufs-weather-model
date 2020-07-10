@@ -51,8 +51,13 @@ export REGRESSIONTEST_LOG
 echo "Test ${TEST_NR} ${TEST_NAME} ${TEST_DESCR}"
 trap 'echo "run_test.sh: Test ${TEST_NAME} killed"; kill $(jobs -p); wait; trap 0; exit' 1 2 3 4 5 6 7 8 10 12 13 15
 trap '[ "$?" -eq 0 ] || write_fail_test' EXIT
-trap 'echo "run_test.sh: Test ${TEST_NAME} error"; echo "${TEST_NAME}" >> ${PATHRT}/fail_test; trap 0; exit' ERR
-./${RUN_SCRIPT} > ${RUNDIR_ROOT}/${TEST_NAME}${RT_SUFFIX}.log 2>&1
+#trap 'echo "run_test.sh: Test ${TEST_NAME} error"; echo "${TEST_NAME}" >> ${PATHRT}/fail_test; trap 0; exit' ERR
+
+if [[ $CI_TEST = true ]]; then
+  ./${RUN_SCRIPT} >${RUNDIR_ROOT}/${TEST_NAME}${RT_SUFFIX}.log 2> >(tee -a ${RUNDIR_ROOT}/${TEST_NAME}${RT_SUFFIX}.log >&3)
+else
+  ./${RUN_SCRIPT} > ${RUNDIR_ROOT}/${TEST_NAME}${RT_SUFFIX}.log 2>&1
+fi
 
 elapsed=$SECONDS
 echo "Elapsed time $elapsed seconds. Test ${TEST_NAME}"

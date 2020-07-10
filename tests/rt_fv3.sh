@@ -71,11 +71,20 @@ atparse < ${PATHTR}/parm/${NEMS_CONFIGURE:-nems.configure} > nems.configure
 # Submit test
 ################################################################################
 
-if [[ $ROCOTO = 'false' ]]; then
-  submit_and_wait job_card
+if [[ $SCHEDULER = 'none' ]]; then
+
+  ulimit -s unlimited
+  mpiexec -n ${TASKS} ./fv3.exe >out 2> >(tee err >&3)
+
 else
-  chmod u+x job_card
-  ./job_card
+
+  if [[ $ROCOTO = 'false' ]]; then
+    submit_and_wait job_card
+  else
+    chmod u+x job_card
+    ./job_card
+  fi
+
 fi
 
 check_results

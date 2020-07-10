@@ -1,0 +1,76 @@
+name: Pull Request Tests
+
+on:
+  push:
+    branches:
+    - feature/ContInteg
+  pull_request:
+    branches:
+    - feature/ContInteg
+
+jobs:
+  rst:
+    name: Restart test
+    runs-on: ubuntu-latest
+    #runs-on: self-hosted
+    steps:
+    - name: Checkout codes
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+
+    - name: Build
+      run: |
+        printf '{\n    "experimental": true\n}' | sudo tee /etc/docker/daemon.json >/dev/null
+        sudo systemctl restart docker
+        sleep 10
+        cd tests && ./ci.sh -b -c rst
+
+    - name: Free up disk space
+      run: |
+        docker rmi $(docker image ls | grep -E -m1 '<none>' | awk '{ print $3 }')
+        docker rmi $(docker image ls | awk '/fv3-input-data/ { print $3 }')
+        docker rmi $(docker image ls | awk '/ci-test-base/ { print $3 }')
+
+    - name: Run utest
+      run: cd tests && ./ci.sh -r
+
+    - name: Upload memory usage file
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: memory_stat_rst
+        path: tests/memory_stat
+
+  bit:
+    name: Bit test
+    runs-on: ubuntu-latest
+    #runs-on: self-hosted
+    steps:
+    - name: Checkout codes
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+
+    - name: Build
+      run: |
+        printf '{\n    "experimental": true\n}' | sudo tee /etc/docker/daemon.json >/dev/null
+        sudo systemctl restart docker
+        sleep 10
+        cd tests && ./ci.sh -b -c bit
+
+    - name: Free up disk space
+      run: |
+        docker rmi $(docker image ls | grep -E -m1 '<none>' | awk '{ print $3 }')
+        docker rmi $(docker image ls | awk '/fv3-input-data/ { print $3 }')
+        docker rmi $(docker image ls | awk '/ci-test-base/ { print $3 }')
+
+    - name: Run utest
+      run: cd tests && ./ci.sh -r
+
+    - name: Upload memory usage file
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: memory_stat_bit
+        path: tests/memory_stat
