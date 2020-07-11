@@ -56,6 +56,8 @@ AVX2 = Y
 HYDRO = N
 CCPP = N
 SION = N
+QUAD_PRECISION = Y
+MULTI_GASES = N
 
 include       $(ESMFMKFILE)
 ESMF_INC    = $(ESMF_F90COMPILEPATHS)
@@ -116,6 +118,10 @@ endif
 
 ifeq ($(MULTI_GASES),Y)
 CPPDEFS += -DMULTI_GASES
+endif
+
+ifeq ($(QUAD_PRECISION),Y)
+CPPDEFS += -DENABLE_QUAD_PRECISION
 endif
 
 FFLAGS_OPT = -O2 -fno-range-check

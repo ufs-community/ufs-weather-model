@@ -60,3 +60,18 @@ if(INLINE_POST)
 else()
     message("INLINE_POST is disabled")
 endif()
+
+if(QUAD_PRECISION)
+    message("QUAD_PRECISION is ENABLED")
+    add_definitions(-DENABLE_QUAD_PRECISION)
+else()
+    message("QUAD_PRECISION is disabled")
+endif()
+
+if(MULTI_GASES)
+    message("MULTI_GASES is ENABLED")
+    add_definitions(-DMULTI_GASES)
+else()
+    message("MULTI_GASES is disabled")
+endif()
+
