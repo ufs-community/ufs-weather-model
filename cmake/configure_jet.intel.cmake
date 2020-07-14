@@ -16,14 +16,18 @@ option(VERBOSE "Enable VERBOSE mode" OFF)
 option(32BIT   "Enable 32BIT (single precision arithmetic in dycore)" OFF)
 option(OPENMP  "Enable OpenMP threading" ON)
 option(AVX2    "Enable AVX2 instruction set" OFF)
+option(QUAD_PRECISION  "Enable QUAD_PRECISION (for certain grid metric terms in dycore)" ON)
+option(MULTI_GASES  "Enable MULTI_GASES" OFF)
 
 option(INLINE_POST "Enable inline post" OFF)
 
 include( cmake/${CMAKE_Fortran_COMPILER_ID}.cmake )
 
-message("AVX2 is   ENABLED on Jet (multi-tagret executable)")
+message("AVX2 is   ENABLED on Jet (multi-target executable)")
 string (REPLACE "-xHOST" "-axSSE4.2,AVX,CORE-AVX2" CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS}")
 string (REPLACE "-xHOST" "-axSSE4.2,AVX,CORE-AVX2" CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
+# For CCPP
+option(SIMDMULTIARCH "Enable multi-target SIMD instruction sets" ON)
 
 string(REPLACE "-i_dynamic" "-shared-intel"
        CMAKE_SHARED_LIBRARY_LINK_Fortran_FLAGS

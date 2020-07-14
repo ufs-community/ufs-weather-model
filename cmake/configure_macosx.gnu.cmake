@@ -21,6 +21,8 @@ else()
 option(OPENMP  "Enable OpenMP threading" ON)
 endif()
 option(AVX2    "Enable AVX2 instruction set" OFF)
+option(QUAD_PRECISION  "Enable QUAD_PRECISION (for certain grid metric terms in dycore)" ON)
+option(MULTI_GASES  "Enable MULTI_GASES" OFF)
 
 option(INLINE_POST "Enable inline post" OFF)
 
