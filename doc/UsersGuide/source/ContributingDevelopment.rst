@@ -57,6 +57,8 @@ When code managers receive a pull request to commit the code changes, it is reco
 
 Reviewers may suggest some code changes during the review process. Developers need to respond to these comments in order to get code changes committed. If developers make further changes to their branch, reviewers need to check the code changes again. When both reviewers give recommendation to commit the code, code managers will merge the changes into the repository.
 
+.. _ConductingRegTests:
+
 ----------------------------
 Conducting regression tests
 ----------------------------

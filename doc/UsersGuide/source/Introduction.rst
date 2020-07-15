@@ -112,6 +112,8 @@ This WM User’s Guide is organized as follows:
 
 - :numref:`Chapter %s <ContributingDevelopment>` (Contributing development) goes beyond the capabilities supported in the public release to cover code management for conducting development and proposing contributions back to the authoritative code repositories. It should be noted that the regression tests described here are mandatory for committing code back to the ufs-weather-model authoritative code repository. These regressions tests differ from those distributed with the workflows for UFS applications, which are intended for application users and developers to assess the quality of their installations and the impact of their code changes.
 
+- :numref:`Chapter %s <FAQ>` (FAQ) lists frequently asked questions and answers.
+
 Finally, :numref:`Chapters %s <Acronyms>` and :numref:`%s <Glossary>` contain a list of acronyms and a glossary, respectively.
 
 .. This is how you cite a reference :cite:`Bernardet2018`.
