@@ -9,17 +9,18 @@ die() { echo "$@" >&2; exit 1; }
 usage() {
   set +x
   echo
-  echo "Usage: $0 -c <model> | -f | -s | -l <file> | -m | -k | -r | -e | -h"
+  echo "Usage: $0 -c | -e | -f | -h | -k | -l <file> | -m | -n <name> | -r | -s"
   echo
-  echo "  -c  create new baseline results for <model>"
+  echo "  -c  create new baseline results"
+  echo "  -e  use ecFlow workflow manager"
   echo "  -f  run full suite of regression tests"
-  echo "  -s  run standard suite of regression tests"
+  echo "  -h  display this help"
+  echo "  -k  keep run directory"
   echo "  -l  runs test specified in <file>"
   echo "  -m  compare against new baseline results"
-  echo "  -k  keep run directory"
+  echo "  -n  run single test <name>"
   echo "  -r  use Rocoto workflow manager"
-  echo "  -e  use ecFlow workflow manager"
-  echo "  -h  display this help"
+  echo "  -s  run standard suite of regression tests"
   echo
   set -x
   exit 1
@@ -37,7 +38,7 @@ rt_single() {
 
     if [[ $line =~ COMPILE && $line =~ ${MACHINE_ID} ]]; then
       compile_line=$line
-    fi  
+    fi
 
     if [[ $line =~ RUN ]]; then
       tmp_test=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
@@ -45,14 +46,14 @@ rt_single() {
         echo $compile_line >$TESTS_FILE
         echo $line >>$TESTS_FILE
         break
-      fi  
-    fi  
+      fi
+    fi
   done <'rt.conf'
 
   if [[ ! -f $TESTS_FILE ]]; then
     echo "$SINGLE_NAME does not exist or cannot be run on $MACHINE_ID"
     exit 1
-  fi  
+  fi
 }
 
 rt_trap() {
