@@ -31,7 +31,8 @@ OPENMP = Y
 AVX2 = Y
 HYDRO = N
 CCPP = N
-STATIC = N
+QUAD_PRECISION = Y
+MULTI_GASES = N
 
 include       $(ESMFMKFILE)
 ESMF_INC    = $(ESMF_F90COMPILEPATHS)
@@ -92,6 +93,10 @@ endif
 
 ifeq ($(MULTI_GASES),Y)
 CPPDEFS += -DMULTI_GASES
+endif
+
+ifeq ($(QUAD_PRECISION),Y)
+CPPDEFS += -DENABLE_QUAD_PRECISION
 endif
 
 FFLAGS_OPT = -O2 -fno-range-check
@@ -158,12 +163,7 @@ ifeq ($(CCPP),Y)
 CPPDEFS += -DCCPP
 CFLAGS += -I$(PATH_CCPP)/include
 FFLAGS += -I$(PATH_CCPP)/include
-ifeq ($(STATIC),Y)
-CPPDEFS += -DSTATIC
 LDFLAGS += -L$(PATH_CCPP)/lib -lccppphys -lccpp $(NCEPLIBS) -lxml2
-else
-LDFLAGS += -L$(PATH_CCPP)/lib -lccpp
-endif
 endif
 
 LDFLAGS += $(LIBS)
