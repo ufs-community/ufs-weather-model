@@ -19,7 +19,7 @@ TEST_NAME=""
 TEST_CASE=""
 
 # Read in TEST_NAME
-source ci.test
+TEST_NAME=$(sed -n 1p ci.test)
 
 while getopts :c:br opt; do
   case $opt in
