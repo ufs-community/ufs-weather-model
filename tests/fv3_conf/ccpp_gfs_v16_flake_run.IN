@@ -1,7 +1,8 @@
 rm -fr INPUT RESTART
 if [ $WARM_START = .F. ]; then
   cp -r @[RTPWD]/FV3_input_data/INPUT .
-  mkdir RESTART
+  cp -r @[RTPWD]/FV3_input_data/ORO_FLAKE/* ./INPUT
+   mkdir RESTART
 else
   mkdir INPUT RESTART
   cp -r @[RTPWD]/FV3_input_data/RESTART/* ./INPUT
