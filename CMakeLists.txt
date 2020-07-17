@@ -160,7 +160,7 @@ if(WW3)
 
   add_custom_target(ww3_nems
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/WW3/model/esmf
-    COMMAND ${CMAKE_BUILD_TOOL} WW3_PARCOMPN=4 WW3_COMP=${WW3_COMP} ww3_nemslibonly > make.log 2>&1
+    COMMAND ${CMAKE_BUILD_TOOL} WW3_PARCOMPN=4 WW3_COMP=${WW3_COMP} ww3_nemslibonly > ${PROJECT_BINARY_DIR}/ww3_make.log 2>&1
   )
 
     set(WW3_LIBS ${PROJECT_SOURCE_DIR}/WW3/model/obj/libww3_multi_esmf.a)
