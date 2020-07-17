@@ -84,7 +84,3 @@ list(APPEND fms_src_files
     FMS/mpp/nsclock.c
     FMS/mpp/threadloc.c
 )
-
-list(APPEND fms_fft_file
-  FMS/fft/fft.F90
-  )
