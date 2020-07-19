@@ -57,6 +57,11 @@ find_package(nemsio REQUIRED)
 find_package(sp REQUIRED)
 find_package(w3emc REQUIRED)
 find_package(w3nco REQUIRED)
+if(INLINE_POST)
+  find_package(nceppost REQUIRED)
+endif()
+# See https://github.com/NOAA-EMC/NCEPLIBS-nemsio/pull/22
+target_link_libraries(nemsio::nemsio INTERFACE w3emc::w3emc_d bacio::bacio_4)
 
 add_definitions(-Duse_libMPI)
 add_definitions(-Duse_netCDF)
@@ -136,7 +141,7 @@ target_include_directories(fms PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/FM
                                       $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/FMS/fms>
                                       $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/FMS/fms2_io/include>
                                       $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/FMS/mpp/include>)
-target_link_libraries(fms NetCDF::NetCDF_Fortran)
+target_link_libraries(fms PRIVATE NetCDF::NetCDF_Fortran)
 set_target_properties(fms PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/FMS)
 set_target_properties(fms PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/FMS/mod)
 target_include_directories(fms PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/FMS/mod>)
@@ -171,7 +176,7 @@ if(WW3)
 endif()
 
 ###############################################################################
-### NEMS (i.e. ufs-weather-model-lib)
+### NEMS (ufs-weather-model-lib)
 ###############################################################################
 add_library(
     ufs-weather-model-lib
@@ -188,7 +193,7 @@ add_library(
     NEMS/src/nems_c_rusage.c
     NEMS/src/ENS_Cpl/ENS_CplComp_ESMFMod_STUB.F90
 )
-add_dependencies(ufs-weather-model-lib fv3cap)
+add_dependencies(ufs-weather-model-lib fv3atm)
 target_link_libraries(ufs-weather-model-lib PRIVATE esmf)
 
 target_compile_definitions(ufs-weather-model-lib PRIVATE -DESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR})
@@ -222,13 +227,13 @@ configure_file(${PROJECT_SOURCE_DIR}/NEMS/src/ESMFConvenienceMacros.h
                ${PROJECT_BINARY_DIR}/NEMS/src/ESMFConvenienceMacros.h
                COPYONLY)
 
-###############################################################################
-### ufs-weather-model
-###############################################################################
-add_executable(
-    NEMS.exe
+target_link_libraries(ufs-weather-model-lib PUBLIC fv3atm)
 
-    NEMS/src/MAIN_NEMS.F90
+###############################################################################
+### UFS executable
+###############################################################################
+add_executable(NEMS.exe
+               NEMS/src/MAIN_NEMS.F90
 )
 add_dependencies(NEMS.exe ufs-weather-model-lib)
 
@@ -243,45 +248,16 @@ if(WW3)
     add_dependencies(NEMS.exe ww3_nems)
 endif()
 
-if(CCPP)
-    set(CCPP_LIBRARIES ccppdriver ccppphys ccpp)
-endif()
-
 target_link_libraries(NEMS.exe
                       ufs-weather-model-lib
-                      fv3cap
-                      fv3core
-                      io
-                      ipd
-                      gfsphysics
-                      ${CCPP_LIBRARIES}
-                      cpl
-                      stochastic_physics
-                      fms
                       ${WW3_LIBS}
-                      nemsio::nemsio w3emc::w3emc_d w3nco::w3nco_d sp::sp_d bacio::bacio_4
-                      esmf NetCDF::NetCDF_Fortran ${MKL_LIB})
-
-target_link_libraries(ufs-weather-model-lib INTERFACE
-                      fv3cap
-                      fv3core
-                      io
-                      ipd
-                      gfsphysics
-                      ${CCPP_LIBRARIES}
-                      cpl
-                      stochastic_physics
-                      fms
-                      ${WW3_LIBS}
-                      nemsio::nemsio w3emc::w3emc_d w3nco::w3nco_d sp::sp_d bacio::bacio_4
                       esmf NetCDF::NetCDF_Fortran ${MKL_LIB})
 
 ###############################################################################
 ### Install
 ###############################################################################
-
 install(
-  TARGETS ufs-weather-model-lib fv3cap fv3core io ipd gfsphysics ${CCPP_LIBRARIES} cpl stochastic_physics fms
+  TARGETS ufs-weather-model-lib fms
   EXPORT ufs-weather-model-lib-config
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib)
