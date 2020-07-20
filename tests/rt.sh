@@ -9,23 +9,52 @@ die() { echo "$@" >&2; exit 1; }
 usage() {
   set +x
   echo
-  echo "Usage: $0 -c <model> | -f | -s | -l <file> | -m | -k | -r | -e | -h"
+  echo "Usage: $0 -c | -e | -f | -h | -k | -l <file> | -m | -n <name> | -r | -s"
   echo
-  echo "  -c  create new baseline results for <model>"
+  echo "  -c  create new baseline results"
+  echo "  -e  use ecFlow workflow manager"
   echo "  -f  run full suite of regression tests"
-  echo "  -s  run standard suite of regression tests"
+  echo "  -h  display this help"
+  echo "  -k  keep run directory"
   echo "  -l  runs test specified in <file>"
   echo "  -m  compare against new baseline results"
-  echo "  -k  keep run directory"
+  echo "  -n  run single test <name>"
   echo "  -r  use Rocoto workflow manager"
-  echo "  -e  use ecFlow workflow manager"
-  echo "  -h  display this help"
+  echo "  -s  run standard suite of regression tests"
   echo
   set -x
   exit 1
 }
 
 [[ $# -eq 0 ]] && usage
+
+rt_single() {
+  local compile_line=''
+  local run_line=''
+  while read -r line; do
+    line="${line#"${line%%[![:space:]]*}"}"
+    [[ ${#line} == 0 ]] && continue
+    [[ $line == \#* ]] && continue
+
+    if [[ $line =~ COMPILE && $line =~ ${MACHINE_ID} ]]; then
+      compile_line=$line
+    fi
+
+    if [[ $line =~ RUN ]]; then
+      tmp_test=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
+      if [[ $SINGLE_NAME == $tmp_test && $compile_line != '' ]]; then
+        echo $compile_line >$TESTS_FILE
+        echo $line >>$TESTS_FILE
+        break
+      fi
+    fi
+  done <'rt.conf'
+
+  if [[ ! -f $TESTS_FILE ]]; then
+    echo "$SINGLE_NAME does not exist or cannot be run on $MACHINE_ID"
+    exit 1
+  fi
+}
 
 rt_trap() {
   [[ ${ROCOTO:-false} == true ]] && rocoto_kill
@@ -323,6 +352,7 @@ CREATE_BASELINE=false
 ROCOTO=false
 ECFLOW=false
 KEEP_RUNDIR=false
+SINGLE_NAME=''
 
 TESTS_FILE='rt.conf'
 
@@ -332,7 +362,7 @@ fi
 
 
 SET_ID='standard'
-while getopts ":cfsl:mkreh" opt; do
+while getopts ":cfsl:mn:kreh" opt; do
   case $opt in
     c)
       CREATE_BASELINE=true
@@ -351,6 +381,12 @@ while getopts ":cfsl:mkreh" opt; do
     m)
       # redefine RTPWD to point to newly created baseline outputs
       RTPWD=${NEW_BASELINE}
+      ;;
+    n)
+      SINGLE_NAME=$OPTARG
+      TESTS_FILE='rt.conf.single'
+      SET_ID=' '
+      rm -f $TESTS_FILE
       ;;
     k)
       KEEP_RUNDIR=true
@@ -377,10 +413,14 @@ while getopts ":cfsl:mkreh" opt; do
   esac
 done
 
+if [[ $SINGLE_NAME != '' ]]; then
+  rt_single
+fi
+
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200611/${COMPILER^^}}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200713/${COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200611}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200713}
 fi
 
 shift $((OPTIND-1))
@@ -410,6 +450,7 @@ if [[ $CREATE_BASELINE == true ]]; then
   rsync -a "${RTPWD}"/fv3_regional_restart/model_configure "${NEW_BASELINE}"/fv3_regional_restart/
 
   rsync -a "${RTPWD}"/fv3_regional_control/INPUT     "${NEW_BASELINE}"/fv3_regional_control/
+  rsync -a "${RTPWD}"/fv3_regional_control/RESTART   "${NEW_BASELINE}"/fv3_regional_control/
   rsync -a "${RTPWD}"/fv3_regional_quilt/INPUT       "${NEW_BASELINE}"/fv3_regional_quilt/
   rsync -a "${RTPWD}"/fv3_regional_c768/INPUT        "${NEW_BASELINE}"/fv3_regional_c768/
   rsync -a "${RTPWD}"/fv3_regional_restart/INPUT     "${NEW_BASELINE}"/fv3_regional_restart/
@@ -492,7 +533,7 @@ fi
 if [[ $ECFLOW == true ]]; then
 
   ECFLOW_RUN=${PATHRT}/ecflow_run
-  ECFLOW_SUITE=regtest
+  ECFLOW_SUITE=regtest_$$
   rm -rf ${ECFLOW_RUN}
   mkdir -p ${ECFLOW_RUN}/${ECFLOW_SUITE}
   cp head.h tail.h ${ECFLOW_RUN}
