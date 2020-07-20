@@ -1,12 +1,12 @@
-##########################################################################################
+###############################################################################
 #
-#  FV3 CCPP GSD (GF CU + Thompson MP + MYNN PBL + RUC LSM) 24h test in DEBUG mode
+#  FV3 CCPP GSD (GF CU + Thompson MP + MYNN PBL + RUC LSM) test with 3d tendencies in DEBUG mode
 #
-##########################################################################################
+###############################################################################
 
-export TEST_DESCR="Compare FV3 CCPP GSD DEBUG results with previous trunk version"
+export TEST_DESCR="Compare FV3 CCPP GSD 3d tendencies debug results with previous trunk version"
 
-export CNTL_DIR=fv3_gsd_debug
+export CNTL_DIR=fv3_gsd_diag3d_debug
 
 export LIST_FILES="atmos_4xdaily.tile1.nc \
                    atmos_4xdaily.tile2.nc \
@@ -84,6 +84,10 @@ export DO_SAT_ADJ=.F.
 export LRADAR=.T.
 export LTAEROSOL=.T.
 
+export LDIAG3D=.T.
+export QDIAG3D=.T.
+export MAX_OUTPUT_FIELDS=400
+
 export FV3_RUN=ccpp_gsd_run.IN
 export CCPP_SUITE=FV3_GSD_v0
 export CCPP_LIB_DIR=ccpp/lib
@@ -100,3 +104,4 @@ export LSOIL_LSM=9
 RUN_SCRIPT=rt_fv3.sh
 
 export WLCLK=30
+
