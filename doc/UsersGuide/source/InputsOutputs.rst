@@ -116,10 +116,12 @@ The configuration files used by the UFS Weather Model are listed here and descri
 
 - *diag_table*
 - *field_table*
-- *input.nml*
 - *model_configure*
 - *nems.configure*
 - *suite_[suite_name].xml* (used only at build time)
+
+While the *input.nml* file is also a configuration file used by the UFS Weather Model, it is described in
+:numref:`Section %s <InputNML>`.
 
 
 *diag_table* file
@@ -409,109 +411,6 @@ supplied through the field table, will allow the user to modify the default para
 The lines in this file can be coded quite flexibly. Due to this flexibility, a number of restrictions are required.
 See ``FMS/field_manager/field_manager.F90`` for more information.
 
-*input.nml* file
-------------------------------------
-
-The atmosphere model reads many parameters from a Fortran namelist file, named *input.nml*.  This file contains
-several Fortran namelist records, some of which are always required, others of which are only used when selected
-physics options are chosen.
-
-The following link describes the various physics-related namelist records:
-
-https://dtcenter.org/GMTB/v4.0/sci_doc/CCPPsuite_nml_desp.html
-
-The following link describes the stochastic physics namelist records:
-
-https://stochastic-physics.readthedocs.io/en/ufs-v1.0.0/namelist_options.html
-
-The following link describes some of the other namelist records (dynamics, grid, etc):
-
-https://www.gfdl.noaa.gov/wp-content/uploads/2017/09/fv3_namelist_Feb2017.pdf
-
-The namelist section ``&fms_io_nml`` of ``input.nml`` contains variables that control
-reading and writing of restart data in netCDF format.  There is a global switch to turn on/off
-the netCDF restart options in all of the modules that read or write these files. The two namelist
-variables that control the netCDF restart options are ``fms_netcdf_override`` and ``fms_netcdf_restart``.
-The default values of both flags are .true., so by default, the behavior of the entire model is
-to use netCDF IO mode. To turn off netCDF restart, simply set ``fms_netcdf_restart`` to .false..
-The namelist variables used in ``&fms_io_nml`` are described in :numref:`Table %s <fms_io_nml>`.
-
-.. _fms_io_nml:
-
-.. list-table:: *Description of the &fms_io_nml namelist section.*
-   :widths: 25 40 15 10
-   :header-rows: 1
-
-   * - Variable Name
-     - Description
-     - Data Type
-     - Default Value
-   * - fms_netcdf_override
-     - If true, ``fms_netcdf_restart`` overrides the individual ``do_netcdf_restart`` value.  If false, individual module settings has a precedence over the global setting, therefore ``fms_netcdf_restart`` is ignored.
-     - logical
-     - .true.
-   * - fms_netcdf_restart
-     - If true, all modules using restart files will operate under netCDF mode.  If false, all modules using restart files will operate under binary mode.  This flag is effective only when ``fms_netcdf_override`` is .true. When ``fms_netcdf_override`` is .false., individual module setting takes over. 
-     - logical
-     - .true.
-   * - threading_read
-     - Can be 'single' or 'multi'
-     - character(len=32)
-     - 'multi'
-   * - format
-     - Format of restart data.  Only netCDF format is supported in fms_io.
-     - character(len=32)
-     - 'netcdf'
-   * - read_all_pe
-     - Reading can be done either by all PEs (default) or by only the root PE.
-     - logical
-     - .true.
-   * - iospec_ieee32
-     - If set, call mpp_open single 32-bit ieee file for reading.
-     - character(len=64)
-     - '-N ieee_32'
-   * - max_files_w
-     - Maximum number of write files
-     - integer
-     - 40
-   * - max_files_r
-     - Maximum number of read files
-     - integer
-     - 40
-   * - time_stamp_restart
-     -  If true, ``time_stamp`` will be added to the restart file name as a prefix. 
-     - logical
-     - .true.
-   * - print_chksum
-     - If true, print out chksum of fields that are read and written through save_restart/restore_state.
-     - logical
-     - .false.
-   * - show_open_namelist_file_warning
-     - Flag to warn that open_namelist_file should not be called when INTERNAL_FILE_NML is defined.
-     - logical
-     - .false.
-   * - debug_mask_list
-     - Set ``debug_mask_list`` to true to print out mask_list reading from mask_table.
-     - logical
-     - .false.
-   * - checksum_required
-     -  If true, compare checksums stored in the attribute of a field against the checksum after reading in the data.
-     - logical
-     - .true.
-
-This release of the UFS Weather Model sets the following variables in the ``&fms_io_nml`` namelist:
-
-.. code-block:: console
-
-   &fms_io_nml
-     checksum_required = .false.
-     max_files_r = 100
-     max_files_w = 100
-   /
-
-The namelist section ``&namsfc`` contains the file names of the static datasets (i.e., *fix files*)
-
-The namelist section relating to the FMS diagnostic manager is described in the last section of this chapter.
 
 *model_configure* file
 ------------------------------------
@@ -722,6 +621,12 @@ this is an atmosphere-only model, so this file is simple and does not need to be
 ---------------------------------------
 There are two SDFs currently supported: *suite_FV3_GFS_v15p2.xml* and *suite_FV3_GFS_v16beta.xml*.
 
+.. -------------------------------------------------------------------
+.. Include InputNML file describing the contents of the input.nml file
+.. -------------------------------------------------------------------
+
+.. include:: InputNML.inc
+
 =============
 Output files
 =============
@@ -748,6 +653,8 @@ The UFS Weather Model output is managed through the FMS (Flexible Modeling Syste
 and is configured using the *diag_table* file. Data can be written at any number of sampling and/or averaging intervals
 specified at run-time.  More information about the FMS diagnostic manager can be found at:
 https://data1.gfdl.noaa.gov/summer-school/Lectures/July16/03_Seth1_DiagManager.pdf
+
+.. _DiagManagerNML:
 
 ------------------------------
 Diagnostic Manager namelist
