@@ -1,9 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
 
-foreach(env_var IN ITEMS
-         CMAKE_C_COMPILER CMAKE_CXX_COMPILER CMAKE_Fortran_COMPILER
-         CMAKE_Platform)
-  if ( NOT DEFINED ENV{${env_var}})
+foreach(env_var IN ITEMS CMAKE_C_COMPILER CMAKE_CXX_COMPILER CMAKE_Fortran_COMPILER)
+  if(NOT DEFINED ENV{${env_var}})
     message(FATAL_ERROR "${env_var} is not defined")
   endif()
 endforeach()
@@ -19,11 +17,29 @@ project(ufs-weather-model
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
-message("")
-message("Setting configuration for $ENV{CMAKE_Platform}")
-message("")
-include(${PROJECT_SOURCE_DIR}/cmake/configure_${CMAKE_Platform}.cmake)
+set(32BIT           OFF CACHE BOOL "Enable 32BIT (single precision arithmetic in dycore)")
+set(AVX2            ON  CACHE BOOL "Enable AVX2 instruction set")
+set(CCPP            ON  CACHE BOOL "Enable CCPP")
+set(DEBUG           OFF CACHE BOOL "Enable DEBUG mode")
+set(INLINE_POST     OFF CACHE BOOL "Enable inline post")
+set(MULTI_GASES     OFF CACHE BOOL "Enable MULTI_GASES")
+set(OPENMP          ON  CACHE BOOL "Enable OpenMP threading")
+set(PARALLEL_NETCDF OFF CACHE BOOL "Enable parallel NetCDF")
+set(QUAD_PRECISION  ON  CACHE BOOL "Enable QUAD_PRECISION (for certain grid metric terms in dycore)")
+set(REPRO           OFF CACHE BOOL "Enable REPRO mode")
+set(WW3             OFF CACHE BOOL "Enable WW3")
 
+if(CMAKE_Platform)
+  message("")
+  if(EXISTS ${PROJECT_SOURCE_DIR}/cmake/configure_${CMAKE_Platform}.cmake)
+    message("Setting configuration for ${CMAKE_Platform}")
+    include(${PROJECT_SOURCE_DIR}/cmake/configure_${CMAKE_Platform}.cmake)
+  else()
+    message("Platform '${CMAKE_Platform}' configuration file does not exist")
+  endif()
+endif()
+
+message("")
 message("32BIT ............ ${32BIT}")
 message("AVX2 ............. ${AVX2}")
 message("CCPP ............. ${CCPP}")
