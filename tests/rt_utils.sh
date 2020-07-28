@@ -7,6 +7,27 @@ fi
 
 UNIT_TEST=${UNIT_TEST:-false}
 
+qsub_id=0
+slurm_id=0
+bsub_id=0
+
+interrupt_job() {
+  set -x
+  if [[ $SCHEDULER = 'pbs' ]]; then
+    echo "run_util.sh: interrupt_job qsub_id = ${qsub_id}"
+    qdel ${qsub_id}
+  elif [[ $SCHEDULER = 'slurm' ]]; then
+    echo "run_util.sh: interrupt_job slurm_id = ${slurm_id}"
+    scancel ${slurm_id}
+  elif [[ $SCHEDULER = 'lsf' ]]; then
+    echo "run_util.sh: interrupt_job bsub_id = ${bsub_id}"
+    bkill ${bsub_id}
+  else
+    echo "run_util.sh: interrupt_job unknown SCHEDULER $SCHEDULER"
+  fi
+}
+
+
 submit_and_wait() {
 
   [[ -z $1 ]] && exit 1
@@ -28,7 +49,6 @@ submit_and_wait() {
     else
       re='^([0-9]+\.[a-zA-Z0-9]+)$'
     fi
-    qsub_id=0
     [[ "${qsubout}" =~ $re ]] && qsub_id=${BASH_REMATCH[1]}
     if [[ ${MACHINE_ID} = cheyenne.* ]]; then
       qsub_id="${qsub_id%.chadm*}"
@@ -37,13 +57,11 @@ submit_and_wait() {
   elif [[ $SCHEDULER = 'slurm' ]]; then
     slurmout=$( sbatch $job_card )
     re='Submitted batch job ([0-9]+)'
-    slurm_id=0
     [[ "${slurmout}" =~ $re ]] && slurm_id=${BASH_REMATCH[1]}
     echo "Job id ${slurm_id}"
   elif [[ $SCHEDULER = 'lsf' ]]; then
     bsubout=$( bsub < $job_card )
     re='Job <([0-9]+)> is submitted to queue <(.+)>.'
-    bsub_id=0
     [[ "${bsubout}" =~ $re ]] && bsub_id=${BASH_REMATCH[1]}
     echo "Job id ${bsub_id}"
   else
@@ -57,6 +75,7 @@ submit_and_wait() {
   until [[ $job_running -eq 1 ]]
   do
     echo "TEST ${TEST_NR} ${TEST_NAME} is waiting to enter the queue"
+    [[ ${ECFLOW:-false} == true ]] && ecflow_client --label=job_status "waiting to enter the queue"
     if [[ $SCHEDULER = 'pbs' ]]; then
       if [[ ${MACHINE_ID} = cheyenne.* ]]; then
         job_running=$( qstat ${qsub_id} | grep ${qsub_id} | wc -l)
@@ -87,14 +106,17 @@ submit_and_wait() {
     echo "Unknown SCHEDULER $SCHEDULER"
     exit 1
   fi
+  echo "TEST ${TEST_NR} ${TEST_NAME} is submitted "
+  if [[ ${ECFLOW:-false} == true ]]; then
+    ecflow_client --label=job_id "${jobid}"
+    ecflow_client --label=job_status "submitted"
+  fi
 
   # wait for the job to finish and compare results
   job_running=1
   local n=1
   until [[ $job_running -eq 0 ]]
   do
-
-    sleep 60 & wait $!
 
     if [[ $SCHEDULER = 'pbs' ]]; then
       if [[ ${MACHINE_ID} = cheyenne.* ]]; then
@@ -118,10 +140,14 @@ submit_and_wait() {
       else
         status=$( qstat -u ${USER} -n | grep ${JBNME} | awk '{print $10}' ); status=${status:--}
       fi
-      if   [[ $status = 'Q' ]];  then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is waiting in a queue, Status: $status jobid ${jobid}"
-      elif [[ $status = 'H' ]];  then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is held in a queue,    Status: $status"
-      elif [[ $status = 'R' ]];  then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is running,            Status: $status"
+      if   [[ $status = 'Q' ]];  then
+        status_label='waiting in a queue'
+      elif [[ $status = 'H' ]];  then
+        status_label='held in a queue'
+      elif [[ $status = 'R' ]];  then
+        status_label='running'
       elif [[ $status = 'E' ]] || [[ $status = 'C' ]];  then
+        status_label='finished'
         if [[ ${MACHINE_ID} = cheyenne.* ]]; then
           exit_status=$( qstat ${jobid} -x -f | grep Exit_status | awk '{print $3}')
         else
@@ -129,62 +155,46 @@ submit_and_wait() {
           exit_status=$( qstat ${jobid} -f | grep exit_status | awk '{print $3}')
         fi
         if [[ $exit_status != 0 ]]; then
-          echo "Test ${TEST_NR} ${TEST_NAME} FAIL" >> ${REGRESSIONTEST_LOG}
-          echo                                     >> ${REGRESSIONTEST_LOG}
-          echo "Test ${TEST_NR} ${TEST_NAME} FAIL"
-          echo
           test_status='FAIL'
-          break
         fi
-        echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is finished,           Status: $status"
-        job_running=0
-      elif [[ $status = 'C' ]];  then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is finished,           Status: $status" ; job_running=0
-      else                            echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is finished,           Status: $status"
+      else
+        status_label='finished'
       fi
 
     elif [[ $SCHEDULER = 'slurm' ]]; then
 
       status=$( squeue -u ${USER} -j ${slurm_id} 2>/dev/null | grep ${slurm_id} | awk '{print $5}' ); status=${status:--}
-      if [[ $status = 'R' ]];  then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is running,            Status: $status"
-      elif [[ $status = 'PD' ]];  then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is pending,            Status: $status"
-      elif [[ $status = 'F' ]];  then
-        echo "Test ${TEST_NR} ${TEST_NAME} FAIL" >> ${REGRESSIONTEST_LOG}
-        echo                                     >> ${REGRESSIONTEST_LOG}
-        echo "Test ${TEST_NR} ${TEST_NAME} FAIL"
-        echo
-        echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is failed,             Status: $status"
-        job_running=0
-      elif [[ $status = 'C' ]];  then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is finished,           Status: $status" ; job_running=0
+      if   [[ $status = 'R'  ]];  then
+        status_label='running'
+      elif [[ $status = 'PD' ]];  then
+        status_label='pending'
+      elif [[ $status = 'F'  ]];  then
+        status_label='failed'
+        test_status='FAIL'
+      elif [[ $status = 'C'  ]];  then
+        status_label='finished'
       else
         echo "Slurm unknown status ${status}. Check sacct ..."
-        sacct -n -j ${slurm_id} --format=JobID,state,Jobname
-        state=$( sacct -n -j ${slurm_id} --format=JobID,state,Jobname | grep ${slurm_id} | awk '{print $2}' )
-        echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is ${state}"
+        sacct -n -j ${slurm_id} --format=JobID,state%20,Jobname%20
+        status_label=$( sacct -n -j ${slurm_id} --format=JobID,state%20,Jobname%20 | grep "^${slurm_id}" | grep ${JBNME} | awk '{print $2}' )
       fi
 
     elif [[ $SCHEDULER = 'lsf' ]]; then
 
       status=$( bjobs ${bsub_id} 2>/dev/null | grep ${bsub_id} | awk '{print $3}' ); status=${status:--}
-      if   [[ $status = 'PEND' ]];  then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is waiting in a queue, Status: $status"
-      elif [[ $status = 'RUN'  ]];  then echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is running,            Status: $status"
+      if   [[ $status = 'PEND' ]];  then
+        status_label='pending'
+      elif [[ $status = 'RUN'  ]];  then
+        status_label='running'
       elif [[ $status = 'EXIT' ]];  then
-        echo "Test ${TEST_NR} ${TEST_NAME} FAIL" >> ${REGRESSIONTEST_LOG}
-        echo;echo;echo                           >> ${REGRESSIONTEST_LOG}
-        echo "Test ${TEST_NR} ${TEST_NAME} FAIL"
-        echo;echo;echo
+        status_label='failed'
         test_status='FAIL'
-        break
       else
-        echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is finished,           Status: $status"
+        status_label='finished'
         exit_status=$( bjobs ${bsub_id} 2>/dev/null | grep ${bsub_id} | awk '{print $3}' ); status=${status:--}
         if [[ $exit_status = 'EXIT' ]];  then
-          echo "Test ${TEST_NR} ${TEST_NAME} FAIL" >> ${REGRESSIONTEST_LOG}
-          echo;echo;echo                           >> ${REGRESSIONTEST_LOG}
-          echo "Test ${TEST_NR} ${TEST_NAME} FAIL"
-          echo;echo;echo
           test_status='FAIL'
         fi
-        break
       fi
 
     else
@@ -192,12 +202,20 @@ submit_and_wait() {
       exit 1
 
     fi
+
+    echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is ${status_label},  status: $status jobid ${jobid}"
+    [[ ${ECFLOW:-false} == true ]] && ecflow_client --label=job_status "$status_label"
+
     (( n=n+1 ))
+    sleep 60
   done
 
   if [[ $test_status = 'FAIL' ]]; then
     if [[ ${UNIT_TEST} == false ]]; then
       echo "${TEST_NAME} ${TEST_NR}" >> $PATHRT/fail_test
+      echo "Test ${TEST_NR} ${TEST_NAME} FAIL" >> ${REGRESSIONTEST_LOG}
+      echo;echo;echo                           >> ${REGRESSIONTEST_LOG}
+      echo "Test ${TEST_NR} ${TEST_NAME} FAIL"
     else
       echo ${TEST_NR} $TEST_NAME >> $PATHRT/fail_unit_test
     fi
@@ -454,14 +472,14 @@ rocoto_run() {
   while [[ $state != "Done" ]]
   do
     $ROCOTORUN -v 10 -w $ROCOTO_XML -d $ROCOTO_DB
-    sleep 10 & wait $!
+    sleep 10
     state=$($ROCOTOSTAT -w $ROCOTO_XML -d $ROCOTO_DB -s | grep 197001010000 | awk -F" " '{print $2}')
     dead_compile=$($ROCOTOSTAT -w $ROCOTO_XML -d $ROCOTO_DB | grep compile_ | grep DEAD | head -1 | awk -F" " '{print $2}')
     if [[ ! -z ${dead_compile} ]]; then
       echo "y" | ${ROCOTOCOMPLETE} -w $ROCOTO_XML -d $ROCOTO_DB -m ${dead_compile}_tasks
       ${ROCOTOCOMPLETE} -w $ROCOTO_XML -d $ROCOTO_DB -t ${dead_compile}
     fi
-    sleep 20 & wait $!
+    sleep 20
   done
 
 }
@@ -473,11 +491,14 @@ ecflow_create_compile_task() {
 
   cat << EOF > ${ECFLOW_RUN}/${ECFLOW_SUITE}/compile_${COMPILE_NR}.ecf
 %include <head.h>
-$PATHRT/run_compile.sh ${PATHRT} ${RUNDIR_ROOT} "${NEMS_VER}" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
+$PATHRT/run_compile.sh ${PATHRT} ${RUNDIR_ROOT} "${NEMS_VER}" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1 &
 %include <tail.h>
 EOF
 
   echo "  task compile_${COMPILE_NR}" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+  echo "      label build_options '${NEMS_VER}'" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+  echo "      label job_id ''" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+  echo "      label job_status ''" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   echo "      inlimit max_builds" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   # serialize WW3 builds. FIXME
   if [[ ${NEMS_VER^^} =~ "WW3=Y" && ${COMPILE_PREV_WW3_NR} != '' ]]; then
@@ -489,11 +510,13 @@ ecflow_create_run_task() {
 
   cat << EOF > ${ECFLOW_RUN}/${ECFLOW_SUITE}/${TEST_NAME}${RT_SUFFIX}.ecf
 %include <head.h>
-$PATHRT/run_test.sh ${PATHRT} ${RUNDIR_ROOT} ${TEST_NAME} ${TEST_NR} ${COMPILE_NR} > ${LOG_DIR}/run_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log 2>&1
+$PATHRT/run_test.sh ${PATHRT} ${RUNDIR_ROOT} ${TEST_NAME} ${TEST_NR} ${COMPILE_NR} > ${LOG_DIR}/run_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log 2>&1 &
 %include <tail.h>
 EOF
 
   echo "    task ${TEST_NAME}${RT_SUFFIX}" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+  echo "      label job_id ''" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+  echo "      label job_status ''" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   echo "      inlimit max_jobs" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   if [[ $DEP_RUN != '' ]]; then
     if [[ ${UNIT_TEST} == false ]]; then
@@ -535,7 +558,7 @@ ecflow_run() {
   active_tasks=1
   while [[ $active_tasks -ne 0 ]]
   do
-    sleep 10 & wait $!
+    sleep 10
     active_tasks=$( ecflow_client --get_state /${ECFLOW_SUITE} | grep "task " | grep -E 'state:active|state:submitted|state:queued' | wc -l )
     echo "ecflow tasks remaining: ${active_tasks}"
     ${PATHRT}/abort_dep_tasks.py
@@ -548,15 +571,14 @@ ecflow_run() {
 ecflow_kill() {
    [[ ${ECFLOW_RUNNING:-false} == true ]] || return
    set +e
-   wait
    ecflow_client --kill /${ECFLOW_SUITE}
    sleep 10
+   ecflow_client --delete=force yes /${ECFLOW_SUITE}
 }
 
 ecflow_stop() {
    [[ ${ECFLOW_RUNNING:-false} == true ]] || return
    set +e
-   wait
    SUITES=$( ecflow_client --get | grep "^suite" )
    echo "SUITES=${SUITES}"
    if [ -z "${SUITES}" ]; then

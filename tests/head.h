@@ -25,6 +25,8 @@ ecflow_client --init=$$
 # Define a error handler
 ERROR() {
    set +e                      # Clear -e flag, so we don't fail
+   jobs -l
+   [[ -z "$(jobs -p)" ]] || kill $(jobs -p)
    wait                        # wait for background process to stop
 
    ecflow_client --ping --host=${ECF_HOST} --port=${ECF_PORT}

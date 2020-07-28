@@ -58,6 +58,7 @@ rt_single() {
 
 rt_trap() {
   [[ ${ROCOTO:-false} == true ]] && rocoto_kill
+  [[ ${ECFLOW:-false} == true ]] && ecflow_kill
   cleanup
 }
 
@@ -236,7 +237,7 @@ elif [[ $MACHINE_ID = orion.* ]]; then
   # Re-instantiate COMPILER in case it gets deleted by module purge
   COMPILER=${NEMS_COMPILER:-intel}
 
-  module load rocoto/1.3.1
+  module load contrib rocoto/1.3.1
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
