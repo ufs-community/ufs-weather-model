@@ -571,6 +571,7 @@ ecflow_run() {
 ecflow_kill() {
    [[ ${ECFLOW_RUNNING:-false} == true ]] || return
    set +e
+   ecflow_client --suspend /${ECFLOW_SUITE}
    ecflow_client --kill /${ECFLOW_SUITE}
    sleep 10
    ecflow_client --delete=force yes /${ECFLOW_SUITE}
