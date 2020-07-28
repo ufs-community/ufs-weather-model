@@ -73,7 +73,7 @@ Building the Weather Model
 ==========================
 
 -------------------------------------------------------------------------
-Setting environment variables for paths to NCEPLIBS and NCEPLIBS-external
+Setting environment variables for NCEPLIBS, NCEPLIBS-external and CMake
 -------------------------------------------------------------------------
 You will need to make sure that the WM has the paths to the libraries that it requires. In order to do
 that, these environment variables need to be set, as shown in :numref:`Table %s <ReqLibEnvVar>` and
@@ -117,7 +117,7 @@ The following are a few different ways to set the required environment variables
 If you are running on one of the `pre-configured platforms
 <https://github.com/ufs-community/ufs/wiki/Supported-Platforms-and-Compilers>`_, you can set them using
 modulefiles.  Modulefiles for all supported platforms are located in ``modulefiles/<platform>/fv3``. To
-load the modules, for example on hera, run:
+load the modules from the `ufs-weather-model` directory on hera:
 
 .. code-block:: console
 
@@ -125,6 +125,25 @@ load the modules, for example on hera, run:
     module use $(pwd)
     module load fv3
     cd ../..
+
+Note that loading this module file will also set the CMake environment variables shown in
+:numref:`Table %s <CMakeEnv>`.
+
+.. _CMakeEnv:
+
+.. table:: *CMake environment variables required to configure the build for the Weather Model*
+
+   +-------------------------+----------------------------------------------+----------------------+
+   | **EnvironmentVariable** | **Description**                              | **Hera Intel Value** |
+   +=========================+==============================================+======================+
+   |  CMAKE_C_COMPILER       | Name of C compiler                           | mpiicc               |
+   +-------------------------+----------------------------------------------+----------------------+
+   |  CMAKE_CXX_COMPILER     | Name of C++ compiler                         | mpiicpc              |
+   +-------------------------+----------------------------------------------+----------------------+
+   |  CMAKE_Fortran_COMPILER | Name of Fortran compiler                     | mpiifort             |
+   +-------------------------+----------------------------------------------+----------------------+
+   |  CMAKE_Platform         | String containing platform and compiler name | hera.intel           |
+   +-------------------------+----------------------------------------------+----------------------+
 
 If you are not running on one of the pre-configured platforms, you will need to set the environment variables
 in a different way.
@@ -135,24 +154,9 @@ to build the prerequisite libraries, there is a script in the ``NCEPLIBS-ufs-v1.
 
 Of course, you can also set the values of these variables yourself if you know where the paths are on your system.
 
------------------------------------
-Setting other environment variables
------------------------------------
-You will also need to set the ``CMAKE_Platform`` environment variable.
-See the ``README`` files in the ``doc/`` directories of the NCEPLIBS-external repository for recognized values.
-
-The default value is:
-
-.. code-block:: console
-
-    export CMAKE_Platform=linux.<compiler>
-
-Where <compiler> is either Intel or GNU.  You may also wish to set the following environment variables:
-
-  * ``CMAKE_Platform``: if not set the default is linux.${COMPILER}
-  * ``CMAKE_C_COMPILER``: if not set the default is mpicc
-  * ``CMAKE_CXX_COMPILER``: if not set the default is mpicxx
-  * ``CMAKE_Fortran_COMPILER``: if not set the default is mpif90
+--------------------------------------------
+Setting the CCPP_SUITES environment variable
+--------------------------------------------
 
 In order to have one or more CCPP physics suites available at runtime, you need to select those suites at
 build time by setting the ``CCPP_SUITES`` environment variable. Multiple suites can be set, as shown below
@@ -160,17 +164,24 @@ in an example for the bash shell:
 
 .. code-block:: console
 
-    export CCPP_SUITES=’FV3_GFS_v15p2,FV3_GFS_v16beta’
+    export CCPP_SUITES="FV3_GFS_v15p2,FV3_GFS_v16beta"
 
-If ``CCPP_SUITES`` is not set, the default is ``‘FV3_GFS_v15p2’``.
+If ``CCPP_SUITES`` is not set, the default is set to ``‘FV3_GFS_v15p2’`` in ``build.sh``.
 
 ------------------
 Building the model
 ------------------
-The UFS Weather Model uses the cmake build system.  There is a build script called ``build.sh`` in the
-top-level directory of the WM repository that ensures all necessary variables are actually set.
+The UFS Weather Model uses the CMake build system.  There is a build script called ``build.sh`` in the
+top-level directory of the WM repository that configures the build environment and runs the ``make``
+command.  This script also checks that all necessary environment variables have been set.
 
-After setting all the environment variables, you can build the model by running the following from the `ufs-weather-model` directory:
+If any of the environment variables have not been set, the ``build.sh`` script will exit with a message similar to:
+
+.. code-block:: console
+
+   ./build.sh: line 11: CMAKE_Platform: Please set the CMAKE_Platform environment variable, e.g. [macosx.gnu|linux.gnu|linux.intel|hera.intel|...]
+
+The WM can be built by running the following command from the `ufs-weather-model` directory:
 
 .. code-block:: console
 
