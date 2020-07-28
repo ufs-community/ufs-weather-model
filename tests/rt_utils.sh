@@ -148,6 +148,7 @@ submit_and_wait() {
         status_label='running'
       elif [[ $status = 'E' ]] || [[ $status = 'C' ]];  then
         status_label='finished'
+        test_status='DONE'
         if [[ ${MACHINE_ID} = cheyenne.* ]]; then
           exit_status=$( qstat ${jobid} -x -f | grep Exit_status | awk '{print $3}')
         else
@@ -173,6 +174,7 @@ submit_and_wait() {
         test_status='FAIL'
       elif [[ $status = 'C'  ]];  then
         status_label='finished'
+        test_status='DONE'
       else
         echo "Slurm unknown status ${status}. Check sacct ..."
         sacct -n -j ${slurm_id} --format=JobID,state%20,Jobname%20
@@ -186,13 +188,19 @@ submit_and_wait() {
         status_label='pending'
       elif [[ $status = 'RUN'  ]];  then
         status_label='running'
+      elif [[ $status = 'DONE'  ]];  then
+        status_label='finished'
+        test_status='DONE'
       elif [[ $status = 'EXIT' ]];  then
         status_label='failed'
         test_status='FAIL'
       else
+        echo "bsub unknown status ${status}"
         status_label='finished'
+        test_status='DONE'
         exit_status=$( bjobs ${bsub_id} 2>/dev/null | grep ${bsub_id} | awk '{print $3}' ); status=${status:--}
         if [[ $exit_status = 'EXIT' ]];  then
+        status_label='failed'
           test_status='FAIL'
         fi
       fi
@@ -206,8 +214,12 @@ submit_and_wait() {
     echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is ${status_label},  status: $status jobid ${jobid}"
     [[ ${ECFLOW:-false} == true ]] && ecflow_client --label=job_status "$status_label"
 
+    if [[ $test_status = 'FAIL' || $test_status = 'DONE' ]]; then
+      break
+    fi
+
     (( n=n+1 ))
-    sleep 60
+    sleep 60 & wait $!
   done
 
   if [[ $test_status = 'FAIL' ]]; then
@@ -558,7 +570,7 @@ ecflow_run() {
   active_tasks=1
   while [[ $active_tasks -ne 0 ]]
   do
-    sleep 10
+    sleep 10 & wait $!
     active_tasks=$( ecflow_client --get_state /${ECFLOW_SUITE} | grep "task " | grep -E 'state:active|state:submitted|state:queued' | wc -l )
     echo "ecflow tasks remaining: ${active_tasks}"
     ${PATHRT}/abort_dep_tasks.py
@@ -573,7 +585,7 @@ ecflow_kill() {
    set +e
    ecflow_client --suspend /${ECFLOW_SUITE}
    ecflow_client --kill /${ECFLOW_SUITE}
-   sleep 10
+   sleep 20
    ecflow_client --delete=force yes /${ECFLOW_SUITE}
 }
 

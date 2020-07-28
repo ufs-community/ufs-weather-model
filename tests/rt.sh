@@ -72,7 +72,7 @@ cleanup() {
 trap '{ echo "rt.sh interrupted"; rt_trap ; }' INT
 trap '{ echo "rt.sh quit"; rt_trap ; }' QUIT
 trap '{ echo "rt.sh terminated"; rt_trap ; }' TERM
-trap '{ echo "rt.sh error on line $LINENO"; rt_trap ; }' ERR
+trap '{ echo "rt.sh error on line $LINENO"; cleanup ; }' ERR
 trap '{ echo "rt.sh finished"; cleanup ; }' EXIT
 
 # PATHRT - Path to regression tests directory
@@ -545,7 +545,8 @@ suite ${ECFLOW_SUITE}
     edit ECF_INCLUDE '${ECFLOW_RUN}'
     edit ECF_KILL_CMD kill -15 %ECF_RID% > %ECF_JOB%.kill 2>&1
     edit ECF_TRIES 1
-    label rundir_root '${RUNDIR_ROOT}'
+    label src_dir '${PATHTR}'
+    label run_dir '${RUNDIR_ROOT}'
     limit max_builds 10
     limit max_jobs 30
 EOF
