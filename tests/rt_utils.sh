@@ -27,7 +27,6 @@ interrupt_job() {
   fi
 }
 
-
 submit_and_wait() {
 
   [[ -z $1 ]] && exit 1
@@ -224,7 +223,7 @@ submit_and_wait() {
 
   if [[ $test_status = 'FAIL' ]]; then
     if [[ ${UNIT_TEST} == false ]]; then
-      echo "${TEST_NAME} ${TEST_NR}" >> $PATHRT/fail_test
+      echo "${TEST_NAME} ${TEST_NR} failed" >> $PATHRT/fail_test
       echo "Test ${TEST_NR} ${TEST_NAME} FAIL" >> ${REGRESSIONTEST_LOG}
       echo;echo;echo                           >> ${REGRESSIONTEST_LOG}
       echo "Test ${TEST_NR} ${TEST_NAME} FAIL"
@@ -267,7 +266,7 @@ check_results() {
 
   if [[ ${CREATE_BASELINE} = false ]]; then
     #
-    # --- regression test comparison ----
+    # --- regression test comparison
     #
     for i in ${LIST_FILES} ; do
       printf %s " Comparing " $i " ....." >> ${REGRESSIONTEST_LOG}
@@ -285,21 +284,13 @@ check_results() {
         echo ".......MISSING baseline"
         test_status='FAIL'
 
-      elif [[ ( $COMPILER == "gnu" || $COMPILER == "pgi" ) && $i == "RESTART/fv_core.res.nc" ]] ; then
+      elif [[ $COMPILER == "gnu" && $i == "RESTART/fv_core.res.nc" ]] ; then
 
         # Although identical in ncdiff, RESTART/fv_core.res.nc differs in byte 469, line 3,
         # for the fv3_control_32bit test between each run (without changing the source code)
-        # for GNU and PGI compilers - skip comparison.
-        echo ".......SKIP for gnu/pgi compilers" >> ${REGRESSIONTEST_LOG}
-        echo ".......SKIP for gnu/pgi compilers"
-
-      elif [[ $COMPILER == "pgi"  && ( $i == "RESTART/fv_BC_sw.res.nest02.nc" || $i == "RESTART/fv_BC_ne.res.nest02.nc" ) ]] ; then
-
-        # Although identical in ncdiff, RESTART/fv_BC_sw.res.nest02.nc differs in byte 6897, line 17
-        # (similar for fv_BC_ne.res.nest02.nc) for the fv3_stretched_nest test between each run
-        # (without changing the source code) for the PGI compiler - skip comparison.
-        echo ".......SKIP for pgi compiler" >> ${REGRESSIONTEST_LOG}
-        echo ".......SKIP for pgi compiler"
+        # for GNU compilers - skip comparison.
+        echo ".......SKIP for gnu compilers" >> ${REGRESSIONTEST_LOG}
+        echo ".......SKIP for gnu compilers"
 
       else
 
@@ -322,19 +313,23 @@ check_results() {
     #
     # --- create baselines
     #
-    echo;echo;echo "Moving set ${TEST_NR} ${TEST_NAME} files ...."
+    echo;echo "Moving baseline ${TEST_NR} ${TEST_NAME} files ...."
+    echo;echo "Moving baseline ${TEST_NR} ${TEST_NAME} files ...." >> ${REGRESSIONTEST_LOG}
     if [[ ! -d ${NEW_BASELINE}/${CNTL_DIR}/RESTART ]] ; then
       echo " mkdir -p ${NEW_BASELINE}/${CNTL_DIR}/RESTART" >> ${REGRESSIONTEST_LOG}
       mkdir -p ${NEW_BASELINE}/${CNTL_DIR}/RESTART
     fi
 
     for i in ${LIST_FILES} ; do
+      printf %s " Moving " $i " ....."
       printf %s " Moving " $i " ....."   >> ${REGRESSIONTEST_LOG}
       if [[ -f ${RUNDIR}/$i ]] ; then
         cp ${RUNDIR}/${i} ${NEW_BASELINE}/${CNTL_DIR}/${i}
+        echo ".... OK"
+        echo ".... OK" >> ${REGRESSIONTEST_LOG}
       else
-        echo "Missing " ${RUNDIR}/$i " output file"
-        echo;echo " Set ${TEST_NR} ${TEST_NAME} failed"
+        echo ".... missing " ${RUNDIR}/$i
+        echo ".... missing " ${RUNDIR}/$i >> ${REGRESSIONTEST_LOG}
         test_status='FAIL'
       fi
     done
@@ -348,7 +343,7 @@ check_results() {
 
   if [[ $test_status = 'FAIL' ]]; then
     if [[ ${UNIT_TEST} == false ]]; then
-      echo $TEST_NAME >> $PATHRT/fail_test
+      echo "${TEST_NAME} ${TEST_NR} failed in check_result" >> $PATHRT/fail_test
     else
       echo ${TEST_NR} $TEST_NAME >> $PATHRT/fail_unit_test
     fi
@@ -360,6 +355,7 @@ check_results() {
 
   eval "$set_x"
 }
+
 
 kill_job() {
 
@@ -375,7 +371,6 @@ kill_job() {
     bkill ${jobid}
   fi
 }
-
 
 rocoto_create_compile_task() {
 
@@ -432,7 +427,6 @@ rocoto_create_compile_task() {
 EOF
 }
 
-
 rocoto_create_run_task() {
 
   if [[ $DEP_RUN != '' ]]; then
@@ -471,7 +465,6 @@ EOF
 
 }
 
-
 rocoto_kill() {
    for jobid in $( $ROCOTOSTAT -w $ROCOTO_XML -d $ROCOTO_DB | grep 197001010000 | grep -E 'QUEUED|RUNNING' | awk -F" " '{print $3}' ); do
       kill_job ${jobid}
@@ -495,6 +488,7 @@ rocoto_run() {
   done
 
 }
+
 
 ecflow_create_compile_task() {
 

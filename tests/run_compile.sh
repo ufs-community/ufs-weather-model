@@ -21,8 +21,8 @@ fi
 
 export PATHRT=$1
 export RUNDIR_ROOT=$2
-export MAKE_OPT=${3}
-export COMPILE_NR=${4}
+export MAKE_OPT=$3
+export COMPILE_NR=$4
 
 cd ${PATHRT}
 

@@ -45,10 +45,7 @@ export INPUT_DIR=${CNTL_DIR}
 export RUNDIR=${RUNDIR_ROOT}/${TEST_NAME}${RT_SUFFIX}
 export CNTL_DIR=${CNTL_DIR}${BL_SUFFIX}
 
-JBNME=$(basename $RUNDIR_ROOT)_${TEST_NR}
-export JBNME
-
-export FV3X=fv3_${COMPILE_NR}.exe
+export JBNME=$(basename $RUNDIR_ROOT)_${TEST_NR}
 
 UNIT_TEST=${UNIT_TEST:-false}
 if [[ ${UNIT_TEST} == false ]]; then
@@ -58,7 +55,6 @@ else
 fi
 export REGRESSIONTEST_LOG
 
-# Submit the actual test run script
 echo "Test ${TEST_NR} ${TEST_NAME} ${TEST_DESCR}"
 
 source rt_utils.sh
@@ -72,7 +68,7 @@ cd $RUNDIR
 ###############################################################################
 
 # FV3 executable:
-cp ${PATHRT}/$FV3X                                 fv3.exe
+cp ${PATHRT}/fv3_${COMPILE_NR}.exe                 fv3.exe
 
 # modulefile for FV3 prerequisites:
 cp ${PATHRT}/modules.fv3_${COMPILE_NR}             modules.fv3
@@ -139,6 +135,10 @@ else
 fi
 
 check_results
+
+################################################################################
+# End test
+################################################################################
 
 elapsed=$SECONDS
 echo "Elapsed time $elapsed seconds. Test ${TEST_NAME}"
