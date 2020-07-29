@@ -3,7 +3,6 @@ set -eu
 
 MYDIR=$(cd "$(dirname "$(readlink -f -n "${BASH_SOURCE[0]}" )" )" && pwd -P)
 
-#export CMAKE_Platform=${CMAKE_Platform:?"Please set the CMAKE_Platform environment variable, e.g. [macosx.gnu|linux.gnu|linux.intel|hera.intel|...]"}
 export CMAKE_C_COMPILER=${CMAKE_C_COMPILER:-mpicc}
 export CMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER:-mpicxx}
 export CMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER:-mpif90}
@@ -15,9 +14,8 @@ BUILD_DIR=${MYDIR}/build
 rm -rf ${BUILD_DIR}
 mkdir ${BUILD_DIR}
 
-CCPP_SUITES="${CCPP_SUITES:-FV3_GFS_2017_gfdlmp}"
+CCPP_SUITES="${CCPP_SUITES:-FV3_GFS_v15p2}"
 CMAKE_FLAGS+=" -DCCPP_SUITES=${CCPP_SUITES} -DNETCDF_DIR=${NETCDF}"
-CMAKE_FLAGS+=" -DCMAKE_BUILD_TYPE=Debug -DDEBUG=ON"
 
 cd ${BUILD_DIR}
 cmake .. ${CMAKE_FLAGS}
