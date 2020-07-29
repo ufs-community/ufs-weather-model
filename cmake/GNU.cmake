@@ -1,24 +1,23 @@
 
 set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fcray-pointer -ffree-line-length-none -fno-range-check -fbacktrace")
 
+
 if(DEBUG)
     set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Wall -O0 -ggdb -fno-unsafe-math-optimizations -frounding-math -fsignaling-nans -ffpe-trap=invalid,zero,overflow -fbounds-check")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -O0 -ggdb")
+    add_definitions(-DDEBUG)
+elseif(REPRO)
+    if (APPLE)
+        set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -O0 -ggdb -fno-range-check")
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0")
+    else()
+        set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -O2 -ggdb -fno-range-check")
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O02")
+    endif()
+    add_definitions(-DREPRO)
 else()
     set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -O2 -fno-range-check")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2")
-endif()
-
-
-if(REPRO)
-    if(APPLE)
-        set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -O0 -ggdb")
-        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0")
-    else()
-        set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -O2 -ggdb")
-        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2")
-    endif()
-else()
 endif()
 
 
@@ -38,6 +37,9 @@ if(OPENMP)
 endif()
 
 if(AVX2)
+    set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS}")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
+elseif(SIMDMULTIARCH)
     set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS}")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
 else()
