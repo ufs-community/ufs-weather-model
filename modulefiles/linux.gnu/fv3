@@ -16,11 +16,6 @@ export F90=${F90:-mpif90}
 export FC=${FC:-mpif90}
 
 ##
-## use own NetCDF library
-##
-export NETCDF=${NETCDF:-/usr/local}
-
-##
 ## use SIONlib library if installed and environment variable is set
 ##
 SIONLIB=${SIONLIB:-}
@@ -29,20 +24,3 @@ if [ ! "x$SIONLIB" == "x" ]; then
   export SIONLIB_INC="-I${SIONLIB}/include -I${SIONLIB}/include/mod_64"
   export SIONLIB_LIB="-L${SIONLIB}/lib -lsionmpi_f90_64 -lsionser_f90_64 -lsionmpi_64 -lsiongen_64 -lsionser_64 -lsioncom_64 -lsioncom_64_lock_none"
 fi
-
-##
-## use pre-compiled EMSF library for above compiler / MPI combination
-##
-ESMF_VERSION=8.0.0
-export ESMFMKFILE=${ESMFMKFILE:-/usr/local/${ESMF_VERSION}/lib/esmf.mk}
-
-##
-## NCEP libraries (need to download and build manually, see doc/README_{UBUNTU,CENTOS,...}.txt and https://github.com/NCAR/NCEPlibs)
-##
-export NCEPLIBS_DIR=${NCEPLIBS_DIR:-/usr/local/NCEPlibs-20190820}
-export NEMSIO_INC=${NCEPLIBS_DIR}/include
-export BACIO_LIB4=${NCEPLIBS_DIR}/lib/libbacio_4.a
-export SP_LIBd=${NCEPLIBS_DIR}/lib/libsp_v2.0.2_d.a
-export W3EMC_LIBd=${NCEPLIBS_DIR}/lib/libw3emc_d.a
-export W3NCO_LIBd=${NCEPLIBS_DIR}/lib/libw3nco_d.a
-export NEMSIO_LIB=${NCEPLIBS_DIR}/lib/libnemsio_d.a
