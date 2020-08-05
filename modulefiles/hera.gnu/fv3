@@ -8,9 +8,6 @@ proc ModulesHelp {} {
 
 module-whatis "loads NEMS FV3 prerequisites for Hera/GNU"
 
-# NOTE: the "module purge" and loading of the module command are
-# handled by the module-setup.sh (or .csh) script.
-setenv NCEPLIBS /scratch2/NCEPDEV/nwprod/NCEPLIBS
 ##
 ## load contrib environment
 ## load slurm utils (arbitrary.pl  layout.pl)
@@ -29,7 +26,26 @@ module load mpich/3.3.2
 ##
 ## use pre-compiled netCDF, EMSF library and NCEP libraries for above compiler / MPI combination
 ##
-module load NCEPlibs/1.0.0
+module use -a /scratch1/BMC/gmtb/software/NCEPLIBS-20200717/gnu-9.2.0/mpich-3.3.2/modules
+module av
+
+module load netcdf/4.7.4
+module load esmf/8.0.0
+
+module load bacio/2.4.0
+module load crtm/2.3.0
+module load g2/3.4.0
+module load g2tmpl/1.9.0
+module load ip/3.3.0
+module load nceppost/dceca26
+module load nemsio/2.5.1
+module load sp/2.3.0
+module load w3emc/2.7.0
+module load w3nco/2.4.0
+
+module load gfsio/1.4.0
+module load sfcio/1.4.0
+module load sigio/2.3.0
 
 ##
 ## load cmake

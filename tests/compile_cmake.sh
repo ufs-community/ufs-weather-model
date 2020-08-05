@@ -48,7 +48,16 @@ MAKE_THREADS=${MAKE_THREADS:-8}
 
 hostname
 
-# ----------------------------------------------------------------------
+set +x
+source $PATHTR/NEMS/src/conf/module-setup.sh.inc
+if [[ $MACHINE_ID == macosx.* ]] || [[ $MACHINE_ID == linux.* ]]; then
+  source $PATHTR/modulefiles/${MACHINE_ID}/fv3
+else
+  module use $PATHTR/modulefiles/${MACHINE_ID}
+  module load fv3
+  module list
+fi
+set -x
 
 echo "Compiling ${MAKE_OPT} into $BUILD_NAME.exe on $MACHINE_ID"
 
@@ -60,7 +69,7 @@ mkdir -p ${BUILD_DIR}
 
 # set CCPP_CMAKE_FLAGS based on $MAKE_OPT
 
-CCPP_CMAKE_FLAGS=""
+CCPP_CMAKE_FLAGS="-DNETCDF_DIR=${NETCDF}"
 
 if [[ "${MAKE_OPT}" == *"DEBUG=Y"* ]]; then
   CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DDEBUG=Y"
@@ -129,15 +138,6 @@ fi
 CCPP_CMAKE_FLAGS=$(trim "${CCPP_CMAKE_FLAGS}")
 
 (
-  source $PATHTR/NEMS/src/conf/module-setup.sh.inc
-  if [[ $MACHINE_ID == macosx.* ]] || [[ $MACHINE_ID == linux.* ]]; then
-    source $PATHTR/modulefiles/${MACHINE_ID}/fv3
-  else
-    module use $PATHTR/modulefiles/${MACHINE_ID}
-    module load fv3
-    module list
-  fi
-
   cd ${BUILD_DIR}
 
   cmake ${PATHTR} ${CCPP_CMAKE_FLAGS}
