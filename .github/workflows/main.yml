@@ -9,12 +9,15 @@ on:
     - feature/ContInteg
 
 jobs:
-  job1:
-    name: determine cases to run
+  setup:
+    name: Set up
     runs-on: ubuntu-latest
 
     outputs:
-      mtx: ${{ steps.parse.outputs.m }}
+      tn: ${{ steps.parse.outputs.tn }}
+      bld: ${{ steps.parse.outputs.bld }}
+      test: ${{ steps.parse.outputs.test }}
+      img: ${{ steps.parse.outputs.img }}
 
     steps:
     - name: Checkout codes
@@ -22,16 +25,56 @@ jobs:
 
     - name: Parse cases
       id: parse
-      run: echo "::set-output name=m::$(sed -n 2p ${GITHUB_WORKSPACE}/tests/ci.test)"
+      run: |
+        name_=$(sed -n 1p ${GITHUB_WORKSPACE}/tests/ci/ci.test)
+        case_=$(sed -n 2p ${GITHUB_WORKSPACE}/tests/ci/ci.test)
+        img_=$(sed -n 3p ${GITHUB_WORKSPACE}/tests/ci/ci.test)
 
-  job2:
-    name: ${{ matrix.kind }} test
-    needs: job1
+        imd1_=''
+        [[ $case_ =~ thr || $case_ =~ mpi || $case_ =~ dcp || $case_ =~ rst ]] && imd1_+='std'
+        [[ $case_ =~ bit ]] && imd1_+=' bit'
+        [[ $case_ =~ dbg ]] && imd1_+=' dbg'
+        imd1_=$(echo $imd1_ | sed -e 's/^ *//' -e 's/ *$//')
+
+        bld_='{"bld_set":['
+        for i in $imd1_; do bld_+="\"$i\","; done
+        bld_=$(echo $bld_ | sed -e 's/,$//')
+        bld_+=']}'
+
+        imd2_=()
+        test_='{"test_set":['
+        for i in $case_; do
+          test_+="\"$i\","
+          [[ $i =~ thr || $i =~ mpi || $i =~ dcp || $i =~ rst ]] && imd2_+=( std )
+          [[ $i =~ bit ]] && imd2_+=( bit )
+          [[ $i =~ dbg ]] && imd2_+=( dbg )
+        done
+
+        test_=$(echo $test_ | sed -e 's/,$//')
+        test_+='],"include":['
+        j=0
+        for i in $case_; do test_+="{\"test_set\":\"$i\",\"artifact\":\"${imd2_[$j]}\"},"; j=$((j+1)); done
+        test_=$(echo $test_ | sed -e 's/,$//')
+        test_+=']}'
+
+        echo "::set-output name=tn::$name_"
+        echo "::set-output name=bld::$bld_"
+        echo "::set-output name=test::$test_"
+        echo "::set-output name=img::$img_"
+
+        echo "test name : $name_"
+        echo "build set : $bld_"
+        echo "test set  : $test_"
+        echo "image name: $img_"
+
+  build:
+    name: Build (${{ matrix.bld_set }})
+    needs: setup
     runs-on: ubuntu-latest
-    #runs-on: self-hosted
 
     strategy:
-      matrix: ${{ fromJson(needs.job1.outputs.mtx) }}
+      fail-fast: false
+      matrix: ${{ fromJson(needs.setup.outputs.bld) }}
 
     steps:
     - name: Checkout codes
@@ -44,20 +87,54 @@ jobs:
         printf '{\n    "experimental": true\n}' | sudo tee /etc/docker/daemon.json >/dev/null
         sudo systemctl restart docker
         sleep 10
-        cd tests && ./ci.sh -b -c ${{ matrix.kind }}
+        cd tests/ci && ./ci.sh -n ${{ needs.setup.outputs.tn }} -b ${{ matrix.bld_set }}
 
     - name: Free up disk space
       run: |
-        docker rmi $(docker image ls | grep -E -m1 '<none>' | awk '{ print $3 }')
-        docker rmi $(docker image ls | awk '/fv3-input-data/ { print $3 }')
-        docker rmi $(docker image ls | awk '/ci-test-base/ { print $3 }')
+        sudo docker rmi $(sudo docker image ls | grep -E -m1 '<none>' | awk '{ print $3 }')
+        sudo docker rmi $(sudo docker image ls | awk '/ci-test-base/ { print $3 }')
+
+    - name: Prepare artifacts
+      run: |
+        cd tests/ci
+        sudo docker save ${{ needs.setup.outputs.img }} | gzip >${{ needs.setup.outputs.img }}.tar.gz
+        tar cvjf artifact.tar.bz2 ${{ needs.setup.outputs.img }}.tar.gz ci.sh ci.test
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ matrix.bld_set }}.artifact.tar.bz2
+        path: tests/ci/artifact.tar.bz2
+
+  utest:
+    name: Unit test (${{ needs.setup.outputs.tn }}, ${{ matrix.test_set }})
+    needs: [setup,build]
+    runs-on: ubuntu-latest
+    #runs-on: self-hosted
+
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.setup.outputs.test) }}
+
+    steps:
+    - name: Download artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: ${{ matrix.artifact }}.artifact.tar.bz2
+
+    - name: Prepare artifacts
+      run: |
+        tar xvjf artifact.tar.bz2 && rm -f artifact.tar.bz2
+        sudo docker load --input ${{ needs.setup.outputs.img }}.tar.gz && rm -f ${{ needs.setup.outputs.img }}.tar.gz
 
     - name: Run utest
-      run: cd tests && ./ci.sh -r
+      run: ./ci.sh -n ${{ needs.setup.outputs.tn }} -r ${{ matrix.test_set }}
 
     - name: Upload memory usage file
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
-        name: memory_stat_${{ matrix.kind }}
-        path: tests/memory_stat
+        name: memory_stat_${{ matrix.test_set }}
+        path: memory_stat
+
+    #- name: Clean up
