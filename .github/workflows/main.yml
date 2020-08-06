@@ -137,4 +137,9 @@ jobs:
         name: memory_stat_${{ matrix.test_set }}
         path: memory_stat
 
-    #- name: Clean up
+    - name: Clean up
+      if: ${{ always() }}
+      run: |
+        rm -f ci.sh ci.test
+        sudo docker rmi ${{ needs.setup.outputs.img }}:latest
+        sudo docker volume rm DataVolume
