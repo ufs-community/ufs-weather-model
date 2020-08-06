@@ -17,7 +17,10 @@ cleanup() {
 write_fail_test() {
   if [[ ${UNIT_TEST} == true ]]; then
     echo ${TEST_NR} $TEST_NAME >> $PATHRT/fail_unit_test
+  else
+    echo "${TEST_NAME} ${TEST_NR} failed in run_test" >> $PATHRT/fail_test
   fi
+  exit 1
 }
 
 if [[ $# != 5 ]]; then
