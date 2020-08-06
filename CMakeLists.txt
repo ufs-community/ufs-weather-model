@@ -168,6 +168,11 @@ set_target_properties(fms PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BI
 target_include_directories(fms PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/FMS/mod>)
 
 ###############################################################################
+### stochastic_physics
+###############################################################################
+add_subdirectory(stochastic_physics)
+
+###############################################################################
 ### FV3
 ###############################################################################
 add_subdirectory(FV3)
