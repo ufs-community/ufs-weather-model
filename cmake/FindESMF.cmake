@@ -1,47 +1,105 @@
+# - Try to find ESMF
+#
+# Requires setting ESMFMKFILE to the filepath of esmf.mk. If this is NOT set,
+# then ESMF_FOUND will always be FALSE. If ESMFMKFILE exists, then ESMF_FOUND=TRUE
+# and all ESMF makefile variables will be set in the global scope. Optionally,
+# set ESMF_MKGLOBALS to a string list to filter makefile variables. For example,
+# to globally scope only ESMF_LIBSDIR and ESMF_APPSDIR variables, use this CMake
+# command in CMakeLists.txt:
+#
+#   set(ESMF_MKGLOBALS "LIBSDIR" "APPSDIR")
 
-if (DEFINED ENV{ESMFMKFILE})
-  message("ESMFMKFILE:   $ENV{ESMFMKFILE}")
+
+# Add the ESMFMKFILE path to the cache if defined as system env variable
+if (DEFINED ENV{ESMFMKFILE} AND NOT DEFINED ESMFMKFILE)
+  set(ESMFMKFILE $ENV{ESMFMKFILE} CACHE FILEPATH "Path to ESMF mk file")
+endif ()
+
+# Found the mk file and ESMF exists on the system
+if (EXISTS ${ESMFMKFILE})
+  set(ESMF_FOUND TRUE CACHE BOOL "ESMF mk file found" FORCE)
+  # Did not find the ESMF mk file
 else()
-  message(FATAL_ERROR "ESMFMKFILE env variable is not defined")
+  set(ESMF_FOUND FALSE CACHE BOOL "ESMF mk file NOT found" FORCE)
+  # Best to warn users that without the mk file there is no way to find ESMF
+  if (NOT DEFINED ESMFMKFILE)
+    message(FATAL_ERROR "ESMFMKFILE not defined. This is the path to esmf.mk file. \
+Without this filepath, ESMF_FOUND will always be FALSE.")
+  endif ()
 endif()
 
-set(ESMFMKFILE $ENV{ESMFMKFILE})
+# Only parse the mk file if it is found
+if (ESMF_FOUND)
+  # Read the mk file
+  file(STRINGS "${ESMFMKFILE}" esmfmkfile_contents)
+  # Parse each line in the mk file
+  foreach(str ${esmfmkfile_contents})
+    # Only consider uncommented lines
+    string(REGEX MATCH "^[^#]" def ${str})
+    # Line is not commented
+    if (def)
+      # Extract the variable name
+      string(REGEX MATCH "^[^=]+" esmf_varname ${str})
+      # Extract the variable's value
+      string(REGEX MATCH "=.+$" esmf_vardef ${str})
+      # Only for variables with a defined value
+      if (esmf_vardef)
+        # Get rid of the assignment string
+        string(SUBSTRING ${esmf_vardef} 1 -1 esmf_vardef)
+        # Remove whitespace
+        string(STRIP ${esmf_vardef} esmf_vardef)
+        # A string or single-valued list
+        if(NOT DEFINED ESMF_MKGLOBALS)
+          # Set in global scope
+          set(${esmf_varname} ${esmf_vardef})
+          # Don't display by default in GUI
+          mark_as_advanced(esmf_varname)
+        else() # Need to filter global promotion
+          foreach(m ${ESMF_MKGLOBALS})
+            string(FIND ${esmf_varname} ${m} match)
+            # Found the string
+            if(NOT ${match} EQUAL -1)
+              # Promote to global scope
+              set(${esmf_varname} ${esmf_vardef})
+              # Don't display by default in the GUI
+              mark_as_advanced (esmf_varname)
+              # No need to search for the current string filter
+              break()
+            endif()
+          endforeach()
+        endif()
+      endif()
+    endif()
+  endforeach()
 
-# convert esmf.mk makefile variables to cmake variables until ESMF
-# provides proper cmake package
-file(STRINGS ${ESMFMKFILE} esmf_mk_text)
-foreach(line ${esmf_mk_text})
-  string(REGEX REPLACE "^[ ]+" "" line ${line}) # strip leading spaces
-  if (line MATCHES "^ESMF_*")                   # process only line starting with ESMF_
-    string(REGEX MATCH "^ESMF_[^=]+" esmf_name ${line})
-    string(REPLACE "${esmf_name}=" "" emsf_value ${line})
-    set(${esmf_name} "${emsf_value}")
+  separate_arguments(ESMF_F90COMPILEPATHS NATIVE_COMMAND ${ESMF_F90COMPILEPATHS})
+  foreach (ITEM ${ESMF_F90COMPILEPATHS})
+     string(REGEX REPLACE "^-I" "" ITEM "${ITEM}")
+     list(APPEND tmp ${ITEM})
+  endforeach()
+  set(ESMF_F90COMPILEPATHS ${tmp})
+
+  add_library(esmf UNKNOWN IMPORTED)
+  # Look for static library, if not found try dynamic library
+  find_library(esmf_lib NAMES libesmf.a PATHS ${ESMF_LIBSDIR})
+  if(esmf_lib MATCHES "esmf_lib-NOTFOUND")
+    message(STATUS "Static ESMF library not found, searching for dynamic library instead")
+    find_library(esmf_lib NAMES esmf_fullylinked PATHS ${ESMF_LIBSDIR})
+    if(esmf_lib MATCHES "esmf_lib-NOTFOUND")
+      message(FATAL_ERROR "Neither the dynamic nor the static ESMF library was found")
+    else()
+      message(STATUS "Found ESMF library: ${esmf_lib}")
+    endif()
+    set(ESMF_INTERFACE_LINK_LIBRARIES "")
+  else()
+    # When linking the static library, also need the ESMF linker flags; strip any leading/trailing whitespaces
+    string(STRIP "${ESMF_F90ESMFLINKRPATHS} ${ESMF_F90ESMFLINKPATHS} ${ESMF_F90LINKLIBS} ${ESMF_F90LINKOPTS}" ESMF_INTERFACE_LINK_LIBRARIES)
+    message(STATUS "Found ESMF library: ${esmf_lib}")
   endif()
-endforeach()
-string(REPLACE "-I" "" ESMF_F90COMPILEPATHS ${ESMF_F90COMPILEPATHS})
-string(REPLACE " " ";" ESMF_F90COMPILEPATHS ${ESMF_F90COMPILEPATHS})
 
-# We use only these 4 variables in our build system. Make sure they are all set
-if(ESMF_VERSION_MAJOR AND
-   ESMF_F90COMPILEPATHS AND
-   ESMF_F90ESMFLINKRPATHS AND
-   ESMF_F90ESMFLINKLIBS)
-  message(" Found ESMF:")
-  message("ESMF_VERSION_MAJOR:     ${ESMF_VERSION_MAJOR}")
-  message("ESMF_F90COMPILEPATHS:   ${ESMF_F90COMPILEPATHS}")
-  message("ESMF_F90ESMFLINKRPATHS: ${ESMF_F90ESMFLINKRPATHS}")
-  message("ESMF_F90ESMFLINKLIBS:   ${ESMF_F90ESMFLINKLIBS}")
-else()
-  message("One of the ESMF_ variables is not defined")
+  set_target_properties(esmf PROPERTIES
+    IMPORTED_LOCATION ${esmf_lib}
+    INTERFACE_INCLUDE_DIRECTORIES "${ESMF_F90COMPILEPATHS}"
+    INTERFACE_LINK_LIBRARIES "${ESMF_INTERFACE_LINK_LIBRARIES}")
+
 endif()
-
-include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(ESMF
-                                    FOUND_VAR
-                                      ESMF_FOUND
-                                    REQUIRED_VARS
-                                      ESMF_F90COMPILEPATHS
-                                      ESMF_F90ESMFLINKRPATHS
-                                      ESMF_F90ESMFLINKLIBS
-                                    VERSION_VAR
-                                      ESMF_VERSION_STRING)
