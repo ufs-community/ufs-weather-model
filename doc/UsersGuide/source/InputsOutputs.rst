@@ -116,10 +116,12 @@ The configuration files used by the UFS Weather Model are listed here and descri
 
 - *diag_table*
 - *field_table*
-- *input.nml*
 - *model_configure*
 - *nems.configure*
 - *suite_[suite_name].xml* (used only at build time)
+
+While the *input.nml* file is also a configuration file used by the UFS Weather Model, it is described in
+:numref:`Section %s <InputNML>`.
 
 
 *diag_table* file
@@ -409,26 +411,6 @@ supplied through the field table, will allow the user to modify the default para
 The lines in this file can be coded quite flexibly. Due to this flexibility, a number of restrictions are required.
 See ``FMS/field_manager/field_manager.F90`` for more information.
 
-*input.nml* file
-------------------------------------
-
-The atmosphere model reads many parameters from a Fortran namelist file, named *input.nml*.  This file contains
-several Fortran namelist records, some of which are always required, others of which are only used when selected
-physics options are chosen.
-
-The following link describes the various physics-related namelist records:
-
-https://dtcenter.org/GMTB/v4.0/sci_doc/CCPPsuite_nml_desp.html
-
-The following link describes the stochastic physics namelist records
-
-https://stochastic-physics.readthedocs.io/en/ufs-v1.0.0/namelist_options.html
-
-The following link describes some of the other namelist records (dynamics, grid, etc):
-
-https://www.gfdl.noaa.gov/wp-content/uploads/2017/09/fv3_namelist_Feb2017.pdf
-
-The namelist section relating to the FMS diagnostic manager is described in the last section of this chapter.
 
 *model_configure* file
 ------------------------------------
@@ -639,6 +621,12 @@ this is an atmosphere-only model, so this file is simple and does not need to be
 ---------------------------------------
 There are two SDFs currently supported: *suite_FV3_GFS_v15p2.xml* and *suite_FV3_GFS_v16beta.xml*.
 
+.. -------------------------------------------------------------------
+.. Include InputNML file describing the contents of the input.nml file
+.. -------------------------------------------------------------------
+
+.. include:: InputNML.inc
+
 =============
 Output files
 =============
@@ -665,6 +653,8 @@ The UFS Weather Model output is managed through the FMS (Flexible Modeling Syste
 and is configured using the *diag_table* file. Data can be written at any number of sampling and/or averaging intervals
 specified at run-time.  More information about the FMS diagnostic manager can be found at:
 https://data1.gfdl.noaa.gov/summer-school/Lectures/July16/03_Seth1_DiagManager.pdf
+
+.. _DiagManagerNML:
 
 ------------------------------
 Diagnostic Manager namelist

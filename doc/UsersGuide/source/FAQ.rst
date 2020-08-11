@@ -88,8 +88,9 @@ In your run directory, there is a file named ``model_configure``.  Change the
 variable ``nhours_fcst`` to the desired number of hours.
 
 ========================================================================
-How do I select the file format for the model output (NetCDF or NEMSIO)?
+How do I select the file format for the model output (netCDF or NEMSIO)?
 ========================================================================
 In your run directory, there is a file named ``model_configure``.  Change the
-variable ``output_file`` to ``'netcdf'`` or ``'nemsio'``.
-
+variable ``output_file`` to ``'netcdf'`` or ``'nemsio'``. The variable ``output_file``
+if only valid when the write component is activated by setting ``quilting`` to .true.
+in the ``model_configure`` file.
