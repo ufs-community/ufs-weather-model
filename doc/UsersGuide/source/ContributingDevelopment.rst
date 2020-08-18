@@ -28,13 +28,13 @@ If developers would like to get their code committed back to the original reposi
 
 4. Merging code from PRs with submodules requires coordination with the person making the PRs. From the "innermost" nested PR up to the top-level PR, the PRs need to be merged as-is. After each merge, the person creating the PRs has to update his/her local code to check out the merged version, revert the change to .gitmodules, and push this to GitHub to update the PR. And so on and so forth.
 
-5. Checking out the code ufs_release_1.0 should always be as follows:
+5. Checking out the code for this v1.1.0 release should be as follows:
 
 .. code-block:: console
 
    git clone https://github.com/ufs-community/ufs-weather-model
    cd ufs-weather-model
-   git checkout ufs_release_1.00
+   git checkout ufs-v1.1.0
    git submodule update --init --recursive
 
 6. Checking out a PR with id ID for testing it should always be as follows:
