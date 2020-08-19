@@ -14,7 +14,7 @@ physics options are chosen.
 
 The following link describes the various physics-related namelist records:
 
-https://dtcenter.org/GMTB/v4.0/sci_doc/CCPPsuite_nml_desp.html
+https://dtcenter.org/GMTB/v4.1.0/sci_doc/CCPPsuite_nml_desp.html
 
 The following link describes the stochastic physics namelist records:
 
