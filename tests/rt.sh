@@ -355,11 +355,6 @@ SINGLE_NAME=''
 
 TESTS_FILE='rt.conf'
 
-if [[ $MACHINE_ID = orion.* ]]; then
-  TESTS_FILE='rt_orion.conf'
-fi
-
-
 SET_ID='standard'
 while getopts ":cfsl:mn:kreh" opt; do
   case $opt in
