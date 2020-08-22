@@ -355,9 +355,9 @@ SINGLE_NAME=''
 
 TESTS_FILE='rt.conf'
 
-if [[ $MACHINE_ID = orion.* ]]; then
-  TESTS_FILE='rt_orion.conf'
-fi
+#if [[ $MACHINE_ID = orion.* ]]; then
+# TESTS_FILE='rt_orion.conf'
+#fi
 
 
 SET_ID='standard'
