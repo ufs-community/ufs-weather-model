@@ -1,7 +1,7 @@
 ## NEMS configuration file
 ##
 ## Platform: Hera
-## Compiler: GNU with OpenMPI
+## Compiler: GNU with MPICH
 
 SHELL=/bin/sh
 
