@@ -65,7 +65,6 @@ elif [[ $MACHINE_ID = wcoss_cray ]]; then
 else
   export TPN=12
 fi
-export NODES=$(expr $TASKS / $TPN + 1)
 
 export INPES=16
 export JNPES=12
@@ -103,4 +102,3 @@ export wav_petlist_bounds="1260 1469"
 export coupling_interval_sec=1800.0  #coupling time step, want it to be multiple of 1800 and FV3 time step
 export NEMS_CONFIGURE="nems.configure.blocked_atm_wav.IN"
 
-RUN_SCRIPT=rt_fv3.sh
