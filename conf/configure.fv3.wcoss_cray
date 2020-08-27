@@ -39,7 +39,7 @@ ifneq ($(need),$(ok))
 $(error Need at least make version $(need).  Load module gmake/3.81)
 endif
 
-NETCDF_ROOT = $(NETCDF_DIR)
+NETCDF_ROOT = $(NETCDF)
 INCLUDE = -I$(NETCDF_ROOT)/include
 
 FPPFLAGS := -fpp -Wp,-w $(INCLUDE)
@@ -48,7 +48,7 @@ CFLAGS := $(INCLUDE)
 FFLAGS := $(INCLUDE) -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte
 
 CPPDEFS += -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP
-CPPDEFS += -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_PARALLEL_NETCDF
+CPPDEFS += -DNEW_TAUCTMAX -DINTERNAL_FILE_NML
 
 ifeq ($(HYDRO),Y)
 CPPDEFS +=
@@ -109,6 +109,7 @@ FFLAGS_TEST = -O3 -debug minimal -fp-model source -qoverride-limits
 CFLAGS_TEST = -O2
 
 LDFLAGS :=
+LDFLAGS += $(Z_LIB) -L$(NETCDF_ROOT)/lib
 LDFLAGS_OPENMP := -qopenmp
 LDFLAGS_VERBOSE := -Wl,-V,--verbose,-cref,-M
 
@@ -157,16 +158,12 @@ FFLAGS += -I$(PATH_CCPP)/include
 LDFLAGS += -L$(PATH_CCPP)/lib -lccppphys -lccpp $(NCEPLIBS) -lxml2
 endif
 
-ifneq ($(findstring netcdf/4,$(LOADEDMODULES)),)
-  LIBS += -lnetcdff -lnetcdf -lhdf5_hl -lhdf5 -lz
-else
-  LIBS += -lnetcdf
-endif
+LIBS += -lnetcdff -lnetcdf -lhdf5_hl -lhdf5 $(Z_LIB)
 
 LDFLAGS += $(LIBS)
 
 ifdef InNemsMakefile
 FFLAGS += $(ESMF_INC)
 CPPFLAGS += -traditional
-EXTLIBS = $(NCEPLIBS) $(ESMF_LIB) $(LDFLAGS)
+EXTLIBS = $(NCEPLIBS) $(LDFLAGS) $(ESMF_LIB)
 endif
