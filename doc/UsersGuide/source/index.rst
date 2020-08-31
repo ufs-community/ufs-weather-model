@@ -15,7 +15,6 @@ Welcome to the UFS Weather Model User's Guide
    BuildingAndRunning
    InputsOutputs
    SDFandNamelistExamplePractices
-   ContributingDevelopment
    FAQ
    Acronyms
    Glossary

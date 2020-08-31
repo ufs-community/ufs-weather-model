@@ -10,7 +10,7 @@ How do I build and run a single test of the UFS Weather Model?
 
 An efficient way to build and run the UFS Weather Model is to use the regression test
 (``rt.sh``).  This script is widely used by model developers on Tier 1 and 2 platforms
-and is described in :numref:`Section %s <ConductingRegTests>`.  The advantages to this approach are:
+and is described in the UFS WM GitHub `wiki <https://github.com/ufs-community/ufs-weather-model/wiki/Making-code-changes-in-the-UFS-weather-model-and-its-subcomponents>`_.  The advantages to this approach are:
 
 - It does not require a workflow, pre- or post-processing steps.
 - The batch submission script is generated.

@@ -49,10 +49,9 @@ For the UFS WM v1.1 release, the following aspects are supported:
 
 - Ability to run with or without SKEBS, SPPT, and SHUM.
 
-- Ability to initialize from GFS files in Gridded Binary v2 (GRIB2) or NEMS
-  Input/Output (NEMSIO) format for past dates,
-  starting January 1, 2018, when the preprocessing utility chgres_cube is employed. Dates before
-  that may work, but are not guaranteed.
+- Ability to initialize from GFS files in Gridded Binary v2 (GRIB2), NEMS Input/Output (NEMSIO), or
+  Network Common Data Form (netCDF) format for past dates, starting January 1, 2018, when the 
+  preprocessing utility chgres_cube is employed.  Dates before that may work, but are not guaranteed.
 
 - Output files in Network Common Data Form (NetCDF) format.
 
@@ -90,9 +89,9 @@ The UFS WM v1 code is portable and can be used with Linux and Mac operating syst
 
 .. note::
 
-   At this time, the following aspects are unsupported:  standalone regional domains, configurations in which a mediator is used to couple the atmospheric model to models of other earth domains (such as ocean, ice, and waves), horizontal resolutions other than the supported ones, different number or placement of vertical levels, physics suites other than GFS v15.2 and GFS v16beta the *cellular automata* stochastic scheme, initialization from sources other than GFS, the use of different file formats for input and output, and the use of the model in different computational platforms. It is expected that the UFS WM supported capabilities will be expanded in future releases.
+   At this time, the following aspects are unsupported:  standalone regional domains, configurations in which a mediator is used to couple the atmospheric model to models of other earth domains (such as ocean, ice, and waves), horizontal resolutions other than the supported ones, different number or placement of vertical levels, physics suites other than GFS v15.2 and GFS v16beta, the *cellular automata* stochastic scheme, initialization from sources other than GFS, the use of different file formats for input and output, and the use of the model in different computational platforms. It is expected that the UFS WM supported capabilities will be expanded in future releases.
 
-It should be noted that the UFS WM is a component of the UFS Medium-Range (MR) Weather Application (App), which also contains pre- and post-processing components, a comprehensive build system, and workflows for configuration and execution of the application. At this time, the UFS WM is only supported to the general community for use as part of the UFS MR Weather App. However, those wishing to contribute development to the UFS WM should become familiar with the procedures for running the model as a standalone component and for executing the regression tests described in this guide to make sure no inadvertent changes to the results have been introduced during the development process.
+It should be noted that the UFS WM is a component of the UFS Medium-Range (MR) Weather Application (App), which also contains pre- and post-processing components, a comprehensive build system, and workflows for configuration and execution of the application. At this time, the UFS WM is only supported to the general community for use as part of the UFS MR Weather App. However, those wishing to contribute development to the UFS WM should become familiar with the procedures for running the model as a standalone component and for executing the regression tests described in the UFS WM GitHub `wiki <https://github.com/ufs-community/ufs-weather-model/wiki/Making-code-changes-in-the-UFS-weather-model-and-its-subcomponents>`_ to make sure no inadvertent changes to the results have been introduced during the development process.
 
 Support for the UFS WM is provided through the `UFS Forum <https://forums.ufscommunity.org/forum/ufs-weather-model>`_ by the Developmental Testbed Center (DTC) and other groups involved in UFS development, such as NOAA’s Environmental Modeling Center (EMC), NOAA research laboratories (GFDL, NSSL, ESRL, and AOML), and NCAR. UFS users and developers are encouraged not only to post questions, but also to help address questions posted by other members of the community.
 
@@ -109,8 +108,6 @@ This WM User’s Guide is organized as follows:
 - :numref:`Chapter %s <SDFandNamelistExamplePractices>` (SDF and namelist samples and best practices)
   contains a description of the :term:`Suite Definition File (SDF)` and namelists needed to configure the model
   for running with the GFS v15.2 and GFS v16beta physics suites.
-
-- :numref:`Chapter %s <ContributingDevelopment>` (Contributing development) goes beyond the capabilities supported in the public release to cover code management for conducting development and proposing contributions back to the authoritative code repositories. It should be noted that the regression tests described here are mandatory for committing code back to the ufs-weather-model authoritative code repository. These regressions tests differ from those distributed with the workflows for UFS applications, which are intended for application users and developers to assess the quality of their installations and the impact of their code changes.
 
 - :numref:`Chapter %s <FAQ>` (FAQ) lists frequently asked questions and answers.
 
