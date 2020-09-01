@@ -62,8 +62,6 @@ Acronyms
    | RRTMG          | Rapid Radiative Transfer Model for Global         |
    |                | Circulation Models                                |
    +----------------+---------------------------------------------------+
-   | RT             | Regression test                                   |
-   +----------------+---------------------------------------------------+
    | SAS            | Simplified Arakawa-Schubert                       |
    +----------------+---------------------------------------------------+
    | SDF            | Suite Definition File                             |
