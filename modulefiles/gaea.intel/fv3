@@ -17,17 +17,19 @@ module-whatis "loads NEMS FV3 prerequisites for Gaea/Intel"
 ##
 module load PrgEnv-intel/6.0.5
 module rm intel
+module rm cray-mpich
+module rm netcdf
 module load intel/18.0.6.288
 module load cray-mpich/7.7.11
 
 ##
-## use pre-compiled NetCDF, EMSF and NCEP libraries for above compiler / MPI combination
+## use pre-compiled PNG, NetCDF, ESMF and NCEP libraries for above compiler / MPI combination
 ##
-module use -a /lustre/f2/pdata/esrl/gsd/ufs/ufs-stack-20200728/intel-18.0.6.288/cray-mpich-7.7.11/modules
+module use -a /lustre/f2/pdata/esrl/gsd/ufs/ufs-stack-20200825/intel-18.0.6.288/cray-mpich-7.7.11/modules
 
 module load libpng/1.6.35
 module load netcdf/4.7.4
-module load esmf/8.0.0
+module load esmf/8.1.0bs21
 
 module load bacio/2.4.0
 module load crtm/2.3.0
