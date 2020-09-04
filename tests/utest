@@ -32,11 +32,11 @@ usage() {
   echo
   echo "  Examples"
   echo
-  echo "    'utest -n fv3_thompson' tests all for fv3_thompson"
-  echo "    'utest -n fv3_control -c rst' tests restart for fv3_control"
-  echo "    'utest -n fv3_iau -c mpi,thr' tests mpi and threading for fv3_iau"
-  echo "    'utest -n fv3_gfdlmprad_gws -c bit' tests bit for fv3_gfdlmprad_gws"
-  echo "    'utest -n fv3_cpt -c dcp,dbg,rst' tests decomposition, debug, restart for fv3_cpt"
+  echo "    'utest -n fv3_ccpp_control' tests all for fv3_ccpp_control"
+  echo "    'utest -n fv3_ccpp_control -c rst' tests restart for fv3_ccpp_control"
+  echo "    'utest -n fv3_ccpp_gfdlmp -c mpi,thr' tests mpi and threading for fv3_ccpp_gfdlmp"
+  echo "    'utest -n fv3_ccpp_gfdlmp -c bit' tests bit for fv3_ccpp_gfdlmp"
+  echo "    'utest -n fv3_ccpp_satmedmf -c dcp,dbg,rst' tests decomposition, debug, restart for fv3_ccpp_satmedmf"
   echo
   #set -x
 }
@@ -178,9 +178,7 @@ run_utests() {
         CREATE_BASELINE=false
         RTPWD=$NEW_BASELINE
         BL_SUFFIX=_std_base
-        INPES=2
-        JNPES=2
-        #JNPES=$(( JNPES/2 ))
+        JNPES=$(( JNPES/2 ))
         WRITE_GROUP=2
         WRTTASK_PER_GROUP=12
         TASKS=$(( INPES*JNPES*6 + WRITE_GROUP*WRTTASK_PER_GROUP ))
@@ -188,7 +186,6 @@ run_utests() {
         cat <<-EOF > ${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
 					export UNIT_TEST=true
 					export NEMS_COMPILER=${NEMS_COMPILER}
-					export INPES=${INPES}
 					export JNPES=${JNPES}
 					export WRITE_GROUP=${WRITE_GROUP}
 					export WRTTASK_PER_GROUP=${WRTTASK_PER_GROUP}
