@@ -1,7 +1,7 @@
 ## NEMS configuration file
 ##
 ## Platform: Hera
-## Compiler: GNU with OpenMPI
+## Compiler: GNU with MPICH
 
 SHELL=/bin/sh
 
@@ -70,10 +70,6 @@ ifeq ($(HYDRO),Y)
 CPPDEFS +=
 else
 CPPDEFS += -DMOIST_CAPPA -DUSE_COND
-endif
-
-ifeq ($(NAM_phys),Y)
-CPPDEFS += -DNAM_phys
 endif
 
 ifeq ($(32BIT),Y)
