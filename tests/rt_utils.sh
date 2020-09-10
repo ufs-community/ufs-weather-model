@@ -323,13 +323,14 @@ check_results() {
     for i in ${LIST_FILES} ; do
       printf %s " Moving " $i " ....."
       printf %s " Moving " $i " ....."   >> ${REGRESSIONTEST_LOG}
+      printf %s " Moving " $i " ....."
       if [[ -f ${RUNDIR}/$i ]] ; then
         cp ${RUNDIR}/${i} ${NEW_BASELINE}/${CNTL_DIR}/${i}
-        echo ".... OK"
-        echo ".... OK" >> ${REGRESSIONTEST_LOG}
+        echo "....OK" >>${REGRESSIONTEST_LOG}
+        echo "....OK"
       else
-        echo ".... missing " ${RUNDIR}/$i
-        echo ".... missing " ${RUNDIR}/$i >> ${REGRESSIONTEST_LOG}
+        echo "....NOT OK. Missing " ${RUNDIR}/$i >>${REGRESSIONTEST_LOG}
+        echo "....NOT OK. Missing " ${RUNDIR}/$i
         test_status='FAIL'
       fi
     done
