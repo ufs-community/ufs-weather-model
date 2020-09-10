@@ -285,7 +285,7 @@ The variables used in ``&atmos_model_nml`` are described in :numref:`Table %s <a
      - real
      - 120.0
    * - fhout
-     - Output frequency during forecast time from 0 to ``fhmax``, or from ``fhmaxhf`` to ``fhmaxhf`` if ``fhmaxf>0``.
+     - Output frequency during forecast time from 0 to ``fhmax``, or from ``fhmaxhf`` to ``fhmax`` if ``fhmaxf>0``.
      - real
      - 3.0
    * - fhouthf
