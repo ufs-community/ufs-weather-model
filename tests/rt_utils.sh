@@ -43,15 +43,8 @@ submit_and_wait() {
 
   if [[ $SCHEDULER = 'pbs' ]]; then
     qsubout=$( qsub $job_card )
-    if [[ ${MACHINE_ID} = cheyenne.* ]]; then
-      re='^([0-9]+\.[a-zA-Z0-9\.]+)$'
-    else
-      re='^([0-9]+\.[a-zA-Z0-9]+)$'
-    fi
+    re='^([0-9]+)(\.[a-zA-Z0-9\.-]+)$'
     [[ "${qsubout}" =~ $re ]] && qsub_id=${BASH_REMATCH[1]}
-    if [[ ${MACHINE_ID} = cheyenne.* ]]; then
-      qsub_id="${qsub_id%.chadm*}"
-    fi
     echo "Job id ${qsub_id}"
   elif [[ $SCHEDULER = 'slurm' ]]; then
     slurmout=$( sbatch $job_card )
@@ -76,11 +69,7 @@ submit_and_wait() {
     echo "TEST ${TEST_NR} ${TEST_NAME} is waiting to enter the queue"
     [[ ${ECFLOW:-false} == true ]] && ecflow_client --label=job_status "waiting to enter the queue"
     if [[ $SCHEDULER = 'pbs' ]]; then
-      if [[ ${MACHINE_ID} = cheyenne.* ]]; then
-        job_running=$( qstat ${qsub_id} | grep ${qsub_id} | wc -l)
-      else
-        job_running=$( qstat -u ${USER} -n | grep ${JBNME} | wc -l)
-      fi
+      job_running=$( qstat ${qsub_id} | grep ${qsub_id} | wc -l )
     elif [[ $SCHEDULER = 'slurm' ]]; then
       job_running=$( squeue -u ${USER} -j ${slurm_id} | grep ${slurm_id} | wc -l)
     elif [[ $SCHEDULER = 'lsf' ]]; then
@@ -118,11 +107,7 @@ submit_and_wait() {
   do
 
     if [[ $SCHEDULER = 'pbs' ]]; then
-      if [[ ${MACHINE_ID} = cheyenne.* ]]; then
-        job_running=$( qstat ${qsub_id} | grep ${qsub_id} | wc -l)
-      else
-        job_running=$( qstat -u ${USER} -n | grep ${JBNME} | wc -l)
-      fi
+      job_running=$( qstat ${qsub_id} | grep ${qsub_id} | wc -l )
     elif [[ $SCHEDULER = 'slurm' ]]; then
       job_running=$( squeue -u ${USER} -j ${slurm_id} | grep ${slurm_id} | wc -l)
     elif [[ $SCHEDULER = 'lsf' ]]; then
@@ -134,11 +119,7 @@ submit_and_wait() {
 
     if [[ $SCHEDULER = 'pbs' ]]; then
 
-      if [[ ${MACHINE_ID} = cheyenne.* ]]; then
-        status=$( qstat ${qsub_id} | grep ${qsub_id} | awk '{print $5}' ); status=${status:--}
-      else
-        status=$( qstat -u ${USER} -n | grep ${JBNME} | awk '{print $10}' ); status=${status:--}
-      fi
+      status=$( qstat ${qsub_id} | grep ${qsub_id} | awk '{print $5}' ); status=${status:--}
       if   [[ $status = 'Q' ]];  then
         status_label='waiting in a queue'
       elif [[ $status = 'H' ]];  then
@@ -148,12 +129,7 @@ submit_and_wait() {
       elif [[ $status = 'E' ]] || [[ $status = 'C' ]];  then
         status_label='finished'
         test_status='DONE'
-        if [[ ${MACHINE_ID} = cheyenne.* ]]; then
-          exit_status=$( qstat ${jobid} -x -f | grep Exit_status | awk '{print $3}')
-        else
-          jobid=$( qstat -u ${USER} | grep ${JBNME} | awk '{print $1}')
-          exit_status=$( qstat ${jobid} -f | grep exit_status | awk '{print $3}')
-        fi
+        exit_status=$( qstat ${jobid} -x -f | grep Exit_status | awk '{print $3}')
         if [[ $exit_status != 0 ]]; then
           test_status='FAIL'
         fi
