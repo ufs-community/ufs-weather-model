@@ -4,8 +4,7 @@
 Provide a detailed description of what this PR does.
 What bug does it fix, or what feature does it add?
 Is a change of answers expected from this PR?
-
-
+Are any library updates included in this PR (modulefiles etc.)?
 
 ### Issue(s) addressed
 
@@ -14,15 +13,12 @@ Link the issues to be closed with this PR, whether in this repository, or in ano
 - fixes #<issue_number>
 - fixes noaa-emc/fv3atm/issues/<issue_number>
 
-
-
 ## Testing
 
 How were these changes tested?
 What compilers / HPCs was it tested with?
 Are the changes covered by regression tests? (If not, why? Do new tests need to be added?)
-
-
+Have regression tests and unit tests (utests) been run? On which platforms and with which compilers?
 
 ## Dependencies
 

@@ -108,7 +108,8 @@ if(CCPP)
 
     if(DEFINED CCPP_SUITES)
         message("Calling CCPP code generator (ccpp_prebuild.py) for SUITES = ${CCPP_SUITES}")
-        execute_process(COMMAND FV3/ccpp/framework/scripts/ccpp_prebuild.py
+        execute_process(COMMAND ${Python_EXECUTABLE}
+                                "FV3/ccpp/framework/scripts/ccpp_prebuild.py"
                                 "--config=FV3/ccpp/config/ccpp_prebuild_config.py"
                                 "--suites=${CCPP_SUITES}"
                                 "--builddir=${PROJECT_BINARY_DIR}/FV3"
@@ -119,7 +120,8 @@ if(CCPP)
                        )
     else()
         message("Calling CCPP code generator (ccpp_prebuild.py) ...")
-        execute_process(COMMAND FV3/ccpp/framework/scripts/ccpp_prebuild.py
+        execute_process(COMMAND ${Python_EXECUTABLE}
+                                "FV3/ccpp/framework/scripts/ccpp_prebuild.py"
                                 "--config=FV3/ccpp/config/ccpp_prebuild_config.py"
                                 "--builddir=${PROJECT_BINARY_DIR}/FV3"
                         WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
