@@ -33,7 +33,7 @@ An in depth description of the namelist settings, SDFs, and parameterizations us
 in all supported suites can be found in the `CCPP v4.1.0 Scientific Documentation <https://dtcenter.org/GMTB/v4.1.0/sci_doc/>`_.
 Note both suites do not
 use stochastic physics by default, but the stochastic physics can be activated following the
-instructions described in the `stochastic physics v1.1 user's guide <https://stochastic-physics.readthedocs.io/en/release-ufs-v1.1.0/>`_.
+instructions described in the `stochastic physics v1.1 user's guide <https://stochastic-physics.readthedocs.io/en/ufs-v1.1.0/>`_.
 
 Both the SDF and the *input.nml* contain information about how to specify the physics suite.
 Some of this information is redundant, and the user must make sure they are compatible. The

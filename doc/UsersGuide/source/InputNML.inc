@@ -14,11 +14,11 @@ physics options are chosen.
 
 The following link describes the various physics-related namelist records:
 
-https://dtcenter.org/GMTB/v4.1.0/sci_doc/CCPPsuite_nml_desp.html
+https://dtcenter.ucar.edu/GMTB/v4.1.0/sci_doc/CCPPsuite_nml_desp.html
 
 The following link describes the stochastic physics namelist records:
 
-https://stochastic-physics.readthedocs.io/en/release-ufs-v1.1.0/namelist_options.html
+https://stochastic-physics.readthedocs.io/en/ufs-v1.1.0/namelist_options.html
 
 The following link describes some of the other namelist records (dynamics, grid, etc):
 
@@ -26,6 +26,9 @@ https://noaa-emc.github.io/FV3_Dycore_ufs-v1.1.0/html/index.html
 
 The namelist section ``&interpolator_nml`` is not used in this release, and any modifications to
 it will have no effect on the model results.
+
+fms_io_nml
+----------
 
 The namelist section ``&fms_io_nml`` of ``input.nml`` contains variables that control
 reading and writing of restart data in netCDF format.  There is a global switch to turn on/off
@@ -108,6 +111,9 @@ This release of the UFS Weather Model sets the following variables in the ``&fms
      max_files_w = 100
    /
 
+namsfc
+------
+
 The namelist section ``&namsfc`` contains the filenames of the static datasets (i.e., *fix files*).
 :numref:`Table %s <FixFiles>` contains a brief description of the climatological information in these files.
 The variables used in ``&namsfc`` to set the filenames are described in :numref:`Table %s <namsfc_nml>`.
@@ -116,7 +122,7 @@ The variables used in ``&namsfc`` to set the filenames are described in :numref:
 
 .. list-table:: *List of common variables in the *namsfc* namelist section used to set the filenames of
                 static datasets.*
-   :widths: 10 40 15 25 
+   :widths: 15 40 15 20 
    :header-rows: 1
 
    * - Variable Name
@@ -223,5 +229,93 @@ A sample subset of this namelist is shown below:
 
 Additional variables for the ``&namsfc`` namelist can be found in the ``FV3/ccpp/physics/physics/sfcsub.F``
 file.
+
+atmos_model_nml
+---------------
+
+The namelist section ``&atmos_model_nml`` contains information used by the atmosphere model.
+The variables used in ``&atmos_model_nml`` are described in :numref:`Table %s <atmos_model_nml>`.
+
+.. _atmos_model_nml:
+
+.. list-table:: *List of common variables in the *atmos_model_nml* namelist section. 
+   :widths: 10 40 15 15
+   :header-rows: 1
+
+   * - Variable Name
+     - Description
+     - Data Type
+     - Default Value
+   * - blocksize
+     - Number of columns in each ``block`` sent to the physics. OpenMP threading is done over the number of blocks.
+       For best performance this number should divide the number of grid cells per processor:
+       ``((npx-1)*(npy-1)/(layout\_x)*(layout\_y))``. A description of these variables is provided
+       `here <https://noaa-emc.github.io/FV3_Dycore_ufs-v1.1.0/html/group__Parameters__List.html>`_.
+     - integer
+     - 1
+   * - chksum_debug
+     - If true, compute checksums for all variables passed into the GFS physics, before and after each physics timestep.       This is very useful for reproducibility checking.
+     - logical
+     - .false.
+   * - dycore_only
+     - If true, only the dynamical core (and not the GFS physics) is executed when running the model,
+       essentially running the model as a solo dynamical core. 
+     - logical
+     - .false.
+   * - debug
+     - If true, turn on additional diagnostics for the atmospheric model.
+     - logical
+     - .false.
+   * - sync
+     - If true, initialize timing identifiers.
+     - logical
+     - .false.
+   * - fdiag
+     - Array with dimension ``maxhr`` = 4096 listing the diagnostic output times (in hours) for the GFS physics.
+       This can either be a list of times after initialization, or an interval if only the first entry is
+       nonzero. The default setting of 0 will result in no outputs.
+     - real
+     - 0.
+   * - fhmax
+     - The maximal forecast time for output.
+     - real
+     - 384.0
+   * - fhmaxhf
+     - The maximal forecast hour for high frequency output.
+     - real
+     - 120.0
+   * - fhout
+     - Output frequency during forecast time from 0 to ``fhmax``, or from ``fhmaxhf`` to ``fhmax`` if ``fhmaxf>0``.
+     - real
+     - 3.0
+   * - fhouthf
+     - The high frequency output frequency during the forecast time from 0 to ``fhmaxhf`` hour.
+     - real
+     - 1.0
+   * - ccpp_suite
+     - Name of the CCPP physics suite
+     - character(len=256)
+     - FV3_GFS_v15p2, set in ``build.sh``
+   * - avg_max_length
+     - Forecast interval (in seconds) determining when the maximum values of diagnostic fields in FV3
+       dynamics are computed. 
+     - real
+     - 3600.
+
+A sample of this namelist is shown below:
+
+.. code-block:: console
+
+   &atmos_model_nml
+     blocksize = 32
+     chksum_debug = .false.
+     dycore_only = .false.
+     fdiag = 1
+     fhmax = 384
+     fhout = 3
+     fhmaxhf = 120
+     fhouthf = 1
+     ccpp_suite = 'FV3_GFS_v16beta'
+   /
 
 The namelist section relating to the FMS diagnostic manager ``&diag_manager_nml`` is described in :numref:`Section %s <DiagManagerNML>`.

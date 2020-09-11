@@ -22,7 +22,7 @@ for those elements, are listed below:
 - `The Common-Community Physics Package <https://dtcenter.org/community-code/common-community-physics-package-ccpp>`_ (:term:`CCPP`), a library of
   physical parameterizations and the framework to use it with the model. :term:`Parameterization or physics scheme` is defined here.
 
-- `The stochastic physics capability <https://stochastic-physics.readthedocs.io/en/release-ufs-v1.1.0/>`_, including the Stochastic Kinetic Backscatter Scheme (SKEBS),
+- `The stochastic physics capability <https://stochastic-physics.readthedocs.io/en/ufs-v1.1.0/>`_, including the Stochastic Kinetic Backscatter Scheme (SKEBS),
   the Stochastically Perturbed Parameterization Tendencies (SPPT) scheme, the perturbed boundary
   layer humidity (SHUM) scheme, and the cellular automata method.
 
