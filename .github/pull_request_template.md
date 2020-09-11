@@ -18,7 +18,7 @@ Link the issues to be closed with this PR, whether in this repository, or in ano
 How were these changes tested?
 What compilers / HPCs was it tested with?
 Are the changes covered by regression tests? (If not, why? Do new tests need to be added?)
-Have regression tests and unit tests (utests) been run? On which platforms and with which compilers?
+Have regression tests and unit tests (utests) been run? On which platforms and with which compilers? (Note that unit tests can only be run on tier-1 platforms)
 
 ## Dependencies
 
