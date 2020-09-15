@@ -1,5 +1,5 @@
-From minsukjinoaa/ci-test-base:ubuntu20.04-v3
-#From minsukjinoaa/ci-test-base:centos7-v3
+From minsukjinoaa/ci-test-base:ubuntu20.04-v3.5
+#From minsukjinoaa/ci-test-base:centos7-v3.5
 
 ENV HOME=/home/tester
 COPY --chown=tester:tester . $HOME/ufs-weather-model
