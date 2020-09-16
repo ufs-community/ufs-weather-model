@@ -63,7 +63,8 @@ include       $(ESMFMKFILE)
 ESMF_INC    = $(ESMF_F90COMPILEPATHS)
 
 NEMSIOINC = -I$(NEMSIO_INC)
-NCEPLIBS = $(NEMSIO_LIB) $(BACIO_LIB4) $(SP_LIBd) $(W3EMC_LIBd) $(W3NCO_LIBd)
+NCEPLIBS = $(POST_LIB) $(NEMSIO_LIB) $(G2_LIB4) $(G2TMPL_LIB) $(BACIO_LIB4) $(SP_LIBd) $(W3EMC_LIBd) $(W3NCO_LIBd) $(CRTM_LIB) -lpng -ljasper -lz
+# $(PNG_LIB) $(JASPER_LIB) $(Z_LIB)
 
 ##############################################
 # Need to use at least GNU Make version 3.81 #
