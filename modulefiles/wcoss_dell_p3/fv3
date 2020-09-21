@@ -1,59 +1,44 @@
-#%Module######################################################################
-##
-##    NEMS FV3 Prerequisites: Venus and Mars (WCOSS Dell)
+#%Module
 
 proc ModulesHelp {} {
-  puts stderr "\tcit - loads modules required for building and running FV3 under NEMS on the Dell side of WCOSS"
+  puts stderr "\tcit - loads modules required for building and running UFS Model on the Dell side of WCOSS"
 }
 
-module-whatis "loads NEMS FV3 prerequisites on Venus and Mars"
+module-whatis "loads UFS Model prerequisites on Venus and Mars"
 
-# NOTE: the "module purge" and loading of the module command are
-# handled by the module-setup.sh (or .csh) script.
-
-##
-## load programming environment
-## this typically includes compiler, MPI and job scheduler
-##
 module load ips/18.0.1.163
 module load impi/18.0.1
 module load lsf/10.1
-module load cmake/3.16.2
 # module load python/3.6.3
 module load python/2.7.14
 
-##
-## NCEP libraries
-##
-module use /usrx/local/nceplibs/dev/NCEPLIBS/cmake/install/NCEPLIBS/modules
-module load bacio/2.4.0
-module load crtm/2.3.0
-module load g2/3.4.0
-module load g2tmpl/1.9.0
-module load ip/3.3.0
-module load nceppost/dceca26
-module load nemsio/2.5.1
-module load sp/2.3.0
-module load w3emc/2.7.0
-module load w3nco/2.4.0
-
-module load gfsio/1.4.0
-module load sfcio/1.4.0
-module load sigio/2.3.0
-
-module load jasper/1.900.29
-
-module use /usrx/local/dev/modulefiles/mpi_third/ips/18.0.1/impi/18.0.1
-module load NetCDF-parallel/4.7.4
-module load HDF5-parallel/1.10.6
-
-module use /gpfs/dell2/emc/modeling/noscrub/emc.nemspara/soft/modulefiles
-module load esmf/8.1.0bs27
-
-##
-## load cmake
-##
+module load cmake/3.16.2
 setenv CMAKE_C_COMPILER mpiicc
 setenv CMAKE_CXX_COMPILER mpiicpc
 setenv CMAKE_Fortran_COMPILER mpiifort
 setenv CMAKE_Platform wcoss_dell_p3
+
+module use /usrx/local/nceplibs/dev/hpc-stack/libs/hpc-stack/v1.0.0-beta1/modulefiles/stack
+
+module load hpc/1.0.0-beta1
+module load hpc-ips/18.0.1.163
+module load hpc-impi/18.0.1
+
+module load jasper/2.0.15
+module load zlib/1.2.11
+module load png/1.6.35
+
+module load hdf5/1.10.6
+module load netcdf/4.7.4
+module load esmf/8_1_0_beta_snapshot_27
+
+module load bacio/2.4.1
+module load crtm/2.3.0
+module load g2/3.4.1
+module load g2tmpl/1.9.1
+module load ip/3.3.3
+module load nceppost/dceca26
+module load nemsio/2.5.2
+module load sp/2.3.3
+module load w3emc/2.7.3
+module load w3nco/2.4.1
