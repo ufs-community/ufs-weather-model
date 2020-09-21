@@ -21,34 +21,29 @@ module load sutils
 ##
 module load intel/18.0.5.274
 module load impi/2018.0.4
+module load netcdf/4.7.0
 
 ##
 ## NCEP libraries
 ##
-module use -a /scratch2/NCEPDEV/nwprod/NCEPLIBS/cmake/install/NCEPLIBS/modules
-module load bacio/2.4.0
-module load crtm_dev/2.3.0
-module load g2/3.4.0
-module load g2tmpl/1.9.0
-module load ip/3.3.0
+module use /scratch1/BMC/gmtb/software/NCEPLIBS-ufs-v2.0.0/intel-18.0.5.274/impi-2018.0.4/modules
+
+module load esmf/8.0.0
+
+module load bacio/2.4.1
+module load crtm/2.3.0
+module load g2/3.4.1
+module load g2tmpl/1.9.1
+module load ip/3.3.3
 module load nceppost/dceca26
-module load nemsio/2.5.1
-module load sp/2.3.0
-module load w3emc/2.7.0
-module load w3nco/2.4.0
+module load nemsio/2.5.2
+module load sp/2.3.3
+module load w3emc/2.7.3
+module load w3nco/2.4.1
 
-module load gfsio/1.4.0
-module load sfcio/1.4.0
-module load sigio/2.3.0
-
-##
-## load ESMF library for above compiler / MPI combination
-## use pre-compiled EMSF library for above compiler / MPI combination
-##
-module use -a /scratch1/NCEPDEV/nems/emc.nemspara/soft/modulefiles
-module load hdf5_parallel/1.10.6
-module load netcdf_parallel/4.7.4
-module load esmf/8.0.0_ParallelNetCDF
+module load gfsio/1.4.1
+module load sfcio/1.4.1
+module load sigio/2.3.2
 
 ##
 ## load cmake
