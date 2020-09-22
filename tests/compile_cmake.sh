@@ -20,19 +20,19 @@ readonly MYDIR=$( dirname $(readlink -f $0) )
 readonly ARGC=$#
 
 if [[ $ARGC -lt 2 ]]; then
-  echo "Usage: $0 PATHTR MACHINE_ID [ MAKE_OPT [ BUILD_NR ] [ clean_before ] [ clean_after ] ]"
+  echo "Usage: $0 MACHINE_ID [ MAKE_OPT [ BUILD_NR ] [ clean_before ] [ clean_after ] ]"
   echo Valid MACHINE_IDs:
-  echo $( ls -1 ../conf/configure.fv3.* | sed s,.*fv3\.,,g ) | fold -sw72
+  echo $( ls -1 ../cmake/configure_* | sed s:.*configure_::g | sed s:\.cmake:: ) | fold -sw72
   exit 1
 else
-  PATHTR=$1
-  MACHINE_ID=$2
-  MAKE_OPT=${3:-}
-  BUILD_NAME=fv3${4:+_$4}
-  clean_before=${5:-YES}
-  clean_after=${6:-YES}
+  MACHINE_ID=$1
+  MAKE_OPT=${2:-}
+  BUILD_NAME=fv3${3:+_$3}
+  clean_before=${4:-YES}
+  clean_after=${5:-YES}
 fi
 
+PATHTR=$( cd ${MYDIR}/.. && pwd )
 BUILD_DIR=$(pwd)/build_${BUILD_NAME}
 
 # ----------------------------------------------------------------------
