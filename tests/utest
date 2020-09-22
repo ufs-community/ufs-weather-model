@@ -76,22 +76,22 @@ build_utests() {
   for name in $compile_case; do
     case $name in
       std)
-        NEMS_VER=$base_opt
+        MAKE_OPT=$base_opt
         ;;
       bit)
         if [[ $base_opt =~ "32BIT=Y" ]]; then
-          NEMS_VER=$(echo $base_opt | sed -e 's/32BIT=Y/32BIT=N/')
+          MAKE_OPT=$(echo $base_opt | sed -e 's/32BIT=Y/32BIT=N/')
         elif [[ ${base_opt} =~ "32BIT=N" ]]; then
-          NEMS_VER=$(echo $base_opt | sed -e 's/32BIT=N/32BIT=Y/')
+          MAKE_OPT=$(echo $base_opt | sed -e 's/32BIT=N/32BIT=Y/')
         else
-          NEMS_VER="$base_opt 32BIT=Y"
+          MAKE_OPT="$base_opt 32BIT=Y"
         fi
         ;;
       dbg)
-        NEMS_VER="$base_opt 32BIT=Y DEBUG=Y"
+        MAKE_OPT="$base_opt 32BIT=Y DEBUG=Y"
         ;;
     esac
-    NEMS_VER=$(echo $NEMS_VER | sed -e 's/^ *//' -e 's/ *$//')
+    MAKE_OPT=$(echo $MAKE_OPT | sed -e 's/^ *//' -e 's/ *$//')
 
       cat <<-EOF > ${RUNDIR_ROOT}/compile_${name}.env
 				export MACHINE_ID=${MACHINE_ID}
@@ -111,8 +111,8 @@ build_utests() {
       COMPILE_NR=$name
       ecflow_create_compile_task
     else
-      echo "compiling $name with compile option $NEMS_VER"
-      ./compile_cmake.sh $MACHINE_ID "${NEMS_VER}" $name >${LOG_DIR}/compile_${TEST_NAME}_$name.log 2>&1
+      echo "compiling $name with compile option $MAKE_OPT"
+      ./compile_cmake.sh $MACHINE_ID "${MAKE_OPT}" $name >${LOG_DIR}/compile_${TEST_NAME}_$name.log 2>&1
       echo "done compiling $name"
     fi
   done
