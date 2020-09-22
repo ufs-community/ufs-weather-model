@@ -1,0 +1,121 @@
+name: Pull Request Tests
+
+on:
+  push:
+    branches:
+    - develop
+  pull_request:
+    branches:
+    - develop
+
+jobs:
+  setup:
+    name: Set up
+    runs-on: ubuntu-latest
+
+    outputs:
+      tn: ${{ steps.parse.outputs.tn }}
+      bld: ${{ steps.parse.outputs.bld }}
+      test: ${{ steps.parse.outputs.test }}
+      img: ${{ steps.parse.outputs.img }}
+
+    steps:
+    - name: Checkout codes
+      uses: actions/checkout@v2
+
+    - name: Parse cases
+      id: parse
+      run: |
+        cd ${GITHUB_WORKSPACE}/tests/ci
+        parsed_output=( $(./parse.sh) )
+        name_=${parsed_output[0]}
+        bld_=${parsed_output[1]}
+        test_=${parsed_output[2]}
+        img_=${parsed_output[3]}
+
+        echo "::set-output name=tn::$name_"
+        echo "::set-output name=bld::$bld_"
+        echo "::set-output name=test::$test_"
+        echo "::set-output name=img::$img_"
+
+        echo "test name : $name_"
+        echo "build set : $bld_"
+        echo "test set  : $test_"
+        echo "image name: $img_"
+
+  build:
+    name: Build (${{ matrix.bld_set }})
+    needs: setup
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.setup.outputs.bld) }}
+
+    steps:
+    - name: Checkout codes
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+
+    - name: Build
+      run: |
+        printf '{\n    "experimental": true\n}' | sudo tee /etc/docker/daemon.json >/dev/null
+        sudo systemctl restart docker
+        sleep 10
+        cd tests/ci && ./ci.sh -n ${{ needs.setup.outputs.tn }} -b ${{ matrix.bld_set }}
+
+    - name: Free up disk space
+      run: |
+        sudo docker rmi $(sudo docker image ls | grep -E -m1 '<none>' | awk '{ print $3 }')
+        sudo docker rmi $(sudo docker image ls | awk '/ci-test-base/ { print $3 }')
+
+    - name: Prepare artifacts
+      run: |
+        cd tests/ci
+        sudo docker save ${{ needs.setup.outputs.img }} | gzip >${{ needs.setup.outputs.img }}.tar.gz
+        tar cvjf artifact.tar.bz2 ${{ needs.setup.outputs.img }}.tar.gz ci.sh ci.test
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ matrix.bld_set }}.artifact.tar.bz2
+        path: tests/ci/artifact.tar.bz2
+
+  utest:
+    name: Unit test (${{ needs.setup.outputs.tn }}, ${{ matrix.test_set }})
+    needs: [setup,build]
+    runs-on: ubuntu-latest
+    #runs-on: self-hosted
+
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.setup.outputs.test) }}
+
+    steps:
+    - name: Download artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: ${{ matrix.artifact }}.artifact.tar.bz2
+
+    - name: Prepare artifacts
+      run: |
+        tar xvjf artifact.tar.bz2 && rm -f artifact.tar.bz2
+        sudo docker load --input ${{ needs.setup.outputs.img }}.tar.gz && rm -f ${{ needs.setup.outputs.img }}.tar.gz
+
+    - name: Run utest
+      run: ./ci.sh -n ${{ needs.setup.outputs.tn }} -r ${{ matrix.test_set }}
+
+    - name: Upload memory usage file
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: memory_stat_${{ matrix.test_set }}
+        path: memory_stat
+
+    - name: Clean up
+      if: ${{ always() }}
+      run: |
+        rm -f ci.sh ci.test
+        sudo docker rm  my-container && sudo docker rmi ${{ needs.setup.outputs.img }}:latest
+        sudo docker volume rm DataVolume

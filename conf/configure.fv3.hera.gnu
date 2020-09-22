@@ -1,7 +1,7 @@
 ## NEMS configuration file
 ##
 ## Platform: Hera
-## Compiler: GNU with OpenMPI
+## Compiler: GNU with MPICH
 
 SHELL=/bin/sh
 
@@ -64,16 +64,12 @@ CFLAGS := $(INCLUDE)
 FFLAGS := $(INCLUDE) -fcray-pointer -ffree-line-length-none -fno-range-check -fbacktrace
 
 CPPDEFS += -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP
-CPPDEFS += -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_INLINE_POST
+CPPDEFS += -DNEW_TAUCTMAX -DINTERNAL_FILE_NML
 
 ifeq ($(HYDRO),Y)
 CPPDEFS +=
 else
 CPPDEFS += -DMOIST_CAPPA -DUSE_COND
-endif
-
-ifeq ($(NAM_phys),Y)
-CPPDEFS += -DNAM_phys
 endif
 
 ifeq ($(32BIT),Y)
