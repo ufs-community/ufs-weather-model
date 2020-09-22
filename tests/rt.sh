@@ -583,7 +583,6 @@ while read -r line; do
 
   if [[ $line == COMPILE* ]] ; then
 
-      APP=''
       NEMS_VER=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
       SET=$(     echo $line | cut -d'|' -f3)
       MACHINES=$(echo $line | cut -d'|' -f4)
@@ -631,45 +630,6 @@ EOF
          COMPILE_PREV_WW3_NR=${COMPILE_NR}
       fi
 
-    continue
-
-  elif [[ $line == APPBUILD* ]] ; then
-
-      APP=$(     echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
-      SET=$(     echo $line | cut -d'|' -f3)
-      MACHINES=$(echo $line | cut -d'|' -f4)
-      CB=$(      echo $line | cut -d'|' -f5)
-
-      [[ $SET_ID != ' ' && $SET != *${SET_ID}* ]] && continue
-      [[ $MACHINES != ' ' && $MACHINES != *${MACHINE_ID}* ]] && continue
-      [[ $CREATE_BASELINE == true && $CB != *fv3* ]] && continue
-      [[ ${ROCOTO} == true || ${ECFLOW} == true ]] && continue
-
-      (( COMPILE_NR += 1 ))
-
-      if [[ $ROCOTO == true ]]; then
-        rocoto_create_compile_task
-      elif [[ $ECFLOW == true ]]; then
-        ecflow_create_compile_task
-      else
-          echo test  > "${LOG_DIR}/compile_${COMPILE_NR}.log" 2>&1
-          test -s ./appbuild.sh
-          test -x ./appbuild.sh
-        MACHINE_ID=${MACHINE_ID} ./appbuild.sh "$PATHTR/FV3" "$APP" "$COMPILE_NR" > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
-        echo " bash NEMSAppBuilder is done"
-      fi
-
-      # Set RT_SUFFIX (regression test run directories and log files) and BL_SUFFIX
-      # (regression test baseline directories) for REPRO (IPD, CCPP) or PROD (CCPP) runs
-      if [[ ${NEMS_VER^^} =~ "REPRO=Y" ]]; then
-        RT_SUFFIX="_repro"
-        BL_SUFFIX="_repro"
-      elif [[ ${NEMS_VER^^} =~ "CCPP=Y" ]]; then
-        RT_SUFFIX="_prod"
-        BL_SUFFIX="_ccpp"
-      fi
-
-      unset APP
     continue
 
   elif [[ $line == RUN* ]] ; then

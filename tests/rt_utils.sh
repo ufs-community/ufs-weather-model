@@ -357,11 +357,7 @@ rocoto_create_compile_task() {
     echo "  </metatask>" >> $ROCOTO_XML
   fi
 
-  if [[ "Q$APP" != Q ]] ; then
-      rocoto_cmd="&PATHRT;/appbuild.sh &PATHTR;/FV3 $APP $COMPILE_NR"
-  else
-      rocoto_cmd="&PATHRT;/compile_cmake.sh $MACHINE_ID \"${NEMS_VER}\" $COMPILE_NR"
-  fi
+  rocoto_cmd="&PATHRT;/compile_cmake.sh $MACHINE_ID \"${NEMS_VER}\" $COMPILE_NR"
 
   # serialize WW3 builds. FIXME
   DEP_STRING=""
