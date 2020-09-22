@@ -112,7 +112,7 @@ build_utests() {
       ecflow_create_compile_task
     else
       echo "compiling $name with compile option $MAKE_OPT"
-      ./compile_cmake.sh $MACHINE_ID "${MAKE_OPT}" $name >${LOG_DIR}/compile_${TEST_NAME}_$name.log 2>&1
+      ./compile.sh $MACHINE_ID "${MAKE_OPT}" $name >${LOG_DIR}/compile_${TEST_NAME}_$name.log 2>&1
       echo "done compiling $name"
     fi
   done

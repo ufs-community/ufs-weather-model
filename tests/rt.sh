@@ -613,7 +613,7 @@ EOF
       elif [[ $ECFLOW == true ]]; then
         ecflow_create_compile_task
       else
-        ./compile_cmake.sh $MACHINE_ID "${MAKE_OPT}" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
+        ./compile.sh $MACHINE_ID "${MAKE_OPT}" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
       fi
 
       # Set RT_SUFFIX (regression test run directories and log files) and BL_SUFFIX

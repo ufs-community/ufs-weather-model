@@ -1,115 +1,154 @@
 #!/bin/bash
 set -eux
 
+function trim {
+    local var="$1"
+    # remove leading whitespace characters
+    var="${var#"${var%%[![:space:]]*}"}"
+    # remove trailing whitespace characters
+    var="${var%"${var##*[![:space:]]}"}"
+    echo -n "$var"
+}
+
 SECONDS=0
 
-if [[ $# -lt 2 ]]; then
-  echo "Usage: $0 PATHTR BUILD_TARGET [ MAKE_OPT [ BUILD_NR ] [ clean_before ] [ clean_after ]  ]"
-  echo Valid BUILD_TARGETs:
-  echo $( ls -1 ../conf/configure.fv3.* | sed s,.*fv3\.,,g ) | fold -sw72
-  exit 1
-fi
+readonly MYDIR=$( dirname $(readlink -f $0) )
 
 # ----------------------------------------------------------------------
 # Parse arguments.
 
-readonly PATHTR=$1
-readonly BUILD_TARGET=$2
-MAKE_OPT=${3:-}
-readonly BUILD_NAME=fv3${4:+_$4}
+readonly ARGC=$#
 
-readonly clean_before=${5:-YES}
-readonly clean_after=${6:-YES}
-
-hostname
-
-# ----------------------------------------------------------------------
-
-echo "Compiling ${MAKE_OPT} into $BUILD_NAME.exe on $BUILD_TARGET"
-
-# ----------------------------------------------------------------------
-# Make sure we have a "make" and reasonable threads.
-
-gnu_make=gmake
-if ( ! which $gnu_make ) ; then
-    echo WARNING: Cannot find gmake in \$PATH.  I will use \"make\" instead.
-    gnu_make=make
-    if ( ! $gnu_make --version 2>&1 | grep -i gnu > /dev/null 2>&1 ) ; then
-       echo WARNING: The build system requires GNU Make. Things may break.
-    fi
+if [[ $ARGC -lt 2 ]]; then
+  echo "Usage: $0 MACHINE_ID [ MAKE_OPT [ BUILD_NR ] [ clean_before ] [ clean_after ] ]"
+  echo Valid MACHINE_IDs:
+  echo $( ls -1 ../cmake/configure_* | sed s:.*configure_::g | sed s:\.cmake:: ) | fold -sw72
+  exit 1
+else
+  MACHINE_ID=$1
+  MAKE_OPT=${2:-}
+  BUILD_NAME=fv3${3:+_$3}
+  clean_before=${4:-YES}
+  clean_after=${5:-YES}
 fi
 
-if [[ $BUILD_TARGET == cheyenne.* || $BUILD_TARGET == stampede.* ]] ; then
+PATHTR=$( cd ${MYDIR}/.. && pwd )
+BUILD_DIR=$(pwd)/build_${BUILD_NAME}
+
+# ----------------------------------------------------------------------
+# Make sure we have reasonable number of threads.
+
+if [[ $MACHINE_ID == cheyenne.* ]] ; then
     MAKE_THREADS=${MAKE_THREADS:-3}
+elif [[ $MACHINE_ID == wcoss_dell_p3 ]] ; then
+    MAKE_THREADS=${MAKE_THREADS:-1}
 fi
 
 MAKE_THREADS=${MAKE_THREADS:-8}
 
-if [[ "$MAKE_THREADS" -gt 1 ]] ; then
-    echo Using \$MAKE_THREADS=$MAKE_THREADS threads to build FV3 and FMS.
-    echo Consider reducing \$MAKE_THREADS if you hit memory or process limits.
-    gnu_make="$gnu_make -j $MAKE_THREADS"
+hostname
+
+set +x
+source $PATHTR/NEMS/src/conf/module-setup.sh.inc
+if [[ $MACHINE_ID == macosx.* ]] || [[ $MACHINE_ID == linux.* ]]; then
+  source $PATHTR/modulefiles/${MACHINE_ID}/fv3
+else
+  module use $PATHTR/modulefiles/${MACHINE_ID}
+  module load fv3
+  module list
+fi
+set -x
+
+echo "Compiling ${MAKE_OPT} into $BUILD_NAME.exe on $MACHINE_ID"
+
+if [ $clean_before = YES ] ; then
+  rm -rf ${BUILD_DIR}
 fi
 
-# ----------------------------------------------------------------------
-# Configure NEMS and components
+mkdir -p ${BUILD_DIR}
 
-# Configure NEMS
-cd "$PATHTR/../NEMS"
+# set CCPP_CMAKE_FLAGS based on $MAKE_OPT
 
-COMPONENTS="FMS,FV3"
+CCPP_CMAKE_FLAGS="-DNETCDF_DIR=${NETCDF}"
+
+if [[ "${MAKE_OPT}" == *"DEBUG=Y"* ]]; then
+  CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DDEBUG=Y"
+elif [[ "${MAKE_OPT}" == *"REPRO=Y"* ]]; then
+  CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DREPRO=Y"
+fi
+
+if [[ "${MAKE_OPT}" == *"32BIT=Y"* ]]; then
+  CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -D32BIT=Y"
+fi
+
+if [[ "${MAKE_OPT}" == *"OPENMP=N"* ]]; then
+  CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DOPENMP=OFF"
+fi
+
+if [[ "${MAKE_OPT}" == *"MULTI_GASES=Y"* ]]; then
+    CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DMULTI_GASES=ON"
+else
+    CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DMULTI_GASES=OFF"
+fi
+
 if [[ "${MAKE_OPT}" == *"CCPP=Y"* ]]; then
-  COMPONENTS="CCPP,$COMPONENTS"
+
+  # FIXME - create CCPP include directory before building FMS to avoid
+  # gfortran warnings of non-existent include directory (adding
+  # -Wno-missing-include-dirs) to the GNU compiler flags does not work,
+  # see also https://gcc.gnu.org/bugzilla/show_bug.cgi?id=55534);
+  # this line can be removed once FMS becomes a pre-installed library
+  mkdir -p $PATHTR/FV3/ccpp/include
+
+  CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DCCPP=ON -DMPI=ON"
+
+  if [[ "${MAKE_OPT}" == *"DEBUG=Y"* ]]; then
+    CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DCMAKE_BUILD_TYPE=Debug"
+  elif [[ "${MAKE_OPT}" == *"REPRO=Y"* ]]; then
+    CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DCMAKE_BUILD_TYPE=Bitforbit"
+  else
+    CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DCMAKE_BUILD_TYPE=Release"
+    if [[ "${MACHINE_ID}" == "jet.intel" ]]; then
+      CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DSIMDMULTIARCH=ON"
+    fi
+  fi
+
+  if [[ "${MAKE_OPT}" == *"32BIT=Y"* ]]; then
+    CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DDYN32=ON"
+  else
+    CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DDYN32=OFF"
+  fi
+
+    # Check if suites argument is provided or not
+  set +ex
+  TEST=$( echo $MAKE_OPT | grep -e "SUITES=" )
+  if [[ $? -eq 0 ]]; then
+    SUITES=$( echo $MAKE_OPT | sed 's/.* SUITES=//' | sed 's/ .*//' )
+    CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DCCPP_SUITES=${SUITES}"
+    echo "Compiling suites ${SUITES}"
+  fi
+  set -ex
+
 fi
 
 if [[ "${MAKE_OPT}" == *"WW3=Y"* ]]; then
-  COMPONENTS="WW3,$COMPONENTS"
+    CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DWW3=Y"
 fi
 
-# Make variables:
-#   COMPONENTS = list of components to build
-#   BUILD_ENV = theia.intel, wcoss_dell_p3, etc.
-#   FV3_MAKEOPT = build options to send to FV3, CCPP, and FMS
-#   TEST_BUILD_NAME = requests copying of modules.nems and
-#      NEMS.x into the tests/ directory using the given build name.
+CCPP_CMAKE_FLAGS=$(trim "${CCPP_CMAKE_FLAGS}")
 
-# FIXME: add -j $MAKE_THREADS once FV3 bug is fixed
+(
+  cd ${BUILD_DIR}
 
-# Pass DEBUG or REPRO flags to NEMS
-if [[ "${MAKE_OPT}" == *"DEBUG=Y"* && "${MAKE_OPT}" == *"REPRO=Y"* ]]; then
-  echo "ERROR in compile.sh: options DEBUG=Y and REPRO=Y are mutually exclusive"
-  exit 1
-elif [[ "${MAKE_OPT}" == *"DEBUG=Y"* ]]; then
-  NEMS_BUILDOPT="DEBUG=Y"
-elif [[ "${MAKE_OPT}" == *"REPRO=Y"* ]]; then
-  NEMS_BUILDOPT="REPRO=Y"
-else
-  NEMS_BUILDOPT=""
-fi
-
-if [ $clean_before = YES ] ; then
-  $gnu_make -k COMPONENTS="$COMPONENTS" TEST_BUILD_NAME="$BUILD_NAME" \
-           BUILD_ENV="$BUILD_TARGET" FV3_MAKEOPT="$MAKE_OPT" \
-           NEMS_BUILDOPT="$NEMS_BUILDOPT" distclean
-fi
-
-# FIXME - create CCPP include directory before building FMS to avoid
-# gfortran warnings of non-existent include directory (adding
-# -Wno-missing-include-dirs) to the GNU compiler flags does not work,
-# see also https://gcc.gnu.org/bugzilla/show_bug.cgi?id=55534);
-# this line can be removed once FMS becomes a pre-installed library
-if [[ "${MAKE_OPT}" == *"CCPP=Y"* ]]; then
-  mkdir -p $PATHTR/ccpp/include
-fi
-
-  $gnu_make -k COMPONENTS="$COMPONENTS" TEST_BUILD_NAME="$BUILD_NAME" \
-           BUILD_ENV="$BUILD_TARGET" FV3_MAKEOPT="$MAKE_OPT" \
-           NEMS_BUILDOPT="$NEMS_BUILDOPT" build
+  cmake ${PATHTR} ${CCPP_CMAKE_FLAGS}
+  make -j ${MAKE_THREADS}
+  mv NEMS.exe ${PATHTR}/tests/${BUILD_NAME}.exe
+  cp ${PATHTR}/modulefiles/${MACHINE_ID}/fv3 ${PATHTR}/tests/modules.${BUILD_NAME}
+  cd ..
+)
 
 if [ $clean_after = YES ] ; then
-  $gnu_make -k COMPONENTS="$COMPONENTS" TEST_BUILD_NAME="$BUILD_NAME" \
-           BUILD_ENV="$BUILD_TARGET" FV3_MAKEOPT="$MAKE_OPT" \
-           NEMS_BUILDOPT="$NEMS_BUILDOPT" clean
+  rm -rf ${BUILD_DIR}
 fi
 
 elapsed=$SECONDS

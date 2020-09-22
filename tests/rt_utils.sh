@@ -357,7 +357,7 @@ rocoto_create_compile_task() {
     echo "  </metatask>" >> $ROCOTO_XML
   fi
 
-  rocoto_cmd="&PATHRT;/compile_cmake.sh $MACHINE_ID \"${MAKE_OPT}\" $COMPILE_NR"
+  rocoto_cmd="&PATHRT;/compile.sh $MACHINE_ID \"${MAKE_OPT}\" $COMPILE_NR"
 
   # serialize WW3 builds. FIXME
   DEP_STRING=""
