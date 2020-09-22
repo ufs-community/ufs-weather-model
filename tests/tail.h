@@ -1,6 +1,6 @@
 
 ### tail.h start
-wait                      # wait for background process to stop
+wait $!                   # wait for background process to stop
 
 ecflow_client --ping --host=${ECF_HOST} --port=${ECF_PORT}
 not_running=$?

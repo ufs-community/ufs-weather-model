@@ -7,13 +7,7 @@
 #
 ###############################################################################
 
-if [ $MACHINE_ID = wcoss ]; then
-
-  TASKS_dflt=144 ; TPN_dflt=16 ; INPES_dflt=3 ; JNPES_dflt=8
-  TASKS_stretch=48 ; TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
-  TASKS_strnest=96 ; TPN_strnest=12 ; INPES_strnest=2 ; JNPES_strnest=4
-
-elif [ $MACHINE_ID = wcoss_cray ]; then
+if [ $MACHINE_ID = wcoss_cray ]; then
 
   TASKS_dflt=150 ; TPN_dflt=24 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=84  ; TPN_thrd=12 ; INPES_thrd=3 ; JNPES_thrd=4
@@ -29,14 +23,25 @@ elif [ $MACHINE_ID = wcoss_dell_p3 ]; then
 
 elif [[ $MACHINE_ID = orion.* ]]; then
 
-  TASKS_dflt=150 ; TPN_dflt=24 ; INPES_dflt=3 ; JNPES_dflt=8
-  TASKS_thrd=84  ; TPN_thrd=12 ; INPES_thrd=3 ; JNPES_thrd=4
+  TASKS_dflt=150 ; TPN_dflt=40 ; INPES_dflt=3 ; JNPES_dflt=8
+  TASKS_thrd=84  ; TPN_thrd=20 ; INPES_thrd=3 ; JNPES_thrd=4
   TASKS_stretch=48 ; TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=12 ; INPES_strnest=2 ; JNPES_strnest=4
 
 elif [[ $MACHINE_ID = hera.* ]]; then
 
   TASKS_dflt=150 ; TPN_dflt=40 ; INPES_dflt=3 ; JNPES_dflt=8
+  TASKS_thrd=84  ; TPN_thrd=20 ; INPES_thrd=3 ; JNPES_thrd=4
+  TASKS_stretch=48 ; TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
+  TASKS_strnest=96 ; TPN_strnest=12 ; INPES_strnest=2 ; JNPES_strnest=4
+
+elif [[ $MACHINE_ID = linux.* ]]; then
+
+  if [[ $CI_TEST = true ]]; then
+  TASKS_dflt=12 ; TPN_dflt=16 ; INPES_dflt=1 ; JNPES_dflt=1
+  else
+  TASKS_dflt=150 ; TPN_dflt=40 ; INPES_dflt=3 ; JNPES_dflt=8
+  fi
   TASKS_thrd=84  ; TPN_thrd=20 ; INPES_thrd=3 ; JNPES_thrd=4
   TASKS_stretch=48 ; TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=12 ; INPES_strnest=2 ; JNPES_strnest=4
@@ -102,6 +107,8 @@ export NUM_FILES=2
 export FILENAME_BASE="'dyn' 'phy'"
 export OUTPUT_GRID="'cubed_sphere_grid'"
 export OUTPUT_FILE="'netcdf'"
+export IDEFLATE=0
+export NBITS=0
 export WRITE_NEMSIOFLIP=.false.
 export WRITE_FSYNCFLAG=.false.
 export IMO=384
@@ -159,6 +166,7 @@ export HWRF_SAMFDEEP=.F.
 
 # SFC
 export DO_MYJSFC=.F.
+export DO_MYNNSFCLAY=.F.
 
 # LSM
 export LSM=1
@@ -199,12 +207,16 @@ export SHOUR=00
 export FHMAX=${FHMAX:-`expr $DAYS \* 24`}
 export DT_ATMOS=1800
 export FHCYC=24
+export LDIAG3D=.F.
+export QDIAG3D=.F.
+export MAX_OUTPUT_FIELDS=300
 
 # Stochastic physics
 export DO_SPPT=.F.
 export DO_SHUM=.F.
 export DO_SKEB=.F.
-export DO_SFCPERTS=.F.
+export LNDP_TYPE=0 
+export N_VAR_LNDP=0
 export SKEB=-999.
 export SPPT=-999.
 export SHUM=-999.

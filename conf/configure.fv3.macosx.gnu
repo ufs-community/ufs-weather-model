@@ -56,10 +56,20 @@ AVX2 = Y
 HYDRO = N
 CCPP = N
 SION = N
+QUAD_PRECISION = Y
+MULTI_GASES = N
 
 include       $(ESMFMKFILE)
 ESMF_INC    = $(ESMF_F90COMPILEPATHS)
 
+# New NCEPLIBS
+NEMSIO_INC=$(NEMSIO_ROOT)/include
+NEMSIO_LIB=$(NEMSIO_ROOT)/lib/libnemsio.a
+BACIO_LIB4=$(BACIO_ROOT)/lib/libbacio_4.a
+SP_LIBd=$(SP_ROOT)/lib/libsp_d.a
+W3EMC_LIBd=$(W3EMC_ROOT)/lib/libw3emc_d.a
+W3NCO_LIBd=$(W3NCO_ROOT)/lib/libw3nco_d.a
+#
 NEMSIOINC = -I$(NEMSIO_INC)
 NCEPLIBS = $(NEMSIO_LIB) $(BACIO_LIB4) $(SP_LIBd) $(W3EMC_LIBd) $(W3NCO_LIBd)
 
@@ -89,16 +99,12 @@ CFLAGS := $(INCLUDE)
 FFLAGS := $(INCLUDE) -fcray-pointer -ffree-line-length-none -fno-range-check -fbacktrace
 
 CPPDEFS += -DMACOSX -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP
-CPPDEFS += -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_INLINE_POST
+CPPDEFS += -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_INLINE_POST -DHAVE_GETTID
 
 ifeq ($(HYDRO),Y)
 CPPDEFS +=
 else
 CPPDEFS += -DMOIST_CAPPA -DUSE_COND
-endif
-
-ifeq ($(NAM_phys),Y)
-CPPDEFS += -DNAM_phys
 endif
 
 ifeq ($(32BIT),Y)
@@ -118,6 +124,10 @@ endif
 
 ifeq ($(MULTI_GASES),Y)
 CPPDEFS += -DMULTI_GASES
+endif
+
+ifeq ($(QUAD_PRECISION),Y)
+CPPDEFS += -DENABLE_QUAD_PRECISION
 endif
 
 FFLAGS_OPT = -O2 -g -fno-range-check

@@ -1,0 +1,105 @@
+###############################################################################
+#
+#  FV3 CCPP GSD (GF CU + Thompson MP + MYNN PBL + RUC LSM) test with 3d tendencies in DEBUG mode
+#
+###############################################################################
+
+export TEST_DESCR="Compare FV3 CCPP GSD 3d tendencies debug results with previous trunk version"
+
+export CNTL_DIR=fv3_gsd_diag3d_debug
+
+export LIST_FILES="atmos_4xdaily.tile1.nc \
+                   atmos_4xdaily.tile2.nc \
+                   atmos_4xdaily.tile3.nc \
+                   atmos_4xdaily.tile4.nc \
+                   atmos_4xdaily.tile5.nc \
+                   atmos_4xdaily.tile6.nc \
+                   phyf000.tile1.nc \
+                   phyf000.tile2.nc \
+                   phyf000.tile3.nc \
+                   phyf000.tile4.nc \
+                   phyf000.tile5.nc \
+                   phyf000.tile6.nc \
+                   phyf003.tile1.nc \
+                   phyf003.tile2.nc \
+                   phyf003.tile3.nc \
+                   phyf003.tile4.nc \
+                   phyf003.tile5.nc \
+                   phyf003.tile6.nc \
+                   dynf000.tile1.nc \
+                   dynf000.tile2.nc \
+                   dynf000.tile3.nc \
+                   dynf000.tile4.nc \
+                   dynf000.tile5.nc \
+                   dynf000.tile6.nc \
+                   dynf003.tile1.nc \
+                   dynf003.tile2.nc \
+                   dynf003.tile3.nc \
+                   dynf003.tile4.nc \
+                   dynf003.tile5.nc \
+                   dynf003.tile6.nc \
+                   RESTART/coupler.res \
+                   RESTART/fv_core.res.nc \
+                   RESTART/fv_core.res.tile1.nc \
+                   RESTART/fv_core.res.tile2.nc \
+                   RESTART/fv_core.res.tile3.nc \
+                   RESTART/fv_core.res.tile4.nc \
+                   RESTART/fv_core.res.tile5.nc \
+                   RESTART/fv_core.res.tile6.nc \
+                   RESTART/fv_srf_wnd.res.tile1.nc \
+                   RESTART/fv_srf_wnd.res.tile2.nc \
+                   RESTART/fv_srf_wnd.res.tile3.nc \
+                   RESTART/fv_srf_wnd.res.tile4.nc \
+                   RESTART/fv_srf_wnd.res.tile5.nc \
+                   RESTART/fv_srf_wnd.res.tile6.nc \
+                   RESTART/fv_tracer.res.tile1.nc \
+                   RESTART/fv_tracer.res.tile2.nc \
+                   RESTART/fv_tracer.res.tile3.nc \
+                   RESTART/fv_tracer.res.tile4.nc \
+                   RESTART/fv_tracer.res.tile5.nc \
+                   RESTART/fv_tracer.res.tile6.nc \
+                   RESTART/phy_data.tile1.nc \
+                   RESTART/phy_data.tile2.nc \
+                   RESTART/phy_data.tile3.nc \
+                   RESTART/phy_data.tile4.nc \
+                   RESTART/phy_data.tile5.nc \
+                   RESTART/phy_data.tile6.nc \
+                   RESTART/sfc_data.tile1.nc \
+                   RESTART/sfc_data.tile2.nc \
+                   RESTART/sfc_data.tile3.nc \
+                   RESTART/sfc_data.tile4.nc \
+                   RESTART/sfc_data.tile5.nc \
+                   RESTART/sfc_data.tile6.nc"
+
+export_fv3
+
+export FHMAX=3
+export FDIAG=3
+
+export DT_ATMOS="600"
+export IMP_PHYSICS=8
+export DNATS=0
+export DO_SAT_ADJ=.F.
+export LRADAR=.T.
+export LTAEROSOL=.T.
+
+export LDIAG3D=.T.
+export QDIAG3D=.T.
+export MAX_OUTPUT_FIELDS=400
+
+export FV3_RUN=ccpp_gsd_run.IN
+export CCPP_SUITE=FV3_GSD_v0
+export CCPP_LIB_DIR=ccpp/lib
+export INPUT_NML=ccpp_gsd.nml.IN
+
+export HYBEDMF=.F.
+export DO_MYNNEDMF=.T.
+export IMFSHALCNV=3
+export IMFDEEPCNV=3
+export FHCYC=0
+export LSM=3
+export LSOIL_LSM=9
+
+
+export WLCLK=30
+

@@ -13,7 +13,7 @@ export LIST_FILES="  atmos_4xdaily.tile1.nc \
                      atmos_4xdaily.tile4.nc \
                      atmos_4xdaily.tile5.nc \
                      atmos_4xdaily.tile6.nc \
-              atmos_4xdaily.nest02.tile7.nc \
+                    atmos_4xdaily.nest02.nc \
                                  dynf000.nc \
                                  dynf001.nc \
                                  dynf006.nc \
@@ -73,7 +73,6 @@ INPES=$INPES_strnest
 JNPES=$JNPES_strnest
 TPN=$TPN_strnest
 TASKS=108
-export NODES=$(expr $TASKS / $TPN + 1)
 
 export INPES_NEST='6'
 export JNPES_NEST='8'
@@ -100,5 +99,4 @@ export DT_ATMOS="450"
 export INPUT_NML=stretched-nest-input.nml.IN
 export INPUT_NEST02_NML=input_nest02.nml.IN
 export MODEL_CONFIGURE=stretched-nest-quilt-model_configure.IN
-export RUN_SCRIPT=rt_fv3.sh
 export FV3_RUN=fv3_stretched_run.IN

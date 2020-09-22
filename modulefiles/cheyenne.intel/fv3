@@ -16,26 +16,38 @@ module-whatis "loads NEMS FV3 prerequisites for Cheyenne/Intel"
 ## this typically includes compiler, MPI and job scheduler
 ##
 module load ncarenv/1.3
-module load intel/19.0.2
+module load intel/19.1.1
 module load mpt/2.19
 module load ncarcompilers/0.5.0
-module load netcdf/4.6.3
-
-module use -a /glade/p/ral/jntp/GMTB/tools/modulefiles/intel-19.0.2/mpt-2.19
 
 ##
-## use pre-compiled EMSF library for above compiler / MPI combination
+## use pre-compiled PNG, NetCDF, ESMF and NCEP libraries for above compiler / MPI combination
 ##
-module load esmf/8.0.0
+module use -a /glade/p/ral/jntp/GMTB/tools/ufs-stack-20200909/intel-19.1.1/mpt-2.19/modules
 
-##
-## NCEP libraries (download and build manually for the time being; https://github.com/NCAR/NCEPlibs)
-##
-module load NCEPlibs/9.9.9
+module load libpng/1.6.35
+module load netcdf/4.7.4
+module load esmf/8.1.0bs27
+
+module load bacio/2.4.0
+module load crtm/2.3.0
+module load g2/3.4.0
+module load g2tmpl/1.9.0
+module load ip/3.3.0
+module load nceppost/dceca26
+module load nemsio/2.5.1
+module load sp/2.3.0
+module load w3emc/2.7.0
+module load w3nco/2.4.0
+
+module load gfsio/1.4.0
+module load sfcio/1.4.0
+module load sigio/2.3.0
 
 ##
 ## SIONlib library
 ##
+module use -a /glade/p/ral/jntp/GMTB/tools/modulefiles/intel-19.1.1/mpt-2.19
 module load SIONlib/1.7.4
 
 ##

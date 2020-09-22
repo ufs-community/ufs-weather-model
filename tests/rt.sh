@@ -9,17 +9,18 @@ die() { echo "$@" >&2; exit 1; }
 usage() {
   set +x
   echo
-  echo "Usage: $0 -c <model> | -f | -s | -l <file> | -m | -k | -r | -e | -h"
+  echo "Usage: $0 -c | -e | -f | -h | -k | -l <file> | -m | -n <name> | -r | -s"
   echo
-  echo "  -c  create new baseline results for <model>"
+  echo "  -c  create new baseline results"
+  echo "  -e  use ecFlow workflow manager"
   echo "  -f  run full suite of regression tests"
-  echo "  -s  run standard suite of regression tests"
+  echo "  -h  display this help"
+  echo "  -k  keep run directory"
   echo "  -l  runs test specified in <file>"
   echo "  -m  compare against new baseline results"
-  echo "  -k  keep run directory"
+  echo "  -n  run single test <name>"
   echo "  -r  use Rocoto workflow manager"
-  echo "  -e  use ecFlow workflow manager"
-  echo "  -h  display this help"
+  echo "  -s  run standard suite of regression tests"
   echo
   set -x
   exit 1
@@ -27,8 +28,37 @@ usage() {
 
 [[ $# -eq 0 ]] && usage
 
+rt_single() {
+  local compile_line=''
+  local run_line=''
+  while read -r line; do
+    line="${line#"${line%%[![:space:]]*}"}"
+    [[ ${#line} == 0 ]] && continue
+    [[ $line == \#* ]] && continue
+
+    if [[ $line =~ COMPILE && $line =~ ${MACHINE_ID} ]]; then
+      compile_line=$line
+    fi
+
+    if [[ $line =~ RUN ]]; then
+      tmp_test=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
+      if [[ $SINGLE_NAME == $tmp_test && $compile_line != '' ]]; then
+        echo $compile_line >$TESTS_FILE
+        echo $line >>$TESTS_FILE
+        break
+      fi
+    fi
+  done <'rt.conf'
+
+  if [[ ! -f $TESTS_FILE ]]; then
+    echo "$SINGLE_NAME does not exist or cannot be run on $MACHINE_ID"
+    exit 1
+  fi
+}
+
 rt_trap() {
   [[ ${ROCOTO:-false} == true ]] && rocoto_kill
+  [[ ${ECFLOW:-false} == true ]] && ecflow_kill
   cleanup
 }
 
@@ -42,7 +72,7 @@ cleanup() {
 trap '{ echo "rt.sh interrupted"; rt_trap ; }' INT
 trap '{ echo "rt.sh quit"; rt_trap ; }' QUIT
 trap '{ echo "rt.sh terminated"; rt_trap ; }' TERM
-trap '{ echo "rt.sh error on line $LINENO"; rt_trap ; }' ERR
+trap '{ echo "rt.sh error on line $LINENO"; cleanup ; }' ERR
 trap '{ echo "rt.sh finished"; cleanup ; }' EXIT
 
 # PATHRT - Path to regression tests directory
@@ -157,7 +187,6 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
   STMP=/lustre/f2/scratch
   PTMP=/lustre/f2/scratch
 
-  # default scheduler on Gaea
   SCHEDULER=slurm
   cp fv3_conf/fv3_slurm.IN_gaea fv3_conf/fv3_slurm.IN
 
@@ -207,7 +236,7 @@ elif [[ $MACHINE_ID = orion.* ]]; then
   # Re-instantiate COMPILER in case it gets deleted by module purge
   COMPILER=${NEMS_COMPILER:-intel}
 
-  module load rocoto/1.3.1
+  module load contrib rocoto/1.3.1
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
@@ -220,7 +249,7 @@ elif [[ $MACHINE_ID = orion.* ]]; then
 #  ACCNR= # detected in detect_machine.sh
   PARTITION=orion
   dprefix=/work/noaa/stmp/${USER}
-  DISKNM=/work/noaa/fv3-cam/djovic/RT
+  DISKNM=/work/noaa/nems/emc.nemspara/RT
   STMP=$dprefix/stmp
   PTMP=$dprefix/stmp
 
@@ -238,28 +267,28 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   # Re-instantiate COMPILER in case it gets deleted by module purge
   COMPILER=${NEMS_COMPILER:-intel}
 
-  module load rocoto/1.3.1
+  module load rocoto/1.3.2
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=slurm
 
-  export PATH=/mnt/lfs3/projects/hfv3gfs/Dusan.Jovic/ecflow/bin:$PATH
-  export PYTHONPATH=/mnt/lfs3/projects/hfv3gfs/Dusan.Jovic/ecflow/lib/python2.7/site-packages
-  ECFLOW_START=/mnt/lfs3/projects/hfv3gfs/Dusan.Jovic/ecflow/bin/ecflow_start.sh
+  export PATH=/lfs4/HFIP/hfv3gfs/software/ecFlow-5.3.1/bin:$PATH
+  export PYTHONPATH=/lfs4/HFIP/hfv3gfs/software/ecFlow-5.3.1/lib/python2.7/site-packages
+  ECFLOW_START=/lfs4/HFIP/hfv3gfs/software/ecFlow-5.3.1/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
-  QUEUE=debug
+  QUEUE=batch
   COMPILE_QUEUE=batch
   ACCNR=hfv3gfs
   PARTITION=xjet
-  DISKNM=/lfs3/projects/hfv3gfs/GMTB/RT
-  dprefix=/lfs3/projects/hfv3gfs/$USER
+  DISKNM=/lfs4/HFIP/hfv3gfs/RT
+  dprefix=/lfs4/HFIP/hfv3gfs/$USER
   STMP=$dprefix/RT_BASELINE
   PTMP=$dprefix/RT_RUNDIRS
 
-  # default scheduler on Jet
   SCHEDULER=slurm
   cp fv3_conf/fv3_slurm.IN_jet fv3_conf/fv3_slurm.IN
+  cp fv3_conf/compile_slurm.IN_jet fv3_conf/compile_slurm.IN
 
 elif [[ $MACHINE_ID = cheyenne.* ]]; then
 
@@ -323,16 +352,12 @@ CREATE_BASELINE=false
 ROCOTO=false
 ECFLOW=false
 KEEP_RUNDIR=false
+SINGLE_NAME=''
 
 TESTS_FILE='rt.conf'
 
-if [[ $MACHINE_ID = orion.* ]]; then
-  TESTS_FILE='rt_orion.conf'
-fi
-
-
 SET_ID='standard'
-while getopts ":cfsl:mkreh" opt; do
+while getopts ":cfsl:mn:kreh" opt; do
   case $opt in
     c)
       CREATE_BASELINE=true
@@ -351,6 +376,12 @@ while getopts ":cfsl:mkreh" opt; do
     m)
       # redefine RTPWD to point to newly created baseline outputs
       RTPWD=${NEW_BASELINE}
+      ;;
+    n)
+      SINGLE_NAME=$OPTARG
+      TESTS_FILE='rt.conf.single'
+      SET_ID=' '
+      rm -f $TESTS_FILE
       ;;
     k)
       KEEP_RUNDIR=true
@@ -377,10 +408,14 @@ while getopts ":cfsl:mkreh" opt; do
   esac
 done
 
-if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200603/${COMPILER^^}}
+if [[ $SINGLE_NAME != '' ]]; then
+  rt_single
+fi
+
+if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = jet.* ]]; then
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200918/${COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200603}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200918}
 fi
 
 shift $((OPTIND-1))
@@ -392,7 +427,7 @@ if [[ $CREATE_BASELINE == true ]]; then
   #
   rm -rf "${NEW_BASELINE}"
   mkdir -p "${NEW_BASELINE}"
-  echo "copy baseline inputs form: ${RTPWD}"
+  echo "copy baseline inputs from: ${RTPWD}"
   echo "                     to:   ${NEW_BASELINE}"
 
   rsync -a "${RTPWD}"/FV3_* "${NEW_BASELINE}"/
@@ -410,6 +445,7 @@ if [[ $CREATE_BASELINE == true ]]; then
   rsync -a "${RTPWD}"/fv3_regional_restart/model_configure "${NEW_BASELINE}"/fv3_regional_restart/
 
   rsync -a "${RTPWD}"/fv3_regional_control/INPUT     "${NEW_BASELINE}"/fv3_regional_control/
+  rsync -a "${RTPWD}"/fv3_regional_control/RESTART   "${NEW_BASELINE}"/fv3_regional_control/
   rsync -a "${RTPWD}"/fv3_regional_quilt/INPUT       "${NEW_BASELINE}"/fv3_regional_quilt/
   rsync -a "${RTPWD}"/fv3_regional_c768/INPUT        "${NEW_BASELINE}"/fv3_regional_c768/
   rsync -a "${RTPWD}"/fv3_regional_restart/INPUT     "${NEW_BASELINE}"/fv3_regional_restart/
@@ -492,7 +528,7 @@ fi
 if [[ $ECFLOW == true ]]; then
 
   ECFLOW_RUN=${PATHRT}/ecflow_run
-  ECFLOW_SUITE=regtest
+  ECFLOW_SUITE=regtest_$$
   rm -rf ${ECFLOW_RUN}
   mkdir -p ${ECFLOW_RUN}/${ECFLOW_SUITE}
   cp head.h tail.h ${ECFLOW_RUN}
@@ -503,7 +539,8 @@ suite ${ECFLOW_SUITE}
     edit ECF_INCLUDE '${ECFLOW_RUN}'
     edit ECF_KILL_CMD kill -15 %ECF_RID% > %ECF_JOB%.kill 2>&1
     edit ECF_TRIES 1
-    label rundir_root '${RUNDIR_ROOT}'
+    label src_dir '${PATHTR}'
+    label run_dir '${RUNDIR_ROOT}'
     limit max_builds 10
     limit max_jobs 30
 EOF
