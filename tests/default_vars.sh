@@ -80,11 +80,11 @@ else
 
 fi
 
-# Longer default walltime for GNU and PGI
-if [[ $NEMS_COMPILER = gnu ]] || [[ $NEMS_COMPILER = pgi ]]; then
-    WLCLK_dflt=30
+# Longer default walltime for GNU
+if [[ $NEMS_COMPILER = gnu ]]; then
+  WLCLK_dflt=30
 else
-    WLCLK_dflt=15
+  WLCLK_dflt=15
 fi
 
 export_fv3 ()
