@@ -12,7 +12,11 @@ function trim {
 
 SECONDS=0
 
-readonly MYDIR=$( dirname $(readlink -f $0) )
+if [[ $(uname -s) == Darwin ]]; then
+  readonly MYDIR=$(cd "$(dirname "$(greadlink -f -n "${BASH_SOURCE[0]}" )" )" && pwd -P)
+else
+  readonly MYDIR=$(cd "$(dirname "$(readlink -f -n "${BASH_SOURCE[0]}" )" )" && pwd -P)
+fi
 
 # ----------------------------------------------------------------------
 # Parse arguments.
