@@ -92,7 +92,7 @@ else
 fi
 
 # Default compiler "intel"
-export COMPILER=${NEMS_COMPILER:-intel}
+export NEMS_COMPILER=${NEMS_COMPILER:-intel}
 
 source detect_machine.sh
 source rt_utils.sh
@@ -197,9 +197,6 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   module use $PATHTR/modulefiles/${MACHINE_ID}
   module load fv3
 
-  # Re-instantiate COMPILER in case it gets deleted by module purge
-  COMPILER=${NEMS_COMPILER:-intel}
-
   module load rocoto
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
@@ -233,9 +230,6 @@ elif [[ $MACHINE_ID = orion.* ]]; then
   module load fv3
   module load gcc/8.3.0
 
-  # Re-instantiate COMPILER in case it gets deleted by module purge
-  COMPILER=${NEMS_COMPILER:-intel}
-
   module load contrib rocoto/1.3.1
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
@@ -264,9 +258,6 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   module use $PATHTR/modulefiles/${MACHINE_ID}
   module load fv3
 
-  # Re-instantiate COMPILER in case it gets deleted by module purge
-  COMPILER=${NEMS_COMPILER:-intel}
-
   module load rocoto/1.3.2
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
@@ -293,8 +284,6 @@ elif [[ $MACHINE_ID = jet.* ]]; then
 elif [[ $MACHINE_ID = cheyenne.* ]]; then
 
   source $PATHTR/NEMS/src/conf/module-setup.sh.inc
-  # Re-instantiate COMPILER in case it gets deleted by module purge
-  COMPILER=${NEMS_COMPILER:-intel}
 
   module load python/2.7.16
   export PATH=/glade/p/ral/jntp/tools/ecFlow-5.3.1/bin:$PATH
@@ -315,8 +304,6 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
 elif [[ $MACHINE_ID = stampede.* ]]; then
 
   source $PATHTR/NEMS/src/conf/module-setup.sh.inc
-  # Re-instantiate COMPILER in case it gets deleted by module purge
-  COMPILER=${NEMS_COMPILER:-intel}
 
   export PYTHONPATH=
   ECFLOW_START=
@@ -341,7 +328,7 @@ mkdir -p ${STMP}/${USER}
 # Different own baseline directories for different compilers on Theia/Cheyenne
 NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]]; then
-    NEW_BASELINE=${NEW_BASELINE}_${COMPILER^^}
+    NEW_BASELINE=${NEW_BASELINE}_${NEMS_COMPILER^^}
 fi
 
 # Overwrite default RUNDIR_ROOT if environment variable RUNDIR_ROOT is set
@@ -413,7 +400,7 @@ if [[ $SINGLE_NAME != '' ]]; then
 fi
 
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = jet.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200918/${COMPILER^^}}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200918/${NEMS_COMPILER^^}}
 else
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200918}
 fi
@@ -675,6 +662,7 @@ EOF
 
       cat << EOF > ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
       export MACHINE_ID=${MACHINE_ID}
+      export NEMS_COMPILER=${NEMS_COMPILER}
       export RTPWD=${RTPWD}
       export PATHRT=${PATHRT}
       export PATHTR=${PATHTR}

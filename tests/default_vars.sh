@@ -80,10 +80,8 @@ else
 
 fi
 
-# Re-instantiate COMPILER in case it gets deleted by module purge
-COMPILER=${NEMS_COMPILER:-intel}
 # Longer default walltime for GNU and PGI
-if [[ $COMPILER = gnu ]] || [[ $COMPILER = pgi ]]; then
+if [[ $NEMS_COMPILER = gnu ]] || [[ $NEMS_COMPILER = pgi ]]; then
     WLCLK_dflt=30
 else
     WLCLK_dflt=15

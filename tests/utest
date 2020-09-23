@@ -388,8 +388,7 @@ export CI_TEST=${CI_TEST:-false}
 [[ $# -eq 0 ]] && usage_and_exit 1
 
 # specify compiler
-NEMS_COMPILER=${NEMS_COMPILER:-}
-export COMPILER=${NEMS_COMPILER:-intel}
+export NEMS_COMPILER=${NEMS_COMPILER:-intel}
 # detect_machine sets ACCNR and MACHINE_ID
 NEMS_MACHINE=${NEMS_MACHINE:-}
 source detect_machine.sh
@@ -411,8 +410,6 @@ if [[ $MACHINE_ID = hera.* ]]; then
   source $PATHTR/NEMS/src/conf/module-setup.sh.inc
   module use $PATHTR/modulefiles/${MACHINE_ID}
   module load fv3
-
-  COMPILER=${NEMS_COMPILER:-intel} # in case compiler gets deleted by module purge
 
   export PATH=/scratch2/NCEPDEV/fv3-cam/Dusan.Jovic/ecflow/bin:$PATH
   export PYTHONPATH=/scratch2/NCEPDEV/fv3-cam/Dusan.Jovic/ecflow/lib/python2.7/site-packages
@@ -437,9 +434,6 @@ elif [[ $MACHINE_ID = orion.* ]]; then
   module use $PATHTR/modulefiles/${MACHINE_ID}
   module load fv3
   module load gcc/8.3.0
-
-  # Re-instantiate COMPILER in case it gets deleted by module purge
-  COMPILER=${NEMS_COMPILER:-intel}
 
   export PATH=/work/noaa/fv3-cam/djovic/ecflow/bin:$PATH
   export PYTHONPATH=/work/noaa/fv3-cam/djovic/ecflow/lib/python2.7/site-packages
@@ -486,7 +480,6 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
 
 elif [[ $MACHINE_ID = linux.* ]]; then
 
-  COMPILER=${NEMS_COMPILER:-intel}
   PARTITION=
   QUEUE=
   COMPILE_QUEUE=
@@ -719,7 +712,7 @@ fi
 mkdir -p ${STMP}/${USER}
 NEW_BASELINE=${STMP}/${USER}/FV3_UT/UNIT_TEST
 if [[ $MACHINE_ID == hera.* || $MACHINE_ID == orion.* ]]; then
-  baseline_location=$DISKNM/NEMSfv3gfs/develop-20200713/${COMPILER^^}
+  baseline_location=$DISKNM/NEMSfv3gfs/develop-20200713/${NEMS_COMPILER^^}
 else
   baseline_location=$DISKNM/NEMSfv3gfs/develop-20200713
 fi

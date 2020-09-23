@@ -223,9 +223,6 @@ check_results() {
   ROCOTO=${ROCOTO:-false}
   ECFLOW=${ECFLOW:-false}
 
-  # Default compiler "intel"
-  export COMPILER=${NEMS_COMPILER:-intel}
-
   local test_status='PASS'
 
   # Give one minute for data to show up on file system
@@ -260,7 +257,7 @@ check_results() {
         echo ".......MISSING baseline"
         test_status='FAIL'
 
-      elif [[ $COMPILER == "gnu" && $i == "RESTART/fv_core.res.nc" ]] ; then
+      elif [[ $NEMS_COMPILER == "gnu" && $i == "RESTART/fv_core.res.nc" ]] ; then
 
         # Although identical in ncdiff, RESTART/fv_core.res.nc differs in byte 469, line 3,
         # for the fv3_control_32bit test between each run (without changing the source code)
