@@ -583,6 +583,7 @@ while read -r line; do
 
       cat << EOF > ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env
       export MACHINE_ID=${MACHINE_ID}
+      export RT_COMPILER=${RT_COMPILER}
       export PATHRT=${PATHRT}
       export PATHTR=${PATHTR}
       export SCHEDULER=${SCHEDULER}
