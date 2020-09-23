@@ -81,7 +81,7 @@ else
 fi
 
 # Longer default walltime for GNU
-if [[ $NEMS_COMPILER = gnu ]]; then
+if [[ $RT_COMPILER = gnu ]]; then
   WLCLK_dflt=30
 else
   WLCLK_dflt=15

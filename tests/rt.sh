@@ -92,7 +92,7 @@ else
 fi
 
 # Default compiler "intel"
-export NEMS_COMPILER=${NEMS_COMPILER:-intel}
+export RT_COMPILER=${RT_COMPILER:-intel}
 
 source detect_machine.sh
 source rt_utils.sh
@@ -328,7 +328,7 @@ mkdir -p ${STMP}/${USER}
 # Different own baseline directories for different compilers on Theia/Cheyenne
 NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]]; then
-    NEW_BASELINE=${NEW_BASELINE}_${NEMS_COMPILER^^}
+    NEW_BASELINE=${NEW_BASELINE}_${RT_COMPILER^^}
 fi
 
 # Overwrite default RUNDIR_ROOT if environment variable RUNDIR_ROOT is set
@@ -400,7 +400,7 @@ if [[ $SINGLE_NAME != '' ]]; then
 fi
 
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = jet.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200923/${NEMS_COMPILER^^}}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200923/${RT_COMPILER^^}}
 else
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200923}
 fi
@@ -662,7 +662,7 @@ EOF
 
       cat << EOF > ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
       export MACHINE_ID=${MACHINE_ID}
-      export NEMS_COMPILER=${NEMS_COMPILER}
+      export RT_COMPILER=${RT_COMPILER}
       export RTPWD=${RTPWD}
       export PATHRT=${PATHRT}
       export PATHTR=${PATHTR}

@@ -140,7 +140,7 @@ run_utests() {
         BL_SUFFIX=_std_base
         cat <<-EOF > ${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
 					export UNIT_TEST=true
-					export NEMS_COMPILER=${NEMS_COMPILER}
+					export RT_COMPILER=${RT_COMPILER}
 					export RESTART_INTERVAL=$(( FHMAX/2 ))
 					EOF
         ;;
@@ -150,7 +150,7 @@ run_utests() {
         BL_SUFFIX=_std_base
         cat <<-EOF > ${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
 					export UNIT_TEST=true
-					export NEMS_COMPILER=${NEMS_COMPILER}
+					export RT_COMPILER=${RT_COMPILER}
 					EOF
         ;;
       thr)
@@ -165,7 +165,7 @@ run_utests() {
         NODES=$(( TASKS/TPN + 1 ))
         cat <<-EOF > ${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
 					export UNIT_TEST=true
-					export NEMS_COMPILER=${NEMS_COMPILER}
+					export RT_COMPILER=${RT_COMPILER}
 					export THRD=${THRD}
 					export JNPES=${JNPES}
 					export TASKS=${TASKS}
@@ -184,7 +184,7 @@ run_utests() {
         NODES=$(( TASKS/TPN + 1 ))
         cat <<-EOF > ${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
 					export UNIT_TEST=true
-					export NEMS_COMPILER=${NEMS_COMPILER}
+					export RT_COMPILER=${RT_COMPILER}
 					export JNPES=${JNPES}
 					export WRITE_GROUP=${WRITE_GROUP}
 					export WRTTASK_PER_GROUP=${WRTTASK_PER_GROUP}
@@ -201,7 +201,7 @@ run_utests() {
         JNPES=$temp
         cat <<-EOF >${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
 					export UNIT_TEST=true
-					export NEMS_COMPILER=${NEMS_COMPILER}
+					export RT_COMPILER=${RT_COMPILER}
 					export INPES=${INPES}
 					export JNPES=${JNPES}
 					EOF
@@ -257,7 +257,7 @@ run_utests() {
 
         cat <<-EOF >${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
 					export UNIT_TEST=true
-					export NEMS_COMPILER=${NEMS_COMPILER}
+					export RT_COMPILER=${RT_COMPILER}
 					export RESTART_FILE_PREFIX=${RESTART_FILE_PREFIX}
 					export WARM_START=${WARM_START}
 					export NGGPS_IC=${NGGPS_IC}
@@ -276,7 +276,7 @@ run_utests() {
         comp_nm=bit
         cat <<-EOF >${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
 					export UNIT_TEST=true
-					export NEMS_COMPILER=${NEMS_COMPILER}
+					export RT_COMPILER=${RT_COMPILER}
 					EOF
         ;;
       bit)
@@ -286,7 +286,7 @@ run_utests() {
         comp_nm=bit
         cat <<-EOF >${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
 					export UNIT_TEST=true
-					export NEMS_COMPILER=${NEMS_COMPILER}
+					export RT_COMPILER=${RT_COMPILER}
 					EOF
         ;;
       dbg_base)
@@ -297,7 +297,7 @@ run_utests() {
         WLCLK=30
         cat <<-EOF >${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
 					export UNIT_TEST=true
-					export NEMS_COMPILER=${NEMS_COMPILER}
+					export RT_COMPILER=${RT_COMPILER}
 					export WLCLK=${WLCLK}
 					EOF
         ;;
@@ -309,7 +309,7 @@ run_utests() {
         WLCLK=30
         cat <<-EOF >${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
 					export UNIT_TEST=true
-					export NEMS_COMPILER=${NEMS_COMPILER}
+					export RT_COMPILER=${RT_COMPILER}
 					export WLCLK=${WLCLK}
 					EOF
         ;;
@@ -388,9 +388,9 @@ export CI_TEST=${CI_TEST:-false}
 [[ $# -eq 0 ]] && usage_and_exit 1
 
 # specify compiler
-export NEMS_COMPILER=${NEMS_COMPILER:-intel}
+export RT_COMPILER=${RT_COMPILER:-intel}
 # detect_machine sets ACCNR and MACHINE_ID
-NEMS_MACHINE=${NEMS_MACHINE:-}
+RT_MACHINE=${RT_MACHINE:-}
 source detect_machine.sh
 cd $PATHRT
 
@@ -712,7 +712,7 @@ fi
 mkdir -p ${STMP}/${USER}
 NEW_BASELINE=${STMP}/${USER}/FV3_UT/UNIT_TEST
 if [[ $MACHINE_ID == hera.* || $MACHINE_ID == orion.* ]]; then
-  baseline_location=$DISKNM/NEMSfv3gfs/develop-20200713/${NEMS_COMPILER^^}
+  baseline_location=$DISKNM/NEMSfv3gfs/develop-20200713/${RT_COMPILER^^}
 else
   baseline_location=$DISKNM/NEMSfv3gfs/develop-20200713
 fi
