@@ -36,7 +36,7 @@ else
   clean_after=${5:-YES}
 fi
 
-PATHTR=$( cd ${MYDIR}/.. && pwd )
+PATHTR=${PATHTR:-$( cd ${MYDIR}/.. && pwd )}
 BUILD_DIR=$(pwd)/build_${BUILD_NAME}
 
 # ----------------------------------------------------------------------
