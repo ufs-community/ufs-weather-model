@@ -12,8 +12,8 @@ ENV test_name=$test_name
 ENV build_case=$build_case
 ENV test_case=
 ENV CI_TEST=true
-ENV NEMS_COMPILER=gnu
-ENV NEMS_MACHINE=linux.gnu
+ENV RT_COMPILER=gnu
+ENV RT_MACHINE=linux.gnu
 
 WORKDIR $HOME/ufs-weather-model/tests
 RUN ./utest -n $test_name -c $build_case -z
