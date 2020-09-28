@@ -43,12 +43,12 @@ BUILD_DIR=$(pwd)/build_${BUILD_NAME}
 # Make sure we have reasonable number of threads.
 
 if [[ $MACHINE_ID == cheyenne.* ]] ; then
-    MAKE_THREADS=${MAKE_THREADS:-3}
+    BUILD_JOBS=${BUILD_JOBS:-3}
 elif [[ $MACHINE_ID == wcoss_dell_p3 ]] ; then
-    MAKE_THREADS=${MAKE_THREADS:-1}
+    BUILD_JOBS=${BUILD_JOBS:-1}
 fi
 
-MAKE_THREADS=${MAKE_THREADS:-8}
+BUILD_JOBS=${BUILD_JOBS:-8}
 
 hostname
 
@@ -65,34 +65,28 @@ set -x
 
 echo "Compiling ${MAKE_OPT} into $BUILD_NAME.exe on $MACHINE_ID"
 
-if [ $clean_before = YES ] ; then
-  rm -rf ${BUILD_DIR}
-fi
+# set CMAKE_FLAGS based on $MAKE_OPT
 
-mkdir -p ${BUILD_DIR}
-
-# set CCPP_CMAKE_FLAGS based on $MAKE_OPT
-
-CCPP_CMAKE_FLAGS="-DNETCDF_DIR=${NETCDF}"
+CMAKE_FLAGS=''
 
 if [[ "${MAKE_OPT}" == *"DEBUG=Y"* ]]; then
-  CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DDEBUG=Y"
+  CMAKE_FLAGS="${CMAKE_FLAGS} -DDEBUG=Y"
 elif [[ "${MAKE_OPT}" == *"REPRO=Y"* ]]; then
-  CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DREPRO=Y"
+  CMAKE_FLAGS="${CMAKE_FLAGS} -DREPRO=Y"
 fi
 
 if [[ "${MAKE_OPT}" == *"32BIT=Y"* ]]; then
-  CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -D32BIT=Y"
+  CMAKE_FLAGS="${CMAKE_FLAGS} -D32BIT=Y"
 fi
 
 if [[ "${MAKE_OPT}" == *"OPENMP=N"* ]]; then
-  CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DOPENMP=OFF"
+  CMAKE_FLAGS="${CMAKE_FLAGS} -DOPENMP=OFF"
 fi
 
 if [[ "${MAKE_OPT}" == *"MULTI_GASES=Y"* ]]; then
-    CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DMULTI_GASES=ON"
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DMULTI_GASES=ON"
 else
-    CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DMULTI_GASES=OFF"
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DMULTI_GASES=OFF"
 fi
 
 if [[ "${MAKE_OPT}" == *"CCPP=Y"* ]]; then
@@ -106,52 +100,55 @@ if [[ "${MAKE_OPT}" == *"CCPP=Y"* ]]; then
   # Similar for this directory, which apparently never gets populated
   mkdir -p $PATHTR/FMS/fms2_io/include
 
-  CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DCCPP=ON -DMPI=ON"
+  CMAKE_FLAGS="${CMAKE_FLAGS} -DCCPP=ON -DMPI=ON"
 
   if [[ "${MAKE_OPT}" == *"DEBUG=Y"* ]]; then
-    CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DCMAKE_BUILD_TYPE=Debug"
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DCMAKE_BUILD_TYPE=Debug"
   elif [[ "${MAKE_OPT}" == *"REPRO=Y"* ]]; then
-    CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DCMAKE_BUILD_TYPE=Bitforbit"
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DCMAKE_BUILD_TYPE=Bitforbit"
   else
-    CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DCMAKE_BUILD_TYPE=Release"
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DCMAKE_BUILD_TYPE=Release"
     if [[ "${MACHINE_ID}" == "jet.intel" ]]; then
-      CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DSIMDMULTIARCH=ON"
+      CMAKE_FLAGS="${CMAKE_FLAGS} -DSIMDMULTIARCH=ON"
     fi
   fi
 
   if [[ "${MAKE_OPT}" == *"32BIT=Y"* ]]; then
-    CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DDYN32=ON"
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DDYN32=ON"
   else
-    CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DDYN32=OFF"
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DDYN32=OFF"
   fi
 
     # Check if suites argument is provided or not
   set +ex
   TEST=$( echo $MAKE_OPT | grep -e "SUITES=" )
   if [[ $? -eq 0 ]]; then
-    SUITES=$( echo $MAKE_OPT | sed 's/.* SUITES=//' | sed 's/ .*//' )
-    CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DCCPP_SUITES=${SUITES}"
-    echo "Compiling suites ${SUITES}"
+    CCPP_SUITES=$( echo $MAKE_OPT | sed 's/.* SUITES=//' | sed 's/ .*//' )
+    echo "Compiling suites ${CCPP_SUITES}"
   fi
   set -ex
 
 fi
 
 if [[ "${MAKE_OPT}" == *"WW3=Y"* ]]; then
-    CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DWW3=Y"
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DWW3=Y"
 fi
 
-CCPP_CMAKE_FLAGS=$(trim "${CCPP_CMAKE_FLAGS}")
+CMAKE_FLAGS=$(trim "${CMAKE_FLAGS}")
 
-(
-  cd ${BUILD_DIR}
+if [ $clean_before = YES ] ; then
+  rm -rf ${BUILD_DIR}
+fi
 
-  cmake ${PATHTR} ${CCPP_CMAKE_FLAGS}
-  make -j ${MAKE_THREADS}
-  mv NEMS.exe ${PATHTR}/tests/${BUILD_NAME}.exe
-  cp ${PATHTR}/modulefiles/${MACHINE_ID}/fv3 ${PATHTR}/tests/modules.${BUILD_NAME}
-  cd ..
-)
+export BUILD_DIR
+export BUILD_JOBS
+export CCPP_SUITES
+export CMAKE_FLAGS
+
+${PATHTR}/build.sh
+
+mv ${PATHTR}/ufs_weather_model ${PATHTR}/tests/${BUILD_NAME}.exe
+cp ${PATHTR}/modulefiles/${MACHINE_ID}/fv3 ${PATHTR}/tests/modules.${BUILD_NAME}
 
 if [ $clean_after = YES ] ; then
   rm -rf ${BUILD_DIR}
@@ -159,4 +156,3 @@ fi
 
 elapsed=$SECONDS
 echo "Elapsed time $elapsed seconds. Compiling ${MAKE_OPT} finished"
-
