@@ -23,4 +23,3 @@ CMAKE_FLAGS+=" -DCCPP_SUITES=${CCPP_SUITES} -DNETCDF_DIR=${NETCDF}"
 cd ${BUILD_DIR}
 cmake ${UFS_MODEL_DIR} ${CMAKE_FLAGS}
 make -j ${BUILD_JOBS:-4}
-cp NEMS.exe ${UFS_MODEL_DIR}/ufs_weather_model

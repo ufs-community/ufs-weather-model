@@ -145,9 +145,9 @@ export BUILD_JOBS
 export CCPP_SUITES
 export CMAKE_FLAGS
 
-${PATHTR}/build.sh
+bash -x ${PATHTR}/build.sh
 
-mv ${PATHTR}/ufs_weather_model ${PATHTR}/tests/${BUILD_NAME}.exe
+mv ${BUILD_DIR}/ufs_model ${PATHTR}/tests/${BUILD_NAME}.exe
 cp ${PATHTR}/modulefiles/${MACHINE_ID}/fv3 ${PATHTR}/tests/modules.${BUILD_NAME}
 
 if [ $clean_after = YES ] ; then
