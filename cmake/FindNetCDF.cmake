@@ -228,6 +228,9 @@ foreach( _comp IN LISTS _search_components )
         IMPORTED_LOCATION ${NetCDF_${_comp}_LIBRARY}
         INTERFACE_INCLUDE_DIRECTORIES "${NetCDF_${_comp}_INCLUDE_DIRS}"
         INTERFACE_LINK_LIBRARIES ${NetCDF_${_comp}_LIBRARIES} )
+      if( NOT _comp MATCHES "^(C)$" )
+        target_link_libraries(NetCDF::NetCDF_${_comp} INTERFACE NetCDF::NetCDF_C)
+      endif()
     endif()
   endif()
 endforeach()
