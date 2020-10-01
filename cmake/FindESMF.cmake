@@ -93,7 +93,7 @@ if (ESMF_FOUND)
     set(ESMF_INTERFACE_LINK_LIBRARIES "")
   else()
     # When linking the static library, also need the ESMF linker flags; strip any leading/trailing whitespaces
-    string(STRIP "${ESMF_F90ESMFLINKRPATHS} ${ESMF_F90ESMFLINKPATHS} ${ESMF_F90LINKLIBS} ${ESMF_F90LINKOPTS}" ESMF_INTERFACE_LINK_LIBRARIES)
+    string(STRIP "${ESMF_F90ESMFLINKRPATHS} ${ESMF_F90ESMFLINKPATHS} ${ESMF_F90LINKPATHS} ${ESMF_F90LINKLIBS} ${ESMF_F90LINKOPTS}" ESMF_INTERFACE_LINK_LIBRARIES)
     message(STATUS "Found ESMF library: ${esmf_lib}")
   endif()
 

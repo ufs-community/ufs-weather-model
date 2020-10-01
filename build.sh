@@ -1,7 +1,11 @@
 #!/bin/bash
 set -eu
 
-MYDIR=$(cd "$(dirname "$(readlink -f -n "${BASH_SOURCE[0]}" )" )" && pwd -P)
+if [[ $(uname -s) == Darwin ]]; then
+  readonly MYDIR=$(cd "$(dirname "$(greadlink -f -n "${BASH_SOURCE[0]}" )" )" && pwd -P)
+else
+  readonly MYDIR=$(cd "$(dirname "$(readlink -f -n "${BASH_SOURCE[0]}" )" )" && pwd -P)
+fi
 
 export CMAKE_C_COMPILER=${CMAKE_C_COMPILER:-mpicc}
 export CMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER:-mpicxx}

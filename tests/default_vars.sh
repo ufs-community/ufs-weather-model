@@ -35,6 +35,17 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   TASKS_stretch=48 ; TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=12 ; INPES_strnest=2 ; JNPES_strnest=4
 
+elif [[ $MACHINE_ID = linux.* ]]; then
+
+  if [[ $CI_TEST = true ]]; then
+  TASKS_dflt=12 ; TPN_dflt=16 ; INPES_dflt=1 ; JNPES_dflt=1
+  else
+  TASKS_dflt=150 ; TPN_dflt=40 ; INPES_dflt=3 ; JNPES_dflt=8
+  fi
+  TASKS_thrd=84  ; TPN_thrd=20 ; INPES_thrd=3 ; JNPES_thrd=4
+  TASKS_stretch=48 ; TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
+  TASKS_strnest=96 ; TPN_strnest=12 ; INPES_strnest=2 ; JNPES_strnest=4
+
 elif [[ $MACHINE_ID = jet.* ]]; then
 
   TASKS_dflt=150 ; TPN_dflt=24 ; INPES_dflt=3 ; JNPES_dflt=8
@@ -69,13 +80,11 @@ else
 
 fi
 
-# Re-instantiate COMPILER in case it gets deleted by module purge
-COMPILER=${NEMS_COMPILER:-intel}
-# Longer default walltime for GNU and PGI
-if [[ $COMPILER = gnu ]] || [[ $COMPILER = pgi ]]; then
-    WLCLK_dflt=30
+# Longer default walltime for GNU
+if [[ $RT_COMPILER = gnu ]]; then
+  WLCLK_dflt=30
 else
-    WLCLK_dflt=15
+  WLCLK_dflt=15
 fi
 
 export_fv3 ()

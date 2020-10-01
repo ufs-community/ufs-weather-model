@@ -92,7 +92,7 @@ else
 fi
 
 # Default compiler "intel"
-export COMPILER=${NEMS_COMPILER:-intel}
+export RT_COMPILER=${RT_COMPILER:-intel}
 
 source detect_machine.sh
 source rt_utils.sh
@@ -197,9 +197,6 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   module use $PATHTR/modulefiles/${MACHINE_ID}
   module load fv3
 
-  # Re-instantiate COMPILER in case it gets deleted by module purge
-  COMPILER=${NEMS_COMPILER:-intel}
-
   module load rocoto
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
@@ -233,9 +230,6 @@ elif [[ $MACHINE_ID = orion.* ]]; then
   module load fv3
   module load gcc/8.3.0
 
-  # Re-instantiate COMPILER in case it gets deleted by module purge
-  COMPILER=${NEMS_COMPILER:-intel}
-
   module load contrib rocoto/1.3.1
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
@@ -264,36 +258,32 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   module use $PATHTR/modulefiles/${MACHINE_ID}
   module load fv3
 
-  # Re-instantiate COMPILER in case it gets deleted by module purge
-  COMPILER=${NEMS_COMPILER:-intel}
-
-  module load rocoto/1.3.1
+  module load rocoto/1.3.2
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=slurm
 
-  export PATH=/mnt/lfs3/projects/hfv3gfs/Dusan.Jovic/ecflow/bin:$PATH
-  export PYTHONPATH=/mnt/lfs3/projects/hfv3gfs/Dusan.Jovic/ecflow/lib/python2.7/site-packages
-  ECFLOW_START=/mnt/lfs3/projects/hfv3gfs/Dusan.Jovic/ecflow/bin/ecflow_start.sh
+  export PATH=/lfs4/HFIP/hfv3gfs/software/ecFlow-5.3.1/bin:$PATH
+  export PYTHONPATH=/lfs4/HFIP/hfv3gfs/software/ecFlow-5.3.1/lib/python2.7/site-packages
+  ECFLOW_START=/lfs4/HFIP/hfv3gfs/software/ecFlow-5.3.1/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
-  QUEUE=debug
+  QUEUE=batch
   COMPILE_QUEUE=batch
   ACCNR=hfv3gfs
   PARTITION=xjet
-  DISKNM=/lfs3/projects/hfv3gfs/GMTB/RT
-  dprefix=/lfs3/projects/hfv3gfs/$USER
+  DISKNM=/lfs4/HFIP/hfv3gfs/RT
+  dprefix=/lfs4/HFIP/hfv3gfs/$USER
   STMP=$dprefix/RT_BASELINE
   PTMP=$dprefix/RT_RUNDIRS
 
   SCHEDULER=slurm
   cp fv3_conf/fv3_slurm.IN_jet fv3_conf/fv3_slurm.IN
+  cp fv3_conf/compile_slurm.IN_jet fv3_conf/compile_slurm.IN
 
 elif [[ $MACHINE_ID = cheyenne.* ]]; then
 
   source $PATHTR/NEMS/src/conf/module-setup.sh.inc
-  # Re-instantiate COMPILER in case it gets deleted by module purge
-  COMPILER=${NEMS_COMPILER:-intel}
 
   module load python/2.7.16
   export PATH=/glade/p/ral/jntp/tools/ecFlow-5.3.1/bin:$PATH
@@ -314,8 +304,6 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
 elif [[ $MACHINE_ID = stampede.* ]]; then
 
   source $PATHTR/NEMS/src/conf/module-setup.sh.inc
-  # Re-instantiate COMPILER in case it gets deleted by module purge
-  COMPILER=${NEMS_COMPILER:-intel}
 
   export PYTHONPATH=
   ECFLOW_START=
@@ -340,7 +328,7 @@ mkdir -p ${STMP}/${USER}
 # Different own baseline directories for different compilers on Theia/Cheyenne
 NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]]; then
-    NEW_BASELINE=${NEW_BASELINE}_${COMPILER^^}
+    NEW_BASELINE=${NEW_BASELINE}_${RT_COMPILER^^}
 fi
 
 # Overwrite default RUNDIR_ROOT if environment variable RUNDIR_ROOT is set
@@ -411,10 +399,10 @@ if [[ $SINGLE_NAME != '' ]]; then
   rt_single
 fi
 
-if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200825/${COMPILER^^}}
+if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = jet.* ]]; then
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200929/${RT_COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200825}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200929}
 fi
 
 shift $((OPTIND-1))
@@ -582,8 +570,7 @@ while read -r line; do
 
   if [[ $line == COMPILE* ]] ; then
 
-      APP=''
-      NEMS_VER=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
+      MAKE_OPT=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
       SET=$(     echo $line | cut -d'|' -f3)
       MACHINES=$(echo $line | cut -d'|' -f4)
       CB=$(      echo $line | cut -d'|' -f5)
@@ -596,6 +583,7 @@ while read -r line; do
 
       cat << EOF > ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env
       export MACHINE_ID=${MACHINE_ID}
+      export RT_COMPILER=${RT_COMPILER}
       export PATHRT=${PATHRT}
       export PATHTR=${PATHTR}
       export SCHEDULER=${SCHEDULER}
@@ -613,64 +601,23 @@ EOF
       elif [[ $ECFLOW == true ]]; then
         ecflow_create_compile_task
       else
-        ./compile.sh $PATHTR/FV3 $MACHINE_ID "${NEMS_VER}" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
-        #./compile_cmake.sh $PATHTR $MACHINE_ID "${NEMS_VER}" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
-        echo " bash Compile is done"
+        ./compile.sh $MACHINE_ID "${MAKE_OPT}" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
       fi
 
       # Set RT_SUFFIX (regression test run directories and log files) and BL_SUFFIX
       # (regression test baseline directories) for REPRO (IPD, CCPP) or PROD (CCPP) runs
-      if [[ ${NEMS_VER^^} =~ "REPRO=Y" ]]; then
+      if [[ ${MAKE_OPT^^} =~ "REPRO=Y" ]]; then
         RT_SUFFIX="_repro"
         BL_SUFFIX="_repro"
-      elif [[ ${NEMS_VER^^} =~ "CCPP=Y" ]]; then
+      elif [[ ${MAKE_OPT^^} =~ "CCPP=Y" ]]; then
         RT_SUFFIX="_prod"
         BL_SUFFIX="_ccpp"
       fi
 
-      if [[ ${NEMS_VER^^} =~ "WW3=Y" ]]; then
+      if [[ ${MAKE_OPT^^} =~ "WW3=Y" ]]; then
          COMPILE_PREV_WW3_NR=${COMPILE_NR}
       fi
 
-    continue
-
-  elif [[ $line == APPBUILD* ]] ; then
-
-      APP=$(     echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
-      SET=$(     echo $line | cut -d'|' -f3)
-      MACHINES=$(echo $line | cut -d'|' -f4)
-      CB=$(      echo $line | cut -d'|' -f5)
-
-      [[ $SET_ID != ' ' && $SET != *${SET_ID}* ]] && continue
-      [[ $MACHINES != ' ' && $MACHINES != *${MACHINE_ID}* ]] && continue
-      [[ $CREATE_BASELINE == true && $CB != *fv3* ]] && continue
-      [[ ${ROCOTO} == true || ${ECFLOW} == true ]] && continue
-
-      (( COMPILE_NR += 1 ))
-
-      if [[ $ROCOTO == true ]]; then
-        rocoto_create_compile_task
-      elif [[ $ECFLOW == true ]]; then
-        ecflow_create_compile_task
-      else
-          echo test  > "${LOG_DIR}/compile_${COMPILE_NR}.log" 2>&1
-          test -s ./appbuild.sh
-          test -x ./appbuild.sh
-        MACHINE_ID=${MACHINE_ID} ./appbuild.sh "$PATHTR/FV3" "$APP" "$COMPILE_NR" > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
-        echo " bash NEMSAppBuilder is done"
-      fi
-
-      # Set RT_SUFFIX (regression test run directories and log files) and BL_SUFFIX
-      # (regression test baseline directories) for REPRO (IPD, CCPP) or PROD (CCPP) runs
-      if [[ ${NEMS_VER^^} =~ "REPRO=Y" ]]; then
-        RT_SUFFIX="_repro"
-        BL_SUFFIX="_repro"
-      elif [[ ${NEMS_VER^^} =~ "CCPP=Y" ]]; then
-        RT_SUFFIX="_prod"
-        BL_SUFFIX="_ccpp"
-      fi
-
-      unset APP
     continue
 
   elif [[ $line == RUN* ]] ; then
@@ -716,6 +663,7 @@ EOF
 
       cat << EOF > ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
       export MACHINE_ID=${MACHINE_ID}
+      export RT_COMPILER=${RT_COMPILER}
       export RTPWD=${RTPWD}
       export PATHRT=${PATHRT}
       export PATHTR=${PATHTR}

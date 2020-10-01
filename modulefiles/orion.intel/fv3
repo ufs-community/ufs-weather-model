@@ -1,67 +1,40 @@
-#%Module######################################################################
-##
-##    NEMS FV3 Prerequisites: Orion/Intel
+#%Module
 
 proc ModulesHelp {} {
-  puts stderr "\tcit - loads modules required for building and running FV3 under NEMS on Orion/Intel"
+  puts stderr "\tcit - loads modules required for building and running UFS Model on Orion/Intel"
 }
 
-module-whatis "loads NEMS FV3 prerequisites for Orion/Intel"
+module-whatis "loads UFS Model prerequisites for Orion/Intel"
 
-##
-## load contrib environment
-## load noaatools (slurm utils (arbitrary.pl  layout.pl))
-##
 module load contrib noaatools
 
-##
-## load programming environment
-## this typically includes compiler, MPI and job scheduler
-##
-module load intel/2018
-module load impi/2018
-
-##
-## NCEP libraries
-##
-module use -a /apps/contrib/NCEPLIBS/orion/cmake/install/NCEPLIBS/modules
-module load bacio/2.4.0
-module load crtm_dev/2.3.0
-module load g2/3.4.0
-module load g2tmpl/1.9.0
-module load ip/3.3.0
-module load nceppost/dceca26
-module load nemsio/2.5.1
-module load sp/2.3.0
-module load w3emc/2.7.0
-module load w3nco/2.4.0
-
-module load gfsio/1.4.0
-module load sfcio/1.4.0
-module load sigio/2.3.0
-
-module use /apps/contrib/NCEPLIBS/orion/modulefiles
-module load jasper/1.900.2
-module load png/1.2.44
-module load z/1.2.6
-
-##
-## load ESMF library for above compiler / MPI combination
-## use pre-compiled ESMF library for above compiler / MPI combination
-##
-module use /apps/contrib/NCEPLIBS/lib/modulefiles
-module load netcdfp/4.7.4.release
-module load esmflocal/8.1.0.21bs.release
-
-###
-### load Python 3
-#module load python/3.7.5
-
-##
-## load cmake
-##
-module load cmake/3.15.4
+module load cmake/3.17.3
 setenv CMAKE_C_COMPILER mpiicc
 setenv CMAKE_CXX_COMPILER mpiicpc
 setenv CMAKE_Fortran_COMPILER mpiifort
 setenv CMAKE_Platform orion.intel
+
+module use /apps/contrib/NCEP/libs/hpc-stack/v1.0.0-beta1/modulefiles/stack
+
+module load hpc/1.0.0-beta1
+module load hpc-intel/2018.4
+module load hpc-impi/2018.4
+
+module load jasper/2.0.15
+module load zlib/1.2.11
+module load png/1.6.35
+
+module load hdf5/1.10.6
+module load netcdf/4.7.4
+module load esmf/8_1_0_beta_snapshot_27
+
+module load bacio/2.4.1
+module load crtm/2.3.0
+module load g2/3.4.1
+module load g2tmpl/1.9.1
+module load ip/3.3.3
+module load nceppost/dceca26
+module load nemsio/2.5.2
+module load sp/2.3.3
+module load w3emc/2.7.3
+module load w3nco/2.4.1
