@@ -1,5 +1,5 @@
-From minsukjinoaa/ci-test-base:ubuntu20.04-v3
-#From minsukjinoaa/ci-test-base:centos7-v3
+From minsukjinoaa/ci-test-base:ubuntu20.04-v3.5
+#From minsukjinoaa/ci-test-base:centos7-v3.5
 
 ENV HOME=/home/tester
 COPY --chown=tester:tester . $HOME/ufs-weather-model
@@ -12,8 +12,8 @@ ENV test_name=$test_name
 ENV build_case=$build_case
 ENV test_case=
 ENV CI_TEST=true
-ENV NEMS_COMPILER=gnu
-ENV NEMS_MACHINE=linux.gnu
+ENV RT_COMPILER=gnu
+ENV RT_MACHINE=linux.gnu
 
 WORKDIR $HOME/ufs-weather-model/tests
 RUN ./utest -n $test_name -c $build_case -z
