@@ -127,7 +127,7 @@ if(CCPP)
                    )
 
     # Check return code from ccpp_prebuild.py
-    if(NO RC EQUAL 0)
+    if(NOT RC EQUAL 0)
         message(FATAL_ERROR "An error occured while running ccpp_prebuild.py, check ${PROJECT_BINARY_DIR}/ccpp_prebuild.{out,err}")
     endif()
 
