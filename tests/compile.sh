@@ -53,7 +53,6 @@ MAKE_THREADS=${MAKE_THREADS:-8}
 hostname
 
 set +x
-source $PATHTR/NEMS/src/conf/module-setup.sh.inc
 if [[ $MACHINE_ID == macosx.* ]] || [[ $MACHINE_ID == linux.* ]]; then
   source $PATHTR/modulefiles/${MACHINE_ID}/fv3
 else
