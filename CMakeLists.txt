@@ -70,6 +70,9 @@ message("")
 
 find_package(NetCDF REQUIRED C Fortran)
 find_package(MPI REQUIRED)
+if(OPENMP)
+  find_package(OpenMP REQUIRED)
+endif()
 find_package(ESMF MODULE REQUIRED)
 
 find_package(bacio REQUIRED)
@@ -109,34 +112,22 @@ if(CCPP)
     message("Found Python: ${Python_EXECUTABLE}")
 
     if(DEFINED CCPP_SUITES)
-        message("Calling CCPP code generator (ccpp_prebuild.py) for SUITES = ${CCPP_SUITES}")
-        execute_process(COMMAND ${Python_EXECUTABLE}
-                                "FV3/ccpp/framework/scripts/ccpp_prebuild.py"
-                                "--config=FV3/ccpp/config/ccpp_prebuild_config.py"
-                                "--suites=${CCPP_SUITES}"
-                                "--builddir=${PROJECT_BINARY_DIR}/FV3"
-                        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-                        OUTPUT_FILE ${PROJECT_BINARY_DIR}/ccpp_prebuild.out
-                        ERROR_FILE ${PROJECT_BINARY_DIR}/ccpp_prebuild.err
-                        RESULT_VARIABLE RC
-                       )
-    else()
-        message("Calling CCPP code generator (ccpp_prebuild.py) ...")
-        execute_process(COMMAND ${Python_EXECUTABLE}
-                                "FV3/ccpp/framework/scripts/ccpp_prebuild.py"
-                                "--config=FV3/ccpp/config/ccpp_prebuild_config.py"
-                                "--builddir=${PROJECT_BINARY_DIR}/FV3"
-                        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-                        OUTPUT_FILE ${PROJECT_BINARY_DIR}/ccpp_prebuild.out
-                        ERROR_FILE ${PROJECT_BINARY_DIR}/ccpp_prebuild.err
-                        RESULT_VARIABLE RC
-                       )
+        set(_ccpp_suites_arg "--suites=${CCPP_SUITES}")
     endif()
 
+    message("Calling CCPP code generator (ccpp_prebuild.py) ... ${_ccpp_suites_arg}")
+    execute_process(COMMAND ${Python_EXECUTABLE}
+                            "FV3/ccpp/framework/scripts/ccpp_prebuild.py"
+                            "--config=FV3/ccpp/config/ccpp_prebuild_config.py"
+                            "--builddir=${PROJECT_BINARY_DIR}/FV3" ${_ccpp_suites_arg}
+                    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+                    OUTPUT_FILE ${PROJECT_BINARY_DIR}/ccpp_prebuild.out
+                    ERROR_FILE ${PROJECT_BINARY_DIR}/ccpp_prebuild.err
+                    RESULT_VARIABLE RC
+                   )
+
     # Check return code from ccpp_prebuild.py
-    if(RC EQUAL 0)
-        message("")
-    else()
+    if(NO RC EQUAL 0)
         message(FATAL_ERROR "An error occured while running ccpp_prebuild.py, check ${PROJECT_BINARY_DIR}/ccpp_prebuild.{out,err}")
     endif()
 
@@ -166,7 +157,11 @@ target_include_directories(fms PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/FM
                                       $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/FMS/fms>
                                       $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/FMS/fms2_io/include>
                                       $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/FMS/mpp/include>)
-target_link_libraries(fms PRIVATE NetCDF::NetCDF_Fortran)
+target_link_libraries(fms PUBLIC MPI::MPI_Fortran)
+target_link_libraries(fms PUBLIC NetCDF::NetCDF_Fortran)
+if(OpenMP_Fortran_FOUND)
+  target_link_libraries(fms PUBLIC OpenMP::OpenMP_Fortran)
+endif()
 set_target_properties(fms PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/FMS)
 set_target_properties(fms PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/FMS/mod)
 target_include_directories(fms PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/FMS/mod>)
@@ -185,12 +180,14 @@ add_subdirectory(FV3)
 ### WW3
 ###############################################################################
 if(WW3)
-  set(WW3_COMP ${CMAKE_Platform})
-  if(${CMAKE_Platform} STREQUAL "hera.intel")
-    set(WW3_COMP "hera")
-  endif()
-  if(${CMAKE_Platform} STREQUAL "orion.intel")
-    set(WW3_COMP "orion")
+  if(CMAKE_Platform)
+    if(${CMAKE_Platform} STREQUAL "hera.intel")
+      set(WW3_COMP "hera")
+    elseif(${CMAKE_Platform} STREQUAL "orion.intel")
+      set(WW3_COMP "orion")
+    else()
+      set(WW3_COMP ${CMAKE_Platform})
+    endif()
   endif()
   message("Build WW3:")
   message("   run: ${CMAKE_BUILD_TOOL} WW3_PARCOMPN=4 WW3_COMP=${WW3_COMP} ww3_nemslibonly")

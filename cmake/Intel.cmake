@@ -54,13 +54,6 @@ else()
     set(FAST "-fast-transcendentals")
 endif()
 
-if(OPENMP)
-    set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -qopenmp")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -qopenmp")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -qopenmp")
-    add_definitions(-DOPENMP)
-endif()
-
 if(QUAD_PRECISION)
     add_definitions(-DENABLE_QUAD_PRECISION)
 endif()
