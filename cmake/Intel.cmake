@@ -5,8 +5,6 @@ set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -qno-opt-dynamic-align")
 
 if(32BIT)
     set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -i4 -real-size 32")
-    add_definitions(-DOVERLOAD_R4)
-    add_definitions(-DOVERLOAD_R8)
 else()
     set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -i4 -real-size 64")
     if(NOT REPRO)

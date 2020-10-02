@@ -24,10 +24,7 @@ else()
 endif()
 
 
-if(32BIT)
-    add_definitions(-DOVERLOAD_R4)
-    add_definitions(-DOVERLOAD_R8)
-else()
+if(NOT 32BIT)
     set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fdefault-real-8 -fdefault-double-8")
 endif()
 

@@ -86,19 +86,6 @@ endif()
 # See https://github.com/NOAA-EMC/NCEPLIBS-nemsio/pull/22
 target_link_libraries(nemsio::nemsio INTERFACE w3emc::w3emc_d bacio::bacio_4)
 
-add_definitions(-Duse_libMPI)
-add_definitions(-Duse_netCDF)
-add_definitions(-Duse_WRTCOMP)
-add_definitions(-DSPMD)
-add_definitions(-DUSE_LOG_DIAG_FIELD_INFO)
-#add_definitions(-Duse_LARGEFILE)
-add_definitions(-DUSE_GFSL63)
-add_definitions(-DGFS_PHYS)
-add_definitions(-DMOIST_CAPPA)
-add_definitions(-DUSE_COND)
-add_definitions(-DNEW_TAUCTMAX)
-add_definitions(-DINTERNAL_FILE_NML)
-
 if (CMAKE_Fortran_COMPILER_ID MATCHES "GNU" AND CMAKE_Fortran_COMPILER_VERSION VERSION_LESS 9.0.0)
   message(FATAL_ERROR "GNU Compiler >= 9 is required")
 endif()
@@ -153,12 +140,24 @@ add_library(fms ${fms_src_files})
 # stupid cmake can not figure out dependency of fft.F90 on fft99.F90 because 'use fft99_mod' is inside ifdefs
 set_property(SOURCE FMS/fft/fft.F90 APPEND_STRING PROPERTY COMPILE_FLAGS "-DSGICRAY=0 -DNAGFFT=0")
 
+list(APPEND _fms_defs_public use_libMPI
+                             use_netCDF
+                             GFS_PHYS
+                             INTERNAL_FILE_NML)
+target_compile_definitions(fms PUBLIC "${_fms_defs_public}")
+
+if(32BIT)
+  list(APPEND _fms_defs_private OVERLOAD_R4
+                                OVERLOAD_R8)
+endif()
+target_compile_definitions(fms PRIVATE "${_fms_defs_private}")
+
 target_include_directories(fms PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/FMS/include>
                                       $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/FMS/fms>
                                       $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/FMS/fms2_io/include>
                                       $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/FMS/mpp/include>)
-target_link_libraries(fms PUBLIC MPI::MPI_Fortran)
-target_link_libraries(fms PUBLIC NetCDF::NetCDF_Fortran)
+target_link_libraries(fms PUBLIC MPI::MPI_Fortran
+                                 NetCDF::NetCDF_Fortran)
 if(OpenMP_Fortran_FOUND)
   target_link_libraries(fms PUBLIC OpenMP::OpenMP_Fortran)
 endif()
