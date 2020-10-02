@@ -73,7 +73,6 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
 
 
 export_fv3
-export NODES=$(expr $TASKS / $TPN + 1)
 
 export DT_ATMOS="1200"
 export LRADAR=.T.
@@ -81,7 +80,6 @@ export LRADAR=.T.
 export INPUT_NML=thompson.nml.IN
 export FV3_RUN=thompson_run.IN
 
-RUN_SCRIPT=rt_fv3.sh
 
 if [[ $MACHINE_ID = cheyenne.intel ]]; then
   export WLCLK=30
