@@ -1,0 +1,38 @@
+###############################################################################
+#
+#  FV3 CCPP regional control test in DEBUG mode
+#
+###############################################################################
+
+export TEST_DESCR="Compare FV3 CCPP regional control DEBUG results with previous trunk version"
+
+export CNTL_DIR=fv3_regional_control_debug
+
+export INPUT_DIR=fv3_regional_control
+
+export LIST_FILES="  atmos_4xdaily.nc \
+                     fv3_history2d.nc \
+                       fv3_history.nc \
+     RESTART/fv_core.res.tile1_new.nc \
+   RESTART/fv_tracer.res.tile1_new.nc"
+
+export_fv3
+
+export TASKS=24
+
+export RUN_SCRIPT=rt_fv3.sh
+export FV3_RUN=ccpp_regional_run.IN
+
+export OZ_PHYS_OLD=.F.
+export OZ_PHYS_NEW=.T.
+export H2O_PHYS=.T.
+
+export CCPP_SUITE=FV3_GFS_2017_gfdlmp_regional
+export CCPP_LIB_DIR=ccpp/lib
+export INPUT_NML=ccpp_regional.nml.IN
+
+export FHMAX=3
+export FDIAG=3
+export INPES=4
+export JNPES=6
+export WRITE_RESTART_WITH_BCS=.true.
