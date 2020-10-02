@@ -11,7 +11,7 @@ set(CMAKE_CXX_COMPILER $ENV{CMAKE_CXX_COMPILER})
 set(CMAKE_Fortran_COMPILER $ENV{CMAKE_Fortran_COMPILER})
 set(CMAKE_Platform $ENV{CMAKE_Platform})
 
-project(ufs-weather-model
+project(ufs
         VERSION 1.0
         LANGUAGES C CXX Fortran)
 
@@ -33,9 +33,9 @@ set(WW3             OFF CACHE BOOL "Enable WW3")
 
 if(CMAKE_Platform)
   message("")
-  if(EXISTS ${PROJECT_SOURCE_DIR}/cmake/configure_${CMAKE_Platform}.cmake)
+  if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/cmake/configure_${CMAKE_Platform}.cmake)
     message("Setting configuration for ${CMAKE_Platform}")
-    include(${PROJECT_SOURCE_DIR}/cmake/configure_${CMAKE_Platform}.cmake)
+    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/configure_${CMAKE_Platform}.cmake)
   else()
     message("Platform '${CMAKE_Platform}' configuration file does not exist")
   endif()
@@ -118,10 +118,10 @@ if(32BIT)
 endif()
 target_compile_definitions(fms PRIVATE "${_fms_defs_private}")
 
-target_include_directories(fms PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/FMS/include>
-                                      $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/FMS/fms>
-                                      $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/FMS/fms2_io/include>
-                                      $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/FMS/mpp/include>)
+target_include_directories(fms PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/include>
+                                      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/fms>
+                                      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/fms2_io/include>
+                                      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/mpp/include>)
 target_link_libraries(fms PUBLIC MPI::MPI_Fortran
                                  NetCDF::NetCDF_Fortran)
 if(OpenMP_Fortran_FOUND)
@@ -156,22 +156,22 @@ if(WW3)
   endif()
   message("Build WW3:")
   message("   run: ${CMAKE_BUILD_TOOL} WW3_PARCOMPN=4 WW3_COMP=${WW3_COMP} ww3_nemslibonly")
-  message("   in:  ${PROJECT_SOURCE_DIR}/WW3/model/esmf")
+  message("   in:  ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/esmf")
   message("")
 
   add_custom_target(ww3_nems
-    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/WW3/model/esmf
-    COMMAND ${CMAKE_BUILD_TOOL} WW3_PARCOMPN=4 WW3_COMP=${WW3_COMP} ww3_nemslibonly > ${PROJECT_BINARY_DIR}/ww3_make.log 2>&1
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/esmf
+    COMMAND ${CMAKE_BUILD_TOOL} WW3_PARCOMPN=4 WW3_COMP=${WW3_COMP} ww3_nemslibonly > ${CMAKE_CURRENT_BINARY_DIR}/WW3/ww3_make.log 2>&1
   )
 
-    set(WW3_LIBS ${PROJECT_SOURCE_DIR}/WW3/model/obj/libww3_multi_esmf.a)
+    set(WW3_LIBS ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/obj/libww3_multi_esmf.a)
 endif()
 
 ###############################################################################
-### NEMS (ufs-weather-model-lib)
+### NEMS (ufs)
 ###############################################################################
 add_library(
-    ufs-weather-model-lib
+    ufs
 
     NEMS/src/module_NEMS_UTILS.F90
     NEMS/src/module_MEDIATOR_methods.F90
@@ -185,41 +185,43 @@ add_library(
     NEMS/src/nems_c_rusage.c
     NEMS/src/ENS_Cpl/ENS_CplComp_ESMFMod_STUB.F90
 )
-add_dependencies(ufs-weather-model-lib fv3atm)
-target_link_libraries(ufs-weather-model-lib PRIVATE esmf)
+add_dependencies(ufs fv3atm)
 
-target_compile_definitions(ufs-weather-model-lib PRIVATE -DESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR})
-target_compile_definitions(ufs-weather-model-lib PRIVATE -DFRONT_FMS)
-target_compile_definitions(ufs-weather-model-lib PRIVATE -DFRONT_FV3=fv3gfs_cap_mod)
+list(APPEND _ufs_defs_private ESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR}
+                              FRONT_FMS
+                              FRONT_FV3=fv3gfs_cap_mod)
 
-target_include_directories(ufs-weather-model-lib PRIVATE ${PROJECT_BINARY_DIR}/NEMS/src)
-target_include_directories(ufs-weather-model-lib PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/FV3/mod)
-target_include_directories(ufs-weather-model-lib PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/FMS/mod)
+
+set_target_properties(ufs PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
+
+target_include_directories(ufs PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/NEMS/src)
+target_include_directories(ufs PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/FV3/mod
+                                       ${CMAKE_CURRENT_BINARY_DIR}/FMS/mod)
 
 if(WW3)
-    target_compile_definitions(ufs-weather-model-lib PRIVATE -DFRONT_WW3=WMESMFMD)
-    target_include_directories(ufs-weather-model-lib PRIVATE ${PROJECT_SOURCE_DIR}/WW3/model/mod)
-    set_target_properties(ufs-weather-model-lib PROPERTIES Fortran_MODULE_DIRECTORY ${PROJECT_SOURCE_DIR}/WW3/model/mod)
-    add_dependencies(ufs-weather-model-lib ww3_nems)
+    list(APPEND _ufs_defs_private FRONT_WW3=WMESMFMD)
+    target_include_directories(ufs PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/mod)
+    add_dependencies(ufs ww3_nems)
 endif()
 
-set_target_properties(ufs-weather-model-lib PROPERTIES Fortran_MODULE_DIRECTORY ${PROJECT_BINARY_DIR}/mod)
-target_include_directories(ufs-weather-model-lib PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
-                                       $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/FV3/mod>
-                                       $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/mod>)
+target_include_directories(ufs PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
+                                      $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/FV3/mod>
+                                      $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/mod>)
 
-configure_file(${PROJECT_SOURCE_DIR}/NEMS/src/ESMFVersionDefine_ESMF_NUOPC.h
-               ${PROJECT_BINARY_DIR}/NEMS/src/ESMFVersionDefine.h
+target_compile_definitions(ufs PRIVATE ${_ufs_defs_private})
+target_link_libraries(ufs PRIVATE esmf)
+target_link_libraries(ufs PUBLIC fv3atm)
+
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/NEMS/src/ESMFVersionDefine_ESMF_NUOPC.h
+               ${CMAKE_CURRENT_BINARY_DIR}/NEMS/src/ESMFVersionDefine.h
                COPYONLY)
 # until we remove "../ESMFVersionDefine.h" from ENS_Cpl/ENS_CplComp_ESMFMod_STUB.F90
-configure_file(${PROJECT_SOURCE_DIR}/NEMS/src/ESMFVersionDefine_ESMF_NUOPC.h
-               ${PROJECT_BINARY_DIR}/NEMS/ESMFVersionDefine.h
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/NEMS/src/ESMFVersionDefine_ESMF_NUOPC.h
+               ${CMAKE_CURRENT_BINARY_DIR}/NEMS/ESMFVersionDefine.h
                COPYONLY)
-configure_file(${PROJECT_SOURCE_DIR}/NEMS/src/ESMFConvenienceMacros.h
-               ${PROJECT_BINARY_DIR}/NEMS/src/ESMFConvenienceMacros.h
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/NEMS/src/ESMFConvenienceMacros.h
+               ${CMAKE_CURRENT_BINARY_DIR}/NEMS/src/ESMFConvenienceMacros.h
                COPYONLY)
-
-target_link_libraries(ufs-weather-model-lib PUBLIC fv3atm)
 
 ###############################################################################
 ### UFS executable
@@ -227,35 +229,39 @@ target_link_libraries(ufs-weather-model-lib PUBLIC fv3atm)
 add_executable(ufs_model
                NEMS/src/MAIN_NEMS.F90
 )
-add_dependencies(ufs_model ufs-weather-model-lib)
+add_dependencies(ufs_model ufs)
 
-target_compile_definitions(ufs_model PRIVATE -DESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR})
-target_include_directories(ufs_model PRIVATE ${PROJECT_BINARY_DIR}/NEMS/src)
+list(APPEND _ufs_model_defs_private ESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR})
 
-set_target_properties(ufs_model PROPERTIES Fortran_MODULE_DIRECTORY ${PROJECT_BINARY_DIR}/mod)
+set_target_properties(ufs_model PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
+
+target_include_directories(ufs_model PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/NEMS/src)
 
 if(WW3)
-    target_compile_definitions(ufs_model PRIVATE -DFRONT_WW3=WMESMFMD)
-    set_target_properties(ufs_model PROPERTIES Fortran_MODULE_DIRECTORY ${PROJECT_SOURCE_DIR}/WW3/model/mod)
+    list(APPEND _ufs_model_defs_private FRONT_WW3=WMESMFMD)
+    target_include_directories(ufs_model PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/mod)
     add_dependencies(ufs_model ww3_nems)
 endif()
 
-target_link_libraries(ufs_model
-                      ufs-weather-model-lib
-                      ${WW3_LIBS}
-                      esmf NetCDF::NetCDF_Fortran ${MKL_LIB})
+target_compile_definitions(ufs_model PRIVATE "${_ufs_model_defs_private}")
+
+target_link_libraries(ufs_model PRIVATE ufs
+                                        ${WW3_LIBS}
+                                        esmf
+                                        NetCDF::NetCDF_Fortran
+                                        ${MKL_LIB})
 
 ###############################################################################
 ### Install
 ###############################################################################
 install(
-  TARGETS ufs-weather-model-lib fms
-  EXPORT ufs-weather-model-lib-config
+  TARGETS ufs fms
+  EXPORT ufs-config
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib)
 install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod DESTINATION ${CMAKE_INSTALL_PREFIX})
 
-install(EXPORT ufs-weather-model-lib-config
+install(EXPORT ufs-config
   DESTINATION lib/cmake
 )
 
