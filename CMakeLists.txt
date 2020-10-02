@@ -224,23 +224,23 @@ target_link_libraries(ufs-weather-model-lib PUBLIC fv3atm)
 ###############################################################################
 ### UFS executable
 ###############################################################################
-add_executable(NEMS.exe
+add_executable(ufs_model
                NEMS/src/MAIN_NEMS.F90
 )
-add_dependencies(NEMS.exe ufs-weather-model-lib)
+add_dependencies(ufs_model ufs-weather-model-lib)
 
-target_compile_definitions(NEMS.exe PRIVATE -DESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR})
-target_include_directories(NEMS.exe PRIVATE ${PROJECT_BINARY_DIR}/NEMS/src)
+target_compile_definitions(ufs_model PRIVATE -DESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR})
+target_include_directories(ufs_model PRIVATE ${PROJECT_BINARY_DIR}/NEMS/src)
 
-set_target_properties(NEMS.exe PROPERTIES Fortran_MODULE_DIRECTORY ${PROJECT_BINARY_DIR}/mod)
+set_target_properties(ufs_model PROPERTIES Fortran_MODULE_DIRECTORY ${PROJECT_BINARY_DIR}/mod)
 
 if(WW3)
-    target_compile_definitions(NEMS.exe PRIVATE -DFRONT_WW3=WMESMFMD)
-    set_target_properties(NEMS.exe PROPERTIES Fortran_MODULE_DIRECTORY ${PROJECT_SOURCE_DIR}/WW3/model/mod)
-    add_dependencies(NEMS.exe ww3_nems)
+    target_compile_definitions(ufs_model PRIVATE -DFRONT_WW3=WMESMFMD)
+    set_target_properties(ufs_model PROPERTIES Fortran_MODULE_DIRECTORY ${PROJECT_SOURCE_DIR}/WW3/model/mod)
+    add_dependencies(ufs_model ww3_nems)
 endif()
 
-target_link_libraries(NEMS.exe
+target_link_libraries(ufs_model
                       ufs-weather-model-lib
                       ${WW3_LIBS}
                       esmf NetCDF::NetCDF_Fortran ${MKL_LIB})
