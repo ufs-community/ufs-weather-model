@@ -65,6 +65,10 @@ message("CXX     compiler: ${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION
 message("Fortran compiler: ${CMAKE_Fortran_COMPILER_ID} ${CMAKE_Fortran_COMPILER_VERSION} (${Fortran_COMPILER_NAME})")
 message("")
 
+if (CMAKE_Fortran_COMPILER_ID MATCHES "GNU" AND CMAKE_Fortran_COMPILER_VERSION VERSION_LESS 9.0.0)
+  message(FATAL_ERROR "GNU Compiler >= 9 is required")
+endif()
+
 include(cmake/${CMAKE_Fortran_COMPILER_ID}.cmake)
 message("")
 
@@ -86,50 +90,12 @@ endif()
 # See https://github.com/NOAA-EMC/NCEPLIBS-nemsio/pull/22
 target_link_libraries(nemsio::nemsio INTERFACE w3emc::w3emc_d bacio::bacio_4)
 
-if (CMAKE_Fortran_COMPILER_ID MATCHES "GNU" AND CMAKE_Fortran_COMPILER_VERSION VERSION_LESS 9.0.0)
-  message(FATAL_ERROR "GNU Compiler >= 9 is required")
-endif()
-
 if(CCPP)
-
     find_package(Python 3 QUIET COMPONENTS Interpreter)
     if (NOT Python_Interpreter_FOUND)
       find_package(Python 2.7 QUIET REQUIRED COMPONENTS Interpreter)
     endif()
     message("Found Python: ${Python_EXECUTABLE}")
-
-    if(DEFINED CCPP_SUITES)
-        set(_ccpp_suites_arg "--suites=${CCPP_SUITES}")
-    endif()
-
-    message("Calling CCPP code generator (ccpp_prebuild.py) ... ${_ccpp_suites_arg}")
-    execute_process(COMMAND ${Python_EXECUTABLE}
-                            "FV3/ccpp/framework/scripts/ccpp_prebuild.py"
-                            "--config=FV3/ccpp/config/ccpp_prebuild_config.py"
-                            "--builddir=${PROJECT_BINARY_DIR}/FV3" ${_ccpp_suites_arg}
-                    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-                    OUTPUT_FILE ${PROJECT_BINARY_DIR}/ccpp_prebuild.out
-                    ERROR_FILE ${PROJECT_BINARY_DIR}/ccpp_prebuild.err
-                    RESULT_VARIABLE RC
-                   )
-
-    # Check return code from ccpp_prebuild.py
-    if(NOT RC EQUAL 0)
-        message(FATAL_ERROR "An error occured while running ccpp_prebuild.py, check ${PROJECT_BINARY_DIR}/ccpp_prebuild.{out,err}")
-    endif()
-
-    # this should not be necessary; including CCPP_*.cmake here and passing
-    # SCHEMES, CAPS and TYPEDEFS via environment variables to CCPP build.
-    # CCPP should be able to directly include those three .cmake files.
-
-    include(${PROJECT_BINARY_DIR}/FV3/ccpp/physics/CCPP_SCHEMES.cmake)
-    include(${PROJECT_BINARY_DIR}/FV3/ccpp/physics/CCPP_CAPS.cmake)
-    include(${PROJECT_BINARY_DIR}/FV3/ccpp/physics/CCPP_TYPEDEFS.cmake)
-
-    set(ENV{CCPP_SCHEMES} "${SCHEMES}")
-    set(ENV{CCPP_CAPS} "${CAPS}")
-    set(ENV{CCPP_TYPEDEFS} "${TYPEDEFS}")
-
 endif()
 
 ###############################################################################
