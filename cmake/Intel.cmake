@@ -2,7 +2,6 @@
 set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fpp -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte")
 set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -qno-opt-dynamic-align")
 
-
 if(32BIT)
     set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -i4 -real-size 32")
 else()
@@ -50,14 +49,6 @@ else()
     set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2 -debug minimal")
     set(FAST "-fast-transcendentals")
-endif()
-
-if(QUAD_PRECISION)
-    add_definitions(-DENABLE_QUAD_PRECISION)
-endif()
-
-if(MULTI_GASES)
-    add_definitions(-DMULTI_GASES)
 endif()
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D__IFC -sox -fp-model source")

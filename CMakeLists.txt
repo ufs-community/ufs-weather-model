@@ -91,11 +91,11 @@ endif()
 target_link_libraries(nemsio::nemsio INTERFACE w3emc::w3emc_d bacio::bacio_4)
 
 if(CCPP)
-    find_package(Python 3 QUIET COMPONENTS Interpreter)
-    if (NOT Python_Interpreter_FOUND)
-      find_package(Python 2.7 QUIET REQUIRED COMPONENTS Interpreter)
-    endif()
-    message("Found Python: ${Python_EXECUTABLE}")
+  find_package(Python 3 QUIET COMPONENTS Interpreter)
+  if (NOT Python_Interpreter_FOUND)
+    find_package(Python 2.7 QUIET REQUIRED COMPONENTS Interpreter)
+  endif()
+  message("Found Python: ${Python_EXECUTABLE}")
 endif()
 
 ###############################################################################
@@ -110,6 +110,9 @@ list(APPEND _fms_defs_public use_libMPI
                              use_netCDF
                              GFS_PHYS
                              INTERNAL_FILE_NML)
+if(QUAD_PRECISION)
+  list(APPEND _fms_defs_public ENABLE_QUAD_PRECISION)
+endif()
 target_compile_definitions(fms PUBLIC "${_fms_defs_public}")
 
 if(32BIT)
@@ -129,7 +132,8 @@ if(OpenMP_Fortran_FOUND)
 endif()
 set_target_properties(fms PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/FMS)
 set_target_properties(fms PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/FMS/mod)
-target_include_directories(fms PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/FMS/mod>)
+target_include_directories(fms INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/FMS/mod>
+                                         $<INSTALL_INTERFACE:FMS/mod>)
 
 ###############################################################################
 ### stochastic_physics
@@ -161,8 +165,7 @@ if(WW3)
 
   add_custom_target(ww3_nems
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/esmf
-    COMMAND ${CMAKE_BUILD_TOOL} WW3_PARCOMPN=4 WW3_COMP=${WW3_COMP} ww3_nemslibonly > ${CMAKE_CURRENT_BINARY_DIR}/WW3/ww3_make.log 2>&1
-  )
+    COMMAND ${CMAKE_BUILD_TOOL} WW3_PARCOMPN=4 WW3_COMP=${WW3_COMP} ww3_nemslibonly > ${CMAKE_CURRENT_BINARY_DIR}/WW3/ww3_make.log 2>&1)
 
     set(WW3_LIBS ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/obj/libww3_multi_esmf.a)
 endif()
@@ -170,47 +173,17 @@ endif()
 ###############################################################################
 ### NEMS (ufs)
 ###############################################################################
-add_library(
-    ufs
-
-    NEMS/src/module_NEMS_UTILS.F90
-    NEMS/src/module_MEDIATOR_methods.F90
-    NEMS/src/module_MEDIATOR.F90
-    NEMS/src/module_MEDIATOR_SpaceWeather.F90
-    NEMS/src/module_EARTH_INTERNAL_STATE.F90
-    NEMS/src/module_EARTH_GRID_COMP.F90
-    NEMS/src/module_NEMS_INTERNAL_STATE.F90
-    NEMS/src/module_NEMS_GRID_COMP.F90
-    NEMS/src/module_NEMS_Rusage.F90
-    NEMS/src/nems_c_rusage.c
-    NEMS/src/ENS_Cpl/ENS_CplComp_ESMFMod_STUB.F90
-)
-add_dependencies(ufs fv3atm)
-
-list(APPEND _ufs_defs_private ESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR}
-                              FRONT_FMS
-                              FRONT_FV3=fv3gfs_cap_mod)
-
-
-set_target_properties(ufs PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
-
-target_include_directories(ufs PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/NEMS/src)
-target_include_directories(ufs PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/FV3/mod
-                                       ${CMAKE_CURRENT_BINARY_DIR}/FMS/mod)
-
-if(WW3)
-    list(APPEND _ufs_defs_private FRONT_WW3=WMESMFMD)
-    target_include_directories(ufs PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/mod)
-    add_dependencies(ufs ww3_nems)
-endif()
-
-target_include_directories(ufs PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
-                                      $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/FV3/mod>
-                                      $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/mod>)
-
-target_compile_definitions(ufs PRIVATE ${_ufs_defs_private})
-target_link_libraries(ufs PRIVATE esmf)
-target_link_libraries(ufs PUBLIC fv3atm)
+list(APPEND _nems_srcs NEMS/src/module_NEMS_UTILS.F90
+                       NEMS/src/module_MEDIATOR_methods.F90
+                       NEMS/src/module_MEDIATOR.F90
+                       NEMS/src/module_MEDIATOR_SpaceWeather.F90
+                       NEMS/src/module_EARTH_INTERNAL_STATE.F90
+                       NEMS/src/module_EARTH_GRID_COMP.F90
+                       NEMS/src/module_NEMS_INTERNAL_STATE.F90
+                       NEMS/src/module_NEMS_GRID_COMP.F90
+                       NEMS/src/module_NEMS_Rusage.F90
+                       NEMS/src/nems_c_rusage.c
+                       NEMS/src/ENS_Cpl/ENS_CplComp_ESMFMod_STUB.F90)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/NEMS/src/ESMFVersionDefine_ESMF_NUOPC.h
                ${CMAKE_CURRENT_BINARY_DIR}/NEMS/src/ESMFVersionDefine.h
@@ -223,13 +196,36 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/NEMS/src/ESMFConvenienceMacros.h
                ${CMAKE_CURRENT_BINARY_DIR}/NEMS/src/ESMFConvenienceMacros.h
                COPYONLY)
 
+add_library(ufs ${_nems_srcs})
+
+list(APPEND _ufs_defs_private ESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR}
+                              FRONT_FMS
+                              FRONT_FV3=fv3gfs_cap_mod)
+
+set_target_properties(ufs PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
+target_include_directories(ufs PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/NEMS/src)
+
+if(WW3)
+  list(APPEND _ufs_defs_private FRONT_WW3=WMESMFMD)
+  target_include_directories(ufs PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/mod)
+  add_dependencies(ufs ww3_nems)
+endif()
+
+target_include_directories(ufs INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
+                                         $<INSTALL_INTERFACE:mod>)
+
+target_compile_definitions(ufs PRIVATE ${_ufs_defs_private})
+target_link_libraries(ufs PUBLIC esmf
+                                 fv3atm)
+if(WW3)
+  target_link_libraries(ufs PUBLIC ${WW3_LIBS})
+endif()
+
+
 ###############################################################################
 ### UFS executable
 ###############################################################################
-add_executable(ufs_model
-               NEMS/src/MAIN_NEMS.F90
-)
-add_dependencies(ufs_model ufs)
+add_executable(ufs_model NEMS/src/MAIN_NEMS.F90)
 
 list(APPEND _ufs_model_defs_private ESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR})
 
@@ -238,15 +234,14 @@ set_target_properties(ufs_model PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURR
 target_include_directories(ufs_model PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/NEMS/src)
 
 if(WW3)
-    list(APPEND _ufs_model_defs_private FRONT_WW3=WMESMFMD)
-    target_include_directories(ufs_model PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/mod)
-    add_dependencies(ufs_model ww3_nems)
+  list(APPEND _ufs_model_defs_private FRONT_WW3=WMESMFMD)
+  target_include_directories(ufs_model PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/mod)
+  add_dependencies(ufs_model ww3_nems)
 endif()
 
 target_compile_definitions(ufs_model PRIVATE "${_ufs_model_defs_private}")
 
 target_link_libraries(ufs_model PRIVATE ufs
-                                        ${WW3_LIBS}
                                         esmf
                                         NetCDF::NetCDF_Fortran
                                         ${MKL_LIB})
@@ -255,10 +250,11 @@ target_link_libraries(ufs_model PRIVATE ufs
 ### Install
 ###############################################################################
 install(
-  TARGETS ufs fms
+  TARGETS ufs_model ufs fms
   EXPORT ufs-config
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib)
+
 install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod DESTINATION ${CMAKE_INSTALL_PREFIX})
 
 install(EXPORT ufs-config
