@@ -165,7 +165,7 @@ if(WW3)
 
   add_custom_target(ww3_nems
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/esmf
-    COMMAND ${CMAKE_BUILD_TOOL} WW3_PARCOMPN=4 WW3_COMP=${WW3_COMP} ww3_nemslibonly > ${CMAKE_CURRENT_BINARY_DIR}/WW3/ww3_make.log 2>&1)
+    COMMAND ${CMAKE_BUILD_TOOL} WW3_PARCOMPN=4 WW3_COMP=${WW3_COMP} ww3_nemslibonly > ${CMAKE_CURRENT_BINARY_DIR}/ww3_make.log 2>&1)
 
     set(WW3_LIBS ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/obj/libww3_multi_esmf.a)
 endif()
@@ -209,6 +209,7 @@ if(WW3)
   list(APPEND _ufs_defs_private FRONT_WW3=WMESMFMD)
   target_include_directories(ufs PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/mod)
   add_dependencies(ufs ww3_nems)
+  target_link_libraries(ufs PUBLIC ${WW3_LIBS})
 endif()
 
 target_include_directories(ufs INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
@@ -217,10 +218,6 @@ target_include_directories(ufs INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINAR
 target_compile_definitions(ufs PRIVATE ${_ufs_defs_private})
 target_link_libraries(ufs PUBLIC esmf
                                  fv3atm)
-if(WW3)
-  target_link_libraries(ufs PUBLIC ${WW3_LIBS})
-endif()
-
 
 ###############################################################################
 ### UFS executable
