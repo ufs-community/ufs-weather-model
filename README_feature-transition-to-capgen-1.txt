@@ -37,3 +37,8 @@ Change log
 
 09/19/2020: remove .gitmodules from ccpp-framework, change .gitmodules in fv3atm and ufs-weather-model,
             add CODEOWNERS to fv3atm and ufs-weather-model
+
+10/05/2020: merge https://github.com/NCAR/ccpp-physics/pull/498, remove other empty CCPP arg table lines
+            in ccpp-physics that do not have entries in the metadata files (empty subroutines), replace
+            horizontal_dimension with horizontal_loop_extent in GFS_typedefs.F90
+
