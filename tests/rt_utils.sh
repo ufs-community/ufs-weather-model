@@ -43,15 +43,8 @@ submit_and_wait() {
 
   if [[ $SCHEDULER = 'pbs' ]]; then
     qsubout=$( qsub $job_card )
-    if [[ ${MACHINE_ID} = cheyenne.* ]]; then
-      re='^([0-9]+\.[a-zA-Z0-9\.]+)$'
-    else
-      re='^([0-9]+\.[a-zA-Z0-9]+)$'
-    fi
+    re='^([0-9]+)(\.[a-zA-Z0-9\.-]+)$'
     [[ "${qsubout}" =~ $re ]] && qsub_id=${BASH_REMATCH[1]}
-    if [[ ${MACHINE_ID} = cheyenne.* ]]; then
-      qsub_id="${qsub_id%.chadm*}"
-    fi
     echo "Job id ${qsub_id}"
   elif [[ $SCHEDULER = 'slurm' ]]; then
     slurmout=$( sbatch $job_card )
@@ -76,11 +69,7 @@ submit_and_wait() {
     echo "TEST ${TEST_NR} ${TEST_NAME} is waiting to enter the queue"
     [[ ${ECFLOW:-false} == true ]] && ecflow_client --label=job_status "waiting to enter the queue"
     if [[ $SCHEDULER = 'pbs' ]]; then
-      if [[ ${MACHINE_ID} = cheyenne.* ]]; then
-        job_running=$( qstat ${qsub_id} | grep ${qsub_id} | wc -l)
-      else
-        job_running=$( qstat -u ${USER} -n | grep ${JBNME} | wc -l)
-      fi
+      job_running=$( qstat ${qsub_id} | grep ${qsub_id} | wc -l )
     elif [[ $SCHEDULER = 'slurm' ]]; then
       job_running=$( squeue -u ${USER} -j ${slurm_id} | grep ${slurm_id} | wc -l)
     elif [[ $SCHEDULER = 'lsf' ]]; then
@@ -118,11 +107,7 @@ submit_and_wait() {
   do
 
     if [[ $SCHEDULER = 'pbs' ]]; then
-      if [[ ${MACHINE_ID} = cheyenne.* ]]; then
-        job_running=$( qstat ${qsub_id} | grep ${qsub_id} | wc -l)
-      else
-        job_running=$( qstat -u ${USER} -n | grep ${JBNME} | wc -l)
-      fi
+      job_running=$( qstat ${qsub_id} | grep ${qsub_id} | wc -l )
     elif [[ $SCHEDULER = 'slurm' ]]; then
       job_running=$( squeue -u ${USER} -j ${slurm_id} | grep ${slurm_id} | wc -l)
     elif [[ $SCHEDULER = 'lsf' ]]; then
@@ -134,11 +119,7 @@ submit_and_wait() {
 
     if [[ $SCHEDULER = 'pbs' ]]; then
 
-      if [[ ${MACHINE_ID} = cheyenne.* ]]; then
-        status=$( qstat ${qsub_id} | grep ${qsub_id} | awk '{print $5}' ); status=${status:--}
-      else
-        status=$( qstat -u ${USER} -n | grep ${JBNME} | awk '{print $10}' ); status=${status:--}
-      fi
+      status=$( qstat ${qsub_id} | grep ${qsub_id} | awk '{print $5}' ); status=${status:--}
       if   [[ $status = 'Q' ]];  then
         status_label='waiting in a queue'
       elif [[ $status = 'H' ]];  then
@@ -148,12 +129,7 @@ submit_and_wait() {
       elif [[ $status = 'E' ]] || [[ $status = 'C' ]];  then
         status_label='finished'
         test_status='DONE'
-        if [[ ${MACHINE_ID} = cheyenne.* ]]; then
-          exit_status=$( qstat ${jobid} -x -f | grep Exit_status | awk '{print $3}')
-        else
-          jobid=$( qstat -u ${USER} | grep ${JBNME} | awk '{print $1}')
-          exit_status=$( qstat ${jobid} -f | grep exit_status | awk '{print $3}')
-        fi
+        exit_status=$( qstat ${jobid} -x -f | grep Exit_status | awk '{print $3}')
         if [[ $exit_status != 0 ]]; then
           test_status='FAIL'
         fi
@@ -247,9 +223,6 @@ check_results() {
   ROCOTO=${ROCOTO:-false}
   ECFLOW=${ECFLOW:-false}
 
-  # Default compiler "intel"
-  export COMPILER=${NEMS_COMPILER:-intel}
-
   local test_status='PASS'
 
   # Give one minute for data to show up on file system
@@ -284,7 +257,7 @@ check_results() {
         echo ".......MISSING baseline"
         test_status='FAIL'
 
-      elif [[ $COMPILER == "gnu" && $i == "RESTART/fv_core.res.nc" ]] ; then
+      elif [[ $RT_COMPILER == "gnu" && $i == "RESTART/fv_core.res.nc" ]] ; then
 
         # Although identical in ncdiff, RESTART/fv_core.res.nc differs in byte 469, line 3,
         # for the fv3_control_32bit test between each run (without changing the source code)
@@ -381,15 +354,11 @@ rocoto_create_compile_task() {
     echo "  </metatask>" >> $ROCOTO_XML
   fi
 
-  if [[ "Q$APP" != Q ]] ; then
-      rocoto_cmd="&PATHRT;/appbuild.sh &PATHTR;/FV3 $APP $COMPILE_NR"
-  else
-      rocoto_cmd="&PATHRT;/compile_cmake.sh &PATHTR; $MACHINE_ID \"${NEMS_VER}\" $COMPILE_NR"
-  fi
+  rocoto_cmd="&PATHRT;/compile.sh $MACHINE_ID \"${MAKE_OPT}\" $COMPILE_NR"
 
   # serialize WW3 builds. FIXME
   DEP_STRING=""
-  if [[ ${NEMS_VER^^} =~ "WW3=Y" && ${COMPILE_PREV_WW3_NR} != '' ]]; then
+  if [[ ${MAKE_OPT^^} =~ "WW3=Y" && ${COMPILE_PREV_WW3_NR} != '' ]]; then
     DEP_STRING="<dependency><taskdep task=\"compile_${COMPILE_PREV_WW3_NR}\"/></dependency>"
   fi
 
@@ -498,17 +467,17 @@ ecflow_create_compile_task() {
 
   cat << EOF > ${ECFLOW_RUN}/${ECFLOW_SUITE}/compile_${COMPILE_NR}.ecf
 %include <head.h>
-$PATHRT/run_compile.sh ${PATHRT} ${RUNDIR_ROOT} "${NEMS_VER}" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1 &
+$PATHRT/run_compile.sh ${PATHRT} ${RUNDIR_ROOT} "${MAKE_OPT}" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1 &
 %include <tail.h>
 EOF
 
   echo "  task compile_${COMPILE_NR}" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
-  echo "      label build_options '${NEMS_VER}'" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+  echo "      label build_options '${MAKE_OPT}'" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   echo "      label job_id ''" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   echo "      label job_status ''" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   echo "      inlimit max_builds" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   # serialize WW3 builds. FIXME
-  if [[ ${NEMS_VER^^} =~ "WW3=Y" && ${COMPILE_PREV_WW3_NR} != '' ]]; then
+  if [[ ${MAKE_OPT^^} =~ "WW3=Y" && ${COMPILE_PREV_WW3_NR} != '' ]]; then
     echo "    trigger compile_${COMPILE_PREV_WW3_NR} == complete"  >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   fi
 }
