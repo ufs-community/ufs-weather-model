@@ -76,22 +76,22 @@ build_utests() {
   for name in $compile_case; do
     case $name in
       std)
-        NEMS_VER=$base_opt
+        MAKE_OPT=$base_opt
         ;;
       bit)
         if [[ $base_opt =~ "32BIT=Y" ]]; then
-          NEMS_VER=$(echo $base_opt | sed -e 's/32BIT=Y/32BIT=N/')
+          MAKE_OPT=$(echo $base_opt | sed -e 's/32BIT=Y/32BIT=N/')
         elif [[ ${base_opt} =~ "32BIT=N" ]]; then
-          NEMS_VER=$(echo $base_opt | sed -e 's/32BIT=N/32BIT=Y/')
+          MAKE_OPT=$(echo $base_opt | sed -e 's/32BIT=N/32BIT=Y/')
         else
-          NEMS_VER="$base_opt 32BIT=Y"
+          MAKE_OPT="$base_opt 32BIT=Y"
         fi
         ;;
       dbg)
-        NEMS_VER="$base_opt 32BIT=Y DEBUG=Y"
+        MAKE_OPT="$base_opt 32BIT=Y DEBUG=Y"
         ;;
     esac
-    NEMS_VER=$(echo $NEMS_VER | sed -e 's/^ *//' -e 's/ *$//')
+    MAKE_OPT=$(echo $MAKE_OPT | sed -e 's/^ *//' -e 's/ *$//')
 
       cat <<-EOF > ${RUNDIR_ROOT}/compile_${name}.env
 				export MACHINE_ID=${MACHINE_ID}
@@ -109,11 +109,10 @@ build_utests() {
 
     if [[ $ECFLOW == true ]]; then
       COMPILE_NR=$name
-      APP=''
       ecflow_create_compile_task
     else
-      echo "compiling $name with compile option $NEMS_VER"
-      ./compile_cmake.sh $PATHTR $MACHINE_ID "${NEMS_VER}" $name >${LOG_DIR}/compile_${TEST_NAME}_$name.log 2>&1
+      echo "compiling $name with compile option $MAKE_OPT"
+      ./compile.sh $MACHINE_ID "${MAKE_OPT}" $name >${LOG_DIR}/compile_${TEST_NAME}_$name.log 2>&1
       echo "done compiling $name"
     fi
   done
@@ -141,7 +140,7 @@ run_utests() {
         BL_SUFFIX=_std_base
         cat <<-EOF > ${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
 					export UNIT_TEST=true
-					export NEMS_COMPILER=${NEMS_COMPILER}
+					export RT_COMPILER=${RT_COMPILER}
 					export RESTART_INTERVAL=$(( FHMAX/2 ))
 					EOF
         ;;
@@ -151,7 +150,7 @@ run_utests() {
         BL_SUFFIX=_std_base
         cat <<-EOF > ${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
 					export UNIT_TEST=true
-					export NEMS_COMPILER=${NEMS_COMPILER}
+					export RT_COMPILER=${RT_COMPILER}
 					EOF
         ;;
       thr)
@@ -166,7 +165,7 @@ run_utests() {
         NODES=$(( TASKS/TPN + 1 ))
         cat <<-EOF > ${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
 					export UNIT_TEST=true
-					export NEMS_COMPILER=${NEMS_COMPILER}
+					export RT_COMPILER=${RT_COMPILER}
 					export THRD=${THRD}
 					export JNPES=${JNPES}
 					export TASKS=${TASKS}
@@ -185,7 +184,7 @@ run_utests() {
         NODES=$(( TASKS/TPN + 1 ))
         cat <<-EOF > ${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
 					export UNIT_TEST=true
-					export NEMS_COMPILER=${NEMS_COMPILER}
+					export RT_COMPILER=${RT_COMPILER}
 					export JNPES=${JNPES}
 					export WRITE_GROUP=${WRITE_GROUP}
 					export WRTTASK_PER_GROUP=${WRTTASK_PER_GROUP}
@@ -202,7 +201,7 @@ run_utests() {
         JNPES=$temp
         cat <<-EOF >${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
 					export UNIT_TEST=true
-					export NEMS_COMPILER=${NEMS_COMPILER}
+					export RT_COMPILER=${RT_COMPILER}
 					export INPES=${INPES}
 					export JNPES=${JNPES}
 					EOF
@@ -258,7 +257,7 @@ run_utests() {
 
         cat <<-EOF >${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
 					export UNIT_TEST=true
-					export NEMS_COMPILER=${NEMS_COMPILER}
+					export RT_COMPILER=${RT_COMPILER}
 					export RESTART_FILE_PREFIX=${RESTART_FILE_PREFIX}
 					export WARM_START=${WARM_START}
 					export NGGPS_IC=${NGGPS_IC}
@@ -277,7 +276,7 @@ run_utests() {
         comp_nm=bit
         cat <<-EOF >${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
 					export UNIT_TEST=true
-					export NEMS_COMPILER=${NEMS_COMPILER}
+					export RT_COMPILER=${RT_COMPILER}
 					EOF
         ;;
       bit)
@@ -287,7 +286,7 @@ run_utests() {
         comp_nm=bit
         cat <<-EOF >${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
 					export UNIT_TEST=true
-					export NEMS_COMPILER=${NEMS_COMPILER}
+					export RT_COMPILER=${RT_COMPILER}
 					EOF
         ;;
       dbg_base)
@@ -298,7 +297,7 @@ run_utests() {
         WLCLK=30
         cat <<-EOF >${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
 					export UNIT_TEST=true
-					export NEMS_COMPILER=${NEMS_COMPILER}
+					export RT_COMPILER=${RT_COMPILER}
 					export WLCLK=${WLCLK}
 					EOF
         ;;
@@ -310,7 +309,7 @@ run_utests() {
         WLCLK=30
         cat <<-EOF >${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
 					export UNIT_TEST=true
-					export NEMS_COMPILER=${NEMS_COMPILER}
+					export RT_COMPILER=${RT_COMPILER}
 					export WLCLK=${WLCLK}
 					EOF
         ;;
@@ -389,10 +388,9 @@ export CI_TEST=${CI_TEST:-false}
 [[ $# -eq 0 ]] && usage_and_exit 1
 
 # specify compiler
-NEMS_COMPILER=${NEMS_COMPILER:-}
-export COMPILER=${NEMS_COMPILER:-intel}
+export RT_COMPILER=${RT_COMPILER:-intel}
 # detect_machine sets ACCNR and MACHINE_ID
-NEMS_MACHINE=${NEMS_MACHINE:-}
+RT_MACHINE=${RT_MACHINE:-}
 source detect_machine.sh
 cd $PATHRT
 
@@ -412,8 +410,6 @@ if [[ $MACHINE_ID = hera.* ]]; then
   source $PATHTR/NEMS/src/conf/module-setup.sh.inc
   module use $PATHTR/modulefiles/${MACHINE_ID}
   module load fv3
-
-  COMPILER=${NEMS_COMPILER:-intel} # in case compiler gets deleted by module purge
 
   export PATH=/scratch2/NCEPDEV/fv3-cam/Dusan.Jovic/ecflow/bin:$PATH
   export PYTHONPATH=/scratch2/NCEPDEV/fv3-cam/Dusan.Jovic/ecflow/lib/python2.7/site-packages
@@ -438,9 +434,6 @@ elif [[ $MACHINE_ID = orion.* ]]; then
   module use $PATHTR/modulefiles/${MACHINE_ID}
   module load fv3
   module load gcc/8.3.0
-
-  # Re-instantiate COMPILER in case it gets deleted by module purge
-  COMPILER=${NEMS_COMPILER:-intel}
 
   export PATH=/work/noaa/fv3-cam/djovic/ecflow/bin:$PATH
   export PYTHONPATH=/work/noaa/fv3-cam/djovic/ecflow/lib/python2.7/site-packages
@@ -487,7 +480,6 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
 
 elif [[ $MACHINE_ID = linux.* ]]; then
 
-  COMPILER=${NEMS_COMPILER:-intel}
   PARTITION=
   QUEUE=
   COMPILE_QUEUE=
@@ -720,7 +712,7 @@ fi
 mkdir -p ${STMP}/${USER}
 NEW_BASELINE=${STMP}/${USER}/FV3_UT/UNIT_TEST
 if [[ $MACHINE_ID == hera.* || $MACHINE_ID == orion.* ]]; then
-  baseline_location=$DISKNM/NEMSfv3gfs/develop-20200713/${COMPILER^^}
+  baseline_location=$DISKNM/NEMSfv3gfs/develop-20200713/${RT_COMPILER^^}
 else
   baseline_location=$DISKNM/NEMSfv3gfs/develop-20200713
 fi
