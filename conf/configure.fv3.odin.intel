@@ -48,10 +48,10 @@ DEBUG =
 REPRO =
 VERBOSE =
 OPENMP = Y
-AVX2 = Y
+AVX2 = N
 HYDRO = N
-QUAD_PRECISION = Y
-MULTI_GASES = N
+CCPP = N
+STATIC = N
 
 include       $(ESMFMKFILE)
 ESMF_INC    = $(ESMF_F90COMPILEPATHS)
@@ -68,50 +68,64 @@ ifneq ($(need),$(ok))
 $(error Need at least make version $(need).  Load module gmake/3.81)
 endif
 
-NETCDF_ROOT = $(NETCDF4)
+NETCDF_ROOT = $(NETCDF_DIR)
 INCLUDE = -I$(NETCDF_ROOT)/include
 NETCDF_INC = -I$(NETCDF_ROOT)/include
 ifneq ($(findstring netcdf/4,$(LOADEDMODULES)),)
-  NETCDF_LIB += -L$(NETCDF4)/lib -lnetcdff -lnetcdf
+  NETCDF_LIB += -L$(NETCDF_DIR)/lib -lnetcdff -lnetcdf
 else
-  NETCDF_LIB += -L$(NETCDF4)/lib -lnetcdff -lnetcdf
+  NETCDF_LIB += -L$(NETCDF_DIR)/lib -lnetcdff -lnetcdf
 endif
 
 FPPFLAGS := -fpp -Wp,-w $(INCLUDE)
 CFLAGS := $(INCLUDE)
 
-FFLAGS := $(INCLUDE) -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte
+FFLAGS := $(INCLUDE) -fno-alias -auto -safe-cray-ptr -save-temps -ftz -assume byterecl -nowarn -sox -align array64byte
+
+CPPDEFS += -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP
+CPPDEFS += -DNEW_TAUCTMAX -DINTERNAL_FILE_NML -DNO_INLINE_POST
 
 ifeq ($(HYDRO),Y)
-CPPDEFS += -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -Duse_WRTCOMP -DNO_INLINE_POST
+CPPDEFS +=
 else
-CPPDEFS += -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO  -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND -Duse_WRTCOMP -DNO_INLINE_POST
+CPPDEFS += -DMOIST_CAPPA -DUSE_COND
 endif
 
-CPPDEFS += -DNEW_TAUCTMAX -DINTERNAL_FILE_NML
+ifeq ($(NAM_phys),Y)
+CPPDEFS += -DNAM_phys
+endif
 
 ifeq ($(32BIT),Y)
 CPPDEFS += -DOVERLOAD_R4 -DOVERLOAD_R8
 FFLAGS += -i4 -real-size 32
 else
+ifeq ($(REPRO),Y)
+FFLAGS += -i4 -real-size 64
+else
 FFLAGS += -i4 -real-size 64 -no-prec-div -no-prec-sqrt
 endif
+endif
 
-FFLAGS += -xCORE-AVX-I #-axavx 
-CFLAGS += -xCORE-AVX-I #-axavx 
+ifeq ($(REPRO),Y)
+FFLAGS += -qno-opt-dynamic-align
+CFLAGS += -qno-opt-dynamic-align
+else
+ifeq ($(AVX2),Y)
+FFLAGS += -xCORE-AVX2 -qno-opt-dynamic-align
+CFLAGS += -xCORE-AVX2 -qno-opt-dynamic-align
+else
+FFLAGS += -qno-opt-dynamic-align
+CFLAGS += -qno-opt-dynamic-align
+endif
+endif
 
 ifeq ($(MULTI_GASES),Y)
 CPPDEFS += -DMULTI_GASES
 endif
 
-ifeq ($(QUAD_PRECISION),Y)
-CPPDEFS += -DENABLE_QUAD_PRECISION
-endif
-
 FFLAGS_OPT = -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3
-FFLAGS_REPRO = -O2 -debug minimal -fp-model consistent -qoverride-limits -g -traceback
-#FFLAGS_DEBUG = -g -O0 -check bounds -check -check noarg_temp_created -check nopointer -warn -warn noerrors -fp-stack-check -fstack-protector-all -fpe0 -debug -traceback -ftrapuv
-FFLAGS_DEBUG = -g -O0 -check bounds -traceback 
+FFLAGS_REPRO = -O2 -debug minimal -fp-model precise -qoverride-limits -g -traceback
+FFLAGS_DEBUG = -g -O0 -check all -check noarg_temp_created -check nopointer -warn -warn noerrors -fp-stack-check -fstack-protector-all -fpe0 -debug -traceback -ftrapuv
 
 TRANSCENDENTALS := -fast-transcendentals
 FFLAGS_OPENMP = -qopenmp
@@ -136,34 +150,49 @@ LDFLAGS_VERBOSE := -Wl,-V,--verbose,-cref,-M
 # start with blank LIBS
 LIBS :=
 
-#ifneq ($(REPRO),)
-#CFLAGS += $(CFLAGS_REPRO)
-#FFLAGS += $(FFLAGS_REPRO)
-#FAST :=
-#else ifneq ($(DEBUG),)
+ifeq ($(REPRO),Y)
+CPPDEFS += -DREPRO
+CFLAGS += $(CFLAGS_REPRO)
+FFLAGS += $(FFLAGS_REPRO)
+FAST :=
+else ifeq ($(DEBUG),Y)
+CPPDEFS += -DDEBUG
 CFLAGS += $(CFLAGS_DEBUG)
 FFLAGS += $(FFLAGS_DEBUG)
 FAST :=
-#else ifneq ($(TEST),)
-#CFLAGS += $(CFLAGS_TEST)
-#FFLAGS += $(FFLAGS_TEST)
-#FAST :=
-#else
-#CFLAGS += $(CFLAGS_OPT)
-#FFLAGS += $(FFLAGS_OPT)
-#FAST := $(TRANSCENDENTALS)
-#endif
+else ifeq ($(TEST),Y)
+CFLAGS += $(CFLAGS_TEST)
+FFLAGS += $(FFLAGS_TEST)
+FAST :=
+else
+CFLAGS += $(CFLAGS_OPT)
+FFLAGS += $(FFLAGS_OPT)
+FAST := $(TRANSCENDENTALS)
+endif
 
-ifneq ($(OPENMP),)
+ifeq ($(OPENMP),Y)
+CPPDEFS += -DOPENMP
 CFLAGS += $(CFLAGS_OPENMP)
 FFLAGS += $(FFLAGS_OPENMP)
 LDFLAGS += $(LDFLAGS_OPENMP)
 endif
 
-ifneq ($(VERBOSE),)
+ifeq ($(VERBOSE),Y)
 CFLAGS += $(CFLAGS_VERBOSE)
 FFLAGS += $(FFLAGS_VERBOSE)
 LDFLAGS += $(LDFLAGS_VERBOSE)
+endif
+
+ifeq ($(CCPP),Y)
+CPPDEFS += -DCCPP
+CFLAGS += -I$(PATH_CCPP)/include
+FFLAGS += -I$(PATH_CCPP)/include
+ifeq ($(STATIC),Y)
+CPPDEFS += -DSTATIC
+LDFLAGS += -L$(PATH_CCPP)/lib -lccppphys -lccpp $(NCEPLIBS) -L/oldscratch/ywang/external/libxml2_static/lib -lxml2
+else
+LDFLAGS += -L$(PATH_CCPP)/lib -lccpp
+endif
 endif
 
 LDFLAGS += $(LIBS)

@@ -131,10 +131,6 @@ if [[ "${MAKE_OPT}" == *"CCPP=Y"* ]]; then
 
 fi
 
-if [[ "${MAKE_OPT}" == *"WW3=Y"* ]]; then
-    CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DWW3=Y"
-fi
-
 CCPP_CMAKE_FLAGS=$(trim "${CCPP_CMAKE_FLAGS}")
 
 (

@@ -28,7 +28,6 @@ set(OPENMP          ON  CACHE BOOL "Enable OpenMP threading")
 set(PARALLEL_NETCDF OFF CACHE BOOL "Enable parallel NetCDF")
 set(QUAD_PRECISION  ON  CACHE BOOL "Enable QUAD_PRECISION (for certain grid metric terms in dycore)")
 set(REPRO           OFF CACHE BOOL "Enable REPRO mode")
-set(WW3             OFF CACHE BOOL "Enable WW3")
 
 if(CMAKE_Platform)
   message("")
@@ -52,7 +51,6 @@ message("OPENMP ........... ${OPENMP}")
 message("PARALLEL_NETCDF .. ${PARALLEL_NETCDF}")
 message("QUAD_PRECISION ... ${QUAD_PRECISION}")
 message("REPRO ............ ${REPRO}")
-message("WW3 .............. ${WW3}")
 message("")
 
 get_filename_component (C_COMPILER_NAME ${CMAKE_C_COMPILER} NAME)
@@ -178,30 +176,6 @@ add_subdirectory(stochastic_physics)
 add_subdirectory(FV3)
 
 ###############################################################################
-### WW3
-###############################################################################
-if(WW3)
-  set(WW3_COMP ${CMAKE_Platform})
-  if(${CMAKE_Platform} STREQUAL "hera.intel")
-    set(WW3_COMP "hera")
-  endif()
-  if(${CMAKE_Platform} STREQUAL "orion.intel")
-    set(WW3_COMP "orion")
-  endif()
-  message("Build WW3:")
-  message("   run: ${CMAKE_BUILD_TOOL} WW3_PARCOMPN=4 WW3_COMP=${WW3_COMP} ww3_nemslibonly")
-  message("   in:  ${PROJECT_SOURCE_DIR}/WW3/model/esmf")
-  message("")
-
-  add_custom_target(ww3_nems
-    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/WW3/model/esmf
-    COMMAND ${CMAKE_BUILD_TOOL} WW3_PARCOMPN=4 WW3_COMP=${WW3_COMP} ww3_nemslibonly > ${PROJECT_BINARY_DIR}/ww3_make.log 2>&1
-  )
-
-    set(WW3_LIBS ${PROJECT_SOURCE_DIR}/WW3/model/obj/libww3_multi_esmf.a)
-endif()
-
-###############################################################################
 ### NEMS (ufs-weather-model-lib)
 ###############################################################################
 add_library(
@@ -229,13 +203,6 @@ target_compile_definitions(ufs-weather-model-lib PRIVATE -DFRONT_FV3=fv3gfs_cap_
 target_include_directories(ufs-weather-model-lib PRIVATE ${PROJECT_BINARY_DIR}/NEMS/src)
 target_include_directories(ufs-weather-model-lib PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/FV3/mod)
 target_include_directories(ufs-weather-model-lib PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/FMS/mod)
-
-if(WW3)
-    target_compile_definitions(ufs-weather-model-lib PRIVATE -DFRONT_WW3=WMESMFMD)
-    target_include_directories(ufs-weather-model-lib PRIVATE ${PROJECT_SOURCE_DIR}/WW3/model/mod)
-    set_target_properties(ufs-weather-model-lib PROPERTIES Fortran_MODULE_DIRECTORY ${PROJECT_SOURCE_DIR}/WW3/model/mod)
-    add_dependencies(ufs-weather-model-lib ww3_nems)
-endif()
 
 set_target_properties(ufs-weather-model-lib PROPERTIES Fortran_MODULE_DIRECTORY ${PROJECT_BINARY_DIR}/mod)
 target_include_directories(ufs-weather-model-lib PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
@@ -268,15 +235,8 @@ target_include_directories(NEMS.exe PRIVATE ${PROJECT_BINARY_DIR}/NEMS/src)
 
 set_target_properties(NEMS.exe PROPERTIES Fortran_MODULE_DIRECTORY ${PROJECT_BINARY_DIR}/mod)
 
-if(WW3)
-    target_compile_definitions(NEMS.exe PRIVATE -DFRONT_WW3=WMESMFMD)
-    set_target_properties(NEMS.exe PROPERTIES Fortran_MODULE_DIRECTORY ${PROJECT_SOURCE_DIR}/WW3/model/mod)
-    add_dependencies(NEMS.exe ww3_nems)
-endif()
-
 target_link_libraries(NEMS.exe
                       ufs-weather-model-lib
-                      ${WW3_LIBS}
                       esmf NetCDF::NetCDF_Fortran ${MKL_LIB})
 
 ###############################################################################
