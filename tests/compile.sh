@@ -139,6 +139,7 @@ if [ $clean_before = YES ] ; then
   rm -rf ${BUILD_DIR}
 fi
 
+export BUILD_VERBOSE=1
 export BUILD_DIR
 export BUILD_JOBS
 export CCPP_SUITES
