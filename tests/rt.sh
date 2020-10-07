@@ -323,10 +323,11 @@ else
   die "Unknown machine ID, please edit detect_machine.sh file"
 fi
 
-mkdir -p ${STMP}/${USER}
+# mkdir -p ${STMP}/${USER}
 
 # Different own baseline directories for different compilers on Theia/Cheyenne
-NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST
+#NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST
+NEW_BASELINE=${RUNDIR_ROOT:-${STMP}/${USER}/FV3_RT}/REGRESSION_TEST
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]]; then
     NEW_BASELINE=${NEW_BASELINE}_${RT_COMPILER^^}
 fi
