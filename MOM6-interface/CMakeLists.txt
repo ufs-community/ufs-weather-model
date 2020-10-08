@@ -38,6 +38,7 @@ add_library(config_obj OBJECT ${mom6_config_src_files})
 set_target_properties(config_obj PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(config_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
 target_link_libraries(config_obj PRIVATE mom6_obj
+                                         fms
                                          esmf)
 # OpenMP is disabled in MOM6
 #if(OpenMP_Fortran_FOUND)

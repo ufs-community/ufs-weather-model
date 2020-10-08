@@ -75,12 +75,18 @@ endif()
 include(cmake/${CMAKE_Fortran_COMPILER_ID}.cmake)
 message("")
 
-find_package(NetCDF REQUIRED C Fortran)
+###############################################################################
+### Find Dependencies
+###############################################################################
 find_package(MPI REQUIRED)
 if(OPENMP)
   find_package(OpenMP REQUIRED)
 endif()
+find_package(NetCDF REQUIRED C Fortran)
 find_package(ESMF MODULE REQUIRED)
+if(S2S)
+  find_package(PIO REQUIRED COMPONENTS C Fortran STATIC)
+endif()
 
 find_package(bacio REQUIRED)
 find_package(nemsio REQUIRED)
@@ -89,9 +95,6 @@ find_package(w3emc REQUIRED)
 find_package(w3nco REQUIRED)
 if(INLINE_POST)
   find_package(nceppost REQUIRED)
-endif()
-if(S2S)
-  find_package(PIO REQUIRED COMPONENTS C Fortran STATIC)
 endif()
 
 # See https://github.com/NOAA-EMC/NCEPLIBS-nemsio/pull/22
@@ -103,6 +106,13 @@ if(CCPP)
     find_package(Python 2.7 REQUIRED COMPONENTS Interpreter)
   endif()
   message("Found Python: ${Python_EXECUTABLE}")
+endif()
+
+###############################################################################
+### Checks
+###############################################################################
+if(S2S AND 32BIT)
+   message(FATAL_ERROR "S2S=ON and 32BIT=ON are incompatible, ABORT!")
 endif()
 
 ###############################################################################
@@ -177,16 +187,16 @@ if(WW3)
 endif()
 
 ###############################################################################
-### S2S
+### S2S Components [CMEPS, MOM6, CICE]
 ###############################################################################
 if(S2S)
   add_subdirectory(CMEPS-interface)
-  add_subdirectory(CICE-interface)
   add_subdirectory(MOM6-interface)
+  add_subdirectory(CICE-interface)
 endif()
 
 ###############################################################################
-### NEMS (ufs)
+### UFS Library [NEMS]
 ###############################################################################
 list(APPEND _nems_srcs NEMS/src/module_NEMS_UTILS.F90
                        NEMS/src/module_MEDIATOR_methods.F90
@@ -286,5 +296,5 @@ install(EXPORT ufs-config
   DESTINATION lib/cmake)
 
 ###############################################################################
-### done
+### Done
 ###############################################################################
