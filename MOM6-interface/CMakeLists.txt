@@ -1,0 +1,74 @@
+### MOM6 Fortran compiler flags
+if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
+  set(CMAKE_Fortran_FLAGS "-g -fbacktrace")
+  set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fdefault-real-8 -fdefault-double-8")
+  set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Waliasing -fcray-pointer -fconvert=big-endian -ffree-line-length-none -fno-range-check -fbacktrace")
+  set(CMAKE_Fortran_FLAGS_RELEASE "-O2")
+  set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -fcheck=bounds -ffpe-trap=invalid,zero,overflow,underflow" )
+  set(CMAKE_Fortran_LINK_FLAGS "")
+elseif(CMAKE_Fortran_COMPILER_ID MATCHES "Intel")
+  set(CMAKE_Fortran_FLAGS "-g -traceback")
+  set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -i4 -r8")
+  set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -sox")
+  set(CMAKE_Fortran_FLAGS_RELEASE "-O2 -fp-model source -debug minimal -nowarn")
+  set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -check -check noarg_temp_created -check nopointer -warn -warn noerrors -fpe0 -ftrapuv")
+  set(CMAKE_Fortran_LINK_FLAGS "")
+else()
+  message(WARNING "Fortran compiler with ID ${CMAKE_Fortran_COMPILER_ID} will be used with CMake default options")
+endif()
+
+# Too many files to list, so include them via this file
+include("mom6_files.cmake")
+
+### Use common object library for building target library
+add_library(mom6_obj OBJECT ${mom6_src_files})
+set_target_properties(mom6_obj PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
+target_include_directories(mom6_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
+target_include_directories(mom6_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/config_src/dynamic>
+                                            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/src/framework>
+                                            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/config_src/nuopc_driver>)
+target_link_libraries(mom6_obj PRIVATE fms
+                                       NetCDF::NetCDF_Fortran)
+# OpenMP is disabled in MOM6
+#if(OpenMP_Fortran_FOUND)
+# target_link_libraries(mom6_obj PRIVATE OpenMP::OpenMP_Fortran)
+#endif()
+
+add_library(config_obj OBJECT ${mom6_config_src_files})
+set_target_properties(config_obj PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
+target_include_directories(config_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
+target_link_libraries(config_obj PRIVATE mom6_obj
+                                         esmf)
+# OpenMP is disabled in MOM6
+#if(OpenMP_Fortran_FOUND)
+# target_link_libraries(config_obj PRIVATE OpenMP::OpenMP_Fortran)
+#endif()
+
+### Create target library and set PUBLIC interfaces on the library
+add_library(mom6 STATIC $<TARGET_OBJECTS:mom6_obj>
+                        $<TARGET_OBJECTS:config_obj>)
+target_include_directories(mom6 PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
+                                       $<INSTALL_INTERFACE:mod>)
+target_link_libraries(mom6 PUBLIC fms
+                                  esmf
+                                  NetCDF::NetCDF_Fortran)
+# OpenMP is disabled in MOM6
+#if(OpenMP_Fortran_FOUND)
+#  target_link_libraries(mom6 PRIVATE OpenMP::OpenMP_Fortran)
+#endif()
+
+###############################################################################
+### Install
+###############################################################################
+
+install(
+  TARGETS mom6
+  EXPORT mom6-config
+  LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib
+  COMPONENT Library)
+
+install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod DESTINATION ${CMAKE_INSTALL_PREFIX}/MOM6)
+
+install(EXPORT      mom6-config
+        DESTINATION lib/cmake)

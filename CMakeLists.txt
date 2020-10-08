@@ -16,6 +16,7 @@ project(ufs
         LANGUAGES C CXX Fortran)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules/Modules)
 
 set(32BIT           OFF CACHE BOOL "Enable 32BIT (single precision arithmetic in dycore)")
 set(AVX2            ON  CACHE BOOL "Enable AVX2 instruction set")
@@ -30,6 +31,7 @@ set(PARALLEL_NETCDF OFF CACHE BOOL "Enable parallel NetCDF")
 set(QUAD_PRECISION  ON  CACHE BOOL "Enable QUAD_PRECISION (for certain grid metric terms in dycore)")
 set(REPRO           OFF CACHE BOOL "Enable REPRO mode")
 set(WW3             OFF CACHE BOOL "Enable WW3")
+set(S2S             OFF CACHE BOOL "Enable S2S")
 
 if(CMAKE_Platform)
   message("")
@@ -55,6 +57,7 @@ message("PARALLEL_NETCDF .. ${PARALLEL_NETCDF}")
 message("QUAD_PRECISION ... ${QUAD_PRECISION}")
 message("REPRO ............ ${REPRO}")
 message("WW3 .............. ${WW3}")
+message("S2S .............. ${S2S}")
 message("")
 
 get_filename_component (C_COMPILER_NAME ${CMAKE_C_COMPILER} NAME)
@@ -87,13 +90,15 @@ find_package(w3nco REQUIRED)
 if(INLINE_POST)
   find_package(nceppost REQUIRED)
 endif()
+find_package(PIO REQUIRED COMPONENTS C Fortran STATIC)
+
 # See https://github.com/NOAA-EMC/NCEPLIBS-nemsio/pull/22
 target_link_libraries(nemsio::nemsio INTERFACE w3emc::w3emc_d bacio::bacio_4)
 
 if(CCPP)
   find_package(Python 3 QUIET COMPONENTS Interpreter)
   if (NOT Python_Interpreter_FOUND)
-    find_package(Python 2.7 QUIET REQUIRED COMPONENTS Interpreter)
+    find_package(Python 2.7 REQUIRED COMPONENTS Interpreter)
   endif()
   message("Found Python: ${Python_EXECUTABLE}")
 endif()
@@ -123,12 +128,11 @@ target_compile_definitions(fms PRIVATE "${_fms_defs_private}")
 
 target_include_directories(fms PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/include>
                                       $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/fms>
-                                      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/fms2_io/include>
                                       $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/mpp/include>)
 target_link_libraries(fms PUBLIC MPI::MPI_Fortran
                                  NetCDF::NetCDF_Fortran)
 if(OpenMP_Fortran_FOUND)
-  target_link_libraries(fms PUBLIC OpenMP::OpenMP_Fortran)
+  target_link_libraries(fms PRIVATE OpenMP::OpenMP_Fortran)
 endif()
 set_target_properties(fms PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/FMS)
 set_target_properties(fms PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/FMS/mod)
@@ -171,6 +175,15 @@ if(WW3)
 endif()
 
 ###############################################################################
+### S2S
+###############################################################################
+if(S2S)
+  add_subdirectory(CMEPS-interface)
+  add_subdirectory(CICE-interface)
+  add_subdirectory(MOM6-interface)
+endif()
+
+###############################################################################
 ### NEMS (ufs)
 ###############################################################################
 list(APPEND _nems_srcs NEMS/src/module_NEMS_UTILS.F90
@@ -201,6 +214,7 @@ add_library(ufs ${_nems_srcs})
 list(APPEND _ufs_defs_private ESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR}
                               FRONT_FMS
                               FRONT_FV3=fv3gfs_cap_mod)
+add_dependencies(ufs fms fv3atm)
 
 set_target_properties(ufs PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(ufs PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/NEMS/src)
@@ -215,9 +229,21 @@ endif()
 target_include_directories(ufs INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                          $<INSTALL_INTERFACE:mod>)
 
-target_compile_definitions(ufs PRIVATE ${_ufs_defs_private})
 target_link_libraries(ufs PUBLIC esmf
                                  fv3atm)
+
+if(S2S)
+  list(APPEND _ufs_defs_private FRONT_MOM6=mom_cap_mod
+                                FRONT_CICE6=ice_comp_nuopc
+                                CMEPS
+                                FRONT_CMEPS=MED)
+  add_dependencies(ufs mom6 cice cmeps)
+  target_link_libraries(ufs PUBLIC mom6
+                                   cice
+                                   cmeps)
+endif()
+
+target_compile_definitions(ufs PRIVATE "${_ufs_defs_private}")
 
 ###############################################################################
 ### UFS executable
@@ -255,8 +281,7 @@ install(
 install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod DESTINATION ${CMAKE_INSTALL_PREFIX})
 
 install(EXPORT ufs-config
-  DESTINATION lib/cmake
-)
+  DESTINATION lib/cmake)
 
 ###############################################################################
 ### done
