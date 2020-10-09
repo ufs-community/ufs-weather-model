@@ -1,58 +1,42 @@
-#%Module######################################################################
-##
-##    NEMS FV3 Prerequisites: Hera/GNU
+#%Module
 
 proc ModulesHelp {} {
-  puts stderr "\tcit - loads modules required for building and running FV3 under NEMS on Hera/GNU"
+  puts stderr "\tcit - loads modules required for building and running UFS Model on Hera/GNU"
 }
 
-module-whatis "loads NEMS FV3 prerequisites for Hera/GNU"
+module-whatis "loads UFS Model prerequisites for Hera/GNU"
 
-##
-## load contrib environment
-## load slurm utils (arbitrary.pl  layout.pl)
-##
-module use -a /contrib/sutils/modulefiles
+module use /contrib/sutils/modulefiles
 module load sutils
 
-##
-## load programming environment
-## this typically includes compiler, MPI and job scheduler
-##
-module load gnu/9.2.0
-module use -a /scratch1/BMC/gmtb/software/modulefiles/gnu-9.2.0/mpich-3.3.2
-module load mpich/3.3.2
-
-##
-## use pre-compiled PNG, NetCDF, ESMF and NCEP libraries for above compiler / MPI combination
-##
-module use -a /scratch1/BMC/gmtb/software/ufs-stack-20200909/gnu-9.2.0/mpich-3.3.2/modules
-
-module load libpng/1.6.35
-module load netcdf/4.7.4
-#module load pio/2.5.1
-module load esmf/8.1.0bs27
-
-module load bacio/2.4.0
-module load crtm/2.3.0
-module load g2/3.4.0
-module load g2tmpl/1.9.0
-module load ip/3.3.0
-module load nceppost/dceca26
-module load nemsio/2.5.1
-module load sp/2.3.0
-module load w3emc/2.7.0
-module load w3nco/2.4.0
-
-module load gfsio/1.4.0
-module load sfcio/1.4.0
-module load sigio/2.3.0
-
-##
-## load cmake
-##
 module load cmake/3.16.1
 setenv CMAKE_C_COMPILER mpicc
 setenv CMAKE_CXX_COMPILER mpicxx
 setenv CMAKE_Fortran_COMPILER mpif90
 setenv CMAKE_Platform hera.gnu
+
+module use /scratch2/NCEPDEV/nwprod/hpc-stack/libs/hpc-stack/v1.0.0-beta1/modulefiles/stack
+
+module load hpc/1.0.0-beta1
+module load hpc-gnu/9.2.0
+module load hpc-mpich/3.3.2
+
+module load jasper/2.0.15
+module load zlib/1.2.11
+module load png/1.6.35
+
+module load hdf5/1.10.6
+module load netcdf/4.7.4
+module load pio/2.5.1
+module load esmf/8_1_0_beta_snapshot_27
+
+module load bacio/2.4.1
+module load crtm/2.3.0
+module load g2/3.4.1
+module load g2tmpl/1.9.1
+module load ip/3.3.3
+module load nceppost/dceca26
+module load nemsio/2.5.2
+module load sp/2.3.3
+module load w3emc/2.7.3
+module load w3nco/2.4.1
