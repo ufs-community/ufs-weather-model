@@ -419,6 +419,10 @@ if [[ $CREATE_BASELINE == true ]]; then
 
   rsync -a "${RTPWD}"/FV3_* "${NEW_BASELINE}"/
   rsync -a "${RTPWD}"/WW3_* "${NEW_BASELINE}"/
+  rsync -a "${RTPWD}"/MOM6_* "${NEW_BASELINE}"/
+  rsync -a "${RTPWD}"/CICE_* "${NEW_BASELINE}"/
+  rsync -a "${RTPWD}"/CPL_* "${NEW_BASELINE}"/
+  rsync -a "${RTPWD}"/BM_* "${NEW_BASELINE}"/
 
   # FIXME: move these namelist files to parm directory
   rsync -a "${RTPWD}"/fv3_regional_control/input.nml "${NEW_BASELINE}"/fv3_regional_control/
@@ -679,6 +683,7 @@ EOF
       export ECFLOW=${ECFLOW}
       export REGRESSIONTEST_LOG=${REGRESSIONTEST_LOG}
       export LOG_DIR=${LOG_DIR}
+      export DEP_RUN=${DEP_RUN}
 EOF
 
       if [[ $ROCOTO == true ]]; then
