@@ -62,6 +62,7 @@ set_target_properties(cice PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_B
 target_include_directories(cice INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                           $<INSTALL_INTERFACE:mod>)
 target_compile_definitions(cice PRIVATE FORTRANUNDERSCORE
+                                        coupled
                                         USE_NETCDF)
 target_link_libraries(cice PUBLIC esmf
                                   NetCDF::NetCDF_Fortran
