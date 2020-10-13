@@ -80,13 +80,11 @@ else
 
 fi
 
-# Re-instantiate COMPILER in case it gets deleted by module purge
-COMPILER=${NEMS_COMPILER:-intel}
-# Longer default walltime for GNU and PGI
-if [[ $COMPILER = gnu ]] || [[ $COMPILER = pgi ]]; then
-    WLCLK_dflt=30
+# Longer default walltime for GNU
+if [[ $RT_COMPILER = gnu ]]; then
+  WLCLK_dflt=30
 else
-    WLCLK_dflt=15
+  WLCLK_dflt=15
 fi
 
 export_fv3 ()
