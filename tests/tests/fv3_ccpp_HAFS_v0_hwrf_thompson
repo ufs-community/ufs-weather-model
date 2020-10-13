@@ -1,12 +1,12 @@
 ###############################################################################
 #
-#  FV3 CCPP HAFS v0 HWRF compiled with 32-bit dynamics test
+#  FV3 CCPP HAFS v0 HWRF with Thompson MP, compiled with 32-bit dynamics test
 #
 ###############################################################################
 
 export TEST_DESCR="Compare HAFS 32bit CCPP HWRF suite results with previous trunk version"
 
-export CNTL_DIR=HAFS_v0_HWRF
+export CNTL_DIR=HAFS_v0_HWRF_thompson
 
 export LIST_FILES="atmos_4xdaily.tile1.nc \
                    atmos_4xdaily.tile2.nc \
@@ -78,16 +78,20 @@ export NODES=$(expr $TASKS / $TPN + 1)
 DT_ATMOS="600"
 
 export FV3_RUN=ccpp_HAFS_v0_hwrf_run.IN
-export CCPP_SUITE=HAFS_v0_hwrf
+export CCPP_SUITE=HAFS_v0_hwrf_thompson
 export CCPP_LIB_DIR=ccpp/lib
-export INPUT_NML=ccpp_c96_HAFS_v0_hwrf.nml.IN
+export INPUT_NML=ccpp_c96_HAFS_v0_hwrf_thompson.nml.IN
 
 export OZ_PHYS_OLD=.F.
 export OZ_PHYS_NEW=.T.
 
-#F-A microphysics
-export IMP_PHYSICS=15
+## F-A microphysics
+#export IMP_PHYSICS=15
+#export LRADAR=.T.
+# Thompson microphysics
+export IMP_PHYSICS=8
 export LRADAR=.T.
+export LTAEROSOL=.F.
 
 #hurricane options for hybrid EDMF
 export HURR_PBL=.T.
