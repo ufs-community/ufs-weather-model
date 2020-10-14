@@ -248,25 +248,20 @@ list(APPEND mom6_src_files
   MOM6/src/ocean_data_assim/geoKdTree/kdtree.f90
 )
 
-list(APPEND mom6_src_files
-  MOM6/config_src/nuopc_driver/mom_ocean_model_nuopc.F90
-  MOM6/config_src/nuopc_driver/mom_surface_forcing_nuopc.F90
-)
-
-list(APPEND mom6_config_src_files
+list(APPEND mom6_nuopc_src_files
   MOM6/config_src/nuopc_driver/mom_cap.F90
   MOM6/config_src/nuopc_driver/time_utils.F90
   MOM6/config_src/nuopc_driver/mom_cap_methods.F90
   MOM6/config_src/nuopc_driver/mom_cap_time.F90
+  MOM6/config_src/nuopc_driver/mom_ocean_model_nuopc.F90
+  MOM6/config_src/nuopc_driver/mom_surface_forcing_nuopc.F90
 )
 
-list(APPEND mom6_include_files
-  MOM6/src/framework/MOM_memory_macros.h
-  MOM6/src/framework/version_variable.h
-  MOM6/config_src/dynamic/MOM_memory.h
-)
-
-list(APPEND mom6_include_dirs
-  MOM6/src/framework
-  MOM6/config_src/dynamic
+list(APPEND mom6_solo_src_files
+  MOM6/config_src/solo_driver/MESO_surface_forcing.F90
+  MOM6/config_src/solo_driver/MOM_driver.F90
+  MOM6/config_src/solo_driver/MOM_surface_forcing.F90
+  MOM6/config_src/solo_driver/Neverland_surface_forcing.F90
+  MOM6/config_src/solo_driver/atmos_ocean_fluxes.F90
+  MOM6/config_src/solo_driver/user_surface_forcing.F90
 )

@@ -17,6 +17,9 @@ else()
   message(WARNING "Fortran compiler with ID ${CMAKE_Fortran_COMPILER_ID} will be used with CMake default options")
 endif()
 
+# User option to build MOM6 solo executable
+set(MOM6SOLO OFF CACHE BOOL "Build MOM6 solo")
+
 # Too many files to list, so include them via this file
 include("mom6_files.cmake")
 
@@ -25,8 +28,7 @@ add_library(mom6_obj OBJECT ${mom6_src_files})
 set_target_properties(mom6_obj PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(mom6_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
 target_include_directories(mom6_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/config_src/dynamic>
-                                            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/src/framework>
-                                            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/config_src/nuopc_driver>)
+                                            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/src/framework>)
 target_link_libraries(mom6_obj PRIVATE fms
                                        NetCDF::NetCDF_Fortran)
 # OpenMP is disabled in MOM6
@@ -34,22 +36,26 @@ target_link_libraries(mom6_obj PRIVATE fms
 # target_link_libraries(mom6_obj PRIVATE OpenMP::OpenMP_Fortran)
 #endif()
 
-add_library(config_obj OBJECT ${mom6_config_src_files})
-set_target_properties(config_obj PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
-target_include_directories(config_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
-target_link_libraries(config_obj PRIVATE mom6_obj
-                                         fms
-                                         esmf)
+add_library(mom6_nuopc_obj OBJECT ${mom6_nuopc_src_files})
+set_target_properties(mom6_nuopc_obj PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
+target_include_directories(mom6_nuopc_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
+target_include_directories(mom6_nuopc_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/config_src/dynamic>
+                                                  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/src/framework>)
+target_link_libraries(mom6_nuopc_obj PRIVATE mom6_obj
+                                             fms
+                                             esmf)
 # OpenMP is disabled in MOM6
 #if(OpenMP_Fortran_FOUND)
-# target_link_libraries(config_obj PRIVATE OpenMP::OpenMP_Fortran)
+# target_link_libraries(mom6_nuopc_obj PRIVATE OpenMP::OpenMP_Fortran)
 #endif()
 
 ### Create target library and set PUBLIC interfaces on the library
 add_library(mom6 STATIC $<TARGET_OBJECTS:mom6_obj>
-                        $<TARGET_OBJECTS:config_obj>)
+                        $<TARGET_OBJECTS:mom6_nuopc_obj>)
 target_include_directories(mom6 PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                        $<INSTALL_INTERFACE:mod>)
+target_include_directories(mom6 PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/config_src/dynamic>
+                                       $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/src/framework>)
 target_link_libraries(mom6 PUBLIC fms
                                   esmf
                                   NetCDF::NetCDF_Fortran)
@@ -58,13 +64,30 @@ target_link_libraries(mom6 PUBLIC fms
 #  target_link_libraries(mom6 PRIVATE OpenMP::OpenMP_Fortran)
 #endif()
 
+### Create standalone MOM6 executable [bug in our fork prevents this compilation]
+#add_executable(mom6solo ${mom6_solo_src_files})
+#add_dependencies(mom6solo mom6_obj)
+#set_target_properties(mom6solo PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod_solo)
+#target_include_directories(mom6solo PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
+#target_include_directories(mom6solo PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod_solo>)
+#target_include_directories(mom6solo PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/config_src/dynamic>
+#                                            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/src/framework>)
+#target_link_libraries(mom6solo PRIVATE mom6_obj
+#                                       fms
+#                                       NetCDF::NetCDF_Fortran)
+# OpenMP is disabled in MOM6
+#if(OpenMP_Fortran_FOUND)
+#  target_link_libraries(mom6solo PRIVATE OpenMP::OpenMP_Fortran)
+#endif()
+
 ###############################################################################
 ### Install
 ###############################################################################
 
 install(
-  TARGETS mom6
-  EXPORT mom6-config
+  TARGETS mom6 #mom6solo
+  EXPORT  mom6-config
+  RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib
   COMPONENT Library)

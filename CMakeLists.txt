@@ -292,14 +292,15 @@ target_link_libraries(ufs_model PRIVATE ufs
 ###############################################################################
 install(
   TARGETS ufs_model ufs fms
-  EXPORT ufs-config
+  EXPORT  ufs-config
+  RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib)
 
 install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod DESTINATION ${CMAKE_INSTALL_PREFIX})
 
-install(EXPORT ufs-config
-  DESTINATION lib/cmake)
+install(EXPORT      ufs-config
+        DESTINATION lib/cmake)
 
 ###############################################################################
 ### Done
