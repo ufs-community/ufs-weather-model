@@ -14,21 +14,20 @@ Start at the [ufs-weather-model wiki](https://github.com/ufs-community/ufs-weath
 
 The top level directory structure groups source code and input files as follow:
 
-| File/directory    | Purpose |
-| --------------    | ------- |
-| ```LICENSE.md```  | A copy of the Gnu lesser general public license, version 3. |
-| ```README.md```   | This file with basic pointers to more information. |
-| ```FMS/```        | Contains Flexible Modeling System source code. |
-| ```NEMS/```       | Contains NOAA Environmental Modeling System source code and nems compset runi scripts. |
-| ```FV3/```        | Contains FV3 atmosphere model component including fv3 dynamics core, dynsmics to physics driver, physics and io. |
-| ```WW3/```        | Contains community wave modeling framework WW3. |
+| File/directory            | Purpose |
+| --------------            | ------- |
+| ```LICENSE.md```          | A copy of the GNU Lesser General Public License, Version 3. |
+| ```README.md```           | This file with basic pointers to more information. |
+| ```FMS/```                | Contains Flexible Modeling System source code. |
+| ```NEMS/```               | Contains NOAA Environmental Modeling System source code and nems compset runi scripts. |
+| ```CMEPS-interface/```    | Contains CMEPS mediator |
+| ```FV3/```                | Contains FV3 atmosphere model component including FV3 dynamical core, dynamics to physics driver, physics and IO. |
+| ```WW3/```                | Contains community wave modeling framework WW3. |
+| ```MOM6-interface/```     | Contains MOM6 ocean model component |
+| ```CICE-interface/```     | Contains CICE sea-ice model component including CICE6 and Icepack |
 | ```stochastic physics/``` | Contains the stochastic physics source code. |
-| ```conf/```       | Contains compile option files on various platforms. |
-| ```compsets/```   | Contains NEMSCompsetRun regression test compset information. |
-| ```log/```        | Contains log files from NEMSCompsetRun regression test.|
-| ```modulefiles/``` | Contains module files on various platforms.|
-| ```parm/```       | Contains model configuration and namelist templates.|
-| ```doc/```        | Workspace for documentation. |
+| ```cmake/```              | Contains compile option files on various platforms. |
+| ```modulefiles/```        | Contains module files on various platforms.|
 
 # Disclaimer
 
