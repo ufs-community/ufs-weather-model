@@ -1,12 +1,12 @@
-###############################################################################
+###########################################################################################
 #
-#  FV3 CCPP HAFS v0 HWRF with Thompson MP, compiled with 32-bit dynamics test
+#  FV3 CCPP HAFS v0 HWRF with Thompson MP, compiled with 32-bit dynamics in DEBUG mode test
 #
-###############################################################################
+###########################################################################################
 
-export TEST_DESCR="Compare HAFS 32bit CCPP HWRF suite results with previous trunk version"
+export TEST_DESCR="Compare HAFS 32bit CCPP HWRF DEBU suite results with previous trunk version"
 
-export CNTL_DIR=HAFS_v0_HWRF_thompson
+export CNTL_DIR=ESG_HAFS_v0_HWRF_thompson_debug
 
 export LIST_FILES="atmos_4xdaily.tile1.nc \
                    atmos_4xdaily.tile2.nc \
@@ -20,24 +20,24 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
                    phyf000.tile4.nc \
                    phyf000.tile5.nc \
                    phyf000.tile6.nc \
-                   phyf024.tile1.nc \
-                   phyf024.tile2.nc \
-                   phyf024.tile3.nc \
-                   phyf024.tile4.nc \
-                   phyf024.tile5.nc \
-                   phyf024.tile6.nc \
+                   phyf003.tile1.nc \
+                   phyf003.tile2.nc \
+                   phyf003.tile3.nc \
+                   phyf003.tile4.nc \
+                   phyf003.tile5.nc \
+                   phyf003.tile6.nc \
                    dynf000.tile1.nc \
                    dynf000.tile2.nc \
                    dynf000.tile3.nc \
                    dynf000.tile4.nc \
                    dynf000.tile5.nc \
                    dynf000.tile6.nc \
-                   dynf024.tile1.nc \
-                   dynf024.tile2.nc \
-                   dynf024.tile3.nc \
-                   dynf024.tile4.nc \
-                   dynf024.tile5.nc \
-                   dynf024.tile6.nc \
+                   dynf003.tile1.nc \
+                   dynf003.tile2.nc \
+                   dynf003.tile3.nc \
+                   dynf003.tile4.nc \
+                   dynf003.tile5.nc \
+                   dynf003.tile6.nc \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -75,12 +75,16 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
 export_fv3
 export NODES=$(expr $TASKS / $TPN + 1)
 
-DT_ATMOS="600"
+export FHMAX=3
+export FDIAG=3
 
-export FV3_RUN=ccpp_HAFS_v0_hwrf_run.IN
+DT_ATMOS="300"
+
+export FV3_RUN=ccpp_esg_HAFS_v0_hwrf_run.IN
 export CCPP_SUITE=HAFS_v0_hwrf_thompson
 export CCPP_LIB_DIR=ccpp/lib
-export INPUT_NML=ccpp_c96_HAFS_v0_hwrf.nml.IN
+export INPUT_NML=ccpp_esg_HAFS_v0_hwrf.nml.IN
+export MODEL_CONFIGURE=ccpp_esg_HAFS_v0_hwrf-model_configure.IN
 
 export OZ_PHYS_OLD=.F.
 export OZ_PHYS_NEW=.T.
