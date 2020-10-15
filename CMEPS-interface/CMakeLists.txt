@@ -68,7 +68,7 @@ target_compile_definitions(cmeps PUBLIC "${_mediator_defs}")
 target_include_directories(cmeps PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                         $<INSTALL_INTERFACE:mod>)
 target_link_libraries(cmeps PUBLIC esmf
-                                   PIO::PIO_Fortran PIO::PIO_C)
+                                   PIO::PIO_Fortran)
 if(OpenMP_Fortran_FOUND)
   target_link_libraries(cmeps PRIVATE OpenMP::OpenMP_Fortran)
 endif()
