@@ -378,8 +378,8 @@ while getopts ":cfsl:mkreh" opt; do
   esac
 done
 
-if [[ $MACHINE_ID = cheyenne.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/develop-20200210/${COMPILER^^}}
+if [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = hera.* ]]; then
+  RTPWD=${RTPWD:-$DISKNM/develop-20200626/${COMPILER^^}}
 else
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200626}
 fi
