@@ -61,35 +61,14 @@ list(APPEND _mediator_defs ESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR}
                            ESMF_VERSION_MINOR=${ESMF_VERSION_MINOR}
                            INTERNAL_PIO_INIT)
 
-### Use common object library for building target library
-add_library(nems_util_obj OBJECT ${_nems_util_files})
-set_target_properties(nems_util_obj PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
-target_include_directories(nems_util_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/CMEPS/nems/util>)
-target_link_libraries(nems_util_obj PRIVATE esmf
-                                            PIO::PIO_C PIO::PIO_Fortran)
-if(OpenMP_Fortran_FOUND)
-  target_link_libraries(nems_util_obj PRIVATE OpenMP::OpenMP_Fortran)
-endif()
-
-add_library(mediator_obj OBJECT ${_mediator_files})
-set_target_properties(mediator_obj PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
-target_include_directories(mediator_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/CMEPS/mediator>)
-target_compile_definitions(mediator_obj PRIVATE "${_mediator_defs}")
-target_link_libraries(mediator_obj PRIVATE nems_util_obj
-                                           esmf
-                                           PIO::PIO_C PIO::PIO_Fortran)
-if(OpenMP_Fortran_FOUND)
-  target_link_libraries(mediator_obj PRIVATE OpenMP::OpenMP_Fortran)
-endif()
-
 ### Create target library and set PUBLIC interfaces on the library
-add_library(cmeps STATIC $<TARGET_OBJECTS:nems_util_obj>
-                         $<TARGET_OBJECTS:mediator_obj>)
+add_library(cmeps STATIC ${_nems_util_files} ${_mediator_files})
+set_target_properties(cmeps PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_compile_definitions(cmeps PUBLIC "${_mediator_defs}")
 target_include_directories(cmeps PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                         $<INSTALL_INTERFACE:mod>)
 target_link_libraries(cmeps PUBLIC esmf
-                                   PIO::PIO_C PIO::PIO_Fortran)
+                                   PIO::PIO_Fortran PIO::PIO_C)
 if(OpenMP_Fortran_FOUND)
   target_link_libraries(cmeps PRIVATE OpenMP::OpenMP_Fortran)
 endif()

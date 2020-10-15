@@ -67,24 +67,9 @@ elseif(CICE_IO MATCHES "Binary")
   list(APPEND lib_src_files ${cice_binary_io_files})
 endif()
 
-### Use common object library for building target library
-add_library(cice_obj OBJECT ${lib_src_files})
-set_target_properties(cice_obj PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
-target_include_directories(cice_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
-target_compile_definitions(cice_obj PRIVATE "${_cice_defs}")
-target_link_libraries(cice_obj PRIVATE esmf)
-if(CICE_IO MATCHES "^(NetCDF|PIO)$")
-  target_link_libraries(cice_obj PRIVATE NetCDF::NetCDF_Fortran)
-  if(CICE_IO MATCHES "PIO")
-    target_link_libraries(cice_obj PRIVATE PIO::PIO_Fortran)
-  endif()
-endif()
-if(OpenMP_Fortran_FOUND)
-  target_link_libraries(cice_obj PRIVATE OpenMP::OpenMP_Fortran)
-endif()
-
 ### Create target library and set PUBLIC interfaces on the library
-add_library(cice STATIC $<TARGET_OBJECTS:cice_obj>)
+add_library(cice STATIC ${lib_src_files})
+set_target_properties(cice PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_compile_definitions(cice PUBLIC "${_cice_defs}")
 target_include_directories(cice PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                        $<INSTALL_INTERFACE:mod>)
@@ -95,6 +80,9 @@ if(CICE_IO MATCHES "^(NetCDF|PIO)$")
     target_link_libraries(cice PUBLIC PIO::PIO_Fortran)
   endif()
 endif()
+if(OpenMP_Fortran_FOUND)
+  target_link_libraries(cice PRIVATE OpenMP::OpenMP_Fortran)
+endif()
 
 ###############################################################################
 ### Install
@@ -102,7 +90,7 @@ endif()
 
 install(
   TARGETS cice
-  EXPORT cice-config
+  EXPORT  cice-config
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib
   COMPONENT Library)
