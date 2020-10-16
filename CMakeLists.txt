@@ -33,6 +33,13 @@ set(REPRO           OFF CACHE BOOL "Enable REPRO mode")
 set(WW3             OFF CACHE BOOL "Enable WW3")
 set(S2S             OFF CACHE BOOL "Enable S2S")
 
+###############################################################################
+### Set CMAKE_BUILD_TYPE for DEBUG mode
+###############################################################################
+if(DEBUG)
+  set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Set type of build to Debug." FORCE)
+endif()
+
 if(CMAKE_Platform)
   message("")
   if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/cmake/configure_${CMAKE_Platform}.cmake)
