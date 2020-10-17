@@ -8,7 +8,7 @@
 /
 
 &atmos_model_nml
-  blocksize = 32
+  blocksize = 10
   chksum_debug = .false.
   dycore_only = .false.
   fdiag = 1
@@ -40,24 +40,21 @@
 /
 
 &fv_core_nml
-  layout = 3,8
-  io_layout = 1,1
-  npx = 97
-  npy = 97
-  ntiles = 6
+  layout = 20, 2
+  io_layout = 1, 1
+  npx = 201
+  npy = 111
+  ntiles = 1
   npz = 64
-  grid_type = -1
-  make_nh = .false.
+  make_nh = .true.
   fv_debug = .false.
-  range_warn = .false.
+  range_warn = .true.
   reset_eta = .false.
-  n_sponge = 10
-  nudge_qv = .true.
-  nudge_dz = .false.
-  tau = 10.
-  rf_cutoff = 7.5e2
-  d2_bg_k1 = 0.15
-  d2_bg_k2 = 0.02
+  n_sponge = 24
+  nudge_qv = .false.
+  rf_cutoff = 2000.0
+  d2_bg_k1 = 0.2
+  d2_bg_k2 = 0.04
   kord_tm = -9
   kord_mt = 9
   kord_wz = 9
@@ -68,13 +65,13 @@
   beta = 0.
   a_imp = 1.
   p_fac = 0.1
-  k_split = 2
-  n_split = 6
+  k_split = 4
+  n_split = 5
   nwat = @[NWAT]
-  na_init = 0
-  d_ext = 0.
+  na_init = 1
+  d_ext = 0.0
   dnats = 0
-  fv_sg_adj = 450
+  fv_sg_adj = 300
   d2_bg = 0.
   nord = 2
   dddmp = 0.1
@@ -96,7 +93,7 @@
   hord_dp = -5
   hord_tr = 8
   adjust_dry_mass = .false.
-  consv_te = 1.
+  consv_te = 0.
   do_sat_adj = .false.
   consv_am = .false.
   fill = .true.
@@ -105,9 +102,21 @@
   warm_start = .false.
   no_dycore = .false.
   z_tracer = .true.
-  agrid_vel_rst = .true.
   read_increment = .false.
-  res_latlon_dynamics = ""
+  res_latlon_dynamics = 'fv3_increment.nc'
+  regional = .true.
+  do_schmidt = .true.
+  regional_bcs_from_gsi = .false.
+  stretch_fac = 0.999
+  target_lat = 38.5
+  target_lon = -97.5
+  tau = 5.0
+  write_restart_with_bcs = .false.
+  nrows_blend = 10
+  bc_update_interval = 6
+  nord_zs_filter = 4
+  n_zs_filter = 0
+  full_zs_filter = .false.
 /
 
 &external_ic_nml
@@ -142,18 +151,18 @@
   moninq_fac     = -1.0          ! HWRF moninedmf
   lradar         = @[LRADAR]
   pdfcld         = .false.
-  fhswr          = 3600.
-  fhlwr          = 3600.
+  fhswr          = 1200.
+  fhlwr          = 1200.
   ialb           = 1
   iems           = 1
-  IAER           = 111
+  iaer           = 111
   ico2           = 2
   isubc_sw       = 2
   isubc_lw       = 2
   isol           = 2
   lwhtr          = .true.
   swhtr          = .true.
-  cnvgwd         = .true.     !true ->no gwdc
+  cnvgwd         = .true. !true ->no gwdc
   shal_cnv       = .true.
   cal_pre        = .false.
   redrag         = .true.
@@ -164,7 +173,7 @@
   cnvcld         = .true.
   imfshalcnv     = 2
   imfdeepcnv     = 2
-  cdmbgwd        = 3.5, 0.25       ! NCEP default
+  cdmbgwd        = 3.5, 1.0
   prslrd0        = 0.
   ivegsrc        = 1
   isot           = 1
@@ -186,11 +195,8 @@
   oz_phys        = .F.
   oz_phys_2015   = .T.
   h2o_phys       = .true.
-  nstf_name      = 2,1,0,0,0
+  nstf_name      = 2, 1, 1, 0, 5
   cplflx         = .F.
-  iau_delthrs    = 6
-  iaufhrs        = 30
-  iau_inc_files  = @[IAU_INC_FILES]
   do_sppt        = @[DO_SPPT]
   do_shum        = @[DO_SHUM]
   do_skeb        = @[DO_SKEB]
@@ -203,46 +209,43 @@
 /
 
 &namsfc
-  FNGLAC   = 'global_glacier.2x2.grb'
-  FNMXIC   = 'global_maxice.2x2.grb'
-  FNTSFC   = 'RTGSST.1982.2012.monthly.clim.grb'
-  FNSNOC   = 'global_snoclim.1.875.grb'
-  FNZORC   = 'igbp'
-  FNALBC   = 'global_snowfree_albedo.bosu.t126.384.190.rg.grb'
-  FNALBC2  = 'global_albedo4.1x1.grb'
-  FNAISC   = 'CFSR.SEAICE.1982.2012.monthly.clim.grb'
-  FNTG3C   = 'global_tg3clim.2.6x1.5.grb'
-  FNVEGC   = 'global_vegfrac.0.144.decpercent.grb'
-  FNVETC   = 'global_vegtype.igbp.t126.384.190.rg.grb'
-  FNSOTC   = 'global_soiltype.statsgo.t126.384.190.rg.grb'
-  FNSMCC   = 'global_soilmgldas.t126.384.190.grb'
-  FNMSKH   = 'seaice_newland.grb'
-  FNTSFA   = ''
-  FNACNA   = ''
-  FNSNOA   = ''
-  FNVMNC   = 'global_shdmin.0.144x0.144.grb'
-  FNVMXC   = 'global_shdmax.0.144x0.144.grb'
-  FNSLPC   = 'global_slope.1x1.grb'
-  FNABSC   = 'global_mxsnoalb.uariz.t126.384.190.rg.grb'
-  LDEBUG   = .false.
-  FSMCL(2) = 99999
-  FSMCL(3) = 99999
-  FSMCL(4) = 99999
-  LANDICE  = .true.
-  FTSFS    = 90
-  FAISL    = 99999
-  FAISS    = 99999
-  FSNOL    = 99999
-  FSNOS    = 99999
-  FSICL    = 99999
-  FSICS    = 99999
-  FTSFL    = 99999
-  FVETL    = 99999
-  FSOTL    = 99999
-  FvmnL    = 99999
-  FvmxL    = 99999
-  FSLPL    = 99999
-  FABSL    = 99999
+  fabsl = 99999
+  faisl = 99999
+  faiss = 99999
+  fnabsc = 'C401.maximum_snow_albedo.tile7.nc'
+  fnacna = ''
+  fnaisc = 'CFSR.SEAICE.1982.2012.monthly.clim.grb'
+  fnalbc = 'C401.snowfree_albedo.tile7.nc'
+  fnalbc2 = 'C401.facsf.tile7.nc'
+  fnglac = 'global_glacier.2x2.grb'
+  fnmskh = 'seaice_newland.grb'
+  fnmxic = 'global_maxice.2x2.grb'
+  fnslpc = 'C401.slope_type.tile7.nc'
+  fnsmcc = 'global_soilmgldas.t126.384.190.grb'
+  fnsnoa = ''
+  fnsnoc = 'global_snoclim.1.875.grb'
+  fnsotc = 'C401.soil_type.tile7.nc'
+  fntg3c = 'C401.substrate_temperature.tile7.nc'
+  fntsfa = ''
+  fntsfc = 'RTGSST.1982.2012.monthly.clim.grb'
+  fnvegc = 'C401.vegetation_greenness.tile7.nc'
+  fnvetc = 'C401.vegetation_type.tile7.nc'
+  fnvmnc = 'C401.vegetation_greenness.tile7.nc'
+  fnvmxc = 'C401.vegetation_greenness.tile7.nc'
+  fnzorc = 'igbp'
+  fsicl = 99999
+  fsics = 99999
+  fslpl = 99999
+  fsmcl = 99999, 99999, 99999
+  fsnol = 99999
+  fsnos = 99999
+  fsotl = 99999
+  ftsfl = 99999
+  ftsfs = 90
+  fvetl = 99999
+  fvmnl = 99999
+  fvmxl = 99999
+  ldebug = .true.
 /
 
 &nam_stochy
@@ -272,18 +275,29 @@
 &nam_sfcperts
 /
 
+&surf_map_nml
+    cd2 = -1
+    cd4 = 0.12
+    max_slope = 0.4
+    n_del2_strong = 0
+    n_del2_weak = 2
+    n_del4 = 1
+    peak_fac = 1.0
+    zero_ocean = .false.
+/
+
 &cires_ugwp_nml
-  knob_ugwp_solver  = 2
-  knob_ugwp_source  = 1,1,0,0
-  knob_ugwp_wvspec  = 1,25,25,25
-  knob_ugwp_azdir   = 2,4,4,4
-  knob_ugwp_stoch   = 0,0,0,0
-  knob_ugwp_effac   = 1,1,1,1
-  knob_ugwp_doaxyz  = 1
-  knob_ugwp_doheat  = 1
-  knob_ugwp_dokdis  = 1
-  knob_ugwp_ndx4lh  = 1
-  knob_ugwp_version = 0
-  launch_level      = 25
+    knob_ugwp_solver = 2
+    knob_ugwp_source = 1,1,0,0
+    knob_ugwp_wvspec = 1,25,25,25
+    knob_ugwp_azdir = 2,4,4,4
+    knob_ugwp_stoch = 0,0,0,0
+    knob_ugwp_effac = 1,1,1,1
+    knob_ugwp_doaxyz = 1
+    knob_ugwp_doheat = 1
+    knob_ugwp_dokdis = 1
+    knob_ugwp_ndx4lh = 1
+    knob_ugwp_version = 0
+    launch_level = 25
 /
 
