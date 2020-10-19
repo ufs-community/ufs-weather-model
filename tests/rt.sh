@@ -419,10 +419,14 @@ if [[ $CREATE_BASELINE == true ]]; then
 
   rsync -a "${RTPWD}"/FV3_* "${NEW_BASELINE}"/
   rsync -a "${RTPWD}"/WW3_* "${NEW_BASELINE}"/
-  rsync -a "${RTPWD}"/MOM6_* "${NEW_BASELINE}"/
-  rsync -a "${RTPWD}"/CICE_* "${NEW_BASELINE}"/
-  rsync -a "${RTPWD}"/CPL_* "${NEW_BASELINE}"/
-  rsync -a "${RTPWD}"/BM_* "${NEW_BASELINE}"/
+
+  # S2S baselines are only (so far) available on these machines
+  if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
+    rsync -a "${RTPWD}"/MOM6_* "${NEW_BASELINE}"/
+    rsync -a "${RTPWD}"/CICE_* "${NEW_BASELINE}"/
+    rsync -a "${RTPWD}"/CPL_* "${NEW_BASELINE}"/
+    rsync -a "${RTPWD}"/BM_* "${NEW_BASELINE}"/
+  fi
 
   # FIXME: move these namelist files to parm directory
   rsync -a "${RTPWD}"/fv3_regional_control/input.nml "${NEW_BASELINE}"/fv3_regional_control/
