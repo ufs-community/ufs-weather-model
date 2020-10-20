@@ -1,0 +1,317 @@
+&amip_interp_nml
+       interp_oi_sst = .true.
+       use_ncep_sst = .true.
+       use_ncep_ice = .false.
+       no_anom_sst = .false.
+       data_set = 'reynolds_oi',
+       date_out_of_range = 'climo',
+/
+
+&atmos_model_nml
+       blocksize = 32
+       chksum_debug = .false.
+       dycore_only = .false.
+       fdiag = @[FDIAG]
+       fhmax = @[FHMAX]
+       fhmaxhf = @[NFHMAX_HF]
+       ccpp_suite = '@[SUITE_NAME]'
+/
+
+&diag_manager_nml
+       prepend_date = .F.
+/
+
+&fms_io_nml
+       checksum_required   = .false.
+       max_files_r = 100,
+       max_files_w = 100,
+/
+
+&fms_nml
+       clock_grain = 'ROUTINE',
+       domains_stack_size = 3000000,
+       print_memory_usage = .false.
+/
+
+&fv_grid_nml
+       grid_file = 'INPUT/grid_spec.nc'
+/
+
+&fv_core_nml
+       layout   = @[INPES],@[JNPES]
+       io_layout = 1,1
+       npx      = @[NPX]
+       npy      = @[NPY]
+       ntiles   = 6,
+       npz    = @[NPZ]
+       grid_type = -1
+       make_nh = @[MAKE_NH]
+       fv_debug = .F.
+       range_warn = .F.
+       reset_eta = .F.
+       n_sponge = 24
+       nudge_qv = .T.
+       tau = 5.
+       rf_cutoff = 7.5e2
+       d2_bg_k1 = 0.15
+       d2_bg_k2 = 0.02
+       kord_tm = -9
+       kord_mt =  9
+       kord_wz =  9
+       kord_tr =  9
+       hydrostatic = .F.
+       phys_hydrostatic = .F.
+       use_hydro_pressure = .F.
+       beta = 0.
+       a_imp = 1.
+       p_fac = 0.1
+       k_split  = 2
+       n_split  = 6
+       nwat = 2
+       na_init = @[NA_INIT]
+       d_ext = 0.0
+       dnats = 0
+       fv_sg_adj = 450
+       d2_bg = 0.
+       nord =  2
+       dddmp = 0.1
+       d4_bg = 0.12
+       vtdm4 = 0.02
+       delt_max = 0.002
+       ke_bg = 0.
+       do_vort_damp = .true.
+       external_ic = @[EXTERNAL_IC]
+       external_eta = .T.
+       gfs_phil = .false.
+       nggps_ic = @[NGGPS_IC]
+       mountain = @[MOUNTAIN]
+       ncep_ic = .F.
+       d_con = 1.
+       hord_mt =  6
+       hord_vt =  6
+       hord_tm =  6
+       hord_dp =  6
+       hord_tr = 8
+       adjust_dry_mass = .F.
+       consv_te = 1.
+       consv_am = .F.
+       fill = .T.
+       dwind_2d = .F.
+       print_freq = 6
+       warm_start = @[WARM_START]
+       no_dycore = .false.
+       z_tracer = .T.
+       read_increment = @[READ_INCREMENT]
+       res_latlon_dynamics = "fv3_increment.nc"
+/
+
+#&coupler_nml
+#       months = 0
+#       days  = 1
+#       hours = 0
+#       dt_atmos = 225
+#       dt_ocean = 225
+#       current_date =  2016,10,03,00,0,0
+#       calendar = 'julian'
+#       memuse_verbose = .false.
+#       atmos_nthreads = 1
+#       use_hyper_thread = .false.
+#       ncores_per_node = 24
+#/
+
+&external_ic_nml
+       filtered_terrain = .true.
+       levp = @[NPZP]
+       gfs_dwinds = .true.
+       checker_tr = .F.
+       nt_checker = 0
+/
+
+&gfs_physics_nml
+       fhzero         = 6.
+       ldiag3d        = .false.
+       fhcyc          = 24.
+       nst_anl        = .true.
+       use_ufo        = .true.
+       pre_rad        = .false.
+       ncld           = 1
+       imp_physics    = 99
+       pdfcld         = .false.
+       fhswr          = 3600.
+       fhlwr          = 3600.
+       ialb           = 1
+       iems           = 1
+       IAER           = 111
+       ico2           = 2
+       isubc_sw       = 2
+       isubc_lw       = 2
+       isol           = 2
+       lwhtr          = .true.
+       swhtr          = .true.
+       cnvgwd         = .true.
+       shal_cnv       = .true.
+       cal_pre        = .true.
+       redrag         = .true.
+       dspheat        = .true.
+       hybedmf        = @[HYBEDMF]
+       satmedmf       = @[SATMEDMF]
+       lheatstrg      = @[LHEATSTRG]
+       random_clds    = .true.
+       trans_trac     = .false.
+       cnvcld         = .true.
+       imfshalcnv     = 2
+       imfdeepcnv     = 2
+       isatmedmf      = @[ISATMEDMF]
+       cdmbgwd        = 3.5,0.25
+       prslrd0        = 0.
+       ivegsrc        = 1
+       isot           = 1
+       lsm            = 1
+       iopt_dveg      = 2
+       iopt_crs       = 1
+       iopt_btr       = 1
+       iopt_run       = 1
+       iopt_sfc       = 1
+       iopt_frz       = 1
+       iopt_inf       = 1
+       iopt_rad       = 1
+       iopt_alb       = 2
+       iopt_snf       = 4
+       iopt_tbot      = 2
+       iopt_stc       = 1
+       debug          = .false.
+       oz_phys        = @[OZ_PHYS_OLD]
+       oz_phys_2015   = @[OZ_PHYS_NEW]
+       h2o_phys       = @[H2O_PHYS]
+       nstf_name      = @[NSTF_NAME]
+       frac_grid      = @[FRAC_GRID]
+       cplflx         = @[CPLFLX]
+       cplwav         = @[CPLWAV]
+       cplwav2atm     = @[CPLWAV2ATM]
+       iau_delthrs    = 6
+       iaufhrs        = 30
+       iau_inc_files  = @[IAU_INC_FILES]
+       iau_drymassfixer = @[IAU_DRYMASSFIXER]
+       do_sppt        = @[DO_SPPT]
+       do_shum        = @[DO_SHUM]
+       do_skeb        = @[DO_SKEB]
+       lndp_type      = @[LNDP_TYPE]
+       n_var_lndp     = @[N_VAR_LNDP]
+       do_ca          = .false.
+       ca_sgs         = .false.
+       nca            = 1
+       ncells         = 5
+       nlives         = 30
+       nseed          = 1000000
+       nfracseed      = 0.5
+       nthresh        = 0.
+       ca_trigger     = .true.	
+       ca_entr	      = .false.
+       ca_closure     = .false.
+       ca_global      = .false.
+       nca_g          = 1
+       ncells_g       = 1
+       nlives_g       = 100
+       nseed_g        = 100
+       ca_smooth      = .false.
+       nspinup        = 100
+       iseed_ca       = 1
+       nsmooth        = 1
+       ca_amplitude   = 0.5
+/
+
+&interpolator_nml
+       interp_method = 'conserve_great_circle'
+/
+
+&namsfc
+       FNGLAC   = "global_glacier.2x2.grb",
+       FNMXIC   = "global_maxice.2x2.grb",
+       FNTSFC   = "RTGSST.1982.2012.monthly.clim.grb",
+       FNSNOC   = "global_snoclim.1.875.grb",
+       FNZORC   = "igbp",
+       FNALBC   = @[FNALBC]
+       FNALBC2  = "global_albedo4.1x1.grb",
+       FNAISC   = "CFSR.SEAICE.1982.2012.monthly.clim.grb",
+       FNTG3C   = "global_tg3clim.2.6x1.5.grb",
+       FNVEGC   = "global_vegfrac.0.144.decpercent.grb",
+       FNVETC   = @[FNVETC]
+       FNSOTC   = @[FNSOTC]
+       FNSMCC   = @[FNSMCC]
+       FNMSKH   = "seaice_newland.grb",
+       FNTSFA   = "",
+       FNACNA   = "",
+       FNSNOA   = "",
+       FNVMNC   = "global_shdmin.0.144x0.144.grb",
+       FNVMXC   = "global_shdmax.0.144x0.144.grb",
+       FNSLPC   = "global_slope.1x1.grb",
+       FNABSC   = @[FNABSC]
+       LDEBUG   =.false.,
+       FSMCL(2) = 99999
+       FSMCL(3) = 99999
+       FSMCL(4) = 99999
+       FTSFS    = 90
+       FAISS    = 99999
+       FSNOL    = 99999
+       FSICL    = 99999
+       FTSFL    = 99999,
+       FAISL    = 99999,
+       FVETL    = 99999,
+       FSOTL    = 99999,
+       FvmnL    = 99999,
+       FvmxL    = 99999,
+       FSLPL    = 99999,
+       FABSL    = 99999,
+       FSNOS    = 99999,
+       FSICS    = 99999,
+/
+&nam_stochy
+  lon_s=768,
+  lat_s=384,
+  ntrunc=382,
+  SKEBNORM=1,
+  SKEB_NPASS=30,
+  SKEB_VDOF=5,
+  SKEB=@[SKEB],
+  SKEB_TAU=2.16E4,
+  SKEB_LSCALE=1000.E3,
+  SHUM=@[SHUM],
+  SHUM_TAU=21600,
+  SHUM_LSCALE=500000,
+  SPPT=@[SPPT],
+  SPPT_TAU=21600,
+  SPPT_LSCALE=500000,
+  SPPT_LOGIT=.TRUE.,
+  SPPT_SFCLIMIT=.TRUE.,
+  ISEED_SHUM=1,
+  ISEED_SKEB=2,
+  ISEED_SPPT=3,
+/
+&nam_sfcperts
+  lndp_type      = @[LNDP_TYPE]
+  LNDP_TAU=21600,
+  LNDP_LSCALE=500000,
+  ISEED_LNDP=2010,
+/
+
+&cires_ugwp_nml
+       knob_ugwp_solver  = 2
+       knob_ugwp_source  = 1,1,0,0
+       knob_ugwp_wvspec  = 1,25,25,25
+       knob_ugwp_azdir   = 2,4,4,4
+       knob_ugwp_stoch   = 0,0,0,0
+       knob_ugwp_effac   = 1,1,1,1
+       knob_ugwp_doaxyz  = 1
+       knob_ugwp_doheat  = 1
+       knob_ugwp_dokdis  = 1
+       knob_ugwp_ndx4lh  = 1
+       knob_ugwp_version = 0
+       launch_level      = 25
+/
+&MOM_input_nml
+         output_directory = 'MOM6_OUTPUT/',
+         input_filename = '@[MOM6_RESTART_SETTING]'
+         restart_input_dir = 'INPUT/',
+         restart_output_dir = 'RESTART/',
+         parameter_filename = 'INPUT/MOM_input',
+                              'INPUT/MOM_override' /
