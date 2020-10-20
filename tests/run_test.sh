@@ -62,6 +62,7 @@ echo "Test ${TEST_NR} ${TEST_NAME} ${TEST_DESCR}"
 
 source rt_utils.sh
 source atparse.bash
+source edit_inputs.sh
 
 mkdir -p ${RUNDIR}
 cd $RUNDIR
@@ -100,6 +101,17 @@ fi
 
 # Set up the run directory
 source ./fv3_run
+
+if [[ $S2S = 'true' ]]; then
+  edit_ice_in     < ${PATHRT}/parm/ice_in_template > ice_in
+  edit_mom_input  < ${PATHRT}/parm/${MOM_INPUT:-MOM_input_template_$OCNRES} > INPUT/MOM_input
+  edit_diag_table < ${PATHRT}/parm/diag_table_template > diag_table
+  edit_data_table < ${PATHRT}/parm/data_table_template > data_table
+  # CMEPS
+  cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
+  cp ${PATHRT}/parm/pio_in pio_in
+  cp ${PATHRT}/parm/med_modelio.nml med_modelio.nml
+fi
 
 if [[ $SCHEDULER = 'pbs' ]]; then
   NODES=$(( TASKS / TPN ))
