@@ -24,36 +24,22 @@ module load craype-haswell
 module load python/2.7.14
 module load cmake/3.16.2
 module load gcc/5.3.0
-#
-module use /usrx/local/dev/modulefiles
+
 module load NetCDF-intel-sandybridge/4.7.4
 module load HDF5-parallel-intel-sandybridge/1.10.6
-
-## WCOSS cray for WW3
-module load jasper-gnu-sandybridge/1.900.1
-module load png-intel-sandybridge/1.2.49
-module load zlib-intel-sandybridge/1.2.7
-setenv PNG_ROOT /usrx/local/prod//png/1.2.49/intel/sandybridge
+module load ESMF-intel-sandybridge/8.0.1
 
 ##
 ## NCEP libraries
 ##
-module use /usrx/local/nceplibs/NCEPLIBS/cmake/install/NCEPLIBS_UFS/modules
-module load bacio/2.4.0
-module load crtm/2.3.0
-module load g2/3.4.0
-module load g2tmpl/1.9.0
-module load ip/3.3.0
-module load nceppost/dceca26
-module load nemsio/2.5.1
-module load sp/2.3.0
-module load w3emc/2.7.0
-module load w3nco/2.4.0
-
-module load gfsio/1.4.0
-module load sfcio/1.4.0
-module load sigio/2.3.0
-
+module load bacio-intel/2.0.3
+module load g2-intel/3.2.0
+module load g2tmpl-intel/1.6.0
+module load ip-intel/3.0.2
+module load nemsio-intel/2.2.4
+module load sp-intel/2.0.3
+module load w3emc-intel/2.4.0
+module load w3nco-intel/2.2.0
 
 ## WCOSS Cray execution prereqs:
 module load rca
@@ -63,15 +49,4 @@ module load gni-headers
 module load udreg
 module load ugni
 
-module use /gpfs/hps3/emc/nems/noscrub/emc.nemspara/soft/modulefiles
-module load esmf/8.1.0bs27
-
 module swap pmi pmi/5.0.11
-
-##
-## load cmake
-##
-setenv CMAKE_C_COMPILER cc
-setenv CMAKE_CXX_COMPILER CC
-setenv CMAKE_Fortran_COMPILER ftn
-setenv CMAKE_Platform wcoss_cray
