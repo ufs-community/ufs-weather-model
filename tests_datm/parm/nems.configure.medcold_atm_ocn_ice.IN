@@ -1,0 +1,66 @@
+#############################################
+####  NEMS Run-Time Configuration File  #####
+#############################################
+
+# EARTH #
+EARTH_component_list: MED ATM OCN ICE
+EARTH_attributes::
+  Verbosity = 0
+::
+
+# MED #
+MED_model:                      @[med_model]
+MED_petlist_bounds:             @[med_petlist_bounds]
+MED_attributes::
+  Verbosity = 0
+  DumpFields = false
+  DumpRHs = false
+  coldstart = true
+  ProfileMemory = false
+  AoMedFlux = true
+::
+
+# ATM #
+ATM_model:                      @[atm_model]
+ATM_petlist_bounds:             @[atm_petlist_bounds]
+ATM_attributes::
+  DumpFields = false
+  ProfileMemory = false
+  DebugFlag = 0
+::
+
+# OCN #
+OCN_model:                      @[ocn_model]
+OCN_petlist_bounds:             @[ocn_petlist_bounds]
+OCN_attributes::
+  DumpFields = false
+  ProfileMemory = false
+::
+
+# ICE #
+ICE_model:                      @[ice_model]
+ICE_petlist_bounds:             @[ice_petlist_bounds]
+ICE_attributes::
+  DumpFields = false
+  ProfileMemory = false
+::
+
+# Run Sequence #
+runSeq::
+  @@[coupling_interval_slow_sec]
+    @@[coupling_interval_fast_sec]
+      ATM
+      ATM -> MED :remapMethod=redist
+      MED MedPhase_prep_ice
+      MED -> ICE :remapMethod=redist
+      ICE
+      ICE -> MED :remapMethod=redist
+      MED MedPhase_atm_ocn_flux
+      MED MedPhase_accum_fast
+    @
+    MED MedPhase_prep_ocn
+    MED -> OCN :remapMethod=redist
+    OCN
+    OCN -> MED :remapMethod=redist
+  @
+::

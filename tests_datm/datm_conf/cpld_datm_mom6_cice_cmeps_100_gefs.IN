@@ -1,0 +1,34 @@
+mkdir INPUT DATM_INPUT RESTART history MOM6_OUTPUT
+
+
+# DATM input
+cp    @[RTPWD]/DATM/gefs.SCRIP.nc DATM_INPUT
+#export IATM=1760
+#export JATM=880
+export OCNRES='100'
+export MOM6_RESTART_SETTING='n'
+export MOM6_RIVER_RUNOFF='False'
+
+# MOM6 fixed input
+cp    @[RTPWD]/MOM6_FIX_100deg/* ./INPUT
+
+# CICE fixed input
+cp    @[RTPWD]/CICE_FIX_mx100/grid_cice_NEMS_mx100.nc .
+cp    @[RTPWD]/CICE_FIX_mx100/kmtu_cice_NEMS_mx100.nc .
+cp    @[RTPWD]/CICE_FIX_mx100/mesh.mx100.nc .
+
+# ICs
+ln -s   @[RTPWD]/DATM/GEFS/201110/* DATM_INPUT
+cp    @[RTPWD]/MOM6_IC_TS/2011100100/MOM6_IC_TS*.nc ./INPUT/MOM6_IC_TS.nc
+cp    @[RTPWD]/CICE_IC/mx100/cice5_model_1.00.cpc*.nc cice_model.res.nc
+
+# WARM START
+if [[ ! $MED_restart_data == '' ]]; then
+  RFILE="DATM_GEFS.cold.cpl.r.${SYEAR}-${SMONTH}-${SDAY}-03600.nc"
+  if [[ @[CREATE_BASELINE] == 'true' ]]; then
+  cp  @[NEW_BASELINE]/MEDIATOR_100_CMEPS_GEFS/${RFILE} .
+  else
+  cp  @[RTPWD]/MEDIATOR_100_CMEPS_GEFS/${RFILE} .
+  fi
+  ls -1 ${RFILE}>rpointer.cpl
+fi

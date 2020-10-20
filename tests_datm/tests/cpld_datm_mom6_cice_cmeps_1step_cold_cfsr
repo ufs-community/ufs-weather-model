@@ -1,0 +1,49 @@
+#
+#  CPLD_DATM_MOM6_CICE_CMEPS_1_STEP_COLD test
+#
+
+export TEST_DESCR="DATM-MOM6-CICE-CMEPS - 1-step cold start"
+
+export CNTL_DIR="RT-Baselines_1step_cold_start_cmeps_CFSR"
+#export CNTLMED_DIR="MEDIATOR_1STEP_CMEPS_CFSR"
+export CNTLMED_DIR="RT-Baselines_1step_cold_start_cmeps_CFSR/RESTART"
+
+export LIST_FILES="RESTART/MOM.res.nc \
+                   RESTART/MOM.res_1.nc \
+                   RESTART/MOM.res_2.nc \
+                   RESTART/MOM.res_3.nc \
+                   RESTART/iced.2011-10-02-00000.nc \
+                   RESTART/DATM_CFSR.cpl.r.2011-10-02-00000.nc \
+                   ocn_2011_10_01_21.nc"
+
+export_datm
+export_cpl
+export DAYS=1
+export FHMAX=24  # Note this needs to be at least 2x CPL_SLOW
+export WLCLK=50
+export DATM_SRC="CFSR"
+export FILENAME_BASE='cfsr.'
+export IATM=1760
+export JATM=880
+
+# set component and coupling timesteps
+export DT_CICE=${DT_ATMOS}
+export CPL_SLOW=${DT_THERM_MOM6}
+export CPL_FAST=${DT_ATMOS}
+
+# cice restart (days)
+export DUMPFREQ_N=1
+export DUMPFREQ="d"
+
+# mediator restart (hours)
+export MEDCOMP="cmeps"
+export RESTART_INTERVAL=24
+
+# nems.configure
+export NEMS_CONFIGURE="nems.configure.cmeps_1step_cold_atm_ocn_ice.IN"
+export coupling_interval_slow_sec=${CPL_SLOW}
+export coupling_interval_fast_sec=${CPL_FAST}
+export use_coldstart=".false."
+
+export FV3_RUN=cpld_datm_mom6_cice_cmeps_cfsr.IN
+export MED_restart_data=''

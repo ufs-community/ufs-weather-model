@@ -1,0 +1,49 @@
+#!/bin/sh
+#SBATCH -e err
+#SBATCH -o out
+#SBATCH --account=@[ACCNR]
+#SBATCH --qos=@[QUEUE]
+### #SBATCH --ntasks=@[TASKS]
+#SBATCH --nodes=@[NODES]
+#SBATCH --ntasks-per-node=@[TPN]
+#SBATCH --time=@[WLCLK]
+#SBATCH --job-name="@[JBNME]"
+### #SBATCH --exclusive
+
+set -eux
+
+set +x
+source ./module-setup.sh
+module use $( pwd -P )
+module load modules.datm
+module list
+
+set -x
+
+echo "Model started:  " `date`
+
+export MPI_TYPE_DEPTH=20
+export OMP_STACKSIZE=512M
+export OMP_NUM_THREADS=@[THRD]
+export ESMF_RUNTIME_COMPLIANCECHECK=OFF:depth=4
+export ESMF_RUNTIME_PROFILE=ON
+export ESMF_RUNTIME_PROFILE_OUTPUT=SUMMARY
+# Set the stack limit as high as we can.
+if [[ $( ulimit -s ) != unlimited ]] ; then
+            for try_limit in 20000 18000 12000 9000 6000 3000 1500 1000 800 ; do
+                if [[ ! ( $( ulimit -s ) -gt $(( try_limit * 1000 )) ) ]] ; then
+                    ulimit -s $(( try_limit * 1000 ))
+            else
+                    break
+                fi
+            done
+fi
+
+# Avoid job errors because of filesystem synchronization delays
+sync && sleep 1
+
+srun --label -n @[TASKS] ./datm_mom6_cice.exe
+
+echo "Model ended:    " `date`
+
+exit
