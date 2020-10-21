@@ -1,10 +1,10 @@
 #
-#  CPLD_FV3_CCPP_384_MOM6_CICE_CMEPS_WW3_1D_BMARK_RT test
+#  cpld_control_c192 test
 #
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C192 MX050"
 
-export TEST_DESCR="Coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system - 1 day"
-
-export CNTL_DIR="RT-Baselines_1d_bmwav_ccpp_cmeps"
+export CNTL_DIR="cpld_control_c192"
+export CNTLMED_DIR="cpld_control_c192"
 
 export LIST_FILES="phyf024.tile1.nc \
                    phyf024.tile2.nc \
@@ -18,9 +18,6 @@ export LIST_FILES="phyf024.tile1.nc \
                    dynf024.tile4.nc \
                    dynf024.tile5.nc \
                    dynf024.tile6.nc \
-                   20130402.000000.out_grd.gwes_30m \
-                   20130402.000000.out_pnt.points \
-                   20130402.000000.restart.gwes_30m \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -54,83 +51,64 @@ export LIST_FILES="phyf024.tile1.nc \
                    RESTART/sfc_data.tile5.nc \
                    RESTART/sfc_data.tile6.nc \
                    RESTART/MOM.res.nc \
-                   RESTART/MOM.res_1.nc \
-                   RESTART/MOM.res_2.nc \
-                   RESTART/MOM.res_3.nc \
-                   RESTART/iced.2013-04-02-00000.nc"
-                  #ufs.s2s.cpl.r.2013-04-02-00000.nc"
+                   RESTART/iced.2016-10-04-00000.nc "
+                   #RESTART/ufs.cpld.cpl.r.2016-10-04-00000.nc"
 
 export_fv3
 export_cpl
 
-export SYEAR="2013"
-export SMONTH="04"
-export SDAY="01"
-export SHOUR="00"
+export TASKS=$TASKS_cpl_c192
+export TPN=$TPN_cpl_c192
+export INPES=$INPES_cpl_c192
+export JNPES=$JNPES_cpl_c192
+export THRD=$THRD_cpl_c192
+export WRTTASK_PER_GROUP=$WPG_cpl_c192
+export WRITE_GROUP=1
 
-export DAYS="1"
-export FHMAX="24"
-export FDIAG="6"
-export WLCLK=60
+export med_petlist_bounds=$MPB_cpl_c192
+export atm_petlist_bounds=$APB_cpl_c192
+export ocn_petlist_bounds=$OPB_cpl_c192
+export ice_petlist_bounds=$IPB_cpl_c192
 
-export DT_ATMOS="450"
-export NPX="385"
-export NPY="385"
-export IMO="1536"
-export JMO="768"
-export FNALBC="'global_snowfree_albedo.bosu.t766.1536.768.rg.grb',"
-export FNVETC="'global_vegtype.igbp.t766.1536.768.rg.grb',"
-export FNSOTC="'global_soiltype.statsgo.t766.1536.768.rg.grb',"
-export FNSMCC="'global_soilmgldas.statsgo.t766.1536.768.grb',"
-export FNABSC="'global_mxsnoalb.uariz.t766.1536.768.rg.grb',"
+# atm/ocn/ice resolution
+export ATMRES='C192'
+export NPX=193
+export NPY=193
+export IMO=768
+export JMO=384
 
-export TASKS=$TASKS_cpl_wwav
-export TPN=$TPN_cpl_wwav
-export INPES=$INPES_cpl_wwav
-export JNPES=$JNPES_cpl_wwav
-export THRD=$THRD_cpl_wwav
-export WRTTASK_PER_GROUP=$WPG_cpl_wwav
-
-export med_petlist_bounds=$MPB_cpl_wwav
-export atm_petlist_bounds=$APB_cpl_wwav
-export ocn_petlist_bounds=$OPB_cpl_wwav
-export ice_petlist_bounds=$IPB_cpl_wwav
-export wav_petlist_bounds=$WPB_cpl_wwav
-
-# no high freq fv3 output
-NFHMAX_HF='-1'
-NFHOUT_HF='-1'
+export OCNRES='050'
+export ICERES='0.50'
+export NX_GLB=720
+export NY_GLB=576
+export NPROC_ICE='24'
 
 # set component and coupling timesteps
+export DT_ATMOS='900'
 export DT_CICE=${DT_ATMOS}
+export DT_DYNAM_MOM6='1800'
+export DT_THERM_MOM6='3600'
 export CPL_SLOW=${DT_THERM_MOM6}
 export CPL_FAST=${DT_ATMOS}
 
-# write a CICE restart at DAYS
-export DUMPFREQ_N=${DAYS}
-export DUMPFREQ="d"
-
-# CMEPS controls intervals in ALLCOMP
-export RESTART_INTERVAL=${FHMAX}
-
 # nems.configure
-export NEMS_CONFIGURE="nems.configure.medcmeps_atm_ocn_ice_wav.IN"
 export coupling_interval_slow_sec=${CPL_SLOW}
 export coupling_interval_fast_sec=${CPL_FAST}
-export MOM_INPUT=MOM_input_wave_template_${OCNRES}
 
-export FV3_RUN=cpld_fv3_mom6_cice_ww3_bmark_rt_run.IN
-export INPUT_NML=input.benchmark_ccpp.nml.IN
+# resolution dependent files
+export MOM_INPUT="MOM_input_template_${OCNRES}"
+export MESHICE="mesh.mx${OCNRES}.nc"
+export CICEGRID="grid_cice_NEMS_mx${OCNRES}.nc"
+export CICEMASK="kmtu_cice_NEMS_mx${OCNRES}.nc"
+export CHLCLIM="seawifs-clim-1997-2010.${NX_GLB}x${NY_GLB}.v20180328.nc"
+export FRUNOFF="runoff.daitren.clim.${NX_GLB}x${NY_GLB}.v20180328.nc"
 
-export FIELD_TABLE="field_table.gfdlmp"
-export SUITE_NAME="FV3_GFS_v15p2_coupled"
+export FNALBC="'global_snowfree_albedo.bosu.t382.768.384.rg.grb',"
+export FNVETC="'global_vegtype.igbp.t382.768.384.rg.grb',"
+export FNSOTC="'global_soiltype.statsgo.t382.768.384.rg.grb',"
+export FNSMCC="'global_soilmgldas.t382.768.384.grb',"
+export FNABSC="'global_mxsnoalb.uariz.t382.768.384.rg.grb',"
 
-export OZ_PHYS_NEW=".T."
+export MOM6_RIVER_RUNOFF='True'
 
-export CPLWAV='.T.'
-export CPLWAV2ATM='.T.'
-
-export RUNID="cpcice"
-export MOM6_RESTART_SETTING="r"
-
-export ATMRES=C384
+export FV3_RUN=cpld_control_run.IN

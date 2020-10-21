@@ -1,0 +1,87 @@
+#
+#  cpld_bmark 35D
+#
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C384 MX025 - Benchmark 35d test"
+
+export_35d_run
+export_fv3
+export_cpl
+
+export SYEAR
+export SMONTH
+export SDAY="01"
+export SHOUR="00"
+
+export DAYS="35"
+export FHMAX="840"
+export FV3_RESTART_H=${FHMAX}
+export WLCLK=480
+
+export TASKS=$TASKS_cpl_bmrk
+export TPN=$TPN_cpl_bmrk
+export INPES=$INPES_cpl_bmrk
+export JNPES=$JNPES_cpl_bmrk
+export THRD=$THRD_cpl_bmrk
+export WRTTASK_PER_GROUP=$WPG_cpl_bmrk
+
+export med_petlist_bounds=$MPB_cpl_bmrk
+export atm_petlist_bounds=$APB_cpl_bmrk
+export ocn_petlist_bounds=$OPB_cpl_bmrk
+export ice_petlist_bounds=$IPB_cpl_bmrk
+
+# atm/ocn/ice resolution
+export ATMRES='C384'
+export NPX=385
+export NPY=385
+export IMO=1536
+export JMO=768
+
+export OCNRES='025'
+export ICERES='0.25'
+export NX_GLB=1440
+export NY_GLB=1080
+export NPROC_ICE='48'
+
+# set component and coupling timesteps
+export DT_ATMOS='450'
+export DT_CICE=${DT_ATMOS}
+export DT_DYNAM_MOM6='900'
+export DT_THERM_MOM6='1800'
+export CPL_SLOW=${DT_THERM_MOM6}
+export CPL_FAST=${DT_ATMOS}
+
+# nems.configure
+export coupling_interval_slow_sec=${CPL_SLOW}
+export coupling_interval_fast_sec=${CPL_FAST}
+
+export FRAC_GRID_INPUT='.F.'
+
+# resolution dependent files
+export MOM_INPUT="MOM_input_template_${OCNRES}"
+export MESHICE="mesh.mx${OCNRES}.nc"
+export CICEGRID="grid_cice_NEMS_mx${OCNRES}.nc"
+export CICEMASK="kmtu_cice_NEMS_mx${OCNRES}.nc"
+export CHLCLIM="seawifs-clim-1997-2010.${NX_GLB}x${NY_GLB}.v20180328.nc"
+export FRUNOFF="runoff.daitren.clim.${NX_GLB}x${NY_GLB}.v20180328.nc"
+
+export FNALBC="'global_snowfree_albedo.bosu.t766.1536.768.rg.grb',"
+export FNVETC="'global_vegtype.igbp.t766.1536.768.rg.grb',"
+export FNSOTC="'global_soiltype.statsgo.t766.1536.768.rg.grb',"
+export FNSMCC="'global_soilmgldas.statsgo.t766.1536.768.grb',"
+export FNABSC="'global_mxsnoalb.uariz.t766.1536.768.rg.grb',"
+
+export OZ_PHYS_NEW=".T."
+
+export MOM6_RIVER_RUNOFF='True'
+export MOM6_RESTART_SETTING="r"
+export MOM6_REPRO_LA='True'
+
+export RUNID="cpcice"
+
+export INPUT_NML=input.benchmark_ccpp.nml.IN
+
+export FIELD_TABLE="field_table.gfdlmp"
+export SUITE_NAME="FV3_GFS_v15p2_coupled"
+
+export RT35D='.T.'
+export FV3_RUN=cpld_bmark_run.IN

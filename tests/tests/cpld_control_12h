@@ -1,23 +1,24 @@
 #
-#  CPLD_FV3_CCPP_MOM6_CICE_CMEPS_3D_ATM_FLUX test
-#
+#  cpld_control 12h test
+#  NOTE: test is not currently used; restarts are tested at c96mx025
 
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - 3d_warm"
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C96MX100 12h"
 
-export CNTL_DIR="RT-Baselines_3d_warm_ccpp_cmeps"
+export CNTL_DIR="cpld_control_12h"
+export CNTLMED_DIR="cpld_control_12h"
 
-export LIST_FILES="phyf072.tile1.nc \
-                   phyf072.tile2.nc \
-                   phyf072.tile3.nc \
-                   phyf072.tile4.nc \
-                   phyf072.tile5.nc \
-                   phyf072.tile6.nc \
-                   dynf072.tile1.nc \
-                   dynf072.tile2.nc \
-                   dynf072.tile3.nc \
-                   dynf072.tile4.nc \
-                   dynf072.tile5.nc \
-                   dynf072.tile6.nc \
+export LIST_FILES="phyf012.tile1.nc \
+                   phyf012.tile2.nc \
+                   phyf012.tile3.nc \
+                   phyf012.tile4.nc \
+                   phyf012.tile5.nc \
+                   phyf012.tile6.nc \
+                   dynf012.tile1.nc \
+                   dynf012.tile2.nc \
+                   dynf012.tile3.nc \
+                   dynf012.tile4.nc \
+                   dynf012.tile5.nc \
+                   dynf012.tile6.nc \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -51,42 +52,14 @@ export LIST_FILES="phyf072.tile1.nc \
                    RESTART/sfc_data.tile5.nc \
                    RESTART/sfc_data.tile6.nc \
                    RESTART/MOM.res.nc \
-                   RESTART/MOM.res_1.nc \
-                   RESTART/MOM.res_2.nc \
-                   RESTART/MOM.res_3.nc \
-                   RESTART/iced.2016-10-06-00000.nc"
-                  #ufs.s2s.cpl.r.2016-10-06-00000.nc"
+                   RESTART/iced.2016-10-03-43200.nc "
+                   #RESTART/ufs.cpld.cpl.r.2016-10-03-43200.nc"
 
 export_fv3
 export_cpl
 
-export DAYS="3"
-export FHMAX="72"
-export FDIAG="6"
-export WLCLK=60
+export DAYS="0.50"
+export FHMAX="12"
+export FV3_RESTART_H=${FHMAX}
 
-# set component and coupling timesteps
-export DT_CICE=${DT_ATMOS}
-export CPL_SLOW=${DT_THERM_MOM6}
-export CPL_FAST=${DT_ATMOS}
-
-# write a CICE restart at DAYS
-export DUMPFREQ_N=${DAYS}
-export DUMPFREQ="d"
-
-# CMEPS controls intervals in ALLCOMP
-export RESTART_INTERVAL=${FHMAX}
-
-# restart test: required for restart repro
-export MOM6_REPRO_LA='False'
-export MOM6_THERMO_SPAN='False'
-
-# nems.configure
-export NEMS_CONFIGURE="nems.configure.medcmeps_atm_ocn_ice.IN"
-export coupling_interval_slow_sec=${CPL_SLOW}
-export coupling_interval_fast_sec=${CPL_FAST}
-
-export FV3_RUN=cpld_fv3_mom6_cice_atm_flux_run.IN
-export INPUT_NML=input.mom6_ccpp.nml.IN
-
-export SUITE_NAME="FV3_GFS_2017_coupled"
+export FV3_RUN=cpld_control_run.IN

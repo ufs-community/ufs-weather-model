@@ -1,0 +1,73 @@
+#
+#  cpld_2threads test
+#
+
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C96MX100 - 2 threads"
+
+export CNTL_DIR="cpld_control"
+export CNTLMED_DIR="cpld_control"
+
+export LIST_FILES="phyf024.tile1.nc \
+                   phyf024.tile2.nc \
+                   phyf024.tile3.nc \
+                   phyf024.tile4.nc \
+                   phyf024.tile5.nc \
+                   phyf024.tile6.nc \
+                   dynf024.tile1.nc \
+                   dynf024.tile2.nc \
+                   dynf024.tile3.nc \
+                   dynf024.tile4.nc \
+                   dynf024.tile5.nc \
+                   dynf024.tile6.nc \
+                   RESTART/coupler.res \
+                   RESTART/fv_core.res.nc \
+                   RESTART/fv_core.res.tile1.nc \
+                   RESTART/fv_core.res.tile2.nc \
+                   RESTART/fv_core.res.tile3.nc \
+                   RESTART/fv_core.res.tile4.nc \
+                   RESTART/fv_core.res.tile5.nc \
+                   RESTART/fv_core.res.tile6.nc \
+                   RESTART/fv_srf_wnd.res.tile1.nc \
+                   RESTART/fv_srf_wnd.res.tile2.nc \
+                   RESTART/fv_srf_wnd.res.tile3.nc \
+                   RESTART/fv_srf_wnd.res.tile4.nc \
+                   RESTART/fv_srf_wnd.res.tile5.nc \
+                   RESTART/fv_srf_wnd.res.tile6.nc \
+                   RESTART/fv_tracer.res.tile1.nc \
+                   RESTART/fv_tracer.res.tile2.nc \
+                   RESTART/fv_tracer.res.tile3.nc \
+                   RESTART/fv_tracer.res.tile4.nc \
+                   RESTART/fv_tracer.res.tile5.nc \
+                   RESTART/fv_tracer.res.tile6.nc \
+                   RESTART/phy_data.tile1.nc \
+                   RESTART/phy_data.tile2.nc \
+                   RESTART/phy_data.tile3.nc \
+                   RESTART/phy_data.tile4.nc \
+                   RESTART/phy_data.tile5.nc \
+                   RESTART/phy_data.tile6.nc \
+                   RESTART/sfc_data.tile1.nc \
+                   RESTART/sfc_data.tile2.nc \
+                   RESTART/sfc_data.tile3.nc \
+                   RESTART/sfc_data.tile4.nc \
+                   RESTART/sfc_data.tile5.nc \
+                   RESTART/sfc_data.tile6.nc \
+                   RESTART/MOM.res.nc \
+                   RESTART/iced.2016-10-04-00000.nc"
+                   #RESTART/ufs.cpld.cpl.r.2016-10-04-00000.nc"
+
+export_fv3
+export_cpl
+
+export TASKS=$TASKS_cpl_thrd
+export TPN=$TPN_cpl_thrd
+export INPES=$INPES_cpl_thrd
+export JNPES=$JNPES_cpl_thrd
+export THRD=$THRD_cpl_thrd
+export WRTTASK_PER_GROUP=$WPG_cpl_thrd
+
+export med_petlist_bounds=$MPB_cpl_thrd
+export atm_petlist_bounds=$APB_cpl_thrd
+export ocn_petlist_bounds=$OPB_cpl_thrd
+export ice_petlist_bounds=$IPB_cpl_thrd
+
+export FV3_RUN=cpld_control_run.IN
