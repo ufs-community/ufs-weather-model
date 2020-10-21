@@ -2,11 +2,6 @@
 set -eu
 
 function edit_ice_in {
-  if [[ $DUMPFREQ == h ]]; then
-    DUMPFREQ_N=$(( DUMPFREQ_N*3600 ))
-    DUMPFREQ="s"
-  fi
-
   jday=$(date -d "${SYEAR}-${SMONTH}-${SDAY} ${SHOUR}:00:00" +%j)
   istep0=$(( ((10#$jday-1)*86400 + 10#$SHOUR*3600) / DT_CICE ))
 
@@ -42,13 +37,14 @@ function edit_mom_input {
       -e "s/MOM6_RIVER_RUNOFF/$MOM6_RIVER_RUNOFF/g" \
       -e "s/MOM6_THERMO_SPAN/$MOM6_THERMO_SPAN/g" \
       -e "s/MOM6_REPRO_LA/$MOM6_REPRO_LA/g" \
+      -e "s/MOM6_USE_WAVES/$MOM6_USE_WAVES/g" \
       -e "s/NX_GLB/$NX_GLB/g" \
       -e "s/NY_GLB/$NY_GLB/g" \
-      -e "s/CHLCLIM/$CHLCLIM/g"
+      -e "s/CHLCLIM/$CHLCLIM/g" 
 }
 
 function edit_data_table {
-  sed -e "s/FRUNOFF/$FRUNOFF/g"
+  sed -e "s/FRUNOFF/$FRUNOFF/g" 
 }
 
 function edit_diag_table {
