@@ -192,7 +192,7 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   ECFLOW_START=/scratch2/NCEPDEV/fv3-cam/Dusan.Jovic/ecflow/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
   QUEUE=batch
-  ACCNR=marine-cpu
+  #ACCNR=marine-cpu
   PARTITION=
   dprefix=/scratch1/NCEPDEV
   DISKNM=$dprefix/nems/emc.nemspara/RT
@@ -221,9 +221,9 @@ elif [[ $MACHINE_ID = orion.* ]]; then
   export PYTHONPATH=/work/noaa/fv3-cam/djovic/ecflow/lib/python2.7/site-packages
   ECFLOW_START=/work/noaa/fv3-cam/djovic/ecflow/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
-  QUEUE=debug
-  ACCNR=marine-cpu
-#  ACCNR= # detected in detect_machine.sh
+  QUEUE=batch
+  #ACCNR=marine-cpu
+  #ACCNR= # detected in detect_machine.sh
   PARTITION=orion
   dprefix=/work/noaa/stmp/${USER}
   DISKNM=/work/noaa/nems/emc.nemspara/RT
@@ -377,7 +377,7 @@ done
 if [[ $MACHINE_ID = cheyenne.* ]]; then
   RTPWD=${RTPWD:-$DISKNM/develop-20200210/${COMPILER^^}}
 else
-  #RTPWD=${RTPWD:-$DISKNM/DATM-MOM6-CICE5/update-20201002}
+  #RTPWD=${RTPWD:-$DISKNM/DATM-MOM6-CICE5/develop-20201019}
   RTPWD=${RTPWD:-$DISKNM/DATM-MOM6-CICE5/update-20201019}
 fi
 
