@@ -55,19 +55,19 @@ if [ $WARM_START = .F. ]; then
 # Restart
 else
   # Restart files
-  cp ../${DEP_RUN}/RESTART/coupler.res ./INPUT
-  cp ../${DEP_RUN}/RESTART/fv_*.nc ./INPUT
-  cp ../${DEP_RUN}/RESTART/sfc_data*.nc ./INPUT
-  cp ../${DEP_RUN}/RESTART/phy_data*.nc ./INPUT
-  cp ../${DEP_RUN}/RESTART/MOM*.nc ./INPUT
+  cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/coupler.res ./INPUT
+  cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/fv_*.nc ./INPUT
+  cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/sfc_data*.nc ./INPUT
+  cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/phy_data*.nc ./INPUT
+  cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/MOM*.nc ./INPUT
 
   # CMEPS restart and pointer files
-  cp  ../${DEP_RUN}/RESTART/ufs.cpld.cpl.r.2016-10-03-43200.nc .
+  cp  ../${DEP_RUN}${RT_SUFFIX}/RESTART/ufs.s2s.cpl.r.2016-10-05-00000.nc .
   RFILE="ufs.cpld.cpl.r.2016-10-03-43200.nc"
   ls -1 ${RFILE}>rpointer.cpl
 
   # CICE restart and pointer files
-  cp  ../${DEP_RUN}/RESTART/iced.2016-10-03-43200.nc ./INPUT
+  cp  ../${DEP_RUN}${RT_SUFFIX}/RESTART/iced.2016-10-05-00000.nc ./INPUT
   RFILE="iced.2016-10-03-43200.nc"
   ls -1 "./INPUT/"${RFILE}>ice.restart_file
 fi
