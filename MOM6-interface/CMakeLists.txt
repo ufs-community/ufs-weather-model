@@ -64,28 +64,31 @@ target_link_libraries(mom6 PUBLIC fms
 #  target_link_libraries(mom6 PRIVATE OpenMP::OpenMP_Fortran)
 #endif()
 
-### Create standalone MOM6 executable [bug in our fork prevents this compilation]
-#add_executable(mom6solo ${mom6_solo_src_files})
-#add_dependencies(mom6solo mom6_obj)
-#set_target_properties(mom6solo PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod_solo)
-#target_include_directories(mom6solo PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
-#target_include_directories(mom6solo PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod_solo>)
-#target_include_directories(mom6solo PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/config_src/dynamic>
-#                                            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/src/framework>)
-#target_link_libraries(mom6solo PRIVATE mom6_obj
-#                                       fms
-#                                       NetCDF::NetCDF_Fortran)
-# OpenMP is disabled in MOM6
-#if(OpenMP_Fortran_FOUND)
-#  target_link_libraries(mom6solo PRIVATE OpenMP::OpenMP_Fortran)
-#endif()
+### Create standalone MOM6 executable
+if(MOM6SOLO)
+  message("Building MOM6 standalone executable")
+  add_executable(mom6solo ${mom6_solo_src_files})
+  add_dependencies(mom6solo mom6_obj)
+  set_target_properties(mom6solo PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod_solo)
+  target_include_directories(mom6solo PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
+  target_include_directories(mom6solo PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod_solo>)
+  target_include_directories(mom6solo PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/config_src/dynamic>
+                                              $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/src/framework>)
+  target_link_libraries(mom6solo PRIVATE mom6_obj
+                                         fms
+                                         NetCDF::NetCDF_Fortran)
+  # OpenMP is disabled in MOM6
+  #if(OpenMP_Fortran_FOUND)
+  #  target_link_libraries(mom6solo PRIVATE OpenMP::OpenMP_Fortran)
+  #endif()
+endif()
 
 ###############################################################################
 ### Install
 ###############################################################################
 
 install(
-  TARGETS mom6 #mom6solo
+  TARGETS mom6
   EXPORT  mom6-config
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
@@ -96,3 +99,7 @@ install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod DESTINATION ${CMAKE_INSTALL_PR
 
 install(EXPORT      mom6-config
         DESTINATION lib/cmake)
+
+if(MOM6SOLO)
+  install(TARGETS mom6solo RUNTIME DESTINATION bin)
+endif()
