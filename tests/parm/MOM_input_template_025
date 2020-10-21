@@ -783,6 +783,29 @@ LT_ENHANCE = 3                  !   [nondim] default = 0
                                 !          1 - Van Roekel et al. 2014/Li et al., 2016
                                 !          2 - Multiplied w/ adjusted La.
                                 !          3 - Added w/ adjusted La.
+USE_WAVES = MOM6_USE_WAVES      !   [Boolean] default = False
+                                ! If true, enables surface wave modules.
+WAVE_METHOD = "SURFACE_BANDS"   ! default = "EMPTY"
+                                ! Choice of wave method, valid options include:
+                                !  TEST_PROFILE  - Prescribed from surface Stokes drift
+                                !                  and a decay wavelength.
+                                !  SURFACE_BANDS - Computed from multiple surface values
+                                !                  and decay wavelengths.
+                                !  DHH85         - Uses Donelan et al. 1985 empirical
+                                !                  wave spectrum with prescribed values.
+                                !  LF17          - Infers Stokes drift profile from wind
+                                !                  speed following Li and Fox-Kemper 2017.
+SURFBAND_SOURCE = "COUPLER"     ! default = "EMPTY"
+                                ! Choice of SURFACE_BANDS data mode, valid options include:
+                                !  DATAOVERRIDE  - Read from NetCDF using FMS DataOverride.
+                                !  COUPLER       - Look for variables from coupler pass
+                                !  INPUT         - Testing with fixed values.
+STK_BAND_COUPLER = 3            ! default = 1
+                                ! STK_BAND_COUPLER is the number of Stokes drift bands in the coupler. This has
+                                ! to be consistent with the number of Stokes drift bands in WW3, or the model
+                                ! will fail.
+SURFBAND_WAVENUMBERS = 0.04, 0.11, 0.3305 !   [rad/m] default = 0.12566
+                                ! Central wavenumbers for surface Stokes drift bands.
 LT_ENHANCE_COEF = 0.044         !   [nondim] default = 0.447
                                 ! Coefficient for Langmuir enhancement if LT_ENHANCE > 1
 LT_ENHANCE_EXP = -1.5           !   [nondim] default = -1.33
