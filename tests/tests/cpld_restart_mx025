@@ -5,7 +5,6 @@
 export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C96MX025 - 12h restart"
 
 export CNTL_DIR="cpld_control_mx025"
-export CNTLMED_DIR="cpld_control_mx025"
 
 export LIST_FILES="phyf024.tile1.nc \
                    phyf024.tile2.nc \
@@ -63,8 +62,8 @@ export_cpl
 
 export DAYS="0.50"
 export FHMAX="24"
-export FV3_RESTART_H=12
 export FHROT='12'
+export RESTART_N=$((FHMAX-$FHROT))
 
 # replicate current tests; explicitly set values for c96/mx025
 export TASKS=$TASKS_cpl_c384
