@@ -420,8 +420,8 @@ if [[ $CREATE_BASELINE == true ]]; then
   rsync -a "${RTPWD}"/FV3_* "${NEW_BASELINE}"/
   rsync -a "${RTPWD}"/WW3_* "${NEW_BASELINE}"/
 
-  # S2S baselines are only (so far) available on these machines
-  if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
+  # FIXME: S2S baselines are only available on these machines with Intel
+  if [[ $MACHINE_ID = hera.intel ]] || [[ $MACHINE_ID = orion.intel ]] || [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
     rsync -a "${RTPWD}"/MOM6_* "${NEW_BASELINE}"/
     rsync -a "${RTPWD}"/CICE_* "${NEW_BASELINE}"/
     rsync -a "${RTPWD}"/CPL_* "${NEW_BASELINE}"/
