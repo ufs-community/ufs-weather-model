@@ -1,60 +1,45 @@
-#%Module######################################################################
-##
-##    NEMS FV3 Prerequisites: Cheyenne/GNU
+#%Module
 
 proc ModulesHelp {} {
-  puts stderr "\tcit - loads modules required for building and running FV3 under NEMS on Cheyenne/GNU"
+  puts stderr "\tcit - loads modules required for building and running UFS Model on Cheyenne/GNU"
 }
 
-module-whatis "loads NEMS FV3 prerequisites for Cheyenne/GNU"
+module-whatis "loads UFS Model prerequisites for Cheyenne/GNU"
 
-# NOTE: the "module purge" and loading of the module command are
-# handled by the module-setup.sh (or .csh) script.
-
-##
-## load programming environment
-## this typically includes compiler, MPI and job scheduler
-##
-module load ncarenv/1.3
-module load gnu/9.1.0
-module load mpt/2.19
-module load ncarcompilers/0.5.0
-
-##
-## use pre-compiled PNG, NetCDF, ESMF and NCEP libraries for above compiler / MPI combination
-##
-module use -a /glade/p/ral/jntp/GMTB/tools/ufs-stack-20200909/gnu-9.1.0/mpt-2.19/modules
-
-module load libpng/1.6.35
-module load netcdf/4.7.4
-module load esmf/8.1.0bs27
-
-module load bacio/2.4.0
-module load crtm/2.3.0
-module load g2/3.4.0
-module load g2tmpl/1.9.0
-module load ip/3.3.0
-module load nceppost/dceca26
-module load nemsio/2.5.1
-module load sp/2.3.0
-module load w3emc/2.7.0
-module load w3nco/2.4.0
-
-module load gfsio/1.4.0
-module load sfcio/1.4.0
-module load sigio/2.3.0
-
-##
-## SIONlib library
-##
-module use -a /glade/p/ral/jntp/GMTB/tools/modulefiles/gnu-9.1.0/mpt-2.19
-module load SIONlib/1.7.4
-
-##
-## load cmake
-##
 module load cmake/3.16.4
 setenv CMAKE_C_COMPILER mpicc
 setenv CMAKE_CXX_COMPILER mpicxx
 setenv CMAKE_Fortran_COMPILER mpif90
 setenv CMAKE_Platform cheyenne.gnu
+
+# load programming environment
+module load ncarenv/1.3
+#module load gnu/9.1.0
+#module load mpt/2.22
+module load ncarcompilers/0.5.0
+module unload netcdf
+
+module use /glade/p/ral/jntp/GMTB/tools/hpc-stack-20201022/modulefiles/stack
+module load hpc/1.0.0-beta1
+module load hpc-gnu/9.1.0
+module load hpc-mpt/2.22
+
+module load jasper/2.0.22
+module load zlib/1.2.11
+module load png/1.6.35
+
+module load hdf5/1.10.6
+module load netcdf/4.7.4
+module load pio/2.5.1
+module load esmf/8_1_0_beta_snapshot_27
+
+module load bacio/2.4.1
+module load crtm/2.3.0
+module load g2/3.4.1
+module load g2tmpl/1.9.1
+module load ip/3.3.3
+module load nceppost/dceca26
+module load nemsio/2.5.2
+module load sp/2.3.3
+module load w3emc/2.7.3
+module load w3nco/2.4.1
