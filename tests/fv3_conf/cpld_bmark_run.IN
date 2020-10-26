@@ -1,4 +1,4 @@
-mkdir INPUT RESTART history MOM6_OUTPUT
+mkdir INPUT RESTART history MOM6_OUTPUT 
 
 if [[ $ATMRES == 'C96' ]]; then
   FV3_DIR=FV3_input_data
@@ -42,8 +42,15 @@ cp    @[RTPWD]/CICE_FIX/@[OCNRES]/kmtu_cice_NEMS_mx@[OCNRES].nc .
 cp    @[RTPWD]/CICE_FIX/@[OCNRES]/mesh.mx@[OCNRES].nc .
 
 # WW3 fix/input
-cp    @[RTPWD]/WW3_input_data/mod_def.* .
-cp    @[RTPWD]/WW3_input_data/ww3_multi_35d.inp ww3_multi.inp
+if [[ $CPLWAV == .T. && $CPLWAV2ATM == .T. ]]; then
+  cp    @[RTPWD]/WW3_input_data/mod_def.* .
+  if [[ $RT35D == .T. ]]; then
+   cp    @[RTPWD]/WW3_input_data/ww3_multi_35d.inp ww3_multi.inp
+   cp    @[RTPWD]/${WW3_IC}/*.000000.restart.gwes_30m ./restart.gwes_30m
+  else
+   cp    @[RTPWD]/WW3_input_data/ww3_multi.inp .
+  fi
+fi
 
 # ICs
 cp    @[RTPWD]/${FV3_IC}/sfc_data*.nc ./INPUT
@@ -51,9 +58,4 @@ cp    @[RTPWD]/${FV3_IC}/gfs_data*.nc ./INPUT
 cp    @[RTPWD]/${MOM6_IC}/MOM*.nc ./INPUT
 # the BM ICs are still named cice5 and need to remain so until P5.0 is completed
 cp    @[RTPWD]/${CICE_IC}/cice5_model_@[ICERES].*.nc ./cice_model.res.nc
-cp    @[RTPWD]/${WW3_IC}/*.000000.restart.gwes_30m ./restart.gwes_30m
 
-# CCPP
-if [[ ! $SUITE_NAME == '' ]]; then
-  cp ${PATHTR}/FV3/ccpp/suites/suite_@[SUITE_NAME].xml .
-fi

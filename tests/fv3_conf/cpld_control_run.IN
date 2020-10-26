@@ -1,4 +1,4 @@
-mkdir INPUT RESTART history MOM6_OUTPUT
+mkdir INPUT RESTART history MOM6_OUTPUT 
 
 if [[ $ATMRES == 'C96' ]]; then
   FV3_DIR=FV3_input_data
@@ -23,7 +23,7 @@ cp    @[RTPWD]/${FV3_DIR}/*grb .
 cp    @[RTPWD]/${FV3_DIR}/@[FIELD_TABLE] ./field_table
 cp    @[RTPWD]/CPL_FIX/a@[ATMRES]o@[OCNRES]/grid_spec.nc ./INPUT
 cp    @[RTPWD]/${FV3_DIR}/INPUT/@[ATMRES]_grid*.nc ./INPUT
-if [ $FRAC_GRID = .F. ]; then
+if [ ${FRAC_GRID_INPUT} = .F. ]; then
   cp  @[RTPWD]/${FV3_DIR}/INPUT/oro_data*.nc ./INPUT
 else
   cp  @[RTPWD]/FV3_input_frac/@[ATMRES].mx@[OCNRES]_frac/oro_data*.nc ./INPUT
@@ -42,7 +42,7 @@ cp    @[RTPWD]/CICE_FIX/@[OCNRES]/mesh.mx@[OCNRES].nc .
 # No restart
 if [ $WARM_START = .F. ]; then
   # ICs
-  if [ $FRAC_GRID = .F. ]; then
+  if [ ${FRAC_GRID_INPUT} = .F. ]; then
    cp  @[RTPWD]/${FV3_DIR}/INPUT/sfc_data*.nc ./INPUT
    cp  @[RTPWD]/${FV3_DIR}/INPUT/gfs_data*.nc ./INPUT
   else
@@ -62,18 +62,12 @@ else
   cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/MOM*.nc ./INPUT
 
   # CMEPS restart and pointer files
-  #cp  ${DEP_RUN}${RT_SUFFIX}/RESTART/ufs.s2s.cpl.r.2016-10-05-00000.nc .
-  cp  ../${DEP_RUN}${RT_SUFFIX}/ufs.s2s.cpl.r.2016-10-05-00000.nc .
-  RFILE="ufs.s2s.cpl.r.2016-10-05-00000.nc"
+  cp  ../${DEP_RUN}${RT_SUFFIX}/RESTART/ufs.cpld.cpl.r.2016-10-03-43200.nc .
+  RFILE="ufs.cpld.cpl.r.2016-10-03-43200.nc"
   ls -1 ${RFILE}>rpointer.cpl
 
   # CICE restart and pointer files
-  cp  ../${DEP_RUN}${RT_SUFFIX}/RESTART/iced.2016-10-05-00000.nc ./INPUT
-  RFILE="iced.2016-10-05-00000.nc"
+  cp  ../${DEP_RUN}${RT_SUFFIX}/RESTART/iced.2016-10-03-43200.nc ./INPUT
+  RFILE="iced.2016-10-03-43200.nc"
   ls -1 "./INPUT/"${RFILE}>ice.restart_file
-fi
-
-# CCPP
-if [[ ! $SUITE_NAME == '' ]]; then
-  cp  ${PATHTR}/FV3/ccpp/suites/suite_@[SUITE_NAME].xml .
 fi
