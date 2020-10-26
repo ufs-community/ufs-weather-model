@@ -2,7 +2,7 @@
    the Modular Ocean Model (MOM6), a numerical ocean model developed at NOAA-GFDL.
    Where appropriate, parameters use usually given in MKS units.
 
-   This particular file is for the example in OM4_025.
+   This particular file is for the example in OM4_05.
 
    This MOM_input file typically contains only the non-default values that are
    needed to reproduce this example.  A full list of parameters for this example
@@ -24,14 +24,14 @@ DT = DT_DYNAM_MOM6              !   [s]
                                 ! is actually used will be an integer fraction of the
                                 ! forcing time-step (DT_FORCING in ocean-only mode or the
                                 ! coupling timestep in coupled mode.)
-DT_THERM = DT_THERM_MOM6        !   [s] default = 900.0
+DT_THERM = DT_THERM_MOM6        !   [s] default = 1800.0
                                 ! The thermodynamic and tracer advection time step.
                                 ! Ideally DT_THERM should be an integer multiple of DT
                                 ! and less than the forcing or coupling time-step, unless
                                 ! THERMO_SPANS_COUPLING is true, in which case DT_THERM
                                 ! can be an integer multiple of the coupling timestep.  By
                                 ! default DT_THERM is set to DT.
-THERMO_SPANS_COUPLING = MOM6_THERMO_SPAN   !   [Boolean] default = False
+THERMO_SPANS_COUPLING = MOM6_THERMO_SPAN    !   [Boolean] default = False
                                 ! If true, the MOM will take thermodynamic and tracer
                                 ! timesteps that can be longer than the coupling timestep.
                                 ! The actual thermodynamic timestep that is used in this
@@ -40,7 +40,7 @@ THERMO_SPANS_COUPLING = MOM6_THERMO_SPAN   !   [Boolean] default = False
 HFREEZE = 20.0                  !   [m] default = -1.0
                                 ! If HFREEZE > 0, melt potential will be computed. The actual depth
                                 ! over which melt potential is computed will be min(HFREEZE, OBLD)
-                                ! where OBLD is the boundary layer depth. If HFREEZE <= 0 (default) 
+                                ! where OBLD is the boundary layer depth. If HFREEZE <= 0 (default)
                                 ! melt potential will not be computed.
 FRAZIL = True                   !   [Boolean] default = False
                                 ! If true, water freezes if it gets too cold, and the
@@ -66,7 +66,7 @@ BAD_VAL_SSH_MAX = 50.0          !   [m] default = 20.0
 BAD_VAL_SSS_MAX = 75.0          !   [PPT] default = 45.0
                                 ! The value of SSS above which a bad value message is
                                 ! triggered, if CHECK_BAD_SURFACE_VALS is true.
-BAD_VAL_SST_MAX = 65.0          !   [deg C] default = 45.0, PTripp: changed from 55.0 on 12/28/2017
+BAD_VAL_SST_MAX = 55.0          !   [deg C] default = 45.0
                                 ! The value of SST above which a bad value message is
                                 ! triggered, if CHECK_BAD_SURFACE_VALS is true.
 BAD_VAL_SST_MIN = -3.0          !   [deg C] default = -2.1
@@ -77,6 +77,10 @@ WRITE_GEOM = 2                  ! default = 1
                                 ! If =1, write the geometry and vertical grid files only for
                                 ! a new simulation. If =2, always write the geometry and
                                 ! vertical grid files. Other values are invalid.
+SAVE_INITIAL_CONDS = True       !   [Boolean] default = False
+                                ! If true, write the initial conditions to a file given by IC_OUTPUT_FILE.
+IC_OUTPUT_FILE = "MOM_IC"       ! default = "MOM_IC"
+                                ! The file into which to write the initial conditions.
 
 ! === module MOM_domains ===
 TRIPOLAR_N = True               !   [Boolean] default = False
@@ -135,6 +139,7 @@ TOPO_CONFIG = "file"            !
                                 !       DOME2D gravity current/overflow test case.
                                 !     Kelvin - flat but with rotated land mask.
                                 !     seamount - Gaussian bump for spontaneous motion test case.
+                                !     dumbbell - Sloshing channel with reservoirs on both ends.
                                 !     shelfwave - exponential slope for shelfwave test case.
                                 !     supercritical - flat but with 8.95 degree land mask.
                                 !     Phillips - ACC-like idealized topography used in the Phillips config.
@@ -142,8 +147,6 @@ TOPO_CONFIG = "file"            !
                                 !     USER - call a user modified routine.
 TOPO_FILE = "ocean_topog.nc"    ! default = "topog.nc"
                                 ! The file from which the bathymetry is read.
-TOPO_EDITS_FILE = "All_edits.nc" ! default = ""
-                                ! The file from which to read a list of i,j,z topography overrides.
 MAXIMUM_DEPTH = 6500.0          !   [m]
                                 ! The maximum depth of the ocean.
 MINIMUM_DEPTH = 9.5             !   [m] default = 0.0
@@ -152,13 +155,12 @@ MINIMUM_DEPTH = 9.5             !   [m] default = 0.0
                                 ! If MASKING_DEPTH is specified, then all depths shallower than
                                 ! MINIMUM_DEPTH but deeper than MASKING_DEPTH are rounded to MINIMUM_DEPTH.
 GRID_ROTATION_ANGLE_BUGS = False  ! [Boolean] default = True
-                                ! If true, use an older algorithm to calculate the sine and 
+                                ! If true, use an older algorithm to calculate the sine and
                                 ! cosines needed rotate between grid-oriented directions and
                                 ! true north and east.  Differences arise at the tripolar fold
 USE_TRIPOLAR_GEOLONB_BUG = False  ! [Boolean] default = True
-                                ! If true, use older code that incorrectly sets the longitude 
+                                ! If true, use older code that incorrectly sets the longitude
                                 ! in some points along the tripolar fold to be off by 360 degrees
-
 ! === module MOM_open_boundary ===
 ! Controls where open boundaries are located, what kind of boundary condition to impose, and what data to apply, if any.
 MASKING_DEPTH = 0.0             !   [m] default = -9999.0
@@ -322,7 +324,7 @@ Z_INIT_ALE_REMAPPING = True     !   [Boolean] default = False
 
 ! === module MOM_diag_mediator ===
 !Jiande NUM_DIAG_COORDS = 2             ! default = 1
-NUM_DIAG_COORDS = 1
+NUM_DIAG_COORDS = 1             ! default = 1
                                 ! The number of diagnostic vertical coordinates to use.
                                 ! For each coordinate, an entry in DIAG_COORDS must be provided.
 !Jiande DIAG_COORDS = "z Z ZSTAR", "rho2 RHO2 RHO" !
@@ -359,8 +361,17 @@ MEKE_GMCOEFF = 1.0              !   [nondim] default = -1.0
                                 ! used or calculated.
 MEKE_BGSRC = 1.0E-13            !   [W kg-1] default = 0.0
                                 ! A background energy source for MEKE.
+MEKE_KHTH_FAC = 0.5             !   [nondim] default = 0.0
+                                ! A factor that maps MEKE%Kh to KhTh.
+MEKE_KHTR_FAC = 0.5             !   [nondim] default = 0.0
+                                ! A factor that maps MEKE%Kh to KhTr.
 MEKE_KHMEKE_FAC = 1.0           !   [nondim] default = 0.0
                                 ! A factor that maps MEKE%Kh to Kh for MEKE itself.
+MEKE_VISCOSITY_COEFF_KU = 1.0   !   [nondim] default = 0.0
+                                ! If non-zero, is the scaling coefficient in the expression for
+                                ! viscosity used to parameterize lateral momentum mixing by
+                                ! unresolved eddies represented by MEKE. Can be negative to
+                                ! represent backscatter from the unresolved eddies.
 MEKE_ALPHA_RHINES = 0.15        !   [nondim] default = 0.05
                                 ! If positive, is a coefficient weighting the Rhines scale
                                 ! in the expression for mixing length used in MEKE-derived diffusiviity.
@@ -383,6 +394,9 @@ RESOLN_SCALED_KHTH = True       !   [Boolean] default = False
                                 ! If true, the interface depth diffusivity is scaled away
                                 ! when the first baroclinic deformation radius is well
                                 ! resolved.
+KHTH_USE_EBT_STRUCT = True      !   [Boolean] default = False
+                                ! If true, uses the equivalent barotropic structure
+                                ! as the vertical structure of thickness diffusivity.
 KHTR_SLOPE_CFF = 0.25           !   [nondim] default = 0.0
                                 ! The nondimensional coefficient in the Visbeck formula
                                 ! for the epipycnal tracer diffusivity
@@ -390,6 +404,11 @@ USE_STORED_SLOPES = True        !   [Boolean] default = False
                                 ! If true, the isopycnal slopes are calculated once and
                                 ! stored for re-use. This uses more memory but avoids calling
                                 ! the equation of state more times than should be necessary.
+KH_RES_FN_POWER = 100           !   [nondim] default = 2
+                                ! The power of dx/Ld in the Kh resolution function.  Any
+                                ! positive integer may be used, although even integers
+                                ! are more efficient to calculate.  Setting this greater
+                                ! than 100 results in a step-function being used.
 INTERPOLATE_RES_FN = False      !   [Boolean] default = True
                                 ! If true, interpolate the resolution function to the
                                 ! velocity points from the thickness points; otherwise
@@ -476,12 +495,26 @@ BOUND_CORIOLIS = True           !   [Boolean] default = False
 
 ! === module MOM_PressureForce_AFV ===
 MASS_WEIGHT_IN_PRESSURE_GRADIENT = True !   [Boolean] default = False
-                                ! If true, use mass weighting when interpolation T/S for
-                                ! top/bottom integrals in AFV pressure gradient calculation.
+                                ! If true, use mass weighting when interpolating T/S for
+                                ! integrals near the bathymetry in AFV pressure gradient
+                                ! calculations.
 
 ! === module MOM_hor_visc ===
 LAPLACIAN = True                !   [Boolean] default = False
                                 ! If true, use a Laplacian horizontal viscosity.
+KH_VEL_SCALE = 0.01             !   [m s-1] default = 0.0
+                                ! The velocity scale which is multiplied by the grid
+                                ! spacing to calculate the Laplacian viscosity.
+                                ! The final viscosity is the largest of this scaled
+                                ! viscosity, the Smagorinsky and Leith viscosities, and KH.
+KH_SIN_LAT = 2000.0             !   [m2 s-1] default = 0.0
+                                ! The amplitude of a latidutinally-dependent background
+                                ! viscosity of the form KH_SIN_LAT*(SIN(LAT)**KH_PWR_OF_SINE).
+SMAGORINSKY_KH = True           !   [Boolean] default = False
+                                ! If true, use a Smagorinsky nonlinear eddy viscosity.
+SMAG_LAP_CONST = 0.15           !   [nondim] default = 0.0
+                                ! The nondimensional Laplacian Smagorinsky constant,
+                                ! often 0.15.
 AH_VEL_SCALE = 0.01             !   [m s-1] default = 0.0
                                 ! The velocity scale which is multiplied by the cube of
                                 ! the grid spacing to calculate the biharmonic viscosity.
@@ -558,6 +591,13 @@ KHTH_MAX_CFL = 0.1              !   [nondimensional] default = 0.8
                                 ! marginally unstable value in a pure layered model, but
                                 ! much smaller numbers (e.g. 0.1) seem to work better for
                                 ! ALE-based models.
+KHTH_USE_FGNV_STREAMFUNCTION = True !   [Boolean] default = False
+                                ! If true, use the streamfunction formulation of
+                                ! Ferrari et al., 2010, which effectively emphasizes
+                                ! graver vertical modes by smoothing in the vertical.
+FGNV_FILTER_SCALE = 0.1         !   [not defined] default = 1.0
+                                ! A coefficient scaling the vertical smoothing term in the
+                                ! Ferrari et al., 2010, streamfunction formulation.
 
 ! === module MOM_mixed_layer_restrat ===
 MIXEDLAYER_RESTRAT = True       !   [Boolean] default = False
@@ -574,7 +614,7 @@ FOX_KEMPER_ML_RESTRAT_COEF = 1.0 !   [nondim] default = 0.0
                                 ! geostrophic kinetic energy or 1 plus the square of the
                                 ! grid spacing over the deformation radius, as detailed
                                 ! by Fox-Kemper et al. (2010)
-MLE_FRONT_LENGTH = 500.0        !   [m] default = 0.0
+MLE_FRONT_LENGTH = 200.0        !   [m] default = 0.0
                                 ! If non-zero, is the frontal-length scale used to calculate the
                                 ! upscaling of buoyancy gradients that is otherwise represented
                                 ! by the parameter FOX_KEMPER_ML_RESTRAT_COEF. If MLE_FRONT_LENGTH is
@@ -589,16 +629,6 @@ MLE_MLD_DECAY_TIME = 2.592E+06  !   [s] default = 0.0
                                 ! depth used in the MLE restratification parameterization. When
                                 ! the MLD deepens below the current running-mean the running-mean
                                 ! is instantaneously set to the current MLD.
-
-! === module MOM_diag_to_Z ===
-!Z_OUTPUT_GRID_FILE = "analysis_vgrid_lev35.v1.nc" ! default = ""
-!Z_OUTPUT_GRID_FILE = "interpolate_zgrid_40L.nc"
-                                ! The file that specifies the vertical grid for
-                                ! depth-space diagnostics, or blank to disable
-                                ! depth-space output.
-!NK_ZSPACE (from file) = 35     !   [nondim]
-                                ! The number of depth-space levels.  This is determined
-                                ! from the size of the variable zw in the output grid file.
 
 ! === module MOM_diabatic_driver ===
 ! The following parameters are used for diabatic processes.
@@ -691,7 +721,7 @@ TKE_ITIDE_MAX = 0.1             !   [W m-2] default = 1000.0
 READ_TIDEAMP = True             !   [Boolean] default = False
                                 ! If true, read a file (given by TIDEAMP_FILE) containing
                                 ! the tidal amplitude with INT_TIDE_DISSIPATION.
-TIDEAMP_FILE = "tidal_amplitude.v20140616.nc" ! default = "tideamp.nc"
+TIDEAMP_FILE = "tidal_amplitude.nc" ! default = "tideamp.nc"
                                 ! The path to the file containing the spatially varying
                                 ! tidal amplitudes with INT_TIDE_DISSIPATION.
 H2_FILE = "ocean_topog.nc"      !
@@ -830,10 +860,11 @@ VAR_PEN_SW = True               !   [Boolean] default = False
                                 ! If true, use one of the CHL_A schemes specified by
                                 ! OPACITY_SCHEME to determine the e-folding depth of
                                 ! incoming short wave radiation.
-CHL_FILE = CHLCLIM              ! CHL_FILE is the file containing chl_a concentrations in
+CHL_FILE = CHLCLIM    ! CHL_FILE is the file containing chl_a concentrations in
                                 ! the variable CHL_A. It is used when VAR_PEN_SW and
                                 ! CHL_FROM_FILE are true.
 CHL_VARNAME = "chlor_a"         ! default = "CHL_A"
+                                ! Name of CHL_A variable in CHL_FILE.
 PEN_SW_NBANDS = 3               ! default = 1
                                 ! The number of bands of penetrating shortwave radiation.
 
@@ -845,29 +876,46 @@ TRACER_ADVECTION_SCHEME = "PPM:H3" ! default = "PLM"
                                 !   PPM    - Piecewise Parabolic Method (Colella-Woodward)
 
 ! === module MOM_tracer_hor_diff ===
+KHTR = 50.0                     !   [m2 s-1] default = 0.0
+                                ! The background along-isopycnal tracer diffusivity.
 CHECK_DIFFUSIVE_CFL = True      !   [Boolean] default = False
                                 ! If true, use enough iterations the diffusion to ensure
                                 ! that the diffusive equivalent of the CFL limit is not
                                 ! violated.  If false, always use 1 iteration.
+MAX_TR_DIFFUSION_CFL = 2.0      !   [nondim] default = -1.0
+                                ! If positive, locally limit the along-isopycnal tracer
+                                ! diffusivity to keep the diffusive CFL locally at or
+                                ! below this value.  The number of diffusive iterations
+                                ! is often this value or the next greater integer.
 
 ! === module MOM_neutral_diffusion ===
 ! This module implements neutral diffusion of tracers
-
+USE_NEUTRAL_DIFFUSION = True    !   [Boolean] default = False
+                                ! If true, enables the neutral diffusion module.
 ! === module ocean_model_init ===
 OCEAN_SURFACE_STAGGER = "A"     ! default = "C"
                                 ! A case-insensitive character string to indicate the
                                 ! staggering of the surface velocity field that is
                                 ! returned to the coupler.  Valid values include
                                 ! 'A', 'B', or 'C'.
+RESTART_CHECKSUMS_REQUIRED = False
+! === module MOM_sum_output ===
+CALCULATE_APE = False           !   [Boolean] default = True
+                                ! If true, calculate the available potential energy of
+                                ! the interfaces.  Setting this to false reduces the
+                                ! memory footprint of high-PE-count models dramatically.
+MAXTRUNC = 100000               !   [truncations save_interval-1] default = 0
+                                ! The run will be stopped, and the day set to a very
+                                ! large value if the velocity is truncated more than
+                                ! MAXTRUNC times between energy saves.  Set MAXTRUNC to 0
+                                ! to stop if there is any truncation of velocities.
 ENERGYSAVEDAYS = 1.00           !   [days] default = 1.0
                                 ! The interval in units of TIMEUNIT between saves of the
                                 ! energies of the run and other globally summed diagnostics.
-
-! === module ocean_model_init ===
-ICE_SHELF = False               !   [Boolean] default = False
-                                ! If true, enables the ice shelf model.
-ICEBERGS_APPLY_RIGID_BOUNDARY = False !   [Boolean] default = False
-                                ! If true, allows icebergs to change boundary condition felt by ocean
+ENERGYSAVEDAYS_GEOMETRIC = 0.25 !   [days] default = 0.0
+                                ! The starting interval in units of TIMEUNIT for the first call
+                                ! to save the energies of the run and other globally summed diagnostics.
+                                ! The interval increases by a factor of 2. after each call to write_energy.
 
 ! === module MOM_surface_forcing ===
 MAX_P_SURF = 0.0                !   [Pa] default = -1.0
@@ -895,16 +943,5 @@ LIQUID_RUNOFF_FROM_DATA = MOM6_RIVER_RUNOFF  !   [Boolean] default = False
                                 ! If true, allows liquid river runoff to be specified via
                                 ! the data_table using the component name 'OCN'.
 ! === module MOM_restart ===
-RESTART_CHECKSUMS_REQUIRED = False
-! === module MOM_sum_output ===
-CALCULATE_APE = False           !   [Boolean] default = True
-                                ! If true, calculate the available potential energy of
-                                ! the interfaces.  Setting this to false reduces the
-                                ! memory footprint of high-PE-count models dramatically.
-MAXTRUNC = 100000               !   [truncations save_interval-1] default = 0
-                                ! The run will be stopped, and the day set to a very
-                                ! large value if the velocity is truncated more than
-                                ! MAXTRUNC times between energy saves.  Set MAXTRUNC to 0
-                                ! to stop if there is any truncation of velocities.
 
 ! === module MOM_file_parser ===
