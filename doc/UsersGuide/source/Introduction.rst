@@ -7,14 +7,14 @@ Introduction
 The Unified Forecast System (:term:`UFS`) :term:`Weather Model` (WM) is a prognostic model that can be
 used for short- and medium-range research and operational forecasts, as exemplified by
 its use in the operational Global Forecast System (GFS) of the National Oceanic and
-Atmospheric Administration (NOAA). The UFS WM v1.1 is the latest public release of this
+Atmospheric Administration (NOAA). The UFS WM v2.0 is the latest public release of this
 software and represents a snapshot of a continuously evolving system undergoing open
 development. More information about the UFS can be found in its portal at https://ufscommunity.org/.
 
 Key architectural elements of the UFS WM, along with links to external detailed documentation
 for those elements, are listed below:
 
-- `The Finite-Volume Cubed-Sphere (FV3) dynamical core <https://noaa-emc.github.io/FV3_Dycore_ufs-v1.1.0/html/index.html>`_.
+- `The Finite-Volume Cubed-Sphere (FV3) dynamical core <https://noaa-emc.github.io/FV3_Dycore_ufs-v2.0.0/html/index.html>`_.
 
 - `The Flexible Modeling System <https://www.gfdl.noaa.gov/fms/>`_ (:term:`FMS`), a software infrastructure used for functions such as
   parallelization.
@@ -22,11 +22,11 @@ for those elements, are listed below:
 - `The Common-Community Physics Package <https://dtcenter.org/community-code/common-community-physics-package-ccpp>`_ (:term:`CCPP`), a library of
   physical parameterizations and the framework to use it with the model. :term:`Parameterization or physics scheme` is defined here.
 
-- `The stochastic physics capability <https://stochastic-physics.readthedocs.io/en/ufs-v1.1.0/>`_, including the Stochastic Kinetic Backscatter Scheme (SKEBS),
+- `The stochastic physics capability <https://stochastic-physics.readthedocs.io/en/ufs-v2.0.0/>`_, including the Stochastic Kinetic Backscatter Scheme (SKEBS),
   the Stochastically Perturbed Parameterization Tendencies (SPPT) scheme, the perturbed boundary
   layer humidity (SHUM) scheme, and the cellular automata method.
 
-- `The NOAA Environmental Modeling System <https://noaa-emc.github.io/NEMS_doc_ufs-v1.1.0/index.html>`_ (:term:`NEMS`) model driver used to create the main program.
+- `The NOAA Environmental Modeling System <https://noaa-emc.github.io/NEMS_doc_ufs-v2.0.0/index.html>`_ (:term:`NEMS`) model driver used to create the main program.
 
 - The libraries needed to build the system, such as:
     - `National Centers for Environmental Prediction (NCEP) Libraries <https://github.com/NOAA-EMC/NCEPLIBS/wiki>`_
@@ -37,7 +37,7 @@ for those elements, are listed below:
 
 - The regression tests used to maintain software integrity as innovations are added.
 
-For the UFS WM v1.1 release, the following aspects are supported:
+For the UFS WM v2.0 release, the following aspects are supported:
 
 - Global configuration with resolutions of C96 (~100 km), C192 (~50 km), C384 (25 km), and C768 (~13 km)
 
@@ -67,7 +67,7 @@ This simple ocean scheme keeps the SST constant throughout the forecast and is r
 conditions do not contain all fields needed to initialize the NSST scheme.
 
 
-Even when using physics suite GFS_v15p2, the UFS WM v1.1 differs from the operational GFS v15.2 in a few ways. First, the public release code
+Even when using physics suite GFS_v15p2, the UFS WM v2.0 differs from the operational GFS v15.2 in a few ways. First, the public release code
 reflects the state of development as of the fall of 2019,
 and therefore the parameterizations contain innovations beyond what is in GFSv15.2 operations.
 For example, the GFDL microphysics distributed for use in GFS v15.2 and GFS v16beta

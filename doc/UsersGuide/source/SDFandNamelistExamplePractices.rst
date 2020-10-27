@@ -8,15 +8,15 @@ The public release of the UFS MR Weather App includes four supported physics sui
 GFS_v15p2, GFS_v15p2_no_nsst, GFS_v16beta, and GFS_v16beta_no_nsst. You will
 find the Suite Definition Files (SDFs) for these suites in
 
-https://github.com/NOAA-EMC/fv3atm/tree/ufs-v1.1.0/ccpp/suites
+https://github.com/NOAA-EMC/fv3atm/tree/ufs-v2.0.0/ccpp/suites
 
 (no other SDFs are available with this release). You will find the namelists for the C96 configuration here:
 
-https://github.com/ufs-community/ufs-weather-model/tree/ufs-v1.1.0/parm/ccpp_v15p2_c96.nml.IN
+https://github.com/ufs-community/ufs-weather-model/tree/ufs-v2.0.0/parm/ccpp_v15p2_c96.nml.IN
 
 and
 
-https://github.com/ufs-community/ufs-weather-model/tree/ufs-v1.1.0/parm/ccpp_v16beta_c96.nml.IN
+https://github.com/ufs-community/ufs-weather-model/tree/ufs-v2.0.0/parm/ccpp_v16beta_c96.nml.IN
 
 As noted in the file names, these namelists are for the operational (v15p2) and developmental (v16beta)
 GFS suites. Each of these namelists are relevant to the suites with and without the SST prediction scheme, that is,
@@ -24,16 +24,16 @@ they are relevant for the suite that employs NSST and for the suite that employs
 model (`no_nsst`). The only difference in the namelist regarding how SST prediction is
 addressed is variable `nstf_name`. For more information about this variable and for information about
 namelist options for higher resolution configurations, please consult the
-`CCPP v4.1.0 Scientific Documentation <https://dtcenter.org/GMTB/v4.1.0/sci_doc/>`_.
+`CCPP v5.0.0 Scientific Documentation <https://dtcenter.org/GMTB/v5.0.0/sci_doc/>`_.
 
 The four CCPP suites for the UFS MR Weather App release are supported in four grid resolutions:
 C96, C192, C384, and C768, with 64 vertical levels.
 
 An in depth description of the namelist settings, SDFs, and parameterizations used
-in all supported suites can be found in the `CCPP v4.1.0 Scientific Documentation <https://dtcenter.org/GMTB/v4.1.0/sci_doc/>`_.
+in all supported suites can be found in the `CCPP v5.0.0 Scientific Documentation <https://dtcenter.org/GMTB/v5.0.0/sci_doc/>`_.
 Note both suites do not
 use stochastic physics by default, but the stochastic physics can be activated following the
-instructions described in the `stochastic physics v1.1 user's guide <https://stochastic-physics.readthedocs.io/en/ufs-v1.1.0/>`_.
+instructions described in the `stochastic physics v2.0 user's guide <https://stochastic-physics.readthedocs.io/en/ufs-v2.0.0/>`_.
 
 Both the SDF and the *input.nml* contain information about how to specify the physics suite.
 Some of this information is redundant, and the user must make sure they are compatible. The
