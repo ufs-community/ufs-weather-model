@@ -1,0 +1,48 @@
+mkdir INPUT DATM_INPUT RESTART history MOM6_OUTPUT
+
+export DATM=true
+# FV3 fixed input
+export IATM=1760
+export JATM=880
+cp    @[RTPWD]/DATM/cfsr.SCRIP.nc DATM_INPUT
+ln -s  @[RTPWD]/DATM/CFSR/201110/* DATM_INPUT
+
+#if [[ $OCNRES == '025' ]]; then
+#export MOM6_RESTART_SETTING='r'
+#export MOM6_RIVER_RUNOFF='True'
+#else
+#export MOM6_RESTART_SETTING='n'
+#export MOM6_RIVER_RUNOFF='False'
+#fi
+
+# MOM6 fixed input
+cp    @[RTPWD]/MOM6_FIX/@[OCNRES]/* ./INPUT
+cp    @[RTPWD]/MOM6_FIX_DATM/@[OCNRES]/* ./INPUT
+
+# CICE fixed input
+#cp    @[RTPWD]/CICE_FIX_mx100/grid_cice_NEMS_mx100.nc .
+#cp    @[RTPWD]/CICE_FIX_mx100/kmtu_cice_NEMS_mx100.nc .
+#cp    @[RTPWD]/CICE_FIX_mx100/mesh.mx100.nc .
+cp    @[RTPWD]/CICE_FIX/@[OCNRES]/grid_cice_NEMS_mx@[OCNRES].nc .
+cp    @[RTPWD]/CICE_FIX/@[OCNRES]/kmtu_cice_NEMS_mx@[OCNRES].nc .
+cp    @[RTPWD]/CICE_FIX/@[OCNRES]/mesh.mx@[OCNRES].nc .
+
+
+if [[ $OCNRES == '025' ]]; then
+cp    @[RTPWD]/MOM6_IC_DATM/025/2011100100/MOM*.nc ./INPUT
+cp    @[RTPWD]/CICE_IC_DATM/025/cice5_model_0.25.cpc*.nc cice_model.res.nc
+else
+cp    @[RTPWD]/MOM6_IC_DATM/100/2011100100/MOM6_IC_TS*.nc ./INPUT/MOM6_IC_TS.nc
+cp    @[RTPWD]/CICE_IC_DATM/100/cice5_model_1.00.cpc*.nc cice_model.res.nc
+fi
+
+# WARM START
+#if [[ ! $MED_restart_data == '' ]]; then
+#  RFILE="DATM_CFSR.cold.cpl.r.${SYEAR}-${SMONTH}-${SDAY}-03600.nc"
+#  if [[ @[CREATE_BASELINE] == 'true' ]]; then
+#  cp  @[NEW_BASELINE]/MEDIATOR_100_CMEPS_CFSR/${RFILE} .
+#  else
+#  cp  @[RTPWD]/MEDIATOR_100_CMEPS_CFSR/${RFILE} .
+#  fi
+#  ls -1 ${RFILE}>rpointer.cpl
+#fi
