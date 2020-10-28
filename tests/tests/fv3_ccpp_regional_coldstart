@@ -8,20 +8,10 @@ export TEST_DESCR="Compare FV3 CCPP regional control results with previous trunk
 
 export CNTL_DIR=fv3_regional_control
 
-export LIST_FILES="atmos_4xdaily.nc \
-                   phyf000.nc \
+export LIST_FILES="phyf000.nc \
                    phyf012.nc \
-                   phyf024.nc \
                    dynf000.nc \
-                   dynf012.nc \
-                   dynf024.nc \
-                   RESTART/coupler.res \
-                   RESTART/fv_core.res.nc \
-                   RESTART/fv_core.res.tile1.nc \
-                   RESTART/fv_srf_wnd.res.tile1.nc \
-                   RESTART/fv_tracer.res.tile1.nc \
-                   RESTART/sfc_data.nc \
-                   RESTART/phy_data.nc"
+                   dynf012.nc"
 
 export_fv3
 export TASKS=80
@@ -30,7 +20,7 @@ export NODES=$(expr $TASKS / $TPN + 1)
 export INPES=20
 export JNPES=2
 
-export FHMAX=24
+export FHMAX=12
 export FDIAG=3
 
 DT_ATMOS="300"

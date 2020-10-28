@@ -1,20 +1,18 @@
-###############################################################################
+##########################################################################################
 #
-#  FV3 CCPP regional control test using RRFS v1beta suite with 32-bit dynamics
+#  FV3 CCPP regional control test using RRFS v1beta suite with 32-bit dynamics, DEBUG mode
 #
-###############################################################################
+##########################################################################################
 
-export TEST_DESCR="Compare FV3 CCPP regional control results with previous trunk version"
+export TEST_DESCR="Compare FV3 CCPP regional control DEBUG results with previous trunk version"
 
-export CNTL_DIR=fv3_regional_control
+export CNTL_DIR=fv3_regional_control_debug
 
 export LIST_FILES="atmos_4xdaily.nc \
                    phyf000.nc \
-                   phyf012.nc \
-                   phyf024.nc \
+                   phyf001.nc \
                    dynf000.nc \
-                   dynf012.nc \
-                   dynf024.nc \
+                   dynf001.nc \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -30,8 +28,8 @@ export NODES=$(expr $TASKS / $TPN + 1)
 export INPES=20
 export JNPES=2
 
-export FHMAX=24
-export FDIAG=3
+export FHMAX=1
+export FDIAG=1
 
 DT_ATMOS="300"
 

@@ -24,7 +24,9 @@ export LIST_FILES="atmos_4xdaily.nc \
                    RESTART/phy_data.nc"
 
 export_fv3
+export THRD=2
 export TASKS=80
+export TPN=$(expr $TPN / 2)
 export NODES=$(expr $TASKS / $TPN + 1)
 
 export INPES=20
