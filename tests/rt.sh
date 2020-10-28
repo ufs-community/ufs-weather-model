@@ -418,9 +418,9 @@ if [[ $SINGLE_NAME != '' ]]; then
 fi
 
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/ufs-public-release-v2-20201002/${COMPILER^^}}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/ufs-public-release-v2-20201027/${COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/ufs-public-release-v2-20201002}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/ufs-public-release-v2-20201027}
 fi
 
 shift $((OPTIND-1))
@@ -436,27 +436,6 @@ if [[ $CREATE_BASELINE == true ]]; then
   echo "                     to:   ${NEW_BASELINE}"
 
   rsync -a "${RTPWD}"/FV3_* "${NEW_BASELINE}"/
-  rsync -a "${RTPWD}"/WW3_* "${NEW_BASELINE}"/
-
-  # FIXME: move these namelist files to parm directory
-  rsync -a "${RTPWD}"/fv3_regional_control/input.nml "${NEW_BASELINE}"/fv3_regional_control/
-  rsync -a "${RTPWD}"/fv3_regional_quilt/input.nml   "${NEW_BASELINE}"/fv3_regional_quilt/
-  rsync -a "${RTPWD}"/fv3_regional_c768/input.nml    "${NEW_BASELINE}"/fv3_regional_c768/
-  rsync -a "${RTPWD}"/fv3_regional_restart/input.nml "${NEW_BASELINE}"/fv3_regional_restart/
-
-  rsync -a "${RTPWD}"/fv3_regional_control/model_configure "${NEW_BASELINE}"/fv3_regional_control/
-  rsync -a "${RTPWD}"/fv3_regional_quilt/model_configure   "${NEW_BASELINE}"/fv3_regional_quilt/
-  rsync -a "${RTPWD}"/fv3_regional_c768/model_configure    "${NEW_BASELINE}"/fv3_regional_c768/
-  rsync -a "${RTPWD}"/fv3_regional_restart/model_configure "${NEW_BASELINE}"/fv3_regional_restart/
-
-  rsync -a "${RTPWD}"/fv3_regional_control/INPUT     "${NEW_BASELINE}"/fv3_regional_control/
-  rsync -a "${RTPWD}"/fv3_regional_control/RESTART   "${NEW_BASELINE}"/fv3_regional_control/
-  rsync -a "${RTPWD}"/fv3_regional_quilt/INPUT       "${NEW_BASELINE}"/fv3_regional_quilt/
-  rsync -a "${RTPWD}"/fv3_regional_c768/INPUT        "${NEW_BASELINE}"/fv3_regional_c768/
-  rsync -a "${RTPWD}"/fv3_regional_restart/INPUT     "${NEW_BASELINE}"/fv3_regional_restart/
-  rsync -a "${RTPWD}"/fv3_stretched/INPUT            "${NEW_BASELINE}"/fv3_stretched/
-  rsync -a "${RTPWD}"/fv3_stretched_nest/INPUT       "${NEW_BASELINE}"/fv3_stretched_nest/
-  rsync -a "${RTPWD}"/fv3_stretched_nest_quilt/INPUT "${NEW_BASELINE}"/fv3_stretched_nest_quilt/
 fi
 
 COMPILE_LOG=${PATHRT}/Compile_$MACHINE_ID.log
