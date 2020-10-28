@@ -8,9 +8,6 @@ proc ModulesHelp {} {
 
 module-whatis "loads NEMS FV3 prerequisites for Stampede/Intel"
 
-# NOTE: the "module purge" and loading of the module command are
-# handled by the module-setup.sh (or .csh) script.
-
 ##
 ## load programming environment
 ## this typically includes compiler, MPI and job scheduler
@@ -27,23 +24,7 @@ setenv NETCDF /opt/apps/intel18/netcdf/4.6.2/x86_64
 # DH* todo - shared directory
 module use /work/06146/tg854455/stampede2/NCEPLIBS-ufs-v2.0.0/intel-18.0.2/impi-18.0.2/modules
 # *DH
-
-module load esmf/8.0.0
-
-module load bacio/2.4.1
-module load crtm/2.3.0
-module load g2/3.4.1
-module load g2tmpl/1.9.1
-module load ip/3.3.3
-module load nceppost/dceca26
-module load nemsio/2.5.2
-module load sp/2.3.3
-module load w3emc/2.7.3
-module load w3nco/2.4.1
-
-module load gfsio/1.4.1
-module load sfcio/1.4.1
-module load sigio/2.3.2
+module load NCEPLIBS/2.0.0
 
 ##
 ## load cmake
