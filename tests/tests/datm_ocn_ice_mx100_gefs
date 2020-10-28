@@ -4,8 +4,8 @@
 
 export TEST_DESCR="DATM-MOM6-CICE-CMEPS - 1 step cold start"
 
-export CNTL_DIR="RT-Baselines_1step_cold_start_100_cmeps_GEFS"
-export CNTLMED_DIR="RT-Baselines_1step_cold_start_100_cmeps_GEFS/RESTART"
+export CNTL_DIR="datm_ocn_ice_mx100_gefs"
+export CNTLMED_DIR="datm_ocn_ice_mx100_gefs/RESTART"
 
 export LIST_FILES="RESTART/MOM.res.nc \
                    RESTART/iced.2011-10-02-00000.nc \
@@ -13,52 +13,7 @@ export LIST_FILES="RESTART/MOM.res.nc \
                    ocn_2011_10_01_21.nc"
 
 export_datm
-export DAYS=1
 export FHMAX=24 # Note this needs to be at least 2x CPL_SLOW
-export DATM_SRC="GEFS"
-export FILENAME_BASE='gefs.'
-#export IATM=1536
-#export JATM=768
-
-# set component and coupling timesteps
-export DT_CICE=${DT_ATMOS}
-export CPL_SLOW=${DT_THERM_MOM6}
-export CPL_FAST=${DT_ATMOS}
-
-export atm_petlist_bounds="0 15"
-export med_petlist_bounds="16 111"
-export ocn_petlist_bounds="112 231"
-export ice_petlist_bounds="232 255"
-export TASKS=256
-export TPN=40
-export NPROC_ICE='24'
-export OCNRES='100'
-export ICERES='1.00'
-export NX_GLB='360'
-export NY_GLB='320'
-#export BLCKX='30'
-#export BLCKY='160'
-export MOM_INPUT="MOM_input_template_${OCNRES}"
-export MESHICE="mesh.mx${OCNRES}.nc"
-export CICEGRID="grid_cice_NEMS_mx${OCNRES}.nc"
-export CICEMASK="kmtu_cice_NEMS_mx${OCNRES}.nc"
-export CHLCLIM='"seawifs_1998-2006_smoothed_2X.nc"'
-export MOM6_RIVER_RUNOFF='False'
-export FRUNOFF=""
-
-# cice restart (days)
 export DUMPFREQ_N=1
 export DUMPFREQ="d"
-
-# mediator restart (hours)
-export MEDCOMP="cmeps"
-export RESTART_INTERVAL=24
-
-# nems.configure
-#export NEMS_CONFIGURE="nems.configure.datm.IN"
-export coupling_interval_slow_sec=${CPL_SLOW}
-export coupling_interval_fast_sec=${CPL_FAST}
-export use_coldstart=".false."
-
 export FV3_RUN=cpld_datm_gefs.IN
-export MED_restart_data=''

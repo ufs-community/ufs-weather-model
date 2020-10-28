@@ -22,14 +22,3 @@ else
 cp    @[RTPWD]/MOM6_IC_DATM/100/2011100100/MOM6_IC_TS*.nc ./INPUT/MOM6_IC_TS.nc
 cp    @[RTPWD]/CICE_IC_DATM/100/cice5_model_1.00.cpc*.nc cice_model.res.nc
 fi
-
-# WARM START
-#if [[ ! $MED_restart_data == '' ]]; then
-#  RFILE="DATM_CFSR.cold.cpl.r.${SYEAR}-${SMONTH}-${SDAY}-03600.nc"
-#  if [[ @[CREATE_BASELINE] == 'true' ]]; then
-#  cp  @[NEW_BASELINE]/MEDIATOR_100_CMEPS_CFSR/${RFILE} .
-#  else
-#  cp  @[RTPWD]/MEDIATOR_100_CMEPS_CFSR/${RFILE} .
-#  fi
-#  ls -1 ${RFILE}>rpointer.cpl
-#fi

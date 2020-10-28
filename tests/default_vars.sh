@@ -459,8 +459,7 @@ export FV3=false
 export S2S=false
 export DATM=true
 export DAYS=1
-export FHMAX=1
-export FHMAX=${FHMAX:-`expr $DAYS \* 24`}
+export FHMAX=24
 export WLCLK=30
 export THRD=1
 export FHROT='0'
@@ -478,6 +477,8 @@ export NX_GLB=360
 export NY_GLB=320
 
 # nems.configure
+export MED_restart_data=''
+export MEDCOMP="cmeps"
 export NEMS_CONFIGURE="nems.configure.datm.IN"
 export med_model="nems"
 export atm_model="datm"
@@ -511,10 +512,9 @@ export coupling_interval_fast_sec=${CPL_FAST}
 export RESTART_N=${FHMAX}
 export CPLMODE='nems_orig_data'
 export cap_dbug_flag="0"
-export use_coldstart="false"
+export use_coldstart=".false."
 export RUNTYPE='startup'
 
-export RESTART_INTERVAL=24
 export WARM_START=.F.
 export CPL=.F.
 export CPLFLX=.F.
@@ -553,4 +553,6 @@ export RESTART_EXT='.false'
 export FRAZIL_FWSALT='.true.'
 # default to write CICE average history files
 export CICE_HIST_AVG='.true.'
+export RT_SUFFIX=""
+export BL_SUFFIX=""
 }

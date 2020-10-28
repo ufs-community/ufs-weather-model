@@ -4,8 +4,8 @@
 
 export TEST_DESCR="DATM-MOM6-CICE-CMEPS - 1-step cold start"
 
-export CNTL_DIR="RT-Baselines_1step_cold_start_cmeps_GEFS"
-export CNTLMED_DIR="RT-Baselines_1step_cold_start_cmeps_GEFS/RESTART"
+export CNTL_DIR="datm_ocn_ice_mx025_gefs"
+export CNTLMED_DIR="datm_ocn_ice_mx025_gefs/RESTART"
 
 export LIST_FILES="RESTART/MOM.res.nc \
                    RESTART/MOM.res_1.nc \
@@ -16,7 +16,6 @@ export LIST_FILES="RESTART/MOM.res.nc \
                    ocn_2011_10_01_21.nc"
 
 export_datm
-export DAYS=1
 export FHMAX=24  # Note this needs to be at least 2x CPL_SLOW
 export WLCLK=40
 export DATM_SRC="GEFS"
@@ -24,7 +23,7 @@ export FILENAME_BASE='gefs.'
 export IATM=1536
 export JATM=768
 
-export atm_petlist_bounds="0 39"
+export atm_petlist_bounds="0 0"
 export med_petlist_bounds="0 39"
 export ocn_petlist_bounds="40 159"
 export ice_petlist_bounds="160 207"
@@ -47,15 +46,9 @@ export CPL_FAST=${DT_ATMOS}
 export DUMPFREQ_N=1
 export DUMPFREQ="d"
 
-# mediator restart (hours)
-export MEDCOMP="cmeps"
-export RESTART_INTERVAL=24
-
 # nems.configure
-#export NEMS_CONFIGURE="nems.configure.datm.IN"
 export coupling_interval_slow_sec=${CPL_SLOW}
 export coupling_interval_fast_sec=${CPL_FAST}
-export use_coldstart=".false."
 
 # resolution dependent files
 export MOM_INPUT="MOM_input_template_${OCNRES}"
@@ -68,4 +61,3 @@ export FRUNOFF="runoff.daitren.clim.1440x1080.v20180328.nc"
 export MOM6_RESTART_SETTING='r'
 
 export FV3_RUN=cpld_datm_gefs.IN
-export MED_restart_data=''
