@@ -57,7 +57,11 @@ if [[ $MACHINE_ID == macosx.* ]] || [[ $MACHINE_ID == linux.* ]]; then
   source $PATHTR/modulefiles/${MACHINE_ID}/fv3
 else
   module use $PATHTR/modulefiles/${MACHINE_ID}
-  module load fv3
+  modulefile="fv3"
+  if [[ "${MAKE_OPT}" == *"DEBUG=Y"* ]]; then
+    [[ -f $PATHTR/modulefiles/${MACHINE_ID}/fv3_debug ]] && modulefile="fv3_debug"
+  fi
+  module load $modulefile
   module list
 fi
 set -x
