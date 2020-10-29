@@ -1,22 +1,19 @@
 #
-#  CPLD_DATM_MOM6_CICE_CMEPS_1_STEP_COLD test
+#  CPLD_DATM_MOM6_CICE_CMEPS_1_STEP_COLD_CFSR test
 #
 
-export TEST_DESCR="DATM-MOM6-CICE-CMEPS - 1-step cold start"
+export TEST_DESCR="DATM-MOM6-CICE-CMEPS_CFSR - 1-step cold start"
 
 export CNTL_DIR="datm_ocn_ice_mx025_cfsr"
-export CNTLMED_DIR="datm_ocn_ice_mx025_cfsr/RESTART"
 
 export LIST_FILES="RESTART/MOM.res.nc \
                    RESTART/MOM.res_1.nc \
                    RESTART/MOM.res_2.nc \
                    RESTART/MOM.res_3.nc \
                    RESTART/iced.2011-10-02-00000.nc \
-                   RESTART/DATM_CFSR.cpl.r.2011-10-02-00000.nc \
-                   ocn_2011_10_01_21.nc"
+                   RESTART/DATM_CFSR.cpl.r.2011-10-02-00000.nc"
 
 export_datm
-export FHMAX=24  # Note this needs to be at least 2x CPL_SLOW
 export WLCLK=40
 export DATM_SRC="CFSR"
 export FILENAME_BASE='cfsr.'
@@ -36,19 +33,6 @@ export OCNRES='025'
 export ICERES='0.25'
 export NX_GLB=1440
 export NY_GLB=1080
-#
-# set component and coupling timesteps
-export DT_CICE=${DT_ATMOS}
-export CPL_SLOW=${DT_THERM_MOM6}
-export CPL_FAST=${DT_ATMOS}
-
-# cice restart (days)
-export DUMPFREQ_N=1
-export DUMPFREQ="d"
-
-# nems.configure
-export coupling_interval_slow_sec=${CPL_SLOW}
-export coupling_interval_fast_sec=${CPL_FAST}
 
 # resolution dependent files
 export MOM_INPUT="MOM_input_template_${OCNRES}"

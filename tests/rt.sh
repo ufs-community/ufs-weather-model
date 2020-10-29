@@ -400,8 +400,7 @@ if [[ $SINGLE_NAME != '' ]]; then
 fi
 
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = jet.* ]]; then
-  #RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20201022/${RT_COMPILER^^}}
-  RTPWD=${RTPWD:-$DISKNM/DATM-MOM6-CICE5/update-20201025/INTEL}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20201022/${RT_COMPILER^^}}
 else
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20201022}
 fi

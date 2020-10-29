@@ -477,8 +477,6 @@ export NX_GLB=360
 export NY_GLB=320
 
 # nems.configure
-export MED_restart_data=''
-export MEDCOMP="cmeps"
 export NEMS_CONFIGURE="nems.configure.datm.IN"
 export med_model="nems"
 export atm_model="datm"
@@ -515,11 +513,6 @@ export cap_dbug_flag="0"
 export use_coldstart=".false."
 export RUNTYPE='startup'
 
-export WARM_START=.F.
-export CPL=.F.
-export CPLFLX=.F.
-export CPLWAV=.F.
-export CPLWAV2ATM=.F.
 export INPUT_NML=input.mom6.nml.IN
 export MODEL_CONFIGURE=datm_configure.IN
 export FIELD_TABLE="field_table"
@@ -553,6 +546,5 @@ export RESTART_EXT='.false'
 export FRAZIL_FWSALT='.true.'
 # default to write CICE average history files
 export CICE_HIST_AVG='.true.'
-export RT_SUFFIX=""
 export BL_SUFFIX=""
 }

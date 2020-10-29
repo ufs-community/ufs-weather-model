@@ -1,19 +1,14 @@
 #
-#  CPLD_DATM_MOM6_CICE_CMEPS_COLD test
+#  CPLD_DATM_MOM6_CICE_CMEPS_COLD_GEFS test
 #
 
-export TEST_DESCR="DATM-MOM6-CICE-CMEPS - 1 step cold start"
+export TEST_DESCR="DATM-MOM6-CICE-CMEPS_GEFS - 1 step cold start"
 
 export CNTL_DIR="datm_ocn_ice_mx100_gefs"
-export CNTLMED_DIR="datm_ocn_ice_mx100_gefs/RESTART"
 
 export LIST_FILES="RESTART/MOM.res.nc \
                    RESTART/iced.2011-10-02-00000.nc \
-                   RESTART/DATM_GEFS.cpl.r.2011-10-02-00000.nc \
-                   ocn_2011_10_01_21.nc"
+                   RESTART/DATM_GEFS.cpl.r.2011-10-02-00000.nc"
 
 export_datm
-export FHMAX=24 # Note this needs to be at least 2x CPL_SLOW
-export DUMPFREQ_N=1
-export DUMPFREQ="d"
 export FV3_RUN=cpld_datm_gefs.IN

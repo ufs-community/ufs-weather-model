@@ -18,9 +18,9 @@ cp    @[RTPWD]/CICE_FIX/@[OCNRES]/mesh.mx@[OCNRES].nc .
 
 
 if [[ $OCNRES == '025' ]]; then
-cp    @[RTPWD]/MOM6_IC_DATM/025/2011100100/MOM*.nc ./INPUT
-cp    @[RTPWD]/CICE_IC_DATM/025/cice5_model_0.25.cpc*.nc cice_model.res.nc
+  cp    @[RTPWD]/MOM6_IC_DATM/@[OCNRES]/2011100100/MOM*.nc ./INPUT
+  cp    @[RTPWD]/CICE_IC_DATM/@[OCNRES]/cice5_model_@[ICERES].cpc*.nc cice_model.res.nc
 else
-cp    @[RTPWD]/MOM6_IC_DATM/100/2011100100/MOM6_IC_TS*.nc ./INPUT/MOM6_IC_TS.nc
-cp    @[RTPWD]/CICE_IC_DATM/100/cice5_model_1.00.cpc*.nc cice_model.res.nc
+  cp    @[RTPWD]/MOM6_IC_DATM/@[OCNRES]/2011100100/MOM6_IC_TS*.nc ./INPUT/MOM6_IC_TS.nc
+  cp    @[RTPWD]/CICE_IC_DATM/@[OCNRES]/cice5_model_@[ICERES].cpc*.nc cice_model.res.nc
 fi
