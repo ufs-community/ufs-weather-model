@@ -288,16 +288,12 @@ check_results() {
     #
     echo;echo "Moving baseline ${TEST_NR} ${TEST_NAME} files ...."
     echo;echo "Moving baseline ${TEST_NR} ${TEST_NAME} files ...." >> ${REGRESSIONTEST_LOG}
-    if [[ ! -d ${NEW_BASELINE}/${CNTL_DIR}/RESTART ]] ; then
-      echo " mkdir -p ${NEW_BASELINE}/${CNTL_DIR}/RESTART" >> ${REGRESSIONTEST_LOG}
-      mkdir -p ${NEW_BASELINE}/${CNTL_DIR}/RESTART
-    fi
 
     for i in ${LIST_FILES} ; do
       printf %s " Moving " $i " ....."
       printf %s " Moving " $i " ....."   >> ${REGRESSIONTEST_LOG}
-      printf %s " Moving " $i " ....."
       if [[ -f ${RUNDIR}/$i ]] ; then
+        mkdir -p ${NEW_BASELINE}/${CNTL_DIR}/$(dirname ${i})
         cp ${RUNDIR}/${i} ${NEW_BASELINE}/${CNTL_DIR}/${i}
         echo "....OK" >>${REGRESSIONTEST_LOG}
         echo "....OK"

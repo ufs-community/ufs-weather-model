@@ -133,6 +133,14 @@ if [[ "${MAKE_OPT}" == *"WW3=Y"* ]]; then
     CMAKE_FLAGS="${CMAKE_FLAGS} -DWW3=Y"
 fi
 
+if [[ "${MAKE_OPT}" == *"S2S=Y"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DS2S=Y"
+fi
+
+if [[ "${MAKE_OPT}" == *"DATM=Y"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DDATM=Y"
+fi
+
 CMAKE_FLAGS=$(trim "${CMAKE_FLAGS}")
 
 if [ $clean_before = YES ] ; then
