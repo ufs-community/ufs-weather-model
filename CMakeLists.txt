@@ -85,7 +85,7 @@ find_package(sp REQUIRED)
 find_package(w3emc REQUIRED)
 find_package(w3nco REQUIRED)
 if(INLINE_POST)
-  find_package(nceppost REQUIRED)
+  find_package(upp REQUIRED)
 endif()
 # See https://github.com/NOAA-EMC/NCEPLIBS-nemsio/pull/22
 target_link_libraries(nemsio::nemsio INTERFACE w3emc::w3emc_d bacio::bacio_4)
