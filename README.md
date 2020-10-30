@@ -2,11 +2,11 @@
 
 # ufs-weather-model
 
-This is the UFS weather model code.
+This is the UFS weather model source code.
 
 # Where to find information
 
-Start at the [ufs-weather-model wiki](https://github.com/ufs-community/ufs-weather-model/wiki) which has quick start instructions.
+Start at the [wiki](https://github.com/ufs-community/ufs-weather-model/wiki) which has quick start instructions.
 
 [User's reference guide](http://ufs-weather-model.readthedocs.io/) is hosted on read the docs.
 
@@ -14,21 +14,28 @@ Start at the [ufs-weather-model wiki](https://github.com/ufs-community/ufs-weath
 
 The top level directory structure groups source code and input files as follow:
 
-| File/directory    | Purpose |
-| --------------    | ------- |
-| ```LICENSE.md```  | A copy of the Gnu lesser general public license, version 3. |
-| ```README.md```   | This file with basic pointers to more information. |
-| ```FMS/```        | Contains Flexible Modeling System source code. |
-| ```NEMS/```       | Contains NOAA Environmental Modeling System source code and nems compset runi scripts. |
-| ```FV3/```        | Contains FV3 atmosphere model component including fv3 dynamics core, dynsmics to physics driver, physics and io. |
-| ```WW3/```        | Contains community wave modeling framework WW3. |
-| ```stochastic physics/``` | Contains the stochastic physics source code. |
-| ```conf/```       | Contains compile option files on various platforms. |
-| ```compsets/```   | Contains NEMSCompsetRun regression test compset information. |
-| ```log/```        | Contains log files from NEMSCompsetRun regression test.|
-| ```modulefiles/``` | Contains module files on various platforms.|
-| ```parm/```       | Contains model configuration and namelist templates.|
-| ```doc/```        | Workspace for documentation. |
+| File/directory            | Purpose |
+| --------------            | ------- |
+| ```LICENSE.md```          | A copy of the GNU Lesser General Public License, Version 3. |
+| ```README.md```           | This file with basic pointers to more information. |
+| ```FMS/```                | Contains Flexible Modeling System source code. |
+| ```NEMS/```               | Contains NOAA Environmental Modeling System source code and nems compset run scripts. |
+| ```CMEPS-interface/```    | Contains CMEPS mediator |
+| ```FV3/```                | Contains FV3 atmosphere model component including FV3 dynamical core, dynamics to physics driver, physics and IO. |
+| ```DATM/```               | Contains Data Atmosphere model component |
+| ```WW3/```                | Contains community wave modeling framework WW3. |
+| ```MOM6-interface/```     | Contains MOM6 ocean model component |
+| ```CICE-interface/```     | Contains CICE sea-ice model component including CICE6 and Icepack |
+| ```stochastic_physics/``` | Contains the stochastic physics source code. |
+| ```cmake/```              | Contains compile option files on various platforms. |
+| ```modulefiles/```        | Contains module files on various platforms. |
+| ```tests/```              | Regression and unit testing framework scripts. |
+| ```build.sh```            | Script to build the model executable. (also used by `tests/`) |
+
+E.g. use of `build.sh` to build the coupled model with `FV3_GFS_v15p2` as the CCPP suite.
+```
+$> CMAKE_FLAGS="-DS2S=ON" CCPP_SUITES="FV3_GFS_v15p2" ./build.sh
+```
 
 # Disclaimer
 

@@ -223,9 +223,6 @@ check_results() {
   ROCOTO=${ROCOTO:-false}
   ECFLOW=${ECFLOW:-false}
 
-  # Default compiler "intel"
-  export COMPILER=${NEMS_COMPILER:-intel}
-
   local test_status='PASS'
 
   # Give one minute for data to show up on file system
@@ -260,7 +257,7 @@ check_results() {
         echo ".......MISSING baseline"
         test_status='FAIL'
 
-      elif [[ $COMPILER == "gnu" && $i == "RESTART/fv_core.res.nc" ]] ; then
+      elif [[ $RT_COMPILER == "gnu" && $i == "RESTART/fv_core.res.nc" ]] ; then
 
         # Although identical in ncdiff, RESTART/fv_core.res.nc differs in byte 469, line 3,
         # for the fv3_control_32bit test between each run (without changing the source code)
@@ -291,16 +288,12 @@ check_results() {
     #
     echo;echo "Moving baseline ${TEST_NR} ${TEST_NAME} files ...."
     echo;echo "Moving baseline ${TEST_NR} ${TEST_NAME} files ...." >> ${REGRESSIONTEST_LOG}
-    if [[ ! -d ${NEW_BASELINE}/${CNTL_DIR}/RESTART ]] ; then
-      echo " mkdir -p ${NEW_BASELINE}/${CNTL_DIR}/RESTART" >> ${REGRESSIONTEST_LOG}
-      mkdir -p ${NEW_BASELINE}/${CNTL_DIR}/RESTART
-    fi
 
     for i in ${LIST_FILES} ; do
       printf %s " Moving " $i " ....."
       printf %s " Moving " $i " ....."   >> ${REGRESSIONTEST_LOG}
-      printf %s " Moving " $i " ....."
       if [[ -f ${RUNDIR}/$i ]] ; then
+        mkdir -p ${NEW_BASELINE}/${CNTL_DIR}/$(dirname ${i})
         cp ${RUNDIR}/${i} ${NEW_BASELINE}/${CNTL_DIR}/${i}
         echo "....OK" >>${REGRESSIONTEST_LOG}
         echo "....OK"
@@ -357,15 +350,11 @@ rocoto_create_compile_task() {
     echo "  </metatask>" >> $ROCOTO_XML
   fi
 
-  if [[ "Q$APP" != Q ]] ; then
-      rocoto_cmd="&PATHRT;/appbuild.sh &PATHTR;/FV3 $APP $COMPILE_NR"
-  else
-      rocoto_cmd="&PATHRT;/compile_cmake.sh &PATHTR; $MACHINE_ID \"${NEMS_VER}\" $COMPILE_NR"
-  fi
+  rocoto_cmd="&PATHRT;/compile.sh $MACHINE_ID \"${MAKE_OPT}\" $COMPILE_NR"
 
   # serialize WW3 builds. FIXME
   DEP_STRING=""
-  if [[ ${NEMS_VER^^} =~ "WW3=Y" && ${COMPILE_PREV_WW3_NR} != '' ]]; then
+  if [[ ${MAKE_OPT^^} =~ "WW3=Y" && ${COMPILE_PREV_WW3_NR} != '' ]]; then
     DEP_STRING="<dependency><taskdep task=\"compile_${COMPILE_PREV_WW3_NR}\"/></dependency>"
   fi
 
@@ -474,17 +463,17 @@ ecflow_create_compile_task() {
 
   cat << EOF > ${ECFLOW_RUN}/${ECFLOW_SUITE}/compile_${COMPILE_NR}.ecf
 %include <head.h>
-$PATHRT/run_compile.sh ${PATHRT} ${RUNDIR_ROOT} "${NEMS_VER}" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1 &
+$PATHRT/run_compile.sh ${PATHRT} ${RUNDIR_ROOT} "${MAKE_OPT}" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1 &
 %include <tail.h>
 EOF
 
   echo "  task compile_${COMPILE_NR}" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
-  echo "      label build_options '${NEMS_VER}'" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+  echo "      label build_options '${MAKE_OPT}'" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   echo "      label job_id ''" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   echo "      label job_status ''" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   echo "      inlimit max_builds" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   # serialize WW3 builds. FIXME
-  if [[ ${NEMS_VER^^} =~ "WW3=Y" && ${COMPILE_PREV_WW3_NR} != '' ]]; then
+  if [[ ${MAKE_OPT^^} =~ "WW3=Y" && ${COMPILE_PREV_WW3_NR} != '' ]]; then
     echo "    trigger compile_${COMPILE_PREV_WW3_NR} == complete"  >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   fi
 }

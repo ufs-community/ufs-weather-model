@@ -62,6 +62,7 @@ echo "Test ${TEST_NR} ${TEST_NAME} ${TEST_DESCR}"
 
 source rt_utils.sh
 source atparse.bash
+source edit_inputs.sh
 
 mkdir -p ${RUNDIR}
 cd $RUNDIR
@@ -78,28 +79,44 @@ cp ${PATHRT}/modules.fv3_${COMPILE_NR}             modules.fv3
 
 # Get the shell file that loads the "module" command and purges modules:
 cp ${PATHRT}/../NEMS/src/conf/module-setup.sh.inc  module-setup.sh
-cp ${PATHTR}/parm/post_itag itag
-cp ${PATHTR}/parm/postxconfig-NT.txt postxconfig-NT.txt
-cp ${PATHTR}/parm/postxconfig-NT_FH00.txt postxconfig-NT_FH00.txt
-cp ${PATHTR}/parm/params_grib2_tbl_new params_grib2_tbl_new
+if [[ $FV3 = 'true' ]]; then
+  cp ${PATHRT}/parm/post_itag itag
+  cp ${PATHRT}/parm/postxconfig-NT.txt postxconfig-NT.txt
+  cp ${PATHRT}/parm/postxconfig-NT_FH00.txt postxconfig-NT_FH00.txt
+  cp ${PATHRT}/parm/params_grib2_tbl_new params_grib2_tbl_new
+fi
 
 SRCD="${PATHTR}"
 RUND="${RUNDIR}"
 
 atparse < ${PATHRT}/fv3_conf/${FV3_RUN:-fv3_run.IN} > fv3_run
 
-atparse < ${PATHTR}/parm/${INPUT_NML:-input.nml.IN} > input.nml
+atparse < ${PATHRT}/parm/${INPUT_NML:-input.nml.IN} > input.nml
 
-atparse < ${PATHTR}/parm/${MODEL_CONFIGURE:-model_configure.IN} > model_configure
+atparse < ${PATHRT}/parm/${MODEL_CONFIGURE:-model_configure.IN} > model_configure
 
-atparse < ${PATHTR}/parm/${NEMS_CONFIGURE:-nems.configure} > nems.configure
+atparse < ${PATHRT}/parm/${NEMS_CONFIGURE:-nems.configure} > nems.configure
 
 if [[ "Q${INPUT_NEST02_NML:-}" != Q ]] ; then
-    atparse < ${PATHTR}/parm/${INPUT_NEST02_NML} > input_nest02.nml
+    atparse < ${PATHRT}/parm/${INPUT_NEST02_NML} > input_nest02.nml
 fi
 
 # Set up the run directory
 source ./fv3_run
+
+if [[ $DATM = 'true' ]] || [[ $S2S = 'true' ]]; then
+  edit_ice_in     < ${PATHRT}/parm/ice_in_template > ice_in
+  edit_mom_input  < ${PATHRT}/parm/${MOM_INPUT:-MOM_input_template_$OCNRES} > INPUT/MOM_input
+  edit_diag_table < ${PATHRT}/parm/diag_table_template > diag_table
+  edit_data_table < ${PATHRT}/parm/data_table_template > data_table
+  # CMEPS
+  cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
+  cp ${PATHRT}/parm/pio_in pio_in
+  cp ${PATHRT}/parm/med_modelio.nml med_modelio.nml
+fi
+if [[ $DATM = 'true' ]]; then
+  cp ${PATHRT}/parm/datm_data_table.IN datm_data_table
+fi
 
 if [[ $SCHEDULER = 'pbs' ]]; then
   NODES=$(( TASKS / TPN ))
@@ -124,7 +141,7 @@ elif [[ $SCHEDULER = 'lsf' ]]; then
   atparse < $PATHRT/fv3_conf/fv3_bsub.IN > job_card
 fi
 
-atparse < ${PATHTR}/parm/${NEMS_CONFIGURE:-nems.configure} > nems.configure
+atparse < ${PATHRT}/parm/${NEMS_CONFIGURE:-nems.configure} > nems.configure
 
 ################################################################################
 # Submit test job

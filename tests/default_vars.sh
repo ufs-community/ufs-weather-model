@@ -21,6 +21,30 @@ elif [ $MACHINE_ID = wcoss_dell_p3 ]; then
   TASKS_stretch=48 ; TPN_stretch=28 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=28 ; INPES_strnest=2 ; JNPES_strnest=4
 
+  TASKS_cpl_dflt=192; TPN_cpl_dflt=28; INPES_cpl_dflt=3; JNPES_cpl_dflt=8
+  THRD_cpl_dflt=1; WPG_cpl_dflt=6;  MPB_cpl_dflt="0 143"; APB_cpl_dflt="0 149"
+  OPB_cpl_dflt="150 179"; IPB_cpl_dflt="180 191"
+
+  TASKS_cpl_thrd=120; TPN_cpl_thrd=14; INPES_cpl_thrd=3; JNPES_cpl_thrd=4
+  THRD_cpl_thrd=2; WPG_cpl_thrd=6;  MPB_cpl_thrd="0 77";  APB_cpl_thrd="0 77"
+  OPB_cpl_thrd="78 107";  IPB_cpl_thrd="108 119"
+
+  TASKS_cpl_bmrk=480; TPN_cpl_bmrk=28; INPES_cpl_bmrk=6; JNPES_cpl_bmrk=8
+  THRD_cpl_bmrk=1; WPG_cpl_bmrk=24; MPB_cpl_bmrk="0 287"; APB_cpl_bmrk="0 311"
+  OPB_cpl_bmrk="312 431"; IPB_cpl_bmrk="432 479"
+
+  TASKS_cpl_wwav=520; TPN_cpl_wwav=28; INPES_cpl_wwav=6; JNPES_cpl_wwav=8
+  THRD_cpl_wwav=1; WPG_cpl_wwav=24; MPB_cpl_wwav="0 287"; APB_cpl_wwav="0 311"
+  OPB_cpl_wwav="312 431"; IPB_cpl_wwav="432 479"; WPB_cpl_wwav="480 519"
+
+  TASKS_cpl_c192=288; TPN_cpl_c192=28; INPES_cpl_c192=4; JNPES_cpl_c192=8
+  THRD_cpl_c192=1; WPG_cpl_c192=12;  MPB_cpl_c192="0 191"; APB_cpl_c192="0 203"
+  OPB_cpl_c192="204 263"; IPB_cpl_c192="264 287"
+
+  TASKS_cpl_c384=318; TPN_cpl_c384=28; INPES_cpl_c384=3; JNPES_cpl_c384=8
+  THRD_cpl_c384=1; WPG_cpl_c384=6;  MPB_cpl_c384="0 143"; APB_cpl_c384="0 149"
+  OPB_cpl_c384="150 269"; IPB_cpl_c384="270 317"
+
 elif [[ $MACHINE_ID = orion.* ]]; then
 
   TASKS_dflt=150 ; TPN_dflt=40 ; INPES_dflt=3 ; JNPES_dflt=8
@@ -28,12 +52,60 @@ elif [[ $MACHINE_ID = orion.* ]]; then
   TASKS_stretch=48 ; TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=12 ; INPES_strnest=2 ; JNPES_strnest=4
 
+  TASKS_cpl_dflt=192; TPN_cpl_dflt=40; INPES_cpl_dflt=3; JNPES_cpl_dflt=8
+  THRD_cpl_dflt=1; WPG_cpl_dflt=6;  MPB_cpl_dflt="0 143"; APB_cpl_dflt="0 149"
+  OPB_cpl_dflt="150 179"; IPB_cpl_dflt="180 191"
+
+  TASKS_cpl_thrd=120; TPN_cpl_thrd=40; INPES_cpl_thrd=3; JNPES_cpl_thrd=4
+  THRD_cpl_thrd=2; WPG_cpl_thrd=6;  MPB_cpl_thrd="0 77";  APB_cpl_thrd="0 77"
+  OPB_cpl_thrd="78 107";  IPB_cpl_thrd="108 119"
+
+  TASKS_cpl_bmrk=480; TPN_cpl_bmrk=40; INPES_cpl_bmrk=6; JNPES_cpl_bmrk=8
+  THRD_cpl_bmrk=1; WPG_cpl_bmrk=24; MPB_cpl_bmrk="0 287"; APB_cpl_bmrk="0 311"
+  OPB_cpl_bmrk="312 431"; IPB_cpl_bmrk="432 479"
+
+  TASKS_cpl_wwav=520; TPN_cpl_wwav=40; INPES_cpl_wwav=6; JNPES_cpl_wwav=8
+  THRD_cpl_wwav=1; WPG_cpl_wwav=24; MPB_cpl_wwav="0 287"; APB_cpl_wwav="0 311"
+  OPB_cpl_wwav="312 431"; IPB_cpl_wwav="432 479"; WPB_cpl_wwav="480 519"
+
+  TASKS_cpl_c192=288; TPN_cpl_c192=40; INPES_cpl_c192=4; JNPES_cpl_c192=8
+  THRD_cpl_c192=1; WPG_cpl_c192=12;  MPB_cpl_c192="0 191"; APB_cpl_c192="0 203"
+  OPB_cpl_c192="204 263"; IPB_cpl_c192="264 287"
+
+  TASKS_cpl_c384=318; TPN_cpl_c384=40; INPES_cpl_c384=3; JNPES_cpl_c384=8
+  THRD_cpl_c384=1; WPG_cpl_c384=6;  MPB_cpl_c384="0 143"; APB_cpl_c384="0 149"
+  OPB_cpl_c384="150 269"; IPB_cpl_c384="270 317"
+
 elif [[ $MACHINE_ID = hera.* ]]; then
 
   TASKS_dflt=150 ; TPN_dflt=40 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=84  ; TPN_thrd=20 ; INPES_thrd=3 ; JNPES_thrd=4
   TASKS_stretch=48 ; TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=12 ; INPES_strnest=2 ; JNPES_strnest=4
+
+  TASKS_cpl_dflt=192; TPN_cpl_dflt=40; INPES_cpl_dflt=3; JNPES_cpl_dflt=8
+  THRD_cpl_dflt=1; WPG_cpl_dflt=6;  MPB_cpl_dflt="0 143"; APB_cpl_dflt="0 149"
+  OPB_cpl_dflt="150 179"; IPB_cpl_dflt="180 191"
+
+  TASKS_cpl_thrd=120; TPN_cpl_thrd=40; INPES_cpl_thrd=3; JNPES_cpl_thrd=4
+  THRD_cpl_thrd=2; WPG_cpl_thrd=6;  MPB_cpl_thrd="0 77";  APB_cpl_thrd="0 77"
+  OPB_cpl_thrd="78 107";  IPB_cpl_thrd="108 119"
+
+  TASKS_cpl_bmrk=480; TPN_cpl_bmrk=40; INPES_cpl_bmrk=6; JNPES_cpl_bmrk=8
+  THRD_cpl_bmrk=1; WPG_cpl_bmrk=24; MPB_cpl_bmrk="0 287"; APB_cpl_bmrk="0 311"
+  OPB_cpl_bmrk="312 431"; IPB_cpl_bmrk="432 479"
+
+  TASKS_cpl_wwav=520; TPN_cpl_wwav=40; INPES_cpl_wwav=6; JNPES_cpl_wwav=8
+  THRD_cpl_wwav=1; WPG_cpl_wwav=24; MPB_cpl_wwav="0 287"; APB_cpl_wwav="0 311"
+  OPB_cpl_wwav="312 431"; IPB_cpl_wwav="432 479"; WPB_cpl_wwav="480 519"
+
+  TASKS_cpl_c192=288; TPN_cpl_c192=40; INPES_cpl_c192=4; JNPES_cpl_c192=8
+  THRD_cpl_c192=1; WPG_cpl_c192=12;  MPB_cpl_c192="0 191"; APB_cpl_c192="0 203"
+  OPB_cpl_c192="204 263"; IPB_cpl_c192="264 287"
+
+  TASKS_cpl_c384=318; TPN_cpl_c384=40; INPES_cpl_c384=3; JNPES_cpl_c384=8
+  THRD_cpl_c384=1; WPG_cpl_c384=6;  MPB_cpl_c384="0 143"; APB_cpl_c384="0 149"
+  OPB_cpl_c384="150 269"; IPB_cpl_c384="270 317"
 
 elif [[ $MACHINE_ID = linux.* ]]; then
 
@@ -73,6 +145,29 @@ elif [[ $MACHINE_ID = stampede.* ]]; then
   TASKS_thrd=84  ; TPN_thrd=24 ; INPES_thrd=3 ; JNPES_thrd=4
   TASKS_stretch=48 ; TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
 
+  TASKS_cpl_dflt=192; TPN_cpl_dflt=48; INPES_cpl_dflt=3; JNPES_cpl_dflt=8
+  THRD_cpl_dflt=1; WPG_cpl_dflt=6;  MPB_cpl_dflt="0 143"; APB_cpl_dflt="0 149"
+  OPB_cpl_dflt="150 179"; IPB_cpl_dflt="180 191"
+
+  TASKS_cpl_thrd=120; TPN_cpl_thrd=48; INPES_cpl_thrd=3; JNPES_cpl_thrd=4
+  THRD_cpl_thrd=2; WPG_cpl_thrd=6;  MPB_cpl_thrd="0 77";  APB_cpl_thrd="0 77"
+  OPB_cpl_thrd="78 107";  IPB_cpl_thrd="108 119"
+
+  TASKS_cpl_bmrk=480; TPN_cpl_bmrk=48; INPES_cpl_bmrk=6; JNPES_cpl_bmrk=8
+  THRD_cpl_bmrk=1; WPG_cpl_bmrk=24; MPB_cpl_bmrk="0 287"; APB_cpl_bmrk="0 311"
+  OPB_cpl_bmrk="312 431"; IPB_cpl_bmrk="432 479"
+
+  TASKS_cpl_wwav=520; TPN_cpl_wwav=48; INPES_cpl_wwav=6; JNPES_cpl_wwav=8
+  THRD_cpl_wwav=1; WPG_cpl_wwav=24; MPB_cpl_wwav="0 287"; APB_cpl_wwav="0 311"
+  OPB_cpl_wwav="312 431"; IPB_cpl_wwav="432 479"; WPB_cpl_wwav="480 519"
+
+  TASKS_cpl_c192=288; TPN_cpl_c192=40; INPES_cpl_c192=4; JNPES_cpl_c192=8
+  THRD_cpl_c192=1; WPG_cpl_c192=12;  MPB_cpl_c192="0 191"; APB_cpl_c192="0 203"
+  OPB_cpl_c192="204 263"; IPB_cpl_c192="264 287"
+
+  TASKS_cpl_c384=318; TPN_cpl_c384=48; INPES_cpl_c384=3; JNPES_cpl_c384=8
+  THRD_cpl_c384=1; WPG_cpl_c384=6;  MPB_cpl_c384="0 143"; APB_cpl_c384="0 149"
+  OPB_cpl_c384="150 269"; IPB_cpl_c384="270 317"
 else
 
   echo "Unknown MACHINE_ID ${MACHINE_ID}"
@@ -80,17 +175,18 @@ else
 
 fi
 
-# Re-instantiate COMPILER in case it gets deleted by module purge
-COMPILER=${NEMS_COMPILER:-intel}
-# Longer default walltime for GNU and PGI
-if [[ $COMPILER = gnu ]] || [[ $COMPILER = pgi ]]; then
-    WLCLK_dflt=30
+# Longer default walltime for GNU
+if [[ $RT_COMPILER = gnu ]]; then
+  WLCLK_dflt=30
 else
-    WLCLK_dflt=15
+  WLCLK_dflt=15
 fi
 
 export_fv3 ()
 {
+export FV3=true
+export S2S=false
+export DATM=false
 export THRD=1
 export WLCLK=$WLCLK_dflt
 export INPES=$INPES_dflt
@@ -202,6 +298,7 @@ export SHOUR=00
 export FHMAX=${FHMAX:-`expr $DAYS \* 24`}
 export DT_ATMOS=1800
 export FHCYC=24
+export FHROT=0
 export LDIAG3D=.F.
 export QDIAG3D=.F.
 export MAX_OUTPUT_FIELDS=300
@@ -210,7 +307,7 @@ export MAX_OUTPUT_FIELDS=300
 export DO_SPPT=.F.
 export DO_SHUM=.F.
 export DO_SKEB=.F.
-export LNDP_TYPE=0 
+export LNDP_TYPE=0
 export N_VAR_LNDP=0
 export SKEB=-999.
 export SPPT=-999.
@@ -228,4 +325,226 @@ export IAU_DRYMASSFIXER=.false.
 
 # Regional
 export WRITE_RESTART_WITH_BCS=.false.
+
+export coupling_interval_fast_sec=0
+}
+
+export_cpl ()
+{
+export FV3=true
+export S2S=true
+export DATM=false
+
+export DAYS="1"
+export FHMAX="24"
+export FDIAG="6"
+export WLCLK=30
+
+# default atm/ocn/ice resolution
+export ATMRES='C96'
+export OCNRES='100'
+export ICERES='1.00'
+export NX_GLB=360
+export NY_GLB=320
+
+# default resources
+export TASKS=$TASKS_cpl_dflt
+export TPN=$TPN_cpl_dflt
+export INPES=$INPES_cpl_dflt
+export JNPES=$JNPES_cpl_dflt
+export THRD=$THRD_cpl_dflt
+export WRTTASK_PER_GROUP=$WPG_cpl_dflt
+
+export med_petlist_bounds=$MPB_cpl_dflt
+export atm_petlist_bounds=$APB_cpl_dflt
+export ocn_petlist_bounds=$OPB_cpl_dflt
+export ice_petlist_bounds=$IPB_cpl_dflt
+
+# component and coupling timesteps
+export DT_ATMOS='900'
+export DT_CICE=${DT_ATMOS}
+export DT_DYNAM_MOM6='1800'
+export DT_THERM_MOM6='3600'
+export CPL_SLOW=${DT_THERM_MOM6}
+export CPL_FAST=${DT_ATMOS}
+
+# nems.configure defaults
+export NEMS_CONFIGURE="nems.configure.medcmeps_atm_ocn_ice.IN"
+export med_model="nems"
+export atm_model="fv3"
+export ocn_model="mom6"
+export ice_model="cice6"
+export wav_model="ww3"
+
+export coupling_interval_slow_sec=${CPL_SLOW}
+export coupling_interval_fast_sec=${CPL_FAST}
+
+export RESTART_N=${FHMAX}
+export CPLMODE='nems_orig'
+export cap_dbug_flag="0"
+export use_coldstart="false"
+export RUNTYPE='startup'
+
+# FV3 defaults
+# to use new oro and ics created from 1deg ocean mask on c96 tiles
+# set frac_grid=.F. but FRAC_GRID_INPUT=.T.
+# to repro existing tests set both frac_grid and FRAC_GRID_INPUT to .F.
+# to run frac_grid, set both frac_grid and FRAC_GRID_INPUTs to .T.
+export FRAC_GRID='.F.'
+export FRAC_GRID_INPUT='.T.'
+export SUITE_NAME="FV3_GFS_2017_coupled"
+export INPUT_NML=input.mom6_ccpp.nml.IN
+export FIELD_TABLE="field_table"
+
+export FHROT='0'
+export NSOUT='-1'
+export FDIAG='6'
+export NFHOUT='6'
+#no high freq fv3 output
+export NFHMAX_HF='-1'
+export NFHOUT_HF='-1'
+
+export CPLFLX='.T.'
+export CPL='.true.'
+export NSTF_NAME='0,0,0,0,0'
+
+# for FV3: default values will be changed if doing a warm-warm restart
+export WARM_START='.F.'
+export MAKE_NH='.T.'
+export NA_INIT='1'
+export EXTERNAL_IC='.T.'
+export NGGPS_IC='.T.'
+export MOUNTAIN='.F.'
+
+# MOM6 defaults; 1 degree
+export MOM_INPUT=MOM_input_template_100
+export MOM6_RESTART_SETTING='n'
+export MOM6_RIVER_RUNOFF='False'
+export FRUNOFF=""
+export CHLCLIM="seawifs_1998-2006_smoothed_2X.nc"
+# this must be set False for restart repro 
+export MOM6_REPRO_LA='False'
+# since CPL_SLOW is set to DT_THERM, this should be always be false 
+export MOM6_THERMO_SPAN='False'
+# no WW3
+export MOM6_USE_WAVES='False'
+
+# CICE6 defaults; 1 degree
+export NPROC_ICE='12'
+export MESHICE="mesh.mx${OCNRES}.nc"
+export CICEGRID="grid_cice_NEMS_mx${OCNRES}.nc"
+export CICEMASK="kmtu_cice_NEMS_mx${OCNRES}.nc"
+export RUNID='unknown'
+# set large; restart frequency now controlled by restart_n in nems.configure
+export DUMPFREQ='d'
+export DUMPFREQ_N=1000
+export USE_RESTART_TIME='.false.'
+export RESTART_EXT='.false'
+# setting to true will allow Frazil FW and Salt to be
+# included in fluxes sent to ocean
+export FRAZIL_FWSALT='.true.'
+# default to write CICE average history files
+export CICE_HIST_AVG='.true.'
+
+export RT35D=''
+}
+export_35d_run ()
+{
+export CNTL_DIR=""
+export LIST_FILES=""
+}
+export_datm ()
+{
+export FV3=false
+export S2S=false
+export DATM=true
+export DAYS=1
+export FHMAX=24
+export WLCLK=30
+export THRD=1
+export FHROT='0'
+
+# atm/ocn/ice resolution
+# GEFS
+export DATM_SRC="GEFS"
+export FILENAME_BASE='gefs.'
+export IATM=1536
+export JATM=768
+export ATMRES='C96'
+export OCNRES='100'
+export ICERES='1.00'
+export NX_GLB=360
+export NY_GLB=320
+
+# nems.configure
+export NEMS_CONFIGURE="nems.configure.datm.IN"
+export med_model="nems"
+export atm_model="datm"
+export ocn_model="mom6"
+export ice_model="cice6"
+export atm_petlist_bounds="0 15"
+export med_petlist_bounds="16 111"
+export ocn_petlist_bounds="112 231"
+export ice_petlist_bounds="232 255"
+export TASKS=256
+export TPN=40
+export NPROC_ICE='24'
+
+export ENS_NUM=1
+export SYEAR='2011'
+export SMONTH='10'
+export SDAY='01'
+export SHOUR='00'
+export CDATE=${SYEAR}${SMONTH}${SDAY}${SHOUR}
+
+export NFHOUT=6
+export FDIAG=6
+export DT_ATMOS='900'
+export DT_DYNAM_MOM6='1800'
+export DT_THERM_MOM6='3600'
+export CPL_SLOW=${DT_THERM_MOM6}
+export CPL_FAST=${DT_ATMOS}
+export coupling_interval_slow_sec=${CPL_SLOW}
+export coupling_interval_fast_sec=${CPL_FAST}
+
+export RESTART_N=${FHMAX}
+export CPLMODE='nems_orig_data'
+export cap_dbug_flag="0"
+export use_coldstart=".false."
+export RUNTYPE='startup'
+
+export INPUT_NML=input.mom6.nml.IN
+export MODEL_CONFIGURE=datm_configure.IN
+export FIELD_TABLE="field_table"
+
+# MOM6 defaults; 1 degree
+export MOM_INPUT=MOM_input_template_100
+export MOM6_RESTART_SETTING='n'
+export MOM6_RIVER_RUNOFF='False'
+export FRUNOFF=""
+export CHLCLIM='"seawifs_1998-2006_smoothed_2X.nc"'
+# this must be set False for restart repro
+export MOM6_REPRO_LA='False'
+# since CPL_SLOW is set to DT_THERM, this should be always be false
+export MOM6_THERMO_SPAN='False'
+# no WW3
+export MOM6_USE_WAVES='False'
+
+# CICE6 defaults; 1 degree
+export DT_CICE=${DT_ATMOS}
+export MESHICE="mesh.mx${OCNRES}.nc"
+export CICEGRID="grid_cice_NEMS_mx${OCNRES}.nc"
+export CICEMASK="kmtu_cice_NEMS_mx${OCNRES}.nc"
+export RUNID='unknown'
+# set large; restart frequency now controlled by restart_n in nems.configure
+export DUMPFREQ='d'
+export DUMPFREQ_N=1000
+export USE_RESTART_TIME='.false.'
+export RESTART_EXT='.false'
+# setting to true will allow Frazil FW and Salt to be
+# included in fluxes sent to ocean
+export FRAZIL_FWSALT='.true.'
+# default to write CICE average history files
+export CICE_HIST_AVG='.true.'
+export BL_SUFFIX=""
 }
