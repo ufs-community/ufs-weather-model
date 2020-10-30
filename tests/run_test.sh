@@ -79,10 +79,12 @@ cp ${PATHRT}/modules.fv3_${COMPILE_NR}             modules.fv3
 
 # Get the shell file that loads the "module" command and purges modules:
 cp ${PATHRT}/../NEMS/src/conf/module-setup.sh.inc  module-setup.sh
-cp ${PATHRT}/parm/post_itag itag
-cp ${PATHRT}/parm/postxconfig-NT.txt postxconfig-NT.txt
-cp ${PATHRT}/parm/postxconfig-NT_FH00.txt postxconfig-NT_FH00.txt
-cp ${PATHRT}/parm/params_grib2_tbl_new params_grib2_tbl_new
+if [[ $FV3 = 'true' ]]; then
+  cp ${PATHRT}/parm/post_itag itag
+  cp ${PATHRT}/parm/postxconfig-NT.txt postxconfig-NT.txt
+  cp ${PATHRT}/parm/postxconfig-NT_FH00.txt postxconfig-NT_FH00.txt
+  cp ${PATHRT}/parm/params_grib2_tbl_new params_grib2_tbl_new
+fi
 
 SRCD="${PATHTR}"
 RUND="${RUNDIR}"
@@ -102,7 +104,7 @@ fi
 # Set up the run directory
 source ./fv3_run
 
-if [[ $S2S = 'true' ]]; then
+if [[ $DATM = 'true' ]] || [[ $S2S = 'true' ]]; then
   edit_ice_in     < ${PATHRT}/parm/ice_in_template > ice_in
   edit_mom_input  < ${PATHRT}/parm/${MOM_INPUT:-MOM_input_template_$OCNRES} > INPUT/MOM_input
   edit_diag_table < ${PATHRT}/parm/diag_table_template > diag_table
@@ -111,6 +113,9 @@ if [[ $S2S = 'true' ]]; then
   cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
   cp ${PATHRT}/parm/pio_in pio_in
   cp ${PATHRT}/parm/med_modelio.nml med_modelio.nml
+fi
+if [[ $DATM = 'true' ]]; then
+  cp ${PATHRT}/parm/datm_data_table.IN datm_data_table
 fi
 
 if [[ $SCHEDULER = 'pbs' ]]; then
