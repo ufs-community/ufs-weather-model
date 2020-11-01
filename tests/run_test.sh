@@ -39,6 +39,7 @@ cd ${PATHRT}
 [[ -e ${RUNDIR_ROOT}/run_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
 source default_vars.sh
 source tests/$TEST_NAME
+module load nccmp/1.8.7.0
 [[ -e ${RUNDIR_ROOT}/unit_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/unit_test_${TEST_NR}.env
 
 # Save original CNTL_DIR name as INPUT_DIR for regression

@@ -270,22 +270,22 @@ check_results() {
         d=$( cmp ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i | wc -l )
 
         if [[ $d -ne 0 ]] ; then
-          echo ".......NOT OK" >> ${REGRESSIONTEST_LOG}
-          echo ".......NOT OK"
 
           if [[ $i =~ ufs.cpld.cpl.r ]]; then
-            echo "....Try nccmp" >> ${REGRESSIONTEST_LOG}
-            echo "....Try nccmp"
-            d=$( nccmp -d ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i | wc -l )
+            printf ".......NOT OK...TRY NCCMP.." >> ${REGRESSIONTEST_LOG}
+            printf ".......NOT OK...TRY NCCMP.."
+            d=$( nccmp -d ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i 2>&1 | wc -l )
             if [[ $d -ne 0 ]]; then
-              echo ".......NOT OK" >> ${REGRESSIONTEST_LOG}
-              echo ".......NOT OK"
+              echo ".....NOT OK" >> ${REGRESSIONTEST_LOG}
+              echo ".....NOT OK"
               test_status='FAIL'
             else
               echo "....OK" >> ${REGRESSIONTEST_LOG}
               echo "....OK"
             fi
           else
+            echo ".......NOT OK" >> ${REGRESSIONTEST_LOG}
+            echo ".......NOT OK"
             test_status='FAIL'
           fi
 
