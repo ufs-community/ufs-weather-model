@@ -330,6 +330,7 @@ run_utests() {
 			export PARTITION=${PARTITION}
 			export ROCOTO=${ROCOTO}
 			export ECFLOW=${ECFLOW}
+			export NCCMP=${NCCMP}
 			export REGRESSIONTEST_LOG=${REGRESSIONTEST_LOG}
 			export LOG_DIR=${LOG_DIR}
 			EOF
@@ -424,6 +425,7 @@ if [[ $MACHINE_ID = hera.* ]]; then
   STMP=${dprefix}/stmp4
   PTMP=${dprefix}/stmp2
   SCHEDULER=slurm
+  NCCMP='/scratch2/NCEPDEV/nwprod/hpc-stack/libs/hpc-stack/v1.0.0-beta1/intel-18.0.5.274/impi-2018.0.4/nccmp/1.8.7.0/bin/nccmp'
   cp fv3_conf/fv3_slurm.IN_hera fv3_conf/fv3_slurm.IN
   cp fv3_conf/compile_slurm.IN_hera fv3_conf/compile_slurm.IN
 
@@ -447,8 +449,8 @@ elif [[ $MACHINE_ID = orion.* ]]; then
   DISKNM=/work/noaa/nems/emc.nemspara/RT
   STMP=$dprefix/stmp
   PTMP=$dprefix/stmp
-
   SCHEDULER=slurm
+  NCCMP='/apps/contrib/NCEP/libs/hpc-stack/v1.0.0-beta1/intel-2018.4/impi-2018.4/nccmp/1.8.7.0/bin/nccmp'
   cp fv3_conf/fv3_slurm.IN_orion fv3_conf/fv3_slurm.IN
   cp fv3_conf/compile_slurm.IN_orion fv3_conf/compile_slurm.IN
 
@@ -475,6 +477,7 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
   STMP=/gpfs/dell2/stmp
   PTMP=/gpfs/dell2/ptmp
   SCHEDULER=lsf
+  NCCMP=''
   cp fv3_conf/fv3_bsub.IN_wcoss_dell_p3 fv3_conf/fv3_bsub.IN
   cp fv3_conf/compile_bsub.IN_wcoss_dell_p3 fv3_conf/compile_bsub.IN
 
@@ -488,6 +491,7 @@ elif [[ $MACHINE_ID = linux.* ]]; then
   STMP=${dprefix}/stmp4
   PTMP=${dprefix}/stmp2
   SCHEDULER=none
+  NCCMP=''
 
 else
   error "unknown machine ID. edit detect_machine.sh file"
