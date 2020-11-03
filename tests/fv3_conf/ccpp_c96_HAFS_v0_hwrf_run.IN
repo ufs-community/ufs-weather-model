@@ -38,7 +38,7 @@ cp    @[RTPWD]/FV3_input_data_hafs/VEGPARM.TBL .
 
 # Copy diag table, depending on microphysics choice
 if [ $IMP_PHYSICS = 8 ]; then
-  ln -sf diag_table.thompson diag_table
+  cp @[RTPWD]/FV3_input_data_gsd/diag_table_gsd_noah diag_table
 elif [ $IMP_PHYSICS = 15 ]; then
   if [ $IOVR_LW = 4 ] && [ $IOVR_SW = 4 ]; then
     cp @[RTPWD]/FV3_input_data_hafs/diag_table_FA_HWRF diag_table
