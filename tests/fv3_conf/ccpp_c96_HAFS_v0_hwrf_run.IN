@@ -1,5 +1,6 @@
 rm -fr INPUT RESTART
 mkdir INPUT RESTART
+
 if [ $IMP_PHYSICS = 8 ]; then
   if [ $WARM_START = .F. ]; then
     cp -r @[RTPWD]/FV3_input_data_gsd/FV3_input_data_C96_with_aerosols/* INPUT/
@@ -15,6 +16,9 @@ elif [ $IMP_PHYSICS = 15 ]; then
   else
     cp -r @[RTPWD]/FV3_input_data/RESTART/* ./INPUT/
   fi
+else
+  echo "ERROR, no input data configured for IMP_PHYSICS=${IMP_PHYSICS}"
+  exit 1
 fi
 
 cp    @[RTPWD]/FV3_input_data/INPUT/aerosol.dat .
@@ -27,29 +31,23 @@ cp    @[RTPWD]/FV3_input_data/*grb .
 cp    @[RTPWD]/FV3_input_data/*_table .
 cp    @[RTPWD]/FV3_input_data/*configure .
 
-if [[ $MACHINE_ID = cheyenne.* ]]; then
-  HAFS_TMP_INPUT_DIR=/glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/FV3_input_data_temporary_hafs
-elif [[ $MACHINE_ID = hera.* ]]; then
-  HAFS_TMP_INPUT_DIR=/scratch1/BMC/gmtb/ufs-weather-model/RT/NEMSfv3gfs/FV3_input_data_temporary_hafs
-else
-  HAFS_TMP_INPUT_DIR=/nonexistentdir
-fi
-
 # Copy landuse/soil/vegetation parameter tables for HWRF Noah LSM
-#cp    @[RTPWD]/FV3_input_data_hafs/GENPARM.TBL .
-#cp    @[RTPWD]/FV3_input_data_hafs/SOILPARM.TBL .
-#cp    @[RTPWD]/FV3_input_data_hafs/VEGPARM.TBL .
-cp     $HAFS_TMP_INPUT_DIR/GENPARM.TBL .
-cp     $HAFS_TMP_INPUT_DIR/SOILPARM.TBL .
-cp     $HAFS_TMP_INPUT_DIR/VEGPARM.TBL .
+cp    @[RTPWD]/FV3_input_data_hafs/GENPARM.TBL .
+cp    @[RTPWD]/FV3_input_data_hafs/SOILPARM.TBL .
+cp    @[RTPWD]/FV3_input_data_hafs/VEGPARM.TBL .
 
-# Copy diag table for HWRF RRTMG or GFS RRTMG
-if [ $IOVR_LW = 4 ] && [ $IOVR_SW = 4 ]; then
-  #cp @[RTPWD]/FV3_input_data_hafs/diag_table_FA_HWRF diag_table
-  cp $HAFS_TMP_INPUT_DIR/diag_table_FA_HWRF diag_table
+# Copy diag table, depending on microphysics choice
+if [ $IMP_PHYSICS = 8 ]; then
+  ln -sf diag_table.thompson diag_table
+elif [ $IMP_PHYSICS = 15 ]; then
+  if [ $IOVR_LW = 4 ] && [ $IOVR_SW = 4 ]; then
+    cp @[RTPWD]/FV3_input_data_hafs/diag_table_FA_HWRF diag_table
+  else
+    cp @[RTPWD]/FV3_input_data_hafs/diag_table_FA diag_table
+  fi
 else
-  #cp @[RTPWD]/FV3_input_data_hafs/diag_table_FA diag_table
-  cp $HAFS_TMP_INPUT_DIR/diag_table_FA diag_table
+  echo "ERROR, no diag table configured for IMP_PHYSICS=${IMP_PHYSICS}"
+  exit 1
 fi
 
 # Copy field table, depending on microphysics choice and whether MYNN/SATMEDMF is used
@@ -70,8 +68,7 @@ if [ $IMP_PHYSICS = 8 ]; then
   fi
 elif [ $IMP_PHYSICS = 15 ]; then
   # Copy field table for Ferrier-Aligo MP
-  #cp @[RTPWD]/FV3_input_data_hafs/field_table_FA_nwat4 field_table
-  cp $HAFS_TMP_INPUT_DIR/field_table_FA_nwat4 field_table
+  cp @[RTPWD]/FV3_input_data_hafs/field_table_FA_nwat4 field_table
 else
   echo "ERROR, no field table configured for IMP_PHYSICS=${IMP_PHYSICS}"
   exit 1
