@@ -63,8 +63,8 @@ rt_35d() {
   rm -f $new_test_name
   cp tests/$TEST_NAME $new_test_name
 
-    sed -i -e "s/\(export SYEAR\)/\1=\"$sy\"/" $new_test_name
-    sed -i -e "s/\(export SMONTH\)/\1=\"$sm\"/" $new_test_name
+  sed -i -e "s/\(export SYEAR\)/\1=\"$sy\"/" $new_test_name
+  sed -i -e "s/\(export SMONTH\)/\1=\"$sm\"/" $new_test_name
 
   TEST_NAME=${new_test_name#tests/}
 }
@@ -169,7 +169,7 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
   module load ecflow/4.7.1
   ECFLOW_START=${ECF_ROOT}/intel/bin/ecflow_start.sh
   ECF_PORT=$(grep $USER /usrx/local/sys/ecflow/assigned_ports.txt | awk '{print $2}')
-  NCCMP=''
+  NCCMP=$(which nccmp)
 
   DISKNM=/gpfs/dell2/emc/modeling/noscrub/emc.nemspara/RT
   QUEUE=debug
@@ -223,7 +223,7 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   export PYTHONPATH=/scratch2/NCEPDEV/fv3-cam/Dusan.Jovic/ecflow/lib/python2.7/site-packages
   ECFLOW_START=/scratch2/NCEPDEV/fv3-cam/Dusan.Jovic/ecflow/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
-  NCCMP='/scratch2/NCEPDEV/nwprod/hpc-stack/libs/hpc-stack/v1.0.0-beta1/intel-18.0.5.274/impi-2018.0.4/nccmp/1.8.7.0/bin/nccmp'
+  NCCMP=$(which nccmp)
 
   QUEUE=batch
   COMPILE_QUEUE=batch
@@ -255,7 +255,7 @@ elif [[ $MACHINE_ID = orion.* ]]; then
   export PYTHONPATH=/work/noaa/fv3-cam/djovic/ecflow/lib/python2.7/site-packages
   ECFLOW_START=/work/noaa/fv3-cam/djovic/ecflow/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
-  NCCMP='/apps/contrib/NCEP/libs/hpc-stack/v1.0.0-beta1/intel-2018.4/impi-2018.4/nccmp/1.8.7.0/bin/nccmp'
+  NCCMP=$(which nccmp)
 
   QUEUE=batch
   COMPILE_QUEUE=batch

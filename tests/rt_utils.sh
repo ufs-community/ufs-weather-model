@@ -271,7 +271,7 @@ check_results() {
 
         if [[ $d -ne 0 ]] ; then
 
-          if [[ -n ${NCCMP} && $i =~ ufs.cpld.cpl.r ]]; then
+          if [[ -n ${NCCMP} ]]; then
             printf ".......NOT OK...TRY NCCMP.." >> ${REGRESSIONTEST_LOG}
             printf ".......NOT OK...TRY NCCMP.."
             d=$( ${NCCMP} -d ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i 2>&1 | wc -l )
