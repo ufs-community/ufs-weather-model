@@ -27,8 +27,8 @@ export_fv3
 export TASKS=80
 export NODES=$(expr $TASKS / $TPN + 1)
 
-export INPES=20
-export JNPES=2
+export INPES=40
+export JNPES=1
 
 export FHMAX=6
 export FDIAG=3
@@ -70,7 +70,3 @@ RUN_SCRIPT=rt_fv3.sh
 
 # Regional option
 export WRITE_RESTART_WITH_BCS=.true.
-
-if [[ $MACHINE_ID = *.gnu ]]; then
-  export WLCLK=60
-fi

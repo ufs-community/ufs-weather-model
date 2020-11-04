@@ -1,6 +1,6 @@
 ###############################################################################
 #
-#  FV3 CCPP RRFS (Thompson MP + MYNN PBL + NOAHMP LSM + MYNN SFC + CIRES UGWP/GFS GWD) test
+#  FV3 CCPP RRFS (Thompson MP + MYNN PBL + NOAHMP LSM + MYNN SFC) test
 #
 ###############################################################################
 
@@ -20,48 +20,36 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
                    phyf000.tile4.nc \
                    phyf000.tile5.nc \
                    phyf000.tile6.nc \
+                   phyf012.tile1.nc \
+                   phyf012.tile2.nc \
+                   phyf012.tile3.nc \
+                   phyf012.tile4.nc \
+                   phyf012.tile5.nc \
+                   phyf012.tile6.nc \
                    phyf024.tile1.nc \
                    phyf024.tile2.nc \
                    phyf024.tile3.nc \
                    phyf024.tile4.nc \
                    phyf024.tile5.nc \
                    phyf024.tile6.nc \
-                   phyf027.tile1.nc \
-                   phyf027.tile2.nc \
-                   phyf027.tile3.nc \
-                   phyf027.tile4.nc \
-                   phyf027.tile5.nc \
-                   phyf027.tile6.nc \
-                   phyf048.tile1.nc \
-                   phyf048.tile2.nc \
-                   phyf048.tile3.nc \
-                   phyf048.tile4.nc \
-                   phyf048.tile5.nc \
-                   phyf048.tile6.nc \
                    dynf000.tile1.nc \
                    dynf000.tile2.nc \
                    dynf000.tile3.nc \
                    dynf000.tile4.nc \
                    dynf000.tile5.nc \
                    dynf000.tile6.nc \
+                   dynf012.tile1.nc \
+                   dynf012.tile2.nc \
+                   dynf012.tile3.nc \
+                   dynf012.tile4.nc \
+                   dynf012.tile5.nc \
+                   dynf012.tile6.nc \
                    dynf024.tile1.nc \
                    dynf024.tile2.nc \
                    dynf024.tile3.nc \
                    dynf024.tile4.nc \
                    dynf024.tile5.nc \
                    dynf024.tile6.nc \
-                   dynf027.tile1.nc \
-                   dynf027.tile2.nc \
-                   dynf027.tile3.nc \
-                   dynf027.tile4.nc \
-                   dynf027.tile5.nc \
-                   dynf027.tile6.nc \
-                   dynf048.tile1.nc \
-                   dynf048.tile2.nc \
-                   dynf048.tile3.nc \
-                   dynf048.tile4.nc \
-                   dynf048.tile5.nc \
-                   dynf048.tile6.nc \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -98,21 +86,31 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
 export_fv3
 export NODES=$(expr $TASKS / $TPN + 1)
 
-export FHMAX=48
+export FHMAX=24
 export FDIAG=3
 
 export DT_ATMOS="600"
+
+export FV3_RUN=ccpp_gsd_run.IN
+export CCPP_SUITE=FV3_RRFS_v1beta
+export CCPP_LIB_DIR=ccpp/lib
+export INPUT_NML=ccpp_global.nml.IN
+
+# Thompson microphysics
 export IMP_PHYSICS=8
 export DNATS=0
 export DO_SAT_ADJ=.F.
 export LRADAR=.T.
 export LTAEROSOL=.T.
+export NWAT=6
+export EFFR_IN=.T.
 
-export FV3_RUN=ccpp_gsd_run.IN
-export CCPP_SUITE=FV3_RRFS_v1beta
-export CCPP_LIB_DIR=ccpp/lib
-export INPUT_NML=ccpp_gsd.nml.IN
+# Ozone / stratospheric H2O
+export OZ_PHYS_OLD=.F.
+export OZ_PHYS_NEW=.T.
+export H2O_PHYS=.T.
 
+# Other namelist switches
 export HYBEDMF=.F.
 export DO_MYNNEDMF=.T.
 export IMFSHALCNV=-1
@@ -125,4 +123,3 @@ export DO_MYNNSFCLAY=.T.
 
 RUN_SCRIPT=rt_fv3.sh
 
-export WLCLK=30

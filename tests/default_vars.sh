@@ -115,6 +115,7 @@ export DO_RRTMGP=.F.
 
 # Microphysics
 export IMP_PHYSICS=11
+export NWAT=6
 # GFDL MP
 export DNATS=1
 export DO_SAT_ADJ=.T.

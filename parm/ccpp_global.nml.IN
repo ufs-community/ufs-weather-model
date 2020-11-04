@@ -1,4 +1,4 @@
-﻿&amip_interp_nml
+&amip_interp_nml
   interp_oi_sst = .true.
   use_ncep_sst = .true.
   use_ncep_ice = .false.
@@ -8,19 +8,16 @@
 /
 
 &atmos_model_nml
-  blocksize = 10
+  blocksize = 32
   chksum_debug = .false.
   dycore_only = .false.
-  fdiag = 1
-  fhmax = 384
-  fhout = 3
-  fhmaxhf = 120
-  fhouthf = 1
+  fdiag = @[FDIAG]
   ccpp_suite = '@[CCPP_SUITE]'
 /
 
 &diag_manager_nml
   prepend_date = .false.
+  max_output_fields = @[MAX_OUTPUT_FIELDS]
 /
 
 &fms_io_nml
@@ -40,21 +37,24 @@
 /
 
 &fv_core_nml
-  layout = @[INPES],@[JNPES]
+  layout   = @[INPES],@[JNPES]
   io_layout = 1,1
-  npx = 201
-  npy = 111
-  ntiles = 1
-  npz = 64
+  npx = @[NPX]
+  npy = @[NPY]
+  ntiles = 6
+  npz = @[NPZ]
+  grid_type = -1
   make_nh = @[MAKE_NH]
   fv_debug = .false.
-  range_warn = .true.
+  range_warn = .false.
   reset_eta = .false.
-  n_sponge = 24
-  nudge_qv = .false.
-  rf_cutoff = 2000.0
-  d2_bg_k1 = 0.2
-  d2_bg_k2 = 0.04
+  n_sponge = 10
+  nudge_qv = .true.
+  rf_fast = .false.
+  tau = 10.
+  rf_cutoff = 7.5e2
+  d2_bg_k1 = 0.15
+  d2_bg_k2 = 0.02
   kord_tm = -9
   kord_mt = 9
   kord_wz = 9
@@ -65,13 +65,13 @@
   beta = 0.
   a_imp = 1.
   p_fac = 0.1
-  k_split = 4
-  n_split = 5
+  k_split = 2
+  n_split = 6
   nwat = @[NWAT]
   na_init = @[NA_INIT]
   d_ext = 0.
   dnats = @[DNATS]
-  fv_sg_adj = 300
+  fv_sg_adj = 450
   d2_bg = 0.
   nord = 2
   dddmp = 0.1
@@ -93,7 +93,7 @@
   hord_dp = -5
   hord_tr = 8
   adjust_dry_mass = .false.
-  consv_te = 0.
+  consv_te = 1.
   do_sat_adj = @[DO_SAT_ADJ]
   consv_am = .false.
   fill = .true.
@@ -105,19 +105,6 @@
   agrid_vel_rst = .true.
   read_increment = @[READ_INCREMENT]
   res_latlon_dynamics = "fv3_increment.nc"
-  regional = .true.
-  do_schmidt = .true.
-  regional_bcs_from_gsi = .false.
-  stretch_fac = 0.999
-  target_lat = 38.5
-  target_lon = -97.5
-  tau = 5.0
-  write_restart_with_bcs = .false.
-  nrows_blend = 10
-  bc_update_interval = 6
-  nord_zs_filter = 4
-  n_zs_filter = 0
-  full_zs_filter = .false.
 /
 
 &external_ic_nml
@@ -129,7 +116,7 @@
 /
 
 &gfs_physics_nml
-  fhzero    = 3.
+  fhzero    = 6
   h2o_phys  = @[H2O_PHYS]
   ldiag3d   = @[LDIAG3D]
   qdiag3d   = @[QDIAG3D]
@@ -142,9 +129,10 @@
   ltaerosol   = @[LTAEROSOL]
   lradar      = @[LRADAR]
   effr_in     = @[EFFR_IN]
+  ttendlim    = 0.004
   pdfcld    = .false.
-  fhswr     = 1200.
-  fhlwr     = 1200.
+  fhswr     = 3600.
+  fhlwr     = 3600.
   ialb      = 1
   iems      = 1
   iaer      = 111
@@ -170,7 +158,7 @@
   cnvcld    = .true.
   imfshalcnv = @[IMFSHALCNV]
   imfdeepcnv = @[IMFDEEPCNV]
-  cdmbgwd   = 3.5,1.0
+  cdmbgwd   = 3.5,0.25
   prslrd0   = 0.
   ivegsrc   = 1
   isot      = 1
@@ -262,60 +250,51 @@
 /
 
 &namsfc
-  fabsl = 99999
-  faisl = 99999
-  faiss = 99999
-  fnabsc = 'C401.maximum_snow_albedo.tile7.nc'
-  fnacna = ''
-  fnaisc = 'CFSR.SEAICE.1982.2012.monthly.clim.grb'
-  fnalbc = 'C401.snowfree_albedo.tile7.nc'
-  fnalbc2 = 'C401.facsf.tile7.nc'
-  fnglac = 'global_glacier.2x2.grb'
-  fnmskh = 'seaice_newland.grb'
-  fnmxic = 'global_maxice.2x2.grb'
-  fnslpc = 'C401.slope_type.tile7.nc'
-  fnsmcc = 'global_soilmgldas.t126.384.190.grb'
-  fnsnoa = ''
-  fnsnoc = 'global_snoclim.1.875.grb'
-  fnsotc = 'C401.soil_type.tile7.nc'
-  fntg3c = 'C401.substrate_temperature.tile7.nc'
-  fntsfa = ''
-  fntsfc = 'RTGSST.1982.2012.monthly.clim.grb'
-  fnvegc = 'C401.vegetation_greenness.tile7.nc'
-  fnvetc = 'C401.vegetation_type.tile7.nc'
-  fnvmnc = 'C401.vegetation_greenness.tile7.nc'
-  fnvmxc = 'C401.vegetation_greenness.tile7.nc'
-  fnzorc = 'igbp'
-  fsicl = 99999
-  fsics = 99999
-  fslpl = 99999
-  fsmcl = 99999, 99999, 99999
-  fsnol = 99999
-  fsnos = 99999
-  fsotl = 99999
-  ftsfl = 99999
-  ftsfs = 90
-  fvetl = 99999
-  fvmnl = 99999
-  fvmxl = 99999
-  ldebug = .true.
+  FNGLAC   = "global_glacier.2x2.grb",
+  FNMXIC   = "global_maxice.2x2.grb",
+  FNTSFC   = "RTGSST.1982.2012.monthly.clim.grb",
+  FNSNOC   = "global_snoclim.1.875.grb",
+  FNZORC   = "igbp",
+  FNALBC   = @[FNALBC]
+  FNALBC2  = "global_albedo4.1x1.grb",
+  FNAISC   = "CFSR.SEAICE.1982.2012.monthly.clim.grb",
+  FNTG3C   = "global_tg3clim.2.6x1.5.grb",
+  FNVEGC   = "global_vegfrac.0.144.decpercent.grb",
+  FNVETC   = @[FNVETC]
+  FNSOTC   = @[FNSOTC]
+  FNSMCC   = @[FNSMCC]
+  FNMSKH   = "seaice_newland.grb",
+  FNTSFA   = "",
+  FNACNA   = "",
+  FNSNOA   = "",
+  FNVMNC   = "global_shdmin.0.144x0.144.grb",
+  FNVMXC   = "global_shdmax.0.144x0.144.grb",
+  FNSLPC   = "global_slope.1x1.grb",
+  FNABSC   = @[FNABSC]
+  LDEBUG   =.false.,
+  FSMCL(2) = 99999
+  FSMCL(3) = 99999
+  FSMCL(4) = 99999
+  FTSFS    = 90
+  FAISS    = 99999
+  FSNOL    = 99999
+  FSICL    = 99999
+  FTSFL    = 99999
+  FAISL    = 99999
+  FVETL    = 99999
+  FSOTL    = 99999
+  FvmnL    = 99999
+  FvmxL    = 99999
+  FSLPL    = 99999
+  FABSL    = 99999
+  FSNOS    = 99999
+  FSICS    = 99999
 /
 
 &nam_stochy
 /
 
 &nam_sfcperts
-/
-
-&surf_map_nml
-    cd2 = -1
-    cd4 = 0.12
-    max_slope = 0.4
-    n_del2_strong = 0
-    n_del2_weak = 2
-    n_del4 = 1
-    peak_fac = 1.0
-    zero_ocean = .false.
 /
 
 &cires_ugwp_nml
@@ -332,4 +311,3 @@
   knob_ugwp_version = 0
   launch_level     = 25
 /
-
