@@ -22,6 +22,7 @@ set -x
 echo "Model started:  " `date`
 
 export OMP_NUM_THREADS=@[THRD]
+export OMP_STACKSIZE=512M
 export I_MPI_DEBUG=4
 
 mpirun -l -n @[TASKS] ./fv3.exe
