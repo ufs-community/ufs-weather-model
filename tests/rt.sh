@@ -251,9 +251,9 @@ elif [[ $MACHINE_ID = orion.* ]]; then
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
-  export PATH=/work/noaa/fv3-cam/djovic/ecflow/bin:$PATH
-  export PYTHONPATH=/work/noaa/fv3-cam/djovic/ecflow/lib/python2.7/site-packages
-  ECFLOW_START=/work/noaa/fv3-cam/djovic/ecflow/bin/ecflow_start.sh
+  export PATH=/work/noaa/stmp/jminsuk/opt/miniconda3/bin:$PATH
+  export PYTHONPATH=/work/noaa/stmp/jminsuk/opt/miniconda3/lib/python3.8/site-packages
+  ECFLOW_START=/work/noaa/stmp/jminsuk/opt/miniconda3/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
   NCCMP=$(which nccmp)
 
