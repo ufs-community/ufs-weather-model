@@ -130,7 +130,6 @@ if [[ $MACHINE_ID = wcoss_cray ]]; then
   module load ecflow/intel/4.7.1
   ECFLOW_START=${ECF_ROOT}/intel/bin/ecflow_start.sh
   ECF_PORT=$(grep $USER /usrx/local/sys/ecflow/assigned_ports.txt | awk '{print $2}')
-  NCCMP=''
 
   DISKNM=/gpfs/hps3/emc/nems/noscrub/emc.nemspara/RT
   QUEUE=debug
@@ -156,7 +155,7 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
   module use $PATHTR/modulefiles/${MACHINE_ID}
   module load fv3
 
-  module load python/2.7.14
+  module load python/3.6.3
 
   module use /usrx/local/dev/emc_rocoto/modulefiles
   module load ruby/2.5.1 rocoto/1.3.0rc2
@@ -166,10 +165,9 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
   ROCOTO_SCHEDULER=lsf
 
   module load ips/18.0.1.163
-  module load ecflow/4.7.1
-  ECFLOW_START=${ECF_ROOT}/intel/bin/ecflow_start.sh
+  module load ecflow/4.17.0
+  ECFLOW_START=${ECF_ROOT}/bin/ecflow_start.sh
   ECF_PORT=$(grep $USER /usrx/local/sys/ecflow/assigned_ports.txt | awk '{print $2}')
-  NCCMP=$(which nccmp)
 
   DISKNM=/gpfs/dell2/emc/modeling/noscrub/emc.nemspara/RT
   QUEUE=debug
@@ -189,7 +187,6 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
 #  export PATH=/gpfs/hps/nco/ops/ecf/ecfdir/ecflow.v4.1.0.intel/bin:$PATH
   export PYTHONPATH=
   ECFLOW_START=
-  NCCMP=''
   # DH* 20190717 temporary
   #DISKNM=/lustre/f2/pdata/ncep_shared/emc.nemspara/RT
   DISKNM=/lustre/f2/pdata/esrl/gsd/ufs/ufs-weather-model/RT
@@ -223,7 +220,6 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   export PYTHONPATH=/scratch2/NCEPDEV/stmp3/Minsuk.Ji/opt/miniconda3/lib/python3.8/site-packages
   ECFLOW_START=/scratch2/NCEPDEV/stmp3/Minsuk.Ji/opt/miniconda3/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
-  NCCMP=$(which nccmp)
 
   QUEUE=batch
   COMPILE_QUEUE=batch
@@ -255,7 +251,6 @@ elif [[ $MACHINE_ID = orion.* ]]; then
   export PYTHONPATH=/work/noaa/stmp/jminsuk/opt/miniconda3/lib/python3.8/site-packages
   ECFLOW_START=/work/noaa/stmp/jminsuk/opt/miniconda3/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
-  NCCMP=$(which nccmp)
 
   QUEUE=batch
   COMPILE_QUEUE=batch
@@ -287,7 +282,6 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   export PYTHONPATH=/lfs4/HFIP/hfv3gfs/software/ecFlow-5.3.1/lib/python2.7/site-packages
   ECFLOW_START=/lfs4/HFIP/hfv3gfs/software/ecFlow-5.3.1/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
-  NCCMP=''
 
   QUEUE=batch
   COMPILE_QUEUE=batch
@@ -311,7 +305,6 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
   export PYTHONPATH=/glade/p/ral/jntp/tools/ecFlow-5.3.1/lib/python2.7/site-packages
   ECFLOW_START=/glade/p/ral/jntp/tools/ecFlow-5.3.1/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
-  NCCMP=''
 
   QUEUE=regular
   COMPILE_QUEUE=regular
@@ -330,7 +323,6 @@ elif [[ $MACHINE_ID = stampede.* ]]; then
 
   export PYTHONPATH=
   ECFLOW_START=
-  NCCMP=''
   QUEUE=skx-dev
   COMPILE_QUEUE=skx-dev
   PARTITION=
@@ -719,7 +711,6 @@ EOF
       export PARTITION=${PARTITION}
       export ROCOTO=${ROCOTO}
       export ECFLOW=${ECFLOW}
-      export NCCMP=${NCCMP}
       export REGRESSIONTEST_LOG=${REGRESSIONTEST_LOG}
       export LOG_DIR=${LOG_DIR}
       export DEP_RUN=${DEP_RUN}

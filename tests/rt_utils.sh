@@ -270,25 +270,17 @@ check_results() {
         d=$( cmp ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i | wc -l )
 
         if [[ $d -ne 0 ]] ; then
-
-          if [[ ${MACHINE_ID} =~ orion || ${MACHINE_ID} =~ hera ]]; then
-            printf ".......NOT OK...TRY ALT CHECK.." >> ${REGRESSIONTEST_LOG}
-            printf ".......NOT OK...TRY ALT CHECK"
+          if [[ ${MACHINE_ID} =~ orion || ${MACHINE_ID} =~ hera || ${MACHINE_ID} =~ wcoss_dell_p3 ]]; then
+            printf ".......ALT CHECK.." >> ${REGRESSIONTEST_LOG}
+            printf ".......ALT CHECK.."
             d=$( ${PATHRT}/compare_ncfile.py ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i 2>/dev/null | wc -l )
-            if [[ $d -ne 0 ]]; then
-              echo ".....NOT OK" >> ${REGRESSIONTEST_LOG}
-              echo ".....NOT OK"
-              test_status='FAIL'
-            else
-              echo "....OK" >> ${REGRESSIONTEST_LOG}
-              echo "....OK"
-            fi
-          else
-            echo ".......NOT OK" >> ${REGRESSIONTEST_LOG}
-            echo ".......NOT OK"
-            test_status='FAIL'
           fi
+        fi
 
+        if [[ $d -ne 0 ]]; then
+          echo "....NOT OK" >> ${REGRESSIONTEST_LOG}
+          echo "....NOT OK"
+          test_status='FAIL'
         else
           echo "....OK" >> ${REGRESSIONTEST_LOG}
           echo "....OK"
