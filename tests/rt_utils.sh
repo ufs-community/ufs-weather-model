@@ -271,7 +271,7 @@ check_results() {
 
         if [[ $d -ne 0 ]] ; then
 
-          if [[ ${MACHINE_ID} =~ orion ]]; then
+          if [[ ${MACHINE_ID} =~ orion || ${MACHINE_ID} =~ hera ]]; then
             printf ".......NOT OK...TRY ALT CHECK.." >> ${REGRESSIONTEST_LOG}
             printf ".......NOT OK...TRY ALT CHECK"
             d=$( ${PATHRT}/compare_ncfile.py ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i 2>/dev/null | wc -l )

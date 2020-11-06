@@ -219,9 +219,9 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=slurm
 
-  export PATH=/scratch2/NCEPDEV/fv3-cam/Dusan.Jovic/ecflow/bin:$PATH
-  export PYTHONPATH=/scratch2/NCEPDEV/fv3-cam/Dusan.Jovic/ecflow/lib/python2.7/site-packages
-  ECFLOW_START=/scratch2/NCEPDEV/fv3-cam/Dusan.Jovic/ecflow/bin/ecflow_start.sh
+  export PATH=/scratch2/NCEPDEV/stmp3/Minsuk.Ji/opt/miniconda3/bin:$PATH
+  export PYTHONPATH=/scratch2/NCEPDEV/stmp3/Minsuk.Ji/opt/miniconda3/lib/python3.8/site-packages
+  ECFLOW_START=/scratch2/NCEPDEV/stmp3/Minsuk.Ji/opt/miniconda3/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
   NCCMP=$(which nccmp)
 
