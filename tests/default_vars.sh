@@ -375,7 +375,7 @@ export CPL_SLOW=${DT_THERM_MOM6}
 export CPL_FAST=${DT_ATMOS}
 
 # nems.configure defaults
-export NEMS_CONFIGURE="nems.configure.medcmeps_atm_ocn_ice.IN"
+export NEMS_CONFIGURE="nems.configure.cpld.IN"
 export med_model="nems"
 export atm_model="fv3"
 export ocn_model="mom6"
