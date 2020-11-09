@@ -519,7 +519,7 @@ export cap_dbug_flag="0"
 export use_coldstart=".false."
 export RUNTYPE='startup'
 export flux_convergence='0'
-export flux_iteration='1'
+export flux_iteration='2'
 export flux_scheme='0'
 
 export INPUT_NML=input.mom6.nml.IN
