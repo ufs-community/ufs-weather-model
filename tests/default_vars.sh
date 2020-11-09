@@ -375,7 +375,7 @@ export CPL_SLOW=${DT_THERM_MOM6}
 export CPL_FAST=${DT_ATMOS}
 
 # nems.configure defaults
-export NEMS_CONFIGURE="nems.configure.medcmeps_atm_ocn_ice.IN"
+export NEMS_CONFIGURE="nems.configure.cpld.IN"
 export med_model="nems"
 export atm_model="fv3"
 export ocn_model="mom6"
@@ -428,9 +428,9 @@ export MOM6_RESTART_SETTING='n'
 export MOM6_RIVER_RUNOFF='False'
 export FRUNOFF=""
 export CHLCLIM="seawifs_1998-2006_smoothed_2X.nc"
-# this must be set False for restart repro 
+# this must be set False for restart repro
 export MOM6_REPRO_LA='False'
-# since CPL_SLOW is set to DT_THERM, this should be always be false 
+# since CPL_SLOW is set to DT_THERM, this should be always be false
 export MOM6_THERMO_SPAN='False'
 # no WW3
 export MOM6_USE_WAVES='False'
