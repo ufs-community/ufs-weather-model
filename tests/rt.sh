@@ -118,7 +118,7 @@ if [[ $MACHINE_ID = wcoss_cray ]]; then
   module use $PATHTR/modulefiles/${MACHINE_ID}
   module load fv3
 
-  module load python/2.7.14
+  module load python/3.6.3
 
   module use /usrx/local/emc_rocoto/modulefiles
   module load rocoto/1.3.0rc2
@@ -127,8 +127,9 @@ if [[ $MACHINE_ID = wcoss_cray ]]; then
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=lsfcray
 
-  module load ecflow/intel/4.7.1
-  ECFLOW_START=${ECF_ROOT}/intel/bin/ecflow_start.sh
+  module use /gpfs/hps/nco/ops/nwtest/modulefiles
+  module load ecflow/intel/4.17.0.1
+  ECFLOW_START=${ECF_ROOT}/bin/ecflow_start.sh
   ECF_PORT=$(grep $USER /usrx/local/sys/ecflow/assigned_ports.txt | awk '{print $2}')
 
   DISKNM=/gpfs/hps3/emc/nems/noscrub/emc.nemspara/RT
