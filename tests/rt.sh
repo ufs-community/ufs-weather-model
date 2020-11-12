@@ -97,6 +97,8 @@ export RT_COMPILER=${RT_COMPILER:-intel}
 source detect_machine.sh
 source rt_utils.sh
 
+source $PATHTR/NEMS/src/conf/module-setup.sh.inc
+
 if [[ $MACHINE_ID = wcoss_cray ]]; then
 
   module load xt-lsfhpc
@@ -158,8 +160,6 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
   cp fv3_conf/compile_bsub.IN_wcoss_dell_p3 fv3_conf/compile_bsub.IN
 
 elif [[ $MACHINE_ID = gaea.* ]]; then
-
-  source $PATHTR/NEMS/src/conf/module-setup.sh.inc
 
 #  export PATH=/gpfs/hps/nco/ops/ecf/ecfdir/ecflow.v4.1.0.intel/bin:$PATH
   export PYTHONPATH=
@@ -234,11 +234,6 @@ elif [[ $MACHINE_ID = orion.* ]]; then
 
 elif [[ $MACHINE_ID = jet.* ]]; then
 
-  source $PATHTR/NEMS/src/conf/module-setup.sh.inc
-
-  module use $PATHTR/modulefiles/${MACHINE_ID}
-  module load fv3
-
   module load rocoto/1.3.2
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
@@ -264,8 +259,6 @@ elif [[ $MACHINE_ID = jet.* ]]; then
 
 elif [[ $MACHINE_ID = cheyenne.* ]]; then
 
-  source $PATHTR/NEMS/src/conf/module-setup.sh.inc
-
   module load python/2.7.16
   export PATH=/glade/p/ral/jntp/tools/ecFlow-5.3.1/bin:$PATH
   export PYTHONPATH=/glade/p/ral/jntp/tools/ecFlow-5.3.1/lib/python2.7/site-packages
@@ -283,8 +276,6 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
   cp fv3_conf/compile_qsub.IN_cheyenne fv3_conf/compile_qsub.IN
 
 elif [[ $MACHINE_ID = stampede.* ]]; then
-
-  source $PATHTR/NEMS/src/conf/module-setup.sh.inc
 
   export PYTHONPATH=
   ECFLOW_START=
