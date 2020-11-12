@@ -339,7 +339,7 @@ fi
 mkdir -p ${STMP}/${USER}
 
 # Different own baseline directories for different compilers on Theia/Cheyenne
-NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST
+NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST_RELEASE_PUBLIC_V2
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]]; then
     NEW_BASELINE=${NEW_BASELINE}_${COMPILER^^}
 fi
@@ -418,9 +418,9 @@ if [[ $SINGLE_NAME != '' ]]; then
 fi
 
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/ufs-public-release-v2-20201027/${COMPILER^^}}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/ufs-public-release-v2-20201112/${COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/ufs-public-release-v2-20201027}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/ufs-public-release-v2-20201112}
 fi
 
 shift $((OPTIND-1))
