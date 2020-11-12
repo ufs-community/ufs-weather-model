@@ -99,12 +99,7 @@ source rt_utils.sh
 
 if [[ $MACHINE_ID = wcoss_cray ]]; then
 
-  source $PATHTR/NEMS/src/conf/module-setup.sh.inc
   module load xt-lsfhpc
-
-  module use $PATHTR/modulefiles/${MACHINE_ID}
-  module load fv3
-
   module load python/2.7.14
 
   module use /usrx/local/emc_rocoto/modulefiles
@@ -136,12 +131,7 @@ if [[ $MACHINE_ID = wcoss_cray ]]; then
 
 elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
 
-  source $PATHTR/NEMS/src/conf/module-setup.sh.inc
   module load lsf/10.1
-
-  module use $PATHTR/modulefiles/${MACHINE_ID}
-  module load fv3
-
   module load python/2.7.14
 
   module use /usrx/local/dev/emc_rocoto/modulefiles
