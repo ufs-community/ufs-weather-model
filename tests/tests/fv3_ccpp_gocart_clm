@@ -68,3 +68,8 @@ export CCPP_SUITE=FV3_GFS_2017_gfdlmp
 export CCPP_LIB_DIR=ccpp/lib
 export INPUT_NML=ccpp.gocart.nml.IN
 
+# Increase the number of nodes on Cheyenne to avoid out of memory errors
+if [[ $MACHINE_ID = cheyenne.* ]]; then
+  # Use 30 instead of 36 tasks per node
+  export TPN=30
+fi
