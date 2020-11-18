@@ -222,8 +222,7 @@ export NA_INIT=1
 # Radiation
 export DO_RRTMGP=.F.
 export ICLOUD=0
-export IOVR_LW=1
-export IOVR_SW=1
+export IOVR=1
 
 # Microphysics
 export IMP_PHYSICS=11
