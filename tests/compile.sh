@@ -56,6 +56,9 @@ set +x
 if [[ $MACHINE_ID == macosx.* ]] || [[ $MACHINE_ID == linux.* ]]; then
   source $PATHTR/modulefiles/${MACHINE_ID}/fv3
 else
+  if [[ $MACHINE_ID == wcoss2 ]]; then
+    source /apps/prod/lmodules/startLmod
+  fi
   module use $PATHTR/modulefiles/${MACHINE_ID}
   modulefile="fv3"
   if [[ "${MAKE_OPT}" == *"DEBUG=Y"* ]]; then

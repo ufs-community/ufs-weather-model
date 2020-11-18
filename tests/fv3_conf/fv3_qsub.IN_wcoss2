@@ -1,0 +1,29 @@
+#!/bin/bash
+
+#PBS -o out
+#PBS -e err
+#PBS -N @[JBNME]
+# #PBS -A @[ACCNR]
+#PBS -q @[QUEUE]
+#PBS -l place=vscatter,select=@[NODES]:ncpus=@[TPN]:mpiprocs=@[TPN]
+#PBS -l walltime=00:@[WLCLK]:00
+
+set -eux
+
+cd $PBS_O_WORKDIR
+export CRAY_CONFIG_DIR=$HOME
+
+module list
+
+echo "Model started:  " `date`
+
+export MPI_TYPE_DEPTH=20
+export OMP_STACKSIZE=512M
+export OMP_NUM_THREADS=@[THRD]
+export ESMF_RUNTIME_COMPLIANCECHECK=OFF:depth=4
+
+cray aprun -n @[TASKS] ./fv3.exe
+
+echo "Model ended:    " `date`
+
+exit
