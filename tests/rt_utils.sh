@@ -368,16 +368,17 @@ rocoto_create_compile_task() {
 
   NATIVE=""
   BUILD_CORES=8
+  BUILD_WALLTIME="00:30:00"
   if [[ ${MACHINE_ID} == wcoss_dell_p3 ]]; then
     BUILD_CORES=1
     NATIVE="<memory>8G</memory> <native>-R 'affinity[core(1)]'</native>"
+    BUILD_WALLTIME="01:00:00"
   fi
   if [[ ${MACHINE_ID} == wcoss_cray ]]; then
     BUILD_CORES=24
     rocoto_cmd="aprun -n 1 -j 1 -N 1 -d $BUILD_CORES $rocoto_cmd"
-    NATIVE="<exclusive></exclusive>"
+    NATIVE="<exclusive></exclusive> <envar><name>PATHTR</name><value>&PATHTR;</value></envar>"
   fi
-  BUILD_WALLTIME="00:30:00"
   if [[ ${MACHINE_ID} == jet ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
