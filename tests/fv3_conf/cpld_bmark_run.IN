@@ -1,0 +1,60 @@
+mkdir INPUT RESTART history MOM6_OUTPUT
+
+if [[ $ATMRES == 'C96' ]]; then
+  FV3_DIR=FV3_input_data
+else
+  FV3_DIR=FV3_input_data${ATMRES#C}
+fi
+
+ICERES="${OCNRES:0:1}.${OCNRES:1}"
+
+BM_IC=BM_IC/${SYEAR}${SMONTH}${SDAY}${SHOUR}
+FV3_IC=${BM_IC}/gfs/@[ATMRES]/INPUT
+MOM6_IC=${BM_IC}/mom6_da
+CICE_IC=${BM_IC}/cpc
+WW3_IC=${BM_IC}/ww3
+
+# FV3 fixed input
+cp    @[RTPWD]/${FV3_DIR}/INPUT/aerosol.dat .
+cp    @[RTPWD]/FV3_input_bm2/INPUT/co2historicaldata_201*.txt .
+cp    @[RTPWD]/${FV3_DIR}/INPUT/sfc_emissivity_idx.txt .
+cp    @[RTPWD]/${FV3_DIR}/INPUT/solarconstant_noaa_an.txt .
+if [ $OZ_PHYS_NEW = .T. ]; then
+  cp  @[RTPWD]/${FV3_DIR}/ozprdlos_2015_new_sbuvO3_tclm15_nuchem.f77 ./global_o3prdlos.f77
+elif [ $OZ_PHYS_OLD = .T. ]; then
+  cp  @[RTPWD]/${FV3_DIR}/INPUT/global_o3prdlos.f77 .
+fi
+cp    @[RTPWD]/${FV3_DIR}/global_h2o_pltc.f77 ./global_h2oprdlos.f77
+cp    @[RTPWD]/${FV3_DIR}/*grb .
+cp    @[RTPWD]/${FV3_DIR}/@[FIELD_TABLE] ./field_table
+cp    @[RTPWD]/CPL_FIX/a@[ATMRES]o@[OCNRES]/grid_spec.nc ./INPUT
+cp    @[RTPWD]/${FV3_DIR}/INPUT/@[ATMRES]_grid*.nc ./INPUT
+cp    @[RTPWD]/${FV3_DIR}/INPUT/oro_data*.nc ./INPUT
+cp    @[RTPWD]/${FV3_DIR}/INPUT/grid_spec.nc ./INPUT/@[ATMRES]_mosaic.nc
+cp    @[RTPWD]/${FV3_DIR}/INPUT/gfs_ctrl.nc ./INPUT
+
+# MOM6 fixed input
+cp    @[RTPWD]/MOM6_FIX/@[OCNRES]/* ./INPUT
+
+# CICE fixed input
+cp    @[RTPWD]/CICE_FIX/@[OCNRES]/grid_cice_NEMS_mx@[OCNRES].nc .
+cp    @[RTPWD]/CICE_FIX/@[OCNRES]/kmtu_cice_NEMS_mx@[OCNRES].nc .
+cp    @[RTPWD]/CICE_FIX/@[OCNRES]/mesh.mx@[OCNRES].nc .
+
+# WW3 fix/input
+if [[ $CPLWAV == .T. && $CPLWAV2ATM == .T. ]]; then
+  cp    @[RTPWD]/WW3_input_data/mod_def.* .
+  if [[ $RT35D == .T. ]]; then
+   cp    @[RTPWD]/WW3_input_data/ww3_multi_35d.inp ww3_multi.inp
+   cp    @[RTPWD]/${WW3_IC}/*.000000.restart.gwes_30m ./restart.gwes_30m
+  else
+   cp    @[RTPWD]/WW3_input_data/ww3_multi.inp .
+  fi
+fi
+
+# ICs
+cp    @[RTPWD]/${FV3_IC}/sfc_data*.nc ./INPUT
+cp    @[RTPWD]/${FV3_IC}/gfs_data*.nc ./INPUT
+cp    @[RTPWD]/${MOM6_IC}/MOM*.nc ./INPUT
+# the BM ICs are still named cice5 and need to remain so until P5.0 is completed
+cp    @[RTPWD]/${CICE_IC}/cice5_model_@[ICERES].*.nc ./cice_model.res.nc
