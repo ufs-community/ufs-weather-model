@@ -202,9 +202,9 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=slurm
 
-  export PATH=/scratch2/NCEPDEV/stmp3/Minsuk.Ji/opt/miniconda3/bin:$PATH
-  export PYTHONPATH=/scratch2/NCEPDEV/stmp3/Minsuk.Ji/opt/miniconda3/lib/python3.8/site-packages
-  ECFLOW_START=/scratch2/NCEPDEV/stmp3/Minsuk.Ji/opt/miniconda3/bin/ecflow_start.sh
+  export PATH=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3/bin:$PATH
+  export PYTHONPATH=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3/lib/python3.8/site-packages
+  ECFLOW_START=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
   QUEUE=batch
@@ -229,9 +229,9 @@ elif [[ $MACHINE_ID = orion.* ]]; then
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
-  export PATH=/work/noaa/stmp/jminsuk/opt/miniconda3/bin:$PATH
-  export PYTHONPATH=/work/noaa/stmp/jminsuk/opt/miniconda3/lib/python3.8/site-packages
-  ECFLOW_START=/work/noaa/stmp/jminsuk/opt/miniconda3/bin/ecflow_start.sh
+  export PATH=/work/noaa/nems/emc.nemspara/soft/miniconda3/bin:$PATH
+  export PYTHONPATH=/work/noaa/nems/emc.nemspara/soft/miniconda3/lib/python3.8/site-packages
+  ECFLOW_START=/work/noaa/nems/emc.nemspara/soft/miniconda3/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
   QUEUE=batch
