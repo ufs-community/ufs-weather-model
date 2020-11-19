@@ -56,6 +56,19 @@ rt_single() {
   fi
 }
 
+rt_35d() {
+  local sy=$(echo ${DATE_35D} | cut -c 1-4)
+  local sm=$(echo ${DATE_35D} | cut -c 5-6)
+  local new_test_name="tests/${TEST_NAME}_${DATE_35D}"
+  rm -f $new_test_name
+  cp tests/$TEST_NAME $new_test_name
+
+  sed -i -e "s/\(export SYEAR\)/\1=\"$sy\"/" $new_test_name
+  sed -i -e "s/\(export SMONTH\)/\1=\"$sm\"/" $new_test_name
+
+  TEST_NAME=${new_test_name#tests/}
+}
+
 rt_trap() {
   [[ ${ROCOTO:-false} == true ]] && rocoto_kill
   [[ ${ECFLOW:-false} == true ]] && ecflow_kill
@@ -97,15 +110,12 @@ export RT_COMPILER=${RT_COMPILER:-intel}
 source detect_machine.sh
 source rt_utils.sh
 
+source $PATHTR/NEMS/src/conf/module-setup.sh.inc
+
 if [[ $MACHINE_ID = wcoss_cray ]]; then
 
-  source $PATHTR/NEMS/src/conf/module-setup.sh.inc
   module load xt-lsfhpc
-
-  module use $PATHTR/modulefiles/${MACHINE_ID}
-  module load fv3
-
-  module load python/2.7.14
+  module load python/3.6.3
 
   module use /usrx/local/emc_rocoto/modulefiles
   module load rocoto/1.3.0rc2
@@ -114,8 +124,9 @@ if [[ $MACHINE_ID = wcoss_cray ]]; then
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=lsfcray
 
-  module load ecflow/intel/4.7.1
-  ECFLOW_START=${ECF_ROOT}/intel/bin/ecflow_start.sh
+  module use /gpfs/hps/nco/ops/nwtest/modulefiles
+  module load ecflow/intel/4.17.0.1
+  ECFLOW_START=${ECF_ROOT}/bin/ecflow_start.sh
   ECF_PORT=$(grep $USER /usrx/local/sys/ecflow/assigned_ports.txt | awk '{print $2}')
 
   DISKNM=/gpfs/hps3/emc/nems/noscrub/emc.nemspara/RT
@@ -136,13 +147,8 @@ if [[ $MACHINE_ID = wcoss_cray ]]; then
 
 elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
 
-  source $PATHTR/NEMS/src/conf/module-setup.sh.inc
   module load lsf/10.1
-
-  module use $PATHTR/modulefiles/${MACHINE_ID}
-  module load fv3
-
-  module load python/2.7.14
+  module load python/3.6.3
 
   module use /usrx/local/dev/emc_rocoto/modulefiles
   module load ruby/2.5.1 rocoto/1.3.0rc2
@@ -152,8 +158,8 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
   ROCOTO_SCHEDULER=lsf
 
   module load ips/18.0.1.163
-  module load ecflow/4.7.1
-  ECFLOW_START=${ECF_ROOT}/intel/bin/ecflow_start.sh
+  module load ecflow/4.17.0
+  ECFLOW_START=${ECF_ROOT}/bin/ecflow_start.sh
   ECF_PORT=$(grep $USER /usrx/local/sys/ecflow/assigned_ports.txt | awk '{print $2}')
 
   DISKNM=/gpfs/dell2/emc/modeling/noscrub/emc.nemspara/RT
@@ -168,8 +174,6 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
   cp fv3_conf/compile_bsub.IN_wcoss_dell_p3 fv3_conf/compile_bsub.IN
 
 elif [[ $MACHINE_ID = gaea.* ]]; then
-
-  source $PATHTR/NEMS/src/conf/module-setup.sh.inc
 
 #  export PATH=/gpfs/hps/nco/ops/ecf/ecfdir/ecflow.v4.1.0.intel/bin:$PATH
   export PYTHONPATH=
@@ -192,20 +196,15 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
 
 elif [[ $MACHINE_ID = hera.* ]]; then
 
-  source $PATHTR/NEMS/src/conf/module-setup.sh.inc
-
-  module use $PATHTR/modulefiles/${MACHINE_ID}
-  module load fv3
-
   module load rocoto
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=slurm
 
-  export PATH=/scratch2/NCEPDEV/fv3-cam/Dusan.Jovic/ecflow/bin:$PATH
-  export PYTHONPATH=/scratch2/NCEPDEV/fv3-cam/Dusan.Jovic/ecflow/lib/python2.7/site-packages
-  ECFLOW_START=/scratch2/NCEPDEV/fv3-cam/Dusan.Jovic/ecflow/bin/ecflow_start.sh
+  export PATH=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3/bin:$PATH
+  export PYTHONPATH=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3/lib/python3.8/site-packages
+  ECFLOW_START=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
   QUEUE=batch
@@ -224,20 +223,17 @@ elif [[ $MACHINE_ID = hera.* ]]; then
 
 elif [[ $MACHINE_ID = orion.* ]]; then
 
-  source $PATHTR/NEMS/src/conf/module-setup.sh.inc
-
-  module use $PATHTR/modulefiles/${MACHINE_ID}
-  module load fv3
   module load gcc/8.3.0
 
   module load contrib rocoto/1.3.1
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
-  export PATH=/work/noaa/fv3-cam/djovic/ecflow/bin:$PATH
-  export PYTHONPATH=/work/noaa/fv3-cam/djovic/ecflow/lib/python2.7/site-packages
-  ECFLOW_START=/work/noaa/fv3-cam/djovic/ecflow/bin/ecflow_start.sh
+  export PATH=/work/noaa/nems/emc.nemspara/soft/miniconda3/bin:$PATH
+  export PYTHONPATH=/work/noaa/nems/emc.nemspara/soft/miniconda3/lib/python3.8/site-packages
+  ECFLOW_START=/work/noaa/nems/emc.nemspara/soft/miniconda3/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
+
   QUEUE=batch
   COMPILE_QUEUE=batch
 #  ACCNR= # detected in detect_machine.sh
@@ -253,11 +249,6 @@ elif [[ $MACHINE_ID = orion.* ]]; then
 
 elif [[ $MACHINE_ID = jet.* ]]; then
 
-  source $PATHTR/NEMS/src/conf/module-setup.sh.inc
-
-  module use $PATHTR/modulefiles/${MACHINE_ID}
-  module load fv3
-
   module load rocoto/1.3.2
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
@@ -268,6 +259,7 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   export PYTHONPATH=/lfs4/HFIP/hfv3gfs/software/ecFlow-5.3.1/lib/python2.7/site-packages
   ECFLOW_START=/lfs4/HFIP/hfv3gfs/software/ecFlow-5.3.1/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
+
   QUEUE=batch
   COMPILE_QUEUE=batch
   ACCNR=hfv3gfs
@@ -283,13 +275,12 @@ elif [[ $MACHINE_ID = jet.* ]]; then
 
 elif [[ $MACHINE_ID = cheyenne.* ]]; then
 
-  source $PATHTR/NEMS/src/conf/module-setup.sh.inc
-
   module load python/2.7.16
   export PATH=/glade/p/ral/jntp/tools/ecFlow-5.3.1/bin:$PATH
   export PYTHONPATH=/glade/p/ral/jntp/tools/ecFlow-5.3.1/lib/python2.7/site-packages
   ECFLOW_START=/glade/p/ral/jntp/tools/ecFlow-5.3.1/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
+
   QUEUE=regular
   COMPILE_QUEUE=regular
   PARTITION=
@@ -302,8 +293,6 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
   cp fv3_conf/compile_qsub.IN_cheyenne fv3_conf/compile_qsub.IN
 
 elif [[ $MACHINE_ID = stampede.* ]]; then
-
-  source $PATHTR/NEMS/src/conf/module-setup.sh.inc
 
   export PYTHONPATH=
   ECFLOW_START=
@@ -340,6 +329,7 @@ ROCOTO=false
 ECFLOW=false
 KEEP_RUNDIR=false
 SINGLE_NAME=''
+TEST_35D=false
 
 TESTS_FILE='rt.conf'
 
@@ -399,10 +389,14 @@ if [[ $SINGLE_NAME != '' ]]; then
   rt_single
 fi
 
+if [[ $TESTS_FILE =~ '35d' ]]; then
+  TEST_35D=true
+fi
+
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = jet.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20201112/${RT_COMPILER^^}}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20201118/${RT_COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20201112}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20201118}
 fi
 
 shift $((OPTIND-1))
@@ -636,10 +630,15 @@ EOF
     MACHINES=$( echo $line | cut -d'|' -f4)
     CB=$(       echo $line | cut -d'|' -f5)
     DEP_RUN=$(  echo $line | cut -d'|' -f6 | sed -e 's/^ *//' -e 's/ *$//')
+    DATE_35D=$( echo $line | cut -d'|' -f7 | sed -e 's/^ *//' -e 's/ *$//')
+
     [[ -e "tests/$TEST_NAME" ]] || die "run test file tests/$TEST_NAME does not exist"
     [[ $SET_ID != ' ' && $SET != *${SET_ID}* ]] && continue
     [[ $MACHINES != ' ' && $MACHINES != *${MACHINE_ID}* ]] && continue
     [[ $CREATE_BASELINE == true && $CB != *fv3* ]] && continue
+
+    # 35 day tests
+    [[ $TEST_35D == true ]] && rt_35d
 
     # skip all *_appbuild runs if rocoto or ecFlow is used. FIXME
     if [[ ${ROCOTO} == true && ${ECFLOW} == true ]]; then
@@ -748,6 +747,7 @@ else
   rm -f fv3_*.x fv3_*.exe modules.fv3_*
   [[ ${KEEP_RUNDIR} == false ]] && rm -rf ${RUNDIR_ROOT}
   [[ ${ROCOTO} == true ]] && rm -f ${ROCOTO_XML} ${ROCOTO_DB} *_lock.db
+  [[ ${TEST_35D} == true ]] && rm -f tests/cpld_bmark*_20*
 fi
 
 date >> ${REGRESSIONTEST_LOG}
