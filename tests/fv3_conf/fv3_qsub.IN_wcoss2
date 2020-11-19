@@ -13,6 +13,9 @@ set -eux
 cd $PBS_O_WORKDIR
 export CRAY_CONFIG_DIR=$HOME
 
+source /apps/prod/lmodules/startLmod
+module use $( pwd -P )
+module load modules.fv3
 module list
 
 echo "Model started:  " `date`
