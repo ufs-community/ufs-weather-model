@@ -37,39 +37,19 @@ for those elements, are listed below:
 
 - The regression tests used to maintain software integrity as innovations are added.
 
-For the UFS WM v2.0 release, the following aspects are supported:
+The UFS Weather Model is currently included in two UFS Application releases.  These UFS Apps also contain pre- and post-processing components, a comprehensive build system, and workflows for configuration and execution of the application.  
 
-- Regional stand-alone ConUS grid with resolutions of 25 km, 13 km or 3 km.
+The UFS WM v2.0 is included as part of the UFS Short Range Weather App, and details can be found `here <https://github.com/ufs-community/ufs-srweather-app/wiki>`_.
 
-- Sixty-four vertical levels at predetermined locations.
-
-- Two physics suites (:term:`suite`), corresponding to GFS v15.2 (operational at the time of the release) and
-  RRFS v1alpha (in preparation for operational implementation in RRFS). 
-
-- Ability to initialize from GFS files in Gridded Binary v2 (GRIB2), NEMS Input/Output (NEMSIO), or
-  Network Common Data Form (netCDF) format for past dates, starting January 1, 2018, when the 
-  preprocessing utility chgres_cube is employed.  Dates before that may work, but are not guaranteed.
-
-- Ability to initialize from RAP or HRRR files in Gridded Binary v2 (GRIB2) format.
-
-- Output files in Network Common Data Form (NetCDF) format.
-
-The GFS_v15p2 physics suite uses the following physical parameterizations: the
-Simplified Arakawa Schubert shallow and deep convective schemes, the Geophysical
-Fluid Dynamics Laboratory (GFDL) microphysics scheme, the Noah Land Surface Model (LSM),
-the Rapid Radiative Transfer Model for Global Circulation Models (RRTMG) radiation scheme,
-the hybrid eddy-diffusivity mass-flux (EDMF) planetary boundary layer (PBL) scheme based on the Smagorinsky K theory,
-an orographic gravity wave drag (GWD) parameterization, and the Near SST (NSST) ocean scheme to predict SST.
-
-In the RRFS_v1alpha suite, ...
+The UFS WM v1.1 and v1.0 is included as part of the UFS Medium Range Weather App, and details can be found `here https://github.com/ufs-community/ufs-mrweather-app/wiki>`_.
 
 The UFS WM v2 code is portable and can be used with Linux and Mac operating systems with Intel and GNU compilers. It has been tested in a variety of platforms widely used by atmospheric scientists, such as the NOAA research Hera system, the National Center for Atmospheric Research (NCAR) Cheyenne system, the National Science Foundation Stampede system, and Mac laptops.
 
 .. note::
 
-   At this time, the following aspects are unsupported:  configurations in which a mediator is used to couple the atmospheric model to models of other earth domains (such as ocean, ice, and waves), horizontal resolutions other than the supported ones, different number or placement of vertical levels, physics suites other than GFS v15.2 and RRFS v1alpha, the *cellular automata* stochastic scheme, initialization from sources other than GFS, the use of different file formats for input and output, and the use of the model in different computational platforms. It is expected that the UFS WM supported capabilities will be expanded in future releases.
+   At this time, the following aspects are unsupported:  configurations in which a mediator is used to couple the atmospheric model to models of other earth domains (such as ocean, ice, and waves), horizontal resolutions other than the supported ones, different number or placement of vertical levels, the *cellular automata* stochastic scheme, and the use of different file formats for input and output.  It is expected that the UFS WM supported capabilities will be expanded in future releases.
 
-It should be noted that the UFS WM is a component of the UFS Short-Range (SR) Weather Application (App), which also contains pre- and post-processing components, a comprehensive build system, and workflows for configuration and execution of the application.  Those wishing to contribute development to the UFS WM should become familiar with the procedures for running the model as a standalone component and for executing the regression tests described in the UFS WM GitHub `wiki <https://github.com/ufs-community/ufs-weather-model/wiki/Making-code-changes-in-the-UFS-weather-model-and-its-subcomponents>`_ to make sure no inadvertent changes to the results have been introduced during the development process.
+Those wishing to contribute development to the UFS WM should become familiar with the procedures for running the model as a standalone component and for executing the regression tests described in the UFS WM GitHub `wiki <https://github.com/ufs-community/ufs-weather-model/wiki/Making-code-changes-in-the-UFS-weather-model-and-its-subcomponents>`_ to make sure no inadvertent changes to the results have been introduced during the development process.
 
 Support for the UFS WM is provided through the `UFS Forum <https://forums.ufscommunity.org/forum/ufs-weather-model>`_ by the Developmental Testbed Center (DTC) and other groups involved in UFS development, such as NOAA’s Environmental Modeling Center (EMC), NOAA research laboratories (GFDL, NSSL, ESRL, and AOML), and NCAR. UFS users and developers are encouraged not only to post questions, but also to help address questions posted by other members of the community.
 

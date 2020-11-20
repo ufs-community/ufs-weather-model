@@ -4,20 +4,33 @@
 SDF and Namelist Samples and Best Practices
 ********************************************
 
-The public release of the UFS SR Weather App includes two 
-supported physics suites:  GFS_V15p2 and RRFS_v1alpha.  You will
-find the Suite Definition Files (SDFs) for these suites in
+The public release of the UFS Weather Model (WM) includes supported physics suites for each UFS Aplication.
+Details regarding these suites can be found with the Application.  
 
-https://github.com/NOAA-EMC/fv3atm/tree/ufs-v2.0.0/ccpp/suites
+The supported physics suites for each UFS Application are specified by Suite Definition Files.  You will
+find the Suite Definition Files (SDFs) for these suites in the following directory:
 
-(no other SDFs are available with this release). 
+FV3/ccpp/suites
 
-As noted in the file names, these SDFs are for the operational GFS (v15p2) and developmental RRFS (v1alpha)
-suites.  For more information about namelist options for these configurations, please consult the
-`CCPP v5.0.0 Scientific Documentation <https://dtcenter.org/GMTB/v5.0.0/sci_doc/>`_.
+.. _UFSApps:
 
-The two CCPP suites for the UFS SR Weather App release are supported for three grid resolutions:
-25km, 13km and 3km, with 64 vertical levels on a pre-defined ConUS domain.
+.. list-table:: *UFS Apps and supported SDFs*
+   :widths: 15 30 30 
+   :header-rows: 1
+
+   * - UFS Application
+     - Supported SDFs
+     - Users Guide 
+   * - Medium Range Weather (MRW)
+     - GFS_v15p2, GFS_v16beta
+     - `Users Guide <https://ufs-mrweather-app.readthedocs.io/en/ufs-v1.1.0/>`_
+   * - Short Range Weather (SRW)
+     - GFS_v15p2, RRFS_v1alpha
+     - `Users Guide <https://ufs-srweather-app.readthedocs.io/en/ufs-v1.0.0/>`_
+
+
+For more information about namelist options for these configurations, please consult the
+latest `CCPP v5.0.0 Scientific Documentation <https://dtcenter.org/GMTB/v5.0.0/sci_doc/>`_.
 
 An in depth description of the namelist settings, SDFs, and parameterizations used
 in all supported suites can be found in the `CCPP v5.0.0 Scientific Documentation <https://dtcenter.org/GMTB/v5.0.0/sci_doc/>`_.
