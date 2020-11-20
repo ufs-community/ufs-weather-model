@@ -32,6 +32,7 @@ set(QUAD_PRECISION  ON  CACHE BOOL "Enable QUAD_PRECISION (for certain grid metr
 set(REPRO           OFF CACHE BOOL "Enable REPRO mode")
 set(WW3             OFF CACHE BOOL "Enable WW3")
 set(S2S             OFF CACHE BOOL "Enable S2S")
+set(NEMS_DRIVER     ON  CACHE BOOL "Enable NEMS as top level driver")
 set(DATM            OFF CACHE BOOL "Enable Data Atmosphere")
 
 ###############################################################################
@@ -102,6 +103,7 @@ find_package(nemsio REQUIRED)
 find_package(sp REQUIRED)
 find_package(w3emc REQUIRED)
 find_package(w3nco REQUIRED)
+set(INLINE_POST FALSE)
 if(INLINE_POST)
   find_package(nceppost REQUIRED)
 endif()
@@ -132,7 +134,7 @@ endif()
 ### FMS
 ###############################################################################
 include(fms_files.cmake)
-add_library(fms ${fms_src_files})
+add_library(fms ${fms_src_files} ${fms_headers})
 # stupid cmake can not figure out dependency of fft.F90 on fft99.F90 because 'use fft99_mod' is inside ifdefs
 set_property(SOURCE FMS/fft/fft.F90 APPEND_STRING PROPERTY COMPILE_FLAGS "-DSGICRAY=0 -DNAGFFT=0")
 
@@ -153,7 +155,12 @@ target_compile_definitions(fms PRIVATE "${_fms_defs_private}")
 
 target_include_directories(fms PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/include>
                                       $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/fms>
+                                      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/fms2_io/include>
+                                      $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/FMS/mod>
                                       $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/mpp/include>)
+target_include_directories(fms INTERFACE 
+                                         $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include>
+                                         $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/mod>)
 target_link_libraries(fms PUBLIC MPI::MPI_Fortran
                                  NetCDF::NetCDF_Fortran)
 if(OpenMP_Fortran_FOUND)
@@ -161,8 +168,7 @@ if(OpenMP_Fortran_FOUND)
 endif()
 set_target_properties(fms PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/FMS)
 set_target_properties(fms PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/FMS/mod)
-target_include_directories(fms INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/FMS/mod>
-                                         $<INSTALL_INTERFACE:FMS/mod>)
+set_target_properties(fms PROPERTIES PUBLIC_HEADER "${fms_headers}" )
 
 ###############################################################################
 ### stochastic_physics
@@ -259,7 +265,9 @@ else()
   list(APPEND _ufs_defs_private FRONT_FV3=fv3gfs_cap_mod)
   add_dependencies(ufs fv3atm)
 endif()
-
+if(NEMS_DRIVER)
+  list(APPEND _ufs_defs_private NEMS_DRIVER=ON)
+endif()
 set_target_properties(ufs PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(ufs PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/NEMS/src)
 
@@ -314,7 +322,7 @@ endif()
 target_compile_definitions(ufs_model PRIVATE "${_ufs_model_defs_private}")
 
 if(DATM)
-  target_link_libraries(ufs_model PRIVATE ufs w3nco::w3nco_d)
+  target_link_libraries(ufs_model PUBLIC ufs w3nco::w3nco_d)
 endif()
 target_link_libraries(ufs_model PRIVATE ufs
                                         esmf
@@ -325,17 +333,28 @@ target_link_libraries(ufs_model PRIVATE ufs
 ### Install
 ###############################################################################
 install(
-  TARGETS ufs_model ufs fms
-  EXPORT  ufs-config
-  RUNTIME DESTINATION bin
+  TARGETS fms 
+  EXPORT fms-config
+  LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib
+  PUBLIC_HEADER DESTINATION include )
+
+install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/FMS/mod DESTINATION ${CMAKE_INSTALL_PREFIX})
+
+install(EXPORT fms-config
+  DESTINATION lib/cmake
+)
+install(
+  TARGETS ufs 
+  EXPORT ufs-config
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib)
 
 install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod DESTINATION ${CMAKE_INSTALL_PREFIX})
 
-install(EXPORT      ufs-config
-        DESTINATION lib/cmake)
-
+install(EXPORT ufs-config
+  DESTINATION lib/cmake
+)
 ###############################################################################
 ### Done
 ###############################################################################
