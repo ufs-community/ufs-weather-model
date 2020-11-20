@@ -270,8 +270,16 @@ check_results() {
         d=$( cmp ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i | wc -l )
 
         if [[ $d -ne 0 ]] ; then
-          echo ".......NOT OK" >> ${REGRESSIONTEST_LOG}
-          echo ".......NOT OK"
+          if [[ ${MACHINE_ID} =~ orion || ${MACHINE_ID} =~ hera || ${MACHINE_ID} =~ wcoss_dell_p3 || ${MACHINE_ID} =~ wcoss_cray ]]; then
+            printf ".......ALT CHECK.." >> ${REGRESSIONTEST_LOG}
+            printf ".......ALT CHECK.."
+            d=$( ${PATHRT}/compare_ncfile.py ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i 2>/dev/null | wc -l )
+          fi
+        fi
+
+        if [[ $d -ne 0 ]]; then
+          echo "....NOT OK" >> ${REGRESSIONTEST_LOG}
+          echo "....NOT OK"
           test_status='FAIL'
         else
           echo "....OK" >> ${REGRESSIONTEST_LOG}
@@ -288,16 +296,12 @@ check_results() {
     #
     echo;echo "Moving baseline ${TEST_NR} ${TEST_NAME} files ...."
     echo;echo "Moving baseline ${TEST_NR} ${TEST_NAME} files ...." >> ${REGRESSIONTEST_LOG}
-    if [[ ! -d ${NEW_BASELINE}/${CNTL_DIR}/RESTART ]] ; then
-      echo " mkdir -p ${NEW_BASELINE}/${CNTL_DIR}/RESTART" >> ${REGRESSIONTEST_LOG}
-      mkdir -p ${NEW_BASELINE}/${CNTL_DIR}/RESTART
-    fi
 
     for i in ${LIST_FILES} ; do
       printf %s " Moving " $i " ....."
       printf %s " Moving " $i " ....."   >> ${REGRESSIONTEST_LOG}
-      printf %s " Moving " $i " ....."
       if [[ -f ${RUNDIR}/$i ]] ; then
+        mkdir -p ${NEW_BASELINE}/${CNTL_DIR}/$(dirname ${i})
         cp ${RUNDIR}/${i} ${NEW_BASELINE}/${CNTL_DIR}/${i}
         echo "....OK" >>${REGRESSIONTEST_LOG}
         echo "....OK"
@@ -364,16 +368,17 @@ rocoto_create_compile_task() {
 
   NATIVE=""
   BUILD_CORES=8
+  BUILD_WALLTIME="00:30:00"
   if [[ ${MACHINE_ID} == wcoss_dell_p3 ]]; then
     BUILD_CORES=1
     NATIVE="<memory>8G</memory> <native>-R 'affinity[core(1)]'</native>"
+    BUILD_WALLTIME="01:00:00"
   fi
   if [[ ${MACHINE_ID} == wcoss_cray ]]; then
     BUILD_CORES=24
     rocoto_cmd="aprun -n 1 -j 1 -N 1 -d $BUILD_CORES $rocoto_cmd"
-    NATIVE="<exclusive></exclusive>"
+    NATIVE="<exclusive></exclusive> <envar><name>PATHTR</name><value>&PATHTR;</value></envar>"
   fi
-  BUILD_WALLTIME="00:30:00"
   if [[ ${MACHINE_ID} == jet ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
