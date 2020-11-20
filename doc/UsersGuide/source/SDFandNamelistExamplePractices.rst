@@ -10,7 +10,7 @@ Details regarding these suites can be found with the Application.
 The supported physics suites for each UFS Application are specified by Suite Definition Files.  You will
 find the Suite Definition Files (SDFs) for these suites in the following directory:
 
-FV3/ccpp/suites
+``FV3/ccpp/suites``
 
 .. _UFSApps:
 
@@ -28,9 +28,6 @@ FV3/ccpp/suites
      - GFS_v15p2, RRFS_v1alpha
      - `Users Guide <https://ufs-srweather-app.readthedocs.io/en/ufs-v1.0.0/>`_
 
-
-For more information about namelist options for these configurations, please consult the
-latest `CCPP v5.0.0 Scientific Documentation <https://dtcenter.org/GMTB/v5.0.0/sci_doc/>`_.
 
 An in depth description of the namelist settings, SDFs, and parameterizations used
 in all supported suites can be found in the `CCPP v5.0.0 Scientific Documentation <https://dtcenter.org/GMTB/v5.0.0/sci_doc/>`_.

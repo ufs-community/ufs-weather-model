@@ -41,7 +41,7 @@ The UFS Weather Model is currently included in two UFS Application releases.  Th
 
 The UFS WM v2.0 is included as part of the UFS Short Range Weather App, and details can be found `here <https://github.com/ufs-community/ufs-srweather-app/wiki>`_.
 
-The UFS WM v1.1 and v1.0 is included as part of the UFS Medium Range Weather App, and details can be found `here https://github.com/ufs-community/ufs-mrweather-app/wiki>`_.
+The UFS WM v1.1 and v1.0 is included as part of the UFS Medium Range Weather App, and details can be found `here <https://github.com/ufs-community/ufs-mrweather-app/wiki>`_.
 
 The UFS WM v2 code is portable and can be used with Linux and Mac operating systems with Intel and GNU compilers. It has been tested in a variety of platforms widely used by atmospheric scientists, such as the NOAA research Hera system, the National Center for Atmospheric Research (NCAR) Cheyenne system, the National Science Foundation Stampede system, and Mac laptops.
 
