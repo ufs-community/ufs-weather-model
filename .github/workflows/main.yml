@@ -68,7 +68,7 @@ jobs:
     - name: Free up disk space
       run: |
         sudo docker rmi $(sudo docker image ls | grep -E -m1 '<none>' | awk '{ print $3 }')
-        sudo docker rmi $(sudo docker image ls | awk '/ci-test-base/ { print $3 }')
+        sudo docker rmi $(sudo docker image ls | awk '/ubuntu-hpc/ { print $3 }')
 
     - name: Prepare artifacts
       run: |
