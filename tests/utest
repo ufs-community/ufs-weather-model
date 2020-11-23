@@ -482,7 +482,7 @@ elif [[ $MACHINE_ID = linux.* ]]; then
   PARTITION=
   QUEUE=
   COMPILE_QUEUE=
-  dprefix=/home/tester
+  dprefix=/home/builder
   DISKNM=${dprefix}/data
   STMP=${dprefix}/stmp4
   PTMP=${dprefix}/stmp2
@@ -711,9 +711,9 @@ fi
 mkdir -p ${STMP}/${USER}
 NEW_BASELINE=${STMP}/${USER}/FV3_UT/UNIT_TEST
 if [[ $MACHINE_ID == hera.* || $MACHINE_ID == orion.* ]]; then
-  baseline_location=$DISKNM/NEMSfv3gfs/develop-20200713/${RT_COMPILER^^}
+  baseline_location=$DISKNM/NEMSfv3gfs/develop-20201118/${RT_COMPILER^^}
 else
-  baseline_location=$DISKNM/NEMSfv3gfs/develop-20200713
+  baseline_location=$DISKNM/NEMSfv3gfs/develop-20201118
 fi
 RTPWD=$baseline_location
 
