@@ -175,15 +175,16 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
 
 elif [[ $MACHINE_ID = gaea.* ]]; then
 
-#  export PATH=/gpfs/hps/nco/ops/ecf/ecfdir/ecflow.v4.1.0.intel/bin:$PATH
-  export PYTHONPATH=
-  ECFLOW_START=
-  # DH* 20190717 temporary
-  #DISKNM=/lustre/f2/pdata/ncep_shared/emc.nemspara/RT
+  module load cray-python/3.7.3.2
+
+  export PATH=/lustre/f2/pdata/esrl/gsd/contrib/ecFlow-5.3.1/bin:$PATH
+  export PYTHONPATH=/lustre/f2/pdata/esrl/gsd/contrib/ecFlow-5.3.1/lib/python3.7/site-packages
+  ECFLOW_START=/lustre/f2/pdata/esrl/gsd/contrib/ecFlow-5.3.1/bin/ecflow_start.sh
+  ECF_PORT=$(( $(id -u) + 1500 ))
+
   DISKNM=/lustre/f2/pdata/esrl/gsd/ufs/ufs-weather-model/RT
-  # *DH 20190717
-  QUEUE=debug
-  COMPILE_QUEUE=debug
+  QUEUE=normal
+  COMPILE_QUEUE=normal
 #  DO NOT SET AN ACCOUNT EVERYONE IS NOT A MEMBER OF
 #  USE AN ENVIRONMENT VARIABLE TO SET ACCOUNT
 #  ACCNR=cmp
@@ -193,6 +194,7 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
 
   SCHEDULER=slurm
   cp fv3_conf/fv3_slurm.IN_gaea fv3_conf/fv3_slurm.IN
+  cp fv3_conf/compile_slurm.IN_gaea fv3_conf/compile_slurm.IN
 
 elif [[ $MACHINE_ID = hera.* ]]; then
 
@@ -550,6 +552,8 @@ EOF
     QUEUE=batch
   elif [[ $MACHINE_ID = jet.* ]]; then
     QUEUE=batch
+  elif [[ $MACHINE_ID = gaea.* ]]; then
+    QUEUE=normal
   elif [[ $MACHINE_ID = cheyenne.* ]]; then
     QUEUE=regular
   else
