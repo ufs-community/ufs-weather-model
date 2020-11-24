@@ -1,0 +1,25 @@
+---
+  machines:
+    - name: 'hera'
+      regexhostname: 'hfe\d\d'
+    - name: "orion"
+      regexhostname: 'Orion-login-\d.HPC.MsState.Edu'
+    - name: "venus"
+      regexhostname: 'v\d\d[a-z]\d'
+    - name: "mars"
+      regexhostname: 'm\d\d[a-z]\d'
+    - name: "surge"
+      regexhostname: 'slogin\d'
+    - name: "Neon"
+      regexhostname: 'Neon'
+  approvedusers:
+    - name: "Brian Curtis"
+      username: "BrianCurtis-NOAA"
+      machines: {"hera", "orion"}
+    - name: "Rahul Mahajan"
+      username: "aerorahul"
+      machines: {"hera", "orion","venus", "mars"}
+  repository:
+    - name: ufs-weather-model
+      address: "BrianCurtis-NOAA/ufs-weather-model"
+      base: "develop"
