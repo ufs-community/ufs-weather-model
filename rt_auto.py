@@ -30,9 +30,10 @@ def is_user_approved(userin):
     if len(A) == 1:
         user = list(A)[0]
         print("Approved Github Username Found: {}".format(user))
-        return user
+        return True
     else:
-        sys.exit("Username {} does not match approved list. Quitting".format(hostname))
+        print("User not found in approved list.")
+        return False
 
 def get_repos_list():
     repos = read_yaml_data("repository")
@@ -53,24 +54,51 @@ def read_yaml_data(keyin):
         sys.exit("No data available with name {}. Quitting".format(keyin))
     return dataout
 
+def clone_pr_repo():
+    return
 
+
+def check_for_trigger(comments):
+    # CHECK FOR TRIGGER WORD IN COMMENTS, IF TRIGGERED, CHECK IF USER IS
+    # APPROVED BEFORE ADDING TO LISTS
+    trigger = []
+    commentid = []
+    for comment in comments:
+        body = comment.body
+        body_split = body.split()
+        for word in body_split:
+            if re.match("\+\+.+\+\+", word):
+                print("FOUND MATCH {} at comment {}".format(word, comment.id))
+                print("USER IS: {}".format(comment.user.login))
+                approve_bool = is_user_approved(comment.user.login)
+                if approve_bool:
+                    print("User {} is approved, continuing".format(comment.user.login))
+                    trigger.append(word)
+                    commentid.append(comment.id)
+                else:
+                    print("User is NOT approved, skipping trigger")
+                    continue
+    if not trigger:
+        return None, None
+    else:
+        return trigger, commentid
 # Initial items
 machine = get_machine_name() #ALWAYS RUN THIS FIRST
 repos = get_repos_list()
 client = connect_to_github()
 for name,address,base in repos.values.tolist():
     repo = client.get_repo(address)
-    pulls = repo.get_pulls(state='open', sort='created', base='develop')
+    pulls = repo.get_pulls(state='open', sort='created', base=base)
     for pr in pulls:
-        print(pr.head.repo.default_branch)
-        print(pr.head.repo.master_branch)
-        print(pr.number)
         comments = pr.get_issue_comments()
-        for comment in comments:
-            comment_user = comment.user.login
-            print("comment user: {}".format(comment_user))
-            is_user_approved(comment_user)
-            print(comment.body)
+        trigger, commentid = check_for_trigger(comments)
+        if trigger == None:
+            continue
+        else:
+            print("Out Triggers, commentid: {}, {}".format(trigger, commentid))
+        print(pr.head.repo.clone_url)
+        print(pr.head.ref)
+
 
 
 
