@@ -4,7 +4,7 @@
 ##
 
 proc ModulesHelp {} {
-     puts stderr "The prerequisites for compiling or running FV3 on Jet."
+     puts stderr "The prerequisites for compiling or running FV3 on Jet/Intel"
 }
 
 ##
@@ -17,23 +17,29 @@ module load sutils
 module load intel/18.0.5.274
 module load impi/2018.4.274
 
-setenv NCEPLIBS /mnt/lfs4/HFIP/hfv3gfs/gwv/l0530/lib/
-module use /mnt/lfs4/HFIP/hfv3gfs/gwv/l0530/lib/modulefiles
-module load netcdfp/4.7.4
-module load esmflocal/8_1_0.19bs
+##
+## use pre-compiled PNG, NetCDF, ESMF and NCEP libraries for above compiler / MPI combination
+##
+module use -a /lfs4/HFIP/hfv3gfs/software/ufs-stack-20200909/intel-18.0.5.274/impi-2018.4.274/modules
 
-module load bacio-intel-sandybridge/2.0.2
-module load ip-intel-sandybridge/3.0.0
-module load nemsio-intel-sandybridge/2.2.4
-module load sp-intel-sandybridge/2.0.2
-module load w3emc-intel-sandybridge/2.4.0
-module load w3nco-intel-sandybridge/2.0.6
-module load g2-intel-sandybridge/3.1.0
-module load g2tmpl-intel-sandybridge/1.5.0
-module load crtm-intel-sandybridge/2.3.0
-module load jasper-intel-sandybridge/1.900.1
-module load png-intel-sandybridge/1.2.59
-module load zlib-intel-sandybridge/1.2.7
+module load libpng/1.6.35
+module load netcdf/4.7.4
+module load esmf/8.1.0bs27
+
+module load bacio/2.4.0
+module load crtm/2.3.0
+module load g2/3.4.0
+module load g2tmpl/1.9.0
+module load ip/3.3.0
+module load nceppost/dceca26
+module load nemsio/2.5.1
+module load sp/2.3.0
+module load w3emc/2.7.0
+module load w3nco/2.4.0
+
+module load gfsio/1.4.0
+module load sfcio/1.4.0
+module load sigio/2.3.0
 
 ##
 ## load cmake

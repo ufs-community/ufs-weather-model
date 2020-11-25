@@ -13,21 +13,21 @@ export LIST_FILES="  atmos_4xdaily.tile1.nc \
                      atmos_4xdaily.tile4.nc \
                      atmos_4xdaily.tile5.nc \
                      atmos_4xdaily.tile6.nc \
-                    atmos_4xdaily.nest02.nc \
+              atmos_4xdaily.nest02.tile7.nc \
                      fv3_history2d.tile1.nc \
                      fv3_history2d.tile2.nc \
                      fv3_history2d.tile3.nc \
                      fv3_history2d.tile4.nc \
                      fv3_history2d.tile5.nc \
                      fv3_history2d.tile6.nc \
-                    fv3_history2d.nest02.nc \
+              fv3_history2d.nest02.tile7.nc \
                        fv3_history.tile1.nc \
                        fv3_history.tile2.nc \
                        fv3_history.tile3.nc \
                        fv3_history.tile4.nc \
                        fv3_history.tile5.nc \
                        fv3_history.tile6.nc \
-                      fv3_history.nest02.nc \
+                fv3_history.nest02.tile7.nc \
                         RESTART/coupler.res \
                      RESTART/fv_core.res.nc \
               RESTART/fv_core.res.nest02.nc \
@@ -75,7 +75,6 @@ INPES=$INPES_strnest
 JNPES=$JNPES_strnest
 TPN=$TPN_strnest
 TASKS=$TASKS_strnest
-export NODES=$(expr $TASKS / $TPN + 1)
 
 export INPES_NEST='6'
 export JNPES_NEST='8'
@@ -102,7 +101,6 @@ QUILTING=.false.
 
 export INPUT_NML=ccpp_stretched-nest-input.nml.IN
 export INPUT_NEST02_NML=ccpp_input_nest02.nml.IN
-export RUN_SCRIPT=rt_fv3.sh
 export FV3_RUN=ccpp_stretched_run.IN
 
 export CCPP_SUITE=FV3_GFS_2017_stretched

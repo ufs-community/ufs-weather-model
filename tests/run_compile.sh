@@ -1,7 +1,18 @@
 #!/bin/bash
 set -eux
 
+echo "PID=$$"
 SECONDS=0
+
+trap 'echo "run_compile.sh interrupted PID=$$"; cleanup' INT
+trap 'echo "run_compile.sh terminated PID=$$";  cleanup' TERM
+
+cleanup() {
+  [[ $ROCOTO = 'false' ]] && interrupt_job
+  trap 0
+  exit
+}
+
 
 if [[ $# != 4 ]]; then
   echo "Usage: $0 PATHRT RUNDIR_ROOT MAKE_OPT COMPILE_NR"
@@ -10,8 +21,8 @@ fi
 
 export PATHRT=$1
 export RUNDIR_ROOT=$2
-export MAKE_OPT=${3}
-export COMPILE_NR=${4}
+export MAKE_OPT=$3
+export COMPILE_NR=$4
 
 cd ${PATHRT}
 

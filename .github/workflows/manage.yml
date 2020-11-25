@@ -1,0 +1,54 @@
+name: Manage workflows
+
+on:
+  workflow_run:
+    workflows: ["Pull Request Tests"]
+    types:
+      - requested
+
+jobs:
+  job1:
+    name: Job 1
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout codes
+        uses: actions/checkout@v2
+
+      - name: Check if skip-ci is requested
+        run: |
+          cd ${GITHUB_WORKSPACE}/tests/ci
+          repo="${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/actions/runs"
+          tr_id=$(cat ${GITHUB_EVENT_PATH} | ./json_helper.py get_trigger_id)
+          tr_br=$(cat ${GITHUB_EVENT_PATH} | ./json_helper.py get_trigger_br)
+          check=$(cat ${GITHUB_EVENT_PATH} | ./json_helper.py check_skip)
+          echo "::set-env name=TRIGGER_ID::${tr_id}"
+          echo "::set-env name=TRIGGER_BR::${tr_br}"
+          echo "skip-ci: ${check}"
+          if [[ $check == yes ]]; then
+            echo "skip-ci is requested"
+            echo '::set-env name=CURR_JOB::cancelled'
+            curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.v3+json" ${repo}/$tr_id/cancel
+          else
+            echo '::set-env name=CURR_JOB::running'
+          fi
+
+      - name: Cancel redundant jobs
+        run: |
+          echo "CURR_JOB is $CURR_JOB"
+          echo "TRIGGER_ID is $TRIGGER_ID"
+          echo "TRIGGER_BR is $TRIGGER_BR"
+          export GITHUB_ACTOR
+          export GITHUB_RUN_ID
+          export TRIGGER_ID
+          export TRIGGER_BR
+          cd ${GITHUB_WORKSPACE}/tests/ci
+          repo="${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/actions/runs"
+          cancel_ids=$(curl -H "Accept: application/vnd.github.v3+json" ${repo} | ./json_helper.py cancel_workflow)
+          echo "cancel ids: $cancel_ids"
+          if [[ $cancel_ids != '' ]]; then
+            for i in $cancel_ids; do
+              curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.v3+json" ${repo}/$i/cancel
+            done
+          fi
+        if: ${{ env.CURR_JOB == 'running' }}
