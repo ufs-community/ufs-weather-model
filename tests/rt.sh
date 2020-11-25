@@ -175,15 +175,16 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
 
 elif [[ $MACHINE_ID = gaea.* ]]; then
 
-#  export PATH=/gpfs/hps/nco/ops/ecf/ecfdir/ecflow.v4.1.0.intel/bin:$PATH
-  export PYTHONPATH=
-  ECFLOW_START=
-  # DH* 20190717 temporary
-  #DISKNM=/lustre/f2/pdata/ncep_shared/emc.nemspara/RT
+  module load cray-python/3.7.3.2
+
+  export PATH=/lustre/f2/pdata/esrl/gsd/contrib/ecFlow-5.3.1/bin:$PATH
+  export PYTHONPATH=/lustre/f2/pdata/esrl/gsd/contrib/ecFlow-5.3.1/lib/python3.7/site-packages
+  ECFLOW_START=/lustre/f2/pdata/esrl/gsd/contrib/ecFlow-5.3.1/bin/ecflow_start.sh
+  ECF_PORT=$(( $(id -u) + 1500 ))
+
   DISKNM=/lustre/f2/pdata/esrl/gsd/ufs/ufs-weather-model/RT
-  # *DH 20190717
-  QUEUE=debug
-  COMPILE_QUEUE=debug
+  QUEUE=normal
+  COMPILE_QUEUE=normal
 #  DO NOT SET AN ACCOUNT EVERYONE IS NOT A MEMBER OF
 #  USE AN ENVIRONMENT VARIABLE TO SET ACCOUNT
 #  ACCNR=cmp
@@ -193,6 +194,7 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
 
   SCHEDULER=slurm
   cp fv3_conf/fv3_slurm.IN_gaea fv3_conf/fv3_slurm.IN
+  cp fv3_conf/compile_slurm.IN_gaea fv3_conf/compile_slurm.IN
 
 elif [[ $MACHINE_ID = hera.* ]]; then
 
@@ -394,9 +396,9 @@ if [[ $TESTS_FILE =~ '35d' ]]; then
 fi
 
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = jet.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20201118/${RT_COMPILER^^}}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20201124/${RT_COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20201118}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20201124}
 fi
 
 shift $((OPTIND-1))
@@ -416,7 +418,7 @@ if [[ $CREATE_BASELINE == true ]]; then
   rsync -a "${RTPWD}"/DATM* "${NEW_BASELINE}"/
 
   # FIXME: S2S baselines are only available on these machines with Intel
-  if [[ $MACHINE_ID = hera.intel ]] || [[ $MACHINE_ID = orion.intel ]] || [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
+  if [[ $MACHINE_ID = hera.intel ]] || [[ $MACHINE_ID = orion.intel ]] || [[ $MACHINE_ID = cheyenne.intel ]] || [[ $MACHINE_ID = gaea.intel ]] || [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
     rsync -a "${RTPWD}"/MOM6_* "${NEW_BASELINE}"/
     rsync -a "${RTPWD}"/CICE_* "${NEW_BASELINE}"/
     rsync -a "${RTPWD}"/CPL_* "${NEW_BASELINE}"/
@@ -429,19 +431,22 @@ if [[ $CREATE_BASELINE == true ]]; then
   rsync -a "${RTPWD}"/fv3_regional_c768/input.nml    "${NEW_BASELINE}"/fv3_regional_c768/
   rsync -a "${RTPWD}"/fv3_regional_restart/input.nml "${NEW_BASELINE}"/fv3_regional_restart/
 
-  rsync -a "${RTPWD}"/fv3_regional_control/model_configure "${NEW_BASELINE}"/fv3_regional_control/
-  rsync -a "${RTPWD}"/fv3_regional_quilt/model_configure   "${NEW_BASELINE}"/fv3_regional_quilt/
-  rsync -a "${RTPWD}"/fv3_regional_c768/model_configure    "${NEW_BASELINE}"/fv3_regional_c768/
-  rsync -a "${RTPWD}"/fv3_regional_restart/model_configure "${NEW_BASELINE}"/fv3_regional_restart/
+  rsync -a "${RTPWD}"/fv3_regional_control/model_configure                "${NEW_BASELINE}"/fv3_regional_control/
+  rsync -a "${RTPWD}"/fv3_regional_quilt/model_configure                  "${NEW_BASELINE}"/fv3_regional_quilt/
+  rsync -a "${RTPWD}"/fv3_regional_c768/model_configure                   "${NEW_BASELINE}"/fv3_regional_c768/
+  rsync -a "${RTPWD}"/fv3_regional_restart/model_configure                "${NEW_BASELINE}"/fv3_regional_restart/
+  rsync -a "${RTPWD}"/fv3_regional_quilt_netcdf_parallel/model_configure "${NEW_BASELINE}"/fv3_regional_quilt_netcdf_parallel/
 
-  rsync -a "${RTPWD}"/fv3_regional_control/INPUT     "${NEW_BASELINE}"/fv3_regional_control/
-  rsync -a "${RTPWD}"/fv3_regional_control/RESTART   "${NEW_BASELINE}"/fv3_regional_control/
-  rsync -a "${RTPWD}"/fv3_regional_quilt/INPUT       "${NEW_BASELINE}"/fv3_regional_quilt/
-  rsync -a "${RTPWD}"/fv3_regional_c768/INPUT        "${NEW_BASELINE}"/fv3_regional_c768/
-  rsync -a "${RTPWD}"/fv3_regional_restart/INPUT     "${NEW_BASELINE}"/fv3_regional_restart/
-  rsync -a "${RTPWD}"/fv3_stretched/INPUT            "${NEW_BASELINE}"/fv3_stretched/
-  rsync -a "${RTPWD}"/fv3_stretched_nest/INPUT       "${NEW_BASELINE}"/fv3_stretched_nest/
-  rsync -a "${RTPWD}"/fv3_stretched_nest_quilt/INPUT "${NEW_BASELINE}"/fv3_stretched_nest_quilt/
+  rsync -a "${RTPWD}"/fv3_regional_control/INPUT               "${NEW_BASELINE}"/fv3_regional_control/
+  rsync -a "${RTPWD}"/fv3_regional_control/RESTART             "${NEW_BASELINE}"/fv3_regional_control/
+  rsync -a "${RTPWD}"/fv3_regional_quilt/INPUT                 "${NEW_BASELINE}"/fv3_regional_quilt/
+  rsync -a "${RTPWD}"/fv3_regional_c768/INPUT                  "${NEW_BASELINE}"/fv3_regional_c768/
+  rsync -a "${RTPWD}"/fv3_regional_restart/INPUT               "${NEW_BASELINE}"/fv3_regional_restart/
+  rsync -a "${RTPWD}"/fv3_stretched/INPUT                      "${NEW_BASELINE}"/fv3_stretched/
+  rsync -a "${RTPWD}"/fv3_stretched_nest/INPUT                 "${NEW_BASELINE}"/fv3_stretched_nest/
+  rsync -a "${RTPWD}"/fv3_stretched_nest_quilt/INPUT           "${NEW_BASELINE}"/fv3_stretched_nest_quilt/
+  rsync -a "${RTPWD}"/fv3_stretched_nest_debug/INPUT           "${NEW_BASELINE}"/fv3_stretched_nest_debug/
+  rsync -a "${RTPWD}"/fv3_regional_quilt_netcdf_parallel/INPUT "${NEW_BASELINE}"/fv3_regional_quilt_netcdf_parallel/
 fi
 
 COMPILE_LOG=${PATHRT}/Compile_$MACHINE_ID.log
@@ -547,6 +552,8 @@ EOF
     QUEUE=batch
   elif [[ $MACHINE_ID = jet.* ]]; then
     QUEUE=batch
+  elif [[ $MACHINE_ID = gaea.* ]]; then
+    QUEUE=normal
   elif [[ $MACHINE_ID = cheyenne.* ]]; then
     QUEUE=regular
   else
