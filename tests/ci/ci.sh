@@ -75,7 +75,7 @@ if [ $BUILD = "true" ]; then
 elif [ $RUN == "true" ]; then
 
   sudo docker run -d --rm -v DataVolume:/tmp minsukjinoaa/fv3-input-data:develop-20200713
-  sudo docker run -d -e test_case=${TEST_CASE} -v DataVolume:/home/tester/data/NEMSfv3gfs/develop-20200713 --name my-container ${IMG_NAME}
+  sudo docker run -d -e test_case=${TEST_CASE} -v DataVolume:/home/builder/data/NEMSfv3gfs/develop-20201118 --name my-container ${IMG_NAME}
 
   echo 'cache,rss,shmem' >memory_stat
   sleep 3
