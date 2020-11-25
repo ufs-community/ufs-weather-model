@@ -176,7 +176,7 @@ else
 fi
 
 # Longer default walltime for GNU
-if [[ $RT_COMPILER = gnu ]]; then
+if [[ ${RT_COMPILER:-} = gnu ]]; then
   WLCLK_dflt=30
 else
   WLCLK_dflt=15
@@ -242,6 +242,13 @@ export LDIAG_UGWP=.F.
 export DO_UGWP=.F.
 export DO_TOFD=.F.
 export GWD_OPT=1
+export DO_UGWP_V0=.F.
+export DO_UGWP_V0_OROG_ONLY=.F.
+export DO_GSL_DRAG_LS_BL=.F.
+export DO_GSL_DRAG_SS=.F.
+export DO_GSL_DRAG_TOFD=.F.
+export DO_UGWP_V1=.F.
+export DO_UGWP_V1_OROG_ONLY=.F.
 
 # PBL
 export SATMEDMF=.F.
