@@ -15,27 +15,36 @@ module-whatis "loads NEMS FV3 prerequisites for Gaea/Intel"
 ## load programming environment
 ## this typically includes compiler, MPI and job scheduler
 ##
-module load PrgEnv-intel/6.0.3
+module load PrgEnv-intel/6.0.5
 module rm intel
-module load intel/18.0.3.222
-module load cray-netcdf
-
-module use -a /lustre/f2/pdata/esrl/gsd/ufs/modules/modulefiles/intel-18.0.3.222
-
-##
-## Libxml2 - compiled manually because of issues with linking the code
-##
-module load libxml2/2.9.9
+module rm cray-mpich
+module rm netcdf
+module load intel/18.0.6.288
+module load cray-mpich/7.7.11
 
 ##
-## NCEP libraries (download and build manually for the time being; https://github.com/NCAR/NCEPlibs)
+## use pre-compiled PNG, NetCDF, ESMF and NCEP libraries for above compiler / MPI combination
 ##
-module load NCEPlibs/9.9.9
+module use -a /lustre/f2/pdata/esrl/gsd/ufs/ufs-stack-20200909/intel-18.0.6.288/cray-mpich-7.7.11/modules
 
-##
-## use pre-compiled EMSF library for above compiler / MPI combination
-##
-module load esmf/8.0.0
+module load libpng/1.6.35
+module load netcdf/4.7.4
+module load esmf/8.1.0bs27
+
+module load bacio/2.4.0
+module load crtm/2.3.0
+module load g2/3.4.0
+module load g2tmpl/1.9.0
+module load ip/3.3.0
+module load nceppost/dceca26
+module load nemsio/2.5.1
+module load sp/2.3.0
+module load w3emc/2.7.0
+module load w3nco/2.4.0
+
+module load gfsio/1.4.0
+module load sfcio/1.4.0
+module load sigio/2.3.0
 
 # Needed at runtime:
 module load alps
@@ -43,6 +52,7 @@ module load alps
 ##
 ## load cmake
 ##
+module load cmake/3.17.0
 setenv CMAKE_C_COMPILER cc
 setenv CMAKE_CXX_COMPILER CC
 setenv CMAKE_Fortran_COMPILER ftn

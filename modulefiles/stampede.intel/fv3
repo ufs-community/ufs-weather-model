@@ -3,7 +3,7 @@
 ##    NEMS FV3 Prerequisites: Stampede/Intel
 
 proc ModulesHelp {} {
-  puts stderr "\tcit - loads modules required for building and running FV3 under NEMS on Stampede/Intel"
+  puts stderr "\tcit - loads modules required for building and running FV3 on Stampede/Intel"
 }
 
 module-whatis "loads NEMS FV3 prerequisites for Stampede/Intel"
@@ -17,16 +17,33 @@ module-whatis "loads NEMS FV3 prerequisites for Stampede/Intel"
 ##
 module load intel/18.0.2
 module load impi/18.0.2
-module load python2/2.7.15
-module load parallel-netcdf/4.6.2
-setenv NETCDF /opt/apps/intel18/impi18_0/parallel-netcdf/4.6.2/x86_64
+module load python3/3.7.0
 
 ##
-## use pre-compiled EMSF and NCEP libraries from MRW public release above compiler / MPI combination
+## use pre-compiled ESMF and NCEP libraries for above compiler / MPI combination
 ##
 # DH* todo - shared directory
-module use -a /work/06146/tg854455/stampede2/NCEPLIBS-ufs-v1.0.0/modules
-module load NCEPLIBS/1.0.0
+module use -a /work/06146/tg854455/stampede2/ufs-stack-20200909/intel-18.0.2/impi-18.0.2/modules
+# *DH
+
+module load libpng/1.6.35
+module load netcdf/4.7.4
+module load esmf/8.1.0bs27
+
+module load bacio/2.4.0
+module load crtm/2.3.0
+module load g2/3.4.0
+module load g2tmpl/1.9.0
+module load ip/3.3.0
+module load nceppost/dceca26
+module load nemsio/2.5.1
+module load sp/2.3.0
+module load w3emc/2.7.0
+module load w3nco/2.4.0
+
+module load gfsio/1.4.0
+module load sfcio/1.4.0
+module load sigio/2.3.0
 
 ##
 ## load cmake
