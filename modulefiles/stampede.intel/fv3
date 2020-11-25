@@ -3,7 +3,7 @@
 ##    NEMS FV3 Prerequisites: Stampede/Intel
 
 proc ModulesHelp {} {
-  puts stderr "\tcit - loads modules required for building and running FV3 under NEMS on Stampede/Intel"
+  puts stderr "\tcit - loads modules required for building and running FV3 on Stampede/Intel"
 }
 
 module-whatis "loads NEMS FV3 prerequisites for Stampede/Intel"
@@ -15,36 +15,41 @@ module-whatis "loads NEMS FV3 prerequisites for Stampede/Intel"
 ## load programming environment
 ## this typically includes compiler, MPI and job scheduler
 ##
-module load intel/17.0.4
-module load impi/17.0.3
-module load netcdf/4.3.3.1
-module load hdf5/1.8.16
-module load pnetcdf/1.8.1
-setenv NETCDF /opt/apps/intel17/netcdf/4.3.3.1/x86_64
+module load intel/18.0.2
+module load impi/18.0.2
+module load python3/3.7.0
 
 ##
-## use pre-compiled EMSF library for above compiler / MPI combination
+## use pre-compiled ESMF and NCEP libraries for above compiler / MPI combination
 ##
 # DH* todo - shared directory
-set ESMF_DIR /home1/05294/tg845932/softwares/esmf_7_1_0r
-setenv ESMF_DIR              ${ESMF_DIR}
-setenv ESMF_INC              ${ESMF_DIR}/include
-setenv ESMF_BIN              ${ESMF_DIR}/bin/bin0/Linux.intel.64.intelmpi.default
-setenv ESMF_LIB              ${ESMF_DIR}/lib/lib0/Linux.intel.64.intelmpi.default
-setenv ESMF_MOD              ${ESMF_DIR}/mod/mod0/Linux.intel.64.intelmpi.default
-setenv ESMFMKFILE            ${ESMF_DIR}/lib/lib0/Linux.intel.64.intelmpi.default/esmf.mk
-prepend-path PATH            ${ESMF_DIR}/bin/bin0/Linux.intel.64.intelmpi.default
-prepend-path LD_LIBRARY_PATH ${ESMF_DIR}/lib/lib0/Linux.intel.64.intelmpi.default
+module use -a /work/06146/tg854455/stampede2/ufs-stack-20200909/intel-18.0.2/impi-18.0.2/modules
+# *DH
+
+module load libpng/1.6.35
+module load netcdf/4.7.4
+module load esmf/8.1.0bs27
+
+module load bacio/2.4.0
+module load crtm/2.3.0
+module load g2/3.4.0
+module load g2tmpl/1.9.0
+module load ip/3.3.0
+module load nceppost/dceca26
+module load nemsio/2.5.1
+module load sp/2.3.0
+module load w3emc/2.7.0
+module load w3nco/2.4.0
+
+module load gfsio/1.4.0
+module load sfcio/1.4.0
+module load sigio/2.3.0
 
 ##
-## NCEP libraries (download and build manually for the time being; https://github.com/climbfuji/NCEPlibs)
+## load cmake
 ##
-# DH* todo - shared directory
-set NCEPLIBS_DIR /home1/05294/tg845932/softwares/NCEPlibs
-setenv NCEPLIBS_DIR ${NCEPLIBS_DIR}
-setenv NEMSIO_INC   ${NCEPLIBS_DIR}/include
-setenv NEMSIO_LIB   ${NCEPLIBS_DIR}/lib/libnemsio_d.a
-setenv BACIO_LIB4   ${NCEPLIBS_DIR}/lib/libbacio_4.a
-setenv SP_LIBd      ${NCEPLIBS_DIR}/lib/libsp_v2.0.2_d.a
-setenv W3EMC_LIBd   ${NCEPLIBS_DIR}/lib/libw3emc_d.a
-setenv W3NCO_LIBd   ${NCEPLIBS_DIR}/lib/libw3nco_d.a
+module load cmake/3.16.1
+setenv CMAKE_C_COMPILER mpiicc
+setenv CMAKE_CXX_COMPILER mpiicpc
+setenv CMAKE_Fortran_COMPILER mpiifort
+setenv CMAKE_Platform stampede.intel

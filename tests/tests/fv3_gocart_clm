@@ -1,0 +1,69 @@
+###############################################################################
+#
+#  FV3 gocart_clm test
+#
+###############################################################################
+
+export TEST_DESCR="Compare FV3 gocart_clm results with previous trunk version"
+
+export CNTL_DIR=fv3_gocart_clm
+
+export LIST_FILES="atmos_4xdaily.tile1.nc \
+                   atmos_4xdaily.tile2.nc \
+                   atmos_4xdaily.tile3.nc \
+                   atmos_4xdaily.tile4.nc \
+                   atmos_4xdaily.tile5.nc \
+                   atmos_4xdaily.tile6.nc \
+                   phyf000.nemsio   \
+                   phyf024.nemsio   \
+                   dynf000.nemsio   \
+                   dynf024.nemsio   \
+                   RESTART/coupler.res \
+                   RESTART/fv_core.res.nc \
+                   RESTART/fv_core.res.tile1.nc \
+                   RESTART/fv_core.res.tile2.nc \
+                   RESTART/fv_core.res.tile3.nc \
+                   RESTART/fv_core.res.tile4.nc \
+                   RESTART/fv_core.res.tile5.nc \
+                   RESTART/fv_core.res.tile6.nc \
+                   RESTART/fv_srf_wnd.res.tile1.nc \
+                   RESTART/fv_srf_wnd.res.tile2.nc \
+                   RESTART/fv_srf_wnd.res.tile3.nc \
+                   RESTART/fv_srf_wnd.res.tile4.nc \
+                   RESTART/fv_srf_wnd.res.tile5.nc \
+                   RESTART/fv_srf_wnd.res.tile6.nc \
+                   RESTART/fv_tracer.res.tile1.nc \
+                   RESTART/fv_tracer.res.tile2.nc \
+                   RESTART/fv_tracer.res.tile3.nc \
+                   RESTART/fv_tracer.res.tile4.nc \
+                   RESTART/fv_tracer.res.tile5.nc \
+                   RESTART/fv_tracer.res.tile6.nc \
+                   RESTART/sfc_data.tile1.nc \
+                   RESTART/sfc_data.tile2.nc \
+                   RESTART/sfc_data.tile3.nc \
+                   RESTART/sfc_data.tile4.nc \
+                   RESTART/sfc_data.tile5.nc \
+                   RESTART/sfc_data.tile6.nc \
+                   RESTART/phy_data.tile1.nc \
+                   RESTART/phy_data.tile2.nc \
+                   RESTART/phy_data.tile3.nc \
+                   RESTART/phy_data.tile4.nc \
+                   RESTART/phy_data.tile5.nc \
+                   RESTART/phy_data.tile6.nc"
+
+
+export_fv3
+
+DT_ATMOS="1200"
+export OUTPUT_GRID="'gaussian_grid'"
+export OUTPUT_FILE="'nemsio'"
+export WRITE_NEMSIOFLIP=.true.
+export WRITE_FSYNCFLAG=.true.
+export IAER=1111
+export HYBEDMF=.true.
+export SATMEDMF=.false.
+
+
+export INPUT_NML=fv3.gocart.nml.IN
+export FV3_RUN=fv3_gocart.IN
+

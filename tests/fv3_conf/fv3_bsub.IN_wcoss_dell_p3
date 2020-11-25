@@ -5,7 +5,7 @@
 #BSUB -J @[JBNME]
 #BSUB -W 00:@[WLCLK]
 #BSUB -q @[QUEUE]
-#BSUB -P FV3GFS-T2O
+#BSUB -P GFS-DEV
 #BSUB -n @[TASKS]
 #BSUB -R span[ptile=@[TPN]]
 #BSUB -R affinity[core(@[THRD])]
@@ -22,6 +22,7 @@ set -x
 echo "Model started:  " `date`
 
 export OMP_NUM_THREADS=@[THRD]
+export OMP_STACKSIZE=512M
 export I_MPI_DEBUG=4
 
 mpirun -l -n @[TASKS] ./fv3.exe

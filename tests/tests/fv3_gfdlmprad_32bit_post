@@ -18,7 +18,9 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
                    phyf024.nemsio   \
                    dynf000.nemsio   \
                    dynf024.nemsio   \
+                   GFSFLX.GrbF00    \
                    GFSPRS.GrbF00    \
+                   GFSFLX.GrbF24    \
                    GFSPRS.GrbF24    \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
@@ -55,7 +57,6 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
 
 
 export_fv3
-export NODES=$(expr $TASKS / $TPN + 1)
 
 DT_ATMOS="1200"
 export LGFDLMPRAD=.true.
@@ -72,4 +73,3 @@ export WRITE_FSYNCFLAG=.true.
 export INPUT_NML=gfdlmp.nml.IN
 export FV3_RUN=gfdlmp_run.IN
 
-RUN_SCRIPT=rt_fv3.sh

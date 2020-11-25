@@ -66,7 +66,6 @@ export LIST_FILES="phyf027.tile1.nc \
                    RESTART/phy_data.tile6.nc"
 
 export_fv3
-export NODES=$(expr $TASKS / $TPN + 1)
 
 export WARM_START=.T.
 export NGGPS_IC=.F.
@@ -79,7 +78,7 @@ export NSTF_NAME=2,0,1,0,5
 export FHMAX=48
 export FDIAG=3
 
-export DT_ATMOS="1200"
+export DT_ATMOS="600"
 export IMP_PHYSICS=8
 export DNATS=0
 export DO_SAT_ADJ=.F.
@@ -95,8 +94,6 @@ export HYBEDMF=.F.
 export DO_MYNNEDMF=.T.
 export IMFSHALCNV=3
 export IMFDEEPCNV=3
-export FHCYC=0
 export LSM=3
 export LSOIL_LSM=9
 
-RUN_SCRIPT=rt_fv3.sh

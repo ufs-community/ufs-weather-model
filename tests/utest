@@ -1,0 +1,766 @@
+#!/bin/bash
+set -eu
+exec 3>&2
+SECONDS=0
+hostname
+
+error() {
+  echo
+  echo "$@" 1>&2
+  exit 1
+}
+
+usage() {
+  #set +x
+  echo
+  echo "Usage: $program -n <test-name> [ -c <test-case> ] [-b] [-d] [-e] [-k] [-h] [-x] [-z]"
+  echo
+  echo "  -n  specify <test-name>"
+  echo
+  echo "  -c  specify <test-case>"
+  echo "      defaults to all test-cases: thr,mpi,dcp,rst,bit,dbg"
+  echo "      comma-separated list of any combination of std,thr,mpi,dcp,rst,bit,dbg"
+  echo
+  echo "  -b  test reproducibility for bit; compare against baseline"
+  echo "  -d  test reproducibility for dbg; compare against baseline"
+  echo "  -s  test reproducibility for std; compare against baseline"
+  echo "  -e  use ecFlow workflow manager"
+  echo "  -k  keep run directory"
+  echo "  -h  display this help and exit"
+  echo "  -x  skip compile"
+  echo "  -z  skip run"
+  echo
+  echo "  Examples"
+  echo
+  echo "    'utest -n fv3_ccpp_control' tests all for fv3_ccpp_control"
+  echo "    'utest -n fv3_ccpp_control -c rst' tests restart for fv3_ccpp_control"
+  echo "    'utest -n fv3_ccpp_gfdlmp -c mpi,thr' tests mpi and threading for fv3_ccpp_gfdlmp"
+  echo "    'utest -n fv3_ccpp_gfdlmp -c bit' tests bit for fv3_ccpp_gfdlmp"
+  echo "    'utest -n fv3_ccpp_satmedmf -c dcp,dbg,rst' tests decomposition, debug, restart for fv3_ccpp_satmedmf"
+  echo
+  #set -x
+}
+
+usage_and_exit() {
+  usage
+  exit $1
+}
+
+cleanup() {
+  rm -rf ${lockdir}
+  [[ ${ECFLOW:-false} == true ]] && ecflow_stop
+  exit $1
+}
+
+build_utests() {
+  [[ -f $build_file ]] || error "$build_file does not exist"
+
+  rm -f fv3_*.exe modules.fv3_* $compile_log
+
+  model_found=false
+  base_opt=
+  while IFS="|" read model compile_opt; do
+    model=$(echo $model | sed -e 's/^ *//' -e 's/ *$//')
+    compile_opt=$(echo $compile_opt | sed -e 's/^ *//' -e 's/ *$//')
+    if [[ $model == $TEST_NAME ]]; then
+      base_opt=$compile_opt
+      model_found=true
+      break
+    fi
+  done <$build_file
+
+  if [[ $model_found == false ]]; then
+    error "build options for $TEST_NAME not found. please edit utest.bld"
+  fi
+
+  for name in $compile_case; do
+    case $name in
+      std)
+        MAKE_OPT=$base_opt
+        ;;
+      bit)
+        if [[ $base_opt =~ "32BIT=Y" ]]; then
+          MAKE_OPT=$(echo $base_opt | sed -e 's/32BIT=Y/32BIT=N/')
+        elif [[ ${base_opt} =~ "32BIT=N" ]]; then
+          MAKE_OPT=$(echo $base_opt | sed -e 's/32BIT=N/32BIT=Y/')
+        else
+          MAKE_OPT="$base_opt 32BIT=Y"
+        fi
+        ;;
+      dbg)
+        MAKE_OPT="$base_opt 32BIT=Y DEBUG=Y"
+        ;;
+    esac
+    MAKE_OPT=$(echo $MAKE_OPT | sed -e 's/^ *//' -e 's/ *$//')
+
+      cat <<-EOF > ${RUNDIR_ROOT}/compile_${name}.env
+				export MACHINE_ID=${MACHINE_ID}
+				export PATHRT=${PATHRT}
+				export PATHTR=${PATHTR}
+				export SCHEDULER=${SCHEDULER}
+				export ACCNR=${ACCNR}
+				export QUEUE=${COMPILE_QUEUE}
+				export PARTITION=${PARTITION}
+				export ROCOTO=${ROCOTO}
+				export ECFLOW=${ECFLOW}
+				export REGRESSIONTEST_LOG=${REGRESSIONTEST_LOG}
+				export LOG_DIR=${LOG_DIR}
+				EOF
+
+    if [[ $ECFLOW == true ]]; then
+      COMPILE_NR=$name
+      ecflow_create_compile_task
+    else
+      echo "compiling $name with compile option $MAKE_OPT"
+      ./compile.sh $MACHINE_ID "${MAKE_OPT}" $name >${LOG_DIR}/compile_${TEST_NAME}_$name.log 2>&1
+      echo "done compiling $name"
+    fi
+  done
+}
+
+run_utests() {
+  for rc in $run_case; do
+    # load default variables and override as necessary
+    source default_vars.sh
+    source ${PATHRT}/tests/$TEST_NAME
+
+    # if TEST_NAME specifies WARM_START true, error and exit
+    if [[ ${WARM_START} == .T. ]]; then
+      error "test-name cannot be a restart run (i.e. WARM_START=.T.)"
+    fi
+
+    comp_nm=std
+
+    RT_SUFFIX="_${rc}"
+
+    case $rc in
+      std_base)
+        CREATE_BASELINE=true
+        RTPWD=$baseline_location
+        BL_SUFFIX=_std_base
+        cat <<-EOF > ${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
+					export UNIT_TEST=true
+					export RT_COMPILER=${RT_COMPILER}
+					export RESTART_INTERVAL=$(( FHMAX/2 ))
+					EOF
+        ;;
+      std)
+        CREATE_BASELINE=false
+        RTPWD=$NEW_BASELINE
+        BL_SUFFIX=_std_base
+        cat <<-EOF > ${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
+					export UNIT_TEST=true
+					export RT_COMPILER=${RT_COMPILER}
+					EOF
+        ;;
+      thr)
+        CREATE_BASELINE=false
+        RTPWD=$NEW_BASELINE
+        BL_SUFFIX=_std_base
+        THRD=2
+        # INPES is sometimes odd, so use JNPES. Make sure JNPES is divisible by THRD
+        JNPES=$(( JNPES/THRD ))
+        TASKS=$(( INPES*JNPES*6 + WRITE_GROUP*WRTTASK_PER_GROUP ))
+        TPN=$(( TPN/THRD ))
+        NODES=$(( TASKS/TPN + 1 ))
+        cat <<-EOF > ${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
+					export UNIT_TEST=true
+					export RT_COMPILER=${RT_COMPILER}
+					export THRD=${THRD}
+					export JNPES=${JNPES}
+					export TASKS=${TASKS}
+					export TPN=${TPN}
+					export NODES=${NODES}
+					EOF
+        ;;
+      mpi)
+        CREATE_BASELINE=false
+        RTPWD=$NEW_BASELINE
+        BL_SUFFIX=_std_base
+        JNPES=$(( JNPES/2 ))
+        WRITE_GROUP=2
+        WRTTASK_PER_GROUP=12
+        TASKS=$(( INPES*JNPES*6 + WRITE_GROUP*WRTTASK_PER_GROUP ))
+        NODES=$(( TASKS/TPN + 1 ))
+        cat <<-EOF > ${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
+					export UNIT_TEST=true
+					export RT_COMPILER=${RT_COMPILER}
+					export JNPES=${JNPES}
+					export WRITE_GROUP=${WRITE_GROUP}
+					export WRTTASK_PER_GROUP=${WRTTASK_PER_GROUP}
+					export TASKS=${TASKS}
+					export NODES=${NODES}
+					EOF
+        ;;
+      dcp)
+        CREATE_BASELINE=false
+        RTPWD=$NEW_BASELINE
+        BL_SUFFIX=_std_base
+        temp=$INPES
+        INPES=$JNPES
+        JNPES=$temp
+        cat <<-EOF >${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
+					export UNIT_TEST=true
+					export RT_COMPILER=${RT_COMPILER}
+					export INPES=${INPES}
+					export JNPES=${JNPES}
+					EOF
+        ;;
+      rst) # this is not going to work for regional model
+        CREATE_BASELINE=false
+        RTPWD=$NEW_BASELINE
+        BL_SUFFIX=_std_base
+        # Set up date and time of restart files for restart run
+        RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( SHOUR + FHMAX/2  )))0000"
+        export RESTART_FILE_PREFIX
+
+        WARM_START=.T.
+        NGGPS_IC=.F.
+        EXTERNAL_IC=.F.
+        MAKE_NH=.F.
+        MOUNTAIN=.T.
+        NA_INIT=0
+        NSTF_NAME=2,0,1,0,5
+
+        LIST_FILES="RESTART/coupler.res RESTART/fv_core.res.nc RESTART/fv_core.res.tile1.nc \
+                    RESTART/fv_core.res.tile2.nc RESTART/fv_core.res.tile3.nc
+                    RESTART/fv_core.res.tile4.nc RESTART/fv_core.res.tile5.nc \
+                    RESTART/fv_core.res.tile6.nc RESTART/fv_srf_wnd.res.tile1.nc \
+                    RESTART/fv_srf_wnd.res.tile2.nc RESTART/fv_srf_wnd.res.tile3.nc \
+                    RESTART/fv_srf_wnd.res.tile4.nc RESTART/fv_srf_wnd.res.tile5.nc \
+                    RESTART/fv_srf_wnd.res.tile6.nc RESTART/fv_tracer.res.tile1.nc \
+                    RESTART/fv_tracer.res.tile2.nc RESTART/fv_tracer.res.tile3.nc \
+                    RESTART/fv_tracer.res.tile4.nc RESTART/fv_tracer.res.tile5.nc \
+                    RESTART/fv_tracer.res.tile6.nc RESTART/phy_data.tile1.nc \
+                    RESTART/phy_data.tile2.nc RESTART/phy_data.tile3.nc RESTART/phy_data.tile4.nc \
+                    RESTART/phy_data.tile5.nc RESTART/phy_data.tile6.nc RESTART/sfc_data.tile1.nc \
+                    RESTART/sfc_data.tile2.nc RESTART/sfc_data.tile3.nc RESTART/sfc_data.tile4.nc \
+                    RESTART/sfc_data.tile5.nc RESTART/sfc_data.tile6.nc"
+
+        comp_hr=$(printf "%03d" $(( SHOUR + FHMAX )))
+        if [[ $OUTPUT_GRID == "'cubed_sphere_grid'" ]]; then
+          LIST_FILES="phyf${comp_hr}.tile1.nc phyf${comp_hr}.tile2.nc phyf${comp_hr}.tile3.nc \
+                      phyf${comp_hr}.tile4.nc phyf${comp_hr}.tile5.nc phyf${comp_hr}.tile6.nc \
+                      dynf${comp_hr}.tile1.nc dynf${comp_hr}.tile2.nc dynf${comp_hr}.tile3.nc \
+                      dynf${comp_hr}.tile4.nc dynf${comp_hr}.tile5.nc dynf${comp_hr}.tile6.nc ${LIST_FILES}"
+        elif [[ $OUTPUT_GRID == "'gaussian_grid'" ]]; then
+          if [[ $OUTPUT_FILE == "'netcdf'" || $OUTPUT_FILE == "'netcdf_esmf'" ]]; then
+            LIST_FILES="phyf${comp_hr}.nc dynf${comp_hr}.nc ${LIST_FILES}"
+          elif [[ $OUTPUT_FILE == "'nemsio'" ]]; then
+            LIST_FILES="phyf${comp_hr}.nemsio dynf${comp_hr}.nemsio ${LIST_FILES}"
+          else
+            error "Unrecognized OUTPUT_FILE ${OUTPUT_FILE}"
+          fi
+        else
+          error "Unrecognized OUTPUT_GRID ${OUTPUT_GRID}"
+        fi
+
+        cat <<-EOF >${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
+					export UNIT_TEST=true
+					export RT_COMPILER=${RT_COMPILER}
+					export RESTART_FILE_PREFIX=${RESTART_FILE_PREFIX}
+					export WARM_START=${WARM_START}
+					export NGGPS_IC=${NGGPS_IC}
+					export EXTERNAL_IC=${EXTERNAL_IC}
+					export MAKE_NH=${MAKE_NH}
+					export MOUNTAIN=${MOUNTAIN}
+					export NA_INIT=${NA_INIT}
+					export NSTF_NAME=${NSTF_NAME}
+					export LIST_FILES="${LIST_FILES}"
+					EOF
+        ;;
+      bit_base)
+        CREATE_BASELINE=true
+        RTPWD=$baseline_location
+        BL_SUFFIX=_bit_base
+        comp_nm=bit
+        cat <<-EOF >${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
+					export UNIT_TEST=true
+					export RT_COMPILER=${RT_COMPILER}
+					EOF
+        ;;
+      bit)
+        CREATE_BASELINE=false
+        RTPWD=$NEW_BASELINE
+        BL_SUFFIX=_bit_base
+        comp_nm=bit
+        cat <<-EOF >${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
+					export UNIT_TEST=true
+					export RT_COMPILER=${RT_COMPILER}
+					EOF
+        ;;
+      dbg_base)
+        CREATE_BASELINE=true
+        RTPWD=$baseline_location
+        BL_SUFFIX=_dbg_base
+        comp_nm=dbg
+        WLCLK=30
+        cat <<-EOF >${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
+					export UNIT_TEST=true
+					export RT_COMPILER=${RT_COMPILER}
+					export WLCLK=${WLCLK}
+					EOF
+        ;;
+      dbg)
+        CREATE_BASELINE=false
+        RTPWD=$NEW_BASELINE
+        BL_SUFFIX=_dbg_base
+        comp_nm=dbg
+        WLCLK=30
+        cat <<-EOF >${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
+					export UNIT_TEST=true
+					export RT_COMPILER=${RT_COMPILER}
+					export WLCLK=${WLCLK}
+					EOF
+        ;;
+    esac
+
+    cat <<- EOF > ${RUNDIR_ROOT}/run_test${RT_SUFFIX}.env
+			export MACHINE_ID=${MACHINE_ID}
+			export RTPWD=${RTPWD}
+			export PATHRT=${PATHRT}
+			export PATHTR=${PATHTR}
+			export NEW_BASELINE=${NEW_BASELINE}
+			export CREATE_BASELINE=${CREATE_BASELINE}
+			export RT_SUFFIX=${RT_SUFFIX}
+			export BL_SUFFIX=${BL_SUFFIX}
+			export SCHEDULER=${SCHEDULER}
+			export ACCNR=${ACCNR}
+			export QUEUE=${QUEUE}
+			export PARTITION=${PARTITION}
+			export ROCOTO=${ROCOTO}
+			export ECFLOW=${ECFLOW}
+			export REGRESSIONTEST_LOG=${REGRESSIONTEST_LOG}
+			export LOG_DIR=${LOG_DIR}
+			EOF
+
+    if [[ $ECFLOW == true ]]; then
+      TEST_NR=${RT_SUFFIX:1}
+      COMPILE_NR=$comp_nm
+      DEP_RUN=
+      if [[ ${RT_SUFFIX} == _std || ${RT_SUFFIX} == _thr || ${RT_SUFFIX} == _mpi || ${RT_SUFFIX} == _dcp || ${RT_SUFFIX} == _rst ]]; then
+        DEP_RUN="${TEST_NAME}_std_base"
+      elif [[ ${RT_SUFFIX} == _bit ]]; then
+        DEP_RUN="${TEST_NAME}_bit_base"
+      elif [[ ${RT_SUFFIX} == _dbg ]]; then
+        DEP_RUN="${TEST_NAME}_dbg_base"
+      else
+        DEP_RUN=''
+      fi
+      ecflow_create_run_task
+    else
+      echo "Running test for $rc with"
+      echo "    THRD: $THRD; INPES: $INPES; JNPES: $JNPES; TASKS: $TASKS; TPN: $TPN"
+      TEST_NR=${RT_SUFFIX:1}
+      ./run_test.sh $PATHRT $RUNDIR_ROOT $TEST_NAME $TEST_NR $comp_nm > $LOG_DIR/run_${TEST_NAME}_${TEST_NR}.log 2>&1
+    fi
+
+  done
+}
+
+trap 'echo utest killed; cleanup $?' KILL
+trap 'echo utest interrupted; cleanup $?' INT
+trap 'echo utest quit; cleanup $?' QUIT
+trap 'echo utest terminated; cleanup $?' TERM
+trap 'echo utest error on line $LINENO; cleanup $?' ERR
+trap '
+  ret=$?
+  if [ "$ret" -ne 0 ]; then
+    echo >&2 "Died with error code $ret"
+  else
+    echo >&2 "utest finished"
+  fi
+  cleanup $ret' EXIT
+
+########################################################################
+####                       PROGRAM STARTS                           ####
+########################################################################
+
+readonly program=$(basename $0)
+# PATHRT - Path to unit tests directory
+readonly PATHRT=$(cd $(dirname $0) && pwd -P)
+# PATHTR - Path to trunk directory
+readonly PATHTR=$(cd ${PATHRT}/.. && pwd)
+readonly lockdir=${PATHRT}/lock_ut
+export UNIT_TEST=true
+export CI_TEST=${CI_TEST:-false}
+
+[[ $# -eq 0 ]] && usage_and_exit 1
+
+# specify compiler
+export RT_COMPILER=${RT_COMPILER:-intel}
+# detect_machine sets ACCNR and MACHINE_ID
+RT_MACHINE=${RT_MACHINE:-}
+source detect_machine.sh
+cd $PATHRT
+
+# make sure only one instance of utest is running
+if mkdir $lockdir 2>/dev/null; then
+  echo $(hostname) $$ > ${lockdir}/PID
+else
+  error "Only one instance of utest can be running at a time"
+fi
+
+# utility functions in rt_utils need to be able to see variables in utest
+source rt_utils.sh
+
+# Machine-dependent libraries, modules, variables, etc.
+if [[ $MACHINE_ID = hera.* ]]; then
+
+  source $PATHTR/NEMS/src/conf/module-setup.sh.inc
+  module use $PATHTR/modulefiles/${MACHINE_ID}
+  module load fv3
+
+  export PATH=/scratch2/NCEPDEV/fv3-cam/Dusan.Jovic/ecflow/bin:$PATH
+  export PYTHONPATH=/scratch2/NCEPDEV/fv3-cam/Dusan.Jovic/ecflow/lib/python2.7/site-packages
+  ECFLOW_START=/scratch2/NCEPDEV/fv3-cam/Dusan.Jovic/ecflow/bin/ecflow_start.sh
+  ECF_PORT=$(( $(id -u) + 1500 ))
+
+  PARTITION=
+  QUEUE=batch
+  COMPILE_QUEUE=batch
+  dprefix=/scratch1/NCEPDEV
+  DISKNM=$dprefix/nems/emc.nemspara/RT
+  STMP=${dprefix}/stmp4
+  PTMP=${dprefix}/stmp2
+  SCHEDULER=slurm
+  cp fv3_conf/fv3_slurm.IN_hera fv3_conf/fv3_slurm.IN
+  cp fv3_conf/compile_slurm.IN_hera fv3_conf/compile_slurm.IN
+
+elif [[ $MACHINE_ID = orion.* ]]; then
+
+  source $PATHTR/NEMS/src/conf/module-setup.sh.inc
+
+  module use $PATHTR/modulefiles/${MACHINE_ID}
+  module load fv3
+  module load gcc/8.3.0
+
+  export PATH=/work/noaa/fv3-cam/djovic/ecflow/bin:$PATH
+  export PYTHONPATH=/work/noaa/fv3-cam/djovic/ecflow/lib/python2.7/site-packages
+  ECFLOW_START=/work/noaa/fv3-cam/djovic/ecflow/bin/ecflow_start.sh
+  ECF_PORT=$(( $(id -u) + 1500 ))
+  QUEUE=batch
+  COMPILE_QUEUE=batch
+#  ACCNR= # detected in detect_machine.sh
+  PARTITION=orion
+  dprefix=/work/noaa/stmp/${USER}
+  DISKNM=/work/noaa/nems/emc.nemspara/RT
+  STMP=$dprefix/stmp
+  PTMP=$dprefix/stmp
+  SCHEDULER=slurm
+  cp fv3_conf/fv3_slurm.IN_orion fv3_conf/fv3_slurm.IN
+  cp fv3_conf/compile_slurm.IN_orion fv3_conf/compile_slurm.IN
+
+elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
+
+  source $PATHTR/NEMS/src/conf/module-setup.sh.inc
+  module load lsf/10.1
+
+  module use $PATHTR/modulefiles/${MACHINE_ID}
+  module load fv3
+
+  module load python/2.7.14
+
+  module load ips/18.0.1.163
+  module load ecflow/4.7.1
+  ECFLOW_START=${ECF_ROOT}/intel/bin/ecflow_start.sh
+  ECF_PORT=$(grep $USER /usrx/local/sys/ecflow/assigned_ports.txt | awk '{print $2}')
+
+  DISKNM=/gpfs/dell2/emc/modeling/noscrub/emc.nemspara/RT
+  QUEUE=debug
+  COMPILE_QUEUE=dev_transfer
+  PARTITION=
+  ACCNR=GFS-DEV
+  STMP=/gpfs/dell2/stmp
+  PTMP=/gpfs/dell2/ptmp
+  SCHEDULER=lsf
+  cp fv3_conf/fv3_bsub.IN_wcoss_dell_p3 fv3_conf/fv3_bsub.IN
+  cp fv3_conf/compile_bsub.IN_wcoss_dell_p3 fv3_conf/compile_bsub.IN
+
+elif [[ $MACHINE_ID = linux.* ]]; then
+
+  PARTITION=
+  QUEUE=
+  COMPILE_QUEUE=
+  dprefix=/home/builder
+  DISKNM=${dprefix}/data
+  STMP=${dprefix}/stmp4
+  PTMP=${dprefix}/stmp2
+  SCHEDULER=none
+
+else
+  error "unknown machine ID. edit detect_machine.sh file"
+fi
+
+# default variable values
+TEST_NAME=
+CREATE_BASELINE=
+test_case="std thr mpi dcp rst bit dbg"
+ECFLOW=false
+ROCOTO=false
+std_compare=false
+bit_compare=false
+dbg_compare=false
+keep_rundir=false
+skip_compile=false
+skip_run=false
+
+# parse command line arguments to fill-in/modify the above default variables
+while getopts :n:c:ekhbdsxz opt; do
+  case $opt in
+    n)
+      TEST_NAME=$OPTARG
+      echo "test name: ${TEST_NAME}"
+      ;;
+    c)
+      test_case=$OPTARG
+      test_case=$(echo $test_case | sed -e 's/^ *//' -e 's/ *$//' -e 's/,/ /g')
+      for i in $test_case; do
+        if [[ $i != std && $i != thr && $i != mpi && $i != dcp && $i != rst && $i != bit && $i != dbg ]]; then
+          error "invalid test case specified: $i"
+        fi
+      done
+      ;;
+    e)
+      ECFLOW=true
+      ;;
+    k)
+      keep_rundir=true
+      ;;
+    b)
+      bit_compare=true
+      ;;
+    d)
+      dbg_compare=true
+      ;;
+    s)
+      std_compare=true
+      ;;
+    x)
+      skip_compile=true
+      ;;
+    z)
+      skip_run=true
+      ;;
+    h)
+      usage_and_exit 0
+      ;;
+    '?')
+      error "$program: invalid option -$OPTARG"
+      ;;
+  esac
+done
+
+# some safety guards for input arguments
+if [[ -z $TEST_NAME ]]; then
+  error "$program: test name is required. try 'utest -h' for usage"
+fi
+if [[ $skip_compile == true && $skip_run == true ]]; then
+  error "$program: cannot skip both compile and run"
+fi
+if [[ $std_compare == true && ! $test_case =~ std ]]; then
+  error "$program: std reproducibility test requires specifying std"
+fi
+if [[ $bit_compare == true && ! $test_case =~ bit ]]; then
+  error "$program: bit reproducibility test requires specifying bit"
+fi
+if [[ $dbg_compare == true && ! $test_case =~ dbg ]]; then
+  error "$program: debug reproducibility test requires specifying dbg"
+fi
+
+# enumerate which case to compile and run
+compile_case=
+run_case=
+for i in $test_case; do
+  if [[ $i == thr || $i == mpi || $i == dcp || $i == rst ]]; then
+    if [[ ! $compile_case =~ std ]]; then
+      compile_case+=" std"
+    fi
+    if [[ ! $run_case =~ std_base ]]; then
+      run_case+=" std_base"
+    fi
+    run_case+=" $i"
+  elif [[ $i == std ]]; then
+    if [[ ! $compile_case =~ std ]]; then
+      compile_case+=" std"
+    fi
+    if [[ ! $run_case =~ std_base ]]; then
+      run_case+=" std_base"
+    fi
+    if [[ $std_compare == true ]]; then
+      run_case+=" std"
+    fi
+  elif [[ $i == bit ]]; then
+    compile_case+=" bit"
+    run_case+=" bit_base"
+    if [[ $bit_compare == true ]]; then
+      run_case+=" bit"
+    fi
+  elif [[ $i == dbg ]]; then
+    compile_case+=" dbg"
+    run_case+=" dbg_base"
+    if [[ $dbg_compare == true ]]; then
+      run_case+=" dbg"
+    fi
+  fi
+done
+compile_case=$(echo $compile_case | sed -e 's/^ *//' -e 's/ *$//')
+run_case=$(echo $run_case | sed -e 's/^ *//' -e 's/ *$//')
+# if there exists std_base in run_case, make sure it is the first
+if [[ $run_case =~ std_base && ! $run_case =~ ^std_base ]]; then
+  run_case=$(echo $run_case | sed -e 's/ std_base//')
+  run_case="std_base $run_case"
+fi
+
+# log directory
+LOG_DIR=${PATHRT}/log_ut_$MACHINE_ID
+rm -rf ${LOG_DIR}
+mkdir ${LOG_DIR}
+
+# directory where all simulations are run
+RUNDIR_ROOT=${RUNDIR_ROOT:-${PTMP}/${USER}}/FV3_UT/ut_$$
+mkdir -p ${RUNDIR_ROOT}
+
+if [[ $ECFLOW == true ]]; then
+  ECFLOW_RUN=${PATHRT}/ecflow_ut_run
+  ECFLOW_SUITE=unittest
+  rm -rf ${ECFLOW_RUN}
+  mkdir -p ${ECFLOW_RUN}/${ECFLOW_SUITE}
+  cp head.h tail.h ${ECFLOW_RUN}
+  > ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+  cat <<-EOF >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+		suite ${ECFLOW_SUITE}
+		edit ECF_HOME '${ECFLOW_RUN}'
+		edit ECF_INCLUDE '${ECFLOW_RUN}'
+		edit ECF_KILL_CMD kill -15 %ECF_RID% > %ECF_JOB%.kill 2>&1
+		edit ECF_TRIES 1
+		label rundir_root '${RUNDIR_ROOT}'
+		limit max_builds 6
+		limit max_jobs 30
+		EOF
+  if [[ $MACHINE_ID == hera.* ]]; then
+    QUEUE=batch
+  elif [[ $MACHINE_ID == orion.* ]]; then
+    QUEUE=batch
+  elif [[ $MACHINE_ID == wcoss_dell_p3 ]]; then
+    QUEUE=dev
+  else
+    error "ecflow is not supported on this machine $MACHINE_ID"
+  fi
+fi
+
+compile_log=${PATHRT}/Compile_ut_$MACHINE_ID.log
+unittest_log=${PATHRT}/UnitTests_$MACHINE_ID.log
+REGRESSIONTEST_LOG=$unittest_log
+
+########################################################################
+####                            COMPILE                             ####
+########################################################################
+
+# build_file specifies compilation options
+build_file='utest.bld'
+
+# if skipping compile, check if all required executables exist. if not,
+# exit with a non-zero number equal to the number of missing executables
+num_of_missing_exe=0
+if [[ $skip_compile == true ]]; then
+  for i in $compile_case; do
+    if [[ ! -f ${PATHRT}/fv3_$i.exe ]]; then
+      echo "cannot find the required executable file fv3_$i.exe" >&2
+      num_of_missing_exe=$(( num_of_missing_exe + 1 ))
+    else
+      echo "found the required executable file fv3_$i.exe" >&2
+    fi
+  done
+
+  if [[ $num_of_missing_exe == 0 ]]; then
+    echo "all required executables are found" >&2
+  else
+    exit $num_of_missing_exe
+  fi
+else
+  echo "cases to compile: $compile_case"
+  build_utests
+  if [[ $ECFLOW == false ]]; then
+    cat ${LOG_DIR}/compile_*.log > ${compile_log}
+  fi
+fi
+
+# if skipping run, stop after build. print out status information and
+# exit with a non-zero number equal to the number of failed builds
+num_of_failed_compilation=0
+if [[ $skip_run == true ]]; then
+  for i in $compile_case; do
+    if [[ ! -f ${PATHRT}/fv3_$i.exe ]]; then
+      echo "failed to generate executable file fv3_$i.exe" >&2
+      num_of_failed_compilation=$(( num_of_failed_compilation + 1 ))
+    fi
+  done
+
+  if [[ $num_of_failed_compilation == 0 ]]; then
+    echo "all executables have been generated" >&2
+  fi
+
+  exit $num_of_failed_compilation
+fi
+
+########################################################################
+####                              RUN                               ####
+########################################################################
+
+mkdir -p ${STMP}/${USER}
+NEW_BASELINE=${STMP}/${USER}/FV3_UT/UNIT_TEST
+if [[ $MACHINE_ID == hera.* || $MACHINE_ID == orion.* ]]; then
+  baseline_location=$DISKNM/NEMSfv3gfs/develop-20201118/${RT_COMPILER^^}
+else
+  baseline_location=$DISKNM/NEMSfv3gfs/develop-20201118
+fi
+RTPWD=$baseline_location
+
+rm -rf $NEW_BASELINE
+mkdir -p $NEW_BASELINE
+ln -s ${RTPWD}/FV3_input_data ${NEW_BASELINE}
+
+rm -f fail_unit_test ${unittest_log}
+
+echo "cases to run: $run_case"
+run_utests
+
+if [[ $ECFLOW == true ]]; then
+  echo "endsuite" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+  ecflow_run
+fi
+
+########################################################################
+####                       UNIT TEST STATUS                         ####
+########################################################################
+set +e
+if [[ $ECFLOW == true ]]; then
+  cat ${LOG_DIR}/compile_*.log > ${compile_log}
+fi
+cat ${LOG_DIR}/ut_*.log | tee -a ${unittest_log}
+
+if [[ -e fail_unit_test ]]; then
+  echo "FAILED TESTS: " | tee -a ${unittest_log}
+  while read -r failed_test_name; do
+    echo "Test ${failed_test_name} failed " | tee -a ${unittest_log}
+  done < fail_unit_test
+
+  echo "UNIT TEST FAILED" | tee -a ${unittest_log}
+  date >>${unittest_log}
+  hrs=$(( $SECONDS%86400/3600 )); mins=$(( $SECONDS%3600/60 )); secs=$(( $SECONDS%60 ))
+  elapsed_time=$(printf '%02dh:%02dm:%02ds\n' $hrs $mins $secs)
+  echo "Elapsed time: ${elapsed_time}. Have a nice day!" | tee -a ${unittest_log}
+
+  exit 1
+else
+  [[ ${keep_rundir} == false ]] && rm -rf ${RUNDIR_ROOT}
+
+  echo "UNIT TEST WAS SUCCESSFUL" | tee -a ${unittest_log}
+  date >>${unittest_log}
+  hrs=$(( $SECONDS%86400/3600 )); mins=$(( $SECONDS%3600/60 )); secs=$(( $SECONDS%60 ))
+  elapsed_time=$(printf '%02dh:%02dm:%02ds\n' $hrs $mins $secs)
+  echo "Elapsed time: ${elapsed_time}. Have a nice day!" | tee -a ${unittest_log}
+
+  exit 0
+fi

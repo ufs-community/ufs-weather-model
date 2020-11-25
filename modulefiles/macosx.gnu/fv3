@@ -4,7 +4,7 @@
 ##
 ##    NEMS FV3 Prerequisites: MACOSX with clang/gfortran compilers
 
-echo "Setting environment variables for NEMSfv3gfs on MACOSX with clang/gfortran"
+echo "Setting environment variables for NEMSfv3gfs on MACOSX with gcc/gfortran or clang/gfortran"
 
 ##
 ## load programming environment: compiler, flags, paths
@@ -19,9 +19,12 @@ export MPICC=${MPICC:-mpicc}
 export MPIF90=${MPIF90:-mpif90}
 
 ##
-## use homebrew NetCDF library
+## load cmake
 ##
-export NETCDF=${NETCDF:-/usr/local}
+export CMAKE_C_COMPILER=${CC}
+export CMAKE_CXX_COMPILER=${CXX}
+export CMAKE_Fortran_COMPILER=${FC}
+export CMAKE_Platform=macosx.gnu
 
 ##
 ## use SIONlib library if installed and environment variable is set
@@ -32,22 +35,6 @@ if [ ! "x$SIONLIB" == "x" ]; then
   export SIONLIB_INC="-I${SIONLIB}/include -I${SIONLIB}/include/mod_64"
   export SIONLIB_LIB="-L${SIONLIB}/lib -lsionmpi_f90_64 -lsionser_f90_64 -lsionmpi_64 -lsiongen_64 -lsionser_64 -lsioncom_64 -lsioncom_64_lock_none"
 fi
-
-##
-## use pre-compiled EMSF library for above compiler / MPI combination
-##
-export ESMFMKFILE=${ESMFMKFILE:-/usr/local/esmf-8.0.0_bs40/lib/esmf.mk}
-
-##
-## NCEP libraries (need to download and build manually, see doc/README_MACOSX.txt and https://github.com/NCAR/NCEPlibs)
-##
-export NCEPLIBS_DIR=${NCEPLIBS_DIR:-/usr/local/NCEPlibs-20190811}
-export NEMSIO_INC=${NCEPLIBS_DIR}/include
-export BACIO_LIB4=${NCEPLIBS_DIR}/lib/libbacio_4.a
-export SP_LIBd=${NCEPLIBS_DIR}/lib/libsp_v2.0.2_d.a
-export W3EMC_LIBd=${NCEPLIBS_DIR}/lib/libw3emc_d.a
-export W3NCO_LIBd=${NCEPLIBS_DIR}/lib/libw3nco_d.a
-export NEMSIO_LIB=${NCEPLIBS_DIR}/lib/libnemsio_d.a
 
 ##
 ## Intel MKL library

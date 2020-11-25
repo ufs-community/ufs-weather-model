@@ -5,7 +5,7 @@
 #BSUB -J @[JBNME]
 #BSUB -W 00:@[WLCLK]
 #BSUB -q @[QUEUE]
-#BSUB -P FV3GFS-T2O
+#BSUB -P GFS-DEV
 #BSUB -extsched "CRAYLINUX[]" -R "1*{select[craylinux && !vnode]} + @[TASKS]*{select[craylinux && vnode] span [ptile=@[TPN]]}"
 #BSUB -M 500
 
@@ -15,7 +15,6 @@ set +x
 source ./module-setup.sh
 module use $( pwd -P )
 module load modules.fv3
-module load alps/5.2.3-2.0502.9295.14.14.ari
 module list
 set -x
 

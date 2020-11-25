@@ -1,0 +1,109 @@
+###############################################################################
+#
+#  FV3 CCPP HAFS v0 HWRF compiled with 32-bit dynamics test
+#
+###############################################################################
+
+export TEST_DESCR="Compare HAFS 32bit CCPP HWRF suite results with previous trunk version"
+
+export CNTL_DIR=HAFS_v0_HWRF
+
+export LIST_FILES="atmos_4xdaily.tile1.nc \
+                   atmos_4xdaily.tile2.nc \
+                   atmos_4xdaily.tile3.nc \
+                   atmos_4xdaily.tile4.nc \
+                   atmos_4xdaily.tile5.nc \
+                   atmos_4xdaily.tile6.nc \
+                   phyf000.tile1.nc \
+                   phyf000.tile2.nc \
+                   phyf000.tile3.nc \
+                   phyf000.tile4.nc \
+                   phyf000.tile5.nc \
+                   phyf000.tile6.nc \
+                   phyf024.tile1.nc \
+                   phyf024.tile2.nc \
+                   phyf024.tile3.nc \
+                   phyf024.tile4.nc \
+                   phyf024.tile5.nc \
+                   phyf024.tile6.nc \
+                   dynf000.tile1.nc \
+                   dynf000.tile2.nc \
+                   dynf000.tile3.nc \
+                   dynf000.tile4.nc \
+                   dynf000.tile5.nc \
+                   dynf000.tile6.nc \
+                   dynf024.tile1.nc \
+                   dynf024.tile2.nc \
+                   dynf024.tile3.nc \
+                   dynf024.tile4.nc \
+                   dynf024.tile5.nc \
+                   dynf024.tile6.nc \
+                   RESTART/coupler.res \
+                   RESTART/fv_core.res.nc \
+                   RESTART/fv_core.res.tile1.nc \
+                   RESTART/fv_core.res.tile2.nc \
+                   RESTART/fv_core.res.tile3.nc \
+                   RESTART/fv_core.res.tile4.nc \
+                   RESTART/fv_core.res.tile5.nc \
+                   RESTART/fv_core.res.tile6.nc \
+                   RESTART/fv_srf_wnd.res.tile1.nc \
+                   RESTART/fv_srf_wnd.res.tile2.nc \
+                   RESTART/fv_srf_wnd.res.tile3.nc \
+                   RESTART/fv_srf_wnd.res.tile4.nc \
+                   RESTART/fv_srf_wnd.res.tile5.nc \
+                   RESTART/fv_srf_wnd.res.tile6.nc \
+                   RESTART/fv_tracer.res.tile1.nc \
+                   RESTART/fv_tracer.res.tile2.nc \
+                   RESTART/fv_tracer.res.tile3.nc \
+                   RESTART/fv_tracer.res.tile4.nc \
+                   RESTART/fv_tracer.res.tile5.nc \
+                   RESTART/fv_tracer.res.tile6.nc \
+                   RESTART/sfc_data.tile1.nc \
+                   RESTART/sfc_data.tile2.nc \
+                   RESTART/sfc_data.tile3.nc \
+                   RESTART/sfc_data.tile4.nc \
+                   RESTART/sfc_data.tile5.nc \
+                   RESTART/sfc_data.tile6.nc \
+                   RESTART/phy_data.tile1.nc \
+                   RESTART/phy_data.tile2.nc \
+                   RESTART/phy_data.tile3.nc \
+                   RESTART/phy_data.tile4.nc \
+                   RESTART/phy_data.tile5.nc \
+                   RESTART/phy_data.tile6.nc"
+
+
+export_fv3
+export NODES=$(expr $TASKS / $TPN + 1)
+
+DT_ATMOS="600"
+
+export FV3_RUN=ccpp_c96_HAFS_v0_hwrf_run.IN
+export CCPP_SUITE=HAFS_v0_hwrf
+export CCPP_LIB_DIR=ccpp/lib
+export INPUT_NML=ccpp_c96_HAFS_v0_hwrf.nml.IN
+
+export OZ_PHYS_OLD=.F.
+export OZ_PHYS_NEW=.T.
+
+#F-A microphysics
+export IMP_PHYSICS=15
+export LRADAR=.T.
+export NWAT=4
+
+#hurricane options for hybrid EDMF
+export HURR_PBL=.T.
+export MONINQFAC=-1.0
+
+#HWRF options for RRTMG
+export ICLOUD=3
+export IOVR=4
+
+#HWRF NOAH LSM
+export LSM=4
+
+#HWRF GFDL surface layer
+export SFC_Z0_TYPE=4
+
+#HWRF options for SAS
+export HWRF_SAMFDEEP=.T.
+export HWRF_SAMFSHAL=.T.

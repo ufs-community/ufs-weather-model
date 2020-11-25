@@ -1,51 +1,45 @@
-#%Module######################################################################
-##
-##    NEMS FV3 Prerequisites: Cheyenne/Intel
+#%Module
 
 proc ModulesHelp {} {
-  puts stderr "\tcit - loads modules required for building and running FV3 under NEMS on Cheyenne/Intel"
+  puts stderr "\tcit - loads modules required for building and running UFS Model on Cheyenne/Intel"
 }
 
-module-whatis "loads NEMS FV3 prerequisites for Cheyenne/Intel"
+module-whatis "loads UFS Model prerequisites for Cheyenne/Intel"
 
-# NOTE: the "module purge" and loading of the module command are
-# handled by the module-setup.sh (or .csh) script.
+module load cmake/3.16.4
+setenv CMAKE_C_COMPILER mpicc
+setenv CMAKE_CXX_COMPILER mpicxx
+setenv CMAKE_Fortran_COMPILER mpif90
+setenv CMAKE_Platform cheyenne.intel
 
-##
-## load programming environment
-## this typically includes compiler, MPI and job scheduler
-##
+# load programming environment
 module load ncarenv/1.3
-module load intel/19.0.2
-module load mpt/2.19
+module load intel/19.1.1
+module load mpt/2.22
 module load ncarcompilers/0.5.0
-module load netcdf/4.6.3
+module unload netcdf
 
-##
-## use pre-compiled EMSF library for above compiler / MPI combination
-##
-set ESMF_DIR /glade/p/ral/jntp/GMTB/tools/esmf-8.0.0_bs40/intel-19.0.2/mpt-2.19
-setenv ESMF_DIR              ${ESMF_DIR}
-setenv ESMFMKFILE            ${ESMF_DIR}/lib/esmf.mk
-prepend-path PATH            ${ESMF_DIR}/bin
-prepend-path LD_LIBRARY_PATH ${ESMF_DIR}/lib
+module use /glade/p/ral/jntp/GMTB/tools/hpc-stack-nco-20201113/modulefiles/stack
+module load hpc/1.0.0-beta1
+module load hpc-intel/19.1.1
+module load hpc-mpt/2.22
 
-##
-## NCEP libraries (download and build manually for the time being; https://github.com/NCAR/NCEPlibs)
-##
-set NCEPLIBS_DIR /glade/p/ral/jntp/GMTB/tools/NCEPlibs/20190703/intel-19.0.2/mpt-2.19
-setenv NCEPLIBS_DIR ${NCEPLIBS_DIR}
-setenv NEMSIO_INC   ${NCEPLIBS_DIR}/include
-setenv NEMSIO_LIB   ${NCEPLIBS_DIR}/lib/libnemsio_d.a
-setenv BACIO_LIB4   ${NCEPLIBS_DIR}/lib/libbacio_4.a
-setenv SP_LIBd      ${NCEPLIBS_DIR}/lib/libsp_v2.0.2_d.a
-setenv W3EMC_LIBd   ${NCEPLIBS_DIR}/lib/libw3emc_d.a
-setenv W3NCO_LIBd   ${NCEPLIBS_DIR}/lib/libw3nco_d.a
+module load jasper/2.0.22
+module load zlib/1.2.11
+module load png/1.6.35
 
-##
-## SIONlib library
-##
-set    SIONLIB     /glade/p/ral/jntp/GMTB/tools/sionlib-1.7.4/intel-19.0.2/mpt-2.19
-setenv SIONLIB     ${SIONLIB}
-setenv SIONLIB_INC "-I${SIONLIB}/include -I${SIONLIB}/include/mod_64"
-setenv SIONLIB_LIB "-L${SIONLIB}/lib -lsionmpi_f90_64 -lsionser_f90_64 -lsionmpi_64 -lsiongen_64 -lsionser_64 -lsioncom_64 -lsioncom_64_lock_none"
+module load hdf5/1.10.6
+module load netcdf/4.7.4
+module load pio/2.5.1
+module load esmf/8_1_0_beta_snapshot_27
+
+module load bacio/2.4.1
+module load crtm/2.3.0
+module load g2/3.4.1
+module load g2tmpl/1.9.1
+module load ip/3.3.3
+module load nemsio/2.5.2
+module load sp/2.3.3
+module load w3emc/2.7.3
+module load w3nco/2.4.1
+module load upp/10.0.0
