@@ -22,15 +22,15 @@ jobs:
           tr_id=$(cat ${GITHUB_EVENT_PATH} | ./json_helper.py get_trigger_id)
           tr_br=$(cat ${GITHUB_EVENT_PATH} | ./json_helper.py get_trigger_br)
           check=$(cat ${GITHUB_EVENT_PATH} | ./json_helper.py check_skip)
-          echo "::set-env name=TRIGGER_ID::${tr_id}"
-          echo "::set-env name=TRIGGER_BR::${tr_br}"
+          echo "TRIGGER_ID=${tr_id}" >> $GITHUB_ENV
+          echo "TRIGGER_BR=${tr_br}" >> $GITHUB_ENV
           echo "skip-ci: ${check}"
           if [[ $check == yes ]]; then
             echo "skip-ci is requested"
-            echo '::set-env name=CURR_JOB::cancelled'
+            echo "CURR_JOB=cancelled" >> $GITHUB_ENV
             curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.v3+json" ${repo}/$tr_id/cancel
           else
-            echo '::set-env name=CURR_JOB::running'
+            echo "CURR_JOB=running" >> $GITHUB_ENV
           fi
 
       - name: Cancel redundant jobs

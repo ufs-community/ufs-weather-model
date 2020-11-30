@@ -8,8 +8,7 @@ export TEST_DESCR="Compare FV3 CCPP GSD SAR results with previous trunk version"
 
 export CNTL_DIR=fv3_gsd_sar
 
-export LIST_FILES="atmos_4xdaily.nc \
-                   dynf000.nc \
+export LIST_FILES="dynf000.nc \
                    dynf003.nc \
                    phyf000.nc \
                    phyf003.nc \
@@ -21,15 +20,17 @@ export LIST_FILES="atmos_4xdaily.nc \
                    RESTART/phy_data.nc \
                    RESTART/sfc_data.nc"
 
+export FHMAX=3
+export FDIAG=1
+
 export_fv3
-export TASKS=840
+export TASKS=24
 
 export MODEL_CONFIGURE=ccpp_gsd_sar-model_configure.IN
 export FV3_RUN=ccpp_gsd_sar_run.IN
 export CCPP_SUITE=FV3_GSD_SAR
 export CCPP_LIB_DIR=ccpp/lib
 export INPUT_NML=ccpp_gsd_sar.nml.IN
-
 
 export WLCLK=30
 

@@ -56,6 +56,11 @@ set +x
 if [[ $MACHINE_ID == macosx.* ]] || [[ $MACHINE_ID == linux.* ]]; then
   source $PATHTR/modulefiles/${MACHINE_ID}/fv3
 else
+  # Activate lua environment for gaea
+  if [[ $MACHINE_ID == gaea.* ]] ; then
+    source /lustre/f2/pdata/esrl/gsd/contrib/lua-5.1.4.9/init/init_lmod.sh
+  fi
+  # Load fv3 module
   module use $PATHTR/modulefiles/${MACHINE_ID}
   modulefile="fv3"
   if [[ "${MAKE_OPT}" == *"DEBUG=Y"* ]]; then
@@ -160,7 +165,11 @@ export CMAKE_FLAGS
 bash -x ${PATHTR}/build.sh
 
 mv ${BUILD_DIR}/ufs_model ${PATHTR}/tests/${BUILD_NAME}.exe
-cp ${PATHTR}/modulefiles/${MACHINE_ID}/fv3 ${PATHTR}/tests/modules.${BUILD_NAME}
+if [[ "${MAKE_OPT}" == "DEBUG=Y" ]]; then
+  cp ${PATHTR}/modulefiles/${MACHINE_ID}/fv3_debug ${PATHTR}/tests/modules.${BUILD_NAME}
+else
+  cp ${PATHTR}/modulefiles/${MACHINE_ID}/fv3 ${PATHTR}/tests/modules.${BUILD_NAME}
+fi
 
 if [ $clean_after = YES ] ; then
   rm -rf ${BUILD_DIR}
