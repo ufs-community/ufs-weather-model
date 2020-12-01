@@ -511,7 +511,7 @@ export CDATE=${SYEAR}${SMONTH}${SDAY}${SHOUR}
 
 export NFHOUT=6
 export FDIAG=6
-export DT_ATMOS='900'
+export DT_ATMOS='3600'
 export DT_DYNAM_MOM6='1800'
 export DT_THERM_MOM6='3600'
 export CPL_SLOW=${DT_THERM_MOM6}
@@ -524,7 +524,7 @@ export CPLMODE='nems_orig_data'
 export cap_dbug_flag="0"
 export use_coldstart=".false."
 export RUNTYPE='startup'
-export flux_convergence='0'
+export flux_convergence='0.0'
 export flux_iteration='2'
 export flux_scheme='0'
 

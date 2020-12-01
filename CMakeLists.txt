@@ -39,6 +39,8 @@ set(DATM            OFF CACHE BOOL "Enable Data Atmosphere")
 ###############################################################################
 if(DEBUG)
   set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Set type of build to Debug." FORCE)
+else()
+  set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Set type of build to Release." FORCE)
 endif()
 
 if(CMAKE_Platform)
