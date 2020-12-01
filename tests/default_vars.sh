@@ -275,6 +275,7 @@ export DO_MYNNSFCLAY=.F.
 export LSM=1
 export LSOIL_LSM=4
 export LANDICE=.T.
+export KICE=2
 
 # Ozone / stratospheric H2O
 export OZ_PHYS_OLD=.T.
