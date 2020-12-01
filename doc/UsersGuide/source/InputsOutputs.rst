@@ -669,8 +669,7 @@ Detailed descriptions of the supported suites can be found with the `CCPP v5.0.0
 Output files
 =============
 
-The following files are output when running *fv3.exe* in the default global configuration (six files of each kind,
-corresponding to the six tiles of the model grid):
+The output files generated when running *fv3.exe* are defined in the *diag_tabl* file.  For the default global configuration, the following files are output (six files of each kind, corresponding to the six tiles of the model grid):
 
 - *atmos_4xdaily.tile[1-6].nc*
 - *atmos_static.tile[1-6].nc*
