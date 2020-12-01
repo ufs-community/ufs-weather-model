@@ -5,7 +5,7 @@ SDF and Namelist Samples and Best Practices
 ********************************************
 
 The public release of the UFS Weather Model (WM) includes supported physics suites for each UFS Aplication.
-Details regarding these suites can be found with the Application.  
+Details regarding these suites can be found in the Application User's Guides.  
 
 The supported physics suites for each UFS Application are specified by Suite Definition Files.  You will
 find the Suite Definition Files (SDFs) for these suites in the following directory:
@@ -61,7 +61,7 @@ shows some variables in the namelist that must match the SDF.
      -
    * - do_myjpbl
      - Flag to activate the MYJ PBL scheme
-     - T
+     - T, F
      - F
      - mypbl_wrapper
      - Set to F for GFSv15p2* and GFSv16beta*
@@ -206,13 +206,13 @@ the namelist are listed in :numref:`Table %s <MiscVarOptions>`.
    * - h2o_phys
      - Flag for stratosphere h2o scheme
      - T, F
-     -
+     - F
      - h2ophys
      - Set to T for GFSv15p2* and GFSv16beta*
    * - oz_phys_2015
      - Flag for new (2015) ozone physics
      - T, F
-     -
+     - F
      - ozphys_2015
      - Set to T for GFSv15p2* and GFSv16beta*
 
