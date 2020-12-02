@@ -1,6 +1,6 @@
 ###############################################################################
 #
-#  FV3 CCPP regional control test using RRFS v1beta suite with 32-bit dynamics
+#  FV3 CCPP regional control test using RRFS v1alpha suite with 32-bit dynamics
 #
 ###############################################################################
 
@@ -9,8 +9,8 @@ export TEST_DESCR="Compare FV3 CCPP regional control results with previous trunk
 export CNTL_DIR=fv3_regional_control
 
 export LIST_FILES="atmos_4xdaily.nc \
-                   phyf006.nc \
-                   dynf006.nc \
+                   phyf012.nc \
+                   dynf012.nc \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -34,13 +34,13 @@ export MOUNTAIN=.T.
 export NA_INIT=0
 export NSTF_NAME=2,0,1,0,5
 
-export FHMAX=6
+export FHMAX=12
 export FDIAG=3
 
 DT_ATMOS="300"
 
 export FV3_RUN=ccpp_regional_run.IN
-export CCPP_SUITE=FV3_RRFS_v1beta
+export CCPP_SUITE=FV3_RRFS_v1alpha
 export CCPP_LIB_DIR=ccpp/lib
 export INPUT_NML=ccpp_regional.nml.IN
 export MODEL_CONFIGURE=ccpp_regional-model_configure.IN
@@ -68,7 +68,7 @@ export FHCYC=0
 export LSM=2
 export LSOIL_LSM=4
 #export GWD_OPT=3
-export DO_MYNNSFCLAY=.T.
+#export DO_MYNNSFCLAY=.T.
 
 RUN_SCRIPT=rt_fv3.sh
 

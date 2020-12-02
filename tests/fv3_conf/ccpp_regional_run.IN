@@ -3,6 +3,8 @@ mkdir INPUT RESTART
 rsync -av @[RTPWD]/FV3_input_data_regional/ ./
 if [ $WARM_START = .T. ]; then
   cp ../fv3_ccpp_regional_coldstart${RT_SUFFIX}/RESTART/* INPUT/
+  cp ../fv3_ccpp_regional_coldstart${RT_SUFFIX}/INPUT/gfs_bndy.tile7.*.nc INPUT/
+  cp ../fv3_ccpp_regional_coldstart${RT_SUFFIX}/INPUT/oro_data.tile7.halo4.nc INPUT/
 fi
 
 # Copy field table, depending on microphysics choice
