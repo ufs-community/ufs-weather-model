@@ -318,7 +318,7 @@ mkdir -p ${STMP}/${USER}
 
 # Different own baseline directories for different compilers on Theia/Cheyenne
 NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST
-if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]]; then
+if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]]; then
     NEW_BASELINE=${NEW_BASELINE}_${RT_COMPILER^^}
 fi
 
@@ -395,10 +395,10 @@ if [[ $TESTS_FILE =~ '35d' ]]; then
   TEST_35D=true
 fi
 
-if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = jet.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20201127/${RT_COMPILER^^}}
+if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]]; then
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20201201/${RT_COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20201127}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20201201}
 fi
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20201201/}
