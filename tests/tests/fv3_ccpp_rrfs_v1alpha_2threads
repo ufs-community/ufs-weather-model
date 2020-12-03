@@ -1,12 +1,12 @@
 ###############################################################################
 #
-#  FV3 CCPP RRFS (Thompson MP + MYNN PBL + NOAHMP LSM + MYNN SFC) test
+#  FV3 CCPP RRFS (Thompson MP + MYNN PBL + NOAHMP LSM + GFS SFC) test
 #
 ###############################################################################
 
-export TEST_DESCR="Compare FV3 CCPP RRFS_v1beta results with previous trunk version"
+export TEST_DESCR="Compare FV3 CCPP RRFS_v1alpha results with previous trunk version"
 
-export CNTL_DIR=fv3_rrfs_v1beta
+export CNTL_DIR=fv3_rrfs_v1alpha
 
 export LIST_FILES="atmos_4xdaily.tile1.nc \
                    atmos_4xdaily.tile2.nc \
@@ -14,12 +14,36 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
                    atmos_4xdaily.tile4.nc \
                    atmos_4xdaily.tile5.nc \
                    atmos_4xdaily.tile6.nc \
+                   phyf000.tile1.nc \
+                   phyf000.tile2.nc \
+                   phyf000.tile3.nc \
+                   phyf000.tile4.nc \
+                   phyf000.tile5.nc \
+                   phyf000.tile6.nc \
+                   phyf012.tile1.nc \
+                   phyf012.tile2.nc \
+                   phyf012.tile3.nc \
+                   phyf012.tile4.nc \
+                   phyf012.tile5.nc \
+                   phyf012.tile6.nc \
                    phyf024.tile1.nc \
                    phyf024.tile2.nc \
                    phyf024.tile3.nc \
                    phyf024.tile4.nc \
                    phyf024.tile5.nc \
                    phyf024.tile6.nc \
+                   dynf000.tile1.nc \
+                   dynf000.tile2.nc \
+                   dynf000.tile3.nc \
+                   dynf000.tile4.nc \
+                   dynf000.tile5.nc \
+                   dynf000.tile6.nc \
+                   dynf012.tile1.nc \
+                   dynf012.tile2.nc \
+                   dynf012.tile3.nc \
+                   dynf012.tile4.nc \
+                   dynf012.tile5.nc \
+                   dynf012.tile6.nc \
                    dynf024.tile1.nc \
                    dynf024.tile2.nc \
                    dynf024.tile3.nc \
@@ -60,15 +84,14 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
                    RESTART/sfc_data.tile6.nc"
 
 export_fv3
-export NODES=$(expr $TASKS / $TPN + 1)
 
-export WARM_START=.T.
-export NGGPS_IC=.F.
-export EXTERNAL_IC=.F.
-export MAKE_NH=.F.
-export MOUNTAIN=.T.
-export NA_INIT=0
-export NSTF_NAME=2,0,1,0,5
+export THRD=2
+export TASKS=$TASKS_thrd
+export TPN=$TPN_thrd
+export INPES=$INPES_thrd
+export JNPES=$JNPES_thrd
+export WRTTASK_PER_GROUP=12
+export NODES=$(expr $TASKS / $TPN + 1)
 
 export FHMAX=24
 export FDIAG=3
@@ -76,7 +99,7 @@ export FDIAG=3
 export DT_ATMOS="600"
 
 export FV3_RUN=ccpp_gsd_run.IN
-export CCPP_SUITE=FV3_RRFS_v1beta
+export CCPP_SUITE=FV3_RRFS_v1alpha
 export CCPP_LIB_DIR=ccpp/lib
 export INPUT_NML=ccpp_global.nml.IN
 
@@ -103,7 +126,7 @@ export FHCYC=0
 export LSM=2
 export LSOIL_LSM=4
 #export GWD_OPT=3
-export DO_MYNNSFCLAY=.T.
+#export DO_MYNNSFCLAY=.T.
 
 RUN_SCRIPT=rt_fv3.sh
 
