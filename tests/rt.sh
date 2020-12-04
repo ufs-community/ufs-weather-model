@@ -76,8 +76,8 @@ rt_trap() {
 }
 
 cleanup() {
-  [[ ${ECFLOW:-false} == true ]] && ecflow_stop
   rm -rf ${LOCKDIR}
+  [[ ${ECFLOW:-false} == true ]] && ecflow_stop
   trap 0
   exit
 }
