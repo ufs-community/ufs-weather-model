@@ -150,6 +150,10 @@ if [[ "${MAKE_OPT}" == *"DATM=Y"* ]]; then
     CMAKE_FLAGS="${CMAKE_FLAGS} -DDATM=Y"
 fi
 
+if [[ "${MAKE_OPT}" == *"S2S=Y"* ]] || [[ ${MAKE_OPT} == *"DATM=Y"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DMOM6SOLO=ON"
+fi
+
 CMAKE_FLAGS=$(trim "${CMAKE_FLAGS}")
 
 if [ $clean_before = YES ] ; then
