@@ -76,8 +76,8 @@ rt_trap() {
 }
 
 cleanup() {
-  [[ ${ECFLOW:-false} == true ]] && ecflow_stop
   rm -rf ${LOCKDIR}
+  [[ ${ECFLOW:-false} == true ]] && ecflow_stop
   trap 0
   exit
 }
@@ -401,6 +401,8 @@ else
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20201202}
 fi
 
+INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20201201/}
+
 shift $((OPTIND-1))
 [[ $# -gt 1 ]] && usage
 
@@ -410,43 +412,6 @@ if [[ $CREATE_BASELINE == true ]]; then
   #
   rm -rf "${NEW_BASELINE}"
   mkdir -p "${NEW_BASELINE}"
-  echo "copy baseline inputs from: ${RTPWD}"
-  echo "                     to:   ${NEW_BASELINE}"
-
-  rsync -a "${RTPWD}"/FV3_* "${NEW_BASELINE}"/
-  rsync -a "${RTPWD}"/WW3_* "${NEW_BASELINE}"/
-  rsync -a "${RTPWD}"/DATM* "${NEW_BASELINE}"/
-
-  # FIXME: S2S baselines are only available on these machines with Intel
-  if [[ $MACHINE_ID = hera.intel ]] || [[ $MACHINE_ID = orion.intel ]] || [[ $MACHINE_ID = cheyenne.intel ]] || [[ $MACHINE_ID = gaea.intel ]] || [[ $MACHINE_ID = jet.intel ]] || [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
-    rsync -a "${RTPWD}"/MOM6_* "${NEW_BASELINE}"/
-    rsync -a "${RTPWD}"/CICE_* "${NEW_BASELINE}"/
-    rsync -a "${RTPWD}"/CPL_* "${NEW_BASELINE}"/
-    rsync -a "${RTPWD}"/BM_* "${NEW_BASELINE}"/
-  fi
-
-  # FIXME: move these namelist files to parm directory
-  rsync -a "${RTPWD}"/fv3_regional_control/input.nml "${NEW_BASELINE}"/fv3_regional_control/
-  rsync -a "${RTPWD}"/fv3_regional_quilt/input.nml   "${NEW_BASELINE}"/fv3_regional_quilt/
-  rsync -a "${RTPWD}"/fv3_regional_c768/input.nml    "${NEW_BASELINE}"/fv3_regional_c768/
-  rsync -a "${RTPWD}"/fv3_regional_restart/input.nml "${NEW_BASELINE}"/fv3_regional_restart/
-
-  rsync -a "${RTPWD}"/fv3_regional_control/model_configure                "${NEW_BASELINE}"/fv3_regional_control/
-  rsync -a "${RTPWD}"/fv3_regional_quilt/model_configure                  "${NEW_BASELINE}"/fv3_regional_quilt/
-  rsync -a "${RTPWD}"/fv3_regional_c768/model_configure                   "${NEW_BASELINE}"/fv3_regional_c768/
-  rsync -a "${RTPWD}"/fv3_regional_restart/model_configure                "${NEW_BASELINE}"/fv3_regional_restart/
-  rsync -a "${RTPWD}"/fv3_regional_quilt_netcdf_parallel/model_configure "${NEW_BASELINE}"/fv3_regional_quilt_netcdf_parallel/
-
-  rsync -a "${RTPWD}"/fv3_regional_control/INPUT               "${NEW_BASELINE}"/fv3_regional_control/
-  rsync -a "${RTPWD}"/fv3_regional_control/RESTART             "${NEW_BASELINE}"/fv3_regional_control/
-  rsync -a "${RTPWD}"/fv3_regional_quilt/INPUT                 "${NEW_BASELINE}"/fv3_regional_quilt/
-  rsync -a "${RTPWD}"/fv3_regional_c768/INPUT                  "${NEW_BASELINE}"/fv3_regional_c768/
-  rsync -a "${RTPWD}"/fv3_regional_restart/INPUT               "${NEW_BASELINE}"/fv3_regional_restart/
-  rsync -a "${RTPWD}"/fv3_stretched/INPUT                      "${NEW_BASELINE}"/fv3_stretched/
-  rsync -a "${RTPWD}"/fv3_stretched_nest/INPUT                 "${NEW_BASELINE}"/fv3_stretched_nest/
-  rsync -a "${RTPWD}"/fv3_stretched_nest_quilt/INPUT           "${NEW_BASELINE}"/fv3_stretched_nest_quilt/
-  rsync -a "${RTPWD}"/fv3_stretched_nest_debug/INPUT           "${NEW_BASELINE}"/fv3_stretched_nest_debug/
-  rsync -a "${RTPWD}"/fv3_regional_quilt_netcdf_parallel/INPUT "${NEW_BASELINE}"/fv3_regional_quilt_netcdf_parallel/
 fi
 
 COMPILE_LOG=${PATHRT}/Compile_$MACHINE_ID.log
@@ -506,12 +471,13 @@ if [[ $ROCOTO == true ]]; then
 <?xml version="1.0"?>
 <!DOCTYPE workflow
 [
-  <!ENTITY PATHRT       "${PATHRT}">
-  <!ENTITY LOG          "${LOG_DIR}">
-  <!ENTITY PATHTR       "${PATHTR}">
-  <!ENTITY RTPWD        "${RTPWD}">
-  <!ENTITY RUNDIR_ROOT  "${RUNDIR_ROOT}">
-  <!ENTITY NEW_BASELINE "${NEW_BASELINE}">
+  <!ENTITY PATHRT         "${PATHRT}">
+  <!ENTITY LOG            "${LOG_DIR}">
+  <!ENTITY PATHTR         "${PATHTR}">
+  <!ENTITY RTPWD          "${RTPWD}">
+  <!ENTITY INPUTDATA_ROOT "${INPUTDATA_ROOT}">
+  <!ENTITY RUNDIR_ROOT    "${RUNDIR_ROOT}">
+  <!ENTITY NEW_BASELINE   "${NEW_BASELINE}">
 ]>
 <workflow realtime="F" scheduler="${ROCOTO_SCHEDULER}" taskthrottle="20">
   <cycledef>197001010000 197001010000 01:00:00</cycledef>
@@ -680,6 +646,7 @@ EOF
       export MACHINE_ID=${MACHINE_ID}
       export RT_COMPILER=${RT_COMPILER}
       export RTPWD=${RTPWD}
+      export INPUTDATA_ROOT=${INPUTDATA_ROOT}
       export PATHRT=${PATHRT}
       export PATHTR=${PATHTR}
       export NEW_BASELINE=${NEW_BASELINE}
