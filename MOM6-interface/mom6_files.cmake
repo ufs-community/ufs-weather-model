@@ -24,12 +24,13 @@ list(APPEND mom6_src_files
   MOM6/src/core/MOM_CoriolisAdv.F90
   MOM6/src/core/MOM_PressureForce.F90
   MOM6/src/core/MOM_PressureForce_Montgomery.F90
-  MOM6/src/core/MOM_PressureForce_analytic_FV.F90
+  MOM6/src/core/MOM_PressureForce_FV.F90
   MOM6/src/core/MOM_barotropic.F90
   MOM6/src/core/MOM_boundary_update.F90
   MOM6/src/core/MOM_checksum_packages.F90
   MOM6/src/core/MOM_continuity.F90
   MOM6/src/core/MOM_continuity_PPM.F90
+  MOM6/src/core/MOM_density_integrals.F90
   MOM6/src/core/MOM_dynamics_split_RK2.F90
   MOM6/src/core/MOM_dynamics_unsplit.F90
   MOM6/src/core/MOM_dynamics_unsplit_RK2.F90
@@ -214,12 +215,13 @@ list(APPEND mom6_src_files
   MOM6/src/user/Kelvin_initialization.F90
   MOM6/src/user/MOM_controlled_forcing.F90
   MOM6/src/user/MOM_wave_interface.F90
-  MOM6/src/user/Neverland_initialization.F90
+  MOM6/src/user/Neverworld_initialization.F90
   MOM6/src/user/Phillips_initialization.F90
   MOM6/src/user/RGC_initialization.F90
   MOM6/src/user/Rossby_front_2d_initialization.F90
   MOM6/src/user/SCM_CVMix_tests.F90
   MOM6/src/user/adjustment_initialization.F90
+  MOM6/src/user/basin_builder.F90
   MOM6/src/user/baroclinic_zone_initialization.F90
   MOM6/src/user/benchmark_initialization.F90
   MOM6/src/user/circle_obcs_initialization.F90
@@ -241,11 +243,15 @@ list(APPEND mom6_src_files
   MOM6/src/user/user_revise_forcing.F90
 
   MOM6/src/ocean_data_assim/MOM_oda_driver.F90
-  MOM6/src/ocean_data_assim/core/ocean_da_core.F90
-  MOM6/src/ocean_data_assim/core/ocean_da_types.F90
-  MOM6/src/ocean_data_assim/core/write_ocean_obs.F90
 
-  MOM6/src/ocean_data_assim/geoKdTree/kdtree.f90
+  MOM6/config_src/external/GFDL_ocean_BGC/FMS_coupler_util.F90
+  MOM6/config_src/external/GFDL_ocean_BGC/generic_tracer.F90
+  MOM6/config_src/external/GFDL_ocean_BGC/generic_tracer_utils.F90
+  MOM6/config_src/external/ODA_hooks/kdtree.f90
+  MOM6/config_src/external/ODA_hooks/ocean_da_core.F90
+  MOM6/config_src/external/ODA_hooks/ocean_da_types.F90
+  MOM6/config_src/external/ODA_hooks/write_ocean_obs.F90
+
 )
 
 list(APPEND mom6_nuopc_src_files
@@ -261,7 +267,6 @@ list(APPEND mom6_solo_src_files
   MOM6/config_src/solo_driver/MESO_surface_forcing.F90
   MOM6/config_src/solo_driver/MOM_driver.F90
   MOM6/config_src/solo_driver/MOM_surface_forcing.F90
-  MOM6/config_src/solo_driver/Neverland_surface_forcing.F90
   MOM6/config_src/solo_driver/atmos_ocean_fluxes.F90
   MOM6/config_src/solo_driver/user_surface_forcing.F90
 )
