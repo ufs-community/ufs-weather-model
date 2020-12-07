@@ -1,11 +1,10 @@
-From minsukjinoaa/ci-test-base:ubuntu20.04-v3.5
-#From minsukjinoaa/ci-test-base:centos7-v3.5
+From noaaemc/ubuntu-hpc:v1
 
-ENV HOME=/home/tester
-COPY --chown=tester:tester . $HOME/ufs-weather-model
+ENV HOME=/home/builder
+COPY --chown=builder:builder . $HOME/ufs-weather-model
 
-USER tester
-ENV USER=tester
+USER builder
+ENV USER=builder
 ARG test_name
 ARG build_case
 ENV test_name=$test_name

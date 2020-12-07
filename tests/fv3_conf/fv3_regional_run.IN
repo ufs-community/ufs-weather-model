@@ -1,11 +1,11 @@
 
-rsync -arv @[RTPWD]/FV3_regional_input_data/. .
-rsync -arv @[RTPWD]/@[INPUT_DIR]/model_configure .
+rsync -arv @[INPUTDATA_ROOT]/FV3_regional_input_data/. .
+rsync -arv @[INPUTDATA_ROOT]/@[INPUT_DIR]/model_configure .
 
 rm -rf INPUT RESTART
 mkdir  INPUT RESTART
 
-rsync -arv @[RTPWD]/@[INPUT_DIR]/INPUT/. INPUT/.
+rsync -arv @[INPUTDATA_ROOT]/@[INPUT_DIR]/INPUT/. INPUT/.
 
 if [ $WARM_START = .T. ]; then
     cp ../fv3_regional_control${RT_SUFFIX}/RESTART/20181015.120000.coupler.res             INPUT/coupler.res

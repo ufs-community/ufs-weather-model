@@ -137,6 +137,7 @@ run_utests() {
       std_base)
         CREATE_BASELINE=true
         RTPWD=$baseline_location
+        INPUTDATA_ROOT=$RTPWD
         BL_SUFFIX=_std_base
         cat <<-EOF > ${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
 					export UNIT_TEST=true
@@ -147,6 +148,7 @@ run_utests() {
       std)
         CREATE_BASELINE=false
         RTPWD=$NEW_BASELINE
+        INPUTDATA_ROOT=$RTPWD
         BL_SUFFIX=_std_base
         cat <<-EOF > ${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
 					export UNIT_TEST=true
@@ -156,6 +158,7 @@ run_utests() {
       thr)
         CREATE_BASELINE=false
         RTPWD=$NEW_BASELINE
+        INPUTDATA_ROOT=$RTPWD
         BL_SUFFIX=_std_base
         THRD=2
         # INPES is sometimes odd, so use JNPES. Make sure JNPES is divisible by THRD
@@ -176,6 +179,7 @@ run_utests() {
       mpi)
         CREATE_BASELINE=false
         RTPWD=$NEW_BASELINE
+        INPUTDATA_ROOT=$RTPWD
         BL_SUFFIX=_std_base
         JNPES=$(( JNPES/2 ))
         WRITE_GROUP=2
@@ -195,6 +199,7 @@ run_utests() {
       dcp)
         CREATE_BASELINE=false
         RTPWD=$NEW_BASELINE
+        INPUTDATA_ROOT=$RTPWD
         BL_SUFFIX=_std_base
         temp=$INPES
         INPES=$JNPES
@@ -209,6 +214,7 @@ run_utests() {
       rst) # this is not going to work for regional model
         CREATE_BASELINE=false
         RTPWD=$NEW_BASELINE
+        INPUTDATA_ROOT=$RTPWD
         BL_SUFFIX=_std_base
         # Set up date and time of restart files for restart run
         RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( SHOUR + FHMAX/2  )))0000"
@@ -272,6 +278,7 @@ run_utests() {
       bit_base)
         CREATE_BASELINE=true
         RTPWD=$baseline_location
+        INPUTDATA_ROOT=$RTPWD
         BL_SUFFIX=_bit_base
         comp_nm=bit
         cat <<-EOF >${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
@@ -282,6 +289,7 @@ run_utests() {
       bit)
         CREATE_BASELINE=false
         RTPWD=$NEW_BASELINE
+        INPUTDATA_ROOT=$RTPWD
         BL_SUFFIX=_bit_base
         comp_nm=bit
         cat <<-EOF >${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
@@ -292,6 +300,7 @@ run_utests() {
       dbg_base)
         CREATE_BASELINE=true
         RTPWD=$baseline_location
+        INPUTDATA_ROOT=$RTPWD
         BL_SUFFIX=_dbg_base
         comp_nm=dbg
         WLCLK=30
@@ -304,6 +313,7 @@ run_utests() {
       dbg)
         CREATE_BASELINE=false
         RTPWD=$NEW_BASELINE
+        INPUTDATA_ROOT=$RTPWD
         BL_SUFFIX=_dbg_base
         comp_nm=dbg
         WLCLK=30
@@ -318,6 +328,7 @@ run_utests() {
     cat <<- EOF > ${RUNDIR_ROOT}/run_test${RT_SUFFIX}.env
 			export MACHINE_ID=${MACHINE_ID}
 			export RTPWD=${RTPWD}
+			export INPUTDATA_ROOT=${INPUTDATA_ROOT}
 			export PATHRT=${PATHRT}
 			export PATHTR=${PATHTR}
 			export NEW_BASELINE=${NEW_BASELINE}
@@ -482,7 +493,7 @@ elif [[ $MACHINE_ID = linux.* ]]; then
   PARTITION=
   QUEUE=
   COMPILE_QUEUE=
-  dprefix=/home/tester
+  dprefix=/home/builder
   DISKNM=${dprefix}/data
   STMP=${dprefix}/stmp4
   PTMP=${dprefix}/stmp2
@@ -711,11 +722,12 @@ fi
 mkdir -p ${STMP}/${USER}
 NEW_BASELINE=${STMP}/${USER}/FV3_UT/UNIT_TEST
 if [[ $MACHINE_ID == hera.* || $MACHINE_ID == orion.* ]]; then
-  baseline_location=$DISKNM/NEMSfv3gfs/develop-20200713/${RT_COMPILER^^}
+  baseline_location=$DISKNM/NEMSfv3gfs/develop-20201118/${RT_COMPILER^^}
 else
-  baseline_location=$DISKNM/NEMSfv3gfs/develop-20200713
+  baseline_location=$DISKNM/NEMSfv3gfs/develop-20201118
 fi
 RTPWD=$baseline_location
+INPUTDATA_ROOT=$RTPWD
 
 rm -rf $NEW_BASELINE
 mkdir -p $NEW_BASELINE
