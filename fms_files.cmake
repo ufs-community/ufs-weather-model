@@ -1,4 +1,5 @@
 list(APPEND fms_src_files
+    FMS/affinity/fms_affinity.F90
     FMS/amip_interp/amip_interp.F90
     FMS/astronomy/astronomy.F90
     FMS/axis_utils/axis_utils.F90

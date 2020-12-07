@@ -12,15 +12,15 @@ echo "inputdir=$inputdir,NPX=$NPX"
 
 UNIT_TEST=${UNIT_TEST:-false}
 if [ $WARM_START = .F. ]; then
-  cp -r @[RTPWD]/${inputdir}/INPUT .
+  cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT .
   mkdir RESTART
 else
   mkdir INPUT RESTART
 
   if [[ ${UNIT_TEST} == false ]]; then
-    cp -r @[RTPWD]/${inputdir}/RESTART/* ./INPUT
+    cp -r @[INPUTDATA_ROOT]/${inputdir}/RESTART/* ./INPUT
   else
-    cp -r @[RTPWD]/${inputdir}/RESTART/* ./INPUT
+    cp -r @[INPUTDATA_ROOT]/${inputdir}/RESTART/* ./INPUT
     rm -f INPUT/fv_core.res.*
     rm -f INPUT/fv_srf_wnd.res.*
     rm -f INPUT/fv_tracer.res.*
@@ -35,24 +35,24 @@ else
   fi
 fi
 
-cp    @[RTPWD]/${inputdir}/INPUT/aerosol.dat .
-cp    @[RTPWD]/${inputdir}/INPUT/co2historicaldata_201*.txt .
-cp    @[RTPWD]/${inputdir}/INPUT/sfc_emissivity_idx.txt .
-cp    @[RTPWD]/${inputdir}/INPUT/solarconstant_noaa_an.txt .
+cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/aerosol.dat .
+cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/co2historicaldata_201*.txt .
+cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/sfc_emissivity_idx.txt .
+cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/solarconstant_noaa_an.txt .
 if [ $OZ_PHYS_NEW = .T. ]; then
-  cp  @[RTPWD]/${inputdir}/ozprdlos_2015_new_sbuvO3_tclm15_nuchem.f77 ./global_o3prdlos.f77
+  cp  @[INPUTDATA_ROOT]/${inputdir}/ozprdlos_2015_new_sbuvO3_tclm15_nuchem.f77 ./global_o3prdlos.f77
 elif [ $OZ_PHYS_OLD = .T. ]; then
-cp    @[RTPWD]/${inputdir}/INPUT/global_o3prdlos.f77 .
+cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/global_o3prdlos.f77 .
 fi
 if [ $H2O_PHYS = .T. ]; then
-  cp  @[RTPWD]/FV3_input_data/global_h2o_pltc.f77 ./global_h2oprdlos.f77
+  cp  @[INPUTDATA_ROOT]/FV3_input_data/global_h2o_pltc.f77 ./global_h2oprdlos.f77
 fi
-cp    @[RTPWD]/${inputdir}/*grb .
-cp    @[RTPWD]/${inputdir}/*_table .
-cp    @[RTPWD]/${inputdir}/*configure .
+cp    @[INPUTDATA_ROOT]/${inputdir}/*grb .
+cp    @[INPUTDATA_ROOT]/${inputdir}/*_table .
+cp    @[INPUTDATA_ROOT]/${inputdir}/*configure .
 
 if [ $CPLWAV = .T. ]; then
-cp    @[RTPWD]/WW3_input_data/mod_def.* .
-cp    @[RTPWD]/WW3_input_data/@[SYEAR]@[SMONTH]@[SDAY]/ww3_multi.inp .
-cp    @[RTPWD]/WW3_input_data/@[SYEAR]@[SMONTH]@[SDAY]/rmp_src* .
+cp    @[INPUTDATA_ROOT]/WW3_input_data/mod_def.* .
+cp    @[INPUTDATA_ROOT]/WW3_input_data/@[SYEAR]@[SMONTH]@[SDAY]/ww3_multi.inp .
+cp    @[INPUTDATA_ROOT]/WW3_input_data/@[SYEAR]@[SMONTH]@[SDAY]/rmp_src* .
 fi
