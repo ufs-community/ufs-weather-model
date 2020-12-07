@@ -365,6 +365,7 @@ export med_petlist_bounds=$MPB_cpl_dflt
 export atm_petlist_bounds=$APB_cpl_dflt
 export ocn_petlist_bounds=$OPB_cpl_dflt
 export ice_petlist_bounds=$IPB_cpl_dflt
+export lnd_petlist_bounds=$APB_cpl_dflt
 
 # component and coupling timesteps
 export DT_ATMOS='900'

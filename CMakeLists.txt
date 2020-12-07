@@ -212,12 +212,13 @@ if(WW3)
 endif()
 
 ###############################################################################
-### S2S Components [CMEPS, MOM6, CICE]
+### S2S Components [CMEPS, MOM6, CICE, LndCompTest]
 ###############################################################################
 if(S2S)
   add_subdirectory(CMEPS-interface)
   add_subdirectory(MOM6-interface)
   add_subdirectory(CICE-interface)
+  add_subdirectory(LndCompTest)
 endif()
 
 ###############################################################################
@@ -285,11 +286,14 @@ if(S2S)
   list(APPEND _ufs_defs_private FRONT_MOM6=mom_cap_mod
                                 FRONT_CICE6=ice_comp_nuopc
                                 CMEPS
-                                FRONT_CMEPS=MED)
-  add_dependencies(ufs mom6 cice cmeps)
+                                FRONT_CMEPS=MED
+				FRONT_NOAH=lnd_comp_nuopc)
+  add_dependencies(ufs mom6 cice cmeps lnd_comp)
   target_link_libraries(ufs PUBLIC mom6
                                    cice
-                                   cmeps)
+                                   cmeps
+				   lnd_comp
+				   )
 endif()
 
 target_compile_definitions(ufs PRIVATE "${_ufs_defs_private}")
