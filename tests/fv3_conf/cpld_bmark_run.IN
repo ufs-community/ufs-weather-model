@@ -43,12 +43,12 @@ cp    @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/mesh.mx@[OCNRES].nc .
 
 # WW3 fix/input
 if [[ $CPLWAV == .T. && $CPLWAV2ATM == .T. ]]; then
-  cp    @[INPUTDATA_ROOT_WW3]/WW3_input_data/mod_def.* .
+  cp    @[INPUTDATA_ROOT_WW3]/mod_def.* .
   if [[ $RT35D == .T. ]]; then
-   cp    @[INPUTDATA_ROOT_WW3]/WW3_input_data/ww3_multi_35d.inp ww3_multi.inp
+   cp    @[INPUTDATA_ROOT_WW3]/ww3_multi_35d.inp ww3_multi.inp
    cp    @[INPUTDATA_ROOT]/${WW3_IC}/*.000000.restart.gwes_30m ./restart.gwes_30m
   else
-   cp    @[INPUTDATA_ROOT_WW3]/WW3_input_data/ww3_multi.inp .
+   cp    @[INPUTDATA_ROOT_WW3]/ww3_multi.inp .
   fi
 fi
 
