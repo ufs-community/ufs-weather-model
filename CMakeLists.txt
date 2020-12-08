@@ -103,7 +103,7 @@ find_package(sp REQUIRED)
 find_package(w3emc REQUIRED)
 find_package(w3nco REQUIRED)
 if(INLINE_POST)
-  find_package(nceppost REQUIRED)
+  find_package(upp REQUIRED)
 endif()
 
 # See https://github.com/NOAA-EMC/NCEPLIBS-nemsio/pull/22
