@@ -93,14 +93,15 @@ ALLCOMP_attributes::
       ScalarFieldIdxGridNY = 2
       ScalarFieldName = cpl_scalars
       start_type = @[RUNTYPE]
-      case_name = RESTART/DATM_@[DATM_SRC]
+      restart_dir = RESTART/
+      case_name = DATM_@[DATM_SRC]
       restart_n = @[RESTART_N]
       restart_option = nhours
       restart_ymd = -999
       dbug_flag = @[cap_dbug_flag]
       use_coldstart = @[use_coldstart]
       coldair_outbreak_mod = .false.
-      flds_wiso = .false.
-      flux_convergence = 0.0
-      flux_max_iteration = 1
+      flux_convergence = @[flux_convergence]
+      flux_max_iteration = @[flux_iteration]
+      ocn_surface_flux_scheme = @[flux_scheme]
 ::
