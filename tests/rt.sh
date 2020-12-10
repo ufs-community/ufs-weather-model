@@ -401,7 +401,8 @@ else
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20201204}
 fi
 
-INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20201201/}
+#INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20201201/}
+ INPUTDATA_ROOT=/scratch2/BMC/gsd-fv3-dev/FV3-MOM6-CICE5/input-data-20201201_frac/
 
 shift $((OPTIND-1))
 [[ $# -gt 1 ]] && usage
