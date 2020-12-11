@@ -138,7 +138,7 @@ if [[ "${MAKE_OPT}" == *"WW3=Y"* ]]; then
 fi
 
 if [[ "${MAKE_OPT}" == *"HYCOM=Y"* ]]; then
-  COMPONENTS="HYCOM,$COMPONENTS"
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DHYCOM=Y"
 fi
 
 # Make variables:

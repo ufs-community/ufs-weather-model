@@ -31,6 +31,7 @@ set(PARALLEL_NETCDF OFF CACHE BOOL "Enable parallel NetCDF")
 set(QUAD_PRECISION  ON  CACHE BOOL "Enable QUAD_PRECISION (for certain grid metric terms in dycore)")
 set(REPRO           OFF CACHE BOOL "Enable REPRO mode")
 set(WW3             OFF CACHE BOOL "Enable WW3")
+set(HYCOM           OFF CACHE BOOL "Enable HYCOM")
 set(S2S             OFF CACHE BOOL "Enable S2S")
 set(DATM            OFF CACHE BOOL "Enable Data Atmosphere")
 
@@ -65,6 +66,7 @@ message("PARALLEL_NETCDF .. ${PARALLEL_NETCDF}")
 message("QUAD_PRECISION ... ${QUAD_PRECISION}")
 message("REPRO ............ ${REPRO}")
 message("WW3 .............. ${WW3}")
+message("HYCOM ............ ${HYCOM}")
 message("S2S .............. ${S2S}")
 message("DATM ............. ${DATM}")
 message("")
@@ -212,6 +214,13 @@ if(WW3)
 endif()
 
 ###############################################################################
+### HYCOM Component
+###############################################################################
+if(HYCOM)
+  add_subdirectory(HYCOM-interface)
+endif()
+
+###############################################################################
 ### S2S Components [CMEPS, MOM6, CICE]
 ###############################################################################
 if(S2S)
@@ -279,6 +288,12 @@ if(DATM)
   target_link_libraries(ufs PUBLIC datatm)
 else()
   target_link_libraries(ufs PUBLIC fv3atm)
+endif()
+
+if(HYCOM)
+  list(APPEND _ufs_defs_private FRONT_HYCOM=HYCOM_Mod)
+  add_dependencies(ufs hycom)
+  target_link_libraries(ufs PUBLIC hycom)
 endif()
 
 if(S2S)
