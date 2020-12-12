@@ -576,7 +576,7 @@ export CDATE=${SYEAR}${SMONTH}${SDAY}${SHOUR}
 
 export NFHOUT=6
 export FDIAG=6
-export DT_ATMOS='3600'
+export DT_ATMOS='900'
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6='1800'
 export DT_THERM_MOM6='3600'
