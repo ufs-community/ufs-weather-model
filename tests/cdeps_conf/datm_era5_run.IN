@@ -1,0 +1,10 @@
+if [ -d "input" ]; then
+  echo "input/ directory exists ..."
+else
+  echo "input/ directory not found. Creating ..."
+  mkdir -p input
+fi
+
+cd input
+rsync -arv @[RTPWD]/DATM_ERA5_input_data/. . 
+cd -

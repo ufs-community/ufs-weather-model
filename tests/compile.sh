@@ -57,7 +57,12 @@ fi
 # Configure NEMS
 cd "$PATHTR/../NEMS"
 
-COMPONENTS="FMS,FV3"
+COMPONENTS=""
+
+if [[ "${MAKE_OPT}" == *"FV3=Y"* ]]; then
+  COMPONENTS="FMS,FV3,$COMPONENTS"
+fi
+
 if [[ "${MAKE_OPT}" == *"CCPP=Y"* ]]; then
   COMPONENTS="CCPP,$COMPONENTS"
 fi
@@ -72,6 +77,18 @@ fi
 
 if [[ "${MAKE_OPT}" == *"CMEPS=Y"* ]]; then
   COMPONENTS="CMEPS,$COMPONENTS"
+fi
+
+if [[ "${MAKE_OPT}" == *"CDEPS=Y"* ]]; then
+  COMPONENTS="CDEPS,$COMPONENTS"
+fi
+
+if [[ "${MAKE_OPT}" == *"CDEPS_DATM=Y"* ]]; then
+  COMPONENTS="CDEPS_DATM,$COMPONENTS"
+fi
+
+if [[ "${MAKE_OPT}" == *"CDEPS_DOCN=Y"* ]]; then
+  COMPONENTS="CDEPS_DOCN,$COMPONENTS"
 fi
 
 # Make variables:
