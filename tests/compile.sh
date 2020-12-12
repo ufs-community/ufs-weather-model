@@ -56,6 +56,14 @@ set +x
 if [[ $MACHINE_ID == macosx.* ]] || [[ $MACHINE_ID == linux.* ]]; then
   source $PATHTR/modulefiles/${MACHINE_ID}/fv3
 else
+  if [[ $MACHINE_ID == wcoss2 ]]; then
+    source /apps/prod/lmodules/startLmod
+  fi
+  # Activate lua environment for gaea
+  if [[ $MACHINE_ID == gaea.* ]] ; then
+    source /lustre/f2/pdata/esrl/gsd/contrib/lua-5.1.4.9/init/init_lmod.sh
+  fi
+  # Load fv3 module
   module use $PATHTR/modulefiles/${MACHINE_ID}
   modulefile="fv3"
   if [[ "${MAKE_OPT}" == *"DEBUG=Y"* ]]; then
@@ -157,6 +165,10 @@ if [[ "${MAKE_OPT}" == *"DATM=Y"* ]]; then
     CMAKE_FLAGS="${CMAKE_FLAGS} -DDATM=Y"
 fi
 
+if [[ "${MAKE_OPT}" == *"S2S=Y"* ]] || [[ ${MAKE_OPT} == *"DATM=Y"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DMOM6SOLO=ON"
+fi
+
 CMAKE_FLAGS=$(trim "${CMAKE_FLAGS}")
 
 if [ $clean_before = YES ] ; then
@@ -172,7 +184,11 @@ export CMAKE_FLAGS
 bash -x ${PATHTR}/build.sh
 
 mv ${BUILD_DIR}/ufs_model ${PATHTR}/tests/${BUILD_NAME}.exe
-cp ${PATHTR}/modulefiles/${MACHINE_ID}/fv3 ${PATHTR}/tests/modules.${BUILD_NAME}
+if [[ "${MAKE_OPT}" == "DEBUG=Y" ]]; then
+  cp ${PATHTR}/modulefiles/${MACHINE_ID}/fv3_debug ${PATHTR}/tests/modules.${BUILD_NAME}
+else
+  cp ${PATHTR}/modulefiles/${MACHINE_ID}/fv3 ${PATHTR}/tests/modules.${BUILD_NAME}
+fi
 
 if [ $clean_after = YES ] ; then
   rm -rf ${BUILD_DIR}
