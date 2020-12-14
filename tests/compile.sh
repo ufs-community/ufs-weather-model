@@ -56,6 +56,9 @@ set +x
 if [[ $MACHINE_ID == macosx.* ]] || [[ $MACHINE_ID == linux.* ]]; then
   source $PATHTR/modulefiles/${MACHINE_ID}/fv3
 else
+  if [[ $MACHINE_ID == wcoss2 ]]; then
+    source /apps/prod/lmodules/startLmod
+  fi
   # Activate lua environment for gaea
   if [[ $MACHINE_ID == gaea.* ]] ; then
     source /lustre/f2/pdata/esrl/gsd/contrib/lua-5.1.4.9/init/init_lmod.sh
@@ -148,6 +151,10 @@ fi
 
 if [[ "${MAKE_OPT}" == *"DATM=Y"* ]]; then
     CMAKE_FLAGS="${CMAKE_FLAGS} -DDATM=Y"
+fi
+
+if [[ "${MAKE_OPT}" == *"S2S=Y"* ]] || [[ ${MAKE_OPT} == *"DATM=Y"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DMOM6SOLO=ON"
 fi
 
 CMAKE_FLAGS=$(trim "${CMAKE_FLAGS}")
