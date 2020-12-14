@@ -329,7 +329,7 @@ mkdir -p ${RUNDIR_ROOT}
 CREATE_BASELINE=false
 ROCOTO=false
 ECFLOW=false
-KEEP_RUNDIR=false
+KEEP_RUNDIR=true
 SINGLE_NAME=''
 TEST_35D=false
 
