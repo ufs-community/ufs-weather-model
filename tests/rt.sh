@@ -76,8 +76,8 @@ rt_trap() {
 }
 
 cleanup() {
-  [[ ${ECFLOW:-false} == true ]] && ecflow_stop
   rm -rf ${LOCKDIR}
+  [[ ${ECFLOW:-false} == true ]] && ecflow_stop
   trap 0
   exit
 }
@@ -172,6 +172,33 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
   SCHEDULER=lsf
   cp fv3_conf/fv3_bsub.IN_wcoss_dell_p3 fv3_conf/fv3_bsub.IN
   cp fv3_conf/compile_bsub.IN_wcoss_dell_p3 fv3_conf/compile_bsub.IN
+
+elif [[ $MACHINE_ID = wcoss2 ]]; then
+
+  source /apps/prod/lmodules/startLmod
+
+  #module use /usrx/local/dev/emc_rocoto/modulefiles
+  #module load ruby/2.5.1 rocoto/1.3.0rc2
+  #ROCOTORUN=$(which rocotorun)
+  #ROCOTOSTAT=$(which rocotostat)
+  #ROCOTOCOMPLETE=$(which rocotocomplete)
+  #ROCOTO_SCHEDULER=lsf
+
+  #module load ips/18.0.1.163
+  #module load ecflow/4.7.1
+  #ECFLOW_START=${ECF_ROOT}/intel/bin/ecflow_start.sh
+  #ECF_PORT=$(grep $USER /usrx/local/sys/ecflow/assigned_ports.txt | awk '{print $2}')
+
+  DISKNM=/lfs/h1/emc/ptmp/Dusan.Jovic/RT
+  QUEUE=workq
+  COMPILE_QUEUE=workq
+  PARTITION=
+  ACCNR=GFS-DEV
+  STMP=/lfs/h1/emc/stmp
+  PTMP=/lfs/h1/emc/ptmp
+  SCHEDULER=pbs
+  cp fv3_conf/fv3_qsub.IN_wcoss2 fv3_conf/fv3_qsub.IN
+  cp fv3_conf/compile_qsub.IN_wcoss2 fv3_conf/compile_qsub.IN
 
 elif [[ $MACHINE_ID = gaea.* ]]; then
 
@@ -318,7 +345,7 @@ mkdir -p ${STMP}/${USER}
 
 # Different own baseline directories for different compilers on Theia/Cheyenne
 NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST
-if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]]; then
+if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]]; then
     NEW_BASELINE=${NEW_BASELINE}_${RT_COMPILER^^}
 fi
 
@@ -395,11 +422,13 @@ if [[ $TESTS_FILE =~ '35d' ]]; then
   TEST_35D=true
 fi
 
-if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = jet.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20201127/${RT_COMPILER^^}}
+if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]]; then
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20201204/${RT_COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20201127}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20201204}
 fi
+
+INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20201201/}
 
 shift $((OPTIND-1))
 [[ $# -gt 1 ]] && usage
@@ -410,43 +439,6 @@ if [[ $CREATE_BASELINE == true ]]; then
   #
   rm -rf "${NEW_BASELINE}"
   mkdir -p "${NEW_BASELINE}"
-  echo "copy baseline inputs from: ${RTPWD}"
-  echo "                     to:   ${NEW_BASELINE}"
-
-  rsync -a "${RTPWD}"/FV3_* "${NEW_BASELINE}"/
-  rsync -a "${RTPWD}"/WW3_* "${NEW_BASELINE}"/
-  rsync -a "${RTPWD}"/DATM* "${NEW_BASELINE}"/
-
-  # FIXME: S2S baselines are only available on these machines with Intel
-  if [[ $MACHINE_ID = hera.intel ]] || [[ $MACHINE_ID = orion.intel ]] || [[ $MACHINE_ID = cheyenne.intel ]] || [[ $MACHINE_ID = gaea.intel ]] || [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
-    rsync -a "${RTPWD}"/MOM6_* "${NEW_BASELINE}"/
-    rsync -a "${RTPWD}"/CICE_* "${NEW_BASELINE}"/
-    rsync -a "${RTPWD}"/CPL_* "${NEW_BASELINE}"/
-    rsync -a "${RTPWD}"/BM_* "${NEW_BASELINE}"/
-  fi
-
-  # FIXME: move these namelist files to parm directory
-  rsync -a "${RTPWD}"/fv3_regional_control/input.nml "${NEW_BASELINE}"/fv3_regional_control/
-  rsync -a "${RTPWD}"/fv3_regional_quilt/input.nml   "${NEW_BASELINE}"/fv3_regional_quilt/
-  rsync -a "${RTPWD}"/fv3_regional_c768/input.nml    "${NEW_BASELINE}"/fv3_regional_c768/
-  rsync -a "${RTPWD}"/fv3_regional_restart/input.nml "${NEW_BASELINE}"/fv3_regional_restart/
-
-  rsync -a "${RTPWD}"/fv3_regional_control/model_configure                "${NEW_BASELINE}"/fv3_regional_control/
-  rsync -a "${RTPWD}"/fv3_regional_quilt/model_configure                  "${NEW_BASELINE}"/fv3_regional_quilt/
-  rsync -a "${RTPWD}"/fv3_regional_c768/model_configure                   "${NEW_BASELINE}"/fv3_regional_c768/
-  rsync -a "${RTPWD}"/fv3_regional_restart/model_configure                "${NEW_BASELINE}"/fv3_regional_restart/
-  rsync -a "${RTPWD}"/fv3_regional_quilt_netcdf_parallel/model_configure "${NEW_BASELINE}"/fv3_regional_quilt_netcdf_parallel/
-
-  rsync -a "${RTPWD}"/fv3_regional_control/INPUT               "${NEW_BASELINE}"/fv3_regional_control/
-  rsync -a "${RTPWD}"/fv3_regional_control/RESTART             "${NEW_BASELINE}"/fv3_regional_control/
-  rsync -a "${RTPWD}"/fv3_regional_quilt/INPUT                 "${NEW_BASELINE}"/fv3_regional_quilt/
-  rsync -a "${RTPWD}"/fv3_regional_c768/INPUT                  "${NEW_BASELINE}"/fv3_regional_c768/
-  rsync -a "${RTPWD}"/fv3_regional_restart/INPUT               "${NEW_BASELINE}"/fv3_regional_restart/
-  rsync -a "${RTPWD}"/fv3_stretched/INPUT                      "${NEW_BASELINE}"/fv3_stretched/
-  rsync -a "${RTPWD}"/fv3_stretched_nest/INPUT                 "${NEW_BASELINE}"/fv3_stretched_nest/
-  rsync -a "${RTPWD}"/fv3_stretched_nest_quilt/INPUT           "${NEW_BASELINE}"/fv3_stretched_nest_quilt/
-  rsync -a "${RTPWD}"/fv3_stretched_nest_debug/INPUT           "${NEW_BASELINE}"/fv3_stretched_nest_debug/
-  rsync -a "${RTPWD}"/fv3_regional_quilt_netcdf_parallel/INPUT "${NEW_BASELINE}"/fv3_regional_quilt_netcdf_parallel/
 fi
 
 COMPILE_LOG=${PATHRT}/Compile_$MACHINE_ID.log
@@ -486,6 +478,10 @@ if [[ $ROCOTO == true ]]; then
     QUEUE=dev
     COMPILE_QUEUE=dev_transfer
     ROCOTO_SCHEDULER=lsf
+  elif [[ $MACHINE_ID = wcoss2 ]]; then
+    QUEUE=workq
+    COMPILE_QUEUE=workq
+    ROCOTO_SCHEDULER=pbs
   elif [[ $MACHINE_ID = hera.* ]]; then
     QUEUE=batch
     COMPILE_QUEUE=batch
@@ -506,12 +502,13 @@ if [[ $ROCOTO == true ]]; then
 <?xml version="1.0"?>
 <!DOCTYPE workflow
 [
-  <!ENTITY PATHRT       "${PATHRT}">
-  <!ENTITY LOG          "${LOG_DIR}">
-  <!ENTITY PATHTR       "${PATHTR}">
-  <!ENTITY RTPWD        "${RTPWD}">
-  <!ENTITY RUNDIR_ROOT  "${RUNDIR_ROOT}">
-  <!ENTITY NEW_BASELINE "${NEW_BASELINE}">
+  <!ENTITY PATHRT         "${PATHRT}">
+  <!ENTITY LOG            "${LOG_DIR}">
+  <!ENTITY PATHTR         "${PATHTR}">
+  <!ENTITY RTPWD          "${RTPWD}">
+  <!ENTITY INPUTDATA_ROOT "${INPUTDATA_ROOT}">
+  <!ENTITY RUNDIR_ROOT    "${RUNDIR_ROOT}">
+  <!ENTITY NEW_BASELINE   "${NEW_BASELINE}">
 ]>
 <workflow realtime="F" scheduler="${ROCOTO_SCHEDULER}" taskthrottle="20">
   <cycledef>197001010000 197001010000 01:00:00</cycledef>
@@ -546,6 +543,8 @@ EOF
     QUEUE=dev
   elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
     QUEUE=dev
+  elif [[ $MACHINE_ID = wcoss2 ]]; then
+    QUEUE=workq
   elif [[ $MACHINE_ID = hera.* ]]; then
     QUEUE=batch
   elif [[ $MACHINE_ID = orion.* ]]; then
@@ -680,6 +679,7 @@ EOF
       export MACHINE_ID=${MACHINE_ID}
       export RT_COMPILER=${RT_COMPILER}
       export RTPWD=${RTPWD}
+      export INPUTDATA_ROOT=${INPUTDATA_ROOT}
       export PATHRT=${PATHRT}
       export PATHTR=${PATHTR}
       export NEW_BASELINE=${NEW_BASELINE}
