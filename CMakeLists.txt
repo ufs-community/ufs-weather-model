@@ -160,8 +160,8 @@ target_include_directories(fms PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_D
                                       $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/FMS/mod>
                                       $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/mpp/include>)
 target_include_directories(fms INTERFACE
-                                         $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include>
-                                         $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/mod>)
+                                      $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include>
+                                      $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/mod>)
 target_link_libraries(fms PUBLIC MPI::MPI_Fortran
                                  NetCDF::NetCDF_Fortran)
 if(OpenMP_Fortran_FOUND)
