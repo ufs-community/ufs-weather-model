@@ -132,7 +132,7 @@ fi
 set +ex
 TEST=$( echo $MAKE_OPT | grep -e "SUITES=" )
 if [[ $? -eq 0 ]]; then
-  CCPP_SUITES=$( echo $MAKE_OPT | sed 's/.* SUITES=//' | sed 's/ .*//' )
+  CCPP_SUITES=$( echo $MAKE_OPT | sed 's/.*SUITES=//' | sed 's/ .*//' )
   echo "Compiling suites ${CCPP_SUITES}"
 fi
 set -ex
