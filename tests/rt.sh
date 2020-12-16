@@ -614,11 +614,11 @@ EOF
       fi
 
       # Set RT_SUFFIX (regression test run directories and log files) and BL_SUFFIX
-      # (regression test baseline directories) for REPRO (IPD, CCPP) or PROD (CCPP) runs
+      # (regression test baseline directories) for REPRO or PROD runs
       if [[ ${MAKE_OPT^^} =~ "REPRO=Y" ]]; then
         RT_SUFFIX="_repro"
         BL_SUFFIX="_repro"
-      elif [[ ${MAKE_OPT^^} =~ "CCPP=Y" ]]; then
+      else
         RT_SUFFIX="_prod"
         BL_SUFFIX="_ccpp"
       fi
