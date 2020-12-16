@@ -28,15 +28,15 @@ if [ $WARM_START = .F. ]; then
  fi
 else
 # warm start
- cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/MOM*.nc ./INPUT
+ cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/MOM.res.2011-10-01-12*.nc ./INPUT/MOM.res.nc
 
 # CMEPS restart and pointer files
- RFILE="DATM_${DATM_SRC}.cpl.r.2011-10-01-21600.nc"
+ RFILE="DATM_${DATM_SRC}.cpl.r.2011-10-01-43200.nc"
  cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/${RFILE} .
  ls -1 ${RFILE}>rpointer.cpl
 
 # CICE restart and pointer files
- cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/iced.2011-10-01-21600.nc ./INPUT
- RFILE="iced.2011-10-01-21600.nc"
+ cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/iced.2011-10-01-43200.nc ./INPUT
+ RFILE="iced.2011-10-01-43200.nc"
  ls -1 "./INPUT/"${RFILE}>ice.restart_file
 fi
