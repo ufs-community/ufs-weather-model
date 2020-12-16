@@ -53,7 +53,7 @@ def is_collaborator(repo, userin):
         print("Collab {}, Perms {}".format(collaborator.login, collab_perms))
         if collaborator.login == userin && 'write' in collab_perms.split():
             collaborator_bool = True
-    sys.exit()
+            
     return collaborator_bool
 
 def get_yaml_subset(in_yaml, keyin):
