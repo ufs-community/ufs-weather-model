@@ -6,15 +6,16 @@ from github import Github as gh
 import datetime
 import pandas as pd
 import socket
+import threading
 import subprocess
 import re
 import sys
 import yaml
-import numpy as np
 import os
-import pdb
 
+# WARNING WARNING WARNING: DO NOT COMMIT WITH THE GHACCESSTOKEN
 # GHACCESSTOKEN = None
+# GITHUB RATE LIMIT FOR AUTHENTICATED USERS IS 5000 REQUESTS PER HOUR
 db_filename = 'rt_auto.yml'
 yaml_data = None
 client = None
@@ -48,8 +49,11 @@ def is_collaborator(repo, userin):
     collaborator_bool = False
     allowed_collaborators = repo.get_collaborators()
     for collaborator in allowed_collaborators:
-        if collaborator.login == userin:
+        collab_perms = repo.get_collaborator_permission(collaborator)
+        print("Collab {}, Perms {}".format(collaborator.login, collab_perms))
+        if collaborator.login == userin && 'write' in collab_perms.split():
             collaborator_bool = True
+    sys.exit()
     return collaborator_bool
 
 def get_yaml_subset(in_yaml, keyin):
@@ -101,6 +105,7 @@ def process_triggers(comments_with_triggers, pr, repo):
             if trigger_comment_id > lastread:
                 actions.append(approved_trigger[1])
                 print("SAVED ACTION {} for machine {}".format(approved_trigger[1], machine.name))
+
     if not actions:
         return lastread, None
     actions = set(actions)
@@ -109,10 +114,9 @@ def process_triggers(comments_with_triggers, pr, repo):
 def get_comments_with_triggers(comments):
     comment_list = []
     for comment in comments:
-        body_split = comment.body.split()
-        for word in body_split:
-            if re.match("\+\+.+\+\+", word):
-                comment_list.append(comment)
+        if [re.match("\+\+.+\+\+", incomment) for incomment in comment.body.split()]:
+            comment_list.append(comment)
+
     if not comment_list:
         return None
     else:
@@ -138,10 +142,23 @@ def process_pulls(pulls, repo):
 
         if bool(actions):
             print("Accepted actions: {}".format(actions))
+            validate_actions(actions)
             pr_workdir = clone_pr_repo(pr)
-            process_actions(actions)
+            process_actions(actions, pr_workdir, pr)
         else:
             print("No Actions Found in this PR, skipping.")
+
+def validate_actions(actions):
+    approved_commands = []
+    valid_actions = get_yaml_subset(static_data, "actions")
+    for name,command in valid_actions.values.tolist():
+        for action in actions:
+            if name == action.lower():
+                print("Action {} approved as valid".format(action.lower()))
+                approved_commands.append(command)
+    return approved_commands
+
+
 
 def clone_pr_repo(pr):
     global machine
@@ -172,12 +189,33 @@ def clone_pr_repo(pr):
 
     return repo_dir_str+"/"+repo_name
 
-def process_actions(actions):
-    global machine
-    for action in actions:
-        print("{} is processing {}".format(machine.name.upper(), action))
+def create_threaded_call(callback, run_fnc):
+    def runInThread(callback, args, kwargs):
+        proc = run_fnc
+        proc.wait()
+        callback()
+        return
 
+    thread = threading.Thread(target=runInThread,
+                              args=(callback, args, kwargs))
+    thread.start()
+
+    return thread # returns immediately after the thread starts
+
+def thread_end(pr, command, pr_workdir):
+    global machine
+    pr.create_issue_comment("AUTOMATED COMMENT: Finished Processing Command '{}' in directory '{}' on machine '{}'".format(command, pr_workdir, machine.name))
     return
+
+def process_actions(actions, pr_workdir, pr):
+    global machine
+
+    approved_commands = validate_actions(actions)
+    if bool(approved_commands):
+        for command in approved_commands:
+            print("{} is processing command {}".format(machine.name.upper(), command))
+            pr.create_issue_comment("AUTOMATED COMMENT: Started Processing Command '{}' in directory '{}' on machine '{}'".format(command, pr_workdir, machine.name))
+            create_threaded_call(thread_end(pr, command, pr_workdir+"/tests"), subprocess.Popen(command, shell=True, cwd=pr_workdir+"/tests"))
 
 # Initial items
 static_data = read_yaml_data('rt_auto.yml')
