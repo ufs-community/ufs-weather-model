@@ -73,4 +73,3 @@ Finally, :numref:`Chapters %s <Acronyms>` and :numref:`%s <Glossary>` contain a 
 
 .. This is how you cite a reference :cite:`Bernardet2018`.
 
-.. bibliography:: references.bib
