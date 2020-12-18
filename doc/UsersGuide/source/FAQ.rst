@@ -100,7 +100,7 @@ How do I set the output history interval?
 ==============================================================
 The interval at which output (history) files are written is controlled in two
 places, and depends on whether you are using the write component to generate your output files.
-:numref:`Table %s <OutputControl>` describes the relevant variables.  If the write_component is used, then the variables listed as *model_configure* are required.  It is also, however, required that the settings in *input.nml* match those same settings in *model_configure*.  If these settings are inconsistent, then unpredictable output files and intervals may occur!
+:numref:`Table %s <OutputControl>` describes the relevant variables.  If the write_component is used, then the variables listed as *model_configure* are required.  It is however, also required that the settings in *input.nml* match those same settings in *model_configure*.  If these settings are inconsistent, then unpredictable output files and intervals may occur!
 
 .. _OutputControl:
 
@@ -150,7 +150,7 @@ places, and depends on whether you are using the write component to generate you
 ==============================================================
 How do I set the total number of tasks for my job?
 ==============================================================
-The total number of MPI tasks used by the UFS Weather Model is a combination of compute and quilt tasks, and can be calculated using the following relationships:
+The total number of MPI tasks used by the UFS Weather Model is a combination of compute and quilt tasks, and can be calculated using the following relationship:
 
 - total tasks = compute tasks + quilt tasks
 - compute tasks = x layout * y layout * number of tiles
