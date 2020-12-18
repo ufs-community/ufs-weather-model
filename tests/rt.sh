@@ -402,7 +402,7 @@ else
 fi
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20201201/}
-INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20201201/}WW3_input_data_20201207/
+INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20201207/
 
 shift $((OPTIND-1))
 [[ $# -gt 1 ]] && usage
