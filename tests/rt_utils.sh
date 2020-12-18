@@ -404,8 +404,8 @@ rocoto_create_compile_task() {
     NATIVE="<exclusive></exclusive>"
   fi
   BUILD_WALLTIME="00:30:00"
-  if [[ ${MACHINE_ID} == jet ]]; then
-    BUILD_WALLTIME="01:00:00"
+  if [[ ${MACHINE_ID} == jet.* ]]; then
+    BUILD_WALLTIME="02:00:00"
   fi
   if [[ ${MACHINE_ID} == orion.* ]]; then
     BUILD_WALLTIME="01:00:00"

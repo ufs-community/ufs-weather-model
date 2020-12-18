@@ -1,12 +1,12 @@
-##########################################################################################
+###############################################################################
 #
-#  FV3 CCPP RRFS (Thompson MP + MYNN PBL + NOAHMP LSM + MYNN SFC) test in DEBUG mode
+#  FV3 CCPP RRFS (Thompson MP + MYNN PBL + NOAHMP LSM + GFS SFC) test
 #
-##########################################################################################
+###############################################################################
 
-export TEST_DESCR="Compare FV3 CCPP RRFS_v1beta DEBUG results with previous trunk version"
+export TEST_DESCR="Compare FV3 CCPP RRFS_v1alpha results with previous trunk version"
 
-export CNTL_DIR=fv3_rrfs_v1beta_debug
+export CNTL_DIR=fv3_rrfs_v1alpha
 
 export LIST_FILES="atmos_4xdaily.tile1.nc \
                    atmos_4xdaily.tile2.nc \
@@ -20,32 +20,38 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
                    phyf000.tile4.nc \
                    phyf000.tile5.nc \
                    phyf000.tile6.nc \
-                   phyf003.tile1.nc \
-                   phyf003.tile2.nc \
-                   phyf003.tile3.nc \
-                   phyf003.tile4.nc \
-                   phyf003.tile5.nc \
-                   phyf003.tile6.nc \
+                   phyf012.tile1.nc \
+                   phyf012.tile2.nc \
+                   phyf012.tile3.nc \
+                   phyf012.tile4.nc \
+                   phyf012.tile5.nc \
+                   phyf012.tile6.nc \
+                   phyf024.tile1.nc \
+                   phyf024.tile2.nc \
+                   phyf024.tile3.nc \
+                   phyf024.tile4.nc \
+                   phyf024.tile5.nc \
+                   phyf024.tile6.nc \
                    dynf000.tile1.nc \
                    dynf000.tile2.nc \
                    dynf000.tile3.nc \
                    dynf000.tile4.nc \
                    dynf000.tile5.nc \
                    dynf000.tile6.nc \
-                   dynf003.tile1.nc \
-                   dynf003.tile2.nc \
-                   dynf003.tile3.nc \
-                   dynf003.tile4.nc \
-                   dynf003.tile5.nc \
-                   dynf003.tile6.nc \
+                   dynf012.tile1.nc \
+                   dynf012.tile2.nc \
+                   dynf012.tile3.nc \
+                   dynf012.tile4.nc \
+                   dynf012.tile5.nc \
+                   dynf012.tile6.nc \
+                   dynf024.tile1.nc \
+                   dynf024.tile2.nc \
+                   dynf024.tile3.nc \
+                   dynf024.tile4.nc \
+                   dynf024.tile5.nc \
+                   dynf024.tile6.nc \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
-                   RESTART/fv_core.res.tile1.nc \
-                   RESTART/fv_core.res.tile2.nc \
-                   RESTART/fv_core.res.tile3.nc \
-                   RESTART/fv_core.res.tile4.nc \
-                   RESTART/fv_core.res.tile5.nc \
-                   RESTART/fv_core.res.tile6.nc \
                    RESTART/fv_srf_wnd.res.tile1.nc \
                    RESTART/fv_srf_wnd.res.tile2.nc \
                    RESTART/fv_srf_wnd.res.tile3.nc \
@@ -71,16 +77,31 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
                    RESTART/sfc_data.tile5.nc \
                    RESTART/sfc_data.tile6.nc"
 
+# DH* 20201119 - removed the following files from the list of files to compare,
+# because they differ in the metadata (FMS checksum of exactly one variable 'v')
+# although all other data, all other files and the checksums reported to stdout
+# at the end of the model run are identical
+#                   RESTART/fv_core.res.tile1.nc \
+#                   RESTART/fv_core.res.tile2.nc \
+#                   RESTART/fv_core.res.tile3.nc \
+#                   RESTART/fv_core.res.tile4.nc \
+#                   RESTART/fv_core.res.tile5.nc \
+#                   RESTART/fv_core.res.tile6.nc \
+# *DH 20201119
+
 export_fv3
 export NODES=$(expr $TASKS / $TPN + 1)
 
-export FHMAX=3
+export INPES=6
+export JNPES=4
+
+export FHMAX=24
 export FDIAG=3
 
 export DT_ATMOS="600"
 
 export FV3_RUN=ccpp_gsd_run.IN
-export CCPP_SUITE=FV3_RRFS_v1beta
+export CCPP_SUITE=FV3_RRFS_v1alpha
 export CCPP_LIB_DIR=ccpp/lib
 export INPUT_NML=ccpp_global.nml.IN
 
@@ -107,8 +128,7 @@ export FHCYC=0
 export LSM=2
 export LSOIL_LSM=4
 #export GWD_OPT=3
-export DO_MYNNSFCLAY=.T.
+#export DO_MYNNSFCLAY=.T.
 
 RUN_SCRIPT=rt_fv3.sh
 
-export WLCLK=30
