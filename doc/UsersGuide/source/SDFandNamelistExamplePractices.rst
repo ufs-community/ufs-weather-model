@@ -4,36 +4,33 @@
 SDF and Namelist Samples and Best Practices
 ********************************************
 
-The public release of the UFS MR Weather App includes four supported physics suites:
-GFS_v15p2, GFS_v15p2_no_nsst, GFS_v16beta, and GFS_v16beta_no_nsst. You will
-find the Suite Definition Files (SDFs) for these suites in
+The public release of the UFS Weather Model (WM) includes supported physics suites for each UFS Aplication.
+Details regarding these suites can be found in the Application User's Guides.  
 
-https://github.com/NOAA-EMC/fv3atm/tree/ufs-v2.0.0/ccpp/suites
+The supported physics suites for each UFS Application are specified by Suite Definition Files.  You will
+find the Suite Definition Files (SDFs) for these suites in the following directory:
 
-(no other SDFs are available with this release). You will find the namelists for the C96 configuration here:
+``FV3/ccpp/suites``
 
-https://github.com/ufs-community/ufs-weather-model/tree/ufs-v2.0.0/parm/ccpp_v15p2_c96.nml.IN
+.. _UFSApps:
 
-and
+.. list-table:: *UFS Apps and supported SDFs*
+   :widths: 15 30 30 
+   :header-rows: 1
 
-https://github.com/ufs-community/ufs-weather-model/tree/ufs-v2.0.0/parm/ccpp_v16beta_c96.nml.IN
+   * - UFS Application
+     - Supported SDFs
+     - Users Guide 
+   * - Medium Range Weather (MRW)
+     - GFS_v15p2, GFS_v16beta
+     - `Users Guide <https://ufs-mrweather-app.readthedocs.io/en/ufs-v1.1.0/>`_
+   * - Short Range Weather (SRW)
+     - GFS_v15p2, RRFS_v1alpha
+     - `Users Guide <https://ufs-srweather-app.readthedocs.io/en/ufs-v1.0.0/>`_
 
-As noted in the file names, these namelists are for the operational (v15p2) and developmental (v16beta)
-GFS suites. Each of these namelists are relevant to the suites with and without the SST prediction scheme, that is,
-they are relevant for the suite that employs NSST and for the suite that employs the simple ocean
-model (`no_nsst`). The only difference in the namelist regarding how SST prediction is
-addressed is variable `nstf_name`. For more information about this variable and for information about
-namelist options for higher resolution configurations, please consult the
-`CCPP v5.0.0 Scientific Documentation <https://dtcenter.org/GMTB/v5.0.0/sci_doc/>`_.
-
-The four CCPP suites for the UFS MR Weather App release are supported in four grid resolutions:
-C96, C192, C384, and C768, with 64 vertical levels.
 
 An in depth description of the namelist settings, SDFs, and parameterizations used
 in all supported suites can be found in the `CCPP v5.0.0 Scientific Documentation <https://dtcenter.org/GMTB/v5.0.0/sci_doc/>`_.
-Note both suites do not
-use stochastic physics by default, but the stochastic physics can be activated following the
-instructions described in the `stochastic physics v2.0 user's guide <https://stochastic-physics.readthedocs.io/en/ufs-v2.0.0/>`_.
 
 Both the SDF and the *input.nml* contain information about how to specify the physics suite.
 Some of this information is redundant, and the user must make sure they are compatible. The
@@ -64,7 +61,7 @@ shows some variables in the namelist that must match the SDF.
      -
    * - do_myjpbl
      - Flag to activate the MYJ PBL scheme
-     - T
+     - T, F
      - F
      - mypbl_wrapper
      - Set to F for GFSv15p2* and GFSv16beta*
@@ -209,13 +206,13 @@ the namelist are listed in :numref:`Table %s <MiscVarOptions>`.
    * - h2o_phys
      - Flag for stratosphere h2o scheme
      - T, F
-     -
+     - F
      - h2ophys
      - Set to T for GFSv15p2* and GFSv16beta*
    * - oz_phys_2015
      - Flag for new (2015) ozone physics
      - T, F
-     -
+     - F
      - ozphys_2015
      - Set to T for GFSv15p2* and GFSv16beta*
 
