@@ -22,11 +22,13 @@ set(MOM6SOLO OFF CACHE BOOL "Build MOM6 solo")
 
 # Too many files to list, so include them via this file
 include("mom6_files.cmake")
-
+#SP LIB
+# sp::sp_d
 ### Use common object library for building target library
 add_library(mom6_obj OBJECT ${mom6_src_files})
 set_target_properties(mom6_obj PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
-target_include_directories(mom6_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
+target_include_directories(mom6_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
+                                            $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/../stochastic_physics>)
 target_include_directories(mom6_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/config_src/dynamic>
                                             $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/src/framework>)
 target_link_libraries(mom6_obj PRIVATE fms
@@ -38,7 +40,8 @@ target_link_libraries(mom6_obj PRIVATE fms
 
 add_library(mom6_nuopc_obj OBJECT ${mom6_nuopc_src_files})
 set_target_properties(mom6_nuopc_obj PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
-target_include_directories(mom6_nuopc_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
+target_include_directories(mom6_nuopc_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
+                                                  $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/../stochastic_physics>)
 target_include_directories(mom6_nuopc_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/config_src/dynamic>
                                                   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/src/framework>)
 target_link_libraries(mom6_nuopc_obj PRIVATE mom6_obj
@@ -56,9 +59,12 @@ target_include_directories(mom6 PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_
                                        $<INSTALL_INTERFACE:mod>)
 target_include_directories(mom6 PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/config_src/dynamic>
                                        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/src/framework>)
+message("Setting up link libararies for MOM6")
 target_link_libraries(mom6 PUBLIC fms
-                                  esmf
-                                  NetCDF::NetCDF_Fortran)
+                                   esmf
+                                   NetCDF::NetCDF_Fortran)
+#                                   sp::sp_d
+#                                   stochastic_physics 
 # OpenMP is disabled in MOM6
 #if(OpenMP_Fortran_FOUND)
 #  target_link_libraries(mom6 PRIVATE OpenMP::OpenMP_Fortran)
@@ -70,12 +76,16 @@ if(MOM6SOLO)
   add_executable(mom6solo ${mom6_solo_src_files})
   add_dependencies(mom6solo mom6_obj)
   set_target_properties(mom6solo PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod_solo)
-  target_include_directories(mom6solo PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
-  target_include_directories(mom6solo PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod_solo>)
+  target_include_directories(mom6solo PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
+                                              $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod_solo>
+                                              $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/../stochastic_physics>)
   target_include_directories(mom6solo PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/config_src/dynamic>
                                               $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/src/framework>)
   target_link_libraries(mom6solo PRIVATE mom6_obj
-                                         fms
+                                         fms  
+                                         stochastic_physics
+                                         esmf
+                                         sp::sp_d
                                          NetCDF::NetCDF_Fortran)
   # OpenMP is disabled in MOM6
   #if(OpenMP_Fortran_FOUND)
@@ -88,7 +98,7 @@ endif()
 ###############################################################################
 
 install(
-  TARGETS mom6
+  TARGETS mom6 stochastic_physics
   EXPORT  mom6-config
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
