@@ -27,6 +27,9 @@ case $(hostname -f) in
   m72a2.ncep.noaa.gov)     MACHINE_ID=wcoss_dell_p3 ;; ### mars
   m72a3.ncep.noaa.gov)     MACHINE_ID=wcoss_dell_p3 ;; ### mars
 
+  alogin01)                MACHINE_ID=wcoss2 ;; ### acorn
+  alogin02)                MACHINE_ID=wcoss2 ;; ### acorn
+
   gaea9)                   MACHINE_ID=gaea ;; ### gaea9
   gaea10)                  MACHINE_ID=gaea ;; ### gaea10
   gaea11)                  MACHINE_ID=gaea ;; ### gaea11

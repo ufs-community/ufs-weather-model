@@ -80,3 +80,8 @@ list(APPEND fms_src_files
     FMS/mpp/nsclock.c
     FMS/mpp/threadloc.c
 )
+
+list( APPEND fms_headers 
+FMS/include/fms_platform.h
+FMS/include/file_version.h
+)
