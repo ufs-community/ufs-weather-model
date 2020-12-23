@@ -516,7 +516,7 @@ export RUNID='unknown'
 export DUMPFREQ='d'
 export DUMPFREQ_N=1000
 export USE_RESTART_TIME='.false.'
-export RESTART_EXT='.false'
+export RESTART_EXT='.false.'
 # setting to true will allow Frazil FW and Salt to be
 # included in fluxes sent to ocean
 export FRAZIL_FWSALT='.true.'
@@ -540,6 +540,7 @@ export FHMAX=24
 export WLCLK=30
 export THRD=1
 export FHROT='0'
+export WARM_START=.F.
 
 # atm/ocn/ice resolution
 # GEFS
@@ -620,11 +621,12 @@ export RUNID='unknown'
 export DUMPFREQ='d'
 export DUMPFREQ_N=1000
 export USE_RESTART_TIME='.false.'
-export RESTART_EXT='.false'
+export RESTART_EXT='.false.'
 # setting to true will allow Frazil FW and Salt to be
 # included in fluxes sent to ocean
 export FRAZIL_FWSALT='.true.'
 # default to write CICE average history files
 export CICE_HIST_AVG='.true.'
 export BL_SUFFIX=""
+export RT_SUFFIX=""
 }

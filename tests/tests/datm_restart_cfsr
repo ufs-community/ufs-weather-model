@@ -1,8 +1,8 @@
 #
-#  DATM_MOM6_CICE_CMEPS_CFSR test
+#  DATM_MOM6_CICE_CMEPS_CFSR restart test
 #
 
-export TEST_DESCR="DATM-MOM6-CICE-CMEPS_CFSR - control "
+export TEST_DESCR="DATM-MOM6-CICE-CMEPS_CFSR - restart test "
 
 export CNTL_DIR="datm_control_cfsr"
 
@@ -15,5 +15,12 @@ export DATM_SRC="CFSR"
 export FILENAME_BASE='cfsr.'
 export IATM=1760
 export JATM=880
-export RESTART_N=12
+export DAYS="1"
+export FHMAX="24"
+export FHROT="12"
+export WARM_START='.T.'
+export RESTART_N=$((FHMAX-$FHROT))
+export RUNTYPE='continue'
+export USE_RESTART_TIME='.true.'
+export MOM6_RESTART_SETTING="r"
 export FV3_RUN=cpld_datm_cfsr.IN
