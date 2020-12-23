@@ -3,25 +3,33 @@
     - name: 'hera'
       regexhostname: 'hfe\d\d'
       workdir: '/scratch1/NCEPDEV/nems/Brian.Curtis'
+      baselinedir: ''
     - name: 'orion'
       regexhostname: 'Orion-login-\d.HPC.MsState.Edu'
       workdir: False
+      baselinedir: ''
     - name: 'venus'
       regexhostname: 'v\d\d[a-z]\d'
       workdir: False
+      baselinedir: ''
     - name: 'mars'
       regexhostname: 'm\d\d[a-z]\d'
       workdir: False
+      baselinedir: ''
     - name: 'surge'
       regexhostname: 'slogin\d'
       workdir: False
+      baselinedir: ''
     - name: 'Neon'
       regexhostname: 'Neon'
       workdir: '/home/bcurtis/WORK/test'
+      baselinedir: ''
   repository:
     - name: 'ufs-weather-model'
       address: 'BrianCurtis-NOAA/ufs-weather-model'
       base: 'develop'
   actions:
-    - name: 'full_rt'
-      command: './rt.sh -fe'
+    - name: 'RT'
+      command: './rt.sh -ef'
+    - name: 'BL'
+      command: './rt.sh -cef'
