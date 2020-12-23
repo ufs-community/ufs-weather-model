@@ -283,7 +283,7 @@ endif()
 target_include_directories(ufs INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                          $<INSTALL_INTERFACE:mod>)
 
-target_link_libraries(ufs PUBLIC esmf)
+target_link_libraries(ufs PUBLIC esmf stochastic_physics)
 
 if(DATM)
   target_link_libraries(ufs PUBLIC datatm)
@@ -296,10 +296,9 @@ if(S2S)
                                 FRONT_CICE6=ice_comp_nuopc
                                 CMEPS
                                 FRONT_CMEPS=MED)
-  add_dependencies(ufs mom6 cice cmeps)
+  add_dependencies(ufs mom6 cice cmeps stochastic_physics)
   target_link_libraries(ufs PUBLIC mom6
                                    cice
-                                   stochastic_physics 
                                    cmeps)
 endif()
 
