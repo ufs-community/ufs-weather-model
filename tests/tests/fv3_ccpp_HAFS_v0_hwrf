@@ -77,7 +77,7 @@ export NODES=$(expr $TASKS / $TPN + 1)
 
 DT_ATMOS="600"
 
-export FV3_RUN=ccpp_HAFS_v0_hwrf_run.IN
+export FV3_RUN=ccpp_c96_HAFS_v0_hwrf_run.IN
 export CCPP_SUITE=HAFS_v0_hwrf
 export CCPP_LIB_DIR=ccpp/lib
 export INPUT_NML=ccpp_c96_HAFS_v0_hwrf.nml.IN
@@ -86,7 +86,9 @@ export OZ_PHYS_OLD=.F.
 export OZ_PHYS_NEW=.T.
 
 #F-A microphysics
+export IMP_PHYSICS=15
 export LRADAR=.T.
+export NWAT=4
 
 #hurricane options for hybrid EDMF
 export HURR_PBL=.T.
@@ -94,8 +96,7 @@ export MONINQFAC=-1.0
 
 #HWRF options for RRTMG
 export ICLOUD=3
-export IOVR_LW=4
-export IOVR_SW=4
+export IOVR=4
 
 #HWRF NOAH LSM
 export LSM=4
@@ -106,5 +107,3 @@ export SFC_Z0_TYPE=4
 #HWRF options for SAS
 export HWRF_SAMFDEEP=.T.
 export HWRF_SAMFSHAL=.T.
-
-RUN_SCRIPT=rt_fv3.sh

@@ -1,4 +1,4 @@
-rsync -arv @[RTPWD]/FV3_nest_input_data/. .
+rsync -arv @[INPUTDATA_ROOT]/FV3_nest_input_data/. .
 rm -rf INPUT RESTART
 mkdir  INPUT RESTART
 
@@ -9,11 +9,9 @@ mkdir  INPUT RESTART
 # see ccpp_regional_run.IN for a working example
 # if this is needed in the future (not needed now)
 #if [ $WARM_START = .F. ]; then
-#    rsync -arv @[RTPWD]/@[CNTL_DIR]/INPUT/. INPUT/.
+#    rsync -arv @[INPUTDATA_ROOT]/@[CNTL_DIR]/INPUT/. INPUT/.
 #else
-#    rsync -arv @[RTPWD]/@[CNTL_DIR]/RESTART/. INPUT/.
+#    rsync -arv @[INPUTDATA_ROOT]/@[CNTL_DIR]/RESTART/. INPUT/.
 #fi
-rsync -arv @[RTPWD]/@[INPUT_DIR]/INPUT/. INPUT/.
+rsync -arv @[INPUTDATA_ROOT]/@[INPUT_DIR]/INPUT/. INPUT/.
 # *DH 20190528
-
-cp ${PATHRT}/../FV3/ccpp/suites/suite_${CCPP_SUITE}.xml suite_${CCPP_SUITE}.xml

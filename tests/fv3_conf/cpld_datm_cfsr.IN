@@ -1,0 +1,26 @@
+mkdir INPUT DATM_INPUT RESTART history MOM6_OUTPUT
+
+export DATM=true
+# FV3 fixed input
+export IATM=1760
+export JATM=880
+cp    @[INPUTDATA_ROOT]/DATM/cfsr.SCRIP.nc DATM_INPUT
+ln -s  @[INPUTDATA_ROOT]/DATM/CFSR/201110/* DATM_INPUT
+
+# MOM6 fixed input
+cp    @[INPUTDATA_ROOT]/MOM6_FIX/@[OCNRES]/* ./INPUT
+cp    @[INPUTDATA_ROOT]/MOM6_FIX_DATM/@[OCNRES]/* ./INPUT
+
+# CICE fixed input
+cp    @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/grid_cice_NEMS_mx@[OCNRES].nc .
+cp    @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/kmtu_cice_NEMS_mx@[OCNRES].nc .
+cp    @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/mesh.mx@[OCNRES].nc .
+
+
+if [[ $OCNRES == '025' ]]; then
+  cp    @[INPUTDATA_ROOT]/MOM6_IC/@[OCNRES]/2011100100/MOM*.nc ./INPUT
+  cp    @[INPUTDATA_ROOT]/CICE_IC/@[OCNRES]/cice_model_@[ICERES].cpc*.nc cice_model.res.nc
+else
+  cp    @[INPUTDATA_ROOT]/MOM6_IC/@[OCNRES]/2011100100/MOM6_IC_TS*.nc ./INPUT/MOM6_IC_TS.nc
+  cp    @[INPUTDATA_ROOT]/CICE_IC/@[OCNRES]/cice_model_@[ICERES].cpc*.nc cice_model.res.nc
+fi

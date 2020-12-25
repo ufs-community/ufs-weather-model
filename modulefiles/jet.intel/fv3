@@ -1,45 +1,43 @@
-#%Module######################################################################
-##
-##      nems prerequisites
-##
+#%Module
 
 proc ModulesHelp {} {
-     puts stderr "The prerequisites for compiling or running FV3 on Jet."
+  puts stderr "\tcit - loads modules required for building and running UFS Model on Jet/Intel"
 }
 
-##
-## load contrib environment
-## load slurm utils (arbitrary.pl  layout.pl)
-##
-module use -a /contrib/sutils/modulefiles
+module-whatis "loads UFS Model prerequisites for Jet/Intel"
+
+module use /contrib/sutils/modulefiles
 module load sutils
 
-module load intel/18.0.5.274
-module load impi/2018.4.274
-
-setenv NCEPLIBS /mnt/lfs4/HFIP/hfv3gfs/gwv/l0530/lib/
-module use /mnt/lfs4/HFIP/hfv3gfs/gwv/l0530/lib/modulefiles
-module load netcdfp/4.7.4
-module load esmflocal/8_1_0.19bs
-
-module load bacio-intel-sandybridge/2.0.2
-module load ip-intel-sandybridge/3.0.0
-module load nemsio-intel-sandybridge/2.2.4
-module load sp-intel-sandybridge/2.0.2
-module load w3emc-intel-sandybridge/2.4.0
-module load w3nco-intel-sandybridge/2.0.6
-module load g2-intel-sandybridge/3.1.0
-module load g2tmpl-intel-sandybridge/1.5.0
-module load crtm-intel-sandybridge/2.3.0
-module load jasper-intel-sandybridge/1.900.1
-module load png-intel-sandybridge/1.2.59
-module load zlib-intel-sandybridge/1.2.7
-
-##
-## load cmake
-##
 module load cmake/3.16.1
 setenv CMAKE_C_COMPILER mpiicc
 setenv CMAKE_CXX_COMPILER mpiicpc
 setenv CMAKE_Fortran_COMPILER mpiifort
 setenv CMAKE_Platform jet.intel
+
+module use /lfs4/HFIP/hfv3gfs/nwprod/hpc-stack/libs/modulefiles/stack
+
+# At this time (2020/11/30), this is the pre-release version 1.0.0
+module load hpc/1.1.0
+module load hpc-intel/18.0.5.274
+module load hpc-impi/2018.4.274
+
+module load jasper/2.0.22
+module load zlib/1.2.11
+module load png/1.6.35
+
+module load hdf5/1.10.6
+module load netcdf/4.7.4
+module load pio/2.5.1
+module load esmf/8_1_0_beta_snapshot_27
+
+module load bacio/2.4.1
+module load crtm/2.3.0
+module load g2/3.4.1
+module load g2tmpl/1.9.1
+module load ip/3.3.3
+module load nemsio/2.5.2
+module load sp/2.3.3
+module load w3emc/2.7.3
+module load w3nco/2.4.1
+module load upp/10.0.0

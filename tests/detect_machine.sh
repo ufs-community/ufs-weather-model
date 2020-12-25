@@ -27,6 +27,9 @@ case $(hostname -f) in
   m72a2.ncep.noaa.gov)     MACHINE_ID=wcoss_dell_p3 ;; ### mars
   m72a3.ncep.noaa.gov)     MACHINE_ID=wcoss_dell_p3 ;; ### mars
 
+  alogin01)                MACHINE_ID=wcoss2 ;; ### acorn
+  alogin02)                MACHINE_ID=wcoss2 ;; ### acorn
+
   gaea9)                   MACHINE_ID=gaea ;; ### gaea9
   gaea10)                  MACHINE_ID=gaea ;; ### gaea10
   gaea11)                  MACHINE_ID=gaea ;; ### gaea11
@@ -92,12 +95,12 @@ case $(hostname -f) in
   login4.stampede2.tacc.utexas.edu) MACHINE_ID=stampede ;; ### stampede4
 esac
 
-# Overwrite auto-detect with NEMS_MACHINE if set
-MACHINE_ID=${NEMS_MACHINE:-${MACHINE_ID}}
+# Overwrite auto-detect with RT_MACHINE if set
+MACHINE_ID=${RT_MACHINE:-${MACHINE_ID}}
 
 # Append compiler
 if [ $MACHINE_ID = orion ] || [ $MACHINE_ID = hera ] || [ $MACHINE_ID = cheyenne ] || [ $MACHINE_ID = jet ] || [ $MACHINE_ID = gaea ] || [ $MACHINE_ID = stampede ] ; then
-    MACHINE_ID=${MACHINE_ID}.${COMPILER}
+    MACHINE_ID=${MACHINE_ID}.${RT_COMPILER}
 fi
 
 echo "Machine: " $MACHINE_ID "    Account: " $ACCNR
