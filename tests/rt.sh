@@ -31,7 +31,7 @@ usage() {
 rt_single() {
   local compile_line=''
   local run_line=''
-  while read -r line; do
+  while read -r line || [ "$line" ]; do
     line="${line#"${line%%[![:space:]]*}"}"
     [[ ${#line} == 0 ]] && continue
     [[ $line == \#* ]] && continue
@@ -573,7 +573,7 @@ in_metatask=false
 
 [[ -f $TESTS_FILE ]] || die "$TESTS_FILE does not exist"
 
-while read -r line; do
+while read -r line || [ "$line" ]; do
 
   line="${line#"${line%%[![:space:]]*}"}"
   [[ ${#line} == 0 ]] && continue
