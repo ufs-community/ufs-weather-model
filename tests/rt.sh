@@ -31,7 +31,7 @@ usage() {
 rt_single() {
   local compile_line=''
   local run_line=''
-  while read -r line; do
+  while read -r line || [ "$line" ]; do
     line="${line#"${line%%[![:space:]]*}"}"
     [[ ${#line} == 0 ]] && continue
     [[ $line == \#* ]] && continue
@@ -573,7 +573,7 @@ in_metatask=false
 
 [[ -f $TESTS_FILE ]] || die "$TESTS_FILE does not exist"
 
-while read -r line; do
+while read -r line || [ "$line" ]; do
 
   line="${line#"${line%%[![:space:]]*}"}"
   [[ ${#line} == 0 ]] && continue
@@ -581,53 +581,63 @@ while read -r line; do
 
   if [[ $line == COMPILE* ]] ; then
 
-      MAKE_OPT=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
-      SET=$(     echo $line | cut -d'|' -f3)
-      MACHINES=$(echo $line | cut -d'|' -f4)
-      CB=$(      echo $line | cut -d'|' -f5)
+    MAKE_OPT=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
+    SET=$(     echo $line | cut -d'|' -f3)
+    MACHINES=$(echo $line | cut -d'|' -f4 | sed -e 's/^ *//' -e 's/ *$//')
+    CB=$(      echo $line | cut -d'|' -f5)
 
-      [[ $SET_ID != ' ' && $SET != *${SET_ID}* ]] && continue
-      [[ $MACHINES != ' ' && $MACHINES != *${MACHINE_ID}* ]] && continue
-      [[ $CREATE_BASELINE == true && $CB != *fv3* ]] && continue
+    [[ $SET_ID != ' ' && $SET != *${SET_ID}* ]] && continue
+    [[ $CREATE_BASELINE == true && $CB != *fv3* ]] && continue
 
-      (( COMPILE_NR += 1 ))
+    if [[ ${MACHINES} != '' ]]; then
+      if [[ ${MACHINES} == -* ]]; then
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] && continue
+      elif [[ ${MACHINES} == +* ]]; then
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] || continue
+      else
+        echo "MACHINES=|${MACHINES}|"
+        die "MACHINES spec must be either an empty string or start with either '+' or '-'"
+      fi
+    fi
 
-      cat << EOF > ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env
-      export MACHINE_ID=${MACHINE_ID}
-      export RT_COMPILER=${RT_COMPILER}
-      export PATHRT=${PATHRT}
-      export PATHTR=${PATHTR}
-      export SCHEDULER=${SCHEDULER}
-      export ACCNR=${ACCNR}
-      export QUEUE=${COMPILE_QUEUE}
-      export PARTITION=${PARTITION}
-      export ROCOTO=${ROCOTO}
-      export ECFLOW=${ECFLOW}
-      export REGRESSIONTEST_LOG=${REGRESSIONTEST_LOG}
-      export LOG_DIR=${LOG_DIR}
+    (( COMPILE_NR += 1 ))
+
+    cat << EOF > ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env
+    export MACHINE_ID=${MACHINE_ID}
+    export RT_COMPILER=${RT_COMPILER}
+    export PATHRT=${PATHRT}
+    export PATHTR=${PATHTR}
+    export SCHEDULER=${SCHEDULER}
+    export ACCNR=${ACCNR}
+    export QUEUE=${COMPILE_QUEUE}
+    export PARTITION=${PARTITION}
+    export ROCOTO=${ROCOTO}
+    export ECFLOW=${ECFLOW}
+    export REGRESSIONTEST_LOG=${REGRESSIONTEST_LOG}
+    export LOG_DIR=${LOG_DIR}
 EOF
 
-      if [[ $ROCOTO == true ]]; then
-        rocoto_create_compile_task
-      elif [[ $ECFLOW == true ]]; then
-        ecflow_create_compile_task
-      else
-        ./compile.sh $MACHINE_ID "${MAKE_OPT}" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
-      fi
+    if [[ $ROCOTO == true ]]; then
+      rocoto_create_compile_task
+    elif [[ $ECFLOW == true ]]; then
+      ecflow_create_compile_task
+    else
+      ./compile.sh $MACHINE_ID "${MAKE_OPT}" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
+    fi
 
-      # Set RT_SUFFIX (regression test run directories and log files) and BL_SUFFIX
-      # (regression test baseline directories) for REPRO or PROD runs
-      if [[ ${MAKE_OPT^^} =~ "REPRO=Y" ]]; then
-        RT_SUFFIX="_repro"
-        BL_SUFFIX="_repro"
-      else
-        RT_SUFFIX="_prod"
-        BL_SUFFIX="_ccpp"
-      fi
+    # Set RT_SUFFIX (regression test run directories and log files) and BL_SUFFIX
+    # (regression test baseline directories) for REPRO or PROD runs
+    if [[ ${MAKE_OPT^^} =~ "REPRO=Y" ]]; then
+      RT_SUFFIX="_repro"
+      BL_SUFFIX="_repro"
+    else
+      RT_SUFFIX="_prod"
+      BL_SUFFIX="_ccpp"
+    fi
 
-      if [[ ${MAKE_OPT^^} =~ "WW3=Y" ]]; then
-         COMPILE_PREV_WW3_NR=${COMPILE_NR}
-      fi
+    if [[ ${MAKE_OPT^^} =~ "WW3=Y" ]]; then
+       COMPILE_PREV_WW3_NR=${COMPILE_NR}
+    fi
 
     continue
 
@@ -635,15 +645,25 @@ EOF
 
     TEST_NAME=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
     SET=$(      echo $line | cut -d'|' -f3)
-    MACHINES=$( echo $line | cut -d'|' -f4)
+    MACHINES=$( echo $line | cut -d'|' -f4 | sed -e 's/^ *//' -e 's/ *$//')
     CB=$(       echo $line | cut -d'|' -f5)
     DEP_RUN=$(  echo $line | cut -d'|' -f6 | sed -e 's/^ *//' -e 's/ *$//')
     DATE_35D=$( echo $line | cut -d'|' -f7 | sed -e 's/^ *//' -e 's/ *$//')
 
     [[ -e "tests/$TEST_NAME" ]] || die "run test file tests/$TEST_NAME does not exist"
     [[ $SET_ID != ' ' && $SET != *${SET_ID}* ]] && continue
-    [[ $MACHINES != ' ' && $MACHINES != *${MACHINE_ID}* ]] && continue
     [[ $CREATE_BASELINE == true && $CB != *fv3* ]] && continue
+
+    if [[ ${MACHINES} != '' ]]; then
+      if [[ ${MACHINES} == -* ]]; then
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] && continue
+      elif [[ ${MACHINES} == +* ]]; then
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] || continue
+      else
+        echo "MACHINES=|${MACHINES}|"
+        die "MACHINES spec must be either an empty string or start with either '+' or '-'"
+      fi
+    fi
 
     # 35 day tests
     [[ $TEST_35D == true ]] && rt_35d
