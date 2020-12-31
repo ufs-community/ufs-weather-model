@@ -521,6 +521,15 @@ fi
 
 if [[ $ECFLOW == true ]]; then
 
+  # Default maximum number of compile and run jobs
+  MAX_BUILDS=10
+  MAX_JOBS=30
+
+  # Reduce maximum number of compile jobs on jet.intel because of licensing issues
+  if [[ $MACHINE_ID = jet.intel ]]; then
+    MAX_BUILDS=5
+  fi
+
   ECFLOW_RUN=${PATHRT}/ecflow_run
   ECFLOW_SUITE=regtest_$$
   rm -rf ${ECFLOW_RUN}
@@ -535,8 +544,8 @@ suite ${ECFLOW_SUITE}
     edit ECF_TRIES 1
     label src_dir '${PATHTR}'
     label run_dir '${RUNDIR_ROOT}'
-    limit max_builds 10
-    limit max_jobs 30
+    limit max_builds ${MAX_BUILDS}
+    limit max_jobs ${MAX_JOBS}
 EOF
 
   if [[ $MACHINE_ID = wcoss ]]; then
