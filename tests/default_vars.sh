@@ -523,6 +523,10 @@ export FRAZIL_FWSALT='.true.'
 # default to write CICE average history files
 export CICE_HIST_AVG='.true.'
 
+# checkpoint restarts
+export RESTART_FILE_PREFIX=''
+export RESTART_FILE_SUFFIX_HRS=''
+export RESTART_FILE_SUFFIX_SECS=''
 export RT35D=''
 }
 export_35d_run ()
