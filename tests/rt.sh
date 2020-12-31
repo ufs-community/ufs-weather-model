@@ -362,22 +362,13 @@ TEST_35D=false
 
 TESTS_FILE='rt.conf'
 
-SET_ID='standard'
-while getopts ":cfsl:mn:kreh" opt; do
+while getopts ":cl:mn:kreh" opt; do
   case $opt in
     c)
       CREATE_BASELINE=true
-      SET_ID=' '
-      ;;
-    f)
-      SET_ID=' '
-      ;;
-    s)
-      SET_ID='standard'
       ;;
     l)
       TESTS_FILE=$OPTARG
-      SET_ID=' '
       ;;
     m)
       # redefine RTPWD to point to newly created baseline outputs
@@ -386,7 +377,6 @@ while getopts ":cfsl:mn:kreh" opt; do
     n)
       SINGLE_NAME=$OPTARG
       TESTS_FILE='rt.conf.single'
-      SET_ID=' '
       rm -f $TESTS_FILE
       ;;
     k)
@@ -591,11 +581,9 @@ while read -r line || [ "$line" ]; do
   if [[ $line == COMPILE* ]] ; then
 
     MAKE_OPT=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
-    SET=$(     echo $line | cut -d'|' -f3)
-    MACHINES=$(echo $line | cut -d'|' -f4 | sed -e 's/^ *//' -e 's/ *$//')
-    CB=$(      echo $line | cut -d'|' -f5)
+    MACHINES=$(echo $line | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
+    CB=$(      echo $line | cut -d'|' -f4)
 
-    [[ $SET_ID != ' ' && $SET != *${SET_ID}* ]] && continue
     [[ $CREATE_BASELINE == true && $CB != *fv3* ]] && continue
 
     if [[ ${MACHINES} != '' ]]; then
@@ -653,14 +641,12 @@ EOF
   elif [[ $line == RUN* ]] ; then
 
     TEST_NAME=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
-    SET=$(      echo $line | cut -d'|' -f3)
-    MACHINES=$( echo $line | cut -d'|' -f4 | sed -e 's/^ *//' -e 's/ *$//')
-    CB=$(       echo $line | cut -d'|' -f5)
-    DEP_RUN=$(  echo $line | cut -d'|' -f6 | sed -e 's/^ *//' -e 's/ *$//')
-    DATE_35D=$( echo $line | cut -d'|' -f7 | sed -e 's/^ *//' -e 's/ *$//')
+    MACHINES=$( echo $line | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
+    CB=$(       echo $line | cut -d'|' -f4)
+    DEP_RUN=$(  echo $line | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
+    DATE_35D=$( echo $line | cut -d'|' -f6 | sed -e 's/^ *//' -e 's/ *$//')
 
     [[ -e "tests/$TEST_NAME" ]] || die "run test file tests/$TEST_NAME does not exist"
-    [[ $SET_ID != ' ' && $SET != *${SET_ID}* ]] && continue
     [[ $CREATE_BASELINE == true && $CB != *fv3* ]] && continue
 
     if [[ ${MACHINES} != '' ]]; then
