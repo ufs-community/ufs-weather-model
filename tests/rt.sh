@@ -9,18 +9,16 @@ die() { echo "$@" >&2; exit 1; }
 usage() {
   set +x
   echo
-  echo "Usage: $0 -c | -e | -f | -h | -k | -l <file> | -m | -n <name> | -r | -s"
+  echo "Usage: $0 -c | -e | -h | -k | -l <file> | -m | -n <name> | -r "
   echo
   echo "  -c  create new baseline results"
   echo "  -e  use ecFlow workflow manager"
-  echo "  -f  run full suite of regression tests"
   echo "  -h  display this help"
   echo "  -k  keep run directory"
   echo "  -l  runs test specified in <file>"
   echo "  -m  compare against new baseline results"
   echo "  -n  run single test <name>"
   echo "  -r  use Rocoto workflow manager"
-  echo "  -s  run standard suite of regression tests"
   echo
   set -x
   exit 1
