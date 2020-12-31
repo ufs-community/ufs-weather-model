@@ -428,7 +428,8 @@ else
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20201223}
 fi
 
-INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20201220/}
+INPUTDATA_ROOT="/scratch1/NCEPDEV/stmp4/Denise.Worthen/input-data-update"
+#INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20201220/}
 INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20201220/
 
 shift $((OPTIND-1))
