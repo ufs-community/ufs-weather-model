@@ -66,14 +66,6 @@ export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${FHROT
 export RESTART_FILE_SUFFIX_HRS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%02d" $(( ${FHROT} )))"
 export RESTART_FILE_SUFFIX_SECS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%02d" $(( ${FHROT}*3600 )))"
 
-# ATM warm start
-WARM_START='.T.'
-MAKE_NH='.F.'
-NA_INIT='0'
-EXTERNAL_IC='.F.'
-NGGPS_IC='.F.'
-MOUNTAIN='.T.'
-
 export TASKS=$TASKS_cpl_c192
 export TPN=$TPN_cpl_c192
 export INPES=$INPES_cpl_c192
@@ -130,6 +122,15 @@ export FNSMCC="'global_soilmgldas.t382.768.384.grb',"
 export FNABSC="'global_mxsnoalb.uariz.t382.768.384.rg.grb',"
 
 export MOM6_RIVER_RUNOFF='True'
+
+
+# ATM warm start
+WARM_START='.T.'
+MAKE_NH='.F.'
+NA_INIT='0'
+EXTERNAL_IC='.F.'
+NGGPS_IC='.F.'
+MOUNTAIN='.T.'
 
 # ICE warm start
 RUNTYPE='continue'
