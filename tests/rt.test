@@ -1,0 +1,25 @@
+#######################################################################################################################################################################################
+# CPLD tests
+#######################################################################################################################################################################################
+
+COMPILE | SUITES=FV3_GFS_2017_coupled,FV3_GFS_2017_satmedmf_coupled,FV3_GFS_v15p2_coupled S2S=Y                                   | standard | - wcoss_cray gaea.intel jet.intel | fv3 |
+RUN     | cpld_control                                                                                                            | standard | - wcoss_cray gaea.intel jet.intel | fv3 |
+RUN     | cpld_restart                                                                                                            | standard | - wcoss_cray gaea.intel jet.intel |     | cpld_control
+RUN     | cpld_2threads                                                                                                           | standard | - wcoss_cray gaea.intel jet.intel |     |
+RUN     | cpld_decomp                                                                                                             | standard | - wcoss_cray gaea.intel jet.intel |     |
+RUN     | cpld_satmedmf                                                                                                           | standard | - wcoss_cray gaea.intel jet.intel | fv3 |
+RUN     | cpld_ca                                                                                                                 | standard | - wcoss_cray gaea.intel jet.intel | fv3 |
+
+RUN     | cpld_control_c192                                                                                                       | standard | - wcoss_cray gaea.intel jet.intel | fv3 |
+RUN     | cpld_restart_c192                                                                                                       | standard | - wcoss_cray gaea.intel jet.intel |     | cpld_control_c192
+RUN     | cpld_control_c384                                                                                                       | standard | - wcoss_cray gaea.intel jet.intel | fv3 |
+RUN     | cpld_controlfrac_c384                                                                                                   | standard | - wcoss_cray gaea.intel jet.intel | fv3 |
+RUN     | cpld_bmark                                                                                                              | standard | - wcoss_cray gaea.intel jet.intel | fv3 |
+RUN     | cpld_restart_bmark                                                                                                      | standard | - wcoss_cray gaea.intel jet.intel |     | cpld_bmark
+
+COMPILE | SUITES=FV3_GFS_2017_coupled,FV3_GFS_2017_satmedmf_coupled,FV3_GFS_v15p2_coupled S2S=Y WW3=Y                             | standard | - wcoss_cray gaea.intel jet.intel | fv3 |
+RUN     | cpld_bmark_wave                                                                                                         | standard | - wcoss_cray gaea.intel jet.intel | fv3 |
+
+COMPILE | DEBUG=Y SUITES=FV3_GFS_2017_coupled,FV3_GFS_2017_satmedmf_coupled,FV3_GFS_v15p2_coupled S2S=Y                           | standard | - wcoss_cray gaea.intel jet.intel | fv3 |
+RUN     | cpld_debug                                                                                                              | standard | - wcoss_cray gaea.intel jet.intel | fv3 |
+
