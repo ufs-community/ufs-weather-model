@@ -27,17 +27,20 @@ cp    @[INPUTDATA_ROOT]/${FV3_DIR}/*grb .
 cp    @[INPUTDATA_ROOT]/${FV3_DIR}/@[FIELD_TABLE] ./field_table
 cp    @[INPUTDATA_ROOT]/CPL_FIX/a@[ATMRES]o@[OCNRES]/grid_spec.nc ./INPUT
 cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/@[ATMRES]_grid*.nc ./INPUT
+# NOTE: No L127 input for non-frac grid input except for C96
 if [ ${FRAC_GRID_INPUT} = .F. ]; then
   cp  @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/oro_data*.nc ./INPUT
+  cp  @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/gfs_ctrl.nc ./INPUT
 else
  if [[ $NPZ == '127' ]]; then
   cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES]_l127.mx@[OCNRES]_frac/oro_data*.nc ./INPUT
+  cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES]_l127.mx@[OCNRES]_frac/gfs_ctrl.nc ./INPUT
  else
   cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES].mx@[OCNRES]_frac/oro_data*.nc ./INPUT
+  cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES].mx@[OCNRES]_frac/gfs_ctrl.nc ./INPUT
  fi
 fi
 cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/grid_spec.nc ./INPUT/@[ATMRES]_mosaic.nc
-cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/gfs_ctrl.nc ./INPUT
 
 # MOM6 fixed input
 cp    @[INPUTDATA_ROOT]/MOM6_FIX/@[OCNRES]/* ./INPUT
