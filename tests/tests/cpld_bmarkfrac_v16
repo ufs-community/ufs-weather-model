@@ -1,22 +1,23 @@
 #
-#  cpld_restart_bmark test
+#  cpld_bmarkfrac_v16 test
 #
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C384 MX025 - Benchmark test - restart"
 
-export CNTL_DIR="cpld_bmark"
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C384L127 MX025 - Benchmark test - frac grid - v16"
 
-export LIST_FILES="phyf024.tile1.nc \
-                   phyf024.tile2.nc \
-                   phyf024.tile3.nc \
-                   phyf024.tile4.nc \
-                   phyf024.tile5.nc \
-                   phyf024.tile6.nc \
-                   dynf024.tile1.nc \
-                   dynf024.tile2.nc \
-                   dynf024.tile3.nc \
-                   dynf024.tile4.nc \
-                   dynf024.tile5.nc \
-                   dynf024.tile6.nc \
+export CNTL_DIR="cpld_bmarkfrac_v16"
+
+export LIST_FILES="phyf012.tile1.nc \
+                   phyf012.tile2.nc \
+                   phyf012.tile3.nc \
+                   phyf012.tile4.nc \
+                   phyf012.tile5.nc \
+                   phyf012.tile6.nc \
+                   dynf012.tile1.nc \
+                   dynf012.tile2.nc \
+                   dynf012.tile3.nc \
+                   dynf012.tile4.nc \
+                   dynf012.tile5.nc \
+                   dynf012.tile6.nc \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -53,23 +54,19 @@ export LIST_FILES="phyf024.tile1.nc \
                    RESTART/MOM.res_1.nc \
                    RESTART/MOM.res_2.nc \
                    RESTART/MOM.res_3.nc \
-                   RESTART/iced.2013-04-02-00000.nc \
-                   RESTART/ufs.cpld.cpl.r.2013-04-02-00000.nc"
+                   RESTART/iced.2013-04-01-43200.nc \
+                   RESTART/ufs.cpld.cpl.r.2013-04-01-43200.nc"
 
 export_fv3
 export_cpl
+
+export RESTART_INTERVAL="6"
+export RESTART_N=${RESTART_INTERVAL}
 
 export SYEAR="2013"
 export SMONTH="04"
 export SDAY="01"
 export SHOUR="00"
-
-export FHROT='12'
-export RESTART_N=$((FHMAX-$FHROT))
-
-export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${FHROT}  )))0000"
-export RESTART_FILE_SUFFIX_HRS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%02d" $(( ${FHROT} )))"
-export RESTART_FILE_SUFFIX_SECS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%02d" $(( ${FHROT}*3600 )))"
 
 export TASKS=$TASKS_cpl_bmrk
 export TPN=$TPN_cpl_bmrk
@@ -97,7 +94,7 @@ export NY_GLB=1080
 export NPROC_ICE='48'
 
 # set component and coupling timesteps
-export DT_ATMOS='450'
+export DT_ATMOS='300'
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6='900'
 export DT_THERM_MOM6='1800'
@@ -107,6 +104,12 @@ export CPL_FAST=${DT_ATMOS}
 # nems.configure
 export coupling_interval_slow_sec=${CPL_SLOW}
 export coupling_interval_fast_sec=${CPL_FAST}
+
+export FRAC_GRID='.T.'
+export CPLMODE='nems_frac'
+
+export NPZ=127
+export NPZP=128
 
 # resolution dependent files
 export MOM_INPUT="MOM_input_template_${OCNRES}"
@@ -129,21 +132,9 @@ export MOM6_RESTART_SETTING="r"
 
 export RUNID="cpcice"
 
-# ATM warm start
-WARM_START='.T.'
-MAKE_NH='.F.'
-NA_INIT='0'
-EXTERNAL_IC='.F.'
-NGGPS_IC='.F.'
-MOUNTAIN='.T.'
-
-# ICE warm start
-RUNTYPE='continue'
-export USE_RESTART_TIME='.true.'
-
-export INPUT_NML=input.benchmark_ccpp.nml.IN
+export INPUT_NML=input.benchmark_v16.nml.IN
 
 export FIELD_TABLE="field_table.gfdlmp"
-export SUITE_NAME="FV3_GFS_v15p2_coupled"
+export SUITE_NAME="FV3_GFS_v16beta_coupled"
 
 export FV3_RUN=cpld_bmark_run.IN
