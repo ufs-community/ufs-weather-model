@@ -55,19 +55,36 @@ if [ $WARM_START = .F. ]; then
 # Restart
 else
   # Restart files
-  cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/coupler.res ./INPUT
-  cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/fv_*.nc ./INPUT
-  cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/sfc_data*.nc ./INPUT
-  cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/phy_data*.nc ./INPUT
-  cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/MOM*.nc ./INPUT
+  cp -r ../${DEP_RUN}${RT_SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.* ./INPUT
+  rm -f INPUT/fv_core.res.*
+  rm -f INPUT/fv_srf_wnd.res.*
+  rm -f INPUT/fv_tracer.res.*
+  rm -f INPUT/phy_data.*
+  rm -f INPUT/sfc_data.*
+  for RFILE in ../${DEP_RUN}${RT_SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.*; do
+    [ -e $RFILE ] || exit 1
+    RFILE_OLD=$(basename $RFILE)
+    RFILE_NEW="${RFILE_OLD//${RESTART_FILE_PREFIX}./}"
+    cp $RFILE INPUT/${RFILE_NEW}
+  done
+
+  #if not mx025, then mom6 restart is a single file
+  if [[ $OCNRES == '025' ]]; then
+   cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/MOM.res.${RESTART_FILE_SUFFIX_HRS}-00-00.nc ./INPUT/MOM.res.nc
+   cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/MOM.res.${RESTART_FILE_SUFFIX_HRS}-00-00_1.nc ./INPUT/MOM.res_1.nc
+   cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/MOM.res.${RESTART_FILE_SUFFIX_HRS}-00-00_2.nc ./INPUT/MOM.res_2.nc
+   cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/MOM.res.${RESTART_FILE_SUFFIX_HRS}-00-00_3.nc ./INPUT/MOM.res_3.nc
+  else
+   cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/MOM.res.${RESTART_FILE_SUFFIX_HRS}-00-00.nc ./INPUT/MOM.res.nc
+  fi
 
   # CMEPS restart and pointer files
-  cp  ../${DEP_RUN}${RT_SUFFIX}/RESTART/ufs.cpld.cpl.r.2016-10-03-43200.nc .
-  RFILE="ufs.cpld.cpl.r.2016-10-03-43200.nc"
+  RFILE="ufs.cpld.cpl.r.${RESTART_FILE_SUFFIX_SECS}.nc"
+  cp  ../${DEP_RUN}${RT_SUFFIX}/RESTART/${RFILE} .
   ls -1 ${RFILE}>rpointer.cpl
 
   # CICE restart and pointer files
-  cp  ../${DEP_RUN}${RT_SUFFIX}/RESTART/iced.2016-10-03-43200.nc ./INPUT
-  RFILE="iced.2016-10-03-43200.nc"
+  RFILE="iced.${RESTART_FILE_SUFFIX_SECS}.nc"
+  cp  ../${DEP_RUN}${RT_SUFFIX}/RESTART/${RFILE} ./INPUT
   ls -1 "./INPUT/"${RFILE}>ice.restart_file
 fi
