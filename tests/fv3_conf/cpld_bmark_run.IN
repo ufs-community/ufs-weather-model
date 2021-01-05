@@ -72,18 +72,8 @@ fi
 # No restart
 if [ $WARM_START = .F. ]; then
   # ICs
-  if [ ${FRAC_GRID_INPUT} = .F. ]; then
-   cp  @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/sfc_data*.nc ./INPUT
-   cp  @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/gfs_data*.nc ./INPUT
-  else
-   if [[ $NPZ == '127' ]]; then
-     cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES]_l127.mx@[OCNRES]_frac/sfc_data*.nc ./INPUT
-     cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES]_l127.mx@[OCNRES]_frac/gfs_data*.nc ./INPUT
-   else
-     cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES].mx@[OCNRES]_frac/sfc_data*.nc ./INPUT
-     cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES].mx@[OCNRES]_frac/gfs_data*.nc ./INPUT
-   fi
-  fi
+  cp    @[INPUTDATA_ROOT]/${FV3_IC}/sfc_data*.nc ./INPUT
+  cp    @[INPUTDATA_ROOT]/${FV3_IC}/gfs_data*.nc ./INPUT
   cp    @[INPUTDATA_ROOT]/${MOM6_IC}/MOM*.nc ./INPUT
   # the BM ICs are still named cice5 and need to remain so until P5.0 is completed
   cp    @[INPUTDATA_ROOT]/${CICE_IC}/cice5_model_@[ICERES].*.nc ./cice_model.res.nc

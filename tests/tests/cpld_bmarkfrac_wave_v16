@@ -17,9 +17,9 @@ export LIST_FILES="phyf012.tile1.nc \
                    dynf012.tile4.nc \
                    dynf012.tile5.nc \
                    dynf012.tile6.nc \
-                   20130401.043200.out_grd.gwes_30m \
-                   20130401.043200.out_pnt.points \
-                   20130401.043200.restart.gwes_30m \
+                   20130401.120000.out_grd.gwes_30m \
+                   20130401.120000.out_pnt.points \
+                   20130401.120000.restart.gwes_30m \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -56,8 +56,8 @@ export LIST_FILES="phyf012.tile1.nc \
                    RESTART/MOM.res_1.nc \
                    RESTART/MOM.res_2.nc \
                    RESTART/MOM.res_3.nc \
-                   RESTART/iced.2013-04-02-43200.nc \
-                   RESTART/ufs.cpld.cpl.r.2013-04-02-43200.nc"
+                   RESTART/iced.2013-04-01-43200.nc \
+                   RESTART/ufs.cpld.cpl.r.2013-04-01-43200.nc"
 
 export_fv3
 export_cpl
@@ -67,7 +67,12 @@ export SMONTH="04"
 export SDAY="01"
 export SHOUR="00"
 
-export WLCLK=60
+export DAYS="0.5"
+export FHMAX="12"
+export RESTART_INTERVAL=${FHMAX}
+export RESTART_N=${RESTART_INTERVAL}
+
+#export WLCLK=60
 
 export TASKS=$TASKS_cpl_wwav
 export TPN=$TPN_cpl_wwav
@@ -136,6 +141,8 @@ export OZ_PHYS_NEW=".T."
 export MOM6_USE_WAVES='True'
 export MOM6_RIVER_RUNOFF='True'
 export MOM6_RESTART_SETTING="r"
+#TODO: must remove for restart repro. This setting is used in bmark+wave configurations only
+export MOM6_REPRO_LA='True'
 
 export RUNID="cpcice"
 
@@ -143,5 +150,4 @@ export INPUT_NML=input.benchmark_v16.nml.IN
 
 export FIELD_TABLE="field_table.gfdlmp"
 export SUITE_NAME="FV3_GFS_v16beta_coupled"
-
 export FV3_RUN=cpld_bmark_run.IN
