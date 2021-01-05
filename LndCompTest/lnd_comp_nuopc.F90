@@ -103,8 +103,8 @@ module lnd_comp_nuopc
     ! importable field: air_pressure_at_sea_level
     ! call NUOPC_Advertise(importState, &
     !   StandardName="air_pressure_at_sea_level", name="pmsl", rc=rc)
-    call NUOPC_Advertise(importState, &
-      StandardName="soil_type", name="soil_type", rc=rc)
+    ! call NUOPC_Advertise(importState, &
+    !   StandardName="soil_type", name="soil_type", rc=rc)
 
     ! if (ESMF_LogFoundError(rcToCheck=rc, msg=ESMF_LOGERR_PASSTHRU, &
     !   line=__LINE__, &
@@ -113,19 +113,22 @@ module lnd_comp_nuopc
 
     ! ! importable field: surface_net_downward_shortwave_flux
     ! call NUOPC_Advertise(importState, &
-    !   StandardName="inst_net_sw_flx", name="inst_net_sw_flx", rc=rc)
-    ! if (ESMF_LogFoundError(rcToCheck=rc, msg=ESMF_LOGERR_PASSTHRU, &
-    !   line=__LINE__, &
-    !   file=__FILE__)) &
-    !   return  ! bail out
+    !   StandardName="mean_down_lw_flx", name="mean_down_lw_flx", rc=rc)
+    call NUOPC_Advertise(importState, &
+      StandardName="mean_down_lw_flx", name="mean_down_lw_flx", rc=rc)
 
-    ! exportable field: sea_surface_temperature
-    call NUOPC_Advertise(exportState, &
-      StandardName="land_mask", name="land_mask", rc=rc)
     if (ESMF_LogFoundError(rcToCheck=rc, msg=ESMF_LOGERR_PASSTHRU, &
       line=__LINE__, &
       file=__FILE__)) &
       return  ! bail out
+
+    ! exportable field: sea_surface_temperature
+    ! call NUOPC_Advertise(exportState, &
+    !   StandardName="inst_down_lw_flx", name="inst_down_lw_flx", rc=rc)
+    ! if (ESMF_LogFoundError(rcToCheck=rc, msg=ESMF_LOGERR_PASSTHRU, &
+    !   line=__LINE__, &
+    !   file=__FILE__)) &
+    !   return  ! bail out
     
   end subroutine
   
@@ -140,7 +143,9 @@ module lnd_comp_nuopc
     type(ESMF_Field)        :: field
     type(ESMF_Grid)         :: gridIn
     type(ESMF_Grid)         :: gridOut
-    
+
+    integer :: dimCount ! tmp, debug
+    integer :: coordDimCount(ESMF_MAXDIM) ! tmp, debug
     write(*,*) "JP debug 7"
     
     rc = ESMF_SUCCESS
@@ -155,32 +160,81 @@ module lnd_comp_nuopc
     !   return  ! bail out
 
     ! create a Grid object for Fields
-    gridIn = ESMF_GridCreateNoPeriDimUfrm(maxIndex=(/100, 10/), &
-      minCornerCoord=(/10._ESMF_KIND_R8, 20._ESMF_KIND_R8/), &
-      maxCornerCoord=(/100._ESMF_KIND_R8, 200._ESMF_KIND_R8/), &
-      coordSys=ESMF_COORDSYS_CART, staggerLocList=(/ESMF_STAGGERLOC_CENTER/), &
-      rc=rc)
+    ! gridIn = ESMF_GridCreateNoPeriDimUfrm(maxIndex=(/360, 180/), &
+    !      minCornerCoord=(/0.0_ESMF_KIND_R8, -90.0_ESMF_KIND_R8/), &
+    !      maxCornerCoord=(/360.0_ESMF_KIND_R8, 90.0_ESMF_KIND_R8/), &
+    !      coordSys=ESMF_COORDSYS_CART,  &
+    !      staggerLocList=(/ESMF_STAGGERLOC_CENTER/), &
+    !      rc=rc)
+    ! gridIn = NUOPC_GridCreateSimpleSph(0._ESMF_KIND_R8, -85._ESMF_KIND_R8, &             
+    !      360._ESMF_KIND_R8, 85._ESMF_KIND_R8, 400, 200, &     
+    !      scheme=ESMF_REGRID_SCHEME_FULL3D, rc=rc)                   
+
+    gridIn = ESMF_GridCreate1PeriDimUfrm(maxIndex=(/360,180/), &
+         minCornerCoord=(/0.0_ESMF_KIND_R8,-90.0_ESMF_KIND_R8/), &
+         maxCornerCoord=(/360.0_ESMF_KIND_R8,90.0_ESMF_KIND_R8/), &
+         staggerLocList=(/ESMF_STAGGERLOC_CORNER, ESMF_STAGGERLOC_CENTER/), rc=rc)
+
+   call ESMF_GridGet(gridIn, dimCount=dimCount, coordDimCount=coordDimCount, &
+        rc=rc)
+   !! write out dimcount, coorddimcount
+   write(*,*) "JP grid", dimCount, coordDImCount
+
+   
+   !  !! from tech note
+   !  gridIn = ESMF_GridCreate1PeriDim(          &
+   !       ! Define a regular distribution
+   !       maxIndex=(/360,180/), & ! define index space
+   !       !regDecomp=(/2,3/),  & ! define how to divide among DEs
+   !       ! Specify mapping of coords dim to Grid dim
+   !       coordDep1=(/1/), & ! 1st coord is 1D and depends on 1st Grid dim
+   !       coordDep2=(/2/), & ! 2nd coord is 1D and depends on 2nd Grid dim
+   !       indexflag=ESMF_INDEX_GLOBAL, &rc=rc)
+   ! !-------------------------------------------------------------------
+   ! ! Allocate coordinate storage and associate it with the center
+   ! ! stagger location.  Since no coordinate values are specified in
+   ! ! this call no coordinate values are set yet.
+   ! !-------------------------------------------------------------------
+   ! call ESMF_GridAddCoord(gridIn,  &
+   !        staggerloc=ESMF_STAGGERLOC_CENTER, rc=rc)
+   ! !-------------------------------------------------------------------
+   ! ! Get the pointer to the first coordinate array and the bounds
+   ! ! of its global indices on the local DE.
+   ! !-------------------------------------------------------------------
+   ! call ESMF_GridGetCoord(gridIn, coordDim=1, localDE=0, &
+   !        staggerloc=ESMF_STAGGERLOC_CENTER, &
+   !        computationalLBound=lbnd, computationalUBound=ubnd, &
+   !        farrayPtr=coordX, rc=rc)
+   ! !-------------------------------------------------------------------
+   ! ! Calculate and set coordinates in the first dimension [10-100].
+   ! !-------------------------------------------------------------------
+   ! do i=lbnd(1),ubnd(1)
+   !      coordX(i) = i*10.0
+   ! enddo
+   ! !-------------------------------------------------------------------
+   ! ! Get the pointer to the second coordinate array and the bounds of
+   ! ! its global indices on the local DE.
+   ! !-------------------------------------------------------------------
+   ! call ESMF_GridGetCoord(gridIn, coordDim=2, localDE=0, &
+   !        staggerloc=ESMF_STAGGERLOC_CENTER, &
+   !        computationalLBound=lbnd, computationalUBound=ubnd, &
+   !        farrayPtr=coordY, rc=rc)
+   ! !-------------------------------------------------------------------
+   ! ! Calculate and set coordinates in the second dimension [10-200]
+   ! !-------------------------------------------------------------------
+   ! do j=lbnd(1),ubnd(1)
+   !      coordY(j) = j*10.0
+   ! enddo
+
+    
     if (ESMF_LogFoundError(rcToCheck=rc, msg=ESMF_LOGERR_PASSTHRU, &
       line=__LINE__, &
       file=__FILE__)) &
       return  ! bail out
     gridOut = gridIn ! for now out same as in
 
-    ! importable field: air_pressure_at_sea_level
-    field = ESMF_FieldCreate(name="soil_type", grid=gridIn, &
-      typekind=ESMF_TYPEKIND_R8, rc=rc)
-    if (ESMF_LogFoundError(rcToCheck=rc, msg=ESMF_LOGERR_PASSTHRU, &
-      line=__LINE__, &
-      file=__FILE__)) &
-      return  ! bail out
-    call NUOPC_Realize(importState, field=field, rc=rc)
-    if (ESMF_LogFoundError(rcToCheck=rc, msg=ESMF_LOGERR_PASSTHRU, &
-      line=__LINE__, &
-      file=__FILE__)) &
-      return  ! bail out
-
-    ! ! importable field: surface_net_downward_shortwave_flux
-    ! field = ESMF_FieldCreate(name="inst_net_sw_flx", grid=gridIn, &
+    ! ! importable field: air_pressure_at_sea_level
+    ! field = ESMF_FieldCreate(name="soil_type", grid=gridIn, &
     !   typekind=ESMF_TYPEKIND_R8, rc=rc)
     ! if (ESMF_LogFoundError(rcToCheck=rc, msg=ESMF_LOGERR_PASSTHRU, &
     !   line=__LINE__, &
@@ -192,18 +246,31 @@ module lnd_comp_nuopc
     !   file=__FILE__)) &
     !   return  ! bail out
 
-    ! exportable field: sea_surface_temperature
-    field = ESMF_FieldCreate(name="land_mask", grid=gridOut, &
+    ! importable field: surface_down_downward_shortwave_flux
+    field = ESMF_FieldCreate(name="mean_down_lw_flx", grid=gridIn, &
       typekind=ESMF_TYPEKIND_R8, rc=rc)
     if (ESMF_LogFoundError(rcToCheck=rc, msg=ESMF_LOGERR_PASSTHRU, &
       line=__LINE__, &
       file=__FILE__)) &
       return  ! bail out
-    call NUOPC_Realize(exportState, field=field, rc=rc)
+    call NUOPC_Realize(importState, field=field, rc=rc)
     if (ESMF_LogFoundError(rcToCheck=rc, msg=ESMF_LOGERR_PASSTHRU, &
       line=__LINE__, &
       file=__FILE__)) &
       return  ! bail out
+
+    ! ! exportable field: sea_surface_temperature
+    ! field = ESMF_FieldCreate(name="land_mask", grid=gridOut, &
+    !   typekind=ESMF_TYPEKIND_R8, rc=rc)
+    ! if (ESMF_LogFoundError(rcToCheck=rc, msg=ESMF_LOGERR_PASSTHRU, &
+    !   line=__LINE__, &
+    !   file=__FILE__)) &
+    !   return  ! bail out
+    ! call NUOPC_Realize(exportState, field=field, rc=rc)
+    ! if (ESMF_LogFoundError(rcToCheck=rc, msg=ESMF_LOGERR_PASSTHRU, &
+    !   line=__LINE__, &
+    !   file=__FILE__)) &
+    !   return  ! bail out
     
   end subroutine
   
