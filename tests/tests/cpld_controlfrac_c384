@@ -1,7 +1,7 @@
 #
 #  cpld_controlfrac_c384 frac grid test
 #
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C384 MX025, frac grid "
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C384 MX025 - frac grid "
 
 export CNTL_DIR="cpld_controlfrac_c384"
 
@@ -97,7 +97,6 @@ export coupling_interval_slow_sec=${CPL_SLOW}
 export coupling_interval_fast_sec=${CPL_FAST}
 
 export FRAC_GRID='.T.'
-export FRAC_GRID_INPUT='.T.'
 export CPLMODE="nems_frac"
 
 # resolution dependent files
@@ -115,6 +114,7 @@ export FNSMCC="'global_soilmgldas.t766.1536.768.grb',"
 export FNABSC="'global_mxsnoalb.uariz.t766.1536.768.rg.grb',"
 
 export MOM6_RIVER_RUNOFF='True'
+#TODO: must remove for restart repro
 export MOM6_REPRO_LA='True'
 
 export FV3_RUN=cpld_control_run.IN
