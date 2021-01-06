@@ -90,6 +90,10 @@ if [[ "${MAKE_OPT}" == *"32BIT=Y"* ]]; then
   CMAKE_FLAGS="${CMAKE_FLAGS} -D32BIT=Y"
 fi
 
+if [[ "${MAKE_OPT}" == *"MKL_DIR=Y"* ]]; then
+  CMAKE_FLAGS="${CMAKE_FLAGS} -DMKL_DIR=Y"
+fi
+
 if [[ "${MAKE_OPT}" == *"OPENMP=N"* ]]; then
   CMAKE_FLAGS="${CMAKE_FLAGS} -DOPENMP=OFF"
 fi

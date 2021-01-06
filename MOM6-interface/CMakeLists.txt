@@ -63,7 +63,6 @@ target_include_directories(mom6 PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_
 #target_include_directories(mom6 PUBLIC  ${CMAKE_CURRENT_BINARY_DIR}/../stochastic_physics)
 target_link_libraries(mom6 PUBLIC fms
                                   esmf
-                                  stochastic_physics
                                   NetCDF::NetCDF_Fortran)
 target_link_libraries(mom6 PRIVATE fms
                                    esmf
@@ -84,10 +83,15 @@ if(MOM6SOLO)
                                               $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/../stochastic_physics>)
   target_include_directories(mom6solo PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/config_src/dynamic>
                                               $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/src/framework>)
+  if(MKL_DIR)
+    set (MKL_LIB "-L$ENV{MKLROOT}/lib/intel64 -Wl,-rpath,$ENV{MKLROOT}/lib/intel64 -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lpthread -lm -ldl")
+    message (STATUS "Enable Intel MKL support for MOM6SOLO")
+   endif()
   target_link_libraries(mom6solo PRIVATE mom6_obj
                                          fms  
                                          stochastic_physics
                                          esmf
+                                         ${MKL_LIB}
                                          NetCDF::NetCDF_Fortran)
   # OpenMP is disabled in MOM6
   #if(OpenMP_Fortran_FOUND)
@@ -100,7 +104,8 @@ endif()
 ###############################################################################
 
 install(
-  TARGETS mom6 stochastic_physics
+  #TARGETS mom6 stochastic_physics
+  TARGETS mom6 
   EXPORT  mom6-config
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
@@ -113,5 +118,6 @@ install(EXPORT      mom6-config
         DESTINATION lib/cmake)
 
 if(MOM6SOLO)
-  install(TARGETS mom6solo RUNTIME DESTINATION bin)
+  #install(TARGETS mom6solo RUNTIME DESTINATION bin)
+  install(TARGETS mom6solo stochastic_physics RUNTIME DESTINATION bin)
 endif()
