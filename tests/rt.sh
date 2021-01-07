@@ -9,18 +9,16 @@ die() { echo "$@" >&2; exit 1; }
 usage() {
   set +x
   echo
-  echo "Usage: $0 -c | -e | -f | -h | -k | -l <file> | -m | -n <name> | -r | -s"
+  echo "Usage: $0 -c | -e | -h | -k | -l <file> | -m | -n <name> | -r "
   echo
   echo "  -c  create new baseline results"
   echo "  -e  use ecFlow workflow manager"
-  echo "  -f  run full suite of regression tests"
   echo "  -h  display this help"
   echo "  -k  keep run directory"
   echo "  -l  runs test specified in <file>"
   echo "  -m  compare against new baseline results"
   echo "  -n  run single test <name>"
   echo "  -r  use Rocoto workflow manager"
-  echo "  -s  run standard suite of regression tests"
   echo
   set -x
   exit 1
@@ -362,22 +360,13 @@ TEST_35D=false
 
 TESTS_FILE='rt.conf'
 
-SET_ID='standard'
-while getopts ":cfsl:mn:kreh" opt; do
+while getopts ":cl:mn:kreh" opt; do
   case $opt in
     c)
       CREATE_BASELINE=true
-      SET_ID=' '
-      ;;
-    f)
-      SET_ID=' '
-      ;;
-    s)
-      SET_ID='standard'
       ;;
     l)
       TESTS_FILE=$OPTARG
-      SET_ID=' '
       ;;
     m)
       # redefine RTPWD to point to newly created baseline outputs
@@ -386,7 +375,6 @@ while getopts ":cfsl:mn:kreh" opt; do
     n)
       SINGLE_NAME=$OPTARG
       TESTS_FILE='rt.conf.single'
-      SET_ID=' '
       rm -f $TESTS_FILE
       ;;
     k)
@@ -423,13 +411,13 @@ if [[ $TESTS_FILE =~ '35d' ]]; then
 fi
 
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20201223/${RT_COMPILER^^}}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20210106/${RT_COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20201223}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20210106}
 fi
 
-INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20201220/}
-INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20201220/
+INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20210107}
+INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20201220
 
 shift $((OPTIND-1))
 [[ $# -gt 1 ]] && usage
@@ -521,6 +509,15 @@ fi
 
 if [[ $ECFLOW == true ]]; then
 
+  # Default maximum number of compile and run jobs
+  MAX_BUILDS=10
+  MAX_JOBS=30
+
+  # Reduce maximum number of compile jobs on jet.intel because of licensing issues
+  if [[ $MACHINE_ID = jet.intel ]]; then
+    MAX_BUILDS=5
+  fi
+
   ECFLOW_RUN=${PATHRT}/ecflow_run
   ECFLOW_SUITE=regtest_$$
   rm -rf ${ECFLOW_RUN}
@@ -535,8 +532,8 @@ suite ${ECFLOW_SUITE}
     edit ECF_TRIES 1
     label src_dir '${PATHTR}'
     label run_dir '${RUNDIR_ROOT}'
-    limit max_builds 10
-    limit max_jobs 30
+    limit max_builds ${MAX_BUILDS}
+    limit max_jobs ${MAX_JOBS}
 EOF
 
   if [[ $MACHINE_ID = wcoss ]]; then
@@ -582,11 +579,9 @@ while read -r line || [ "$line" ]; do
   if [[ $line == COMPILE* ]] ; then
 
     MAKE_OPT=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
-    SET=$(     echo $line | cut -d'|' -f3)
-    MACHINES=$(echo $line | cut -d'|' -f4 | sed -e 's/^ *//' -e 's/ *$//')
-    CB=$(      echo $line | cut -d'|' -f5)
+    MACHINES=$(echo $line | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
+    CB=$(      echo $line | cut -d'|' -f4)
 
-    [[ $SET_ID != ' ' && $SET != *${SET_ID}* ]] && continue
     [[ $CREATE_BASELINE == true && $CB != *fv3* ]] && continue
 
     if [[ ${MACHINES} != '' ]]; then
@@ -644,14 +639,12 @@ EOF
   elif [[ $line == RUN* ]] ; then
 
     TEST_NAME=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
-    SET=$(      echo $line | cut -d'|' -f3)
-    MACHINES=$( echo $line | cut -d'|' -f4 | sed -e 's/^ *//' -e 's/ *$//')
-    CB=$(       echo $line | cut -d'|' -f5)
-    DEP_RUN=$(  echo $line | cut -d'|' -f6 | sed -e 's/^ *//' -e 's/ *$//')
-    DATE_35D=$( echo $line | cut -d'|' -f7 | sed -e 's/^ *//' -e 's/ *$//')
+    MACHINES=$( echo $line | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
+    CB=$(       echo $line | cut -d'|' -f4)
+    DEP_RUN=$(  echo $line | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
+    DATE_35D=$( echo $line | cut -d'|' -f6 | sed -e 's/^ *//' -e 's/ *$//')
 
     [[ -e "tests/$TEST_NAME" ]] || die "run test file tests/$TEST_NAME does not exist"
-    [[ $SET_ID != ' ' && $SET != *${SET_ID}* ]] && continue
     [[ $CREATE_BASELINE == true && $CB != *fv3* ]] && continue
 
     if [[ ${MACHINES} != '' ]]; then

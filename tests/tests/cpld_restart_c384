@@ -1,9 +1,9 @@
 #
-#  cpld_controlfrac_c384 frac grid test
+#  cpld_restart_c384 test
 #
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C384 MX025 - frac grid "
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C384 MX025 - restart"
 
-export CNTL_DIR="cpld_controlfrac_c384"
+export CNTL_DIR="cpld_control_c384"
 
 export LIST_FILES="phyf024.tile1.nc \
                    phyf024.tile2.nc \
@@ -59,8 +59,12 @@ export LIST_FILES="phyf024.tile1.nc \
 export_fv3
 export_cpl
 
-export RESTART_INTERVAL="12"
-export RESTART_N=${RESTART_INTERVAL}
+export FHROT='12'
+export RESTART_N=$((FHMAX-$FHROT))
+
+export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${FHROT}  )))0000"
+export RESTART_FILE_SUFFIX_HRS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%02d" $(( ${FHROT} )))"
+export RESTART_FILE_SUFFIX_SECS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%02d" $(( ${FHROT}*3600 )))"
 
 export TASKS=$TASKS_cpl_c384
 export TPN=$TPN_cpl_c384
@@ -99,9 +103,6 @@ export CPL_FAST=${DT_ATMOS}
 export coupling_interval_slow_sec=${CPL_SLOW}
 export coupling_interval_fast_sec=${CPL_FAST}
 
-export FRAC_GRID='.T.'
-export CPLMODE='nems_frac'
-
 # resolution dependent files
 export MOM_INPUT="MOM_input_template_${OCNRES}"
 export MESHICE="mesh.mx${OCNRES}.nc"
@@ -117,5 +118,20 @@ export FNSMCC="'global_soilmgldas.t766.1536.768.grb',"
 export FNABSC="'global_mxsnoalb.uariz.t766.1536.768.rg.grb',"
 
 export MOM6_RIVER_RUNOFF='True'
+
+# ATM warm start
+WARM_START='.T.'
+MAKE_NH='.F.'
+NA_INIT='0'
+EXTERNAL_IC='.F.'
+NGGPS_IC='.F.'
+MOUNTAIN='.T.'
+
+# ICE warm start
+RUNTYPE='continue'
+export USE_RESTART_TIME='.true.'
+
+# MOM6 warm start
+export MOM6_RESTART_SETTING="r"
 
 export FV3_RUN=cpld_control_run.IN
