@@ -1,23 +1,23 @@
 #
-#  cpld_control 12h test
-#  NOTE: test is not currently used; restarts are tested at c96mx025
+#  cpld_debugfrac test
+#
 
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C96MX100 12h"
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C96MX100 - debug - frac grid"
 
-export CNTL_DIR="cpld_control_12h"
+export CNTL_DIR="cpld_debugfrac"
 
-export LIST_FILES="phyf012.tile1.nc \
-                   phyf012.tile2.nc \
-                   phyf012.tile3.nc \
-                   phyf012.tile4.nc \
-                   phyf012.tile5.nc \
-                   phyf012.tile6.nc \
-                   dynf012.tile1.nc \
-                   dynf012.tile2.nc \
-                   dynf012.tile3.nc \
-                   dynf012.tile4.nc \
-                   dynf012.tile5.nc \
-                   dynf012.tile6.nc \
+export LIST_FILES="phyf006.tile1.nc \
+                   phyf006.tile2.nc \
+                   phyf006.tile3.nc \
+                   phyf006.tile4.nc \
+                   phyf006.tile5.nc \
+                   phyf006.tile6.nc \
+                   dynf006.tile1.nc \
+                   dynf006.tile2.nc \
+                   dynf006.tile3.nc \
+                   dynf006.tile4.nc \
+                   dynf006.tile5.nc \
+                   dynf006.tile6.nc \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -51,14 +51,21 @@ export LIST_FILES="phyf012.tile1.nc \
                    RESTART/sfc_data.tile5.nc \
                    RESTART/sfc_data.tile6.nc \
                    RESTART/MOM.res.nc \
-                   RESTART/iced.2016-10-03-43200.nc \
-                   RESTART/ufs.cpld.cpl.r.2016-10-03-43200.nc"
+                   RESTART/iced.2016-10-03-21600.nc \
+                   RESTART/ufs.cpld.cpl.r.2016-10-03-21600.nc"
 
 export_fv3
 export_cpl
 
-export DAYS="0.50"
-export FHMAX="12"
+export DAYS="0.25"
+export FHMAX="6"
+export NFHOUT_HF="1"
+# requires extra time
+export WLCLK=60
+
 export RESTART_N=${FHMAX}
+
+export FRAC_GRID='.T.'
+export CPLMODE='nems_frac'
 
 export FV3_RUN=cpld_control_run.IN
