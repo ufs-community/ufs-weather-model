@@ -9,7 +9,13 @@ fi
 ICERES="${OCNRES:0:1}.${OCNRES:1}"
 
 BM_IC=BM_IC/${SYEAR}${SMONTH}${SDAY}${SHOUR}
-FV3_IC=${BM_IC}/gfs/@[ATMRES]/INPUT
+if [[ ${FRAC_GRID_INPUT} = .F. ]]; then
+  FV3_IC=${BM_IC}/gfs/@[ATMRES]/INPUT
+elif [[ @[NPZ] == '127' ]]; then
+  FV3_IC=FV3_input_frac/${BM_IC}/gfs/@[ATMRES]_L@[NPZ]/INPUT
+else
+  FV3_IC=FV3_input_frac/${BM_IC}/gfs/@[ATMRES]/INPUT
+fi
 MOM6_IC=${BM_IC}/mom6_da
 CICE_IC=${BM_IC}/cpc
 WW3_IC=${BM_IC}/ww3
@@ -29,9 +35,20 @@ cp    @[INPUTDATA_ROOT]/${FV3_DIR}/*grb .
 cp    @[INPUTDATA_ROOT]/${FV3_DIR}/@[FIELD_TABLE] ./field_table
 cp    @[INPUTDATA_ROOT]/CPL_FIX/a@[ATMRES]o@[OCNRES]/grid_spec.nc ./INPUT
 cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/@[ATMRES]_grid*.nc ./INPUT
-cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/oro_data*.nc ./INPUT
+# NOTE: No L127 FV3_DIR input for non-frac grid input except for C96
+if [ ${FRAC_GRID_INPUT} = .F. ]; then
+  cp  @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/oro_data*.nc ./INPUT
+  cp  @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/gfs_ctrl.nc ./INPUT
+else
+ if [[ $NPZ == '127' ]]; then
+  cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES]_l127.mx@[OCNRES]_frac/oro_data*.nc ./INPUT
+  cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES]_l127.mx@[OCNRES]_frac/gfs_ctrl.nc ./INPUT
+ else
+  cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES].mx@[OCNRES]_frac/oro_data*.nc ./INPUT
+  cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES].mx@[OCNRES]_frac/gfs_ctrl.nc ./INPUT
+ fi
+fi
 cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/grid_spec.nc ./INPUT/@[ATMRES]_mosaic.nc
-cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/gfs_ctrl.nc ./INPUT
 
 # MOM6 fixed input
 cp    @[INPUTDATA_ROOT]/MOM6_FIX/@[OCNRES]/* ./INPUT
