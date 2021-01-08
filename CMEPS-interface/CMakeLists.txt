@@ -67,7 +67,7 @@ list(APPEND _mediator_files
 
 list(APPEND _mediator_defs ESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR}
                            ESMF_VERSION_MINOR=${ESMF_VERSION_MINOR}
-                           INTERNAL_PIO_INIT)
+                           INTERNAL_PIO_INIT=0)
 
 ### Create target library and set PUBLIC interfaces on the library
 add_library(cmeps STATIC ${_nems_util_files} ${_mediator_files})
