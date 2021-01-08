@@ -13,15 +13,6 @@ import sys
 import yaml
 import os
 
-# WARNING WARNING WARNING: DO NOT COMMIT WITH THE GHACCESSTOKEN
-GHACCESSTOKEN = "e670110df066c9ba2ceeb8042103255ee1fba4fb"
-# GHACCESSTOKEN = None
-# GITHUB RATE LIMIT FOR AUTHENTICATED USERS IS 5000 REQUESTS PER HOUR
-db_filename = 'rt_auto.yml'
-yaml_data = None
-client = None
-machine = None
-
 class machine_info():
 
     def __init__(self, name, regexhostname, workdir, baselinedir):
@@ -29,6 +20,30 @@ class machine_info():
         self.regexhostname = regexhostname
         self.workdir = workdir
         self.baselinedir = baselinedir
+
+def get_access_token():
+    # CREATE FILE "accesstoken.txt" add API Token and change perms appropriately
+    # GITHUB RATE LIMIT FOR AUTHENTICATED USERS IS 5000 REQUESTS PER HOUR
+    f = open("accesstoken.txt", 'rb')
+    GHACCESSTOKEN = f.read()
+    f.close()
+    GHACCESSTOKEN = GHACCESSTOKEN.decode("utf-8").strip('\n')
+
+    return GHACCESSTOKEN
+
+def read_yaml_data(filename):
+    stream = open(db_filename, 'r')
+    yaml_data = yaml.load(stream, Loader=yaml.SafeLoader)
+    stream.close()
+    return yaml_data
+
+def get_yaml_subset(in_yaml, keyin):
+    try:
+        yaml_subset = in_yaml[keyin]
+    except:
+        sys.exit("Unable to get yaml subset: {}. Quitting".format(keyin))
+    df = pd.DataFrame.from_dict(yaml_subset)
+    return df
 
 def get_machine_info(static_data):
     hostname = socket.gethostname()
@@ -45,27 +60,11 @@ def get_machine_info(static_data):
                            mach_db_info['workdir'], mach_db_info['baselinedir'])
     return machine
 
-def get_yaml_subset(in_yaml, keyin):
-    try:
-        yaml_subset = in_yaml[keyin]
-    except:
-        sys.exit("Unable to get yaml subset: {}. Quitting".format(keyin))
-    df = pd.DataFrame.from_dict(yaml_subset)
-    return df
-
-def connect_to_github(): # In case there's more needed later
-    global GHACCESSTOKEN
-    global client
+def connect_to_github(GHACCESSTOKEN): # In case there's more needed later
     client = gh(GHACCESSTOKEN) #will work if None for public repos.
-
-def read_yaml_data(filename):
-    stream = open(db_filename, 'r')
-    yaml_data = yaml.load(stream, Loader=yaml.SafeLoader)
-    stream.close()
-    return yaml_data
+    return client
 
 def process_pulls(pulls, repo):
-    global machine
     valid_actions = get_yaml_subset(static_data, "actions")
     for pr in pulls:
         labels = pr.get_labels()
@@ -73,21 +72,27 @@ def process_pulls(pulls, repo):
             if label.name.split('-')[1].lower() == machine.name.lower():
                 for action_name, action_command in valid_actions.values.tolist():
                     if label.name.split('-')[0].lower() == action_name.lower():
-                        pr_workdir = clone_pr_repo(pr)
-                        process_actions(action_command, pr_workdir, pr)
-        sys.exit()
+                        try:
+                            pr_workdir = clone_pr_repo(pr)
+                            pa_ret = process_actions(action_command, pr_workdir, pr)
+                            if pa_ret == 0:
+                                pr.remove_from_labels(label.name.split('-')[0]+"-"+label.name.split('-')[1])
+
+                        except:
+                            print("ERROR RUNNING RT {}".format(action_name))
+                            continue
 
 def clone_pr_repo(pr):
-    global machine
     branch = pr.head.ref
     repo_name = pr.head.repo.name
     git_url = pr.head.repo.html_url
     repo_dir_str = machine.workdir+"/"+str(pr.id)+"/"+datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-    print("repo_dir_str is: {}".format(repo_dir_str))
+    git_url_w_login = git_url.split('//')
+    git_url_w_login = git_url_w_login[0]+"//"+GHUSERNAME+":"+GHACCESSTOKEN+"@"+git_url_w_login[1]
 
     create_repo_commands = [
         ["mkdir -p \""+repo_dir_str+"\"", machine.workdir],
-        ["git clone -b "+branch+" "+git_url, repo_dir_str],
+        ["git clone -b "+branch+" "+git_url_w_login, repo_dir_str],
         ["git submodule update --init --recursive", repo_dir_str+"/"+repo_name]
     ]
 
@@ -103,116 +108,79 @@ def clone_pr_repo(pr):
                 sys.exit()
         except OSError as e:
             print("Execution failed: {}".format(e))
+            sys.exit()
 
     return repo_dir_str+"/"+repo_name
 
 def create_threaded_call(callback, run_fnc):
-    def runInThread(callback, args, kwargs):
+    def runInThread(callback, run_fnc):
         proc = run_fnc
         proc.wait()
         callback()
         return
 
     thread = threading.Thread(target=runInThread,
-                              args=(callback, args, kwargs))
+                              args=(callback, run_fnc))
     thread.start()
 
     return thread # returns immediately after the thread starts
 
-def callback_commands(argument):
-    callbacks = {
-        'RT' =
-    }
+def move_rt_logs(pr, pr_workdir):
+    rt_log = 'tests/RegressionTests_hera.intel.log'
+    # rt_log = 'RegressionTests_'+machine.name+'.intel.log'
+    filepath = pr_workdir+'/'+rt_log
+    print("File path is {}".format(filepath))
+    if os.path.exists(filepath):
+        branch = pr.head.ref
+        print("Branch used is: {}".format(branch))
+        repo = pr.head.repo
 
-def thread_end(pr, command, pr_workdir):
-    global machine
-    pr.create_issue_comment("AUTOMATED COMMENT: Finished Processing Command '{}' in directory '{}' on machine '{}'".format(command, pr_workdir, machine.name))
-    return
+        move_rt_commands = [
+            ['echo "GOOSEBUMPS2" >> '+rt_log, pr_workdir],
+            ['git add '+rt_log, pr_workdir],
+            ['git commit -m "Auto: Added Updated RT Log file: '+rt_log+'"', pr_workdir],
+            ['git push origin '+branch, pr_workdir]
+        ]
+        for command, in_cwd in move_rt_commands:
+            print("Attempting to run: {}".format(command))
+            try:
+                retcode = subprocess.Popen(command, shell=True, cwd=in_cwd)
+                retcode.wait()
+                if retcode.returncode==1:
+                    print("Error Occured:")
+                    print("Stdout: {}".format(retcode.stdout))
+                    print("Stderr: {}".format(retcode.stderr))
+                    sys.exit()
+            except OSError as e:
+                print("Execution failed: {}".format(e))
+                sys.exit()
+    else:
+        print("ERROR: Could not find RT log")
+        sys.exit()
 
 def process_actions(command, pr_workdir, pr):
-        print("{} is processing command {}".format(machine.name.upper(), command))
-        pr.create_issue_comment("AUTOMATED COMMENT: Started Processing Command '{}' in directory '{}' on machine '{}'".format(command, pr_workdir, machine.name))
-        create_threaded_call(thread_end(pr, command, pr_workdir+"/tests"), subprocess.Popen(command, shell=True, cwd=pr_workdir+"/tests"))
+        try:
+            print("{} attempting command {}".format(machine.name.upper(), command))
+            thethread = create_threaded_call(move_rt_logs(pr, pr_workdir), subprocess.Popen(command, shell=True, cwd=pr_workdir+"/tests"))
+        except:
+            print("{} failed command {}".format(machine.name.upper(), command))
+            return 1
+        return 0
+        # pr.create_issue_comment("AUTOMATED COMMENT: Submitted Command '{}' in directory '{}' on machine '{}'".format(command, pr_workdir, machine.name))
+
+# START OF MAIN
+db_filename = 'rt_auto.yml'
+machine = get_machine_info(read_yaml_data(db_filename))
+GHUSERNAME = "BrianCurtis-NOAA"
+GHACCESSTOKEN = get_access_token()
 
 # Initial items
 static_data = read_yaml_data('rt_auto.yml')
-machine = get_machine_info(static_data)
 repos = get_yaml_subset(static_data, "repository")
-connect_to_github()
+client = connect_to_github(GHACCESSTOKEN)
 
 # Maybe a process_repo(repos) function start?
 for name,address,base in repos.values.tolist():
     repo = client.get_repo(address)
     pull_reqs = repo.get_pulls(state='open', sort='created', base=base)
     triggers = process_pulls(pull_reqs, repo)
-
-
-# DEAD FUNCTIONS
-# def process_triggers(pr, triggers, commentids):
-# def process_triggers(comments_with_triggers, pr, repo):
-#     global machine
-#     if not machine:
-#         sys.exit("No machine information set, please use \"get_machine_info()\"")
-#     lastread = False
-#     approved_triggers = []
-#     trigger_comment_ids = []
-#     for comment in comments_with_triggers:
-#         body_split = comment.body.split()
-#         for word in body_split:
-#             if re.match("\+\+.+\+\+", word):
-#                 if is_collaborator(repo, comment.user.login):
-#                     split_trigger = str(word).strip("+")
-#                     split_trigger = split_trigger.split(":")
-#                     if split_trigger[0].lower() == "read":
-#                         if bool(lastread):
-#                             print("Found old 'READ' comment: deleting")
-#                             pr.get_issue_comment(int(lastread)).delete()
-#                         lastread = comment.id
-#                     else:
-#                         approved_triggers.append(split_trigger)
-#                         trigger_comment_ids.append(comment.id)
-#
-#     actions = []
-#     for (approved_trigger, trigger_comment_id) in zip(approved_triggers, trigger_comment_ids):
-#         if approved_trigger[0].lower() == machine.name.lower() or approved_trigger[0].lower() == "all":
-#             if trigger_comment_id > lastread:
-#                 actions.append(approved_trigger[1])
-#                 print("SAVED ACTION {} for machine {}".format(approved_trigger[1], machine.name))
-#
-#     if not actions:
-#         return lastread, None
-#     actions = set(actions)
-#     return lastread, actions
-#
-# def get_comments_with_triggers(comments):
-#     comment_list = []
-#     for comment in comments:
-#         if [re.match("\+\+.+\+\+", incomment) for incomment in comment.body.split()]:
-#             comment_list.append(comment)
-#
-#     if not comment_list:
-#         return None
-#     else:
-#         return comment_list
-#
-# # THE FOLLOWING FUNCTION REQUIRES AUTHENTICATION TOKEN TO BE SET
-# def is_collaborator(repo, userin):
-#     collaborator_bool = False
-#     allowed_collaborators = repo.get_collaborators()
-#     for collaborator in allowed_collaborators:
-#         collab_perms = repo.get_collaborator_permission(collaborator)
-#         print("Collab {}, Perms {}".format(collaborator.login, collab_perms))
-#         if collaborator.login == userin && 'write' in collab_perms.split():
-#             collaborator_bool = True
-#
-#     return collaborator_bool
-#
-# def validate_actions(actions):
-#     approved_commands = []
-#     valid_actions = get_yaml_subset(static_data, "actions")
-#     for name,command in valid_actions.values.tolist():
-#         for action in actions:
-#             if name == action.lower():
-#                 print("Action {} approved as valid".format(action.lower()))
-#                 approved_commands.append(command)
-#     return approved_commands

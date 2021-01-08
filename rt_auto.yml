@@ -8,19 +8,27 @@
       regexhostname: 'Orion-login-\d.HPC.MsState.Edu'
       workdir: False
       baselinedir: ''
-    - name: 'venus'
+      # VENUS
+    - name: 'wcoss_dell_p3'
       regexhostname: 'v\d\d[a-z]\d'
       workdir: False
       baselinedir: ''
-    - name: 'mars'
+      # MARS
+    - name: 'wcoss_dell_p3'
       regexhostname: 'm\d\d[a-z]\d'
       workdir: False
       baselinedir: ''
-    - name: 'surge'
+      # SURGE
+    - name: 'wcoss_cray'
       regexhostname: 'slogin\d'
       workdir: False
       baselinedir: ''
-    - name: 'Neon'
+      # LUNA
+    - name: 'wcoss_cray'
+      regexhostname: 'llogin\d'
+      workdir: False
+      baselinedir: ''
+    - name: 'neon'
       regexhostname: 'Neon'
       workdir: '/home/bcurtis/WORK/test'
       baselinedir: ''
@@ -30,6 +38,8 @@
       base: 'develop'
   actions:
     - name: 'RT'
-      command: './rt.sh -ef'
+      command: './rt.sh -n cpld_control'
+    # - name: 'RT'
+    #   command: './rt.sh -ef'
     - name: 'BL'
       command: './rt.sh -cef'
