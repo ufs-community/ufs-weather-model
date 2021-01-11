@@ -396,6 +396,10 @@ if(WW3)
   add_dependencies(ufs_model ww3_nems)
 endif()
 
+if (CMEPS)
+  list(APPEND _ufs_model_defs_private PIO)
+endif()
+
 target_compile_definitions(ufs_model PRIVATE "${_ufs_model_defs_private}")
 
 if(DATM OR CDEPS)
