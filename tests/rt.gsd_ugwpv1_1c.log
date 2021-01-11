@@ -1,0 +1,788 @@
++ SECONDS=0
++ hostname
+hfe10
++ [[ 5 -eq 0 ]]
++ trap '{ echo "rt.sh interrupted"; rt_trap ; }' INT
++ trap '{ echo "rt.sh quit"; rt_trap ; }' QUIT
++ trap '{ echo "rt.sh terminated"; rt_trap ; }' TERM
++ trap '{ echo "rt.sh error on line $LINENO"; cleanup ; }' ERR
++ trap '{ echo "rt.sh finished"; cleanup ; }' EXIT
++++ dirname ./rt_ugwpv1.sh
+++ cd .
+++ pwd -P
++ readonly PATHRT=/scratch1/NCEPDEV/swpc/Valery.Yudin/save/JAN_2021/ufs-weather-model/tests
++ PATHRT=/scratch1/NCEPDEV/swpc/Valery.Yudin/save/JAN_2021/ufs-weather-model/tests
++ cd /scratch1/NCEPDEV/swpc/Valery.Yudin/save/JAN_2021/ufs-weather-model/tests
+++ cd /scratch1/NCEPDEV/swpc/Valery.Yudin/save/JAN_2021/ufs-weather-model/tests/..
+++ pwd
++ readonly PATHTR=/scratch1/NCEPDEV/swpc/Valery.Yudin/save/JAN_2021/ufs-weather-model
++ PATHTR=/scratch1/NCEPDEV/swpc/Valery.Yudin/save/JAN_2021/ufs-weather-model
++ readonly LOCKDIR=/scratch1/NCEPDEV/swpc/Valery.Yudin/save/JAN_2021/ufs-weather-model/tests/lock
++ LOCKDIR=/scratch1/NCEPDEV/swpc/Valery.Yudin/save/JAN_2021/ufs-weather-model/tests/lock
++ mkdir /scratch1/NCEPDEV/swpc/Valery.Yudin/save/JAN_2021/ufs-weather-model/tests/lock
+++ hostname
++ echo hfe10 306201
++ export RT_COMPILER=intel
++ RT_COMPILER=intel
++ source detect_machine.sh
+++ export ACCNR=swpc
+++ ACCNR=swpc
+++ case $(hostname -f) in
++++ hostname -f
+++ MACHINE_ID=hera
+++ MACHINE_ID=hera
+++ '[' hera = orion ']'
+++ '[' hera = hera ']'
+++ MACHINE_ID=hera.intel
+++ echo 'Machine: ' hera.intel '    Account: ' swpc
+Machine:  hera.intel     Account:  swpc
++ source rt_utils.sh
+++ set -eu
+++ [[ ./rt_ugwpv1.sh = \.\/\r\t\_\u\t\i\l\s\.\s\h ]]
+++ UNIT_TEST=false
+++ qsub_id=0
+++ slurm_id=0
+++ bsub_id=0
++ source /scratch1/NCEPDEV/swpc/Valery.Yudin/save/JAN_2021/ufs-weather-model/NEMS/src/conf/module-setup.sh.inc
+++ __ms_function_name=setup__test_function__306201
+++ eval 'setup__test_function__306201() { /bin/true ; }'
++++ eval '__text="text" ; if [[ $__text =~ ^(t).* ]] ; then printf "%s" ${.sh.match[1]} ; fi'
++++ cat
+++ __ms_ksh_test=
++++ eval 'if ( set | grep setup__test_function__306201 | grep -v name > /dev/null 2>&1 ) ; then echo t ; fi '
++++ cat
+++ __ms_bash_test=t
+++ [[ ! -z '' ]]
+++ [[ ! -z t ]]
+++ __ms_shell=bash
+++ [[ -d /lfs3 ]]
+++ [[ -d /scratch1 ]]
+++ [[ ! -d /scratch ]]
+++ eval module help
+++ module purge
++++ /apps/lmod/7.7.18/libexec/lmod bash purge
+++ eval unset 'CDO_ROOT;' unset '__LMOD_REF_COUNT_CLASSPATH;' unset 'CLASSPATH;' unset '__LMOD_REF_COUNT_CPATH;' unset 'CPATH;' unset 'GADDIR;' unset '__LMOD_REF_COUNT_GASCRP;' unset 'GASCRP;' unset 'GAUDPT;' unset 'GDBSERVER_MIC;' unset 'GDB_CROSS;' unset 'GRADS_ROOT;' unset 'GRIB_API_ROOT;' unset '__LMOD_REF_COUNT_INFOPATH;' unset 'INFOPATH;' unset '__LMOD_REF_COUNT_INTEL_LICENSE_FILE;' unset 'INTEL_LICENSE_FILE;' unset 'INTEL_PYTHONHOME;' unset 'IPATH_NO_BACKTRACE;' unset 'I_MPI_CC;' unset 'I_MPI_F90;' unset 'I_MPI_HYDRA_BRANCH_COUNT;' unset 'I_MPI_HYDRA_PMI_CONNECT;' unset 'I_MPI_ROOT;' unset 'I_MPI_TMI_PROVIDER;' '__LMOD_REF_COUNT_LD_LIBRARY_PATH="/apps/slurm/default/lib:1";' export '__LMOD_REF_COUNT_LD_LIBRARY_PATH;' 'LD_LIBRARY_PATH="/apps/slurm/default/lib";' export 'LD_LIBRARY_PATH;' unset '__LMOD_REF_COUNT_LIBRARY_PATH;' unset 'LIBRARY_PATH;' unset 'LMOD_FAMILY_COMPILER;' unset 'LMOD_FAMILY_COMPILER_VERSION;' unset 'LMOD_FAMILY_MPI;' unset 'LMOD_FAMILY_MPI_VERSION;' unset '__LMOD_REF_COUNT_LM_LICENSE_FILE;' unset 'LM_LICENSE_FILE;' unset '__LMOD_REF_COUNT_LOADEDMODULES;' unset 'LOADEDMODULES;' unset 'MAGICK_HOME;' '__LMOD_REF_COUNT_MANPATH="/apps/lmod/lmod/share/man:1;/apps/local/man:1;/apps/slurm/default/share/man:1;/apps/slurm/tools/sbank/share/man:1";' export '__LMOD_REF_COUNT_MANPATH;' 'MANPATH="/apps/lmod/lmod/share/man:/apps/local/man:/apps/slurm/default/share/man:/apps/slurm/tools/sbank/share/man";' export 'MANPATH;' unset 'MKLROOT;' '__LMOD_REF_COUNT_MODULEPATH="/apps/lmod/lmod/modulefiles/Core:1;/apps/modules/modulefiles/Linux:1;/apps/modules/modulefiles:1;/opt/cray/modulefiles:1;/opt/cray/craype/default/modulefiles:1;/scratch1/NCEPDEV/nwprod/lib/modulefiles:1;/contrib/modulefiles:1";' export '__LMOD_REF_COUNT_MODULEPATH;' 'MODULEPATH="/apps/lmod/lmod/modulefiles/Core:/apps/modules/modulefiles/Linux:/apps/modules/modulefiles:/opt/cray/modulefiles:/opt/cray/craype/default/modulefiles:/scratch1/NCEPDEV/nwprod/lib/modulefiles:/contrib/modulefiles";' export 'MODULEPATH;' unset 'MPM_LAUNCHER;' unset 'NETCDF;' unset '__LMOD_REF_COUNT_NLSPATH;' unset 'NLSPATH;' '__LMOD_REF_COUNT_PATH="/apps/hpss:1;.:1;/home/Valery.Yudin/bin:1;/usr/lib64/qt-3.3/bin:1;/usr/local/bin:1;/usr/bin:1;/usr/local/sbin:1;/usr/sbin:1;/opt/ibutils/bin:1;/apps/local/bin:1;/apps/local/sbin:1;/apps/slurm/default/slurm/tools:1;/apps/slurm/default/bin:1;/apps/slurm/default/sbin:1;/apps/slurm/tools/sbank/bin:1";' export '__LMOD_REF_COUNT_PATH;' 'PATH="/apps/hpss:.:/home/Valery.Yudin/bin:/usr/lib64/qt-3.3/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/ibutils/bin:/apps/local/bin:/apps/local/sbin:/apps/slurm/default/slurm/tools:/apps/slurm/default/bin:/apps/slurm/default/sbin:/apps/slurm/tools/sbank/bin";' export 'PATH;' unset '__LMOD_REF_COUNT_PKG_CONFIG_PATH;' unset 'PKG_CONFIG_PATH;' unset 'WGRIB2_ROOT;' unset '__LMOD_REF_COUNT__LMFILES_;' unset '_LMFILES_;' '_ModuleTable001_="X01vZHVsZVRhYmxlXz17WyJNVHZlcnNpb24iXT0zLFsiY19yZWJ1aWxkVGltZSJdPWZhbHNlLFsiY19zaG9ydFRpbWUiXT1mYWxzZSxkZXB0aFQ9e30sZmFtaWx5PXt9LG1UPXt9LG1wYXRoQT17Ii9hcHBzL2xtb2QvbG1vZC9tb2R1bGVmaWxlcy9Db3JlIiwiL2FwcHMvbW9kdWxlcy9tb2R1bGVmaWxlcy9MaW51eCIsIi9hcHBzL21vZHVsZXMvbW9kdWxlZmlsZXMiLCIvb3B0L2NyYXkvbW9kdWxlZmlsZXMiLCIvb3B0L2NyYXkvY3JheXBlL2RlZmF1bHQvbW9kdWxlZmlsZXMiLCIvc2NyYXRjaDEvTkNFUERFVi9ud3Byb2QvbGliL21vZHVsZWZpbGVzIiwiL2NvbnRyaWIvbW9kdWxlZmlsZXMiLH0sWyJzeXN0ZW1CYXNlTVBBVEgiXT0iL2FwcHMvbG1vZC9sbW9kL21vZHVsZWZp";' export '_ModuleTable001_;' '_ModuleTable002_="bGVzL0NvcmU6L2FwcHMvbW9kdWxlcy9tb2R1bGVmaWxlcy9MaW51eDovYXBwcy9tb2R1bGVzL21vZHVsZWZpbGVzOi9vcHQvY3JheS9tb2R1bGVmaWxlczovb3B0L2NyYXkvY3JheXBlL2RlZmF1bHQvbW9kdWxlZmlsZXMiLH0=";' export '_ModuleTable002_;' '_ModuleTable_Sz_="2";' export '_ModuleTable_Sz_;' unset '_ModuleTable004_;' unset '_ModuleTable005_;' unset '_ModuleTable006_;' unset '_ModuleTable007_;' unset '_ModuleTable008_;' unalias htar '2>' /dev/null '||' 'true;'
++++ unset CDO_ROOT
++++ unset __LMOD_REF_COUNT_CLASSPATH
++++ unset CLASSPATH
++++ unset __LMOD_REF_COUNT_CPATH
++++ unset CPATH
++++ unset GADDIR
++++ unset __LMOD_REF_COUNT_GASCRP
++++ unset GASCRP
++++ unset GAUDPT
++++ unset GDBSERVER_MIC
++++ unset GDB_CROSS
++++ unset GRADS_ROOT
++++ unset GRIB_API_ROOT
++++ unset __LMOD_REF_COUNT_INFOPATH
++++ unset INFOPATH
++++ unset __LMOD_REF_COUNT_INTEL_LICENSE_FILE
++++ unset INTEL_LICENSE_FILE
++++ unset INTEL_PYTHONHOME
++++ unset IPATH_NO_BACKTRACE
++++ unset I_MPI_CC
++++ unset I_MPI_F90
++++ unset I_MPI_HYDRA_BRANCH_COUNT
++++ unset I_MPI_HYDRA_PMI_CONNECT
++++ unset I_MPI_ROOT
++++ unset I_MPI_TMI_PROVIDER
++++ __LMOD_REF_COUNT_LD_LIBRARY_PATH=/apps/slurm/default/lib:1
++++ export __LMOD_REF_COUNT_LD_LIBRARY_PATH
++++ LD_LIBRARY_PATH=/apps/slurm/default/lib
++++ export LD_LIBRARY_PATH
++++ unset __LMOD_REF_COUNT_LIBRARY_PATH
++++ unset LIBRARY_PATH
++++ unset LMOD_FAMILY_COMPILER
++++ unset LMOD_FAMILY_COMPILER_VERSION
++++ unset LMOD_FAMILY_MPI
++++ unset LMOD_FAMILY_MPI_VERSION
++++ unset __LMOD_REF_COUNT_LM_LICENSE_FILE
++++ unset LM_LICENSE_FILE
++++ unset __LMOD_REF_COUNT_LOADEDMODULES
++++ unset LOADEDMODULES
++++ unset MAGICK_HOME
++++ __LMOD_REF_COUNT_MANPATH='/apps/lmod/lmod/share/man:1;/apps/local/man:1;/apps/slurm/default/share/man:1;/apps/slurm/tools/sbank/share/man:1'
++++ export __LMOD_REF_COUNT_MANPATH
++++ MANPATH=/apps/lmod/lmod/share/man:/apps/local/man:/apps/slurm/default/share/man:/apps/slurm/tools/sbank/share/man
++++ export MANPATH
++++ unset MKLROOT
++++ __LMOD_REF_COUNT_MODULEPATH='/apps/lmod/lmod/modulefiles/Core:1;/apps/modules/modulefiles/Linux:1;/apps/modules/modulefiles:1;/opt/cray/modulefiles:1;/opt/cray/craype/default/modulefiles:1;/scratch1/NCEPDEV/nwprod/lib/modulefiles:1;/contrib/modulefiles:1'
++++ export __LMOD_REF_COUNT_MODULEPATH
++++ MODULEPATH=/apps/lmod/lmod/modulefiles/Core:/apps/modules/modulefiles/Linux:/apps/modules/modulefiles:/opt/cray/modulefiles:/opt/cray/craype/default/modulefiles:/scratch1/NCEPDEV/nwprod/lib/modulefiles:/contrib/modulefiles
++++ export MODULEPATH
++++ unset MPM_LAUNCHER
++++ unset NETCDF
++++ unset __LMOD_REF_COUNT_NLSPATH
++++ unset NLSPATH
++++ __LMOD_REF_COUNT_PATH='/apps/hpss:1;.:1;/home/Valery.Yudin/bin:1;/usr/lib64/qt-3.3/bin:1;/usr/local/bin:1;/usr/bin:1;/usr/local/sbin:1;/usr/sbin:1;/opt/ibutils/bin:1;/apps/local/bin:1;/apps/local/sbin:1;/apps/slurm/default/slurm/tools:1;/apps/slurm/default/bin:1;/apps/slurm/default/sbin:1;/apps/slurm/tools/sbank/bin:1'
++++ export __LMOD_REF_COUNT_PATH
++++ PATH=/apps/hpss:.:/home/Valery.Yudin/bin:/usr/lib64/qt-3.3/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/ibutils/bin:/apps/local/bin:/apps/local/sbin:/apps/slurm/default/slurm/tools:/apps/slurm/default/bin:/apps/slurm/default/sbin:/apps/slurm/tools/sbank/bin
++++ export PATH
++++ unset __LMOD_REF_COUNT_PKG_CONFIG_PATH
++++ unset PKG_CONFIG_PATH
++++ unset WGRIB2_ROOT
++++ unset __LMOD_REF_COUNT__LMFILES_
++++ unset _LMFILES_
++++ _ModuleTable001_=X01vZHVsZVRhYmxlXz17WyJNVHZlcnNpb24iXT0zLFsiY19yZWJ1aWxkVGltZSJdPWZhbHNlLFsiY19zaG9ydFRpbWUiXT1mYWxzZSxkZXB0aFQ9e30sZmFtaWx5PXt9LG1UPXt9LG1wYXRoQT17Ii9hcHBzL2xtb2QvbG1vZC9tb2R1bGVmaWxlcy9Db3JlIiwiL2FwcHMvbW9kdWxlcy9tb2R1bGVmaWxlcy9MaW51eCIsIi9hcHBzL21vZHVsZXMvbW9kdWxlZmlsZXMiLCIvb3B0L2NyYXkvbW9kdWxlZmlsZXMiLCIvb3B0L2NyYXkvY3JheXBlL2RlZmF1bHQvbW9kdWxlZmlsZXMiLCIvc2NyYXRjaDEvTkNFUERFVi9ud3Byb2QvbGliL21vZHVsZWZpbGVzIiwiL2NvbnRyaWIvbW9kdWxlZmlsZXMiLH0sWyJzeXN0ZW1CYXNlTVBBVEgiXT0iL2FwcHMvbG1vZC9sbW9kL21vZHVsZWZp
++++ export _ModuleTable001_
++++ _ModuleTable002_=bGVzL0NvcmU6L2FwcHMvbW9kdWxlcy9tb2R1bGVmaWxlcy9MaW51eDovYXBwcy9tb2R1bGVzL21vZHVsZWZpbGVzOi9vcHQvY3JheS9tb2R1bGVmaWxlczovb3B0L2NyYXkvY3JheXBlL2RlZmF1bHQvbW9kdWxlZmlsZXMiLH0=
++++ export _ModuleTable002_
++++ _ModuleTable_Sz_=2
++++ export _ModuleTable_Sz_
++++ unset _ModuleTable004_
++++ unset _ModuleTable005_
++++ unset _ModuleTable006_
++++ unset _ModuleTable007_
++++ unset _ModuleTable008_
++++ unalias htar
++++ true
++++ : -s sh
+++ eval
+++ unset __ms_shell
+++ unset __ms_ksh_test
+++ unset __ms_bash_test
+++ unset setup__test_function__306201
+++ unset __ms_function_name
++ [[ hera.intel = wcoss_cray ]]
++ [[ hera.intel = wcoss_dell_p3 ]]
++ [[ hera.intel = gaea.* ]]
++ [[ hera.intel = hera.* ]]
++ module load rocoto
+++ /apps/lmod/7.7.18/libexec/lmod bash load rocoto
++ eval '__LMOD_REF_COUNT_LOADEDMODULES="rocoto/1.3.2:1";' export '__LMOD_REF_COUNT_LOADEDMODULES;' 'LOADEDMODULES="rocoto/1.3.2";' export 'LOADEDMODULES;' '__LMOD_REF_COUNT_MANPATH="/apps/rocoto/1.3.2/man:1;/apps/lmod/lmod/share/man:1;/apps/local/man:1;/apps/slurm/default/share/man:1;/apps/slurm/tools/sbank/share/man:1";' export '__LMOD_REF_COUNT_MANPATH;' 'MANPATH="/apps/rocoto/1.3.2/man:/apps/lmod/lmod/share/man:/apps/local/man:/apps/slurm/default/share/man:/apps/slurm/tools/sbank/share/man";' export 'MANPATH;' 'MODULEPATH="/apps/lmod/lmod/modulefiles/Core:/apps/modules/modulefiles/Linux:/apps/modules/modulefiles:/opt/cray/modulefiles:/opt/cray/craype/default/modulefiles:/scratch1/NCEPDEV/nwprod/lib/modulefiles:/contrib/modulefiles";' export 'MODULEPATH;' '__LMOD_REF_COUNT_PATH="/apps/rocoto/1.3.2/bin:1;/apps/hpss:1;.:1;/home/Valery.Yudin/bin:1;/usr/lib64/qt-3.3/bin:1;/usr/local/bin:1;/usr/bin:1;/usr/local/sbin:1;/usr/sbin:1;/opt/ibutils/bin:1;/apps/local/bin:1;/apps/local/sbin:1;/apps/slurm/default/slurm/tools:1;/apps/slurm/default/bin:1;/apps/slurm/default/sbin:1;/apps/slurm/tools/sbank/bin:1";' export '__LMOD_REF_COUNT_PATH;' 'PATH="/apps/rocoto/1.3.2/bin:/apps/hpss:.:/home/Valery.Yudin/bin:/usr/lib64/qt-3.3/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/ibutils/bin:/apps/local/bin:/apps/local/sbin:/apps/slurm/default/slurm/tools:/apps/slurm/default/bin:/apps/slurm/default/sbin:/apps/slurm/tools/sbank/bin";' export 'PATH;' '__LMOD_REF_COUNT__LMFILES_="/apps/modules/modulefiles/rocoto/1.3.2:1";' export '__LMOD_REF_COUNT__LMFILES_;' '_LMFILES_="/apps/modules/modulefiles/rocoto/1.3.2";' export '_LMFILES_;' '_ModuleTable001_="X01vZHVsZVRhYmxlXz17WyJNVHZlcnNpb24iXT0zLFsiY19yZWJ1aWxkVGltZSJdPWZhbHNlLFsiY19zaG9ydFRpbWUiXT1mYWxzZSxkZXB0aFQ9e30sZmFtaWx5PXt9LG1UPXtyb2NvdG89e1siZm4iXT0iL2FwcHMvbW9kdWxlcy9tb2R1bGVmaWxlcy9yb2NvdG8vMS4zLjIiLFsiZnVsbE5hbWUiXT0icm9jb3RvLzEuMy4yIixbImxvYWRPcmRlciJdPTEscHJvcFQ9e30sWyJzdGFja0RlcHRoIl09MCxbInN0YXR1cyJdPSJhY3RpdmUiLFsidXNlck5hbWUiXT0icm9jb3RvIix9LH0sbXBhdGhBPXsiL2FwcHMvbG1vZC9sbW9kL21vZHVsZWZpbGVzL0NvcmUiLCIvYXBwcy9tb2R1bGVzL21vZHVsZWZpbGVzL0xpbnV4IiwiL2FwcHMvbW9kdWxlcy9tb2R1bGVmaWxlcyIsIi9vcHQv";' export '_ModuleTable001_;' '_ModuleTable002_="Y3JheS9tb2R1bGVmaWxlcyIsIi9vcHQvY3JheS9jcmF5cGUvZGVmYXVsdC9tb2R1bGVmaWxlcyIsIi9zY3JhdGNoMS9OQ0VQREVWL253cHJvZC9saWIvbW9kdWxlZmlsZXMiLCIvY29udHJpYi9tb2R1bGVmaWxlcyIsfSxbInN5c3RlbUJhc2VNUEFUSCJdPSIvYXBwcy9sbW9kL2xtb2QvbW9kdWxlZmlsZXMvQ29yZTovYXBwcy9tb2R1bGVzL21vZHVsZWZpbGVzL0xpbnV4Oi9hcHBzL21vZHVsZXMvbW9kdWxlZmlsZXM6L29wdC9jcmF5L21vZHVsZWZpbGVzOi9vcHQvY3JheS9jcmF5cGUvZGVmYXVsdC9tb2R1bGVmaWxlcyIsfQ==";' export '_ModuleTable002_;' '_ModuleTable_Sz_="2";' export '_ModuleTable_Sz_;'
+++ __LMOD_REF_COUNT_LOADEDMODULES=rocoto/1.3.2:1
+++ export __LMOD_REF_COUNT_LOADEDMODULES
+++ LOADEDMODULES=rocoto/1.3.2
+++ export LOADEDMODULES
+++ __LMOD_REF_COUNT_MANPATH='/apps/rocoto/1.3.2/man:1;/apps/lmod/lmod/share/man:1;/apps/local/man:1;/apps/slurm/default/share/man:1;/apps/slurm/tools/sbank/share/man:1'
+++ export __LMOD_REF_COUNT_MANPATH
+++ MANPATH=/apps/rocoto/1.3.2/man:/apps/lmod/lmod/share/man:/apps/local/man:/apps/slurm/default/share/man:/apps/slurm/tools/sbank/share/man
+++ export MANPATH
+++ MODULEPATH=/apps/lmod/lmod/modulefiles/Core:/apps/modules/modulefiles/Linux:/apps/modules/modulefiles:/opt/cray/modulefiles:/opt/cray/craype/default/modulefiles:/scratch1/NCEPDEV/nwprod/lib/modulefiles:/contrib/modulefiles
+++ export MODULEPATH
+++ __LMOD_REF_COUNT_PATH='/apps/rocoto/1.3.2/bin:1;/apps/hpss:1;.:1;/home/Valery.Yudin/bin:1;/usr/lib64/qt-3.3/bin:1;/usr/local/bin:1;/usr/bin:1;/usr/local/sbin:1;/usr/sbin:1;/opt/ibutils/bin:1;/apps/local/bin:1;/apps/local/sbin:1;/apps/slurm/default/slurm/tools:1;/apps/slurm/default/bin:1;/apps/slurm/default/sbin:1;/apps/slurm/tools/sbank/bin:1'
+++ export __LMOD_REF_COUNT_PATH
+++ PATH=/apps/rocoto/1.3.2/bin:/apps/hpss:.:/home/Valery.Yudin/bin:/usr/lib64/qt-3.3/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/ibutils/bin:/apps/local/bin:/apps/local/sbin:/apps/slurm/default/slurm/tools:/apps/slurm/default/bin:/apps/slurm/default/sbin:/apps/slurm/tools/sbank/bin
+++ export PATH
+++ __LMOD_REF_COUNT__LMFILES_=/apps/modules/modulefiles/rocoto/1.3.2:1
+++ export __LMOD_REF_COUNT__LMFILES_
+++ _LMFILES_=/apps/modules/modulefiles/rocoto/1.3.2
+++ export _LMFILES_
+++ _ModuleTable001_=X01vZHVsZVRhYmxlXz17WyJNVHZlcnNpb24iXT0zLFsiY19yZWJ1aWxkVGltZSJdPWZhbHNlLFsiY19zaG9ydFRpbWUiXT1mYWxzZSxkZXB0aFQ9e30sZmFtaWx5PXt9LG1UPXtyb2NvdG89e1siZm4iXT0iL2FwcHMvbW9kdWxlcy9tb2R1bGVmaWxlcy9yb2NvdG8vMS4zLjIiLFsiZnVsbE5hbWUiXT0icm9jb3RvLzEuMy4yIixbImxvYWRPcmRlciJdPTEscHJvcFQ9e30sWyJzdGFja0RlcHRoIl09MCxbInN0YXR1cyJdPSJhY3RpdmUiLFsidXNlck5hbWUiXT0icm9jb3RvIix9LH0sbXBhdGhBPXsiL2FwcHMvbG1vZC9sbW9kL21vZHVsZWZpbGVzL0NvcmUiLCIvYXBwcy9tb2R1bGVzL21vZHVsZWZpbGVzL0xpbnV4IiwiL2FwcHMvbW9kdWxlcy9tb2R1bGVmaWxlcyIsIi9vcHQv
+++ export _ModuleTable001_
+++ _ModuleTable002_=Y3JheS9tb2R1bGVmaWxlcyIsIi9vcHQvY3JheS9jcmF5cGUvZGVmYXVsdC9tb2R1bGVmaWxlcyIsIi9zY3JhdGNoMS9OQ0VQREVWL253cHJvZC9saWIvbW9kdWxlZmlsZXMiLCIvY29udHJpYi9tb2R1bGVmaWxlcyIsfSxbInN5c3RlbUJhc2VNUEFUSCJdPSIvYXBwcy9sbW9kL2xtb2QvbW9kdWxlZmlsZXMvQ29yZTovYXBwcy9tb2R1bGVzL21vZHVsZWZpbGVzL0xpbnV4Oi9hcHBzL21vZHVsZXMvbW9kdWxlZmlsZXM6L29wdC9jcmF5L21vZHVsZWZpbGVzOi9vcHQvY3JheS9jcmF5cGUvZGVmYXVsdC9tb2R1bGVmaWxlcyIsfQ==
+++ export _ModuleTable002_
+++ _ModuleTable_Sz_=2
+++ export _ModuleTable_Sz_
+++ : -s sh
++ eval
+++ which rocotorun
++ ROCOTORUN=/apps/rocoto/1.3.2/bin/rocotorun
+++ which rocotostat
++ ROCOTOSTAT=/apps/rocoto/1.3.2/bin/rocotostat
+++ which rocotocomplete
++ ROCOTOCOMPLETE=/apps/rocoto/1.3.2/bin/rocotocomplete
++ ROCOTO_SCHEDULER=slurm
++ export PATH=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3/bin:/apps/rocoto/1.3.2/bin:/apps/hpss:.:/home/Valery.Yudin/bin:/usr/lib64/qt-3.3/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/ibutils/bin:/apps/local/bin:/apps/local/sbin:/apps/slurm/default/slurm/tools:/apps/slurm/default/bin:/apps/slurm/default/sbin:/apps/slurm/tools/sbank/bin
++ PATH=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3/bin:/apps/rocoto/1.3.2/bin:/apps/hpss:.:/home/Valery.Yudin/bin:/usr/lib64/qt-3.3/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/ibutils/bin:/apps/local/bin:/apps/local/sbin:/apps/slurm/default/slurm/tools:/apps/slurm/default/bin:/apps/slurm/default/sbin:/apps/slurm/tools/sbank/bin
++ export PYTHONPATH=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3/lib/python3.8/site-packages
++ PYTHONPATH=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3/lib/python3.8/site-packages
++ ECFLOW_START=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3/bin/ecflow_start.sh
+++ id -u
++ ECF_PORT=12300
++ QUEUE=debug
++ COMPILE_QUEUE=debug
++ PARTITION=
++ dprefix=/scratch1/NCEPDEV
++ DISKNM=/scratch1/NCEPDEV/nems/emc.nemspara/RT
++ STMP=/scratch1/NCEPDEV/stmp4
++ PTMP=/scratch1/NCEPDEV/stmp2
++ SCHEDULER=slurm
++ cp fv3_conf/fv3_slurm.IN_hera fv3_conf/fv3_slurm.IN
++ cp fv3_conf/compile_slurm.IN_hera fv3_conf/compile_slurm.IN
++ NEW_BASELINE=/scratch1/NCEPDEV/stmp4/Valery.Yudin/FV3_RT/REGRESSION_TEST_GSL_DEVELOP
++ [[ hera.intel = hera.* ]]
++ NEW_BASELINE=/scratch1/NCEPDEV/stmp4/Valery.Yudin/FV3_RT/REGRESSION_TEST_GSL_DEVELOP_INTEL
++ RUNDIR_ROOT=/scratch1/NCEPDEV/stmp2/Valery.Yudin/FV3_RT/rt_306201
++ mkdir -p /scratch1/NCEPDEV/stmp2/Valery.Yudin/FV3_RT/rt_306201
++ CREATE_BASELINE=false
++ ROCOTO=false
++ ECFLOW=false
++ KEEP_RUNDIR=false
++ SINGLE_NAME=
++ TEST_35D=false
++ TESTS_FILE=rt.conf
++ SET_ID=standard
++ getopts :cfsl:mn:kreh opt
++ case $opt in
++ KEEP_RUNDIR=true
++ getopts :cfsl:mn:kreh opt
++ case $opt in
++ TESTS_FILE=rt_ccpp_fv3gfs_v16b_ugwpv1.conf
++ SET_ID=' '
++ getopts :cfsl:mn:kreh opt
++ case $opt in
++ CREATE_BASELINE=true
++ SET_ID=' '
++ getopts :cfsl:mn:kreh opt
++ [[ '' != '' ]]
++ [[ rt_ccpp_fv3gfs_v16b_ugwpv1.conf =~ 35d ]]
++ [[ hera.intel = hera.* ]]
++ RTPWD=/scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL
++ shift 4
++ [[ 1 -gt 1 ]]
++ [[ true == true ]]
++ rm -rf /scratch1/NCEPDEV/stmp4/Valery.Yudin/FV3_RT/REGRESSION_TEST_GSL_DEVELOP_INTEL
++ mkdir -p /scratch1/NCEPDEV/stmp4/Valery.Yudin/FV3_RT/REGRESSION_TEST_GSL_DEVELOP_INTEL
++ echo 'copy baseline inputs from: /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL'
+copy baseline inputs from: /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL
++ echo '                     to:   /scratch1/NCEPDEV/stmp4/Valery.Yudin/FV3_RT/REGRESSION_TEST_GSL_DEVELOP_INTEL'
+                     to:   /scratch1/NCEPDEV/stmp4/Valery.Yudin/FV3_RT/REGRESSION_TEST_GSL_DEVELOP_INTEL
++ rsync -a /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/FV3_input_bm2 /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/FV3_input_data /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/FV3_input_data192 /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/FV3_input_data384 /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/FV3_input_data_127 /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/FV3_input_data_149 /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/FV3_input_data_INCCN_aeroclim /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/FV3_input_data_RRTMGP /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/FV3_input_data_c192 /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/FV3_input_data_c384 /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/FV3_input_data_c768 /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/FV3_input_data_gsd /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/FV3_input_data_hafs /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/FV3_input_data_regional_esg /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/FV3_input_data_sar /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/FV3_input_frac /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/FV3_nest_input_data /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/FV3_regional_input_data /scratch1/NCEPDEV/stmp4/Valery.Yudin/FV3_RT/REGRESSION_TEST_GSL_DEVELOP_INTEL/
++ rsync -a /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/WW3_input_data /scratch1/NCEPDEV/stmp4/Valery.Yudin/FV3_RT/REGRESSION_TEST_GSL_DEVELOP_INTEL/
++ rsync -a /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/DATM /scratch1/NCEPDEV/stmp4/Valery.Yudin/FV3_RT/REGRESSION_TEST_GSL_DEVELOP_INTEL/
++ [[ hera.intel = hera.intel ]]
++ rsync -a /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/MOM6_FIX /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/MOM6_FIX_DATM /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/MOM6_IC /scratch1/NCEPDEV/stmp4/Valery.Yudin/FV3_RT/REGRESSION_TEST_GSL_DEVELOP_INTEL/
++ rsync -a /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/CICE_FIX /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/CICE_IC /scratch1/NCEPDEV/stmp4/Valery.Yudin/FV3_RT/REGRESSION_TEST_GSL_DEVELOP_INTEL/
++ rsync -a /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/CPL_FIX /scratch1/NCEPDEV/stmp4/Valery.Yudin/FV3_RT/REGRESSION_TEST_GSL_DEVELOP_INTEL/
++ rsync -a /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/BM_IC /scratch1/NCEPDEV/stmp4/Valery.Yudin/FV3_RT/REGRESSION_TEST_GSL_DEVELOP_INTEL/
++ rsync -a /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/fv3_regional_control/input.nml /scratch1/NCEPDEV/stmp4/Valery.Yudin/FV3_RT/REGRESSION_TEST_GSL_DEVELOP_INTEL/fv3_regional_control/
++ rsync -a /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/fv3_regional_quilt/input.nml /scratch1/NCEPDEV/stmp4/Valery.Yudin/FV3_RT/REGRESSION_TEST_GSL_DEVELOP_INTEL/fv3_regional_quilt/
++ rsync -a /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/fv3_regional_c768/input.nml /scratch1/NCEPDEV/stmp4/Valery.Yudin/FV3_RT/REGRESSION_TEST_GSL_DEVELOP_INTEL/fv3_regional_c768/
++ rsync -a /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/fv3_regional_restart/input.nml /scratch1/NCEPDEV/stmp4/Valery.Yudin/FV3_RT/REGRESSION_TEST_GSL_DEVELOP_INTEL/fv3_regional_restart/
++ rsync -a /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/fv3_regional_control/model_configure /scratch1/NCEPDEV/stmp4/Valery.Yudin/FV3_RT/REGRESSION_TEST_GSL_DEVELOP_INTEL/fv3_regional_control/
++ rsync -a /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/fv3_regional_quilt/model_configure /scratch1/NCEPDEV/stmp4/Valery.Yudin/FV3_RT/REGRESSION_TEST_GSL_DEVELOP_INTEL/fv3_regional_quilt/
++ rsync -a /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/fv3_regional_c768/model_configure /scratch1/NCEPDEV/stmp4/Valery.Yudin/FV3_RT/REGRESSION_TEST_GSL_DEVELOP_INTEL/fv3_regional_c768/
++ rsync -a /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/fv3_regional_restart/model_configure /scratch1/NCEPDEV/stmp4/Valery.Yudin/FV3_RT/REGRESSION_TEST_GSL_DEVELOP_INTEL/fv3_regional_restart/
++ rsync -a /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/fv3_regional_quilt_netcdf_parallel/model_configure /scratch1/NCEPDEV/stmp4/Valery.Yudin/FV3_RT/REGRESSION_TEST_GSL_DEVELOP_INTEL/fv3_regional_quilt_netcdf_parallel/
++ rsync -a /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/fv3_regional_control/INPUT /scratch1/NCEPDEV/stmp4/Valery.Yudin/FV3_RT/REGRESSION_TEST_GSL_DEVELOP_INTEL/fv3_regional_control/
++ rsync -a /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/fv3_regional_control/RESTART /scratch1/NCEPDEV/stmp4/Valery.Yudin/FV3_RT/REGRESSION_TEST_GSL_DEVELOP_INTEL/fv3_regional_control/
++ rsync -a /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/fv3_regional_quilt/INPUT /scratch1/NCEPDEV/stmp4/Valery.Yudin/FV3_RT/REGRESSION_TEST_GSL_DEVELOP_INTEL/fv3_regional_quilt/
++ rsync -a /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/fv3_regional_c768/INPUT /scratch1/NCEPDEV/stmp4/Valery.Yudin/FV3_RT/REGRESSION_TEST_GSL_DEVELOP_INTEL/fv3_regional_c768/
++ rsync -a /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/fv3_regional_restart/INPUT /scratch1/NCEPDEV/stmp4/Valery.Yudin/FV3_RT/REGRESSION_TEST_GSL_DEVELOP_INTEL/fv3_regional_restart/
++ rsync -a /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/fv3_stretched/INPUT /scratch1/NCEPDEV/stmp4/Valery.Yudin/FV3_RT/REGRESSION_TEST_GSL_DEVELOP_INTEL/fv3_stretched/
++ rsync -a /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/fv3_stretched_nest/INPUT /scratch1/NCEPDEV/stmp4/Valery.Yudin/FV3_RT/REGRESSION_TEST_GSL_DEVELOP_INTEL/fv3_stretched_nest/
++ rsync -a /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/fv3_stretched_nest_quilt/INPUT /scratch1/NCEPDEV/stmp4/Valery.Yudin/FV3_RT/REGRESSION_TEST_GSL_DEVELOP_INTEL/fv3_stretched_nest_quilt/
++ rsync -a /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/fv3_stretched_nest_debug/INPUT /scratch1/NCEPDEV/stmp4/Valery.Yudin/FV3_RT/REGRESSION_TEST_GSL_DEVELOP_INTEL/fv3_stretched_nest_debug/
++ rsync -a /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20201124/INTEL/fv3_regional_quilt_netcdf_parallel/INPUT /scratch1/NCEPDEV/stmp4/Valery.Yudin/FV3_RT/REGRESSION_TEST_GSL_DEVELOP_INTEL/fv3_regional_quilt_netcdf_parallel/
++ COMPILE_LOG=/scratch1/NCEPDEV/swpc/Valery.Yudin/save/JAN_2021/ufs-weather-model/tests/Compile_hera.intel.log
++ REGRESSIONTEST_LOG=/scratch1/NCEPDEV/swpc/Valery.Yudin/save/JAN_2021/ufs-weather-model/tests/RegressionTests_hera.intel.log
++ date
++ echo 'Start Regression test'
++ echo
++ source default_vars.sh
+++ [[ hera.intel = wcoss_cray ]]
+++ [[ hera.intel = wcoss_dell_p3 ]]
+++ [[ hera.intel = wcoss2 ]]
+++ [[ hera.intel = orion.* ]]
+++ [[ hera.intel = hera.* ]]
+++ TASKS_dflt=150
+++ TPN_dflt=40
+++ INPES_dflt=3
+++ JNPES_dflt=8
+++ TASKS_thrd=84
+++ TPN_thrd=20
+++ INPES_thrd=3
+++ JNPES_thrd=4
+++ TASKS_stretch=48
+++ TPN_stretch=12
+++ INPES_stretch=2
+++ JNPES_stretch=4
+++ TASKS_strnest=96
+++ TPN_strnest=12
+++ INPES_strnest=2
+++ JNPES_strnest=4
+++ TASKS_cpl_dflt=192
+++ TPN_cpl_dflt=40
+++ INPES_cpl_dflt=3
+++ JNPES_cpl_dflt=8
+++ THRD_cpl_dflt=1
+++ WPG_cpl_dflt=6
+++ MPB_cpl_dflt='0 143'
+++ APB_cpl_dflt='0 149'
+++ OPB_cpl_dflt='150 179'
+++ IPB_cpl_dflt='180 191'
+++ TASKS_cpl_thrd=120
+++ TPN_cpl_thrd=40
+++ INPES_cpl_thrd=3
+++ JNPES_cpl_thrd=4
+++ THRD_cpl_thrd=2
+++ WPG_cpl_thrd=6
+++ MPB_cpl_thrd='0 77'
+++ APB_cpl_thrd='0 77'
+++ OPB_cpl_thrd='78 107'
+++ IPB_cpl_thrd='108 119'
+++ TASKS_cpl_bmrk=480
+++ TPN_cpl_bmrk=40
+++ INPES_cpl_bmrk=6
+++ JNPES_cpl_bmrk=8
+++ THRD_cpl_bmrk=1
+++ WPG_cpl_bmrk=24
+++ MPB_cpl_bmrk='0 287'
+++ APB_cpl_bmrk='0 311'
+++ OPB_cpl_bmrk='312 431'
+++ IPB_cpl_bmrk='432 479'
+++ TASKS_cpl_wwav=520
+++ TPN_cpl_wwav=40
+++ INPES_cpl_wwav=6
+++ JNPES_cpl_wwav=8
+++ THRD_cpl_wwav=1
+++ WPG_cpl_wwav=24
+++ MPB_cpl_wwav='0 287'
+++ APB_cpl_wwav='0 311'
+++ OPB_cpl_wwav='312 431'
+++ IPB_cpl_wwav='432 479'
+++ WPB_cpl_wwav='480 519'
+++ TASKS_cpl_c192=288
+++ TPN_cpl_c192=40
+++ INPES_cpl_c192=4
+++ JNPES_cpl_c192=8
+++ THRD_cpl_c192=1
+++ WPG_cpl_c192=12
+++ MPB_cpl_c192='0 191'
+++ APB_cpl_c192='0 203'
+++ OPB_cpl_c192='204 263'
+++ IPB_cpl_c192='264 287'
+++ TASKS_cpl_c384=318
+++ TPN_cpl_c384=40
+++ INPES_cpl_c384=3
+++ JNPES_cpl_c384=8
+++ THRD_cpl_c384=1
+++ WPG_cpl_c384=6
+++ MPB_cpl_c384='0 143'
+++ APB_cpl_c384='0 149'
+++ OPB_cpl_c384='150 269'
+++ IPB_cpl_c384='270 317'
+++ TASKS_datm_100=120
+++ TPN_datm_100=40
+++ MPB_datm_100='16 77'
+++ APB_datm_100='0 15'
+++ OPB_datm_100='78 107'
+++ IPB_datm_100='108 119'
+++ TASKS_datm_025=208
+++ TPN_datm_025=40
+++ MPB_datm_025='0 39'
+++ APB_datm_025='0 39'
+++ OPB_datm_025='40 159'
+++ IPB_datm_025='160 207'
+++ [[ intel = gnu ]]
+++ WLCLK_dflt=15
++ TEST_NR=0
++ COMPILE_NR=0
++ COMPILE_PREV_WW3_NR=
++ rm -f fail_test
++ LOG_DIR=/scratch1/NCEPDEV/swpc/Valery.Yudin/save/JAN_2021/ufs-weather-model/tests/log_hera.intel
++ rm -rf /scratch1/NCEPDEV/swpc/Valery.Yudin/save/JAN_2021/ufs-weather-model/tests/log_hera.intel
++ mkdir /scratch1/NCEPDEV/swpc/Valery.Yudin/save/JAN_2021/ufs-weather-model/tests/log_hera.intel
++ [[ false == true ]]
++ [[ false == true ]]
++ new_compile=false
++ in_metatask=false
++ [[ -f rt_ccpp_fv3gfs_v16b_ugwpv1.conf ]]
++ read -r line
++ line='#################################################################################################################################################################################'
++ [[ 177 == 0 ]]
++ [[ ################################################################################################################################################################################# == \#* ]]
++ continue
++ read -r line
++ line='# CCPP REPRO tests                                                                                                                                                              #'
++ [[ 177 == 0 ]]
++ [[ # CCPP REPRO tests                                                                                                                                                              # == \#* ]]
++ continue
++ read -r line
++ line='#################################################################################################################################################################################'
++ [[ 177 == 0 ]]
++ [[ ################################################################################################################################################################################# == \#* ]]
++ continue
++ read -r line
++ line=
++ [[ 0 == 0 ]]
++ continue
++ read -r line
++ line='COMPILE | CCPP=Y REPRO=Y SUITES=FV3_GFS_v16b_ugwpv1                                                                                | standard    |                | fv3         |'
++ [[ 177 == 0 ]]
++ [[ COMPILE | CCPP=Y REPRO=Y SUITES=FV3_GFS_v16b_ugwpv1                                                                                | standard    |                | fv3         | == \#* ]]
++ [[ COMPILE | CCPP=Y REPRO=Y SUITES=FV3_GFS_v16b_ugwpv1                                                                                | standard    |                | fv3         | == COMPILE* ]]
+++ sed -e 's/^ *//' -e 's/ *$//'
+++ echo COMPILE '|' CCPP=Y REPRO=Y SUITES=FV3_GFS_v16b_ugwpv1 '|' standard '|' '|' fv3 '|'
+++ cut '-d|' -f2
++ MAKE_OPT='CCPP=Y REPRO=Y SUITES=FV3_GFS_v16b_ugwpv1'
+++ echo COMPILE '|' CCPP=Y REPRO=Y SUITES=FV3_GFS_v16b_ugwpv1 '|' standard '|' '|' fv3 '|'
+++ cut '-d|' -f3
++ SET=' standard '
+++ cut '-d|' -f4
+++ echo COMPILE '|' CCPP=Y REPRO=Y SUITES=FV3_GFS_v16b_ugwpv1 '|' standard '|' '|' fv3 '|'
++ MACHINES=' '
+++ echo COMPILE '|' CCPP=Y REPRO=Y SUITES=FV3_GFS_v16b_ugwpv1 '|' standard '|' '|' fv3 '|'
+++ cut '-d|' -f5
++ CB=' fv3 '
++ [[   != \  ]]
++ [[   != \  ]]
++ [[ true == true ]]
++ [[  fv3  != *fv3* ]]
++ ((  COMPILE_NR += 1  ))
++ cat
++ [[ false == true ]]
++ [[ false == true ]]
++ ./compile.sh hera.intel 'CCPP=Y REPRO=Y SUITES=FV3_GFS_v16b_ugwpv1' 1
++ [[ CCPP=Y REPRO=Y SUITES=FV3_GFS_V16B_UGWPV1 =~ REPRO=Y ]]
++ RT_SUFFIX=_repro
++ BL_SUFFIX=_repro
++ [[ CCPP=Y REPRO=Y SUITES=FV3_GFS_V16B_UGWPV1 =~ WW3=Y ]]
++ continue
++ read -r line
++ line='RUN     | fv3_ccpp_gfsv16_ugwpv1                                                                                                   | standard    |                | fv3         |'
++ [[ 177 == 0 ]]
++ [[ RUN     | fv3_ccpp_gfsv16_ugwpv1                                                                                                   | standard    |                | fv3         | == \#* ]]
++ [[ RUN     | fv3_ccpp_gfsv16_ugwpv1                                                                                                   | standard    |                | fv3         | == COMPILE* ]]
++ [[ RUN     | fv3_ccpp_gfsv16_ugwpv1                                                                                                   | standard    |                | fv3         | == RUN* ]]
+++ echo RUN '|' fv3_ccpp_gfsv16_ugwpv1 '|' standard '|' '|' fv3 '|'
+++ cut '-d|' -f2
+++ sed -e 's/^ *//' -e 's/ *$//'
++ TEST_NAME=fv3_ccpp_gfsv16_ugwpv1
+++ echo RUN '|' fv3_ccpp_gfsv16_ugwpv1 '|' standard '|' '|' fv3 '|'
+++ cut '-d|' -f3
++ SET=' standard '
+++ echo RUN '|' fv3_ccpp_gfsv16_ugwpv1 '|' standard '|' '|' fv3 '|'
+++ cut '-d|' -f4
++ MACHINES=' '
+++ echo RUN '|' fv3_ccpp_gfsv16_ugwpv1 '|' standard '|' '|' fv3 '|'
+++ cut '-d|' -f5
++ CB=' fv3 '
+++ echo RUN '|' fv3_ccpp_gfsv16_ugwpv1 '|' standard '|' '|' fv3 '|'
+++ cut '-d|' -f6
+++ sed -e 's/^ *//' -e 's/ *$//'
++ DEP_RUN=
+++ echo RUN '|' fv3_ccpp_gfsv16_ugwpv1 '|' standard '|' '|' fv3 '|'
+++ cut '-d|' -f7
+++ sed -e 's/^ *//' -e 's/ *$//'
++ DATE_35D=
++ [[ -e tests/fv3_ccpp_gfsv16_ugwpv1 ]]
++ [[   != \  ]]
++ [[   != \  ]]
++ [[ true == true ]]
++ [[  fv3  != *fv3* ]]
++ [[ false == true ]]
++ [[ false == true ]]
++ RT_SUFFIX=_repro
++ BL_SUFFIX=_repro
++ [[ false == true ]]
+++ printf %03d 1
++ TEST_NR=001
++ source /scratch1/NCEPDEV/swpc/Valery.Yudin/save/JAN_2021/ufs-weather-model/tests/tests/fv3_ccpp_gfsv16_ugwpv1
+++ export 'TEST_DESCR=Compare fv3_ccpp_gfsv16_ugwpv1 with previous trunk version'
+++ TEST_DESCR='Compare fv3_ccpp_gfsv16_ugwpv1 with previous trunk version'
+++ export CNTL_DIR=fv3_ccpp_gfsv16_ugwpv1
+++ CNTL_DIR=fv3_ccpp_gfsv16_ugwpv1
+++ export 'LIST_FILES=atmos_4xdaily.tile1.nc                    atmos_4xdaily.tile2.nc                    atmos_4xdaily.tile3.nc                    atmos_4xdaily.tile4.nc                    atmos_4xdaily.tile5.nc                    atmos_4xdaily.tile6.nc                    phyf000.tile1.nc                    phyf000.tile2.nc                    phyf000.tile3.nc                    phyf000.tile4.nc                    phyf000.tile5.nc                    phyf000.tile6.nc                    phyf024.tile1.nc                    phyf024.tile2.nc                    phyf024.tile3.nc                    phyf024.tile4.nc                    phyf024.tile5.nc                    phyf024.tile6.nc                    dynf000.tile1.nc                    dynf000.tile2.nc                    dynf000.tile3.nc                    dynf000.tile4.nc                    dynf000.tile5.nc                    dynf000.tile6.nc                    dynf024.tile1.nc                    dynf024.tile2.nc                    dynf024.tile3.nc                    dynf024.tile4.nc                    dynf024.tile5.nc                    dynf024.tile6.nc                    RESTART/coupler.res                    RESTART/fv_core.res.nc                    RESTART/fv_core.res.tile1.nc                    RESTART/fv_core.res.tile2.nc                    RESTART/fv_core.res.tile3.nc                    RESTART/fv_core.res.tile4.nc                    RESTART/fv_core.res.tile5.nc                    RESTART/fv_core.res.tile6.nc                    RESTART/fv_srf_wnd.res.tile1.nc                    RESTART/fv_srf_wnd.res.tile2.nc                    RESTART/fv_srf_wnd.res.tile3.nc                    RESTART/fv_srf_wnd.res.tile4.nc                    RESTART/fv_srf_wnd.res.tile5.nc                    RESTART/fv_srf_wnd.res.tile6.nc                    RESTART/fv_tracer.res.tile1.nc                    RESTART/fv_tracer.res.tile2.nc                    RESTART/fv_tracer.res.tile3.nc                    RESTART/fv_tracer.res.tile4.nc                    RESTART/fv_tracer.res.tile5.nc                    RESTART/fv_tracer.res.tile6.nc                    RESTART/sfc_data.tile1.nc                    RESTART/sfc_data.tile2.nc                    RESTART/sfc_data.tile3.nc                    RESTART/sfc_data.tile4.nc                    RESTART/sfc_data.tile5.nc                    RESTART/sfc_data.tile6.nc                    RESTART/phy_data.tile1.nc                    RESTART/phy_data.tile2.nc                    RESTART/phy_data.tile3.nc                    RESTART/phy_data.tile4.nc                    RESTART/phy_data.tile5.nc                    RESTART/phy_data.tile6.nc'
+++ LIST_FILES='atmos_4xdaily.tile1.nc                    atmos_4xdaily.tile2.nc                    atmos_4xdaily.tile3.nc                    atmos_4xdaily.tile4.nc                    atmos_4xdaily.tile5.nc                    atmos_4xdaily.tile6.nc                    phyf000.tile1.nc                    phyf000.tile2.nc                    phyf000.tile3.nc                    phyf000.tile4.nc                    phyf000.tile5.nc                    phyf000.tile6.nc                    phyf024.tile1.nc                    phyf024.tile2.nc                    phyf024.tile3.nc                    phyf024.tile4.nc                    phyf024.tile5.nc                    phyf024.tile6.nc                    dynf000.tile1.nc                    dynf000.tile2.nc                    dynf000.tile3.nc                    dynf000.tile4.nc                    dynf000.tile5.nc                    dynf000.tile6.nc                    dynf024.tile1.nc                    dynf024.tile2.nc                    dynf024.tile3.nc                    dynf024.tile4.nc                    dynf024.tile5.nc                    dynf024.tile6.nc                    RESTART/coupler.res                    RESTART/fv_core.res.nc                    RESTART/fv_core.res.tile1.nc                    RESTART/fv_core.res.tile2.nc                    RESTART/fv_core.res.tile3.nc                    RESTART/fv_core.res.tile4.nc                    RESTART/fv_core.res.tile5.nc                    RESTART/fv_core.res.tile6.nc                    RESTART/fv_srf_wnd.res.tile1.nc                    RESTART/fv_srf_wnd.res.tile2.nc                    RESTART/fv_srf_wnd.res.tile3.nc                    RESTART/fv_srf_wnd.res.tile4.nc                    RESTART/fv_srf_wnd.res.tile5.nc                    RESTART/fv_srf_wnd.res.tile6.nc                    RESTART/fv_tracer.res.tile1.nc                    RESTART/fv_tracer.res.tile2.nc                    RESTART/fv_tracer.res.tile3.nc                    RESTART/fv_tracer.res.tile4.nc                    RESTART/fv_tracer.res.tile5.nc                    RESTART/fv_tracer.res.tile6.nc                    RESTART/sfc_data.tile1.nc                    RESTART/sfc_data.tile2.nc                    RESTART/sfc_data.tile3.nc                    RESTART/sfc_data.tile4.nc                    RESTART/sfc_data.tile5.nc                    RESTART/sfc_data.tile6.nc                    RESTART/phy_data.tile1.nc                    RESTART/phy_data.tile2.nc                    RESTART/phy_data.tile3.nc                    RESTART/phy_data.tile4.nc                    RESTART/phy_data.tile5.nc                    RESTART/phy_data.tile6.nc'
+++ export_fv3
+++ export FV3=true
+++ FV3=true
+++ export S2S=false
+++ S2S=false
+++ export DATM=false
+++ DATM=false
+++ export THRD=1
+++ THRD=1
+++ export WLCLK=15
+++ WLCLK=15
+++ export INPES=3
+++ INPES=3
+++ export JNPES=8
+++ JNPES=8
+++ export TASKS=150
+++ TASKS=150
+++ export TPN=40
+++ TPN=40
+++ export RESTART_INTERVAL=0
+++ RESTART_INTERVAL=0
+++ export QUILTING=.true.
+++ QUILTING=.true.
+++ export WRITE_GROUP=1
+++ WRITE_GROUP=1
+++ export WRTTASK_PER_GROUP=6
+++ WRTTASK_PER_GROUP=6
+++ export OUTPUT_HISTORY=.true.
+++ OUTPUT_HISTORY=.true.
+++ export WRITE_DOPOST=.false.
+++ WRITE_DOPOST=.false.
+++ export NUM_FILES=2
+++ NUM_FILES=2
+++ export 'FILENAME_BASE='\''dyn'\'' '\''phy'\'''
+++ FILENAME_BASE=''\''dyn'\'' '\''phy'\'''
+++ export 'OUTPUT_GRID='\''cubed_sphere_grid'\'''
+++ OUTPUT_GRID=''\''cubed_sphere_grid'\'''
+++ export 'OUTPUT_FILE='\''netcdf'\'''
+++ OUTPUT_FILE=''\''netcdf'\'''
+++ export IDEFLATE=0
+++ IDEFLATE=0
+++ export NBITS=0
+++ NBITS=0
+++ export WRITE_NEMSIOFLIP=.false.
+++ WRITE_NEMSIOFLIP=.false.
+++ export WRITE_FSYNCFLAG=.false.
+++ WRITE_FSYNCFLAG=.false.
+++ export IMO=384
+++ IMO=384
+++ export JMO=190
+++ JMO=190
+++ export WARM_START=.F.
+++ WARM_START=.F.
+++ export READ_INCREMENT=.F.
+++ READ_INCREMENT=.F.
+++ export NGGPS_IC=.T.
+++ NGGPS_IC=.T.
+++ export EXTERNAL_IC=.T.
+++ EXTERNAL_IC=.T.
+++ export MAKE_NH=.T.
+++ MAKE_NH=.T.
+++ export MOUNTAIN=.F.
+++ MOUNTAIN=.F.
+++ export NA_INIT=1
+++ NA_INIT=1
+++ export DO_RRTMGP=.F.
+++ DO_RRTMGP=.F.
+++ export ICLOUD=0
+++ ICLOUD=0
+++ export IOVR=1
+++ IOVR=1
+++ export IMP_PHYSICS=11
+++ IMP_PHYSICS=11
+++ export NWAT=6
+++ NWAT=6
+++ export DNATS=1
+++ DNATS=1
+++ export DO_SAT_ADJ=.T.
+++ DO_SAT_ADJ=.T.
+++ export LHEATSTRG=.F.
+++ LHEATSTRG=.F.
+++ export LGFDLMPRAD=.F.
+++ LGFDLMPRAD=.F.
+++ export EFFR_IN=.F.
+++ EFFR_IN=.F.
+++ export LRADAR=.T.
+++ LRADAR=.T.
+++ export LTAEROSOL=.T.
+++ LTAEROSOL=.T.
+++ export LDIAG_UGWP=.F.
+++ LDIAG_UGWP=.F.
+++ export DO_UGWP=.F.
+++ DO_UGWP=.F.
+++ export DO_TOFD=.F.
+++ DO_TOFD=.F.
+++ export GWD_OPT=1
+++ GWD_OPT=1
+++ export DO_UGWP_V0=.F.
+++ DO_UGWP_V0=.F.
+++ export DO_UGWP_V0_OROG_ONLY=.F.
+++ DO_UGWP_V0_OROG_ONLY=.F.
+++ export DO_GSL_DRAG_LS_BL=.F.
+++ DO_GSL_DRAG_LS_BL=.F.
+++ export DO_GSL_DRAG_SS=.F.
+++ DO_GSL_DRAG_SS=.F.
+++ export DO_GSL_DRAG_TOFD=.F.
+++ DO_GSL_DRAG_TOFD=.F.
+++ export DO_UGWP_V1=.F.
+++ DO_UGWP_V1=.F.
+++ export DO_UGWP_V1_OROG_ONLY=.F.
+++ DO_UGWP_V1_OROG_ONLY=.F.
+++ export SATMEDMF=.F.
+++ SATMEDMF=.F.
+++ export ISATMEDMF=0
+++ ISATMEDMF=0
+++ export HYBEDMF=.T.
+++ HYBEDMF=.T.
+++ export SHINHONG=.F.
+++ SHINHONG=.F.
+++ export DO_YSU=.F.
+++ DO_YSU=.F.
+++ export DO_MYNNEDMF=.F.
+++ DO_MYNNEDMF=.F.
+++ export DO_MYJPBL=.F.
+++ DO_MYJPBL=.F.
+++ export HURR_PBL=.F.
+++ HURR_PBL=.F.
+++ export MONINQ_FAC=1.0
+++ MONINQ_FAC=1.0
+++ export IMFSHALCNV=2
+++ IMFSHALCNV=2
+++ export HWRF_SAMFSHAL=.F.
+++ HWRF_SAMFSHAL=.F.
+++ export IMFDEEPCNV=2
+++ IMFDEEPCNV=2
+++ export HWRF_SAMFDEEP=.F.
+++ HWRF_SAMFDEEP=.F.
+++ export DO_MYJSFC=.F.
+++ DO_MYJSFC=.F.
+++ export DO_MYNNSFCLAY=.F.
+++ DO_MYNNSFCLAY=.F.
+++ export LSM=1
+++ LSM=1
+++ export LSOIL_LSM=4
+++ LSOIL_LSM=4
+++ export LANDICE=.T.
+++ LANDICE=.T.
+++ export OZ_PHYS_OLD=.T.
+++ OZ_PHYS_OLD=.T.
+++ export OZ_PHYS_NEW=.F.
+++ OZ_PHYS_NEW=.F.
+++ export H2O_PHYS=.F.
+++ H2O_PHYS=.F.
+++ export CPL=.F.
+++ CPL=.F.
+++ export CPLFLX=.F.
+++ CPLFLX=.F.
+++ export CPLWAV=.F.
+++ CPLWAV=.F.
+++ export CPLWAV2ATM=.F.
+++ CPLWAV2ATM=.F.
+++ export DAYS=1
+++ DAYS=1
+++ export NPX=97
+++ NPX=97
+++ export NPY=97
+++ NPY=97
+++ export NPZ=64
+++ NPZ=64
+++ export NPZP=65
+++ NPZP=65
+++ export NSTF_NAME=2,1,1,0,5
+++ NSTF_NAME=2,1,1,0,5
+++ export FDIAG=0,1,2,3,4,5,6,7,8,9,10,11,12,15,18,21,24
+++ FDIAG=0,1,2,3,4,5,6,7,8,9,10,11,12,15,18,21,24
+++ export NFHOUT=3
+++ NFHOUT=3
+++ export NFHMAX_HF=12
+++ NFHMAX_HF=12
+++ export NFHOUT_HF=1
+++ NFHOUT_HF=1
+++ export 'FNALBC='\''global_snowfree_albedo.bosu.t126.384.190.rg.grb'\'','
+++ FNALBC=''\''global_snowfree_albedo.bosu.t126.384.190.rg.grb'\'','
+++ export 'FNVETC='\''global_vegtype.igbp.t126.384.190.rg.grb'\'','
+++ FNVETC=''\''global_vegtype.igbp.t126.384.190.rg.grb'\'','
+++ export 'FNSOTC='\''global_soiltype.statsgo.t126.384.190.rg.grb'\'','
+++ FNSOTC=''\''global_soiltype.statsgo.t126.384.190.rg.grb'\'','
+++ export 'FNSMCC='\''global_soilmgldas.t126.384.190.grb'\'','
+++ FNSMCC=''\''global_soilmgldas.t126.384.190.grb'\'','
+++ export 'FNABSC='\''global_mxsnoalb.uariz.t126.384.190.rg.grb'\'','
+++ FNABSC=''\''global_mxsnoalb.uariz.t126.384.190.rg.grb'\'','
+++ export ENS_NUM=1
+++ ENS_NUM=1
+++ export SYEAR=2016
+++ SYEAR=2016
+++ export SMONTH=10
+++ SMONTH=10
+++ export SDAY=03
+++ SDAY=03
+++ export SHOUR=00
+++ SHOUR=00
++++ expr 1 '*' 24
+++ export FHMAX=24
+++ FHMAX=24
+++ export DT_ATMOS=1800
+++ DT_ATMOS=1800
+++ export FHCYC=24
+++ FHCYC=24
+++ export FHROT=0
+++ FHROT=0
+++ export LDIAG3D=.F.
+++ LDIAG3D=.F.
+++ export QDIAG3D=.F.
+++ QDIAG3D=.F.
+++ export MAX_OUTPUT_FIELDS=300
+++ MAX_OUTPUT_FIELDS=300
+++ export DO_SPPT=.F.
+++ DO_SPPT=.F.
+++ export DO_SHUM=.F.
+++ DO_SHUM=.F.
+++ export DO_SKEB=.F.
+++ DO_SKEB=.F.
+++ export LNDP_TYPE=0
+++ LNDP_TYPE=0
+++ export N_VAR_LNDP=0
+++ N_VAR_LNDP=0
+++ export SKEB=-999.
+++ SKEB=-999.
+++ export SPPT=-999.
+++ SPPT=-999.
+++ export SHUM=-999.
+++ SHUM=-999.
+++ export 'IAU_INC_FILES='\'''\'''
+++ IAU_INC_FILES=''\'''\'''
+++ export DO_CA=.F.
+++ DO_CA=.F.
+++ export CA_SGS=.F.
+++ CA_SGS=.F.
+++ export CA_GLOBAL=.F.
+++ CA_GLOBAL=.F.
+++ export IAU_DRYMASSFIXER=.false.
+++ IAU_DRYMASSFIXER=.false.
+++ export WRITE_RESTART_WITH_BCS=.false.
+++ WRITE_RESTART_WITH_BCS=.false.
+++ export coupling_interval_fast_sec=0
+++ coupling_interval_fast_sec=0
+++ DT_ATMOS=600
+++ export RTPWD127=/scratch1/NCEPDEV/swpc/Valery.Yudin/noscrub/CCPP_GEOS
+++ RTPWD127=/scratch1/NCEPDEV/swpc/Valery.Yudin/noscrub/CCPP_GEOS
+++ export FV3_RUN=ccpp_gfsv16_ugwpv1_run.IN
+++ FV3_RUN=ccpp_gfsv16_ugwpv1_run.IN
+++ export CCPP_SUITE=FV3_GFS_v16b_ugwpv1
+++ CCPP_SUITE=FV3_GFS_v16b_ugwpv1
+++ export CCPP_LIB_DIR=ccpp/lib
+++ CCPP_LIB_DIR=ccpp/lib
+++ export INPUT_NML=ccpp_v16_c96_ugwpv1.nml.IN
+++ INPUT_NML=ccpp_v16_c96_ugwpv1.nml.IN
+++ export WLCLK=30
+++ WLCLK=30
++ NODES=3
++ ((  NODES * TPN < TASKS  ))
++ NODES=4
++ cat
++ [[ false == true ]]
++ [[ false == true ]]
++ ./run_test.sh /scratch1/NCEPDEV/swpc/Valery.Yudin/save/JAN_2021/ufs-weather-model/tests /scratch1/NCEPDEV/stmp2/Valery.Yudin/FV3_RT/rt_306201 fv3_ccpp_gfsv16_ugwpv1 001 1
++ continue
++ read -r line
++ line=
++ [[ 0 == 0 ]]
++ continue
++ read -r line
++ line=
++ [[ 0 == 0 ]]
++ continue
++ read -r line
++ line=
++ [[ 0 == 0 ]]
++ continue
++ read -r line
++ [[ false == true ]]
++ [[ false == true ]]
++ set +e
++ cat /scratch1/NCEPDEV/swpc/Valery.Yudin/save/JAN_2021/ufs-weather-model/tests/log_hera.intel/compile_1.log
++ cat /scratch1/NCEPDEV/swpc/Valery.Yudin/save/JAN_2021/ufs-weather-model/tests/log_hera.intel/rt_001_fv3_ccpp_gfsv16_ugwpv1_repro.log
++ [[ -e fail_test ]]
++ echo
+
++ echo REGRESSION TEST WAS SUCCESSFUL
+REGRESSION TEST WAS SUCCESSFUL
++ echo
++ echo REGRESSION TEST WAS SUCCESSFUL
++ rm -f 'fv3_*.x' fv3_1.exe modules.fv3_1
++ [[ true == false ]]
++ [[ false == true ]]
++ [[ false == true ]]
++ date
+++ printf '%02dh:%02dm:%02ds\n' 0 31 58
++ elapsed_time=00h:31m:58s
++ echo 'Elapsed time: 00h:31m:58s. Have a nice day!'
++ echo 'Elapsed time: 00h:31m:58s. Have a nice day!'
+Elapsed time: 00h:31m:58s. Have a nice day!
++ echo 'rt.sh finished'
+rt.sh finished
++ cleanup
++ [[ false == true ]]
++ rm -rf /scratch1/NCEPDEV/swpc/Valery.Yudin/save/JAN_2021/ufs-weather-model/tests/lock
++ trap 0
++ exit
