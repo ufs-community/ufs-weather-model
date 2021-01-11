@@ -1,0 +1,23 @@
+rm -fr INPUT RESTART
+rsync -arv @[INPUTDATA_ROOT]/FV3_input_data_c192L127/INPUT/ INPUT/
+mkdir RESTART
+if [ $WARM_START = .T. ]; then
+  rsync -arv ../fv3_ccpp_gfs_v16_c192L127${RT_SUFFIX}/RESTART/ INPUT/
+  cd INPUT
+  rename 20190120.000000. '' 20190120.000000.*
+  cd ..
+fi
+
+cp    @[INPUTDATA_ROOT]/FV3_input_data_c192L127/aerosol.dat .
+cp    @[INPUTDATA_ROOT]/FV3_input_data_c192L127/co2historicaldata_201*.txt .
+cp    @[INPUTDATA_ROOT]/FV3_input_data_c192L127/sfc_emissivity_idx.txt .
+cp    @[INPUTDATA_ROOT]/FV3_input_data_c192L127/solarconstant_noaa_an.txt .
+cp    @[INPUTDATA_ROOT]/FV3_input_data_c192L127/global_o3prdlos.f77 ./global_o3prdlos.f77
+cp    @[INPUTDATA_ROOT]/FV3_input_data_c192L127/global_h2o_pltc.f77 ./global_h2oprdlos.f77
+cp    @[INPUTDATA_ROOT]/FV3_input_data_c192L127/*grb .
+cp    @[INPUTDATA_ROOT]/FV3_input_data_c192L127/*_table .
+cp    @[INPUTDATA_ROOT]/FV3_input_data_c192L127/*configure .
+
+if [ $DO_RRTMGP = .T. ]; then
+  cp @[INPUTDATA_ROOT]/FV3_input_data_c192L127/rrtmgp* .
+fi
