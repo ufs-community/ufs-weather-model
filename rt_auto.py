@@ -12,6 +12,7 @@ import re
 import sys
 import yaml
 import os
+from importlib import import_module
 
 class machine_info():
 
@@ -48,17 +49,17 @@ def get_yaml_subset(in_yaml, keyin):
 def get_machine_info(static_data):
     hostname = socket.gethostname()
     machines = get_yaml_subset(static_data, "machines")
-    A = machines['name'][machines.index[machines.regexhostname.str.match(hostname)].tolist()]
-    if len(A) == 1:
-        app_machine_name = str(list(A)[0])
-        print("Approved Machine Found: {}".format(app_machine_name))
-    else:
-        sys.exit("Hostname {} does not match approved list. Quitting".format(hostname))
-
-    mach_db_info = machines.loc[machines[machines['name'] == app_machine_name].index.values[0]]
-    machine = machine_info(mach_db_info['name'], mach_db_info['regexhostname'],
-                           mach_db_info['workdir'], mach_db_info['baselinedir'])
-    return machine
+    regexmachines = machines['regexhostname'].values
+    for i, mach in enumerate(regexmachines):
+        if re.search(mach, hostname):
+            print("{} is an approved machine".format(hostname))
+            mach_db_info = machines.iloc[i]
+            machine = machine_info(mach_db_info['name'], mach_db_info['regexhostname'],
+                                   mach_db_info['workdir'], mach_db_info['baselinedir'])
+            return machine
+        else:
+            continue
+    sys.exit("Hostname {} does not match approved list. Quitting".format(hostname))
 
 def connect_to_github(GHACCESSTOKEN): # In case there's more needed later
     client = gh(GHACCESSTOKEN) #will work if None for public repos.
@@ -70,16 +71,16 @@ def process_pulls(pulls, repo):
         labels = pr.get_labels()
         for label in labels:
             if label.name.split('-')[1].lower() == machine.name.lower():
-                for action_name, action_command in valid_actions.values.tolist():
+                for action_name, action_command, action_callback in valid_actions.values.tolist():
                     if label.name.split('-')[0].lower() == action_name.lower():
                         try:
                             pr_workdir = clone_pr_repo(pr)
-                            pa_ret = process_actions(action_command, pr_workdir, pr)
+                            pa_ret = process_actions(action_callback, action_command, pr_workdir, pr)
                             if pa_ret == 0:
                                 pr.remove_from_labels(label.name.split('-')[0]+"-"+label.name.split('-')[1])
 
-                        except:
-                            print("ERROR RUNNING RT {}".format(action_name))
+                        except Exception as e:
+                            print("ERROR RUNNING RT {} with error: {}".format(action_name, e))
                             continue
 
 def clone_pr_repo(pr):
@@ -93,7 +94,8 @@ def clone_pr_repo(pr):
     create_repo_commands = [
         ["mkdir -p \""+repo_dir_str+"\"", machine.workdir],
         ["git clone -b "+branch+" "+git_url_w_login, repo_dir_str],
-        ["git submodule update --init --recursive", repo_dir_str+"/"+repo_name]
+        ["git submodule update --init --recursive", repo_dir_str+"/"+repo_name],
+        ["module use modulefiles/{}.intel && module load fv3".format(machine.name), repo_dir_str+"/"+repo_name]
     ]
 
     for command, in_cwd in create_repo_commands:
@@ -112,31 +114,18 @@ def clone_pr_repo(pr):
 
     return repo_dir_str+"/"+repo_name
 
-def create_threaded_call(callback, run_fnc):
-    def runInThread(callback, run_fnc):
-        proc = run_fnc
-        proc.wait()
-        callback()
-        return
 
-    thread = threading.Thread(target=runInThread,
-                              args=(callback, run_fnc))
-    thread.start()
-
-    return thread # returns immediately after the thread starts
 
 def move_rt_logs(pr, pr_workdir):
-    rt_log = 'tests/RegressionTests_hera.intel.log'
-    # rt_log = 'RegressionTests_'+machine.name+'.intel.log'
-    filepath = pr_workdir+'/'+rt_log
-    print("File path is {}".format(filepath))
+    rt_log = 'RegressionTests_'+machine.name+'.intel.log'
+    filepath = pr_workdir+'/tests/'+rt_log
+    print("File path issssss {}".format(filepath))
     if os.path.exists(filepath):
         branch = pr.head.ref
         print("Branch used is: {}".format(branch))
-        repo = pr.head.repo
 
         move_rt_commands = [
-            ['echo "GOOSEBUMPS2" >> '+rt_log, pr_workdir],
+            #['echo "GOOSEBUMPS2" >> '+rt_log, pr_workdir],
             ['git add '+rt_log, pr_workdir],
             ['git commit -m "Auto: Added Updated RT Log file: '+rt_log+'"', pr_workdir],
             ['git push origin '+branch, pr_workdir]
@@ -158,15 +147,26 @@ def move_rt_logs(pr, pr_workdir):
         print("ERROR: Could not find RT log")
         sys.exit()
 
-def process_actions(command, pr_workdir, pr):
-        try:
-            print("{} attempting command {}".format(machine.name.upper(), command))
-            thethread = create_threaded_call(move_rt_logs(pr, pr_workdir), subprocess.Popen(command, shell=True, cwd=pr_workdir+"/tests"))
-        except:
-            print("{} failed command {}".format(machine.name.upper(), command))
-            return 1
-        return 0
-        # pr.create_issue_comment("AUTOMATED COMMENT: Submitted Command '{}' in directory '{}' on machine '{}'".format(command, pr_workdir, machine.name))
+def process_actions(callback_fnc, command, pr_workdir, pr):
+
+    def create_threaded_call(callback_fnc, command, cwd_in):
+
+        def runInThread(callback_fnc, command, cwd_in):
+            proc = subprocess.Popen(command, shell=True, cwd=cwd_in)
+            proc.wait()
+            globals()[callback_fnc](pr, pr_workdir)
+            return
+
+        thread = threading.Thread(target=runInThread,
+                                  args=(callback_fnc, command, cwd_in))
+        thread.start()
+
+        return thread # returns immediately after the thread starts
+
+    print("{} attempting command {}".format(machine.name.upper(), command))
+    thread = create_threaded_call(callback_fnc, command, pr_workdir+'/tests')
+    # create_threaded_call(callback_fnc, [1,2,3,4])
+    # print("Thread is {}".format(thread))
 
 # START OF MAIN
 db_filename = 'rt_auto.yml'

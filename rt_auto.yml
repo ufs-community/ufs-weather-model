@@ -1,8 +1,8 @@
 ---
   machines:
     - name: 'hera'
-      regexhostname: 'hfe\d\d'
-      workdir: '/scratch1/NCEPDEV/nems/Brian.Curtis'
+      regexhostname: 'hfe'
+      workdir: '/scratch1/NCEPDEV/nems/Brian.Curtis/test'
       baselinedir: ''
     - name: 'orion'
       regexhostname: 'Orion-login-\d.HPC.MsState.Edu'
@@ -39,7 +39,9 @@
   actions:
     - name: 'RT'
       command: './rt.sh -n cpld_control'
+      callback_fnc: 'move_rt_logs'
     # - name: 'RT'
     #   command: './rt.sh -ef'
     - name: 'BL'
       command: './rt.sh -cef'
+      callback_fnc: ''
