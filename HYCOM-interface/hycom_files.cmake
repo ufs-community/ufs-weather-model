@@ -55,7 +55,6 @@ list(APPEND _hycom_nuopc_src_files
   HYCOM/NUOPC/HYCOM_OceanComp.F90
   HYCOM/NUOPC/HYCOM_ESMF_Extensions.F90
   HYCOM/NUOPC/hycom_couple.F90
-  HYCOM/NUOPC/ReadHycomLatLon.F90
   HYCOM/NUOPC/read_impexp_config_mod.F90
   HYCOM/NUOPC/impexpField_cdf_mod.F90
   HYCOM/NUOPC/export_from_hycom_tiled.F90
