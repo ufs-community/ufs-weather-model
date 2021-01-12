@@ -146,11 +146,8 @@ endif()
 target_compile_definitions(fms PUBLIC "${_fms_defs_public}")
 
 if(32BIT)
-  set(DYN32 ON CACHE BOOL "Enable support for 32bit fast physics in CCPP")
   list(APPEND _fms_defs_private OVERLOAD_R4
                                 OVERLOAD_R8)
-else()
-  set(DYN32 OFF CACHE BOOL "Disable support for 32bit fast physics in CCPP")
 endif()
 
 target_compile_definitions(fms PRIVATE "${_fms_defs_private}")
