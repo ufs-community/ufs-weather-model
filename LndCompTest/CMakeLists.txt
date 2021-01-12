@@ -1,7 +1,20 @@
 #set(SRCS lnd_comp_nuopc.F90)
 
 ### Create target library and set PUBLIC interfaces on the library
-add_library(lnd_comp STATIC lnd_comp_nuopc.F90)
+add_library(lnd_comp STATIC
+	    clm_varctl.F90
+	    # decompInitMod.F90
+	    # domainMod.F90
+	    lnd_comp_nuopc.F90
+	    lnd_import_export.F90
+	    lnd_set_decomp_and_domain.F90
+	    nuopc_shr_methods.F90
+	    shr_file_mod.F90
+	    shr_kind_mod.F90
+	    shr_log_mod.F90
+	    shr_sys_mod.F90
+	    spmdMod.F90
+	    )
 set_target_properties(lnd_comp PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_compile_definitions(lnd_comp PUBLIC "${_lnd_comp_defs}")
 target_include_directories(lnd_comp PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
