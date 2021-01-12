@@ -11,6 +11,7 @@ import subprocess
 import re
 import sys
 import yaml
+import os
 
 class machine_info():
 
@@ -113,8 +114,8 @@ def clone_pr_repo(pr):
     return repo_dir_str+"/"+repo_name
 
 def move_rt_logs(pr, pr_workdir):
-    rt_log = 'RegressionTests_'+machine.name+'.intel.log'
-    filepath = pr_workdir+'/tests/'+rt_log
+    rt_log = 'tests/RegressionTests_'+machine.name+'.intel.log'
+    filepath = pr_workdir+'/'+rt_log
     print("File path issssss {}".format(filepath))
     if os.path.exists(filepath):
         branch = pr.head.ref
