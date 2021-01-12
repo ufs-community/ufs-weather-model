@@ -122,12 +122,6 @@ else
   fi
 fi
 
-#if [[ "${MAKE_OPT}" == *"32BIT=Y"* ]]; then
-#  CMAKE_FLAGS="${CMAKE_FLAGS} -DDYN32=ON"
-#else
-#  CMAKE_FLAGS="${CMAKE_FLAGS} -DDYN32=OFF"
-#fi
-
   # Check if suites argument is provided or not
 set +ex
 TEST=$( echo $MAKE_OPT | grep -e "SUITES=" )
