@@ -24,8 +24,8 @@ else
     rm -f INPUT/fv_core.res.*
     rm -f INPUT/fv_srf_wnd.res.*
     rm -f INPUT/fv_tracer.res.*
-    rm -f INPUT/phy_data.*c
-    rm -f INPUT/srf_data.*
+    rm -f INPUT/phy_data.*
+    rm -f INPUT/sfc_data.*
     for RFILE in ../${TEST_NAME}${BL_SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.*; do
       [ -e $RFILE ] || exit 1
       RFILE_OLD=$(basename $RFILE)
@@ -52,7 +52,7 @@ cp    @[INPUTDATA_ROOT]/${inputdir}/*_table .
 cp    @[INPUTDATA_ROOT]/${inputdir}/*configure .
 
 if [ $CPLWAV = .T. ]; then
-cp    @[INPUTDATA_ROOT]/WW3_input_data/mod_def.* .
-cp    @[INPUTDATA_ROOT]/WW3_input_data/@[SYEAR]@[SMONTH]@[SDAY]/ww3_multi.inp .
-cp    @[INPUTDATA_ROOT]/WW3_input_data/@[SYEAR]@[SMONTH]@[SDAY]/rmp_src* .
+cp    @[INPUTDATA_ROOT_WW3]/mod_def.* .
+cp    @[INPUTDATA_ROOT_WW3]/@[SYEAR]@[SMONTH]@[SDAY]/ww3_multi.inp .
+cp    @[INPUTDATA_ROOT_WW3]/@[SYEAR]@[SMONTH]@[SDAY]/rmp_src* .
 fi
