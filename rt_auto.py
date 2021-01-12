@@ -11,8 +11,6 @@ import subprocess
 import re
 import sys
 import yaml
-import os
-from importlib import import_module
 
 class machine_info():
 
@@ -114,8 +112,6 @@ def clone_pr_repo(pr):
 
     return repo_dir_str+"/"+repo_name
 
-
-
 def move_rt_logs(pr, pr_workdir):
     rt_log = 'RegressionTests_'+machine.name+'.intel.log'
     filepath = pr_workdir+'/tests/'+rt_log
@@ -125,7 +121,6 @@ def move_rt_logs(pr, pr_workdir):
         print("Branch used is: {}".format(branch))
 
         move_rt_commands = [
-            #['echo "GOOSEBUMPS2" >> '+rt_log, pr_workdir],
             ['git add '+rt_log, pr_workdir],
             ['git commit -m "Auto: Added Updated RT Log file: '+rt_log+'"', pr_workdir],
             ['git push origin '+branch, pr_workdir]
