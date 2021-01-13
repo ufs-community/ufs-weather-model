@@ -74,13 +74,11 @@ def process_pulls(pulls, repo):
                     if label.name.split('-')[0].lower() == action_name.lower():
                         try:
                             pr_workdir = clone_pr_repo(pr)
-                            pa_ret = process_actions(action_callback, action_command, pr_workdir, pr)
-                            if pa_ret == 0:
-                                pr.remove_from_labels(label.name.split('-')[0]+"-"+label.name.split('-')[1])
-
+                            process_actions(action_callback, action_command, pr_workdir, pr)
                         except Exception as e:
                             print("ERROR RUNNING RT {} with error: {}".format(action_name, e))
                             continue
+                        pr.remove_from_labels(label.name.split('-')[0]+"-"+label.name.split('-')[1])
 
 def clone_pr_repo(pr):
     branch = pr.head.ref
@@ -94,7 +92,7 @@ def clone_pr_repo(pr):
         ["mkdir -p \""+repo_dir_str+"\"", machine.workdir],
         ["git clone -b "+branch+" "+git_url_w_login, repo_dir_str],
         ["git submodule update --init --recursive", repo_dir_str+"/"+repo_name],
-        ["module use modulefiles/{}.intel && module load fv3".format(machine.name), repo_dir_str+"/"+repo_name]
+        ["module use modulefiles/{}.intel && module load fv3".format(machine.name.lower()), repo_dir_str+"/"+repo_name]
     ]
 
     for command, in_cwd in create_repo_commands:
@@ -159,10 +157,8 @@ def process_actions(callback_fnc, command, pr_workdir, pr):
 
         return thread # returns immediately after the thread starts
 
-    print("{} attempting command {}".format(machine.name.upper(), command))
+    print("{} is running command {}".format(machine.name.upper(), command))
     thread = create_threaded_call(callback_fnc, command, pr_workdir+'/tests')
-    # create_threaded_call(callback_fnc, [1,2,3,4])
-    # print("Thread is {}".format(thread))
 
 # START OF MAIN
 db_filename = 'rt_auto.yml'
