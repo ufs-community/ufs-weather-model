@@ -109,7 +109,7 @@ mkdir -p $PATHTR/FV3/ccpp/include
 # Similar for this directory, which apparently never gets populated
 mkdir -p $PATHTR/FMS/fms2_io/include
 
-CMAKE_FLAGS="${CMAKE_FLAGS} -DCCPP=ON -DMPI=ON"
+CMAKE_FLAGS="${CMAKE_FLAGS} -DMPI=ON"
 
 if [[ "${MAKE_OPT}" == *"DEBUG=Y"* ]]; then
   CMAKE_FLAGS="${CMAKE_FLAGS} -DCMAKE_BUILD_TYPE=Debug"
