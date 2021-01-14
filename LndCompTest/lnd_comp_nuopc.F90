@@ -36,7 +36,9 @@ module lnd_comp_nuopc
   private :: InitializeP0
   private :: InitializeAdvertise
   private :: InitializeRealize
-
+  private :: ModelAdvance
+  private :: ModelFinalize
+  
   character(len=CL)      :: flds_scalar_name = ''
   integer                :: flds_scalar_num = 0
 
@@ -76,7 +78,16 @@ contains
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
 !!!!!!!!!!!! JP: just try to get this far for now
+    ! attach specializing method(s)            
+    call NUOPC_CompSpecialize(gcomp, specLabel=model_label_Advance, &
+         specRoutine=ModelAdvance, rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
+    call NUOPC_CompSpecialize(gcomp, specLabel=model_label_Finalize, &
+         specRoutine=ModelFinalize, rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    
+    
   end subroutine SetServices
 
 
@@ -204,9 +215,62 @@ contains
     
   end subroutine InitializeRealize
 
+  !===============================================================================
+  subroutine ModelAdvance(gcomp, rc)
+
+    ! Arguments
+    type(ESMF_GridComp)  :: gcomp
+    integer, intent(out) :: rc
+
+    ! Local variables
+    type(ESMF_Clock)           :: clock,dclock,mclock
+    type(ESMF_Alarm)           :: alarm
+    type(ESMF_Time)            :: startTime
+    type(ESMF_Time)            :: currTime
+    type(ESMF_Time)            :: nextTime
+    type(ESMF_TimeInterval)    :: timeStep
+    type(ESMF_State)           :: importState, exportState
+    character(len=*),parameter :: subname=trim(modName)//':(ModelAdvance) '
+    character(len=256)   :: msgString
+    
+    ! query the Component for its clock, importState and exportState
+    call ESMF_GridCompGet(gcomp, clock=clock, importState=importState, &
+         exportState=exportState, rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+
+    call ESMF_ClockPrint(clock, options="currTime", &
+         preString="------>Advancing LND from: ", unit=msgString, rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    call ESMF_LogWrite(subname//trim(msgString), ESMF_LOGMSG_INFO)
+
+    call ESMF_ClockGet(clock, startTime=startTime, currTime=currTime, &
+         timeStep=timeStep, rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+
+    call ESMF_TimePrint(currTime + timeStep, &
+         preString="--------------------------------> to: ", unit=msgString, rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    call ESMF_LogWrite(trim(msgString), ESMF_LOGMSG_INFO)
+
+    ! call ESMF_ClockAdvance(clock,rc=rc)
+    ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
 
-  
+  end subroutine ModelAdvance
+
+  !===============================================================================
+
+  subroutine ModelFinalize(gcomp, rc)
+    type(ESMF_GridComp)  :: gcomp
+    integer, intent(out) :: rc
+    character(len=*),parameter  :: subname=trim(modName)//':(ModelFinalize) '
+
+    ! begin
+    rc = ESMF_SUCCESS
+    call ESMF_LogWrite(subname//' called', ESMF_LOGMSG_INFO)
+  end subroutine ModelFinalize
+
+    
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  
 !   use ESMF
 !   use NUOPC
