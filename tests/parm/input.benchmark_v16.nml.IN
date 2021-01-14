@@ -94,7 +94,7 @@
   hord_mt = 5
   hord_vt = 5
   hord_tm = 5
-  hord_dp = -5
+  hord_dp = 5
   hord_tr = 8
   adjust_dry_mass = .false.
   consv_te = 1.
@@ -110,21 +110,6 @@
   read_increment = .false.
   res_latlon_dynamics = ""
   
-/
-
-&cires_ugwp_nml
-       knob_ugwp_solver  = 2
-       knob_ugwp_source  = 1,1,0,0
-       knob_ugwp_wvspec  = 1,25,25,25
-       knob_ugwp_azdir   = 2,4,4,4
-       knob_ugwp_stoch   = 0,0,0,0
-       knob_ugwp_effac   = 1,1,1,1
-       knob_ugwp_doaxyz  = 1
-       knob_ugwp_doheat  = 1
-       knob_ugwp_dokdis  = 1
-       knob_ugwp_ndx4lh  = 1
-       knob_ugwp_version = 0
-       launch_level      = 54
 /
 
 &external_ic_nml
@@ -175,7 +160,7 @@
   cnvcld       = .true.
   imfshalcnv   = 2
   imfdeepcnv   = 2
-  cdmbgwd      = 1.1,0.72,1.0,1.0
+  cdmbgwd      = 0.23,1.5,1.0,1.0
   prslrd0      = 0.
   ivegsrc      = 1
   isot         = 1
@@ -318,6 +303,21 @@
 &nam_stochy
 /
 &nam_sfcperts
+/
+
+&cires_ugwp_nml
+  knob_ugwp_solver  = 2
+  knob_ugwp_source  = 1,1,0,0
+  knob_ugwp_wvspec  = 1,25,25,25
+  knob_ugwp_azdir   = 2,4,4,4
+  knob_ugwp_stoch   = 0,0,0,0
+  knob_ugwp_effac   = 1,1,1,1
+  knob_ugwp_doaxyz  = 1
+  knob_ugwp_doheat  = 1
+  knob_ugwp_dokdis  = 1
+  knob_ugwp_ndx4lh  = 1
+  knob_ugwp_version = 0
+  launch_level      = 54
 /
 
  &MOM_input_nml
