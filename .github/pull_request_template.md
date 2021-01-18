@@ -1,7 +1,7 @@
 # PR Checklist
 
-- [ ] Ths PR is up-to-date with the top of all sub-component repositories except for those sub-components which are the subject of this PR
-- [ ] An Issue describing the work contained in this PR has been created on both the ufs-weather-model and any relevant subcomponent repositories
+- [ ] Ths PR is up-to-date with the top of all sub-component repositories except for those sub-components which are the subject of this PR. Please consult the ufs-weather-model [wiki](https://github.com/ufs-community/ufs-weather-model/wiki/Making-code-changes-in-the-UFS-weather-model-and-its-subcomponents) if you are unsure how to do this.
+- [ ] An Issue describing the work contained in this PR has been created on both the ufs-weather-model and any relevant subcomponent repositories.
 - [ ] If new or updated input data is required by this PR, a separate issue has been opened in ufs-weather-model so that the code managers are notified of the need to stage the required files.
 
 ## Instructions: this, and all subsequent sections of text should be filled in as appropriate.
