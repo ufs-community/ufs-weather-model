@@ -1,15 +1,19 @@
+## PR Checklist
+
+- [ ] Ths PR is up-to-date with the top of all sub-component repositories except for those sub-components which are the subject of this PR
+- [ ] An Issue describing the work contained in this PR has been created on both the ufs-weather-model and any relevant subcomponent repositories
+- [ ] If new or updated input data is required by this PR, a separate issue has been opened in ufs-weather-model so that the code managers are notified of the need to stage the required files.
+
+### Instructions: this, and all subsequent sections of text should be removed and filled in as appropriate.
+
 ## Description
 
-(Instructions: this, and all subsequent sections of text should be removed and filled in as appropriate.)
-Provide a detailed description of what this PR does.
-What bug does it fix, or what feature does it add?
-Is a change of answers expected from this PR?
-Are any library updates included in this PR (modulefiles etc.)?
+Provide a detailed description of what this PR does. What bug does it fix, or what feature does it add? Is a change of answers expected from this PR? Are any library updates included in this PR (modulefiles etc.)?
 
 ### Issue(s) addressed
 
 Link the issues to be closed with this PR, whether in this repository, or in another repository.
-(Remember, issues should always be created before starting work on a PR branch!)
+(Remember, issues must always be created before starting work on a PR branch!)
 - fixes #<issue_number>
 - fixes noaa-emc/fv3atm/issues/<issue_number>
 
