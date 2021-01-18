@@ -4,7 +4,7 @@
 - [ ] An Issue describing the work contained in this PR has been created on both the ufs-weather-model and any relevant subcomponent repositories.
 - [ ] If new or updated input data is required by this PR, a separate issue has been opened in ufs-weather-model so that the code managers are notified of the need to stage the required files.
 
-## Instructions: this, and all subsequent sections of text should be filled in as appropriate.
+## Instructions: all subsequent sections of text should be filled in as appropriate.
 
 ## Description
 
