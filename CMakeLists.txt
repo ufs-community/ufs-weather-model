@@ -111,10 +111,7 @@ endif()
 target_link_libraries(nemsio::nemsio INTERFACE w3emc::w3emc_d bacio::bacio_4)
 
 # Configure Python
-find_package(Python 3 QUIET COMPONENTS Interpreter)
-if (NOT Python_Interpreter_FOUND)
-  find_package(Python 2.7 REQUIRED COMPONENTS Interpreter)
-endif()
+find_package(Python 3 REQUIRED COMPONENTS Interpreter)
 message("Found Python: ${Python_EXECUTABLE}")
 
 ###############################################################################
