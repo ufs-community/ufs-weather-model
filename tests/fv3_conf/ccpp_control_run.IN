@@ -18,6 +18,11 @@ else
   mkdir INPUT RESTART
 
   rsync -arv ../fv3_ccpp_control${RT_SUFFIX}/RESTART/ INPUT/
+  rm -f INPUT/fv_core.res.*
+  rm -f INPUT/fv_srf_wnd.res.*
+  rm -f INPUT/fv_tracer.res.*
+  rm -f INPUT/phy_data.*
+  rm -f INPUT/sfc_data.*
   cd INPUT
   rename 20161004.000000. '' 20161004.000000.*
   cp ../../fv3_ccpp_control${RT_SUFFIX}/INPUT/grid_spec.nc .
