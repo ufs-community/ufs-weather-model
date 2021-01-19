@@ -20,18 +20,14 @@ else
   rsync -arv ../fv3_ccpp_control${RT_SUFFIX}/RESTART/ INPUT/
   cd INPUT
   rename 20161004.000000. '' 20161004.000000.*
+  cp ../../fv3_ccpp_control${RT_SUFFIX}/INPUT/grid_spec.nc .
+  cp ../../fv3_ccpp_control${RT_SUFFIX}/INPUT/*_grid.tile*.nc .
+  cp ../../fv3_ccpp_control${RT_SUFFIX}/INPUT/oro_data.tile*.nc .
+  if [[ $IAU_INC_FILES != '' ]] || [[ $READ_INCREMENT = '.T.' ]]; then
+    cp ../../fv3_ccpp_control${RT_SUFFIX}/INPUT/fv3_increment.nc .
+  fi
   cd ..
 
-#  if [[ ${UNIT_TEST} == false ]]; then
-#    cp -r @[INPUTDATA_ROOT]/${inputdir}/RESTART/* ./INPUT
-#  else
-#    for RFILE in ../${TEST_NAME}${BL_SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.*; do
-#      [ -e $RFILE ] || exit 1
-#      RFILE_OLD=$(basename $RFILE)
-#      RFILE_NEW="${RFILE_OLD//${RESTART_FILE_PREFIX}./}"
-#      cp $RFILE INPUT/${RFILE_NEW}
-#    done
-#  fi
 fi
 
 cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/aerosol.dat .
