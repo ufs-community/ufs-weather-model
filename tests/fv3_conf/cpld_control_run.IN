@@ -50,6 +50,16 @@ cp    @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/grid_cice_NEMS_mx@[OCNRES].nc .
 cp    @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/kmtu_cice_NEMS_mx@[OCNRES].nc .
 cp    @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/mesh.mx@[OCNRES].nc .
 
+# WW3 fix/input
+if [[ $CPLWAV == .T. && $CPLWAV2ATM == .T. ]]; then
+  cp    @[INPUTDATA_ROOT_WW3]/mod_def.* .
+  if [[ $RT1DEG == .T. ]]; then
+   cp    @[INPUTDATA_ROOT_WW3]/ww3_multi_1deg.inp ww3_multi.inp
+  else
+   cp    @[INPUTDATA_ROOT_WW3]/ww3_multi.inp .
+  fi
+fi
+
 # No restart
 if [ $WARM_START = .F. ]; then
   # ICs
