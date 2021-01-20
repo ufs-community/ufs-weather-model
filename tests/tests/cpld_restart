@@ -1,8 +1,8 @@
 #
 #  cpld_restart test
-#  NOTE: test is not currently used; restarts are tested at c96mx025
+#
 
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C96MX100 - 12h restart"
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C96MX100 - restart"
 
 export CNTL_DIR="cpld_control"
 
@@ -57,10 +57,12 @@ export LIST_FILES="phyf024.tile1.nc \
 export_fv3
 export_cpl
 
-export DAYS="0.50"
-export FHMAX="24"
 export FHROT='12'
 export RESTART_N=$((FHMAX-$FHROT))
+
+export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${FHROT}  )))0000"
+export RESTART_FILE_SUFFIX_HRS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%02d" $(( ${FHROT} )))"
+export RESTART_FILE_SUFFIX_SECS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%02d" $(( ${FHROT}*3600 )))"
 
 # ATM warm start
 WARM_START='.T.'
