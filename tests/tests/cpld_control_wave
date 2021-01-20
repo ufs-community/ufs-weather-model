@@ -58,17 +58,6 @@ export LIST_FILES="phyf024.tile1.nc \
 export_fv3
 export_cpl
 
-# set component and coupling timesteps
-export DT_ATMOS='450'
-export DT_CICE=${DT_ATMOS}
-export DT_DYNAM_MOM6='900'
-export DT_THERM_MOM6='1800'
-export CPL_SLOW=${DT_THERM_MOM6}
-export CPL_FAST=${DT_ATMOS}
-
-export RESTART_INTERVAL="12"
-export RESTART_N=${RESTART_INTERVAL}
-
 export TASKS=$TASKS_cpl_dflt_wwav
 export TPN=$TPN_cpl_dflt_wwav
 export INPES=$INPES_cpl_dflt_wwav
@@ -84,8 +73,6 @@ export wav_petlist_bounds=$WPB_cpl_dflt_wwav
 
 # nems.configure
 export NEMS_CONFIGURE="nems.configure.cpld_wave.IN"
-export coupling_interval_slow_sec=${CPL_SLOW}
-export coupling_interval_fast_sec=${CPL_FAST}
 
 export CPLWAV='.T.'
 export CPLWAV2ATM='.T.'
