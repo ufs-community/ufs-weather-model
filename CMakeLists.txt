@@ -42,6 +42,8 @@ set(DATM            OFF CACHE BOOL "Enable Data Atmosphere")
 ###############################################################################
 if(DEBUG)
   set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Set type of build to Debug." FORCE)
+else()
+  set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Set type of build to Release." FORCE)
 endif()
 
 if(CMAKE_Platform)
@@ -164,9 +166,9 @@ target_include_directories(fms PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_D
                                       $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/fms2_io/include>
                                       $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/FMS/mod>
                                       $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/mpp/include>)
-target_include_directories(fms INTERFACE 
-                                         $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include>
-                                         $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/mod>)
+target_include_directories(fms INTERFACE
+                                      $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include>
+                                      $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/mod>)
 target_link_libraries(fms PUBLIC MPI::MPI_Fortran
                                  NetCDF::NetCDF_Fortran)
 if(OpenMP_Fortran_FOUND)
@@ -201,6 +203,8 @@ if(WW3)
       set(WW3_COMP "hera")
     elseif(${CMAKE_Platform} STREQUAL "orion.intel")
       set(WW3_COMP "orion")
+    elseif(${CMAKE_Platform} STREQUAL "cheyenne.intel")
+      set(WW3_COMP "cheyenne")
     elseif(${CMAKE_Platform} STREQUAL "wcoss2")
       set(WW3_COMP "wcoss_cray")
     elseif(${CMAKE_Platform} MATCHES "linux*" OR ${CMAKE_Platform} MATCHES "macosx*")
@@ -368,7 +372,7 @@ target_link_libraries(ufs_model PRIVATE ufs
 ### Install
 ###############################################################################
 install(
-  TARGETS fms 
+  TARGETS fms
   EXPORT fms-config
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib
@@ -380,7 +384,7 @@ install(EXPORT fms-config
   DESTINATION lib/cmake
 )
 install(
-  TARGETS ufs 
+  TARGETS ufs
   EXPORT ufs-config
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib)
