@@ -23,6 +23,9 @@ target_link_libraries(lnd_comp PUBLIC esmf)
 
 #target_link_libraries(lnd_comp PUBLIC esmf)
 
+# test this:
+target_include_directories(lnd_comp PRIVATE ${CMAKE_BINARY_DIR}/FV3/ccpp/physics)
+
 ###############################################################################
 ### Install
 ###############################################################################
