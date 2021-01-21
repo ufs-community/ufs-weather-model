@@ -218,7 +218,7 @@ def process_pr(pullreq, ghinterface, machine, functions):
             except Exception as e:
                 print(f'ERROR RUNNING RT {prlabel.function.command} with error: {e}')
                 continue
-            # pullreq.preq.remove_from_labels(f'{prlabel.name}-{prlabel.machine}')
+            pullreq.preq.remove_from_labels(f'{prlabel.name}-{prlabel.machine}')
 
 def move_rt_logs(PullReq):
     filepath = PullReq.clone_dir+'/'+rt_log
