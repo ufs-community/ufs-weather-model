@@ -1,0 +1,22 @@
+rm -rf INPUT RESTART
+
+if [ $WARM_START = .F. ]; then
+  cp -r @[RTPWD127]/FV3_input_data/INPUT ./
+  mkdir RESTART
+else
+  mkdir INPUT RESTART
+  cp -r @[RTPWD127]/FV3_input_data/RESTART/* ./INPUT
+fi
+cp    @[RTPWD127]/FV3_input_data//aerosol.dat .
+cp    @[RTPWD127]/FV3_input_data/co2historicaldata_201*.txt .
+cp    @[RTPWD127]/FV3_input_data/sfc_emissivity_idx.txt .
+cp    @[RTPWD127]/FV3_input_data/solarconstant_noaa_an.txt .
+cp    @[RTPWD127]/FV3_input_data/global_o3prdlos.f77 ./global_o3prdlos.f77
+cp    @[RTPWD127]/FV3_input_data/global_h2oprdlos.f77 ./global_h2oprdlos.f77
+cp    @[RTPWD127]/FV3_input_data/*grb .
+cp    @[RTPWD127]/FV3_input_data/*_table ./
+cp    @[RTPWD127]/FV3_input_data/*configure ./
+cp    @[RTPWD127]/FV3_input_data/ugwp_c384_tau.nc   ./ugwp_limb_tau.nc 
+if [ $DO_RRTMGP = .T. ]; then
+cp    @[RTPWD]/FV3_input_data_RRTMGP/* .
+fi
