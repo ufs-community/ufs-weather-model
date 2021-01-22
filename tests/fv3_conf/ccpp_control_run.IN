@@ -32,7 +32,10 @@ else
     #restart test start from fh=12
     cp ../fv3_ccpp_control${RT_SUFFIX}/RESTART/20161003.120000.* INPUT/.
     cd INPUT
-    rename 20161003.120000. '' 20161003.120000.*
+    for RFILE in 20161003.120000.*; do
+      [ -e $RFILE ] || exit 1
+      mv $RFILE ${RFILE#20161003.120000.}
+    done
   fi
   cp ../../fv3_ccpp_control${RT_SUFFIX}/INPUT/grid_spec.nc .
   cp ../../fv3_ccpp_control${RT_SUFFIX}/INPUT/*_grid.tile*.nc .
