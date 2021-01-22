@@ -18,19 +18,25 @@ else
   mkdir INPUT RESTART
 
   rsync -arv ../fv3_ccpp_control${RT_SUFFIX}/RESTART/ INPUT/
-  rm -f INPUT/fv_core.res.*
-  rm -f INPUT/fv_srf_wnd.res.*
-  rm -f INPUT/fv_tracer.res.*
-  rm -f INPUT/phy_data.*
-  rm -f INPUT/sfc_data.*
-  cd INPUT
-  rename 20161004.000000. '' 20161004.000000.*
+  if [[ $IAU_INC_FILES = 'fv3_increment.nc' ]] || [[ $READ_INCREMENT = '.T.' ]]; then
+    #read_inc and iau tests restart from fh=24
+    cp ../fv3_ccpp_control${RT_SUFFIX}/RESTART/coupler.res INPUT/.
+    cp ../fv3_ccpp_control${RT_SUFFIX}/RESTART/fv_core.res.* INPUT/.
+    cp ../fv3_ccpp_control${RT_SUFFIX}/RESTART/fv_srf_wnd.res.* INPUT/.
+    cp ../fv3_ccpp_control${RT_SUFFIX}/RESTART/fv_tracer.* INPUT/.
+    cp ../fv3_ccpp_control${RT_SUFFIX}/RESTART/phy_data.* INPUT/.
+    cp ../fv3_ccpp_control${RT_SUFFIX}/RESTART/sfc_data.* INPUT/.
+    cp ../fv3_ccpp_control${RT_SUFFIX}/INPUT/fv3_increment.nc INPUT/.
+    cd INPUT
+  else
+    #restart test start from fh=12
+    cp ../fv3_ccpp_control${RT_SUFFIX}/RESTART/20161003.120000.* INPUT/.
+    cd INPUT
+    rename 20161003.120000. '' 20161003.120000.*
+  fi
   cp ../../fv3_ccpp_control${RT_SUFFIX}/INPUT/grid_spec.nc .
   cp ../../fv3_ccpp_control${RT_SUFFIX}/INPUT/*_grid.tile*.nc .
   cp ../../fv3_ccpp_control${RT_SUFFIX}/INPUT/oro_data.tile*.nc .
-  if [[ $IAU_INC_FILES != '' ]] || [[ $READ_INCREMENT = '.T.' ]]; then
-    cp ../../fv3_ccpp_control${RT_SUFFIX}/INPUT/fv3_increment.nc .
-  fi
   cd ..
 
 fi
