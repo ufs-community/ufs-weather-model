@@ -1,6 +1,7 @@
 #
 #  cpld_bmark test
 #
+
 export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C384 MX025 - Benchmark test"
 
 export CNTL_DIR="cpld_bmark"
@@ -59,6 +60,9 @@ export LIST_FILES="phyf024.tile1.nc \
 export_fv3
 export_cpl
 
+export RESTART_INTERVAL="12"
+export RESTART_N=${RESTART_INTERVAL}
+
 export SYEAR="2013"
 export SMONTH="04"
 export SDAY="01"
@@ -100,8 +104,6 @@ export CPL_FAST=${DT_ATMOS}
 # nems.configure
 export coupling_interval_slow_sec=${CPL_SLOW}
 export coupling_interval_fast_sec=${CPL_FAST}
-
-export FRAC_GRID_INPUT='.F.'
 
 # resolution dependent files
 export MOM_INPUT="MOM_input_template_${OCNRES}"

@@ -21,7 +21,6 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules/Modules)
 set(32BIT           OFF CACHE BOOL "Enable 32BIT (single precision arithmetic in dycore)")
 set(AVX2            ON  CACHE BOOL "Enable AVX2 instruction set")
 set(SIMDMULTIARCH   OFF CACHE BOOL "Enable multi-target SIMD instruction sets")
-set(CCPP            ON  CACHE BOOL "Enable CCPP")
 set(DEBUG           OFF CACHE BOOL "Enable DEBUG mode")
 set(DEBUG_LINKMPI   ON  CACHE BOOL "Enable linkmpi option when DEBUG mode is on")
 set(INLINE_POST     OFF CACHE BOOL "Enable inline post")
@@ -45,6 +44,8 @@ set(CDEPS_DOCN      OFF CACHE BOOL "Enable CDEPS Data Ocean")
 ###############################################################################
 if(DEBUG)
   set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Set type of build to Debug." FORCE)
+else()
+  set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Set type of build to Release." FORCE)
 endif()
 
 if(CMAKE_Platform)
@@ -61,7 +62,6 @@ message("")
 message("32BIT ............ ${32BIT}")
 message("AVX2 ............. ${AVX2}")
 message("SIMDMULTIARCH ...  ${SIMDMULTIARCH}")
-message("CCPP ............. ${CCPP}")
 message("DEBUG ............ ${DEBUG}")
 message("DEBUG_LINKMPI .... ${DEBUG_LINKMPI}")
 message("INLINE_POST ...... ${INLINE_POST}")
@@ -123,13 +123,12 @@ endif()
 # See https://github.com/NOAA-EMC/NCEPLIBS-nemsio/pull/22
 target_link_libraries(nemsio::nemsio INTERFACE w3emc::w3emc_d bacio::bacio_4)
 
-if(CCPP)
-  find_package(Python 3 QUIET COMPONENTS Interpreter)
-  if (NOT Python_Interpreter_FOUND)
-    find_package(Python 2.7 REQUIRED COMPONENTS Interpreter)
-  endif()
-  message("Found Python: ${Python_EXECUTABLE}")
+# Configure Python
+find_package(Python 3 QUIET COMPONENTS Interpreter)
+if (NOT Python_Interpreter_FOUND)
+  find_package(Python 2.7 REQUIRED COMPONENTS Interpreter)
 endif()
+message("Found Python: ${Python_EXECUTABLE}")
 
 ###############################################################################
 ### Checks
@@ -213,6 +212,8 @@ if(WW3)
       set(WW3_COMP "hera")
     elseif(${CMAKE_Platform} STREQUAL "orion.intel")
       set(WW3_COMP "orion")
+    elseif(${CMAKE_Platform} STREQUAL "cheyenne.intel")
+      set(WW3_COMP "cheyenne")
     elseif(${CMAKE_Platform} STREQUAL "wcoss2")
       set(WW3_COMP "wcoss_cray")
     elseif(${CMAKE_Platform} MATCHES "linux*" OR ${CMAKE_Platform} MATCHES "macosx*")
@@ -429,7 +430,7 @@ if(NOT DATM AND NOT CDEPS_DATM)
 endif()
 
 install(
-  TARGETS ufs 
+  TARGETS ufs
   EXPORT ufs-config
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib)
