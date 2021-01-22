@@ -38,6 +38,7 @@ class Machine:
     def __init__(self, rtdata_obj):
         self.rtdata_obj = rtdata_obj
         self.get_machine_info()
+        self.machineid = os.environ.get('MACHINE_ID')
 
     def get_machine_info(self):
         hostname = socket.gethostname()
@@ -141,7 +142,10 @@ class PullReq:
         pr_labels = self.preq_obj.get_labels()
         for pr_label in pr_labels:
             split_pr_label = pr_label.name.split('-')
-            self.labels.append(PRLabel(split_pr_label[0], split_pr_label[1]))
+            if len(split_pr_label) == 3 and split_pr_label[0] == "Auto":
+                self.labels.append(PRLabel(split_pr_label[1], split_pr_label[2]))
+            else:
+                continue
 
     def add_clone_dir(self, clone_dir):
         self.clone_dir = clone_dir
@@ -157,7 +161,7 @@ class PRLabel:
         self.function_obj = function_obj
 
     def is_approved(self, machine_obj, functions):
-        if re.match(self.machine.lower(), machine.name.lower()):
+        if re.match(self.machine.lower(), machine_obj.name.lower()):
             for function_obj in functions:
                 if function_obj.verify_name(self.name):
                     print(f'Approved label "{self.name}-{self.machine}"')
@@ -213,13 +217,17 @@ def process_pr(pullreq_obj, ghinterface_obj, machine_obj, functions):
             except Exception as e:
                 sys.exit(f'Error cloning repo: {pullreq_obj.git_url}')
             try:
-                send_to_thread(prlabel.function, pullreq_obj)
+                goodexit = runInThread(prlabel.function_obj, pullreq_obj)
+                # thread, badexit = send_to_thread(prlabel.function_obj, pullreq_obj)
             except Exception as e:
-                print(f'ERROR RUNNING RT {prlabel.function.command} with error: {e}')
+                print(f'ERROR RUNNING RT {prlabel.function_obj.command} with error: {e}')
                 continue
-            pullreq_obj.preq.remove_from_labels(f'{prlabel.name}-{prlabel.machine}')
+            else:
+                if goodexit == True:
+                    pullreq_obj.preq_obj.remove_from_labels(f'Auto-{prlabel.name}-{prlabel.machine}')
 
 def move_rt_logs(pullreq_obj):
+    rt_log = 'tests/RegressionTests_'+pullreq_obj.machine_obj.machineid+'.log'
     filepath = pullreq_obj.clone_dir+'/'+rt_log
     if os.path.exists(filepath):
 
@@ -245,23 +253,46 @@ def move_rt_logs(pullreq_obj):
         print('ERROR: Could not find RT log')
         sys.exit()
 
-def send_to_thread(function_obj, pullreq_obj):
+# def send_to_thread(function_obj, pullreq_obj):
+#     badexit = False
+#     def create_threaded_call(function_obj, pullreq_obj, badexit):
+#
+#         def runInThread(incallback, incommand, cwd_in, badexit):
+#             print(f'cwd_in is:{cwd_in}')
+#             proc = subprocess.Popen(incommand, shell=True, cwd=cwd_in)
+#             proc.wait()
+#             proc.poll()
+#             if proc.returncode == 0:
+#                 print(f'Process successful, running callback function')
+#                 globals()[incallback](pullreq_obj)
+#             else:
+#                 print(f'badexit is {badexit}')
+#                 print(f'Process failed, skipping callback function')
+#                 badexit = True
+#                 print(f'new badexit is {badexit}')
+#             return
+#
+#         thread = threading.Thread(target=runInThread,
+#                                   args=(function_obj.callback, function_obj.command, pullreq_obj.clone_dir, badexit))
+#         thread.start()
+#         print(f'ouside badexit is {badexit}')
+#         return thread, badexit # returns immediately after the thread starts
+#     thread, exit = create_threaded_call(function_obj, pullreq_obj, badexit)
+#     return thread, exit
 
-    def create_threaded_call(function_obj, pullreq_obj):
-
-        def runInThread(incallback, incommand, cwd_in):
-            print(f'cwd_in is:{cwd_in}')
-            proc = subprocess.Popen(incommand, shell=True, cwd=cwd_in)
-            proc.wait()
-            globals()[incallback](PullReq)
-            return
-
-        thread = threading.Thread(target=runInThread,
-                                  args=(function_obj.callback, function_obj.command, pullreq_obj.clone_dir))
-        thread.start()
-
-        return thread # returns immediately after the thread starts
-    thread = create_threaded_call(function_obj, pullreq_obj)
+def runInThread(function_obj, pullreq_obj):
+    goodexit = None
+    proc = subprocess.Popen(function_obj.command, shell=True, cwd=pullreq_obj.clone_dir)
+    proc.wait()
+    proc.poll()
+    if proc.returncode == 0:
+        print(f'Process successful, running callback function')
+        globals()[function_obj.callback](pullreq_obj)
+        goodexit = True
+    else:
+        print(f'Process failed, skipping callback function')
+        goodexit = False
+    return goodexit
 
 def get_approved_repos(rtdata_obj, machine_obj, ghinterface_obj):
     repo_data = rtdata_obj.get_yaml_subset('repository').values.tolist()
@@ -279,8 +310,11 @@ def main():
     functions_obj = get_approved_functions(rtdata_obj)
     repo_list = get_approved_repos(rtdata_obj, machine_obj, ghinterface_obj)
     for single_repo in repo_list:
+        print(f'Processing {single_repo.address} repository')
         for single_pr in single_repo.pullreq_list:
+            print(f'Processing pull request #{single_pr.preq_obj.id}')
             process_pr(single_pr, ghinterface_obj, machine_obj, functions_obj)
+            print(f'Finished processing pull request #{single_pr.preq_obj.id}')
 
 if __name__ == '__main__':
     main()

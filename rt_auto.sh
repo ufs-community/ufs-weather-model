@@ -4,6 +4,7 @@ set -eux
 export RT_COMPILER='intel'
 source tests/detect_machine.sh
 echo "Machine ID: "+$MACHINE_ID
+export MACHINE_ID=$MACHINE_ID
 if [[ $MACHINE_ID = hera.* ]]; then
   export PATH=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3/bin:$PATH
   export PYTHONPATH=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3/lib/python3.8/site-packages
