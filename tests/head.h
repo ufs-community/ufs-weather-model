@@ -23,9 +23,26 @@ ecflow_client --init=$$
 
 
 # Define a error handler
-ERROR() {
+handle_error() {
    set +e                      # Clear -e flag, so we don't fail
-   kill $(jobs -p)
+   wait                        # wait for background process to stop
+
+   ecflow_client --ping --host=${ECF_HOST} --port=${ECF_PORT}
+   not_running=$?
+   if [[ $not_running -eq 0 ]]; then
+     export ECF_TIMEOUT=5
+     ecflow_client --abort=error  # Notify ecFlow that something went wrong, using 'trap' as the reason
+   fi
+   sleep 5
+   trap 0                      # Remove the trap
+   exit 0                      # End the script
+}
+
+# Define a signal handler
+handle_signal() {
+   set +e                      # Clear -e flag, so we don't fail
+   jobs -l
+   [[ -z "$(jobs -p)" ]] || kill $(jobs -p)
    wait                        # wait for background process to stop
 
    ecflow_client --ping --host=${ECF_HOST} --port=${ECF_PORT}
@@ -41,9 +58,9 @@ ERROR() {
 
 
 # Trap any calls to exit and errors caught by the -e flag
-trap ERROR 0
+trap handle_error 0
 
 # Trap any signal that may cause the script to fail
-trap '{ echo "$0 Killed by a signal"; ERROR ; }' 1 2 3 4 5 6 7 8   10    12 13    15
+trap '{ echo "$0 Killed by a signal"; handle_signal ; }' 1 2 3 4 5 6 7 8   10    12 13    15
 
 ### head.h end

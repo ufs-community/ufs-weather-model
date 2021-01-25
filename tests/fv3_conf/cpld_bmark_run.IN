@@ -1,0 +1,111 @@
+mkdir INPUT RESTART history MOM6_OUTPUT
+
+if [[ $ATMRES == 'C96' ]]; then
+  FV3_DIR=FV3_input_data
+else
+  FV3_DIR=FV3_input_data${ATMRES#C}
+fi
+
+ICERES="${OCNRES:0:1}.${OCNRES:1}"
+
+BM_IC=BM_IC/${SYEAR}${SMONTH}${SDAY}${SHOUR}
+if [[ ${FRAC_GRID_INPUT} = .F. ]]; then
+  FV3_IC=${BM_IC}/gfs/@[ATMRES]/INPUT
+elif [[ @[NPZ] == '127' ]]; then
+  FV3_IC=FV3_input_frac/${BM_IC}/gfs/@[ATMRES]_L@[NPZ]/INPUT
+else
+  FV3_IC=FV3_input_frac/${BM_IC}/gfs/@[ATMRES]/INPUT
+fi
+MOM6_IC=${BM_IC}/mom6_da
+CICE_IC=${BM_IC}/cpc
+WW3_IC=${BM_IC}/ww3
+
+# FV3 fixed input
+cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/aerosol.dat .
+cp    @[INPUTDATA_ROOT]/FV3_input_bm2/INPUT/co2historicaldata_201*.txt .
+cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/sfc_emissivity_idx.txt .
+cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/solarconstant_noaa_an.txt .
+if [ $OZ_PHYS_NEW = .T. ]; then
+  cp  @[INPUTDATA_ROOT]/${FV3_DIR}/ozprdlos_2015_new_sbuvO3_tclm15_nuchem.f77 ./global_o3prdlos.f77
+elif [ $OZ_PHYS_OLD = .T. ]; then
+  cp  @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/global_o3prdlos.f77 .
+fi
+cp    @[INPUTDATA_ROOT]/${FV3_DIR}/global_h2o_pltc.f77 ./global_h2oprdlos.f77
+cp    @[INPUTDATA_ROOT]/${FV3_DIR}/*grb .
+cp    @[INPUTDATA_ROOT]/${FV3_DIR}/@[FIELD_TABLE] ./field_table
+cp    @[INPUTDATA_ROOT]/CPL_FIX/a@[ATMRES]o@[OCNRES]/grid_spec.nc ./INPUT
+cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/@[ATMRES]_grid*.nc ./INPUT
+# NOTE: No L127 FV3_DIR input for non-frac grid input except for C96
+if [ ${FRAC_GRID_INPUT} = .F. ]; then
+  cp  @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/oro_data*.nc ./INPUT
+  cp  @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/gfs_ctrl.nc ./INPUT
+else
+ if [[ $NPZ == '127' ]]; then
+  cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES]_l127.mx@[OCNRES]_frac/oro_data*.nc ./INPUT
+  cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES]_l127.mx@[OCNRES]_frac/gfs_ctrl.nc ./INPUT
+ else
+  cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES].mx@[OCNRES]_frac/oro_data*.nc ./INPUT
+  cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES].mx@[OCNRES]_frac/gfs_ctrl.nc ./INPUT
+ fi
+fi
+cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/grid_spec.nc ./INPUT/@[ATMRES]_mosaic.nc
+
+# MOM6 fixed input
+cp    @[INPUTDATA_ROOT]/MOM6_FIX/@[OCNRES]/* ./INPUT
+
+# CICE fixed input
+cp    @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/grid_cice_NEMS_mx@[OCNRES].nc .
+cp    @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/kmtu_cice_NEMS_mx@[OCNRES].nc .
+cp    @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/mesh.mx@[OCNRES].nc .
+
+# WW3 fix/input
+if [[ $CPLWAV == .T. && $CPLWAV2ATM == .T. ]]; then
+  cp    @[INPUTDATA_ROOT_WW3]/mod_def.* .
+  if [[ $RT35D == .T. ]]; then
+   cp    @[INPUTDATA_ROOT_WW3]/ww3_multi_35d.inp ww3_multi.inp
+   cp    @[INPUTDATA_ROOT]/${WW3_IC}/*.000000.restart.gwes_30m ./restart.gwes_30m
+  else
+   cp    @[INPUTDATA_ROOT_WW3]/ww3_multi.inp .
+  fi
+fi
+
+# No restart
+if [ $WARM_START = .F. ]; then
+  # ICs
+  cp    @[INPUTDATA_ROOT]/${FV3_IC}/sfc_data*.nc ./INPUT
+  cp    @[INPUTDATA_ROOT]/${FV3_IC}/gfs_data*.nc ./INPUT
+  cp    @[INPUTDATA_ROOT]/${MOM6_IC}/MOM*.nc ./INPUT
+  # the BM ICs are still named cice5 and need to remain so until P5.0 is completed
+  cp    @[INPUTDATA_ROOT]/${CICE_IC}/cice5_model_@[ICERES].*.nc ./cice_model.res.nc
+else
+  # NOTE: bmark-wave model is not currently tested for restart
+  # Restart files
+  cp -r ../${DEP_RUN}${RT_SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.* ./INPUT
+  rm -f INPUT/fv_core.res.*
+  rm -f INPUT/fv_srf_wnd.res.*
+  rm -f INPUT/fv_tracer.res.*
+  rm -f INPUT/phy_data.*
+  rm -f INPUT/sfc_data.*
+  for RFILE in ../${DEP_RUN}${RT_SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.*; do
+    [ -e $RFILE ] || exit 1
+    RFILE_OLD=$(basename $RFILE)
+    RFILE_NEW="${RFILE_OLD//${RESTART_FILE_PREFIX}./}"
+    cp $RFILE INPUT/${RFILE_NEW}
+  done
+  
+  # Restart files MOM6 mx025
+  cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/MOM.res.${RESTART_FILE_SUFFIX_HRS}-00-00.nc ./INPUT/MOM.res.nc
+  cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/MOM.res.${RESTART_FILE_SUFFIX_HRS}-00-00_1.nc ./INPUT/MOM.res_1.nc
+  cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/MOM.res.${RESTART_FILE_SUFFIX_HRS}-00-00_2.nc ./INPUT/MOM.res_2.nc
+  cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/MOM.res.${RESTART_FILE_SUFFIX_HRS}-00-00_3.nc ./INPUT/MOM.res_3.nc
+
+  # CMEPS restart and pointer files
+  RFILE="ufs.cpld.cpl.r.${RESTART_FILE_SUFFIX_SECS}.nc"
+  cp  ../${DEP_RUN}${RT_SUFFIX}/RESTART/${RFILE} .
+  ls -1 ${RFILE}>rpointer.cpl
+
+  # CICE restart and pointer files
+  RFILE="iced.${RESTART_FILE_SUFFIX_SECS}.nc"
+  cp  ../${DEP_RUN}${RT_SUFFIX}/RESTART/${RFILE} ./INPUT
+  ls -1 "./INPUT/"${RFILE}>ice.restart_file
+fi

@@ -20,24 +20,24 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
                    phyf000.tile4.nc \
                    phyf000.tile5.nc \
                    phyf000.tile6.nc \
-                   phyf024.tile1.nc \
-                   phyf024.tile2.nc \
-                   phyf024.tile3.nc \
-                   phyf024.tile4.nc \
-                   phyf024.tile5.nc \
-                   phyf024.tile6.nc \
+                   phyf003.tile1.nc \
+                   phyf003.tile2.nc \
+                   phyf003.tile3.nc \
+                   phyf003.tile4.nc \
+                   phyf003.tile5.nc \
+                   phyf003.tile6.nc \
                    dynf000.tile1.nc \
                    dynf000.tile2.nc \
                    dynf000.tile3.nc \
                    dynf000.tile4.nc \
                    dynf000.tile5.nc \
                    dynf000.tile6.nc \
-                   dynf024.tile1.nc \
-                   dynf024.tile2.nc \
-                   dynf024.tile3.nc \
-                   dynf024.tile4.nc \
-                   dynf024.tile5.nc \
-                   dynf024.tile6.nc \
+                   dynf003.tile1.nc \
+                   dynf003.tile2.nc \
+                   dynf003.tile3.nc \
+                   dynf003.tile4.nc \
+                   dynf003.tile5.nc \
+                   dynf003.tile6.nc \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -72,9 +72,8 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
                    RESTART/sfc_data.tile6.nc"
 
 export_fv3
-export NODES=$(expr $TASKS / $TPN + 1)
 
-export FHMAX=24
+export FHMAX=3
 export FDIAG=3
 
 export DT_ATMOS="600"
@@ -93,10 +92,8 @@ export HYBEDMF=.F.
 export DO_MYNNEDMF=.T.
 export IMFSHALCNV=3
 export IMFDEEPCNV=3
-export FHCYC=0
 export LSM=3
 export LSOIL_LSM=9
-
-RUN_SCRIPT=rt_fv3.sh
+export KICE=9
 
 export WLCLK=30
