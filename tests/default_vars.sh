@@ -341,6 +341,7 @@ export DO_MYNNSFCLAY=.F.
 export LSM=1
 export LSOIL_LSM=4
 export LANDICE=.T.
+export KICE=2
 
 # Ozone / stratospheric H2O
 export OZ_PHYS_OLD=.T.
@@ -357,7 +358,7 @@ export NPY=97
 export NPZ=64
 export NPZP=65
 export NSTF_NAME=2,1,1,0,5
-export FDIAG=0,1,2,3,4,5,6,7,8,9,10,11,12,15,18,21,24
+export FDIAG=0,1,2,3,4,5,6,7,8,9,10,11,12,15,18,21,24,27,30,33,36,39,42,45,48
 export NFHOUT=3
 export NFHMAX_HF=12
 export NFHOUT_HF=1
@@ -387,6 +388,7 @@ export DO_SHUM=.F.
 export DO_SKEB=.F.
 export LNDP_TYPE=0
 export N_VAR_LNDP=0
+export LNDP_EACH_STEP=.F.
 export SKEB=-999.
 export SPPT=-999.
 export SHUM=-999.
