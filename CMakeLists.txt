@@ -133,8 +133,6 @@ endif()
 ###############################################################################
 include(fms_files.cmake)
 add_library(fms ${fms_src_files} ${fms_headers})
-# stupid cmake can not figure out dependency of fft.F90 on fft99.F90 because 'use fft99_mod' is inside ifdefs
-set_property(SOURCE FMS/fft/fft.F90 APPEND_STRING PROPERTY COMPILE_FLAGS "-DSGICRAY=0 -DNAGFFT=0")
 
 list(APPEND _fms_defs_public use_libMPI
                              use_netCDF
