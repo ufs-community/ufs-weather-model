@@ -81,8 +81,13 @@ cp ${PATHRT}/modules.fv3_${COMPILE_NR}             modules.fv3
 cp ${PATHRT}/../NEMS/src/conf/module-setup.sh.inc  module-setup.sh
 if [[ $FV3 = 'true' ]]; then
   cp ${PATHRT}/parm/post_itag itag
-  cp ${PATHRT}/parm/postxconfig-NT.txt postxconfig-NT.txt
-  cp ${PATHRT}/parm/postxconfig-NT_FH00.txt postxconfig-NT_FH00.txt
+  if [[ $POSTAPP = 'global' ]]; then
+    cp ${PATHRT}/parm/postxconfig-NT.txt postxconfig-NT.txt
+    cp ${PATHRT}/parm/postxconfig-NT_FH00.txt postxconfig-NT_FH00.txt
+  elif [[ $POSTAPP = 'lam' ]]; then
+    cp ${PATHRT}/parm/postxconfig-NT-lam.txt postxconfig-NT.txt
+    cp ${PATHRT}/parm/postxconfig-NT-lam.txt postxconfig-NT_FH00.txt
+  endif
   cp ${PATHRT}/parm/params_grib2_tbl_new params_grib2_tbl_new
 fi
 
