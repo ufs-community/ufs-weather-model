@@ -86,3 +86,8 @@ list(APPEND fms_src_files
     FMS/mosaic/mosaic_util.c
     FMS/mosaic/read_mosaic.c
 )
+
+list( APPEND fms_headers 
+FMS/include/fms_platform.h
+FMS/include/file_version.h
+)
