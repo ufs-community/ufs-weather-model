@@ -1,12 +1,12 @@
-###############################################################################
+#########################################################################################
 #
-#  FV3 CCPP GSD (GF CU + Thompson MP + MYNN PBL + RUC LSM + GSD DRAG) test
+#  FV3 CCPP GSD (GF CU + Thompson MP + MYNN PBL + RUC LSM) with land stochastic pert test
 #
-###############################################################################
+#########################################################################################
 
-export TEST_DESCR="Compare unified_ugwp FV3 CCPP GSD + DRAG results with previous trunk version"
+export TEST_DESCR="Compare FV3 CCPP GSD lndp results with previous trunk version"
 
-export CNTL_DIR=fv3_gsd_drag_suite
+export CNTL_DIR=fv3_gsd_lndp
 
 export LIST_FILES="atmos_4xdaily.tile1.nc \
                    atmos_4xdaily.tile2.nc \
@@ -73,9 +73,6 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
 
 export_fv3
 
-export FHMAX=24
-export FDIAG=3
-
 export DT_ATMOS="600"
 export IMP_PHYSICS=8
 export DNATS=0
@@ -84,7 +81,7 @@ export LRADAR=.T.
 export LTAEROSOL=.T.
 
 export FV3_RUN=ccpp_gsd_run.IN
-export CCPP_SUITE=FV3_GSD_v0_unified_ugwp_suite
+export CCPP_SUITE=FV3_GSD_v0
 export CCPP_LIB_DIR=ccpp/lib
 export INPUT_NML=ccpp_gsd.nml.IN
 
@@ -96,14 +93,8 @@ export LSM=3
 export LSOIL_LSM=9
 export KICE=9
 
-export GWD_OPT=2
-export DO_UGWP_V0=.F.
-export DO_UGWP_V0_OROG_ONLY=.F.
-export DO_GSL_DRAG_LS_BL=.T.
-export DO_GSL_DRAG_SS=.T.
-export DO_GSL_DRAG_TOFD=.T.
-export DO_UGWP_V1=.F.
-export DO_UGWP_V1_OROG_ONLY=.F.
+export LNDP_TYPE=2
+export N_VAR_LNDP=6
+export LNDP_EACH_STEP=.T.
 
-export WLCLK=30
-
+#export WLCLK=30
