@@ -1,12 +1,12 @@
 ###############################################################################
 #
-#  FV3 CCPP GFS v16beta with ugwpv1 and gsldrag: fv3_ccpp_gfsv16_ugwpv1ws
-#  configuartion with wam_start=.T.
+#  FV3 CCPP GFS v16beta with ugwpv1 and gsldrag, warm start: fv3_ccpp_gfsv16_ugwpv1_warmstart
+#
 ###############################################################################
 
 export TEST_DESCR="Compare fv3_ccpp_gfsv16_ugwpv1 with previous trunk version"
 
-export CNTL_DIR=fv3_ccpp_gfsv16_ugwpv1
+export CNTL_DIR=fv3_ccpp_gfsv16_ugwpv1_warmstart
 
 export LIST_FILES="atmos_4xdaily.tile1.nc \
                    atmos_4xdaily.tile2.nc \
@@ -76,9 +76,14 @@ export_fv3
 
 DT_ATMOS="600"
 export RTPWD127=/scratch1/NCEPDEV/swpc/Valery.Yudin/noscrub/CCPP_GEOS
-export FV3_RUN=ccpp_gfsv16_ugwpv1ws_run.IN
+export FV3_RUN=ccpp_gfsv16_ugwpv1_run.IN
 export CCPP_SUITE=FV3_GFS_v16b_ugwpv1
 export CCPP_LIB_DIR=ccpp/lib
-export INPUT_NML=ccpp_v16_c96_ugwpv1ws.nml.IN
+export INPUT_NML=ccpp_v16_c96_ugwpv1.nml.IN
 export WLCLK=30
+
+# Warm start
 export WARM_START=.T.
+export EXTERNAL_IC=.F.
+export MOUNTAIN=.T.
+
