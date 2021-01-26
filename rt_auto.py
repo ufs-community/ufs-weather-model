@@ -234,7 +234,9 @@ def move_rt_logs(pullreq_obj):
         move_rt_commands = [
             ['git add '+rt_log, pullreq_obj.clone_dir],
             ['git commit -m "Auto: Added Updated RT Log file: '+rt_log+'"', pullreq_obj.clone_dir],
-            ['git push origin '+pullreq_obj.branch, pullreq_obj.clone_dir]
+            ['git pull origin '+pullreq_obj.branch, pullreq_obj.clone_dir],
+            ['git push origin '+pullreq_obj.branch, pullreq_obj.clone_dir],
+            ['rm -rf '+pullreq_obj.clone_dir, pullreq_obj.clone_dir]
         ]
         for command, in_cwd in move_rt_commands:
             print(f'Attempting to run: {command}')
@@ -302,6 +304,35 @@ def get_approved_repos(rtdata_obj, machine_obj, ghinterface_obj):
         repo_list = list(repo_list)
     return repo_list
 
+def delete_old_pullreq(repo_list, machine_obj):
+    # Get all PR ID Nums
+    pr_id_list = [str(single_pr.preq_obj.id) for single_repo in repo_list for single_pr in single_repo.pullreq_list]
+    dir_list = next(os.walk(machine_obj.workdir))[1]
+    not_in_both = [item for item in dir_list if not item in pr_id_list]
+
+    for not_in in not_in_both:
+        if os.path.isdir(machine_obj.workdir+'/'+not_in):
+            command = ['rm -rf '+machine_obj.workdir+'/'+not_in]
+            print(f'Attempting to run: {command}')
+            try:
+                retcode = subprocess.Popen(command, shell=True)
+                retcode.wait()
+                if retcode.returncode==1:
+                    print('Error Occured:')
+                    print(f'Stdout: {retcode.stdout}')
+                    print(f'Stderr: {retcode.stderr}')
+                    sys.exit()
+            except OSError as e:
+                print(f'Execution failed: {e}')
+                sys.exit()
+            else:
+                if os.path.isdir(machine_obj.workdir+'/'+not_in):
+                    print(f'WARNING: Successful command but dir was not removed')
+                else:
+                    print(f'Command {command} ran successfully')
+        else:
+            print(f'Somehow directory called for removal does not exist, skipping..')
+
 def main():
     GHUSERNAME = 'BrianCurtis-NOAA'
     ghinterface_obj = GHInterface(GHUSERNAME)
@@ -309,6 +340,7 @@ def main():
     machine_obj = Machine(rtdata_obj)
     functions_obj = get_approved_functions(rtdata_obj)
     repo_list = get_approved_repos(rtdata_obj, machine_obj, ghinterface_obj)
+    delete_old_pullreq(repo_list, machine_obj)
     for single_repo in repo_list:
         print(f'Processing {single_repo.address} repository')
         for single_pr in single_repo.pullreq_list:
