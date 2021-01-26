@@ -270,13 +270,19 @@ check_results() {
 
       else
 
-        d=$( cmp ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i | wc -l )
+        cmp ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i >/dev/null 2>&1 && d=$? || d=$?
+        if [[ $d -eq 2 ]]; then
+          exit 1
+        fi
 
-        if [[ $d -ne 0 ]] ; then
+        if [[ $d -eq 1 ]] ; then
           if [[ ${MACHINE_ID} =~ orion || ${MACHINE_ID} =~ hera || ${MACHINE_ID} =~ wcoss_dell_p3 || ${MACHINE_ID} =~ wcoss_cray || ${MACHINE_ID} =~ cheyenne || ${MACHINE_ID} =~ gaea || ${MACHINE_ID} =~ jet ]]; then
             printf ".......ALT CHECK.." >> ${REGRESSIONTEST_LOG}
             printf ".......ALT CHECK.."
-            d=$( ${PATHRT}/compare_ncfile.py ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i 2>/dev/null | wc -l )
+            ${PATHRT}/compare_ncfile.py {RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i 1>/dev/null 2>&1 && d=$? || d=$?
+            if [[ $d -eq 1 ]]; then
+              exit 1
+            fi
           fi
         fi
 
