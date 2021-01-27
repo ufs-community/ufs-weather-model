@@ -234,7 +234,7 @@ def move_rt_logs(pullreq_obj):
         move_rt_commands = [
             ['git add '+rt_log, pullreq_obj.clone_dir],
             ['git commit -m "Auto: Added Updated RT Log file: '+rt_log+'"', pullreq_obj.clone_dir],
-            ['git pull origin '+pullreq_obj.branch, pullreq_obj.clone_dir],
+            ['git pull --commit origin '+pullreq_obj.branch, pullreq_obj.clone_dir],
             ['git push origin '+pullreq_obj.branch, pullreq_obj.clone_dir],
             ['rm -rf '+pullreq_obj.clone_dir, pullreq_obj.clone_dir]
         ]
