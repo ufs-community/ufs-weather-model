@@ -18,6 +18,7 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   export PYTHONPATH=/lfs4/HFIP/hfv3gfs/software/ecFlow-5.3.1/lib/python2.7/site-packages
   python rt_auto.py
 elif [[ $MACHINE_ID = gaea.* ]]; then
+  module load cray-python/3.7.3.2
   export PATH=/lustre/f2/pdata/esrl/gsd/contrib/ecFlow-5.3.1/bin:$PATH
   export PYTHONPATH=/lustre/f2/pdata/esrl/gsd/contrib/ecFlow-5.3.1/lib/python3.7/site-packages
   python rt_auto.py

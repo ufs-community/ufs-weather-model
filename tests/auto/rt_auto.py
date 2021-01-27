@@ -1,6 +1,7 @@
 # HEADER
 # Written by Brian Curtis
 # Automation of RT tasks using github cli
+from __future__ import print_function
 
 from github import Github as gh
 import datetime
@@ -238,7 +239,8 @@ def move_rt_logs(pullreq_obj):
             ['git add '+rt_log, pullreq_obj.clone_dir],
             ['git commit -m "Auto: Added Updated RT Log file: '+rt_log+'"', pullreq_obj.clone_dir],
             ['git pull --no-edit origin '+pullreq_obj.branch, pullreq_obj.clone_dir],
-            ['sleep(10); git push origin '+pullreq_obj.branch, pullreq_obj.clone_dir],
+            ['sleep 10', pullreq_obj.clone_dir],
+            ['git push origin '+pullreq_obj.branch, pullreq_obj.clone_dir],
             ['rm -rf '+rm_filepath, pullreq_obj.machine_obj.workdir]
         ]
         for command, in_cwd in move_rt_commands:
