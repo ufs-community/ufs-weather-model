@@ -2,7 +2,7 @@
 set -eux
 
 export RT_COMPILER='intel'
-source tests/detect_machine.sh
+source ../detect_machine.sh
 echo "Machine ID: "+$MACHINE_ID
 export MACHINE_ID=$MACHINE_ID
 if [[ $MACHINE_ID = hera.* ]]; then

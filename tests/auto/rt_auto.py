@@ -78,20 +78,22 @@ class Function:
 
 class GHInterface:
 
-    def __init__(self, GHUSERNAME):
-        self.GHUSERNAME = GHUSERNAME
+    def __init__(self):
         self.get_access_token()
         self.client = gh(self.GHACCESSTOKEN)
 
     def get_access_token(self):
         if os.path.exists('accesstoken.txt'):
             f = open('accesstoken.txt', 'rb')
-            self.GHACCESSTOKEN = f.read()
+            filedata = f.read()
             f.close()
-            self.GHACCESSTOKEN = self.GHACCESSTOKEN.decode('utf-8').strip('\n')
+            filedata = str(filedata)[2:-1].split('\\n')
+            self.GHACCESSTOKEN = filedata[0]
+            self.GHUSERNAME = filedata[1]
         else:
             sys.exit('Please create a file "accesstoken.txt" that contains your'\
-                ' GitHub API Token.\nMake sure to set permissions so others can'\
+                ' GitHub API Token on the first line, and GitHub Username on the'\
+                ' second line.\nMake sure to set permissions so others can'\
                 ' not read it (400)')
 
 # REPO STUFF
@@ -236,7 +238,7 @@ def move_rt_logs(pullreq_obj):
             ['git add '+rt_log, pullreq_obj.clone_dir],
             ['git commit -m "Auto: Added Updated RT Log file: '+rt_log+'"', pullreq_obj.clone_dir],
             ['git pull --no-edit origin '+pullreq_obj.branch, pullreq_obj.clone_dir],
-            ['git push origin '+pullreq_obj.branch, pullreq_obj.clone_dir],
+            ['sleep(10); git push origin '+pullreq_obj.branch, pullreq_obj.clone_dir],
             ['rm -rf '+rm_filepath, pullreq_obj.machine_obj.workdir]
         ]
         for command, in_cwd in move_rt_commands:
@@ -336,7 +338,7 @@ def delete_old_pullreq(repo_list, machine_obj):
 
 def main():
     GHUSERNAME = 'BrianCurtis-NOAA'
-    ghinterface_obj = GHInterface(GHUSERNAME)
+    ghinterface_obj = GHInterface()
     rtdata_obj= RTData()
     machine_obj = Machine(rtdata_obj)
     functions_obj = get_approved_functions(rtdata_obj)
