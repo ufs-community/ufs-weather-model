@@ -418,9 +418,9 @@ if [[ $SINGLE_NAME != '' ]]; then
 fi
 
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/ufs-public-release-v2-20210104/${COMPILER^^}}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/ufs-public-release-v2-20210126/${COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/ufs-public-release-v2-20210104}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/ufs-public-release-v2-20210126}
 fi
 
 shift $((OPTIND-1))
