@@ -85,9 +85,9 @@ if [[ $FV3 = 'true' ]]; then
     cp ${PATHRT}/parm/postxconfig-NT.txt postxconfig-NT.txt
     cp ${PATHRT}/parm/postxconfig-NT_FH00.txt postxconfig-NT_FH00.txt
   elif [[ $POSTAPP = 'lam' ]]; then
-    cp ${PATHRT}/parm/postxconfig-NT-lam.txt postxconfig-NT.txt
-    cp ${PATHRT}/parm/postxconfig-NT-lam.txt postxconfig-NT_FH00.txt
-  endif
+    cp ${PATHRT}/parm/postxconfig-NT-fv3lam.txt postxconfig-NT.txt
+    cp ${PATHRT}/parm/postxconfig-NT-fv3lam.txt postxconfig-NT_FH00.txt
+  fi
   cp ${PATHRT}/parm/params_grib2_tbl_new params_grib2_tbl_new
 fi
 
@@ -98,7 +98,11 @@ atparse < ${PATHRT}/fv3_conf/${FV3_RUN:-fv3_run.IN} > fv3_run
 
 atparse < ${PATHRT}/parm/${INPUT_NML:-input.nml.IN} > input.nml
 
-atparse < ${PATHRT}/parm/${MODEL_CONFIGURE:-model_configure.IN} > model_configure
+if [[ $FV3_RUN = 'ccpp_regional_run.IN' ]]; then
+  atparse < ${PATHRT}/parm/${MODEL_CONFIGURE:-model_configure_regional.IN} > model_configure
+else
+  atparse < ${PATHRT}/parm/${MODEL_CONFIGURE:-model_configure.IN} > model_configure
+fi
 
 atparse < ${PATHRT}/parm/${NEMS_CONFIGURE:-nems.configure} > nems.configure
 
