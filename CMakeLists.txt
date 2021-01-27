@@ -104,10 +104,7 @@ if(OPENMP)
 endif()
 find_package(NetCDF REQUIRED C Fortran)
 find_package(ESMF MODULE REQUIRED)
-if(CMEPS OR CDEPS)
-  find_package(PIO REQUIRED COMPONENTS C Fortran STATIC)
-endif()
-if(S2S)
+if(S2S OR CMEPS OR CDEPS)
   find_package(PIO REQUIRED COMPONENTS C Fortran STATIC)
 endif()
 
@@ -368,7 +365,8 @@ if(CDEPS)
 endif()
 
 if(S2S)
-  list(APPEND _ufs_defs_private FRONT_MOM6=mom_cap_mod
+  list(APPEND _ufs_defs_private PIO
+                                FRONT_MOM6=mom_cap_mod
                                 FRONT_CICE6=ice_comp_nuopc
                                 CMEPS
                                 FRONT_CMEPS=MED)
