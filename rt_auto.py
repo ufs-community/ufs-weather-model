@@ -229,14 +229,15 @@ def process_pr(pullreq_obj, ghinterface_obj, machine_obj, functions):
 def move_rt_logs(pullreq_obj):
     rt_log = 'tests/RegressionTests_'+pullreq_obj.machine_obj.machineid+'.log'
     filepath = pullreq_obj.clone_dir+'/'+rt_log
+    rm_filepath = '/'.join((pullreq_obj.clone_dir.split('/'))[:-1])
     if os.path.exists(filepath):
 
         move_rt_commands = [
             ['git add '+rt_log, pullreq_obj.clone_dir],
             ['git commit -m "Auto: Added Updated RT Log file: '+rt_log+'"', pullreq_obj.clone_dir],
-            ['git pull --commit origin '+pullreq_obj.branch, pullreq_obj.clone_dir],
+            ['git pull --no-edit origin '+pullreq_obj.branch, pullreq_obj.clone_dir],
             ['git push origin '+pullreq_obj.branch, pullreq_obj.clone_dir],
-            ['rm -rf '+pullreq_obj.clone_dir, pullreq_obj.clone_dir]
+            ['rm -rf '+rm_filepath, pullreq_obj.machine_obj.workdir]
         ]
         for command, in_cwd in move_rt_commands:
             print(f'Attempting to run: {command}')
@@ -312,7 +313,7 @@ def delete_old_pullreq(repo_list, machine_obj):
 
     for not_in in not_in_both:
         if os.path.isdir(machine_obj.workdir+'/'+not_in):
-            command = ['rm -rf '+machine_obj.workdir+'/'+not_in]
+            command = 'rm -rf '+machine_obj.workdir+'/'+not_in
             print(f'Attempting to run: {command}')
             try:
                 retcode = subprocess.Popen(command, shell=True)

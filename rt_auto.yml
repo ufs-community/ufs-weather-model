@@ -11,32 +11,33 @@
       baselinedir: ''
     - name: 'jet'
       regexhostname: 'fe\d'
-      workdir: '/scratch1/NCEPDEV/nems/Brian.Curtis/test'
+      workdir: ''
       baselinedir: ''
     - name: 'orion'
       regexhostname: 'Orion-login-\d.HPC.MsState.Edu'
       workdir: '/work/noaa/nems/bcurtis/test'
       baselinedir: ''
-      # VENUS
-    - name: 'wcoss_dell_p3'
-      regexhostname: 'v\d\d[a-z]\d'
-      workdir: False
-      baselinedir: ''
-      # MARS
-    - name: 'wcoss_dell_p3'
-      regexhostname: 'm\d\d[a-z]\d'
-      workdir: False
-      baselinedir: ''
-      # SURGE
-    - name: 'wcoss_cray'
-      regexhostname: 'slogin\d'
-      workdir: False
-      baselinedir: ''
-      # LUNA
-    - name: 'wcoss_cray'
-      regexhostname: 'llogin\d'
-      workdir: False
-      baselinedir: ''
+    # NOT SUPPORTED
+    #   # VENUS
+    # - name: 'wcoss_dell_p3'
+    #   regexhostname: 'v\d\d[a-z]\d'
+    #   workdir: False
+    #   baselinedir: ''
+    #   # MARS
+    # - name: 'wcoss_dell_p3'
+    #   regexhostname: 'm\d\d[a-z]\d'
+    #   workdir: False
+    #   baselinedir: ''
+    #   # SURGE
+    # - name: 'wcoss_cray'
+    #   regexhostname: 'slogin\d'
+    #   workdir: False
+    #   baselinedir: ''
+    #   # LUNA
+    # - name: 'wcoss_cray'
+    #   regexhostname: 'llogin\d'
+    #   workdir: False
+    #   baselinedir: ''
   repository:
     - name: 'ufs-weather-model'
       address: 'ufs-community/ufs-weather-model'
@@ -46,10 +47,8 @@
       base: 'develop'
   functions:
     - name: 'RT'
-      command: './tests/rt.sh -ek'
+      command: './tests/rt.sh -e'
       callback_fnc: 'move_rt_logs'
-    # - name: 'RT'
-    #   command: './rt.sh -ef'
     # - name: 'BL'
     #   command: './rt.sh -cef'
     #   callback_fnc: ''
