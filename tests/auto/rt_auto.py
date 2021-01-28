@@ -192,8 +192,8 @@ def clone_pr_repo(pullreq_obj, ghinterface_obj, machine_obj):
     create_repo_commands = [
         ['mkdir -p "'+pullreq_obj.repo_dir_str+'"', machine_obj.workdir],
         ['git clone -b '+pullreq_obj.branch+' '+git_url_w_login, pullreq_obj.repo_dir_str],
-        ['git submodule update --init --recursive', pullreq_obj.repo_dir_str+'/'+pullreq_obj.repo_name],
-        ['module use modulefiles/{}.intel && module load fv3'.format(machine_obj.name.lower()), pullreq_obj.repo_dir_str+'/'+pullreq_obj.repo_name]
+        ['git submodule update --init --recursive', pullreq_obj.repo_dir_str+'/'+pullreq_obj.repo_name]
+        # ['module use modulefiles/{} && module load fv3'.format(machine_obj.machineid), pullreq_obj.repo_dir_str+'/'+pullreq_obj.repo_name]
     ]
 
     for command, in_cwd in create_repo_commands:
