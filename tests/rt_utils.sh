@@ -272,15 +272,19 @@ check_results() {
 
         cmp ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i >/dev/null 2>&1 && d=$? || d=$?
         if [[ $d -eq 2 ]]; then
+          echo "....CMP ERROR" >> ${REGRESSIONTEST_LOG}
+          echo "....CMP ERROR"
           exit 1
         fi
 
-        if [[ $d -eq 1 ]] ; then
+        if [[ $d -eq 1 && ${i##*.} == 'nc' ]] ; then
           if [[ ${MACHINE_ID} =~ orion || ${MACHINE_ID} =~ hera || ${MACHINE_ID} =~ wcoss_dell_p3 || ${MACHINE_ID} =~ wcoss_cray || ${MACHINE_ID} =~ cheyenne || ${MACHINE_ID} =~ gaea || ${MACHINE_ID} =~ jet ]]; then
             printf ".......ALT CHECK.." >> ${REGRESSIONTEST_LOG}
             printf ".......ALT CHECK.."
             ${PATHRT}/compare_ncfile.py ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i >/dev/null 2>&1 && d=$? || d=$?
             if [[ $d -eq 1 ]]; then
+              echo "....ERROR" >> ${REGRESSIONTEST_LOG}
+              echo "....ERROR"
               exit 1
             fi
           fi
