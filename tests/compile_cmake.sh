@@ -77,8 +77,8 @@ elif [[ "${MAKE_OPT}" == *"REPRO=Y"* ]]; then
   CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DREPRO=Y"
 fi
 
-if [[ "${MAKE_OPT}" == *"32BIT=Y"* ]]; then
-  CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -D32BIT=Y"
+if [[ "${MAKE_OPT}" == *"32BIT=N"* ]]; then
+  CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -D32BIT=OFF"
 fi
 
 if [[ "${MAKE_OPT}" == *"OPENMP=N"* ]]; then
@@ -111,12 +111,6 @@ if [[ "${MAKE_OPT}" == *"CCPP=Y"* ]]; then
     if [[ "${MACHINE_ID}" == "jet.intel" ]]; then
       CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DSIMDMULTIARCH=ON"
     fi
-  fi
-
-  if [[ "${MAKE_OPT}" == *"32BIT=Y"* ]]; then
-    CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DDYN32=ON"
-  else
-    CCPP_CMAKE_FLAGS="${CCPP_CMAKE_FLAGS} -DDYN32=OFF"
   fi
 
     # Check if suites argument is provided or not

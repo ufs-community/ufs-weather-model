@@ -17,7 +17,7 @@ project(ufs-weather-model
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
-set(32BIT           OFF CACHE BOOL "Enable 32BIT (single precision arithmetic in dycore)")
+set(32BIT           ON  CACHE BOOL "Enable 32BIT (single precision arithmetic in dycore)")
 set(AVX2            ON  CACHE BOOL "Enable AVX2 instruction set")
 set(SIMDMULTIARCH   OFF CACHE BOOL "Enable multi-target SIMD instruction sets")
 set(CCPP            ON  CACHE BOOL "Enable CCPP")
@@ -42,6 +42,12 @@ endif()
 # OpenMP broken for clang compiler
 if(${CMAKE_C_COMPILER_ID} MATCHES "^(Clang|AppleClang)$")
   set(OPENMP        OFF CACHE BOOL "Enable OpenMP threading" FORCE)
+endif()
+
+if(32BIT)
+  set(DYN32 ON CACHE BOOL "Enable support for 32bit fast physics in CCPP")
+else()
+  set(DYN32 OFF CACHE BOOL "Enable support for 32bit fast physics in CCPP")
 endif()
 
 message("")
