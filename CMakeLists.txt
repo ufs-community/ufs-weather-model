@@ -254,7 +254,6 @@ endif()
 ###############################################################################
 if(CDEPS)
   add_subdirectory(CDEPS)
-  set(BLD_STANDALONE ON CACHE BOOL "cdeps build flag")
 endif()
 
 ###############################################################################
@@ -395,7 +394,7 @@ if(WW3)
   add_dependencies(ufs_model ww3_nems)
 endif()
 
-if (CMEPS)
+if (CMEPS OR S2S)
   list(APPEND _ufs_model_defs_private PIO)
 endif()
 
