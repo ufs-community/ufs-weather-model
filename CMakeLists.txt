@@ -135,7 +135,14 @@ endif()
 if(QUAD_PRECISION)
   set(ENABLE_QUAD_PRECISION ON CACHE BOOL "Enable Quad-precision")
 endif()
+
 add_subdirectory(FMS)
+
+if(32BIT) 
+   add_library(fms ALIAS fms_r4)
+else()
+   add_library(fms ALIAS fms_r8)
+endif()
 
 ###############################################################################
 ### stochastic_physics
@@ -227,11 +234,7 @@ add_library(ufs ${_nems_srcs})
 
 list(APPEND _ufs_defs_private ESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR}
                               FRONT_FMS)
-if(32BIT)
-   add_dependencies(ufs FMS::fms_r4)
-else()
-   add_dependencies(ufs FMS::fms_r8)
-endif()
+add_dependencies(ufs fms)
 
 if(DATM)
   list(APPEND _ufs_defs_private FRONT_DATM=datm)
