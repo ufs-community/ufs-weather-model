@@ -29,8 +29,13 @@ set_target_properties(mom6_obj PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRE
 target_include_directories(mom6_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
 target_include_directories(mom6_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/config_src/dynamic>
                                             $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/src/framework>)
-target_link_libraries(mom6_obj PRIVATE fms
-                                       NetCDF::NetCDF_Fortran)
+if(32BIT)
+   target_link_libraries(mom6_obj PRIVATE FMS::fms_r4
+                                          NetCDF::NetCDF_Fortran)
+else()
+   target_link_libraries(mom6_obj PRIVATE FMS::fms_r8
+                                          NetCDF::NetCDF_Fortran)
+endif()
 # OpenMP is disabled in MOM6
 #if(OpenMP_Fortran_FOUND)
 # target_link_libraries(mom6_obj PRIVATE OpenMP::OpenMP_Fortran)
@@ -41,9 +46,15 @@ set_target_properties(mom6_nuopc_obj PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE
 target_include_directories(mom6_nuopc_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
 target_include_directories(mom6_nuopc_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/config_src/dynamic>
                                                   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/src/framework>)
-target_link_libraries(mom6_nuopc_obj PRIVATE mom6_obj
-                                             fms
-                                             esmf)
+if(32BIT)
+   target_link_libraries(mom6_nuopc_obj PRIVATE mom6_obj
+                                                FMS::fms_r4
+                                                esmf)
+else()
+   target_link_libraries(mom6_nuopc_obj PRIVATE mom6_obj
+                                                FMS::fms_r8
+                                                esmf)
+endif()
 # OpenMP is disabled in MOM6
 #if(OpenMP_Fortran_FOUND)
 # target_link_libraries(mom6_nuopc_obj PRIVATE OpenMP::OpenMP_Fortran)
@@ -56,9 +67,15 @@ target_include_directories(mom6 PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_
                                        $<INSTALL_INTERFACE:mod>)
 target_include_directories(mom6 PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/config_src/dynamic>
                                        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/src/framework>)
-target_link_libraries(mom6 PUBLIC fms
-                                  esmf
-                                  NetCDF::NetCDF_Fortran)
+if(32BIT)
+   target_link_libraries(mom6 PUBLIC FMS::fms_r4
+                                     esmf
+                                     NetCDF::NetCDF_Fortran)
+else()
+   target_link_libraries(mom6 PUBLIC FMS::fms_r8
+                                     esmf
+                                     NetCDF::NetCDF_Fortran)
+endif()
 # OpenMP is disabled in MOM6
 #if(OpenMP_Fortran_FOUND)
 #  target_link_libraries(mom6 PRIVATE OpenMP::OpenMP_Fortran)
@@ -74,9 +91,15 @@ if(MOM6SOLO)
   target_include_directories(mom6solo PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod_solo>)
   target_include_directories(mom6solo PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/config_src/dynamic>
                                               $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/src/framework>)
-  target_link_libraries(mom6solo PRIVATE mom6_obj
-                                         fms
-                                         NetCDF::NetCDF_Fortran)
+  if(32BIT)
+     target_link_libraries(mom6solo PRIVATE mom6_obj
+                                            FMS::fms_r4
+                                            NetCDF::NetCDF_Fortran)
+  else()
+     target_link_libraries(mom6solo PRIVATE mom6_obj
+                                            FMS::fms_r8
+                                            NetCDF::NetCDF_Fortran)
+  endif()
   # OpenMP is disabled in MOM6
   #if(OpenMP_Fortran_FOUND)
   #  target_link_libraries(mom6solo PRIVATE OpenMP::OpenMP_Fortran)
