@@ -111,10 +111,7 @@ endif()
 target_link_libraries(nemsio::nemsio INTERFACE w3emc::w3emc_d bacio::bacio_4)
 
 # Configure Python
-find_package(Python 3 QUIET COMPONENTS Interpreter)
-if (NOT Python_Interpreter_FOUND)
-  find_package(Python 2.7 REQUIRED COMPONENTS Interpreter)
-endif()
+find_package(Python 3 REQUIRED COMPONENTS Interpreter)
 message("Found Python: ${Python_EXECUTABLE}")
 
 ###############################################################################
@@ -242,8 +239,7 @@ list(APPEND _nems_srcs NEMS/src/module_NEMS_UTILS.F90
                        NEMS/src/module_NEMS_INTERNAL_STATE.F90
                        NEMS/src/module_NEMS_GRID_COMP.F90
                        NEMS/src/module_NEMS_Rusage.F90
-                       NEMS/src/nems_c_rusage.c
-                       NEMS/src/ENS_Cpl/ENS_CplComp_ESMFMod_STUB.F90)
+                       NEMS/src/nems_c_rusage.c)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/NEMS/src/ESMFVersionDefine_ESMF_NUOPC.h
                ${CMAKE_CURRENT_BINARY_DIR}/NEMS/src/ESMFVersionDefine.h

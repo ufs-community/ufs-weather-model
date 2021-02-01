@@ -2,7 +2,7 @@ rm -fr INPUT RESTART
 rsync -arv @[INPUTDATA_ROOT]/FV3_input_data/INPUT/ INPUT/
 mkdir RESTART
 if [ $WARM_START = .T. ]; then
-  rsync -arv ../fv3_ccpp_gfs_v16beta${RT_SUFFIX}/RESTART/ INPUT/
+  rsync -arv ../fv3_ccpp_gfs_v16${RT_SUFFIX}/RESTART/ INPUT/
   cd INPUT
   rename 20161004.000000. '' 20161004.000000.*
   cd ..
