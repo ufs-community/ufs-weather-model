@@ -218,7 +218,6 @@ list(APPEND _nems_srcs NEMS/src/module_NEMS_UTILS.F90
                        NEMS/src/module_NEMS_Rusage.F90
                        NEMS/src/nems_c_rusage.c)
 
-
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/NEMS/src/ESMFVersionDefine_ESMF_NUOPC.h
                ${CMAKE_CURRENT_BINARY_DIR}/NEMS/src/ESMFVersionDefine.h
                COPYONLY)
