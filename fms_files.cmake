@@ -46,7 +46,6 @@ list(APPEND fms_src_files
     FMS/horiz_interp/horiz_interp_conserve.F90
     FMS/horiz_interp/horiz_interp_spherical.F90
     FMS/horiz_interp/horiz_interp_type.F90
-    FMS/horiz_interp/horiz_interp.F90
     FMS/interpolator/interpolator.F90
     FMS/memutils/memutils.F90
     FMS/monin_obukhov/monin_obukhov.F90
