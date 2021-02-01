@@ -111,7 +111,10 @@ endif()
 target_link_libraries(nemsio::nemsio INTERFACE w3emc::w3emc_d bacio::bacio_4)
 
 # Configure Python
-find_package(Python 3 REQUIRED COMPONENTS Interpreter)
+find_package(Python 3 QUIET COMPONENTS Interpreter)
+if (NOT Python_Interpreter_FOUND)
+  find_package(Python 2.7 REQUIRED COMPONENTS Interpreter)
+endif()
 message("Found Python: ${Python_EXECUTABLE}")
 
 ###############################################################################
@@ -128,43 +131,14 @@ endif()
 ###############################################################################
 ### FMS
 ###############################################################################
-include(fms_files.cmake)
-add_library(fms ${fms_src_files} ${fms_headers})
-# stupid cmake can not figure out dependency of fft.F90 on fft99.F90 because 'use fft99_mod' is inside ifdefs
-set_property(SOURCE FMS/fft/fft.F90 APPEND_STRING PROPERTY COMPILE_FLAGS "-DSGICRAY=0 -DNAGFFT=0")
-
-list(APPEND _fms_defs_public use_libMPI
-                             use_netCDF
-                             GFS_PHYS
-                             INTERNAL_FILE_NML)
+set(GFS_PHYS ON CACHE BOOL "Enable GFS Physics")
+if(NOT 32BIT)
+   set(64BIT ON CACHE BOOL "Enable 64-bit")
+endif()
 if(QUAD_PRECISION)
-  list(APPEND _fms_defs_public ENABLE_QUAD_PRECISION)
+  set(ENABLE_QUAD_PRECISION ON CACHE BOOL "Enable Quad-precision")
 endif()
-target_compile_definitions(fms PUBLIC "${_fms_defs_public}")
-
-if(32BIT)
-  list(APPEND _fms_defs_private OVERLOAD_R4
-                                OVERLOAD_R8)
-endif()
-
-target_compile_definitions(fms PRIVATE "${_fms_defs_private}")
-
-target_include_directories(fms PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/include>
-                                      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/fms>
-                                      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/fms2_io/include>
-                                      $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/FMS/mod>
-                                      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/mpp/include>)
-target_include_directories(fms INTERFACE
-                                      $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include>
-                                      $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/mod>)
-target_link_libraries(fms PUBLIC MPI::MPI_Fortran
-                                 NetCDF::NetCDF_Fortran)
-if(OpenMP_Fortran_FOUND)
-  target_link_libraries(fms PRIVATE OpenMP::OpenMP_Fortran)
-endif()
-set_target_properties(fms PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/FMS)
-set_target_properties(fms PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/FMS/mod)
-set_target_properties(fms PROPERTIES PUBLIC_HEADER "${fms_headers}" )
+add_subdirectory(FMS)
 
 ###############################################################################
 ### stochastic_physics
@@ -238,7 +212,8 @@ list(APPEND _nems_srcs NEMS/src/module_NEMS_UTILS.F90
                        NEMS/src/module_NEMS_INTERNAL_STATE.F90
                        NEMS/src/module_NEMS_GRID_COMP.F90
                        NEMS/src/module_NEMS_Rusage.F90
-                       NEMS/src/nems_c_rusage.c)
+                       NEMS/src/nems_c_rusage.c
+                       NEMS/src/ENS_Cpl/ENS_CplComp_ESMFMod_STUB.F90)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/NEMS/src/ESMFVersionDefine_ESMF_NUOPC.h
                ${CMAKE_CURRENT_BINARY_DIR}/NEMS/src/ESMFVersionDefine.h
@@ -255,7 +230,11 @@ add_library(ufs ${_nems_srcs})
 
 list(APPEND _ufs_defs_private ESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR}
                               FRONT_FMS)
-add_dependencies(ufs fms)
+if(32BIT)
+   add_dependencies(ufs FMS::fms_r4)
+else()
+   add_dependencies(ufs FMS::fms_r8)
+endif()
 
 if(DATM)
   list(APPEND _ufs_defs_private FRONT_DATM=datm)
@@ -331,18 +310,6 @@ target_link_libraries(ufs_model PRIVATE ufs
 ###############################################################################
 ### Install
 ###############################################################################
-install(
-  TARGETS fms
-  EXPORT fms-config
-  LIBRARY DESTINATION lib
-  ARCHIVE DESTINATION lib
-  PUBLIC_HEADER DESTINATION include )
-
-install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/FMS/mod DESTINATION ${CMAKE_INSTALL_PREFIX})
-
-install(EXPORT fms-config
-  DESTINATION lib/cmake
-)
 install(
   TARGETS ufs
   EXPORT ufs-config
