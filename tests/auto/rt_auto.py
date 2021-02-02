@@ -1,33 +1,47 @@
-# HEADER
-# Written by Brian Curtis
-# Automation of RT tasks using github cli
-from __future__ import print_function
+"""Automation of UFS Regression Testing
 
+This script automates the process of regression testing for code managers
+at NOAA-EMC
+
+The data set required for this code to operate properly is rt_auto.yml:
+  - Provides all the repository information in which to search through
+  - Provides all information about the machines this code should be run on
+  - Provides all acceptable commands to be run on machines
+
+This script should be started through rt_auto.sh so that env vars are set up
+prior to start.
+"""
+from __future__ import print_function
 from github import Github as gh
 import datetime
 import time
-import pandas as pd
+from pandas import DataFrame
 import socket
 import threading
 import subprocess
 import re
-import sys
 import yaml
 import os
 import logging
 
 class RTData:
-
+    '''
+    This class provides a storge location for the data from rt_auto.yml as well
+    as a method to read the data and a method to get a subset of the data
+    ...
+    Attributes
+    ----------
+    data: yaml data
+        a container for the yaml data
+    '''
     def __init__(self):
         self.logger = logging.getLogger("RTData")
-        self.DB_FILENAME = 'rt_auto.yml'
         self.data = self.read_yaml_data()
 
     def read_yaml_data(self):
         self.logger.info(f'Reading in default YAML data')
-        stream = open(self.DB_FILENAME, 'r')
-        yaml_data = yaml.load(stream, Loader=yaml.SafeLoader)
-        stream.close()
+        with open('rt_auto.yml', 'r') as stream:
+            yaml_data = yaml.load(stream, Loader=yaml.SafeLoader)
         self.logger.info(f'Finished reading in YAML data')
         return yaml_data
 
@@ -35,26 +49,42 @@ class RTData:
         self.logger.info(f'Getting YAML subset: {keyin}')
         try:
             yaml_subset = self.data[keyin]
-        except:
-            self.logger.critical(f'Unable to get yaml subset: {keyin}. Quitting')
-            sys.exit()
-        df = pd.DataFrame.from_dict(yaml_subset)
-        self.logger.info(f'Finished getting YAML subset {keyin}')
-        return df
+        except KeyError as kerror:
+            self.logger.critical(f'Unable to get yaml subset {keyin} with error: {kerror}')
+            raise
+        else:
+            df = DataFrame.from_dict(yaml_subset)
+            self.logger.info(f'Finished getting YAML subset {keyin}')
+            return df
 
 class Machine:
+    '''
+    A class to store information about the machine the code is being run on
+    ...
 
+    Attributes
+    ---------
+    machineid : str
+      the env var machine id
+    name : str
+      the name of the machine
+    regexhostname : str
+      a regex string to match with login nodes of the machine to determine name
+    workdir : str
+      the directory to perform work in
+    baselinedir : str
+      the directory where baselines are stored on the machine
+    '''
     def __init__(self, rtdata_obj):
         self.logger = logging.getLogger("Machine")
-        self.rtdata_obj = rtdata_obj
-        self.get_machine_info()
+        self.get_machine_info(rtdata_obj)
         self.machineid = os.environ.get('MACHINE_ID')
 
-    def get_machine_info(self):
+    def get_machine_info(self, rtdata_obj):
         self.logger.info(f'Getting machine information')
         hostname = socket.gethostname()
         self.logger.debug(f'hostname is {hostname}')
-        machines = self.rtdata_obj.get_yaml_subset('machines')
+        machines = rtdata_obj.get_yaml_subset('machines')
         regexmachines = machines['regexhostname'].values
         for i, mach in enumerate(regexmachines):
             if re.search(mach, hostname):
@@ -72,63 +102,100 @@ class Machine:
                 return
             else:
                 continue
-        self.logger.critical(f'Hostname:{hostname} does not match approved list. Quitting')
-        sys.exit()
+        self.logger.critical(f'Hostname:{hostname} does not match approved list.')
+        raise Exception(f'Hostname:{hostname} does not match approved list.')
 
-class Function:
+class Action:
+    '''
+    This class stores all the information about each action
+    ...
 
+    Attributes
+    ----------
+    name : str
+      the name of the action
+    command : str
+      the command the action will run on the machine
+    callback : str
+      the function to run once the command has completed
+    '''
     def __init__(self, name, command, callback):
-        self.logger = logging.getLogger("Function")
+        self.logger = logging.getLogger("Action")
         self.name = name
         self.command = command
         self.callback = callback
-        self.logger.debug(f'Function object created')
+        self.logger.debug(f'Action object created')
         self.logger.debug(f'self.name: {self.name}\n\
             self.command: {self.command}\n\
             self.callback: {self.callback}')
 
-    def verify_name(self, comparable):
-        self.logger.debug(f'Verifying name: {comparable}')
-        if re.match(self.name.lower(), comparable.lower()):
-            self.logger.debug(f'Match found')
-            return True
+    def verify_item(self, item, comparable):
+        if item == "name":
+            if re.match(self.name.lower(), comparable.lower()):
+                self.logger.debug(f'Name match found')
+                return True
+        elif item == "command":
+            if re.match(self.name.lower(), comparable.lower()):
+                self.logger.debug(f'Command match found')
+                return True
         else:
             self.logger.debug(f'Not a match')
             return False
-
-    def verify_command(self, comparable):
-        self.logger.debug(f'Verifying command: {comparable}')
-        if re.match(self.command.lower(), comparable.lower()):
-            self.logger.debug(f'Match found')
-            return True
-        else:
-            self.logger.debug(f'Not a match')
-            return False
+    # def verify_name(self, comparable):
+    #     self.logger.debug(f'Verifying name: {comparable}')
+    #     if re.match(self.name.lower(), comparable.lower()):
+    #         self.logger.debug(f'Match found')
+    #         return True
+    #     else:
+    #         self.logger.debug(f'Not a match')
+    #         return False
+    #
+    # def verify_command(self, comparable):
+    #     self.logger.debug(f'Verifying command: {comparable}')
+    #     if re.match(self.command.lower(), comparable.lower()):
+    #         self.logger.debug(f'Match found')
+    #         return True
+    #     else:
+    #         self.logger.debug(f'Not a match')
+    #         return False
 
 class GHInterface:
+    '''
+    This class stores information for communicating with GitHub
+    ...
 
-    def __init__(self):
+    Attributes
+    ----------
+    GHACCESSTOKEN : str
+      API token to autheticate with GitHub
+    GHUSERNAME : str
+      UserName connected to GHACCESSTOKEN
+    client : pyGitHub communication object
+      The connection to GitHub to make API requests
+    '''
+    def __init__(self) -> None:
         self.logger = logging.getLogger("GHInterface")
         self.get_access_token()
         self.client = gh(self.GHACCESSTOKEN)
 
     def get_access_token(self):
-        if os.path.exists('accesstoken.txt'):
-            f = open('accesstoken.txt', 'rb')
-            filedata = f.read()
-            f.close()
+        try:
+            with open('accesstoken.txt', 'rb') as f:
+                filedata = f.read()
+        except FileNotFoundError:
+            ERROR_MESSAGE = f'Please create a file "accesstoken.txt" that'\
+                ' contains your GitHub API Token on the first line, and GitHub'\
+                ' Username on the second line.\nMake sure to set permission'\
+                ' so others can not read it (400)'
+            self.logger.critical(ERROR_MESSAGE)
+            raise FileNotFoundError(ERROR_MESSAGE)
+        else:
             filedata = str(filedata)[2:-1].split('\\n')
-
             self.GHACCESSTOKEN = filedata[0]
             self.GHUSERNAME = filedata[1]
             self.logger.debug(f'GHACCESSTOKEN is {self.GHACCESSTOKEN}')
             self.logger.debug(f'GHUSERNAME is {self.GHUSERNAME}')
-        else:
-            self.logger.critical(f'Please create a file "accesstoken.txt" that'\
-                ' contains your GitHub API Token on the first line, and GitHub'\
-                ' Username on the second line.\nMake sure to set permission'\
-                ' so others can not read it (400)')
-            sys.exit()
+
 
 # REPO STUFF
 class Repo:
@@ -153,7 +220,7 @@ class Repo:
             self.ghrepo = self.ghinterface_obj.client.get_repo(self.address)
         except Exception as e:
             self.logger.critical(f'Failed to get repo object with error {e}')
-            sys.exit()
+            raise Exception(f'Failed to get repo object with error {e}')
 
     def get_repo_preqs(self):
         self.logger.debug(f'Creating list of PullReq objects')
@@ -162,7 +229,7 @@ class Repo:
             preqs = self.ghrepo.get_pulls(state='open', sort='created', base=self.base)
         except Exception as e:
             self.logger.critical(f'Failed to get pull object with error {e}')
-            sys.exit()
+            raise Exception(f'Failed to get pull object with error {e}')
 
         for preq in preqs:
             self.pullreq_list.append(PullReq(self, preq, self.machine_obj))
@@ -210,19 +277,19 @@ class PRLabel:
         self.machine = machine
         self.logger.debug(f'self.name: {self.name}\n\
             self.machine: {self.machine} ')
-        self.function_obj = None
+        self.action_obj = None
 
-    def add_function(self, function_obj):
-        self.logger.debug("Adding function Object: {function_obj}")
-        self.function_obj = function_obj
+    def add_function(self, action_obj):
+        self.logger.debug("Adding function Object: {action_obj}")
+        self.action_obj = action_obj
 
     def is_approved(self, machine_obj, functions):
         self.logger.debug("Checking if PRLabel is approved")
         if re.match(self.machine.lower(), machine_obj.name.lower()):
-            for function_obj in functions:
-                if function_obj.verify_name(self.name):
+            for action_obj in functions:
+                if action_obj.verify_item('name', self.name):
                     self.logger.debug(f'Approved label: "{self.name}-{self.machine}"')
-                    self.add_function(function_obj)
+                    self.add_function(action_obj)
                     return True
                 else:
                     self.logger.warning(f'Label not approved. Name: {self.name} not on approved list.')
@@ -236,8 +303,8 @@ def get_approved_functions(rtdata_obj):
     logger.debug(f'Start of get_approved_functions()')
     function_data = rtdata_obj.get_yaml_subset('functions').\
         values.tolist()
-    logger.debug("Sending function data off to Function objects")
-    function_list = [Function(name,command,callback_fnc)
+    logger.debug("Sending function data off to Action objects")
+    function_list = [Action(name,command,callback_fnc)
         for name,command,callback_fnc in function_data]
     logger.debug(f'End of get_approved_functions()')
     return function_list
@@ -251,25 +318,16 @@ def clone_pr_repo(pullreq_obj, ghinterface_obj, machine_obj):
         ['mkdir -p "'+pullreq_obj.repo_dir_str+'"', machine_obj.workdir],
         ['git clone -b '+pullreq_obj.branch+' '+git_url_w_login, pullreq_obj.repo_dir_str],
         ['git submodule update --init --recursive', pullreq_obj.repo_dir_str+'/'+pullreq_obj.repo_name]
-        # ['module use modulefiles/{} && module load fv3'.format(machine_obj.machineid), pullreq_obj.repo_dir_str+'/'+pullreq_obj.repo_name]
     ]
 
     for command, in_cwd in create_repo_commands:
-        logger.debug(f'Attempting to run: {command}'.format(command))
-        try:
-            retcode = subprocess.Popen(command, shell=True, cwd=in_cwd)
-            retcode.wait()
-            if retcode.returncode==1:
-                logger.critical('Error Occured:')
-                logger.critical(f'Stdout: {retcode.stdout}')
-                logger.critical(f'Stderr: {retcode.stderr}')
-                sys.exit()
-        except OSError as e:
-            logger.critical(f'Execution failed with error: {e}')
-            sys.exit()
-        else:
-            logger.debug(f'Finished Cloning {git_url_w_login}')
+        logger.info(f'Attempting to run: {command}')
+        retcode = subprocess.Popen(command, shell=True, cwd=in_cwd)
+        retcode.wait()
+        assert(retcode.returncode==0), f'{command} returned with non-zero exit'
+        logger.info(f'Finished running: {command}')
 
+    logger.debug(f'Finished Cloning {git_url_w_login}')
     pullreq_obj.add_clone_dir(pullreq_obj.repo_dir_str+"/"+pullreq_obj.repo_name)
 
 def process_pr(pullreq_obj, ghinterface_obj, machine_obj, functions):
@@ -279,19 +337,14 @@ def process_pr(pullreq_obj, ghinterface_obj, machine_obj, functions):
         if prlabel.is_approved(machine_obj, functions):
             logger.debug(f'Removing Label Auto-{prlabel.name}-{prlabel.machine}')
             pullreq_obj.preq_obj.remove_from_labels(f'Auto-{prlabel.name}-{prlabel.machine}')
+            clone_pr_repo(pullreq_obj, ghinterface_obj, machine_obj)
             try:
-                clone_pr_repo(pullreq_obj, ghinterface_obj, machine_obj)
+                goodexit = runFunction(prlabel.action_obj, pullreq_obj)
             except Exception as e:
-                logger.critical(f'Error cloning repo: {pullreq_obj.git_url}')
-                sys.exit()
-            try:
-                goodexit = runFunction(prlabel.function_obj, pullreq_obj)
-                # thread, badexit = send_to_thread(prlabel.function_obj, pullreq_obj)
-            except Exception as e:
-                logger.critical(f'ERROR RUNNING RT {prlabel.function_obj.command} with error: {e}')
+                logger.critical(f'ERROR RUNNING RT {prlabel.action_obj.command} with error: {e}')
                 logger.debug(f'Adding back label Auto-{prlabel.name}-{prlabel.machine}')
                 pullreq_obj.preq_obj.add_to_labels(f'Auto-{prlabel.name}-{prlabel.machine}')
-                sys.exit()
+                raise
             else:
                 if goodexit == False:
                     logger.debug(f'runFunction exited with error')
@@ -317,26 +370,18 @@ def move_rt_logs(pullreq_obj):
         ]
         for command, in_cwd in move_rt_commands:
             logger.debug(f'Attempting to run: {command}')
-            try:
-                retcode = subprocess.Popen(command, shell=True, cwd=in_cwd)
-                retcode.wait()
-                if retcode.returncode==1:
-                    logger.critical('Error Occured:')
-                    logger.critical(f'Stdout: {retcode.stdout}')
-                    logger.critical(f'Stderr: {retcode.stderr}')
-                    sys.exit()
-            except OSError as e:
-                logger.critical(f'Execution failed with error: {e}')
-                sys.exit()
-            else:
-                logger.debug(f'Funished running command: {command}')
+            retcode = subprocess.Popen(command, shell=True, cwd=in_cwd)
+            retcode.wait()
+            retcode.poll()
+            assert(retcode.returncode==0), f'{command} returned with non-zero number'
+            logger.debug(f'Funished running command: {command}')
     else:
-        logger.critical('ERROR: Could not find RT log')
-        sys.exit()
+        logger.critical('Could not find RT log')
+        raise FileNotFoundError('Could not find RT log')
 
-# def send_to_thread(function_obj, pullreq_obj):
+# def send_to_thread(action_obj, pullreq_obj):
 #     badexit = False
-#     def create_threaded_call(function_obj, pullreq_obj, badexit):
+#     def create_threaded_call(action_obj, pullreq_obj, badexit):
 #
 #         def runInThread(incallback, incommand, cwd_in, badexit):
 #             print(f'cwd_in is:{cwd_in}')
@@ -354,31 +399,31 @@ def move_rt_logs(pullreq_obj):
 #             return
 #
 #         thread = threading.Thread(target=runInThread,
-#                                   args=(function_obj.callback, function_obj.command, pullreq_obj.clone_dir, badexit))
+#                                   args=(action_obj.callback, action_obj.command, pullreq_obj.clone_dir, badexit))
 #         thread.start()
 #         print(f'ouside badexit is {badexit}')
 #         return thread, badexit # returns immediately after the thread starts
-#     thread, exit = create_threaded_call(function_obj, pullreq_obj, badexit)
+#     thread, exit = create_threaded_call(action_obj, pullreq_obj, badexit)
 #     return thread, exit
 
-def runFunction(function_obj, pullreq_obj):
+def runFunction(action_obj, pullreq_obj):
     logger = logging.getLogger("runFunction()")
     goodexit = None
-    logger.debug(f'Running command: {function_obj.command}')
-    proc = subprocess.Popen(function_obj.command, shell=True, cwd=pullreq_obj.clone_dir)
+    logger.debug(f'Running command: {action_obj.command}')
+    proc = subprocess.Popen(action_obj.command, shell=True, cwd=pullreq_obj.clone_dir)
     proc.wait()
     proc.poll()
     if proc.returncode == 0:
-        logger.debug(f'Command {function_obj.command} successful')
+        logger.debug(f'Command {action_obj.command} successful')
         try:
-            logger.debug(f'Running callback function: {function_obj.callback}')
-            globals()[function_obj.callback](pullreq_obj)
+            logger.debug(f'Running callback function: {action_obj.callback}')
+            globals()[action_obj.callback](pullreq_obj)
         except:
-            logger.critical(f'Callback function {function_obj.callback} failed,\
+            logger.critical(f'Callback function {action_obj.callback} failed,\
                 skipping callback function')
             goodexit = False
         else:
-            logger.debug(f'Callback function {function_obj.callback} ran successfully')
+            logger.debug(f'Callback function {action_obj.callback} ran successfully')
             goodexit = True
     return goodexit
 
@@ -405,22 +450,13 @@ def delete_old_pullreq(repo_list, machine_obj):
         if os.path.isdir(machine_obj.workdir+'/'+not_in):
             command = 'rm -rf '+machine_obj.workdir+'/'+not_in
             logger.info(f'Attempting to run: {command}')
-            try:
-                retcode = subprocess.Popen(command, shell=True)
-                retcode.wait()
-                if retcode.returncode==1:
-                    logger.critital('Error Occured:')
-                    logger.critical(f'Stdout: {retcode.stdout}')
-                    logger.critical(f'Stderr: {retcode.stderr}')
-                    sys.exit()
-            except OSError as e:
-                logger.critical(f'Execution failed with error: {e}')
-                sys.exit()
+            retcode = subprocess.Popen(command, shell=True)
+            retcode.wait()
+            assert(retcode.returncode==0), f'{command} exited with non-zero number'
+            if os.path.isdir(machine_obj.workdir+'/'+not_in):
+                logger.warning(f'Successful command but dir was not removed')
             else:
-                if os.path.isdir(machine_obj.workdir+'/'+not_in):
-                    logger.warning(f'Successful command but dir was not removed')
-                else:
-                    logger.info(f'Command {command} ran successfully')
+                logger.info(f'Command {command} ran successfully')
         else:
             logger.warning(f'Somehow directory called for removal does not exist, skipping..')
 
