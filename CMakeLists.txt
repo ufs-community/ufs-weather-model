@@ -133,7 +133,7 @@ if(NOT 32BIT)
    set(64BIT ON CACHE BOOL "Enable 64-bit")
 endif()
 if(NOT QUAD_PRECISION)
-  set(ENABLE_QUAD_PRECISION OFF CACHE BOOL "Disable Quad-precision")
+  set(ENABLE_QUAD_PRECISION OFF CACHE BOOL "Enable Quad-precision")
 endif()
 
 add_subdirectory(FMS)
