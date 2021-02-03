@@ -634,3 +634,70 @@ export CICE_HIST_AVG='.true.'
 export BL_SUFFIX=""
 export RT_SUFFIX=""
 }
+export_cdeps_datm ()
+{
+export FV3=false
+export CDEPS_DATM=true
+export DATM=false
+export THRD=1
+export WLCLK=$WLCLK_dflt
+export INPES=$INPES_dflt
+export JNPES=$JNPES_dflt
+export TASKS=$TASKS_dflt
+export TPN=$TPN_dflt
+
+export atm_model="datm"
+}
+export_cdeps_docn ()
+{
+export CDEPS_DOCN=true
+export THRD=1
+export WLCLK=$WLCLK_dflt
+export INPES=$INPES_dflt
+export JNPES=$JNPES_dflt
+export TASKS=$TASKS_dflt
+export TPN=$TPN_dflt
+
+export ocn_model="docn"
+export ocn_datamode="sstdata"
+}
+export_cpl_regional ()
+{
+export S2S=false
+
+# model_configure
+export SYEAR='2019'
+export SMONTH='08'
+export SDAY='29'
+export SHOUR='00'
+export FHMAX=24
+export ENS_NUM=1
+export DT_ATMOS='900'
+export CPL='.true.'
+export RESTART_INTERVAL=0
+export FHROT=0
+export coupling_interval_fast_sec=0
+export QUILTING=.true.
+export WRITE_GROUP=1
+export WRTTASK_PER_GROUP=6
+export OUTPUT_HISTORY=.true.
+export WRITE_DOPOST=.false.
+export NUM_FILES=2
+export FILENAME_BASE="'dyn' 'phy'"
+export OUTPUT_GRID="'regional_latlon'"
+export OUTPUT_FILE="'netcdf'"
+export IDEFLATE=0
+export NBITS=0
+export WRITE_NEMSIOFLIP=.false.
+export WRITE_FSYNCFLAG=.false.
+export NFHOUT=3
+export NFHMAX_HF=-1
+export NFHOUT_HF=3
+
+# nems.configure
+export med_model="nems"
+export RESTART_N=${FHMAX} 
+export CPLMODE="hafs"
+export RUNTYPE="startup"
+export USE_COLDSTART="false"
+}

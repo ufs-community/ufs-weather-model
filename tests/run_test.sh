@@ -89,9 +89,15 @@ fi
 SRCD="${PATHTR}"
 RUND="${RUNDIR}"
 
-atparse < ${PATHRT}/fv3_conf/${FV3_RUN:-fv3_run.IN} > fv3_run
+# FV3_RUN could have multiple entry seperated by space
+for i in ${FV3_RUN:-fv3_run.IN}
+do
+  atparse < ${PATHRT}/fv3_conf/${i} >> fv3_run
+done
 
+if [[ $FV3 = 'true' ]]; then
 atparse < ${PATHRT}/parm/${INPUT_NML:-input.nml.IN} > input.nml
+fi
 
 atparse < ${PATHRT}/parm/${MODEL_CONFIGURE:-model_configure.IN} > model_configure
 
@@ -101,21 +107,43 @@ if [[ "Q${INPUT_NEST02_NML:-}" != Q ]] ; then
     atparse < ${PATHRT}/parm/${INPUT_NEST02_NML} > input_nest02.nml
 fi
 
+if [[ $CDEPS_DATM = 'true' ]]; then
+  atparse < ${PATHRT}/parm/${DATM_CONFIGURE_A:-datm_in} > datm_in
+  atparse < ${PATHRT}/parm/${DATM_CONFIGURE_B:-datm.streams.xml} > datm.streams.xml
+fi
+
+if [[ $CDEPS_DOCN = 'true' ]]; then
+  atparse < ${PATHRT}/parm/${DOCN_CONFIGURE_A:-docn_in} > docn_in
+  atparse < ${PATHRT}/parm/${DOCN_CONFIGURE_B:-docn.streams.xml} > docn.streams.xml
+fi
+
 # Set up the run directory
 source ./fv3_run
+
+# CMEPS
+if [[ $DATM = 'true' ]] || [[ $CDEPS_DATM = 'true' ]] || [[ $CDEPS_DOCN = 'true' ]] || [[ $S2S = 'true' ]]; then
+  cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
+  cp ${PATHRT}/parm/pio_in pio_in
+  cp ${PATHRT}/parm/med_modelio.nml med_modelio.nml
+fi
 
 if [[ $DATM = 'true' ]] || [[ $S2S = 'true' ]]; then
   edit_ice_in     < ${PATHRT}/parm/ice_in_template > ice_in
   edit_mom_input  < ${PATHRT}/parm/${MOM_INPUT:-MOM_input_template_$OCNRES} > INPUT/MOM_input
   edit_diag_table < ${PATHRT}/parm/diag_table_template > diag_table
   edit_data_table < ${PATHRT}/parm/data_table_template > data_table
-  # CMEPS
-  cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
-  cp ${PATHRT}/parm/pio_in pio_in
-  cp ${PATHRT}/parm/med_modelio.nml med_modelio.nml
 fi
+
 if [[ $DATM = 'true' ]]; then
   cp ${PATHRT}/parm/datm_data_table.IN datm_data_table
+fi
+
+if [[ $CDEPS_DATM = 'true' ]]; then
+  cp ${PATHRT}/parm/atm_modelio.nml atm_modelio.nml
+fi
+
+if [[ $CDEPS_DOCN = 'true' ]]; then
+  cp ${PATHRT}/parm/ocn_modelio.nml ocn_modelio.nml
 fi
 
 if [[ $SCHEDULER = 'pbs' ]]; then
