@@ -1,4 +1,4 @@
-#############################################
+##############################################
 #####  NEMS Run-Time Configuration File  #####
 ##############################################
 
@@ -9,7 +9,7 @@ EARTH_attributes::
 ::
 
 # MED #
-MED_model:                      @[med_model] 
+MED_model:                      @[med_model]
 MED_petlist_bounds:             @[med_petlist_bounds]
 ::
 
@@ -18,34 +18,38 @@ ATM_model:                      @[atm_model]
 ATM_petlist_bounds:             @[atm_petlist_bounds]
 ATM_attributes::
   Verbosity = low
-  domain_atm = input/domain.lnd.TL639_Atlantic8.200618.nc
-  mesh_atm = input/TL639_200618_ESMFmesh.nc
+  mesh_atm = $[atm_mesh]
 ::
 
 # OCN #
 OCN_model:                      @[ocn_model]
 OCN_petlist_bounds:             @[ocn_petlist_bounds]
 OCN_attributes::
-  domain_ocn = input/domain.ocn.tx025.201105.nc 
-  mesh_ocn = input/TX025_201105_ESMFmesh.nc
+  Verbosity = low
+  mesh_ocn = $[ocn_mesh]
 ::
 
 # Run Sequence #
-runSeq::
-@@[coupling_interval_sec]
-  OCN
-  OCN -> MED :remapMethod=redist
+runSeq:: 
+@@[coupling_interval_sec] 
   MED med_phases_prep_ocn_avg
+  MED -> OCN :remapMethod=redist
+  OCN
   ATM
   ATM -> MED :remapMethod=redist
+  MED med_phases_post_atm
+  MED med_phases_aofluxes_run
+  MED med_phases_prep_ocn_accum
+  OCN -> MED :remapMethod=redist:ignoreUnmatchedIndices=true
+  MED med_phases_post_ocn
   MED med_phases_history_write
   MED med_phases_restart_write
-@
+@ 
 ::
 
 # Other Attributes #
 DRIVER_attributes::
-      mediator_read_restart = @[use_coldstart] 
+      mediator_read_restart = @[USE_COLDSTART] 
 ::
 
 MED_attributes::
@@ -54,17 +58,7 @@ MED_attributes::
       history_n = 1
       history_option = nhours
       history_ymd = -999
-      coupling_mode = @[cplmode]
-      atm2ice_fmapname = unset
-      atm2ice_smapname = unset
-      atm2ice_vmapname = unset
-      atm2ocn_fmapname = unset
-      atm2ocn_smapname = unset
-      atm2ocn_vmapname = unset
-      ocn2atm_fmapname = unset
-      ocn2atm_smapname = unset
-      ice2atm_fmapname = unset
-      ice2atm_smapname = unset
+      coupling_mode = @[CPLMODE]
 ::
 
 ALLCOMP_attributes::
@@ -75,9 +69,9 @@ ALLCOMP_attributes::
       ScalarFieldIdxGridNY = 2
       ScalarFieldIdxNextSwCday = 3
       ScalarFieldName = cpl_scalars
-      start_type = @[runtype]
+      start_type = @[RUNTYPE] 
       case_name = ufs.hafs
-      restart_n = @[restart_n]
+      restart_n = @[RESTART_N]
       restart_option = nhours
       restart_ymd = -999
       dbug_flag = 0
@@ -91,11 +85,11 @@ ALLCOMP_attributes::
 ::
 
 ATM_modelio::
-     diro = . 
-     logfile = atm.log
+     diro = .
+     logfile = @[atm_model].log
 ::
 
 OCN_modelio::
      diro = . 
-     logfile = ocn.log
+     logfile = @[ocn_model].log
 :: 
