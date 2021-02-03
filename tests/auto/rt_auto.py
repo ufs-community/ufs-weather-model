@@ -15,7 +15,6 @@ from __future__ import print_function
 from github import Github as gh
 import datetime
 import time
-from pandas import DataFrame
 import socket
 import threading
 import subprocess
@@ -53,9 +52,8 @@ class RTData:
             self.logger.critical(f'Unable to get yaml subset {keyin} with error: {kerror}')
             raise
         else:
-            df = DataFrame.from_dict(yaml_subset)
             self.logger.info(f'Finished getting YAML subset {keyin}')
-            return df
+            return yaml_subset
 
 class Machine:
     '''
@@ -85,15 +83,13 @@ class Machine:
         hostname = socket.gethostname()
         self.logger.debug(f'hostname is {hostname}')
         machines = rtdata_obj.get_yaml_subset('machines')
-        regexmachines = machines['regexhostname'].values
-        for i, mach in enumerate(regexmachines):
-            if re.search(mach, hostname):
+        for i, mach in enumerate(machines):
+            if re.search(mach['regexhostname'], hostname):
                 self.logger.info(f'{hostname} is an approved machine')
-                mach_db_info = machines.iloc[i]
-                self.name = mach_db_info['name']
-                self.regexhostname = mach_db_info['regexhostname']
-                self.workdir = mach_db_info['workdir']
-                self.baselinedir = mach_db_info['baselinedir']
+                self.name = mach['name']
+                self.regexhostname = mach['regexhostname']
+                self.workdir = mach['workdir']
+                self.baselinedir = mach['baselinedir']
                 self.logger.debug(f'self.name: {self.name}\n\
                     self.regexhostname: {self.regexhostname}\n\
                     self.workdir: {self.workdir}\n\
@@ -129,42 +125,9 @@ class Action:
             self.command: {self.command}\n\
             self.callback: {self.callback}')
 
-    # def verify_item(self, item, comparable):
-    #     if item == "name":
-    #         if re.match(self.name.lower(), comparable.lower()):
-    #             self.logger.debug(f'Name match found')
-    #             return True
-    #     elif item == "command":
-    #         if re.match(self.name.lower(), comparable.lower()):
-    #             self.logger.debug(f'Command match found')
-    #             return True
-    #     else:
-    #         self.logger.debug(f'Not a match')
-    #         return False
-    def verify_item(self, item, comparable):
-        if item == 'name':
-            return True if re.match(self.name.lower(), comparable.lower()) else False
-        elif item == 'command':
-            return True if re.match(self.command.lower(), comparable.lower()) else False
-        else:
-            raise KeyError(f'{item} not verifiable')
-    # def verify_name(self, comparable):
-    #     self.logger.debug(f'Verifying name: {comparable}')
-    #     if re.match(self.name.lower(), comparable.lower()):
-    #         self.logger.debug(f'Match found')
-    #         return True
-    #     else:
-    #         self.logger.debug(f'Not a match')
-    #         return False
-    #
-    # def verify_command(self, comparable):
-    #     self.logger.debug(f'Verifying command: {comparable}')
-    #     if re.match(self.command.lower(), comparable.lower()):
-    #         self.logger.debug(f'Match found')
-    #         return True
-    #     else:
-    #         self.logger.debug(f'Not a match')
-    #         return False
+    def verify(self, item, comparable):
+        return True if re.match(getattr(self, item).lower(), comparable.lower()) else False
+
 
 class GHInterface:
     '''
@@ -294,7 +257,7 @@ class PRLabel:
         self.logger.debug("Checking if PRLabel is approved")
         if re.match(self.machine.lower(), machine_obj.name.lower()):
             for action_obj in functions:
-                if action_obj.verify_item('name', self.name):
+                if action_obj.verify('name', self.name):
                     self.logger.debug(f'Approved label: "{self.name}-{self.machine}"')
                     self.add_function(action_obj)
                     return True
@@ -308,11 +271,10 @@ class PRLabel:
 def get_approved_functions(rtdata_obj):
     logger = logging.getLogger("get_approved_functions()")
     logger.debug(f'Start of get_approved_functions()')
-    function_data = rtdata_obj.get_yaml_subset('functions').\
-        values.tolist()
+    function_data = rtdata_obj.get_yaml_subset('functions')
     logger.debug("Sending function data off to Action objects")
-    function_list = [Action(name,command,callback_fnc)
-        for name,command,callback_fnc in function_data]
+    function_list = [Action(data['name'],data['command'],data['callback_fnc'])
+        for data in function_data]
     logger.debug(f'End of get_approved_functions()')
     return function_list
 
@@ -343,11 +305,15 @@ def process_pr(pullreq_obj, ghinterface_obj, machine_obj, functions):
     logger.debug(f'Start')
     for prlabel in pullreq_obj.labels:
         if prlabel.is_approved(machine_obj, functions):
-            logger.debug(f'Removing Label Auto-{prlabel.name}-{prlabel.machine}')
-            pullreq_obj.preq_obj.remove_from_labels(f'Auto-{prlabel.name}-{prlabel.machine}')
-            clone_pr_repo(pullreq_obj, ghinterface_obj, machine_obj)
             try:
+                logger.debug(f'Removing Label Auto-{prlabel.name}-{prlabel.machine}')
+                pullreq_obj.preq_obj.remove_from_labels(f'Auto-{prlabel.name}-{prlabel.machine}')
+                clone_pr_repo(pullreq_obj, ghinterface_obj, machine_obj)
                 goodexit = runFunction(prlabel.action_obj, pullreq_obj)
+            except KeyboardInterrupt:
+                print(f'KEY BOAR DINTERRUPT')
+                pullreq_obj.preq_obj.add_to_labels(f'Auto-{prlabel.name}-{prlabel.machine}')
+                raise
             except Exception as e:
                 logger.critical(f'ERROR RUNNING RT {prlabel.action_obj.command} with error: {e}')
                 logger.debug(f'Adding back label Auto-{prlabel.name}-{prlabel.machine}')
@@ -411,10 +377,11 @@ def runFunction(action_obj, pullreq_obj):
 def get_approved_repos(rtdata_obj, machine_obj, ghinterface_obj):
     logger = logging.getLogger(f'get_approved_repos')
     logger.debug(f'Start')
-    repo_data = rtdata_obj.get_yaml_subset('repository').values.tolist()
+    repo_data = rtdata_obj.get_yaml_subset('repository')
     logger.debug(f'Creating list of repository data Repo objects')
-    repo_list = [Repo(name, address, base, machine_obj, ghinterface_obj)
-        for name, address, base in repo_data]
+    repo_list = [Repo(data['name'], data['address'], data['base'], \
+        machine_obj, ghinterface_obj) \
+        for data in repo_data]
     if not isinstance(repo_list, list):
         logger.warning(f'repo_list not list type')
         repo_list = list(repo_list)

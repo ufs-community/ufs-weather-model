@@ -1,6 +1,5 @@
 ---
   machines:
-      #RDHPCS
     - name: 'hera'
       regexhostname: 'hfe\d\d'
       workdir: '/scratch1/NCEPDEV/nems/Brian.Curtis/test'
@@ -42,13 +41,7 @@
     - name: 'ufs-weather-model'
       address: 'ufs-community/ufs-weather-model'
       base: 'develop'
-    - name: 'ufs-weather-model'
-      address: 'BrianCurtis-NOAA/ufs-weather-model'
-      base: 'develop'
   functions:
     - name: 'RT'
       command: './tests/rt.sh -e'
       callback_fnc: 'move_rt_logs'
-    # - name: 'BL'
-    #   command: './rt.sh -cef'
-    #   callback_fnc: ''
