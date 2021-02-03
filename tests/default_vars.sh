@@ -252,6 +252,8 @@ export_fv3 ()
 export FV3=true
 export S2S=false
 export DATM=false
+export CDEPS_DATM=false
+export CDEPS_DOCN=false
 export THRD=1
 export WLCLK=$WLCLK_dflt
 export INPES=$INPES_dflt
@@ -539,6 +541,8 @@ export_datm ()
 export FV3=false
 export S2S=false
 export DATM=true
+export CDEPS_DATM=false
+export CDEPS_DOCN=false
 export DAYS=1
 export FHMAX=24
 export WLCLK=30
