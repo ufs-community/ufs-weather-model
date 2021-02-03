@@ -129,18 +129,25 @@ class Action:
             self.command: {self.command}\n\
             self.callback: {self.callback}')
 
+    # def verify_item(self, item, comparable):
+    #     if item == "name":
+    #         if re.match(self.name.lower(), comparable.lower()):
+    #             self.logger.debug(f'Name match found')
+    #             return True
+    #     elif item == "command":
+    #         if re.match(self.name.lower(), comparable.lower()):
+    #             self.logger.debug(f'Command match found')
+    #             return True
+    #     else:
+    #         self.logger.debug(f'Not a match')
+    #         return False
     def verify_item(self, item, comparable):
-        if item == "name":
-            if re.match(self.name.lower(), comparable.lower()):
-                self.logger.debug(f'Name match found')
-                return True
-        elif item == "command":
-            if re.match(self.name.lower(), comparable.lower()):
-                self.logger.debug(f'Command match found')
-                return True
+        if item == 'name':
+            return True if re.match(self.name.lower(), comparable.lower()) else False
+        elif item == 'command':
+            return True if re.match(self.command.lower(), comparable.lower()) else False
         else:
-            self.logger.debug(f'Not a match')
-            return False
+            raise KeyError(f'{item} not verifiable')
     # def verify_name(self, comparable):
     #     self.logger.debug(f'Verifying name: {comparable}')
     #     if re.match(self.name.lower(), comparable.lower()):
@@ -324,6 +331,7 @@ def clone_pr_repo(pullreq_obj, ghinterface_obj, machine_obj):
         logger.info(f'Attempting to run: {command}')
         retcode = subprocess.Popen(command, shell=True, cwd=in_cwd)
         retcode.wait()
+        retcode.poll()
         assert(retcode.returncode==0), f'{command} returned with non-zero exit'
         logger.info(f'Finished running: {command}')
 
@@ -379,33 +387,6 @@ def move_rt_logs(pullreq_obj):
         logger.critical('Could not find RT log')
         raise FileNotFoundError('Could not find RT log')
 
-# def send_to_thread(action_obj, pullreq_obj):
-#     badexit = False
-#     def create_threaded_call(action_obj, pullreq_obj, badexit):
-#
-#         def runInThread(incallback, incommand, cwd_in, badexit):
-#             print(f'cwd_in is:{cwd_in}')
-#             proc = subprocess.Popen(incommand, shell=True, cwd=cwd_in)
-#             proc.wait()
-#             proc.poll()
-#             if proc.returncode == 0:
-#                 print(f'Process successful, running callback function')
-#                 globals()[incallback](pullreq_obj)
-#             else:
-#                 print(f'badexit is {badexit}')
-#                 print(f'Process failed, skipping callback function')
-#                 badexit = True
-#                 print(f'new badexit is {badexit}')
-#             return
-#
-#         thread = threading.Thread(target=runInThread,
-#                                   args=(action_obj.callback, action_obj.command, pullreq_obj.clone_dir, badexit))
-#         thread.start()
-#         print(f'ouside badexit is {badexit}')
-#         return thread, badexit # returns immediately after the thread starts
-#     thread, exit = create_threaded_call(action_obj, pullreq_obj, badexit)
-#     return thread, exit
-
 def runFunction(action_obj, pullreq_obj):
     logger = logging.getLogger("runFunction()")
     goodexit = None
@@ -452,6 +433,7 @@ def delete_old_pullreq(repo_list, machine_obj):
             logger.info(f'Attempting to run: {command}')
             retcode = subprocess.Popen(command, shell=True)
             retcode.wait()
+            retcode.poll()
             assert(retcode.returncode==0), f'{command} exited with non-zero number'
             if os.path.isdir(machine_obj.workdir+'/'+not_in):
                 logger.warning(f'Successful command but dir was not removed')
