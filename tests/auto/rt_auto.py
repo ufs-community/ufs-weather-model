@@ -1,6 +1,6 @@
 """Automation of UFS Regression Testing
 
-This script automates the process of regression testing for code managers
+This script automates the process of UFS regression testing for code managers
 at NOAA-EMC
 
 The data set required for this code to operate properly is rt_auto.yml:
@@ -13,9 +13,9 @@ prior to start.
 """
 from __future__ import print_function
 from github import Github as gh
+import argparse
 import datetime
 import time
-import socket
 import threading
 import subprocess
 import re
@@ -73,33 +73,22 @@ class Machine:
     baselinedir : str
       the directory where baselines are stored on the machine
     '''
-    def __init__(self, rtdata_obj):
+    def __init__(self, rtdata_obj, machineid):
         self.logger = logging.getLogger("Machine")
+        self.machine_name = machineid
         self.get_machine_info(rtdata_obj)
-        self.machineid = os.environ.get('MACHINE_ID')
 
     def get_machine_info(self, rtdata_obj):
         self.logger.info(f'Getting machine information')
-        hostname = socket.gethostname()
-        self.logger.debug(f'hostname is {hostname}')
         machines = rtdata_obj.get_yaml_subset('machines')
-        for i, mach in enumerate(machines):
-            if re.search(mach['regexhostname'], hostname):
-                self.logger.info(f'{hostname} is an approved machine')
-                self.name = mach['name']
-                self.regexhostname = mach['regexhostname']
-                self.workdir = mach['workdir']
-                self.baselinedir = mach['baselinedir']
-                self.logger.debug(f'self.name: {self.name}\n\
-                    self.regexhostname: {self.regexhostname}\n\
-                    self.workdir: {self.workdir}\n\
-                    self.baselinedir: {self.baselinedir}')
-                self.logger.info(f'Finished getting machine information')
-                return
-            else:
-                continue
-        self.logger.critical(f'Hostname:{hostname} does not match approved list.')
-        raise Exception(f'Hostname:{hostname} does not match approved list.')
+        this_host = next(mach for mach in machines if mach['name'] == self.machine_name.split('.')[0])
+        self.name = this_host['name']
+        self.workdir = this_host['workdir']
+        self.baselinedir = this_host['baselinedir']
+        self.logger.debug(f'self.name: {self.name}\n\
+            self.workdir: {self.workdir}\n\
+            self.baselinedir: {self.baselinedir}')
+        self.logger.info(f'Finished getting machine information')
 
 class Action:
     '''
@@ -138,15 +127,12 @@ class GHInterface:
     ----------
     GHACCESSTOKEN : str
       API token to autheticate with GitHub
-    GHUSERNAME : str
-      UserName connected to GHACCESSTOKEN
     client : pyGitHub communication object
       The connection to GitHub to make API requests
     '''
     def __init__(self) -> None:
         self.logger = logging.getLogger("GHInterface")
         self.get_access_token()
-        self.client = gh(self.GHACCESSTOKEN)
 
     def get_access_token(self):
         try:
@@ -154,22 +140,43 @@ class GHInterface:
                 filedata = f.read()
         except FileNotFoundError:
             ERROR_MESSAGE = f'Please create a file "accesstoken.txt" that'\
-                ' contains your GitHub API Token on the first line, and GitHub'\
-                ' Username on the second line.\nMake sure to set permission'\
-                ' so others can not read it (400)'
+                ' contains your GitHub API Token only.\n'\
+                'Make sure to set permission so others can not read it (400)'
             self.logger.critical(ERROR_MESSAGE)
             raise FileNotFoundError(ERROR_MESSAGE)
         else:
-            filedata = str(filedata)[2:-1].split('\\n')
-            self.GHACCESSTOKEN = filedata[0]
-            self.GHUSERNAME = filedata[1]
-            self.logger.debug(f'GHACCESSTOKEN is {self.GHACCESSTOKEN}')
-            self.logger.debug(f'GHUSERNAME is {self.GHUSERNAME}')
+            self.GHACCESSTOKEN = str(filedata)[2:-3]
+            self.client = gh(self.GHACCESSTOKEN)
+            try:
+                self.logger.debug(f'GHUSERNAME is {self.client.get_user().login}')
+            except Exception as e:
+                self.logger.critical(f'Exception is {e}')
+                raise Exception(e)
 
 
 # REPO STUFF
 class Repo:
+    '''
+    This class stores the information from the input data
+    rt_auto.yml and stores the object retrieved from the GitHub
+    API request for the repo as well as all the pull requests in
+    that repo.
+    The machine_obj is needed for threaded calls
+    ...
 
+    Attributes
+    ----------
+    name: str
+        name of the repository
+    address: str
+        location of the repository in GitHub
+    base: str
+        default branch of the repository
+    machine_obj: Machine object
+        a store of the machine information
+    ghinterface_obj: GHInterface object
+        the method to make calls to the GitHub API
+    '''
     def __init__(self, name, address, base, machine_obj, ghinterface_obj):
         self.logger  = logging.getLogger("Repo")
         self.logger.debug(f'Creating a Repo object')
@@ -206,7 +213,30 @@ class Repo:
         self.logger.debug(f'Finished getting list of GutHub Repo objects')
 
 class PullReq:
+    '''
+    This class stores the pull request information. All the
+    information stored here will be used to keep all data needed
+    to operate the code as it gets sent off to a thread
+    ...
 
+    Attributes
+    ----------
+    preq_obj: pyGitHub Pull Request object
+    repo_obj: Repo object
+    machine_obj: Machine object
+    branch: str
+        branch of the repo requesting the pull
+    repo_name: str
+        repo requesting the pull
+    git_url: str
+        GitHub location of the repo
+    repo_dir_str: str
+        Machine location to clone the repo into
+    labels: list
+        List of Label objects
+    clone_dir: str
+        Machine location of the repo clone
+    '''
     def __init__(self, repo_obj, preq_obj, machine_obj):
         self.logger = logging.getLogger("PullReq")
         self.preq_obj = preq_obj
@@ -240,7 +270,21 @@ class PullReq:
         self.clone_dir = clone_dir
 
 class PRLabel:
+    '''
+    This class stores information from the GitHub pull requests
+    of labels. These labels are then compared to Action object data
+    for verification
+    ...
 
+    Attributes
+    ----------
+    name: str
+        PR label name
+    machine: str
+        PR label machine
+    action_obj: Action object
+        Action object to compare label with for verification
+    '''
     def __init__(self, name, machine):
         self.logger = logging.getLogger("PRLabel")
         self.name = name
@@ -249,8 +293,8 @@ class PRLabel:
             self.machine: {self.machine} ')
         self.action_obj = None
 
-    def add_function(self, action_obj):
-        self.logger.debug("Adding function Object: {action_obj}")
+    def add_action(self, action_obj):
+        self.logger.debug("Adding Action Object: {action_obj}")
         self.action_obj = action_obj
 
     def is_approved(self, machine_obj, functions):
@@ -259,7 +303,7 @@ class PRLabel:
             for action_obj in functions:
                 if action_obj.verify('name', self.name):
                     self.logger.debug(f'Approved label: "{self.name}-{self.machine}"')
-                    self.add_function(action_obj)
+                    self.add_action(action_obj)
                     return True
                 else:
                     self.logger.warning(f'Label not approved. Name: {self.name} not on approved list.')
@@ -269,6 +313,12 @@ class PRLabel:
             return False
 
 def get_approved_functions(rtdata_obj):
+    ''' Get approved functions from the input data
+
+    Arguments:
+    rtdata_obj: RTData object
+    '''
+
     logger = logging.getLogger("get_approved_functions()")
     logger.debug(f'Start of get_approved_functions()')
     function_data = rtdata_obj.get_yaml_subset('functions')
@@ -279,9 +329,16 @@ def get_approved_functions(rtdata_obj):
     return function_list
 
 def clone_pr_repo(pullreq_obj, ghinterface_obj, machine_obj):
+    ''' This method clones the pull request repository for Testing
+
+    Arguments:
+    pullreq_obj: PullReq object
+    ghinterface_obj: GHInterface object
+    machine_obj: Machine object
+    '''
     logger = logging.getLogger("clone_pr_repo()")
     git_url_w_login = pullreq_obj.git_url.split('//')
-    git_url_w_login = git_url_w_login[0]+"//"+ghinterface_obj.GHUSERNAME+":"+ghinterface_obj.GHACCESSTOKEN+"@"+git_url_w_login[1]
+    git_url_w_login = git_url_w_login[0]+"//"+ghinterface_obj.GHACCESSTOKEN+"@"+git_url_w_login[1]
 
     create_repo_commands = [
         ['mkdir -p "'+pullreq_obj.repo_dir_str+'"', machine_obj.workdir],
@@ -301,6 +358,10 @@ def clone_pr_repo(pullreq_obj, ghinterface_obj, machine_obj):
     pullreq_obj.add_clone_dir(pullreq_obj.repo_dir_str+"/"+pullreq_obj.repo_name)
 
 def process_pr(pullreq_obj, ghinterface_obj, machine_obj, functions):
+    '''This method processes each PulLReq obj by checking if the
+    label in the PR is approved and clones the repository
+
+    '''
     logger = logging.getLogger(f'PR#{pullreq_obj.preq_obj.id}')
     logger.debug(f'Start')
     for prlabel in pullreq_obj.labels:
@@ -432,12 +493,18 @@ def wait_for_daemon_threads(thread_list):
     logger.debug("All deamon threads finished")
 
 def main():
+    # Parse Input Arguments
+    parser = argparse.ArgumentParser()
+    parser.add_argument("machine_name", help="Machine Name in <machine>.<compiler> format", type=str)
+    args = parser.parse_args()
+    if len(args.machine_name.split('.'))!=2:
+        raise argparse.ArgumentTypeError("Please use <machine>.<compiler> format for machine_name")
     #SETUP LOGGER
     logging.basicConfig(filename="rt_auto.log", filemode='w', level=logging.DEBUG)
     logger = logging.getLogger("main")
     ghinterface_obj = GHInterface()
     rtdata_obj= RTData()
-    machine_obj = Machine(rtdata_obj)
+    machine_obj = Machine(rtdata_obj, args.machine_name)
     functions_obj = get_approved_functions(rtdata_obj)
     repo_list = get_approved_repos(rtdata_obj, machine_obj, ghinterface_obj)
     delete_old_pullreq(repo_list, machine_obj)
