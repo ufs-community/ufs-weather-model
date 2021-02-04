@@ -405,12 +405,16 @@ export MAX_OUTPUT_FIELDS=300
 export DO_SPPT=.F.
 export DO_SHUM=.F.
 export DO_SKEB=.F.
+export DO_OCNSPPT=FALSE
+export DO_PERT_EPBL=FALSE
 export LNDP_TYPE=0
 export N_VAR_LNDP=0
 export LNDP_EACH_STEP=.F.
 export SKEB=-999.
 export SPPT=-999.
 export SHUM=-999.
+export OCNSPPT=-999.
+export EPBL=-999.
 
 #IAU
 export IAU_INC_FILES="''"

@@ -41,6 +41,8 @@ function edit_mom_input {
       -e "s/MOM6_USE_WAVES/$MOM6_USE_WAVES/g" \
       -e "s/NX_GLB/$NX_GLB/g" \
       -e "s/NY_GLB/$NY_GLB/g" \
+      -e "s/DO_OCNSPPT/$DO_OCNSPPT/g" \
+      -e "s/DO_PERT_EPBL/$DO_PERT_EPBL/g" \
       -e "s/CHLCLIM/$CHLCLIM/g"
 }
 

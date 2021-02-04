@@ -324,14 +324,9 @@ target_compile_definitions(ufs_model PRIVATE "${_ufs_model_defs_private}")
 if(DATM)
   target_link_libraries(ufs_model PUBLIC ufs w3nco::w3nco_d)
 endif()
-if(MKL_DIR)
-  set (MKL_LIB "-L$ENV{MKLROOT}/lib/intel64 -Wl,-rpath,$ENV{MKLROOT}/lib/intel64 -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lpthread -lm -ldl")
-  message (STATUS "Enable Intel MKL support for UFS")
- endif()
 target_link_libraries(ufs_model PRIVATE ufs
                                         esmf
-                                        NetCDF::NetCDF_Fortran
-                                        ${MKL_LIB})
+                                        NetCDF::NetCDF_Fortran)
 
 ###############################################################################
 ### Install
