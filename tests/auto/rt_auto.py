@@ -1,6 +1,6 @@
 """Automation of UFS Regression Testing
 
-This script automates the process of regression testing for code managers
+This script automates the process of UFS regression testing for code managers
 at NOAA-EMC
 
 The data set required for this code to operate properly is rt_auto.yml:
