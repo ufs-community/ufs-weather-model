@@ -11,26 +11,40 @@ fi
 echo "inputdir=$inputdir,NPX=$NPX"
 
 UNIT_TEST=${UNIT_TEST:-false}
+SUFFIX=${RT_SUFFIX}
 if [ $WARM_START = .F. ]; then
   cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT .
   mkdir RESTART
 else
   mkdir INPUT RESTART
 
-  rsync -arv ../fv3_ccpp_control${RT_SUFFIX}/RESTART/ INPUT/
-  rm -f INPUT/fv_core.res.*
-  rm -f INPUT/fv_srf_wnd.res.*
-  rm -f INPUT/fv_tracer.res.*
-  rm -f INPUT/phy_data.*
-  rm -f INPUT/sfc_data.*
-  cd INPUT
-  rename 20161004.000000. '' 20161004.000000.*
-  cp ../../fv3_ccpp_control${RT_SUFFIX}/INPUT/grid_spec.nc .
-  cp ../../fv3_ccpp_control${RT_SUFFIX}/INPUT/*_grid.tile*.nc .
-  cp ../../fv3_ccpp_control${RT_SUFFIX}/INPUT/oro_data.tile*.nc .
-  if [[ $IAU_INC_FILES != '' ]] || [[ $READ_INCREMENT = '.T.' ]]; then
-    cp ../../fv3_ccpp_control${RT_SUFFIX}/INPUT/fv3_increment.nc .
+  if [[ ${UNIT_TEST} == true ]]; then
+    SUFFIX=${BL_SUFFIX}
   fi
+
+  rsync -arv ../fv3_ccpp_control${SUFFIX}/RESTART/ INPUT/
+  if [[ $IAU_INC_FILES = 'fv3_increment.nc' ]] || [[ $READ_INCREMENT = '.T.' ]]; then
+    #read_inc and iau tests restart from fh=24
+    cp ../fv3_ccpp_control${SUFFIX}/RESTART/coupler.res INPUT/.
+    cp ../fv3_ccpp_control${SUFFIX}/RESTART/fv_core.res.* INPUT/.
+    cp ../fv3_ccpp_control${SUFFIX}/RESTART/fv_srf_wnd.res.* INPUT/.
+    cp ../fv3_ccpp_control${SUFFIX}/RESTART/fv_tracer.* INPUT/.
+    cp ../fv3_ccpp_control${SUFFIX}/RESTART/phy_data.* INPUT/.
+    cp ../fv3_ccpp_control${SUFFIX}/RESTART/sfc_data.* INPUT/.
+    cp ../fv3_ccpp_control${SUFFIX}/INPUT/fv3_increment.nc INPUT/.
+    cd INPUT
+  else
+    #restart test start from fh=12
+    cp ../fv3_ccpp_control${SUFFIX}/RESTART/20161003.120000.* INPUT/.
+    cd INPUT
+    for RFILE in 20161003.120000.*; do
+      [ -e $RFILE ] || exit 1
+      mv $RFILE ${RFILE#20161003.120000.}
+    done
+  fi
+  cp ../../fv3_ccpp_control${SUFFIX}/INPUT/grid_spec.nc .
+  cp ../../fv3_ccpp_control${SUFFIX}/INPUT/*_grid.tile*.nc .
+  cp ../../fv3_ccpp_control${SUFFIX}/INPUT/oro_data.tile*.nc .
   cd ..
 
 fi
