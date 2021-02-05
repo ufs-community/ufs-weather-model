@@ -1,19 +1,17 @@
 ###############################################################################
 #
-#  FV3 CCPP regional control test using RRFS v1alpha suite with 32-bit dynamics
+#  FV3 CCPP regional control test using GFS v15p2 suite with 32-bit dynamics
 #
 ###############################################################################
 
-export TEST_DESCR="Compare FV3 CCPP regional control results with previous trunk version"
+export TEST_DESCR="Compare FV3 CCPP regional GFS v15p2 results with previous trunk version"
 
-export CNTL_DIR=fv3_regional_control
+export CNTL_DIR=fv3_regional_v15p2
 
 export LIST_FILES="atmos_4xdaily.nc \
                    phyf000.nc \
-                   phyf006.nc \
                    phyf012.nc \
                    dynf000.nc \
-                   dynf006.nc \
                    dynf012.nc \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
@@ -24,11 +22,13 @@ export LIST_FILES="atmos_4xdaily.nc \
                    RESTART/phy_data.nc"
 
 export_fv3
+export THRD=2
 export TASKS=80
+export TPN=$(expr $TPN / 2)
 export NODES=$(expr $TASKS / $TPN + 1)
 
-export INPES=10
-export JNPES=4
+export INPES=20
+export JNPES=2
 
 export FHMAX=12
 export FDIAG=3
@@ -36,7 +36,7 @@ export FDIAG=3
 DT_ATMOS="300"
 
 export FV3_RUN=ccpp_regional_run.IN
-export CCPP_SUITE=FV3_RRFS_v1alpha
+export CCPP_SUITE=FV3_GFS_v15p2
 export CCPP_LIB_DIR=ccpp/lib
 export INPUT_NML=ccpp_regional.nml.IN
 export MODEL_CONFIGURE=ccpp_regional-model_configure.IN
@@ -46,25 +46,12 @@ export OZ_PHYS_OLD=.F.
 export OZ_PHYS_NEW=.T.
 export H2O_PHYS=.T.
 
-# Thompson microphysics
-export IMP_PHYSICS=8
-export DNATS=0
-export DO_SAT_ADJ=.F.
-export LRADAR=.T.
-export LTAEROSOL=.T.
-export NWAT=6
-export EFFR_IN=.T.
+# GFDL microphysics
+export IMP_PHYSICS=11
 
 # Other namelist switches
-export HYBEDMF=.F.
-export DO_MYNNEDMF=.T.
-export IMFSHALCNV=-1
-export IMFDEEPCNV=-1
+export HYBEDMF=.T.
 export FHCYC=0
-export LSM=2
-export LSOIL_LSM=4
-#export GWD_OPT=3
-#export DO_MYNNSFCLAY=.T.
 
 RUN_SCRIPT=rt_fv3.sh
 
