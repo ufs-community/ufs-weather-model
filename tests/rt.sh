@@ -354,7 +354,7 @@ mkdir -p ${RUNDIR_ROOT}
 CREATE_BASELINE=false
 ROCOTO=false
 ECFLOW=false
-KEEP_RUNDIR=true
+KEEP_RUNDIR=false
 SINGLE_NAME=''
 TEST_35D=false
 
