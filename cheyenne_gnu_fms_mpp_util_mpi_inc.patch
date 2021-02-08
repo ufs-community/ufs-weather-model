@@ -1,0 +1,12 @@
+--- FMS/mpp/include/mpp_util_mpi.inc	2021-02-08 08:24:21.000000000 -0700
++++ FMS/mpp/include/mpp_util_mpi.inc	2021-02-08 08:24:15.000000000 -0700
+@@ -169,7 +169,8 @@
+   integer, intent(in   ), optional :: msg_size(:)
+   integer, intent(in   ), optional :: msg_type(:)
+ 
+-  integer                       :: i, m, n, stride, my_check, rsize
++  integer                       :: i, m, n, stride, my_check
++  integer, volatile             :: rsize
+ 
+   if( debug .and. (current_clock.NE.0) )call SYSTEM_CLOCK(start_tick)
+   my_check = EVENT_SEND
