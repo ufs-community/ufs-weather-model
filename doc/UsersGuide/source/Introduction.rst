@@ -63,10 +63,6 @@ This WM User’s Guide is organized as follows:
 - :numref:`Chapter %s <InputsOutputs>` (Inputs and Outputs) lists the model inputs and outputs
   and has a description of the key files.
 
-- :numref:`Chapter %s <SDFandNamelistExamplePractices>` (SDF and namelist samples and best practices)
-  contains a description of the :term:`Suite Definition File (SDF)` and namelists needed to configure the model
-  for running with the GFS v15.2 and GFS v16beta physics suites.
-
 - :numref:`Chapter %s <FAQ>` (FAQ) lists frequently asked questions and answers.
 
 Finally, :numref:`Chapters %s <Acronyms>` and :numref:`%s <Glossary>` contain a list of acronyms and a glossary, respectively.
