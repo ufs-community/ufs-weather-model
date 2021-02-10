@@ -145,6 +145,22 @@ if [[ "${MAKE_OPT}" == *"HYCOM=Y"* ]]; then
     CMAKE_FLAGS="${CMAKE_FLAGS} -DHYCOM=Y"
 fi
 
+if [[ "${MAKE_OPT}" == *"CMEPS=Y"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DCMEPS=Y"
+fi
+
+if [[ "${MAKE_OPT}" == *"CDEPS=Y"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DCDEPS=Y"
+fi
+
+if [[ "${MAKE_OPT}" == *"CDEPS_DATM=Y"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DCDEPS_DATM=Y"
+fi
+
+if [[ "${MAKE_OPT}" == *"CDEPS_DOCN=Y"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DCDEPS_DOCN=Y"
+fi
+
 # Make variables:
 #   COMPONENTS = list of components to build
 #   BUILD_ENV = theia.intel, wcoss_dell_p3, etc.

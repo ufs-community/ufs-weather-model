@@ -32,6 +32,7 @@ set(QUAD_PRECISION  ON  CACHE BOOL "Enable QUAD_PRECISION (for certain grid metr
 set(REPRO           OFF CACHE BOOL "Enable REPRO mode")
 set(WW3             OFF CACHE BOOL "Enable WW3")
 set(HYCOM           OFF CACHE BOOL "Enable HYCOM")
+set(CMEPS           OFF CACHE BOOL "Enable CMEPS")
 set(S2S             OFF CACHE BOOL "Enable S2S")
 set(JEDI_DRIVER     OFF CACHE BOOL "Enable JEDI as top level driver")
 set(DATM            OFF CACHE BOOL "Enable Data Atmosphere")
@@ -70,6 +71,7 @@ message("QUAD_PRECISION ... ${QUAD_PRECISION}")
 message("REPRO ............ ${REPRO}")
 message("WW3 .............. ${WW3}")
 message("HYCOM ............ ${HYCOM}")
+message("CMEPS ............ ${CMEPS}")
 message("S2S .............. ${S2S}")
 message("DATM ............. ${DATM}")
 message("")
@@ -98,6 +100,9 @@ if(OPENMP)
 endif()
 find_package(NetCDF REQUIRED C Fortran)
 find_package(ESMF MODULE REQUIRED)
+if(CMEPS)
+  find_package(PIO REQUIRED COMPONENTS C Fortran STATIC)
+endif()
 if(S2S)
   find_package(PIO REQUIRED COMPONENTS C Fortran STATIC)
 endif()
@@ -115,10 +120,7 @@ endif()
 target_link_libraries(nemsio::nemsio INTERFACE w3emc::w3emc_d bacio::bacio_4)
 
 # Configure Python
-find_package(Python 3 QUIET COMPONENTS Interpreter)
-if (NOT Python_Interpreter_FOUND)
-  find_package(Python 2.7 REQUIRED COMPONENTS Interpreter)
-endif()
+find_package(Python 3 REQUIRED COMPONENTS Interpreter)
 message("Found Python: ${Python_EXECUTABLE}")
 
 ###############################################################################
@@ -232,6 +234,13 @@ if(HYCOM)
 endif()
 
 ###############################################################################
+### CMEPS Component
+###############################################################################
+if(CMEPS)
+  add_subdirectory(CMEPS-interface)
+endif()
+
+###############################################################################
 ### S2S Components [CMEPS, MOM6, CICE]
 ###############################################################################
 if(S2S)
@@ -252,8 +261,7 @@ list(APPEND _nems_srcs NEMS/src/module_NEMS_UTILS.F90
                        NEMS/src/module_NEMS_INTERNAL_STATE.F90
                        NEMS/src/module_NEMS_GRID_COMP.F90
                        NEMS/src/module_NEMS_Rusage.F90
-                       NEMS/src/nems_c_rusage.c
-                       NEMS/src/ENS_Cpl/ENS_CplComp_ESMFMod_STUB.F90)
+                       NEMS/src/nems_c_rusage.c)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/NEMS/src/ESMFVersionDefine_ESMF_NUOPC.h
                ${CMAKE_CURRENT_BINARY_DIR}/NEMS/src/ESMFVersionDefine.h
@@ -307,6 +315,13 @@ if(HYCOM)
   list(APPEND _ufs_defs_private FRONT_HYCOM=HYCOM_Mod)
   add_dependencies(ufs hycom)
   target_link_libraries(ufs PUBLIC hycom)
+endif()
+
+if(CMEPS)
+  list(APPEND _ufs_defs_private CMEPS
+                                FRONT_CMEPS=MED)
+  add_dependencies(ufs cmeps)
+  target_link_libraries(ufs PUBLIC cmeps)
 endif()
 
 if(S2S)

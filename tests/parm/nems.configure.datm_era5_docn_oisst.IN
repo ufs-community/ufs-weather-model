@@ -1,0 +1,101 @@
+#############################################
+#####  NEMS Run-Time Configuration File  #####
+##############################################
+
+# EARTH #
+EARTH_component_list: MED ATM OCN
+EARTH_attributes::
+  Verbosity = 0
+::
+
+# MED #
+MED_model:                      @[med_model] 
+MED_petlist_bounds:             @[med_petlist_bounds]
+::
+
+# ATM #
+ATM_model:                      @[atm_model]
+ATM_petlist_bounds:             @[atm_petlist_bounds]
+ATM_attributes::
+  Verbosity = low
+  domain_atm = input/domain.lnd.TL639_Atlantic8.200618.nc
+  mesh_atm = input/TL639_200618_ESMFmesh.nc
+::
+
+# OCN #
+OCN_model:                      @[ocn_model]
+OCN_petlist_bounds:             @[ocn_petlist_bounds]
+OCN_attributes::
+  domain_ocn = input/domain.ocn.tx025.201105.nc 
+  mesh_ocn = input/TX025_201105_ESMFmesh.nc
+::
+
+# Run Sequence #
+runSeq::
+@@[coupling_interval_sec]
+  OCN
+  OCN -> MED :remapMethod=redist
+  MED med_phases_prep_ocn_map
+  ATM
+  ATM -> MED :remapMethod=redist
+  MED med_phases_history_write
+  MED med_phases_restart_write
+@
+::
+
+# Other Attributes #
+DRIVER_attributes::
+      mediator_read_restart = @[use_coldstart] 
+::
+
+MED_attributes::
+      ATM_model = @[atm_model]
+      OCN_model = @[ocn_model]
+      history_n = 1
+      history_option = nhours
+      history_ymd = -999
+      coupling_mode = @[cplmode]
+      atm2ice_fmapname = unset
+      atm2ice_smapname = unset
+      atm2ice_vmapname = unset
+      atm2ocn_fmapname = unset
+      atm2ocn_smapname = unset
+      atm2ocn_vmapname = unset
+      ocn2atm_fmapname = unset
+      ocn2atm_smapname = unset
+      ice2atm_fmapname = unset
+      ice2atm_smapname = unset
+::
+
+ALLCOMP_attributes::
+      ATM_model = @[atm_model]
+      OCN_model = @[ocn_model]
+      ScalarFieldCount = 3
+      ScalarFieldIdxGridNX = 1
+      ScalarFieldIdxGridNY = 2
+      ScalarFieldIdxNextSwCday = 3
+      ScalarFieldName = cpl_scalars
+      start_type = @[runtype]
+      case_name = ufs.hafs
+      restart_n = @[restart_n]
+      restart_option = nhours
+      restart_ymd = -999
+      dbug_flag = 0
+      use_coldstart = true
+      orb_eccen = 1.e36
+      orb_iyear = 2000
+      orb_iyear_align = 2000
+      orb_mode = fixed_year
+      orb_mvelp = 1.e36
+      orb_obliq = 1.e36
+::
+
+ATM_modelio::
+     diro = . 
+     logfile = atm.log
+::
+
+OCN_modelio::
+     diro = . 
+     logfile = ocn.log
+:: 
