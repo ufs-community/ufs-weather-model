@@ -218,7 +218,8 @@ contains
   !===============================================================================
   subroutine ModelAdvance(gcomp, rc)
 
-    use lsm_noah, only: lsm_noah_run ! tmp test
+    use lsm_noah, only: lsm_noah_run
+    !use noah_loop, only: noah_loop_run
     
     ! Arguments
     type(ESMF_GridComp)  :: gcomp
@@ -254,6 +255,8 @@ contains
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
     call ESMF_LogWrite(trim(msgString), ESMF_LOGMSG_INFO)
 
+
+    
     ! call ESMF_ClockAdvance(clock,rc=rc)
     ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
