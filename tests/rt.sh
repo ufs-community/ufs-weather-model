@@ -249,7 +249,7 @@ elif [[ $MACHINE_ID = orion.* ]]; then
 #  ACCNR= # detected in detect_machine.sh
   PARTITION=orion
   dprefix=/work/noaa/stmp/${USER}
-  DISKNM=/work/noaa/fv3-cam/djovic/RT
+  DISKNM=/work/noaa/nems/emc.nemspara/RT
   STMP=$dprefix/stmp
   PTMP=$dprefix/stmp
 
@@ -355,11 +355,6 @@ KEEP_RUNDIR=false
 SINGLE_NAME=''
 
 TESTS_FILE='rt.conf'
-
-if [[ $MACHINE_ID = orion.* ]]; then
-  TESTS_FILE='rt_orion.conf'
-fi
-
 
 SET_ID='standard'
 while getopts ":cfsl:mn:kreh" opt; do
