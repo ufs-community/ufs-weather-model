@@ -282,9 +282,9 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=slurm
 
-  export PATH=/lfs4/HFIP/hfv3gfs/software/ecFlow-5.3.1/bin:$PATH
-  export PYTHONPATH=/lfs4/HFIP/hfv3gfs/software/ecFlow-5.3.1/lib/python2.7/site-packages
-  ECFLOW_START=/lfs4/HFIP/hfv3gfs/software/ecFlow-5.3.1/bin/ecflow_start.sh
+  export PATH=/lfs4/HFIP/hfv3gfs/software/ecFlow-5.5.3/bin:$PATH
+  export PYTHONPATH=/lfs4/HFIP/hfv3gfs/software/ecFlow-5.5.3/lib/python3.6/site-packages
+  ECFLOW_START=/lfs4/HFIP/hfv3gfs/software/ecFlow-5.5.3/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
   QUEUE=batch
@@ -302,10 +302,10 @@ elif [[ $MACHINE_ID = jet.* ]]; then
 
 elif [[ $MACHINE_ID = cheyenne.* ]]; then
 
-  module load python/2.7.16
-  export PATH=/glade/p/ral/jntp/tools/ecFlow-5.3.1/bin:$PATH
-  export PYTHONPATH=/glade/p/ral/jntp/tools/ecFlow-5.3.1/lib/python2.7/site-packages
-  ECFLOW_START=/glade/p/ral/jntp/tools/ecFlow-5.3.1/bin/ecflow_start.sh
+  module load python/3.7.9
+  export PATH=/glade/p/ral/jntp/tools/ecFlow-5.5.3/bin:$PATH
+  export PYTHONPATH=/glade/p/ral/jntp/tools/ecFlow-5.5.3/lib/python3.7/site-packages
+  ECFLOW_START=/glade/p/ral/jntp/tools/ecFlow-5.5.3/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
   QUEUE=regular
@@ -411,9 +411,9 @@ if [[ $TESTS_FILE =~ '35d' ]]; then
 fi
 
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20210115/${RT_COMPILER^^}}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20210128/${RT_COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20210115}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20210128}
 fi
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20210115}

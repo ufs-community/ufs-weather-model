@@ -1,12 +1,12 @@
 ###############################################################################
 #
-#  FV3 CCPP GF CU test
+#  FV3 CCPP GFS v16 compiled with 32-bit dynamics test
 #
 ###############################################################################
 
-export TEST_DESCR="Compare FV3 CCPP GF CU results with previous trunk version"
+export TEST_DESCR="Compare FV3 32bit CCPP GFS v16 flake results with previous trunk version"
 
-export CNTL_DIR=fv3_gf
+export CNTL_DIR=fv3_gfs_v16_flake
 
 export LIST_FILES="atmos_4xdaily.tile1.nc \
                    atmos_4xdaily.tile2.nc \
@@ -58,32 +58,25 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
                    RESTART/fv_tracer.res.tile4.nc \
                    RESTART/fv_tracer.res.tile5.nc \
                    RESTART/fv_tracer.res.tile6.nc \
-                   RESTART/phy_data.tile1.nc \
-                   RESTART/phy_data.tile2.nc \
-                   RESTART/phy_data.tile3.nc \
-                   RESTART/phy_data.tile4.nc \
-                   RESTART/phy_data.tile5.nc \
-                   RESTART/phy_data.tile6.nc \
                    RESTART/sfc_data.tile1.nc \
                    RESTART/sfc_data.tile2.nc \
                    RESTART/sfc_data.tile3.nc \
                    RESTART/sfc_data.tile4.nc \
                    RESTART/sfc_data.tile5.nc \
-                   RESTART/sfc_data.tile6.nc"
+                   RESTART/sfc_data.tile6.nc \
+                   RESTART/phy_data.tile1.nc \
+                   RESTART/phy_data.tile2.nc \
+                   RESTART/phy_data.tile3.nc \
+                   RESTART/phy_data.tile4.nc \
+                   RESTART/phy_data.tile5.nc \
+                   RESTART/phy_data.tile6.nc"
+
 
 export_fv3
 
-export DT_ATMOS="1200"
-export IMP_PHYSICS=11
-export DNATS=1
-export DO_SAT_ADJ=.T.
+DT_ATMOS="1200"
 
-export FV3_RUN=ccpp_gsd_run.IN
-export CCPP_SUITE=FV3_GFS_v15_gf
-export INPUT_NML=ccpp_gsd.nml.IN
-
-export HYBEDMF=.T.
-export DO_MYNNEDMF=.F.
-export IMFSHALCNV=3
-export IMFDEEPCNV=3
+export FV3_RUN=ccpp_gfs_v16_flake_run.IN
+export CCPP_SUITE=FV3_GFS_v16_flake
+export INPUT_NML=ccpp_v16_flake_c96.nml.IN
 
