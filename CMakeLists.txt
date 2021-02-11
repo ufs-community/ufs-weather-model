@@ -142,44 +142,42 @@ endif()
 ###############################################################################
 ### FMS
 ###############################################################################
-if(NOT DATM AND NOT CDEPS_DATM)
-  include(fms_files.cmake)
-  add_library(fms ${fms_src_files} ${fms_headers})
-  # stupid cmake can not figure out dependency of fft.F90 on fft99.F90 because 'use fft99_mod' is inside ifdefs
-  set_property(SOURCE FMS/fft/fft.F90 APPEND_STRING PROPERTY COMPILE_FLAGS "-DSGICRAY=0 -DNAGFFT=0")
-  
-  list(APPEND _fms_defs_public use_libMPI
-                               use_netCDF
-                               GFS_PHYS
-                               INTERNAL_FILE_NML)
-  if(QUAD_PRECISION)
-    list(APPEND _fms_defs_public ENABLE_QUAD_PRECISION)
-  endif()
-  target_compile_definitions(fms PUBLIC "${_fms_defs_public}")
-  
-  if(32BIT)
-    list(APPEND _fms_defs_private OVERLOAD_R4
-                                  OVERLOAD_R8)
-  endif()
-  target_compile_definitions(fms PRIVATE "${_fms_defs_private}")
-  
-  target_include_directories(fms PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/include>
-                                        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/fms>
-                                        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/fms2_io/include>
-                                        $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/FMS/mod>
-                                        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/mpp/include>)
-  target_include_directories(fms INTERFACE 
-                                           $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include>
-                                           $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/mod>)
-  target_link_libraries(fms PUBLIC MPI::MPI_Fortran
-                                   NetCDF::NetCDF_Fortran)
-  if(OpenMP_Fortran_FOUND)
-    target_link_libraries(fms PRIVATE OpenMP::OpenMP_Fortran)
-  endif()
-  set_target_properties(fms PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/FMS)
-  set_target_properties(fms PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/FMS/mod)
-  set_target_properties(fms PROPERTIES PUBLIC_HEADER "${fms_headers}" )
+include(fms_files.cmake)
+add_library(fms ${fms_src_files} ${fms_headers})
+# stupid cmake can not figure out dependency of fft.F90 on fft99.F90 because 'use fft99_mod' is inside ifdefs
+set_property(SOURCE FMS/fft/fft.F90 APPEND_STRING PROPERTY COMPILE_FLAGS "-DSGICRAY=0 -DNAGFFT=0")
+
+list(APPEND _fms_defs_public use_libMPI
+                             use_netCDF
+                             GFS_PHYS
+                             INTERNAL_FILE_NML)
+if(QUAD_PRECISION)
+  list(APPEND _fms_defs_public ENABLE_QUAD_PRECISION)
 endif()
+target_compile_definitions(fms PUBLIC "${_fms_defs_public}")
+
+if(32BIT)
+  list(APPEND _fms_defs_private OVERLOAD_R4
+                                OVERLOAD_R8)
+endif()
+target_compile_definitions(fms PRIVATE "${_fms_defs_private}")
+
+target_include_directories(fms PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/include>
+                                      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/fms>
+                                      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/fms2_io/include>
+                                      $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/FMS/mod>
+                                      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/mpp/include>)
+target_include_directories(fms INTERFACE 
+                                         $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include>
+                                         $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/mod>)
+target_link_libraries(fms PUBLIC MPI::MPI_Fortran
+                                 NetCDF::NetCDF_Fortran)
+if(OpenMP_Fortran_FOUND)
+  target_link_libraries(fms PRIVATE OpenMP::OpenMP_Fortran)
+endif()
+set_target_properties(fms PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/FMS)
+set_target_properties(fms PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/FMS/mod)
+set_target_properties(fms PROPERTIES PUBLIC_HEADER "${fms_headers}" )
 
 ###############################################################################
 ### stochastic_physics
@@ -289,11 +287,9 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/NEMS/src/ESMFConvenienceMacros.h
 
 add_library(ufs ${_nems_srcs})
 
-if(NOT DATM AND NOT CDEPS_DATM)
-  list(APPEND _ufs_defs_private ESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR}
-                                FRONT_FMS)
-  add_dependencies(ufs fms)
-endif()
+list(APPEND _ufs_defs_private ESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR}
+                              FRONT_FMS)
+add_dependencies(ufs fms)
 
 if(DATM)
   list(APPEND _ufs_defs_private FRONT_DATM=datm)
@@ -407,20 +403,18 @@ target_link_libraries(ufs_model PRIVATE ufs
 ###############################################################################
 ### Install
 ###############################################################################
-if(NOT DATM AND NOT CDEPS_DATM)
-  install(
-    TARGETS fms 
-    EXPORT fms-config
-    LIBRARY DESTINATION lib
-    ARCHIVE DESTINATION lib
-    PUBLIC_HEADER DESTINATION include )
+install(
+  TARGETS fms 
+  EXPORT fms-config
+  LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib
+  PUBLIC_HEADER DESTINATION include )
 
-  install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/FMS/mod DESTINATION ${CMAKE_INSTALL_PREFIX})
+install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/FMS/mod DESTINATION ${CMAKE_INSTALL_PREFIX})
 
-  install(EXPORT fms-config
-    DESTINATION lib/cmake
-  )
-endif()
+install(EXPORT fms-config
+  DESTINATION lib/cmake
+)
 
 install(
   TARGETS ufs
