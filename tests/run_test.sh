@@ -95,7 +95,7 @@ do
   atparse < ${PATHRT}/fv3_conf/${i} >> fv3_run
 done
 
-if [[ $FV3 = 'true' ]]; then
+if [[ $FV3 = 'true' ]] || [[ $DATM = 'true' ]]; then
 atparse < ${PATHRT}/parm/${INPUT_NML:-input.nml.IN} > input.nml
 fi
 
