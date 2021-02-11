@@ -1,0 +1,54 @@
+###############################################################################
+#
+#  FV3 CCPP GFS v15.2 compiled with 32-bit dynamics test
+#
+###############################################################################
+
+export TEST_DESCR="Compare FV3 32bit CCPP GFS v15.2 results with previous trunk version"
+
+export CNTL_DIR=fv3_gfs_v15p2
+
+export LIST_FILES="phyf000.tile1.nc \
+                   phyf000.tile2.nc \
+                   phyf000.tile3.nc \
+                   phyf000.tile4.nc \
+                   phyf000.tile5.nc \
+                   phyf000.tile6.nc \
+                   phyf012.tile1.nc \
+                   phyf012.tile2.nc \
+                   phyf012.tile3.nc \
+                   phyf012.tile4.nc \
+                   phyf012.tile5.nc \
+                   phyf012.tile6.nc \
+                   dynf000.tile1.nc \
+                   dynf000.tile2.nc \
+                   dynf000.tile3.nc \
+                   dynf000.tile4.nc \
+                   dynf000.tile5.nc \
+                   dynf000.tile6.nc \
+                   dynf012.tile1.nc \
+                   dynf012.tile2.nc \
+                   dynf012.tile3.nc \
+                   dynf012.tile4.nc \
+                   dynf012.tile5.nc \
+                   dynf012.tile6.nc"
+
+
+export_fv3
+export NODES=$(expr $TASKS / $TPN + 1)
+
+export FHMAX=12
+
+DT_ATMOS="1200"
+
+# Ozone / stratospheric H2O
+export OZ_PHYS_OLD=.F.
+export OZ_PHYS_NEW=.T.
+export H2O_PHYS=.T.
+
+export FV3_RUN=ccpp_gfs_v15_run.IN
+export CCPP_SUITE=FV3_GFS_v15p2
+export CCPP_LIB_DIR=ccpp/lib
+export INPUT_NML=ccpp_global.nml.IN
+
+RUN_SCRIPT=rt_fv3.sh
