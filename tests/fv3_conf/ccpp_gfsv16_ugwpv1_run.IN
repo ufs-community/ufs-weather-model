@@ -3,7 +3,6 @@ rm -rf INPUT RESTART
 if [ $WARM_START = .F. ]; then
   cp -r @[RTPWD127]/FV3_input_data/INPUT ./
   mkdir RESTART
-  ### DH NEEDED? cp    @[RTPWD127]/FV3_input_data/model_cold_configure ./model_configure  
 else
   mkdir INPUT RESTART
   cp  @[RTPWD127]/FV3_input_data/INPUT/*   ./INPUT 
@@ -23,3 +22,6 @@ cp    @[RTPWD127]/FV3_input_data/ugwp_c384_tau.nc   ./ugwp_limb_tau.nc
 if [ $DO_RRTMGP = .T. ]; then
 cp    @[RTPWD]/FV3_input_data_RRTMGP/* .
 fi
+
+# Overwrite diag_table with a version that doesn't use the FMS write component
+cp    @[INPUTDATA_ROOT]/FV3_input_data_c192L127/diag_table .
