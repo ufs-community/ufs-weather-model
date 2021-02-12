@@ -2,11 +2,9 @@ rm -rf INPUT RESTART
 mkdir INPUT RESTART
 if [ $WARM_START = .F. ]; then
   cp  @[INPUTDATA_ROOT]/FV3_input_data_ugwpv1/INPUT/*   ./INPUT
-  cp  @[INPUTDATA_ROOT]/FV3_input_data_ugwpv1/model_cold_configure ./model_configure
 else
   cp  @[INPUTDATA_ROOT]/FV3_input_data_ugwpv1/INPUT/*   ./INPUT
   cp  @[INPUTDATA_ROOT]/FV3_input_data_ugwpv1/RESTART/* ./INPUT
-  cp  @[INPUTDATA_ROOT]/FV3_input_data_ugwpv1/model_warm_configure ./model_configure
 fi
 cp    @[INPUTDATA_ROOT]/FV3_input_data_ugwpv1/aerosol.dat .
 cp    @[INPUTDATA_ROOT]/FV3_input_data_ugwpv1/co2historicaldata_201*.txt .
