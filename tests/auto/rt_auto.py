@@ -14,7 +14,6 @@ import time
 import threading
 import subprocess
 import re
-import yaml
 import os
 import logging
 
