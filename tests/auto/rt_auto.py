@@ -3,11 +3,6 @@
 This script automates the process of UFS regression testing for code managers
 at NOAA-EMC
 
-The data set required for this code to operate properly is rt_auto.yml:
-  - Provides all the repository information in which to search through
-  - Provides all information about the machines this code should be run on
-  - Provides all acceptable commands to be run on machines
-
 This script should be started through rt_auto.sh so that env vars are set up
 prior to start.
 """
@@ -36,7 +31,7 @@ class GHInterface:
       The connection to GitHub to make API requests
     '''
     def __init__(self) -> None:
-        self.logger = logging.getLogger("GHInterface")
+        self.logger = logging.getLogger('GHINTERFACE')
         try:
             with open('accesstoken.txt', 'rb') as f:
                 filedata = f.read()
@@ -48,64 +43,21 @@ class GHInterface:
             raise FileNotFoundError(e)
         else:
             self.GHACCESSTOKEN = str(filedata)[2:-3]
-            self.client = gh(self.GHACCESSTOKEN)
             try:
-                self.logger.debug(f'GHUSERNAME is {self.client.get_user().login}')
+                self.client = gh(self.GHACCESSTOKEN)
             except Exception as e:
                 self.logger.critical(f'Exception is {e}')
                 raise Exception(e)
 
-def process_pr(pullreq_obj, ghinterface_obj, machine_obj, functions):
-    '''This method processes each PulLReq obj by checking if the
-    label in the PR is approved and clones the repository
-
-    '''
-    logger = logging.getLogger(f'PR#{pullreq_obj.preq_obj.id}')
-    logger.debug(f'Start')
-    for prlabel in pullreq_obj.labels:
-        if prlabel.is_approved(machine_obj, functions):
-            try:
-                logger.debug(f'Removing Label Auto-{prlabel.name}-{prlabel.machine}')
-                pullreq_obj.preq_obj.remove_from_labels(f'Auto-{prlabel.name}-{prlabel.machine}')
-                clone_pr_repo(pullreq_obj, ghinterface_obj, machine_obj)
-                goodexit = runFunction(prlabel.action_obj, pullreq_obj)
-            except KeyboardInterrupt:
-                print(f'KEY BOAR DINTERRUPT')
-                pullreq_obj.preq_obj.add_to_labels(f'Auto-{prlabel.name}-{prlabel.machine}')
-                raise
-            except Exception as e:
-                logger.critical(f'ERROR RUNNING RT {prlabel.action_obj.command} with error: {e}')
-                logger.debug(f'Adding back label Auto-{prlabel.name}-{prlabel.machine}')
-                pullreq_obj.preq_obj.add_to_labels(f'Auto-{prlabel.name}-{prlabel.machine}')
-                raise
-            else:
-                if goodexit == False:
-                    logger.debug(f'runFunction exited with error')
-                    pullreq_obj.preq_obj.add_to_labels(f'Auto-{prlabel.name}-{prlabel.machine}')
-                    logger.debug(f'Adding back label Auto-{prlabel.name}-{prlabel.machine}')
-    logger.debug(f'End')
-
-def runFunction(action_obj, pullreq_obj):
-    goodexit = None
-    proc = subprocess.Popen(action_obj.command, shell=True, cwd=pullreq_obj.clone_dir)
-    proc.wait()
-    proc.poll()
-    if proc.returncode == 0:
-        try:
-            globals()[action_obj.callback](pullreq_obj)
-        except:
-            goodexit = False
-        else:
-            goodexit = True
-    return goodexit
-
 def parse_args_in():
+    ''' Parse all input arguments coming from rt_auto.sh '''
+    logger = logging.getLogger('PARSE_ARGS_IN')
     # Create Parse
     parser = argparse.ArgumentParser()
 
     # Setup Input Arguments
-    parser.add_argument("machine_name", help="Machine name in <machine>.<compiler> format", type=str)
-    parser.add_argument("workdir", help="Working directory for the machine", type=str)
+    parser.add_argument('machine_name', help='Machine name in <machine>.<compiler> format', type=str)
+    parser.add_argument('workdir', help='Working directory for the machine', type=str)
 
     # Get Arguments
     args = parser.parse_args()
@@ -114,11 +66,13 @@ def parse_args_in():
     if type(args.workdir) != str or type(args.machine_name) != str:
         raise TypeError('All arguments need to be of type str')
     if len(args.machine_name.split('.'))!=2:
-        raise argparse.ArgumentTypeError("Please use <machine>.<compiler> format for machine_name")
+        raise argparse.ArgumentTypeError('Please use <machine>.<compiler> format for machine_name')
 
     return args
 
 def input_data(args):
+    ''' Create dictionaries of data needed for processing UFS pull requests '''
+    logger = logging.getLogger('INPUT_DATA')
     machine_dict = {
         'name': args.machine_name,
         'workdir': args.workdir
@@ -137,7 +91,8 @@ def input_data(args):
     return machine_dict, repo_list_dict, action_list_dict
 
 def match_label_with_action(machine, actions, label):
-
+    ''' Match the label that initiates a job with an action in the dict'''
+    logger = logging.getLogger('MATCH_LABEL_WITH_ACTIONS')
     split_label = label.name.split('-')
 
     if len(split_label) != 3: return False
@@ -149,7 +104,8 @@ def match_label_with_action(machine, actions, label):
 
 
 def get_preqs_with_actions(repos, machine, ghinterface_obj, actions):
-
+    ''' Create list of dictionaries of a pull request and its machine label and action '''
+    logger = logging.getLogger('GET_PREQS_WITH_ACTIONS')
     gh_preqs = [ghinterface_obj.client.get_repo(repo['address']).get_pulls(state='open', sort='created', base=repo['base']) for repo in repos]
     each_pr = [preq for gh_preq in gh_preqs for preq in gh_preq]
     preq_labels = [{'preq': pr, 'label': label} for pr in each_pr for label in pr.get_labels()]
@@ -161,25 +117,52 @@ def get_preqs_with_actions(repos, machine, ghinterface_obj, actions):
         else:
             preq_labels[i] = False
 
-    preq_labels = [x for x in preq_labels if x]
+    preq_dict = [x for x in preq_labels if x]
 
-    return preq_labels
+    return preq_dict
 
 class Job:
+    '''
+    This class stores all information needed to run jobs on this machine.
+    This class provides all methods needed to run all jobs.
+    ...
 
-    def __init__(self, pullreq_obj, ghinterface_obj, machine):
-        self.pullreq_obj = pullreq_obj
+    Attributes
+    ----------
+    preq_dict: dict
+        Dictionary of all data that comes from the GitHub pull request
+    ghinterface_obj: object
+        An interface to GitHub setup through class GHInterface
+    machine: dict
+        Information about the machine the jobs will be running on
+        provided by the bash script
+    '''
+
+    def __init__(self, preq_dict, ghinterface_obj, machine):
+        self.logger = logging.getLogger('JOB')
+        self.preq_dict = preq_dict
         self.ghinterface_obj = ghinterface_obj
         self.machine = machine
 
-    def clone_pr_repo(self):
+    def remove_pr_label(self):
+        ''' Removes the pull request label that initiated the job run from PR '''
+        self.logger.info(f'Removing Label: {self.preq_dict["label"]}')
+        self.preq_dict['preq'].remove_from_labels(self.preq_dict['label'])
 
-        logger = logging.getLogger("clone_pr_repo()")
-        repo_name = self.pullreq_obj['preq'].head.repo.name
-        self.branch = self.pullreq_obj['preq'].head.ref
-        git_url = self.pullreq_obj['preq'].head.repo.html_url.split('//')
+    def add_pr_label(self):
+        ''' adds the pull request label that initiated the job run to PR'''
+        self.logger.info(f'Adding Label: {self.preq_dict["label"]}')
+        self.preq_dict['preq'].add_to_labels(self.preq_dict['label'])
+
+    def clone_pr_repo(self):
+        ''' clone the GitHub pull request repo, via command line '''
+        logger = logging.getLogger('JOB/CLONE_PR_REPO')
+        repo_name = self.preq_dict['preq'].head.repo.name
+        self.branch = self.preq_dict['preq'].head.ref
+        git_url = self.preq_dict['preq'].head.repo.html_url.split('//')
         git_url = f'{git_url[0]}//{self.ghinterface_obj.GHACCESSTOKEN}@{git_url[1]}'
-        repo_dir_str = f'{self.machine["workdir"]}/{str(self.pullreq_obj["preq"].id)}/{datetime.datetime.now().strftime("%Y%m%d%H%M%S")}'
+        logger.info(f'Starting clone of {git_url}')
+        repo_dir_str = f'{self.machine["workdir"]}/{str(self.preq_dict["preq"].id)}/{datetime.datetime.now().strftime("%Y%m%d%H%M%S")}'
 
         create_repo_commands = [
             [f'mkdir -p "{repo_dir_str}"', self.machine['workdir']],
@@ -188,90 +171,124 @@ class Job:
         ]
 
         for command, in_cwd in create_repo_commands:
-            logger.info(f'Attempting to run: {command}')
+            logger.info(f'Running "{command}" in location "{in_cwd}"')
             try:
-                output = subprocess.check_output(command, shell=True, cwd=in_cwd, stderr=subprocess.STDOUT)
-            except subprocess.CalledProcessError as e:
+                output = subprocess.Popen(command, shell=True, cwd=in_cwd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+                output.communicate()
+            except Exception as e:
+                self.add_pr_label()
                 logger.critical(e)
                 logger.critical(f'STDOUT: {output.stdout}')
                 logger.critical(f'STDERR: {output.stderr}')
                 assert(e)
             else:
                 logger.info(f'Finished running: {command}')
+                logger.debug(f'stdout: {output.stdout}')
+                logger.debug(f'stderr: {output.stderr}')
 
         logger.debug(f'Finished Cloning {git_url}')
         self.pr_repo_loc = repo_dir_str+"/"+repo_name
         return self.pr_repo_loc
 
     def runFunction(self):
-        logger = logging.getLogger("runFunction()")
+        ''' Run the command associted with the label used to initiate this job '''
+        logger = logging.getLogger('JOB/RUNFUNCTION')
         try:
-            output = subprocess.check_output(self.pullreq_obj['action']['command'], cwd=self.pr_repo_loc, shell=True, stderr=subprocess.STDOUT)
-        except subprocess.CalledProcessError as e:
+            logger.info(f'Running: "{self.preq_dict["action"]["command"]}" in "{self.pr_repo_loc}"')
+            output = subprocess.Popen(self.preq_dict['action']['command'], cwd=self.pr_repo_loc, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            output.communicate()
+        except Exception as e:
+            self.add_pr_label()
             logger.critical(e)
             logger.critical(f'STDOUT: {output.stdout}')
             logger.critical(f'STDERR: {output.stderr}')
             assert(e)
         else:
             try:
-                globals()[self.pullreq_obj['action']['callback']](self)
+                logger.info(f'Attempting to run callback: {self.preq_dict["action"]["callback_fnc"]}')
+                getattr(self, self.preq_dict['action']['callback_fnc'])()
             except Exception as e:
-                logger.critical(f'Callback function {self.pullreq_obj["action"]["callback"]} failed')
-                logger.critical(e)
+                self.add_pr_label()
+                logger.critical(f'Callback function {self.preq_dict["action"]["callback_fnc"]} failed with "{e}"')
                 goodexit = False
             else:
-                logger.info(f'Finished callback {self.pullreq_obj["action"]["callback"]}')
+                logger.info(f'Finished callback {self.preq_dict["action"]["callback_fnc"]}')
+                logger.debug(f'stdout: {output.stdout}')
+                logger.debug(f'stderr: {output.stderr}')
 
-    # Callback Function After Here
+    # Add Callback Functions After Here
     def move_rt_logs(self):
-        logger = logging.getLogger("clone_pr_repo()")
-        rt_log = 'tests/RegressionTests_'+self.machine.name+'.log'
-        filepath = self.pr_repo_loc+'/'+rt_log
+        ''' This is the callback function associated with the "RT" command '''
+        logger = logging.getLogger('JOB/MOVE_RT_LOGS')
+        rt_log = f'tests/RegressionTests_{self.machine["name"]}.log'
+        filepath = f'{self.pr_repo_loc}/{rt_log}'
         rm_filepath = '/'.join((self.pr_repo_loc.split('/'))[:-1])
         if os.path.exists(filepath):
             move_rt_commands = [
-                ['git add '+rt_log, self.pr_repo_loc],
-                ['git commit -m "Auto: Added Updated RT Log file: '+rt_log+'"', self.pr_repo_loc],
-                ['git pull --no-edit origin '+self.branch, self.pr_repo_loc],
+                [f'git add {rt_log}', self.pr_repo_loc],
+                [f'git commit -m "Auto: Added Updated RT Log file: {rt_log}"', self.pr_repo_loc],
+                [f'git pull --no-edit origin {self.branch}', self.pr_repo_loc],
                 ['sleep 10', self.pr_repo_loc],
-                ['git push origin '+self.branch, self.pr_repo_loc]
+                [f'git push origin {self.branch}', self.pr_repo_loc]
             ]
             for command, in_cwd in move_rt_commands:
                 try:
-                    output = subprocess.check_output(command, shell=True, cwd=in_cwd, stderr=subprocess.STDOUT)
-                except subprocess.CalledProcessError as e:
+                    logger.info(f'Attempting to run: {command}')
+                    output = subprocess.Popen(command, shell=True, cwd=in_cwd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+                    output.communicate()
+                except Exception as e:
+                    self.add_pr_label()
                     logger.critical(e)
                     logger.critical(f'STDOUT: {output.stdout}')
                     logger.critical(f'STDERR: {output.stderr}')
                     assert(e)
                 else:
                     logger.info(f'Finished command {command}')
+                    logger.debug(f'stdout: {output.stdout}')
+                    logger.debug(f'stderr: {output.stderr}')
         else:
             logger.critical('Could not find RT log')
             raise FileNotFoundError('Could not find RT log')
 
 def main():
-    # handle input args
-    args = parse_args_in()
 
     # handle logging
-    logging.basicConfig(filename="rt_auto.log", filemode='w', level=logging.DEBUG)
-    logger = logging.getLogger("main")
+    logging.basicConfig(filename='rt_auto.log', filemode='w', level=logging.DEBUG)
+    logger = logging.getLogger('MAIN')
+    logger.info('Starting Script')
+    # handle input args
+    logger.info('Parsing input args')
+    args = parse_args_in()
 
     # get input data
+    logger.info('Calling input_data().')
     machine, repos, actions = input_data(args)
 
     # setup interface with GitHub
+    logger.info('Setting up GitHub interface.')
     ghinterface_obj = GHInterface()
 
     # get all pull requests from the GitHub object
-    full_preqs = get_preqs_with_actions(repos, machine, ghinterface_obj, actions)
+    logger.info('Getting all pull requests, labels and actions applicable to this machine.')
+    preq_dict = get_preqs_with_actions(repos, machine, ghinterface_obj, actions)
 
     # add Job objects and run them
-    jobs = [Job(pullreq_obj, ghinterface_obj, machine) for pullreq_obj in full_preqs]
+    logger.info('Adding all jobs to an object list and running them.')
+    jobs = [Job(pullreq, ghinterface_obj, machine) for pullreq in preq_dict]
     for job in jobs:
-        job.clone_pr_repo()
-        job.runFunction()
+        try:
+            logger.debug('Calling remove_pr_label')
+            job.remove_pr_label()
+            logger.debug('Calling clone_pr_repo')
+            job.clone_pr_repo()
+            logger.debug('Calling runFunction')
+            job.runFunction()
+        except Exception as e:
+            job.add_pr_label()
+            logger.critical(e)
+            assert(e)
+
+    logger.info('Script Finished')
 
 
 if __name__ == '__main__':
