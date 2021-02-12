@@ -9,7 +9,7 @@ fi
 rm -rf INPUT RESTART
 mkdir  INPUT RESTART
 
-rsync -arv @[INPUTDATA_ROOT]/@[INPUT_DIR]/INPUT/. INPUT/.
+rsync -arv @[INPUTDATA_ROOT]/fv3_regional_control/INPUT/. INPUT/.
 
 if [ $WARM_START = .T. ]; then
     cp ../fv3_ccpp_regional_control${RT_SUFFIX}/RESTART/20181015.120000.coupler.res             INPUT/coupler.res
