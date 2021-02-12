@@ -31,6 +31,6 @@ else
   exit 1
 fi
 
-python rt_auto.py $MACHINE_ID $WORKDIR
+python rt_auto.py -m $MACHINE_ID -w $WORKDIR
 
 exit 0

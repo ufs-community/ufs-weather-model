@@ -10,8 +10,6 @@ from __future__ import print_function
 from github import Github as gh
 import argparse
 import datetime
-import time
-import threading
 import subprocess
 import re
 import os
@@ -55,17 +53,12 @@ def parse_args_in():
     parser = argparse.ArgumentParser()
 
     # Setup Input Arguments
-    parser.add_argument('machine_name', help='Machine name in <machine>.<compiler> format', type=str)
-    parser.add_argument('workdir', help='Working directory for the machine', type=str)
+    choices = ['hera.intel', 'orion.intel', 'gaea.intel', 'jet.intel', 'wcoss_dell_p3']
+    parser.add_argument('-m', '--machine', help='Machine and Compiler combination', required=True, choices=choices, metadata="<host>.<compiler>", type=str)
+    parser.add_argument('-w', '--workdir', help='Working directory', required=True, type=str)
 
     # Get Arguments
     args = parser.parse_args()
-
-    # Check incoming args for proper formatting and type
-    if type(args.workdir) != str or type(args.machine_name) != str:
-        raise TypeError('All arguments need to be of type str')
-    if len(args.machine_name.split('.'))!=2:
-        raise argparse.ArgumentTypeError('Please use <machine>.<compiler> format for machine_name')
 
     return args
 
