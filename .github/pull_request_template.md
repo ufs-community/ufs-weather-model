@@ -6,14 +6,13 @@
 
 - [ ] An Issue describing the work contained in this PR has been created either in the subcomponent(s) or in the ufs-weather-model. The Issue should be created in the repository that is most relevant to the changes in contained in the PR. The Issue and the dependent sub-component PR (if any) are specified below.
 
-
 - [ ] If new or updated input data is required by this PR, it is clearly stated in the text of the PR.
 
-## Commit Queue 
+# Commit Queue 
 
-Once the PR is opened, ufs-weather-model code managers will use the information provided to add the applicable labels (e.g. ``No Baseline Change``), assign reviewers and place it in the Commit Queue. Once the PR is in the Commit Queue, it is the PR owner's responsiblity to keep the PR up-to-date with the develop branch of ufs-weather-model. This allows code managers to proceed directly to the next PR in the Commit Queue if issues unexpectedly arise with preceding commits.
+Once the PR is opened, ufs-weather-model code managers will use the information provided to add the applicable labels (e.g. ``No Baseline Change``), assign reviewers and place it in the Commit Queue. Once the PR is in the Commit Queue, it is the PR owner's responsiblity to keep the PR up-to-date with the develop branch of ufs-weather-model. This allows code managers to proceed directly to this PR if issues unexpectedly arise with preceding commits.
 
-The information provided below allows the code managers to understand the changes relevant to this PR, whether those changes are in the ufs-weather-model repository or in a subcomponent repository. You may reference Issues and dependent PRs from subcomponent repositories. The more information you provide, the easier it will be for code managers to review your changes and place the PR in the Commit Queue. 
+The information provided below allows the code managers to understand the changes relevant to this PR, whether those changes are in the ufs-weather-model repository or in a subcomponent repository. Reference Issues and dependent PRs from subcomponent repositories if applicable. The more information you provide, the easier it will be for code managers to review your changes and place the PR in the Commit Queue. 
 
 ## Instructions: All subsequent sections of text should be filled in as appropriate.
 
