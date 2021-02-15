@@ -10,9 +10,9 @@
 
 # Commit Queue 
 
-Once the PR is opened, ufs-weather-model code managers will use the information provided to add the applicable labels (e.g. ``No Baseline Change``), assign reviewers and place it in the Commit Queue. Once the PR is in the Commit Queue, it is the PR owner's responsiblity to keep the PR up-to-date with the develop branch of ufs-weather-model. This allows code managers to proceed directly to this PR if issues unexpectedly arise with preceding commits.
-
 The information provided below allows the code managers to understand the changes relevant to this PR, whether those changes are in the ufs-weather-model repository or in a subcomponent repository. Reference Issues and dependent PRs from subcomponent repositories if applicable. The more information you provide, the easier it will be for code managers to review your changes and place the PR in the Commit Queue. 
+
+Once the PR is opened, ufs-weather-model code managers will use the information provided to add the applicable labels (e.g. ``No Baseline Change``), assign reviewers and place it in the Commit Queue. Once the PR is in the Commit Queue, it is the PR owner's responsiblity to keep the PR up-to-date with the develop branch of ufs-weather-model. This allows code managers to proceed directly to this PR if issues unexpectedly arise with preceding commits.
 
 ## Instructions: All subsequent sections of text should be filled in as appropriate.
 
