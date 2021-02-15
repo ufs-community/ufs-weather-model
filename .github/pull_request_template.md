@@ -4,7 +4,7 @@
 
 - [ ] This PR has been tested using a branch which is up-to-date with the top of all sub-component repositories except for those sub-components which are the subject of this PR
 
-- [ ] An Issue describing the work contained in this PR has been created either in the subcomponent(s) or in the ufs-weather-model. The Issue should be created in the repository that is most relevant to the changes in contained in the PR. The Issue and the dependent sub-component PR (if any) are specified below.
+- [ ] An Issue describing the work contained in this PR has been created either in the subcomponent(s) or in the ufs-weather-model. The Issue should be created in the repository that is most relevant to the changes in contained in the PR. The Issue and the dependent sub-component PR are specified below.
 
 - [ ] If new or updated input data is required by this PR, it is clearly stated in the text of the PR.
 
