@@ -95,6 +95,9 @@ export NX_GLB=1440
 export NY_GLB=1080
 export NPROC_ICE='48'
 
+# resolution dependent setting
+export CDMBWD=${CDMBWD_c384}
+
 # set component and coupling timesteps
 export DT_ATMOS='450'
 export DT_CICE=${DT_ATMOS}
@@ -116,7 +119,7 @@ export CPLWAV2ATM='.T.'
 
 # resolution dependent files
 export MOM_INPUT="MOM_input_template_${OCNRES}"
-export MESHICE="mesh.mx${OCNRES}.nc"
+export MESHOCN_ICE="mesh.mx${OCNRES}.nc"
 export CICEGRID="grid_cice_NEMS_mx${OCNRES}.nc"
 export CICEMASK="kmtu_cice_NEMS_mx${OCNRES}.nc"
 export CHLCLIM="seawifs-clim-1997-2010.${NX_GLB}x${NY_GLB}.v20180328.nc"
@@ -133,7 +136,6 @@ export OZ_PHYS_NEW=".T."
 export MOM6_USE_WAVES='True'
 export MOM6_RIVER_RUNOFF='True'
 export MOM6_RESTART_SETTING="r"
-#TODO: must remove for restart repro. This setting is used in bmark+wave configurations only
 export MOM6_REPRO_LA='True'
 
 export RUNID="cpcice"

@@ -91,6 +91,9 @@ export NX_GLB=720
 export NY_GLB=576
 export NPROC_ICE='24'
 
+# resolution dependent setting
+export CDMBWD=${CDMBWD_c192}
+
 # set component and coupling timesteps
 export DT_ATMOS='900'
 export DT_CICE=${DT_ATMOS}
@@ -105,7 +108,7 @@ export coupling_interval_fast_sec=${CPL_FAST}
 
 # resolution dependent files
 export MOM_INPUT="MOM_input_template_${OCNRES}"
-export MESHICE="mesh.mx${OCNRES}.nc"
+export MESHOCN_ICE="mesh.mx${OCNRES}.nc"
 export CICEGRID="grid_cice_NEMS_mx${OCNRES}.nc"
 export CICEMASK="kmtu_cice_NEMS_mx${OCNRES}.nc"
 export CHLCLIM="seawifs-clim-1997-2010.${NX_GLB}x${NY_GLB}.v20180328.nc"
