@@ -1,11 +1,14 @@
 rm -fr INPUT RESTART
+mkdir INPUT RESTART
 if [ $WARM_START = .F. ]; then
-  cp -r @[RTPWD]/FV3_input_data/INPUT .
-  mkdir RESTART
+  cp -r @[RTPWD]/FV3_input_data/INPUT/* INPUT/
 else
-  mkdir INPUT RESTART
-  cp -r @[RTPWD]/FV3_input_data/RESTART/* ./INPUT
+  cp -r @[RTPWD]/FV3_input_data/INPUT/grid_spec*.nc INPUT/
+  cp -r @[RTPWD]/FV3_input_data/INPUT/C96_grid*.nc INPUT/
+  cp -r @[RTPWD]/FV3_input_data/INPUT/oro_data*.nc INPUT/
+  cp ../fv3_ccpp_gfs_v15p2_coldstart${RT_SUFFIX}/RESTART/* INPUT/
 fi
+
 cp    @[RTPWD]/FV3_input_data/INPUT/aerosol.dat .
 cp    @[RTPWD]/FV3_input_data/INPUT/co2historicaldata_201*.txt .
 cp    @[RTPWD]/FV3_input_data/INPUT/sfc_emissivity_idx.txt .
