@@ -149,6 +149,14 @@ list(APPEND _fms_defs_public use_libMPI
 if(QUAD_PRECISION)
   list(APPEND _fms_defs_public ENABLE_QUAD_PRECISION)
 endif()
+
+# check gettid
+include(CheckFunctionExists)
+check_function_exists(gettid HAVE_GETTID)
+if(HAVE_GETTID)
+  list(APPEND _fms_defs_public HAVE_GETTID)
+endif()
+
 target_compile_definitions(fms PUBLIC "${_fms_defs_public}")
 
 if(32BIT)
