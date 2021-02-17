@@ -518,6 +518,7 @@ export RESTART_N=${FHMAX}
 export CPLMODE='nems_orig'
 export cap_dbug_flag="0"
 export use_coldstart="false"
+export use_mommesh="false"
 export RUNTYPE='startup'
 
 # FV3 defaults
@@ -542,6 +543,9 @@ export NFHOUT_HF='-1'
 export CPLFLX='.T.'
 export CPL='.true.'
 export NSTF_NAME='0,0,0,0,0'
+
+export DZ_MIN='2'
+export MIN_SEAICE='1.0e-11'
 
 # resolution dependent settings
 export CDMBWD_c96='0.14,1.8,1.0,1.0'
@@ -575,7 +579,7 @@ export MOM6_USE_WAVES='False'
 
 # CICE6 defaults; 1 degree
 export NPROC_ICE='12'
-export MESHICE="mesh.mx${OCNRES}.nc"
+export MESHOCN_ICE="mesh.mx${OCNRES}.nc"
 export CICEGRID="grid_cice_NEMS_mx${OCNRES}.nc"
 export CICEMASK="kmtu_cice_NEMS_mx${OCNRES}.nc"
 export RUNID='unknown'
@@ -662,6 +666,7 @@ export RESTART_N=${FHMAX}
 export CPLMODE='nems_orig_data'
 export cap_dbug_flag="0"
 export use_coldstart=".false."
+export use_mommesh=".false."
 export RUNTYPE='startup'
 export flux_convergence='0.0'
 export flux_iteration='2'
@@ -685,7 +690,7 @@ export MOM6_THERMO_SPAN='False'
 export MOM6_USE_WAVES='False'
 
 # CICE6 defaults; 1 degree
-export MESHICE="mesh.mx${OCNRES}.nc"
+export MESHOCN_ICE="mesh.mx${OCNRES}.nc"
 export CICEGRID="grid_cice_NEMS_mx${OCNRES}.nc"
 export CICEMASK="kmtu_cice_NEMS_mx${OCNRES}.nc"
 export RUNID='unknown'
