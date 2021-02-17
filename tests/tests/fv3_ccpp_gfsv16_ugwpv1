@@ -1,20 +1,14 @@
 ###############################################################################
 #
-#  FV3 CCPP GF CU test
+#  FV3 CCPP GFS v16beta with ugwpv1 and gsldrag: fv3_ccpp_gfsv16_ugwpv1
 #
 ###############################################################################
 
-export TEST_DESCR="Compare FV3 CCPP GF CU results with previous trunk version"
+export TEST_DESCR="Compare fv3_ccpp_gfsv16_ugwpv1 with previous trunk version"
 
-export CNTL_DIR=fv3_gf
+export CNTL_DIR=fv3_ccpp_gfsv16_ugwpv1
 
-export LIST_FILES="atmos_4xdaily.tile1.nc \
-                   atmos_4xdaily.tile2.nc \
-                   atmos_4xdaily.tile3.nc \
-                   atmos_4xdaily.tile4.nc \
-                   atmos_4xdaily.tile5.nc \
-                   atmos_4xdaily.tile6.nc \
-                   phyf000.tile1.nc \
+export LIST_FILES="phyf000.tile1.nc \
                    phyf000.tile2.nc \
                    phyf000.tile3.nc \
                    phyf000.tile4.nc \
@@ -58,32 +52,37 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
                    RESTART/fv_tracer.res.tile4.nc \
                    RESTART/fv_tracer.res.tile5.nc \
                    RESTART/fv_tracer.res.tile6.nc \
-                   RESTART/phy_data.tile1.nc \
-                   RESTART/phy_data.tile2.nc \
-                   RESTART/phy_data.tile3.nc \
-                   RESTART/phy_data.tile4.nc \
-                   RESTART/phy_data.tile5.nc \
-                   RESTART/phy_data.tile6.nc \
                    RESTART/sfc_data.tile1.nc \
                    RESTART/sfc_data.tile2.nc \
                    RESTART/sfc_data.tile3.nc \
                    RESTART/sfc_data.tile4.nc \
                    RESTART/sfc_data.tile5.nc \
-                   RESTART/sfc_data.tile6.nc"
+                   RESTART/sfc_data.tile6.nc \
+                   RESTART/phy_data.tile1.nc \
+                   RESTART/phy_data.tile2.nc \
+                   RESTART/phy_data.tile3.nc \
+                   RESTART/phy_data.tile4.nc \
+                   RESTART/phy_data.tile5.nc \
+                   RESTART/phy_data.tile6.nc"
+
 
 export_fv3
 
-export DT_ATMOS="1200"
-export IMP_PHYSICS=11
-export DNATS=1
-export DO_SAT_ADJ=.T.
+export SYEAR=2019
+export SMONTH=07
+export SDAY=01
+export SHOUR=00
 
-export FV3_RUN=ccpp_gsd_run.IN
-export CCPP_SUITE=FV3_GFS_v15_gf
-export INPUT_NML=ccpp_gsd.nml.IN
+DT_ATMOS="600"
 
-export HYBEDMF=.T.
-export DO_MYNNEDMF=.F.
-export IMFSHALCNV=3
-export IMFDEEPCNV=3
+export FV3_RUN=ccpp_gfsv16_ugwpv1_run.IN
+export CCPP_SUITE=FV3_GFS_v16b_ugwpv1
+export CCPP_LIB_DIR=ccpp/lib
+export INPUT_NML=ccpp_v16_c96_ugwpv1.nml.IN
+export WLCLK=30
+
+# Cold start, these are defaults
+#export WARM_START=.F.
+#export EXTERNAL_IC=.T.
+#export MOUNTAIN=.F.
 

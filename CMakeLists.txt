@@ -51,6 +51,17 @@ if(CMAKE_Platform)
   else()
     message("Platform '${CMAKE_Platform}' configuration file does not exist")
   endif()
+
+  # DH* 20210208 temporary workaround for FMS issues on Cheyenne with GNU 9.1.0
+  if (CMAKE_Platform MATCHES "cheyenne.gnu")
+    message("Applying patch cheyenne_gnu_fms_mpp_util_mpi_inc.patch")
+    execute_process(COMMAND patch -N -p0 INPUT_FILE cheyenne_gnu_fms_mpp_util_mpi_inc.patch
+                    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+                    OUTPUT_FILE ${CMAKE_CURRENT_BINARY_DIR}/cheyenne_gnu_fms_mpp_util_mpi_inc.patch.out
+                    ERROR_FILE  ${CMAKE_CURRENT_BINARY_DIR}/cheyenne_gnu_fms_mpp_util_mpi_inc.patch.err
+                    RESULT_VARIABLE RC)
+    # *DH 20210208
+  endif()
 endif()
 
 message("")
@@ -111,10 +122,7 @@ endif()
 target_link_libraries(nemsio::nemsio INTERFACE w3emc::w3emc_d bacio::bacio_4)
 
 # Configure Python
-find_package(Python 3 QUIET COMPONENTS Interpreter)
-if (NOT Python_Interpreter_FOUND)
-  find_package(Python 2.7 REQUIRED COMPONENTS Interpreter)
-endif()
+find_package(Python 3 REQUIRED COMPONENTS Interpreter)
 message("Found Python: ${Python_EXECUTABLE}")
 
 ###############################################################################
@@ -133,8 +141,6 @@ endif()
 ###############################################################################
 include(fms_files.cmake)
 add_library(fms ${fms_src_files} ${fms_headers})
-# stupid cmake can not figure out dependency of fft.F90 on fft99.F90 because 'use fft99_mod' is inside ifdefs
-set_property(SOURCE FMS/fft/fft.F90 APPEND_STRING PROPERTY COMPILE_FLAGS "-DSGICRAY=0 -DNAGFFT=0")
 
 list(APPEND _fms_defs_public use_libMPI
                              use_netCDF
@@ -143,6 +149,14 @@ list(APPEND _fms_defs_public use_libMPI
 if(QUAD_PRECISION)
   list(APPEND _fms_defs_public ENABLE_QUAD_PRECISION)
 endif()
+
+# check gettid
+include(CheckFunctionExists)
+check_function_exists(gettid HAVE_GETTID)
+if(HAVE_GETTID)
+  list(APPEND _fms_defs_public HAVE_GETTID)
+endif()
+
 target_compile_definitions(fms PUBLIC "${_fms_defs_public}")
 
 if(32BIT)
@@ -241,8 +255,7 @@ list(APPEND _nems_srcs NEMS/src/module_NEMS_UTILS.F90
                        NEMS/src/module_NEMS_INTERNAL_STATE.F90
                        NEMS/src/module_NEMS_GRID_COMP.F90
                        NEMS/src/module_NEMS_Rusage.F90
-                       NEMS/src/nems_c_rusage.c
-                       NEMS/src/ENS_Cpl/ENS_CplComp_ESMFMod_STUB.F90)
+                       NEMS/src/nems_c_rusage.c)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/NEMS/src/ESMFVersionDefine_ESMF_NUOPC.h
                ${CMAKE_CURRENT_BINARY_DIR}/NEMS/src/ESMFVersionDefine.h
