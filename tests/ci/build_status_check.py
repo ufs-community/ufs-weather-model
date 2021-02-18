@@ -38,9 +38,9 @@ def main():
       status = "completed"
     else:
       no_completed_jobs = 0
-      time.sleep(20)
+      time.sleep(40)
 
-  time.sleep(20)
+  time.sleep(40)
   conclusion="failure"
   no_successful_jobs = 0
   for i in indices:

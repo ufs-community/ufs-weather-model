@@ -2,12 +2,10 @@ name: Pull request tests
 
 on:
   push:
-    branches: ['feature/ci-aws']
+    branches: ['develop']
   pull_request_review:
     types: [submitted]
-    branches: ['feature/ci-aws']
-  #pull_request:
-  #  branches: ['feature/ci-aws']
+    branches: ['develop']
 
 jobs:
   setup:
@@ -120,5 +118,5 @@ jobs:
         rm -f ci.sh ci.test
         docker stop my-container && docker rm  my-container && docker rmi ${{ needs.setup.outputs.img }}:latest
         docker volume rm DataVolume
-        #&& docker rmi develop-20200731
+        #docker rmi minsukjinoaa/fv3-input-data:input-data-20210115
         rm -f memory_stat
