@@ -354,7 +354,7 @@ mkdir -p ${RUNDIR_ROOT}
 CREATE_BASELINE=false
 ROCOTO=false
 ECFLOW=false
-KEEP_RUNDIR=false
+KEEP_RUNDIR=true
 SINGLE_NAME=''
 TEST_35D=false
 
@@ -617,7 +617,7 @@ EOF
     elif [[ $ECFLOW == true ]]; then
       ecflow_create_compile_task
     else
-      ./compile.sh $MACHINE_ID "${MAKE_OPT}" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
+      ./compile.sh $MACHINE_ID "${MAKE_OPT}" $COMPILE_NR NO NO> ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
     fi
 
     # Set RT_SUFFIX (regression test run directories and log files) and BL_SUFFIX
@@ -767,7 +767,7 @@ else
    echo ; echo REGRESSION TEST WAS SUCCESSFUL
   (echo ; echo REGRESSION TEST WAS SUCCESSFUL) >> ${REGRESSIONTEST_LOG}
 
-  rm -f fv3_*.x fv3_*.exe modules.fv3_*
+#jw  rm -f fv3_*.x fv3_*.exe modules.fv3_*
   [[ ${KEEP_RUNDIR} == false ]] && rm -rf ${RUNDIR_ROOT}
   [[ ${ROCOTO} == true ]] && rm -f ${ROCOTO_XML} ${ROCOTO_DB} *_lock.db
   [[ ${TEST_35D} == true ]] && rm -f tests/cpld_bmark*_20*

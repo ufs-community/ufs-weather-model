@@ -2,9 +2,6 @@ rsync -arv @[INPUTDATA_ROOT]/FV3_regional_input_data/. .
 if [ $WRITE_DOPOST = .true. ]; then
     cp @[INPUTDATA_ROOT]/FV3_regional_input_data/diag_table_lam ./diag_table
 fi
-if [ $QUILTING = .false. ]; then
-rsync -arv @[INPUTDATA_ROOT]/@[INPUT_DIR]/model_configure .
-fi
 
 rm -rf INPUT RESTART
 mkdir  INPUT RESTART
