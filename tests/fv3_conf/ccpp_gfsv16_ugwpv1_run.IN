@@ -1,0 +1,22 @@
+rm -rf INPUT RESTART
+mkdir INPUT RESTART
+if [ $WARM_START = .F. ]; then
+  cp  @[INPUTDATA_ROOT]/FV3_input_data_ugwpv1/INPUT/*   ./INPUT
+else
+  cp  @[INPUTDATA_ROOT]/FV3_input_data_ugwpv1/INPUT/*   ./INPUT
+  cp  @[INPUTDATA_ROOT]/FV3_input_data_ugwpv1/RESTART/* ./INPUT
+fi
+cp    @[INPUTDATA_ROOT]/FV3_input_data_ugwpv1/aerosol.dat .
+cp    @[INPUTDATA_ROOT]/FV3_input_data_ugwpv1/co2historicaldata_201*.txt .
+cp    @[INPUTDATA_ROOT]/FV3_input_data_ugwpv1/sfc_emissivity_idx.txt .
+cp    @[INPUTDATA_ROOT]/FV3_input_data_ugwpv1/solarconstant_noaa_an.txt .
+cp    @[INPUTDATA_ROOT]/FV3_input_data_ugwpv1/global_o3prdlos.f77 ./global_o3prdlos.f77
+cp    @[INPUTDATA_ROOT]/FV3_input_data_ugwpv1/global_h2oprdlos.f77 ./global_h2oprdlos.f77
+cp    @[INPUTDATA_ROOT]/FV3_input_data_ugwpv1/*grb .
+cp    @[INPUTDATA_ROOT]/FV3_input_data_ugwpv1/*_table ./
+cp    @[INPUTDATA_ROOT]/FV3_input_data_ugwpv1/nems.configure ./
+cp    @[INPUTDATA_ROOT]/FV3_input_data_ugwpv1/ugwp_c384_tau.nc ./ugwp_limb_tau.nc
+
+if [ $DO_RRTMGP = .T. ]; then
+  cp  @[INPUTDATA_ROOT]/FV3_input_data_RRTMGP/* .
+fi
