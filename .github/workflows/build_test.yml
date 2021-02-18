@@ -94,9 +94,6 @@ jobs:
       matrix: ${{ fromJson(needs.setup.outputs.test) }}
 
     steps:
-    - name: Wait for runners to come up
-      run: sleep 75
-
     - name: Download artifacts
       uses: actions/download-artifact@v2
       with:
