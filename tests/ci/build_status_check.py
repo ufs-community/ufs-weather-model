@@ -20,7 +20,7 @@ def update_url_data(response):
 
 def main():
 
-  time.sleep(180)
+  time.sleep(600)
   url = json.load(sys.stdin)["workflow_run"]["jobs_url"]
 
   status="not-completed"
