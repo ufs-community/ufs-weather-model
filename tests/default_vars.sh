@@ -146,7 +146,7 @@ elif [[ $MACHINE_ID = hera.* ]]; then
 elif [[ $MACHINE_ID = linux.* ]]; then
 
   if [[ $CI_TEST = true ]]; then
-  TASKS_dflt=12 ; TPN_dflt=16 ; INPES_dflt=1 ; JNPES_dflt=1
+  TASKS_dflt=42 ; TPN_dflt=48 ; INPES_dflt=3 ; JNPES_dflt=2
   else
   TASKS_dflt=150 ; TPN_dflt=40 ; INPES_dflt=3 ; JNPES_dflt=8
   fi
