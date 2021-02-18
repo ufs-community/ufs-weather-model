@@ -150,7 +150,11 @@ atparse < ${PATHRT}/parm/${NEMS_CONFIGURE:-nems.configure} > nems.configure
 if [[ $SCHEDULER = 'none' ]]; then
 
   ulimit -s unlimited
-  mpiexec -n ${TASKS} ./fv3.exe >out 2> >(tee err >&3)
+  if [[ $CI_TEST = 'true' ]]; then
+    eval mpiexec -n ${TASKS} ${MPI_PROC_BIND} ./fv3.exe >out 2> >(tee err >&3)
+  else
+    mpiexec -n ${TASKS} ./fv3.exe >out 2> >(tee err >&3)
+  fi
 
 else
 
