@@ -531,6 +531,7 @@ export FRAC_GRID_INPUT='.T.'
 export SUITE_NAME="FV3_GFS_2017_coupled"
 export INPUT_NML=input.mom6_ccpp.nml.IN
 export FIELD_TABLE="field_table"
+export DIAG_TABLE="diag_table_template"
 
 export FHROT='0'
 export NSOUT='-1'
@@ -675,6 +676,7 @@ export flux_scheme='0'
 export INPUT_NML=input.mom6.nml.IN
 export MODEL_CONFIGURE=datm_configure.IN
 export FIELD_TABLE="field_table"
+export DIAG_TABLE="diag_table_template"
 
 # MOM6 defaults; 1 degree
 export MOM_INPUT=MOM_input_template_100
