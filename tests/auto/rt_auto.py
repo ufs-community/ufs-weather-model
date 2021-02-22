@@ -76,7 +76,7 @@ def input_data(args):
     }]
     action_list_dict = [{
         'name': 'RT',
-        'command': 'cd tests && ./rt.sh -e',
+        'command': 'cd tests && /bin/bash --login ./rt.sh -e',
         'callback_fnc': 'move_rt_logs'
     }]
 
