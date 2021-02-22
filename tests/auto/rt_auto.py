@@ -54,7 +54,7 @@ def parse_args_in():
 
     # Setup Input Arguments
     choices = ['hera.intel', 'orion.intel', 'gaea.intel', 'jet.intel', 'wcoss_dell_p3']
-    parser.add_argument('-m', '--machine', help='Machine and Compiler combination', required=True, choices=choices, metadata="<host>.<compiler>", type=str)
+    parser.add_argument('-m', '--machine', help='Machine and Compiler combination', required=True, choices=choices, type=str)
     parser.add_argument('-w', '--workdir', help='Working directory', required=True, type=str)
 
     # Get Arguments
@@ -66,7 +66,7 @@ def input_data(args):
     ''' Create dictionaries of data needed for processing UFS pull requests '''
     logger = logging.getLogger('INPUT_DATA')
     machine_dict = {
-        'name': args.machine_name,
+        'name': args.machine,
         'workdir': args.workdir
     }
     repo_list_dict = [{
@@ -76,7 +76,7 @@ def input_data(args):
     }]
     action_list_dict = [{
         'name': 'RT',
-        'command': './tests/rt.sh -e',
+        'command': './rt.sh -e',
         'callback_fnc': 'move_rt_logs'
     }]
 
@@ -166,17 +166,17 @@ class Job:
             logger.info(f'Running "{command}" in location "{in_cwd}"')
             try:
                 output = subprocess.Popen(command, shell=True, cwd=in_cwd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-                output.communicate()
+                out, err = output.communicate()
             except Exception as e:
                 self.add_pr_label()
                 logger.critical(e)
-                logger.critical(f'STDOUT: {output.stdout}')
-                logger.critical(f'STDERR: {output.stderr}')
+                logger.critical(f'STDOUT: {out}')
+                logger.critical(f'STDERR: {err}')
                 assert(e)
             else:
                 logger.info(f'Finished running: {command}')
-                logger.debug(f'stdout: {output.stdout}')
-                logger.debug(f'stderr: {output.stderr}')
+                logger.debug(f'stdout: {out}')
+                logger.debug(f'stderr: {err}')
 
         logger.debug(f'Finished Cloning {git_url}')
         self.pr_repo_loc = repo_dir_str+"/"+repo_name
@@ -187,26 +187,34 @@ class Job:
         logger = logging.getLogger('JOB/RUNFUNCTION')
         try:
             logger.info(f'Running: "{self.preq_dict["action"]["command"]}" in "{self.pr_repo_loc}"')
-            output = subprocess.Popen(self.preq_dict['action']['command'], cwd=self.pr_repo_loc, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-            output.communicate()
+            output = subprocess.Popen(self.preq_dict['action']['command'], cwd=self.pr_repo_loc+"/tests", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            out,err = output.communicate()
         except Exception as e:
             self.add_pr_label()
             logger.critical(e)
-            logger.critical(f'STDOUT: {output.stdout}')
-            logger.critical(f'STDERR: {output.stderr}')
+            logger.critical(f'stdout: {out}')
+            logger.critical(f'stderr: {err}')
             assert(e)
         else:
-            try:
-                logger.info(f'Attempting to run callback: {self.preq_dict["action"]["callback_fnc"]}')
-                getattr(self, self.preq_dict['action']['callback_fnc'])()
-            except Exception as e:
+            logger.critical(f'STDOUT: {out}')
+            logger.critical(f'STDERR: {err}')
+            if output.returncode != 0:
                 self.add_pr_label()
-                logger.critical(f'Callback function {self.preq_dict["action"]["callback_fnc"]} failed with "{e}"')
-                goodexit = False
+                logger.critical(f'{self.preq_dict["action"]["command"]} Failed')
+                logger.debug(f'stdout: {out}')
+                logger.debug(f'stderr: {err}')
             else:
-                logger.info(f'Finished callback {self.preq_dict["action"]["callback_fnc"]}')
-                logger.debug(f'stdout: {output.stdout}')
-                logger.debug(f'stderr: {output.stderr}')
+                try:
+                    logger.info(f'Attempting to run callback: {self.preq_dict["action"]["callback_fnc"]}')
+                    getattr(self, self.preq_dict['action']['callback_fnc'])()
+                except Exception as e:
+                    self.add_pr_label()
+                    logger.critical(f'Callback function {self.preq_dict["action"]["callback_fnc"]} failed with "{e}"')
+                    goodexit = False
+                else:
+                    logger.info(f'Finished callback {self.preq_dict["action"]["callback_fnc"]}')
+                    logger.debug(f'stdout: {out}')
+                    logger.debug(f'stderr: {err}')
 
     # Add Callback Functions After Here
     def move_rt_logs(self):
@@ -227,17 +235,17 @@ class Job:
                 try:
                     logger.info(f'Attempting to run: {command}')
                     output = subprocess.Popen(command, shell=True, cwd=in_cwd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-                    output.communicate()
+                    out, err = output.communicate()
                 except Exception as e:
                     self.add_pr_label()
                     logger.critical(e)
-                    logger.critical(f'STDOUT: {output.stdout}')
-                    logger.critical(f'STDERR: {output.stderr}')
+                    logger.critical(f'stdout: {out}')
+                    logger.critical(f'stderr: {err}')
                     assert(e)
                 else:
                     logger.info(f'Finished command {command}')
-                    logger.debug(f'stdout: {output.stdout}')
-                    logger.debug(f'stderr: {output.stderr}')
+                    logger.debug(f'stdout: {out}')
+                    logger.debug(f'stderr: {err}')
         else:
             logger.critical('Could not find RT log')
             raise FileNotFoundError('Could not find RT log')
@@ -268,6 +276,7 @@ def main():
     logger.info('Adding all jobs to an object list and running them.')
     jobs = [Job(pullreq, ghinterface_obj, machine) for pullreq in preq_dict]
     for job in jobs:
+        logger.info(f'Starting Job: {job}')
         try:
             logger.debug('Calling remove_pr_label')
             job.remove_pr_label()
