@@ -76,7 +76,7 @@ def input_data(args):
     }]
     action_list_dict = [{
         'name': 'RT',
-        'command': './rt.sh -e',
+        'command': 'cd tests && ./rt.sh -e',
         'callback_fnc': 'move_rt_logs'
     }]
 
@@ -187,7 +187,7 @@ class Job:
         logger = logging.getLogger('JOB/RUNFUNCTION')
         try:
             logger.info(f'Running: "{self.preq_dict["action"]["command"]}" in "{self.pr_repo_loc}"')
-            output = subprocess.Popen(self.preq_dict['action']['command'], cwd=self.pr_repo_loc+"/tests", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            output = subprocess.Popen(self.preq_dict['action']['command'], cwd=self.pr_repo_loc, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             out,err = output.communicate()
         except Exception as e:
             self.add_pr_label()
