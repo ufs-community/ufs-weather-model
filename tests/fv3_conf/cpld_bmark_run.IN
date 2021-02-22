@@ -10,15 +10,15 @@ ICERES="${OCNRES:0:1}.${OCNRES:1}"
 
 BM_IC=BM_IC/${SYEAR}${SMONTH}${SDAY}${SHOUR}
 if [[ ${FRAC_GRID_INPUT} = .F. ]]; then
-  FV3_IC=${BM_IC}/gfs/@[ATMRES]/INPUT
+  FV3_IC="../${BM_IC}/gfs/@[ATMRES]/INPUT"
 elif [[ @[NPZ] == '127' ]]; then
   FV3_IC=FV3_input_frac/${BM_IC}/gfs/@[ATMRES]_L@[NPZ]/INPUT
 else
   FV3_IC=FV3_input_frac/${BM_IC}/gfs/@[ATMRES]/INPUT
 fi
-MOM6_IC=${BM_IC}/mom6_da
-CICE_IC=${BM_IC}/cpc
-WW3_IC=${BM_IC}/ww3
+MOM6_IC="../${BM_IC}/mom6_da"
+CICE_IC="../${BM_IC}/cpc"
+WW3_IC="../${BM_IC}/ww3"
 
 # FV3 fixed input
 cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/aerosol.dat .
