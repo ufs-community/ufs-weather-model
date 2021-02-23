@@ -146,23 +146,18 @@ class Job:
         self.logger.info(f'Adding Label: {self.preq_dict["label"]}')
         self.preq_dict['preq'].add_to_labels(self.preq_dict['label'])
 
-    def clone_pr_repo(self):
-        ''' clone the GitHub pull request repo, via command line '''
-        logger = logging.getLogger('JOB/CLONE_PR_REPO')
-        repo_name = self.preq_dict['preq'].head.repo.name
-        self.branch = self.preq_dict['preq'].head.ref
-        git_url = self.preq_dict['preq'].head.repo.html_url.split('//')
-        git_url = f'{git_url[0]}//{self.ghinterface_obj.GHACCESSTOKEN}@{git_url[1]}'
-        logger.info(f'Starting clone of {git_url}')
-        repo_dir_str = f'{self.machine["workdir"]}/{str(self.preq_dict["preq"].id)}/{datetime.datetime.now().strftime("%Y%m%d%H%M%S")}'
-
-        create_repo_commands = [
-            [f'mkdir -p "{repo_dir_str}"', self.machine['workdir']],
-            [f'git clone -b {self.branch} {git_url}', repo_dir_str],
-            [f'git submodule update --init --recursive', f'{repo_dir_str}/{repo_name}']
+    def push_rtauto_log(self, log_path, log_filename):
+        logger = logging.getLogger('JOB/PUSH_RTAUTO_LOG')
+        push_rtauto_commands = [
+            [f'cp {log_path}/{log_filename} {self.pr_repo_loc}/tests/auto/', self.pr_repo_loc],
+            [f'git add tests/auto/{log_filename}', self.pr_repo_loc],
+            [f'git commit -m "Auto: adding rt_auto.log"', self.pr_repo_loc],
+            [f'git pull --no-edit origin {self.branch}', self.pr_repo_loc],
+            ['sleep 10', self.pr_repo_loc],
+            [f'git push origin {self.branch}', self.pr_repo_loc]
         ]
 
-        for command, in_cwd in create_repo_commands:
+        for command, in_cwd in push_rtauto_commands:
             logger.info(f'Running "{command}" in location "{in_cwd}"')
             try:
                 output = subprocess.Popen(command, shell=True, cwd=in_cwd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -175,6 +170,57 @@ class Job:
                 assert(e)
             else:
                 logger.info(f'Finished running: {command}')
+                logger.debug(f'stdout: {out}')
+                logger.debug(f'stderr: {err}')
+
+    def remove_pr_dir(self):
+        logger = logging.getLogger('JOB/REMOVE_PR_DIR')
+        pr_dir_str = f'{self.machine["workdir"]}/{str(self.preq_dict["preq"].id)}'
+        rm_command = f'rm -rf {pr_dir_str}'
+        logger.info(f'Running "{rm_command}"')
+        try:
+            output = subprocess.Popen(rm_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            out, err = output.communicate()
+        except Exception as e:
+            logger.warning('Removal of directory at end failed.')
+            logger.warning(e)
+            logger.warning(f'STDOUT: {out}')
+            logger.warning(f'STDERR: {err}')
+            assert(e)
+        else:
+            logger.info(f'Finished running: {rm_command}')
+            logger.debug(f'stdout: {out}')
+            logger.debug(f'stderr: {err}')
+
+    def clone_pr_repo(self):
+        ''' clone the GitHub pull request repo, via command line '''
+        logger = logging.getLogger('JOB/CLONE_PR_REPO')
+        repo_name = self.preq_dict['preq'].head.repo.name
+        self.branch = self.preq_dict['preq'].head.ref
+        git_url = self.preq_dict['preq'].head.repo.html_url.split('//')
+        git_url = f'{git_url[0]}//{self.ghinterface_obj.GHACCESSTOKEN}@{git_url[1]}'
+        logger.debug(f'Starting clone of {git_url}')
+        repo_dir_str = f'{self.machine["workdir"]}/{str(self.preq_dict["preq"].id)}/{datetime.datetime.now().strftime("%Y%m%d%H%M%S")}'
+
+        create_repo_commands = [
+            [f'mkdir -p "{repo_dir_str}"', self.machine['workdir']],
+            [f'git clone -b {self.branch} {git_url}', repo_dir_str],
+            [f'git submodule update --init --recursive', f'{repo_dir_str}/{repo_name}']
+        ]
+
+        for command, in_cwd in create_repo_commands:
+            logger.debug(f'Running "{command}" in location "{in_cwd}"')
+            try:
+                output = subprocess.Popen(command, shell=True, cwd=in_cwd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+                out, err = output.communicate()
+            except Exception as e:
+                self.add_pr_label()
+                logger.critical(e)
+                logger.critical(f'STDOUT: {out}')
+                logger.critical(f'STDERR: {err}')
+                assert(e)
+            else:
+                logger.debug(f'Finished running: {command}')
                 logger.debug(f'stdout: {out}')
                 logger.debug(f'stderr: {err}')
 
@@ -198,6 +244,7 @@ class Job:
         else:
             logger.critical(f'STDOUT: {out}')
             logger.critical(f'STDERR: {err}')
+            logger.debug(output.returncode)
             if output.returncode != 0:
                 self.add_pr_label()
                 logger.critical(f'{self.preq_dict["action"]["command"]} Failed')
@@ -211,6 +258,7 @@ class Job:
                     self.add_pr_label()
                     logger.critical(f'Callback function {self.preq_dict["action"]["callback_fnc"]} failed with "{e}"')
                     goodexit = False
+                    assert(e)
                 else:
                     logger.info(f'Finished callback {self.preq_dict["action"]["callback_fnc"]}')
                     logger.debug(f'stdout: {out}')
@@ -253,7 +301,9 @@ class Job:
 def main():
 
     # handle logging
-    logging.basicConfig(filename='rt_auto.log', filemode='w', level=logging.DEBUG)
+    log_path = os.getcwd()
+    log_filename = f'rt_auto_{datetime.datetime.now().strftime("%Y%m%d%H%M%S")}.log'
+    logging.basicConfig(filename=log_filename, filemode='w', level=logging.INFO)
     logger = logging.getLogger('MAIN')
     logger.info('Starting Script')
     # handle input args
@@ -278,12 +328,16 @@ def main():
     for job in jobs:
         logger.info(f'Starting Job: {job}')
         try:
-            logger.debug('Calling remove_pr_label')
+            logger.info('Calling remove_pr_label')
             job.remove_pr_label()
-            logger.debug('Calling clone_pr_repo')
+            logger.info('Calling clone_pr_repo')
             job.clone_pr_repo()
-            logger.debug('Calling runFunction')
+            logger.info('Calling runFunction')
             job.runFunction()
+            logger.info('Calling push_rtauto_log')
+            job.push_rtauto_log(log_path, log_filename)
+            logger.info('Calling remove_pr_dir')
+            job.remove_pr_dir()
         except Exception as e:
             job.add_pr_label()
             logger.critical(e)
