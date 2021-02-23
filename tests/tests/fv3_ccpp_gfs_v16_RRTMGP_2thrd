@@ -6,7 +6,7 @@
 
 export TEST_DESCR="Compare FV3 CCPP GFS v16 w/ RRTMGP using two threads results with previous trunk version"
 
-export CNTL_DIR=fv3_gfs_v16_RRTMGP_2thrd
+export CNTL_DIR=fv3_gfs_v16_RRTMGP
 
 export LIST_FILES="atmos_4xdaily.tile1.nc \
                    atmos_4xdaily.tile2.nc \
@@ -73,8 +73,10 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
 
 
 export_fv3
-export THRD=2
-export TPN=20
+export TASKS=$TASKS_thrd
+export TPN=$TPN_thrd
+export INPES=$INPES_thrd
+export JNPES=$JNPES_thrd
 DT_ATMOS="1200"
 export DO_RRTMGP=.T.
 
