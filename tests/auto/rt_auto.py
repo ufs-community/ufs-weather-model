@@ -130,29 +130,24 @@ class Job:
         self.logger.info(f'Removing Label: {self.preq_dict["label"]}')
         self.preq_dict['preq'].remove_from_labels(self.preq_dict['label'])
 
-    def add_pr_label(self):
-        ''' adds the pull request label that initiated the job run to PR'''
-        self.logger.info(f'Adding Label: {self.preq_dict["label"]}')
-        self.preq_dict['preq'].add_to_labels(self.preq_dict['label'])
-
     def send_log_name_as_comment(self):
         logger = logging.getLogger('JOB/SEND_LOG_NAME_AS_COMMENT')
-        logger.info('Removing last months logs (if any)'')
+        logger.info('Removing last months logs (if any)')
         last_month = datetime.date.today().replace(day=1) - datetime.timedelta(days=1)
         rm_command = [[f'rm rt_auto_{last_month.strftime("%Y%m")}*.log', os.getcwd()]]
         logger.info(f'Running "{rm_command}"')
         try:
             self.run_commands(rm_command)
-        except as e:
+        except Exception as e:
             logger.warning(f'"{rm_command}" failed with error:{e}')
 
         new_log_name = f'rt_auto_{self.machine["name"]}_'\
                        f'{datetime.datetime.now().strftime("%Y%m%d%H%M%S")}.log'
-        cp_command = [[f'cp rt_auto.log new_log_name', os.getcwd()]]
+        cp_command = [[f'cp rt_auto.log {new_log_name}', os.getcwd()]]
         logger.info(f'Running "{cp_command}"')
         try:
             self.run_commands(cp_command)
-        except as e:
+        except Exception as e:
             logger.warning('Renaming rt_auto failed')
         else:
             comment_text = f'Log Name:{new_log_name}\n'\
@@ -160,7 +155,7 @@ class Job:
                            'Logs are kept for one month'
             try:
                 self.preq_dict['preq'].create_issue_comment(comment_text)
-            except as e:
+            except Exception as e:
                 logger.warning('Creating comment with log location failed with:{e}')
             else:
                 logger.info(f'{comment_text}')
@@ -175,7 +170,6 @@ class Job:
                 out = [] if not out else out.decode('utf8').split('\n')
                 err = [] if not err else err.decode('utf8').split('\n')
             except Exception as e:
-                self.add_pr_label()
                 logger.critical(e)
                 [logger.critical(f'stdout: {item}') for item in out if not None]
                 [logger.critical(f'stderr: {eitem}') for eitem in err if not None]
@@ -225,14 +219,12 @@ class Job:
             out = [] if not out else out.decode('utf8').split('\n')
             err = [] if not err else err.decode('utf8').split('\n')
         except Exception as e:
-            self.add_pr_label()
             logger.critical(e)
             [logger.critical(f'stdout: {item}') for item in out if not None]
             [logger.critical(f'stderr: {eitem}') for eitem in err if not None]
             assert(e)
         else:
             if output.returncode != 0:
-                self.add_pr_label()
                 logger.critical(f'{self.preq_dict["action"]["command"]} Failed')
                 [logger.critical(f'stdout: {item}') for item in out if not None]
                 [logger.critical(f'stderr: {eitem}') for eitem in err if not None]
@@ -241,7 +233,6 @@ class Job:
                     logger.info(f'Attempting to run callback: {self.preq_dict["action"]["callback_fnc"]}')
                     getattr(self, self.preq_dict['action']['callback_fnc'])()
                 except Exception as e:
-                    self.add_pr_label()
                     logger.critical(f'Callback function {self.preq_dict["action"]["callback_fnc"]} failed with "{e}"')
                     goodexit = False
                     assert(e)
@@ -315,7 +306,6 @@ def main():
             logger.info('Calling send_log_name_as_comment')
             job.send_log_name_as_comment()
         except Exception as e:
-            job.add_pr_label()
             logger.critical(e)
             assert(e)
 
