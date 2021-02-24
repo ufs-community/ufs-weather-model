@@ -135,13 +135,38 @@ class Job:
         self.logger.info(f'Adding Label: {self.preq_dict["label"]}')
         self.preq_dict['preq'].add_to_labels(self.preq_dict['label'])
 
-    def send_log_as_comment(self):
-        with open('rt_auto.log', 'r') as f:
-            filedata = f.read()
-        self.preq_dict['preq'].create_issue_comment(filedata)
+    def send_log_name_as_comment(self):
+        logger = logging.getLogger('JOB/SEND_LOG_NAME_AS_COMMENT')
+        logger.info('Removing last months logs (if any)'')
+        last_month = datetime.date.today().replace(day=1) - datetime.timedelta(days=1)
+        rm_command = [[f'rm rt_auto_{last_month.strftime("%Y%m")}*.log', os.getcwd()]]
+        logger.info(f'Running "{rm_command}"')
+        try:
+            self.run_commands(rm_command)
+        except as e:
+            logger.warning(f'"{rm_command}" failed with error:{e}')
+
+        new_log_name = f'rt_auto_{self.machine["name"]}_'\
+                       f'{datetime.datetime.now().strftime("%Y%m%d%H%M%S")}.log'
+        cp_command = [[f'cp rt_auto.log new_log_name', os.getcwd()]]
+        logger.info(f'Running "{cp_command}"')
+        try:
+            self.run_commands(cp_command)
+        except as e:
+            logger.warning('Renaming rt_auto failed')
+        else:
+            comment_text = f'Log Name:{new_log_name}\n'\
+                           f'Log Location:{os.getcwd()}\n'\
+                           'Logs are kept for one month'
+            try:
+                self.preq_dict['preq'].create_issue_comment(comment_text)
+            except as e:
+                logger.warning('Creating comment with log location failed with:{e}')
+            else:
+                logger.info(f'{comment_text}')
 
     def run_commands(self, commands_with_cwd):
-        logger = logging.getLogger('RUN_COMMANDS')
+        logger = logging.getLogger('JOB/RUN_COMMANDS')
         for command, in_cwd in commands_with_cwd:
             logger.info(f'Running "{command}" in location "{in_cwd}"')
             try:
@@ -163,7 +188,7 @@ class Job:
     def remove_pr_dir(self):
         logger = logging.getLogger('JOB/REMOVE_PR_DIR')
         pr_dir_str = f'{self.machine["workdir"]}/{str(self.preq_dict["preq"].id)}'
-        rm_command = [f'rm -rf {pr_dir_str}', os.getcwd()]
+        rm_command = [[f'rm -rf {pr_dir_str}', self.pr_repo_loc]]
         logger.info(f'Running "{rm_command}"')
         self.run_commands(rm_command)
 
@@ -190,9 +215,9 @@ class Job:
         self.pr_repo_loc = repo_dir_str+"/"+repo_name
         return self.pr_repo_loc
 
-    def runFunction(self):
+    def run_function(self):
         ''' Run the command associted with the label used to initiate this job '''
-        logger = logging.getLogger('JOB/RUNFUNCTION')
+        logger = logging.getLogger('JOB/RUN_FUNCTION')
         try:
             logger.info(f'Running: "{self.preq_dict["action"]["command"]}" in "{self.pr_repo_loc}"')
             output = subprocess.Popen(self.preq_dict['action']['command'], cwd=self.pr_repo_loc, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -206,14 +231,11 @@ class Job:
             [logger.critical(f'stderr: {eitem}') for eitem in err if not None]
             assert(e)
         else:
-            [logger.critical(f'stdout: {item}') for item in out if not None]
-            [logger.critical(f'stderr: {eitem}') for eitem in err if not None]
-            logger.debug(output.returncode)
             if output.returncode != 0:
                 self.add_pr_label()
                 logger.critical(f'{self.preq_dict["action"]["command"]} Failed')
-                [logger.debug(f'stdout: {item}') for item in out if not None]
-                [logger.debug(f'stderr: {eitem}') for eitem in err if not None]
+                [logger.critical(f'stdout: {item}') for item in out if not None]
+                [logger.critical(f'stderr: {eitem}') for eitem in err if not None]
             else:
                 try:
                     logger.info(f'Attempting to run callback: {self.preq_dict["action"]["callback_fnc"]}')
@@ -286,12 +308,12 @@ def main():
             job.remove_pr_label()
             logger.info('Calling clone_pr_repo')
             job.clone_pr_repo()
-            logger.info('Calling runFunction')
-            job.runFunction()
+            logger.info('Calling run_function')
+            job.run_function()
             logger.info('Calling remove_pr_dir')
             job.remove_pr_dir()
-            logger.info('Calling send_log_as_comment')
-            job.send_log_as_comment()
+            logger.info('Calling send_log_name_as_comment')
+            job.send_log_name_as_comment()
         except Exception as e:
             job.add_pr_label()
             logger.critical(e)
