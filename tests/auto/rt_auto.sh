@@ -1,5 +1,14 @@
 #!/bin/bash --login
 set -eux
+if [ -f "accesstoken.sh" ]; then
+  source ./accesstoken.sh
+  export ghapitoken=$ghapitoken
+else
+  echo "Please create accesstoken.sh (600) with the following content\n"
+  echo "/bin/bash\n"
+  echo "export ghapitoken=<GitHub API Token Here>"
+  exit 1
+fi
 
 export RT_COMPILER='intel'
 source ../detect_machine.sh
