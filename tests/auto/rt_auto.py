@@ -166,21 +166,6 @@ class Job:
         rm_command = [f'rm -rf {pr_dir_str}', os.getcwd()]
         logger.info(f'Running "{rm_command}"')
         self.run_commands(rm_command)
-        # try:
-        #     output = subprocess.Popen(rm_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        #     out, err = output.communicate()
-        #     out = [] if not out else out.decode('utf8').split('\n')
-        #     err = [] if not err else err.decode('utf8').split('\n')
-        # except Exception as e:
-        #     logger.warning('Removal of directory at end failed.')
-        #     logger.warning(e)
-        #     [logger.warning(f'stdout: {item}') for item in out if not None]
-        #     [logger.warning(f'stderr: {eitem}') for eitem in err if not None]
-        #     assert(e)
-        # else:
-        #     logger.info(f'Finished running: {rm_command}')
-        #     [logger.debug(f'stdout: {item}') for item in out if not None]
-        #     [logger.debug(f'stderr: {eitem}') for eitem in err if not None]
 
     def clone_pr_repo(self):
         ''' clone the GitHub pull request repo, via command line '''
@@ -198,25 +183,8 @@ class Job:
             [f'git clone -b {self.branch} {git_url}', repo_dir_str],
             [f'git submodule update --init --recursive', f'{repo_dir_str}/{repo_name}']
         ]
+
         self.run_commands(create_repo_commands)
-        # for command, in_cwd in create_repo_commands:
-        #     logger.info(f'Running "{command}" in location "{in_cwd}"')
-        #     try:
-        #         output = subprocess.Popen(command, shell=True, cwd=in_cwd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        #         out, err = output.communicate()
-        #         out = [] if not out else out.decode('utf8').split('\n')
-        #         err = [] if not err else err.decode('utf8').split('\n')
-        #     except Exception as e:
-        #         self.add_pr_label()
-        #         logger.critical(e)
-        #         [logger.critical(f'stdout: {item}') for item in out if not None]
-        #         [logger.critical(f'stderr: {eitem}') for eitem in err if not None]
-        #
-        #         assert(e)
-        #     else:
-        #         logger.info(f'Finished running: {command}')
-        #         [logger.info(f'stdout: {item}') for item in out if not None]
-        #         [logger.info(f'stderr: {eitem}') for eitem in err if not None]
 
         logger.info('Finished repo clone')
         self.pr_repo_loc = repo_dir_str+"/"+repo_name
@@ -276,23 +244,7 @@ class Job:
                 [f'git push origin {self.branch}', self.pr_repo_loc]
             ]
             self.run_commands(move_rt_commands)
-            # for command, in_cwd in move_rt_commands:
-            #     try:
-            #         logger.info(f'Attempting to run: {command}')
-            #         output = subprocess.Popen(command, shell=True, cwd=in_cwd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-            #         out, err = output.communicate()
-            #         out = [] if not out else out.decode('utf8').split('\n')
-            #         err = [] if not err else err.decode('utf8').split('\n')
-            #     except Exception as e:
-            #         self.add_pr_label()
-            #         logger.critical(e)
-            #         [logger.critical(f'stdout: {item}') for item in out if not None]
-            #         [logger.critical(f'stderr: {eitem}') for eitem in err if not None]
-            #         assert(e)
-            #     else:
-            #         logger.info(f'Finished command {command}')
-            #         [logger.debug(f'stdout: {item}') for item in out if not None]
-            #         [logger.debug(f'stderr: {eitem}') for eitem in err if not None]
+
         else:
             logger.critical('Could not find RT log')
             raise FileNotFoundError('Could not find RT log')
