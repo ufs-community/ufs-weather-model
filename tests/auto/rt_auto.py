@@ -134,7 +134,7 @@ class Job:
         logger = logging.getLogger('JOB/SEND_LOG_NAME_AS_COMMENT')
         logger.info('Removing last months logs (if any)')
         last_month = datetime.date.today().replace(day=1) - datetime.timedelta(days=1)
-        rm_command = [[f'rm rt_auto_{last_month.strftime("%Y%m")}*.log', os.getcwd()]]
+        rm_command = [[f'rm rt_auto_*_{last_month.strftime("%Y%m")}*.log', os.getcwd()]]
         logger.info(f'Running "{rm_command}"')
         try:
             self.run_commands(rm_command)
