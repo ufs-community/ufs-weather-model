@@ -548,6 +548,7 @@ export CPL='.true.'
 export NSTF_NAME='0,0,0,0,0'
 
 export DZ_MIN='2'
+export PSM_BC='0'
 export MIN_SEAICE='1.0e-11'
 
 # resolution dependent settings
