@@ -14,7 +14,7 @@ def update_url_data(response):
       indices.append(n)
 
   if len(indices) == 0:
-    sys.exit(1)
+    raise ValueError("No build job exists.")
 
   return data, indices
 
