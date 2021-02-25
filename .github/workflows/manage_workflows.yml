@@ -2,14 +2,14 @@ name: Manage workflows
 
 on:
   workflow_run:
-    workflows: ["Pull Request Tests"]
+    workflows: ["Pull request tests"]
     types:
       - requested
 
 jobs:
   job1:
-    name: Job 1
-    runs-on: ubuntu-latest
+    name: Cancel workflows
+    runs-on: ubuntu-20.04
 
     steps:
       - name: Checkout codes
@@ -17,6 +17,7 @@ jobs:
 
       - name: Check if skip-ci is requested
         run: |
+          sleep 40
           cd ${GITHUB_WORKSPACE}/tests/ci
           repo="${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/actions/runs"
           tr_id=$(cat ${GITHUB_EVENT_PATH} | ./json_helper.py get_trigger_id)

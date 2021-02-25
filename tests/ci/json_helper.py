@@ -19,6 +19,7 @@ def cancel_workflow(data):
         x["id"]!=int(os.environ["GITHUB_RUN_ID"]) and
         x["id"]!=int(os.environ["TRIGGER_ID"]) and
         x["head_branch"]==os.environ["TRIGGER_BR"] and
+        x["event"]!="workflow_run" and
         (x["status"]=="queued" or x["status"]=="in_progress")]
 
   return wfs
