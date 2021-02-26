@@ -343,6 +343,8 @@ export NA_INIT=1
 # Radiation
 export DO_RRTMGP=.F.
 export ICLOUD=0
+export IAER=111
+export ICLIQ_SW=1
 export IOVR=1
 
 # Microphysics

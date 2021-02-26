@@ -134,7 +134,9 @@
        fhlwr          = 3600.
        ialb           = 1
        iems           = 1
-       iaer           = 111
+       iaer           = @[IAER]
+       icliq_sw       = @[ICLIQ_SW]
+       iovr           = @[IOVR]
        ico2           = 2
        isubc_sw       = 2
        isubc_lw       = 2
@@ -147,7 +149,8 @@
        redrag         = .true.
        dspheat        = .true.
        hybedmf        = @[HYBEDMF]
-       satmedmf       = .false.
+       satmedmf       = @[SATMEDMF]
+       isatmedmf      = 1
        lheatstrg      = @[LHEATSTRG]
        do_mynnedmf    = @[DO_MYNNEDMF]
        do_mynnsfclay  = @[DO_MYNNSFCLAY]
@@ -194,7 +197,10 @@
        bl_mynn_tkeadvect = .true.
        bl_mynn_edmf      = 1
        bl_mynn_edmf_mom  = 1
-       gwd_opt        = @[GWD_OPT]
+       gwd_opt              = @[GWD_OPT]
+       ldiag_ugwp           = @[LDIAG_UGWP]
+       do_ugwp              = @[DO_UGWP]
+       do_tofd              = @[DO_TOFD]
        do_ugwp_v0           = @[DO_UGWP_V0]
        do_ugwp_v0_orog_only = @[DO_UGWP_V0_OROG_ONLY]
        do_gsl_drag_ls_bl    = @[DO_GSL_DRAG_LS_BL]
@@ -300,27 +306,28 @@
        FSICS    = 99999,
 /
 &nam_stochy
-  lon_s=768,
-  lat_s=384,
-  ntrunc=382,
   SKEBNORM=1,
   SKEB_NPASS=30,
   SKEB_VDOF=5,
   SKEB=@[SKEB],
   SKEB_TAU=2.16E4,
   SKEB_LSCALE=1000.E3,
+  SKEBINT=1800,
   SHUM=@[SHUM],
   SHUM_TAU=21600,
   SHUM_LSCALE=500000,
+  SHUMINT=3600,
   SPPT=@[SPPT],
   SPPT_TAU=21600,
   SPPT_LSCALE=500000,
   SPPT_LOGIT=.TRUE.,
   SPPT_SFCLIMIT=.TRUE.,
+  SPPTINT=1800,
   ISEED_SHUM=1,
   ISEED_SKEB=2,
   ISEED_SPPT=3,
 /
+
 &nam_sfcperts
   lndp_type      = @[LNDP_TYPE]
   LNDP_TAU=21600,
@@ -344,3 +351,4 @@
        knob_ugwp_version = 0
        launch_level      = 25
 /
+
