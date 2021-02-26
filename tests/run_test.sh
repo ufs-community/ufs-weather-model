@@ -123,8 +123,6 @@ source ./fv3_run
 # CMEPS
 if [[ $DATM = 'true' ]] || [[ $CDEPS_DATM = 'true' ]] || [[ $CDEPS_DOCN = 'true' ]] || [[ $S2S = 'true' ]]; then
   cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
-  cp ${PATHRT}/parm/pio_in pio_in
-  cp ${PATHRT}/parm/med_modelio.nml med_modelio.nml
 fi
 
 if [[ $DATM = 'true' ]] || [[ $S2S = 'true' ]]; then
@@ -136,14 +134,6 @@ fi
 
 if [[ $DATM = 'true' ]]; then
   cp ${PATHRT}/parm/datm_data_table.IN datm_data_table
-fi
-
-if [[ $CDEPS_DATM = 'true' ]]; then
-  cp ${PATHRT}/parm/atm_modelio.nml atm_modelio.nml
-fi
-
-if [[ $CDEPS_DOCN = 'true' ]]; then
-  cp ${PATHRT}/parm/ocn_modelio.nml ocn_modelio.nml
 fi
 
 if [[ $SCHEDULER = 'pbs' ]]; then

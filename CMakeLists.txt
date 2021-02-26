@@ -27,6 +27,7 @@ set(INLINE_POST     OFF CACHE BOOL "Enable inline post")
 set(MULTI_GASES     OFF CACHE BOOL "Enable MULTI_GASES")
 set(OPENMP          ON  CACHE BOOL "Enable OpenMP threading")
 set(PARALLEL_NETCDF OFF CACHE BOOL "Enable parallel NetCDF")
+set(PNETCDF         OFF CACHE BOOL "Enable PnetCDF to support PIO PnetCDF mode")
 set(QUAD_PRECISION  ON  CACHE BOOL "Enable QUAD_PRECISION (for certain grid metric terms in dycore)")
 set(REPRO           OFF CACHE BOOL "Enable REPRO mode")
 set(WW3             OFF CACHE BOOL "Enable WW3")
@@ -68,6 +69,7 @@ message("INLINE_POST ...... ${INLINE_POST}")
 message("MULTI_GASES ...... ${MULTI_GASES}")
 message("OPENMP ........... ${OPENMP}")
 message("PARALLEL_NETCDF .. ${PARALLEL_NETCDF}")
+message("PNETCDF .......... ${PNETCDF}")
 message("QUAD_PRECISION ... ${QUAD_PRECISION}")
 message("REPRO ............ ${REPRO}")
 message("WW3 .............. ${WW3}")
@@ -106,6 +108,9 @@ find_package(NetCDF REQUIRED C Fortran)
 find_package(ESMF MODULE REQUIRED)
 if(S2S OR CMEPS OR CDEPS)
   find_package(PIO REQUIRED COMPONENTS C Fortran STATIC)
+  if(PNETCDF)
+    find_package(PnetCDF REQUIRED STATIC)
+  endif()
 endif()
 
 find_package(bacio REQUIRED)
@@ -343,8 +348,7 @@ elseif(CDEPS_DOCN)
 endif()
 
 if(CMEPS)
-  list(APPEND _ufs_defs_private PIO
-                                CMEPS
+  list(APPEND _ufs_defs_private CMEPS
                                 FRONT_CMEPS=MED)
   add_dependencies(ufs cmeps)
   target_link_libraries(ufs PUBLIC cmeps)
@@ -356,8 +360,7 @@ if(CDEPS)
 endif()
 
 if(S2S)
-  list(APPEND _ufs_defs_private PIO
-                                FRONT_MOM6=mom_cap_mod
+  list(APPEND _ufs_defs_private FRONT_MOM6=mom_cap_mod
                                 FRONT_CICE6=ice_comp_nuopc
                                 CMEPS
                                 FRONT_CMEPS=MED)
@@ -386,10 +389,6 @@ if(WW3)
   add_dependencies(ufs_model ww3_nems)
 endif()
 
-if (CMEPS OR S2S)
-  list(APPEND _ufs_model_defs_private PIO)
-endif()
-
 target_compile_definitions(ufs_model PRIVATE "${_ufs_model_defs_private}")
 
 if(DATM OR CDEPS)
@@ -399,6 +398,13 @@ target_link_libraries(ufs_model PRIVATE ufs
                                         esmf
                                         NetCDF::NetCDF_Fortran
                                         ${MKL_LIB})
+
+if(S2S OR CMEPS OR CDEPS)
+  if(PNETCDF)
+    target_link_libraries (ufs_model PRIVATE ${PNETCDF_LIBRARY_DIRS})
+    target_include_directories(ufs_model PRIVATE ${PNETCDF_INCLUDE_DIRS})
+  endif()
+endif()
 
 ###############################################################################
 ### Install

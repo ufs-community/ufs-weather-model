@@ -18,7 +18,6 @@ endif()
 list(APPEND _nems_util_files
   CMEPS/util/shr_abort_mod.F90
   CMEPS/util/shr_log_mod.F90
-  CMEPS/util/shr_pio_mod.F90
   CMEPS/util/shr_sys_mod.F90
   CMEPS/util/shr_flux_mod.F90
   CMEPS/util/shr_mpi_mod.F90
