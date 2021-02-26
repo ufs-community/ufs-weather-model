@@ -42,8 +42,8 @@ def parse_args_in():
     parser = argparse.ArgumentParser()
 
     # Setup Input Arguments
-    choices = ['hera.intel', 'orion.intel', 'gaea.intel', 'jet.intel', 'wcoss_dell_p3']
-    parser.add_argument('-m', '--machine', help='Machine and Compiler combination', required=True, choices=choices, type=str)
+    choices = ['hera', 'orion', 'gaea', 'jet', 'wcoss_dell_p3']
+    parser.add_argument('-m', '--machine', help='Machine name', required=True, choices=choices, type=str)
     parser.add_argument('-w', '--workdir', help='Working directory', required=True, type=str)
 
     # Get Arguments
@@ -65,8 +65,13 @@ def input_data(args):
     }]
     action_list_dict = [{
         'name': 'RT',
-        'command': 'cd tests && /bin/bash --login ./rt.sh -e',
+        'command': 'export RT_COMPILER="intel" && cd tests && /bin/bash --login ./rt.sh -e',
         'callback_fnc': 'move_rt_logs'
+    },
+    {
+        'name': 'GRT',
+        'command': 'export RT_COMPILER="gnu" && cd tests && /bin/bash --login ./rt.sh -e -l rt_gnu.conf',
+        'callback_fnc': 'move_grt_logs'
     }]
 
     return machine_dict, repo_list_dict, action_list_dict
@@ -78,7 +83,7 @@ def match_label_with_action(machine, actions, label):
 
     if len(split_label) != 3: return False
     if not re.match(split_label[0], 'Auto'): return False
-    if not re.match(split_label[2], machine['name'].split('.')[0]): return False
+    if not re.match(split_label[2], machine['name']): return False
     action_match = next((action for action in actions if re.match(action['name'], split_label[1])), False)
 
     return action_match
@@ -130,8 +135,25 @@ class Job:
         self.logger.info(f'Removing Label: {self.preq_dict["label"]}')
         self.preq_dict['preq'].remove_from_labels(self.preq_dict['label'])
 
-    def send_log_name_as_comment(self):
+    def add_pr_label(self):
+        ''' Removes the pull request label that initiated the job run from PR '''
+        self.logger.info(f'Removing Label: {self.preq_dict["label"]}')
+        self.preq_dict['preq'].add_to_labels(self.preq_dict['label'])
+
+    def check_label_before_job_start(self):
+        # LETS Check the label still exists before the start of the job in the
+        # case of multiple jobs
+        label_to_check = f'Auto-{preq_dict["action"]}-{self.machine["name"]}'
+        print(f'REMOVE ME: label_to_check is: {label_to_check}')
+        label_match = next((label for label in self.preq_dict['preq'].get_labels() if re.match(label, label_to_check)), False)
+
+        return label_match
+
+
+    def send_log_name_as_comment(self, log_filename):
         logger = logging.getLogger('JOB/SEND_LOG_NAME_AS_COMMENT')
+
+        #Remove LAST MONTHS LOGS
         logger.info('Removing last months logs (if any)')
         last_month = datetime.date.today().replace(day=1) - datetime.timedelta(days=1)
         rm_command = [[f'rm rt_auto_*_{last_month.strftime("%Y%m")}*.log', os.getcwd()]]
@@ -141,24 +163,16 @@ class Job:
         except Exception as e:
             logger.warning(f'"{rm_command}" failed with error:{e}')
 
-        new_log_name = f'rt_auto_{self.machine["name"]}_'\
-                       f'{datetime.datetime.now().strftime("%Y%m%d%H%M%S")}.log'
-        cp_command = [[f'cp rt_auto.log {new_log_name}', os.getcwd()]]
-        logger.info(f'Running "{cp_command}"')
+        # Add log information to PR.
+        comment_text = f'Log Name:{log_filename}\n'\
+                       f'Log Location:{os.getcwd()}\n'\
+                       'Logs are kept for one month'
         try:
-            self.run_commands(cp_command)
+            self.preq_dict['preq'].create_issue_comment(comment_text)
         except Exception as e:
-            logger.warning('Renaming rt_auto failed')
+            logger.warning('Creating comment with log location failed with:{e}')
         else:
-            comment_text = f'Log Name:{new_log_name}\n'\
-                           f'Log Location:{os.getcwd()}\n'\
-                           'Logs are kept for one month'
-            try:
-                self.preq_dict['preq'].create_issue_comment(comment_text)
-            except Exception as e:
-                logger.warning('Creating comment with log location failed with:{e}')
-            else:
-                logger.info(f'{comment_text}')
+            logger.info(f'{comment_text}')
 
     def run_commands(self, commands_with_cwd):
         logger = logging.getLogger('JOB/RUN_COMMANDS')
@@ -225,6 +239,7 @@ class Job:
             assert(e)
         else:
             if output.returncode != 0:
+                self.add_pr_label()
                 logger.critical(f'{self.preq_dict["action"]["command"]} Failed')
                 [logger.critical(f'stdout: {item}') for item in out if not None]
                 [logger.critical(f'stderr: {eitem}') for eitem in err if not None]
@@ -245,28 +260,46 @@ class Job:
     def move_rt_logs(self):
         ''' This is the callback function associated with the "RT" command '''
         logger = logging.getLogger('JOB/MOVE_RT_LOGS')
-        rt_log = f'tests/RegressionTests_{self.machine["name"]}.log'
+        rt_log = f'tests/RegressionTests_{self.machine["name"]}.intel.log'
         filepath = f'{self.pr_repo_loc}/{rt_log}'
-        rm_filepath = '/'.join((self.pr_repo_loc.split('/'))[:-1])
         if os.path.exists(filepath):
             move_rt_commands = [
+                [f'git pull --ff-only origin {self.branch}', self.pr_repo_loc],
                 [f'git add {rt_log}', self.pr_repo_loc],
-                [f'git commit -m "Auto: Added Updated RT Log file: {rt_log}"', self.pr_repo_loc],
-                [f'git pull --no-edit origin {self.branch}', self.pr_repo_loc],
+                [f'git commit -m "Auto: Added Updated RT Log file: {rt_log} skip-ci"', self.pr_repo_loc],
                 ['sleep 10', self.pr_repo_loc],
                 [f'git push origin {self.branch}', self.pr_repo_loc]
             ]
             self.run_commands(move_rt_commands)
 
         else:
-            logger.critical('Could not find RT log')
-            raise FileNotFoundError('Could not find RT log')
+            logger.critical('Could not find Intel RT log')
+            raise FileNotFoundError('Could not find Intel RT log')
+
+    def move_grt_logs(self):
+        ''' This is the callback function associated with the "GRT" command '''
+        logger = logging.getLogger('JOB/MOVE_GRT_LOGS')
+        rt_log = f'tests/RegressionTests_{self.machine["name"]}.gnu.log'
+        filepath = f'{self.pr_repo_loc}/{rt_log}'
+        if os.path.exists(filepath):
+            move_grt_commands = [
+                [f'git add {rt_log}', self.pr_repo_loc],
+                [f'git commit -m "Auto: Added Updated RT Log file: {rt_log} skip-ci"', self.pr_repo_loc],
+                [f'git pull --no-edit origin {self.branch}', self.pr_repo_loc],
+                ['sleep 10', self.pr_repo_loc],
+                [f'git push origin {self.branch}', self.pr_repo_loc]
+            ]
+            self.run_commands(move_grt_commands)
+
+        else:
+            logger.critical('Could not find Gnu RT log')
+            raise FileNotFoundError('Could not find Gnu RT log')
 
 def main():
 
     # handle logging
     log_path = os.getcwd()
-    log_filename = 'rt_auto.log'
+    log_filename = f'rt_auto_{datetime.datetime.now().strftime("%Y%m%d%H%M%S")}.log'
     # Please don't run the following on cron with level=logging.DEBUG
     # as it exposes the GH API Token
     # Only set it to DEBUG while debugging
@@ -294,20 +327,21 @@ def main():
     jobs = [Job(pullreq, ghinterface_obj, machine) for pullreq in preq_dict]
     for job in jobs:
         logger.info(f'Starting Job: {job}')
-        try:
-            logger.info('Calling remove_pr_label')
-            job.remove_pr_label()
-            logger.info('Calling clone_pr_repo')
-            job.clone_pr_repo()
-            logger.info('Calling run_function')
-            job.run_function()
-            logger.info('Calling remove_pr_dir')
-            job.remove_pr_dir()
-            logger.info('Calling send_log_name_as_comment')
-            job.send_log_name_as_comment()
-        except Exception as e:
-            logger.critical(e)
-            assert(e)
+        if job.check_label_before_job_start():
+            try:
+                logger.info('Calling remove_pr_label')
+                job.remove_pr_label()
+                logger.info('Calling clone_pr_repo')
+                job.clone_pr_repo()
+                logger.info('Calling run_function')
+                job.run_function()
+                logger.info('Calling remove_pr_dir')
+                job.remove_pr_dir()
+                logger.info('Calling send_log_name_as_comment')
+                job.send_log_name_as_comment(log_filename)
+            except Exception as e:
+                logger.critical(e)
+                assert(e)
 
     logger.info('Script Finished')
 
