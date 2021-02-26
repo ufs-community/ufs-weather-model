@@ -42,7 +42,7 @@ def parse_args_in():
     parser = argparse.ArgumentParser()
 
     # Setup Input Arguments
-    choices = ['hera.intel', 'orion.intel', 'gaea.intel', 'jet.intel', 'wcoss_dell_p3']
+    choices = ['cheyenne.gnu', 'hera.intel', 'orion.intel', 'gaea.intel', 'jet.intel', 'wcoss_dell_p3']
     parser.add_argument('-m', '--machine', help='Machine and Compiler combination', required=True, choices=choices, type=str)
     parser.add_argument('-w', '--workdir', help='Working directory', required=True, type=str)
 
