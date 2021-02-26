@@ -60,7 +60,7 @@ def input_data(args):
     }
     repo_list_dict = [{
         'name': 'ufs-weather-model',
-        'address': 'ufs-community/ufs-weather-model',
+        'address': 'BrianCurtis-NOAA/ufs-weather-model',
         'base': 'develop'
     }]
     action_list_dict = [{
@@ -143,9 +143,12 @@ class Job:
     def check_label_before_job_start(self):
         # LETS Check the label still exists before the start of the job in the
         # case of multiple jobs
-        label_to_check = f'Auto-{preq_dict["action"]}-{self.machine["name"]}'
+        label_to_check = f'Auto-{self.preq_dict["action"]["name"]}-{self.machine["name"]}'
         print(f'REMOVE ME: label_to_check is: {label_to_check}')
-        label_match = next((label for label in self.preq_dict['preq'].get_labels() if re.match(label, label_to_check)), False)
+        labels = self.preq_dict['preq'].get_labels()
+        print(f'LABELS: {labels}')
+        print(f'{next((label for label in labels))}')
+        label_match = next((label for label in labels if re.match(label.name, label_to_check)), False)
 
         return label_match
 
@@ -266,7 +269,7 @@ class Job:
             move_rt_commands = [
                 [f'git pull --ff-only origin {self.branch}', self.pr_repo_loc],
                 [f'git add {rt_log}', self.pr_repo_loc],
-                [f'git commit -m "Auto: Added Updated RT Log file: {rt_log} skip-ci"', self.pr_repo_loc],
+                [f'git commit -m "Auto: Add RT Log file: {rt_log} skip-ci"', self.pr_repo_loc],
                 ['sleep 10', self.pr_repo_loc],
                 [f'git push origin {self.branch}', self.pr_repo_loc]
             ]
@@ -336,8 +339,8 @@ def main():
                 logger.info('Calling run_function')
                 job.run_function()
                 logger.info('Calling remove_pr_dir')
-                job.remove_pr_dir()
-                logger.info('Calling send_log_name_as_comment')
+                # job.remove_pr_dir()
+                # logger.info('Calling send_log_name_as_comment')
                 job.send_log_name_as_comment(log_filename)
             except Exception as e:
                 logger.critical(e)
