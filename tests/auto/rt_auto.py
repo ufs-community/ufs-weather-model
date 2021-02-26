@@ -60,7 +60,7 @@ def input_data(args):
     }
     repo_list_dict = [{
         'name': 'ufs-weather-model',
-        'address': 'BrianCurtis-NOAA/ufs-weather-model',
+        'address': 'ufs-community/ufs-weather-model',
         'base': 'develop'
     }]
     action_list_dict = [{
@@ -144,10 +144,7 @@ class Job:
         # LETS Check the label still exists before the start of the job in the
         # case of multiple jobs
         label_to_check = f'Auto-{self.preq_dict["action"]["name"]}-{self.machine["name"]}'
-        print(f'REMOVE ME: label_to_check is: {label_to_check}')
         labels = self.preq_dict['preq'].get_labels()
-        print(f'LABELS: {labels}')
-        print(f'{next((label for label in labels))}')
         label_match = next((label for label in labels if re.match(label.name, label_to_check)), False)
 
         return label_match
