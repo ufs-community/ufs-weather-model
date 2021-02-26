@@ -142,6 +142,7 @@ endif()
 set(GFS_PHYS ON CACHE BOOL "Enable GFS Physics")
 if(NOT 32BIT)
    set(64BIT ON CACHE BOOL "Enable 64-bit")
+
 endif()
 if(NOT QUAD_PRECISION)
   set(ENABLE_QUAD_PRECISION OFF CACHE BOOL "Enable Quad-precision")
@@ -158,9 +159,9 @@ endif()
 ###############################################################################
 ### stochastic_physics
 ###############################################################################
-if(NOT DATM)
+#if(NOT DATM)
   add_subdirectory(stochastic_physics)
-endif()
+#endif()
 
 ###############################################################################
 ### FV3 or Data Atmosphere
@@ -269,7 +270,7 @@ endif()
 target_include_directories(ufs INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                          $<INSTALL_INTERFACE:mod>)
 
-target_link_libraries(ufs PUBLIC esmf)
+target_link_libraries(ufs PUBLIC esmf stochastic_physics)
 
 if(DATM)
   target_link_libraries(ufs PUBLIC datatm)
@@ -282,7 +283,7 @@ if(S2S)
                                 FRONT_CICE6=ice_comp_nuopc
                                 CMEPS
                                 FRONT_CMEPS=MED)
-  add_dependencies(ufs mom6 cice cmeps)
+  add_dependencies(ufs mom6 cice cmeps stochastic_physics)
   target_link_libraries(ufs PUBLIC mom6
                                    cice
                                    cmeps)
@@ -314,14 +315,14 @@ if(DATM)
 endif()
 target_link_libraries(ufs_model PRIVATE ufs
                                         esmf
-                                        NetCDF::NetCDF_Fortran
-                                        ${MKL_LIB})
+                                        NetCDF::NetCDF_Fortran)
 
 ###############################################################################
 ### Install
 ###############################################################################
 install(
   TARGETS ufs
+
   EXPORT ufs-config
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib)

@@ -449,6 +449,8 @@ export LNDP_EACH_STEP=.F.
 export SKEB=-999.
 export SPPT=-999.
 export SHUM=-999.
+export OCNSPPT=-999.
+export EPBL=-999.
 
 #IAU
 export IAU_INC_FILES="''"
@@ -578,6 +580,9 @@ export MOM6_REPRO_LA='False'
 export MOM6_THERMO_SPAN='False'
 # no WW3
 export MOM6_USE_WAVES='False'
+## ocean stochastic physics
+#export DO_OCNSPPT=FALSE
+#export DO_PERT_EPBL=FALSE
 
 # CICE6 defaults; 1 degree
 export NPROC_ICE='12'
@@ -690,6 +695,9 @@ export MOM6_REPRO_LA='False'
 export MOM6_THERMO_SPAN='False'
 # no WW3
 export MOM6_USE_WAVES='False'
+## ocean stochastic physics
+#export DO_OCNSPPT=FALSE
+#export DO_PERT_EPBL=FALSE
 
 # CICE6 defaults; 1 degree
 export MESHOCN_ICE="mesh.mx${OCNRES}.nc"
