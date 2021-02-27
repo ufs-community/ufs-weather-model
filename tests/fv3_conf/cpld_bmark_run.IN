@@ -8,17 +8,13 @@ fi
 
 ICERES="${OCNRES:0:1}.${OCNRES:1}"
 
-BM_IC=BM_IC/${SYEAR}${SMONTH}${SDAY}${SHOUR}
 if [[ ${FRAC_GRID_INPUT} = .F. ]]; then
-  FV3_IC="../${BM_IC}/gfs/@[ATMRES]/INPUT"
+  FV3_IC=@[INPUTDATA_ROOT_BMIC]/${SYEAR}${SMONTH}${SDAY}${SHOUR}/gfs/@[ATMRES]/INPUT
 elif [[ @[NPZ] == '127' ]]; then
-  FV3_IC=FV3_input_frac/${BM_IC}/gfs/@[ATMRES]_L@[NPZ]/INPUT
+  FV3_IC=FV3_input_frac/BM_IC/${SYEAR}${SMONTH}${SDAY}${SHOUR}/gfs/@[ATMRES]_L@[NPZ]/INPUT
 else
-  FV3_IC=FV3_input_frac/${BM_IC}/gfs/@[ATMRES]/INPUT
+  FV3_IC=FV3_input_frac/BM_IC/${SYEAR}${SMONTH}${SDAY}${SHOUR}/gfs/@[ATMRES]/INPUT
 fi
-MOM6_IC="../${BM_IC}/mom6_da"
-CICE_IC="../${BM_IC}/cpc"
-WW3_IC="../${BM_IC}/ww3"
 
 # FV3 fixed input
 cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/aerosol.dat .
@@ -63,7 +59,7 @@ if [[ $CPLWAV == .T. && $CPLWAV2ATM == .T. ]]; then
   cp    @[INPUTDATA_ROOT_WW3]/mod_def.* .
   if [[ $RT35D == .T. ]]; then
    cp    @[INPUTDATA_ROOT_WW3]/ww3_multi_35d.inp ww3_multi.inp
-   cp    @[INPUTDATA_ROOT]/${WW3_IC}/*.000000.restart.gwes_30m ./restart.gwes_30m
+   cp    @[INPUTDATA_ROOT_BMIC]/${SYEAR}${SMONTH}${SDAY}${SHOUR}/ww3/*.000000.restart.gwes_30m ./restart.gwes_30m
   else
    cp    @[INPUTDATA_ROOT_WW3]/ww3_multi.inp .
   fi
@@ -74,9 +70,9 @@ if [ $WARM_START = .F. ]; then
   # ICs
   cp    @[INPUTDATA_ROOT]/${FV3_IC}/sfc_data*.nc ./INPUT
   cp    @[INPUTDATA_ROOT]/${FV3_IC}/gfs_data*.nc ./INPUT
-  cp    @[INPUTDATA_ROOT]/${MOM6_IC}/MOM*.nc ./INPUT
+  cp    @[INPUTDATA_ROOT_BMIC]/${SYEAR}${SMONTH}${SDAY}${SHOUR}/mom6_da/MOM*.nc ./INPUT
   # the BM ICs are still named cice5 and need to remain so until P5.0 is completed
-  cp    @[INPUTDATA_ROOT]/${CICE_IC}/cice5_model_@[ICERES].*.nc ./cice_model.res.nc
+  cp    @[INPUTDATA_ROOT_BMIC]/${SYEAR}${SMONTH}${SDAY}${SHOUR}/cpc/cice5_model_@[ICERES].*.nc ./cice_model.res.nc
 else
   # NOTE: bmark-wave model is not currently tested for restart
   # Restart files
