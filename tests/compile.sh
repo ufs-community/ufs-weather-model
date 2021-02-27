@@ -94,6 +94,10 @@ if [[ "${MAKE_OPT}" == *"OPENMP=N"* ]]; then
   CMAKE_FLAGS="${CMAKE_FLAGS} -DOPENMP=OFF"
 fi
 
+if [[ "${MAKE_OPT}" == *"PNETCDF=Y"* ]]; then
+  CMAKE_FLAGS="${CMAKE_FLAGS} -DPNETCDF=Y"
+fi
+
 if [[ "${MAKE_OPT}" == *"MULTI_GASES=Y"* ]]; then
     CMAKE_FLAGS="${CMAKE_FLAGS} -DMULTI_GASES=ON"
 else
