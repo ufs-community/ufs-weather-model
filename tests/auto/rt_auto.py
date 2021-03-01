@@ -65,28 +65,27 @@ def input_data(args):
     }]
     action_list_dict = [{
         'name': 'RT',
-        'command': 'export RT_COMPILER="intel" && cd tests && /bin/bash --login ./rt.sh -e',
+        'command': 'cd tests && /bin/bash --login ./rt.sh -e',
         'callback_fnc': 'move_rt_logs'
-    },
-    {
-        'name': 'GRT',
-        'command': 'export RT_COMPILER="gnu" && cd tests && /bin/bash --login ./rt.sh -e -l rt_gnu.conf',
-        'callback_fnc': 'move_grt_logs'
     }]
 
     return machine_dict, repo_list_dict, action_list_dict
 
 def match_label_with_action(machine, actions, label):
     ''' Match the label that initiates a job with an action in the dict'''
+    # <machine>-<compiler>-<test> i.e. hera-gnu-RT
+    # RT = full regression test suite
     logger = logging.getLogger('MATCH_LABEL_WITH_ACTIONS')
     split_label = label.name.split('-')
-
-    if len(split_label) != 3: return False
-    if not re.match(split_label[0], 'Auto'): return False
-    if not re.match(split_label[2], machine['name']): return False
-    action_match = next((action for action in actions if re.match(action['name'], split_label[1])), False)
-
-    return action_match
+    if len(split_label) != 3: return False, False #Make sure it has three parts
+    if not re.match(split_label[0], machine['name']): return False, False #First check machine name matches
+    compiler = split_label[1]
+    if not str(compiler) in ["intel", "gnu"]: return False, False
+    action_match = next((action for action in actions if re.match(action['name'], split_label[2])), False)
+    action_match["command"] = f'export RT_COMPILER="{compiler}" && {action_match["command"]}'
+    if split_label[2] == "RT" and compiler == "gnu":
+        action_match["command"] = f'{action_match["command"]} -l rt_gnu.conf'
+    return compiler, action_match
 
 
 def get_preqs_with_actions(repos, machine, ghinterface_obj, actions):
@@ -97,9 +96,10 @@ def get_preqs_with_actions(repos, machine, ghinterface_obj, actions):
     preq_labels = [{'preq': pr, 'label': label} for pr in each_pr for label in pr.get_labels()]
 
     for i, pr_label in enumerate(preq_labels):
-        match = match_label_with_action(machine, actions, pr_label['label'])
+        compiler, match = match_label_with_action(machine, actions, pr_label['label'])
         if match:
             preq_labels[i]['action'] = match
+            preq_labels[i]['compiler'] = compiler
         else:
             preq_labels[i] = False
 
@@ -135,15 +135,10 @@ class Job:
         self.logger.info(f'Removing Label: {self.preq_dict["label"]}')
         self.preq_dict['preq'].remove_from_labels(self.preq_dict['label'])
 
-    def add_pr_label(self):
-        ''' Removes the pull request label that initiated the job run from PR '''
-        self.logger.info(f'Removing Label: {self.preq_dict["label"]}')
-        self.preq_dict['preq'].add_to_labels(self.preq_dict['label'])
-
     def check_label_before_job_start(self):
         # LETS Check the label still exists before the start of the job in the
         # case of multiple jobs
-        label_to_check = f'Auto-{self.preq_dict["action"]["name"]}-{self.machine["name"]}'
+        label_to_check = f'{self.machine["name"]}-{self.preq_dict["compiler"]}-{self.preq_dict["action"]["name"]}'
         labels = self.preq_dict['preq'].get_labels()
         label_match = next((label for label in labels if re.match(label.name, label_to_check)), False)
 
@@ -226,9 +221,12 @@ class Job:
     def run_function(self):
         ''' Run the command associted with the label used to initiate this job '''
         logger = logging.getLogger('JOB/RUN_FUNCTION')
+        compiler = self.preq_dict['compiler']
+        logger.info(f'Compiler being used for command is {compiler}')
+        command = self.preq_dict["action"]["command"]
         try:
-            logger.info(f'Running: "{self.preq_dict["action"]["command"]}" in "{self.pr_repo_loc}"')
-            output = subprocess.Popen(self.preq_dict['action']['command'], cwd=self.pr_repo_loc, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            logger.info(f'Running: "{command}" in "{self.pr_repo_loc}"')
+            output = subprocess.Popen(command, cwd=self.pr_repo_loc, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             out,err = output.communicate()
             out = [] if not out else out.decode('utf8').split('\n')
             err = [] if not err else err.decode('utf8').split('\n')
@@ -239,8 +237,13 @@ class Job:
             assert(e)
         else:
             if output.returncode != 0:
-                self.add_pr_label()
-                logger.critical(f'{self.preq_dict["action"]["command"]} Failed')
+                comment_text = f'rt.sh failed \n'\
+                               f'machine: {self.machine["name"]} \n'\
+                               f'compiler: {self.preq_dict["compiler"]}\n'\
+                               f'STDOUT: {out} \n'\
+                               f'STDERR: {err}'
+                self.preq_dict['preq'].create_issue_comment(comment_text)
+                logger.critical(f'{command} Failed')
                 [logger.critical(f'stdout: {item}') for item in out if not None]
                 [logger.critical(f'stderr: {eitem}') for eitem in err if not None]
             else:
@@ -260,7 +263,7 @@ class Job:
     def move_rt_logs(self):
         ''' This is the callback function associated with the "RT" command '''
         logger = logging.getLogger('JOB/MOVE_RT_LOGS')
-        rt_log = f'tests/RegressionTests_{self.machine["name"]}.intel.log'
+        rt_log = f'tests/RegressionTests_{self.machine["name"]}.{self.preq_dict["compiler"]}.log'
         filepath = f'{self.pr_repo_loc}/{rt_log}'
         if os.path.exists(filepath):
             move_rt_commands = [
@@ -275,25 +278,6 @@ class Job:
         else:
             logger.critical('Could not find Intel RT log')
             raise FileNotFoundError('Could not find Intel RT log')
-
-    def move_grt_logs(self):
-        ''' This is the callback function associated with the "GRT" command '''
-        logger = logging.getLogger('JOB/MOVE_GRT_LOGS')
-        rt_log = f'tests/RegressionTests_{self.machine["name"]}.gnu.log'
-        filepath = f'{self.pr_repo_loc}/{rt_log}'
-        if os.path.exists(filepath):
-            move_grt_commands = [
-                [f'git add {rt_log}', self.pr_repo_loc],
-                [f'git commit -m "Auto: Added Updated RT Log file: {rt_log} skip-ci"', self.pr_repo_loc],
-                [f'git pull --no-edit origin {self.branch}', self.pr_repo_loc],
-                ['sleep 10', self.pr_repo_loc],
-                [f'git push origin {self.branch}', self.pr_repo_loc]
-            ]
-            self.run_commands(move_grt_commands)
-
-        else:
-            logger.critical('Could not find Gnu RT log')
-            raise FileNotFoundError('Could not find Gnu RT log')
 
 def main():
 
@@ -321,7 +305,6 @@ def main():
     # get all pull requests from the GitHub object
     logger.info('Getting all pull requests, labels and actions applicable to this machine.')
     preq_dict = get_preqs_with_actions(repos, machine, ghinterface_obj, actions)
-
     # add Job objects and run them
     logger.info('Adding all jobs to an object list and running them.')
     jobs = [Job(pullreq, ghinterface_obj, machine) for pullreq in preq_dict]

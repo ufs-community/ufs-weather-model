@@ -6,6 +6,7 @@ if [ -f "accesstoken.sh" ]; then
     source ./accesstoken.sh
   else
     echo "accesstoken.sh permissions NEED to be set to 600 before starting"
+    exit 1
   fi
 else
   echo "Please create accesstoken.sh (600) with the following content\n"
