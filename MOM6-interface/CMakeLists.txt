@@ -27,7 +27,7 @@ include("mom6_files.cmake")
 ### Use common object library for building target library
 add_library(mom6_obj OBJECT ${mom6_src_files})
 set_target_properties(mom6_obj PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
-target_include_directories(mom6_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
+target_include_directories(mom6_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
 target_include_directories(mom6_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/config_src/dynamic>
                                             $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/src/framework>)
 target_link_libraries(mom6_obj PRIVATE fms
