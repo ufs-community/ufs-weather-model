@@ -1,7 +1,7 @@
 #!/bin/bash --login
 set -eux
 if [ -f "accesstoken.sh" ]; then
-  if [ $(stat -c "%a" "accesstoken.sh") == "600" ]; then
+  if [ $(stat -L -c "%a" "accesstoken.sh") == "600" ]; then
     echo "Sourcing accesstoken.sh"
     source ./accesstoken.sh
   else

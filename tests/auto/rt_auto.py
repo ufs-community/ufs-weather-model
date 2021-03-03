@@ -42,7 +42,7 @@ def parse_args_in():
     parser = argparse.ArgumentParser()
 
     # Setup Input Arguments
-    choices = ['hera', 'orion', 'gaea', 'jet', 'wcoss_dell_p3']
+    choices = ['cheyenne', 'hera', 'orion', 'gaea', 'jet', 'wcoss_dell_p3']
     parser.add_argument('-m', '--machine', help='Machine name', required=True, choices=choices, type=str)
     parser.add_argument('-w', '--workdir', help='Working directory', required=True, type=str)
 
