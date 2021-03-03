@@ -37,7 +37,7 @@ elif [[ $HOSTNAME == gaea* ]]; then
   export ACCNR="nggps_emc" # This applies to Brian.Curtis, may need change later
   export PATH=/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/envs/ufs-weather-model/bin:$PATH
   export PYTHONPATH=/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/lib/python3.8/site-packages
-elif [[ $HOSTNAME = cheyenne* ]]; then
+elif [[ $HOSTNAME == *.cheyenne.ucar.edu ]]; then
   MACHINE_NAME=cheyenne
   WORKDIR=/glade/work/heinzell/fv3/ufs-weather-model/auto-rt
   export ACCNR="P48503002"
