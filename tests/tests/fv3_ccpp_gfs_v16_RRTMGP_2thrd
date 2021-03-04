@@ -1,12 +1,12 @@
 ###############################################################################
 #
-#  FV3 CCPP GFDL-MPrad Noah MP test
+#  FV3 CCPP GFS v16 w/ RRTMGP test using two openMP threads
 #
 ###############################################################################
 
-export TEST_DESCR="Compare FV3 CCPP GFDL-MP radiation interaction and Noah MP option with the control"
+export TEST_DESCR="Compare FV3 CCPP GFS v16 w/ RRTMGP using two threads results with previous trunk version"
 
-export CNTL_DIR=fv3_gfdlmprad_noahmp
+export CNTL_DIR=fv3_gfs_v16_RRTMGP
 
 export LIST_FILES="atmos_4xdaily.tile1.nc \
                    atmos_4xdaily.tile2.nc \
@@ -14,10 +14,30 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
                    atmos_4xdaily.tile4.nc \
                    atmos_4xdaily.tile5.nc \
                    atmos_4xdaily.tile6.nc \
-                   phyf000.nemsio   \
-                   phyf024.nemsio   \
-                   dynf000.nemsio   \
-                   dynf024.nemsio   \
+                   phyf000.tile1.nc \
+                   phyf000.tile2.nc \
+                   phyf000.tile3.nc \
+                   phyf000.tile4.nc \
+                   phyf000.tile5.nc \
+                   phyf000.tile6.nc \
+                   phyf024.tile1.nc \
+                   phyf024.tile2.nc \
+                   phyf024.tile3.nc \
+                   phyf024.tile4.nc \
+                   phyf024.tile5.nc \
+                   phyf024.tile6.nc \
+                   dynf000.tile1.nc \
+                   dynf000.tile2.nc \
+                   dynf000.tile3.nc \
+                   dynf000.tile4.nc \
+                   dynf000.tile5.nc \
+                   dynf000.tile6.nc \
+                   dynf024.tile1.nc \
+                   dynf024.tile2.nc \
+                   dynf024.tile3.nc \
+                   dynf024.tile4.nc \
+                   dynf024.tile5.nc \
+                   dynf024.tile6.nc \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -53,23 +73,17 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
 
 
 export_fv3
+export THRD=2
+export TASKS=$TASKS_thrd
+export TPN=$TPN_thrd
+export INPES=$INPES_thrd
+export JNPES=$JNPES_thrd
+export WRTTASK_PER_GROUP=12
 
 DT_ATMOS="1200"
-export LGFDLMPRAD=.true.
-export EFFR_IN=.true.
-export LSM=2
-export LANDICE=.false.
-export LHEATSTRG=.false.
-export IALB=2
-export IEMS=2
+export DO_RRTMGP=.T.
 
-
-export OUTPUT_GRID="'gaussian_grid'"
-export OUTPUT_FILE="'nemsio'"
-export WRITE_NEMSIOFLIP=.true.
-export WRITE_FSYNCFLAG=.true.
-
-export CCPP_SUITE=FV3_GFS_2017_gfdlmp_noahmp
-export INPUT_NML=ccpp_gfdlmp.nml.IN
-export FV3_RUN=ccpp_gfdlmp_run.IN
+export FV3_RUN=ccpp_gfs_v16_run.IN
+export CCPP_SUITE=FV3_GFS_v16_RRTMGP
+export INPUT_NML=ccpp_v16_c96_rrtmgp.nml.IN
 
