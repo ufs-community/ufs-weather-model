@@ -237,7 +237,8 @@ class Job:
             assert(e)
         else:
             if output.returncode != 0:
-                comment_text = f'rt.sh failed \n'\
+                comment_text = f'Script rt.sh failed \n'\
+                               f'location: {self.pr_repo_loc} \n'\
                                f'machine: {self.machine["name"]} \n'\
                                f'compiler: {self.preq_dict["compiler"]}\n'\
                                f'STDOUT: {out} \n'\
@@ -266,18 +267,29 @@ class Job:
         rt_log = f'tests/RegressionTests_{self.machine["name"]}.{self.preq_dict["compiler"]}.log'
         filepath = f'{self.pr_repo_loc}/{rt_log}'
         if os.path.exists(filepath):
-            move_rt_commands = [
-                [f'git pull --ff-only origin {self.branch}', self.pr_repo_loc],
-                [f'git add {rt_log}', self.pr_repo_loc],
-                [f'git commit -m "Auto: Add RT Log file: {rt_log} skip-ci"', self.pr_repo_loc],
-                ['sleep 10', self.pr_repo_loc],
-                [f'git push origin {self.branch}', self.pr_repo_loc]
-            ]
-            self.run_commands(move_rt_commands)
+            #check_for_success
+            with open(filepath) as f:
+                if 'SUCCESSFUL' in f.read():
+                    move_rt_commands = [
+                        [f'git pull --ff-only origin {self.branch}', self.pr_repo_loc],
+                        [f'git add {rt_log}', self.pr_repo_loc],
+                        [f'git commit -m "PASSED: {self.machine["name"]}.{self.preq_dict["compiler"]}. Log file uploaded. skip-ci"', self.pr_repo_loc],
+                        ['sleep 10', self.pr_repo_loc],
+                        [f'git push origin {self.branch}', self.pr_repo_loc]
+                    ]
+                    self.run_commands(move_rt_commands)
+                else:
+                    comment_text = f'REGRESSION TEST FAILED \n'\
+                                   f'location: {self.pr_repo_loc} \n'\
+                                   f'machine: {self.machine["name"]} \n'\
+                                   f'compiler: {self.preq_dict["compiler"]}\n'\
+                                   'Please make changes and add the following label back: '\
+                                   f'{self.machine["name"]}-{self.preq_dict["compiler"]}-{self.preq_dict["action"]["name"]}'
+                    self.preq_dict['preq'].create_issue_comment(comment_text)
 
         else:
-            logger.critical('Could not find Intel RT log')
-            raise FileNotFoundError('Could not find Intel RT log')
+            logger.critical(f'Could not find {self.machine["name"]}.{self.preq_dict["compiler"]} RT log')
+            raise FileNotFoundError(f'Could not find {self.machine["name"]}.{self.preq_dict["compiler"]} RT log')
 
 def main():
 
