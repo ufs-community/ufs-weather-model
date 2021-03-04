@@ -16,7 +16,7 @@
   fhout = 3
   fhmaxhf = 120
   fhouthf = 1
-  ccpp_suite = 'FV3_GFS_v15p2'
+  ccpp_suite = '@[CCPP_SUITE]'
 /
 
 &diag_manager_nml
@@ -144,8 +144,9 @@
   random_clds  = .false.
   trans_trac   = .true.
   cnvcld       = .true.
-  imfshalcnv   = 2
-  imfdeepcnv   = 2
+  imfshalcnv   = @[IMFSHALCNV]
+  imfdeepcnv   = @[IMFDEEPCNV]
+  ras          = @[RAS]
   cdmbgwd      = 0.14,1.8,1.0,1.0
   prslrd0      = 0.
   ivegsrc      = 1
@@ -162,8 +163,8 @@
   do_sppt      = .true.
   do_shum      = .true.
   do_skeb      = .true.
-       lndp_type      = @[LNDP_TYPE]
-       n_var_lndp     = @[N_VAR_LNDP]
+  lndp_type    = @[LNDP_TYPE]
+  n_var_lndp   = @[N_VAR_LNDP]
 /
 
 &gfdl_cloud_microphysics_nml
