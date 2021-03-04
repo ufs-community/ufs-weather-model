@@ -630,8 +630,8 @@ EOF
       RT_SUFFIX="_repro"
       BL_SUFFIX="_repro"
     else
-      RT_SUFFIX="_prod"
-      BL_SUFFIX="_ccpp"
+      RT_SUFFIX=""
+      BL_SUFFIX=""
     fi
 
     if [[ ${MAKE_OPT^^} =~ "WW3=Y" ]]; then

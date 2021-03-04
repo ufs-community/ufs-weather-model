@@ -1,0 +1,30 @@
+rsync -arv @[INPUTDATA_ROOT]/FV3_regional_input_data/. .
+rsync -arv @[INPUTDATA_ROOT]/@[INPUT_DIR]/model_configure .
+
+rm -rf INPUT RESTART
+mkdir  INPUT RESTART
+
+rsync -arv @[INPUTDATA_ROOT]/fv3_regional_control/INPUT/. INPUT/.
+
+if [ $WARM_START = .T. ]; then
+    cp ../fv3_regional_control${RT_SUFFIX}/RESTART/20181015.120000.coupler.res             INPUT/coupler.res
+    cp ../fv3_regional_control${RT_SUFFIX}/RESTART/20181015.120000.fv_core.res.nc          INPUT/fv_core.res.nc
+    cp ../fv3_regional_control${RT_SUFFIX}/RESTART/20181015.120000.fv_core.res.tile1.nc    INPUT/fv_core.res.tile1.nc
+    cp ../fv3_regional_control${RT_SUFFIX}/RESTART/20181015.120000.fv_srf_wnd.res.tile1.nc INPUT/fv_srf_wnd.res.tile1.nc
+    cp ../fv3_regional_control${RT_SUFFIX}/RESTART/20181015.120000.fv_tracer.res.tile1.nc  INPUT/fv_tracer.res.tile1.nc
+    cp ../fv3_regional_control${RT_SUFFIX}/RESTART/20181015.120000.phy_data.nc             INPUT/phy_data.nc
+    cp ../fv3_regional_control${RT_SUFFIX}/RESTART/20181015.120000.sfc_data.nc             INPUT/sfc_data.nc
+fi
+if [ $WRITE_RESTART_WITH_BCS = .true. ]; then
+    cp @[INPUTDATA_ROOT]/fv3_regional_control/RESTART/fv_core.res.tile1_new.nc                           RESTART/fv_core.res.tile1_new.nc
+    cp @[INPUTDATA_ROOT]/fv3_regional_control/RESTART/fv_tracer.res.tile1_new.nc                         RESTART/fv_tracer.res.tile1_new.nc
+fi
+
+if [ $OZ_PHYS_NEW = .T. ]; then
+  cp  @[INPUTDATA_ROOT]/FV3_input_data/ozprdlos_2015_new_sbuvO3_tclm15_nuchem.f77 ./global_o3prdlos.f77
+elif [ $OZ_PHYS_OLD = .T. ]; then
+  cp  @[INPUTDATA_ROOT]/FV3_input_data/INPUT/global_o3prdlos.f77 .
+fi
+if [ $H2O_PHYS = .T. ]; then
+  cp  @[INPUTDATA_ROOT]/FV3_input_data/global_h2o_pltc.f77 ./global_h2oprdlos.f77
+fi
