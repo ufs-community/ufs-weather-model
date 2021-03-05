@@ -16,6 +16,7 @@ elseif(CMAKE_Fortran_COMPILER_ID MATCHES "Intel")
 else()
   message(WARNING "Fortran compiler with ID ${CMAKE_Fortran_COMPILER_ID} will be used with CMake default options")
 endif()
+set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} ${MOM6_Extra_FORTRAN_FLAGS}")
 
 # User option to build MOM6 solo executable
 set(MOM6SOLO OFF CACHE BOOL "Build MOM6 solo")
