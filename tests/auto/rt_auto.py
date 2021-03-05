@@ -59,8 +59,11 @@ def input_data(args):
         'workdir': args.workdir
     }
     repo_list_dict = [{
+        # 'name': 'ufs-weather-model',
+        # 'address': 'ufs-community/ufs-weather-model',
+        # 'base': 'develop'
         'name': 'ufs-weather-model',
-        'address': 'ufs-community/ufs-weather-model',
+        'address': 'BrianCurtis-NOAA/ufs-weather-model',
         'base': 'develop'
     }]
     action_list_dict = [{
@@ -144,31 +147,6 @@ class Job:
 
         return label_match
 
-
-    def send_log_name_as_comment(self, log_filename):
-        logger = logging.getLogger('JOB/SEND_LOG_NAME_AS_COMMENT')
-
-        #Remove LAST MONTHS LOGS
-        logger.info('Removing last months logs (if any)')
-        last_month = datetime.date.today().replace(day=1) - datetime.timedelta(days=1)
-        rm_command = [[f'rm rt_auto_*_{last_month.strftime("%Y%m")}*.log', os.getcwd()]]
-        logger.info(f'Running "{rm_command}"')
-        try:
-            self.run_commands(rm_command)
-        except Exception as e:
-            logger.warning(f'"{rm_command}" failed with error:{e}')
-
-        # Add log information to PR.
-        comment_text = f'Log Name:{log_filename}\n'\
-                       f'Log Location:{os.getcwd()}\n'\
-                       'Logs are kept for one month'
-        try:
-            self.preq_dict['preq'].create_issue_comment(comment_text)
-        except Exception as e:
-            logger.warning('Creating comment with log location failed with:{e}')
-        else:
-            logger.info(f'{comment_text}')
-
     def run_commands(self, commands_with_cwd):
         logger = logging.getLogger('JOB/RUN_COMMANDS')
         for command, in_cwd in commands_with_cwd:
@@ -179,14 +157,14 @@ class Job:
                 out = [] if not out else out.decode('utf8').split('\n')
                 err = [] if not err else err.decode('utf8').split('\n')
             except Exception as e:
-                logger.critical(e)
-                [logger.critical(f'stdout: {item}') for item in out if not None]
-                [logger.critical(f'stderr: {eitem}') for eitem in err if not None]
-                assert(e)
+                self.job_failed(logger, f'Command {command}', exception=e, out=out, err=err)
+                # logger.critical(e)
+                # [logger.critical(f'stdout: {item}') for item in out if not None]
+                # [logger.critical(f'stderr: {eitem}') for eitem in err if not None]
+                # assert(e)
             else:
                 logger.info(f'Finished running: {command}')
                 [logger.debug(f'stdout: {item}') for item in out if not None]
-                [logger.debug(f'stderr: {eitem}') for eitem in err if not None]
 
     def remove_pr_dir(self):
         logger = logging.getLogger('JOB/REMOVE_PR_DIR')
@@ -231,22 +209,24 @@ class Job:
             out = [] if not out else out.decode('utf8').split('\n')
             err = [] if not err else err.decode('utf8').split('\n')
         except Exception as e:
+            self.job_failed(logger, f'Command {command}', exception=e, out=out, err=err)
             logger.critical(e)
             [logger.critical(f'stdout: {item}') for item in out if not None]
             [logger.critical(f'stderr: {eitem}') for eitem in err if not None]
             assert(e)
         else:
             if output.returncode != 0:
-                comment_text = f'Script rt.sh failed \n'\
-                               f'location: {self.pr_repo_loc} \n'\
-                               f'machine: {self.machine["name"]} \n'\
-                               f'compiler: {self.preq_dict["compiler"]}\n'\
-                               f'STDOUT: {out} \n'\
-                               f'STDERR: {err}'
-                self.preq_dict['preq'].create_issue_comment(comment_text)
-                logger.critical(f'{command} Failed')
-                [logger.critical(f'stdout: {item}') for item in out if not None]
-                [logger.critical(f'stderr: {eitem}') for eitem in err if not None]
+                # comment_text = f'Script rt.sh failed \n'\
+                #                f'location: {self.pr_repo_loc} \n'\
+                #                f'machine: {self.machine["name"]} \n'\
+                #                f'compiler: {self.preq_dict["compiler"]}\n'\
+                #                f'STDOUT: {out} \n'\
+                #                f'STDERR: {err}'
+                # self.preq_dict['preq'].create_issue_comment(comment_text)
+                self.job_failed(logger, "Script rt.sh", exception=SystemExit, out=out, err=err)
+                # logger.critical(f'{command} Failed')
+                # [logger.critical(f'stdout: {item}') for item in out if not None]
+                # [logger.critical(f'stderr: {eitem}') for eitem in err if not None]
             else:
                 try:
                     logger.info(f'Attempting to run callback: {self.preq_dict["action"]["callback_fnc"]}')
@@ -258,7 +238,21 @@ class Job:
                 else:
                     logger.info(f'Finished callback {self.preq_dict["action"]["callback_fnc"]}')
                     [logger.debug(f'stdout: {item}') for item in out if not None]
-                    [logger.debug(f'stderr: {eitem}') for eitem in err if not None]
+
+    def job_failed(self, logger, job_name, STDOUT=True, exception=None, out=None, err=None):
+        comment_text = f'{job_name} FAILED \n'\
+                       f'Repo location: {self.pr_repo_loc} \n'\
+                       f'Machine: {self.machine["name"]} \n'\
+                       f'Compiler: {self.preq_dict["compiler"]}'
+        if STDOUT:
+            comment_text.append('\n'\
+                                f'STDOUT: {[item for item in out if not None]} \n'\
+                                f'STDERR: {[eitem for eitem in err if not None]} \n')
+        comment_text.append('Please make changes and add the following label back:\n'\
+                            f'{self.machine["name"]}-{self.preq_dict["compiler"]}-{self.preq_dict["action"]["name"]}')
+        logger.critical(comment_text)
+        self.preq_dict['preq'].create_issue_comment(comment_text)
+        raise exception(f'{[eitem for eitem in err if not None]}')
 
     # Add Callback Functions After Here
     def move_rt_logs(self):
@@ -267,7 +261,6 @@ class Job:
         rt_log = f'tests/RegressionTests_{self.machine["name"]}.{self.preq_dict["compiler"]}.log'
         filepath = f'{self.pr_repo_loc}/{rt_log}'
         if os.path.exists(filepath):
-            #check_for_success
             with open(filepath) as f:
                 if 'SUCCESSFUL' in f.read():
                     move_rt_commands = [
@@ -279,13 +272,14 @@ class Job:
                     ]
                     self.run_commands(move_rt_commands)
                 else:
-                    comment_text = f'REGRESSION TEST FAILED \n'\
-                                   f'location: {self.pr_repo_loc} \n'\
-                                   f'machine: {self.machine["name"]} \n'\
-                                   f'compiler: {self.preq_dict["compiler"]}\n'\
-                                   'Please make changes and add the following label back: '\
-                                   f'{self.machine["name"]}-{self.preq_dict["compiler"]}-{self.preq_dict["action"]["name"]}'
-                    self.preq_dict['preq'].create_issue_comment(comment_text)
+                    # comment_text = f'REGRESSION TEST FAILED \n'\
+                    #                f'location: {self.pr_repo_loc} \n'\
+                    #                f'machine: {self.machine["name"]} \n'\
+                    #                f'compiler: {self.preq_dict["compiler"]}\n'\
+                    #                'Please make changes and add the following label back: '\
+                    #                f'{self.machine["name"]}-{self.preq_dict["compiler"]}-{self.preq_dict["action"]["name"]}'
+                    # self.preq_dict['preq'].create_issue_comment(comment_text)
+                    self.job_failed(logger, "Regression Tests", STDOUT=False)
 
         else:
             logger.critical(f'Could not find {self.machine["name"]}.{self.preq_dict["compiler"]} RT log')
@@ -331,9 +325,6 @@ def main():
                 logger.info('Calling run_function')
                 job.run_function()
                 logger.info('Calling remove_pr_dir')
-                # job.remove_pr_dir()
-                # logger.info('Calling send_log_name_as_comment')
-                job.send_log_name_as_comment(log_filename)
             except Exception as e:
                 logger.critical(e)
                 assert(e)
