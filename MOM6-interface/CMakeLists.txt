@@ -23,8 +23,6 @@ set(MOM6SOLO OFF CACHE BOOL "Build MOM6 solo")
 
 # Too many files to list, so include them via this file
 include("mom6_files.cmake")
-#SP LIB
-# sp::sp_d
 ### Use common object library for building target library
 add_library(mom6_obj OBJECT ${mom6_src_files})
 set_target_properties(mom6_obj PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
