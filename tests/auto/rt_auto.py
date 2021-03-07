@@ -58,11 +58,8 @@ def input_data(args):
         'workdir': args.workdir
     }
     repo_list_dict = [{
-        # 'name': 'ufs-weather-model',
-        # 'address': 'ufs-community/ufs-weather-model',
-        # 'base': 'develop'
         'name': 'ufs-weather-model',
-        'address': 'BrianCurtis-NOAA/ufs-weather-model',
+        'address': 'ufs-community/ufs-weather-model',
         'base': 'develop'
     }]
     action_list_dict = [{
