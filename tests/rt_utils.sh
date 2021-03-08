@@ -154,6 +154,9 @@ submit_and_wait() {
         echo "Slurm unknown status ${status}. Check sacct ..."
         sacct -n -j ${slurm_id} --format=JobID,state%20,Jobname%20
         status_label=$( sacct -n -j ${slurm_id} --format=JobID,state%20,Jobname%20 | grep "^${slurm_id}" | grep ${JBNME} | awk '{print $2}' )
+        if [[ $status_label = 'FAILED' ]]; then
+            test_status='FAIL'
+        fi
       fi
 
     elif [[ $SCHEDULER = 'lsf' ]]; then
@@ -267,11 +270,29 @@ check_results() {
 
       else
 
-        d=$( cmp ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i | wc -l )
+        cmp ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i >/dev/null 2>&1 && d=$? || d=$?
+        if [[ $d -eq 2 ]]; then
+          echo "....CMP ERROR" >> ${REGRESSIONTEST_LOG}
+          echo "....CMP ERROR"
+          exit 1
+        fi
 
-        if [[ $d -ne 0 ]] ; then
-          echo ".......NOT OK" >> ${REGRESSIONTEST_LOG}
-          echo ".......NOT OK"
+        if [[ $d -eq 1 && ${i##*.} == 'nc' ]] ; then
+          if [[ ${MACHINE_ID} =~ orion || ${MACHINE_ID} =~ hera || ${MACHINE_ID} =~ wcoss_dell_p3 || ${MACHINE_ID} =~ wcoss_cray || ${MACHINE_ID} =~ cheyenne || ${MACHINE_ID} =~ gaea || ${MACHINE_ID} =~ jet ]]; then
+            printf ".......ALT CHECK.." >> ${REGRESSIONTEST_LOG}
+            printf ".......ALT CHECK.."
+            ${PATHRT}/compare_ncfile.py ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i >/dev/null 2>&1 && d=$? || d=$?
+            if [[ $d -eq 1 ]]; then
+              echo "....ERROR" >> ${REGRESSIONTEST_LOG}
+              echo "....ERROR"
+              exit 1
+            fi
+          fi
+        fi
+
+        if [[ $d -ne 0 ]]; then
+          echo "....NOT OK" >> ${REGRESSIONTEST_LOG}
+          echo "....NOT OK"
           test_status='FAIL'
         else
           echo "....OK" >> ${REGRESSIONTEST_LOG}
@@ -360,16 +381,17 @@ rocoto_create_compile_task() {
 
   NATIVE=""
   BUILD_CORES=8
+  BUILD_WALLTIME="00:30:00"
   if [[ ${MACHINE_ID} == wcoss_dell_p3 ]]; then
     BUILD_CORES=1
     NATIVE="<memory>8G</memory> <native>-R 'affinity[core(1)]'</native>"
+    BUILD_WALLTIME="01:00:00"
   fi
   if [[ ${MACHINE_ID} == wcoss_cray ]]; then
     BUILD_CORES=24
     rocoto_cmd="aprun -n 1 -j 1 -N 1 -d $BUILD_CORES $rocoto_cmd"
-    NATIVE="<exclusive></exclusive>"
+    NATIVE="<exclusive></exclusive> <envar><name>PATHTR</name><value>&PATHTR;</value></envar>"
   fi
-  BUILD_WALLTIME="00:30:00"
   if [[ ${MACHINE_ID} == jet ]]; then
     BUILD_WALLTIME="01:00:00"
   fi

@@ -63,8 +63,6 @@ fi
 
 if [ $BUILD = "true" ]; then
 
-  sed -i -e '/affinity.c/d' ../../CMakeLists.txt
-
   sudo docker build --build-arg test_name=$TEST_NAME \
                     --build-arg build_case=$BUILD_CASE \
                     --no-cache \
@@ -74,8 +72,8 @@ if [ $BUILD = "true" ]; then
 
 elif [ $RUN == "true" ]; then
 
-  sudo docker run -d --rm -v DataVolume:/tmp minsukjinoaa/fv3-input-data:develop-20200713
-  sudo docker run -d -e test_case=${TEST_CASE} -v DataVolume:/home/tester/data/NEMSfv3gfs/develop-20200713 --name my-container ${IMG_NAME}
+  sudo docker run -d --rm -v DataVolume:/tmp minsukjinoaa/fv3-input-data:input-data-20210115
+  sudo docker run -d -e test_case=${TEST_CASE} -v DataVolume:/home/builder/data/NEMSfv3gfs/input-data-20210115 --name my-container ${IMG_NAME}
 
   echo 'cache,rss,shmem' >memory_stat
   sleep 3

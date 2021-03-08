@@ -28,6 +28,7 @@ list(APPEND cice_shared_files
   CICE/cicecore/cicedynB/dynamics/ice_dyn_evp.F90
   CICE/cicecore/cicedynB/dynamics/ice_dyn_evp_1d.F90
   CICE/cicecore/cicedynB/dynamics/ice_dyn_shared.F90
+  CICE/cicecore/cicedynB/dynamics/ice_dyn_vp.F90
   CICE/cicecore/cicedynB/dynamics/ice_transport_driver.F90
   CICE/cicecore/cicedynB/dynamics/ice_transport_remap.F90
 
