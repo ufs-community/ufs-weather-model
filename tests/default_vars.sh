@@ -552,6 +552,8 @@ export NSTF_NAME='0,0,0,0,0'
 export DZ_MIN='2'
 export PSM_BC='0'
 export MIN_SEAICE='1.0e-11'
+export DDDMP='0.1'
+export FSICL='99999'
 
 # resolution dependent settings
 export CDMBWD_c96='0.14,1.8,1.0,1.0'
