@@ -14,6 +14,9 @@ add_library(lnd_comp STATIC
 	    shr_log_mod.F90
 	    shr_sys_mod.F90
 	    spmdMod.F90
+	    noah_driver.F90
+	    #sfc_drv_loop.F90
+	    field_print_debug.F90 # tmp test
 	    )
 set_target_properties(lnd_comp PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_compile_definitions(lnd_comp PUBLIC "${_lnd_comp_defs}")
@@ -24,7 +27,8 @@ target_link_libraries(lnd_comp PUBLIC esmf)
 #target_link_libraries(lnd_comp PUBLIC esmf)
 
 # test this:
-target_include_directories(lnd_comp PRIVATE ${CMAKE_BINARY_DIR}/FV3/ccpp/physics)
+target_include_directories(lnd_comp PRIVATE ${CMAKE_BINARY_DIR}/FV3/ccpp/framework/src
+				    	    ${CMAKE_BINARY_DIR}/FV3/ccpp/physics )
 
 ###############################################################################
 ### Install
