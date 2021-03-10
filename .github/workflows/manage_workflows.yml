@@ -15,22 +15,23 @@ jobs:
       - name: Checkout codes
         uses: actions/checkout@v2
 
-      - name: Check if skip-ci is requested
+      - name: Check if run-ci is requested
         run: |
           sleep 40
           cd ${GITHUB_WORKSPACE}/tests/ci
           repo="${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/actions/runs"
           tr_id=$(cat ${GITHUB_EVENT_PATH} | ./json_helper.py get_trigger_id)
           tr_br=$(cat ${GITHUB_EVENT_PATH} | ./json_helper.py get_trigger_br)
-          check=$(cat ${GITHUB_EVENT_PATH} | ./json_helper.py check_skip)
+          check=$(cat ${GITHUB_EVENT_PATH} | ./json_helper.py check_run)
           echo "TRIGGER_ID=${tr_id}" >> $GITHUB_ENV
           echo "TRIGGER_BR=${tr_br}" >> $GITHUB_ENV
-          echo "skip-ci: ${check}"
-          if [[ $check == yes ]]; then
-            echo "skip-ci is requested"
+          echo "run-ci: ${check}"
+          if [[ $check == no ]]; then
+            echo "run-ci is not requested"
             echo "CURR_JOB=cancelled" >> $GITHUB_ENV
             curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.v3+json" ${repo}/$tr_id/cancel
           else
+            echo "run-ci is requested"
             echo "CURR_JOB=running" >> $GITHUB_ENV
           fi
 
