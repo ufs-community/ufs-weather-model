@@ -30,3 +30,15 @@ fi
 if [ $H2O_PHYS = .T. ]; then
   cp  @[INPUTDATA_ROOT]/FV3_input_data/global_h2o_pltc.f77 ./global_h2oprdlos.f77
 fi
+
+if [[ $POSTAPP = 'lam' ]]; then
+    cp ${PATHRT}/parm/post_itag_fv3lam itag
+    cp ${PATHRT}/parm/postxconfig-NT-fv3lam.txt postxconfig-NT.txt
+    cp ${PATHRT}/parm/postxconfig-NT-fv3lam.txt postxconfig-NT_FH00.txt
+    cp ${PATHRT}/parm/params_grib2_tbl_new params_grib2_tbl_new
+elif [[ $POSTAPP = 'hafs' ]]; then
+    cp ${PATHRT}/parm/post_itag_hafs itag
+    cp ${PATHRT}/parm/postxconfig-NT-hafs.txt postxconfig-NT.txt
+    cp ${PATHRT}/parm/postxconfig-NT-hafs.txt postxconfig-NT_FH00.txt
+    cp ${PATHRT}/parm/params_grib2_tbl_new params_grib2_tbl_new
+fi

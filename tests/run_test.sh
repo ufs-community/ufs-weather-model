@@ -79,22 +79,6 @@ cp ${PATHRT}/modules.fv3_${COMPILE_NR}             modules.fv3
 
 # Get the shell file that loads the "module" command and purges modules:
 cp ${PATHRT}/../NEMS/src/conf/module-setup.sh.inc  module-setup.sh
-if [[ $FV3 = 'true' ]]; then
-  if [[ $POSTAPP = 'global' ]]; then
-    cp ${PATHRT}/parm/post_itag itag
-    cp ${PATHRT}/parm/postxconfig-NT.txt postxconfig-NT.txt
-    cp ${PATHRT}/parm/postxconfig-NT_FH00.txt postxconfig-NT_FH00.txt
-  elif [[ $POSTAPP = 'lam' ]]; then
-    cp ${PATHRT}/parm/post_itag_fv3lam itag
-    cp ${PATHRT}/parm/postxconfig-NT-fv3lam.txt postxconfig-NT.txt
-    cp ${PATHRT}/parm/postxconfig-NT-fv3lam.txt postxconfig-NT_FH00.txt
-  elif [[ $POSTAPP = 'hafs' ]]; then
-    cp ${PATHRT}/parm/post_itag_hafs itag
-    cp ${PATHRT}/parm/postxconfig-NT-hafs.txt postxconfig-NT.txt
-    cp ${PATHRT}/parm/postxconfig-NT-hafs.txt postxconfig-NT_FH00.txt
-  fi
-  cp ${PATHRT}/parm/params_grib2_tbl_new params_grib2_tbl_new
-fi
 
 SRCD="${PATHTR}"
 RUND="${RUNDIR}"
@@ -103,15 +87,7 @@ atparse < ${PATHRT}/fv3_conf/${FV3_RUN:-fv3_run.IN} > fv3_run
 
 atparse < ${PATHRT}/parm/${INPUT_NML:-input.nml.IN} > input.nml
 
-if [[ $FV3_RUN = 'ccpp_regional_run.IN' ]]; then
-  if [[ $POSTAPP = 'hafs' ]]; then
-    atparse < ${PATHRT}/parm/${MODEL_CONFIGURE:-model_configure_hafs.IN} > model_configure
-  else
-    atparse < ${PATHRT}/parm/${MODEL_CONFIGURE:-model_configure_regional.IN} > model_configure
-  fi
-else
-  atparse < ${PATHRT}/parm/${MODEL_CONFIGURE:-model_configure.IN} > model_configure
-fi
+atparse < ${PATHRT}/parm/${MODEL_CONFIGURE:-model_configure.IN} > model_configure
 
 atparse < ${PATHRT}/parm/${NEMS_CONFIGURE:-nems.configure} > nems.configure
 
