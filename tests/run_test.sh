@@ -107,7 +107,7 @@ source ./fv3_run
 if [[ $DATM = 'true' ]] || [[ $S2S = 'true' ]]; then
   edit_ice_in     < ${PATHRT}/parm/ice_in_template > ice_in
   edit_mom_input  < ${PATHRT}/parm/${MOM_INPUT:-MOM_input_template_$OCNRES} > INPUT/MOM_input
-  edit_diag_table < ${PATHRT}/parm/diag_table_template > diag_table
+  edit_diag_table < ${PATHRT}/parm/${DIAG_TABLE:-diag_table_template} > diag_table
   edit_data_table < ${PATHRT}/parm/data_table_template > data_table
   # CMEPS
   cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
@@ -150,7 +150,11 @@ atparse < ${PATHRT}/parm/${NEMS_CONFIGURE:-nems.configure} > nems.configure
 if [[ $SCHEDULER = 'none' ]]; then
 
   ulimit -s unlimited
-  mpiexec -n ${TASKS} ./fv3.exe >out 2> >(tee err >&3)
+  if [[ $CI_TEST = 'true' ]]; then
+    eval mpiexec -n ${TASKS} ${MPI_PROC_BIND} ./fv3.exe >out 2> >(tee err >&3)
+  else
+    mpiexec -n ${TASKS} ./fv3.exe >out 2> >(tee err >&3)
+  fi
 
 else
 
