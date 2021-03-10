@@ -287,13 +287,20 @@ if(S2S)
                                 FRONT_CICE6=ice_comp_nuopc
                                 CMEPS
                                 FRONT_CMEPS=MED
-				FRONT_NOAH=lnd_comp_nuopc)
+  				FRONT_NOAH=lnd_comp_nuopc)
   add_dependencies(ufs mom6 cice cmeps lnd_comp)
   target_link_libraries(ufs PUBLIC mom6
                                    cice
                                    cmeps
-				   lnd_comp
-				   )
+  				   lnd_comp
+  				   )
+  # list(APPEND _ufs_defs_private CMEPS
+  #                               FRONT_CMEPS=MED
+  # 				FRONT_NOAH=lnd_comp_nuopc)
+  # add_dependencies(ufs cmeps lnd_comp)
+  # target_link_libraries(ufs PUBLIC cmeps
+  # 				   lnd_comp
+  # 				   )
 endif()
 
 target_compile_definitions(ufs PRIVATE "${_ufs_defs_private}")

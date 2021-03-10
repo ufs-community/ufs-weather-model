@@ -65,7 +65,9 @@ module lnd_import_export
 
   ! import fields
   character(*), parameter :: Faxa_lwdn           = 'Faxa_lwdn'
-
+  !character(*), parameter :: inst_land_sea_mask  = 'inst_land_sea_mask'
+  character(*), parameter :: foo_atm2lndfield = 'foo_atm2lndfield'
+  
   ! export fields
   character(*), parameter :: Fall_lat       = 'Fall_lat'
   character(*), parameter :: Fall_lwup      = 'Fall_lwup'
@@ -230,6 +232,8 @@ contains
 
     ! from atm
     call fldlist_add(fldsToLnd_num, fldsToLnd, Faxa_lwdn    )
+    !call fldlist_add(fldsToLnd_num, fldsToLnd, inst_land_sea_mask   )
+    call fldlist_add(fldsToLnd_num, fldsToLnd, foo_atm2lndfield    )
 
     ! ! from atm - black carbon deposition fluxes (3)
     ! ! (1) => bcphidry, (2) => bcphodry, (3) => bcphiwet
