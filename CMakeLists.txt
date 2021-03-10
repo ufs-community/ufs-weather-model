@@ -31,8 +31,10 @@ set(QUAD_PRECISION  ON  CACHE BOOL "Enable QUAD_PRECISION (for certain grid metr
 set(REPRO           OFF CACHE BOOL "Enable REPRO mode")
 set(WW3             OFF CACHE BOOL "Enable WW3")
 set(S2S             OFF CACHE BOOL "Enable S2S")
+set(CDEPS           OFF CACHE BOOL "Enable CDEPS")
 set(JEDI_DRIVER     OFF CACHE BOOL "Enable JEDI as top level driver")
 set(DATM            OFF CACHE BOOL "Enable Data Atmosphere")
+set(CDES_DATM       OFF CACHE BOOL "Enable CDEPS Data Atmosphere")
 
 ###############################################################################
 ### Set CMAKE_BUILD_TYPE for DEBUG mode
@@ -78,7 +80,9 @@ message("QUAD_PRECISION ... ${QUAD_PRECISION}")
 message("REPRO ............ ${REPRO}")
 message("WW3 .............. ${WW3}")
 message("S2S .............. ${S2S}")
+message("CDEPS ............ ${CDEPS}")
 message("DATM ............. ${DATM}")
+message("CDEPS_DATM ....... ${CDEPS_DATM}")
 message("")
 
 get_filename_component (C_COMPILER_NAME ${CMAKE_C_COMPILER} NAME)
@@ -105,7 +109,7 @@ if(OPENMP)
 endif()
 find_package(NetCDF REQUIRED C Fortran)
 find_package(ESMF MODULE REQUIRED)
-if(S2S)
+if(S2S OR CDEPS)
   find_package(PIO REQUIRED COMPONENTS C Fortran STATIC)
 endif()
 
@@ -134,6 +138,10 @@ endif()
 
 if(S2S AND 32BIT)
    message(FATAL_ERROR "S2S=ON and 32BIT=ON are incompatible, ABORT!")
+endif()
+
+if(DATM AND CDEPS_DATM)
+   message(FATAL_ERROR "DATM=ON and CDEPS_DATM=ON are incompatible, ABORT!")
 endif()
 
 ###############################################################################
@@ -186,7 +194,7 @@ set_target_properties(fms PROPERTIES PUBLIC_HEADER "${fms_headers}" )
 ###############################################################################
 ### stochastic_physics
 ###############################################################################
-if(NOT DATM)
+if(NOT DATM AND NOT CDEPS_DATM)
   add_subdirectory(stochastic_physics)
 endif()
 
@@ -195,7 +203,7 @@ endif()
 ###############################################################################
 if(DATM)
   add_subdirectory(DATM)
-else()
+elseif(NOT CDEPS_DATM)
   add_subdirectory(FV3)
 endif()
 
@@ -244,6 +252,12 @@ if(S2S)
 endif()
 
 ###############################################################################
+### CDEPS Component
+###############################################################################
+if(CDEPS)
+  add_subdirectory(CDEPS)
+endif()
+
 ### UFS Library [NEMS]
 ###############################################################################
 list(APPEND _nems_srcs NEMS/src/module_NEMS_UTILS.F90
@@ -277,10 +291,11 @@ add_dependencies(ufs fms)
 if(DATM)
   list(APPEND _ufs_defs_private FRONT_DATM=datm)
   add_dependencies(ufs datatm)
-else()
+elseif(NOT CDEPS_DATM)
   list(APPEND _ufs_defs_private FRONT_FV3=fv3gfs_cap_mod)
   add_dependencies(ufs fv3atm)
 endif()
+
 if(JEDI_DRIVER)
   list(APPEND _ufs_defs_private JEDI_DRIVER=ON)
 endif()
@@ -301,6 +316,12 @@ target_link_libraries(ufs PUBLIC esmf)
 
 if(DATM)
   target_link_libraries(ufs PUBLIC datatm)
+elseif(CDEPS_DATM)
+  list(APPEND _ufs_defs_private CDEPS
+                                FRONT_CDEPS_DATM=atm_comp_nuopc)
+  add_dependencies(ufs datm)
+  include_directories(${CMAKE_CURRENT_BINARY_DIR}/CDEPS/datm)
+  target_link_libraries(ufs PUBLIC datm)
 else()
   target_link_libraries(ufs PUBLIC fv3atm)
 endif()
@@ -314,6 +335,11 @@ if(S2S)
   target_link_libraries(ufs PUBLIC mom6
                                    cice
                                    cmeps)
+endif()
+
+if(CDEPS)
+  add_dependencies(ufs streams dshr cdeps_share FoX_dom)
+  target_link_libraries(ufs PUBLIC streams dshr cdeps_share FoX_dom)
 endif()
 
 target_compile_definitions(ufs PRIVATE "${_ufs_defs_private}")
@@ -337,7 +363,7 @@ endif()
 
 target_compile_definitions(ufs_model PRIVATE "${_ufs_model_defs_private}")
 
-if(DATM)
+if(DATM OR CDEPS)
   target_link_libraries(ufs_model PUBLIC ufs w3nco::w3nco_d)
 endif()
 target_link_libraries(ufs_model PRIVATE ufs

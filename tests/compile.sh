@@ -135,12 +135,20 @@ if [[ "${MAKE_OPT}" == *"WW3=Y"* ]]; then
     CMAKE_FLAGS="${CMAKE_FLAGS} -DWW3=Y"
 fi
 
-if [[ "${MAKE_OPT}" == *"S2S=Y"* ]]; then
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DS2S=Y"
+if [[ "${MAKE_OPT}" == *"CDEPS=Y"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DCDEPS=Y"
 fi
 
-if [[ "${MAKE_OPT}" == *"DATM=Y"* ]]; then
+if [[ "${MAKE_OPT}" == *"CDEPS_DATM=Y"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DCDEPS_DATM=Y"
+fi
+
+if [[ "${MAKE_OPT}" == *"DATM=Y"* ]] && [[ "${MAKE_OPT}" != *"CDEPS_DATM=Y"* ]]; then
     CMAKE_FLAGS="${CMAKE_FLAGS} -DDATM=Y"
+fi
+
+if [[ "${MAKE_OPT}" == *"S2S=Y"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DS2S=Y"
 fi
 
 if [[ "${MAKE_OPT}" == *"S2S=Y"* ]] || [[ ${MAKE_OPT} == *"DATM=Y"* ]]; then
