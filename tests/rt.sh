@@ -327,10 +327,11 @@ elif [[ $MACHINE_ID = stampede.* ]]; then
 
   export PYTHONPATH=
   ECFLOW_START=
-  QUEUE=skx-dev
+  QUEUE=skx-normal
   COMPILE_QUEUE=skx-dev
   PARTITION=
-  dprefix=$WORK/ufs-weather-model/run
+  ACCNR=TG-EES200015
+  dprefix=$SCRATCH/ufs-weather-model/run
   DISKNM=$WORK/ufs-weather-model/RT
   STMP=$dprefix
   PTMP=$dprefix
