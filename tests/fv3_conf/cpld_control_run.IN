@@ -1,7 +1,11 @@
 mkdir INPUT RESTART history MOM6_OUTPUT
 
 if [[ $ATMRES == 'C96' ]]; then
+ if [[ $NPZ == '127' ]]; then
+  FV3_DIR=FV3_input_data_127
+ else
   FV3_DIR=FV3_input_data
+ fi
 else
   FV3_DIR=FV3_input_data${ATMRES#C}
 fi
@@ -14,7 +18,7 @@ cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/co2historicaldata_201*.txt .
 cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/sfc_emissivity_idx.txt .
 cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/solarconstant_noaa_an.txt .
 if [ $OZ_PHYS_NEW = .T. ]; then
-  cp  @[INPUTDATA_ROOT]/${FV3_DIR}/ozprdlos_2015_new_sbuv03_tclm15_nuchem.f77 ./global_o3prdlos.f77
+  cp  @[INPUTDATA_ROOT]/${FV3_DIR}/ozprdlos_2015_new_sbuvO3_tclm15_nuchem.f77 ./global_o3prdlos.f77
 elif [ $OZ_PHYS_OLD = .T. ]; then
   cp  @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/global_o3prdlos.f77 .
 fi
@@ -23,13 +27,20 @@ cp    @[INPUTDATA_ROOT]/${FV3_DIR}/*grb .
 cp    @[INPUTDATA_ROOT]/${FV3_DIR}/@[FIELD_TABLE] ./field_table
 cp    @[INPUTDATA_ROOT]/CPL_FIX/a@[ATMRES]o@[OCNRES]/grid_spec.nc ./INPUT
 cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/@[ATMRES]_grid*.nc ./INPUT
+# NOTE: No L127 FV3_DIR for non-frac grid input except for C96
 if [ ${FRAC_GRID_INPUT} = .F. ]; then
   cp  @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/oro_data*.nc ./INPUT
+  cp  @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/gfs_ctrl.nc ./INPUT
 else
+ if [[ $NPZ == '127' ]]; then
+  cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES]_l127.mx@[OCNRES]_frac/oro_data*.nc ./INPUT
+  cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES]_l127.mx@[OCNRES]_frac/gfs_ctrl.nc ./INPUT
+ else
   cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES].mx@[OCNRES]_frac/oro_data*.nc ./INPUT
+  cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES].mx@[OCNRES]_frac/gfs_ctrl.nc ./INPUT
+ fi
 fi
 cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/grid_spec.nc ./INPUT/@[ATMRES]_mosaic.nc
-cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/gfs_ctrl.nc ./INPUT
 
 # MOM6 fixed input
 cp    @[INPUTDATA_ROOT]/MOM6_FIX/@[OCNRES]/* ./INPUT
@@ -39,6 +50,12 @@ cp    @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/grid_cice_NEMS_mx@[OCNRES].nc .
 cp    @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/kmtu_cice_NEMS_mx@[OCNRES].nc .
 cp    @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/mesh.mx@[OCNRES].nc .
 
+# WW3 fix/input
+if [[ $CPLWAV == .T. ]]; then
+  cp    @[INPUTDATA_ROOT_WW3]/mod_def.* .
+  cp    @[INPUTDATA_ROOT_WW3]/ww3_multi_1deg.inp ww3_multi.inp
+fi
+
 # No restart
 if [ $WARM_START = .F. ]; then
   # ICs
@@ -46,8 +63,13 @@ if [ $WARM_START = .F. ]; then
    cp  @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/sfc_data*.nc ./INPUT
    cp  @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/gfs_data*.nc ./INPUT
   else
-   cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES].mx@[OCNRES]_frac/sfc_data*.nc ./INPUT
-   cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES].mx@[OCNRES]_frac/gfs_data*.nc ./INPUT
+   if [[ $NPZ == '127' ]]; then
+     cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES]_l127.mx@[OCNRES]_frac/sfc_data*.nc ./INPUT
+     cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES]_l127.mx@[OCNRES]_frac/gfs_data*.nc ./INPUT
+   else
+     cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES].mx@[OCNRES]_frac/sfc_data*.nc ./INPUT
+     cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES].mx@[OCNRES]_frac/gfs_data*.nc ./INPUT
+   fi
   fi
   cp  @[INPUTDATA_ROOT]/MOM6_IC/MOM*.nc ./INPUT
   cp  @[INPUTDATA_ROOT]/CICE_IC/@[OCNRES]/cice_model_@[ICERES].res_2016100300.nc ./cice_model.res.nc
@@ -55,19 +77,36 @@ if [ $WARM_START = .F. ]; then
 # Restart
 else
   # Restart files
-  cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/coupler.res ./INPUT
-  cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/fv_*.nc ./INPUT
-  cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/sfc_data*.nc ./INPUT
-  cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/phy_data*.nc ./INPUT
-  cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/MOM*.nc ./INPUT
+  cp -r ../${DEP_RUN}${RT_SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.* ./INPUT
+  rm -f INPUT/fv_core.res.*
+  rm -f INPUT/fv_srf_wnd.res.*
+  rm -f INPUT/fv_tracer.res.*
+  rm -f INPUT/phy_data.*
+  rm -f INPUT/sfc_data.*
+  for RFILE in ../${DEP_RUN}${RT_SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.*; do
+    [ -e $RFILE ] || exit 1
+    RFILE_OLD=$(basename $RFILE)
+    RFILE_NEW="${RFILE_OLD//${RESTART_FILE_PREFIX}./}"
+    cp $RFILE INPUT/${RFILE_NEW}
+  done
+
+  #if not mx025, then mom6 restart is a single file
+  if [[ $OCNRES == '025' ]]; then
+   cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/MOM.res.${RESTART_FILE_SUFFIX_HRS}-00-00.nc ./INPUT/MOM.res.nc
+   cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/MOM.res.${RESTART_FILE_SUFFIX_HRS}-00-00_1.nc ./INPUT/MOM.res_1.nc
+   cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/MOM.res.${RESTART_FILE_SUFFIX_HRS}-00-00_2.nc ./INPUT/MOM.res_2.nc
+   cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/MOM.res.${RESTART_FILE_SUFFIX_HRS}-00-00_3.nc ./INPUT/MOM.res_3.nc
+  else
+   cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/MOM.res.${RESTART_FILE_SUFFIX_HRS}-00-00.nc ./INPUT/MOM.res.nc
+  fi
 
   # CMEPS restart and pointer files
-  cp  ../${DEP_RUN}${RT_SUFFIX}/RESTART/ufs.cpld.cpl.r.2016-10-03-43200.nc .
-  RFILE="ufs.cpld.cpl.r.2016-10-03-43200.nc"
+  RFILE="ufs.cpld.cpl.r.${RESTART_FILE_SUFFIX_SECS}.nc"
+  cp  ../${DEP_RUN}${RT_SUFFIX}/RESTART/${RFILE} .
   ls -1 ${RFILE}>rpointer.cpl
 
   # CICE restart and pointer files
-  cp  ../${DEP_RUN}${RT_SUFFIX}/RESTART/iced.2016-10-03-43200.nc ./INPUT
-  RFILE="iced.2016-10-03-43200.nc"
+  RFILE="iced.${RESTART_FILE_SUFFIX_SECS}.nc"
+  cp  ../${DEP_RUN}${RT_SUFFIX}/RESTART/${RFILE} ./INPUT
   ls -1 "./INPUT/"${RFILE}>ice.restart_file
 fi
