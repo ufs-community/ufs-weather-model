@@ -50,6 +50,8 @@ export CNTL_DIR=${CNTL_DIR}${BL_SUFFIX}
 
 export JBNME=$(basename $RUNDIR_ROOT)_${TEST_NR}
 
+echo -n "${TEST_NAME}, $( date +%s )," > ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+
 UNIT_TEST=${UNIT_TEST:-false}
 if [[ ${UNIT_TEST} == false ]]; then
   REGRESSIONTEST_LOG=${LOG_DIR}/rt_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log
@@ -172,6 +174,8 @@ check_results
 ################################################################################
 # End test
 ################################################################################
+
+echo " $( date +%s )" >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
 
 elapsed=$SECONDS
 echo "Elapsed time $elapsed seconds. Test ${TEST_NAME}"

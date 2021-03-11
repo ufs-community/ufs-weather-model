@@ -444,6 +444,7 @@ echo                         >> ${REGRESSIONTEST_LOG}
 
 source default_vars.sh
 
+JOB_NR=0
 TEST_NR=0
 COMPILE_NR=0
 COMPILE_PREV_WW3_NR=''
@@ -582,6 +583,8 @@ while read -r line || [ "$line" ]; do
   [[ ${#line} == 0 ]] && continue
   [[ $line == \#* ]] && continue
 
+  JOB_NR=$( printf '%03d' $(( 10#$JOB_NR + 1 )) )
+
   if [[ $line == COMPILE* ]] ; then
 
     MAKE_OPT=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
@@ -604,6 +607,7 @@ while read -r line || [ "$line" ]; do
     (( COMPILE_NR += 1 ))
 
     cat << EOF > ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env
+    export JOB_NR=${JOB_NR}
     export MACHINE_ID=${MACHINE_ID}
     export RT_COMPILER=${RT_COMPILER}
     export PATHRT=${PATHRT}
@@ -697,6 +701,7 @@ EOF
       fi
 
       cat << EOF > ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
+      export JOB_NR=${JOB_NR}
       export MACHINE_ID=${MACHINE_ID}
       export RT_COMPILER=${RT_COMPILER}
       export RTPWD=${RTPWD}
