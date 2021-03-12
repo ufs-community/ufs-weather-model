@@ -29,9 +29,11 @@ set(OPENMP          ON  CACHE BOOL "Enable OpenMP threading")
 set(PARALLEL_NETCDF OFF CACHE BOOL "Enable parallel NetCDF")
 set(QUAD_PRECISION  ON  CACHE BOOL "Enable QUAD_PRECISION (for certain grid metric terms in dycore)")
 set(REPRO           OFF CACHE BOOL "Enable REPRO mode")
+set(JEDI_DRIVER     OFF CACHE BOOL "Enable JEDI as top level driver")
+
+# Valid Applications
 set(WW3             OFF CACHE BOOL "Enable WW3")
 set(S2S             OFF CACHE BOOL "Enable S2S")
-set(JEDI_DRIVER     OFF CACHE BOOL "Enable JEDI as top level driver")
 set(DATM            OFF CACHE BOOL "Enable Data Atmosphere")
 
 ###############################################################################
@@ -76,6 +78,11 @@ message("OPENMP ........... ${OPENMP}")
 message("PARALLEL_NETCDF .. ${PARALLEL_NETCDF}")
 message("QUAD_PRECISION ... ${QUAD_PRECISION}")
 message("REPRO ............ ${REPRO}")
+
+# Validate compsets
+include(cmake/validate_compsets.cmake)
+
+# Application
 message("WW3 .............. ${WW3}")
 message("S2S .............. ${S2S}")
 message("DATM ............. ${DATM}")
@@ -126,67 +133,59 @@ find_package(Python 3 REQUIRED COMPONENTS Interpreter)
 message("Found Python: ${Python_EXECUTABLE}")
 
 ###############################################################################
-### Checks
-###############################################################################
-if(DATM AND NOT S2S)
-   message(FATAL_ERROR "DATM=ON and S2S=OFF are incompatible, ABORT!")
-endif()
-
-if(S2S AND 32BIT)
-   message(FATAL_ERROR "S2S=ON and 32BIT=ON are incompatible, ABORT!")
-endif()
-
-###############################################################################
 ### FMS
 ###############################################################################
-include(fms_files.cmake)
-add_library(fms ${fms_src_files} ${fms_headers})
+if(FMS)
+  include(fms_files.cmake)
+  add_library(fms ${fms_src_files} ${fms_headers})
 
-list(APPEND _fms_defs_public use_libMPI
-                             use_netCDF
-                             GFS_PHYS
-                             INTERNAL_FILE_NML)
-if(QUAD_PRECISION)
-  list(APPEND _fms_defs_public ENABLE_QUAD_PRECISION)
-endif()
+  list(APPEND _fms_defs_public use_libMPI
+                               use_netCDF
+                               GFS_PHYS
+                               INTERNAL_FILE_NML)
+  if(QUAD_PRECISION)
+    list(APPEND _fms_defs_public ENABLE_QUAD_PRECISION)
+  endif()
 
-# check gettid
-include(CheckFunctionExists)
-check_function_exists(gettid HAVE_GETTID)
-if(HAVE_GETTID)
-  list(APPEND _fms_defs_public HAVE_GETTID)
-endif()
+  # check gettid
+  include(CheckFunctionExists)
+  check_function_exists(gettid HAVE_GETTID)
+  if(HAVE_GETTID)
+    list(APPEND _fms_defs_public HAVE_GETTID)
+  endif()
 
-target_compile_definitions(fms PUBLIC "${_fms_defs_public}")
+  target_compile_definitions(fms PUBLIC "${_fms_defs_public}")
 
-if(32BIT)
-  list(APPEND _fms_defs_private OVERLOAD_R4
-                                OVERLOAD_R8)
-endif()
+  if(32BIT)
+    list(APPEND _fms_defs_private OVERLOAD_R4
+                                  OVERLOAD_R8)
+  endif()
 
-target_compile_definitions(fms PRIVATE "${_fms_defs_private}")
+  target_compile_definitions(fms PRIVATE "${_fms_defs_private}")
 
-target_include_directories(fms PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/include>
-                                      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/fms>
-                                      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/fms2_io/include>
-                                      $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/FMS/mod>
-                                      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/mpp/include>)
-target_include_directories(fms INTERFACE
-                                      $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include>
-                                      $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/mod>)
-target_link_libraries(fms PUBLIC MPI::MPI_Fortran
-                                 NetCDF::NetCDF_Fortran)
-if(OpenMP_Fortran_FOUND)
-  target_link_libraries(fms PRIVATE OpenMP::OpenMP_Fortran)
-endif()
-set_target_properties(fms PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/FMS)
-set_target_properties(fms PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/FMS/mod)
-set_target_properties(fms PROPERTIES PUBLIC_HEADER "${fms_headers}" )
+  target_include_directories(fms PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/include>
+                                        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/fms>
+                                        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/fms2_io/include>
+                                        $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/FMS/mod>
+                                        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/mpp/include>)
+  target_include_directories(fms INTERFACE
+                                        $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include>
+                                        $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/mod>)
+  target_link_libraries(fms PUBLIC MPI::MPI_Fortran
+                                   NetCDF::NetCDF_Fortran)
+  if(OpenMP_Fortran_FOUND)
+    target_link_libraries(fms PRIVATE OpenMP::OpenMP_Fortran)
+  endif()
+  set_target_properties(fms PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/FMS)
+  set_target_properties(fms PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/FMS/mod)
+  set_target_properties(fms PROPERTIES PUBLIC_HEADER "${fms_headers}" )
+endif(FMS)
+
 
 ###############################################################################
 ### stochastic_physics
 ###############################################################################
-if(NOT DATM)
+if(STOCH_PHYS)
   add_subdirectory(stochastic_physics)
 endif()
 
@@ -195,7 +194,9 @@ endif()
 ###############################################################################
 if(DATM)
   add_subdirectory(DATM)
-else()
+endif()
+
+if(FV3)
   add_subdirectory(FV3)
 endif()
 
@@ -277,10 +278,13 @@ add_dependencies(ufs fms)
 if(DATM)
   list(APPEND _ufs_defs_private FRONT_DATM=datm)
   add_dependencies(ufs datatm)
-else()
+endif()
+
+if(FV3)
   list(APPEND _ufs_defs_private FRONT_FV3=fv3gfs_cap_mod)
   add_dependencies(ufs fv3atm)
 endif()
+
 if(JEDI_DRIVER)
   list(APPEND _ufs_defs_private JEDI_DRIVER=ON)
 endif()
@@ -301,7 +305,9 @@ target_link_libraries(ufs PUBLIC esmf)
 
 if(DATM)
   target_link_libraries(ufs PUBLIC datatm)
-else()
+endif()
+
+if(FV3)
   target_link_libraries(ufs PUBLIC fv3atm)
 endif()
 
@@ -348,18 +354,21 @@ target_link_libraries(ufs_model PRIVATE ufs
 ###############################################################################
 ### Install
 ###############################################################################
-install(
-  TARGETS fms
-  EXPORT fms-config
-  LIBRARY DESTINATION lib
-  ARCHIVE DESTINATION lib
-  PUBLIC_HEADER DESTINATION include )
+if(FMS)
+  install(
+    TARGETS fms
+    EXPORT fms-config
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+    PUBLIC_HEADER DESTINATION include )
 
-install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/FMS/mod DESTINATION ${CMAKE_INSTALL_PREFIX})
+  install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/FMS/mod DESTINATION ${CMAKE_INSTALL_PREFIX})
 
-install(EXPORT fms-config
-  DESTINATION lib/cmake
-)
+  install(EXPORT fms-config
+    DESTINATION lib/cmake
+  )
+endif(FMS)
+
 install(
   TARGETS ufs
   EXPORT ufs-config
