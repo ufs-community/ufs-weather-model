@@ -57,6 +57,17 @@ if(CMAKE_Platform)
   else()
     message("Platform '${CMAKE_Platform}' configuration file does not exist")
   endif()
+
+  # DH* 20210208 temporary workaround for FMS issues on Cheyenne with GNU 9.1.0
+  if (CMAKE_Platform MATCHES "cheyenne.gnu")
+    message("Applying patch cheyenne_gnu_fms_mpp_util_mpi_inc.patch")
+    execute_process(COMMAND patch -N -p0 INPUT_FILE cheyenne_gnu_fms_mpp_util_mpi_inc.patch
+                    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+                    OUTPUT_FILE ${CMAKE_CURRENT_BINARY_DIR}/cheyenne_gnu_fms_mpp_util_mpi_inc.patch.out
+                    ERROR_FILE  ${CMAKE_CURRENT_BINARY_DIR}/cheyenne_gnu_fms_mpp_util_mpi_inc.patch.err
+                    RESULT_VARIABLE RC)
+    # *DH 20210208
+  endif()
 endif()
 
 message("")
@@ -149,8 +160,6 @@ endif()
 ###############################################################################
 include(fms_files.cmake)
 add_library(fms ${fms_src_files} ${fms_headers})
-# stupid cmake can not figure out dependency of fft.F90 on fft99.F90 because 'use fft99_mod' is inside ifdefs
-set_property(SOURCE FMS/fft/fft.F90 APPEND_STRING PROPERTY COMPILE_FLAGS "-DSGICRAY=0 -DNAGFFT=0")
 
 list(APPEND _fms_defs_public use_libMPI
                              use_netCDF
@@ -159,6 +168,14 @@ list(APPEND _fms_defs_public use_libMPI
 if(QUAD_PRECISION)
   list(APPEND _fms_defs_public ENABLE_QUAD_PRECISION)
 endif()
+
+# check gettid
+include(CheckFunctionExists)
+check_function_exists(gettid HAVE_GETTID)
+if(HAVE_GETTID)
+  list(APPEND _fms_defs_public HAVE_GETTID)
+endif()
+
 target_compile_definitions(fms PUBLIC "${_fms_defs_public}")
 
 if(32BIT)
