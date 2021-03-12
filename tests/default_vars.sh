@@ -307,7 +307,6 @@ export_fv3 ()
 {
 export FV3=true
 export S2S=false
-export DATM=false
 export DATM_CDEPS=false
 export THRD=1
 export WLCLK=$WLCLK_dflt
@@ -474,7 +473,6 @@ export_cpl ()
 {
 export FV3=true
 export S2S=true
-export DATM=false
 export DATM_CDEPS=false
 
 export DAYS="1"
@@ -620,7 +618,6 @@ export_datm_cdeps_cfsr ()
 {
 export FV3=false
 export S2S=false
-export DATM=false
 export DATM_CDEPS=true
 export DAYS=1
 export FHMAX=24
