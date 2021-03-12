@@ -36,7 +36,7 @@ How were these changes tested? What compilers / HPCs was it tested with? Are the
 - [ ] gaea.intel 
 - [ ] jet.intel
 - [ ] wcoss_cray
-- [ ] wcoss-dell-p3
+- [ ] wcoss_dell_p3
 
 ## Dependencies
 
