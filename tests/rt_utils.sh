@@ -327,6 +327,10 @@ check_results() {
 
   fi
 
+  echo                                               >> ${REGRESSIONTEST_LOG}
+  grep "The total amount of wall time" ${RUNDIR}/out >> ${REGRESSIONTEST_LOG}
+  echo                                               >> ${REGRESSIONTEST_LOG}
+
   echo "Test ${TEST_NR} ${TEST_NAME} ${test_status}" >> ${REGRESSIONTEST_LOG}
   echo                                               >> ${REGRESSIONTEST_LOG}
   echo "Test ${TEST_NR} ${TEST_NAME} ${test_status}"
