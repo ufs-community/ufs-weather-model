@@ -3,6 +3,7 @@
 ###############################################################################
 set(FMS        OFF CACHE BOOL "Disable FMS"                FORCE)
 set(CDEPS      OFF CACHE BOOL "Disable CDEPS"              FORCE)
+set(CMEPS      OFF CACHE BOOL "Disable CMEPS"              FORCE)
 set(FV3        OFF CACHE BOOL "Disable FV3"                FORCE)
 set(MOM6       OFF CACHE BOOL "Disable MOM6"               FORCE)
 set(CICE6      OFF CACHE BOOL "Disable CICE6"              FORCE)
@@ -20,7 +21,7 @@ endif()
 ### Enable Application Specific components
 ###############################################################################
 if(DATM)
-  set(FMS        ON  CACHE BOOL "Enable MOM6"                FORCE)
+  set(FMS        ON  CACHE BOOL "Enable FMS"                 FORCE)
   set(FV3        OFF CACHE BOOL "Disable FV3"                FORCE)
   set(MOM6       ON  CACHE BOOL "Enable MOM6"                FORCE)
   set(CICE6      ON  CACHE BOOL "Enable CICE6"               FORCE)
@@ -31,7 +32,8 @@ if(DATM)
 endif()
 
 if(S2S)
-  set(FMS        ON  CACHE BOOL "Enable MOM6"                FORCE)
+  set(FMS        ON  CACHE BOOL "Enable FMS"                 FORCE)
+  set(CMEPS      ON  CACHE BOOL "Enable CMEPS"               FORCE)
   set(FV3        ON  CACHE BOOL "Enable FV3"                 FORCE)
   set(MOM6       ON  CACHE BOOL "Enable MOM6"                FORCE)
   set(CICE6      ON  CACHE BOOL "Enable CICE6"               FORCE)
@@ -42,3 +44,9 @@ if(S2S)
   return()
 endif()
 
+###############################################################################
+### If you have reached here, then it is the default application
+###############################################################################
+set(FMS        ON  CACHE BOOL "Enable FMS"                 FORCE)
+set(FV3        ON  CACHE BOOL "Enable FV3"                 FORCE)
+set(STOCH_PHYS ON  CACHE BOOL "Enable Stochastic Physics"  FORCE)
