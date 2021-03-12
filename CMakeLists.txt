@@ -238,9 +238,15 @@ endif()
 ###############################################################################
 ### S2S Components [CMEPS, MOM6, CICE]
 ###############################################################################
-if(S2S)
+if(CMEPS)
   add_subdirectory(CMEPS-interface)
+endif()
+
+if(MOM6)
   add_subdirectory(MOM6-interface)
+endif()
+
+if(CICE6)
   add_subdirectory(CICE-interface)
 endif()
 
