@@ -35,6 +35,7 @@ set(FMS             OFF CACHE BOOL "Enable FMS")
 set(FV3             OFF CACHE BOOL "Enable FV3")
 set(MOM6            OFF CACHE BOOL "Enable MOM6")
 set(CICE6           OFF CACHE BOOL "Enable CICE6")
+set(WW3             OFF CACHE BOOL "Enable WW3")
 set(CMEPS           OFF CACHE BOOL "Enable CMEPS")
 set(CDEPS           OFF CACHE BOOL "Enable CDEPS")
 
@@ -102,6 +103,10 @@ message("MOM6 ............. ${MOM6}")
 message("CICE6 ............ ${CICE6}")
 message("WW3 .............. ${WW3}")
 message("STOCH_PHYS ....... ${STOCH_PHYS}")
+message("")
+
+# Options that components reset
+message("")
 message("32BIT ............ ${32BIT}")
 message("")
 
