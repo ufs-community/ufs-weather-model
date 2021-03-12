@@ -3,8 +3,7 @@ name: Pull request tests
 on:
   push:
     branches: ['develop']
-  pull_request_review:
-    types: [submitted]
+  pull_request:
     branches: ['develop']
 
 jobs:
@@ -45,7 +44,6 @@ jobs:
   build:
     name: Build (${{ matrix.bld_set }})
     needs: setup
-    if: github.event_name == 'push' || (github.event.review.state == 'approved' && toJson(github.event.pull_request.requested_reviewers) == '[]')
     runs-on: ubuntu-20.04
 
     strategy:
