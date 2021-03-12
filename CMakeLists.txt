@@ -31,9 +31,18 @@ set(QUAD_PRECISION  ON  CACHE BOOL "Enable QUAD_PRECISION (for certain grid metr
 set(REPRO           OFF CACHE BOOL "Enable REPRO mode")
 set(JEDI_DRIVER     OFF CACHE BOOL "Enable JEDI as top level driver")
 
+set(FMS             OFF CACHE BOOL "Enable FMS")
+set(FV3             OFF CACHE BOOL "Enable FV3")
+set(MOM6            OFF CACHE BOOL "Enable MOM6")
+set(CICE6           OFF CACHE BOOL "Enable CICE6")
+set(CMEPS           OFF CACHE BOOL "Enable CMEPS")
+set(CDEPS           OFF CACHE BOOL "Enable CDEPS")
+
 # Valid Applications
-set(WW3             OFF CACHE BOOL "Enable WW3")
+set(ATM             ON  CACHE BOOL "Enable Atmosphere only")
+set(ATMW            OFF CACHE BOOL "Enable Atmosphere with Waves")
 set(S2S             OFF CACHE BOOL "Enable S2S")
+set(S2SW            OFF CACHE BOOL "Enable S2S with Waves")
 set(DATM            OFF CACHE BOOL "Enable Data Atmosphere")
 
 ###############################################################################
@@ -67,7 +76,6 @@ if(CMAKE_Platform)
 endif()
 
 message("")
-message("32BIT ............ ${32BIT}")
 message("AVX2 ............. ${AVX2}")
 message("SIMDMULTIARCH ...  ${SIMDMULTIARCH}")
 message("DEBUG ............ ${DEBUG}")
@@ -80,12 +88,21 @@ message("QUAD_PRECISION ... ${QUAD_PRECISION}")
 message("REPRO ............ ${REPRO}")
 
 # Validate compsets
+message("")
 include(cmake/validate_compsets.cmake)
+message("")
 
-# Application
+# Components
+message("")
+message("FMS .............. ${FMS}")
+message("CDEPS ............ ${CDEPS}")
+message("CMEPS ............ ${CMEPS}")
+message("FV3 .............. ${FV3}")
+message("MOM6 ............. ${MOM6}")
+message("CICE6 ............ ${CICE6}")
 message("WW3 .............. ${WW3}")
-message("S2S .............. ${S2S}")
-message("DATM ............. ${DATM}")
+message("STOCH_PHYS ....... ${STOCH_PHYS}")
+message("32BIT ............ ${32BIT}")
 message("")
 
 get_filename_component (C_COMPILER_NAME ${CMAKE_C_COMPILER} NAME)
@@ -112,7 +129,7 @@ if(OPENMP)
 endif()
 find_package(NetCDF REQUIRED C Fortran)
 find_package(ESMF MODULE REQUIRED)
-if(S2S)
+if(CMEPS)
   find_package(PIO REQUIRED COMPONENTS C Fortran STATIC)
 endif()
 
@@ -232,7 +249,7 @@ if(WW3)
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/esmf
     COMMAND ${CMAKE_BUILD_TOOL} WW3_PARCOMPN=4 WW3_COMP=${WW3_COMP} ww3_nemslibonly > ${CMAKE_CURRENT_BINARY_DIR}/ww3_make.log 2>&1)
 
-    set(WW3_LIBS ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/obj/libww3_multi_esmf.a)
+  set(WW3_LIBS ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/obj/libww3_multi_esmf.a)
 endif()
 
 ###############################################################################
@@ -317,15 +334,23 @@ if(FV3)
   target_link_libraries(ufs PUBLIC fv3atm)
 endif()
 
-if(S2S)
-  list(APPEND _ufs_defs_private FRONT_MOM6=mom_cap_mod
-                                FRONT_CICE6=ice_comp_nuopc
-                                CMEPS
+if(MOM6)
+  list(APPEND _ufs_defs_private FRONT_MOM6=mom_cap_mod)
+  add_dependencies(ufs mom6)
+  target_link_libraries(ufs PUBLIC mom6)
+endif()
+
+if(CICE6)
+  list(APPEND _ufs_defs_private FRONT_CICE6=ice_comp_nuopc)
+  add_dependencies(ufs cice)
+  target_link_libraries(ufs PUBLIC cice)
+endif()
+
+if(CMEPS)
+  list(APPEND _ufs_defs_private CMEPS
                                 FRONT_CMEPS=MED)
-  add_dependencies(ufs mom6 cice cmeps)
-  target_link_libraries(ufs PUBLIC mom6
-                                   cice
-                                   cmeps)
+  add_dependencies(ufs cmeps)
+  target_link_libraries(ufs PUBLIC cmeps)
 endif()
 
 target_compile_definitions(ufs PRIVATE "${_ufs_defs_private}")
@@ -352,6 +377,7 @@ target_compile_definitions(ufs_model PRIVATE "${_ufs_model_defs_private}")
 if(DATM)
   target_link_libraries(ufs_model PUBLIC ufs w3nco::w3nco_d)
 endif()
+
 target_link_libraries(ufs_model PRIVATE ufs
                                         esmf
                                         NetCDF::NetCDF_Fortran

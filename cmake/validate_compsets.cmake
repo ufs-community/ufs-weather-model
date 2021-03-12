@@ -1,25 +1,34 @@
 ###############################################################################
-# Disable all Components except applications
+### Application Checks
 ###############################################################################
-set(FMS        OFF CACHE BOOL "Disable FMS"                FORCE)
-set(CDEPS      OFF CACHE BOOL "Disable CDEPS"              FORCE)
-set(CMEPS      OFF CACHE BOOL "Disable CMEPS"              FORCE)
-set(FV3        OFF CACHE BOOL "Disable FV3"                FORCE)
-set(MOM6       OFF CACHE BOOL "Disable MOM6"               FORCE)
-set(CICE6      OFF CACHE BOOL "Disable CICE6"              FORCE)
-set(WW3        OFF CACHE BOOL "Disable WaveWatch III"      FORCE)
-set(STOCH_PHYS OFF CACHE BOOL "Disable Stochastic Physics" FORCE)
+if((ATM OR ATMW) AND (S2S OR S2SW))
+  message(FATAL_ERROR "ATM|ATMW=ON and S2S|S2SW=ON are incompatible, ABORT!")
+endif()
 
-###############################################################################
-### Checks
-###############################################################################
-if(DATM AND S2S)
-  message(FATAL_ERROR "DATM=ON and S2S=ON are incompatible, ABORT!")
+if(DATM AND (S2S OR S2SW))
+  message(FATAL_ERROR "DATM=ON and S2S|S2SW=ON are incompatible, ABORT!")
+endif()
+
+if(DATM AND (ATM OR ATMW))
+  message(FATAL_ERROR "DATM=ON and ATM|ATMW=ON are incompatible, ABORT!")
 endif()
 
 ###############################################################################
-### Enable Application Specific components
+### Enable Components in Supported Applications
 ###############################################################################
+if(ATM OR ATMW)
+  set(FMS        ON  CACHE BOOL "Enable FMS"                 FORCE)
+  set(FV3        ON  CACHE BOOL "Enable FV3"                 FORCE)
+  set(STOCH_PHYS ON  CACHE BOOL "Enable Stochastic Physics"  FORCE)
+  if(ATMW)
+    set(WW3      ON  CACHE BOOL "Enable WaveWatch III"       FORCE)
+    message("Configuring UFS app in Atmosphere with Waves mode")
+  else()
+    message("Configuring UFS app in Atmosphere Only mode")
+  endif()
+  return()
+endif()
+
 if(DATM)
   set(FMS        ON  CACHE BOOL "Enable FMS"                 FORCE)
   set(FV3        OFF CACHE BOOL "Disable FV3"                FORCE)
@@ -27,26 +36,28 @@ if(DATM)
   set(CICE6      ON  CACHE BOOL "Enable CICE6"               FORCE)
   set(STOCH_PHYS OFF CACHE BOOL "Disable Stochastic Physics" FORCE)
   set(CDEPS      ON  CACHE BOOL "Enable CDEPS"               FORCE)
-  message("Configuring UFS in Data Atmosphere application mode")
+  message("Configuring UFS app in Data Atmosphere mode")
   return()
 endif()
 
-if(S2S)
+if(S2S OR S2SW)
   set(FMS        ON  CACHE BOOL "Enable FMS"                 FORCE)
   set(CMEPS      ON  CACHE BOOL "Enable CMEPS"               FORCE)
   set(FV3        ON  CACHE BOOL "Enable FV3"                 FORCE)
   set(MOM6       ON  CACHE BOOL "Enable MOM6"                FORCE)
   set(CICE6      ON  CACHE BOOL "Enable CICE6"               FORCE)
-  set(WW3        ON  CACHE BOOL "Enable WaveWatch III"       FORCE)
   set(STOCH_PHYS ON  CACHE BOOL "Enable Stochastic Physics"  FORCE)
   set(32BIT      OFF CACHE BOOL "Disable 32IT"               FORCE)
-  message("Configuring UFS in S2S application mode")
+  if(S2SW)
+    set(WW3      ON  CACHE BOOL "Enable WaveWatch III"       FORCE)
+    message("Configuring UFS app in S2S with Waves mode")
+  else()
+    message("Configuring UFS app in S2S mode")
+  endif()
   return()
 endif()
 
 ###############################################################################
-### If you have reached here, then it is the default application
+### The application you are building is unsupported, proceed with caution!
 ###############################################################################
-set(FMS        ON  CACHE BOOL "Enable FMS"                 FORCE)
-set(FV3        ON  CACHE BOOL "Enable FV3"                 FORCE)
-set(STOCH_PHYS ON  CACHE BOOL "Enable Stochastic Physics"  FORCE)
+message("Configuring UFS app in an unsupported configuration!")
