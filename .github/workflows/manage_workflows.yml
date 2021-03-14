@@ -1,0 +1,56 @@
+name: Manage workflows
+
+on:
+  workflow_run:
+    workflows: ["Pull request tests"]
+    types:
+      - requested
+
+jobs:
+  job1:
+    name: Cancel workflows
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout codes
+        uses: actions/checkout@v2
+
+      - name: Check if run-ci is requested
+        run: |
+          sleep 40
+          cd ${GITHUB_WORKSPACE}/tests/ci
+          repo="${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/actions/runs"
+          tr_id=$(cat ${GITHUB_EVENT_PATH} | ./json_helper.py get_trigger_id)
+          tr_br=$(cat ${GITHUB_EVENT_PATH} | ./json_helper.py get_trigger_br)
+          check=$(cat ${GITHUB_EVENT_PATH} | ./json_helper.py check_run)
+          echo "TRIGGER_ID=${tr_id}" >> $GITHUB_ENV
+          echo "TRIGGER_BR=${tr_br}" >> $GITHUB_ENV
+          echo "run-ci: ${check}"
+          if [[ $check == no ]]; then
+            echo "run-ci is not requested"
+            echo "CURR_JOB=cancelled" >> $GITHUB_ENV
+            curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.v3+json" ${repo}/$tr_id/cancel
+          else
+            echo "run-ci is requested"
+            echo "CURR_JOB=running" >> $GITHUB_ENV
+          fi
+
+      - name: Cancel redundant jobs
+        run: |
+          echo "CURR_JOB is $CURR_JOB"
+          echo "TRIGGER_ID is $TRIGGER_ID"
+          echo "TRIGGER_BR is $TRIGGER_BR"
+          export GITHUB_ACTOR
+          export GITHUB_RUN_ID
+          export TRIGGER_ID
+          export TRIGGER_BR
+          cd ${GITHUB_WORKSPACE}/tests/ci
+          repo="${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/actions/runs"
+          cancel_ids=$(curl -H "Accept: application/vnd.github.v3+json" ${repo} | ./json_helper.py cancel_workflow)
+          echo "cancel ids: $cancel_ids"
+          if [[ $cancel_ids != '' ]]; then
+            for i in $cancel_ids; do
+              curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.v3+json" ${repo}/$i/cancel
+            done
+          fi
+        if: ${{ env.CURR_JOB == 'running' }}

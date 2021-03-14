@@ -1,8 +1,8 @@
 #
-#  DATM_MOM6_CICE_CMEPS_1_STEP_COLD_GEFS test
+#  DATM_MOM6_CICE_CMEPS_GEFS test
 #
 
-export TEST_DESCR="DATM-MOM6-CICE-CMEPS_GEFS - 1-step cold start"
+export TEST_DESCR="DATM-MOM6-CICE-CMEPS_GEFS - 1/4deg ocean+ice"
 
 export CNTL_DIR="datm_mx025_gefs"
 
@@ -16,12 +16,12 @@ export LIST_FILES="RESTART/MOM.res.nc \
 export_datm
 export WLCLK=40
 
-export atm_petlist_bounds="0 39"
-export med_petlist_bounds="0 39"
-export ocn_petlist_bounds="40 159"
-export ice_petlist_bounds="160 207"
-export TASKS=208
-export TPN=40
+export TASKS=$TASKS_datm_025
+export TPN=$TPN_datm_025
+export atm_petlist_bounds=$APB_datm_025
+export med_petlist_bounds=$MPB_datm_025
+export ocn_petlist_bounds=$OPB_datm_025
+export ice_petlist_bounds=$IPB_datm_025
 export NPROC_ICE='48'
 
 # atm/ocn/ice resolution
@@ -32,7 +32,7 @@ export NY_GLB=1080
 
 # resolution dependent files
 export MOM_INPUT="MOM_input_template_${OCNRES}"
-export MESHICE="mesh.mx${OCNRES}.nc"
+export MESHOCN_ICE="mesh.mx${OCNRES}.nc"
 export CICEGRID="grid_cice_NEMS_mx${OCNRES}.nc"
 export CICEMASK="kmtu_cice_NEMS_mx${OCNRES}.nc"
 export CHLCLIM='"seawifs-clim-1997-2010.1440x1080.v20180328.nc"'
