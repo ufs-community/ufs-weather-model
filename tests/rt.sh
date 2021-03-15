@@ -435,7 +435,6 @@ if [[ $CREATE_BASELINE == true ]]; then
   mkdir -p "${NEW_BASELINE}"
 fi
 
-COMPILE_LOG=${PATHRT}/Compile_$MACHINE_ID.log
 REGRESSIONTEST_LOG=${PATHRT}/RegressionTests_$MACHINE_ID.log
 
 date > ${REGRESSIONTEST_LOG}
@@ -450,7 +449,7 @@ COMPILE_NR=0
 COMPILE_PREV_WW3_NR=''
 rm -f fail_test
 
-LOG_DIR=${PATHRT}/log_$MACHINE_ID
+export LOG_DIR=${PATHRT}/log_$MACHINE_ID
 rm -rf ${LOG_DIR}
 mkdir ${LOG_DIR}
 
@@ -604,10 +603,11 @@ while read -r line || [ "$line" ]; do
       fi
     fi
 
-    (( COMPILE_NR += 1 ))
+    export COMPILE_NR=$( printf '%03d' $(( 10#$COMPILE_NR + 1 )) )
 
     cat << EOF > ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env
     export JOB_NR=${JOB_NR}
+    export COMPILE_NR=${COMPILE_NR}
     export MACHINE_ID=${MACHINE_ID}
     export RT_COMPILER=${RT_COMPILER}
     export PATHRT=${PATHRT}
@@ -763,7 +763,7 @@ fi
 ## regression test is either failed or successful
 ##
 set +e
-cat ${LOG_DIR}/compile_*.log                   >  ${COMPILE_LOG}
+cat ${LOG_DIR}/compile_*_time.log              >> ${REGRESSIONTEST_LOG}
 cat ${LOG_DIR}/rt_*.log                        >> ${REGRESSIONTEST_LOG}
 if [[ -e fail_test ]]; then
   echo "FAILED TESTS: "
