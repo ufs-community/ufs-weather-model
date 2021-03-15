@@ -10,10 +10,10 @@
 
 set -eux
 
-echo -n " $( date +%s )" >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+echo -n " $( date +%s )," >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
 echo "Compile started:  " `date`
 
 @[PATHRT]/compile.sh @[MACHINE_ID] "@[MAKE_OPT]" @[COMPILE_NR]
 
 echo "Compile ended:    " `date`
-echo -n " $( date +%s )" >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+echo -n " $( date +%s )," >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
