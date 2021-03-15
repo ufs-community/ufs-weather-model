@@ -81,12 +81,6 @@ cp ${PATHRT}/modules.fv3_${COMPILE_NR}             modules.fv3
 
 # Get the shell file that loads the "module" command and purges modules:
 cp ${PATHRT}/../NEMS/src/conf/module-setup.sh.inc  module-setup.sh
-if [[ $FV3 = 'true' ]]; then
-  cp ${PATHRT}/parm/post_itag itag
-  cp ${PATHRT}/parm/postxconfig-NT.txt postxconfig-NT.txt
-  cp ${PATHRT}/parm/postxconfig-NT_FH00.txt postxconfig-NT_FH00.txt
-  cp ${PATHRT}/parm/params_grib2_tbl_new params_grib2_tbl_new
-fi
 
 SRCD="${PATHTR}"
 RUND="${RUNDIR}"
