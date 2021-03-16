@@ -16,7 +16,7 @@
   fhout = 3
   fhmaxhf = 120
   fhouthf = 1
-  ccpp_suite = 'FV3_GFS_v16'
+  ccpp_suite = '@[CCPP_SUITE]'
 /
 
 &diag_manager_nml
@@ -154,8 +154,9 @@ deflate_level=1
   random_clds  = .false.
   trans_trac   = .true.
   cnvcld       = .true.
-  imfshalcnv   = 2
-  imfdeepcnv   = 2
+  imfshalcnv   = @[IMFSHALCNV]
+  imfdeepcnv   = @[IMFDEEPCNV]
+  ras          = @[RAS]
   cdmbgwd      = 0.14,1.8,1.0,1.0
   prslrd0      = 0.
   ivegsrc      = 1
