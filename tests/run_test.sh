@@ -121,7 +121,7 @@ fi
 source ./fv3_run
 
 # CMEPS
-if [[ $DATM = 'true' ]] || [[ $CDEPS_DATM = 'true' ]] || [[ $CDEPS_DOCN = 'true' ]] || [[ $S2S = 'true' ]]; then
+if [[ $DATM = 'true' ]] || [[ $CDEPS_DATM = 'true' ]] || [[ $CDEPS_DOCN = 'true' ]] || [[ $S2S = 'true' ]] || [[ $CMEPS = 'true' ]]; then
   cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
 fi
 

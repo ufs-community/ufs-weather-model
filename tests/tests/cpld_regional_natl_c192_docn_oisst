@@ -1,0 +1,81 @@
+###############################################################################
+#
+#  FV3 CCPP regional c192 test for North Atlantic domain domain coupled with regional data ocean (OISST)
+#
+###############################################################################
+
+export TEST_DESCR="FV3 CCPP regional c192 for North Atlantic domain coupled with regional data ocean (OISST)"
+
+export CNTL_DIR=cpld_regional_natl_c192_docn_oisst
+
+export LIST_FILES=" dynf000.nc \
+                    dynf003.nc \
+                    dynf006.nc \
+                    dynf009.nc \
+                    dynf012.nc \
+                    dynf015.nc \
+                    dynf018.nc \
+                    dynf021.nc \
+                    dynf024.nc \
+                    phyf000.nc \
+                    phyf003.nc \
+                    phyf006.nc \
+                    phyf009.nc \
+                    phyf012.nc \
+                    phyf015.nc \
+                    phyf018.nc \
+                    phyf021.nc \
+                    phyf024.nc "
+
+export_fv3
+export_cpl_regional
+export_cdeps_docn
+
+export TASKS=1340
+export WLCLK=30
+export THRD=2
+export CEN_LON=-62.0
+export CEN_LAT=22.0
+export LON1=-116.90
+export LAT1=-14.45
+export LON2=-7.10
+export LAT2=58.45
+export DLON=0.03
+export DLAT=0.03
+export DT_ATMOS=90
+export IDEFLATE=1
+export NFHMAX_HF=-1
+export NFHOUT_HF=3
+export OUTPUT_FILE="'netcdf_parallel' 'netcdf_parallel'"
+export OUTPUT_GRID='regional_latlon'
+export SDAY=29
+export SHOUR=00
+export SMONTH=08
+export SYEAR=2019
+export WRTTASK_PER_GROUP=80
+export CPLFLX=.true.
+export MERGE_IMPORT=.true.
+export NSTF_NAME=0,0,0,0,0
+export CDEPS_DOCN=true
+export INPES=40
+export JNPES=30
+
+export atm_model="fv3"
+export ocn_model="docn"
+export atm_petlist_bounds="0 1279"
+export ocn_petlist_bounds="1280 1339"
+export med_petlist_bounds="1280 1339"
+export coupling_interval_sec=360
+
+export ocn_mesh="docn/TX025_201215_ESMFmesh_direct.nc"
+export ocn_data="docn/sst.day.mean.2019.nc"
+export ocn_data_var="sst"
+export ocn_nx_global=1440
+export ocn_ny_global=720
+
+export FV3_RUN=ccpp_regional_natl_run.IN
+export CCPP_SUITE=HAFS_v0_gfdlmp_nonsst
+export INPUT_NML=ccpp_regional_c192_natl.nml.IN
+export MODEL_CONFIGURE=model_configure.regional.IN
+export NEMS_CONFIGURE="nems.configure.cpld.hafs_docn.IN"
+export FV3_RUN="ccpp_regional_natl_run.IN cpld_docn_cdeps_oisst.IN"

@@ -1,5 +1,5 @@
 total_member:            @[ENS_NUM]
-print_esmf:              .true.
+print_esmf:              .false.
 PE_MEMBER01:             @[TASKS]
 start_year:              @[SYEAR]
 start_month:             @[SMONTH]
@@ -31,20 +31,25 @@ num_files:               @[NUM_FILES]
 filename_base:           @[FILENAME_BASE]
 output_grid:             @[OUTPUT_GRID]
 output_file:             @[OUTPUT_FILE]
+ichunk2d:                -1
+jchunk2d:                -1
+ichunk3d:                -1
+jchunk3d:                -1
+kchunk3d:                -1
 ideflate:                @[IDEFLATE]
 nbits:                   @[NBITS]
 write_nemsioflip:        @[WRITE_NEMSIOFLIP]
 write_fsyncflag:         @[WRITE_FSYNCFLAG]
 
 app_domain:              'regional'
-cen_lon:                 -62.0               # central longitude
-cen_lat:                 25.0                # central latitude
-lon1:                    -114.5              # longitude of lower-left
-lat1:                    -5.0                # latitude of lower-left
-lon2:                    -9.5                # longitude of upper-right
-lat2:                    55.0                # latitude of upper-right
-dlon:                    0.03
-dlat:                    0.03
+cen_lon:                 @[CEN_LON]             # central longitude
+cen_lat:                 @[CEN_LAT]             # central latitude
+lon1:                    @[LON1]                # longitude of lower-left
+lat1:                    @[LAT1]                # latitude of lower-left
+lon2:                    @[LON2]                # longitude of upper-right
+lat2:                    @[LAT2]                # latitude of upper-right
+dlon:                    @[DLON]
+dlat:                    @[DLAT]
 
 nfhout:                  @[NFHOUT]
 nfhmax_hf:               @[NFHMAX_HF]

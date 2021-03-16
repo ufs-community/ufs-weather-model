@@ -719,6 +719,9 @@ export TASKS=$TASKS_dflt
 export TPN=$TPN_dflt
 
 export atm_model="datm"
+
+export DATM_CONFIGURE_A="datm_in"
+export DATM_CONFIGURE_B="datm.streams.xml.era5"
 }
 export_cdeps_docn ()
 {
@@ -732,10 +735,14 @@ export TPN=$TPN_dflt
 
 export ocn_model="docn"
 export ocn_datamode="sstdata"
+
+export DOCN_CONFIGURE_A="docn_in"
+export DOCN_CONFIGURE_B="docn.streams.xml.IN"
 }
 export_cpl_regional ()
 {
 export S2S=false
+export CMEPS=true
 
 # model_configure
 export SYEAR='2019'
@@ -765,9 +772,21 @@ export WRITE_FSYNCFLAG=.false.
 export NFHOUT=3
 export NFHMAX_HF=-1
 export NFHOUT_HF=3
+export CEN_LON=-62.0
+export CEN_LAT=25.0
+export LON1=-114.5
+export LAT1=-5.0
+export LON2=-9.5
+export LAT2=55.0
+export DLON=0.03
+export DLAT=0.03
+
+# input.nml
+export MERGE_IMPORT=.true.
 
 # nems.configure
 export med_model="nems"
+export CAP_DBUG_FLAG="0"
 export RESTART_N=${FHMAX} 
 export CPLMODE="hafs"
 export RUNTYPE="startup"

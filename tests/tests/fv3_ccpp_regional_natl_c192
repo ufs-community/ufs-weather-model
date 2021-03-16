@@ -1,0 +1,64 @@
+###############################################################################
+#
+#  FV3 CCPP regional c192 test for North Atlantic domain
+#
+###############################################################################
+
+export TEST_DESCR="Compare FV3 CCPP regional c192 results for North Atlantic domain with previous trunk version"
+
+export CNTL_DIR=fv3_regional_natl_c192
+
+export LIST_FILES=" dynf000.nc \
+                    dynf003.nc \
+                    dynf006.nc \
+                    dynf009.nc \
+                    dynf012.nc \
+                    dynf015.nc \
+                    dynf018.nc \
+                    dynf021.nc \
+                    dynf024.nc \
+                    phyf000.nc \
+                    phyf003.nc \
+                    phyf006.nc \
+                    phyf009.nc \
+                    phyf012.nc \
+                    phyf015.nc \
+                    phyf018.nc \
+                    phyf021.nc \
+                    phyf024.nc "
+
+export_fv3
+
+export TASKS=1280
+export WLCLK=30
+export THRD=2
+export CEN_LON=-62.0
+export CEN_LAT=22.0
+export LON1=-116.90
+export LAT1=-14.45
+export LON2=-7.10
+export LAT2=58.45
+export DLON=0.03
+export DLAT=0.03
+export DT_ATMOS=90
+export IDEFLATE=1
+export NFHMAX_HF=-1
+export NFHOUT_HF=3
+export OUTPUT_FILE="'netcdf_parallel' 'netcdf_parallel'"
+export OUTPUT_GRID='regional_latlon'
+export SDAY=29
+export SHOUR=00
+export SMONTH=08
+export SYEAR=2019
+export WRTTASK_PER_GROUP=80
+export CPLFLX=.false.
+export MERGE_IMPORT=.false.
+export NSTF_NAME=2,0,0,0,0
+export INPES=40
+export JNPES=30
+export CMEPS=false
+
+export CCPP_SUITE=HAFS_v0_gfdlmp
+export INPUT_NML=ccpp_regional_c192_natl.nml.IN
+export MODEL_CONFIGURE=model_configure.regional.IN
+export FV3_RUN=ccpp_regional_natl_run.IN

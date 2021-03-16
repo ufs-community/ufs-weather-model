@@ -1,0 +1,101 @@
+##############################################
+#####  NEMS Run-Time Configuration File  #####
+##############################################
+
+# EARTH #
+EARTH_component_list: MED ATM OCN
+EARTH_attributes::
+  Verbosity = 0
+::
+
+# MED #
+MED_model:                      @[med_model]
+MED_petlist_bounds:             @[med_petlist_bounds]
+::
+
+# ATM #
+ATM_model:                      @[atm_model]
+ATM_petlist_bounds:             @[atm_petlist_bounds]
+ATM_attributes::
+  Verbosity = 1
+  Diagnostic = 0
+::
+
+# OCN #
+OCN_model:                      @[ocn_model]
+OCN_petlist_bounds:             @[ocn_petlist_bounds]
+OCN_attributes::
+  Verbosity = low
+  mesh_ocn = @[ocn_mesh]
+::
+
+# Run Sequence #
+runSeq::
+@@[coupling_interval_sec]
+  MED med_phases_prep_atm
+  MED -> ATM :remapMethod=redist
+  ATM
+  OCN
+  ATM -> MED :remapMethod=redist
+  MED med_phases_post_atm
+  OCN -> MED :remapMethod=redist
+  MED med_phases_post_ocn
+  MED med_phases_restart_write
+  MED med_phases_history_write
+@
+::
+
+# Other Attributes #
+DRIVER_attributes::
+  mediator_read_restart = @[USE_COLDSTART]
+::
+
+MED_attributes::
+  Verbosity = 1
+  Diagnostic = 0
+  ATM_model = @[atm_model]
+  OCN_model = @[ocn_model]
+  system_type = ufs
+  normalization = none
+  merge_type = copy
+  history_n = 1
+  history_option = nhours
+  history_ymd = -999
+  coupling_mode = @[CPLMODE]
+::
+
+ALLCOMP_attributes::
+  ScalarFieldCount = 3
+  ScalarFieldIdxGridNX = 1
+  ScalarFieldIdxGridNY = 2
+  ScalarFieldIdxNextSwCday = 3
+  ScalarFieldName = cpl_scalars
+  start_type = @[RUNTYPE] 
+  case_name = ufs.hafs
+  restart_n = @[RESTART_N]
+  restart_option = nhours
+  restart_ymd = -999
+  dbug_flag = @[CAP_DBUG_FLAG]
+  use_coldstart = @[USE_COLDSTART]
+  orb_eccen = 1.e36
+  orb_iyear = 2000
+  orb_iyear_align = 2000
+  orb_mode = fixed_year
+  orb_mvelp = 1.e36
+  orb_obliq = 1.e36
+::
+
+ATM_modelio::
+  diro = .
+  logfile = @[atm_model].log
+::
+
+OCN_modelio::
+  diro = .
+  logfile = @[ocn_model].log
+::
+
+MED_modelio::
+  diro = .
+  logfile = @[med_model].log
+::
