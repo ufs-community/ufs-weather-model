@@ -134,7 +134,7 @@ if(INLINE_POST)
 endif()
 
 # See https://github.com/NOAA-EMC/NCEPLIBS-nemsio/pull/22
-target_link_libraries(nemsio::nemsio INTERFACE w3emc::w3emc_d bacio::bacio_4)
+target_link_libraries(nemsio::nemsio INTERFACE w3nco::w3nco_d w3emc::w3emc_d bacio::bacio_4)
 
 # Configure Python
 find_package(Python 3 REQUIRED COMPONENTS Interpreter)
@@ -189,9 +189,9 @@ target_include_directories(fms PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_D
                                       $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/fms2_io/include>
                                       $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/FMS/mod>
                                       $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/mpp/include>)
-target_include_directories(fms INTERFACE 
-                                         $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include>
-                                         $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/mod>)
+target_include_directories(fms INTERFACE
+                                      $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include>
+                                      $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/mod>)
 target_link_libraries(fms PUBLIC MPI::MPI_Fortran
                                  NetCDF::NetCDF_Fortran)
 if(OpenMP_Fortran_FOUND)
@@ -408,7 +408,7 @@ endif()
 
 target_compile_definitions(ufs_model PRIVATE "${_ufs_model_defs_private}")
 
-if(DATM OR CDEPS)
+if(DATM OR CMEPS OR CDEPS)
   target_link_libraries(ufs_model PUBLIC ufs w3nco::w3nco_d)
 endif()
 target_link_libraries(ufs_model PRIVATE ufs
@@ -427,7 +427,7 @@ endif()
 ### Install
 ###############################################################################
 install(
-  TARGETS fms 
+  TARGETS fms
   EXPORT fms-config
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib
