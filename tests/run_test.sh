@@ -79,12 +79,6 @@ cp ${PATHRT}/modules.fv3_${COMPILE_NR}             modules.fv3
 
 # Get the shell file that loads the "module" command and purges modules:
 cp ${PATHRT}/../NEMS/src/conf/module-setup.sh.inc  module-setup.sh
-if [[ $FV3 = 'true' ]]; then
-  cp ${PATHRT}/parm/post_itag itag
-  cp ${PATHRT}/parm/postxconfig-NT.txt postxconfig-NT.txt
-  cp ${PATHRT}/parm/postxconfig-NT_FH00.txt postxconfig-NT_FH00.txt
-  cp ${PATHRT}/parm/params_grib2_tbl_new params_grib2_tbl_new
-fi
 
 SRCD="${PATHTR}"
 RUND="${RUNDIR}"
@@ -128,7 +122,7 @@ fi
 if [[ $DATM = 'true' ]] || [[ $S2S = 'true' ]]; then
   edit_ice_in     < ${PATHRT}/parm/ice_in_template > ice_in
   edit_mom_input  < ${PATHRT}/parm/${MOM_INPUT:-MOM_input_template_$OCNRES} > INPUT/MOM_input
-  edit_diag_table < ${PATHRT}/parm/diag_table_template > diag_table
+  edit_diag_table < ${PATHRT}/parm/${DIAG_TABLE:-diag_table_template} > diag_table
   edit_data_table < ${PATHRT}/parm/data_table_template > data_table
 fi
 
@@ -168,7 +162,11 @@ atparse < ${PATHRT}/parm/${NEMS_CONFIGURE:-nems.configure} > nems.configure
 if [[ $SCHEDULER = 'none' ]]; then
 
   ulimit -s unlimited
-  mpiexec -n ${TASKS} ./fv3.exe >out 2> >(tee err >&3)
+  if [[ $CI_TEST = 'true' ]]; then
+    eval mpiexec -n ${TASKS} ${MPI_PROC_BIND} ./fv3.exe >out 2> >(tee err >&3)
+  else
+    mpiexec -n ${TASKS} ./fv3.exe >out 2> >(tee err >&3)
+  fi
 
 else
 

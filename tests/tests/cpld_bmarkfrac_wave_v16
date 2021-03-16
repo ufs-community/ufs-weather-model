@@ -5,21 +5,20 @@ export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system - C384L127 
 
 export CNTL_DIR="cpld_bmarkfrac_wave_v16"
 
-export LIST_FILES="phyf012.tile1.nc \
-                   phyf012.tile2.nc \
-                   phyf012.tile3.nc \
-                   phyf012.tile4.nc \
-                   phyf012.tile5.nc \
-                   phyf012.tile6.nc \
-                   dynf012.tile1.nc \
-                   dynf012.tile2.nc \
-                   dynf012.tile3.nc \
-                   dynf012.tile4.nc \
-                   dynf012.tile5.nc \
-                   dynf012.tile6.nc \
-                   20130401.120000.out_grd.gwes_30m \
-                   20130401.120000.out_pnt.points \
-                   20130401.120000.restart.gwes_30m \
+export LIST_FILES="phyf006.tile1.nc \
+                   phyf006.tile2.nc \
+                   phyf006.tile3.nc \
+                   phyf006.tile4.nc \
+                   phyf006.tile5.nc \
+                   phyf006.tile6.nc \
+                   dynf006.tile1.nc \
+                   dynf006.tile2.nc \
+                   dynf006.tile3.nc \
+                   dynf006.tile4.nc \
+                   dynf006.tile5.nc \
+                   dynf006.tile6.nc \
+                   20130401.060000.out_grd.gwes_30m \
+                   20130401.060000.out_pnt.points \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -56,8 +55,8 @@ export LIST_FILES="phyf012.tile1.nc \
                    RESTART/MOM.res_1.nc \
                    RESTART/MOM.res_2.nc \
                    RESTART/MOM.res_3.nc \
-                   RESTART/iced.2013-04-01-43200.nc \
-                   RESTART/ufs.cpld.cpl.r.2013-04-01-43200.nc"
+                   RESTART/iced.2013-04-01-21600.nc \
+                   RESTART/ufs.cpld.cpl.r.2013-04-01-21600.nc"
 
 export_fv3
 export_cpl
@@ -67,8 +66,8 @@ export SMONTH="04"
 export SDAY="01"
 export SHOUR="00"
 
-export DAYS="0.5"
-export FHMAX="12"
+export DAYS="0.25"
+export FHMAX="6"
 export RESTART_INTERVAL=${FHMAX}
 export RESTART_N=${RESTART_INTERVAL}
 
@@ -104,7 +103,7 @@ export NPROC_ICE='48'
 export CDMBWD=${CDMBWD_c384}
 
 # set component and coupling timesteps
-export DT_ATMOS='300'
+export DT_ATMOS='225'
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6='900'
 export DT_THERM_MOM6='1800'
@@ -121,13 +120,15 @@ export CPLMODE='nems_frac'
 
 export NPZ=127
 export NPZP=128
+export PSM_BC=1
+export DDDMP=0.2
 
 export CPLWAV='.T.'
 export CPLWAV2ATM='.T.'
 
 # resolution dependent files
 export MOM_INPUT="MOM_input_template_${OCNRES}"
-export MESHICE="mesh.mx${OCNRES}.nc"
+export MESHOCN_ICE="mesh.mx${OCNRES}.nc"
 export CICEGRID="grid_cice_NEMS_mx${OCNRES}.nc"
 export CICEMASK="kmtu_cice_NEMS_mx${OCNRES}.nc"
 export CHLCLIM="seawifs-clim-1997-2010.${NX_GLB}x${NY_GLB}.v20180328.nc"
@@ -151,6 +152,6 @@ export RUNID="cpcice"
 export INPUT_NML=input.benchmark_v16.nml.IN
 
 export FIELD_TABLE="field_table_gfsv16"
-export DIAG_TABLE="diag_table_gfsv16"
+export DIAG_TABLE="diag_table_bmark_v16_template"
 export SUITE_NAME="FV3_GFS_v16_coupled"
 export FV3_RUN=cpld_bmark_run.IN
