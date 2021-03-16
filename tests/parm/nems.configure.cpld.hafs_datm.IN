@@ -1,0 +1,128 @@
+##############################################
+#####  NEMS Run-Time Configuration File  #####
+##############################################
+
+# EARTH #
+EARTH_component_list: MED ATM OCN
+EARTH_attributes::
+  Verbosity = 0
+::
+
+# MED #
+MED_model:                      @[med_model]
+MED_petlist_bounds:             @[med_petlist_bounds]
+::
+
+# ATM #
+ATM_model:                      @[atm_model]
+ATM_petlist_bounds:             @[atm_petlist_bounds]
+ATM_attributes::
+  Verbosity = low
+  mesh_atm = @[atm_mesh]
+::
+
+# OCN #
+OCN_model:                      @[ocn_model]
+OCN_petlist_bounds:             @[ocn_petlist_bounds]
+OCN_attributes::
+  Verbosity = 1
+  Diagnostic = 0
+  cdf_impexp_freq = 3
+  cpl_hour = 0
+  cpl_min = 0
+  cpl_sec = @[coupling_interval_sec]
+  base_dtg = @[SYEAR]@[SMONTH]@[SDAY]@[SHOUR]
+  merge_import = .true.
+  skip_first_import = .true.
+  hycom_arche_output = .false.
+  hyc_esmf_exp_output = .true.
+  hyc_esmf_imp_output = .true.
+  hyc_impexp_file = nems.configure
+  espc_show_impexp_minmax = .true.
+  ocean_start_dtg = @[OCEAN_START_DTG]
+  start_hour = 0
+  start_min = 0
+  start_sec = 0
+  end_hour = @[FHMAX]
+  end_min = 0
+  end_sec = 0
+::
+
+# Run Sequence #
+runSeq:: 
+@@[coupling_interval_sec] 
+  MED med_phases_prep_ocn_avg
+  MED -> OCN :remapMethod=redist
+  OCN
+  ATM
+  ATM -> MED :remapMethod=redist
+  MED med_phases_post_atm
+  MED med_phases_aofluxes_run
+  MED med_phases_prep_ocn_accum
+  OCN -> MED :remapMethod=redist:ignoreUnmatchedIndices=true
+  MED med_phases_post_ocn
+  MED med_phases_history_write
+  MED med_phases_restart_write
+@ 
+::
+
+# Other Attributes #
+DRIVER_attributes::
+  mediator_read_restart = @[USE_COLDSTART] 
+::
+
+MED_attributes::
+  Verbosity = 1
+  Diagnostic = 0
+  ATM_model = @[atm_model]
+  OCN_model = @[ocn_model]
+  history_n = 1
+  history_option = nhours
+  history_ymd = -999
+  coupling_mode = @[CPLMODE]
+  system_type = ufs
+  normalization = none
+  merge_type = copy
+  ScalarFieldCount = 0
+  ScalarFieldIdxGridNX = 0
+  ScalarFieldIdxGridNY = 0
+  ScalarFieldName = cpl_scalars
+::
+
+ALLCOMP_attributes::
+  mediator_read_restart = @[USE_COLDSTART]
+::
+
+ATM_modelio::
+  diro = .
+  logfile = @[atm_model].log
+::
+
+OCN_modelio::
+  diro = .
+  logfile = @[ocn_model].log
+::
+
+MED_modelio::
+  diro = .
+  logfile = @[med_model].log
+::
+
+ocn_export_fields::
+  'sst'         'sea_surface_temperature' 'K'       '.TRUE.' 'FLD_REMAP_BILINR' 'FLD_MASK_NNE' '1'
+  'mask'        'So_omask'                '1'       '.TRUE.' 'FLD_REMAP_BILINR' 'FLD_MASK_NNE' '1'
+::
+
+ocn_import_fields::
+  'u10'    'inst_zonal_wind_height10m' 'm_s-1'      '.TRUE.' 'FLD_REMAP_BILINR' 'FLD_MASK_NNE' '1'
+  'v10'    'inst_merid_wind_height10m' 'm_s-1'      '.TRUE.' 'FLD_REMAP_BILINR' 'FLD_MASK_NNE' '1'
+  'taux10' 'mean_zonal_moment_flx_atm' 'N_m-2'      '.TRUE.' 'FLD_REMAP_BILINR' 'FLD_MASK_NNE' '1'
+  'tauy10' 'mean_merid_moment_flx_atm' 'N_m-2'      '.TRUE.' 'FLD_REMAP_BILINR' 'FLD_MASK_NNE' '1'
+  'airtmp' 'inst_temp_height2m'        'K'          '.TRUE.' 'FLD_REMAP_BILINR' 'FLD_MASK_NNE' '1'
+  'airhum' 'inst_spec_humid_height2m'  'kg_kg-1'    '.TRUE.' 'FLD_REMAP_BILINR' 'FLD_MASK_NNE' '1'
+  'prcp'   'mean_prec_rate'            'kg_m-2_s-1' '.TRUE.' 'FLD_REMAP_BILINR' 'FLD_MASK_NNE' '1'
+  'swflxd' 'mean_net_sw_flx'           'W_m-2'      '.TRUE.' 'FLD_REMAP_BILINR' 'FLD_MASK_NNE' '1'
+  'lwflxd' 'mean_net_lw_flx'           'W_m-2'      '.TRUE.' 'FLD_REMAP_BILINR' 'FLD_MASK_NNE' '1'
+  'mslprs' 'inst_pres_height_surface'  'Pa'         '.TRUE.' 'FLD_REMAP_BILINR' 'FLD_MASK_NNE' '1'
+  'gt'     'inst_temp_height_surface'  'K'          '.TRUE.' 'FLD_REMAP_BILINR' 'FLD_MASK_NNE' '1'
+::
