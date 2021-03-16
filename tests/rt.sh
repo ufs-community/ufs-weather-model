@@ -138,7 +138,7 @@ if [[ $MACHINE_ID = wcoss_cray ]]; then
   QUEUE=debug
   COMPILE_QUEUE=dev
   PARTITION=
-  ACCNR=GFS-DEV
+  ACCNR=DA-DEV
   if [[ -d /gpfs/hps3/ptmp ]] ; then
       STMP=/gpfs/hps3/stmp
       PTMP=/gpfs/hps3/stmp
@@ -242,7 +242,7 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   QUEUE=batch
   COMPILE_QUEUE=batch
 
-  #ACCNR=fv3-cpu
+  ACCNR=da-cpu
   PARTITION=
   dprefix=/scratch1/NCEPDEV
   DISKNM=$dprefix/nems/emc.nemspara/RT
