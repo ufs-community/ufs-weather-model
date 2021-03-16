@@ -31,9 +31,10 @@ set(QUAD_PRECISION  ON  CACHE BOOL "Enable QUAD_PRECISION (for certain grid metr
 set(REPRO           OFF CACHE BOOL "Enable REPRO mode")
 set(WW3             OFF CACHE BOOL "Enable WW3")
 set(S2S             OFF CACHE BOOL "Enable S2S")
-set(CDEPS           OFF CACHE BOOL "Enable CDEPS")
 set(JEDI_DRIVER     OFF CACHE BOOL "Enable JEDI as top level driver")
-set(CDES_DATM       OFF CACHE BOOL "Enable CDEPS Data Atmosphere")
+set(DATM            OFF CACHE BOOL "Enable Data Atmosphere")
+set(CDEPS           OFF CACHE BOOL "Enable CDEPS")
+set(CDPES_DATM      OFF CACHE BOOL "Enable CDEPS Data Atmosphere")
 
 ###############################################################################
 ### Set CMAKE_BUILD_TYPE for DEBUG mode
@@ -79,6 +80,7 @@ message("QUAD_PRECISION ... ${QUAD_PRECISION}")
 message("REPRO ............ ${REPRO}")
 message("WW3 .............. ${WW3}")
 message("S2S .............. ${S2S}")
+message("DATM ............. ${DATM}")
 message("CDEPS ............ ${CDEPS}")
 message("CDEPS_DATM ....... ${CDEPS_DATM}")
 message("")
@@ -130,12 +132,16 @@ message("Found Python: ${Python_EXECUTABLE}")
 ###############################################################################
 ### Checks
 ###############################################################################
-if(CDEPS_DATM AND NOT S2S)
-   message(FATAL_ERROR "CDEPS_DATM=ON and S2S=OFF are incompatible, ABORT!")
+if(DATM AND NOT S2S)
+   message(FATAL_ERROR "DATM=ON and S2S=OFF are incompatible, ABORT!")
 endif()
 
 if(S2S AND 32BIT)
    message(FATAL_ERROR "S2S=ON and 32BIT=ON are incompatible, ABORT!")
+endif()
+
+if(DATM AND CDEPS_DATM)
+   message(FATAL_ERROR "DATM=ON and CDEPS_DATM=ON are incompatible, ABORT!")
 endif()
 
 ###############################################################################
@@ -188,16 +194,16 @@ set_target_properties(fms PROPERTIES PUBLIC_HEADER "${fms_headers}" )
 ###############################################################################
 ### stochastic_physics
 ###############################################################################
-if(NOT CDEPS_DATM)
+if(NOT DATM AND NOT CDEPS_DATM)
   add_subdirectory(stochastic_physics)
 endif()
 
 ###############################################################################
 ### FV3 or Data Atmosphere
 ###############################################################################
-if(CDEPS)
-  add_subdirectory(CDEPS)
-else()
+if(DATM)
+  add_subdirectory(DATM)
+elseif(NOT CDEPS_DATM)
   add_subdirectory(FV3)
 endif()
 
@@ -245,6 +251,13 @@ if(S2S)
   add_subdirectory(CICE-interface)
 endif()
 
+###############################################################################
+### CDEPS Component
+###############################################################################
+if(CDEPS)
+  add_subdirectory(CDEPS)
+endif()
+
 ### UFS Library [NEMS]
 ###############################################################################
 list(APPEND _nems_srcs NEMS/src/module_NEMS_UTILS.F90
@@ -275,7 +288,10 @@ list(APPEND _ufs_defs_private ESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR}
                               FRONT_FMS)
 add_dependencies(ufs fms)
 
-if(NOT CDEPS_DATM)
+if(DATM)
+  list(APPEND _ufs_defs_private FRONT_DATM=datm)
+  add_dependencies(ufs datatm)
+elseif(NOT CDEPS_DATM)
   list(APPEND _ufs_defs_private FRONT_FV3=fv3gfs_cap_mod)
   add_dependencies(ufs fv3atm)
 endif()
@@ -298,7 +314,9 @@ target_include_directories(ufs INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINAR
 
 target_link_libraries(ufs PUBLIC esmf)
 
-if(CDEPS_DATM)
+if(DATM)
+  target_link_libraries(ufs PUBLIC datatm)
+elseif(CDEPS_DATM)
   list(APPEND _ufs_defs_private CDEPS
                                 FRONT_CDEPS_DATM=atm_comp_nuopc)
   add_dependencies(ufs datm)
@@ -345,7 +363,7 @@ endif()
 
 target_compile_definitions(ufs_model PRIVATE "${_ufs_model_defs_private}")
 
-if(CDEPS)
+if(DATM OR CDEPS)
   target_link_libraries(ufs_model PUBLIC ufs w3nco::w3nco_d)
 endif()
 target_link_libraries(ufs_model PRIVATE ufs
