@@ -529,8 +529,7 @@ if [[ $ECFLOW == true ]]; then
   rm -rf ${ECFLOW_RUN}
   mkdir -p ${ECFLOW_RUN}/${ECFLOW_SUITE}
   cp head.h tail.h ${ECFLOW_RUN}
-  > ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
-  cat << EOF >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+  cat << EOF > ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
 suite ${ECFLOW_SUITE}
     edit ECF_HOME '${ECFLOW_RUN}'
     edit ECF_INCLUDE '${ECFLOW_RUN}'
@@ -788,6 +787,6 @@ fi
 
 date >> ${REGRESSIONTEST_LOG}
 
-elapsed_time=$( printf '%02dh:%02dm:%02ds\n' $(($SECONDS%86400/3600)) $(($SECONDS%3600/60)) $(($SECONDS%60)) )
+elapsed_time=$( printf '%02dh:%02dm:%02ds\n' $((SECONDS%86400/3600)) $((SECONDS%3600/60)) $((SECONDS%60)) )
 echo "Elapsed time: ${elapsed_time}. Have a nice day!" >> ${REGRESSIONTEST_LOG}
 echo "Elapsed time: ${elapsed_time}. Have a nice day!"
