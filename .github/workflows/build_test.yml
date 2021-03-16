@@ -1,17 +1,15 @@
-name: Pull Request Tests
+name: Pull request tests
 
 on:
   push:
-    branches:
-    - develop
+    branches: ['develop']
   pull_request:
-    branches:
-    - develop
+    branches: ['develop']
 
 jobs:
   setup:
     name: Set up
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     outputs:
       tn: ${{ steps.parse.outputs.tn }}
@@ -46,7 +44,7 @@ jobs:
   build:
     name: Build (${{ matrix.bld_set }})
     needs: setup
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     strategy:
       fail-fast: false
@@ -85,8 +83,7 @@ jobs:
   utest:
     name: Unit test (${{ needs.setup.outputs.tn }}, ${{ matrix.test_set }})
     needs: [setup,build]
-    runs-on: ubuntu-latest
-    #runs-on: self-hosted
+    runs-on: self-hosted
 
     strategy:
       fail-fast: false
@@ -101,7 +98,7 @@ jobs:
     - name: Prepare artifacts
       run: |
         tar xvjf artifact.tar.bz2 && rm -f artifact.tar.bz2
-        sudo docker load --input ${{ needs.setup.outputs.img }}.tar.gz && rm -f ${{ needs.setup.outputs.img }}.tar.gz
+        docker load --input ${{ needs.setup.outputs.img }}.tar.gz && rm -f ${{ needs.setup.outputs.img }}.tar.gz
 
     - name: Run utest
       run: ./ci.sh -n ${{ needs.setup.outputs.tn }} -r ${{ matrix.test_set }}
@@ -117,5 +114,7 @@ jobs:
       if: ${{ always() }}
       run: |
         rm -f ci.sh ci.test
-        sudo docker rm  my-container && sudo docker rmi ${{ needs.setup.outputs.img }}:latest
-        sudo docker volume rm DataVolume
+        docker stop my-container && docker rm  my-container && docker rmi ${{ needs.setup.outputs.img }}:latest
+        docker volume rm DataVolume
+        #docker rmi minsukjinoaa/fv3-input-data:input-data-20210115
+        rm -f memory_stat
