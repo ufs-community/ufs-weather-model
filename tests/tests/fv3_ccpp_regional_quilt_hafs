@@ -6,16 +6,14 @@
 
 export TEST_DESCR="Compare FV3 CCPP regional quilt results with previous trunk version"
 
-export CNTL_DIR=fv3_regional_quilt
+export CNTL_DIR=fv3_regional_quilt_hafs
 
 export LIST_FILES="dynf000.nc \
                    dynf024.nc \
                    phyf000.nc \
                    phyf024.nc \
-                   PRSLEV.GrbF00 \
-                   PRSLEV.GrbF24 \
-                   NATLEV.GrbF00 \
-                   NATLEV.GrbF24"
+                   HURPRS.GrbF00 \
+                   HURPRS.GrbF24"
 
 export_fv3
 
@@ -28,11 +26,11 @@ export OZ_PHYS_NEW=.T.
 export H2O_PHYS=.T.
 export HYBEDMF=.F.
 export WRITE_DOPOST=.true.
-export POSTAPP='lam'
+export POSTAPP='hafs'
 
 export CCPP_SUITE=FV3_GFS_v15_thompson_mynn
 export INPUT_NML=ccpp_regional.nml.IN
-export MODEL_CONFIGURE=model_configure_regional.IN
+export MODEL_CONFIGURE=model_configure_hafs.IN
 
 export FDIAG=3
 export INPES=6
