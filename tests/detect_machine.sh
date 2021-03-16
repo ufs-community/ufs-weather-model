@@ -114,6 +114,11 @@ case $(hostname -f) in
   login2.stampede2.tacc.utexas.edu) MACHINE_ID=stampede ;; ### stampede2
   login3.stampede2.tacc.utexas.edu) MACHINE_ID=stampede ;; ### stampede3
   login4.stampede2.tacc.utexas.edu) MACHINE_ID=stampede ;; ### stampede4
+
+  comet-ln1.sdsc.edu) MACHINE_ID=comet ;; ### comet
+  comet-ln2.sdsc.edu) MACHINE_ID=comet ;; ### comet
+  comet-ln3.sdsc.edu) MACHINE_ID=comet ;; ### comet
+  comet-ln4.sdsc.edu) MACHINE_ID=comet ;; ### comet
 esac
 
 # Overwrite auto-detect with NEMS_MACHINE if set

@@ -1,0 +1,54 @@
+#%Module######################################################################
+##
+##    NEMS FV3 Prerequisites: Comet/Intel
+
+proc ModulesHelp {} {
+  puts stderr "\tcit - loads modules required for building and running FV3 under NEMS on Comet/Intel"
+}
+
+module-whatis "loads NEMS FV3 prerequisites for Comet/Intel"
+
+##
+## load programming environment
+## this typically includes compiler, MPI and job scheduler
+##
+module load intel/2018.1.163
+module load intelmpi/2018.1.163
+
+##
+## NCEP libraries (temporary version to match the CCPP requirements)
+##
+module use /oasis/projects/nsf/ddp181/hanglei/library/libs/hpc-stack/modulefiles
+module load bacio/2.4.1
+module load ip/3.3.3
+module load nemsio/2.5.2
+module load sp/2.3.3
+module load w3emc/2.7.3
+module load w3nco/2.4.1
+module load g2/3.4.1
+module load g2tmpl/1.9.1
+module load crtm/2.3.0
+
+module load jasper/2.0.25
+module load png/1.6.35
+module load zlib/1.2.11
+module load upp/10.0.0
+
+module load netcdf/4.6.1
+module load esmf/8_1_0_beta_snapshot_27
+
+##
+## set thses environment variables for WW3 on Comet
+##
+setenv JASPER_LIB $env(JASPER_LIBRARIES)/libjasper.a
+setenv PNG_LIB $env(PNG_LIBRARIES)/libpng.a
+setenv Z_LIB $env(ZLIB_LIBRARIES)/libz.a
+
+##
+## load cmake
+##
+module load cmake/3.17.2
+setenv CMAKE_C_COMPILER mpiicc
+setenv CMAKE_CXX_COMPILER mpiicpc
+setenv CMAKE_Fortran_COMPILER mpiifort
+setenv CMAKE_Platform comet

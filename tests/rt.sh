@@ -300,6 +300,20 @@ elif [[ $MACHINE_ID = stampede.* ]]; then
   MPIEXECOPTS=
   cp fv3_conf/fv3_qsub.IN_stampede fv3_conf/fv3_qsub.IN
 
+elif [[ $MACHINE_ID = comet* ]]; then
+
+  COMPILER=${NEMS_COMPILER:-intel}
+  ECFLOW_START=
+  QUEUE=
+  ACCNR=ddp181
+  PARTITION=compute
+  dprefix=/oasis/projects/nsf/ddp181/${USER}
+  DISKNM=/oasis/projects/nsf/ddp181/${USER}
+  STMP=$dprefix/stmp
+  PTMP=$dprefix/stmp
+  SCHEDULER=slurm
+  cp fv3_conf/fv3_slurm.IN_comet fv3_conf/fv3_slurm.IN
+
 else
   die "Unknown machine ID, please edit detect_machine.sh file"
 fi
