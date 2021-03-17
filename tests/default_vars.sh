@@ -452,8 +452,6 @@ export LNDP_EACH_STEP=.F.
 export SKEB=-999.
 export SPPT=-999.
 export SHUM=-999.
-export OCNSPPT=-999.
-export EPBL=-999.
 
 #IAU
 export IAU_INC_FILES="''"
