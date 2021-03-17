@@ -21,3 +21,11 @@ cp    @[INPUTDATA_ROOT]/FV3_input_data_gsd/qr_acr_qs.dat .
 cp    @[INPUTDATA_ROOT]/FV3_input_data_gsd/qr_acr_qg.dat .
 cp    @[INPUTDATA_ROOT]/FV3_input_data_gsd/freezeH2O.dat .
 cp    @[INPUTDATA_ROOT]/FV3_input_data_gsd/CCN_ACTIVATE.BIN .
+
+# temporary: new Thompson tables
+if [[ $MACHINE_ID = cheyenne.* ]]; then
+  cp /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/tmp_input_data_thompson_update_20210304/* .
+else
+  cp /scratch1/BMC/gmtb/Dom.Heinzeller/ufs-weather-model/tmp_input_data_thompson_update_20210304/* .
+fi
+
