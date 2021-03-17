@@ -587,9 +587,6 @@ export MOM6_REPRO_LA='False'
 export MOM6_THERMO_SPAN='False'
 # no WW3
 export MOM6_USE_WAVES='False'
-## ocean stochastic physics
-#export DO_OCNSPPT=FALSE
-#export DO_PERT_EPBL=FALSE
 
 # CICE6 defaults; 1 degree
 export NPROC_ICE='12'
@@ -703,9 +700,6 @@ export MOM6_REPRO_LA='False'
 export MOM6_THERMO_SPAN='False'
 # no WW3
 export MOM6_USE_WAVES='False'
-## ocean stochastic physics
-#export DO_OCNSPPT=FALSE
-#export DO_PERT_EPBL=FALSE
 
 # CICE6 defaults; 1 degree
 export MESHOCN_ICE="mesh.mx${OCNRES}.nc"
