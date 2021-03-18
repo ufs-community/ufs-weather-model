@@ -1,5 +1,7 @@
 rsync -arv @[INPUTDATA_ROOT]/FV3_regional_input_data/. .
-rsync -arv @[INPUTDATA_ROOT]/@[INPUT_DIR]/model_configure .
+if [ $WRITE_DOPOST = .true. ]; then
+    cp @[INPUTDATA_ROOT]/FV3_regional_input_data/diag_table_lam ./diag_table
+fi
 
 rm -rf INPUT RESTART
 mkdir  INPUT RESTART
@@ -27,6 +29,18 @@ elif [ $OZ_PHYS_OLD = .T. ]; then
 fi
 if [ $H2O_PHYS = .T. ]; then
   cp  @[INPUTDATA_ROOT]/FV3_input_data/global_h2o_pltc.f77 ./global_h2oprdlos.f77
+fi
+
+if [[ $POSTAPP = 'lam' ]]; then
+    cp ${PATHRT}/parm/post_itag_fv3lam itag
+    cp ${PATHRT}/parm/postxconfig-NT-fv3lam.txt postxconfig-NT.txt
+    cp ${PATHRT}/parm/postxconfig-NT-fv3lam.txt postxconfig-NT_FH00.txt
+    cp ${PATHRT}/parm/params_grib2_tbl_new params_grib2_tbl_new
+elif [[ $POSTAPP = 'hafs' ]]; then
+    cp ${PATHRT}/parm/post_itag_hafs itag
+    cp ${PATHRT}/parm/postxconfig-NT-hafs.txt postxconfig-NT.txt
+    cp ${PATHRT}/parm/postxconfig-NT-hafs.txt postxconfig-NT_FH00.txt
+    cp ${PATHRT}/parm/params_grib2_tbl_new params_grib2_tbl_new
 fi
 
 # temporary: new Thompson tables
