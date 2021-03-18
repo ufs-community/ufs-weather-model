@@ -13,8 +13,8 @@ echo "inputdir=$inputdir,NPX=$NPX"
 UNIT_TEST=${UNIT_TEST:-false}
 SUFFIX=${RT_SUFFIX}
 if [ $WARM_START = .F. ]; then
-  cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT .
-  mkdir RESTART
+  mkdir INPUT RESTART
+  cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127/* ./INPUT/.
 else
   mkdir INPUT RESTART
 
@@ -53,20 +53,16 @@ cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/aerosol.dat .
 cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/co2historicaldata_201*.txt .
 cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/sfc_emissivity_idx.txt .
 cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/solarconstant_noaa_an.txt .
-if [ $OZ_PHYS_NEW = .T. ]; then
-  cp  @[INPUTDATA_ROOT]/${inputdir}/ozprdlos_2015_new_sbuvO3_tclm15_nuchem.f77 ./global_o3prdlos.f77
-elif [ $OZ_PHYS_OLD = .T. ]; then
-  cp  @[INPUTDATA_ROOT]/${inputdir}/INPUT/global_o3prdlos.f77 .
-fi
-if [ $H2O_PHYS = .T. ]; then
-  cp  @[INPUTDATA_ROOT]/FV3_input_data/global_h2o_pltc.f77 ./global_h2oprdlos.f77
-fi
+cp    @[INPUTDATA_ROOT]/${inputdir}/global_o3prdlos.f77 .
+cp    @[INPUTDATA_ROOT]/${inputdir}/global_h2o_pltc.f77 ./global_h2oprdlos.f77
 cp    @[INPUTDATA_ROOT]/${inputdir}/*grb .
-cp    @[INPUTDATA_ROOT]/${inputdir}/*_table .
+cp    @[INPUTDATA_ROOT]/${inputdir}/data_table .
+cp    @[INPUTDATA_ROOT]/${inputdir}/diag_table_gfsv16 ./diag_table
+cp    @[INPUTDATA_ROOT]/${inputdir}/field_table_gfsv16 ./field_table
 cp    @[INPUTDATA_ROOT]/${inputdir}/*configure .
 
 if [ $CPLWAV = .T. ]; then
-cp    @[INPUTDATA_ROOT_WW3]/mod_def.* .
-cp    @[INPUTDATA_ROOT_WW3]/@[SYEAR]@[SMONTH]@[SDAY]/ww3_multi.inp .
-cp    @[INPUTDATA_ROOT_WW3]/@[SYEAR]@[SMONTH]@[SDAY]/rmp_src* .
+  cp    @[INPUTDATA_ROOT_WW3]/mod_def.* .
+  cp    @[INPUTDATA_ROOT_WW3]/@[SYEAR]@[SMONTH]@[SDAY]/ww3_multi.inp .
+  cp    @[INPUTDATA_ROOT_WW3]/@[SYEAR]@[SMONTH]@[SDAY]/rmp_src* .
 fi

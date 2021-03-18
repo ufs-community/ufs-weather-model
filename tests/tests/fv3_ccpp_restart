@@ -8,18 +8,10 @@ export TEST_DESCR="Compare FV3 CCPP restart results with previous trunk version"
 
 export CNTL_DIR=fv3_control
 
-export LIST_FILES="phyf024.tile1.nc \
-                   phyf024.tile2.nc \
-                   phyf024.tile3.nc \
-                   phyf024.tile4.nc \
-                   phyf024.tile5.nc \
-                   phyf024.tile6.nc \
-                   dynf024.tile1.nc \
-                   dynf024.tile2.nc \
-                   dynf024.tile3.nc \
-                   dynf024.tile4.nc \
-                   dynf024.tile5.nc \
-                   dynf024.tile6.nc \
+export LIST_FILES="phyf024.nc \
+                   dynf024.nc \
+                   GFSFLX.GrbF24 \
+                   GFSPRS.GrbF24 \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -53,10 +45,15 @@ export LIST_FILES="phyf024.tile1.nc \
                    RESTART/sfc_data.tile5.nc \
                    RESTART/sfc_data.tile6.nc"
 
-
 export_fv3
+export NPZ=127
+export NPZP=128
+export DT_ATMOS=720
+export RESTART_INTERVAL=12
+export OUTPUT_GRID='gaussian_grid'
+export NSTF_NAME='2,0,0,0,0'
+export WRITE_DOPOST=.true.
 export FHROT=12
-export FHMAX=24
 
 export WARM_START=.T.
 export NGGPS_IC=.F.
@@ -65,9 +62,7 @@ export MAKE_NH=.F.
 export MOUNTAIN=.T.
 export NA_INIT=0
 export FDIAG=3
-export NSTF_NAME=2,0,1,0,5
 
 export FV3_RUN=ccpp_control_run.IN
-export CCPP_SUITE=FV3_GFS_2017
+export CCPP_SUITE=FV3_GFS_v16
 export INPUT_NML=ccpp_control.nml.IN
-
