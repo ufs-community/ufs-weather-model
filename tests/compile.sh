@@ -131,20 +131,25 @@ if [[ $? -eq 0 ]]; then
 fi
 set -ex
 
-if [[ "${MAKE_OPT}" == *"WW3=Y"* ]]; then
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DWW3=Y"
+# Valid applications
+if [[ "${MAKE_OPT}" == *"ATM=Y"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DATM=Y"
+fi
+
+if [[ "${MAKE_OPT}" == *"ATMW=Y"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DATMW=Y"
 fi
 
 if [[ "${MAKE_OPT}" == *"S2S=Y"* ]]; then
     CMAKE_FLAGS="${CMAKE_FLAGS} -DS2S=Y"
 fi
 
-if [[ "${MAKE_OPT}" == *"DATM=Y"* ]]; then
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DDATM=Y"
+if [[ "${MAKE_OPT}" == *"S2SW=Y"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DS2SW=Y"
 fi
 
-if [[ "${MAKE_OPT}" == *"S2S=Y"* ]] || [[ ${MAKE_OPT} == *"DATM=Y"* ]]; then
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DMOM6SOLO=ON"
+if [[ "${MAKE_OPT}" == *"DATM_NEMS=Y"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DDATM_NEMS=Y"
 fi
 
 CMAKE_FLAGS=$(trim "${CMAKE_FLAGS}")
