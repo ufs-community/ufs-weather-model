@@ -416,9 +416,9 @@ if [[ $TESTS_FILE =~ '35d' ]]; then
 fi
 
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20210308/${RT_COMPILER^^}}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20210316/${RT_COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20210308}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20210316}
 fi
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20210212}
@@ -633,8 +633,8 @@ EOF
       RT_SUFFIX="_repro"
       BL_SUFFIX="_repro"
     else
-      RT_SUFFIX="_prod"
-      BL_SUFFIX="_ccpp"
+      RT_SUFFIX=""
+      BL_SUFFIX=""
     fi
 
     if [[ ${MAKE_OPT^^} =~ "WW3=Y" ]]; then

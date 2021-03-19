@@ -320,6 +320,7 @@ export WRITE_GROUP=1
 export WRTTASK_PER_GROUP=6
 export OUTPUT_HISTORY=.true.
 export WRITE_DOPOST=.false.
+export POSTAPP=''
 export NUM_FILES=2
 export FILENAME_BASE="'dyn' 'phy'"
 export OUTPUT_GRID="'cubed_sphere_grid'"
@@ -389,6 +390,7 @@ export IMFSHALCNV=2
 export HWRF_SAMFSHAL=.F.
 export IMFDEEPCNV=2
 export HWRF_SAMFDEEP=.F.
+export RAS=.F.
 
 # SFC
 export DO_MYJSFC=.F.
