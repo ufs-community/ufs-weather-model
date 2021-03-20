@@ -31,21 +31,22 @@ set(QUAD_PRECISION  ON  CACHE BOOL "Enable QUAD_PRECISION (for certain grid metr
 set(REPRO           OFF CACHE BOOL "Enable REPRO mode")
 set(JEDI_DRIVER     OFF CACHE BOOL "Enable JEDI as top level driver")
 
+# Component Options
 set(FMS             OFF CACHE BOOL "Enable FMS")
 set(FV3             OFF CACHE BOOL "Enable FV3")
 set(MOM6            OFF CACHE BOOL "Enable MOM6")
 set(CICE6           OFF CACHE BOOL "Enable CICE6")
 set(WW3             OFF CACHE BOOL "Enable WW3")
+set(NEMSdatm        OFF CACHE BOOL "Enable NEMSdatm")
 set(CMEPS           OFF CACHE BOOL "Enable CMEPS")
 set(CDEPS           OFF CACHE BOOL "Enable CDEPS")
 
-# Valid Applications
-set(ATM             OFF CACHE BOOL "Enable Atmosphere only")
-set(ATMW            OFF CACHE BOOL "Enable Atmosphere with Waves")
-set(S2S             OFF CACHE BOOL "Enable Coupled model")
-set(S2SW            OFF CACHE BOOL "Enable Coupled model with Waves")
-set(DATM            OFF CACHE BOOL "Enable Coupled model with (CMEPS) Data Atmosphere")
-set(DATM_NEMS       OFF CACHE BOOL "Enable Coupled model with (NEMS) Data Atmosphere")
+# Valid applications and choices
+list(APPEND VALID_APPS ATM ATMW S2S S2SW DATM DATM_NEMS)
+set(APP NONE CACHE BOOL "Application Name")
+if(NOT (APP IN_LIST VALID_APPS))
+  message(FATAL_ERROR "${APP} is not a valid application.\nValid Applications are: ${VALID_APPS}")
+endif()
 
 ###############################################################################
 ### Set CMAKE_BUILD_TYPE for DEBUG mode
@@ -89,9 +90,9 @@ message("PARALLEL_NETCDF .. ${PARALLEL_NETCDF}")
 message("QUAD_PRECISION ... ${QUAD_PRECISION}")
 message("REPRO ............ ${REPRO}")
 
-# Validate compsets
+# Configure selected application specific components
 message("")
-include(cmake/validate_compsets.cmake)
+include(cmake/configure_apps.cmake)
 message("")
 
 # Components
@@ -107,7 +108,7 @@ message("NEMSdatm ......... ${NEMSdatm}")
 message("STOCH_PHYS ....... ${STOCH_PHYS}")
 message("")
 
-# Options that components reset
+# Options that applications reset
 message("")
 message("32BIT ............ ${32BIT}")
 message("")
