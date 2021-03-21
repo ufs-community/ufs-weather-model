@@ -62,6 +62,8 @@ runSeq::
   MED -> OCN :remapMethod=redist
   ATM
   OCN
+  MED med_phases_restart_write
+  MED med_phases_history_write
 @ 
 ::
 
@@ -75,6 +77,10 @@ MED_attributes::
   Diagnostic = 0
   ATM_model = @[atm_model]
   OCN_model = @[ocn_model]
+  case_name = ufs.hafs
+  restart_n = @[RESTART_N]
+  restart_option = nhours
+  restart_ymd = -999
   history_n = 1
   history_option = nhours
   history_ymd = -999
@@ -82,9 +88,9 @@ MED_attributes::
   system_type = ufs
   normalization = none
   merge_type = copy
-  ScalarFieldCount = 0
-  ScalarFieldIdxGridNX = 0
-  ScalarFieldIdxGridNY = 0
+  ScalarFieldCount = 2
+  ScalarFieldIdxGridNX = 1
+  ScalarFieldIdxGridNY = 2
   ScalarFieldName = cpl_scalars
 ::
 

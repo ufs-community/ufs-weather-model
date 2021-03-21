@@ -37,7 +37,7 @@ OCN_attributes::
   hycom_arche_output = .false.
   hyc_esmf_exp_output = .true.
   hyc_esmf_imp_output = .true.
-  hyc_impexp_file = nems.configure
+  hyc_impexp_file = dummy_file
   espc_show_impexp_minmax = .true.
   ocean_start_dtg = @[OCEAN_START_DTG]
   start_hour = 0
@@ -68,7 +68,7 @@ runSeq::
 
 # Other Attributes #
 DRIVER_attributes::
-  mediator_read_restart = @[USE_COLDSTART] 
+  mediator_read_restart = @[USE_COLDSTART]
 ::
 
 MED_attributes::
@@ -80,17 +80,27 @@ MED_attributes::
   history_option = nhours
   history_ymd = -999
   coupling_mode = @[CPLMODE]
-  system_type = ufs
-  normalization = none
-  merge_type = copy
-  ScalarFieldCount = 0
-  ScalarFieldIdxGridNX = 0
-  ScalarFieldIdxGridNY = 0
-  ScalarFieldName = cpl_scalars
 ::
 
 ALLCOMP_attributes::
-  mediator_read_restart = @[USE_COLDSTART]
+  start_type = @[RUNTYPE]
+  case_name = ufs.hafs
+  restart_n = @[RESTART_N]
+  restart_option = nhours
+  restart_ymd = -999
+  normalization = none
+  merge_type = copy
+  ScalarFieldCount = 3
+  ScalarFieldIdxGridNX = 1
+  ScalarFieldIdxGridNY = 2
+  ScalarFieldIdxNextSwCday = 3
+  ScalarFieldName = cpl_scalars
+  orb_eccen = 1.e36
+  orb_iyear = 2000
+  orb_iyear_align = 2000
+  orb_mode = fixed_year
+  orb_mvelp = 1.e36
+  orb_obliq = 1.e36
 ::
 
 ATM_modelio::
@@ -106,23 +116,4 @@ OCN_modelio::
 MED_modelio::
   diro = .
   logfile = @[med_model].log
-::
-
-ocn_export_fields::
-  'sst'         'sea_surface_temperature' 'K'       '.TRUE.' 'FLD_REMAP_BILINR' 'FLD_MASK_NNE' '1'
-  'mask'        'So_omask'                '1'       '.TRUE.' 'FLD_REMAP_BILINR' 'FLD_MASK_NNE' '1'
-::
-
-ocn_import_fields::
-  'u10'    'inst_zonal_wind_height10m' 'm_s-1'      '.TRUE.' 'FLD_REMAP_BILINR' 'FLD_MASK_NNE' '1'
-  'v10'    'inst_merid_wind_height10m' 'm_s-1'      '.TRUE.' 'FLD_REMAP_BILINR' 'FLD_MASK_NNE' '1'
-  'taux10' 'mean_zonal_moment_flx_atm' 'N_m-2'      '.TRUE.' 'FLD_REMAP_BILINR' 'FLD_MASK_NNE' '1'
-  'tauy10' 'mean_merid_moment_flx_atm' 'N_m-2'      '.TRUE.' 'FLD_REMAP_BILINR' 'FLD_MASK_NNE' '1'
-  'airtmp' 'inst_temp_height2m'        'K'          '.TRUE.' 'FLD_REMAP_BILINR' 'FLD_MASK_NNE' '1'
-  'airhum' 'inst_spec_humid_height2m'  'kg_kg-1'    '.TRUE.' 'FLD_REMAP_BILINR' 'FLD_MASK_NNE' '1'
-  'prcp'   'mean_prec_rate'            'kg_m-2_s-1' '.TRUE.' 'FLD_REMAP_BILINR' 'FLD_MASK_NNE' '1'
-  'swflxd' 'mean_net_sw_flx'           'W_m-2'      '.TRUE.' 'FLD_REMAP_BILINR' 'FLD_MASK_NNE' '1'
-  'lwflxd' 'mean_net_lw_flx'           'W_m-2'      '.TRUE.' 'FLD_REMAP_BILINR' 'FLD_MASK_NNE' '1'
-  'mslprs' 'inst_pres_height_surface'  'Pa'         '.TRUE.' 'FLD_REMAP_BILINR' 'FLD_MASK_NNE' '1'
-  'gt'     'inst_temp_height_surface'  'K'          '.TRUE.' 'FLD_REMAP_BILINR' 'FLD_MASK_NNE' '1'
 ::

@@ -55,28 +55,26 @@ MED_attributes::
   Diagnostic = 0
   ATM_model = @[atm_model]
   OCN_model = @[ocn_model]
-  system_type = ufs
-  normalization = none
-  merge_type = copy
   history_n = 1
   history_option = nhours
   history_ymd = -999
   coupling_mode = @[CPLMODE]
+  system_type = ufs
 ::
 
 ALLCOMP_attributes::
+  start_type = @[RUNTYPE]
+  case_name = ufs.hafs
+  restart_n = @[RESTART_N]
+  restart_option = nhours
+  restart_ymd = -999
+  normalization = none
+  merge_type = copy
   ScalarFieldCount = 3
   ScalarFieldIdxGridNX = 1
   ScalarFieldIdxGridNY = 2
   ScalarFieldIdxNextSwCday = 3
   ScalarFieldName = cpl_scalars
-  start_type = @[RUNTYPE] 
-  case_name = ufs.hafs
-  restart_n = @[RESTART_N]
-  restart_option = nhours
-  restart_ymd = -999
-  dbug_flag = @[CAP_DBUG_FLAG]
-  use_coldstart = @[USE_COLDSTART]
   orb_eccen = 1.e36
   orb_iyear = 2000
   orb_iyear_align = 2000
