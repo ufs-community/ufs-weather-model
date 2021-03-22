@@ -27,12 +27,26 @@ set(INLINE_POST     OFF CACHE BOOL "Enable inline post")
 set(MULTI_GASES     OFF CACHE BOOL "Enable MULTI_GASES")
 set(OPENMP          ON  CACHE BOOL "Enable OpenMP threading")
 set(PARALLEL_NETCDF OFF CACHE BOOL "Enable parallel NetCDF")
-set(QUAD_PRECISION  ON  CACHE BOOL "Enable QUAD_PRECISION (for certain grid metric terms in dycore)")
 set(REPRO           OFF CACHE BOOL "Enable REPRO mode")
-set(WW3             OFF CACHE BOOL "Enable WW3")
-set(S2S             OFF CACHE BOOL "Enable S2S")
 set(JEDI_DRIVER     OFF CACHE BOOL "Enable JEDI as top level driver")
-set(DATM            OFF CACHE BOOL "Enable Data Atmosphere")
+
+# Component Options
+set(FMS             OFF CACHE BOOL "Enable FMS")
+set(FV3             OFF CACHE BOOL "Enable FV3")
+set(MOM6            OFF CACHE BOOL "Enable MOM6")
+set(CICE6           OFF CACHE BOOL "Enable CICE6")
+set(WW3             OFF CACHE BOOL "Enable WW3")
+set(STOCH_PHYS      OFF CACHE BOOL "Enable Stochastic Physics")
+set(NEMSdatm        OFF CACHE BOOL "Enable NEMSdatm")
+set(CMEPS           OFF CACHE BOOL "Enable CMEPS")
+set(CDEPS           OFF CACHE BOOL "Enable CDEPS")
+
+# Valid applications and choices
+list(APPEND VALID_APPS ATM ATMW S2S S2SW DATM DATM_NEMS)
+set(APP NONE CACHE BOOL "Application Name")
+if(NOT (APP IN_LIST VALID_APPS))
+  message(FATAL_ERROR "${APP} is not a valid application.\nValid Applications are: ${VALID_APPS}")
+endif()
 
 ###############################################################################
 ### Set CMAKE_BUILD_TYPE for DEBUG mode
@@ -65,7 +79,6 @@ if(CMAKE_Platform)
 endif()
 
 message("")
-message("32BIT ............ ${32BIT}")
 message("AVX2 ............. ${AVX2}")
 message("SIMDMULTIARCH ...  ${SIMDMULTIARCH}")
 message("DEBUG ............ ${DEBUG}")
@@ -74,11 +87,26 @@ message("INLINE_POST ...... ${INLINE_POST}")
 message("MULTI_GASES ...... ${MULTI_GASES}")
 message("OPENMP ........... ${OPENMP}")
 message("PARALLEL_NETCDF .. ${PARALLEL_NETCDF}")
-message("QUAD_PRECISION ... ${QUAD_PRECISION}")
 message("REPRO ............ ${REPRO}")
+message("")
+
+# Configure selected application specific components
+include(cmake/configure_apps.cmake)
+
+# Components
+message("")
+message("FMS .............. ${FMS}")
+message("FV3 .............. ${FV3}")
+message("MOM6 ............. ${MOM6}")
+message("CICE6 ............ ${CICE6}")
 message("WW3 .............. ${WW3}")
-message("S2S .............. ${S2S}")
-message("DATM ............. ${DATM}")
+message("STOCH_PHYS ....... ${STOCH_PHYS}")
+message("NEMSdatm ......... ${NEMSdatm}")
+message("CDEPS ............ ${CDEPS}")
+message("CMEPS ............ ${CMEPS}")
+
+# Options that applications reset
+message("32BIT ............ ${32BIT}")
 message("")
 
 get_filename_component (C_COMPILER_NAME ${CMAKE_C_COMPILER} NAME)
@@ -105,7 +133,7 @@ if(OPENMP)
 endif()
 find_package(NetCDF REQUIRED C Fortran)
 find_package(ESMF MODULE REQUIRED)
-if(S2S)
+if(CMEPS)
   find_package(PIO REQUIRED COMPONENTS C Fortran STATIC)
 endif()
 
@@ -126,52 +154,39 @@ find_package(Python 3 REQUIRED COMPONENTS Interpreter)
 message("Found Python: ${Python_EXECUTABLE}")
 
 ###############################################################################
-### Checks
-###############################################################################
-if(DATM AND NOT S2S)
-   message(FATAL_ERROR "DATM=ON and S2S=OFF are incompatible, ABORT!")
-endif()
-
-if(S2S AND 32BIT)
-   message(FATAL_ERROR "S2S=ON and 32BIT=ON are incompatible, ABORT!")
-endif()
-
-###############################################################################
 ### FMS
 ###############################################################################
-set(GFS_PHYS ON CACHE BOOL "Enable GFS Physics")
-if(NOT 32BIT)
-   set(64BIT ON CACHE BOOL "Enable 64-bit")
+if(FMS)
+  set(GFS_PHYS ON CACHE BOOL "Enable GFS Physics")
+  if(NOT 32BIT)
+    set(64BIT ON CACHE BOOL "Enable 64-bit")
+  endif()
 
-endif()
-if(NOT QUAD_PRECISION)
-  set(ENABLE_QUAD_PRECISION OFF CACHE BOOL "Enable Quad-precision")
-endif()
+  add_subdirectory(FMS)
 
-add_subdirectory(FMS)
-
-if(32BIT) 
-   add_library(fms ALIAS fms_r4)
-else()
-   add_library(fms ALIAS fms_r8)
-endif()
+  if(32BIT)
+    add_library(fms ALIAS fms_r4)
+  else()
+    add_library(fms ALIAS fms_r8)
+  endif()
+endif(FMS)
 
 ###############################################################################
 ### stochastic_physics
 ###############################################################################
+if(STOCH_PHYS)
   add_subdirectory(stochastic_physics)
+endif()
 
 ###############################################################################
-### FV3 or Data Atmosphere
+### Atmosphere Components [FV3, MPAS?]
 ###############################################################################
-if(DATM)
-  add_subdirectory(DATM)
-else()
+if(FV3)
   add_subdirectory(FV3)
 endif()
 
 ###############################################################################
-### WW3
+### Wave components [WW3]
 ###############################################################################
 if(WW3)
   if(CMAKE_Platform)
@@ -196,16 +211,37 @@ if(WW3)
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/esmf
     COMMAND ${CMAKE_BUILD_TOOL} WW3_PARCOMPN=4 WW3_COMP=${WW3_COMP} ww3_nemslibonly > ${CMAKE_CURRENT_BINARY_DIR}/ww3_make.log 2>&1)
 
-    set(WW3_LIBS ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/obj/libww3_multi_esmf.a)
+  set(WW3_LIBS ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/obj/libww3_multi_esmf.a)
 endif()
 
 ###############################################################################
-### S2S Components [CMEPS, MOM6, CICE]
+### Ocean Components [MOM6, CICE]
 ###############################################################################
-if(S2S)
-  add_subdirectory(CMEPS-interface)
+if(MOM6)
   add_subdirectory(MOM6-interface)
+endif()
+
+if(CICE6)
   add_subdirectory(CICE-interface)
+endif()
+
+###############################################################################
+### Mediator Components [CMEPS]
+###############################################################################
+if(CMEPS)
+  add_subdirectory(CMEPS-interface)
+endif()
+
+###############################################################################
+### Data Components [NEMSdatm, CDEPS]
+###############################################################################
+if(NEMSdatm)
+  add_subdirectory(DATM)
+endif()
+
+if(CDEPS)
+  message("ADD CDEPS-interface directory")
+#  add_subdirectory(CDEPS-interface)
 endif()
 
 ###############################################################################
@@ -234,23 +270,39 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/NEMS/src/ESMFConvenienceMacros.h
                COPYONLY)
 
 add_library(ufs ${_nems_srcs})
+target_include_directories(ufs PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/NEMS/src)
+set_target_properties(ufs PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
+target_include_directories(ufs INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
+                                         $<INSTALL_INTERFACE:mod>)
 
-list(APPEND _ufs_defs_private ESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR}
-                              FRONT_FMS)
-add_dependencies(ufs fms)
+list(APPEND _ufs_defs_private ESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR})
 
-if(DATM)
-  list(APPEND _ufs_defs_private FRONT_DATM=datm)
-  add_dependencies(ufs datatm)
-else()
-  list(APPEND _ufs_defs_private FRONT_FV3=fv3gfs_cap_mod)
-  add_dependencies(ufs fv3atm)
-endif()
+target_link_libraries(ufs PUBLIC esmf)
+
 if(JEDI_DRIVER)
   list(APPEND _ufs_defs_private JEDI_DRIVER=ON)
 endif()
-set_target_properties(ufs PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
-target_include_directories(ufs PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/NEMS/src)
+
+if(FMS)
+  list(APPEND _ufs_defs_private FRONT_FMS)
+  add_dependencies(ufs fms)
+endif()
+
+if(NEMSdatm)
+  list(APPEND _ufs_defs_private FRONT_DATM=datm)
+  add_dependencies(ufs datatm)
+  target_link_libraries(ufs PUBLIC datatm)
+endif()
+
+if(FV3)
+  list(APPEND _ufs_defs_private FRONT_FV3=fv3gfs_cap_mod)
+  add_dependencies(ufs fv3atm)
+  target_link_libraries(ufs PUBLIC fv3atm)
+endif()
+
+if(STOCH_PHYS)
+  target_link_libraries(ufs PUBLIC stochastic_physics)
+endif()
 
 if(WW3)
   list(APPEND _ufs_defs_private FRONT_WW3=WMESMFMD)
@@ -259,26 +311,26 @@ if(WW3)
   target_link_libraries(ufs PUBLIC ${WW3_LIBS})
 endif()
 
-target_include_directories(ufs INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
-                                         $<INSTALL_INTERFACE:mod>)
-
-target_link_libraries(ufs PUBLIC esmf stochastic_physics)
-
-if(DATM)
-  target_link_libraries(ufs PUBLIC datatm)
-else()
-  target_link_libraries(ufs PUBLIC fv3atm)
+if(MOM6)
+  list(APPEND _ufs_defs_private FRONT_MOM6=mom_cap_mod)
+  add_dependencies(ufs mom6)
+  target_link_libraries(ufs PUBLIC mom6)
 endif()
 
-if(S2S)
-  list(APPEND _ufs_defs_private FRONT_MOM6=mom_cap_mod
-                                FRONT_CICE6=ice_comp_nuopc
-                                CMEPS
-                                FRONT_CMEPS=MED)
-  add_dependencies(ufs mom6 cice cmeps stochastic_physics)
-  target_link_libraries(ufs PUBLIC mom6
-                                   cice
-                                   cmeps)
+if(CICE6)
+  list(APPEND _ufs_defs_private FRONT_CICE6=ice_comp_nuopc)
+  add_dependencies(ufs cice)
+  target_link_libraries(ufs PUBLIC cice)
+endif()
+
+if(CMEPS)
+  list(APPEND _ufs_defs_private CMEPS FRONT_CMEPS=MED)
+  add_dependencies(ufs cmeps)
+  target_link_libraries(ufs PUBLIC cmeps)
+endif()
+
+if(CDEPS)
+  message("Do CDEPS things here")
 endif()
 
 target_compile_definitions(ufs PRIVATE "${_ufs_defs_private}")
@@ -290,7 +342,8 @@ add_executable(ufs_model NEMS/src/MAIN_NEMS.F90)
 
 list(APPEND _ufs_model_defs_private ESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR})
 
-set_target_properties(ufs_model PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
+set_target_properties(ufs_model PROPERTIES Fortran_MODULE_DIRECTORY
+                                           ${CMAKE_CURRENT_BINARY_DIR}/mod)
 
 target_include_directories(ufs_model PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/NEMS/src)
 
@@ -302,9 +355,10 @@ endif()
 
 target_compile_definitions(ufs_model PRIVATE "${_ufs_model_defs_private}")
 
-if(DATM)
+if(NEMSdatm)
   target_link_libraries(ufs_model PUBLIC ufs w3nco::w3nco_d)
 endif()
+
 target_link_libraries(ufs_model PRIVATE ufs
                                         esmf
                                         NetCDF::NetCDF_Fortran)
@@ -312,18 +366,16 @@ target_link_libraries(ufs_model PRIVATE ufs
 ###############################################################################
 ### Install
 ###############################################################################
-install(
-  TARGETS ufs
+install(TARGETS ufs
+        EXPORT  ufs-config
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib)
 
-  EXPORT ufs-config
-  LIBRARY DESTINATION lib
-  ARCHIVE DESTINATION lib)
+install(EXPORT      ufs-config
+        DESTINATION lib/cmake)
 
 install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod DESTINATION ${CMAKE_INSTALL_PREFIX})
 
-install(EXPORT ufs-config
-  DESTINATION lib/cmake
-)
 ###############################################################################
 ### Done
 ###############################################################################
