@@ -33,7 +33,7 @@ module lnd_import_export
 
   private :: fldlist_add
   private :: fldlist_realize
-  ! private :: state_getfldptr
+  private :: state_getfldptr
   ! private :: fldchk
 
   type fld_list_type
@@ -925,37 +925,37 @@ contains
   end subroutine fldlist_realize
 
   !===============================================================================
-  ! subroutine state_getimport_1d(state, fldname, ctsmdata, rc)
+  subroutine state_getimport_1d(state, fldname, ctsmdata, rc)
 
-  !   ! fill in ctsm import data for 1d field
+    ! fill in ctsm import data for 1d field
 
-  !   use ESMF, only : ESMF_LOGERR_PASSTHRU, ESMF_END_ABORT, ESMF_LogFoundError
-  !   use ESMF, only : ESMF_Finalize
+    use ESMF, only : ESMF_LOGERR_PASSTHRU, ESMF_END_ABORT, ESMF_LogFoundError
+    use ESMF, only : ESMF_Finalize
 
-  !   ! input/output variabes
-  !   type(ESMF_State) , intent(in)    :: state
-  !   character(len=*) , intent(in)    :: fldname
-  !   real(r8)         , intent(inout) :: ctsmdata(:)
-  !   integer          , intent(out)   :: rc
+    ! input/output variabes
+    type(ESMF_State) , intent(in)    :: state
+    character(len=*) , intent(in)    :: fldname
+    real(r8)         , intent(inout) :: ctsmdata(:)
+    integer          , intent(out)   :: rc
 
-  !   ! local variables
-  !   real(r8), pointer :: fldPtr1d(:)
-  !   integer           :: g
-  !   character(len=*), parameter :: subname='(lnd_import_export:state_getimport_1d)'
-  !   ! ----------------------------------------------
+    ! local variables
+    real(r8), pointer :: fldPtr1d(:)
+    integer           :: g
+    character(len=*), parameter :: subname='(lnd_import_export:state_getimport_1d)'
+    ! ----------------------------------------------
 
-  !   rc = ESMF_SUCCESS
+    rc = ESMF_SUCCESS
 
-  !   call state_getfldptr(State, trim(fldname), fldptr1d=fldptr1d, rc=rc)
-  !   if (ChkErr(rc,__LINE__,u_FILE_u)) return
-  !   do g = 1,size(ctsmdata)
-  !      ctsmdata(g) = fldptr1d(g)
-  !   end do
-  !   call check_for_nans(ctsmdata, trim(fldname), 1)
+    call state_getfldptr(State, trim(fldname), fldptr1d=fldptr1d, rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    do g = 1,size(ctsmdata)
+       ctsmdata(g) = fldptr1d(g)
+    end do
+    !call check_for_nans(ctsmdata, trim(fldname), 1)
 
-  ! end subroutine state_getimport_1d
+  end subroutine state_getimport_1d
 
-  ! !===============================================================================
+  !===============================================================================
   ! subroutine state_getimport_2d(state, fldname, ctsmdata, rc)
 
   !   ! fill in ctsm import data for 2d field
@@ -1071,44 +1071,44 @@ contains
   ! end subroutine state_setexport_2d
 
   !===============================================================================
-  ! subroutine state_getfldptr(State, fldname, fldptr1d, fldptr2d, rc)
+  subroutine state_getfldptr(State, fldname, fldptr1d, fldptr2d, rc)
 
-  !   ! ----------------------------------------------
-  !   ! Get pointer to a state field
-  !   ! ----------------------------------------------
+    ! ----------------------------------------------
+    ! Get pointer to a state field
+    ! ----------------------------------------------
 
-  !   use ESMF , only : ESMF_State, ESMF_Field, ESMF_Mesh, ESMF_FieldStatus_Flag
-  !   use ESMF , only : ESMF_StateGet, ESMF_FieldGet, ESMF_MeshGet
-  !   use ESMF , only : ESMF_FIELDSTATUS_COMPLETE, ESMF_FAILURE
+    use ESMF , only : ESMF_State, ESMF_Field, ESMF_Mesh, ESMF_FieldStatus_Flag
+    use ESMF , only : ESMF_StateGet, ESMF_FieldGet, ESMF_MeshGet
+    use ESMF , only : ESMF_FIELDSTATUS_COMPLETE, ESMF_FAILURE
 
-  !   ! input/output variables
-  !   type(ESMF_State),             intent(in)    :: State
-  !   character(len=*),             intent(in)    :: fldname
-  !   real(R8), pointer, optional , intent(out)   :: fldptr1d(:)
-  !   real(R8), pointer, optional , intent(out)   :: fldptr2d(:,:)
-  !   integer,                      intent(out)   :: rc
+    ! input/output variables
+    type(ESMF_State),             intent(in)    :: State
+    character(len=*),             intent(in)    :: fldname
+    real(R8), pointer, optional , intent(out)   :: fldptr1d(:)
+    real(R8), pointer, optional , intent(out)   :: fldptr2d(:,:)
+    integer,                      intent(out)   :: rc
 
-  !   ! local variables
-  !   type(ESMF_FieldStatus_Flag) :: status
-  !   type(ESMF_Field)            :: lfield
-  !   character(len=*), parameter :: subname='(lnd_import_export:state_getfldptr)'
-  !   ! ----------------------------------------------
+    ! local variables
+    type(ESMF_FieldStatus_Flag) :: status
+    type(ESMF_Field)            :: lfield
+    character(len=*), parameter :: subname='(lnd_import_export:state_getfldptr)'
+    ! ----------------------------------------------
 
-  !   rc = ESMF_SUCCESS
+    rc = ESMF_SUCCESS
 
-  !   call ESMF_StateGet(State, itemName=trim(fldname), field=lfield, rc=rc)
-  !   if (ChkErr(rc,__LINE__,u_FILE_u)) return
-  !   if (present(fldptr1d)) then
-  !      call ESMF_FieldGet(lfield, farrayPtr=fldptr1d, rc=rc)
-  !      if (ChkErr(rc,__LINE__,u_FILE_u)) return
-  !   else if (present(fldptr2d)) then
-  !      call ESMF_FieldGet(lfield, farrayPtr=fldptr2d, rc=rc)
-  !      if (ChkErr(rc,__LINE__,u_FILE_u)) return
-  !   else
-  !      call shr_sys_abort("either fldptr1d or fldptr2d must be an input argument")
-  !   end if
+    call ESMF_StateGet(State, itemName=trim(fldname), field=lfield, rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    if (present(fldptr1d)) then
+       call ESMF_FieldGet(lfield, farrayPtr=fldptr1d, rc=rc)
+       if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    else if (present(fldptr2d)) then
+       call ESMF_FieldGet(lfield, farrayPtr=fldptr2d, rc=rc)
+       if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    else
+       call shr_sys_abort("either fldptr1d or fldptr2d must be an input argument")
+    end if
 
-  ! end subroutine state_getfldptr
+  end subroutine state_getfldptr
 
   !===============================================================================
   ! logical function fldchk(state, fldname)

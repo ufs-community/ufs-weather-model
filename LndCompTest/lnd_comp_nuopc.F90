@@ -26,21 +26,21 @@ module lnd_comp_nuopc
   use shr_sys_mod            , only : shr_sys_abort
 
   use noah_driver            , only : init_driver
-  
-  implicit none
-  private ! except 
 
-  ! Module public routines 
+  implicit none
+  private ! except
+
+  ! Module public routines
   public  :: SetServices
   public  :: SetVM
 
-  ! Module private routines  
+  ! Module private routines
   private :: InitializeP0
   private :: InitializeAdvertise
   private :: InitializeRealize
   private :: ModelAdvance
   private :: ModelFinalize
-  
+
   character(len=CL)      :: flds_scalar_name = ''
   integer                :: flds_scalar_num = 0
 
@@ -48,9 +48,9 @@ module lnd_comp_nuopc
   character(len=*) , parameter :: u_FILE_u = &
        __FILE__
 
-!===============================================================================   
+!===============================================================================
 contains
-!===============================================================================   
+!===============================================================================
 
   subroutine SetServices(gcomp, rc)
     type(ESMF_GridComp)  :: gcomp
@@ -65,12 +65,12 @@ contains
     call NUOPC_CompDerive(gcomp, model_routine_SS, rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
-    ! switching to IPD versions    
+    ! switching to IPD versions
     call ESMF_GridCompSetEntryPoint(gcomp, ESMF_METHOD_INITIALIZE, &
          userRoutine=InitializeP0, phase=0, rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
-    ! set entry point for methods that require specific implementation 
+    ! set entry point for methods that require specific implementation
     call NUOPC_CompSetEntryPoint(gcomp, ESMF_METHOD_INITIALIZE, &
          phaseLabelList=(/"IPDv01p1"/), userRoutine=InitializeAdvertise, rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
@@ -79,7 +79,7 @@ contains
          phaseLabelList=(/"IPDv01p3"/), userRoutine=InitializeRealize, rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
-    ! attach specializing method(s)            
+    ! attach specializing method(s)
     call NUOPC_CompSpecialize(gcomp, specLabel=model_label_Advance, &
          specRoutine=ModelAdvance, rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
@@ -87,32 +87,32 @@ contains
     call NUOPC_CompSpecialize(gcomp, specLabel=model_label_Finalize, &
          specRoutine=ModelFinalize, rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
-    
-    
+
+
   end subroutine SetServices
 
 
-  !=============================================================================== 
+  !===============================================================================
   subroutine InitializeP0(gcomp, importState, exportState, clock, rc)
 
-    ! input/output variables 
+    ! input/output variables
     type(ESMF_GridComp)   :: gcomp
     type(ESMF_State)      :: importState, exportState
     type(ESMF_Clock)      :: clock
     integer, intent(out)  :: rc
-    !-------------------------------------------------------------------------------           
+    !-------------------------------------------------------------------------------
 
     rc = ESMF_SUCCESS
 
-    ! Switch to IPDv01 by filtering all other phaseMap entries   
+    ! Switch to IPDv01 by filtering all other phaseMap entries
     call NUOPC_CompFilterPhaseMap(gcomp, ESMF_METHOD_INITIALIZE, acceptStringList=(/"IPDv01p"/), rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
   end subroutine InitializeP0
 
-  !===============================================================================  
+  !===============================================================================
 
-  !===============================================================================  
+  !===============================================================================
   subroutine InitializeAdvertise(gcomp, importState, exportState, clock, rc)
 
     ! input/output variables
@@ -127,8 +127,8 @@ contains
     integer            :: ierr
     integer            :: n
     integer            :: localpet
-    integer            :: compid      ! component id    
-    integer            :: shrlogunit  ! original log unit             
+    integer            :: compid      ! component id
+    integer            :: shrlogunit  ! original log unit
     character(len=CL)  :: cvalue
     character(len=CL)  :: logmsg
     logical            :: isPresent, isSet
@@ -137,7 +137,7 @@ contains
     character(len=*), parameter :: format = "('("//trim(subname)//") :',A)"
     !-------------------------------------------------------------------------------
     rc = ESMF_SUCCESS
-    
+
     call ESMF_LogWrite(subname//' called', ESMF_LOGMSG_INFO)
 
     call ESMF_GridCompGet(gcomp, vm=vm, rc=rc)
@@ -147,9 +147,9 @@ contains
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
     inst_name = 'LND'
 
-    !----------------------------------------------------------------------------      
-    ! advertise fields 
-    !---------------------------------------------------------------------------- 
+    !----------------------------------------------------------------------------
+    ! advertise fields
+    !----------------------------------------------------------------------------
 
     call NUOPC_CompAttributeGet(gcomp, name="ScalarFieldName", value=cvalue, isPresent=isPresent, isSet=isSet, rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
@@ -175,13 +175,13 @@ contains
     call advertise_fields(gcomp, flds_scalar_name, rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
-    
+
   end subroutine InitializeAdvertise
 
 
-  !===============================================================================  
+  !===============================================================================
   subroutine InitializeRealize(gcomp, importState, exportState, clock, rc)
-    ! input/output variables      
+    ! input/output variables
     type(ESMF_GridComp)  :: gcomp
     type(ESMF_State)     :: importState
     type(ESMF_State)     :: exportState
@@ -192,7 +192,7 @@ contains
     character(len=*),parameter :: subname=trim(modName)//':(InitializeRealize) '
     character(len=CL) ::  meshfile_lnd = 'INPUT/C96_181018_ESMFmesh.nc'
     type(ESMF_Mesh)   ::  mesh
-    
+
     !-------------------------------------------------------------------------------
     rc = ESMF_SUCCESS
     call ESMF_LogWrite(subname//' called', ESMF_LOGMSG_INFO)
@@ -201,23 +201,23 @@ contains
     mesh = ESMF_MeshCreate(filename=trim(meshfile_lnd), fileformat=ESMF_FILEFORMAT_ESMFMESH, rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
-    ! ! Read in mask meshfile if needed       
+    ! ! Read in mask meshfile if needed
     ! if (trim(meshfile_mask) /= trim(meshfile_lnd)) then
     !    mesh_maskinput = ESMF_MeshCreate(filename=trim(meshfile_mask), fileformat=ESMF_FILEFORMAT_ESMFMESH, rc=rc)
     !    if (ChkErr(rc,__LINE__,u_FILE_u)) return
     ! end if
 
-    ! ---------------------  
-    ! Realize the actively coupled fields        
-    ! ---------------------            
+    ! ---------------------
+    ! Realize the actively coupled fields
+    ! ---------------------
     call realize_fields(gcomp, mesh, flds_scalar_name, flds_scalar_num, rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
     ! initialize noah:
-    
-    
 
-    
+
+
+
   end subroutine InitializeRealize
 
   !===============================================================================
@@ -228,7 +228,7 @@ contains
     use noah_driver, only: noah_loop_drv
 
     use field_print_debug, only: field_foo ! test tmp
-    
+
     ! Arguments
     type(ESMF_GridComp)  :: gcomp
     integer, intent(out) :: rc
@@ -246,20 +246,31 @@ contains
 
 
     !tmp debug
-    real(r8), pointer          :: dataPtr(:,:)
+    real(r8), pointer          :: dataPtr(:)
     character(len=*),parameter :: fldname="foo_atm2lndfield"
-    
+!    character(len=*),parameter :: fldname="Faxa_lwdn"
+
     ! query the Component for its clock, importState and exportState
-    call ESMF_GridCompGet(gcomp, clock=clock, importState=importState, &
-         exportState=exportState, rc=rc)
+    ! call ESMF_GridCompGet(gcomp, clock=clock, importState=importState, &
+    !      exportState=exportState, rc=rc)
+    call NUOPC_ModelGet(gcomp, modelClock=clock, importState=importState, exportState=exportState, rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
-    ! test tmp
+    !--------------------------------
+    ! Unpack import state
+    !--------------------------------
+
+    ! call import_fields(importState,rc)....
+
+    ! test tmp import
     write(*,*) 'JP foo A'
     call field_foo(importState, trim(fldname), dataPtr, rc=rc)
     write(*,*) 'JP foo B'
     ! end test tmp
+
+    ! ...end call import_fields
     
+
     call ESMF_ClockPrint(clock, options="currTime", &
          preString="------>Advancing LND from: ", unit=msgString, rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
@@ -275,7 +286,7 @@ contains
     call ESMF_LogWrite(trim(msgString), ESMF_LOGMSG_INFO)
 
 
-    
+
     ! call ESMF_ClockAdvance(clock,rc=rc)
     ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
@@ -293,6 +304,6 @@ contains
     rc = ESMF_SUCCESS
     call ESMF_LogWrite(subname//' called', ESMF_LOGMSG_INFO)
   end subroutine ModelFinalize
-   
+
 
 end module
