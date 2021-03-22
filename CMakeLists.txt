@@ -159,49 +159,21 @@ message("Found Python: ${Python_EXECUTABLE}")
 ### FMS
 ###############################################################################
 if(FMS)
-  include(fms_files.cmake)
-  add_library(fms ${fms_src_files} ${fms_headers})
-
-  list(APPEND _fms_defs_public use_libMPI
-                               use_netCDF
-                               GFS_PHYS
-                               INTERNAL_FILE_NML)
-  if(QUAD_PRECISION)
-    list(APPEND _fms_defs_public ENABLE_QUAD_PRECISION)
+  set(GFS_PHYS ON CACHE BOOL "Enable GFS Physics")
+  if(NOT 32BIT)
+    set(64BIT ON CACHE BOOL "Enable 64-bit")
+  endif()
+  if(NOT QUAD_PRECISION)
+    set(ENABLE_QUAD_PRECISION OFF CACHE BOOL "Enable Quad-precision")
   endif()
 
-  # check gettid
-  include(CheckFunctionExists)
-  check_function_exists(gettid HAVE_GETTID)
-  if(HAVE_GETTID)
-    list(APPEND _fms_defs_public HAVE_GETTID)
-  endif()
-
-  target_compile_definitions(fms PUBLIC "${_fms_defs_public}")
+  add_subdirectory(FMS)
 
   if(32BIT)
-    list(APPEND _fms_defs_private OVERLOAD_R4
-                                  OVERLOAD_R8)
+    add_library(fms ALIAS fms_r4)
+  else()
+    add_library(fms ALIAS fms_r8)
   endif()
-
-  target_compile_definitions(fms PRIVATE "${_fms_defs_private}")
-
-  target_include_directories(fms PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/include>
-                                        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/fms>
-                                        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/fms2_io/include>
-                                        $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/FMS/mod>
-                                        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/FMS/mpp/include>)
-  target_include_directories(fms INTERFACE
-                                        $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include>
-                                        $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/mod>)
-  target_link_libraries(fms PUBLIC MPI::MPI_Fortran
-                                   NetCDF::NetCDF_Fortran)
-  if(OpenMP_Fortran_FOUND)
-    target_link_libraries(fms PRIVATE OpenMP::OpenMP_Fortran)
-  endif()
-  set_target_properties(fms PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/FMS)
-  set_target_properties(fms PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/FMS/mod)
-  set_target_properties(fms PROPERTIES PUBLIC_HEADER "${fms_headers}" )
 endif(FMS)
 
 ###############################################################################
@@ -212,7 +184,7 @@ if(STOCH_PHYS)
 endif()
 
 ###############################################################################
-### Atmosphere Components [FV3]
+### Atmosphere Components [FV3, MPAS?]
 ###############################################################################
 if(FV3)
   add_subdirectory(FV3)
@@ -312,6 +284,10 @@ list(APPEND _ufs_defs_private ESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR})
 
 target_link_libraries(ufs PUBLIC esmf)
 
+if(JEDI_DRIVER)
+  list(APPEND _ufs_defs_private JEDI_DRIVER=ON)
+endif()
+
 if(FMS)
   list(APPEND _ufs_defs_private FRONT_FMS)
   add_dependencies(ufs fms)
@@ -329,8 +305,8 @@ if(FV3)
   target_link_libraries(ufs PUBLIC fv3atm)
 endif()
 
-if(JEDI_DRIVER)
-  list(APPEND _ufs_defs_private JEDI_DRIVER=ON)
+if(STOCH_PHYS)
+  target_link_libraries(ufs PUBLIC stochastic_physics)
 endif()
 
 if(WW3)
@@ -371,7 +347,8 @@ add_executable(ufs_model NEMS/src/MAIN_NEMS.F90)
 
 list(APPEND _ufs_model_defs_private ESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR})
 
-set_target_properties(ufs_model PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
+set_target_properties(ufs_model PROPERTIES Fortran_MODULE_DIRECTORY
+                                           ${CMAKE_CURRENT_BINARY_DIR}/mod)
 
 target_include_directories(ufs_model PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/NEMS/src)
 
@@ -389,8 +366,7 @@ endif()
 
 target_link_libraries(ufs_model PRIVATE ufs
                                         esmf
-                                        NetCDF::NetCDF_Fortran
-                                        ${MKL_LIB})
+                                        NetCDF::NetCDF_Fortran)
 
 ###############################################################################
 ### Install
@@ -412,6 +388,7 @@ endif(FMS)
 
 install(
   TARGETS ufs
+
   EXPORT ufs-config
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib)
