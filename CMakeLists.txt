@@ -215,7 +215,7 @@ if(WW3)
 endif()
 
 ###############################################################################
-### Ocean Components [MOM6, CICE]
+### Marine Components [MOM6, CICE6]
 ###############################################################################
 if(MOM6)
   add_subdirectory(MOM6-interface)
@@ -270,63 +270,64 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/NEMS/src/ESMFConvenienceMacros.h
                COPYONLY)
 
 add_library(ufs ${_nems_srcs})
+set_target_properties(ufs PROPERTIES Fortran_MODULE_DIRECTORY
+                                     ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(ufs PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/NEMS/src)
-set_target_properties(ufs PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(ufs INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                          $<INSTALL_INTERFACE:mod>)
 
 list(APPEND _ufs_defs_private ESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR})
 
-target_link_libraries(ufs PUBLIC esmf)
-
 if(JEDI_DRIVER)
   list(APPEND _ufs_defs_private JEDI_DRIVER=ON)
 endif()
 
+if(WW3)
+  add_dependencies(ufs ww3_nems)
+  list(APPEND _ufs_defs_private FRONT_WW3=WMESMFMD)
+  target_include_directories(ufs PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/mod)
+  list(APPEND _ufs_libs_public ${WW3_LIBS})
+endif()
+
+list(APPEND _ufs_libs_public esmf)
+
+if(STOCH_PHYS)
+  list(APPEND _ufs_libs_public stochastic_physics)
+endif()
+
 if(FMS)
-  list(APPEND _ufs_defs_private FRONT_FMS)
   add_dependencies(ufs fms)
+  list(APPEND _ufs_defs_private FRONT_FMS)
 endif()
 
 if(NEMSdatm)
-  list(APPEND _ufs_defs_private FRONT_DATM=datm)
   add_dependencies(ufs datatm)
-  target_link_libraries(ufs PUBLIC datatm)
+  list(APPEND _ufs_defs_private FRONT_DATM=datm)
+  list(APPEND _ufs_libs_public datatm)
 endif()
 
 if(FV3)
-  list(APPEND _ufs_defs_private FRONT_FV3=fv3gfs_cap_mod)
   add_dependencies(ufs fv3atm)
-  target_link_libraries(ufs PUBLIC fv3atm)
-endif()
-
-if(STOCH_PHYS)
-  target_link_libraries(ufs PUBLIC stochastic_physics)
-endif()
-
-if(WW3)
-  list(APPEND _ufs_defs_private FRONT_WW3=WMESMFMD)
-  target_include_directories(ufs PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/mod)
-  add_dependencies(ufs ww3_nems)
-  target_link_libraries(ufs PUBLIC ${WW3_LIBS})
+  list(APPEND _ufs_defs_private FRONT_FV3=fv3gfs_cap_mod)
+  list(APPEND _ufs_libs_public fv3atm)
 endif()
 
 if(MOM6)
-  list(APPEND _ufs_defs_private FRONT_MOM6=mom_cap_mod)
   add_dependencies(ufs mom6)
-  target_link_libraries(ufs PUBLIC mom6)
+  list(APPEND _ufs_defs_private FRONT_MOM6=mom_cap_mod)
+  list(APPEND _ufs_libs_public mom6)
 endif()
 
 if(CICE6)
-  list(APPEND _ufs_defs_private FRONT_CICE6=ice_comp_nuopc)
   add_dependencies(ufs cice)
-  target_link_libraries(ufs PUBLIC cice)
+  list(APPEND _ufs_defs_private FRONT_CICE6=ice_comp_nuopc)
+  list(APPEND _ufs_libs_public cice)
 endif()
 
 if(CMEPS)
-  list(APPEND _ufs_defs_private CMEPS FRONT_CMEPS=MED)
   add_dependencies(ufs cmeps)
-  target_link_libraries(ufs PUBLIC cmeps)
+  list(APPEND _ufs_defs_private CMEPS FRONT_CMEPS=MED)
+  list(APPEND _ufs_libs_public cmeps)
 endif()
 
 if(CDEPS)
@@ -334,11 +335,13 @@ if(CDEPS)
 endif()
 
 target_compile_definitions(ufs PRIVATE "${_ufs_defs_private}")
+target_link_libraries(ufs PUBLIC "${_ufs_libs_public}")
 
 ###############################################################################
 ### UFS executable
 ###############################################################################
 add_executable(ufs_model NEMS/src/MAIN_NEMS.F90)
+add_dependencies(ufs_model ufs)
 
 list(APPEND _ufs_model_defs_private ESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR})
 
@@ -350,7 +353,6 @@ target_include_directories(ufs_model PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/NEMS/sr
 if(WW3)
   list(APPEND _ufs_model_defs_private FRONT_WW3=WMESMFMD)
   target_include_directories(ufs_model PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/mod)
-  add_dependencies(ufs_model ww3_nems)
 endif()
 
 target_compile_definitions(ufs_model PRIVATE "${_ufs_model_defs_private}")
