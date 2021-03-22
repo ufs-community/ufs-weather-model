@@ -32,11 +32,11 @@ usage() {
   echo
   echo "  Examples"
   echo
-  echo "    'utest -n fv3_ccpp_control' tests all for fv3_ccpp_control"
-  echo "    'utest -n fv3_ccpp_control -c rst' tests restart for fv3_ccpp_control"
-  echo "    'utest -n fv3_ccpp_gfdlmp -c mpi,thr' tests mpi and threading for fv3_ccpp_gfdlmp"
-  echo "    'utest -n fv3_ccpp_gfdlmp -c bit' tests bit for fv3_ccpp_gfdlmp"
-  echo "    'utest -n fv3_ccpp_satmedmf -c dcp,dbg,rst' tests decomposition, debug, restart for fv3_ccpp_satmedmf"
+  echo "    'utest -n fv3_control' tests all for fv3_control"
+  echo "    'utest -n fv3_control -c rst' tests restart for fv3_control"
+  echo "    'utest -n fv3_gfdlmp -c mpi,thr' tests mpi and threading for fv3_gfdlmp"
+  echo "    'utest -n fv3_gfdlmp -c bit' tests bit for fv3_gfdlmp"
+  echo "    'utest -n fv3_satmedmf -c dcp,dbg,rst' tests decomposition, debug, restart for fv3_satmedmf"
   echo
   #set -x
 }
@@ -138,17 +138,21 @@ run_utests() {
         CREATE_BASELINE=true
         BL_SUFFIX=_std_base
         cat <<-EOF > ${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
-					export UNIT_TEST=true
+					export UNIT_TEST=${UNIT_TEST}
+					export CI_TEST=${CI_TEST}
 					export RT_COMPILER=${RT_COMPILER}
 					export RESTART_INTERVAL=$(( FHMAX/2 ))
+					export MPI_PROC_BIND="-bind-to user:0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41"
 					EOF
         ;;
       std)
         CREATE_BASELINE=false
         BL_SUFFIX=_std_base
         cat <<-EOF > ${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
-					export UNIT_TEST=true
+					export UNIT_TEST=${UNIT_TEST}
+					export CI_TEST=${CI_TEST}
 					export RT_COMPILER=${RT_COMPILER}
+					export MPI_PROC_BIND="-bind-to user:0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41"
 					EOF
         ;;
       thr)
@@ -161,31 +165,41 @@ run_utests() {
         TPN=$(( TPN/THRD ))
         NODES=$(( TASKS/TPN + 1 ))
         cat <<-EOF > ${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
-					export UNIT_TEST=true
+					export UNIT_TEST=${UNIT_TEST}
+					export CI_TEST=${CI_TEST}
 					export RT_COMPILER=${RT_COMPILER}
 					export THRD=${THRD}
 					export JNPES=${JNPES}
 					export TASKS=${TASKS}
 					export TPN=${TPN}
 					export NODES=${NODES}
+					export MPI_PROC_BIND="-bind-to user:0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,37,38,39,40,41"
 					EOF
         ;;
       mpi)
         CREATE_BASELINE=false
         BL_SUFFIX=_std_base
-        JNPES=$(( JNPES/2 ))
+        if [[ ${CI_TEST} == true ]]; then
+          INPES=2
+          JNPES=2
+        else
+          JNPES=$(( JNPES/2 ))
+        fi
         WRITE_GROUP=2
         WRTTASK_PER_GROUP=12
         TASKS=$(( INPES*JNPES*6 + WRITE_GROUP*WRTTASK_PER_GROUP ))
         NODES=$(( TASKS/TPN + 1 ))
         cat <<-EOF > ${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
-					export UNIT_TEST=true
+					export UNIT_TEST=${UNIT_TEST}
+					export CI_TEST=${CI_TEST}
 					export RT_COMPILER=${RT_COMPILER}
+					export INPES=${INPES}
 					export JNPES=${JNPES}
 					export WRITE_GROUP=${WRITE_GROUP}
 					export WRTTASK_PER_GROUP=${WRTTASK_PER_GROUP}
 					export TASKS=${TASKS}
 					export NODES=${NODES}
+					export MPI_PROC_BIND="-bind-to user:0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47"
 					EOF
         ;;
       dcp)
@@ -195,10 +209,12 @@ run_utests() {
         INPES=$JNPES
         JNPES=$temp
         cat <<-EOF >${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
-					export UNIT_TEST=true
+					export UNIT_TEST=${UNIT_TEST}
+					export CI_TEST=${CI_TEST}
 					export RT_COMPILER=${RT_COMPILER}
 					export INPES=${INPES}
 					export JNPES=${JNPES}
+					export MPI_PROC_BIND="-bind-to user:0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41"
 					EOF
         ;;
       rst) # this is not going to work for regional model
@@ -250,7 +266,8 @@ run_utests() {
         fi
 
         cat <<-EOF >${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
-					export UNIT_TEST=true
+					export UNIT_TEST=${UNIT_TEST}
+					export CI_TEST=${CI_TEST}
 					export RT_COMPILER=${RT_COMPILER}
 					export RESTART_FILE_PREFIX=${RESTART_FILE_PREFIX}
 					export WARM_START=${WARM_START}
@@ -261,6 +278,7 @@ run_utests() {
 					export NA_INIT=${NA_INIT}
 					export NSTF_NAME=${NSTF_NAME}
 					export LIST_FILES="${LIST_FILES}"
+					export MPI_PROC_BIND="-bind-to user:0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41"
 					EOF
         ;;
       bit_base)
@@ -268,8 +286,10 @@ run_utests() {
         BL_SUFFIX=_bit_base
         comp_nm=bit
         cat <<-EOF >${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
-					export UNIT_TEST=true
+					export UNIT_TEST=${UNIT_TEST}
+					export CI_TEST=${CI_TEST}
 					export RT_COMPILER=${RT_COMPILER}
+					export MPI_PROC_BIND="-bind-to user:0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41"
 					EOF
         ;;
       bit)
@@ -277,8 +297,10 @@ run_utests() {
         BL_SUFFIX=_bit_base
         comp_nm=bit
         cat <<-EOF >${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
-					export UNIT_TEST=true
+					export UNIT_TEST=${UNIT_TEST}
+					export CI_TEST=${CI_TEST}
 					export RT_COMPILER=${RT_COMPILER}
+					export MPI_PROC_BIND="-bind-to user:0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41"
 					EOF
         ;;
       dbg_base)
@@ -287,9 +309,11 @@ run_utests() {
         comp_nm=dbg
         WLCLK=30
         cat <<-EOF >${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
-					export UNIT_TEST=true
+					export UNIT_TEST=${UNIT_TEST}
+					export CI_TEST=${CI_TEST}
 					export RT_COMPILER=${RT_COMPILER}
 					export WLCLK=${WLCLK}
+					export MPI_PROC_BIND="-bind-to user:0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41"
 					EOF
         ;;
       dbg)
@@ -298,9 +322,11 @@ run_utests() {
         comp_nm=dbg
         WLCLK=30
         cat <<-EOF >${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
-					export UNIT_TEST=true
+					export UNIT_TEST=${UNIT_TEST}
+					export CI_TEST=${CI_TEST}
 					export RT_COMPILER=${RT_COMPILER}
 					export WLCLK=${WLCLK}
+					export MPI_PROC_BIND="-bind-to user:0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41"
 					EOF
         ;;
     esac
