@@ -355,7 +355,7 @@ export_fv3 ()
 {
 export FV3=true
 export S2S=false
-export DATM=false
+export DATM_NEMS=false
 export DATM_CDEPS=false
 export THRD=1
 export WLCLK=$WLCLK_dflt
@@ -523,7 +523,7 @@ export_cpl ()
 {
 export FV3=true
 export S2S=true
-export DATM=false
+export DATM_NEMS=false
 export DATM_CDEPS=false
 
 export DAYS="1"
@@ -669,7 +669,7 @@ export_datm ()
 {
 export FV3=false
 export S2S=false
-export DATM=true
+export DATM_NEMS=true
 export DATM_CDEPS=false
 export DAYS=1
 export FHMAX=24
@@ -694,7 +694,7 @@ export NY_GLB=320
 # nems.configure
 export NEMS_CONFIGURE="nems.configure.datm.IN"
 export med_model="nems"
-export atm_model="datm"
+export atm_model="nems_datm"
 export ocn_model="mom6"
 export ice_model="cice6"
 export atm_petlist_bounds=$APB_datm_100
@@ -773,7 +773,7 @@ export_datm_cdeps ()
 {
 export FV3=false
 export S2S=false
-export DATM=false
+export DATM_NEMS=false
 export DATM_CDEPS=true
 export DAYS=1
 export FHMAX=24
@@ -796,7 +796,7 @@ export NY_GLB=320
 # nems.configure
 export NEMS_CONFIGURE="nems.configure.datm_cdeps.IN"
 export med_model="nems"
-export atm_model="datm_cfsr"
+export atm_model="datm"
 export ocn_model="mom6"
 export ice_model="cice6"
 export atm_petlist_bounds=$APB_cdeps_100

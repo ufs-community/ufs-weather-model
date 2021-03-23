@@ -136,6 +136,10 @@ if(DATM AND NOT S2S)
    message(FATAL_ERROR "DATM=ON and S2S=OFF are incompatible, ABORT!")
 endif()
 
+if(DATM_NEMS AND NOT S2S)
+   message(FATAL_ERROR "DATM_NEMS=ON and S2S=OFF are incompatible, ABORT!")
+endif()
+
 if(S2S AND 32BIT)
    message(FATAL_ERROR "S2S=ON and 32BIT=ON are incompatible, ABORT!")
 endif()
@@ -172,11 +176,13 @@ if(NOT DATM_NEMS AND NOT DATM)
 endif()
 
 ###############################################################################
-### FV3 or Data Atmosphere
+### FV3 or NEMS Data Atmosphere
 ###############################################################################
 if(DATM_NEMS)
   add_subdirectory(DATM)
-elseif(NOT DATM)
+endif()
+
+if(NOT DATM_NEMS AND NOT DATM)
   add_subdirectory(FV3)
 endif()
 
@@ -225,6 +231,7 @@ if(CDEPS)
   add_subdirectory(CDEPS)
 endif()
 
+###############################################################################
 ### UFS Library [NEMS]
 ###############################################################################
 list(APPEND _nems_srcs NEMS/src/module_NEMS_UTILS.F90
@@ -256,7 +263,7 @@ list(APPEND _ufs_defs_private ESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR}
 add_dependencies(ufs fms)
 
 if(DATM_NEMS)
-  list(APPEND _ufs_defs_private FRONT_DATM=datm)
+  list(APPEND _ufs_defs_private FRONT_NEMS_DATM=datm)
   add_dependencies(ufs datatm)
 elseif(NOT DATM)
   list(APPEND _ufs_defs_private FRONT_FV3=fv3gfs_cap_mod)
@@ -279,7 +286,7 @@ endif()
 target_include_directories(ufs INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                          $<INSTALL_INTERFACE:mod>)
 
-target_link_libraries(ufs PUBLIC esmf stochastic_physics)
+target_link_libraries(ufs PUBLIC esmf)
 
 if(DATM_NEMS)
   target_link_libraries(ufs PUBLIC datatm)
@@ -290,7 +297,7 @@ elseif(DATM)
   include_directories(${CMAKE_CURRENT_BINARY_DIR}/CDEPS/datm)
   target_link_libraries(ufs PUBLIC datm)
 else()
-  target_link_libraries(ufs PUBLIC fv3atm)
+  target_link_libraries(ufs PUBLIC fv3atm stochastic_physics)
 endif()
 
 if(S2S)
@@ -298,7 +305,12 @@ if(S2S)
                                 FRONT_CICE6=ice_comp_nuopc
                                 CMEPS
                                 FRONT_CMEPS=MED)
-  add_dependencies(ufs mom6 cice cmeps stochastic_physics)
+  if(NOT DATM_NEMS AND NOT DATM)
+    add_dependencies(ufs mom6 cice cmeps stochastic_physics)
+  else()
+    add_dependencies(ufs mom6 cice cmeps )
+  endif()
+
   target_link_libraries(ufs PUBLIC mom6
                                    cice
                                    cmeps)
