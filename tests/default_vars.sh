@@ -806,4 +806,8 @@ export RESTART_N=${FHMAX}
 export CPLMODE="hafs"
 export RUNTYPE="startup"
 export USE_COLDSTART="false"
+
+# timing
+export ESMF_RUNTIME_PROFILE=ON
+export ESMF_RUNTIME_PROFILE_OUTPUT=SUMMARY
 }
