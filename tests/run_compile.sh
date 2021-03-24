@@ -35,6 +35,8 @@ export TEST_NR=${COMPILE_NR}
 export JBNME="compile_${COMPILE_NR}"
 export RUNDIR=${RUNDIR_ROOT}/${TEST_NAME}_${TEST_NR}
 
+echo -n "${JBNME}, $( date +%s )," > ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+
 source rt_utils.sh
 source atparse.bash
 
@@ -63,6 +65,8 @@ fi
 ################################################################################
 # End compile job
 ################################################################################
+
+echo " $( date +%s )" >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
 
 elapsed=$SECONDS
 echo "Elapsed time $elapsed seconds. Compile ${COMPILE_NR}"
