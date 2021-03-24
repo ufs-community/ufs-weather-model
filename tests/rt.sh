@@ -242,12 +242,12 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   QUEUE=batch
   COMPILE_QUEUE=batch
 
-  ACCNR=fv3-cpu
+  #ACCNR=fv3-cpu
   PARTITION=
   dprefix=/scratch1/NCEPDEV
   DISKNM=$dprefix/nems/emc.nemspara/RT
-  STMP=/scratch1/NCEPDEV/stmp4
-  PTMP=/scratch1/NCEPDEV/stmp2
+  STMP=$dprefix/stmp4
+  PTMP=$dprefix/stmp2
 
   SCHEDULER=slurm
   cp fv3_conf/fv3_slurm.IN_hera fv3_conf/fv3_slurm.IN
@@ -417,7 +417,7 @@ fi
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]]; then
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20210318/${RT_COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20210318}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20210324}
 fi
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20210324}
