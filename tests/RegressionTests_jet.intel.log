@@ -1,10 +1,24 @@
-Thu Mar  4 15:31:24 GMT 2021
+Mon Mar 22 23:31:27 GMT 2021
 Start Regression test
 
+Compile 001 elapsed time 3225 seconds. APP=ATM SUITES=FV3_GFS_2017
+Compile 002 elapsed time 1177 seconds. APP=ATM SUITES=FV3_GFS_2017_fv3wam 32BIT=Y MULTI_GASES=Y REPRO=Y
+Compile 003 elapsed time 2040 seconds. APP=ATM SUITES=FV3_GFS_2017,FV3_GFS_2017_stretched 32BIT=Y
+Compile 004 elapsed time 2052 seconds. APP=ATM SUITES=FV3_GFS_v15_thompson_mynn 32BIT=Y
+Compile 005 elapsed time 2078 seconds. APP=ATM SUITES=FV3_GFS_2017_gfdlmp,FV3_GFS_2017_gfdlmp_noahmp
+Compile 006 elapsed time 2601 seconds. APP=ATM SUITES=FV3_GFS_2017_csawmgshoc,FV3_GFS_2017_csawmg,FV3_GFS_2017_satmedmf,FV3_GFS_2017_satmedmfq
+Compile 007 elapsed time 2476 seconds. APP=ATM SUITES=FV3_GFS_2017_gfdlmp,FV3_CPT_v0,FV3_GSD_v0,FV3_GFS_v16_thompson,FV3_RAP,FV3_HRRR,FV3_RRFS_v1beta 32BIT=Y
+Compile 008 elapsed time 2255 seconds. APP=ATM SUITES=FV3_GFS_v15p2,FV3_GFS_v16,FV3_GFS_v15p2_RRTMGP,FV3_GFS_v16_RRTMGP
+Compile 009 elapsed time 2186 seconds. APP=ATM SUITES=FV3_GFS_v16_csawmg
+Compile 010 elapsed time 2083 seconds. APP=ATM SUITES=FV3_GFS_2017_gfdlmp,FV3_GFS_2017_gfdlmp_noahmp,FV3_GFS_v16_flake
+Compile 011 elapsed time 2293 seconds. APP=ATM SUITES=HAFS_v0_hwrf_thompson,HAFS_v0_hwrf,FV3_GFS_v16b_ugwpv1,FV3_GFS_v16_ras
+Compile 012 elapsed time 219 seconds. APP=ATM DEBUG=Y SUITES=FV3_GFS_v15p2,FV3_GFS_v15p2_RRTMGP,FV3_GFS_v16,FV3_GFS_v16_RRTMGP
+Compile 013 elapsed time 230 seconds. APP=ATM SUITES=FV3_GFS_v15_thompson_mynn,FV3_GFS_2017,FV3_GFS_2017_stretched,FV3_GSD_v0,FV3_GFS_v16_thompson,FV3_RRFS_v1beta 32BIT=Y DEBUG=Y
+Compile 014 elapsed time 211 seconds. APP=ATM SUITES=HAFS_v0_hwrf_thompson,HAFS_v0_hwrf,FV3_GFS_v16b_ugwpv1,FV3_GFS_v16_ras DEBUG=Y
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_control_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_control_prod
-Checking test 001 fv3_ccpp_control results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_control
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_control
+Checking test 001 fv3_control results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -67,12 +81,15 @@ Checking test 001 fv3_ccpp_control results ....
  Comparing RESTART/sfc_data.tile4.nc .........OK
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
-Test 001 fv3_ccpp_control PASS
+
+The total amount of wall time                        = 63.457498
+
+Test 001 fv3_control PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_control_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_2threads_prod
-Checking test 002 fv3_ccpp_2threads results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_control
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_2threads
+Checking test 002 fv3_2threads results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -135,12 +152,15 @@ Checking test 002 fv3_ccpp_2threads results ....
  Comparing RESTART/sfc_data.tile4.nc .........OK
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
-Test 002 fv3_ccpp_2threads PASS
+
+The total amount of wall time                        = 286.959426
+
+Test 002 fv3_2threads PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_control_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_restart_prod
-Checking test 003 fv3_ccpp_restart results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_control
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_restart
+Checking test 003 fv3_restart results ....
  Comparing phyf024.tile1.nc .........OK
  Comparing phyf024.tile2.nc .........OK
  Comparing phyf024.tile3.nc .........OK
@@ -185,12 +205,15 @@ Checking test 003 fv3_ccpp_restart results ....
  Comparing RESTART/sfc_data.tile4.nc .........OK
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
-Test 003 fv3_ccpp_restart PASS
+
+The total amount of wall time                        = 28.010051
+
+Test 003 fv3_restart PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_read_inc_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_read_inc_prod
-Checking test 004 fv3_ccpp_read_inc results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_read_inc
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_read_inc
+Checking test 004 fv3_read_inc results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -253,12 +276,15 @@ Checking test 004 fv3_ccpp_read_inc results ....
  Comparing RESTART/sfc_data.tile4.nc .........OK
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
-Test 004 fv3_ccpp_read_inc PASS
+
+The total amount of wall time                        = 53.034675
+
+Test 004 fv3_read_inc PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_wrtGauss_netcdf_esmf_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_wrtGauss_netcdf_esmf_prod
-Checking test 005 fv3_ccpp_wrtGauss_netcdf_esmf results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_wrtGauss_netcdf_esmf
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_wrtGauss_netcdf_esmf
+Checking test 005 fv3_wrtGauss_netcdf_esmf results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -301,12 +327,15 @@ Checking test 005 fv3_ccpp_wrtGauss_netcdf_esmf results ....
  Comparing RESTART/sfc_data.tile4.nc .........OK
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
-Test 005 fv3_ccpp_wrtGauss_netcdf_esmf PASS
+
+The total amount of wall time                        = 155.728536
+
+Test 005 fv3_wrtGauss_netcdf_esmf PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_wrtGauss_netcdf_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_wrtGauss_netcdf_prod
-Checking test 006 fv3_ccpp_wrtGauss_netcdf results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_wrtGauss_netcdf
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_wrtGauss_netcdf
+Checking test 006 fv3_wrtGauss_netcdf results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -349,12 +378,15 @@ Checking test 006 fv3_ccpp_wrtGauss_netcdf results ....
  Comparing RESTART/sfc_data.tile4.nc .........OK
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
-Test 006 fv3_ccpp_wrtGauss_netcdf PASS
+
+The total amount of wall time                        = 53.058650
+
+Test 006 fv3_wrtGauss_netcdf PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_wrtGauss_netcdf_parallel_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_wrtGauss_netcdf_parallel_prod
-Checking test 007 fv3_ccpp_wrtGauss_netcdf_parallel results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_wrtGauss_netcdf_parallel
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_wrtGauss_netcdf_parallel
+Checking test 007 fv3_wrtGauss_netcdf_parallel results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -362,7 +394,7 @@ Checking test 007 fv3_ccpp_wrtGauss_netcdf_parallel results ....
  Comparing atmos_4xdaily.tile5.nc .........OK
  Comparing atmos_4xdaily.tile6.nc .........OK
  Comparing phyf000.nc .........OK
- Comparing phyf024.nc ............ALT CHECK......OK
+ Comparing phyf024.nc .........OK
  Comparing dynf000.nc .........OK
  Comparing dynf024.nc ............ALT CHECK......OK
  Comparing RESTART/coupler.res .........OK
@@ -397,12 +429,15 @@ Checking test 007 fv3_ccpp_wrtGauss_netcdf_parallel results ....
  Comparing RESTART/sfc_data.tile4.nc .........OK
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
-Test 007 fv3_ccpp_wrtGauss_netcdf_parallel PASS
+
+The total amount of wall time                        = 67.698088
+
+Test 007 fv3_wrtGauss_netcdf_parallel PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_wrtGlatlon_netcdf_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_wrtGlatlon_netcdf_prod
-Checking test 008 fv3_ccpp_wrtGlatlon_netcdf results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_wrtGlatlon_netcdf
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_wrtGlatlon_netcdf
+Checking test 008 fv3_wrtGlatlon_netcdf results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -445,12 +480,15 @@ Checking test 008 fv3_ccpp_wrtGlatlon_netcdf results ....
  Comparing RESTART/sfc_data.tile4.nc .........OK
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
-Test 008 fv3_ccpp_wrtGlatlon_netcdf PASS
+
+The total amount of wall time                        = 53.516661
+
+Test 008 fv3_wrtGlatlon_netcdf PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_wrtGauss_nemsio_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_wrtGauss_nemsio_prod
-Checking test 009 fv3_ccpp_wrtGauss_nemsio results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_wrtGauss_nemsio
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_wrtGauss_nemsio
+Checking test 009 fv3_wrtGauss_nemsio results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -493,12 +531,15 @@ Checking test 009 fv3_ccpp_wrtGauss_nemsio results ....
  Comparing RESTART/sfc_data.tile4.nc .........OK
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
-Test 009 fv3_ccpp_wrtGauss_nemsio PASS
+
+The total amount of wall time                        = 52.530401
+
+Test 009 fv3_wrtGauss_nemsio PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_wrtGauss_nemsio_c192_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_wrtGauss_nemsio_c192_prod
-Checking test 010 fv3_ccpp_wrtGauss_nemsio_c192 results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_wrtGauss_nemsio_c192
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_wrtGauss_nemsio_c192
+Checking test 010 fv3_wrtGauss_nemsio_c192 results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -541,12 +582,15 @@ Checking test 010 fv3_ccpp_wrtGauss_nemsio_c192 results ....
  Comparing RESTART/sfc_data.tile4.nc .........OK
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
-Test 010 fv3_ccpp_wrtGauss_nemsio_c192 PASS
+
+The total amount of wall time                        = 140.918517
+
+Test 010 fv3_wrtGauss_nemsio_c192 PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_stochy_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_stochy_prod
-Checking test 011 fv3_ccpp_stochy results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_stochy
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_stochy
+Checking test 011 fv3_stochy results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -609,12 +653,15 @@ Checking test 011 fv3_ccpp_stochy results ....
  Comparing RESTART/sfc_data.tile4.nc .........OK
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
-Test 011 fv3_ccpp_stochy PASS
+
+The total amount of wall time                        = 58.535293
+
+Test 011 fv3_stochy PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_ca_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_ca_prod
-Checking test 012 fv3_ccpp_ca results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_ca
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_ca
+Checking test 012 fv3_ca results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -677,12 +724,15 @@ Checking test 012 fv3_ccpp_ca results ....
  Comparing RESTART/sfc_data.tile4.nc .........OK
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
-Test 012 fv3_ccpp_ca PASS
+
+The total amount of wall time                        = 43.192538
+
+Test 012 fv3_ca PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_lndp_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_lndp_prod
-Checking test 013 fv3_ccpp_lndp results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_lndp
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_lndp
+Checking test 013 fv3_lndp results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -745,12 +795,15 @@ Checking test 013 fv3_ccpp_lndp results ....
  Comparing RESTART/sfc_data.tile4.nc .........OK
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
-Test 013 fv3_ccpp_lndp PASS
+
+The total amount of wall time                        = 64.112856
+
+Test 013 fv3_lndp PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_iau_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_iau_prod
-Checking test 014 fv3_ccpp_iau results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_iau
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_iau
+Checking test 014 fv3_iau results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -813,12 +866,15 @@ Checking test 014 fv3_ccpp_iau results ....
  Comparing RESTART/sfc_data.tile4.nc .........OK
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
-Test 014 fv3_ccpp_iau PASS
+
+The total amount of wall time                        = 52.773235
+
+Test 014 fv3_iau PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_lheatstrg_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_lheatstrg_prod
-Checking test 015 fv3_ccpp_lheatstrg results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_lheatstrg
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_lheatstrg
+Checking test 015 fv3_lheatstrg results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -861,12 +917,15 @@ Checking test 015 fv3_ccpp_lheatstrg results ....
  Comparing RESTART/sfc_data.tile4.nc .........OK
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
-Test 015 fv3_ccpp_lheatstrg PASS
+
+The total amount of wall time                        = 52.165470
+
+Test 015 fv3_lheatstrg PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_multigases_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_multigases_prod
-Checking test 016 fv3_ccpp_multigases results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_multigases_repro
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_multigases_repro
+Checking test 016 fv3_multigases results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -935,12 +994,15 @@ Checking test 016 fv3_ccpp_multigases results ....
  Comparing RESTART/phy_data.tile4.nc .........OK
  Comparing RESTART/phy_data.tile5.nc .........OK
  Comparing RESTART/phy_data.tile6.nc .........OK
-Test 016 fv3_ccpp_multigases PASS
+
+The total amount of wall time                        = 129.437864
+
+Test 016 fv3_multigases PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_control_32bit_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_control_32bit_prod
-Checking test 017 fv3_ccpp_control_32bit results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_control_32bit
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_control_32bit
+Checking test 017 fv3_control_32bit results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -1003,12 +1065,15 @@ Checking test 017 fv3_ccpp_control_32bit results ....
  Comparing RESTART/sfc_data.tile4.nc .........OK
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
-Test 017 fv3_ccpp_control_32bit PASS
+
+The total amount of wall time                        = 55.128539
+
+Test 017 fv3_control_32bit PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_stretched_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_stretched_prod
-Checking test 018 fv3_ccpp_stretched results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_stretched
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_stretched
+Checking test 018 fv3_stretched results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -1059,12 +1124,15 @@ Checking test 018 fv3_ccpp_stretched results ....
  Comparing RESTART/sfc_data.tile4.nc .........OK
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
-Test 018 fv3_ccpp_stretched PASS
+
+The total amount of wall time                        = 395.212291
+
+Test 018 fv3_stretched PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_stretched_nest_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_stretched_nest_prod
-Checking test 019 fv3_ccpp_stretched_nest results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_stretched_nest
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_stretched_nest
+Checking test 019 fv3_stretched_nest results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -1126,54 +1194,87 @@ Checking test 019 fv3_ccpp_stretched_nest results ....
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
  Comparing RESTART/sfc_data.nest02.tile7.nc .........OK
-Test 019 fv3_ccpp_stretched_nest PASS
+
+The total amount of wall time                        = 425.768103
+
+Test 019 fv3_stretched_nest PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_regional_control_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_regional_control_prod
-Checking test 020 fv3_ccpp_regional_control results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_regional_control
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_regional_control
+Checking test 020 fv3_regional_control results ....
  Comparing atmos_4xdaily.nc .........OK
  Comparing fv3_history2d.nc .........OK
  Comparing fv3_history.nc .........OK
  Comparing RESTART/fv_core.res.tile1_new.nc .........OK
  Comparing RESTART/fv_tracer.res.tile1_new.nc .........OK
-Test 020 fv3_ccpp_regional_control PASS
+
+The total amount of wall time                        = 862.438264
+
+Test 020 fv3_regional_control PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_regional_restart_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_regional_restart_prod
-Checking test 021 fv3_ccpp_regional_restart results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_regional_restart
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_regional_restart
+Checking test 021 fv3_regional_restart results ....
  Comparing atmos_4xdaily.nc .........OK
  Comparing fv3_history2d.nc .........OK
  Comparing fv3_history.nc .........OK
-Test 021 fv3_ccpp_regional_restart PASS
+
+The total amount of wall time                        = 482.687176
+
+Test 021 fv3_regional_restart PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_regional_quilt_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_regional_quilt_prod
-Checking test 022 fv3_ccpp_regional_quilt results ....
- Comparing atmos_4xdaily.nc .........OK
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_regional_quilt
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_regional_quilt
+Checking test 022 fv3_regional_quilt results ....
  Comparing dynf000.nc .........OK
  Comparing dynf024.nc .........OK
  Comparing phyf000.nc .........OK
  Comparing phyf024.nc .........OK
-Test 022 fv3_ccpp_regional_quilt PASS
+ Comparing PRSLEV.GrbF00 .........OK
+ Comparing PRSLEV.GrbF24 .........OK
+ Comparing NATLEV.GrbF00 .........OK
+ Comparing NATLEV.GrbF24 .........OK
+
+The total amount of wall time                        = 843.703210
+
+Test 022 fv3_regional_quilt PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_regional_quilt_netcdf_parallel_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_regional_quilt_netcdf_parallel_prod
-Checking test 023 fv3_ccpp_regional_quilt_netcdf_parallel results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_regional_quilt_hafs
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_regional_quilt_hafs
+Checking test 023 fv3_regional_quilt_hafs results ....
+ Comparing dynf000.nc .........OK
+ Comparing dynf024.nc .........OK
+ Comparing phyf000.nc .........OK
+ Comparing phyf024.nc .........OK
+ Comparing HURPRS.GrbF00 .........OK
+ Comparing HURPRS.GrbF24 .........OK
+
+The total amount of wall time                        = 849.096346
+
+Test 023 fv3_regional_quilt_hafs PASS
+
+
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_regional_quilt_netcdf_parallel
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_regional_quilt_netcdf_parallel
+Checking test 024 fv3_regional_quilt_netcdf_parallel results ....
  Comparing atmos_4xdaily.nc .........OK
  Comparing dynf000.nc .........OK
  Comparing dynf024.nc ............ALT CHECK......OK
  Comparing phyf000.nc .........OK
  Comparing phyf024.nc .........OK
-Test 023 fv3_ccpp_regional_quilt_netcdf_parallel PASS
+
+The total amount of wall time                        = 846.773020
+
+Test 024 fv3_regional_quilt_netcdf_parallel PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_gfdlmp_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_gfdlmp_prod
-Checking test 024 fv3_ccpp_gfdlmp results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_gfdlmp
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_gfdlmp
+Checking test 025 fv3_gfdlmp results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -1216,12 +1317,15 @@ Checking test 024 fv3_ccpp_gfdlmp results ....
  Comparing RESTART/phy_data.tile4.nc .........OK
  Comparing RESTART/phy_data.tile5.nc .........OK
  Comparing RESTART/phy_data.tile6.nc .........OK
-Test 024 fv3_ccpp_gfdlmp PASS
+
+The total amount of wall time                        = 60.602688
+
+Test 025 fv3_gfdlmp PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_gfdlmprad_gwd_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_gfdlmprad_gwd_prod
-Checking test 025 fv3_ccpp_gfdlmprad_gwd results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_gfdlmprad_gwd
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_gfdlmprad_gwd
+Checking test 026 fv3_gfdlmprad_gwd results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -1264,12 +1368,15 @@ Checking test 025 fv3_ccpp_gfdlmprad_gwd results ....
  Comparing RESTART/phy_data.tile4.nc .........OK
  Comparing RESTART/phy_data.tile5.nc .........OK
  Comparing RESTART/phy_data.tile6.nc .........OK
-Test 025 fv3_ccpp_gfdlmprad_gwd PASS
+
+The total amount of wall time                        = 60.719972
+
+Test 026 fv3_gfdlmprad_gwd PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_gfdlmprad_noahmp_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_gfdlmprad_noahmp_prod
-Checking test 026 fv3_ccpp_gfdlmprad_noahmp results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_gfdlmprad_noahmp
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_gfdlmprad_noahmp
+Checking test 027 fv3_gfdlmprad_noahmp results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -1312,12 +1419,15 @@ Checking test 026 fv3_ccpp_gfdlmprad_noahmp results ....
  Comparing RESTART/phy_data.tile4.nc .........OK
  Comparing RESTART/phy_data.tile5.nc .........OK
  Comparing RESTART/phy_data.tile6.nc .........OK
-Test 026 fv3_ccpp_gfdlmprad_noahmp PASS
+
+The total amount of wall time                        = 60.836103
+
+Test 027 fv3_gfdlmprad_noahmp PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_csawmg_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_csawmg_prod
-Checking test 027 fv3_ccpp_csawmg results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_csawmg
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_csawmg
+Checking test 028 fv3_csawmg results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -1360,12 +1470,15 @@ Checking test 027 fv3_ccpp_csawmg results ....
  Comparing RESTART/sfc_data.tile4.nc .........OK
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
-Test 027 fv3_ccpp_csawmg PASS
+
+The total amount of wall time                        = 150.291266
+
+Test 028 fv3_csawmg PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_satmedmf_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_satmedmf_prod
-Checking test 028 fv3_ccpp_satmedmf results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_satmedmf
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_satmedmf
+Checking test 029 fv3_satmedmf results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -1408,12 +1521,15 @@ Checking test 028 fv3_ccpp_satmedmf results ....
  Comparing RESTART/sfc_data.tile4.nc .........OK
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
-Test 028 fv3_ccpp_satmedmf PASS
+
+The total amount of wall time                        = 66.779379
+
+Test 029 fv3_satmedmf PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_satmedmfq_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_satmedmfq_prod
-Checking test 029 fv3_ccpp_satmedmfq results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_satmedmfq
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_satmedmfq
+Checking test 030 fv3_satmedmfq results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -1456,12 +1572,15 @@ Checking test 029 fv3_ccpp_satmedmfq results ....
  Comparing RESTART/sfc_data.tile4.nc .........OK
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
-Test 029 fv3_ccpp_satmedmfq PASS
+
+The total amount of wall time                        = 65.432115
+
+Test 030 fv3_satmedmfq PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_gfdlmp_32bit_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_gfdlmp_32bit_prod
-Checking test 030 fv3_ccpp_gfdlmp_32bit results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_gfdlmp_32bit
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_gfdlmp_32bit
+Checking test 031 fv3_gfdlmp_32bit results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -1504,12 +1623,15 @@ Checking test 030 fv3_ccpp_gfdlmp_32bit results ....
  Comparing RESTART/phy_data.tile4.nc .........OK
  Comparing RESTART/phy_data.tile5.nc .........OK
  Comparing RESTART/phy_data.tile6.nc .........OK
-Test 030 fv3_ccpp_gfdlmp_32bit PASS
+
+The total amount of wall time                        = 53.211388
+
+Test 031 fv3_gfdlmp_32bit PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_gfdlmprad_32bit_post_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_gfdlmprad_32bit_post_prod
-Checking test 031 fv3_ccpp_gfdlmprad_32bit_post results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_gfdlmprad_32bit_post
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_gfdlmprad_32bit_post
+Checking test 032 fv3_gfdlmprad_32bit_post results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -1556,12 +1678,15 @@ Checking test 031 fv3_ccpp_gfdlmprad_32bit_post results ....
  Comparing RESTART/phy_data.tile4.nc .........OK
  Comparing RESTART/phy_data.tile5.nc .........OK
  Comparing RESTART/phy_data.tile6.nc .........OK
-Test 031 fv3_ccpp_gfdlmprad_32bit_post PASS
+
+The total amount of wall time                        = 95.386979
+
+Test 032 fv3_gfdlmprad_32bit_post PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_cpt_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_cpt_prod
-Checking test 032 fv3_ccpp_cpt results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_cpt
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_cpt
+Checking test 033 fv3_cpt results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -1610,12 +1735,15 @@ Checking test 032 fv3_ccpp_cpt results ....
  Comparing RESTART/phy_data.tile4.nc .........OK
  Comparing RESTART/phy_data.tile5.nc .........OK
  Comparing RESTART/phy_data.tile6.nc .........OK
-Test 032 fv3_ccpp_cpt PASS
+
+The total amount of wall time                        = 348.795415
+
+Test 033 fv3_cpt PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_gsd_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_gsd_prod
-Checking test 033 fv3_ccpp_gsd results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_gsd
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_gsd
+Checking test 034 fv3_gsd results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -1702,12 +1830,15 @@ Checking test 033 fv3_ccpp_gsd results ....
  Comparing RESTART/sfc_data.tile4.nc .........OK
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
-Test 033 fv3_ccpp_gsd PASS
+
+The total amount of wall time                        = 244.664044
+
+Test 034 fv3_gsd PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_thompson_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_thompson_prod
-Checking test 034 fv3_ccpp_thompson results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_thompson
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_thompson
+Checking test 035 fv3_thompson results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -1770,12 +1901,15 @@ Checking test 034 fv3_ccpp_thompson results ....
  Comparing RESTART/sfc_data.tile4.nc .........OK
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
-Test 034 fv3_ccpp_thompson PASS
+
+The total amount of wall time                        = 113.992952
+
+Test 035 fv3_thompson PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_thompson_no_aero_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_thompson_no_aero_prod
-Checking test 035 fv3_ccpp_thompson_no_aero results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_thompson_no_aero
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_thompson_no_aero
+Checking test 036 fv3_thompson_no_aero results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -1838,12 +1972,15 @@ Checking test 035 fv3_ccpp_thompson_no_aero results ....
  Comparing RESTART/sfc_data.tile4.nc .........OK
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
-Test 035 fv3_ccpp_thompson_no_aero PASS
+
+The total amount of wall time                        = 107.419023
+
+Test 036 fv3_thompson_no_aero PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_gfs_v15p2_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_gfs_v15p2_prod
-Checking test 036 fv3_ccpp_gfs_v15p2 results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_gfs_v15p2
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_gfs_v15p2
+Checking test 037 fv3_gfs_v15p2 results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -1906,12 +2043,15 @@ Checking test 036 fv3_ccpp_gfs_v15p2 results ....
  Comparing RESTART/phy_data.tile4.nc .........OK
  Comparing RESTART/phy_data.tile5.nc .........OK
  Comparing RESTART/phy_data.tile6.nc .........OK
-Test 036 fv3_ccpp_gfs_v15p2 PASS
+
+The total amount of wall time                        = 119.860968
+
+Test 037 fv3_gfs_v15p2 PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_gfs_v16_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_gfs_v16_prod
-Checking test 037 fv3_ccpp_gfs_v16 results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_gfs_v16
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_gfs_v16
+Checking test 038 fv3_gfs_v16 results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -1986,12 +2126,15 @@ Checking test 037 fv3_ccpp_gfs_v16 results ....
  Comparing RESTART/phy_data.tile4.nc .........OK
  Comparing RESTART/phy_data.tile5.nc .........OK
  Comparing RESTART/phy_data.tile6.nc .........OK
-Test 037 fv3_ccpp_gfs_v16 PASS
+
+The total amount of wall time                        = 145.620340
+
+Test 038 fv3_gfs_v16 PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_gfs_v16_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_gfs_v16_restart_prod
-Checking test 038 fv3_ccpp_gfs_v16_restart results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_gfs_v16
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_gfs_v16_restart
+Checking test 039 fv3_gfs_v16_restart results ....
  Comparing phyf048.tile1.nc .........OK
  Comparing phyf048.tile2.nc .........OK
  Comparing phyf048.tile3.nc .........OK
@@ -2036,12 +2179,15 @@ Checking test 038 fv3_ccpp_gfs_v16_restart results ....
  Comparing RESTART/phy_data.tile4.nc .........OK
  Comparing RESTART/phy_data.tile5.nc .........OK
  Comparing RESTART/phy_data.tile6.nc .........OK
-Test 038 fv3_ccpp_gfs_v16_restart PASS
+
+The total amount of wall time                        = 75.006198
+
+Test 039 fv3_gfs_v16_restart PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_gfs_v16_stochy_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_gfs_v16_stochy_prod
-Checking test 039 fv3_ccpp_gfs_v16_stochy results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_gfs_v16_stochy
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_gfs_v16_stochy
+Checking test 040 fv3_gfs_v16_stochy results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -2104,12 +2250,15 @@ Checking test 039 fv3_ccpp_gfs_v16_stochy results ....
  Comparing RESTART/phy_data.tile4.nc .........OK
  Comparing RESTART/phy_data.tile5.nc .........OK
  Comparing RESTART/phy_data.tile6.nc .........OK
-Test 039 fv3_ccpp_gfs_v16_stochy PASS
+
+The total amount of wall time                        = 66.798086
+
+Test 040 fv3_gfs_v16_stochy PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_gfs_v15p2_RRTMGP_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_gfs_v15p2_RRTMGP_prod
-Checking test 040 fv3_ccpp_gfs_v15p2_RRTMGP results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_gfs_v16_RRTMGP
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_gfs_v16_RRTMGP
+Checking test 041 fv3_gfs_v16_RRTMGP results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -2172,80 +2321,15 @@ Checking test 040 fv3_ccpp_gfs_v15p2_RRTMGP results ....
  Comparing RESTART/phy_data.tile4.nc .........OK
  Comparing RESTART/phy_data.tile5.nc .........OK
  Comparing RESTART/phy_data.tile6.nc .........OK
-Test 040 fv3_ccpp_gfs_v15p2_RRTMGP PASS
+
+The total amount of wall time                        = 192.208742
+
+Test 041 fv3_gfs_v16_RRTMGP PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_gfs_v16_RRTMGP_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_gfs_v16_RRTMGP_prod
-Checking test 041 fv3_ccpp_gfs_v16_RRTMGP results ....
- Comparing atmos_4xdaily.tile1.nc .........OK
- Comparing atmos_4xdaily.tile2.nc .........OK
- Comparing atmos_4xdaily.tile3.nc .........OK
- Comparing atmos_4xdaily.tile4.nc .........OK
- Comparing atmos_4xdaily.tile5.nc .........OK
- Comparing atmos_4xdaily.tile6.nc .........OK
- Comparing phyf000.tile1.nc .........OK
- Comparing phyf000.tile2.nc .........OK
- Comparing phyf000.tile3.nc .........OK
- Comparing phyf000.tile4.nc .........OK
- Comparing phyf000.tile5.nc .........OK
- Comparing phyf000.tile6.nc .........OK
- Comparing phyf024.tile1.nc .........OK
- Comparing phyf024.tile2.nc .........OK
- Comparing phyf024.tile3.nc .........OK
- Comparing phyf024.tile4.nc .........OK
- Comparing phyf024.tile5.nc .........OK
- Comparing phyf024.tile6.nc .........OK
- Comparing dynf000.tile1.nc .........OK
- Comparing dynf000.tile2.nc .........OK
- Comparing dynf000.tile3.nc .........OK
- Comparing dynf000.tile4.nc .........OK
- Comparing dynf000.tile5.nc .........OK
- Comparing dynf000.tile6.nc .........OK
- Comparing dynf024.tile1.nc .........OK
- Comparing dynf024.tile2.nc .........OK
- Comparing dynf024.tile3.nc .........OK
- Comparing dynf024.tile4.nc .........OK
- Comparing dynf024.tile5.nc .........OK
- Comparing dynf024.tile6.nc .........OK
- Comparing RESTART/coupler.res .........OK
- Comparing RESTART/fv_core.res.nc .........OK
- Comparing RESTART/fv_core.res.tile1.nc .........OK
- Comparing RESTART/fv_core.res.tile2.nc .........OK
- Comparing RESTART/fv_core.res.tile3.nc .........OK
- Comparing RESTART/fv_core.res.tile4.nc .........OK
- Comparing RESTART/fv_core.res.tile5.nc .........OK
- Comparing RESTART/fv_core.res.tile6.nc .........OK
- Comparing RESTART/fv_srf_wnd.res.tile1.nc .........OK
- Comparing RESTART/fv_srf_wnd.res.tile2.nc .........OK
- Comparing RESTART/fv_srf_wnd.res.tile3.nc .........OK
- Comparing RESTART/fv_srf_wnd.res.tile4.nc .........OK
- Comparing RESTART/fv_srf_wnd.res.tile5.nc .........OK
- Comparing RESTART/fv_srf_wnd.res.tile6.nc .........OK
- Comparing RESTART/fv_tracer.res.tile1.nc .........OK
- Comparing RESTART/fv_tracer.res.tile2.nc .........OK
- Comparing RESTART/fv_tracer.res.tile3.nc .........OK
- Comparing RESTART/fv_tracer.res.tile4.nc .........OK
- Comparing RESTART/fv_tracer.res.tile5.nc .........OK
- Comparing RESTART/fv_tracer.res.tile6.nc .........OK
- Comparing RESTART/sfc_data.tile1.nc .........OK
- Comparing RESTART/sfc_data.tile2.nc .........OK
- Comparing RESTART/sfc_data.tile3.nc .........OK
- Comparing RESTART/sfc_data.tile4.nc .........OK
- Comparing RESTART/sfc_data.tile5.nc .........OK
- Comparing RESTART/sfc_data.tile6.nc .........OK
- Comparing RESTART/phy_data.tile1.nc .........OK
- Comparing RESTART/phy_data.tile2.nc .........OK
- Comparing RESTART/phy_data.tile3.nc .........OK
- Comparing RESTART/phy_data.tile4.nc .........OK
- Comparing RESTART/phy_data.tile5.nc .........OK
- Comparing RESTART/phy_data.tile6.nc .........OK
-Test 041 fv3_ccpp_gfs_v16_RRTMGP PASS
-
-
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_gfs_v16_RRTMGP_c192L127_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_gfs_v16_RRTMGP_c192L127_prod
-Checking test 042 fv3_ccpp_gfs_v16_RRTMGP_c192L127 results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_gfs_v16_RRTMGP_c192L127
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_gfs_v16_RRTMGP_c192L127
+Checking test 042 fv3_gfs_v16_RRTMGP_c192L127 results ....
  Comparing phyf000.tile1.nc .........OK
  Comparing phyf000.tile2.nc .........OK
  Comparing phyf000.tile3.nc .........OK
@@ -2302,12 +2386,15 @@ Checking test 042 fv3_ccpp_gfs_v16_RRTMGP_c192L127 results ....
  Comparing RESTART/phy_data.tile4.nc .........OK
  Comparing RESTART/phy_data.tile5.nc .........OK
  Comparing RESTART/phy_data.tile6.nc .........OK
-Test 042 fv3_ccpp_gfs_v16_RRTMGP_c192L127 PASS
+
+The total amount of wall time                        = 804.367251
+
+Test 042 fv3_gfs_v16_RRTMGP_c192L127 PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_gfs_v16_RRTMGP_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_gfs_v16_RRTMGP_2thrd_prod
-Checking test 043 fv3_ccpp_gfs_v16_RRTMGP_2thrd results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_gfs_v16_RRTMGP
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_gfs_v16_RRTMGP_2thrd
+Checking test 043 fv3_gfs_v16_RRTMGP_2thrd results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -2370,12 +2457,15 @@ Checking test 043 fv3_ccpp_gfs_v16_RRTMGP_2thrd results ....
  Comparing RESTART/phy_data.tile4.nc .........OK
  Comparing RESTART/phy_data.tile5.nc .........OK
  Comparing RESTART/phy_data.tile6.nc .........OK
-Test 043 fv3_ccpp_gfs_v16_RRTMGP_2thrd PASS
+
+The total amount of wall time                        = 806.425917
+
+Test 043 fv3_gfs_v16_RRTMGP_2thrd PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_gfsv16_csawmg_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_gfsv16_csawmg_prod
-Checking test 044 fv3_ccpp_gfsv16_csawmg results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_gfsv16_csawmg
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_gfsv16_csawmg
+Checking test 044 fv3_gfsv16_csawmg results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -2418,12 +2508,15 @@ Checking test 044 fv3_ccpp_gfsv16_csawmg results ....
  Comparing RESTART/sfc_data.tile4.nc .........OK
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
-Test 044 fv3_ccpp_gfsv16_csawmg PASS
+
+The total amount of wall time                        = 161.862794
+
+Test 044 fv3_gfsv16_csawmg PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_gfsv16_csawmgt_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_gfsv16_csawmgt_prod
-Checking test 045 fv3_ccpp_gfsv16_csawmgt results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_gfsv16_csawmgt
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_gfsv16_csawmgt
+Checking test 045 fv3_gfsv16_csawmgt results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -2466,12 +2559,15 @@ Checking test 045 fv3_ccpp_gfsv16_csawmgt results ....
  Comparing RESTART/sfc_data.tile4.nc .........OK
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
-Test 045 fv3_ccpp_gfsv16_csawmgt PASS
+
+The total amount of wall time                        = 160.459083
+
+Test 045 fv3_gfsv16_csawmgt PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_gocart_clm_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_gocart_clm_prod
-Checking test 046 fv3_ccpp_gocart_clm results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_gocart_clm
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_gocart_clm
+Checking test 046 fv3_gocart_clm results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -2514,12 +2610,15 @@ Checking test 046 fv3_ccpp_gocart_clm results ....
  Comparing RESTART/phy_data.tile4.nc .........OK
  Comparing RESTART/phy_data.tile5.nc .........OK
  Comparing RESTART/phy_data.tile6.nc .........OK
-Test 046 fv3_ccpp_gocart_clm PASS
+
+The total amount of wall time                        = 67.712083
+
+Test 046 fv3_gocart_clm PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_gfs_v16_flake_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_gfs_v16_flake_prod
-Checking test 047 fv3_ccpp_gfs_v16_flake results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_gfs_v16_flake
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_gfs_v16_flake
+Checking test 047 fv3_gfs_v16_flake results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -2582,12 +2681,15 @@ Checking test 047 fv3_ccpp_gfs_v16_flake results ....
  Comparing RESTART/phy_data.tile4.nc .........OK
  Comparing RESTART/phy_data.tile5.nc .........OK
  Comparing RESTART/phy_data.tile6.nc .........OK
-Test 047 fv3_ccpp_gfs_v16_flake PASS
+
+The total amount of wall time                        = 122.945789
+
+Test 047 fv3_gfs_v16_flake PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/HAFS_v0_HWRF_thompson_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_HAFS_v0_hwrf_thompson_prod
-Checking test 048 fv3_ccpp_HAFS_v0_hwrf_thompson results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/HAFS_v0_HWRF_thompson
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_HAFS_v0_hwrf_thompson
+Checking test 048 fv3_HAFS_v0_hwrf_thompson results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -2650,12 +2752,15 @@ Checking test 048 fv3_ccpp_HAFS_v0_hwrf_thompson results ....
  Comparing RESTART/phy_data.tile4.nc .........OK
  Comparing RESTART/phy_data.tile5.nc .........OK
  Comparing RESTART/phy_data.tile6.nc .........OK
-Test 048 fv3_ccpp_HAFS_v0_hwrf_thompson PASS
+
+The total amount of wall time                        = 191.517763
+
+Test 048 fv3_HAFS_v0_hwrf_thompson PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/ESG_HAFS_v0_HWRF_thompson_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_esg_HAFS_v0_hwrf_thompson_prod
-Checking test 049 fv3_ccpp_esg_HAFS_v0_hwrf_thompson results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/ESG_HAFS_v0_HWRF_thompson
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_esg_HAFS_v0_hwrf_thompson
+Checking test 049 fv3_esg_HAFS_v0_hwrf_thompson results ....
  Comparing atmos_4xdaily.nc .........OK
  Comparing phyf000.nc .........OK
  Comparing phyf012.nc .........OK
@@ -2668,12 +2773,15 @@ Checking test 049 fv3_ccpp_esg_HAFS_v0_hwrf_thompson results ....
  Comparing RESTART/fv_tracer.res.tile1.nc .........OK
  Comparing RESTART/sfc_data.nc .........OK
  Comparing RESTART/phy_data.nc .........OK
-Test 049 fv3_ccpp_esg_HAFS_v0_hwrf_thompson PASS
+
+The total amount of wall time                        = 357.299887
+
+Test 049 fv3_esg_HAFS_v0_hwrf_thompson PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_ccpp_gfsv16_ugwpv1_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_gfsv16_ugwpv1_prod
-Checking test 050 fv3_ccpp_gfsv16_ugwpv1 results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_gfsv16_ugwpv1
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_gfsv16_ugwpv1
+Checking test 050 fv3_gfsv16_ugwpv1 results ....
  Comparing phyf000.tile1.nc .........OK
  Comparing phyf000.tile2.nc .........OK
  Comparing phyf000.tile3.nc .........OK
@@ -2730,12 +2838,15 @@ Checking test 050 fv3_ccpp_gfsv16_ugwpv1 results ....
  Comparing RESTART/phy_data.tile4.nc .........OK
  Comparing RESTART/phy_data.tile5.nc .........OK
  Comparing RESTART/phy_data.tile6.nc .........OK
-Test 050 fv3_ccpp_gfsv16_ugwpv1 PASS
+
+The total amount of wall time                        = 229.338431
+
+Test 050 fv3_gfsv16_ugwpv1 PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_ccpp_gfsv16_ugwpv1_warmstart_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_gfsv16_ugwpv1_warmstart_prod
-Checking test 051 fv3_ccpp_gfsv16_ugwpv1_warmstart results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_gfsv16_ugwpv1_warmstart
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_gfsv16_ugwpv1_warmstart
+Checking test 051 fv3_gfsv16_ugwpv1_warmstart results ....
  Comparing phyf000.tile1.nc .........OK
  Comparing phyf000.tile2.nc .........OK
  Comparing phyf000.tile3.nc .........OK
@@ -2792,12 +2903,86 @@ Checking test 051 fv3_ccpp_gfsv16_ugwpv1_warmstart results ....
  Comparing RESTART/phy_data.tile4.nc .........OK
  Comparing RESTART/phy_data.tile5.nc .........OK
  Comparing RESTART/phy_data.tile6.nc .........OK
-Test 051 fv3_ccpp_gfsv16_ugwpv1_warmstart PASS
+
+The total amount of wall time                        = 228.134745
+
+Test 051 fv3_gfsv16_ugwpv1_warmstart PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_gfs_v15p2_debug_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_gfs_v15p2_debug_prod
-Checking test 052 fv3_ccpp_gfs_v15p2_debug results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_gfs_v16_ras
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_gfs_v16_ras
+Checking test 052 fv3_gfs_v16_ras results ....
+ Comparing atmos_4xdaily.tile1.nc .........OK
+ Comparing atmos_4xdaily.tile2.nc .........OK
+ Comparing atmos_4xdaily.tile3.nc .........OK
+ Comparing atmos_4xdaily.tile4.nc .........OK
+ Comparing atmos_4xdaily.tile5.nc .........OK
+ Comparing atmos_4xdaily.tile6.nc .........OK
+ Comparing phyf000.tile1.nc .........OK
+ Comparing phyf000.tile2.nc .........OK
+ Comparing phyf000.tile3.nc .........OK
+ Comparing phyf000.tile4.nc .........OK
+ Comparing phyf000.tile5.nc .........OK
+ Comparing phyf000.tile6.nc .........OK
+ Comparing phyf024.tile1.nc .........OK
+ Comparing phyf024.tile2.nc .........OK
+ Comparing phyf024.tile3.nc .........OK
+ Comparing phyf024.tile4.nc .........OK
+ Comparing phyf024.tile5.nc .........OK
+ Comparing phyf024.tile6.nc .........OK
+ Comparing dynf000.tile1.nc .........OK
+ Comparing dynf000.tile2.nc .........OK
+ Comparing dynf000.tile3.nc .........OK
+ Comparing dynf000.tile4.nc .........OK
+ Comparing dynf000.tile5.nc .........OK
+ Comparing dynf000.tile6.nc .........OK
+ Comparing dynf024.tile1.nc .........OK
+ Comparing dynf024.tile2.nc .........OK
+ Comparing dynf024.tile3.nc .........OK
+ Comparing dynf024.tile4.nc .........OK
+ Comparing dynf024.tile5.nc .........OK
+ Comparing dynf024.tile6.nc .........OK
+ Comparing RESTART/coupler.res .........OK
+ Comparing RESTART/fv_core.res.nc .........OK
+ Comparing RESTART/fv_core.res.tile1.nc .........OK
+ Comparing RESTART/fv_core.res.tile2.nc .........OK
+ Comparing RESTART/fv_core.res.tile3.nc .........OK
+ Comparing RESTART/fv_core.res.tile4.nc .........OK
+ Comparing RESTART/fv_core.res.tile5.nc .........OK
+ Comparing RESTART/fv_core.res.tile6.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile1.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile2.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile3.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile4.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile5.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile6.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile1.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile2.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile3.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile4.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile5.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile6.nc .........OK
+ Comparing RESTART/phy_data.tile1.nc .........OK
+ Comparing RESTART/phy_data.tile2.nc .........OK
+ Comparing RESTART/phy_data.tile3.nc .........OK
+ Comparing RESTART/phy_data.tile4.nc .........OK
+ Comparing RESTART/phy_data.tile5.nc .........OK
+ Comparing RESTART/phy_data.tile6.nc .........OK
+ Comparing RESTART/sfc_data.tile1.nc .........OK
+ Comparing RESTART/sfc_data.tile2.nc .........OK
+ Comparing RESTART/sfc_data.tile3.nc .........OK
+ Comparing RESTART/sfc_data.tile4.nc .........OK
+ Comparing RESTART/sfc_data.tile5.nc .........OK
+ Comparing RESTART/sfc_data.tile6.nc .........OK
+
+The total amount of wall time                        = 122.757670
+
+Test 052 fv3_gfs_v16_ras PASS
+
+
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_gfs_v15p2_debug
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_gfs_v15p2_debug
+Checking test 053 fv3_gfs_v15p2_debug results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -2860,12 +3045,15 @@ Checking test 052 fv3_ccpp_gfs_v15p2_debug results ....
  Comparing RESTART/sfc_data.tile4.nc .........OK
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
-Test 052 fv3_ccpp_gfs_v15p2_debug PASS
+
+The total amount of wall time                        = 273.041754
+
+Test 053 fv3_gfs_v15p2_debug PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_gfs_v16_debug_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_gfs_v16_debug_prod
-Checking test 053 fv3_ccpp_gfs_v16_debug results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_gfs_v16_debug
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_gfs_v16_debug
+Checking test 054 fv3_gfs_v16_debug results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -2928,12 +3116,15 @@ Checking test 053 fv3_ccpp_gfs_v16_debug results ....
  Comparing RESTART/sfc_data.tile4.nc .........OK
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
-Test 053 fv3_ccpp_gfs_v16_debug PASS
+
+The total amount of wall time                        = 207.147070
+
+Test 054 fv3_gfs_v16_debug PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_gfs_v15p2_RRTMGP_debug_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_gfs_v15p2_RRTMGP_debug_prod
-Checking test 054 fv3_ccpp_gfs_v15p2_RRTMGP_debug results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_gfs_v15p2_RRTMGP_debug
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_gfs_v15p2_RRTMGP_debug
+Checking test 055 fv3_gfs_v15p2_RRTMGP_debug results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -2996,12 +3187,15 @@ Checking test 054 fv3_ccpp_gfs_v15p2_RRTMGP_debug results ....
  Comparing RESTART/sfc_data.tile4.nc .........OK
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
-Test 054 fv3_ccpp_gfs_v15p2_RRTMGP_debug PASS
+
+The total amount of wall time                        = 440.676073
+
+Test 055 fv3_gfs_v15p2_RRTMGP_debug PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_gfs_v16_RRTMGP_debug_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_gfs_v16_RRTMGP_debug_prod
-Checking test 055 fv3_ccpp_gfs_v16_RRTMGP_debug results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_gfs_v16_RRTMGP_debug
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_gfs_v16_RRTMGP_debug
+Checking test 056 fv3_gfs_v16_RRTMGP_debug results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -3064,23 +3258,29 @@ Checking test 055 fv3_ccpp_gfs_v16_RRTMGP_debug results ....
  Comparing RESTART/sfc_data.tile4.nc .........OK
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
-Test 055 fv3_ccpp_gfs_v16_RRTMGP_debug PASS
+
+The total amount of wall time                        = 454.031668
+
+Test 056 fv3_gfs_v16_RRTMGP_debug PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_regional_control_debug_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_regional_control_debug_prod
-Checking test 056 fv3_ccpp_regional_control_debug results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_regional_control_debug
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_regional_control_debug
+Checking test 057 fv3_regional_control_debug results ....
  Comparing atmos_4xdaily.nc .........OK
  Comparing fv3_history2d.nc .........OK
  Comparing fv3_history.nc .........OK
  Comparing RESTART/fv_core.res.tile1_new.nc .........OK
  Comparing RESTART/fv_tracer.res.tile1_new.nc .........OK
-Test 056 fv3_ccpp_regional_control_debug PASS
+
+The total amount of wall time                        = 455.214080
+
+Test 057 fv3_regional_control_debug PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_control_debug_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_control_debug_prod
-Checking test 057 fv3_ccpp_control_debug results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_control_debug
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_control_debug
+Checking test 058 fv3_control_debug results ....
  Comparing phyf000.tile1.nc .........OK
  Comparing phyf000.tile2.nc .........OK
  Comparing phyf000.tile3.nc .........OK
@@ -3105,12 +3305,15 @@ Checking test 057 fv3_ccpp_control_debug results ....
  Comparing dynf006.tile4.nc .........OK
  Comparing dynf006.tile5.nc .........OK
  Comparing dynf006.tile6.nc .........OK
-Test 057 fv3_ccpp_control_debug PASS
+
+The total amount of wall time                        = 160.145813
+
+Test 058 fv3_control_debug PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_stretched_nest_debug_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_stretched_nest_debug_prod
-Checking test 058 fv3_ccpp_stretched_nest_debug results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_stretched_nest_debug
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_stretched_nest_debug
+Checking test 059 fv3_stretched_nest_debug results ....
  Comparing fv3_history2d.nest02.tile7.nc .........OK
  Comparing fv3_history2d.tile1.nc .........OK
  Comparing fv3_history2d.tile2.nc .........OK
@@ -3125,12 +3328,15 @@ Checking test 058 fv3_ccpp_stretched_nest_debug results ....
  Comparing fv3_history.tile4.nc .........OK
  Comparing fv3_history.tile5.nc .........OK
  Comparing fv3_history.tile6.nc .........OK
-Test 058 fv3_ccpp_stretched_nest_debug PASS
+
+The total amount of wall time                        = 535.120230
+
+Test 059 fv3_stretched_nest_debug PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_gsd_debug_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_gsd_debug_prod
-Checking test 059 fv3_ccpp_gsd_debug results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_gsd_debug
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_gsd_debug
+Checking test 060 fv3_gsd_debug results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -3193,12 +3399,15 @@ Checking test 059 fv3_ccpp_gsd_debug results ....
  Comparing RESTART/sfc_data.tile4.nc .........OK
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
-Test 059 fv3_ccpp_gsd_debug PASS
+
+The total amount of wall time                        = 240.946924
+
+Test 060 fv3_gsd_debug PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_gsd_diag3d_debug_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_gsd_diag3d_debug_prod
-Checking test 060 fv3_ccpp_gsd_diag3d_debug results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_gsd_diag3d_debug
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_gsd_diag3d_debug
+Checking test 061 fv3_gsd_diag3d_debug results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -3261,12 +3470,15 @@ Checking test 060 fv3_ccpp_gsd_diag3d_debug results ....
  Comparing RESTART/sfc_data.tile4.nc .........OK
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
-Test 060 fv3_ccpp_gsd_diag3d_debug PASS
+
+The total amount of wall time                        = 269.074205
+
+Test 061 fv3_gsd_diag3d_debug PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_thompson_debug_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_thompson_debug_prod
-Checking test 061 fv3_ccpp_thompson_debug results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_thompson_debug
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_thompson_debug
+Checking test 062 fv3_thompson_debug results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -3329,12 +3541,15 @@ Checking test 061 fv3_ccpp_thompson_debug results ....
  Comparing RESTART/sfc_data.tile4.nc .........OK
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
-Test 061 fv3_ccpp_thompson_debug PASS
+
+The total amount of wall time                        = 417.046468
+
+Test 062 fv3_thompson_debug PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_thompson_no_aero_debug_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_thompson_no_aero_debug_prod
-Checking test 062 fv3_ccpp_thompson_no_aero_debug results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_thompson_no_aero_debug
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_thompson_no_aero_debug
+Checking test 063 fv3_thompson_no_aero_debug results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -3397,12 +3612,15 @@ Checking test 062 fv3_ccpp_thompson_no_aero_debug results ....
  Comparing RESTART/sfc_data.tile4.nc .........OK
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
-Test 062 fv3_ccpp_thompson_no_aero_debug PASS
+
+The total amount of wall time                        = 403.581965
+
+Test 063 fv3_thompson_no_aero_debug PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_rrfs_v1beta_debug_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_rrfs_v1beta_debug_prod
-Checking test 063 fv3_ccpp_rrfs_v1beta_debug results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_rrfs_v1beta_debug
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_rrfs_v1beta_debug
+Checking test 064 fv3_rrfs_v1beta_debug results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -3465,12 +3683,15 @@ Checking test 063 fv3_ccpp_rrfs_v1beta_debug results ....
  Comparing RESTART/sfc_data.tile4.nc .........OK
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
-Test 063 fv3_ccpp_rrfs_v1beta_debug PASS
+
+The total amount of wall time                        = 230.865834
+
+Test 064 fv3_rrfs_v1beta_debug PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/HAFS_v0_HWRF_thompson_debug_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_HAFS_v0_hwrf_thompson_debug_prod
-Checking test 064 fv3_ccpp_HAFS_v0_hwrf_thompson_debug results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/HAFS_v0_HWRF_thompson_debug
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_HAFS_v0_hwrf_thompson_debug
+Checking test 065 fv3_HAFS_v0_hwrf_thompson_debug results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -3533,12 +3754,15 @@ Checking test 064 fv3_ccpp_HAFS_v0_hwrf_thompson_debug results ....
  Comparing RESTART/phy_data.tile4.nc .........OK
  Comparing RESTART/phy_data.tile5.nc .........OK
  Comparing RESTART/phy_data.tile6.nc .........OK
-Test 064 fv3_ccpp_HAFS_v0_hwrf_thompson_debug PASS
+
+The total amount of wall time                        = 248.012531
+
+Test 065 fv3_HAFS_v0_hwrf_thompson_debug PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/ESG_HAFS_v0_HWRF_thompson_debug_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_esg_HAFS_v0_hwrf_thompson_debug_prod
-Checking test 065 fv3_ccpp_esg_HAFS_v0_hwrf_thompson_debug results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/ESG_HAFS_v0_HWRF_thompson_debug
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_esg_HAFS_v0_hwrf_thompson_debug
+Checking test 066 fv3_esg_HAFS_v0_hwrf_thompson_debug results ....
  Comparing atmos_4xdaily.nc .........OK
  Comparing phyf000.nc .........OK
  Comparing phyf001.nc .........OK
@@ -3551,12 +3775,15 @@ Checking test 065 fv3_ccpp_esg_HAFS_v0_hwrf_thompson_debug results ....
  Comparing RESTART/fv_tracer.res.tile1.nc .........OK
  Comparing RESTART/sfc_data.nc .........OK
  Comparing RESTART/phy_data.nc .........OK
-Test 065 fv3_ccpp_esg_HAFS_v0_hwrf_thompson_debug PASS
+
+The total amount of wall time                        = 464.074253
+
+Test 066 fv3_esg_HAFS_v0_hwrf_thompson_debug PASS
 
 
-baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210303/INTEL/fv3_ccpp_gfsv16_ugwpv1_debug_ccpp
-working dir  = /lfs4/HFIP/hfv3gfs/Brian.Curtis/RT_RUNDIRS/Brian.Curtis/FV3_RT/rt_248561/fv3_ccpp_gfsv16_ugwpv1_debug_prod
-Checking test 066 fv3_ccpp_gfsv16_ugwpv1_debug results ....
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_gfsv16_ugwpv1_debug
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_gfsv16_ugwpv1_debug
+Checking test 067 fv3_gfsv16_ugwpv1_debug results ....
  Comparing phyf000.tile1.nc .........OK
  Comparing phyf000.tile2.nc .........OK
  Comparing phyf000.tile3.nc .........OK
@@ -3613,9 +3840,83 @@ Checking test 066 fv3_ccpp_gfsv16_ugwpv1_debug results ....
  Comparing RESTART/phy_data.tile4.nc .........OK
  Comparing RESTART/phy_data.tile5.nc .........OK
  Comparing RESTART/phy_data.tile6.nc .........OK
-Test 066 fv3_ccpp_gfsv16_ugwpv1_debug PASS
+
+The total amount of wall time                        = 709.823754
+
+Test 067 fv3_gfsv16_ugwpv1_debug PASS
+
+
+baseline dir = /lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/develop-20210318/INTEL/fv3_gfs_v16_ras_debug
+working dir  = /lfs4/HFIP/hfv3gfs/emc.nemspara/RT_RUNDIRS/emc.nemspara/FV3_RT/rt_67925/fv3_gfs_v16_ras_debug
+Checking test 068 fv3_gfs_v16_ras_debug results ....
+ Comparing atmos_4xdaily.tile1.nc .........OK
+ Comparing atmos_4xdaily.tile2.nc .........OK
+ Comparing atmos_4xdaily.tile3.nc .........OK
+ Comparing atmos_4xdaily.tile4.nc .........OK
+ Comparing atmos_4xdaily.tile5.nc .........OK
+ Comparing atmos_4xdaily.tile6.nc .........OK
+ Comparing phyf000.tile1.nc .........OK
+ Comparing phyf000.tile2.nc .........OK
+ Comparing phyf000.tile3.nc .........OK
+ Comparing phyf000.tile4.nc .........OK
+ Comparing phyf000.tile5.nc .........OK
+ Comparing phyf000.tile6.nc .........OK
+ Comparing phyf006.tile1.nc .........OK
+ Comparing phyf006.tile2.nc .........OK
+ Comparing phyf006.tile3.nc .........OK
+ Comparing phyf006.tile4.nc .........OK
+ Comparing phyf006.tile5.nc .........OK
+ Comparing phyf006.tile6.nc .........OK
+ Comparing dynf000.tile1.nc .........OK
+ Comparing dynf000.tile2.nc .........OK
+ Comparing dynf000.tile3.nc .........OK
+ Comparing dynf000.tile4.nc .........OK
+ Comparing dynf000.tile5.nc .........OK
+ Comparing dynf000.tile6.nc .........OK
+ Comparing dynf006.tile1.nc .........OK
+ Comparing dynf006.tile2.nc .........OK
+ Comparing dynf006.tile3.nc .........OK
+ Comparing dynf006.tile4.nc .........OK
+ Comparing dynf006.tile5.nc .........OK
+ Comparing dynf006.tile6.nc .........OK
+ Comparing RESTART/coupler.res .........OK
+ Comparing RESTART/fv_core.res.nc .........OK
+ Comparing RESTART/fv_core.res.tile1.nc .........OK
+ Comparing RESTART/fv_core.res.tile2.nc .........OK
+ Comparing RESTART/fv_core.res.tile3.nc .........OK
+ Comparing RESTART/fv_core.res.tile4.nc .........OK
+ Comparing RESTART/fv_core.res.tile5.nc .........OK
+ Comparing RESTART/fv_core.res.tile6.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile1.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile2.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile3.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile4.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile5.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile6.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile1.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile2.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile3.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile4.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile5.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile6.nc .........OK
+ Comparing RESTART/phy_data.tile1.nc .........OK
+ Comparing RESTART/phy_data.tile2.nc .........OK
+ Comparing RESTART/phy_data.tile3.nc .........OK
+ Comparing RESTART/phy_data.tile4.nc .........OK
+ Comparing RESTART/phy_data.tile5.nc .........OK
+ Comparing RESTART/phy_data.tile6.nc .........OK
+ Comparing RESTART/sfc_data.tile1.nc .........OK
+ Comparing RESTART/sfc_data.tile2.nc .........OK
+ Comparing RESTART/sfc_data.tile3.nc .........OK
+ Comparing RESTART/sfc_data.tile4.nc .........OK
+ Comparing RESTART/sfc_data.tile5.nc .........OK
+ Comparing RESTART/sfc_data.tile6.nc .........OK
+
+The total amount of wall time                        = 395.042769
+
+Test 068 fv3_gfs_v16_ras_debug PASS
 
 
 REGRESSION TEST WAS SUCCESSFUL
-Thu Mar  4 17:49:35 GMT 2021
-Elapsed time: 02h:18m:12s. Have a nice day!
+Tue Mar 23 02:45:23 GMT 2021
+Elapsed time: 03h:13m:56s. Have a nice day!
