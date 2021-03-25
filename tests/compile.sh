@@ -81,13 +81,13 @@ echo "Compiling ${MAKE_OPT} into $BUILD_NAME.exe on $MACHINE_ID"
 CMAKE_FLAGS=''
 
 if [[ "${MAKE_OPT}" == *"DEBUG=Y"* ]]; then
-  CMAKE_FLAGS="${CMAKE_FLAGS} -DDEBUG=Y"
+  CMAKE_FLAGS="${CMAKE_FLAGS} -DDEBUG=ON"
 elif [[ "${MAKE_OPT}" == *"REPRO=Y"* ]]; then
-  CMAKE_FLAGS="${CMAKE_FLAGS} -DREPRO=Y"
+  CMAKE_FLAGS="${CMAKE_FLAGS} -DREPRO=ON"
 fi
 
 if [[ "${MAKE_OPT}" == *"32BIT=Y"* ]]; then
-  CMAKE_FLAGS="${CMAKE_FLAGS} -D32BIT=Y"
+  CMAKE_FLAGS="${CMAKE_FLAGS} -D32BIT=ON"
 fi
 
 if [[ "${MAKE_OPT}" == *"OPENMP=N"* ]]; then
@@ -131,20 +131,30 @@ if [[ $? -eq 0 ]]; then
 fi
 set -ex
 
-if [[ "${MAKE_OPT}" == *"WW3=Y"* ]]; then
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DWW3=Y"
+# Valid applications
+if [[ "${MAKE_OPT}" == *"APP=ATM"* ]]; then
+    echo "MAKE_OPT = ${MAKE_OPT}"
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=ATM"
 fi
 
-if [[ "${MAKE_OPT}" == *"S2S=Y"* ]]; then
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DS2S=Y"
+if [[ "${MAKE_OPT}" == *"APP=ATMW"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=ATMW"
 fi
 
-if [[ "${MAKE_OPT}" == *"DATM=Y"* ]]; then
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DDATM=Y"
+if [[ "${MAKE_OPT}" == *"APP=S2S"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=S2S -DMOM6SOLO=ON"
 fi
 
-if [[ "${MAKE_OPT}" == *"S2S=Y"* ]] || [[ ${MAKE_OPT} == *"DATM=Y"* ]]; then
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DMOM6SOLO=ON"
+if [[ "${MAKE_OPT}" == *"APP=S2SW"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=S2SW -DMOM6SOLO=ON"
+fi
+
+if [[ "${MAKE_OPT}" == *"APP=DATM"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=DATM"
+fi
+
+if [[ "${MAKE_OPT}" == *"APP=DATM_NEMS"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=DATM_NEMS"
 fi
 
 CMAKE_FLAGS=$(trim "${CMAKE_FLAGS}")
@@ -174,3 +184,4 @@ fi
 
 elapsed=$SECONDS
 echo "Elapsed time $elapsed seconds. Compiling ${MAKE_OPT} finished"
+echo "Compile $COMPILE_NR elapsed time $elapsed seconds. ${MAKE_OPT}" >> ${LOG_DIR}/compile_${COMPILE_NR}_time.log
