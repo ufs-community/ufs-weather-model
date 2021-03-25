@@ -54,7 +54,7 @@ hostname
 
 set +x
 if [[ $MACHINE_ID == macosx.* ]] || [[ $MACHINE_ID == linux.* ]]; then
-  source $PATHTR/modulefiles/${MACHINE_ID}/fv3
+  source $PATHTR/modulefiles/ufs_${MACHINE_ID}
 else
   if [[ $MACHINE_ID == wcoss2 ]]; then
     source /apps/prod/lmodules/startLmod
