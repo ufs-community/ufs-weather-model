@@ -22,29 +22,29 @@ else
     SUFFIX=${BL_SUFFIX}
   fi
 
-  rsync -arv ../fv3_control${SUFFIX}/RESTART/ INPUT/
+  rsync -arv ../control${SUFFIX}/RESTART/ INPUT/
   if [[ $IAU_INC_FILES = 'fv3_increment.nc' ]] || [[ $READ_INCREMENT = '.T.' ]]; then
     #read_inc and iau tests restart from fh=24
-    cp ../fv3_control${SUFFIX}/RESTART/coupler.res INPUT/.
-    cp ../fv3_control${SUFFIX}/RESTART/fv_core.res.* INPUT/.
-    cp ../fv3_control${SUFFIX}/RESTART/fv_srf_wnd.res.* INPUT/.
-    cp ../fv3_control${SUFFIX}/RESTART/fv_tracer.* INPUT/.
-    cp ../fv3_control${SUFFIX}/RESTART/phy_data.* INPUT/.
-    cp ../fv3_control${SUFFIX}/RESTART/sfc_data.* INPUT/.
-    cp ../fv3_control${SUFFIX}/INPUT/fv3_increment.nc INPUT/.
+    cp ../control${SUFFIX}/RESTART/coupler.res INPUT/.
+    cp ../control${SUFFIX}/RESTART/fv_core.res.* INPUT/.
+    cp ../control${SUFFIX}/RESTART/fv_srf_wnd.res.* INPUT/.
+    cp ../control${SUFFIX}/RESTART/fv_tracer.* INPUT/.
+    cp ../control${SUFFIX}/RESTART/phy_data.* INPUT/.
+    cp ../control${SUFFIX}/RESTART/sfc_data.* INPUT/.
+    cp ../control${SUFFIX}/INPUT/fv3_increment.nc INPUT/.
     cd INPUT
   else
     #restart test start from fh=12
-    cp ../fv3_control${SUFFIX}/RESTART/20161003.120000.* INPUT/.
+    cp ../control${SUFFIX}/RESTART/20181001.120000.* INPUT/.
     cd INPUT
-    for RFILE in 20161003.120000.*; do
+    for RFILE in 20181001.120000.*; do
       [ -e $RFILE ] || exit 1
-      mv $RFILE ${RFILE#20161003.120000.}
+      mv $RFILE ${RFILE#20181001.120000.}
     done
   fi
-  cp ../../fv3_control${SUFFIX}/INPUT/grid_spec.nc .
-  cp ../../fv3_control${SUFFIX}/INPUT/*_grid.tile*.nc .
-  cp ../../fv3_control${SUFFIX}/INPUT/oro_data.tile*.nc .
+  cp ../../control${SUFFIX}/INPUT/grid_spec.nc .
+  cp ../../control${SUFFIX}/INPUT/*_grid.tile*.nc .
+  cp ../../control${SUFFIX}/INPUT/oro_data.tile*.nc .
   cd ..
 
 fi
@@ -65,4 +65,11 @@ if [ $CPLWAV = .T. ]; then
   cp    @[INPUTDATA_ROOT_WW3]/mod_def.* .
   cp    @[INPUTDATA_ROOT_WW3]/@[SYEAR]@[SMONTH]@[SDAY]/ww3_multi.inp .
   cp    @[INPUTDATA_ROOT_WW3]/@[SYEAR]@[SMONTH]@[SDAY]/rmp_src* .
+fi
+
+if [[ $POSTAPP = 'global' ]]; then
+    cp ${PATHRT}/parm/post_itag itag
+    cp ${PATHRT}/parm/postxconfig-NT.txt postxconfig-NT.txt
+    cp ${PATHRT}/parm/postxconfig-NT_FH00.txt postxconfig-NT_FH00.txt
+    cp ${PATHRT}/parm/params_grib2_tbl_new params_grib2_tbl_new
 fi
