@@ -19,6 +19,5 @@ module use /scratch2/NCEPDEV/nwprod/hpc-stack/libs/hpc-stack/modulefiles/stack
 module load hpc/1.1.0
 module load hpc-gnu/9.2.0
 module load hpc-mpich/3.3.2
-module load mpich/3.3.2
 
 module load ufs_common
