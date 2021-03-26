@@ -628,6 +628,7 @@ EOF
       ecflow_create_compile_task
     else
       ./compile.sh $MACHINE_ID "${MAKE_OPT}" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
+      mv compile_${COMPILE_NR}_time.log ${LOG_DIR}
     fi
 
     # Set RT_SUFFIX (regression test run directories and log files) and BL_SUFFIX
@@ -670,13 +671,6 @@ EOF
 
     # 35 day tests
     [[ $TEST_35D == true ]] && rt_35d
-
-    # skip all *_appbuild runs if rocoto or ecFlow is used. FIXME
-    if [[ ${ROCOTO} == true && ${ECFLOW} == true ]]; then
-      if [[ ${TEST_NAME} == *_appbuild ]]; then
-      continue
-      fi
-    fi
 
     # Avoid uninitialized RT_SUFFIX/BL_SUFFIX (see definition above)
     RT_SUFFIX=${RT_SUFFIX:-""}
