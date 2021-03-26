@@ -186,4 +186,4 @@ fi
 
 elapsed=$SECONDS
 echo "Elapsed time $elapsed seconds. Compiling ${MAKE_OPT} finished"
-echo "Compile $COMPILE_NR elapsed time $elapsed seconds. ${MAKE_OPT}" > compile${COMPILE_NR}_time.log
+echo "Compile ${COMPILE_NR/#_} elapsed time $elapsed seconds. ${MAKE_OPT}" > compile${COMPILE_NR}_time.log
