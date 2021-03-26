@@ -327,11 +327,12 @@ elif [[ $MACHINE_ID = stampede.* ]]; then
 
   export PYTHONPATH=
   ECFLOW_START=
-  QUEUE=skx-dev
+  QUEUE=skx-normal
   COMPILE_QUEUE=skx-dev
   PARTITION=
-  dprefix=$WORK/ufs-weather-model/run
-  DISKNM=$WORK/ufs-weather-model/RT
+  ACCNR=TG-EES200015
+  dprefix=$SCRATCH/ufs-weather-model/run
+  DISKNM=/work/07736/minsukji/stampede2/ufs-weather-model/RT
   STMP=$dprefix
   PTMP=$dprefix
   SCHEDULER=slurm
@@ -415,9 +416,9 @@ if [[ $TESTS_FILE =~ '35d' ]]; then
 fi
 
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20210316/${RT_COMPILER^^}}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20210318/${RT_COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20210316}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20210318}
 fi
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20210212}
@@ -435,7 +436,6 @@ if [[ $CREATE_BASELINE == true ]]; then
   mkdir -p "${NEW_BASELINE}"
 fi
 
-COMPILE_LOG=${PATHRT}/Compile_$MACHINE_ID.log
 REGRESSIONTEST_LOG=${PATHRT}/RegressionTests_$MACHINE_ID.log
 
 date > ${REGRESSIONTEST_LOG}
@@ -444,12 +444,13 @@ echo                         >> ${REGRESSIONTEST_LOG}
 
 source default_vars.sh
 
+JOB_NR=0
 TEST_NR=0
 COMPILE_NR=0
 COMPILE_PREV_WW3_NR=''
 rm -f fail_test
 
-LOG_DIR=${PATHRT}/log_$MACHINE_ID
+export LOG_DIR=${PATHRT}/log_$MACHINE_ID
 rm -rf ${LOG_DIR}
 mkdir ${LOG_DIR}
 
@@ -529,8 +530,7 @@ if [[ $ECFLOW == true ]]; then
   rm -rf ${ECFLOW_RUN}
   mkdir -p ${ECFLOW_RUN}/${ECFLOW_SUITE}
   cp head.h tail.h ${ECFLOW_RUN}
-  > ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
-  cat << EOF >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+  cat << EOF > ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
 suite ${ECFLOW_SUITE}
     edit ECF_HOME '${ECFLOW_RUN}'
     edit ECF_INCLUDE '${ECFLOW_RUN}'
@@ -582,6 +582,8 @@ while read -r line || [ "$line" ]; do
   [[ ${#line} == 0 ]] && continue
   [[ $line == \#* ]] && continue
 
+  JOB_NR=$( printf '%03d' $(( 10#$JOB_NR + 1 )) )
+
   if [[ $line == COMPILE* ]] ; then
 
     MAKE_OPT=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
@@ -601,9 +603,11 @@ while read -r line || [ "$line" ]; do
       fi
     fi
 
-    (( COMPILE_NR += 1 ))
+    export COMPILE_NR=$( printf '%03d' $(( 10#$COMPILE_NR + 1 )) )
 
     cat << EOF > ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env
+    export JOB_NR=${JOB_NR}
+    export COMPILE_NR=${COMPILE_NR}
     export MACHINE_ID=${MACHINE_ID}
     export RT_COMPILER=${RT_COMPILER}
     export PATHRT=${PATHRT}
@@ -697,6 +701,7 @@ EOF
       fi
 
       cat << EOF > ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
+      export JOB_NR=${JOB_NR}
       export MACHINE_ID=${MACHINE_ID}
       export RT_COMPILER=${RT_COMPILER}
       export RTPWD=${RTPWD}
@@ -758,7 +763,7 @@ fi
 ## regression test is either failed or successful
 ##
 set +e
-cat ${LOG_DIR}/compile_*.log                   >  ${COMPILE_LOG}
+cat ${LOG_DIR}/compile_*_time.log              >> ${REGRESSIONTEST_LOG}
 cat ${LOG_DIR}/rt_*.log                        >> ${REGRESSIONTEST_LOG}
 if [[ -e fail_test ]]; then
   echo "FAILED TESTS: "
@@ -783,6 +788,6 @@ fi
 
 date >> ${REGRESSIONTEST_LOG}
 
-elapsed_time=$( printf '%02dh:%02dm:%02ds\n' $(($SECONDS%86400/3600)) $(($SECONDS%3600/60)) $(($SECONDS%60)) )
+elapsed_time=$( printf '%02dh:%02dm:%02ds\n' $((SECONDS%86400/3600)) $((SECONDS%3600/60)) $((SECONDS%60)) )
 echo "Elapsed time: ${elapsed_time}. Have a nice day!" >> ${REGRESSIONTEST_LOG}
 echo "Elapsed time: ${elapsed_time}. Have a nice day!"
