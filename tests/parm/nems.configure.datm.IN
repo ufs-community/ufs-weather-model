@@ -31,6 +31,7 @@ OCN_attributes::
   DumpFields = false
   ProfileMemory = false
   OverwriteSlice = true
+  mesh_ocn = @[MESHOCN_ICE]
 ::
 
 # ICE #
@@ -41,7 +42,7 @@ ICE_attributes::
   DumpFields = false
   ProfileMemory = false
   OverwriteSlice = true
-  mesh_ice = @[MESHICE]
+  mesh_ice = @[MESHOCN_ICE]
   stop_n = @[RESTART_N]
   stop_option = nhours
   stop_ymd = -999
@@ -81,7 +82,7 @@ MED_attributes::
       ATM_model = datm
       ICE_model = cice6
       OCN_model = mom
-      history_n = 0
+      history_n = 1
       history_option = nhours
       history_ymd = -999
       coupling_mode = nems_orig_data
@@ -99,6 +100,7 @@ ALLCOMP_attributes::
       restart_ymd = -999
       dbug_flag = @[cap_dbug_flag]
       use_coldstart = @[use_coldstart]
+      use_mommesh = @[use_mommesh]
       coldair_outbreak_mod = .false.
       flux_convergence = @[flux_convergence]
       flux_max_iteration = @[flux_iteration]

@@ -270,13 +270,23 @@ check_results() {
 
       else
 
-        d=$( cmp ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i | wc -l )
+        cmp ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i >/dev/null 2>&1 && d=$? || d=$?
+        if [[ $d -eq 2 ]]; then
+          echo "....CMP ERROR" >> ${REGRESSIONTEST_LOG}
+          echo "....CMP ERROR"
+          exit 1
+        fi
 
-        if [[ $d -ne 0 ]] ; then
+        if [[ $d -eq 1 && ${i##*.} == 'nc' ]] ; then
           if [[ ${MACHINE_ID} =~ orion || ${MACHINE_ID} =~ hera || ${MACHINE_ID} =~ wcoss_dell_p3 || ${MACHINE_ID} =~ wcoss_cray || ${MACHINE_ID} =~ cheyenne || ${MACHINE_ID} =~ gaea || ${MACHINE_ID} =~ jet ]]; then
             printf ".......ALT CHECK.." >> ${REGRESSIONTEST_LOG}
             printf ".......ALT CHECK.."
-            d=$( ${PATHRT}/compare_ncfile.py ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i 2>/dev/null | wc -l )
+            ${PATHRT}/compare_ncfile.py ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i >/dev/null 2>&1 && d=$? || d=$?
+            if [[ $d -eq 1 ]]; then
+              echo "....ERROR" >> ${REGRESSIONTEST_LOG}
+              echo "....ERROR"
+              exit 1
+            fi
           fi
         fi
 
@@ -316,6 +326,10 @@ check_results() {
     done
 
   fi
+
+  echo                                               >> ${REGRESSIONTEST_LOG}
+  grep "The total amount of wall time" ${RUNDIR}/out >> ${REGRESSIONTEST_LOG}
+  echo                                               >> ${REGRESSIONTEST_LOG}
 
   echo "Test ${TEST_NR} ${TEST_NAME} ${test_status}" >> ${REGRESSIONTEST_LOG}
   echo                                               >> ${REGRESSIONTEST_LOG}
@@ -361,8 +375,6 @@ rocoto_create_compile_task() {
     echo "  </metatask>" >> $ROCOTO_XML
   fi
 
-  rocoto_cmd="&PATHRT;/compile.sh $MACHINE_ID \"${MAKE_OPT}\" $COMPILE_NR"
-
   # serialize WW3 builds. FIXME
   DEP_STRING=""
   if [[ ${MAKE_OPT^^} =~ "WW3=Y" && ${COMPILE_PREV_WW3_NR} != '' ]]; then
@@ -379,7 +391,6 @@ rocoto_create_compile_task() {
   fi
   if [[ ${MACHINE_ID} == wcoss_cray ]]; then
     BUILD_CORES=24
-    rocoto_cmd="aprun -n 1 -j 1 -N 1 -d $BUILD_CORES $rocoto_cmd"
     NATIVE="<exclusive></exclusive> <envar><name>PATHTR</name><value>&PATHTR;</value></envar>"
   fi
   if [[ ${MACHINE_ID} == jet ]]; then
@@ -392,14 +403,15 @@ rocoto_create_compile_task() {
   cat << EOF >> $ROCOTO_XML
   <task name="compile_${COMPILE_NR}" maxtries="3">
     $DEP_STRING
-    <command>$rocoto_cmd</command>
+    <command>&PATHRT;/run_compile.sh &PATHRT; &RUNDIR_ROOT; "${MAKE_OPT}" ${COMPILE_NR}</command>
     <jobname>compile_${COMPILE_NR}</jobname>
     <account>${ACCNR}</account>
     <queue>${COMPILE_QUEUE}</queue>
     <partition>${PARTITION}</partition>
     <cores>${BUILD_CORES}</cores>
     <walltime>${BUILD_WALLTIME}</walltime>
-    <join>&LOG;/compile_${COMPILE_NR}.log</join>
+    <stdout>&RUNDIR_ROOT;/compile_${COMPILE_NR}/out</stdout>
+    <stderr>&RUNDIR_ROOT;/compile_${COMPILE_NR}/err</stderr>
     ${NATIVE}
   </task>
 EOF
@@ -436,7 +448,8 @@ rocoto_create_run_task() {
       <partition>${PARTITION}</partition>
       <nodes>${NODES}:ppn=${TPN}</nodes>
       <walltime>00:${WLCLK}:00</walltime>
-      <join>&LOG;/run_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log</join>
+      <stdout>&RUNDIR_ROOT;/${TEST_NAME}${RT_SUFFIX}/out</stdout>
+      <stderr>&RUNDIR_ROOT;/${TEST_NAME}${RT_SUFFIX}/err</stderr>
       ${NATIVE}
     </task>
 EOF

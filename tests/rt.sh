@@ -34,8 +34,15 @@ rt_single() {
     [[ ${#line} == 0 ]] && continue
     [[ $line == \#* ]] && continue
 
-    if [[ $line =~ COMPILE && $line =~ ${MACHINE_ID} ]]; then
-      compile_line=$line
+    if [[ $line == COMPILE* ]] ; then
+      MACHINES=$(echo $line | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
+      if [[ ${MACHINES} == '' ]]; then
+        compile_line=$line
+      elif [[ ${MACHINES} == -* ]]; then
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] || compile_line=$line
+      elif [[ ${MACHINES} == +* ]]; then
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] && compile_line=$line
+      fi
     fi
 
     if [[ $line =~ RUN ]]; then
@@ -200,11 +207,9 @@ elif [[ $MACHINE_ID = wcoss2 ]]; then
 
 elif [[ $MACHINE_ID = gaea.* ]]; then
 
-  module load cray-python/3.7.3.2
-
-  export PATH=/lustre/f2/pdata/esrl/gsd/contrib/ecFlow-5.3.1/bin:$PATH
-  export PYTHONPATH=/lustre/f2/pdata/esrl/gsd/contrib/ecFlow-5.3.1/lib/python3.7/site-packages
-  ECFLOW_START=/lustre/f2/pdata/esrl/gsd/contrib/ecFlow-5.3.1/bin/ecflow_start.sh
+  export PATH=/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/envs/ufs-weather-model/bin:/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/bin:$PATH
+  export PYTHONPATH=/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/lib/python3.8/site-packages
+  ECFLOW_START=/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/envs/ufs-weather-model/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
   DISKNM=/lustre/f2/pdata/esrl/gsd/ufs/ufs-weather-model/RT
@@ -282,9 +287,9 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=slurm
 
-  export PATH=/lfs4/HFIP/hfv3gfs/software/ecFlow-5.5.3/bin:$PATH
-  export PYTHONPATH=/lfs4/HFIP/hfv3gfs/software/ecFlow-5.5.3/lib/python3.6/site-packages
-  ECFLOW_START=/lfs4/HFIP/hfv3gfs/software/ecFlow-5.5.3/bin/ecflow_start.sh
+  export PATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/bin:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/bin:$PATH
+  export PYTHONPATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/lib/python3.8/site-packages
+  ECFLOW_START=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
   QUEUE=batch
@@ -302,10 +307,9 @@ elif [[ $MACHINE_ID = jet.* ]]; then
 
 elif [[ $MACHINE_ID = cheyenne.* ]]; then
 
-  module load python/3.7.9
-  export PATH=/glade/p/ral/jntp/tools/ecFlow-5.5.3/bin:$PATH
-  export PYTHONPATH=/glade/p/ral/jntp/tools/ecFlow-5.5.3/lib/python3.7/site-packages
-  ECFLOW_START=/glade/p/ral/jntp/tools/ecFlow-5.5.3/bin/ecflow_start.sh
+  export PATH=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/bin:/glade/p/ral/jntp/tools/miniconda3/4.8.3/bin:$PATH
+  export PYTHONPATH=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/glade/p/ral/jntp/tools/miniconda3/4.8.3/lib/python3.8/site-packages
+  ECFLOW_START=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
   QUEUE=regular
@@ -323,11 +327,12 @@ elif [[ $MACHINE_ID = stampede.* ]]; then
 
   export PYTHONPATH=
   ECFLOW_START=
-  QUEUE=skx-dev
+  QUEUE=skx-normal
   COMPILE_QUEUE=skx-dev
   PARTITION=
-  dprefix=$WORK/ufs-weather-model/run
-  DISKNM=$WORK/ufs-weather-model/RT
+  ACCNR=TG-EES200015
+  dprefix=$SCRATCH/ufs-weather-model/run
+  DISKNM=/work/07736/minsukji/stampede2/ufs-weather-model/RT
   STMP=$dprefix
   PTMP=$dprefix
   SCHEDULER=slurm
@@ -411,13 +416,14 @@ if [[ $TESTS_FILE =~ '35d' ]]; then
 fi
 
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20210128/${RT_COMPILER^^}}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20210324/${RT_COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20210128}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20210324}
 fi
 
-INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20210115}
+INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20210324}
 INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20201220
+INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC:-$DISKNM/NEMSfv3gfs/BM_IC-20210212}
 
 shift $((OPTIND-1))
 [[ $# -gt 1 ]] && usage
@@ -430,7 +436,6 @@ if [[ $CREATE_BASELINE == true ]]; then
   mkdir -p "${NEW_BASELINE}"
 fi
 
-COMPILE_LOG=${PATHRT}/Compile_$MACHINE_ID.log
 REGRESSIONTEST_LOG=${PATHRT}/RegressionTests_$MACHINE_ID.log
 
 date > ${REGRESSIONTEST_LOG}
@@ -439,12 +444,13 @@ echo                         >> ${REGRESSIONTEST_LOG}
 
 source default_vars.sh
 
+JOB_NR=0
 TEST_NR=0
 COMPILE_NR=0
 COMPILE_PREV_WW3_NR=''
 rm -f fail_test
 
-LOG_DIR=${PATHRT}/log_$MACHINE_ID
+export LOG_DIR=${PATHRT}/log_$MACHINE_ID
 rm -rf ${LOG_DIR}
 mkdir ${LOG_DIR}
 
@@ -497,6 +503,7 @@ if [[ $ROCOTO == true ]]; then
   <!ENTITY RTPWD          "${RTPWD}">
   <!ENTITY INPUTDATA_ROOT "${INPUTDATA_ROOT}">
   <!ENTITY INPUTDATA_ROOT_WW3 "${INPUTDATA_ROOT_WW3}">
+  <!ENTITY INPUTDATA_ROOT_BMIC "${INPUTDATA_ROOT_BMIC}">
   <!ENTITY RUNDIR_ROOT    "${RUNDIR_ROOT}">
   <!ENTITY NEW_BASELINE   "${NEW_BASELINE}">
 ]>
@@ -523,8 +530,7 @@ if [[ $ECFLOW == true ]]; then
   rm -rf ${ECFLOW_RUN}
   mkdir -p ${ECFLOW_RUN}/${ECFLOW_SUITE}
   cp head.h tail.h ${ECFLOW_RUN}
-  > ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
-  cat << EOF >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+  cat << EOF > ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
 suite ${ECFLOW_SUITE}
     edit ECF_HOME '${ECFLOW_RUN}'
     edit ECF_INCLUDE '${ECFLOW_RUN}'
@@ -576,6 +582,8 @@ while read -r line || [ "$line" ]; do
   [[ ${#line} == 0 ]] && continue
   [[ $line == \#* ]] && continue
 
+  JOB_NR=$( printf '%03d' $(( 10#$JOB_NR + 1 )) )
+
   if [[ $line == COMPILE* ]] ; then
 
     MAKE_OPT=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
@@ -595,9 +603,11 @@ while read -r line || [ "$line" ]; do
       fi
     fi
 
-    (( COMPILE_NR += 1 ))
+    export COMPILE_NR=$( printf '%03d' $(( 10#$COMPILE_NR + 1 )) )
 
     cat << EOF > ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env
+    export JOB_NR=${JOB_NR}
+    export COMPILE_NR=${COMPILE_NR}
     export MACHINE_ID=${MACHINE_ID}
     export RT_COMPILER=${RT_COMPILER}
     export PATHRT=${PATHRT}
@@ -626,8 +636,8 @@ EOF
       RT_SUFFIX="_repro"
       BL_SUFFIX="_repro"
     else
-      RT_SUFFIX="_prod"
-      BL_SUFFIX="_ccpp"
+      RT_SUFFIX=""
+      BL_SUFFIX=""
     fi
 
     if [[ ${MAKE_OPT^^} =~ "WW3=Y" ]]; then
@@ -691,11 +701,13 @@ EOF
       fi
 
       cat << EOF > ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
+      export JOB_NR=${JOB_NR}
       export MACHINE_ID=${MACHINE_ID}
       export RT_COMPILER=${RT_COMPILER}
       export RTPWD=${RTPWD}
       export INPUTDATA_ROOT=${INPUTDATA_ROOT}
       export INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT_WW3}
+      export INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC}
       export PATHRT=${PATHRT}
       export PATHTR=${PATHTR}
       export NEW_BASELINE=${NEW_BASELINE}
@@ -751,7 +763,7 @@ fi
 ## regression test is either failed or successful
 ##
 set +e
-cat ${LOG_DIR}/compile_*.log                   >  ${COMPILE_LOG}
+cat ${LOG_DIR}/compile_*_time.log              >> ${REGRESSIONTEST_LOG}
 cat ${LOG_DIR}/rt_*.log                        >> ${REGRESSIONTEST_LOG}
 if [[ -e fail_test ]]; then
   echo "FAILED TESTS: "
@@ -771,10 +783,11 @@ else
   [[ ${KEEP_RUNDIR} == false ]] && rm -rf ${RUNDIR_ROOT}
   [[ ${ROCOTO} == true ]] && rm -f ${ROCOTO_XML} ${ROCOTO_DB} *_lock.db
   [[ ${TEST_35D} == true ]] && rm -f tests/cpld_bmark*_20*
+  [[ ${SINGLE_NAME} != '' ]] && rm -f rt.conf.single
 fi
 
 date >> ${REGRESSIONTEST_LOG}
 
-elapsed_time=$( printf '%02dh:%02dm:%02ds\n' $(($SECONDS%86400/3600)) $(($SECONDS%3600/60)) $(($SECONDS%60)) )
+elapsed_time=$( printf '%02dh:%02dm:%02ds\n' $((SECONDS%86400/3600)) $((SECONDS%3600/60)) $((SECONDS%60)) )
 echo "Elapsed time: ${elapsed_time}. Have a nice day!" >> ${REGRESSIONTEST_LOG}
 echo "Elapsed time: ${elapsed_time}. Have a nice day!"
