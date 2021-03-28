@@ -7,6 +7,7 @@ import sys
 
 def run(job_obj):
     logger = logging.getLogger('BL/RUN')
+    bldate = get_bl_date(job_obj)
     workdir, rtbldir, blstore = set_directories(job_obj)
     branch, pr_repo_loc, repo_dir_str = clone_pr_repo(job_obj, workdir)
     run_regression_test(job_obj, pr_repo_loc)
@@ -78,14 +79,18 @@ def get_bl_date(job_obj):
             if len(bldate) != 8:
                 print(f'Date: {bldate} is not formatted YYYYMMDD')
                 raise ValueError
-            logger.info(f'bldate: {bldate}')
+            logger.info(f'BL_DATE: {bldate}')
             bl_format = '%Y%m%d'
             try:
                 datetime.datetime.strptime(bldate, bl_format)
             except ValueError:
                 logger.info(f'Date {bldate} is not formatted YYYYMMDD')
                 raise ValueError
-    return bldate
+            return bldate
+        else:
+            logger.critical('"BL_DATE:YYYYMMDD" needs to be in the PR body.'\
+                            'On its own line. Stopping')
+            raise ValueError
 
 
 def run_regression_test(job_obj, pr_repo_loc):
