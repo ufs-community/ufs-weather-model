@@ -107,8 +107,6 @@ if [[ $DATM = 'true' ]] || [[ $S2S = 'true' ]]; then
   edit_data_table < ${PATHRT}/parm/data_table_template > data_table
   # CMEPS
   cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
-  cp ${PATHRT}/parm/pio_in pio_in
-  cp ${PATHRT}/parm/med_modelio.nml med_modelio.nml
 fi
 if [[ $DATM = 'true' ]]; then
   cp ${PATHRT}/parm/datm_data_table.IN datm_data_table
