@@ -87,10 +87,9 @@ def get_bl_date(job_obj):
                 logger.info(f'Date {bldate} is not formatted YYYYMMDD')
                 raise ValueError
             return bldate
-        else:
-            logger.critical('"BL_DATE:YYYYMMDD" needs to be in the PR body.'\
-                            'On its own line. Stopping')
-            raise ValueError
+    logger.critical('"BL_DATE:YYYYMMDD" needs to be in the PR body.'\
+                    'On its own line. Stopping')
+    raise ValueError
 
 
 def run_regression_test(job_obj, pr_repo_loc):
