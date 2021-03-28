@@ -9,9 +9,11 @@ def run(job_obj):
     logger = logging.getLogger('BL/RUN')
     bldate = get_bl_date(job_obj)
     workdir, rtbldir, blstore = set_directories(job_obj)
-    branch, pr_repo_loc, repo_dir_str = clone_pr_repo(job_obj, workdir)
-    run_regression_test(job_obj, pr_repo_loc)
-    post_process(job_obj, pr_repo_loc, repo_dir_str, rtbldir, blstore, branch)
+    bldir = f'{blstore}/develop-{bldate}/{job_obj.compiler.upper()}'
+    if not check_for_bl_dir(bldir):
+        branch, pr_repo_loc, repo_dir_str = clone_pr_repo(job_obj, workdir)
+        run_regression_test(job_obj, pr_repo_loc)
+        post_process(job_obj, pr_repo_loc, repo_dir_str, rtbldir, bldir, branch)
 
 
 def set_directories(job_obj):
@@ -42,7 +44,7 @@ def set_directories(job_obj):
         rtbldir = '/glade/work/heinzell/FV3_RT/'\
                  f'REGRESSION_TEST_{job_obj.compiler.upper()}'
     else:
-        print(f'Machine {job_obj.machine} is not supported for this job')
+        logger.critical(f'Machine {job_obj.machine} is not supported for this job')
         raise KeyError
 
     logger.info(f'machine: {job_obj.machine}')
@@ -53,20 +55,22 @@ def set_directories(job_obj):
     return workdir, rtbldir, blstore
 
 
-def create_bl_dir(job_obj, bldate, blstore):
-    logger = logging.getLogger('BL/CREATE_BL_DIR')
-    bldir = f'{blstore}/develop-{bldate}/{job_obj.compiler.upper()}'
-    logger.info(f'Build Dir: {bldir}')
+def check_for_bl_dir(bldir):
+    logger = logging.getLogger('BL/CHECK_FOR_BL_DIR')
+    logger.info('Checking if baseline directory exists')
     if os.path.exists(bldir):
-        print(f'Baseline dir: {bldir} exists. It should not.')
+        logger.critical(f'Baseline dir: {bldir} exists. It should not, yet.')
         raise FileExistsError
-    else:
+    return False
+
+
+def create_bl_dir(bldir):
+    logger = logging.getLogger('BL/CREATE_BL_DIR')
+    if not check_for_bl_dir(bldir):
         os.makedirs(bldir)
         if not os.path.exists(bldir):
-            print(f'Someting went wrong creating {bldir}')
+            logger.critical(f'Someting went wrong creating {bldir}')
             raise FileNotFoundError
-
-    return bldir
 
 
 def get_bl_date(job_obj):
@@ -144,7 +148,7 @@ def clone_pr_repo(job_obj, workdir):
     return branch, pr_repo_loc, repo_dir_str
 
 
-def post_process(job_obj, pr_repo_loc, repo_dir_str, rtbldir, blstore, branch):
+def post_process(job_obj, pr_repo_loc, repo_dir_str, rtbldir, bldir, branch):
     logger = logging.getLogger('BL/MOVE_RT_LOGS')
     rt_log = f'tests/RegressionTests_{job_obj.machine}'\
              f'.{job_obj.compiler}.log'
@@ -152,7 +156,7 @@ def post_process(job_obj, pr_repo_loc, repo_dir_str, rtbldir, blstore, branch):
     rt_dir, logfile_pass = process_logfile(job_obj, filepath)
     if logfile_pass:
         bldate = get_bl_date(job_obj)
-        bldir = create_bl_dir(job_obj, bldate, blstore)
+        create_bl_dir(bldir)
         move_bl_command = [[f'mv {rtbldir}/* {bldir}/', pr_repo_loc]]
         job_obj.run_commands(logger, move_bl_command)
         update_rt_sh(job_obj, pr_repo_loc, bldate, branch)
@@ -175,7 +179,7 @@ def update_rt_sh(job_obj, pr_repo_loc, bldate, branch):
     if not BLDATEFOUND:
         job_obj.comment_text_append('BL_DATE not found in rt.sh.'
                                     'Please manually edit rt.sh '
-                                    'with BL_DATE={bldate})
+                                    'with BL_DATE={bldate}')
     logger.info('Finished update_rt_sh')
 
     move_rtsh_commands = [
@@ -217,6 +221,4 @@ def process_logfile(job_obj, logfile):
         logger.critical(f'Could not find {job_obj.machine}'
                         f'.{job_obj.compiler} '
                         f'{job_obj.preq_dict["action"]} log')
-        print(f'Could not find {job_obj.machine}.{job_obj.compiler} '
-              f'{job_obj.preq_dict["action"]} log')
         raise FileNotFoundError
