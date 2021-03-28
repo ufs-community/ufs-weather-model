@@ -161,13 +161,22 @@ def post_process(job_obj, pr_repo_loc, repo_dir_str, rtbldir, blstore, branch):
 
 def update_rt_sh(job_obj, pr_repo_loc, bldate, branch):
     logger = logging.getLogger('BL/UPDATE_RT_SH')
+    BLDATEFOUND = False
     with open(f'{pr_repo_loc}/tests/rt.sh', 'r') as f:
         with open(f'{pr_repo_loc}/tests/rt.sh.new', 'w') as w:
             for line in f:
                 if 'BL_DATE' in line:
+                    logger.info('Found BL_DATE in line')
+                    logger.info(f'Writing "BL_DATE-{bldate}" into file')
                     w.write(f'BL_DATE={bldate}\n')
+                    BLDATEFOUND = True
                 else:
                     w.write(line)
+    if not BLDATEFOUND:
+        job_obj.comment_text_append('BL_DATE not found in rt.sh.'
+                                    'Please manually edit rt.sh '
+                                    'with BL_DATE={bldate})
+    logger.info('Finished update_rt_sh')
 
     move_rtsh_commands = [
         [f'git pull --ff-only origin {branch}', pr_repo_loc],
