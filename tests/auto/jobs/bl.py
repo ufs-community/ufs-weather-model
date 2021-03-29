@@ -169,7 +169,7 @@ def update_rt_sh(job_obj, pr_repo_loc, bldate, branch):
     with open(f'{pr_repo_loc}/tests/rt.sh', 'r') as f:
         with open(f'{pr_repo_loc}/tests/rt.sh.new', 'w') as w:
             for line in f:
-                if 'BL_DATE' in line:
+                if 'BL_DATE=' in line:
                     logger.info('Found BL_DATE in line')
                     logger.info(f'Writing "BL_DATE-{bldate}" into file')
                     w.write(f'BL_DATE={bldate}\n')
