@@ -1,21 +1,21 @@
 ###############################################################################
 #
-#  FV3 CCPP control test with Gaussian grid parallel compressed netcdf output
+#  FV3 CCPP control debug test with Gaussian grid parallel compressed netcdf output
 #
 ###############################################################################
 
-export TEST_DESCR="Compare FV3 CCPP control Gaussian grid parallel compressed netcdf output results with previous trunk version"
+export TEST_DESCR="Compare FV3 CCPP control debug with Gaussian grid parallel compressed netcdf output results with previous trunk version"
 
-export CNTL_DIR=control_wrtGauss_netcdf_parallel
+export CNTL_DIR=control_wrtGauss_netcdf_parallel_debug
 
 export LIST_FILES="sfcf000.nc \
-                   sfcf024.nc \
+                   sfcf001.nc \
                    atmf000.nc \
-                   atmf024.nc \
+                   atmf001.nc \
                    GFSFLX.GrbF00 \
-                   GFSFLX.GrbF24 \
+                   GFSFLX.GrbF01 \
                    GFSPRS.GrbF00 \
-                   GFSPRS.GrbF24 \
+                   GFSPRS.GrbF01 \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -56,7 +56,8 @@ export DT_ATMOS=720
 export SYEAR=2018
 export SMONTH=10
 export SDAY=01
-export RESTART_INTERVAL=12
+export RESTART_INTERVAL=0
+export FHMAX=1
 export OUTPUT_GRID='gaussian_grid'
 export NSTF_NAME='2,0,0,0,0'
 export WRITE_DOPOST=.true.

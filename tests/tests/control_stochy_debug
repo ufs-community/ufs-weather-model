@@ -1,21 +1,21 @@
 ###############################################################################
 #
-#  FV3 CCPP control test with Gaussian grid parallel compressed netcdf output
+#  FV3 CCPP control debug test with stochastic physics
 #
 ###############################################################################
 
-export TEST_DESCR="Compare FV3 CCPP control Gaussian grid parallel compressed netcdf output results with previous trunk version"
+export TEST_DESCR="Compare FV3 CCPP control debug stochy results with previous trunk version"
 
-export CNTL_DIR=control_wrtGauss_netcdf_parallel
+export CNTL_DIR=control_stochy_debug
 
 export LIST_FILES="sfcf000.nc \
-                   sfcf024.nc \
+                   sfcf001.nc \
                    atmf000.nc \
-                   atmf024.nc \
+                   atmf001.nc \
                    GFSFLX.GrbF00 \
-                   GFSFLX.GrbF24 \
+                   GFSFLX.GrbF01 \
                    GFSPRS.GrbF00 \
-                   GFSPRS.GrbF24 \
+                   GFSPRS.GrbF01 \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -52,17 +52,22 @@ export LIST_FILES="sfcf000.nc \
 export_fv3
 export NPZ=127
 export NPZP=128
-export DT_ATMOS=720
+export DT_ATMOS=600
 export SYEAR=2018
 export SMONTH=10
 export SDAY=01
-export RESTART_INTERVAL=12
+export RESTART_INTERVAL=0
+export FHMAX=1
 export OUTPUT_GRID='gaussian_grid'
 export NSTF_NAME='2,0,0,0,0'
 export WRITE_DOPOST=.true.
-export OUTPUT_FILE="'netcdf_parallel' 'netcdf_parallel'"
-export IDEFLATE=1
-export NBITS=14
+export DO_SPPT=.T.
+export DO_SHUM=.T.
+export DO_SKEB=.T.
+export SKEB=0.3
+export SHUM=0.003
+export SPPT=0.2
+
 
 export FV3_RUN=control_run.IN
 export CCPP_SUITE=FV3_GFS_v16

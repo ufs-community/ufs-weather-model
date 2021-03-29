@@ -1,21 +1,21 @@
 ###############################################################################
 #
-#  FV3 CCPP control test with Gaussian grid parallel compressed netcdf output
+#  FV3 CCPP control C192L127 W/ RRTMGP test
 #
 ###############################################################################
 
-export TEST_DESCR="Compare FV3 CCPP control Gaussian grid parallel compressed netcdf output results with previous trunk version"
+export TEST_DESCR="Compare FV3 CCPP control C192L127 W RRTMGP results with previous trunk version"
 
-export CNTL_DIR=control_wrtGauss_netcdf_parallel
+export CNTL_DIR=control_rrtmgp_c192
 
 export LIST_FILES="sfcf000.nc \
-                   sfcf024.nc \
+                   sfcf012.nc \
                    atmf000.nc \
-                   atmf024.nc \
+                   atmf012.nc \
                    GFSFLX.GrbF00 \
-                   GFSFLX.GrbF24 \
+                   GFSFLX.GrbF12 \
                    GFSPRS.GrbF00 \
-                   GFSPRS.GrbF24 \
+                   GFSPRS.GrbF12 \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -52,18 +52,28 @@ export LIST_FILES="sfcf000.nc \
 export_fv3
 export NPZ=127
 export NPZP=128
-export DT_ATMOS=720
+export NPX=193
+export NPY=193
+export DT_ATMOS=360
 export SYEAR=2018
 export SMONTH=10
 export SDAY=01
-export RESTART_INTERVAL=12
+export RESTART_INTERVAL=0
+export CDMBWD=${CDMBWD_c192}
 export OUTPUT_GRID='gaussian_grid'
 export NSTF_NAME='2,0,0,0,0'
 export WRITE_DOPOST=.true.
-export OUTPUT_FILE="'netcdf_parallel' 'netcdf_parallel'"
-export IDEFLATE=1
-export NBITS=14
+export IMO=768
+export JMO=384
+export FHMAX=12
+
+export DO_RRTMGP=.T.
+
+export FNALBC="'global_snowfree_albedo.bosu.t382.768.384.rg.grb',"
+export FNVETC="'global_vegtype.igbp.t382.768.384.rg.grb',"
+export FNSOTC="'global_soiltype.statsgo.t382.768.384.rg.grb',"
+export FNABSC="'global_mxsnoalb.uariz.t382.768.384.rg.grb',"
 
 export FV3_RUN=control_run.IN
-export CCPP_SUITE=FV3_GFS_v16
-export INPUT_NML=control.nml.IN
+export CCPP_SUITE=FV3_GFS_v16_RRTMGP
+export INPUT_NML=control_rrtmgp.nml.IN

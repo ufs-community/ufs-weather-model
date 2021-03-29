@@ -1,43 +1,37 @@
 ###############################################################################
 #
-#  FV3 CCPP GFS v16 w/ RRTMGP test in DEBUG mode
+#  FV3 CCPP control debug with native grid out test
 #
 ###############################################################################
 
-export TEST_DESCR="Run FV3 CCPP GFS v16 w/ RRTMGP in DEBUG mode"
+export TEST_DESCR="Compare FV3 CCPP control debug native grid out results with previous trunk version"
 
-export CNTL_DIR=fv3_gfs_v16_RRTMGP_debug
+export CNTL_DIR=control_CubedSphereGrid_debug
 
-export LIST_FILES="atmos_4xdaily.tile1.nc \
-                   atmos_4xdaily.tile2.nc \
-                   atmos_4xdaily.tile3.nc \
-                   atmos_4xdaily.tile4.nc \
-                   atmos_4xdaily.tile5.nc \
-                   atmos_4xdaily.tile6.nc \
-                   phyf000.tile1.nc \
-                   phyf000.tile2.nc \
-                   phyf000.tile3.nc \
-                   phyf000.tile4.nc \
-                   phyf000.tile5.nc \
-                   phyf000.tile6.nc \
-                   phyf006.tile1.nc \
-                   phyf006.tile2.nc \
-                   phyf006.tile3.nc \
-                   phyf006.tile4.nc \
-                   phyf006.tile5.nc \
-                   phyf006.tile6.nc \
-                   dynf000.tile1.nc \
-                   dynf000.tile2.nc \
-                   dynf000.tile3.nc \
-                   dynf000.tile4.nc \
-                   dynf000.tile5.nc \
-                   dynf000.tile6.nc \
-                   dynf006.tile1.nc \
-                   dynf006.tile2.nc \
-                   dynf006.tile3.nc \
-                   dynf006.tile4.nc \
-                   dynf006.tile5.nc \
-                   dynf006.tile6.nc \
+export LIST_FILES="sfcf000.tile1.nc \
+                   sfcf000.tile2.nc \
+                   sfcf000.tile3.nc \
+                   sfcf000.tile4.nc \
+                   sfcf000.tile5.nc \
+                   sfcf000.tile6.nc \
+                   sfcf001.tile1.nc \
+                   sfcf001.tile2.nc \
+                   sfcf001.tile3.nc \
+                   sfcf001.tile4.nc \
+                   sfcf001.tile5.nc \
+                   sfcf001.tile6.nc \
+                   atmf000.tile1.nc \
+                   atmf000.tile2.nc \
+                   atmf000.tile3.nc \
+                   atmf000.tile4.nc \
+                   atmf000.tile5.nc \
+                   atmf000.tile6.nc \
+                   atmf001.tile1.nc \
+                   atmf001.tile2.nc \
+                   atmf001.tile3.nc \
+                   atmf001.tile4.nc \
+                   atmf001.tile5.nc \
+                   atmf001.tile6.nc \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -72,12 +66,18 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
                    RESTART/sfc_data.tile6.nc"
 
 export_fv3
+export NPZ=127
+export NPZP=128
+export DT_ATMOS=720
+export SYEAR=2018
+export SMONTH=10
+export SDAY=01
+export RESTART_INTERVAL=0
+export FHMAX=1
+export OUTPUT_GRID='cubed_sphere_grid'
+export NSTF_NAME='2,0,0,0,0'
+export WRITE_DOPOST=.false.
 
-export FHMAX="06"
-DT_ATMOS="1200"
-export DO_RRTMGP=.T.
-
-export FV3_RUN=gfs_v16_run.IN
-export CCPP_SUITE=FV3_GFS_v16_RRTMGP
-export INPUT_NML=v16_c96_rrtmgp.nml.IN
-
+export FV3_RUN=control_run.IN
+export CCPP_SUITE=FV3_GFS_v16
+export INPUT_NML=control.nml.IN
