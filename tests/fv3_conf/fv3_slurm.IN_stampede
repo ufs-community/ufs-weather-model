@@ -1,13 +1,14 @@
 #!/bin/bash -l
 #SBATCH -o out
 #SBATCH -e err
-#SBATCH -N 4
+#SBATCH -N @[NODES]
 #SBATCH -A @[ACCNR]
-#SBATCH -p skx-dev
+#SBATCH -p @[QUEUE]
 #SBATCH -n @[TASKS]
 #SBATCH -t 00:@[WLCLK]:00
 
 set -eux
+echo -n " $( date +%s )," >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
 
 set +x
 source ./module-setup.sh
@@ -32,5 +33,4 @@ export LD_BIND_NOW=1
 ibrun   ./fv3.exe
 
 echo "Model ended:    " `date`
-
-exit
+echo -n " $( date +%s )," >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
