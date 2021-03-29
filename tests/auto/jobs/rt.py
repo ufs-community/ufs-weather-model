@@ -98,7 +98,7 @@ def post_process(job_obj, pr_repo_loc, repo_dir_str, branch):
             [f'git pull --ff-only origin {branch}', pr_repo_loc],
             [f'git add {rt_log}', pr_repo_loc],
             [f'git commit -m "RT JOBS PASSED: {job_obj.machine}'
-             f'.{job_obj.compiler}. Log file uploaded. skip-ci"',
+             f'.{job_obj.compiler}. Log file uploaded."',
              pr_repo_loc],
             ['sleep 10', pr_repo_loc],
             [f'git push origin {branch}', pr_repo_loc]
