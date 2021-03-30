@@ -29,9 +29,9 @@ def set_directories(job_obj):
         rtbldir = '/lfs4/HFIP/hfv3gfs/emc.nemspara/RT_BASELINE/'\
                  f'emc.nemspara/FV3_RT/REGRESSION_TEST_{job_obj.compiler.upper()}'
     elif job_obj.machine == 'gaea':
-        workdir = '/lustre/f2/pdata/ncep/Brian.Curtis/autort/pr'
-        blstore = '/lustre/f2/pdata/esrl/gsd/ufs/ufs-weather-model/RT'
-        rtbldir = '/lustre/f2/scratch/Brian.Curtis/FV3_RT/'\
+        workdir = '/lustre/f2/pdata/ncep/emc.nemspara/autort/pr'
+        blstore = '/lustre/f2/pdata/ncep_shared/emc.nemspara/RT'
+        rtbldir = '/lustre/f2/scratch/emc.nemspara/FV3_RT/'\
                  f'REGRESSION_TEST_{job_obj.compiler.upper()}'
     elif job_obj.machine == 'orion':
         workdir = '/work/noaa/nems/emc.nemspara/autort/pr'
