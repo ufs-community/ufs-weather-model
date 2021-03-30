@@ -156,13 +156,13 @@ def post_process(job_obj, pr_repo_loc, repo_dir_str, rtbldir, blstore, branch):
     rt_dir, logfile_pass = process_logfile(job_obj, filepath)
     if logfile_pass:
         bldate = get_bl_date(job_obj, pr_repo_loc)
-    	bldir = f'{blstore}/develop-{bldate}/{job_obj.compiler.upper()}'
+        bldir = f'{blstore}/develop-{bldate}/{job_obj.compiler.upper()}'
         create_bl_dir(bldir)
         move_bl_command = [[f'mv {rtbldir}/* {bldir}/', pr_repo_loc]]
         job_obj.run_commands(logger, move_bl_command)
         # update_rt_sh(job_obj, pr_repo_loc, bldate, branch)
-	logger.info('Starting RT Job')
-	rt.run(job_obj)
+        logger.info('Starting RT Job')
+        rt.run(job_obj)
         logger.info('Finished with RT Job')
         remove_pr_data(job_obj, pr_repo_loc, repo_dir_str, rt_dir)
 
@@ -175,10 +175,10 @@ def get_bl_date(job_obj, pr_repo_loc):
             if 'BL_DATE=' in line:
                 logger.info('Found BL_DATE in line')
                 BLDATEFOUND = True
-		bldate = line
-            	bldate = bldate.replace('BL_DATE=', '')
-            	bldate = bldate.replace(' ', '')
-            	bl_format = '%Y%m%d'
+                bldate = line
+                bldate = bldate.replace('BL_DATE=', '')
+                bldate = bldate.replace(' ', '')
+                bl_format = '%Y%m%d'
                 try:
                     datetime.datetime.strptime(bldate, bl_format)
                 except ValueError:
@@ -192,7 +192,7 @@ def get_bl_date(job_obj, pr_repo_loc):
     logger.info('Finished get_bl_date')
     job_obj.run_commands(logger, move_rtsh_commands)
 
-    return bldate	
+    return bldate
 
 
 def process_logfile(job_obj, logfile):
