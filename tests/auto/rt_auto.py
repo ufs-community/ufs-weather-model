@@ -231,7 +231,7 @@ def setup_env():
     # Dictionary of GitHub repositories to check
     repo_dict = [{
         'name': 'ufs-weather-model',
-        'address': 'BrianCurtis-NOAA/ufs-weather-model',
+        'address': 'ufs-community/ufs-weather-model',
         'base': 'develop'
     }]
 
