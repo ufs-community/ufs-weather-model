@@ -3,17 +3,17 @@ import datetime
 import logging
 import os
 import sys
-
+from . import rt
 
 def run(job_obj):
     logger = logging.getLogger('BL/RUN')
-    bldate = get_bl_date(job_obj)
+    #bldate = get_bl_date(job_obj)
     workdir, rtbldir, blstore = set_directories(job_obj)
-    bldir = f'{blstore}/develop-{bldate}/{job_obj.compiler.upper()}'
-    if not check_for_bl_dir(bldir):
-        branch, pr_repo_loc, repo_dir_str = clone_pr_repo(job_obj, workdir)
-        run_regression_test(job_obj, pr_repo_loc)
-        post_process(job_obj, pr_repo_loc, repo_dir_str, rtbldir, bldir, branch)
+    #bldir = f'{blstore}/develop-{bldate}/{job_obj.compiler.upper()}'
+    #if not check_for_bl_dir(bldir):
+    branch, pr_repo_loc, repo_dir_str = clone_pr_repo(job_obj, workdir)
+    run_regression_test(job_obj, pr_repo_loc)
+    post_process(job_obj, pr_repo_loc, repo_dir_str, rtbldir, blstore, branch)
 
 
 def set_directories(job_obj):
@@ -73,27 +73,27 @@ def create_bl_dir(bldir):
             raise FileNotFoundError
 
 
-def get_bl_date(job_obj):
-    logger = logging.getLogger('BL/GET_BL_DATE')
-    for line in job_obj.preq_dict['preq'].body.splitlines():
-        if 'BL_DATE:' in line:
-            bldate = line
-            bldate = bldate.replace('BL_DATE:', '')
-            bldate = bldate.replace(' ', '')
-            if len(bldate) != 8:
-                print(f'Date: {bldate} is not formatted YYYYMMDD')
-                raise ValueError
-            logger.info(f'BL_DATE: {bldate}')
-            bl_format = '%Y%m%d'
-            try:
-                datetime.datetime.strptime(bldate, bl_format)
-            except ValueError:
-                logger.info(f'Date {bldate} is not formatted YYYYMMDD')
-                raise ValueError
-            return bldate
-    logger.critical('"BL_DATE:YYYYMMDD" needs to be in the PR body.'\
-                    'On its own line. Stopping')
-    raise ValueError
+#def get_bl_date(job_obj):
+#    logger = logging.getLogger('BL/GET_BL_DATE')
+#    for line in job_obj.preq_dict['preq'].body.splitlines():
+#        if 'BL_DATE:' in line:
+#            bldate = line
+#            bldate = bldate.replace('BL_DATE:', '')
+#            bldate = bldate.replace(' ', '')
+#            if len(bldate) != 8:
+#                print(f'Date: {bldate} is not formatted YYYYMMDD')
+#                raise ValueError
+#            logger.info(f'BL_DATE: {bldate}')
+#            bl_format = '%Y%m%d'
+#            try:
+#                datetime.datetime.strptime(bldate, bl_format)
+#            except ValueError:
+#                logger.info(f'Date {bldate} is not formatted YYYYMMDD')
+#                raise ValueError
+#            return bldate
+#    logger.critical('"BL_DATE:YYYYMMDD" needs to be in the PR body.'\
+#                    'On its own line. Stopping')
+#    raise ValueError
 
 
 def run_regression_test(job_obj, pr_repo_loc):
@@ -148,54 +148,51 @@ def clone_pr_repo(job_obj, workdir):
     return branch, pr_repo_loc, repo_dir_str
 
 
-def post_process(job_obj, pr_repo_loc, repo_dir_str, rtbldir, bldir, branch):
+def post_process(job_obj, pr_repo_loc, repo_dir_str, rtbldir, blstore, branch):
     logger = logging.getLogger('BL/MOVE_RT_LOGS')
     rt_log = f'tests/RegressionTests_{job_obj.machine}'\
              f'.{job_obj.compiler}.log'
     filepath = f'{pr_repo_loc}/{rt_log}'
     rt_dir, logfile_pass = process_logfile(job_obj, filepath)
     if logfile_pass:
-        bldate = get_bl_date(job_obj)
+        bldate = get_bl_date(job_obj, pr_repo_loc)
+        bldir = f'{blstore}/develop-{bldate}/{job_obj.compiler.upper()}'
         create_bl_dir(bldir)
         move_bl_command = [[f'mv {rtbldir}/* {bldir}/', pr_repo_loc]]
         job_obj.run_commands(logger, move_bl_command)
-        update_rt_sh(job_obj, pr_repo_loc, bldate, branch)
+        # update_rt_sh(job_obj, pr_repo_loc, bldate, branch)
+        logger.info('Starting RT Job')
+        rt.run(job_obj)
+        logger.info('Finished with RT Job')
         remove_pr_data(job_obj, pr_repo_loc, repo_dir_str, rt_dir)
 
 
-def update_rt_sh(job_obj, pr_repo_loc, bldate, branch):
+def get_bl_date(job_obj, pr_repo_loc):
     logger = logging.getLogger('BL/UPDATE_RT_SH')
     BLDATEFOUND = False
     with open(f'{pr_repo_loc}/tests/rt.sh', 'r') as f:
-        with open(f'{pr_repo_loc}/tests/rt.sh.new', 'w') as w:
-            for line in f:
-                if 'BL_DATE=' in line:
-                    logger.info('Found BL_DATE in line')
-                    logger.info(f'Writing "BL_DATE-{bldate}" into file')
-                    w.write(f'BL_DATE={bldate}\n')
-                    BLDATEFOUND = True
-                else:
-                    w.write(line)
+        for line in f:
+            if 'BL_DATE=' in line:
+                logger.info('Found BL_DATE in line')
+                BLDATEFOUND = True
+                bldate = line
+                bldate = bldate.replace('BL_DATE=', '')
+                bldate = bldate.replace(' ', '')
+                bl_format = '%Y%m%d'
+                try:
+                    datetime.datetime.strptime(bldate, bl_format)
+                except ValueError:
+                    logger.info(f'Date {bldate} is not formatted YYYYMMDD')
+                    raise ValueError
     if not BLDATEFOUND:
         job_obj.comment_text_append('BL_DATE not found in rt.sh.'
                                     'Please manually edit rt.sh '
                                     'with BL_DATE={bldate}')
-    logger.info('Finished update_rt_sh')
-
-    move_rtsh_commands = [
-        [f'git pull --ff-only origin {branch}', pr_repo_loc],
-        [f'mv {pr_repo_loc}/tests/rt.sh.new {pr_repo_loc}/tests/rt.sh',
-         pr_repo_loc],
-
-        [f'git add {pr_repo_loc}/tests/rt.sh', pr_repo_loc],
-        [f'git commit -m "BL JOBS PASSED: {job_obj.machine}'
-         f'.{job_obj.compiler}. Updated rt.sh with new develop date: '
-         f'{bldate}"',
-         pr_repo_loc],
-        ['sleep 10', pr_repo_loc],
-        [f'git push origin {branch}', pr_repo_loc]
-        ]
+        job_obj.job_failed(logger, 'get_bl_date()')
+    logger.info('Finished get_bl_date')
     job_obj.run_commands(logger, move_rtsh_commands)
+
+    return bldate
 
 
 def process_logfile(job_obj, logfile):
