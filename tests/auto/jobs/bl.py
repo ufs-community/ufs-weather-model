@@ -188,7 +188,7 @@ def update_rt_sh(job_obj, pr_repo_loc, bldate, branch):
          pr_repo_loc],
 
         [f'git add {pr_repo_loc}/tests/rt.sh', pr_repo_loc],
-        [f'git commit -m "BL JOBS PASSED: {job_obj.machine}'
+        [f'git commit --allow-empty -m "BL JOBS PASSED: {job_obj.machine}'
          f'.{job_obj.compiler}. Updated rt.sh with new develop date: '
          f'{bldate}"',
          pr_repo_loc],
