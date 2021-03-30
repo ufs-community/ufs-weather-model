@@ -212,11 +212,9 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
   ECFLOW_START=/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/envs/ufs-weather-model/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
-  DISKNM=/lustre/f2/pdata/esrl/gsd/ufs/ufs-weather-model/RT
+  DISKNM=/lustre/f2/pdata/ncep/emc.nemspara/RT
   QUEUE=normal
   COMPILE_QUEUE=normal
-#  DO NOT SET AN ACCOUNT EVERYONE IS NOT A MEMBER OF
-#  USE AN ENVIRONMENT VARIABLE TO SET ACCOUNT
 #  ACCNR=cmp
   PARTITION=c4
   STMP=/lustre/f2/scratch
@@ -416,9 +414,9 @@ if [[ $TESTS_FILE =~ '35d' ]]; then
 fi
 
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20210324/${RT_COMPILER^^}}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20210330/${RT_COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20210324}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20210330}
 fi
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20210324}
