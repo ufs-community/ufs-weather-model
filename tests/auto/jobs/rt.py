@@ -15,11 +15,11 @@ def run(job_obj):
 def set_directories(job_obj):
     logger = logging.getLogger('RT/SET_DIRECTORIES')
     if job_obj.machine == 'hera':
-        workdir = '/scratch1/NCEPDEV/nems/Brian.Curtis/autort/pr'
+        workdir = '/scratch1/NCEPDEV/nems/emc.nemspara/autort/pr'
     elif job_obj.machine == 'jet':
         workdir = '/lfs4/HFIP/h-nems/emc.nemspara/autort/pr'
     elif job_obj.machine == 'gaea':
-        workdir = '/lustre/f2/pdata/ncep/Brian.Curtis/autort/pr'
+        workdir = '/lustre/f2/pdata/ncep/emc.nemspara/autort/pr'
     elif job_obj.machine == 'orion':
         workdir = '/work/noaa/nems/emc.nemspara/autort/pr'
     elif job_obj.machine == 'cheyenne':
