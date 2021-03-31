@@ -43,7 +43,7 @@ set(CDEPS           OFF CACHE BOOL "Enable CDEPS")
 
 # Valid applications and choices
 list(APPEND VALID_APPS ATM ATMW S2S S2SW DATM DATM_NEMS)
-#set(APP NONE CACHE BOOL "Application Name")
+set(APP NONE CACHE BOOL "Application Name")
 if(NOT (APP IN_LIST VALID_APPS))
   message(FATAL_ERROR "${APP} is not a valid application.\nValid Applications are: ${VALID_APPS}")
 endif()
