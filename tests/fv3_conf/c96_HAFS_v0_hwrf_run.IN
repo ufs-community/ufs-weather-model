@@ -1,0 +1,92 @@
+rm -fr INPUT RESTART
+mkdir INPUT RESTART
+
+if [ $IMP_PHYSICS = 8 ]; then
+  if [ $WARM_START = .F. ]; then
+    cp -r @[INPUTDATA_ROOT]/FV3_input_data_gsd/FV3_input_data_C96_with_aerosols/* INPUT/
+  else
+    cp -r @[INPUTDATA_ROOT]/FV3_input_data_gsd/FV3_input_data_C96_with_aerosols/grid_spec*.nc INPUT/
+    cp -r @[INPUTDATA_ROOT]/FV3_input_data_gsd/FV3_input_data_C96_with_aerosols/C96_grid*.nc INPUT/
+    cp -r @[INPUTDATA_ROOT]/FV3_input_data_gsd/FV3_input_data_C96_with_aerosols/oro_data*.nc INPUT/
+    cp ../fv3_ccpp_gsd_coldstart${RT_SUFFIX}/RESTART/* INPUT/
+  fi
+elif [ $IMP_PHYSICS = 15 ]; then
+  if [ $WARM_START = .F. ]; then
+    cp -r @[INPUTDATA_ROOT]/FV3_input_data/INPUT/* INPUT/
+  else
+    cp -r @[INPUTDATA_ROOT]/FV3_input_data/RESTART/* ./INPUT/
+  fi
+else
+  echo "ERROR, no input data configured for IMP_PHYSICS=${IMP_PHYSICS}"
+  exit 1
+fi
+
+cp    @[INPUTDATA_ROOT]/FV3_input_data/INPUT/aerosol.dat .
+cp    @[INPUTDATA_ROOT]/FV3_input_data/INPUT/co2historicaldata_201*.txt .
+cp    @[INPUTDATA_ROOT]/FV3_input_data/INPUT/sfc_emissivity_idx.txt .
+cp    @[INPUTDATA_ROOT]/FV3_input_data/INPUT/solarconstant_noaa_an.txt .
+cp    @[INPUTDATA_ROOT]/FV3_input_data/ozprdlos_2015_new_sbuvO3_tclm15_nuchem.f77 ./global_o3prdlos.f77
+cp    @[INPUTDATA_ROOT]/FV3_input_data/global_h2o_pltc.f77 ./global_h2oprdlos.f77
+cp    @[INPUTDATA_ROOT]/FV3_input_data/*grb .
+cp    @[INPUTDATA_ROOT]/FV3_input_data/*_table .
+cp    @[INPUTDATA_ROOT]/FV3_input_data/*configure .
+
+# Copy landuse/soil/vegetation parameter tables for HWRF Noah LSM
+cp    @[INPUTDATA_ROOT]/FV3_input_data_hafs/GENPARM.TBL .
+cp    @[INPUTDATA_ROOT]/FV3_input_data_hafs/SOILPARM.TBL .
+cp    @[INPUTDATA_ROOT]/FV3_input_data_hafs/VEGPARM.TBL .
+
+# Copy diag table, depending on microphysics choice
+if [ $IMP_PHYSICS = 8 ]; then
+  cp @[INPUTDATA_ROOT]/FV3_input_data_gsd/diag_table_gsd_noah diag_table
+elif [ $IMP_PHYSICS = 15 ]; then
+  if [ $IOVR = 4 ]; then
+    cp @[INPUTDATA_ROOT]/FV3_input_data_hafs/diag_table_FA_HWRF diag_table
+  else
+    cp @[INPUTDATA_ROOT]/FV3_input_data_hafs/diag_table_FA diag_table
+  fi
+else
+  echo "ERROR, no diag table configured for IMP_PHYSICS=${IMP_PHYSICS}"
+  exit 1
+fi
+
+# Copy field table, depending on microphysics choice and whether MYNN/SATMEDMF is used
+if [ $IMP_PHYSICS = 8 ]; then
+  if [ $LTAEROSOL = .T. ]; then
+    if [ $DO_MYNNEDMF = .T. ] || [ $SATMEDMF = .T. ]; then
+      cp  @[INPUTDATA_ROOT]/FV3_input_data_gsd/field_table_gsd field_table
+    else
+      cp  @[INPUTDATA_ROOT]/FV3_input_data_gsd/field_table_gf_thompson field_table
+    fi
+  else
+    if [ $DO_MYNNEDMF = .T. ] || [ $SATMEDMF = .T. ]; then
+      echo "ERROR, no field table configured for Thompson MP without aerosols but with MYNN or SATMEDMF (need TKE)"
+      exit 1
+    else
+      cp  @[INPUTDATA_ROOT]/FV3_input_data_gsd/field_table_thompson_noaero field_table
+    fi
+  fi
+elif [ $IMP_PHYSICS = 15 ]; then
+  # Copy field table for Ferrier-Aligo MP
+  cp @[INPUTDATA_ROOT]/FV3_input_data_hafs/field_table_FA_nwat4 field_table
+else
+  echo "ERROR, no field table configured for IMP_PHYSICS=${IMP_PHYSICS}"
+  exit 1
+fi
+
+# Thompson or F-A MP lookup tables
+if [ $IMP_PHYSICS = 8 ]; then
+  cp @[INPUTDATA_ROOT]/FV3_input_data_gsd/qr_acr_qsV2.dat .
+  cp @[INPUTDATA_ROOT]/FV3_input_data_gsd/qr_acr_qgV2.dat .
+  cp @[INPUTDATA_ROOT]/FV3_input_data_gsd/freezeH2O.dat .
+  cp @[INPUTDATA_ROOT]/FV3_input_data_gsd/CCN_ACTIVATE.BIN .
+elif [ $IMP_PHYSICS = 15 ]; then
+  cp @[INPUTDATA_ROOT]/FV3_input_data/DETAMPNEW_DATA* .
+fi
+
+# temporary: new Thompson tables
+if [[ $MACHINE_ID = cheyenne.* ]]; then
+  cp /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/tmp_input_data_thompson_update_20210304/* .
+else
+  cp /scratch1/BMC/gmtb/Dom.Heinzeller/ufs-weather-model/tmp_input_data_thompson_update_20210304/* .
+fi

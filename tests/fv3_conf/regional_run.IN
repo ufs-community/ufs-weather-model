@@ -1,0 +1,51 @@
+rsync -arv @[INPUTDATA_ROOT]/FV3_regional_input_data/. .
+if [ $WRITE_DOPOST = .true. ]; then
+    cp @[INPUTDATA_ROOT]/FV3_regional_input_data/diag_table_lam ./diag_table
+fi
+
+rm -rf INPUT RESTART
+mkdir  INPUT RESTART
+
+rsync -arv @[INPUTDATA_ROOT]/fv3_regional_control/INPUT/. INPUT/.
+
+if [ $WARM_START = .T. ]; then
+    cp ../fv3_regional_control${RT_SUFFIX}/RESTART/20181015.120000.coupler.res             INPUT/coupler.res
+    cp ../fv3_regional_control${RT_SUFFIX}/RESTART/20181015.120000.fv_core.res.nc          INPUT/fv_core.res.nc
+    cp ../fv3_regional_control${RT_SUFFIX}/RESTART/20181015.120000.fv_core.res.tile1.nc    INPUT/fv_core.res.tile1.nc
+    cp ../fv3_regional_control${RT_SUFFIX}/RESTART/20181015.120000.fv_srf_wnd.res.tile1.nc INPUT/fv_srf_wnd.res.tile1.nc
+    cp ../fv3_regional_control${RT_SUFFIX}/RESTART/20181015.120000.fv_tracer.res.tile1.nc  INPUT/fv_tracer.res.tile1.nc
+    cp ../fv3_regional_control${RT_SUFFIX}/RESTART/20181015.120000.phy_data.nc             INPUT/phy_data.nc
+    cp ../fv3_regional_control${RT_SUFFIX}/RESTART/20181015.120000.sfc_data.nc             INPUT/sfc_data.nc
+fi
+if [ $WRITE_RESTART_WITH_BCS = .true. ]; then
+    cp @[INPUTDATA_ROOT]/fv3_regional_control/RESTART/fv_core.res.tile1_new.nc                           RESTART/fv_core.res.tile1_new.nc
+    cp @[INPUTDATA_ROOT]/fv3_regional_control/RESTART/fv_tracer.res.tile1_new.nc                         RESTART/fv_tracer.res.tile1_new.nc
+fi
+
+if [ $OZ_PHYS_NEW = .T. ]; then
+  cp  @[INPUTDATA_ROOT]/FV3_input_data/ozprdlos_2015_new_sbuvO3_tclm15_nuchem.f77 ./global_o3prdlos.f77
+elif [ $OZ_PHYS_OLD = .T. ]; then
+  cp  @[INPUTDATA_ROOT]/FV3_input_data/INPUT/global_o3prdlos.f77 .
+fi
+if [ $H2O_PHYS = .T. ]; then
+  cp  @[INPUTDATA_ROOT]/FV3_input_data/global_h2o_pltc.f77 ./global_h2oprdlos.f77
+fi
+
+if [[ $POSTAPP = 'lam' ]]; then
+    cp ${PATHRT}/parm/post_itag_fv3lam itag
+    cp ${PATHRT}/parm/postxconfig-NT-fv3lam.txt postxconfig-NT.txt
+    cp ${PATHRT}/parm/postxconfig-NT-fv3lam.txt postxconfig-NT_FH00.txt
+    cp ${PATHRT}/parm/params_grib2_tbl_new params_grib2_tbl_new
+elif [[ $POSTAPP = 'hafs' ]]; then
+    cp ${PATHRT}/parm/post_itag_hafs itag
+    cp ${PATHRT}/parm/postxconfig-NT-hafs.txt postxconfig-NT.txt
+    cp ${PATHRT}/parm/postxconfig-NT-hafs.txt postxconfig-NT_FH00.txt
+    cp ${PATHRT}/parm/params_grib2_tbl_new params_grib2_tbl_new
+fi
+
+# temporary: new Thompson tables
+if [[ $MACHINE_ID = cheyenne.* ]]; then
+  cp /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/tmp_input_data_thompson_update_20210304/* .
+else
+  cp /scratch1/BMC/gmtb/Dom.Heinzeller/ufs-weather-model/tmp_input_data_thompson_update_20210304/* .
+fi
