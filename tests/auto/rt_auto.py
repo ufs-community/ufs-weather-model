@@ -202,7 +202,6 @@ class Job:
 
     def job_failed(self, logger, job_name, exception=Exception, STDOUT=False,
                    out=None, err=None):
-        self.comment_text_append(f'{job_name} FAILED. Exception:{exception}')
         logger.critical(f'{job_name} FAILED. Exception:{exception}')
 
         if STDOUT:
