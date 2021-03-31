@@ -313,7 +313,7 @@ export WLCLK=$WLCLK_dflt
 export POSTAPP='global'
 export NEW_DIAGTABLE=''
 export NEW_FIELDTABLE=''
-export MERRA2=.T.
+export USE_MERRA2=.F.
 
 export INPES=$INPES_dflt
 export JNPES=$JNPES_dflt
