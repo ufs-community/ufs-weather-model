@@ -165,7 +165,9 @@ fi
 
 check_results
 
-cat ${RUNDIR}/job_timestamp.txt >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+if [[ $SCHEDULER != 'none' ]]; then
+  cat ${RUNDIR}/job_timestamp.txt >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+fi
 ################################################################################
 # End test
 ################################################################################
