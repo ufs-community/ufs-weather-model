@@ -7,13 +7,12 @@ from . import rt
 
 def run(job_obj):
     logger = logging.getLogger('BL/RUN')
-    #bldate = get_bl_date(job_obj)
     workdir, rtbldir, blstore = set_directories(job_obj)
-    #bldir = f'{blstore}/develop-{bldate}/{job_obj.compiler.upper()}'
-    #if not check_for_bl_dir(bldir):
-    branch, pr_repo_loc, repo_dir_str = clone_pr_repo(job_obj, workdir)
+    pr_repo_loc, repo_dir_str = clone_pr_repo(job_obj, workdir)
+    bldate = get_bl_date(job_obj, pr_repo_loc)
+    bldir = f'{blstore}/develop-{bldate}/{job_obj.compiler.upper()}'
     run_regression_test(job_obj, pr_repo_loc)
-    post_process(job_obj, pr_repo_loc, repo_dir_str, rtbldir, blstore, branch)
+    post_process(job_obj, pr_repo_loc, repo_dir_str, rtbldir, bldir)
 
 
 def set_directories(job_obj):
@@ -30,7 +29,7 @@ def set_directories(job_obj):
                  f'emc.nemspara/FV3_RT/REGRESSION_TEST_{job_obj.compiler.upper()}'
     elif job_obj.machine == 'gaea':
         workdir = '/lustre/f2/pdata/ncep/emc.nemspara/autort/pr'
-        blstore = '/lustre/f2/pdata/ncep_shared/emc.nemspara/RT'
+        blstore = '/lustre/f2/pdata/ncep_shared/emc.nemspara/RT/NEMSfv3gfs'
         rtbldir = '/lustre/f2/scratch/emc.nemspara/FV3_RT/'\
                  f'REGRESSION_TEST_{job_obj.compiler.upper()}'
     elif job_obj.machine == 'orion':
@@ -145,22 +144,19 @@ def clone_pr_repo(job_obj, workdir):
     job_obj.run_commands(logger, create_repo_commands)
 
     logger.info('Finished repo clone')
-    return branch, pr_repo_loc, repo_dir_str
+    return pr_repo_loc, repo_dir_str
 
 
-def post_process(job_obj, pr_repo_loc, repo_dir_str, rtbldir, blstore, branch):
+def post_process(job_obj, pr_repo_loc, repo_dir_str, rtbldir, bldir):
     logger = logging.getLogger('BL/MOVE_RT_LOGS')
     rt_log = f'tests/RegressionTests_{job_obj.machine}'\
              f'.{job_obj.compiler}.log'
     filepath = f'{pr_repo_loc}/{rt_log}'
     rt_dir, logfile_pass = process_logfile(job_obj, filepath)
     if logfile_pass:
-        bldate = get_bl_date(job_obj, pr_repo_loc)
-        bldir = f'{blstore}/develop-{bldate}/{job_obj.compiler.upper()}'
         create_bl_dir(bldir)
         move_bl_command = [[f'mv {rtbldir}/* {bldir}/', pr_repo_loc]]
         job_obj.run_commands(logger, move_bl_command)
-        # update_rt_sh(job_obj, pr_repo_loc, bldate, branch)
         logger.info('Starting RT Job')
         rt.run(job_obj)
         logger.info('Finished with RT Job')
@@ -176,11 +172,14 @@ def get_bl_date(job_obj, pr_repo_loc):
                 logger.info('Found BL_DATE in line')
                 BLDATEFOUND = True
                 bldate = line
+                bldate = bldate.rstrip('\n')
                 bldate = bldate.replace('BL_DATE=', '')
-                bldate = bldate.replace(' ', '')
+                bldate = bldate.strip(' ')
+                logger.info(f'bldate is "{bldate}"')
+                logger.info(f'Type bldate: {type(bldate)}')
                 bl_format = '%Y%m%d'
                 try:
-                    datetime.datetime.strptime(bldate, bl_format)
+                    datetime.datetime.strptime(bldate, '%Y%m%d')
                 except ValueError:
                     logger.info(f'Date {bldate} is not formatted YYYYMMDD')
                     raise ValueError
@@ -190,7 +189,6 @@ def get_bl_date(job_obj, pr_repo_loc):
                                     'with BL_DATE={bldate}')
         job_obj.job_failed(logger, 'get_bl_date()')
     logger.info('Finished get_bl_date')
-    job_obj.run_commands(logger, move_rtsh_commands)
 
     return bldate
 
