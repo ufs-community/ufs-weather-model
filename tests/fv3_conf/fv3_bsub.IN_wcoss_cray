@@ -10,6 +10,7 @@
 #BSUB -M 500
 
 set -eux
+echo -n " $( date +%s )," >  job_timestamp.txt
 
 set +x
 source ./module-setup.sh
@@ -28,5 +29,4 @@ export KMP_AFFINITY=disabled
 aprun -j 1 -n @[TASKS] -N @[TPN] -d @[THRD] -cc depth ./fv3.exe
 
 echo "Model ended:    " `date`
-
-exit
+echo -n " $( date +%s )," >> job_timestamp.txt
