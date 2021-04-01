@@ -31,10 +31,12 @@ if [[ $ARGC -lt 2 ]]; then
 else
   MACHINE_ID=$1
   MAKE_OPT=${2:-}
-  BUILD_NAME=fv3${3:+_$3}
+  COMPILE_NR=${3:+_$3}
   clean_before=${4:-YES}
   clean_after=${5:-YES}
 fi
+
+BUILD_NAME=fv3${COMPILE_NR}
 
 PATHTR=${PATHTR:-$( cd ${MYDIR}/.. && pwd )}
 BUILD_DIR=$(pwd)/build_${BUILD_NAME}
@@ -81,13 +83,13 @@ echo "Compiling ${MAKE_OPT} into $BUILD_NAME.exe on $MACHINE_ID"
 CMAKE_FLAGS=''
 
 if [[ "${MAKE_OPT}" == *"DEBUG=Y"* ]]; then
-  CMAKE_FLAGS="${CMAKE_FLAGS} -DDEBUG=Y"
+  CMAKE_FLAGS="${CMAKE_FLAGS} -DDEBUG=ON"
 elif [[ "${MAKE_OPT}" == *"REPRO=Y"* ]]; then
-  CMAKE_FLAGS="${CMAKE_FLAGS} -DREPRO=Y"
+  CMAKE_FLAGS="${CMAKE_FLAGS} -DREPRO=ON"
 fi
 
 if [[ "${MAKE_OPT}" == *"32BIT=Y"* ]]; then
-  CMAKE_FLAGS="${CMAKE_FLAGS} -D32BIT=Y"
+  CMAKE_FLAGS="${CMAKE_FLAGS} -D32BIT=ON"
 fi
 
 if [[ "${MAKE_OPT}" == *"OPENMP=N"* ]]; then
@@ -131,28 +133,30 @@ if [[ $? -eq 0 ]]; then
 fi
 set -ex
 
-if [[ "${MAKE_OPT}" == *"WW3=Y"* ]]; then
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DWW3=Y"
+# Valid applications
+if [[ "${MAKE_OPT}" == *"APP=ATM"* ]]; then
+    echo "MAKE_OPT = ${MAKE_OPT}"
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=ATM"
 fi
 
-if [[ "${MAKE_OPT}" == *"CDEPS=Y"* ]]; then
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DCDEPS=Y"
+if [[ "${MAKE_OPT}" == *"APP=ATMW"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=ATMW"
 fi
 
-if [[ "${MAKE_OPT}" == *"DATM=Y"* ]]; then
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DDATM=Y"
+if [[ "${MAKE_OPT}" == *"APP=S2S"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=S2S -DMOM6SOLO=ON"
 fi
 
-if [[ "${MAKE_OPT}" == *"DATM_NEMS=Y"* ]]; then
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DDATM_NEMS=Y"
+if [[ "${MAKE_OPT}" == *"APP=S2SW"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=S2SW -DMOM6SOLO=ON"
 fi
 
-if [[ "${MAKE_OPT}" == *"S2S=Y"* ]]; then
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DS2S=Y"
+if [[ "${MAKE_OPT}" == *"APP=DATM"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=DATM"
 fi
 
-if [[ "${MAKE_OPT}" == *"S2S=Y"* ]] || [[ "${MAKE_OPT}" == *"DATM_NEMS=Y"* ]] || [[ "${MAKE_OPT}" == *"DATM=Y"* ]]; then
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DMOM6SOLO=ON"
+if [[ "${MAKE_OPT}" == *"APP=DATM_NEMS"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=DATM_NEMS"
 fi
 
 CMAKE_FLAGS=$(trim "${CMAKE_FLAGS}")
@@ -182,3 +186,4 @@ fi
 
 elapsed=$SECONDS
 echo "Elapsed time $elapsed seconds. Compiling ${MAKE_OPT} finished"
+echo "Compile ${COMPILE_NR/#_} elapsed time $elapsed seconds. ${MAKE_OPT}" > compile${COMPILE_NR}_time.log
