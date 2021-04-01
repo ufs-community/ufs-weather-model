@@ -31,10 +31,12 @@ if [[ $ARGC -lt 2 ]]; then
 else
   MACHINE_ID=$1
   MAKE_OPT=${2:-}
-  BUILD_NAME=fv3${3:+_$3}
+  COMPILE_NR=${3:+_$3}
   clean_before=${4:-YES}
   clean_after=${5:-YES}
 fi
+
+BUILD_NAME=fv3${COMPILE_NR}
 
 PATHTR=${PATHTR:-$( cd ${MYDIR}/.. && pwd )}
 BUILD_DIR=$(pwd)/build_${BUILD_NAME}
@@ -192,4 +194,4 @@ fi
 
 elapsed=$SECONDS
 echo "Elapsed time $elapsed seconds. Compiling ${MAKE_OPT} finished"
-echo "Compile $COMPILE_NR elapsed time $elapsed seconds. ${MAKE_OPT}" >> ${LOG_DIR}/compile_${COMPILE_NR}_time.log
+echo "Compile ${COMPILE_NR/#_} elapsed time $elapsed seconds. ${MAKE_OPT}" > compile${COMPILE_NR}_time.log
