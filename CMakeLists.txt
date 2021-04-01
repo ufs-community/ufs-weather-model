@@ -240,8 +240,7 @@ if(NEMSdatm)
 endif()
 
 if(CDEPS)
-  message("ADD CDEPS-interface directory")
-#  add_subdirectory(CDEPS-interface)
+  add_subdirectory(CDEPS-interface)
 endif()
 
 ###############################################################################
