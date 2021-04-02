@@ -467,6 +467,10 @@ export IAU_DRYMASSFIXER=.false.
 # Regional
 export WRITE_RESTART_WITH_BCS=.false.
 
+# Diagnostics
+export PRINT_DIFF_PGR=.false.
+
+# Coupling
 export coupling_interval_fast_sec=0
 }
 
