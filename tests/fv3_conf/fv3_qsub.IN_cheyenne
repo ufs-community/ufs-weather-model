@@ -8,6 +8,7 @@
 #PBS -l walltime=00:@[WLCLK]:00
 
 set -eux
+echo -n " $( date +%s )," >  job_timestamp.txt
 
 set +x
 source ./module-setup.sh
@@ -30,5 +31,4 @@ sync && sleep 1
 mpiexec_mpt -np @[TASKS] ./fv3.exe
 
 echo "Model ended:    " `date`
-
-exit
+echo -n " $( date +%s )," >> job_timestamp.txt
