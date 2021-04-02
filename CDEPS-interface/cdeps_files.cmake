@@ -6,7 +6,6 @@ list(APPEND cdeps_share_files_tmpl
 )
 
 list(APPEND cdeps_share_files
-  ${cdeps_share_files_tmpl}
   CDEPS/share/glc_elevclass_mod.F90
   CDEPS/share/shr_abort_mod.F90
   CDEPS/share/shr_assert.h

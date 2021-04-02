@@ -17,24 +17,28 @@ endif()
 
 # Third-party Fortran XML library
 add_subdirectory(CDEPS/fox)
+list(APPEND LIB_TARGETS FoX_dom FoX_sax FoX_wxml FoX_common FoX_utils FoX_fsys)
 
 # Too many files to list, so include them via this file
 include("cdeps_files.cmake")
 
 # Use genf90.pl from CMEPS for now.
 set(GENF90_PATH ${PROJECT_SOURCE_DIR}/CMEPS-interface/CMEPS/util)
-foreach(file_ IN ${cdeps_share_files_tmpl})
+foreach(file_ IN LISTS ${cdeps_share_files_tmpl})
   add_custom_command(
-    OUTPUT  ${file_}
-    COMMAND ${GENF90_PATH}/genf90.pl ${file_}.in > ${file_}
-    DEPENDS ${file_}.in)
+    OUTPUT  ${CMAKE_CURRENT_BINARY_DIR}/${file_}
+    COMMAND ${GENF90_PATH}/genf90.pl ${file_}.in > ${CMAKE_CURRENT_BINARY_DIR}/${file_}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    DEPENDS ${file_}.in
+    COMMENT "Generating ${file_} from ${file_}.in"
+    VERBATIM)
+  list(APPEND ${cdeps_share_files} ${CMAKE_CURRENT_BINARY_DIR}/${file_})
 endforeach ()
-
 
 # CDEPS/share
 add_library(share STATIC ${cdeps_share_files})
 add_library(cdeps::share ALIAS share)
-set_target_properties(share PROPERTIES ${CMAKE_CURRENT_BINARY_DIR}/mod)
+set_target_properties(share PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(share PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                         $<INSTALL_INTERFACE:mod>)
 target_link_libraries(share PUBLIC esmf PIO::PIO_Fortran)
@@ -44,7 +48,7 @@ list(APPEND LIB_TARGETS share)
 add_library(streams STATIC ${cdeps_streams_files})
 add_library(cdeps::streams ALIAS streams)
 add_dependencies(streams FoX_dom cdeps::share)
-set_target_properties(streams PROPERTIES ${CMAKE_CURRENT_BINARY_DIR}/mod)
+set_target_properties(streams PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(streams PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                           $<INSTALL_INTERFACE:mod>)
 target_link_libraries(streams PUBLIC FoX_dom)
@@ -56,7 +60,7 @@ list(APPEND LIB_TARGETS streams)
 add_library(dshr STATIC ${cdeps_dshr_files})
 add_library(cdeps::dshr ALIAS dshr)
 add_dependencies(dshr cdeps::share cdeps::streams)
-set_target_properties(dshr PROPERTIES ${CMAKE_CURRENT_BINARY_DIR}/mod)
+set_target_properties(dshr PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(dshr PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                        $<INSTALL_INTERFACE:mod>)
 target_link_libraries(dshr PUBLIC cdeps::share cdeps::streams)
@@ -67,7 +71,7 @@ list(APPEND LIB_TARGETS dshr)
 add_library(datm STATIC ${cdeps_datm_files})
 add_library(cdeps::datm ALIAS datm)
 add_dependencies(datm cdeps::share cdeps::streams cdeps::dshr)
-set_target_properties(datm PROPERTIES ${CMAKE_CURRENT_BINARY_DIR}/mod)
+set_target_properties(datm PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(datm PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                        $<INSTALL_INTERFACE:mod>)
 target_link_libraries(datm PUBLIC cdeps::dshr cdeps::share cdeps::streams)
@@ -78,7 +82,7 @@ list(APPEND LIB_TARGETS datm)
 add_library(dice STATIC ${cdeps_dice_files})
 add_library(cdeps::dice ALIAS dice)
 add_dependencies(dice cdeps::share cdeps::streams cdeps::dshr)
-set_target_properties(dice PROPERTIES ${CMAKE_CURRENT_BINARY_DIR}/mod)
+set_target_properties(dice PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(dice PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                        $<INSTALL_INTERFACE:mod>)
 target_link_libraries(dice PUBLIC cdeps::dshr cdeps::share cdeps::streams)
@@ -89,7 +93,7 @@ list(APPEND LIB_TARGETS dice)
 add_library(dlnd STATIC ${cdeps_dlnd_files})
 add_library(cdeps::dlnd ALIAS dlnd)
 add_dependencies(dlnd cdeps::share cdeps::streams cdeps::dshr)
-set_target_properties(dlnd PROPERTIES ${CMAKE_CURRENT_BINARY_DIR}/mod)
+set_target_properties(dlnd PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(dlnd PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                        $<INSTALL_INTERFACE:mod>)
 target_link_libraries(dlnd PUBLIC cdeps::dshr cdeps::share cdeps::streams)
@@ -100,7 +104,7 @@ list(APPEND LIB_TARGETS dlnd)
 add_library(docn STATIC ${cdeps_docn_files})
 add_library(cdeps::docn ALIAS docn)
 add_dependencies(docn cdeps::share cdeps::streams cdeps::dshr)
-set_target_properties(docn PROPERTIES ${CMAKE_CURRENT_BINARY_DIR}/mod)
+set_target_properties(docn PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(docn PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                        $<INSTALL_INTERFACE:mod>)
 target_link_libraries(docn PUBLIC cdeps::dshr cdeps::share cdeps::streams)
@@ -111,7 +115,7 @@ list(APPEND LIB_TARGETS docn)
 add_library(drof STATIC ${cdeps_drof_files})
 add_library(cdeps::drof ALIAS drof)
 add_dependencies(drof cdeps::share cdeps::streams cdeps::dshr)
-set_target_properties(drof PROPERTIES ${CMAKE_CURRENT_BINARY_DIR}/mod)
+set_target_properties(drof PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(drof PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                        $<INSTALL_INTERFACE:mod>)
 target_link_libraries(drof PUBLIC cdeps::dshr cdeps::share cdeps::streams)
@@ -122,7 +126,7 @@ list(APPEND LIB_TARGETS drof)
 add_library(dwav STATIC ${cdeps_dwav_files})
 add_library(cdeps::dwav ALIAS dwav)
 add_dependencies(dwav cdeps::share cdeps::streams cdeps::dshr)
-set_target_properties(dwav PROPERTIES ${CMAKE_CURRENT_BINARY_DIR}/mod)
+set_target_properties(dwav PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(dwav PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                        $<INSTALL_INTERFACE:mod>)
 target_link_libraries(dwav PUBLIC cdeps::dshr cdeps::share cdeps::streams)
@@ -134,7 +138,7 @@ list(APPEND LIB_TARGETS dwav)
 ###############################################################################
 
 install(
-  TARGETS cdeps
+  TARGETS ${LIB_TARGETS}
   EXPORT  CDEPSExports
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib
@@ -148,5 +152,5 @@ install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod DESTINATION ${CMAKE_INSTALL_PR
 
 install(EXPORT      CDEPSExports
         NAMESPACE   cdeps::
-        FILE cdeps-targets.cmake)
+        FILE        cdeps-targets.cmake
         DESTINATION lib/cmake)
