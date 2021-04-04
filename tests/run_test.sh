@@ -97,6 +97,9 @@ if [[ "Q${INPUT_NEST02_NML:-}" != Q ]] ; then
     atparse < ${PATHRT}/parm/${INPUT_NEST02_NML} > input_nest02.nml
 fi
 
+# Field Dictionary
+cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
+
 # Set up the run directory
 source ./fv3_run
 
@@ -105,8 +108,6 @@ if [[ $DATM = 'true' ]] || [[ $S2S = 'true' ]]; then
   edit_mom_input  < ${PATHRT}/parm/${MOM_INPUT:-MOM_input_template_$OCNRES} > INPUT/MOM_input
   edit_diag_table < ${PATHRT}/parm/${DIAG_TABLE:-diag_table_template} > diag_table
   edit_data_table < ${PATHRT}/parm/data_table_template > data_table
-  # CMEPS
-  cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
   cp ${PATHRT}/parm/pio_in pio_in
   cp ${PATHRT}/parm/med_modelio.nml med_modelio.nml
 fi

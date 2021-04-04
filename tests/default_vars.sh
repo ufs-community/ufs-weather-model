@@ -511,7 +511,7 @@ export CPL_FAST=${DT_ATMOS}
 
 # nems.configure defaults
 export NEMS_CONFIGURE="nems.configure.cpld.IN"
-export med_model="nems"
+export med_model="cmeps"
 export atm_model="fv3"
 export ocn_model="mom6"
 export ice_model="cice6"
@@ -642,7 +642,7 @@ export NY_GLB=320
 
 # nems.configure
 export NEMS_CONFIGURE="nems.configure.datm.IN"
-export med_model="nems"
+export med_model="cmeps"
 export atm_model="datm"
 export ocn_model="mom6"
 export ice_model="cice6"
