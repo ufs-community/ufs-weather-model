@@ -46,6 +46,7 @@ list(APPEND mom6_src_files
 
   MOM6/src/diagnostics/MOM_PointAccel.F90
   MOM6/src/diagnostics/MOM_debugging.F90
+  MOM6/src/diagnostics/MOM_spatial_means.F90
   MOM6/src/diagnostics/MOM_diagnostics.F90
   MOM6/src/diagnostics/MOM_obsolete_diagnostics.F90
   MOM6/src/diagnostics/MOM_obsolete_params.F90
@@ -96,33 +97,33 @@ list(APPEND mom6_src_files
   MOM6/src/framework/MOM_array_transform.F90
   MOM6/src/framework/MOM_checksums.F90
   MOM6/src/framework/MOM_coms.F90
-  MOM6/src/framework/MOM_constants.F90
+  MOM6/src/framework/MOM_coupler_types.F90
   MOM6/src/framework/MOM_cpu_clock.F90
-  MOM6/src/framework/MOM_diag_manager_wrapper.F90
+  MOM6/src/framework/MOM_data_override.F90
   MOM6/src/framework/MOM_diag_mediator.F90
   MOM6/src/framework/MOM_diag_remap.F90
   MOM6/src/framework/MOM_diag_vkernels.F90
   MOM6/src/framework/MOM_document.F90
   MOM6/src/framework/MOM_domains.F90
   MOM6/src/framework/MOM_dyn_horgrid.F90
+  MOM6/src/framework/MOM_ensemble_manager.F90
   MOM6/src/framework/MOM_error_handler.F90
   MOM6/src/framework/MOM_file_parser.F90
   MOM6/src/framework/MOM_get_input.F90
   MOM6/src/framework/MOM_hor_index.F90
   MOM6/src/framework/MOM_horizontal_regridding.F90
+  MOM6/src/framework/MOM_interpolate.F90
   MOM6/src/framework/MOM_intrinsic_functions.F90
   MOM6/src/framework/MOM_io.F90
   MOM6/src/framework/MOM_random.F90
   MOM6/src/framework/MOM_restart.F90
   MOM6/src/framework/MOM_safe_alloc.F90
-  MOM6/src/framework/MOM_spatial_means.F90
   MOM6/src/framework/MOM_string_functions.F90
-  MOM6/src/framework/MOM_time_manager.F90
-  MOM6/src/framework/MOM_transform_FMS.F90
   MOM6/src/framework/MOM_unit_scaling.F90
   MOM6/src/framework/MOM_write_cputime.F90
 
   MOM6/src/ice_shelf/MOM_ice_shelf.F90
+  MOM6/src/ice_shelf/MOM_ice_shelf_diag_mediator.F90
   MOM6/src/ice_shelf/MOM_ice_shelf_dynamics.F90
   MOM6/src/ice_shelf/MOM_ice_shelf_initialize.F90
   MOM6/src/ice_shelf/MOM_ice_shelf_state.F90
@@ -252,21 +253,34 @@ list(APPEND mom6_src_files
   MOM6/config_src/external/ODA_hooks/ocean_da_types.F90
   MOM6/config_src/external/ODA_hooks/write_ocean_obs.F90
 
+  MOM6/config_src/infra/FMS1/MOM_coms_infra.F90
+  MOM6/config_src/infra/FMS1/MOM_constants.F90
+  MOM6/config_src/infra/FMS1/MOM_couplertype_infra.F90
+  MOM6/config_src/infra/FMS1/MOM_cpu_clock_infra.F90
+  MOM6/config_src/infra/FMS1/MOM_data_override_infra.F90
+  MOM6/config_src/infra/FMS1/MOM_diag_manager_infra.F90
+  MOM6/config_src/infra/FMS1/MOM_domain_infra.F90
+  MOM6/config_src/infra/FMS1/MOM_ensemble_manager_infra.F90
+  MOM6/config_src/infra/FMS1/MOM_error_infra.F90
+  MOM6/config_src/infra/FMS1/MOM_interp_infra.F90
+  MOM6/config_src/infra/FMS1/MOM_io_infra.F90
+  MOM6/config_src/infra/FMS1/MOM_time_manager.F90
+
 )
 
 list(APPEND mom6_nuopc_src_files
-  MOM6/config_src/nuopc_driver/mom_cap.F90
-  MOM6/config_src/nuopc_driver/time_utils.F90
-  MOM6/config_src/nuopc_driver/mom_cap_methods.F90
-  MOM6/config_src/nuopc_driver/mom_cap_time.F90
-  MOM6/config_src/nuopc_driver/mom_ocean_model_nuopc.F90
-  MOM6/config_src/nuopc_driver/mom_surface_forcing_nuopc.F90
+  MOM6/config_src/drivers/nuopc_cap/mom_cap.F90
+  MOM6/config_src/drivers/nuopc_cap/time_utils.F90
+  MOM6/config_src/drivers/nuopc_cap/mom_cap_methods.F90
+  MOM6/config_src/drivers/nuopc_cap/mom_cap_time.F90
+  MOM6/config_src/drivers/nuopc_cap/mom_ocean_model_nuopc.F90
+  MOM6/config_src/drivers/nuopc_cap/mom_surface_forcing_nuopc.F90
 )
 
 list(APPEND mom6_solo_src_files
-  MOM6/config_src/solo_driver/MESO_surface_forcing.F90
-  MOM6/config_src/solo_driver/MOM_driver.F90
-  MOM6/config_src/solo_driver/MOM_surface_forcing.F90
-  MOM6/config_src/solo_driver/atmos_ocean_fluxes.F90
-  MOM6/config_src/solo_driver/user_surface_forcing.F90
+  MOM6/config_src/drivers/solo_driver/MESO_surface_forcing.F90
+  MOM6/config_src/drivers/solo_driver/MOM_driver.F90
+  MOM6/config_src/drivers/solo_driver/MOM_surface_forcing.F90
+  MOM6/config_src/drivers/solo_driver/atmos_ocean_fluxes.F90
+  MOM6/config_src/drivers/solo_driver/user_surface_forcing.F90
 )

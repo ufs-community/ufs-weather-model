@@ -6,9 +6,9 @@ import re
 import sys
 import json
 
-def check_skip(data):
+def check_run(data):
   msg = data["head_commit"]["message"]
-  if re.search("skip-ci", msg):
+  if re.search("run-ci", msg):
     return "yes"
   else:
     return "no"
@@ -19,15 +19,16 @@ def cancel_workflow(data):
         x["id"]!=int(os.environ["GITHUB_RUN_ID"]) and
         x["id"]!=int(os.environ["TRIGGER_ID"]) and
         x["head_branch"]==os.environ["TRIGGER_BR"] and
+        x["event"]!="workflow_run" and
         (x["status"]=="queued" or x["status"]=="in_progress")]
 
   return wfs
 
 def main():
 
-  if sys.argv[1]=="check_skip":
+  if sys.argv[1]=="check_run":
     data = json.load(sys.stdin)["workflow_run"]
-    ans = check_skip(data)
+    ans = check_run(data)
     print(ans)
   elif sys.argv[1]=="get_trigger_id":
     print(json.load(sys.stdin)["workflow_run"]["id"])
