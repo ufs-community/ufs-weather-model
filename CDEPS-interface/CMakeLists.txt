@@ -15,9 +15,31 @@ else()
   message(WARNING "Fortran compiler with ID ${CMAKE_Fortran_COMPILER_ID} will be used with CMake default options")
 endif()
 
+################################################################################
 # Third-party Fortran XML library
 add_subdirectory(CDEPS/fox)
-list(APPEND LIB_TARGETS FoX_dom FoX_sax FoX_wxml FoX_common FoX_utils FoX_fsys)
+# All this and more should be done properly in the FoX library CMakeLists.txt
+target_include_directories(FoX_dom PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/CDEPS/fox/include>)
+list(APPEND FoX_TARGETS FoX_dom FoX_sax FoX_wxml FoX_common FoX_utils FoX_fsys)
+foreach(foxlib_ IN LISTS FoX_TARGETS)
+  add_library(FoX::${foxlib_} ALIAS ${foxlib_})
+endforeach()
+install(
+  TARGETS   ${FoX_TARGETS}
+  EXPORT    FoXExports
+  LIBRARY   DESTINATION lib
+  ARCHIVE   DESTINATION lib
+  COMPONENT Library)
+
+export(EXPORT    FoXExports
+       NAMESPACE FoX::
+       FILE      fox-targets.cmake)
+
+install(EXPORT      FoXExports
+        NAMESPACE   FoX::
+        FILE        fox-targets.cmake
+        DESTINATION lib/cmake)
+################################################################################
 
 # Too many files to list, so include them via this file
 include("cdeps_files.cmake")
@@ -43,18 +65,17 @@ set_source_files_properties(${cdeps_genf90_share_files}
 set_target_properties(share PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(share PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                         $<INSTALL_INTERFACE:mod>)
-target_link_libraries(share PUBLIC esmf PIO::PIO_Fortran)
+target_link_libraries(share PUBLIC esmf)
 list(APPEND LIB_TARGETS share)
 
 # CDEPS/streams
 add_library(streams STATIC ${cdeps_streams_files})
 add_library(cdeps::streams ALIAS streams)
-add_dependencies(streams FoX_dom cdeps::share)
+add_dependencies(streams FoX::FoX_dom cdeps::share)
 set_target_properties(streams PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(streams PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                           $<INSTALL_INTERFACE:mod>)
-target_link_libraries(streams PUBLIC FoX_dom)
-target_include_directories(streams PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/CDEPS/fox/include>)
+target_link_libraries(streams PUBLIC FoX::FoX_dom)
 target_link_libraries(streams PUBLIC cdeps::share)
 target_link_libraries(streams PUBLIC esmf PIO::PIO_Fortran)
 list(APPEND LIB_TARGETS streams)
@@ -89,7 +110,7 @@ set_target_properties(dice PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_B
 target_include_directories(dice PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                        $<INSTALL_INTERFACE:mod>)
 target_link_libraries(dice PUBLIC cdeps::dshr cdeps::share cdeps::streams)
-target_link_libraries(dice PUBLIC esmf PIO::PIO_Fortran)
+target_link_libraries(dice PUBLIC esmf)
 list(APPEND LIB_TARGETS dice)
 
 # CDEPS/dlnd
@@ -100,7 +121,7 @@ set_target_properties(dlnd PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_B
 target_include_directories(dlnd PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                        $<INSTALL_INTERFACE:mod>)
 target_link_libraries(dlnd PUBLIC cdeps::dshr cdeps::share cdeps::streams)
-target_link_libraries(dlnd PUBLIC esmf PIO::PIO_Fortran)
+target_link_libraries(dlnd PUBLIC esmf)
 list(APPEND LIB_TARGETS dlnd)
 
 # CDEPS/docn
@@ -111,7 +132,7 @@ set_target_properties(docn PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_B
 target_include_directories(docn PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                        $<INSTALL_INTERFACE:mod>)
 target_link_libraries(docn PUBLIC cdeps::dshr cdeps::share cdeps::streams)
-target_link_libraries(docn PUBLIC esmf PIO::PIO_Fortran)
+target_link_libraries(docn PUBLIC esmf)
 list(APPEND LIB_TARGETS docn)
 
 # CDEPS/drof
@@ -122,7 +143,7 @@ set_target_properties(drof PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_B
 target_include_directories(drof PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                        $<INSTALL_INTERFACE:mod>)
 target_link_libraries(drof PUBLIC cdeps::dshr cdeps::share cdeps::streams)
-target_link_libraries(drof PUBLIC esmf PIO::PIO_Fortran)
+target_link_libraries(drof PUBLIC esmf)
 list(APPEND LIB_TARGETS drof)
 
 # CDEPS/dwav
@@ -133,7 +154,7 @@ set_target_properties(dwav PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_B
 target_include_directories(dwav PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                        $<INSTALL_INTERFACE:mod>)
 target_link_libraries(dwav PUBLIC cdeps::dshr cdeps::share cdeps::streams)
-target_link_libraries(dwav PUBLIC esmf PIO::PIO_Fortran)
+target_link_libraries(dwav PUBLIC esmf)
 list(APPEND LIB_TARGETS dwav)
 
 ###############################################################################
@@ -141,15 +162,15 @@ list(APPEND LIB_TARGETS dwav)
 ###############################################################################
 
 install(
-  TARGETS ${LIB_TARGETS}
-  EXPORT  CDEPSExports
-  LIBRARY DESTINATION lib
-  ARCHIVE DESTINATION lib
+  TARGETS   ${LIB_TARGETS}
+  EXPORT    CDEPSExports
+  LIBRARY   DESTINATION lib
+  ARCHIVE   DESTINATION lib
   COMPONENT Library)
 
-export(EXPORT CDEPSExports
+export(EXPORT    CDEPSExports
        NAMESPACE cdeps::
-       FILE cdeps-targets.cmake)
+       FILE      cdeps-targets.cmake)
 
 install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod DESTINATION ${CMAKE_INSTALL_PREFIX}/CDEPS)
 
