@@ -58,7 +58,7 @@ contains
     call ESMF_StateGet(State, itemName=trim(fldname), field=lfield, rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
     call ESMF_FieldWrite(lfield, fileName='field_lnd_import'//'.nc', &
-         timeslice=1, overwrite=.false., rc=rc)
+         timeslice=1, overwrite=.true., rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
     

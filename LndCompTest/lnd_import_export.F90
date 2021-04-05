@@ -65,13 +65,24 @@ module lnd_import_export
 
   ! import fields
   character(*), parameter :: Faxa_lwdn           = 'Faxa_lwdn'
-  !character(*), parameter :: inst_land_sea_mask  = 'inst_land_sea_mask'
-  character(*), parameter :: foo_atm2lndfield = 'foo_atm2lndfield'
+  character(*), parameter :: inst_land_sea_mask  = 'inst_land_sea_mask'
+  character(*), parameter :: foo_atm2lndfield    = 'foo_atm2lndfield'
+  character(*), parameter :: Faxa_swndr          = 'Faxa_swndr'
+  character(*), parameter :: Faxa_swvdr          = 'Faxa_swvdr'
+  character(*), parameter :: Faxa_swndf          = 'Faxa_swndf'
+  character(*), parameter :: Faxa_swvdf          = 'Faxa_swvdf'
+  character(*), parameter :: Faxa_rain           = 'Faxa_rain'
+  character(*), parameter :: Faxa_snow           = 'Faxa_snow'
+  character(*), parameter :: land_mask           = 'land_mask'
+  character(*), parameter :: sea_surface_temperature  = 'sea_surface_temperature'
+
+  
   
   ! export fields
   character(*), parameter :: Fall_lat       = 'Fall_lat'
   character(*), parameter :: Fall_lwup      = 'Fall_lwup'
   character(*), parameter :: Sl_lfrin      = 'Sl_lfrin'
+  character(*), parameter :: foo_lnd2atmfield = 'foo_lnd2atmfield'
 
   logical :: send_to_atm = .false.
 
@@ -176,6 +187,9 @@ contains
        call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_lat      )
        call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_lwup     )
        call fldlist_add(fldsFrLnd_num, fldsFrlnd, Sl_lfrin     )
+
+       call fldlist_add(fldsFrLnd_num, fldsFrLnd, foo_lnd2atmfield    )
+
        ! ! call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_methane  )
        ! ! dust fluxes from land (4 sizes)
        ! call fldlist_add(fldsFrLnd_num, fldsFrLnd, Fall_flxdst, ungridded_lbound=1, ungridded_ubound=4)
@@ -232,9 +246,19 @@ contains
 
     ! from atm
     call fldlist_add(fldsToLnd_num, fldsToLnd, Faxa_lwdn    )
-    !call fldlist_add(fldsToLnd_num, fldsToLnd, inst_land_sea_mask   )
     call fldlist_add(fldsToLnd_num, fldsToLnd, foo_atm2lndfield    )
+    call fldlist_add(fldsToLnd_num, fldsToLnd, inst_land_sea_mask  )
+    call fldlist_add(fldsToLnd_num, fldsToLnd,Faxa_swndr)
+    call fldlist_add(fldsToLnd_num, fldsToLnd,Faxa_swvdr)
+    call fldlist_add(fldsToLnd_num, fldsToLnd,Faxa_swndf)        
+    call fldlist_add(fldsToLnd_num, fldsToLnd,Faxa_swvdf)        
+    call fldlist_add(fldsToLnd_num, fldsToLnd,Faxa_rain)          
+    call fldlist_add(fldsToLnd_num, fldsToLnd,Faxa_snow)          
+    ! call fldlist_add(fldsToLnd_num, fldsToLnd,land_mask)          
+    ! call fldlist_add(fldsToLnd_num, fldsToLnd,sea_surface_temperature)
 
+
+    
     ! ! from atm - black carbon deposition fluxes (3)
     ! ! (1) => bcphidry, (2) => bcphodry, (3) => bcphiwet
     ! call fldlist_add(fldsToLnd_num, fldsToLnd, Faxa_bcph,  ungridded_lbound=1, ungridded_ubound=3)

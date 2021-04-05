@@ -227,8 +227,10 @@ contains
     !use noah_loop, only: noah_loop_run
     use noah_driver, only: noah_loop_drv
 
-    use field_print_debug, only: field_foo ! test tmp
-
+    !use field_print_debug, only: field_foo ! test tmp
+    !use import_2_export_test, only: import_2_export ! test tmp
+    use import_fields, only: import_field
+    
     ! Arguments
     type(ESMF_GridComp)  :: gcomp
     integer, intent(out) :: rc
@@ -246,10 +248,16 @@ contains
 
 
     !tmp debug
-    real(r8), pointer          :: dataPtr(:)
-    character(len=*),parameter :: fldname="foo_atm2lndfield"
-!    character(len=*),parameter :: fldname="Faxa_lwdn"
-
+    real(r8), pointer          :: dataPtr_i(:)
+    !character(len=*),parameter :: fldname_i="foo_atm2lndfield"
+    character(len=*),parameter :: fldname_i="inst_land_sea_mask"
+    real(r8), pointer          :: dataPtr_e(:)
+    character(len=*),parameter :: fldname_e="foo_lnd2atmfield"
+    !real(r8), allocatable      :: lnd_data(:)  ! change this
+!    character(len=*),parameter :: fldname_i="Faxa_lwdn"
+    character(len=80), allocatable :: flds(:)
+    character(len=80)   :: fldname
+    integer                   :: n
     ! query the Component for its clock, importState and exportState
     ! call ESMF_GridCompGet(gcomp, clock=clock, importState=importState, &
     !      exportState=exportState, rc=rc)
@@ -263,9 +271,31 @@ contains
     ! call import_fields(importState,rc)....
 
     ! test tmp import
-    write(*,*) 'JP foo A'
-    call field_foo(importState, trim(fldname), dataPtr, rc=rc)
-    write(*,*) 'JP foo B'
+    !call field_foo(importState, trim(fldname_i), dataPtr_i, rc=rc)
+    !call import_2_export(importState, exportState, fldname_i, fldname_e, rc)
+
+    allocate(flds(7))
+    flds = (/'Faxa_lwdn  '    , 'Faxa_swndr '   , 'Faxa_swvdr '   , 'Faxa_swndf ' , 'Faxa_swvdf ', &
+         'Faxa_rain  '    , 'Faxa_snow  ' /)
+
+    do n = 1,size(flds)
+       fldname = trim(flds(n))
+       call import_field(importState, fldname, rc)
+    end do
+    deallocate(flds)
+
+    allocate(flds(6))
+    flds=(/"sea_ice_surface_temperature", "sea_surface_temperature", "ice_fraction",&
+         "wave_z0_roughness_length", "inst_land_sea_mask","foo_atm2lndfield"     /)
+    ! flds=(/"land_mask", "sea_ice_surface_temperature", "sea_surface_temperature", "ice_fraction",&
+    !      "wave_z0_roughness_length"     /)
+
+    do n = 1,size(flds)
+       fldname = trim(flds(n))
+       call import_field(importState, fldname, rc)
+    end do
+    deallocate(flds)
+
     ! end test tmp
 
     ! ...end call import_fields
