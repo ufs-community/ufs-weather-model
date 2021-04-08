@@ -196,10 +196,12 @@ def get_bl_date(job_obj, pr_repo_loc):
 def process_logfile(job_obj, logfile):
     logger = logging.getLogger('BL/PROCESS_LOGFILE')
     rt_dir = []
+    fail_string_list = ['Test', 'failed']
     if os.path.exists(logfile):
         with open(logfile) as f:
             for line in f:
-                if 'FAIL' in line and 'Test' in line:
+                if all(x in line for x in fail_string_list):
+                # if 'FAIL' in line and 'Test' in line:
                     job_obj.comment_text_append(f'{line.rstrip(chr(10))}')
                 elif 'working dir' in line and not rt_dir:
                     logger.info(f'Found "working dir" in line: {line}')
