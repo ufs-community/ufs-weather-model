@@ -120,7 +120,6 @@ source $PATHTR/NEMS/src/conf/module-setup.sh.inc
 if [[ $MACHINE_ID = wcoss_cray ]]; then
 
   module load xt-lsfhpc
-  module load python/3.6.3
 
   module use /usrx/local/emc_rocoto/modulefiles
   module load rocoto/1.3.0rc2
@@ -133,6 +132,7 @@ if [[ $MACHINE_ID = wcoss_cray ]]; then
   module load ecflow/intel/4.17.0.1
   ECFLOW_START=${ECF_ROOT}/bin/ecflow_start.sh
   ECF_PORT=$(grep $USER /usrx/local/sys/ecflow/assigned_ports.txt | awk '{print $2}')
+  module load python/3.6.3
 
   DISKNM=/gpfs/hps3/emc/nems/noscrub/emc.nemspara/RT
   QUEUE=debug
@@ -292,10 +292,10 @@ elif [[ $MACHINE_ID = jet.* ]]; then
 
   QUEUE=batch
   COMPILE_QUEUE=batch
-  ACCNR=hfv3gfs
+  ACCNR=h-nems
   PARTITION=xjet
-  DISKNM=/lfs4/HFIP/hfv3gfs/emc.nemspara/RT
-  dprefix=/lfs4/HFIP/hfv3gfs/$USER
+  DISKNM=/lfs4/HFIP/h-nems/emc.nemspara/RT
+  dprefix=/lfs4/HFIP/h-nems/$USER
   STMP=$dprefix/RT_BASELINE
   PTMP=$dprefix/RT_RUNDIRS
 
@@ -413,7 +413,7 @@ if [[ $TESTS_FILE =~ '35d' ]]; then
   TEST_35D=true
 fi
 
-BL_DATE=20210330
+BL_DATE=20210406
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]]; then
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
 else
