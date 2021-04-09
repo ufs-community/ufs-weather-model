@@ -478,7 +478,6 @@ export DATM=false
 
 export DAYS="1"
 export FHMAX="24"
-export FDIAG="6"
 export WLCLK=30
 
 # default atm/ocn/ice resolution
@@ -534,7 +533,7 @@ export RUNTYPE='startup'
 # to run frac_grid, set both frac_grid and FRAC_GRID_INPUTs to .T.
 export FRAC_GRID='.F.'
 export FRAC_GRID_INPUT='.T.'
-export SUITE_NAME="FV3_GFS_2017_coupled"
+export CCPP_SUITE="FV3_GFS_2017_coupled"
 export INPUT_NML=input.mom6_ccpp.nml.IN
 export FIELD_TABLE="field_table"
 export DIAG_TABLE="diag_table_template"
