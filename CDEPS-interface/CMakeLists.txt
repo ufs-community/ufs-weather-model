@@ -44,24 +44,9 @@ install(EXPORT      FoXExports
 # Too many files to list, so include them via this file
 include("cdeps_files.cmake")
 
-# Use genf90.pl from CMEPS for now.
-set(GENF90_PATH ${PROJECT_SOURCE_DIR}/CMEPS-interface/CMEPS/util)
-foreach(file_ IN LISTS cdeps_share_files_tmpl)
-  get_filename_component(filename_ ${file_} NAME)
-  add_custom_command(
-    OUTPUT  ${filename_}
-    COMMAND ${GENF90_PATH}/genf90.pl ${CMAKE_CURRENT_SOURCE_DIR}/${file_}.in > ${CMAKE_CURRENT_BINARY_DIR}/${filename_}
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${file_}.in
-    COMMENT "Generating ${filename_} from ${file_}.in"
-    VERBATIM)
-  list(APPEND cdeps_genf90_share_files ${CMAKE_CURRENT_BINARY_DIR}/${filename_})
-endforeach ()
-
 # CDEPS/share
-add_library(share STATIC ${cdeps_share_files} ${cdeps_genf90_share_files})
+add_library(share STATIC ${cdeps_share_files} ${ufs_cdeps_share_files})
 add_library(cdeps::share ALIAS share)
-set_source_files_properties(${cdeps_genf90_share_files}
-                            PROPERTIES GENERATED TRUE)
 set_target_properties(share PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(share PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                         $<INSTALL_INTERFACE:mod>)

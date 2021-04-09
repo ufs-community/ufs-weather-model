@@ -1,8 +1,9 @@
-# These are generated with genf90.pl
-list(APPEND cdeps_share_files_tmpl
-  CDEPS/share/shr_assert_mod.F90
-  CDEPS/share/shr_frz_mod.F90
-  CDEPS/share/shr_infnan_mod.F90
+# CDEPS generates these with genf90.pl acting on templates .in in CDEPS/share
+# For the UFS, they are pre-generated and committed to the UFS repository
+list(APPEND ufs_cdeps_share_files
+  ufs/cdeps_share/shr_assert_mod.F90
+  ufs/cdeps_share/shr_frz_mod.F90
+  ufs/cdeps_share/shr_infnan_mod.F90
 )
 
 list(APPEND cdeps_share_files
