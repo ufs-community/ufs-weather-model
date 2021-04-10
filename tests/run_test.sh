@@ -78,6 +78,7 @@ cp ${PATHRT}/fv3_${COMPILE_NR}.exe                 fv3.exe
 
 # modulefile for FV3 prerequisites:
 cp ${PATHRT}/modules.fv3_${COMPILE_NR}             modules.fv3
+cp ${PATHTR}/modulefiles/ufs_common*               .
 
 # Get the shell file that loads the "module" command and purges modules:
 cp ${PATHRT}/../NEMS/src/conf/module-setup.sh.inc  module-setup.sh
@@ -108,8 +109,6 @@ if [[ $DATM = 'true' ]] || [[ $S2S = 'true' ]]; then
   edit_mom_input  < ${PATHRT}/parm/${MOM_INPUT:-MOM_input_template_$OCNRES} > INPUT/MOM_input
   edit_diag_table < ${PATHRT}/parm/${DIAG_TABLE:-diag_table_template} > diag_table
   edit_data_table < ${PATHRT}/parm/data_table_template > data_table
-  cp ${PATHRT}/parm/pio_in pio_in
-  cp ${PATHRT}/parm/med_modelio.nml med_modelio.nml
 fi
 if [[ $DATM = 'true' ]]; then
   cp ${PATHRT}/parm/datm_data_table.IN datm_data_table
