@@ -113,6 +113,11 @@ fi
 if [[ $DATM = 'true' ]]; then
   cp ${PATHRT}/parm/datm_data_table.IN datm_data_table
 fi
+if [[ "${DIAG_TABLE_ADDITIONAL:-}Q" != Q ]] ; then
+  # Append diagnostic outputs, to support tests that vary from others
+  # only by adding diagnostics.
+  atparse < "${PATHRT}/parm/${DIAG_TABLE_ADDITIONAL:-}" >> diag_table
+fi
 
 if [[ $SCHEDULER = 'pbs' ]]; then
   NODES=$(( TASKS / TPN ))

@@ -442,6 +442,7 @@ export FHROT=0
 export LDIAG3D=.F.
 export QDIAG3D=.F.
 export MAX_OUTPUT_FIELDS=300
+export FHZERO="6"
 
 # Stochastic physics
 export DO_SPPT=.F.
@@ -483,6 +484,7 @@ export DATM=false
 export DAYS="1"
 export FHMAX="24"
 export FDIAG="6"
+export FHZERO="6"
 export WLCLK=30
 
 # default atm/ocn/ice resolution
