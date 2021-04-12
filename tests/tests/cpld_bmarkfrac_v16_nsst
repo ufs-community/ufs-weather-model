@@ -1,10 +1,10 @@
 #
-#  cpld_bmarkfrac_v16 test
+#  cpld_bmarkfrac_v16_nsst test
 #
 
 export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C384L127 MX025 - Benchmark test - frac grid - v16"
 
-export CNTL_DIR="cpld_bmarkfrac_v16"
+export CNTL_DIR="cpld_bmarkfrac_v16_nsst"
 
 export LIST_FILES="phyf012.tile1.nc \
                    phyf012.tile2.nc \
@@ -117,6 +117,7 @@ export NPZ=127
 export NPZP=128
 export PSM_BC=1
 export DDDMP=0.2
+export NSTF_NAME=2,1,0,0,0
 
 # resolution dependent files
 export MOM_INPUT="MOM_input_template_${OCNRES}"
@@ -144,6 +145,6 @@ export INPUT_NML=input.benchmark_v16.nml.IN
 
 export FIELD_TABLE="field_table_gfsv16"
 export DIAG_TABLE="diag_table_bmark_v16_template"
-export CCPP_SUITE="FV3_GFS_v16_coupled"
+export CCPP_SUITE="FV3_GFS_v16_couplednsst"
 
 export FV3_RUN=cpld_bmark_run.IN
