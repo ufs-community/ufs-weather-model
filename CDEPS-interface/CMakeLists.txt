@@ -15,32 +15,6 @@ else()
   message(WARNING "Fortran compiler with ID ${CMAKE_Fortran_COMPILER_ID} will be used with CMake default options")
 endif()
 
-################################################################################
-# Third-party Fortran XML library
-add_subdirectory(CDEPS/fox)
-# All this and more should be done properly in the FoX library CMakeLists.txt
-target_include_directories(FoX_dom PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/CDEPS/fox/include>)
-list(APPEND FoX_TARGETS FoX_dom FoX_sax FoX_wxml FoX_common FoX_utils FoX_fsys)
-foreach(foxlib_ IN LISTS FoX_TARGETS)
-  add_library(FoX::${foxlib_} ALIAS ${foxlib_})
-endforeach()
-install(
-  TARGETS   ${FoX_TARGETS}
-  EXPORT    FoXExports
-  LIBRARY   DESTINATION lib
-  ARCHIVE   DESTINATION lib
-  COMPONENT Library)
-
-export(EXPORT    FoXExports
-       NAMESPACE FoX::
-       FILE      fox-targets.cmake)
-
-install(EXPORT      FoXExports
-        NAMESPACE   FoX::
-        FILE        fox-targets.cmake
-        DESTINATION lib/cmake)
-################################################################################
-
 # Too many files to list, so include them via this file
 include("cdeps_files.cmake")
 
@@ -56,11 +30,11 @@ list(APPEND LIB_TARGETS share)
 # CDEPS/streams
 add_library(streams STATIC ${cdeps_streams_files})
 add_library(cdeps::streams ALIAS streams)
-add_dependencies(streams FoX::FoX_dom cdeps::share)
+add_dependencies(streams cdeps::share)
 set_target_properties(streams PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(streams PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                           $<INSTALL_INTERFACE:mod>)
-target_link_libraries(streams PUBLIC FoX::FoX_dom)
+target_compile_definitions(streams PUBLIC "DISABLE_FoX")
 target_link_libraries(streams PUBLIC cdeps::share)
 target_link_libraries(streams PUBLIC esmf PIO::PIO_Fortran)
 list(APPEND LIB_TARGETS streams)
