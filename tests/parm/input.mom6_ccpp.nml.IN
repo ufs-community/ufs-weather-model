@@ -44,6 +44,7 @@
        npy      = @[NPY]
        ntiles   = 6,
        npz    = @[NPZ]
+       dz_min = @[DZ_MIN]
        grid_type = -1
        make_nh = @[MAKE_NH]
        fv_debug = .F.
@@ -162,7 +163,7 @@
        imfshalcnv     = 2
        imfdeepcnv     = 2
        isatmedmf      = @[ISATMEDMF]
-       cdmbgwd        = 3.5,0.25
+       cdmbgwd        = @[CDMBWD]
        prslrd0        = 0.
        ivegsrc        = 1
        isot           = 1
@@ -188,6 +189,7 @@
        cplflx         = @[CPLFLX]
        cplwav         = @[CPLWAV]
        cplwav2atm     = @[CPLWAV2ATM]
+       min_seaice     = @[MIN_SEAICE]
        iau_delthrs    = 6
        iaufhrs        = 30
        iau_inc_files  = @[IAU_INC_FILES]
@@ -205,7 +207,7 @@
        nseed          = 1000000
        nfracseed      = 0.5
        nthresh        = 0.
-       ca_trigger     = .true.	
+       ca_trigger     = .true.
        ca_entr	      = .false.
        ca_closure     = .false.
        ca_global      = .false.
@@ -266,9 +268,6 @@
        FSICS    = 99999,
 /
 &nam_stochy
-  lon_s=768,
-  lat_s=384,
-  ntrunc=382,
   SKEBNORM=1,
   SKEB_NPASS=30,
   SKEB_VDOF=5,
