@@ -22,6 +22,7 @@ include("cdeps_files.cmake")
 add_library(share STATIC ${cdeps_share_files} ${ufs_cdeps_share_files})
 add_library(cdeps::share ALIAS share)
 set_target_properties(share PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
+target_include_directories(share PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/ufs/cdeps_share)
 target_include_directories(share PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                         $<INSTALL_INTERFACE:mod>)
 target_link_libraries(share PUBLIC esmf)
