@@ -211,13 +211,7 @@ endif()
 ###############################################################################
 if(WW3)
   if(CMAKE_Platform)
-    if(${CMAKE_Platform} STREQUAL "hera.intel")
-      set(WW3_COMP "hera")
-    elseif(${CMAKE_Platform} STREQUAL "orion.intel")
-      set(WW3_COMP "orion")
-    elseif(${CMAKE_Platform} STREQUAL "cheyenne.intel")
-      set(WW3_COMP "cheyenne")
-    elseif(${CMAKE_Platform} STREQUAL "wcoss2")
+    if(${CMAKE_Platform} STREQUAL "wcoss2")
       set(WW3_COMP "wcoss_cray")
     elseif(${CMAKE_Platform} MATCHES "linux*" OR ${CMAKE_Platform} MATCHES "macosx*")
       if (CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
@@ -238,7 +232,7 @@ if(WW3)
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/esmf
     COMMAND ${CMAKE_BUILD_TOOL} WW3_PARCOMPN=4 WW3_COMP=${WW3_COMP} ww3_nemslibonly > ${CMAKE_CURRENT_BINARY_DIR}/ww3_make.log 2>&1)
 
-    set(WW3_LIBS ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/obj/libww3_multi_esmf.a)
+  set(WW3_LIBS ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/obj/libww3_multi_esmf.a)
 endif()
 
 ###############################################################################
