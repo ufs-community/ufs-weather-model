@@ -33,6 +33,7 @@ set(JEDI_DRIVER     OFF CACHE BOOL "Enable JEDI as top level driver")
 # Component Options
 set(FMS             OFF CACHE BOOL "Enable FMS")
 set(FV3             OFF CACHE BOOL "Enable FV3")
+set(GOCART          OFF CACHE BOOL "Enable GOCART")
 set(MOM6            OFF CACHE BOOL "Enable MOM6")
 set(CICE6           OFF CACHE BOOL "Enable CICE6")
 set(WW3             OFF CACHE BOOL "Enable WW3")
@@ -42,7 +43,7 @@ set(CMEPS           OFF CACHE BOOL "Enable CMEPS")
 set(CDEPS           OFF CACHE BOOL "Enable CDEPS")
 
 # Valid applications and choices
-list(APPEND VALID_APPS ATM ATMW S2S S2SW DATM DATM_NEMS)
+list(APPEND VALID_APPS ATM ATMAERO ATMW S2S S2SW DATM DATM_NEMS)
 set(APP NONE CACHE BOOL "Application Name")
 if(NOT (APP IN_LIST VALID_APPS))
   message(FATAL_ERROR "${APP} is not a valid application.\nValid Applications are: ${VALID_APPS}")
@@ -97,6 +98,7 @@ include(cmake/configure_apps.cmake)
 message("")
 message("FMS .............. ${FMS}")
 message("FV3 .............. ${FV3}")
+message("GOCART ........... ${GOCART}")
 message("MOM6 ............. ${MOM6}")
 message("CICE6 ............ ${CICE6}")
 message("WW3 .............. ${WW3}")
@@ -183,6 +185,15 @@ endif()
 ###############################################################################
 if(FV3)
   add_subdirectory(FV3)
+endif()
+
+###############################################################################
+### GOCART
+###############################################################################
+if(GOCART)
+  set(BUILD_UFS ON)
+  include (ecbuild_system NO_POLICY_SCOPE)
+  add_subdirectory(GOCART)
 endif()
 
 ###############################################################################
@@ -280,6 +291,12 @@ list(APPEND _ufs_defs_private ESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR})
 
 if(JEDI_DRIVER)
   list(APPEND _ufs_defs_private JEDI_DRIVER=ON)
+endif()
+
+if(GOCART)
+  list(APPEND _ufs_defs_private FRONT_GSDCHEM=Aerosol_Cap)
+  add_dependencies(ufs UFS)
+  target_link_libraries(ufs PUBLIC UFS)
 endif()
 
 if(WW3)
