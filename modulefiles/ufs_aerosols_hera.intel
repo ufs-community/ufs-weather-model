@@ -1,0 +1,22 @@
+#%Module
+
+module use /scratch1/NCEPDEV/nems/Raffaele.Montuoro/dev/nasa/ufs/lib/hpc-stack/1.1.0-nasa/modulefiles/stack
+
+module load hpc/1.1.0-nasa
+module load hpc-intel/18.0.5.274
+module load hpc-impi/2018.0.4
+
+module load cmake
+module load ecbuild
+module load esma_cmake
+module load cmakemodules
+module load gftl-shared
+module load pflogger
+module load yafyaml
+module load mapl
+
+module load intelpython/3.6.8
+
+# use shared memory and OpenFabrics Alliance (OFA) fabric with Intel MPI to circumvent RDMA-related bug in DAPL.
+# RDMA operations are explicitly used in MAPL when writing output files.
+setenv I_MPI_FABRICS shm:ofa
