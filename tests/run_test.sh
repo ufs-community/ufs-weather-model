@@ -50,6 +50,8 @@ export CNTL_DIR=${CNTL_DIR}${BL_SUFFIX}
 
 export JBNME=$(basename $RUNDIR_ROOT)_${TEST_NR}
 
+echo -n "${TEST_NAME}, $( date +%s )," > ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+
 UNIT_TEST=${UNIT_TEST:-false}
 if [[ ${UNIT_TEST} == false ]]; then
   REGRESSIONTEST_LOG=${LOG_DIR}/rt_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log
@@ -76,15 +78,10 @@ cp ${PATHRT}/fv3_${COMPILE_NR}.exe                 fv3.exe
 
 # modulefile for FV3 prerequisites:
 cp ${PATHRT}/modules.fv3_${COMPILE_NR}             modules.fv3
+cp ${PATHTR}/modulefiles/ufs_common*               .
 
 # Get the shell file that loads the "module" command and purges modules:
 cp ${PATHRT}/../NEMS/src/conf/module-setup.sh.inc  module-setup.sh
-if [[ $FV3 = 'true' ]]; then
-  cp ${PATHRT}/parm/post_itag itag
-  cp ${PATHRT}/parm/postxconfig-NT.txt postxconfig-NT.txt
-  cp ${PATHRT}/parm/postxconfig-NT_FH00.txt postxconfig-NT_FH00.txt
-  cp ${PATHRT}/parm/params_grib2_tbl_new params_grib2_tbl_new
-fi
 
 SRCD="${PATHTR}"
 RUND="${RUNDIR}"
@@ -111,8 +108,6 @@ if [[ $DATM = 'true' ]] || [[ $S2S = 'true' ]]; then
   edit_data_table < ${PATHRT}/parm/data_table_template > data_table
   # CMEPS
   cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
-  cp ${PATHRT}/parm/pio_in pio_in
-  cp ${PATHRT}/parm/med_modelio.nml med_modelio.nml
 fi
 if [[ $DATM = 'true' ]]; then
   cp ${PATHRT}/parm/datm_data_table.IN datm_data_table
@@ -169,9 +164,14 @@ fi
 
 check_results
 
+if [[ $SCHEDULER != 'none' ]]; then
+  cat ${RUNDIR}/job_timestamp.txt >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+fi
 ################################################################################
 # End test
 ################################################################################
+
+echo " $( date +%s )" >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
 
 elapsed=$SECONDS
 echo "Elapsed time $elapsed seconds. Test ${TEST_NAME}"

@@ -181,6 +181,9 @@ contains
 
   !===============================================================================
   subroutine InitializeRealize(gcomp, importState, exportState, clock, rc)
+
+    use lnd_set_decomp_and_domain , only : lnd_set_decomp_and_domain_from_readmesh ! try out read mask
+    
     ! input/output variables
     type(ESMF_GridComp)  :: gcomp
     type(ESMF_State)     :: importState
@@ -191,30 +194,90 @@ contains
     ! local variables
     character(len=*),parameter :: subname=trim(modName)//':(InitializeRealize) '
     character(len=CL) ::  meshfile_lnd = 'INPUT/C96_181018_ESMFmesh.nc'
-    type(ESMF_Mesh)   ::  mesh
+    character(len=CL) ::  meshfile_mask
+    type(ESMF_Mesh)   ::  mesh_input
 
+    real(r8), pointer   :: lndfrac_glob(:)
+    integer,  pointer   :: lndmask_glob(:)
+    type(ESMF_DistGrid) :: distgrid
+    integer             :: lsize
+    integer , pointer   :: lndmask_loc(:)
+    integer , pointer   :: itemp_glob(:)
+    type(ESMF_Array)    :: elemMaskArray
+    integer , pointer   :: gindex(:)
+    integer             :: gsize
+    integer             :: n
+    type(ESMF_VM)       :: vm
     !-------------------------------------------------------------------------------
     rc = ESMF_SUCCESS
     call ESMF_LogWrite(subname//' called', ESMF_LOGMSG_INFO)
 
+
+    ! assume mesh file has mask
+    meshfile_mask = meshfile_lnd
+    
     ! Read in the land mesh from the file
-    mesh = ESMF_MeshCreate(filename=trim(meshfile_lnd), fileformat=ESMF_FILEFORMAT_ESMFMESH, rc=rc)
+    
+    mesh_input = ESMF_MeshCreate(filename=trim(meshfile_lnd), fileformat=ESMF_FILEFORMAT_ESMFMESH, rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
-    ! ! Read in mask meshfile if needed
-    ! if (trim(meshfile_mask) /= trim(meshfile_lnd)) then
-    !    mesh_maskinput = ESMF_MeshCreate(filename=trim(meshfile_mask), fileformat=ESMF_FILEFORMAT_ESMFMESH, rc=rc)
-    !    if (ChkErr(rc,__LINE__,u_FILE_u)) return
-    ! end if
+    ! Determine lsize and distgrid_lnd
+    call ESMF_MeshGet(mesh_input, elementdistGrid=distgrid, rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    call ESMF_DistGridGet(distgrid, localDe=0, elementCount=lsize, rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+
+    ! Determine lndmask_loc
+    ! The call to ESMF_MeshGet fills in the values of lndmask_loc
+    allocate(lndmask_loc(lsize))
+    elemMaskArray = ESMF_ArrayCreate(distgrid, lndmask_loc, rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    call ESMF_MeshGet(mesh_input, elemMaskArray=elemMaskArray, rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+
+    ! Determine global landmask_glob 
+    ! how to get gsize? same as elementCount? No, that's lsize....
+    gsize = lsize ! this is a (wrong) palceholder to test
+
+    allocate(gindex(lsize))
+    allocate(itemp_glob(gsize))
+    ! List of sequence indices for the elements on localDe
+    call ESMF_DistGridGet(distgrid, 0, seqIndexList=gindex, rc=rc)
+    if (chkerr(rc,__LINE__,u_FILE_u)) return
+    write(*,*) "JP A2.4. lsize = ", lsize
+    
+    ! do n = 1,lsize
+    !    write(*,*) "JP n, gindex(n), lndmask_loc(n) =", n, gindex(n), lndmask_loc(n)
+    !    lndmask_glob(gindex(n)) = lndmask_loc(n)
+    ! end do
+
+    ! call ESMF_GridCompGet(gcomp, vm=vm, rc=rc)
+    ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
+
+    ! call ESMF_VMAllReduce(vm, sendData=lndmask_glob, recvData=itemp_glob, count=gsize, &
+    !      reduceflag=ESMF_REDUCE_SUM, rc=rc)
+    ! write(*,*) "JP A5"
+    ! lndmask_glob(:) = int(itemp_glob(:))
+    ! deallocate(itemp_glob)
+    ! deallocate(gindex)
+    ! deallocate(lndmask_loc)
+    ! write(*,*) "JP A6"
+
+    ! ! ASSUME that land fraction is identical to land mask in this case                                                                                       
+    ! lndfrac_glob(:) = lndmask_glob(:)
+    ! write(*,*) "JP A7"
+
+    
 
     ! ---------------------
     ! Realize the actively coupled fields
     ! ---------------------
-    call realize_fields(gcomp, mesh, flds_scalar_name, flds_scalar_num, rc)
+    call realize_fields(gcomp, mesh_input, flds_scalar_name, flds_scalar_num, rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
+    ! --------------------- 
     ! initialize noah:
-
+    ! ---------------------   
 
 
 

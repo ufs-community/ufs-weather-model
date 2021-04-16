@@ -320,6 +320,7 @@ export WRITE_GROUP=1
 export WRTTASK_PER_GROUP=6
 export OUTPUT_HISTORY=.true.
 export WRITE_DOPOST=.false.
+export POSTAPP=''
 export NUM_FILES=2
 export FILENAME_BASE="'dyn' 'phy'"
 export OUTPUT_GRID="'cubed_sphere_grid'"
@@ -389,6 +390,7 @@ export IMFSHALCNV=2
 export HWRF_SAMFSHAL=.F.
 export IMFDEEPCNV=2
 export HWRF_SAMFDEEP=.F.
+export RAS=.F.
 
 # SFC
 export DO_MYJSFC=.F.
@@ -476,7 +478,6 @@ export DATM=false
 
 export DAYS="1"
 export FHMAX="24"
-export FDIAG="6"
 export WLCLK=30
 
 # default atm/ocn/ice resolution
@@ -533,7 +534,7 @@ export RUNTYPE='startup'
 # to run frac_grid, set both frac_grid and FRAC_GRID_INPUTs to .T.
 export FRAC_GRID='.F.'
 export FRAC_GRID_INPUT='.T.'
-export SUITE_NAME="FV3_GFS_2017_coupled"
+export CCPP_SUITE="FV3_GFS_2017_coupled"
 export INPUT_NML=input.mom6_ccpp.nml.IN
 export FIELD_TABLE="field_table"
 export DIAG_TABLE="diag_table_template"
@@ -585,6 +586,7 @@ export MOM6_REPRO_LA='False'
 export MOM6_THERMO_SPAN='False'
 # no WW3
 export MOM6_USE_WAVES='False'
+export MOM6_ALLOW_LANDMASK_CHANGES='False'
 
 # CICE6 defaults; 1 degree
 export NPROC_ICE='12'
@@ -674,8 +676,8 @@ export coupling_interval_fast_sec=${CPL_FAST}
 export RESTART_N=${FHMAX}
 export CPLMODE='nems_orig_data'
 export cap_dbug_flag="0"
-export use_coldstart=".false."
-export use_mommesh=".false."
+export use_coldstart="false"
+export use_mommesh="false"
 export RUNTYPE='startup'
 export flux_convergence='0.0'
 export flux_iteration='2'
@@ -698,6 +700,7 @@ export MOM6_REPRO_LA='False'
 export MOM6_THERMO_SPAN='False'
 # no WW3
 export MOM6_USE_WAVES='False'
+export MOM6_ALLOW_LANDMASK_CHANGES='False'
 
 # CICE6 defaults; 1 degree
 export MESHOCN_ICE="mesh.mx${OCNRES}.nc"

@@ -39,6 +39,7 @@ function edit_mom_input {
       -e "s/MOM6_THERMO_SPAN/$MOM6_THERMO_SPAN/g" \
       -e "s/MOM6_REPRO_LA/$MOM6_REPRO_LA/g" \
       -e "s/MOM6_USE_WAVES/$MOM6_USE_WAVES/g" \
+      -e "s/MOM6_ALLOW_LANDMASK_CHANGES/$MOM6_ALLOW_LANDMASK_CHANGES/g" \
       -e "s/NX_GLB/$NX_GLB/g" \
       -e "s/NY_GLB/$NY_GLB/g" \
       -e "s/CHLCLIM/$CHLCLIM/g"

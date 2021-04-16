@@ -17,6 +17,8 @@ add_library(lnd_comp STATIC
 	    noah_driver.F90
 	    #sfc_drv_loop.F90
 	    field_print_debug.F90 # tmp test
+	    import_2_export_test.F90 # tmp test
+	    import_fields.F90
 	    )
 set_target_properties(lnd_comp PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_compile_definitions(lnd_comp PUBLIC "${_lnd_comp_defs}")
