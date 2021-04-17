@@ -1,0 +1,82 @@
+#
+#  atm_lnd_12h
+#  NOTE: test is not currently used; restarts are tested at c96mx025
+
+export TEST_DESCR="coupled FV3-Land--CMEPS system - C96 12h"
+
+export CNTL_DIR="cpld_control_12h"
+
+export LIST_FILES="phyf012.tile1.nc \
+                   phyf012.tile2.nc \
+                   phyf012.tile3.nc \
+                   phyf012.tile4.nc \
+                   phyf012.tile5.nc \
+                   phyf012.tile6.nc \
+                   dynf012.tile1.nc \
+                   dynf012.tile2.nc \
+                   dynf012.tile3.nc \
+                   dynf012.tile4.nc \
+                   dynf012.tile5.nc \
+                   dynf012.tile6.nc \
+                   RESTART/coupler.res \
+                   RESTART/fv_core.res.nc \
+                   RESTART/fv_core.res.tile1.nc \
+                   RESTART/fv_core.res.tile2.nc \
+                   RESTART/fv_core.res.tile3.nc \
+                   RESTART/fv_core.res.tile4.nc \
+                   RESTART/fv_core.res.tile5.nc \
+                   RESTART/fv_core.res.tile6.nc \
+                   RESTART/fv_srf_wnd.res.tile1.nc \
+                   RESTART/fv_srf_wnd.res.tile2.nc \
+                   RESTART/fv_srf_wnd.res.tile3.nc \
+                   RESTART/fv_srf_wnd.res.tile4.nc \
+                   RESTART/fv_srf_wnd.res.tile5.nc \
+                   RESTART/fv_srf_wnd.res.tile6.nc \
+                   RESTART/fv_tracer.res.tile1.nc \
+                   RESTART/fv_tracer.res.tile2.nc \
+                   RESTART/fv_tracer.res.tile3.nc \
+                   RESTART/fv_tracer.res.tile4.nc \
+                   RESTART/fv_tracer.res.tile5.nc \
+                   RESTART/fv_tracer.res.tile6.nc \
+                   RESTART/phy_data.tile1.nc \
+                   RESTART/phy_data.tile2.nc \
+                   RESTART/phy_data.tile3.nc \
+                   RESTART/phy_data.tile4.nc \
+                   RESTART/phy_data.tile5.nc \
+                   RESTART/phy_data.tile6.nc \
+                   RESTART/sfc_data.tile1.nc \
+                   RESTART/sfc_data.tile2.nc \
+                   RESTART/sfc_data.tile3.nc \
+                   RESTART/sfc_data.tile4.nc \
+                   RESTART/sfc_data.tile5.nc \
+                   RESTART/sfc_data.tile6.nc \
+                   RESTART/MOM.res.nc \
+                   RESTART/iced.2016-10-03-43200.nc"
+                   #RESTART/ufs.cpld.cpl.r.2016-10-03-43200.nc"
+
+export_fv3
+export_cpl
+
+export lnd_model='lnd_comp'
+
+export DAYS="0.50"
+export FHMAX="12"
+export RESTART_N=${FHMAX}
+
+export FV3_RUN=cpld_lnd_run.IN
+export NEMS_CONFIGURE="nems.configure.atm_lnd.IN"
+
+# # try to make job smaller for faster testing
+# export TASKS=$TASKS_thrd
+# export TPN=$TPN_thrd
+# export INPES=$INPES_thrd
+# export JNPES=$JNPES_thrd
+# # export THRD=1
+# # export WRTTASK_PER_GROUP=6
+# # export WRITE_GROUP=1
+
+# export med_petlist_bounds=$MPB_cpl_thrd
+# export atm_petlist_bounds=$APB_cpl_thrd
+# export ocn_petlist_bounds=$OPB_cpl_thrd
+# export ice_petlist_bounds=$IPB_cpl_thrd
+# export lnd_petlist_bounds=$APB_cpl_thrd
