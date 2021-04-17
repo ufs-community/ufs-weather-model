@@ -585,6 +585,7 @@ export MOM6_REPRO_LA='False'
 export MOM6_THERMO_SPAN='False'
 # no WW3
 export MOM6_USE_WAVES='False'
+export MOM6_ALLOW_LANDMASK_CHANGES='False'
 
 # CICE6 defaults; 1 degree
 export NPROC_ICE='12'
@@ -674,8 +675,8 @@ export coupling_interval_fast_sec=${CPL_FAST}
 export RESTART_N=${FHMAX}
 export CPLMODE='nems_orig_data'
 export cap_dbug_flag="0"
-export use_coldstart=".false."
-export use_mommesh=".false."
+export use_coldstart="false"
+export use_mommesh="false"
 export RUNTYPE='startup'
 export flux_convergence='0.0'
 export flux_iteration='2'
@@ -698,6 +699,7 @@ export MOM6_REPRO_LA='False'
 export MOM6_THERMO_SPAN='False'
 # no WW3
 export MOM6_USE_WAVES='False'
+export MOM6_ALLOW_LANDMASK_CHANGES='False'
 
 # CICE6 defaults; 1 degree
 export MESHOCN_ICE="mesh.mx${OCNRES}.nc"
