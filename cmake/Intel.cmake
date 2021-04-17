@@ -7,7 +7,7 @@ endif()
 
 if(DEBUG)
     add_definitions(-DDEBUG)
-    set(CMAKE_Fortran_FLAGS_DEBUG "${CMAKE_Fortran_FLAGS_DEBUG} -O0 -check -check noarg_temp_created -check nopointer -warn -warn noerrors -fp-stack-check -fstack-protector-all -fpe0 -debug -ftrapuvi -no-prec-div -no-prec-sqrt")
+    set(CMAKE_Fortran_FLAGS_DEBUG "${CMAKE_Fortran_FLAGS_DEBUG} -O0 -check -check noarg_temp_created -check nopointer -warn -warn noerrors -fp-stack-check -fstack-protector-all -fpe0 -debug -ftrapuv -no-prec-div -no-prec-sqrt")
     if(DEBUG_LINKMPI)
       if(OPENMP)
         set(CMAKE_Fortran_FLAGS_DEBUG "${CMAKE_Fortran_FLAGS_DEBUG} -link_mpi=dbg_mt")
