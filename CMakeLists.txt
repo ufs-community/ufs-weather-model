@@ -240,8 +240,7 @@ if(NEMSdatm)
 endif()
 
 if(CDEPS)
-  message("ADD CDEPS-interface directory")
-#  add_subdirectory(CDEPS-interface)
+  add_subdirectory(CDEPS-interface)
 endif()
 
 ###############################################################################
@@ -331,7 +330,7 @@ if(CMEPS)
 endif()
 
 if(CDEPS)
-  message("Do CDEPS things here")
+  add_dependencies(ufs cdeps::datm)
 endif()
 
 target_compile_definitions(ufs PRIVATE "${_ufs_defs_private}")
@@ -357,7 +356,7 @@ endif()
 
 target_compile_definitions(ufs_model PRIVATE "${_ufs_model_defs_private}")
 
-if(NEMSdatm)
+if(NEMSdatm OR CDEPS)
   target_link_libraries(ufs_model PUBLIC ufs w3nco::w3nco_d)
 endif()
 
