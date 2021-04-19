@@ -76,6 +76,8 @@ module lnd_import_export
   character(*), parameter :: land_mask           = 'land_mask'
   character(*), parameter :: sea_surface_temperature  = 'sea_surface_temperature'
 
+  character(*), parameter :: Faxa_soiltyp           = 'Faxa_soiltyp'
+
   
   
   ! export fields
@@ -253,7 +255,10 @@ contains
     call fldlist_add(fldsToLnd_num, fldsToLnd,Faxa_swndf)        
     call fldlist_add(fldsToLnd_num, fldsToLnd,Faxa_swvdf)        
     call fldlist_add(fldsToLnd_num, fldsToLnd,Faxa_rain)          
-    call fldlist_add(fldsToLnd_num, fldsToLnd,Faxa_snow)          
+    call fldlist_add(fldsToLnd_num, fldsToLnd,Faxa_snow)
+
+    call fldlist_add(fldsToLnd_num, fldsToLnd,Faxa_soiltyp)
+    
     ! call fldlist_add(fldsToLnd_num, fldsToLnd,land_mask)          
     ! call fldlist_add(fldsToLnd_num, fldsToLnd,sea_surface_temperature)
 

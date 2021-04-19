@@ -347,9 +347,8 @@ contains
     end do
     deallocate(flds)
 
-    allocate(flds(6))
-    flds=(/"sea_ice_surface_temperature", "sea_surface_temperature", "ice_fraction",&
-         "wave_z0_roughness_length", "inst_land_sea_mask","foo_atm2lndfield"     /)
+    allocate(flds(3))
+    flds=(/"foo_atm2lndfield", "Faxa_soiltyp","soil_type_classification"     /)
     ! flds=(/"land_mask", "sea_ice_surface_temperature", "sea_surface_temperature", "ice_fraction",&
     !      "wave_z0_roughness_length"     /)
 

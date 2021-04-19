@@ -81,6 +81,8 @@ contains
     use ESMF , only : ESMF_StateGet, ESMF_FieldGet, ESMF_MeshGet
     use ESMF , only : ESMF_FIELDSTATUS_COMPLETE, ESMF_FAILURE
 
+    use shr_sys_mod, only : shr_sys_abort
+    
     ! input/output variables
     type(ESMF_State),             intent(in)    :: State
     character(len=*),             intent(in)    :: fldname
