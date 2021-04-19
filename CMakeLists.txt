@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.18)
 
-message(STATUS "The cmake version is ${CMAKE_VERSION}")
-
 foreach(env_var IN ITEMS CMAKE_C_COMPILER CMAKE_CXX_COMPILER CMAKE_Fortran_COMPILER)
   if(NOT DEFINED ENV{${env_var}})
     message(FATAL_ERROR "${env_var} is not defined")
