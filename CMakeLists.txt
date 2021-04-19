@@ -1,4 +1,6 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.18)
+
+message(STATUS "The cmake version is ${CMAKE_VERSION}")
 
 foreach(env_var IN ITEMS CMAKE_C_COMPILER CMAKE_CXX_COMPILER CMAKE_Fortran_COMPILER)
   if(NOT DEFINED ENV{${env_var}})
@@ -133,6 +135,14 @@ if(OPENMP)
 endif()
 find_package(NetCDF REQUIRED C Fortran)
 find_package(ESMF MODULE REQUIRED)
+if(FMS)
+  find_package(FMS REQUIRED COMPONENTS R4 R8)
+  if(32BIT)
+    add_library(fms ALIAS FMS::fms_r4)
+  else()
+    add_library(fms ALIAS FMS::fms_r8)
+  endif()
+endif()
 if(CMEPS)
   find_package(PIO REQUIRED COMPONENTS C Fortran STATIC)
 endif()
@@ -152,24 +162,6 @@ target_link_libraries(nemsio::nemsio INTERFACE w3emc::w3emc_d bacio::bacio_4)
 # Configure Python
 find_package(Python 3 REQUIRED COMPONENTS Interpreter)
 message("Found Python: ${Python_EXECUTABLE}")
-
-###############################################################################
-### FMS
-###############################################################################
-if(FMS)
-  set(GFS_PHYS ON CACHE BOOL "Enable GFS Physics")
-  if(NOT 32BIT)
-    set(64BIT ON CACHE BOOL "Enable 64-bit")
-  endif()
-
-  add_subdirectory(FMS)
-
-  if(32BIT)
-    add_library(fms ALIAS fms_r4)
-  else()
-    add_library(fms ALIAS fms_r8)
-  endif()
-endif(FMS)
 
 ###############################################################################
 ### stochastic_physics
