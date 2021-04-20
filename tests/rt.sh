@@ -120,7 +120,6 @@ source $PATHTR/NEMS/src/conf/module-setup.sh.inc
 if [[ $MACHINE_ID = wcoss_cray ]]; then
 
   module load xt-lsfhpc
-  module load python/3.6.3
 
   module use /usrx/local/emc_rocoto/modulefiles
   module load rocoto/1.3.0rc2
@@ -133,6 +132,7 @@ if [[ $MACHINE_ID = wcoss_cray ]]; then
   module load ecflow/intel/4.17.0.1
   ECFLOW_START=${ECF_ROOT}/bin/ecflow_start.sh
   ECF_PORT=$(grep $USER /usrx/local/sys/ecflow/assigned_ports.txt | awk '{print $2}')
+  module load python/3.6.3
 
   DISKNM=/gpfs/hps3/emc/nems/noscrub/emc.nemspara/RT
   QUEUE=debug
@@ -212,11 +212,9 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
   ECFLOW_START=/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/envs/ufs-weather-model/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
-  DISKNM=/lustre/f2/pdata/esrl/gsd/ufs/ufs-weather-model/RT
+  DISKNM=/lustre/f2/pdata/ncep_shared/emc.nemspara/RT
   QUEUE=normal
   COMPILE_QUEUE=normal
-#  DO NOT SET AN ACCOUNT EVERYONE IS NOT A MEMBER OF
-#  USE AN ENVIRONMENT VARIABLE TO SET ACCOUNT
 #  ACCNR=cmp
   PARTITION=c4
   STMP=/lustre/f2/scratch
@@ -294,10 +292,10 @@ elif [[ $MACHINE_ID = jet.* ]]; then
 
   QUEUE=batch
   COMPILE_QUEUE=batch
-  ACCNR=hfv3gfs
+  ACCNR=h-nems
   PARTITION=xjet
-  DISKNM=/lfs4/HFIP/hfv3gfs/RT
-  dprefix=/lfs4/HFIP/hfv3gfs/$USER
+  DISKNM=/lfs4/HFIP/h-nems/emc.nemspara/RT
+  dprefix=/lfs4/HFIP/h-nems/$USER
   STMP=$dprefix/RT_BASELINE
   PTMP=$dprefix/RT_RUNDIRS
 
@@ -312,8 +310,8 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
   ECFLOW_START=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
-  QUEUE=regular
-  COMPILE_QUEUE=regular
+  QUEUE=economy
+  COMPILE_QUEUE=economy
   PARTITION=
   dprefix=/glade/scratch
   DISKNM=/glade/p/ral/jntp/GMTB/ufs-weather-model/RT
@@ -415,10 +413,11 @@ if [[ $TESTS_FILE =~ '35d' ]]; then
   TEST_35D=true
 fi
 
+BL_DATE=20210419
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20210324/${RT_COMPILER^^}}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20210324}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}}
 fi
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20210210}
@@ -559,7 +558,7 @@ EOF
   elif [[ $MACHINE_ID = gaea.* ]]; then
     QUEUE=normal
   elif [[ $MACHINE_ID = cheyenne.* ]]; then
-    QUEUE=regular
+    QUEUE=economy
   else
     die "ecFlow is not supported on this machine $MACHINE_ID"
   fi
@@ -628,6 +627,7 @@ EOF
       ecflow_create_compile_task
     else
       ./compile.sh $MACHINE_ID "${MAKE_OPT}" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
+      mv compile_${COMPILE_NR}_time.log ${LOG_DIR}
     fi
 
     # Set RT_SUFFIX (regression test run directories and log files) and BL_SUFFIX
@@ -670,13 +670,6 @@ EOF
 
     # 35 day tests
     [[ $TEST_35D == true ]] && rt_35d
-
-    # skip all *_appbuild runs if rocoto or ecFlow is used. FIXME
-    if [[ ${ROCOTO} == true && ${ECFLOW} == true ]]; then
-      if [[ ${TEST_NAME} == *_appbuild ]]; then
-      continue
-      fi
-    fi
 
     # Avoid uninitialized RT_SUFFIX/BL_SUFFIX (see definition above)
     RT_SUFFIX=${RT_SUFFIX:-""}

@@ -31,10 +31,12 @@ if [[ $ARGC -lt 2 ]]; then
 else
   MACHINE_ID=$1
   MAKE_OPT=${2:-}
-  BUILD_NAME=fv3${3:+_$3}
+  COMPILE_NR=${3:+_$3}
   clean_before=${4:-YES}
   clean_after=${5:-YES}
 fi
+
+BUILD_NAME=fv3${COMPILE_NR}
 
 PATHTR=${PATHTR:-$( cd ${MYDIR}/.. && pwd )}
 BUILD_DIR=$(pwd)/build_${BUILD_NAME}
@@ -54,7 +56,7 @@ hostname
 
 set +x
 if [[ $MACHINE_ID == macosx.* ]] || [[ $MACHINE_ID == linux.* ]]; then
-  source $PATHTR/modulefiles/${MACHINE_ID}/fv3
+  source $PATHTR/modulefiles/ufs_${MACHINE_ID}
 else
   if [[ $MACHINE_ID == wcoss2 ]]; then
     source /apps/prod/lmodules/startLmod
@@ -64,10 +66,10 @@ else
     source /lustre/f2/pdata/esrl/gsd/contrib/lua-5.1.4.9/init/init_lmod.sh
   fi
   # Load fv3 module
-  module use $PATHTR/modulefiles/${MACHINE_ID}
-  modulefile="fv3"
+  module use $PATHTR/modulefiles
+  modulefile="ufs_${MACHINE_ID}"
   if [[ "${MAKE_OPT}" == *"DEBUG=Y"* ]]; then
-    [[ -f $PATHTR/modulefiles/${MACHINE_ID}/fv3_debug ]] && modulefile="fv3_debug"
+    [[ -f $PATHTR/modulefiles/ufs_${MACHINE_ID}_debug ]] && modulefile="ufs_${MACHINE_ID}_debug"
   fi
   module load $modulefile
   module list
@@ -173,9 +175,9 @@ bash -x ${PATHTR}/build.sh
 
 mv ${BUILD_DIR}/ufs_model ${PATHTR}/tests/${BUILD_NAME}.exe
 if [[ "${MAKE_OPT}" == "DEBUG=Y" ]]; then
-  cp ${PATHTR}/modulefiles/${MACHINE_ID}/fv3_debug ${PATHTR}/tests/modules.${BUILD_NAME}
+  cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}_debug ${PATHTR}/tests/modules.${BUILD_NAME}
 else
-  cp ${PATHTR}/modulefiles/${MACHINE_ID}/fv3 ${PATHTR}/tests/modules.${BUILD_NAME}
+  cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}       ${PATHTR}/tests/modules.${BUILD_NAME}
 fi
 
 if [ $clean_after = YES ] ; then
@@ -184,4 +186,4 @@ fi
 
 elapsed=$SECONDS
 echo "Elapsed time $elapsed seconds. Compiling ${MAKE_OPT} finished"
-echo "Compile $COMPILE_NR elapsed time $elapsed seconds. ${MAKE_OPT}" >> ${LOG_DIR}/compile_${COMPILE_NR}_time.log
+echo "Compile ${COMPILE_NR/#_} elapsed time $elapsed seconds. ${MAKE_OPT}" > compile${COMPILE_NR}_time.log
