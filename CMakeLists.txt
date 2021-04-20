@@ -247,9 +247,7 @@ endif()
 ### UFS Library [NEMS]
 ###############################################################################
 list(APPEND _nems_srcs NEMS/src/module_NEMS_UTILS.F90
-                       NEMS/src/module_EARTH_INTERNAL_STATE.F90
                        NEMS/src/module_EARTH_GRID_COMP.F90
-                       NEMS/src/module_NEMS_INTERNAL_STATE.F90
                        NEMS/src/module_NEMS_GRID_COMP.F90
                        NEMS/src/module_NEMS_Rusage.F90
                        NEMS/src/nems_c_rusage.c)
