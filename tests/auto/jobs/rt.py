@@ -23,7 +23,7 @@ def set_directories(job_obj):
     elif job_obj.machine == 'orion':
         workdir = '/work/noaa/nems/emc.nemspara/autort/pr'
     elif job_obj.machine == 'cheyenne':
-        workdir = '/glade/work/heinzell/fv3/ufs-weather-model/auto-rt'
+        workdir = '/glade/work/briancurtis/git/BrianCurtis-NOAA/ufs-weather-model/tests/auto/pr'
     else:
         print(f'Machine {job_obj.machine} is not supported for this job')
         raise KeyError
@@ -118,10 +118,12 @@ def post_process(job_obj, pr_repo_loc, repo_dir_str, branch):
 def process_logfile(job_obj, logfile):
     logger = logging.getLogger('RT/PROCESS_LOGFILE')
     rt_dir = []
+    fail_string_list = ['Test', 'failed']
     if os.path.exists(logfile):
         with open(logfile) as f:
             for line in f:
-                if 'FAIL' in line and 'Test' in line:
+                if all(x in line for x in fail_string_list):
+                # if 'FAIL' in line and 'Test' in line:
                     job_obj.comment_text_append(f'{line.rstrip(chr(10))}')
                 elif 'working dir' in line and not rt_dir:
                     rt_dir = os.path.split(line.split()[-1])[0]

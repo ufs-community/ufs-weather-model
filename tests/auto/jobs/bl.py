@@ -24,8 +24,8 @@ def set_directories(job_obj):
                  f'REGRESSION_TEST_{job_obj.compiler.upper()}'
     elif job_obj.machine == 'jet':
         workdir = '/lfs4/HFIP/h-nems/emc.nemspara/autort/pr'
-        blstore = '/lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/'
-        rtbldir = '/lfs4/HFIP/hfv3gfs/emc.nemspara/RT_BASELINE/'\
+        blstore = '/lfs4/HFIP/h-nems/emc.nemspara/RT/NEMSfv3gfs/'
+        rtbldir = '/lfs4/HFIP/h-nems/emc.nemspara/RT_BASELINE/'\
                  f'emc.nemspara/FV3_RT/REGRESSION_TEST_{job_obj.compiler.upper()}'
     elif job_obj.machine == 'gaea':
         workdir = '/lustre/f2/pdata/ncep/emc.nemspara/autort/pr'
@@ -38,9 +38,9 @@ def set_directories(job_obj):
         rtbldir = '/work/noaa/stmp/bcurtis/stmp/bcurtis/FV3_RT/'\
                  f'REGRESSION_TEST_{job_obj.compiler.upper()}'
     elif job_obj.machine == 'cheyenne':
-        workdir = '/glade/work/heinzell/fv3/ufs-weather-model/auto-rt'
+        workdir = '/glade/work/briancurtis/git/BrianCurtis-NOAA/ufs-weather-model/tests/auto/pr'
         blstore = '/glade/p/ral/jntp/GMTB/ufs-weather-model/RT'
-        rtbldir = '/glade/work/heinzell/FV3_RT/'\
+        rtbldir = '/glade/scratch/briancurtis/FV3_RT/'\
                  f'REGRESSION_TEST_{job_obj.compiler.upper()}'
     else:
         logger.critical(f'Machine {job_obj.machine} is not supported for this job')
@@ -196,10 +196,12 @@ def get_bl_date(job_obj, pr_repo_loc):
 def process_logfile(job_obj, logfile):
     logger = logging.getLogger('BL/PROCESS_LOGFILE')
     rt_dir = []
+    fail_string_list = ['Test', 'failed']
     if os.path.exists(logfile):
         with open(logfile) as f:
             for line in f:
-                if 'FAIL' in line and 'Test' in line:
+                if all(x in line for x in fail_string_list):
+                # if 'FAIL' in line and 'Test' in line:
                     job_obj.comment_text_append(f'{line.rstrip(chr(10))}')
                 elif 'working dir' in line and not rt_dir:
                     logger.info(f'Found "working dir" in line: {line}')
