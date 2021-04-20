@@ -11,12 +11,8 @@
   blocksize = 32
   chksum_debug = .false.
   dycore_only = .false.
-  fdiag = 1
-  fhmax = 384
-  fhout = 3
-  fhmaxhf = 120
-  fhouthf = 1
-  ccpp_suite = 'FV3_GFS_v16_flake'
+  fdiag = @[FDIAG]
+  ccpp_suite = '@[CCPP_SUITE]'
 /
 
 &diag_manager_nml
@@ -41,18 +37,18 @@ deflate_level=1
 /
 
 &fv_core_nml
-  layout = 3,8
+  layout = @[INPES],@[JNPES]
   io_layout = 1,1
-  npx = 97
-  npy = 97
+  npx = @[NPX]
+  npy = @[NPY]
   ntiles = 6
-  npz = 64
+  npz = @[NPZ]
   grid_type = -1
-  make_nh = .false.
+  make_nh = @[MAKE_NH]
   fv_debug = .false.
   range_warn = .false.
   reset_eta = .false.
-  n_sponge = 10
+  n_sponge = 42
   nudge_qv = .true.
   nudge_dz = .false.
   tau = 10.
@@ -84,11 +80,11 @@ deflate_level=1
   delt_max = 0.002
   ke_bg = 0.
   do_vort_damp = .true.
-  external_ic = .true.
+  external_ic = @[EXTERNAL_IC]
   external_eta = .true.
   gfs_phil = .false.
-  nggps_ic = .true.
-  mountain = .false.
+  nggps_ic = @[NGGPS_IC]
+  mountain = @[MOUNTAIN]
   ncep_ic = .false.
   d_con = 1.
   hord_mt = 5
@@ -103,7 +99,7 @@ deflate_level=1
   fill = .true.
   dwind_2d = .false.
   print_freq = 6
-  warm_start = .false.
+  warm_start = @[WARM_START]
   no_dycore = .false.
   z_tracer = .true.
   agrid_vel_rst = .true.
@@ -113,7 +109,7 @@ deflate_level=1
 
 &external_ic_nml
   filtered_terrain = .true.
-  levp = 65
+  levp = @[NPZP]
   gfs_dwinds = .true.
   checker_tr = .false.
   nt_checker = 0
@@ -150,13 +146,13 @@ deflate_level=1
   hybedmf      = .false.
   satmedmf     = .true.
   isatmedmf    = 1
-  lheatstrg    = .true.
+  lheatstrg    = @[LHEATSTRG]
   random_clds  = .false.
   trans_trac   = .true.
   cnvcld       = .true.
   imfshalcnv   = 2
   imfdeepcnv   = 2
-  cdmbgwd      = 0.14,1.8,1.0,1.0
+  cdmbgwd      = @[CDMBWD]
   prslrd0      = 0.
   ivegsrc      = 1
   isot         = 1
@@ -177,7 +173,7 @@ deflate_level=1
   debug        = .false.
   oz_phys      = .F.
   oz_phys_2015 = .T.
-  nstf_name    = 2,1,0,0,0
+  nstf_name    = 2,0,0,0,0
   nst_anl      = .true.
   psautco      = 0.0008,0.0005
   prautco      = 0.00015,0.00015
@@ -185,12 +181,25 @@ deflate_level=1
   effr_in      = .true.
   ldiag_ugwp   = .false.
   do_ugwp      = .false.
-  do_tofd      = .true.
-  do_sppt      = .true.
-  do_shum      = .true.
-  do_skeb      = .true.
-  lndp_type      = @[LNDP_TYPE]
-  n_var_lndp     = @[N_VAR_LNDP]
+  do_tofd      = .false.
+  do_sppt      = .false.
+  do_shum      = .false.
+  do_skeb      = .false.
+  ttendlim     = 0.005
+  bl_mynn_edmf = 1
+  bl_mynn_tkeadvect = .true.
+  min_lakeice  = 0.15
+  min_seaice   = 0.15
+  gwd_opt      = 1
+  do_ugwp_v1   = @[DO_UGWP_V1]
+  do_ugwp_v1_w_gsldrag = .T.
+  do_ugwp_v1_orog_only = .F.
+  do_gsl_drag_ls_bl    = .F.
+  do_gsl_drag_ss       = .F.
+  do_gsl_drag_tofd     = .F.
+  do_ugwp_v0           = .F.
+  do_ugwp_v0_orog_only = .F.
+
 /
 
 &gfdl_cloud_microphysics_nml
@@ -253,14 +262,14 @@ deflate_level=1
   FNTSFC   = 'RTGSST.1982.2012.monthly.clim.grb'
   FNSNOC   = 'global_snoclim.1.875.grb'
   FNZORC   = 'igbp'
-  FNALBC   = 'global_snowfree_albedo.bosu.t126.384.190.rg.grb'
+  FNALBC   = @[FNALBC]
   FNALBC2  = 'global_albedo4.1x1.grb'
   FNAISC   = 'CFSR.SEAICE.1982.2012.monthly.clim.grb'
   FNTG3C   = 'global_tg3clim.2.6x1.5.grb'
   FNVEGC   = 'global_vegfrac.0.144.decpercent.grb'
-  FNVETC   = 'global_vegtype.igbp.t126.384.190.rg.grb'
-  FNSOTC   = 'global_soiltype.statsgo.t126.384.190.rg.grb'
-  FNSMCC   = 'global_soilmgldas.t126.384.190.grb'
+  FNVETC   = @[FNVETC]
+  FNSOTC   = @[FNSOTC]
+  FNSMCC   = 'global_soilmgldas.statsgo.t1534.3072.1536.grb'
   FNMSKH   = 'global_slmask.t1534.3072.1536.grb'
   FNTSFA   = ''
   FNACNA   = ''
@@ -268,7 +277,7 @@ deflate_level=1
   FNVMNC   = 'global_shdmin.0.144x0.144.grb'
   FNVMXC   = 'global_shdmax.0.144x0.144.grb'
   FNSLPC   = 'global_slope.1x1.grb'
-  FNABSC   = 'global_mxsnoalb.uariz.t126.384.190.rg.grb'
+  FNABSC   = @[FNABSC]
   LDEBUG   = .false.
   FSMCL(2) = 99999
   FSMCL(3) = 99999
@@ -295,44 +304,30 @@ deflate_level=1
 /
 
 &nam_stochy
-  ntrunc = 766
-  lon_s = 1536
-  lat_s = 768
-  skeb = 0.3
-  iseed_skeb = 2019102712451
-  iseed_shum = 2019102712452
-  iseed_sppt = 2019102712453
-  skeb_tau = 21600.
-  skeb_lscale = 500000.
-  skebnorm = 0
-  skeb_npass = 30
-  skeb_vdof = 5
-  shum = 0.005
-  shum_tau = 21600.
-  shum_lscale = 500000.
-  sppt = 0.5
-  sppt_tau = 21600.
-  sppt_lscale = 500000.
-  sppt_logit = .true.
-  sppt_sfclimit = .true.
-  use_zmtnblck = .true.
 /
 
 &nam_sfcperts
 /
 
 &cires_ugwp_nml
-  knob_ugwp_solver  = 2
-  knob_ugwp_source  = 1,1,0,0
-  knob_ugwp_wvspec  = 1,25,25,25
-  knob_ugwp_azdir   = 2,4,4,4
-  knob_ugwp_stoch   = 0,0,0,0
-  knob_ugwp_effac   = 1,1,1,1
-  knob_ugwp_doaxyz  = 1
-  knob_ugwp_doheat  = 1
-  knob_ugwp_dokdis  = 1
-  knob_ugwp_ndx4lh  = 1
-  knob_ugwp_version = 0
-  launch_level      = 27
+  knob_ugwp_solver   = 2
+  knob_ugwp_version  = 1
+  knob_ugwp_source   = 1,1,0,0
+  knob_ugwp_wvspec   = 1,25,25,25
+  knob_ugwp_azdir    = 2,4,4,4
+  knob_ugwp_stoch    = 0,0,0,0
+  knob_ugwp_effac    = 1,1,1,1
+  knob_ugwp_doaxyz   = 1
+  knob_ugwp_doheat   = 1
+  knob_ugwp_dokdis   = 2
+  knob_ugwp_ndx4lh   = 4
+  knob_ugwp_palaunch = 275.0e2
+  knob_ugwp_nslope   = 0
+  knob_ugwp_lzmax    = 15.750e3
+  knob_ugwp_lzmin    = 0.75e3
+  knob_ugwp_lzstar   = 2.0e3
+  knob_ugwp_taumin   = 0.25e-3
+  knob_ugwp_tauamp   = 3.0e-3
+  knob_ugwp_lhmet    = 200.0e3
+  knob_ugwp_orosolv  = 'pss-1986'
 /
-
