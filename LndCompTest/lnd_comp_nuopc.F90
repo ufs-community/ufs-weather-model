@@ -347,10 +347,31 @@ contains
     end do
     deallocate(flds)
 
-    allocate(flds(3))
-    flds=(/"foo_atm2lndfield", "Faxa_soiltyp","soil_type_classification"     /)
-    ! flds=(/"land_mask", "sea_ice_surface_temperature", "sea_surface_temperature", "ice_fraction",&
-    !      "wave_z0_roughness_length"     /)
+    allocate(flds(22))
+    flds=(/ &
+         'Faxa_soiltyp     ', &
+         'Faxa_vegtype     ', &
+         'Faxa_sigmaf      ', &
+         'Faxa_sfcemis     ', &
+         'Faxa_dlwflx      ', &
+         'Faxa_dswsfc      ', &
+         'Faxa_snet        ', &
+         'Faxa_tg3         ', &
+         'Faxa_cm          ', &
+         'Faxa_ch          ', &
+         'Faxa_prsl1       ', &
+         'Faxa_prslki      ', &
+         'Faxa_zf          ', &
+         'Faxa_land        ', &
+         'Faxa_slopetyp    ', &
+         'Faxa_shdmin      ', &
+         'Faxa_shdmax      ', &
+         'Faxa_snoalb      ', &
+         'Faxa_sfalb       ', &
+         'Faxa_bexppert    ', &
+         'Faxa_xlaipert    ', &
+         'Faxa_vegfpert    ' &
+         /)
 
     do n = 1,size(flds)
        fldname = trim(flds(n))

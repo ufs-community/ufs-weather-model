@@ -76,8 +76,28 @@ module lnd_import_export
   character(*), parameter :: land_mask           = 'land_mask'
   character(*), parameter :: sea_surface_temperature  = 'sea_surface_temperature'
 
-  character(*), parameter :: Faxa_soiltyp           = 'Faxa_soiltyp'
-
+  character(*), parameter :: Faxa_soiltyp   = 'Faxa_soiltyp'
+  character(*), parameter :: Faxa_vegtype   = 'Faxa_vegtype'
+  character(*), parameter :: Faxa_sigmaf    = 'Faxa_sigmaf'
+  character(*), parameter :: Faxa_sfcemis   = 'Faxa_sfcemis'
+  character(*), parameter :: Faxa_dlwflx    = 'Faxa_dlwflx'
+  character(*), parameter :: Faxa_dswsfc    = 'Faxa_dswsfc'
+  character(*), parameter :: Faxa_snet      = 'Faxa_snet'
+  character(*), parameter :: Faxa_tg3       = 'Faxa_tg3'
+  character(*), parameter :: Faxa_cm        = 'Faxa_cm'
+  character(*), parameter :: Faxa_ch        = 'Faxa_ch'
+  character(*), parameter :: Faxa_prsl1     = 'Faxa_prsl1'
+  character(*), parameter :: Faxa_prslki    = 'Faxa_prslki'
+  character(*), parameter :: Faxa_zf        = 'Faxa_zf'
+  character(*), parameter :: Faxa_land      = 'Faxa_land'
+  character(*), parameter :: Faxa_slopetyp  = 'Faxa_slopetyp'
+  character(*), parameter :: Faxa_shdmin    = 'Faxa_shdmin'
+  character(*), parameter :: Faxa_shdmax    = 'Faxa_shdmax'
+  character(*), parameter :: Faxa_snoalb    = 'Faxa_snoalb'
+  character(*), parameter :: Faxa_sfalb     = 'Faxa_sfalb'
+  character(*), parameter :: Faxa_bexppert  = 'Faxa_bexppert'
+  character(*), parameter :: Faxa_xlaipert  = 'Faxa_xlaipert'
+  character(*), parameter :: Faxa_vegfpert  = 'Faxa_vegfpert'
   
   
   ! export fields
@@ -258,6 +278,28 @@ contains
     call fldlist_add(fldsToLnd_num, fldsToLnd,Faxa_snow)
 
     call fldlist_add(fldsToLnd_num, fldsToLnd,Faxa_soiltyp)
+    call fldlist_add(fldsToLnd_num, fldsToLnd,Faxa_vegtype)
+    call fldlist_add(fldsToLnd_num, fldsToLnd,Faxa_sigmaf)
+    call fldlist_add(fldsToLnd_num, fldsToLnd,Faxa_sfcemis)
+    call fldlist_add(fldsToLnd_num, fldsToLnd,Faxa_dlwflx)
+    call fldlist_add(fldsToLnd_num, fldsToLnd,Faxa_dswsfc)
+    call fldlist_add(fldsToLnd_num, fldsToLnd,Faxa_snet)
+    call fldlist_add(fldsToLnd_num, fldsToLnd,Faxa_tg3)
+    call fldlist_add(fldsToLnd_num, fldsToLnd,Faxa_cm)
+    call fldlist_add(fldsToLnd_num, fldsToLnd,Faxa_ch)
+    call fldlist_add(fldsToLnd_num, fldsToLnd,Faxa_prsl1)
+    call fldlist_add(fldsToLnd_num, fldsToLnd,Faxa_prslki)
+    call fldlist_add(fldsToLnd_num, fldsToLnd,Faxa_zf)
+    call fldlist_add(fldsToLnd_num, fldsToLnd,Faxa_land)
+    call fldlist_add(fldsToLnd_num, fldsToLnd,Faxa_slopetyp)
+    call fldlist_add(fldsToLnd_num, fldsToLnd,Faxa_shdmin)
+    call fldlist_add(fldsToLnd_num, fldsToLnd,Faxa_shdmax)
+    call fldlist_add(fldsToLnd_num, fldsToLnd,Faxa_snoalb)
+    call fldlist_add(fldsToLnd_num, fldsToLnd,Faxa_sfalb)
+    call fldlist_add(fldsToLnd_num, fldsToLnd,Faxa_bexppert)
+    call fldlist_add(fldsToLnd_num, fldsToLnd,Faxa_xlaipert)
+    call fldlist_add(fldsToLnd_num, fldsToLnd,Faxa_vegfpert)
+    
     
     ! call fldlist_add(fldsToLnd_num, fldsToLnd,land_mask)          
     ! call fldlist_add(fldsToLnd_num, fldsToLnd,sea_surface_temperature)
