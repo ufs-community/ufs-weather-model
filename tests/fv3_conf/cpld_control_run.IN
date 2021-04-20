@@ -32,13 +32,8 @@ if [ ${FRAC_GRID_INPUT} = .F. ]; then
   cp  @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/oro_data*.nc ./INPUT
   cp  @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/gfs_ctrl.nc ./INPUT
 else
- if [[ $NPZ == '127' ]]; then
-  cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES]_l127.mx@[OCNRES]_frac/oro_data*.nc ./INPUT
-  cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES]_l127.mx@[OCNRES]_frac/gfs_ctrl.nc ./INPUT
- else
-  cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES].mx@[OCNRES]_frac/oro_data*.nc ./INPUT
-  cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES].mx@[OCNRES]_frac/gfs_ctrl.nc ./INPUT
- fi
+  cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES]_L@[NPZ].mx@[OCNRES]_frac/oro_data*.nc ./INPUT
+  cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES]_L@[NPZ].mx@[OCNRES]_frac/gfs_ctrl.nc ./INPUT
 fi
 cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/grid_spec.nc ./INPUT/@[ATMRES]_mosaic.nc
 
@@ -63,13 +58,8 @@ if [ $WARM_START = .F. ]; then
    cp  @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/sfc_data*.nc ./INPUT
    cp  @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/gfs_data*.nc ./INPUT
   else
-   if [[ $NPZ == '127' ]]; then
-     cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES]_l127.mx@[OCNRES]_frac/sfc_data*.nc ./INPUT
-     cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES]_l127.mx@[OCNRES]_frac/gfs_data*.nc ./INPUT
-   else
-     cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES].mx@[OCNRES]_frac/sfc_data*.nc ./INPUT
-     cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES].mx@[OCNRES]_frac/gfs_data*.nc ./INPUT
-   fi
+   cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES]_L@[NPZ].mx@[OCNRES]_frac/sfc_data*.nc ./INPUT
+   cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES]_L@[NPZ].mx@[OCNRES]_frac/gfs_data*.nc ./INPUT
   fi
   cp  @[INPUTDATA_ROOT]/MOM6_IC/MOM*.nc ./INPUT
   cp  @[INPUTDATA_ROOT]/CICE_IC/@[OCNRES]/cice_model_@[ICERES].res_2016100300.nc ./cice_model.res.nc
