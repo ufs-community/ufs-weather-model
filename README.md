@@ -18,7 +18,6 @@ The top level directory structure groups source code and input files as follow:
 | --------------            | ------- |
 | ```LICENSE.md```          | A copy of the GNU Lesser General Public License, Version 3. |
 | ```README.md```           | This file with basic pointers to more information. |
-| ```FMS/```                | Contains Flexible Modeling System source code. |
 | ```NEMS/```               | Contains NOAA Environmental Modeling System source code and nems compset run scripts. |
 | ```CMEPS-interface/```    | Contains CMEPS mediator |
 | ```FV3/```                | Contains FV3 atmosphere model component including FV3 dynamical core, dynamics to physics driver, physics and IO. |
