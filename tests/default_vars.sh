@@ -460,6 +460,10 @@ export CA_GLOBAL=.F.
 
 export IAU_DRYMASSFIXER=.false.
 
+#waves
+export WW3RSTDTHR='12'
+export WW3OUTDTHR='6'
+
 # Regional
 export WRITE_RESTART_WITH_BCS=.false.
 
