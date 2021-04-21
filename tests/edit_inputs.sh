@@ -67,10 +67,6 @@ function edit_ww3_input {
   DT_2_RST_WAV="$(printf "%02d" $(( ${WW3RSTDTHR}*3600 )))"
   DTFLD_WAV="$(printf "%02d" $(( ${WW3OUTDTHR}*3600 )))"
   DTPNT_WAV="$(printf "%02d" $(( ${WW3OUTDTHR}*3600 )))"
-  OUTPARS_WAV="WND HS FP DP PHS PTP PDIR"
-  CPLILINE='$'
-  NFGRIDS=0
-  NMGRIDS=1
 
   sed -e "s/NFGRIDS/$NFGRIDS/g" \
       -e "s/NMGRIDS/${NMGRIDS}/g" \
@@ -82,6 +78,9 @@ function edit_ww3_input {
       -e "s/CPLILINE/${CPLILINE}/g" \
       -e "s/UNIPOINTS/'points'/g" \
       -e "s/GRIDLINE/${ww3gline}/g" \
+      -e "s/ICELINE/$ICELINE/g" \
+      -e "s/CURRLINE/$CURRLINE/g" \
+      -e "s/WINDLINE/$WINDLINE/g" \
       -e "s/RUN_BEG/$SDATEWW3/g" \
       -e "s/RUN_END/$EDATEWW3/g" \
       -e "s/OUT_BEG/$SDATEWW3/g" \

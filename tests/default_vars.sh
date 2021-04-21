@@ -466,7 +466,15 @@ export IAU_DRYMASSFIXER=.false.
 
 #waves
 export WW3RSTDTHR='12'
-export WW3OUTDTHR='6'
+export WW3OUTDTHR='1'
+export OUTPARS_WAV="WND HS FP DP PHS PTP PDIR"
+export CPLILINE='$'
+export ICELINE='$'
+export WINDLINE='$'
+export CURRLINE='$'
+export NFGRIDS=0
+export NMGRIDS=1
+export ww3gline="'glo_30m'  'no' 'no' 'CPL:native' 'no' 'no' 'no' 'no'   1  1  0.00 1.00  F"
 
 # Regional
 export WRITE_RESTART_WITH_BCS=.false.
@@ -607,6 +615,9 @@ export RESTART_EXT='.false.'
 export FRAZIL_FWSALT='.true.'
 # default to write CICE average history files
 export CICE_HIST_AVG='.true.'
+
+#wave
+export ww3gline="'glo_1deg'  'no' 'CPL:native' 'CPL:native' 'CPL:native' 'no' 'no' 'no'   1  1  0.00 1.00  F"
 
 # checkpoint restarts
 export RESTART_FILE_PREFIX=''
