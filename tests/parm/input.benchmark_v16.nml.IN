@@ -12,12 +12,12 @@
   blocksize = 32
   chksum_debug = .false.
   dycore_only = .false.
-  fdiag = 6
-  fhmax = 840
-  fhout = 6
-  fhmaxhf = 0
-  fhouthf = -1
-  ccpp_suite = '@[SUITE_NAME]'
+  fdiag = @[FDIAG]
+  fhmax = @[FHMAX]
+  fhout = @[NFHOUT]
+  fhmaxhf = @[NFHMAX_HF]
+  fhouthf = @[NFHOUT_HF]
+  ccpp_suite = @[CCPP_SUITE]
   
 /
 
@@ -48,6 +48,7 @@
   ntiles   = 6,
   npz    = @[NPZ]
   dz_min = @[DZ_MIN]
+  psm_bc = @[PSM_BC]
   grid_type = -1
   make_nh = @[MAKE_NH]
   fv_debug = .false.
@@ -79,7 +80,7 @@
   fv_sg_adj = 450
   d2_bg = 0.
   nord = 2
-  dddmp = 0.1
+  dddmp = @[DDDMP]
   d4_bg = 0.12
   vtdm4 = 0.02
   delt_max = 0.002
@@ -180,8 +181,8 @@
   iopt_tbot    = 2
   iopt_stc     = 1
   debug        = .false.
-  nstf_name    = 0,0,0,0,0
   frac_grid    = @[FRAC_GRID]
+  nstf_name    = @[NSTF_NAME]
   nst_anl      = .false.
   psautco      = 0.0008,0.0005
   prautco      = 0.00015,0.00015
@@ -285,7 +286,7 @@
   FAISS = 99999
   FSNOL = 99999
   FSNOS = 99999
-  FSICL = 99999
+  FSICL = @[FSICL]
   FSICS = 99999
   FTSFL = 99999
   FVETL = 99999

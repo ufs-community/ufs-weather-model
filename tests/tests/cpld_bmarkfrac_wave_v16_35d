@@ -72,7 +72,7 @@ export NPROC_ICE='48'
 export CDMBWD=${CDMBWD_c384}
 
 # set component and coupling timesteps
-export DT_ATMOS='300'
+export DT_ATMOS='225'
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6='900'
 export DT_THERM_MOM6='1800'
@@ -89,7 +89,8 @@ export CPLMODE='nems_frac'
 
 export NPZ=127
 export NPZP=128
-#export DZ_MIN=6
+export PSM_BC=1
+export DDDMP=0.2
 
 export CPLWAV='.T.'
 export CPLWAV2ATM='.T.'
@@ -120,7 +121,7 @@ export RUNID="cpcice"
 export INPUT_NML=input.benchmark_v16.nml.IN
 
 export FIELD_TABLE="field_table_gfsv16"
-export DIAG_TABLE="diag_table_gfsv16"
-export SUITE_NAME="FV3_GFS_v16_coupled"
+export DIAG_TABLE="diag_table_bmark_v16_template"
+export CCPP_SUITE="FV3_GFS_v16_coupled"
 export RT35D='.T.'
 export FV3_RUN=cpld_bmark_run.IN

@@ -146,7 +146,7 @@ elif [[ $MACHINE_ID = hera.* ]]; then
 elif [[ $MACHINE_ID = linux.* ]]; then
 
   if [[ $CI_TEST = true ]]; then
-  TASKS_dflt=12 ; TPN_dflt=16 ; INPES_dflt=1 ; JNPES_dflt=1
+  TASKS_dflt=42 ; TPN_dflt=48 ; INPES_dflt=3 ; JNPES_dflt=2
   else
   TASKS_dflt=150 ; TPN_dflt=40 ; INPES_dflt=3 ; JNPES_dflt=8
   fi
@@ -320,6 +320,7 @@ export WRITE_GROUP=1
 export WRTTASK_PER_GROUP=6
 export OUTPUT_HISTORY=.true.
 export WRITE_DOPOST=.false.
+export POSTAPP=''
 export NUM_FILES=2
 export FILENAME_BASE="'dyn' 'phy'"
 export OUTPUT_GRID="'cubed_sphere_grid'"
@@ -389,6 +390,7 @@ export IMFSHALCNV=2
 export HWRF_SAMFSHAL=.F.
 export IMFDEEPCNV=2
 export HWRF_SAMFDEEP=.F.
+export RAS=.F.
 
 # SFC
 export DO_MYJSFC=.F.
@@ -399,6 +401,8 @@ export LSM=1
 export LSOIL_LSM=4
 export LANDICE=.T.
 export KICE=2
+export IALB=1
+export IEMS=1
 
 # Ozone / stratospheric H2O
 export OZ_PHYS_OLD=.T.
@@ -478,7 +482,6 @@ export DATM=false
 
 export DAYS="1"
 export FHMAX="24"
-export FDIAG="6"
 export WLCLK=30
 
 # default atm/ocn/ice resolution
@@ -534,9 +537,10 @@ export RUNTYPE='startup'
 # to run frac_grid, set both frac_grid and FRAC_GRID_INPUTs to .T.
 export FRAC_GRID='.F.'
 export FRAC_GRID_INPUT='.T.'
-export SUITE_NAME="FV3_GFS_2017_coupled"
+export CCPP_SUITE="FV3_GFS_2017_coupled"
 export INPUT_NML=input.mom6_ccpp.nml.IN
 export FIELD_TABLE="field_table"
+export DIAG_TABLE="diag_table_template"
 
 export FHROT='0'
 export NSOUT='-1'
@@ -551,7 +555,10 @@ export CPL='.true.'
 export NSTF_NAME='0,0,0,0,0'
 
 export DZ_MIN='2'
+export PSM_BC='0'
 export MIN_SEAICE='1.0e-11'
+export DDDMP='0.1'
+export FSICL='99999'
 
 # resolution dependent settings
 export CDMBWD_c96='0.14,1.8,1.0,1.0'
@@ -582,6 +589,7 @@ export MOM6_REPRO_LA='False'
 export MOM6_THERMO_SPAN='False'
 # no WW3
 export MOM6_USE_WAVES='False'
+export MOM6_ALLOW_LANDMASK_CHANGES='False'
 
 # CICE6 defaults; 1 degree
 export NPROC_ICE='12'
@@ -671,8 +679,8 @@ export coupling_interval_fast_sec=${CPL_FAST}
 export RESTART_N=${FHMAX}
 export CPLMODE='nems_orig_data'
 export cap_dbug_flag="0"
-export use_coldstart=".false."
-export use_mommesh=".false."
+export use_coldstart="false"
+export use_mommesh="false"
 export RUNTYPE='startup'
 export flux_convergence='0.0'
 export flux_iteration='2'
@@ -681,6 +689,7 @@ export flux_scheme='0'
 export INPUT_NML=input.mom6.nml.IN
 export MODEL_CONFIGURE=datm_configure.IN
 export FIELD_TABLE="field_table"
+export DIAG_TABLE="diag_table_template"
 
 # MOM6 defaults; 1 degree
 export MOM_INPUT=MOM_input_template_100
@@ -694,6 +703,7 @@ export MOM6_REPRO_LA='False'
 export MOM6_THERMO_SPAN='False'
 # no WW3
 export MOM6_USE_WAVES='False'
+export MOM6_ALLOW_LANDMASK_CHANGES='False'
 
 # CICE6 defaults; 1 degree
 export MESHOCN_ICE="mesh.mx${OCNRES}.nc"
