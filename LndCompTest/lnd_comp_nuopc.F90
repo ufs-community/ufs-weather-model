@@ -278,7 +278,7 @@ contains
     ! --------------------- 
     ! initialize noah:
     ! ---------------------   
-
+    call init_driver
 
 
   end subroutine InitializeRealize

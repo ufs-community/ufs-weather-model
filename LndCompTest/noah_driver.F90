@@ -1,7 +1,7 @@
 module noah_driver
 
 
-  !use noah_loop, only: noah_loop_init, noah_loop_run
+  use noah_loop, only: noah_loop_init, noah_loop_run
   
   implicit none
 
@@ -28,7 +28,7 @@ contains
     isot = 1
     ivegsrc = 1
     
-    !call noah_loop_init(0, isot, ivegsrc, 0 , errmsg, errflg)
+    call noah_loop_init(0, isot, ivegsrc, 0 , errmsg, errflg)
     
   end subroutine init_driver
 
