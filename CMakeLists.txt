@@ -35,7 +35,7 @@ set(FMS             OFF CACHE BOOL "Enable FMS")
 set(FV3             OFF CACHE BOOL "Enable FV3")
 set(MOM6            OFF CACHE BOOL "Enable MOM6")
 set(CICE6           OFF CACHE BOOL "Enable CICE6")
-set(LndCompTest     OFF CACHE BOOL "Enable LndCompTest")
+set(Noah-Comp       OFF CACHE BOOL "Enable Noah-Comp")
 set(WW3             OFF CACHE BOOL "Enable WW3")
 set(STOCH_PHYS      OFF CACHE BOOL "Enable Stochastic Physics")
 set(NEMSdatm        OFF CACHE BOOL "Enable NEMSdatm")
@@ -100,7 +100,7 @@ message("FMS .............. ${FMS}")
 message("FV3 .............. ${FV3}")
 message("MOM6 ............. ${MOM6}")
 message("CICE6 ............ ${CICE6}")
-message("LndCompTest ...... ${LndCompTest}")
+message("Noah-Comp ........ ${Noah-Comp}")
 message("WW3 .............. ${WW3}")
 message("STOCH_PHYS ....... ${STOCH_PHYS}")
 message("NEMSdatm ......... ${NEMSdatm}")
@@ -216,8 +216,8 @@ if(WW3)
   set(WW3_LIBS ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/obj/libww3_multi_esmf.a)
 endif()
 
-### S2S Components [CMEPS, MOM6, CICE, LndCompTest]
-### Marine Components [MOM6, CICE6, + LndCompTest ]
+### S2S Components [CMEPS, MOM6, CICE, Noah-Comp]
+### Marine Components [MOM6, CICE6, + Noah-Comp ]
 ###############################################################################
 if(MOM6)
   add_subdirectory(MOM6-interface)
@@ -227,8 +227,8 @@ if(CICE6)
   add_subdirectory(CICE-interface)
 endif()
 
-if (LndCompTest)
-  add_subdirectory(LndCompTest)
+if (Noah-Comp)
+  add_subdirectory(Noah-Comp)
 endif()
 
 ###############################################################################
@@ -330,7 +330,7 @@ if(CICE6)
   list(APPEND _ufs_libs_public cice)
 endif()
 
-if (LndCompTest)
+if (Noah-Comp)
    add_dependencies(ufs lnd_comp)
    list(APPEND _ufs_defs_private FRONT_NOAH=lnd_comp_nuopc)
    list(APPEND _ufs_libs_public lnd_comp)   
