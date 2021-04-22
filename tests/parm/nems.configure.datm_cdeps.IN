@@ -11,6 +11,9 @@ EARTH_attributes::
 # MED #
 MED_model:                      @[med_model]
 MED_petlist_bounds:             @[med_petlist_bounds]
+  Verbosity = 5
+  dbug_flag = 5
+
 ::
 
 # ATM #
@@ -19,8 +22,9 @@ ATM_petlist_bounds:             @[atm_petlist_bounds]
 ATM_attributes::
   Verbosity = 0
   DumpFields = false
-  ProfileMemory = false
-  OverwriteSlice = true
+  mesh_atm  = @[MESH_ATM]
+  diro = "."
+  logfile = atm.log
 ::
 
 # OCN #
@@ -79,19 +83,19 @@ DRIVER_attributes::
       mediator_read_restart = @[use_coldstart]
 ::
 MED_attributes::
-ATM_model:                      @[atm_model]
       ATM_model = @[atm_model]
-      ICE_model = cice6
-      OCN_model = mom6
+      ICE_model = @[ice_model]
+      OCN_model = @[ocn_model]
       history_n = 1
       history_option = nhours
       history_ymd = -999
       coupling_mode = nems_orig_data
 ::
 ALLCOMP_attributes::
-      ScalarFieldCount = 2
+      ScalarFieldCount = 3
       ScalarFieldIdxGridNX = 1
       ScalarFieldIdxGridNY = 2
+      ScalarFieldIdxNextSwCday = 3
       ScalarFieldName = cpl_scalars
       start_type = @[RUNTYPE]
       restart_dir = RESTART/
@@ -103,7 +107,14 @@ ALLCOMP_attributes::
       use_coldstart = @[use_coldstart]
       use_mommesh = @[use_mommesh]
       coldair_outbreak_mod = .false.
+      flds_wiso = .false.
       flux_convergence = @[flux_convergence]
       flux_max_iteration = @[flux_iteration]
       ocn_surface_flux_scheme = @[flux_scheme]
+      orb_eccen = 1.e36
+      orb_iyear = 2000
+      orb_iyear_align = 2000
+      orb_mode = fixed_year
+      orb_mvelp = 1.e36
+      orb_obliq = 1.e36
 ::
