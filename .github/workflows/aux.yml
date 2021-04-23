@@ -53,7 +53,7 @@ jobs:
           echo "pr_number is $pr_number"
           pr_uid=${{ github.event.workflow_run.head_repository.owner.login }}
           echo "pr_uid is $pr_uid"
-          comment="$(./repo-check.sh $pr_uid 2>/dev/null)"
+          comment="$(./repo_check.sh $pr_uid 2>/dev/null)"
           echo "comment is $comment"
         fi
 
@@ -73,6 +73,7 @@ jobs:
 
   startrunner:
     name: Start runners
+    needs: repocheck
     runs-on: ubuntu-20.04
     outputs:
       started: ${{ steps.ec2.outputs.started }}
