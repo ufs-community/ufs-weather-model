@@ -282,9 +282,9 @@ if(JEDI_DRIVER)
 endif()
 
 if(GOCART)
-  list(APPEND _ufs_defs_private FRONT_GSDCHEM=Aerosol_Cap)
   add_dependencies(ufs UFS)
-  target_link_libraries(ufs PUBLIC UFS)
+  list(APPEND _ufs_defs_private FRONT_GSDCHEM=Aerosol_Cap)
+  list(APPEND _ufs_libs_public UFS)
 endif()
 
 if(WW3)
