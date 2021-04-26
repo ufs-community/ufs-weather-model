@@ -88,8 +88,8 @@ function edit_ww3_input {
       -e "s/DTFLD/ $DTFLD_WAV/g" \
       -e "s/FLAGMASKCOMP/ F/g" \
       -e "s/FLAGMASKOUT/ F/g" \
-      -e "s/GOFILETYPE/ 1/g" \
-      -e "s/POFILETYPE/ 1/g" \
+      -e "s/GOFILETYPE/ $WW3OUTPUTTYPE/g" \
+      -e "s/POFILETYPE/ $WW3OUTPUTTYPE/g" \
       -e "s/DTPNT/ $DTPNT_WAV/g" \
       -e "s/RST_BEG/$SDATEWW3/g" \
       -e "s/RSTTYPE/T/g" \

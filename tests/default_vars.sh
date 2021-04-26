@@ -467,6 +467,7 @@ export IAU_DRYMASSFIXER=.false.
 #waves
 export WW3RSTDTHR='12'
 export WW3OUTDTHR='1'
+export WW3OUTPUTTYPE=' '
 export OUTPARS_WAV="WND HS FP DP PHS PTP PDIR"
 export CPLILINE='$'
 export ICELINE='$'
@@ -618,6 +619,7 @@ export CICE_HIST_AVG='.true.'
 
 #wave
 export ww3gline="'glo_1deg'  'no' 'CPL:native' 'CPL:native' 'CPL:native' 'no' 'no' 'no'   1  1  0.00 1.00  F"
+export WW3OUTPUTTYPE=' 1'
 
 # checkpoint restarts
 export RESTART_FILE_PREFIX=''
