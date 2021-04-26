@@ -636,6 +636,7 @@ export_datm ()
 {
 export FV3=false
 export S2S=false
+export CPLWAV=.F.
 export DATM=true
 export DAYS=1
 export FHMAX=24
