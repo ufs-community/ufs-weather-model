@@ -1,23 +1,21 @@
 ###############################################################################
 #
-#  FV3 CCPP CSAWMGSHOC test
+#  FV3 CCPP control with csawmgshoc test
 #
 ###############################################################################
 
-export TEST_DESCR="Compare FV3 CCPP csawmgshoc results with previous trunk version"
+export TEST_DESCR="Compare FV3 CCPP control with csawmgshoc results with previous trunk version"
 
-export CNTL_DIR=fv3_csawmgshoc
+export CNTL_DIR=control_csawmgshoc
 
-export LIST_FILES="atmos_4xdaily.tile1.nc \
-                   atmos_4xdaily.tile2.nc \
-                   atmos_4xdaily.tile3.nc \
-                   atmos_4xdaily.tile4.nc \
-                   atmos_4xdaily.tile5.nc \
-                   atmos_4xdaily.tile6.nc \
-                   phyf000.nemsio \
-                   phyf024.nemsio \
-                   dynf000.nemsio \
-                   dynf024.nemsio \
+export LIST_FILES="sfcf000.nc \
+                   sfcf024.nc \
+                   atmf000.nc \
+                   atmf024.nc \
+                   GFSFLX.GrbF00 \
+                   GFSFLX.GrbF24 \
+                   GFSPRS.GrbF00 \
+                   GFSPRS.GrbF24 \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -51,18 +49,23 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
                    RESTART/sfc_data.tile5.nc \
                    RESTART/sfc_data.tile6.nc"
 
-
 export_fv3
+export NPZ=127
+export NPZP=128
+export DT_ATMOS=720
+export SYEAR=2021
+export SMONTH=03
+export SDAY=22
+export SHOUR=06
+export RESTART_INTERVAL=12
+export OUTPUT_GRID='gaussian_grid'
+export NSTF_NAME='2,0,0,0,0'
+export WRITE_DOPOST=.true.
+export IAER=5111
 
-DT_ATMOS="600"
 
+export NEW_DIAGTABLE='diag_table_mgtkers'
+export NEW_FIELDTABLE='field_table_csawmgshoc'
+export FV3_RUN=control_run.IN
+export CCPP_SUITE=FV3_GFS_v16_csawmgshoc
 export INPUT_NML=csawmgshoc.nml.IN
-export FV3_RUN=csawmgshoc_run.IN
-export OUTPUT_GRID="'gaussian_grid'"
-export OUTPUT_FILE="'nemsio'"
-export WRITE_NEMSIOFLIP=.true.
-export WRITE_FSYNCFLAG=.true.
-
-export CCPP_SUITE=FV3_GFS_2017_csawmgshoc
-
-

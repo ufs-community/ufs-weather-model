@@ -1,23 +1,21 @@
 ###############################################################################
 #
-#  FV3 CCPP GFDL-MPrad 2way atm-way coupling test
+#  FV3 CCPP control with 2way atm-wav coupling test
 #
 ###############################################################################
 
-export TEST_DESCR="Compare FV3 CCPP GFDL-MP radiation interaction 2way atm-way coupling option with the control"
+export TEST_DESCR="Compare FV3 CCPP control with 2way atm-wav coupling results with previous trunk version"
 
-export CNTL_DIR=fv3_gfdlmprad_atmwav
+export CNTL_DIR=control_atmwav
 
-export LIST_FILES="atmos_4xdaily.tile1.nc \
-                   atmos_4xdaily.tile2.nc \
-                   atmos_4xdaily.tile3.nc \
-                   atmos_4xdaily.tile4.nc \
-                   atmos_4xdaily.tile5.nc \
-                   atmos_4xdaily.tile6.nc \
-                   phyf000.nemsio   \
-                   phyf024.nemsio   \
-                   dynf000.nemsio   \
-                   dynf024.nemsio   \
+export LIST_FILES="sfcf000.nc \
+                   sfcf012.nc \
+                   atmf000.nc \
+                   atmf012.nc \
+                   GFSFLX.GrbF00 \
+                   GFSFLX.GrbF12 \
+                   GFSPRS.GrbF00 \
+                   GFSPRS.GrbF12 \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -38,34 +36,36 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
                    RESTART/fv_tracer.res.tile4.nc \
                    RESTART/fv_tracer.res.tile5.nc \
                    RESTART/fv_tracer.res.tile6.nc \
-                   RESTART/sfc_data.tile1.nc \
-                   RESTART/sfc_data.tile2.nc \
-                   RESTART/sfc_data.tile3.nc \
-                   RESTART/sfc_data.tile4.nc \
-                   RESTART/sfc_data.tile5.nc \
-                   RESTART/sfc_data.tile6.nc \
                    RESTART/phy_data.tile1.nc \
                    RESTART/phy_data.tile2.nc \
                    RESTART/phy_data.tile3.nc \
                    RESTART/phy_data.tile4.nc \
                    RESTART/phy_data.tile5.nc \
                    RESTART/phy_data.tile6.nc \
-                   out_grd.glo_30m"
-
+                   RESTART/sfc_data.tile1.nc \
+                   RESTART/sfc_data.tile2.nc \
+                   RESTART/sfc_data.tile3.nc \
+                   RESTART/sfc_data.tile4.nc \
+                   RESTART/sfc_data.tile5.nc \
+                   RESTART/sfc_data.tile6.nc"
 
 export_fv3
+export NPZ=127
+export NPZP=128
+export DT_ATMOS=600
+export SYEAR=2021
+export SMONTH=03
+export SDAY=22
+export SHOUR=06
+export RESTART_INTERVAL=12
+export OUTPUT_GRID='gaussian_grid'
+export NSTF_NAME='2,0,0,0,0'
+export WRITE_DOPOST=.true.
+export IAER=5111
 
 export TASKS=232
-export WLCLK=60
-
-DT_ATMOS="1200"
-export LGFDLMPRAD=.true.
-export EFFR_IN=.true.
-
-export OUTPUT_GRID="'gaussian_grid'"
-export OUTPUT_FILE="'nemsio'"
-export WRITE_NEMSIOFLIP=.true.
-export WRITE_FSYNCFLAG=.true.
+export WLCLK=30
+export FHMAX=12
 
 export CPL=.true.
 export CPLWAV=.T.
@@ -74,10 +74,9 @@ export atm_model='fv3'
 export atm_petlist_bounds="0 149"
 export wav_model='ww3'
 export wav_petlist_bounds="150 231"
-export coupling_interval_sec=1200.0  #coupling time step, want it to be multiple of 1800 and FV3 time step
+export coupling_interval_sec=600
 export NEMS_CONFIGURE="nems.configure.blocked_atm_wav_2way.IN"
 
-export CCPP_SUITE=FV3_GFS_2017_gfdlmp
-export INPUT_NML=gfdlmp.nml.IN
-export FV3_RUN=gfdlmp_run.IN
-
+export FV3_RUN=control_run.IN
+export CCPP_SUITE=FV3_GFS_v16
+export INPUT_NML=control.nml.IN
