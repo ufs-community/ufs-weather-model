@@ -26,6 +26,12 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
                    phyf024.tile4.nc \
                    phyf024.tile5.nc \
                    phyf024.tile6.nc \
+                   phyf048.tile1.nc \
+                   phyf048.tile2.nc \
+                   phyf048.tile3.nc \
+                   phyf048.tile4.nc \
+                   phyf048.tile5.nc \
+                   phyf048.tile6.nc \
                    dynf000.tile1.nc \
                    dynf000.tile2.nc \
                    dynf000.tile3.nc \
@@ -38,6 +44,12 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
                    dynf024.tile4.nc \
                    dynf024.tile5.nc \
                    dynf024.tile6.nc \
+                   dynf048.tile1.nc \
+                   dynf048.tile2.nc \
+                   dynf048.tile3.nc \
+                   dynf048.tile4.nc \
+                   dynf048.tile5.nc \
+                   dynf048.tile6.nc \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -75,10 +87,14 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
 export_fv3
 
 DT_ATMOS="1200"
+export FHMAX=24
+export RESTART_INTERVAL=0
+
+export NSTF_NAME=2,1,0,0,0
 export DO_RRTMGP=.T.
 
 export FV3_RUN=gfs_v16_run.IN
 export CCPP_SUITE=FV3_GFS_v16_RRTMGP
 export INPUT_NML=v16_c96_rrtmgp.nml.IN
-export IAER=5111
-
+export IAER=1111
+export WLCLK=30
