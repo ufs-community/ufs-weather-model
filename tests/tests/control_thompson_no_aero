@@ -1,43 +1,21 @@
 ###############################################################################
 #
-#  FV3 CCPP Thompson MP without aerosols debug test
+#  FV3 CCPP control with Thompson no aerosol test
 #
 ###############################################################################
 
-export TEST_DESCR="Compare FV3 CCPP Thompson MP without aerosols debug results with previous trunk version"
+export TEST_DESCR="Compare FV3 CCPP control Thompson no aerosol results with previous trunk version"
 
-export CNTL_DIR=fv3_thompson_no_aero_debug
+export CNTL_DIR=control_thompson_no_aero
 
-export LIST_FILES="atmos_4xdaily.tile1.nc \
-                   atmos_4xdaily.tile2.nc \
-                   atmos_4xdaily.tile3.nc \
-                   atmos_4xdaily.tile4.nc \
-                   atmos_4xdaily.tile5.nc \
-                   atmos_4xdaily.tile6.nc \
-                   phyf000.tile1.nc \
-                   phyf000.tile2.nc \
-                   phyf000.tile3.nc \
-                   phyf000.tile4.nc \
-                   phyf000.tile5.nc \
-                   phyf000.tile6.nc \
-                   phyf006.tile1.nc \
-                   phyf006.tile2.nc \
-                   phyf006.tile3.nc \
-                   phyf006.tile4.nc \
-                   phyf006.tile5.nc \
-                   phyf006.tile6.nc \
-                   dynf000.tile1.nc \
-                   dynf000.tile2.nc \
-                   dynf000.tile3.nc \
-                   dynf000.tile4.nc \
-                   dynf000.tile5.nc \
-                   dynf000.tile6.nc \
-                   dynf006.tile1.nc \
-                   dynf006.tile2.nc \
-                   dynf006.tile3.nc \
-                   dynf006.tile4.nc \
-                   dynf006.tile5.nc \
-                   dynf006.tile6.nc \
+export LIST_FILES="sfcf000.nc \
+                   sfcf024.nc \
+                   atmf000.nc \
+                   atmf024.nc \
+                   GFSFLX.GrbF00 \
+                   GFSFLX.GrbF24 \
+                   GFSPRS.GrbF00 \
+                   GFSPRS.GrbF24 \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -72,32 +50,35 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
                    RESTART/sfc_data.tile6.nc"
 
 export_fv3
+export NPZ=127
+export NPZP=128
+export DT_ATMOS=600
+export SYEAR=2021
+export SMONTH=03
+export SDAY=22
+export SHOUR=06
+export RESTART_INTERVAL=0
+export OUTPUT_GRID='gaussian_grid'
+export NSTF_NAME='2,0,0,0,0'
+export WRITE_DOPOST=.true.
 
-export FHMAX=6
-export FDIAG=3
-
-export DT_ATMOS="600"
 export IMP_PHYSICS=8
 export DNATS=0
 export DO_SAT_ADJ=.F.
 export LRADAR=.T.
 export NSRADAR_RESET=3600.0
 export LTAEROSOL=.F.
-
-export FV3_RUN=gsd_run.IN
-export CCPP_SUITE=FV3_GFS_v16_thompson
-export INPUT_NML=gsd.nml.IN
-
 export HYBEDMF=.F.
 export SATMEDMF=.T.
 export DO_MYNNEDMF=.F.
-
 export IMFSHALCNV=2
 export IMFDEEPCNV=2
-
 export IAER=5111
 export ICLIQ_SW=2
 export IOVR=3
-
 export LHEATSTRG=.T.
-export DO_TOFD=.T.
+export DO_TOFD=.T
+
+export FV3_RUN=control_run.IN
+export CCPP_SUITE=FV3_GFS_v16_thompson
+export INPUT_NML=control_thompson.nml.IN

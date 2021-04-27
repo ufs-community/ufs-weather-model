@@ -339,6 +339,7 @@ export JMO=190
 # Coldstart/warmstart
 export WARM_START=.F.
 export READ_INCREMENT=.F.
+export RES_LATLON_DYNAMICS="''"
 export NGGPS_IC=.T.
 export EXTERNAL_IC=.T.
 export MAKE_NH=.T.

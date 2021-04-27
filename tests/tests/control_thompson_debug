@@ -1,25 +1,21 @@
 ###############################################################################
 #
-#  FV3 CCPP GFS v16 compiled with 32-bit dynamics test
+#  FV3 CCPP control with Thompson debug test
 #
 ###############################################################################
 
-export TEST_DESCR="Compare FV3 32bit CCPP GFS v16 results with previous trunk version"
+export TEST_DESCR="Compare FV3 CCPP control Thompson debug results with previous trunk version"
 
-export CNTL_DIR=fv3_gfs_v16
+export CNTL_DIR=control_thompson_debug
 
-export LIST_FILES="phyf048.tile1.nc \
-                   phyf048.tile2.nc \
-                   phyf048.tile3.nc \
-                   phyf048.tile4.nc \
-                   phyf048.tile5.nc \
-                   phyf048.tile6.nc \
-                   dynf048.tile1.nc \
-                   dynf048.tile2.nc \
-                   dynf048.tile3.nc \
-                   dynf048.tile4.nc \
-                   dynf048.tile5.nc \
-                   dynf048.tile6.nc \
+export LIST_FILES="sfcf000.nc \
+                   sfcf001.nc \
+                   atmf000.nc \
+                   atmf001.nc \
+                   GFSFLX.GrbF00 \
+                   GFSFLX.GrbF01 \
+                   GFSPRS.GrbF00 \
+                   GFSPRS.GrbF01 \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -40,36 +36,47 @@ export LIST_FILES="phyf048.tile1.nc \
                    RESTART/fv_tracer.res.tile4.nc \
                    RESTART/fv_tracer.res.tile5.nc \
                    RESTART/fv_tracer.res.tile6.nc \
-                   RESTART/sfc_data.tile1.nc \
-                   RESTART/sfc_data.tile2.nc \
-                   RESTART/sfc_data.tile3.nc \
-                   RESTART/sfc_data.tile4.nc \
-                   RESTART/sfc_data.tile5.nc \
-                   RESTART/sfc_data.tile6.nc \
                    RESTART/phy_data.tile1.nc \
                    RESTART/phy_data.tile2.nc \
                    RESTART/phy_data.tile3.nc \
                    RESTART/phy_data.tile4.nc \
                    RESTART/phy_data.tile5.nc \
-                   RESTART/phy_data.tile6.nc"
-
+                   RESTART/phy_data.tile6.nc \
+                   RESTART/sfc_data.tile1.nc \
+                   RESTART/sfc_data.tile2.nc \
+                   RESTART/sfc_data.tile3.nc \
+                   RESTART/sfc_data.tile4.nc \
+                   RESTART/sfc_data.tile5.nc \
+                   RESTART/sfc_data.tile6.nc"
 
 export_fv3
+export NPZ=127
+export NPZP=128
+export DT_ATMOS=600
+export SYEAR=2021
+export SMONTH=03
+export SDAY=22
+export SHOUR=06
+export OUTPUT_GRID='gaussian_grid'
+export NSTF_NAME='2,0,0,0,0'
+export FHMAX=1
 
-DT_ATMOS="1200"
+export IMP_PHYSICS=8
+export DNATS=0
+export DO_SAT_ADJ=.F.
+export LRADAR=.T.
+export LTAEROSOL=.T.
+export HYBEDMF=.F.
+export SATMEDMF=.T.
+export DO_MYNNEDMF=.F.
+export IMFSHALCNV=2
+export IMFDEEPCNV=2
+export IAER=5111
+export ICLIQ_SW=2
+export IOVR=3
+export LHEATSTRG=.T.
+export DO_TOFD=.T.
 
-export FHMAX=48
-export RESTART_INTERVAL=24
-
-export WARM_START=.T.
-export NGGPS_IC=.F.
-export EXTERNAL_IC=.F.
-export MAKE_NH=.F.
-export MOUNTAIN=.T.
-export NSTF_NAME=2,0,0,0,0
-export IAER=1111
-
-export FV3_RUN=gfs_v16_run.IN
-export CCPP_SUITE=FV3_GFS_v16
-export INPUT_NML=v16_c96.nml.IN
-
+export FV3_RUN=control_run.IN
+export CCPP_SUITE=FV3_GFS_v16_thompson
+export INPUT_NML=control_thompson.nml.IN
