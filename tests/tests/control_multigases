@@ -1,20 +1,14 @@
 ###############################################################################
 #
-#  FV3 multi-gases test
+#  FV3 CCPP control multigases test
 #
 ###############################################################################
 
-export TEST_DESCR="Compare CCPP FV3 multi-gases results with previous trunk version"
+export TEST_DESCR="Compare FV3 CCPP control multigases results with previous trunk version"
 
-export CNTL_DIR=fv3_multigases
+export CNTL_DIR=control__multigases
 
-export LIST_FILES="atmos_4xdaily.tile1.nc \
-                   atmos_4xdaily.tile2.nc \
-                   atmos_4xdaily.tile3.nc \
-                   atmos_4xdaily.tile4.nc \
-                   atmos_4xdaily.tile5.nc \
-                   atmos_4xdaily.tile6.nc \
-                   phyf000.tile1.nc \
+export LIST_FILES="phyf000.tile1.nc \
                    phyf000.tile2.nc \
                    phyf000.tile3.nc \
                    phyf000.tile4.nc \
@@ -69,26 +63,23 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
                    RESTART/sfc_data.tile3.nc \
                    RESTART/sfc_data.tile4.nc \
                    RESTART/sfc_data.tile5.nc \
-                   RESTART/sfc_data.tile6.nc \
-                   RESTART/phy_data.tile1.nc \
-                   RESTART/phy_data.tile2.nc \
-                   RESTART/phy_data.tile3.nc \
-                   RESTART/phy_data.tile4.nc \
-                   RESTART/phy_data.tile5.nc \
-                   RESTART/phy_data.tile6.nc"
+                   RESTART/sfc_data.tile6.nc"
 
-                                                    
 export_fv3
 export NPZ=149
 export NPZP=150
-DT_ATMOS="225"
-SYEAR="2017"
-SMONTH="01"
-SDAY="19"
-SHOUR="06"
+export DT_ATMOS="225"
+export SYEAR="2017"
+export SMONTH="01"
+export SDAY="19"
+export SHOUR="06"
 export FHMAX=06
 export FDIAG=0,1,2,3,4,5,6
 export NSTF_NAME=0,0,1,0,5
 export INPUT_NML=multi_gases.nml.IN
 export FV3_RUN=multigases_run.IN
-export CCPP_SUITE=FV3_GFS_2017_fv3wam
+export CCPP_SUITE=FV3_GFS_v16_fv3wam
+export IAER=5111
+export OZ_PHYS_OLD=.F.
+export OZ_PHYS_NEW=.T.
+export H2O_PHYS=.T.
