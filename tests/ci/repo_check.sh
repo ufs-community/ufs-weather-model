@@ -80,7 +80,7 @@ done
 cd ${GITHUB_WORKSPACE}
 git remote add upstream ${base[repo]}
 git fetch -q upstream ${base[branch]}
-common=$(git merge-base upstream/${base[branch]} @)
+common=$(git merge-base ${base[sha]} @)
 if [[ $common != ${base[sha]} ]]; then
   comment="* ufs-weather-model **NOT** up to date\n"
 fi
@@ -89,7 +89,7 @@ for submodule in $submodules; do
   eval cd ${GITHUB_WORKSPACE}/'${'$submodule'[dir]}'
   eval git remote add upstream '${'$submodule'[repo]}'
   eval git fetch -q upstream '${'$submodule'[branch]}'
-  common=$(eval git merge-base upstream/'${'$submodule'[branch]}' @)
+  common=$(eval git merge-base '${'$submodule'[sha]}' @)
   if (eval test $common != '${'$submodule'[sha]}'); then
     comment+="* $submodule **NOT** up to date\n"
   fi
