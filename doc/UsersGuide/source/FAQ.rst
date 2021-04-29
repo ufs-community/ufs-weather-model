@@ -92,5 +92,68 @@ How do I select the file format for the model output (netCDF or NEMSIO)?
 ========================================================================
 In your run directory, there is a file named ``model_configure``.  Change the
 variable ``output_file`` to ``'netcdf'`` or ``'nemsio'``. The variable ``output_file``
-if only valid when the write component is activated by setting ``quilting`` to .true.
+is only valid when the write component is activated by setting ``quilting`` to .true.
 in the ``model_configure`` file.
+
+==============================================================
+How do I set the output history interval?
+==============================================================
+The interval at which output (history) files are written is controlled in two
+places, and depends on whether you are using the write component to generate your output files.
+:numref:`Table %s <OutputControl>` describes the relevant variables.  If the write_component is used, then the variables listed as *model_configure* are required.  It is however, also required that the settings in *input.nml* match those same settings in *model_configure*.  If these settings are inconsistent, then unpredictable output files and intervals may occur!
+
+.. _OutputControl:
+
+.. list-table:: *Namelist variables used to control the output file frequency.*
+   :widths: 15 10 10 30 
+   :header-rows: 1
+
+   * - Namelist variable
+     - Location
+     - Default Value
+     - Description
+   * - fdiag
+     - input.nml
+     - 0
+     - Array with dimension ``maxhr`` = 4096 listing the diagnostic output times (in hours) for the GFS physics.
+       This can either be a list of times after initialization, or an interval if only the first entry is
+       nonzero. The default setting of 0 will result in no outputs.
+   * - fhmax
+     - input.nml
+     - 384
+     - The maximal forecast time for output.
+   * - fhmaxhf
+     - input.nml
+     - 120
+     - The maximal forecast hour for high frequency output.
+   * - fhout
+     - input.nml
+     - 3
+     - Output frequency during forecast time from 0 to ``fhmax``, or from ``fhmaxhf`` to ``fhmax`` if ``fhmaxf>0``.
+   * - fhouthf
+     - input.nml
+     - 1
+     - The high frequency output frequency during the forecast time from 0 to ``fhmaxhf`` hour.
+   * - nfhmax_hf
+     - model_configure
+     - 0
+     - forecast length of high history file
+   * - nfhout_hf
+     - model_configure
+     - 1
+     - high history file output frequency
+   * - nfhout
+     - model_configure
+     - 3
+     - history file output frequency
+
+==============================================================
+How do I set the total number of tasks for my job?
+==============================================================
+The total number of MPI tasks used by the UFS Weather Model is a combination of compute and quilt tasks, and can be calculated using the following relationship:
+
+- total tasks = compute tasks + quilt tasks
+- compute tasks = x layout * y layout * number of tiles
+- quilt tasks = write_groups * write_tasks_per_group if quilting==.true.
+
+The layout and tiles settings are in ``input.nml``, and the quilt task settings are in ``model_configure``
