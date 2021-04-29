@@ -315,7 +315,7 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
   PARTITION=
   dprefix=/glade/scratch
   DISKNM=/glade/p/ral/jntp/GMTB/ufs-weather-model/RT
-  STMP=/glade/work
+  STMP=$dprefix
   PTMP=$dprefix
   SCHEDULER=pbs
   cp fv3_conf/fv3_qsub.IN_cheyenne fv3_conf/fv3_qsub.IN
