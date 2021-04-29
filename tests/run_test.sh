@@ -104,6 +104,10 @@ cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
 # Set up the run directory
 source ./fv3_run
 
+if [[ $CPLWAV == .T. ]]; then
+  edit_ww3_input  < ${PATHRT}/parm/ww3_multi.inp.IN > ww3_multi.inp
+fi
+
 if [[ $DATM = 'true' ]] || [[ $S2S = 'true' ]]; then
   edit_ice_in     < ${PATHRT}/parm/ice_in_template > ice_in
   edit_mom_input  < ${PATHRT}/parm/${MOM_INPUT:-MOM_input_template_$OCNRES} > INPUT/MOM_input

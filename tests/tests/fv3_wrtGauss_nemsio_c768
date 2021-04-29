@@ -66,6 +66,7 @@ else
   export TPN=12
 fi
 
+
 export INPES=16
 export JNPES=12
 export NPX=769
@@ -101,6 +102,13 @@ export wav_model='ww3'
 export wav_petlist_bounds="1260 1469"
 export coupling_interval_sec=1800.0  #coupling time step, want it to be multiple of 1800 and FV3 time step
 export NEMS_CONFIGURE="nems.configure.blocked_atm_wav.IN"
+
+export NFGRIDS=1
+export NMGRIDS=3
+export CPLILINE="'glo_15mxt'  F F T F F F F"
+export ww3gline="'glo_10m' 'no' 'no' 'CPL:glo_15mxt' 'no'  'no' 'no' 'no'  1 10  0.00 1.00  F\n"
+export ww3gline="${ww3gline}'aoc_9km' 'no' 'no' 'CPL:glo_15mxt' 'no'  'no' 'no' 'no'  2 20  0.00 1.00  F\n"
+export ww3gline="${ww3gline}'ant_9km' 'no' 'no' 'CPL:glo_15mxt' 'no'  'no' 'no' 'no'  3 30  0.00 1.00  F"
 
 export FV3_RUN=control_run.IN
 export CCPP_SUITE=FV3_GFS_2017

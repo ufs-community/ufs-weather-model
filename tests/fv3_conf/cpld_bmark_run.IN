@@ -58,10 +58,7 @@ cp    @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/mesh.mx@[OCNRES].nc .
 if [[ $CPLWAV == .T. && $CPLWAV2ATM == .T. ]]; then
   cp    @[INPUTDATA_ROOT_WW3]/mod_def.* .
   if [[ $RT35D == .T. ]]; then
-   cp    @[INPUTDATA_ROOT_WW3]/ww3_multi_35d.inp ww3_multi.inp
    cp    @[INPUTDATA_ROOT_BMIC]/${SYEAR}${SMONTH}${SDAY}${SHOUR}/ww3/*.000000.restart.gwes_30m ./restart.gwes_30m
-  else
-   cp    @[INPUTDATA_ROOT_WW3]/ww3_multi.inp .
   fi
 fi
 
