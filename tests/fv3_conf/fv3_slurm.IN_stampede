@@ -8,7 +8,7 @@
 #SBATCH -t 00:@[WLCLK]:00
 
 set -eux
-echo -n " $( date +%s )," >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+echo -n " $( date +%s )," >  job_timestamp.txt
 
 set +x
 source ./module-setup.sh
@@ -33,4 +33,4 @@ export LD_BIND_NOW=1
 ibrun   ./fv3.exe
 
 echo "Model ended:    " `date`
-echo -n " $( date +%s )," >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+echo -n " $( date +%s )," >> job_timestamp.txt

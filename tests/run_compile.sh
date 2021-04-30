@@ -62,6 +62,8 @@ else
   ./job_card
 fi
 
+cp ${RUNDIR}/compile_*_time.log ${LOG_DIR}
+cat ${RUNDIR}/job_timestamp.txt >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
 ################################################################################
 # End compile job
 ################################################################################
