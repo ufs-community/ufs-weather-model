@@ -9,13 +9,13 @@ mkdir  INPUT RESTART
 rsync -arv @[INPUTDATA_ROOT]/fv3_regional_control/INPUT/. INPUT/.
 
 if [ $WARM_START = .T. ]; then
-    cp ../fv3_regional_control${RT_SUFFIX}/RESTART/20181015.120000.coupler.res             INPUT/coupler.res
-    cp ../fv3_regional_control${RT_SUFFIX}/RESTART/20181015.120000.fv_core.res.nc          INPUT/fv_core.res.nc
-    cp ../fv3_regional_control${RT_SUFFIX}/RESTART/20181015.120000.fv_core.res.tile1.nc    INPUT/fv_core.res.tile1.nc
-    cp ../fv3_regional_control${RT_SUFFIX}/RESTART/20181015.120000.fv_srf_wnd.res.tile1.nc INPUT/fv_srf_wnd.res.tile1.nc
-    cp ../fv3_regional_control${RT_SUFFIX}/RESTART/20181015.120000.fv_tracer.res.tile1.nc  INPUT/fv_tracer.res.tile1.nc
-    cp ../fv3_regional_control${RT_SUFFIX}/RESTART/20181015.120000.phy_data.nc             INPUT/phy_data.nc
-    cp ../fv3_regional_control${RT_SUFFIX}/RESTART/20181015.120000.sfc_data.nc             INPUT/sfc_data.nc
+    cp ../regional_control${RT_SUFFIX}/RESTART/20181015.120000.coupler.res             INPUT/coupler.res
+    cp ../regional_control${RT_SUFFIX}/RESTART/20181015.120000.fv_core.res.nc          INPUT/fv_core.res.nc
+    cp ../regional_control${RT_SUFFIX}/RESTART/20181015.120000.fv_core.res.tile1.nc    INPUT/fv_core.res.tile1.nc
+    cp ../regional_control${RT_SUFFIX}/RESTART/20181015.120000.fv_srf_wnd.res.tile1.nc INPUT/fv_srf_wnd.res.tile1.nc
+    cp ../regional_control${RT_SUFFIX}/RESTART/20181015.120000.fv_tracer.res.tile1.nc  INPUT/fv_tracer.res.tile1.nc
+    cp ../regional_control${RT_SUFFIX}/RESTART/20181015.120000.phy_data.nc             INPUT/phy_data.nc
+    cp ../regional_control${RT_SUFFIX}/RESTART/20181015.120000.sfc_data.nc             INPUT/sfc_data.nc
 fi
 if [ $WRITE_RESTART_WITH_BCS = .true. ]; then
     cp @[INPUTDATA_ROOT]/fv3_regional_control/RESTART/fv_core.res.tile1_new.nc                           RESTART/fv_core.res.tile1_new.nc
