@@ -1,12 +1,12 @@
 ###############################################################################
 #
-#  FV3 CCPP control with Thompson debug test
+#  FV3 CCPP control c384gdas debug test
 #
 ###############################################################################
 
-export TEST_DESCR="Compare FV3 CCPP control Thompson debug results with previous trunk version"
+export TEST_DESCR="Compare FV3 CCPP control c384gdas debug results with previous trunk version"
 
-export CNTL_DIR=control_thompson_debug
+export CNTL_DIR=control_c384gdas_debug
 
 export LIST_FILES="sfcf000.nc \
                    sfcf001.nc \
@@ -46,33 +46,48 @@ export LIST_FILES="sfcf000.nc \
                    RESTART/sfc_data.tile6.nc"
 
 export_fv3
+export TASKS=312
+export TPN=$TPN_thrd
+export INPES=6
+export JNPES=8
+export WRITE_GROUP=1
+export WRTTASK_PER_GROUP=24
+export FHMAX=7
 export NPZ=127
 export NPZP=128
-export DT_ATMOS=600
+export NPX=385
+export NPY=385
+export DT_ATMOS=225
+
 export SYEAR=2021
 export SMONTH=03
-export SDAY=22
-export SHOUR=06
+export SDAY=21
+export SHOUR=18
+export FHROT=3
+export FDIAG=1
+export NFHMAX_HF=7
+export IAU_OFFSET=6
+export CDMBWD=${CDMBWD_c384}
 export OUTPUT_GRID='gaussian_grid'
-export NSTF_NAME='2,0,0,0,0'
-export FHMAX=1
+export IMO=1536
+export JMO=768
 
-export IMP_PHYSICS=8
-export DNATS=0
-export DO_SAT_ADJ=.F.
-export LRADAR=.T.
-export LTAEROSOL=.T.
-export HYBEDMF=.F.
-export SATMEDMF=.T.
-export DO_MYNNEDMF=.F.
-export IMFSHALCNV=2
-export IMFDEEPCNV=2
-export IAER=5111
-export ICLIQ_SW=2
-export IOVR=3
-export LHEATSTRG=.T.
-export DO_TOFD=.T.
+export WARM_START=.true.
+export NGGPS_IC=.false.
+export EXTERNAL_IC=.false.
+export MAKE_NH=.false.
+export MOUNTAIN=.true.
+export NA_INIT=0
+export IAU_INC_FILES="'fv_increment3.nc','fv_increment6.nc','fv_increment9.nc'"
+export MODEL_INITIALIZATION=true
+export WLCLK=30
 
+export FNALBC="'global_snowfree_albedo.bosu.t766.1536.768.rg.grb',"
+export FNVETC="'global_vegtype.igbp.t766.1536.768.rg.grb',"
+export FNSOTC="'global_soiltype.statsgo.t766.1536.768.rg.grb',"
+export FNABSC="'global_mxsnoalb.uariz.t766.1536.768.rg.grb',"
+
+export MODEL_INITIALIZATION=true
 export FV3_RUN=control_run.IN
-export CCPP_SUITE=FV3_GFS_v16_thompson
-export INPUT_NML=control_thompson.nml.IN
+export CCPP_SUITE=FV3_GFS_v16
+export INPUT_NML=control_gdas.nml.IN

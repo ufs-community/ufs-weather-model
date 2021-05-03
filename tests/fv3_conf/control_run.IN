@@ -22,30 +22,48 @@ else
     SUFFIX=${BL_SUFFIX}
   fi
 
-  rsync -arv ../control${SUFFIX}/RESTART/ INPUT/
-  if [[ $IAU_INC_FILES = 'fv3_increment.nc' ]] || [[ $READ_INCREMENT = '.T.' ]]; then
+  if [ $MODEL_INITIALIZATION = false ]; then
     #read_inc and iau tests restart from fh=24
-    cp ../control${SUFFIX}/RESTART/coupler.res INPUT/.
-    cp ../control${SUFFIX}/RESTART/fv_core.res.* INPUT/.
-    cp ../control${SUFFIX}/RESTART/fv_srf_wnd.res.* INPUT/.
-    cp ../control${SUFFIX}/RESTART/fv_tracer.* INPUT/.
-    cp ../control${SUFFIX}/RESTART/phy_data.* INPUT/.
-    cp ../control${SUFFIX}/RESTART/sfc_data.* INPUT/.
-    cp ../control${SUFFIX}/INPUT/fv3_increment.nc INPUT/.
-    cd INPUT
+    CURRDIR=`pwd`
+    FILEDIR=${CURRDIR}/../control${SUFFIX}/RESTART/
+  else
+    #for warm start from initialiation time
+    FILEDIR=@[INPUTDATA_ROOT]/${inputdir}/INPUT_L127_GDAS
+  fi
+
+  if [[ "$IAU_INC_FILES" != '' ]] || [[ $READ_INCREMENT = '.T.' ]]; then
+
+    if [ $MODEL_INITIALIZATION = false ]; then
+      cp ${FILEDIR}/../INPUT/fv3_increment.nc INPUT/.
+      cp ${FILEDIR}/../INPUT/grid_spec.nc INPUT/.
+      cp ${FILEDIR}/../INPUT/*_grid.tile*.nc INPUT/.
+      cp ${FILEDIR}/../INPUT/oro_data.tile*.nc INPUT/.
+    else
+      cp ${FILEDIR}/fv_increment*.nc INPUT/.
+      cp ${FILEDIR}/grid_spec.nc INPUT/.
+      cp ${FILEDIR}/*_grid.tile*.nc INPUT/.
+      cp ${FILEDIR}/oro_data.tile*.nc INPUT/.
+    fi
+    cp ${FILEDIR}/coupler.res INPUT/.
+    cp ${FILEDIR}/fv_core.res.* INPUT/.
+    cp ${FILEDIR}/fv_srf_wnd.res.* INPUT/.
+    cp ${FILEDIR}/fv_tracer.* INPUT/.
+    cp ${FILEDIR}/phy_data.* INPUT/.
+    cp ${FILEDIR}/sfc_data.* INPUT/.
   else
     #restart test start from fh=12
-    cp ../control${SUFFIX}/RESTART/20210322.180000.* INPUT/.
+    rsync -arv ${FILEDIR} INPUT/
+    cp ${FILEDIR}/20210322.180000.* INPUT/.
+    cp ${FILEDIR}/../INPUT/grid_spec.nc INPUT/.
+    cp ${FILEDIR}/../INPUT/*_grid.tile*.nc INPUT/.
+    cp ${FILEDIR}/../INPUT/oro_data.tile*.nc INPUT/.
     cd INPUT
     for RFILE in 20210322.180000.*; do
       [ -e $RFILE ] || exit 1
       mv $RFILE ${RFILE#20210322.180000.}
     done
+    cd ..
   fi
-  cp ../../control${SUFFIX}/INPUT/grid_spec.nc .
-  cp ../../control${SUFFIX}/INPUT/*_grid.tile*.nc .
-  cp ../../control${SUFFIX}/INPUT/oro_data.tile*.nc .
-  cd ..
 
 fi
 

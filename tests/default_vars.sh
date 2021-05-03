@@ -337,6 +337,9 @@ export IMO=384
 export JMO=190
 
 # Coldstart/warmstart
+#rt script for ICs
+export MODEL_INITIALIZATION=false
+#namelist variable
 export WARM_START=.F.
 export READ_INCREMENT=.F.
 export RES_LATLON_DYNAMICS="''"
@@ -438,6 +441,7 @@ export FDIAG=0,1,2,3,4,5,6,7,8,9,10,11,12,15,18,21,24
 export NFHOUT=3
 export NFHMAX_HF=12
 export NFHOUT_HF=1
+export IAU_OFFSET=0
 export FNALBC="'global_snowfree_albedo.bosu.t126.384.190.rg.grb',"
 export FNVETC="'global_vegtype.igbp.t126.384.190.rg.grb',"
 export FNSOTC="'global_soiltype.statsgo.t126.384.190.rg.grb',"
