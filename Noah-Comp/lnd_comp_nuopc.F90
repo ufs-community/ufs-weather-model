@@ -183,6 +183,8 @@ contains
   subroutine InitializeRealize(gcomp, importState, exportState, clock, rc)
 
     use lnd_set_decomp_and_domain , only : lnd_set_decomp_and_domain_from_readmesh ! try out read mask
+
+    use proc_bounds, only : procbounds
     
     ! input/output variables
     type(ESMF_GridComp)  :: gcomp
@@ -208,6 +210,20 @@ contains
     integer             :: gsize
     integer             :: n
     type(ESMF_VM)       :: vm
+
+    ! tmp, debugging
+    integer :: dimCount     ! Number of dimensions (rank) ofdistgrid
+    integer :: deCount      ! Number of DEs in the DELayout indistgrid
+    integer :: localDeCount ! Number of local DEs in the DELayout in distgrid on this PET
+    
+    !integer :: localDe      ! Local DE for which information is requested.[0,..,localDeCount-1]
+    integer :: de            ! The global DE associated with thelocalDe. DE indexing starts at 0.   
+    integer :: elementCount  ! Number of elements in the localDe, i.e. identical to elementCountPDe(localDeToDeMap(localDe))
+    integer , pointer   :: seqIndexList(:)  ! List of sequence indices for the elements onlocalDe
+
+    integer :: i
+
+    
     !-------------------------------------------------------------------------------
     rc = ESMF_SUCCESS
     call ESMF_LogWrite(subname//' called', ESMF_LOGMSG_INFO)
@@ -237,14 +253,36 @@ contains
 
     ! Determine global landmask_glob 
     ! how to get gsize? same as elementCount? No, that's lsize....
-    gsize = lsize ! this is a (wrong) palceholder to test
+    gsize = lsize ! this is a (wrong) placeholder to test
 
     allocate(gindex(lsize))
     allocate(itemp_glob(gsize))
     ! List of sequence indices for the elements on localDe
-    call ESMF_DistGridGet(distgrid, 0, seqIndexList=gindex, rc=rc)
+    !call ESMF_DistGridGet(distgrid, 0, seqIndexList=gindex, rc=rc)
+    !if (chkerr(rc,__LINE__,u_FILE_u)) return
+    !write(*,*) "JP A2.4. gindex = ", gindex
+
+!!! debug prints
+    call ESMF_DistGridGet(distgrid,dimCount=dimCount, deCount=deCount, localDeCount=localDeCount, rc=rc)
     if (chkerr(rc,__LINE__,u_FILE_u)) return
-    write(*,*) "JP A2.4. lsize = ", lsize
+    !write(*,*) "DGG1: ", dimCount, deCount, localDeCount
+
+    allocate(seqIndexList(lsize))
+    call ESMF_DistGridGet(distgrid, localDe=0, de=de,seqIndexList=seqIndexList, rc=rc)
+    if (chkerr(rc,__LINE__,u_FILE_u)) return
+
+    ! do i = 1, lsize
+    !    write(*,*) "DGG2: ", de, seqIndexList(i)
+    ! end do
+
+    procbounds%de = de
+    ! think this will suffice for now for gc indexing:
+    procbounds%gridbeg = seqIndexList(1)
+    procbounds%gridend = seqIndexList(lsize)
+    procbounds%im      = lsize
+    
+    write(*,*) "bounds: ", de, seqIndexList(1), seqIndexList(lsize), lsize
+    
     
     ! do n = 1,lsize
     !    write(*,*) "JP n, gindex(n), lndmask_loc(n) =", n, gindex(n), lndmask_loc(n)
@@ -267,7 +305,11 @@ contains
     ! lndfrac_glob(:) = lndmask_glob(:)
     ! write(*,*) "JP A7"
 
-    
+
+    !!! add for testing,
+    ! call ESMF_MeshGet(mesh_input, elementCount=elementCount, rc=rc)
+    ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    ! write(*,*) "JP B. element count = ", elementCount
 
     ! ---------------------
     ! Realize the actively coupled fields
@@ -278,7 +320,7 @@ contains
     ! --------------------- 
     ! initialize noah:
     ! ---------------------   
-    call init_driver
+    call init_driver(procbounds)
 
 
   end subroutine InitializeRealize
@@ -288,11 +330,9 @@ contains
 
     !use lsm_noah, only: lsm_noah_run
     !use noah_loop, only: noah_loop_run
-    use noah_driver, only: noah_loop_drv
-
-    !use field_print_debug, only: field_foo ! test tmp
-    !use import_2_export_test, only: import_2_export ! test tmp
-    use import_fields, only: import_field
+    use noah_driver, only: noah_loop_drv, noah_pubinst
+    use import_fields, only: write_import_field, import_allfields
+    use proc_bounds, only : procbounds
     
     ! Arguments
     type(ESMF_GridComp)  :: gcomp
@@ -312,15 +352,17 @@ contains
 
     !tmp debug
     real(r8), pointer          :: dataPtr_i(:)
-    !character(len=*),parameter :: fldname_i="foo_atm2lndfield"
-    character(len=*),parameter :: fldname_i="inst_land_sea_mask"
     real(r8), pointer          :: dataPtr_e(:)
     character(len=*),parameter :: fldname_e="foo_lnd2atmfield"
-    !real(r8), allocatable      :: lnd_data(:)  ! change this
-!    character(len=*),parameter :: fldname_i="Faxa_lwdn"
     character(len=80), allocatable :: flds(:)
     character(len=80)   :: fldname
     integer                   :: n
+
+    ! tmp debug
+    integer                 :: i, de, gridbeg, gridend, im
+    real(r8)                :: foodata(procbounds%im)
+
+    
     ! query the Component for its clock, importState and exportState
     ! call ESMF_GridCompGet(gcomp, clock=clock, importState=importState, &
     !      exportState=exportState, rc=rc)
@@ -331,19 +373,17 @@ contains
     ! Unpack import state
     !--------------------------------
 
-    ! call import_fields(importState,rc)....
-
     ! test tmp import
     !call field_foo(importState, trim(fldname_i), dataPtr_i, rc=rc)
     !call import_2_export(importState, exportState, fldname_i, fldname_e, rc)
-
+ 
     allocate(flds(7))
     flds = (/'Faxa_lwdn  '    , 'Faxa_swndr '   , 'Faxa_swvdr '   , 'Faxa_swndf ' , 'Faxa_swvdf ', &
          'Faxa_rain  '    , 'Faxa_snow  ' /)
 
     do n = 1,size(flds)
        fldname = trim(flds(n))
-       call import_field(importState, fldname, rc)
+       call write_import_field(importState, fldname, rc)
     end do
     deallocate(flds)
 
@@ -373,17 +413,38 @@ contains
          'Faxa_vegfpert    ' &
          /)
 
+
+    ! tmp
+    !write(*,*) 'procbound test:', procbounds%de, procbounds%gridbeg, procbounds%gridend
+    
     do n = 1,size(flds)
        fldname = trim(flds(n))
-       call import_field(importState, fldname, rc)
+       call write_import_field(importState, fldname, rc)
     end do
     deallocate(flds)
+
 
     ! end test tmp
 
     ! ...end call import_fields
+    call import_allfields(procbounds, noah_pubinst, rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
     
+    ! run model
+    !call noah_loop_drv()
+    call noah_loop_drv(procbounds, noah_pubinst)
 
+    ! tmp test
+    im = procbounds%im
+    gridbeg = procbounds%gridbeg
+    gridend = procbounds%gridend
+
+    ! foodata(1:im) = noah_pubinst%model%foo_atm2lndfield(gridbeg:gridend)
+    ! do i = 1,im
+    !    write(*,*) 'MA1: ', de, gridbeg,gridend, size(foodata), foodata(i)
+    ! end do
+
+    
     call ESMF_ClockPrint(clock, options="currTime", &
          preString="------>Advancing LND from: ", unit=msgString, rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
