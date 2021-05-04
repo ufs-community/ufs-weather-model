@@ -60,22 +60,26 @@ contains
     real(kind_phys)         :: foodata(procbounds%im)
     !
     
-    associate(foodata => noah_pubinst%model%foo_atm2lndfield(procbounds%gridbeg:procbounds%gridend)  )
+    associate(foodata => noah_pubinst%model%foo_atm2lndfield  )
 
       ! first test
-      !write(*,*) 'NLP test: ', noah_pubinst%model%soiltyp
+      !write(*,*) 'NLP test: ', noah_pubinst%model%soiltyp ! get all zeros, good
+      
       de = procbounds%de
       im = procbounds%im
       gridbeg = procbounds%gridbeg
       gridend = procbounds%gridend
 
-      !foodata = noah_pubinst%model%foo_atm2lndfield
+      write(*,*) 'NLP1: ', de, gridbeg, gridend, im, size(noah_pubinst%model%foo_atm2lndfield)
 
-      write(*,*) 'NLP1: ', de, gridbeg,gridend, im, size(foodata)
+      ! foodata(1:gridend-gridbeg+1) = noah_pubinst%model%foo_atm2lndfield(gridbeg:gridend)
+      ! foodata = noah_pubinst%model%foo_atm2lndfield(gridbeg:gridend)
+      ! foodata = noah_pubinst%model%foo_atm2lndfield
 
-      do i = 1,im
-         write(*,*) 'NLP2: ', de, gridbeg,gridend, foodata(i)
-      end do
+
+      ! do i = 1,im
+      !    write(*,*) 'NLP2: ', de, gridbeg, gridend, foodata(i)
+      ! end do
 
     end associate
 

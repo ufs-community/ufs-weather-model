@@ -143,7 +143,7 @@ contains
   end subroutine write_import_field
 
 
-  subroutine import_allfields(procbounds, noah_pubinst, rc)
+  subroutine import_allfields(State_i, procbounds, noah_pubinst, rc)
 
     use ESMF, only : ESMF_State, ESMF_Field, ESMF_Mesh, ESMF_FieldStatus_Flag
     use ESMF, only : ESMF_StateGet, ESMF_FieldGet, ESMF_MeshGet
@@ -154,12 +154,13 @@ contains
     ! ----------------------------------------------
     ! Get pointers to internal land model variables, for multiple fields
     ! ----------------------------------------------
+    type(ESMF_State),       intent(in)    :: State_i
     type(procbounds_type),  intent(in)    :: procbounds 
     type(noah_type),        intent(inout) :: noah_pubinst ! land model's variable type
     integer,                intent(out)   :: rc
 
     ! local
-    type(ESMF_State)        :: importState
+    !type(ESMF_State)        :: importState
     character(len=25)       :: fldname_i
     real(r8), pointer       :: fldPtr1d_i(:)
     integer                 :: g, gridbeg, gridend,im
@@ -172,14 +173,14 @@ contains
     im      = procbounds%im
 
     ! tmp debug
-    write(*,*) 'IF1 debug: ', im, noah_pubinst%model%foo_atm2lndfield(1:im)
+    !write(*,*) 'IF1 debug: ', im, noah_pubinst%model%foo_atm2lndfield(1:im)
     
-    !call import_field_int(importState, fldname_i, noah_pubinst%model%soiltyp(1:im), rc=rc)
-    ! call import_field_int(importState, fldname_i, fldPtr1d_i, rc=rc)
+    !call import_field_int(State_i, fldname_i, noah_pubinst%model%soiltyp(1:im), rc=rc)
+    ! call import_field_int(State_i, fldname_i, fldPtr1d_i, rc=rc)
     ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
-    call import_fieldv2(importState, 'foo_atm2lndfield', noah_pubinst%model%foo_atm2lndfield(1:im), rc=rc)
-    !call import_fieldv2(importState, 'foo_atm2lndfield', fldPtr1d_i, rc=rc)
+    call import_fieldv2(State_i, 'foo_atm2lndfield', noah_pubinst%model%foo_atm2lndfield(1:im), rc=rc)
+    !call import_fieldv2(State_i, 'foo_atm2lndfield', fldPtr1d_i, rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
 

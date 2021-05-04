@@ -427,7 +427,7 @@ contains
     ! end test tmp
 
     ! ...end call import_fields
-    call import_allfields(procbounds, noah_pubinst, rc)
+    call import_allfields(importState,procbounds, noah_pubinst, rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
     
     ! run model
