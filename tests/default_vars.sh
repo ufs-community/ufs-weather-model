@@ -221,6 +221,14 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   MPB_datm_025="0 39"; APB_datm_025="0 39"
   OPB_datm_025="40 159"; IPB_datm_025="160 207"
 
+  TASKS_cdeps_100=40; TPN_cdeps_100=24
+  MPB_cdeps_100="0 11"; APB_cdeps_100="0 11"
+  OPB_cdeps_100="12 27"; IPB_cdeps_100="28 39"
+
+  TASKS_cdeps_025=208; TPN_cdeps_025=24
+  MPB_cdeps_025="0 39"; APB_cdeps_025="0 39"
+  OPB_cdeps_025="40 159"; IPB_cdeps_025="160 207"
+
 elif [[ $MACHINE_ID = gaea.* ]]; then
 
   TASKS_dflt=150 ; TPN_dflt=36 ; INPES_dflt=3 ; JNPES_dflt=8
