@@ -183,6 +183,7 @@ contains
     !allocate(nh%model%slc  (im,num_soil_levels))
 
 
+    nh%static%km         = 4 ! tmp for testing. This should come from nml
     nh%static%grav       = zero !huge
     nh%static%cp         = zero !huge
     nh%static%hvap       = zero !huge
