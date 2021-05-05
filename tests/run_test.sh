@@ -117,7 +117,6 @@ fi
 if [[ $DATM_CDEPS = 'true' ]]; then
   atparse < ${PATHRT}/parm/${DATM_IN_CONFIGURE:-datm_in} > datm_in
   atparse < ${PATHRT}/parm/datm.streams.IN > datm.streams
-  #cp ${PATHRT}/parm/datm_${FILENAME_BASE}streams datm.streams
 fi
 
 if [[ $SCHEDULER = 'pbs' ]]; then
