@@ -21,9 +21,6 @@ export MPIF90=${MPIF90:-mpif90}
 ##
 ## load cmake
 ##
-export CC=${CC}
-export CXX=${CXX}
-export FC=${FC}
 export CMAKE_Platform=macosx.gnu
 
 ##

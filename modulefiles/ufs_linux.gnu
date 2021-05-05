@@ -19,9 +19,6 @@ export FC=${FC:-mpif90}
 ## set up variables for ../cmake/configure_linux.gnu.cmake
 ##
 export CMAKE_Platform=linux.gnu
-export CC=${CC}
-export CXX=${CXX}
-export FC=${FC}
 
 ##
 ## use own NetCDF library
