@@ -7,9 +7,9 @@ else
   readonly UFS_MODEL_DIR=$(cd "$(dirname "$(readlink -f -n "${BASH_SOURCE[0]}" )" )" && pwd -P)
 fi
 
-export CMAKE_C_COMPILER=${CMAKE_C_COMPILER:-${CC:-mpicc}}
-export CMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER:-${CXX:-mpicxx}}
-export CMAKE_Fortran_COMPILER=${CMAKE_Fortran_COMPILER:-${FC:-mpif90}}
+export CC=${CC:-mpicc}
+export CXX=${CXX:-mpicxx}
+export FC=${FC:-mpif90}
 
 export ESMFMKFILE=${ESMFMKFILE:?"Please set ESMFMKFILE environment variable"}
 
