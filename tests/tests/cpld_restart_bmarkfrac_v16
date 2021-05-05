@@ -6,8 +6,8 @@ export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C384L127 MX02
 
 export CNTL_DIR="cpld_bmarkfrac_v16"
 
-export LIST_FILES="phyf012.nc \
-                   dynf012.nc \
+export LIST_FILES="phyf009.nc \
+                   dynf009.nc \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -44,8 +44,8 @@ export LIST_FILES="phyf012.nc \
                    RESTART/MOM.res_1.nc \
                    RESTART/MOM.res_2.nc \
                    RESTART/MOM.res_3.nc \
-                   RESTART/iced.2013-04-01-43200.nc \
-                   RESTART/ufs.cpld.cpl.r.2013-04-01-43200.nc"
+                   RESTART/iced.2013-04-01-32400.nc \
+                   RESTART/ufs.cpld.cpl.r.2013-04-01-32400.nc"
 
 export_fv3
 export_cpl
@@ -55,11 +55,12 @@ export SMONTH="04"
 export SDAY="01"
 export SHOUR="00"
 
-export DAYS="0.5"
-export FHMAX="12"
+export DAYS='0.375'
+export FHMAX='9'
 export FHROT='6'
 export RESTART_N=$((FHMAX-$FHROT))
-export WLCLK=40
+export NFHOUT=3
+export FDIAG=3
 
 export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${FHROT}  )))0000"
 export RESTART_FILE_SUFFIX_HRS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%02d" $(( ${FHROT} )))"
