@@ -516,6 +516,7 @@ export FDIAG=0,1,2,3,4,5,6,7,8,9,10,11,12,15,18,21,24,27,30,33,36,39,42,45,48
 export NFHOUT=3
 export NFHMAX_HF=12
 export NFHOUT_HF=1
+export FHZERO=6
 export FNALBC="'global_snowfree_albedo.bosu.t126.384.190.rg.grb',"
 export FNVETC="'global_vegtype.igbp.t126.384.190.rg.grb',"
 export FNSOTC="'global_soiltype.statsgo.t126.384.190.rg.grb',"
@@ -652,6 +653,7 @@ export NFHOUT='6'
 #no high freq fv3 output
 export NFHMAX_HF='-1'
 export NFHOUT_HF='-1'
+export FHZERO=${FDIAG}
 
 export CPLFLX='.T.'
 export CPL='.true.'
