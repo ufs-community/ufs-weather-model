@@ -653,7 +653,7 @@ export NFHOUT='6'
 #no high freq fv3 output
 export NFHMAX_HF='-1'
 export NFHOUT_HF='-1'
-export FHZERO=${FDIAG}
+export FHZERO=${FHZERO}
 
 export CPLFLX='.T.'
 export CPL='.true.'
