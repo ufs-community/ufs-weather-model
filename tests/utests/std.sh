@@ -28,7 +28,7 @@ fi
 
 NODES=$(((TASKS+TPN-1)/TPN))
 (test $CI_TEST == 'true') && source $PATHRT/utests/cmp_proc_bind.sh
-#source $PATHRT/utests/cmp_proc_bind.sh
+##source $PATHRT/utests/cmp_proc_bind.sh
 if [[ $RT_SUFFIX =~ std ]]; then
   source $PATHRT/utests/wrt_env.sh
 fi
