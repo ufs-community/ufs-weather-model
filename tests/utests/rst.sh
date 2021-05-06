@@ -31,7 +31,7 @@ LIST_FILES=$(echo -n $LIST_FILES | sed -E "s/phyf000\.(tile.\.nc|nemsio|nc) ?//g
                                  | sed -E "s/atmos_4xdaily\.tile[1-6]\.nc ?//g" | sed -e "s/^ *//" -e "s/ *$//")
 
 (test $CI_TEST == 'true') && source $PATHRT/utests/cmp_proc_bind.sh
-#source $PATHRT/utests/cmp_proc_bind.sh
+##source $PATHRT/utests/cmp_proc_bind.sh
 source $PATHRT/utests/wrt_env.sh
 
 cat <<EOF >>${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
