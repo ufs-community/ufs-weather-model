@@ -315,7 +315,7 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
   PARTITION=
   dprefix=/glade/scratch
   DISKNM=/glade/p/ral/jntp/GMTB/ufs-weather-model/RT
-  STMP=/glade/work
+  STMP=$dprefix
   PTMP=$dprefix
   SCHEDULER=pbs
   cp fv3_conf/fv3_qsub.IN_cheyenne fv3_conf/fv3_qsub.IN
@@ -413,7 +413,7 @@ if [[ $TESTS_FILE =~ '35d' ]]; then
   TEST_35D=true
 fi
 
-BL_DATE=20210419
+BL_DATE=20210504
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]]; then
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
 else

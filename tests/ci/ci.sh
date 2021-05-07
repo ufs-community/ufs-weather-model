@@ -24,7 +24,7 @@ usage_and_exit() {
   exit 2
 }
 
-IMG_NAME=$(sed -n 3p ci.test)
+IMG_NAME=ci-test-weather
 BUILD="false"
 RUN="false"
 TEST_NAME=""
@@ -48,7 +48,6 @@ while getopts :b:r:n: opt; do
 done
 
 # Read in TEST_NAME if not passed on
-TEST_NAME=${TEST_NAME:-$(sed -n 1p ci.test)}
 echo "test name is ${TEST_NAME}"
 
 if [ $BUILD = "true" ] && [ $RUN = "true" ]; then
