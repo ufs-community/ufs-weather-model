@@ -72,7 +72,7 @@ if [ $BUILD = "true" ]; then
 elif [ $RUN == "true" ]; then
 
   docker run -d --rm -v DataVolume:/tmp minsukjinoaa/input-data:20210428
-  docker run -d -e test_case=${TEST_CASE} --shm-size=512m -v DataVolume:/home/builder/data/NEMSfv3gfs/input-data-20210115 --name my-container ${IMG_NAME}
+  docker run -d -e test_case=${TEST_CASE} --shm-size=512m -v DataVolume:/home/builder/data/NEMSfv3gfs/input-data-20210428 --name my-container ${IMG_NAME}
 
   echo 'cache,rss,shmem' >memory_stat
   sleep 3
