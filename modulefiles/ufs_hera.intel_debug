@@ -10,10 +10,6 @@ module use /contrib/sutils/modulefiles
 module load sutils
 
 module load cmake/3.16.1
-setenv CMAKE_C_COMPILER mpiicc
-setenv CMAKE_CXX_COMPILER mpiicpc
-setenv CMAKE_Fortran_COMPILER mpiifort
-setenv CMAKE_Platform hera.intel
 
 module use /scratch2/NCEPDEV/nwprod/hpc-stack/libs/hpc-stack/modulefiles/stack
 
@@ -22,3 +18,8 @@ module load hpc-intel/18.0.5.274
 module load hpc-impi/2018.0.4
 
 module load ufs_common_debug
+
+setenv CC mpiicc
+setenv CXX mpiicpc
+setenv FC mpiifort
+setenv CMAKE_Platform hera.intel
