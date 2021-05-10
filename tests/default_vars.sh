@@ -565,6 +565,8 @@ export LNDP_EACH_STEP=.F.
 export SKEB=-999.
 export SPPT=-999.
 export SHUM=-999.
+export LNDP_VAR_LIST='XXX'
+export LNDP_PRT_LISY=-999
 
 #IAU
 export IAU_INC_FILES="''"
