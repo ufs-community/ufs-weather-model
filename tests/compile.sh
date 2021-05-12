@@ -83,7 +83,7 @@ echo "Compiling ${MAKE_OPT} into $BUILD_NAME.exe on $MACHINE_ID"
 CMAKE_FLAGS=''
 
 if [[ "${MAKE_OPT}" == *"DEBUG=Y"* ]]; then
-  CMAKE_FLAGS="${CMAKE_FLAGS} -DDEBUG=ON"
+  CMAKE_FLAGS="${CMAKE_FLAGS} -DDEBUG=ON -DCMAKE_BUILD_TYPE=Debug"
 elif [[ "${MAKE_OPT}" == *"REPRO=Y"* ]]; then
   CMAKE_FLAGS="${CMAKE_FLAGS} -DREPRO=ON"
 fi

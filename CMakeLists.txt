@@ -1,23 +1,57 @@
 cmake_minimum_required(VERSION 3.15)
 
-foreach(env_var IN ITEMS CMAKE_C_COMPILER CMAKE_CXX_COMPILER CMAKE_Fortran_COMPILER)
-  if(NOT DEFINED ENV{${env_var}})
-    message(FATAL_ERROR "${env_var} is not defined")
-  endif()
-endforeach()
-
-set(CMAKE_C_COMPILER $ENV{CMAKE_C_COMPILER})
-set(CMAKE_CXX_COMPILER $ENV{CMAKE_CXX_COMPILER})
-set(CMAKE_Fortran_COMPILER $ENV{CMAKE_Fortran_COMPILER})
-set(CMAKE_Platform $ENV{CMAKE_Platform})
-
 project(ufs
         VERSION 1.0
         LANGUAGES C CXX Fortran)
 
+if (CMAKE_Fortran_COMPILER_ID MATCHES "GNU" AND CMAKE_Fortran_COMPILER_VERSION VERSION_LESS 9.0.0)
+  message(FATAL_ERROR "GNU Compiler >= 9 is required")
+endif()
+
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules/Modules)
 
+###############################################################################
+### App and Component Options
+###############################################################################
+
+# Valid applications and choices
+list(APPEND VALID_APPS ATM ATMW S2S S2SW HAFS HAFSW DATM DATM_NEMS)
+set(APP NONE CACHE BOOL "Application Name")
+if(NOT (APP IN_LIST VALID_APPS))
+  message(FATAL_ERROR "${APP} is not a valid application.\nValid Applications are: ${VALID_APPS}")
+endif()
+
+set(FMS             OFF CACHE BOOL "Enable FMS")
+set(FV3             OFF CACHE BOOL "Enable FV3")
+set(MOM6            OFF CACHE BOOL "Enable MOM6")
+set(HYCOM           OFF CACHE BOOL "Enable HYCOM")
+set(CICE6           OFF CACHE BOOL "Enable CICE6")
+set(WW3             OFF CACHE BOOL "Enable WW3")
+set(STOCH_PHYS      OFF CACHE BOOL "Enable Stochastic Physics")
+set(NEMSdatm        OFF CACHE BOOL "Enable NEMSdatm")
+set(CMEPS           OFF CACHE BOOL "Enable CMEPS")
+set(CDEPS           OFF CACHE BOOL "Enable CDEPS")
+
+# Configure selected application specific components
+message("")
+include(cmake/configure_apps.cmake)
+
+message("")
+message("FMS .............. ${FMS}")
+message("FV3 .............. ${FV3}")
+message("MOM6 ............. ${MOM6}")
+message("HYCOM ............ ${HYCOM}")
+message("CICE6 ............ ${CICE6}")
+message("WW3 .............. ${WW3}")
+message("STOCH_PHYS ....... ${STOCH_PHYS}")
+message("NEMSdatm ......... ${NEMSdatm}")
+message("CDEPS ............ ${CDEPS}")
+message("CMEPS ............ ${CMEPS}")
+
+###############################################################################
+### Build Options
+###############################################################################
 set(32BIT           OFF CACHE BOOL "Enable 32BIT (single precision arithmetic in dycore)")
 set(AVX2            ON  CACHE BOOL "Enable AVX2 instruction set")
 set(SIMDMULTIARCH   OFF CACHE BOOL "Enable multi-target SIMD instruction sets")
@@ -30,34 +64,7 @@ set(PARALLEL_NETCDF OFF CACHE BOOL "Enable parallel NetCDF")
 set(REPRO           OFF CACHE BOOL "Enable REPRO mode")
 set(JEDI_DRIVER     OFF CACHE BOOL "Enable JEDI as top level driver")
 
-# Component Options
-set(FMS             OFF CACHE BOOL "Enable FMS")
-set(FV3             OFF CACHE BOOL "Enable FV3")
-set(MOM6            OFF CACHE BOOL "Enable MOM6")
-set(HYCOM           OFF CACHE BOOL "Enable HYCOM")
-set(CICE6           OFF CACHE BOOL "Enable CICE6")
-set(WW3             OFF CACHE BOOL "Enable WW3")
-set(STOCH_PHYS      OFF CACHE BOOL "Enable Stochastic Physics")
-set(NEMSdatm        OFF CACHE BOOL "Enable NEMSdatm")
-set(CMEPS           OFF CACHE BOOL "Enable CMEPS")
-set(CDEPS           OFF CACHE BOOL "Enable CDEPS")
-
-# Valid applications and choices
-list(APPEND VALID_APPS ATM ATMW S2S S2SW HAFS HAFSW DATM DATM_NEMS)
-set(APP NONE CACHE BOOL "Application Name")
-if(NOT (APP IN_LIST VALID_APPS))
-  message(FATAL_ERROR "${APP} is not a valid application.\nValid Applications are: ${VALID_APPS}")
-endif()
-
-###############################################################################
-### Set CMAKE_BUILD_TYPE for DEBUG mode
-###############################################################################
-if(DEBUG)
-  set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Set type of build to Debug." FORCE)
-else()
-  set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Set type of build to Release." FORCE)
-endif()
-
+set(CMAKE_Platform $ENV{CMAKE_Platform})
 if(CMAKE_Platform)
   message("")
   if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/cmake/configure_${CMAKE_Platform}.cmake)
@@ -80,6 +87,7 @@ if(CMAKE_Platform)
 endif()
 
 message("")
+message("32BIT ............ ${32BIT}")
 message("AVX2 ............. ${AVX2}")
 message("SIMDMULTIARCH ...  ${SIMDMULTIARCH}")
 message("DEBUG ............ ${DEBUG}")
@@ -89,42 +97,19 @@ message("MULTI_GASES ...... ${MULTI_GASES}")
 message("OPENMP ........... ${OPENMP}")
 message("PARALLEL_NETCDF .. ${PARALLEL_NETCDF}")
 message("REPRO ............ ${REPRO}")
+message("JEDI_DRIVER ...... ${JEDI_DRIVER}")
 message("")
 
-# Configure selected application specific components
-include(cmake/configure_apps.cmake)
-
-# Components
-message("")
-message("FMS .............. ${FMS}")
-message("FV3 .............. ${FV3}")
-message("MOM6 ............. ${MOM6}")
-message("HYCOM ............ ${HYCOM}")
-message("CICE6 ............ ${CICE6}")
-message("WW3 .............. ${WW3}")
-message("STOCH_PHYS ....... ${STOCH_PHYS}")
-message("NEMSdatm ......... ${NEMSdatm}")
-message("CDEPS ............ ${CDEPS}")
-message("CMEPS ............ ${CMEPS}")
-
-# Options that applications reset
-message("32BIT ............ ${32BIT}")
-message("")
-
-get_filename_component (C_COMPILER_NAME ${CMAKE_C_COMPILER} NAME)
-get_filename_component (CXX_COMPILER_NAME ${CMAKE_CXX_COMPILER} NAME)
-get_filename_component (Fortran_COMPILER_NAME ${CMAKE_Fortran_COMPILER} NAME)
-message("C       compiler: ${CMAKE_C_COMPILER_ID} ${CMAKE_C_COMPILER_VERSION} (${C_COMPILER_NAME})")
-message("CXX     compiler: ${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION} (${CXX_COMPILER_NAME})")
-message("Fortran compiler: ${CMAKE_Fortran_COMPILER_ID} ${CMAKE_Fortran_COMPILER_VERSION} (${Fortran_COMPILER_NAME})")
-message("")
-
-if (CMAKE_Fortran_COMPILER_ID MATCHES "GNU" AND CMAKE_Fortran_COMPILER_VERSION VERSION_LESS 9.0.0)
-  message(FATAL_ERROR "GNU Compiler >= 9 is required")
+###############################################################################
+### Set CMAKE_BUILD_TYPE for DEBUG mode
+###############################################################################
+if(DEBUG)
+  set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Set type of build to Debug." FORCE)
+else()
+  set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Set type of build to Release." FORCE)
 endif()
 
 include(cmake/${CMAKE_Fortran_COMPILER_ID}.cmake)
-message("")
 
 ###############################################################################
 ### Find Dependencies
@@ -253,31 +238,15 @@ endif()
 ### UFS Library [NEMS]
 ###############################################################################
 list(APPEND _nems_srcs NEMS/src/module_NEMS_UTILS.F90
-                       NEMS/src/module_MEDIATOR_methods.F90
-                       NEMS/src/module_MEDIATOR.F90
-                       NEMS/src/module_MEDIATOR_SpaceWeather.F90
-                       NEMS/src/module_EARTH_INTERNAL_STATE.F90
                        NEMS/src/module_EARTH_GRID_COMP.F90
-                       NEMS/src/module_NEMS_INTERNAL_STATE.F90
                        NEMS/src/module_NEMS_GRID_COMP.F90
                        NEMS/src/module_NEMS_Rusage.F90
                        NEMS/src/nems_c_rusage.c)
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/NEMS/src/ESMFVersionDefine_ESMF_NUOPC.h
-               ${CMAKE_CURRENT_BINARY_DIR}/NEMS/src/ESMFVersionDefine.h
-               COPYONLY)
-# until we remove "../ESMFVersionDefine.h" from ENS_Cpl/ENS_CplComp_ESMFMod_STUB.F90
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/NEMS/src/ESMFVersionDefine_ESMF_NUOPC.h
-               ${CMAKE_CURRENT_BINARY_DIR}/NEMS/ESMFVersionDefine.h
-               COPYONLY)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/NEMS/src/ESMFConvenienceMacros.h
-               ${CMAKE_CURRENT_BINARY_DIR}/NEMS/src/ESMFConvenienceMacros.h
-               COPYONLY)
-
 add_library(ufs ${_nems_srcs})
 set_target_properties(ufs PROPERTIES Fortran_MODULE_DIRECTORY
                                      ${CMAKE_CURRENT_BINARY_DIR}/mod)
-target_include_directories(ufs PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/NEMS/src)
+target_include_directories(ufs PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/NEMS/src)
 target_include_directories(ufs INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                          $<INSTALL_INTERFACE:mod>)
 
@@ -307,7 +276,7 @@ endif()
 
 if(NEMSdatm)
   add_dependencies(ufs datatm)
-  list(APPEND _ufs_defs_private FRONT_DATM=datm)
+  list(APPEND _ufs_defs_private FRONT_NEMS_DATM=datm)
   list(APPEND _ufs_libs_public datatm)
 endif()
 
@@ -343,6 +312,10 @@ endif()
 
 if(CDEPS)
   add_dependencies(ufs cdeps::datm)
+  list(APPEND _ufs_defs_private CDEPS-interface/CDEPS
+                                FRONT_CDEPS_DATM=atm_comp_nuopc)
+  include_directories(${CMAKE_CURRENT_BINARY_DIR}/CDEPS-interface/CDEPS/datm)
+  target_link_libraries(ufs PUBLIC cdeps::datm)
 endif()
 
 target_compile_definitions(ufs PRIVATE "${_ufs_defs_private}")

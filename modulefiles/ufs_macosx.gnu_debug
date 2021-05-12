@@ -21,9 +21,6 @@ export MPIF90=${MPIF90:-mpif90}
 ##
 ## load cmake
 ##
-export CMAKE_C_COMPILER=${CC}
-export CMAKE_CXX_COMPILER=${CXX}
-export CMAKE_Fortran_COMPILER=${FC}
 export CMAKE_Platform=macosx.gnu
 
 ##

@@ -15,6 +15,7 @@ list(APPEND _hycom_src_files
   HYCOM/mod_barotp.F90
   HYCOM/mod_asselin.F90
   HYCOM/mod_restart.F90
+  HYCOM/mod_import.F90
   HYCOM/mod_hycom.F90
 
   HYCOM/bigrid.F90
@@ -59,6 +60,7 @@ list(APPEND _hycom_nuopc_src_files
   HYCOM/NUOPC/impexpField_cdf_mod.F90
   HYCOM/NUOPC/export_from_hycom_tiled.F90
   HYCOM/NUOPC/hycom_read_latlon.F90
+  HYCOM/NUOPC/hycom_nuopc_flags.F90
 )
 
 list(APPEND _hycom_offline_src_files
