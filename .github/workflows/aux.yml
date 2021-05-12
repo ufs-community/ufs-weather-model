@@ -26,6 +26,18 @@ jobs:
         path: ~/id_file
         key: helperid-${{ github.event.workflow_run.id }}
 
+    - name: Delete run-ci label
+      run: |
+        head_sha=${{ github.event.workflow_run.head_sha }}
+        echo "head_sha is $head_sha"
+        url=$GITHUB_API_URL/repos/$GITHUB_REPOSITORY
+        echo "url is $url"
+        pr_number=$(curl -sS -H $app $url/pulls \
+          | jq -r '.[] | select(.head.sha == "'"$head_sha"'") | .number')
+        echo "pr_number is $pr_number"
+        curl -sS -X DELETE -H $app -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          $url/issues/$pr_number/labels/run-ci
+
 
   repocheck:
     name: Repo check
@@ -86,7 +98,7 @@ jobs:
       run: |
         cd ${{ github.workspace }}/tests/ci
         eval url=$base_url/${{ github.event.workflow_run.id }}/jobs
-        b_r=$(echo -n $url | ./check_status.py build $(./setup.py no_builds))
+        b_r=$(echo -n $url | ./check_status.py build)
         if [ $b_r == 'success' ]; then
           echo "::set-output name=check::pass"
         elif [ $b_r == 'failure' ]; then

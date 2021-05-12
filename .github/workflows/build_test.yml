@@ -1,9 +1,8 @@
 name: Pull Request Tests
 on:
-  push:
-    branches: ['develop']
   pull_request:
-    branches: ['develop']
+    branches: ['feature/ci-label']
+    types: ['labeled']
 env:
   app: Accept:application/vnd.github.v3+json
 
@@ -53,41 +52,11 @@ jobs:
         fi
 
 
-  runcheck:
-    name: Check if run-ci is requested
-    runs-on: ubuntu-20.04
-
-    outputs:
-      cirun: ${{ steps.check.outputs.cirun }}
-
-    steps:
-    - name: Check
-      id: check
-      run: |
-        if [[ ${{github.event_name}} == pull_request ]]; then
-          sha=${{github.event.pull_request.head.sha}}
-          url=$(echo ${{github.event.pull_request.head.repo.git_commits_url}} \
-            | sed "s:{/sha}:/$sha:")
-        elif [[ ${{github.event_name}} == push ]]; then
-          sha=${{github.event.after}}
-          url=$(echo ${{github.event.repository.git_commits_url}} | sed "s:{/sha}:/$sha:")
-        fi
-
-        message="$(curl -sS -H "$app" $url | jq '.message')"
-        echo $message | grep run-ci >/dev/null 2>&1 && d=$? || d=$?
-        if [[ $d -eq 0 ]]; then
-          echo "::set-output name=cirun::yes"
-        elif [[ $d -eq 1 ]]; then
-          echo "::set-output name=cirun::no"
-        fi
-        printf "Commit message is %s\n" "$message"
-
-
   setup:
     name: Configure cases to run
-    needs: [repocheck,runcheck]
+    needs: [repocheck]
     runs-on: ubuntu-20.04
-    if: needs.repocheck.outputs.current == 'yes' && needs.runcheck.outputs.cirun == 'yes'
+    if: needs.repocheck.outputs.current == 'yes' && github.event.label.name == 'run-ci'
 
     outputs:
       bld: ${{ steps.parse.outputs.bld }}
