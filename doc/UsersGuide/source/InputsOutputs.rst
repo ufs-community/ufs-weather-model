@@ -467,7 +467,7 @@ These field section entries are described in :numref:`Table %s <FieldDescription
 
 Comments can be added to the diag_table using the hash symbol (``#``).
 
-A brief example of the diag_table is shown below.  ``“...”`` denote where lines have been removed.
+A brief example of the diag_table is shown below.  ``“...”`` denotes where lines have been removed.
 
 .. _code-block-fv3-diag-table:
 
@@ -814,15 +814,10 @@ are not usually changed.
 
 .. todo:: Add information/organize for ATM, ATMW, S2S, S2SW, CDEPS
 
-This file contains information about the various NEMS components and their run sequence. The active components for 
-a particular model configuration are given in the *EARTH_component_list*. For each active component, 
-the model name, compute tasks assigned to each component are given. A specific component might also require additional configuration
-information to be present. The *runSeq* describes the order and
-time intervals over which one or more component models integrate in time. Additional *attributes*, if present, provide additional
-configuration of the model components when coupled with the CMEPS mediator.
+This file contains  information about the various NEMS components  and their run sequence. The active  components for a particular model configuration  are given in the *EARTH_component_list*. For  each active component,  the model name  and compute tasks  assigned to the component are given. A  specific component might  also require additional configuration  information to be present.  The *runSeq* describes the order and time intervals  over which one or  more component models integrate  in time. Additional *attributes*, if present, provide additional configuration of the model components when coupled with the CMEPS mediator.
 
 For the ATM application, since it consists of a single component, the *nems.configure* is simple and does not need to be changed.
-A sample of the file contents is below:
+A sample of the file contents is shown below:
 
 .. code-block:: console
 
@@ -833,55 +828,66 @@ A sample of the file contents is below:
   ::
 
 
-.. todo:: use a cpld control wave example
-
-For the fully coupled S2S application, a sample file configuration is below :
+For the fully coupled S2SW application, a sample *nems.configure* is shown below :
 
 .. code-block:: console
 
 	# EARTH #
-	EARTH_component_list: MED ATM OCN ICE
+	EARTH_component_list: MED ATM OCN ICE WAV
 	EARTH_attributes::
+	  Verbosity = 0
 	::
 
 	# MED #
 	MED_model:                      cmeps
-	MED_petlist_bounds:             0 287
+	MED_petlist_bounds:             0 143
 	::
 
 	# ATM #
 	ATM_model:                      fv3
-	ATM_petlist_bounds:             0 311
+	ATM_petlist_bounds:             0 149
 	ATM_attributes::
 	::
 
 	# OCN #
 	OCN_model:                      mom6
-	OCN_petlist_bounds:             312 431
+	OCN_petlist_bounds:             150 179
 	OCN_attributes::
-	  mesh_ocn = mesh.mx025.nc
+	  mesh_ocn = mesh.mx100.nc
 	::
 
 	# ICE #
 	ICE_model:                      cice6
-	ICE_petlist_bounds:             432 479
+	ICE_petlist_bounds:             180 191
 	ICE_attributes::
-	  mesh_ice = mesh.mx025.nc
+	  mesh_ice = mesh.mx100.nc
+	::
+
+	# WAV #
+	WAV_model:                      ww3
+	WAV_petlist_bounds:             192 395
+	WAV_attributes::
 	::
 
 	# CMEPS warm run sequence
 	runSeq::
-	@1800
+	@3600
 	   MED med_phases_prep_ocn_avg
 	   MED -> OCN :remapMethod=redist
+	   OCN -> WAV
+	   WAV -> OCN :srcMaskValues=1
 	   OCN
-	   @225
+	   @900
 	     MED med_phases_prep_atm
 	     MED med_phases_prep_ice
 	     MED -> ATM :remapMethod=redist
 	     MED -> ICE :remapMethod=redist
+	     WAV -> ATM :srcMaskValues=1
+	     ATM -> WAV
+	     ICE -> WAV
 	     ATM
 	     ICE
+	     WAV
 	     ATM -> MED :remapMethod=redist
 	     MED med_phases_post_atm
 	     ICE -> MED :remapMethod=redist
@@ -896,8 +902,6 @@ For the fully coupled S2S application, a sample file configuration is below :
 
 	# CMEPS variables
 
-	DRIVER_attributes::
-	      mediator_read_restart = false
 	::
 	MED_attributes::
 	      ATM_model = fv3
@@ -906,7 +910,7 @@ For the fully coupled S2S application, a sample file configuration is below :
 	      history_n = 1
 	      history_option = nhours
 	      history_ymd = -999
-	      coupling_mode = nems_frac
+	      coupling_mode = nems_orig
 	::
 	ALLCOMP_attributes::
 	      ScalarFieldCount = 2
@@ -916,14 +920,13 @@ For the fully coupled S2S application, a sample file configuration is below :
 	      start_type = startup
 	      restart_dir = RESTART/
 	      case_name = ufs.cpld
-	      restart_n = 3
+	      restart_n = 24
 	      restart_option = nhours
 	      restart_ymd = -999
 	      dbug_flag = 0
 	      use_coldstart = false
-	      use_mommesh = false
+	      use_mommesh = true
 	::
-
 
 ---------------------------------------
 *The SDF (Suite Definition File) file*
@@ -976,9 +979,9 @@ Additional output files include: nemsusage.xml, a timing log file; time_stamp.ou
 MOM6
 -------
 
-.. todo:: Information needed
+MOM6 output is controlled via the FMS diag_manager using the *diag_table*. When MOM6 is present, the *diag_table* shown :ref:`above <code-block-fv3-diag-table>` includes additional requested MOM6 fields. 
 
-MOM6 output is controlled via the FMS diag_manager using the *diag_table*. When MOM6 is present, the *diag_table* shown :ref:`above <code-block-fv3-diag-table>` includes the additional MOM6 fields shown here.
+A brief example of the diag_table is shown below.  ``“...”`` denotes where lines have been removed. 
 
 .. code-block:: console
 
@@ -989,32 +992,12 @@ MOM6 output is controlled via the FMS diag_manager using the *diag_table*. When 
    # static fields
    "ocean_model", "geolon",      "geolon",      "ocn%4yr%2mo%2dy%2hr", "all", .false., "none", 2
    "ocean_model", "geolat",      "geolat",      "ocn%4yr%2mo%2dy%2hr", "all", .false., "none", 2
-   "ocean_model", "geolon_c",    "geolon_c",    "ocn%4yr%2mo%2dy%2hr", "all", .false., "none", 2
-   "ocean_model", "geolat_c",    "geolat_c",    "ocn%4yr%2mo%2dy%2hr", "all", .false., "none", 2
-   "ocean_model", "geolon_u",    "geolon_u",    "ocn%4yr%2mo%2dy%2hr", "all", .false., "none", 2
-   "ocean_model", "geolat_u",    "geolat_u",    "ocn%4yr%2mo%2dy%2hr", "all", .false., "none", 2
-   "ocean_model", "geolon_v",    "geolon_v",    "ocn%4yr%2mo%2dy%2hr", "all", .false., "none", 2
-   "ocean_model", "geolat_v",    "geolat_v",    "ocn%4yr%2mo%2dy%2hr", "all", .false., "none", 2
-  # "ocean_model", "depth_ocean", "depth_ocean", "ocn%4yr%2mo%2dy%2hr", "all", .false., "none", 2
-  # "ocean_model", "wet",         "wet",         "ocn%4yr%2mo%2dy%2hr", "all", .false., "none", 2
-   "ocean_model", "wet_c",       "wet_c",       "ocn%4yr%2mo%2dy%2hr", "all", .false., "none", 2
-   "ocean_model", "wet_u",       "wet_u",       "ocn%4yr%2mo%2dy%2hr", "all", .false., "none", 2
-   "ocean_model", "wet_v",       "wet_v",       "ocn%4yr%2mo%2dy%2hr", "all", .false., "none", 2
-   "ocean_model", "sin_rot",      "sin_rot",      "ocn%4yr%2mo%2dy%2hr", "all", .false., "none", 2
-   "ocean_model", "cos_rot",      "cos_rot",      "ocn%4yr%2mo%2dy%2hr", "all", .false., "none", 2
-  
+   ...
   # ocean output TSUV and others
    "ocean_model", "SSH",      "SSH",      "ocn%4yr%2mo%2dy%2hr","all",.true.,"none",2
    "ocean_model", "SST",      "SST",      "ocn%4yr%2mo%2dy%2hr","all",.true.,"none",2
    "ocean_model", "SSS",      "SSS",      "ocn%4yr%2mo%2dy%2hr","all",.true.,"none",2
-   "ocean_model", "speed",    "speed",    "ocn%4yr%2mo%2dy%2hr","all",.true.,"none",2
-   "ocean_model", "SSU",      "SSU",      "ocn%4yr%2mo%2dy%2hr","all",.true.,"none",2
-   "ocean_model", "SSV",      "SSV",      "ocn%4yr%2mo%2dy%2hr","all",.true.,"none",2
-   "ocean_model", "frazil",   "frazil",   "ocn%4yr%2mo%2dy%2hr","all",.true.,"none",2
-   "ocean_model", "ePBL_h_ML","ePBL",     "ocn%4yr%2mo%2dy%2hr","all",.true.,"none",2
-   "ocean_model", "MLD_003",  "MLD_003",  "ocn%4yr%2mo%2dy%2hr","all",.true.,"none",2
-   "ocean_model", "MLD_0125", "MLD_0125", "ocn%4yr%2mo%2dy%2hr","all",.true.,"none",2
-  
+   ...
   # save daily SST
    "ocean_model", "geolon",      "geolon",      "SST%4yr%2mo%2dy", "all", .false., "none", 2
    "ocean_model", "geolat",      "geolat",      "SST%4yr%2mo%2dy", "all", .false., "none", 2
@@ -1030,26 +1013,11 @@ MOM6 output is controlled via the FMS diag_manager using the *diag_table*. When 
   # forcing
    "ocean_model", "taux",      "taux",          "ocn%4yr%2mo%2dy%2hr","all",.true.,"none",2
    "ocean_model", "tauy",      "tauy",          "ocn%4yr%2mo%2dy%2hr","all",.true.,"none",2
-   "ocean_model", "latent",    "latent",        "ocn%4yr%2mo%2dy%2hr","all",.true.,"none",2
-   "ocean_model", "sensible",  "sensible",      "ocn%4yr%2mo%2dy%2hr","all",.true.,"none",2
-   "ocean_model", "SW",        "SW",            "ocn%4yr%2mo%2dy%2hr","all",.true.,"none",2
-   "ocean_model", "LW",        "LW",            "ocn%4yr%2mo%2dy%2hr","all",.true.,"none",2
-   "ocean_model", "evap",      "evap",          "ocn%4yr%2mo%2dy%2hr","all",.true.,"none",2
-   "ocean_model", "lprec",     "lprec",         "ocn%4yr%2mo%2dy%2hr","all",.true.,"none",2
-   "ocean_model", "lrunoff",   "lrunoff",       "ocn%4yr%2mo%2dy%2hr","all",.true.,"none",2
-  # "ocean_model", "frunoff",   "frunoff",       "ocn%4yr%2mo%2dy%2hr","all",.true.,"none",2
-   "ocean_model", "fprec",     "fprec",         "ocn%4yr%2mo%2dy%2hr","all",.true.,"none",2
-   "ocean_model", "LwLatSens", "LwLatSens",     "ocn%4yr%2mo%2dy%2hr","all",.true.,"none",2
-   "ocean_model", "Heat_PmE",  "Heat_PmE",      "ocn%4yr%2mo%2dy%2hr","all",.true.,"none",2
-
-
-
+   ...
 
 -------
 CICE6
 -------
-
-.. todo:: Information needed---what is the second 'x'??
 
 CICE6 output is controlled via the namelist *ice_in*. The relevant configuration settings are
 
@@ -1062,7 +1030,7 @@ CICE6 output is controlled via the namelist *ice_in*. The relevant configuration
    ...
 
 In this example, *histfreq_n* and *hist_avg* specify that output will be 6-hour means. No monthly (*m*), 
-daily (*d*), or higher frequency (*secs* or *every timestep*) output will be produced. The *hist_avg* can 
+daily (*d*), yearly (*x*) or per-timestep (*x*) output will be produced.The *hist_avg* can 
 also be set *.false.* to produce, for example, instaneous fields every 6 hours.
 
 The output of any field is set in the appropriate *ice_in* namelist. For example,
@@ -1077,7 +1045,9 @@ The output of any field is set in the appropriate *ice_in* namelist. For example
    ...
    
 where the ice concentration (*aice*), ice thickness (*hi*) and snow thickness (*hs*) are set to be output
-on the monthly, daily, hourly, seconds or timestep intervals set by the *histfreq_n* setting.
+on the monthly, daily, hourly, seconds or timestep intervals set by the *histfreq_n* setting. Since *histfreq_n* is
+*0* for both monthly and daily frequencies and neither yearly nor per-timestep output is requested, only 6-hour 
+mean history files will be produced.
 
 Further details of the configuration of CICE model output can be found in the CICE documentation  `3.1.4 <https://cice-consortium-cice.readthedocs.io/en/master/user_guide/ug_implementation.html#model-output>`_
 
@@ -1093,15 +1063,13 @@ CMEPS
 
 .. todo:: Information needed
 
-The CMEPS mediator writes general information about the run-time configuration to the file *mediator.log* in the model run directory. In addition, the CMEPS
-mediator can be configured to write history files for the purposes of examining the field exchanges at various points in the model run sequence. 
+The CMEPS mediator writes general information about the run-time configuration to the file *mediator.log* in the model run directory. Optionally, the CMEPS mediator can be configured to write history files for the purposes of examining the field exchanges at various points in the model run sequence. 
 
 ==============================================================
 Additional Information about the FMS Diagnostic Manager
 ==============================================================
 
-The FMS (Flexible Modeling System) diagnostic manager (``FMS/diag_manager``) manages the output for the ATM and, if present, the MOM6 component in the UFS Weather Model. It
-is configured using the *diag_table* file. Data can be written at any number of sampling and/or averaging intervals
+The FMS (Flexible Modeling System) diagnostic manager (``FMS/diag_manager``) manages the output for the ATM and, if present, the MOM6 component in the UFS Weather Model. It is configured using the *diag_table* file. Data can be written at any number of sampling and/or averaging intervals
 specified at run-time.  More information about the FMS diagnostic manager can be found at:
 https://data1.gfdl.noaa.gov/summer-school/Lectures/July16/03_Seth1_DiagManager.pdf
 
