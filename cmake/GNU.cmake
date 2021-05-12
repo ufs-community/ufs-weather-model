@@ -1,4 +1,4 @@
-set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -ggdb -fbacktrace -fcray-pointer -ffree-line-length-none -fno-range-check")
+set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -ggdb -fbacktrace -cpp -fcray-pointer -ffree-line-length-none -fno-range-check")
 
 if(${CMAKE_Fortran_COMPILER_VERSION} VERSION_GREATER_EQUAL 10)
     set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fallow-argument-mismatch -fallow-invalid-boz")
@@ -25,3 +25,9 @@ else()
     set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -O2")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2")
 endif()
+
+# For ccpp
+set(CMAKE_Fortran_FLAGS_DEFAULT_PREC "-fdefault-real-8 -fdefault-double-8")
+set(CMAKE_C_FLAGS_RELEASE       "-O2 -fPIC" CACHE STRING "" FORCE)
+set(CMAKE_CXX_FLAGS_RELEASE     "-O2 -fPIC" CACHE STRING "" FORCE)
+set(CMAKE_Fortran_FLAGS_RELEASE "-O2 -fPIC" CACHE STRING "" FORCE)

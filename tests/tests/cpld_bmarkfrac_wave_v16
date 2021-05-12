@@ -5,18 +5,8 @@ export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system - C384L127 
 
 export CNTL_DIR="cpld_bmarkfrac_wave_v16"
 
-export LIST_FILES="sfcf006.tile1.nc \
-                   sfcf006.tile2.nc \
-                   sfcf006.tile3.nc \
-                   sfcf006.tile4.nc \
-                   sfcf006.tile5.nc \
-                   sfcf006.tile6.nc \
-                   atmf006.tile1.nc \
-                   atmf006.tile2.nc \
-                   atmf006.tile3.nc \
-                   atmf006.tile4.nc \
-                   atmf006.tile5.nc \
-                   atmf006.tile6.nc \
+export LIST_FILES="sfcf006.nc \
+                   atmf006.nc \
                    20130401.060000.out_grd.gwes_30m \
                    20130401.060000.out_pnt.points \
                    RESTART/coupler.res \
@@ -71,8 +61,6 @@ export FHMAX="6"
 export RESTART_INTERVAL=${FHMAX}
 export RESTART_N=${RESTART_INTERVAL}
 
-#export WLCLK=60
-
 export TASKS=$TASKS_cpl_wwav
 export TPN=$TPN_cpl_wwav
 export INPES=$INPES_cpl_wwav
@@ -92,6 +80,7 @@ export NPX=385
 export NPY=385
 export IMO=1536
 export JMO=768
+export OUTPUT_GRID="'gaussian_grid'"
 
 export OCNRES='025'
 export ICERES='0.25'
@@ -148,6 +137,8 @@ export MOM6_RESTART_SETTING="r"
 export MOM6_REPRO_LA='True'
 
 export RUNID="cpcice"
+
+export ww3gline="'gwes_30m' 'no' 'CPL:native' 'CPL:native' 'CPL:native' 'no' 'no' 'no'   1  1  0.00 1.00  F"
 
 export INPUT_NML=input.benchmark_v16.nml.IN
 
