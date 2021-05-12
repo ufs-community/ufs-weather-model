@@ -1,7 +1,7 @@
 name: Pull Request Tests
 on:
   pull_request:
-    branches: ['feature/ci-label']
+    branches: ['develop']
     types: ['labeled']
 env:
   app: Accept:application/vnd.github.v3+json
@@ -70,7 +70,7 @@ jobs:
       id: parse
       run: |
         cd ${{ github.workspace }}/tests/ci
-        IFS='|'; parsed_output=( $(./setup.py cases) )
+        IFS='|'; parsed_output=( $(./setup.py) )
         bld_=${parsed_output[0]}
         test_=${parsed_output[1]}
         img_=ci-test-weather
@@ -82,9 +82,7 @@ jobs:
         echo "build set : $bld_"
         echo "test set  : $test_"
         echo "image name: $img_"
-
         echo "repocheck: ${{needs.repocheck.outputs.current}}"
-        echo "runcheck: ${{needs.runcheck.outputs.cirun}}"
 
 
   build:

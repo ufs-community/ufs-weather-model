@@ -9,7 +9,7 @@ env:
   base_url: $GITHUB_API_URL/repos/$GITHUB_REPOSITORY/actions/runs
   AUTH: ${{ secrets.GITHUB_TOKEN }}
   aws_instance_id: ${{ secrets.AWS_INSTANCE_ID }}
-  no_instances: 2
+  no_instances: 6
 
 
 jobs:
@@ -46,28 +46,22 @@ jobs:
     steps:
     - name: Check up-to-dateness and post comment
       run: |
-        if [[ ${{ github.event.workflow_run.event }} == push ]]; then
-          echo "This is a push event. No need to check."
-          comment=''
-        elif [[ ${{ github.event.workflow_run.event }} == pull_request ]]; then
-          echo "This is a pull_request event. Check."
-          head_sha=${{ github.event.workflow_run.head_sha }}
-          echo "head_sha is $head_sha"
+        head_sha=${{ github.event.workflow_run.head_sha }}
+        echo "head_sha is $head_sha"
 
-          git clone -q ${{ github.event.workflow_run.head_repository.html_url }} .
-          git checkout -q $head_sha
-          git submodule -q update --init --recursive
+        git clone -q ${{ github.event.workflow_run.head_repository.html_url }} .
+        git checkout -q $head_sha
+        git submodule -q update --init --recursive
 
-          cd ${{ github.workspace }}/tests/ci
-          url=$GITHUB_API_URL/repos/$GITHUB_REPOSITORY
-          pr_number=$(curl -sS -H $app $url/pulls \
-            | jq -r '.[] | select(.head.sha == "'"$head_sha"'") | .number')
-          echo "pr_number is $pr_number"
-          pr_uid=${{ github.event.workflow_run.head_repository.owner.login }}
-          echo "pr_uid is $pr_uid"
-          comment="$(./repo_check.sh $pr_uid 2>/dev/null)"
-          echo "comment is $comment"
-        fi
+        cd ${{ github.workspace }}/tests/ci
+        url=$GITHUB_API_URL/repos/$GITHUB_REPOSITORY
+        pr_number=$(curl -sS -H $app $url/pulls \
+          | jq -r '.[] | select(.head.sha == "'"$head_sha"'") | .number')
+        echo "pr_number is $pr_number"
+        pr_uid=${{ github.event.workflow_run.head_repository.owner.login }}
+        echo "pr_uid is $pr_uid"
+        comment="$(./repo_check.sh $pr_uid 2>/dev/null)"
+        echo "comment is $comment"
 
         if [[ -n $comment ]]; then
           curl -sS -X POST -H $app -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
