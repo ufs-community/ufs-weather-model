@@ -29,9 +29,7 @@ jobs:
     - name: Delete run-ci label
       run: |
         head_sha=${{ github.event.workflow_run.head_sha }}
-        echo "head_sha is $head_sha"
         url=$GITHUB_API_URL/repos/$GITHUB_REPOSITORY
-        echo "url is $url"
         pr_number=$(curl -sS -H $app $url/pulls \
           | jq -r '.[] | select(.head.sha == "'"$head_sha"'") | .number')
         echo "pr_number is $pr_number"
@@ -47,8 +45,6 @@ jobs:
     - name: Check up-to-dateness and post comment
       run: |
         head_sha=${{ github.event.workflow_run.head_sha }}
-        echo "head_sha is $head_sha"
-
         git clone -q ${{ github.event.workflow_run.head_repository.html_url }} .
         git checkout -q $head_sha
         git submodule -q update --init --recursive
