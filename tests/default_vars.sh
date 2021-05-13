@@ -631,7 +631,7 @@ export RESTART_N=${FHMAX}
 export CPLMODE='nems_orig'
 export cap_dbug_flag="0"
 export use_coldstart="false"
-export use_mommesh="false"
+export use_mommesh="true"
 export RUNTYPE='startup'
 
 # FV3 defaults
@@ -791,7 +791,7 @@ export RESTART_N=${FHMAX}
 export CPLMODE='nems_orig_data'
 export cap_dbug_flag="0"
 export use_coldstart="false"
-export use_mommesh="false"
+export use_mommesh="true"
 export RUNTYPE='startup'
 export flux_convergence='0.0'
 export flux_iteration='2'
