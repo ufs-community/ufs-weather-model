@@ -195,5 +195,103 @@ set up specifically for issues related to the Weather Model.
 =================
 Running the model
 =================
-The `UFS Weather Model wiki <https://github.com/ufs-community/ufs-weather-model/wiki>`_ includes a simple
-test case that illustrates how the model can be run.
+
+--------------------------------
+Using the regression test script
+--------------------------------
+The regression test script ``rt.sh`` in the tests/ directory can be
+used to run a number of preconfigured test cases. It is the top-level script
+that calls lower-level scripts to build, set up environments and run tests.
+On `Tier-1 platforms <https://github.com/ufs-community/ ufs-weather-model/wiki
+/Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>`_, it can
+be as simple as editing the ``rt.conf`` file and subsequently executing
+``./rt.sh -l rt.conf``. Following discussions assume that the user has access
+to at least one Tier-1 platform.
+
+Each line in the PSV (Pipe-separated values) file ``rt.conf`` is used to either
+build or test. The ``COMPILE`` line specifies the application to build (e.g.
+``APP=S2S``), CCPP suite to use (e.g. ``SUITES=FV3_GFS_2017_coupled``), and
+additional build options (e.g. ``DEBUG=Y``) as necessary. The ``RUN`` line
+specifies the name of a test to run. The test name should match one of the test
+files in the tests/tests/ directory or, if the user is adding a new test, the name
+of the new test file. The order of lines in ``rt.conf`` matters since ``rt.sh``
+processes them sequentially; a ``RUN`` line should be proceeded by a ``COMPILE``
+line that builds the model used in the test. The following example ``rt.conf``
+file builds the Subseasonal to Seasonal (S2S) model and then runs the
+``cpld_control`` test.
+
+.. code-block:: console
+
+    COMPILE | APP=S2S SUITES=FV3_GFS_2017_coupled | | fv3
+    RUN     | cpld_control                        | | fv3
+
+Regression test generates a number of log files. The summary log file
+``RegressionTests_<machine>.<compiler>.log`` in the tests/ directory compares
+the results of the test against the baseline specific to a given platform and
+reports the outcome (hence, the 'regression' test). More detailed log files are
+found in tests/log_<machine> directory. Particularly, the user may find useful
+the compile and run directory paths provided as the value of ``RUNDIR``
+variable in run file. ``RUNDIR`` is a self-contained directory.
+
+
+In the following, a more detailed description of ``rt.sh``, its lower-level
+scripts, configuration templates for setting simulation parameters, and etc.
+is provided. This may be useful when the user wants to create a new test case
+to test his/her implementations.
+
+Shown in :numref:`Table %s <LowLevelScripts>` are the lower-level scripts found
+in tests/ directory.
+
+.. _LowLevelScripts:
+
+.. table:: *Lower-level scripts*
+
+   +----------------------+-----------------------------------------------------------+
+   | **File Name**        | **Description**                                           |
+   +======================+===========================================================+
+   | edit_inputs.sh       | Sets the default simulation parameters                    |
+   +----------------------+-----------------------------------------------------------+
+   | default_vars.sh      | Sets the default simulation parameters                    |
+   +----------------------+-----------------------------------------------------------+
+   | rt_utils.sh          | Sets the default simulation parameters                    |
+   +----------------------+-----------------------------------------------------------+
+   | detect_machine.sh    | Detects platform and sets relevant parameters             |
+   +----------------------+-----------------------------------------------------------+
+   | run_compile.sh       | Sets the default simulation parameters                    |
+   +----------------------+-----------------------------------------------------------+
+   | run_test.sh          | Sets the default simulation parameters                    |
+   +----------------------+-----------------------------------------------------------+
+
+Next,
+
+.. _SubDirs:
+
+.. table:: *Subdirectories*
+
+   +---------------------------+-----------------------------------------------------------+
+   | **Subdirectory Name**     | **Description**                                           |
+   +===========================+===========================================================+
+   | fv3_conf                  | Sets the default simulation parameters                    |
+   +---------------------------+-----------------------------------------------------------+
+   | parm                      | Sets the default simulation parameters                    |
+   +---------------------------+-----------------------------------------------------------+
+   | tests                     | Sets the default simulation parameters                    |
+   +---------------------------+-----------------------------------------------------------+
+
+--------------------------
+Using the unit test script
+--------------------------
+The unit test script ``utest.sh`` in the tests/ directory can be used. Given the name of a test,
+it carries out a suite of tests, with each test addressing a single aspect of the requirement
+a new implementation should satisfy:
+
+#. Thread (``THR``) reproducibility: varying the number of threads produces the same results
+#. MPI process (``MPI``) reproducibility: varying the number of MPI tasks produces the same results
+#. Domain decomposition (``DCP``) reproducibility: varying the tile layout of FV3 produces the same results
+#. Restart (``RST``) reproducibility: restarting produces the same results
+#. 64/32 (``BIT``) reproducibility: changing to double/single precision can be compiled and simulations can be run to completion
+#. Debug (``DBG``) reproducibility: can be compiled and simulation can be run to completion in debug mode
+
+The model can be run by executing ``./utest -n <test-name> -c <case-name>``, where ``<test-name>`` is
+the name of a test file in tests/tests/ directory, and ``<case-name>`` is one or comma-separated combination
+of ``THR``, ``MPI``, ``DCP``, ``RST``, ``BIT``, ``DBG``.
