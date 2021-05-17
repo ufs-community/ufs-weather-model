@@ -628,7 +628,7 @@ export coupling_interval_slow_sec=${CPL_SLOW}
 export coupling_interval_fast_sec=${CPL_FAST}
 
 export RESTART_N=${FHMAX}
-export CPLMODE='nems_orig'
+export CPLMODE='nems_frac'
 export cap_dbug_flag="0"
 export use_coldstart="false"
 export use_mommesh="true"
@@ -639,7 +639,7 @@ export RUNTYPE='startup'
 # set frac_grid=.F. but FRAC_GRID_INPUT=.T.
 # to repro existing tests set both frac_grid and FRAC_GRID_INPUT to .F.
 # to run frac_grid, set both frac_grid and FRAC_GRID_INPUTs to .T.
-export FRAC_GRID='.F.'
+export FRAC_GRID='.T.'
 export FRAC_GRID_INPUT='.T.'
 export CCPP_SUITE="FV3_GFS_2017_coupled"
 export INPUT_NML=input.mom6_ccpp.nml.IN
