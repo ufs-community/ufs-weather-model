@@ -67,12 +67,27 @@ if [ $BUILD = "true" ]; then
                     --no-cache \
                     --squash --compress \
                     -f Dockerfile -t ${IMG_NAME} ../..
-  exit $?
+
+  sudo docker create --name tmp-container ${IMG_NAME}
+  sudo docker cp tmp-container:/home/builder/ufs-weather-model/tests/fv3_std.exe ~
+  sudo docker cp tmp-container:/home/builder/ufs-weather-model/tests/modules.fv3_std ~
+  sudo docker rm tmp-container
 
 elif [ $RUN == "true" ]; then
 
   docker run -d --rm -v DataVolume:/tmp minsukjinoaa/fv3-input-data:input-data-20210115
-  docker run -d -e test_case=${TEST_CASE} --shm-size=512m -v DataVolume:/home/builder/data/NEMSfv3gfs/input-data-20210115 --name my-container ${IMG_NAME}
+
+  docker create -u builder -e "CI_TEST=true" -e "USER=builder" \
+                -e "RT_MACHINE=linux.gnu" -e "RT_COMPILER=gnu" \
+                -v DataVolume:/home/builder/data/NEMSfv3gfs/input-data-20210115 \
+                --shm-size=512m --name my-container noaaemc/ubuntu-hpc:v1.3 \
+                /bin/bash -c "cd ufs-weather-model/tests; ./utest -n ${TEST_NAME} -c ${TEST_CASE} -x"
+
+  cd $GITHUB_WORKSPACE
+  docker cp . my-container:/home/builder/ufs-weather-model
+  #docker cp ~/fv3_std.exe my-container:/home/builder/ufs-weather-model/tests
+  #docker cp ~/modules.fv3_std my-container:/home/builder/ufs-weather-model/tests
+  docker start -a my-container
 
   echo 'cache,rss,shmem' >memory_stat
   sleep 3
