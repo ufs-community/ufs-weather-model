@@ -101,10 +101,51 @@ module lnd_import_export
   
   
   ! export fields
-  character(*), parameter :: Fall_lat       = 'Fall_lat'
-  character(*), parameter :: Fall_lwup      = 'Fall_lwup'
-  character(*), parameter :: Sl_lfrin      = 'Sl_lfrin'
+  character(*), parameter :: Sl_lfrin         = 'Sl_lfrin'
   character(*), parameter :: foo_lnd2atmfield = 'foo_lnd2atmfield'
+  ! inouts
+  character(*), parameter :: Fall_weasd  = 'Fall_weasd'
+  character(*), parameter :: Fall_snwdph = 'Fall_snwdph'
+  character(*), parameter :: Fall_tskin  = 'Fall_tskin'
+  character(*), parameter :: Fall_tprcp  = 'Fall_tprcp'
+  character(*), parameter :: Fall_srflag = 'Fall_srflag'
+  character(*), parameter :: Fall_smc    = 'Fall_smc'
+  character(*), parameter :: Fall_stc    = 'Fall_stc'
+  character(*), parameter :: Fall_slc    = 'Fall_slc'
+  character(*), parameter :: Fall_canopy = 'Fall_canopy'
+  character(*), parameter :: Fall_trans  = 'Fall_trans'
+  character(*), parameter :: Fall_tsurf  = 'Fall_tsurf'
+  character(*), parameter :: Fall_z0rl   = 'Fall_z0rl'
+
+  ! noahouts
+  character(*), parameter :: Fall_sncovr1 = 'Fall_sncovr1'
+  character(*), parameter :: Fall_qsurf   = 'Fall_qsurf'
+  character(*), parameter :: Fall_gflux   = 'Fall_gflux'
+  character(*), parameter :: Fall_drain   = 'Fall_drain'
+  character(*), parameter :: Fall_evap    = 'Fall_evap'
+  character(*), parameter :: Fall_hflx    = 'Fall_hflx'
+  character(*), parameter :: Fall_ep      = 'Fall_ep'
+  character(*), parameter :: Fall_runoff  = 'Fall_runoff'
+  character(*), parameter :: Fall_cmm     = 'Fall_cmm'
+  character(*), parameter :: Fall_chh     = 'Fall_chh'
+  character(*), parameter :: Fall_evbs    = 'Fall_evbs'
+  character(*), parameter :: Fall_evcw    = 'Fall_evcw'
+  character(*), parameter :: Fall_sbsno   = 'Fall_sbsno'
+  character(*), parameter :: Fall_snowc   = 'Fall_snowc'
+  character(*), parameter :: Fall_stm     = 'Fall_stm'
+  character(*), parameter :: Fall_snohf   = 'Fall_snohf'
+  character(*), parameter :: Fall_smcwlt2 = 'Fall_smcwlt2'
+  character(*), parameter :: Fall_smcref2 = 'Fall_smcref2'
+  character(*), parameter :: Fall_wet1    = 'Fall_wet1'
+
+  ! diffouts
+  character(*), parameter :: Fall_rb_lnd   = 'Fall_rb_lnd'
+  character(*), parameter :: Fall_fm_lnd   = 'Fall_fm_lnd'
+  character(*), parameter :: Fall_fh_lnd   = 'Fall_fh_lnd'
+  character(*), parameter :: Fall_fm10_lnd = 'Fall_fm10_lnd'
+  character(*), parameter :: Fall_fh2_lnd  = 'Fall_fh2_lnd'
+  character(*), parameter :: Fall_stress   = 'Fall_stress'
+
 
   logical :: send_to_atm = .false.
 
@@ -203,15 +244,53 @@ contains
     ! call shr_carma_readnl('drv_flds_in', carma_fields)
 
     ! export to atm
-    ! call fldlist_add(fldsFrLnd_num, fldsFrlnd, trim(flds_scalar_name))
-    ! call fldlist_add(fldsFrLnd_num, fldsFrlnd, 'Sl_lfrin')
     if (send_to_atm) then
-       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_lat      )
-       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_lwup     )
        call fldlist_add(fldsFrLnd_num, fldsFrlnd, Sl_lfrin     )
 
        call fldlist_add(fldsFrLnd_num, fldsFrLnd, foo_lnd2atmfield    )
+       ! inouts
+       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_weasd       )
+       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_snwdph      )
+       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_tskin       )
+       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_tprcp       )
+       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_srflag      )
+       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_smc         )
+       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_stc         )
+       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_slc         )
+       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_canopy      )
+       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_trans       )
+       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_tsurf       )
+       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_z0rl        )
 
+       ! noahouts
+       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_sncovr1      )
+       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_qsurf        )
+       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_gflux        )
+       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_drain        )
+       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_evap         )
+       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_hflx         )
+       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_ep           )
+       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_runoff       )
+       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_cmm          )
+       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_chh          )
+       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_evbs         )
+       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_evcw         )
+       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_sbsno        )
+       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_snowc        )
+       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_stm          )
+       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_snohf        )
+       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_smcwlt2      )
+       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_smcref2      )
+       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_wet1         )
+
+       ! diffouts
+       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_rb_lnd        )
+       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_fm_lnd        )
+       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_fh_lnd        )
+       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_fm10_lnd      )
+       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_fh2_lnd       )
+       call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_stress        )
+       
        ! ! call fldlist_add(fldsFrLnd_num, fldsFrlnd, Fall_methane  )
        ! ! dust fluxes from land (4 sizes)
        ! call fldlist_add(fldsFrLnd_num, fldsFrLnd, Fall_flxdst, ungridded_lbound=1, ungridded_ubound=4)

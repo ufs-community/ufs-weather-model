@@ -335,7 +335,7 @@ contains
     !use lsm_noah, only: lsm_noah_run
     !use noah_loop, only: noah_loop_run
     use noah_driver, only: noah_loop_drv, noah_pubinst
-    use import_fields, only: write_import_field, import_allfields
+    use import_fields, only: write_import_field, import_allfields, export_allfields
     use proc_bounds, only : procbounds
     
     ! Arguments
@@ -366,6 +366,7 @@ contains
     integer                 :: i, de, gridbeg, gridend, im
     real(r8)                :: foodata(procbounds%im)
 
+    logical           :: first_time = .true.
     
     ! query the Component for its clock, importState and exportState
     ! call ESMF_GridCompGet(gcomp, clock=clock, importState=importState, &
@@ -373,14 +374,10 @@ contains
     call NUOPC_ModelGet(gcomp, modelClock=clock, importState=importState, exportState=exportState, rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
-    !--------------------------------
-    ! Unpack import state
-    !--------------------------------
-
     ! test tmp import
     !call field_foo(importState, trim(fldname_i), dataPtr_i, rc=rc)
     !call import_2_export(importState, exportState, fldname_i, fldname_e, rc)
- 
+    
     allocate(flds(7))
     flds = (/'Faxa_lwdn  '    , 'Faxa_swndr '   , 'Faxa_swvdr '   , 'Faxa_swndf ' , 'Faxa_swvdf ', &
          'Faxa_rain  '    , 'Faxa_snow  ' /)
@@ -420,7 +417,7 @@ contains
 
     ! tmp
     !write(*,*) 'procbound test:', procbounds%de, procbounds%gridbeg, procbounds%gridend
-    
+
     do n = 1,size(flds)
        fldname = trim(flds(n))
        call write_import_field(importState, fldname, rc)
@@ -430,25 +427,80 @@ contains
 
     ! end test tmp
 
-    ! ...end call import_fields
     call import_allfields(importState, procbounds, noah_pubinst, rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
+
+    ! tmp workaround to run first time step with simple nems.configure sequence, without having land restart read
+    first_time = .false.
+    if (first_time) then
+       first_time = .false.
+       write(*,*) 'lnd_comp: skipping first time step'
+    else
     
-    ! run model
-    !call noah_loop_drv()
-    call noah_loop_drv(procbounds, noah_pubinst)
+       ! run model
+       call noah_loop_drv(procbounds, noah_pubinst)
 
-    ! tmp test
-    im = procbounds%im
-    gridbeg = procbounds%gridbeg
-    gridend = procbounds%gridend
+       ! tmp test
+       ! im = procbounds%im
+       ! gridbeg = procbounds%gridbeg
+       ! gridend = procbounds%gridend
+       ! foodata(1:im) = noah_pubinst%model%foo_atm2lndfield(gridbeg:gridend)
+       ! do i = 1,im
+       !    write(*,*) 'MA1: ', de, gridbeg,gridend, size(foodata), foodata(i)
+       ! end do
 
-    ! foodata(1:im) = noah_pubinst%model%foo_atm2lndfield(gridbeg:gridend)
-    ! do i = 1,im
-    !    write(*,*) 'MA1: ', de, gridbeg,gridend, size(foodata), foodata(i)
-    ! end do
+    end if
+       call export_allfields(exportState, procbounds, noah_pubinst, rc)
 
-    
+
+       ! ! write out export fields
+       ! allocate(flds(37))
+       ! flds=(/ &          ! inouts
+       !      'Fall_weasd ', &
+       !      'Fall_snwdph', &
+       !      'Fall_tskin ', &
+       !      'Fall_tprcp ', &
+       !      'Fall_srflag', &
+       !      'Fall_smc   ', &
+       !      'Fall_stc   ', &
+       !      'Fall_slc   ', &
+       !      'Fall_canopy', &
+       !      'Fall_trans ', &
+       !      'Fall_tsurf ', &
+       !      'Fall_z0rl  ', &
+       !      'Fall_sncovr1', &          ! noahouts
+       !      'Fall_qsurf  ', &
+       !      'Fall_gflux  ', &
+       !      'Fall_drain  ', &
+       !      'Fall_evap   ', &
+       !      'Fall_hflx   ', &
+       !      'Fall_ep     ', &
+       !      'Fall_runoff ', &
+       !      'Fall_cmm    ', &
+       !      'Fall_chh    ', &
+       !      'Fall_evbs   ', &
+       !      'Fall_evcw   ', &
+       !      'Fall_sbsno  ', &
+       !      'Fall_snowc  ', &
+       !      'Fall_stm    ', &
+       !      'Fall_snohf  ', &
+       !      'Fall_smcwlt2', &
+       !      'Fall_smcref2', &
+       !      'Fall_wet1   ', &         
+       !      'Fall_rb_lnd  ', &         ! diffouts
+       !      'Fall_fm_lnd  ', &
+       !      'Fall_fh_lnd  ', &
+       !      'Fall_fm10_lnd', &
+       !      'Fall_fh2_lnd ', &
+       !      'Fall_stress  '  &
+       !      /)
+
+       ! do n = 1,size(flds)
+       !    fldname = trim(flds(n))
+       !    call write_import_field(exportState, fldname, rc)
+       ! end do
+       ! deallocate(flds)
+   
     call ESMF_ClockPrint(clock, options="currTime", &
          preString="------>Advancing LND from: ", unit=msgString, rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
