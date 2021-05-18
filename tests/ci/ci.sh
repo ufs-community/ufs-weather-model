@@ -62,16 +62,16 @@ fi
 
 if [ $BUILD = "true" ]; then
 
-  sudo docker build --build-arg test_name=$TEST_NAME \
+  docker build --build-arg test_name=$TEST_NAME \
                     --build-arg build_case=$BUILD_CASE \
                     --no-cache \
                     --squash --compress \
                     -f Dockerfile -t ${IMG_NAME} ../..
 
-  sudo docker create --name tmp-container ${IMG_NAME}
-  sudo docker cp tmp-container:/home/builder/ufs-weather-model/tests/fv3_std.exe ~
-  sudo docker cp tmp-container:/home/builder/ufs-weather-model/tests/modules.fv3_std ~
-  sudo docker rm tmp-container
+  docker create --name tmp-container ${IMG_NAME}
+  docker cp tmp-container:/home/builder/ufs-weather-model/tests/fv3_std.exe ~
+  docker cp tmp-container:/home/builder/ufs-weather-model/tests/modules.fv3_std ~
+  docker rm tmp-container
 
 elif [ $RUN == "true" ]; then
 
