@@ -8,13 +8,7 @@ fi
 
 ICERES="${OCNRES:0:1}.${OCNRES:1}"
 
-if [[ ${FRAC_GRID_INPUT} = .F. ]]; then
-  FV3_IC=@[INPUTDATA_ROOT_BMIC]/${SYEAR}${SMONTH}${SDAY}${SHOUR}/gfs/@[ATMRES]/INPUT
-elif [[ @[NPZ] == '127' ]]; then
-  FV3_IC=FV3_input_frac/BM_IC/${SYEAR}${SMONTH}${SDAY}${SHOUR}/gfs/@[ATMRES]_L@[NPZ]/INPUT
-else
-  FV3_IC=FV3_input_frac/BM_IC/${SYEAR}${SMONTH}${SDAY}${SHOUR}/gfs/@[ATMRES]/INPUT
-fi
+FV3_IC=FV3_input_frac_P7/BM_IC/${SYEAR}${SMONTH}${SDAY}${SHOUR}/gfs/@[ATMRES]_L@[NPZ]/INPUT
 
 # FV3 fixed input
 cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/aerosol.dat .
@@ -27,19 +21,11 @@ elif [ $OZ_PHYS_OLD = .T. ]; then
   cp  @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/global_o3prdlos.f77 .
 fi
 cp    @[INPUTDATA_ROOT]/${FV3_DIR}/global_h2o_pltc.f77 ./global_h2oprdlos.f77
-#TODO: convert to tileX.nc
-cp    @[INPUTDATA_ROOT]/${FV3_DIR}/*grb .
+cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/*nc .
 cp    @[INPUTDATA_ROOT]/${FV3_DIR}/@[FIELD_TABLE] ./field_table
 cp    @[INPUTDATA_ROOT]/CPL_FIX/a@[ATMRES]o@[OCNRES]/grid_spec.nc ./INPUT
 cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/@[ATMRES]_grid*.nc ./INPUT
-# NOTE: No L127 FV3_DIR input for non-frac grid input except for C96
-if [ ${FRAC_GRID_INPUT} = .F. ]; then
-  cp  @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/oro_data*.nc ./INPUT
-  cp  @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/gfs_ctrl.nc ./INPUT
-else
-  cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES]_L@[NPZ].mx@[OCNRES]_frac/oro_data*.nc ./INPUT
-  cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES]_L@[NPZ].mx@[OCNRES]_frac/gfs_ctrl.nc ./INPUT
-fi
+cp    @[INPUTDATA_ROOT]/FV3_input_frac_P7/@[ATMRES]_L@[NPZ].mx@[OCNRES]_frac/oro_data*.nc ./INPUT
 cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/grid_spec.nc ./INPUT/@[ATMRES]_mosaic.nc
 
 # MOM6 fixed input
@@ -63,6 +49,7 @@ if [ $WARM_START = .F. ]; then
   # ICs
   cp    @[INPUTDATA_ROOT]/${FV3_IC}/sfc_data*.nc ./INPUT
   cp    @[INPUTDATA_ROOT]/${FV3_IC}/gfs_data*.nc ./INPUT
+  cp    @[INPUTDATA_ROOT]/${FV3_IC}/gfs_ctrl.nc ./INPUT
   cp    @[INPUTDATA_ROOT_BMIC]/${SYEAR}${SMONTH}${SDAY}${SHOUR}/mom6_da/MOM*.nc ./INPUT
   # the BM ICs are still named cice5 and need to remain so until P5.0 is completed
   cp    @[INPUTDATA_ROOT_BMIC]/${SYEAR}${SMONTH}${SDAY}${SHOUR}/cpc/cice5_model_@[ICERES].*.nc ./cice_model.res.nc
