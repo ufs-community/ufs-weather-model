@@ -80,7 +80,7 @@ elif [ $RUN == "true" ]; then
   docker create -u builder -e "CI_TEST=true" -e "USER=builder" \
                 -e "RT_MACHINE=linux.gnu" -e "RT_COMPILER=gnu" \
                 -v DataVolume:/home/builder/data/NEMSfv3gfs/input-data-20210115 \
-                --shm-size=512m --name my-container noaaemc/ubuntu-hpc:v1.3 \
+                --shm-size=512m --name my-container noaaemc/ubuntu-hpc:v1.3b \
                 /bin/bash -c "cd ufs-weather-model/tests; ./utest -n ${TEST_NAME} -c ${TEST_CASE} -x"
 
   cd $GITHUB_WORKSPACE
