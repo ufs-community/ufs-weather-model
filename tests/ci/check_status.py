@@ -8,7 +8,7 @@ from urllib.request import urlopen, Request
 from datetime import datetime, timedelta
 
 
-def check_build(request, no_builds):
+def check_build(request):
     """Check if all build jobs are completed successfully.
     API endpoint: api.github.com/repos/{owner}/{repo}/actions/runs/{run_id}/jobs
     """
@@ -20,7 +20,7 @@ def check_build(request, no_builds):
         ids = [x["id"] for x in data if re.search("Build", x["name"])]
         if len(ids) == 1 and next(re.search("matrix", x["name"]) for x in data if x["id"] in ids):
             break
-        if len(ids) != no_builds:
+        if len(ids) == 0:
             continue
         all_completed = all(
             [x["status"] == "completed" for x in data if x["id"] in ids])
@@ -109,8 +109,7 @@ def main():
         pass
 
     if sys.argv[1] == "build":
-        print("success") if check_build(
-            request, int(sys.argv[2])) else print("failure")
+        print("success") if check_build(request) else print("failure")
     elif sys.argv[1] == "completion":
         print("success") if check_completion(
             request, sys.argv[2]) else print("failure")
