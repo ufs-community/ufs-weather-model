@@ -69,8 +69,8 @@ if [ $BUILD = "true" ]; then
                     -f Dockerfile -t ${IMG_NAME} ../..
 
   docker create --name tmp-container ${IMG_NAME}
-  docker cp tmp-container:/home/builder/ufs-weather-model/tests/fv3_std.exe ~
-  docker cp tmp-container:/home/builder/ufs-weather-model/tests/modules.fv3_std ~
+  docker cp -a tmp-container:/home/builder/ufs-weather-model/tests/fv3_std.exe ~
+  docker cp -a tmp-container:/home/builder/ufs-weather-model/tests/modules.fv3_std ~
   docker rm tmp-container
 
 elif [ $RUN == "true" ]; then
