@@ -8,7 +8,7 @@ fi
 
 ICERES="${OCNRES:0:1}.${OCNRES:1}"
 
-FV3_IC=FV3_input_frac_P7/BM_IC/${SYEAR}${SMONTH}${SDAY}${SHOUR}/gfs/@[ATMRES]_L@[NPZ]/INPUT
+FV3_IC=FV3_input_frac/BM7_IC/${SYEAR}${SMONTH}${SDAY}${SHOUR}/gfs/@[ATMRES]_L@[NPZ]/INPUT
 
 # FV3 fixed input
 cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/aerosol.dat .
@@ -36,11 +36,10 @@ cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/oro_@[ATMRES].mx@[OCNRES].tile4.
 cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/oro_@[ATMRES].mx@[OCNRES].tile5.nc INPUT/oro_data.tile5.nc
 cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/oro_@[ATMRES].mx@[OCNRES].tile6.nc INPUT/oro_data.tile6.nc
 cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/@[ATMRES]*.nc .
+
 cp    @[INPUTDATA_ROOT]/${FV3_DIR}/@[FIELD_TABLE] ./field_table
 cp    @[INPUTDATA_ROOT]/CPL_FIX/a@[ATMRES]o@[OCNRES]/grid_spec.nc ./INPUT
 cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/@[ATMRES]_grid*.nc ./INPUT
-#TODO: check these oro copies are not needed---the whole frac_P7 might not be needed
-#cp    @[INPUTDATA_ROOT]/FV3_input_frac_P7/@[ATMRES]_L@[NPZ].mx@[OCNRES]_frac/oro_data*.nc ./INPUT
 cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/grid_spec.nc ./INPUT/@[ATMRES]_mosaic.nc
 
 # MOM6 fixed input
