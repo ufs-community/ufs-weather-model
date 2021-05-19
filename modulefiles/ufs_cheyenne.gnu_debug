@@ -6,7 +6,7 @@ proc ModulesHelp {} {
 
 module-whatis "loads UFS Model prerequisites for Cheyenne/GNU"
 
-module load cmake/3.16.4
+module load cmake/3.18.2
 
 # load programming environment
 module load ncarenv/1.3
