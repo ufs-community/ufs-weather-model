@@ -108,8 +108,6 @@ fi
 # see also https://gcc.gnu.org/bugzilla/show_bug.cgi?id=55534);
 # this line can be removed once FMS becomes a pre-installed library
 mkdir -p $PATHTR/FV3/ccpp/include
-# Similar for this directory, which apparently never gets populated
-mkdir -p $PATHTR/FMS/fms2_io/include
 
 CMAKE_FLAGS="${CMAKE_FLAGS} -DMPI=ON"
 
