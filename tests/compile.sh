@@ -32,8 +32,8 @@ else
   MACHINE_ID=$1
   MAKE_OPT=${2:-}
   COMPILE_NR=${3:+_$3}
-  clean_before=${4:-NO}
-  clean_after=${5:-NO}
+  clean_before=${4:-YES}
+  clean_after=${5:-YES}
 fi
 
 BUILD_NAME=fv3${COMPILE_NR}
