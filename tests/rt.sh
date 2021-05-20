@@ -237,13 +237,13 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   ECFLOW_START=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
-  QUEUE=batch
-  COMPILE_QUEUE=batch
+  QUEUE=debug
+  COMPILE_QUEUE=debug
 
-  #ACCNR=fv3-cpu
+  ACCNR=ome
   PARTITION=
-  dprefix=/scratch1/NCEPDEV
-  DISKNM=$dprefix/nems/emc.nemspara/RT
+  dprefix=/scratch2/BMC/rem/Lisa.Bengtsson/
+  DISKNM=/scratch1/NCEPDEV/nems/emc.nemspara/RT
   STMP=$dprefix/stmp4
   PTMP=$dprefix/stmp2
 
@@ -413,7 +413,7 @@ if [[ $TESTS_FILE =~ '35d' ]]; then
   TEST_35D=true
 fi
 
-BL_DATE=20210517
+BL_DATE=20210513
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]]; then
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
 else
