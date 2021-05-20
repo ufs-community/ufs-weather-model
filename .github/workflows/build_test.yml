@@ -138,7 +138,7 @@ jobs:
         sudo systemctl restart docker
         sleep 10
         cd tests/ci && ./ci.sh -n ${{ matrix.name }} -b ${{ matrix.case }}
-        cd ~ && tar -cvf my_files.tar fv3_std.exe modules.fv3_std
+        #cd ~ && tar -cvf my_files.tar fv3_std.exe modules.fv3_std
 
     - name: Free up disk space
       run: |
@@ -148,7 +148,7 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: ${{ matrix.bld_set }}.artifact
-        path: ~/my_files.tar
+        path: ~/fv3.tar
 
   wait:
     name: Wait for ec2 instances to start
@@ -188,11 +188,11 @@ jobs:
     steps:
     - name: Clean up in case of left-over files
       run: |
-        #rm -rf ${{ github.workspace }}
+        cd ${{ github.workspace }}/../.. && rm -rf ufs-weather-model
         docker ps -a --filter "name=my-container" | grep my-container >/dev/null 2>&1 \
           && docker rm my-container >/dev/null 2>&1 && d=$? || d=$?
-        docker image ls | grep ${{ needs.setup.outputs.img }} >/dev/null 2>&1 \
-          && docker rmi ${{ needs.setup.outputs.img }} >/dev/null 2>&1 && d=$? || d=$?
+        #docker image ls | grep ${{ needs.setup.outputs.img }} >/dev/null 2>&1 \
+        #  && docker rmi ${{ needs.setup.outputs.img }} >/dev/null 2>&1 && d=$? || d=$?
 
     - uses: actions/checkout@v2
       with:
@@ -205,7 +205,7 @@ jobs:
 
     - name: Run utest
       run: |
-        cd ${{ github.workspace }}/tests && tar -xvf my_files.tar && rm -rf my_files.tar
+        cd ${{ github.workspace }}/tests && tar -xvf fv3.tar && rm -rf fv3.tar
         cd ${{ github.workspace }}/tests/ci
         ./ci.sh -n ${{ matrix.name }} -r ${{ matrix.case }}
 
@@ -219,7 +219,7 @@ jobs:
       if: ${{ always() }}
       run: |
         rm -f ci.sh ci.test
-        docker stop my-container && docker rm  my-container \
-          && docker rmi ${{ needs.setup.outputs.img }}:latest
+        docker stop my-container && docker rm  my-container
+        #docker rmi ${{ needs.setup.outputs.img }}:latest
         docker volume rm DataVolume
-        rm -f memory_stat
+        #rm -f memory_stat

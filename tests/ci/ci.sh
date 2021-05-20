@@ -63,14 +63,13 @@ fi
 if [ $BUILD = "true" ]; then
 
   docker build --build-arg test_name=$TEST_NAME \
-                    --build-arg build_case=$BUILD_CASE \
-                    --no-cache \
-                    --squash --compress \
-                    -f Dockerfile -t ${IMG_NAME} ../..
+               --build-arg build_case=$BUILD_CASE \
+               --no-cache \
+               --squash --compress \
+               -f Dockerfile -t ${IMG_NAME} ../..
 
   docker create --name tmp-container ${IMG_NAME}
-  docker cp -a tmp-container:/home/builder/ufs-weather-model/tests/fv3_std.exe ~
-  docker cp -a tmp-container:/home/builder/ufs-weather-model/tests/modules.fv3_std ~
+  docker cp -a tmp-container:/home/builder/ufs-weather-model/tests/fv3.tar ~
   docker rm tmp-container
 
 elif [ $RUN == "true" ]; then
@@ -79,15 +78,14 @@ elif [ $RUN == "true" ]; then
 
   docker create -u builder -e "CI_TEST=true" -e "USER=builder" \
                 -e "RT_MACHINE=linux.gnu" -e "RT_COMPILER=gnu" \
+                -w "/home/builder/ufs-weather-model/tests" \
                 -v DataVolume:/home/builder/data/NEMSfv3gfs/input-data-20210115 \
                 --shm-size=512m --name my-container noaaemc/ubuntu-hpc:v1.3b \
-                /bin/bash -c "cd ufs-weather-model/tests; ./utest -n ${TEST_NAME} -c ${TEST_CASE} -x"
+                /bin/bash -c "./utest -n ${TEST_NAME} -c ${TEST_CASE} -x"
 
   cd $GITHUB_WORKSPACE
   docker cp . my-container:/home/builder/ufs-weather-model
-  #docker cp ~/fv3_std.exe my-container:/home/builder/ufs-weather-model/tests
-  #docker cp ~/modules.fv3_std my-container:/home/builder/ufs-weather-model/tests
-  docker start -a my-container
+  docker start my-container
 
   echo 'cache,rss,shmem' >memory_stat
   sleep 3
