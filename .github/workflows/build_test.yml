@@ -189,6 +189,7 @@ jobs:
     - name: Clean up in case of left-over files
       run: |
         #cd ${{ github.workspace }}/../.. && rm -rf ufs-weather-model
+        rm -rf ${{ github.workspace }}
         docker ps -a --filter "name=my-container" | grep my-container >/dev/null 2>&1 \
           && docker rm my-container >/dev/null 2>&1 && d=$? || d=$?
         #docker image ls | grep ${{ needs.setup.outputs.img }} >/dev/null 2>&1 \
@@ -196,6 +197,7 @@ jobs:
 
     - uses: actions/checkout@v2
       with:
+        path: ufs-weather-model
         submodules: recursive
 
     - uses: actions/download-artifact@v2
@@ -205,6 +207,8 @@ jobs:
 
     - name: Run utest
       run: |
+        echo $(pwd)
+        ls -alF
         cd ${{ github.workspace }}/tests && tar -xvf fv3.tar && rm -rf fv3.tar
         cd ${{ github.workspace }}/tests/ci
         ./ci.sh -n ${{ matrix.name }} -r ${{ matrix.case }}
