@@ -56,7 +56,7 @@ hostname
 
 set +x
 if [[ $MACHINE_ID == macosx.* ]] || [[ $MACHINE_ID == linux.* ]]; then
-  source $PATHTR/modulefiles/${MACHINE_ID}/fv3
+  source $PATHTR/modulefiles/ufs_${MACHINE_ID}
 else
   if [[ $MACHINE_ID == wcoss2 ]]; then
     source /apps/prod/lmodules/startLmod
@@ -66,10 +66,10 @@ else
     source /lustre/f2/pdata/esrl/gsd/contrib/lua-5.1.4.9/init/init_lmod.sh
   fi
   # Load fv3 module
-  module use $PATHTR/modulefiles/${MACHINE_ID}
-  modulefile="fv3"
+  module use $PATHTR/modulefiles
+  modulefile="ufs_${MACHINE_ID}"
   if [[ "${MAKE_OPT}" == *"DEBUG=Y"* ]]; then
-    [[ -f $PATHTR/modulefiles/${MACHINE_ID}/fv3_debug ]] && modulefile="fv3_debug"
+    [[ -f $PATHTR/modulefiles/ufs_${MACHINE_ID}_debug ]] && modulefile="ufs_${MACHINE_ID}_debug"
   fi
   module load $modulefile
   module list
@@ -83,7 +83,7 @@ echo "Compiling ${MAKE_OPT} into $BUILD_NAME.exe on $MACHINE_ID"
 CMAKE_FLAGS=''
 
 if [[ "${MAKE_OPT}" == *"DEBUG=Y"* ]]; then
-  CMAKE_FLAGS="${CMAKE_FLAGS} -DDEBUG=ON"
+  CMAKE_FLAGS="${CMAKE_FLAGS} -DDEBUG=ON -DCMAKE_BUILD_TYPE=Debug"
 elif [[ "${MAKE_OPT}" == *"REPRO=Y"* ]]; then
   CMAKE_FLAGS="${CMAKE_FLAGS} -DREPRO=ON"
 fi
@@ -108,8 +108,6 @@ fi
 # see also https://gcc.gnu.org/bugzilla/show_bug.cgi?id=55534);
 # this line can be removed once FMS becomes a pre-installed library
 mkdir -p $PATHTR/FV3/ccpp/include
-# Similar for this directory, which apparently never gets populated
-mkdir -p $PATHTR/FMS/fms2_io/include
 
 CMAKE_FLAGS="${CMAKE_FLAGS} -DMPI=ON"
 
@@ -175,9 +173,9 @@ bash -x ${PATHTR}/build.sh
 
 mv ${BUILD_DIR}/ufs_model ${PATHTR}/tests/${BUILD_NAME}.exe
 if [[ "${MAKE_OPT}" == "DEBUG=Y" ]]; then
-  cp ${PATHTR}/modulefiles/${MACHINE_ID}/fv3_debug ${PATHTR}/tests/modules.${BUILD_NAME}
+  cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}_debug ${PATHTR}/tests/modules.${BUILD_NAME}
 else
-  cp ${PATHTR}/modulefiles/${MACHINE_ID}/fv3 ${PATHTR}/tests/modules.${BUILD_NAME}
+  cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}       ${PATHTR}/tests/modules.${BUILD_NAME}
 fi
 
 if [ $clean_after = YES ] ; then

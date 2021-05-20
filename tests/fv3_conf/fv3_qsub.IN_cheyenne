@@ -28,7 +28,7 @@ export ESMF_RUNTIME_COMPLIANCECHECK=OFF:depth=4
 # Avoid job errors because of filesystem synchronization delays
 sync && sleep 1
 
-mpiexec_mpt -np @[TASKS] ./fv3.exe
+mpiexec_mpt -p %g: -np @[TASKS] ./fv3.exe
 
 echo "Model ended:    " `date`
 echo -n " $( date +%s )," >> job_timestamp.txt

@@ -1,7 +1,7 @@
 print_esmf:              .true.
 
 total_member:            1
-PE_MEMBER01:             28
+PE_MEMBER01:             @[TASKS]
 
 start_year:              2018
 start_month:             10
@@ -18,14 +18,14 @@ calendar:                'julian'
 memuse_verbose:          .false.
 atmos_nthreads:          1
 use_hyper_thread:        .false.
-ncores_per_node:         24
+ncores_per_node:         @[TPN]
 debug_affinity:          .true.
 restart_interval:        0
 output_1st_tstep_rst:    .false.
 
 quilting:                .true.
 write_groups:            1
-write_tasks_per_group:   4
+write_tasks_per_group:   8
 write_dopost:            @[WRITE_DOPOST]
 num_files:               2
 filename_base:           'dyn' 'phy'
