@@ -6,18 +6,8 @@ export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C384L127 MX02
 
 export CNTL_DIR="cpld_bmarkfrac_v16"
 
-export LIST_FILES="phyf012.tile1.nc \
-                   phyf012.tile2.nc \
-                   phyf012.tile3.nc \
-                   phyf012.tile4.nc \
-                   phyf012.tile5.nc \
-                   phyf012.tile6.nc \
-                   dynf012.tile1.nc \
-                   dynf012.tile2.nc \
-                   dynf012.tile3.nc \
-                   dynf012.tile4.nc \
-                   dynf012.tile5.nc \
-                   dynf012.tile6.nc \
+export LIST_FILES="phyf006.nc \
+                   dynf006.nc \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -54,8 +44,8 @@ export LIST_FILES="phyf012.tile1.nc \
                    RESTART/MOM.res_1.nc \
                    RESTART/MOM.res_2.nc \
                    RESTART/MOM.res_3.nc \
-                   RESTART/iced.2013-04-01-43200.nc \
-                   RESTART/ufs.cpld.cpl.r.2013-04-01-43200.nc"
+                   RESTART/iced.2013-04-01-21600.nc \
+                   RESTART/ufs.cpld.cpl.r.2013-04-01-21600.nc"
 
 export_fv3
 export_cpl
@@ -65,10 +55,13 @@ export SMONTH="04"
 export SDAY="01"
 export SHOUR="00"
 
-export DAYS="0.5"
-export FHMAX="12"
-export RESTART_INTERVAL="6"
+export DAYS='0.25'
+export FHMAX='6'
+export RESTART_INTERVAL='3'
 export RESTART_N=${RESTART_INTERVAL}
+export NFHOUT=3
+export FDIAG=3
+export FHZERO=3
 
 export TASKS=$TASKS_cpl_bmrk
 export TPN=$TPN_cpl_bmrk
@@ -88,6 +81,7 @@ export NPX=385
 export NPY=385
 export IMO=1536
 export JMO=768
+export OUTPUT_GRID="'gaussian_grid'"
 
 export OCNRES='025'
 export ICERES='0.25'
@@ -144,6 +138,6 @@ export INPUT_NML=input.benchmark_v16.nml.IN
 
 export FIELD_TABLE="field_table_gfsv16"
 export DIAG_TABLE="diag_table_bmark_v16_template"
-export SUITE_NAME="FV3_GFS_v16_coupled"
+export CCPP_SUITE="FV3_GFS_v16_coupled"
 
 export FV3_RUN=cpld_bmark_run.IN

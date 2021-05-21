@@ -18,7 +18,6 @@ endif()
 list(APPEND _nems_util_files
   CMEPS/util/shr_abort_mod.F90
   CMEPS/util/shr_log_mod.F90
-  CMEPS/util/shr_pio_mod.F90
   CMEPS/util/shr_sys_mod.F90
   CMEPS/util/shr_flux_mod.F90
   CMEPS/util/shr_mpi_mod.F90
@@ -66,8 +65,7 @@ list(APPEND _mediator_files
   CMEPS/mediator/med_phases_post_wav_mod.F90)
 
 list(APPEND _mediator_defs ESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR}
-                           ESMF_VERSION_MINOR=${ESMF_VERSION_MINOR}
-                           INTERNAL_PIO_INIT)
+                           ESMF_VERSION_MINOR=${ESMF_VERSION_MINOR})
 
 ### Create target library and set PUBLIC interfaces on the library
 add_library(cmeps STATIC ${_nems_util_files} ${_mediator_files})

@@ -12,9 +12,13 @@ The atmosphere model reads many parameters from a Fortran namelist file, named *
 several Fortran namelist records, some of which are always required, others of which are only used when selected
 physics options are chosen.
 
+The following link provides an in depth description of the namelist settings:
+
+https://dtcenter.ucar.edu/GMTB/v5.0.0/sci_doc/
+
 The following link describes the various physics-related namelist records:
 
-https://dtcenter.ucar.edu/GMTB/v4.1.0/sci_doc/CCPPsuite_nml_desp.html
+https://dtcenter.ucar.edu/GMTB/v5.0.0/sci_doc/CCPPsuite_nml_desp.html
 
 The following link describes the stochastic physics namelist records:
 
