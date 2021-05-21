@@ -912,6 +912,7 @@ export FILENAME_BASE='cfsr.'
 export mesh_file="cfsr_mesh.nc"
 export MESH_ATM="DATM_INPUT/${mesh_file}"
 export atm_datamode=${DATM_SRC}
+export stream_files="DATM_INPUT/${FILENAME_BASE}201110.nc"
 
 # MOM6 defaults; 1 degree
 export MOM_INPUT=MOM_input_template_100
