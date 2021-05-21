@@ -635,7 +635,7 @@ export RESTART_N=${FHMAX}
 export CPLMODE='nems_orig'
 export cap_dbug_flag="0"
 export use_coldstart="false"
-export use_mommesh="false"
+export use_mommesh="true"
 export RUNTYPE='startup'
 
 # FV3 defaults
@@ -795,7 +795,7 @@ export RESTART_N=${FHMAX}
 export CPLMODE='nems_orig_data'
 export cap_dbug_flag="0"
 export use_coldstart="false"
-export use_mommesh="false"
+export use_mommesh="true"
 export RUNTYPE='startup'
 export flux_convergence='0.0'
 export flux_iteration='2'
@@ -916,6 +916,7 @@ export FILENAME_BASE='cfsr.'
 export mesh_file="cfsr_mesh.nc"
 export MESH_ATM="DATM_INPUT/${mesh_file}"
 export atm_datamode=${DATM_SRC}
+export stream_files="DATM_INPUT/${FILENAME_BASE}201110.nc"
 
 # MOM6 defaults; 1 degree
 export MOM_INPUT=MOM_input_template_100
