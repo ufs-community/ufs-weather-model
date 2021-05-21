@@ -242,7 +242,7 @@ endif()
 
 if(GOCART)
   add_dependencies(ufs UFS)
-  list(APPEND _ufs_defs_private FRONT_GSDCHEM=Aerosol_Cap)
+  list(APPEND _ufs_defs_private FRONT_GOCART=Aerosol_Cap)
   list(APPEND _ufs_libs_public UFS)
 endif()
 
