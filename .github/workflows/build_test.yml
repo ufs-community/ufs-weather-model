@@ -217,8 +217,6 @@ jobs:
     - name: Clean up
       if: ${{ always() }}
       run: |
-        rm -f ci.sh ci.test
         docker stop my-container && docker rm my-container
-        #docker rmi ${{ needs.setup.outputs.img }}:latest
         docker volume rm DataVolume
-        #rm -f memory_stat
+        rm -rf ${{ github.workspace }}
