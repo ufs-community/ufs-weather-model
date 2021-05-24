@@ -812,8 +812,6 @@ are not usually changed.
 *nems.configure* file
 -----------------------
 
-.. todo:: Add information/organize for ATM, ATMW, S2S, S2SW, CDEPS
-
 This file contains  information about the various NEMS components  and their run sequence. The active  components for a particular model configuration  are given in the *EARTH_component_list*. For  each active component,  the model name  and compute tasks  assigned to the component are given. A  specific component might  also require additional configuration  information to be present.  The *runSeq* describes the order and time intervals  over which one or  more component models integrate  in time. Additional *attributes*, if present, provide additional configuration of the model components when coupled with the CMEPS mediator.
 
 For the ATM application, since it consists of a single component, the *nems.configure* is simple and does not need to be changed.
@@ -1045,7 +1043,7 @@ The output of any field is set in the appropriate *ice_in* namelist. For example
    ...
    
 where the ice concentration (*aice*), ice thickness (*hi*) and snow thickness (*hs*) are set to be output
-on the monthly, daily, hourly, seconds or timestep intervals set by the *histfreq_n* setting. Since *histfreq_n* is
+on the monthly, daily, hourly, yearly or timestep intervals set by the *histfreq_n* setting. Since *histfreq_n* is
 *0* for both monthly and daily frequencies and neither yearly nor per-timestep output is requested, only 6-hour 
 mean history files will be produced.
 
@@ -1060,8 +1058,6 @@ WW3
 -------
 CMEPS
 -------
-
-.. todo:: Information needed
 
 The CMEPS mediator writes general information about the run-time configuration to the file *mediator.log* in the model run directory. Optionally, the CMEPS mediator can be configured to write history files for the purposes of examining the field exchanges at various points in the model run sequence. 
 

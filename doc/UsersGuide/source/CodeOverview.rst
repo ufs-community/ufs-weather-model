@@ -81,13 +81,13 @@ When the ufs-weather-model is cloned, the basic directory structure will be simi
 .. code-block:: console
 
    ufs-weather-model/
-   ├── cmake               --------- cmake configuration files
-   ├── compsets            --------- configurations used by some regression tests
-   ├── conf                --------- compile options for Tier 1 and 2 platforms
-   ├── doc                 --------- READMEs with build, reg-test hints
-   ├── FMS                 --------- The Flexible Modeling System (FMS),a software framework
-   ├── FV3                 --------- FV3 atmosphere model
-   │   ├── atmos_cubed_sphere   ---- FV3 dynamic core
+   ├── cmake                -------- cmake configuration files
+   ├── compsets             -------- configurations used by some regression tests
+   ├── conf                 -------- compile options for Tier 1 and 2 platforms
+   ├── doc                  -------- READMEs with build, reg-test hints
+   ├── FMS                  -------- The Flexible Modeling System (FMS),a software framework
+   ├── FV3                  -------- UFSAtm atmosphere model
+   │   ├── atmos_cubed_sphere ------ FV3 dynamic core
    │   │   ├── docs
    │   │   ├── driver
    │   │   ├── model
@@ -99,19 +99,16 @@ When the ufs-weather-model is cloned, the basic directory structure will be simi
    │   │   ├── physics      -------- CCPP compliant physics schemes
    │   │   └── suites       -------- CCPP physics suite definition files (SDFs)
    │   ├── cpl              -------- Coupling field data structures
-   │   ├── gfsphysics
-   │   │   ├── CCPP_layer
-   │   │   ├── GFS_layer
-   │   │   └── physics     --------- unused - IPD version of physics codes
-   │   ├── io              --------- FV3 write grid comp code
-   │   ├── ipd             --------- unused - IPD driver/interfaces
-   |   ├── stochastic_physics  ----- Cmakefile for stochastic physics code
-   ├── log                 --------- log files from NEMS compset regression tests
-   ├── modulefiles         --------- system module files for supported HPC systems
-   ├── NEMS                --------- NOAA Earth Modeling System framework
+   │   ├── fv3_cap          -------- UFSAtm NUOPC cap
+   │   ├── io               -------- UFSAtm write grid comp code
+   │   ├── ipd              -------- unused - IPD driver/interfaces
+   |   ├── stochastic_physics ------ Cmakefile for stochastic physics code
+   ├── log                  -------- log files from NEMS compset regression tests
+   ├── modulefiles          -------- system module files for supported HPC systems
+   ├── NEMS                 -------- NOAA Earth Modeling System framework
    ├── stochastic_physics   -------- stochastic physics pattern generator
-   ├── tests               --------- regression test scripts
-   |   └── parm            --------- regression test configurations
+   ├── tests                -------- regression test scripts
+   |   └── parm             -------- regression test configurations
    ├── MOM6-interface
    |    └── MOM6                                
    │        ├── src                              --------- MOM6 ocean model
