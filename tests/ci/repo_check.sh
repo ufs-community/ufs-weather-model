@@ -13,8 +13,8 @@ result() {
 }
 
 # Declare variables
-declare -A base fv3 mom6 cice ww3 stoch fms nems cmeps datm cdeps cmake
-submodules="fv3 mom6 cice ww3 stoch fms nems cmeps datm cdeps cmake"
+declare -A base fv3 mom6 cice ww3 stoch nems cmeps datm cdeps cmake
+submodules="fv3 mom6 cice ww3 stoch nems cmeps datm cdeps cmake"
 comment=''
 ownerID=$1
 
@@ -42,10 +42,6 @@ ww3[dir]='WW3'
 stoch[repo]='https://github.com/noaa-psd/stochastic_physics'
 stoch[branch]='master'
 stoch[dir]='stochastic_physics'
-
-fms[repo]='https://github.com/NOAA-GFDL/FMS'
-fms[branch]='main'
-fms[dir]='FMS'
 
 nems[repo]='https://github.com/NOAA-EMC/NEMS'
 nems[branch]='develop'
