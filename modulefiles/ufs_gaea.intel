@@ -1,0 +1,35 @@
+#%Module
+
+proc ModulesHelp {} {
+  puts stderr "\tcit - loads modules required for building and running UFS Model on Gaea/Intel"
+}
+
+module-whatis "loads UFS Model prerequisites for Gaea/Intel"
+
+module load PrgEnv-intel/6.0.5
+module rm intel
+module rm cray-mpich
+module rm netcdf
+module load intel/18.0.6.288
+module load cray-mpich/7.7.11
+module load cray-python/3.7.3.2
+# Needed at runtime:
+module load alps
+
+module load cmake/3.17.0
+
+#needed for WW3 build
+module load gcc/8.3.0
+
+module use /lustre/f2/pdata/esrl/gsd/ufs/hpc-stack-v1.1.0/modulefiles/stack
+
+module load hpc/1.1.0
+module load hpc-intel/18.0.6.288
+module load hpc-cray-mpich/7.7.11
+
+module load ufs_common
+
+setenv CC cc
+setenv CXX CC
+setenv FC ftn
+setenv CMAKE_Platform gaea.intel

@@ -1,4 +1,4 @@
-From noaaemc/ubuntu-hpc:v1.1
+From noaaemc/ubuntu-hpc:v1.2
 
 ENV HOME=/home/builder
 COPY --chown=builder:builder . $HOME/ufs-weather-model
