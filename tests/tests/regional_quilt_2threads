@@ -9,17 +9,15 @@ export TEST_DESCR="Compare FV3 CCPP regional quilt results with previous trunk v
 export CNTL_DIR=fv3_regional_quilt
 
 export LIST_FILES="dynf000.nc \
-                   dynf012.nc \
+                   dynf024.nc \
                    phyf000.nc \
-                   phyf012.nc \
+                   phyf024.nc \
                    PRSLEV.GrbF00 \
-                   PRSLEV.GrbF12 \
+                   PRSLEV.GrbF24 \
                    NATLEV.GrbF00 \
-                   NATLEV.GrbF12"
+                   NATLEV.GrbF24"
 
 export_fv3
-
-export TASKS=48
 
 export FV3_RUN=regional_run.IN
 
@@ -34,9 +32,10 @@ export CCPP_SUITE=FV3_GFS_v15_thompson_mynn
 export INPUT_NML=regional.nml.IN
 export MODEL_CONFIGURE=model_configure_regional.IN
 
-export FHMAX=12
+export FDIAG=3
+export TASKS=88
 export INPES=10
-export JNPES=4
+export JNPES=8
 export THRD=2
 export TPN=$TPN_thrd
 
