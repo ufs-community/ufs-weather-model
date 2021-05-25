@@ -87,6 +87,7 @@ if(CMAKE_Platform)
 endif()
 
 message("")
+message("32BIT ............ ${32BIT}")
 message("AVX2 ............. ${AVX2}")
 message("SIMDMULTIARCH ...  ${SIMDMULTIARCH}")
 message("DEBUG ............ ${DEBUG}")
