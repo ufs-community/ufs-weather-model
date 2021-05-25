@@ -32,11 +32,11 @@ usage() {
   echo
   echo "  Examples"
   echo
-  echo "    'utest -n fv3_ccpp_control' tests all for fv3_ccpp_control"
-  echo "    'utest -n fv3_ccpp_control -c rst' tests restart for fv3_ccpp_control"
-  echo "    'utest -n fv3_ccpp_gfdlmp -c mpi,thr' tests mpi and threading for fv3_ccpp_gfdlmp"
-  echo "    'utest -n fv3_ccpp_gfdlmp -c bit' tests bit for fv3_ccpp_gfdlmp"
-  echo "    'utest -n fv3_ccpp_satmedmf -c dcp,dbg,rst' tests decomposition, debug, restart for fv3_ccpp_satmedmf"
+  echo "    'utest -n fv3_control' tests all for fv3_control"
+  echo "    'utest -n fv3_control -c rst' tests restart for fv3_control"
+  echo "    'utest -n fv3_gfdlmp -c mpi,thr' tests mpi and threading for fv3_gfdlmp"
+  echo "    'utest -n fv3_gfdlmp -c bit' tests bit for fv3_gfdlmp"
+  echo "    'utest -n fv3_satmedmf -c dcp,dbg,rst' tests decomposition, debug, restart for fv3_satmedmf"
   echo
   #set -x
 }
@@ -55,7 +55,7 @@ cleanup() {
 build_utests() {
   [[ -f $build_file ]] || error "$build_file does not exist"
 
-  rm -f fv3_*.exe modules.fv3_* $compile_log
+  rm -f fv3_*.exe modules.fv3_*
 
   model_found=false
   base_opt=
@@ -92,9 +92,12 @@ build_utests() {
         ;;
     esac
     MAKE_OPT=$(echo $MAKE_OPT | sed -e 's/^ *//' -e 's/ *$//')
+    export COMPILE_NR=${name}
 
       cat <<-EOF > ${RUNDIR_ROOT}/compile_${name}.env
 				export MACHINE_ID=${MACHINE_ID}
+				export JOB_NR=${COMPILE_NR}
+				export COMPILE_NR=${COMPILE_NR}
 				export PATHRT=${PATHRT}
 				export PATHTR=${PATHTR}
 				export SCHEDULER=${SCHEDULER}
@@ -119,6 +122,7 @@ build_utests() {
 }
 
 run_utests() {
+  JOB_NR=0
   for rc in $run_case; do
     # load default variables and override as necessary
     source default_vars.sh
@@ -132,6 +136,7 @@ run_utests() {
     comp_nm=std
 
     RT_SUFFIX="_${rc}"
+    JOB_NR=$( printf '%03d' $(( 10#$JOB_NR + 1 )) )
 
     case $rc in
       std_base)
@@ -332,6 +337,7 @@ run_utests() {
     esac
 
     cat <<- EOF > ${RUNDIR_ROOT}/run_test${RT_SUFFIX}.env
+			export JOB_NR=${JOB_NR}
 			export MACHINE_ID=${MACHINE_ID}
 			export RTPWD=${RTPWD}
 			export INPUTDATA_ROOT=${INPUTDATA_ROOT}
@@ -631,7 +637,7 @@ if [[ $run_case =~ std_base && ! $run_case =~ ^std_base ]]; then
 fi
 
 # log directory
-LOG_DIR=${PATHRT}/log_ut_$MACHINE_ID
+export LOG_DIR=${PATHRT}/log_ut_$MACHINE_ID
 rm -rf ${LOG_DIR}
 mkdir ${LOG_DIR}
 
@@ -667,7 +673,6 @@ if [[ $ECFLOW == true ]]; then
   fi
 fi
 
-compile_log=${PATHRT}/Compile_ut_$MACHINE_ID.log
 unittest_log=${PATHRT}/UnitTests_$MACHINE_ID.log
 REGRESSIONTEST_LOG=$unittest_log
 
@@ -699,9 +704,6 @@ if [[ $skip_compile == true ]]; then
 else
   echo "cases to compile: $compile_case"
   build_utests
-  if [[ $ECFLOW == false ]]; then
-    cat ${LOG_DIR}/compile_*.log > ${compile_log}
-  fi
 fi
 
 # if skipping run, stop after build. print out status information and
@@ -749,9 +751,6 @@ fi
 ####                       UNIT TEST STATUS                         ####
 ########################################################################
 set +e
-if [[ $ECFLOW == true ]]; then
-  cat ${LOG_DIR}/compile_*.log > ${compile_log}
-fi
 cat ${LOG_DIR}/ut_*.log | tee -a ${unittest_log}
 
 if [[ -e fail_unit_test ]]; then

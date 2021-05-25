@@ -1,0 +1,37 @@
+###############################################################################
+#
+#  FV3 CCPP regional control test
+#
+###############################################################################
+
+export TEST_DESCR="Compare FV3 CCPP regional control results with previous trunk version"
+
+export CNTL_DIR=fv3_regional_control_debug
+
+export LIST_FILES="  atmos_4xdaily.nc \
+                     fv3_history2d.nc \
+                       fv3_history.nc \
+     RESTART/fv_core.res.tile1_new.nc \
+   RESTART/fv_tracer.res.tile1_new.nc"
+
+export_fv3
+
+export TASKS=40
+export FHMAX="01"
+
+export FV3_RUN=regional_run.IN
+
+export OZ_PHYS_OLD=.F.
+export OZ_PHYS_NEW=.T.
+export H2O_PHYS=.T.
+export HYBEDMF=.F.
+export QUILTING=.false.
+export MODEL_CONFIGURE=model_configure_regional.IN
+
+export CCPP_SUITE=FV3_GFS_v15_thompson_mynn
+export INPUT_NML=regional.nml.IN
+
+export FDIAG=1
+export INPES=5
+export JNPES=8
+export WRITE_RESTART_WITH_BCS=.true.

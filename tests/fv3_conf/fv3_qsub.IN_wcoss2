@@ -9,6 +9,7 @@
 #PBS -l walltime=00:@[WLCLK]:00
 
 set -eux
+echo -n " $( date +%s )," >  job_timestamp.txt
 
 cd $PBS_O_WORKDIR
 export CRAY_CONFIG_DIR=$HOME
@@ -28,5 +29,4 @@ export ESMF_RUNTIME_COMPLIANCECHECK=OFF:depth=4
 cray aprun -n @[TASKS] ./fv3.exe
 
 echo "Model ended:    " `date`
-
-exit
+echo -n " $( date +%s )," >> job_timestamp.txt
