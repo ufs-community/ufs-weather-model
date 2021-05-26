@@ -16,5 +16,6 @@ export THRD=${THRD}
 export TASKS=${TASKS}
 export TPN=${TPN}
 export NODES=${NODES}
+export OMP_ENV="${OMP_ENV:-}"
 export MPI_PROC_BIND="${MPI_PROC_BIND:-}"
 EOF

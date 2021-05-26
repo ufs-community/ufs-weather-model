@@ -1,3 +1,5 @@
+set -eu
+
 if [[ $application == 'global' ]]; then
   if [[ $CI_TEST == 'true' ]]; then
     INPES=3

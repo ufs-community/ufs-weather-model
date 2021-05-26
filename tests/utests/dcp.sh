@@ -1,3 +1,4 @@
+set -eu
 source $PATHRT/utests/std.sh
 
 if [[ $application == 'global' ]]; then

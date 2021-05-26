@@ -1,3 +1,4 @@
+set -eu
 source $PATHRT/utests/std.sh
 
 # Set up date and time of restart files for restart run
