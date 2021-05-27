@@ -159,8 +159,7 @@ jobs:
     steps:
     - name: Clean up in case of left-over files
       run: |
-        cd ${{ github.workspace }}/.. && rm -rf ${{ github.workspace }} \
-          && mkdir ${{ github.workspace }}
+        rm -rf ${{ github.workspace }} && mkdir -p ${{ github.workspace }}
         docker ps -a --filter "name=my-container" | grep my-container >/dev/null 2>&1 \
           && docker rm my-container >/dev/null 2>&1 && d=$? || d=$?
 
