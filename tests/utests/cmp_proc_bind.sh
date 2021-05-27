@@ -1,14 +1,13 @@
 set -eu
 
-tc=$1
 OMP_ENV=""
 MPI_PROC_BIND="-bind-to user:"
 
-if [[ $tc != 'thr' ]]; then
+if [[ $rc != 'thr' ]]; then
   for i in $(seq 0 $((TASKS-1))); do
     MPI_PROC_BIND="$MPI_PROC_BIND$i,"
   done
-elif [[ $tc == 'thr' ]]; then
+elif [[ $rc == 'thr' ]]; then
   OMP_ENV="OMP_PROC_BIND=true OMP_NUM_THREADS=$THRD"
   if [[ $application != 'regional' ]]; then
     atm_total=$((INPES*JNPES*6))
