@@ -156,7 +156,6 @@ endif()
 ###############################################################################
 if(GOCART)
   set(BUILD_UFS ON)
-  include (ecbuild_system NO_POLICY_SCOPE)
   add_subdirectory(GOCART)
 endif()
 
