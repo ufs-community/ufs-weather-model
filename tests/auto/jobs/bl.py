@@ -40,7 +40,7 @@ def set_directories(job_obj):
     elif job_obj.machine == 'cheyenne':
         workdir = '/glade/scratch/dtcufsrt/autort/tests/auto/pr'
         blstore = '/glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs'
-        rtbldir = '/glade/work/dtcufsrt/FV3_RT/'\
+        rtbldir = '/glade/scratch/dtcufsrt/FV3_RT/'\
                  f'REGRESSION_TEST_{job_obj.compiler.upper()}'
     else:
         logger.critical(f'Machine {job_obj.machine} is not supported for this job')
