@@ -38,9 +38,9 @@ def set_directories(job_obj):
         rtbldir = '/work/noaa/stmp/bcurtis/stmp/bcurtis/FV3_RT/'\
                  f'REGRESSION_TEST_{job_obj.compiler.upper()}'
     elif job_obj.machine == 'cheyenne':
-        workdir = '/glade/work/briancurtis/git/BrianCurtis-NOAA/ufs-weather-model/tests/auto/pr'
+        workdir = '/glade/scratch/dtcufsrt/autort/tests/auto/pr'
         blstore = '/glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs'
-        rtbldir = '/glade/work/briancurtis/FV3_RT/'\
+        rtbldir = '/glade/work/dtcufsrt/FV3_RT/'\
                  f'REGRESSION_TEST_{job_obj.compiler.upper()}'
     else:
         logger.critical(f'Machine {job_obj.machine} is not supported for this job')
@@ -157,6 +157,7 @@ def post_process(job_obj, pr_repo_loc, repo_dir_str, rtbldir, bldir):
         create_bl_dir(bldir)
         move_bl_command = [[f'mv {rtbldir}/* {bldir}/', pr_repo_loc]]
         job_obj.run_commands(logger, move_bl_command)
+	job_obj.comment_text_append(f'Baseline creation and move successful')
         logger.info('Starting RT Job')
         rt.run(job_obj)
         logger.info('Finished with RT Job')

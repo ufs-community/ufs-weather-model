@@ -23,7 +23,7 @@ def set_directories(job_obj):
     elif job_obj.machine == 'orion':
         workdir = '/work/noaa/nems/emc.nemspara/autort/pr'
     elif job_obj.machine == 'cheyenne':
-        workdir = '/glade/work/briancurtis/git/BrianCurtis-NOAA/ufs-weather-model/tests/auto/pr'
+        workdir = '/glade/scratch/dtcufsrt/autort/tests/auto/pr'
     else:
         print(f'Machine {job_obj.machine} is not supported for this job')
         raise KeyError
