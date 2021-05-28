@@ -9,11 +9,9 @@ if [[ $application == 'global' ]]; then
   fi
 elif [[ $application == 'regional' ]]; then
   if [[ $CI_TEST == 'true' ]]; then
-    INPES=8
+    INPES=4
     JNPES=6
     TASKS=$((INPES*JNPES))
-    FHMAX=12
-    DAYS=0.5
   fi
 elif [[ $application == 'cpld' ]]; then
   if [ $CI_TEST == 'true' ]; then

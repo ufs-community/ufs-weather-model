@@ -6,7 +6,8 @@ if [[ $application == 'global' ]]; then
   INPES=$JNPES
   JNPES=$temp
 elif [[ $application == 'regional' ]]; then
-  JNPES=$((JNPES/2))
+  INPES=10
+  JNPES=3
   TASKS=$((INPES*JNPES))
   NODES=$(((TASKS+TPN-1)/TPN))
 elif [[ $application == 'cpld' ]]; then

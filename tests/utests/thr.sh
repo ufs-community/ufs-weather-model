@@ -8,13 +8,15 @@ if [[ $application == 'global' ]]; then
   TPN=$((TPN/THRD))
   NODES=$(((TASKS+TPN-1)/TPN))
 elif [[ $application == 'regional' ]]; then
+  #JNPES=$((JNPES/THRD))
+  #TASKS=$((INPES*JNPES))
+  TPN=$((TPN/THRD))
+  NODES=$(((TASKS+TPN-1)/TPN))
+elif [[ $application == 'cpld' ]]; then
   JNPES=$((JNPES/THRD))
   TASKS=$((INPES*JNPES))
   TPN=$((TPN/THRD))
   NODES=$(((TASKS+TPN-1)/TPN))
-elif [[ $application == 'cpld' ]]; then
-  echo "Coupled application not yet implemented for thread"
-  exit 1
 fi
 
 (test $CI_TEST == 'true') && source $PATHRT/utests/cmp_proc_bind.sh
