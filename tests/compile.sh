@@ -149,12 +149,12 @@ if [[ "${MAKE_OPT}" == *"APP=S2SW"* ]]; then
     CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=S2SW -DMOM6SOLO=ON"
 fi
 
-if [[ "${MAKE_OPT}" == *"APP=DATM"* ]]; then
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=DATM"
+if [[ "${MAKE_OPT}" == *"APP=NG-GODAS"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=NG-GODAS"
 fi
 
-if [[ "${MAKE_OPT}" == *"APP=DATM_NEMS"* ]]; then
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=DATM_NEMS"
+if [[ "${MAKE_OPT}" == *"APP=NG-GODAS-NEMSDATM"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=NG-GODAS-NEMSDATM"
 fi
 
 CMAKE_FLAGS=$(trim "${CMAKE_FLAGS}")

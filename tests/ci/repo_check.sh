@@ -56,7 +56,7 @@ datm[branch]='develop'
 datm[dir]='DATM'
 
 cdeps[repo]='https://github.com/NOAA-EMC/CDEPS'
-cdeps[branch]='emc/develop'
+cdeps[branch]='develop'
 cdeps[dir]='CDEPS-interface/CDEPS'
 
 cmake[repo]='https://github.com/NOAA-EMC/CMakeModules'
