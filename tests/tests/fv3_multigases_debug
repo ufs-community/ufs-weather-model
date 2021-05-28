@@ -1,37 +1,37 @@
 ###############################################################################
 #
-#  FV3 CCPP GSD (GF CU + Thompson MP + MYNN PBL + RUC LSM) restart (24-48h) test
+#  FV3 multi-gases DDEBUG test
 #
 ###############################################################################
 
-export TEST_DESCR="Compare FV3 CCPP GSD restart results with previous trunk version"
+export TEST_DESCR="Compare CCPP FV3 multi-gases DEBUG results with previous trunk version"
 
-export CNTL_DIR=fv3_gsd
+export CNTL_DIR=fv3_multigases_debug
 
-export LIST_FILES="sfcf027.tile1.nc \
-                   sfcf027.tile2.nc \
-                   sfcf027.tile3.nc \
-                   sfcf027.tile4.nc \
-                   sfcf027.tile5.nc \
-                   sfcf027.tile6.nc \
-                   sfcf048.tile1.nc \
-                   sfcf048.tile2.nc \
-                   sfcf048.tile3.nc \
-                   sfcf048.tile4.nc \
-                   sfcf048.tile5.nc \
-                   sfcf048.tile6.nc \
-                   atmf027.tile1.nc \
-                   atmf027.tile2.nc \
-                   atmf027.tile3.nc \
-                   atmf027.tile4.nc \
-                   atmf027.tile5.nc \
-                   atmf027.tile6.nc \
-                   atmf048.tile1.nc \
-                   atmf048.tile2.nc \
-                   atmf048.tile3.nc \
-                   atmf048.tile4.nc \
-                   atmf048.tile5.nc \
-                   atmf048.tile6.nc \
+export LIST_FILES="phyf000.tile1.nc \
+                   phyf000.tile2.nc \
+                   phyf000.tile3.nc \
+                   phyf000.tile4.nc \
+                   phyf000.tile5.nc \
+                   phyf000.tile6.nc \
+                   phyf001.tile1.nc \
+                   phyf001.tile2.nc \
+                   phyf001.tile3.nc \
+                   phyf001.tile4.nc \
+                   phyf001.tile5.nc \
+                   phyf001.tile6.nc \
+                   dynf000.tile1.nc \
+                   dynf000.tile2.nc \
+                   dynf000.tile3.nc \
+                   dynf000.tile4.nc \
+                   dynf000.tile5.nc \
+                   dynf000.tile6.nc \
+                   dynf001.tile1.nc \
+                   dynf001.tile2.nc \
+                   dynf001.tile3.nc \
+                   dynf001.tile4.nc \
+                   dynf001.tile5.nc \
+                   dynf001.tile6.nc \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -52,6 +52,12 @@ export LIST_FILES="sfcf027.tile1.nc \
                    RESTART/fv_tracer.res.tile4.nc \
                    RESTART/fv_tracer.res.tile5.nc \
                    RESTART/fv_tracer.res.tile6.nc \
+                   RESTART/phy_data.tile1.nc \
+                   RESTART/phy_data.tile2.nc \
+                   RESTART/phy_data.tile3.nc \
+                   RESTART/phy_data.tile4.nc \
+                   RESTART/phy_data.tile5.nc \
+                   RESTART/phy_data.tile6.nc \
                    RESTART/sfc_data.tile1.nc \
                    RESTART/sfc_data.tile2.nc \
                    RESTART/sfc_data.tile3.nc \
@@ -66,36 +72,16 @@ export LIST_FILES="sfcf027.tile1.nc \
                    RESTART/phy_data.tile6.nc"
 
 export_fv3
-
-export WARM_START=.T.
-export NGGPS_IC=.F.
-export EXTERNAL_IC=.F.
-export MAKE_NH=.F.
-export MOUNTAIN=.T.
-export NA_INIT=0
-export NSTF_NAME=2,0,1,0,5
-
-export IALB=2
-export IEMS=2
-
-export FHMAX=48
-export FDIAG=3
-
-export DT_ATMOS="600"
-export IMP_PHYSICS=8
-export DNATS=0
-export DO_SAT_ADJ=.F.
-export LRADAR=.T.
-export LTAEROSOL=.T.
-
-export FV3_RUN=gsd_run.IN
-export CCPP_SUITE=FV3_GSD_v0
-export INPUT_NML=gsd.nml.IN
-
-export HYBEDMF=.F.
-export DO_MYNNEDMF=.T.
-export IMFSHALCNV=3
-export IMFDEEPCNV=3
-export LSM=3
-export LSOIL_LSM=9
-export KICE=9
+export NPZ=149
+export NPZP=150
+DT_ATMOS="225"
+SYEAR="2017"
+SMONTH="01"
+SDAY="19"
+SHOUR="06"
+export FHMAX=01
+export FDIAG=0,1
+export NSTF_NAME=0,0,1,0,5
+export INPUT_NML=multi_gases.nml.IN
+export FV3_RUN=multigases_run.IN
+export CCPP_SUITE=FV3_GFS_2017_fv3wam
