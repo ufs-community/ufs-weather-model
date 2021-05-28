@@ -14,7 +14,7 @@ elif [[ $application == 'regional' ]]; then
   NODES=$(((TASKS+TPN-1)/TPN))
 elif [[ $application == 'cpld' ]]; then
   JNPES=$((JNPES/THRD))
-  TASKS=$((INPES*JNPES))
+  TASKS=$((INPES*JNPES*6 + WRTIE_GROUP*WRTTASK_PER_GROUP + 10 + 6))
   TPN=$((TPN/THRD))
   NODES=$(((TASKS+TPN-1)/TPN))
 fi
