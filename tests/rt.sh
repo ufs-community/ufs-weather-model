@@ -413,13 +413,12 @@ if [[ $TESTS_FILE =~ '35d' ]]; then
   TEST_35D=true
 fi
 
-BL_DATE=20210527
+BL_DATE=20210528
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]]; then
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
 else
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}}
 fi
-RTPWD=/scratch1/NCEPDEV/stmp4/Jun.Wang/FV3_RT/REGRESSION_TEST_INTEL
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20210528}
 INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20210503
