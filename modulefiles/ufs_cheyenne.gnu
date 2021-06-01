@@ -6,11 +6,7 @@ proc ModulesHelp {} {
 
 module-whatis "loads UFS Model prerequisites for Cheyenne/GNU"
 
-module load cmake/3.16.4
-setenv CMAKE_C_COMPILER mpicc
-setenv CMAKE_CXX_COMPILER mpicxx
-setenv CMAKE_Fortran_COMPILER mpif90
-setenv CMAKE_Platform cheyenne.gnu
+module load cmake/3.18.2
 
 # load programming environment
 module load ncarenv/1.3
@@ -25,3 +21,8 @@ module load hpc-gnu/9.1.0
 module load hpc-mpt/2.22
 
 module load ufs_common
+
+setenv CC mpicc
+setenv CXX mpicxx
+setenv FC mpif90
+setenv CMAKE_Platform cheyenne.gnu

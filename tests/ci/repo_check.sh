@@ -13,8 +13,8 @@ result() {
 }
 
 # Declare variables
-declare -A base fv3 mom6 cice ww3 stoch fms nems cmeps datm cdeps cmake
-submodules="fv3 mom6 cice ww3 stoch fms nems cmeps datm cdeps cmake"
+declare -A base fv3 mom6 cice ww3 stoch nems cmeps datm cdeps cmake
+submodules="fv3 mom6 cice ww3 stoch nems cmeps datm cdeps cmake"
 comment=''
 ownerID=$1
 
@@ -43,10 +43,6 @@ stoch[repo]='https://github.com/noaa-psd/stochastic_physics'
 stoch[branch]='master'
 stoch[dir]='stochastic_physics'
 
-fms[repo]='https://github.com/NOAA-GFDL/FMS'
-fms[branch]='main'
-fms[dir]='FMS'
-
 nems[repo]='https://github.com/NOAA-EMC/NEMS'
 nems[branch]='develop'
 nems[dir]='NEMS'
@@ -60,7 +56,7 @@ datm[branch]='develop'
 datm[dir]='DATM'
 
 cdeps[repo]='https://github.com/NOAA-EMC/CDEPS'
-cdeps[branch]='emc/develop'
+cdeps[branch]='develop'
 cdeps[dir]='CDEPS-interface/CDEPS'
 
 cmake[repo]='https://github.com/NOAA-EMC/CMakeModules'
@@ -80,7 +76,7 @@ done
 cd ${GITHUB_WORKSPACE}
 git remote add upstream ${base[repo]}
 git fetch -q upstream ${base[branch]}
-common=$(git merge-base upstream/${base[branch]} @)
+common=$(git merge-base ${base[sha]} @)
 if [[ $common != ${base[sha]} ]]; then
   comment="* ufs-weather-model **NOT** up to date\n"
 fi
@@ -89,7 +85,7 @@ for submodule in $submodules; do
   eval cd ${GITHUB_WORKSPACE}/'${'$submodule'[dir]}'
   eval git remote add upstream '${'$submodule'[repo]}'
   eval git fetch -q upstream '${'$submodule'[branch]}'
-  common=$(eval git merge-base upstream/'${'$submodule'[branch]}' @)
+  common=$(eval git merge-base '${'$submodule'[sha]}' @)
   if (eval test $common != '${'$submodule'[sha]}'); then
     comment+="* $submodule **NOT** up to date\n"
   fi
