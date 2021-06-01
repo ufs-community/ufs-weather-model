@@ -534,7 +534,7 @@ suite ${ECFLOW_SUITE}
     edit ECF_HOME '${ECFLOW_RUN}'
     edit ECF_INCLUDE '${ECFLOW_RUN}'
     edit ECF_KILL_CMD kill -15 %ECF_RID% > %ECF_JOB%.kill 2>&1
-    edit ECF_TRIES 2
+    edit ECF_TRIES 1
     label src_dir '${PATHTR}'
     label run_dir '${RUNDIR_ROOT}'
     limit max_builds ${MAX_BUILDS}
