@@ -279,8 +279,7 @@ endif()
 
 if(CDEPS)
   add_dependencies(ufs cdeps::cdeps)
-  list(APPEND _ufs_defs_private CDEPS-interface/CDEPS
-                                FRONT_CDEPS_DATM=atm_comp_nuopc)
+  list(APPEND _ufs_defs_private FRONT_CDEPS_DATM=atm_comp_nuopc)
   target_link_libraries(ufs PUBLIC cdeps::cdeps)
 endif()
 
