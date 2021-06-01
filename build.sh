@@ -16,8 +16,6 @@ export ESMFMKFILE=${ESMFMKFILE:?"Please set ESMFMKFILE environment variable"}
 BUILD_DIR=${BUILD_DIR:-${UFS_MODEL_DIR}/build}
 mkdir -p ${BUILD_DIR}
 
-[[ -n "${CCPP_SUITES:-""}" ]] && CMAKE_FLAGS+=" -DCCPP_SUITES=${CCPP_SUITES}"
-
 cd ${BUILD_DIR}
 cmake ${UFS_MODEL_DIR} ${CMAKE_FLAGS}
 make -j ${BUILD_JOBS:-4} VERBOSE=${BUILD_VERBOSE:-}
