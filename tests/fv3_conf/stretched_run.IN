@@ -14,4 +14,7 @@ mkdir  INPUT RESTART
 #    rsync -arv @[INPUTDATA_ROOT]/@[CNTL_DIR]/RESTART/. INPUT/.
 #fi
 rsync -arv @[INPUTDATA_ROOT]/@[INPUT_DIR]/INPUT/. INPUT/.
+if [[ "Q${INPUT_NEST02_NML:-}" != Q ]]; then
+  mv INPUT/C96_grid.nest02.tile7.nc INPUT/grid.nest02.tile7.nc
+fi
 # *DH 20190528
