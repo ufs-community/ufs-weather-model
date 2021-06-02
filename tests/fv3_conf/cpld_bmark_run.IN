@@ -15,6 +15,8 @@ elif [[ @[NPZ] == '127' ]]; then
 else
   FV3_IC=FV3_input_frac/BM_IC/${SYEAR}${SMONTH}${SDAY}${SHOUR}/gfs/@[ATMRES]/INPUT
 fi
+#unused unless 35D run is active
+WW3_IC=FV3_input_frac/BM_IC/${SYEAR}${SMONTH}${SDAY}${SHOUR}/wav/gwes_30m
 
 # FV3 fixed input
 cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/aerosol.dat .
@@ -53,7 +55,7 @@ cp    @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/mesh.mx@[OCNRES].nc .
 if [[ $CPLWAV == .T. && $CPLWAV2ATM == .T. ]]; then
   cp    @[INPUTDATA_ROOT_WW3]/mod_def.* .
   if [[ $RT35D == .T. ]]; then
-   cp    @[INPUTDATA_ROOT_BMIC]/${SYEAR}${SMONTH}${SDAY}${SHOUR}/ww3/*.000000.restart.gwes_30m ./restart.gwes_30m
+   cp   @[INPUTDATA_ROOT]/${WW3_IC}/*.000000.restart.gwes_30m ./restart.gwes_30m
   fi
 fi
 
