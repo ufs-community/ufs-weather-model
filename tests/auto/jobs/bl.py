@@ -157,7 +157,7 @@ def post_process(job_obj, pr_repo_loc, repo_dir_str, rtbldir, bldir):
         create_bl_dir(bldir)
         move_bl_command = [[f'mv {rtbldir}/* {bldir}/', pr_repo_loc]]
         job_obj.run_commands(logger, move_bl_command)
-	job_obj.comment_text_append(f'Baseline creation and move successful')
+	job_obj.comment_text_append('Baseline creation and move successful')
         logger.info('Starting RT Job')
         rt.run(job_obj)
         logger.info('Finished with RT Job')
