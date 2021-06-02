@@ -13,8 +13,8 @@ echo "inputdir=$inputdir,NPX=$NPX"
 UNIT_TEST=${UNIT_TEST:-false}
 SUFFIX=${RT_SUFFIX}
 if [ $WARM_START = .F. ]; then
-  cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT .
-  mkdir RESTART
+  mkdir INPUT RESTART
+  cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127/* ./INPUT/.
 else
   mkdir INPUT RESTART
 
@@ -22,30 +22,48 @@ else
     SUFFIX=${BL_SUFFIX}
   fi
 
-  rsync -arv ../fv3_control${SUFFIX}/RESTART/ INPUT/
-  if [[ $IAU_INC_FILES = 'fv3_increment.nc' ]] || [[ $READ_INCREMENT = '.T.' ]]; then
+  if [ $MODEL_INITIALIZATION = false ]; then
     #read_inc and iau tests restart from fh=24
-    cp ../fv3_control${SUFFIX}/RESTART/coupler.res INPUT/.
-    cp ../fv3_control${SUFFIX}/RESTART/fv_core.res.* INPUT/.
-    cp ../fv3_control${SUFFIX}/RESTART/fv_srf_wnd.res.* INPUT/.
-    cp ../fv3_control${SUFFIX}/RESTART/fv_tracer.* INPUT/.
-    cp ../fv3_control${SUFFIX}/RESTART/phy_data.* INPUT/.
-    cp ../fv3_control${SUFFIX}/RESTART/sfc_data.* INPUT/.
-    cp ../fv3_control${SUFFIX}/INPUT/fv3_increment.nc INPUT/.
-    cd INPUT
+    CURRDIR=`pwd`
+    FILEDIR=${CURRDIR}/../control${SUFFIX}/RESTART/
+  else
+    #for warm start from initialiation time
+    FILEDIR=@[INPUTDATA_ROOT]/${inputdir}/INPUT_L127_GDAS
+  fi
+
+  if [[ ${IAU_OFFSET} != 0 ]] || [[ $READ_INCREMENT = '.T.' ]]; then
+
+    if [ $MODEL_INITIALIZATION = false ]; then
+      cp ${FILEDIR}/../INPUT/fv3_increment.nc INPUT/.
+      cp ${FILEDIR}/../INPUT/grid_spec.nc INPUT/.
+      cp ${FILEDIR}/../INPUT/*_grid.tile*.nc INPUT/.
+      cp ${FILEDIR}/../INPUT/oro_data.tile*.nc INPUT/.
+    else
+      cp ${FILEDIR}/fv_increment*.nc INPUT/.
+      cp ${FILEDIR}/grid_spec.nc INPUT/.
+      cp ${FILEDIR}/*_grid.tile*.nc INPUT/.
+      cp ${FILEDIR}/oro_data.tile*.nc INPUT/.
+    fi
+    cp ${FILEDIR}/coupler.res INPUT/.
+    cp ${FILEDIR}/fv_core.res.* INPUT/.
+    cp ${FILEDIR}/fv_srf_wnd.res.* INPUT/.
+    cp ${FILEDIR}/fv_tracer.* INPUT/.
+    cp ${FILEDIR}/phy_data.* INPUT/.
+    cp ${FILEDIR}/sfc_data.* INPUT/.
   else
     #restart test start from fh=12
-    cp ../fv3_control${SUFFIX}/RESTART/20161003.120000.* INPUT/.
+    rsync -arv ${FILEDIR} INPUT/
+    cp ${FILEDIR}/20210322.180000.* INPUT/.
+    cp ${FILEDIR}/../INPUT/grid_spec.nc INPUT/.
+    cp ${FILEDIR}/../INPUT/*_grid.tile*.nc INPUT/.
+    cp ${FILEDIR}/../INPUT/oro_data.tile*.nc INPUT/.
     cd INPUT
-    for RFILE in 20161003.120000.*; do
+    for RFILE in 20210322.180000.*; do
       [ -e $RFILE ] || exit 1
-      mv $RFILE ${RFILE#20161003.120000.}
+      mv $RFILE ${RFILE#20210322.180000.}
     done
+    cd ..
   fi
-  cp ../../fv3_control${SUFFIX}/INPUT/grid_spec.nc .
-  cp ../../fv3_control${SUFFIX}/INPUT/*_grid.tile*.nc .
-  cp ../../fv3_control${SUFFIX}/INPUT/oro_data.tile*.nc .
-  cd ..
 
 fi
 
@@ -53,19 +71,74 @@ cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/aerosol.dat .
 cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/co2historicaldata_201*.txt .
 cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/sfc_emissivity_idx.txt .
 cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/solarconstant_noaa_an.txt .
-if [ $OZ_PHYS_NEW = .T. ]; then
-  cp  @[INPUTDATA_ROOT]/${inputdir}/ozprdlos_2015_new_sbuvO3_tclm15_nuchem.f77 ./global_o3prdlos.f77
-elif [ $OZ_PHYS_OLD = .T. ]; then
-  cp  @[INPUTDATA_ROOT]/${inputdir}/INPUT/global_o3prdlos.f77 .
-fi
-if [ $H2O_PHYS = .T. ]; then
-  cp  @[INPUTDATA_ROOT]/FV3_input_data/global_h2o_pltc.f77 ./global_h2oprdlos.f77
-fi
+cp    @[INPUTDATA_ROOT]/${inputdir}/global_o3prdlos.f77 .
+cp    @[INPUTDATA_ROOT]/${inputdir}/global_h2o_pltc.f77 ./global_h2oprdlos.f77
 cp    @[INPUTDATA_ROOT]/${inputdir}/*grb .
-cp    @[INPUTDATA_ROOT]/${inputdir}/*_table .
+cp    @[INPUTDATA_ROOT]/${inputdir}/data_table .
+cp    @[INPUTDATA_ROOT]/${inputdir}/diag_table_gfsv16 ./diag_table
+cp    @[INPUTDATA_ROOT]/${inputdir}/field_table_gfsv16 ./field_table
 cp    @[INPUTDATA_ROOT]/${inputdir}/*configure .
+
+if [ $NEW_DIAGTABLE != '' ]; then
+  cp    @[INPUTDATA_ROOT]/${inputdir}/$NEW_DIAGTABLE ./diag_table
+fi
+
+if [ $NEW_FIELDTABLE != '' ]; then
+  cp    @[INPUTDATA_ROOT]/${inputdir}/$NEW_FIELDTABLE ./field_table
+fi
 
 if [ $CPLWAV = .T. ]; then
   cp    @[INPUTDATA_ROOT_WW3]/mod_def.* .
   cp    @[INPUTDATA_ROOT_WW3]/rmp_src* .
+fi
+
+#inline post
+if [[ $POSTAPP = 'global' ]]; then
+  cp    ${PATHRT}/parm/post_itag itag
+  cp    ${PATHRT}/parm/postxconfig-NT.txt postxconfig-NT.txt
+  cp    ${PATHRT}/parm/postxconfig-NT_FH00.txt postxconfig-NT_FH00.txt
+  cp    ${PATHRT}/parm/params_grib2_tbl_new params_grib2_tbl_new
+fi
+
+#rrtmgp
+if [ $DO_RRTMGP = .T. ]; then
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_RRTMGP/* .
+fi
+
+#merra2
+if [ $USE_MERRA2 = .T. ]; then
+  for n in 01 02 03 04 05 06 07 08 09 10 11 12; do
+    cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/MERRA2/merra2.aerclim.2003-2014.m${n}.nc aeroclim.m${n}.nc
+  done
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_BC.v1_3.dat  optics_BC.dat
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_OC.v1_3.dat  optics_OC.dat
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_DU.v15_3.dat optics_DU.dat
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_SS.v3_3.dat  optics_SS.dat
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_SU.v1_3.dat  optics_SU.dat
+fi
+
+#ugwpv1
+if [ $DO_UGWP_V1 = .T. ]; then
+  cp    @[INPUTDATA_ROOT]/FV3_input_data/ugwp_c384_tau.nc ./ugwp_limb_tau.nc
+fi
+
+#Thompson
+if [ $IMP_PHYSICS = 8 ]; then
+  if [ $LTAEROSOL = .T. ]; then
+    if [ $DO_MYNNEDMF = .T. ] || [ $SATMEDMF = .T. ]; then
+      cp  @[INPUTDATA_ROOT]/FV3_input_data_gsd/field_table_gsd field_table
+    else
+      cp  @[INPUTDATA_ROOT]/FV3_input_data_gsd/field_table_gf_thompson field_table
+    fi
+  else
+    if [ $DO_MYNNEDMF = .T. ] || [ $SATMEDMF = .T. ]; then
+      cp  @[INPUTDATA_ROOT]/FV3_input_data_gsd/field_table_thompson_noaero_tke field_table
+    else
+      cp  @[INPUTDATA_ROOT]/FV3_input_data_gsd/field_table_thompson_noaero field_table
+    fi
+  fi
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_gsd/qr_acr_qsV2.dat .
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_gsd/qr_acr_qgV2.dat .
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_gsd/freezeH2O.dat .
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_gsd/CCN_ACTIVATE.BIN .
 fi
