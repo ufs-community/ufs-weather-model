@@ -2,7 +2,7 @@ set -eu
 source $PATHRT/utests/std.sh
 
 if [[ $application == 'global' ]]; then
-  WLCLK=30
+  WLCLK=60
 elif [[ $application == 'regional' ]]; then
   echo "Regional application not yet implemented for debug"
   exit 1
@@ -14,5 +14,5 @@ fi
 source $PATHRT/utests/wrt_env.sh
 
 cat <<EOF >>${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
-export WLCL=${WLCLK}
+export WLCLK=${WLCLK}
 EOF

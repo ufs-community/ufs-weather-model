@@ -8,8 +8,6 @@ if [[ $application == 'global' ]]; then
   TPN=$((TPN/THRD))
   NODES=$(((TASKS+TPN-1)/TPN))
 elif [[ $application == 'regional' ]]; then
-  #JNPES=$((JNPES/THRD))
-  #TASKS=$((INPES*JNPES))
   TPN=$((TPN/THRD))
   NODES=$(((TASKS+TPN-1)/TPN))
 elif [[ $application == 'cpld' ]]; then
