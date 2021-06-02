@@ -1,0 +1,39 @@
+###############################################################################
+#
+#  FV3 CCPP regional control test
+#
+###############################################################################
+
+export TEST_DESCR="Compare FV3 CCPP regional quilt results with previous trunk version"
+
+export CNTL_DIR=fv3_regional_quilt_hafs
+
+export LIST_FILES="dynf000.nc \
+                   dynf024.nc \
+                   phyf000.nc \
+                   phyf024.nc \
+                   HURPRS.GrbF00 \
+                   HURPRS.GrbF24"
+
+export_fv3
+
+export TASKS=68
+
+export FV3_RUN=regional_run.IN
+
+export OZ_PHYS_OLD=.F.
+export OZ_PHYS_NEW=.T.
+export H2O_PHYS=.T.
+export HYBEDMF=.F.
+export WRITE_DOPOST=.true.
+export POSTAPP='hafs'
+
+export CCPP_SUITE=FV3_GFS_v15_thompson_mynn
+export INPUT_NML=regional.nml.IN
+export MODEL_CONFIGURE=model_configure_hafs.IN
+
+export FDIAG=3
+export INPES=10
+export JNPES=6
+
+export WLCLK=30
