@@ -54,6 +54,7 @@ BUILD_JOBS=${BUILD_JOBS:-8}
 
 hostname
 
+module purge
 set +x
 if [[ $MACHINE_ID == macosx.* ]] || [[ $MACHINE_ID == linux.* ]]; then
   source $PATHTR/modulefiles/ufs_${MACHINE_ID}
