@@ -278,9 +278,11 @@ if(CMEPS)
 endif()
 
 if(CDEPS)
-  add_dependencies(ufs cdeps::cdeps)
-  list(APPEND _ufs_defs_private FRONT_CDEPS_DATM=atm_comp_nuopc)
-  target_link_libraries(ufs PUBLIC cdeps::cdeps)
+  add_dependencies(ufs cdeps::datm)
+  list(APPEND _ufs_defs_private CDEPS-interface/CDEPS
+                                FRONT_CDEPS_DATM=atm_comp_nuopc)
+  include_directories(${CMAKE_CURRENT_BINARY_DIR}/CDEPS-interface/CDEPS/datm)
+  target_link_libraries(ufs PUBLIC cdeps::datm)
 endif()
 
 target_compile_definitions(ufs PRIVATE "${_ufs_defs_private}")
