@@ -156,7 +156,7 @@ if [[ $SCHEDULER = 'none' ]]; then
 
   ulimit -s unlimited
   if [[ $CI_TEST = 'true' ]]; then
-    eval mpiexec -n ${TASKS} ${MPI_PROC_BIND} ./fv3.exe >out 2> >(tee err >&3)
+    eval ${OMP_ENV} mpiexec -n ${TASKS} ${MPI_PROC_BIND} ./fv3.exe >out 2> >(tee err >&3)
   else
     mpiexec -n ${TASKS} ./fv3.exe >out 2> >(tee err >&3)
   fi
