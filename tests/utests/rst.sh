@@ -54,5 +54,4 @@ export MAKE_NH=${MAKE_NH}
 export MOUNTAIN=${MOUNTAIN}
 export NA_INIT=${NA_INIT}
 export FDIAG=${FDIAG}
-export LIST_FILES="${LIST_FILES}"
 EOF
