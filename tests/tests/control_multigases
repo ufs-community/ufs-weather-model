@@ -1,0 +1,53 @@
+###############################################################################
+#
+#  Global control multigases test
+#
+###############################################################################
+
+export TEST_DESCR="Compare global control multigases results with previous trunk version"
+
+export CNTL_DIR=control__multigases
+
+export LIST_FILES="sfcf000.tile1.nc \
+                   sfcf000.tile2.nc \
+                   sfcf000.tile3.nc \
+                   sfcf000.tile4.nc \
+                   sfcf000.tile5.nc \
+                   sfcf000.tile6.nc \
+                   sfcf006.tile1.nc \
+                   sfcf006.tile2.nc \
+                   sfcf006.tile3.nc \
+                   sfcf006.tile4.nc \
+                   sfcf006.tile5.nc \
+                   sfcf006.tile6.nc \
+                   atmf000.tile1.nc \
+                   atmf000.tile2.nc \
+                   atmf000.tile3.nc \
+                   atmf000.tile4.nc \
+                   atmf000.tile5.nc \
+                   atmf000.tile6.nc \
+                   atmf006.tile1.nc \
+                   atmf006.tile2.nc \
+                   atmf006.tile3.nc \
+                   atmf006.tile4.nc \
+                   atmf006.tile5.nc \
+                   atmf006.tile6.nc"
+
+export_fv3
+export NPZ=149
+export NPZP=150
+export DT_ATMOS="225"
+export SYEAR="2017"
+export SMONTH="01"
+export SDAY="19"
+export SHOUR="06"
+export FHMAX=06
+export FDIAG=0,1,2,3,4,5,6
+export NSTF_NAME=0,0,1,0,5
+export INPUT_NML=multi_gases.nml.IN
+export FV3_RUN=multigases_run.IN
+export CCPP_SUITE=FV3_GFS_v16_fv3wam
+export IAER=5111
+export OZ_PHYS_OLD=.F.
+export OZ_PHYS_NEW=.T.
+export H2O_PHYS=.T.
