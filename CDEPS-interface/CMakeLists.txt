@@ -27,7 +27,7 @@ add_library(streams OBJECT ${cdeps_streams_files})
 add_dependencies(streams share)
 set_target_properties(streams PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(streams PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
-target_compile_definitions(streams PRIVATE "DISABLE_FoX")
+target_compile_definitions(streams PUBLIC "DISABLE_FoX")
 target_link_libraries(streams PRIVATE share)
 target_link_libraries(streams PRIVATE esmf PIO::PIO_Fortran)
 
