@@ -21,5 +21,7 @@ export TPN=${TPN}
 export NODES=${NODES}
 export OMP_ENV="${OMP_ENV:-}"
 export MPI_PROC_BIND="${MPI_PROC_BIND:-}"
+export NFHMAX_HF=${NFHMAX_HF}
+export NFHOUT_HF=${NFHOUT_HF}
 export LIST_FILES="${LIST_FILES}"
 EOF
