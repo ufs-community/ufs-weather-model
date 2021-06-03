@@ -1,11 +1,10 @@
 #
-#  cpld_decomp test
+#  cpld_restart test
 #
 
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C96MX100 - decomp"
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C96MX100 - restart "
 
-export CNTL_DIR="cpld_controlfrac"
-#export CNTL_DIR="cpld_control"
+export CNTL_DIR="cpld_control"
 
 export LIST_FILES="sfcf024.tile1.nc \
                    sfcf024.tile2.nc \
@@ -58,7 +57,26 @@ export LIST_FILES="sfcf024.tile1.nc \
 export_fv3
 export_cpl
 
-export INPES='6'
-export JNPES='4'
+export FHROT='12'
+export RESTART_N=$((FHMAX-$FHROT))
+
+export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${FHROT}  )))0000"
+export RESTART_FILE_SUFFIX_HRS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%02d" $(( ${FHROT} )))"
+export RESTART_FILE_SUFFIX_SECS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%02d" $(( ${FHROT}*3600 )))"
+
+# ATM warm start
+WARM_START='.T.'
+MAKE_NH='.F.'
+NA_INIT='0'
+EXTERNAL_IC='.F.'
+NGGPS_IC='.F.'
+MOUNTAIN='.T.'
+
+# ICE warm start
+RUNTYPE='continue'
+export USE_RESTART_TIME='.true.'
+
+# MOM6 warm start
+export MOM6_RESTART_SETTING="r"
 
 export FV3_RUN=cpld_control_run.IN

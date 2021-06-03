@@ -1,9 +1,10 @@
 #
-#  cpld_controlfrac_c192 test
+#  cpld_restart_c192 test
 #
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C192 MX050 - frac grid"
 
-export CNTL_DIR="cpld_controlfrac_c192"
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C192 MX050 - 36h restart "
+
+export CNTL_DIR="cpld_control_c192"
 
 export LIST_FILES="sfcf048.tile1.nc \
                    sfcf048.tile2.nc \
@@ -58,8 +59,12 @@ export_cpl
 
 export DAYS="2"
 export FHMAX="48"
-export RESTART_INTERVAL="12"
-export RESTART_N=${RESTART_INTERVAL}
+export FHROT='12'
+export RESTART_N=$((FHMAX-$FHROT))
+
+export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${FHROT}  )))0000"
+export RESTART_FILE_SUFFIX_HRS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%02d" $(( ${FHROT} )))"
+export RESTART_FILE_SUFFIX_SECS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%02d" $(( ${FHROT}*3600 )))"
 
 export TASKS=$TASKS_cpl_c192
 export TPN=$TPN_cpl_c192
@@ -117,5 +122,20 @@ export FNSMCC="'global_soilmgldas.t382.768.384.grb',"
 export FNABSC="'global_mxsnoalb.uariz.t382.768.384.rg.grb',"
 
 export MOM6_RIVER_RUNOFF='True'
+
+# ATM warm start
+WARM_START='.T.'
+MAKE_NH='.F.'
+NA_INIT='0'
+EXTERNAL_IC='.F.'
+NGGPS_IC='.F.'
+MOUNTAIN='.T.'
+
+# ICE warm start
+RUNTYPE='continue'
+export USE_RESTART_TIME='.true.'
+
+# MOM6 warm start
+export MOM6_RESTART_SETTING="r"
 
 export FV3_RUN=cpld_control_run.IN
