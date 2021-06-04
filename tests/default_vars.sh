@@ -567,7 +567,6 @@ export FHROT=0
 export LDIAG3D=.F.
 export QDIAG3D=.F.
 export MAX_OUTPUT_FIELDS=300
-export FHZERO="6"
 
 # Stochastic physics
 export DO_SPPT=.F.
