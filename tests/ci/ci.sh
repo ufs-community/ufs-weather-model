@@ -75,7 +75,7 @@ if [ $BUILD = "true" ]; then
 elif [ $RUN == "true" ]; then
 
   docker run -d --rm -v DataVolume:/tmp minsukjinoaa/input-data:20210528 \
-    && docker rmi -f minsukjinoaa/input-data:20210528
+    && sleep 5 && docker rmi -f minsukjinoaa/input-data:20210528
 
   docker create -u builder -e "CI_TEST=true" -e "USER=builder" \
                 -e "RT_MACHINE=linux.gnu" -e "RT_COMPILER=gnu" \

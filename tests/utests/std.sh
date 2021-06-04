@@ -9,6 +9,7 @@ if [[ $application == 'global' ]]; then
     TASKS=$((INPES*JNPES*6 + WRITE_GROUP*WRTTASK_PER_GROUP))
     RESTART_INTERVAL=$((FHMAX/2))
     WRITE_DOPOST=.false.
+    NFHOUT=6
     NFHMAX_HF=-1
     NFHOUT_HF=-1
     LIST_FILES=$(echo -n $LIST_FILES | sed -E "s/GFSFLX\.GrbF[0-9][0-9] ?//g" \
