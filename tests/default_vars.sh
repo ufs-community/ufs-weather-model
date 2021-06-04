@@ -736,6 +736,9 @@ export RESTART_EXT='.false.'
 export FRAZIL_FWSALT='.true.'
 # default to write CICE average history files
 export CICE_HIST_AVG='.true.'
+# default non-mushy thermo
+export KTHERM=1
+export TFREEZE_OPTION='linear_salt'
 
 #wave
 export ww3gline="'glo_1deg'  'no' 'CPL:native' 'CPL:native' 'CPL:native' 'no' 'no' 'no'   1  1  0.00 1.00  F"
@@ -855,6 +858,9 @@ export RESTART_EXT='.false.'
 export FRAZIL_FWSALT='.true.'
 # default to write CICE average history files
 export CICE_HIST_AVG='.true.'
+# default non-mushy thermo
+export KTHERM=1
+export TFREEZE_OPTION='linear_salt'
 export BL_SUFFIX=""
 export RT_SUFFIX=""
 }
@@ -967,6 +973,9 @@ export RESTART_EXT='.false.'
 export FRAZIL_FWSALT='.true.'
 # default to write CICE average history files
 export CICE_HIST_AVG='.true.'
+# default non-mushy thermo
+export KTHERM=1
+export TFREEZE_OPTION='linear_salt'
 export BL_SUFFIX=""
 export RT_SUFFIX=""
 }
