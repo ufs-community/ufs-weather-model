@@ -10,14 +10,16 @@
 if [[ $MACHINE_ID = wcoss_cray ]]; then
 
   TASKS_dflt=150 ; TPN_dflt=24 ; INPES_dflt=3 ; JNPES_dflt=8
-  TASKS_thrd=84  ; TPN_thrd=12 ; INPES_thrd=3 ; JNPES_thrd=4
+  TASKS_thrd=78  ; TPN_thrd=12 ; INPES_thrd=3 ; JNPES_thrd=4
+  TASKS_c384=336 ; TPN_c384=20 ; INPES_c384=8 ; JNPES_c384=6
   TASKS_stretch=48 ; TPN_stretch=24 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=24 ; INPES_strnest=2 ; JNPES_strnest=4
 
 elif [[ $MACHINE_ID = wcoss_dell_p3 || $MACHINE_ID = wcoss2 ]]; then
 
   TASKS_dflt=150 ; TPN_dflt=28 ; INPES_dflt=3 ; JNPES_dflt=8
-  TASKS_thrd=84  ; TPN_thrd=14 ; INPES_thrd=3 ; JNPES_thrd=4
+  TASKS_thrd=78  ; TPN_thrd=14 ; INPES_thrd=3 ; JNPES_thrd=4
+  TASKS_c384=336 ; TPN_c384=20 ; INPES_c384=8 ; JNPES_c384=6
   TASKS_stretch=48 ; TPN_stretch=28 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=28 ; INPES_strnest=2 ; JNPES_strnest=4
 
@@ -68,7 +70,8 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 || $MACHINE_ID = wcoss2 ]]; then
 elif [[ $MACHINE_ID = orion.* ]]; then
 
   TASKS_dflt=150 ; TPN_dflt=40 ; INPES_dflt=3 ; JNPES_dflt=8
-  TASKS_thrd=84  ; TPN_thrd=20 ; INPES_thrd=3 ; JNPES_thrd=4
+  TASKS_thrd=78  ; TPN_thrd=20 ; INPES_thrd=3 ; JNPES_thrd=4
+  TASKS_c384=336 ; TPN_c384=20 ; INPES_c384=8 ; JNPES_c384=6
   TASKS_stretch=48 ; TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=12 ; INPES_strnest=2 ; JNPES_strnest=4
 
@@ -119,7 +122,8 @@ elif [[ $MACHINE_ID = orion.* ]]; then
 elif [[ $MACHINE_ID = hera.* ]]; then
 
   TASKS_dflt=150 ; TPN_dflt=40 ; INPES_dflt=3 ; JNPES_dflt=8
-  TASKS_thrd=84  ; TPN_thrd=20 ; INPES_thrd=3 ; JNPES_thrd=4
+  TASKS_thrd=78  ; TPN_thrd=20 ; INPES_thrd=3 ; JNPES_thrd=4
+  TASKS_c384=336 ; TPN_c384=20 ; INPES_c384=8 ; JNPES_c384=6
   TASKS_stretch=48 ; TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=12 ; INPES_strnest=2 ; JNPES_strnest=4
 
@@ -169,19 +173,24 @@ elif [[ $MACHINE_ID = hera.* ]]; then
 
 elif [[ $MACHINE_ID = linux.* ]]; then
 
-  if [[ $CI_TEST = true ]]; then
-  TASKS_dflt=42 ; TPN_dflt=48 ; INPES_dflt=3 ; JNPES_dflt=2
-  else
   TASKS_dflt=150 ; TPN_dflt=40 ; INPES_dflt=3 ; JNPES_dflt=8
-  fi
-  TASKS_thrd=84  ; TPN_thrd=20 ; INPES_thrd=3 ; JNPES_thrd=4
+  TASKS_thrd=78  ; TPN_thrd=20 ; INPES_thrd=3 ; JNPES_thrd=4
   TASKS_stretch=48 ; TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=12 ; INPES_strnest=2 ; JNPES_strnest=4
+
+  TASKS_cpl_dflt=192; TPN_cpl_dflt=40; INPES_cpl_dflt=3; JNPES_cpl_dflt=8
+  THRD_cpl_dflt=1; WPG_cpl_dflt=6;  MPB_cpl_dflt="0 143"; APB_cpl_dflt="0 149"
+  OPB_cpl_dflt="150 179"; IPB_cpl_dflt="180 191"
+
+  TASKS_cpl_thrd=120; TPN_cpl_thrd=40; INPES_cpl_thrd=3; JNPES_cpl_thrd=4
+  THRD_cpl_thrd=2; WPG_cpl_thrd=6;  MPB_cpl_thrd="0 77";  APB_cpl_thrd="0 77"
+  OPB_cpl_thrd="78 107";  IPB_cpl_thrd="108 119"
 
 elif [[ $MACHINE_ID = jet.* ]]; then
 
   TASKS_dflt=150 ; TPN_dflt=24 ; INPES_dflt=3 ; JNPES_dflt=8
-  TASKS_thrd=84  ; TPN_thrd=12 ; INPES_thrd=3 ; JNPES_thrd=4
+  TASKS_thrd=78  ; TPN_thrd=12 ; INPES_thrd=3 ; JNPES_thrd=4
+  TASKS_c384=480 ; TPN_c384=24 ; INPES_c384=12 ; JNPES_c384=6
   TASKS_stretch=48 ; TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=12 ; INPES_strnest=2 ; JNPES_strnest=4
 
@@ -232,7 +241,8 @@ elif [[ $MACHINE_ID = jet.* ]]; then
 elif [[ $MACHINE_ID = gaea.* ]]; then
 
   TASKS_dflt=150 ; TPN_dflt=36 ; INPES_dflt=3 ; JNPES_dflt=8
-  TASKS_thrd=84  ; TPN_thrd=18 ; INPES_thrd=3 ; JNPES_thrd=4
+  TASKS_thrd=78  ; TPN_thrd=18 ; INPES_thrd=3 ; JNPES_thrd=4
+  TASKS_c384=480 ; TPN_c384=36 ; INPES_c384=12 ; JNPES_c384=6
   TASKS_stretch=48 ; TPN_stretch=18 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=18 ; INPES_strnest=2 ; JNPES_strnest=4
 
@@ -283,7 +293,8 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
 elif [[ $MACHINE_ID = cheyenne.* ]]; then
 
   TASKS_dflt=150 ; TPN_dflt=36 ; INPES_dflt=3 ; JNPES_dflt=8
-  TASKS_thrd=84  ; TPN_thrd=18 ; INPES_thrd=3 ; JNPES_thrd=4
+  TASKS_thrd=78  ; TPN_thrd=18 ; INPES_thrd=3 ; JNPES_thrd=4
+  TASKS_c384=336 ; TPN_c384=18 ; INPES_c384=8 ; JNPES_c384=6
   TASKS_stretch=48 ; TPN_stretch=18 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=18 ; INPES_strnest=2 ; JNPES_strnest=4
 
@@ -334,7 +345,8 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
 elif [[ $MACHINE_ID = stampede.* ]]; then
 
   TASKS_dflt=150 ; TPN_dflt=48 ; INPES_dflt=3 ; JNPES_dflt=8
-  TASKS_thrd=84  ; TPN_thrd=24 ; INPES_thrd=3 ; JNPES_thrd=4
+  TASKS_thrd=78  ; TPN_thrd=24 ; INPES_thrd=3 ; JNPES_thrd=4
+  TASKS_c384=336 ; TPN_c384=20 ; INPES_c384=8 ; JNPES_c384=6
   TASKS_stretch=48 ; TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
 
   TASKS_cpl_dflt=192; TPN_cpl_dflt=48; INPES_cpl_dflt=3; JNPES_cpl_dflt=8
@@ -403,6 +415,11 @@ export DATM_NEMS=false
 export DATM_CDEPS=false
 export THRD=1
 export WLCLK=$WLCLK_dflt
+export POSTAPP='global'
+export NEW_DIAGTABLE=''
+export NEW_FIELDTABLE=''
+export USE_MERRA2=.F.
+
 export INPES=$INPES_dflt
 export JNPES=$JNPES_dflt
 export TASKS=$TASKS_dflt
@@ -413,9 +430,8 @@ export WRITE_GROUP=1
 export WRTTASK_PER_GROUP=6
 export OUTPUT_HISTORY=.true.
 export WRITE_DOPOST=.false.
-export POSTAPP=''
 export NUM_FILES=2
-export FILENAME_BASE="'dyn' 'phy'"
+export FILENAME_BASE="'atm' 'sfc'"
 export OUTPUT_GRID="'cubed_sphere_grid'"
 export OUTPUT_FILE="'netcdf'"
 export IDEFLATE=0
@@ -426,8 +442,12 @@ export IMO=384
 export JMO=190
 
 # Coldstart/warmstart
+#rt script for ICs
+export MODEL_INITIALIZATION=false
+#namelist variable
 export WARM_START=.F.
 export READ_INCREMENT=.F.
+export RES_LATLON_DYNAMICS="''"
 export NGGPS_IC=.T.
 export EXTERNAL_IC=.T.
 export MAKE_NH=.T.
@@ -467,6 +487,15 @@ export DO_GSL_DRAG_TOFD=.F.
 export DO_UGWP_V1=.F.
 export DO_UGWP_V1_OROG_ONLY=.F.
 
+# resolution dependent settings
+export CDMBWD_c96='0.14,1.8,1.0,1.0'
+export CDMBWD_c192='0.23,1.5,1.0,1.0'
+export CDMBWD_c384='1.1,0.72,1.0,1.0'
+export CDMBWD_c768='4.0,0.15,1.0,1.0'
+
+# set default
+export CDMBWD=${CDMBWD_c96}
+
 # PBL
 export SATMEDMF=.F.
 export ISATMEDMF=0
@@ -502,6 +531,7 @@ export OZ_PHYS_OLD=.T.
 export OZ_PHYS_NEW=.F.
 export H2O_PHYS=.F.
 
+
 export CPL=.F.
 export CPLFLX=.F.
 export CPLWAV=.F.
@@ -516,6 +546,7 @@ export FDIAG=0,1,2,3,4,5,6,7,8,9,10,11,12,15,18,21,24,27,30,33,36,39,42,45,48
 export NFHOUT=3
 export NFHMAX_HF=12
 export NFHOUT_HF=1
+export IAU_OFFSET=0
 export FHZERO=6
 export FNALBC="'global_snowfree_albedo.bosu.t126.384.190.rg.grb',"
 export FNVETC="'global_vegtype.igbp.t126.384.190.rg.grb',"
@@ -536,7 +567,6 @@ export FHROT=0
 export LDIAG3D=.F.
 export QDIAG3D=.F.
 export MAX_OUTPUT_FIELDS=300
-export FHZERO="6"
 
 # Stochastic physics
 export DO_SPPT=.F.
@@ -548,6 +578,8 @@ export LNDP_EACH_STEP=.F.
 export SKEB=-999.
 export SPPT=-999.
 export SHUM=-999.
+export LNDP_VAR_LIST='XXX'
+export LNDP_PRT_LISY=-999
 
 #IAU
 export IAU_INC_FILES="''"
@@ -671,15 +703,6 @@ export PSM_BC='0'
 export MIN_SEAICE='1.0e-11'
 export DDDMP='0.1'
 export FSICL='99999'
-
-# resolution dependent settings
-export CDMBWD_c96='0.14,1.8,1.0,1.0'
-export CDMBWD_c192='0.23,1.5,1.0,1.0'
-export CDMBWD_c384='1.1,0.72,1.0,1.0'
-export CDMBWD_c768='4.0,0.15,1.0,1.0'
-
-# set default
-export CDMBWD=${CDMBWD_c96}
 
 # for FV3: default values will be changed if doing a warm-warm restart
 export WARM_START='.F.'
@@ -902,7 +925,7 @@ export RESTART_N=${FHMAX}
 export CPLMODE='nems_orig_data'
 export cap_dbug_flag="0"
 export use_coldstart="false"
-export use_mommesh="false"
+export use_mommesh="true"
 export RUNTYPE='startup'
 export flux_convergence='0.0'
 export flux_iteration='2'
