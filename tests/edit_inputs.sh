@@ -3,16 +3,14 @@ set -eu
 
 function edit_ice_in {
 
-  jday=$(date -d "${SYEAR}-${SMONTH}-${SDAY} ${SHOUR}:00:00" +%j)
-  istep0=$(( ((10#$jday-1)*86400 + 10#$SHOUR*3600) / DT_CICE ))
-
   # assumes processor shape = "slenderX2"
   np2=$((NPROC_ICE/2))
   BLCKX=$((NX_GLB/$np2))
   BLCKY=$((NY_GLB/2))
 
   sed -e "s/YEAR_INIT/$SYEAR/g" \
-      -e "s/ISTEP0/$istep0/g" \
+      -e "s/MONTH_INIT/$SMONTH/g" \
+      -e "s/DAY_INIT/$SDAY/g" \
       -e "s/DT_CICE/$DT_CICE/g" \
       -e "s/CICEGRID/$CICEGRID/g" \
       -e "s/CICEMASK/$CICEMASK/g" \
