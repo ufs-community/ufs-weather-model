@@ -24,7 +24,7 @@ def main():
 
             if any(e in case for e in ['thr', 'mpi', 'dcp', 'rst']):
                 std = test+'_std'
-                if not bj['bld_set'] or not any(std in e for e in bj['bld_set']):
+                if not bj['bld_set'] or not any(std == e for e in bj['bld_set']):
                     bj['bld_set'].append(std)
                     bj['include'].append(
                         {'bld_set': std, 'name': test, 'case': std[-3:]})
