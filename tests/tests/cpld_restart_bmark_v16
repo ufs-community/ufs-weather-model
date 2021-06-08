@@ -1,10 +1,10 @@
 #
-#  cpld_bmarkfrac_v16 test
+#  cpld_restart_bmark_v16 test
 #
 
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C384L127 MX025 - Benchmark test - frac grid - v16"
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C384L127 MX025 - Benchmark test - restart - v16"
 
-export CNTL_DIR="cpld_bmarkfrac_v16"
+export CNTL_DIR="cpld_bmark_v16"
 
 export LIST_FILES="sfcf006.nc \
                    atmf006.nc \
@@ -57,11 +57,15 @@ export SHOUR="00"
 
 export DAYS='0.25'
 export FHMAX='6'
-export RESTART_INTERVAL='3'
-export RESTART_N=${RESTART_INTERVAL}
+export FHROT='3'
+export RESTART_N=$((FHMAX-$FHROT))
 export NFHOUT=3
 export FDIAG=3
 export FHZERO=3
+
+export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${FHROT}  )))0000"
+export RESTART_FILE_SUFFIX_HRS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%02d" $(( ${FHROT} )))"
+export RESTART_FILE_SUFFIX_SECS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%02d" $(( ${FHROT}*3600 )))"
 
 export TASKS=$TASKS_cpl_bmrk
 export TPN=$TPN_cpl_bmrk
@@ -103,9 +107,6 @@ export CPL_FAST=${DT_ATMOS}
 # nems.configure
 export coupling_interval_slow_sec=${CPL_SLOW}
 export coupling_interval_fast_sec=${CPL_FAST}
-
-export FRAC_GRID='.T.'
-export CPLMODE='nems_frac'
 
 export NPZ=127
 export NPZP=128
@@ -151,6 +152,18 @@ export MOM6_RESTART_SETTING="r"
 export MOM6_REPRO_LA='True'
 
 export RUNID="cpcice"
+
+# ATM warm start
+WARM_START='.T.'
+MAKE_NH='.F.'
+NA_INIT='0'
+EXTERNAL_IC='.F.'
+NGGPS_IC='.F.'
+MOUNTAIN='.T.'
+
+# ICE warm start
+RUNTYPE='continue'
+export USE_RESTART_TIME='.true.'
 
 export INPUT_NML=input.benchmark_v16.nml.IN
 
