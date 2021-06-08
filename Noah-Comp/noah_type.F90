@@ -10,6 +10,11 @@ module noah_type_mod
   real(kind_phys), parameter :: zero      = 0.0_kind_phys
   real(kind_phys), parameter :: clear_val = zero
 
+type :: noah_control_type
+   logical   :: first_time  ! flag for first time step
+   integer   :: mype 
+end type noah_control_type
+  
 type :: noah_static_type
 
   integer                 ::   im         ! horiz dimension and num of used pts         1
@@ -46,6 +51,7 @@ type  :: noah_model_type
   real(kind_phys), allocatable :: sfcemis   (:) ! sfc lw emissivity ( fraction )              im
   real(kind_phys), allocatable :: dlwflx    (:) ! total sky sfc downward lw flux ( w/m**2 )   im
   real(kind_phys), allocatable :: dswsfc    (:) ! total sky sfc downward sw flux ( w/m**2 )   im
+  real(kind_phys), allocatable :: dswsfci   (:) ! inst  sky sfc downward sw flux ( w/m**2 )   im
   real(kind_phys), allocatable :: snet      (:) ! total sky sfc netsw flx into ground(w/m**2) im
   real(kind_phys), allocatable :: tg3       (:) ! deep soil temperature (k)                   im
   real(kind_phys), allocatable :: cm        (:) ! surface exchange coeff for momentum (m/s)   im
@@ -73,7 +79,7 @@ type  :: noah_model_type
   real(kind_phys), allocatable :: canopy    (:) ! canopy moisture content (m)                 im
   real(kind_phys), allocatable :: trans     (:) ! total plant transpiration (m/s)             im
   real(kind_phys), allocatable :: tsurf     (:) ! surface skin temperature (after iteration)  im
-  real(kind_phys), allocatable :: zorl      (:) ! surface roughness                           im
+  real(kind_phys), allocatable :: z0rl      (:) ! surface roughness                           im
   real(kind_phys), allocatable :: sncovr1   (:) ! snow cover over land (fractional)            im
   real(kind_phys), allocatable :: qsurf     (:) ! specific humidity at sfc                     im
   real(kind_phys), allocatable :: gflux     (:) ! soil heat flux (w/m**2)                      im
@@ -105,13 +111,14 @@ type  :: noah_model_type
   real(kind_phys), allocatable :: fm10_lnd (:)
   real(kind_phys), allocatable :: fh2_lnd  (:)
   real(kind_phys), allocatable :: stress   (:)  
+  real(kind_phys), allocatable :: ustar    (:)  
 end type noah_model_type
 
 
 type, public :: noah_type
-   type (noah_static_type) :: static
-   type (noah_model_type)  :: model
-
+   type(noah_static_type) :: static
+   type(noah_model_type)  :: model
+   type(noah_control_type) :: control
  contains
 
    procedure, public  :: Create
@@ -137,6 +144,7 @@ contains
     allocate(nh%model%sfcemis   (im))
     allocate(nh%model%dlwflx    (im))
     allocate(nh%model%dswsfc    (im))
+    allocate(nh%model%dswsfci   (im))
     allocate(nh%model%snet      (im))
     allocate(nh%model%tg3       (im))
     allocate(nh%model%cm        (im))
@@ -164,7 +172,7 @@ contains
     allocate(nh%model%canopy    (im))
     allocate(nh%model%trans     (im))
     allocate(nh%model%tsurf     (im))
-    allocate(nh%model%zorl      (im))
+    allocate(nh%model%z0rl      (im))
     allocate(nh%model%sncovr1   (im))
     allocate(nh%model%qsurf     (im))
     allocate(nh%model%gflux     (im))
@@ -195,6 +203,11 @@ contains
     allocate(nh%model%fm10_lnd(im))
     allocate(nh%model%fh2_lnd (im))
     allocate(nh%model%stress  (im))
+    allocate(nh%model%ustar  (im))
+
+    ! --------------------------------------------------------
+    nh%control%first_time = .true.
+    nh%control%mype       = -999
 
     nh%static%km         = 4 ! tmp for testing. This should come from nml
     nh%static%grav       = zero !huge
@@ -222,6 +235,7 @@ contains
     nh%model%sfcemis    = zero !huge
     nh%model%dlwflx     = zero !huge
     nh%model%dswsfc     = zero !huge
+    nh%model%dswsfci    = zero !huge
     nh%model%snet       = zero !huge
     nh%model%tg3        = zero !huge
     nh%model%cm         = zero !huge
@@ -249,7 +263,7 @@ contains
     nh%model%canopy     = zero !huge
     nh%model%trans      = zero !huge
     nh%model%tsurf      = zero !huge
-    nh%model%zorl       = zero !huge
+    nh%model%z0rl       = zero !huge
     nh%model%sncovr1    = zero !huge
     nh%model%qsurf      = zero !huge
     nh%model%gflux      = zero !huge
@@ -279,6 +293,7 @@ contains
     nh%model%fm10_lnd   = zero
     nh%model%fh2_lnd    = zero
     nh%model%stress     = zero
+    nh%model%ustar     = zero
     
   end subroutine Create
 

@@ -205,8 +205,8 @@ contains
     ! tmp debug
     !write(*,*) 'IF1 debug: ', im, noah_pubinst%model%foo_atm2lndfield(1:im)
     
-    call import_field_int(State_i, 'soiltyp', noah_pubinst%model%soiltyp(1:im), rc=rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    ! call import_field_int(State_i, 'soiltyp', noah_pubinst%model%soiltyp(1:im), rc=rc)
+    ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
     
     call import_fieldv2(State_i, 'foo_atm2lndfield', noah_pubinst%model%foo_atm2lndfield(1:im), rc=rc)
     !call import_fieldv2(State_i, 'foo_atm2lndfield', fldPtr1d_i, rc=rc)
@@ -223,6 +223,10 @@ contains
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
     call import_fieldv2(State_i, 'Faxa_dlwflx', noah_pubinst%model%dlwflx(1:im), rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    call import_fieldv2(State_i, 'Faxa_dswsfc', noah_pubinst%model%dswsfc(1:im), rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return    
+    call import_fieldv2(State_i, 'inst_down_sw_flx', noah_pubinst%model%dswsfci(1:im), rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return    
     call import_fieldv2(State_i, 'Faxa_snet', noah_pubinst%model%snet(1:im), rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
     call import_fieldv2(State_i, 'Faxa_tg3', noah_pubinst%model%tg3(1:im), rc=rc)
@@ -289,14 +293,16 @@ contains
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
     call import_fieldv2(State_i, 'Faxa_tsurf', noah_pubinst%model%tsurf(1:im), rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
-    ! call import_fieldv2(State_i, 'Faxa_z0rl', noah_pubinst%model%z0rl(1:im), rc=rc)
-    ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    call import_fieldv2(State_i, 'Faxa_z0rl', noah_pubinst%model%z0rl(1:im), rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
     ! call import_fieldv2(State_i, 'Faxa_z0pert', noah_pubinst%model%z0pert(1:im), rc=rc)
     ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
     ! call import_fieldv2(State_i, 'Faxa_ztpert', noah_pubinst%model%ztpert(1:im), rc=rc)
     ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
-    ! call import_fieldv2(State_i, 'Faxa_ustar', noah_pubinst%model%ustar(1:im), rc=rc)
-    ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    call import_fieldv2(State_i, 'Faxa_ustar', noah_pubinst%model%ustar(1:im), rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    call import_fieldv2(State_i, 'Faxa_wind', noah_pubinst%model%wind(1:im), rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return    
 
   end subroutine import_allfields
   
@@ -350,7 +356,7 @@ contains
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
     call state_setexport_1d(State_o, 'Fall_tsurf', noah_pubinst%model%tsurf(1:im), rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
-    call state_setexport_1d(State_o, 'Fall_z0rl', noah_pubinst%model%zorl(1:im), rc=rc)
+    call state_setexport_1d(State_o, 'Fall_z0rl', noah_pubinst%model%z0rl(1:im), rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
     ! noahouts
     call state_setexport_1d(State_o, 'Fall_sncovr1', noah_pubinst%model%sncovr1(1:im), rc=rc)

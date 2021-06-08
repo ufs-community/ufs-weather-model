@@ -101,7 +101,7 @@ contains
     real(kind_phys) :: canopy    (procbounds%im) ! canopy moisture content (m)                 im
     real(kind_phys) :: trans     (procbounds%im) ! total plant transpiration (m/s)             im
     real(kind_phys) :: tsurf     (procbounds%im) ! surface skin temperature (after iteration)  im
-    real(kind_phys) :: zorl      (procbounds%im) ! surface roughness                           im
+    real(kind_phys) :: z0rl      (procbounds%im) ! surface roughness                           im
     real(kind_phys) :: sncovr1   (procbounds%im) ! snow cover over land (fractional)            im
     real(kind_phys) :: qsurf     (procbounds%im) ! specific humidity at sfc                     im
     real(kind_phys) :: gflux     (procbounds%im) ! soil heat flux (w/m**2)                      im
@@ -122,13 +122,15 @@ contains
     real(kind_phys) :: smcref2   (procbounds%im) ! soil moisture threshold                      im
     real(kind_phys) :: wet1      (procbounds%im) ! normalized soil wetness                      im
 
+    real(kind_phys) :: ustar     (procbounds%im)
     real(kind_phys) :: smc(procbounds%im,noah_pubinst%static%km) ! total soil moisture content (fractional)   im,km
     real(kind_phys) :: stc(procbounds%im,noah_pubinst%static%km) ! soil temp (k)                              im,km
     real(kind_phys) :: slc(procbounds%im,noah_pubinst%static%km) ! liquid soil moisture                       im,km
 
     ! tmp for testing. Missing imports for these
     real(kind_phys) :: prsik1(procbounds%im), z0pert(procbounds%im), &
-                       ztpert(procbounds%im), ustar(procbounds%im), stress(procbounds%im)
+                       ztpert(procbounds%im), stress(procbounds%im)
+
     ! tmp for testing. These should be coming from namelist
     real(kind_phys), parameter :: delt = 900.0_kind_phys
     integer, parameter :: ivegsrc        = 1
@@ -145,6 +147,7 @@ contains
          q1         => noah_pubinst%model%q1         ,&
          dlwflx     => noah_pubinst%model%dlwflx     ,&
          dswsfc     => noah_pubinst%model%dswsfc     ,&
+         dswsfci    => noah_pubinst%model%dswsfci    ,&
          wind       => noah_pubinst%model%wind       ,&
          tprcp      => noah_pubinst%model%tprcp      ,&
          im         => procbounds%im                 ,& 
@@ -185,10 +188,10 @@ contains
          canopy     => noah_pubinst%model%canopy     ,&
          trans      => noah_pubinst%model%trans      ,&   
          tsurf      => noah_pubinst%model%tsurf      ,&
-         zorl       => noah_pubinst%model%zorl       ,&
-         smc        => noah_pubinst%model%smc        ,&
-         stc        => noah_pubinst%model%stc        ,&
-         slc        => noah_pubinst%model%slc        ,&
+         z0rl       => noah_pubinst%model%z0rl       ,&
+         ! smc        => noah_pubinst%model%smc        ,&
+         ! stc        => noah_pubinst%model%stc        ,&
+         ! slc        => noah_pubinst%model%slc        ,&
          sncovr1    => noah_pubinst%model%sncovr1    ,&
          qsurf      => noah_pubinst%model%qsurf      ,&
          gflux      => noah_pubinst%model%gflux      ,&
@@ -207,16 +210,28 @@ contains
          snohf      => noah_pubinst%model%snohf      ,&
          smcwlt2    => noah_pubinst%model%smcwlt2    ,&
          smcref2    => noah_pubinst%model%smcref2    ,&
-         wet1       => noah_pubinst%model%wet1        &
+         wet1       => noah_pubinst%model%wet1       ,&
+         !
+         rb_lnd     => noah_pubinst%model%rb_lnd     ,&
+         fm_lnd     => noah_pubinst%model%fm_lnd     ,&
+         fh_lnd     => noah_pubinst%model%fh_lnd     ,&
+         fm10_lnd   => noah_pubinst%model%fm10_lnd   ,&
+         fh2_lnd    => noah_pubinst%model%fh2_lnd    ,&
+         stress     => noah_pubinst%model%stress     ,&
+         !
+         ustar      => noah_pubinst%model%ustar       &
          )
 
       ! tmp for testing. Missing imports for these
       prsik1    = 0.1_kind_phys
       z0pert    = 0.0_kind_phys
       ztpert    = 0.0_kind_phys
-      ustar     = 0.1_kind_phys
-      stress    = 0.1_kind_phys
-
+      !ustar     = 0.1_kind_phys
+      stress    = 0.1_kind_phys  ! think stress is not needed as input, only output from stability
+      smc       = 0.65_kind_phys
+      slc       = 0.65_kind_phys
+      stc       = 296_kind_phys
+      
       ! first test
       !write(*,*) 'NLP test: ', noah_pubinst%model%soiltyp ! get all zeros, good
       
@@ -226,7 +241,7 @@ contains
       gridend = procbounds%gridend
 
       ! tmp, debug
-      write(*,*) 'NLP1: ', de, gridbeg, gridend, im, size(noah_pubinst%model%foo_atm2lndfield)
+      !write(6,'("noah drv: dswsfc   - min/max/avg",3g16.6)') minval(dswsfc),   maxval(dswsfc),   sum(dswsfc)/size(dswsfc)
 
       call noah_loop_run( &
                                 !! ARGS FROM NOAH
@@ -240,7 +255,7 @@ contains
        bexppert, xlaipert, vegfpert,pertvegf,                       & ! sfc perts, mgehne
                                 !     ---  in/outs:
        weasd, snwdph, tskin, tprcp, srflag, smc, stc, slc,          &
-       canopy, trans, tsurf, zorl,                                  &
+       canopy, trans, tsurf, z0rl,                                  &
                                 !     ---  outputs:
        sncovr1, qsurf, gflux, drain, evap, hflx, ep, runoff,        &
        cmm, chh, evbs, evcw, sbsno, snowc, stm, snohf,              &

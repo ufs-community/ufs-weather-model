@@ -392,9 +392,7 @@ contains
     call NUOPC_ModelGet(gcomp, modelClock=clock, importState=importState, exportState=exportState, rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
-    ! test tmp import
-    !call field_foo(importState, trim(fldname_i), dataPtr_i, rc=rc)
-    !call import_2_export(importState, exportState, fldname_i, fldname_e, rc)
+    ! write out imports. Should make this optional, and put into a routine
     
     allocate(flds(7))
     flds = (/'Faxa_lwdn  '    , 'Faxa_swndr '   , 'Faxa_swvdr '   , 'Faxa_swndf ' , 'Faxa_swvdf ', &
@@ -406,7 +404,7 @@ contains
     end do
     deallocate(flds)
 
-    allocate(flds(22))
+    allocate(flds(27))
     flds=(/ &
          'Faxa_soiltyp     ', &
          'Faxa_vegtype     ', &
@@ -414,6 +412,7 @@ contains
          'Faxa_sfcemis     ', &
          'Faxa_dlwflx      ', &
          'Faxa_dswsfc      ', &
+         'inst_down_sw_flx ', &
          'Faxa_snet        ', &
          'Faxa_tg3         ', &
          'Faxa_cm          ', &
@@ -429,7 +428,17 @@ contains
          'Faxa_sfalb       ', &
          'Faxa_bexppert    ', &
          'Faxa_xlaipert    ', &
-         'Faxa_vegfpert    ' &
+         'Faxa_vegfpert    ', &
+         'Faxa_tsurf       ', &
+         'Faxa_wind        ', &
+         'Faxa_ps          ', &
+         'Faxa_t1          ', &
+         'Faxa_q1          ', &
+         'Faxa_z0rl        ', &
+         'Faxa_canopy      ', &
+         'Faxa_tprcp       ', &
+         'Faxa_weasd       ', &
+         'Faxa_ustar       ' &
          /)
 
 
@@ -449,9 +458,9 @@ contains
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
     ! tmp workaround to run first time step with simple nems.configure sequence, without having land restart read
-    first_time = .false.
-    if (first_time) then
-       first_time = .false.
+    !first_time = .false.
+    if (noah_pubinst%control%first_time) then
+       !first_time = .false.
        write(*,*) 'lnd_comp: skipping first time step'
     else
     
@@ -471,53 +480,53 @@ contains
        call export_allfields(exportState, procbounds, noah_pubinst, rc)
 
 
-       ! ! write out export fields
-       ! allocate(flds(37))
-       ! flds=(/ &          ! inouts
-       !      'Fall_weasd ', &
-       !      'Fall_snwdph', &
-       !      'Fall_tskin ', &
-       !      'Fall_tprcp ', &
-       !      'Fall_srflag', &
-       !      'Fall_smc   ', &
-       !      'Fall_stc   ', &
-       !      'Fall_slc   ', &
-       !      'Fall_canopy', &
-       !      'Fall_trans ', &
-       !      'Fall_tsurf ', &
-       !      'Fall_z0rl  ', &
-       !      'Fall_sncovr1', &          ! noahouts
-       !      'Fall_qsurf  ', &
-       !      'Fall_gflux  ', &
-       !      'Fall_drain  ', &
-       !      'Fall_evap   ', &
-       !      'Fall_hflx   ', &
-       !      'Fall_ep     ', &
-       !      'Fall_runoff ', &
-       !      'Fall_cmm    ', &
-       !      'Fall_chh    ', &
-       !      'Fall_evbs   ', &
-       !      'Fall_evcw   ', &
-       !      'Fall_sbsno  ', &
-       !      'Fall_snowc  ', &
-       !      'Fall_stm    ', &
-       !      'Fall_snohf  ', &
-       !      'Fall_smcwlt2', &
-       !      'Fall_smcref2', &
-       !      'Fall_wet1   ', &         
-       !      'Fall_rb_lnd  ', &         ! diffouts
-       !      'Fall_fm_lnd  ', &
-       !      'Fall_fh_lnd  ', &
-       !      'Fall_fm10_lnd', &
-       !      'Fall_fh2_lnd ', &
-       !      'Fall_stress  '  &
-       !      /)
+       ! write out export fields
+       allocate(flds(37))
+       flds=(/ &          ! inouts
+            'Fall_weasd ', &
+            'Fall_snwdph', &
+            'Fall_tskin ', &
+            'Fall_tprcp ', &
+            'Fall_srflag', &
+            'Fall_smc   ', &
+            'Fall_stc   ', &
+            'Fall_slc   ', &
+            'Fall_canopy', &
+            'Fall_trans ', &
+            'Fall_tsurf ', &
+            'Fall_z0rl  ', &
+            'Fall_sncovr1', &          ! noahouts
+            'Fall_qsurf  ', &
+            'Fall_gflux  ', &
+            'Fall_drain  ', &
+            'Fall_evap   ', &
+            'Fall_hflx   ', &
+            'Fall_ep     ', &
+            'Fall_runoff ', &
+            'Fall_cmm    ', &
+            'Fall_chh    ', &
+            'Fall_evbs   ', &
+            'Fall_evcw   ', &
+            'Fall_sbsno  ', &
+            'Fall_snowc  ', &
+            'Fall_stm    ', &
+            'Fall_snohf  ', &
+            'Fall_smcwlt2', &
+            'Fall_smcref2', &
+            'Fall_wet1   ', &         
+            'Fall_rb_lnd  ', &         ! diffouts
+            'Fall_fm_lnd  ', &
+            'Fall_fh_lnd  ', &
+            'Fall_fm10_lnd', &
+            'Fall_fh2_lnd ', &
+            'Fall_stress  '  &
+            /)
 
-       ! do n = 1,size(flds)
-       !    fldname = trim(flds(n))
-       !    call write_import_field(exportState, fldname, rc)
-       ! end do
-       ! deallocate(flds)
+       do n = 1,size(flds)
+          fldname = trim(flds(n))
+          call write_import_field(exportState, fldname, rc)
+       end do
+       deallocate(flds)
    
     call ESMF_ClockPrint(clock, options="currTime", &
          preString="------>Advancing LND from: ", unit=msgString, rc=rc)
@@ -534,7 +543,9 @@ contains
     call ESMF_LogWrite(trim(msgString), ESMF_LOGMSG_INFO)
 
 
-
+    if (noah_pubinst%control%first_time) then
+       noah_pubinst%control%first_time = .false.
+    endif
     ! call ESMF_ClockAdvance(clock,rc=rc)
     ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
