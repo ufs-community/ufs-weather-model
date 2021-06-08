@@ -1,13 +1,3 @@
-&amip_interp_nml
-  interp_oi_sst = .true.
-  use_ncep_sst = .true.
-  use_ncep_ice = .false.
-  no_anom_sst = .false.
-  data_set = 'reynolds_oi'
-  date_out_of_range = 'climo'
-  
-/
-
 &atmos_model_nml
   blocksize = 32
   chksum_debug = .false.
@@ -17,7 +7,7 @@
   fhout = @[NFHOUT]
   fhmaxhf = @[NFHMAX_HF]
   fhouthf = @[NFHOUT_HF]
-  ccpp_suite = @[CCPP_SUITE]
+  ccpp_suite = '@[CCPP_SUITE]'
   
 /
 
@@ -137,8 +127,8 @@
   pdfcld       = .false.
   fhswr        = 3600.
   fhlwr        = 3600.
-  ialb         = 1
-  iems         = 1
+  ialb         = @[IALB]
+  iems         = @[IEMS]
   iaer         = 5111
   icliq_sw     = 2
   iovr         = 3
@@ -167,19 +157,19 @@
   ivegsrc      = 1
   isot         = 1
   lsoil        = 4
-  lsm          = 1
-  iopt_dveg    = 1
-  iopt_crs     = 1
+  lsm          = @[LSM]
+  iopt_dveg    = @[IOPT_DVEG]
+  iopt_crs     = @[IOPT_CRS]
   iopt_btr     = 1
   iopt_run     = 1
   iopt_sfc     = 1
   iopt_frz     = 1
   iopt_inf     = 1
-  iopt_rad     = 1
-  iopt_alb     = 2
+  iopt_rad     = @[IOPT_RAD]
+  iopt_alb     = @[IOPT_ALB]
   iopt_snf     = 4
   iopt_tbot    = 2
-  iopt_stc     = 1
+  iopt_stc     = @[IOPT_STC]
   debug        = .false.
   frac_grid    = @[FRAC_GRID]
   nstf_name    = @[NSTF_NAME]
@@ -261,10 +251,10 @@
        FNSNOC   = "global_snoclim.1.875.grb",
        FNZORC   = "igbp",
        FNALBC   = @[FNALBC]
-       FNALBC2  = "global_albedo4.1x1.grb",
+       FNALBC2  = @[FNALBC2]
        FNAISC   = "CFSR.SEAICE.1982.2012.monthly.clim.grb",
-       FNTG3C   = "global_tg3clim.2.6x1.5.grb",
-       FNVEGC   = "global_vegfrac.0.144.decpercent.grb",
+       FNTG3C   = @[FNTG3C]
+       FNVEGC   = @[FNVEGC]
        FNVETC   = @[FNVETC]
        FNSOTC   = @[FNSOTC]
        FNSMCC   = @[FNSMCC]
@@ -272,15 +262,15 @@
        FNTSFA   = "",
        FNACNA   = "",
        FNSNOA   = "",
-       FNVMNC   = "global_shdmin.0.144x0.144.grb",
-       FNVMXC   = "global_shdmax.0.144x0.144.grb",
-       FNSLPC   = "global_slope.1x1.grb",
+       FNVMNC   = @[FNVMNC]
+       FNVMXC   = @[FNVMXC]
+       FNSLPC   = @[FNSLPC]
        FNABSC   = @[FNABSC]
        LDEBUG   =.false.,
   FSMCL(2) = 99999
   FSMCL(3) = 99999
   FSMCL(4) = 99999
-  LANDICE = .true.
+  LANDICE = @[LANDICE]
   FTSFS = 90
   FAISL = 99999
   FAISS = 99999
