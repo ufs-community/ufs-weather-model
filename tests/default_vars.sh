@@ -607,6 +607,10 @@ export ww3gline="'glo_30m'  'no' 'no' 'CPL:native' 'no' 'no' 'no' 'no'   1  1  0
 # Regional
 export WRITE_RESTART_WITH_BCS=.false.
 
+# Diagnostics
+export PRINT_DIFF_PGR=.false.
+
+# Coupling
 export coupling_interval_fast_sec=0
 }
 
@@ -619,6 +623,8 @@ export DATM_CDEPS=false
 
 export DAYS="1"
 export FHMAX="24"
+export FDIAG="6"
+export FHZERO="6"
 export WLCLK=30
 
 # default atm/ocn/ice resolution

@@ -3,11 +3,16 @@
   chksum_debug = .false.
   dycore_only = .false.
   fdiag = @[FDIAG]
+  fhmax = 384
+  fhout = 3
+  fhmaxhf = 120
+  fhouthf = 1
   ccpp_suite = '@[CCPP_SUITE]'
 /
 
 &diag_manager_nml
   prepend_date = .false.
+  max_output_fields = @[MAX_OUTPUT_FIELDS]
 /
 
 &fms_io_nml
@@ -107,9 +112,10 @@ deflate_level=1
 /
 
 &gfs_physics_nml
-  fhzero       = 6
+  fhzero       = @[FHZERO]
   h2o_phys     = .true.
-  ldiag3d      = .false.
+  ldiag3d        = @[LDIAG3D]
+  qdiag3d        = @[QDIAG3D]
   fhcyc        = @[FHCYC]
   use_ufo      = .true.
   pre_rad      = .false.
