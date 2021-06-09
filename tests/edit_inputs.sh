@@ -26,7 +26,9 @@ function edit_ice_in {
       -e "s/USE_RESTART_TIME/$USE_RESTART_TIME/g" \
       -e "s/DUMPFREQ_N/$DUMPFREQ_N/g" \
       -e "s/DUMPFREQ/$DUMPFREQ/g" \
-      -e "s/FRAZIL_FWSALT/$FRAZIL_FWSALT/g"
+      -e "s/FRAZIL_FWSALT/$FRAZIL_FWSALT/g" \
+      -e "s/TFREEZE_OPTION/$TFREEZE_OPTION/g" \
+      -e "s/KTHERM/$KTHERM/g"
 }
 
 function edit_mom_input {
