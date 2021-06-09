@@ -240,12 +240,13 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   QUEUE=debug
   COMPILE_QUEUE=batch
 
-  #ACCNR=fv3-cpu
+  ACCNR=ome
   PARTITION=
   dprefix=/scratch1/NCEPDEV
+  dprefix2=/scratch2/BMC/rem/Lisa.Bengtsson
   DISKNM=$dprefix/nems/emc.nemspara/RT
-  STMP=$dprefix/stmp4
-  PTMP=$dprefix/stmp2
+  STMP=$dprefix2/stmp4
+  PTMP=$dprefix2/stmp2
 
   SCHEDULER=slurm
   cp fv3_conf/fv3_slurm.IN_hera fv3_conf/fv3_slurm.IN
