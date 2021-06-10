@@ -315,12 +315,17 @@ if(CMEPS)
 endif()
 
 if(CDEPS)
-  add_dependencies(ufs cdeps::cdeps)
-  list(APPEND _ufs_defs_private CDEPS-interface/CDEPS
-                                FRONT_CDEPS_DATM=cdeps_datm_comp)
-  list(APPEND _ufs_defs_private CDEPS-interface/CDEPS
-                                FRONT_CDEPS_DOCN=cdeps_docn_comp)
-  target_link_libraries(ufs PUBLIC cdeps::cdeps)
+   add_dependencies(ufs cdeps::datm)
+   list(APPEND _ufs_defs_private CDEPS-interface/CDEPS
+                                 FRONT_CDEPS_DATM=cdeps_datm_comp)
+   include_directories(${CMAKE_CURRENT_BINARY_DIR}/CDEPS-interface/CDEPS/datm)
+   target_link_libraries(ufs PUBLIC cdeps::datm)
+
+   add_dependencies(ufs cdeps::docn)
+   list(APPEND _ufs_defs_private CDEPS-interface/CDEPS
+                                 FRONT_CDEPS_DOCN=cdeps_docn_comp)
+   include_directories(${CMAKE_CURRENT_BINARY_DIR}/CDEPS-interface/CDEPS/docn)
+   target_link_libraries(ufs PUBLIC cdeps::docn)
 endif()
 
 target_compile_definitions(ufs PRIVATE "${_ufs_defs_private}")
