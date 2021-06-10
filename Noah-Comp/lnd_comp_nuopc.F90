@@ -26,9 +26,12 @@ module lnd_comp_nuopc
   use shr_sys_mod            , only : shr_sys_abort
 
   use mpp_mod,            only: mpp_init, mpp_pe, mpp_root_pe
-  use       fms_mod,      only: fms_init  
-  use noah_driver            , only : init_driver
-
+  use fms_mod,            only: fms_init
+  use fms_io_mod,         only: read_data
+  
+  use noah_driver,        only: init_driver
+  use land_domain_mod,    only: domain_create 
+  
   implicit none
   private ! except
 
@@ -150,15 +153,15 @@ contains
     call ESMF_VMGetCurrent(vm=VM,rc=RC)
     call ESMF_VMGet(vm=VM, localPet=mype, mpiCommunicator=mpi_comm_land, &
          petCount=ntasks, rc=rc)
-    !if (mype == 0) write(0,*) 'in lnd comp initadvert, ntasks=',ntasks
-    write(0,*) 'in lnd comp init advert, ntasks=',ntasks, ' pe=',mype
+    if (mype == 0) write(0,*) 'in lnd comp initadvert, ntasks=',ntasks
+    !write(0,*) 'in lnd comp init advert, ntasks=',ntasks, ' pe=',mype
     call fms_init(mpi_comm_land)
-    !if (mype == 0) write(0,*) 'in lnd comp 2'
-    write(0,*) 'in lnd comp init advert 2, ntasks=',ntasks, ' pe=',mype
+    !write(0,*) 'in lnd comp init advert 2, ntasks=',ntasks, ' pe=',mype
     
-    ! call mpp_init()
-    ! if (mype == 0) write(0,*) 'in lnd comp 3'
 
+    ! Create domain
+
+    
 
     
     call get_component_instance(gcomp, inst_suffix, inst_index, rc)
@@ -250,7 +253,9 @@ contains
     rc = ESMF_SUCCESS
     call ESMF_LogWrite(subname//' called', ESMF_LOGMSG_INFO)
 
-
+    ! domain create with FMS:
+    call domain_create()
+    
     ! assume mesh file has mask
     meshfile_mask = meshfile_lnd
     

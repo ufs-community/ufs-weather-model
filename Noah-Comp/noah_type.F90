@@ -116,8 +116,8 @@ end type noah_model_type
 
 
 type, public :: noah_type
-   type(noah_static_type) :: static
-   type(noah_model_type)  :: model
+   type(noah_static_type)  :: static
+   type(noah_model_type)   :: model
    type(noah_control_type) :: control
  contains
 

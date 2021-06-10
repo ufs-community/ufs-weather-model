@@ -20,6 +20,7 @@ add_library(lnd_comp STATIC
 	    import_2_export_test.F90 # tmp test
 	    import_fields.F90
 	    proc_bounds.F90
+	    domain_create.F90
 	    ccpphys_files/funcphys.f90
 	    ccpphys_files/machine.F
 	    ccpphys_files/sfc_diff.f
