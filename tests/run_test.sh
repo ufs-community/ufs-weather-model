@@ -50,6 +50,8 @@ export CNTL_DIR=${CNTL_DIR}${BL_SUFFIX}
 
 export JBNME=$(basename $RUNDIR_ROOT)_${TEST_NR}
 
+echo -n "${TEST_NAME}, $( date +%s )," > ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+
 UNIT_TEST=${UNIT_TEST:-false}
 if [[ ${UNIT_TEST} == false ]]; then
   REGRESSIONTEST_LOG=${LOG_DIR}/rt_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log
@@ -76,6 +78,7 @@ cp ${PATHRT}/fv3_${COMPILE_NR}.exe                 fv3.exe
 
 # modulefile for FV3 prerequisites:
 cp ${PATHRT}/modules.fv3_${COMPILE_NR}             modules.fv3
+cp ${PATHTR}/modulefiles/ufs_common*               .
 
 # Get the shell file that loads the "module" command and purges modules:
 cp ${PATHRT}/../NEMS/src/conf/module-setup.sh.inc  module-setup.sh
@@ -101,33 +104,30 @@ if [[ "Q${INPUT_NEST02_NML:-}" != Q ]] ; then
     atparse < ${PATHRT}/parm/${INPUT_NEST02_NML} > input_nest02.nml
 fi
 
-if [[ $CDEPS_DATM = 'true' ]]; then
-  atparse < ${PATHRT}/parm/${DATM_CONFIGURE_A:-datm_in} > datm_in
-  atparse < ${PATHRT}/parm/${DATM_CONFIGURE_B:-datm.streams.xml} > datm.streams.xml
-fi
-
-if [[ $CDEPS_DOCN = 'true' ]]; then
-  atparse < ${PATHRT}/parm/${DOCN_CONFIGURE_A:-docn_in} > docn_in
-  atparse < ${PATHRT}/parm/${DOCN_CONFIGURE_B:-docn.streams.xml} > docn.streams.xml
-fi
+# Field Dictionary
+cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
 
 # Set up the run directory
 source ./fv3_run
 
-# CMEPS
-if [[ $DATM = 'true' ]] || [[ $CDEPS_DATM = 'true' ]] || [[ $CDEPS_DOCN = 'true' ]] || [[ $S2S = 'true' ]] || [[ $CMEPS = 'true' ]]; then
-  cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
+if [[ $CPLWAV == .T. ]]; then
+  edit_ww3_input  < ${PATHRT}/parm/ww3_multi.inp.IN > ww3_multi.inp
 fi
 
-if [[ $DATM = 'true' ]] || [[ $S2S = 'true' ]]; then
+if [[ $DATM_NEMS = 'true' ]] || [[ $DATM_CDEPS = 'true' ]] || [[ $S2S = 'true' ]]; then
   edit_ice_in     < ${PATHRT}/parm/ice_in_template > ice_in
   edit_mom_input  < ${PATHRT}/parm/${MOM_INPUT:-MOM_input_template_$OCNRES} > INPUT/MOM_input
   edit_diag_table < ${PATHRT}/parm/${DIAG_TABLE:-diag_table_template} > diag_table
   edit_data_table < ${PATHRT}/parm/data_table_template > data_table
 fi
 
-if [[ $DATM = 'true' ]]; then
+if [[ $DATM_NEMS = 'true' ]]; then
   cp ${PATHRT}/parm/datm_data_table.IN datm_data_table
+fi
+
+if [[ $DATM_CDEPS = 'true' ]]; then
+  atparse < ${PATHRT}/parm/${DATM_IN_CONFIGURE:-datm_in} > datm_in
+  atparse < ${PATHRT}/parm/datm.streams.IN > datm.streams
 fi
 
 if [[ $SCHEDULER = 'pbs' ]]; then
@@ -181,9 +181,14 @@ fi
 
 check_results
 
+if [[ $SCHEDULER != 'none' ]]; then
+  cat ${RUNDIR}/job_timestamp.txt >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+fi
 ################################################################################
 # End test
 ################################################################################
+
+echo " $( date +%s )" >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
 
 elapsed=$SECONDS
 echo "Elapsed time $elapsed seconds. Test ${TEST_NAME}"

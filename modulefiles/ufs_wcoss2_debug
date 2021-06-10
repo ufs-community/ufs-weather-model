@@ -1,0 +1,25 @@
+#%Module
+
+proc ModulesHelp {} {
+  puts stderr "\tcit - loads modules required for building and running UFS Model on the Dell side of WCOSS"
+}
+
+module-whatis "loads UFS Model prerequisites on Venus and Mars"
+
+module unload cpe-cray cce
+module load cpe-intel intel
+
+module load cmake/3.17.3
+
+module use /lfs/h1/emc/nceplibs/noscrub/hpc-stack/test/noaa/modulefiles/stack
+
+module load hpc/1.0.0-beta1
+module load hpc-intel/19.1.1.217
+module load hpc-cray-mpich/8.0.15
+
+module load ufs_common_debug
+
+setenv CC cc
+setenv CXX CC
+setenv FC ftn
+setenv CMAKE_Platform wcoss2

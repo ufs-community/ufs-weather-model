@@ -10,6 +10,7 @@
 ### #SBATCH --exclusive
 
 set -eux
+echo -n " $( date +%s )," >  job_timestamp.txt
 
 set +x
 source ./module-setup.sh
@@ -34,5 +35,4 @@ sync && sleep 1
 srun ./fv3.exe
 
 echo "Model ended:    " `date`
-
-exit
+echo -n " $( date +%s )," >> job_timestamp.txt
