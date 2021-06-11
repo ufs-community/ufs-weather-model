@@ -240,13 +240,12 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   QUEUE=debug
   COMPILE_QUEUE=batch
 
-  ACCNR=ome
+  #ACCNR=fv3-cpu
   PARTITION=
   dprefix=/scratch1/NCEPDEV
-  dprefix2=/scratch2/BMC/rem/Lisa.Bengtsson
   DISKNM=$dprefix/nems/emc.nemspara/RT
-  STMP=$dprefix2/stmp4
-  PTMP=$dprefix2/stmp2
+  STMP=$dprefix/stmp4
+  PTMP=$dprefix/stmp2
 
   SCHEDULER=slurm
   cp fv3_conf/fv3_slurm.IN_hera fv3_conf/fv3_slurm.IN
@@ -414,7 +413,7 @@ if [[ $TESTS_FILE =~ '35d' ]]; then
   TEST_35D=true
 fi
 
-BL_DATE=20210609
+BL_DATE=20210611
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]]; then
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
 else
