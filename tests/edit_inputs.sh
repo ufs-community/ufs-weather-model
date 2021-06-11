@@ -3,16 +3,14 @@ set -eu
 
 function edit_ice_in {
 
-  jday=$(date -d "${SYEAR}-${SMONTH}-${SDAY} ${SHOUR}:00:00" +%j)
-  istep0=$(( ((10#$jday-1)*86400 + 10#$SHOUR*3600) / DT_CICE ))
-
   # assumes processor shape = "slenderX2"
   np2=$((NPROC_ICE/2))
   BLCKX=$((NX_GLB/$np2))
   BLCKY=$((NY_GLB/2))
 
   sed -e "s/YEAR_INIT/$SYEAR/g" \
-      -e "s/ISTEP0/$istep0/g" \
+      -e "s/MONTH_INIT/$SMONTH/g" \
+      -e "s/DAY_INIT/$SDAY/g" \
       -e "s/DT_CICE/$DT_CICE/g" \
       -e "s/CICEGRID/$CICEGRID/g" \
       -e "s/CICEMASK/$CICEMASK/g" \
@@ -28,7 +26,9 @@ function edit_ice_in {
       -e "s/USE_RESTART_TIME/$USE_RESTART_TIME/g" \
       -e "s/DUMPFREQ_N/$DUMPFREQ_N/g" \
       -e "s/DUMPFREQ/$DUMPFREQ/g" \
-      -e "s/FRAZIL_FWSALT/$FRAZIL_FWSALT/g"
+      -e "s/FRAZIL_FWSALT/$FRAZIL_FWSALT/g" \
+      -e "s/TFREEZE_OPTION/$TFREEZE_OPTION/g" \
+      -e "s/KTHERM/$KTHERM/g"
 }
 
 function edit_mom_input {
@@ -57,11 +57,11 @@ function edit_diag_table {
       -e "s/SDAY/$SDAY/g"
 }
 
-function edit_ww3_input { 
+function edit_ww3_input {
 
   SDATEWW3="${SYEAR}${SMONTH}${SDAY} $(printf "%02d" $(( ${SHOUR}  )))0000"
   EDATEWW3="2100${SMONTH}${SDAY} $(printf "%02d" $(( ${SHOUR}  )))0000"
-  #note EDATE should be SDATE+FHMAX, but since this requires adding ndate 
+  #note EDATE should be SDATE+FHMAX, but since this requires adding ndate
   #a work around is to just put a date long in the future as the actual end time is
   #determined by the driver
   DT_2_RST_WAV="$(printf "%02d" $(( ${WW3RSTDTHR}*3600 )))"
@@ -97,5 +97,5 @@ function edit_ww3_input {
       -e "s/DTRST/0/g" \
       -e "s/DT_2_RST/$DT_2_RST_WAV/g" \
       -e "s/RST_END/$EDATEWW3/g" \
-      -e "s/RST_2_END/$EDATEWW3/g" 
+      -e "s/RST_2_END/$EDATEWW3/g"
 }
