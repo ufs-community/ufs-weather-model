@@ -108,8 +108,6 @@ fi
 # see also https://gcc.gnu.org/bugzilla/show_bug.cgi?id=55534);
 # this line can be removed once FMS becomes a pre-installed library
 mkdir -p $PATHTR/FV3/ccpp/include
-# Similar for this directory, which apparently never gets populated
-mkdir -p $PATHTR/FMS/fms2_io/include
 
 CMAKE_FLAGS="${CMAKE_FLAGS} -DMPI=ON"
 
@@ -151,12 +149,12 @@ if [[ "${MAKE_OPT}" == *"APP=S2SW"* ]]; then
     CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=S2SW -DMOM6SOLO=ON"
 fi
 
-if [[ "${MAKE_OPT}" == *"APP=DATM"* ]]; then
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=DATM"
+if [[ "${MAKE_OPT}" == *"APP=NG-GODAS"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=NG-GODAS"
 fi
 
-if [[ "${MAKE_OPT}" == *"APP=DATM_NEMS"* ]]; then
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=DATM_NEMS"
+if [[ "${MAKE_OPT}" == *"APP=NG-GODAS-NEMSDATM"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=NG-GODAS-NEMSDATM"
 fi
 
 CMAKE_FLAGS=$(trim "${CMAKE_FLAGS}")
@@ -174,7 +172,7 @@ export CMAKE_FLAGS
 bash -x ${PATHTR}/build.sh
 
 mv ${BUILD_DIR}/ufs_model ${PATHTR}/tests/${BUILD_NAME}.exe
-if [[ "${MAKE_OPT}" == "DEBUG=Y" ]]; then
+if [[ "${MAKE_OPT}" == *"DEBUG=Y"* ]]; then
   cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}_debug ${PATHTR}/tests/modules.${BUILD_NAME}
 else
   cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}       ${PATHTR}/tests/modules.${BUILD_NAME}

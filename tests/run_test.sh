@@ -98,19 +98,29 @@ if [[ "Q${INPUT_NEST02_NML:-}" != Q ]] ; then
     atparse < ${PATHRT}/parm/${INPUT_NEST02_NML} > input_nest02.nml
 fi
 
+# Field Dictionary
+cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
+
 # Set up the run directory
 source ./fv3_run
 
-if [[ $DATM = 'true' ]] || [[ $S2S = 'true' ]]; then
+if [[ $CPLWAV == .T. ]]; then
+  edit_ww3_input  < ${PATHRT}/parm/ww3_multi.inp.IN > ww3_multi.inp
+fi
+
+if [[ $DATM_NEMS = 'true' ]] || [[ $DATM_CDEPS = 'true' ]] || [[ $S2S = 'true' ]]; then
   edit_ice_in     < ${PATHRT}/parm/ice_in_template > ice_in
   edit_mom_input  < ${PATHRT}/parm/${MOM_INPUT:-MOM_input_template_$OCNRES} > INPUT/MOM_input
   edit_diag_table < ${PATHRT}/parm/${DIAG_TABLE:-diag_table_template} > diag_table
   edit_data_table < ${PATHRT}/parm/data_table_template > data_table
-  # CMEPS
-  cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
 fi
-if [[ $DATM = 'true' ]]; then
+if [[ $DATM_NEMS = 'true' ]]; then
   cp ${PATHRT}/parm/datm_data_table.IN datm_data_table
+fi
+
+if [[ $DATM_CDEPS = 'true' ]]; then
+  atparse < ${PATHRT}/parm/${DATM_IN_CONFIGURE:-datm_in} > datm_in
+  atparse < ${PATHRT}/parm/datm.streams.IN > datm.streams
 fi
 
 if [[ $SCHEDULER = 'pbs' ]]; then
@@ -146,7 +156,7 @@ if [[ $SCHEDULER = 'none' ]]; then
 
   ulimit -s unlimited
   if [[ $CI_TEST = 'true' ]]; then
-    eval mpiexec -n ${TASKS} ${MPI_PROC_BIND} ./fv3.exe >out 2> >(tee err >&3)
+    eval ${OMP_ENV} mpiexec -n ${TASKS} ${MPI_PROC_BIND} ./fv3.exe >out 2> >(tee err >&3)
   else
     mpiexec -n ${TASKS} ./fv3.exe >out 2> >(tee err >&3)
   fi
