@@ -278,7 +278,7 @@ endif()
 if(CDEPS)
   add_dependencies(ufs cdeps::datm)
   list(APPEND _ufs_defs_private CDEPS-interface/CDEPS
-                                FRONT_CDEPS_DATM=atm_comp_nuopc)
+                                FRONT_CDEPS_DATM=cdeps_datm_comp)
   include_directories(${CMAKE_CURRENT_BINARY_DIR}/CDEPS-interface/CDEPS/datm)
   target_link_libraries(ufs PUBLIC cdeps::datm)
 endif()
