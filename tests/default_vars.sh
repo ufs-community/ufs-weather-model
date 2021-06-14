@@ -603,7 +603,7 @@ export WINDLINE='$'
 export CURRLINE='$'
 export NFGRIDS=0
 export NMGRIDS=1
-export ww3gline="'glo_30m'  'no' 'no' 'CPL:native' 'no' 'no' 'no' 'no'   1  1  0.00 1.00  F"
+export ww3gline="'glo_30m'  'no' 'no' 'CPL:native' 'no' 'no' 'no' 'no' 'no' 'no'   1  1  0.00 1.00  F"
 
 # Regional
 export WRITE_RESTART_WITH_BCS=.false.
@@ -662,7 +662,7 @@ export coupling_interval_slow_sec=${CPL_SLOW}
 export coupling_interval_fast_sec=${CPL_FAST}
 
 export RESTART_N=${FHMAX}
-export CPLMODE='nems_orig'
+export CPLMODE='nems_frac'
 export cap_dbug_flag="0"
 export use_coldstart="false"
 export use_mommesh="true"
@@ -673,7 +673,7 @@ export RUNTYPE='startup'
 # set frac_grid=.F. but FRAC_GRID_INPUT=.T.
 # to repro existing tests set both frac_grid and FRAC_GRID_INPUT to .F.
 # to run frac_grid, set both frac_grid and FRAC_GRID_INPUTs to .T.
-export FRAC_GRID='.F.'
+export FRAC_GRID='.T.'
 export FRAC_GRID_INPUT='.T.'
 export CCPP_SUITE="FV3_GFS_2017_coupled"
 export INPUT_NML=input.mom6_ccpp.nml.IN
@@ -737,9 +737,12 @@ export RESTART_EXT='.false.'
 export FRAZIL_FWSALT='.true.'
 # default to write CICE average history files
 export CICE_HIST_AVG='.true.'
+# default non-mushy thermo
+export KTHERM=1
+export TFREEZE_OPTION='linear_salt'
 
 #wave
-export ww3gline="'glo_1deg'  'no' 'CPL:native' 'CPL:native' 'CPL:native' 'no' 'no' 'no'   1  1  0.00 1.00  F"
+export ww3gline="'glo_1deg'  'no' 'CPL:native' 'CPL:native' 'CPL:native' 'no' 'no' 'no' 'no' 'no'   1  1  0.00 1.00  F"
 export WW3OUTPUTTYPE=' 1'
 
 # checkpoint restarts
@@ -856,6 +859,9 @@ export RESTART_EXT='.false.'
 export FRAZIL_FWSALT='.true.'
 # default to write CICE average history files
 export CICE_HIST_AVG='.true.'
+# default non-mushy thermo
+export KTHERM=1
+export TFREEZE_OPTION='linear_salt'
 export BL_SUFFIX=""
 export RT_SUFFIX=""
 }
@@ -968,6 +974,9 @@ export RESTART_EXT='.false.'
 export FRAZIL_FWSALT='.true.'
 # default to write CICE average history files
 export CICE_HIST_AVG='.true.'
+# default non-mushy thermo
+export KTHERM=1
+export TFREEZE_OPTION='linear_salt'
 export BL_SUFFIX=""
 export RT_SUFFIX=""
 }
