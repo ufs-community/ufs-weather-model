@@ -37,6 +37,7 @@ How were these changes tested? What compilers / HPCs was it tested with? Are the
 - [ ] jet.intel
 - [ ] wcoss_cray
 - [ ] wcoss_dell_p3
+- [ ] CI
 
 ## Dependencies
 
