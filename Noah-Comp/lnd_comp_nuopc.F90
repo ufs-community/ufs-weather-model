@@ -210,6 +210,7 @@ contains
     use lnd_set_decomp_and_domain , only : lnd_set_decomp_and_domain_from_readmesh ! try out read mask
 
     use proc_bounds, only : procbounds
+    use fms_io_mod,         only: field_exist, read_data
     
     ! input/output variables
     type(ESMF_GridComp)  :: gcomp
@@ -248,69 +249,97 @@ contains
 
     integer :: i
 
-    
+    ! cube sphere mosaic
+    type(ESMF_Decomp_Flag)  :: decompflagPTile(2,6)
+    character(256)          :: gridfile
+    integer                 :: tl
+    integer,dimension(2,6)  :: decomptile                  !define delayout for the 6 cubed-sphere tiles
+    type(ESMF_Grid)         :: lndGrid
     !-------------------------------------------------------------------------------
     rc = ESMF_SUCCESS
     call ESMF_LogWrite(subname//' called', ESMF_LOGMSG_INFO)
 
     ! domain create with FMS:
     call domain_create()
-    
-    ! assume mesh file has mask
-    meshfile_mask = meshfile_lnd
-    
-    ! Read in the land mesh from the file
-    
-    mesh_input = ESMF_MeshCreate(filename=trim(meshfile_lnd), fileformat=ESMF_FILEFORMAT_ESMFMESH, rc=rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
-    ! Determine lsize and distgrid_lnd
-    call ESMF_MeshGet(mesh_input, elementdistGrid=distgrid, rc=rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return
-    call ESMF_DistGridGet(distgrid, localDe=0, elementCount=lsize, rc=rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
-    ! Determine lndmask_loc
-    ! The call to ESMF_MeshGet fills in the values of lndmask_loc
-    allocate(lndmask_loc(lsize))
-    elemMaskArray = ESMF_ArrayCreate(distgrid, lndmask_loc, rc=rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return
-    call ESMF_MeshGet(mesh_input, elemMaskArray=elemMaskArray, rc=rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    if ( .false. )  then ! mesh creation
+       ! assume mesh file has mask
+       meshfile_mask = meshfile_lnd
 
-    ! Determine global landmask_glob 
-    ! how to get gsize? same as elementCount? No, that's lsize....
-    gsize = lsize ! this is a (wrong) placeholder to test
+       ! Read in the land mesh from the file
 
-    allocate(gindex(lsize))
-    allocate(itemp_glob(gsize))
-    ! List of sequence indices for the elements on localDe
-    !call ESMF_DistGridGet(distgrid, 0, seqIndexList=gindex, rc=rc)
-    !if (chkerr(rc,__LINE__,u_FILE_u)) return
-    !write(*,*) "JP A2.4. gindex = ", gindex
+       mesh_input = ESMF_MeshCreate(filename=trim(meshfile_lnd), fileformat=ESMF_FILEFORMAT_ESMFMESH, rc=rc)
+       if (ChkErr(rc,__LINE__,u_FILE_u)) return
+
+       ! Determine lsize and distgrid_lnd
+       call ESMF_MeshGet(mesh_input, elementdistGrid=distgrid, rc=rc)
+       if (ChkErr(rc,__LINE__,u_FILE_u)) return
+       call ESMF_DistGridGet(distgrid, localDe=0, elementCount=lsize, rc=rc)
+       if (ChkErr(rc,__LINE__,u_FILE_u)) return
+
+       ! Determine lndmask_loc
+       ! The call to ESMF_MeshGet fills in the values of lndmask_loc
+       allocate(lndmask_loc(lsize))
+       elemMaskArray = ESMF_ArrayCreate(distgrid, lndmask_loc, rc=rc)
+       if (ChkErr(rc,__LINE__,u_FILE_u)) return
+       call ESMF_MeshGet(mesh_input, elemMaskArray=elemMaskArray, rc=rc)
+       if (ChkErr(rc,__LINE__,u_FILE_u)) return
+
+       ! Determine global landmask_glob 
+       ! how to get gsize? same as elementCount? No, that's lsize....
+       gsize = lsize ! this is a (wrong) placeholder to test
+
+       allocate(gindex(lsize))
+       allocate(itemp_glob(gsize))
+       ! List of sequence indices for the elements on localDe
+       !call ESMF_DistGridGet(distgrid, 0, seqIndexList=gindex, rc=rc)
+       !if (chkerr(rc,__LINE__,u_FILE_u)) return
+       !write(*,*) "JP A2.4. gindex = ", gindex
 
 !!! debug prints
-    call ESMF_DistGridGet(distgrid,dimCount=dimCount, deCount=deCount, localDeCount=localDeCount, rc=rc)
-    if (chkerr(rc,__LINE__,u_FILE_u)) return
-    !write(*,*) "DGG1: ", dimCount, deCount, localDeCount
+       call ESMF_DistGridGet(distgrid,dimCount=dimCount, deCount=deCount, localDeCount=localDeCount, rc=rc)
+       if (chkerr(rc,__LINE__,u_FILE_u)) return
+       !write(*,*) "DGG1: ", dimCount, deCount, localDeCount
 
-    allocate(seqIndexList(lsize))
-    call ESMF_DistGridGet(distgrid, localDe=0, de=de,seqIndexList=seqIndexList, rc=rc)
-    if (chkerr(rc,__LINE__,u_FILE_u)) return
+       allocate(seqIndexList(lsize))
+       call ESMF_DistGridGet(distgrid, localDe=0, de=de,seqIndexList=seqIndexList, rc=rc)
+       if (chkerr(rc,__LINE__,u_FILE_u)) return
 
-    ! do i = 1, lsize
-    !    write(*,*) "DGG2: ", de, seqIndexList(i)
-    ! end do
+       ! do i = 1, lsize
+       !    write(*,*) "DGG2: ", de, seqIndexList(i)
+       ! end do
 
-    procbounds%de = de
-    ! think this will suffice for now for gc indexing:
-    procbounds%gridbeg = seqIndexList(1)
-    procbounds%gridend = seqIndexList(lsize)
-    procbounds%im      = lsize
+       procbounds%de = de
+       ! think this will suffice for now for gc indexing:
+       procbounds%gridbeg = seqIndexList(1)
+       procbounds%gridend = seqIndexList(lsize)
+       procbounds%im      = lsize
+
+       write(*,*) "bounds: ", de, seqIndexList(1), seqIndexList(lsize), lsize
     
-    write(*,*) "bounds: ", de, seqIndexList(1), seqIndexList(lsize), lsize
-    
-    
+
+    else ! cube sphere mosaic
+
+       gridfile = "grid_spec.nc" ! default                                                                                              
+       if (field_exist("INPUT/grid_spec.nc", "atm_mosaic_file")) then
+          call read_data("INPUT/grid_spec.nc", "atm_mosaic_file", gridfile)
+       endif
+
+       do tl=1,6
+          decomptile(1,tl) = 2 !! TEST
+          decomptile(2,tl) = 6 !! TEST
+          decompflagPTile(:,tl) = (/ESMF_DECOMP_SYMMEDGEMAX,ESMF_DECOMP_SYMMEDGEMAX/)
+       enddo
+       lndGrid = ESMF_GridCreateMosaic(filename="INPUT/"//trim(gridfile),     &
+            regDecompPTile=decomptile,tileFilePath="INPUT/",                   &
+            decompflagPTile=decompflagPTile,                                   &
+            staggerlocList=(/ESMF_STAGGERLOC_CENTER, ESMF_STAGGERLOC_CORNER/), &
+            name='lnd_grid', rc=rc)
+
+       
+    end if
+       
     ! do n = 1,lsize
     !    write(*,*) "JP n, gindex(n), lndmask_loc(n) =", n, gindex(n), lndmask_loc(n)
     !    lndmask_glob(gindex(n)) = lndmask_loc(n)
