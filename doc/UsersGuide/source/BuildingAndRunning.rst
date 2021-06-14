@@ -57,7 +57,7 @@ set up specifically for issues related to build dependencies.
 Downloading the Weather Model Code
 ==================================
 
-To clone the ufs-weather-model repository, execute the following commands:
+To clone the develop branch of the ufs-weather-model repository, execute the following commands:
 
 .. code-block:: console
 
@@ -71,51 +71,13 @@ Compiling the model will take place within the `ufs-weather-model` directory you
 Building the Weather Model
 ==========================
 
--------------------------------------------------------------------------
-Setting environment variables for NCEPLIBS, NCEPLIBS-external and CMake
--------------------------------------------------------------------------
-You will need to make sure that the WM has the paths to the libraries that it requires. In order to do
-that, these environment variables need to be set, as shown in :numref:`Table %s <ReqLibEnvVar>` and
-:numref:`Table %s <ReqLibEnvVar2>` for the bash shell.
+----------------------------
+Loading the required modules
+----------------------------
 
-.. _ReqLibEnvVar:
-
-.. table:: *Bundled libraries (NCEPLIBS) required for the Weather Model*
-
-   +------------------+-----------------------------------------------------------------+
-   | **NCEP Library** | **Environment Variables**                                       |
-   +==================+=================================================================+
-   |  nemsio          || export NEMSIO_INC=<path_to_nemsio_include_dir>                 |
-   |                  || export NEMSIO_LIB=<path_to_nemsio_lib_dir>/libnemsio<version>.a|
-   +------------------+-----------------------------------------------------------------+
-   |  bacio           | export BACIO_LIB4=<path_to_bacio_lib_dir>/libbacio<version>.a   |
-   +------------------+-----------------------------------------------------------------+
-   |  splib           | export SP_LIBd=<path_to_sp_lib_dir>/libsp<version>_d.a          |
-   +------------------+-----------------------------------------------------------------+
-   |  w3emc           | export W3EMC_LIBd=<path_to_w3emc_lib_dir>/libw3emc<version>_d.a |
-   +------------------+-----------------------------------------------------------------+
-   |  w3nco           | export W3NCO_LIBd=<path_to_w3nco_lib_dir>/libw3nco<version>_d.a |
-   +------------------+-----------------------------------------------------------------+
-
-|
-
-.. _ReqLibEnvVar2:
-
-.. table:: *Third-party libraries (NCEPLIBS-external) required for the Weather Model*
-
-   +------------------+----------------------------------------------------+
-   | **Library**      | **Environment Variables**                          |
-   +==================+====================================================+
-   |  NetCDF          | export NETCDF=<path_to_netcdf_install_dir>         |
-   +------------------+----------------------------------------------------+
-   |  ESMF            | export ESMFMKFILE=<path_to_esmfmk_file>/esmf.mk    |
-   +------------------+----------------------------------------------------+
-
-The following are a few different ways to set the required environment variables to the correct values.
-If you are running on one of the `pre-configured platforms
-<https://github.com/ufs-community/ufs/wiki/Supported-Platforms-and-Compilers>`_, you can set them using
-modulefiles.  Modulefiles for all supported platforms are located in ``modulefiles/ufs_<platform>.<compiler>``. To
-load the modules from the `ufs-weather-model` directory on hera:
+Modulefiles for `pre-configured platforms <https://github.com/ufs-community/ufs/wiki/Supported-Platforms-and-Compilers>`_
+are located in ``modulefiles/ufs_<platform>.<compiler>``. For example, to load the modules from the `ufs-weather-model`
+directory on hera:
 
 .. code-block:: console
 
@@ -143,12 +105,6 @@ Note that loading this module file will also set the CMake environment variables
 
 If you are not running on one of the pre-configured platforms, you will need to set the environment variables
 in a different way.
-
-If you used one of the platform- and compiler-specific ``README`` files in the ``doc/`` directory of NCEPLIBS-external
-to build the prerequisite libraries, there is a script in the ``NCEPLIBS-ufs-v2.0.0/bin`` directory called
-``setenv_nceplibs.sh`` that will set the NCEPLIBS-external variables for you.
-
-Of course, you can also set the values of these variables yourself if you know where the paths are on your system.
 
 -------------------------------------------------------------
 Setting the CMAKE_FLAGS and CCPP_SUITES environment variables
@@ -193,6 +149,7 @@ For the ufs-weather-model S2S app (atm/ice/ocean) with debugging flags turned on
 
     export CMAKE_FLAGS="-DAPP=S2S -DDEBUG=ON"
     export CCPP_SUITES="FV3_GFS_2017_coupled,FV3_GFS_2017_satmedmf_coupled,FV3_GFS_v15p2_coupled,FV3_GFS_v16_coupled,FV3_GFS_v16_couplednsst"
+    export BUILD_VERBOSE=1
 
 For the ufs-weather-model S2SW app (atm/ice/ocean/wave):
 
@@ -220,7 +177,9 @@ The WM can be built by running the following command from the `ufs-weather-model
 
    ./build.sh
 
-Once ``build.sh`` is finished, you should see the executable, named ``ufs_weather_model``, in the top-level directory.
+Once ``build.sh`` is finished, you should see the executable, named ``ufs_model``, in the `ufs-weather-model/build/` directory.
+If it is desired to build in a different directory, specify the ``BUILD_DIR`` environment variable: e.g. ``export BUILD_DIR=test_cpld``
+will build in the `ufs-weather-model/test_cpld` directory instead.
 
 Expert help is available through a `user support forum <https://forums.ufscommunity.org/forum/ufs-weather-model>`_
 set up specifically for issues related to the Weather Model.
@@ -257,13 +216,13 @@ of the test files in the tests/tests/ directory or, if the user is adding a new
 test, the name of the new test file. The order of lines in ``rt.conf`` matters
 since ``rt.sh`` processes them sequentially; a ``RUN`` line should be proceeded
 by a ``COMPILE`` line that builds the model used in the test. The following example
-``rt.conf`` file builds the Subseasonal to Seasonal (S2S) model and then runs the
-``cpld_control`` test:
+``rt.conf`` file builds the standalone ATM model in 32 bit and then runs the
+``control`` test:
 
 .. code-block:: console
 
-    COMPILE | APP=S2S SUITES=FV3_GFS_2017_coupled | | fv3
-    RUN     | cpld_control                        | | fv3
+    COMPILE | APP=ATM SUITES=FV3_GFS_v16 32BIT=Y | | fv3
+    RUN     | control                            | | fv3
 
 The third column of ``rt.conf`` relates to the platform; if left blank, the test
 runs on all Tier-1 platforms. The fourth column deals with baseline creation (more
@@ -289,9 +248,15 @@ value of ``RUNDIR`` variable in the ``run_<test-name>`` file. ``$RUNDIR`` is a
 self-contained (i.e. sandboxed) directory with the executable file, initial
 conditions, model configuration files, environment setup scripts and a batch job
 submission script. The user can run the test by cd'ing into ``$RUNDIR`` and
-invoking the command ``sbatch job_card``. Note that ``$RUNDIR`` is automatically
-deleted at the end of a successful regression test; specifying the ``-k`` option
-retains the ``$RUNDIR``, e.g. ``./rt.sh -l rt.conf -k``.
+invoking the command
+
+.. code-block:: console
+
+    sbatch job_card
+
+This can be particularly useful for debugging and testing code changes. Note that
+``$RUNDIR`` is automatically deleted at the end of a successful regression test;
+specifying the ``-k`` option retains the ``$RUNDIR``, e.g. ``./rt.sh -l rt.conf -k``.
 
 Found inside the ``$RUNDIR`` directory are the model configuration files
 ``data_table``, ``diag_table``, ``ice_in``, ``input.nml``, ``model_configure``
@@ -336,8 +301,8 @@ of them are discussed here. When running a large number (10's or 100's) of
 tests, the ``-e`` option to use the ecFlow workflow manager can significantly
 decrease the testing time by queuing the jobs according to dependencies and
 running them concurrently. The ``-n`` option can be used to run a single test;
-for example, ``./rt.sh -n cpld_control`` will build the S2S model and run the
-``cpld_control`` test. The ``-c`` option is used to create baseline. New
+for example, ``./rt.sh -n control`` will build the ATM model and run the
+``control`` test. The ``-c`` option is used to create baseline. New
 baslines are needed when code changes lead to result changes, and therefore
 deviate from existing baselines on a bit-for-bit basis.
 
@@ -389,8 +354,8 @@ test case refers to any one of ``thr``, ``mpi``, ``dcp``, ``rst``, ``bit`` and `
   +----------+------------------------------------------------------------------------+
 
 The unit test uses the same testing framework used by the regression
-test, and therefore it is recommened that the user first read the
-:numref:`Section on regression test %s <UsingRegressionTest>`. All the files in
+test, and therefore it is recommened that the user first read
+:numref:`Section %s <UsingRegressionTest>`. All the files in
 the subdirectories shown in :numref:`Table %s <RTSubDirs>` are relavant to the
 unit test except that the ``utest`` script replaces ``rt.sh`` and the
 ``utest.bld`` file replaces ``rt.conf``. The /tests/utests/ directory contains
@@ -409,10 +374,10 @@ For example, including in the ``utest.bld`` file the following line
 
 .. code-block:: console
 
-    cpld_control | APP=S2S SUITES=FV3_GFS_2017_coupled
+    control | APP=ATM SUITES=FV3_GFS_v16 32BIT=Y
 
-and then executing ``./utest -n cpld_control`` performs all six test cases
-listed in :numref:`Table %s <ImplementationRequirement>` for ``cpld_control``
+and then executing ``./utest -n control`` performs all six test cases
+listed in :numref:`Table %s <ImplementationRequirement>` for ``control``
 test. At the end of the run, a log file ``UnitTests_<machine>.<compiler>.log``
 is generated in tests/ directory, which informs the user whether each test case
 passed or failed. The user can choose to run a specific test case by invoking
@@ -423,8 +388,8 @@ passed or failed. The user can choose to run a specific test case by invoking
 
 where ``<test-case>`` is one or
 more comma-separated values selected from ``thr``, ``mpi``, ``dcp``, ``rst``,
-``bit``, ``dbg``. For example, ``./utest -n cpld_control -c thr,rst`` runs the
-``cpld_control`` test and checks the reproducibility of threading and restart.
+``bit``, ``dbg``. For example, ``./utest -n control -c thr,rst`` runs the
+``control`` test and checks the reproducibility of threading and restart.
 The user can see different command line options available to ``utest`` by
 executing ``./utest -h``; frequently used options are ``-e`` to use the ecFlow
 workflow manager, and ``-k`` to keep the ``$RUNDIR``. In the following,
