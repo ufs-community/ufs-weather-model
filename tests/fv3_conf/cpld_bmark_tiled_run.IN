@@ -8,9 +8,11 @@ fi
 
 ICERES="${OCNRES:0:1}.${OCNRES:1}"
 
-FV3_IC=FV3_input_frac/BM7_IC/${SYEAR}${SMONTH}${SDAY}${SHOUR}/gfs/@[ATMRES]_L@[NPZ]/INPUT
+FV3_IC=@[INPUTDATA_ROOT_BMIC]/${SYEAR}${SMONTH}${SDAY}${SHOUR}/gfs/@[ATMRES]_L@[NPZ]/INPUT
+MOM_IC=@[INPUTDATA_ROOT_BMIC]/${SYEAR}${SMONTH}${SDAY}${SHOUR}/mom6_da
+ICE_IC=@[INPUTDATA_ROOT_BMIC]/${SYEAR}${SMONTH}${SDAY}${SHOUR}/cpc
 #unused unless 35D run is active
-WW3_IC=FV3_input_frac/BM7_IC/${SYEAR}${SMONTH}${SDAY}${SHOUR}/wav/gwes_30m
+WW3_IC=@[INPUTDATA_ROOT_BMIC]/${SYEAR}${SMONTH}${SDAY}${SHOUR}/wav_gefs/gwes_30m
 
 # FV3 fixed input
 cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/aerosol.dat .
@@ -56,19 +58,19 @@ cp    @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/mesh.mx@[OCNRES].nc .
 if [[ $CPLWAV == .T. && $CPLWAV2ATM == .T. ]]; then
   cp    @[INPUTDATA_ROOT_WW3]/mod_def.* .
   if [[ $RT35D == .T. ]]; then
-   cp   @[INPUTDATA_ROOT]/${WW3_IC}/*.000000.restart.gwes_30m ./restart.gwes_30m
+   cp   ${WW3_IC}/*.000000.restart.gwes_30m ./restart.gwes_30m
   fi
 fi
 
 # No restart
 if [ $WARM_START = .F. ]; then
   # ICs
-  cp    @[INPUTDATA_ROOT]/${FV3_IC}/sfc_data*.nc ./INPUT
-  cp    @[INPUTDATA_ROOT]/${FV3_IC}/gfs_data*.nc ./INPUT
-  cp    @[INPUTDATA_ROOT]/${FV3_IC}/gfs_ctrl.nc ./INPUT
-  cp    @[INPUTDATA_ROOT_BMIC]/${SYEAR}${SMONTH}${SDAY}${SHOUR}/mom6_da/MOM*.nc ./INPUT
+  cp    ${FV3_IC}/sfc_data*.nc ./INPUT
+  cp    ${FV3_IC}/gfs_data*.nc ./INPUT
+  cp    ${FV3_IC}/gfs_ctrl.nc ./INPUT
+  cp    ${MOM_IC}/MOM*.nc ./INPUT
   # the BM ICs are still named cice5 and need to remain so until P5.0 is completed
-  cp    @[INPUTDATA_ROOT_BMIC]/${SYEAR}${SMONTH}${SDAY}${SHOUR}/cpc/cice5_model_@[ICERES].*.nc ./cice_model.res.nc
+  cp    ${ICE_IC}/cice5_model_@[ICERES].*.nc ./cice_model.res.nc
 else
   # NOTE: bmark-wave model is not currently tested for restart
   # Restart files
