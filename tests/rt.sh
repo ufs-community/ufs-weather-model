@@ -413,7 +413,7 @@ if [[ $TESTS_FILE =~ '35d' ]]; then
   TEST_35D=true
 fi
 
-BL_DATE=20210610
+BL_DATE=20210611
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]]; then
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
 else
@@ -423,9 +423,9 @@ fi
 #INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20210528}
 #INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20210503
 #INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC:-$DISKNM/NEMSfv3gfs/BM_IC-20210212}
-INPUTDATA_ROOT="/scratch1/NCEPDEV/stmp4/Denise.Worthen/input-data-20210614"
+INPUTDATA_ROOT="/scratch1/NCEPDEV/stmp4/Denise.Worthen/input-data-20210630"
 INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20210503
-INPUTDATA_ROOT_BMIC="/scratch1/NCEPDEV/stmp4/Denise.Worthen/BM_IC-20210614"
+INPUTDATA_ROOT_BMIC="/scratch1/NCEPDEV/stmp4/Denise.Worthen/BM_IC-20210630"
 
 shift $((OPTIND-1))
 [[ $# -gt 1 ]] && usage
