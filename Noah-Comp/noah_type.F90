@@ -12,7 +12,7 @@ module noah_type_mod
 
 type :: noah_control_type
    logical   :: first_time  ! flag for first time step
-   integer   :: mype 
+   integer   :: mype  
 end type noah_control_type
   
 type :: noah_static_type

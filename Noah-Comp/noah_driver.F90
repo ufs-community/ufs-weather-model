@@ -18,25 +18,63 @@ contains
 
   subroutine init_driver(procbounds)
 
-    use proc_bounds, only : procbounds_type
+    use proc_bounds,        only: procbounds_type
+    use mpp_domains_mod,    only: domain2d, mpp_get_compute_domain
+    use mpp_mod,            only: mpp_pe, mpp_root_pe
+    use land_domain_mod,    only: domain_create
+    use block_control_mod,  only: block_control_type, define_blocks_packed
 
+    
     type(procbounds_type),  intent(in)    :: procbounds
-
+    
     ! local
     !type (noah_type)        ::   noah
+    type(domain2D) :: land_domain
+    type (block_control_type), target   :: Lnd_block !  Block container
+    integer :: isc, iec, jsc, jec
+    
     integer                 ::   im         ! horiz dimension
     integer                 ::   isot       ! sfc soil type data source
     integer                 ::   ivegsrc    ! sfc veg type data source
-
+    
+    integer                 ::   blocksize
+    logical, save        :: block_message = .true.
+    
     character(len=128)      ::   errmsg     ! error messaging added to ccpp
     integer                 ::   errflg     ! error messaging added to ccpp
 
+    integer                 :: i, j, nb, ix
     im = procbounds%im
 
     ! quick test, should be read in from nml
     isot = 1
     ivegsrc = 1
+    blocksize = 64
 
+    ! domain create with FMS:
+    call domain_create(land_domain)
+
+    ! Creat blocking a la FV3
+    call mpp_get_compute_domain(land_domain,isc,iec,jsc,jec)
+    write(*,*) "isc,iec,jsc,jec: ",isc,iec,jsc,jec
+    
+    call define_blocks_packed('land_model', Lnd_block, isc, iec, jsc, jec, 1, &
+         blocksize, block_message)
+
+    ! tmp debug
+    if (mpp_pe() == mpp_root_pe()) then
+       write(*,*) "block nblks, isc,iec,jsc,jec: ", Lnd_block%nblks, Lnd_block%isc, Lnd_block%iec, Lnd_block%jsc, Lnd_block%jec
+       !write(*,*) "block blksz: ", Lnd_block%blksz
+
+       do j=jsc,jec
+          do i=isc,iec
+             nb = Lnd_block%blkno(i,j)
+             ix = Lnd_block%ixp(i,j)
+             write(*,*) "i,j,nb,ix: ", i,j,nb,ix
+          end do
+       end do
+    end if
+    
     call noah_pubinst%Create(im)
 
     call noah_loop_init(0, isot, ivegsrc, 0 , errmsg, errflg)

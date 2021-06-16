@@ -5,7 +5,7 @@ module land_domain_mod
   use fms_mod,             only: open_namelist_file, &
        check_nml_error, close_file, file_exist
   implicit none
-  type(domain2D) :: noah_domain
+  !type(domain2D) :: land_domain
 
   !! NEED TO GET from nml: npx,npy, layout
   !! halo = 0
@@ -21,8 +21,9 @@ module land_domain_mod
   
 contains
 
-  subroutine domain_create()
+  subroutine domain_create(land_domain)
 
+    type(domain2d), intent(out) :: land_domain
     !type (land_data_type), intent(in) :: Land ! create this
 
     integer, allocatable :: pe_start(:), pe_end(:)
@@ -44,8 +45,8 @@ contains
        pe_end(n)   = mpp_root_pe() +     n*layout(1)*layout(2)-1
     enddo
 
-    call define_cubic_mosaic(noah_domain, npx-1, npy-1, layout, pe_start, pe_end, halo)
-    !write(*,*) 'some domain info: ', noah_domain%pe, noah_domain%ntiles  !tmp debug
+    call define_cubic_mosaic(land_domain, npx-1, npy-1, layout, pe_start, pe_end, halo)
+    !write(*,*) 'some domain info: ', land_domain%pe, land_domain%ntiles  !tmp debug
     deallocate(pe_start)
     deallocate(pe_end)
 
