@@ -2,6 +2,8 @@ set -eu
 source $PATHRT/utests/std.sh
 
 if [[ $application == 'global' ]]; then
+  LIST_FILES="sfcf000.nc sfcf001.nc atmf000.nc atmf001.nc"
+  FHMAX=1
   WLCLK=60
 elif [[ $application == 'regional' ]]; then
   echo "Regional application not yet implemented for debug"
