@@ -71,6 +71,9 @@ else
   if [[ "${MAKE_OPT}" == *"DEBUG=Y"* ]]; then
     [[ -f $PATHTR/modulefiles/ufs_${MACHINE_ID}_debug ]] && modulefile="ufs_${MACHINE_ID}_debug"
   fi
+  if [[ "${MAKE_OPT}" == *"APP=ATMAERO"* ]]; then
+    [[ -f $PATHTR/modulefiles/ufs_aerosols_${MACHINE_ID} ]] && modulefile="${modulefile} ufs_aerosols_${MACHINE_ID}"
+  fi
   module load $modulefile
   module list
 fi
@@ -132,29 +135,26 @@ fi
 set -ex
 
 # Valid applications
-if [[ "${MAKE_OPT}" == *"APP=ATM"* ]]; then
+if [[ "${MAKE_OPT}" == *"APP=ATMAERO"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=ATMAERO"
+    unset PYTHONPATH
+elif [[ "${MAKE_OPT}" == *"APP=ATMW"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=ATMW"
+elif [[ "${MAKE_OPT}" == *"APP=ATM"* ]]; then
     echo "MAKE_OPT = ${MAKE_OPT}"
     CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=ATM"
 fi
 
-if [[ "${MAKE_OPT}" == *"APP=ATMW"* ]]; then
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=ATMW"
-fi
-
-if [[ "${MAKE_OPT}" == *"APP=S2S"* ]]; then
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=S2S -DMOM6SOLO=ON"
-fi
-
 if [[ "${MAKE_OPT}" == *"APP=S2SW"* ]]; then
     CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=S2SW -DMOM6SOLO=ON"
-fi
-
-if [[ "${MAKE_OPT}" == *"APP=NG-GODAS"* ]]; then
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=NG-GODAS"
+elif [[ "${MAKE_OPT}" == *"APP=S2S"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=S2S -DMOM6SOLO=ON"
 fi
 
 if [[ "${MAKE_OPT}" == *"APP=NG-GODAS-NEMSDATM"* ]]; then
     CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=NG-GODAS-NEMSDATM"
+elif [[ "${MAKE_OPT}" == *"APP=NG-GODAS"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=NG-GODAS"
 fi
 
 CMAKE_FLAGS=$(trim "${CMAKE_FLAGS}")
@@ -172,11 +172,11 @@ export CMAKE_FLAGS
 bash -x ${PATHTR}/build.sh
 
 mv ${BUILD_DIR}/ufs_model ${PATHTR}/tests/${BUILD_NAME}.exe
-if [[ "${MAKE_OPT}" == *"DEBUG=Y"* ]]; then
-  cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}_debug ${PATHTR}/tests/modules.${BUILD_NAME}
-else
-  cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}       ${PATHTR}/tests/modules.${BUILD_NAME}
-fi
+
+echo "#%Module" > ${PATHTR}/tests/modules.${BUILD_NAME}
+for m in ${modulefile} ; do
+  tail -n +2 ${PATHTR}/modulefiles/${m} >> ${PATHTR}/tests/modules.${BUILD_NAME}
+done
 
 if [ $clean_after = YES ] ; then
   rm -rf ${BUILD_DIR}
