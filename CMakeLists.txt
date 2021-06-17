@@ -208,20 +208,15 @@ endif()
 ###############################################################################
 ### UFS Library [NEMS]
 ###############################################################################
-list(APPEND _nems_srcs NEMS/src/module_NEMS_UTILS.F90
-                       NEMS/src/module_EARTH_GRID_COMP.F90
-                       NEMS/src/module_NEMS_GRID_COMP.F90
+list(APPEND _nems_srcs NEMS/src/module_EARTH_GRID_COMP.F90
                        NEMS/src/module_NEMS_Rusage.F90
                        NEMS/src/nems_c_rusage.c)
 
 add_library(ufs ${_nems_srcs})
 set_target_properties(ufs PROPERTIES Fortran_MODULE_DIRECTORY
                                      ${CMAKE_CURRENT_BINARY_DIR}/mod)
-target_include_directories(ufs PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/NEMS/src)
 target_include_directories(ufs INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                          $<INSTALL_INTERFACE:mod>)
-
-list(APPEND _ufs_defs_private ESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR})
 
 if(JEDI_DRIVER)
   list(APPEND _ufs_defs_private JEDI_DRIVER=ON)
