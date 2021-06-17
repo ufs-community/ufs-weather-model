@@ -9,7 +9,6 @@ export INPES=${INPES}
 export JNPES=${JNPES}
 export WRITE_GROUP=${WRITE_GROUP}
 export WRTTASK_PER_GROUP=${WRTTASK_PER_GROUP}
-export WRITE_DOPOST=${WRITE_DOPOST:-}
 export NPROC_ICE=${NPROC_ICE:-}
 export med_petlist_bounds="${med_petlist_bounds:-}"
 export atm_petlist_bounds="${atm_petlist_bounds:-}"
