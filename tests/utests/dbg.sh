@@ -4,6 +4,7 @@ source $PATHRT/utests/std.sh
 if [[ $application == 'global' ]]; then
   LIST_FILES="sfcf000.nc sfcf001.nc atmf000.nc atmf001.nc"
   FHMAX=1
+  DAYS=0.041667
   NFHOUT=3
   NFHMAX_HF=12
   NFHOUT_HF=1
@@ -13,7 +14,10 @@ elif [[ $application == 'regional' ]]; then
   exit 1
 elif [[ $application == 'cpld' ]]; then
   FHMAX=6
+  DAYS=0.25
   NFHOUT_HF=1
+  RESTART_INTERVAL=${FHMAX}
+  RESTART_N=${FHMAX}
   LIST_FILES=$(echo -n $LIST_FILES | sed -E "s/sfcf024/sfcf006/g" \
                                    | sed -E "s/atmf024/atmf006/g" \
                                    | sed -E "s/2016-10-04-00000/2016-10-03-21600/g" \
