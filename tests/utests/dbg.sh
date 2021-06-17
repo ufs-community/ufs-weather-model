@@ -14,6 +14,10 @@ elif [[ $application == 'regional' ]]; then
 elif [[ $application == 'cpld' ]]; then
   FHMAX=6
   NFHOUT_HF=1
+  LIST_FILES=$(echo -n $LIST_FILES | sed -E "s/sfcf024/sfcf006/g" \
+                                   | sed -E "s/atmf024/atmf006/g" \
+                                   | sed -E "s/2016-10-04-00000/2016-10-03-21600/g" \
+                                   | sed -e "s/^ *//" -e "s/ *$//")
 fi
 
 source $PATHRT/utests/wrt_env.sh
