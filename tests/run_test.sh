@@ -148,8 +148,6 @@ elif [[ $SCHEDULER = 'lsf' ]]; then
   atparse < $PATHRT/fv3_conf/fv3_bsub.IN > job_card
 fi
 
-#atparse < ${PATHRT}/parm/${NEMS_CONFIGURE:-nems.configure} > nems.configure
-
 ################################################################################
 # Submit test job
 ################################################################################
