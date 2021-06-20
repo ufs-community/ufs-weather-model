@@ -100,6 +100,8 @@ fi
 
 # Field Dictionary
 cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
+# Empty data_table; needs fix to fcst component
+cp ${PATHRT}/parm/data_table data_table
 
 # Set up the run directory
 source ./fv3_run
@@ -146,7 +148,7 @@ elif [[ $SCHEDULER = 'lsf' ]]; then
   atparse < $PATHRT/fv3_conf/fv3_bsub.IN > job_card
 fi
 
-atparse < ${PATHRT}/parm/${NEMS_CONFIGURE:-nems.configure} > nems.configure
+#atparse < ${PATHRT}/parm/${NEMS_CONFIGURE:-nems.configure} > nems.configure
 
 ################################################################################
 # Submit test job

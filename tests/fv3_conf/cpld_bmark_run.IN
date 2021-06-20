@@ -1,10 +1,6 @@
 mkdir INPUT RESTART history MOM6_OUTPUT
 
-if [[ $ATMRES == 'C96' ]]; then
-  FV3_DIR=FV3_input_data
-else
-  FV3_DIR=FV3_input_data${ATMRES#C}
-fi
+FV3_DIR=FV3_input_data${ATMRES#C}
 
 ICERES="${OCNRES:0:1}.${OCNRES:1}"
 
