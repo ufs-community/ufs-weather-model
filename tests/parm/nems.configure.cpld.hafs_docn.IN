@@ -11,6 +11,18 @@ EARTH_attributes::
 # MED #
 MED_model:                      @[med_model]
 MED_petlist_bounds:             @[med_petlist_bounds]
+MED_attributes::
+  Verbosity = 1
+  Diagnostic = 0
+  ATM_model = @[atm_model]
+  OCN_model = @[ocn_model]
+  MED_model = cmeps
+  history_n = 1
+  history_option = ndays
+  history_ymd = -999
+  coupling_mode = @[CPLMODE]
+  normalization = none
+  merge_type = copy
 ::
 
 # ATM #
@@ -25,75 +37,72 @@ ATM_attributes::
 OCN_model:                      @[ocn_model]
 OCN_petlist_bounds:             @[ocn_petlist_bounds]
 OCN_attributes::
-  Verbosity = low
+  Verbosity = 1
+  Diagnostic = 0
   mesh_ocn = @[ocn_mesh]
 ::
 
 # Run Sequence #
-runSeq::
-@@[coupling_interval_sec]
-  MED med_phases_prep_atm
-  MED -> ATM :remapMethod=redist
-  ATM
-  OCN
+runSeq:: 
+@@[coupling_interval_sec] 
   ATM -> MED :remapMethod=redist
   MED med_phases_post_atm
   OCN -> MED :remapMethod=redist
   MED med_phases_post_ocn
+  MED med_phases_prep_atm
+  MED med_phases_prep_ocn_accum
+  MED med_phases_prep_ocn_avg
+  MED -> ATM :remapMethod=redist
+  MED -> OCN :remapMethod=redist
+  ATM
+  OCN
   MED med_phases_restart_write
   MED med_phases_history_write
-@
+@ 
 ::
 
 # Other Attributes #
 DRIVER_attributes::
-  mediator_read_restart = @[USE_COLDSTART]
-::
-
-MED_attributes::
-  Verbosity = 1
-  Diagnostic = 0
-  ATM_model = @[atm_model]
-  OCN_model = @[ocn_model]
-  history_n = 1
-  history_option = nhours
-  history_ymd = -999
-  coupling_mode = @[CPLMODE]
-  system_type = ufs
+  start_type = @[RUNTYPE]
 ::
 
 ALLCOMP_attributes::
-  start_type = @[RUNTYPE]
-  case_name = ufs.hafs
-  restart_n = @[RESTART_N]
-  restart_option = nhours
-  restart_ymd = -999
-  normalization = none
-  merge_type = copy
+  ATM_model = @[atm_model]
+  OCN_model = @[ocn_model]
+  MED_model = cmeps
   ScalarFieldCount = 3
   ScalarFieldIdxGridNX = 1
   ScalarFieldIdxGridNY = 2
   ScalarFieldIdxNextSwCday = 3
   ScalarFieldName = cpl_scalars
+  start_type = startup
+  case_name = ufs.hafs
+  restart_n = 1
+  restart_option = ndays
+  restart_ymd = -999
+  dbug_flag = 20
+  use_coldstart = true
   orb_eccen = 1.e36
   orb_iyear = 2000
   orb_iyear_align = 2000
   orb_mode = fixed_year
   orb_mvelp = 1.e36
   orb_obliq = 1.e36
+  mediator_read_restart = @[USE_COLDSTART]
+  mediator_present = true
 ::
 
 ATM_modelio::
   diro = .
-  logfile = @[atm_model].log
+  logfile = atm.log
 ::
 
 OCN_modelio::
   diro = .
-  logfile = @[ocn_model].log
+  logfile = ocn.log
 ::
 
 MED_modelio::
   diro = .
-  logfile = @[med_model].log
+  logfile = med.log
 ::

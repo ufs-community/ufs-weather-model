@@ -1,28 +1,37 @@
  &amip_interp_nml
-     interp_oi_sst = .true.
-     use_ncep_sst = .true.
-     use_ncep_ice = .false.
-     no_anom_sst = .false.
-     data_set = 'reynolds_oi'
-     date_out_of_range = 'climo'
+       interp_oi_sst = .true.
+       use_ncep_sst = .true.
+       use_ncep_ice = .false.
+       no_anom_sst = .false.
+       data_set = 'reynolds_oi'
+       date_out_of_range = 'climo'
 /
 
  &atmos_model_nml
-     blocksize = 60
-     chksum_debug = .false.
-     dycore_only = .false.
-     fdiag = 3
-     avg_max_length = 3600.
-     fhmax = 24
-     fhout = 3
-     fhmaxhf = 0
-     fhouthf = 3
-     ccpp_suite = '@[CCPP_SUITE]'
-     merge_import = @[MERGE_IMPORT] 
+       blocksize = 40
+       chksum_debug = .false.
+       dycore_only = .false.
+       fdiag = 3
+       avg_max_length = 3600.
+       fhmax = 24
+       fhout = 3
+       fhmaxhf = 0
+       fhouthf = 3
+       ccpp_suite = '@[CCPP_SUITE]'
+       merge_import = @[MERGE_IMPORT] 
 /
 
-&diag_manager_nml
-     prepend_date = .false.
+ &diag_manager_nml
+       prepend_date = .false.
+/
+
+ &mpp_io_nml
+       header_buffer_val = 16384,
+       global_field_on_root_pe = .true.,
+       io_clocks_on = .false.,
+       shuffle = 0,
+       deflate_level = -1,
+       cf_compliance = .false.
 /
 
  &fms_io_nml
@@ -42,7 +51,7 @@
 /
 
  &fv_core_nml
-       layout   = @[INPES],@[JNPES]
+       layout = @[INPES],@[JNPES]
        io_layout = 1,1
        npx = 721
        npy = 601
@@ -85,11 +94,11 @@
        delt_max = 0.008
        ke_bg = 0.
        do_vort_damp = .T.
-       external_ic = .T.
+       external_ic = .true.
        external_eta = .T.
        gfs_phil = .false.
-       nggps_ic = .T.
-       mountain = .F.
+       nggps_ic = .true.
+       mountain = .false.
        ncep_ic = .F.
        d_con = 1.0
        hord_mt = 6
@@ -104,7 +113,7 @@
        fill = .T.
        dwind_2d = .F.
        print_freq = 3
-       warm_start = .F.
+       warm_start = .false.
        no_dycore = .false.
        z_tracer = .T.
        agrid_vel_rst = .true.
@@ -156,8 +165,8 @@
        ncld           = 5
        imp_physics    = 11
        pdfcld         = .false.
-       fhswr          = 1800.
-       fhlwr          = 1800.
+       fhswr          = 900.
+       fhlwr          = 900.
        ialb           = 1
        iems           = 1
        iaer           = 111
@@ -172,10 +181,11 @@
        cal_pre        = .false.
        redrag         = .true.
        dspheat        = .true.
-       hybedmf        = .true.
+       hybedmf        = .false.
        hurr_pbl       = .T.        ! HWRF moninedmf
        moninq_fac     = -1.0       ! HWRF_moninedmf
-       satmedmf       = .false.
+       satmedmf       = .true.
+       isatmedmf      = 1
        random_clds    = .false.
        trans_trac     = .true.
        cnvcld         = .true.
@@ -205,8 +215,9 @@
        nst_anl        = .true.
        nstf_name      = @[NSTF_NAME]
        cplflx         = @[CPLFLX]
-       cplwav         = .false.
-       cplwav2atm     = .false.
+       cplice         = .false.
+       cplwav         = @[CPLWAV]
+       cplwav2atm     = @[CPLWAV2ATM]
        psautco        = 0.0008, 0.0005
        prautco        = 0.00015, 0.00015
        iau_delthrs    = 6
@@ -339,9 +350,11 @@
        FSNOS    = 99999,
        FSICS    = 99999,
 /
-&nam_stochy
+
+ &nam_stochy
 /
-&nam_sfcperts
+
+ &nam_sfcperts
 /
 
  &cires_ugwp_nml

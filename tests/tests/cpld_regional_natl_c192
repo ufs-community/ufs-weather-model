@@ -21,13 +21,14 @@ export LIST_FILES=" dynf000.nc \
                     RESTART/fv_tracer.res.tile1.nc \
                     RESTART/phy_data.nc \
                     RESTART/sfc_data.nc \
+                    ufs.hafs.cpl.hi.2019-08-30-00000.nc \
                     ufs.hafs.cpl.r.2019-08-30-00000.nc "
 
 export_fv3
 export_cpl_regional
 
 export TASKS=1340
-export WLCLK=30
+export WLCLK=180
 export THRD=2
 export CEN_LON=-62.0
 export CEN_LAT=22.0
@@ -48,13 +49,17 @@ export SHOUR=00
 export SMONTH=08
 export SYEAR=2019
 export WRTTASK_PER_GROUP=80
+
 export CPLFLX=.true.
+export CPLWAV=.false.
+export CPLWAV2ATM=.false.
 export MERGE_IMPORT=.true.
 export NSTF_NAME=0,0,0,0,0
-export CDEPS_DOCN=false
-export OCEAN_START_DTG=43340.00000
 export INPES=40
 export JNPES=30
+
+export CDEPS_DOCN=false
+export OCEAN_START_DTG=43340.00000
 
 export atm_model="fv3"
 export ocn_model="hycom"
@@ -62,9 +67,10 @@ export atm_petlist_bounds="0 1279"
 export ocn_petlist_bounds="1280 1339"
 export med_petlist_bounds="1280 1339"
 export coupling_interval_sec=360
+export MESH_ATM="unset"
 
-export CCPP_SUITE=HAFS_v0_gfdlmp_nonsst
-export INPUT_NML=ccpp_regional_c192_natl.nml.IN
+export CCPP_SUITE=HAFS_v0_gfdlmp_tedmf_nonsst
+export INPUT_NML=input_natl_c192.nml.IN
 export MODEL_CONFIGURE=model_configure_hafsv2.IN
 export NEMS_CONFIGURE="nems.configure.cpld.hafs.IN"
-export FV3_RUN="ccpp_regional_natl_run.IN hycom_hat10_run.IN"
+export FV3_RUN="fv3_regional_natl_run.IN hycom_hat10_run.IN"

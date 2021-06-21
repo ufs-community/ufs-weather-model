@@ -13,12 +13,19 @@ export LIST_FILES=" dynf000.nc \
                     dynf024.nc \
                     phyf000.nc \
                     phyf012.nc \
-                    phyf024.nc "
+                    phyf024.nc \
+                    RESTART/coupler.res \
+                    RESTART/fv_core.res.nc \
+                    RESTART/fv_core.res.tile1.nc \
+                    RESTART/fv_srf_wnd.res.tile1.nc \
+                    RESTART/fv_tracer.res.tile1.nc \
+                    RESTART/phy_data.nc \
+                    RESTART/sfc_data.nc"
 
 export_fv3
 
 export TASKS=1280
-export WLCLK=30
+export WLCLK=180
 export THRD=2
 export CEN_LON=-62.0
 export CEN_LAT=22.0
@@ -39,20 +46,20 @@ export SHOUR=00
 export SMONTH=08
 export SYEAR=2019
 export WRTTASK_PER_GROUP=80
+
 export CPLFLX=.false.
+export CPLWAV=.false.
+export CPLWAV2ATM=.false.
 export MERGE_IMPORT=.false.
 export NSTF_NAME=2,0,0,0,0
 export INPES=40
 export JNPES=30
+
 export CMEPS=false
 export RUNTYPE="startup"
 export USE_COLDSTART="false"
 
-export ESMF_RUNTIME_PROFILE=ON
-export ESMF_RUNTIME_PROFILE_OUTPUT=SUMMARY
-
-export CCPP_SUITE=HAFS_v0_gfdlmp
-export INPUT_NML=ccpp_regional_c192_natl.nml.IN
-export NEMS_CONFIGURE="nems.configure.hafs.IN"
+export CCPP_SUITE=HAFS_v0_gfdlmp_tedmf
+export INPUT_NML=input_natl_c192.nml.IN
 export MODEL_CONFIGURE="model_configure_hafsv2.IN"
-export FV3_RUN=ccpp_regional_natl_run.IN
+export FV3_RUN=fv3_regional_natl_run.IN

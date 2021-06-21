@@ -21,15 +21,16 @@ export LIST_FILES=" dynf000.nc \
                     RESTART/fv_tracer.res.tile1.nc \
                     RESTART/phy_data.nc \
                     RESTART/sfc_data.nc \
+                    ufs.hafs.cpl.hi.2019-08-30-00000.nc \
                     ufs.hafs.cpl.r.2019-08-30-00000.nc \
-                    ufs.hafs.docn.r.2019-08-30-00000.nc "
+                    ufs.hafs.docn.r.2019-08-30-00000.nc"
 
 export_fv3
 export_cpl_regional
 export_cdeps_docn
 
 export TASKS=1340
-export WLCLK=30
+export WLCLK=180
 export THRD=2
 export CEN_LON=-62.0
 export CEN_LAT=22.0
@@ -50,10 +51,12 @@ export SHOUR=00
 export SMONTH=08
 export SYEAR=2019
 export WRTTASK_PER_GROUP=80
+
 export CPLFLX=.true.
+export CPLWAV=.false.
+export CPLWAV2ATM=.false.
 export MERGE_IMPORT=.true.
 export NSTF_NAME=0,0,0,0,0
-export CDEPS_DOCN=true
 export INPES=40
 export JNPES=30
 
@@ -64,15 +67,15 @@ export ocn_petlist_bounds="1280 1339"
 export med_petlist_bounds="1280 1339"
 export coupling_interval_sec=360
 
-export ocn_mesh="docn/hat10_210129_ESMFmesh_py.nc"
-export ocn_data="docn/hycom_201908_surf_nolev.nc"
+export MESH_ATM="unset"
+export ocn_mesh="INPUT_DOCN/hat10_210129_ESMFmesh_py.nc"
+export ocn_data="INPUT_DOCN/hycom_201908_surf_nolev.nc"
 export ocn_data_var="temp"
 export ocn_nx_global=1135
 export ocn_ny_global=633
 
-export FV3_RUN=ccpp_regional_natl_run.IN
-export CCPP_SUITE=HAFS_v0_gfdlmp_nonsst
-export INPUT_NML=ccpp_regional_c192_natl.nml.IN
+export CCPP_SUITE=HAFS_v0_gfdlmp_tedmf_nonsst
+export INPUT_NML=input_natl_c192.nml.IN
 export MODEL_CONFIGURE=model_configure_hafsv2.IN
 export NEMS_CONFIGURE="nems.configure.cpld.hafs_docn.IN"
-export FV3_RUN="ccpp_regional_natl_run.IN cpld_docn_cdeps_mom6.IN"
+export FV3_RUN="fv3_regional_natl_run.IN cpld_docn_cdeps_mom6.IN"

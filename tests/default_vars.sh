@@ -950,8 +950,8 @@ export RT_SUFFIX=""
 export_cdeps_datm ()
 {
 export FV3=false
-export CDEPS_DATM=true
-export DATM=false
+export DATM_CDEPS=true
+export DATM_NEMS=false
 export THRD=1
 export WLCLK=$WLCLK_dflt
 export INPES=$INPES_dflt
@@ -961,12 +961,12 @@ export TPN=$TPN_dflt
 
 export atm_model="datm"
 
-export DATM_CONFIGURE_A="datm_in"
-export DATM_CONFIGURE_B="datm.streams.xml.era5"
+export DATM_IN_CONFIGURE="datm_in"
+export DATM_STREAM_CONFIGURE="datm.streams.era5.IN"
 }
 export_cdeps_docn ()
 {
-export CDEPS_DOCN=true
+export DOCN_CDEPS=true
 export THRD=1
 export WLCLK=$WLCLK_dflt
 export INPES=$INPES_dflt
@@ -977,8 +977,8 @@ export TPN=$TPN_dflt
 export ocn_model="docn"
 export ocn_datamode="sstdata"
 
-export DOCN_CONFIGURE_A="docn_in"
-export DOCN_CONFIGURE_B="docn.streams.xml.IN"
+export DOCN_IN_CONFIGURE="docn_in"
+export DOCN_STREAM_CONFIGURE="docn.streams.IN"
 }
 export_cpl_regional ()
 {
@@ -1026,14 +1026,10 @@ export DLAT=0.03
 export MERGE_IMPORT=.true.
 
 # nems.configure
-export med_model="nems"
+export med_model="cmeps"
 export CAP_DBUG_FLAG="0"
 export RESTART_N=${FHMAX} 
 export CPLMODE="hafs"
 export RUNTYPE="startup"
 export USE_COLDSTART="false"
-
-# timing
-export ESMF_RUNTIME_PROFILE=ON
-export ESMF_RUNTIME_PROFILE_OUTPUT=SUMMARY
 }
