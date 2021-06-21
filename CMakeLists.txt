@@ -129,7 +129,7 @@ if(INLINE_POST)
 endif()
 
 # See https://github.com/NOAA-EMC/NCEPLIBS-nemsio/pull/22
-target_link_libraries(nemsio::nemsio INTERFACE w3emc::w3emc_d bacio::bacio_4)
+target_link_libraries(nemsio::nemsio INTERFACE w3nco::w3nco_d bacio::bacio_4)
 
 # Configure Python
 find_package(Python 3 REQUIRED COMPONENTS Interpreter)
@@ -235,11 +235,6 @@ if(STOCH_PHYS)
   list(APPEND _ufs_libs_public stochastic_physics)
 endif()
 
-if(FMS)
-  add_dependencies(ufs fms)
-  list(APPEND _ufs_defs_private FRONT_FMS)
-endif()
-
 if(NEMSdatm)
   add_dependencies(ufs datatm)
   list(APPEND _ufs_defs_private FRONT_NEMS_DATM=datm)
@@ -286,28 +281,7 @@ target_link_libraries(ufs PUBLIC "${_ufs_libs_public}")
 ###############################################################################
 add_executable(ufs_model NEMS/src/MAIN_NEMS.F90)
 add_dependencies(ufs_model ufs)
-
-list(APPEND _ufs_model_defs_private ESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR})
-
-set_target_properties(ufs_model PROPERTIES Fortran_MODULE_DIRECTORY
-                                           ${CMAKE_CURRENT_BINARY_DIR}/mod)
-
-target_include_directories(ufs_model PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/NEMS/src)
-
-if(WW3)
-  list(APPEND _ufs_model_defs_private FRONT_WW3=WMESMFMD)
-  target_include_directories(ufs_model PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/mod)
-endif()
-
-target_compile_definitions(ufs_model PRIVATE "${_ufs_model_defs_private}")
-
-if(NEMSdatm OR CDEPS)
-  target_link_libraries(ufs_model PUBLIC ufs w3nco::w3nco_d)
-endif()
-
-target_link_libraries(ufs_model PRIVATE ufs
-                                        esmf
-                                        NetCDF::NetCDF_Fortran)
+target_link_libraries(ufs_model ufs esmf w3nco::w3nco_d)
 
 ###############################################################################
 ### Install
