@@ -4,13 +4,15 @@ module noah_driver
 
   use noah_loop, only: noah_loop_init, noah_loop_run
   use noah_type_mod
-
+  use proc_bounds,        only: procbounds_type, control_init_type
+  
 
 
   implicit none
   private
 
-  type (noah_type), public        ::   noah_pubinst
+  type (noah_type),         public        ::   noah_model
+  type (control_init_type), public        ::   ctrl_init
 
   public :: noah_loop_drv, init_driver
 
@@ -18,7 +20,6 @@ contains
 
   subroutine init_driver(procbounds)
 
-    use proc_bounds,        only: procbounds_type
     use mpp_domains_mod,    only: domain2d, mpp_get_compute_domain
     use mpp_mod,            only: mpp_pe, mpp_root_pe
     use land_domain_mod,    only: domain_create
@@ -26,8 +27,11 @@ contains
 
     
     type(procbounds_type),  intent(in)    :: procbounds
-    
+
+    ! ---------------
     ! local
+
+    type(control_init_type)  ::   ctrl_init
     !type (noah_type)        ::   noah
     type(domain2D) :: land_domain
     type (block_control_type), target   :: Lnd_block !  Block container
@@ -44,22 +48,37 @@ contains
     integer                 ::   errflg     ! error messaging added to ccpp
 
     integer                 :: i, j, nb, ix
+    integer                 :: nblks
     im = procbounds%im
 
-    ! quick test, should be read in from nml
-    isot = 1
-    ivegsrc = 1
-    blocksize = 64
+    ! ! setup ctrl_init
+    
+    call ctrl_init%init()
 
+    ! ! quick test, should be read in from nml
+    ! isot = 1
+    ! ivegsrc = 1
+    ! blocksize = 64
+
+    if (mpp_pe() == mpp_root_pe()) then
+       write(*,*) 'ctrl_init%grid: '     ,ctrl_init%grid
+       write(*,*) 'ctrl_init%npx: '      ,ctrl_init%npx
+       write(*,*) 'ctrl_init%npy: '      ,ctrl_init%npy
+       write(*,*) 'ctrl_init%layout: '   ,ctrl_init%layout
+       write(*,*) 'ctrl_init%ntiles: '   ,ctrl_init%ntiles
+       write(*,*) 'ctrl_init%blocksize: ',ctrl_init%blocksize
+       write(*,*) 'ctrl_init%ivegsrc: '  ,ctrl_init%ivegsrc
+       write(*,*) 'ctrl_init%isot: '     ,ctrl_init%isot
+    end if
     ! domain create with FMS:
-    call domain_create(land_domain)
+    call domain_create(ctrl_init, land_domain)
 
     ! Creat blocking a la FV3
     call mpp_get_compute_domain(land_domain,isc,iec,jsc,jec)
     write(*,*) "isc,iec,jsc,jec: ",isc,iec,jsc,jec
     
     call define_blocks_packed('land_model', Lnd_block, isc, iec, jsc, jec, 1, &
-         blocksize, block_message)
+         ctrl_init%blocksize, block_message)
 
     ! tmp debug
     if (mpp_pe() == mpp_root_pe()) then
@@ -74,15 +93,24 @@ contains
           end do
        end do
     end if
-    
-    call noah_pubinst%Create(im)
 
-    call noah_loop_init(0, isot, ivegsrc, 0 , errmsg, errflg)
+    nblks = size(Lnd_block%blksz)
+    
+!    if (ctrl_init%grid == '1Dmesh') then ! 1D grid
+       call noah_model%Create(im)
+!    elseif (ctrl_init%grid == 'CS') then ! blocking
+!       do nb = 1,nblks
+!          ix = Lnd_block%blksz(nb)
+!          call noah_model(nb)%Create(ix)
+!       end do
+!    end if
+
+    call noah_loop_init(0, ctrl_init%isot, ctrl_init%ivegsrc, 0 , errmsg, errflg)
 
 
   end subroutine init_driver
 
-  subroutine noah_loop_drv(procbounds, noah_pubinst)
+  subroutine noah_loop_drv(procbounds, noah_model)
 
     use proc_bounds, only : procbounds_type
 
@@ -97,7 +125,7 @@ contains
          tfreeze => con_t0c
 
     type(procbounds_type),  intent(in)    :: procbounds
-    type(noah_type),        intent(inout)    :: noah_pubinst ! land model's variable type
+    type(noah_type),        intent(inout)    :: noah_model ! land model's variable type
 
     ! local
     integer                 :: i, de, gridbeg, gridend
@@ -161,9 +189,9 @@ contains
     real(kind_phys) :: wet1      (procbounds%im) ! normalized soil wetness                      im
 
     real(kind_phys) :: ustar     (procbounds%im)
-    real(kind_phys) :: smc(procbounds%im,noah_pubinst%static%km) ! total soil moisture content (fractional)   im,km
-    real(kind_phys) :: stc(procbounds%im,noah_pubinst%static%km) ! soil temp (k)                              im,km
-    real(kind_phys) :: slc(procbounds%im,noah_pubinst%static%km) ! liquid soil moisture                       im,km
+    real(kind_phys) :: smc(procbounds%im,noah_model%static%km) ! total soil moisture content (fractional)   im,km
+    real(kind_phys) :: stc(procbounds%im,noah_model%static%km) ! soil temp (k)                              im,km
+    real(kind_phys) :: slc(procbounds%im,noah_model%static%km) ! liquid soil moisture                       im,km
 
     ! tmp for testing. Missing imports for these
     real(kind_phys) :: prsik1(procbounds%im), z0pert(procbounds%im), &
@@ -179,85 +207,85 @@ contains
     real(kind_phys) :: rb_lnd(procbounds%im), fm_lnd(procbounds%im), &
                        fh_lnd(procbounds%im), fm10_lnd(procbounds%im), fh2_lnd(procbounds%im)
     
-    associate(foodata => noah_pubinst%model%foo_atm2lndfield,  &
-         ps         => noah_pubinst%model%ps         ,&
-         t1         => noah_pubinst%model%t1         ,&
-         q1         => noah_pubinst%model%q1         ,&
-         dlwflx     => noah_pubinst%model%dlwflx     ,&
-         dswsfc     => noah_pubinst%model%dswsfc     ,&
-         dswsfci    => noah_pubinst%model%dswsfci    ,&
-         wind       => noah_pubinst%model%wind       ,&
-         tprcp      => noah_pubinst%model%tprcp      ,&
+    associate(foodata => noah_model%model%foo_atm2lndfield,  &
+         ps         => noah_model%model%ps         ,&
+         t1         => noah_model%model%t1         ,&
+         q1         => noah_model%model%q1         ,&
+         dlwflx     => noah_model%model%dlwflx     ,&
+         dswsfc     => noah_model%model%dswsfc     ,&
+         dswsfci    => noah_model%model%dswsfci    ,&
+         wind       => noah_model%model%wind       ,&
+         tprcp      => noah_model%model%tprcp      ,&
          im         => procbounds%im                 ,& 
-         km         => noah_pubinst%static%km        ,&
-         ! delt       => noah_pubinst%static%delt      ,&
-         ! isot       => noah_pubinst%static%isot      ,&
-         ! ivegsrc    => noah_pubinst%static%ivegsrc   ,&
-         ! pertvegf   => noah_pubinst%static%pertvegf  ,&  
-         ! lheatstrg  => noah_pubinst%static%lheatstrg ,& 
-         errmsg     => noah_pubinst%static%errmsg    ,& 
-         errflg     => noah_pubinst%static%errflg    ,& 
-         soiltyp    => noah_pubinst%model%soiltyp    ,&
-         vegtype    => noah_pubinst%model%vegtype    ,&
-         slopetyp   => noah_pubinst%model%slopetyp   ,&
-         sigmaf     => noah_pubinst%model%sigmaf     ,&
-         sfcemis    => noah_pubinst%model%sfcemis    ,&
-         snet       => noah_pubinst%model%snet       ,&
-         tg3        => noah_pubinst%model%tg3        ,&
-         cm         => noah_pubinst%model%cm         ,&
-         ch         => noah_pubinst%model%ch         ,&
-         prsl1      => noah_pubinst%model%prsl1      ,&
-         shdmin     => noah_pubinst%model%shdmin     ,&
-         shdmax     => noah_pubinst%model%shdmax     ,&
-         snoalb     => noah_pubinst%model%snoalb     ,&
-         sfalb      => noah_pubinst%model%sfalb      ,&
-         zf         => noah_pubinst%model%zf         ,&
-         bexppert   => noah_pubinst%model%bexppert   ,&
-         xlaipert   => noah_pubinst%model%xlaipert   ,&
-         vegfpert   => noah_pubinst%model%vegfpert   ,&
-         flag_iter  => noah_pubinst%model%flag_iter  ,&
-         flag_guess => noah_pubinst%model%flag_guess ,&
-         land       => noah_pubinst%model%land       ,&
-         prslki     => noah_pubinst%model%prslki     ,&
-         weasd      => noah_pubinst%model%weasd      ,&
-         snwdph     => noah_pubinst%model%snwdph     ,&
-         tskin      => noah_pubinst%model%tskin      ,&
-         srflag     => noah_pubinst%model%srflag     ,&
-         canopy     => noah_pubinst%model%canopy     ,&
-         trans      => noah_pubinst%model%trans      ,&   
-         tsurf      => noah_pubinst%model%tsurf      ,&
-         z0rl       => noah_pubinst%model%z0rl       ,&
-         ! smc        => noah_pubinst%model%smc        ,&
-         ! stc        => noah_pubinst%model%stc        ,&
-         ! slc        => noah_pubinst%model%slc        ,&
-         sncovr1    => noah_pubinst%model%sncovr1    ,&
-         qsurf      => noah_pubinst%model%qsurf      ,&
-         gflux      => noah_pubinst%model%gflux      ,&
-         drain      => noah_pubinst%model%drain      ,&
-         evap       => noah_pubinst%model%evap       ,&
-         hflx       => noah_pubinst%model%hflx       ,&
-         ep         => noah_pubinst%model%ep         ,&
-         runoff     => noah_pubinst%model%runoff     ,&
-         cmm        => noah_pubinst%model%cmm        ,&
-         chh        => noah_pubinst%model%chh        ,&
-         evbs       => noah_pubinst%model%evbs       ,&
-         evcw       => noah_pubinst%model%evcw       ,&
-         sbsno      => noah_pubinst%model%sbsno      ,&
-         snowc      => noah_pubinst%model%snowc      ,&
-         stm        => noah_pubinst%model%stm        ,&
-         snohf      => noah_pubinst%model%snohf      ,&
-         smcwlt2    => noah_pubinst%model%smcwlt2    ,&
-         smcref2    => noah_pubinst%model%smcref2    ,&
-         wet1       => noah_pubinst%model%wet1       ,&
+         km         => noah_model%static%km        ,&
+         ! delt       => noah_model%static%delt      ,&
+         ! isot       => noah_model%static%isot      ,&
+         ! ivegsrc    => noah_model%static%ivegsrc   ,&
+         ! pertvegf   => noah_model%static%pertvegf  ,&  
+         ! lheatstrg  => noah_model%static%lheatstrg ,& 
+         errmsg     => noah_model%static%errmsg    ,& 
+         errflg     => noah_model%static%errflg    ,& 
+         soiltyp    => noah_model%model%soiltyp    ,&
+         vegtype    => noah_model%model%vegtype    ,&
+         slopetyp   => noah_model%model%slopetyp   ,&
+         sigmaf     => noah_model%model%sigmaf     ,&
+         sfcemis    => noah_model%model%sfcemis    ,&
+         snet       => noah_model%model%snet       ,&
+         tg3        => noah_model%model%tg3        ,&
+         cm         => noah_model%model%cm         ,&
+         ch         => noah_model%model%ch         ,&
+         prsl1      => noah_model%model%prsl1      ,&
+         shdmin     => noah_model%model%shdmin     ,&
+         shdmax     => noah_model%model%shdmax     ,&
+         snoalb     => noah_model%model%snoalb     ,&
+         sfalb      => noah_model%model%sfalb      ,&
+         zf         => noah_model%model%zf         ,&
+         bexppert   => noah_model%model%bexppert   ,&
+         xlaipert   => noah_model%model%xlaipert   ,&
+         vegfpert   => noah_model%model%vegfpert   ,&
+         flag_iter  => noah_model%model%flag_iter  ,&
+         flag_guess => noah_model%model%flag_guess ,&
+         land       => noah_model%model%land       ,&
+         prslki     => noah_model%model%prslki     ,&
+         weasd      => noah_model%model%weasd      ,&
+         snwdph     => noah_model%model%snwdph     ,&
+         tskin      => noah_model%model%tskin      ,&
+         srflag     => noah_model%model%srflag     ,&
+         canopy     => noah_model%model%canopy     ,&
+         trans      => noah_model%model%trans      ,&   
+         tsurf      => noah_model%model%tsurf      ,&
+         z0rl       => noah_model%model%z0rl       ,&
+         ! smc        => noah_model%model%smc        ,&
+         ! stc        => noah_model%model%stc        ,&
+         ! slc        => noah_model%model%slc        ,&
+         sncovr1    => noah_model%model%sncovr1    ,&
+         qsurf      => noah_model%model%qsurf      ,&
+         gflux      => noah_model%model%gflux      ,&
+         drain      => noah_model%model%drain      ,&
+         evap       => noah_model%model%evap       ,&
+         hflx       => noah_model%model%hflx       ,&
+         ep         => noah_model%model%ep         ,&
+         runoff     => noah_model%model%runoff     ,&
+         cmm        => noah_model%model%cmm        ,&
+         chh        => noah_model%model%chh        ,&
+         evbs       => noah_model%model%evbs       ,&
+         evcw       => noah_model%model%evcw       ,&
+         sbsno      => noah_model%model%sbsno      ,&
+         snowc      => noah_model%model%snowc      ,&
+         stm        => noah_model%model%stm        ,&
+         snohf      => noah_model%model%snohf      ,&
+         smcwlt2    => noah_model%model%smcwlt2    ,&
+         smcref2    => noah_model%model%smcref2    ,&
+         wet1       => noah_model%model%wet1       ,&
          !
-         rb_lnd     => noah_pubinst%model%rb_lnd     ,&
-         fm_lnd     => noah_pubinst%model%fm_lnd     ,&
-         fh_lnd     => noah_pubinst%model%fh_lnd     ,&
-         fm10_lnd   => noah_pubinst%model%fm10_lnd   ,&
-         fh2_lnd    => noah_pubinst%model%fh2_lnd    ,&
-         stress     => noah_pubinst%model%stress     ,&
+         rb_lnd     => noah_model%model%rb_lnd     ,&
+         fm_lnd     => noah_model%model%fm_lnd     ,&
+         fh_lnd     => noah_model%model%fh_lnd     ,&
+         fm10_lnd   => noah_model%model%fm10_lnd   ,&
+         fh2_lnd    => noah_model%model%fh2_lnd    ,&
+         stress     => noah_model%model%stress     ,&
          !
-         ustar      => noah_pubinst%model%ustar       &
+         ustar      => noah_model%model%ustar       &
          )
 
       ! tmp for testing. Missing imports for these
@@ -271,7 +299,7 @@ contains
       stc       = 296_kind_phys
       
       ! first test
-      !write(*,*) 'NLP test: ', noah_pubinst%model%soiltyp ! get all zeros, good
+      !write(*,*) 'NLP test: ', noah_model%model%soiltyp ! get all zeros, good
       
       de = procbounds%de
       !im = procbounds%im
@@ -312,9 +340,9 @@ contains
        )
 
 
-      ! foodata(1:gridend-gridbeg+1) = noah_pubinst%model%foo_atm2lndfield(gridbeg:gridend)
-      ! foodata = noah_pubinst%model%foo_atm2lndfield(gridbeg:gridend)
-      ! foodata = noah_pubinst%model%foo_atm2lndfield
+      ! foodata(1:gridend-gridbeg+1) = noah_model%model%foo_atm2lndfield(gridbeg:gridend)
+      ! foodata = noah_model%model%foo_atm2lndfield(gridbeg:gridend)
+      ! foodata = noah_model%model%foo_atm2lndfield
 
 
       ! do i = 1,im

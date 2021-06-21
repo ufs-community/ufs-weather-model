@@ -401,7 +401,7 @@ contains
 
     !use lsm_noah, only: lsm_noah_run
     !use noah_loop, only: noah_loop_run
-    use noah_driver, only: noah_loop_drv, noah_pubinst
+    use noah_driver, only: noah_loop_drv, noah_model, ctrl_init
     use import_fields, only: write_import_field, import_allfields, export_allfields
     use proc_bounds, only : procbounds
     
@@ -505,30 +505,30 @@ contains
 
     ! end test tmp
 
-    call import_allfields(importState, procbounds, noah_pubinst, rc)
+    call import_allfields(importState, procbounds, noah_model, ctrl_init, rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
     ! tmp workaround to run first time step with simple nems.configure sequence, without having land restart read
     !first_time = .false.
-    if (noah_pubinst%control%first_time) then
+    if (noah_model%control%first_time) then
        !first_time = .false.
        write(*,*) 'lnd_comp: skipping first time step'
     else
     
        ! run model
-       call noah_loop_drv(procbounds, noah_pubinst)
+       call noah_loop_drv(procbounds, noah_model)
 
        ! tmp test
        ! im = procbounds%im
        ! gridbeg = procbounds%gridbeg
        ! gridend = procbounds%gridend
-       ! foodata(1:im) = noah_pubinst%model%foo_atm2lndfield(gridbeg:gridend)
+       ! foodata(1:im) = noah_model%model%foo_atm2lndfield(gridbeg:gridend)
        ! do i = 1,im
        !    write(*,*) 'MA1: ', de, gridbeg,gridend, size(foodata), foodata(i)
        ! end do
 
     end if
-       call export_allfields(exportState, procbounds, noah_pubinst, rc)
+       call export_allfields(exportState, procbounds, noah_model, rc)
 
        ! Commenting out, because won't currently work with tiles
        ! ! write out export fields
@@ -594,8 +594,8 @@ contains
     call ESMF_LogWrite(trim(msgString), ESMF_LOGMSG_INFO)
 
 
-    if (noah_pubinst%control%first_time) then
-       noah_pubinst%control%first_time = .false.
+    if (noah_model%control%first_time) then
+       noah_model%control%first_time = .false.
     endif
     ! call ESMF_ClockAdvance(clock,rc=rc)
     ! if (ChkErr(rc,__LINE__,u_FILE_u)) return

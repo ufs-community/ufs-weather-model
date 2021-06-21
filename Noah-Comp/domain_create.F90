@@ -12,40 +12,41 @@ module land_domain_mod
 
   integer :: f_unit, ios, ierr
 
-  ! namelist variables
-  integer :: npx = 0, npy = 0, ntiles = 0
-  integer :: layout(2) = (/0,0/)
-  namelist /noah_nml/ npx, npy,layout, ntiles
+  ! ! namelist variables
+  ! integer :: npx = 0, npy = 0, ntiles = 0
+  ! integer :: layout(2) = (/0,0/)
+  ! namelist /noah_nml/ npx, npy,layout, ntiles
 
   public domain_create
   
 contains
 
-  subroutine domain_create(land_domain)
+  subroutine domain_create(ctrl_init, land_domain)
 
-    type(domain2d), intent(out) :: land_domain
-    !type (land_data_type), intent(in) :: Land ! create this
+    use proc_bounds,   only: control_init_type
+    
+    type(control_init_type), intent(in)  :: ctrl_init
+    type(domain2d)         , intent(out) :: land_domain
 
     integer, allocatable :: pe_start(:), pe_end(:)
     integer :: n
     integer :: halo = 0 ! 0 for land
 
-
     call mpp_domains_init()
 
-    call read_namelist_noah_nml()
-    write(*,*) 'spit out noah nml: ', npx, npy,layout !tmp debug
+    ! call read_namelist_noah_nml()
+    ! write(*,*) 'spit out noah nml: ', npx, npy,layout !tmp debug
 
     !--- define mosaic for domain
     !ntiles=6
-    allocate(pe_start(ntiles))
-    allocate(pe_end(ntiles))
-    do n = 1, ntiles
-       pe_start(n) = mpp_root_pe() + (n-1)*layout(1)*layout(2)
-       pe_end(n)   = mpp_root_pe() +     n*layout(1)*layout(2)-1
+    allocate(pe_start(ctrl_init%ntiles))
+    allocate(pe_end(ctrl_init%ntiles))
+    do n = 1, ctrl_init%ntiles
+       pe_start(n) = mpp_root_pe() + (n-1)*ctrl_init%layout(1)*ctrl_init%layout(2)
+       pe_end(n)   = mpp_root_pe() +     n*ctrl_init%layout(1)*ctrl_init%layout(2)-1
     enddo
 
-    call define_cubic_mosaic(land_domain, npx-1, npy-1, layout, pe_start, pe_end, halo)
+    call define_cubic_mosaic(land_domain, ctrl_init%npx-1, ctrl_init%npy-1, ctrl_init%layout, pe_start, pe_end, halo)
     !write(*,*) 'some domain info: ', land_domain%pe, land_domain%ntiles  !tmp debug
     deallocate(pe_start)
     deallocate(pe_end)
@@ -53,18 +54,18 @@ contains
   end subroutine domain_create
 
 
-  subroutine read_namelist_noah_nml
+  ! subroutine read_namelist_noah_nml
 
-    integer :: f_unit, ios, ierr
+  !   integer :: f_unit, ios, ierr
 
-    f_unit = open_namelist_file('input.nml')
-    ! Read Noah namelist                                                                                                                            
-    read (f_unit,noah_nml,iostat=ios)
-    ierr = check_nml_error(ios,'noah_nml')
-    call close_file(f_unit)
-    !#endif
+  !   f_unit = open_namelist_file('input.nml')
+  !   ! Read Noah namelist                                                                                                                            
+  !   read (f_unit,noah_nml,iostat=ios)
+  !   ierr = check_nml_error(ios,'noah_nml')
+  !   call close_file(f_unit)
+  !   !#endif
 
-  end subroutine read_namelist_noah_nml
+  ! end subroutine read_namelist_noah_nml
 
 
 
