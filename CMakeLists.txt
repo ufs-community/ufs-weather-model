@@ -16,7 +16,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules/Modules)
 ###############################################################################
 
 # Valid applications and choices
-list(APPEND VALID_APPS ATM ATMW S2S S2SW DATM DATM_NEMS)
+list(APPEND VALID_APPS ATM ATMW S2S S2SW NG-GODAS NG-GODAS-NEMSDATM)
 set(APP NONE CACHE BOOL "Application Name")
 if(NOT (APP IN_LIST VALID_APPS))
   message(FATAL_ERROR "${APP} is not a valid application.\nValid Applications are: ${VALID_APPS}")
@@ -154,9 +154,7 @@ endif()
 ###############################################################################
 if(WW3)
   if(CMAKE_Platform)
-    if(${CMAKE_Platform} STREQUAL "wcoss2")
-      set(WW3_COMP "wcoss_cray")
-    elseif(${CMAKE_Platform} MATCHES "linux*" OR ${CMAKE_Platform} MATCHES "macosx*")
+    if(${CMAKE_Platform} MATCHES "linux*" OR ${CMAKE_Platform} MATCHES "macosx*")
       if (CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
         set(WW3_COMP "gnu")
       elseif (CMAKE_Fortran_COMPILER_ID MATCHES "Intel")

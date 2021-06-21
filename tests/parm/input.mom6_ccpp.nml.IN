@@ -1,12 +1,3 @@
-&amip_interp_nml
-       interp_oi_sst = .true.
-       use_ncep_sst = .true.
-       use_ncep_ice = .false.
-       no_anom_sst = .false.
-       data_set = 'reynolds_oi',
-       date_out_of_range = 'climo',
-/
-
 &atmos_model_nml
        blocksize = 32
        chksum_debug = .false.
@@ -16,7 +7,7 @@
        fhout = @[NFHOUT]
        fhmaxhf = @[NFHMAX_HF]
        fhouthf = @[NFHOUT_HF]
-       ccpp_suite = @[CCPP_SUITE]
+       ccpp_suite = '@[CCPP_SUITE]'
 /
 
 &diag_manager_nml
@@ -204,11 +195,11 @@
        do_ca          = @[DO_CA]
        ca_sgs         = @[CA_SGS]
        ca_global      = @[CA_GLOBAL]
-       ncells         = 5
-       nlives         = 30
+       scells         = 2600
+       tlives         = 1800
        nseed          = 1000000
        nfracseed      = 0.5
-       nthresh        = 0.
+       rcell          = 0.72
        ca_trigger     = .true.
        ca_entr	      = .false.
        ca_closure     = .false.
