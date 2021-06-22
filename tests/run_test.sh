@@ -92,8 +92,10 @@ do
   atparse < ${PATHRT}/fv3_conf/${i} >> fv3_run
 done
 
-if [[ $FV3 = 'true' ]] || [[ $DATM_NEMS = 'true' ]]; then
-  atparse < ${PATHRT}/parm/${INPUT_NML:-input.nml.IN} > input.nml
+if [[ $FV3 = 'true' ]] || [[ $DATM_NEMS = 'true' ]] || [[ $DATM_CDEPS = 'true' ]]; then
+  if [[ $HAFS = 'false' ]]; then
+    atparse < ${PATHRT}/parm/${INPUT_NML:-input.nml.IN} > input.nml
+  fi
 fi
 
 atparse < ${PATHRT}/parm/${MODEL_CONFIGURE:-model_configure.IN} > model_configure
@@ -115,12 +117,12 @@ if [[ $CPLWAV == .T. ]]; then
 fi
 
 if [[ $DATM_NEMS = 'true' ]] || [[ $DATM_CDEPS = 'true' ]] || [[ $S2S = 'true' ]]; then
-  if [[ $S2S = 'true' ]]; then
+  if [[ $HAFS = 'false' ]]; then
     edit_ice_in     < ${PATHRT}/parm/ice_in_template > ice_in
     edit_mom_input  < ${PATHRT}/parm/${MOM_INPUT:-MOM_input_template_$OCNRES} > INPUT/MOM_input
+    edit_diag_table < ${PATHRT}/parm/${DIAG_TABLE:-diag_table_template} > diag_table
+    edit_data_table < ${PATHRT}/parm/data_table_template > data_table
   fi
-  edit_diag_table < ${PATHRT}/parm/${DIAG_TABLE:-diag_table_template} > diag_table
-  edit_data_table < ${PATHRT}/parm/data_table_template > data_table
 fi
 
 if [[ $DATM_NEMS = 'true' ]]; then

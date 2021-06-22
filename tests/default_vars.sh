@@ -399,6 +399,7 @@ export_fv3 ()
 {
 export FV3=true
 export S2S=false
+export HAFS=false
 export DATM_NEMS=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
@@ -582,8 +583,10 @@ export_cpl ()
 {
 export FV3=true
 export S2S=true
+export HAFS=false
 export DATM_NEMS=false
 export DATM_CDEPS=false
+export DOCN_CDEPS=false
 
 export DAYS="1"
 export FHMAX="24"
@@ -733,9 +736,9 @@ export_datm ()
 {
 export FV3=false
 export S2S=false
+export HAFS=false
 export DATM_NEMS=true
 export DATM_CDEPS=false
-export DOCN_CDEPS=false
 export CPLWAV=.F.
 export DAYS=1
 export FHMAX=24
@@ -840,8 +843,10 @@ export_datm_cdeps ()
 {
 export FV3=false
 export S2S=false
+export HAFS=false
 export DATM_NEMS=false
 export DATM_CDEPS=true
+export DOCN_CDEPS=false
 export CPLWAV=.F.
 export DAYS=1
 export FHMAX=24
@@ -950,8 +955,10 @@ export RT_SUFFIX=""
 export_cdeps_datm ()
 {
 export FV3=false
+export S2S=false
 export DATM_CDEPS=true
 export DATM_NEMS=false
+export DOCN_CDEPS=false
 export THRD=1
 export WLCLK=$WLCLK_dflt
 export INPES=$INPES_dflt
@@ -966,6 +973,7 @@ export DATM_STREAM_CONFIGURE="datm.streams.era5.IN"
 }
 export_cdeps_docn ()
 {
+export S2S=false
 export DOCN_CDEPS=true
 export THRD=1
 export WLCLK=$WLCLK_dflt
@@ -983,7 +991,10 @@ export DOCN_STREAM_CONFIGURE="docn.streams.IN"
 export_cpl_regional ()
 {
 export S2S=false
-export CMEPS=true
+export HAFS=true
+export DATM_NEMS=false
+export DATM_CDEPS=false
+export DOCN_CDEPS=false
 
 # model_configure
 export SYEAR='2019'
