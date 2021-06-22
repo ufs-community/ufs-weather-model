@@ -566,6 +566,7 @@ export FHCYC=24
 export FHROT=0
 export LDIAG3D=.F.
 export QDIAG3D=.F.
+export PRINT_DIFF_PGR=.false.
 export MAX_OUTPUT_FIELDS=300
 
 # Stochastic physics
@@ -684,6 +685,8 @@ export CCPP_SUITE="FV3_GFS_2017_coupled"
 export INPUT_NML=input.mom6_ccpp.nml.IN
 export FIELD_TABLE="field_table"
 export DIAG_TABLE="diag_table_template"
+
+export DIAG_TABLE_ADDITIONAL=''
 
 export FHROT='0'
 export NSOUT='-1'

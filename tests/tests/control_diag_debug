@@ -4,93 +4,36 @@
 #
 ###############################################################################
 
-export TEST_DESCR="Run FV3 32bit CCPP GFS v16 in DEBUG mode"
+export TEST_DESCR="Compare global control diagnostic debug results with previous trunk version"
 
-export CNTL_DIR=fv3_gfs_v16_dtend_debug
+export CNTL_DIR=control_diag_debug
 
-export LIST_FILES="atmos_4xdaily.tile1.nc \
-                   atmos_4xdaily.tile2.nc \
-                   atmos_4xdaily.tile3.nc \
-                   atmos_4xdaily.tile4.nc \
-                   atmos_4xdaily.tile5.nc \
-                   atmos_4xdaily.tile6.nc \
-                   phyf000.tile1.nc \
-                   phyf000.tile2.nc \
-                   phyf000.tile3.nc \
-                   phyf000.tile4.nc \
-                   phyf000.tile5.nc \
-                   phyf000.tile6.nc \
-                   phyf002.tile1.nc \
-                   phyf002.tile2.nc \
-                   phyf002.tile3.nc \
-                   phyf002.tile4.nc \
-                   phyf002.tile5.nc \
-                   phyf002.tile6.nc \
-                   dynf000.tile1.nc \
-                   dynf000.tile2.nc \
-                   dynf000.tile3.nc \
-                   dynf000.tile4.nc \
-                   dynf000.tile5.nc \
-                   dynf000.tile6.nc \
-                   dynf002.tile1.nc \
-                   dynf002.tile2.nc \
-                   dynf002.tile3.nc \
-                   dynf002.tile4.nc \
-                   dynf002.tile5.nc \
-                   dynf002.tile6.nc \
-                   RESTART/coupler.res \
-                   RESTART/fv_core.res.nc \
-                   RESTART/fv_core.res.tile1.nc \
-                   RESTART/fv_core.res.tile2.nc \
-                   RESTART/fv_core.res.tile3.nc \
-                   RESTART/fv_core.res.tile4.nc \
-                   RESTART/fv_core.res.tile5.nc \
-                   RESTART/fv_core.res.tile6.nc \
-                   RESTART/fv_srf_wnd.res.tile1.nc \
-                   RESTART/fv_srf_wnd.res.tile2.nc \
-                   RESTART/fv_srf_wnd.res.tile3.nc \
-                   RESTART/fv_srf_wnd.res.tile4.nc \
-                   RESTART/fv_srf_wnd.res.tile5.nc \
-                   RESTART/fv_srf_wnd.res.tile6.nc \
-                   RESTART/fv_tracer.res.tile1.nc \
-                   RESTART/fv_tracer.res.tile2.nc \
-                   RESTART/fv_tracer.res.tile3.nc \
-                   RESTART/fv_tracer.res.tile4.nc \
-                   RESTART/fv_tracer.res.tile5.nc \
-                   RESTART/fv_tracer.res.tile6.nc \
-                   RESTART/phy_data.tile1.nc \
-                   RESTART/phy_data.tile2.nc \
-                   RESTART/phy_data.tile3.nc \
-                   RESTART/phy_data.tile4.nc \
-                   RESTART/phy_data.tile5.nc \
-                   RESTART/phy_data.tile6.nc \
-                   RESTART/sfc_data.tile1.nc \
-                   RESTART/sfc_data.tile2.nc \
-                   RESTART/sfc_data.tile3.nc \
-                   RESTART/sfc_data.tile4.nc \
-                   RESTART/sfc_data.tile5.nc \
-                   RESTART/sfc_data.tile6.nc"
+export LIST_FILES="sfcf000.nc \
+                   sfcf001.nc \
+                   atmf000.nc \
+                   atmf001.nc"
 
 export_fv3
+export NPZ=127
+export NPZP=128
+export DT_ATMOS=720
+export SYEAR=2021
+export SMONTH=03
+export SDAY=22
+export SHOUR=06
+export OUTPUT_GRID='gaussian_grid'
+export NSTF_NAME='2,0,0,0,0'
+export IAER=5111
+export FHMAX=1
+
+export FV3_RUN=control_run.IN
+export CCPP_SUITE=FV3_GFS_v16
+export INPUT_NML=control.nml.IN
 
 export FDIAG=0,1,2,3,4,5,6
 export FHZERO=1
 export LDIAG3D=.true.
 export QDIAG3D=.true.
-export MAX_OUTPUT_FIELDS=400
-export DIAG_TABLE_ADDITIONAL=diag_additional_gfs_v16_dtend
-
-DT_ATMOS="1200"
-
-export FHMAX=2
-export NFHOUT=1
-export NFHMAX_HF=12
-export NFHOUT_HF=1
-
-export NSTF_NAME=2,1,0,0,0
-
-export FV3_RUN=gfs_v16_run.IN
-export CCPP_SUITE=FV3_GFS_v16
-export INPUT_NML=v16_c96.nml.IN
-export IAER=1111
-
+export MAX_OUTPUT_FIELDS=500
+export DIAG_TABLE_ADDITIONAL=diag_additional_control_dtend
+export PRINT_DIFF_PGR=.T.
