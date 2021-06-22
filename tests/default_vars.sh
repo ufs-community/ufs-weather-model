@@ -603,7 +603,7 @@ export WINDLINE='$'
 export CURRLINE='$'
 export NFGRIDS=0
 export NMGRIDS=1
-export ww3gline="'glo_30m'  'no' 'no' 'CPL:native' 'no' 'no' 'no' 'no'   1  1  0.00 1.00  F"
+export ww3gline="'glo_30m'  'no' 'no' 'CPL:native' 'no' 'no' 'no' 'no' 'no' 'no'   1  1  0.00 1.00  F"
 
 # Regional
 export WRITE_RESTART_WITH_BCS=.false.
@@ -750,7 +750,7 @@ export KTHERM=1
 export TFREEZE_OPTION='linear_salt'
 
 #wave
-export ww3gline="'glo_1deg'  'no' 'CPL:native' 'CPL:native' 'CPL:native' 'no' 'no' 'no'   1  1  0.00 1.00  F"
+export ww3gline="'glo_1deg'  'no' 'CPL:native' 'CPL:native' 'CPL:native' 'no' 'no' 'no' 'no' 'no'   1  1  0.00 1.00  F"
 export WW3OUTPUTTYPE=' 1'
 
 # checkpoint restarts
