@@ -92,8 +92,8 @@ do
   atparse < ${PATHRT}/fv3_conf/${i} >> fv3_run
 done
 
-if [[ $FV3 = 'true' ]] || [[ $DATM_NEMS = 'true' ]] || [[ $DATM_CDEPS = 'true' ]]; then
-  if [[ $HAFS = 'false' ]]; then
+if [[ $DATM_NEMS = 'true' ]] || [[ $DATM_CDEPS = 'true' ]] || [[ $FV3 = 'true' ]] || [[ $S2S = 'true' ]]; then
+  if [[ $HAFS = 'false' ]] || [[ $FV3 = 'true' && $HAFS = 'true' ]]; then
     atparse < ${PATHRT}/parm/${INPUT_NML:-input.nml.IN} > input.nml
   fi
 fi
