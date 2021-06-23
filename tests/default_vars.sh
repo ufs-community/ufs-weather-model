@@ -739,6 +739,7 @@ export S2S=false
 export HAFS=false
 export DATM_NEMS=true
 export DATM_CDEPS=false
+export DOCN_CDEPS=false
 export CPLWAV=.F.
 export DAYS=1
 export FHMAX=24
@@ -952,10 +953,11 @@ export CICE_HIST_AVG='.true.'
 export BL_SUFFIX=""
 export RT_SUFFIX=""
 }
-export_cdeps_datm ()
+export_datm_cdeps_hafs ()
 {
 export FV3=false
 export S2S=false
+export HAFS=true
 export DATM_CDEPS=true
 export DATM_NEMS=false
 export DOCN_CDEPS=false
@@ -971,9 +973,11 @@ export atm_model="datm"
 export DATM_IN_CONFIGURE="datm_in"
 export DATM_STREAM_CONFIGURE="datm.streams.era5.IN"
 }
-export_cdeps_docn ()
+export_docn_cdeps_hafs ()
 {
+export FV3=true
 export S2S=false
+export HAFS=true
 export DOCN_CDEPS=true
 export THRD=1
 export WLCLK=$WLCLK_dflt
@@ -990,11 +994,18 @@ export DOCN_STREAM_CONFIGURE="docn.streams.IN"
 }
 export_cpl_regional ()
 {
+export FV3=true
 export S2S=false
 export HAFS=true
 export DATM_NEMS=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
+export THRD=1
+export WLCLK=$WLCLK_dflt
+export INPES=$INPES_dflt
+export JNPES=$JNPES_dflt
+export TASKS=$TASKS_dflt
+export TPN=$TPN_dflt
 
 # model_configure
 export SYEAR='2019'
