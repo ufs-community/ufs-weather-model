@@ -237,7 +237,7 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   ECFLOW_START=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
-  QUEUE=debug
+  QUEUE=batch 
   COMPILE_QUEUE=batch
 
   #ACCNR=fv3-cpu
