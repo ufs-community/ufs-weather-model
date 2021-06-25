@@ -569,6 +569,7 @@ export QDIAG3D=.F.
 export MAX_OUTPUT_FIELDS=300
 
 # Stochastic physics
+export STOCHINI=.F.
 export DO_SPPT=.F.
 export DO_SHUM=.F.
 export DO_SKEB=.F.

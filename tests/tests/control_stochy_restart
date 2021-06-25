@@ -1,21 +1,17 @@
 ###############################################################################
 #
-#  Global control test with stochastic physics
+#  Global control stochy restart test
 #
 ###############################################################################
 
-export TEST_DESCR="Compare global control stochy results with previous trunk version"
+export TEST_DESCR="Compare global restart wth stochsatics results with previous trunk version"
 
 export CNTL_DIR=control_stochy
 
-export LIST_FILES="sfcf000.nc \
-                   sfcf012.nc \
-                   atmf000.nc \
+export LIST_FILES="sfcf012.nc \
                    atmf012.nc \
-                   GFSFLX.GrbF00 \
                    GFSFLX.GrbF12 \
-                   GFSPRS.GrbF00 \
-                   GFSPRS.GrbF12"
+                   GFSPRS.GrbF12 "
 
 export_fv3
 export NPZ=127
@@ -30,14 +26,21 @@ export OUTPUT_GRID='gaussian_grid'
 export NSTF_NAME='2,0,0,0,0'
 export WRITE_DOPOST=.true.
 export IAER=5111
+export FHROT=06
+
+export WARM_START=.T.
+export NGGPS_IC=.F.
+export EXTERNAL_IC=.F.
+export MAKE_NH=.F.
+export MOUNTAIN=.T.
+export NA_INIT=0
 export DO_SPPT=.T.
 export DO_SHUM=.T.
 export DO_SKEB=.T.
-export RESTART_INTERVAL=6
 export SKEB=0.3
 export SHUM=0.003
 export SPPT=0.2
-
+export STOCHINI=.T.
 
 export FV3_RUN=control_stochy_run.IN
 export CCPP_SUITE=FV3_GFS_v16
