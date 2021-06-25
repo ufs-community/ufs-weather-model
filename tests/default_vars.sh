@@ -512,7 +512,9 @@ export IMFSHALCNV=2
 export HWRF_SAMFSHAL=.F.
 export IMFDEEPCNV=2
 export HWRF_SAMFDEEP=.F.
-export RAS=.F.
+export RAS=.false.
+export RANDOM_CLDS=.false.
+export CNVCLD=.true.
 
 # SFC
 export DO_MYJSFC=.F.
