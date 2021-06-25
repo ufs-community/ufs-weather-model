@@ -190,7 +190,7 @@ elif [[ $MACHINE_ID = jet.* ]]; then
 
   TASKS_dflt=150 ; TPN_dflt=24 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=78  ; TPN_thrd=12 ; INPES_thrd=3 ; JNPES_thrd=4
-  TASKS_c384=480 ; TPN_c384=24 ; INPES_c384=12 ; JNPES_c384=6
+  TASKS_c384=480 ; TPN_c384=12 ; INPES_c384=12 ; JNPES_c384=6
   TASKS_stretch=48 ; TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=12 ; INPES_strnest=2 ; JNPES_strnest=4
 
