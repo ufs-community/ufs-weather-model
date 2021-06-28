@@ -71,9 +71,6 @@ else
   if [[ "${MAKE_OPT}" == *"DEBUG=Y"* ]]; then
     [[ -f $PATHTR/modulefiles/ufs_${MACHINE_ID}_debug ]] && modulefile="ufs_${MACHINE_ID}_debug"
   fi
-  if [[ "${MAKE_OPT}" == *"APP=ATMAERO"* ]]; then
-    [[ -f $PATHTR/modulefiles/ufs_aerosols_${MACHINE_ID} ]] && modulefile="${modulefile} ufs_aerosols_${MACHINE_ID}"
-  fi
   module load $modulefile
   module list
 fi
@@ -172,11 +169,11 @@ export CMAKE_FLAGS
 bash -x ${PATHTR}/build.sh
 
 mv ${BUILD_DIR}/ufs_model ${PATHTR}/tests/${BUILD_NAME}.exe
-
-echo "#%Module" > ${PATHTR}/tests/modules.${BUILD_NAME}
-for m in ${modulefile} ; do
-  tail -n +2 ${PATHTR}/modulefiles/${m} >> ${PATHTR}/tests/modules.${BUILD_NAME}
-done
+if [[ "${MAKE_OPT}" == *"DEBUG=Y"* ]]; then
+  cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}_debug ${PATHTR}/tests/modules.${BUILD_NAME}
+else
+  cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}       ${PATHTR}/tests/modules.${BUILD_NAME}
+fi
 
 if [ $clean_after = YES ] ; then
   rm -rf ${BUILD_DIR}
