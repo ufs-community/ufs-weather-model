@@ -2,7 +2,8 @@
     days_per_year  = 365
     use_leap_years = .true.
     year_init      = YEAR_INIT
-    istep0         = ISTEP0
+    month_init     = MONTH_INIT
+    day_init       = DAY_INIT
     dt             = DT_CICE
     npt            = 999
     ndtd           = 1
@@ -32,7 +33,6 @@
     lonpnt(1)      =  0.
     latpnt(2)      = -65.
     lonpnt(2)      = -45.
-    dbug           = .false.
     histfreq       = 'm','d','h','x','x'
     histfreq_n     =  0 , 0 , 6 , 1 , 1
     hist_avg       = CICE_HIST_AVG
@@ -49,7 +49,6 @@
     grid_type    = 'tripole'
     grid_file    = 'CICEGRID'
     kmt_file     = 'CICEMASK'
-    use_bathymetry = .false.
     kcatbound    = 0
     ncat         = 5
     nfsd         = 1
@@ -60,17 +59,9 @@
 /
 
 &tracer_nml
-    n_aero       = 0
-    n_zaero      = 0
-    n_algae      = 0
-    n_doc        = 0
-    n_dic        = 0
-    n_don        = 0
-    n_fed        = 0
-    n_fep        = 0
     tr_iage      = .true.
     restart_age  = .false.
-    tr_FY        = .true.
+    tr_FY        = .false.
     restart_FY   = .false.
     tr_lvl       = .true.
     restart_lvl  = .false.
@@ -88,7 +79,7 @@
 
 &thermo_nml
     kitd              = 1
-    ktherm            = 1
+    ktherm            = KTHERM
     conduct           = 'MU71'
     a_rapid_mode      =  0.5e-3
     Rac_rapid_mode    =    10.0
@@ -159,30 +150,8 @@
     fbot_xfer_type  = 'constant'
     update_ocn_f    = FRAZIL_FWSALT
     l_mpond_fresh   = .false.
-    tfrz_option     = 'linear_salt'
+    tfrz_option     = 'TFREEZE_OPTION'
     restart_coszen  = .true.
-    oceanmixed_ice  = .false.
-    wave_spec_type  = 'none'
-    wave_spec_file  = 'unknown_wave_spec_file'
-    nfreq           = 25
-    restore_ice     = .false.
-    restore_ocn     = .false.
-    trestore        =  90
-    precip_units    = 'mm_per_month'
-    default_season  = 'winter'
-    atm_data_type   = 'ncar'
-    ocn_data_type   = 'default'
-    bgc_data_type   = 'default'
-    fe_data_type    = 'default'
-    ice_data_type   = 'default'
-    fyear_init      = 1997
-    ycycle          = 1
-    atm_data_format = 'nc'
-    atm_data_dir    = './INPUT/gx3_forcing_fields.nc'
-    bgc_data_dir    = 'unknown_bgc_data_dir'
-    ocn_data_format = 'bin'
-    ocn_data_dir    = '/unknown_ocn_data_dir'
-    oceanmixed_file = 'unknown_oceanmixed_file'
 /
 
 &domain_nml
@@ -203,152 +172,6 @@
 /
 
 &zbgc_nml
-    tr_brine        = .false.
-    restart_hbrine  = .false.
-    tr_zaero        = .false.
-    modal_aero      = .false.
-    skl_bgc         = .false.
-    z_tracers       = .false.
-    dEdd_algae      = .false.
-    solve_zbgc      = .false.
-    bgc_flux_type   = 'Jin2006'
-    restore_bgc     = .false.
-    restart_bgc     = .false.
-    scale_bgc       = .false.
-    solve_zsal      = .false.
-    restart_zsal    = .false.
-    tr_bgc_Nit      = .true.
-    tr_bgc_C        = .true.
-    tr_bgc_chl      = .false.
-    tr_bgc_Am       = .true.
-    tr_bgc_Sil      = .true.
-    tr_bgc_DMS      = .false.
-    tr_bgc_PON      = .true.
-    tr_bgc_hum      = .true.
-    tr_bgc_DON      = .false.
-    tr_bgc_Fe       = .true.
-    grid_o          = 0.006
-    grid_o_t        = 0.006
-    l_sk            = 0.024
-    grid_oS         = 0.0
-    l_skS           = 0.028
-    phi_snow        = -0.3
-    initbio_frac    = 0.8
-    frazil_scav     = 0.8
-    ratio_Si2N_diatoms = 1.8
-    ratio_Si2N_sp      = 0.0
-    ratio_Si2N_phaeo   = 0.0
-    ratio_S2N_diatoms  = 0.03
-    ratio_S2N_sp       = 0.03
-    ratio_S2N_phaeo    = 0.03
-    ratio_Fe2C_diatoms = 0.0033
-    ratio_Fe2C_sp      = 0.0033
-    ratio_Fe2C_phaeo   = 0.1
-    ratio_Fe2N_diatoms = 0.023
-    ratio_Fe2N_sp      = 0.023
-    ratio_Fe2N_phaeo   = 0.7
-    ratio_Fe2DON       = 0.023
-    ratio_Fe2DOC_s     = 0.1
-    ratio_Fe2DOC_l     = 0.033
-    fr_resp            = 0.05
-    tau_min            = 5200.0
-    tau_max            = 173000.0
-    algal_vel          = 0.0000000111
-    R_dFe2dust         = 0.035
-    dustFe_sol         = 0.005
-    chlabs_diatoms     = 0.03
-    chlabs_sp          = 0.01
-    chlabs_phaeo       = 0.05
-    alpha2max_low_diatoms = 0.8
-    alpha2max_low_sp      = 0.67
-    alpha2max_low_phaeo   = 0.67
-    beta2max_diatoms   = 0.018
-    beta2max_sp        = 0.0025
-    beta2max_phaeo     = 0.01
-    mu_max_diatoms     = 1.44
-    mu_max_sp          = 0.851
-    mu_max_phaeo       = 0.851
-    grow_Tdep_diatoms  = 0.06
-    grow_Tdep_sp       = 0.06
-    grow_Tdep_phaeo    = 0.06
-    fr_graze_diatoms   = 0.0
-    fr_graze_sp        = 0.1
-    fr_graze_phaeo     = 0.1
-    mort_pre_diatoms   = 0.007
-    mort_pre_sp        = 0.007
-    mort_pre_phaeo     = 0.007
-    mort_Tdep_diatoms  = 0.03
-    mort_Tdep_sp       = 0.03
-    mort_Tdep_phaeo    = 0.03
-    k_exude_diatoms    = 0.0
-    k_exude_sp         = 0.0
-    k_exude_phaeo      = 0.0
-    K_Nit_diatoms      = 1.0
-    K_Nit_sp           = 1.0
-    K_Nit_phaeo        = 1.0
-    K_Am_diatoms       = 0.3
-    K_Am_sp            = 0.3
-    K_Am_phaeo         = 0.3
-    K_Sil_diatoms      = 4.0
-    K_Sil_sp           = 0.0
-    K_Sil_phaeo        = 0.0
-    K_Fe_diatoms       = 1.0
-    K_Fe_sp            = 0.2
-    K_Fe_phaeo         = 0.1
-    f_don_protein      = 0.6
-    kn_bac_protein     = 0.03
-    f_don_Am_protein   = 0.25
-    f_doc_s            = 0.4
-    f_doc_l            = 0.4
-    f_exude_s          = 1.0
-    f_exude_l          = 1.0
-    k_bac_s            = 0.03
-    k_bac_l            = 0.03
-    T_max              = 0.0
-    fsal               = 1.0
-    op_dep_min         = 0.1
-    fr_graze_s         = 0.5
-    fr_graze_e         = 0.5
-    fr_mort2min        = 0.5
-    fr_dFe             = 0.3
-    k_nitrif           = 0.0
-    t_iron_conv        = 3065.0
-    max_loss           = 0.9
-    max_dfe_doc1       = 0.2
-    fr_resp_s          = 0.75
-    y_sk_DMS           = 0.5
-    t_sk_conv          = 3.0
-    t_sk_ox            = 10.0
-    algaltype_diatoms  = 0.0
-    algaltype_sp       = 0.5
-    algaltype_phaeo    = 0.5
-    nitratetype        = -1.0
-    ammoniumtype       = 1.0
-    silicatetype       = -1.0
-    dmspptype          = 0.5
-    dmspdtype          = -1.0
-    humtype            = 1.0
-    doctype_s          = 0.5
-    doctype_l          = 0.5
-    dontype_protein    = 0.5
-    fedtype_1          = 0.5
-    feptype_1          = 0.5
-    zaerotype_bc1      = 1.0
-    zaerotype_bc2      = 1.0
-    zaerotype_dust1    = 1.0
-    zaerotype_dust2    = 1.0
-    zaerotype_dust3    = 1.0
-    zaerotype_dust4    = 1.0
-    ratio_C2N_diatoms  = 7.0
-    ratio_C2N_sp       = 7.0
-    ratio_C2N_phaeo    = 7.0
-    ratio_chl2N_diatoms= 2.1
-    ratio_chl2N_sp     = 1.1
-    ratio_chl2N_phaeo  = 0.84
-    F_abs_chl_diatoms  = 2.0
-    F_abs_chl_sp       = 4.0
-    F_abs_chl_phaeo    = 5.0
-    ratio_C2N_proteins = 7.0
 /
 
 &icefields_nml
@@ -464,8 +287,8 @@
     f_daidtd       = 'x'
     f_dagedtt      = 'x'
     f_dagedtd      = 'x'
-    f_mlt_onset    = 'mdhxx'
-    f_frz_onset    = 'mdhxx'
+    f_mlt_onset    = 'x'
+    f_frz_onset    = 'x'
     f_hisnap       = 'x'
     f_aisnap       = 'x'
     f_trsig        = 'x'
@@ -523,65 +346,11 @@
     f_apeff_ai     = 'x'
 /
 
-&icefields_bgc_nml
-    f_faero_atm    = 'x'
-    f_faero_ocn    = 'x'
-    f_aero         = 'x'
-    f_fbio         = 'x'
-    f_fbio_ai      = 'x'
-    f_zaero        = 'x'
-    f_bgc_S        = 'x'
-    f_bgc_N        = 'x'
-    f_bgc_C        = 'x'
-    f_bgc_DOC      = 'x'
-    f_bgc_DIC      = 'x'
-    f_bgc_chl      = 'x'
-    f_bgc_Nit      = 'x'
-    f_bgc_Am       = 'x'
-    f_bgc_Sil      = 'x'
-    f_bgc_DMSPp    = 'x'
-    f_bgc_DMSPd    = 'x'
-    f_bgc_DMS      = 'x'
-    f_bgc_DON      = 'x'
-    f_bgc_Fe       = 'x'
-    f_bgc_hum      = 'x'
-    f_bgc_PON      = 'x'
-    f_bgc_ml       = 'x'
-    f_upNO         = 'x'
-    f_upNH         = 'x'
-    f_bTin         = 'x'
-    f_bphi         = 'x'
-    f_iDi          = 'x'
-    f_iki          = 'x'
-    f_fbri         = 'x'
-    f_hbri         = 'x'
-    f_zfswin       = 'x'
-    f_bionet       = 'x'
-    f_biosnow      = 'x'
-    f_grownet      = 'x'
-    f_PPnet        = 'x'
-    f_algalpeak    = 'x'
-    f_zbgc_frac    = 'x'
-/
-
 &icefields_drag_nml
     f_drag         = 'x'
     f_Cdn_atm      = 'x'
     f_Cdn_ocn      = 'x'
 /
 
-&icefields_fsd_nml
-    f_fsdrad       = 'x'
-    f_fsdperim     = 'x'
-    f_afsd         = 'x'
-    f_afsdn        = 'x'
-    f_dafsd_newi   = 'x'
-    f_dafsd_latg   = 'x'
-    f_dafsd_latm   = 'x'
-    f_dafsd_wave   = 'x'
-    f_dafsd_weld   = 'x'
-    f_wave_sig_ht  = 'x'
-    f_aice_ww      = 'x'
-    f_diam_ww      = 'x'
-    f_hice_ww      = 'x'
+&icefields_bgc_nml
 /
