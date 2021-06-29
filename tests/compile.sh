@@ -134,7 +134,6 @@ set -ex
 # Valid applications
 if [[ "${MAKE_OPT}" == *"APP=ATMAERO"* ]]; then
     CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=ATMAERO"
-    unset PYTHONPATH
 elif [[ "${MAKE_OPT}" == *"APP=ATMW"* ]]; then
     CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=ATMW"
 elif [[ "${MAKE_OPT}" == *"APP=ATM"* ]]; then
