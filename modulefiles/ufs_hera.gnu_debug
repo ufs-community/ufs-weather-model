@@ -14,7 +14,7 @@ module load sutils
 
 module load cmake/3.20.1
 
-module use /scratch1/NCEPDEV/nems/emc.nemspara/soft/hpc-stack_new_20210629/modulefiles/stack
+module use /scratch2/NCEPDEV/nwprod/hpc-stack/libs/hpc-stack/modulefiles/stack
 
 module load hpc/1.1.0
 
