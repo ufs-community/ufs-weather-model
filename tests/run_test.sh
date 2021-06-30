@@ -118,10 +118,6 @@ if [[ $DATM_NEMS = 'true' ]]; then
   cp ${PATHRT}/parm/datm_data_table.IN datm_data_table
 fi
 
-if [[ ${RAP:-'false'} = 'true' ]] ; then
-  edit_diag_table < ${PATHRT}/parm/diag_table_template_rap > diag_table
-fi
-
 if [[ $DATM_CDEPS = 'true' ]]; then
   atparse < ${PATHRT}/parm/${DATM_IN_CONFIGURE:-datm_in} > datm_in
   atparse < ${PATHRT}/parm/datm.streams.IN > datm.streams
