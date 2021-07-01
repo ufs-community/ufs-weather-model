@@ -232,9 +232,10 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=slurm
 
-  export PATH=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3/bin:$PATH
-  export PYTHONPATH=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3/lib/python3.8/site-packages
-  ECFLOW_START=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3/bin/ecflow_start.sh
+  PYTHONHOME=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3_new_20210629
+  export PATH=$PYTHONHOME/bin:$PATH
+  export PYTHONPATH=$PYTHONHOME/lib/python3.7/site-packages
+  ECFLOW_START=$PYTHONHOME/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
   QUEUE=debug
