@@ -21,6 +21,7 @@ module lnd_comp_nuopc
   use nuopc_shr_methods      , only : set_component_logging, get_component_instance, log_clock_advance
   use clm_varctl             , only : inst_index, inst_suffix, inst_name
   use lnd_import_export      , only : advertise_fields, realize_fields
+  use import_fields_mod      , only : ie_set_geomtype
   ! use lnd_import_export      , only : advertise_fields, realize_fields, import_fields, export_fields
   !use lnd_comp_shr           , only : mesh, model_meshfile !, model_clock
   use shr_sys_mod            , only : shr_sys_abort
@@ -31,6 +32,7 @@ module lnd_comp_nuopc
   
   use noah_driver,        only: init_driver
   !use land_domain_mod,    only: domain_create 
+
   
   implicit none
   private ! except
@@ -53,6 +55,7 @@ module lnd_comp_nuopc
   character(len=*) , parameter :: u_FILE_u = &
        __FILE__
 
+  type(ESMF_GeomType_Flag) :: geomtype
 !===============================================================================
 contains
 !===============================================================================
@@ -209,7 +212,7 @@ contains
 
     use lnd_set_decomp_and_domain , only : lnd_set_decomp_and_domain_from_readmesh ! try out read mask
 
-    use proc_bounds, only : procbounds
+    use proc_bounds, only : procbounds, control_init_type
     use fms_io_mod,         only: field_exist, read_data
     
     ! input/output variables
@@ -255,6 +258,8 @@ contains
     integer                 :: tl
     integer,dimension(2,6)  :: decomptile                  !define delayout for the 6 cubed-sphere tiles
     type(ESMF_Grid)         :: lndGrid
+    character(50)           :: gridchoice
+    type (control_init_type)::   ctrl_init
     !-------------------------------------------------------------------------------
     rc = ESMF_SUCCESS
     call ESMF_LogWrite(subname//' called', ESMF_LOGMSG_INFO)
@@ -263,8 +268,14 @@ contains
     ! ! domain create with FMS:
     ! call domain_create()
 
+    ! --------------------- 
+    ! initialize noah:
+    ! ---------------------   
+    call init_driver(ctrl_init)
 
-    if ( .false. )  then ! mesh creation
+    if ( trim(ctrl_init%grid) == '1Dmesh' )  then ! mesh creation
+       geomtype = ESMF_GEOMTYPE_MESH
+       
        ! assume mesh file has mask
        meshfile_mask = meshfile_lnd
 
@@ -326,16 +337,18 @@ contains
             flds_scalar_num=flds_scalar_num, rc=rc)
        if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
-    else ! cube sphere mosaic
+    elseif ( trim(ctrl_init%grid) == 'CS' ) then ! cube sphere mosaic
 
+       geomtype = ESMF_GEOMTYPE_GRID
+       
        gridfile = "grid_spec.nc" ! default                                                                                              
        if (field_exist("INPUT/grid_spec.nc", "atm_mosaic_file")) then
           call read_data("INPUT/grid_spec.nc", "atm_mosaic_file", gridfile)
        endif
 
        do tl=1,6
-          decomptile(1,tl) = 2 !! TEST
-          decomptile(2,tl) = 6 !! TEST
+          decomptile(1,tl) = ctrl_init%layout(1)
+          decomptile(2,tl) = ctrl_init%layout(2)
           decompflagPTile(:,tl) = (/ESMF_DECOMP_SYMMEDGEMAX,ESMF_DECOMP_SYMMEDGEMAX/)
        enddo
        lndGrid = ESMF_GridCreateMosaic(filename="INPUT/"//trim(gridfile),     &
@@ -358,8 +371,16 @@ contains
        ! call define_blocks_packed ('land_model', Lnd_block, isc, iec, jsc, jec, nlev, &
        !      blocksize, block_message)
 
+    else
+       write(*,*) 'Do not know if imports/exports should be 1D or 2D from ctrl_init%grid'                                           
+       stop
+
     end if
-       
+
+
+    ! set variable geomtype for import/export module
+    call ie_set_geomtype(geomtype)
+    
     ! do n = 1,lsize
     !    write(*,*) "JP n, gindex(n), lndmask_loc(n) =", n, gindex(n), lndmask_loc(n)
     !    lndmask_glob(gindex(n)) = lndmask_loc(n)
@@ -388,12 +409,6 @@ contains
     ! write(*,*) "JP B. element count = ", elementCount
 
 
-    ! --------------------- 
-    ! initialize noah:
-    ! ---------------------   
-    call init_driver(procbounds)
-
-
   end subroutine InitializeRealize
 
   !===============================================================================
@@ -401,8 +416,8 @@ contains
 
     !use lsm_noah, only: lsm_noah_run
     !use noah_loop, only: noah_loop_run
-    use noah_driver, only: noah_loop_drv, noah_model, ctrl_init
-    use import_fields, only: write_import_field, import_allfields, export_allfields
+    use noah_driver, only: noah_block_run, noah_model, ctrl_init, noah_loop_drv
+    use import_fields_mod, only: write_import_field, import_allfields_am, export_allfields
     use proc_bounds, only : procbounds
     
     ! Arguments
@@ -433,8 +448,6 @@ contains
     integer                 :: i, de, gridbeg, gridend, im
     real(r8)                :: foodata(procbounds%im)
 
-    logical           :: first_time = .true.
-    
     ! query the Component for its clock, importState and exportState
     ! call ESMF_GridCompGet(gcomp, clock=clock, importState=importState, &
     !      exportState=exportState, rc=rc)
@@ -505,19 +518,18 @@ contains
 
     ! end test tmp
 
-    call import_allfields(importState, procbounds, noah_model, ctrl_init, rc)
+    call import_allfields_am(importState, procbounds, noah_model, ctrl_init, rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
-    ! tmp workaround to run first time step with simple nems.configure sequence, without having land restart read
-    !first_time = .false.
+    ! ! tmp workaround to run first time step with simple nems.configure sequence, without having land restart read
     if (noah_model%control%first_time) then
-       !first_time = .false.
        write(*,*) 'lnd_comp: skipping first time step'
     else
     
        ! run model
+       !call noah_block_run(procbounds, noah_model) !! IF using blocking
        call noah_loop_drv(procbounds, noah_model)
-
+       
        ! tmp test
        ! im = procbounds%im
        ! gridbeg = procbounds%gridbeg
@@ -527,8 +539,9 @@ contains
        !    write(*,*) 'MA1: ', de, gridbeg,gridend, size(foodata), foodata(i)
        ! end do
 
-    end if
-       call export_allfields(exportState, procbounds, noah_model, rc)
+    end if ! first_time
+
+    call export_allfields(exportState, procbounds, noah_model, ctrl_init, rc)
 
        ! Commenting out, because won't currently work with tiles
        ! ! write out export fields
@@ -593,10 +606,11 @@ contains
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
     call ESMF_LogWrite(trim(msgString), ESMF_LOGMSG_INFO)
 
-
+    ! tmp workaround to run first time step with simple nems.configure sequence, without having land restart read 
     if (noah_model%control%first_time) then
        noah_model%control%first_time = .false.
     endif
+    
     ! call ESMF_ClockAdvance(clock,rc=rc)
     ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
 

@@ -12,13 +12,15 @@ module noah_driver
   private
 
   type (noah_type),         public        ::   noah_model
-  type (control_init_type), public        ::   ctrl_init
+  !type (noah_type),  dimension(:), allocatable, public   ::   noah_model
+  type (control_init_type),                     public   ::   ctrl_init
 
-  public :: noah_loop_drv, init_driver
+  public :: noah_loop_drv, init_driver, noah_block_run
 
 contains
 
-  subroutine init_driver(procbounds)
+  !subroutine init_driver(procbounds)
+  subroutine init_driver(ctrl_init)
 
     use mpp_domains_mod,    only: domain2d, mpp_get_compute_domain
     use mpp_mod,            only: mpp_pe, mpp_root_pe
@@ -26,12 +28,14 @@ contains
     use block_control_mod,  only: block_control_type, define_blocks_packed
 
     
-    type(procbounds_type),  intent(in)    :: procbounds
-
+    !type(procbounds_type),  intent(in)    :: procbounds
+    !character(len=*), intent(out) :: gridchoice
+    type(control_init_type), intent(out)  ::   ctrl_init
+    
     ! ---------------
     ! local
 
-    type(control_init_type)  ::   ctrl_init
+    !type(control_init_type)  ::   ctrl_init
     !type (noah_type)        ::   noah
     type(domain2D) :: land_domain
     type (block_control_type), target   :: Lnd_block !  Block container
@@ -49,16 +53,11 @@ contains
 
     integer                 :: i, j, nb, ix
     integer                 :: nblks
-    im = procbounds%im
+    !im = procbounds%im
 
     ! ! setup ctrl_init
     
     call ctrl_init%init()
-
-    ! ! quick test, should be read in from nml
-    ! isot = 1
-    ! ivegsrc = 1
-    ! blocksize = 64
 
     if (mpp_pe() == mpp_root_pe()) then
        write(*,*) 'ctrl_init%grid: '     ,ctrl_init%grid
@@ -70,13 +69,19 @@ contains
        write(*,*) 'ctrl_init%ivegsrc: '  ,ctrl_init%ivegsrc
        write(*,*) 'ctrl_init%isot: '     ,ctrl_init%isot
     end if
+
+    !gridchoice = ctrl_init%grid
     ! domain create with FMS:
     call domain_create(ctrl_init, land_domain)
 
     ! Creat blocking a la FV3
     call mpp_get_compute_domain(land_domain,isc,iec,jsc,jec)
-    write(*,*) "isc,iec,jsc,jec: ",isc,iec,jsc,jec
+
+    im = (iec-isc+1)*(jec-jsc+1)
+    write(*,*) "isc,iec,jsc,jec, im: ",isc,iec,jsc,jec, im
     
+    
+    ! Create blocks, but not curretnly using
     call define_blocks_packed('land_model', Lnd_block, isc, iec, jsc, jec, 1, &
          ctrl_init%blocksize, block_message)
 
@@ -85,30 +90,54 @@ contains
        write(*,*) "block nblks, isc,iec,jsc,jec: ", Lnd_block%nblks, Lnd_block%isc, Lnd_block%iec, Lnd_block%jsc, Lnd_block%jec
        !write(*,*) "block blksz: ", Lnd_block%blksz
 
-       do j=jsc,jec
-          do i=isc,iec
-             nb = Lnd_block%blkno(i,j)
-             ix = Lnd_block%ixp(i,j)
-             write(*,*) "i,j,nb,ix: ", i,j,nb,ix
-          end do
-       end do
+    !    do j=jsc,jec
+    !       do i=isc,iec
+    !          nb = Lnd_block%blkno(i,j)
+    !          ix = Lnd_block%ixp(i,j)
+    !          write(*,*) "i,j,nb,ix: ", i,j,nb,ix
+    !       end do
+    !    end do
     end if
 
-    nblks = size(Lnd_block%blksz)
-    
-!    if (ctrl_init%grid == '1Dmesh') then ! 1D grid
-       call noah_model%Create(im)
-!    elseif (ctrl_init%grid == 'CS') then ! blocking
-!       do nb = 1,nblks
-!          ix = Lnd_block%blksz(nb)
-!          call noah_model(nb)%Create(ix)
-!       end do
-!    end if
+    !! IF were using blocking:
+    !nblks = size(Lnd_block%blksz)
+    !allocate(noah_model(nblks))
+    ! do nb = 1,nblks
+    !    ix = Lnd_block%blksz(nb)
+    !    call noah_model(nb)%Create(ix)
 
+    !    noah_model(nb)%control%nblks = Lnd_block%nblks
+    !    noah_model(nb)%control%blksz = Lnd_block%blksz(nb)
+    !    noah_model(nb)%control%isc = Lnd_block%isc
+    !    noah_model(nb)%control%iec = Lnd_block%iec
+    !    noah_model(nb)%control%jsc = Lnd_block%jsc
+    !    noah_model(nb)%control%jec = Lnd_block%jec
+    ! end do
+    !! ELSE:
+    noah_model%control%isc = isc
+    noah_model%control%iec = iec
+    noah_model%control%jsc = jsc
+    noah_model%control%jec = jec
+    noah_model%static%im  = im
+    call noah_model%Create(im)
+    
     call noah_loop_init(0, ctrl_init%isot, ctrl_init%ivegsrc, 0 , errmsg, errflg)
 
 
   end subroutine init_driver
+
+  subroutine noah_block_run(procbounds, noah_model)
+
+    type(procbounds_type),  intent(in)    :: procbounds
+    type(noah_type),        intent(inout) :: noah_model(:) ! land model's variable type
+
+
+    integer                 :: nb
+    do nb=1, size(noah_model)
+       call noah_loop_drv(procbounds, noah_model(nb))
+    end do
+
+  end subroutine noah_block_run
 
   subroutine noah_loop_drv(procbounds, noah_model)
 
@@ -129,73 +158,73 @@ contains
 
     ! local
     integer                 :: i, de, gridbeg, gridend
-    real(kind_phys)         :: foodata(procbounds%im)
+    real(kind_phys)         :: foodata(noah_model%static%im)
     !
-    real(kind_phys) :: ps        (procbounds%im) ! surface pressure (pa)                       im
-    real(kind_phys) :: t1        (procbounds%im) ! surface layer mean temperature (k)          im
-    real(kind_phys) :: q1        (procbounds%im) ! surface layer mean specific humidity        im
-    integer         :: soiltyp   (procbounds%im) ! soil type (integer index)                   im
-    integer         :: vegtype   (procbounds%im) ! vegetation type (integer index)             im
-    real(kind_phys) :: sigmaf    (procbounds%im) ! areal fractional cover of green vegetation  im
-    real(kind_phys) :: sfcemis   (procbounds%im) ! sfc lw emissivity ( fraction )              im
-    real(kind_phys) :: dlwflx    (procbounds%im) ! total sky sfc downward lw flux ( w/m**2 )   im
-    real(kind_phys) :: dswsfc    (procbounds%im) ! total sky sfc downward sw flux ( w/m**2 )   im
-    real(kind_phys) :: snet      (procbounds%im) ! total sky sfc netsw flx into ground(w/m**2) im
-    real(kind_phys) :: tg3       (procbounds%im) ! deep soil temperature (k)                   im
-    real(kind_phys) :: cm        (procbounds%im) ! surface exchange coeff for momentum (m/s)   im
-    real(kind_phys) :: ch        (procbounds%im) ! surface exchange coeff heat & moisture(m/s) im
-    real(kind_phys) :: prsl1     (procbounds%im) ! sfc layer 1 mean pressure (pa)              im
-    real(kind_phys) :: prslki    (procbounds%im) !                                             im
-    real(kind_phys) :: zf        (procbounds%im) ! height of bottom layer (m)                  im
-    logical         :: land      (procbounds%im) ! = T if a point with any land                im
-    real(kind_phys) :: wind      (procbounds%im) ! wind speed (m/s)                            im
-    integer         :: slopetyp  (procbounds%im) ! class of sfc slope (integer index)          im
-    real(kind_phys) :: shdmin    (procbounds%im) ! min fractional coverage of green veg        im
-    real(kind_phys) :: shdmax    (procbounds%im) ! max fractnl cover of green veg (not used)   im
-    real(kind_phys) :: snoalb    (procbounds%im) ! upper bound on max albedo over deep snow    im
-    real(kind_phys) :: sfalb     (procbounds%im) ! mean sfc diffused sw albedo (fractional)    im
-    logical         :: flag_iter (procbounds%im) !                                             im
-    logical         :: flag_guess(procbounds%im) !                                             im
-    real(kind_phys) :: bexppert  (procbounds%im)
-    real(kind_phys) :: xlaipert  (procbounds%im)
-    real(kind_phys) :: vegfpert  (procbounds%im)
-    real(kind_phys) :: weasd     (procbounds%im) ! water equivalent accumulated snow depth(mm) im
-    real(kind_phys) :: snwdph    (procbounds%im) ! snow depth (water equiv) over land          im
-    real(kind_phys) :: tskin     (procbounds%im) ! ground surface skin temperature ( k )       im
-    real(kind_phys) :: tprcp     (procbounds%im) ! total precipitation                         im
-    real(kind_phys) :: srflag    (procbounds%im) ! snow/rain flag for precipitation            im
-    real(kind_phys) :: canopy    (procbounds%im) ! canopy moisture content (m)                 im
-    real(kind_phys) :: trans     (procbounds%im) ! total plant transpiration (m/s)             im
-    real(kind_phys) :: tsurf     (procbounds%im) ! surface skin temperature (after iteration)  im
-    real(kind_phys) :: z0rl      (procbounds%im) ! surface roughness                           im
-    real(kind_phys) :: sncovr1   (procbounds%im) ! snow cover over land (fractional)            im
-    real(kind_phys) :: qsurf     (procbounds%im) ! specific humidity at sfc                     im
-    real(kind_phys) :: gflux     (procbounds%im) ! soil heat flux (w/m**2)                      im
-    real(kind_phys) :: drain     (procbounds%im) ! subsurface runoff (mm/s)                     im
-    real(kind_phys) :: evap      (procbounds%im) ! evaperation from latent heat flux            im
-    real(kind_phys) :: hflx      (procbounds%im) ! sensible heat flux                           im
-    real(kind_phys) :: ep        (procbounds%im) ! potential evaporation                        im
-    real(kind_phys) :: runoff    (procbounds%im) ! surface runoff (m/s)                         im
-    real(kind_phys) :: cmm       (procbounds%im) !                                              im
-    real(kind_phys) :: chh       (procbounds%im) !                                              im
-    real(kind_phys) :: evbs      (procbounds%im) ! direct soil evaporation (m/s)                im
-    real(kind_phys) :: evcw      (procbounds%im) ! canopy water evaporation (m/s)               im
-    real(kind_phys) :: sbsno     (procbounds%im) ! sublimation/deposit from snopack (m/s)       im
-    real(kind_phys) :: snowc     (procbounds%im) ! fractional snow cover                        im
-    real(kind_phys) :: stm       (procbounds%im) ! total soil column moisture content (m)       im
-    real(kind_phys) :: snohf     (procbounds%im) ! snow/freezing-rain latent heat flux (w/m**2) im
-    real(kind_phys) :: smcwlt2   (procbounds%im) ! dry soil moisture threshold                  im
-    real(kind_phys) :: smcref2   (procbounds%im) ! soil moisture threshold                      im
-    real(kind_phys) :: wet1      (procbounds%im) ! normalized soil wetness                      im
+    real(kind_phys) :: ps        (noah_model%static%im) ! surface pressure (pa)                       im
+    real(kind_phys) :: t1        (noah_model%static%im) ! surface layer mean temperature (k)          im
+    real(kind_phys) :: q1        (noah_model%static%im) ! surface layer mean specific humidity        im
+    integer         :: soiltyp   (noah_model%static%im) ! soil type (integer index)                   im
+    integer         :: vegtype   (noah_model%static%im) ! vegetation type (integer index)             im
+    real(kind_phys) :: sigmaf    (noah_model%static%im) ! areal fractional cover of green vegetation  im
+    real(kind_phys) :: sfcemis   (noah_model%static%im) ! sfc lw emissivity ( fraction )              im
+    real(kind_phys) :: dlwflx    (noah_model%static%im) ! total sky sfc downward lw flux ( w/m**2 )   im
+    real(kind_phys) :: dswsfc    (noah_model%static%im) ! total sky sfc downward sw flux ( w/m**2 )   im
+    real(kind_phys) :: snet      (noah_model%static%im) ! total sky sfc netsw flx into ground(w/m**2) im
+    real(kind_phys) :: tg3       (noah_model%static%im) ! deep soil temperature (k)                   im
+    real(kind_phys) :: cm        (noah_model%static%im) ! surface exchange coeff for momentum (m/s)   im
+    real(kind_phys) :: ch        (noah_model%static%im) ! surface exchange coeff heat & moisture(m/s) im
+    real(kind_phys) :: prsl1     (noah_model%static%im) ! sfc layer 1 mean pressure (pa)              im
+    real(kind_phys) :: prslki    (noah_model%static%im) !                                             im
+    real(kind_phys) :: zf        (noah_model%static%im) ! height of bottom layer (m)                  im
+    logical         :: land      (noah_model%static%im) ! = T if a point with any land                im
+    real(kind_phys) :: wind      (noah_model%static%im) ! wind speed (m/s)                            im
+    integer         :: slopetyp  (noah_model%static%im) ! class of sfc slope (integer index)          im
+    real(kind_phys) :: shdmin    (noah_model%static%im) ! min fractional coverage of green veg        im
+    real(kind_phys) :: shdmax    (noah_model%static%im) ! max fractnl cover of green veg (not used)   im
+    real(kind_phys) :: snoalb    (noah_model%static%im) ! upper bound on max albedo over deep snow    im
+    real(kind_phys) :: sfalb     (noah_model%static%im) ! mean sfc diffused sw albedo (fractional)    im
+    logical         :: flag_iter (noah_model%static%im) !                                             im
+    logical         :: flag_guess(noah_model%static%im) !                                             im
+    real(kind_phys) :: bexppert  (noah_model%static%im)
+    real(kind_phys) :: xlaipert  (noah_model%static%im)
+    real(kind_phys) :: vegfpert  (noah_model%static%im)
+    real(kind_phys) :: weasd     (noah_model%static%im) ! water equivalent accumulated snow depth(mm) im
+    real(kind_phys) :: snwdph    (noah_model%static%im) ! snow depth (water equiv) over land          im
+    real(kind_phys) :: tskin     (noah_model%static%im) ! ground surface skin temperature ( k )       im
+    real(kind_phys) :: tprcp     (noah_model%static%im) ! total precipitation                         im
+    real(kind_phys) :: srflag    (noah_model%static%im) ! snow/rain flag for precipitation            im
+    real(kind_phys) :: canopy    (noah_model%static%im) ! canopy moisture content (m)                 im
+    real(kind_phys) :: trans     (noah_model%static%im) ! total plant transpiration (m/s)             im
+    real(kind_phys) :: tsurf     (noah_model%static%im) ! surface skin temperature (after iteration)  im
+    real(kind_phys) :: z0rl      (noah_model%static%im) ! surface roughness                           im
+    real(kind_phys) :: sncovr1   (noah_model%static%im) ! snow cover over land (fractional)            im
+    real(kind_phys) :: qsurf     (noah_model%static%im) ! specific humidity at sfc                     im
+    real(kind_phys) :: gflux     (noah_model%static%im) ! soil heat flux (w/m**2)                      im
+    real(kind_phys) :: drain     (noah_model%static%im) ! subsurface runoff (mm/s)                     im
+    real(kind_phys) :: evap      (noah_model%static%im) ! evaperation from latent heat flux            im
+    real(kind_phys) :: hflx      (noah_model%static%im) ! sensible heat flux                           im
+    real(kind_phys) :: ep        (noah_model%static%im) ! potential evaporation                        im
+    real(kind_phys) :: runoff    (noah_model%static%im) ! surface runoff (m/s)                         im
+    real(kind_phys) :: cmm       (noah_model%static%im) !                                              im
+    real(kind_phys) :: chh       (noah_model%static%im) !                                              im
+    real(kind_phys) :: evbs      (noah_model%static%im) ! direct soil evaporation (m/s)                im
+    real(kind_phys) :: evcw      (noah_model%static%im) ! canopy water evaporation (m/s)               im
+    real(kind_phys) :: sbsno     (noah_model%static%im) ! sublimation/deposit from snopack (m/s)       im
+    real(kind_phys) :: snowc     (noah_model%static%im) ! fractional snow cover                        im
+    real(kind_phys) :: stm       (noah_model%static%im) ! total soil column moisture content (m)       im
+    real(kind_phys) :: snohf     (noah_model%static%im) ! snow/freezing-rain latent heat flux (w/m**2) im
+    real(kind_phys) :: smcwlt2   (noah_model%static%im) ! dry soil moisture threshold                  im
+    real(kind_phys) :: smcref2   (noah_model%static%im) ! soil moisture threshold                      im
+    real(kind_phys) :: wet1      (noah_model%static%im) ! normalized soil wetness                      im
 
-    real(kind_phys) :: ustar     (procbounds%im)
-    real(kind_phys) :: smc(procbounds%im,noah_model%static%km) ! total soil moisture content (fractional)   im,km
-    real(kind_phys) :: stc(procbounds%im,noah_model%static%km) ! soil temp (k)                              im,km
-    real(kind_phys) :: slc(procbounds%im,noah_model%static%km) ! liquid soil moisture                       im,km
+    real(kind_phys) :: ustar     (noah_model%static%im)
+    real(kind_phys) :: smc(noah_model%static%im,noah_model%static%km) ! total soil moisture content (fractional)   im,km
+    real(kind_phys) :: stc(noah_model%static%im,noah_model%static%km) ! soil temp (k)                              im,km
+    real(kind_phys) :: slc(noah_model%static%im,noah_model%static%km) ! liquid soil moisture                       im,km
 
     ! tmp for testing. Missing imports for these
-    real(kind_phys) :: prsik1(procbounds%im), z0pert(procbounds%im), &
-                       ztpert(procbounds%im), stress(procbounds%im)
+    real(kind_phys) :: prsik1(noah_model%static%im), z0pert(noah_model%static%im), &
+                       ztpert(noah_model%static%im), stress(noah_model%static%im)
 
     ! tmp for testing. These should be coming from namelist
     real(kind_phys), parameter :: delt = 900.0_kind_phys
@@ -204,8 +233,8 @@ contains
     logical, parameter :: lheatstrg      = .false.
     real(kind_phys), parameter :: pertvegf = 0.0_kind_phys
     ! outputs
-    real(kind_phys) :: rb_lnd(procbounds%im), fm_lnd(procbounds%im), &
-                       fh_lnd(procbounds%im), fm10_lnd(procbounds%im), fh2_lnd(procbounds%im)
+    real(kind_phys) :: rb_lnd(noah_model%static%im), fm_lnd(noah_model%static%im), &
+                       fh_lnd(noah_model%static%im), fm10_lnd(noah_model%static%im), fh2_lnd(noah_model%static%im)
     
     associate(foodata => noah_model%model%foo_atm2lndfield,  &
          ps         => noah_model%model%ps         ,&
@@ -216,7 +245,7 @@ contains
          dswsfci    => noah_model%model%dswsfci    ,&
          wind       => noah_model%model%wind       ,&
          tprcp      => noah_model%model%tprcp      ,&
-         im         => procbounds%im                 ,& 
+         im         => noah_model%static%im        ,& 
          km         => noah_model%static%km        ,&
          ! delt       => noah_model%static%delt      ,&
          ! isot       => noah_model%static%isot      ,&
@@ -301,10 +330,10 @@ contains
       ! first test
       !write(*,*) 'NLP test: ', noah_model%model%soiltyp ! get all zeros, good
       
-      de = procbounds%de
-      !im = procbounds%im
-      gridbeg = procbounds%gridbeg
-      gridend = procbounds%gridend
+      ! de = procbounds%de
+      ! !im = procbounds%im
+      ! gridbeg = procbounds%gridbeg
+      ! gridend = procbounds%gridend
 
       ! tmp, debug
       !write(6,'("noah drv: dswsfc   - min/max/avg",3g16.6)') minval(dswsfc),   maxval(dswsfc),   sum(dswsfc)/size(dswsfc)

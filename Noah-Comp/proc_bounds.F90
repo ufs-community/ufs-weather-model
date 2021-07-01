@@ -1,3 +1,5 @@
+!!! This should bprobably be cleaned up or removed
+
 module proc_bounds
 
   ! proc and gridcell bounds for simple  mesh with regular decomp

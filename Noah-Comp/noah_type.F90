@@ -1,3 +1,5 @@
+
+
 module noah_type_mod
 
   use machine, only: kind_phys
@@ -12,7 +14,8 @@ module noah_type_mod
 
 type :: noah_control_type
    logical   :: first_time  ! flag for first time step
-   integer   :: mype  
+   integer   :: mype
+   integer   :: nblks, blksz, isc, iec, jsc, jec
 end type noah_control_type
   
 type :: noah_static_type
@@ -209,6 +212,7 @@ contains
     nh%control%first_time = .true.
     nh%control%mype       = -999
 
+    !nh%static%im         = -999
     nh%static%km         = 4 ! tmp for testing. This should come from nml
     nh%static%grav       = zero !huge
     nh%static%cp         = zero !huge

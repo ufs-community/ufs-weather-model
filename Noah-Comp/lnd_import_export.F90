@@ -1331,9 +1331,15 @@ contains
     call ESMF_StateGet(State, itemName=trim(fldname), field=lfield, rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
     if (present(fldptr1d)) then
+       if (.not.associated(fldptr1d)) then
+          write(*,*) 'fldptr1d not associated'
+       endif
        call ESMF_FieldGet(lfield, farrayPtr=fldptr1d, rc=rc)
        if (ChkErr(rc,__LINE__,u_FILE_u)) return
     else if (present(fldptr2d)) then
+       if (.not.associated(fldptr2d)) then
+          write(*,*) 'fldptr2d not associated'
+       endif
        call ESMF_FieldGet(lfield, farrayPtr=fldptr2d, rc=rc)
        if (ChkErr(rc,__LINE__,u_FILE_u)) return
     else
