@@ -132,29 +132,25 @@ fi
 set -ex
 
 # Valid applications
-if [[ "${MAKE_OPT}" == *"APP=ATM"* ]]; then
+if [[ "${MAKE_OPT}" == *"APP=ATMAERO"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=ATMAERO"
+elif [[ "${MAKE_OPT}" == *"APP=ATMW"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=ATMW"
+elif [[ "${MAKE_OPT}" == *"APP=ATM"* ]]; then
     echo "MAKE_OPT = ${MAKE_OPT}"
     CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=ATM"
 fi
 
-if [[ "${MAKE_OPT}" == *"APP=ATMW"* ]]; then
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=ATMW"
-fi
-
-if [[ "${MAKE_OPT}" == *"APP=S2S"* ]]; then
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=S2S -DMOM6SOLO=ON"
-fi
-
 if [[ "${MAKE_OPT}" == *"APP=S2SW"* ]]; then
     CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=S2SW -DMOM6SOLO=ON"
-fi
-
-if [[ "${MAKE_OPT}" == *"APP=NG-GODAS"* ]]; then
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=NG-GODAS"
+elif [[ "${MAKE_OPT}" == *"APP=S2S"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=S2S -DMOM6SOLO=ON"
 fi
 
 if [[ "${MAKE_OPT}" == *"APP=NG-GODAS-NEMSDATM"* ]]; then
     CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=NG-GODAS-NEMSDATM"
+elif [[ "${MAKE_OPT}" == *"APP=NG-GODAS"* ]]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=NG-GODAS"
 fi
 
 CMAKE_FLAGS=$(trim "${CMAKE_FLAGS}")
