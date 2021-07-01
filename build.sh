@@ -17,7 +17,10 @@ BUILD_DIR=${BUILD_DIR:-${UFS_MODEL_DIR}/build}
 mkdir -p ${BUILD_DIR}
 
 [[ -n "${CCPP_SUITES:-""}" ]] && CMAKE_FLAGS+=" -DCCPP_SUITES=${CCPP_SUITES}"
+[[ -n "${MAPL_ROOT:-""}" ]] && CMAKE_FLAGS+=" -DCMAKE_MODULE_PATH=${MAPL_ROOT}/share/MAPL/cmake"
 
 cd ${BUILD_DIR}
 cmake ${UFS_MODEL_DIR} ${CMAKE_FLAGS}
-make -j ${BUILD_JOBS:-4} VERBOSE=${BUILD_VERBOSE:-}
+# Turn off OpenMP threading for parallel builds
+# to avoid exhausting the number of user processes
+OMP_NUM_THREADS=1 make -j ${BUILD_JOBS:-4} VERBOSE=${BUILD_VERBOSE:-}
