@@ -16,7 +16,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules/Modules)
 ###############################################################################
 
 # Valid applications and choices
-list(APPEND VALID_APPS ATM ATMW S2S S2SW NG-GODAS NG-GODAS-NEMSDATM)
+list(APPEND VALID_APPS ATM ATMAERO ATMW S2S S2SW NG-GODAS NG-GODAS-NEMSDATM)
 set(APP NONE CACHE BOOL "Application Name")
 if(NOT (APP IN_LIST VALID_APPS))
   message(FATAL_ERROR "${APP} is not a valid application.\nValid Applications are: ${VALID_APPS}")
@@ -24,6 +24,7 @@ endif()
 
 set(FMS             OFF CACHE BOOL "Enable FMS")
 set(FV3             OFF CACHE BOOL "Enable FV3")
+set(UFS_GOCART      OFF CACHE BOOL "Enable GOCART")
 set(MOM6            OFF CACHE BOOL "Enable MOM6")
 set(CICE6           OFF CACHE BOOL "Enable CICE6")
 set(WW3             OFF CACHE BOOL "Enable WW3")
@@ -39,6 +40,7 @@ include(cmake/configure_apps.cmake)
 message("")
 message("FMS .............. ${FMS}")
 message("FV3 .............. ${FV3}")
+message("GOCART ........... ${UFS_GOCART}")
 message("MOM6 ............. ${MOM6}")
 message("CICE6 ............ ${CICE6}")
 message("WW3 .............. ${WW3}")
@@ -150,6 +152,13 @@ if(FV3)
 endif()
 
 ###############################################################################
+### GOCART
+###############################################################################
+if(UFS_GOCART)
+  add_subdirectory(GOCART)
+endif()
+
+###############################################################################
 ### Wave components [WW3]
 ###############################################################################
 if(WW3)
@@ -225,6 +234,12 @@ list(APPEND _ufs_defs_private ESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR})
 
 if(JEDI_DRIVER)
   list(APPEND _ufs_defs_private JEDI_DRIVER=ON)
+endif()
+
+if(UFS_GOCART)
+  add_dependencies(ufs UFS_Aerosols)
+  list(APPEND _ufs_defs_private FRONT_GOCART=Aerosol_Cap)
+  list(APPEND _ufs_libs_public UFS_Aerosols)
 endif()
 
 if(WW3)
