@@ -241,7 +241,7 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   QUEUE=debug
   COMPILE_QUEUE=batch
 
-  #ACCNR=fv3-cpu
+  ACCNR=fv3-cpu
   PARTITION=
   dprefix=/scratch1/NCEPDEV
   DISKNM=$dprefix/nems/emc.nemspara/RT
