@@ -670,6 +670,7 @@ export cap_dbug_flag="0"
 export use_coldstart="false"
 export use_mommesh="true"
 export RUNTYPE='startup'
+export CICERUNTYPE='initial'
 export eps_imesh='1.0e-1'
 
 # FV3 defaults
@@ -825,6 +826,7 @@ export cap_dbug_flag="0"
 export use_coldstart="false"
 export use_mommesh="true"
 export RUNTYPE='startup'
+export CICERUNTYPE='initial'
 export eps_imesh='1.0e-1'
 export flux_convergence='0.0'
 export flux_iteration='2'
@@ -933,6 +935,7 @@ export cap_dbug_flag="0"
 export use_coldstart="false"
 export use_mommesh="true"
 export RUNTYPE='startup'
+export CICERUNTYPE='initial'
 export eps_imesh='1.0e-1'
 export flux_convergence='0.0'
 export flux_iteration='2'
