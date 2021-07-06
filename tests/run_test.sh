@@ -100,8 +100,6 @@ fi
 
 # Field Dictionary
 cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
-# Empty data_table; needs fix to fcst component
-cp ${PATHRT}/parm/data_table data_table
 
 # Set up the run directory
 source ./fv3_run
