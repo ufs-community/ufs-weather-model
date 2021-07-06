@@ -80,7 +80,14 @@ cp    @[INPUTDATA_ROOT]/${inputdir}/field_table_gfsv16 ./field_table
 cp    @[INPUTDATA_ROOT]/${inputdir}/*configure .
 
 if [ $NEW_DIAGTABLE != '' ]; then
-  cp    @[INPUTDATA_ROOT]/${inputdir}/$NEW_DIAGTABLE ./diag_table
+  # DH* TEMPORARY!
+  if [ $NEW_DIAGTABLE == 'diag_table_gfsv16_thompson_extdiag' ]; then
+    cp    /scratch1/BMC/gmtb/Dom.Heinzeller/TMP_THOMPSON_EXTDIAG/diag_table_gfsv16_thompson_extdiag ./diag_table
+  else
+    cp    @[INPUTDATA_ROOT]/${inputdir}/$NEW_DIAGTABLE ./diag_table
+  fi
+  #cp    @[INPUTDATA_ROOT]/${inputdir}/$NEW_DIAGTABLE ./diag_table
+  # *DH
 fi
 
 if [ $NEW_FIELDTABLE != '' ]; then
