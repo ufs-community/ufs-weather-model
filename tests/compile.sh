@@ -114,11 +114,11 @@ set -ex
 # Valid applications
 
 if [[ "${MAKE_OPT}" == *"-DAPP=S2S"* ]]; then
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DMOM6SOLO=ON"
+    CMAKE_FLAGS+=" -DMOM6SOLO=ON"
 fi
 
 if [[ "${MAKE_OPT}" == *"-DAPP=NG-GODAS"* ]]; then
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DMOM6SOLO=ON"
+    CMAKE_FLAGS+=" -DMOM6SOLO=ON"
 fi
 
 CMAKE_FLAGS=$(trim "${CMAKE_FLAGS}")
