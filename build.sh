@@ -16,7 +16,6 @@ export ESMFMKFILE=${ESMFMKFILE:?"Please set ESMFMKFILE environment variable"}
 BUILD_DIR=${BUILD_DIR:-${UFS_MODEL_DIR}/build}
 mkdir -p ${BUILD_DIR}
 
-[[ -n "${CCPP_SUITES:-""}" ]] && CMAKE_FLAGS+=" -DCCPP_SUITES=${CCPP_SUITES}"
 [[ -n "${MAPL_ROOT:-""}" ]] && CMAKE_FLAGS+=" -DCMAKE_MODULE_PATH=${MAPL_ROOT}/share/MAPL/cmake"
 
 cd ${BUILD_DIR}
