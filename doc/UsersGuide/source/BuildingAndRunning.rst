@@ -221,8 +221,8 @@ by a ``COMPILE`` line that builds the model used in the test. The following exam
 
 .. code-block:: console
 
-    COMPILE | APP=ATM SUITES=FV3_GFS_v16 32BIT=Y | | fv3
-    RUN     | control                            | | fv3
+    COMPILE | -DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16 -D32BIT=ON | | fv3
+    RUN     | control                                        | | fv3
 
 The third column of ``rt.conf`` relates to the platform; if left blank, the test
 runs on all Tier-1 platforms. The fourth column deals with baseline creation (more
@@ -376,7 +376,7 @@ For example, including in the ``utest.bld`` file the following line
 
 .. code-block:: console
 
-    control | APP=ATM SUITES=FV3_GFS_v16 32BIT=Y
+    control | -DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16 -D32BIT=ON
 
 and then executing ``./utest -n control`` performs all six test cases
 listed in :numref:`Table %s <ImplementationRequirement>` for ``control``
