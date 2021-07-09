@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.18)
 
 project(ufs
         VERSION 1.0
@@ -16,7 +16,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules/Modules)
 ###############################################################################
 
 # Valid applications and choices
-list(APPEND VALID_APPS ATM ATMW S2S S2SW HAFS HAFSW DATM DATM_NEMS)
+list(APPEND VALID_APPS ATM ATMAERO ATMW S2S S2SW HAFS HAFSW NG-GODAS NG-GODAS-NEMSDATM)
 set(APP NONE CACHE BOOL "Application Name")
 if(NOT (APP IN_LIST VALID_APPS))
   message(FATAL_ERROR "${APP} is not a valid application.\nValid Applications are: ${VALID_APPS}")
@@ -24,6 +24,7 @@ endif()
 
 set(FMS             OFF CACHE BOOL "Enable FMS")
 set(FV3             OFF CACHE BOOL "Enable FV3")
+set(UFS_GOCART      OFF CACHE BOOL "Enable GOCART")
 set(MOM6            OFF CACHE BOOL "Enable MOM6")
 set(HYCOM           OFF CACHE BOOL "Enable HYCOM")
 set(CICE6           OFF CACHE BOOL "Enable CICE6")
@@ -40,6 +41,7 @@ include(cmake/configure_apps.cmake)
 message("")
 message("FMS .............. ${FMS}")
 message("FV3 .............. ${FV3}")
+message("GOCART ........... ${UFS_GOCART}")
 message("MOM6 ............. ${MOM6}")
 message("HYCOM ............ ${HYCOM}")
 message("CICE6 ............ ${CICE6}")
@@ -72,17 +74,6 @@ if(CMAKE_Platform)
     include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/configure_${CMAKE_Platform}.cmake)
   else()
     message("Platform '${CMAKE_Platform}' configuration file does not exist")
-  endif()
-
-  # DH* 20210208 temporary workaround for FMS issues on Cheyenne with GNU 9.1.0
-  if (CMAKE_Platform MATCHES "cheyenne.gnu")
-    message("Applying patch cheyenne_gnu_fms_mpp_util_mpi_inc.patch")
-    execute_process(COMMAND patch -N -p0 INPUT_FILE cheyenne_gnu_fms_mpp_util_mpi_inc.patch
-                    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-                    OUTPUT_FILE ${CMAKE_CURRENT_BINARY_DIR}/cheyenne_gnu_fms_mpp_util_mpi_inc.patch.out
-                    ERROR_FILE  ${CMAKE_CURRENT_BINARY_DIR}/cheyenne_gnu_fms_mpp_util_mpi_inc.patch.err
-                    RESULT_VARIABLE RC)
-    # *DH 20210208
   endif()
 endif()
 
@@ -120,6 +111,14 @@ if(OPENMP)
 endif()
 find_package(NetCDF REQUIRED C Fortran)
 find_package(ESMF MODULE REQUIRED)
+if(FMS)
+  find_package(FMS REQUIRED COMPONENTS R4 R8)
+  if(32BIT)
+    add_library(fms ALIAS FMS::fms_r4)
+  else()
+    add_library(fms ALIAS FMS::fms_r8)
+  endif()
+endif()
 if(CMEPS)
   find_package(PIO REQUIRED COMPONENTS C Fortran STATIC)
 endif()
@@ -141,24 +140,6 @@ find_package(Python 3 REQUIRED COMPONENTS Interpreter)
 message("Found Python: ${Python_EXECUTABLE}")
 
 ###############################################################################
-### FMS
-###############################################################################
-if(FMS)
-  set(GFS_PHYS ON CACHE BOOL "Enable GFS Physics")
-  if(NOT 32BIT)
-    set(64BIT ON CACHE BOOL "Enable 64-bit")
-  endif()
-
-  add_subdirectory(FMS)
-
-  if(32BIT)
-    add_library(fms ALIAS fms_r4)
-  else()
-    add_library(fms ALIAS fms_r8)
-  endif()
-endif(FMS)
-
-###############################################################################
 ### stochastic_physics
 ###############################################################################
 if(STOCH_PHYS)
@@ -173,13 +154,18 @@ if(FV3)
 endif()
 
 ###############################################################################
+### GOCART
+###############################################################################
+if(UFS_GOCART)
+  add_subdirectory(GOCART)
+endif()
+
+###############################################################################
 ### Wave components [WW3]
 ###############################################################################
 if(WW3)
   if(CMAKE_Platform)
-    if(${CMAKE_Platform} STREQUAL "wcoss2")
-      set(WW3_COMP "wcoss_cray")
-    elseif(${CMAKE_Platform} MATCHES "linux*" OR ${CMAKE_Platform} MATCHES "macosx*")
+    if(${CMAKE_Platform} MATCHES "linux*" OR ${CMAKE_Platform} MATCHES "macosx*")
       if (CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
         set(WW3_COMP "gnu")
       elseif (CMAKE_Fortran_COMPILER_ID MATCHES "Intel")
@@ -256,6 +242,12 @@ if(JEDI_DRIVER)
   list(APPEND _ufs_defs_private JEDI_DRIVER=ON)
 endif()
 
+if(UFS_GOCART)
+  add_dependencies(ufs UFS_Aerosols)
+  list(APPEND _ufs_defs_private FRONT_GOCART=Aerosol_Cap)
+  list(APPEND _ufs_libs_public UFS_Aerosols)
+endif()
+
 if(WW3)
   add_dependencies(ufs ww3_nems)
   list(APPEND _ufs_defs_private FRONT_WW3=WMESMFMD)
@@ -311,11 +303,9 @@ if(CMEPS)
 endif()
 
 if(CDEPS)
-  add_dependencies(ufs cdeps::datm)
-  list(APPEND _ufs_defs_private CDEPS-interface/CDEPS
-                                FRONT_CDEPS_DATM=atm_comp_nuopc)
-  include_directories(${CMAKE_CURRENT_BINARY_DIR}/CDEPS-interface/CDEPS/datm)
-  target_link_libraries(ufs PUBLIC cdeps::datm)
+  add_dependencies(ufs cdeps::cdeps)
+  list(APPEND _ufs_defs_private FRONT_CDEPS_DATM=cdeps_datm_comp)
+  target_link_libraries(ufs PUBLIC cdeps::cdeps)
 endif()
 
 target_compile_definitions(ufs PRIVATE "${_ufs_defs_private}")

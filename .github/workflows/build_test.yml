@@ -1,9 +1,8 @@
 name: Pull Request Tests
 on:
-  push:
-    branches: ['develop']
   pull_request:
     branches: ['develop']
+    types: ['labeled']
 env:
   app: Accept:application/vnd.github.v3+json
 
@@ -53,41 +52,11 @@ jobs:
         fi
 
 
-  runcheck:
-    name: Check if run-ci is requested
-    runs-on: ubuntu-20.04
-
-    outputs:
-      cirun: ${{ steps.check.outputs.cirun }}
-
-    steps:
-    - name: Check
-      id: check
-      run: |
-        if [[ ${{github.event_name}} == pull_request ]]; then
-          sha=${{github.event.pull_request.head.sha}}
-          url=$(echo ${{github.event.pull_request.head.repo.git_commits_url}} \
-            | sed "s:{/sha}:/$sha:")
-        elif [[ ${{github.event_name}} == push ]]; then
-          sha=${{github.event.after}}
-          url=$(echo ${{github.event.repository.git_commits_url}} | sed "s:{/sha}:/$sha:")
-        fi
-
-        message="$(curl -sS -H "$app" $url | jq '.message')"
-        echo $message | grep run-ci >/dev/null 2>&1 && d=$? || d=$?
-        if [[ $d -eq 0 ]]; then
-          echo "::set-output name=cirun::yes"
-        elif [[ $d -eq 1 ]]; then
-          echo "::set-output name=cirun::no"
-        fi
-        printf "Commit message is %s\n" "$message"
-
-
   setup:
     name: Configure cases to run
-    needs: [repocheck,runcheck]
+    needs: [repocheck]
     runs-on: ubuntu-20.04
-    if: needs.repocheck.outputs.current == 'yes' && needs.runcheck.outputs.cirun == 'yes'
+    if: needs.repocheck.outputs.current == 'yes' && github.event.label.name == 'run-ci'
 
     outputs:
       bld: ${{ steps.parse.outputs.bld }}
@@ -101,7 +70,7 @@ jobs:
       id: parse
       run: |
         cd ${{ github.workspace }}/tests/ci
-        IFS='|'; parsed_output=( $(./setup.py cases) )
+        IFS='|'; parsed_output=( $(./setup.py) )
         bld_=${parsed_output[0]}
         test_=${parsed_output[1]}
         img_=ci-test-weather
@@ -113,9 +82,7 @@ jobs:
         echo "build set : $bld_"
         echo "test set  : $test_"
         echo "image name: $img_"
-
         echo "repocheck: ${{needs.repocheck.outputs.current}}"
-        echo "runcheck: ${{needs.runcheck.outputs.cirun}}"
 
 
   build:
@@ -144,17 +111,10 @@ jobs:
         sudo docker rmi $(sudo docker image ls | grep -E -m1 '<none>' | awk '{ print $3 }')
         sudo docker rmi $(sudo docker image ls | awk '/ubuntu-hpc/ { print $3 }')
 
-    - name: Prepare artifacts
-      run: |
-        cd tests/ci
-        sudo docker save ${{ needs.setup.outputs.img }} \
-          | gzip >${{ needs.setup.outputs.img }}.tar.gz
-        tar cvjf artifact.tar.bz2 ${{ needs.setup.outputs.img }}.tar.gz ci.sh ci.test
-
     - uses: actions/upload-artifact@v2
       with:
-        name: ${{ matrix.bld_set }}.artifact.tar.bz2
-        path: tests/ci/artifact.tar.bz2
+        name: ${{ matrix.bld_set }}.artifact
+        path: ~/fv3.tar.gz
 
 
   wait:
@@ -195,24 +155,24 @@ jobs:
     steps:
     - name: Clean up in case of left-over files
       run: |
-        rm -f artifact.tar.bz2 ${{ needs.setup.outputs.img }}.tar.gz
+        rm -rf ${{ github.workspace }} && mkdir -p ${{ github.workspace }}
         docker ps -a --filter "name=my-container" | grep my-container >/dev/null 2>&1 \
           && docker rm my-container >/dev/null 2>&1 && d=$? || d=$?
-        docker image ls | grep ${{ needs.setup.outputs.img }} >/dev/null 2>&1 \
-          && docker rmi ${{ needs.setup.outputs.img }} >/dev/null 2>&1 && d=$? || d=$?
+
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
 
     - uses: actions/download-artifact@v2
       with:
-        name: ${{ matrix.artifact }}.artifact.tar.bz2
-
-    - name: Prepare artifacts
-      run: |
-        tar xvjf artifact.tar.bz2 && rm -f artifact.tar.bz2
-        docker load --input ${{ needs.setup.outputs.img }}.tar.gz \
-          && rm -f ${{ needs.setup.outputs.img }}.tar.gz
+        name: ${{ matrix.artifact }}.artifact
+        path: ${{ github.workspace}}/tests
 
     - name: Run utest
-      run: ./ci.sh -n ${{ matrix.name }} -r ${{ matrix.case }}
+      run: |
+        cd ${{ github.workspace }}/tests && tar -xvzf fv3.tar.gz && rm -f fv3.tar.gz
+        cd ${{ github.workspace }}/tests/ci
+        ./ci.sh -n ${{ matrix.name }} -r ${{ matrix.case }}
 
     - uses: actions/upload-artifact@v2
       if: ${{ always() }}
@@ -223,8 +183,5 @@ jobs:
     - name: Clean up
       if: ${{ always() }}
       run: |
-        rm -f ci.sh ci.test
-        docker stop my-container && docker rm  my-container \
-          && docker rmi ${{ needs.setup.outputs.img }}:latest
+        docker stop my-container && docker rm my-container
         docker volume rm DataVolume
-        rm -f memory_stat

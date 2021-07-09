@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-import sys
 import json
 
 
@@ -25,7 +24,7 @@ def main():
 
             if any(e in case for e in ['thr', 'mpi', 'dcp', 'rst']):
                 std = test+'_std'
-                if not bj['bld_set'] or not any(std in e for e in bj['bld_set']):
+                if not bj['bld_set'] or not any(std == e for e in bj['bld_set']):
                     bj['bld_set'].append(std)
                     bj['include'].append(
                         {'bld_set': std, 'name': test, 'case': std[-3:]})
@@ -41,10 +40,7 @@ def main():
             tj['test_set'].append(case)
             tj['include'].append(aj)
 
-    if sys.argv[1] == "cases":
-        print(json.dumps(bj), "|", json.dumps(tj))
-    elif sys.argv[1] == "no_builds":
-        print(len(bj['bld_set']))
+    print(json.dumps(bj), "|", json.dumps(tj))
 
 
 if __name__ == '__main__':
