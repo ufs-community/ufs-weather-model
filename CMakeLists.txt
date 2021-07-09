@@ -202,7 +202,7 @@ endif()
 ### Data Components [NEMSdatm, CDEPS]
 ###############################################################################
 if(NEMSdatm)
-  add_subdirectory(DATM)
+  add_subdirectory(DATM/DATM)
 endif()
 
 if(CDEPS)
