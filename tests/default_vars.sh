@@ -474,6 +474,7 @@ export EFFR_IN=.F.
 # Thompson MP
 export LRADAR=.T.
 export LTAEROSOL=.T.
+export EXT_DIAG_THOMPSON=.F.
 
 # GWD
 export LDIAG_UGWP=.F.
