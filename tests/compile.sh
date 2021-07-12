@@ -48,6 +48,8 @@ if [[ $MACHINE_ID == cheyenne.* ]] ; then
     BUILD_JOBS=${BUILD_JOBS:-3}
 elif [[ $MACHINE_ID == wcoss_dell_p3 ]] ; then
     BUILD_JOBS=${BUILD_JOBS:-1}
+    . $MODULESHOME/init/sh
+    module purge
 fi
 
 BUILD_JOBS=${BUILD_JOBS:-8}
