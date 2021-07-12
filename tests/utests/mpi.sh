@@ -22,8 +22,3 @@ fi
 
 (test $CI_TEST == 'true') && source $PATHRT/utests/cmp_proc_bind.sh
 source $PATHRT/utests/wrt_env.sh
-
-cat <<EOF >>${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
-export WRITE_GROUP=${WRITE_GROUP}
-export WRTTASK_PER_GROUP=${WRTTASK_PER_GROUP}
-EOF
