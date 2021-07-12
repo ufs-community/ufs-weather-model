@@ -1,0 +1,49 @@
+###############################################################################
+#
+#  Global control with Thompson debug test with extended diagnostics
+#
+###############################################################################
+
+export TEST_DESCR="Compare global control Thompson debug results with extended diagnostics with previous trunk version"
+
+export CNTL_DIR=control_thompson_debug_extdiag
+
+export LIST_FILES="sfcf000.nc \
+                   sfcf001.nc \
+                   atmf000.nc \
+                   atmf001.nc"
+
+export_fv3
+export NPZ=127
+export NPZP=128
+export DT_ATMOS=600
+export SYEAR=2021
+export SMONTH=03
+export SDAY=22
+export SHOUR=06
+export OUTPUT_GRID='gaussian_grid'
+export NSTF_NAME='2,0,0,0,0'
+export FHMAX=1
+
+export IMP_PHYSICS=8
+export DNATS=0
+export DO_SAT_ADJ=.F.
+export LRADAR=.T.
+export LTAEROSOL=.T.
+export EXT_DIAG_THOMPSON=.T.
+export HYBEDMF=.F.
+export SATMEDMF=.T.
+export DO_MYNNEDMF=.F.
+export IMFSHALCNV=2
+export IMFDEEPCNV=2
+export IAER=5111
+export ICLIQ_SW=2
+export IOVR=3
+export LHEATSTRG=.T.
+export DO_TOFD=.T.
+
+export NEW_DIAGTABLE='diag_table_gfsv16_thompson_extdiag'
+
+export FV3_RUN=control_run.IN
+export CCPP_SUITE=FV3_GFS_v16_thompson
+export INPUT_NML=control_thompson.nml.IN
