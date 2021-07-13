@@ -4,8 +4,13 @@ if [[ $application == 'global' ]]; then
   if [[ $CI_TEST == 'true' ]]; then
     INPES=3
     JNPES=2
+    WRITE_GROUP=1
+    WRTTASK_PER_GROUP=12
     TASKS=$((INPES*JNPES*6 + WRITE_GROUP*WRTTASK_PER_GROUP))
     RESTART_INTERVAL=$((FHMAX/2))
+    NFHOUT=6
+    NFHMAX_HF=-1
+    NFHOUT_HF=-1
   fi
 elif [[ $application == 'regional' ]]; then
   if [[ $CI_TEST == 'true' ]]; then
@@ -23,6 +28,8 @@ elif [[ $application == 'cpld' ]]; then
     ocn_petlist_bounds="30 39"
     ice_petlist_bounds="40 45"
     TASKS=$((INPES*JNPES*6 + WRITE_GROUP*WRTTASK_PER_GROUP + 10 + 6))
+    RESTART_INTERVAL=12
+    RESTART_N=${RESTART_INTERVAL}
   fi
 fi
 
