@@ -1,0 +1,38 @@
+###############################################
+#
+#  Global with ugwpv1 and gsldrag
+#
+###############################################
+
+export TEST_DESCR="Compare global control with ugwpv1 and gsldrag with previous trunk version"
+
+export CNTL_DIR=control_ugwpv1
+
+export LIST_FILES="sfcf000.nc \
+                   sfcf024.nc \
+                   atmf000.nc \
+                   atmf024.nc \
+                   GFSFLX.GrbF00 \
+                   GFSFLX.GrbF24 \
+                   GFSPRS.GrbF00 \
+                   GFSPRS.GrbF24"
+
+export_fv3
+export NPZ=127
+export NPZP=128
+export DT_ATMOS=600
+export SYEAR=2021
+export SMONTH=03
+export SDAY=22
+export SHOUR=06
+export OUTPUT_GRID='gaussian_grid'
+export NSTF_NAME='2,0,0,0,0'
+export WRITE_DOPOST=.true.
+export IAER=5111
+
+export WLCLK=30
+export DO_UGWP_V1=.T.
+
+export FV3_RUN=control_run.IN
+export CCPP_SUITE=FV3_GFS_v16_ugwpv1
+export INPUT_NML=control_ugwpv1.nml.IN
