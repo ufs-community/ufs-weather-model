@@ -101,8 +101,6 @@ export NPZP=128
 export PSM_BC=1
 export DDDMP=0.2
 export NSTF_NAME=2,1,0,0,0
-export CPLWAV='.T.'
-export CPLWAV2ATM='.T.'
 
 # P7 settings
 export IALB=2
@@ -114,9 +112,8 @@ export IOPT_RAD=3
 export IOPT_ALB=1
 export IOPT_STC=3
 
-# P7b
-export IAER=1011
-export DO_UGWP_V1=".true."
+export CPLWAV='.T.'
+export CPLWAV2ATM='.T.'
 
 # resolution dependent files
 export MOM_INPUT="MOM_input_template_${OCNRES}"
@@ -142,16 +139,21 @@ export LANDICE=".false."
 
 export OZ_PHYS_NEW=".T."
 
+# P7b
+export IAER=1011
+export DO_UGWP_V1=".true."
+export KTHERM=2
+export TFREEZE_OPTION='mushy'
+
 export MOM6_USE_WAVES='True'
 export MOM6_RIVER_RUNOFF='True'
 export MOM6_RESTART_SETTING="r"
 export MOM6_REPRO_LA='True'
 
 export RUNID="cpcice"
-export KTHERM=2
-export TFREEZE_OPTION='mushy'
 
-export ww3gline="'gwes_30m' 'no' 'CPL:native' 'CPL:native' 'CPL:native' 'no' 'no' 'no'   1  1  0.00 1.00  F"
+export ww3gline="'gwes_30m' 'no' 'CPL:native' 'CPL:native' 'CPL:native' 'no' 'no' 'no' 'no' 'no'  1  1  0.00 1.00  F"
+export WW3RSTDTHR=${FHMAX}
 
 export INPUT_NML=input.benchmark_v16_p7b.nml.IN
 

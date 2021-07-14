@@ -5,8 +5,8 @@ export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system - C384L127 
 
 export CNTL_DIR="cpld_bmark_wave_v16_p7b"
 
-export LIST_FILES="phyf006.nc \
-                   dynf006.nc \
+export LIST_FILES="sfcf006.nc \
+                   atmf006.nc \
                    20130401.060000.out_grd.gwes_30m \
                    20130401.060000.out_pnt.points \
                    RESTART/coupler.res \
@@ -147,8 +147,11 @@ export LANDICE=".false."
 
 export OZ_PHYS_NEW=".T."
 
+# P7b
 export IAER=1011
 export DO_UGWP_V1=".true."
+export KTHERM=2
+export TFREEZE_OPTION='mushy'
 
 export MOM6_USE_WAVES='True'
 export MOM6_RIVER_RUNOFF='True'
@@ -157,7 +160,8 @@ export MOM6_REPRO_LA='True'
 
 export RUNID="cpcice"
 
-export ww3gline="'gwes_30m' 'no' 'CPL:native' 'CPL:native' 'CPL:native' 'no' 'no' 'no'   1  1  0.00 1.00  F"
+export ww3gline="'gwes_30m' 'no' 'CPL:native' 'CPL:native' 'CPL:native' 'no' 'no' 'no' 'no' 'no'  1  1  0.00 1.00  F"
+export WW3RSTDTHR=${FHMAX}
 
 export INPUT_NML=input.benchmark_v16_p7b.nml.IN
 
