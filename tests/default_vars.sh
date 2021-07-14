@@ -513,7 +513,9 @@ export IMFSHALCNV=2
 export HWRF_SAMFSHAL=.F.
 export IMFDEEPCNV=2
 export HWRF_SAMFDEEP=.F.
-export RAS=.F.
+export RAS=.false.
+export RANDOM_CLDS=.false.
+export CNVCLD=.true.
 
 # Aerosol convective scavenging
 export FSCAV_AERO="'*:0.0'"
