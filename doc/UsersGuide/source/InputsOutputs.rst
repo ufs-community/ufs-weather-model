@@ -184,9 +184,15 @@ The static input files for global configurations are listed and described in :nu
 
    * - Filename
      - Description
-   * -
-     -
-     
+   * - runoff.daitren.clim.1440x1080.v20180328.nc
+     - climatological runoff
+   * - seawifs-clim-1997-2010.1440x1080.v20180328.nc
+     - climatological chlorophyll concentration in sea water
+   * - tidal_amplitude.v20140616.nc
+     - climatological tide amplitude
+   * - geothermal_davies2013_v1.nc
+     - climatological geothermal heat flow
+
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Grid description and initial condition files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -204,8 +210,35 @@ The input files containing grid information and the initial conditions for globa
    * - Filename
      - Description
      - Date-dependent
-   * -
+   * - ocean_hgrid.nc
+     - horizonal grid information
      -
+   * - ocean_mosaic.nc
+     - specify horizonal starting and ending points index
+     -
+   * - ocean_topog.nc
+     - ocean topography
+     -
+   * - ocean_mask.nc
+     - lans/sea mask
+     -
+   * - hycom1_75_800m.nc 
+     - vertical coordinate level thickness
+     -
+   * - layer_coord.nc
+     - vertical layer target potential density
+     -
+   * - All_edits.nc
+     - specify grid points where topography are manually modified to adjust throughflow strength for narrow channels
+     -
+   * - MOM_channels_global_025
+     - specifies restricted channel widths
+     -
+   * - interpolate_zgrid_40L.nc
+     - specify target depth for output
+     -
+   * - MOM.res*nc
+     - ocean initial conditions
      -
 
 -------
