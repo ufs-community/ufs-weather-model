@@ -74,14 +74,14 @@ if [ $BUILD = "true" ]; then
 
 elif [ $RUN == "true" ]; then
 
-  docker run -d --rm -v DataVolume:/tmp minsukjinoaa/input-data:20210528 \
-    && docker rmi -f minsukjinoaa/input-data:20210528
+  docker volume rm -f DataVolume >/dev/null &&
+    docker run -d --rm -v DataVolume:/tmp minsukjinoaa/input-data:20210528
 
   docker create -u builder -e "CI_TEST=true" -e "USER=builder" \
                 -e "RT_MACHINE=linux.gnu" -e "RT_COMPILER=gnu" \
                 -w "/home/builder/ufs-weather-model/tests" \
                 -v DataVolume:/home/builder/data/NEMSfv3gfs/input-data-20210528 \
-                --shm-size=512m --name my-container noaaemc/ubuntu-hpc:v1.3b \
+                --shm-size=512m --name my-container noaaemc/ubuntu-hpc:v1.4b \
                 /bin/bash -c "./utest -n ${TEST_NAME} -c ${TEST_CASE} -x"
 
   cd $GITHUB_WORKSPACE
