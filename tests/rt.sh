@@ -194,7 +194,7 @@ elif [[ $MACHINE_ID = wcoss2 ]]; then
   #ECFLOW_START=${ECF_ROOT}/intel/bin/ecflow_start.sh
   #ECF_PORT=$(grep $USER /usrx/local/sys/ecflow/assigned_ports.txt | awk '{print $2}')
 
-  DISKNM=/lfs/h1/emc/ptmp/Dusan.Jovic/RT
+  DISKNM=/lfs/h1/emc/ptmp/${USER}/RT
   QUEUE=workq
   COMPILE_QUEUE=workq
   PARTITION=
