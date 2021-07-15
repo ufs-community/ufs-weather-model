@@ -79,16 +79,14 @@ build_utests() {
         MAKE_OPT=$base_opt
         ;;
       bit)
-        if [[ $base_opt =~ "32BIT=Y" ]]; then
-          MAKE_OPT=$(echo $base_opt | sed -e 's/32BIT=Y/32BIT=N/')
-        elif [[ ${base_opt} =~ "32BIT=N" ]]; then
-          MAKE_OPT=$(echo $base_opt | sed -e 's/32BIT=N/32BIT=Y/')
+        if [[ $base_opt =~ "-D32BIT=ON" ]]; then
+          MAKE_OPT=$(echo $base_opt | sed -e 's/-D32BIT=ON//')
         else
-          MAKE_OPT="$base_opt 32BIT=Y"
+          MAKE_OPT="$base_opt -D32BIT=ON"
         fi
         ;;
       dbg)
-        MAKE_OPT="$base_opt 32BIT=Y DEBUG=Y"
+        MAKE_OPT="$base_opt -DDEBUG=ON"
         ;;
     esac
     MAKE_OPT=$(echo $MAKE_OPT | sed -e 's/^ *//' -e 's/ *$//')
