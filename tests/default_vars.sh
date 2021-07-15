@@ -473,6 +473,7 @@ export EFFR_IN=.F.
 # Thompson MP
 export LRADAR=.T.
 export LTAEROSOL=.T.
+export EXT_DIAG_THOMPSON=.F.
 
 # GWD
 export LDIAG_UGWP=.F.
@@ -512,7 +513,12 @@ export IMFSHALCNV=2
 export HWRF_SAMFSHAL=.F.
 export IMFDEEPCNV=2
 export HWRF_SAMFDEEP=.F.
-export RAS=.F.
+export RAS=.false.
+export RANDOM_CLDS=.false.
+export CNVCLD=.true.
+
+# Aerosol convective scavenging
+export FSCAV_AERO="'*:0.0'"
 
 # SFC
 export DO_MYJSFC=.F.
@@ -533,6 +539,7 @@ export H2O_PHYS=.F.
 
 
 export CPL=.F.
+export CPLCHM=.F.
 export CPLFLX=.F.
 export CPLWAV=.F.
 export CPLWAV2ATM=.F.
