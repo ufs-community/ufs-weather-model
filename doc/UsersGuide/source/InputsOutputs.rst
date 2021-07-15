@@ -329,13 +329,35 @@ CDEPS
 Static datasets (i.e., *fix files*)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. todo:: Information needed
+No fix files are required for CDEPS
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Grid description and initial condition files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The input files containing grid information and the time-varying forcing files for global configurations are listed and described in :numref:`Table %s <CDEPS_Files>`.
 
-.. todo:: Information needed
+.. _CDEPS_Files:
+
+.. list-table:: *Input files containing grid information and forcing files for global configurations*
+   :widths: 35 50 15
+   :header-rows: 1
+
+   * - Filename
+     - Description
+     - Date-dependent
+   * - cfsr_mesh.nc
+     - ESMF mesh file for CFSR data source
+     -
+   * - gefs_mesh.nc
+     - ESMF mesh file for GEFS data source
+     -
+   * - cfsr.YYYYMMM.nc
+     - CFSR forcing file for year YYYY and month MM
+     - ✔
+   * - gefs.YYYYMMM.nc
+     - GEFS forcing file for year YYYY and month MM
+     - ✔
+
 
 ==========================
 Model configuration files
@@ -348,6 +370,8 @@ The configuration files used by the UFS Weather Model are listed here and descri
 - *model_configure*
 - *nems.configure*
 - *suite_[suite_name].xml* (used only at build time)
+- *datm.streams* (used by cdeps)
+- *datm_in* (used by cdeps)
 
 While the *input.nml* file is also a configuration file used by the UFS Weather Model, it is described in
 :numref:`Section %s <InputNML>`.  The run-time configuration of model output fields is controlled by the combination of *diag_table* and *model_configure*, and is described in detail in :numref:`Section %s <OutputFiles>`.
@@ -959,6 +983,129 @@ For the fully coupled S2SW application, a sample *nems.configure* is shown below
 	      use_mommesh = true
 	::
 
+
+For the coupled MOM6_CICE6_CDEPS_DATM application, a sample *nems.configure* is shown below :
+
+.. code-block:: console
+
+	# EARTH #
+	EARTH_component_list: MED ATM OCN ICE
+	EARTH_attributes::
+	  Verbosity = 0
+	::
+
+	# MED #
+	MED_model:                      cmeps
+	MED_petlist_bounds:             0 11
+	  Verbosity = 5
+	  dbug_flag = 5
+
+	::
+
+	# ATM #
+	ATM_model:                      datm
+	ATM_petlist_bounds:             0 11
+	ATM_attributes::
+	  Verbosity = 0
+	  DumpFields = false
+	  mesh_atm  = DATM_INPUT/cfsr_mesh.nc
+	  diro = "."
+	  logfile = atm.log
+	::
+
+	# OCN #
+	OCN_model:                      mom6
+	OCN_petlist_bounds:             12 27
+	OCN_attributes::
+	  Verbosity = 0
+	  DumpFields = false
+	  ProfileMemory = false
+	  OverwriteSlice = true
+	  mesh_ocn = mesh.mx100.nc
+	::
+
+	# ICE #
+	ICE_model:                      cice6
+	ICE_petlist_bounds:             28 39
+	ICE_attributes::
+	  Verbosity = 0
+	  DumpFields = false
+	  ProfileMemory = false
+	  OverwriteSlice = true
+	  mesh_ice = mesh.mx100.nc
+	  stop_n = 12
+	  stop_option = nhours
+	  stop_ymd = -999
+	::
+
+	# CMEPS concurrent warm run sequence
+
+	runSeq::
+	@3600
+	   MED med_phases_prep_ocn_avg
+	   MED -> OCN :remapMethod=redist
+	   OCN
+	   @900
+	     MED med_phases_prep_ice
+	     MED -> ICE :remapMethod=redist
+	     ATM
+	     ICE
+	     ATM -> MED :remapMethod=redist
+	     MED med_phases_post_atm
+	     ICE -> MED :remapMethod=redist
+	     MED med_phases_post_ice
+	     MED med_phases_aofluxes_run
+	     MED med_phases_prep_ocn_accum
+	   @
+	   OCN -> MED :remapMethod=redist
+	   MED med_phases_post_ocn
+	   MED med_phases_restart_write
+	@
+	::
+
+	# CMEPS variables
+
+	DRIVER_attributes::
+	      mediator_read_restart = false
+	::
+	MED_attributes::
+	      ATM_model = datm
+	      ICE_model = cice6
+	      OCN_model = mom6
+	      history_n = 1
+	      history_option = nhours
+	      history_ymd = -999
+	      coupling_mode = nems_orig_data
+	::
+	ALLCOMP_attributes::
+	      ScalarFieldCount = 3
+	      ScalarFieldIdxGridNX = 1
+	      ScalarFieldIdxGridNY = 2
+	      ScalarFieldIdxNextSwCday = 3
+	      ScalarFieldName = cpl_scalars
+	      start_type = startup
+	      restart_dir = RESTART/
+	      case_name = DATM_CFSR
+	      restart_n = 12
+	      restart_option = nhours
+	      restart_ymd = -999
+	      dbug_flag = 0
+	      use_coldstart = false
+	      use_mommesh = true
+	      coldair_outbreak_mod = .false.
+	      flds_wiso = .false.
+	      flux_convergence = 0.0
+	      flux_max_iteration = 2
+	      ocn_surface_flux_scheme = 0
+	      orb_eccen = 1.e36
+	      orb_iyear = 2000
+	      orb_iyear_align = 2000
+	      orb_mode = fixed_year
+	      orb_mvelp = 1.e36
+	      orb_obliq = 1.e36
+	::
+
+
 ---------------------------------------
 *The SDF (Suite Definition File) file*
 ---------------------------------------
@@ -968,6 +1115,120 @@ There are two SDFs currently supported for the UFS Short Range Weather App confi
 
 Detailed descriptions of the supported suites can be found with the `CCPP v5.0.0 Scientific Documentation <https://dtcenter.ucar.edu/GMTB/v5.0.0/sci_doc/>`_.
 
+---------------------------------------
+*datm.streams*
+---------------------------------------
+A data stream is a time series of input forcing files. A data stream configuration file (datm.streams) describes the information about those input forcing files.
+
+.. list-table:: *Parameters that can be set in a data stream configuration file at run-time.*
+   :widths: 20 30
+   :header-rows: 1
+
+   * - Parameter
+     - Meaning
+   * - taxmode01
+     - time axis mode
+   * - mapalgo01
+     - type of spatial mapping (default=bilinear)
+   * - tInterpAlgo01
+     - time interpolation algorithm option
+   * - readMode01
+     - number of forcing files to read in (current option is single)
+   * - dtimit01
+     - ratio of max/min stream delta times (default=1.0. For monthly data, the ratio is 31/28.)
+   * - stream_offset01
+     - shift of the time axis of a data stream in seconds (Positive offset advances the time axis forward.)
+   * - yearFirst01
+     - the first year of the stream data
+   * - yearLast01
+     - the last year of the stream data
+   * - yearAlign01
+     - the simulation year corresponding to yearFirst01
+   * - stream_vectors01
+     - the paired vector field names
+   * - stream_mesh_file01
+     - stream mesh file name
+   * - stream_lev_dimname01
+     - name of vertical dimension in data stream
+   * - stream_data_files01
+     - input forcing file names
+   * - stream_data_variables01
+     - a paired list with the name of the variable used in the file on the left and the name of the Fortran variable on the right
+
+A sample of the data stream file is shown below:
+
+.. code-block:: console
+
+  stream_info:               cfsr.01
+  taxmode01:                 cycle
+  mapalgo01:                 bilinear
+  tInterpAlgo01:             linear
+  readMode01:                single
+  dtlimit01:                 1.0
+  stream_offset01:           0
+  yearFirst01:               2011
+  yearLast01:                2011
+  yearAlign01:               2011
+  stream_vectors01:          "u:v"
+  stream_mesh_file01:        DATM_INPUT/cfsr_mesh.nc
+  stream_lev_dimname01:      null
+  stream_data_files01:       DATM_INPUT/cfsr.201110.nc
+  stream_data_variables01:  "slmsksfc Sa_mask" "DSWRF Faxa_swdn" "DLWRF Faxa_lwdn" "vbdsf_ave Faxa_swvdr" "vddsf_ave Faxa_swvdf" "nbdsf_ave Faxa_swndr" "nddsf_ave Faxa_swndf" "u10m Sa_u10m" "v10m Sa_v10m" "hgt_hyblev1 Sa_z" "psurf Sa_pslv" "tmp_hyblev1 Sa_tbot" "spfh_hyblev1 Sa_shum" "ugrd_hyblev1 Sa_u" "vgrd_hyblev1 Sa_v" "q2m Sa_q2m" "t2m Sa_t2m" "pres_hyblev1 Sa_pbot" "precp Faxa_rain" "fprecp Faxa_snow"
+
+
+---------------------------------------
+*datm_in*
+---------------------------------------
+
+.. list-table:: *Parameters that can be set in a data stream namelist file (datm_in) at run-time.*
+   :widths: 20 30
+   :header-rows: 1
+
+   * - Parameter
+     - Meaning
+   * - datamode
+     - data mode (such as CFSR, GEFS, etc.)
+   * - factorfn_data
+     - file containing correction factor for input data
+   * - factorfn_mesh
+     - file containing correction factor for input mesh
+   * - flds_co2
+     - if true, prescribed co2 data is sent to the mediator
+   * - flds_presaero
+     - if true, prescribed aerosol data is sent to the mediator
+   * - flds_wiso
+     - if true, water isotopes data is sent to the mediator
+   * - iradsw
+     - the frequency to update the shortwave radiation in number of steps (or hours if negative)
+   * - model_maskfile
+     - data stream mask file name
+   * - model_meshfile
+     - data stream mesh file name
+   * - nx_global 
+     - number of grid points in zonal direction 
+   * - ny_global 
+     - number of grid points in meridional direction 
+   * - restfilm
+     - model restart file namelist
+
+A sample of the data stream namelist file is shown below:
+
+.. code-block:: console
+
+  &datm_nml
+  datamode = "CFSR"
+  factorfn_data = "null"
+  factorfn_mesh = "null"
+  flds_co2 = .false.
+  flds_presaero = .false.
+  flds_wiso = .false.
+  iradsw = 1
+  model_maskfile = "DATM_INPUT/cfsr_mesh.nc"
+  model_meshfile = "DATM_INPUT/cfsr_mesh.nc"
+  nx_global = 1760
+  ny_global = 880
+  restfilm = "null"
+  /
 
 .. -------------------------------------------------------------------
 .. Include InputNML file describing the contents of the input.nml file
