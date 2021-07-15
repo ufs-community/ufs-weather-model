@@ -172,7 +172,6 @@ MOM6
 Static datasets (i.e., *fix files*)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-
 The static input files for global configurations are listed and described in :numref:`Table %s <MOM6_FixFiles>`.
 
 .. _MOM6_FixFiles:
@@ -211,6 +210,7 @@ The static input files for global configurations are listed and described in :nu
    * - KH_background_2d.nc
      - climatological 2-d background harmonic viscosities
      - 1.00
+
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Grid description and initial condition files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -220,7 +220,7 @@ The input files containing grid information and the initial conditions for globa
 .. _MOM6_GridICFiles:
 
 .. list-table:: *Input files containing grid information and initial conditions for global configurations*
-   :widths: 35 35 25 15 
+   :widths: 10 35 10 5
    :header-rows: 1
    
    * - Filename
@@ -274,11 +274,12 @@ The input files containing grid information and the initial conditions for globa
    * - MOM.res*nc
      - ocean initial conditions (from CPC ocean DA)
      - 0.25
-     -
+     - ✔
    * - MOM6_IC_TS.nc
      - ocean temperature and salinity initial conditions (from CFSR)
      - 1.00, 0.50, 0.25
-     -
+     - ✔
+
 -------
 CICE6
 -------
