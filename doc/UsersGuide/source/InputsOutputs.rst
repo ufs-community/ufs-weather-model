@@ -172,75 +172,113 @@ MOM6
 Static datasets (i.e., *fix files*)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. todo:: Information needed
 
 The static input files for global configurations are listed and described in :numref:`Table %s <MOM6_FixFiles>`.
 
 .. _MOM6_FixFiles:
 
 .. list-table:: *Fix files containing climatological information*
-   :widths: 40 50
+   :widths: 40 50 15
    :header-rows: 1
 
    * - Filename
      - Description
+     - Used in resolution
    * - runoff.daitren.clim.1440x1080.v20180328.nc
      - climatological runoff
+     - 0.25
+   * - runoff.daitren.clim.720x576.v20180328.nc
+     - climatological runoff
+     - 0.50
    * - seawifs-clim-1997-2010.1440x1080.v20180328.nc
      - climatological chlorophyll concentration in sea water
+     - 0.25
+   * - seawifs-clim-1997-2010.720x576.v20180328.nc
+     - climatological chlorophyll concentration in sea water
+     - 0.50
+   * - seawifs_1998-2006_smoothed_2X.nc
+     - climatological chlorophyll concentration in sea water
+     - 1.00
    * - tidal_amplitude.v20140616.nc
      - climatological tide amplitude
+     - 0.25
+   * - tidal_amplitude.nc
+     - climatological tide amplitude
+     - 0.50, 1.00
    * - geothermal_davies2013_v1.nc
      - climatological geothermal heat flow
-
+     - 0.50, 0.25
+   * - KH_background_2d.nc
+     - climatological 2-d background harmonic viscosities
+     - 1.00
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Grid description and initial condition files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. todo:: Information needed
 
 The input files containing grid information and the initial conditions for global configurations are listed and described in :numref:`Table %s <MOM6_GridICFiles>`.
 
 .. _MOM6_GridICFiles:
 
 .. list-table:: *Input files containing grid information and initial conditions for global configurations*
-   :widths: 35 50 15
+   :widths: 35 35 25 15 
    :header-rows: 1
    
    * - Filename
      - Description
+     - Valid RES options
      - Date-dependent
    * - ocean_hgrid.nc
      - horizonal grid information
+     - 1.00, 0.50, 0.25
      -
    * - ocean_mosaic.nc
      - specify horizonal starting and ending points index
+     - 1.00, 0.50, 0.25
      -
    * - ocean_topog.nc
      - ocean topography
+     - 1.00, 0.50, 0.25
      -
    * - ocean_mask.nc
      - lans/sea mask
+     - 1.00, 0.50, 0.25
      -
-   * - hycom1_75_800m.nc 
+   * - hycom1_75_800m.nc
      - vertical coordinate level thickness
+     - 1.00, 0.50, 0.25
      -
    * - layer_coord.nc
      - vertical layer target potential density
+     - 1.00, 0.50, 0.25
      -
    * - All_edits.nc
      - specify grid points where topography are manually modified to adjust throughflow strength for narrow channels
+     - 0.25
+     -
+   * - topo_edits_011818.nc
+     - specify grid points where topography are manually modified to adjust throughflow strength for narrow channels
+     - 1.00
      -
    * - MOM_channels_global_025
      - specifies restricted channel widths
+     - 0.50, 0.25
+     -
+   * - MOM_channel_SPEAR
+     - specifies restricted channel widths
+     - 1.00
      -
    * - interpolate_zgrid_40L.nc
      - specify target depth for output
+     - 1.00, 0.50, 0.25
      -
    * - MOM.res*nc
-     - ocean initial conditions
+     - ocean initial conditions (from CPC ocean DA)
+     - 0.25
      -
-
+   * - MOM6_IC_TS.nc
+     - ocean temperature and salinity initial conditions (from CFSR)
+     - 1.00, 0.50, 0.25
+     -
 -------
 CICE6
 -------
