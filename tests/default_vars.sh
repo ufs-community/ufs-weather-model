@@ -468,6 +468,7 @@ export NWAT=6
 export DNATS=1
 export DO_SAT_ADJ=.T.
 export LHEATSTRG=.F.
+export LSEASPRAY=.F.
 export LGFDLMPRAD=.F.
 export EFFR_IN=.F.
 # Thompson MP
