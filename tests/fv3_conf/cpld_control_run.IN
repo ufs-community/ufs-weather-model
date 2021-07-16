@@ -27,14 +27,8 @@ cp    @[INPUTDATA_ROOT]/${FV3_DIR}/*grb .
 cp    @[INPUTDATA_ROOT]/${FV3_DIR}/@[FIELD_TABLE] ./field_table
 cp    @[INPUTDATA_ROOT]/CPL_FIX/a@[ATMRES]o@[OCNRES]/grid_spec.nc ./INPUT
 cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/@[ATMRES]_grid*.nc ./INPUT
-# NOTE: No L127 FV3_DIR for non-frac grid input except for C96
-if [ ${FRAC_GRID_INPUT} = .F. ]; then
-  cp  @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/oro_data*.nc ./INPUT
-  cp  @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/gfs_ctrl.nc ./INPUT
-else
   cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES]_L@[NPZ].mx@[OCNRES]_frac/oro_data*.nc ./INPUT
   cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES]_L@[NPZ].mx@[OCNRES]_frac/gfs_ctrl.nc ./INPUT
-fi
 cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/grid_spec.nc ./INPUT/@[ATMRES]_mosaic.nc
 
 # MOM6 fixed input
@@ -55,13 +49,8 @@ SUFFIX=${RT_SUFFIX}
 # No restart
 if [ $WARM_START = .F. ]; then
   # ICs
-  if [ ${FRAC_GRID_INPUT} = .F. ]; then
-   cp  @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/sfc_data*.nc ./INPUT
-   cp  @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/gfs_data*.nc ./INPUT
-  else
-   cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES]_L@[NPZ].mx@[OCNRES]_frac/sfc_data*.nc ./INPUT
-   cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES]_L@[NPZ].mx@[OCNRES]_frac/gfs_data*.nc ./INPUT
-  fi
+  cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES]_L@[NPZ].mx@[OCNRES]_frac/sfc_data*.nc ./INPUT
+  cp  @[INPUTDATA_ROOT]/FV3_input_frac/@[ATMRES]_L@[NPZ].mx@[OCNRES]_frac/gfs_data*.nc ./INPUT
   cp  @[INPUTDATA_ROOT]/MOM6_IC/MOM*.nc ./INPUT
   cp  @[INPUTDATA_ROOT]/CICE_IC/@[OCNRES]/cice_model_@[ICERES].res_2016100300.nc ./cice_model.res.nc
 
