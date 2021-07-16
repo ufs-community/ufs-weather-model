@@ -1,36 +1,37 @@
 ###############################################################################
 #
-#  Global control with ras debug test
+#  Global control with lseaspray test
 #
 ###############################################################################
 
-export TEST_DESCR="Compare global control with ras debug results with previous trunk version"
+export TEST_DESCR="Compare global control with lseaspray results with previous trunk version"
 
-export CNTL_DIR=control_ras_debug
+export CNTL_DIR=control_lseaspray
 
 export LIST_FILES="sfcf000.nc \
-                   sfcf001.nc \
+                   sfcf024.nc \
                    atmf000.nc \
-                   atmf001.nc"
+                   atmf024.nc \
+                   GFSFLX.GrbF00 \
+                   GFSFLX.GrbF24 \
+                   GFSPRS.GrbF00 \
+                   GFSPRS.GrbF24"
 
 export_fv3
 export NPZ=127
 export NPZP=128
-export DT_ATMOS=720
+export DT_ATMOS=600
 export SYEAR=2021
 export SMONTH=03
 export SDAY=22
 export SHOUR=06
-export FHMAX=1
 export OUTPUT_GRID='gaussian_grid'
 export NSTF_NAME='2,0,0,0,0'
+export WRITE_DOPOST=.true.
 export IAER=5111
 
-export RAS=.T.
-export IMFDEEPCNV=-1
-export CNVCLD=.F.
-export RANDOM_CLDS=.T.
+export LSEASPRAY=.T.
 
 export FV3_RUN=control_run.IN
-export CCPP_SUITE=FV3_GFS_v16_ras
+export CCPP_SUITE=FV3_GFS_v16
 export INPUT_NML=control.nml.IN
