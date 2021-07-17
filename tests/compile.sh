@@ -48,6 +48,7 @@ if [[ $MACHINE_ID == cheyenne.* ]] ; then
     BUILD_JOBS=${BUILD_JOBS:-3}
 elif [[ $MACHINE_ID == wcoss_dell_p3 ]] ; then
     BUILD_JOBS=${BUILD_JOBS:-1}
+    source $PATHTR/NEMS/src/conf/module-setup.sh.inc
 fi
 
 BUILD_JOBS=${BUILD_JOBS:-8}

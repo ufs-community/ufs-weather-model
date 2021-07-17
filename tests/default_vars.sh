@@ -470,6 +470,7 @@ export NWAT=6
 export DNATS=1
 export DO_SAT_ADJ=.T.
 export LHEATSTRG=.F.
+export LSEASPRAY=.F.
 export LGFDLMPRAD=.F.
 export EFFR_IN=.F.
 # Thompson MP
@@ -515,7 +516,9 @@ export IMFSHALCNV=2
 export HWRF_SAMFSHAL=.F.
 export IMFDEEPCNV=2
 export HWRF_SAMFDEEP=.F.
-export RAS=.F.
+export RAS=.false.
+export RANDOM_CLDS=.false.
+export CNVCLD=.true.
 
 # Aerosol convective scavenging
 export FSCAV_AERO="'*:0.0'"
