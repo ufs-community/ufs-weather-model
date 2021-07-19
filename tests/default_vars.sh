@@ -411,8 +411,10 @@ export_fv3 ()
 {
 export FV3=true
 export S2S=false
+export HAFS=false
 export DATM_NEMS=false
 export DATM_CDEPS=false
+export DOCN_CDEPS=false
 export THRD=1
 export WLCLK=$WLCLK_dflt
 export POSTAPP='global'
@@ -468,6 +470,7 @@ export NWAT=6
 export DNATS=1
 export DO_SAT_ADJ=.T.
 export LHEATSTRG=.F.
+export LSEASPRAY=.F.
 export LGFDLMPRAD=.F.
 export EFFR_IN=.F.
 # Thompson MP
@@ -513,7 +516,9 @@ export IMFSHALCNV=2
 export HWRF_SAMFSHAL=.F.
 export IMFDEEPCNV=2
 export HWRF_SAMFDEEP=.F.
-export RAS=.F.
+export RAS=.false.
+export RANDOM_CLDS=.false.
+export CNVCLD=.true.
 
 # Aerosol convective scavenging
 export FSCAV_AERO="'*:0.0'"
@@ -619,8 +624,10 @@ export_cpl ()
 {
 export FV3=true
 export S2S=true
+export HAFS=false
 export DATM_NEMS=false
 export DATM_CDEPS=false
+export DOCN_CDEPS=false
 
 export DAYS="1"
 export FHMAX="24"
@@ -764,8 +771,10 @@ export_datm ()
 {
 export FV3=false
 export S2S=false
+export HAFS=false
 export DATM_NEMS=true
 export DATM_CDEPS=false
+export DOCN_CDEPS=false
 export CPLWAV=.F.
 export DAYS=1
 export FHMAX=24
@@ -873,8 +882,10 @@ export_datm_cdeps ()
 {
 export FV3=false
 export S2S=false
+export HAFS=false
 export DATM_NEMS=false
 export DATM_CDEPS=true
+export DOCN_CDEPS=false
 export CPLWAV=.F.
 export DAYS=1
 export FHMAX=24
@@ -983,4 +994,106 @@ export KTHERM=1
 export TFREEZE_OPTION='linear_salt'
 export BL_SUFFIX=""
 export RT_SUFFIX=""
+}
+export_datm_cdeps_hafs ()
+{
+export FV3=false
+export S2S=false
+export HAFS=true
+export DATM_CDEPS=true
+export DATM_NEMS=false
+export DOCN_CDEPS=false
+export THRD=1
+export WLCLK=$WLCLK_dflt
+export INPES=$INPES_dflt
+export JNPES=$JNPES_dflt
+export TASKS=$TASKS_dflt
+export TPN=$TPN_dflt
+
+export atm_model="datm"
+
+export DATM_IN_CONFIGURE="datm_in"
+export DATM_STREAM_CONFIGURE="datm.streams.era5.IN"
+}
+export_docn_cdeps_hafs ()
+{
+export FV3=true
+export S2S=false
+export HAFS=true
+export DOCN_CDEPS=true
+export THRD=1
+export WLCLK=$WLCLK_dflt
+export INPES=$INPES_dflt
+export JNPES=$JNPES_dflt
+export TASKS=$TASKS_dflt
+export TPN=$TPN_dflt
+
+export ocn_model="docn"
+export ocn_datamode="sstdata"
+
+export DOCN_IN_CONFIGURE="docn_in"
+export DOCN_STREAM_CONFIGURE="docn.streams.IN"
+}
+export_cpl_regional ()
+{
+export FV3=true
+export S2S=false
+export HAFS=true
+export DATM_NEMS=false
+export DATM_CDEPS=false
+export DOCN_CDEPS=false
+export THRD=1
+export WLCLK=$WLCLK_dflt
+export INPES=$INPES_dflt
+export JNPES=$JNPES_dflt
+export TASKS=$TASKS_dflt
+export TPN=$TPN_dflt
+
+# model_configure
+export SYEAR='2019'
+export SMONTH='08'
+export SDAY='29'
+export SHOUR='00'
+export FHMAX=24
+export ENS_NUM=1
+export DT_ATMOS='900'
+export CPL='.true.'
+export RESTART_INTERVAL=0
+export FHROT=0
+export coupling_interval_fast_sec=0
+export QUILTING=.true.
+export WRITE_GROUP=1
+export WRTTASK_PER_GROUP=6
+export OUTPUT_HISTORY=.true.
+export WRITE_DOPOST=.false.
+export NUM_FILES=2
+export FILENAME_BASE="'atm' 'sfc'"
+export OUTPUT_GRID="'regional_latlon'"
+export OUTPUT_FILE="'netcdf'"
+export IDEFLATE=0
+export NBITS=0
+export WRITE_NEMSIOFLIP=.false.
+export WRITE_FSYNCFLAG=.false.
+export NFHOUT=3
+export NFHMAX_HF=-1
+export NFHOUT_HF=3
+export CEN_LON=-62.0
+export CEN_LAT=25.0
+export LON1=-114.5
+export LAT1=-5.0
+export LON2=-9.5
+export LAT2=55.0
+export DLON=0.03
+export DLAT=0.03
+
+# input.nml
+export MERGE_IMPORT=.true.
+
+# nems.configure
+export med_model="cmeps"
+export CAP_DBUG_FLAG="0"
+export RESTART_N=${FHMAX} 
+export CPLMODE="hafs"
+export RUNTYPE="startup"
+export USE_COLDSTART="false"
 }

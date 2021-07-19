@@ -1,0 +1,10 @@
+if [ -d "INPUT_DOCN" ]; then
+  echo "INPUT_DOCN/ directory exists ..."
+else
+  echo "INPUT_DOCN/ directory not found. Creating ..."
+  mkdir -p INPUT_DOCN 
+fi
+
+cd INPUT_DOCN
+rsync -arv @[RTPWD]/DOCN_OISST_input_data/. .
+cd -

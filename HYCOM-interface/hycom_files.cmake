@@ -66,4 +66,3 @@ list(APPEND _hycom_nuopc_src_files
 list(APPEND _hycom_offline_src_files
   HYCOM/hycom.F90
 )
-
