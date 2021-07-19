@@ -11,6 +11,7 @@ elif [[ $application == 'regional' ]]; then
   echo "Regional application not yet implemented for restart"
   exit 1
 elif [[ $application == 'cpld' ]]; then
+  CICERUNTYPE='continue'
   RUNTYPE='continue'
   USE_RESTART_TIME='.true.'
   MOM6_RESTART_SETTING="r"
@@ -40,6 +41,7 @@ cat <<EOF >>${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
 export FHROT=${FHROT}
 export RESTART_FILE_PREFIX=${RESTART_FILE_PREFIX}
 export NSTF_NAME=${NSTF_NAME}
+export CICERUNTYPE=${CICERUNTYPE:-}
 export RUNTYPE=${RUNTYPE:-}
 export USE_RESTART_TIME=${USE_RESTART_TIME:-}
 export MOM6_RESTART_SETTING=${MOM6_RESTART_SETTING:-}
