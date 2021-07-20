@@ -65,18 +65,20 @@ export RESTART_FILE_SUFFIX_HRS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%02d" $(( $
 export RESTART_FILE_SUFFIX_SECS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%02d" $(( ${FHROT}*3600 )))"
 
 # ATM warm start
-WARM_START='.T.'
-MAKE_NH='.F.'
-NA_INIT='0'
-EXTERNAL_IC='.F.'
-NGGPS_IC='.F.'
-MOUNTAIN='.T.'
+export WARM_START='.T.'
+export MAKE_NH='.F.'
+export NA_INIT='0'
+export EXTERNAL_IC='.F.'
+export NGGPS_IC='.F.'
+export MOUNTAIN='.T.'
 
 # ICE warm start
-RUNTYPE='continue'
+export CICERUNTYPE='continue'
+export RUNTYPE='continue'
 export USE_RESTART_TIME='.true.'
 
 # MOM6 warm start
 export MOM6_RESTART_SETTING="r"
+export eps_imesh='2.5e-1'
 
 export FV3_RUN=cpld_control_run.IN
