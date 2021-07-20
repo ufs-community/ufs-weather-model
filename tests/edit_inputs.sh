@@ -19,7 +19,7 @@ function edit_ice_in {
       -e "s/NY_GLB/$NY_GLB/g" \
       -e "s/BLCKX/$BLCKX/g" \
       -e "s/BLCKY/$BLCKY/g" \
-      -e "s/RUNTYPE/$RUNTYPE/g" \
+      -e "s/CICERUNTYPE/$CICERUNTYPE/g" \
       -e "s/RUNID/$RUNID/g" \
       -e "s/CICE_HIST_AVG/$CICE_HIST_AVG/g" \
       -e "s/RESTART_EXT/$RESTART_EXT/g" \
