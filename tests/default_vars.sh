@@ -202,7 +202,7 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   THRD_cpl_dflt_wwav=1; WPG_cpl_dflt_wwav=6;  MPB_cpl_dflt_wwav="0 143"; APB_cpl_dflt_wwav="0 149"
   OPB_cpl_dflt_wwav="150 179"; IPB_cpl_dflt_wwav="180 191"; WPB_cpl_dflt_wwav="192 203"
 
-  TASKS_cpl_thrd=120; TPN_cpl_thrd=18; INPES_cpl_thrd=3; JNPES_cpl_thrd=4
+  TASKS_cpl_thrd=120; TPN_cpl_thrd=12; INPES_cpl_thrd=3; JNPES_cpl_thrd=4
   THRD_cpl_thrd=2; WPG_cpl_thrd=6;  MPB_cpl_thrd="0 77";  APB_cpl_thrd="0 77"
   OPB_cpl_thrd="78 107";  IPB_cpl_thrd="108 119"
 
@@ -357,7 +357,7 @@ elif [[ $MACHINE_ID = stampede.* ]]; then
   THRD_cpl_dflt_wwav=1; WPG_cpl_dflt_wwav=6;  MPB_cpl_dflt_wwav="0 143"; APB_cpl_dflt_wwav="0 149"
   OPB_cpl_dflt_wwav="150 179"; IPB_cpl_dflt_wwav="180 191"; WPB_cpl_dflt_wwav="192 383"
 
-  TASKS_cpl_thrd=120; TPN_cpl_thrd=48; INPES_cpl_thrd=3; JNPES_cpl_thrd=4
+  TASKS_cpl_thrd=120; TPN_cpl_thrd=24; INPES_cpl_thrd=3; JNPES_cpl_thrd=4
   THRD_cpl_thrd=2; WPG_cpl_thrd=6;  MPB_cpl_thrd="0 77";  APB_cpl_thrd="0 77"
   OPB_cpl_thrd="78 107";  IPB_cpl_thrd="108 119"
 
@@ -468,11 +468,13 @@ export NWAT=6
 export DNATS=1
 export DO_SAT_ADJ=.T.
 export LHEATSTRG=.F.
+export LSEASPRAY=.F.
 export LGFDLMPRAD=.F.
 export EFFR_IN=.F.
 # Thompson MP
 export LRADAR=.T.
 export LTAEROSOL=.T.
+export EXT_DIAG_THOMPSON=.F.
 
 # GWD
 export LDIAG_UGWP=.F.
@@ -512,7 +514,12 @@ export IMFSHALCNV=2
 export HWRF_SAMFSHAL=.F.
 export IMFDEEPCNV=2
 export HWRF_SAMFDEEP=.F.
-export RAS=.F.
+export RAS=.false.
+export RANDOM_CLDS=.false.
+export CNVCLD=.true.
+
+# Aerosol convective scavenging
+export FSCAV_AERO="'*:0.0'"
 
 # SFC
 export DO_MYJSFC=.F.
@@ -533,6 +540,7 @@ export H2O_PHYS=.F.
 
 
 export CPL=.F.
+export CPLCHM=.F.
 export CPLFLX=.F.
 export CPLWAV=.F.
 export CPLWAV2ATM=.F.
@@ -668,14 +676,11 @@ export cap_dbug_flag="0"
 export use_coldstart="false"
 export use_mommesh="true"
 export RUNTYPE='startup'
+export CICERUNTYPE='initial'
+export eps_imesh='1.0e-1'
 
 # FV3 defaults
-# to use new oro and ics created from 1deg ocean mask on c96 tiles
-# set frac_grid=.F. but FRAC_GRID_INPUT=.T.
-# to repro existing tests set both frac_grid and FRAC_GRID_INPUT to .F.
-# to run frac_grid, set both frac_grid and FRAC_GRID_INPUTs to .T.
 export FRAC_GRID='.T.'
-export FRAC_GRID_INPUT='.T.'
 export CCPP_SUITE="FV3_GFS_2017_coupled"
 export INPUT_NML=input.mom6_ccpp.nml.IN
 export FIELD_TABLE="field_table"
@@ -825,6 +830,8 @@ export cap_dbug_flag="0"
 export use_coldstart="false"
 export use_mommesh="true"
 export RUNTYPE='startup'
+export CICERUNTYPE='initial'
+export eps_imesh='1.0e-1'
 export flux_convergence='0.0'
 export flux_iteration='2'
 export flux_scheme='0'
@@ -935,6 +942,8 @@ export cap_dbug_flag="0"
 export use_coldstart="false"
 export use_mommesh="true"
 export RUNTYPE='startup'
+export CICERUNTYPE='initial'
+export eps_imesh='1.0e-1'
 export flux_convergence='0.0'
 export flux_iteration='2'
 export flux_scheme='0'

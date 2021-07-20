@@ -6,14 +6,17 @@ proc ModulesHelp {} {
 
 module-whatis "loads UFS Model prerequisites for Hera/Intel"
 
+module use /scratch1/NCEPDEV/nems/emc.nemspara/soft/modulefiles
+module load miniconda3/3.7.3
+
 module use /contrib/sutils/modulefiles
 module load sutils
+
+module load cmake/3.20.1
 
 module use /scratch2/NCEPDEV/nwprod/hpc-stack/libs/hpc-stack/modulefiles/stack
 
 module load hpc/1.1.0
-
-module load cmake/3.20.0
 
 module load hpc-intel/18.0.5.274
 module load hpc-impi/2018.0.4
@@ -24,3 +27,6 @@ setenv CC mpiicc
 setenv CXX mpiicpc
 setenv FC mpiifort
 setenv CMAKE_Platform hera.intel
+
+# use shared memory and OpenFabrics Alliance (OFA) fabric with Intel MPI to circumvent RDMA-related bug in DAPL.
+setenv I_MPI_FABRICS shm:ofa
