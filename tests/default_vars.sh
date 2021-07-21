@@ -574,6 +574,7 @@ export FHCYC=24
 export FHROT=0
 export LDIAG3D=.F.
 export QDIAG3D=.F.
+export PRINT_DIFF_PGR=.false.
 export MAX_OUTPUT_FIELDS=300
 
 # Stochastic physics
@@ -617,6 +618,10 @@ export ww3gline="'glo_30m'  'no' 'no' 'CPL:native' 'no' 'no' 'no' 'no' 'no' 'no'
 # Regional
 export WRITE_RESTART_WITH_BCS=.false.
 
+# Diagnostics
+export PRINT_DIFF_PGR=.false.
+
+# Coupling
 export coupling_interval_fast_sec=0
 }
 
@@ -629,6 +634,8 @@ export DATM_CDEPS=false
 
 export DAYS="1"
 export FHMAX="24"
+export FDIAG="6"
+export FHZERO="6"
 export WLCLK=30
 
 # default atm/ocn/ice resolution
@@ -685,6 +692,8 @@ export CCPP_SUITE="FV3_GFS_2017_coupled"
 export INPUT_NML=input.mom6_ccpp.nml.IN
 export FIELD_TABLE="field_table"
 export DIAG_TABLE="diag_table_template"
+
+export DIAG_TABLE_ADDITIONAL=''
 
 export FHROT='0'
 export NSOUT='-1'
