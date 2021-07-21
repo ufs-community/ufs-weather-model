@@ -5,18 +5,18 @@ export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C384 MX025 - 
 
 export CNTL_DIR="cpld_control_c384"
 
-export LIST_FILES="sfcf024.tile1.nc \
-                   sfcf024.tile2.nc \
-                   sfcf024.tile3.nc \
-                   sfcf024.tile4.nc \
-                   sfcf024.tile5.nc \
-                   sfcf024.tile6.nc \
-                   atmf024.tile1.nc \
-                   atmf024.tile2.nc \
-                   atmf024.tile3.nc \
-                   atmf024.tile4.nc \
-                   atmf024.tile5.nc \
-                   atmf024.tile6.nc \
+export LIST_FILES="sfcf012.tile1.nc \
+                   sfcf012.tile2.nc \
+                   sfcf012.tile3.nc \
+                   sfcf012.tile4.nc \
+                   sfcf012.tile5.nc \
+                   sfcf012.tile6.nc \
+                   atmf012.tile1.nc \
+                   atmf012.tile2.nc \
+                   atmf012.tile3.nc \
+                   atmf012.tile4.nc \
+                   atmf012.tile5.nc \
+                   atmf012.tile6.nc \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -53,13 +53,15 @@ export LIST_FILES="sfcf024.tile1.nc \
                    RESTART/MOM.res_1.nc \
                    RESTART/MOM.res_2.nc \
                    RESTART/MOM.res_3.nc \
-                   RESTART/iced.2016-10-04-00000.nc \
-                   RESTART/ufs.cpld.cpl.r.2016-10-04-00000.nc"
+                   RESTART/iced.2016-10-03-43200.nc \
+                   RESTART/ufs.cpld.cpl.r.2016-10-03-43200.nc"
 
 export_fv3
 export_cpl
 
-export FHROT='12'
+export DAYS='0.50'
+export FHMAX='12'
+export FHROT='6'
 export RESTART_N=$((FHMAX-$FHROT))
 
 export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${FHROT}  )))0000"
@@ -123,15 +125,16 @@ export FNABSC="'global_mxsnoalb.uariz.t766.1536.768.rg.grb',"
 export MOM6_RIVER_RUNOFF='True'
 
 # ATM warm start
-WARM_START='.T.'
-MAKE_NH='.F.'
-NA_INIT='0'
-EXTERNAL_IC='.F.'
-NGGPS_IC='.F.'
-MOUNTAIN='.T.'
+export WARM_START='.T.'
+export MAKE_NH='.F.'
+export NA_INIT='0'
+export EXTERNAL_IC='.F.'
+export NGGPS_IC='.F.'
+export MOUNTAIN='.T.'
 
 # ICE warm start
-RUNTYPE='continue'
+export CICERUNTYPE='continue'
+export RUNTYPE='continue'
 export USE_RESTART_TIME='.true.'
 
 # MOM6 warm start
