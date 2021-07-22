@@ -16,7 +16,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules/Modules)
 ###############################################################################
 
 # Valid applications and choices
-list(APPEND VALID_APPS ATM ATMW S2S S2SW NG-GODAS NG-GODAS-NEMSDATM)
+list(APPEND VALID_APPS ATM ATMAERO ATMW S2S S2SW NG-GODAS NG-GODAS-NEMSDATM)
 set(APP NONE CACHE BOOL "Application Name")
 if(NOT (APP IN_LIST VALID_APPS))
   message(FATAL_ERROR "${APP} is not a valid application.\nValid Applications are: ${VALID_APPS}")
@@ -24,6 +24,7 @@ endif()
 
 set(FMS             OFF CACHE BOOL "Enable FMS")
 set(FV3             OFF CACHE BOOL "Enable FV3")
+set(UFS_GOCART      OFF CACHE BOOL "Enable GOCART")
 set(MOM6            OFF CACHE BOOL "Enable MOM6")
 set(CICE6           OFF CACHE BOOL "Enable CICE6")
 set(WW3             OFF CACHE BOOL "Enable WW3")
@@ -39,6 +40,7 @@ include(cmake/configure_apps.cmake)
 message("")
 message("FMS .............. ${FMS}")
 message("FV3 .............. ${FV3}")
+message("GOCART ........... ${UFS_GOCART}")
 message("MOM6 ............. ${MOM6}")
 message("CICE6 ............ ${CICE6}")
 message("WW3 .............. ${WW3}")
@@ -131,7 +133,7 @@ if(INLINE_POST)
 endif()
 
 # See https://github.com/NOAA-EMC/NCEPLIBS-nemsio/pull/22
-target_link_libraries(nemsio::nemsio INTERFACE w3emc::w3emc_d bacio::bacio_4)
+target_link_libraries(nemsio::nemsio INTERFACE w3nco::w3nco_d bacio::bacio_4)
 
 # Configure Python
 find_package(Python 3 REQUIRED COMPONENTS Interpreter)
@@ -149,6 +151,13 @@ endif()
 ###############################################################################
 if(FV3)
   add_subdirectory(FV3)
+endif()
+
+###############################################################################
+### GOCART
+###############################################################################
+if(UFS_GOCART)
+  add_subdirectory(GOCART)
 endif()
 
 ###############################################################################
@@ -210,23 +219,24 @@ endif()
 ###############################################################################
 ### UFS Library [NEMS]
 ###############################################################################
-list(APPEND _nems_srcs NEMS/src/module_NEMS_UTILS.F90
-                       NEMS/src/module_EARTH_GRID_COMP.F90
-                       NEMS/src/module_NEMS_GRID_COMP.F90
+list(APPEND _nems_srcs NEMS/src/module_EARTH_GRID_COMP.F90
                        NEMS/src/module_NEMS_Rusage.F90
                        NEMS/src/nems_c_rusage.c)
 
 add_library(ufs ${_nems_srcs})
 set_target_properties(ufs PROPERTIES Fortran_MODULE_DIRECTORY
                                      ${CMAKE_CURRENT_BINARY_DIR}/mod)
-target_include_directories(ufs PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/NEMS/src)
 target_include_directories(ufs INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                          $<INSTALL_INTERFACE:mod>)
 
-list(APPEND _ufs_defs_private ESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR})
-
 if(JEDI_DRIVER)
   list(APPEND _ufs_defs_private JEDI_DRIVER=ON)
+endif()
+
+if(UFS_GOCART)
+  add_dependencies(ufs UFS_Aerosols)
+  list(APPEND _ufs_defs_private FRONT_GOCART=Aerosol_Cap)
+  list(APPEND _ufs_libs_public UFS_Aerosols)
 endif()
 
 if(WW3)
@@ -240,11 +250,6 @@ list(APPEND _ufs_libs_public esmf)
 
 if(STOCH_PHYS)
   list(APPEND _ufs_libs_public stochastic_physics)
-endif()
-
-if(FMS)
-  add_dependencies(ufs fms)
-  list(APPEND _ufs_defs_private FRONT_FMS)
 endif()
 
 if(NEMSdatm)
@@ -278,11 +283,9 @@ if(CMEPS)
 endif()
 
 if(CDEPS)
-  add_dependencies(ufs cdeps::datm)
-  list(APPEND _ufs_defs_private CDEPS-interface/CDEPS
-                                FRONT_CDEPS_DATM=atm_comp_nuopc)
-  include_directories(${CMAKE_CURRENT_BINARY_DIR}/CDEPS-interface/CDEPS/datm)
-  target_link_libraries(ufs PUBLIC cdeps::datm)
+  add_dependencies(ufs cdeps::cdeps)
+  list(APPEND _ufs_defs_private FRONT_CDEPS_DATM=cdeps_datm_comp)
+  target_link_libraries(ufs PUBLIC cdeps::cdeps)
 endif()
 
 target_compile_definitions(ufs PRIVATE "${_ufs_defs_private}")
@@ -293,28 +296,7 @@ target_link_libraries(ufs PUBLIC "${_ufs_libs_public}")
 ###############################################################################
 add_executable(ufs_model NEMS/src/MAIN_NEMS.F90)
 add_dependencies(ufs_model ufs)
-
-list(APPEND _ufs_model_defs_private ESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR})
-
-set_target_properties(ufs_model PROPERTIES Fortran_MODULE_DIRECTORY
-                                           ${CMAKE_CURRENT_BINARY_DIR}/mod)
-
-target_include_directories(ufs_model PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/NEMS/src)
-
-if(WW3)
-  list(APPEND _ufs_model_defs_private FRONT_WW3=WMESMFMD)
-  target_include_directories(ufs_model PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/mod)
-endif()
-
-target_compile_definitions(ufs_model PRIVATE "${_ufs_model_defs_private}")
-
-if(NEMSdatm OR CDEPS)
-  target_link_libraries(ufs_model PUBLIC ufs w3nco::w3nco_d)
-endif()
-
-target_link_libraries(ufs_model PRIVATE ufs
-                                        esmf
-                                        NetCDF::NetCDF_Fortran)
+target_link_libraries(ufs_model ufs esmf w3nco::w3nco_d)
 
 ###############################################################################
 ### Install
