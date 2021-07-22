@@ -325,19 +325,38 @@ WW3
 Static datasets (i.e., *fix files*)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. todo:: Information needed
 
 The static input files for global configurations are listed and described in :numref:`Table %s <WW3_FixFiles>`.
+The model definitons for wave grid(s) including spectral and directional resoluitions, time steps, numerical scheme and parallelization algorithm, the physics parameters, boundary conditions and grid definitions are stored in mod_def files. The aformentioned parameteres are defined in ww3_grid_<grd>.inp and the ww3_grid executables generates the binary mod_def.<grd> file.
+
+The WW3 version number in mod_def files should be consistent with version of the code in ufs-weather-model. 
 
 .. _WW3_FixFiles:
 
-.. list-table:: *Fix files containing climatological information*
-   :widths: 40 50
+.. list-table:: *Input files containing grid information for global configurations (GFSv16 Wave)*
+   :widths: 35 35 30 15 15
    :header-rows: 1
 
    * - Filename
      - Description
-   * -
+     - Coverage
+     - Resolution
+     - Date-dependent
+   * - mod_def.aoc_9km
+     - polar streo arctic grid
+     - 50N 90N
+     - 9km
+     - ✔
+   * - mod_def.gnh_10m
+     - Global mid core
+     - 15S 52N
+     - 10 min
+     - ✔
+   * - mod_def.gsh_15m
+     - southern ocean
+     - 79.5S 10.5S
+     - 15 min
+     - ✔
      -
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
