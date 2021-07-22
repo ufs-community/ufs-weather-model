@@ -333,29 +333,82 @@ The WW3 version number in mod_def files should be consistent with version of the
 
 .. _WW3_FixFiles:
 
-.. list-table:: *Input files containing grid information for global configurations (GFSv16 Wave)*
+.. list-table:: *Input files containing grid information and conservative remapping for global configurations (GFSv16 Wave)*
+   :widths: 35 35 25 15
+   :header-rows: 1
+
+   * - Filename
+     - Description
+     - Resolution
+     - Date-dependent
+   * - mod_def.aoc_9km
+     - Antarctic Ocean PolarStereo [50N 90N]
+     - 9km
+     - ✔
+   * - mod_def.gnh_10m
+     - Global mid core [15S 52N]
+     - 10 min
+     - ✔
+   * - mod_def.gsh_15m
+     - southern ocean [79.5S 10.5S]
+     - 15 min
+     - ✔
+   * - mod_def.glo_15mxt 
+     - Global 1/4 extended grid [90S 90S]
+     - 15 min
+     - ✔
+   * - mod_def.points
+     - GFSv16-wave spectral grid point output
+     - na
+     - ✔
+   * - mod_def.points
+     - GFSv16-wave spectral grid point output
+     - na
+     - ✔
+   * - rmp_src_to_dst_conserv_002_001.nc
+     - Conservative remapping gsh_15m to gnh_10m
+     - na
+     - ✔
+   * - rmp_src_to_dst_conserv_003_001.nc
+     - Conservative remapping aoc_9km to gnh_10m
+     - na
+     - ✔
+     -
+
+
+.. _WW3_FixFiles:
+
+.. list-table:: *Input grid information for single global configurations*
    :widths: 35 35 30 15 15
    :header-rows: 1
 
    * - Filename
      - Description
-     - Coverage
      - Resolution
      - Date-dependent
-   * - mod_def.aoc_9km
-     - polar streo arctic grid
-     - 50N 90N
+   * - mod_def.ant_9km
+     - polar streo antarctic grid [90S 50S]
      - 9km
      - ✔
-   * - mod_def.gnh_10m
-     - Global mid core
-     - 15S 52N
+   * - mod_def.glo_10m
+     - Global grid [80S 80N]
      - 10 min
      - ✔
-   * - mod_def.gsh_15m
-     - southern ocean
-     - 79.5S 10.5S
-     - 15 min
+   * - mod_def.glo_30m
+     - Global grid [80S 80N]
+     - 30 min
+     - ✔
+   * - mod_def.glo_1deg
+     - Global grid [85S 85N]
+     - 1 degree
+     - ✔
+   * - mod_def.glo_2deg
+     - Global grid [85S 85N]
+     - 2 degree
+     - ✔
+   * - mod_def.glo_gwes_30m
+     - Global NAWES 30 min wave grid [80S 80N]
+     - 30 min
      - ✔
      -
 
