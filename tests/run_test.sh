@@ -117,6 +117,11 @@ fi
 if [[ $DATM_NEMS = 'true' ]]; then
   cp ${PATHRT}/parm/datm_data_table.IN datm_data_table
 fi
+if [[ "${DIAG_TABLE_ADDITIONAL:-}Q" != Q ]] ; then
+  # Append diagnostic outputs, to support tests that vary from others
+  # only by adding diagnostics.
+  atparse < "${PATHRT}/parm/${DIAG_TABLE_ADDITIONAL:-}" >> diag_table
+fi
 
 if [[ $DATM_CDEPS = 'true' ]]; then
   atparse < ${PATHRT}/parm/${DATM_IN_CONFIGURE:-datm_in} > datm_in
@@ -145,8 +150,6 @@ elif [[ $SCHEDULER = 'lsf' ]]; then
   fi
   atparse < $PATHRT/fv3_conf/fv3_bsub.IN > job_card
 fi
-
-atparse < ${PATHRT}/parm/${NEMS_CONFIGURE:-nems.configure} > nems.configure
 
 ################################################################################
 # Submit test job

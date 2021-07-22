@@ -129,7 +129,6 @@
        nst_anl        = .true.
        use_ufo        = .true.
        pre_rad        = .false.
-       ncld           = 5
        imp_physics    = 8
        ltaerosol      = .F.
        ttendlim       = -999.0
@@ -138,7 +137,7 @@
        fhlwr          = 900.
        ialb           = 1
        iems           = 1
-       IAER           = 111
+       IAER           = 5111
        ico2           = 2
        isubc_sw       = 2
        isubc_lw       = 2
@@ -154,6 +153,7 @@
        hybedmf        = @[HYBEDMF]
        satmedmf       = @[SATMEDMF]
        lheatstrg      = @[LHEATSTRG]
+       lseaspray      = @[LSEASPRAY]
        do_mynnedmf    = .T.
        do_mynnsfclay  = .true.
        lgfdlmprad     = .false.
@@ -213,6 +213,9 @@
        doGP_cldoptics_LUT = .true.
        doGP_lwscat        = .true.
        use_LW_jacobian    = .true.
+       damp_LW_fluxadj    = .true.
+       lfnc_k             = 3125.
+       lfnc_p0            = 60000.
 /
 
   &interpolator_nml
