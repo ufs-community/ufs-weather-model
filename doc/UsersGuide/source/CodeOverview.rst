@@ -45,6 +45,8 @@ The ufs-weather-model repository supports the short- and medium-range UFS applic
   * - Community Data Models for Earth Prediction Systems (CDEPS)
     - https://github.com/NOAA-EMC/CDEPS
 
+.. TODO:: need GoCart details
+
 In the table, the left column contains a description of each repository, and the right column shows the component repositories which are pointing to (or will point to) the authoritative repositories. The ufs-weather-model currently uses git submodule to manage the sub-components.
 
 The umbrella repository for the UFS Weather Model is named ufs-weather-model.  Under this repository reside a number of submodules that are nested in specific directories under the parent repository’s working directory.  When the ufs-weather-model repository is cloned, the *.gitmodules* file creates the following directories:
@@ -64,11 +66,11 @@ The umbrella repository for the UFS Weather Model is named ufs-weather-model.  U
    |    └── MOM6                               https://github.com/NOAA-EMC/MOM6
    ├── CICE-interface
    |    └── CICE                               https://github.com/NOAA-EMC/CICE
-   ├── WW3                                     https://github.com/NOAA-EMC/WW3    
+   ├── WW3                                     https://github.com/NOAA-EMC/WW3
    ├── CMEPS-interface
-   |    └── CMEPS                              https://github.com/NOAA-EMC/CMEPS	
+   |    └── CMEPS                              https://github.com/NOAA-EMC/CMEPS
    ├── CDEPS-interface
-   |    └── CDEPS                              https://github.com/NOAA-EMC/CDEPS	
+   |    └── CDEPS                              https://github.com/NOAA-EMC/CDEPS
    
 ===================
 Directory Structure
@@ -76,7 +78,7 @@ Directory Structure
 
 When the ufs-weather-model is cloned, the basic directory structure will be similar to the example below. Files and some directories have been removed for brevity.
 
-.. TODO:: need WW3 details and CDEPS details
+.. TODO:: need GoCart details
 
 .. code-block:: console
 
@@ -110,19 +112,19 @@ When the ufs-weather-model is cloned, the basic directory structure will be simi
    ├── tests                -------- regression test scripts
    |   └── parm             -------- regression test configurations
    ├── MOM6-interface
-   |    └── MOM6                                
+   |    └── MOM6
    │        ├── src                              --------- MOM6 ocean model
    │        └── config_source/drivers/nuopc_cap  --------- NUOPC MOM6 cap
    ├── CICE-interface
    |    └── CICE                                 --------- CICE6 sea ice model
    │        ├── icepack                          --------- Sea ice column physics
    │        └── cicecore/drivers/nuopc/cmeps     --------- NUOPC CICE6 cap
-   ├── WW3                                      
+   ├── WW3
    │    └── model                                --------- WW3 model
    │        └── esmf                             --------- NUOPC WW3 cap
    ├── CDEPS-interface
-   |     └── CDEPS                
-   |         └── datm                            --------- CDEPS DATM 
+   |     └── CDEPS
+   |         └── datm                            --------- CDEPS DATM
    
    
 The physics subdirectory in the *gfsphysics* directory  is not used or supported

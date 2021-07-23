@@ -6,6 +6,8 @@ Inputs and Outputs
 
 The ufs-weather-model can be configured as one of several applications, from a single component model atmosphere model to a fully coupled model with multiple earth system components (atmosphere, ocean, sea-ice and mediator). Currently the supported configurations are:
 
+.. todo:: GoCart information needed
+
 .. _UFS-applications:
 
 .. list-table:: *Supported ufs-weather-model applications*
@@ -397,6 +399,48 @@ The input files containing grid information and the time-varying forcing files f
      - GEFS forcing file for year YYYY and month MM
      - ✔
 
+-------
+GoCart
+-------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Static datasets (i.e., *fix files*)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. todo:: Information needed
+
+The static input files for global configurations are listed and described in :numref:`Table %s <GoCart_FixFiles>`.
+
+.. _GoCart_FixFiles:
+
+.. list-table:: *Fix files containing climatological information*
+   :widths: 40 50
+   :header-rows: 1
+
+   * - Filename
+     - Description
+   * -
+     -
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Grid description and initial condition files
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. todo:: Information needed
+
+The input files containing grid information and the initial conditions for global configurations are listed and described in :numref:`Table %s <GoCart_GridICFiles>`.
+
+.. _GoCart_GridICFiles:
+
+.. list-table:: *Input files containing grid information and initial conditions for global configurations*
+   :widths: 35 50 15
+   :header-rows: 1
+
+   * - Filename
+     - Description
+     - Date-dependent
+   * -
+     -
+     -
 
 ==========================
 Model configuration files
@@ -907,6 +951,8 @@ are not usually changed.
 -----------------------
 *nems.configure* file
 -----------------------
+
+.. todo:: GoCart information needed
 
 This file contains  information about the various NEMS components  and their run sequence. The active  components for a particular model configuration  are given in the *EARTH_component_list*. For  each active component,  the model name  and compute tasks  assigned to the component are given. A  specific component might  also require additional configuration  information to be present.  The *runSeq* describes the order and time intervals  over which one or  more component models integrate  in time. Additional *attributes*, if present, provide additional configuration of the model components when coupled with the CMEPS mediator.
 
