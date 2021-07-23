@@ -373,13 +373,12 @@ The WW3 version number in mod_def.<grd> files should be consistent with version 
      - Conservative remapping aoc_9km to gnh_10m
      - na
      - ✔
-     -
 
 
 .. _WW3_FixFilesp:
 
 .. list-table:: *Input grid information for single global configurations*
-   :widths: 35 35 30 15 15
+   :widths: 35 35 30 15
    :header-rows: 1
 
    * - Filename
@@ -410,7 +409,6 @@ The WW3 version number in mod_def.<grd> files should be consistent with version 
      - Global NAWES 30 min wave grid [80S 80N]
      - 30 min
      - ✔
-     -
 
 The model driver input (ww3_multi.inp) includes the input, model and output grids definition, the starting and ending times for the entire model run and output types and intervals. The ww3_multi.inp.IN template is located under tests/parm/ directory. The inputs are described hereinafter:
 
@@ -423,7 +421,7 @@ The model driver input (ww3_multi.inp) includes the input, model and output grid
      - Number of wave model grids
    * - NFGRIDS 
      - Number of grids defining input fields
-     - FUNIPNT
+   * - FUNIPNT
      - Flag for using unified point output file.
    * - IOSRV 
      - Output server type 
@@ -431,7 +429,7 @@ The model driver input (ww3_multi.inp) includes the input, model and output grid
      - Flag for dedicated process for unified point output
    * - FGRDPROC
      - Flag for grids sharing dedicated output processes
-     -
+
 
 If there are input data grids defined ( NFGRIDS > 0 ) then these grids are defined first (CPLILINE, WINDLINE, ICELINE, CURRLINE). These grids are defined as if they are wave model grids using the file mod_def.<grd>. Each grid is defined on a separate input line with <grd>, with eight input flags identifying
 $ the presence of 1) water levels 2) currents 3) winds 4) ice
