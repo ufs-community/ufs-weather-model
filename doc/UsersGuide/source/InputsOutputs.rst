@@ -412,7 +412,7 @@ The WW3 version number in mod_def.<grd> files should be consistent with version 
      - ✔
      -
 
-The model driver input (ww3_multi.inp) includes the input, model and output grids definition, the starting and ending times for the entire model run and output types and intervals. The ww3_multi.inp.IN template is located under tests/parm/ directory. The inputs are listed and described in :numref:`Table %s <WW3_Driver>`
+The model driver input (ww3_multi.inp) includes the input, model and output grids definition, the starting and ending times for the entire model run and output types and intervals. The ww3_multi.inp.IN template is located under tests/parm/ directory. The inputs are described hereinafter:
 
 .. _WW3_Driver:
 
