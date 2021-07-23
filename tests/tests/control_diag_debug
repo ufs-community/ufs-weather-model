@@ -1,12 +1,12 @@
 ###############################################################################
 #
-#  Global control merra2 aerosol debug test
+#  FV3 CCPP GFS v16 compiled with 32-bit dynamics test in DEBUG mode plus extra diagnostics
 #
 ###############################################################################
 
-export TEST_DESCR="Compare global control merra2 aerosol debug results with previous trunk version"
+export TEST_DESCR="Compare global control diagnostic debug results with previous trunk version"
 
-export CNTL_DIR=control_merra2_debug
+export CNTL_DIR=control_diag_debug
 
 export LIST_FILES="sfcf000.nc \
                    sfcf001.nc \
@@ -23,12 +23,17 @@ export SDAY=22
 export SHOUR=06
 export OUTPUT_GRID='gaussian_grid'
 export NSTF_NAME='2,0,0,0,0'
+export IAER=5111
 export FHMAX=1
-
-export USE_MERRA2=.T.
-export IAER=1011
-export NEW_DIAGTABLE='diag_table_gfsv16_merra2'
 
 export FV3_RUN=control_run.IN
 export CCPP_SUITE=FV3_GFS_v16
 export INPUT_NML=control.nml.IN
+
+export FDIAG=0,1,2,3,4,5,6
+export FHZERO=1
+export LDIAG3D=.true.
+export QDIAG3D=.true.
+export MAX_OUTPUT_FIELDS=500
+export DIAG_TABLE_ADDITIONAL=diag_additional_control_dtend
+export PRINT_DIFF_PGR=.T.

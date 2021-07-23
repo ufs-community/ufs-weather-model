@@ -25,7 +25,7 @@ else
   if [ $MODEL_INITIALIZATION = false ]; then
     #read_inc and iau tests restart from fh=24
     CURRDIR=`pwd`
-    FILEDIR=${CURRDIR}/../control${SUFFIX}/RESTART/
+    FILEDIR=${CURRDIR}/../control_stochy${SUFFIX}/RESTART/
   else
     #for warm start from initialiation time
     FILEDIR=@[INPUTDATA_ROOT]/${inputdir}/INPUT_L127_GDAS
@@ -51,16 +51,16 @@ else
     cp ${FILEDIR}/phy_data.* INPUT/.
     cp ${FILEDIR}/sfc_data.* INPUT/.
   else
-    #restart test start from fh=12
+    #restart test start from fh=06
     rsync -arv ${FILEDIR} INPUT/
-    cp ${FILEDIR}/20210322.180000.* INPUT/.
+    cp ${FILEDIR}/20210322.120000.* INPUT/.
     cp ${FILEDIR}/../INPUT/grid_spec.nc INPUT/.
     cp ${FILEDIR}/../INPUT/*_grid.tile*.nc INPUT/.
     cp ${FILEDIR}/../INPUT/oro_data.tile*.nc INPUT/.
     cd INPUT
-    for RFILE in 20210322.180000.*; do
+    for RFILE in 20210322.120000.*; do
       [ -e $RFILE ] || exit 1
-      mv $RFILE ${RFILE#20210322.180000.}
+      mv $RFILE ${RFILE#20210322.120000.}
     done
     cd ..
   fi

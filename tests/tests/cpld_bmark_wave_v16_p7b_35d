@@ -1,7 +1,7 @@
 #
-#  cpld_bmark_v16 35D
+#  cpld_bmark_v16_p7b 35D
 #
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system - C384L127 MX025 - Benchmark 35d test with v16"
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system - C384L127 MX025 - Benchmark 35d test with p7b: v16 NoahMP NSST merra2 ugwpv1 composite_sfcfields"
 
 export_35d_run
 export_fv3
@@ -72,6 +72,7 @@ export NPY=385
 export IMO=1536
 export JMO=768
 export OUTPUT_GRID="'gaussian_grid'"
+export WRITE_DOPOST=.true.
 
 export OCNRES='025'
 export ICERES='0.25'
@@ -83,7 +84,7 @@ export NPROC_ICE='80'
 export CDMBWD=${CDMBWD_c384}
 
 # set component and coupling timesteps
-export DT_ATMOS='225'
+export DT_ATMOS='300'
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6='900'
 export DT_THERM_MOM6='1800'
@@ -99,16 +100,17 @@ export NPZ=127
 export NPZP=128
 export PSM_BC=1
 export DDDMP=0.2
+export NSTF_NAME=2,1,0,0,0
 
-# P6 settings
-export IALB=1
-export IEMS=1
-export LSM=1
-export IOPT_DVEG=1
-export IOPT_CRS=1
-export IOPT_RAD=1
-export IOPT_ALB=2
-export IOPT_STC=1
+# P7 settings
+export IALB=2
+export IEMS=2
+export LSM=2
+export IOPT_DVEG=4
+export IOPT_CRS=2
+export IOPT_RAD=3
+export IOPT_ALB=1
+export IOPT_STC=3
 
 export CPLWAV='.T.'
 export CPLWAV2ATM='.T.'
@@ -121,21 +123,27 @@ export CICEMASK="kmtu_cice_NEMS_mx${OCNRES}.nc"
 export CHLCLIM="seawifs-clim-1997-2010.${NX_GLB}x${NY_GLB}.v20180328.nc"
 export FRUNOFF="runoff.daitren.clim.${NX_GLB}x${NY_GLB}.v20180328.nc"
 
-# P6 settings
-export FNALBC="'global_snowfree_albedo.bosu.t766.1536.768.rg.grb',"
-export FNALBC2="'global_albedo4.1x1.grb',"
-export FNTG3C="'global_tg3clim.2.6x1.5.grb',"
-export FNVEGC="'global_vegfrac.0.144.decpercent.grb',"
-export FNVETC="'global_vegtype.igbp.t766.1536.768.rg.grb',"
-export FNSOTC="'global_soiltype.statsgo.t766.1536.768.rg.grb',"
+# P7 settings
+export FNALBC="'C384.snowfree_albedo.tileX.nc',"
+export FNALBC2="'C384.facsf.tileX.nc',"
+export FNTG3C="'C384.substrate_temperature.tileX.nc',"
+export FNVEGC="'C384.vegetation_greenness.tileX.nc',"
+export FNVETC="'C384.vegetation_type.tileX.nc',"
+export FNSOTC="'C384.soil_type.tileX.nc',"
 export FNSMCC="'global_soilmgldas.statsgo.t766.1536.768.grb',"
-export FNVMNC="'global_shdmin.0.144x0.144.grb',"
-export FNVMXC="'global_shdmax.0.144x0.144.grb',"
-export FNSLPC="'global_slope.1x1.grb',"
-export FNABSC="'global_mxsnoalb.uariz.t766.1536.768.rg.grb',"
-export LANDICE=".true."
+export FNVMNC="'C384.vegetation_greenness.tileX.nc',"
+export FNVMXC="'C384.vegetation_greenness.tileX.nc',"
+export FNSLPC="'C384.slope_type.tileX.nc',"
+export FNABSC="'C384.maximum_snow_albedo.tileX.nc',"
+export LANDICE=".false."
 
 export OZ_PHYS_NEW=".T."
+
+# P7b
+export IAER=1011
+export DO_UGWP_V1=".true."
+export KTHERM=2
+export TFREEZE_OPTION='mushy'
 
 export MOM6_USE_WAVES='True'
 export MOM6_RIVER_RUNOFF='True'
@@ -147,11 +155,11 @@ export RUNID="cpcice"
 export ww3gline="'gwes_30m' 'no' 'CPL:native' 'CPL:native' 'CPL:native' 'no' 'no' 'no' 'no' 'no'  1  1  0.00 1.00  F"
 export WW3RSTDTHR=${FHMAX}
 
-export INPUT_NML=input.benchmark_v16.nml.IN
+export INPUT_NML=input.benchmark_v16_p7b.nml.IN
 
 export FIELD_TABLE="field_table_gfsv16"
-export DIAG_TABLE="diag_table_bmark_v16_template"
-export CCPP_SUITE="FV3_GFS_v16_coupled"
+export DIAG_TABLE="diag_table_bmark_v16_merra2_template"
+export CCPP_SUITE="FV3_GFS_v16_coupled_nsstNoahmpUGWPv1"
 export RT35D='.T.'
 
-export FV3_RUN=cpld_bmark_run.IN
+export FV3_RUN=cpld_bmark_tiled_run.IN
