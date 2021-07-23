@@ -442,7 +442,6 @@ read from a single line in the file for each. It includes (1) its own input grid
 
 RUN_BEG and RUN_END define the starting and end times,  FLAGMASKCOMP and FLAGMASKOUT are flags for masking at printout time (default F F), followed by the gridded and point outputs start time (OUT_BEG), interval (DTFLD and DTPNT) and end time (OUT_END). The restart outputs start time, interval and end time are define by RST_BEG, DTRST, RST_END respectively.
 
-The run directory includes the binary outputs for the gridded outputs (YYYYMMDD.HHMMSS.out_grd.<grd>), point outputs (YYYYMMDD.HHMMSS.out_pnt.points) and restart files (YYYYMMDD.HHMMSS.restart.<grd>). 
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Grid description and initial condition files
@@ -1490,7 +1489,7 @@ Further details of the configuration of CICE model output can be found in the CI
 WW3
 -------
 
-.. todo:: Information needed
+The run directory includes WW3 binary outputs for the gridded outputs (YYYYMMDD.HHMMSS.out_grd.<grd>), point outputs (YYYYMMDD.HHMMSS.out_pnt.points) and restart files (YYYYMMDD.HHMMSS.restart.<grd>). 
 
 -------
 CMEPS
