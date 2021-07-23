@@ -326,10 +326,10 @@ Static datasets (i.e., *fix files*)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
-The static input files for global configurations are listed and described in :numref:`Table %s <WW3_FixFiles>`.
-The model definitons for wave grid(s) including spectral and directional resoluitions, time steps, numerical scheme and parallelization algorithm, the physics parameters, boundary conditions and grid definitions are stored in mod_def files. The aformentioned parameteres are defined in ww3_grid_<grd>.inp and the ww3_grid executables generates the binary mod_def.<grd> file.
+The static input files for global configurations are listed and described in :numref:`Table %s <WW3_FixFiles>` for GFSv16 setup and :numref:`Table %s <WW3_FixFilesp>` for single grid configurations.
+The model definitions for wave grid(s) including spectral and directional resolutions, time steps, numerical scheme and parallelization algorithm, the physics parameters, boundary conditions and grid definitions are stored in binary mod_def files. The aforementioned parameters are defined in ww3_grid.inp.<grd> and the ww3_grid executables generates the binary mod_def.<grd> files.
 
-The WW3 version number in mod_def files should be consistent with version of the code in ufs-weather-model. 
+The WW3 version number in mod_def.<grd> files should be consistent with version of the code in ufs-weather-model. createmoddefs/creategridfiles.sh can be used in order to generate the mod_def.<grd> files, using ww3_grid.inp.<grd>, using the WW3 version in ups-weather-model. In order to do it, the path to the location of the ufs-weather-model  (UFSMODELDIR), the path to generated mod_def.<grd> outputs (OUTDIR), the path to input ww3_grid.inp.<grd> files (SRCDIR) and the path to the working directory for log files (WORKDIR) should be defined. 
 
 .. _WW3_FixFiles:
 
@@ -376,7 +376,7 @@ The WW3 version number in mod_def files should be consistent with version of the
      -
 
 
-.. _WW3_FixFiles:
+.. _WW3_FixFilesp:
 
 .. list-table:: *Input grid information for single global configurations*
    :widths: 35 35 30 15 15
@@ -411,6 +411,38 @@ The WW3 version number in mod_def files should be consistent with version of the
      - 30 min
      - ✔
      -
+
+The model driver input (ww3_multi.inp) includes the input, model and output grids definition, the starting and ending times for the entire model run and output types and intervals. The ww3_multi.inp.IN template is located under tests/parm/ directory. The inputs are listed and described in :numref:`Table %s <WW3_Driver>`
+
+.. _WW3_Driver:
+
+.. list-table:: *Model driver input*
+   :widths: 30 70 
+   :header-rows: 1
+   * - NMGRIDS 
+     - Number of wave model grids
+   * - NFGRIDS 
+     - Number of grids defining input fields
+     - FUNIPNT
+     - Flag for using unified point output file.
+   * - IOSRV 
+     - Output server type 
+   * - FPNTPROC 
+     - Flag for dedicated process for unified point output
+   * - FGRDPROC
+     - Flag for grids sharing dedicated output processes
+     -
+
+If there are input data grids defined ( NFGRIDS > 0 ) then these grids are defined first (CPLILINE, WINDLINE, ICELINE, CURRLINE). These grids are defined as if they are wave model grids using the file mod_def.<grd>. Each grid is defined on a separate input line with <grd>, with eight input flags identifying
+$ the presence of 1) water levels 2) currents 3) winds 4) ice
+$ 5) momentum 6) air density and 7-9) assimilation data.
+
+The GRIDLINE defines actual wave model grids using 13 parameters to be
+read from a single line in the file for each. It includes (1) its own input grid mod_def.<grd>, (2-10) forcing grid ids, (3) rank number, (12) group number and (13-14) fraction of communicator (processes) used for this grid.
+
+RUN_BEG and RUN_END define the starting and end times,  FLAGMASKCOMP and FLAGMASKOUT are flags for masking at printout time (default F F), followed by the gridded and point outputs start time (OUT_BEG), interval (DTFLD and DTPNT) and end time (OUT_END). The restart outputs start time, interval and end time are define by RST_BEG, DTRST, RST_END respectively.
+
+The run directory includes the binary outputs for the gridded outputs (YYYYMMDD.HHMMSS.out_grd.<grd>), point outputs (YYYYMMDD.HHMMSS.out_pnt.points) and restart files (YYYYMMDD.HHMMSS.restart.<grd>). 
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Grid description and initial condition files
