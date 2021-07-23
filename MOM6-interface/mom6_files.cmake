@@ -244,6 +244,7 @@ list(APPEND mom6_src_files
   MOM6/src/user/user_revise_forcing.F90
 
   MOM6/src/ocean_data_assim/MOM_oda_driver.F90
+  MOM6/src/ocean_data_assim/MOM_oda_incupd.F90
 
   MOM6/config_src/external/GFDL_ocean_BGC/FMS_coupler_util.F90
   MOM6/config_src/external/GFDL_ocean_BGC/generic_tracer.F90

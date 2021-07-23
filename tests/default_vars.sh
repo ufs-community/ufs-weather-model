@@ -574,9 +574,11 @@ export FHCYC=24
 export FHROT=0
 export LDIAG3D=.F.
 export QDIAG3D=.F.
+export PRINT_DIFF_PGR=.false.
 export MAX_OUTPUT_FIELDS=300
 
 # Stochastic physics
+export STOCHINI=.F.
 export DO_SPPT=.F.
 export DO_SHUM=.F.
 export DO_SKEB=.F.
@@ -591,6 +593,7 @@ export LNDP_PRT_LISY=-999
 
 #IAU
 export IAU_INC_FILES="''"
+
 
 #Cellular automata
 export DO_CA=.F.
@@ -615,6 +618,10 @@ export ww3gline="'glo_30m'  'no' 'no' 'CPL:native' 'no' 'no' 'no' 'no' 'no' 'no'
 # Regional
 export WRITE_RESTART_WITH_BCS=.false.
 
+# Diagnostics
+export PRINT_DIFF_PGR=.false.
+
+# Coupling
 export coupling_interval_fast_sec=0
 }
 
@@ -627,6 +634,8 @@ export DATM_CDEPS=false
 
 export DAYS="1"
 export FHMAX="24"
+export FDIAG="6"
+export FHZERO="6"
 export WLCLK=30
 
 # default atm/ocn/ice resolution
@@ -684,6 +693,8 @@ export INPUT_NML=input.mom6_ccpp.nml.IN
 export FIELD_TABLE="field_table"
 export DIAG_TABLE="diag_table_template"
 
+export DIAG_TABLE_ADDITIONAL=''
+
 export FHROT='0'
 export NSOUT='-1'
 export OUTPUT_FH='6 -1'
@@ -720,6 +731,9 @@ export MOM6_THERMO_SPAN='False'
 # no WW3
 export MOM6_USE_WAVES='False'
 export MOM6_ALLOW_LANDMASK_CHANGES='False'
+# MOM6 IAU
+export MOM_IAU='False'
+export MOM_IAU_HRS=6
 
 # CICE6 defaults; 1 degree
 export NPROC_ICE='12'
@@ -837,6 +851,9 @@ export MOM6_RESTART_SETTING='n'
 export MOM6_RIVER_RUNOFF='False'
 export FRUNOFF=""
 export CHLCLIM='"seawifs_1998-2006_smoothed_2X.nc"'
+# MOM6 IAU
+export MOM_IAU='False'
+export MOM_IAU_HRS=6
 # this must be set False for restart repro
 export MOM6_REPRO_LA='False'
 # since CPL_SLOW is set to DT_THERM, this should be always be false
@@ -953,6 +970,9 @@ export MOM6_RESTART_SETTING='n'
 export MOM6_RIVER_RUNOFF='False'
 export FRUNOFF=""
 export CHLCLIM='"seawifs_1998-2006_smoothed_2X.nc"'
+# MOM6 IAU
+export MOM_IAU='False'
+export MOM_IAU_HRS=6
 # this must be set False for restart repro
 export MOM6_REPRO_LA='False'
 # since CPL_SLOW is set to DT_THERM, this should be always be false

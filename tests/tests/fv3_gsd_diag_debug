@@ -1,12 +1,12 @@
 ###############################################################################
 #
-#  FV3 CCPP GSD (GF CU + Thompson MP + MYNN PBL + RUC LSM) coldstart (0-24h) test
+#  FV3 CCPP GSD (GF CU + Thompson MP + MYNN PBL + RUC LSM) plus extra diagnostics
 #
 ###############################################################################
 
-export TEST_DESCR="Compare FV3 CCPP GSD results with previous trunk version"
+export TEST_DESCR="Compare FV3 CCPP GSD diagnostic results with previous trunk version"
 
-export CNTL_DIR=fv3_gsd
+export CNTL_DIR=fv3_gsd_diag_debug
 
 export LIST_FILES="sfcf000.tile1.nc \
                    sfcf000.tile2.nc \
@@ -14,29 +14,26 @@ export LIST_FILES="sfcf000.tile1.nc \
                    sfcf000.tile4.nc \
                    sfcf000.tile5.nc \
                    sfcf000.tile6.nc \
-                   sfcf024.tile1.nc \
-                   sfcf024.tile2.nc \
-                   sfcf024.tile3.nc \
-                   sfcf024.tile4.nc \
-                   sfcf024.tile5.nc \
-                   sfcf024.tile6.nc \
+                   sfcf001.tile1.nc \
+                   sfcf001.tile2.nc \
+                   sfcf001.tile3.nc \
+                   sfcf001.tile4.nc \
+                   sfcf001.tile5.nc \
+                   sfcf001.tile6.nc \
                    atmf000.tile1.nc \
                    atmf000.tile2.nc \
                    atmf000.tile3.nc \
                    atmf000.tile4.nc \
                    atmf000.tile5.nc \
                    atmf000.tile6.nc \
-                   atmf024.tile1.nc \
-                   atmf024.tile2.nc \
-                   atmf024.tile3.nc \
-                   atmf024.tile4.nc \
-                   atmf024.tile5.nc \
-                   atmf024.tile6.nc"
+                   atmf001.tile1.nc \
+                   atmf001.tile2.nc \
+                   atmf001.tile3.nc \
+                   atmf001.tile4.nc \
+                   atmf001.tile5.nc \
+                   atmf001.tile6.nc"
 
 export_fv3
-
-export FHMAX=24
-export OUTPUT_FH="3 -1"
 
 export DT_ATMOS="450"
 export IMP_PHYSICS=8
@@ -59,3 +56,19 @@ export IMFDEEPCNV=3
 export LSM=3
 export LSOIL_LSM=9
 export KICE=9
+
+export WLCLK=30
+
+export FDIAG=0,1,2
+export FHZERO=1
+export LDIAG3D=.true.
+export QDIAG3D=.true.
+export MAX_OUTPUT_FIELDS=500
+export DIAG_TABLE_ADDITIONAL=diag_additional_gsd_dtend
+export PRINT_DIFF_PGR=.true.
+
+export FHMAX=2
+export NFHOUT=1
+export NFHMAX_HF=12
+export NFHOUT_HF=1
+
