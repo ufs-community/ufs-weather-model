@@ -686,11 +686,7 @@ export DIAG_TABLE="diag_table_template"
 
 export FHROT='0'
 export NSOUT='-1'
-export FDIAG='6'
-export NFHOUT='6'
-#no high freq fv3 output
-export NFHMAX_HF='-1'
-export NFHOUT_HF='-1'
+export OUTPUT_FH='6 -1'
 export FHZERO=${FHZERO}
 
 export CPLFLX='.T.'
@@ -808,8 +804,7 @@ export SDAY='01'
 export SHOUR='00'
 export CDATE=${SYEAR}${SMONTH}${SDAY}${SHOUR}
 
-export NFHOUT=6
-export FDIAG=6
+export NFHOUT="6"
 export DT_ATMOS='900'
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6='1800'
@@ -917,8 +912,7 @@ export SDAY='01'
 export SHOUR='00'
 export CDATE=${SYEAR}${SMONTH}${SDAY}${SHOUR}
 
-export NFHOUT=6
-export FDIAG=6
+export NFHOUT="6"
 export DT_ATMOS='900'
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6='1800'
