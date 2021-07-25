@@ -327,20 +327,121 @@ WW3
 Static datasets (i.e., *fix files*)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. todo:: Information needed
 
-The static input files for global configurations are listed and described in :numref:`Table %s <WW3_FixFiles>`.
+The static input files for global configurations are listed and described in :numref:`Table %s <WW3_FixFiles>` for GFSv16 setup and :numref:`Table %s <WW3_FixFilesp>` for single grid configurations.
+The model definitions for wave grid(s) including spectral and directional resolutions, time steps, numerical scheme and parallelization algorithm, the physics parameters, boundary conditions and grid definitions are stored in binary mod_def files. The aforementioned parameters are defined in ww3_grid.inp.<grd> and the ww3_grid executables generates the binary mod_def.<grd> files.
+
+The WW3 version number in mod_def.<grd> files should be consistent with version of the code in ufs-weather-model. createmoddefs/creategridfiles.sh can be used in order to generate the mod_def.<grd> files, using ww3_grid.inp.<grd>, using the WW3 version in ups-weather-model. In order to do it, the path to the location of the ufs-weather-model  (UFSMODELDIR), the path to generated mod_def.<grd> outputs (OUTDIR), the path to input ww3_grid.inp.<grd> files (SRCDIR) and the path to the working directory for log files (WORKDIR) should be defined. 
 
 .. _WW3_FixFiles:
 
-.. list-table:: *Fix files containing climatological information*
-   :widths: 40 50
+.. list-table:: *Input files containing grid information and conservative remapping for global configurations (GFSv16 Wave)*
+   :widths: 35 35 25 15
    :header-rows: 1
 
    * - Filename
      - Description
-   * -
-     -
+     - Resolution
+     - Date-dependent
+   * - mod_def.aoc_9km
+     - Antarctic Ocean PolarStereo [50N 90N]
+     - 9km
+     - ✔
+   * - mod_def.gnh_10m
+     - Global mid core [15S 52N]
+     - 10 min
+     - ✔
+   * - mod_def.gsh_15m
+     - southern ocean [79.5S 10.5S]
+     - 15 min
+     - ✔
+   * - mod_def.glo_15mxt 
+     - Global 1/4 extended grid [90S 90S]
+     - 15 min
+     - ✔
+   * - mod_def.points
+     - GFSv16-wave spectral grid point output
+     - na
+     - ✔
+   * - mod_def.points
+     - GFSv16-wave spectral grid point output
+     - na
+     - ✔
+   * - rmp_src_to_dst_conserv_002_001.nc
+     - Conservative remapping gsh_15m to gnh_10m
+     - na
+     - ✔
+   * - rmp_src_to_dst_conserv_003_001.nc
+     - Conservative remapping aoc_9km to gnh_10m
+     - na
+     - ✔
+
+
+.. _WW3_FixFilesp:
+
+.. list-table:: *Input grid information for single global configurations*
+   :widths: 35 35 30 15
+   :header-rows: 1
+
+   * - Filename
+     - Description
+     - Resolution
+     - Date-dependent
+   * - mod_def.ant_9km
+     - polar streo antarctic grid [90S 50S]
+     - 9km
+     - ✔
+   * - mod_def.glo_10m
+     - Global grid [80S 80N]
+     - 10 min
+     - ✔
+   * - mod_def.glo_30m
+     - Global grid [80S 80N]
+     - 30 min
+     - ✔
+   * - mod_def.glo_1deg
+     - Global grid [85S 85N]
+     - 1 degree
+     - ✔
+   * - mod_def.glo_2deg
+     - Global grid [85S 85N]
+     - 2 degree
+     - ✔
+   * - mod_def.glo_gwes_30m
+     - Global NAWES 30 min wave grid [80S 80N]
+     - 30 min
+     - ✔
+
+The model driver input (ww3_multi.inp) includes the input, model and output grids definition, the starting and ending times for the entire model run and output types and intervals. The ww3_multi.inp.IN template is located under tests/parm/ directory. The inputs are described hereinafter:
+
+.. _WW3_Driver:
+
+.. list-table:: *Model driver input*
+   :widths: 30 70 
+   :header-rows: 1
+   * - NMGRIDS 
+     - Number of wave model grids
+   * - NFGRIDS 
+     - Number of grids defining input fields
+   * - FUNIPNT
+     - Flag for using unified point output file.
+   * - IOSRV 
+     - Output server type 
+   * - FPNTPROC 
+     - Flag for dedicated process for unified point output
+   * - FGRDPROC
+     - Flag for grids sharing dedicated output processes
+
+
+If there are input data grids defined ( NFGRIDS > 0 ) then these grids are defined first (CPLILINE, WINDLINE, ICELINE, CURRLINE). These grids are defined as if they are wave model grids using the file mod_def.<grd>. Each grid is defined on a separate input line with <grd>, with eight input flags identifying
+$ the presence of 1) water levels 2) currents 3) winds 4) ice
+$ 5) momentum 6) air density and 7-9) assimilation data.
+
+The GRIDLINE defines actual wave model grids using 13 parameters to be
+read from a single line in the file for each. It includes (1) its own input grid mod_def.<grd>, (2-10) forcing grid ids, (3) rank number, (12) group number and (13-14) fraction of communicator (processes) used for this grid.
+
+RUN_BEG and RUN_END define the starting and end times,  FLAGMASKCOMP and FLAGMASKOUT are flags for masking at printout time (default F F), followed by the gridded and point outputs start time (OUT_BEG), interval (DTFLD and DTPNT) and end time (OUT_END). The restart outputs start time, interval and end time are define by RST_BEG, DTRST, RST_END respectively.
+
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Grid description and initial condition files
@@ -1432,7 +1533,7 @@ Further details of the configuration of CICE model output can be found in the CI
 WW3
 -------
 
-.. todo:: Information needed
+The run directory includes WW3 binary outputs for the gridded outputs (YYYYMMDD.HHMMSS.out_grd.<grd>), point outputs (YYYYMMDD.HHMMSS.out_pnt.points) and restart files (YYYYMMDD.HHMMSS.restart.<grd>). 
 
 -------
 CMEPS
