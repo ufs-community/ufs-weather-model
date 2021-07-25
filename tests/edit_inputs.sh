@@ -19,7 +19,7 @@ function edit_ice_in {
       -e "s/NY_GLB/$NY_GLB/g" \
       -e "s/BLCKX/$BLCKX/g" \
       -e "s/BLCKY/$BLCKY/g" \
-      -e "s/RUNTYPE/$RUNTYPE/g" \
+      -e "s/CICERUNTYPE/$CICERUNTYPE/g" \
       -e "s/RUNID/$RUNID/g" \
       -e "s/CICE_HIST_AVG/$CICE_HIST_AVG/g" \
       -e "s/RESTART_EXT/$RESTART_EXT/g" \
@@ -40,6 +40,8 @@ function edit_mom_input {
       -e "s/MOM6_REPRO_LA/$MOM6_REPRO_LA/g" \
       -e "s/MOM6_USE_WAVES/$MOM6_USE_WAVES/g" \
       -e "s/MOM6_ALLOW_LANDMASK_CHANGES/$MOM6_ALLOW_LANDMASK_CHANGES/g" \
+      -e "s/MOM_IAU_HRS/$MOM_IAU_HRS/g" \
+      -e "s/MOM_IAU/$MOM_IAU/g" \
       -e "s/NX_GLB/$NX_GLB/g" \
       -e "s/NY_GLB/$NY_GLB/g" \
       -e "s/CHLCLIM/$CHLCLIM/g"
