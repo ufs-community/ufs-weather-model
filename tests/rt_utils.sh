@@ -538,7 +538,7 @@ ecflow_run() {
   not_running=$?
   if [[ $not_running -eq 1 ]]; then
     echo "ecflow_server is NOT running on ${ECF_HOST}:${ECF_PORT}"
-    sh ${ECFLOW_START} -p ${ECF_PORT}
+    ${ECFLOW_START} -p ${ECF_PORT}
   else
     echo "ecflow_server is already running on ${ECF_HOST}:${ECF_PORT}"
   fi
