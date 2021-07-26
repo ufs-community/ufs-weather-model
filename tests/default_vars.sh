@@ -436,8 +436,6 @@ export OUTPUT_GRID="'cubed_sphere_grid'"
 export OUTPUT_FILE="'netcdf'"
 export IDEFLATE=0
 export NBITS=0
-export WRITE_NEMSIOFLIP=.false.
-export WRITE_FSYNCFLAG=.false.
 export IMO=384
 export JMO=190
 
