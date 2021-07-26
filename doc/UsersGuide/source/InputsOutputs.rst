@@ -27,14 +27,14 @@ The ufs-weather-model can be configured as one of several applications, from a s
    * - DATM
      - Coupled CDEPS DATM-MOM6-CICE6-CMEPS
 	 
-This chapter describes the input and output files needed for executing the model in the various supported configurations. 
+This chapter describes the input and output files needed for executing the model in the various supported configurations.
 
 =============
 Input files
 =============
 
 There are three types of files needed to execute a run: static datasets (*fix* files containing climatological
-information), files that depend on grid resolution, initial and boundary conditions, and model configuration files (such as namelists). 
+information), files that depend on grid resolution, initial and boundary conditions, and model configuration files (such as namelists).
 
 -------
 UFSAtm
@@ -331,7 +331,7 @@ Static datasets (i.e., *fix files*)
 The static input files for global configurations are listed and described in :numref:`Table %s <WW3_FixFiles>` for GFSv16 setup and :numref:`Table %s <WW3_FixFilesp>` for single grid configurations.
 The model definitions for wave grid(s) including spectral and directional resolutions, time steps, numerical scheme and parallelization algorithm, the physics parameters, boundary conditions and grid definitions are stored in binary mod_def files. The aforementioned parameters are defined in ww3_grid.inp.<grd> and the ww3_grid executables generates the binary mod_def.<grd> files.
 
-The WW3 version number in mod_def.<grd> files should be consistent with version of the code in ufs-weather-model. createmoddefs/creategridfiles.sh can be used in order to generate the mod_def.<grd> files, using ww3_grid.inp.<grd>, using the WW3 version in ups-weather-model. In order to do it, the path to the location of the ufs-weather-model  (UFSMODELDIR), the path to generated mod_def.<grd> outputs (OUTDIR), the path to input ww3_grid.inp.<grd> files (SRCDIR) and the path to the working directory for log files (WORKDIR) should be defined. 
+The WW3 version number in mod_def.<grd> files should be consistent with version of the code in ufs-weather-model. createmoddefs/creategridfiles.sh can be used in order to generate the mod_def.<grd> files, using ww3_grid.inp.<grd>, using the WW3 version in ups-weather-model. In order to do it, the path to the location of the ufs-weather-model  (UFSMODELDIR), the path to generated mod_def.<grd> outputs (OUTDIR), the path to input ww3_grid.inp.<grd> files (SRCDIR) and the path to the working directory for log files (WORKDIR) should be defined.
 
 .. _WW3_FixFiles:
 
@@ -355,7 +355,7 @@ The WW3 version number in mod_def.<grd> files should be consistent with version 
      - southern ocean [79.5S 10.5S]
      - 15 min
      - ✔
-   * - mod_def.glo_15mxt 
+   * - mod_def.glo_15mxt
      - Global 1/4 extended grid [90S 90S]
      - 15 min
      - ✔
@@ -417,21 +417,21 @@ The model driver input (ww3_multi.inp) includes the input, model and output grid
 .. _WW3_Driver:
 
 .. list-table:: *Model driver input*
-   :widths: 30 70 
+   :widths: 30 70
    :header-rows: 1
-   * - NMGRIDS 
+
+   * - NMGRIDS
      - Number of wave model grids
-   * - NFGRIDS 
+   * - NFGRIDS
      - Number of grids defining input fields
    * - FUNIPNT
      - Flag for using unified point output file.
-   * - IOSRV 
-     - Output server type 
-   * - FPNTPROC 
+   * - IOSRV
+     - Output server type
+   * - FPNTPROC
      - Flag for dedicated process for unified point output
    * - FGRDPROC
      - Flag for grids sharing dedicated output processes
-
 
 If there are input data grids defined ( NFGRIDS > 0 ) then these grids are defined first (CPLILINE, WINDLINE, ICELINE, CURRLINE). These grids are defined as if they are wave model grids using the file mod_def.<grd>. Each grid is defined on a separate input line with <grd>, with eight input flags identifying
 $ the presence of 1) water levels 2) currents 3) winds 4) ice
@@ -1390,10 +1390,10 @@ A sample of the data stream file is shown below:
      - data stream mask file name
    * - model_meshfile
      - data stream mesh file name
-   * - nx_global 
-     - number of grid points in zonal direction 
-   * - ny_global 
-     - number of grid points in meridional direction 
+   * - nx_global
+     - number of grid points in zonal direction
+   * - ny_global
+     - number of grid points in meridional direction
    * - restfilm
      - model restart file namelist
 
@@ -1457,9 +1457,9 @@ Additional output files include: nemsusage.xml, a timing log file; time_stamp.ou
 MOM6
 -------
 
-MOM6 output is controlled via the FMS diag_manager using the *diag_table*. When MOM6 is present, the *diag_table* shown :ref:`above <code-block-fv3-diag-table>` includes additional requested MOM6 fields. 
+MOM6 output is controlled via the FMS diag_manager using the *diag_table*. When MOM6 is present, the *diag_table* shown :ref:`above <code-block-fv3-diag-table>` includes additional requested MOM6 fields.
 
-A brief example of the diag_table is shown below.  ``“...”`` denotes where lines have been removed. 
+A brief example of the diag_table is shown below.  ``“...”`` denotes where lines have been removed.
 
 .. code-block:: console
 
@@ -1507,8 +1507,8 @@ CICE6 output is controlled via the namelist *ice_in*. The relevant configuration
     hist_avg       = .true.
    ...
 
-In this example, *histfreq_n* and *hist_avg* specify that output will be 6-hour means. No monthly (*m*), 
-daily (*d*), yearly (*x*) or per-timestep (*x*) output will be produced.The *hist_avg* can 
+In this example, *histfreq_n* and *hist_avg* specify that output will be 6-hour means. No monthly (*m*),
+daily (*d*), yearly (*x*) or per-timestep (*x*) output will be produced.The *hist_avg* can
 also be set *.false.* to produce, for example, instaneous fields every 6 hours.
 
 The output of any field is set in the appropriate *ice_in* namelist. For example,
@@ -1519,12 +1519,12 @@ The output of any field is set in the appropriate *ice_in* namelist. For example
    &icefields_nml
    f_aice         = 'mdhxx'
    f_hi           = 'mdhxx'
-   f_hs           = 'mdhxx' 
+   f_hs           = 'mdhxx'
    ...
    
 where the ice concentration (*aice*), ice thickness (*hi*) and snow thickness (*hs*) are set to be output
 on the monthly, daily, hourly, yearly or timestep intervals set by the *histfreq_n* setting. Since *histfreq_n* is
-*0* for both monthly and daily frequencies and neither yearly nor per-timestep output is requested, only 6-hour 
+*0* for both monthly and daily frequencies and neither yearly nor per-timestep output is requested, only 6-hour
 mean history files will be produced.
 
 Further details of the configuration of CICE model output can be found in the CICE documentation  `3.1.4 <https://cice-consortium-cice.readthedocs.io/en/master/user_guide/ug_implementation.html#model-output>`_
@@ -1533,13 +1533,13 @@ Further details of the configuration of CICE model output can be found in the CI
 WW3
 -------
 
-The run directory includes WW3 binary outputs for the gridded outputs (YYYYMMDD.HHMMSS.out_grd.<grd>), point outputs (YYYYMMDD.HHMMSS.out_pnt.points) and restart files (YYYYMMDD.HHMMSS.restart.<grd>). 
+The run directory includes WW3 binary outputs for the gridded outputs (YYYYMMDD.HHMMSS.out_grd.<grd>), point outputs (YYYYMMDD.HHMMSS.out_pnt.points) and restart files (YYYYMMDD.HHMMSS.restart.<grd>).
 
 -------
 CMEPS
 -------
 
-The CMEPS mediator writes general information about the run-time configuration to the file *mediator.log* in the model run directory. Optionally, the CMEPS mediator can be configured to write history files for the purposes of examining the field exchanges at various points in the model run sequence. 
+The CMEPS mediator writes general information about the run-time configuration to the file *mediator.log* in the model run directory. Optionally, the CMEPS mediator can be configured to write history files for the purposes of examining the field exchanges at various points in the model run sequence.
 
 ==============================================================
 Additional Information about the FMS Diagnostic Manager
