@@ -42,7 +42,7 @@
        reset_eta = .F.
        n_sponge = -1
        nudge_qv = .T.
-       tau = 0.015
+       tau = -5.0e1
        rf_cutoff = 2.e2
        d2_bg_k1 = 0.20
        d2_bg_k2 = 0.005
@@ -84,7 +84,7 @@
        hord_dp =  6
        hord_tr = 8
        adjust_dry_mass = .F.
-       consv_te = 1.
+       consv_te = 0.
        do_sat_adj = .false.
        consv_am = .F.
        fill = .T.
@@ -126,7 +126,6 @@
        nst_anl        = .true.
        use_ufo        = true.
        pre_rad        = .false.
-       ncld           = 1
        imp_physics    = 11
        pdfcld         = .false.
        fhswr          = 3600.
@@ -334,5 +333,15 @@
 /
 &multi_gases_nml
   ri= 295.3892,  461.50, 0., 0., 0., 0., 0., 173.2247,  519.674, 259.8370 ,0.,0.
- cpi=1031.1083, 1846.00, 0., 0., 0., 0., 0.,  820.2391, 1299.185, 918.0969, 0.,0.
+  cpi=1031.1083, 1846.00, 0., 0., 0., 0., 0.,  820.2391, 1299.185, 918.0969, 0.,0.
 /
+&molecular_diffusion_nml
+  tau_visc = 1.0
+  tau_cond = 1.0
+  tau_diff = 1.0
+  md_layers = 70
+  md_tadj_layers = 0
+  md_consv_te = 1.0
+  md_wait_hr  = 0.0
+/
+  

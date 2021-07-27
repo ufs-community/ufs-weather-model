@@ -83,12 +83,6 @@ echo "Compiling ${MAKE_OPT} into $BUILD_NAME.exe on $MACHINE_ID"
 
 CMAKE_FLAGS=$MAKE_OPT
 
-if [[ "${MAKE_OPT}" == *"MOLECULAR_DIFFUSION=Y"* ]]; then
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DMOLECULAR_DIFFUSION=ON"
-else
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DMOLECULAR_DIFFUSION=OFF"
-fi
-
 # FIXME - create CCPP include directory before building FMS to avoid
 # gfortran warnings of non-existent include directory (adding
 # -Wno-missing-include-dirs) to the GNU compiler flags does not work,
