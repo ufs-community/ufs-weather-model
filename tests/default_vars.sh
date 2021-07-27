@@ -488,6 +488,7 @@ export DO_UGWP_V1=.F.
 export DO_UGWP_V1_OROG_ONLY=.F.
 
 # resolution dependent settings
+export CDMBWD_c48='0.071,2.1,1.0,1.0'
 export CDMBWD_c96='0.14,1.8,1.0,1.0'
 export CDMBWD_c192='0.23,1.5,1.0,1.0'
 export CDMBWD_c384='1.1,0.72,1.0,1.0'
@@ -558,6 +559,7 @@ export FNALBC="'global_snowfree_albedo.bosu.t126.384.190.rg.grb',"
 export FNVETC="'global_vegtype.igbp.t126.384.190.rg.grb',"
 export FNSOTC="'global_soiltype.statsgo.t126.384.190.rg.grb',"
 export FNSMCC="'global_soilmgldas.t126.384.190.grb',"
+export FNSMCC_control="'global_soilmgldas.statsgo.t1534.3072.1536.grb',"
 export FNABSC="'global_mxsnoalb.uariz.t126.384.190.rg.grb',"
 
 
