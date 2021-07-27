@@ -126,7 +126,7 @@ submit_and_wait() {
         status_label='held in a queue'
       elif [[ $status = 'R' ]];  then
         status_label='running'
-      elif [[ $status = 'E' ]] || [[ $status = 'C' ]];  then
+      elif [[ $status = 'E' ]] || [[ $status = 'C' ]] || [[ $status = '-' ]];  then
         status_label='finished'
         test_status='DONE'
         exit_status=$( qstat ${jobid} -x -f | grep Exit_status | awk '{print $3}')
