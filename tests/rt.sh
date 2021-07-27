@@ -236,10 +236,6 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   export PATH=$PYTHONHOME/bin:$PATH
   export PYTHONPATH=$PYTHONHOME/lib/python3.7/site-packages
 
-  if [[ ! $HOSTNAME = hecflow* ]]; then
-    echo "ERROR: On Hera we must be logged into 'hecflow' login nodes"
-    exit 1
-  fi
   module load ecflow
   ECFLOW_START=ecflow_start.sh
 
@@ -528,6 +524,11 @@ if [[ $ECFLOW == true ]]; then
   # Reduce maximum number of compile jobs on jet.intel because of licensing issues
   if [[ $MACHINE_ID = jet.intel ]]; then
     MAX_BUILDS=5
+  fi
+
+  if [[ $MACHINE_ID = hera.* ]] && [[ ! $HOSTNAME = hecflow* ]]; then
+    echo "ERROR: To use ECFlow on Hera we must be logged into 'hecflow01' login node."
+    exit 1
   fi
 
   ECFLOW_RUN=${PATHRT}/ecflow_run
