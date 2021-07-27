@@ -154,7 +154,7 @@ submit_and_wait() {
         echo "Slurm unknown status ${status}. Check sacct ..."
         sacct -n -j ${slurm_id} --format=JobID,state%20,Jobname%20
         status_label=$( sacct -n -j ${slurm_id} --format=JobID,state%20,Jobname%20 | grep "^${slurm_id}" | grep ${JBNME} | awk '{print $2}' )
-        if [[ $status_label = 'FAILED' ]]; then
+        if [[ $status_label = 'FAILED' ]] || [[ $status_label = 'TIMEOUT' ]]; then
             test_status='FAIL'
         fi
       fi
