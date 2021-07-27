@@ -194,7 +194,7 @@ elif [[ $MACHINE_ID = wcoss2 ]]; then
   #ECFLOW_START=${ECF_ROOT}/intel/bin/ecflow_start.sh
   #ECF_PORT=$(grep $USER /usrx/local/sys/ecflow/assigned_ports.txt | awk '{print $2}')
 
-  DISKNM=/lfs/h1/emc/ptmp/Dusan.Jovic/RT
+  DISKNM=/lfs/h1/emc/ptmp/${USER}/RT
   QUEUE=workq
   COMPILE_QUEUE=workq
   PARTITION=
@@ -235,8 +235,13 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   PYTHONHOME=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3_new_20210629
   export PATH=$PYTHONHOME/bin:$PATH
   export PYTHONPATH=$PYTHONHOME/lib/python3.7/site-packages
-  ECFLOW_START=$PYTHONHOME/bin/ecflow_start.sh
-  ECF_PORT=$(( $(id -u) + 1500 ))
+
+  if [[ ! $HOSTNAME = hecflow* ]]; then
+    echo "ERROR: On Hera we must be logged into 'hecflow' login nodes"
+    exit 1
+  fi
+  module load ecflow
+  ECFLOW_START=ecflow_start.sh
 
   QUEUE=debug
   COMPILE_QUEUE=batch
