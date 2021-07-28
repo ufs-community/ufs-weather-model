@@ -436,8 +436,6 @@ export OUTPUT_GRID="'cubed_sphere_grid'"
 export OUTPUT_FILE="'netcdf'"
 export IDEFLATE=0
 export NBITS=0
-export WRITE_NEMSIOFLIP=.false.
-export WRITE_FSYNCFLAG=.false.
 export IMO=384
 export JMO=190
 
@@ -550,7 +548,7 @@ export NPY=97
 export NPZ=64
 export NPZP=65
 export NSTF_NAME=2,1,1,0,5
-export FDIAG=0,1,2,3,4,5,6,7,8,9,10,11,12,15,18,21,24,27,30,33,36,39,42,45,48
+export OUTPUT_FH="0 1 2 3 4 5 6 7 8 9 10 11 12 15 18 21 24 27 30 33 36 39 42 45 48"
 export NFHOUT=3
 export NFHMAX_HF=12
 export NFHOUT_HF=1
@@ -574,9 +572,11 @@ export FHCYC=24
 export FHROT=0
 export LDIAG3D=.F.
 export QDIAG3D=.F.
+export PRINT_DIFF_PGR=.false.
 export MAX_OUTPUT_FIELDS=300
 
 # Stochastic physics
+export STOCHINI=.F.
 export DO_SPPT=.F.
 export DO_SHUM=.F.
 export DO_SKEB=.F.
@@ -591,6 +591,7 @@ export LNDP_PRT_LISY=-999
 
 #IAU
 export IAU_INC_FILES="''"
+
 
 #Cellular automata
 export DO_CA=.F.
@@ -615,6 +616,10 @@ export ww3gline="'glo_1deg'  'no' 'no' 'CPL:native' 'no' 'no' 'no' 'no' 'no' 'no
 # Regional
 export WRITE_RESTART_WITH_BCS=.false.
 
+# Diagnostics
+export PRINT_DIFF_PGR=.false.
+
+# Coupling
 export coupling_interval_fast_sec=0
 }
 
@@ -627,6 +632,8 @@ export DATM_CDEPS=false
 
 export DAYS="1"
 export FHMAX="24"
+export FDIAG="6"
+export FHZERO="6"
 export WLCLK=30
 
 # default atm/ocn/ice resolution
@@ -684,13 +691,11 @@ export INPUT_NML=input.mom6_ccpp.nml.IN
 export FIELD_TABLE="field_table"
 export DIAG_TABLE="diag_table_template"
 
+export DIAG_TABLE_ADDITIONAL=''
+
 export FHROT='0'
 export NSOUT='-1'
-export FDIAG='6'
-export NFHOUT='6'
-#no high freq fv3 output
-export NFHMAX_HF='-1'
-export NFHOUT_HF='-1'
+export OUTPUT_FH='6 -1'
 export FHZERO=${FHZERO}
 
 export CPLFLX='.T.'
@@ -724,6 +729,9 @@ export MOM6_THERMO_SPAN='False'
 # no WW3
 export MOM6_USE_WAVES='False'
 export MOM6_ALLOW_LANDMASK_CHANGES='False'
+# MOM6 IAU
+export MOM_IAU='False'
+export MOM_IAU_HRS=6
 
 # CICE6 defaults; 1 degree
 export NPROC_ICE='12'
@@ -808,8 +816,7 @@ export SDAY='01'
 export SHOUR='00'
 export CDATE=${SYEAR}${SMONTH}${SDAY}${SHOUR}
 
-export NFHOUT=6
-export FDIAG=6
+export NFHOUT="6"
 export DT_ATMOS='900'
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6='1800'
@@ -842,6 +849,9 @@ export MOM6_RESTART_SETTING='n'
 export MOM6_RIVER_RUNOFF='False'
 export FRUNOFF=""
 export CHLCLIM='"seawifs_1998-2006_smoothed_2X.nc"'
+# MOM6 IAU
+export MOM_IAU='False'
+export MOM_IAU_HRS=6
 # this must be set False for restart repro
 export MOM6_REPRO_LA='False'
 # since CPL_SLOW is set to DT_THERM, this should be always be false
@@ -917,8 +927,7 @@ export SDAY='01'
 export SHOUR='00'
 export CDATE=${SYEAR}${SMONTH}${SDAY}${SHOUR}
 
-export NFHOUT=6
-export FDIAG=6
+export NFHOUT="6"
 export DT_ATMOS='900'
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6='1800'
@@ -959,6 +968,9 @@ export MOM6_RESTART_SETTING='n'
 export MOM6_RIVER_RUNOFF='False'
 export FRUNOFF=""
 export CHLCLIM='"seawifs_1998-2006_smoothed_2X.nc"'
+# MOM6 IAU
+export MOM_IAU='False'
+export MOM_IAU_HRS=6
 # this must be set False for restart repro
 export MOM6_REPRO_LA='False'
 # since CPL_SLOW is set to DT_THERM, this should be always be false
