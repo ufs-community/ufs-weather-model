@@ -69,10 +69,17 @@ else
 
 fi
 
-cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/aerosol.dat .
-cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/co2historicaldata_201*.txt .
-cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/sfc_emissivity_idx.txt .
-cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/solarconstant_noaa_an.txt .
+if [ $NPX = 49 ]; then
+    cp    @[INPUTDATA_ROOT]/${inputdir}/aerosol.dat .
+    cp    @[INPUTDATA_ROOT]/${inputdir}/co2historicaldata_201*.txt .
+    cp    @[INPUTDATA_ROOT]/${inputdir}/sfc_emissivity_idx.txt .
+    cp    @[INPUTDATA_ROOT]/${inputdir}/solarconstant_noaa_an.txt .
+else
+    cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/aerosol.dat .
+    cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/co2historicaldata_201*.txt .
+    cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/sfc_emissivity_idx.txt .
+    cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/solarconstant_noaa_an.txt .
+fi
 cp    @[INPUTDATA_ROOT]/${inputdir}/global_o3prdlos.f77 .
 cp    @[INPUTDATA_ROOT]/${inputdir}/global_h2o_pltc.f77 ./global_h2oprdlos.f77
 cp    @[INPUTDATA_ROOT]/${inputdir}/*grb .

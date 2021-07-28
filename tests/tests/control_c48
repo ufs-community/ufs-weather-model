@@ -1,12 +1,12 @@
 ###############################################################################
 #
-#  global control test: GFSv16 atmosphere only at C96L127
+#  global control test: GFSv16 atmosphere only at C48L127
 #
 ###############################################################################
 
-export TEST_DESCR="Compare global control results with previous trunk version"
+export TEST_DESCR="Compare global control C48L127 results with previous trunk version"
 
-export CNTL_DIR=control
+export CNTL_DIR=control_c48
 
 export LIST_FILES="sfcf000.nc \
                    sfcf024.nc \
@@ -47,6 +47,7 @@ export LIST_FILES="sfcf000.nc \
 
 export_fv3
 export TASKS=24
+export TPN=24
 export INPES=1
 export JNPES=3
 export WRTTASK_PER_GROUP=6
@@ -74,6 +75,7 @@ export FNVETC="'global_vegtype.igbp.t62.192.94.rg.grb',"
 export FNSOTC="'global_soiltype.statsgo.t62.192.94.rg.grb',"
 export FNABSC="'global_mxsnoalb.uariz.t62.192.94.rg.grb',"
 export FNSMCC_control="'global_soilmgldas.statsgo.t92.192.94.grb',"
+export FNMSKH_control="'global_slmask.t62.192.94.grb',"
 
 
 export FV3_RUN=control_run.IN
