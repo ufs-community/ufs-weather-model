@@ -18,6 +18,8 @@ The ufs-weather-model can be configured as one of several applications, from a s
      - Standalone UFSAtm
    * - ATMW
      - UFSAtm coupled to WW3
+   * - ATMAERO
+     - UFSAtm coupled to GoCart
    * - S2S
      - Coupled UFSATM-MOM6-CICE6-CMEPS
    * - S2SW
