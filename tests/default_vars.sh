@@ -436,8 +436,6 @@ export OUTPUT_GRID="'cubed_sphere_grid'"
 export OUTPUT_FILE="'netcdf'"
 export IDEFLATE=0
 export NBITS=0
-export WRITE_NEMSIOFLIP=.false.
-export WRITE_FSYNCFLAG=.false.
 export IMO=384
 export JMO=190
 
@@ -550,7 +548,7 @@ export NPY=97
 export NPZ=64
 export NPZP=65
 export NSTF_NAME=2,1,1,0,5
-export FDIAG=0,1,2,3,4,5,6,7,8,9,10,11,12,15,18,21,24,27,30,33,36,39,42,45,48
+export OUTPUT_FH="0 1 2 3 4 5 6 7 8 9 10 11 12 15 18 21 24 27 30 33 36 39 42 45 48"
 export NFHOUT=3
 export NFHMAX_HF=12
 export NFHOUT_HF=1
@@ -697,11 +695,7 @@ export DIAG_TABLE_ADDITIONAL=''
 
 export FHROT='0'
 export NSOUT='-1'
-export FDIAG='6'
-export NFHOUT='6'
-#no high freq fv3 output
-export NFHMAX_HF='-1'
-export NFHOUT_HF='-1'
+export OUTPUT_FH='6 -1'
 export FHZERO=${FHZERO}
 
 export CPLFLX='.T.'
@@ -822,8 +816,7 @@ export SDAY='01'
 export SHOUR='00'
 export CDATE=${SYEAR}${SMONTH}${SDAY}${SHOUR}
 
-export NFHOUT=6
-export FDIAG=6
+export NFHOUT="6"
 export DT_ATMOS='900'
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6='1800'
@@ -934,8 +927,7 @@ export SDAY='01'
 export SHOUR='00'
 export CDATE=${SYEAR}${SMONTH}${SDAY}${SHOUR}
 
-export NFHOUT=6
-export FDIAG=6
+export NFHOUT="6"
 export DT_ATMOS='900'
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6='1800'
