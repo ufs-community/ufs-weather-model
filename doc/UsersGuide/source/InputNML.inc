@@ -277,28 +277,6 @@ The variables used in ``&atmos_model_nml`` are described in :numref:`Table %s <a
      - If true, initialize timing identifiers.
      - logical
      - .false.
-   * - fdiag
-     - Array with dimension ``maxhr`` = 4096 listing the diagnostic output times (in hours) for the GFS physics.
-       This can either be a list of times after initialization, or an interval if only the first entry is
-       nonzero. The default setting of 0 will result in no outputs.
-     - real
-     - 0.
-   * - fhmax
-     - The maximal forecast time for output.
-     - real
-     - 384.0
-   * - fhmaxhf
-     - The maximal forecast hour for high frequency output.
-     - real
-     - 120.0
-   * - fhout
-     - Output frequency during forecast time from 0 to ``fhmax``, or from ``fhmaxhf`` to ``fhmax`` if ``fhmaxf>0``.
-     - real
-     - 3.0
-   * - fhouthf
-     - The high frequency output frequency during the forecast time from 0 to ``fhmaxhf`` hour.
-     - real
-     - 1.0
    * - ccpp_suite
      - Name of the CCPP physics suite
      - character(len=256)
@@ -317,11 +295,6 @@ A sample of this namelist is shown below:
      blocksize = 32
      chksum_debug = .false.
      dycore_only = .false.
-     fdiag = 1
-     fhmax = 384
-     fhout = 3
-     fhmaxhf = 120
-     fhouthf = 1
      ccpp_suite = 'FV3_GFS_v16beta'
    /
 
