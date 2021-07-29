@@ -1,8 +1,10 @@
 module lnd_import_export
 
+  use ESMF
+  use NUOPC
   use ESMF                    , only : ESMF_GridComp, ESMF_State, ESMF_Mesh, ESMF_StateGet
   use ESMF                    , only : ESMF_KIND_R8, ESMF_SUCCESS, ESMF_MAXSTR, ESMF_LOGMSG_INFO
-  use ESMF                    , only : ESMF_LogWrite, ESMF_LOGMSG_ERROR, ESMF_LogFoundError
+  use ESMF                    , only : ESMF_LogWrite, ESMF_LOGMSG_ERROR, ESMF_LogFoundError, ESMF_FAILURE
   use ESMF                    , only : ESMF_STATEITEM_NOTFOUND, ESMF_StateItem_Flag
   use ESMF                    , only : operator(/=), operator(==)
   use NUOPC                   , only : NUOPC_CompAttributeGet, NUOPC_Advertise, NUOPC_IsConnected
@@ -484,14 +486,18 @@ contains
   end subroutine advertise_fields
 
   !===============================================================================
-  subroutine realize_fields(gcomp, Emesh, flds_scalar_name, flds_scalar_num, rc)
+  subroutine realize_fields(gcomp, mesh, grid, flds_scalar_name, flds_scalar_num, rc)
 
+    use ESMF, only : ESMF_Mesh, ESMF_Grid
+    
     ! input/output variables
-    type(ESMF_GridComp) , intent(inout) :: gcomp
-    type(ESMF_Mesh)     , intent(in)    :: Emesh
-    character(len=*)    , intent(in)    :: flds_scalar_name
-    integer             , intent(in)    :: flds_scalar_num
-    integer             , intent(out)   :: rc
+    type(ESMF_GridComp) , intent(inout)          :: gcomp
+    type(ESMF_Mesh)     , optional , intent(in)  :: mesh
+    type(ESMF_Grid)     , optional , intent(in)  :: grid
+    
+    character(len=*)    , intent(in)             :: flds_scalar_name
+    integer             , intent(in)             :: flds_scalar_num
+    integer             , intent(out)            :: rc
 
     ! local variables
     type(ESMF_State)     :: importState
@@ -504,26 +510,49 @@ contains
     call NUOPC_ModelGet(gcomp, importState=importState, exportState=exportState, rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
-    call fldlist_realize( &
-         state=ExportState, &
-         fldList=fldsFrLnd, &
-         numflds=fldsFrLnd_num, &
-         flds_scalar_name=flds_scalar_name, &
-         flds_scalar_num=flds_scalar_num, &
-         tag=subname//':clmExport',&
-         mesh=Emesh, rc=rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
-    call fldlist_realize( &
-         state=importState, &
-         fldList=fldsToLnd, &
-         numflds=fldsToLnd_num, &
-         flds_scalar_name=flds_scalar_name, &
-         flds_scalar_num=flds_scalar_num, &
-         tag=subname//':clmImport',&
-         mesh=Emesh, rc=rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    if (present(mesh)) then
+       call fldlist_realize( &
+            state=ExportState, &
+            fldList=fldsFrLnd, &
+            numflds=fldsFrLnd_num, &
+            flds_scalar_name=flds_scalar_name, &
+            flds_scalar_num=flds_scalar_num, &
+            tag=subname//':Land Export',&
+            mesh=mesh, rc=rc)
+       if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
+       call fldlist_realize( &
+            state=importState, &
+            fldList=fldsToLnd, &
+            numflds=fldsToLnd_num, &
+            flds_scalar_name=flds_scalar_name, &
+            flds_scalar_num=flds_scalar_num, &
+            tag=subname//':Land Import',&
+            mesh=mesh, rc=rc)
+       if (ChkErr(rc,__LINE__,u_FILE_u)) return
+       
+    else if (present(grid)) then
+       call fldlist_realize( &
+            state=ExportState, &
+            fldList=fldsFrLnd, &
+            numflds=fldsFrLnd_num, &
+            flds_scalar_name=flds_scalar_name, &
+            flds_scalar_num=flds_scalar_num, &
+            tag=subname//':Land Export',&
+            grid=grid, rc=rc)
+       if (ChkErr(rc,__LINE__,u_FILE_u)) return
+
+       call fldlist_realize( &
+            state=importState, &
+            fldList=fldsToLnd, &
+            numflds=fldsToLnd_num, &
+            flds_scalar_name=flds_scalar_name, &
+            flds_scalar_num=flds_scalar_num, &
+            tag=subname//':Land Import',&
+            grid=grid, rc=rc)
+       if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    end if
   end subroutine realize_fields
 
   !===============================================================================
@@ -1011,11 +1040,11 @@ contains
   end subroutine fldlist_add
 
   !===============================================================================
-  subroutine fldlist_realize(state, fldList, numflds, flds_scalar_name, flds_scalar_num, mesh, tag, rc)
+  subroutine fldlist_realize(state, fldList, numflds, flds_scalar_name, flds_scalar_num, mesh, grid, tag, rc)
 
     use NUOPC , only : NUOPC_IsConnected, NUOPC_Realize
-    use ESMF  , only : ESMF_MeshLoc_Element, ESMF_FieldCreate, ESMF_TYPEKIND_R8
-    use ESMF  , only : ESMF_MAXSTR, ESMF_Field, ESMF_State, ESMF_Mesh, ESMF_StateRemove
+    use ESMF  , only : ESMF_MeshLoc_Element, ESMF_INDEX_DELOCAL, ESMF_FieldCreate, ESMF_TYPEKIND_R8
+    use ESMF  , only : ESMF_MAXSTR, ESMF_Field, ESMF_State, ESMF_Mesh, ESMF_Grid, ESMF_StateRemove
     use ESMF  , only : ESMF_LogFoundError, ESMF_LOGMSG_INFO, ESMF_SUCCESS
     use ESMF  , only : ESMF_LogWrite, ESMF_LOGMSG_ERROR, ESMF_LOGERR_PASSTHRU
 
@@ -1026,7 +1055,8 @@ contains
     character(len=*)    , intent(in)    :: flds_scalar_name
     integer             , intent(in)    :: flds_scalar_num
     character(len=*)    , intent(in)    :: tag
-    type(ESMF_Mesh)     , intent(in)    :: mesh
+    type(ESMF_Mesh), optional , intent(in)    :: mesh
+    type(ESMF_Grid), optional , intent(in)    :: grid
     integer             , intent(inout) :: rc
 
     ! local variables
@@ -1049,18 +1079,30 @@ contains
              if (ChkErr(rc,__LINE__,u_FILE_u)) return
           else
              ! Create the field
-             if (fldlist(n)%ungridded_lbound > 0 .and. fldlist(n)%ungridded_ubound > 0) then
-                field = ESMF_FieldCreate(mesh, ESMF_TYPEKIND_R8, name=stdname, meshloc=ESMF_MESHLOC_ELEMENT, &
-                     ungriddedLbound=(/fldlist(n)%ungridded_lbound/), &
-                     ungriddedUbound=(/fldlist(n)%ungridded_ubound/), &
-                     gridToFieldMap=(/2/), rc=rc)
-                if (ChkErr(rc,__LINE__,u_FILE_u)) return
+             if (present(mesh)) then
+                if (fldlist(n)%ungridded_lbound > 0 .and. fldlist(n)%ungridded_ubound > 0) then
+                   field = ESMF_FieldCreate(mesh, ESMF_TYPEKIND_R8, name=stdname, meshloc=ESMF_MESHLOC_ELEMENT, &
+                        ungriddedLbound=(/fldlist(n)%ungridded_lbound/), &
+                        ungriddedUbound=(/fldlist(n)%ungridded_ubound/), &
+                        gridToFieldMap=(/2/), rc=rc)
+                   if (ChkErr(rc,__LINE__,u_FILE_u)) return
+                else
+                   field = ESMF_FieldCreate(mesh, ESMF_TYPEKIND_R8, name=stdname, meshloc=ESMF_MESHLOC_ELEMENT, rc=rc)
+                   if (ChkErr(rc,__LINE__,u_FILE_u)) return
+                end if
+                call ESMF_LogWrite(trim(subname)//trim(tag)//" Field = "//trim(stdname)//" is connected using mesh", &
+                     ESMF_LOGMSG_INFO)
+             else if (present(grid)) then
+                ! Note no ungridded bounds. Hope this doesn't cause issues.
+                   field = ESMF_FieldCreate(grid, ESMF_TYPEKIND_R8, name=stdname, indexflag=ESMF_INDEX_DELOCAL, rc=rc)
+                   if (ChkErr(rc,__LINE__,u_FILE_u)) return
+                call ESMF_LogWrite(trim(subname)//trim(tag)//" Field = "//trim(stdname)//" is connected using grid", &
+                     ESMF_LOGMSG_INFO)
              else
-                field = ESMF_FieldCreate(mesh, ESMF_TYPEKIND_R8, name=stdname, meshloc=ESMF_MESHLOC_ELEMENT, rc=rc)
-                if (ChkErr(rc,__LINE__,u_FILE_u)) return
-             end if
-             call ESMF_LogWrite(trim(subname)//trim(tag)//" Field = "//trim(stdname)//" is connected using mesh", &
-                  ESMF_LOGMSG_INFO)
+                call ESMF_LogWrite(subname // 'input must be grid or mesh', ESMF_LOGMSG_INFO)
+                rc = ESMF_FAILURE
+                return
+             end if ! mesh or grid
           endif
 
           ! NOW call NUOPC_Realize
@@ -1289,9 +1331,15 @@ contains
     call ESMF_StateGet(State, itemName=trim(fldname), field=lfield, rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
     if (present(fldptr1d)) then
+       if (.not.associated(fldptr1d)) then
+          write(*,*) 'fldptr1d not associated'
+       endif
        call ESMF_FieldGet(lfield, farrayPtr=fldptr1d, rc=rc)
        if (ChkErr(rc,__LINE__,u_FILE_u)) return
     else if (present(fldptr2d)) then
+       if (.not.associated(fldptr2d)) then
+          write(*,*) 'fldptr2d not associated'
+       endif
        call ESMF_FieldGet(lfield, farrayPtr=fldptr2d, rc=rc)
        if (ChkErr(rc,__LINE__,u_FILE_u)) return
     else

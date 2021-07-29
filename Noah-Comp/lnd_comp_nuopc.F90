@@ -21,12 +21,19 @@ module lnd_comp_nuopc
   use nuopc_shr_methods      , only : set_component_logging, get_component_instance, log_clock_advance
   use clm_varctl             , only : inst_index, inst_suffix, inst_name
   use lnd_import_export      , only : advertise_fields, realize_fields
+  use import_fields_mod      , only : ie_set_geomtype
   ! use lnd_import_export      , only : advertise_fields, realize_fields, import_fields, export_fields
   !use lnd_comp_shr           , only : mesh, model_meshfile !, model_clock
   use shr_sys_mod            , only : shr_sys_abort
 
-  use noah_driver            , only : init_driver
+  use mpp_mod,            only: mpp_init, mpp_pe, mpp_root_pe
+  use fms_mod,            only: fms_init
+  use fms_io_mod,         only: read_data
+  
+  use noah_driver,        only: init_driver
+  !use land_domain_mod,    only: domain_create 
 
+  
   implicit none
   private ! except
 
@@ -48,6 +55,7 @@ module lnd_comp_nuopc
   character(len=*) , parameter :: u_FILE_u = &
        __FILE__
 
+  type(ESMF_GeomType_Flag) :: geomtype
 !===============================================================================
 contains
 !===============================================================================
@@ -133,6 +141,7 @@ contains
     character(len=CL)  :: logmsg
     logical            :: isPresent, isSet
     logical            :: cism_evolve
+    integer :: mype, ntasks, mpi_comm_land
     character(len=*), parameter :: subname=trim(modName)//':(InitializeAdvertise) '
     character(len=*), parameter :: format = "('("//trim(subname)//") :',A)"
     !-------------------------------------------------------------------------------
@@ -143,6 +152,21 @@ contains
     call ESMF_GridCompGet(gcomp, vm=vm, rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
+    ! start putting in fms/mpp stuff here
+    call ESMF_VMGetCurrent(vm=VM,rc=RC)
+    call ESMF_VMGet(vm=VM, localPet=mype, mpiCommunicator=mpi_comm_land, &
+         petCount=ntasks, rc=rc)
+    if (mype == 0) write(0,*) 'in lnd comp initadvert, ntasks=',ntasks
+    !write(0,*) 'in lnd comp init advert, ntasks=',ntasks, ' pe=',mype
+    call fms_init(mpi_comm_land)
+    !write(0,*) 'in lnd comp init advert 2, ntasks=',ntasks, ' pe=',mype
+    
+
+    ! Create domain
+
+    
+
+    
     call get_component_instance(gcomp, inst_suffix, inst_index, rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
     inst_name = 'LND'
@@ -188,7 +212,8 @@ contains
 
     use lnd_set_decomp_and_domain , only : lnd_set_decomp_and_domain_from_readmesh ! try out read mask
 
-    use proc_bounds, only : procbounds
+    use proc_bounds, only : procbounds, control_init_type
+    use fms_io_mod,         only: field_exist, read_data
     
     ! input/output variables
     type(ESMF_GridComp)  :: gcomp
@@ -227,66 +252,134 @@ contains
 
     integer :: i
 
-    
+    ! cube sphere mosaic
+    type(ESMF_Decomp_Flag)  :: decompflagPTile(2,6)
+    character(256)          :: gridfile
+    integer                 :: tl
+    integer,dimension(2,6)  :: decomptile                  !define delayout for the 6 cubed-sphere tiles
+    type(ESMF_Grid)         :: lndGrid
+    character(50)           :: gridchoice
+    type (control_init_type)::   ctrl_init
     !-------------------------------------------------------------------------------
     rc = ESMF_SUCCESS
     call ESMF_LogWrite(subname//' called', ESMF_LOGMSG_INFO)
 
+    ! moved to init_driver
+    ! ! domain create with FMS:
+    ! call domain_create()
 
-    ! assume mesh file has mask
-    meshfile_mask = meshfile_lnd
-    
-    ! Read in the land mesh from the file
-    
-    mesh_input = ESMF_MeshCreate(filename=trim(meshfile_lnd), fileformat=ESMF_FILEFORMAT_ESMFMESH, rc=rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    ! --------------------- 
+    ! initialize noah:
+    ! ---------------------   
+    call init_driver(ctrl_init)
 
-    ! Determine lsize and distgrid_lnd
-    call ESMF_MeshGet(mesh_input, elementdistGrid=distgrid, rc=rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return
-    call ESMF_DistGridGet(distgrid, localDe=0, elementCount=lsize, rc=rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    if ( trim(ctrl_init%grid) == '1Dmesh' )  then ! mesh creation
+       geomtype = ESMF_GEOMTYPE_MESH
+       
+       ! assume mesh file has mask
+       meshfile_mask = meshfile_lnd
 
-    ! Determine lndmask_loc
-    ! The call to ESMF_MeshGet fills in the values of lndmask_loc
-    allocate(lndmask_loc(lsize))
-    elemMaskArray = ESMF_ArrayCreate(distgrid, lndmask_loc, rc=rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return
-    call ESMF_MeshGet(mesh_input, elemMaskArray=elemMaskArray, rc=rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+       ! Read in the land mesh from the file
 
-    ! Determine global landmask_glob 
-    ! how to get gsize? same as elementCount? No, that's lsize....
-    gsize = lsize ! this is a (wrong) placeholder to test
+       mesh_input = ESMF_MeshCreate(filename=trim(meshfile_lnd), fileformat=ESMF_FILEFORMAT_ESMFMESH, rc=rc)
+       if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
-    allocate(gindex(lsize))
-    allocate(itemp_glob(gsize))
-    ! List of sequence indices for the elements on localDe
-    !call ESMF_DistGridGet(distgrid, 0, seqIndexList=gindex, rc=rc)
-    !if (chkerr(rc,__LINE__,u_FILE_u)) return
-    !write(*,*) "JP A2.4. gindex = ", gindex
+       ! Determine lsize and distgrid_lnd
+       call ESMF_MeshGet(mesh_input, elementdistGrid=distgrid, rc=rc)
+       if (ChkErr(rc,__LINE__,u_FILE_u)) return
+       call ESMF_DistGridGet(distgrid, localDe=0, elementCount=lsize, rc=rc)
+       if (ChkErr(rc,__LINE__,u_FILE_u)) return
+
+       ! Determine lndmask_loc
+       ! The call to ESMF_MeshGet fills in the values of lndmask_loc
+       allocate(lndmask_loc(lsize))
+       elemMaskArray = ESMF_ArrayCreate(distgrid, lndmask_loc, rc=rc)
+       if (ChkErr(rc,__LINE__,u_FILE_u)) return
+       call ESMF_MeshGet(mesh_input, elemMaskArray=elemMaskArray, rc=rc)
+       if (ChkErr(rc,__LINE__,u_FILE_u)) return
+
+       ! Determine global landmask_glob 
+       ! how to get gsize? same as elementCount? No, that's lsize....
+       gsize = lsize ! this is a (wrong) placeholder to test
+
+       allocate(gindex(lsize))
+       allocate(itemp_glob(gsize))
+       ! List of sequence indices for the elements on localDe
+       !call ESMF_DistGridGet(distgrid, 0, seqIndexList=gindex, rc=rc)
+       !if (chkerr(rc,__LINE__,u_FILE_u)) return
+       !write(*,*) "JP A2.4. gindex = ", gindex
 
 !!! debug prints
-    call ESMF_DistGridGet(distgrid,dimCount=dimCount, deCount=deCount, localDeCount=localDeCount, rc=rc)
-    if (chkerr(rc,__LINE__,u_FILE_u)) return
-    !write(*,*) "DGG1: ", dimCount, deCount, localDeCount
+       call ESMF_DistGridGet(distgrid,dimCount=dimCount, deCount=deCount, localDeCount=localDeCount, rc=rc)
+       if (chkerr(rc,__LINE__,u_FILE_u)) return
+       !write(*,*) "DGG1: ", dimCount, deCount, localDeCount
 
-    allocate(seqIndexList(lsize))
-    call ESMF_DistGridGet(distgrid, localDe=0, de=de,seqIndexList=seqIndexList, rc=rc)
-    if (chkerr(rc,__LINE__,u_FILE_u)) return
+       allocate(seqIndexList(lsize))
+       call ESMF_DistGridGet(distgrid, localDe=0, de=de,seqIndexList=seqIndexList, rc=rc)
+       if (chkerr(rc,__LINE__,u_FILE_u)) return
 
-    ! do i = 1, lsize
-    !    write(*,*) "DGG2: ", de, seqIndexList(i)
-    ! end do
+       ! do i = 1, lsize
+       !    write(*,*) "DGG2: ", de, seqIndexList(i)
+       ! end do
 
-    procbounds%de = de
-    ! think this will suffice for now for gc indexing:
-    procbounds%gridbeg = seqIndexList(1)
-    procbounds%gridend = seqIndexList(lsize)
-    procbounds%im      = lsize
+       procbounds%de = de
+       ! think this will suffice for now for gc indexing:
+       procbounds%gridbeg = seqIndexList(1)
+       procbounds%gridend = seqIndexList(lsize)
+       procbounds%im      = lsize
+
+       write(*,*) "bounds: ", de, seqIndexList(1), seqIndexList(lsize), lsize
     
-    write(*,*) "bounds: ", de, seqIndexList(1), seqIndexList(lsize), lsize
-    
+       ! ---------------------
+       ! Realize the actively coupled fields
+       ! ---------------------
+       call realize_fields(gcomp, mesh=mesh_input, flds_scalar_name=flds_scalar_name, &
+            flds_scalar_num=flds_scalar_num, rc=rc)
+       if (ChkErr(rc,__LINE__,u_FILE_u)) return
+
+    elseif ( trim(ctrl_init%grid) == 'CS' ) then ! cube sphere mosaic
+
+       geomtype = ESMF_GEOMTYPE_GRID
+       
+       gridfile = "grid_spec.nc" ! default                                                                                              
+       if (field_exist("INPUT/grid_spec.nc", "atm_mosaic_file")) then
+          call read_data("INPUT/grid_spec.nc", "atm_mosaic_file", gridfile)
+       endif
+
+       do tl=1,6
+          decomptile(1,tl) = ctrl_init%layout(1)
+          decomptile(2,tl) = ctrl_init%layout(2)
+          decompflagPTile(:,tl) = (/ESMF_DECOMP_SYMMEDGEMAX,ESMF_DECOMP_SYMMEDGEMAX/)
+       enddo
+       lndGrid = ESMF_GridCreateMosaic(filename="INPUT/"//trim(gridfile),     &
+            regDecompPTile=decomptile,tileFilePath="INPUT/",                   &
+            decompflagPTile=decompflagPTile,                                   &
+            staggerlocList=(/ESMF_STAGGERLOC_CENTER, ESMF_STAGGERLOC_CORNER/), &
+            name='lnd_grid', rc=rc)
+
+       ! ---------------------
+       ! Realize the actively coupled fields
+       ! ---------------------
+       call realize_fields(gcomp, grid=lndGrid, flds_scalar_name=flds_scalar_name, &
+            flds_scalar_num=flds_scalar_num, rc=rc)
+       if (ChkErr(rc,__LINE__,u_FILE_u)) return
+
+
+       ! ! ---------------------
+       ! ! Define Blocking
+       ! ! ---------------------
+       ! call define_blocks_packed ('land_model', Lnd_block, isc, iec, jsc, jec, nlev, &
+       !      blocksize, block_message)
+
+    else
+       write(*,*) 'Do not know if imports/exports should be 1D or 2D from ctrl_init%grid'                                           
+       stop
+
+    end if
+
+
+    ! set variable geomtype for import/export module
+    call ie_set_geomtype(geomtype)
     
     ! do n = 1,lsize
     !    write(*,*) "JP n, gindex(n), lndmask_loc(n) =", n, gindex(n), lndmask_loc(n)
@@ -315,17 +408,6 @@ contains
     ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
     ! write(*,*) "JP B. element count = ", elementCount
 
-    ! ---------------------
-    ! Realize the actively coupled fields
-    ! ---------------------
-    call realize_fields(gcomp, mesh_input, flds_scalar_name, flds_scalar_num, rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return
-
-    ! --------------------- 
-    ! initialize noah:
-    ! ---------------------   
-    call init_driver(procbounds)
-
 
   end subroutine InitializeRealize
 
@@ -334,8 +416,8 @@ contains
 
     !use lsm_noah, only: lsm_noah_run
     !use noah_loop, only: noah_loop_run
-    use noah_driver, only: noah_loop_drv, noah_pubinst
-    use import_fields, only: write_import_field, import_allfields, export_allfields
+    use noah_driver, only: noah_block_run, noah_model, ctrl_init, noah_loop_drv
+    use import_fields_mod, only: write_import_field, import_allfields_am, export_allfields
     use proc_bounds, only : procbounds
     
     ! Arguments
@@ -366,149 +448,149 @@ contains
     integer                 :: i, de, gridbeg, gridend, im
     real(r8)                :: foodata(procbounds%im)
 
-    logical           :: first_time = .true.
-    
     ! query the Component for its clock, importState and exportState
     ! call ESMF_GridCompGet(gcomp, clock=clock, importState=importState, &
     !      exportState=exportState, rc=rc)
     call NUOPC_ModelGet(gcomp, modelClock=clock, importState=importState, exportState=exportState, rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
-    ! write out imports. Should make this optional, and put into a routine
+
+    ! Commenting out, because won't currently work with tiles
+    ! ! write out imports. Should make this optional, and put into a routine
     
-    allocate(flds(7))
-    flds = (/'Faxa_lwdn  '    , 'Faxa_swndr '   , 'Faxa_swvdr '   , 'Faxa_swndf ' , 'Faxa_swvdf ', &
-         'Faxa_rain  '    , 'Faxa_snow  ' /)
+    ! allocate(flds(7))
+    ! flds = (/'Faxa_lwdn  '    , 'Faxa_swndr '   , 'Faxa_swvdr '   , 'Faxa_swndf ' , 'Faxa_swvdf ', &
+    !      'Faxa_rain  '    , 'Faxa_snow  ' /)
 
-    do n = 1,size(flds)
-       fldname = trim(flds(n))
-       call write_import_field(importState, fldname, rc)
-    end do
-    deallocate(flds)
+    ! do n = 1,size(flds)
+    !    fldname = trim(flds(n))
+    !    call write_import_field(importState, fldname, rc)
+    ! end do
+    ! deallocate(flds)
 
-    allocate(flds(27))
-    flds=(/ &
-         'Faxa_soiltyp     ', &
-         'Faxa_vegtype     ', &
-         'Faxa_sigmaf      ', &
-         'Faxa_sfcemis     ', &
-         'Faxa_dlwflx      ', &
-         'Faxa_dswsfc      ', &
-         'inst_down_sw_flx ', &
-         'Faxa_snet        ', &
-         'Faxa_tg3         ', &
-         'Faxa_cm          ', &
-         'Faxa_ch          ', &
-         'Faxa_prsl1       ', &
-         'Faxa_prslki      ', &
-         'Faxa_zf          ', &
-         'Faxa_land        ', &
-         'Faxa_slopetyp    ', &
-         'Faxa_shdmin      ', &
-         'Faxa_shdmax      ', &
-         'Faxa_snoalb      ', &
-         'Faxa_sfalb       ', &
-         'Faxa_bexppert    ', &
-         'Faxa_xlaipert    ', &
-         'Faxa_vegfpert    ', &
-         'Faxa_tsurf       ', &
-         'Faxa_wind        ', &
-         'Faxa_ps          ', &
-         'Faxa_t1          ', &
-         'Faxa_q1          ', &
-         'Faxa_z0rl        ', &
-         'Faxa_canopy      ', &
-         'Faxa_tprcp       ', &
-         'Faxa_weasd       ', &
-         'Faxa_ustar       ' &
-         /)
+    ! allocate(flds(27))
+    ! flds=(/ &
+    !      'Faxa_soiltyp     ', &
+    !      'Faxa_vegtype     ', &
+    !      'Faxa_sigmaf      ', &
+    !      'Faxa_sfcemis     ', &
+    !      'Faxa_dlwflx      ', &
+    !      'Faxa_dswsfc      ', &
+    !      'inst_down_sw_flx ', &
+    !      'Faxa_snet        ', &
+    !      'Faxa_tg3         ', &
+    !      'Faxa_cm          ', &
+    !      'Faxa_ch          ', &
+    !      'Faxa_prsl1       ', &
+    !      'Faxa_prslki      ', &
+    !      'Faxa_zf          ', &
+    !      'Faxa_land        ', &
+    !      'Faxa_slopetyp    ', &
+    !      'Faxa_shdmin      ', &
+    !      'Faxa_shdmax      ', &
+    !      'Faxa_snoalb      ', &
+    !      'Faxa_sfalb       ', &
+    !      'Faxa_bexppert    ', &
+    !      'Faxa_xlaipert    ', &
+    !      'Faxa_vegfpert    ', &
+    !      'Faxa_tsurf       ', &
+    !      'Faxa_wind        ', &
+    !      'Faxa_ps          ', &
+    !      'Faxa_t1          ', &
+    !      'Faxa_q1          ', &
+    !      'Faxa_z0rl        ', &
+    !      'Faxa_canopy      ', &
+    !      'Faxa_tprcp       ', &
+    !      'Faxa_weasd       ', &
+    !      'Faxa_ustar       ' &
+    !      /)
 
 
-    ! tmp
-    !write(*,*) 'procbound test:', procbounds%de, procbounds%gridbeg, procbounds%gridend
+    ! ! tmp
+    ! !write(*,*) 'procbound test:', procbounds%de, procbounds%gridbeg, procbounds%gridend
 
-    do n = 1,size(flds)
-       fldname = trim(flds(n))
-       call write_import_field(importState, fldname, rc)
-    end do
-    deallocate(flds)
+    ! do n = 1,size(flds)
+    !    fldname = trim(flds(n))
+    !    call write_import_field(importState, fldname, rc)
+    ! end do
+    ! deallocate(flds)
 
 
     ! end test tmp
 
-    call import_allfields(importState, procbounds, noah_pubinst, rc)
+    call import_allfields_am(importState, procbounds, noah_model, ctrl_init, rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
-    ! tmp workaround to run first time step with simple nems.configure sequence, without having land restart read
-    !first_time = .false.
-    if (noah_pubinst%control%first_time) then
-       !first_time = .false.
+    ! ! tmp workaround to run first time step with simple nems.configure sequence, without having land restart read
+    if (noah_model%control%first_time) then
        write(*,*) 'lnd_comp: skipping first time step'
     else
     
        ! run model
-       call noah_loop_drv(procbounds, noah_pubinst)
-
+       !call noah_block_run(procbounds, noah_model) !! IF using blocking
+       call noah_loop_drv(procbounds, noah_model)
+       
        ! tmp test
        ! im = procbounds%im
        ! gridbeg = procbounds%gridbeg
        ! gridend = procbounds%gridend
-       ! foodata(1:im) = noah_pubinst%model%foo_atm2lndfield(gridbeg:gridend)
+       ! foodata(1:im) = noah_model%model%foo_atm2lndfield(gridbeg:gridend)
        ! do i = 1,im
        !    write(*,*) 'MA1: ', de, gridbeg,gridend, size(foodata), foodata(i)
        ! end do
 
-    end if
-       call export_allfields(exportState, procbounds, noah_pubinst, rc)
+    end if ! first_time
 
+    call export_allfields(exportState, procbounds, noah_model, ctrl_init, rc)
 
-       ! write out export fields
-       allocate(flds(37))
-       flds=(/ &          ! inouts
-            'Fall_weasd ', &
-            'Fall_snwdph', &
-            'Fall_tskin ', &
-            'Fall_tprcp ', &
-            'Fall_srflag', &
-            'Fall_smc   ', &
-            'Fall_stc   ', &
-            'Fall_slc   ', &
-            'Fall_canopy', &
-            'Fall_trans ', &
-            'Fall_tsurf ', &
-            'Fall_z0rl  ', &
-            'Fall_sncovr1', &          ! noahouts
-            'Fall_qsurf  ', &
-            'Fall_gflux  ', &
-            'Fall_drain  ', &
-            'Fall_evap   ', &
-            'Fall_hflx   ', &
-            'Fall_ep     ', &
-            'Fall_runoff ', &
-            'Fall_cmm    ', &
-            'Fall_chh    ', &
-            'Fall_evbs   ', &
-            'Fall_evcw   ', &
-            'Fall_sbsno  ', &
-            'Fall_snowc  ', &
-            'Fall_stm    ', &
-            'Fall_snohf  ', &
-            'Fall_smcwlt2', &
-            'Fall_smcref2', &
-            'Fall_wet1   ', &         
-            'Fall_rb_lnd  ', &         ! diffouts
-            'Fall_fm_lnd  ', &
-            'Fall_fh_lnd  ', &
-            'Fall_fm10_lnd', &
-            'Fall_fh2_lnd ', &
-            'Fall_stress  '  &
-            /)
+       ! Commenting out, because won't currently work with tiles
+       ! ! write out export fields
+       ! allocate(flds(37))
+       ! flds=(/ &          ! inouts
+       !      'Fall_weasd ', &
+       !      'Fall_snwdph', &
+       !      'Fall_tskin ', &
+       !      'Fall_tprcp ', &
+       !      'Fall_srflag', &
+       !      'Fall_smc   ', &
+       !      'Fall_stc   ', &
+       !      'Fall_slc   ', &
+       !      'Fall_canopy', &
+       !      'Fall_trans ', &
+       !      'Fall_tsurf ', &
+       !      'Fall_z0rl  ', &
+       !      'Fall_sncovr1', &          ! noahouts
+       !      'Fall_qsurf  ', &
+       !      'Fall_gflux  ', &
+       !      'Fall_drain  ', &
+       !      'Fall_evap   ', &
+       !      'Fall_hflx   ', &
+       !      'Fall_ep     ', &
+       !      'Fall_runoff ', &
+       !      'Fall_cmm    ', &
+       !      'Fall_chh    ', &
+       !      'Fall_evbs   ', &
+       !      'Fall_evcw   ', &
+       !      'Fall_sbsno  ', &
+       !      'Fall_snowc  ', &
+       !      'Fall_stm    ', &
+       !      'Fall_snohf  ', &
+       !      'Fall_smcwlt2', &
+       !      'Fall_smcref2', &
+       !      'Fall_wet1   ', &         
+       !      'Fall_rb_lnd  ', &         ! diffouts
+       !      'Fall_fm_lnd  ', &
+       !      'Fall_fh_lnd  ', &
+       !      'Fall_fm10_lnd', &
+       !      'Fall_fh2_lnd ', &
+       !      'Fall_stress  '  &
+       !      /)
 
-       do n = 1,size(flds)
-          fldname = trim(flds(n))
-          call write_import_field(exportState, fldname, rc)
-       end do
-       deallocate(flds)
+       ! do n = 1,size(flds)
+       !    fldname = trim(flds(n))
+       !    call write_import_field(exportState, fldname, rc)
+       ! end do
+       ! deallocate(flds)
    
     call ESMF_ClockPrint(clock, options="currTime", &
          preString="------>Advancing LND from: ", unit=msgString, rc=rc)
@@ -524,10 +606,11 @@ contains
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
     call ESMF_LogWrite(trim(msgString), ESMF_LOGMSG_INFO)
 
-
-    if (noah_pubinst%control%first_time) then
-       noah_pubinst%control%first_time = .false.
+    ! tmp workaround to run first time step with simple nems.configure sequence, without having land restart read 
+    if (noah_model%control%first_time) then
+       noah_model%control%first_time = .false.
     endif
+    
     ! call ESMF_ClockAdvance(clock,rc=rc)
     ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
 

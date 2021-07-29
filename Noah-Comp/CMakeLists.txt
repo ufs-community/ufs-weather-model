@@ -20,6 +20,7 @@ add_library(lnd_comp STATIC
 	    import_2_export_test.F90 # tmp test
 	    import_fields.F90
 	    proc_bounds.F90
+	    domain_create.F90
 	    ccpphys_files/funcphys.f90
 	    ccpphys_files/machine.F
 	    ccpphys_files/sfc_diff.f
@@ -36,11 +37,8 @@ target_include_directories(lnd_comp PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BIN
                                        $<INSTALL_INTERFACE:mod>)
 
 #target_link_libraries(lnd_comp PUBLIC esmf ccppphys)
-target_link_libraries(lnd_comp PUBLIC esmf)
+target_link_libraries(lnd_comp PUBLIC esmf fms)
 
-# test this:
-#target_include_directories(lnd_comp PRIVATE ${CMAKE_BINARY_DIR}/../FV3/ccpp/framework/src
-#				    	    ${CMAKE_BINARY_DIR}/../FV3/ccpp/physics )
 
 
 #add_dependencies(lnd_comp fv3dycore)
