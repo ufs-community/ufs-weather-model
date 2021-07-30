@@ -24,8 +24,8 @@ The ufs-weather-model can be configured as one of several applications, from a s
      - Coupled UFSATM-MOM6-CICE6-CMEPS
    * - S2SW
      - Coupled UFSATM-MOM6-CICE6-WW3-CMEPS
-   * - DATM
-     - Coupled CDEPS DATM-MOM6-CICE6-CMEPS
+   * - NG-GODAS
+     - Coupled CDEPS-DATM-MOM6-CICE6-CMEPS
 	 
 This chapter describes the input and output files needed for executing the model in the various supported configurations.
 
@@ -1109,7 +1109,7 @@ For the fully coupled S2SW application, a sample *nems.configure* is shown below
 	::
 
 
-For the coupled MOM6_CICE6_CDEPS_DATM application, a sample *nems.configure* is shown below :
+For the coupled NG_GODAS application, a sample *nems.configure* is shown below :
 
 .. code-block:: console
 
