@@ -1,23 +1,21 @@
+###############################################################################
 #
-#  cpld_control test
+#  global control test: GFSv16 atmosphere only with fhzero change at C96L127
 #
+###############################################################################
 
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C96MX100"
+export TEST_DESCR="Compare global control with fhzero change results with previous trunk version"
 
-export CNTL_DIR="cpld_control"
+export CNTL_DIR=control
 
-export LIST_FILES="sfcf024.tile1.nc \
-                   sfcf024.tile2.nc \
-                   sfcf024.tile3.nc \
-                   sfcf024.tile4.nc \
-                   sfcf024.tile5.nc \
-                   sfcf024.tile6.nc \
-                   atmf024.tile1.nc \
-                   atmf024.tile2.nc \
-                   atmf024.tile3.nc \
-                   atmf024.tile4.nc \
-                   atmf024.tile5.nc \
-                   atmf024.tile6.nc \
+export LIST_FILES="sfcf000.nc \
+                   sfcf021.nc \
+                   atmf000.nc \
+                   atmf021.nc \
+                   GFSFLX.GrbF00 \
+                   GFSFLX.GrbF21 \
+                   GFSPRS.GrbF00 \
+                   GFSPRS.GrbF21 \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -49,16 +47,23 @@ export LIST_FILES="sfcf024.tile1.nc \
                    RESTART/sfc_data.tile3.nc \
                    RESTART/sfc_data.tile4.nc \
                    RESTART/sfc_data.tile5.nc \
-                   RESTART/sfc_data.tile6.nc \
-                   RESTART/MOM.res.nc \
-                   RESTART/iced.2016-10-04-00000.nc \
-                   RESTART/ufs.cpld.cpl.r.2016-10-04-00000.nc"
+                   RESTART/sfc_data.tile6.nc"
 
 export_fv3
-export_cpl
+export NPZ=127
+export NPZP=128
+export DT_ATMOS=720
+export SYEAR=2021
+export SMONTH=03
+export SDAY=22
+export SHOUR=06
+export OUTPUT_GRID='gaussian_grid'
+export NSTF_NAME='2,0,0,0,0'
+export WRITE_DOPOST=.true.
+export IAER=5111
+export FHZERO=3
 
-export RESTART_N="12"
-export RESTART_INTERVAL="${RESTART_N} -1"
-export eps_imesh='2.5e-1'
 
-export FV3_RUN=cpld_control_run.IN
+export FV3_RUN=control_run.IN
+export CCPP_SUITE=FV3_GFS_v16
+export INPUT_NML=control.nml.IN

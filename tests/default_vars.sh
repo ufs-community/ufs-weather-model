@@ -190,7 +190,7 @@ elif [[ $MACHINE_ID = jet.* ]]; then
 
   TASKS_dflt=150 ; TPN_dflt=24 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=78  ; TPN_thrd=12 ; INPES_thrd=3 ; JNPES_thrd=4
-  TASKS_c384=480 ; TPN_c384=24 ; INPES_c384=12 ; JNPES_c384=6
+  TASKS_c384=480 ; TPN_c384=12 ; INPES_c384=12 ; JNPES_c384=6
   TASKS_stretch=48 ; TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=12 ; INPES_strnest=2 ; JNPES_strnest=4
 
@@ -242,7 +242,7 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
 
   TASKS_dflt=150 ; TPN_dflt=36 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=78  ; TPN_thrd=18 ; INPES_thrd=3 ; JNPES_thrd=4
-  TASKS_c384=480 ; TPN_c384=36 ; INPES_c384=12 ; JNPES_c384=6
+  TASKS_c384=480 ; TPN_c384=18 ; INPES_c384=12 ; JNPES_c384=6
   TASKS_stretch=48 ; TPN_stretch=18 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=18 ; INPES_strnest=2 ; JNPES_strnest=4
 
@@ -438,8 +438,6 @@ export OUTPUT_GRID="'cubed_sphere_grid'"
 export OUTPUT_FILE="'netcdf'"
 export IDEFLATE=0
 export NBITS=0
-export WRITE_NEMSIOFLIP=.false.
-export WRITE_FSYNCFLAG=.false.
 export IMO=384
 export JMO=190
 
@@ -552,7 +550,7 @@ export NPY=97
 export NPZ=64
 export NPZP=65
 export NSTF_NAME=2,1,1,0,5
-export FDIAG=0,1,2,3,4,5,6,7,8,9,10,11,12,15,18,21,24,27,30,33,36,39,42,45,48
+export OUTPUT_FH="0 1 2 3 4 5 6 7 8 9 10 11 12 15 18 21 24 27 30 33 36 39 42 45 48"
 export NFHOUT=3
 export NFHMAX_HF=12
 export NFHOUT_HF=1
@@ -607,7 +605,7 @@ export IAU_DRYMASSFIXER=.false.
 #waves
 export WW3RSTDTHR='12'
 export WW3OUTDTHR='1'
-export WW3OUTPUTTYPE=' '
+export WW3OUTPUTTYPE='1'
 export OUTPARS_WAV="WND HS FP DP PHS PTP PDIR"
 export CPLILINE='$'
 export ICELINE='$'
@@ -615,7 +613,7 @@ export WINDLINE='$'
 export CURRLINE='$'
 export NFGRIDS=0
 export NMGRIDS=1
-export ww3gline="'glo_30m'  'no' 'no' 'CPL:native' 'no' 'no' 'no' 'no' 'no' 'no'   1  1  0.00 1.00  F"
+export ww3gline="'glo_1deg'  'no' 'no' 'CPL:native' 'no' 'no' 'no' 'no' 'no' 'no'   1  1  0.00 1.00  F"
 
 # Regional
 export WRITE_RESTART_WITH_BCS=.false.
@@ -701,11 +699,7 @@ export DIAG_TABLE_ADDITIONAL=''
 
 export FHROT='0'
 export NSOUT='-1'
-export FDIAG='6'
-export NFHOUT='6'
-#no high freq fv3 output
-export NFHMAX_HF='-1'
-export NFHOUT_HF='-1'
+export OUTPUT_FH='6 -1'
 export FHZERO=${FHZERO}
 
 export CPLFLX='.T.'
@@ -828,8 +822,7 @@ export SDAY='01'
 export SHOUR='00'
 export CDATE=${SYEAR}${SMONTH}${SDAY}${SHOUR}
 
-export NFHOUT=6
-export FDIAG=6
+export NFHOUT="6"
 export DT_ATMOS='900'
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6='1800'
@@ -942,8 +935,7 @@ export SDAY='01'
 export SHOUR='00'
 export CDATE=${SYEAR}${SMONTH}${SDAY}${SHOUR}
 
-export NFHOUT=6
-export FDIAG=6
+export NFHOUT="6"
 export DT_ATMOS='900'
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6='1800'

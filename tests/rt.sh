@@ -194,7 +194,7 @@ elif [[ $MACHINE_ID = wcoss2 ]]; then
   #ECFLOW_START=${ECF_ROOT}/intel/bin/ecflow_start.sh
   #ECF_PORT=$(grep $USER /usrx/local/sys/ecflow/assigned_ports.txt | awk '{print $2}')
 
-  DISKNM=/lfs/h1/emc/ptmp/Dusan.Jovic/RT
+  DISKNM=/lfs/h1/emc/ptmp/${USER}/RT
   QUEUE=workq
   COMPILE_QUEUE=workq
   PARTITION=
@@ -235,10 +235,11 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   PYTHONHOME=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3_new_20210629
   export PATH=$PYTHONHOME/bin:$PATH
   export PYTHONPATH=$PYTHONHOME/lib/python3.7/site-packages
-  ECFLOW_START=$PYTHONHOME/bin/ecflow_start.sh
-  ECF_PORT=$(( $(id -u) + 1500 ))
 
-  QUEUE=debug
+  module load ecflow
+  ECFLOW_START=ecflow_start.sh
+
+  QUEUE=batch 
   COMPILE_QUEUE=batch
 
   #ACCNR=fv3-cpu
@@ -414,7 +415,7 @@ if [[ $TESTS_FILE =~ '35d' ]]; then
   TEST_35D=true
 fi
 
-BL_DATE=20210722
+BL_DATE=20210729
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]]; then
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
 else
@@ -422,7 +423,7 @@ else
 fi
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20210717}
-INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20210503
+INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20210621
 INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC:-$DISKNM/NEMSfv3gfs/BM_IC-20210717}
 
 shift $((OPTIND-1))
@@ -523,6 +524,11 @@ if [[ $ECFLOW == true ]]; then
   # Reduce maximum number of compile jobs on jet.intel because of licensing issues
   if [[ $MACHINE_ID = jet.intel ]]; then
     MAX_BUILDS=5
+  fi
+
+  if [[ $MACHINE_ID = hera.* ]] && [[ ! $HOSTNAME = hecflow* ]]; then
+    echo "ERROR: To use ECFlow on Hera we must be logged into 'hecflow01' login node."
+    exit 1
   fi
 
   ECFLOW_RUN=${PATHRT}/ecflow_run
