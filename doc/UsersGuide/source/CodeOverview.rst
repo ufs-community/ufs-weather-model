@@ -20,8 +20,6 @@ The ufs-weather-model repository supports the short- and medium-range UFS applic
     - Authoritative repository URL
   * - Umbrella repository for the UFS Weather Model
     - https://github.com/ufs-community/ufs-weather-model
-  * - Infrastructure: Flexible Modeling System
-    - https://github.com/NOAA-GFDL/FMS
   * - Infrastructure: NOAA Environmental Modeling System
     - https://github.com/NOAA-EMC/NEMS
   * - Framework to connect the CCPP library to a host model
@@ -38,7 +36,7 @@ The ufs-weather-model repository supports the short- and medium-range UFS applic
     - https://github.com/NOAA-EMC/MOM6
   * - Los Alamos sea ice model (CICE6)
     - https://github.com/NOAA-EMC/CICE
-  * - EMC WaveWatch III Model (WW3)
+  * - NOAA/NCEP WAVEWATCH III Model (WW3)
     - https://github.com/NOAA-EMC/WW3
   * - NUOPC Community Mediator for Earth Prediction Systems (CMEPS)
     - https://github.com/NOAA-EMC/CMEPS
@@ -54,7 +52,6 @@ The umbrella repository for the UFS Weather Model is named ufs-weather-model.  U
 .. code-block:: console
 
    ufs-weather-model/
-   ├── FMS                                     https://github.com/NOAA-GFDL/FMS
    ├── FV3                                     https://github.com/NOAA-EMC/fv3atm
    │   ├── atmos_cubed_sphere                  https://github.com/NOAA-GFDL/GFDL_atmos_cubed_sphere
    │   ├── ccpp
@@ -86,7 +83,6 @@ When the ufs-weather-model is cloned, the basic directory structure will be simi
    ├── compsets             -------- configurations used by some regression tests
    ├── conf                 -------- compile options for Tier 1 and 2 platforms
    ├── doc                  -------- READMEs with build, reg-test hints
-   ├── FMS                  -------- The Flexible Modeling System (FMS),a software framework
    ├── FV3                  -------- UFSAtm atmosphere model
    │   ├── atmos_cubed_sphere ------ FV3 dynamic core
    │   │   ├── docs

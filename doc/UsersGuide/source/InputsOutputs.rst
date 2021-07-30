@@ -4,7 +4,7 @@
 Inputs and Outputs
 *************************
 
-The ufs-weather-model can be configured as one of several applications, from a single component model atmosphere model to a fully coupled model with multiple earth system components (atmosphere, ocean, sea-ice and mediator). Currently the supported configurations are:
+The ufs-weather-model can be configured as one of several applications, from a single component atmosphere model to a fully coupled model with multiple earth system components (atmosphere, ocean, sea-ice and mediator). Currently the supported configurations are:
 
 .. _UFS-applications:
 
