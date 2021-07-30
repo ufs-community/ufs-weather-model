@@ -45,7 +45,7 @@ The ufs-weather-model repository supports the short- and medium-range UFS applic
   * - Community Data Models for Earth Prediction Systems (CDEPS)
     - https://github.com/NOAA-EMC/CDEPS
 
-.. TODO:: need GoCart details
+.. TODO:: GoCart information in progress
 
 In the table, the left column contains a description of each repository, and the right column shows the component repositories which are pointing to (or will point to) the authoritative repositories. The ufs-weather-model currently uses git submodule to manage the sub-components.
 
@@ -78,7 +78,6 @@ Directory Structure
 
 When the ufs-weather-model is cloned, the basic directory structure will be similar to the example below. Files and some directories have been removed for brevity.
 
-.. TODO:: need GoCart details
 
 .. code-block:: console
 
@@ -126,7 +125,8 @@ When the ufs-weather-model is cloned, the basic directory structure will be simi
    |     └── CDEPS
    |         └── datm                            --------- CDEPS DATM
    
-   
+.. TODO:: GoCart information in progress
+
 The physics subdirectory in the *gfsphysics* directory  is not used or supported
 as part of this release (all physics is available through the :term:`CCPP` using
 the repository described in :numref:`Table %s <Repo_Structure>`).

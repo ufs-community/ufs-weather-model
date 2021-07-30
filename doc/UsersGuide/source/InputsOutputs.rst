@@ -476,7 +476,7 @@ GoCart
 Static datasets (i.e., *fix files*)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. todo:: Information needed
+.. TODO:: GoCart information in progress
 
 The static input files for global configurations are listed and described in :numref:`Table %s <GoCart_FixFiles>`.
 
@@ -495,7 +495,7 @@ The static input files for global configurations are listed and described in :nu
 Grid description and initial condition files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. todo:: Information needed
+.. TODO:: GoCart information in progress
 
 The input files containing grid information and the initial conditions for global configurations are listed and described in :numref:`Table %s <GoCart_GridICFiles>`.
 
@@ -994,8 +994,6 @@ are not usually changed.
 *nems.configure* file
 -----------------------
 
-.. todo:: GoCart information needed
-
 This file contains  information about the various NEMS components  and their run sequence. The active  components for a particular model configuration  are given in the *EARTH_component_list*. For  each active component,  the model name  and compute tasks  assigned to the component are given. A  specific component might  also require additional configuration  information to be present.  The *runSeq* describes the order and time intervals  over which one or  more component models integrate  in time. Additional *attributes*, if present, provide additional configuration of the model components when coupled with the CMEPS mediator.
 
 For the ATM application, since it consists of a single component, the *nems.configure* is simple and does not need to be changed.
@@ -1232,6 +1230,8 @@ For the coupled MOM6_CICE6_CDEPS_DATM application, a sample *nems.configure* is 
 	      orb_obliq = 1.e36
 	::
 
+
+.. TODO:: GoCart information in progress
 
 ---------------------------------------
 *The SDF (Suite Definition File) file*
