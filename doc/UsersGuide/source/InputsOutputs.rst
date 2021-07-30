@@ -19,7 +19,7 @@ The ufs-weather-model can be configured as one of several applications, from a s
    * - ATMW
      - UFSAtm coupled to WW3
    * - ATMAERO
-     - UFSAtm coupled to GoCart
+     - UFSAtm coupled to GOCART
    * - S2S
      - Coupled UFSATM-MOM6-CICE6-CMEPS
    * - S2SW
@@ -470,17 +470,17 @@ The input files containing grid information and the time-varying forcing files f
      - ✔
 
 -------
-GoCart
+GOCART
 -------
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Static datasets (i.e., *fix files*)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. TODO:: GoCart information in progress
+.. TODO:: GOCART information in progress
 
-The static input files for global configurations are listed and described in :numref:`Table %s <GoCart_FixFiles>`.
+The static input files for global configurations are listed and described in :numref:`Table %s <GOCART_FixFiles>`.
 
-.. _GoCart_FixFiles:
+.. _GOCART_FixFiles:
 
 .. list-table:: *Fix files containing climatological information*
    :widths: 40 50
@@ -495,11 +495,11 @@ The static input files for global configurations are listed and described in :nu
 Grid description and initial condition files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. TODO:: GoCart information in progress
+.. TODO:: GOCART information in progress
 
-The input files containing grid information and the initial conditions for global configurations are listed and described in :numref:`Table %s <GoCart_GridICFiles>`.
+The input files containing grid information and the initial conditions for global configurations are listed and described in :numref:`Table %s <GOCART_GridICFiles>`.
 
-.. _GoCart_GridICFiles:
+.. _GOCART_GridICFiles:
 
 .. list-table:: *Input files containing grid information and initial conditions for global configurations*
    :widths: 35 50 15
@@ -1231,7 +1231,7 @@ For the coupled NG_GODAS application, a sample *nems.configure* is shown below :
 	::
 
 
-.. TODO:: GoCart information in progress
+.. TODO:: GOCART information in progress
 
 ---------------------------------------
 *The SDF (Suite Definition File) file*
