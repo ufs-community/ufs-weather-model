@@ -309,13 +309,6 @@ add_executable(ufs_model NEMS/src/MAIN_NEMS.F90)
 add_dependencies(ufs_model ufs)
 target_link_libraries(ufs_model ufs esmf w3nco::w3nco_d)
 
-if(S2S OR CMEPS OR CDEPS)
-  if(PNETCDF)
-    target_link_libraries (ufs_model PRIVATE ${PNETCDF_LIBRARY_DIRS})
-    target_include_directories(ufs_model PRIVATE ${PNETCDF_INCLUDE_DIRS})
-  endif()
-endif()
-
 ###############################################################################
 ### Install
 ###############################################################################
