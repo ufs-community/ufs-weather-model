@@ -1,0 +1,132 @@
+###############################################################################
+#
+#  Global control test: GFSv16 gdas ensemble forecast case
+#
+###############################################################################
+
+export TEST_DESCR="Compare global c384gdas_wave results with previous trunk version"
+
+export CNTL_DIR=control_c384gdas_wav
+
+export LIST_FILES="sfcf000.nc \
+                   sfcf003.nc \
+                   atmf000.nc \
+                   atmf003.nc \
+                   GFSFLX.GrbF00 \
+                   GFSFLX.GrbF03 \
+                   GFSPRS.GrbF00 \
+                   GFSPRS.GrbF03 \
+                   RESTART/coupler.res \
+                   RESTART/fv_core.res.nc \
+                   RESTART/fv_core.res.tile1.nc \
+                   RESTART/fv_core.res.tile2.nc \
+                   RESTART/fv_core.res.tile3.nc \
+                   RESTART/fv_core.res.tile4.nc \
+                   RESTART/fv_core.res.tile5.nc \
+                   RESTART/fv_core.res.tile6.nc \
+                   RESTART/fv_srf_wnd.res.tile1.nc \
+                   RESTART/fv_srf_wnd.res.tile2.nc \
+                   RESTART/fv_srf_wnd.res.tile3.nc \
+                   RESTART/fv_srf_wnd.res.tile4.nc \
+                   RESTART/fv_srf_wnd.res.tile5.nc \
+                   RESTART/fv_srf_wnd.res.tile6.nc \
+                   RESTART/fv_tracer.res.tile1.nc \
+                   RESTART/fv_tracer.res.tile2.nc \
+                   RESTART/fv_tracer.res.tile3.nc \
+                   RESTART/fv_tracer.res.tile4.nc \
+                   RESTART/fv_tracer.res.tile5.nc \
+                   RESTART/fv_tracer.res.tile6.nc \
+                   RESTART/phy_data.tile1.nc \
+                   RESTART/phy_data.tile2.nc \
+                   RESTART/phy_data.tile3.nc \
+                   RESTART/phy_data.tile4.nc \
+                   RESTART/phy_data.tile5.nc \
+                   RESTART/phy_data.tile6.nc \
+                   RESTART/sfc_data.tile1.nc \
+                   RESTART/sfc_data.tile2.nc \
+                   RESTART/sfc_data.tile3.nc \
+                   RESTART/sfc_data.tile4.nc \
+                   RESTART/sfc_data.tile5.nc \
+                   RESTART/sfc_data.tile6.nc \
+                   20210322.030000.restart.aoc_9km \
+                   20210322.030000.restart.gnh_10m \
+                   20210322.030000.restart.gsh_15m"
+
+export_fv3
+
+export TASKS=552
+if [[ $MACHINE_ID = cheyenne.* ]]; then
+  export TPN=12
+elif [[ $MACHINE_ID = hera.* ]]; then
+  export TPN=20
+  export THRD=2
+elif [[ $MACHINE_ID = wcoss_cray ]]; then
+  export TPN=6
+else
+  export TPN=12
+fi
+
+
+export INPES=6
+export JNPES=8
+export WRITE_GROUP=1
+export WRTTASK_PER_GROUP=24
+export FHMAX=9
+export NPZ=127
+export NPZP=128
+export NPX=385
+export NPY=385
+export DT_ATMOS=225
+
+export SYEAR=2021
+export SMONTH=03
+export SDAY=21
+export SHOUR=18
+export FHROT=3
+export FDIAG=3
+export NFHMAX_HF=0
+export IAU_OFFSET=6
+export CDMBWD=${CDMBWD_c384}
+export OUTPUT_GRID='gaussian_grid'
+export WRITE_DOPOST=.true.
+export IMO=1536
+export JMO=768
+
+export WARM_START=.true.
+export NGGPS_IC=.false.
+export EXTERNAL_IC=.false.
+export MAKE_NH=.false.
+export MOUNTAIN=.true.
+export NA_INIT=0
+export IAU_INC_FILES="'fv_increment3.nc','fv_increment6.nc','fv_increment9.nc'"
+export MODEL_INITIALIZATION=true
+export WLCLK=30
+
+export FNALBC="'global_snowfree_albedo.bosu.t766.1536.768.rg.grb',"
+export FNVETC="'global_vegtype.igbp.t766.1536.768.rg.grb',"
+export FNSOTC="'global_soiltype.statsgo.t766.1536.768.rg.grb',"
+export FNABSC="'global_mxsnoalb.uariz.t766.1536.768.rg.grb',"
+
+export CPL=.true.
+export CPLWAV=.true.
+export CPLWAV=.T.
+export NEMS_CONFIGURE="nems.configure.leapfrog_atm_wav.IN"
+export atm_model='fv3'
+export atm_petlist_bounds="0 311"
+export wav_model='ww3'
+export wav_petlist_bounds="312 551"
+export WW3OUTPUTTYPE=' 1'
+export coupling_interval_sec=1800.0  #coupling time step, want it to be multiple of 1800 and FV3 time step
+#wave
+export WW3RSTDTHR=9
+export NFGRIDS=1
+export NMGRIDS=3
+export CPLILINE="'glo_15mxt'  F F T F F F F F F"
+export ww3gline="'gnh_10m' 'no' 'no' 'CPL:glo_15mxt' 'no'  'no' 'no' 'no' 'no' 'no' 1 10  0.00 1.00  F\n"
+export ww3gline="${ww3gline}'gsh_15m' 'no' 'no' 'CPL:glo_15mxt' 'no'  'no' 'no' 'no' 'no' 'no' 2 20  0.00 1.00  F\n"
+export ww3gline="${ww3gline}'aoc_9km' 'no' 'no' 'CPL:glo_15mxt' 'no'  'no' 'no' 'no' 'no' 'no' 3 30  0.00 1.00  F"
+
+export MODEL_INITIALIZATION=true
+export FV3_RUN=control_run.IN
+export CCPP_SUITE=FV3_GFS_v16
+export INPUT_NML=control_gdas.nml.IN
