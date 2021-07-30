@@ -80,8 +80,6 @@ When the ufs-weather-model is cloned, the basic directory structure will be simi
 
    ufs-weather-model/
    ├── cmake                -------- cmake configuration files
-   ├── compsets             -------- configurations used by some regression tests
-   ├── conf                 -------- compile options for Tier 1 and 2 platforms
    ├── doc                  -------- READMEs with build, reg-test hints
    ├── FV3                  -------- UFSAtm atmosphere model
    │   ├── atmos_cubed_sphere ------ FV3 dynamic core
@@ -96,11 +94,8 @@ When the ufs-weather-model is cloned, the basic directory structure will be simi
    │   │   ├── physics      -------- CCPP compliant physics schemes
    │   │   └── suites       -------- CCPP physics suite definition files (SDFs)
    │   ├── cpl              -------- Coupling field data structures
-   │   ├── fv3_cap          -------- UFSAtm NUOPC cap
    │   ├── io               -------- UFSAtm write grid comp code
-   │   ├── ipd              -------- unused - IPD driver/interfaces
    |   ├── stochastic_physics ------ Cmakefile for stochastic physics code
-   ├── log                  -------- log files from NEMS compset regression tests
    ├── modulefiles          -------- system module files for supported HPC systems
    ├── NEMS                 -------- NOAA Earth Modeling System framework
    ├── stochastic_physics   -------- stochastic physics pattern generator
