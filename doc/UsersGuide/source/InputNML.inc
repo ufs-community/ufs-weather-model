@@ -5,7 +5,7 @@
 .. _InputNML:
 
 ---------------------------
-Namelist file ``input.nml``
+Namelist file *input.nml*
 ---------------------------
 
 The atmosphere model reads many parameters from a Fortran namelist file, named *input.nml*.  This file contains
