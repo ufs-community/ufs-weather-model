@@ -60,14 +60,14 @@ The umbrella repository for the UFS Weather Model is named ufs-weather-model.  U
    ├── NEMS                                    https://github.com/NOAA-EMC/NEMS
    ├── stochastic_physics                      https://github.com/noaa-psd/stochastic_physics
    ├── MOM6-interface
-   |    └── MOM6                               https://github.com/NOAA-EMC/MOM6
+   │    └── MOM6                               https://github.com/NOAA-EMC/MOM6
    ├── CICE-interface
-   |    └── CICE                               https://github.com/NOAA-EMC/CICE
+   │    └── CICE                               https://github.com/NOAA-EMC/CICE
    ├── WW3                                     https://github.com/NOAA-EMC/WW3
    ├── CMEPS-interface
-   |    └── CMEPS                              https://github.com/NOAA-EMC/CMEPS
+   │    └── CMEPS                              https://github.com/NOAA-EMC/CMEPS
    ├── CDEPS-interface
-   |    └── CDEPS                              https://github.com/NOAA-EMC/CDEPS
+   │    └── CDEPS                              https://github.com/NOAA-EMC/CDEPS
    
 ===================
 Directory Structure
@@ -80,7 +80,7 @@ When the ufs-weather-model is cloned, the basic directory structure will be simi
 
    ufs-weather-model/
    ├── cmake                -------- cmake configuration files
-   ├── doc                  -------- READMEs with build, reg-test hints
+   ├── doc                  -------- User Guide files
    ├── FV3                  -------- UFSAtm atmosphere model
    │   ├── atmos_cubed_sphere ------ FV3 dynamic core
    │   │   ├── docs
@@ -95,26 +95,30 @@ When the ufs-weather-model is cloned, the basic directory structure will be simi
    │   │   └── suites       -------- CCPP physics suite definition files (SDFs)
    │   ├── cpl              -------- Coupling field data structures
    │   ├── io               -------- UFSAtm write grid comp code
-   |   ├── stochastic_physics ------ Cmakefile for stochastic physics code
-   ├── modulefiles          -------- system module files for supported HPC systems
+   │   └── stochastic_physics ------ Wrapper for stochastic physics
+   │
    ├── NEMS                 -------- NOAA Earth Modeling System framework
    ├── stochastic_physics   -------- stochastic physics pattern generator
-   ├── tests                -------- regression test scripts
-   |   └── parm             -------- regression test configurations
    ├── MOM6-interface
-   |    └── MOM6
+   │    └── MOM6
    │        ├── src                              --------- MOM6 ocean model
    │        └── config_source/drivers/nuopc_cap  --------- NUOPC MOM6 cap
    ├── CICE-interface
-   |    └── CICE                                 --------- CICE6 sea ice model
+   │    └── CICE                                 --------- CICE6 sea ice model
    │        ├── icepack                          --------- Sea ice column physics
    │        └── cicecore/drivers/nuopc/cmeps     --------- NUOPC CICE6 cap
    ├── WW3
    │    └── model                                --------- WW3 model
    │        └── esmf                             --------- NUOPC WW3 cap
    ├── CDEPS-interface
-   |     └── CDEPS
-   |         └── datm                            --------- CDEPS DATM
+   │     └── CDEPS
+   │         └── datm                            --------- CDEPS DATM
+   │
+   ├── modulefiles          -------- system module files for supported HPC systems
+   ├── tests                -------- regression test infrastructure
+   │   └── parm
+   │   └── tests
+   │   └── fv3_conf
    
 .. TODO:: GOCART information in progress
 
