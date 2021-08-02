@@ -2,9 +2,9 @@
 #SBATCH -o out
 #SBATCH -e err
 #SBATCH -N @[NODES]
+#SBATCH --ntasks-per-node=@[TPN]
 #SBATCH -A @[ACCNR]
 #SBATCH -p @[QUEUE]
-#SBATCH -n @[TASKS]
 #SBATCH -t 00:@[WLCLK]:00
 
 set -eux
@@ -30,7 +30,7 @@ export LD_BIND_NOW=1
 #sync && sleep 1
 
 #mpirun -prepend-rank -np $SBATCH_NP ./fv3.exe
-ibrun   ./fv3.exe
+ibrun -n @[TASKS] ./fv3.exe
 
 echo "Model ended:    " `date`
 echo -n " $( date +%s )," >> job_timestamp.txt
