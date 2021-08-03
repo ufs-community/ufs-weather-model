@@ -418,7 +418,7 @@ export WLCLK=$WLCLK_dflt
 export POSTAPP='global'
 export NEW_DIAGTABLE=''
 export NEW_FIELDTABLE=''
-export USE_MERRA2=.F.
+export USE_MERRA2=.false.
 
 export INPES=$INPES_dflt
 export JNPES=$JNPES_dflt
@@ -443,17 +443,17 @@ export JMO=190
 #rt script for ICs
 export MODEL_INITIALIZATION=false
 #namelist variable
-export WARM_START=.F.
-export READ_INCREMENT=.F.
+export WARM_START=.false.
+export READ_INCREMENT=.false.
 export RES_LATLON_DYNAMICS="''"
-export NGGPS_IC=.T.
-export EXTERNAL_IC=.T.
-export MAKE_NH=.T.
-export MOUNTAIN=.F.
+export NGGPS_IC=.true.
+export EXTERNAL_IC=.true.
+export MAKE_NH=.true.
+export MOUNTAIN=.false.
 export NA_INIT=1
 
 # Radiation
-export DO_RRTMGP=.F.
+export DO_RRTMGP=.false.
 export ICLOUD=0
 export IAER=111
 export ICLIQ_SW=1
@@ -464,28 +464,28 @@ export IMP_PHYSICS=11
 export NWAT=6
 # GFDL MP
 export DNATS=1
-export DO_SAT_ADJ=.T.
-export LHEATSTRG=.F.
-export LSEASPRAY=.F.
-export LGFDLMPRAD=.F.
-export EFFR_IN=.F.
+export DO_SAT_ADJ=.true.
+export LHEATSTRG=.false.
+export LSEASPRAY=.false.
+export LGFDLMPRAD=.false.
+export EFFR_IN=.false.
 # Thompson MP
-export LRADAR=.T.
-export LTAEROSOL=.T.
-export EXT_DIAG_THOMPSON=.F.
+export LRADAR=.true.
+export LTAEROSOL=.true.
+export EXT_DIAG_THOMPSON=.false.
 
 # GWD
-export LDIAG_UGWP=.F.
-export DO_UGWP=.F.
-export DO_TOFD=.F.
+export LDIAG_UGWP=.false.
+export DO_UGWP=.false.
+export DO_TOFD=.false.
 export GWD_OPT=1
-export DO_UGWP_V0=.F.
-export DO_UGWP_V0_OROG_ONLY=.F.
-export DO_GSL_DRAG_LS_BL=.F.
-export DO_GSL_DRAG_SS=.F.
-export DO_GSL_DRAG_TOFD=.F.
-export DO_UGWP_V1=.F.
-export DO_UGWP_V1_OROG_ONLY=.F.
+export DO_UGWP_V0=.false.
+export DO_UGWP_V0_OROG_ONLY=.false.
+export DO_GSL_DRAG_LS_BL=.false.
+export DO_GSL_DRAG_SS=.false.
+export DO_GSL_DRAG_TOFD=.false.
+export DO_UGWP_V1=.false.
+export DO_UGWP_V1_OROG_ONLY=.false.
 
 # resolution dependent settings
 export CDMBWD_c96='0.14,1.8,1.0,1.0'
@@ -497,21 +497,21 @@ export CDMBWD_c768='4.0,0.15,1.0,1.0'
 export CDMBWD=${CDMBWD_c96}
 
 # PBL
-export SATMEDMF=.F.
+export SATMEDMF=.false.
 export ISATMEDMF=0
-export HYBEDMF=.T.
-export SHINHONG=.F.
-export DO_YSU=.F.
-export DO_MYNNEDMF=.F.
-export DO_MYJPBL=.F.
-export HURR_PBL=.F.
+export HYBEDMF=.true.
+export SHINHONG=.false.
+export DO_YSU=.false.
+export DO_MYNNEDMF=.false.
+export DO_MYJPBL=.false.
+export HURR_PBL=.false.
 export MONINQ_FAC=1.0
 
 # Shallow/deep convection
 export IMFSHALCNV=2
-export HWRF_SAMFSHAL=.F.
+export HWRF_SAMFSHAL=.false.
 export IMFDEEPCNV=2
-export HWRF_SAMFDEEP=.F.
+export HWRF_SAMFDEEP=.false.
 export RAS=.false.
 export RANDOM_CLDS=.false.
 export CNVCLD=.true.
@@ -520,28 +520,28 @@ export CNVCLD=.true.
 export FSCAV_AERO="'*:0.0'"
 
 # SFC
-export DO_MYJSFC=.F.
-export DO_MYNNSFCLAY=.F.
+export DO_MYJSFC=.false.
+export DO_MYNNSFCLAY=.false.
 
 # LSM
 export LSM=1
 export LSOIL_LSM=4
-export LANDICE=.T.
+export LANDICE=.true.
 export KICE=2
 export IALB=1
 export IEMS=1
 
 # Ozone / stratospheric H2O
-export OZ_PHYS_OLD=.T.
-export OZ_PHYS_NEW=.F.
-export H2O_PHYS=.F.
+export OZ_PHYS_OLD=.true.
+export OZ_PHYS_NEW=.false.
+export H2O_PHYS=.false.
 
 
-export CPL=.F.
-export CPLCHM=.F.
-export CPLFLX=.F.
-export CPLWAV=.F.
-export CPLWAV2ATM=.F.
+export CPL=.false.
+export CPLCHM=.false.
+export CPLFLX=.false.
+export CPLWAV=.false.
+export CPLWAV2ATM=.false.
 export DAYS=1
 export NPX=97
 export NPY=97
@@ -570,19 +570,19 @@ export FHMAX=${FHMAX:-`expr $DAYS \* 24`}
 export DT_ATMOS=1800
 export FHCYC=24
 export FHROT=0
-export LDIAG3D=.F.
-export QDIAG3D=.F.
+export LDIAG3D=.false.
+export QDIAG3D=.false.
 export PRINT_DIFF_PGR=.false.
 export MAX_OUTPUT_FIELDS=300
 
 # Stochastic physics
-export STOCHINI=.F.
-export DO_SPPT=.F.
-export DO_SHUM=.F.
-export DO_SKEB=.F.
+export STOCHINI=.false.
+export DO_SPPT=.false.
+export DO_SHUM=.false.
+export DO_SKEB=.false.
 export LNDP_TYPE=0
 export N_VAR_LNDP=0
-export LNDP_EACH_STEP=.F.
+export LNDP_EACH_STEP=.false.
 export SKEB=-999.
 export SPPT=-999.
 export SHUM=-999.
@@ -594,9 +594,9 @@ export IAU_INC_FILES="''"
 
 
 #Cellular automata
-export DO_CA=.F.
-export CA_SGS=.F.
-export CA_GLOBAL=.F.
+export DO_CA=.false.
+export CA_SGS=.false.
+export CA_GLOBAL=.false.
 
 export IAU_DRYMASSFIXER=.false.
 
@@ -685,7 +685,7 @@ export CICERUNTYPE='initial'
 export eps_imesh='1.0e-1'
 
 # FV3 defaults
-export FRAC_GRID='.T.'
+export FRAC_GRID='.true.'
 export CCPP_SUITE="FV3_GFS_2017_coupled"
 export INPUT_NML=input.mom6_ccpp.nml.IN
 export FIELD_TABLE="field_table"
@@ -698,7 +698,7 @@ export NSOUT='-1'
 export OUTPUT_FH='6 -1'
 export FHZERO=${FHZERO}
 
-export CPLFLX='.T.'
+export CPLFLX='.true.'
 export CPL='.true.'
 export NSTF_NAME='0,0,0,0,0'
 
@@ -709,12 +709,12 @@ export DDDMP='0.1'
 export FSICL='99999'
 
 # for FV3: default values will be changed if doing a warm-warm restart
-export WARM_START='.F.'
-export MAKE_NH='.T.'
+export WARM_START='.false.'
+export MAKE_NH='.true.'
 export NA_INIT='1'
-export EXTERNAL_IC='.T.'
-export NGGPS_IC='.T.'
-export MOUNTAIN='.F.'
+export EXTERNAL_IC='.true.'
+export NGGPS_IC='.true.'
+export MOUNTAIN='.false.'
 
 # MOM6 defaults; 1 degree
 export MOM_INPUT=MOM_input_template_100
@@ -774,13 +774,13 @@ export FV3=false
 export S2S=false
 export DATM_NEMS=true
 export DATM_CDEPS=false
-export CPLWAV=.F.
+export CPLWAV=.false.
 export DAYS=1
 export FHMAX=24
 export WLCLK=30
 export THRD=1
 export FHROT='0'
-export WARM_START=.F.
+export WARM_START=.false.
 
 # atm/ocn/ice resolution
 # GEFS
@@ -887,13 +887,13 @@ export FV3=false
 export S2S=false
 export DATM_NEMS=false
 export DATM_CDEPS=true
-export CPLWAV=.F.
+export CPLWAV=.false.
 export DAYS=1
 export FHMAX=24
 export WLCLK=30
 export THRD=1
 export FHROT='0'
-export WARM_START=.F.
+export WARM_START=.false.
 
 # atm/ocn/ice resolution
 export IATM=1760
