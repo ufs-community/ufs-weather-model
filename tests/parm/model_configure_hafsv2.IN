@@ -1,6 +1,4 @@
 print_esmf:              .false.
-total_member:            @[ENS_NUM]
-PE_MEMBER01:             @[TASKS]
 start_year:              @[SYEAR]
 start_month:             @[SMONTH]
 start_day:               @[SDAY]
@@ -11,7 +9,6 @@ nhours_fcst:             @[FHMAX]
 RUN_CONTINUE:            .false.
 ENS_SPS:                 .false.
 dt_atmos:                @[DT_ATMOS]
-cpl:                     @[CPL]
 calendar:                'julian'
 memuse_verbose:          .false.
 atmos_nthreads:          @[THRD]
@@ -34,8 +31,8 @@ jchunk3d:                -1
 kchunk3d:                -1
 ideflate:                @[IDEFLATE]
 nbits:                   @[NBITS]
-write_nemsioflip:        @[WRITE_NEMSIOFLIP]
-write_fsyncflag:         @[WRITE_FSYNCFLAG]
+write_nemsioflip:        .false.
+write_fsyncflag:         .false.
 
 app_domain:              'regional'
 output_grid:             @[OUTPUT_GRID]
@@ -52,3 +49,4 @@ nfhout:                  @[NFHOUT]
 nfhmax_hf:               @[NFHMAX_HF]
 nfhout_hf:               @[NFHOUT_HF]
 nsout:                   -1
+output_fh:               -1
