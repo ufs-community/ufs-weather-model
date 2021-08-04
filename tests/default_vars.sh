@@ -1026,7 +1026,7 @@ export TPN=$TPN_dflt
 export atm_model="datm"
 
 export DATM_IN_CONFIGURE="datm_in"
-export DATM_STREAM_CONFIGURE="datm.streams.era5.IN"
+export DATM_STREAM_CONFIGURE="hafs_datm.streams.era5.IN"
 }
 export_docn_cdeps_hafs ()
 {
@@ -1045,7 +1045,7 @@ export ocn_model="docn"
 export ocn_datamode="sstdata"
 
 export DOCN_IN_CONFIGURE="docn_in"
-export DOCN_STREAM_CONFIGURE="docn.streams.IN"
+export DOCN_STREAM_CONFIGURE="hafs_docn.streams.IN"
 }
 export_cpl_regional ()
 {
@@ -1067,7 +1067,7 @@ export SYEAR='2019'
 export SMONTH='08'
 export SDAY='29'
 export SHOUR='00'
-export FHMAX=24
+export FHMAX=6
 export ENS_NUM=1
 export DT_ATMOS='900'
 export CPL='.true.'
