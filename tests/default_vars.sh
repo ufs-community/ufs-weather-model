@@ -416,8 +416,8 @@ export DATM_CDEPS=false
 export THRD=1
 export WLCLK=$WLCLK_dflt
 export POSTAPP='global'
-export NEW_DIAGTABLE=''
-export NEW_FIELDTABLE=''
+export NEW_DIAGTABLE='none'
+export NEW_FIELDTABLE='none'
 export USE_MERRA2=.false.
 
 export INPES=$INPES_dflt

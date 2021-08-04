@@ -104,7 +104,7 @@ cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
 # Set up the run directory
 source ./fv3_run
 
-if [[ $CPLWAV == .T. ]]; then
+if [[ $CPLWAV == .true. ]]; then
   edit_ww3_input  < ${PATHRT}/parm/ww3_multi.inp.IN > ww3_multi.inp
 fi
 
