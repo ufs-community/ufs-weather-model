@@ -570,6 +570,13 @@ EOF
     die "ecFlow is not supported on this machine $MACHINE_ID"
   fi
 
+else
+
+  if [[ $MACHINE_ID = hera.* ]] && [[ $HOSTNAME = hecflow* ]]; then
+    echo "ERROR: To run without using ECFlow on Hera, please do not use ecflow node."
+    exit 1
+  fi
+
 fi
 
 ##
