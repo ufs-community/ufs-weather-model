@@ -1008,7 +1008,7 @@ export TFREEZE_OPTION='linear_salt'
 export BL_SUFFIX=""
 export RT_SUFFIX=""
 }
-export_datm_cdeps_hafs ()
+export_hafs_datm_cdeps ()
 {
 export FV3=false
 export S2S=false
@@ -1017,7 +1017,7 @@ export DATM_CDEPS=true
 export DATM_NEMS=false
 export DOCN_CDEPS=false
 export THRD=1
-export WLCLK=$WLCLK_dflt
+export WLCLK=30
 export INPES=$INPES_dflt
 export JNPES=$JNPES_dflt
 export TASKS=$TASKS_dflt
@@ -1028,7 +1028,7 @@ export atm_model="datm"
 export DATM_IN_CONFIGURE="datm_in"
 export DATM_STREAM_CONFIGURE="hafs_datm.streams.era5.IN"
 }
-export_docn_cdeps_hafs ()
+export_hafs_docn_cdeps ()
 {
 export FV3=true
 export S2S=false
@@ -1047,7 +1047,7 @@ export ocn_datamode="sstdata"
 export DOCN_IN_CONFIGURE="docn_in"
 export DOCN_STREAM_CONFIGURE="hafs_docn.streams.IN"
 }
-export_cpl_regional ()
+export_hafs_regional ()
 {
 export FV3=true
 export S2S=false
