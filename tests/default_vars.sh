@@ -556,11 +556,11 @@ export NFHMAX_HF=12
 export NFHOUT_HF=1
 export IAU_OFFSET=0
 export FHZERO=6
-export FNALBC="'global_snowfree_albedo.bosu.t126.384.190.rg.grb',"
-export FNVETC="'global_vegtype.igbp.t126.384.190.rg.grb',"
-export FNSOTC="'global_soiltype.statsgo.t126.384.190.rg.grb',"
-export FNSMCC="'global_soilmgldas.t126.384.190.grb',"
-export FNABSC="'global_mxsnoalb.uariz.t126.384.190.rg.grb',"
+export FNALBC="'global_snowfree_albedo.bosu.t126.384.190.rg.grb'"
+export FNVETC="'global_vegtype.igbp.t126.384.190.rg.grb'"
+export FNSOTC="'global_soiltype.statsgo.t126.384.190.rg.grb'"
+export FNSMCC="'global_soilmgldas.t126.384.190.grb'"
+export FNABSC="'global_mxsnoalb.uariz.t126.384.190.rg.grb'"
 
 
 export ENS_NUM=1
@@ -588,7 +588,7 @@ export LNDP_EACH_STEP=.false.
 export SKEB=-999.
 export SPPT=-999.
 export SHUM=-999.
-export LNDP_VAR_LIST='XXX'
+export LNDP_VAR_LIST=XXX
 export LNDP_PRT_LISY=-999
 
 #IAU
@@ -603,9 +603,9 @@ export CA_GLOBAL=.false.
 export IAU_DRYMASSFIXER=.false.
 
 #waves
-export WW3RSTDTHR='12'
-export WW3OUTDTHR='1'
-export WW3OUTPUTTYPE='1'
+export WW3RSTDTHR=12
+export WW3OUTDTHR=1
+export WW3OUTPUTTYPE=1
 export OUTPARS_WAV="WND HS FP DP PHS PTP PDIR"
 export CPLILINE='$'
 export ICELINE='$'
@@ -1023,10 +1023,10 @@ export JNPES=$JNPES_dflt
 export TASKS=$TASKS_dflt
 export TPN=$TPN_dflt
 
-export atm_model="datm"
+export atm_model=datm
 
-export DATM_IN_CONFIGURE="datm_in"
-export DATM_STREAM_CONFIGURE="hafs_datm.streams.era5.IN"
+export DATM_IN_CONFIGURE=datm_in
+export DATM_STREAM_CONFIGURE=hafs_datm.streams.era5.IN
 }
 export_hafs_docn_cdeps ()
 {
@@ -1041,11 +1041,11 @@ export JNPES=$JNPES_dflt
 export TASKS=$TASKS_dflt
 export TPN=$TPN_dflt
 
-export ocn_model="docn"
-export ocn_datamode="sstdata"
+export ocn_model=docn
+export ocn_datamode=sstdata
 
-export DOCN_IN_CONFIGURE="docn_in"
-export DOCN_STREAM_CONFIGURE="hafs_docn.streams.IN"
+export DOCN_IN_CONFIGURE=docn_in
+export DOCN_STREAM_CONFIGURE=hafs_docn.streams.IN
 }
 export_hafs_regional ()
 {
@@ -1063,14 +1063,14 @@ export TASKS=$TASKS_dflt
 export TPN=$TPN_dflt
 
 # model_configure
-export SYEAR='2019'
-export SMONTH='08'
-export SDAY='29'
-export SHOUR='00'
+export SYEAR=2019
+export SMONTH=08
+export SDAY=29
+export SHOUR=00
 export FHMAX=6
 export ENS_NUM=1
-export DT_ATMOS='900'
-export CPL='.true.'
+export DT_ATMOS=900
+export CPL=.true.
 export RESTART_INTERVAL=0
 export FHROT=0
 export coupling_interval_fast_sec=0
@@ -1101,10 +1101,10 @@ export DLAT=0.03
 export MERGE_IMPORT=.true.
 
 # nems.configure
-export med_model="cmeps"
-export CAP_DBUG_FLAG="0"
+export med_model=cmeps
+export CAP_DBUG_FLAG=0
 export RESTART_N=${FHMAX}
-export CPLMODE="hafs"
-export RUNTYPE="startup"
-export USE_COLDSTART="false"
+export CPLMODE=hafs
+export RUNTYPE=startup
+export USE_COLDSTART=false
 }
