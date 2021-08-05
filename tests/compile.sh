@@ -103,7 +103,7 @@ else
   fi
 fi
 
-  # Check if suites argument is provided or not
+# Check if suites argument is provided or not
 set +ex
 TEST=$( echo $MAKE_OPT | grep -e "-DCCPP_SUITES=" )
 if [[ $? -eq 0 ]]; then
