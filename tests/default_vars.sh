@@ -1103,7 +1103,7 @@ export MERGE_IMPORT=.true.
 # nems.configure
 export med_model="cmeps"
 export CAP_DBUG_FLAG="0"
-export RESTART_N=${FHMAX} 
+export RESTART_N=${FHMAX}
 export CPLMODE="hafs"
 export RUNTYPE="startup"
 export USE_COLDSTART="false"
