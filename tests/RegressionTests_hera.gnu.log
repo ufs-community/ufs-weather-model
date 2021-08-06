@@ -1,25 +1,29 @@
-Fri Jul 23 19:04:38 UTC 2021
+Thu Aug  5 16:11:15 UTC 2021
 Start Regression test
 
-Compile 001 elapsed time 187 seconds. -DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16,FV3_GFS_v16_flake,FV3_GFS_v16_RRTMGP,FV3_GFS_v16_thompson,FV3_GFS_v16_ugwpv1,FV3_GFS_v16_ras -DMPI=ON -DCMAKE_BUILD_TYPE=Release
-Compile 002 elapsed time 191 seconds. -DAPP=ATM -DCCPP_SUITES=FV3_GSD_v0,FV3_GFS_v16_thompson,FV3_RRFS_v1alpha,FV3_RRFS_v1beta -D32BIT=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release
-Compile 003 elapsed time 188 seconds. -DAPP=ATM -DCCPP_SUITES=HAFS_v0_hwrf_thompson,HAFS_v0_hwrf -DMPI=ON -DCMAKE_BUILD_TYPE=Release
-Compile 004 elapsed time 186 seconds. -DAPP=ATM -D32BIT=ON -DDEBUG=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Debug
-Compile 005 elapsed time 113 seconds. -DAPP=ATM -DCCPP_SUITES=HAFS_v0_hwrf_thompson,HAFS_v0_hwrf -DDEBUG=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Debug
-Compile 006 elapsed time 200 seconds. -DAPP=S2S -DCCPP_SUITES=FV3_GFS_2017_coupled -DMPI=ON -DCMAKE_BUILD_TYPE=Release -DMOM6SOLO=ON
-Compile 007 elapsed time 120 seconds. -DAPP=S2S -DCCPP_SUITES=FV3_GFS_2017_coupled -DDEBUG=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Debug -DMOM6SOLO=ON
-Compile 008 elapsed time 97 seconds. -DAPP=NG-GODAS-NEMSDATM -DMPI=ON -DCMAKE_BUILD_TYPE=Release -DMOM6SOLO=ON
+Compile 001 elapsed time 178 seconds. -DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16,FV3_GFS_v16_flake,FV3_GFS_v16_RRTMGP,FV3_GFS_v16_thompson,FV3_GFS_v16_ugwpv1,FV3_GFS_v16_ras -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile 002 elapsed time 178 seconds. -DAPP=ATM -DCCPP_SUITES=FV3_GSD_v0,FV3_GFS_v16_thompson,FV3_RRFS_v1alpha,FV3_RRFS_v1beta -D32BIT=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile 003 elapsed time 172 seconds. -DAPP=ATM -DCCPP_SUITES=FV3_HAFS_v0_hwrf_thompson,FV3_HAFS_v0_hwrf -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile 004 elapsed time 171 seconds. -DAPP=ATM -D32BIT=ON -DDEBUG=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Debug
+Compile 005 elapsed time 89 seconds. -DAPP=ATM -DCCPP_SUITES=FV3_HAFS_v0_hwrf_thompson,FV3_HAFS_v0_hwrf -DDEBUG=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Debug
+Compile 006 elapsed time 193 seconds. -DAPP=S2S -DCCPP_SUITES=FV3_GFS_2017_coupled -DMPI=ON -DCMAKE_BUILD_TYPE=Release -DMOM6SOLO=ON
+Compile 007 elapsed time 106 seconds. -DAPP=S2S -DCCPP_SUITES=FV3_GFS_2017_coupled -DDEBUG=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Debug -DMOM6SOLO=ON
+Compile 008 elapsed time 92 seconds. -DAPP=NG-GODAS-NEMSDATM -DMPI=ON -DCMAKE_BUILD_TYPE=Release -DMOM6SOLO=ON
 
-baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210722/GNU/control
-working dir  = /scratch1/NCEPDEV/stmp2/Dusan.Jovic/FV3_RT/rt_154209/control
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210805/GNU/control
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_16015/control
 Checking test 001 control results ....
  Comparing sfcf000.nc .........OK
+ Comparing sfcf021.nc .........OK
  Comparing sfcf024.nc .........OK
  Comparing atmf000.nc .........OK
+ Comparing atmf021.nc .........OK
  Comparing atmf024.nc .........OK
  Comparing GFSFLX.GrbF00 .........OK
+ Comparing GFSFLX.GrbF21 .........OK
  Comparing GFSFLX.GrbF24 .........OK
  Comparing GFSPRS.GrbF00 .........OK
+ Comparing GFSPRS.GrbF21 .........OK
  Comparing GFSPRS.GrbF24 .........OK
  Comparing RESTART/coupler.res .........OK
  Comparing RESTART/fv_core.res.nc ............SKIP for gnu compilers
@@ -54,13 +58,13 @@ Checking test 001 control results ....
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
 
-  0: The total amount of wall time                        = 888.843709
+  0: The total amount of wall time                        = 839.040488
 
 Test 001 control PASS
 
 
-baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210722/GNU/control
-working dir  = /scratch1/NCEPDEV/stmp2/Dusan.Jovic/FV3_RT/rt_154209/control_restart
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210805/GNU/control
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_16015/control_restart
 Checking test 002 control_restart results ....
  Comparing sfcf024.nc .........OK
  Comparing atmf024.nc .........OK
@@ -99,14 +103,59 @@ Checking test 002 control_restart results ....
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
 
-  0: The total amount of wall time                        = 400.221208
+  0: The total amount of wall time                        = 408.576287
 
 Test 002 control_restart PASS
 
 
-baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210722/GNU/control_stochy
-working dir  = /scratch1/NCEPDEV/stmp2/Dusan.Jovic/FV3_RT/rt_154209/control_stochy
-Checking test 003 control_stochy results ....
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210805/GNU/control_c48
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_16015/control_c48
+Checking test 003 control_c48 results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf024.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf024.nc .........OK
+ Comparing RESTART/coupler.res .........OK
+ Comparing RESTART/fv_core.res.nc ............SKIP for gnu compilers
+ Comparing RESTART/fv_core.res.tile1.nc .........OK
+ Comparing RESTART/fv_core.res.tile2.nc .........OK
+ Comparing RESTART/fv_core.res.tile3.nc .........OK
+ Comparing RESTART/fv_core.res.tile4.nc .........OK
+ Comparing RESTART/fv_core.res.tile5.nc .........OK
+ Comparing RESTART/fv_core.res.tile6.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile1.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile2.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile3.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile4.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile5.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile6.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile1.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile2.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile3.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile4.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile5.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile6.nc .........OK
+ Comparing RESTART/phy_data.tile1.nc .........OK
+ Comparing RESTART/phy_data.tile2.nc .........OK
+ Comparing RESTART/phy_data.tile3.nc .........OK
+ Comparing RESTART/phy_data.tile4.nc .........OK
+ Comparing RESTART/phy_data.tile5.nc .........OK
+ Comparing RESTART/phy_data.tile6.nc .........OK
+ Comparing RESTART/sfc_data.tile1.nc .........OK
+ Comparing RESTART/sfc_data.tile2.nc .........OK
+ Comparing RESTART/sfc_data.tile3.nc .........OK
+ Comparing RESTART/sfc_data.tile4.nc .........OK
+ Comparing RESTART/sfc_data.tile5.nc .........OK
+ Comparing RESTART/sfc_data.tile6.nc .........OK
+
+0: The total amount of wall time                        = 677.769216
+
+Test 003 control_c48 PASS
+
+
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210805/GNU/control_stochy
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_16015/control_stochy
+Checking test 004 control_stochy results ....
  Comparing sfcf000.nc .........OK
  Comparing sfcf012.nc .........OK
  Comparing atmf000.nc .........OK
@@ -116,14 +165,14 @@ Checking test 003 control_stochy results ....
  Comparing GFSPRS.GrbF00 .........OK
  Comparing GFSPRS.GrbF12 .........OK
 
-  0: The total amount of wall time                        = 663.607023
+  0: The total amount of wall time                        = 659.756024
 
-Test 003 control_stochy PASS
+Test 004 control_stochy PASS
 
 
-baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210722/GNU/control_flake
-working dir  = /scratch1/NCEPDEV/stmp2/Dusan.Jovic/FV3_RT/rt_154209/control_flake
-Checking test 004 control_flake results ....
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210805/GNU/control_flake
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_16015/control_flake
+Checking test 005 control_flake results ....
  Comparing sfcf000.nc .........OK
  Comparing sfcf024.nc .........OK
  Comparing atmf000.nc .........OK
@@ -133,14 +182,14 @@ Checking test 004 control_flake results ....
  Comparing GFSPRS.GrbF00 .........OK
  Comparing GFSPRS.GrbF24 .........OK
 
-  0: The total amount of wall time                        = 1388.394680
+  0: The total amount of wall time                        = 1476.962130
 
-Test 004 control_flake PASS
+Test 005 control_flake PASS
 
 
-baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210722/GNU/control_rrtmgp
-working dir  = /scratch1/NCEPDEV/stmp2/Dusan.Jovic/FV3_RT/rt_154209/control_rrtmgp
-Checking test 005 control_rrtmgp results ....
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210805/GNU/control_rrtmgp
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_16015/control_rrtmgp
+Checking test 006 control_rrtmgp results ....
  Comparing sfcf000.nc .........OK
  Comparing sfcf024.nc .........OK
  Comparing atmf000.nc .........OK
@@ -150,14 +199,14 @@ Checking test 005 control_rrtmgp results ....
  Comparing GFSPRS.GrbF00 .........OK
  Comparing GFSPRS.GrbF24 .........OK
 
-  0: The total amount of wall time                        = 878.763327
+  0: The total amount of wall time                        = 929.671604
 
-Test 005 control_rrtmgp PASS
+Test 006 control_rrtmgp PASS
 
 
-baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210722/GNU/control_thompson
-working dir  = /scratch1/NCEPDEV/stmp2/Dusan.Jovic/FV3_RT/rt_154209/control_thompson
-Checking test 006 control_thompson results ....
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210805/GNU/control_thompson
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_16015/control_thompson
+Checking test 007 control_thompson results ....
  Comparing sfcf000.nc .........OK
  Comparing sfcf024.nc .........OK
  Comparing atmf000.nc .........OK
@@ -167,14 +216,14 @@ Checking test 006 control_thompson results ....
  Comparing GFSPRS.GrbF00 .........OK
  Comparing GFSPRS.GrbF24 .........OK
 
-  0: The total amount of wall time                        = 1013.502524
+  0: The total amount of wall time                        = 1079.783062
 
-Test 006 control_thompson PASS
+Test 007 control_thompson PASS
 
 
-baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210722/GNU/control_thompson_no_aero
-working dir  = /scratch1/NCEPDEV/stmp2/Dusan.Jovic/FV3_RT/rt_154209/control_thompson_no_aero
-Checking test 007 control_thompson_no_aero results ....
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210805/GNU/control_thompson_no_aero
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_16015/control_thompson_no_aero
+Checking test 008 control_thompson_no_aero results ....
  Comparing sfcf000.nc .........OK
  Comparing sfcf024.nc .........OK
  Comparing atmf000.nc .........OK
@@ -184,14 +233,14 @@ Checking test 007 control_thompson_no_aero results ....
  Comparing GFSPRS.GrbF00 .........OK
  Comparing GFSPRS.GrbF24 .........OK
 
-  0: The total amount of wall time                        = 1051.954009
+  0: The total amount of wall time                        = 1065.970802
 
-Test 007 control_thompson_no_aero PASS
+Test 008 control_thompson_no_aero PASS
 
 
-baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210722/GNU/control_ugwpv1
-working dir  = /scratch1/NCEPDEV/stmp2/Dusan.Jovic/FV3_RT/rt_154209/control_ugwpv1
-Checking test 008 control_ugwpv1 results ....
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210805/GNU/control_ugwpv1
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_16015/control_ugwpv1
+Checking test 009 control_ugwpv1 results ....
  Comparing sfcf000.nc .........OK
  Comparing sfcf024.nc .........OK
  Comparing atmf000.nc .........OK
@@ -201,14 +250,14 @@ Checking test 008 control_ugwpv1 results ....
  Comparing GFSPRS.GrbF00 .........OK
  Comparing GFSPRS.GrbF24 .........OK
 
-  0: The total amount of wall time                        = 987.865407
+  0: The total amount of wall time                        = 1018.892360
 
-Test 008 control_ugwpv1 PASS
+Test 009 control_ugwpv1 PASS
 
 
-baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210722/GNU/control_ras
-working dir  = /scratch1/NCEPDEV/stmp2/Dusan.Jovic/FV3_RT/rt_154209/control_ras
-Checking test 009 control_ras results ....
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210805/GNU/control_ras
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_16015/control_ras
+Checking test 010 control_ras results ....
  Comparing sfcf000.nc .........OK
  Comparing sfcf024.nc .........OK
  Comparing atmf000.nc .........OK
@@ -218,14 +267,14 @@ Checking test 009 control_ras results ....
  Comparing GFSPRS.GrbF00 .........OK
  Comparing GFSPRS.GrbF24 .........OK
 
-  0: The total amount of wall time                        = 851.736935
+  0: The total amount of wall time                        = 872.657126
 
-Test 009 control_ras PASS
+Test 010 control_ras PASS
 
 
-baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210722/GNU/fv3_gsd
-working dir  = /scratch1/NCEPDEV/stmp2/Dusan.Jovic/FV3_RT/rt_154209/fv3_gsd
-Checking test 010 fv3_gsd results ....
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210805/GNU/fv3_gsd
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_16015/fv3_gsd
+Checking test 011 fv3_gsd results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -313,14 +362,14 @@ Checking test 010 fv3_gsd results ....
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
 
-  0: The total amount of wall time                        = 1128.507242
+  0: The total amount of wall time                        = 1319.579568
 
-Test 010 fv3_gsd PASS
+Test 011 fv3_gsd PASS
 
 
-baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210722/GNU/fv3_rrfs_v1alpha
-working dir  = /scratch1/NCEPDEV/stmp2/Dusan.Jovic/FV3_RT/rt_154209/fv3_rrfs_v1alpha
-Checking test 011 fv3_rrfs_v1alpha results ....
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210805/GNU/fv3_rrfs_v1alpha
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_16015/fv3_rrfs_v1alpha
+Checking test 012 fv3_rrfs_v1alpha results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -384,14 +433,14 @@ Checking test 011 fv3_rrfs_v1alpha results ....
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
 
-  0: The total amount of wall time                        = 446.623889
+  0: The total amount of wall time                        = 418.718815
 
-Test 011 fv3_rrfs_v1alpha PASS
+Test 012 fv3_rrfs_v1alpha PASS
 
 
-baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210722/GNU/fv3_rrfs_v1beta
-working dir  = /scratch1/NCEPDEV/stmp2/Dusan.Jovic/FV3_RT/rt_154209/fv3_rrfs_v1beta
-Checking test 012 fv3_rrfs_v1beta results ....
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210805/GNU/fv3_rrfs_v1beta
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_16015/fv3_rrfs_v1beta
+Checking test 013 fv3_rrfs_v1beta results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -455,14 +504,14 @@ Checking test 012 fv3_rrfs_v1beta results ....
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
 
-  0: The total amount of wall time                        = 436.851145
+  0: The total amount of wall time                        = 418.100169
 
-Test 012 fv3_rrfs_v1beta PASS
+Test 013 fv3_rrfs_v1beta PASS
 
 
-baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210722/GNU/HAFS_v0_HWRF_thompson
-working dir  = /scratch1/NCEPDEV/stmp2/Dusan.Jovic/FV3_RT/rt_154209/fv3_HAFS_v0_hwrf_thompson
-Checking test 013 fv3_HAFS_v0_hwrf_thompson results ....
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210805/GNU/HAFS_v0_HWRF_thompson
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_16015/fv3_HAFS_v0_hwrf_thompson
+Checking test 014 fv3_HAFS_v0_hwrf_thompson results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -526,14 +575,14 @@ Checking test 013 fv3_HAFS_v0_hwrf_thompson results ....
  Comparing RESTART/phy_data.tile5.nc .........OK
  Comparing RESTART/phy_data.tile6.nc .........OK
 
-  0: The total amount of wall time                        = 653.686618
+  0: The total amount of wall time                        = 644.379291
 
-Test 013 fv3_HAFS_v0_hwrf_thompson PASS
+Test 014 fv3_HAFS_v0_hwrf_thompson PASS
 
 
-baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210722/GNU/ESG_HAFS_v0_HWRF_thompson
-working dir  = /scratch1/NCEPDEV/stmp2/Dusan.Jovic/FV3_RT/rt_154209/fv3_esg_HAFS_v0_hwrf_thompson
-Checking test 014 fv3_esg_HAFS_v0_hwrf_thompson results ....
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210805/GNU/ESG_HAFS_v0_HWRF_thompson
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_16015/fv3_esg_HAFS_v0_hwrf_thompson
+Checking test 015 fv3_esg_HAFS_v0_hwrf_thompson results ....
  Comparing atmos_4xdaily.nc .........OK
  Comparing phyf000.nc .........OK
  Comparing phyf012.nc .........OK
@@ -547,54 +596,54 @@ Checking test 014 fv3_esg_HAFS_v0_hwrf_thompson results ....
  Comparing RESTART/sfc_data.nc .........OK
  Comparing RESTART/phy_data.nc .........OK
 
- 0: The total amount of wall time                        = 450.898486
+ 0: The total amount of wall time                        = 452.478438
 
-Test 014 fv3_esg_HAFS_v0_hwrf_thompson PASS
+Test 015 fv3_esg_HAFS_v0_hwrf_thompson PASS
 
 
-baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210722/GNU/control_debug
-working dir  = /scratch1/NCEPDEV/stmp2/Dusan.Jovic/FV3_RT/rt_154209/control_debug
-Checking test 015 control_debug results ....
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210805/GNU/control_debug
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_16015/control_debug
+Checking test 016 control_debug results ....
  Comparing sfcf000.nc .........OK
  Comparing sfcf001.nc .........OK
  Comparing atmf000.nc .........OK
  Comparing atmf001.nc .........OK
 
-  0: The total amount of wall time                        = 105.762762
+  0: The total amount of wall time                        = 99.078789
 
-Test 015 control_debug PASS
+Test 016 control_debug PASS
 
 
-baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210722/GNU/control_diag_debug
-working dir  = /scratch1/NCEPDEV/stmp2/Dusan.Jovic/FV3_RT/rt_154209/control_diag_debug
-Checking test 016 control_diag_debug results ....
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210805/GNU/control_diag_debug
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_16015/control_diag_debug
+Checking test 017 control_diag_debug results ....
  Comparing sfcf000.nc .........OK
  Comparing sfcf001.nc .........OK
  Comparing atmf000.nc .........OK
  Comparing atmf001.nc .........OK
 
-  0: The total amount of wall time                        = 126.032673
+  0: The total amount of wall time                        = 129.756820
 
-Test 016 control_diag_debug PASS
+Test 017 control_diag_debug PASS
 
 
-baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210722/GNU/fv3_regional_control_debug
-working dir  = /scratch1/NCEPDEV/stmp2/Dusan.Jovic/FV3_RT/rt_154209/regional_control_debug
-Checking test 017 regional_control_debug results ....
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210805/GNU/fv3_regional_control_debug
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_16015/regional_control_debug
+Checking test 018 regional_control_debug results ....
  Comparing atmos_4xdaily.nc .........OK
  Comparing fv3_history2d.nc .........OK
  Comparing fv3_history.nc .........OK
  Comparing RESTART/fv_core.res.tile1_new.nc .........OK
  Comparing RESTART/fv_tracer.res.tile1_new.nc .........OK
 
- 0: The total amount of wall time                        = 123.434448
+ 0: The total amount of wall time                        = 121.563084
 
-Test 017 regional_control_debug PASS
+Test 018 regional_control_debug PASS
 
 
-baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210722/GNU/fv3_rrfs_v1alpha_debug
-working dir  = /scratch1/NCEPDEV/stmp2/Dusan.Jovic/FV3_RT/rt_154209/fv3_rrfs_v1alpha_debug
-Checking test 018 fv3_rrfs_v1alpha_debug results ....
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210805/GNU/fv3_rrfs_v1alpha_debug
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_16015/fv3_rrfs_v1alpha_debug
+Checking test 019 fv3_rrfs_v1alpha_debug results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -658,14 +707,14 @@ Checking test 018 fv3_rrfs_v1alpha_debug results ....
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
 
-  0: The total amount of wall time                        = 122.705232
+  0: The total amount of wall time                        = 115.780892
 
-Test 018 fv3_rrfs_v1alpha_debug PASS
+Test 019 fv3_rrfs_v1alpha_debug PASS
 
 
-baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210722/GNU/fv3_rrfs_v1beta_debug
-working dir  = /scratch1/NCEPDEV/stmp2/Dusan.Jovic/FV3_RT/rt_154209/fv3_rrfs_v1beta_debug
-Checking test 019 fv3_rrfs_v1beta_debug results ....
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210805/GNU/fv3_rrfs_v1beta_debug
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_16015/fv3_rrfs_v1beta_debug
+Checking test 020 fv3_rrfs_v1beta_debug results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -729,14 +778,14 @@ Checking test 019 fv3_rrfs_v1beta_debug results ....
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
 
-  0: The total amount of wall time                        = 124.504502
+  0: The total amount of wall time                        = 116.788241
 
-Test 019 fv3_rrfs_v1beta_debug PASS
+Test 020 fv3_rrfs_v1beta_debug PASS
 
 
-baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210722/GNU/fv3_gsd_debug
-working dir  = /scratch1/NCEPDEV/stmp2/Dusan.Jovic/FV3_RT/rt_154209/fv3_gsd_debug
-Checking test 020 fv3_gsd_debug results ....
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210805/GNU/fv3_gsd_debug
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_16015/fv3_gsd_debug
+Checking test 021 fv3_gsd_debug results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -800,14 +849,14 @@ Checking test 020 fv3_gsd_debug results ....
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
 
-  0: The total amount of wall time                        = 163.093697
+  0: The total amount of wall time                        = 144.463174
 
-Test 020 fv3_gsd_debug PASS
+Test 021 fv3_gsd_debug PASS
 
 
-baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210722/GNU/fv3_gsd_diag_debug
-working dir  = /scratch1/NCEPDEV/stmp2/Dusan.Jovic/FV3_RT/rt_154209/fv3_gsd_diag_debug
-Checking test 021 fv3_gsd_diag_debug results ....
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210805/GNU/fv3_gsd_diag_debug
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_16015/fv3_gsd_diag_debug
+Checking test 022 fv3_gsd_diag_debug results ....
  Comparing sfcf000.tile1.nc .........OK
  Comparing sfcf000.tile2.nc .........OK
  Comparing sfcf000.tile3.nc .........OK
@@ -833,105 +882,105 @@ Checking test 021 fv3_gsd_diag_debug results ....
  Comparing atmf001.tile5.nc .........OK
  Comparing atmf001.tile6.nc .........OK
 
-  0: The total amount of wall time                        = 631.090674
+  0: The total amount of wall time                        = 393.990173
 
-Test 021 fv3_gsd_diag_debug PASS
+Test 022 fv3_gsd_diag_debug PASS
 
 
-baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210722/GNU/control_thompson_debug
-working dir  = /scratch1/NCEPDEV/stmp2/Dusan.Jovic/FV3_RT/rt_154209/control_thompson_debug
-Checking test 022 control_thompson_debug results ....
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210805/GNU/control_thompson_debug
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_16015/control_thompson_debug
+Checking test 023 control_thompson_debug results ....
  Comparing sfcf000.nc .........OK
  Comparing sfcf001.nc .........OK
  Comparing atmf000.nc .........OK
  Comparing atmf001.nc .........OK
 
-  0: The total amount of wall time                        = 111.780244
+  0: The total amount of wall time                        = 112.121711
 
-Test 022 control_thompson_debug PASS
+Test 023 control_thompson_debug PASS
 
 
-baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210722/GNU/control_thompson_no_aero_debug
-working dir  = /scratch1/NCEPDEV/stmp2/Dusan.Jovic/FV3_RT/rt_154209/control_thompson_no_aero_debug
-Checking test 023 control_thompson_no_aero_debug results ....
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210805/GNU/control_thompson_no_aero_debug
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_16015/control_thompson_no_aero_debug
+Checking test 024 control_thompson_no_aero_debug results ....
  Comparing sfcf000.nc .........OK
  Comparing sfcf001.nc .........OK
  Comparing atmf000.nc .........OK
  Comparing atmf001.nc .........OK
 
-  0: The total amount of wall time                        = 109.421825
+  0: The total amount of wall time                        = 110.249417
 
-Test 023 control_thompson_no_aero_debug PASS
+Test 024 control_thompson_no_aero_debug PASS
 
 
-baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210722/GNU/control_thompson_debug_extdiag
-working dir  = /scratch1/NCEPDEV/stmp2/Dusan.Jovic/FV3_RT/rt_154209/control_thompson_extdiag_debug
-Checking test 024 control_thompson_extdiag_debug results ....
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210805/GNU/control_thompson_debug_extdiag
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_16015/control_thompson_extdiag_debug
+Checking test 025 control_thompson_extdiag_debug results ....
  Comparing sfcf000.nc .........OK
  Comparing sfcf001.nc .........OK
  Comparing atmf000.nc .........OK
  Comparing atmf001.nc .........OK
 
-  0: The total amount of wall time                        = 134.127834
+  0: The total amount of wall time                        = 136.069570
 
-Test 024 control_thompson_extdiag_debug PASS
+Test 025 control_thompson_extdiag_debug PASS
 
 
-baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210722/GNU/control_rrtmgp_debug
-working dir  = /scratch1/NCEPDEV/stmp2/Dusan.Jovic/FV3_RT/rt_154209/control_rrtmgp_debug
-Checking test 025 control_rrtmgp_debug results ....
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210805/GNU/control_rrtmgp_debug
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_16015/control_rrtmgp_debug
+Checking test 026 control_rrtmgp_debug results ....
  Comparing sfcf000.nc .........OK
  Comparing sfcf001.nc .........OK
  Comparing atmf000.nc .........OK
  Comparing atmf001.nc .........OK
 
-  0: The total amount of wall time                        = 104.705553
+  0: The total amount of wall time                        = 106.531480
 
-Test 025 control_rrtmgp_debug PASS
+Test 026 control_rrtmgp_debug PASS
 
 
-baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210722/GNU/control_ugwpv1_debug
-working dir  = /scratch1/NCEPDEV/stmp2/Dusan.Jovic/FV3_RT/rt_154209/control_ugwpv1_debug
-Checking test 026 control_ugwpv1_debug results ....
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210805/GNU/control_ugwpv1_debug
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_16015/control_ugwpv1_debug
+Checking test 027 control_ugwpv1_debug results ....
  Comparing sfcf000.nc .........OK
  Comparing sfcf001.nc .........OK
  Comparing atmf000.nc .........OK
  Comparing atmf001.nc .........OK
 
-  0: The total amount of wall time                        = 107.130504
+  0: The total amount of wall time                        = 107.614111
 
-Test 026 control_ugwpv1_debug PASS
+Test 027 control_ugwpv1_debug PASS
 
 
-baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210722/GNU/control_ras_debug
-working dir  = /scratch1/NCEPDEV/stmp2/Dusan.Jovic/FV3_RT/rt_154209/control_ras_debug
-Checking test 027 control_ras_debug results ....
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210805/GNU/control_ras_debug
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_16015/control_ras_debug
+Checking test 028 control_ras_debug results ....
  Comparing sfcf000.nc .........OK
  Comparing sfcf001.nc .........OK
  Comparing atmf000.nc .........OK
  Comparing atmf001.nc .........OK
 
-  0: The total amount of wall time                        = 99.481457
+  0: The total amount of wall time                        = 107.371596
 
-Test 027 control_ras_debug PASS
+Test 028 control_ras_debug PASS
 
 
-baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210722/GNU/control_noahmp_debug
-working dir  = /scratch1/NCEPDEV/stmp2/Dusan.Jovic/FV3_RT/rt_154209/control_noahmp_debug
-Checking test 028 control_noahmp_debug results ....
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210805/GNU/control_noahmp_debug
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_16015/control_noahmp_debug
+Checking test 029 control_noahmp_debug results ....
  Comparing sfcf000.nc .........OK
  Comparing sfcf001.nc .........OK
  Comparing atmf000.nc .........OK
  Comparing atmf001.nc .........OK
 
-  0: The total amount of wall time                        = 98.963086
+  0: The total amount of wall time                        = 98.804556
 
-Test 028 control_noahmp_debug PASS
+Test 029 control_noahmp_debug PASS
 
 
-baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210722/GNU/HAFS_v0_HWRF_thompson_debug
-working dir  = /scratch1/NCEPDEV/stmp2/Dusan.Jovic/FV3_RT/rt_154209/fv3_HAFS_v0_hwrf_thompson_debug
-Checking test 029 fv3_HAFS_v0_hwrf_thompson_debug results ....
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210805/GNU/HAFS_v0_HWRF_thompson_debug
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_16015/fv3_HAFS_v0_hwrf_thompson_debug
+Checking test 030 fv3_HAFS_v0_hwrf_thompson_debug results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -995,14 +1044,14 @@ Checking test 029 fv3_HAFS_v0_hwrf_thompson_debug results ....
  Comparing RESTART/phy_data.tile5.nc .........OK
  Comparing RESTART/phy_data.tile6.nc .........OK
 
-  0: The total amount of wall time                        = 132.828280
+  0: The total amount of wall time                        = 133.426892
 
-Test 029 fv3_HAFS_v0_hwrf_thompson_debug PASS
+Test 030 fv3_HAFS_v0_hwrf_thompson_debug PASS
 
 
-baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210722/GNU/ESG_HAFS_v0_HWRF_thompson_debug
-working dir  = /scratch1/NCEPDEV/stmp2/Dusan.Jovic/FV3_RT/rt_154209/fv3_esg_HAFS_v0_hwrf_thompson_debug
-Checking test 030 fv3_esg_HAFS_v0_hwrf_thompson_debug results ....
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210805/GNU/ESG_HAFS_v0_HWRF_thompson_debug
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_16015/fv3_esg_HAFS_v0_hwrf_thompson_debug
+Checking test 031 fv3_esg_HAFS_v0_hwrf_thompson_debug results ....
  Comparing atmos_4xdaily.nc .........OK
  Comparing phyf000.nc .........OK
  Comparing phyf001.nc .........OK
@@ -1016,14 +1065,14 @@ Checking test 030 fv3_esg_HAFS_v0_hwrf_thompson_debug results ....
  Comparing RESTART/sfc_data.nc .........OK
  Comparing RESTART/phy_data.nc .........OK
 
- 0: The total amount of wall time                        = 228.896022
+ 0: The total amount of wall time                        = 235.573034
 
-Test 030 fv3_esg_HAFS_v0_hwrf_thompson_debug PASS
+Test 031 fv3_esg_HAFS_v0_hwrf_thompson_debug PASS
 
 
-baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210722/GNU/cpld_control
-working dir  = /scratch1/NCEPDEV/stmp2/Dusan.Jovic/FV3_RT/rt_154209/cpld_control
-Checking test 031 cpld_control results ....
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210805/GNU/cpld_control
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_16015/cpld_control
+Checking test 032 cpld_control results ....
  Comparing sfcf024.tile1.nc .........OK
  Comparing sfcf024.tile2.nc .........OK
  Comparing sfcf024.tile3.nc .........OK
@@ -1072,14 +1121,14 @@ Checking test 031 cpld_control results ....
  Comparing RESTART/iced.2016-10-04-00000.nc .........OK
  Comparing RESTART/ufs.cpld.cpl.r.2016-10-04-00000.nc .........OK
 
-  0: The total amount of wall time                        = 609.725478
+  0: The total amount of wall time                        = 674.375732
 
-Test 031 cpld_control PASS
+Test 032 cpld_control PASS
 
 
-baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210722/GNU/cpld_debug
-working dir  = /scratch1/NCEPDEV/stmp2/Dusan.Jovic/FV3_RT/rt_154209/cpld_debug
-Checking test 032 cpld_debug results ....
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210805/GNU/cpld_debug
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_16015/cpld_debug
+Checking test 033 cpld_debug results ....
  Comparing sfcf006.tile1.nc .........OK
  Comparing sfcf006.tile2.nc .........OK
  Comparing sfcf006.tile3.nc .........OK
@@ -1128,11 +1177,11 @@ Checking test 032 cpld_debug results ....
  Comparing RESTART/iced.2016-10-03-21600.nc .........OK
  Comparing RESTART/ufs.cpld.cpl.r.2016-10-03-21600.nc .........OK
 
-  0: The total amount of wall time                        = 362.751779
+  0: The total amount of wall time                        = 334.627901
 
-Test 032 cpld_debug PASS
+Test 033 cpld_debug PASS
 
 
 REGRESSION TEST WAS SUCCESSFUL
-Fri Jul 23 20:14:46 UTC 2021
-Elapsed time: 01h:10m:08s. Have a nice day!
+Thu Aug  5 16:48:05 UTC 2021
+Elapsed time: 00h:36m:51s. Have a nice day!

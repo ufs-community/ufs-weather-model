@@ -16,7 +16,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules/Modules)
 ###############################################################################
 
 # Valid applications and choices
-list(APPEND VALID_APPS ATM ATMAERO ATMW S2S S2SW NG-GODAS NG-GODAS-NEMSDATM)
+list(APPEND VALID_APPS ATM ATMAERO ATMW S2S S2SW HAFS HAFSW HAFS-ALL NG-GODAS NG-GODAS-NEMSDATM)
 set(APP NONE CACHE BOOL "Application Name")
 if(NOT (APP IN_LIST VALID_APPS))
   message(FATAL_ERROR "${APP} is not a valid application.\nValid Applications are: ${VALID_APPS}")
@@ -26,6 +26,7 @@ set(FMS             OFF CACHE BOOL "Enable FMS")
 set(FV3             OFF CACHE BOOL "Enable FV3")
 set(UFS_GOCART      OFF CACHE BOOL "Enable GOCART")
 set(MOM6            OFF CACHE BOOL "Enable MOM6")
+set(HYCOM           OFF CACHE BOOL "Enable HYCOM")
 set(CICE6           OFF CACHE BOOL "Enable CICE6")
 set(WW3             OFF CACHE BOOL "Enable WW3")
 set(STOCH_PHYS      OFF CACHE BOOL "Enable Stochastic Physics")
@@ -42,6 +43,7 @@ message("FMS .............. ${FMS}")
 message("FV3 .............. ${FV3}")
 message("GOCART ........... ${UFS_GOCART}")
 message("MOM6 ............. ${MOM6}")
+message("HYCOM ............ ${HYCOM}")
 message("CICE6 ............ ${CICE6}")
 message("WW3 .............. ${WW3}")
 message("STOCH_PHYS ....... ${STOCH_PHYS}")
@@ -181,10 +183,14 @@ if(WW3)
 endif()
 
 ###############################################################################
-### Marine Components [MOM6, CICE6]
+### Marine Components [MOM6, HYCOM, CICE6]
 ###############################################################################
 if(MOM6)
   add_subdirectory(MOM6-interface)
+endif()
+
+if(HYCOM)
+  add_subdirectory(HYCOM-interface)
 endif()
 
 if(CICE6)
@@ -263,6 +269,12 @@ if(MOM6)
   list(APPEND _ufs_libs_public mom6)
 endif()
 
+if(HYCOM)
+  list(APPEND _ufs_defs_private FRONT_HYCOM=HYCOM_Mod)
+  add_dependencies(ufs hycom)
+  target_link_libraries(ufs PUBLIC hycom)
+endif()
+
 if(CICE6)
   add_dependencies(ufs cice)
   list(APPEND _ufs_defs_private FRONT_CICE6=ice_comp_nuopc)
@@ -278,6 +290,7 @@ endif()
 if(CDEPS)
   add_dependencies(ufs cdeps::cdeps)
   list(APPEND _ufs_defs_private FRONT_CDEPS_DATM=cdeps_datm_comp)
+  list(APPEND _ufs_defs_private FRONT_CDEPS_DOCN=cdeps_docn_comp)
   target_link_libraries(ufs PUBLIC cdeps::cdeps)
 endif()
 
