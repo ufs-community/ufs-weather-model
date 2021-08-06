@@ -977,6 +977,10 @@ are not usually changed.
      - flag to do post on write grid component
      - logical
      - .true.
+   * - write_nsflip
+     - flag to flip the latitudes from S to N to N to S on output domain
+     - logical
+     - .false.
    * - ideflate
      - lossless compression level
      - integer
