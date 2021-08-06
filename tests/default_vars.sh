@@ -123,7 +123,7 @@ elif [[ $MACHINE_ID = hera.* ]]; then
 
   TASKS_dflt=150 ; TPN_dflt=40 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=78  ; TPN_thrd=20 ; INPES_thrd=3 ; JNPES_thrd=4
-  TASKS_c384=336 ; TPN_c384=20 ; INPES_c384=8 ; JNPES_c384=6
+  TASKS_c384=336 ; TPN_c384=20 ; INPES_c384=6 ; JNPES_c384=8
   TASKS_stretch=48 ; TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=12 ; INPES_strnest=2 ; JNPES_strnest=4
 
@@ -242,7 +242,7 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
 
   TASKS_dflt=150 ; TPN_dflt=36 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=78  ; TPN_thrd=18 ; INPES_thrd=3 ; JNPES_thrd=4
-  TASKS_c384=480 ; TPN_c384=18 ; INPES_c384=12 ; JNPES_c384=6
+  TASKS_c384=336 ; TPN_c384=18 ; INPES_c384=6 ; JNPES_c384=8
   TASKS_stretch=48 ; TPN_stretch=18 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=18 ; INPES_strnest=2 ; JNPES_strnest=4
 
@@ -490,6 +490,7 @@ export DO_UGWP_V1=.F.
 export DO_UGWP_V1_OROG_ONLY=.F.
 
 # resolution dependent settings
+export CDMBWD_c48='0.071,2.1,1.0,1.0'
 export CDMBWD_c96='0.14,1.8,1.0,1.0'
 export CDMBWD_c192='0.23,1.5,1.0,1.0'
 export CDMBWD_c384='1.1,0.72,1.0,1.0'
@@ -560,6 +561,8 @@ export FNALBC="'global_snowfree_albedo.bosu.t126.384.190.rg.grb',"
 export FNVETC="'global_vegtype.igbp.t126.384.190.rg.grb',"
 export FNSOTC="'global_soiltype.statsgo.t126.384.190.rg.grb',"
 export FNSMCC="'global_soilmgldas.t126.384.190.grb',"
+export FNSMCC_control="'global_soilmgldas.statsgo.t1534.3072.1536.grb',"
+export FNMSKH_control="'global_slmask.t1534.3072.1536.grb',"
 export FNABSC="'global_mxsnoalb.uariz.t126.384.190.rg.grb',"
 
 
