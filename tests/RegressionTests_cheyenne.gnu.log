@@ -1,14 +1,14 @@
-Wed Aug  4 10:31:03 MDT 2021
+Thu Aug  5 11:03:29 MDT 2021
 Start Regression test
 
-Compile 001 elapsed time 359 seconds. -DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16,FV3_GFS_v16_flake,FV3_GFS_v16_RRTMGP,FV3_GFS_v16_thompson,FV3_GFS_v16_ugwpv1,FV3_GFS_v16_ras -DMPI=ON -DCMAKE_BUILD_TYPE=Release
-Compile 002 elapsed time 346 seconds. -DAPP=ATM -DCCPP_SUITES=FV3_GSD_v0,FV3_GFS_v16_thompson,FV3_RRFS_v1alpha,FV3_RRFS_v1beta -D32BIT=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release
-Compile 003 elapsed time 315 seconds. -DAPP=ATM -DCCPP_SUITES=FV3_HAFS_v0_hwrf_thompson,FV3_HAFS_v0_hwrf -DMPI=ON -DCMAKE_BUILD_TYPE=Release
-Compile 004 elapsed time 409 seconds. -DAPP=ATM -D32BIT=ON -DDEBUG=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Debug
-Compile 005 elapsed time 162 seconds. -DAPP=ATM -DCCPP_SUITES=FV3_HAFS_v0_hwrf_thompson,FV3_HAFS_v0_hwrf -DDEBUG=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Debug
+Compile 001 elapsed time 354 seconds. -DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16,FV3_GFS_v16_flake,FV3_GFS_v16_RRTMGP,FV3_GFS_v16_thompson,FV3_GFS_v16_ugwpv1,FV3_GFS_v16_ras -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile 002 elapsed time 343 seconds. -DAPP=ATM -DCCPP_SUITES=FV3_GSD_v0,FV3_GFS_v16_thompson,FV3_RRFS_v1alpha,FV3_RRFS_v1beta -D32BIT=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile 003 elapsed time 321 seconds. -DAPP=ATM -DCCPP_SUITES=FV3_HAFS_v0_hwrf_thompson,FV3_HAFS_v0_hwrf -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile 004 elapsed time 401 seconds. -DAPP=ATM -D32BIT=ON -DDEBUG=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Debug
+Compile 005 elapsed time 165 seconds. -DAPP=ATM -DCCPP_SUITES=FV3_HAFS_v0_hwrf_thompson,FV3_HAFS_v0_hwrf -DDEBUG=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Debug
 
-baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210729/GNU/control
-working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_35498/control
+baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210805/GNU/control
+working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_24197/control
 Checking test 001 control results ....
  Comparing sfcf000.nc .........OK
  Comparing sfcf021.nc .........OK
@@ -55,13 +55,13 @@ Checking test 001 control results ....
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
 
-0:The total amount of wall time                        = 279.977867
+0:The total amount of wall time                        = 287.219868
 
 Test 001 control PASS
 
 
-baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210729/GNU/control
-working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_35498/control_restart
+baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210805/GNU/control
+working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_24197/control_restart
 Checking test 002 control_restart results ....
  Comparing sfcf024.nc .........OK
  Comparing atmf024.nc .........OK
@@ -100,14 +100,59 @@ Checking test 002 control_restart results ....
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
 
-0:The total amount of wall time                        = 138.199015
+0:The total amount of wall time                        = 138.129577
 
 Test 002 control_restart PASS
 
 
-baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210729/GNU/control_stochy
-working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_35498/control_stochy
-Checking test 003 control_stochy results ....
+baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210805/GNU/control_c48
+working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_24197/control_c48
+Checking test 003 control_c48 results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf024.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf024.nc .........OK
+ Comparing RESTART/coupler.res .........OK
+ Comparing RESTART/fv_core.res.nc ............SKIP for gnu compilers
+ Comparing RESTART/fv_core.res.tile1.nc .........OK
+ Comparing RESTART/fv_core.res.tile2.nc .........OK
+ Comparing RESTART/fv_core.res.tile3.nc .........OK
+ Comparing RESTART/fv_core.res.tile4.nc .........OK
+ Comparing RESTART/fv_core.res.tile5.nc .........OK
+ Comparing RESTART/fv_core.res.tile6.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile1.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile2.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile3.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile4.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile5.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile6.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile1.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile2.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile3.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile4.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile5.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile6.nc .........OK
+ Comparing RESTART/phy_data.tile1.nc .........OK
+ Comparing RESTART/phy_data.tile2.nc .........OK
+ Comparing RESTART/phy_data.tile3.nc .........OK
+ Comparing RESTART/phy_data.tile4.nc .........OK
+ Comparing RESTART/phy_data.tile5.nc .........OK
+ Comparing RESTART/phy_data.tile6.nc .........OK
+ Comparing RESTART/sfc_data.tile1.nc .........OK
+ Comparing RESTART/sfc_data.tile2.nc .........OK
+ Comparing RESTART/sfc_data.tile3.nc .........OK
+ Comparing RESTART/sfc_data.tile4.nc .........OK
+ Comparing RESTART/sfc_data.tile5.nc .........OK
+ Comparing RESTART/sfc_data.tile6.nc .........OK
+
+0:The total amount of wall time                        = 817.095205
+
+Test 003 control_c48 PASS
+
+
+baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210805/GNU/control_stochy
+working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_24197/control_stochy
+Checking test 004 control_stochy results ....
  Comparing sfcf000.nc .........OK
  Comparing sfcf012.nc .........OK
  Comparing atmf000.nc .........OK
@@ -117,14 +162,14 @@ Checking test 003 control_stochy results ....
  Comparing GFSPRS.GrbF00 .........OK
  Comparing GFSPRS.GrbF12 .........OK
 
-0:The total amount of wall time                        = 186.264276
+0:The total amount of wall time                        = 180.576352
 
-Test 003 control_stochy PASS
+Test 004 control_stochy PASS
 
 
-baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210729/GNU/control_flake
-working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_35498/control_flake
-Checking test 004 control_flake results ....
+baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210805/GNU/control_flake
+working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_24197/control_flake
+Checking test 005 control_flake results ....
  Comparing sfcf000.nc .........OK
  Comparing sfcf024.nc .........OK
  Comparing atmf000.nc .........OK
@@ -134,14 +179,14 @@ Checking test 004 control_flake results ....
  Comparing GFSPRS.GrbF00 .........OK
  Comparing GFSPRS.GrbF24 .........OK
 
-0:The total amount of wall time                        = 350.367147
+0:The total amount of wall time                        = 348.061759
 
-Test 004 control_flake PASS
+Test 005 control_flake PASS
 
 
-baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210729/GNU/control_rrtmgp
-working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_35498/control_rrtmgp
-Checking test 005 control_rrtmgp results ....
+baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210805/GNU/control_rrtmgp
+working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_24197/control_rrtmgp
+Checking test 006 control_rrtmgp results ....
  Comparing sfcf000.nc .........OK
  Comparing sfcf024.nc .........OK
  Comparing atmf000.nc .........OK
@@ -151,14 +196,14 @@ Checking test 005 control_rrtmgp results ....
  Comparing GFSPRS.GrbF00 .........OK
  Comparing GFSPRS.GrbF24 .........OK
 
-0:The total amount of wall time                        = 361.053178
+0:The total amount of wall time                        = 339.773489
 
-Test 005 control_rrtmgp PASS
+Test 006 control_rrtmgp PASS
 
 
-baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210729/GNU/control_thompson
-working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_35498/control_thompson
-Checking test 006 control_thompson results ....
+baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210805/GNU/control_thompson
+working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_24197/control_thompson
+Checking test 007 control_thompson results ....
  Comparing sfcf000.nc .........OK
  Comparing sfcf024.nc .........OK
  Comparing atmf000.nc .........OK
@@ -168,14 +213,14 @@ Checking test 006 control_thompson results ....
  Comparing GFSPRS.GrbF00 .........OK
  Comparing GFSPRS.GrbF24 .........OK
 
-0:The total amount of wall time                        = 364.440357
+0:The total amount of wall time                        = 360.690796
 
-Test 006 control_thompson PASS
+Test 007 control_thompson PASS
 
 
-baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210729/GNU/control_thompson_no_aero
-working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_35498/control_thompson_no_aero
-Checking test 007 control_thompson_no_aero results ....
+baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210805/GNU/control_thompson_no_aero
+working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_24197/control_thompson_no_aero
+Checking test 008 control_thompson_no_aero results ....
  Comparing sfcf000.nc .........OK
  Comparing sfcf024.nc .........OK
  Comparing atmf000.nc .........OK
@@ -185,14 +230,14 @@ Checking test 007 control_thompson_no_aero results ....
  Comparing GFSPRS.GrbF00 .........OK
  Comparing GFSPRS.GrbF24 .........OK
 
-0:The total amount of wall time                        = 344.551630
+0:The total amount of wall time                        = 345.170617
 
-Test 007 control_thompson_no_aero PASS
+Test 008 control_thompson_no_aero PASS
 
 
-baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210729/GNU/control_ugwpv1
-working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_35498/control_ugwpv1
-Checking test 008 control_ugwpv1 results ....
+baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210805/GNU/control_ugwpv1
+working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_24197/control_ugwpv1
+Checking test 009 control_ugwpv1 results ....
  Comparing sfcf000.nc .........OK
  Comparing sfcf024.nc .........OK
  Comparing atmf000.nc .........OK
@@ -202,14 +247,14 @@ Checking test 008 control_ugwpv1 results ....
  Comparing GFSPRS.GrbF00 .........OK
  Comparing GFSPRS.GrbF24 .........OK
 
-0:The total amount of wall time                        = 307.871986
+0:The total amount of wall time                        = 306.501824
 
-Test 008 control_ugwpv1 PASS
+Test 009 control_ugwpv1 PASS
 
 
-baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210729/GNU/control_ras
-working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_35498/control_ras
-Checking test 009 control_ras results ....
+baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210805/GNU/control_ras
+working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_24197/control_ras
+Checking test 010 control_ras results ....
  Comparing sfcf000.nc .........OK
  Comparing sfcf024.nc .........OK
  Comparing atmf000.nc .........OK
@@ -219,14 +264,14 @@ Checking test 009 control_ras results ....
  Comparing GFSPRS.GrbF00 .........OK
  Comparing GFSPRS.GrbF24 .........OK
 
-0:The total amount of wall time                        = 294.373894
+0:The total amount of wall time                        = 291.207381
 
-Test 009 control_ras PASS
+Test 010 control_ras PASS
 
 
-baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210729/GNU/fv3_gsd
-working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_35498/fv3_gsd
-Checking test 010 fv3_gsd results ....
+baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210805/GNU/fv3_gsd
+working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_24197/fv3_gsd
+Checking test 011 fv3_gsd results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -314,14 +359,14 @@ Checking test 010 fv3_gsd results ....
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
 
-0:The total amount of wall time                        = 442.107282
+0:The total amount of wall time                        = 440.085321
 
-Test 010 fv3_gsd PASS
+Test 011 fv3_gsd PASS
 
 
-baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210729/GNU/fv3_rrfs_v1alpha
-working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_35498/fv3_rrfs_v1alpha
-Checking test 011 fv3_rrfs_v1alpha results ....
+baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210805/GNU/fv3_rrfs_v1alpha
+working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_24197/fv3_rrfs_v1alpha
+Checking test 012 fv3_rrfs_v1alpha results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -385,14 +430,14 @@ Checking test 011 fv3_rrfs_v1alpha results ....
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
 
-0:The total amount of wall time                        = 164.254553
+0:The total amount of wall time                        = 162.080110
 
-Test 011 fv3_rrfs_v1alpha PASS
+Test 012 fv3_rrfs_v1alpha PASS
 
 
-baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210729/GNU/fv3_rrfs_v1beta
-working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_35498/fv3_rrfs_v1beta
-Checking test 012 fv3_rrfs_v1beta results ....
+baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210805/GNU/fv3_rrfs_v1beta
+working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_24197/fv3_rrfs_v1beta
+Checking test 013 fv3_rrfs_v1beta results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -456,14 +501,14 @@ Checking test 012 fv3_rrfs_v1beta results ....
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
 
-0:The total amount of wall time                        = 162.865390
+0:The total amount of wall time                        = 162.053749
 
-Test 012 fv3_rrfs_v1beta PASS
+Test 013 fv3_rrfs_v1beta PASS
 
 
-baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210729/GNU/HAFS_v0_HWRF_thompson
-working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_35498/fv3_HAFS_v0_hwrf_thompson
-Checking test 013 fv3_HAFS_v0_hwrf_thompson results ....
+baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210805/GNU/HAFS_v0_HWRF_thompson
+working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_24197/fv3_HAFS_v0_hwrf_thompson
+Checking test 014 fv3_HAFS_v0_hwrf_thompson results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -527,14 +572,14 @@ Checking test 013 fv3_HAFS_v0_hwrf_thompson results ....
  Comparing RESTART/phy_data.tile5.nc .........OK
  Comparing RESTART/phy_data.tile6.nc .........OK
 
-0:The total amount of wall time                        = 247.702449
+0:The total amount of wall time                        = 234.122603
 
-Test 013 fv3_HAFS_v0_hwrf_thompson PASS
+Test 014 fv3_HAFS_v0_hwrf_thompson PASS
 
 
-baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210729/GNU/ESG_HAFS_v0_HWRF_thompson
-working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_35498/fv3_esg_HAFS_v0_hwrf_thompson
-Checking test 014 fv3_esg_HAFS_v0_hwrf_thompson results ....
+baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210805/GNU/ESG_HAFS_v0_HWRF_thompson
+working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_24197/fv3_esg_HAFS_v0_hwrf_thompson
+Checking test 015 fv3_esg_HAFS_v0_hwrf_thompson results ....
  Comparing atmos_4xdaily.nc .........OK
  Comparing phyf000.nc .........OK
  Comparing phyf012.nc .........OK
@@ -548,54 +593,54 @@ Checking test 014 fv3_esg_HAFS_v0_hwrf_thompson results ....
  Comparing RESTART/sfc_data.nc .........OK
  Comparing RESTART/phy_data.nc .........OK
 
-0:The total amount of wall time                        = 434.485596
+0:The total amount of wall time                        = 437.249148
 
-Test 014 fv3_esg_HAFS_v0_hwrf_thompson PASS
+Test 015 fv3_esg_HAFS_v0_hwrf_thompson PASS
 
 
-baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210729/GNU/control_debug
-working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_35498/control_debug
-Checking test 015 control_debug results ....
+baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210805/GNU/control_debug
+working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_24197/control_debug
+Checking test 016 control_debug results ....
  Comparing sfcf000.nc .........OK
  Comparing sfcf001.nc .........OK
  Comparing atmf000.nc .........OK
  Comparing atmf001.nc .........OK
 
-0:The total amount of wall time                        = 82.627217
+0:The total amount of wall time                        = 83.522625
 
-Test 015 control_debug PASS
+Test 016 control_debug PASS
 
 
-baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210729/GNU/control_diag_debug
-working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_35498/control_diag_debug
-Checking test 016 control_diag_debug results ....
+baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210805/GNU/control_diag_debug
+working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_24197/control_diag_debug
+Checking test 017 control_diag_debug results ....
  Comparing sfcf000.nc .........OK
  Comparing sfcf001.nc .........OK
  Comparing atmf000.nc .........OK
  Comparing atmf001.nc .........OK
 
-0:The total amount of wall time                        = 89.825533
+0:The total amount of wall time                        = 89.252345
 
-Test 016 control_diag_debug PASS
+Test 017 control_diag_debug PASS
 
 
-baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210729/GNU/fv3_regional_control_debug
-working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_35498/regional_control_debug
-Checking test 017 regional_control_debug results ....
+baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210805/GNU/fv3_regional_control_debug
+working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_24197/regional_control_debug
+Checking test 018 regional_control_debug results ....
  Comparing atmos_4xdaily.nc .........OK
  Comparing fv3_history2d.nc .........OK
  Comparing fv3_history.nc .........OK
  Comparing RESTART/fv_core.res.tile1_new.nc .........OK
  Comparing RESTART/fv_tracer.res.tile1_new.nc .........OK
 
-0:The total amount of wall time                        = 129.126882
+0:The total amount of wall time                        = 129.343878
 
-Test 017 regional_control_debug PASS
+Test 018 regional_control_debug PASS
 
 
-baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210729/GNU/fv3_rrfs_v1alpha_debug
-working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_35498/fv3_rrfs_v1alpha_debug
-Checking test 018 fv3_rrfs_v1alpha_debug results ....
+baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210805/GNU/fv3_rrfs_v1alpha_debug
+working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_24197/fv3_rrfs_v1alpha_debug
+Checking test 019 fv3_rrfs_v1alpha_debug results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -659,14 +704,14 @@ Checking test 018 fv3_rrfs_v1alpha_debug results ....
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
 
-0:The total amount of wall time                        = 106.011461
+0:The total amount of wall time                        = 105.367437
 
-Test 018 fv3_rrfs_v1alpha_debug PASS
+Test 019 fv3_rrfs_v1alpha_debug PASS
 
 
-baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210729/GNU/fv3_rrfs_v1beta_debug
-working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_35498/fv3_rrfs_v1beta_debug
-Checking test 019 fv3_rrfs_v1beta_debug results ....
+baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210805/GNU/fv3_rrfs_v1beta_debug
+working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_24197/fv3_rrfs_v1beta_debug
+Checking test 020 fv3_rrfs_v1beta_debug results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -730,14 +775,14 @@ Checking test 019 fv3_rrfs_v1beta_debug results ....
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
 
-0:The total amount of wall time                        = 105.815442
+0:The total amount of wall time                        = 105.445210
 
-Test 019 fv3_rrfs_v1beta_debug PASS
+Test 020 fv3_rrfs_v1beta_debug PASS
 
 
-baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210729/GNU/fv3_gsd_debug
-working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_35498/fv3_gsd_debug
-Checking test 020 fv3_gsd_debug results ....
+baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210805/GNU/fv3_gsd_debug
+working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_24197/fv3_gsd_debug
+Checking test 021 fv3_gsd_debug results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -801,14 +846,14 @@ Checking test 020 fv3_gsd_debug results ....
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
 
-0:The total amount of wall time                        = 135.389091
+0:The total amount of wall time                        = 135.060172
 
-Test 020 fv3_gsd_debug PASS
+Test 021 fv3_gsd_debug PASS
 
 
-baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210729/GNU/fv3_gsd_diag_debug
-working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_35498/fv3_gsd_diag_debug
-Checking test 021 fv3_gsd_diag_debug results ....
+baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210805/GNU/fv3_gsd_diag_debug
+working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_24197/fv3_gsd_diag_debug
+Checking test 022 fv3_gsd_diag_debug results ....
  Comparing sfcf000.tile1.nc .........OK
  Comparing sfcf000.tile2.nc .........OK
  Comparing sfcf000.tile3.nc .........OK
@@ -834,105 +879,105 @@ Checking test 021 fv3_gsd_diag_debug results ....
  Comparing atmf001.tile5.nc .........OK
  Comparing atmf001.tile6.nc .........OK
 
-0:The total amount of wall time                        = 290.333970
+0:The total amount of wall time                        = 303.318151
 
-Test 021 fv3_gsd_diag_debug PASS
+Test 022 fv3_gsd_diag_debug PASS
 
 
-baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210729/GNU/control_thompson_debug
-working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_35498/control_thompson_debug
-Checking test 022 control_thompson_debug results ....
+baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210805/GNU/control_thompson_debug
+working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_24197/control_thompson_debug
+Checking test 023 control_thompson_debug results ....
  Comparing sfcf000.nc .........OK
  Comparing sfcf001.nc .........OK
  Comparing atmf000.nc .........OK
  Comparing atmf001.nc .........OK
 
-0:The total amount of wall time                        = 96.524176
+0:The total amount of wall time                        = 97.415944
 
-Test 022 control_thompson_debug PASS
+Test 023 control_thompson_debug PASS
 
 
-baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210729/GNU/control_thompson_no_aero_debug
-working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_35498/control_thompson_no_aero_debug
-Checking test 023 control_thompson_no_aero_debug results ....
+baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210805/GNU/control_thompson_no_aero_debug
+working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_24197/control_thompson_no_aero_debug
+Checking test 024 control_thompson_no_aero_debug results ....
  Comparing sfcf000.nc .........OK
  Comparing sfcf001.nc .........OK
  Comparing atmf000.nc .........OK
  Comparing atmf001.nc .........OK
 
-0:The total amount of wall time                        = 94.475175
+0:The total amount of wall time                        = 95.447972
 
-Test 023 control_thompson_no_aero_debug PASS
+Test 024 control_thompson_no_aero_debug PASS
 
 
-baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210729/GNU/control_thompson_debug_extdiag
-working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_35498/control_thompson_extdiag_debug
-Checking test 024 control_thompson_extdiag_debug results ....
+baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210805/GNU/control_thompson_debug_extdiag
+working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_24197/control_thompson_extdiag_debug
+Checking test 025 control_thompson_extdiag_debug results ....
  Comparing sfcf000.nc .........OK
  Comparing sfcf001.nc .........OK
  Comparing atmf000.nc .........OK
  Comparing atmf001.nc .........OK
 
-0:The total amount of wall time                        = 103.445335
+0:The total amount of wall time                        = 101.976863
 
-Test 024 control_thompson_extdiag_debug PASS
+Test 025 control_thompson_extdiag_debug PASS
 
 
-baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210729/GNU/control_rrtmgp_debug
-working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_35498/control_rrtmgp_debug
-Checking test 025 control_rrtmgp_debug results ....
+baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210805/GNU/control_rrtmgp_debug
+working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_24197/control_rrtmgp_debug
+Checking test 026 control_rrtmgp_debug results ....
  Comparing sfcf000.nc .........OK
  Comparing sfcf001.nc .........OK
  Comparing atmf000.nc .........OK
  Comparing atmf001.nc .........OK
 
-0:The total amount of wall time                        = 93.451478
+0:The total amount of wall time                        = 91.252427
 
-Test 025 control_rrtmgp_debug PASS
+Test 026 control_rrtmgp_debug PASS
 
 
-baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210729/GNU/control_ugwpv1_debug
-working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_35498/control_ugwpv1_debug
-Checking test 026 control_ugwpv1_debug results ....
+baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210805/GNU/control_ugwpv1_debug
+working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_24197/control_ugwpv1_debug
+Checking test 027 control_ugwpv1_debug results ....
  Comparing sfcf000.nc .........OK
  Comparing sfcf001.nc .........OK
  Comparing atmf000.nc .........OK
  Comparing atmf001.nc .........OK
 
-0:The total amount of wall time                        = 88.101142
+0:The total amount of wall time                        = 89.207116
 
-Test 026 control_ugwpv1_debug PASS
+Test 027 control_ugwpv1_debug PASS
 
 
-baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210729/GNU/control_ras_debug
-working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_35498/control_ras_debug
-Checking test 027 control_ras_debug results ....
+baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210805/GNU/control_ras_debug
+working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_24197/control_ras_debug
+Checking test 028 control_ras_debug results ....
  Comparing sfcf000.nc .........OK
  Comparing sfcf001.nc .........OK
  Comparing atmf000.nc .........OK
  Comparing atmf001.nc .........OK
 
-0:The total amount of wall time                        = 86.558726
+0:The total amount of wall time                        = 85.603643
 
-Test 027 control_ras_debug PASS
+Test 028 control_ras_debug PASS
 
 
-baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210729/GNU/control_noahmp_debug
-working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_35498/control_noahmp_debug
-Checking test 028 control_noahmp_debug results ....
+baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210805/GNU/control_noahmp_debug
+working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_24197/control_noahmp_debug
+Checking test 029 control_noahmp_debug results ....
  Comparing sfcf000.nc .........OK
  Comparing sfcf001.nc .........OK
  Comparing atmf000.nc .........OK
  Comparing atmf001.nc .........OK
 
-0:The total amount of wall time                        = 85.092509
+0:The total amount of wall time                        = 82.659096
 
-Test 028 control_noahmp_debug PASS
+Test 029 control_noahmp_debug PASS
 
 
-baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210729/GNU/HAFS_v0_HWRF_thompson_debug
-working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_35498/fv3_HAFS_v0_hwrf_thompson_debug
-Checking test 029 fv3_HAFS_v0_hwrf_thompson_debug results ....
+baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210805/GNU/HAFS_v0_HWRF_thompson_debug
+working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_24197/fv3_HAFS_v0_hwrf_thompson_debug
+Checking test 030 fv3_HAFS_v0_hwrf_thompson_debug results ....
  Comparing atmos_4xdaily.tile1.nc .........OK
  Comparing atmos_4xdaily.tile2.nc .........OK
  Comparing atmos_4xdaily.tile3.nc .........OK
@@ -996,14 +1041,14 @@ Checking test 029 fv3_HAFS_v0_hwrf_thompson_debug results ....
  Comparing RESTART/phy_data.tile5.nc .........OK
  Comparing RESTART/phy_data.tile6.nc .........OK
 
-0:The total amount of wall time                        = 107.162402
+0:The total amount of wall time                        = 109.459338
 
-Test 029 fv3_HAFS_v0_hwrf_thompson_debug PASS
+Test 030 fv3_HAFS_v0_hwrf_thompson_debug PASS
 
 
-baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210729/GNU/ESG_HAFS_v0_HWRF_thompson_debug
-working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_35498/fv3_esg_HAFS_v0_hwrf_thompson_debug
-Checking test 030 fv3_esg_HAFS_v0_hwrf_thompson_debug results ....
+baseline dir = /glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20210805/GNU/ESG_HAFS_v0_HWRF_thompson_debug
+working dir  = /glade/scratch/dtcufsrt/FV3_RT/rt_24197/fv3_esg_HAFS_v0_hwrf_thompson_debug
+Checking test 031 fv3_esg_HAFS_v0_hwrf_thompson_debug results ....
  Comparing atmos_4xdaily.nc .........OK
  Comparing phyf000.nc .........OK
  Comparing phyf001.nc .........OK
@@ -1017,11 +1062,11 @@ Checking test 030 fv3_esg_HAFS_v0_hwrf_thompson_debug results ....
  Comparing RESTART/sfc_data.nc .........OK
  Comparing RESTART/phy_data.nc .........OK
 
-0:The total amount of wall time                        = 212.579795
+0:The total amount of wall time                        = 213.316958
 
-Test 030 fv3_esg_HAFS_v0_hwrf_thompson_debug PASS
+Test 031 fv3_esg_HAFS_v0_hwrf_thompson_debug PASS
 
 
 REGRESSION TEST WAS SUCCESSFUL
-Wed Aug  4 11:46:08 MDT 2021
-Elapsed time: 01h:15m:05s. Have a nice day!
+Thu Aug  5 11:39:23 MDT 2021
+Elapsed time: 00h:35m:54s. Have a nice day!
