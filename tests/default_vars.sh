@@ -123,7 +123,7 @@ elif [[ $MACHINE_ID = hera.* ]]; then
 
   TASKS_dflt=150 ; TPN_dflt=40 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=78  ; TPN_thrd=20 ; INPES_thrd=3 ; JNPES_thrd=4
-  TASKS_c384=336 ; TPN_c384=20 ; INPES_c384=8 ; JNPES_c384=6
+  TASKS_c384=336 ; TPN_c384=20 ; INPES_c384=6 ; JNPES_c384=8
   TASKS_stretch=48 ; TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=12 ; INPES_strnest=2 ; JNPES_strnest=4
 
@@ -242,7 +242,7 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
 
   TASKS_dflt=150 ; TPN_dflt=36 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=78  ; TPN_thrd=18 ; INPES_thrd=3 ; JNPES_thrd=4
-  TASKS_c384=480 ; TPN_c384=18 ; INPES_c384=12 ; JNPES_c384=6
+  TASKS_c384=336 ; TPN_c384=18 ; INPES_c384=6 ; JNPES_c384=8
   TASKS_stretch=48 ; TPN_stretch=18 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=18 ; INPES_strnest=2 ; JNPES_strnest=4
 
@@ -358,7 +358,7 @@ elif [[ $MACHINE_ID = stampede.* ]]; then
   OPB_cpl_dflt_wwav="150 179"; IPB_cpl_dflt_wwav="180 191"; WPB_cpl_dflt_wwav="192 383"
 
   TASKS_cpl_thrd=120; TPN_cpl_thrd=24; INPES_cpl_thrd=3; JNPES_cpl_thrd=4
-  THRD_cpl_thrd=2; WPG_cpl_thrd=6;  MPB_cpl_thrd="0 77";  APB_cpl_thrd="0 77"
+  THRD_cpl_thrd=2; WPG_cpl_thrd=6;  MPB_cpl_thrd="0 71";  APB_cpl_thrd="0 77"
   OPB_cpl_thrd="78 107";  IPB_cpl_thrd="108 119"
 
   TASKS_cpl_bmrk=480; TPN_cpl_bmrk=48; INPES_cpl_bmrk=6; JNPES_cpl_bmrk=8
@@ -369,7 +369,7 @@ elif [[ $MACHINE_ID = stampede.* ]]; then
   THRD_cpl_wwav=1; WPG_cpl_wwav=24; MPB_cpl_wwav="0 287"; APB_cpl_wwav="0 311"
   OPB_cpl_wwav="312 431"; IPB_cpl_wwav="432 479"; WPB_cpl_wwav="480 527"
 
-  TASKS_cpl_c192=288; TPN_cpl_c192=40; INPES_cpl_c192=4; JNPES_cpl_c192=8
+  TASKS_cpl_c192=288; TPN_cpl_c192=48; INPES_cpl_c192=4; JNPES_cpl_c192=8
   THRD_cpl_c192=1; WPG_cpl_c192=12;  MPB_cpl_c192="0 191"; APB_cpl_c192="0 203"
   OPB_cpl_c192="204 263"; IPB_cpl_c192="264 287"
 
@@ -411,8 +411,10 @@ export_fv3 ()
 {
 export FV3=true
 export S2S=false
+export HAFS=false
 export DATM_NEMS=false
 export DATM_CDEPS=false
+export DOCN_CDEPS=false
 export THRD=1
 export WLCLK=$WLCLK_dflt
 export POSTAPP='global'
@@ -488,6 +490,7 @@ export DO_UGWP_V1=.F.
 export DO_UGWP_V1_OROG_ONLY=.F.
 
 # resolution dependent settings
+export CDMBWD_c48='0.071,2.1,1.0,1.0'
 export CDMBWD_c96='0.14,1.8,1.0,1.0'
 export CDMBWD_c192='0.23,1.5,1.0,1.0'
 export CDMBWD_c384='1.1,0.72,1.0,1.0'
@@ -558,6 +561,8 @@ export FNALBC="'global_snowfree_albedo.bosu.t126.384.190.rg.grb',"
 export FNVETC="'global_vegtype.igbp.t126.384.190.rg.grb',"
 export FNSOTC="'global_soiltype.statsgo.t126.384.190.rg.grb',"
 export FNSMCC="'global_soilmgldas.t126.384.190.grb',"
+export FNSMCC_control="'global_soilmgldas.statsgo.t1534.3072.1536.grb',"
+export FNMSKH_control="'global_slmask.t1534.3072.1536.grb',"
 export FNABSC="'global_mxsnoalb.uariz.t126.384.190.rg.grb',"
 
 
@@ -627,8 +632,10 @@ export_cpl ()
 {
 export FV3=true
 export S2S=true
+export HAFS=false
 export DATM_NEMS=false
 export DATM_CDEPS=false
+export DOCN_CDEPS=false
 
 export DAYS="1"
 export FHMAX="24"
@@ -772,8 +779,10 @@ export_datm ()
 {
 export FV3=false
 export S2S=false
+export HAFS=false
 export DATM_NEMS=true
 export DATM_CDEPS=false
+export DOCN_CDEPS=false
 export CPLWAV=.F.
 export DAYS=1
 export FHMAX=24
@@ -885,8 +894,10 @@ export_datm_cdeps ()
 {
 export FV3=false
 export S2S=false
+export HAFS=false
 export DATM_NEMS=false
 export DATM_CDEPS=true
+export DOCN_CDEPS=false
 export CPLWAV=.F.
 export DAYS=1
 export FHMAX=24
@@ -999,4 +1010,104 @@ export KTHERM=1
 export TFREEZE_OPTION='linear_salt'
 export BL_SUFFIX=""
 export RT_SUFFIX=""
+}
+export_hafs_datm_cdeps ()
+{
+export FV3=false
+export S2S=false
+export HAFS=true
+export DATM_CDEPS=true
+export DATM_NEMS=false
+export DOCN_CDEPS=false
+export THRD=1
+export WLCLK=30
+export INPES=$INPES_dflt
+export JNPES=$JNPES_dflt
+export TASKS=$TASKS_dflt
+export TPN=$TPN_dflt
+
+export atm_model="datm"
+
+export DATM_IN_CONFIGURE="datm_in"
+export DATM_STREAM_CONFIGURE="hafs_datm.streams.era5.IN"
+}
+export_hafs_docn_cdeps ()
+{
+export FV3=true
+export S2S=false
+export HAFS=true
+export DOCN_CDEPS=true
+export THRD=1
+export WLCLK=$WLCLK_dflt
+export INPES=$INPES_dflt
+export JNPES=$JNPES_dflt
+export TASKS=$TASKS_dflt
+export TPN=$TPN_dflt
+
+export ocn_model="docn"
+export ocn_datamode="sstdata"
+
+export DOCN_IN_CONFIGURE="docn_in"
+export DOCN_STREAM_CONFIGURE="hafs_docn.streams.IN"
+}
+export_hafs_regional ()
+{
+export FV3=true
+export S2S=false
+export HAFS=true
+export DATM_NEMS=false
+export DATM_CDEPS=false
+export DOCN_CDEPS=false
+export THRD=1
+export WLCLK=$WLCLK_dflt
+export INPES=$INPES_dflt
+export JNPES=$JNPES_dflt
+export TASKS=$TASKS_dflt
+export TPN=$TPN_dflt
+
+# model_configure
+export SYEAR='2019'
+export SMONTH='08'
+export SDAY='29'
+export SHOUR='00'
+export FHMAX=6
+export ENS_NUM=1
+export DT_ATMOS='900'
+export CPL='.true.'
+export RESTART_INTERVAL=0
+export FHROT=0
+export coupling_interval_fast_sec=0
+export QUILTING=.true.
+export WRITE_GROUP=1
+export WRTTASK_PER_GROUP=6
+export OUTPUT_HISTORY=.true.
+export WRITE_DOPOST=.false.
+export NUM_FILES=2
+export FILENAME_BASE="'atm' 'sfc'"
+export OUTPUT_GRID="'regional_latlon'"
+export OUTPUT_FILE="'netcdf'"
+export IDEFLATE=0
+export NBITS=0
+export NFHOUT=3
+export NFHMAX_HF=-1
+export NFHOUT_HF=3
+export CEN_LON=-62.0
+export CEN_LAT=25.0
+export LON1=-114.5
+export LAT1=-5.0
+export LON2=-9.5
+export LAT2=55.0
+export DLON=0.03
+export DLAT=0.03
+
+# input.nml
+export MERGE_IMPORT=.true.
+
+# nems.configure
+export med_model="cmeps"
+export CAP_DBUG_FLAG="0"
+export RESTART_N=${FHMAX}
+export CPLMODE="hafs"
+export RUNTYPE="startup"
+export USE_COLDSTART="false"
 }
