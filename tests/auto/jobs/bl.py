@@ -11,6 +11,7 @@ def run(job_obj):
     pr_repo_loc, repo_dir_str = clone_pr_repo(job_obj, workdir)
     bldate = get_bl_date(job_obj, pr_repo_loc)
     bldir = f'{blstore}/develop-{bldate}/{job_obj.compiler.upper()}'
+    bldirbool = check_for_bl_dir(bldir)
     run_regression_test(job_obj, pr_repo_loc)
     post_process(job_obj, pr_repo_loc, repo_dir_str, rtbldir, bldir)
 
