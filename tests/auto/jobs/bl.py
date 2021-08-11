@@ -60,6 +60,8 @@ def check_for_bl_dir(bldir):
     logger.info('Checking if baseline directory exists')
     if os.path.exists(bldir):
         logger.critical(f'Baseline dir: {bldir} exists. It should not, yet.')
+        job_obj.comment_text_append(f'{bldir}\n Exists already. '
+                                    'It should not yet. Please delete.')
         raise FileExistsError
     return False
 
