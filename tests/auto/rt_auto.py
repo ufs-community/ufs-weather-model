@@ -212,6 +212,8 @@ def setup_env():
     hostname = os.getenv('HOSTNAME')
     if bool(re.match(re.compile('hfe.+'), hostname)):
         machine = 'hera'
+    elif bool(re.match(re.compile('hecflow.+'), hostname)):
+        machine = 'hera'
     elif bool(re.match(re.compile('fe.+'), hostname)):
         machine = 'jet'
         os.environ['ACCNR'] = 'h-nems'

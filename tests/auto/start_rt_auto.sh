@@ -4,6 +4,9 @@ set -eux
 if [[ $HOSTNAME == hfe* ]]; then
   export PATH=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3/bin:$PATH
   export PYTHONPATH=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3/lib/python3.8/site-packages
+elif [[ $HOSTNAME == hecflow* ]]; then
+  export PATH=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3/bin:$PATH
+  export PYTHONPATH=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3/lib/python3.8/site-packages
 elif [[ $HOSTNAME == Orion-login-* ]]; then
   export PATH=/work/noaa/nems/emc.nemspara/soft/miniconda3/bin:$PATH
   export PYTHONPATH=/work/noaa/nems/emc.nemspara/soft/miniconda3/lib/python3.8/site-packages
