@@ -11,6 +11,7 @@ def run(job_obj):
     pr_repo_loc, repo_dir_str = clone_pr_repo(job_obj, workdir)
     bldate = get_bl_date(job_obj, pr_repo_loc)
     bldir = f'{blstore}/develop-{bldate}/{job_obj.compiler.upper()}'
+    bldirbool = check_for_bl_dir(bldir, job_obj)
     run_regression_test(job_obj, pr_repo_loc)
     post_process(job_obj, pr_repo_loc, repo_dir_str, rtbldir, bldir)
 
@@ -54,18 +55,20 @@ def set_directories(job_obj):
     return workdir, rtbldir, blstore
 
 
-def check_for_bl_dir(bldir):
+def check_for_bl_dir(bldir, job_obj):
     logger = logging.getLogger('BL/CHECK_FOR_BL_DIR')
     logger.info('Checking if baseline directory exists')
     if os.path.exists(bldir):
         logger.critical(f'Baseline dir: {bldir} exists. It should not, yet.')
+        job_obj.comment_text_append(f'{bldir}\n Exists already. '
+                                    'It should not yet. Please delete.')
         raise FileExistsError
     return False
 
 
-def create_bl_dir(bldir):
+def create_bl_dir(bldir, job_obj):
     logger = logging.getLogger('BL/CREATE_BL_DIR')
-    if not check_for_bl_dir(bldir):
+    if not check_for_bl_dir(bldir, job_obj):
         os.makedirs(bldir)
         if not os.path.exists(bldir):
             logger.critical(f'Someting went wrong creating {bldir}')
@@ -154,8 +157,10 @@ def post_process(job_obj, pr_repo_loc, repo_dir_str, rtbldir, bldir):
     filepath = f'{pr_repo_loc}/{rt_log}'
     rt_dir, logfile_pass = process_logfile(job_obj, filepath)
     if logfile_pass:
-        create_bl_dir(bldir)
+        create_bl_dir(bldir, job_obj)
         move_bl_command = [[f'mv {rtbldir}/* {bldir}/', pr_repo_loc]]
+        if job_obj.machine == 'orion':
+            move_bl_command.append([f'/bin/bash --login adjust_permissions.sh orion develop-{bldate}', blstore])
         job_obj.run_commands(logger, move_bl_command)
         job_obj.comment_text_append('Baseline creation and move successful')
         logger.info('Starting RT Job')
