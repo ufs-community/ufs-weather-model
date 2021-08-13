@@ -1,0 +1,79 @@
+MAPLROOT_COMPNAME: AERO
+        ROOT_NAME: AERO
+ROOT_CF:    AERO.rc
+HIST_CF:    AERO_HISTORY.rc
+EXTDATA_CF: AERO_ExtData.rc
+
+REPORT_THROUGHPUT: .false.
+
+USE_SHMEM: 0
+
+MAPL_ENABLE_TIMERS: NO
+MAPL_ENABLE_MEMUTILS: NO
+PRINTSPEC: 0  # (0: OFF, 1: IMPORT & EXPORT, 2: IMPORT, 3: EXPORT)
+
+
+# Meteorological fields imported from atmospheric model
+# -----------------------------------------------------
+CAP_IMPORTS:
+    FROCEAN
+    FRACI
+    FRSNOW
+    LWI
+    U10M
+    V10M
+    USTAR
+    TS
+    DZ
+    FRLAKE
+    AREA
+    ZPBL
+    SH
+    Z0H
+    CN_PRCP
+    NCN_PRCP
+    AIRDENS
+    DELP
+    T
+    RH2
+    ZLE
+    PLE
+    PFL_LSAN
+    PFI_LSAN
+    U
+    V
+    WET1
+    SLC
+    FCLD
+::
+
+
+# Prognostic Tracers Table
+# GOCARTname,GOCARTcomp.   AtmTracerName
+#---------------------------------------
+CAP_EXPORTS:
+   SS,SS                   seas*
+   DU,DU                   dust*
+   DMS,SU                  dms
+   MSA,SU                  msa
+   SO2,SU                  so2
+   SO4,SU                  so4
+   CAphobicCA.bc,CA.bc     bc1
+   CAphilicCA.bc,CA.bc     bc2
+   CAphobicCA.oc,CA.oc     oc1
+   CAphilicCA.oc,CA.oc     oc2
+   NH3,NI                  nh3
+   NH4a,NI                 nh4a
+   NO3an1,NI               no3an1
+   NO3an2,NI               no3an2
+   NO3an3,NI               no3an3
+::
+
+
+# Diagnostic Tracers Table (only PM10 & PM25 available)
+# InternalName             AtmTracerName
+#---------------------------------------
+CAP_DIAGNOSTICS:
+   PM10                    pm10
+   PM25                    pm25
+::
