@@ -5,17 +5,18 @@ module noah_driver
   use noah_loop, only: noah_loop_init, noah_loop_run
   use noah_type_mod
   use proc_bounds,        only: procbounds_type, control_init_type
-  
+  use mpp_domains_mod,    only: domain2d
 
 
   implicit none
   private
 
-  type (noah_type),         public        ::   noah_model
+  type(noah_type),          public :: noah_model
+  type(domain2D),           public :: land_domain
+  type(control_init_type),  public :: ctrl_init
   !type (noah_type),  dimension(:), allocatable, public   ::   noah_model
-  type (control_init_type),                     public   ::   ctrl_init
 
-  public :: noah_loop_drv, init_driver, noah_block_run
+  public :: noah_loop_drv, init_driver, noah_block_run, noah_finalize
 
 contains
 
@@ -26,8 +27,8 @@ contains
     use mpp_mod,            only: mpp_pe, mpp_root_pe
     use land_domain_mod,    only: domain_create
     use block_control_mod,  only: block_control_type, define_blocks_packed
-
-    
+    use land_restart_mod,   only: sfc_prop_restart_read
+    !use land_restart_mod,   only: sfc_prop_restart_write ! TMP DEBUG
     !type(procbounds_type),  intent(in)    :: procbounds
     !character(len=*), intent(out) :: gridchoice
     type(control_init_type), intent(out)  ::   ctrl_init
@@ -37,7 +38,7 @@ contains
 
     !type(control_init_type)  ::   ctrl_init
     !type (noah_type)        ::   noah
-    type(domain2D) :: land_domain
+    !type(domain2D) :: land_domain
     type (block_control_type), target   :: Lnd_block !  Block container
     integer :: isc, iec, jsc, jec
     
@@ -74,11 +75,11 @@ contains
     ! domain create with FMS:
     call domain_create(ctrl_init, land_domain)
 
-    ! Creat blocking a la FV3
+    ! Create blocking a la FV3
     call mpp_get_compute_domain(land_domain,isc,iec,jsc,jec)
 
     im = (iec-isc+1)*(jec-jsc+1)
-    write(*,*) "isc,iec,jsc,jec, im: ",isc,iec,jsc,jec, im
+    !write(*,*) "isc,iec,jsc,jec, im: ",isc,iec,jsc,jec, im
     
     
     ! Create blocks, but not curretnly using
@@ -120,6 +121,9 @@ contains
     noah_model%control%jec = jec
     noah_model%static%im  = im
     call noah_model%Create(im)
+
+    ! Restart read of sfc_data
+    call sfc_prop_restart_read(noah_model, land_domain, .false.)
     
     call noah_loop_init(0, ctrl_init%isot, ctrl_init%ivegsrc, 0 , errmsg, errflg)
 
@@ -142,7 +146,8 @@ contains
   subroutine noah_loop_drv(procbounds, noah_model)
 
     use proc_bounds, only : procbounds_type
-
+    !use land_restart_mod,   only: sfc_prop_restart_write ! TMP DEBUG
+    
     use physcons, only :       &
          cp      => con_cp,    &
          eps     => con_eps,   &
@@ -153,7 +158,7 @@ contains
          rvrdm1  => con_fvirt, &
          tfreeze => con_t0c
 
-    type(procbounds_type),  intent(in)    :: procbounds
+    type(procbounds_type),  intent(in)       :: procbounds
     type(noah_type),        intent(inout)    :: noah_model ! land model's variable type
 
     ! local
@@ -335,9 +340,6 @@ contains
       ! gridbeg = procbounds%gridbeg
       ! gridend = procbounds%gridend
 
-      ! tmp, debug
-      !write(6,'("noah drv: dswsfc   - min/max/avg",3g16.6)') minval(dswsfc),   maxval(dswsfc),   sum(dswsfc)/size(dswsfc)
-
       call noah_loop_run( &
                                 !! ARGS FROM NOAH
                                 !  ---  inputs:
@@ -381,5 +383,15 @@ contains
     end associate
 
   end subroutine noah_loop_drv
+  
+  
+  ! -------------------------------------------------------------------
+  subroutine noah_finalize()
 
+    use land_restart_mod,   only: sfc_prop_restart_write
+
+    call sfc_prop_restart_write(noah_model, land_domain)
+
+  end subroutine noah_finalize
+  
 end module noah_driver

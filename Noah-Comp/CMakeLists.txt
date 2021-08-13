@@ -21,6 +21,7 @@ add_library(lnd_comp STATIC
 	    import_fields.F90
 	    proc_bounds.F90
 	    domain_create.F90
+	    restart_io.F90 
 	    ccpphys_files/funcphys.f90
 	    ccpphys_files/machine.F
 	    ccpphys_files/sfc_diff.f

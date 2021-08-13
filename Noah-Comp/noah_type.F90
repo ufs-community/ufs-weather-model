@@ -39,6 +39,9 @@ type :: noah_static_type
 
 end type noah_static_type
 
+type sfcprop_type
+  real(kind_phys), allocatable      :: landfrac(:)
+end type sfcprop_type
 
 type  :: noah_model_type
 
@@ -122,6 +125,7 @@ type, public :: noah_type
    type(noah_static_type)  :: static
    type(noah_model_type)   :: model
    type(noah_control_type) :: control
+   type(sfcprop_type)      :: sfcprop
  contains
 
    procedure, public  :: Create
@@ -208,6 +212,10 @@ contains
     allocate(nh%model%stress  (im))
     allocate(nh%model%ustar  (im))
 
+
+    allocate(nh%sfcprop%landfrac (im))
+
+    
     ! --------------------------------------------------------
     nh%control%first_time = .true.
     nh%control%mype       = -999
@@ -297,8 +305,10 @@ contains
     nh%model%fm10_lnd   = zero
     nh%model%fh2_lnd    = zero
     nh%model%stress     = zero
-    nh%model%ustar     = zero
-    
+    nh%model%ustar      = zero
+
+    nh%sfcprop%landfrac  = zero
+
   end subroutine Create
 
 
