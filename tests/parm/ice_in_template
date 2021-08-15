@@ -93,7 +93,7 @@
     kdyn            = 1
     ndte            = 120
     revised_evp     = .false.
-    kevp_kernel     = 0
+    evp_algorithm   = 'standard_2d'
     brlx            = 300.0
     arlx            = 300.0
     ssh_stress      = 'coupled'
@@ -136,6 +136,28 @@
     rfracmin        = 0.15
     rfracmax        = 1.
     pndaspect       = 0.8
+/
+
+&snow_nml
+    snwredist       = 'none'
+    snwgrain        = .false.
+    use_smliq_pnd   = .false.
+    rsnw_fall       =  100.0
+    rsnw_tmax       = 1500.0
+    rhosnew         =  100.0
+    rhosmin         =  100.0
+    rhosmax         =  450.0
+    windmin         =   10.0
+    drhosdwind      =   27.3
+    snwlvlfac       =    0.3
+    snw_aging_table = 'test'
+    snw_filename    = 'unknown'
+    snw_rhos_fname  = 'unknown'
+    snw_Tgrd_fname  = 'unknown'
+    snw_T_fname     = 'unknown'
+    snw_tau_fname   = 'unknown'
+    snw_kappa_fname = 'unknown'
+    snw_drdt0_fname = 'unknown'
 /
 
 &forcing_nml
