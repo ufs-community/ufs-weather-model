@@ -1,0 +1,43 @@
+#
+# Resource file Sea Salt parameters
+#
+
+aerosol_radBands_optics_file: ExtData/optics/opticsBands_SS.v3_3.RRTMG.nc
+aerosol_monochromatic_optics_file: ExtData/monochromatic/optics_SS.v3_3.nc
+
+particle_radius_microns: 0.079 0.316 1.119 2.818 7.772
+
+radius_lower: 0.03 0.1 0.5 1.5 5.0
+
+radius_upper: 0.1 0.5 1.5 5.0 10.0
+
+particle_density: 2200. 2200. 2200. 2200. 2200.
+
+# Scavenging efficiency per bin [km-1]
+fscav: 0.4  0.4  0.4  0.4  0.4 
+
+# Emissions methods and scaling
+emission_scheme: 3                                     # 1 for Gong 2003, 2 for ...
+emission_scale:  1.0 1.0 1.0 1.0 1.0 1.0   # a global scaling factor for C96
+sstEmisFlag:     2                                     # Apply a correction to emissions based on SST (see code)
+hoppelFlag:      .false.              # Apply Hoppel correction (set non-zero, see Fan and Toon 2011)
+weibullFlag:     .false.              # Apply Weibull distribution (set non-zero, see Fan and Toon 2011)
+
+# Method of apply relative humidity to particle radius
+rhFlag:          2       # RH swelling of Seasalt (1 for Fitzgerald 1975,
+                         #                         2 for Gerber 1985 method)
+
+# Molecular weight of species [kg mole-1]
+molecular_weight: 0.058  0.058  0.058  0.058  0.058
+
+# Number of particles per kg mass
+fnum: 3.017e17  1.085e16  1.207e14  9.391e12  2.922e11
+
+# Number median radius [um]
+particle_radius_number: 0.066  0.176  0.885  2.061  6.901
+
+nbins: 5
+
+pressure_lid_in_hPa: 0.01
+
+

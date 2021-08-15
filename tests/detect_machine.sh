@@ -59,6 +59,7 @@ case $(hostname -f) in
   hfe10)                   MACHINE_ID=hera ;; ### hera10
   hfe11)                   MACHINE_ID=hera ;; ### hera11
   hfe12)                   MACHINE_ID=hera ;; ### hera12
+  hecflow01)               MACHINE_ID=hera ;; ### heraecflow01
 
   fe1)                     MACHINE_ID=jet ;; ### jet01
   fe2)                     MACHINE_ID=jet ;; ### jet02

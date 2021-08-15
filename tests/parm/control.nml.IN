@@ -2,12 +2,12 @@
   blocksize = 32
   chksum_debug = .false.
   dycore_only = .false.
-  fdiag = @[FDIAG]
   ccpp_suite = '@[CCPP_SUITE]'
 /
 
 &diag_manager_nml
   prepend_date = .false.
+  max_output_fields = @[MAX_OUTPUT_FIELDS]
 /
 
 &fms_io_nml
@@ -107,9 +107,11 @@ deflate_level=1
 /
 
 &gfs_physics_nml
-  fhzero       = 6
+  fhzero       = @[FHZERO]
   h2o_phys     = .true.
-  ldiag3d      = .false.
+  ldiag3d      = @[LDIAG3D]
+  qdiag3d      = @[QDIAG3D]
+  print_diff_pgr = @[PRINT_DIFF_PGR]
   fhcyc        = @[FHCYC]
   use_ufo      = .true.
   pre_rad      = .false.
@@ -137,6 +139,7 @@ deflate_level=1
   satmedmf     = .true.
   isatmedmf    = 1
   lheatstrg    = @[LHEATSTRG]
+  lseaspray    = @[LSEASPRAY]
   random_clds  = @[RANDOM_CLDS]
   trans_trac   = .true.
   cnvcld       = @[CNVCLD]
@@ -251,8 +254,8 @@ deflate_level=1
   FNVEGC   = 'global_vegfrac.0.144.decpercent.grb'
   FNVETC   = @[FNVETC]
   FNSOTC   = @[FNSOTC]
-  FNSMCC   = 'global_soilmgldas.statsgo.t1534.3072.1536.grb'
-  FNMSKH   = 'global_slmask.t1534.3072.1536.grb'
+  FNSMCC   = @[FNSMCC_control]
+  FNMSKH   = @[FNMSKH_control]
   FNTSFA   = ''
   FNACNA   = ''
   FNSNOA   = ''
@@ -286,6 +289,7 @@ deflate_level=1
 /
 
 &nam_stochy
+  STOCHINI=@[STOCHINI],
   SKEBNORM=1,
   SKEB_NPASS=30,
   SKEB_VDOF=5,

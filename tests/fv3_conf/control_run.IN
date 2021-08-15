@@ -1,6 +1,8 @@
 rm -fr INPUT RESTART
 if [ $NPX = 97 ]; then
   inputdir=FV3_input_data
+elif [ $NPX = 49 ]; then
+  inputdir=FV3_input_data48
 elif [ $NPX = 193 ]; then
   inputdir=FV3_input_data192
 elif [ $NPX = 385 ]; then
@@ -67,17 +69,22 @@ else
 
 fi
 
-cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/aerosol.dat .
-cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/co2historicaldata_201*.txt .
-cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/sfc_emissivity_idx.txt .
-cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/solarconstant_noaa_an.txt .
+if [ $NPX = 49 ]; then
+    cp    @[INPUTDATA_ROOT]/${inputdir}/aerosol.dat .
+    cp    @[INPUTDATA_ROOT]/${inputdir}/co2historicaldata_201*.txt .
+    cp    @[INPUTDATA_ROOT]/${inputdir}/sfc_emissivity_idx.txt .
+    cp    @[INPUTDATA_ROOT]/${inputdir}/solarconstant_noaa_an.txt .
+else
+    cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/aerosol.dat .
+    cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/co2historicaldata_201*.txt .
+    cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/sfc_emissivity_idx.txt .
+    cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/solarconstant_noaa_an.txt .
+fi
 cp    @[INPUTDATA_ROOT]/${inputdir}/global_o3prdlos.f77 .
 cp    @[INPUTDATA_ROOT]/${inputdir}/global_h2o_pltc.f77 ./global_h2oprdlos.f77
 cp    @[INPUTDATA_ROOT]/${inputdir}/*grb .
-cp    @[INPUTDATA_ROOT]/${inputdir}/data_table .
 cp    @[INPUTDATA_ROOT]/${inputdir}/diag_table_gfsv16 ./diag_table
 cp    @[INPUTDATA_ROOT]/${inputdir}/field_table_gfsv16 ./field_table
-cp    @[INPUTDATA_ROOT]/${inputdir}/*configure .
 
 if [ $NEW_DIAGTABLE != '' ]; then
   cp    @[INPUTDATA_ROOT]/${inputdir}/$NEW_DIAGTABLE ./diag_table
@@ -145,8 +152,8 @@ fi
 
 #prognostic aerosols
 if [ $CPLCHM = .T. ]; then
-  cp      @[INPUTDATA_ROOT]/GOCART/diag_table  .
-  cp      @[INPUTDATA_ROOT]/GOCART/field_table .
-  cp      @[INPUTDATA_ROOT]/GOCART/rc/* .
+  cp      ${PATHRT}/parm/gocart/diag_table  .
+  cp      ${PATHRT}/parm/gocart/field_table .
+  cp      ${PATHRT}/parm/gocart/*.rc .
   ln -sf  @[INPUTDATA_ROOT]/GOCART/ExtData .
 fi

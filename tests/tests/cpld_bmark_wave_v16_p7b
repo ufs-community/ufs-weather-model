@@ -1,12 +1,12 @@
 #
-#  cpld_bmark_wave_v16 NoahMP NSST test
+#  cpld_bmark_wave_v16 P7b test
 #
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system - C384L127 MX025 - Benchmark test with waves - v16 NoahMP NSST"
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system - C384L127 MX025 - Benchmark test with waves - p7b:v16 NoahMP NSST merra2 ugwpv1 composite_sfcfields"
 
-export CNTL_DIR="cpld_bmark_wave_v16_noahmp_nsst"
+export CNTL_DIR="cpld_bmark_wave_v16_p7b"
 
-export LIST_FILES="phyf006.nc \
-                   dynf006.nc \
+export LIST_FILES="sfcf006.nc \
+                   atmf006.nc \
                    20130401.060000.out_grd.gwes_30m \
                    20130401.060000.out_pnt.points \
                    RESTART/coupler.res \
@@ -58,8 +58,8 @@ export SHOUR="00"
 
 export DAYS="0.25"
 export FHMAX="6"
-export RESTART_INTERVAL=${FHMAX}
-export RESTART_N=${RESTART_INTERVAL}
+export RESTART_N=${FHMAX}
+export RESTART_INTERVAL="${RESTART_N} -1"
 
 export TASKS=$TASKS_cpl_wwav
 export TPN=$TPN_cpl_wwav
@@ -92,7 +92,7 @@ export NPROC_ICE='48'
 export CDMBWD=${CDMBWD_c384}
 
 # set component and coupling timesteps
-export DT_ATMOS='225'
+export DT_ATMOS='300'
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6='900'
 export DT_THERM_MOM6='1800'
@@ -147,6 +147,12 @@ export LANDICE=".false."
 
 export OZ_PHYS_NEW=".T."
 
+# P7b
+export IAER=1011
+export DO_UGWP_V1=".true."
+export KTHERM=2
+export TFREEZE_OPTION='mushy'
+
 export MOM6_USE_WAVES='True'
 export MOM6_RIVER_RUNOFF='True'
 export MOM6_RESTART_SETTING="r"
@@ -154,13 +160,13 @@ export MOM6_REPRO_LA='True'
 
 export RUNID="cpcice"
 
-export ww3gline="'gwes_30m' 'no' 'CPL:native' 'CPL:native' 'CPL:native' 'no' 'no' 'no' 'no' 'no'   1  1  0.00 1.00  F"
+export ww3gline="'gwes_30m' 'no' 'CPL:native' 'CPL:native' 'CPL:native' 'no' 'no' 'no' 'no' 'no'  1  1  0.00 1.00  F"
 export WW3RSTDTHR=${FHMAX}
 
-export INPUT_NML=input.benchmark_v16.nml.IN
+export INPUT_NML=input.benchmark_v16_p7b.nml.IN
 
 export FIELD_TABLE="field_table_gfsv16"
-export DIAG_TABLE="diag_table_bmark_v16_template"
-export CCPP_SUITE="FV3_GFS_v16_coupled_nsstNoahmp"
+export DIAG_TABLE="diag_table_bmark_v16_merra2_template"
+export CCPP_SUITE="FV3_GFS_v16_coupled_nsstNoahmpUGWPv1"
 
 export FV3_RUN=cpld_bmark_tiled_run.IN

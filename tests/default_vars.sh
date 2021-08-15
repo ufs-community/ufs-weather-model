@@ -123,7 +123,7 @@ elif [[ $MACHINE_ID = hera.* ]]; then
 
   TASKS_dflt=150 ; TPN_dflt=40 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=78  ; TPN_thrd=20 ; INPES_thrd=3 ; JNPES_thrd=4
-  TASKS_c384=336 ; TPN_c384=20 ; INPES_c384=8 ; JNPES_c384=6
+  TASKS_c384=336 ; TPN_c384=20 ; INPES_c384=6 ; JNPES_c384=8
   TASKS_stretch=48 ; TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=12 ; INPES_strnest=2 ; JNPES_strnest=4
 
@@ -190,7 +190,7 @@ elif [[ $MACHINE_ID = jet.* ]]; then
 
   TASKS_dflt=150 ; TPN_dflt=24 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=78  ; TPN_thrd=12 ; INPES_thrd=3 ; JNPES_thrd=4
-  TASKS_c384=480 ; TPN_c384=24 ; INPES_c384=12 ; JNPES_c384=6
+  TASKS_c384=480 ; TPN_c384=12 ; INPES_c384=12 ; JNPES_c384=6
   TASKS_stretch=48 ; TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=12 ; INPES_strnest=2 ; JNPES_strnest=4
 
@@ -202,7 +202,7 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   THRD_cpl_dflt_wwav=1; WPG_cpl_dflt_wwav=6;  MPB_cpl_dflt_wwav="0 143"; APB_cpl_dflt_wwav="0 149"
   OPB_cpl_dflt_wwav="150 179"; IPB_cpl_dflt_wwav="180 191"; WPB_cpl_dflt_wwav="192 203"
 
-  TASKS_cpl_thrd=120; TPN_cpl_thrd=18; INPES_cpl_thrd=3; JNPES_cpl_thrd=4
+  TASKS_cpl_thrd=120; TPN_cpl_thrd=12; INPES_cpl_thrd=3; JNPES_cpl_thrd=4
   THRD_cpl_thrd=2; WPG_cpl_thrd=6;  MPB_cpl_thrd="0 77";  APB_cpl_thrd="0 77"
   OPB_cpl_thrd="78 107";  IPB_cpl_thrd="108 119"
 
@@ -242,7 +242,7 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
 
   TASKS_dflt=150 ; TPN_dflt=36 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=78  ; TPN_thrd=18 ; INPES_thrd=3 ; JNPES_thrd=4
-  TASKS_c384=480 ; TPN_c384=36 ; INPES_c384=12 ; JNPES_c384=6
+  TASKS_c384=336 ; TPN_c384=18 ; INPES_c384=6 ; JNPES_c384=8
   TASKS_stretch=48 ; TPN_stretch=18 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=18 ; INPES_strnest=2 ; JNPES_strnest=4
 
@@ -357,8 +357,8 @@ elif [[ $MACHINE_ID = stampede.* ]]; then
   THRD_cpl_dflt_wwav=1; WPG_cpl_dflt_wwav=6;  MPB_cpl_dflt_wwav="0 143"; APB_cpl_dflt_wwav="0 149"
   OPB_cpl_dflt_wwav="150 179"; IPB_cpl_dflt_wwav="180 191"; WPB_cpl_dflt_wwav="192 383"
 
-  TASKS_cpl_thrd=120; TPN_cpl_thrd=48; INPES_cpl_thrd=3; JNPES_cpl_thrd=4
-  THRD_cpl_thrd=2; WPG_cpl_thrd=6;  MPB_cpl_thrd="0 77";  APB_cpl_thrd="0 77"
+  TASKS_cpl_thrd=120; TPN_cpl_thrd=24; INPES_cpl_thrd=3; JNPES_cpl_thrd=4
+  THRD_cpl_thrd=2; WPG_cpl_thrd=6;  MPB_cpl_thrd="0 71";  APB_cpl_thrd="0 77"
   OPB_cpl_thrd="78 107";  IPB_cpl_thrd="108 119"
 
   TASKS_cpl_bmrk=480; TPN_cpl_bmrk=48; INPES_cpl_bmrk=6; JNPES_cpl_bmrk=8
@@ -369,7 +369,7 @@ elif [[ $MACHINE_ID = stampede.* ]]; then
   THRD_cpl_wwav=1; WPG_cpl_wwav=24; MPB_cpl_wwav="0 287"; APB_cpl_wwav="0 311"
   OPB_cpl_wwav="312 431"; IPB_cpl_wwav="432 479"; WPB_cpl_wwav="480 527"
 
-  TASKS_cpl_c192=288; TPN_cpl_c192=40; INPES_cpl_c192=4; JNPES_cpl_c192=8
+  TASKS_cpl_c192=288; TPN_cpl_c192=48; INPES_cpl_c192=4; JNPES_cpl_c192=8
   THRD_cpl_c192=1; WPG_cpl_c192=12;  MPB_cpl_c192="0 191"; APB_cpl_c192="0 203"
   OPB_cpl_c192="204 263"; IPB_cpl_c192="264 287"
 
@@ -411,8 +411,10 @@ export_fv3 ()
 {
 export FV3=true
 export S2S=false
+export HAFS=false
 export DATM_NEMS=false
 export DATM_CDEPS=false
+export DOCN_CDEPS=false
 export THRD=1
 export WLCLK=$WLCLK_dflt
 export POSTAPP='global'
@@ -436,8 +438,6 @@ export OUTPUT_GRID="'cubed_sphere_grid'"
 export OUTPUT_FILE="'netcdf'"
 export IDEFLATE=0
 export NBITS=0
-export WRITE_NEMSIOFLIP=.false.
-export WRITE_FSYNCFLAG=.false.
 export IMO=384
 export JMO=190
 
@@ -468,6 +468,7 @@ export NWAT=6
 export DNATS=1
 export DO_SAT_ADJ=.T.
 export LHEATSTRG=.F.
+export LSEASPRAY=.F.
 export LGFDLMPRAD=.F.
 export EFFR_IN=.F.
 # Thompson MP
@@ -489,6 +490,7 @@ export DO_UGWP_V1=.F.
 export DO_UGWP_V1_OROG_ONLY=.F.
 
 # resolution dependent settings
+export CDMBWD_c48='0.071,2.1,1.0,1.0'
 export CDMBWD_c96='0.14,1.8,1.0,1.0'
 export CDMBWD_c192='0.23,1.5,1.0,1.0'
 export CDMBWD_c384='1.1,0.72,1.0,1.0'
@@ -549,7 +551,7 @@ export NPY=97
 export NPZ=64
 export NPZP=65
 export NSTF_NAME=2,1,1,0,5
-export FDIAG=0,1,2,3,4,5,6,7,8,9,10,11,12,15,18,21,24,27,30,33,36,39,42,45,48
+export OUTPUT_FH="0 1 2 3 4 5 6 7 8 9 10 11 12 15 18 21 24 27 30 33 36 39 42 45 48"
 export NFHOUT=3
 export NFHMAX_HF=12
 export NFHOUT_HF=1
@@ -559,6 +561,8 @@ export FNALBC="'global_snowfree_albedo.bosu.t126.384.190.rg.grb',"
 export FNVETC="'global_vegtype.igbp.t126.384.190.rg.grb',"
 export FNSOTC="'global_soiltype.statsgo.t126.384.190.rg.grb',"
 export FNSMCC="'global_soilmgldas.t126.384.190.grb',"
+export FNSMCC_control="'global_soilmgldas.statsgo.t1534.3072.1536.grb',"
+export FNMSKH_control="'global_slmask.t1534.3072.1536.grb',"
 export FNABSC="'global_mxsnoalb.uariz.t126.384.190.rg.grb',"
 
 
@@ -573,9 +577,11 @@ export FHCYC=24
 export FHROT=0
 export LDIAG3D=.F.
 export QDIAG3D=.F.
+export PRINT_DIFF_PGR=.false.
 export MAX_OUTPUT_FIELDS=300
 
 # Stochastic physics
+export STOCHINI=.F.
 export DO_SPPT=.F.
 export DO_SHUM=.F.
 export DO_SKEB=.F.
@@ -591,6 +597,7 @@ export LNDP_PRT_LISY=-999
 #IAU
 export IAU_INC_FILES="''"
 
+
 #Cellular automata
 export DO_CA=.F.
 export CA_SGS=.F.
@@ -601,7 +608,7 @@ export IAU_DRYMASSFIXER=.false.
 #waves
 export WW3RSTDTHR='12'
 export WW3OUTDTHR='1'
-export WW3OUTPUTTYPE=' '
+export WW3OUTPUTTYPE='1'
 export OUTPARS_WAV="WND HS FP DP PHS PTP PDIR"
 export CPLILINE='$'
 export ICELINE='$'
@@ -609,11 +616,15 @@ export WINDLINE='$'
 export CURRLINE='$'
 export NFGRIDS=0
 export NMGRIDS=1
-export ww3gline="'glo_30m'  'no' 'no' 'CPL:native' 'no' 'no' 'no' 'no' 'no' 'no'   1  1  0.00 1.00  F"
+export ww3gline="'glo_1deg'  'no' 'no' 'CPL:native' 'no' 'no' 'no' 'no' 'no' 'no'   1  1  0.00 1.00  F"
 
 # Regional
 export WRITE_RESTART_WITH_BCS=.false.
 
+# Diagnostics
+export PRINT_DIFF_PGR=.false.
+
+# Coupling
 export coupling_interval_fast_sec=0
 }
 
@@ -621,11 +632,15 @@ export_cpl ()
 {
 export FV3=true
 export S2S=true
+export HAFS=false
 export DATM_NEMS=false
 export DATM_CDEPS=false
+export DOCN_CDEPS=false
 
 export DAYS="1"
 export FHMAX="24"
+export FDIAG="6"
+export FHZERO="6"
 export WLCLK=30
 
 # default atm/ocn/ice resolution
@@ -677,24 +692,17 @@ export CICERUNTYPE='initial'
 export eps_imesh='1.0e-1'
 
 # FV3 defaults
-# to use new oro and ics created from 1deg ocean mask on c96 tiles
-# set frac_grid=.F. but FRAC_GRID_INPUT=.T.
-# to repro existing tests set both frac_grid and FRAC_GRID_INPUT to .F.
-# to run frac_grid, set both frac_grid and FRAC_GRID_INPUTs to .T.
 export FRAC_GRID='.T.'
-export FRAC_GRID_INPUT='.T.'
 export CCPP_SUITE="FV3_GFS_2017_coupled"
 export INPUT_NML=input.mom6_ccpp.nml.IN
 export FIELD_TABLE="field_table"
 export DIAG_TABLE="diag_table_template"
 
+export DIAG_TABLE_ADDITIONAL=''
+
 export FHROT='0'
 export NSOUT='-1'
-export FDIAG='6'
-export NFHOUT='6'
-#no high freq fv3 output
-export NFHMAX_HF='-1'
-export NFHOUT_HF='-1'
+export OUTPUT_FH='6 -1'
 export FHZERO=${FHZERO}
 
 export CPLFLX='.T.'
@@ -728,6 +736,9 @@ export MOM6_THERMO_SPAN='False'
 # no WW3
 export MOM6_USE_WAVES='False'
 export MOM6_ALLOW_LANDMASK_CHANGES='False'
+# MOM6 IAU
+export MOM_IAU='False'
+export MOM_IAU_HRS=6
 
 # CICE6 defaults; 1 degree
 export NPROC_ICE='12'
@@ -768,8 +779,10 @@ export_datm ()
 {
 export FV3=false
 export S2S=false
+export HAFS=false
 export DATM_NEMS=true
 export DATM_CDEPS=false
+export DOCN_CDEPS=false
 export CPLWAV=.F.
 export DAYS=1
 export FHMAX=24
@@ -812,8 +825,7 @@ export SDAY='01'
 export SHOUR='00'
 export CDATE=${SYEAR}${SMONTH}${SDAY}${SHOUR}
 
-export NFHOUT=6
-export FDIAG=6
+export NFHOUT="6"
 export DT_ATMOS='900'
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6='1800'
@@ -846,6 +858,9 @@ export MOM6_RESTART_SETTING='n'
 export MOM6_RIVER_RUNOFF='False'
 export FRUNOFF=""
 export CHLCLIM='"seawifs_1998-2006_smoothed_2X.nc"'
+# MOM6 IAU
+export MOM_IAU='False'
+export MOM_IAU_HRS=6
 # this must be set False for restart repro
 export MOM6_REPRO_LA='False'
 # since CPL_SLOW is set to DT_THERM, this should be always be false
@@ -879,8 +894,10 @@ export_datm_cdeps ()
 {
 export FV3=false
 export S2S=false
+export HAFS=false
 export DATM_NEMS=false
 export DATM_CDEPS=true
+export DOCN_CDEPS=false
 export CPLWAV=.F.
 export DAYS=1
 export FHMAX=24
@@ -921,8 +938,7 @@ export SDAY='01'
 export SHOUR='00'
 export CDATE=${SYEAR}${SMONTH}${SDAY}${SHOUR}
 
-export NFHOUT=6
-export FDIAG=6
+export NFHOUT="6"
 export DT_ATMOS='900'
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6='1800'
@@ -963,6 +979,9 @@ export MOM6_RESTART_SETTING='n'
 export MOM6_RIVER_RUNOFF='False'
 export FRUNOFF=""
 export CHLCLIM='"seawifs_1998-2006_smoothed_2X.nc"'
+# MOM6 IAU
+export MOM_IAU='False'
+export MOM_IAU_HRS=6
 # this must be set False for restart repro
 export MOM6_REPRO_LA='False'
 # since CPL_SLOW is set to DT_THERM, this should be always be false
@@ -991,4 +1010,104 @@ export KTHERM=1
 export TFREEZE_OPTION='linear_salt'
 export BL_SUFFIX=""
 export RT_SUFFIX=""
+}
+export_hafs_datm_cdeps ()
+{
+export FV3=false
+export S2S=false
+export HAFS=true
+export DATM_CDEPS=true
+export DATM_NEMS=false
+export DOCN_CDEPS=false
+export THRD=1
+export WLCLK=30
+export INPES=$INPES_dflt
+export JNPES=$JNPES_dflt
+export TASKS=$TASKS_dflt
+export TPN=$TPN_dflt
+
+export atm_model="datm"
+
+export DATM_IN_CONFIGURE="datm_in"
+export DATM_STREAM_CONFIGURE="hafs_datm.streams.era5.IN"
+}
+export_hafs_docn_cdeps ()
+{
+export FV3=true
+export S2S=false
+export HAFS=true
+export DOCN_CDEPS=true
+export THRD=1
+export WLCLK=$WLCLK_dflt
+export INPES=$INPES_dflt
+export JNPES=$JNPES_dflt
+export TASKS=$TASKS_dflt
+export TPN=$TPN_dflt
+
+export ocn_model="docn"
+export ocn_datamode="sstdata"
+
+export DOCN_IN_CONFIGURE="docn_in"
+export DOCN_STREAM_CONFIGURE="hafs_docn.streams.IN"
+}
+export_hafs_regional ()
+{
+export FV3=true
+export S2S=false
+export HAFS=true
+export DATM_NEMS=false
+export DATM_CDEPS=false
+export DOCN_CDEPS=false
+export THRD=1
+export WLCLK=$WLCLK_dflt
+export INPES=$INPES_dflt
+export JNPES=$JNPES_dflt
+export TASKS=$TASKS_dflt
+export TPN=$TPN_dflt
+
+# model_configure
+export SYEAR='2019'
+export SMONTH='08'
+export SDAY='29'
+export SHOUR='00'
+export FHMAX=6
+export ENS_NUM=1
+export DT_ATMOS='900'
+export CPL='.true.'
+export RESTART_INTERVAL=0
+export FHROT=0
+export coupling_interval_fast_sec=0
+export QUILTING=.true.
+export WRITE_GROUP=1
+export WRTTASK_PER_GROUP=6
+export OUTPUT_HISTORY=.true.
+export WRITE_DOPOST=.false.
+export NUM_FILES=2
+export FILENAME_BASE="'atm' 'sfc'"
+export OUTPUT_GRID="'regional_latlon'"
+export OUTPUT_FILE="'netcdf'"
+export IDEFLATE=0
+export NBITS=0
+export NFHOUT=3
+export NFHMAX_HF=-1
+export NFHOUT_HF=3
+export CEN_LON=-62.0
+export CEN_LAT=25.0
+export LON1=-114.5
+export LAT1=-5.0
+export LON2=-9.5
+export LAT2=55.0
+export DLON=0.03
+export DLAT=0.03
+
+# input.nml
+export MERGE_IMPORT=.true.
+
+# nems.configure
+export med_model="cmeps"
+export CAP_DBUG_FLAG="0"
+export RESTART_N=${FHMAX}
+export CPLMODE="hafs"
+export RUNTYPE="startup"
+export USE_COLDSTART="false"
 }
