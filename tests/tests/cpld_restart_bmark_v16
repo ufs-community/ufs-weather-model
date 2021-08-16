@@ -59,8 +59,7 @@ export DAYS='0.25'
 export FHMAX='6'
 export FHROT='3'
 export RESTART_N=$((FHMAX-$FHROT))
-export NFHOUT=3
-export FDIAG=3
+export OUTPUT_FH="3 -1"
 export FHZERO=3
 
 export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${FHROT}  )))0000"
@@ -97,7 +96,7 @@ export NPROC_ICE='48'
 export CDMBWD=${CDMBWD_c384}
 
 # set component and coupling timesteps
-export DT_ATMOS='225'
+export DT_ATMOS='300'
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6='900'
 export DT_THERM_MOM6='1800'
@@ -145,7 +144,7 @@ export FNSLPC="'global_slope.1x1.grb',"
 export FNABSC="'global_mxsnoalb.uariz.t766.1536.768.rg.grb',"
 export LANDICE=".true."
 
-export OZ_PHYS_NEW=".T."
+export OZ_PHYS_NEW=".true."
 
 export MOM6_RIVER_RUNOFF='True'
 export MOM6_RESTART_SETTING="r"
@@ -154,15 +153,16 @@ export MOM6_REPRO_LA='True'
 export RUNID="cpcice"
 
 # ATM warm start
-WARM_START='.T.'
-MAKE_NH='.F.'
-NA_INIT='0'
-EXTERNAL_IC='.F.'
-NGGPS_IC='.F.'
-MOUNTAIN='.T.'
+export WARM_START='.true.'
+export MAKE_NH='.false.'
+export NA_INIT='0'
+export EXTERNAL_IC='.false.'
+export NGGPS_IC='.false.'
+export MOUNTAIN='.true.'
 
 # ICE warm start
-RUNTYPE='continue'
+export CICERUNTYPE='continue'
+export RUNTYPE='continue'
 export USE_RESTART_TIME='.true.'
 
 export INPUT_NML=input.benchmark_v16.nml.IN

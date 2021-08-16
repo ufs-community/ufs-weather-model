@@ -1,13 +1,13 @@
-﻿&atmos_model_nml
+&atmos_model_nml
   blocksize = 32
   chksum_debug = .false.
   dycore_only = .false.
-  fdiag = @[FDIAG]
   ccpp_suite = '@[CCPP_SUITE]'
 /
 
 &diag_manager_nml
   prepend_date = .false.
+  max_output_fields = @[MAX_OUTPUT_FIELDS]
 /
 
 &fms_io_nml
@@ -61,7 +61,7 @@ deflate_level=1
   nwat = 6
   na_init = @[NA_INIT]
   d_ext = 0.
-  dnats = 1
+  dnats = @[DNATS]
   fv_sg_adj = 450
   d2_bg = 0.
   nord = 2
@@ -107,13 +107,14 @@ deflate_level=1
 /
 
 &gfs_physics_nml
-  fhzero       = 6
+  fhzero       = @[FHZERO]
   h2o_phys     = .true.
-  ldiag3d      = .false.
+  ldiag3d      = @[LDIAG3D]
+  qdiag3d      = @[QDIAG3D]
+  print_diff_pgr = @[PRINT_DIFF_PGR]
   fhcyc        = @[FHCYC]
   use_ufo      = .true.
   pre_rad      = .false.
-  ncld         = 5
   imp_physics  = 11
   pdfcld       = .false.
   fhswr        = 3600.
@@ -138,11 +139,13 @@ deflate_level=1
   satmedmf     = .true.
   isatmedmf    = 1
   lheatstrg    = @[LHEATSTRG]
-  random_clds  = .false.
+  lseaspray    = @[LSEASPRAY]
+  random_clds  = @[RANDOM_CLDS]
   trans_trac   = .true.
-  cnvcld       = .true.
-  imfshalcnv   = 2
-  imfdeepcnv   = 2
+  cnvcld       = @[CNVCLD]
+  imfshalcnv   = @[IMFSHALCNV]
+  imfdeepcnv   = @[IMFDEEPCNV]
+  ras          = @[RAS]
   cdmbgwd      = @[CDMBWD]
   prslrd0      = 0.
   ivegsrc      = 1
@@ -162,13 +165,14 @@ deflate_level=1
   iopt_tbot    = 2
   iopt_stc     = 1
   debug        = .false.
-  oz_phys      = .F.
-  oz_phys_2015 = .T.
+  oz_phys      = .false.
+  oz_phys_2015 = .true.
   nstf_name    = 2,0,0,0,0
   nst_anl      = .true.
   psautco      = 0.0008,0.0005
   prautco      = 0.00015,0.00015
   lgfdlmprad   = .true.
+  cplchm       = @[CPLCHM]
   cplwav       = @[CPLWAV]
   cplwav2atm   = @[CPLWAV2ATM]
   effr_in      = .true.
@@ -180,6 +184,7 @@ deflate_level=1
   do_skeb      = @[DO_SKEB]
   lndp_type    = @[LNDP_TYPE]
   n_var_lndp   = @[N_VAR_LNDP]
+  fscav_aero   = @[FSCAV_AERO]
 /
 
 &gfdl_cloud_microphysics_nml
@@ -188,10 +193,10 @@ deflate_level=1
   rad_snow = .true.
   rad_graupel = .true.
   rad_rain = .true.
-  const_vi = .F.
-  const_vs = .F.
-  const_vg = .F.
-  const_vr = .F.
+  const_vi = .false.
+  const_vs = .false.
+  const_vg = .false.
+  const_vr = .false.
   vi_max = 1.
   vs_max = 2.
   vg_max = 12.
@@ -249,8 +254,8 @@ deflate_level=1
   FNVEGC   = 'global_vegfrac.0.144.decpercent.grb'
   FNVETC   = @[FNVETC]
   FNSOTC   = @[FNSOTC]
-  FNSMCC   = 'global_soilmgldas.statsgo.t1534.3072.1536.grb'
-  FNMSKH   = 'global_slmask.t1534.3072.1536.grb'
+  FNSMCC   = @[FNSMCC_control]
+  FNMSKH   = @[FNMSKH_control]
   FNTSFA   = ''
   FNACNA   = ''
   FNSNOA   = ''
@@ -284,6 +289,7 @@ deflate_level=1
 /
 
 &nam_stochy
+  STOCHINI=@[STOCHINI],
   SKEBNORM=1,
   SKEB_NPASS=30,
   SKEB_VDOF=5,

@@ -4,8 +4,9 @@ if [[ $application == 'global' ]]; then
   if [[ $CI_TEST == 'true' ]]; then
     INPES=3
     JNPES=2
+    WRITE_GROUP=1
+    WRTTASK_PER_GROUP=12
     TASKS=$((INPES*JNPES*6 + WRITE_GROUP*WRTTASK_PER_GROUP))
-    RESTART_INTERVAL=$((FHMAX/2))
   fi
 elif [[ $application == 'regional' ]]; then
   if [[ $CI_TEST == 'true' ]]; then

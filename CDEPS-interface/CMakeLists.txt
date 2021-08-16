@@ -16,103 +16,92 @@ endif()
 include("cdeps_files.cmake")
 
 # CDEPS/share
-add_library(share STATIC ${cdeps_share_files} ${ufs_cdeps_share_files})
-add_library(cdeps::share ALIAS share)
+add_library(share OBJECT ${cdeps_share_files} ${ufs_cdeps_share_files})
 set_target_properties(share PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(share PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/ufs/cdeps_share)
-target_include_directories(share PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
-                                        $<INSTALL_INTERFACE:mod>)
-target_link_libraries(share PUBLIC esmf)
-list(APPEND LIB_TARGETS share)
+target_include_directories(share PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
+target_link_libraries(share PRIVATE esmf)
 
 # CDEPS/streams
-add_library(streams STATIC ${cdeps_streams_files})
-add_library(cdeps::streams ALIAS streams)
-add_dependencies(streams cdeps::share)
+add_library(streams OBJECT ${cdeps_streams_files})
+add_dependencies(streams share)
 set_target_properties(streams PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
-target_include_directories(streams PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
-                                          $<INSTALL_INTERFACE:mod>)
+target_include_directories(streams PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
 target_compile_definitions(streams PUBLIC "DISABLE_FoX")
-target_link_libraries(streams PUBLIC cdeps::share)
-target_link_libraries(streams PUBLIC esmf PIO::PIO_Fortran)
-list(APPEND LIB_TARGETS streams)
+target_link_libraries(streams PRIVATE share)
+target_link_libraries(streams PRIVATE esmf PIO::PIO_Fortran)
 
 # CDEPS/dshr
-add_library(dshr STATIC ${cdeps_dshr_files})
-add_library(cdeps::dshr ALIAS dshr)
-add_dependencies(dshr cdeps::share cdeps::streams)
+add_library(dshr OBJECT ${cdeps_dshr_files})
+add_dependencies(dshr share streams)
 set_target_properties(dshr PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
-target_include_directories(dshr PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
-                                       $<INSTALL_INTERFACE:mod>)
-target_link_libraries(dshr PUBLIC cdeps::share cdeps::streams)
-target_link_libraries(dshr PUBLIC esmf PIO::PIO_Fortran)
-list(APPEND LIB_TARGETS dshr)
+target_include_directories(dshr PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
+target_link_libraries(dshr PRIVATE share streams)
+target_link_libraries(dshr PRIVATE esmf PIO::PIO_Fortran)
 
 # CDEPS/datm
-add_library(datm STATIC ${cdeps_datm_files})
-add_library(cdeps::datm ALIAS datm)
-add_dependencies(datm cdeps::share cdeps::streams cdeps::dshr)
+add_library(datm OBJECT ${cdeps_datm_files})
+add_dependencies(datm share streams dshr)
 set_target_properties(datm PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
-target_include_directories(datm PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
-                                       $<INSTALL_INTERFACE:mod>)
-target_link_libraries(datm PUBLIC cdeps::dshr cdeps::share cdeps::streams)
-target_link_libraries(datm PUBLIC esmf PIO::PIO_Fortran)
-list(APPEND LIB_TARGETS datm)
+target_include_directories(datm PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
+target_link_libraries(datm PRIVATE dshr share streams)
+target_link_libraries(datm PRIVATE esmf PIO::PIO_Fortran)
 
 # CDEPS/dice
-add_library(dice STATIC ${cdeps_dice_files})
-add_library(cdeps::dice ALIAS dice)
-add_dependencies(dice cdeps::share cdeps::streams cdeps::dshr)
+add_library(dice OBJECT ${cdeps_dice_files})
+add_dependencies(dice share streams dshr)
 set_target_properties(dice PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
-target_include_directories(dice PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
-                                       $<INSTALL_INTERFACE:mod>)
-target_link_libraries(dice PUBLIC cdeps::dshr cdeps::share cdeps::streams)
-target_link_libraries(dice PUBLIC esmf)
-list(APPEND LIB_TARGETS dice)
+target_include_directories(dice PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
+target_link_libraries(dice PRIVATE dshr share streams)
+target_link_libraries(dice PRIVATE esmf)
 
 # CDEPS/dlnd
-add_library(dlnd STATIC ${cdeps_dlnd_files})
-add_library(cdeps::dlnd ALIAS dlnd)
-add_dependencies(dlnd cdeps::share cdeps::streams cdeps::dshr)
+add_library(dlnd OBJECT ${cdeps_dlnd_files})
+add_dependencies(dlnd share streams dshr)
 set_target_properties(dlnd PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
-target_include_directories(dlnd PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
-                                       $<INSTALL_INTERFACE:mod>)
-target_link_libraries(dlnd PUBLIC cdeps::dshr cdeps::share cdeps::streams)
-target_link_libraries(dlnd PUBLIC esmf)
-list(APPEND LIB_TARGETS dlnd)
+target_include_directories(dlnd PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
+target_link_libraries(dlnd PRIVATE dshr share streams)
+target_link_libraries(dlnd PRIVATE esmf)
 
 # CDEPS/docn
-add_library(docn STATIC ${cdeps_docn_files})
-add_library(cdeps::docn ALIAS docn)
-add_dependencies(docn cdeps::share cdeps::streams cdeps::dshr)
+add_library(docn OBJECT ${cdeps_docn_files})
+add_dependencies(docn share streams dshr)
 set_target_properties(docn PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
-target_include_directories(docn PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
-                                       $<INSTALL_INTERFACE:mod>)
-target_link_libraries(docn PUBLIC cdeps::dshr cdeps::share cdeps::streams)
-target_link_libraries(docn PUBLIC esmf)
-list(APPEND LIB_TARGETS docn)
+target_include_directories(docn PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
+target_link_libraries(docn PRIVATE dshr share streams)
+target_link_libraries(docn PRIVATE esmf)
 
 # CDEPS/drof
-add_library(drof STATIC ${cdeps_drof_files})
-add_library(cdeps::drof ALIAS drof)
-add_dependencies(drof cdeps::share cdeps::streams cdeps::dshr)
+add_library(drof OBJECT ${cdeps_drof_files})
+add_dependencies(drof share streams dshr)
 set_target_properties(drof PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
-target_include_directories(drof PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
-                                       $<INSTALL_INTERFACE:mod>)
-target_link_libraries(drof PUBLIC cdeps::dshr cdeps::share cdeps::streams)
-target_link_libraries(drof PUBLIC esmf)
-list(APPEND LIB_TARGETS drof)
+target_include_directories(drof PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
+target_link_libraries(drof PRIVATE dshr share streams)
+target_link_libraries(drof PRIVATE esmf)
 
 # CDEPS/dwav
-add_library(dwav STATIC ${cdeps_dwav_files})
-add_library(cdeps::dwav ALIAS dwav)
-add_dependencies(dwav cdeps::share cdeps::streams cdeps::dshr)
+add_library(dwav OBJECT ${cdeps_dwav_files})
+add_dependencies(dwav share streams dshr)
 set_target_properties(dwav PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
-target_include_directories(dwav PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
-                                       $<INSTALL_INTERFACE:mod>)
-target_link_libraries(dwav PUBLIC cdeps::dshr cdeps::share cdeps::streams)
-target_link_libraries(dwav PUBLIC esmf)
-list(APPEND LIB_TARGETS dwav)
+target_include_directories(dwav PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
+target_link_libraries(dwav PRIVATE dshr share streams)
+target_link_libraries(dwav PRIVATE esmf)
+
+# CDEPS
+add_library(cdeps STATIC $<TARGET_OBJECTS:share>
+                         $<TARGET_OBJECTS:streams>
+                         $<TARGET_OBJECTS:dshr>
+                         $<TARGET_OBJECTS:datm>
+                         $<TARGET_OBJECTS:dice>
+                         $<TARGET_OBJECTS:dlnd>
+                         $<TARGET_OBJECTS:docn>
+                         $<TARGET_OBJECTS:drof>
+                         $<TARGET_OBJECTS:dwav>)
+add_library(cdeps::cdeps ALIAS cdeps)
+target_include_directories(cdeps PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
+                                        $<INSTALL_INTERFACE:mod>)
+target_link_libraries(cdeps PUBLIC esmf PIO::PIO_Fortran)
+list(APPEND LIB_TARGETS cdeps)
 
 ###############################################################################
 ### Install

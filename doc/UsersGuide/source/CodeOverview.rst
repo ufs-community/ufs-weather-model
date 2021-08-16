@@ -20,12 +20,8 @@ The ufs-weather-model repository supports the short- and medium-range UFS applic
     - Authoritative repository URL
   * - Umbrella repository for the UFS Weather Model
     - https://github.com/ufs-community/ufs-weather-model
-  * - Infrastructure: Flexible Modeling System
-    - https://github.com/NOAA-GFDL/FMS
   * - Infrastructure: NOAA Environmental Modeling System
     - https://github.com/NOAA-EMC/NEMS
-  * - Infrastructure: Utilities
-    - https://github.com/NOAA-EMC/NCEPLIBS-pyprodutil
   * - Framework to connect the CCPP library to a host model
     - https://github.com/NCAR/ccpp-framework
   * - CCPP library of physical parameterizations
@@ -36,6 +32,18 @@ The ufs-weather-model repository supports the short- and medium-range UFS applic
     - https://github.com/NOAA-GFDL/GFDL_atmos_cubed_sphere
   * - Stochastic physics pattern generator
     - https://github.com/noaa-psd/stochastic_physics
+  * - Modular Ocean Model (MOM6)
+    - https://github.com/NOAA-EMC/MOM6
+  * - Los Alamos sea ice model (CICE6)
+    - https://github.com/NOAA-EMC/CICE
+  * - NOAA/NCEP WAVEWATCH III Model (WW3)
+    - https://github.com/NOAA-EMC/WW3
+  * - NUOPC Community Mediator for Earth Prediction Systems (CMEPS)
+    - https://github.com/NOAA-EMC/CMEPS
+  * - Community Data Models for Earth Prediction Systems (CDEPS)
+    - https://github.com/NOAA-EMC/CDEPS
+
+.. TODO:: GOCART information in progress
 
 In the table, the left column contains a description of each repository, and the right column shows the component repositories which are pointing to (or will point to) the authoritative repositories. The ufs-weather-model currently uses git submodule to manage the sub-components.
 
@@ -44,32 +52,37 @@ The umbrella repository for the UFS Weather Model is named ufs-weather-model.  U
 .. code-block:: console
 
    ufs-weather-model/
-   ├── FMS                                     https://github.com/NOAA-GFDL/FMS
    ├── FV3                                     https://github.com/NOAA-EMC/fv3atm
    │   ├── atmos_cubed_sphere                  https://github.com/NOAA-GFDL/GFDL_atmos_cubed_sphere
    │   ├── ccpp
    │   │   ├── framework                       https://github.com/NCAR/ccpp-framework
    │   │   ├── physics                         https://github.com/NCAR/ccpp-physics
    ├── NEMS                                    https://github.com/NOAA-EMC/NEMS
-   │   └── tests/produtil/NCEPLIBS-pyprodutil  https://github.com/NOAA-EMC/NCEPLIBS-pyprodutil
    ├── stochastic_physics                      https://github.com/noaa-psd/stochastic_physics
-
+   ├── MOM6-interface
+   │    └── MOM6                               https://github.com/NOAA-EMC/MOM6
+   ├── CICE-interface
+   │    └── CICE                               https://github.com/NOAA-EMC/CICE
+   ├── WW3                                     https://github.com/NOAA-EMC/WW3
+   ├── CMEPS-interface
+   │    └── CMEPS                              https://github.com/NOAA-EMC/CMEPS
+   ├── CDEPS-interface
+   │    └── CDEPS                              https://github.com/NOAA-EMC/CDEPS
+   
 ===================
 Directory Structure
 ===================
 
 When the ufs-weather-model is cloned, the basic directory structure will be similar to the example below. Files and some directories have been removed for brevity.
 
+
 .. code-block:: console
 
    ufs-weather-model/
-   ├── cmake               --------- cmake configuration files
-   ├── compsets            --------- configurations used by some regression tests
-   ├── conf                --------- compile options for Tier 1 and 2 platforms
-   ├── doc                 --------- READMEs with build, reg-test hints
-   ├── FMS                 --------- The Flexible Modeling System (FMS),a software framework
-   ├── FV3                 --------- FV3 atmosphere model
-   │   ├── atmos_cubed_sphere   ---- FV3 dynamic core
+   ├── cmake                -------- cmake configuration files
+   ├── doc                  -------- User Guide files
+   ├── FV3                  -------- UFSAtm atmosphere model
+   │   ├── atmos_cubed_sphere ------ FV3 dynamic core
    │   │   ├── docs
    │   │   ├── driver
    │   │   ├── model
@@ -81,22 +94,33 @@ When the ufs-weather-model is cloned, the basic directory structure will be simi
    │   │   ├── physics      -------- CCPP compliant physics schemes
    │   │   └── suites       -------- CCPP physics suite definition files (SDFs)
    │   ├── cpl              -------- Coupling field data structures
-   │   ├── gfsphysics
-   │   │   ├── CCPP_layer
-   │   │   ├── GFS_layer
-   │   │   └── physics     --------- unused - IPD version of physics codes
-   │   ├── io              --------- FV3 write grid comp code
-   │   ├── ipd             --------- unused - IPD driver/interfaces
-   |   ├── stochastic_physics  ----- Cmakefile for stochastic physics code
-   ├── log                 --------- log files from NEMS compset regression tests
-   ├── modulefiles         --------- system module files for supported HPC systems
-   ├── NEMS                --------- NOAA Earth Modeling System framework
-   │   ├── exe
-   │   ├── src
-   │   └── test
-   ├── parm                --------- regression test configurations
+   │   ├── io               -------- UFSAtm write grid comp code
+   │   └── stochastic_physics ------ Wrapper for stochastic physics
+   │
+   ├── NEMS                 -------- NOAA Earth Modeling System framework
    ├── stochastic_physics   -------- stochastic physics pattern generator
-   ├── tests               --------- regression test scripts
+   ├── MOM6-interface
+   │    └── MOM6
+   │        ├── src                              --------- MOM6 ocean model
+   │        └── config_source/drivers/nuopc_cap  --------- NUOPC MOM6 cap
+   ├── CICE-interface
+   │    └── CICE                                 --------- CICE6 sea ice model
+   │        ├── icepack                          --------- Sea ice column physics
+   │        └── cicecore/drivers/nuopc/cmeps     --------- NUOPC CICE6 cap
+   ├── WW3
+   │    └── model                                --------- WW3 model
+   │        └── esmf                             --------- NUOPC WW3 cap
+   ├── CDEPS-interface
+   │     └── CDEPS
+   │         └── datm                            --------- CDEPS DATM
+   │
+   ├── modulefiles          -------- system module files for supported HPC systems
+   ├── tests                -------- regression test infrastructure
+   │   └── parm
+   │   └── tests
+   │   └── fv3_conf
+   
+.. TODO:: GOCART information in progress
 
 The physics subdirectory in the *gfsphysics* directory  is not used or supported
 as part of this release (all physics is available through the :term:`CCPP` using
