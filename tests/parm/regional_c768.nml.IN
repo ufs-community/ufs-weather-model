@@ -6,7 +6,7 @@
 /
 
 &diag_manager_nml
-       prepend_date = .F.
+       prepend_date = .false.
 /
 
  &fms_io_nml
@@ -34,11 +34,11 @@
        npz    = 64
        !grid_type = -1
        make_nh = @[MAKE_NH]
-       fv_debug = .F.
-       range_warn = .T.
-       reset_eta = .F.
+       fv_debug = .false.
+       range_warn = .true.
+       reset_eta = .false.
        n_sponge = 24
-       nudge_qv = .T.
+       nudge_qv = .true.
        tau = 5.
        rf_cutoff = 20.e2
        d2_bg_k1 = 0.20
@@ -47,9 +47,9 @@
        kord_mt =  11
        kord_wz =  11
        kord_tr =  11
-       hydrostatic = .F.
-       phys_hydrostatic = .F.
-       use_hydro_pressure = .F.
+       hydrostatic = .false.
+       phys_hydrostatic = .false.
+       use_hydro_pressure = .false.
        beta = 0.
        a_imp = 1.
        p_fac = 0.1
@@ -67,29 +67,29 @@
        vtdm4 = 0.02
        delt_max = 0.008
        ke_bg = 0.
-       do_vort_damp = .T.
+       do_vort_damp = .true.
        external_ic = @[EXTERNAL_IC]
-       external_eta = .T.
+       external_eta = .true.
        gfs_phil = .false.
        nggps_ic = @[NGGPS_IC]
        mountain = @[MOUNTAIN]
-       ncep_ic = .F.
+       ncep_ic = .false.
        d_con = 1.0
        hord_mt = 6
        hord_vt = 6
        hord_tm = 6
        hord_dp = 6
        hord_tr = 8
-       adjust_dry_mass = .F.
+       adjust_dry_mass = .false.
        consv_te = 0.
-       do_sat_adj = .T.
-       consv_am = .F.
-       fill = .T.
-       dwind_2d = .F.
+       do_sat_adj = .true.
+       consv_am = .false.
+       fill = .true.
+       dwind_2d = .false.
        print_freq = 6
        warm_start = @[WARM_START]
        no_dycore = .false.
-       z_tracer = .T.
+       z_tracer = .true.
        read_increment = @[READ_INCREMENT]
        res_latlon_dynamics = "fv3_increment.nc"
 
@@ -107,7 +107,7 @@
        filtered_terrain = .true.
        levp = 65
        gfs_dwinds = .true.
-       checker_tr = .F.
+       checker_tr = .false.
        nt_checker = 0
 /
 
@@ -167,7 +167,7 @@
        oz_phys_2015   = @[OZ_PHYS_NEW]
        h2o_phys       = @[H2O_PHYS]
        nstf_name      = 1,1,1,0,5
-       cplflx         = .F.
+       cplflx         = .false.
        iau_delthrs    = 6
        iaufhrs        = 30
        iau_inc_files  = @[IAU_INC_FILES]
@@ -230,10 +230,10 @@
        rad_snow = .true.
        rad_graupel = .true.
        rad_rain = .true.
-       const_vi = .F.
-       const_vs = .F.
-       const_vg = .F.
-       const_vr = .F.
+       const_vi = .false.
+       const_vs = .false.
+       const_vg = .false.
+       const_vr = .false.
        vi_max = 1.
        vs_max = 2.
        vg_max = 12.
