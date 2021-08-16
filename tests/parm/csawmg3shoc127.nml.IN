@@ -6,7 +6,7 @@
 /
 
 &diag_manager_nml
-       prepend_date = .F.
+       prepend_date = .false.
 /
 
 &fms_io_nml
@@ -34,11 +34,11 @@
        npz         = @[NPZ]
        grid_type   = -1
        make_nh     = @[MAKE_NH]
-       fv_debug    = .F.
-       range_warn  = .F.
-       reset_eta   = .F.
+       fv_debug    = .false.
+       range_warn  = .false.
+       reset_eta   = .false.
        n_sponge    = @[NPZ]
-       nudge_qv    = .F.
+       nudge_qv    = .false.
        tau         = 5.
        rf_cutoff   = 7.5e2
        d2_bg_k1    = 0.15
@@ -47,9 +47,9 @@
        kord_mt     =  9
        kord_wz     =  9
        kord_tr     =  9
-       hydrostatic = .F.
-       phys_hydrostatic   = .F.
-       use_hydro_pressure = .F.
+       hydrostatic = .false.
+       phys_hydrostatic   = .false.
+       use_hydro_pressure = .false.
        beta      = 0.0
        a_imp     = 1.0
        p_fac     = 0.1
@@ -69,27 +69,27 @@
        ke_bg     = 0.
        do_vort_damp = .true.
        external_ic  = @[EXTERNAL_IC]
-       external_eta = .T.
+       external_eta = .true.
        gfs_phil = .false.
        nggps_ic = @[NGGPS_IC]
        mountain = @[MOUNTAIN]
-       ncep_ic  = .F.
+       ncep_ic  = .false.
        d_con    = 1.
        hord_mt  =  6
        hord_vt  =  6
        hord_tm  =  6
        hord_dp  =  6
        hord_tr  = 13
-       adjust_dry_mass = .F.
+       adjust_dry_mass = .false.
        consv_te   = 1.
-       consv_am   = .F.
+       consv_am   = .false.
        do_sat_adj = .false.
-       fill       = .T.
-       dwind_2d   = .F.
+       fill       = .true.
+       dwind_2d   = .false.
        print_freq = 6
        warm_start = @[WARM_START]
        no_dycore  = .false.
-       z_tracer   = .T.
+       z_tracer   = .true.
        read_increment = @[READ_INCREMENT]
        res_latlon_dynamics = "fv3_increment.nc"
 /
@@ -112,7 +112,7 @@
        filtered_terrain = .true.
        levp       = @[NPZP]
        gfs_dwinds = .true.
-       checker_tr = .F.
+       checker_tr = .false.
        nt_checker = 0
 /
 
