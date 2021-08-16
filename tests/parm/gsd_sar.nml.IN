@@ -6,7 +6,7 @@
 /
 
 &diag_manager_nml
-     prepend_date = .F.
+     prepend_date = .false.
 /
 
 &fms_io_nml
@@ -33,12 +33,12 @@
      ntiles   = 1,
      npz    = 64
      !grid_type = -1
-     make_nh = .T.
-     fv_debug = .T.
-     range_warn = .T.
-     reset_eta = .F.
+     make_nh = .true.
+     fv_debug = .true.
+     range_warn = .true.
+     reset_eta = .false.
      n_sponge = 24
-     nudge_qv = .F.
+     nudge_qv = .false.
      tau = 5.
      rf_cutoff = 20.e2
      d2_bg_k1 = 0.20
@@ -47,9 +47,9 @@
      kord_mt =  11
      kord_wz =  11
      kord_tr =  11
-     hydrostatic = .F.
-     phys_hydrostatic = .F.
-     use_hydro_pressure = .F.
+     hydrostatic = .false.
+     phys_hydrostatic = .false.
+     use_hydro_pressure = .false.
      beta = 0.
      a_imp = 1.
      p_fac = 0.1
@@ -67,12 +67,12 @@
      vtdm4 = 0.02
      ke_bg = 0.
      do_vort_damp = .true.
-     external_ic = .T.
-     external_eta = .T.
+     external_ic = .true.
+     external_eta = .true.
      gfs_phil = .false.
-     nggps_ic = .T.
-     mountain = .F.
-     ncep_ic = .F.
+     nggps_ic = .true.
+     mountain = .false.
+     ncep_ic = .false.
      d_con = 1.0
      delt_max = 0.002
      hord_mt = 6
@@ -80,17 +80,17 @@
      hord_tm = 6
      hord_dp = -6
      hord_tr = 8
-     adjust_dry_mass = .F.
+     adjust_dry_mass = .false.
      consv_te = 0.
-     do_sat_adj = .F.
-     consv_am = .F.
-     fill = .T.
-     dwind_2d = .F.
+     do_sat_adj = .false.
+     consv_am = .false.
+     fill = .true.
+     dwind_2d = .false.
      print_freq = 6
-     warm_start = .F.
+     warm_start = .false.
      no_dycore = .false.
-     z_tracer = .T.
-     read_increment = .F.
+     z_tracer = .true.
+     read_increment = .false.
      res_latlon_dynamics = "fv3_increment.nc"
 
      do_schmidt = .true.
@@ -102,14 +102,14 @@
      regional = .true.
      bc_update_interval = 6
 
-     full_zs_filter = .F. !unreleased feature
+     full_zs_filter = .false. !unreleased feature
 
      nord_zs_filter = 4
      n_zs_filter = 0 ! safety
 /
 
 &surf_map_nml
-     zero_ocean = .F.
+     zero_ocean = .false.
      cd4 = 0.12
      cd2 = -1
      n_del2_strong = 0
@@ -123,7 +123,7 @@
      filtered_terrain = .true.
      levp = 65
      gfs_dwinds = .true.
-     checker_tr = .F.
+     checker_tr = .false.
      nt_checker = 0
 /
 
@@ -138,8 +138,8 @@
      imp_physics    = 8
 !     ttendlim       = 0.005
      ttendlim       = 50.0
-     ltaerosol      = .T.
-     lradar         = .T.
+     ltaerosol      = .true.
+     lradar         = .true.
      pdfcld         = .false.
      fhswr          = 3600.
      fhlwr          = 3600.
@@ -177,13 +177,13 @@
      oz_phys        = .false.
      oz_phys_2015   = .true.
      nstf_name      = 2,1,1,0,5
-     cplflx         = .F.
+     cplflx         = .false.
      iau_delthrs    = 6
      iaufhrs        = 30
      iau_inc_files  = ''
-     do_sppt        = .F.
-     do_shum        = .F.
-     do_skeb        = .F.
+     do_sppt        = .false.
+     do_shum        = .false.
+     do_skeb        = .false.
        lndp_type      = @[LNDP_TYPE]
        n_var_lndp     = @[N_VAR_LNDP]
      lsm            = 3
