@@ -26,6 +26,10 @@ The ufs-weather-model can be configured as one of several applications, from a s
      - Coupled UFSATM-MOM6-CICE6-WW3-CMEPS
    * - NG-GODAS
      - Coupled CDEPS-DATM-MOM6-CICE6-CMEPS
+   * - HAFS
+     - Coupled UFSATM-HYCOM-CMEPS
+   * - HAFSW
+     - Coupled UFSATM-HYCOM-WW3-CMEPS
 	 
 This chapter describes the input and output files needed for executing the model in the various supported configurations.
 
@@ -283,6 +287,156 @@ The input files containing grid information and the initial conditions for globa
      - ✔
 
 -------
+HYCOM
+-------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Static datasets (i.e., *fix files*)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Static input files have been created for several regional domains. These domains are listed and described in :numref:`Table %s <HYCOM_DomainIdentifiers>`.
+
+.. _HYCOM_DomainIdentifiers:
+
+.. list-table:: *The following table describes each domain identifier.*
+   :widths: 10 20
+   :header-rows: 1
+
+   * - Identifier
+     - Description
+   * - hat10
+     - Hurricane North Atlantic (1/12 degree)
+   * - hep20
+     - Hurricane Eastern North Pacific (1/12 degree)
+   * - hwp30
+     - Hurricane Western North Pacific (1/12 degree)
+   * - hcp70
+     - Hurricane Central North Pacific (1/12 degree)
+
+Static input files are listed and described in :numref:`Table %s <HYCOM_FixFiles>`. Several datasets contain both dot-a (.a) and dot-b (.b) files. Dot-a files contain data written as 32-bit IEEE real values (idm*jdm) and dot-b files contain plain text metadata for each field in the dot-a file.
+
+.. _HYCOM_FixFiles:
+
+.. list-table:: *Fix files containing climatological information*
+   :widths: 15 30 15
+   :header-rows: 1
+
+   * - Filename
+     - Description
+     - Domain
+   * - :ref:`blkdat.input<HYCOM_BlkdatInput>`
+     - Model input parameters
+     -
+   * - patch.input
+     - Tile description
+     -
+   * - ports.input
+     - Open boundary cells
+     -
+   * - forcing.chl.(a,b)
+     - Chlorophyll (monthly climatology)
+     - hat10, hep20, hwp30, hcp70
+   * - forcing.rivers.(a,b)
+     - River discharge (monthly climatology)
+     - hat10, hep20, hwp30, hcp70
+   * - iso.sigma.(a,b)
+     - Fixed sigma thickness
+     - hat10, hep20, hwp30, hcp70
+   * - regional.depth.(a,b)
+     - Total depth of ocean
+     - hat10, hep20, hwp30, hcp70
+   * - regional.grid.(a,b)
+     - Grid information for HYCOM "C" grid
+     - hat10, hep20, hwp30, hcp70
+   * - relax.rmu.(a,b)
+     - Open boundary nudging value
+     - hat10, hep20, hwp30, hcp70
+   * - relax.ssh.(a,b)
+     - Surface height nudging value (monthly climatology)
+     - hat10, hep20, hwp30, hcp70
+   * - tbaric.(a,b)
+     - Thermobaricity correction
+     - hat10, hep20, hwp30, hcp70
+   * - thkdf4.(a,b)
+     - Diffusion velocity (m/s) for Laplacian thickness diffusivity
+     - hat10, hep20, hwp30, hcp70
+   * - veldf2.(a,b)
+     - Diffusion velocity (m/s) for biharmonic momentum dissipation
+     - hat10, hep20, hwp30, hcp70
+   * - veldf4.(a,b)
+     - Diffusion velocity (m/s) for Laplacian momentum dissipation
+     - hat10, hep20, hwp30, hcp70
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Grid description and initial condition files
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The input files containing time dependent configuration and forcing data are listed and described in :numref:`Table %s <HYCOM_GridICFiles>`. These files are generated for specific regional domains, see :numref:`Table %s <HYCOM_DomainIdentifiers>`, during ocean prep. When uncoupled, the the forcing data drives the ocean model. When coupled, the forcing data is used to fill unmapped grid cells. Several datasets contain both dot-a (.a) and dot-b (.b) files. Dot-a files contain data written as 32-bit IEEE real values (idm*jdm) and dot-b files contain plain text metadata for each field in the dot-a file.
+
+
+.. _HYCOM_GridICFiles:
+
+.. list-table:: *Input files containing grid information, initial conditions, and forcing data for regional configurations.*
+   :widths: 15 30 15 5
+   :header-rows: 1
+
+   * - Filename
+     - Description
+     - Domain
+     - Date-dependent
+   * - limits
+     - Model begin and end time (since HYCOM epoch)
+     -
+     - ✔
+   * - forcing.airtmp.(a,b)
+     - GFS forcing data for 2m air temperature
+     - hat10, hep20, hwp30, hcp70
+     - ✔
+   * - forcing.mslprs.(a,b)
+     - GFS forcing data for mean sea level pressure (symlink)
+     - hat10, hep20, hwp30, hcp70
+     - ✔
+   * - forcing.precip.(a,b)
+     - GFS forcing data for precipitation rate
+     - hat10, hep20, hwp30, hcp70
+     - ✔
+   * - forcing.presur.(a,b)
+     - GFS forcing data for mean sea level pressure
+     - hat10, hep20, hwp30, hcp70
+     - ✔
+   * - forcing.radflx.(a,b)
+     - GFS forcing data for total radiation flux
+     - hat10, hep20, hwp30, hcp70
+     - ✔
+   * - forcing.shwflx.(a,b)
+     - GFS forcing data for net downward shortwave radiation flux
+     - hat10, hep20, hwp30, hcp70
+     - ✔
+   * - forcing.surtmp.(a,b)
+     - GFS forcing data for surface temperature
+     - hat10, hep20, hwp30, hcp70
+     - ✔
+   * - forcing.tauewd.(a,b)
+     - GFS forcing data for eastward momentum flux
+     - hat10, hep20, hwp30, hcp70
+     - ✔
+   * - forcing.taunwd.(a,b)
+     - GFS forcing data for northward momentum flux
+     - hat10, hep20, hwp30, hcp70
+     - ✔
+   * - forcing.vapmix.(a,b)
+     - GFS forcing data for 2m vapor mixing ratio
+     - hat10, hep20, hwp30, hcp70
+     - ✔
+   * - forcing.wndspd.(a,b)
+     - GFS forcing data for 10m wind speed
+     - hat10, hep20, hwp30, hcp70
+     - ✔
+   * - restart_in.(a,b)
+     - Restart file for ocean state variables
+     - hat10, hep20, hwp30, hcp70
+     - ✔
+
+-------
 CICE6
 -------
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -525,6 +679,7 @@ The configuration files used by the UFS Weather Model are listed here and descri
 - *suite_[suite_name].xml* (used only at build time)
 - *datm.streams* (used by cdeps)
 - *datm_in* (used by cdeps)
+- :ref:`blkdat.input<HYCOM_BlkdatInput>` (used by HYCOM)
 
 While the *input.nml* file is also a configuration file used by the UFS Weather Model, it is described in
 :numref:`Section %s <InputNML>`.  The run-time configuration of model output fields is controlled by the combination of *diag_table* and *model_configure*, and is described in detail in :numref:`Section %s <OutputFiles>`.
@@ -1234,6 +1389,110 @@ For the coupled NG_GODAS application, a sample *nems.configure* is shown below :
 	      orb_obliq = 1.e36
 	::
 
+For the coupled HAFS application, a sample *nems.configure* is shown below :
+
+.. code-block:: console
+
+        # EARTH #
+        EARTH_component_list: ATM OCN MED
+
+        # MED #
+        MED_model:                      cmeps
+        MED_petlist_bounds:             1340 1399
+        MED_attributes::
+          coupling_mode = hafs
+          system_type = ufs
+          normalization = none
+          merge_type = copy
+          ATM_model = fv3
+          OCN_model = hycom
+          history_ymd = -999
+          ScalarFieldCount = 0
+          ScalarFieldIdxGridNX = 0
+          ScalarFieldIdxGridNY = 0
+          ScalarFieldName = cpl_scalars
+        ::
+
+        # ATM #
+        ATM_model:                      fv3
+        ATM_petlist_bounds:             0000 1339
+        ATM_attributes::
+          Verbosity = 1
+          Diagnostic = 0
+        ::
+
+        # OCN #
+        OCN_model:                      hycom
+        OCN_petlist_bounds:             1340 1399
+        OCN_attributes::
+          Verbosity = 1
+          Diagnostic = 0
+          cdf_impexp_freq = 3
+          cpl_hour = 0
+          cpl_min = 0
+          cpl_sec = 360
+          base_dtg = 2020082512
+          merge_import = .true.
+          skip_first_import = .true.
+          hycom_arche_output = .false.
+          hyc_esmf_exp_output = .true.
+          hyc_esmf_imp_output = .true.
+          import_diagnostics = .false.
+          import_setting = flexible
+          hyc_impexp_file = nems.configure
+          espc_show_impexp_minmax = .true.
+          ocean_start_dtg = 43702.50000
+          start_hour = 0
+          start_min = 0
+          start_sec = 0
+          end_hour = 12
+          end_min = 0
+          end_sec = 0
+        ::
+
+        DRIVER_attributes::
+          start_type = startup
+        ::
+
+        ALLCOMP_attributes::
+          mediator_read_restart = false
+        ::
+
+        # CMEPS cold run sequence
+
+        runSeq::
+        @360
+          ATM -> MED :remapMethod=redist
+          MED med_phases_post_atm
+          OCN -> MED :remapMethod=redist
+          MED med_phases_post_ocn
+          MED med_phases_prep_atm
+          MED med_phases_prep_ocn_accum
+          MED med_phases_prep_ocn_avg
+          MED -> ATM :remapMethod=redist
+          MED -> OCN :remapMethod=redist
+          ATM
+          OCN
+        @
+        ::
+
+        # HYCOM field coupling configuration (location set by hyc_impexp_file)
+
+        ocn_export_fields::
+          'sst'     'sea_surface_temperature'   'K'
+          'mask'    'ocean_mask'                '1'
+        ::
+
+        ocn_import_fields::
+          'taux10'  'mean_zonal_moment_flx_atm' 'N_m-2'
+          'tauy10'  'mean_merid_moment_flx_atm' 'N_m-2'
+          'prcp'    'mean_prec_rate'            'kg_m-2_s-1'
+          'swflxd'  'mean_net_sw_flx'           'W_m-2'
+          'lwflxd'  'mean_net_lw_flx'           'W_m-2'
+          'mslprs'  'inst_pres_height_surface'  'Pa'
+          'sensflx' 'mean_sensi_heat_flx'       'W_m-2'
+          'latflx'  'mean_laten_heat_flx'       'W_m-2'
+        ::
 
 .. TODO:: GOCART information in progress
 
@@ -1361,6 +1620,14 @@ A sample of the data stream namelist file is shown below:
   restfilm = "null"
   /
 
+.. _HYCOM_BlkdatInput:
+
+---------------------------------------
+*blkdat.input*
+---------------------------------------
+
+The HYCOM model reads parameters from a custom formatted configuraiton file, blkdat.input. The `HYCOM User's Guide <https://www.hycom.org/hycom/documentation>`_ provides an in depth description of the configuration settings.
+
 .. -------------------------------------------------------------------
 .. Include InputNML file describing the contents of the input.nml file
 .. -------------------------------------------------------------------
@@ -1439,6 +1706,50 @@ A brief example of the diag_table is shown below.  ``“...”`` denotes where l
    "ocean_model", "taux",      "taux",          "ocn%4yr%2mo%2dy%2hr","all",.true.,"none",2
    "ocean_model", "tauy",      "tauy",          "ocn%4yr%2mo%2dy%2hr","all",.true.,"none",2
    ...
+
+-------
+HYCOM
+-------
+
+HYCOM output configuration is set in the :ref:`blkdat.input<HYCOM_BlkdatInput>` file. A few common configuration options are described in :numref:`Table %s <HYCOM_OutputConfig>`
+
+.. _HYCOM_OutputConfig:
+
+.. list-table:: *The following table describes HYCOM output configuration.*
+   :widths: 10 25
+   :header-rows: 1
+
+   * - Parameter
+     - Description
+   * - dsurfq
+     - Configure the output frequency for archs files
+   * - diagfq
+     - Configure the output frequency for archv files
+   * - meanfq
+     - Configure the output frequency for archm files
+   * - rstrfq
+     - Configure the output frequency for restart files
+   * - itest
+     - i grid point where detailed diagnostics are desired
+   * - jtest
+     - j grid point where detailed diagnostics are desired
+
+HYCOM outpus multiple datasets. These datasets contain both dot-a (.a), dot-b (.b), and dot-txt (.txt) files. Dot-a files contain data written as 32-bit IEEE real values (idm*jdm). Dot-b files contain plain text metadata for each field in the dot-a file. Dot-txt files contain plain text data for a single sell for profiling purposes. Post-processing utilties are available in the `HYCOM-tools <https://github.com/HYCOM/HYCOM-tools>`_ repository.
+
+.. _HYCOM_OutputFiles:
+
+.. list-table:: *The following table describes HYCOM output files.*
+   :widths: 10 10
+   :header-rows: 1
+
+   * - Filename
+     - Description
+   * - archs.YYYY_DDD_HH.(a,b,txt)
+     - HYCOM surface archive data
+   * - archv.YYYY_DDD_HH.(a,b,txt)
+     - HYCOM archive data
+   * - restart_out.(a,b)
+     - HYCOM restart files
 
 -------
 CICE6
