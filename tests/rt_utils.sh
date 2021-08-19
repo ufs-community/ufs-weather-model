@@ -126,7 +126,7 @@ submit_and_wait() {
         status_label='held in a queue'
       elif [[ $status = 'R' ]];  then
         status_label='running'
-      elif [[ $status = 'E' ]] || [[ $status = 'C' ]];  then
+      elif [[ $status = 'E' ]] || [[ $status = 'C' ]] || [[ $status = '-' ]];  then
         status_label='finished'
         test_status='DONE'
         exit_status=$( qstat ${jobid} -x -f | grep Exit_status | awk '{print $3}')
@@ -538,7 +538,7 @@ ecflow_run() {
   not_running=$?
   if [[ $not_running -eq 1 ]]; then
     echo "ecflow_server is NOT running on ${ECF_HOST}:${ECF_PORT}"
-    sh ${ECFLOW_START} -p ${ECF_PORT}
+    ${ECFLOW_START} -p ${ECF_PORT}
   else
     echo "ecflow_server is already running on ${ECF_HOST}:${ECF_PORT}"
   fi

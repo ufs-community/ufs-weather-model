@@ -15,9 +15,9 @@ cp    @[INPUTDATA_ROOT_BMIC]/FV3_fix/INPUT/co2historicaldata_201*.txt .
 cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/aerosol.dat .
 cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/sfc_emissivity_idx.txt .
 cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/solarconstant_noaa_an.txt .
-if [ $OZ_PHYS_NEW = .T. ]; then
+if [ $OZ_PHYS_NEW = .true. ]; then
   cp  @[INPUTDATA_ROOT]/${FV3_DIR}/ozprdlos_2015_new_sbuvO3_tclm15_nuchem.f77 ./global_o3prdlos.f77
-elif [ $OZ_PHYS_OLD = .T. ]; then
+elif [ $OZ_PHYS_OLD = .true. ]; then
   cp  @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/global_o3prdlos.f77 .
 fi
 cp    @[INPUTDATA_ROOT]/${FV3_DIR}/global_h2o_pltc.f77 ./global_h2oprdlos.f77
@@ -38,15 +38,15 @@ cp    @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/kmtu_cice_NEMS_mx@[OCNRES].nc .
 cp    @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/mesh.mx@[OCNRES].nc .
 
 # WW3 fix/input
-if [[ $CPLWAV == .T. && $CPLWAV2ATM == .T. ]]; then
+if [[ $CPLWAV == .true. && $CPLWAV2ATM == .true. ]]; then
   cp    @[INPUTDATA_ROOT_WW3]/mod_def.* .
-  if [[ $RT35D == .T. ]]; then
+  if [[ $RT35D == .true. ]]; then
    cp   ${WW3_IC}/*.000000.restart.gwes_30m ./restart.gwes_30m
   fi
 fi
 
 # No restart
-if [ $WARM_START = .F. ]; then
+if [ $WARM_START = .false. ]; then
   # ICs
   cp    ${FV3_IC}/sfc_data*.nc ./INPUT
   cp    ${FV3_IC}/gfs_data*.nc ./INPUT
