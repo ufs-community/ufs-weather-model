@@ -9,11 +9,7 @@ module-whatis "loads UFS Model prerequisites for Jet/Intel"
 module use /contrib/sutils/modulefiles
 module load sutils
 
-module load cmake/3.16.1
-setenv CMAKE_C_COMPILER mpiicc
-setenv CMAKE_CXX_COMPILER mpiicpc
-setenv CMAKE_Fortran_COMPILER mpiifort
-setenv CMAKE_Platform jet.intel
+module load cmake/3.20.1
 
 module use /lfs4/HFIP/hfv3gfs/nwprod/hpc-stack/libs/modulefiles/stack
 
@@ -22,3 +18,8 @@ module load hpc-intel/18.0.5.274
 module load hpc-impi/2018.4.274
 
 module load ufs_common_debug
+
+setenv CC mpiicc
+setenv CXX mpiicpc
+setenv FC mpiifort
+setenv CMAKE_Platform jet.intel

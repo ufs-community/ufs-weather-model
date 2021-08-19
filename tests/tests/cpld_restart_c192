@@ -5,18 +5,18 @@ export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C192 MX050 - 
 
 export CNTL_DIR="cpld_control_c192"
 
-export LIST_FILES="phyf048.tile1.nc \
-                   phyf048.tile2.nc \
-                   phyf048.tile3.nc \
-                   phyf048.tile4.nc \
-                   phyf048.tile5.nc \
-                   phyf048.tile6.nc \
-                   dynf048.tile1.nc \
-                   dynf048.tile2.nc \
-                   dynf048.tile3.nc \
-                   dynf048.tile4.nc \
-                   dynf048.tile5.nc \
-                   dynf048.tile6.nc \
+export LIST_FILES="sfcf048.tile1.nc \
+                   sfcf048.tile2.nc \
+                   sfcf048.tile3.nc \
+                   sfcf048.tile4.nc \
+                   sfcf048.tile5.nc \
+                   sfcf048.tile6.nc \
+                   atmf048.tile1.nc \
+                   atmf048.tile2.nc \
+                   atmf048.tile3.nc \
+                   atmf048.tile4.nc \
+                   atmf048.tile5.nc \
+                   atmf048.tile6.nc \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -123,15 +123,16 @@ export FNABSC="'global_mxsnoalb.uariz.t382.768.384.rg.grb',"
 export MOM6_RIVER_RUNOFF='True'
 
 # ATM warm start
-WARM_START='.T.'
-MAKE_NH='.F.'
-NA_INIT='0'
-EXTERNAL_IC='.F.'
-NGGPS_IC='.F.'
-MOUNTAIN='.T.'
+export WARM_START='.true.'
+export MAKE_NH='.false.'
+export NA_INIT='0'
+export EXTERNAL_IC='.false.'
+export NGGPS_IC='.false.'
+export MOUNTAIN='.true.'
 
 # ICE warm start
-RUNTYPE='continue'
+export CICERUNTYPE='continue'
+export RUNTYPE='continue'
 export USE_RESTART_TIME='.true.'
 
 # MOM6 warm start

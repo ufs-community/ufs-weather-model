@@ -64,13 +64,9 @@ list(APPEND _mediator_files
   CMEPS/mediator/med_phases_post_rof_mod.F90
   CMEPS/mediator/med_phases_post_wav_mod.F90)
 
-list(APPEND _mediator_defs ESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR}
-                           ESMF_VERSION_MINOR=${ESMF_VERSION_MINOR})
-
 ### Create target library and set PUBLIC interfaces on the library
 add_library(cmeps STATIC ${_nems_util_files} ${_mediator_files})
 set_target_properties(cmeps PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
-target_compile_definitions(cmeps PUBLIC "${_mediator_defs}")
 target_include_directories(cmeps PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                         $<INSTALL_INTERFACE:mod>)
 target_link_libraries(cmeps PUBLIC esmf
