@@ -52,11 +52,12 @@ function edit_data_table {
 }
 
 function edit_diag_table {
-  sed -e "s/YMD/$SYEAR$SMONTH$SDAY/g" \
-      -e "s/ATMRES/$ATMRES/g" \
-      -e "s/SYEAR/$SYEAR/g" \
-      -e "s/SMONTH/$SMONTH/g" \
-      -e "s/SDAY/$SDAY/g"
+  sed -e "s/@[YMD]/$SYEAR$SMONTH$SDAY/g" \
+      -e "s/@[ATMRES]/$ATMRES/g" \
+      -e "s/@[SYEAR]/$SYEAR/g" \
+      -e "s/@[SMONTH]/$SMONTH/g" \
+      -e "s/@[SDAY]/$SDAY/g" \
+      -e "s/@[SHOUR]/$SHOUR/g"
 }
 
 function edit_ww3_input {
