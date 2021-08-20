@@ -11,6 +11,7 @@ def run(job_obj):
     pr_repo_loc, repo_dir_str = clone_pr_repo(job_obj, workdir)
     bldate = get_bl_date(job_obj, pr_repo_loc)
     bldir = f'{blstore}/develop-{bldate}/{job_obj.compiler.upper()}'
+    bldirbool = check_for_bl_dir(bldir, job_obj)
     run_regression_test(job_obj, pr_repo_loc)
     post_process(job_obj, pr_repo_loc, repo_dir_str, rtbldir, bldir)
 
@@ -24,8 +25,8 @@ def set_directories(job_obj):
                  f'REGRESSION_TEST_{job_obj.compiler.upper()}'
     elif job_obj.machine == 'jet':
         workdir = '/lfs4/HFIP/h-nems/emc.nemspara/autort/pr'
-        blstore = '/lfs4/HFIP/hfv3gfs/RT/NEMSfv3gfs/'
-        rtbldir = '/lfs4/HFIP/hfv3gfs/emc.nemspara/RT_BASELINE/'\
+        blstore = '/lfs4/HFIP/h-nems/emc.nemspara/RT/NEMSfv3gfs/'
+        rtbldir = '/lfs4/HFIP/h-nems/emc.nemspara/RT_BASELINE/'\
                  f'emc.nemspara/FV3_RT/REGRESSION_TEST_{job_obj.compiler.upper()}'
     elif job_obj.machine == 'gaea':
         workdir = '/lustre/f2/pdata/ncep/emc.nemspara/autort/pr'
@@ -38,9 +39,9 @@ def set_directories(job_obj):
         rtbldir = '/work/noaa/stmp/bcurtis/stmp/bcurtis/FV3_RT/'\
                  f'REGRESSION_TEST_{job_obj.compiler.upper()}'
     elif job_obj.machine == 'cheyenne':
-        workdir = '/glade/work/heinzell/fv3/ufs-weather-model/auto-rt'
-        blstore = '/glade/p/ral/jntp/GMTB/ufs-weather-model/RT'
-        rtbldir = '/glade/work/heinzell/FV3_RT/'\
+        workdir = '/glade/scratch/dtcufsrt/autort/tests/auto/pr'
+        blstore = '/glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs'
+        rtbldir = '/glade/scratch/dtcufsrt/FV3_RT/'\
                  f'REGRESSION_TEST_{job_obj.compiler.upper()}'
     else:
         logger.critical(f'Machine {job_obj.machine} is not supported for this job')
@@ -54,18 +55,20 @@ def set_directories(job_obj):
     return workdir, rtbldir, blstore
 
 
-def check_for_bl_dir(bldir):
+def check_for_bl_dir(bldir, job_obj):
     logger = logging.getLogger('BL/CHECK_FOR_BL_DIR')
     logger.info('Checking if baseline directory exists')
     if os.path.exists(bldir):
         logger.critical(f'Baseline dir: {bldir} exists. It should not, yet.')
+        job_obj.comment_text_append(f'{bldir}\n Exists already. '
+                                    'It should not yet. Please delete.')
         raise FileExistsError
     return False
 
 
-def create_bl_dir(bldir):
+def create_bl_dir(bldir, job_obj):
     logger = logging.getLogger('BL/CREATE_BL_DIR')
-    if not check_for_bl_dir(bldir):
+    if not check_for_bl_dir(bldir, job_obj):
         os.makedirs(bldir)
         if not os.path.exists(bldir):
             logger.critical(f'Someting went wrong creating {bldir}')
@@ -154,9 +157,12 @@ def post_process(job_obj, pr_repo_loc, repo_dir_str, rtbldir, bldir):
     filepath = f'{pr_repo_loc}/{rt_log}'
     rt_dir, logfile_pass = process_logfile(job_obj, filepath)
     if logfile_pass:
-        create_bl_dir(bldir)
+        create_bl_dir(bldir, job_obj)
         move_bl_command = [[f'mv {rtbldir}/* {bldir}/', pr_repo_loc]]
+        if job_obj.machine == 'orion':
+            move_bl_command.append([f'/bin/bash --login adjust_permissions.sh orion develop-{bldate}', blstore])
         job_obj.run_commands(logger, move_bl_command)
+        job_obj.comment_text_append('Baseline creation and move successful')
         logger.info('Starting RT Job')
         rt.run(job_obj)
         logger.info('Finished with RT Job')
@@ -196,10 +202,12 @@ def get_bl_date(job_obj, pr_repo_loc):
 def process_logfile(job_obj, logfile):
     logger = logging.getLogger('BL/PROCESS_LOGFILE')
     rt_dir = []
+    fail_string_list = ['Test', 'failed']
     if os.path.exists(logfile):
         with open(logfile) as f:
             for line in f:
-                if 'FAIL' in line and 'Test' in line:
+                if all(x in line for x in fail_string_list):
+                # if 'FAIL' in line and 'Test' in line:
                     job_obj.comment_text_append(f'{line.rstrip(chr(10))}')
                 elif 'working dir' in line and not rt_dir:
                     logger.info(f'Found "working dir" in line: {line}')
