@@ -212,6 +212,8 @@ def setup_env():
     hostname = os.getenv('HOSTNAME')
     if bool(re.match(re.compile('hfe.+'), hostname)):
         machine = 'hera'
+    elif bool(re.match(re.compile('hecflow.+'), hostname)):
+        machine = 'hera'
     elif bool(re.match(re.compile('fe.+'), hostname)):
         machine = 'jet'
         os.environ['ACCNR'] = 'h-nems'
@@ -220,7 +222,7 @@ def setup_env():
         os.environ['ACCNR'] = 'nggps_emc'
     elif bool(re.match(re.compile('Orion-login.+'), hostname)):
         machine = 'orion'
-    elif bool(re.match(re.compile('.+.cheyenne.ucar.edu'), hostname)):
+    elif bool(re.match(re.compile('chadmin.+'), hostname)):
         machine = 'cheyenne'
         os.environ['ACCNR'] = 'P48503002'
     else:
