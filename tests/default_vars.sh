@@ -35,21 +35,17 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 || $MACHINE_ID = wcoss2 ]]; then
   THRD_cpl_thrd=2; WPG_cpl_thrd=6;  MPB_cpl_thrd="0 77";  APB_cpl_thrd="0 77"
   OPB_cpl_thrd="78 107";  IPB_cpl_thrd="108 119"
 
-  TASKS_cpl_bmrk=480; TPN_cpl_bmrk=28; INPES_cpl_bmrk=6; JNPES_cpl_bmrk=8
-  THRD_cpl_bmrk=1; WPG_cpl_bmrk=24; MPB_cpl_bmrk="0 287"; APB_cpl_bmrk="0 311"
-  OPB_cpl_bmrk="312 431"; IPB_cpl_bmrk="432 479"
+  TASKS_cpl_c384=480; TPN_cpl_c384=28; INPES_cpl_c384=6; JNPES_cpl_c384=8
+  THRD_cpl_c384=1; WPG_cpl_c384=24; MPB_cpl_c384="0 287"; APB_cpl_c384="0 311"
+  OPB_cpl_c384="312 431"; IPB_cpl_c384="432 479"
 
-  TASKS_cpl_wwav=560; TPN_cpl_wwav=28; INPES_cpl_wwav=6; JNPES_cpl_wwav=8
-  THRD_cpl_wwav=1; WPG_cpl_wwav=24; MPB_cpl_wwav="0 287"; APB_cpl_wwav="0 311"
-  OPB_cpl_wwav="312 431"; IPB_cpl_wwav="432 479"; WPB_cpl_wwav="480 559"
+  TASKS_cpl_bmrk=560; TPN_cpl_bmrk=28; INPES_cpl_bmrk=6; JNPES_cpl_bmrk=8
+  THRD_cpl_bmrk=1; WPG_cpl_bmrk=24; MPB_cpl_bmrk="0 287"; APB_cpl_bmrk="0 311"
+  OPB_cpl_bmrk="312 431"; IPB_cpl_bmrk="432 479"; WPB_cpl_bmrk="480 559"
 
   TASKS_cpl_c192=288; TPN_cpl_c192=28; INPES_cpl_c192=4; JNPES_cpl_c192=8
   THRD_cpl_c192=1; WPG_cpl_c192=12;  MPB_cpl_c192="0 191"; APB_cpl_c192="0 203"
   OPB_cpl_c192="204 263"; IPB_cpl_c192="264 287"
-
-  TASKS_cpl_c384=318; TPN_cpl_c384=28; INPES_cpl_c384=3; JNPES_cpl_c384=8
-  THRD_cpl_c384=1; WPG_cpl_c384=6;  MPB_cpl_c384="0 143"; APB_cpl_c384="0 149"
-  OPB_cpl_c384="150 269"; IPB_cpl_c384="270 317"
 
   TASKS_datm_100=120; TPN_datm_100=28
   MPB_datm_100="16 77"; APB_datm_100="0 15"
@@ -87,21 +83,17 @@ elif [[ $MACHINE_ID = orion.* ]]; then
   THRD_cpl_thrd=2; WPG_cpl_thrd=6;  MPB_cpl_thrd="0 77";  APB_cpl_thrd="0 77"
   OPB_cpl_thrd="78 107";  IPB_cpl_thrd="108 119"
 
-  TASKS_cpl_bmrk=480; TPN_cpl_bmrk=40; INPES_cpl_bmrk=6; JNPES_cpl_bmrk=8
-  THRD_cpl_bmrk=1; WPG_cpl_bmrk=24; MPB_cpl_bmrk="0 287"; APB_cpl_bmrk="0 311"
-  OPB_cpl_bmrk="312 431"; IPB_cpl_bmrk="432 479"
+  TASKS_cpl_c384=480; TPN_cpl_c384=40; INPES_cpl_c384=6; JNPES_cpl_c384=8
+  THRD_cpl_c384=1; WPG_cpl_c384=24; MPB_cpl_c384="0 287"; APB_cpl_c384="0 311"
+  OPB_cpl_c384="312 431"; IPB_cpl_c384="432 479"
 
-  TASKS_cpl_wwav=560; TPN_cpl_wwav=40; INPES_cpl_wwav=6; JNPES_cpl_wwav=8
-  THRD_cpl_wwav=1; WPG_cpl_wwav=24; MPB_cpl_wwav="0 287"; APB_cpl_wwav="0 311"
-  OPB_cpl_wwav="312 431"; IPB_cpl_wwav="432 479"; WPB_cpl_wwav="480 559"
+  TASKS_cpl_bmrk=560; TPN_cpl_bmrk=40; INPES_cpl_bmrk=6; JNPES_cpl_bmrk=8
+  THRD_cpl_bmrk=1; WPG_cpl_bmrk=24; MPB_cpl_bmrk="0 287"; APB_cpl_bmrk="0 311"
+  OPB_cpl_bmrk="312 431"; IPB_cpl_bmrk="432 479"; WPB_cpl_bmrk="480 559"
 
   TASKS_cpl_c192=288; TPN_cpl_c192=40; INPES_cpl_c192=4; JNPES_cpl_c192=8
   THRD_cpl_c192=1; WPG_cpl_c192=12;  MPB_cpl_c192="0 191"; APB_cpl_c192="0 203"
   OPB_cpl_c192="204 263"; IPB_cpl_c192="264 287"
-
-  TASKS_cpl_c384=318; TPN_cpl_c384=40; INPES_cpl_c384=3; JNPES_cpl_c384=8
-  THRD_cpl_c384=1; WPG_cpl_c384=6;  MPB_cpl_c384="0 143"; APB_cpl_c384="0 149"
-  OPB_cpl_c384="150 269"; IPB_cpl_c384="270 317"
 
   TASKS_datm_100=120; TPN_datm_100=40
   MPB_datm_100="16 77"; APB_datm_100="0 15"
@@ -139,21 +131,17 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   THRD_cpl_thrd=2; WPG_cpl_thrd=6;  MPB_cpl_thrd="0 77";  APB_cpl_thrd="0 77"
   OPB_cpl_thrd="78 107";  IPB_cpl_thrd="108 119"
 
-  TASKS_cpl_bmrk=480; TPN_cpl_bmrk=40; INPES_cpl_bmrk=6; JNPES_cpl_bmrk=8
-  THRD_cpl_bmrk=1; WPG_cpl_bmrk=24; MPB_cpl_bmrk="0 287"; APB_cpl_bmrk="0 311"
-  OPB_cpl_bmrk="312 431"; IPB_cpl_bmrk="432 479"
+  TASKS_cpl_c384=480; TPN_cpl_c384=40; INPES_cpl_c384=6; JNPES_cpl_c384=8
+  THRD_cpl_c384=1; WPG_cpl_c384=24; MPB_cpl_c384="0 287"; APB_cpl_c384="0 311"
+  OPB_cpl_c384="312 431"; IPB_cpl_c384="432 479"
 
-  TASKS_cpl_wwav=560; TPN_cpl_wwav=40; INPES_cpl_wwav=6; JNPES_cpl_wwav=8
-  THRD_cpl_wwav=1; WPG_cpl_wwav=24; MPB_cpl_wwav="0 287"; APB_cpl_wwav="0 311"
-  OPB_cpl_wwav="312 431"; IPB_cpl_wwav="432 479"; WPB_cpl_wwav="480 559"
+  TASKS_cpl_bmrk=560; TPN_cpl_bmrk=40; INPES_cpl_bmrk=6; JNPES_cpl_bmrk=8
+  THRD_cpl_bmrk=1; WPG_cpl_bmrk=24; MPB_cpl_bmrk="0 287"; APB_cpl_bmrk="0 311"
+  OPB_cpl_bmrk="312 431"; IPB_cpl_bmrk="432 479"; WPB_cpl_bmrk="480 559"
 
   TASKS_cpl_c192=288; TPN_cpl_c192=40; INPES_cpl_c192=4; JNPES_cpl_c192=8
   THRD_cpl_c192=1; WPG_cpl_c192=12;  MPB_cpl_c192="0 191"; APB_cpl_c192="0 203"
   OPB_cpl_c192="204 263"; IPB_cpl_c192="264 287"
-
-  TASKS_cpl_c384=318; TPN_cpl_c384=40; INPES_cpl_c384=3; JNPES_cpl_c384=8
-  THRD_cpl_c384=1; WPG_cpl_c384=6;  MPB_cpl_c384="0 143"; APB_cpl_c384="0 149"
-  OPB_cpl_c384="150 269"; IPB_cpl_c384="270 317"
 
   TASKS_datm_100=120; TPN_datm_100=40
   MPB_datm_100="16 77"; APB_datm_100="0 15"
@@ -206,21 +194,17 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   THRD_cpl_thrd=2; WPG_cpl_thrd=6;  MPB_cpl_thrd="0 77";  APB_cpl_thrd="0 77"
   OPB_cpl_thrd="78 107";  IPB_cpl_thrd="108 119"
 
-  TASKS_cpl_bmrk=480; TPN_cpl_bmrk=24; INPES_cpl_bmrk=6; JNPES_cpl_bmrk=8
-  THRD_cpl_bmrk=1; WPG_cpl_bmrk=24; MPB_cpl_bmrk="0 287"; APB_cpl_bmrk="0 311"
-  OPB_cpl_bmrk="312 431"; IPB_cpl_bmrk="432 479"
+  TASKS_cpl_c384=480; TPN_cpl_c384=24; INPES_cpl_c384=6; JNPES_cpl_c384=8
+  THRD_cpl_c384=1; WPG_cpl_c384=24; MPB_cpl_c384="0 287"; APB_cpl_c384="0 311"
+  OPB_cpl_c384="312 431"; IPB_cpl_c384="432 479"
 
-  TASKS_cpl_wwav=520; TPN_cpl_wwav=24; INPES_cpl_wwav=6; JNPES_cpl_wwav=8
-  THRD_cpl_wwav=1; WPG_cpl_wwav=24; MPB_cpl_wwav="0 287"; APB_cpl_wwav="0 311"
-  OPB_cpl_wwav="312 431"; IPB_cpl_wwav="432 479"; WPB_cpl_wwav="480 519"
+  TASKS_cpl_bmrk=520; TPN_cpl_bmrk=24; INPES_cpl_bmrk=6; JNPES_cpl_bmrk=8
+  THRD_cpl_bmrk=1; WPG_cpl_bmrk=24; MPB_cpl_bmrk="0 287"; APB_cpl_bmrk="0 311"
+  OPB_cpl_bmrk="312 431"; IPB_cpl_bmrk="432 479"; WPB_cpl_bmrk="480 519"
 
   TASKS_cpl_c192=288; TPN_cpl_c192=24; INPES_cpl_c192=4; JNPES_cpl_c192=8
   THRD_cpl_c192=1; WPG_cpl_c192=12;  MPB_cpl_c192="0 191"; APB_cpl_c192="0 203"
   OPB_cpl_c192="204 263"; IPB_cpl_c192="264 287"
-
-  TASKS_cpl_c384=480; TPN_cpl_c384=24; INPES_cpl_c384=6; JNPES_cpl_c384=8
-  THRD_cpl_c384=1; WPG_cpl_c384=24;  MPB_cpl_c384="0 287"; APB_cpl_c384="0 311"
-  OPB_cpl_c384="312 431"; IPB_cpl_c384="432 479"
 
   TASKS_datm_100=120; TPN_datm_100=24
   MPB_datm_100="16 77"; APB_datm_100="0 15"
@@ -258,21 +242,17 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
   THRD_cpl_thrd=2; WPG_cpl_thrd=6;  MPB_cpl_thrd="0 77";  APB_cpl_thrd="0 77"
   OPB_cpl_thrd="78 107";  IPB_cpl_thrd="108 119"
 
-  TASKS_cpl_bmrk=480; TPN_cpl_bmrk=36; INPES_cpl_bmrk=6; JNPES_cpl_bmrk=8
-  THRD_cpl_bmrk=1; WPG_cpl_bmrk=24; MPB_cpl_bmrk="0 287"; APB_cpl_bmrk="0 311"
-  OPB_cpl_bmrk="312 431"; IPB_cpl_bmrk="432 479"
+  TASKS_cpl_c384=480; TPN_cpl_c384=36; INPES_cpl_c384=6; JNPES_cpl_c384=8
+  THRD_cpl_c384=1; WPG_cpl_c384=24; MPB_cpl_c384="0 287"; APB_cpl_c384="0 311"
+  OPB_cpl_c384="312 431"; IPB_cpl_c384="432 479"
 
-  TASKS_cpl_wwav=540; TPN_cpl_wwav=36; INPES_cpl_wwav=6; JNPES_cpl_wwav=8
-  THRD_cpl_wwav=1; WPG_cpl_wwav=24; MPB_cpl_wwav="0 287"; APB_cpl_wwav="0 311"
-  OPB_cpl_wwav="312 431"; IPB_cpl_wwav="432 479"; WPB_cpl_wwav="480 539"
+  TASKS_cpl_bmrk=540; TPN_cpl_bmrk=36; INPES_cpl_bmrk=6; JNPES_cpl_bmrk=8
+  THRD_cpl_bmrk=1; WPG_cpl_bmrk=24; MPB_cpl_bmrk="0 287"; APB_cpl_bmrk="0 311"
+  OPB_cpl_bmrk="312 431"; IPB_cpl_bmrk="432 479"; WPB_cpl_bmrk="480 539"
 
   TASKS_cpl_c192=288; TPN_cpl_c192=36; INPES_cpl_c192=4; JNPES_cpl_c192=8
   THRD_cpl_c192=1; WPG_cpl_c192=12;  MPB_cpl_c192="0 191"; APB_cpl_c192="0 203"
   OPB_cpl_c192="204 263"; IPB_cpl_c192="264 287"
-
-  TASKS_cpl_c384=318; TPN_cpl_c384=36; INPES_cpl_c384=3; JNPES_cpl_c384=8
-  THRD_cpl_c384=1; WPG_cpl_c384=6;  MPB_cpl_c384="0 143"; APB_cpl_c384="0 149"
-  OPB_cpl_c384="150 269"; IPB_cpl_c384="270 317"
 
   TASKS_datm_100=120; TPN_datm_100=36
   MPB_datm_100="16 77"; APB_datm_100="0 15"
@@ -310,21 +290,17 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
   THRD_cpl_thrd=2; WPG_cpl_thrd=6;  MPB_cpl_thrd="0 77";  APB_cpl_thrd="0 77"
   OPB_cpl_thrd="78 107";  IPB_cpl_thrd="108 119"
 
-  TASKS_cpl_bmrk=480; TPN_cpl_bmrk=36; INPES_cpl_bmrk=6; JNPES_cpl_bmrk=8
-  THRD_cpl_bmrk=1; WPG_cpl_bmrk=24; MPB_cpl_bmrk="0 287"; APB_cpl_bmrk="0 311"
-  OPB_cpl_bmrk="312 431"; IPB_cpl_bmrk="432 479"
+  TASKS_cpl_c384=480; TPN_cpl_c384=36; INPES_cpl_c384=6; JNPES_cpl_c384=8
+  THRD_cpl_c384=1; WPG_cpl_c384=24; MPB_cpl_c384="0 287"; APB_cpl_c384="0 311"
+  OPB_cpl_c384="312 431"; IPB_cpl_c384="432 479"
 
-  TASKS_cpl_wwav=540; TPN_cpl_wwav=36; INPES_cpl_wwav=6; JNPES_cpl_wwav=8
-  THRD_cpl_wwav=1; WPG_cpl_wwav=24; MPB_cpl_wwav="0 287"; APB_cpl_wwav="0 311"
-  OPB_cpl_wwav="312 431"; IPB_cpl_wwav="432 479"; WPB_cpl_wwav="480 539"
+  TASKS_cpl_bmrk=540; TPN_cpl_bmrk=36; INPES_cpl_bmrk=6; JNPES_cpl_bmrk=8
+  THRD_cpl_bmrk=1; WPG_cpl_bmrk=24; MPB_cpl_bmrk="0 287"; APB_cpl_bmrk="0 311"
+  OPB_cpl_bmrk="312 431"; IPB_cpl_bmrk="432 479"; WPB_cpl_bmrk="480 539"
 
   TASKS_cpl_c192=288; TPN_cpl_c192=36; INPES_cpl_c192=4; JNPES_cpl_c192=8
   THRD_cpl_c192=1; WPG_cpl_c192=12;  MPB_cpl_c192="0 191"; APB_cpl_c192="0 203"
   OPB_cpl_c192="204 263"; IPB_cpl_c192="264 287"
-
-  TASKS_cpl_c384=318; TPN_cpl_c384=36; INPES_cpl_c384=3; JNPES_cpl_c384=8
-  THRD_cpl_c384=1; WPG_cpl_c384=6;  MPB_cpl_c384="0 143"; APB_cpl_c384="0 149"
-  OPB_cpl_c384="150 269"; IPB_cpl_c384="270 317"
 
   TASKS_datm_100=120; TPN_datm_100=36
   MPB_datm_100="16 77"; APB_datm_100="0 15"
@@ -361,21 +337,17 @@ elif [[ $MACHINE_ID = stampede.* ]]; then
   THRD_cpl_thrd=2; WPG_cpl_thrd=6;  MPB_cpl_thrd="0 71";  APB_cpl_thrd="0 77"
   OPB_cpl_thrd="78 107";  IPB_cpl_thrd="108 119"
 
-  TASKS_cpl_bmrk=480; TPN_cpl_bmrk=48; INPES_cpl_bmrk=6; JNPES_cpl_bmrk=8
-  THRD_cpl_bmrk=1; WPG_cpl_bmrk=24; MPB_cpl_bmrk="0 287"; APB_cpl_bmrk="0 311"
-  OPB_cpl_bmrk="312 431"; IPB_cpl_bmrk="432 479"
+  TASKS_cpl_c384=480; TPN_cpl_c384=48; INPES_cpl_c384=6; JNPES_cpl_c384=8
+  THRD_cpl_c384=1; WPG_cpl_c384=24; MPB_cpl_c384="0 287"; APB_cpl_c384="0 311"
+  OPB_cpl_c384="312 431"; IPB_cpl_c384="432 479"
 
-  TASKS_cpl_wwav=528; TPN_cpl_wwav=48; INPES_cpl_wwav=6; JNPES_cpl_wwav=8
-  THRD_cpl_wwav=1; WPG_cpl_wwav=24; MPB_cpl_wwav="0 287"; APB_cpl_wwav="0 311"
-  OPB_cpl_wwav="312 431"; IPB_cpl_wwav="432 479"; WPB_cpl_wwav="480 527"
+  TASKS_cpl_bmrk=528; TPN_cpl_bmrk=48; INPES_cpl_bmrk=6; JNPES_cpl_bmrk=8
+  THRD_cpl_bmrk=1; WPG_cpl_bmrk=24; MPB_cpl_bmrk="0 287"; APB_cpl_bmrk="0 311"
+  OPB_cpl_bmrk="312 431"; IPB_cpl_bmrk="432 479"; WPB_cpl_bmrk="480 527"
 
   TASKS_cpl_c192=288; TPN_cpl_c192=48; INPES_cpl_c192=4; JNPES_cpl_c192=8
   THRD_cpl_c192=1; WPG_cpl_c192=12;  MPB_cpl_c192="0 191"; APB_cpl_c192="0 203"
   OPB_cpl_c192="204 263"; IPB_cpl_c192="264 287"
-
-  TASKS_cpl_c384=318; TPN_cpl_c384=48; INPES_cpl_c384=3; JNPES_cpl_c384=8
-  THRD_cpl_c384=1; WPG_cpl_c384=6;  MPB_cpl_c384="0 143"; APB_cpl_c384="0 149"
-  OPB_cpl_c384="150 269"; IPB_cpl_c384="270 317"
 
   TASKS_datm_100=120; TPN_datm_100=48
   MPB_datm_100="16 77"; APB_datm_100="0 15"
@@ -592,7 +564,7 @@ export SKEB=-999.
 export SPPT=-999.
 export SHUM=-999.
 export LNDP_VAR_LIST='XXX'
-export LNDP_PRT_LISY=-999
+export LNDP_PRT_LIST=-999
 
 #IAU
 export IAU_INC_FILES="''"
@@ -637,6 +609,13 @@ export DATM_NEMS=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
 
+export SYEAR=2021
+export SMONTH=03
+export SDAY=22
+export SHOUR=06
+export SECS=`expr $SHOUR \* 3600`
+export BMIC=.false.
+
 export DAYS=1
 export FHMAX=24
 export FDIAG=6
@@ -649,6 +628,8 @@ export OCNRES=100
 export ICERES=1.00
 export NX_GLB=360
 export NY_GLB=320
+export NPZ=127
+export NPZP=128
 
 # default resources
 export TASKS=$TASKS_cpl_dflt
@@ -664,7 +645,7 @@ export ocn_petlist_bounds=$OPB_cpl_dflt
 export ice_petlist_bounds=$IPB_cpl_dflt
 
 # component and coupling timesteps
-export DT_ATMOS=900
+export DT_ATMOS=720
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6=1800
 export DT_THERM_MOM6=3600
@@ -693,9 +674,9 @@ export eps_imesh=1.0e-1
 
 # FV3 defaults
 export FRAC_GRID=.true.
-export CCPP_SUITE=FV3_GFS_2017_coupled
-export INPUT_NML=input.mom6_ccpp.nml.IN
-export FIELD_TABLE=field_table
+export CCPP_SUITE=FV3_GFS_v16_coupled_nsstNoahmpUGWPv1
+export INPUT_NML=cpld_control.nml.IN
+export FIELD_TABLE=field_table_gfsv16
 export DIAG_TABLE=diag_table_template
 
 export DIAG_TABLE_ADDITIONAL=''
@@ -703,17 +684,83 @@ export DIAG_TABLE_ADDITIONAL=''
 export FHROT=0
 export NSOUT=-1
 export OUTPUT_FH='6 -1'
-export FHZERO=${FHZERO}
+
+#P7 default
+export IALB=2
+export IEMS=2
+export LSM=2
+export IOPT_DVEG=4
+export IOPT_CRS=2
+export IOPT_RAD=3
+export IOPT_ALB=1
+export IOPT_STC=3
+
+# FV3 P7 settings
+export D2_BG_K1=0.20
+export D2_BG_K2=0.04
+export DZ_MIN=2
+export PSM_BC=1
+export DDDMP=0.2
+
+# P7 Merra2 Aerosols & NSST
+export USE_MERRA2=.true.
+export IAER=1011
+export NSTF_NAME=2,1,0,0,0
+
+export LHEATSTRG=.true.
+export LSEASPRAY=.true.
+
+# P7 UGWP1
+export GWD_OPT=2
+export DO_UGWP_V1=.true.
+export KNOB_UGWP_VERSION=1
+export KNOB_UGWP_NSLOPE=1
+export DO_UGWP_V0=.false.
+export DO_GSL_DRAG_LS_BL=.true.
+export DO_GSL_DRAG_SS=.true.
+export DO_GSL_DRAG_TOFD=.true.
+export DO_UGWP_V1_OROG_ONLY=.false.
+export DO_UGWP_V0_NST_ONLY=.false.
+export LDIAG_UGWP=.false.
+
+# P7 CA
+export DO_CA=.true.
+export CA_SGS=.true.
+export CA_GLOBAL=.false.
+export NCA=1
+export SCELLS=2600
+export TLIVES=1800
+export NSEED=1
+export NFRACSEED=0.5
+export RCELL=0.72
+export CA_TRIGGER=.true.
+export NSPINUP=1
+export ISEED_CA=12345
+
+# P7 settings
+export FNALBC="'C96.snowfree_albedo.tileX.nc'"
+export FNALBC2="'C96.facsf.tileX.nc'"
+export FNTG3C="'C96.substrate_temperature.tileX.nc'"
+export FNVEGC="'C96.vegetation_greenness.tileX.nc'"
+export FNVETC="'C96.vegetation_type.tileX.nc'"
+export FNSOTC="'C96.soil_type.tileX.nc'"
+export FNSMCC=${FNSMCC_control}
+export FNMSKH=${FNMSKH_control}
+export FNVMNC="'C96.vegetation_greenness.tileX.nc'"
+export FNVMXC="'C96.vegetation_greenness.tileX.nc'"
+export FNSLPC="'C96.slope_type.tileX.nc'"
+export FNABSC="'C96.maximum_snow_albedo.tileX.nc'"
+export LANDICE=".false."
+export FSICL=99999
+export USE_CICE_ALB=.false.
+
+# P7 default mushy thermo
+export KTHERM=2
+export TFREEZE_OPTION=mushy
 
 export CPLFLX=.true.
 export CPL=.true.
-export NSTF_NAME=0,0,0,0,0
-
-export DZ_MIN=2
-export PSM_BC=0
 export MIN_SEAICE=1.0e-11
-export DDDMP=0.1
-export FSICL=99999
 
 # for FV3: default values will be changed if doing a warm-warm restart
 export WARM_START=.false.
@@ -729,8 +776,7 @@ export MOM6_RESTART_SETTING=n
 export MOM6_RIVER_RUNOFF=False
 export FRUNOFF=''
 export CHLCLIM=seawifs_1998-2006_smoothed_2X.nc
-# this must be set False for restart repro
-export MOM6_REPRO_LA=False
+export MOM6_USE_LI2016=True
 # since CPL_SLOW is set to DT_THERM, this should be always be false
 export MOM6_THERMO_SPAN=False
 # no WW3
@@ -756,9 +802,6 @@ export RESTART_EXT=.false.
 export FRAZIL_FWSALT=.true.
 # default to write CICE average history files
 export CICE_HIST_AVG=.true.
-# default non-mushy thermo
-export KTHERM=1
-export TFREEZE_OPTION=linear_salt
 
 #wave
 export ww3gline="'glo_1deg'  'no' 'CPL:native' 'CPL:native' 'CPL:native' 'no' 'no' 'no' 'no' 'no'   1  1  0.00 1.00  F"
@@ -861,8 +904,7 @@ export CHLCLIM=seawifs_1998-2006_smoothed_2X.nc
 # MOM6 IAU
 export MOM_IAU=False
 export MOM_IAU_HRS=6
-# this must be set False for restart repro
-export MOM6_REPRO_LA=False
+export MOM6_USE_LI2016=False
 # since CPL_SLOW is set to DT_THERM, this should be always be false
 export MOM6_THERMO_SPAN=False
 # no WW3
@@ -982,8 +1024,7 @@ export CHLCLIM=seawifs_1998-2006_smoothed_2X.nc
 # MOM6 IAU
 export MOM_IAU=False
 export MOM_IAU_HRS=6
-# this must be set False for restart repro
-export MOM6_REPRO_LA=False
+export MOM6_USE_LI2016=False
 # since CPL_SLOW is set to DT_THERM, this should be always be false
 export MOM6_THERMO_SPAN=False
 # no WW3
