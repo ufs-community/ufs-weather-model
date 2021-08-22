@@ -239,7 +239,7 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   module load ecflow
   ECFLOW_START=ecflow_start.sh
 
-  QUEUE=batch 
+  QUEUE=batch
   COMPILE_QUEUE=batch
 
   #ACCNR=fv3-cpu
@@ -422,7 +422,12 @@ else
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}}
 fi
 
-INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20210717}
+if [[ $MACHINE_ID = hera.* ]]; then
+ INPUTDATA_ROOT="/scratch1/NCEPDEV/stmp4/Denise.Worthen/input-data-20210830"
+else
+ INPUTDATA_ROOT="/lustre/f2/pdata/ncep/Denise.Worthen/input-data-20210830"
+fi
+#INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20210717}
 INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20210621
 INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC:-$DISKNM/NEMSfv3gfs/BM_IC-20210717}
 

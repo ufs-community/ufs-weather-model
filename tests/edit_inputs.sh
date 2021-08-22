@@ -11,6 +11,7 @@ function edit_ice_in {
   sed -e "s/YEAR_INIT/$SYEAR/g" \
       -e "s/MONTH_INIT/$SMONTH/g" \
       -e "s/DAY_INIT/$SDAY/g" \
+      -e "s/SEC_INIT/$SECS/g" \
       -e "s/DT_CICE/$DT_CICE/g" \
       -e "s/CICEGRID/$CICEGRID/g" \
       -e "s/CICEMASK/$CICEMASK/g" \
@@ -37,7 +38,7 @@ function edit_mom_input {
       -e "s/DT_DYNAM_MOM6/$DT_DYNAM_MOM6/g" \
       -e "s/MOM6_RIVER_RUNOFF/$MOM6_RIVER_RUNOFF/g" \
       -e "s/MOM6_THERMO_SPAN/$MOM6_THERMO_SPAN/g" \
-      -e "s/MOM6_REPRO_LA/$MOM6_REPRO_LA/g" \
+      -e "s/MOM6_USE_LI2016/$MOM6_USE_LI2016/g" \
       -e "s/MOM6_USE_WAVES/$MOM6_USE_WAVES/g" \
       -e "s/MOM6_ALLOW_LANDMASK_CHANGES/$MOM6_ALLOW_LANDMASK_CHANGES/g" \
       -e "s/MOM_IAU_HRS/$MOM_IAU_HRS/g" \
@@ -52,11 +53,12 @@ function edit_data_table {
 }
 
 function edit_diag_table {
-  sed -e "s/YMD/$SYEAR$SMONTH$SDAY/g" \
+  sed -e "s/YMD/$SYEAR$SMONTH$SDAY.$SHOUR/g" \
       -e "s/ATMRES/$ATMRES/g" \
       -e "s/SYEAR/$SYEAR/g" \
       -e "s/SMONTH/$SMONTH/g" \
-      -e "s/SDAY/$SDAY/g"
+      -e "s/SDAY/$SDAY/g" \
+      -e "s/SHOUR/$SHOUR/g"
 }
 
 function edit_ww3_input {
