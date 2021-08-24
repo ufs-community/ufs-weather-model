@@ -268,7 +268,7 @@ elif [[ $MACHINE_ID = orion.* ]]; then
 
   QUEUE=batch
   COMPILE_QUEUE=batch
-#  ACCNR= # detected in detect_machine.sh
+  ACCNR="fv3-cpu"
   PARTITION=orion
   dprefix=/work/noaa/stmp/${USER}
   DISKNM=/work/noaa/nems/emc.nemspara/RT
