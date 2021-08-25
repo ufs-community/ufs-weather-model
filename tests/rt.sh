@@ -424,7 +424,9 @@ fi
 
 if [[ $MACHINE_ID = hera.* ]]; then
  INPUTDATA_ROOT="/scratch1/NCEPDEV/stmp4/Denise.Worthen/input-data-20210830"
-else
+elif [[ $MACHINE_ID = cheyenne.* ]]; then
+ INPUTDATA_ROOT="/glade/scratch/worthen/input-data-20210830"
+elif [[ $MACHINE_ID = gaea.* ]]; then
  INPUTDATA_ROOT="/lustre/f2/pdata/ncep/Denise.Worthen/input-data-20210830"
 fi
 #INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20210717}
