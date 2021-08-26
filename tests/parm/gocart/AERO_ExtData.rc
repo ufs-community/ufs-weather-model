@@ -1,0 +1,177 @@
+
+PrimaryExports%%
+# -------------|-------|-------|--------|----------------------|--------|--------|-------------|----------|
+#  Import      |       |       | Regrid |        Refresh       | OffSet | Scale  | Variable On |   File   |
+#  Name        | Units | Clim  | Method |     Time Template    | Factor | Factor |     File    | Template |
+# -------------|-------|-------|--------|----------------------|--------|--------|-------------|----------|
+
+# SS Temporary imports
+#FROCEAN             '1'                  Y        N               0              0.0      1.0     FROCEAN    /dev/null:1.0
+#FRACI               '1'                  Y        N               0              0.0      1.0     FRACI      /dev/null:1.0
+#LWI                 '1'                  Y        N               0              0.0      1.0     LWI        /dev/null:1.0
+#U10M                'm s-1'              Y        N               0              0.0      1.0     U10M       /dev/null:1.0
+#V10M                'm s-1'              Y        N               0              0.0      1.0     V10M       /dev/null:1.0
+#USTAR               'm s-1'              Y        N               0              0.0      1.0     USTAR      /dev/null:1.0
+#TS                  'K'                  Y        N               0              0.0      1.0     TS         /dev/null:1.0
+#DZ                  'm'                  Y        N               0              0.0      1.0     DZ         /dev/null:1.0
+#FRLAKE              '1'                  Y        N               0              0.0      1.0     FRLAKE     /dev/null:1.0
+#AREA                'm^2'                Y        N               0              0.0      1.0     AREA       /dev/null:1.0
+#ZPBL                'm'                  Y        N               0              0.0      1.0     ZPBL       /dev/null:1.0
+#SH                  'w m-2'              Y        N               0              0.0      1.0     SH         /dev/null:1.0
+#Z0H                 'm'                  Y        N               0              0.0      1.0     Z0H        /dev/null:1.0
+#CN_PRCP             'kg/m^2/s'           Y        N               0              0.0      1.0     CN_PRCP    /dev/null:1.0
+#NCN_PRCP            'kg/m^2/s'           Y        N               0              0.0      1.0     NCN_PRCP   /dev/null:1.0
+#AIRDENS             'kg/m^2/s'           Y        N               0              0.0      1.0     AIRDENS    /dev/null:1.22
+#DELP                'Pa'                 Y        N               0              0.0      1.0     DELP       /dev/null:1.0
+#T                   'k'                  Y        N               0              0.0      1.0     T          /dev/null:300.0
+#RH2                 '1'                  Y        N               0              0.0      1.0     RH2        /dev/null:0.1
+#ZLE                 'm'                  Y        N               0              0.0      1.0     ZLE        /dev/null:1.0
+#PLE                 'Pa'                 Y        N               0              0.0      1.0     PLE        /dev/null:1.0
+#PFL_LSAN            'kg/m2/s'            Y        N               0              0.0      1.0     PFL_LSAN   /dev/null:0.0
+#PFI_LSAN            'kg/m2/s'            Y        N               0              0.0      1.0     PFI_LSAN   /dev/null:0.0
+#WET1                'kg/m2/s'            Y        N               0              0.0      1.0     WET1       /dev/null:0.0
+#U                   'm s-1'              Y        N               0              0.0      1.0     U          /dev/null:10.0
+#V                   'm s-1'              Y        N               0              0.0      1.0     V          /dev/null:2.0
+#PS                  'Pa'                 Y        N               0              0.0      1.0     PS         /dev/null:101325.24
+#FCLD                '1'                  Y        N               0              0.0      1.0     FCLD       /dev/null:0.01
+#FRSNOW              '1'                  Y        N               0              0.0      1.0     FRSNOW     /dev/null:0.01
+TROPP                'Pa'                 Y        N               0              0.0      1.0     TROPP      /dev/null:10000.0
+
+# dust component
+# Ginoux input file
+DU_SRC NA  N Y - none none du_src ExtData/dust/gocart.dust_source.v5a.x1152_y721.nc
+#DU_SRC NA  N Y - none none du_src ExtData/Dust/gocart.dust_source.v5a.x1152_y721.nc
+# FENGSHA input files. Note: regridding should be N or E
+DU_CLAY                 '1'  Y E - none none clayfrac     ExtData/dust/FENGSHA_DUST_INPUTS_v0.6.nc
+DU_SAND                 '1'  Y E - none none sandfrac     ExtData/dust/FENGSHA_DUST_INPUTS_v0.6.nc
+DU_SILT                 '1'  Y E - none none siltfrac     ExtData/dust/FENGSHA_DUST_INPUTS_v0.6.nc
+DU_SSM                  '1'  Y E - none none ssm          ExtData/dust/FENGSHA_DUST_INPUTS_v0.6.nc
+DU_RDRAG                '1'  Y E - none none drag_part    ExtData/dust/FENGSHA_DUST_INPUTS_v0.6.nc
+DU_UTHRES               '1'  Y E - none none uthres       ExtData/dust/FENGSHA_DUST_INPUTS_v0.6.nc
+
+# sulfate
+SU_regionMask        '1'                  Y        N               0              0.0      1.0     SU_regionMask     /dev/null:1.00
+pSO2_OCS             '1'                  Y        N               0              0.0      1.0     pSO2_OCS          /dev/null:0.00
+SU_AIRCRAFT          '1'                  Y        N               0              0.0      1.0     SU_AIRCRAFT       /dev/null:0.00
+SU_BIOMASS           '1'                  Y        N               0              0.0      1.0     SU_BIOMASS        /dev/null:0.00
+SU_ANTHROL1          '1'                  Y        N               0              0.0      1.0     SU_ANTHROL1       /dev/null:0.00
+SU_ANTHROL2          '1'                  Y        N               0              0.0      1.0     SU_ANTHROL2       /dev/null:0.00
+SU_SHIPSO2           '1'                  Y        N               0              0.0      1.0     SU_SHIPSO2        /dev/null:0.00
+SU_SHIPSO4           '1'                  Y        N               0              0.0      1.0     SU_SHIPSO4        /dev/null:0.00
+SU_DMSO              '1'                  Y        N               0              0.0      1.0     SU_DMSO           /dev/null:0.00
+SU_H2O2              '1'                  Y        N               0              0.0      1.0     SU_DMSO           /dev/null:0.00
+SU_NO3               '1'                  Y        N               0              0.0      1.0     SU_DMSO           /dev/null:0.00
+SU_OH                '1'                  Y        N               0              0.0      1.0     SU_DMSO           /dev/null:0.00
+SU_AVIATION_LTO      '1'                  Y        N               0              0.0      1.0     SU_AVIATION_LTO   /dev/null:0.00
+SU_AVIATION_CDS      '1'                  Y        N               0              0.0      1.0     SU_AVIATION_CDS   /dev/null:0.00
+SU_AVIATION_CRS      '1'                  Y        N               0              0.0      1.0     SU_AVIATION_CRS   /dev/null:0.00
+
+# CA
+
+# -------------|-------|-------|--------|----------------------|--------|--------|-------------|----------|
+#  Import      |       |       | Regrid |        Refresh       | OffSet | Scale  | Variable On |   File   |
+#  Name        | Units | Clim  | Method |     Time Template    | Factor | Factor |     File    | Template |
+# -------------|-------|-------|--------|----------------------|--------|--------|-------------|----------|
+
+#=========== Carbonaceous aerosol sources ===========================================
+# ORGANIC CARBON
+# ---------------
+# Biomass burning -- QFED-v2.x
+OC_BIOMASS NA  N Y - none none biomass ExtData/PIESA/sfc/QFED/NRT/v2.5/qfed2.emis_oc.nc4
+
+# VOCs
+OC_ISOPRENE NA  Y Y %y4-%m2-%d2t12:00:00 none none isoprene /dev/null
+OC_LIMO     NA  Y Y %y4-%m2-%d2t12:00:00 none none limo     /dev/null
+OC_MTPA     NA  Y Y %y4-%m2-%d2t12:00:00 none none mtpa     /dev/null
+OC_MTPO     NA  Y Y %y4-%m2-%d2t12:00:00 none none mtpo     /dev/null
+
+# Biofuel Source -- Included in AeroCom anthropogenic emissions
+OC_BIOFUEL NA  Y Y %y4-%m2-%d2t12:00:00 none none biofuel /dev/null
+
+# Anthropogenic (BF & FF) emissions -- allowed to input as two layers
+OC_ANTEOC1 NA  Y Y %y4-%m2-%d2t12:00:00 none none anteoc1 ExtData/PIESA/sfc/HTAP/v2.2/htap-v2.2.emis_oc.surface.x3600_y1800_t12.2010.nc4
+OC_ANTEOC2 NA  Y Y %y4-%m2-%d2t12:00:00 none none anteoc2 ExtData/PIESA/sfc/HTAP/v2.2/htap-v2.2.emis_oc.elevated.x3600_y1800_t12.2010.nc4
+
+# EDGAR based ship emissions
+OC_SHIP    NA  Y Y %y4-%m2-%d2t12:00:00 none none oc_ship ExtData/PIESA/sfc/HTAP/v2.2/htap-v2.2.emis_oc.ships.x3600_y1800_t12.2010.nc4
+
+# Aviation emissions during the three phases of flight
+OC_AVIATION_LTO NA  Y Y %y4-%m2-%d2t12:00:00 none none oc_aviation ExtData/PIESA/sfc/HTAP/v2.2/htap-v2.2.emis_oc.aviation_lto.x3600_y1800_t12.2010.nc4
+OC_AVIATION_CDS NA  Y Y %y4-%m2-%d2t12:00:00 none none oc_aviation ExtData/PIESA/sfc/HTAP/v2.2/htap-v2.2.emis_oc.aviation_cds.x3600_y1800_t12.2010.nc4
+OC_AVIATION_CRS NA  Y Y %y4-%m2-%d2t12:00:00 none none oc_aviation ExtData/PIESA/sfc/HTAP/v2.2/htap-v2.2.emis_oc.aviation_crs.x3600_y1800_t12.2010.nc4
+
+# SOA production
+pSOA_ANTHRO_VOC NA Y Y %y4-%m2-%d2t12:00:00 none none biofuel /dev/null
+
+#============================================================================================================
+# BLACK CARBON
+# ------------
+# QFED v2.x
+BC_BIOMASS NA  N Y - none none biomass ExtData/PIESA/sfc/QFED/NRT/v2.5/qfed2.emis_bc.nc4
+
+# Biofuel Source -- Included in AeroCom anthropogenic emissions
+BC_BIOFUEL NA  Y Y %y4-%m2-%d2t12:00:00 none none biofuel /dev/null
+
+# Anthropogenic (BF & FF) emissions -- allowed to input as two layers
+BC_ANTEBC1 NA  Y Y %y4-%m2-%d2t12:00:00 none none antebc1 ExtData/PIESA/sfc/HTAP/v2.2/htap-v2.2.emis_bc.surface.x3600_y1800_t12.2010.nc4
+BC_ANTEBC2 NA  Y Y %y4-%m2-%d2t12:00:00 none none antebc2 ExtData/PIESA/sfc/HTAP/v2.2/htap-v2.2.emis_bc.elevated.x3600_y1800_t12.2010.nc4
+
+# EDGAR based ship emissions
+BC_SHIP NA  Y Y %y4-%m2-%d2t12:00:00 none none bc_ship ExtData/PIESA/sfc/HTAP/v2.2/htap-v2.2.emis_bc.ships.x3600_y1800_t12.2010.nc4
+
+# Aviation emissions during the LTO, SDC and CRS phases of flight
+BC_AVIATION_LTO NA  Y Y %y4-%m2-%d2t12:00:00 none none bc_aviation ExtData/PIESA/sfc/HTAP/v2.2/htap-v2.2.emis_bc.aviation_lto.x3600_y1800_t12.2010.nc4
+BC_AVIATION_CDS NA  Y Y %y4-%m2-%d2t12:00:00 none none bc_aviation ExtData/PIESA/sfc/HTAP/v2.2/htap-v2.2.emis_bc.aviation_cds.x3600_y1800_t12.2010.nc4
+BC_AVIATION_CRS NA  Y Y %y4-%m2-%d2t12:00:00 none none bc_aviation ExtData/PIESA/sfc/HTAP/v2.2/htap-v2.2.emis_bc.aviation_crs.x3600_y1800_t12.2010.nc4
+
+#============================================================================================================
+# BROWN CARBON
+# ------------
+# Biomass burning -- QFED-v2.x
+BRC_BIOMASS NA  N Y %y4-%m2-%d2t12:00:00 none none biomass /dev/null # ExtData/PIESA/sfc/QFED/NRT/v2.5r1_0.1_deg/Y%y4/M%m2/qfed2.emis_oc.006.%y4%m2%d2.nc4
+
+# Terpene emission
+BRC_TERPENE NA  Y Y %y4-%m2-%d2t12:00:00 none none terpene /dev/null
+
+# Biofuel Source -- Included in AeroCom anthropogenic emissions
+BRC_BIOFUEL NA  Y Y %y4-%m2-%d2t12:00:00 none none biofuel /dev/null
+
+# Anthropogenic (BF & FF) emissions -- allowed to input as two layers
+BRC_ANTEBRC1 NA  Y Y %y4-%m2-%d2t12:00:00 none none anteoc1 /dev/null
+BRC_ANTEBRC2 NA  Y Y %y4-%m2-%d2t12:00:00 none none anteoc2 /dev/null
+
+# EDGAR based ship emissions
+BRC_SHIP    NA  Y Y %y4-%m2-%d2t12:00:00 none none oc_ship /dev/null
+
+# Aviation emissions during the three phases of flight
+BRC_AVIATION_LTO NA  Y Y %y4-%m2-%d2t12:00:00 none none oc_aviation /dev/null
+BRC_AVIATION_CDS NA  Y Y %y4-%m2-%d2t12:00:00 none none oc_aviation /dev/null
+BRC_AVIATION_CRS NA  Y Y %y4-%m2-%d2t12:00:00 none none oc_aviation /dev/null
+
+# SOA production
+pSOA_BIOB_VOC NA Y Y %y4-%m2-%d2t12:00:00 none none biofuel /dev/null
+
+
+# NI
+
+# -------------|-------|-------|--------|----------------------|--------|--------|-------------|----------|----------
+#  Import      |       |       | Regrid |        Refresh       | OffSet | Scale  | Variable On |   File   |   File
+#  Name        | Units | Clim  | Method |     Time Template    | Factor | Factor |     File    | Template | Frequency
+# -------------|-------|-------|--------|----------------------|--------|--------|-------------|----------|-----------
+
+# ======= Nitrate Sources ========
+# EMI_NH3_BB   'kg m-2 s-1'  N      Y      %y4-%m2-%d2T12:00:00    none     none     biomass     ExtData/PIESA/sfc/QFED/NRT/v2.5r1_0.1_deg/Y%y4/M%m2/qfed2.emis_nh3.006.%y4%m2%d2.nc4
+EMI_NH3_BB   'kg m-2 s-1'  N      Y      - none     none     biomass     ExtData/PIESA/sfc/QFED/NRT/v2.5/qfed2.emis_nh3.nc4
+EMI_NH3_AG   'kg m-2 s-1'  Y      Y      %y4-%m2-%d2T12:00:00    none     none     nh3_emis    ExtData/PIESA/sfc/HTAP/v2.2/htap-v2.2.emis_nh3.agriculture.x3600_y1800_t12.2010.nc4
+EMI_NH3_EN   'kg m-2 s-1'  Y      Y      %y4-%m2-%d2T12:00:00    none     none     nh3_emis    ExtData/PIESA/sfc/HTAP/v2.2/htap-v2.2.emis_nh3.energy.x3600_y1800_t12.2010.nc4
+EMI_NH3_IN   'kg m-2 s-1'  Y      Y      %y4-%m2-%d2T12:00:00    none     none     nh3_emis    ExtData/PIESA/sfc/HTAP/v2.2/htap-v2.2.emis_nh3.industry.x3600_y1800_t12.2010.nc4
+EMI_NH3_RE   'kg m-2 s-1'  Y      Y      %y4-%m2-%d2T12:00:00    none     none     nh3_emis    ExtData/PIESA/sfc/HTAP/v2.2/htap-v2.2.emis_nh3.residential.x3600_y1800_t12.2010.nc4
+EMI_NH3_TR   'kg m-2 s-1'  Y      Y      %y4-%m2-%d2T12:00:00    none     none     nh3_emis    ExtData/PIESA/sfc/HTAP/v2.2/htap-v2.2.emis_nh3.transport.x3600_y1800_t12.2010.nc4
+EMI_NH3_OC   'kg m-2 s-1'  Y      Y      %y4-%m2-%d2T12:00:00    none     none     emiss_ocn   ExtData/PIESA/sfc/GEIA.emis_NH3.ocean.x576_y361.t12.20080715_12z.nc4
+# EMI_NH3_OC   'kg m-2 s-1'  Y      Y      %y4-%m2-%d2T12:00:00    none     none     emiss_ocn   /dev/null:0.0
+
+NITRATE_HNO3 'mol mol-1'   Y      N      %y4-%m2-%d2T12:00:00    none     0.20     hno3        /dev/null # ExtData/PIESA/L72/GMI.vmr_HNO3.x144_y91.t12.2006.nc4
+
+NI_regionMask NA           Y      V      -                       none     none     REGION_MASK ExtData/PIESA/sfc/ARCTAS.region_mask.x540_y361.2008.nc
+
+%%

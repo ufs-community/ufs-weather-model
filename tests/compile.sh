@@ -47,7 +47,7 @@ BUILD_DIR=$(pwd)/build_${BUILD_NAME}
 if [[ $MACHINE_ID == cheyenne.* ]] ; then
     BUILD_JOBS=${BUILD_JOBS:-3}
 elif [[ $MACHINE_ID == wcoss_dell_p3 ]] ; then
-    BUILD_JOBS=${BUILD_JOBS:-1}
+    BUILD_JOBS=${BUILD_JOBS:-4}
     source $PATHTR/NEMS/src/conf/module-setup.sh.inc
 fi
 
@@ -103,7 +103,7 @@ else
   fi
 fi
 
-  # Check if suites argument is provided or not
+# Check if suites argument is provided or not
 set +ex
 TEST=$( echo $MAKE_OPT | grep -e "-DCCPP_SUITES=" )
 if [[ $? -eq 0 ]]; then

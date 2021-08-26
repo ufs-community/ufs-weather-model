@@ -1,5 +1,5 @@
 
-if [ $WARM_START = .F. ]; then
+if [ $WARM_START = .false. ]; then
   cp -r @[INPUTDATA_ROOT]/FV3_input_data/INPUT .
   mkdir RESTART
 else
@@ -28,6 +28,6 @@ cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_DU.v1
 cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_SS.v3_3.dat  optics_SS.dat
 cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_SU.v1_3.dat  optics_SU.dat
 
-if [ $CPLWAV = .T. ]; then
+if [ $CPLWAV = .true. ]; then
 cp    @[INPUTDATA_ROOT_WW3]/mod_def.* .
 fi
