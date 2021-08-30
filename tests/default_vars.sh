@@ -791,6 +791,7 @@ export MOM_IAU=False
 export MOM_IAU_HRS=6
 
 # CICE6 defaults; 1 degree
+export CICE_DECOMP=slenderX2
 export NPROC_ICE=12
 export MESHOCN_ICE=mesh.mx${OCNRES}.nc
 export CICEGRID=grid_cice_NEMS_mx${OCNRES}.nc

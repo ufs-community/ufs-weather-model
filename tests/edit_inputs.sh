@@ -3,10 +3,14 @@ set -eu
 
 function edit_ice_in {
 
-  # assumes processor shape = "slenderX2"
-  np2=$((NPROC_ICE/2))
-  BLCKX=$((NX_GLB/$np2))
-  BLCKY=$((NY_GLB/2))
+  if [ $CICE_DECOMP == slenderX2 ]; then
+   np2=$((NPROC_ICE/2))
+   BLCKX=$((NX_GLB/$np2))
+   BLCKY=$((NY_GLB/2))
+  elif [ $CICE_DECOMP == slenderX1 ]; then
+   BLCKX=$((NX_GLB/$NPROC_ICE))
+   BLCKY=$((NY_GLB))
+  fi
 
   sed -e "s/YEAR_INIT/$SYEAR/g" \
       -e "s/MONTH_INIT/$SMONTH/g" \
@@ -18,6 +22,7 @@ function edit_ice_in {
       -e "s/NPROC_ICE/$NPROC_ICE/g" \
       -e "s/NX_GLB/$NX_GLB/g" \
       -e "s/NY_GLB/$NY_GLB/g" \
+      -e "s/CICE_DECOMP/$CICE_DECOMP/g" \
       -e "s/BLCKX/$BLCKX/g" \
       -e "s/BLCKY/$BLCKY/g" \
       -e "s/CICERUNTYPE/$CICERUNTYPE/g" \
