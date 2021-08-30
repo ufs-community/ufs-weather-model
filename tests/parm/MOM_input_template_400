@@ -489,7 +489,7 @@ MAX_RINO_IT = 205               !   [nondim] default = 50
 EPBL_USTAR_MIN = 1.45842E-18    !   [m s-1]
                                 ! The (tiny) minimum friction velocity used within the
                                 ! ePBL code, derived from OMEGA and ANGSTROM.
-USE_LA_LI2016 = MOM6_REPRO_LA   !   [nondim] default = False
+USE_LA_LI2016 = MOM6_USE_LI2016 !   [nondim] default = False
                                 ! A logical to use the Li et al. 2016 (submitted) formula to determine the
                                 ! Langmuir number.
 ! === module MOM_regularize_layers ===
@@ -547,64 +547,6 @@ WIND_STAGGER = "A"              ! default = "C"
                                 ! A case-insensitive character string to indicate the
                                 ! staggering of the input wind stress field.  Valid
                                 ! values are 'A', 'B', or 'C'.
-!BUOY_CONFIG = "file"            !
-!                                ! The character string that indicates how buoyancy forcing
-!                                ! is specified. Valid options include (file), (zero),
-!                                ! (linear), (USER), (BFB) and (NONE).
-!ARCHAIC_OMIP_FORCING_FILE = False !   [Boolean] default = True
-!                                ! If true, use the forcing variable decomposition from
-!                                ! the old German OMIP prescription that predated CORE. If
-!                                ! false, use the variable groupings available from MOM
-!                                ! output diagnostics of forcing variables.
-!LONGWAVE_FILE = "forcing_daily.nc" !
-!                                ! The file with the longwave heat flux, in the variable
-!                                ! given by LONGWAVE_FORCING_VAR.
-!SHORTWAVE_FILE = "forcing_daily.nc" !
-!                                ! The file with the shortwave heat flux, in the variable
-!                                ! given by SHORTWAVE_FORCING_VAR.
-!EVAPORATION_FILE = "forcing_daily.nc" !
-!                                ! The file with the evaporative moisture flux, in the
-!                                ! variable given by EVAP_FORCING_VAR.
-!LATENTHEAT_FILE = "forcing_daily.nc" !
-!                                ! The file with the latent heat flux, in the variable
-!                                ! given by LATENT_FORCING_VAR.
-!SENSIBLEHEAT_FILE = "forcing_daily.nc" !
-!                                ! The file with the sensible heat flux, in the variable
-!                                ! given by SENSIBLE_FORCING_VAR.
-!RAIN_FILE = "forcing_monthly.nc" !
-!                                ! The file with the liquid precipitation flux, in the
-!                                ! variable given by RAIN_FORCING_VAR.
-!SNOW_FILE = "forcing_monthly.nc" !
-!                                ! The file with the frozen precipitation flux, in the
-!                                ! variable given by SNOW_FORCING_VAR.
-!RUNOFF_FILE = "forcing_monthly.nc" !
-!                                ! The file with the fresh and frozen runoff/calving
-!                                ! fluxes, in variables given by LIQ_RUNOFF_FORCING_VAR
-!                                ! and FROZ_RUNOFF_FORCING_VAR.
-!SSTRESTORE_FILE = "forcing_daily.nc" !
-!                                ! The file with the SST toward which to restore in the
-!                                ! variable given by SST_RESTORE_VAR.
-!SALINITYRESTORE_FILE = "forcing_daily.nc" !
-!                                ! The file with the surface salinity toward which to
-!                                ! restore in the variable given by SSS_RESTORE_VAR.
-!WIND_CONFIG = "file"            !
-!                                ! The character string that indicates how wind forcing
-!                                ! is specified. Valid options include (file), (2gyre),
-!                                ! (1gyre), (gyres), (zero), and (USER).
-!WIND_FILE = "forcing_daily.nc" !
-!                                ! The file in which the wind stresses are found in
-!                                ! variables STRESS_X and STRESS_Y.
-!WINDSTRESS_X_VAR = "taux"       ! default = "STRESS_X"
-!                                ! The name of the x-wind stress variable in WIND_FILE.
-!WINDSTRESS_Y_VAR = "tauy"       ! default = "STRESS_Y"
-!                                ! The name of the y-wind stress variable in WIND_FILE.
-!WINDSTRESS_STAGGER = "C"        ! default = "A"
-!                                ! A character indicating how the wind stress components
-!                                ! are staggered in WIND_FILE.  This may be A or C for now.
-!FLUXCONST = 0.5                 !   [m day-1]
-!                                ! The constant that relates the restoring surface fluxes
-!                                ! to the relative surface anomalies (akin to a piston
-!                                ! velocity).  Note the non-MKS units.
 ! === module MOM_restart ===
 
 ! === module MOM_file_parser ===
