@@ -180,8 +180,6 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
 
 elif [[ $MACHINE_ID = wcoss2 ]]; then
 
-  source /apps/prod/lmodules/startLmod
-
   #module use /usrx/local/dev/emc_rocoto/modulefiles
   #module load ruby/2.5.1 rocoto/1.3.0rc2
   #ROCOTORUN=$(which rocotorun)
@@ -194,12 +192,12 @@ elif [[ $MACHINE_ID = wcoss2 ]]; then
   #ECFLOW_START=${ECF_ROOT}/intel/bin/ecflow_start.sh
   #ECF_PORT=$(grep $USER /usrx/local/sys/ecflow/assigned_ports.txt | awk '{print $2}')
 
-  DISKNM=/lfs/h1/emc/ptmp/${USER}/RT
+  DISKNM=/lfs/h1/emc/eib/noscrub/Dusan.Jovic
   QUEUE=workq
   COMPILE_QUEUE=workq
   PARTITION=
   ACCNR=GFS-DEV
-  STMP=/lfs/h1/emc/stmp
+  STMP=/lfs/h1/emc/ptmp
   PTMP=/lfs/h1/emc/ptmp
   SCHEDULER=pbs
   cp fv3_conf/fv3_qsub.IN_wcoss2 fv3_conf/fv3_qsub.IN

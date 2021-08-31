@@ -12,11 +12,10 @@ set -eux
 echo -n " $( date +%s )," >  job_timestamp.txt
 
 cd $PBS_O_WORKDIR
-export CRAY_CONFIG_DIR=$HOME
 
-source /apps/prod/lmodules/startLmod
 module use $( pwd -P )
 module load modules.fv3
+module load cray-pals
 module list
 
 echo "Model started:  " `date`
@@ -26,7 +25,7 @@ export OMP_STACKSIZE=512M
 export OMP_NUM_THREADS=@[THRD]
 export ESMF_RUNTIME_COMPLIANCECHECK=OFF:depth=4
 
-cray aprun -n @[TASKS] ./fv3.exe
+mpiexec -n @[TASKS] ./fv3.exe
 
 echo "Model ended:    " `date`
 echo -n " $( date +%s )," >> job_timestamp.txt
