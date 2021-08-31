@@ -78,7 +78,11 @@ if [ $WARM_START = .false. ]; then
    cp    ${MOM_IC}/MOM*.nc ./INPUT
    cp    ${ICE_IC}/cice5_model_@[ICERES].res_${SYEAR}${SMONTH}${SDAY}00.nc ./cice_model.res.nc
   else
-   cp    ${MOM_IC}/MOM6_IC_TS_${SYEAR}${SMONTH}${SDAY}${SHOUR}.nc ./INPUT/MOM6_IC_TS.nc
+    if [[ $ATMRES == C48 ]]; then
+      cp    ${MOM_IC}/woa18_decav* ./INPUT
+    else
+      cp    ${MOM_IC}/MOM6_IC_TS_${SYEAR}${SMONTH}${SDAY}${SHOUR}.nc ./INPUT/MOM6_IC_TS.nc
+    fi
    cp    ${ICE_IC}/cice_model_@[ICERES].cpc.res_${SYEAR}${SMONTH}${SDAY}.nc ./cice_model.res.nc
   fi
 #Restart
