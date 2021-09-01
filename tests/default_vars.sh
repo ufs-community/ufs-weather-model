@@ -743,9 +743,9 @@ export MOM_IAU_HRS=6
 # CICE6 defaults; 1 degree
 export NPROC_ICE=12
 # SlenderX2
-export np2=$((NPROC_ICE/2))
-export BLCKX=$((NX_GLB/$np2))
-export BLCKY=$((NY_GLB/2))
+export np2=`expr $NPROC_ICE / 2`
+export BLCKX=`expr $NX_GLB / $np2`
+export BLCKY=`expr $NY_GLB / 2`
 export MESHOCN_ICE=mesh.mx${OCNRES}.nc
 export CICEGRID=grid_cice_NEMS_mx${OCNRES}.nc
 export CICEMASK=kmtu_cice_NEMS_mx${OCNRES}.nc
