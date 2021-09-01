@@ -1,5 +1,5 @@
 #
-#  cpld_control_c48 P7 test
+#  cpld_control_c48 test
 #
 
 export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C48MX400"
@@ -54,8 +54,6 @@ export LIST_FILES="sfcf024.tile1.nc \
                    RESTART/iced.2021-03-23-21600.nc \
                    RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc"
 
-#TODO: add comparison of CA restart files?
-
 export_fv3
 export_cpl
 
@@ -98,6 +96,11 @@ export CDMBWD=${CDMBWD_c48}
 export USE_MERRA2=.false.
 export IAER=5111
 
+# turn off CA
+export DO_CA=.false.
+export CA_SGS=.false.
+export CA_GLOBAL=.false.
+
 # set component and coupling timesteps
 export DT_ATMOS=1200
 export DT_CICE=${DT_ATMOS}
@@ -110,6 +113,29 @@ export CPL_FAST=${DT_ATMOS}
 export coupling_interval_slow_sec=${CPL_SLOW}
 export coupling_interval_fast_sec=${CPL_FAST}
 
+# P6 settings
+export IALB=1
+export IEMS=1
+export LSM=1
+export IOPT_DVEG=1
+export IOPT_CRS=1
+export IOPT_RAD=1
+export IOPT_ALB=2
+export IOPT_STC=1
+
+# GWD default v16
+export LDIAG_UGWP=.false.
+export DO_UGWP=.false.
+export DO_TOFD=.false.
+export GWD_OPT=1
+export DO_UGWP_V0=.false.
+export DO_UGWP_V0_OROG_ONLY=.false.
+export DO_GSL_DRAG_LS_BL=.false.
+export DO_GSL_DRAG_SS=.false.
+export DO_GSL_DRAG_TOFD=.false.
+export DO_UGWP_V1=.false.
+export DO_UGWP_V1_OROG_ONLY=.false.
+
 # resolution dependent files
 export MOM_INPUT=MOM_input_template_${OCNRES}
 export MESHOCN_ICE=mesh.mx${OCNRES}.nc
@@ -120,18 +146,21 @@ export FRUNOFF=''
 export MOM6_RIVER_RUNOFF=False
 export MOM6_USE_LI2016=False
 
-export FNALBC="'C48.snowfree_albedo.tileX.nc'"
-export FNALBC2="'C48.facsf.tileX.nc'"
-export FNTG3C="'C48.substrate_temperature.tileX.nc'"
-export FNVEGC="'C48.vegetation_greenness.tileX.nc'"
-export FNVETC="'C48.vegetation_type.tileX.nc'"
-export FNSOTC="'C48.soil_type.tileX.nc'"
-export FNVMNC="'C48.vegetation_greenness.tileX.nc'"
-export FNVMXC="'C48.vegetation_greenness.tileX.nc'"
-export FNSLPC="'C48.slope_type.tileX.nc'"
-export FNABSC="'C48.maximum_snow_albedo.tileX.nc'"
-
+# P6 settings
+export FNALBC="'global_snowfree_albedo.bosu.t766.1536.768.rg.grb',"
+export FNALBC2="'global_albedo4.1x1.grb',"
+export FNTG3C="'global_tg3clim.2.6x1.5.grb',"
+export FNVEGC="'global_vegfrac.0.144.decpercent.grb',"
+export FNVETC="'global_vegtype.igbp.t766.1536.768.rg.grb',"
+export FNSOTC="'global_soiltype.statsgo.t766.1536.768.rg.grb',"
 export FNSMCC="'global_soilmgldas.statsgo.t92.192.94.grb'"
 export FNMSKH="'global_slmask.t62.192.94.grb'"
+export FNVMNC="'global_shdmin.0.144x0.144.grb',"
+export FNVMXC="'global_shdmax.0.144x0.144.grb',"
+export FNSLPC="'global_slope.1x1.grb',"
+export FNABSC="'global_mxsnoalb.uariz.t766.1536.768.rg.grb',"
+export LANDICE=".true."
 
+export FIELD_TABLE="field_table_gfsv16"
+export CCPP_SUITE="FV3_GFS_v16_coupled"
 export FV3_RUN=cpld_control_run.IN
