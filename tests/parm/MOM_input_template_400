@@ -127,10 +127,9 @@ NK = 25                         !   [nondim]
 ! === module MOM_tracer_registry ===
 
 ! === module MOM_EOS ===
-DTFREEZE_DP = -7.75E-08         !   [deg C Pa-1] default = 0.0
-                                ! When TFREEZE_FORM=LINEAR,
-                                ! this is the derivative of the freezing potential
-                                ! temperature with pressure.
+TFREEZE_FORM = "MILLERO_78"     ! default = "LINEAR"
+                                ! TFREEZE_FORM determines which expression should be used for the freezing
+                                ! point.  Currently, the valid choices are "LINEAR", "MILLERO_78", "TEOS10"
 
 ! === module MOM_restart ===
 RESTART_CHECKSUMS_REQUIRED = False
@@ -379,7 +378,7 @@ BT_PROJECT_VELOCITY = True      !   [Boolean] default = False
                                 ! to do a corrector continuity step using a weighted
                                 ! average of the old and new velocities, with weights
                                 ! of (1-BEBT) and BEBT.
-DYNAMIC_SURFACE_PRESSURE = True !   [Boolean] default = False
+DYNAMIC_SURFACE_PRESSURE = False !   [Boolean] default = False
                                 ! If true, add a dynamic pressure due to a viscous ice
                                 ! shelf, for instance.
 BEBT = 0.2                      !   [nondim] default = 0.1
@@ -439,6 +438,9 @@ ENERGETICS_SFC_PBL = True       !   [Boolean] default = False
                                 ! If true, use an implied energetics planetary boundary
                                 ! layer scheme to determine the diffusivity and viscosity
                                 ! in the surface boundary layer.
+EPBL_IS_ADDITIVE = False        !   [Boolean] default = True
+                                ! If true, the diffusivity from ePBL is added to all other diffusivities.
+                                ! Otherwise, the larger of kappa-shear and ePBL diffusivities are used.
 
 ! === module MOM_CVMix_KPP ===
 ! This is the MOM wrapper to CVMix:KPP
@@ -492,6 +494,9 @@ EPBL_USTAR_MIN = 1.45842E-18    !   [m s-1]
 USE_LA_LI2016 = MOM6_USE_LI2016 !   [nondim] default = False
                                 ! A logical to use the Li et al. 2016 (submitted) formula to determine the
                                 ! Langmuir number.
+USE_WAVES = MOM6_USE_WAVES      !   [Boolean] default = False
+                                ! If true, enables surface wave modules.
+
 ! === module MOM_regularize_layers ===
 
 ! === module MOM_opacity ===
