@@ -106,7 +106,7 @@ contains
        unit = open_namelist_file ( )
        ierr=1
        do while (ierr /= 0)
-          read(unit, nml=noah_nml, iostat=io, end=10)
+          read(unit, nml=noah_nml, iostat=io)
           ierr = check_nml_error(io,'noah_nml')
        enddo
        call close_file(unit)
