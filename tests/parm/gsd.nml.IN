@@ -1,22 +1,12 @@
-&amip_interp_nml
-       interp_oi_sst = .true.
-       use_ncep_sst = .true.
-       use_ncep_ice = .false.
-       no_anom_sst = .false.
-       data_set = 'reynolds_oi',
-       date_out_of_range = 'climo',
-/
-
 &atmos_model_nml
        blocksize = 32
        chksum_debug = .false.
        dycore_only = .false.
-       fdiag = @[FDIAG]
        ccpp_suite = '@[CCPP_SUITE]'
 /
 
 &diag_manager_nml
-       prepend_date = .F.
+       prepend_date = .false.
        max_output_fields = @[MAX_OUTPUT_FIELDS]
 /
 
@@ -45,12 +35,12 @@
        npz    = @[NPZ]
        grid_type = -1
        make_nh = @[MAKE_NH]
-       fv_debug = .F.
-       range_warn = .F.
-       reset_eta = .F.
+       fv_debug = .false.
+       range_warn = .false.
+       reset_eta = .false.
        n_sponge = 10
-       nudge_qv = .T.
-       rf_fast = .F.
+       nudge_qv = .true.
+       rf_fast = .false.
        tau = 10.
        rf_cutoff = 7.5e2
        d2_bg_k1 = 0.15
@@ -59,9 +49,9 @@
        kord_mt =  9
        kord_wz =  9
        kord_tr =  9
-       hydrostatic = .F.
-       phys_hydrostatic = .F.
-       use_hydro_pressure = .F.
+       hydrostatic = .false.
+       phys_hydrostatic = .false.
+       use_hydro_pressure = .false.
        beta = 0.
        a_imp = 1.
        p_fac = 0.1
@@ -81,27 +71,27 @@
        ke_bg = 0.
        do_vort_damp = .true.
        external_ic = @[EXTERNAL_IC]
-       external_eta = .T.
+       external_eta = .true.
        gfs_phil = .false.
        nggps_ic = @[NGGPS_IC]
        mountain = @[MOUNTAIN]
-       ncep_ic = .F.
+       ncep_ic = .false.
        d_con = 1.
        hord_mt =  5
        hord_vt =  5
        hord_tm =  5
        hord_dp = -5
        hord_tr =  8
-       adjust_dry_mass = .F.
+       adjust_dry_mass = .false.
        consv_te = 1.
        do_sat_adj = @[DO_SAT_ADJ]
-       consv_am = .F.
-       fill = .T.
-       dwind_2d = .F.
+       consv_am = .false.
+       fill = .true.
+       dwind_2d = .false.
        print_freq = 6
        warm_start = @[WARM_START]
        no_dycore = .false.
-       z_tracer = .T.
+       z_tracer = .true.
        agrid_vel_rst = .true.
        read_increment = @[READ_INCREMENT]
        res_latlon_dynamics = "fv3_increment.nc"
@@ -111,12 +101,12 @@
        filtered_terrain = .true.
        levp = @[NPZP]
        gfs_dwinds = .true.
-       checker_tr = .F.
+       checker_tr = .false.
        nt_checker = 0
 /
 
 &gfs_physics_nml
-       fhzero         = 6.
+       fhzero         = @[FHZERO]
        h2o_phys       = .true.
        ldiag3d        = @[LDIAG3D]
        qdiag3d        = @[QDIAG3D]
@@ -124,7 +114,6 @@
        nst_anl        = .true.
        use_ufo        = .true.
        pre_rad        = .false.
-       ncld           = 5
        imp_physics    = @[IMP_PHYSICS]
        ltaerosol      = @[LTAEROSOL]
        lradar         = @[LRADAR]
@@ -152,6 +141,7 @@
        satmedmf       = @[SATMEDMF]
        isatmedmf      = 1
        lheatstrg      = @[LHEATSTRG]
+       lseaspray      = @[LSEASPRAY]
        do_mynnedmf    = @[DO_MYNNEDMF]
        do_mynnsfclay  = @[DO_MYNNSFCLAY]
        effr_in        = .true.
@@ -208,6 +198,7 @@
        do_gsl_drag_tofd     = @[DO_GSL_DRAG_TOFD]
        do_ugwp_v1           = @[DO_UGWP_V1]
        do_ugwp_v1_orog_only = @[DO_UGWP_V1_OROG_ONLY]
+       print_diff_pgr       = @[PRINT_DIFF_PGR]
 /
 
 &gfdl_cloud_microphysics_nml
@@ -216,10 +207,10 @@
        rad_snow = .true.
        rad_graupel = .true.
        rad_rain = .true.
-       const_vi = .F.
-       const_vs = .F.
-       const_vg = .F.
-       const_vr = .F.
+       const_vi = .false.
+       const_vs = .false.
+       const_vg = .false.
+       const_vr = .false.
        vi_max = 1.
        vs_max = 2.
        vg_max = 12.

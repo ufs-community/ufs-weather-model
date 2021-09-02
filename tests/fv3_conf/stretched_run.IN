@@ -8,10 +8,13 @@ mkdir  INPUT RESTART
 # CNTL_DIR (which may have _prod or _repro appended);
 # see ccpp_regional_run.IN for a working example
 # if this is needed in the future (not needed now)
-#if [ $WARM_START = .F. ]; then
+#if [ $WARM_START = .false. ]; then
 #    rsync -arv @[INPUTDATA_ROOT]/@[CNTL_DIR]/INPUT/. INPUT/.
 #else
 #    rsync -arv @[INPUTDATA_ROOT]/@[CNTL_DIR]/RESTART/. INPUT/.
 #fi
 rsync -arv @[INPUTDATA_ROOT]/@[INPUT_DIR]/INPUT/. INPUT/.
+if [[ "Q${INPUT_NEST02_NML:-}" != Q ]]; then
+  mv INPUT/C96_grid.nest02.tile7.nc INPUT/grid.nest02.tile7.nc
+fi
 # *DH 20190528

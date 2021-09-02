@@ -1,0 +1,58 @@
+###############################################################################
+#
+#  HAFS regional atmosphere only
+#
+###############################################################################
+
+export TEST_DESCR="Compare HAFS regional atmosphere only results with previous trunk version"
+
+export CNTL_DIR=hafs_regional_atm
+
+export LIST_FILES="atmf006.nc \
+                   sfcf006.nc"
+
+export_fv3
+
+export WLCLK=30
+export FHMAX=6
+export RESTART_N=${FHMAX}
+export TASKS=300
+export THRD=2
+export TPN=$TPN_thrd
+export CEN_LON=-62.0
+export CEN_LAT=22.0
+export LON1=-116.90
+export LAT1=-14.45
+export LON2=-7.10
+export LAT2=58.45
+export DLON=0.1
+export DLAT=0.1
+export DT_ATMOS=180
+export IDEFLATE=1
+export NFHMAX_HF=-1
+export NFHOUT_HF=3
+export OUTPUT_FILE="'netcdf_parallel' 'netcdf_parallel'"
+export OUTPUT_GRID='regional_latlon'
+export SDAY=29
+export SHOUR=00
+export SMONTH=08
+export SYEAR=2019
+export WRTTASK_PER_GROUP=60
+
+export CPLFLX=.false.
+export CPLWAV=.false.
+export CPLWAV2ATM=.false.
+export MERGE_IMPORT=.false.
+export NSTF_NAME=2,0,0,0,0
+export INPES=20
+export JNPES=12
+
+export CMEPS=false
+export RUNTYPE="startup"
+export USE_COLDSTART="false"
+
+export CCPP_SUITE=FV3_HAFS_v0_gfdlmp_tedmf
+export INPUT_NML=input_hafs_regional.nml.IN
+export MODEL_CONFIGURE="model_configure_hafs_regional.IN"
+export NEMS_CONFIGURE="nems.configure.hafs_atm.IN"
+export FV3_RUN="hafs_regional_run.IN"

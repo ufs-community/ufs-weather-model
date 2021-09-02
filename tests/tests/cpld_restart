@@ -6,18 +6,18 @@ export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C96MX100 - re
 
 export CNTL_DIR="cpld_control"
 
-export LIST_FILES="phyf024.tile1.nc \
-                   phyf024.tile2.nc \
-                   phyf024.tile3.nc \
-                   phyf024.tile4.nc \
-                   phyf024.tile5.nc \
-                   phyf024.tile6.nc \
-                   dynf024.tile1.nc \
-                   dynf024.tile2.nc \
-                   dynf024.tile3.nc \
-                   dynf024.tile4.nc \
-                   dynf024.tile5.nc \
-                   dynf024.tile6.nc \
+export LIST_FILES="sfcf024.tile1.nc \
+                   sfcf024.tile2.nc \
+                   sfcf024.tile3.nc \
+                   sfcf024.tile4.nc \
+                   sfcf024.tile5.nc \
+                   sfcf024.tile6.nc \
+                   atmf024.tile1.nc \
+                   atmf024.tile2.nc \
+                   atmf024.tile3.nc \
+                   atmf024.tile4.nc \
+                   atmf024.tile5.nc \
+                   atmf024.tile6.nc \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -65,18 +65,20 @@ export RESTART_FILE_SUFFIX_HRS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%02d" $(( $
 export RESTART_FILE_SUFFIX_SECS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%02d" $(( ${FHROT}*3600 )))"
 
 # ATM warm start
-WARM_START='.T.'
-MAKE_NH='.F.'
-NA_INIT='0'
-EXTERNAL_IC='.F.'
-NGGPS_IC='.F.'
-MOUNTAIN='.T.'
+export WARM_START='.true.'
+export MAKE_NH='.false.'
+export NA_INIT='0'
+export EXTERNAL_IC='.false.'
+export NGGPS_IC='.false.'
+export MOUNTAIN='.true.'
 
 # ICE warm start
-RUNTYPE='continue'
+export CICERUNTYPE='continue'
+export RUNTYPE='continue'
 export USE_RESTART_TIME='.true.'
 
 # MOM6 warm start
 export MOM6_RESTART_SETTING="r"
+export eps_imesh='2.5e-1'
 
 export FV3_RUN=cpld_control_run.IN

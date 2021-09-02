@@ -1,23 +1,8 @@
-&amip_interp_nml
-  interp_oi_sst = .true.
-  use_ncep_sst = .true.
-  use_ncep_ice = .false.
-  no_anom_sst = .false.
-  data_set = 'reynolds_oi'
-  date_out_of_range = 'climo'
-  
-/
-
 &atmos_model_nml
   blocksize = 32
   chksum_debug = .false.
   dycore_only = .false.
-  fdiag = @[FDIAG]
-  fhmax = @[FHMAX]
-  fhout = @[NFHOUT]
-  fhmaxhf = @[NFHMAX_HF]
-  fhouthf = @[NFHOUT_HF]
-  ccpp_suite = @[CCPP_SUITE]
+  ccpp_suite = '@[CCPP_SUITE]'
   
 /
 
@@ -124,7 +109,7 @@
 /
 
 &gfs_physics_nml
-  fhzero       = 6
+  fhzero       = @[FHZERO]
   oz_phys      = .false.
   oz_phys_2015 = .true.
   h2o_phys     = .true.
@@ -132,13 +117,12 @@
   fhcyc        = 24
   use_ufo      = .true.
   pre_rad      = .false.
-  ncld         = 5
   imp_physics  = 11
   pdfcld       = .false.
   fhswr        = 3600.
   fhlwr        = 3600.
-  ialb         = 1
-  iems         = 1
+  ialb         = @[IALB]
+  iems         = @[IEMS]
   iaer         = 5111
   icliq_sw     = 2
   iovr         = 3
@@ -156,7 +140,8 @@
   hybedmf      = .false.
   satmedmf     = .true.
   isatmedmf    = 1
-  lheatstrg    = .false.
+  lheatstrg    = @[LHEATSTRG]
+  lseaspray    = @[LSEASPRAY]
   random_clds  = .false.
   trans_trac   = .true.
   cnvcld       = .true.
@@ -167,23 +152,23 @@
   ivegsrc      = 1
   isot         = 1
   lsoil        = 4
-  lsm          = 1
-  iopt_dveg    = 1
-  iopt_crs     = 1
+  lsm          = @[LSM]
+  iopt_dveg    = @[IOPT_DVEG]
+  iopt_crs     = @[IOPT_CRS]
   iopt_btr     = 1
   iopt_run     = 1
   iopt_sfc     = 1
   iopt_frz     = 1
   iopt_inf     = 1
-  iopt_rad     = 1
-  iopt_alb     = 2
+  iopt_rad     = @[IOPT_RAD]
+  iopt_alb     = @[IOPT_ALB]
   iopt_snf     = 4
   iopt_tbot    = 2
-  iopt_stc     = 1
+  iopt_stc     = @[IOPT_STC]
   debug        = .false.
   frac_grid    = @[FRAC_GRID]
   nstf_name    = @[NSTF_NAME]
-  nst_anl      = .false.
+  nst_anl      = .true.
   psautco      = 0.0008,0.0005
   prautco      = 0.00015,0.00015
   lgfdlmprad   = .true.
@@ -191,7 +176,7 @@
   ldiag_ugwp   = .false.
   do_ugwp      = .false.
   do_tofd      = .true.
-  cplflx       = .T.
+  cplflx       = .true.
   cplwav         = @[CPLWAV]
   cplwav2atm     = @[CPLWAV2ATM]
   min_seaice     = @[MIN_SEAICE]
@@ -204,10 +189,10 @@
   rad_snow = .true.
   rad_graupel = .true.
   rad_rain = .true.
-  const_vi = .F.
-  const_vs = .F.
-  const_vg = .F.
-  const_vr = .F.
+  const_vi = .false.
+  const_vs = .false.
+  const_vg = .false.
+  const_vr = .false.
   vi_max = 1.
   vs_max = 2.
   vg_max = 12.
@@ -261,10 +246,10 @@
        FNSNOC   = "global_snoclim.1.875.grb",
        FNZORC   = "igbp",
        FNALBC   = @[FNALBC]
-       FNALBC2  = "global_albedo4.1x1.grb",
+       FNALBC2  = @[FNALBC2]
        FNAISC   = "CFSR.SEAICE.1982.2012.monthly.clim.grb",
-       FNTG3C   = "global_tg3clim.2.6x1.5.grb",
-       FNVEGC   = "global_vegfrac.0.144.decpercent.grb",
+       FNTG3C   = @[FNTG3C]
+       FNVEGC   = @[FNVEGC]
        FNVETC   = @[FNVETC]
        FNSOTC   = @[FNSOTC]
        FNSMCC   = @[FNSMCC]
@@ -272,15 +257,15 @@
        FNTSFA   = "",
        FNACNA   = "",
        FNSNOA   = "",
-       FNVMNC   = "global_shdmin.0.144x0.144.grb",
-       FNVMXC   = "global_shdmax.0.144x0.144.grb",
-       FNSLPC   = "global_slope.1x1.grb",
+       FNVMNC   = @[FNVMNC]
+       FNVMXC   = @[FNVMXC]
+       FNSLPC   = @[FNSLPC]
        FNABSC   = @[FNABSC]
        LDEBUG   =.false.,
   FSMCL(2) = 99999
   FSMCL(3) = 99999
   FSMCL(4) = 99999
-  LANDICE = .true.
+  LANDICE = @[LANDICE]
   FTSFS = 90
   FAISL = 99999
   FAISS = 99999
