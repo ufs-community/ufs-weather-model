@@ -821,6 +821,10 @@ export ice_petlist_bounds=$IPB_datm_100
 export TASKS=$TASKS_datm_100
 export TPN=$TPN_datm_100
 export NPROC_ICE=12
+# SlenderX2
+export np2=`expr $NPROC_ICE / 2`
+export BLCKX=`expr $NX_GLB / $np2`
+export BLCKY=`expr $NY_GLB / 2`
 
 export ENS_NUM=1
 export SYEAR=2011
@@ -933,7 +937,11 @@ export ocn_petlist_bounds=$OPB_cdeps_100
 export ice_petlist_bounds=$IPB_cdeps_100
 export TASKS=$TASKS_cdeps_100
 export TPN=$TPN_cdeps_100
+# SlenderX2
 export NPROC_ICE=12
+export np2=`expr $NPROC_ICE / 2`
+export BLCKX=`expr $NX_GLB / $np2`
+export BLCKY=`expr $NY_GLB / 2`
 
 export ENS_NUM=1
 export SYEAR=2011
