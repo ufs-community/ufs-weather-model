@@ -20,12 +20,12 @@ module list
 
 echo "Model started:  " `date`
 
-export MPI_TYPE_DEPTH=20
 export OMP_STACKSIZE=512M
 export OMP_NUM_THREADS=@[THRD]
+export OMP_PLACES=cores
 export ESMF_RUNTIME_COMPLIANCECHECK=OFF:depth=4
 
-mpiexec -n @[TASKS] ./fv3.exe
+mpiexec -n @[TASKS] -ppn @[TPN] -depth @[THRD] ./fv3.exe
 
 echo "Model ended:    " `date`
 echo -n " $( date +%s )," >> job_timestamp.txt

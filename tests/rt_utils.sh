@@ -538,7 +538,12 @@ ecflow_run() {
   not_running=$?
   if [[ $not_running -eq 1 ]]; then
     echo "ecflow_server is NOT running on ${ECF_HOST}:${ECF_PORT}"
-    ${ECFLOW_START} -p ${ECF_PORT}
+    if [[ ${MACHINE_ID} == wcoss2 ]]; then
+      # Annoying "Has NCO assigned port $ECF_PORT for use by this account? (yes/no) ".
+      echo yes | ${ECFLOW_START} -p ${ECF_PORT}
+    else
+      ${ECFLOW_START} -p ${ECF_PORT}
+    fi
   else
     echo "ecflow_server is already running on ${ECF_HOST}:${ECF_PORT}"
   fi
@@ -551,6 +556,7 @@ ecflow_run() {
 
   ecflow_client --load=${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   ecflow_client --begin=${ECFLOW_SUITE}
+  ecflow_client --restart
 
   active_tasks=1
   while [[ $active_tasks -ne 0 ]]

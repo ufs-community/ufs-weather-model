@@ -187,10 +187,15 @@ elif [[ $MACHINE_ID = wcoss2 ]]; then
   #ROCOTOCOMPLETE=$(which rocotocomplete)
   #ROCOTO_SCHEDULER=lsf
 
-  #module load ips/18.0.1.163
-  #module load ecflow/4.7.1
-  #ECFLOW_START=${ECF_ROOT}/intel/bin/ecflow_start.sh
-  #ECF_PORT=$(grep $USER /usrx/local/sys/ecflow/assigned_ports.txt | awk '{print $2}')
+  module load ecflow/5.6.0.6
+  module load gcc/10.3.0 python/3.8.6
+  ECFLOW_START=${ECF_ROOT}/scripts/server_check.sh
+  export ECF_OUTPUTDIR=${PATHRT}/ecf_outputdir
+  export ECF_COMDIR=${PATHRT}/ecf_comdir
+  rm -rf ${ECF_OUTPUTDIR} ${ECF_COMDIR}
+  mkdir -p ${ECF_OUTPUTDIR}
+  mkdir -p ${ECF_COMDIR}
+  export colonifnco=":output"  # hack
 
   DISKNM=/lfs/h1/emc/eib/noscrub/Dusan.Jovic
   QUEUE=workq
