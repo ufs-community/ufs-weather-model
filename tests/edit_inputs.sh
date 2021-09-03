@@ -1,14 +1,6 @@
 #! /usr/bin/env bash
 set -eu
 
-function edit_diag_table {
-  sed -e "s/YMD/$SYEAR$SMONTH$SDAY/g" \
-      -e "s/ATMRES/$ATMRES/g" \
-      -e "s/SYEAR/$SYEAR/g" \
-      -e "s/SMONTH/$SMONTH/g" \
-      -e "s/SDAY/$SDAY/g"
-}
-
 function edit_ww3_input {
 
   SDATEWW3="${SYEAR}${SMONTH}${SDAY} $(printf "%02d" $(( ${SHOUR}  )))0000"
