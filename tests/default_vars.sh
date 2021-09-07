@@ -400,12 +400,13 @@ else
 
 fi
 
-# Longer default walltime for GNU
-if [[ ${RT_COMPILER:-} = gnu ]]; then
-  WLCLK_dflt=30
-else
-  WLCLK_dflt=15
+WLCLK_dflt=30
+# Longer default walltime on Gaea
+if [[ $MACHINE_ID = gaea.* ]]; then
+  WLCLK_dflt=60
 fi
+
+export WLCLK=$WLCLK_dflt
 
 export_fv3 ()
 {
@@ -416,7 +417,6 @@ export DATM_NEMS=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
 export THRD=1
-export WLCLK=$WLCLK_dflt
 export POSTAPP='global'
 export NEW_DIAGTABLE='none'
 export NEW_FIELDTABLE='none'
@@ -641,7 +641,6 @@ export DAYS=1
 export FHMAX=24
 export FDIAG=6
 export FHZERO=6
-export WLCLK=30
 
 # default atm/ocn/ice resolution
 export ATMRES=C96
@@ -786,7 +785,6 @@ export DOCN_CDEPS=false
 export CPLWAV=.false.
 export DAYS=1
 export FHMAX=24
-export WLCLK=30
 export THRD=1
 export FHROT=0
 export WARM_START=.false.
@@ -901,7 +899,6 @@ export DOCN_CDEPS=false
 export CPLWAV=.false.
 export DAYS=1
 export FHMAX=24
-export WLCLK=30
 export THRD=1
 export FHROT=0
 export WARM_START=.false.
@@ -1020,7 +1017,6 @@ export DATM_CDEPS=true
 export DATM_NEMS=false
 export DOCN_CDEPS=false
 export THRD=1
-export WLCLK=30
 export INPES=$INPES_dflt
 export JNPES=$JNPES_dflt
 export TASKS=$TASKS_dflt
@@ -1038,7 +1034,6 @@ export S2S=false
 export HAFS=true
 export DOCN_CDEPS=true
 export THRD=1
-export WLCLK=$WLCLK_dflt
 export INPES=$INPES_dflt
 export JNPES=$JNPES_dflt
 export TASKS=$TASKS_dflt
@@ -1059,7 +1054,6 @@ export DATM_NEMS=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
 export THRD=1
-export WLCLK=$WLCLK_dflt
 export INPES=$INPES_dflt
 export JNPES=$JNPES_dflt
 export TASKS=$TASKS_dflt
