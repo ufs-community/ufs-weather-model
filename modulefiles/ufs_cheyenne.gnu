@@ -15,8 +15,8 @@ module load mpt/2.22
 module load ncarcompilers/0.5.0
 module unload netcdf
 
-module use /glade/p/ral/jntp/GMTB/tools/hpc-stack-v1.1.0/modulefiles/stack
-module load hpc/1.1.0
+module use /glade/p/ral/jntp/GMTB/tools/hpc-stack-v1.2.0/modulefiles/stack
+module load hpc/1.2.0
 module load hpc-gnu/10.1.0
 module load hpc-mpt/2.22
 
