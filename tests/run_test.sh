@@ -86,9 +86,17 @@ cp ${PATHRT}/../NEMS/src/conf/module-setup.sh.inc  module-setup.sh
 SRCD="${PATHTR}"
 RUND="${RUNDIR}"
 
-atparse < ${PATHRT}/fv3_conf/${FV3_RUN:-fv3_run.IN} > fv3_run
+# FV3_RUN could have multiple entry seperated by space
+for i in ${FV3_RUN:-fv3_run.IN}
+do
+  atparse < ${PATHRT}/fv3_conf/${i} >> fv3_run
+done
 
-atparse < ${PATHRT}/parm/${INPUT_NML:-input.nml.IN} > input.nml
+if [[ $DATM_NEMS = 'true' ]] || [[ $DATM_CDEPS = 'true' ]] || [[ $FV3 = 'true' ]] || [[ $S2S = 'true' ]]; then
+  if [[ $HAFS = 'false' ]] || [[ $FV3 = 'true' && $HAFS = 'true' ]]; then
+    atparse < ${PATHRT}/parm/${INPUT_NML:-input.nml.IN} > input.nml
+  fi
+fi
 
 atparse < ${PATHRT}/parm/${MODEL_CONFIGURE:-model_configure.IN} > model_configure
 
@@ -104,16 +112,19 @@ cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
 # Set up the run directory
 source ./fv3_run
 
-if [[ $CPLWAV == .T. ]]; then
+if [[ $CPLWAV == .true. ]]; then
   edit_ww3_input  < ${PATHRT}/parm/ww3_multi.inp.IN > ww3_multi.inp
 fi
 
 if [[ $DATM_NEMS = 'true' ]] || [[ $DATM_CDEPS = 'true' ]] || [[ $S2S = 'true' ]]; then
-  edit_ice_in     < ${PATHRT}/parm/ice_in_template > ice_in
-  edit_mom_input  < ${PATHRT}/parm/${MOM_INPUT:-MOM_input_template_$OCNRES} > INPUT/MOM_input
-  edit_diag_table < ${PATHRT}/parm/${DIAG_TABLE:-diag_table_template} > diag_table
-  edit_data_table < ${PATHRT}/parm/data_table_template > data_table
+  if [[ $HAFS = 'false' ]]; then
+    edit_ice_in     < ${PATHRT}/parm/ice_in_template > ice_in
+    edit_mom_input  < ${PATHRT}/parm/${MOM_INPUT:-MOM_input_template_$OCNRES} > INPUT/MOM_input
+    atparse         < ${PATHRT}/parm/${DIAG_TABLE:-diag_table_template} > diag_table
+    edit_data_table < ${PATHRT}/parm/data_table_template > data_table
+  fi
 fi
+
 if [[ $DATM_NEMS = 'true' ]]; then
   cp ${PATHRT}/parm/datm_data_table.IN datm_data_table
 fi
@@ -125,7 +136,12 @@ fi
 
 if [[ $DATM_CDEPS = 'true' ]]; then
   atparse < ${PATHRT}/parm/${DATM_IN_CONFIGURE:-datm_in} > datm_in
-  atparse < ${PATHRT}/parm/datm.streams.IN > datm.streams
+  atparse < ${PATHRT}/parm/${DATM_STREAM_CONFIGURE:-datm.streams.IN} > datm.streams
+fi
+
+if [[ $DOCN_CDEPS = 'true' ]]; then
+  atparse < ${PATHRT}/parm/${DOCN_IN_CONFIGURE:-docn_in} > docn_in
+  atparse < ${PATHRT}/parm/${DOCN_STREAM_CONFIGURE:-docn.streams.IN} > docn.streams
 fi
 
 if [[ $SCHEDULER = 'pbs' ]]; then

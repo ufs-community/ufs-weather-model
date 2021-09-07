@@ -37,7 +37,7 @@ for those elements, are listed below:
 
 - The regression tests used to maintain software integrity as innovations are added.
 
-The UFS Weather Model is currently included in two UFS Application releases.  These UFS Apps also contain pre- and post-processing components, a comprehensive build system, and workflows for configuration and execution of the application.  
+The UFS Weather Model is currently included in two UFS Application releases.  These UFS Apps also contain pre- and post-processing components, a comprehensive build system, and workflows for configuration and execution of the application.
 
 The UFS WM v2.0 is included as part of the UFS Short Range Weather App, and details can be found `here <https://ufs-srweather-app.readthedocs.io/en/ufs-v1.0.0>`_.
 
