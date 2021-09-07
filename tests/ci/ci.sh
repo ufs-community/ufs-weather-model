@@ -81,7 +81,7 @@ elif [ $RUN == "true" ]; then
                 -e "RT_MACHINE=linux.gnu" -e "RT_COMPILER=gnu" \
                 -w "/home/builder/ufs-weather-model/tests" \
                 -v DataVolume:/home/builder/data/NEMSfv3gfs/input-data-20210528 \
-                --shm-size=512m --name my-container noaaemc/ubuntu-hpc:v1.5b \
+                --shm-size=512m --name my-container noaaemc/ubuntu-hpc:v1.6b \
                 /bin/bash -c "./utest -n ${TEST_NAME} -c ${TEST_CASE} -x"
 
   cd $GITHUB_WORKSPACE
