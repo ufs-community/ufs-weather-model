@@ -20,8 +20,8 @@ end type noah_control_type
   
 type :: noah_static_type
 
-  integer                 ::   im         ! horiz dimension and num of used pts         1
-  integer                 ::   km         ! vertical soil layer dimension               1
+  integer            ::   im         ! horiz dimension and num of used pts         1
+  integer            ::   km         ! vertical soil layer dimension               1
   real(kind_phys)    ::   grav       ! constant added to call in ccpp
   real(kind_phys)    ::   cp         ! constant added to call in ccpp
   real(kind_phys)    ::   hvap       ! constant added to call in ccpp
@@ -30,13 +30,14 @@ type :: noah_static_type
   real(kind_phys)    ::   epsm1      ! constant added to call in ccpp
   real(kind_phys)    ::   rvrdm1     ! constant added to call in ccpp
   real(kind_phys)    ::   delt       ! time interval (second)                      1
-  integer                 ::   isot       ! sfc soil type data source zobler or statsgo
-  integer                 ::   ivegsrc    ! sfc veg type data source umd or igbp
-  logical                 ::   lheatstrg  ! flag for canopy heat storage parameterization  1
-  character(len=128)      ::   errmsg     ! error messaging added to ccpp
-  integer                 ::   errflg     ! error messaging added to ccpp
+  integer            ::   isot       ! sfc soil type data source zobler or statsgo
+  integer            ::   ivegsrc    ! sfc veg type data source umd or igbp
+  logical            ::   lheatstrg  ! flag for canopy heat storage parameterization  1
+  character(len=128) ::   errmsg     ! error messaging added to ccpp
+  integer            ::   errflg     ! error messaging added to ccpp
   real(kind_phys)    ::   pertvegf
-
+  logical            ::   thsfc_loc ! this should be changed to match same FV3 var
+  
 end type noah_static_type
 
 
@@ -48,8 +49,8 @@ type  :: noah_model_type
   real(kind_phys), allocatable :: ps        (:) ! surface pressure (pa)                       im
   real(kind_phys), allocatable :: t1        (:) ! surface layer mean temperature (k)          im
   real(kind_phys), allocatable :: q1        (:) ! surface layer mean specific humidity        im
-  integer             , allocatable :: soiltyp   (:) ! soil type (integer index)                   im
-  integer             , allocatable :: vegtype   (:) ! vegetation type (integer index)             im
+  integer        , allocatable :: soiltyp   (:) ! soil type (integer index)                   im
+  integer        , allocatable :: vegtype   (:) ! vegetation type (integer index)             im
   real(kind_phys), allocatable :: sigmaf    (:) ! areal fractional cover of green vegetation  im
   real(kind_phys), allocatable :: sfcemis   (:) ! sfc lw emissivity ( fraction )              im
   real(kind_phys), allocatable :: dlwflx    (:) ! total sky sfc downward lw flux ( w/m**2 )   im
@@ -62,15 +63,15 @@ type  :: noah_model_type
   real(kind_phys), allocatable :: prsl1     (:) ! sfc layer 1 mean pressure (pa)              im
   real(kind_phys), allocatable :: prslki    (:) !                                             im
   real(kind_phys), allocatable :: zf        (:) ! height of bottom layer (m)                  im
-  logical             , allocatable :: land      (:) ! = T if a point with any land                im
+  logical        , allocatable :: land      (:) ! = T if a point with any land                im
   real(kind_phys), allocatable :: wind      (:) ! wind speed (m/s)                            im
-  integer             , allocatable :: slopetyp  (:) ! class of sfc slope (integer index)          im
+  integer        , allocatable :: slopetyp  (:) ! class of sfc slope (integer index)          im
   real(kind_phys), allocatable :: shdmin    (:) ! min fractional coverage of green veg        im
   real(kind_phys), allocatable :: shdmax    (:) ! max fractnl cover of green veg (not used)   im
   real(kind_phys), allocatable :: snoalb    (:) ! upper bound on max albedo over deep snow    im
   real(kind_phys), allocatable :: sfalb     (:) ! mean sfc diffused sw albedo (fractional)    im
-  logical             , allocatable :: flag_iter (:) !                                             im
-  logical             , allocatable :: flag_guess(:) !                                             im
+  logical        , allocatable :: flag_iter (:) !                                             im
+  logical        , allocatable :: flag_guess(:) !                                             im
   real(kind_phys), allocatable :: bexppert  (:)
   real(kind_phys), allocatable :: xlaipert  (:)
   real(kind_phys), allocatable :: vegfpert  (:)
@@ -102,11 +103,22 @@ type  :: noah_model_type
   real(kind_phys), allocatable :: smcwlt2   (:) ! dry soil moisture threshold                  im
   real(kind_phys), allocatable :: smcref2   (:) ! soil moisture threshold                      im
   real(kind_phys), allocatable :: wet1      (:) ! normalized soil wetness                      im
-
+  real(kind_phys), allocatable :: prslk1    (:)
+  
   real(kind_phys), allocatable :: smc(:,:) ! total soil moisture content (fractional)   im,km
   real(kind_phys), allocatable :: stc(:,:) ! soil temp (k)                              im,km
   real(kind_phys), allocatable :: slc(:,:) ! liquid soil moisture                       im,km
 
+  ! rad
+  real(kind_phys), allocatable :: albdvis_lnd (:)
+  real(kind_phys), allocatable :: albdnir_lnd (:)
+  real(kind_phys), allocatable :: albivis_lnd (:)
+  real(kind_phys), allocatable :: albinir_lnd (:)
+  real(kind_phys), allocatable :: adjvisbmd   (:)
+  real(kind_phys), allocatable :: adjnirbmd   (:)
+  real(kind_phys), allocatable :: adjvisdfd   (:)
+  real(kind_phys), allocatable :: adjnirdfd   (:)
+  
   ! from sfc_diff
   real(kind_phys), allocatable :: rb_lnd   (:)
   real(kind_phys), allocatable :: fm_lnd   (:)
@@ -114,7 +126,9 @@ type  :: noah_model_type
   real(kind_phys), allocatable :: fm10_lnd (:)
   real(kind_phys), allocatable :: fh2_lnd  (:)
   real(kind_phys), allocatable :: stress   (:)  
-  real(kind_phys), allocatable :: ustar    (:)  
+  real(kind_phys), allocatable :: ustar    (:)
+  real(kind_phys), allocatable :: garea    (:)
+  
 end type noah_model_type
 
 
@@ -138,76 +152,84 @@ contains
     integer,                intent(in) :: im
 
     allocate(nh%model%foo_atm2lndfield        (im))
-    allocate(nh%model%ps        (im))
-    allocate(nh%model%t1        (im))
-    allocate(nh%model%q1        (im))
-    allocate(nh%model%soiltyp   (im))
-    allocate(nh%model%vegtype   (im))
-    allocate(nh%model%sigmaf    (im))
-    allocate(nh%model%sfcemis   (im))
-    allocate(nh%model%dlwflx    (im))
-    allocate(nh%model%dswsfc    (im))
-    allocate(nh%model%dswsfci   (im))
-    allocate(nh%model%snet      (im))
-    allocate(nh%model%tg3       (im))
-    allocate(nh%model%cm        (im))
-    allocate(nh%model%ch        (im))
-    allocate(nh%model%prsl1     (im))
-    allocate(nh%model%prslki    (im))
-    allocate(nh%model%zf        (im))
-    allocate(nh%model%land      (im))
-    allocate(nh%model%wind      (im))
-    allocate(nh%model%slopetyp  (im))
-    allocate(nh%model%shdmin    (im))
-    allocate(nh%model%shdmax    (im))
-    allocate(nh%model%snoalb    (im))
-    allocate(nh%model%sfalb     (im))
-    allocate(nh%model%flag_iter (im))
-    allocate(nh%model%flag_guess(im))
-    allocate(nh%model%bexppert  (im))
-    allocate(nh%model%xlaipert  (im))
-    allocate(nh%model%vegfpert  (im))
-    allocate(nh%model%weasd     (im))
-    allocate(nh%model%snwdph    (im))
-    allocate(nh%model%tskin     (im))
-    allocate(nh%model%tprcp     (im))
-    allocate(nh%model%srflag    (im))
-    allocate(nh%model%canopy    (im))
-    allocate(nh%model%trans     (im))
-    allocate(nh%model%tsurf     (im))
-    allocate(nh%model%z0rl      (im))
-    allocate(nh%model%sncovr1   (im))
-    allocate(nh%model%qsurf     (im))
-    allocate(nh%model%gflux     (im))
-    allocate(nh%model%drain     (im))
-    allocate(nh%model%evap      (im))
-    allocate(nh%model%hflx      (im))
-    allocate(nh%model%ep        (im))
-    allocate(nh%model%runoff    (im))
-    allocate(nh%model%cmm       (im))
-    allocate(nh%model%chh       (im))
-    allocate(nh%model%evbs      (im))
-    allocate(nh%model%evcw      (im))
-    allocate(nh%model%sbsno     (im))
-    allocate(nh%model%snowc     (im))
-    allocate(nh%model%stm       (im))
-    allocate(nh%model%snohf     (im))
-    allocate(nh%model%smcwlt2   (im))
-    allocate(nh%model%smcref2   (im))
-    allocate(nh%model%wet1      (im))
-
+    allocate(nh%model%ps            (im))
+    allocate(nh%model%t1            (im))
+    allocate(nh%model%q1            (im))
+    allocate(nh%model%soiltyp       (im))
+    allocate(nh%model%vegtype       (im))
+    allocate(nh%model%sigmaf        (im))
+    allocate(nh%model%sfcemis       (im))
+    allocate(nh%model%dlwflx        (im))
+    allocate(nh%model%dswsfc        (im))
+    allocate(nh%model%dswsfci       (im))
+    allocate(nh%model%snet          (im))
+    allocate(nh%model%tg3           (im))
+    allocate(nh%model%cm            (im))
+    allocate(nh%model%ch            (im))
+    allocate(nh%model%prsl1         (im))
+    allocate(nh%model%prslki        (im))
+    allocate(nh%model%zf            (im))
+    allocate(nh%model%land          (im))
+    allocate(nh%model%wind          (im))
+    allocate(nh%model%slopetyp      (im))
+    allocate(nh%model%shdmin        (im))
+    allocate(nh%model%shdmax        (im))
+    allocate(nh%model%snoalb        (im))
+    allocate(nh%model%sfalb         (im))
+    allocate(nh%model%flag_iter     (im))
+    allocate(nh%model%flag_guess    (im))
+    allocate(nh%model%bexppert      (im))
+    allocate(nh%model%xlaipert      (im))
+    allocate(nh%model%vegfpert      (im))
+    allocate(nh%model%weasd         (im))
+    allocate(nh%model%snwdph        (im))
+    allocate(nh%model%tskin         (im))
+    allocate(nh%model%tprcp         (im))
+    allocate(nh%model%srflag        (im))
+    allocate(nh%model%canopy        (im))
+    allocate(nh%model%trans         (im))
+    allocate(nh%model%tsurf         (im))
+    allocate(nh%model%z0rl          (im))
+    allocate(nh%model%sncovr1       (im))
+    allocate(nh%model%qsurf         (im))
+    allocate(nh%model%gflux         (im))
+    allocate(nh%model%drain         (im))
+    allocate(nh%model%evap          (im))
+    allocate(nh%model%hflx          (im))
+    allocate(nh%model%ep            (im))
+    allocate(nh%model%runoff        (im))
+    allocate(nh%model%cmm           (im))
+    allocate(nh%model%chh           (im))
+    allocate(nh%model%evbs          (im))
+    allocate(nh%model%evcw          (im))
+    allocate(nh%model%sbsno         (im))
+    allocate(nh%model%snowc         (im))
+    allocate(nh%model%stm           (im))
+    allocate(nh%model%snohf         (im))
+    allocate(nh%model%smcwlt2       (im))
+    allocate(nh%model%smcref2       (im))
+    allocate(nh%model%wet1          (im))
+    allocate(nh%model%albdvis_lnd   (im))
+    allocate(nh%model%albdnir_lnd   (im))
+    allocate(nh%model%albivis_lnd   (im))
+    allocate(nh%model%albinir_lnd   (im))
+    allocate(nh%model%adjvisbmd     (im))
+    allocate(nh%model%adjnirbmd     (im))
+    allocate(nh%model%adjvisdfd     (im))
+    allocate(nh%model%adjnirdfd     (im))
+    allocate(nh%model%prslk1        (im))
     !allocate(nh%model%smc  (im,num_soil_levels))
     !allocate(nh%model%stc  (im,num_soil_levels))
     !allocate(nh%model%slc  (im,num_soil_levels))
     ! sfc_diff
-    allocate(nh%model%rb_lnd  (im))
-    allocate(nh%model%fm_lnd  (im))
-    allocate(nh%model%fh_lnd  (im))
-    allocate(nh%model%fm10_lnd(im))
-    allocate(nh%model%fh2_lnd (im))
-    allocate(nh%model%stress  (im))
-    allocate(nh%model%ustar  (im))
-
+    allocate(nh%model%rb_lnd        (im))
+    allocate(nh%model%fm_lnd        (im))
+    allocate(nh%model%fh_lnd        (im))
+    allocate(nh%model%fm10_lnd      (im))
+    allocate(nh%model%fh2_lnd       (im))
+    allocate(nh%model%stress        (im))
+    allocate(nh%model%ustar         (im))
+    allocate(nh%model%garea         (im))
     ! --------------------------------------------------------
     nh%control%first_time = .true.
     nh%control%mype       = -999
@@ -228,6 +250,7 @@ contains
     nh%static%errmsg     = ""
     nh%static%errflg     = zero !huge
     nh%static%pertvegf   = zero !huge
+    nh%static%thsfc_loc  = .true.
 
     nh%model%foo_atm2lndfield         = zero !huge
     nh%model%ps         = zero !huge
@@ -291,13 +314,26 @@ contains
     nh%model%stc        = zero !huge
     nh%model%slc        = zero !huge
 
-    nh%model%rb_lnd     = zero
-    nh%model%fm_lnd     = zero
-    nh%model%fh_lnd     = zero
-    nh%model%fm10_lnd   = zero
-    nh%model%fh2_lnd    = zero
-    nh%model%stress     = zero
-    nh%model%ustar     = zero
+    nh%model%albdvis_lnd = zero
+    nh%model%albdnir_lnd = zero
+    nh%model%albivis_lnd = zero
+    nh%model%albinir_lnd = zero
+    nh%model%adjvisbmd   = zero
+    nh%model%adjnirbmd   = zero
+    nh%model%adjvisdfd   = zero
+    nh%model%adjnirdfd   = zero
+    nh%model%prslk1      = zero
+
+    !sfc_diff
+    nh%model%rb_lnd      = zero
+    nh%model%fm_lnd      = zero
+    nh%model%fh_lnd      = zero
+    nh%model%fm10_lnd    = zero
+    nh%model%fh2_lnd     = zero
+    nh%model%stress      = zero
+    nh%model%ustar       = zero
+
+    nh%model%garea       = zero
     
   end subroutine Create
 
