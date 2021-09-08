@@ -740,6 +740,7 @@ export MOM_IAU_HRS=6
 # CICE6 defaults; 1 degree
 export NPROC_ICE=12
 # SlenderX2
+export CICE_DECOMP=slenderX2
 export np2=`expr $NPROC_ICE / 2`
 export BLCKX=`expr $NX_GLB / $np2`
 export BLCKY=`expr $NY_GLB / 2`
@@ -818,6 +819,7 @@ export TASKS=$TASKS_datm_100
 export TPN=$TPN_datm_100
 export NPROC_ICE=12
 # SlenderX2
+export CICE_DECOMP=slenderX2
 export np2=`expr $NPROC_ICE / 2`
 export BLCKX=`expr $NX_GLB / $np2`
 export BLCKY=`expr $NY_GLB / 2`
@@ -931,6 +933,7 @@ export ice_petlist_bounds=$IPB_cdeps_100
 export TASKS=$TASKS_cdeps_100
 export TPN=$TPN_cdeps_100
 # SlenderX2
+export CICE_DECOMP=slenderX2
 export NPROC_ICE=12
 export np2=`expr $NPROC_ICE / 2`
 export BLCKX=`expr $NX_GLB / $np2`
