@@ -243,6 +243,7 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   COMPILE_QUEUE=batch
 
   #ACCNR=fv3-cpu
+  ACCNR=coastal
   PARTITION=
   dprefix=/scratch1/NCEPDEV
   DISKNM=$dprefix/nems/emc.nemspara/RT
@@ -423,7 +424,7 @@ else
 fi
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20210825}
-INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20210621
+INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20210908
 INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC:-$DISKNM/NEMSfv3gfs/BM_IC-20210717}
 
 shift $((OPTIND-1))
