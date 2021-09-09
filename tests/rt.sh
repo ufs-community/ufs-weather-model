@@ -243,7 +243,6 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   COMPILE_QUEUE=batch
 
   #ACCNR=fv3-cpu
-  ACCNR=coastal
   PARTITION=
   dprefix=/scratch1/NCEPDEV
   DISKNM=$dprefix/nems/emc.nemspara/RT
