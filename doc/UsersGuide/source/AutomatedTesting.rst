@@ -58,3 +58,79 @@ to carry out in the CI/CD workflow (``setup.py`` and ``ci.test``).
 =======
 Auto RT
 =======
+
+The Automated Regression Testing (AutoRT) system:
+
+* Automates the process of regression testing on NOAA HPC platforms.
+
+* Written in python.
+
+* Contains the following files:
+
+.. table:: *Files for Automated Regression Testing (AutoRT) system*
+
+   +-------------------+-----------------------------------------------------+
+   | **File Name**     | **Description**                                     |
+   +===================+=====================================================+
+   |  start_rt_auto.sh | Verifies HPC name, sets the python paths            |
+   +-------------------+-----------------------------------------------------+
+   |  rt_auto.py       | Python interface between the HPC and the github API |
+   +-------------------+-----------------------------------------------------+
+   |  jobs/bl.py       | Functions for the baseline job                      |
+   +-------------------+-----------------------------------------------------+
+   |  jobs/rt.py       | Functions for the regression test job               |
+   +-------------------+-----------------------------------------------------+
+
+~~~~~~~~~~~~~~~
+AutoRT Workflow
+~~~~~~~~~~~~~~~
+* Cron-job on supported HPC systems runs start_rt_auto.sh bash script every
+  15 minutes.
+
+  * This script verifies the HPC name, and sets the python paths. Runs
+    rt_auto.py.
+
+* rt_auto.py: Uses the Github API (Through pyGitHub)
+
+  * Checks the pull requests to ufs-community/ufs-weather-model for
+    labels specific to the HPC name. If no match to HPC name, exits.
+    (i.e. hera-intel-RT or cheyenne-gnu-BL)
+
+  * If the HPC name matches the label in ufs-weather-model pull
+    request, the label provides the HPC with the compiler and job to run on
+    the machine.
+
+    * For example the label gaea-intel-BL will be recognized by the HPC
+      machine 'Gaea', set the RT_COMPILER variable to 'intel' and run the
+      baseline creation script (bl.py).
+
+  * Creates a Job class that contains all information from the machine
+    that the job will need to run. That is sent into the jobs/rt[bl].py script.
+
+* rt.py: Sets directories for storage, gets repo information, runs RT,
+  post processes.
+
+.. code-block:: python3
+
+    def run(job_obj):
+        logger = logging.getLogger('RT/RUN')
+        workdir = set_directories(job_obj)
+        branch, pr_repo_loc, repo_dir_str = clone_pr_repo(job_obj, workdir)
+        run_regression_test(job_obj, pr_repo_loc)
+        post_process(job_obj, pr_repo_loc, repo_dir_str, branch)
+
+* bl.py: (similar to rt.py) Adds functionality to create baselines before
+  running regression testing.
+
+.. code-block:: python3
+  :emphasize-lines: 5,6,7
+
+    def run(job_obj):
+        logger = logging.getLogger('BL/RUN')
+        workdir, rtbldir, blstore = set_directories(job_obj)
+        pr_repo_loc, repo_dir_str = clone_pr_repo(job_obj, workdir)
+        bldate = get_bl_date(job_obj, pr_repo_loc)
+        bldir = f'{blstore}/develop-{bldate}/{job_obj.compiler.upper()}'
+        bldirbool = check_for_bl_dir(bldir, job_obj)
+        run_regression_test(job_obj, pr_repo_loc)
+        post_process(job_obj, pr_repo_loc, repo_dir_str, rtbldir, bldir)
