@@ -1,5 +1,5 @@
 rm -fr INPUT RESTART
-if [ $WARM_START = .F. ]; then
+if [ $WARM_START = .false. ]; then
   cp -r @[INPUTDATA_ROOT]/FV3_input_data/INPUT .
   mkdir RESTART
 else
@@ -17,6 +17,6 @@ cp    @[INPUTDATA_ROOT]/FV3_input_data/*_table .
 cp    @[INPUTDATA_ROOT]/FV3_input_data/diag_table_gfdlmp diag_table
 cp    @[INPUTDATA_ROOT]/FV3_input_data/field_table_gfdlmp field_table
 
-if [ $DO_RRTMGP = .T. ]; then
+if [ $DO_RRTMGP = .true. ]; then
 cp    @[INPUTDATA_ROOT]/FV3_input_data_RRTMGP/* .
 fi
