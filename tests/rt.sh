@@ -198,8 +198,8 @@ elif [[ $MACHINE_ID = wcoss2 ]]; then
   export colonifnco=":output"  # hack
 
   DISKNM=/lfs/h1/emc/eib/noscrub/Dusan.Jovic
-  QUEUE=workq
-  COMPILE_QUEUE=workq
+  QUEUE=dev
+  COMPILE_QUEUE=dev
   PARTITION=
   ACCNR=GFS-DEV
   STMP=/lfs/h1/emc/ptmp
