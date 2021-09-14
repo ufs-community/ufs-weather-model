@@ -308,16 +308,14 @@ elif [[ $MACHINE_ID = jet.* ]]; then
 elif [[ $MACHINE_ID = s4.* ]]; then
 
   module load rocoto/1.3.2
+  module load ecflow/5.6.0
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=slurm
 
-  PYTHONHOME=/opt/miniconda/3.8-s4
-  export PATH=$PYTHONHOME/bin:$PATH
-  export PYTHONPATH=$PYTHONHOME/lib/python3.8/site-packages
-  ECFLOW_START=
-  ECF_PORT=
+  ECFLOW_START=/opt/ecflow/5.6.0/bin/ecflow_start.sh
+  ECF_PORT=$(( $(id -u) + 1500 ))
 
   QUEUE=s4
   COMPILE_QUEUE=s4
