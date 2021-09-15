@@ -415,7 +415,7 @@ if [[ $TESTS_FILE =~ '35d' ]]; then
   TEST_35D=true
 fi
 
-BL_DATE=20210901
+BL_DATE=20210907
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]]; then
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
 else
@@ -654,7 +654,7 @@ EOF
       BL_SUFFIX=""
     fi
 
-    if [[ ${MAKE_OPT^^} =~ "-DAPP=ATMW" ]] ||  [[ ${MAKE_OPT^^} =~ "-DAPP=S2SW" ]]; then
+    if [[ ${MAKE_OPT^^} =~ "-DAPP=ATMW" ]] || [[ ${MAKE_OPT^^} =~ "-DAPP=S2SW" ]] || [[ ${MAKE_OPT^^} =~ "-DAPP=HAFSW" ]] || [[ ${MAKE_OPT^^} =~ "-DAPP=HAFS-ALL" ]] ; then
        COMPILE_PREV_WW3_NR=${COMPILE_NR}
     fi
 

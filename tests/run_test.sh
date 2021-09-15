@@ -118,10 +118,10 @@ fi
 
 if [[ $DATM_NEMS = 'true' ]] || [[ $DATM_CDEPS = 'true' ]] || [[ $S2S = 'true' ]]; then
   if [[ $HAFS = 'false' ]]; then
-    edit_ice_in     < ${PATHRT}/parm/ice_in_template > ice_in
-    edit_mom_input  < ${PATHRT}/parm/${MOM_INPUT:-MOM_input_template_$OCNRES} > INPUT/MOM_input
-    atparse         < ${PATHRT}/parm/${DIAG_TABLE:-diag_table_template} > diag_table
-    edit_data_table < ${PATHRT}/parm/data_table_template > data_table
+    atparse < ${PATHRT}/parm/ice_in_template > ice_in
+    atparse < ${PATHRT}/parm/${MOM_INPUT:-MOM_input_template_$OCNRES} > INPUT/MOM_input
+    atparse < ${PATHRT}/parm/${DIAG_TABLE:-diag_table_template} > diag_table
+    atparse < ${PATHRT}/parm/data_table_template > data_table
   fi
 fi
 

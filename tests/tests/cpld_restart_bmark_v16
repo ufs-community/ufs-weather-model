@@ -100,12 +100,10 @@ export DT_ATMOS='300'
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6='900'
 export DT_THERM_MOM6='1800'
-export CPL_SLOW=${DT_THERM_MOM6}
-export CPL_FAST=${DT_ATMOS}
 
 # nems.configure
-export coupling_interval_slow_sec=${CPL_SLOW}
-export coupling_interval_fast_sec=${CPL_FAST}
+export coupling_interval_slow_sec=${DT_THERM_MOM6}
+export coupling_interval_fast_sec=${DT_ATMOS}
 
 export NPZ=127
 export NPZP=128

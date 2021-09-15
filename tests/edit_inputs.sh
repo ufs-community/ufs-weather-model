@@ -1,56 +1,6 @@
 #! /usr/bin/env bash
 set -eu
 
-function edit_ice_in {
-
-  # assumes processor shape = "slenderX2"
-  np2=$((NPROC_ICE/2))
-  BLCKX=$((NX_GLB/$np2))
-  BLCKY=$((NY_GLB/2))
-
-  sed -e "s/YEAR_INIT/$SYEAR/g" \
-      -e "s/MONTH_INIT/$SMONTH/g" \
-      -e "s/DAY_INIT/$SDAY/g" \
-      -e "s/DT_CICE/$DT_CICE/g" \
-      -e "s/CICEGRID/$CICEGRID/g" \
-      -e "s/CICEMASK/$CICEMASK/g" \
-      -e "s/NPROC_ICE/$NPROC_ICE/g" \
-      -e "s/NX_GLB/$NX_GLB/g" \
-      -e "s/NY_GLB/$NY_GLB/g" \
-      -e "s/BLCKX/$BLCKX/g" \
-      -e "s/BLCKY/$BLCKY/g" \
-      -e "s/CICERUNTYPE/$CICERUNTYPE/g" \
-      -e "s/RUNID/$RUNID/g" \
-      -e "s/CICE_HIST_AVG/$CICE_HIST_AVG/g" \
-      -e "s/RESTART_EXT/$RESTART_EXT/g" \
-      -e "s/USE_RESTART_TIME/$USE_RESTART_TIME/g" \
-      -e "s/DUMPFREQ_N/$DUMPFREQ_N/g" \
-      -e "s/DUMPFREQ/$DUMPFREQ/g" \
-      -e "s/FRAZIL_FWSALT/$FRAZIL_FWSALT/g" \
-      -e "s/TFREEZE_OPTION/$TFREEZE_OPTION/g" \
-      -e "s/KTHERM/$KTHERM/g"
-}
-
-function edit_mom_input {
-
-  sed -e "s/DT_THERM_MOM6/$DT_THERM_MOM6/g" \
-      -e "s/DT_DYNAM_MOM6/$DT_DYNAM_MOM6/g" \
-      -e "s/MOM6_RIVER_RUNOFF/$MOM6_RIVER_RUNOFF/g" \
-      -e "s/MOM6_THERMO_SPAN/$MOM6_THERMO_SPAN/g" \
-      -e "s/MOM6_REPRO_LA/$MOM6_REPRO_LA/g" \
-      -e "s/MOM6_USE_WAVES/$MOM6_USE_WAVES/g" \
-      -e "s/MOM6_ALLOW_LANDMASK_CHANGES/$MOM6_ALLOW_LANDMASK_CHANGES/g" \
-      -e "s/MOM_IAU_HRS/$MOM_IAU_HRS/g" \
-      -e "s/MOM_IAU/$MOM_IAU/g" \
-      -e "s/NX_GLB/$NX_GLB/g" \
-      -e "s/NY_GLB/$NY_GLB/g" \
-      -e "s/CHLCLIM/$CHLCLIM/g"
-}
-
-function edit_data_table {
-  sed -e "s/FRUNOFF/$FRUNOFF/g"
-}
-
 function edit_ww3_input {
 
   SDATEWW3="${SYEAR}${SMONTH}${SDAY} $(printf "%02d" $(( ${SHOUR}  )))0000"
