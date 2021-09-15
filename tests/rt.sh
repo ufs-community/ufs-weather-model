@@ -478,8 +478,8 @@ if [[ $ROCOTO == true ]]; then
     COMPILE_QUEUE=dev_transfer
     ROCOTO_SCHEDULER=lsf
   elif [[ $MACHINE_ID = wcoss2 ]]; then
-    QUEUE=workq
-    COMPILE_QUEUE=workq
+    QUEUE=dev
+    COMPILE_QUEUE=dev
     ROCOTO_SCHEDULER=pbs
   elif [[ $MACHINE_ID = hera.* ]]; then
     QUEUE=batch
@@ -558,7 +558,7 @@ EOF
   elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
     QUEUE=dev
   elif [[ $MACHINE_ID = wcoss2 ]]; then
-    QUEUE=workq
+    QUEUE=dev
   elif [[ $MACHINE_ID = hera.* ]]; then
     QUEUE=batch
   elif [[ $MACHINE_ID = orion.* ]]; then
