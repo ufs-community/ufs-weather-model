@@ -686,7 +686,7 @@ EOF
       BL_SUFFIX=""
     fi
 
-    if [[ ${MAKE_OPT^^} =~ "-DAPP=ATMW" ]] ||  [[ ${MAKE_OPT^^} =~ "-DAPP=S2SW" ]]; then
+    if [[ ${MAKE_OPT^^} =~ "-DAPP=ATMW" ]] || [[ ${MAKE_OPT^^} =~ "-DAPP=S2SW" ]] || [[ ${MAKE_OPT^^} =~ "-DAPP=HAFSW" ]] || [[ ${MAKE_OPT^^} =~ "-DAPP=HAFS-ALL" ]] ; then
        COMPILE_PREV_WW3_NR=${COMPILE_NR}
     fi
 
