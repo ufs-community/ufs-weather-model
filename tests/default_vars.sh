@@ -787,6 +787,7 @@ export MOM_IAU=False
 export MOM_IAU_HRS=6
 
 # CICE6 defaults; 1 degree
+export CICE_DECOMP=slenderX2
 export NPROC_ICE=12
 # SlenderX2
 export CICE_DECOMP=slenderX2
