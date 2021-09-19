@@ -82,7 +82,18 @@ else
 fi
 cp    @[INPUTDATA_ROOT]/${inputdir}/global_o3prdlos.f77 .
 cp    @[INPUTDATA_ROOT]/${inputdir}/global_h2o_pltc.f77 ./global_h2oprdlos.f77
-cp    @[INPUTDATA_ROOT]/${inputdir}/*grb .
+if [ $TILEDFIX = .true. ]; then
+    cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/@[ATMRES]*.nc .
+    cp    @[INPUTDATA_ROOT]/${inputdir}/global_glacier.2x2.grb .
+    cp    @[INPUTDATA_ROOT]/${inputdir}/global_maxice.2x2.grb .
+    cp    @[INPUTDATA_ROOT]/${inputdir}/RTGSST.1982.2012.monthly.clim.grb .
+    cp    @[INPUTDATA_ROOT]/${inputdir}/global_snoclim.1.875.grb .
+    cp    @[INPUTDATA_ROOT]/${inputdir}/CFSR.SEAICE.1982.2012.monthly.clim.grb .
+    cp    @[INPUTDATA_ROOT]/${inputdir}/@[FNSMCC] .
+    cp    @[INPUTDATA_ROOT]/${inputdir}/@[FNMSKH] .
+else
+    cp    @[INPUTDATA_ROOT]/${inputdir}/*grb .
+fi
 cp    @[INPUTDATA_ROOT]/${inputdir}/diag_table_gfsv16 ./diag_table
 cp    @[INPUTDATA_ROOT]/${inputdir}/field_table_gfsv16 ./field_table
 

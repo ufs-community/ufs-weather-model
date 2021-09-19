@@ -537,6 +537,9 @@ export FNSMCC_control="'global_soilmgldas.statsgo.t1534.3072.1536.grb'"
 export FNMSKH_control="'global_slmask.t1534.3072.1536.grb'"
 export FNABSC="'global_mxsnoalb.uariz.t126.384.190.rg.grb'"
 
+# Tiled Fix files
+export ATMRES=C96
+export TILEDFIX=.false.
 
 export ENS_NUM=1
 export SYEAR=2016
