@@ -375,7 +375,7 @@ fi
 WLCLK_dflt=30
 # Longer default walltime on Gaea
 if [[ $MACHINE_ID = gaea.* ]]; then
-  WLCLK_dflt=120
+  WLCLK_dflt=180
 fi
 
 export WLCLK=$WLCLK_dflt
