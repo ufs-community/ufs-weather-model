@@ -27,10 +27,7 @@ contains
     use mpp_mod,            only: mpp_pe, mpp_root_pe
     use land_domain_mod,    only: domain_create
     use block_control_mod,  only: block_control_type, define_blocks_packed
-    use land_restart_mod,   only: sfc_prop_restart_read
-    !use land_restart_mod,   only: sfc_prop_restart_write ! TMP DEBUG
-    !type(procbounds_type),  intent(in)    :: procbounds
-    !character(len=*), intent(out) :: gridchoice
+    use land_restart_mod,   only: sfc_prop_restart_read, sfc_prop_transfer
     type(control_init_type), intent(out)  ::   ctrl_init
     
     ! ---------------
@@ -124,7 +121,9 @@ contains
 
     ! Restart read of sfc_data
     call sfc_prop_restart_read(noah_model, land_domain, .false.)
-    
+    ! Transfer from sfcprop to model data
+    call sfc_prop_transfer(noah_model) 
+    ! initialization related to Noah LSM and stability
     call noah_loop_init(0, ctrl_init%isot, ctrl_init%ivegsrc, 0 , errmsg, errflg)
 
 
@@ -231,10 +230,11 @@ contains
     real(kind_phys) :: prsik1(noah_model%static%im), z0pert(noah_model%static%im), &
                        ztpert(noah_model%static%im), stress(noah_model%static%im)
 
+    integer         :: isot
     ! tmp for testing. These should be coming from namelist
     real(kind_phys), parameter :: delt = 900.0_kind_phys
     integer, parameter :: ivegsrc        = 1
-    integer, parameter :: isot           = 1
+    !integer, parameter :: isot           = 1
     logical, parameter :: lheatstrg      = .false.
     real(kind_phys), parameter :: pertvegf = 0.0_kind_phys
     ! outputs
@@ -253,7 +253,7 @@ contains
          im         => noah_model%static%im        ,& 
          km         => noah_model%static%km        ,&
          ! delt       => noah_model%static%delt      ,&
-         ! isot       => noah_model%static%isot      ,&
+         isot       => noah_model%static%isot      ,&
          ! ivegsrc    => noah_model%static%ivegsrc   ,&
          ! pertvegf   => noah_model%static%pertvegf  ,&  
          ! lheatstrg  => noah_model%static%lheatstrg ,& 
