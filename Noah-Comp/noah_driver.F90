@@ -231,9 +231,10 @@ contains
                        ztpert(noah_model%static%im), stress(noah_model%static%im)
 
     integer         :: isot
+    integer         :: ivegsrc
     ! tmp for testing. These should be coming from namelist
     real(kind_phys), parameter :: delt = 900.0_kind_phys
-    integer, parameter :: ivegsrc        = 1
+    !integer, parameter :: ivegsrc        = 1
     !integer, parameter :: isot           = 1
     logical, parameter :: lheatstrg      = .false.
     real(kind_phys), parameter :: pertvegf = 0.0_kind_phys
