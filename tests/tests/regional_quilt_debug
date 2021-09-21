@@ -6,36 +6,32 @@
 
 export TEST_DESCR="Compare FV3 CCPP regional quilt results with previous trunk version"
 
-export CNTL_DIR=fv3_regional_quilt
+export CNTL_DIR=fv3_regional_quilt_debug
 
 export LIST_FILES="dynf000.nc \
-                   dynf024.nc \
+                   dynf001.nc \
                    phyf000.nc \
-                   phyf024.nc \
-                   PRSLEV.GrbF00 \
-                   PRSLEV.GrbF24 \
-                   NATLEV.GrbF00 \
-                   NATLEV.GrbF24"
+                   phyf001.nc"
 
 export_fv3
 
 export FV3_RUN=regional_run.IN
 
-export OZ_PHYS_OLD=.false.
-export OZ_PHYS_NEW=.true.
-export H2O_PHYS=.true.
-export HYBEDMF=.false.
-export WRITE_DOPOST=.true.
+export OZ_PHYS_OLD=.F.
+export OZ_PHYS_NEW=.T.
+export H2O_PHYS=.T.
+export HYBEDMF=.F.
+#export WRITE_DOPOST=.true.
 export POSTAPP='lam'
 
 export CCPP_SUITE=FV3_GFS_v15_thompson_mynn
 export INPUT_NML=regional.nml.IN
 export MODEL_CONFIGURE=model_configure_regional.IN
 
+export FDIAG=1
+export FHMAX=1
 export TASKS=68
 export INPES=10
 export JNPES=6
-export THRD=2
-export TPN=$TPN_thrd
-export OUTPUT_FH="-1"
 
+export WLCLK=30
