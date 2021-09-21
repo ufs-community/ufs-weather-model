@@ -305,7 +305,7 @@ endif()
 
 if(NOAHMP)
   add_dependencies(ufs noahmp)
-  list(APPEND _ufs_defs_private FRONT_NOAHMP=noahmp_cap_mod)
+  list(APPEND _ufs_defs_private FRONT_NOAHMP=lnd_comp_nuopc)
   list(APPEND _ufs_libs_public noahmp)
 endif()
 
