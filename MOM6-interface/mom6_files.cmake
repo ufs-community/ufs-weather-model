@@ -206,6 +206,7 @@ list(APPEND mom6_src_files
   MOM6/src/tracer/oil_tracer.F90
   MOM6/src/tracer/pseudo_salt_tracer.F90
   MOM6/src/tracer/tracer_example.F90
+  MOM6/src/tracer/MOM_CFC_cap.F90
 
   MOM6/src/user/BFB_initialization.F90
   MOM6/src/user/BFB_surface_forcing.F90
