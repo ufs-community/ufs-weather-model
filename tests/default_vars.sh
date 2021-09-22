@@ -400,12 +400,13 @@ else
 
 fi
 
-# Longer default walltime for GNU
-if [[ ${RT_COMPILER:-} = gnu ]]; then
-  WLCLK_dflt=30
-else
-  WLCLK_dflt=15
+WLCLK_dflt=30
+# Longer default walltime on Gaea
+if [[ $MACHINE_ID = gaea.* ]]; then
+  WLCLK_dflt=180
 fi
+
+export WLCLK=$WLCLK_dflt
 
 export_fv3 ()
 {
@@ -416,7 +417,6 @@ export DATM_NEMS=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
 export THRD=1
-export WLCLK=$WLCLK_dflt
 export POSTAPP='global'
 export NEW_DIAGTABLE='none'
 export NEW_FIELDTABLE='none'
@@ -641,7 +641,6 @@ export DAYS=1
 export FHMAX=24
 export FDIAG=6
 export FHZERO=6
-export WLCLK=30
 
 # default atm/ocn/ice resolution
 export ATMRES=C96
@@ -668,8 +667,6 @@ export DT_ATMOS=900
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6=1800
 export DT_THERM_MOM6=3600
-export CPL_SLOW=${DT_THERM_MOM6}
-export CPL_FAST=${DT_ATMOS}
 
 # nems.configure defaults
 export NEMS_CONFIGURE=nems.configure.cpld.IN
@@ -679,8 +676,8 @@ export ocn_model=mom6
 export ice_model=cice6
 export wav_model=ww3
 
-export coupling_interval_slow_sec=${CPL_SLOW}
-export coupling_interval_fast_sec=${CPL_FAST}
+export coupling_interval_slow_sec=${DT_THERM_MOM6}
+export coupling_interval_fast_sec=${DT_ATMOS}
 
 export RESTART_N=${FHMAX}
 export CPLMODE=nems_frac
@@ -731,7 +728,7 @@ export FRUNOFF=''
 export CHLCLIM=seawifs_1998-2006_smoothed_2X.nc
 # this must be set False for restart repro
 export MOM6_REPRO_LA=False
-# since CPL_SLOW is set to DT_THERM, this should be always be false
+# since coupling_interval_slow is set to DT_THERM, this should be always be false
 export MOM6_THERMO_SPAN=False
 # no WW3
 export MOM6_USE_WAVES=False
@@ -742,6 +739,11 @@ export MOM_IAU_HRS=6
 
 # CICE6 defaults; 1 degree
 export NPROC_ICE=12
+# SlenderX2
+export CICE_DECOMP=slenderX2
+export np2=`expr $NPROC_ICE / 2`
+export BLCKX=`expr $NX_GLB / $np2`
+export BLCKY=`expr $NY_GLB / 2`
 export MESHOCN_ICE=mesh.mx${OCNRES}.nc
 export CICEGRID=grid_cice_NEMS_mx${OCNRES}.nc
 export CICEMASK=kmtu_cice_NEMS_mx${OCNRES}.nc
@@ -786,7 +788,6 @@ export DOCN_CDEPS=false
 export CPLWAV=.false.
 export DAYS=1
 export FHMAX=24
-export WLCLK=30
 export THRD=1
 export FHROT=0
 export WARM_START=.false.
@@ -817,6 +818,11 @@ export ice_petlist_bounds=$IPB_datm_100
 export TASKS=$TASKS_datm_100
 export TPN=$TPN_datm_100
 export NPROC_ICE=12
+# SlenderX2
+export CICE_DECOMP=slenderX2
+export np2=`expr $NPROC_ICE / 2`
+export BLCKX=`expr $NX_GLB / $np2`
+export BLCKY=`expr $NY_GLB / 2`
 
 export ENS_NUM=1
 export SYEAR=2011
@@ -830,10 +836,8 @@ export DT_ATMOS=900
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6=1800
 export DT_THERM_MOM6=3600
-export CPL_SLOW=${DT_THERM_MOM6}
-export CPL_FAST=${DT_ATMOS}
-export coupling_interval_slow_sec=${CPL_SLOW}
-export coupling_interval_fast_sec=${CPL_FAST}
+export coupling_interval_slow_sec=${DT_THERM_MOM6}
+export coupling_interval_fast_sec=${DT_ATMOS}
 
 export RESTART_N=${FHMAX}
 export CPLMODE=nems_orig_data
@@ -863,7 +867,7 @@ export MOM_IAU=False
 export MOM_IAU_HRS=6
 # this must be set False for restart repro
 export MOM6_REPRO_LA=False
-# since CPL_SLOW is set to DT_THERM, this should be always be false
+# since coupling_interval_slow is set to DT_THERM, this should be always be false
 export MOM6_THERMO_SPAN=False
 # no WW3
 export MOM6_USE_WAVES=False
@@ -901,7 +905,6 @@ export DOCN_CDEPS=false
 export CPLWAV=.false.
 export DAYS=1
 export FHMAX=24
-export WLCLK=30
 export THRD=1
 export FHROT=0
 export WARM_START=.false.
@@ -929,7 +932,12 @@ export ocn_petlist_bounds=$OPB_cdeps_100
 export ice_petlist_bounds=$IPB_cdeps_100
 export TASKS=$TASKS_cdeps_100
 export TPN=$TPN_cdeps_100
+# SlenderX2
+export CICE_DECOMP=slenderX2
 export NPROC_ICE=12
+export np2=`expr $NPROC_ICE / 2`
+export BLCKX=`expr $NX_GLB / $np2`
+export BLCKY=`expr $NY_GLB / 2`
 
 export ENS_NUM=1
 export SYEAR=2011
@@ -943,10 +951,8 @@ export DT_ATMOS=900
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6=1800
 export DT_THERM_MOM6=3600
-export CPL_SLOW=${DT_THERM_MOM6}
-export CPL_FAST=${DT_ATMOS}
-export coupling_interval_slow_sec=${CPL_SLOW}
-export coupling_interval_fast_sec=${CPL_FAST}
+export coupling_interval_slow_sec=${DT_THERM_MOM6}
+export coupling_interval_fast_sec=${DT_ATMOS}
 
 export RESTART_N=${FHMAX}
 export CPLMODE=nems_orig_data
@@ -984,7 +990,7 @@ export MOM_IAU=False
 export MOM_IAU_HRS=6
 # this must be set False for restart repro
 export MOM6_REPRO_LA=False
-# since CPL_SLOW is set to DT_THERM, this should be always be false
+# since coupling_interval_slow is set to DT_THERM, this should be always be false
 export MOM6_THERMO_SPAN=False
 # no WW3
 export MOM6_USE_WAVES=False
@@ -1020,7 +1026,6 @@ export DATM_CDEPS=true
 export DATM_NEMS=false
 export DOCN_CDEPS=false
 export THRD=1
-export WLCLK=30
 export INPES=$INPES_dflt
 export JNPES=$JNPES_dflt
 export TASKS=$TASKS_dflt
@@ -1038,7 +1043,6 @@ export S2S=false
 export HAFS=true
 export DOCN_CDEPS=true
 export THRD=1
-export WLCLK=$WLCLK_dflt
 export INPES=$INPES_dflt
 export JNPES=$JNPES_dflt
 export TASKS=$TASKS_dflt
@@ -1059,7 +1063,6 @@ export DATM_NEMS=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
 export THRD=1
-export WLCLK=$WLCLK_dflt
 export INPES=$INPES_dflt
 export JNPES=$JNPES_dflt
 export TASKS=$TASKS_dflt
