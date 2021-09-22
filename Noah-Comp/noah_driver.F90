@@ -54,7 +54,9 @@ contains
     integer                      :: i, j, nb, ix
     integer                      :: nblks
 
-    real(kind_phys), allocatable :: fake1(:),fake2(:) ! for noah init
+    ! These are needed by noah init, but aren't used here
+    real(kind_phys)              :: pores(30), resid(30) 
+    integer                      :: lsm=1, lsm_noah=1, me=1
     !im = procbounds%im
 
     ! ! setup ctrl_init
@@ -72,24 +74,23 @@ contains
        write(*,*) 'ctrl_init%isot: '     ,ctrl_init%isot
     end if
 
-    !gridchoice = ctrl_init%grid
-    ! domain create with FMS:
+    ! FMS domain creation:
     call domain_create(ctrl_init, land_domain)
 
-    ! Creat blocking a la FV3
+    ! Create blocking a la FV3, but not currently using
     call mpp_get_compute_domain(land_domain,isc,iec,jsc,jec)
 
     im = (iec-isc+1)*(jec-jsc+1)
     write(*,*) "isc,iec,jsc,jec, im: ",isc,iec,jsc,jec, im
     
     
-    ! Create blocks, but not curretnly using
+    ! Create blocks, but again, not currently using
     call define_blocks_packed('land_model', Lnd_block, isc, iec, jsc, jec, 1, &
          ctrl_init%blocksize, block_message)
 
     ! tmp debug
     if (mpp_pe() == mpp_root_pe()) then
-       write(*,*) "block nblks, isc,iec,jsc,jec: ", Lnd_block%nblks, Lnd_block%isc, Lnd_block%iec, Lnd_block%jsc, Lnd_block%jec
+       !write(*,*) "block nblks, isc,iec,jsc,jec: ", Lnd_block%nblks, Lnd_block%isc, Lnd_block%iec, Lnd_block%jsc, Lnd_block%jec
        !write(*,*) "block blksz: ", Lnd_block%blksz
 
     !    do j=jsc,jec
@@ -123,8 +124,8 @@ contains
     noah_model%static%im  = im
     call noah_model%Create(im)
 
-    !noah_loop_init(lsm, lsm_noah, me, isot, ivegsrc, nlunit, pores, resid, errmsg, errflg)
-    call noah_loop_init(1,1,0, ctrl_init%isot, ctrl_init%ivegsrc, 0, fake1, fake2, errmsg, errflg)
+    ! TODO: keywords isntead of integer inputs
+    call noah_loop_init(lsm, lsm_noah, me, ctrl_init%isot, ctrl_init%ivegsrc, 0, pores, resid, errmsg, errflg)
 
 
   end subroutine init_driver

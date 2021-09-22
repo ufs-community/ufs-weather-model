@@ -157,23 +157,10 @@ contains
     call ESMF_VMGet(vm=VM, localPet=mype, mpiCommunicator=mpi_comm_land, &
          petCount=ntasks, rc=rc)
     if (mype == 0) write(0,*) 'in lnd comp initadvert, ntasks=',ntasks
-    !write(0,*) 'in lnd comp init advert, ntasks=',ntasks, ' pe=',mype
+    
+    ! fms_init will return without doing anything if already called on same proc layout
     call fms_init(mpi_comm_land)
-    !write(0,*) 'in lnd comp init advert 2, ntasks=',ntasks, ' pe=',mype
-    
 
-    ! Create domain
-
-    
-
-    
-    call get_component_instance(gcomp, inst_suffix, inst_index, rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return
-    inst_name = 'LND'
-
-    !----------------------------------------------------------------------------
-    ! get config variables
-    !----------------------------------------------------------------------------                  
 
     !----------------------------------------------------------------------------
     ! advertise fields
@@ -541,56 +528,9 @@ contains
 
     end if ! first_time
 
+    ! TODO: move within first_time step if else statement
     call export_allfields(exportState, procbounds, noah_model, ctrl_init, rc)
 
-       ! Commenting out, because won't currently work with tiles
-       ! ! write out export fields
-       ! allocate(flds(37))
-       ! flds=(/ &          ! inouts
-       !      'Fall_weasd ', &
-       !      'Fall_snwdph', &
-       !      'Fall_tskin ', &
-       !      'Fall_tprcp ', &
-       !      'Fall_srflag', &
-       !      'Fall_smc   ', &
-       !      'Fall_stc   ', &
-       !      'Fall_slc   ', &
-       !      'Fall_canopy', &
-       !      'Fall_trans ', &
-       !      'Fall_tsurf ', &
-       !      'Fall_z0rl  ', &
-       !      'Fall_sncovr1', &          ! noahouts
-       !      'Fall_qsurf  ', &
-       !      'Fall_gflux  ', &
-       !      'Fall_drain  ', &
-       !      'Fall_evap   ', &
-       !      'Fall_hflx   ', &
-       !      'Fall_ep     ', &
-       !      'Fall_runoff ', &
-       !      'Fall_cmm    ', &
-       !      'Fall_chh    ', &
-       !      'Fall_evbs   ', &
-       !      'Fall_evcw   ', &
-       !      'Fall_sbsno  ', &
-       !      'Fall_snowc  ', &
-       !      'Fall_stm    ', &
-       !      'Fall_snohf  ', &
-       !      'Fall_smcwlt2', &
-       !      'Fall_smcref2', &
-       !      'Fall_wet1   ', &         
-       !      'Fall_rb_lnd  ', &         ! diffouts
-       !      'Fall_fm_lnd  ', &
-       !      'Fall_fh_lnd  ', &
-       !      'Fall_fm10_lnd', &
-       !      'Fall_fh2_lnd ', &
-       !      'Fall_stress  '  &
-       !      /)
-
-       ! do n = 1,size(flds)
-       !    fldname = trim(flds(n))
-       !    call write_import_field(exportState, fldname, rc)
-       ! end do
-       ! deallocate(flds)
    
     call ESMF_ClockPrint(clock, options="currTime", &
          preString="------>Advancing LND from: ", unit=msgString, rc=rc)

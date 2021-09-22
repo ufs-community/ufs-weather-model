@@ -215,6 +215,7 @@ contains
 
     ! export to atm
     if (send_to_atm) then
+       ! TODO: actually set land frac for this field
        call fldlist_add(fldsFrLnd_num, fldsFrlnd, Sl_lfrin     )
 
        call fldlist_add(fldsFrLnd_num, fldsFrLnd, foo_lnd2atmfield    )
