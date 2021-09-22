@@ -30,7 +30,7 @@ module lnd_comp_nuopc
   use fms_mod,            only: fms_init
   use fms_io_mod,         only: read_data
   
-  use noah_driver,        only: init_driver
+  use noah_driver,        only: init_driver, noah_finalize
   !use land_domain_mod,    only: domain_create 
 
   
@@ -141,9 +141,10 @@ contains
     character(len=CL)  :: logmsg
     logical            :: isPresent, isSet
     logical            :: cism_evolve
-    integer :: mype, ntasks, mpi_comm_land
+    integer :: mype, ntasks, mpi_comm_land, mpi_comm_land2
     character(len=*), parameter :: subname=trim(modName)//':(InitializeAdvertise) '
     character(len=*), parameter :: format = "('("//trim(subname)//") :',A)"
+   
     !-------------------------------------------------------------------------------
     rc = ESMF_SUCCESS
 
@@ -152,28 +153,16 @@ contains
     call ESMF_GridCompGet(gcomp, vm=vm, rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
-    ! start putting in fms/mpp stuff here
+    ! Get communicator for fms. If smae proc layout as Atm, will be same communicator
+    ! that Atm uses in it's fms_init. But it's ok, this fms_init will return without 
+    ! doing anything if already called on same proc layout
     call ESMF_VMGetCurrent(vm=VM,rc=RC)
     call ESMF_VMGet(vm=VM, localPet=mype, mpiCommunicator=mpi_comm_land, &
          petCount=ntasks, rc=rc)
     if (mype == 0) write(0,*) 'in lnd comp initadvert, ntasks=',ntasks
-    !write(0,*) 'in lnd comp init advert, ntasks=',ntasks, ' pe=',mype
+    ! 
     call fms_init(mpi_comm_land)
-    !write(0,*) 'in lnd comp init advert 2, ntasks=',ntasks, ' pe=',mype
-    
 
-    ! Create domain
-
-    
-
-    
-    call get_component_instance(gcomp, inst_suffix, inst_index, rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return
-    inst_name = 'LND'
-
-    !----------------------------------------------------------------------------
-    ! get config variables
-    !----------------------------------------------------------------------------                  
 
     !----------------------------------------------------------------------------
     ! advertise fields
@@ -455,6 +444,7 @@ contains
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
 
+    
     ! Commenting out, because won't currently work with tiles
     ! ! write out imports. Should make this optional, and put into a routine
     
@@ -541,56 +531,9 @@ contains
 
     end if ! first_time
 
+    ! TODO: move within first_time step if else statement
     call export_allfields(exportState, procbounds, noah_model, ctrl_init, rc)
 
-       ! Commenting out, because won't currently work with tiles
-       ! ! write out export fields
-       ! allocate(flds(37))
-       ! flds=(/ &          ! inouts
-       !      'Fall_weasd ', &
-       !      'Fall_snwdph', &
-       !      'Fall_tskin ', &
-       !      'Fall_tprcp ', &
-       !      'Fall_srflag', &
-       !      'Fall_smc   ', &
-       !      'Fall_stc   ', &
-       !      'Fall_slc   ', &
-       !      'Fall_canopy', &
-       !      'Fall_trans ', &
-       !      'Fall_tsurf ', &
-       !      'Fall_z0rl  ', &
-       !      'Fall_sncovr1', &          ! noahouts
-       !      'Fall_qsurf  ', &
-       !      'Fall_gflux  ', &
-       !      'Fall_drain  ', &
-       !      'Fall_evap   ', &
-       !      'Fall_hflx   ', &
-       !      'Fall_ep     ', &
-       !      'Fall_runoff ', &
-       !      'Fall_cmm    ', &
-       !      'Fall_chh    ', &
-       !      'Fall_evbs   ', &
-       !      'Fall_evcw   ', &
-       !      'Fall_sbsno  ', &
-       !      'Fall_snowc  ', &
-       !      'Fall_stm    ', &
-       !      'Fall_snohf  ', &
-       !      'Fall_smcwlt2', &
-       !      'Fall_smcref2', &
-       !      'Fall_wet1   ', &         
-       !      'Fall_rb_lnd  ', &         ! diffouts
-       !      'Fall_fm_lnd  ', &
-       !      'Fall_fh_lnd  ', &
-       !      'Fall_fm10_lnd', &
-       !      'Fall_fh2_lnd ', &
-       !      'Fall_stress  '  &
-       !      /)
-
-       ! do n = 1,size(flds)
-       !    fldname = trim(flds(n))
-       !    call write_import_field(exportState, fldname, rc)
-       ! end do
-       ! deallocate(flds)
    
     call ESMF_ClockPrint(clock, options="currTime", &
          preString="------>Advancing LND from: ", unit=msgString, rc=rc)
@@ -625,8 +568,12 @@ contains
     character(len=*),parameter  :: subname=trim(modName)//':(ModelFinalize) '
 
     ! begin
+    !write(*,*) '--- Land finalize called ---'
     rc = ESMF_SUCCESS
     call ESMF_LogWrite(subname//' called', ESMF_LOGMSG_INFO)
+
+    call noah_finalize()
+    
   end subroutine ModelFinalize
 
 

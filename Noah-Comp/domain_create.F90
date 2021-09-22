@@ -45,9 +45,8 @@ contains
        pe_start(n) = mpp_root_pe() + (n-1)*ctrl_init%layout(1)*ctrl_init%layout(2)
        pe_end(n)   = mpp_root_pe() +     n*ctrl_init%layout(1)*ctrl_init%layout(2)-1
     enddo
-
+    
     call define_cubic_mosaic(land_domain, ctrl_init%npx-1, ctrl_init%npy-1, ctrl_init%layout, pe_start, pe_end, halo)
-    !write(*,*) 'some domain info: ', land_domain%pe, land_domain%ntiles  !tmp debug
     deallocate(pe_start)
     deallocate(pe_end)
 

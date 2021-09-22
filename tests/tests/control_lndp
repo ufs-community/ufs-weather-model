@@ -1,0 +1,52 @@
+###############################################################################
+#
+#  Global control with land pert scheme test
+#
+###############################################################################
+
+export TEST_DESCR="Compare global control with land pert scheme results with previous trunk version"
+
+export CNTL_DIR=control_lndp
+
+export LIST_FILES="sfcf000.nc \
+                   sfcf012.nc \
+                   atmf000.nc \
+                   atmf012.nc \
+                   GFSFLX.GrbF00 \
+                   GFSFLX.GrbF12 \
+                   GFSPRS.GrbF00 \
+                   GFSPRS.GrbF12"
+
+export_fv3
+export NPZ=127
+export NPZP=128
+export DT_ATMOS=720
+export SYEAR=2021
+export SMONTH=03
+export SDAY=22
+export SHOUR=06
+export FHMAX=12
+export OUTPUT_GRID='gaussian_grid'
+export NSTF_NAME='2,0,0,0,0'
+export WRITE_DOPOST=.true.
+export IAER=5111
+
+export FV3_RUN=control_run.IN
+export CCPP_SUITE=FV3_GFS_v16
+export INPUT_NML=control_ca.nml.IN
+
+export DO_CA=.false.
+export CA_SGS=.false.
+export CA_GLOBAL=.false.
+export NLIVES=30
+export NSEED=1000000
+export NTHRESH=0
+export CA_SMOOTH=.false.
+export NSPINUP=100
+export ISEED_CA=1
+export NSMOOTH=1
+export CA_AMPLITUDE=0.5
+export LNDP_TYPE=2
+export N_VAR_LNDP=2
+export LNDP_VAR_LIST="'smc' , 'vgf',"
+export LNDP_PRT_LIST='0.2,0.1,'

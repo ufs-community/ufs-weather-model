@@ -357,12 +357,13 @@ contains
     ! write(*,*) 'i isc, iec, jsc, jec: ', isc, iec, jsc, jec
     ! write(*,*) 'foo_atm2lndfield: ', noah_model%model%foo_atm2lndfield
 
-    call state_getimport(State_i, 'Faxa_soiltyp', isc, iec, jsc, jec, noah_model%model%soiltyp, rc=rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return
-    call state_getimport(State_i, 'Faxa_vegtype', isc, iec, jsc, jec, noah_model%model%vegtype, rc=rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return
-    call state_getimport(State_i, 'Faxa_sigmaf', isc, iec, jsc, jec, noah_model%model%sigmaf, rc=rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    !! Removing these, as now read in by restart
+    ! call state_getimport(State_i, 'Faxa_soiltyp', isc, iec, jsc, jec, noah_model%model%soiltyp, rc=rc)
+    ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    ! call state_getimport(State_i, 'Faxa_vegtype', isc, iec, jsc, jec, noah_model%model%vegtype, rc=rc)
+    ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    ! call state_getimport(State_i, 'Faxa_sigmaf', isc, iec, jsc, jec, noah_model%model%sigmaf, rc=rc)
+    ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
     call state_getimport(State_i, 'Faxa_sfcemis', isc, iec, jsc, jec, noah_model%model%sfcemis, rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
     call state_getimport(State_i, 'Faxa_dlwflx', isc, iec, jsc, jec, noah_model%model%dlwflx, rc=rc)
@@ -375,26 +376,29 @@ contains
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
     call state_getimport(State_i, 'Faxa_tg3', isc, iec, jsc, jec, noah_model%model%tg3, rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
-    call state_getimport(State_i, 'Faxa_cm', isc, iec, jsc, jec, noah_model%model%cm, rc=rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return
-    call state_getimport(State_i, 'Faxa_ch', isc, iec, jsc, jec, noah_model%model%ch, rc=rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    !! Is this needed for restart or otherwise? 
+    ! call state_getimport(State_i, 'Faxa_cm', isc, iec, jsc, jec, noah_model%model%cm, rc=rc)
+    ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    !! Is this needed for restart or otherwise? 
+    ! call state_getimport(State_i, 'Faxa_ch', isc, iec, jsc, jec, noah_model%model%ch, rc=rc)
+    ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
     call state_getimport(State_i, 'Faxa_prsl1', isc, iec, jsc, jec, noah_model%model%prsl1, rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
     call state_getimport(State_i, 'Faxa_prslki', isc, iec, jsc, jec, noah_model%model%prslki, rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
     call state_getimport(State_i, 'Faxa_zf', isc, iec, jsc, jec, noah_model%model%zf, rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
-    call state_getimport(State_i, 'Faxa_land', isc, iec, jsc, jec, noah_model%model%land, rc=rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return
-    call state_getimport(State_i, 'Faxa_slopetyp', isc, iec, jsc, jec, noah_model%model%slopetyp, rc=rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return
-    call state_getimport(State_i, 'Faxa_shdmin', isc, iec, jsc, jec, noah_model%model%shdmin, rc=rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return
-    call state_getimport(State_i, 'Faxa_shdmax', isc, iec, jsc, jec, noah_model%model%shdmax, rc=rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return
-    call state_getimport(State_i, 'Faxa_snoalb', isc, iec, jsc, jec, noah_model%model%snoalb, rc=rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    !! Removing these, as now read in by restart
+    ! call state_getimport(State_i, 'Faxa_land', isc, iec, jsc, jec, noah_model%model%land, rc=rc)
+    ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    ! call state_getimport(State_i, 'Faxa_slopetyp', isc, iec, jsc, jec, noah_model%model%slopetyp, rc=rc)
+    ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    ! call state_getimport(State_i, 'Faxa_shdmin', isc, iec, jsc, jec, noah_model%model%shdmin, rc=rc)
+    ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    ! call state_getimport(State_i, 'Faxa_shdmax', isc, iec, jsc, jec, noah_model%model%shdmax, rc=rc)
+    ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    ! call state_getimport(State_i, 'Faxa_snoalb', isc, iec, jsc, jec, noah_model%model%snoalb, rc=rc)
+    ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
     call state_getimport(State_i, 'Faxa_sfalb', isc, iec, jsc, jec, noah_model%model%sfalb, rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
     call state_getimport(State_i, 'Faxa_bexppert', isc, iec, jsc, jec, noah_model%model%bexppert, rc=rc)
@@ -416,26 +420,33 @@ contains
     ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
     call state_getimport(State_i, 'Faxa_sfalb', isc, iec, jsc, jec, noah_model%model%sfalb, rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
-    call state_getimport(State_i, 'Faxa_weasd', isc, iec, jsc, jec, noah_model%model%weasd, rc=rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return
-    call state_getimport(State_i, 'Faxa_snwdph', isc, iec, jsc, jec, noah_model%model%snwdph, rc=rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return
-    call state_getimport(State_i, 'Faxa_tskin', isc, iec, jsc, jec, noah_model%model%tskin, rc=rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return
-    call state_getimport(State_i, 'Faxa_tprcp', isc, iec, jsc, jec, noah_model%model%tprcp, rc=rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return
-    call state_getimport(State_i, 'Faxa_srflag', isc, iec, jsc, jec, noah_model%model%srflag, rc=rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+
+    !! Removing these, as now read in by restart
+    ! call state_getimport(State_i, 'Faxa_weasd', isc, iec, jsc, jec, noah_model%model%weasd, rc=rc)
+    ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    ! call state_getimport(State_i, 'Faxa_tskin', isc, iec, jsc, jec, noah_model%model%tskin, rc=rc)
+    ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    ! call state_getimport(State_i, 'Faxa_snwdph', isc, iec, jsc, jec, noah_model%model%snwdph, rc=rc)
+    ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    ! call state_getimport(State_i, 'Faxa_tprcp', isc, iec, jsc, jec, noah_model%model%tprcp, rc=rc)
+    ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    ! call state_getimport(State_i, 'Faxa_srflag', isc, iec, jsc, jec, noah_model%model%srflag, rc=rc)
+    ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    
     ! call state_getimport(State_i, 'Faxa_smc', isc, iec, jsc, jec, noah_model%model%smc, rc=rc)
     ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
     ! call state_getimport(State_i, 'Faxa_stc', isc, iec, jsc, jec, noah_model%model%stc, rc=rc)
     ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
     ! call state_getimport(State_i, 'Faxa_slc', isc, iec, jsc, jec, noah_model%model%slc, rc=rc)
     ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
-    call state_getimport(State_i, 'Faxa_canopy', isc, iec, jsc, jec, noah_model%model%canopy, rc=rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return
-    call state_getimport(State_i, 'Faxa_trans', isc, iec, jsc, jec, noah_model%model%trans, rc=rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+
+    !! Removing these, as now read in by restart
+    ! call state_getimport(State_i, 'Faxa_canopy', isc, iec, jsc, jec, noah_model%model%canopy, rc=rc)
+    ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    
+    !! Is this needed for restart or otherwise? Note controlled by flag_iter
+    ! call state_getimport(State_i, 'Faxa_trans', isc, iec, jsc, jec, noah_model%model%trans, rc=rc)
+    ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
     call state_getimport(State_i, 'Faxa_tsurf', isc, iec, jsc, jec, noah_model%model%tsurf, rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
     call state_getimport(State_i, 'Faxa_z0rl', isc, iec, jsc, jec, noah_model%model%z0rl, rc=rc)
@@ -444,10 +455,36 @@ contains
     ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
     ! call state_getimport(State_i, 'Faxa_ztpert', isc, iec, jsc, jec, noah_model%model%ztpert, rc=rc)
     ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
-    call state_getimport(State_i, 'Faxa_ustar', isc, iec, jsc, jec, noah_model%model%ustar, rc=rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    !! Is this needed for restart or otherwise?
+    ! call state_getimport(State_i, 'Faxa_ustar', isc, iec, jsc, jec, noah_model%model%ustar, rc=rc)
+    ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
     call state_getimport(State_i, 'Faxa_wind', isc, iec, jsc, jec, noah_model%model%wind, rc=rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return       
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+
+
+    call state_getimport(State_i, 'Faxa_albdvis_lnd', isc, iec, jsc, jec, noah_model%model%albdvis_lnd, rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    call state_getimport(State_i, 'Faxa_albdnir_lnd', isc, iec, jsc, jec, noah_model%model%albdnir_lnd, rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    call state_getimport(State_i, 'Faxa_albivis_lnd', isc, iec, jsc, jec, noah_model%model%albivis_lnd, rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    call state_getimport(State_i, 'Faxa_albinir_lnd', isc, iec, jsc, jec, noah_model%model%albinir_lnd, rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    call state_getimport(State_i, 'Faxa_adjvisbmd', isc, iec, jsc, jec, noah_model%model%adjvisbmd, rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    call state_getimport(State_i, 'Faxa_adjnirbmd', isc, iec, jsc, jec, noah_model%model%adjnirbmd, rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    call state_getimport(State_i, 'Faxa_adjvisdfd', isc, iec, jsc, jec, noah_model%model%adjvisdfd, rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    call state_getimport(State_i, 'Faxa_adjnirdfd', isc, iec, jsc, jec, noah_model%model%adjnirdfd, rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    call state_getimport(State_i, 'Faxa_prslk1', isc, iec, jsc, jec, noah_model%model%prslk1, rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    call state_getimport(State_i, 'Faxa_garea', isc, iec, jsc, jec, noah_model%model%garea, rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    
+
+    
   end subroutine import_allfields_am
 
 
@@ -1059,6 +1096,11 @@ contains
                 endif
              enddo
           enddo
+
+          ! TMP debug
+          write(*,*) 'JP State_GetImport_Int A: ', trim(fldname),  dataPtr2d(1:2,1:2)
+          write(*,*) 'JP State_GetImport_Int B: ', trim(fldname),  output(1:4)
+
        endif
     endif
 
@@ -1142,13 +1184,8 @@ contains
              do i = isc, iec
                 i1 = i + lbnd1 - isc
                 n = n +1
-                if (present(do_sum)) then
-                   !output(i,j) = output(i,j) + dataPtr2d(i1,j1)
-                   output(n) = output(n) + dataPtr2d(i1,j1)
-                else
-                   output(n) = dataPtr2d(i1,j1)
-                   !output(i,j) = dataPtr2d(i1,j1)
-                endif
+                   !output(n) = dataPtr2d(i1,j1)
+                   output(n) = transfer(dataPtr2d(i1,j1),.TRUE.)
              enddo
           enddo
        endif
