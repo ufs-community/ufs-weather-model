@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Tue Sep 21 19:04:55 UTC 2021
 Start Regression test
 
@@ -6,16 +7,1084 @@ Compile 001 elapsed time 187 seconds. -DAPP=ATM -D32BIT=ON -DDEBUG=ON -DMPI=ON -
 baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210901/GNU/control_debug
 working dir  = /scratch2/BMC/gsienkf/Philip.Pegion/stmp2/Philip.Pegion/FV3_RT/rt_7954/control_debug
 Checking test 001 control_debug results ....
+=======
+Tue Sep 21 18:48:06 UTC 2021
+Start Regression test
+
+Compile 001 elapsed time 208 seconds. -DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16,FV3_GFS_v16_flake,FV3_GFS_v16_RRTMGP,FV3_GFS_v16_thompson,FV3_GFS_v16_ugwpv1,FV3_GFS_v16_ras,FV3_HAFS_v0_hwrf_thompson,FV3_HAFS_v0_hwrf -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile 002 elapsed time 202 seconds. -DAPP=ATM -DCCPP_SUITES=FV3_GSD_v0,FV3_GFS_v16_thompson,FV3_RRFS_v1alpha,FV3_RRFS_v1beta -D32BIT=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile 003 elapsed time 174 seconds. -DAPP=ATM -D32BIT=ON -DDEBUG=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Debug
+Compile 004 elapsed time 87 seconds. -DAPP=ATM -DCCPP_SUITES=FV3_HAFS_v0_hwrf_thompson,FV3_HAFS_v0_hwrf -DDEBUG=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Debug
+Compile 005 elapsed time 220 seconds. -DAPP=S2S -DCCPP_SUITES=FV3_GFS_2017_coupled -DMPI=ON -DCMAKE_BUILD_TYPE=Release -DMOM6SOLO=ON
+Compile 006 elapsed time 101 seconds. -DAPP=S2S -DCCPP_SUITES=FV3_GFS_2017_coupled -DDEBUG=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Debug -DMOM6SOLO=ON
+Compile 007 elapsed time 100 seconds. -DAPP=NG-GODAS-NEMSDATM -DMPI=ON -DCMAKE_BUILD_TYPE=Release -DMOM6SOLO=ON
+
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210915/GNU/control
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_22523/control
+Checking test 001 control results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf021.nc .........OK
+ Comparing sfcf024.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf021.nc .........OK
+ Comparing atmf024.nc .........OK
+ Comparing GFSFLX.GrbF00 .........OK
+ Comparing GFSFLX.GrbF21 .........OK
+ Comparing GFSFLX.GrbF24 .........OK
+ Comparing GFSPRS.GrbF00 .........OK
+ Comparing GFSPRS.GrbF21 .........OK
+ Comparing GFSPRS.GrbF24 .........OK
+ Comparing RESTART/coupler.res .........OK
+ Comparing RESTART/fv_core.res.nc ............SKIP for gnu compilers
+ Comparing RESTART/fv_core.res.tile1.nc .........OK
+ Comparing RESTART/fv_core.res.tile2.nc .........OK
+ Comparing RESTART/fv_core.res.tile3.nc .........OK
+ Comparing RESTART/fv_core.res.tile4.nc .........OK
+ Comparing RESTART/fv_core.res.tile5.nc .........OK
+ Comparing RESTART/fv_core.res.tile6.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile1.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile2.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile3.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile4.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile5.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile6.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile1.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile2.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile3.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile4.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile5.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile6.nc .........OK
+ Comparing RESTART/phy_data.tile1.nc .........OK
+ Comparing RESTART/phy_data.tile2.nc .........OK
+ Comparing RESTART/phy_data.tile3.nc .........OK
+ Comparing RESTART/phy_data.tile4.nc .........OK
+ Comparing RESTART/phy_data.tile5.nc .........OK
+ Comparing RESTART/phy_data.tile6.nc .........OK
+ Comparing RESTART/sfc_data.tile1.nc .........OK
+ Comparing RESTART/sfc_data.tile2.nc .........OK
+ Comparing RESTART/sfc_data.tile3.nc .........OK
+ Comparing RESTART/sfc_data.tile4.nc .........OK
+ Comparing RESTART/sfc_data.tile5.nc .........OK
+ Comparing RESTART/sfc_data.tile6.nc .........OK
+
+  0: The total amount of wall time                        = 801.609193
+
+Test 001 control PASS
+
+
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210915/GNU/control
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_22523/control_restart
+Checking test 002 control_restart results ....
+ Comparing sfcf024.nc .........OK
+ Comparing atmf024.nc .........OK
+ Comparing GFSFLX.GrbF24 .........OK
+ Comparing GFSPRS.GrbF24 .........OK
+ Comparing RESTART/coupler.res .........OK
+ Comparing RESTART/fv_core.res.nc ............SKIP for gnu compilers
+ Comparing RESTART/fv_core.res.tile1.nc .........OK
+ Comparing RESTART/fv_core.res.tile2.nc .........OK
+ Comparing RESTART/fv_core.res.tile3.nc .........OK
+ Comparing RESTART/fv_core.res.tile4.nc .........OK
+ Comparing RESTART/fv_core.res.tile5.nc .........OK
+ Comparing RESTART/fv_core.res.tile6.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile1.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile2.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile3.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile4.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile5.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile6.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile1.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile2.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile3.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile4.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile5.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile6.nc .........OK
+ Comparing RESTART/phy_data.tile1.nc .........OK
+ Comparing RESTART/phy_data.tile2.nc .........OK
+ Comparing RESTART/phy_data.tile3.nc .........OK
+ Comparing RESTART/phy_data.tile4.nc .........OK
+ Comparing RESTART/phy_data.tile5.nc .........OK
+ Comparing RESTART/phy_data.tile6.nc .........OK
+ Comparing RESTART/sfc_data.tile1.nc .........OK
+ Comparing RESTART/sfc_data.tile2.nc .........OK
+ Comparing RESTART/sfc_data.tile3.nc .........OK
+ Comparing RESTART/sfc_data.tile4.nc .........OK
+ Comparing RESTART/sfc_data.tile5.nc .........OK
+ Comparing RESTART/sfc_data.tile6.nc .........OK
+
+  0: The total amount of wall time                        = 388.314012
+
+Test 002 control_restart PASS
+
+
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210915/GNU/control_c48
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_22523/control_c48
+Checking test 003 control_c48 results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf024.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf024.nc .........OK
+ Comparing RESTART/coupler.res .........OK
+ Comparing RESTART/fv_core.res.nc ............SKIP for gnu compilers
+ Comparing RESTART/fv_core.res.tile1.nc .........OK
+ Comparing RESTART/fv_core.res.tile2.nc .........OK
+ Comparing RESTART/fv_core.res.tile3.nc .........OK
+ Comparing RESTART/fv_core.res.tile4.nc .........OK
+ Comparing RESTART/fv_core.res.tile5.nc .........OK
+ Comparing RESTART/fv_core.res.tile6.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile1.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile2.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile3.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile4.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile5.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile6.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile1.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile2.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile3.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile4.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile5.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile6.nc .........OK
+ Comparing RESTART/phy_data.tile1.nc .........OK
+ Comparing RESTART/phy_data.tile2.nc .........OK
+ Comparing RESTART/phy_data.tile3.nc .........OK
+ Comparing RESTART/phy_data.tile4.nc .........OK
+ Comparing RESTART/phy_data.tile5.nc .........OK
+ Comparing RESTART/phy_data.tile6.nc .........OK
+ Comparing RESTART/sfc_data.tile1.nc .........OK
+ Comparing RESTART/sfc_data.tile2.nc .........OK
+ Comparing RESTART/sfc_data.tile3.nc .........OK
+ Comparing RESTART/sfc_data.tile4.nc .........OK
+ Comparing RESTART/sfc_data.tile5.nc .........OK
+ Comparing RESTART/sfc_data.tile6.nc .........OK
+
+0: The total amount of wall time                        = 669.963604
+
+Test 003 control_c48 PASS
+
+
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210915/GNU/control_stochy
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_22523/control_stochy
+Checking test 004 control_stochy results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf012.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf012.nc .........OK
+ Comparing GFSFLX.GrbF00 .........OK
+ Comparing GFSFLX.GrbF12 .........OK
+ Comparing GFSPRS.GrbF00 .........OK
+ Comparing GFSPRS.GrbF12 .........OK
+
+  0: The total amount of wall time                        = 647.381628
+
+Test 004 control_stochy PASS
+
+
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210915/GNU/control_flake
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_22523/control_flake
+Checking test 005 control_flake results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf024.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf024.nc .........OK
+ Comparing GFSFLX.GrbF00 .........OK
+ Comparing GFSFLX.GrbF24 .........OK
+ Comparing GFSPRS.GrbF00 .........OK
+ Comparing GFSPRS.GrbF24 .........OK
+
+  0: The total amount of wall time                        = 1394.220128
+
+Test 005 control_flake PASS
+
+
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210915/GNU/control_rrtmgp
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_22523/control_rrtmgp
+Checking test 006 control_rrtmgp results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf024.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf024.nc .........OK
+ Comparing GFSFLX.GrbF00 .........OK
+ Comparing GFSFLX.GrbF24 .........OK
+ Comparing GFSPRS.GrbF00 .........OK
+ Comparing GFSPRS.GrbF24 .........OK
+
+  0: The total amount of wall time                        = 885.858926
+
+Test 006 control_rrtmgp PASS
+
+
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210915/GNU/control_thompson
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_22523/control_thompson
+Checking test 007 control_thompson results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf024.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf024.nc .........OK
+ Comparing GFSFLX.GrbF00 .........OK
+ Comparing GFSFLX.GrbF24 .........OK
+ Comparing GFSPRS.GrbF00 .........OK
+ Comparing GFSPRS.GrbF24 .........OK
+
+  0: The total amount of wall time                        = 985.769604
+
+Test 007 control_thompson PASS
+
+
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210915/GNU/control_thompson_no_aero
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_22523/control_thompson_no_aero
+Checking test 008 control_thompson_no_aero results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf024.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf024.nc .........OK
+ Comparing GFSFLX.GrbF00 .........OK
+ Comparing GFSFLX.GrbF24 .........OK
+ Comparing GFSPRS.GrbF00 .........OK
+ Comparing GFSPRS.GrbF24 .........OK
+
+  0: The total amount of wall time                        = 987.635803
+
+Test 008 control_thompson_no_aero PASS
+
+
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210915/GNU/control_ugwpv1
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_22523/control_ugwpv1
+Checking test 009 control_ugwpv1 results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf024.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf024.nc .........OK
+ Comparing GFSFLX.GrbF00 .........OK
+ Comparing GFSFLX.GrbF24 .........OK
+ Comparing GFSPRS.GrbF00 .........OK
+ Comparing GFSPRS.GrbF24 .........OK
+
+  0: The total amount of wall time                        = 977.952768
+
+Test 009 control_ugwpv1 PASS
+
+
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210915/GNU/control_ras
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_22523/control_ras
+Checking test 010 control_ras results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf024.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf024.nc .........OK
+ Comparing GFSFLX.GrbF00 .........OK
+ Comparing GFSFLX.GrbF24 .........OK
+ Comparing GFSPRS.GrbF00 .........OK
+ Comparing GFSPRS.GrbF24 .........OK
+
+  0: The total amount of wall time                        = 854.117216
+
+Test 010 control_ras PASS
+
+
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210915/GNU/HAFS_v0_HWRF_thompson
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_22523/fv3_HAFS_v0_hwrf_thompson
+Checking test 011 fv3_HAFS_v0_hwrf_thompson results ....
+ Comparing atmos_4xdaily.tile1.nc .........OK
+ Comparing atmos_4xdaily.tile2.nc .........OK
+ Comparing atmos_4xdaily.tile3.nc .........OK
+ Comparing atmos_4xdaily.tile4.nc .........OK
+ Comparing atmos_4xdaily.tile5.nc .........OK
+ Comparing atmos_4xdaily.tile6.nc .........OK
+ Comparing sfcf000.tile1.nc .........OK
+ Comparing sfcf000.tile2.nc .........OK
+ Comparing sfcf000.tile3.nc .........OK
+ Comparing sfcf000.tile4.nc .........OK
+ Comparing sfcf000.tile5.nc .........OK
+ Comparing sfcf000.tile6.nc .........OK
+ Comparing sfcf024.tile1.nc .........OK
+ Comparing sfcf024.tile2.nc .........OK
+ Comparing sfcf024.tile3.nc .........OK
+ Comparing sfcf024.tile4.nc .........OK
+ Comparing sfcf024.tile5.nc .........OK
+ Comparing sfcf024.tile6.nc .........OK
+ Comparing atmf000.tile1.nc .........OK
+ Comparing atmf000.tile2.nc .........OK
+ Comparing atmf000.tile3.nc .........OK
+ Comparing atmf000.tile4.nc .........OK
+ Comparing atmf000.tile5.nc .........OK
+ Comparing atmf000.tile6.nc .........OK
+ Comparing atmf024.tile1.nc .........OK
+ Comparing atmf024.tile2.nc .........OK
+ Comparing atmf024.tile3.nc .........OK
+ Comparing atmf024.tile4.nc .........OK
+ Comparing atmf024.tile5.nc .........OK
+ Comparing atmf024.tile6.nc .........OK
+ Comparing RESTART/coupler.res .........OK
+ Comparing RESTART/fv_core.res.nc ............SKIP for gnu compilers
+ Comparing RESTART/fv_core.res.tile1.nc .........OK
+ Comparing RESTART/fv_core.res.tile2.nc .........OK
+ Comparing RESTART/fv_core.res.tile3.nc .........OK
+ Comparing RESTART/fv_core.res.tile4.nc .........OK
+ Comparing RESTART/fv_core.res.tile5.nc .........OK
+ Comparing RESTART/fv_core.res.tile6.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile1.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile2.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile3.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile4.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile5.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile6.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile1.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile2.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile3.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile4.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile5.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile6.nc .........OK
+ Comparing RESTART/sfc_data.tile1.nc .........OK
+ Comparing RESTART/sfc_data.tile2.nc .........OK
+ Comparing RESTART/sfc_data.tile3.nc .........OK
+ Comparing RESTART/sfc_data.tile4.nc .........OK
+ Comparing RESTART/sfc_data.tile5.nc .........OK
+ Comparing RESTART/sfc_data.tile6.nc .........OK
+ Comparing RESTART/phy_data.tile1.nc .........OK
+ Comparing RESTART/phy_data.tile2.nc .........OK
+ Comparing RESTART/phy_data.tile3.nc .........OK
+ Comparing RESTART/phy_data.tile4.nc .........OK
+ Comparing RESTART/phy_data.tile5.nc .........OK
+ Comparing RESTART/phy_data.tile6.nc .........OK
+
+  0: The total amount of wall time                        = 633.191824
+
+Test 011 fv3_HAFS_v0_hwrf_thompson PASS
+
+
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210915/GNU/ESG_HAFS_v0_HWRF_thompson
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_22523/fv3_esg_HAFS_v0_hwrf_thompson
+Checking test 012 fv3_esg_HAFS_v0_hwrf_thompson results ....
+ Comparing atmos_4xdaily.nc .........OK
+ Comparing phyf000.nc .........OK
+ Comparing phyf012.nc .........OK
+ Comparing dynf000.nc .........OK
+ Comparing dynf012.nc .........OK
+ Comparing RESTART/coupler.res .........OK
+ Comparing RESTART/fv_core.res.nc ............SKIP for gnu compilers
+ Comparing RESTART/fv_core.res.tile1.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile1.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile1.nc .........OK
+ Comparing RESTART/sfc_data.nc .........OK
+ Comparing RESTART/phy_data.nc .........OK
+
+ 0: The total amount of wall time                        = 448.330430
+
+Test 012 fv3_esg_HAFS_v0_hwrf_thompson PASS
+
+
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210915/GNU/fv3_gsd
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_22523/fv3_gsd
+Checking test 013 fv3_gsd results ....
+ Comparing atmos_4xdaily.tile1.nc .........OK
+ Comparing atmos_4xdaily.tile2.nc .........OK
+ Comparing atmos_4xdaily.tile3.nc .........OK
+ Comparing atmos_4xdaily.tile4.nc .........OK
+ Comparing atmos_4xdaily.tile5.nc .........OK
+ Comparing atmos_4xdaily.tile6.nc .........OK
+ Comparing sfcf000.tile1.nc .........OK
+ Comparing sfcf000.tile2.nc .........OK
+ Comparing sfcf000.tile3.nc .........OK
+ Comparing sfcf000.tile4.nc .........OK
+ Comparing sfcf000.tile5.nc .........OK
+ Comparing sfcf000.tile6.nc .........OK
+ Comparing sfcf024.tile1.nc .........OK
+ Comparing sfcf024.tile2.nc .........OK
+ Comparing sfcf024.tile3.nc .........OK
+ Comparing sfcf024.tile4.nc .........OK
+ Comparing sfcf024.tile5.nc .........OK
+ Comparing sfcf024.tile6.nc .........OK
+ Comparing sfcf027.tile1.nc .........OK
+ Comparing sfcf027.tile2.nc .........OK
+ Comparing sfcf027.tile3.nc .........OK
+ Comparing sfcf027.tile4.nc .........OK
+ Comparing sfcf027.tile5.nc .........OK
+ Comparing sfcf027.tile6.nc .........OK
+ Comparing sfcf048.tile1.nc .........OK
+ Comparing sfcf048.tile2.nc .........OK
+ Comparing sfcf048.tile3.nc .........OK
+ Comparing sfcf048.tile4.nc .........OK
+ Comparing sfcf048.tile5.nc .........OK
+ Comparing sfcf048.tile6.nc .........OK
+ Comparing atmf000.tile1.nc .........OK
+ Comparing atmf000.tile2.nc .........OK
+ Comparing atmf000.tile3.nc .........OK
+ Comparing atmf000.tile4.nc .........OK
+ Comparing atmf000.tile5.nc .........OK
+ Comparing atmf000.tile6.nc .........OK
+ Comparing atmf024.tile1.nc .........OK
+ Comparing atmf024.tile2.nc .........OK
+ Comparing atmf024.tile3.nc .........OK
+ Comparing atmf024.tile4.nc .........OK
+ Comparing atmf024.tile5.nc .........OK
+ Comparing atmf024.tile6.nc .........OK
+ Comparing atmf027.tile1.nc .........OK
+ Comparing atmf027.tile2.nc .........OK
+ Comparing atmf027.tile3.nc .........OK
+ Comparing atmf027.tile4.nc .........OK
+ Comparing atmf027.tile5.nc .........OK
+ Comparing atmf027.tile6.nc .........OK
+ Comparing atmf048.tile1.nc .........OK
+ Comparing atmf048.tile2.nc .........OK
+ Comparing atmf048.tile3.nc .........OK
+ Comparing atmf048.tile4.nc .........OK
+ Comparing atmf048.tile5.nc .........OK
+ Comparing atmf048.tile6.nc .........OK
+ Comparing RESTART/coupler.res .........OK
+ Comparing RESTART/fv_core.res.nc ............SKIP for gnu compilers
+ Comparing RESTART/fv_core.res.tile1.nc .........OK
+ Comparing RESTART/fv_core.res.tile2.nc .........OK
+ Comparing RESTART/fv_core.res.tile3.nc .........OK
+ Comparing RESTART/fv_core.res.tile4.nc .........OK
+ Comparing RESTART/fv_core.res.tile5.nc .........OK
+ Comparing RESTART/fv_core.res.tile6.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile1.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile2.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile3.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile4.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile5.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile6.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile1.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile2.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile3.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile4.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile5.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile6.nc .........OK
+ Comparing RESTART/phy_data.tile1.nc .........OK
+ Comparing RESTART/phy_data.tile2.nc .........OK
+ Comparing RESTART/phy_data.tile3.nc .........OK
+ Comparing RESTART/phy_data.tile4.nc .........OK
+ Comparing RESTART/phy_data.tile5.nc .........OK
+ Comparing RESTART/phy_data.tile6.nc .........OK
+ Comparing RESTART/sfc_data.tile1.nc .........OK
+ Comparing RESTART/sfc_data.tile2.nc .........OK
+ Comparing RESTART/sfc_data.tile3.nc .........OK
+ Comparing RESTART/sfc_data.tile4.nc .........OK
+ Comparing RESTART/sfc_data.tile5.nc .........OK
+ Comparing RESTART/sfc_data.tile6.nc .........OK
+
+  0: The total amount of wall time                        = 1067.768531
+
+Test 013 fv3_gsd PASS
+
+
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210915/GNU/fv3_rrfs_v1alpha
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_22523/fv3_rrfs_v1alpha
+Checking test 014 fv3_rrfs_v1alpha results ....
+ Comparing atmos_4xdaily.tile1.nc .........OK
+ Comparing atmos_4xdaily.tile2.nc .........OK
+ Comparing atmos_4xdaily.tile3.nc .........OK
+ Comparing atmos_4xdaily.tile4.nc .........OK
+ Comparing atmos_4xdaily.tile5.nc .........OK
+ Comparing atmos_4xdaily.tile6.nc .........OK
+ Comparing sfcf000.tile1.nc .........OK
+ Comparing sfcf000.tile2.nc .........OK
+ Comparing sfcf000.tile3.nc .........OK
+ Comparing sfcf000.tile4.nc .........OK
+ Comparing sfcf000.tile5.nc .........OK
+ Comparing sfcf000.tile6.nc .........OK
+ Comparing sfcf024.tile1.nc .........OK
+ Comparing sfcf024.tile2.nc .........OK
+ Comparing sfcf024.tile3.nc .........OK
+ Comparing sfcf024.tile4.nc .........OK
+ Comparing sfcf024.tile5.nc .........OK
+ Comparing sfcf024.tile6.nc .........OK
+ Comparing atmf000.tile1.nc .........OK
+ Comparing atmf000.tile2.nc .........OK
+ Comparing atmf000.tile3.nc .........OK
+ Comparing atmf000.tile4.nc .........OK
+ Comparing atmf000.tile5.nc .........OK
+ Comparing atmf000.tile6.nc .........OK
+ Comparing atmf024.tile1.nc .........OK
+ Comparing atmf024.tile2.nc .........OK
+ Comparing atmf024.tile3.nc .........OK
+ Comparing atmf024.tile4.nc .........OK
+ Comparing atmf024.tile5.nc .........OK
+ Comparing atmf024.tile6.nc .........OK
+ Comparing RESTART/coupler.res .........OK
+ Comparing RESTART/fv_core.res.nc ............SKIP for gnu compilers
+ Comparing RESTART/fv_core.res.tile1.nc .........OK
+ Comparing RESTART/fv_core.res.tile2.nc .........OK
+ Comparing RESTART/fv_core.res.tile3.nc .........OK
+ Comparing RESTART/fv_core.res.tile4.nc .........OK
+ Comparing RESTART/fv_core.res.tile5.nc .........OK
+ Comparing RESTART/fv_core.res.tile6.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile1.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile2.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile3.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile4.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile5.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile6.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile1.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile2.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile3.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile4.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile5.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile6.nc .........OK
+ Comparing RESTART/phy_data.tile1.nc .........OK
+ Comparing RESTART/phy_data.tile2.nc .........OK
+ Comparing RESTART/phy_data.tile3.nc .........OK
+ Comparing RESTART/phy_data.tile4.nc .........OK
+ Comparing RESTART/phy_data.tile5.nc .........OK
+ Comparing RESTART/phy_data.tile6.nc .........OK
+ Comparing RESTART/sfc_data.tile1.nc .........OK
+ Comparing RESTART/sfc_data.tile2.nc .........OK
+ Comparing RESTART/sfc_data.tile3.nc .........OK
+ Comparing RESTART/sfc_data.tile4.nc .........OK
+ Comparing RESTART/sfc_data.tile5.nc .........OK
+ Comparing RESTART/sfc_data.tile6.nc .........OK
+
+  0: The total amount of wall time                        = 382.498260
+
+Test 014 fv3_rrfs_v1alpha PASS
+
+
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210915/GNU/fv3_rrfs_v1beta
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_22523/fv3_rrfs_v1beta
+Checking test 015 fv3_rrfs_v1beta results ....
+ Comparing atmos_4xdaily.tile1.nc .........OK
+ Comparing atmos_4xdaily.tile2.nc .........OK
+ Comparing atmos_4xdaily.tile3.nc .........OK
+ Comparing atmos_4xdaily.tile4.nc .........OK
+ Comparing atmos_4xdaily.tile5.nc .........OK
+ Comparing atmos_4xdaily.tile6.nc .........OK
+ Comparing sfcf000.tile1.nc .........OK
+ Comparing sfcf000.tile2.nc .........OK
+ Comparing sfcf000.tile3.nc .........OK
+ Comparing sfcf000.tile4.nc .........OK
+ Comparing sfcf000.tile5.nc .........OK
+ Comparing sfcf000.tile6.nc .........OK
+ Comparing sfcf024.tile1.nc .........OK
+ Comparing sfcf024.tile2.nc .........OK
+ Comparing sfcf024.tile3.nc .........OK
+ Comparing sfcf024.tile4.nc .........OK
+ Comparing sfcf024.tile5.nc .........OK
+ Comparing sfcf024.tile6.nc .........OK
+ Comparing atmf000.tile1.nc .........OK
+ Comparing atmf000.tile2.nc .........OK
+ Comparing atmf000.tile3.nc .........OK
+ Comparing atmf000.tile4.nc .........OK
+ Comparing atmf000.tile5.nc .........OK
+ Comparing atmf000.tile6.nc .........OK
+ Comparing atmf024.tile1.nc .........OK
+ Comparing atmf024.tile2.nc .........OK
+ Comparing atmf024.tile3.nc .........OK
+ Comparing atmf024.tile4.nc .........OK
+ Comparing atmf024.tile5.nc .........OK
+ Comparing atmf024.tile6.nc .........OK
+ Comparing RESTART/coupler.res .........OK
+ Comparing RESTART/fv_core.res.nc ............SKIP for gnu compilers
+ Comparing RESTART/fv_core.res.tile1.nc .........OK
+ Comparing RESTART/fv_core.res.tile2.nc .........OK
+ Comparing RESTART/fv_core.res.tile3.nc .........OK
+ Comparing RESTART/fv_core.res.tile4.nc .........OK
+ Comparing RESTART/fv_core.res.tile5.nc .........OK
+ Comparing RESTART/fv_core.res.tile6.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile1.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile2.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile3.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile4.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile5.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile6.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile1.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile2.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile3.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile4.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile5.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile6.nc .........OK
+ Comparing RESTART/phy_data.tile1.nc .........OK
+ Comparing RESTART/phy_data.tile2.nc .........OK
+ Comparing RESTART/phy_data.tile3.nc .........OK
+ Comparing RESTART/phy_data.tile4.nc .........OK
+ Comparing RESTART/phy_data.tile5.nc .........OK
+ Comparing RESTART/phy_data.tile6.nc .........OK
+ Comparing RESTART/sfc_data.tile1.nc .........OK
+ Comparing RESTART/sfc_data.tile2.nc .........OK
+ Comparing RESTART/sfc_data.tile3.nc .........OK
+ Comparing RESTART/sfc_data.tile4.nc .........OK
+ Comparing RESTART/sfc_data.tile5.nc .........OK
+ Comparing RESTART/sfc_data.tile6.nc .........OK
+
+  0: The total amount of wall time                        = 364.436018
+
+Test 015 fv3_rrfs_v1beta PASS
+
+
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210915/GNU/control_debug
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_22523/control_debug
+Checking test 016 control_debug results ....
  Comparing sfcf000.nc .........OK
  Comparing sfcf001.nc .........OK
  Comparing atmf000.nc .........OK
  Comparing atmf001.nc .........OK
 
+  0: The total amount of wall time                        = 98.412661
+
+Test 016 control_debug PASS
+
+
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210915/GNU/control_diag_debug
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_22523/control_diag_debug
+Checking test 017 control_diag_debug results ....
+>>>>>>> upstream/develop
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf001.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf001.nc .........OK
+
+<<<<<<< HEAD
   0: The total amount of wall time                        = 98.758877
+=======
+  0: The total amount of wall time                        = 125.006403
+
+Test 017 control_diag_debug PASS
+
+
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210915/GNU/fv3_regional_control_debug
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_22523/regional_control_debug
+Checking test 018 regional_control_debug results ....
+ Comparing atmos_4xdaily.nc .........OK
+ Comparing fv3_history2d.nc .........OK
+ Comparing fv3_history.nc .........OK
+ Comparing RESTART/fv_core.res.tile1_new.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile1_new.nc .........OK
+
+ 0: The total amount of wall time                        = 122.827336
+
+Test 018 regional_control_debug PASS
+
+
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210915/GNU/fv3_rrfs_v1alpha_debug
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_22523/fv3_rrfs_v1alpha_debug
+Checking test 019 fv3_rrfs_v1alpha_debug results ....
+ Comparing atmos_4xdaily.tile1.nc .........OK
+ Comparing atmos_4xdaily.tile2.nc .........OK
+ Comparing atmos_4xdaily.tile3.nc .........OK
+ Comparing atmos_4xdaily.tile4.nc .........OK
+ Comparing atmos_4xdaily.tile5.nc .........OK
+ Comparing atmos_4xdaily.tile6.nc .........OK
+ Comparing sfcf000.tile1.nc .........OK
+ Comparing sfcf000.tile2.nc .........OK
+ Comparing sfcf000.tile3.nc .........OK
+ Comparing sfcf000.tile4.nc .........OK
+ Comparing sfcf000.tile5.nc .........OK
+ Comparing sfcf000.tile6.nc .........OK
+ Comparing sfcf003.tile1.nc .........OK
+ Comparing sfcf003.tile2.nc .........OK
+ Comparing sfcf003.tile3.nc .........OK
+ Comparing sfcf003.tile4.nc .........OK
+ Comparing sfcf003.tile5.nc .........OK
+ Comparing sfcf003.tile6.nc .........OK
+ Comparing atmf000.tile1.nc .........OK
+ Comparing atmf000.tile2.nc .........OK
+ Comparing atmf000.tile3.nc .........OK
+ Comparing atmf000.tile4.nc .........OK
+ Comparing atmf000.tile5.nc .........OK
+ Comparing atmf000.tile6.nc .........OK
+ Comparing atmf003.tile1.nc .........OK
+ Comparing atmf003.tile2.nc .........OK
+ Comparing atmf003.tile3.nc .........OK
+ Comparing atmf003.tile4.nc .........OK
+ Comparing atmf003.tile5.nc .........OK
+ Comparing atmf003.tile6.nc .........OK
+ Comparing RESTART/coupler.res .........OK
+ Comparing RESTART/fv_core.res.nc ............SKIP for gnu compilers
+ Comparing RESTART/fv_core.res.tile1.nc .........OK
+ Comparing RESTART/fv_core.res.tile2.nc .........OK
+ Comparing RESTART/fv_core.res.tile3.nc .........OK
+ Comparing RESTART/fv_core.res.tile4.nc .........OK
+ Comparing RESTART/fv_core.res.tile5.nc .........OK
+ Comparing RESTART/fv_core.res.tile6.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile1.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile2.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile3.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile4.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile5.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile6.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile1.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile2.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile3.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile4.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile5.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile6.nc .........OK
+ Comparing RESTART/phy_data.tile1.nc .........OK
+ Comparing RESTART/phy_data.tile2.nc .........OK
+ Comparing RESTART/phy_data.tile3.nc .........OK
+ Comparing RESTART/phy_data.tile4.nc .........OK
+ Comparing RESTART/phy_data.tile5.nc .........OK
+ Comparing RESTART/phy_data.tile6.nc .........OK
+ Comparing RESTART/sfc_data.tile1.nc .........OK
+ Comparing RESTART/sfc_data.tile2.nc .........OK
+ Comparing RESTART/sfc_data.tile3.nc .........OK
+ Comparing RESTART/sfc_data.tile4.nc .........OK
+ Comparing RESTART/sfc_data.tile5.nc .........OK
+ Comparing RESTART/sfc_data.tile6.nc .........OK
+
+  0: The total amount of wall time                        = 119.339189
+
+Test 019 fv3_rrfs_v1alpha_debug PASS
+
+
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210915/GNU/fv3_rrfs_v1beta_debug
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_22523/fv3_rrfs_v1beta_debug
+Checking test 020 fv3_rrfs_v1beta_debug results ....
+ Comparing atmos_4xdaily.tile1.nc .........OK
+ Comparing atmos_4xdaily.tile2.nc .........OK
+ Comparing atmos_4xdaily.tile3.nc .........OK
+ Comparing atmos_4xdaily.tile4.nc .........OK
+ Comparing atmos_4xdaily.tile5.nc .........OK
+ Comparing atmos_4xdaily.tile6.nc .........OK
+ Comparing sfcf000.tile1.nc .........OK
+ Comparing sfcf000.tile2.nc .........OK
+ Comparing sfcf000.tile3.nc .........OK
+ Comparing sfcf000.tile4.nc .........OK
+ Comparing sfcf000.tile5.nc .........OK
+ Comparing sfcf000.tile6.nc .........OK
+ Comparing sfcf003.tile1.nc .........OK
+ Comparing sfcf003.tile2.nc .........OK
+ Comparing sfcf003.tile3.nc .........OK
+ Comparing sfcf003.tile4.nc .........OK
+ Comparing sfcf003.tile5.nc .........OK
+ Comparing sfcf003.tile6.nc .........OK
+ Comparing atmf000.tile1.nc .........OK
+ Comparing atmf000.tile2.nc .........OK
+ Comparing atmf000.tile3.nc .........OK
+ Comparing atmf000.tile4.nc .........OK
+ Comparing atmf000.tile5.nc .........OK
+ Comparing atmf000.tile6.nc .........OK
+ Comparing atmf003.tile1.nc .........OK
+ Comparing atmf003.tile2.nc .........OK
+ Comparing atmf003.tile3.nc .........OK
+ Comparing atmf003.tile4.nc .........OK
+ Comparing atmf003.tile5.nc .........OK
+ Comparing atmf003.tile6.nc .........OK
+ Comparing RESTART/coupler.res .........OK
+ Comparing RESTART/fv_core.res.nc ............SKIP for gnu compilers
+ Comparing RESTART/fv_core.res.tile1.nc .........OK
+ Comparing RESTART/fv_core.res.tile2.nc .........OK
+ Comparing RESTART/fv_core.res.tile3.nc .........OK
+ Comparing RESTART/fv_core.res.tile4.nc .........OK
+ Comparing RESTART/fv_core.res.tile5.nc .........OK
+ Comparing RESTART/fv_core.res.tile6.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile1.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile2.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile3.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile4.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile5.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile6.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile1.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile2.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile3.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile4.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile5.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile6.nc .........OK
+ Comparing RESTART/phy_data.tile1.nc .........OK
+ Comparing RESTART/phy_data.tile2.nc .........OK
+ Comparing RESTART/phy_data.tile3.nc .........OK
+ Comparing RESTART/phy_data.tile4.nc .........OK
+ Comparing RESTART/phy_data.tile5.nc .........OK
+ Comparing RESTART/phy_data.tile6.nc .........OK
+ Comparing RESTART/sfc_data.tile1.nc .........OK
+ Comparing RESTART/sfc_data.tile2.nc .........OK
+ Comparing RESTART/sfc_data.tile3.nc .........OK
+ Comparing RESTART/sfc_data.tile4.nc .........OK
+ Comparing RESTART/sfc_data.tile5.nc .........OK
+ Comparing RESTART/sfc_data.tile6.nc .........OK
+
+  0: The total amount of wall time                        = 116.025587
+
+Test 020 fv3_rrfs_v1beta_debug PASS
+
+
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210915/GNU/fv3_gsd_debug
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_22523/fv3_gsd_debug
+Checking test 021 fv3_gsd_debug results ....
+ Comparing atmos_4xdaily.tile1.nc .........OK
+ Comparing atmos_4xdaily.tile2.nc .........OK
+ Comparing atmos_4xdaily.tile3.nc .........OK
+ Comparing atmos_4xdaily.tile4.nc .........OK
+ Comparing atmos_4xdaily.tile5.nc .........OK
+ Comparing atmos_4xdaily.tile6.nc .........OK
+ Comparing sfcf000.tile1.nc .........OK
+ Comparing sfcf000.tile2.nc .........OK
+ Comparing sfcf000.tile3.nc .........OK
+ Comparing sfcf000.tile4.nc .........OK
+ Comparing sfcf000.tile5.nc .........OK
+ Comparing sfcf000.tile6.nc .........OK
+ Comparing sfcf003.tile1.nc .........OK
+ Comparing sfcf003.tile2.nc .........OK
+ Comparing sfcf003.tile3.nc .........OK
+ Comparing sfcf003.tile4.nc .........OK
+ Comparing sfcf003.tile5.nc .........OK
+ Comparing sfcf003.tile6.nc .........OK
+ Comparing atmf000.tile1.nc .........OK
+ Comparing atmf000.tile2.nc .........OK
+ Comparing atmf000.tile3.nc .........OK
+ Comparing atmf000.tile4.nc .........OK
+ Comparing atmf000.tile5.nc .........OK
+ Comparing atmf000.tile6.nc .........OK
+ Comparing atmf003.tile1.nc .........OK
+ Comparing atmf003.tile2.nc .........OK
+ Comparing atmf003.tile3.nc .........OK
+ Comparing atmf003.tile4.nc .........OK
+ Comparing atmf003.tile5.nc .........OK
+ Comparing atmf003.tile6.nc .........OK
+ Comparing RESTART/coupler.res .........OK
+ Comparing RESTART/fv_core.res.nc ............SKIP for gnu compilers
+ Comparing RESTART/fv_core.res.tile1.nc .........OK
+ Comparing RESTART/fv_core.res.tile2.nc .........OK
+ Comparing RESTART/fv_core.res.tile3.nc .........OK
+ Comparing RESTART/fv_core.res.tile4.nc .........OK
+ Comparing RESTART/fv_core.res.tile5.nc .........OK
+ Comparing RESTART/fv_core.res.tile6.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile1.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile2.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile3.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile4.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile5.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile6.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile1.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile2.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile3.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile4.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile5.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile6.nc .........OK
+ Comparing RESTART/phy_data.tile1.nc .........OK
+ Comparing RESTART/phy_data.tile2.nc .........OK
+ Comparing RESTART/phy_data.tile3.nc .........OK
+ Comparing RESTART/phy_data.tile4.nc .........OK
+ Comparing RESTART/phy_data.tile5.nc .........OK
+ Comparing RESTART/phy_data.tile6.nc .........OK
+ Comparing RESTART/sfc_data.tile1.nc .........OK
+ Comparing RESTART/sfc_data.tile2.nc .........OK
+ Comparing RESTART/sfc_data.tile3.nc .........OK
+ Comparing RESTART/sfc_data.tile4.nc .........OK
+ Comparing RESTART/sfc_data.tile5.nc .........OK
+ Comparing RESTART/sfc_data.tile6.nc .........OK
+
+  0: The total amount of wall time                        = 142.897424
+
+Test 021 fv3_gsd_debug PASS
+
+
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210915/GNU/fv3_gsd_diag_debug
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_22523/fv3_gsd_diag_debug
+Checking test 022 fv3_gsd_diag_debug results ....
+ Comparing sfcf000.tile1.nc .........OK
+ Comparing sfcf000.tile2.nc .........OK
+ Comparing sfcf000.tile3.nc .........OK
+ Comparing sfcf000.tile4.nc .........OK
+ Comparing sfcf000.tile5.nc .........OK
+ Comparing sfcf000.tile6.nc .........OK
+ Comparing sfcf001.tile1.nc .........OK
+ Comparing sfcf001.tile2.nc .........OK
+ Comparing sfcf001.tile3.nc .........OK
+ Comparing sfcf001.tile4.nc .........OK
+ Comparing sfcf001.tile5.nc .........OK
+ Comparing sfcf001.tile6.nc .........OK
+ Comparing atmf000.tile1.nc .........OK
+ Comparing atmf000.tile2.nc .........OK
+ Comparing atmf000.tile3.nc .........OK
+ Comparing atmf000.tile4.nc .........OK
+ Comparing atmf000.tile5.nc .........OK
+ Comparing atmf000.tile6.nc .........OK
+ Comparing atmf001.tile1.nc .........OK
+ Comparing atmf001.tile2.nc .........OK
+ Comparing atmf001.tile3.nc .........OK
+ Comparing atmf001.tile4.nc .........OK
+ Comparing atmf001.tile5.nc .........OK
+ Comparing atmf001.tile6.nc .........OK
+
+  0: The total amount of wall time                        = 408.651140
+
+Test 022 fv3_gsd_diag_debug PASS
+
+
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210915/GNU/control_thompson_debug
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_22523/control_thompson_debug
+Checking test 023 control_thompson_debug results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf001.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf001.nc .........OK
+
+  0: The total amount of wall time                        = 109.451509
+
+Test 023 control_thompson_debug PASS
+
+
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210915/GNU/control_thompson_no_aero_debug
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_22523/control_thompson_no_aero_debug
+Checking test 024 control_thompson_no_aero_debug results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf001.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf001.nc .........OK
+
+  0: The total amount of wall time                        = 106.867273
+
+Test 024 control_thompson_no_aero_debug PASS
+
+
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210915/GNU/control_thompson_debug_extdiag
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_22523/control_thompson_extdiag_debug
+Checking test 025 control_thompson_extdiag_debug results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf001.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf001.nc .........OK
+
+  0: The total amount of wall time                        = 133.122096
+
+Test 025 control_thompson_extdiag_debug PASS
+
+
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210915/GNU/control_rrtmgp_debug
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_22523/control_rrtmgp_debug
+Checking test 026 control_rrtmgp_debug results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf001.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf001.nc .........OK
+
+  0: The total amount of wall time                        = 108.365042
+
+Test 026 control_rrtmgp_debug PASS
+
+
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210915/GNU/control_ugwpv1_debug
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_22523/control_ugwpv1_debug
+Checking test 027 control_ugwpv1_debug results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf001.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf001.nc .........OK
+
+  0: The total amount of wall time                        = 105.622793
+
+Test 027 control_ugwpv1_debug PASS
+
+
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210915/GNU/control_ras_debug
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_22523/control_ras_debug
+Checking test 028 control_ras_debug results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf001.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf001.nc .........OK
+
+  0: The total amount of wall time                        = 101.800721
+
+Test 028 control_ras_debug PASS
+
+
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210915/GNU/control_noahmp_debug
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_22523/control_noahmp_debug
+Checking test 029 control_noahmp_debug results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf001.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf001.nc .........OK
+
+  0: The total amount of wall time                        = 98.315422
+
+Test 029 control_noahmp_debug PASS
+
+
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210915/GNU/HAFS_v0_HWRF_thompson_debug
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_22523/fv3_HAFS_v0_hwrf_thompson_debug
+Checking test 030 fv3_HAFS_v0_hwrf_thompson_debug results ....
+ Comparing atmos_4xdaily.tile1.nc .........OK
+ Comparing atmos_4xdaily.tile2.nc .........OK
+ Comparing atmos_4xdaily.tile3.nc .........OK
+ Comparing atmos_4xdaily.tile4.nc .........OK
+ Comparing atmos_4xdaily.tile5.nc .........OK
+ Comparing atmos_4xdaily.tile6.nc .........OK
+ Comparing sfcf000.tile1.nc .........OK
+ Comparing sfcf000.tile2.nc .........OK
+ Comparing sfcf000.tile3.nc .........OK
+ Comparing sfcf000.tile4.nc .........OK
+ Comparing sfcf000.tile5.nc .........OK
+ Comparing sfcf000.tile6.nc .........OK
+ Comparing sfcf003.tile1.nc .........OK
+ Comparing sfcf003.tile2.nc .........OK
+ Comparing sfcf003.tile3.nc .........OK
+ Comparing sfcf003.tile4.nc .........OK
+ Comparing sfcf003.tile5.nc .........OK
+ Comparing sfcf003.tile6.nc .........OK
+ Comparing atmf000.tile1.nc .........OK
+ Comparing atmf000.tile2.nc .........OK
+ Comparing atmf000.tile3.nc .........OK
+ Comparing atmf000.tile4.nc .........OK
+ Comparing atmf000.tile5.nc .........OK
+ Comparing atmf000.tile6.nc .........OK
+ Comparing atmf003.tile1.nc .........OK
+ Comparing atmf003.tile2.nc .........OK
+ Comparing atmf003.tile3.nc .........OK
+ Comparing atmf003.tile4.nc .........OK
+ Comparing atmf003.tile5.nc .........OK
+ Comparing atmf003.tile6.nc .........OK
+ Comparing RESTART/coupler.res .........OK
+ Comparing RESTART/fv_core.res.nc ............SKIP for gnu compilers
+ Comparing RESTART/fv_core.res.tile1.nc .........OK
+ Comparing RESTART/fv_core.res.tile2.nc .........OK
+ Comparing RESTART/fv_core.res.tile3.nc .........OK
+ Comparing RESTART/fv_core.res.tile4.nc .........OK
+ Comparing RESTART/fv_core.res.tile5.nc .........OK
+ Comparing RESTART/fv_core.res.tile6.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile1.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile2.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile3.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile4.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile5.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile6.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile1.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile2.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile3.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile4.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile5.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile6.nc .........OK
+ Comparing RESTART/sfc_data.tile1.nc .........OK
+ Comparing RESTART/sfc_data.tile2.nc .........OK
+ Comparing RESTART/sfc_data.tile3.nc .........OK
+ Comparing RESTART/sfc_data.tile4.nc .........OK
+ Comparing RESTART/sfc_data.tile5.nc .........OK
+ Comparing RESTART/sfc_data.tile6.nc .........OK
+ Comparing RESTART/phy_data.tile1.nc .........OK
+ Comparing RESTART/phy_data.tile2.nc .........OK
+ Comparing RESTART/phy_data.tile3.nc .........OK
+ Comparing RESTART/phy_data.tile4.nc .........OK
+ Comparing RESTART/phy_data.tile5.nc .........OK
+ Comparing RESTART/phy_data.tile6.nc .........OK
+
+  0: The total amount of wall time                        = 132.347612
+
+Test 030 fv3_HAFS_v0_hwrf_thompson_debug PASS
+
+
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210915/GNU/ESG_HAFS_v0_HWRF_thompson_debug
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_22523/fv3_esg_HAFS_v0_hwrf_thompson_debug
+Checking test 031 fv3_esg_HAFS_v0_hwrf_thompson_debug results ....
+ Comparing atmos_4xdaily.nc .........OK
+ Comparing phyf000.nc .........OK
+ Comparing phyf001.nc .........OK
+ Comparing dynf000.nc .........OK
+ Comparing dynf001.nc .........OK
+ Comparing RESTART/coupler.res .........OK
+ Comparing RESTART/fv_core.res.nc ............SKIP for gnu compilers
+ Comparing RESTART/fv_core.res.tile1.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile1.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile1.nc .........OK
+ Comparing RESTART/sfc_data.nc .........OK
+ Comparing RESTART/phy_data.nc .........OK
+
+ 0: The total amount of wall time                        = 237.241772
+>>>>>>> upstream/develop
 
 Test 001 control_debug PASS
 
 
+<<<<<<< HEAD
 baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210901/GNU/control_stochy_debug
 working dir  = /scratch2/BMC/gsienkf/Philip.Pegion/stmp2/Philip.Pegion/FV3_RT/rt_7954/control_stochy_debug
 Checking test 002 control_stochy_debug results ....
@@ -25,10 +1094,65 @@ Checking test 002 control_stochy_debug results ....
  Comparing atmf001.nc ............MISSING baseline
 
   0: The total amount of wall time                        = 115.160848
+=======
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210915/GNU/cpld_control
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_22523/cpld_control
+Checking test 032 cpld_control results ....
+ Comparing sfcf024.tile1.nc .........OK
+ Comparing sfcf024.tile2.nc .........OK
+ Comparing sfcf024.tile3.nc .........OK
+ Comparing sfcf024.tile4.nc .........OK
+ Comparing sfcf024.tile5.nc .........OK
+ Comparing sfcf024.tile6.nc .........OK
+ Comparing atmf024.tile1.nc .........OK
+ Comparing atmf024.tile2.nc .........OK
+ Comparing atmf024.tile3.nc .........OK
+ Comparing atmf024.tile4.nc .........OK
+ Comparing atmf024.tile5.nc .........OK
+ Comparing atmf024.tile6.nc .........OK
+ Comparing RESTART/coupler.res .........OK
+ Comparing RESTART/fv_core.res.nc ............SKIP for gnu compilers
+ Comparing RESTART/fv_core.res.tile1.nc .........OK
+ Comparing RESTART/fv_core.res.tile2.nc .........OK
+ Comparing RESTART/fv_core.res.tile3.nc .........OK
+ Comparing RESTART/fv_core.res.tile4.nc .........OK
+ Comparing RESTART/fv_core.res.tile5.nc .........OK
+ Comparing RESTART/fv_core.res.tile6.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile1.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile2.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile3.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile4.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile5.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile6.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile1.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile2.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile3.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile4.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile5.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile6.nc .........OK
+ Comparing RESTART/phy_data.tile1.nc .........OK
+ Comparing RESTART/phy_data.tile2.nc .........OK
+ Comparing RESTART/phy_data.tile3.nc .........OK
+ Comparing RESTART/phy_data.tile4.nc .........OK
+ Comparing RESTART/phy_data.tile5.nc .........OK
+ Comparing RESTART/phy_data.tile6.nc .........OK
+ Comparing RESTART/sfc_data.tile1.nc .........OK
+ Comparing RESTART/sfc_data.tile2.nc .........OK
+ Comparing RESTART/sfc_data.tile3.nc .........OK
+ Comparing RESTART/sfc_data.tile4.nc .........OK
+ Comparing RESTART/sfc_data.tile5.nc .........OK
+ Comparing RESTART/sfc_data.tile6.nc .........OK
+ Comparing RESTART/MOM.res.nc .........OK
+ Comparing RESTART/iced.2016-10-04-00000.nc .........OK
+ Comparing RESTART/ufs.cpld.cpl.r.2016-10-04-00000.nc .........OK
+
+  0: The total amount of wall time                        = 630.127356
+>>>>>>> upstream/develop
 
 Test 002 control_stochy_debug FAIL
 
 
+<<<<<<< HEAD
 baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210901/GNU/control_ca_debug
 working dir  = /scratch2/BMC/gsienkf/Philip.Pegion/stmp2/Philip.Pegion/FV3_RT/rt_7954/control_ca_debug
 Checking test 003 control_ca_debug results ....
@@ -38,6 +1162,60 @@ Checking test 003 control_ca_debug results ....
  Comparing atmf001.nc ............MISSING baseline
 
   0: The total amount of wall time                        = 98.768296
+=======
+baseline dir = /scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs/develop-20210915/GNU/cpld_debug
+working dir  = /scratch1/NCEPDEV/stmp2/emc.nemspara/FV3_RT/rt_22523/cpld_debug
+Checking test 033 cpld_debug results ....
+ Comparing sfcf006.tile1.nc .........OK
+ Comparing sfcf006.tile2.nc .........OK
+ Comparing sfcf006.tile3.nc .........OK
+ Comparing sfcf006.tile4.nc .........OK
+ Comparing sfcf006.tile5.nc .........OK
+ Comparing sfcf006.tile6.nc .........OK
+ Comparing atmf006.tile1.nc .........OK
+ Comparing atmf006.tile2.nc .........OK
+ Comparing atmf006.tile3.nc .........OK
+ Comparing atmf006.tile4.nc .........OK
+ Comparing atmf006.tile5.nc .........OK
+ Comparing atmf006.tile6.nc .........OK
+ Comparing RESTART/coupler.res .........OK
+ Comparing RESTART/fv_core.res.nc ............SKIP for gnu compilers
+ Comparing RESTART/fv_core.res.tile1.nc .........OK
+ Comparing RESTART/fv_core.res.tile2.nc .........OK
+ Comparing RESTART/fv_core.res.tile3.nc .........OK
+ Comparing RESTART/fv_core.res.tile4.nc .........OK
+ Comparing RESTART/fv_core.res.tile5.nc .........OK
+ Comparing RESTART/fv_core.res.tile6.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile1.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile2.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile3.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile4.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile5.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile6.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile1.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile2.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile3.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile4.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile5.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile6.nc .........OK
+ Comparing RESTART/phy_data.tile1.nc .........OK
+ Comparing RESTART/phy_data.tile2.nc .........OK
+ Comparing RESTART/phy_data.tile3.nc .........OK
+ Comparing RESTART/phy_data.tile4.nc .........OK
+ Comparing RESTART/phy_data.tile5.nc .........OK
+ Comparing RESTART/phy_data.tile6.nc .........OK
+ Comparing RESTART/sfc_data.tile1.nc .........OK
+ Comparing RESTART/sfc_data.tile2.nc .........OK
+ Comparing RESTART/sfc_data.tile3.nc .........OK
+ Comparing RESTART/sfc_data.tile4.nc .........OK
+ Comparing RESTART/sfc_data.tile5.nc .........OK
+ Comparing RESTART/sfc_data.tile6.nc .........OK
+ Comparing RESTART/MOM.res.nc .........OK
+ Comparing RESTART/iced.2016-10-03-21600.nc .........OK
+ Comparing RESTART/ufs.cpld.cpl.r.2016-10-03-21600.nc .........OK
+
+  0: The total amount of wall time                        = 340.471730
+>>>>>>> upstream/develop
 
 Test 003 control_ca_debug FAIL
 
@@ -47,6 +1225,12 @@ Test control_ca_debug 003 failed in run_test failed
 Test control_stochy_debug 002 failed in check_result failed 
 Test control_stochy_debug 002 failed in run_test failed 
 
+<<<<<<< HEAD
 REGRESSION TEST FAILED
 Tue Sep 21 19:15:39 UTC 2021
 Elapsed time: 00h:10m:44s. Have a nice day!
+=======
+REGRESSION TEST WAS SUCCESSFUL
+Tue Sep 21 19:20:02 UTC 2021
+Elapsed time: 00h:31m:57s. Have a nice day!
+>>>>>>> upstream/develop
