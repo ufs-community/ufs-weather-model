@@ -424,19 +424,21 @@ contains
 
    ! Some vars need more work than just copying. Associate these
    associate(                                      &
+        ! static
         im         => noah_model%static%im        ,&
         isot       => noah_model%static%isot      ,&
         ivegsrc    => noah_model%static%ivegsrc   ,&
-        
+        ! sfcprop
         islmsk     => noah_model%sfcprop%slmsk    ,&
         stype      => noah_model%sfcprop%stype    ,&
         vtype      => noah_model%sfcprop%vtype    ,&
         slope      => noah_model%sfcprop%slope    ,&
-        
+        ! model
         soiltyp    => noah_model%model%soiltyp    ,&
         vegtype    => noah_model%model%vegtype    ,&
         slopetyp   => noah_model%model%slopetyp   ,&
-        sigmaf     => noah_model%model%sigmaf      &        
+        sigmaf     => noah_model%model%sigmaf     ,&        
+        land       => noah_model%model%land        &        
         )
      
    
@@ -455,7 +457,8 @@ contains
     
     !noah_model%model%vfrac  = noah_model%sfcprop%vfrac
 
-    !! This is copied from ccpp's GFS_surface_generic_pre_run. Be cafeful of code drift.
+    !! This is copied from ccpp's GFS_surface_generic_pre. Be cafeful of code drift.
+    !! land from islmsk is from GFS_surface_composites_pre
     !! TODO: Common code should be a shared module with CCPP's GFS_surface_generic
     
     do i=1,im
@@ -484,6 +487,11 @@ contains
           if (vegtype(i)  < 1) vegtype(i)  = 17
           if (slopetyp(i) < 1) slopetyp(i) = 1
        endif
+
+       ! set land mask
+       if (islmsk(i) == 1) then
+          land(i)    = .true.
+       end if
     end do
     
     noah_model%model%canopy = noah_model%sfcprop%canopy 
@@ -501,7 +509,7 @@ contains
     ! uustar(i) = txl*uustar_lnd(i) + txi*uustar_ice(i) + txo*uustar_wat(i)
     ! But are they needed anyways? Not if only ouptuts of stability
     
-    !noah_model%model%ustar = noah_model%sfcprop%uustar  ! note GLOBAL surface friction velocity
+    noah_model%model%ustar = noah_model%sfcprop%uustar  ! note GLOBAL surface friction velocity
     !noah_model%model%ffmm   = noah_model%sfcprop%ffmm   ! note GLOBAL Monin-Obukhov similarity function for momentum
     !noah_model%model%ffhh   = noah_model%sfcprop%ffhh   ! note GLOBAL
 

@@ -388,9 +388,9 @@ contains
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
     call state_getimport(State_i, 'Faxa_zf', isc, iec, jsc, jec, noah_model%model%zf, rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
-    call state_getimport(State_i, 'Faxa_land', isc, iec, jsc, jec, noah_model%model%land, rc=rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return
     !! Removing these, as now read in by restart
+    ! call state_getimport(State_i, 'Faxa_land', isc, iec, jsc, jec, noah_model%model%land, rc=rc)
+    ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
     ! call state_getimport(State_i, 'Faxa_slopetyp', isc, iec, jsc, jec, noah_model%model%slopetyp, rc=rc)
     ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
     ! call state_getimport(State_i, 'Faxa_shdmin', isc, iec, jsc, jec, noah_model%model%shdmin, rc=rc)
