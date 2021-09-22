@@ -4,17 +4,13 @@
 #
 ###############################################################################
 
-export TEST_DESCR="Compare global control with ca results with previous trunk version"
+export TEST_DESCR="Compare global restart with ca results with previous trunk version"
 
 export CNTL_DIR=control_ca
 
-export LIST_FILES="sfcf000.nc \
-                   sfcf012.nc \
-                   atmf000.nc \
+export LIST_FILES="sfcf012.nc \
                    atmf012.nc \
-                   GFSFLX.GrbF00 \
                    GFSFLX.GrbF12 \
-                   GFSPRS.GrbF00 \
                    GFSPRS.GrbF12"
 
 export_fv3
@@ -25,7 +21,7 @@ export SYEAR=2021
 export SMONTH=03
 export SDAY=22
 export SHOUR=06
-export RESTART_INTERVAL=6
+export RESTART_INTERVAL=0
 export FHMAX=12
 export OUTPUT_GRID='gaussian_grid'
 export NSTF_NAME='2,0,0,0,0'
@@ -36,6 +32,14 @@ export FV3_RUN=control_run.IN
 export CCPP_SUITE=FV3_GFS_v16
 export INPUT_NML=control_ca.nml.IN
 
+export FHROT=06
+export FHRST=12
+export WARM_START=.true.
+export NGGPS_IC=.false.
+export EXTERNAL_IC=.false.
+export MAKE_NH=.false.
+export MOUNTAIN=.true.
+export NA_INIT=0
 export DO_CA=.true.
 export CA_SGS=.true.
 export CA_GLOBAL=.true.
@@ -49,3 +53,4 @@ export NSMOOTH=100
 export CA_AMPLITUDE=0.35
 export LNDP_VAR_LIST="'XXX'"
 export LNDP_PRT_LIST=-9999
+export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${FHRST}  )))0000"
