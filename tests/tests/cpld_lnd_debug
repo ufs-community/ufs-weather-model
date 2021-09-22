@@ -1,0 +1,85 @@
+#
+#  cpld_debug test
+#
+
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-Land system - C96MX100 - debug"
+
+export CNTL_DIR="cpld_lnd_debug"
+
+export LIST_FILES="sfcf006.tile1.nc \
+                   sfcf006.tile2.nc \
+                   sfcf006.tile3.nc \
+                   sfcf006.tile4.nc \
+                   sfcf006.tile5.nc \
+                   sfcf006.tile6.nc \
+                   atmf006.tile1.nc \
+                   atmf006.tile2.nc \
+                   atmf006.tile3.nc \
+                   atmf006.tile4.nc \
+                   atmf006.tile5.nc \
+                   atmf006.tile6.nc \
+                   RESTART/coupler.res \
+                   RESTART/fv_core.res.nc \
+                   RESTART/fv_core.res.tile1.nc \
+                   RESTART/fv_core.res.tile2.nc \
+                   RESTART/fv_core.res.tile3.nc \
+                   RESTART/fv_core.res.tile4.nc \
+                   RESTART/fv_core.res.tile5.nc \
+                   RESTART/fv_core.res.tile6.nc \
+                   RESTART/fv_srf_wnd.res.tile1.nc \
+                   RESTART/fv_srf_wnd.res.tile2.nc \
+                   RESTART/fv_srf_wnd.res.tile3.nc \
+                   RESTART/fv_srf_wnd.res.tile4.nc \
+                   RESTART/fv_srf_wnd.res.tile5.nc \
+                   RESTART/fv_srf_wnd.res.tile6.nc \
+                   RESTART/fv_tracer.res.tile1.nc \
+                   RESTART/fv_tracer.res.tile2.nc \
+                   RESTART/fv_tracer.res.tile3.nc \
+                   RESTART/fv_tracer.res.tile4.nc \
+                   RESTART/fv_tracer.res.tile5.nc \
+                   RESTART/fv_tracer.res.tile6.nc \
+                   RESTART/phy_data.tile1.nc \
+                   RESTART/phy_data.tile2.nc \
+                   RESTART/phy_data.tile3.nc \
+                   RESTART/phy_data.tile4.nc \
+                   RESTART/phy_data.tile5.nc \
+                   RESTART/phy_data.tile6.nc \
+                   RESTART/sfc_data.tile1.nc \
+                   RESTART/sfc_data.tile2.nc \
+                   RESTART/sfc_data.tile3.nc \
+                   RESTART/sfc_data.tile4.nc \
+                   RESTART/sfc_data.tile5.nc \
+                   RESTART/sfc_data.tile6.nc \
+                   RESTART/MOM.res.nc \
+                   RESTART/iced.2016-10-03-21600.nc \
+                   RESTART/ufs.cpld.cpl.r.2016-10-03-21600.nc"
+
+export_fv3
+export_cpl
+export lnd_model='lnd_comp'
+
+export DAYS="0.25"
+export FHMAX="6"
+export NFHOUT_HF="1"
+
+export RESTART_N=${FHMAX}
+export eps_imesh='2.5e-1'
+
+export FV3_RUN=cpld_lnd_run.IN
+export NEMS_CONFIGURE="nems.configure.cpld_lnd.IN"
+export INPUT_NML=input.mom6_noah_ccpp.nml.IN
+
+# # try to make job smaller for faster testing
+# export TASKS=$TASKS_thrd
+# export TPN=$TPN_thrd
+# export INPES=$INPES_thrd
+# export JNPES=$JNPES_thrd
+# # export THRD=1
+# # export WRTTASK_PER_GROUP=6
+# # export WRITE_GROUP=1
+
+# export med_petlist_bounds=$MPB_cpl_thrd
+# export atm_petlist_bounds=$APB_cpl_thrd
+# export ocn_petlist_bounds=$OPB_cpl_thrd
+# export ice_petlist_bounds=$IPB_cpl_thrd
+# export lnd_petlist_bounds=$APB_cpl_thrd

@@ -459,7 +459,32 @@ contains
     ! call state_getimport(State_i, 'Faxa_ustar', isc, iec, jsc, jec, noah_model%model%ustar, rc=rc)
     ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
     call state_getimport(State_i, 'Faxa_wind', isc, iec, jsc, jec, noah_model%model%wind, rc=rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return       
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+
+
+    call state_getimport(State_i, 'Faxa_albdvis_lnd', isc, iec, jsc, jec, noah_model%model%albdvis_lnd, rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    call state_getimport(State_i, 'Faxa_albdnir_lnd', isc, iec, jsc, jec, noah_model%model%albdnir_lnd, rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    call state_getimport(State_i, 'Faxa_albivis_lnd', isc, iec, jsc, jec, noah_model%model%albivis_lnd, rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    call state_getimport(State_i, 'Faxa_albinir_lnd', isc, iec, jsc, jec, noah_model%model%albinir_lnd, rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    call state_getimport(State_i, 'Faxa_adjvisbmd', isc, iec, jsc, jec, noah_model%model%adjvisbmd, rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    call state_getimport(State_i, 'Faxa_adjnirbmd', isc, iec, jsc, jec, noah_model%model%adjnirbmd, rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    call state_getimport(State_i, 'Faxa_adjvisdfd', isc, iec, jsc, jec, noah_model%model%adjvisdfd, rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    call state_getimport(State_i, 'Faxa_adjnirdfd', isc, iec, jsc, jec, noah_model%model%adjnirdfd, rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    call state_getimport(State_i, 'Faxa_prslk1', isc, iec, jsc, jec, noah_model%model%prslk1, rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    call state_getimport(State_i, 'Faxa_garea', isc, iec, jsc, jec, noah_model%model%garea, rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    
+
+    
   end subroutine import_allfields_am
 
 
@@ -1071,6 +1096,11 @@ contains
                 endif
              enddo
           enddo
+
+          ! TMP debug
+          write(*,*) 'JP State_GetImport_Int A: ', trim(fldname),  dataPtr2d(1:2,1:2)
+          write(*,*) 'JP State_GetImport_Int B: ', trim(fldname),  output(1:4)
+
        endif
     endif
 
@@ -1154,13 +1184,8 @@ contains
              do i = isc, iec
                 i1 = i + lbnd1 - isc
                 n = n +1
-                if (present(do_sum)) then
-                   !output(i,j) = output(i,j) + dataPtr2d(i1,j1)
-                   output(n) = output(n) + dataPtr2d(i1,j1)
-                else
-                   output(n) = dataPtr2d(i1,j1)
-                   !output(i,j) = dataPtr2d(i1,j1)
-                endif
+                   !output(n) = dataPtr2d(i1,j1)
+                   output(n) = transfer(dataPtr2d(i1,j1),.TRUE.)
              enddo
           enddo
        endif

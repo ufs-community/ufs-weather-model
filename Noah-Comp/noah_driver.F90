@@ -39,18 +39,22 @@ contains
     type (block_control_type), target   :: Lnd_block !  Block container
     integer :: isc, iec, jsc, jec
     
-    integer                 ::   im         ! horiz dimension
-    integer                 ::   isot       ! sfc soil type data source
-    integer                 ::   ivegsrc    ! sfc veg type data source
+    integer                      ::   im         ! horiz dimension
+    integer                      ::   isot       ! sfc soil type data source
+    integer                      ::   ivegsrc    ! sfc veg type data source
     
-    integer                 ::   blocksize
-    logical, save        :: block_message = .true.
+    integer                      ::   blocksize
+    logical, save                :: block_message = .true.
     
-    character(len=128)      ::   errmsg     ! error messaging added to ccpp
-    integer                 ::   errflg     ! error messaging added to ccpp
+    character(len=128)           ::   errmsg     ! error messaging added to ccpp
+    integer                      ::   errflg     ! error messaging added to ccpp
 
-    integer                 :: i, j, nb, ix
-    integer                 :: nblks
+    integer                      :: i, j, nb, ix
+    integer                      :: nblks
+
+    ! These are needed by noah init, but aren't used here
+    real(kind_phys)              :: pores(30), resid(30) 
+    integer                      :: lsm=1, lsm_noah=1, me=1
     !im = procbounds%im
 
     ! ! setup ctrl_init
@@ -68,24 +72,23 @@ contains
        write(*,*) 'ctrl_init%isot: '     ,ctrl_init%isot
     end if
 
-    !gridchoice = ctrl_init%grid
-    ! domain create with FMS:
+    ! FMS domain creation:
     call domain_create(ctrl_init, land_domain)
 
-    ! Create blocking a la FV3
+    ! Create blocking a la FV3, but not currently using
     call mpp_get_compute_domain(land_domain,isc,iec,jsc,jec)
 
     im = (iec-isc+1)*(jec-jsc+1)
     !write(*,*) "isc,iec,jsc,jec, im: ",isc,iec,jsc,jec, im
     
     
-    ! Create blocks, but not curretnly using
+    ! Create blocks, but again, not currently using
     call define_blocks_packed('land_model', Lnd_block, isc, iec, jsc, jec, 1, &
          ctrl_init%blocksize, block_message)
 
     ! tmp debug
     if (mpp_pe() == mpp_root_pe()) then
-       write(*,*) "block nblks, isc,iec,jsc,jec: ", Lnd_block%nblks, Lnd_block%isc, Lnd_block%iec, Lnd_block%jsc, Lnd_block%jec
+       !write(*,*) "block nblks, isc,iec,jsc,jec: ", Lnd_block%nblks, Lnd_block%isc, Lnd_block%iec, Lnd_block%jsc, Lnd_block%jec
        !write(*,*) "block blksz: ", Lnd_block%blksz
 
     !    do j=jsc,jec
@@ -124,7 +127,7 @@ contains
     ! Transfer from sfcprop to model data
     call sfc_prop_transfer(noah_model) 
     ! initialization related to Noah LSM and stability
-    call noah_loop_init(0, ctrl_init%isot, ctrl_init%ivegsrc, 0 , errmsg, errflg)
+    call noah_loop_init(lsm, lsm_noah, me, ctrl_init%isot, ctrl_init%ivegsrc, 0, pores, resid, errmsg, errflg)
 
 
   end subroutine init_driver
@@ -258,6 +261,7 @@ contains
          ! ivegsrc    => noah_model%static%ivegsrc   ,&
          ! pertvegf   => noah_model%static%pertvegf  ,&  
          ! lheatstrg  => noah_model%static%lheatstrg ,& 
+         thsfc_loc  => noah_model%static%thsfc_loc ,&
          errmsg     => noah_model%static%errmsg    ,& 
          errflg     => noah_model%static%errflg    ,& 
          soiltyp    => noah_model%model%soiltyp    ,&
@@ -290,9 +294,9 @@ contains
          trans      => noah_model%model%trans      ,&   
          tsurf      => noah_model%model%tsurf      ,&
          z0rl       => noah_model%model%z0rl       ,&
-         ! smc        => noah_model%model%smc        ,&
-         ! stc        => noah_model%model%stc        ,&
-         ! slc        => noah_model%model%slc        ,&
+                                ! smc        => noah_model%model%smc        ,&
+                                ! stc        => noah_model%model%stc        ,&
+                                ! slc        => noah_model%model%slc        ,&
          sncovr1    => noah_model%model%sncovr1    ,&
          qsurf      => noah_model%model%qsurf      ,&
          gflux      => noah_model%model%gflux      ,&
@@ -312,15 +316,28 @@ contains
          smcwlt2    => noah_model%model%smcwlt2    ,&
          smcref2    => noah_model%model%smcref2    ,&
          wet1       => noah_model%model%wet1       ,&
-         !
+
+         albdvis_lnd  => noah_model%model%albdvis_lnd  ,&
+         albdnir_lnd  => noah_model%model%albdnir_lnd  ,&
+         albivis_lnd  => noah_model%model%albivis_lnd  ,&
+         albinir_lnd  => noah_model%model%albinir_lnd  ,&
+         adjvisbmd    => noah_model%model%adjvisbmd    ,&
+         adjnirbmd    => noah_model%model%adjnirbmd    ,&
+         adjvisdfd    => noah_model%model%adjvisdfd    ,&
+         adjnirdfd    => noah_model%model%adjnirdfd    ,&
+
+         ! sfc_diff
          rb_lnd     => noah_model%model%rb_lnd     ,&
          fm_lnd     => noah_model%model%fm_lnd     ,&
          fh_lnd     => noah_model%model%fh_lnd     ,&
          fm10_lnd   => noah_model%model%fm10_lnd   ,&
          fh2_lnd    => noah_model%model%fh2_lnd    ,&
          stress     => noah_model%model%stress     ,&
-         !
-         ustar      => noah_model%model%ustar       &
+                                !
+         ustar      => noah_model%model%ustar      ,&
+         prslk1     => noah_model%model%prslk1     ,&
+         garea      => noah_model%model%garea       &
+         
          )
 
       ! tmp for testing. Missing imports for these
@@ -346,11 +363,13 @@ contains
                                 !  ---  inputs:
        im, km, grav, cp, hvap, rd, eps, epsm1, rvrdm1, ps,          &
        t1, q1, soiltyp, vegtype, sigmaf,                            &
-       sfcemis, dlwflx, dswsfc, snet, delt, tg3, cm, ch,            &
+       sfcemis, dlwflx, dswsfc, delt, tg3, cm, ch,                  &
        prsl1, prslki, zf, land, wind, slopetyp,                     &
        shdmin, shdmax, snoalb, sfalb, flag_iter, flag_guess,        &
        lheatstrg, isot, ivegsrc,                                    &
        bexppert, xlaipert, vegfpert,pertvegf,                       & ! sfc perts, mgehne
+       albdvis_lnd, albdnir_lnd, albivis_lnd, albinir_lnd,          &
+       adjvisbmd, adjnirbmd, adjvisdfd, adjnirdfd,                  &       
                                 !     ---  in/outs:
        weasd, snwdph, tskin, tprcp, srflag, smc, stc, slc,          &
        canopy, trans, tsurf, z0rl,                                  &
@@ -360,7 +379,7 @@ contains
        smcwlt2, smcref2, wet1,                                      &
                                 !! ARGS FROM  stab_prep_lnd (minus those from noah
                                 !  ---  inputs:
-       prsik1,z0pert,ztpert,ustar,                                  &
+       prsik1,z0pert,ztpert,ustar, prslk1, garea, thsfc_loc,        &
                                 !  ---  outputs:
                                 !! ARGS FROM stability (minus those above)
                                 !  ---  inputs:
@@ -371,15 +390,6 @@ contains
        errmsg, errflg                                               &
        )
 
-
-      ! foodata(1:gridend-gridbeg+1) = noah_model%model%foo_atm2lndfield(gridbeg:gridend)
-      ! foodata = noah_model%model%foo_atm2lndfield(gridbeg:gridend)
-      ! foodata = noah_model%model%foo_atm2lndfield
-
-
-      ! do i = 1,im
-      !    write(*,*) 'NLP2: ', de, gridbeg, gridend, foodata(i)
-      ! end do
 
     end associate
 
