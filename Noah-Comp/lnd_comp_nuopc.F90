@@ -452,166 +452,165 @@ contains
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
 
-!!!!!!!!!TMP DISABLE !!!!!!!!!!
     
-    ! ! Commenting out, because won't currently work with tiles
-    ! ! ! write out imports. Should make this optional, and put into a routine
+    ! Commenting out, because won't currently work with tiles
+    ! ! write out imports. Should make this optional, and put into a routine
     
-    ! ! allocate(flds(7))
-    ! ! flds = (/'Faxa_lwdn  '    , 'Faxa_swndr '   , 'Faxa_swvdr '   , 'Faxa_swndf ' , 'Faxa_swvdf ', &
-    ! !      'Faxa_rain  '    , 'Faxa_snow  ' /)
+    ! allocate(flds(7))
+    ! flds = (/'Faxa_lwdn  '    , 'Faxa_swndr '   , 'Faxa_swvdr '   , 'Faxa_swndf ' , 'Faxa_swvdf ', &
+    !      'Faxa_rain  '    , 'Faxa_snow  ' /)
 
-    ! ! do n = 1,size(flds)
-    ! !    fldname = trim(flds(n))
-    ! !    call write_import_field(importState, fldname, rc)
-    ! ! end do
-    ! ! deallocate(flds)
+    ! do n = 1,size(flds)
+    !    fldname = trim(flds(n))
+    !    call write_import_field(importState, fldname, rc)
+    ! end do
+    ! deallocate(flds)
 
-    ! ! allocate(flds(27))
-    ! ! flds=(/ &
-    ! !      'Faxa_soiltyp     ', &
-    ! !      'Faxa_vegtype     ', &
-    ! !      'Faxa_sigmaf      ', &
-    ! !      'Faxa_sfcemis     ', &
-    ! !      'Faxa_dlwflx      ', &
-    ! !      'Faxa_dswsfc      ', &
-    ! !      'inst_down_sw_flx ', &
-    ! !      'Faxa_snet        ', &
-    ! !      'Faxa_tg3         ', &
-    ! !      'Faxa_cm          ', &
-    ! !      'Faxa_ch          ', &
-    ! !      'Faxa_prsl1       ', &
-    ! !      'Faxa_prslki      ', &
-    ! !      'Faxa_zf          ', &
-    ! !      'Faxa_land        ', &
-    ! !      'Faxa_slopetyp    ', &
-    ! !      'Faxa_shdmin      ', &
-    ! !      'Faxa_shdmax      ', &
-    ! !      'Faxa_snoalb      ', &
-    ! !      'Faxa_sfalb       ', &
-    ! !      'Faxa_bexppert    ', &
-    ! !      'Faxa_xlaipert    ', &
-    ! !      'Faxa_vegfpert    ', &
-    ! !      'Faxa_tsurf       ', &
-    ! !      'Faxa_wind        ', &
-    ! !      'Faxa_ps          ', &
-    ! !      'Faxa_t1          ', &
-    ! !      'Faxa_q1          ', &
-    ! !      'Faxa_z0rl        ', &
-    ! !      'Faxa_canopy      ', &
-    ! !      'Faxa_tprcp       ', &
-    ! !      'Faxa_weasd       ', &
-    ! !      'Faxa_ustar       ' &
-    ! !      /)
-
-
-    ! ! ! tmp
-    ! ! !write(*,*) 'procbound test:', procbounds%de, procbounds%gridbeg, procbounds%gridend
-
-    ! ! do n = 1,size(flds)
-    ! !    fldname = trim(flds(n))
-    ! !    call write_import_field(importState, fldname, rc)
-    ! ! end do
-    ! ! deallocate(flds)
+    ! allocate(flds(27))
+    ! flds=(/ &
+    !      'Faxa_soiltyp     ', &
+    !      'Faxa_vegtype     ', &
+    !      'Faxa_sigmaf      ', &
+    !      'Faxa_sfcemis     ', &
+    !      'Faxa_dlwflx      ', &
+    !      'Faxa_dswsfc      ', &
+    !      'inst_down_sw_flx ', &
+    !      'Faxa_snet        ', &
+    !      'Faxa_tg3         ', &
+    !      'Faxa_cm          ', &
+    !      'Faxa_ch          ', &
+    !      'Faxa_prsl1       ', &
+    !      'Faxa_prslki      ', &
+    !      'Faxa_zf          ', &
+    !      'Faxa_land        ', &
+    !      'Faxa_slopetyp    ', &
+    !      'Faxa_shdmin      ', &
+    !      'Faxa_shdmax      ', &
+    !      'Faxa_snoalb      ', &
+    !      'Faxa_sfalb       ', &
+    !      'Faxa_bexppert    ', &
+    !      'Faxa_xlaipert    ', &
+    !      'Faxa_vegfpert    ', &
+    !      'Faxa_tsurf       ', &
+    !      'Faxa_wind        ', &
+    !      'Faxa_ps          ', &
+    !      'Faxa_t1          ', &
+    !      'Faxa_q1          ', &
+    !      'Faxa_z0rl        ', &
+    !      'Faxa_canopy      ', &
+    !      'Faxa_tprcp       ', &
+    !      'Faxa_weasd       ', &
+    !      'Faxa_ustar       ' &
+    !      /)
 
 
-    ! ! end test tmp
+    ! ! tmp
+    ! !write(*,*) 'procbound test:', procbounds%de, procbounds%gridbeg, procbounds%gridend
 
-    ! call import_allfields_am(importState, procbounds, noah_model, ctrl_init, rc)
-    ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    ! do n = 1,size(flds)
+    !    fldname = trim(flds(n))
+    !    call write_import_field(importState, fldname, rc)
+    ! end do
+    ! deallocate(flds)
 
-    ! ! ! tmp workaround to run first time step with simple nems.configure sequence, without having land restart read
-    ! if (noah_model%control%first_time) then
-    !    write(*,*) 'lnd_comp: skipping first time step'
-    ! else
+
+    ! end test tmp
+
+    call import_allfields_am(importState, procbounds, noah_model, ctrl_init, rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+
+    ! ! tmp workaround to run first time step with simple nems.configure sequence, without having land restart read
+    if (noah_model%control%first_time) then
+       write(*,*) 'lnd_comp: skipping first time step'
+    else
     
-    !    ! run model
-    !    !call noah_block_run(procbounds, noah_model) !! IF using blocking
-    !    call noah_loop_drv(procbounds, noah_model)
+       ! run model
+       !call noah_block_run(procbounds, noah_model) !! IF using blocking
+       call noah_loop_drv(procbounds, noah_model)
        
-    !    ! tmp test
-    !    ! im = procbounds%im
-    !    ! gridbeg = procbounds%gridbeg
-    !    ! gridend = procbounds%gridend
-    !    ! foodata(1:im) = noah_model%model%foo_atm2lndfield(gridbeg:gridend)
-    !    ! do i = 1,im
-    !    !    write(*,*) 'MA1: ', de, gridbeg,gridend, size(foodata), foodata(i)
-    !    ! end do
+       ! tmp test
+       ! im = procbounds%im
+       ! gridbeg = procbounds%gridbeg
+       ! gridend = procbounds%gridend
+       ! foodata(1:im) = noah_model%model%foo_atm2lndfield(gridbeg:gridend)
+       ! do i = 1,im
+       !    write(*,*) 'MA1: ', de, gridbeg,gridend, size(foodata), foodata(i)
+       ! end do
 
-    ! end if ! first_time
+    end if ! first_time
 
-    ! call export_allfields(exportState, procbounds, noah_model, ctrl_init, rc)
+    call export_allfields(exportState, procbounds, noah_model, ctrl_init, rc)
 
-    !    ! Commenting out, because won't currently work with tiles
-    !    ! ! write out export fields
-    !    ! allocate(flds(37))
-    !    ! flds=(/ &          ! inouts
-    !    !      'Fall_weasd ', &
-    !    !      'Fall_snwdph', &
-    !    !      'Fall_tskin ', &
-    !    !      'Fall_tprcp ', &
-    !    !      'Fall_srflag', &
-    !    !      'Fall_smc   ', &
-    !    !      'Fall_stc   ', &
-    !    !      'Fall_slc   ', &
-    !    !      'Fall_canopy', &
-    !    !      'Fall_trans ', &
-    !    !      'Fall_tsurf ', &
-    !    !      'Fall_z0rl  ', &
-    !    !      'Fall_sncovr1', &          ! noahouts
-    !    !      'Fall_qsurf  ', &
-    !    !      'Fall_gflux  ', &
-    !    !      'Fall_drain  ', &
-    !    !      'Fall_evap   ', &
-    !    !      'Fall_hflx   ', &
-    !    !      'Fall_ep     ', &
-    !    !      'Fall_runoff ', &
-    !    !      'Fall_cmm    ', &
-    !    !      'Fall_chh    ', &
-    !    !      'Fall_evbs   ', &
-    !    !      'Fall_evcw   ', &
-    !    !      'Fall_sbsno  ', &
-    !    !      'Fall_snowc  ', &
-    !    !      'Fall_stm    ', &
-    !    !      'Fall_snohf  ', &
-    !    !      'Fall_smcwlt2', &
-    !    !      'Fall_smcref2', &
-    !    !      'Fall_wet1   ', &         
-    !    !      'Fall_rb_lnd  ', &         ! diffouts
-    !    !      'Fall_fm_lnd  ', &
-    !    !      'Fall_fh_lnd  ', &
-    !    !      'Fall_fm10_lnd', &
-    !    !      'Fall_fh2_lnd ', &
-    !    !      'Fall_stress  '  &
-    !    !      /)
+       ! Commenting out, because won't currently work with tiles
+       ! ! write out export fields
+       ! allocate(flds(37))
+       ! flds=(/ &          ! inouts
+       !      'Fall_weasd ', &
+       !      'Fall_snwdph', &
+       !      'Fall_tskin ', &
+       !      'Fall_tprcp ', &
+       !      'Fall_srflag', &
+       !      'Fall_smc   ', &
+       !      'Fall_stc   ', &
+       !      'Fall_slc   ', &
+       !      'Fall_canopy', &
+       !      'Fall_trans ', &
+       !      'Fall_tsurf ', &
+       !      'Fall_z0rl  ', &
+       !      'Fall_sncovr1', &          ! noahouts
+       !      'Fall_qsurf  ', &
+       !      'Fall_gflux  ', &
+       !      'Fall_drain  ', &
+       !      'Fall_evap   ', &
+       !      'Fall_hflx   ', &
+       !      'Fall_ep     ', &
+       !      'Fall_runoff ', &
+       !      'Fall_cmm    ', &
+       !      'Fall_chh    ', &
+       !      'Fall_evbs   ', &
+       !      'Fall_evcw   ', &
+       !      'Fall_sbsno  ', &
+       !      'Fall_snowc  ', &
+       !      'Fall_stm    ', &
+       !      'Fall_snohf  ', &
+       !      'Fall_smcwlt2', &
+       !      'Fall_smcref2', &
+       !      'Fall_wet1   ', &         
+       !      'Fall_rb_lnd  ', &         ! diffouts
+       !      'Fall_fm_lnd  ', &
+       !      'Fall_fh_lnd  ', &
+       !      'Fall_fm10_lnd', &
+       !      'Fall_fh2_lnd ', &
+       !      'Fall_stress  '  &
+       !      /)
 
-    !    ! do n = 1,size(flds)
-    !    !    fldname = trim(flds(n))
-    !    !    call write_import_field(exportState, fldname, rc)
-    !    ! end do
-    !    ! deallocate(flds)
+       ! do n = 1,size(flds)
+       !    fldname = trim(flds(n))
+       !    call write_import_field(exportState, fldname, rc)
+       ! end do
+       ! deallocate(flds)
    
-    ! call ESMF_ClockPrint(clock, options="currTime", &
-    !      preString="------>Advancing LND from: ", unit=msgString, rc=rc)
-    ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
-    ! call ESMF_LogWrite(subname//trim(msgString), ESMF_LOGMSG_INFO)
+    call ESMF_ClockPrint(clock, options="currTime", &
+         preString="------>Advancing LND from: ", unit=msgString, rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    call ESMF_LogWrite(subname//trim(msgString), ESMF_LOGMSG_INFO)
 
-    ! call ESMF_ClockGet(clock, startTime=startTime, currTime=currTime, &
-    !      timeStep=timeStep, rc=rc)
-    ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    call ESMF_ClockGet(clock, startTime=startTime, currTime=currTime, &
+         timeStep=timeStep, rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
-    ! call ESMF_TimePrint(currTime + timeStep, &
-    !      preString="--------------------------------> to: ", unit=msgString, rc=rc)
-    ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
-    ! call ESMF_LogWrite(trim(msgString), ESMF_LOGMSG_INFO)
+    call ESMF_TimePrint(currTime + timeStep, &
+         preString="--------------------------------> to: ", unit=msgString, rc=rc)
+    if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    call ESMF_LogWrite(trim(msgString), ESMF_LOGMSG_INFO)
 
-    ! ! tmp workaround to run first time step with simple nems.configure sequence, without having land restart read 
-    ! if (noah_model%control%first_time) then
-    !    noah_model%control%first_time = .false.
-    ! endif
+    ! tmp workaround to run first time step with simple nems.configure sequence, without having land restart read 
+    if (noah_model%control%first_time) then
+       noah_model%control%first_time = .false.
+    endif
     
-    ! ! call ESMF_ClockAdvance(clock,rc=rc)
-    ! ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
+    ! call ESMF_ClockAdvance(clock,rc=rc)
+    ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
 
   end subroutine ModelAdvance

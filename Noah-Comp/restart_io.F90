@@ -421,7 +421,8 @@ contains
    real(kind_phys) :: vtype     (noah_model%static%im)
    real(kind_phys) :: slope     (noah_model%static%im)
 
-   
+
+   ! Some vars need more work than just copying. Associate these
    associate(                                      &
         im         => noah_model%static%im        ,&
         isot       => noah_model%static%isot      ,&
@@ -444,6 +445,7 @@ contains
     noah_model%model%weasd  = noah_model%sfcprop%weasd   
     noah_model%model%tg3    = noah_model%sfcprop%tg3    
     noah_model%model%z0rl   = noah_model%sfcprop%zorll  ! surface_roughness_length_over_land
+    
     ! noah_model%model%alvsf  = noah_model%sfcprop%alvsf  
     ! noah_model%model%alvwf  = noah_model%sfcprop%alvwf  
     ! noah_model%model%alnsf  = noah_model%sfcprop%alnsf  
@@ -453,8 +455,8 @@ contains
     
     !noah_model%model%vfrac  = noah_model%sfcprop%vfrac
 
-    ! This is copied from ccpp's GFS_surface_generic_pre_run. Be cafeful of code drift.
-    ! Todo: Common code should be a shared module with CCPP's GFS_surface_generic
+    !! This is copied from ccpp's GFS_surface_generic_pre_run. Be cafeful of code drift.
+    !! TODO: Common code should be a shared module with CCPP's GFS_surface_generic
     
     do i=1,im
        sigmaf(i) = max(vfrac(i), 0.01_kind_phys)
@@ -504,6 +506,7 @@ contains
     !noah_model%model%ffhh   = noah_model%sfcprop%ffhh   ! note GLOBAL
 
     ! These are not needed
+    ! TODO: delete from restart reading
     !noah_model%model%hice   = noah_model%sfcprop%hice   
     !noah_model%model%fice   = noah_model%sfcprop%fice   
     !noah_model%model%tisfc  = noah_model%sfcprop%tisfc
@@ -516,6 +519,10 @@ contains
     noah_model%model%snoalb = noah_model%sfcprop%snoalb 
     noah_model%model%sncovr1= noah_model%sfcprop%sncovr 
 
+    noah_model%model%stc    = noah_model%sfcprop%stc
+    noah_model%model%smc    = noah_model%sfcprop%smc
+    noah_model%model%slc    = noah_model%sfcprop%slc
+    
   end associate
   
  end subroutine sfc_prop_transfer
