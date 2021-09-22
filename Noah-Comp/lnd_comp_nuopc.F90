@@ -30,7 +30,7 @@ module lnd_comp_nuopc
   use fms_mod,            only: fms_init
   use fms_io_mod,         only: read_data
   
-  use noah_driver,        only: init_driver
+  use noah_driver,        only: init_driver, noah_finalize
   !use land_domain_mod,    only: domain_create 
 
   
@@ -141,9 +141,10 @@ contains
     character(len=CL)  :: logmsg
     logical            :: isPresent, isSet
     logical            :: cism_evolve
-    integer :: mype, ntasks, mpi_comm_land
+    integer :: mype, ntasks, mpi_comm_land, mpi_comm_land2
     character(len=*), parameter :: subname=trim(modName)//':(InitializeAdvertise) '
     character(len=*), parameter :: format = "('("//trim(subname)//") :',A)"
+   
     !-------------------------------------------------------------------------------
     rc = ESMF_SUCCESS
 
@@ -152,13 +153,14 @@ contains
     call ESMF_GridCompGet(gcomp, vm=vm, rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
-    ! start putting in fms/mpp stuff here
+    ! Get communicator for fms. If smae proc layout as Atm, will be same communicator
+    ! that Atm uses in it's fms_init. But it's ok, this fms_init will return without 
+    ! doing anything if already called on same proc layout
     call ESMF_VMGetCurrent(vm=VM,rc=RC)
     call ESMF_VMGet(vm=VM, localPet=mype, mpiCommunicator=mpi_comm_land, &
          petCount=ntasks, rc=rc)
     if (mype == 0) write(0,*) 'in lnd comp initadvert, ntasks=',ntasks
-    
-    ! fms_init will return without doing anything if already called on same proc layout
+    ! 
     call fms_init(mpi_comm_land)
 
 
@@ -442,6 +444,7 @@ contains
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
 
+    
     ! Commenting out, because won't currently work with tiles
     ! ! write out imports. Should make this optional, and put into a routine
     
@@ -565,8 +568,12 @@ contains
     character(len=*),parameter  :: subname=trim(modName)//':(ModelFinalize) '
 
     ! begin
+    !write(*,*) '--- Land finalize called ---'
     rc = ESMF_SUCCESS
     call ESMF_LogWrite(subname//' called', ESMF_LOGMSG_INFO)
+
+    call noah_finalize()
+    
   end subroutine ModelFinalize
 
 
