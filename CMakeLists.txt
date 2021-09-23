@@ -16,7 +16,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules/Modules)
 ###############################################################################
 
 # Valid applications and choices
-list(APPEND VALID_APPS ATM ATMAERO ATMW S2S S2SW NG-GODAS NG-GODAS-NEMSDATM)
+list(APPEND VALID_APPS ATM ATMAERO ATMW S2S S2SW HAFS HAFSW HAFS-ALL NG-GODAS NG-GODAS-NEMSDATM)
 set(APP NONE CACHE BOOL "Application Name")
 if(NOT (APP IN_LIST VALID_APPS))
   message(FATAL_ERROR "${APP} is not a valid application.\nValid Applications are: ${VALID_APPS}")
@@ -26,6 +26,7 @@ set(FMS             OFF CACHE BOOL "Enable FMS")
 set(FV3             OFF CACHE BOOL "Enable FV3")
 set(UFS_GOCART      OFF CACHE BOOL "Enable GOCART")
 set(MOM6            OFF CACHE BOOL "Enable MOM6")
+set(HYCOM           OFF CACHE BOOL "Enable HYCOM")
 set(CICE6           OFF CACHE BOOL "Enable CICE6")
 set(WW3             OFF CACHE BOOL "Enable WW3")
 set(STOCH_PHYS      OFF CACHE BOOL "Enable Stochastic Physics")
@@ -42,6 +43,7 @@ message("FMS .............. ${FMS}")
 message("FV3 .............. ${FV3}")
 message("GOCART ........... ${UFS_GOCART}")
 message("MOM6 ............. ${MOM6}")
+message("HYCOM ............ ${HYCOM}")
 message("CICE6 ............ ${CICE6}")
 message("WW3 .............. ${WW3}")
 message("STOCH_PHYS ....... ${STOCH_PHYS}")
@@ -54,6 +56,7 @@ message("CMEPS ............ ${CMEPS}")
 ###############################################################################
 set(32BIT           OFF CACHE BOOL "Enable 32BIT (single precision arithmetic in dycore)")
 set(AVX2            ON  CACHE BOOL "Enable AVX2 instruction set")
+set(AVX             OFF CACHE BOOL "Enable AVX-I instruction set")
 set(SIMDMULTIARCH   OFF CACHE BOOL "Enable multi-target SIMD instruction sets")
 set(DEBUG           OFF CACHE BOOL "Enable DEBUG mode")
 set(DEBUG_LINKMPI   ON  CACHE BOOL "Enable linkmpi option when DEBUG mode is on")
@@ -122,16 +125,11 @@ if(CMEPS)
 endif()
 
 find_package(bacio REQUIRED)
-find_package(nemsio REQUIRED)
 find_package(sp REQUIRED)
-find_package(w3emc REQUIRED)
 find_package(w3nco REQUIRED)
 if(INLINE_POST)
   find_package(upp REQUIRED)
 endif()
-
-# See https://github.com/NOAA-EMC/NCEPLIBS-nemsio/pull/22
-target_link_libraries(nemsio::nemsio INTERFACE w3emc::w3emc_d bacio::bacio_4)
 
 # Configure Python
 find_package(Python 3 REQUIRED COMPONENTS Interpreter)
@@ -186,10 +184,14 @@ if(WW3)
 endif()
 
 ###############################################################################
-### Marine Components [MOM6, CICE6]
+### Marine Components [MOM6, HYCOM, CICE6]
 ###############################################################################
 if(MOM6)
   add_subdirectory(MOM6-interface)
+endif()
+
+if(HYCOM)
+  add_subdirectory(HYCOM-interface)
 endif()
 
 if(CICE6)
@@ -207,7 +209,7 @@ endif()
 ### Data Components [NEMSdatm, CDEPS]
 ###############################################################################
 if(NEMSdatm)
-  add_subdirectory(DATM)
+  add_subdirectory(DATM/DATM)
 endif()
 
 if(CDEPS)
@@ -217,20 +219,15 @@ endif()
 ###############################################################################
 ### UFS Library [NEMS]
 ###############################################################################
-list(APPEND _nems_srcs NEMS/src/module_NEMS_UTILS.F90
-                       NEMS/src/module_EARTH_GRID_COMP.F90
-                       NEMS/src/module_NEMS_GRID_COMP.F90
+list(APPEND _nems_srcs NEMS/src/module_EARTH_GRID_COMP.F90
                        NEMS/src/module_NEMS_Rusage.F90
                        NEMS/src/nems_c_rusage.c)
 
 add_library(ufs ${_nems_srcs})
 set_target_properties(ufs PROPERTIES Fortran_MODULE_DIRECTORY
                                      ${CMAKE_CURRENT_BINARY_DIR}/mod)
-target_include_directories(ufs PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/NEMS/src)
 target_include_directories(ufs INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                          $<INSTALL_INTERFACE:mod>)
-
-list(APPEND _ufs_defs_private ESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR})
 
 if(JEDI_DRIVER)
   list(APPEND _ufs_defs_private JEDI_DRIVER=ON)
@@ -255,11 +252,6 @@ if(STOCH_PHYS)
   list(APPEND _ufs_libs_public stochastic_physics)
 endif()
 
-if(FMS)
-  add_dependencies(ufs fms)
-  list(APPEND _ufs_defs_private FRONT_FMS)
-endif()
-
 if(NEMSdatm)
   add_dependencies(ufs datatm)
   list(APPEND _ufs_defs_private FRONT_NEMS_DATM=datm)
@@ -278,6 +270,12 @@ if(MOM6)
   list(APPEND _ufs_libs_public mom6)
 endif()
 
+if(HYCOM)
+  list(APPEND _ufs_defs_private FRONT_HYCOM=HYCOM_Mod)
+  add_dependencies(ufs hycom)
+  target_link_libraries(ufs PUBLIC hycom)
+endif()
+
 if(CICE6)
   add_dependencies(ufs cice)
   list(APPEND _ufs_defs_private FRONT_CICE6=ice_comp_nuopc)
@@ -293,6 +291,7 @@ endif()
 if(CDEPS)
   add_dependencies(ufs cdeps::cdeps)
   list(APPEND _ufs_defs_private FRONT_CDEPS_DATM=cdeps_datm_comp)
+  list(APPEND _ufs_defs_private FRONT_CDEPS_DOCN=cdeps_docn_comp)
   target_link_libraries(ufs PUBLIC cdeps::cdeps)
 endif()
 
@@ -304,28 +303,7 @@ target_link_libraries(ufs PUBLIC "${_ufs_libs_public}")
 ###############################################################################
 add_executable(ufs_model NEMS/src/MAIN_NEMS.F90)
 add_dependencies(ufs_model ufs)
-
-list(APPEND _ufs_model_defs_private ESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR})
-
-set_target_properties(ufs_model PROPERTIES Fortran_MODULE_DIRECTORY
-                                           ${CMAKE_CURRENT_BINARY_DIR}/mod)
-
-target_include_directories(ufs_model PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/NEMS/src)
-
-if(WW3)
-  list(APPEND _ufs_model_defs_private FRONT_WW3=WMESMFMD)
-  target_include_directories(ufs_model PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/mod)
-endif()
-
-target_compile_definitions(ufs_model PRIVATE "${_ufs_model_defs_private}")
-
-if(NEMSdatm OR CDEPS)
-  target_link_libraries(ufs_model PUBLIC ufs w3nco::w3nco_d)
-endif()
-
-target_link_libraries(ufs_model PRIVATE ufs
-                                        esmf
-                                        NetCDF::NetCDF_Fortran)
+target_link_libraries(ufs_model ufs esmf w3nco::w3nco_d)
 
 ###############################################################################
 ### Install

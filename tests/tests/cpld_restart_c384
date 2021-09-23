@@ -92,6 +92,9 @@ export ICERES='0.25'
 export NX_GLB=1440
 export NY_GLB=1080
 export NPROC_ICE='48'
+export np2=`expr $NPROC_ICE / 2`
+export BLCKX=`expr $NX_GLB / $np2`
+export BLCKY=`expr $NY_GLB / 2`
 
 # resolution dependent setting
 export CDMBWD=${CDMBWD_c384}
@@ -101,12 +104,10 @@ export DT_ATMOS='450'
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6='900'
 export DT_THERM_MOM6='1800'
-export CPL_SLOW=${DT_THERM_MOM6}
-export CPL_FAST=${DT_ATMOS}
 
 # nems.configure
-export coupling_interval_slow_sec=${CPL_SLOW}
-export coupling_interval_fast_sec=${CPL_FAST}
+export coupling_interval_slow_sec=${DT_THERM_MOM6}
+export coupling_interval_fast_sec=${DT_ATMOS}
 
 # resolution dependent files
 export MOM_INPUT="MOM_input_template_${OCNRES}"
@@ -125,15 +126,16 @@ export FNABSC="'global_mxsnoalb.uariz.t766.1536.768.rg.grb',"
 export MOM6_RIVER_RUNOFF='True'
 
 # ATM warm start
-WARM_START='.T.'
-MAKE_NH='.F.'
-NA_INIT='0'
-EXTERNAL_IC='.F.'
-NGGPS_IC='.F.'
-MOUNTAIN='.T.'
+export WARM_START='.true.'
+export MAKE_NH='.false.'
+export NA_INIT='0'
+export EXTERNAL_IC='.false.'
+export NGGPS_IC='.false.'
+export MOUNTAIN='.true.'
 
 # ICE warm start
-RUNTYPE='continue'
+export CICERUNTYPE='continue'
+export RUNTYPE='continue'
 export USE_RESTART_TIME='.true.'
 
 # MOM6 warm start

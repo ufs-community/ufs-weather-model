@@ -79,6 +79,9 @@ export ICERES='0.25'
 export NX_GLB=1440
 export NY_GLB=1080
 export NPROC_ICE='80'
+export np2=`expr $NPROC_ICE / 2`
+export BLCKX=`expr $NX_GLB / $np2`
+export BLCKY=`expr $NY_GLB / 2`
 
 # resolution dependent setting
 export CDMBWD=${CDMBWD_c384}
@@ -88,13 +91,11 @@ export DT_ATMOS='225'
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6='900'
 export DT_THERM_MOM6='1800'
-export CPL_SLOW=${DT_THERM_MOM6}
-export CPL_FAST=${DT_ATMOS}
 
 # nems.configure
 export NEMS_CONFIGURE="nems.configure.cpld_wave.IN"
-export coupling_interval_slow_sec=${CPL_SLOW}
-export coupling_interval_fast_sec=${CPL_FAST}
+export coupling_interval_slow_sec=${DT_THERM_MOM6}
+export coupling_interval_fast_sec=${DT_ATMOS}
 
 export NPZ=127
 export NPZP=128
@@ -111,8 +112,8 @@ export IOPT_RAD=3
 export IOPT_ALB=1
 export IOPT_STC=3
 
-export CPLWAV='.T.'
-export CPLWAV2ATM='.T.'
+export CPLWAV='.true.'
+export CPLWAV2ATM='.true.'
 
 # resolution dependent files
 export MOM_INPUT="MOM_input_template_${OCNRES}"
@@ -136,7 +137,7 @@ export FNSLPC="'C384.slope_type.tileX.nc',"
 export FNABSC="'C384.maximum_snow_albedo.tileX.nc',"
 export LANDICE=".false."
 
-export OZ_PHYS_NEW=".T."
+export OZ_PHYS_NEW=".true."
 
 export MOM6_USE_WAVES='True'
 export MOM6_RIVER_RUNOFF='True'
@@ -153,6 +154,6 @@ export INPUT_NML=input.benchmark_v16.nml.IN
 export FIELD_TABLE="field_table_gfsv16"
 export DIAG_TABLE="diag_table_bmark_v16_template"
 export CCPP_SUITE="FV3_GFS_v16_coupled_noahmp"
-export RT35D='.T.'
+export RT35D='.true.'
 
 export FV3_RUN=cpld_bmark_tiled_run.IN

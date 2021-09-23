@@ -119,44 +119,38 @@ For the ufs-weather-model ATM app (standalone ATM):
 
 .. code-block:: console
 
-    export CMAKE_FLAGS="-DAPP=ATM"
-    export CCPP_SUITES="FV3_GFS_v16"
+    export CMAKE_FLAGS="-DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16"
 
 For the ufs-weather-model ATM app (standalone ATM) in 32 bit:
 
 .. code-block:: console
 
-    export CMAKE_FLAGS="-DAPP=ATM -D32BIT=ON"
-    export CCPP_SUITES="FV3_GFS_v16"
+    export CMAKE_FLAGS="-DAPP=ATM -D32BIT=ON -DCCPP_SUITES=FV3_GFS_v16"
 
 For the ufs-weather-model ATMW app (standalone ATM with wave):
 
 .. code-block:: console
 
-    export CMAKE_FLAGS="-DAPP=ATMW"
-    export CCPP_SUITES="FV3_GFS_v16"
+    export CMAKE_FLAGS="-DAPP=ATMW -DCCPP_SUITES=FV3_GFS_v16"
 
 For the ufs-weather-model S2S app (atm/ice/ocean):
 
 .. code-block:: console
 
-    export CMAKE_FLAGS="-DAPP=S2S"
-    export CCPP_SUITES="FV3_GFS_2017_coupled,FV3_GFS_2017_satmedmf_coupled,FV3_GFS_v15p2_coupled,FV3_GFS_v16_coupled,FV3_GFS_v16_couplednsst"
+    export CMAKE_FLAGS="-DAPP=S2S -DCCPP_SUITES=FV3_GFS_2017_coupled,FV3_GFS_2017_satmedmf_coupled,FV3_GFS_v15p2_coupled,FV3_GFS_v16_coupled,FV3_GFS_v16_couplednsst"
 
 For the ufs-weather-model S2S app (atm/ice/ocean) with debugging flags turned on, with verbose build messages:
 
 .. code-block:: console
 
-    export CMAKE_FLAGS="-DAPP=S2S -DDEBUG=ON"
-    export CCPP_SUITES="FV3_GFS_2017_coupled,FV3_GFS_2017_satmedmf_coupled,FV3_GFS_v15p2_coupled,FV3_GFS_v16_coupled,FV3_GFS_v16_couplednsst"
+    export CMAKE_FLAGS="-DAPP=S2S -DDEBUG=ON -DCCPP_SUITES=FV3_GFS_2017_coupled,FV3_GFS_2017_satmedmf_coupled,FV3_GFS_v15p2_coupled,FV3_GFS_v16_coupled,FV3_GFS_v16_couplednsst"
     export BUILD_VERBOSE=1
 
 For the ufs-weather-model S2SW app (atm/ice/ocean/wave):
 
 .. code-block:: console
 
-    export CMAKE_FLAGS="-DAPP=S2SW"
-    export CCPP_SUITES="FV3_GFS_2017_coupled,FV3_GFS_v15p2_coupled,FV3_GFS_v16_coupled,FV3_GFS_v16_coupled_noahmp"
+    export CMAKE_FLAGS="-DAPP=S2SW -DCCPP_SUITES=FV3_GFS_2017_coupled,FV3_GFS_v15p2_coupled,FV3_GFS_v16_coupled,FV3_GFS_v16_coupled_noahmp"
 
 ------------------
 Building the model

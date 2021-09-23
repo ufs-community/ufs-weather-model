@@ -126,7 +126,7 @@ submit_and_wait() {
         status_label='held in a queue'
       elif [[ $status = 'R' ]];  then
         status_label='running'
-      elif [[ $status = 'E' ]] || [[ $status = 'C' ]];  then
+      elif [[ $status = 'E' ]] || [[ $status = 'C' ]] || [[ $status = '-' ]];  then
         status_label='finished'
         test_status='DONE'
         exit_status=$( qstat ${jobid} -x -f | grep Exit_status | awk '{print $3}')
@@ -154,7 +154,7 @@ submit_and_wait() {
         echo "Slurm unknown status ${status}. Check sacct ..."
         sacct -n -j ${slurm_id} --format=JobID,state%20,Jobname%20
         status_label=$( sacct -n -j ${slurm_id} --format=JobID,state%20,Jobname%20 | grep "^${slurm_id}" | grep ${JBNME} | awk '{print $2}' )
-        if [[ $status_label = 'FAILED' ]]; then
+        if [[ $status_label = 'FAILED' ]] || [[ $status_label = 'TIMEOUT' ]]; then
             test_status='FAIL'
         fi
       fi
@@ -278,7 +278,7 @@ check_results() {
         fi
 
         if [[ $d -eq 1 && ${i##*.} == 'nc' ]] ; then
-          if [[ ${MACHINE_ID} =~ orion || ${MACHINE_ID} =~ hera || ${MACHINE_ID} =~ wcoss_dell_p3 || ${MACHINE_ID} =~ wcoss_cray || ${MACHINE_ID} =~ cheyenne || ${MACHINE_ID} =~ gaea || ${MACHINE_ID} =~ jet ]]; then
+          if [[ ${MACHINE_ID} =~ orion || ${MACHINE_ID} =~ hera || ${MACHINE_ID} =~ wcoss_dell_p3 || ${MACHINE_ID} =~ wcoss_cray || ${MACHINE_ID} =~ cheyenne || ${MACHINE_ID} =~ gaea || ${MACHINE_ID} =~ jet || ${MACHINE_ID} =~ s4 ]] ; then
             printf ".......ALT CHECK.." >> ${REGRESSIONTEST_LOG}
             printf ".......ALT CHECK.."
             ${PATHRT}/compare_ncfile.py ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i >/dev/null 2>&1 && d=$? || d=$?
@@ -399,6 +399,9 @@ rocoto_create_compile_task() {
   if [[ ${MACHINE_ID} == orion.* ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
+  if [[ ${MACHINE_ID} == s4.* ]]; then
+    BUILD_WALLTIME="01:00:00"
+  fi
 
   cat << EOF >> $ROCOTO_XML
   <task name="compile_${COMPILE_NR}" maxtries="3">
@@ -498,8 +501,10 @@ EOF
   echo "      label job_status ''" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   echo "      inlimit max_builds" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   # serialize WW3 builds. FIXME
-  if [[ ${MAKE_OPT^^} =~ "WW3=Y" && ${COMPILE_PREV_WW3_NR} != '' ]]; then
-    echo "    trigger compile_${COMPILE_PREV_WW3_NR} == complete"  >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+  if [[ ${MAKE_OPT^^} =~ "-DAPP=ATMW" ]] || [[ ${MAKE_OPT^^} =~ "-DAPP=S2SW" ]] || [[ ${MAKE_OPT^^} =~ "-DAPP=HAFSW" ]] || [[ ${MAKE_OPT^^} =~ "-DAPP=HAFS-ALL" ]] ; then
+    if [[ ${COMPILE_PREV_WW3_NR} != '' ]]; then
+      echo "    trigger compile_${COMPILE_PREV_WW3_NR} == complete"  >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+    fi
   fi
 }
 
@@ -538,7 +543,7 @@ ecflow_run() {
   not_running=$?
   if [[ $not_running -eq 1 ]]; then
     echo "ecflow_server is NOT running on ${ECF_HOST}:${ECF_PORT}"
-    sh ${ECFLOW_START} -p ${ECF_PORT}
+    ${ECFLOW_START} -p ${ECF_PORT}
   else
     echo "ecflow_server is already running on ${ECF_HOST}:${ECF_PORT}"
   fi
