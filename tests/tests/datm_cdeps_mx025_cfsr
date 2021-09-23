@@ -30,13 +30,16 @@ export atm_petlist_bounds=$APB_cdeps_025
 export med_petlist_bounds=$MPB_cdeps_025
 export ocn_petlist_bounds=$OPB_cdeps_025
 export ice_petlist_bounds=$IPB_cdeps_025
-export NPROC_ICE='48'
 
 # ocn/ice resolution
 export OCNRES='025'
 export ICERES='0.25'
 export NX_GLB=1440
 export NY_GLB=1080
+export NPROC_ICE='48'
+export np2=`expr $NPROC_ICE / 2`
+export BLCKX=`expr $NX_GLB / $np2`
+export BLCKY=`expr $NY_GLB / 2`
 
 # resolution dependent files
 export MOM_INPUT="MOM_input_template_${OCNRES}"
