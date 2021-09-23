@@ -1,21 +1,55 @@
 ###############################################################################
 #
-#  Global control debug test: GFSv16 atmosphere only at C96L127, P7 configuration
+#  Global control 2thread test GFSv16 atmosphere only at C96L127, P7 configuration
 #
 ###############################################################################
 
-export TEST_DESCR="Compare global control debug results with previous trunk version"
+export TEST_DESCR="Compare global control results with control test"
 
-export CNTL_DIR=control_debug_p7
+export CNTL_DIR=control_p7
 
 export LIST_FILES="sfcf000.nc \
-                   sfcf001.nc \
+                   sfcf024.nc \
                    atmf000.nc \
-                   atmf001.nc"
+                   atmf024.nc \
+                   GFSFLX.GrbF00 \
+                   GFSFLX.GrbF24 \
+                   GFSPRS.GrbF00 \
+                   GFSPRS.GrbF24 \
+                   RESTART/coupler.res \
+                   RESTART/fv_core.res.nc \
+                   RESTART/fv_core.res.tile1.nc \
+                   RESTART/fv_core.res.tile2.nc \
+                   RESTART/fv_core.res.tile3.nc \
+                   RESTART/fv_core.res.tile4.nc \
+                   RESTART/fv_core.res.tile5.nc \
+                   RESTART/fv_core.res.tile6.nc \
+                   RESTART/fv_srf_wnd.res.tile1.nc \
+                   RESTART/fv_srf_wnd.res.tile2.nc \
+                   RESTART/fv_srf_wnd.res.tile3.nc \
+                   RESTART/fv_srf_wnd.res.tile4.nc \
+                   RESTART/fv_srf_wnd.res.tile5.nc \
+                   RESTART/fv_srf_wnd.res.tile6.nc \
+                   RESTART/fv_tracer.res.tile1.nc \
+                   RESTART/fv_tracer.res.tile2.nc \
+                   RESTART/fv_tracer.res.tile3.nc \
+                   RESTART/fv_tracer.res.tile4.nc \
+                   RESTART/fv_tracer.res.tile5.nc \
+                   RESTART/fv_tracer.res.tile6.nc \
+                   RESTART/phy_data.tile1.nc \
+                   RESTART/phy_data.tile2.nc \
+                   RESTART/phy_data.tile3.nc \
+                   RESTART/phy_data.tile4.nc \
+                   RESTART/phy_data.tile5.nc \
+                   RESTART/phy_data.tile6.nc \
+                   RESTART/sfc_data.tile1.nc \
+                   RESTART/sfc_data.tile2.nc \
+                   RESTART/sfc_data.tile3.nc \
+                   RESTART/sfc_data.tile4.nc \
+                   RESTART/sfc_data.tile5.nc \
+                   RESTART/sfc_data.tile6.nc"
 
 export_fv3
-
-export FHMAX=1
 export NPZ=127
 export NPZP=128
 export DT_ATMOS=720
@@ -25,7 +59,14 @@ export SDAY=22
 export SHOUR=06
 export OUTPUT_GRID='gaussian_grid'
 export NSTF_NAME='2,0,0,0,0'
-#export WRITE_DOPOST=.true.
+export WRITE_DOPOST=.true.
+
+export THRD=2
+export TASKS=$TASKS_thrd
+export TPN=$TPN_thrd
+export INPES=$INPES_thrd
+export JNPES=$JNPES_thrd
+export WRTTASK_PER_GROUP=6
 
 #P7 default
 export IALB=2
