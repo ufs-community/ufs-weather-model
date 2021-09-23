@@ -305,6 +305,32 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   cp fv3_conf/fv3_slurm.IN_jet fv3_conf/fv3_slurm.IN
   cp fv3_conf/compile_slurm.IN_jet fv3_conf/compile_slurm.IN
 
+elif [[ $MACHINE_ID = s4.* ]]; then
+
+  module load rocoto/1.3.2
+  module load ecflow/5.6.0
+  ROCOTORUN=$(which rocotorun)
+  ROCOTOSTAT=$(which rocotostat)
+  ROCOTOCOMPLETE=$(which rocotocomplete)
+  ROCOTO_SCHEDULER=slurm
+
+  ECFLOW_START=/opt/ecflow/5.6.0/bin/ecflow_start.sh
+  ECF_PORT=$(( $(id -u) + 1500 ))
+
+  QUEUE=s4
+  COMPILE_QUEUE=s4
+
+  ACCNR=star
+  PARTITION=s4
+  dprefix=/data/users/dhuber/save
+  DISKNM=$dprefix/nems/emc.nemspara/RT
+  STMP=/scratch/short/users
+  PTMP=/scratch/users
+
+  SCHEDULER=slurm
+  cp fv3_conf/fv3_slurm.IN_s4 fv3_conf/fv3_slurm.IN
+  cp fv3_conf/compile_slurm.IN_s4 fv3_conf/compile_slurm.IN
+
 elif [[ $MACHINE_ID = cheyenne.* ]]; then
 
   export PATH=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/bin:/glade/p/ral/jntp/tools/miniconda3/4.8.3/bin:$PATH
@@ -348,7 +374,7 @@ mkdir -p ${STMP}/${USER}
 
 # Different own baseline directories for different compilers on Theia/Cheyenne
 NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST
-if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]]; then
+if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]] || [[ $MACHINE_ID = s4.* ]] ; then
     NEW_BASELINE=${NEW_BASELINE}_${RT_COMPILER^^}
 fi
 
@@ -416,14 +442,14 @@ if [[ $TESTS_FILE =~ '35d' ]]; then
 fi
 
 BL_DATE=20210915
-if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]]; then
+if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]] || [[ $MACHINE_ID = s4.* ]]; then
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
 else
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}}
 fi
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20210825}
-INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20210621
+INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20210908
 INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC:-$DISKNM/NEMSfv3gfs/BM_IC-20210717}
 
 shift $((OPTIND-1))
@@ -485,6 +511,10 @@ if [[ $ROCOTO == true ]]; then
   elif [[ $MACHINE_ID = orion.* ]]; then
     QUEUE=batch
     COMPILE_QUEUE=batch
+    ROCOTO_SCHEDULER=slurm
+  elif [[ $MACHINE_ID = s4.* ]]; then
+    QUEUE=s4
+    COMPILE_QUEUE=s4
     ROCOTO_SCHEDULER=slurm
   elif [[ $MACHINE_ID = jet.* ]]; then
     QUEUE=batch
@@ -562,6 +592,8 @@ EOF
     QUEUE=batch
   elif [[ $MACHINE_ID = jet.* ]]; then
     QUEUE=batch
+  elif [[ $MACHINE_ID = s4.* ]]; then
+    QUEUE=s4
   elif [[ $MACHINE_ID = gaea.* ]]; then
     QUEUE=normal
   elif [[ $MACHINE_ID = cheyenne.* ]]; then
