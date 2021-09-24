@@ -1,16 +1,14 @@
-#!/bin/bash
-
-#PBS -o out
-#PBS -e err
-#PBS -N @[JBNME]
-#PBS -A @[ACCNR]
-#PBS -q @[QUEUE]
-#PBS -l select=1:ncpus=8:mpiprocs=1
-#PBS -l walltime=00:30:00
+#!/bin/sh
+#SBATCH -e err
+#SBATCH -o out
+#SBATCH --account=@[ACCNR]
+#SBATCH --qos=@[QUEUE]
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=8
+#SBATCH --time=30
+#SBATCH --job-name="@[JBNME]"
 
 set -eux
-
-cd $PBS_O_WORKDIR
 
 echo -n " $( date +%s )," >  job_timestamp.txt
 echo "Compile started:  " `date`
