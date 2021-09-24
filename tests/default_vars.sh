@@ -736,6 +736,11 @@ export MOM6_ALLOW_LANDMASK_CHANGES=False
 # MOM6 IAU
 export MOM_IAU=False
 export MOM_IAU_HRS=6
+# MOM6 stochastics
+export DO_OCN_SPPT=False
+export PERT_EPBL=False
+export OCN_SPPT=-999.
+export EPBL=-999.
 
 # CICE6 defaults; 1 degree
 export NPROC_ICE=12
@@ -865,6 +870,11 @@ export CHLCLIM=seawifs_1998-2006_smoothed_2X.nc
 # MOM6 IAU
 export MOM_IAU=False
 export MOM_IAU_HRS=6
+# MOM6 stochastics
+export DO_OCN_SPPT=False
+export PERT_EPBL=False
+export OCN_SPPT=-999.
+export EPBL=-999.
 # this must be set False for restart repro
 export MOM6_REPRO_LA=False
 # since coupling_interval_slow is set to DT_THERM, this should be always be false
@@ -988,6 +998,11 @@ export CHLCLIM=seawifs_1998-2006_smoothed_2X.nc
 # MOM6 IAU
 export MOM_IAU=False
 export MOM_IAU_HRS=6
+# MOM6 stochastics
+export DO_OCN_SPPT=False
+export PERT_EPBL=False
+export OCN_SPPT=-999.
+export EPBL=-999.
 # this must be set False for restart repro
 export MOM6_REPRO_LA=False
 # since coupling_interval_slow is set to DT_THERM, this should be always be false

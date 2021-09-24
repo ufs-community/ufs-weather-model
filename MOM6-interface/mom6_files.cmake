@@ -170,6 +170,7 @@ list(APPEND mom6_src_files
   MOM6/src/parameterizations/vertical/MOM_tidal_mixing.F90
   MOM6/src/parameterizations/vertical/MOM_vert_friction.F90
 
+
   MOM6/src/parameterizations/CVmix/cvmix_background.F90
   MOM6/src/parameterizations/CVmix/cvmix_convection.F90
   MOM6/src/parameterizations/CVmix/cvmix_ddiff.F90
@@ -254,6 +255,7 @@ list(APPEND mom6_src_files
   MOM6/config_src/external/ODA_hooks/ocean_da_core.F90
   MOM6/config_src/external/ODA_hooks/ocean_da_types.F90
   MOM6/config_src/external/ODA_hooks/write_ocean_obs.F90
+  MOM6/config_src/external/OCEAN_stochastic_phyiscs/MOM_stochastics.F90
 
   MOM6/config_src/infra/FMS1/MOM_coms_infra.F90
   MOM6/config_src/infra/FMS1/MOM_constants.F90
