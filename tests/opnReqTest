@@ -52,25 +52,36 @@ cleanup() {
   exit $1
 }
 
-build_opnReqTests() {
-  [[ -f $build_file ]] || error "$build_file does not exist"
+find_build() {
+  local compile_line=''
+  local run_line=''
+  while read -r line || [ "$line" ]; do
+    line="${line#"${line%%[![:space:]]*}"}"
+    [[ ${#line} == 0 ]] && continue
+    [[ $line == \#* ]] && continue
 
+    if [[ $line =~ COMPILE ]] ; then
+      compile_opt=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
+    elif [[ $line =~ RUN ]]; then
+      tmp_test_name=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
+      if [[ $TEST_NAME == $tmp_test_name && $compile_opt != '' ]]; then
+        model_found=true
+        base_opt=$compile_opt
+        break
+      fi
+    fi
+  done <'rt.conf'
+}
+
+build_opnReqTests() {
   rm -f fv3_*.exe modules.fv3_*
 
   model_found=false
   base_opt=
-  while IFS="|" read model compile_opt; do
-    model=$(echo $model | sed -e 's/^ *//' -e 's/ *$//')
-    compile_opt=$(echo $compile_opt | sed -e 's/^ *//' -e 's/ *$//')
-    if [[ $model == $TEST_NAME ]]; then
-      base_opt=$compile_opt
-      model_found=true
-      break
-    fi
-  done <$build_file
+  find_build
 
   if [[ $model_found == false ]]; then
-    error "build options for $TEST_NAME not found. please edit opnReqTest.bld"
+    error "build options for $TEST_NAME not found. please take a look at rt.conf"
   fi
 
   for name in $compile_case; do
@@ -537,9 +548,6 @@ REGRESSIONTEST_LOG=$opnreqtest_log
 ########################################################################
 ####                            COMPILE                             ####
 ########################################################################
-
-# build_file specifies compilation options
-build_file='opnReqTest.bld'
 
 # if skipping compile, check if all required executables exist. if not,
 # exit with a non-zero number equal to the number of missing executables
