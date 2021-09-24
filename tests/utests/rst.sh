@@ -2,23 +2,30 @@ set -eu
 source $PATHRT/utests/std.sh
 
 # Set up date and time of restart files for restart run
-FHROT=12
-RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( SHOUR + FHROT  )))0000"
 
 if [[ $application == 'global' ]]; then
+  FHROT=12
   OUTPUT_FH="3 -1"
+  RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( SHOUR + FHROT  )))0000"
 elif [[ $application == 'regional' ]]; then
   echo "Regional application not yet implemented for restart"
   exit 1
 elif [[ $application == 'cpld' ]]; then
+  if [[ $TEST_NAME == 'cpld_control' ]]; then
+    FHROT=12
+  elif [[ $TEST_NAME == 'cpld_bmark_v16' ]]; then
+    FHROT=3
+  fi
+
+  DEP_RUN=${TEST_NAME}
   CICERUNTYPE='continue'
   RUNTYPE='continue'
   USE_RESTART_TIME='.true.'
   MOM6_RESTART_SETTING="r"
-  RESTART_FILE_SUFFIX_HRS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%02d" $(( ${FHROT} )))"
-  RESTART_FILE_SUFFIX_SECS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%02d" $(( ${FHROT}*3600 )))"
-  RESTART_N=$((FHMAX-$FHROT))
-  DEP_RUN=${TEST_NAME}
+  RESTART_N=$(( FHMAX - FHROT ))
+  RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( SHOUR + FHROT  )))0000"
+  RESTART_FILE_SUFFIX_HRS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%02d" $(( SHOUR + FHROT )))"
+  RESTART_FILE_SUFFIX_SECS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%05d" $(( (SHOUR + FHROT)* 3600 )))"
 fi
 
 WARM_START=.T.
@@ -45,6 +52,7 @@ export CICERUNTYPE=${CICERUNTYPE:-}
 export RUNTYPE=${RUNTYPE:-}
 export USE_RESTART_TIME=${USE_RESTART_TIME:-}
 export MOM6_RESTART_SETTING=${MOM6_RESTART_SETTING:-}
+export RESTART_N=${RESTART_N:-}
 export RESTART_FILE_SUFFIX_HRS=${RESTART_FILE_SUFFIX_HRS:-}
 export RESTART_FILE_SUFFIX_SECS=${RESTART_FILE_SUFFIX_SECS:-}
 export DEP_RUN=${DEP_RUN:-}

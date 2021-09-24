@@ -18,7 +18,7 @@ elif [[ $application == 'cpld' ]]; then
     atm_petlist_bounds="0 77"
     ocn_petlist_bounds="78 107"
     ice_petlist_bounds="108 119"
-    TASKS=$((INPES*JNPES*6 + WRTIE_GROUP*WRTTASK_PER_GROUP + 30 + 12))
+    TASKS=$((INPES*JNPES*6 + WRITE_GROUP*WRTTASK_PER_GROUP + 30 + 12))
     TPN=$((TPN/THRD))
     NODES=$(((TASKS+TPN-1)/TPN))
   fi

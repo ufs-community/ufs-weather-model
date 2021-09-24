@@ -61,17 +61,12 @@ else
   fi
   
   # Restart files
+  cp -r ../${DEP_RUN}${SUFFIX}/INPUT/* ./INPUT
   cp -r ../${DEP_RUN}${SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.* ./INPUT
-  rm -f INPUT/fv_core.res.*
-  rm -f INPUT/fv_srf_wnd.res.*
-  rm -f INPUT/fv_tracer.res.*
-  rm -f INPUT/phy_data.*
-  rm -f INPUT/sfc_data.*
-  for RFILE in ../${DEP_RUN}${SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.*; do
+  for RFILE in INPUT/${RESTART_FILE_PREFIX}.*; do
     [ -e $RFILE ] || exit 1
     RFILE_OLD=$(basename $RFILE)
-    RFILE_NEW="${RFILE_OLD//${RESTART_FILE_PREFIX}./}"
-    cp $RFILE INPUT/${RFILE_NEW}
+    mv -f $RFILE INPUT/"${RFILE_OLD//${RESTART_FILE_PREFIX}./}"
   done
 
   #if not mx025, then mom6 restart is a single file

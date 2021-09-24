@@ -26,8 +26,9 @@ elif [[ $application == 'cpld' ]]; then
     ice_petlist_bounds="34 39"
     TASKS=$((INPES*JNPES*6 + WRITE_GROUP*WRTTASK_PER_GROUP + 10 + 6))
   else
-    INPES=6
-    JNPES=4
+    temp=$INPES
+    INPES=$JNPES
+    JNPES=$temp
   fi
 fi
 
