@@ -4,6 +4,7 @@ set -eux
 echo "PID=$$"
 SECONDS=0
 
+trap '[ "$?" -eq 0 ] || write_fail_test' EXIT
 trap 'echo "run_compile.sh interrupted PID=$$"; cleanup' INT
 trap 'echo "run_compile.sh terminated PID=$$";  cleanup' TERM
 
@@ -13,6 +14,14 @@ cleanup() {
   exit
 }
 
+write_fail_test() {
+  if [[ ${UNIT_TEST} == true ]]; then
+    echo compile ${COMPILE_NR} >> $PATHRT/fail_unit_test
+  else
+    echo "compile_${COMPILE_NR} failed in run_compile" >> $PATHRT/fail_test
+  fi
+  exit 1
+}
 
 if [[ $# != 4 ]]; then
   echo "Usage: $0 PATHRT RUNDIR_ROOT MAKE_OPT COMPILE_NR"
@@ -61,6 +70,8 @@ else
   chmod u+x job_card
   ./job_card
 fi
+
+ls -l ${PATHTR}/tests/fv3_${COMPILE_NR}.exe
 
 cp ${RUNDIR}/compile_*_time.log ${LOG_DIR}
 cat ${RUNDIR}/job_timestamp.txt >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
