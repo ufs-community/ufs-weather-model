@@ -32,11 +32,11 @@ usage() {
   echo
   echo "  Examples"
   echo
-  echo "    'utest -n fv3_control' tests all for fv3_control"
-  echo "    'utest -n fv3_control -c rst' tests restart for fv3_control"
-  echo "    'utest -n fv3_gfdlmp -c mpi,thr' tests mpi and threading for fv3_gfdlmp"
-  echo "    'utest -n fv3_gfdlmp -c bit' tests bit for fv3_gfdlmp"
-  echo "    'utest -n fv3_satmedmf -c dcp,dbg,rst' tests decomposition, debug, restart for fv3_satmedmf"
+  echo "    'opnReqTest -n fv3_control' tests all for fv3_control"
+  echo "    'opnReqTest -n fv3_control -c rst' tests restart for fv3_control"
+  echo "    'opnReqTest -n fv3_gfdlmp -c mpi,thr' tests mpi and threading for fv3_gfdlmp"
+  echo "    'opnReqTest -n fv3_gfdlmp -c bit' tests bit for fv3_gfdlmp"
+  echo "    'opnReqTest -n fv3_satmedmf -c dcp,dbg,rst' tests decomposition, debug, restart for fv3_satmedmf"
   echo
   #set -x
 }
@@ -52,7 +52,7 @@ cleanup() {
   exit $1
 }
 
-build_utests() {
+build_opnReqTests() {
   [[ -f $build_file ]] || error "$build_file does not exist"
 
   rm -f fv3_*.exe modules.fv3_*
@@ -70,7 +70,7 @@ build_utests() {
   done <$build_file
 
   if [[ $model_found == false ]]; then
-    error "build options for $TEST_NAME not found. please edit utest.bld"
+    error "build options for $TEST_NAME not found. please edit opnReqTest.bld"
   fi
 
   for name in $compile_case; do
@@ -119,7 +119,7 @@ build_utests() {
   done
 }
 
-run_utests() {
+run_opnReqTests() {
   JOB_NR=0
   for rc in $run_case; do
     # load default variables and override as necessary
@@ -150,57 +150,57 @@ run_utests() {
       std_base)
         CREATE_BASELINE=true
         BL_SUFFIX=_std_base
-        source $PATHRT/utests/std.sh
+        source $PATHRT/opnReqTests/std.sh
         ;;
       std)
         CREATE_BASELINE=false
         BL_SUFFIX=_std_base
-        source $PATHRT/utests/std.sh
+        source $PATHRT/opnReqTests/std.sh
         ;;
       thr)
         CREATE_BASELINE=false
         BL_SUFFIX=_std_base
-        source $PATHRT/utests/thr.sh
+        source $PATHRT/opnReqTests/thr.sh
         ;;
       mpi)
         CREATE_BASELINE=false
         BL_SUFFIX=_std_base
-        source $PATHRT/utests/mpi.sh
+        source $PATHRT/opnReqTests/mpi.sh
         ;;
       dcp)
         CREATE_BASELINE=false
         BL_SUFFIX=_std_base
-        source $PATHRT/utests/dcp.sh
+        source $PATHRT/opnReqTests/dcp.sh
         ;;
       rst) # this is not going to work for regional model
         CREATE_BASELINE=false
         BL_SUFFIX=_std_base
-        source $PATHRT/utests/rst.sh
+        source $PATHRT/opnReqTests/rst.sh
         ;;
       bit_base)
         CREATE_BASELINE=true
         BL_SUFFIX=_bit_base
         comp_nm=bit
-        source $PATHRT/utests/bit.sh
+        source $PATHRT/opnReqTests/bit.sh
         ;;
       bit)
         CREATE_BASELINE=false
         BL_SUFFIX=_bit_base
         comp_nm=bit
-        source $PATHRT/utests/bit.sh
+        source $PATHRT/opnReqTests/bit.sh
         ;;
       dbg_base)
         CREATE_BASELINE=true
         BL_SUFFIX=_dbg_base
         comp_nm=dbg
-        source $PATHRT/utests/dbg.sh
+        source $PATHRT/opnReqTests/dbg.sh
         WLCLK=60
         ;;
       dbg)
         CREATE_BASELINE=false
         BL_SUFFIX=_dbg_base
         comp_nm=dbg
-        source $PATHRT/utests/dbg.sh
+        source $PATHRT/opnReqTests/dbg.sh
         WLCLK=60
         ;;
     esac
@@ -252,17 +252,17 @@ run_utests() {
   done
 }
 
-trap 'echo utest killed; cleanup $?' KILL
-trap 'echo utest interrupted; cleanup $?' INT
-trap 'echo utest quit; cleanup $?' QUIT
-trap 'echo utest terminated; cleanup $?' TERM
-trap 'echo utest error on line $LINENO; cleanup $?' ERR
+trap 'echo opnReqTest killed; cleanup $?' KILL
+trap 'echo opnReqTest interrupted; cleanup $?' INT
+trap 'echo opnReqTest quit; cleanup $?' QUIT
+trap 'echo opnReqTest terminated; cleanup $?' TERM
+trap 'echo opnReqTest error on line $LINENO; cleanup $?' ERR
 trap '
   ret=$?
   if [ "$ret" -ne 0 ]; then
     echo >&2 "Died with error code $ret"
   else
-    echo >&2 "utest finished"
+    echo >&2 "opnReqTest finished"
   fi
   cleanup $ret' EXIT
 
@@ -271,12 +271,12 @@ trap '
 ########################################################################
 
 readonly program=$(basename $0)
-# PATHRT - Path to unit tests directory
+# PATHRT - Path to operation requirement tests directory
 readonly PATHRT=$(cd $(dirname $0) && pwd -P)
 # PATHTR - Path to trunk directory
 readonly PATHTR=$(cd ${PATHRT}/.. && pwd)
-readonly lockdir=${PATHRT}/lock_ut
-export UNIT_TEST=true
+readonly lockdir=${PATHRT}/lock_opnReqTest
+export OPNREQ_TEST=true
 export CI_TEST=${CI_TEST:-false}
 
 [[ $# -eq 0 ]] && usage_and_exit 1
@@ -288,14 +288,14 @@ RT_MACHINE=${RT_MACHINE:-}
 source detect_machine.sh
 cd $PATHRT
 
-# make sure only one instance of utest is running
+# make sure only one instance of opnReqTest is running
 if mkdir $lockdir 2>/dev/null; then
   echo $(hostname) $$ > ${lockdir}/PID
 else
-  error "Only one instance of utest can be running at a time"
+  error "Only one instance of opnReqTest can be running at a time"
 fi
 
-# utility functions in rt_utils need to be able to see variables in utest
+# utility functions in rt_utils need to be able to see variables in opnReqTest
 source rt_utils.sh
 
 source $PATHTR/NEMS/src/conf/module-setup.sh.inc
@@ -435,7 +435,7 @@ done
 
 # some safety guards for input arguments
 if [[ -z $TEST_NAME ]]; then
-  error "$program: test name is required. try 'utest -h' for usage"
+  error "$program: test name is required. try 'opnReqTest -h' for usage"
 fi
 if [[ $skip_compile == true && $skip_run == true ]]; then
   error "$program: cannot skip both compile and run"
@@ -495,17 +495,17 @@ if [[ $run_case =~ std_base && ! $run_case =~ ^std_base ]]; then
 fi
 
 # log directory
-export LOG_DIR=${PATHRT}/log_ut_$MACHINE_ID
+export LOG_DIR=${PATHRT}/log_opnReqTest_$MACHINE_ID
 rm -rf ${LOG_DIR}
 mkdir ${LOG_DIR}
 
 # directory where all simulations are run
-RUNDIR_ROOT=${RUNDIR_ROOT:-${PTMP}/${USER}}/FV3_UT/ut_$$
+RUNDIR_ROOT=${RUNDIR_ROOT:-${PTMP}/${USER}}/FV3_OPNREQ_TEST/opnReqTest_$$
 mkdir -p ${RUNDIR_ROOT}
 
 if [[ $ECFLOW == true ]]; then
-  ECFLOW_RUN=${PATHRT}/ecflow_ut_run
-  ECFLOW_SUITE=unittest
+  ECFLOW_RUN=${PATHRT}/ecflow_opnReqTest_run
+  ECFLOW_SUITE=opnreqtest
   rm -rf ${ECFLOW_RUN}
   mkdir -p ${ECFLOW_RUN}/${ECFLOW_SUITE}
   cp head.h tail.h ${ECFLOW_RUN}
@@ -531,15 +531,15 @@ if [[ $ECFLOW == true ]]; then
   fi
 fi
 
-unittest_log=${PATHRT}/UnitTests_$MACHINE_ID.log
-REGRESSIONTEST_LOG=$unittest_log
+opnreqtest_log=${PATHRT}/OpnReqTests_$MACHINE_ID.log
+REGRESSIONTEST_LOG=$opnreqtest_log
 
 ########################################################################
 ####                            COMPILE                             ####
 ########################################################################
 
 # build_file specifies compilation options
-build_file='utest.bld'
+build_file='opnReqTest.bld'
 
 # if skipping compile, check if all required executables exist. if not,
 # exit with a non-zero number equal to the number of missing executables
@@ -561,7 +561,7 @@ if [[ $skip_compile == true ]]; then
   fi
 else
   echo "cases to compile: $compile_case"
-  build_utests
+  build_opnReqTests
 fi
 
 # if skipping run, stop after build. print out status information and
@@ -587,7 +587,7 @@ fi
 ########################################################################
 
 mkdir -p ${STMP}/${USER}
-NEW_BASELINE=${STMP}/${USER}/FV3_UT/UNIT_TEST
+NEW_BASELINE=${STMP}/${USER}/FV3_OPNREQ_TEST/OPNREQ_TEST
 RTPWD=${NEW_BASELINE}
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20210825}
 INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20210908/
@@ -596,10 +596,10 @@ INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC:-$DISKNM/NEMSfv3gfs/BM_IC-20210717}
 rm -rf $NEW_BASELINE
 mkdir -p $NEW_BASELINE
 
-rm -f fail_unit_test ${unittest_log}
+rm -f fail_opnreq_test ${opnreqtest_log}
 
 echo "cases to run: $run_case"
-run_utests
+run_opnReqTests
 
 if [[ $ECFLOW == true ]]; then
   echo "endsuite" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
@@ -607,32 +607,32 @@ if [[ $ECFLOW == true ]]; then
 fi
 
 ########################################################################
-####                       UNIT TEST STATUS                         ####
+####               OPERATION REQUIREMENT TEST STATUS                ####
 ########################################################################
 set +e
-cat ${LOG_DIR}/ut_*.log | tee -a ${unittest_log}
+cat ${LOG_DIR}/opnReqTest_*.log | tee -a ${opnreqtest_log}
 
-if [[ -e fail_unit_test ]]; then
-  echo "FAILED TESTS: " | tee -a ${unittest_log}
+if [[ -e fail_opnreq_test ]]; then
+  echo "FAILED TESTS: " | tee -a ${opnreqtest_log}
   while read -r failed_test_name; do
-    echo "Test ${failed_test_name} failed " | tee -a ${unittest_log}
-  done < fail_unit_test
+    echo "Test ${failed_test_name} failed " | tee -a ${opnreqtest_log}
+  done < fail_opnreq_test
 
-  echo "UNIT TEST FAILED" | tee -a ${unittest_log}
-  date >>${unittest_log}
+  echo "OPERATION REQUIREMENT TEST FAILED" | tee -a ${opnreqtest_log}
+  date >>${opnreqtest_log}
   hrs=$(( $SECONDS%86400/3600 )); mins=$(( $SECONDS%3600/60 )); secs=$(( $SECONDS%60 ))
   elapsed_time=$(printf '%02dh:%02dm:%02ds\n' $hrs $mins $secs)
-  echo "Elapsed time: ${elapsed_time}. Have a nice day!" | tee -a ${unittest_log}
+  echo "Elapsed time: ${elapsed_time}. Have a nice day!" | tee -a ${opnreqtest_log}
 
   exit 1
 else
   [[ ${keep_rundir} == false ]] && rm -rf ${RUNDIR_ROOT}
 
-  echo "UNIT TEST WAS SUCCESSFUL" | tee -a ${unittest_log}
-  date >>${unittest_log}
+  echo "OPERATION REQUIREMENT TEST WAS SUCCESSFUL" | tee -a ${opnreqtest_log}
+  date >>${opnreqtest_log}
   hrs=$(( $SECONDS%86400/3600 )); mins=$(( $SECONDS%3600/60 )); secs=$(( $SECONDS%60 ))
   elapsed_time=$(printf '%02dh:%02dm:%02ds\n' $hrs $mins $secs)
-  echo "Elapsed time: ${elapsed_time}. Have a nice day!" | tee -a ${unittest_log}
+  echo "Elapsed time: ${elapsed_time}. Have a nice day!" | tee -a ${opnreqtest_log}
 
   exit 0
 fi

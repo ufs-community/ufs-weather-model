@@ -1,5 +1,5 @@
 set -eu
-source $PATHRT/utests/std.sh
+source $PATHRT/opnReqTests/std.sh
 
 if [[ $application == 'global' ]]; then
   LIST_FILES="sfcf000.nc sfcf001.nc atmf000.nc atmf001.nc"
@@ -19,8 +19,8 @@ elif [[ $application == 'cpld' ]]; then
                                    | sed -e "s/^ *//" -e "s/ *$//")
 fi
 
-source $PATHRT/utests/wrt_env.sh
+source $PATHRT/opnReqTests/wrt_env.sh
 
-cat <<EOF >>${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
+cat <<EOF >>${RUNDIR_ROOT}/opnreq_test${RT_SUFFIX}.env
 export WLCLK=${WLCLK}
 EOF

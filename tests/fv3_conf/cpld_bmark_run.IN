@@ -45,7 +45,7 @@ if [[ $CPLWAV == .true. && $CPLWAV2ATM == .true. ]]; then
   fi
 fi
 
-UNIT_TEST=${UNIT_TEST:-false}
+OPNREQ_TEST=${OPNREQ_TEST:-false}
 SUFFIX=${RT_SUFFIX}
 # No restart
 if [ $WARM_START = .false. ]; then
@@ -58,7 +58,7 @@ if [ $WARM_START = .false. ]; then
 
 # Restart
 else
-  if [[ ${UNIT_TEST} == true ]]; then
+  if [[ ${OPNREQ_TEST} == true ]]; then
     SUFFIX=${BL_SUFFIX}
   fi
 

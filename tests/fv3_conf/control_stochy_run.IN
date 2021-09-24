@@ -10,7 +10,7 @@ elif [ $NPX = 769 ]; then
 fi
 echo "inputdir=$inputdir,NPX=$NPX"
 
-UNIT_TEST=${UNIT_TEST:-false}
+OPNREQ_TEST=${OPNREQ_TEST:-false}
 SUFFIX=${RT_SUFFIX}
 if [ $WARM_START = .false. ]; then
   mkdir INPUT RESTART
@@ -18,7 +18,7 @@ if [ $WARM_START = .false. ]; then
 else
   mkdir INPUT RESTART
 
-  if [[ ${UNIT_TEST} == true ]]; then
+  if [[ ${OPNREQ_TEST} == true ]]; then
     SUFFIX=${BL_SUFFIX}
   fi
 

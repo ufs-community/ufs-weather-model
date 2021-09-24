@@ -1,5 +1,5 @@
 set -eu
-source $PATHRT/utests/std.sh
+source $PATHRT/opnReqTests/std.sh
 
 THRD=2
 if [[ $application == 'global' ]]; then
@@ -24,5 +24,5 @@ elif [[ $application == 'cpld' ]]; then
   fi
 fi
 
-(test $CI_TEST == 'true') && source $PATHRT/utests/cmp_proc_bind.sh
-source $PATHRT/utests/wrt_env.sh
+(test $CI_TEST == 'true') && source $PATHRT/opnReqTests/cmp_proc_bind.sh
+source $PATHRT/opnReqTests/wrt_env.sh

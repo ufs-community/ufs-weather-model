@@ -14,7 +14,7 @@ check_memory_usage() {
 
 usage_and_exit() {
   echo
-  echo "Note: main purpose of this script is to interface between CI automation and utest script"
+  echo "Note: main purpose of this script is to interface between CI automation and opnReqTest script"
   echo "and therefore, direct invocation via CLI may result in unexpected behavior"
   echo
   echo "Usage: $0 -b <build-case> | -r <test-case>"
@@ -82,7 +82,7 @@ elif [ $RUN == "true" ]; then
                 -w "/home/builder/ufs-weather-model/tests" \
                 -v DataVolume:/home/builder/data/NEMSfv3gfs/input-data-20210825 \
                 --shm-size=512m --name my-container noaaemc/ubuntu-hpc:v1.7b \
-                /bin/bash -c "./utest -n ${TEST_NAME} -c ${TEST_CASE} -x"
+                /bin/bash -c "./opnReqTest -n ${TEST_NAME} -c ${TEST_CASE} -x"
 
   cd $GITHUB_WORKSPACE
   docker cp . my-container:/home/builder/ufs-weather-model

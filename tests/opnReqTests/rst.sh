@@ -1,5 +1,5 @@
 set -eu
-source $PATHRT/utests/std.sh
+source $PATHRT/opnReqTests/std.sh
 
 # Set up date and time of restart files for restart run
 
@@ -41,10 +41,10 @@ LIST_FILES=$(echo -n $LIST_FILES | sed -E "s/phyf00(00|21)\.(tile.\.nc|nemsio|nc
                                  | sed -E "s/GFSFLX.GrbF(00|21) ?//g" | sed -E "s/GFSPRS.GrbF(00|21) ?//g" \
                                  | sed -E "s/atmos_4xdaily\.tile[1-6]\.nc ?//g" | sed -e "s/^ *//" -e "s/ *$//")
 
-(test $CI_TEST == 'true') && source $PATHRT/utests/cmp_proc_bind.sh
-source $PATHRT/utests/wrt_env.sh
+(test $CI_TEST == 'true') && source $PATHRT/opnReqTests/cmp_proc_bind.sh
+source $PATHRT/opnReqTests/wrt_env.sh
 
-cat <<EOF >>${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
+cat <<EOF >>${RUNDIR_ROOT}/opnreq_test${RT_SUFFIX}.env
 export FHROT=${FHROT}
 export RESTART_FILE_PREFIX=${RESTART_FILE_PREFIX}
 export NSTF_NAME=${NSTF_NAME}
