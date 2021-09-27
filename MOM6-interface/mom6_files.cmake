@@ -170,7 +170,6 @@ list(APPEND mom6_src_files
   MOM6/src/parameterizations/vertical/MOM_tidal_mixing.F90
   MOM6/src/parameterizations/vertical/MOM_vert_friction.F90
 
-
   MOM6/src/parameterizations/CVmix/cvmix_background.F90
   MOM6/src/parameterizations/CVmix/cvmix_convection.F90
   MOM6/src/parameterizations/CVmix/cvmix_ddiff.F90
