@@ -1,13 +1,11 @@
-#!/bin/bash -l
+#!/bin/sh
 #SBATCH -e err
 #SBATCH -o out
 #SBATCH --account=@[ACCNR]
-##SBATCH --qos=@[QUEUE]
-#SBATCH --clusters=es
-#SBATCH --partition=eslogin
+#SBATCH --qos=@[QUEUE]
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=8
-#SBATCH --time=180
+#SBATCH --time=30
 #SBATCH --job-name="@[JBNME]"
 
 set -eux
