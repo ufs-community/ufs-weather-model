@@ -27,7 +27,7 @@ else
   if [ $MODEL_INITIALIZATION = false ]; then
     #read_inc and iau tests restart from fh=24
     CURRDIR=`pwd`
-    FILEDIR=${CURRDIR}/../control${SUFFIX}/RESTART/
+    FILEDIR=${CURRDIR}/../${DEP_RUN}/RESTART
   else
     #for warm start from initialiation time
     FILEDIR=@[INPUTDATA_ROOT]/${inputdir}/INPUT_L127_GDAS
@@ -54,11 +54,11 @@ else
     cp ${FILEDIR}/sfc_data.* INPUT/.
   else
     #restart test start from fh=12
-    rsync -arv ${FILEDIR} INPUT/
+    rsync -arv ${FILEDIR}/ INPUT/
     cp ${FILEDIR}/20210322.180000.* INPUT/.
     cp ${FILEDIR}/../INPUT/grid_spec.nc INPUT/.
     cp ${FILEDIR}/../INPUT/*_grid.tile*.nc INPUT/.
-    cp ${FILEDIR}/../INPUT/oro_data.tile*.nc INPUT/.
+    cp ${FILEDIR}/../INPUT/oro_data*.nc INPUT/.
     cd INPUT
     for RFILE in 20210322.180000.*; do
       [ -e $RFILE ] || exit 1
@@ -90,7 +90,7 @@ if [ $TILEDFIX = .true. ]; then
     cp    @[INPUTDATA_ROOT]/${inputdir}/global_snoclim.1.875.grb .
     cp    @[INPUTDATA_ROOT]/${inputdir}/CFSR.SEAICE.1982.2012.monthly.clim.grb .
     cp    @[INPUTDATA_ROOT]/${inputdir}/@[FNSMCC] .
-    cp    @[INPUTDATA_ROOT]/${inputdir}/@[FNMSKH] .
+    cp    @[INPUTDATA_ROOT]/${inputdir}/@[FNMSKH_control] .
 else
     cp    @[INPUTDATA_ROOT]/${inputdir}/*grb .
 fi

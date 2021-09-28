@@ -3,7 +3,7 @@
 #PBS -o out
 #PBS -e err
 #PBS -N @[JBNME]
-# #PBS -A @[ACCNR]
+#PBS -A @[ACCNR]
 #PBS -q @[QUEUE]
 #PBS -l select=1:ncpus=8:mpiprocs=1
 #PBS -l walltime=00:30:00
@@ -11,7 +11,6 @@
 set -eux
 
 cd $PBS_O_WORKDIR
-export CRAY_CONFIG_DIR=$HOME
 
 echo -n " $( date +%s )," >  job_timestamp.txt
 echo "Compile started:  " `date`

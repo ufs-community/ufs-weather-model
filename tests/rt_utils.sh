@@ -278,7 +278,7 @@ check_results() {
         fi
 
         if [[ $d -eq 1 && ${i##*.} == 'nc' ]] ; then
-          if [[ ${MACHINE_ID} =~ orion || ${MACHINE_ID} =~ hera || ${MACHINE_ID} =~ wcoss_dell_p3 || ${MACHINE_ID} =~ wcoss_cray || ${MACHINE_ID} =~ cheyenne || ${MACHINE_ID} =~ gaea || ${MACHINE_ID} =~ jet ]]; then
+          if [[ ${MACHINE_ID} =~ orion || ${MACHINE_ID} =~ hera || ${MACHINE_ID} =~ wcoss_dell_p3 || ${MACHINE_ID} =~ wcoss_cray || ${MACHINE_ID} =~ cheyenne || ${MACHINE_ID} =~ gaea || ${MACHINE_ID} =~ jet || ${MACHINE_ID} =~ s4 ]] ; then
             printf ".......ALT CHECK.." >> ${REGRESSIONTEST_LOG}
             printf ".......ALT CHECK.."
             ${PATHRT}/compare_ncfile.py ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i >/dev/null 2>&1 && d=$? || d=$?
@@ -397,6 +397,9 @@ rocoto_create_compile_task() {
     BUILD_WALLTIME="01:00:00"
   fi
   if [[ ${MACHINE_ID} == orion.* ]]; then
+    BUILD_WALLTIME="01:00:00"
+  fi
+  if [[ ${MACHINE_ID} == s4.* ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
 
@@ -540,7 +543,12 @@ ecflow_run() {
   not_running=$?
   if [[ $not_running -eq 1 ]]; then
     echo "ecflow_server is NOT running on ${ECF_HOST}:${ECF_PORT}"
-    ${ECFLOW_START} -p ${ECF_PORT}
+    if [[ ${MACHINE_ID} == wcoss2 ]]; then
+      # Annoying "Has NCO assigned port $ECF_PORT for use by this account? (yes/no) ".
+      echo yes | ${ECFLOW_START} -p ${ECF_PORT}
+    else
+      ${ECFLOW_START} -p ${ECF_PORT}
+    fi
   else
     echo "ecflow_server is already running on ${ECF_HOST}:${ECF_PORT}"
   fi
@@ -553,6 +561,7 @@ ecflow_run() {
 
   ecflow_client --load=${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   ecflow_client --begin=${ECFLOW_SUITE}
+  ecflow_client --restart
 
   active_tasks=1
   while [[ $active_tasks -ne 0 ]]
