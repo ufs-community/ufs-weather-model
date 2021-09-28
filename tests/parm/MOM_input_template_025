@@ -858,6 +858,11 @@ SEA_ICE_RIGID_MASS = 100.0      !   [kg m-2] default = 1000.0
 LIQUID_RUNOFF_FROM_DATA = @[MOM6_RIVER_RUNOFF]  !   [Boolean] default = False
                                 ! If true, allows liquid river runoff to be specified via
                                 ! the data_table using the component name 'OCN'.
+! == module ocean_stochastics ===
+DO_SPPT   = @[DO_OCN_SPPT]      ! [Boolean] default = False
+                                ! If true perturb the diabatic tendencies in MOM_diabadic_driver
+PERT_EPBL = @[PERT_EPBL]        ! [Boolean] default = False
+                                ! If true perturb the KE dissipation and destruction in MOM_energetic_PBL
 ! === module MOM_restart ===
 RESTART_CHECKSUMS_REQUIRED = False
 ! === module MOM_file_parser ===
