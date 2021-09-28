@@ -890,6 +890,11 @@ export MOM6_ALLOW_LANDMASK_CHANGES=False
 # MOM6 IAU
 export MOM_IAU=False
 export MOM_IAU_HRS=6
+# MOM6 stochastics
+export DO_OCN_SPPT=False
+export PERT_EPBL=False
+export OCN_SPPT=-999.
+export EPBL=-999.
 
 # CICE6 defaults; 1 degree
 export CICE_DECOMP=slenderX2
@@ -1015,15 +1020,20 @@ export MOM6_RESTART_SETTING=n
 export MOM6_RIVER_RUNOFF=False
 export FRUNOFF=''
 export CHLCLIM=seawifs_1998-2006_smoothed_2X.nc
-# MOM6 IAU
-export MOM_IAU=False
-export MOM_IAU_HRS=6
 export MOM6_USE_LI2016=False
 # since coupling_interval_slow is set to DT_THERM, this should be always be false
 export MOM6_THERMO_SPAN=False
 # no WW3
 export MOM6_USE_WAVES=False
 export MOM6_ALLOW_LANDMASK_CHANGES=False
+# MOM6 IAU
+export MOM_IAU=False
+export MOM_IAU_HRS=6
+# MOM6 stochastics
+export DO_OCN_SPPT=False
+export PERT_EPBL=False
+export OCN_SPPT=-999.
+export EPBL=-999.
 
 # CICE6 defaults; 1 degree
 export MESHOCN_ICE=mesh.mx${OCNRES}.nc
@@ -1138,15 +1148,20 @@ export MOM6_RESTART_SETTING=n
 export MOM6_RIVER_RUNOFF=False
 export FRUNOFF=''
 export CHLCLIM=seawifs_1998-2006_smoothed_2X.nc
-# MOM6 IAU
-export MOM_IAU=False
-export MOM_IAU_HRS=6
 export MOM6_USE_LI2016=False
 # since coupling_interval_slow is set to DT_THERM, this should be always be false
 export MOM6_THERMO_SPAN=False
 # no WW3
 export MOM6_USE_WAVES=False
 export MOM6_ALLOW_LANDMASK_CHANGES=False
+# MOM6 IAU
+export MOM_IAU=False
+export MOM_IAU_HRS=6
+# MOM6 stochastics
+export DO_OCN_SPPT=False
+export PERT_EPBL=False
+export OCN_SPPT=-999.
+export EPBL=-999.
 
 # CICE6 defaults; 1 degree
 export MESHOCN_ICE=mesh.mx${OCNRES}.nc
