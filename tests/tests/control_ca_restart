@@ -33,7 +33,6 @@ export CCPP_SUITE=FV3_GFS_v16
 export INPUT_NML=control_ca.nml.IN
 
 export FHROT=06
-export FHRST=12
 export WARM_START=.true.
 export NGGPS_IC=.false.
 export EXTERNAL_IC=.false.
@@ -51,6 +50,7 @@ export NSPINUP=100
 export ISEED_CA=12345
 export NSMOOTH=100
 export CA_AMPLITUDE=0.35
+export RCELL=${RCELL_c96}
 export LNDP_VAR_LIST="'XXX'"
 export LNDP_PRT_LIST=-9999
-export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${FHRST}  )))0000"
+export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${SHOUR} + ${FHROT} )))0000"
