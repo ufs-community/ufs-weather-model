@@ -601,7 +601,7 @@ export CDMBWD_c384='1.1,0.72,1.0,1.0'
 export CDMBWD_c768='4.0,0.15,1.0,1.0'
 
 # CA tunable parameter
-export RCELL_c46=0.1 
+export RCELL_c48=0.1 
 export RCELL_c96=0.1 
 export RCELL_c192=0.2
 export RCELL_c384=0.72
