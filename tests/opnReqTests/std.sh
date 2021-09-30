@@ -25,6 +25,8 @@ elif [[ $application == 'cpld' ]]; then
     ice_petlist_bounds="40 45"
     TASKS=$((INPES*JNPES*6 + WRITE_GROUP*WRTTASK_PER_GROUP + 10 + 6))
   fi
+  RESTART_N=$(( FHMAX/2 ))
+  RESTART_INTERVAL="${RESTART_N} -1"
 fi
 
 NODES=$(((TASKS+TPN-1)/TPN))

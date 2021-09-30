@@ -11,11 +11,12 @@ elif [[ $application == 'regional' ]]; then
   echo "Regional application not yet implemented for restart"
   exit 1
 elif [[ $application == 'cpld' ]]; then
-  if [[ $TEST_NAME == 'cpld_control' ]]; then
-    FHROT=12
-  elif [[ $TEST_NAME == 'cpld_bmark_v16' ]]; then
-    FHROT=3
-  fi
+  #if [[ $TEST_NAME == 'cpld_control' ]]; then
+  #  FHROT=12
+  #elif [[ $TEST_NAME == 'cpld_bmark_v16' ]]; then
+  #  FHROT=3
+  #fi
+  FHROT=$(( FHMAX/2 ))
 
   DEP_RUN=${TEST_NAME}
   CICERUNTYPE='continue'
@@ -26,6 +27,7 @@ elif [[ $application == 'cpld' ]]; then
   RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( SHOUR + FHROT  )))0000"
   RESTART_FILE_SUFFIX_HRS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%02d" $(( SHOUR + FHROT )))"
   RESTART_FILE_SUFFIX_SECS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%05d" $(( (SHOUR + FHROT)* 3600 )))"
+  NSTF_NAME=2,0,0,0,0
 fi
 
 WARM_START=.T.
