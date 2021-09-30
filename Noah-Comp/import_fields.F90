@@ -399,8 +399,6 @@ contains
     ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
     ! call state_getimport(State_i, 'Faxa_snoalb', isc, iec, jsc, jec, noah_model%model%snoalb, rc=rc)
     ! if (ChkErr(rc,__LINE__,u_FILE_u)) return
-    call state_getimport(State_i, 'Faxa_sfalb', isc, iec, jsc, jec, noah_model%model%sfalb, rc=rc)
-    if (ChkErr(rc,__LINE__,u_FILE_u)) return
     call state_getimport(State_i, 'Faxa_bexppert', isc, iec, jsc, jec, noah_model%model%bexppert, rc=rc)
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
     call state_getimport(State_i, 'Faxa_xlaipert', isc, iec, jsc, jec, noah_model%model%xlaipert, rc=rc)
@@ -1096,10 +1094,6 @@ contains
                 endif
              enddo
           enddo
-
-          ! TMP debug
-          write(*,*) 'JP State_GetImport_Int A: ', trim(fldname),  dataPtr2d(1:2,1:2)
-          write(*,*) 'JP State_GetImport_Int B: ', trim(fldname),  output(1:4)
 
        endif
     endif

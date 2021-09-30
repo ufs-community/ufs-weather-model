@@ -256,11 +256,11 @@ contains
          tprcp      => noah_model%model%tprcp      ,&
          im         => noah_model%static%im        ,& 
          km         => noah_model%static%km        ,&
-         ! delt       => noah_model%static%delt      ,&
+                                ! delt       => noah_model%static%delt      ,&
          isot       => noah_model%static%isot      ,&
-         ! ivegsrc    => noah_model%static%ivegsrc   ,&
-         ! pertvegf   => noah_model%static%pertvegf  ,&  
-         ! lheatstrg  => noah_model%static%lheatstrg ,& 
+                                ! ivegsrc    => noah_model%static%ivegsrc   ,&
+                                ! pertvegf   => noah_model%static%pertvegf  ,&  
+                                ! lheatstrg  => noah_model%static%lheatstrg ,& 
          thsfc_loc  => noah_model%static%thsfc_loc ,&
          errmsg     => noah_model%static%errmsg    ,& 
          errflg     => noah_model%static%errflg    ,& 
@@ -294,9 +294,9 @@ contains
          trans      => noah_model%model%trans      ,&   
          tsurf      => noah_model%model%tsurf      ,&
          z0rl       => noah_model%model%z0rl       ,&
-                                ! smc        => noah_model%model%smc        ,&
-                                ! stc        => noah_model%model%stc        ,&
-                                ! slc        => noah_model%model%slc        ,&
+         smc        => noah_model%model%smc        ,&
+         stc        => noah_model%model%stc        ,&
+         slc        => noah_model%model%slc        ,&
          sncovr1    => noah_model%model%sncovr1    ,&
          qsurf      => noah_model%model%qsurf      ,&
          gflux      => noah_model%model%gflux      ,&
@@ -346,9 +346,9 @@ contains
       ztpert    = 0.0_kind_phys
       !ustar     = 0.1_kind_phys
       stress    = 0.1_kind_phys  ! think stress is not needed as input, only output from stability
-      smc       = 0.65_kind_phys
-      slc       = 0.65_kind_phys
-      stc       = 296_kind_phys
+      !smc       = 0.65_kind_phys
+      !slc       = 0.65_kind_phys
+      !stc       = 296_kind_phys
       
       ! first test
       !write(*,*) 'NLP test: ', noah_model%model%soiltyp ! get all zeros, good
