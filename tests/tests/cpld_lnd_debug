@@ -70,16 +70,18 @@ export NEMS_CONFIGURE="nems.configure.cpld_lnd.IN"
 export INPUT_NML=input.mom6_noah_ccpp.nml.IN
 
 # # try to make job smaller for faster testing
-# export TASKS=$TASKS_thrd
-# export TPN=$TPN_thrd
-# export INPES=$INPES_thrd
-# export JNPES=$JNPES_thrd
+export TASKS=96
+export NODES=3
+export TPN=32
+export PARTITION=c3
+export WLCLK=30
+export INPES=2
+export JNPES=4
 # # export THRD=1
 # # export WRTTASK_PER_GROUP=6
 # # export WRITE_GROUP=1
 
-# export med_petlist_bounds=$MPB_cpl_thrd
-# export atm_petlist_bounds=$APB_cpl_thrd
-# export ocn_petlist_bounds=$OPB_cpl_thrd
-# export ice_petlist_bounds=$IPB_cpl_thrd
-# export lnd_petlist_bounds=$APB_cpl_thrd
+export med_petlist_bounds="0 47"
+export atm_petlist_bounds="0 53"
+export ocn_petlist_bounds="54 83"
+export ice_petlist_bounds="84 95"
