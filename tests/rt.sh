@@ -120,7 +120,6 @@ source $PATHTR/NEMS/src/conf/module-setup.sh.inc
 if [[ $MACHINE_ID = wcoss_cray ]]; then
 
   module load xt-lsfhpc
-  module load python/3.6.3
 
   module use /usrx/local/emc_rocoto/modulefiles
   module load rocoto/1.3.0rc2
@@ -133,6 +132,7 @@ if [[ $MACHINE_ID = wcoss_cray ]]; then
   module load ecflow/intel/4.17.0.1
   ECFLOW_START=${ECF_ROOT}/bin/ecflow_start.sh
   ECF_PORT=$(grep $USER /usrx/local/sys/ecflow/assigned_ports.txt | awk '{print $2}')
+  module load python/3.6.3
 
   DISKNM=/gpfs/hps3/emc/nems/noscrub/emc.nemspara/RT
   QUEUE=debug
@@ -194,7 +194,7 @@ elif [[ $MACHINE_ID = wcoss2 ]]; then
   #ECFLOW_START=${ECF_ROOT}/intel/bin/ecflow_start.sh
   #ECF_PORT=$(grep $USER /usrx/local/sys/ecflow/assigned_ports.txt | awk '{print $2}')
 
-  DISKNM=/lfs/h1/emc/ptmp/Dusan.Jovic/RT
+  DISKNM=/lfs/h1/emc/ptmp/${USER}/RT
   QUEUE=workq
   COMPILE_QUEUE=workq
   PARTITION=
@@ -232,10 +232,12 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=slurm
 
-  export PATH=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3/bin:$PATH
-  export PYTHONPATH=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3/lib/python3.8/site-packages
-  ECFLOW_START=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3/bin/ecflow_start.sh
-  ECF_PORT=$(( $(id -u) + 1500 ))
+  PYTHONHOME=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3_new_20210629
+  export PATH=$PYTHONHOME/bin:$PATH
+  export PYTHONPATH=$PYTHONHOME/lib/python3.7/site-packages
+
+  module load ecflow
+  ECFLOW_START=ecflow_start.sh
 
   QUEUE=batch
   COMPILE_QUEUE=batch
@@ -292,10 +294,10 @@ elif [[ $MACHINE_ID = jet.* ]]; then
 
   QUEUE=batch
   COMPILE_QUEUE=batch
-  ACCNR=hfv3gfs
+  ACCNR=h-nems
   PARTITION=xjet
-  DISKNM=/lfs4/HFIP/hfv3gfs/emc.nemspara/RT
-  dprefix=/lfs4/HFIP/hfv3gfs/$USER
+  DISKNM=/lfs4/HFIP/h-nems/emc.nemspara/RT
+  dprefix=/lfs4/HFIP/h-nems/$USER
   STMP=$dprefix/RT_BASELINE
   PTMP=$dprefix/RT_RUNDIRS
 
@@ -315,7 +317,7 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
   PARTITION=
   dprefix=/glade/scratch
   DISKNM=/glade/p/ral/jntp/GMTB/ufs-weather-model/RT
-  STMP=/glade/work
+  STMP=$dprefix
   PTMP=$dprefix
   SCHEDULER=pbs
   cp fv3_conf/fv3_qsub.IN_cheyenne fv3_conf/fv3_qsub.IN
@@ -330,7 +332,7 @@ elif [[ $MACHINE_ID = stampede.* ]]; then
   PARTITION=
   ACCNR=TG-EES200015
   dprefix=$SCRATCH/ufs-weather-model/run
-  DISKNM=/work/07736/minsukji/stampede2/ufs-weather-model/RT
+  DISKNM=/work2/07736/minsukji/stampede2/ufs-weather-model/RT
   STMP=$dprefix
   PTMP=$dprefix
   SCHEDULER=slurm
@@ -413,16 +415,16 @@ if [[ $TESTS_FILE =~ '35d' ]]; then
   TEST_35D=true
 fi
 
-BL_DATE=20210330
+BL_DATE=20210901
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]]; then
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
 else
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}}
 fi
 
-INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20210324}
-INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20201220
-INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC:-$DISKNM/NEMSfv3gfs/BM_IC-20210212}
+INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20210825}
+INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20210621
+INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC:-$DISKNM/NEMSfv3gfs/BM_IC-20210717}
 
 shift $((OPTIND-1))
 [[ $# -gt 1 ]] && usage
@@ -524,6 +526,11 @@ if [[ $ECFLOW == true ]]; then
     MAX_BUILDS=5
   fi
 
+  if [[ $MACHINE_ID = hera.* ]] && [[ ! $HOSTNAME = hecflow* ]]; then
+    echo "ERROR: To use ECFlow on Hera we must be logged into 'hecflow01' login node."
+    exit 1
+  fi
+
   ECFLOW_RUN=${PATHRT}/ecflow_run
   ECFLOW_SUITE=regtest_$$
   rm -rf ${ECFLOW_RUN}
@@ -561,6 +568,13 @@ EOF
     QUEUE=regular
   else
     die "ecFlow is not supported on this machine $MACHINE_ID"
+  fi
+
+else
+
+  if [[ $MACHINE_ID = hera.* ]] && [[ $HOSTNAME = hecflow* ]]; then
+    echo "ERROR: To run without using ECFlow on Hera, please do not use ecflow node."
+    exit 1
   fi
 
 fi
@@ -632,7 +646,7 @@ EOF
 
     # Set RT_SUFFIX (regression test run directories and log files) and BL_SUFFIX
     # (regression test baseline directories) for REPRO or PROD runs
-    if [[ ${MAKE_OPT^^} =~ "REPRO=Y" ]]; then
+    if [[ ${MAKE_OPT^^} =~ "-DREPRO=ON" ]]; then
       RT_SUFFIX="_repro"
       BL_SUFFIX="_repro"
     else
@@ -640,7 +654,7 @@ EOF
       BL_SUFFIX=""
     fi
 
-    if [[ ${MAKE_OPT^^} =~ "WW3=Y" ]]; then
+    if [[ ${MAKE_OPT^^} =~ "-DAPP=ATMW" ]] ||  [[ ${MAKE_OPT^^} =~ "-DAPP=S2SW" ]]; then
        COMPILE_PREV_WW3_NR=${COMPILE_NR}
     fi
 

@@ -147,6 +147,8 @@ TOPO_CONFIG = "file"            !
                                 !     USER - call a user modified routine.
 TOPO_FILE = "ocean_topog.nc"    ! default = "topog.nc"
                                 ! The file from which the bathymetry is read.
+ALLOW_LANDMASK_CHANGES = MOM6_ALLOW_LANDMASK_CHANGES   ! default = "False"
+                                ! If true, allow topography overrides to change ocean points to land
 MAXIMUM_DEPTH = 6500.0          !   [m]
                                 ! The maximum depth of the ocean.
 MINIMUM_DEPTH = 9.5             !   [m] default = 0.0
@@ -771,13 +773,6 @@ MIX_LEN_EXPONENT = 1.0          !   [nondim] default = 2.0
 USE_LA_LI2016 = MOM6_REPRO_LA   !   [nondim] default = False
                                 ! A logical to use the Li et al. 2016 (submitted) formula to determine the
                                 ! Langmuir number.
-LT_ENHANCE = 3                  !   [nondim] default = 0
-                                ! Integer for Langmuir number mode.
-                                !  *Requires USE_LA_LI2016 to be set to True.
-                                ! Options: 0 - No Langmuir
-                                !          1 - Van Roekel et al. 2014/Li et al., 2016
-                                !          2 - Multiplied w/ adjusted La.
-                                !          3 - Added w/ adjusted La.
 USE_WAVES = MOM6_USE_WAVES      !   [Boolean] default = False
                                 ! If true, enables surface wave modules.
 WAVE_METHOD = "SURFACE_BANDS"   ! default = "EMPTY"

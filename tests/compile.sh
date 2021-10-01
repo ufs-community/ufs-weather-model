@@ -47,7 +47,8 @@ BUILD_DIR=$(pwd)/build_${BUILD_NAME}
 if [[ $MACHINE_ID == cheyenne.* ]] ; then
     BUILD_JOBS=${BUILD_JOBS:-3}
 elif [[ $MACHINE_ID == wcoss_dell_p3 ]] ; then
-    BUILD_JOBS=${BUILD_JOBS:-1}
+    BUILD_JOBS=${BUILD_JOBS:-4}
+    source $PATHTR/NEMS/src/conf/module-setup.sh.inc
 fi
 
 BUILD_JOBS=${BUILD_JOBS:-8}
@@ -56,7 +57,7 @@ hostname
 
 set +x
 if [[ $MACHINE_ID == macosx.* ]] || [[ $MACHINE_ID == linux.* ]]; then
-  source $PATHTR/modulefiles/${MACHINE_ID}/fv3
+  source $PATHTR/modulefiles/ufs_${MACHINE_ID}
 else
   if [[ $MACHINE_ID == wcoss2 ]]; then
     source /apps/prod/lmodules/startLmod
@@ -66,10 +67,10 @@ else
     source /lustre/f2/pdata/esrl/gsd/contrib/lua-5.1.4.9/init/init_lmod.sh
   fi
   # Load fv3 module
-  module use $PATHTR/modulefiles/${MACHINE_ID}
-  modulefile="fv3"
-  if [[ "${MAKE_OPT}" == *"DEBUG=Y"* ]]; then
-    [[ -f $PATHTR/modulefiles/${MACHINE_ID}/fv3_debug ]] && modulefile="fv3_debug"
+  module use $PATHTR/modulefiles
+  modulefile="ufs_${MACHINE_ID}"
+  if [[ "${MAKE_OPT}" == *"-DDEBUG=ON"* ]]; then
+    [[ -f $PATHTR/modulefiles/ufs_${MACHINE_ID}_debug ]] && modulefile="ufs_${MACHINE_ID}_debug"
   fi
   module load $modulefile
   module list
@@ -80,33 +81,7 @@ echo "Compiling ${MAKE_OPT} into $BUILD_NAME.exe on $MACHINE_ID"
 
 # set CMAKE_FLAGS based on $MAKE_OPT
 
-CMAKE_FLAGS=''
-
-if [[ "${MAKE_OPT}" == *"DEBUG=Y"* ]]; then
-  CMAKE_FLAGS="${CMAKE_FLAGS} -DDEBUG=ON"
-elif [[ "${MAKE_OPT}" == *"REPRO=Y"* ]]; then
-  CMAKE_FLAGS="${CMAKE_FLAGS} -DREPRO=ON"
-fi
-
-if [[ "${MAKE_OPT}" == *"32BIT=Y"* ]]; then
-  CMAKE_FLAGS="${CMAKE_FLAGS} -D32BIT=ON"
-fi
-
-if [[ "${MAKE_OPT}" == *"OPENMP=N"* ]]; then
-  CMAKE_FLAGS="${CMAKE_FLAGS} -DOPENMP=OFF"
-fi
-
-if [[ "${MAKE_OPT}" == *"MOVING_NEST=Y"* ]]; then
-  CMAKE_FLAGS="${CMAKE_FLAGS} -DMOVING_NEST=ON"
-else
-  CMAKE_FLAGS="${CMAKE_FLAGS} -DMOVING_NEST=OFF"
-fi
-
-if [[ "${MAKE_OPT}" == *"MULTI_GASES=Y"* ]]; then
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DMULTI_GASES=ON"
-else
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DMULTI_GASES=OFF"
-fi
+CMAKE_FLAGS=$MAKE_OPT
 
 # FIXME - create CCPP include directory before building FMS to avoid
 # gfortran warnings of non-existent include directory (adding
@@ -114,66 +89,41 @@ fi
 # see also https://gcc.gnu.org/bugzilla/show_bug.cgi?id=55534);
 # this line can be removed once FMS becomes a pre-installed library
 mkdir -p $PATHTR/FV3/ccpp/include
-# Similar for this directory, which apparently never gets populated
-mkdir -p $PATHTR/FMS/fms2_io/include
 
-CMAKE_FLAGS="${CMAKE_FLAGS} -DMPI=ON"
+CMAKE_FLAGS+=" -DMPI=ON"
 
-if [[ "${MAKE_OPT}" == *"DEBUG=Y"* ]]; then
-  CMAKE_FLAGS="${CMAKE_FLAGS} -DCMAKE_BUILD_TYPE=Debug"
-elif [[ "${MAKE_OPT}" == *"REPRO=Y"* ]]; then
-  CMAKE_FLAGS="${CMAKE_FLAGS} -DCMAKE_BUILD_TYPE=Bitforbit"
+if [[ "${MAKE_OPT}" == *"-DDEBUG=ON"* ]]; then
+  CMAKE_FLAGS+=" -DCMAKE_BUILD_TYPE=Debug"
+elif [[ "${MAKE_OPT}" == *"-DREPRO=ON"* ]]; then
+  CMAKE_FLAGS+=" -DCMAKE_BUILD_TYPE=Bitforbit"
 else
-  CMAKE_FLAGS="${CMAKE_FLAGS} -DCMAKE_BUILD_TYPE=Release"
+  CMAKE_FLAGS+=" -DCMAKE_BUILD_TYPE=Release"
   if [[ "${MACHINE_ID}" == "jet.intel" ]]; then
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DSIMDMULTIARCH=ON"
+    CMAKE_FLAGS+=" -DSIMDMULTIARCH=ON"
   fi
 fi
 
-  # Check if suites argument is provided or not
+# Check if suites argument is provided or not
 set +ex
-TEST=$( echo $MAKE_OPT | grep -e "SUITES=" )
+TEST=$( echo $MAKE_OPT | grep -e "-DCCPP_SUITES=" )
 if [[ $? -eq 0 ]]; then
-  CCPP_SUITES=$( echo $MAKE_OPT | sed 's/.*SUITES=//' | sed 's/ .*//' )
-  echo "Compiling suites ${CCPP_SUITES}"
+  SUITES=$( echo $MAKE_OPT | sed 's/.*-DCCPP_SUITES=//' | sed 's/ .*//' )
+  echo "Compiling suites ${SUITES}"
 fi
 set -ex
 
 # Valid applications
-if [[ "${MAKE_OPT}" == *"APP=ATM"* ]]; then
-    echo "MAKE_OPT = ${MAKE_OPT}"
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=ATM"
+
+if [[ "${MAKE_OPT}" == *"-DAPP=S2S"* ]]; then
+    CMAKE_FLAGS+=" -DMOM6SOLO=ON"
 fi
 
-if [[ "${MAKE_OPT}" == *"APP=ATMW"* ]]; then
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=ATMW"
-fi
-
-if [[ "${MAKE_OPT}" == *"APP=S2S"* ]]; then
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=S2S -DMOM6SOLO=ON"
-fi
-
-if [[ "${MAKE_OPT}" == *"APP=S2SW"* ]]; then
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=S2SW -DMOM6SOLO=ON"
-fi
-
-if [[ "${MAKE_OPT}" == *"APP=HAFS"* ]]; then
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=HAFS"
-fi
-
-if [[ "${MAKE_OPT}" == *"APP=HAFSW"* ]]; then
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=HAFSW"
-fi
-
-if [[ "${MAKE_OPT}" == *"APP=DATM"* ]]; then
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=DATM"
-fi
-
-if [[ "${MAKE_OPT}" == *"APP=DATM_NEMS"* ]]; then
-    CMAKE_FLAGS="${CMAKE_FLAGS} -DAPP=DATM_NEMS"
+if [[ "${MAKE_OPT}" == *"-DAPP=NG-GODAS"* ]]; then
+    CMAKE_FLAGS+=" -DMOM6SOLO=ON"
 fi
 
 CMAKE_FLAGS=$(trim "${CMAKE_FLAGS}")
+echo "CMAKE_FLAGS = ${CMAKE_FLAGS}"
 
 if [ $clean_before = YES ] ; then
   rm -rf ${BUILD_DIR}
@@ -182,16 +132,15 @@ fi
 export BUILD_VERBOSE=1
 export BUILD_DIR
 export BUILD_JOBS
-export CCPP_SUITES
 export CMAKE_FLAGS
 
 bash -x ${PATHTR}/build.sh
 
 mv ${BUILD_DIR}/ufs_model ${PATHTR}/tests/${BUILD_NAME}.exe
-if [[ "${MAKE_OPT}" == "DEBUG=Y" ]]; then
-  cp ${PATHTR}/modulefiles/${MACHINE_ID}/fv3_debug ${PATHTR}/tests/modules.${BUILD_NAME}
+if [[ "${MAKE_OPT}" == "-DDEBUG=ON" ]]; then
+  cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}_debug ${PATHTR}/tests/modules.${BUILD_NAME}
 else
-  cp ${PATHTR}/modulefiles/${MACHINE_ID}/fv3 ${PATHTR}/tests/modules.${BUILD_NAME}
+  cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}       ${PATHTR}/tests/modules.${BUILD_NAME}
 fi
 
 if [ $clean_after = YES ] ; then
@@ -199,5 +148,5 @@ if [ $clean_after = YES ] ; then
 fi
 
 elapsed=$SECONDS
-echo "Elapsed time $elapsed seconds. Compiling ${MAKE_OPT} finished"
-echo "Compile ${COMPILE_NR/#_} elapsed time $elapsed seconds. ${MAKE_OPT}" > compile${COMPILE_NR}_time.log
+echo "Elapsed time $elapsed seconds. Compiling ${CMAKE_FLAGS} finished"
+echo "Compile ${COMPILE_NR/#_} elapsed time $elapsed seconds. ${CMAKE_FLAGS}" > compile${COMPILE_NR}_time.log
