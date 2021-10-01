@@ -180,8 +180,6 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
 
 elif [[ $MACHINE_ID = wcoss2 ]]; then
 
-  source /apps/prod/lmodules/startLmod
-
   #module use /usrx/local/dev/emc_rocoto/modulefiles
   #module load ruby/2.5.1 rocoto/1.3.0rc2
   #ROCOTORUN=$(which rocotorun)
@@ -189,17 +187,22 @@ elif [[ $MACHINE_ID = wcoss2 ]]; then
   #ROCOTOCOMPLETE=$(which rocotocomplete)
   #ROCOTO_SCHEDULER=lsf
 
-  #module load ips/18.0.1.163
-  #module load ecflow/4.7.1
-  #ECFLOW_START=${ECF_ROOT}/intel/bin/ecflow_start.sh
-  #ECF_PORT=$(grep $USER /usrx/local/sys/ecflow/assigned_ports.txt | awk '{print $2}')
+  module load ecflow/5.6.0.6
+  module load gcc/10.3.0 python/3.8.6
+  ECFLOW_START=${ECF_ROOT}/scripts/server_check.sh
+  export ECF_OUTPUTDIR=${PATHRT}/ecf_outputdir
+  export ECF_COMDIR=${PATHRT}/ecf_comdir
+  rm -rf ${ECF_OUTPUTDIR} ${ECF_COMDIR}
+  mkdir -p ${ECF_OUTPUTDIR}
+  mkdir -p ${ECF_COMDIR}
+  export colonifnco=":output"  # hack
 
-  DISKNM=/lfs/h1/emc/ptmp/${USER}/RT
-  QUEUE=workq
-  COMPILE_QUEUE=workq
+  DISKNM=/lfs/h1/emc/eib/noscrub/Dusan.Jovic
+  QUEUE=dev
+  COMPILE_QUEUE=dev
   PARTITION=
   ACCNR=GFS-DEV
-  STMP=/lfs/h1/emc/stmp
+  STMP=/lfs/h1/emc/ptmp
   PTMP=/lfs/h1/emc/ptmp
   SCHEDULER=pbs
   cp fv3_conf/fv3_qsub.IN_wcoss2 fv3_conf/fv3_qsub.IN
@@ -441,7 +444,7 @@ if [[ $TESTS_FILE =~ '35d' ]]; then
   TEST_35D=true
 fi
 
-BL_DATE=20210915
+BL_DATE=20210929
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]] || [[ $MACHINE_ID = s4.* ]]; then
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
 else
@@ -501,8 +504,8 @@ if [[ $ROCOTO == true ]]; then
     COMPILE_QUEUE=dev_transfer
     ROCOTO_SCHEDULER=lsf
   elif [[ $MACHINE_ID = wcoss2 ]]; then
-    QUEUE=workq
-    COMPILE_QUEUE=workq
+    QUEUE=dev
+    COMPILE_QUEUE=dev
     ROCOTO_SCHEDULER=pbs
   elif [[ $MACHINE_ID = hera.* ]]; then
     QUEUE=batch
@@ -585,7 +588,7 @@ EOF
   elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
     QUEUE=dev
   elif [[ $MACHINE_ID = wcoss2 ]]; then
-    QUEUE=workq
+    QUEUE=dev
   elif [[ $MACHINE_ID = hera.* ]]; then
     QUEUE=batch
   elif [[ $MACHINE_ID = orion.* ]]; then

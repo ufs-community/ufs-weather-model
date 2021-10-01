@@ -4,7 +4,7 @@ source $PATHRT/utests/std.sh
 # Set up date and time of restart files for restart run
 FHROT=12
 RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( SHOUR + FHROT  )))0000"
-
+DEP_RUN=${TEST_NAME}
 if [[ $application == 'global' ]]; then
   OUTPUT_FH="3 -1"
 elif [[ $application == 'regional' ]]; then
@@ -18,7 +18,6 @@ elif [[ $application == 'cpld' ]]; then
   RESTART_FILE_SUFFIX_HRS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%02d" $(( ${FHROT} )))"
   RESTART_FILE_SUFFIX_SECS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%02d" $(( ${FHROT}*3600 )))"
   RESTART_N=$((FHMAX-$FHROT))
-  DEP_RUN=${TEST_NAME}
 fi
 
 WARM_START=.T.
