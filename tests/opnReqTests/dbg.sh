@@ -2,8 +2,9 @@ set -eu
 source $PATHRT/opnReqTests/std.sh
 
 if [[ $application == 'global' ]]; then
-  LIST_FILES="sfcf000.nc sfcf001.nc atmf000.nc atmf001.nc"
   FHMAX=1
+  OUTPUT_FH="0 1"
+  LIST_FILES="sfcf000.nc sfcf001.nc atmf000.nc atmf001.nc"
 elif [[ $application == 'regional' ]]; then
   echo "Regional application not yet implemented for debug"
   exit 1

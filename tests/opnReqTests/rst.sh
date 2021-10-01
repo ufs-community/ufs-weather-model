@@ -63,5 +63,4 @@ export EXTERNAL_IC=${EXTERNAL_IC}
 export MAKE_NH=${MAKE_NH}
 export MOUNTAIN=${MOUNTAIN}
 export NA_INIT=${NA_INIT}
-export OUTPUT_FH="${OUTPUT_FH:-}"
 EOF
