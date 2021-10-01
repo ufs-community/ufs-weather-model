@@ -56,6 +56,7 @@ export SHOUR=06
 export OUTPUT_GRID='gaussian_grid'
 export WRITE_DOPOST=.true.
 export FHROT=12
+export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${SHOUR} + ${FHROT}  )))0000"
 
 export WARM_START=.true.
 export NGGPS_IC=.false.
@@ -63,7 +64,6 @@ export EXTERNAL_IC=.false.
 export MAKE_NH=.false.
 export MOUNTAIN=.true.
 export NA_INIT=0
-export OUTPUT_FH="3 -1"
 
 #P7 default
 export IALB=2
@@ -112,7 +112,6 @@ export SCELLS=2600
 export TLIVES=1800
 export NSEED=1
 export NFRACSEED=0.5
-export RCELL=0.72
 export CA_TRIGGER=.true.
 export NSPINUP=1
 export ISEED_CA=12345

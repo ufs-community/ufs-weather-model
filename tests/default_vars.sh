@@ -564,8 +564,16 @@ export CDMBWD_c192='0.23,1.5,1.0,1.0'
 export CDMBWD_c384='1.1,0.72,1.0,1.0'
 export CDMBWD_c768='4.0,0.15,1.0,1.0'
 
+# CA tunable parameter
+export RCELL_c48=0.1
+export RCELL_c96=0.1
+export RCELL_c192=0.2
+export RCELL_c384=0.72
+export RCELL_c768=0.72
+
 # set default
 export CDMBWD=${CDMBWD_c96}
+export RCELL=${RCELL_c96}
 
 # PBL
 export SATMEDMF=.false.
@@ -619,10 +627,10 @@ export NPY=97
 export NPZ=64
 export NPZP=65
 export NSTF_NAME=2,1,1,0,5
-export OUTPUT_FH="0 1 2 3 4 5 6 7 8 9 10 11 12 15 18 21 24 27 30 33 36 39 42 45 48"
-export NFHOUT=3
+export OUTPUT_FH="12 -1"
+export NFHOUT=12
 export NFHMAX_HF=12
-export NFHOUT_HF=1
+export NFHOUT_HF=6
 export IAU_OFFSET=0
 export FHZERO=6
 export FNALBC="'global_snowfree_albedo.bosu.t126.384.190.rg.grb'"
@@ -829,7 +837,6 @@ export SCELLS=2600
 export TLIVES=1800
 export NSEED=1
 export NFRACSEED=0.5
-export RCELL=0.72
 export CA_TRIGGER=.true.
 export NSPINUP=1
 export ISEED_CA=12345
@@ -882,6 +889,11 @@ export MOM6_ALLOW_LANDMASK_CHANGES=False
 # MOM6 IAU
 export MOM_IAU=False
 export MOM_IAU_HRS=6
+# MOM6 stochastics
+export DO_OCN_SPPT=False
+export PERT_EPBL=False
+export OCN_SPPT=-999.
+export EPBL=-999.
 
 # CICE6 defaults; 1 degree
 export CICE_DECOMP=slenderX2
@@ -1011,6 +1023,11 @@ export CHLCLIM=seawifs_1998-2006_smoothed_2X.nc
 export MOM_IAU=False
 export MOM_IAU_HRS=6
 export MOM6_USE_LI2016=False
+# MOM6 stochastics
+export DO_OCN_SPPT=False
+export PERT_EPBL=False
+export OCN_SPPT=-999.
+export EPBL=-999.
 # since coupling_interval_slow is set to DT_THERM, this should be always be false
 export MOM6_THERMO_SPAN=False
 # no WW3
@@ -1134,6 +1151,11 @@ export CHLCLIM=seawifs_1998-2006_smoothed_2X.nc
 export MOM_IAU=False
 export MOM_IAU_HRS=6
 export MOM6_USE_LI2016=False
+# MOM6 stochastics
+export DO_OCN_SPPT=False
+export PERT_EPBL=False
+export OCN_SPPT=-999.
+export EPBL=-999.
 # since coupling_interval_slow is set to DT_THERM, this should be always be false
 export MOM6_THERMO_SPAN=False
 # no WW3

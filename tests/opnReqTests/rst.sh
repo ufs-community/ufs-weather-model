@@ -1,7 +1,7 @@
 set -eu
 source $PATHRT/opnReqTests/std.sh
 
-# Set up date and time of restart files for restart run
+DEP_RUN=${TEST_NAME}
 
 if [[ $application == 'global' ]]; then
   FHROT=12
@@ -18,7 +18,6 @@ elif [[ $application == 'cpld' ]]; then
   #fi
   FHROT=$(( FHMAX/2 ))
 
-  DEP_RUN=${TEST_NAME}
   CICERUNTYPE='continue'
   RUNTYPE='continue'
   USE_RESTART_TIME='.true.'
