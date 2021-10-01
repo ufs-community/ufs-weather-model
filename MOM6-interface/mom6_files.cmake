@@ -206,6 +206,7 @@ list(APPEND mom6_src_files
   MOM6/src/tracer/oil_tracer.F90
   MOM6/src/tracer/pseudo_salt_tracer.F90
   MOM6/src/tracer/tracer_example.F90
+  MOM6/src/tracer/MOM_CFC_cap.F90
 
   MOM6/src/user/BFB_initialization.F90
   MOM6/src/user/BFB_surface_forcing.F90
@@ -253,6 +254,7 @@ list(APPEND mom6_src_files
   MOM6/config_src/external/ODA_hooks/ocean_da_core.F90
   MOM6/config_src/external/ODA_hooks/ocean_da_types.F90
   MOM6/config_src/external/ODA_hooks/write_ocean_obs.F90
+  MOM6/config_src/external/OCEAN_stochastic_phyiscs/MOM_stochastics.F90
 
   MOM6/config_src/infra/FMS1/MOM_coms_infra.F90
   MOM6/config_src/infra/FMS1/MOM_constants.F90

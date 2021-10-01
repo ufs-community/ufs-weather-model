@@ -56,6 +56,7 @@ message("CMEPS ............ ${CMEPS}")
 ###############################################################################
 set(32BIT           OFF CACHE BOOL "Enable 32BIT (single precision arithmetic in dycore)")
 set(AVX2            ON  CACHE BOOL "Enable AVX2 instruction set")
+set(AVX             OFF CACHE BOOL "Enable AVX-I instruction set")
 set(SIMDMULTIARCH   OFF CACHE BOOL "Enable multi-target SIMD instruction sets")
 set(DEBUG           OFF CACHE BOOL "Enable DEBUG mode")
 set(DEBUG_LINKMPI   ON  CACHE BOOL "Enable linkmpi option when DEBUG mode is on")
