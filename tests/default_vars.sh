@@ -171,9 +171,24 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   THRD_cpl_dflt=1; WPG_cpl_dflt=6;  MPB_cpl_dflt="0 143"; APB_cpl_dflt="0 149"
   OPB_cpl_dflt="150 179"; IPB_cpl_dflt="180 191"
 
-  TASKS_cpl_dflt_wwav=212; TPN_cpl_dflt_wwav=40; INPES_cpl_dflt_wwav=3; JNPES_cpl_dflt_wwav=8
+  TASKS_cpl_dflt_wwav=240; TPN_cpl_dflt_wwav=40; INPES_cpl_dflt_wwav=3; JNPES_cpl_dflt_wwav=8
   THRD_cpl_dflt_wwav=1; WPG_cpl_dflt_wwav=6;  MPB_cpl_dflt_wwav="0 143"; APB_cpl_dflt_wwav="0 149"
-  OPB_cpl_dflt_wwav="150 179"; IPB_cpl_dflt_wwav="180 191"; WPB_cpl_dflt_wwav="192 211"
+  OPB_cpl_dflt_wwav="150 179"; IPB_cpl_dflt_wwav="180 191"; WPB_cpl_dflt_wwav="192 239"
+
+  TASKS_cpl_thrd_wwav=140; TPN_cpl_thrd_wwav=20; INPES_cpl_thrd_wwav=3; JNPES_cpl_thrd_wwav=4
+  THRD_cpl_thrd_wwav=2; WPG_cpl_thrd_wwav=6;  MPB_cpl_thrd_wwav="0 71"; APB_cpl_thrd_wwav="0 77"
+  OPB_cpl_thrd_wwav="78 107"; IPB_cpl_thrd_wwav="108 119"; WPB_cpl_thrd_wwav="120 139"
+
+  TASKS_cpl_dcmp_wwav=240; TPN_cpl_dcmp_wwav=40; INPES_cpl_dcmp_wwav=4; JNPES_cpl_dcmp_wwav=6
+  THRD_cpl_dcmp_wwav=1; WPG_cpl_dcmp_wwav=6;  MPB_cpl_dcmp_wwav="0 143"; APB_cpl_dcmp_wwav="0 149"
+  OPB_cpl_dcmp_wwav="150 179"; IPB_cpl_dcmp_wwav="180 191"; WPB_cpl_dcmp_wwav="192 239"
+
+  #TASKS_cpl_mpi_wwav=280; TPN_cpl_mpi_wwav=40; INPES_cpl_mpi_wwav=4; JNPES_cpl_mpi_wwav=8
+  #THRD_cpl_mpi_wwav=1; WPG_cpl_mpi_wwav=6;  MPB_cpl_mpi_wwav="0 191"; APB_cpl_mpi_wwav="0 197"
+  #OPB_cpl_mpi_wwav="198 231"; IPB_cpl_mpi_wwav="232 251"; WPB_cpl_mpi_wwav="252 279"
+  TASKS_cpl_mpi_wwav=220; TPN_cpl_mpi_wwav=40; INPES_cpl_mpi_wwav=3; JNPES_cpl_mpi_wwav=8
+  THRD_cpl_mpi_wwav=1; WPG_cpl_mpi_wwav=6;  MPB_cpl_mpi_wwav="0 143"; APB_cpl_mpi_wwav="0 149"
+  OPB_cpl_mpi_wwav="150 179"; IPB_cpl_mpi_wwav="180 191"; WPB_cpl_mpi_wwav="192 219"
 
   TASKS_cpl_thrd=120; TPN_cpl_thrd=20; INPES_cpl_thrd=3; JNPES_cpl_thrd=4
   THRD_cpl_thrd=2; WPG_cpl_thrd=6;  MPB_cpl_thrd="0 77";  APB_cpl_thrd="0 77"
