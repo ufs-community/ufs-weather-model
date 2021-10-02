@@ -80,7 +80,7 @@ elif [ $RUN == "true" ]; then
   docker create -u builder -e "CI_TEST=true" -e "USER=builder" \
                 -e "RT_MACHINE=linux.gnu" -e "RT_COMPILER=gnu" \
                 -w "/home/builder/ufs-weather-model/tests" \
-                -v DataVolume:/home/builder/data/NEMSfv3gfs/input-data-20210930 \
+                -v DataVolume:/home/builder/data/NEMSfv3gfs \
                 --shm-size=512m --name my-container noaaemc/ubuntu-hpc:v1.7b \
                 /bin/bash -c "./opnReqTest -n ${TEST_NAME} -c ${TEST_CASE} -x"
 
