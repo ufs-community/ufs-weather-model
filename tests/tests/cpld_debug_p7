@@ -1,10 +1,10 @@
 #
-#  cpld_debug test
+#  cpld_debug_p7 test
 #
 
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C96MX100 - debug"
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C96MX100 - P7 debug"
 
-export CNTL_DIR="cpld_debug"
+export CNTL_DIR="cpld_debug_p7"
 
 export LIST_FILES="sfcf006.tile1.nc \
                    sfcf006.tile2.nc \
@@ -51,17 +51,16 @@ export LIST_FILES="sfcf006.tile1.nc \
                    RESTART/sfc_data.tile5.nc \
                    RESTART/sfc_data.tile6.nc \
                    RESTART/MOM.res.nc \
-                   RESTART/iced.2016-10-03-21600.nc \
-                   RESTART/ufs.cpld.cpl.r.2016-10-03-21600.nc"
+                   RESTART/iced.2021-03-22-43200.nc \
+                   RESTART/ufs.cpld.cpl.r.2021-03-22-43200.nc"
 
 export_fv3
 export_cpl
 
-export DAYS="0.25"
-export FHMAX="6"
-export NFHOUT_HF="1"
+export DAYS=0.25
+export FHMAX=6
 
 export RESTART_N=${FHMAX}
-export eps_imesh='2.5e-1'
+export eps_imesh=2.5e-1
 
 export FV3_RUN=cpld_control_run.IN
