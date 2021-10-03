@@ -16,7 +16,7 @@ elif [[ $application == 'cpld' ]]; then
   RESTART_N=${FHMAX}
   LIST_FILES=$(echo -n $LIST_FILES | sed -E "s/sfcf024/sfcf006/g" \
                                    | sed -E "s/atmf024/atmf006/g" \
-                                   | sed -E "s/2016-10-04-00000/2016-10-03-21600/g" \
+                                   | sed -E "s/2021-03-23-21600/2021-03-22-43200/g" \
                                    | sed -e "s/^ *//" -e "s/ *$//")
 fi
 
