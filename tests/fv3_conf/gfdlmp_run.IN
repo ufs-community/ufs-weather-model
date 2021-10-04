@@ -1,13 +1,13 @@
 rm -fr INPUT RESTART
 
-UNIT_TEST=${UNIT_TEST:-false}
+OPNREQ_TEST=${OPNREQ_TEST:-false}
 if [ $WARM_START = .false. ]; then
   cp -r @[INPUTDATA_ROOT]/FV3_input_data/INPUT .
   mkdir RESTART
 else
   mkdir INPUT RESTART
 
-  if [[ ${UNIT_TEST} == false ]]; then
+  if [[ ${OPNREQ_TEST} == false ]]; then
     cp -r @[INPUTDATA_ROOT]/FV3_input_data/RESTART/* ./INPUT
   else
     cp -r @[INPUTDATA_ROOT]/FV3_input_data/RESTART/* ./INPUT
