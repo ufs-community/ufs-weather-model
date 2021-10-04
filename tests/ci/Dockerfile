@@ -15,5 +15,5 @@ ENV RT_COMPILER=gnu
 ENV RT_MACHINE=linux.gnu
 
 WORKDIR $HOME/ufs-weather-model/tests
-RUN ./utest -n $test_name -c $build_case -z && tar -cvzf fv3.tar.gz fv3_*.exe modules.fv3_*
-CMD ./utest -n $test_name -c $test_case -x
+RUN ./opnReqTest -n $test_name -c $build_case -z && tar -cvzf fv3.tar.gz fv3_*.exe modules.fv3_*
+CMD ./opnReqTest -n $test_name -c $test_case -x

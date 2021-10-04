@@ -1,5 +1,5 @@
 set -eu
-source $PATHRT/utests/std.sh
+source $PATHRT/opnReqTests/std.sh
 
 if [[ $application == 'global' ]]; then
   temp=$INPES
@@ -26,10 +26,11 @@ elif [[ $application == 'cpld' ]]; then
     ice_petlist_bounds="34 39"
     TASKS=$((INPES*JNPES*6 + WRITE_GROUP*WRTTASK_PER_GROUP + 10 + 6))
   else
-    INPES=6
-    JNPES=4
+    temp=$INPES
+    INPES=$JNPES
+    JNPES=$temp
   fi
 fi
 
-(test $CI_TEST == 'true') && source $PATHRT/utests/cmp_proc_bind.sh
-source $PATHRT/utests/wrt_env.sh
+(test $CI_TEST == 'true') && source $PATHRT/opnReqTests/cmp_proc_bind.sh
+source $PATHRT/opnReqTests/wrt_env.sh
