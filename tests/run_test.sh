@@ -103,7 +103,31 @@ atparse < ${PATHRT}/parm/${MODEL_CONFIGURE:-model_configure.IN} > model_configur
 atparse < ${PATHRT}/parm/${NEMS_CONFIGURE:-nems.configure} > nems.configure
 
 if [[ "Q${INPUT_NEST02_NML:-}" != Q ]] ; then
+    INPES_NEST=$INPES_NEST02; JNPES_NEST=$JNPES_NEST02
+    NPX_NEST=$NPX_NEST02; NPY_NEST=$NPY_NEST02
+    K_SPLIT_NEST=$K_SPLIT_NEST02; N_SPLIT_NEST=$N_SPLIT_NEST02
     atparse < ${PATHRT}/parm/${INPUT_NEST02_NML} > input_nest02.nml
+fi
+
+if [[ "Q${INPUT_NEST03_NML:-}" != Q ]] ; then
+    INPES_NEST=$INPES_NEST03; JNPES_NEST=$JNPES_NEST03
+    NPX_NEST=$NPX_NEST03; NPY_NEST=$NPY_NEST03
+    K_SPLIT_NEST=$K_SPLIT_NEST03; N_SPLIT_NEST=$N_SPLIT_NEST03
+    atparse < ${PATHRT}/parm/${INPUT_NEST03_NML} > input_nest03.nml
+fi
+
+if [[ "Q${INPUT_NEST04_NML:-}" != Q ]] ; then
+    INPES_NEST=$INPES_NEST04; JNPES_NEST=$JNPES_NEST04
+    NPX_NEST=$NPX_NEST04; NPY_NEST=$NPY_NEST04
+    K_SPLIT_NEST=$K_SPLIT_NEST04; N_SPLIT_NEST=$N_SPLIT_NEST04
+    atparse < ${PATHRT}/parm/${INPUT_NEST04_NML} > input_nest04.nml
+fi
+
+if [[ "Q${INPUT_NEST05_NML:-}" != Q ]] ; then
+    INPES_NEST=$INPES_NEST05; JNPES_NEST=$JNPES_NEST05
+    NPX_NEST=$NPX_NEST05; NPY_NEST=$NPY_NEST05
+    K_SPLIT_NEST=$K_SPLIT_NEST05; N_SPLIT_NEST=$N_SPLIT_NEST05
+    atparse < ${PATHRT}/parm/${INPUT_NEST05_NML} > input_nest05.nml
 fi
 
 # Field Dictionary
@@ -123,6 +147,10 @@ if [[ $DATM_NEMS = 'true' ]] || [[ $DATM_CDEPS = 'true' ]] || [[ $S2S = 'true' ]
     atparse < ${PATHRT}/parm/${DIAG_TABLE:-diag_table_template} > diag_table
     atparse < ${PATHRT}/parm/data_table_template > data_table
   fi
+fi
+
+if [[ $HAFS = 'true' ]] && [[ $DATM_CDEPS = 'false' ]]; then
+  atparse < ${PATHRT}/parm/${DIAG_TABLE:-diag_table_template} > diag_table
 fi
 
 if [[ $DATM_NEMS = 'true' ]]; then

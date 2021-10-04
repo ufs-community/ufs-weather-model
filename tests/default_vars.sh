@@ -1271,7 +1271,7 @@ export DLON=0.03
 export DLAT=0.03
 
 # input.nml
-export MERGE_IMPORT=.true.
+export CPL_IMP_MRG=.true.
 
 # nems.configure
 export med_model=cmeps
