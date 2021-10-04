@@ -183,16 +183,19 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   THRD_cpl_dcmp_wwav=1; WPG_cpl_dcmp_wwav=6;  MPB_cpl_dcmp_wwav="0 143"; APB_cpl_dcmp_wwav="0 149"
   OPB_cpl_dcmp_wwav="150 179"; IPB_cpl_dcmp_wwav="180 191"; WPB_cpl_dcmp_wwav="192 239"
 
-  #TASKS_cpl_mpi_wwav=280; TPN_cpl_mpi_wwav=40; INPES_cpl_mpi_wwav=4; JNPES_cpl_mpi_wwav=8
-  #THRD_cpl_mpi_wwav=1; WPG_cpl_mpi_wwav=6;  MPB_cpl_mpi_wwav="0 191"; APB_cpl_mpi_wwav="0 197"
-  #OPB_cpl_mpi_wwav="198 231"; IPB_cpl_mpi_wwav="232 251"; WPB_cpl_mpi_wwav="252 279"
-  TASKS_cpl_mpi_wwav=220; TPN_cpl_mpi_wwav=40; INPES_cpl_mpi_wwav=3; JNPES_cpl_mpi_wwav=8
-  THRD_cpl_mpi_wwav=1; WPG_cpl_mpi_wwav=6;  MPB_cpl_mpi_wwav="0 143"; APB_cpl_mpi_wwav="0 149"
-  OPB_cpl_mpi_wwav="150 179"; IPB_cpl_mpi_wwav="180 191"; WPB_cpl_mpi_wwav="192 219"
+  TASKS_cpl_mpi_wwav=280; TPN_cpl_mpi_wwav=40; INPES_cpl_mpi_wwav=4; JNPES_cpl_mpi_wwav=8
+  THRD_cpl_mpi_wwav=1; WPG_cpl_mpi_wwav=6;  MPB_cpl_mpi_wwav="0 191"; APB_cpl_mpi_wwav="0 197"
+  OPB_cpl_mpi_wwav="198 231"; IPB_cpl_mpi_wwav="232 251"; WPB_cpl_mpi_wwav="252 279"
+  #TASKS_cpl_mpi_wwav=220; TPN_cpl_mpi_wwav=40; INPES_cpl_mpi_wwav=3; JNPES_cpl_mpi_wwav=8
+  #THRD_cpl_mpi_wwav=1; WPG_cpl_mpi_wwav=6;  MPB_cpl_mpi_wwav="0 143"; APB_cpl_mpi_wwav="0 149"
+  #OPB_cpl_mpi_wwav="150 179"; IPB_cpl_mpi_wwav="180 191"; WPB_cpl_mpi_wwav="192 219"
+  NPROC_ICE_cpl_mpi_wwav=20
+
 
   TASKS_cpl_thrd=120; TPN_cpl_thrd=20; INPES_cpl_thrd=3; JNPES_cpl_thrd=4
   THRD_cpl_thrd=2; WPG_cpl_thrd=6;  MPB_cpl_thrd="0 77";  APB_cpl_thrd="0 77"
-  OPB_cpl_thrd="78 107";  IPB_cpl_thrd="108 119"
+  OPB_cpl_thrd="78 109";  IPB_cpl_thrd="110 119"
+  NPROC_ICE_cpl_thrd=10
 
   TASKS_cpl_c384=480; TPN_cpl_c384=40; INPES_cpl_c384=6; JNPES_cpl_c384=8
   THRD_cpl_c384=1; WPG_cpl_c384=24; MPB_cpl_c384="0 287"; APB_cpl_c384="0 311"
@@ -201,6 +204,11 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   TASKS_cpl_bmrk=560; TPN_cpl_bmrk=40; INPES_cpl_bmrk=6; JNPES_cpl_bmrk=8
   THRD_cpl_bmrk=1; WPG_cpl_bmrk=24; MPB_cpl_bmrk="0 287"; APB_cpl_bmrk="0 311"
   OPB_cpl_bmrk="312 431"; IPB_cpl_bmrk="432 479"; WPB_cpl_bmrk="480 559"
+
+  TASKS_cpl_bmrk_mpi=560; TPN_cpl_bmrk_mpi=40; INPES_cpl_bmrk_mpi=6; JNPES_cpl_bmrk_mpi=8
+  THRD_cpl_bmrk_mpi=1; WPG_cpl_bmrk_mpi=24; MPB_cpl_bmrk_mpi="0 287"; APB_cpl_bmrk_mpi="0 311"
+  OPB_cpl_bmrk_mpi="312 411"; IPB_cpl_bmrk_mpi="412 471"; WPB_cpl_bmrk_mpi="472 559"
+  NPROC_ICE_cpl_bmrk_mpi=40
 
   TASKS_cpl_c192=288; TPN_cpl_c192=40; INPES_cpl_c192=4; JNPES_cpl_c192=8
   THRD_cpl_c192=1; WPG_cpl_c192=12;  MPB_cpl_c192="0 191"; APB_cpl_c192="0 203"
