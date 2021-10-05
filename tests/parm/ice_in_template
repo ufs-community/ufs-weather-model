@@ -1,18 +1,19 @@
 &setup_nml
     days_per_year  = 365
     use_leap_years = .true.
-    year_init      = YEAR_INIT
-    month_init     = MONTH_INIT
-    day_init       = DAY_INIT
-    dt             = DT_CICE
+    year_init      = @[SYEAR]
+    month_init     = @[SMONTH]
+    day_init       = @[SDAY]
+    sec_init       = @[SECS]
+    dt             = @[DT_CICE]
     npt            = 999
     ndtd           = 1
-    runtype        = 'CICERUNTYPE'
-    runid          = 'RUNID'
+    runtype        = '@[CICERUNTYPE]'
+    runid          = '@[RUNID]'
     ice_ic         = 'cice_model.res.nc'
     restart        = .true.
-    restart_ext    = RESTART_EXT
-    use_restart_time = USE_RESTART_TIME
+    restart_ext    = .false.
+    use_restart_time = @[USE_RESTART_TIME]
     restart_format = 'nc'
     lcdf64         = .false.
     numin          = 21
@@ -20,8 +21,8 @@
     restart_dir    = './RESTART/'
     restart_file   = 'iced'
     pointer_file   = './ice.restart_file'
-    dumpfreq       = 'DUMPFREQ'
-    dumpfreq_n     = DUMPFREQ_N
+    dumpfreq       = '@[DUMPFREQ]'
+    dumpfreq_n     = @[DUMPFREQ_N]
     dump_last      = .false.
     bfbflag        = 'off'
     diagfreq       = 6
@@ -35,7 +36,7 @@
     lonpnt(2)      = -45.
     histfreq       = 'm','d','h','x','x'
     histfreq_n     =  0 , 0 , 6 , 1 , 1
-    hist_avg       = CICE_HIST_AVG
+    hist_avg       = @[CICE_HIST_AVG]
     history_dir    = './history/'
     history_file   = 'iceh'
     write_ic       = .true.
@@ -47,8 +48,8 @@
 &grid_nml
     grid_format  = 'nc'
     grid_type    = 'tripole'
-    grid_file    = 'CICEGRID'
-    kmt_file     = 'CICEMASK'
+    grid_file    = '@[CICEGRID]'
+    kmt_file     = '@[CICEMASK]'
     kcatbound    = 0
     ncat         = 5
     nfsd         = 1
@@ -79,7 +80,7 @@
 
 &thermo_nml
     kitd              = 1
-    ktherm            = KTHERM
+    ktherm            = @[KTHERM]
     conduct           = 'MU71'
     a_rapid_mode      =  0.5e-3
     Rac_rapid_mode    =    10.0
@@ -93,7 +94,7 @@
     kdyn            = 1
     ndte            = 120
     revised_evp     = .false.
-    kevp_kernel     = 0
+    evp_algorithm   = 'standard_2d'
     brlx            = 300.0
     arlx            = 300.0
     ssh_stress      = 'coupled'
@@ -138,6 +139,10 @@
     pndaspect       = 0.8
 /
 
+&snow_nml
+    snwredist       = 'none'
+/
+
 &forcing_nml
     formdrag        = .false.
     atmbndy         = 'default'
@@ -148,20 +153,20 @@
     ustar_min       = 0.0005
     emissivity      = 0.95
     fbot_xfer_type  = 'constant'
-    update_ocn_f    = FRAZIL_FWSALT
+    update_ocn_f    = @[FRAZIL_FWSALT]
     l_mpond_fresh   = .false.
-    tfrz_option     = 'TFREEZE_OPTION'
+    tfrz_option     = '@[TFREEZE_OPTION]'
     restart_coszen  = .true.
 /
 
 &domain_nml
-    nprocs            = NPROC_ICE
-    nx_global         = NX_GLB
-    ny_global         = NY_GLB
-    block_size_x      = BLCKX
-    block_size_y      = BLCKY
+    nprocs            = @[NPROC_ICE]
+    nx_global         = @[NX_GLB]
+    ny_global         = @[NY_GLB]
+    block_size_x      = @[BLCKX]
+    block_size_y      = @[BLCKY]
     max_blocks        = -1
-    processor_shape   = 'slenderX2'
+    processor_shape   = '@[CICE_DECOMP]'
     distribution_type = 'cartesian'
     distribution_wght = 'latitude'
     ew_boundary_type  = 'cyclic'

@@ -3,7 +3,7 @@
 #PBS -o out
 #PBS -e err
 #PBS -N @[JBNME]
-# #PBS -A @[ACCNR]
+#PBS -A @[ACCNR]
 #PBS -q @[QUEUE]
 #PBS -l place=vscatter,select=@[NODES]:ncpus=@[TPN]:mpiprocs=@[TPN]
 #PBS -l walltime=00:@[WLCLK]:00
@@ -12,21 +12,20 @@ set -eux
 echo -n " $( date +%s )," >  job_timestamp.txt
 
 cd $PBS_O_WORKDIR
-export CRAY_CONFIG_DIR=$HOME
 
-source /apps/prod/lmodules/startLmod
 module use $( pwd -P )
 module load modules.fv3
+module load cray-pals
 module list
 
 echo "Model started:  " `date`
 
-export MPI_TYPE_DEPTH=20
 export OMP_STACKSIZE=512M
 export OMP_NUM_THREADS=@[THRD]
+export OMP_PLACES=cores
 export ESMF_RUNTIME_COMPLIANCECHECK=OFF:depth=4
 
-cray aprun -n @[TASKS] ./fv3.exe
+mpiexec -n @[TASKS] -ppn @[TPN] -depth @[THRD] ./fv3.exe
 
 echo "Model ended:    " `date`
 echo -n " $( date +%s )," >> job_timestamp.txt
