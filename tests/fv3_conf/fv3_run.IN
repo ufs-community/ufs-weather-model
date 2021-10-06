@@ -10,14 +10,14 @@ elif [ $NPX = 769 ]; then
 fi
 echo "inputdir=$inputdir,NPX=$NPX"
 
-UNIT_TEST=${UNIT_TEST:-false}
+OPNREQ_TEST=${OPNREQ_TEST:-false}
 if [ $WARM_START = .false. ]; then
   cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT .
   mkdir RESTART
 else
   mkdir INPUT RESTART
 
-  if [[ ${UNIT_TEST} == false ]]; then
+  if [[ ${OPNREQ_TEST} == false ]]; then
     cp -r @[INPUTDATA_ROOT]/${inputdir}/RESTART/* ./INPUT
   else
     cp -r @[INPUTDATA_ROOT]/${inputdir}/RESTART/* ./INPUT
