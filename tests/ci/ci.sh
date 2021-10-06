@@ -14,7 +14,7 @@ check_memory_usage() {
 
 usage_and_exit() {
   echo
-  echo "Note: main purpose of this script is to interface between CI automation and utest script"
+  echo "Note: main purpose of this script is to interface between CI automation and opnReqTest script"
   echo "and therefore, direct invocation via CLI may result in unexpected behavior"
   echo
   echo "Usage: $0 -b <build-case> | -r <test-case>"
@@ -75,14 +75,14 @@ if [ $BUILD = "true" ]; then
 elif [ $RUN == "true" ]; then
 
   docker volume rm -f DataVolume >/dev/null &&
-    docker run -d --rm -v DataVolume:/tmp minsukjinoaa/input-data:20210528
+    docker run -d --rm -v DataVolume:/tmp minsukjinoaa/input-data:20210930
 
   docker create -u builder -e "CI_TEST=true" -e "USER=builder" \
                 -e "RT_MACHINE=linux.gnu" -e "RT_COMPILER=gnu" \
                 -w "/home/builder/ufs-weather-model/tests" \
-                -v DataVolume:/home/builder/data/NEMSfv3gfs/input-data-20210528 \
-                --shm-size=512m --name my-container noaaemc/ubuntu-hpc:v1.6b \
-                /bin/bash -c "./utest -n ${TEST_NAME} -c ${TEST_CASE} -x"
+                -v DataVolume:/home/builder/data/NEMSfv3gfs \
+                --shm-size=512m --name my-container noaaemc/ubuntu-hpc:v1.7b \
+                /bin/bash -c "./opnReqTest -n ${TEST_NAME} -c ${TEST_CASE} -x"
 
   cd $GITHUB_WORKSPACE
   docker cp . my-container:/home/builder/ufs-weather-model

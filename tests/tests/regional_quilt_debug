@@ -1,0 +1,38 @@
+###############################################################################
+#
+#  FV3 CCPP regional control test
+#
+###############################################################################
+
+export TEST_DESCR="Compare FV3 CCPP regional quilt results with previous trunk version"
+
+export CNTL_DIR=fv3_regional_quilt_debug
+
+export LIST_FILES="dynf000.nc \
+                   dynf001.nc \
+                   phyf000.nc \
+                   phyf001.nc"
+
+export_fv3
+
+export FV3_RUN=regional_run.IN
+
+export OZ_PHYS_OLD=.F.
+export OZ_PHYS_NEW=.T.
+export H2O_PHYS=.T.
+export HYBEDMF=.F.
+#export WRITE_DOPOST=.true.
+export POSTAPP='lam'
+
+export CCPP_SUITE=FV3_GFS_v15_thompson_mynn
+export INPUT_NML=regional.nml.IN
+export MODEL_CONFIGURE=model_configure_regional.IN
+
+export FDIAG=1
+export FHMAX=1
+export TASKS=68
+export INPES=10
+export JNPES=6
+export OUTPUT_FH="0 1"
+
+export WLCLK=30

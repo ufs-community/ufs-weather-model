@@ -80,6 +80,7 @@ def check_ec2(url, request, myid):
             in_progress.append(x["id"])
 
     while True:
+        print("in_progress: ", in_progress)
         if len(in_progress) == 0:
             break
         time.sleep(20)
@@ -94,6 +95,7 @@ def check_ec2(url, request, myid):
                 break
             if start_status == "completed" and stop_status == "completed":
                 done.append(cid)
+        print("done: ", done)
         if len(done) != 0:
             [workflows.pop(k) for k in done]
             [in_progress.remove(k) for k in done]
