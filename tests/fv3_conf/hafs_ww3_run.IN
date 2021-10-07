@@ -1,0 +1,13 @@
+
+if [ ${CNTL_DIR} = "hafs_regional_atm_wav" ] || \
+   [ ${CNTL_DIR} = "hafs_regional_atm_ocn_wav" ]; then
+  cp -p @[INPUTDATA_ROOT]/WW3_hafs_input_data/hafs_natl_6m/mod_def.ww3 ./
+  cp -p @[INPUTDATA_ROOT]/WW3_hafs_input_data/hafs_natl_6m/wind.ww3 ./
+# cp -p @[INPUTDATA_ROOT]/WW3_hafs_input_data/hafs_natl_6m/current.ww3 ./
+# cp -p @[INPUTDATA_ROOT]/WW3_hafs_input_data/hafs_natl_6m/restart.ww3 ./
+  # Currently, provide a non-existing symbolic link for nest.ww3
+  ln -sf @[INPUTDATA_ROOT]/WW3_hafs_input_data/hafs_natl_6m/nest.ww3 ./
+# cp -p @[INPUTDATA_ROOT]/WW3_hafs_input_data/hafs_natl_6m/ww3_multi.inp ./
+else
+  echo "Error: unsupported experiments ${CNTL_DIR}"
+fi
