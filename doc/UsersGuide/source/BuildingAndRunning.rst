@@ -315,23 +315,23 @@ can be identified via variables ``INPUT_NML``, ``NEMS_CONFIGURE`` and ``FV3_RUN`
 for example, by trying ``grep -n INPUT_NML *`` inside the tests/ and tests/tests/
 directories.
 
-.. _UsingUnitTest:
+.. _UsingOpnReqTest:
 
---------------------------
-Using the unit test script
---------------------------
-The unit test script ``utest`` in the tests/ directory can also be used to run
-tests. Given the name of a test, ``utest`` carries out a suite of test cases.
+---------------------------------------------
+Using the operational requirement test script
+---------------------------------------------
+The operational requirement test script ``opnReqTest`` in the tests/ directory can also be used to run
+tests. Given the name of a test, ``opnReqTest`` carries out a suite of test cases.
 Each test case addresses an aspect of the requirements new implementations
-should satisfy, which are shown in :numref:`Table %s <ImplementationRequirement>`.
-For the following discussions on utest, the user should note the distinction between
+should satisfy, which are shown in :numref:`Table %s <OperationalRequirement>`.
+For the following discussions on opnReqTest, the user should note the distinction between
 'test name' and 'test case': examples of test name are ``control``, ``cpld_control``
 and ``regional_control`` which are all found in the /tests/tests/ directory, whereas
 test case refers to any one of ``thr``, ``mpi``, ``dcp``, ``rst``, ``bit`` and ``dbg``.
 
-.. _ImplementationRequirement:
+.. _OperationalRequirement:
 
-.. table:: *Implementation requirements*
+.. table:: *Operational requirements*
 
   +----------+------------------------------------------------------------------------+
   | **Case** | **Description**                                                        |
@@ -349,47 +349,40 @@ test case refers to any one of ``thr``, ``mpi``, ``dcp``, ``rst``, ``bit`` and `
   | dbg      | Model can be compiled and run to completion in debug mode              |
   +----------+------------------------------------------------------------------------+
 
-The unit test uses the same testing framework used by the regression
+The operational requirement test uses the same testing framework used by the regression
 test, and therefore it is recommened that the user first read
 :numref:`Section %s <UsingRegressionTest>`. All the files in
 the subdirectories shown in :numref:`Table %s <RTSubDirs>` are relavant to the
-unit test except that the ``utest`` script replaces ``rt.sh`` and the
-``utest.bld`` file replaces ``rt.conf``. The /tests/utests/ directory contains
-utest-specific lower-level scripts used to set up run configurations.
+operational requirement test except that the ``opnReqTest`` script replaces ``rt.sh``.
+The /tests/opnReqTests/ directory contains
+opnReqTest-specific lower-level scripts used to set up run configurations.
 
 On `Tier-1 platforms <https://github.com/ufs-community/ ufs-weather-model/wiki
 /Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>`_, tests can
-be run by first modifying the PSV file ``utest.bld`` to specify the build options
-and then invoking
+be run by invoking
 
 .. code-block:: console
 
-    ./utest -n <test-name>
+    ./opnReqTest -n <test-name>
 
-For example, including in the ``utest.bld`` file the following line
-
-.. code-block:: console
-
-    control | -DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16 -D32BIT=ON
-
-and then executing ``./utest -n control`` performs all six test cases
-listed in :numref:`Table %s <ImplementationRequirement>` for ``control``
-test. At the end of the run, a log file ``UnitTests_<machine>.<compiler>.log``
+For example, ``./opnReqTest -n control`` performs all six test cases
+listed in :numref:`Table %s <OperationalRequirement>` for ``control``
+test. At the end of the run, a log file ``OpnReqTests_<machine>.<compiler>.log``
 is generated in tests/ directory, which informs the user whether each test case
 passed or failed. The user can choose to run a specific test case by invoking
 
 .. code-block:: console
 
-    ./utest -n <test-name> -c <test-case>
+    ./opnReqTest -n <test-name> -c <test-case>
 
 where ``<test-case>`` is one or
 more comma-separated values selected from ``thr``, ``mpi``, ``dcp``, ``rst``,
-``bit``, ``dbg``. For example, ``./utest -n control -c thr,rst`` runs the
+``bit``, ``dbg``. For example, ``./opnReqTest -n control -c thr,rst`` runs the
 ``control`` test and checks the reproducibility of threading and restart.
-The user can see different command line options available to ``utest`` by
-executing ``./utest -h``; frequently used options are ``-e`` to use the ecFlow
+The user can see different command line options available to ``opnReqTest`` by
+executing ``./opnReqTest -h``; frequently used options are ``-e`` to use the ecFlow
 workflow manager, and ``-k`` to keep the ``$RUNDIR``. In the following,
-comparisons are made between the regression and unit tests on how they handle
+comparisons are made between the regression and operational requirement tests on how they handle
 different reproducibility tests.
 
 As discussed in :numref:`Section %s <UsingRegressionTest>`, the variables and
@@ -398,18 +391,18 @@ values used to configure model parameters and to set up initial conditions in th
 define default values; then a specific test file in the tests/tests/ subdirectory
 either overrides the default values or creates new variables if required by the test.
 The regression test treats the different test cases shown in
-:numref:`Table %s <ImplementationRequirement>` as different tests. Therefore, each
+:numref:`Table %s <OperationalRequirement>` as different tests. Therefore, each
 test case requires a test file in the tests/tests/ subdirectory; examples are
 ``control_2threads``, ``control_decomp``, ``control_restart`` and ``control_debug``,
 which are just variations of ``control`` test to check various reproducibilities.
 There are two potential issues with this approach. First, if several different
 variations of a given test were to be created and included in the ``rt.conf`` file,
 there are too many tests to run. Second, if a new test is added by the user, s/he
-will also have to create these variations. The idea behind the unit test is to
+will also have to create these variations. The idea behind the operational requirement test is to
 automatically configure and run these variations, or test cases, given a test file.
-For example, ``./utest -n control`` will run all six test cases in
-:numref:`Table %s <ImplementationRequirement>` based on a single ``control`` test file.
-Similarly, if the user adds a new test ``new_test``, then ``./utest -n new_test`` will
-run all test cases. This is done by the unit test script ``utest`` by adding a third
-stage of variable overrides, and the related scripts can be found in the tests/utests/
+For example, ``./opnReqTest -n control`` will run all six test cases in
+:numref:`Table %s <OperationalRequirement>` based on a single ``control`` test file.
+Similarly, if the user adds a new test ``new_test``, then ``./opnReqTest -n new_test`` will
+run all test cases. This is done by the operational requirement test script ``opnReqTest`` by adding a third
+stage of variable overrides, and the related scripts can be found in the tests/opnReqTests/
 directory.

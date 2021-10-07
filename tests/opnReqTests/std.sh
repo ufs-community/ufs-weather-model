@@ -25,10 +25,12 @@ elif [[ $application == 'cpld' ]]; then
     ice_petlist_bounds="40 45"
     TASKS=$((INPES*JNPES*6 + WRITE_GROUP*WRTTASK_PER_GROUP + 10 + 6))
   fi
+  RESTART_N=$(( FHMAX/2 ))
+  RESTART_INTERVAL="${RESTART_N} -1"
 fi
 
 NODES=$(((TASKS+TPN-1)/TPN))
-(test $CI_TEST == 'true') && source $PATHRT/utests/cmp_proc_bind.sh
+(test $CI_TEST == 'true') && source $PATHRT/opnReqTests/cmp_proc_bind.sh
 if [[ $RT_SUFFIX =~ std ]]; then
-  source $PATHRT/utests/wrt_env.sh
+  source $PATHRT/opnReqTests/wrt_env.sh
 fi
