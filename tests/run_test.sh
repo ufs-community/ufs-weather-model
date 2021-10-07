@@ -18,7 +18,7 @@ write_fail_test() {
   if [[ ${OPNREQ_TEST} == true ]]; then
     echo ${TEST_NR} $TEST_NAME >> $PATHRT/fail_opnreq_test
   else
-    echo "${TEST_NAME} ${TEST_NR} failed in run_test" >> $PATHRT/fail_test
+    echo "${TEST_NAME} ${TEST_NR} failed in run_test" >> $PATHRT/fail_test_${TEST_NR}
   fi
   exit 1
 }
@@ -35,6 +35,7 @@ export TEST_NR=$4
 export COMPILE_NR=$5
 
 cd ${PATHRT}
+rm -f fail_test_${TEST_NR}
 
 [[ -e ${RUNDIR_ROOT}/run_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
 source default_vars.sh
@@ -66,6 +67,7 @@ source rt_utils.sh
 source atparse.bash
 source edit_inputs.sh
 
+rm -rf ${RUNDIR}
 mkdir -p ${RUNDIR}
 cd $RUNDIR
 

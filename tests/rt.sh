@@ -478,7 +478,7 @@ JOB_NR=0
 TEST_NR=0
 COMPILE_NR=0
 COMPILE_PREV_WW3_NR=''
-rm -f fail_test
+rm -f fail_test* fail_compile*
 
 export LOG_DIR=${PATHRT}/log_$MACHINE_ID
 rm -rf ${LOG_DIR}
@@ -574,7 +574,7 @@ suite ${ECFLOW_SUITE}
     edit ECF_HOME '${ECFLOW_RUN}'
     edit ECF_INCLUDE '${ECFLOW_RUN}'
     edit ECF_KILL_CMD kill -15 %ECF_RID% > %ECF_JOB%.kill 2>&1
-    edit ECF_TRIES 1
+    edit ECF_TRIES 3
     label src_dir '${PATHTR}'
     label run_dir '${RUNDIR_ROOT}'
     limit max_builds ${MAX_BUILDS}
@@ -807,6 +807,7 @@ fi
 set +e
 cat ${LOG_DIR}/compile_*_time.log              >> ${REGRESSIONTEST_LOG}
 cat ${LOG_DIR}/rt_*.log                        >> ${REGRESSIONTEST_LOG}
+cat fail_compile_* fail_test_*                 >  fail_test
 if [[ -e fail_test ]]; then
   echo "FAILED TESTS: "
   echo "FAILED TESTS: "                        >> ${REGRESSIONTEST_LOG}
