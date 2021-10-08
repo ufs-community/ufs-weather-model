@@ -12,7 +12,7 @@ elif [ $NPX = 769 ]; then
 fi
 echo "inputdir=$inputdir,NPX=$NPX"
 
-UNIT_TEST=${UNIT_TEST:-false}
+OPNREQ_TEST=${OPNREQ_TEST:-false}
 SUFFIX=${RT_SUFFIX}
 if [ $WARM_START = .false. ]; then
   mkdir INPUT RESTART
@@ -20,14 +20,14 @@ if [ $WARM_START = .false. ]; then
 else
   mkdir INPUT RESTART
 
-  if [[ ${UNIT_TEST} == true ]]; then
+  if [[ ${OPNREQ_TEST} == true ]]; then
     SUFFIX=${BL_SUFFIX}
   fi
 
   if [ $MODEL_INITIALIZATION = false ]; then
     #read_inc and iau tests restart from fh=24
     CURRDIR=`pwd`
-    FILEDIR=${CURRDIR}/../control${SUFFIX}/RESTART/
+    FILEDIR=${CURRDIR}/../${DEP_RUN}${SUFFIX}/RESTART
   else
     #for warm start from initialiation time
     FILEDIR=@[INPUTDATA_ROOT]/${inputdir}/INPUT_L127_GDAS
@@ -53,18 +53,22 @@ else
     cp ${FILEDIR}/phy_data.* INPUT/.
     cp ${FILEDIR}/sfc_data.* INPUT/.
   else
-    #restart test start from fh=12
-    rsync -arv ${FILEDIR} INPUT/
-    cp ${FILEDIR}/20210322.180000.* INPUT/.
+    #restart test start from fh FHROT
+    cp -r ../${DEP_RUN}${SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.* ./INPUT
+    rm -f INPUT/fv_core.res.*
+    rm -f INPUT/fv_srf_wnd.res.*
+    rm -f INPUT/fv_tracer.res.*
+    rm -f INPUT/phy_data.*
+    rm -f INPUT/sfc_data.*
     cp ${FILEDIR}/../INPUT/grid_spec.nc INPUT/.
     cp ${FILEDIR}/../INPUT/*_grid.tile*.nc INPUT/.
-    cp ${FILEDIR}/../INPUT/oro_data.tile*.nc INPUT/.
-    cd INPUT
-    for RFILE in 20210322.180000.*; do
+    cp ${FILEDIR}/../INPUT/oro_data*.nc INPUT/.
+    for RFILE in ../${DEP_RUN}${SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.*; do
       [ -e $RFILE ] || exit 1
-      mv $RFILE ${RFILE#20210322.180000.}
+      RFILE_OLD=$(basename $RFILE)
+      RFILE_NEW="${RFILE_OLD//${RESTART_FILE_PREFIX}./}"
+      cp $RFILE INPUT/${RFILE_NEW}
     done
-    cd ..
   fi
 
 fi
@@ -82,7 +86,18 @@ else
 fi
 cp    @[INPUTDATA_ROOT]/${inputdir}/global_o3prdlos.f77 .
 cp    @[INPUTDATA_ROOT]/${inputdir}/global_h2o_pltc.f77 ./global_h2oprdlos.f77
-cp    @[INPUTDATA_ROOT]/${inputdir}/*grb .
+if [ $TILEDFIX = .true. ]; then
+    cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/@[ATMRES]*.nc .
+    cp    @[INPUTDATA_ROOT]/${inputdir}/global_glacier.2x2.grb .
+    cp    @[INPUTDATA_ROOT]/${inputdir}/global_maxice.2x2.grb .
+    cp    @[INPUTDATA_ROOT]/${inputdir}/RTGSST.1982.2012.monthly.clim.grb .
+    cp    @[INPUTDATA_ROOT]/${inputdir}/global_snoclim.1.875.grb .
+    cp    @[INPUTDATA_ROOT]/${inputdir}/CFSR.SEAICE.1982.2012.monthly.clim.grb .
+    cp    @[INPUTDATA_ROOT]/${inputdir}/@[FNSMCC] .
+    cp    @[INPUTDATA_ROOT]/${inputdir}/@[FNMSKH_control] .
+else
+    cp    @[INPUTDATA_ROOT]/${inputdir}/*grb .
+fi
 cp    @[INPUTDATA_ROOT]/${inputdir}/diag_table_gfsv16 ./diag_table
 cp    @[INPUTDATA_ROOT]/${inputdir}/field_table_gfsv16 ./field_table
 

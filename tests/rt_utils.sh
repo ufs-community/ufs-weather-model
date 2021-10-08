@@ -5,7 +5,7 @@ if [[ "$0" = "${BASH_SOURCE[0]}" ]]; then
   exit 1
 fi
 
-UNIT_TEST=${UNIT_TEST:-false}
+OPNREQ_TEST=${OPNREQ_TEST:-false}
 
 qsub_id=0
 slurm_id=0
@@ -201,13 +201,13 @@ submit_and_wait() {
   done
 
   if [[ $test_status = 'FAIL' ]]; then
-    if [[ ${UNIT_TEST} == false ]]; then
+    if [[ ${OPNREQ_TEST} == false ]]; then
       echo "${TEST_NAME} ${TEST_NR} failed" >> $PATHRT/fail_test
       echo "Test ${TEST_NR} ${TEST_NAME} FAIL" >> ${REGRESSIONTEST_LOG}
       echo;echo;echo                           >> ${REGRESSIONTEST_LOG}
       echo "Test ${TEST_NR} ${TEST_NAME} FAIL"
     else
-      echo ${TEST_NR} $TEST_NAME >> $PATHRT/fail_unit_test
+      echo ${TEST_NR} $TEST_NAME >> $PATHRT/fail_opnreq_test
     fi
 
     if [[ $ROCOTO == true || $ECFLOW == true ]]; then
@@ -278,7 +278,7 @@ check_results() {
         fi
 
         if [[ $d -eq 1 && ${i##*.} == 'nc' ]] ; then
-          if [[ ${MACHINE_ID} =~ orion || ${MACHINE_ID} =~ hera || ${MACHINE_ID} =~ wcoss_dell_p3 || ${MACHINE_ID} =~ wcoss_cray || ${MACHINE_ID} =~ cheyenne || ${MACHINE_ID} =~ gaea || ${MACHINE_ID} =~ jet ]]; then
+          if [[ ${MACHINE_ID} =~ orion || ${MACHINE_ID} =~ hera || ${MACHINE_ID} =~ wcoss_dell_p3 || ${MACHINE_ID} =~ wcoss_cray || ${MACHINE_ID} =~ cheyenne || ${MACHINE_ID} =~ gaea || ${MACHINE_ID} =~ jet || ${MACHINE_ID} =~ s4 ]] ; then
             printf ".......ALT CHECK.." >> ${REGRESSIONTEST_LOG}
             printf ".......ALT CHECK.."
             ${PATHRT}/compare_ncfile.py ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i >/dev/null 2>&1 && d=$? || d=$?
@@ -337,10 +337,10 @@ check_results() {
   echo
 
   if [[ $test_status = 'FAIL' ]]; then
-    if [[ ${UNIT_TEST} == false ]]; then
+    if [[ ${OPNREQ_TEST} == false ]]; then
       echo "${TEST_NAME} ${TEST_NR} failed in check_result" >> $PATHRT/fail_test
     else
-      echo ${TEST_NR} $TEST_NAME >> $PATHRT/fail_unit_test
+      echo ${TEST_NR} $TEST_NAME >> $PATHRT/fail_opnreq_test
     fi
 
     if [[ $ROCOTO = true || $ECFLOW == true ]]; then
@@ -397,6 +397,9 @@ rocoto_create_compile_task() {
     BUILD_WALLTIME="01:00:00"
   fi
   if [[ ${MACHINE_ID} == orion.* ]]; then
+    BUILD_WALLTIME="01:00:00"
+  fi
+  if [[ ${MACHINE_ID} == s4.* ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
 
@@ -498,8 +501,10 @@ EOF
   echo "      label job_status ''" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   echo "      inlimit max_builds" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   # serialize WW3 builds. FIXME
-  if [[ ${MAKE_OPT^^} =~ "WW3=Y" && ${COMPILE_PREV_WW3_NR} != '' ]]; then
-    echo "    trigger compile_${COMPILE_PREV_WW3_NR} == complete"  >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+  if [[ ${MAKE_OPT^^} =~ "-DAPP=ATMW" ]] || [[ ${MAKE_OPT^^} =~ "-DAPP=S2SW" ]] || [[ ${MAKE_OPT^^} =~ "-DAPP=HAFSW" ]] || [[ ${MAKE_OPT^^} =~ "-DAPP=HAFS-ALL" ]] ; then
+    if [[ ${COMPILE_PREV_WW3_NR} != '' ]]; then
+      echo "    trigger compile_${COMPILE_PREV_WW3_NR} == complete"  >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+    fi
   fi
 }
 
@@ -516,7 +521,7 @@ EOF
   echo "      label job_status ''" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   echo "      inlimit max_jobs" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   if [[ $DEP_RUN != '' ]]; then
-    if [[ ${UNIT_TEST} == false ]]; then
+    if [[ ${OPNREQ_TEST} == false ]]; then
       echo "      trigger compile_${COMPILE_NR} == complete and ${DEP_RUN}${RT_SUFFIX} == complete" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
     else
       echo "      trigger compile_${COMPILE_NR} == complete and ${DEP_RUN} == complete" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
@@ -538,7 +543,12 @@ ecflow_run() {
   not_running=$?
   if [[ $not_running -eq 1 ]]; then
     echo "ecflow_server is NOT running on ${ECF_HOST}:${ECF_PORT}"
-    ${ECFLOW_START} -p ${ECF_PORT}
+    if [[ ${MACHINE_ID} == wcoss2 ]]; then
+      # Annoying "Has NCO assigned port $ECF_PORT for use by this account? (yes/no) ".
+      echo yes | ${ECFLOW_START} -p ${ECF_PORT}
+    else
+      ${ECFLOW_START} -p ${ECF_PORT}
+    fi
   else
     echo "ecflow_server is already running on ${ECF_HOST}:${ECF_PORT}"
   fi
@@ -551,6 +561,7 @@ ecflow_run() {
 
   ecflow_client --load=${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   ecflow_client --begin=${ECFLOW_SUITE}
+  ecflow_client --restart
 
   active_tasks=1
   while [[ $active_tasks -ne 0 ]]
