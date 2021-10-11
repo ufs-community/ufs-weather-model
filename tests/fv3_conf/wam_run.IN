@@ -1,12 +1,7 @@
 
 inputdir=FV3_input_data_149
-if [ $WARM_START = .false. ]; then
-  cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT .
-  mkdir RESTART
-else
-  mkdir INPUT RESTART
-  cp -r @[INPUTDATA_ROOT]/${inputdir}/RESTART/* ./INPUT
-fi
+mkdir INPUT RESTART
+cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT/* ./INPUT
 cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/aerosol.dat .
 cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/co2historicaldata_201*.txt .
 cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/sfc_emissivity_idx.txt .
