@@ -107,7 +107,9 @@ if [[ "Q${INPUT_NEST02_NML:-}" != Q ]] ; then
 fi
 
 # Field table
-cp ${PATHRT}/parm/field_table/${FIELD_TABLE} field_table
+if [[ "Q${FIELD_TABLE:-}" != Q ]] ; then
+  cp ${PATHRT}/parm/field_table/${FIELD_TABLE} field_table
+fi
 
 # Field Dictionary
 cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml

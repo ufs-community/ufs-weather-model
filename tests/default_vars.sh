@@ -1013,7 +1013,6 @@ export flux_scheme=0
 
 export INPUT_NML=input.mom6.nml.IN
 export MODEL_CONFIGURE=datm_configure.IN
-export FIELD_TABLE=field_table
 export DIAG_TABLE=diag_table_template
 
 # MOM6 defaults; 1 degree
@@ -1133,7 +1132,6 @@ export flux_scheme=0
 
 export INPUT_NML=input.mom6.nml.IN
 export MODEL_CONFIGURE=datm_cdeps_configure.IN
-export FIELD_TABLE=field_table
 export DIAG_TABLE=diag_table_template
 
 # atm defaults
