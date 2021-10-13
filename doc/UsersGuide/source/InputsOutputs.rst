@@ -30,6 +30,8 @@ The ufs-weather-model can be configured as one of several applications, from a s
      - Coupled UFSATM-HYCOM-CMEPS
    * - HAFSW
      - Coupled UFSATM-HYCOM-WW3-CMEPS
+   * - HAFS-ALL
+     - Coupled CDEPS-UFSATM-HYCOM-WW3-CMEPS
 	 
 This chapter describes the input and output files needed for executing the model in the various supported configurations.
 
@@ -1722,13 +1724,13 @@ HYCOM output configuration is set in the :ref:`blkdat.input<HYCOM_BlkdatInput>` 
    * - Parameter
      - Description
    * - dsurfq
-     - Configure the output frequency for archs files
+     - Number of days between model diagnostics at the surface
    * - diagfq
-     - Configure the output frequency for archv files
+     - Number of days between model diagnostics
    * - meanfq
-     - Configure the output frequency for archm files
+     - Number of days between model time averaged diagnostics
    * - rstrfq
-     - Configure the output frequency for restart files
+     - Number of days between model restart output
    * - itest
      - i grid point where detailed diagnostics are desired
    * - jtest

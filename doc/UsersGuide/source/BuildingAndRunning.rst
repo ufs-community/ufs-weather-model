@@ -164,6 +164,12 @@ For the ufs-weather-model HAFSW app (atm/ocean/wave) in 32 bit:
 
     export CMAKE_FLAGS="-DAPP=HAFSW -D32BIT=ON -DCCPP_SUITES=FV3_HAFS_v0_gfdlmp_tedmf_nonsst,FV3_HAFS_v0_gfdlmp_tedmf,FV3_HAFS_v0_hwrf_thompson,FV3_HAFS_v0_hwrf"
 
+For the ufs-weather-model HAFS-ALL app (data/atm/ocean/wave) in 32 bit:
+
+.. code-block:: console
+
+    export CMAKE_FLAGS="-DAPP=HAFS-ALL -D32BIT=ON -DCCPP_SUITES=FV3_HAFS_v0_gfdlmp_tedmf_nonsst,FV3_HAFS_v0_gfdlmp_tedmf,FV3_HAFS_v0_hwrf_thompson,FV3_HAFS_v0_hwrf"
+
 ------------------
 Building the model
 ------------------
