@@ -18,10 +18,10 @@ cp    @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/mesh.mx@[OCNRES].nc .
 
 if [[ $OCNRES == '025' ]]; then
   cp    @[INPUTDATA_ROOT]/MOM6_IC/@[OCNRES]/2011100100/MOM*.nc ./INPUT
-  cp    @[INPUTDATA_ROOT]/CICE_IC/@[OCNRES]/cice_model_@[ICERES].cpc*.nc cice_model.res.nc
+  cp    @[INPUTDATA_ROOT]/CICE_IC/@[OCNRES]/cice_model_@[ICERES].cpc.res_2011100100.nc cice_model.res.nc
 else
   cp    @[INPUTDATA_ROOT]/MOM6_IC/@[OCNRES]/2011100100/MOM6_IC_TS*.nc ./INPUT/MOM6_IC_TS.nc
-  cp    @[INPUTDATA_ROOT]/CICE_IC/@[OCNRES]/cice_model_@[ICERES].cpc*.nc cice_model.res.nc
+  cp    @[INPUTDATA_ROOT]/CICE_IC/@[OCNRES]/cice_model_@[ICERES].cpc.res_2011100100.nc cice_model.res.nc
   # MOM6 increment file
   cp    @[INPUTDATA_ROOT]/MOM6_IC/@[OCNRES]/2011100100/mom6_increment.nc ./INPUT/mom6_increment.nc
 fi
