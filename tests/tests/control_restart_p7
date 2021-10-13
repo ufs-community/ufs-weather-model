@@ -4,7 +4,7 @@
 #
 ###############################################################################
 
-export TEST_DESCR="Compare global control results with control test"
+export TEST_DESCR="Compare global restart results with control_p7 test"
 
 export CNTL_DIR=control_p7
 
@@ -56,6 +56,7 @@ export SHOUR=06
 export OUTPUT_GRID='gaussian_grid'
 export WRITE_DOPOST=.true.
 export FHROT=12
+export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${SHOUR} + ${FHROT}  )))0000"
 
 export WARM_START=.true.
 export NGGPS_IC=.false.
@@ -63,7 +64,6 @@ export EXTERNAL_IC=.false.
 export MAKE_NH=.false.
 export MOUNTAIN=.true.
 export NA_INIT=0
-export OUTPUT_FH="3 -1"
 
 #P7 default
 export IALB=2
@@ -104,17 +104,14 @@ export DO_UGWP_V0_NST_ONLY=.false.
 export LDIAG_UGWP=.false.
 
 # P7 CA
-export DO_CA=.false.
-export CA_SGS=.false.
-#export DO_CA=.true.
-#export CA_SGS=.true.
+export DO_CA=.true.
+export CA_SGS=.true.
 export CA_GLOBAL=.false.
 export NCA=1
 export SCELLS=2600
 export TLIVES=1800
 export NSEED=1
 export NFRACSEED=0.5
-export RCELL=0.72
 export CA_TRIGGER=.true.
 export NSPINUP=1
 export ISEED_CA=12345

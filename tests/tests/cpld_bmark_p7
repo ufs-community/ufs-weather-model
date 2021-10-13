@@ -60,7 +60,7 @@ export BMIC=.true.
 
 export DAYS=0.25
 export FHMAX=6
-export RESTART_N=${FHMAX}
+export RESTART_N=`expr ${FHMAX} - ${FHROT}`
 export RESTART_INTERVAL="${RESTART_N} -1"
 
 export TASKS=$TASKS_cpl_bmrk
@@ -95,6 +95,7 @@ export BLCKY=`expr $NY_GLB / 2`
 
 # resolution dependent setting
 export CDMBWD=${CDMBWD_c384}
+export RCELL=${RCELL_c384}
 
 # set component and coupling timesteps
 export DT_ATMOS=300

@@ -1,11 +1,11 @@
-cat <<EOF >${RUNDIR_ROOT}/unit_test${RT_SUFFIX}.env
-export UNIT_TEST=${UNIT_TEST}
+cat <<EOF >${RUNDIR_ROOT}/opnreq_test${RT_SUFFIX}.env
+export OPNREQ_TEST=${OPNREQ_TEST}
 export CI_TEST=${CI_TEST}
 export RT_COMPILER=${RT_COMPILER}
 export FHMAX=${FHMAX}
 export DAYS=${DAYS}
-export RESTART_INTERVAL="${RESTART_INTERVAL:-}"
 export RESTART_N=${RESTART_N:-}
+export RESTART_INTERVAL="${RESTART_INTERVAL:-}"
 export INPES=${INPES}
 export JNPES=${JNPES}
 export WRITE_GROUP=${WRITE_GROUP}
@@ -25,4 +25,5 @@ export NFHOUT=${NFHOUT}
 export NFHMAX_HF=${NFHMAX_HF}
 export NFHOUT_HF=${NFHOUT_HF}
 export LIST_FILES="${LIST_FILES}"
+export OUTPUT_FH="${OUTPUT_FH}"
 EOF
