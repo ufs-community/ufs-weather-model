@@ -99,14 +99,9 @@ else
     cp    @[INPUTDATA_ROOT]/${inputdir}/*grb .
 fi
 cp    @[INPUTDATA_ROOT]/${inputdir}/diag_table_gfsv16 ./diag_table
-cp    @[INPUTDATA_ROOT]/${inputdir}/field_table_gfsv16 ./field_table
 
 if [ $NEW_DIAGTABLE != 'none' ]; then
   cp    @[INPUTDATA_ROOT]/${inputdir}/$NEW_DIAGTABLE ./diag_table
-fi
-
-if [ $NEW_FIELDTABLE != 'none' ]; then
-  cp    @[INPUTDATA_ROOT]/${inputdir}/$NEW_FIELDTABLE ./field_table
 fi
 
 if [ $CPLWAV = .true. ]; then

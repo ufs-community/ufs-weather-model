@@ -509,6 +509,9 @@ export NBITS=0
 export IMO=384
 export JMO=190
 
+#input file
+export FIELD_TABLE=field_table_gfsv16
+
 # Coldstart/warmstart
 #rt script for ICs
 export MODEL_INITIALIZATION=false
