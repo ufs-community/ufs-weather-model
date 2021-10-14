@@ -27,8 +27,10 @@ case $(hostname -f) in
   m72a2.ncep.noaa.gov)     MACHINE_ID=wcoss_dell_p3 ;; ### mars
   m72a3.ncep.noaa.gov)     MACHINE_ID=wcoss_dell_p3 ;; ### mars
 
-  alogin01)                MACHINE_ID=wcoss2 ;; ### acorn
-  alogin02)                MACHINE_ID=wcoss2 ;; ### acorn
+  alogin01.acorn.wcoss2.ncep.noaa.gov)   MACHINE_ID=wcoss2 ;; ### acorn
+  alogin02.acorn.wcoss2.ncep.noaa.gov)   MACHINE_ID=wcoss2 ;; ### acorn
+  adecflow01.acorn.wcoss2.ncep.noaa.gov) MACHINE_ID=wcoss2 ;; ### acorn
+  adecflow02.acorn.wcoss2.ncep.noaa.gov) MACHINE_ID=wcoss2 ;; ### acorn
 
   gaea9)                   MACHINE_ID=gaea ;; ### gaea9
   gaea10)                  MACHINE_ID=gaea ;; ### gaea10
@@ -60,6 +62,8 @@ case $(hostname -f) in
   hfe11)                   MACHINE_ID=hera ;; ### hera11
   hfe12)                   MACHINE_ID=hera ;; ### hera12
   hecflow01)               MACHINE_ID=hera ;; ### heraecflow01
+
+  s4-submit.ssec.wisc.edu) MACHINE_ID=s4 ;; ### s4
 
   fe1)                     MACHINE_ID=jet ;; ### jet01
   fe2)                     MACHINE_ID=jet ;; ### jet02
@@ -106,7 +110,7 @@ esac
 MACHINE_ID=${RT_MACHINE:-${MACHINE_ID}}
 
 # Append compiler
-if [ $MACHINE_ID = orion ] || [ $MACHINE_ID = hera ] || [ $MACHINE_ID = cheyenne ] || [ $MACHINE_ID = jet ] || [ $MACHINE_ID = gaea ] || [ $MACHINE_ID = stampede ] ; then
+if [ $MACHINE_ID = orion ] || [ $MACHINE_ID = hera ] || [ $MACHINE_ID = cheyenne ] || [ $MACHINE_ID = jet ] || [ $MACHINE_ID = gaea ] || [ $MACHINE_ID = stampede ] || [ $MACHINE_ID = s4 ] ; then
     MACHINE_ID=${MACHINE_ID}.${RT_COMPILER}
 fi
 
