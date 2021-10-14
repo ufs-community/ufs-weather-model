@@ -88,8 +88,8 @@ export NY_GLB=35
 export NPROC_ICE=4
 export eps_imesh=4.0e-1
 export CICE_DECOMP=slenderX1
-export BLCKX=${NPROC_ICE}
-export BLCKY=1
+export BLCKX=`expr $NX_GLB / $NPROC_ICE`
+export BLCKY=NY_GLB
 
 # resolution dependent setting
 export CDMBWD=${CDMBWD_c48}
