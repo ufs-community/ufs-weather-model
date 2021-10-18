@@ -271,7 +271,7 @@ elif [[ $MACHINE_ID = orion.* ]]; then
 
   QUEUE=batch
   COMPILE_QUEUE=batch
-  ACCNR="fv3-cpu"
+#  ACCNR= # detected in detect_machine.sh
   PARTITION=orion
   dprefix=/work/noaa/stmp/${USER}
   DISKNM=/work/noaa/nems/emc.nemspara/RT
@@ -676,7 +676,7 @@ EOF
     elif [[ $ECFLOW == true ]]; then
       ecflow_create_compile_task
     else
-      ./compile.sh $MACHINE_ID "${MAKE_OPT}" $COMPILE_NR YES NO > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
+      ./compile.sh $MACHINE_ID "${MAKE_OPT}" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
       mv compile_${COMPILE_NR}_time.log ${LOG_DIR}
     fi
 
