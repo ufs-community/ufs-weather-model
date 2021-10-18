@@ -312,6 +312,7 @@ elif [[ $MACHINE_ID = s4.* ]]; then
 
   module load rocoto/1.3.2
   module load ecflow/5.6.0
+  module load miniconda/3.8-s4
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
