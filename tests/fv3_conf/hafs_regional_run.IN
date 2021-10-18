@@ -2,9 +2,3 @@ rm -rf INPUT RESTART
 mkdir  INPUT RESTART
 
 rsync -arv --exclude 'field_table' @[INPUTDATA_ROOT]/FV3_hafs_regional_input_data/. .
-
-# overwrite Field table until the field_table in FV3_hafs_regional_input_data is removed
-if [[ "Q${FIELD_TABLE:-}" != Q ]] ; then
-  cp ${PATHRT}/parm/field_table/${FIELD_TABLE} field_table
-fi
-
