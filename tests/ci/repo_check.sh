@@ -13,8 +13,8 @@ result() {
 }
 
 # Declare variables
-declare -A base fv3 mom6 cice ww3 stoch gocart nems cmeps datm cdeps cmake
-submodules="fv3 mom6 cice ww3 stoch gocart nems cmeps datm cdeps cmake"
+declare -A base fv3 mom6 cice ww3 stoch gocart nems cmeps cdeps cmake
+submodules="fv3 mom6 cice ww3 stoch gocart nems cmeps cdeps cmake"
 comment=''
 ownerID=$1
 
@@ -55,13 +55,13 @@ cmeps[repo]='https://github.com/NOAA-EMC/CMEPS'
 cmeps[branch]='emc/develop'
 cmeps[dir]='CMEPS-interface/CMEPS'
 
-datm[repo]='https://github.com/NOAA-EMC/NEMSdatm'
-datm[branch]='develop'
-datm[dir]='DATM'
-
 cdeps[repo]='https://github.com/NOAA-EMC/CDEPS'
 cdeps[branch]='develop'
 cdeps[dir]='CDEPS-interface/CDEPS'
+
+hycom[repo]='https://github.com/NOAA-EMC/HYCOM-src'
+hycom[branch]='develop'
+hycom[dir]='HYCOM-interface/HYCOM'
 
 cmake[repo]='https://github.com/NOAA-EMC/CMakeModules'
 cmake[branch]='develop'
