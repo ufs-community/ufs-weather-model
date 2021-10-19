@@ -436,6 +436,9 @@ export NBITS=0
 export IMO=384
 export JMO=190
 
+#input file
+export FIELD_TABLE=field_table_gfsv16
+
 # Coldstart/warmstart
 #rt script for ICs
 export MODEL_INITIALIZATION=false
@@ -935,7 +938,6 @@ export flux_scheme=0
 
 export INPUT_NML=input.mom6.nml.IN
 export MODEL_CONFIGURE=datm_cdeps_configure.IN
-export FIELD_TABLE=field_table
 export DIAG_TABLE=diag_table_template
 
 # atm defaults
