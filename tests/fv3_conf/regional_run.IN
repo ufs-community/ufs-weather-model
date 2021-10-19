@@ -1,4 +1,4 @@
-rsync -arv @[INPUTDATA_ROOT]/FV3_regional_input_data/. .
+rsync -arv --exclude 'field_table' @[INPUTDATA_ROOT]/FV3_regional_input_data/. .
 if [ $WRITE_DOPOST = .true. ]; then
     cp @[INPUTDATA_ROOT]/FV3_regional_input_data/diag_table_lam ./diag_table
 fi
