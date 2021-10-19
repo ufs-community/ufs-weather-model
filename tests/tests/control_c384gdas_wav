@@ -62,6 +62,9 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   export THRD=2
 elif [[ $MACHINE_ID = wcoss_cray ]]; then
   export TPN=6
+elif [[ $MACHINE_ID = s4.* ]]; then
+  export TPN=16
+  export THRD=2
 else
   export TPN=12
 fi
@@ -83,7 +86,7 @@ export SMONTH=03
 export SDAY=21
 export SHOUR=18
 export FHROT=3
-export FDIAG=3
+export OUTPUT_FH="3 -1"
 export NFHMAX_HF=0
 export IAU_OFFSET=6
 export CDMBWD=${CDMBWD_c384}
