@@ -54,6 +54,8 @@ WAV_petlist_bounds:             @[wav_petlist_bounds]
 WAV_attributes::
   Verbosity = 0
   OverwriteSlice = false
+  diro = "."
+  logfile = wav.log
 ::
 
 # CMEPS warm run sequence
@@ -61,17 +63,14 @@ runSeq::
 @@[coupling_interval_slow_sec]
    MED med_phases_prep_ocn_avg
    MED -> OCN :remapMethod=redist
-   OCN -> WAV
-   WAV -> OCN :srcMaskValues=1
    OCN
    @@[coupling_interval_fast_sec]
      MED med_phases_prep_atm
      MED med_phases_prep_ice
+     MED med_phases_prep_wav
      MED -> ATM :remapMethod=redist
      MED -> ICE :remapMethod=redist
-     WAV -> ATM :srcMaskValues=1
-     ATM -> WAV
-     ICE -> WAV
+     MED -> WAV :remapMethod=redist
      ATM
      ICE
      WAV
@@ -79,6 +78,8 @@ runSeq::
      MED med_phases_post_atm
      ICE -> MED :remapMethod=redist
      MED med_phases_post_ice
+     WAV -> MED :remapMethod=redist
+     MED med_phases_post_wav
      MED med_phases_prep_ocn_accum
    @
    OCN -> MED :remapMethod=redist
@@ -96,6 +97,7 @@ MED_attributes::
       ATM_model = @[atm_model]
       ICE_model = @[ice_model]
       OCN_model = @[ocn_model]
+      WAV_model = @[wav_model]
       history_n = 1
       history_option = nhours
       history_ymd = -999
