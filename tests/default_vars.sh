@@ -583,6 +583,7 @@ export H2O_PHYS=.false.
 export CPL=.false.
 export CPLCHM=.false.
 export CPLFLX=.false.
+export CPLICE=.false.
 export CPLWAV=.false.
 export CPLWAV2ATM=.false.
 export DAYS=1
@@ -826,6 +827,7 @@ export KTHERM=2
 export TFREEZE_OPTION=mushy
 
 export CPLFLX=.true.
+export CPLICE=.true.
 export CPL=.true.
 export MIN_SEAICE=1.0e-11
 
