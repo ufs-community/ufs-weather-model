@@ -136,9 +136,7 @@ cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
 source ./fv3_run
 
 if [[ $CPLWAV == .true. ]]; then
-  cat ${PATHRT}/parm/ww3_multi.inp.IN
   atparse < ${PATHRT}/parm/ww3_multi.inp.IN > ww3_multi.inp
-  cat ww3_multi.inp
 fi
 
 if [[ $DATM_NEMS = 'true' ]] || [[ $DATM_CDEPS = 'true' ]] || [[ $S2S = 'true' ]]; then
