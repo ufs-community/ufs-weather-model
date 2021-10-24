@@ -43,7 +43,7 @@ set_target_properties(noahmp PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT
 set_target_properties(noahmp PROPERTIES COMPILE_FLAGS ${FORTRAN_PREPROCESS_FLAG})
 target_include_directories(noahmp PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                        $<INSTALL_INTERFACE:mod>)
-target_link_libraries(noahmp PUBLIC esmf)
+target_link_libraries(noahmp PUBLIC esmf fms)
 
 ###############################################################################
 ### Install
