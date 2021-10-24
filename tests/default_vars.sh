@@ -436,6 +436,9 @@ export NBITS=0
 export IMO=384
 export JMO=190
 
+#input file
+export FIELD_TABLE=field_table_gfsv16
+
 # Coldstart/warmstart
 #rt script for ICs
 export MODEL_INITIALIZATION=false
@@ -546,6 +549,7 @@ export H2O_PHYS=.false.
 export CPL=.false.
 export CPLCHM=.false.
 export CPLFLX=.false.
+export CPLICE=.false.
 export CPLWAV=.false.
 export CPLWAV2ATM=.false.
 export DAYS=1
@@ -789,6 +793,7 @@ export KTHERM=2
 export TFREEZE_OPTION=mushy
 
 export CPLFLX=.true.
+export CPLICE=.true.
 export CPL=.true.
 export MIN_SEAICE=1.0e-11
 
@@ -933,7 +938,6 @@ export flux_scheme=0
 
 export INPUT_NML=input.mom6.nml.IN
 export MODEL_CONFIGURE=datm_cdeps_configure.IN
-export FIELD_TABLE=field_table
 export DIAG_TABLE=diag_table_template
 
 # atm defaults
