@@ -605,6 +605,8 @@ The input files containing grid information and the time-varying forcing files f
 
 .. _CDEPS_Files:
 
+**Data Atmosphere**
+
 .. list-table:: *Input files containing grid information and forcing files for global configurations*
    :widths: 35 50 15
    :header-rows: 1
@@ -618,11 +620,54 @@ The input files containing grid information and the time-varying forcing files f
    * - gefs_mesh.nc
      - ESMF mesh file for GEFS data source
      -
+   * - TL639_200618_ESMFmesh.nc
+     - ESMF mesh file for ERA5 data source
+     -
    * - cfsr.YYYYMMM.nc
      - CFSR forcing file for year YYYY and month MM
      - ✔
    * - gefs.YYYYMMM.nc
      - GEFS forcing file for year YYYY and month MM
+     - ✔
+   * - ERA5.TL639.YYYY.MM.nc
+     - ERA5 forcing file for year YYYY and month MM
+     - ✔
+
+**Data Ocean**
+
+
+.. list-table:: *Input files containing grid information and forcing files for global configurations*
+   :widths: 35 50 15
+   :header-rows: 1
+
+   * - Filename
+     - Description
+     - Date-dependent
+   * - TX025_210327_ESMFmesh_py.nc
+     - ESMF mesh file for OISST data source
+     -
+   * - sst.day.mean.YYYY.nc
+     - OISST forcing file for year YYYY
+     - ✔
+
+.. list-table:: *Input files containing grid information and forcing files for regional configurations*
+   :widths: 35 50 15
+   :header-rows: 1
+
+   * - Filename
+     - Description
+     - Date-dependent
+   * - hat10_210129_ESMFmesh_py.nc
+     - ESMF mesh file for MOM6 data source
+     -
+   * - GHRSST_mesh.nc
+     - ESMF mesh file for GHRSST data source
+     -
+   * - hycom_YYYYMM_surf_nolev.nc
+     - MOM6 forcing file for year YYYY and month MM
+     - ✔
+   * - ghrsst_YYYYMMDD.nc
+     - GHRSST forcing file for year YYYY, month MM and day DD
      - ✔
 
 -------
