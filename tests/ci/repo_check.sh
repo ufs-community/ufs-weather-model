@@ -36,7 +36,7 @@ cice[branch]='emc/develop'
 cice[dir]='CICE-interface/CICE'
 
 ww3[repo]='https://github.com/NOAA-EMC/WW3'
-ww3[branch]='develop'
+ww3[branch]='dev/ufs-weather-model'
 ww3[dir]='WW3'
 
 stoch[repo]='https://github.com/noaa-psd/stochastic_physics'
