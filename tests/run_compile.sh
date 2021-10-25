@@ -15,8 +15,8 @@ cleanup() {
 }
 
 write_fail_test() {
-  if [[ ${UNIT_TEST} == true ]]; then
-    echo compile ${COMPILE_NR} >> $PATHRT/fail_unit_test
+  if [[ ${OPNREQ_TEST} == true ]]; then
+    echo compile ${COMPILE_NR} >> $PATHRT/fail_opnreq_test
   else
     echo "compile_${COMPILE_NR} failed in run_compile" >> $PATHRT/fail_test
   fi
