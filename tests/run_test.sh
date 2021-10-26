@@ -15,8 +15,8 @@ cleanup() {
 }
 
 write_fail_test() {
-  if [[ ${UNIT_TEST} == true ]]; then
-    echo ${TEST_NR} $TEST_NAME >> $PATHRT/fail_unit_test
+  if [[ ${OPNREQ_TEST} == true ]]; then
+    echo ${TEST_NR} $TEST_NAME >> $PATHRT/fail_opnreq_test
   else
     echo "${TEST_NAME} ${TEST_NR} failed in run_test" >> $PATHRT/fail_test
   fi
@@ -39,7 +39,7 @@ cd ${PATHRT}
 [[ -e ${RUNDIR_ROOT}/run_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
 source default_vars.sh
 source tests/$TEST_NAME
-[[ -e ${RUNDIR_ROOT}/unit_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/unit_test_${TEST_NR}.env
+[[ -e ${RUNDIR_ROOT}/opnreq_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/opnreq_test_${TEST_NR}.env
 
 # Save original CNTL_DIR name as INPUT_DIR for regression
 # tests that try to copy input data from CNTL_DIR
@@ -50,11 +50,13 @@ export CNTL_DIR=${CNTL_DIR}${BL_SUFFIX}
 
 export JBNME=$(basename $RUNDIR_ROOT)_${TEST_NR}
 
-UNIT_TEST=${UNIT_TEST:-false}
-if [[ ${UNIT_TEST} == false ]]; then
+echo -n "${TEST_NAME}, $( date +%s )," > ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+
+OPNREQ_TEST=${OPNREQ_TEST:-false}
+if [[ ${OPNREQ_TEST} == false ]]; then
   REGRESSIONTEST_LOG=${LOG_DIR}/rt_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log
 else
-  REGRESSIONTEST_LOG=${LOG_DIR}/ut_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log
+  REGRESSIONTEST_LOG=${LOG_DIR}/opnReqTest_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log
 fi
 export REGRESSIONTEST_LOG
 
@@ -76,22 +78,25 @@ cp ${PATHRT}/fv3_${COMPILE_NR}.exe                 fv3.exe
 
 # modulefile for FV3 prerequisites:
 cp ${PATHRT}/modules.fv3_${COMPILE_NR}             modules.fv3
+cp ${PATHTR}/modulefiles/ufs_common*               .
 
 # Get the shell file that loads the "module" command and purges modules:
 cp ${PATHRT}/../NEMS/src/conf/module-setup.sh.inc  module-setup.sh
-if [[ $FV3 = 'true' ]]; then
-  cp ${PATHRT}/parm/post_itag itag
-  cp ${PATHRT}/parm/postxconfig-NT.txt postxconfig-NT.txt
-  cp ${PATHRT}/parm/postxconfig-NT_FH00.txt postxconfig-NT_FH00.txt
-  cp ${PATHRT}/parm/params_grib2_tbl_new params_grib2_tbl_new
-fi
 
 SRCD="${PATHTR}"
 RUND="${RUNDIR}"
 
-atparse < ${PATHRT}/fv3_conf/${FV3_RUN:-fv3_run.IN} > fv3_run
+# FV3_RUN could have multiple entry seperated by space
+for i in ${FV3_RUN:-fv3_run.IN}
+do
+  atparse < ${PATHRT}/fv3_conf/${i} >> fv3_run
+done
 
-atparse < ${PATHRT}/parm/${INPUT_NML:-input.nml.IN} > input.nml
+if [[ $DATM_CDEPS = 'true' ]] || [[ $FV3 = 'true' ]] || [[ $S2S = 'true' ]]; then
+  if [[ $HAFS = 'false' ]] || [[ $FV3 = 'true' && $HAFS = 'true' ]]; then
+    atparse < ${PATHRT}/parm/${INPUT_NML:-input.nml.IN} > input.nml
+  fi
+fi
 
 atparse < ${PATHRT}/parm/${MODEL_CONFIGURE:-model_configure.IN} > model_configure
 
@@ -101,21 +106,44 @@ if [[ "Q${INPUT_NEST02_NML:-}" != Q ]] ; then
     atparse < ${PATHRT}/parm/${INPUT_NEST02_NML} > input_nest02.nml
 fi
 
+# Field table
+if [[ "Q${FIELD_TABLE:-}" != Q ]] ; then
+  cp ${PATHRT}/parm/field_table/${FIELD_TABLE} field_table
+fi
+
+# Field Dictionary
+cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
+
 # Set up the run directory
 source ./fv3_run
 
-if [[ $DATM = 'true' ]] || [[ $S2S = 'true' ]]; then
-  edit_ice_in     < ${PATHRT}/parm/ice_in_template > ice_in
-  edit_mom_input  < ${PATHRT}/parm/${MOM_INPUT:-MOM_input_template_$OCNRES} > INPUT/MOM_input
-  edit_diag_table < ${PATHRT}/parm/diag_table_template > diag_table
-  edit_data_table < ${PATHRT}/parm/data_table_template > data_table
-  # CMEPS
-  cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
-  cp ${PATHRT}/parm/pio_in pio_in
-  cp ${PATHRT}/parm/med_modelio.nml med_modelio.nml
+if [[ $CPLWAV == .true. ]]; then
+  edit_ww3_input  < ${PATHRT}/parm/ww3_multi.inp.IN > ww3_multi.inp
 fi
-if [[ $DATM = 'true' ]]; then
-  cp ${PATHRT}/parm/datm_data_table.IN datm_data_table
+
+if [[ $DATM_CDEPS = 'true' ]] || [[ $S2S = 'true' ]]; then
+  if [[ $HAFS = 'false' ]]; then
+    atparse < ${PATHRT}/parm/ice_in_template > ice_in
+    atparse < ${PATHRT}/parm/${MOM_INPUT:-MOM_input_template_$OCNRES} > INPUT/MOM_input
+    atparse < ${PATHRT}/parm/${DIAG_TABLE:-diag_table_template} > diag_table
+    atparse < ${PATHRT}/parm/data_table_template > data_table
+  fi
+fi
+
+if [[ "${DIAG_TABLE_ADDITIONAL:-}Q" != Q ]] ; then
+  # Append diagnostic outputs, to support tests that vary from others
+  # only by adding diagnostics.
+  atparse < "${PATHRT}/parm/${DIAG_TABLE_ADDITIONAL:-}" >> diag_table
+fi
+
+if [[ $DATM_CDEPS = 'true' ]]; then
+  atparse < ${PATHRT}/parm/${DATM_IN_CONFIGURE:-datm_in} > datm_in
+  atparse < ${PATHRT}/parm/${DATM_STREAM_CONFIGURE:-datm.streams.IN} > datm.streams
+fi
+
+if [[ $DOCN_CDEPS = 'true' ]]; then
+  atparse < ${PATHRT}/parm/${DOCN_IN_CONFIGURE:-docn_in} > docn_in
+  atparse < ${PATHRT}/parm/${DOCN_STREAM_CONFIGURE:-docn.streams.IN} > docn.streams
 fi
 
 if [[ $SCHEDULER = 'pbs' ]]; then
@@ -141,8 +169,6 @@ elif [[ $SCHEDULER = 'lsf' ]]; then
   atparse < $PATHRT/fv3_conf/fv3_bsub.IN > job_card
 fi
 
-atparse < ${PATHRT}/parm/${NEMS_CONFIGURE:-nems.configure} > nems.configure
-
 ################################################################################
 # Submit test job
 ################################################################################
@@ -150,7 +176,11 @@ atparse < ${PATHRT}/parm/${NEMS_CONFIGURE:-nems.configure} > nems.configure
 if [[ $SCHEDULER = 'none' ]]; then
 
   ulimit -s unlimited
-  mpiexec -n ${TASKS} ./fv3.exe >out 2> >(tee err >&3)
+  if [[ $CI_TEST = 'true' ]]; then
+    eval ${OMP_ENV} mpiexec -n ${TASKS} ${MPI_PROC_BIND} ./fv3.exe >out 2> >(tee err >&3)
+  else
+    mpiexec -n ${TASKS} ./fv3.exe >out 2> >(tee err >&3)
+  fi
 
 else
 
@@ -165,9 +195,14 @@ fi
 
 check_results
 
+if [[ $SCHEDULER != 'none' ]]; then
+  cat ${RUNDIR}/job_timestamp.txt >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+fi
 ################################################################################
 # End test
 ################################################################################
+
+echo " $( date +%s )" >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
 
 elapsed=$SECONDS
 echo "Elapsed time $elapsed seconds. Test ${TEST_NAME}"

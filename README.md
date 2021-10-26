@@ -18,7 +18,6 @@ The top level directory structure groups source code and input files as follow:
 | --------------            | ------- |
 | ```LICENSE.md```          | A copy of the GNU Lesser General Public License, Version 3. |
 | ```README.md```           | This file with basic pointers to more information. |
-| ```FMS/```                | Contains Flexible Modeling System source code. |
 | ```NEMS/```               | Contains NOAA Environmental Modeling System source code and nems compset run scripts. |
 | ```CMEPS-interface/```    | Contains CMEPS mediator |
 | ```FV3/```                | Contains FV3 atmosphere model component including FV3 dynamical core, dynamics to physics driver, physics and IO. |
@@ -34,8 +33,12 @@ The top level directory structure groups source code and input files as follow:
 
 E.g. use of `build.sh` to build the coupled model with `FV3_GFS_v15p2` as the CCPP suite.
 ```
-$> CMAKE_FLAGS="-DS2S=ON" CCPP_SUITES="FV3_GFS_v15p2" ./build.sh
+$> CMAKE_FLAGS="-DAPP=S2S" CCPP_SUITES="FV3_GFS_v15p2" ./build.sh
 ```
+The build system is regularly tested with [Tier-1 and Tier-2 platforms](
+https://github.com/ufs-community/ufs-weather-model/wiki/Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers).
+Configurations for other platforms that are available with UFS should be used with the understanding that they are not regularly
+tested and users will have to adapt those to make it work.
 
 # Disclaimer
 

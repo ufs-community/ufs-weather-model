@@ -1,6 +1,9 @@
 # CMEPS compiler flags
 if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
   set(CMAKE_Fortran_FLAGS "-g -fbacktrace -ffree-line-length-none")
+  if(${CMAKE_Fortran_COMPILER_VERSION} VERSION_GREATER_EQUAL 10)
+    set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fallow-argument-mismatch -fallow-invalid-boz")
+  endif()
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS}")
   set(CMAKE_Fortran_FLAGS_RELEASE "-O2")
   set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -fcheck=bounds -ffpe-trap=invalid,zero,overflow,underflow" )
@@ -18,7 +21,6 @@ endif()
 list(APPEND _nems_util_files
   CMEPS/util/shr_abort_mod.F90
   CMEPS/util/shr_log_mod.F90
-  CMEPS/util/shr_pio_mod.F90
   CMEPS/util/shr_sys_mod.F90
   CMEPS/util/shr_flux_mod.F90
   CMEPS/util/shr_mpi_mod.F90
@@ -65,14 +67,9 @@ list(APPEND _mediator_files
   CMEPS/mediator/med_phases_post_rof_mod.F90
   CMEPS/mediator/med_phases_post_wav_mod.F90)
 
-list(APPEND _mediator_defs ESMF_VERSION_MAJOR=${ESMF_VERSION_MAJOR}
-                           ESMF_VERSION_MINOR=${ESMF_VERSION_MINOR}
-                           INTERNAL_PIO_INIT)
-
 ### Create target library and set PUBLIC interfaces on the library
 add_library(cmeps STATIC ${_nems_util_files} ${_mediator_files})
 set_target_properties(cmeps PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
-target_compile_definitions(cmeps PUBLIC "${_mediator_defs}")
 target_include_directories(cmeps PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                         $<INSTALL_INTERFACE:mod>)
 target_link_libraries(cmeps PUBLIC esmf

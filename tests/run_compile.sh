@@ -4,6 +4,7 @@ set -eux
 echo "PID=$$"
 SECONDS=0
 
+trap '[ "$?" -eq 0 ] || write_fail_test' EXIT
 trap 'echo "run_compile.sh interrupted PID=$$"; cleanup' INT
 trap 'echo "run_compile.sh terminated PID=$$";  cleanup' TERM
 
@@ -13,6 +14,14 @@ cleanup() {
   exit
 }
 
+write_fail_test() {
+  if [[ ${OPNREQ_TEST} == true ]]; then
+    echo compile ${COMPILE_NR} >> $PATHRT/fail_opnreq_test
+  else
+    echo "compile_${COMPILE_NR} failed in run_compile" >> $PATHRT/fail_test
+  fi
+  exit 1
+}
 
 if [[ $# != 4 ]]; then
   echo "Usage: $0 PATHRT RUNDIR_ROOT MAKE_OPT COMPILE_NR"
@@ -34,6 +43,8 @@ export TEST_NAME=compile
 export TEST_NR=${COMPILE_NR}
 export JBNME="compile_${COMPILE_NR}"
 export RUNDIR=${RUNDIR_ROOT}/${TEST_NAME}_${TEST_NR}
+
+echo -n "${JBNME}, $( date +%s )," > ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
 
 source rt_utils.sh
 source atparse.bash
@@ -60,9 +71,15 @@ else
   ./job_card
 fi
 
+ls -l ${PATHTR}/tests/fv3_${COMPILE_NR}.exe
+
+cp ${RUNDIR}/compile_*_time.log ${LOG_DIR}
+cat ${RUNDIR}/job_timestamp.txt >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
 ################################################################################
 # End compile job
 ################################################################################
+
+echo " $( date +%s )" >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
 
 elapsed=$SECONDS
 echo "Elapsed time $elapsed seconds. Compile ${COMPILE_NR}"

@@ -5,10 +5,12 @@
 #SBATCH --account=@[ACCNR]
 #SBATCH --qos=@[QUEUE]
 #SBATCH --clusters=@[PARTITION]
-#SBATCH --ntasks=@[TASKS]
+#SBATCH --nodes=@[NODES]
+#SBATCH --ntasks-per-node=@[TPN]
 #SBATCH --time=@[WLCLK]
 
-set -ux
+set -eux
+echo -n " $( date +%s )," >  job_timestamp.txt
 
 set +x
 source ./module-setup.sh
@@ -27,8 +29,7 @@ export NC_BLKSZ=1M
 # Avoid job errors because of filesystem synchronization delays
 sync && sleep 1
 
-srun ./fv3.exe
+srun --label -n @[TASKS] ./fv3.exe
 
 echo "Model ended:    " `date`
-
-exit
+echo -n " $( date +%s )," >> job_timestamp.txt

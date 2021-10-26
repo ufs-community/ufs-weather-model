@@ -14,7 +14,7 @@ check_memory_usage() {
 
 usage_and_exit() {
   echo
-  echo "Note: main purpose of this script is to interface between CI automation and utest script"
+  echo "Note: main purpose of this script is to interface between CI automation and opnReqTest script"
   echo "and therefore, direct invocation via CLI may result in unexpected behavior"
   echo
   echo "Usage: $0 -b <build-case> | -r <test-case>"
@@ -24,7 +24,7 @@ usage_and_exit() {
   exit 2
 }
 
-IMG_NAME=$(sed -n 3p ci.test)
+IMG_NAME=ci-test-weather
 BUILD="false"
 RUN="false"
 TEST_NAME=""
@@ -48,7 +48,6 @@ while getopts :b:r:n: opt; do
 done
 
 # Read in TEST_NAME if not passed on
-TEST_NAME=${TEST_NAME:-$(sed -n 1p ci.test)}
 echo "test name is ${TEST_NAME}"
 
 if [ $BUILD = "true" ] && [ $RUN = "true" ]; then
@@ -63,24 +62,38 @@ fi
 
 if [ $BUILD = "true" ]; then
 
-  sudo docker build --build-arg test_name=$TEST_NAME \
-                    --build-arg build_case=$BUILD_CASE \
-                    --no-cache \
-                    --squash --compress \
-                    -f Dockerfile -t ${IMG_NAME} ../..
-  exit $?
+  docker build --build-arg test_name=$TEST_NAME \
+               --build-arg build_case=$BUILD_CASE \
+               --no-cache \
+               --squash --compress \
+               -f Dockerfile -t ${IMG_NAME} ../..
+
+  docker create --name tmp-container ${IMG_NAME}
+  docker cp -a tmp-container:/home/builder/ufs-weather-model/tests/fv3.tar.gz ~
+  docker rm tmp-container
 
 elif [ $RUN == "true" ]; then
 
-  sudo docker run -d --rm -v DataVolume:/tmp minsukjinoaa/fv3-input-data:input-data-20210115
-  sudo docker run -d -e test_case=${TEST_CASE} -v DataVolume:/home/builder/data/NEMSfv3gfs/input-data-20210115 --name my-container ${IMG_NAME}
+  docker volume rm -f DataVolume >/dev/null &&
+    docker run -d --rm -v DataVolume:/tmp minsukjinoaa/input-data:20210930
+
+  docker create -u builder -e "CI_TEST=true" -e "USER=builder" \
+                -e "RT_MACHINE=linux.gnu" -e "RT_COMPILER=gnu" \
+                -w "/home/builder/ufs-weather-model/tests" \
+                -v DataVolume:/home/builder/data/NEMSfv3gfs \
+                --shm-size=512m --name my-container noaaemc/ubuntu-hpc:v1.7b \
+                /bin/bash -c "./opnReqTest -n ${TEST_NAME} -c ${TEST_CASE} -x"
+
+  cd $GITHUB_WORKSPACE
+  docker cp . my-container:/home/builder/ufs-weather-model
+  docker start my-container
 
   echo 'cache,rss,shmem' >memory_stat
   sleep 3
-  containerID=$(sudo docker ps -q --no-trunc)
+  containerID=$(docker ps -q --no-trunc)
   check_memory_usage $containerID >>memory_stat &
 
-  sudo docker logs -f $containerID
-  exit $(sudo docker inspect $containerID --format='{{.State.ExitCode}}')
+  docker logs -f $containerID
+  exit $(docker inspect $containerID --format='{{.State.ExitCode}}')
 
 fi

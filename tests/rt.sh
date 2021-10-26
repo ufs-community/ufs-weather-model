@@ -120,7 +120,6 @@ source $PATHTR/NEMS/src/conf/module-setup.sh.inc
 if [[ $MACHINE_ID = wcoss_cray ]]; then
 
   module load xt-lsfhpc
-  module load python/3.6.3
 
   module use /usrx/local/emc_rocoto/modulefiles
   module load rocoto/1.3.0rc2
@@ -133,6 +132,7 @@ if [[ $MACHINE_ID = wcoss_cray ]]; then
   module load ecflow/intel/4.17.0.1
   ECFLOW_START=${ECF_ROOT}/bin/ecflow_start.sh
   ECF_PORT=$(grep $USER /usrx/local/sys/ecflow/assigned_ports.txt | awk '{print $2}')
+  module load python/3.6.3
 
   DISKNM=/gpfs/hps3/emc/nems/noscrub/emc.nemspara/RT
   QUEUE=debug
@@ -180,8 +180,6 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
 
 elif [[ $MACHINE_ID = wcoss2 ]]; then
 
-  source /apps/prod/lmodules/startLmod
-
   #module use /usrx/local/dev/emc_rocoto/modulefiles
   #module load ruby/2.5.1 rocoto/1.3.0rc2
   #ROCOTORUN=$(which rocotorun)
@@ -189,17 +187,22 @@ elif [[ $MACHINE_ID = wcoss2 ]]; then
   #ROCOTOCOMPLETE=$(which rocotocomplete)
   #ROCOTO_SCHEDULER=lsf
 
-  #module load ips/18.0.1.163
-  #module load ecflow/4.7.1
-  #ECFLOW_START=${ECF_ROOT}/intel/bin/ecflow_start.sh
-  #ECF_PORT=$(grep $USER /usrx/local/sys/ecflow/assigned_ports.txt | awk '{print $2}')
+  module load ecflow/5.6.0.6
+  module load gcc/10.3.0 python/3.8.6
+  ECFLOW_START=${ECF_ROOT}/scripts/server_check.sh
+  export ECF_OUTPUTDIR=${PATHRT}/ecf_outputdir
+  export ECF_COMDIR=${PATHRT}/ecf_comdir
+  rm -rf ${ECF_OUTPUTDIR} ${ECF_COMDIR}
+  mkdir -p ${ECF_OUTPUTDIR}
+  mkdir -p ${ECF_COMDIR}
+  export colonifnco=":output"  # hack
 
-  DISKNM=/lfs/h1/emc/ptmp/Dusan.Jovic/RT
-  QUEUE=workq
-  COMPILE_QUEUE=workq
+  DISKNM=/lfs/h1/emc/eib/noscrub/Dusan.Jovic
+  QUEUE=dev
+  COMPILE_QUEUE=dev
   PARTITION=
   ACCNR=GFS-DEV
-  STMP=/lfs/h1/emc/stmp
+  STMP=/lfs/h1/emc/ptmp
   PTMP=/lfs/h1/emc/ptmp
   SCHEDULER=pbs
   cp fv3_conf/fv3_qsub.IN_wcoss2 fv3_conf/fv3_qsub.IN
@@ -212,11 +215,9 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
   ECFLOW_START=/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/envs/ufs-weather-model/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
-  DISKNM=/lustre/f2/pdata/esrl/gsd/ufs/ufs-weather-model/RT
+  DISKNM=/lustre/f2/pdata/ncep_shared/emc.nemspara/RT
   QUEUE=normal
   COMPILE_QUEUE=normal
-#  DO NOT SET AN ACCOUNT EVERYONE IS NOT A MEMBER OF
-#  USE AN ENVIRONMENT VARIABLE TO SET ACCOUNT
 #  ACCNR=cmp
   PARTITION=c4
   STMP=/lustre/f2/scratch
@@ -234,10 +235,12 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=slurm
 
-  export PATH=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3/bin:$PATH
-  export PYTHONPATH=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3/lib/python3.8/site-packages
-  ECFLOW_START=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3/bin/ecflow_start.sh
-  ECF_PORT=$(( $(id -u) + 1500 ))
+  PYTHONHOME=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3_new_20210629
+  export PATH=$PYTHONHOME/bin:$PATH
+  export PYTHONPATH=$PYTHONHOME/lib/python3.7/site-packages
+
+  module load ecflow
+  ECFLOW_START=ecflow_start.sh
 
   QUEUE=batch
   COMPILE_QUEUE=batch
@@ -294,16 +297,43 @@ elif [[ $MACHINE_ID = jet.* ]]; then
 
   QUEUE=batch
   COMPILE_QUEUE=batch
-  ACCNR=hfv3gfs
+  ACCNR=h-nems
   PARTITION=xjet
-  DISKNM=/lfs4/HFIP/hfv3gfs/RT
-  dprefix=/lfs4/HFIP/hfv3gfs/$USER
+  DISKNM=/lfs4/HFIP/h-nems/emc.nemspara/RT
+  dprefix=/lfs4/HFIP/h-nems/$USER
   STMP=$dprefix/RT_BASELINE
   PTMP=$dprefix/RT_RUNDIRS
 
   SCHEDULER=slurm
   cp fv3_conf/fv3_slurm.IN_jet fv3_conf/fv3_slurm.IN
   cp fv3_conf/compile_slurm.IN_jet fv3_conf/compile_slurm.IN
+
+elif [[ $MACHINE_ID = s4.* ]]; then
+
+  module load rocoto/1.3.2
+  module load ecflow/5.6.0
+  module load miniconda/3.8-s4
+  ROCOTORUN=$(which rocotorun)
+  ROCOTOSTAT=$(which rocotostat)
+  ROCOTOCOMPLETE=$(which rocotocomplete)
+  ROCOTO_SCHEDULER=slurm
+
+  ECFLOW_START=/opt/ecflow/5.6.0/bin/ecflow_start.sh
+  ECF_PORT=$(( $(id -u) + 1500 ))
+
+  QUEUE=s4
+  COMPILE_QUEUE=s4
+
+  ACCNR=star
+  PARTITION=s4
+  dprefix=/data/users/dhuber/save
+  DISKNM=$dprefix/nems/emc.nemspara/RT
+  STMP=/scratch/short/users
+  PTMP=/scratch/users
+
+  SCHEDULER=slurm
+  cp fv3_conf/fv3_slurm.IN_s4 fv3_conf/fv3_slurm.IN
+  cp fv3_conf/compile_slurm.IN_s4 fv3_conf/compile_slurm.IN
 
 elif [[ $MACHINE_ID = cheyenne.* ]]; then
 
@@ -317,7 +347,7 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
   PARTITION=
   dprefix=/glade/scratch
   DISKNM=/glade/p/ral/jntp/GMTB/ufs-weather-model/RT
-  STMP=/glade/work
+  STMP=$dprefix
   PTMP=$dprefix
   SCHEDULER=pbs
   cp fv3_conf/fv3_qsub.IN_cheyenne fv3_conf/fv3_qsub.IN
@@ -327,17 +357,33 @@ elif [[ $MACHINE_ID = stampede.* ]]; then
 
   export PYTHONPATH=
   ECFLOW_START=
-  QUEUE=skx-dev
+  QUEUE=skx-normal
   COMPILE_QUEUE=skx-dev
   PARTITION=
-  dprefix=$WORK/ufs-weather-model/run
-  DISKNM=$WORK/ufs-weather-model/RT
+  ACCNR=TG-EES200015
+  dprefix=$SCRATCH/ufs-weather-model/run
+  DISKNM=/work2/07736/minsukji/stampede2/ufs-weather-model/RT
   STMP=$dprefix
   PTMP=$dprefix
   SCHEDULER=slurm
   MPIEXEC=ibrun
   MPIEXECOPTS=
   cp fv3_conf/fv3_slurm.IN_stampede fv3_conf/fv3_slurm.IN
+
+elif [[ $MACHINE_ID = expanse.* ]]; then
+
+  export PYTHONPATH=
+  ECFLOW_START=
+  QUEUE=compute
+  COMPILE_QUEUE=shared
+  PARTITION=
+  ACCNR=TG-EES200015
+  dprefix=/expanse/lustre/scratch/$USER/temp_project/run
+  DISKNM=/expanse/lustre/scratch/domh/temp_project/RT
+  STMP=$dprefix
+  PTMP=$dprefix
+  SCHEDULER=slurm
+  cp fv3_conf/fv3_slurm.IN_expanse fv3_conf/fv3_slurm.IN
 
 else
   die "Unknown machine ID, please edit detect_machine.sh file"
@@ -347,7 +393,7 @@ mkdir -p ${STMP}/${USER}
 
 # Different own baseline directories for different compilers on Theia/Cheyenne
 NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST
-if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]]; then
+if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]] || [[ $MACHINE_ID = s4.* ]] ; then
     NEW_BASELINE=${NEW_BASELINE}_${RT_COMPILER^^}
 fi
 
@@ -414,14 +460,16 @@ if [[ $TESTS_FILE =~ '35d' ]]; then
   TEST_35D=true
 fi
 
-if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20210212/${RT_COMPILER^^}}
+BL_DATE=20211022
+if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]] || [[ $MACHINE_ID = s4.* ]]; then
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20210212}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}}
 fi
 
-INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20210212}
-INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20201220
+INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20210930}
+INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20210908
+INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC:-$DISKNM/NEMSfv3gfs/BM_IC-20210717}
 
 shift $((OPTIND-1))
 [[ $# -gt 1 ]] && usage
@@ -434,7 +482,6 @@ if [[ $CREATE_BASELINE == true ]]; then
   mkdir -p "${NEW_BASELINE}"
 fi
 
-COMPILE_LOG=${PATHRT}/Compile_$MACHINE_ID.log
 REGRESSIONTEST_LOG=${PATHRT}/RegressionTests_$MACHINE_ID.log
 
 date > ${REGRESSIONTEST_LOG}
@@ -443,12 +490,13 @@ echo                         >> ${REGRESSIONTEST_LOG}
 
 source default_vars.sh
 
+JOB_NR=0
 TEST_NR=0
 COMPILE_NR=0
 COMPILE_PREV_WW3_NR=''
 rm -f fail_test
 
-LOG_DIR=${PATHRT}/log_$MACHINE_ID
+export LOG_DIR=${PATHRT}/log_$MACHINE_ID
 rm -rf ${LOG_DIR}
 mkdir ${LOG_DIR}
 
@@ -472,8 +520,8 @@ if [[ $ROCOTO == true ]]; then
     COMPILE_QUEUE=dev_transfer
     ROCOTO_SCHEDULER=lsf
   elif [[ $MACHINE_ID = wcoss2 ]]; then
-    QUEUE=workq
-    COMPILE_QUEUE=workq
+    QUEUE=dev
+    COMPILE_QUEUE=dev
     ROCOTO_SCHEDULER=pbs
   elif [[ $MACHINE_ID = hera.* ]]; then
     QUEUE=batch
@@ -482,6 +530,10 @@ if [[ $ROCOTO == true ]]; then
   elif [[ $MACHINE_ID = orion.* ]]; then
     QUEUE=batch
     COMPILE_QUEUE=batch
+    ROCOTO_SCHEDULER=slurm
+  elif [[ $MACHINE_ID = s4.* ]]; then
+    QUEUE=s4
+    COMPILE_QUEUE=s4
     ROCOTO_SCHEDULER=slurm
   elif [[ $MACHINE_ID = jet.* ]]; then
     QUEUE=batch
@@ -501,6 +553,7 @@ if [[ $ROCOTO == true ]]; then
   <!ENTITY RTPWD          "${RTPWD}">
   <!ENTITY INPUTDATA_ROOT "${INPUTDATA_ROOT}">
   <!ENTITY INPUTDATA_ROOT_WW3 "${INPUTDATA_ROOT_WW3}">
+  <!ENTITY INPUTDATA_ROOT_BMIC "${INPUTDATA_ROOT_BMIC}">
   <!ENTITY RUNDIR_ROOT    "${RUNDIR_ROOT}">
   <!ENTITY NEW_BASELINE   "${NEW_BASELINE}">
 ]>
@@ -522,13 +575,17 @@ if [[ $ECFLOW == true ]]; then
     MAX_BUILDS=5
   fi
 
+  if [[ $MACHINE_ID = hera.* ]] && [[ ! $HOSTNAME = hecflow* ]]; then
+    echo "ERROR: To use ECFlow on Hera we must be logged into 'hecflow01' login node."
+    exit 1
+  fi
+
   ECFLOW_RUN=${PATHRT}/ecflow_run
   ECFLOW_SUITE=regtest_$$
   rm -rf ${ECFLOW_RUN}
   mkdir -p ${ECFLOW_RUN}/${ECFLOW_SUITE}
   cp head.h tail.h ${ECFLOW_RUN}
-  > ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
-  cat << EOF >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+  cat << EOF > ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
 suite ${ECFLOW_SUITE}
     edit ECF_HOME '${ECFLOW_RUN}'
     edit ECF_INCLUDE '${ECFLOW_RUN}'
@@ -547,19 +604,28 @@ EOF
   elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
     QUEUE=dev
   elif [[ $MACHINE_ID = wcoss2 ]]; then
-    QUEUE=workq
+    QUEUE=dev
   elif [[ $MACHINE_ID = hera.* ]]; then
     QUEUE=batch
   elif [[ $MACHINE_ID = orion.* ]]; then
     QUEUE=batch
   elif [[ $MACHINE_ID = jet.* ]]; then
     QUEUE=batch
+  elif [[ $MACHINE_ID = s4.* ]]; then
+    QUEUE=s4
   elif [[ $MACHINE_ID = gaea.* ]]; then
     QUEUE=normal
   elif [[ $MACHINE_ID = cheyenne.* ]]; then
     QUEUE=regular
   else
     die "ecFlow is not supported on this machine $MACHINE_ID"
+  fi
+
+else
+
+  if [[ $MACHINE_ID = hera.* ]] && [[ $HOSTNAME = hecflow* ]]; then
+    echo "ERROR: To run without using ECFlow on Hera, please do not use ecflow node."
+    exit 1
   fi
 
 fi
@@ -580,6 +646,8 @@ while read -r line || [ "$line" ]; do
   [[ ${#line} == 0 ]] && continue
   [[ $line == \#* ]] && continue
 
+  JOB_NR=$( printf '%03d' $(( 10#$JOB_NR + 1 )) )
+
   if [[ $line == COMPILE* ]] ; then
 
     MAKE_OPT=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
@@ -599,9 +667,11 @@ while read -r line || [ "$line" ]; do
       fi
     fi
 
-    (( COMPILE_NR += 1 ))
+    export COMPILE_NR=$( printf '%03d' $(( 10#$COMPILE_NR + 1 )) )
 
     cat << EOF > ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env
+    export JOB_NR=${JOB_NR}
+    export COMPILE_NR=${COMPILE_NR}
     export MACHINE_ID=${MACHINE_ID}
     export RT_COMPILER=${RT_COMPILER}
     export PATHRT=${PATHRT}
@@ -622,19 +692,20 @@ EOF
       ecflow_create_compile_task
     else
       ./compile.sh $MACHINE_ID "${MAKE_OPT}" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
+      mv compile_${COMPILE_NR}_time.log ${LOG_DIR}
     fi
 
     # Set RT_SUFFIX (regression test run directories and log files) and BL_SUFFIX
     # (regression test baseline directories) for REPRO or PROD runs
-    if [[ ${MAKE_OPT^^} =~ "REPRO=Y" ]]; then
+    if [[ ${MAKE_OPT^^} =~ "-DREPRO=ON" ]]; then
       RT_SUFFIX="_repro"
       BL_SUFFIX="_repro"
     else
-      RT_SUFFIX="_prod"
-      BL_SUFFIX="_ccpp"
+      RT_SUFFIX=""
+      BL_SUFFIX=""
     fi
 
-    if [[ ${MAKE_OPT^^} =~ "WW3=Y" ]]; then
+    if [[ ${MAKE_OPT^^} =~ "-DAPP=ATMW" ]] || [[ ${MAKE_OPT^^} =~ "-DAPP=S2SW" ]] || [[ ${MAKE_OPT^^} =~ "-DAPP=HAFSW" ]] || [[ ${MAKE_OPT^^} =~ "-DAPP=HAFS-ALL" ]] ; then
        COMPILE_PREV_WW3_NR=${COMPILE_NR}
     fi
 
@@ -665,13 +736,6 @@ EOF
     # 35 day tests
     [[ $TEST_35D == true ]] && rt_35d
 
-    # skip all *_appbuild runs if rocoto or ecFlow is used. FIXME
-    if [[ ${ROCOTO} == true && ${ECFLOW} == true ]]; then
-      if [[ ${TEST_NAME} == *_appbuild ]]; then
-      continue
-      fi
-    fi
-
     # Avoid uninitialized RT_SUFFIX/BL_SUFFIX (see definition above)
     RT_SUFFIX=${RT_SUFFIX:-""}
     BL_SUFFIX=${BL_SUFFIX:-""}
@@ -695,11 +759,13 @@ EOF
       fi
 
       cat << EOF > ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
+      export JOB_NR=${JOB_NR}
       export MACHINE_ID=${MACHINE_ID}
       export RT_COMPILER=${RT_COMPILER}
       export RTPWD=${RTPWD}
       export INPUTDATA_ROOT=${INPUTDATA_ROOT}
       export INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT_WW3}
+      export INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC}
       export PATHRT=${PATHRT}
       export PATHTR=${PATHTR}
       export NEW_BASELINE=${NEW_BASELINE}
@@ -755,7 +821,7 @@ fi
 ## regression test is either failed or successful
 ##
 set +e
-cat ${LOG_DIR}/compile_*.log                   >  ${COMPILE_LOG}
+cat ${LOG_DIR}/compile_*_time.log              >> ${REGRESSIONTEST_LOG}
 cat ${LOG_DIR}/rt_*.log                        >> ${REGRESSIONTEST_LOG}
 if [[ -e fail_test ]]; then
   echo "FAILED TESTS: "
@@ -780,6 +846,6 @@ fi
 
 date >> ${REGRESSIONTEST_LOG}
 
-elapsed_time=$( printf '%02dh:%02dm:%02ds\n' $(($SECONDS%86400/3600)) $(($SECONDS%3600/60)) $(($SECONDS%60)) )
+elapsed_time=$( printf '%02dh:%02dm:%02ds\n' $((SECONDS%86400/3600)) $((SECONDS%3600/60)) $((SECONDS%60)) )
 echo "Elapsed time: ${elapsed_time}. Have a nice day!" >> ${REGRESSIONTEST_LOG}
 echo "Elapsed time: ${elapsed_time}. Have a nice day!"

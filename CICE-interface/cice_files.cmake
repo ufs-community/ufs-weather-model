@@ -22,6 +22,7 @@ list(APPEND cice_shared_files
   CICE/cicecore/cicedynB/analysis/ice_history_mechred.F90
   CICE/cicecore/cicedynB/analysis/ice_history_pond.F90
   CICE/cicecore/cicedynB/analysis/ice_history_shared.F90
+  CICE/cicecore/cicedynB/analysis/ice_history_snow.F90
 
   #Dynamics List:
   CICE/cicecore/cicedynB/dynamics/ice_dyn_eap.F90
@@ -74,6 +75,7 @@ list(APPEND icepack_files
   CICE/icepack/columnphysics/icepack_orbital.F90
   CICE/icepack/columnphysics/icepack_parameters.F90
   CICE/icepack/columnphysics/icepack_shortwave.F90
+  CICE/icepack/columnphysics/icepack_snow.F90
   CICE/icepack/columnphysics/icepack_therm_0layer.F90
   CICE/icepack/columnphysics/icepack_therm_bl99.F90
   CICE/icepack/columnphysics/icepack_therm_itd.F90
@@ -154,6 +156,7 @@ list(APPEND cice_nuopc_cmeps_driver_files
   CICE/cicecore/drivers/nuopc/cmeps/ice_prescribed_mod.F90
   CICE/cicecore/drivers/nuopc/cmeps/ice_scam.F90
   CICE/cicecore/drivers/nuopc/cmeps/ice_shr_methods.F90
+  CICE/cicecore/drivers/nuopc/cmeps/ice_mesh_mod.F90
 )
 
 #-- Using NUOPC DMI driver

@@ -4,12 +4,15 @@
 #SBATCH --account=@[ACCNR]
 #SBATCH --partition=@[PARTITION]
 #SBATCH --qos=@[QUEUE]
-#SBATCH --ntasks=@[TASKS]
+##SBATCH --ntasks=@[TASKS]
+#SBATCH --nodes=@[NODES]
+#SBATCH --ntasks-per-node=@[TPN]
 #SBATCH --time=@[WLCLK]
 #SBATCH --job-name="@[JBNME]"
 ### #SBATCH --exclusive
 
 set -eux
+echo -n " $( date +%s )," >  job_timestamp.txt
 
 set +x
 source ./module-setup.sh
@@ -31,8 +34,7 @@ export PSM_SHAREDCONTEXTS=1
 # Avoid job errors because of filesystem synchronization delays
 sync && sleep 1
 
-srun ./fv3.exe
+srun --label -n @[TASKS] ./fv3.exe
 
 echo "Model ended:    " `date`
-
-exit
+echo -n " $( date +%s )," >> job_timestamp.txt

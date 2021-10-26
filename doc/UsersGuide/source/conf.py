@@ -54,6 +54,8 @@ extensions = [
     'sphinxcontrib.bibtex'
 ]
 
+bibtex_bibfiles = ['references.bib']
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
@@ -102,7 +104,7 @@ html_theme_options = {"body_max_width": "none"}
 html_static_path = ['_static']
 
 def setup(app):
-    app.add_stylesheet('custom.css')  # may also be an URL
+    app.add_css_file('custom.css')  # may also be an URL
 
 # Custom sidebar templates, must be a dictionary that maps document names
 # to template names.
