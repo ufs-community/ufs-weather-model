@@ -30,11 +30,6 @@ cp    @[INPUTDATA_ROOT]/FV3_input_data/global_h2o_pltc.f77 ./global_h2oprdlos.f7
 cp    @[INPUTDATA_ROOT]/FV3_input_data/*grb .
 cp    @[INPUTDATA_ROOT]/FV3_input_data/diag_table .
 
-# Copy landuse/soil/vegetation parameter tables for HWRF Noah LSM
-cp    @[INPUTDATA_ROOT]/FV3_input_data_hafs/GENPARM.TBL .
-cp    @[INPUTDATA_ROOT]/FV3_input_data_hafs/SOILPARM.TBL .
-cp    @[INPUTDATA_ROOT]/FV3_input_data_hafs/VEGPARM.TBL .
-
 # Copy diag table, depending on microphysics choice
 if [ $IMP_PHYSICS = 8 ]; then
   cp @[INPUTDATA_ROOT]/FV3_input_data_gsd/diag_table_gsd_noah diag_table
