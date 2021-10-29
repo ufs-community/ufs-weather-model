@@ -47,14 +47,6 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
   THRD_cpl_c192=1; WPG_cpl_c192=12;  MPB_cpl_c192="0 191"; APB_cpl_c192="0 203"
   OPB_cpl_c192="204 263"; IPB_cpl_c192="264 287"
 
-  TASKS_datm_100=120; TPN_datm_100=28
-  MPB_datm_100="16 77"; APB_datm_100="0 15"
-  OPB_datm_100="78 107"; IPB_datm_100="108 119"
-
-  TASKS_datm_025=208; TPN_datm_025=28
-  MPB_datm_025="0 39"; APB_datm_025="0 39"
-  OPB_datm_025="40 159"; IPB_datm_025="160 207"
-
   TASKS_cdeps_100=40; TPN_cdeps_100=28
   MPB_cdeps_100="0 11"; APB_cdeps_100="0 11"
   OPB_cdeps_100="12 27"; IPB_cdeps_100="28 39"
@@ -95,14 +87,6 @@ elif [[ $MACHINE_ID = wcoss2 ]]; then
   THRD_cpl_c192=1; WPG_cpl_c192=12;  MPB_cpl_c192="0 191"; APB_cpl_c192="0 203"
   OPB_cpl_c192="204 263"; IPB_cpl_c192="264 287"
 
-  TASKS_datm_100=120; TPN_datm_100=128
-  MPB_datm_100="16 77"; APB_datm_100="0 15"
-  OPB_datm_100="78 107"; IPB_datm_100="108 119"
-
-  TASKS_datm_025=208; TPN_datm_025=128
-  MPB_datm_025="0 39"; APB_datm_025="0 39"
-  OPB_datm_025="40 159"; IPB_datm_025="160 207"
-
   TASKS_cdeps_100=40; TPN_cdeps_100=128
   MPB_cdeps_100="0 11"; APB_cdeps_100="0 11"
   OPB_cdeps_100="12 27"; IPB_cdeps_100="28 39"
@@ -142,14 +126,6 @@ elif [[ $MACHINE_ID = orion.* ]]; then
   TASKS_cpl_c192=288; TPN_cpl_c192=40; INPES_cpl_c192=4; JNPES_cpl_c192=8
   THRD_cpl_c192=1; WPG_cpl_c192=12;  MPB_cpl_c192="0 191"; APB_cpl_c192="0 203"
   OPB_cpl_c192="204 263"; IPB_cpl_c192="264 287"
-
-  TASKS_datm_100=120; TPN_datm_100=40
-  MPB_datm_100="16 77"; APB_datm_100="0 15"
-  OPB_datm_100="78 107"; IPB_datm_100="108 119"
-
-  TASKS_datm_025=208; TPN_datm_025=40
-  MPB_datm_025="0 39"; APB_datm_025="0 39"
-  OPB_datm_025="40 159"; IPB_datm_025="160 207"
 
   TASKS_cdeps_100=40; TPN_cdeps_100=40
   MPB_cdeps_100="0 11"; APB_cdeps_100="0 11"
@@ -214,14 +190,6 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   THRD_cpl_c192=1; WPG_cpl_c192=12;  MPB_cpl_c192="0 191"; APB_cpl_c192="0 203"
   OPB_cpl_c192="204 263"; IPB_cpl_c192="264 287"
 
-  TASKS_datm_100=120; TPN_datm_100=40
-  MPB_datm_100="16 77"; APB_datm_100="0 15"
-  OPB_datm_100="78 107"; IPB_datm_100="108 119"
-
-  TASKS_datm_025=208; TPN_datm_025=40
-  MPB_datm_025="0 39"; APB_datm_025="0 39"
-  OPB_datm_025="40 159"; IPB_datm_025="160 207"
-
   TASKS_cdeps_100=40; TPN_cdeps_100=40
   MPB_cdeps_100="0 11"; APB_cdeps_100="0 11"
   OPB_cdeps_100="12 27"; IPB_cdeps_100="28 39"
@@ -277,14 +245,6 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   THRD_cpl_c192=1; WPG_cpl_c192=12;  MPB_cpl_c192="0 191"; APB_cpl_c192="0 203"
   OPB_cpl_c192="204 263"; IPB_cpl_c192="264 287"
 
-  TASKS_datm_100=120; TPN_datm_100=24
-  MPB_datm_100="16 77"; APB_datm_100="0 15"
-  OPB_datm_100="78 107"; IPB_datm_100="108 119"
-
-  TASKS_datm_025=208; TPN_datm_025=24
-  MPB_datm_025="0 39"; APB_datm_025="0 39"
-  OPB_datm_025="40 159"; IPB_datm_025="160 207"
-
   TASKS_cdeps_100=40; TPN_cdeps_100=24
   MPB_cdeps_100="0 11"; APB_cdeps_100="0 11"
   OPB_cdeps_100="12 27"; IPB_cdeps_100="28 39"
@@ -324,14 +284,6 @@ elif [[ $MACHINE_ID = s4.* ]]; then
   TASKS_cpl_c192=288; TPN_cpl_c192=32; INPES_cpl_c192=4; JNPES_cpl_c192=8
   THRD_cpl_c192=1; WPG_cpl_c192=12;  MPB_cpl_c192="0 191"; APB_cpl_c192="0 203"
   OPB_cpl_c192="204 263"; IPB_cpl_c192="264 287"
-
-  TASKS_datm_100=120; TPN_datm_100=32
-  MPB_datm_100="16 77"; APB_datm_100="0 15"
-  OPB_datm_100="78 107"; IPB_datm_100="108 119"
-
-  TASKS_datm_025=208; TPN_datm_025=32
-  MPB_datm_025="0 39"; APB_datm_025="0 39"
-  OPB_datm_025="40 159"; IPB_datm_025="160 207"
 
   TASKS_cdeps_100=40; TPN_cdeps_100=32
   MPB_cdeps_100="0 11"; APB_cdeps_100="0 11"
@@ -373,14 +325,6 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
   THRD_cpl_c192=1; WPG_cpl_c192=12;  MPB_cpl_c192="0 191"; APB_cpl_c192="0 203"
   OPB_cpl_c192="204 263"; IPB_cpl_c192="264 287"
 
-  TASKS_datm_100=120; TPN_datm_100=36
-  MPB_datm_100="16 77"; APB_datm_100="0 15"
-  OPB_datm_100="78 107"; IPB_datm_100="108 119"
-
-  TASKS_datm_025=208; TPN_datm_025=36
-  MPB_datm_025="0 39"; APB_datm_025="0 39"
-  OPB_datm_025="40 159"; IPB_datm_025="160 207"
-
   TASKS_cdeps_100=40; TPN_cdeps_100=36
   MPB_cdeps_100="0 11"; APB_cdeps_100="0 11"
   OPB_cdeps_100="12 27"; IPB_cdeps_100="28 39"
@@ -421,14 +365,6 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
   THRD_cpl_c192=1; WPG_cpl_c192=12;  MPB_cpl_c192="0 191"; APB_cpl_c192="0 203"
   OPB_cpl_c192="204 263"; IPB_cpl_c192="264 287"
 
-  TASKS_datm_100=120; TPN_datm_100=36
-  MPB_datm_100="16 77"; APB_datm_100="0 15"
-  OPB_datm_100="78 107"; IPB_datm_100="108 119"
-
-  TASKS_datm_025=208; TPN_datm_025=36
-  MPB_datm_025="0 39"; APB_datm_025="0 39"
-  OPB_datm_025="40 159"; IPB_datm_025="160 207"
-
   TASKS_cdeps_100=40; TPN_cdeps_100=36
   MPB_cdeps_100="0 11"; APB_cdeps_100="0 11"
   OPB_cdeps_100="12 27"; IPB_cdeps_100="28 39"
@@ -468,14 +404,6 @@ elif [[ $MACHINE_ID = stampede.* ]]; then
   THRD_cpl_c192=1; WPG_cpl_c192=12;  MPB_cpl_c192="0 191"; APB_cpl_c192="0 203"
   OPB_cpl_c192="204 263"; IPB_cpl_c192="264 287"
 
-  TASKS_datm_100=120; TPN_datm_100=48
-  MPB_datm_100="16 77"; APB_datm_100="0 15"
-  OPB_datm_100="78 107"; IPB_datm_100="108 119"
-
-  TASKS_datm_025=208; TPN_datm_025=48
-  MPB_datm_025="0 39"; APB_datm_025="0 39"
-  OPB_datm_025="40 159"; IPB_datm_025="160 207"
-
   TASKS_cdeps_100=40; TPN_cdeps_100=48
   MPB_cdeps_100="0 11"; APB_cdeps_100="0 11"
   OPB_cdeps_100="12 27"; IPB_cdeps_100="28 39"
@@ -483,6 +411,40 @@ elif [[ $MACHINE_ID = stampede.* ]]; then
   TASKS_cdeps_025=208; TPN_cdeps_025=48
   MPB_cdeps_025="0 39"; APB_cdeps_025="0 39"
   OPB_cdeps_025="40 159"; IPB_cdeps_025="160 207"
+
+elif [[ $MACHINE_ID = expanse.* ]]; then
+
+  TASKS_dflt=150 ; TPN_dflt=64 ; INPES_dflt=3 ; JNPES_dflt=8
+  TASKS_thrd=78  ; TPN_thrd=64 ; INPES_thrd=3 ; JNPES_thrd=4
+  TASKS_stretch=48 ; TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
+
+  TASKS_cpl_dflt=192; TPN_cpl_dflt=64; INPES_cpl_dflt=3; JNPES_cpl_dflt=8
+  THRD_cpl_dflt=1; WPG_cpl_dflt=6;  MPB_cpl_dflt="0 143"; APB_cpl_dflt="0 149"
+  OPB_cpl_dflt="150 179"; IPB_cpl_dflt="180 191"
+
+  TASKS_cpl_dflt_wwav=384; TPN_cpl_dflt_wwav=64; INPES_cpl_dflt_wwav=3; JNPES_cpl_dflt_wwav=8
+  THRD_cpl_dflt_wwav=1; WPG_cpl_dflt_wwav=6;  MPB_cpl_dflt_wwav="0 143"; APB_cpl_dflt_wwav="0 149"
+  OPB_cpl_dflt_wwav="150 179"; IPB_cpl_dflt_wwav="180 191"; WPB_cpl_dflt_wwav="192 383"
+
+  TASKS_cpl_thrd=120; TPN_cpl_thrd=64; INPES_cpl_thrd=3; JNPES_cpl_thrd=4
+  THRD_cpl_thrd=2; WPG_cpl_thrd=6;  MPB_cpl_thrd="0 77";  APB_cpl_thrd="0 77"
+  OPB_cpl_thrd="78 107";  IPB_cpl_thrd="108 119"
+
+  TASKS_cpl_bmrk=480; TPN_cpl_bmrk=64; INPES_cpl_bmrk=6; JNPES_cpl_bmrk=8
+  THRD_cpl_bmrk=1; WPG_cpl_bmrk=24; MPB_cpl_bmrk="0 287"; APB_cpl_bmrk="0 311"
+  OPB_cpl_bmrk="312 431"; IPB_cpl_bmrk="432 479"
+
+  TASKS_cpl_wwav=640; TPN_cpl_wwav=64; INPES_cpl_wwav=6; JNPES_cpl_wwav=8
+  THRD_cpl_wwav=2; WPG_cpl_wwav=24; MPB_cpl_wwav="0 287"; APB_cpl_wwav="0 311"
+  OPB_cpl_wwav="312 431"; IPB_cpl_wwav="432 479"; WPB_cpl_wwav="480 639"
+
+  TASKS_cpl_c192=288; TPN_cpl_c192=64; INPES_cpl_c192=4; JNPES_cpl_c192=8
+  THRD_cpl_c192=1; WPG_cpl_c192=12;  MPB_cpl_c192="0 191"; APB_cpl_c192="0 203"
+  OPB_cpl_c192="204 263"; IPB_cpl_c192="264 287"
+
+  TASKS_cpl_c384=318; TPN_cpl_c384=64; INPES_cpl_c384=3; JNPES_cpl_c384=8
+  THRD_cpl_c384=1; WPG_cpl_c384=6;  MPB_cpl_c384="0 143"; APB_cpl_c384="0 149"
+  OPB_cpl_c384="150 269"; IPB_cpl_c384="270 317"
 
 else
 
@@ -504,7 +466,6 @@ export_fv3 ()
 export FV3=true
 export S2S=false
 export HAFS=false
-export DATM_NEMS=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
 export THRD=1
@@ -531,6 +492,9 @@ export IDEFLATE=0
 export NBITS=0
 export IMO=384
 export JMO=190
+
+#input file
+export FIELD_TABLE=field_table_gfsv16
 
 # Coldstart/warmstart
 #rt script for ICs
@@ -566,6 +530,9 @@ export EFFR_IN=.false.
 export LRADAR=.true.
 export LTAEROSOL=.true.
 export EXT_DIAG_THOMPSON=.false.
+export sedi_semi=.false.
+export sedi_semi_update=.false.
+export sedi_semi_decfl=.false.
 
 # GWD
 export LDIAG_UGWP=.false.
@@ -642,6 +609,7 @@ export H2O_PHYS=.false.
 export CPL=.false.
 export CPLCHM=.false.
 export CPLFLX=.false.
+export CPLICE=.false.
 export CPLWAV=.false.
 export CPLWAV2ATM=.false.
 export DAYS=1
@@ -736,7 +704,6 @@ export_cpl ()
 export FV3=true
 export S2S=true
 export HAFS=false
-export DATM_NEMS=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
 
@@ -886,6 +853,7 @@ export KTHERM=2
 export TFREEZE_OPTION=mushy
 
 export CPLFLX=.true.
+export CPLICE=.true.
 export CPL=.true.
 export MIN_SEAICE=1.0e-11
 
@@ -956,134 +924,11 @@ export_35d_run ()
 export CNTL_DIR=""
 export LIST_FILES=""
 }
-export_datm ()
-{
-export FV3=false
-export S2S=false
-export HAFS=false
-export DATM_NEMS=true
-export DATM_CDEPS=false
-export DOCN_CDEPS=false
-export CPLWAV=.false.
-export DAYS=1
-export FHMAX=24
-export THRD=1
-export FHROT=0
-export WARM_START=.false.
-
-# atm/ocn/ice resolution
-# GEFS
-export DATM_SRC=GEFS
-export FILENAME_BASE=gefs.
-export IATM=1536
-export JATM=768
-export ATMRES=C96
-export OCNRES=100
-export ICERES=1.00
-export WAVRES=1.00
-export NX_GLB=360
-export NY_GLB=320
-
-# nems.configure
-export NEMS_CONFIGURE=nems.configure.datm.IN
-export med_model=cmeps
-export atm_model=nems_datm
-export ocn_model=mom6
-export ice_model=cice6
-export atm_petlist_bounds=$APB_datm_100
-export med_petlist_bounds=$MPB_datm_100
-export ocn_petlist_bounds=$OPB_datm_100
-export ice_petlist_bounds=$IPB_datm_100
-export TASKS=$TASKS_datm_100
-export TPN=$TPN_datm_100
-export NPROC_ICE=12
-# SlenderX2
-export CICE_DECOMP=slenderX2
-export np2=`expr $NPROC_ICE / 2`
-export BLCKX=`expr $NX_GLB / $np2`
-export BLCKY=`expr $NY_GLB / 2`
-
-export ENS_NUM=1
-export SYEAR=2011
-export SMONTH=10
-export SDAY=01
-export SHOUR=00
-export SECS=`expr $SHOUR \* 3600`
-export CDATE=${SYEAR}${SMONTH}${SDAY}${SHOUR}
-
-export NFHOUT=6
-export DT_ATMOS=900
-export DT_CICE=${DT_ATMOS}
-export DT_DYNAM_MOM6=1800
-export DT_THERM_MOM6=3600
-export coupling_interval_slow_sec=${DT_THERM_MOM6}
-export coupling_interval_fast_sec=${DT_ATMOS}
-
-export RESTART_N=${FHMAX}
-export CPLMODE=nems_orig_data
-export cap_dbug_flag=0
-export use_coldstart=false
-export use_mommesh=true
-export RUNTYPE=startup
-export CICERUNTYPE=initial
-export eps_imesh=1.0e-1
-export flux_convergence=0.0
-export flux_iteration=2
-export flux_scheme=0
-
-export INPUT_NML=input.mom6.nml.IN
-export MODEL_CONFIGURE=datm_configure.IN
-export FIELD_TABLE=field_table
-export DIAG_TABLE=diag_table_template
-
-# MOM6 defaults; 1 degree
-export MOM_INPUT=MOM_input_template_100
-export MOM6_RESTART_SETTING=n
-export MOM6_RIVER_RUNOFF=False
-export FRUNOFF=''
-export CHLCLIM=seawifs_1998-2006_smoothed_2X.nc
-# MOM6 IAU
-export MOM_IAU=False
-export MOM_IAU_HRS=6
-export MOM6_USE_LI2016=False
-# MOM6 stochastics
-export DO_OCN_SPPT=False
-export PERT_EPBL=False
-export OCN_SPPT=-999.
-export EPBL=-999.
-# since coupling_interval_slow is set to DT_THERM, this should be always be false
-export MOM6_THERMO_SPAN=False
-# no WW3
-export MOM6_USE_WAVES=False
-export MOM6_ALLOW_LANDMASK_CHANGES=False
-
-# CICE6 defaults; 1 degree
-export MESHOCN_ICE=mesh.mx${OCNRES}.nc
-export CICEGRID=grid_cice_NEMS_mx${OCNRES}.nc
-export CICEMASK=kmtu_cice_NEMS_mx${OCNRES}.nc
-export RUNID=unknown
-# set large; restart frequency now controlled by restart_n in nems.configure
-export DUMPFREQ=d
-export DUMPFREQ_N=1000
-export USE_RESTART_TIME=.false.
-export RESTART_EXT=.false.
-# setting to true will allow Frazil FW and Salt to be
-# included in fluxes sent to ocean
-export FRAZIL_FWSALT=.true.
-# default to write CICE average history files
-export CICE_HIST_AVG=.true.
-# default non-mushy thermo
-export KTHERM=1
-export TFREEZE_OPTION=linear_salt
-export BL_SUFFIX=""
-export RT_SUFFIX=""
-}
 export_datm_cdeps ()
 {
 export FV3=false
 export S2S=false
 export HAFS=false
-export DATM_NEMS=false
 export DATM_CDEPS=true
 export DOCN_CDEPS=false
 export CPLWAV=.false.
@@ -1153,7 +998,6 @@ export flux_scheme=0
 
 export INPUT_NML=input.mom6.nml.IN
 export MODEL_CONFIGURE=datm_cdeps_configure.IN
-export FIELD_TABLE=field_table
 export DIAG_TABLE=diag_table_template
 
 # atm defaults
@@ -1212,7 +1056,6 @@ export FV3=false
 export S2S=false
 export HAFS=true
 export DATM_CDEPS=true
-export DATM_NEMS=false
 export DOCN_CDEPS=false
 export THRD=1
 export INPES=$INPES_dflt
@@ -1248,7 +1091,6 @@ export_hafs_regional ()
 export FV3=true
 export S2S=false
 export HAFS=true
-export DATM_NEMS=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
 export THRD=1
