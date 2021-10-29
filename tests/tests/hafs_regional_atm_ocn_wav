@@ -1,19 +1,19 @@
 ###############################################################################
 #
-#  HAFS regional atmosphere-ocean coupled with HYCOM
+#  HAFS regional atmosphere-ocean-wave coupled with HYCOM and WW3
 #
 ###############################################################################
 
-export TEST_DESCR="Compare HAFS regional atmosphere-ocean coupled HYCOM results with previous trunk version"
+export TEST_DESCR="Compare HAFS regional atmosphere-ocean-wave coupled results with previous trunk version"
 
-export CNTL_DIR=hafs_regional_atm_ocn
+export CNTL_DIR=hafs_regional_atm_ocn_wav
 
 export LIST_FILES="atmf006.nc \
                    sfcf006.nc \
                    archv.2019_241_06.a \
                    archs.2019_241_06.a \
-                   ufs.hafs.cpl.hi.2019-08-29-21600.nc \
-                   ufs.hafs.cpl.r.2019-08-29-21600.nc"
+                   out_grd.ww3 \
+                   out_pnt.ww3"
 
 export_fv3
 export_hafs_regional
@@ -21,7 +21,7 @@ export_hafs_regional
 export HAFS=true
 export FHMAX=6
 export RESTART_N=${FHMAX}
-export TASKS=360
+export TASKS=420
 export CEN_LON=-62.0
 export CEN_LAT=22.0
 export LON1=-116.90
@@ -82,23 +82,43 @@ export FHLWR=1800
 export NSTF_NAME=0,0,0,0,0
 export CPLFLX=.true.
 export CPLOCN2ATM=.true.
-export CPLWAV=.false.
+export CPLWAV=.true.
 export CPLWAV2ATM=.false.
 export CPL_IMP_MRG=.true.
+
+export FLD_DT="10800"
+export PNT_DT="10800"
+export GOFILETYPE=""
+export POFILETYPE=""
+export UNIPOINTS='ww3'
+export OUTPARS_WAV="WND HS T01 T02 DIR FP DP PHS PTP PDIR UST CHA USP"
+export WW3GRIDLINE="'ww3' 'no' 'no' 'CPL:native' 'no' 'no' 'no' 'no' 'no' 'no'  1  1  0.00 1.00  F"
+export WW3RSTDTHR=${FHMAX}
+export DT_2_RST="$(printf "%02d" $(( ${WW3RSTDTHR}*3600 )))"
+export RUN_BEG="${SYEAR}${SMONTH}${SDAY} $(printf "%02d" $(( ${SHOUR}  )))0000"
+export RUN_END="20190829 060000"
+export OUT_BEG=$RUN_BEG
+export OUT_END=$RUN_END
+export RST_BEG=$RUN_BEG
+export RST_2_BEG=$RUN_BEG
+export RST_END=$RUN_END
+export RST_2_END=$RUN_END
 
 export CDEPS_DOCN=false
 export OCEAN_START_DTG=43340.00000
 
 export atm_model="fv3"
 export ocn_model="hycom"
+export wav_model="ww3"
 export atm_petlist_bounds="0000 0299"
 export ocn_petlist_bounds="0300 0359"
 export med_petlist_bounds="0300 0359"
+export wav_petlist_bounds="0360 0419"
 export coupling_interval_sec=360
 export MESH_ATM="unset"
 
 export DIAG_TABLE=diag_table_hafs_template
 export INPUT_NML=input_regional_hafs.nml.IN
 export MODEL_CONFIGURE="model_configure_hafs_shared.IN"
-export NEMS_CONFIGURE="nems.configure.hafs_atm_ocn.IN"
-export FV3_RUN="hafs_fv3_run.IN hycom_hat10_run.IN"
+export NEMS_CONFIGURE="nems.configure.hafs_atm_ocn_wav.IN"
+export FV3_RUN="hafs_fv3_run.IN hycom_hat10_run.IN hafs_ww3_run.IN"

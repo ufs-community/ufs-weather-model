@@ -64,7 +64,6 @@ echo "Test ${TEST_NR} ${TEST_NAME} ${TEST_DESCR}"
 
 source rt_utils.sh
 source atparse.bash
-source edit_inputs.sh
 
 mkdir -p ${RUNDIR}
 cd $RUNDIR
@@ -137,7 +136,7 @@ cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
 source ./fv3_run
 
 if [[ $CPLWAV == .true. ]]; then
-  edit_ww3_input  < ${PATHRT}/parm/ww3_multi.inp.IN > ww3_multi.inp
+  atparse < ${PATHRT}/parm/ww3_multi.inp.IN > ww3_multi.inp
 fi
 
 if [[ $DATM_NEMS = 'true' ]] || [[ $DATM_CDEPS = 'true' ]] || [[ $S2S = 'true' ]]; then
