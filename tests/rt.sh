@@ -370,6 +370,21 @@ elif [[ $MACHINE_ID = stampede.* ]]; then
   MPIEXECOPTS=
   cp fv3_conf/fv3_slurm.IN_stampede fv3_conf/fv3_slurm.IN
 
+elif [[ $MACHINE_ID = expanse.* ]]; then
+
+  export PYTHONPATH=
+  ECFLOW_START=
+  QUEUE=compute
+  COMPILE_QUEUE=shared
+  PARTITION=
+  ACCNR=TG-EES200015
+  dprefix=/expanse/lustre/scratch/$USER/temp_project/run
+  DISKNM=/expanse/lustre/scratch/domh/temp_project/RT
+  STMP=$dprefix
+  PTMP=$dprefix
+  SCHEDULER=slurm
+  cp fv3_conf/fv3_slurm.IN_expanse fv3_conf/fv3_slurm.IN
+
 else
   die "Unknown machine ID, please edit detect_machine.sh file"
 fi
@@ -445,7 +460,7 @@ if [[ $TESTS_FILE =~ '35d' ]]; then
   TEST_35D=true
 fi
 
-BL_DATE=20211006
+BL_DATE=20211027
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]] || [[ $MACHINE_ID = s4.* ]]; then
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
 else
