@@ -447,8 +447,6 @@ export DATM_CDEPS=false
 export DOCN_CDEPS=false
 export THRD=1
 export POSTAPP='global'
-export NEW_DIAGTABLE='none'
-export NEW_FIELDTABLE='none'
 export USE_MERRA2=.false.
 
 export INPES=$INPES_dflt
@@ -471,6 +469,7 @@ export IMO=384
 export JMO=190
 
 #input file
+export DIAG_TABLE=diag_table_gfsv16
 export FIELD_TABLE=field_table_gfsv16
 
 # Coldstart/warmstart
@@ -1114,6 +1113,8 @@ export DLAT=0.03
 
 # input.nml
 export MERGE_IMPORT=.true.
+export DIAG_TABLE=diag_table_hafs
+export FIELD_TABLE=field_table_hafs
 
 # nems.configure
 export med_model=cmeps

@@ -108,10 +108,10 @@ if [[ "Q${INPUT_NEST02_NML:-}" != Q ]] ; then
     atparse < ${PATHRT}/parm/${INPUT_NEST02_NML} > input_nest02.nml
 fi
 
+# diag table
+cp ${PATHRT}/parm/diag_table/${DIAG_TABLE} diag_table
 # Field table
-if [[ "Q${FIELD_TABLE:-}" != Q ]] ; then
-  cp ${PATHRT}/parm/field_table/${FIELD_TABLE} field_table
-fi
+cp ${PATHRT}/parm/field_table/${FIELD_TABLE} field_table
 
 # Field Dictionary
 cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
@@ -127,7 +127,7 @@ if [[ $DATM_CDEPS = 'true' ]] || [[ $S2S = 'true' ]]; then
   if [[ $HAFS = 'false' ]]; then
     atparse < ${PATHRT}/parm/ice_in_template > ice_in
     atparse < ${PATHRT}/parm/${MOM_INPUT:-MOM_input_template_$OCNRES} > INPUT/MOM_input
-    atparse < ${PATHRT}/parm/${DIAG_TABLE:-diag_table_template} > diag_table
+    atparse < ${PATHRT}/parm/diag_table/${DIAG_TABLE:-diag_table_template} > diag_table
     atparse < ${PATHRT}/parm/data_table_template > data_table
   fi
 fi
@@ -135,7 +135,7 @@ fi
 if [[ "${DIAG_TABLE_ADDITIONAL:-}Q" != Q ]] ; then
   # Append diagnostic outputs, to support tests that vary from others
   # only by adding diagnostics.
-  atparse < "${PATHRT}/parm/${DIAG_TABLE_ADDITIONAL:-}" >> diag_table
+  atparse < "${PATHRT}/parm/diag_table/${DIAG_TABLE_ADDITIONAL:-}" >> diag_table
 fi
 
 if [[ $DATM_CDEPS = 'true' ]]; then

@@ -98,11 +98,6 @@ if [ $TILEDFIX = .true. ]; then
 else
     cp    @[INPUTDATA_ROOT]/${inputdir}/*grb .
 fi
-cp    @[INPUTDATA_ROOT]/${inputdir}/diag_table_gfsv16 ./diag_table
-
-if [ $NEW_DIAGTABLE != 'none' ]; then
-  cp    @[INPUTDATA_ROOT]/${inputdir}/$NEW_DIAGTABLE ./diag_table
-fi
 
 if [ $CPLWAV = .true. ]; then
   cp    @[INPUTDATA_ROOT_WW3]/mod_def.* .
@@ -149,7 +144,6 @@ fi
 
 #prognostic aerosols
 if [ $CPLCHM = .true. ]; then
-  cp      ${PATHRT}/parm/gocart/diag_table  .
   cp      ${PATHRT}/parm/gocart/*.rc .
   ln -sf  @[INPUTDATA_ROOT]/GOCART/ExtData .
 fi
