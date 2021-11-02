@@ -137,7 +137,6 @@ if [[ "${DIAG_TABLE_ADDITIONAL:-}Q" != Q ]] ; then
   # only by adding diagnostics.
   atparse < "${PATHRT}/parm/${DIAG_TABLE_ADDITIONAL:-}" >> diag_table
 fi
-cp /gpfs/dell2/emc/modeling/save/Helin.Wei/git/sync/coupled/main/ufs-weather-model/tests/diag_table .
 
 if [[ $DATM_CDEPS = 'true' ]]; then
   atparse < ${PATHRT}/parm/${DATM_IN_CONFIGURE:-datm_in} > datm_in
