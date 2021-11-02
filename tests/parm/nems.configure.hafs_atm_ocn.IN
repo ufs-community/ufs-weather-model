@@ -32,6 +32,10 @@ ATM_attributes::
   Verbosity = 1
   Diagnostic = 0
   mesh_atm = @[MESH_ATM]
+  stop_n = @[FHMAX]
+  stop_option = nhours
+  stop_ymd = -999
+  write_restart_at_endofrun = .true.
 ::
 
 # OCN #
@@ -61,6 +65,14 @@ OCN_attributes::
   end_hour = @[FHMAX]
   end_min = 0
   end_sec = 0
+::
+
+# WAV #
+WAV_attributes::
+  Verbosity = 1
+  Diagnostic = 0
+  OverwriteSlice = false
+  merge_import = .true.
 ::
 
 # Run Sequence #
@@ -111,21 +123,9 @@ ALLCOMP_attributes::
   orb_obliq = 1.e36
   mediator_read_restart = @[USE_COLDSTART]
   mediator_present = true
-::
-
-ATM_modelio::
-  diro = .
-  logfile = atm.log
-::
-
-OCN_modelio::
-  diro = .
-  logfile = ocn.log
-::
-
-MED_modelio::
-  diro = .
-  logfile = med.log
+  stop_n = @[FHMAX]
+  stop_option = nhours
+  stop_ymd = -999
 ::
 
 ocn_export_fields::

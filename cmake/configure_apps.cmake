@@ -27,6 +27,7 @@ endif()
 
 if(APP MATCHES "^(NG-GODAS|NG-GODAS-NEMSDATM)$")
   set(CMEPS      ON  CACHE BOOL "Enable CMEPS"               FORCE)
+  set(STOCH_PHYS ON  CACHE BOOL "Enable Stochastic Physics"  FORCE)
   set(FMS        ON  CACHE BOOL "Enable FMS"                 FORCE)
   set(MOM6       ON  CACHE BOOL "Enable MOM6"                FORCE)
   set(CICE6      ON  CACHE BOOL "Enable CICE6"               FORCE)
