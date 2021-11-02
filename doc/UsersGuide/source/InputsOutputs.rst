@@ -596,14 +596,18 @@ The model driver input (ww3_multi.inp) includes the input, model and output grid
    * - FGRDPROC
      - Flag for grids sharing dedicated output processes
 
-If there are input data grids defined ( NFGRIDS > 0 ) then these grids are defined first (CPLILINE, WINDLINE, ICELINE, CURRLINE). These grids are defined as if they are wave model grids using the file mod_def.<grd>. Each grid is defined on a separate input line with <grd>, with eight input flags identifying
+If there are input data grids defined ( NFGRIDS > 0 ) then these grids are defined first (CPLILINE, WINDLINE, ICELINE, CURRLINE). These grids are defined as if they are wave model grids using the file mod_def.<grd>. Each grid is defined on a separate input line with <grd>, with nine input flags identifying
 $ the presence of 1) water levels 2) currents 3) winds 4) ice
 $ 5) momentum 6) air density and 7-9) assimilation data.
 
-The GRIDLINE defines actual wave model grids using 13 parameters to be
+The UNIPOINTS defines the name of this grid for all point output, which gathers the output spectral grid in a unified point output file.
+
+The WW3GRIDLINE defines actual wave model grids using 13 parameters to be
 read from a single line in the file for each. It includes (1) its own input grid mod_def.<grd>, (2-10) forcing grid ids, (3) rank number, (12) group number and (13-14) fraction of communicator (processes) used for this grid.
 
 RUN_BEG and RUN_END define the starting and end times,  FLAGMASKCOMP and FLAGMASKOUT are flags for masking at printout time (default F F), followed by the gridded and point outputs start time (OUT_BEG), interval (DTFLD and DTPNT) and end time (OUT_END). The restart outputs start time, interval and end time are define by RST_BEG, DTRST, RST_END respectively.
+
+The OUTPARS_WAV defines gridded output fields. The GOFILETYPE, POFILETYPE and RSTTYPE are gridded, point and restart output types respectively.
 
 No initial condition files are required for WW3.
 
