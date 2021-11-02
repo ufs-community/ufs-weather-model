@@ -492,7 +492,7 @@ Grid description and initial condition files
 The files for global configurations are listed and described in :numref:`Table %s <WW3_FixFiles>` for GFSv16 setup and :numref:`Table %s <WW3_FixFilesp>` for single grid configurations.
 The model definitions for wave grid(s) including spectral and directional resolutions, time steps, numerical scheme and parallelization algorithm, the physics parameters, boundary conditions and grid definitions are stored in binary mod_def files. The aforementioned parameters are defined in ww3_grid.inp.<grd> and the ww3_grid executables generates the binary mod_def.<grd> files.
 
-The WW3 version number in mod_def.<grd> files should be consistent with version of the code in ufs-weather-model. createmoddefs/creategridfiles.sh can be used in order to generate the mod_def.<grd> files, using ww3_grid.inp.<grd>, using the WW3 version in ups-weather-model. In order to do it, the path to the location of the ufs-weather-model  (UFSMODELDIR), the path to generated mod_def.<grd> outputs (OUTDIR), the path to input ww3_grid.inp.<grd> files (SRCDIR) and the path to the working directory for log files (WORKDIR) should be defined.
+The WW3 version number in mod_def.<grd> files should be consistent with version of the code in ufs-weather-model. createmoddefs/creategridfiles.sh can be used in order to generate the mod_def.<grd> files, using ww3_grid.inp.<grd>, using the WW3 version in ufs-weather-model. In order to do it, the path to the location of the ufs-weather-model  (UFSMODELDIR), the path to generated mod_def.<grd> outputs (OUTDIR), the path to input ww3_grid.inp.<grd> files (SRCDIR) and the path to the working directory for log files (WORKDIR) should be defined.
 
 .. _WW3_FixFiles:
 
@@ -531,15 +531,15 @@ The WW3 version number in mod_def.<grd> files should be consistent with version 
 
 .. _WW3_FixFilesp:
 
-.. list-table:: *Input grid information for single global configurations*
-   :widths: 35 35 30
+.. list-table:: *Input grid information for single global/regional configurations*
+   :widths: 30 50 20
    :header-rows: 1
 
    * - Filename
      - Description
      - Resolution
    * - mod_def.ant_9km
-     - polar streo antarctic grid [90S 50S]
+     - Regional polar stereo antarctic grid [90S 50S]
      - 9km
    * - mod_def.glo_10m
      - Global grid [80S 80N]
@@ -556,6 +556,24 @@ The WW3 version number in mod_def.<grd> files should be consistent with version 
    * - mod_def.glo_gwes_30m
      - Global NAWES 30 min wave grid [80S 80N]
      - 30 min
+   * - mod_def.natl_6m
+     - Regional North Atlantic Basin [1.5N 45.5N; 98W 8W]
+     - 6 min
+
+Coupled regional configurations require forcing files to fill regions that cannot be interpolated from the atmospheric component. For a list of forcing files used to fill unmapped data points see :numref:`Table %s <WW3_ForcingFiles>`.
+
+.. _WW3_ForcingFiles:
+
+.. list-table:: *Forcing information for single regional configurations*
+   :widths: 30 50 20
+   :header-rows: 1
+
+   * - Filename
+     - Description
+     - Resolution
+   * - wind.natl_6m
+     - Interpolated wind data from GFS
+     - 6 min
 
 The model driver input (ww3_multi.inp) includes the input, model and output grids definition, the starting and ending times for the entire model run and output types and intervals. The ww3_multi.inp.IN template is located under tests/parm/ directory. The inputs are described hereinafter:
 
@@ -601,11 +619,11 @@ No fix files are required for CDEPS
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Grid description and initial condition files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The input files containing grid information and the time-varying forcing files for global configurations are listed and described in :numref:`Table %s <CDEPS_Files>`.
-
-.. _CDEPS_Files:
+The input files containing grid information and the time-varying forcing files for global configurations are listed and described in :numref:`Table %s <CDEPS_FilesATM>` and :numref:`Table %s <CDEPS_FilesOCN>`.
 
 **Data Atmosphere**
+
+.. _CDEPS_FilesATM:
 
 .. list-table:: *Input files containing grid information and forcing files for global configurations*
    :widths: 35 50 15
@@ -635,6 +653,7 @@ The input files containing grid information and the time-varying forcing files f
 
 **Data Ocean**
 
+.. _CDEPS_FilesOCN:
 
 .. list-table:: *Input files containing grid information and forcing files for global configurations*
    :widths: 35 50 15
@@ -1540,6 +1559,13 @@ For the coupled HAFS application, a sample *nems.configure* is shown below :
           'sensflx' 'mean_sensi_heat_flx'       'W_m-2'
           'latflx'  'mean_laten_heat_flx'       'W_m-2'
         ::
+
+For more HAFS, HAFSW, and HAFS-ALL configurations please see the following nems.configure templates.
+
+- `HAFS ATM-OCN <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/nems.configure.hafs_atm_ocn.IN>`_
+- `HAFS ATM-WAV <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/nems.configure.hafs_atm_wav.IN>`_
+- `HAFS ATM-OCN-WAV <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/nems.configure.hafs_atm_ocn_wav.IN>`_
+- `HAFS ATM-DOCN <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/nems.configure.hafs_atm_docn.IN>`_
 
 .. TODO:: GOCART information in progress
 
