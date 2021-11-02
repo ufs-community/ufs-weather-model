@@ -4,18 +4,17 @@ source $PATHRT/opnReqTests/std.sh
 DEP_RUN=${TEST_NAME}
 
 if [[ $application == 'global' ]]; then
-  FHROT=12
+  FHROT=$(( FHMAX/2 ))
   OUTPUT_FH="3 -1"
-  RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( SHOUR + FHROT  )))0000"
+  if [[ $(( SHOUR + FHROT )) -lt 24 ]]; then
+    RESTART_FILE_PREFIX="${SYEAR}${SMONTH}$(printf "%02d" ${SDAY}).$(printf "%02d" $(( SHOUR + FHROT  )))0000"
+  else
+    RESTART_FILE_PREFIX="${SYEAR}${SMONTH}$(printf "%02d" $((SDAY+1))).$(printf "%02d" $(( SHOUR + FHROT - 24 )))0000"
+  fi
 elif [[ $application == 'regional' ]]; then
   echo "Regional application not yet implemented for restart"
   exit 1
 elif [[ $application == 'cpld' ]]; then
-  #if [[ $TEST_NAME == 'cpld_control' ]]; then
-  #  FHROT=12
-  #elif [[ $TEST_NAME == 'cpld_bmark_v16' ]]; then
-  #  FHROT=3
-  #fi
   FHROT=$(( FHMAX/2 ))
 
   CICERUNTYPE='continue'
@@ -36,11 +35,14 @@ MAKE_NH=.F.
 MOUNTAIN=.T.
 NA_INIT=0
 
-LIST_FILES=$(echo -n $LIST_FILES | sed -E "s/phyf00(00|21)\.(tile.\.nc|nemsio|nc) ?//g" \
-                                 | sed -E "s/dynf00(00|21)\.(tile.\.nc|nemsio|nc) ?//g" \
-                                 | sed -E "s/sfcf0(00|21).nc ?//g" | sed -E "s/atmf0(00|21).nc ?//g" \
-                                 | sed -E "s/GFSFLX.GrbF(00|21) ?//g" | sed -E "s/GFSPRS.GrbF(00|21) ?//g" \
+FHMAX_2D=$(printf "%02d" $FHMAX)
+LIST_FILES=$(echo -n $LIST_FILES | sed -E "s/phyf00[0-9][0-9]/phyf00$FHMAX_2D/g" \
+                                 | sed -E "s/dynf00[0-9][0-9]/dynf00$FHMAX_2D/g" \
+                                 | sed -E "s/sfcf0[0-9][0-9]/sfcf0$FHMAX_2D/g" | sed -E "s/atmf0[0-9][0-9]/atmf0$FHMAX_2D/g" \
+                                 | sed -E "s/GFSFLX.GrbF[0-9][0-9]/GFSFLX.GrbF$FHMAX_2D/g" | sed -E "s/GFSPRS.GrbF[0-9][0-9]/GFSPRS.GrbF$FHMAX_2D/g" \
                                  | sed -E "s/atmos_4xdaily\.tile[1-6]\.nc ?//g" | sed -e "s/^ *//" -e "s/ *$//")
+LIST_FILES=$(echo $LIST_FILES | xargs -n1 | sort -u | xargs)
+
 
 (test $CI_TEST == 'true') && source $PATHRT/opnReqTests/cmp_proc_bind.sh
 source $PATHRT/opnReqTests/wrt_env.sh
