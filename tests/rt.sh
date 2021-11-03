@@ -570,9 +570,11 @@ if [[ $ECFLOW == true ]]; then
   MAX_BUILDS=10
   MAX_JOBS=30
 
-  # Reduce maximum number of compile jobs on jet.intel because of licensing issues
+  # Reduce maximum number of compile jobs on jet.intel and s4.intel because of licensing issues
   if [[ $MACHINE_ID = jet.intel ]]; then
     MAX_BUILDS=5
+  elif [[ $MACHINE_ID = s4.intel ]]; then
+    MAX_BUILDS=1
   fi
 
   if [[ $MACHINE_ID = hera.* ]] && [[ ! $HOSTNAME = hecflow* ]]; then
