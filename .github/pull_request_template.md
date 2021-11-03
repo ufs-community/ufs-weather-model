@@ -7,7 +7,7 @@
 - [ ] An Issue describing the work contained in this PR has been created either in the subcomponent(s) or in the ufs-weather-model. The Issue should be created in the repository that is most relevant to the changes in contained in the PR. The Issue and the dependent sub-component PR 
 are specified below.
 
-- [ ] Results for one or more of the regression tests change New or updated input data is required by this PR, and the reasons for the changes are understood and explained below.
+- [ ] Results for one or more of the regression tests change and the reasons for the changes are understood and explained below.
 
 - [ ] New or updated input data is required by this PR. If checked, please work with the code managers to update input data sets on all platforms.
 
