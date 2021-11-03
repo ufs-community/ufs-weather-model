@@ -11,6 +11,14 @@ if [[ $application == 'global' ]]; then
   else
     RESTART_FILE_PREFIX="${SYEAR}${SMONTH}$(printf "%02d" $((SDAY+1))).$(printf "%02d" $(( SHOUR + FHROT - 24 )))0000"
   fi
+
+  if [[ ! -z $NSTF_NAME ]]; then
+    second_value=$(echo $NSTF_NAME | cut -d ',' -f 2)
+    if [[ $second_value -eq 1 ]]; then
+      NSTF_NAME=$(echo $NSTF_NAME | awk 'BEGIN{FS=OFS=","} { $2-=1; print}')
+    fi
+  fi
+
 elif [[ $application == 'regional' ]]; then
   echo "Regional application not yet implemented for restart"
   exit 1
