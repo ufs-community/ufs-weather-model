@@ -75,6 +75,11 @@ export ocn_petlist_bounds=$OPB_cpl_thrd_wwav
 export ice_petlist_bounds=$IPB_cpl_thrd_wwav
 export wav_petlist_bounds=$WPB_cpl_thrd_wwav
 
+export NPROC_ICE=$NPROC_ICE_cpl_thrd_wwav
+export np2=`expr $NPROC_ICE / 2`
+export BLCKX=`expr $NX_GLB / $np2`
+export BLCKY=`expr $NY_GLB / 2`
+
 export CPLWAV=.true.
 export CPLWAV2ATM=.true.
 export eps_imesh=2.5e-1
