@@ -1365,6 +1365,10 @@ For the coupled NG_GODAS application, a sample *nems.configure* is shown below :
 	  mesh_atm  = DATM_INPUT/cfsr_mesh.nc
 	  diro = "."
 	  logfile = atm.log
+          stop_n = 24
+          stop_option = nhours
+          stop_ymd = -999
+          write_restart_at_endofrun = .true.
 	::
 
 	# OCN #
