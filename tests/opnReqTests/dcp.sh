@@ -2,9 +2,14 @@ set -eu
 source $PATHRT/opnReqTests/std.sh
 
 if [[ $application == 'global' ]]; then
-  temp=$INPES
-  INPES=$JNPES
-  JNPES=$temp
+  if [[ $CI_TEST == 'true' ]]; then
+    temp=$INPES
+    INPES=$JNPES
+    JNPES=$temp
+  else
+    INPES=6
+    JNPES=4
+  fi
 elif [[ $application == 'regional' ]]; then
   if [[ $CI_TEST == 'true' ]]; then
     INPES=10
