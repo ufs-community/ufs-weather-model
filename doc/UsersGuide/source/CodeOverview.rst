@@ -34,6 +34,8 @@ The ufs-weather-model repository supports the short- and medium-range UFS applic
     - https://github.com/noaa-psd/stochastic_physics
   * - Modular Ocean Model (MOM6)
     - https://github.com/NOAA-EMC/MOM6
+  * - HYbrid Coordinate Ocean Model (HYCOM)
+    - https://github.com/NOAA-EMC/HYCOM-src
   * - Los Alamos sea ice model (CICE6)
     - https://github.com/NOAA-EMC/CICE
   * - NOAA/NCEP WAVEWATCH III Model (WW3)
@@ -61,6 +63,8 @@ The umbrella repository for the UFS Weather Model is named ufs-weather-model.  U
    ├── stochastic_physics                      https://github.com/noaa-psd/stochastic_physics
    ├── MOM6-interface
    │    └── MOM6                               https://github.com/NOAA-EMC/MOM6
+   ├── HYCOM-interface
+   │    └── HYCOM                              https://github.com/NOAA-EMC/HYCOM-src
    ├── CICE-interface
    │    └── CICE                               https://github.com/NOAA-EMC/CICE
    ├── WW3                                     https://github.com/NOAA-EMC/WW3
@@ -103,6 +107,10 @@ When the ufs-weather-model is cloned, the basic directory structure will be simi
    │    └── MOM6
    │        ├── src                              --------- MOM6 ocean model
    │        └── config_source/drivers/nuopc_cap  --------- NUOPC MOM6 cap
+   ├── HYCOM-interface
+   │    └── HYCOM                                --------- HYCOM ocean model
+   │        └── NUOPC                            --------- NUOPC HYCOM cap
+   ├── CICE-interface
    ├── CICE-interface
    │    └── CICE                                 --------- CICE6 sea ice model
    │        ├── icepack                          --------- Sea ice column physics
@@ -112,8 +120,8 @@ When the ufs-weather-model is cloned, the basic directory structure will be simi
    │        └── esmf                             --------- NUOPC WW3 cap
    ├── CDEPS-interface
    │     └── CDEPS
-   │         └── datm                            --------- CDEPS DATM
-   │
+   │         ├── datm                            --------- CDEPS DATM
+   │         └── docn                            --------- CDEPS DOCN
    ├── modulefiles          -------- system module files for supported HPC systems
    ├── tests                -------- regression test infrastructure
    │   └── parm

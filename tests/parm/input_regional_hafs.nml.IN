@@ -1,5 +1,5 @@
  &atmos_model_nml
-       blocksize = 40
+       blocksize = @[BLOCKSIZE]
        chksum_debug = .false.
        dycore_only = .false.
        avg_max_length = 3600.
@@ -15,7 +15,7 @@
        global_field_on_root_pe = .true.,
        io_clocks_on = .false.,
        shuffle = 0,
-       deflate_level = -1,
+       deflate_level = @[DEFLATE_LEVEL],
        cf_compliance = .false.
 /
 
@@ -27,7 +27,7 @@
 
  &fms_nml
        clock_grain = 'ROUTINE',
-       domains_stack_size = 12000000,
+       domains_stack_size = 30000000,
        print_memory_usage = .false.
 /
 
@@ -38,10 +38,10 @@
  &fv_core_nml
        layout = @[INPES],@[JNPES]
        io_layout = 1,1
-       npx = 721
-       npy = 601
+       npx = @[NPX]
+       npy = @[NPY]
        ntiles   = 1
-       npz    = 91
+       npz    = @[NPZ]
        !grid_type = -1
        make_nh = .false.
        fv_debug = .false.
@@ -64,10 +64,10 @@
        beta = 0.
        a_imp = 1.
        p_fac = 0.1
-       k_split  = 2
-       n_split  = 5
-       nwat = 6
-       na_init = 1
+       k_split = @[K_SPLIT]
+       n_split = @[N_SPLIT]
+       nwat = @[NWAT]
+       na_init = @[NA_INIT]
        d_ext = 0.0
        dnats = 1
        fv_sg_adj = 300
@@ -79,11 +79,11 @@
        delt_max = 0.008
        ke_bg = 0.
        do_vort_damp = .true.
-       external_ic = .true.
+       external_ic = @[EXTERNAL_IC]
        external_eta = .true.
        gfs_phil = .false.
-       nggps_ic = .true.
-       mountain = .false.
+       nggps_ic = @[NGGPS_IC]
+       mountain = @[MOUNTAIN]
        ncep_ic = .false.
        d_con = 1.0
        hord_mt = 6
@@ -98,7 +98,7 @@
        fill = .true.
        dwind_2d = .false.
        print_freq = 3
-       warm_start = .false.
+       warm_start = @[WARM_START]
        no_dycore = .false.
        z_tracer = .true.
        agrid_vel_rst = .true.
@@ -107,16 +107,27 @@
        write_3d_diags = .true.
 
        do_schmidt = .true.
-       target_lat = 22.0
-       target_lon = -62.0
-       stretch_fac = 1.0001
-       regional = .true.
-       bc_update_interval = 3
-       nrows_blend = 10
+       target_lat = @[TARGET_LAT]
+       target_lon = @[TARGET_LON]
+       stretch_fac = @[STRETCH_FAC]
 
-       full_zs_filter = .false. !unreleased feature
-       n_zs_filter = 0 ! safety
+       regional = @[REGIONAL]
+       bc_update_interval = @[BC_UPDATE_INTERVAL]
+       nrows_blend = @[NROWS_BLEND]
+
+       full_zs_filter = @[FULL_ZS_FILTER]
+       n_zs_filter = @[N_ZS_FILTER]
        nord_zs_filter = 4
+/
+
+ &fv_nest_nml
+       grid_pes = @[GRID_PES]
+       tile_coarse = @[TILE_COARSE]
+       num_tile_top = @[NUM_TILE_TOP]
+       p_split = 1
+       nest_refine = @[NEST_REFINE]
+       nest_ioffsets= @[NEST_IOFFSETS]
+       nest_joffsets= @[NEST_JOFFSETS]
 /
 
  &surf_map_nml
@@ -132,7 +143,7 @@
 
  &external_ic_nml
        filtered_terrain = .true.
-       levp = 92
+       levp = @[NPZP]
        gfs_dwinds = .true.
        checker_tr = .false.
        nt_checker = 0
@@ -144,13 +155,13 @@
        lradar         = .true.
        avg_max_length = 3600.
        h2o_phys       = .true.
-       fhcyc          = 24.
+       fhcyc          = @[FHCYC]
        use_ufo        = .true.
        pre_rad        = .false.
        imp_physics    = 11
        pdfcld         = .false.
-       fhswr          = 1800.
-       fhlwr          = 1800.
+       fhswr          = @[FHSWR]
+       fhlwr          = @[FHLWR]
        ialb           = 1
        iems           = 1
        iaer           = 111
@@ -166,7 +177,7 @@
        redrag         = .true.
        dspheat        = .true.
        hybedmf        = .false.
-       hurr_pbl       = .true.        ! HWRF moninedmf
+       hurr_pbl       = .true.     ! HWRF moninedmf
        moninq_fac     = -1.0       ! HWRF_moninedmf
        satmedmf       = .true.
        isatmedmf      = 1
@@ -178,7 +189,7 @@
        cnvcld         = .true.
        imfshalcnv     = 2
        imfdeepcnv     = 2
-       cdmbgwd        = 0.88, 0.04
+       cdmbgwd        = 0.88,0.04
        sfc_z0_type    = 6
        prslrd0        = 0.
        ivegsrc        = 1
@@ -203,9 +214,10 @@
        nstf_name      = @[NSTF_NAME]
        cplflx         = @[CPLFLX]
        cplice         = .false.
+       cplocn2atm     = @[CPLOCN2ATM]
        cplwav         = @[CPLWAV]
        cplwav2atm     = @[CPLWAV2ATM]
-       cpl_imp_mrg    = @[MERGE_IMPORT]
+       cpl_imp_mrg    = @[CPL_IMP_MRG]
        psautco        = 0.0008, 0.0005
        prautco        = 0.00015, 0.00015
        iau_delthrs    = 6
@@ -223,9 +235,8 @@
        do_ca          = .false.
        ca_sgs         = .false.
        nca            = 1
-       ncells         = 5
-       nlives         = 12
-       nthresh        = 18
+       scells         = 2600
+       tlives         = 1800
        nseed          = 1
        nfracseed      = 0.5
        ca_trigger     = .false.
