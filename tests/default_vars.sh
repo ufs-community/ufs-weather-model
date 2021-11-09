@@ -533,7 +533,6 @@ export CDMBWD_c768='4.0,0.15,1.0,1.0'
 
 # set default
 export CDMBWD=${CDMBWD_c96}
-export RCELL=${RCELL_c96}
 
 # PBL
 export SATMEDMF=.false.
