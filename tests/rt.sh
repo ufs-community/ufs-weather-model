@@ -570,6 +570,12 @@ if [[ $ECFLOW == true ]]; then
   MAX_BUILDS=10
   MAX_JOBS=30
 
+  # Default number of tries to run jobs - on wcoss, no error tolerance
+  ECF_TRIES=2
+  if [[ $MACHINE_ID = wcoss* ]]; then
+    ECF_TRIES=1
+  fi
+
   # Reduce maximum number of compile jobs on jet.intel because of licensing issues
   if [[ $MACHINE_ID = jet.intel ]]; then
     MAX_BUILDS=5
@@ -590,7 +596,7 @@ suite ${ECFLOW_SUITE}
     edit ECF_HOME '${ECFLOW_RUN}'
     edit ECF_INCLUDE '${ECFLOW_RUN}'
     edit ECF_KILL_CMD kill -15 %ECF_RID% > %ECF_JOB%.kill 2>&1
-    edit ECF_TRIES 2
+    edit ECF_TRIES ${ECF_TRIES}
     label src_dir '${PATHTR}'
     label run_dir '${RUNDIR_ROOT}'
     limit max_builds ${MAX_BUILDS}
