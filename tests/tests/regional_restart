@@ -6,10 +6,9 @@
 
 export TEST_DESCR="Compare FV3 CCPP regional restart results with previous trunk version"
 
-export CNTL_DIR=fv3_regional_restart
+export CNTL_DIR=fv3_regional_control
 
-export LIST_FILES="  atmos_4xdaily.nc \
-                     fv3_history2d.nc \
+export LIST_FILES=" fv3_history2d.nc \
                        fv3_history.nc "
 
 export_fv3
@@ -23,11 +22,13 @@ export OZ_PHYS_OLD=.false.
 export OZ_PHYS_NEW=.true.
 export H2O_PHYS=.true.
 export HYBEDMF=.false.
+export NSTF_NAME='2,0,0,0,0'
 export QUILTING=.false.
 export MODEL_CONFIGURE=model_configure_regional.IN
 
 export CCPP_SUITE=FV3_GFS_v15_thompson_mynn
 export INPUT_NML=regional.nml.IN
+export DIAG_TABLE=diag_table_regional
 export FIELD_TABLE=field_table_regional
 
 export INPES=10
