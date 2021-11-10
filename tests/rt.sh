@@ -460,7 +460,7 @@ if [[ $TESTS_FILE =~ '35d' ]]; then
   TEST_35D=true
 fi
 
-BL_DATE=20211022
+BL_DATE=20211108
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]] || [[ $MACHINE_ID = s4.* ]]; then
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
 else
@@ -468,7 +468,7 @@ else
 fi
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20210930}
-INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20210908
+INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20211101
 INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC:-$DISKNM/NEMSfv3gfs/BM_IC-20210717}
 
 shift $((OPTIND-1))
@@ -494,7 +494,7 @@ JOB_NR=0
 TEST_NR=0
 COMPILE_NR=0
 COMPILE_PREV_WW3_NR=''
-rm -f fail_test
+rm -f fail_test* fail_compile*
 
 export LOG_DIR=${PATHRT}/log_$MACHINE_ID
 rm -rf ${LOG_DIR}
@@ -590,7 +590,7 @@ suite ${ECFLOW_SUITE}
     edit ECF_HOME '${ECFLOW_RUN}'
     edit ECF_INCLUDE '${ECFLOW_RUN}'
     edit ECF_KILL_CMD kill -15 %ECF_RID% > %ECF_JOB%.kill 2>&1
-    edit ECF_TRIES 1
+    edit ECF_TRIES 2
     label src_dir '${PATHTR}'
     label run_dir '${RUNDIR_ROOT}'
     limit max_builds ${MAX_BUILDS}
@@ -823,6 +823,14 @@ fi
 set +e
 cat ${LOG_DIR}/compile_*_time.log              >> ${REGRESSIONTEST_LOG}
 cat ${LOG_DIR}/rt_*.log                        >> ${REGRESSIONTEST_LOG}
+
+FILES="fail_test_* fail_compile_*"
+for f in $FILES; do
+  if [[ -f "$f" ]]; then
+    cat "$f" >> fail_test
+  fi
+done
+
 if [[ -e fail_test ]]; then
   echo "FAILED TESTS: "
   echo "FAILED TESTS: "                        >> ${REGRESSIONTEST_LOG}
