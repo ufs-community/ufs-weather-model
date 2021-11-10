@@ -163,7 +163,7 @@ TOPO_CONFIG = "file"            !
                                 !     Phillips - ACC-like idealized topography used in the Phillips config.
                                 !     dense - Denmark Strait-like dense water formation and overflow.
                                 !     USER - call a user modified routine.
-TOPO_EDITS_FILE = "topo_edits_011818.nc" ! default = ""
+TOPO_EDITS_FILE = "@[TOPOEDITS]" ! default = ""
                                 ! The file from which to read a list of i,j,z topography overrides.
 ALLOW_LANDMASK_CHANGES = @[MOM6_ALLOW_LANDMASK_CHANGES]   ! default = "False"
                                 ! If true, allow topography overrides to change ocean points to land
@@ -853,8 +853,8 @@ FIX_USTAR_GUSTLESS_BUG = False  !   [Boolean] default = True
                                 ! velocity
 ! === module ocean_stochastics ===
 DO_SPPT   = @[DO_OCN_SPPT]      ! [Boolean] default = False
-                                ! If true perturb the diabatic tendencies in MOM_diabadic_driver 
-PERT_EPBL = @[PERT_EPBL]        ! [Boolean] default = False 
+                                ! If true perturb the diabatic tendencies in MOM_diabadic_driver
+PERT_EPBL = @[PERT_EPBL]        ! [Boolean] default = False
                                 ! If true perturb the KE dissipation and destruction in MOM_energetic_PBL
 
 ! === module MOM_restart ===
