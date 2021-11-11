@@ -801,16 +801,8 @@ export CDMBWD_c192='0.23,1.5,1.0,1.0'
 export CDMBWD_c384='1.1,0.72,1.0,1.0'
 export CDMBWD_c768='4.0,0.15,1.0,1.0'
 
-# CA tunable parameter
-export RCELL_c48=0.1
-export RCELL_c96=0.1
-export RCELL_c192=0.2
-export RCELL_c384=0.72
-export RCELL_c768=0.72
-
 # set default
 export CDMBWD=${CDMBWD_c96}
-export RCELL=${RCELL_c96}
 
 # PBL
 export SATMEDMF=.false.
@@ -1091,8 +1083,9 @@ export DO_CA=.true.
 export CA_SGS=.true.
 export CA_GLOBAL=.false.
 export NCA=1
-export SCELLS=2600
-export TLIVES=1800
+export NCELLS=5
+export NLIVES=12
+export NTHRESH=18
 export NSEED=1
 export NFRACSEED=0.5
 export CA_TRIGGER=.true.
