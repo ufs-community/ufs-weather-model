@@ -13,6 +13,8 @@ export FC=${FC:-mpif90}
 
 export ESMFMKFILE=${ESMFMKFILE:?"Please set ESMFMKFILE environment variable"}
 
+export CCPP_SUITES="FV3_RRFS_v1beta"
+
 BUILD_DIR=${BUILD_DIR:-${UFS_MODEL_DIR}/build}
 mkdir -p ${BUILD_DIR}
 
