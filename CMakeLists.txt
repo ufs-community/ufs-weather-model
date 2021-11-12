@@ -306,7 +306,7 @@ endif()
 
 if (LM4)
    add_dependencies(ufs lm4)
-   list(APPEND _ufs_defs_private FRONT_LM4=lnd_comp_nuopc)
+   list(APPEND _ufs_defs_private FRONT_LM4=lm4_cap_mod)
    list(APPEND _ufs_libs_public lm4)
 endif()
 

@@ -34,6 +34,8 @@ list(APPEND lm4_src_files
      LM4/shared/debug.inc
      LM4/shared/version_variable.inc
      LM4/shared/land_numerics.F90
+     LM4/shared/sat_vapor_pres/sat_vapor_pres.F90
+     LM4/shared/sat_vapor_pres/sat_vapor_pres_k.F90		
      LM4/land_tracers/land_tracer_driver.F90
      LM4/land_tracers/land_dust.F90
      LM4/land_tracers/land_tracers.F90
@@ -54,4 +56,22 @@ list(APPEND lm4_src_files
      LM4/glacier/glac_tile.F90
      LM4/glacier/glacier.F90
      LM4/land_chksum.F90
-     )
+
+     LM4/nuopc_cap/lm4_cap.F90
+     LM4/nuopc_cap/lm4_driver.F90
+     LM4/nuopc_cap/lm4_type.F90
+     LM4/nuopc_cap/lnd_import_export.F90
+     LM4/nuopc_cap/nuopc_shr_methods.F90
+     LM4/nuopc_cap/shr_file_mod.F90
+     LM4/nuopc_cap/shr_kind_mod.F90
+     LM4/nuopc_cap/shr_log_mod.F90
+     LM4/nuopc_cap/shr_sys_mod.F90
+     LM4/nuopc_cap/domain_create.F90
+     LM4/nuopc_cap/proc_bounds.F90
+
+    )
+
+# TODO: seperate cap files into seperate list
+# list(APPEND lm4_nuopc_src_files
+#      nuopc_cap/lm4_cap.F90
+# )

@@ -1,3 +1,5 @@
+!! Based of of CMEPS nuopc_shr_methods
+
 module nuopc_shr_methods
 
   use ESMF         , only : operator(<), operator(/=), operator(+)
