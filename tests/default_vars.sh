@@ -642,6 +642,9 @@ export IAU_INC_FILES="''"
 export DO_CA=.false.
 export CA_SGS=.false.
 export CA_GLOBAL=.false.
+export NCELLS=5
+export NLIVES=12
+export NTHRESH=18
 
 export IAU_DRYMASSFIXER=.false.
 
@@ -813,9 +816,6 @@ export DO_CA=.true.
 export CA_SGS=.true.
 export CA_GLOBAL=.false.
 export NCA=1
-export NCELLS=5
-export NLIVES=12
-export NTHRESH=18
 export NSEED=1
 export NFRACSEED=0.5
 export CA_TRIGGER=.true.
