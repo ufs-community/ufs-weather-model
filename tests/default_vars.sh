@@ -1168,6 +1168,7 @@ export HAFS=false
 export DATM_CDEPS=true
 export DOCN_CDEPS=false
 export CPLWAV=.false.
+export MOM6_USE_WAVES=False
 export DAYS=1
 export FHMAX=24
 export THRD=1
