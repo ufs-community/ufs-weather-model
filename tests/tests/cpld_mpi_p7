@@ -1,10 +1,10 @@
 #
-#  cpld_2threads_wave P7 test
+#  cpld_mpi P7 test
 #
 
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system - C96MX100 with waves - 2 threads"
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system - C96MX100 - change mpi task test"
 
-export CNTL_DIR="cpld_control_wave_p7"
+export CNTL_DIR="cpld_control_p7"
 
 export LIST_FILES="sfcf012.tile1.nc \
                    sfcf012.tile2.nc \
@@ -62,20 +62,21 @@ export_cpl
 export FHMAX=12
 export RESTART_N=${FHMAX}
 
-export TASKS=$TASKS_cpl_thrd_wwav
-export TPN=$TPN_cpl_thrd_wwav
-export INPES=$INPES_cpl_thrd_wwav
-export JNPES=$JNPES_cpl_thrd_wwav
-export THRD=$THRD_cpl_thrd_wwav
-export WRTTASK_PER_GROUP=$WPG_cpl_thrd_wwav
+export TASKS=$TASKS_cpl_mpi_wwav
+export TPN=$TPN_cpl_mpi_wwav
+export INPES=$INPES_cpl_mpi_wwav
+export JNPES=$JNPES_cpl_mpi_wwav
+export THRD=$THRD_cpl_mpi_wwav
+export WRTTASK_PER_GROUP=$WPG_cpl_mpi_wwav
 
-export med_petlist_bounds=$MPB_cpl_thrd_wwav
-export atm_petlist_bounds=$APB_cpl_thrd_wwav
-export ocn_petlist_bounds=$OPB_cpl_thrd_wwav
-export ice_petlist_bounds=$IPB_cpl_thrd_wwav
-export wav_petlist_bounds=$WPB_cpl_thrd_wwav
+export med_petlist_bounds=$MPB_cpl_mpi_wwav
+export atm_petlist_bounds=$APB_cpl_mpi_wwav
+export ocn_petlist_bounds=$OPB_cpl_mpi_wwav
+export ice_petlist_bounds=$IPB_cpl_mpi_wwav
+export wav_petlist_bounds=$WPB_cpl_mpi_wwav
 
-export NPROC_ICE=$NPROC_ICE_cpl_thrd_wwav
+export NPROC_ICE=$NPROC_ICE_cpl_mpi_wwav
+
 export np2=`expr $NPROC_ICE / 2`
 export BLCKX=`expr $NX_GLB / $np2`
 export BLCKY=`expr $NY_GLB / 2`
