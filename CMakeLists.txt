@@ -217,13 +217,9 @@ if(CDEPS)
 endif()
 
 ###############################################################################
-### UFS Library [NEMS]
+### UFS Library
 ###############################################################################
-list(APPEND _nems_srcs NEMS/src/module_EARTH_GRID_COMP.F90
-                       NEMS/src/module_NEMS_Rusage.F90
-                       NEMS/src/nems_c_rusage.c)
-
-add_library(ufs ${_nems_srcs})
+add_library(ufs EARTH_GRID_COMP.F90)
 set_target_properties(ufs PROPERTIES Fortran_MODULE_DIRECTORY
                                      ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(ufs INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
@@ -301,7 +297,7 @@ target_link_libraries(ufs PUBLIC "${_ufs_libs_public}")
 ###############################################################################
 ### UFS executable
 ###############################################################################
-add_executable(ufs_model NEMS/src/MAIN_NEMS.F90)
+add_executable(ufs_model UFS.F90)
 add_dependencies(ufs_model ufs)
 target_link_libraries(ufs_model ufs esmf w3nco::w3nco_d)
 
