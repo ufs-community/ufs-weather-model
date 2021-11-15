@@ -104,7 +104,6 @@ elif [[ $MACHINE_ID = gaea.* ]] ; then
         source /etc/profile
         unset __ms_source_etc_profile
     fi
-    source /lustre/f2/pdata/esrl/gsd/contrib/lua-5.1.4.9/init/init_lmod.sh
 
 elif [[ $MACHINE_ID = expanse.* ]]; then
     # We are on SDSC Expanse
