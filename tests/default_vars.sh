@@ -1168,7 +1168,6 @@ export HAFS=false
 export DATM_CDEPS=true
 export DOCN_CDEPS=false
 export CPLWAV=.false.
-export MOM6_USE_WAVES=False
 export DAYS=1
 export FHMAX=24
 export THRD=1
@@ -1262,8 +1261,7 @@ export OCN_SPPT=-999.
 export EPBL=-999.
 # since coupling_interval_slow is set to DT_THERM, this should be always be false
 export MOM6_THERMO_SPAN=False
-# no WW3
-export MOM6_USE_WAVES=True
+export MOM6_USE_WAVES=False
 export MOM6_ALLOW_LANDMASK_CHANGES=False
 
 # CICE6 defaults; 1 degree
