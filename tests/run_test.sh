@@ -160,7 +160,7 @@ if [[ $DATM_CDEPS = 'true' ]] || [[ $S2S = 'true' ]]; then
 fi
 
 if [[ $HAFS = 'true' ]] && [[ $DATM_CDEPS = 'false' ]]; then
-  atparse < ${PATHRT}/parm/${DIAG_TABLE:-diag_table_template} > diag_table
+  atparse < ${PATHRT}/parm/diag_table/${DIAG_TABLE:-diag_table_template} > diag_table
 fi
 
 if [[ "${DIAG_TABLE_ADDITIONAL:-}Q" != Q ]] ; then
