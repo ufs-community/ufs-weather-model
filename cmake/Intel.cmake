@@ -52,3 +52,9 @@ set(CMAKE_Fortran_FLAGS_RELEASE "-O2 -fPIC" CACHE STRING "" FORCE)
 set(CMAKE_C_FLAGS_BITFORBIT       "-O2 -fPIC" CACHE STRING "" FORCE)
 set(CMAKE_CXX_FLAGS_BITFORBIT     "-O2 -fPIC" CACHE STRING "" FORCE)
 set(CMAKE_Fortran_FLAGS_BITFORBIT "-O2 -fPIC" CACHE STRING "" FORCE)
+
+if(APPLE)
+  # The linker on macOS does not include `common symbols` by default
+  # Passing the -c flag includes them and fixes an error with undefined symbols
+  set(CMAKE_Fortran_ARCHIVE_FINISH "<CMAKE_RANLIB> -c <TARGET>")
+endif()
