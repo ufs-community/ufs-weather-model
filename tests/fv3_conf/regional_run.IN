@@ -29,15 +29,6 @@ if [ $WRITE_RESTART_WITH_BCS = .true. ]; then
     cp @[INPUTDATA_ROOT]/fv3_regional_control/RESTART/fv_tracer.res.tile1_new.nc                         RESTART/fv_tracer.res.tile1_new.nc
 fi
 
-if [ $OZ_PHYS_NEW = .true. ]; then
-  cp  @[INPUTDATA_ROOT]/FV3_input_data/ozprdlos_2015_new_sbuvO3_tclm15_nuchem.f77 ./global_o3prdlos.f77
-elif [ $OZ_PHYS_OLD = .true. ]; then
-  cp  @[INPUTDATA_ROOT]/FV3_input_data/INPUT/global_o3prdlos.f77 .
-fi
-if [ $H2O_PHYS = .true. ]; then
-  cp  @[INPUTDATA_ROOT]/FV3_input_data/global_h2o_pltc.f77 ./global_h2oprdlos.f77
-fi
-
 if [[ $POSTAPP = 'lam' ]]; then
     cp ${PATHRT}/parm/post_itag_fv3lam itag
     cp ${PATHRT}/parm/postxconfig-NT-fv3lam.txt postxconfig-NT.txt
