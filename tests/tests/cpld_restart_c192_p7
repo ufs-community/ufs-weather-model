@@ -88,7 +88,7 @@ export OCNRES=050
 export ICERES=0.50
 export NX_GLB=720
 export NY_GLB=576
-export NPROC_ICE=24
+export NPROC_ICE=$NPROC_ICE_cpl_c192
 export np2=`expr $NPROC_ICE / 2`
 export BLCKX=`expr $NX_GLB / $np2`
 export BLCKY=`expr $NY_GLB / 2`
@@ -142,5 +142,11 @@ export USE_RESTART_TIME=.true.
 
 # MOM6 warm start
 export MOM6_RESTART_SETTING=r
+
+export CPLWAV=.false.
+export CPLWAV2ATM=.false.
+export MOM6_USE_WAVES=False
+
+export NEMS_CONFIGURE=nems.configure.cpld.IN
 
 export FV3_RUN=cpld_control_run.IN
