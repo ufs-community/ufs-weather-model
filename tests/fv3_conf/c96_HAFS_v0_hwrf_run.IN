@@ -21,15 +21,6 @@ else
   exit 1
 fi
 
-cp    @[INPUTDATA_ROOT]/FV3_input_data/INPUT/aerosol.dat .
-cp    @[INPUTDATA_ROOT]/FV3_input_data/INPUT/co2historicaldata_201*.txt .
-cp    @[INPUTDATA_ROOT]/FV3_input_data/INPUT/sfc_emissivity_idx.txt .
-cp    @[INPUTDATA_ROOT]/FV3_input_data/INPUT/solarconstant_noaa_an.txt .
-cp    @[INPUTDATA_ROOT]/FV3_input_data/ozprdlos_2015_new_sbuvO3_tclm15_nuchem.f77 ./global_o3prdlos.f77
-cp    @[INPUTDATA_ROOT]/FV3_input_data/global_h2o_pltc.f77 ./global_h2oprdlos.f77
-cp    @[INPUTDATA_ROOT]/FV3_input_data/*grb .
-
-
 # Thompson or F-A MP lookup tables
 if [ $IMP_PHYSICS = 8 ]; then
   cp @[INPUTDATA_ROOT]/FV3_input_data_gsd/qr_acr_qsV2.dat .

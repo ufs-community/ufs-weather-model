@@ -2,18 +2,6 @@
 inputdir=FV3_input_data_L149
 mkdir INPUT RESTART
 cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT/* ./INPUT
-cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/aerosol.dat .
-cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/co2historicaldata_201*.txt .
-cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/sfc_emissivity_idx.txt .
-cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/solarconstant_noaa_an.txt .
-if [ $OZ_PHYS_NEW = .true. ]; then
-  cp  @[INPUTDATA_ROOT]/${inputdir}/ozprdlos_2015_new_sbuvO3_tclm15_nuchem.f77 ./global_o3prdlos.f77
-elif [ $OZ_PHYS_OLD = .true. ]; then
-cp    @[INPUTDATA_ROOT]/${inputdir}/INPUT/global_o3prdlos.f77 .
-fi
-if [ $H2O_PHYS = .true. ]; then
-  cp  @[INPUTDATA_ROOT]/FV3_input_data/global_h2o_pltc.f77 ./global_h2oprdlos.f77
-fi
 cp    @[INPUTDATA_ROOT]/${inputdir}/*grb .
 
 if [ $CPLWAV = .true. ]; then

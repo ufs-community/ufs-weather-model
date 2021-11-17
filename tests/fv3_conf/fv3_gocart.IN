@@ -6,16 +6,7 @@ else
   mkdir INPUT RESTART
   cp -r @[INPUTDATA_ROOT]/FV3_input_data/RESTART/* ./INPUT
 fi
-cp    @[INPUTDATA_ROOT]/FV3_input_data/INPUT/aerosol.dat .
-cp    @[INPUTDATA_ROOT]/FV3_input_data/INPUT/co2historicaldata_201*.txt .
-cp    @[INPUTDATA_ROOT]/FV3_input_data/INPUT/sfc_emissivity_idx.txt .
-cp    @[INPUTDATA_ROOT]/FV3_input_data/INPUT/solarconstant_noaa_an.txt .
-cp    @[INPUTDATA_ROOT]/FV3_input_data/INPUT/global_o3prdlos.f77 .
 cp    @[INPUTDATA_ROOT]/FV3_input_data/*grb .
-cp    @[INPUTDATA_ROOT]/FV3_input_data/*_table .
-##cp    @[INPUTDATA_ROOT]/FV3_input_data/diag_table_gfdlmp diag_table
-cp    @[INPUTDATA_ROOT]/FV3_input_data/diag_table_aod diag_table
-cp    @[INPUTDATA_ROOT]/FV3_input_data/field_table_gfdlmp field_table
 cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/MERRA2/merra2C.aerclim.2003-2014.*nc .
 for n in 01 02 03 04 05 06 07 08 09 10 11 12; do
 ln -sf merra2C.aerclim.2003-2014.m${n}.nc  aeroclim.m${n}.nc

@@ -140,6 +140,17 @@ if [[ "Q${FIELD_TABLE:-}" != Q ]] ; then
   cp ${PATHRT}/parm/field_table/${FIELD_TABLE} field_table
 fi
 
+# fix files
+if [[ $FV3 == true ]]; then
+  cp ${INPUTDATA_ROOT}/FV3_fix/*.txt .
+  cp ${INPUTDATA_ROOT}/FV3_fix/*.f77 .
+  cp ${INPUTDATA_ROOT}/FV3_fix/*.dat .
+  cp ${INPUTDATA_ROOT}/FV3_fix/fix_co2_proj/* .
+  if [[ $TILEDFIX != .true. ]]; then
+    cp ${INPUTDATA_ROOT}/FV3_fix/*.grb .
+  fi
+fi
+
 # Field Dictionary
 cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
 
