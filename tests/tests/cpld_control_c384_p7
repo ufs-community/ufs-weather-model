@@ -80,7 +80,7 @@ export OCNRES=025
 export ICERES=0.25
 export NX_GLB=1440
 export NY_GLB=1080
-export NPROC_ICE=48
+export NPROC_ICE=$NPROC_ICE_cpl_c384
 export np2=`expr $NPROC_ICE / 2`
 export BLCKX=`expr $NX_GLB / $np2`
 export BLCKY=`expr $NY_GLB / 2`
@@ -117,5 +117,11 @@ export FNVMNC="'C384.vegetation_greenness.tileX.nc'"
 export FNVMXC="'C384.vegetation_greenness.tileX.nc'"
 export FNSLPC="'C384.slope_type.tileX.nc'"
 export FNABSC="'C384.maximum_snow_albedo.tileX.nc'"
+
+export CPLWAV=.false.
+export CPLWAV2ATM=.false.
+export MOM6_USE_WAVES=False
+
+export NEMS_CONFIGURE=nems.configure.cpld.IN
 
 export FV3_RUN=cpld_control_run.IN
