@@ -497,68 +497,102 @@ The WW3 version number in mod_def.<grd> files must be consistent with version of
 .. _WW3_FixFiles:
 
 .. list-table:: *Input files containing grid information and conservative remapping for global configurations (GFSv16 Wave)*
-   :widths: 35 35 25
+   :widths: 35 35 25 10 10
    :header-rows: 1
 
    * - Filename
      - Description
-     - Resolution
+     - Spatial Resolution
+     - nFreq
+     - nDir
    * - mod_def.aoc_9km
      - Antarctic Ocean PolarStereo [50N 90N]
      - 9km
+     - 50
+     - 36
    * - mod_def.gnh_10m
      - Global mid core [15S 52N]
      - 10 min
+     - 50
+     - 36
    * - mod_def.gsh_15m
      - southern ocean [79.5S 10.5S]
      - 15 min
+     - 50
+     - 36
    * - mod_def.glo_15mxt
      - Global 1/4 extended grid [90S 90S]
      - 15 min
+     - 36
+     - 24
    * - mod_def.points
      - GFSv16-wave spectral grid point output
      - na
-   * - mod_def.points
-     - GFSv16-wave spectral grid point output
+     - na
      - na
    * - rmp_src_to_dst_conserv_002_001.nc
      - Conservative remapping gsh_15m to gnh_10m
      - na
+     - na
+     - na
    * - rmp_src_to_dst_conserv_003_001.nc
      - Conservative remapping aoc_9km to gnh_10m
+     - na
+     - na
      - na
 
 
 .. _WW3_FixFilesp:
 
 .. list-table:: *Input grid information for single global/regional configurations*
-   :widths: 30 50 20
+   :widths: 30 50 20 10 10
    :header-rows: 1
 
    * - Filename
      - Description
-     - Resolution
+     - Spatial Resolution
+     - nFreq
+     - nDir
    * - mod_def.ant_9km
      - Regional polar stereo antarctic grid [90S 50S]
      - 9km
+     - 36
+     - 24
    * - mod_def.glo_10m
      - Global grid [80S 80N]
      - 10 min
+     - 36
+     - 24
    * - mod_def.glo_30m
      - Global grid [80S 80N]
      - 30 min
+     - 36
+     - 36
    * - mod_def.glo_1deg
      - Global grid [85S 85N]
      - 1 degree
+     - 25
+     - 24
    * - mod_def.glo_2deg
      - Global grid [85S 85N]
      - 2 degree
+     - 20
+     - 18
+   * - mod_def.glo_5deg
+     - Global grid [85S 85N]
+     - 5 degree
+     - 18
+     - 12
    * - mod_def.glo_gwes_30m
      - Global NAWES 30 min wave grid [80S 80N]
      - 30 min
+     - 36
+     - 36
    * - mod_def.natl_6m
      - Regional North Atlantic Basin [1.5N 45.5N; 98W 8W]
      - 6 min
+     - 50
+     - 36
 
 Coupled regional configurations require forcing files to fill regions that cannot be interpolated from the atmospheric component. For a list of forcing files used to fill unmapped data points see :numref:`Table %s <WW3_ForcingFiles>`.
 
