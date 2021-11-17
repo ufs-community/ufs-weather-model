@@ -18,6 +18,11 @@ else
   ICE_IC=@[INPUTDATA_ROOT]/CICE_IC/${OCNRES}
 fi
 
+# RRTMGP
+if [ $DO_RRTMGP = .true. ]; then
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_RRTMGP/* .
+fi
+
 # FV3 fixed input
 cp    @[INPUTDATA_ROOT_BMIC]/FV3_fix/INPUT/co2historicaldata_201*.txt .
 cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/aerosol.dat .
