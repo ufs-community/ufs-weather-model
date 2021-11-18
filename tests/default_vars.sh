@@ -1023,6 +1023,7 @@ export use_mommesh=true
 export RUNTYPE=startup
 export CICERUNTYPE=initial
 export eps_imesh=1.0e-1
+export ATMTILESIZE=`expr $NPX - 1`
 
 # FV3 defaults
 export FRAC_GRID=.true.
