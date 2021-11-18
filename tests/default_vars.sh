@@ -508,8 +508,7 @@ export LRADAR=.true.
 export LTAEROSOL=.true.
 export EXT_DIAG_THOMPSON=.false.
 export sedi_semi=.false.
-export sedi_semi_update=.false.
-export sedi_semi_decfl=.false.
+export decfl=8
 
 # GWD
 export LDIAG_UGWP=.false.
