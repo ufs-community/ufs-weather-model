@@ -95,7 +95,6 @@ export BLCKY=`expr $NY_GLB / 2`
 
 # resolution dependent setting
 export CDMBWD=${CDMBWD_c384}
-export RCELL=${RCELL_c384}
 
 # set component and coupling timesteps
 export DT_ATMOS=300
@@ -134,7 +133,16 @@ export MOM6_USE_WAVES=True
 export MOM6_RIVER_RUNOFF=True
 export MOM6_RESTART_SETTING=r
 
-export ww3gline="'gwes_30m' 'no' 'CPL:native' 'CPL:native' 'CPL:native' 'no' 'no' 'no' 'no' 'no'  1  1  0.00 1.00  F"
+export WW3GRIDLINE="'gwes_30m' 'no' 'CPL:native' 'CPL:native' 'CPL:native' 'no' 'no' 'no' 'no' 'no'  1  1  0.00 1.00  F"
 export WW3RSTDTHR=${FHMAX}
+export DT_2_RST="$(printf "%02d" $(( ${WW3RSTDTHR}*3600 )))"
+export RUN_BEG="${SYEAR}${SMONTH}${SDAY} $(printf "%02d" $(( ${SHOUR}  )))0000"
+export RUN_END="2100${SMONTH}${SDAY} $(printf "%02d" $(( ${SHOUR}  )))0000"
+export OUT_BEG=$RUN_BEG
+export OUT_END=$RUN_END
+export RST_BEG=$RUN_BEG
+export RST_2_BEG=$RUN_BEG
+export RST_END=$RUN_END
+export RST_2_END=$RUN_END
 
 export FV3_RUN=cpld_control_run.IN
