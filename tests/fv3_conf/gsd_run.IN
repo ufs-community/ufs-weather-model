@@ -1,12 +1,25 @@
 rm -fr INPUT RESTART
 mkdir INPUT RESTART
+
+OPNREQ_TEST=${OPNREQ_TEST:-false}
+SUFFIX=${RT_SUFFIX}
 if [ $WARM_START = .false. ]; then
   cp -r @[INPUTDATA_ROOT]/FV3_input_data_gsd/FV3_input_data_C96_with_aerosols/* INPUT/
 else
+  if [[ ${OPNREQ_TEST} == true ]]; then
+    SUFFIX=${BL_SUFFIX}
+  fi
+
   cp -r @[INPUTDATA_ROOT]/FV3_input_data_gsd/FV3_input_data_C96_with_aerosols/grid_spec*.nc INPUT/
   cp -r @[INPUTDATA_ROOT]/FV3_input_data_gsd/FV3_input_data_C96_with_aerosols/C96_grid*.nc INPUT/
   cp -r @[INPUTDATA_ROOT]/FV3_input_data_gsd/FV3_input_data_C96_with_aerosols/oro_data*.nc INPUT/
-  cp ../fv3_gsd_coldstart${RT_SUFFIX}/RESTART/* INPUT/
+  #cp ../fv3_gsd_coldstart${RT_SUFFIX}/RESTART/* INPUT/
+  cp -r ../${DEP_RUN}${SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.* ./INPUT
+  for RFILE in INPUT/${RESTART_FILE_PREFIX}.*; do
+    [ -e $RFILE ] || exit 1
+    RFILE_OLD=$(basename $RFILE)
+    mv -f $RFILE INPUT/"${RFILE_OLD//${RESTART_FILE_PREFIX}./}"
+  done
 fi
 
 cp    @[INPUTDATA_ROOT]/FV3_input_data/INPUT/aerosol.dat .
