@@ -15,10 +15,10 @@ cleanup() {
 }
 
 write_fail_test() {
-  if [[ ${UNIT_TEST} == true ]]; then
-    echo compile ${COMPILE_NR} >> $PATHRT/fail_unit_test
+  if [[ ${OPNREQ_TEST} == true ]]; then
+    echo compile ${COMPILE_NR} >> $PATHRT/fail_opnreq_test
   else
-    echo "compile_${COMPILE_NR} failed in run_compile" >> $PATHRT/fail_test
+    echo "compile_${COMPILE_NR} failed in run_compile" >> $PATHRT/fail_compile_${COMPILE_NR}
   fi
   exit 1
 }
@@ -34,6 +34,7 @@ export MAKE_OPT=$3
 export COMPILE_NR=$4
 
 cd ${PATHRT}
+rm -rf fail_compile_${COMPILE_NR}
 
 [[ -e ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env ]] && source ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env
 source default_vars.sh
@@ -49,6 +50,7 @@ echo -n "${JBNME}, $( date +%s )," > ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
 source rt_utils.sh
 source atparse.bash
 
+rm -rf ${RUNDIR}
 mkdir -p ${RUNDIR}
 cd $RUNDIR
 

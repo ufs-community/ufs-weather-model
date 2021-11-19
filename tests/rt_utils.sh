@@ -5,7 +5,7 @@ if [[ "$0" = "${BASH_SOURCE[0]}" ]]; then
   exit 1
 fi
 
-UNIT_TEST=${UNIT_TEST:-false}
+OPNREQ_TEST=${OPNREQ_TEST:-false}
 
 qsub_id=0
 slurm_id=0
@@ -201,13 +201,13 @@ submit_and_wait() {
   done
 
   if [[ $test_status = 'FAIL' ]]; then
-    if [[ ${UNIT_TEST} == false ]]; then
-      echo "${TEST_NAME} ${TEST_NR} failed" >> $PATHRT/fail_test
+    if [[ ${OPNREQ_TEST} == false ]]; then
+      echo "${TEST_NAME} ${TEST_NR} failed" >> $PATHRT/fail_test_${TEST_NR}
       echo "Test ${TEST_NR} ${TEST_NAME} FAIL" >> ${REGRESSIONTEST_LOG}
       echo;echo;echo                           >> ${REGRESSIONTEST_LOG}
       echo "Test ${TEST_NR} ${TEST_NAME} FAIL"
     else
-      echo ${TEST_NR} $TEST_NAME >> $PATHRT/fail_unit_test
+      echo ${TEST_NR} $TEST_NAME >> $PATHRT/fail_opnreq_test
     fi
 
     if [[ $ROCOTO == true || $ECFLOW == true ]]; then
@@ -331,16 +331,22 @@ check_results() {
   grep "The total amount of wall time" ${RUNDIR}/out >> ${REGRESSIONTEST_LOG}
   echo                                               >> ${REGRESSIONTEST_LOG}
 
-  echo "Test ${TEST_NR} ${TEST_NAME} ${test_status}" >> ${REGRESSIONTEST_LOG}
-  echo                                               >> ${REGRESSIONTEST_LOG}
-  echo "Test ${TEST_NR} ${TEST_NAME} ${test_status}"
+  TRIES=''
+  if [[ $ECFLOW == true ]]; then
+    if [[ $ECF_TRYNO -gt 1 ]]; then
+      TRIES=" Tries: $ECF_TRYNO"
+    fi
+  fi
+  echo "Test ${TEST_NR} ${TEST_NAME} ${test_status}${TRIES}" >> ${REGRESSIONTEST_LOG}
+  echo                                                       >> ${REGRESSIONTEST_LOG}
+  echo "Test ${TEST_NR} ${TEST_NAME} ${test_status}${TRIES}"
   echo
 
   if [[ $test_status = 'FAIL' ]]; then
-    if [[ ${UNIT_TEST} == false ]]; then
-      echo "${TEST_NAME} ${TEST_NR} failed in check_result" >> $PATHRT/fail_test
+    if [[ ${OPNREQ_TEST} == false ]]; then
+      echo "${TEST_NAME} ${TEST_NR} failed in check_result" >> $PATHRT/fail_test_${TEST_NR}
     else
-      echo ${TEST_NR} $TEST_NAME >> $PATHRT/fail_unit_test
+      echo ${TEST_NR} $TEST_NAME >> $PATHRT/fail_opnreq_test
     fi
 
     if [[ $ROCOTO = true || $ECFLOW == true ]]; then
@@ -521,7 +527,7 @@ EOF
   echo "      label job_status ''" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   echo "      inlimit max_jobs" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   if [[ $DEP_RUN != '' ]]; then
-    if [[ ${UNIT_TEST} == false ]]; then
+    if [[ ${OPNREQ_TEST} == false ]]; then
       echo "      trigger compile_${COMPILE_NR} == complete and ${DEP_RUN}${RT_SUFFIX} == complete" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
     else
       echo "      trigger compile_${COMPILE_NR} == complete and ${DEP_RUN} == complete" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
