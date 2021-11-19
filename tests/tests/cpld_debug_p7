@@ -63,4 +63,27 @@ export FHMAX=6
 export RESTART_N=${FHMAX}
 export eps_imesh=2.5e-1
 
+export TASKS=$TASKS_cpl_c96
+export TPN=$TPN_cpl_c96
+export INPES=$INPES_cpl_c96
+export JNPES=$JNPES_cpl_c96
+export THRD=$THRD_cpl_c96
+export WRTTASK_PER_GROUP=$WPG_cpl_c96
+
+export NPROC_ICE=$NPROC_ICE_cpl_c96
+export np2=`expr $NPROC_ICE / 2`
+export BLCKX=`expr $NX_GLB / $np2`
+export BLCKY=`expr $NY_GLB / 2`
+
+export med_petlist_bounds=$MPB_cpl_c96
+export atm_petlist_bounds=$APB_cpl_c96
+export ocn_petlist_bounds=$OPB_cpl_c96
+export ice_petlist_bounds=$IPB_cpl_c96
+
+export CPLWAV=.false.
+export CPLWAV2ATM=.false.
+export MOM6_USE_WAVES=False
+
+export NEMS_CONFIGURE=nems.configure.cpld.IN
+
 export FV3_RUN=cpld_control_run.IN
