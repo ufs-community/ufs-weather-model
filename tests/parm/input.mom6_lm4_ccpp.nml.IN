@@ -1,0 +1,635 @@
+&atmos_model_nml
+       blocksize = 32
+       chksum_debug = .false.
+       dycore_only = .false.
+       ccpp_suite = '@[CCPP_SUITE]'
+/
+
+&diag_manager_nml
+       prepend_date = .false.
+/
+
+&fms_io_nml
+       checksum_required   = .false.
+       max_files_r = 100,
+       max_files_w = 100,
+/
+
+&fms_nml
+       clock_grain = 'ROUTINE',
+       domains_stack_size = 3000000,
+       print_memory_usage = .false.
+/
+
+&fv_grid_nml
+       grid_file = 'INPUT/grid_spec.nc'
+/
+
+&fv_core_nml
+       layout   = @[INPES],@[JNPES]
+       io_layout = 1,1
+       npx      = @[NPX]
+       npy      = @[NPY]
+       ntiles   = 6,
+       npz    = @[NPZ]
+       dz_min = @[DZ_MIN]
+       grid_type = -1
+       make_nh = @[MAKE_NH]
+       fv_debug = .false.
+       range_warn = .false.
+       reset_eta = .false.
+       n_sponge = 24
+       nudge_qv = .true.
+       tau = 5.
+       rf_cutoff = 7.5e2
+       d2_bg_k1 = 0.15
+       d2_bg_k2 = 0.02
+       kord_tm = -9
+       kord_mt =  9
+       kord_wz =  9
+       kord_tr =  9
+       hydrostatic = .false.
+       phys_hydrostatic = .false.
+       use_hydro_pressure = .false.
+       beta = 0.
+       a_imp = 1.
+       p_fac = 0.1
+       k_split  = 2
+       n_split  = 6
+       nwat = 2
+       na_init = @[NA_INIT]
+       d_ext = 0.0
+       dnats = 0
+       fv_sg_adj = 450
+       d2_bg = 0.
+       nord =  2
+       dddmp = 0.1
+       d4_bg = 0.12
+       vtdm4 = 0.02
+       delt_max = 0.002
+       ke_bg = 0.
+       do_vort_damp = .true.
+       external_ic = @[EXTERNAL_IC]
+       external_eta = .true.
+       gfs_phil = .false.
+       nggps_ic = @[NGGPS_IC]
+       mountain = @[MOUNTAIN]
+       ncep_ic = .false.
+       d_con = 1.
+       hord_mt =  6
+       hord_vt =  6
+       hord_tm =  6
+       hord_dp =  6
+       hord_tr = 8
+       adjust_dry_mass = .false.
+       consv_te = 1.
+       consv_am = .false.
+       fill = .true.
+       dwind_2d = .false.
+       print_freq = 6
+       warm_start = @[WARM_START]
+       no_dycore = .false.
+       z_tracer = .true.
+       read_increment = @[READ_INCREMENT]
+       res_latlon_dynamics = "fv3_increment.nc"
+/
+
+#&coupler_nml
+#       months = 0
+#       days  = 1
+#       hours = 0
+#       dt_atmos = 225
+#       dt_ocean = 225
+#       current_date =  2016,10,03,00,0,0
+#       calendar = 'julian'
+#       memuse_verbose = .false.
+#       atmos_nthreads = 1
+#       use_hyper_thread = .false.
+#       ncores_per_node = 24
+#/
+
+&external_ic_nml
+       filtered_terrain = .true.
+       levp = @[NPZP]
+       gfs_dwinds = .true.
+       checker_tr = .false.
+       nt_checker = 0
+/
+
+&gfs_physics_nml
+       fhzero         = 6.
+       ldiag3d        = .false.
+       fhcyc          = 24.
+       nst_anl        = .true.
+       use_ufo        = .true.
+       pre_rad        = .false.
+       imp_physics    = 99
+       pdfcld         = .false.
+       fhswr          = 3600.
+       fhlwr          = 3600.
+       ialb           = 1
+       iems           = 1
+       IAER           = 111
+       ico2           = 2
+       isubc_sw       = 2
+       isubc_lw       = 2
+       isol           = 2
+       lwhtr          = .true.
+       swhtr          = .true.
+       cnvgwd         = .true.
+       shal_cnv       = .true.
+       cal_pre        = .true.
+       redrag         = .true.
+       dspheat        = .true.
+       hybedmf        = @[HYBEDMF]
+       satmedmf       = @[SATMEDMF]
+       lheatstrg      = @[LHEATSTRG]
+       lseaspray      = @[LSEASPRAY]
+       random_clds    = .true.
+       trans_trac     = .false.
+       cnvcld         = .true.
+       imfshalcnv     = 2
+       imfdeepcnv     = 2
+       isatmedmf      = @[ISATMEDMF]
+       cdmbgwd        = @[CDMBWD]
+       prslrd0        = 0.
+       ivegsrc        = 1
+       isot           = 1
+       lsm            = 1
+       iopt_dveg      = 2
+       iopt_crs       = 1
+       iopt_btr       = 1
+       iopt_run       = 1
+       iopt_sfc       = 1
+       iopt_frz       = 1
+       iopt_inf       = 1
+       iopt_rad       = 1
+       iopt_alb       = 2
+       iopt_snf       = 4
+       iopt_tbot      = 2
+       iopt_stc       = 1
+       debug          = .false.
+       oz_phys        = @[OZ_PHYS_OLD]
+       oz_phys_2015   = @[OZ_PHYS_NEW]
+       h2o_phys       = @[H2O_PHYS]
+       nstf_name      = @[NSTF_NAME]
+       frac_grid      = @[FRAC_GRID]
+       cplflx         = @[CPLFLX]
+       cplwav         = @[CPLWAV]
+       cplwav2atm     = @[CPLWAV2ATM]
+       min_seaice     = @[MIN_SEAICE]
+       iau_delthrs    = 6
+       iaufhrs        = 30
+       iau_inc_files  = @[IAU_INC_FILES]
+       iau_drymassfixer = @[IAU_DRYMASSFIXER]
+       do_sppt        = @[DO_SPPT]
+       do_shum        = @[DO_SHUM]
+       do_skeb        = @[DO_SKEB]
+       lndp_type      = @[LNDP_TYPE]
+       n_var_lndp     = @[N_VAR_LNDP]
+       do_ca          = @[DO_CA]
+       ca_sgs         = @[CA_SGS]
+       ca_global      = @[CA_GLOBAL]
+       scells         = 2600
+       tlives         = 1800
+       nseed          = 1000000
+       nfracseed      = 0.5
+       rcell          = 0.72
+       ca_trigger     = .true.
+       ca_entr	      = .false.
+       ca_closure     = .false.
+       nca_g          = 1
+       ncells_g       = 1
+       nlives_g       = 100
+       nseed_g        = 100
+       ca_smooth      = .false.
+       nspinup        = 100
+       iseed_ca       = 1
+       nsmooth        = 1
+       ca_amplitude   = 0.5
+/
+
+&interpolator_nml
+       interp_method = 'conserve_great_circle'
+/
+
+&namsfc
+       FNGLAC   = "global_glacier.2x2.grb",
+       FNMXIC   = "global_maxice.2x2.grb",
+       FNTSFC   = "RTGSST.1982.2012.monthly.clim.grb",
+       FNSNOC   = "global_snoclim.1.875.grb",
+       FNZORC   = "igbp",
+       FNALBC   = @[FNALBC]
+       FNALBC2  = "global_albedo4.1x1.grb",
+       FNAISC   = "CFSR.SEAICE.1982.2012.monthly.clim.grb",
+       FNTG3C   = "global_tg3clim.2.6x1.5.grb",
+       FNVEGC   = "global_vegfrac.0.144.decpercent.grb",
+       FNVETC   = @[FNVETC]
+       FNSOTC   = @[FNSOTC]
+       FNSMCC   = @[FNSMCC]
+       FNMSKH   = "global_slmask.t1534.3072.1536.grb",
+       FNTSFA   = "",
+       FNACNA   = "",
+       FNSNOA   = "",
+       FNVMNC   = "global_shdmin.0.144x0.144.grb",
+       FNVMXC   = "global_shdmax.0.144x0.144.grb",
+       FNSLPC   = "global_slope.1x1.grb",
+       FNABSC   = @[FNABSC]
+       LDEBUG   =.false.,
+       FSMCL(2) = 99999
+       FSMCL(3) = 99999
+       FSMCL(4) = 99999
+       FTSFS    = 90
+       FAISS    = 99999
+       FSNOL    = 99999
+       FSICL    = 99999
+       FTSFL    = 99999,
+       FAISL    = 99999,
+       FVETL    = 99999,
+       FSOTL    = 99999,
+       FvmnL    = 99999,
+       FvmxL    = 99999,
+       FSLPL    = 99999,
+       FABSL    = 99999,
+       FSNOS    = 99999,
+       FSICS    = 99999,
+/
+&nam_stochy
+  SKEBNORM=1,
+  SKEB_NPASS=30,
+  SKEB_VDOF=5,
+  SKEB=@[SKEB],
+  SKEB_TAU=2.16E4,
+  SKEB_LSCALE=1000.E3,
+  SHUM=@[SHUM],
+  SHUM_TAU=21600,
+  SHUM_LSCALE=500000,
+  SPPT=@[SPPT],
+  SPPT_TAU=21600,
+  SPPT_LSCALE=500000,
+  SPPT_LOGIT=.TRUE.,
+  SPPT_SFCLIMIT=.TRUE.,
+  ISEED_SHUM=1,
+  ISEED_SKEB=2,
+  ISEED_SPPT=3,
+/
+&nam_sfcperts
+  lndp_type      = @[LNDP_TYPE]
+  LNDP_TAU=21600,
+  LNDP_LSCALE=500000,
+  ISEED_LNDP=2010,
+/
+
+&cires_ugwp_nml
+       knob_ugwp_solver  = 2
+       knob_ugwp_source  = 1,1,0,0
+       knob_ugwp_wvspec  = 1,25,25,25
+       knob_ugwp_azdir   = 2,4,4,4
+       knob_ugwp_stoch   = 0,0,0,0
+       knob_ugwp_effac   = 1,1,1,1
+       knob_ugwp_doaxyz  = 1
+       knob_ugwp_doheat  = 1
+       knob_ugwp_dokdis  = 1
+       knob_ugwp_ndx4lh  = 1
+       knob_ugwp_version = 0
+       launch_level      = 25
+/
+&MOM_input_nml
+         output_directory = 'MOM6_OUTPUT/',
+         input_filename = '@[MOM6_RESTART_SETTING]'
+         restart_input_dir = 'INPUT/',
+         restart_output_dir = 'RESTART/',
+         parameter_filename = 'INPUT/MOM_input',
+                              'INPUT/MOM_override' /
+&lm4_nml
+        grid = 'CS'
+        layout = 2,4
+        npx = 97
+        npy = 97
+        ntiles = 6
+        isot = 1
+        ivegsrc =1
+        blocksize = -1
+/
+
+&glac_data_nml
+       input_cover_types = 99
+       use_lm2_awc = .true.,
+       rsa_exp_global = 10.,
+       f_iso_cold = 0.92, 0.58
+       f_vol_cold = 0.06, 0.08
+       f_geo_cold = 0.00, 0.00
+       f_iso_warm = 0.92, 0.58
+       f_vol_warm = 0.06, 0.08
+       f_geo_warm = 0.00, 0.00
+       dat_emis_dry = 1.,
+       dat_emis_sat = 1.,
+       geothermal_heat_flux_constant = 0.065
+/
+
+&glac_nml
+       conserve_glacier_mass = .true.
+       lm2 = .true.
+       albedo_to_use = 'brdf-params'
+/
+
+&harvesting_nml
+       do_harvesting          =.true.
+       grazing_intensity      = 18.25 ! roughly 5% of biomass per day
+       grazing_residue        = 0.1
+       grazing_frequency      = 'daily'
+       min_lai_for_grazing    = 1.0
+       frac_wood_wasted_harv  = 0.25
+       frac_wood_wasted_clear = 0.25
+       !frac_wood_fast         = ONETHIRD
+       !frac_wood_med          = ONETHIRD
+       !frac_wood_slow         = ONETHIRD
+       crop_seed_density      = 0.1
+       waste_below_ground_wood = .TRUE.
+/
+
+&hlsp_nml
+       max_num_topo_hlsps = 1
+       num_vertclusters = 10
+       use_geohydrodata = .true.
+       strm_depth_penetration = 1.5
+       use_hlsp_aspect_in_gwflow = .true.
+       diagnostics_by_cluster = .true.
+       init_wt_strmelev = .false.
+       dammed_strm_bc = .true.
+       limit_intertile_flow = .true. !.false.
+       flow_ratio_limit = 0.25
+/
+
+&ice_albedo_nml
+       t_range = 10.
+/
+
+&ice_model_nml
+       interp_method = 'bilinear'
+/
+
+&lake_data_nml
+       lake_to_use = 'from-rivers'
+       lake_specific_width = .false.
+       large_lake_sill_width = 800.
+       num_l = 20,
+       dat_emis_dry = 1.,
+       dat_emis_sat = 1.,
+       dat_heat_capacity_ref = 0.,
+       f_iso_liq = 0.025, 0.01
+       f_iso_ice = 0.025, 0.01
+       f_vol_liq = 0., 0.
+       f_vol_ice = 0., 0.
+       f_geo_liq = 0., 0.
+       f_geo_ice = 0., 0.
+       dry_lake_depth_frac = 0.5
+       dat_z0_momentum(1)     = 1.4e-4
+       dat_z0_momentum_ice(1) = 1.4e-4
+       k_over_B_ice           = 0.25
+       geothermal_heat_flux_constant = 0.065
+/
+
+&lake_nml
+       albedo_to_use = 'brdf-params'
+       float_ice_to_top = .true.
+       lake_depth_max = 1.e10
+       max_plain_slope = 16.e-5
+       K_z_background  = 15.e-5
+/
+
+&land_conservation_nml
+        do_check_conservation = .FALSE.
+/
+
+&land_debug_nml
+       watch_point = 0, 0, 0, 1
+/
+
+&land_model_nml
+       ! layout = $lnd_layout
+       ! io_layout = $lnd_io_layout
+       tau_snow_T_adj = 604800.
+       prohibit_negative_canopy_water=.false.
+       min_frac = 1e-8
+       npes_io_group = 18
+/
+
+&landuse_nml
+       do_landuse_change = .false.
+       data_type   = 'luh2'
+       input_file  = '/lustre/f2/pdata/gfdl/cmip6/datasets/CM4/forcings/landuse/LUH2/v2.0h/transitions.nc'
+       state_file  = '/lustre/f2/pdata/gfdl/cmip6/datasets/CM4/forcings/landuse/LUH2/v2.0h/states.nc'
+       static_file = '/lustre/f2/pdata/gfdl/cmip6/datasets/CM4/forcings/landuse/LUH2/v2.0h/landfrac.nc'
+       distribute_transitions = 'min-n-tiles'
+/
+
+&monin_obukhov_nml
+       stable_option = 2,
+       rich_crit = 1.0,
+       zeta_trans = 0.5
+/
+
+&photosynthesis_nml
+       photosynthesis_to_use = 'leuning'
+       co2_to_use_for_photosynthesis ='prescribed'    ! slm/jgj 2016/12/16 ok to set to interactive
+       co2_for_photosynthesis = 284.262e-6             ! jgj  to match CMIP6 Jan 1 1850 co2 value
+       respiration_to_use = 'LM3'
+       Kok_effect = .False.
+       lai_eps=1.e-5
+/
+
+&river_nml
+       do_rivers   = .FALSE.
+       dt_slow     = 86400.
+       land_area_called_cellarea = .true.
+       all_big_outlet_ctn0 = .true.
+       ave_DHG_exp = 0.55, 0.45, 0.0
+       ave_DHG_coef = 7.5, 0.3, 0.444444444
+       ave_AAS_exp = 0.26, 0.40, 0.34
+/
+
+&river_physics_nml
+       lake_sfc_w_min = 10.
+       prohibit_cold_ice_outflow = .FALSE.
+/
+
+&sat_vapor_pres_nml
+       construct_table_wrt_liq = .true.
+       construct_table_wrt_liq_and_ice = .true.
+       use_exact_qs = .true.
+/
+
+&snow_data_nml
+       emis_snow_max = 1.
+       emis_snow_min = 1.
+       z0_momentum = 0.01
+       num_l = 5
+       dz = 0.05, 0.2, 0.5, 0.2, 0.05, 0.0, 0.0, 0.0, 0.0, 0.0
+       f_iso_cold = 0.92, 0.58
+       f_vol_cold = 0.06, 0.08
+       f_geo_cold = 0.00, 0.00
+       f_iso_warm = 0.77, 0.43
+       f_vol_warm = 0.06, 0.08
+       f_geo_warm = 0.00, 0.00
+       depth_crit = 0.0125
+       thermal_cond_ref = 0.09
+
+       distinct_snow_on_glacier = .TRUE.
+       f_iso_cold_on_glacier = 0.92, 0.68
+       f_vol_cold_on_glacier = 0.06, 0.08
+       f_geo_cold_on_glacier = 0.00, 0.00
+       f_iso_warm_on_glacier = 0.77, 0.43
+       f_vol_warm_on_glacier = 0.06, 0.08
+       f_geo_warm_on_glacier = 0.00, 0.00
+/
+
+&snow_nml
+       min_snow_mass = 1.e-7
+       albedo_to_use = 'brdf-params'
+       snow_density = 250.
+       prevent_tiny_snow = .true.
+/
+
+&soil_data_nml
+       geohydrology_to_use    = 'hill'
+       use_comp_for_ic        = .true.
+       use_comp_for_push      = .true.
+       use_tau_fix            = .false.
+       use_sat_fix            = .true.
+       use_alt3_soil_hydraulics = .true.
+       gw_scale_soil_depth  = 0.1666667
+       gw_scale_perm        = 1.0
+       gw_scale_relief      = 0.5
+       aspect           = 0.01
+       k0_macro_z       = 0.0
+       k0_macro_x       = 1.0
+       freeze_factor    = 1.5
+       comp             = 1e-4
+       num_l            = 20
+       dz = 0.020, 0.040, 0.040, 0.050, 0.05, 0.100, 0.10, 0.200, 0.200, 0.2,
+            0.40,  0.40,  0.40,  0.4,   0.4,   1.0,   1.0,  1.0,  1.5,   2.5
+       soil_type_file          = "INPUT/soil_type.nc"
+       input_cover_types       =  1,       2,       3,       4,       5,       6,       7,       8,       9,       10,      11,      12,      13,       14
+       tile_names              =  'hec',   'sic',   'lic',   'sicl',  'cl',    'si',    'sil',   'sac',   'l',     'sacl',  'sal',  'ls',     's',     'u'
+       dat_w_sat               =  0.468,   0.468,   0.468,   0.464,   0.465,   0.476,   0.476,   0.406,   0.439,   0.404,   0.434,   0.421,   0.339,   0.439
+       dat_k_sat_ref           =  0.00097, 0.0013,  0.00097, 0.002,   0.0024,  0.0028,  0.0028,  0.0072,  0.0033,  0.0045,  0.0052,  0.014,   0.047,   0.0033
+       dat_psi_sat_ref         = -0.47,   -0.32,   -0.47,   -0.62,   -0.26,   -0.76,   -0.76,   -0.098,  -0.35,   -0.13,   -0.14,   -0.036   -0.069,  -0.35
+       dat_chb                 =  12.0,    10.0,    12.0,    8.7,     8.2,     5.3,     5.3,     11.0,    5.2,     6.8,     4.7,     4.3,     2.8,     5.2
+       dat_heat_capacity_dry   =  1.1e6,   1.1e6,   1.1e6,   1.1e6,   1.1e6,   1.1e6,   1.1e6,   1.1e6,   1.1e6,   1.1e6,   1.1e6,   1.1e6,   1.1e6,   1.1e6
+       dat_thermal_cond_dry    =  0.21,    0.21,    0.21,    0.21,    0.21,    0.21,    0.21,    0.21,    0.21,    0.21,    0.21,    0.21,    0.14,    0.21
+       dat_thermal_cond_sat    =  1.5,     1.5,     1.5,     1.5,     1.5,     1.5,     1.5,     1.5,     1.5,     1.5,     1.5,     1.5,     2.3,     1.5
+       dat_thermal_cond_exp    =  6,       6,       6,       5,       5,       5,       5,       6,       5,       5,       5,       5,       3,       5
+       dat_thermal_cond_scale  =  10,      10,      10,      0.5,     0.5,     0.5,     0.5,     10,      0.5,     0.5,     0.5,     0.5,     15,      0.5
+       dat_thermal_cond_weight =  0.7,     0.7,     0.7,     0.7,     0.7,     0.7,     0.7,     0.7,     0.7,     0.7,     0.7,     0.7,     0.2,     0.7
+       dat_emis_dry            =  1.0,     1.0,     1.0,     1.0,     1.0,     1.0,     1.0,     1.0,     1.0,     1.0,     1.0,     1.0,     1.0,     1.0
+       dat_emis_sat            =  1.0,     1.0,     1.0,     1.0,     1.0,     1.0,     1.0,     1.0,     1.0,     1.0,     1.0,     1.0,     1.0,     1.0
+       dat_tf_depr             =  2.0,     2.0,     2.0,     2.0,     2.0,     2.0,     2.0,     2.0,     2.0,     2.0,     2.0,     2.0,     2.0,     2.0
+       dat_z0_momentum         =  0.01,    0.01,    0.01,    0.01,    0.01,    0.01,    0.01,    0.01,    0.01,    0.01,    0.01,    0.01,    0.01,    0.01
+       Dpsi_min_const      = -1.e12
+       K_min               = 1.e-12
+       geothermal_heat_flux_constant = 0.065
+       retro_a0N1 = .true.
+/
+
+&soil_nml
+       init_wtdep    = 10.
+       albedo_to_use = 'brdf-maps'
+       uptake_to_use = 'darcy2d-linearized'
+       uptake_oneway = .true.
+       active_layer_drainage_acceleration = 1.
+       gw_flux_max   = 0.001
+       lrunf_from_div = .false.
+       cold_infilt   = .false.
+       use_depth_to_wt_4 = .true.
+       layer_for_gw_switch = 16
+       bottom_up_cold_infilt = .true.
+       cold_depth = 3.0
+       bwood_macinf = 1.
+       allow_neg_wl = .true.
+       prohibit_negative_water_div = .true.
+       fix_neg_subsurface_wl = .TRUE.
+/
+
+&static_veg_nml
+       use_static_veg = .FALSE.
+       timeline   = 'loop'
+       start_loop = 1981, 1, 1, 0, 0, 0
+       end_loop   = 1982, 1, 1, 0, 0, 0
+       fill_land_mask = .TRUE.
+       write_static_veg = .FALSE.
+       input_file = 'INPUT/19810101.static_veg_out.nc'
+/
+
+&topo_rough_nml
+       use_topo_rough    = .true.
+       max_topo_rough    = 100.0
+       topo_rough_factor = 0.01
+       topo_rough_source = 'input',
+       topo_rough_file = 'INPUT/topo_rough_land.nc',
+/
+
+&topography_nml
+       topog_file = 'INPUT/navy_topography.data.nc'
+/
+
+&vegn_data_nml
+       vegn_to_use = 'uniform'
+       K1=10,
+       K2=0.1,
+       fsc_liv=0.9,
+       fsc_wood=0.45,
+       c1(4) = 0.3
+       c2(4) = 0.3
+       Vmax = 2.0E-5, 2.0E-5, 2.0E-5, 2.0E-5, 1.50E-5,
+       m_cond = 4., 9., 9., 7., 7.,
+       alpha_phot = 0.05, 0.06, 0.06, 0.06, 0.06,
+       gamma_resp = 0.03, 0.02, 0.02, 0.02, 0.02,
+       tc_crit(0:2) = 3*273.16
+       fact_crit_phen(0:4) = 0., 0., 0., 0., 0.
+       fact_crit_fire(0:4) = 0., 0., 0., 0., 0.
+       cnst_crit_phen(0:4) = 0.30, 0.15, 0.15, 0.30, 0.30
+       cnst_crit_fire(0:4) = 0.15,  0.40, 0.15, 0.15, 0.15
+       wet_leaf_dreg(0:4)  = .3, .3, .3, .3, .3
+       ksi =  0, 0, 0, 0, 0,
+       leaf_refl(0:4,1) = 0.11, 0.11, 0.10, 0.10, 0.10
+       leaf_refl(0:4,2) = 0.58, 0.58, 0.45, 0.45, 0.39,
+       dat_root_zeta(0:4) =   0.35212, 0.17039, 0.28909, 0.25813, 0.17039
+       critical_root_density = 0.0,
+       tau_drip_s     = 259200.0
+       cmc_lai(0:4) = 0.02, 0.02, 0.02, 0.02, 0.02
+       csc_lai(0:4) = 0.30, 0.30, 0.30, 0.30, 0.2
+       dat_snow_crit = 2*1.e7, .1, 1.e7, .1
+       t_transp_min = 268.
+       srl(0:1) = 112.0e3, 150.0e3
+       root_perm = 14*5e-7
+       alpha(1,3) = 4
+       leaf_age_tau(2) = 150
+       smoke_fraction = 0.9, 0.9, 0.6, 0.6, 0.6
+       tg_c3_thresh = 1
+       phen_ev1 = 0.2
+       phen_ev2 = 0.7
+       cmc_eps = 0.01
+       alpha(0:4,6) = 0.0, 0.0, 0.012, 0.012, 0.012
+       treefall_disturbance_rate = 0.175, 0.185, 0.025, 0.0275, 0.027
+       use_light_saber = .true.
+       sai_cover = .true.
+       sai_rad = .true.
+
+       min_lai = 1.e-5   ! h1g, prevent numerical instability, 2017-08-24
+/
+
+&vegn_nml
+       init_Tv = 288.0
+       rad_to_use = 'two-stream'
+       snow_rad_to_use = 'paint-leaves'
+       do_cohort_dynamics   = .TRUE.
+       do_patch_disturbance = .TRUE.
+       do_phenology         = .TRUE.
+       do_biogeography      = .TRUE.
+       do_seed_transport    = .TRUE.
+       tau_smooth_ncm = 22.0
+       rav_lit_bwood = 300.
+/
+
+
