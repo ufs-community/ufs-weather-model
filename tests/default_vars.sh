@@ -293,6 +293,17 @@ elif [[ $MACHINE_ID = linux.* ]]; then
   TASKS_cpl_c96=192; TPN_cpl_c96=40; INPES_cpl_c96=3; JNPES_cpl_c96=8
   THRD_cpl_c96=1; WPG_cpl_c96=6;  MPB_cpl_c96="0 143"; APB_cpl_c96="0 149"
   OPB_cpl_c96="150 179"; IPB_cpl_c96="180 191"
+  NPROC_ICE_cpl_c96=12
+
+  TASKS_cpl_dflt=200; TPN_cpl_dflt=40; INPES_cpl_dflt=3; JNPES_cpl_dflt=8
+  THRD_cpl_dflt=1; WPG_cpl_dflt=6;  MPB_cpl_dflt="0 143"; APB_cpl_dflt="0 149"
+  OPB_cpl_dflt="150 169"; IPB_cpl_dflt="170 179"; WPB_cpl_dflt="180 199"
+  NPROC_ICE_cpl_dflt=10
+
+  TASKS_cpl_thrd=120; TPN_cpl_thrd=40; INPES_cpl_thrd=3; JNPES_cpl_thrd=4
+  THRD_cpl_thrd=2; WPG_cpl_thrd=6;  MPB_cpl_thrd="0 71";  APB_cpl_thrd="0 77"
+  OPB_cpl_thrd="78 97";  IPB_cpl_thrd="98 107"; WPB_cpl_thrd="108 119"
+  NPROC_ICE_cpl_thrd=10
 
 elif [[ $MACHINE_ID = jet.* ]]; then
 
