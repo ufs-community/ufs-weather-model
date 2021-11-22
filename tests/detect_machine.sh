@@ -114,7 +114,7 @@ MACHINE_ID=${RT_MACHINE:-${MACHINE_ID}}
 
 # Append compiler
 if [ $MACHINE_ID = orion ] || [ $MACHINE_ID = hera ] || [ $MACHINE_ID = cheyenne ] || [ $MACHINE_ID = jet ] || \
-   [ $MACHINE_ID = gaea ] || [ $MACHINE_ID = stampede ] || [ $MACHINE_ID = s4] || [ $MACHINE_ID = expanse ] ; then
+   [ $MACHINE_ID = gaea ] || [ $MACHINE_ID = stampede ] || [ $MACHINE_ID = s4 ] || [ $MACHINE_ID = expanse ] ; then
     MACHINE_ID=${MACHINE_ID}.${RT_COMPILER}
 fi
 
