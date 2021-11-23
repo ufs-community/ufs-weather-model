@@ -1,0 +1,129 @@
+###############################################################################
+#
+#  HAFS global with 4 multiple nests and atmosphere only
+#
+###############################################################################
+
+export TEST_DESCR="Compare HAFS global with 4 multiple nests and atmosphere only results with previous trunk version"
+
+export CNTL_DIR=hafs_global_multiple_4nests_atm
+
+export LIST_FILES="atmf006.nc \
+                   sfcf006.nc"
+
+export_fv3
+
+export HAFS=true
+export FHMAX=6
+export RESTART_N=${FHMAX}
+export TASKS=420
+export THRD=2
+export TPN=$TPN_thrd
+export CEN_LON=-86.0
+export CEN_LAT=23.0
+export LON1=-45.00
+export LAT1=-40.00
+export LON2=45.00
+export LAT2=40.00
+export DLON=0.1
+export DLAT=0.1
+export DT_ATMOS=90
+export IDEFLATE=1
+export NFHMAX_HF=-1
+export NFHOUT_HF=3
+export NFHOUT=3
+export OUTPUT_FILE="'netcdf_parallel' 'netcdf_parallel'"
+export OUTPUT_GRID='rotated_latlon'
+export SDAY=25
+export SHOUR=12
+export SMONTH=08
+export SYEAR=2020
+export WRTTASK_PER_GROUP=60
+
+export BLOCKSIZE=${BLOCKSIZE:-24}
+export CCPP_SUITE="FV3_HAFS_v0_gfdlmp_tedmf"
+export DEFLATE_LEVEL=-1
+export INPES=4
+export JNPES=5
+export NPX=97
+export NPY=97
+export NPZ=64
+export NPZP=$(($NPZ + 1))
+export K_SPLIT=4
+export N_SPLIT=5
+export NWAT=6
+export NA_INIT=1
+export EXTERNAL_IC=.true.
+export NGGPS_IC=.true.
+export MOUNTAIN=.false.
+export WARM_START=.false.
+export TARGET_LAT="23.0"
+export TARGET_LON="-86.0"
+export STRETCH_FAC=1.0001
+export FULL_ZS_FILTER=.false.
+export N_ZS_FILTER=0
+
+export GRID_PES="120,60,60,60,60"
+export TILE_COARSE="0,2,6,8,9"
+export NUM_TILE_TOP=6
+export NEST_REFINE="0,3,3,3,3"
+export NEST_IOFFSETS="1,9,9,61,121"
+export NEST_JOFFSETS="1,9,9,61,121"
+
+export FHCYC=0
+export FHSWR=1800
+export FHLWR=1800
+export NSTF_NAME=2,0,0,0,0
+export CPLFLX=.false.
+export CPLOCN2ATM=.true.
+export CPLWAV=.false.
+export CPLWAV2ATM=.false.
+export CPL_IMP_MRG=.false.
+
+export INPES_NEST02=6
+export JNPES_NEST02=10
+export NPX_NEST02=241
+export NPY_NEST02=241
+export K_SPLIT_NEST02=4
+export N_SPLIT_NEST02=5
+
+export INPES_NEST03=6
+export JNPES_NEST03=10
+export NPX_NEST03=241
+export NPY_NEST03=241
+export K_SPLIT_NEST03=4
+export N_SPLIT_NEST03=5
+
+export INPES_NEST04=6
+export JNPES_NEST04=10
+export NPX_NEST04=361
+export NPY_NEST04=361
+export K_SPLIT_NEST04=4
+export N_SPLIT_NEST04=5
+
+export INPES_NEST05=6
+export JNPES_NEST05=10
+export NPX_NEST05=361
+export NPY_NEST05=361
+export K_SPLIT_NEST05=4
+export N_SPLIT_NEST05=5
+
+export NESTED=.true.
+export FULL_ZS_FILTER=.false.
+export N_ZS_FILTER=0
+
+export CMEPS=false
+export RUNTYPE="startup"
+export USE_COLDSTART="false"
+
+export FIELD_TABLE=field_table_hafs
+export DIAG_TABLE=diag_table_hafs_template
+export INPUT_NML=input_global_hafs.nml.IN
+export INPUT_NEST02_NML=input_nest_hafs.nml.IN
+export INPUT_NEST03_NML=input_nest_hafs.nml.IN
+export INPUT_NEST04_NML=input_nest_hafs.nml.IN
+export INPUT_NEST05_NML=input_nest_hafs.nml.IN
+export MODEL_CONFIGURE="model_configure_hafs_shared.IN"
+export NEMS_CONFIGURE="nems.configure.hafs_atm.IN"
+export FV3_RUN="hafs_fv3_run.IN"
+

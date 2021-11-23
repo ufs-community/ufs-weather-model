@@ -189,6 +189,7 @@ list(APPEND mom6_src_files
   MOM6/src/tracer/MOM_generic_tracer.F90
   MOM6/src/tracer/MOM_lateral_boundary_diffusion.F90
   MOM6/src/tracer/MOM_neutral_diffusion.F90
+  MOM6/src/tracer/nw2_tracers.F90
   MOM6/src/tracer/MOM_offline_aux.F90
   MOM6/src/tracer/MOM_offline_main.F90
   MOM6/src/tracer/MOM_tracer_Z_init.F90
@@ -254,6 +255,7 @@ list(APPEND mom6_src_files
   MOM6/config_src/external/ODA_hooks/ocean_da_core.F90
   MOM6/config_src/external/ODA_hooks/ocean_da_types.F90
   MOM6/config_src/external/ODA_hooks/write_ocean_obs.F90
+  MOM6/config_src/external/OCEAN_stochastic_phyiscs/MOM_stochastics.F90
 
   MOM6/config_src/infra/FMS1/MOM_coms_infra.F90
   MOM6/config_src/infra/FMS1/MOM_constants.F90

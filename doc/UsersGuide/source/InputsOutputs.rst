@@ -26,6 +26,12 @@ The ufs-weather-model can be configured as one of several applications, from a s
      - Coupled UFSATM-MOM6-CICE6-WW3-CMEPS
    * - NG-GODAS
      - Coupled CDEPS-DATM-MOM6-CICE6-CMEPS
+   * - HAFS
+     - Coupled UFSATM-HYCOM-CMEPS
+   * - HAFSW
+     - Coupled UFSATM-HYCOM-WW3-CMEPS
+   * - HAFS-ALL
+     - Coupled CDEPS-UFSATM-HYCOM-WW3-CMEPS
 	 
 This chapter describes the input and output files needed for executing the model in the various supported configurations.
 
@@ -283,6 +289,156 @@ The input files containing grid information and the initial conditions for globa
      - ✔
 
 -------
+HYCOM
+-------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Static datasets (i.e., *fix files*)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Static input files have been created for several regional domains. These domains are listed and described in :numref:`Table %s <HYCOM_DomainIdentifiers>`.
+
+.. _HYCOM_DomainIdentifiers:
+
+.. list-table:: *The following table describes each domain identifier.*
+   :widths: 10 20
+   :header-rows: 1
+
+   * - Identifier
+     - Description
+   * - hat10
+     - Hurricane North Atlantic (1/12 degree)
+   * - hep20
+     - Hurricane Eastern North Pacific (1/12 degree)
+   * - hwp30
+     - Hurricane Western North Pacific (1/12 degree)
+   * - hcp70
+     - Hurricane Central North Pacific (1/12 degree)
+
+Static input files are listed and described in :numref:`Table %s <HYCOM_FixFiles>`. Several datasets contain both dot-a (.a) and dot-b (.b) files. Dot-a files contain data written as 32-bit IEEE real values (idm*jdm) and dot-b files contain plain text metadata for each field in the dot-a file.
+
+.. _HYCOM_FixFiles:
+
+.. list-table:: *Fix files containing climatological information*
+   :widths: 15 30 15
+   :header-rows: 1
+
+   * - Filename
+     - Description
+     - Domain
+   * - :ref:`blkdat.input<HYCOM_BlkdatInput>`
+     - Model input parameters
+     -
+   * - patch.input
+     - Tile description
+     -
+   * - ports.input
+     - Open boundary cells
+     -
+   * - forcing.chl.(a,b)
+     - Chlorophyll (monthly climatology)
+     - hat10, hep20, hwp30, hcp70
+   * - forcing.rivers.(a,b)
+     - River discharge (monthly climatology)
+     - hat10, hep20, hwp30, hcp70
+   * - iso.sigma.(a,b)
+     - Fixed sigma thickness
+     - hat10, hep20, hwp30, hcp70
+   * - regional.depth.(a,b)
+     - Total depth of ocean
+     - hat10, hep20, hwp30, hcp70
+   * - regional.grid.(a,b)
+     - Grid information for HYCOM "C" grid
+     - hat10, hep20, hwp30, hcp70
+   * - relax.rmu.(a,b)
+     - Open boundary nudging value
+     - hat10, hep20, hwp30, hcp70
+   * - relax.ssh.(a,b)
+     - Surface height nudging value (monthly climatology)
+     - hat10, hep20, hwp30, hcp70
+   * - tbaric.(a,b)
+     - Thermobaricity correction
+     - hat10, hep20, hwp30, hcp70
+   * - thkdf4.(a,b)
+     - Diffusion velocity (m/s) for Laplacian thickness diffusivity
+     - hat10, hep20, hwp30, hcp70
+   * - veldf2.(a,b)
+     - Diffusion velocity (m/s) for biharmonic momentum dissipation
+     - hat10, hep20, hwp30, hcp70
+   * - veldf4.(a,b)
+     - Diffusion velocity (m/s) for Laplacian momentum dissipation
+     - hat10, hep20, hwp30, hcp70
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Grid description and initial condition files
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The input files containing time dependent configuration and forcing data are listed and described in :numref:`Table %s <HYCOM_GridICFiles>`. These files are generated for specific regional domains, see :numref:`Table %s <HYCOM_DomainIdentifiers>`, during ocean prep. When uncoupled, the the forcing data drives the ocean model. When coupled, the forcing data is used to fill unmapped grid cells. Several datasets contain both dot-a (.a) and dot-b (.b) files. Dot-a files contain data written as 32-bit IEEE real values (idm*jdm) and dot-b files contain plain text metadata for each field in the dot-a file.
+
+
+.. _HYCOM_GridICFiles:
+
+.. list-table:: *Input files containing grid information, initial conditions, and forcing data for regional configurations.*
+   :widths: 15 30 15 5
+   :header-rows: 1
+
+   * - Filename
+     - Description
+     - Domain
+     - Date-dependent
+   * - limits
+     - Model begin and end time (since HYCOM epoch)
+     -
+     - ✔
+   * - forcing.airtmp.(a,b)
+     - GFS forcing data for 2m air temperature
+     - hat10, hep20, hwp30, hcp70
+     - ✔
+   * - forcing.mslprs.(a,b)
+     - GFS forcing data for mean sea level pressure (symlink)
+     - hat10, hep20, hwp30, hcp70
+     - ✔
+   * - forcing.precip.(a,b)
+     - GFS forcing data for precipitation rate
+     - hat10, hep20, hwp30, hcp70
+     - ✔
+   * - forcing.presur.(a,b)
+     - GFS forcing data for mean sea level pressure
+     - hat10, hep20, hwp30, hcp70
+     - ✔
+   * - forcing.radflx.(a,b)
+     - GFS forcing data for total radiation flux
+     - hat10, hep20, hwp30, hcp70
+     - ✔
+   * - forcing.shwflx.(a,b)
+     - GFS forcing data for net downward shortwave radiation flux
+     - hat10, hep20, hwp30, hcp70
+     - ✔
+   * - forcing.surtmp.(a,b)
+     - GFS forcing data for surface temperature
+     - hat10, hep20, hwp30, hcp70
+     - ✔
+   * - forcing.tauewd.(a,b)
+     - GFS forcing data for eastward momentum flux
+     - hat10, hep20, hwp30, hcp70
+     - ✔
+   * - forcing.taunwd.(a,b)
+     - GFS forcing data for northward momentum flux
+     - hat10, hep20, hwp30, hcp70
+     - ✔
+   * - forcing.vapmix.(a,b)
+     - GFS forcing data for 2m vapor mixing ratio
+     - hat10, hep20, hwp30, hcp70
+     - ✔
+   * - forcing.wndspd.(a,b)
+     - GFS forcing data for 10m wind speed
+     - hat10, hep20, hwp30, hcp70
+     - ✔
+   * - restart_in.(a,b)
+     - Restart file for ocean state variables
+     - hat10, hep20, hwp30, hcp70
+     - ✔
+
+-------
 CICE6
 -------
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -336,70 +492,122 @@ Grid description and initial condition files
 The files for global configurations are listed and described in :numref:`Table %s <WW3_FixFiles>` for GFSv16 setup and :numref:`Table %s <WW3_FixFilesp>` for single grid configurations.
 The model definitions for wave grid(s) including spectral and directional resolutions, time steps, numerical scheme and parallelization algorithm, the physics parameters, boundary conditions and grid definitions are stored in binary mod_def files. The aforementioned parameters are defined in ww3_grid.inp.<grd> and the ww3_grid executables generates the binary mod_def.<grd> files.
 
-The WW3 version number in mod_def.<grd> files should be consistent with version of the code in ufs-weather-model. createmoddefs/creategridfiles.sh can be used in order to generate the mod_def.<grd> files, using ww3_grid.inp.<grd>, using the WW3 version in ups-weather-model. In order to do it, the path to the location of the ufs-weather-model  (UFSMODELDIR), the path to generated mod_def.<grd> outputs (OUTDIR), the path to input ww3_grid.inp.<grd> files (SRCDIR) and the path to the working directory for log files (WORKDIR) should be defined.
+The WW3 version number in mod_def.<grd> files must be consistent with version of the code in ufs-weather-model. createmoddefs/creategridfiles.sh can be used in order to generate the mod_def.<grd> files, using ww3_grid.inp.<grd>, using the WW3 version in ufs-weather-model. In order to do it, the path to the location of the ufs-weather-model  (UFSMODELDIR), the path to generated mod_def.<grd> outputs (OUTDIR), the path to input ww3_grid.inp.<grd> files (SRCDIR) and the path to the working directory for log files (WORKDIR) should be defined.
 
 .. _WW3_FixFiles:
 
 .. list-table:: *Input files containing grid information and conservative remapping for global configurations (GFSv16 Wave)*
-   :widths: 35 35 25
+   :widths: 35 35 25 10 10
    :header-rows: 1
 
    * - Filename
      - Description
-     - Resolution
+     - Spatial Resolution
+     - nFreq
+     - nDir
    * - mod_def.aoc_9km
      - Antarctic Ocean PolarStereo [50N 90N]
      - 9km
+     - 50
+     - 36
    * - mod_def.gnh_10m
      - Global mid core [15S 52N]
      - 10 min
+     - 50
+     - 36
    * - mod_def.gsh_15m
      - southern ocean [79.5S 10.5S]
      - 15 min
+     - 50
+     - 36
    * - mod_def.glo_15mxt
      - Global 1/4 extended grid [90S 90S]
      - 15 min
+     - 36
+     - 24
    * - mod_def.points
      - GFSv16-wave spectral grid point output
      - na
-   * - mod_def.points
-     - GFSv16-wave spectral grid point output
+     - na
      - na
    * - rmp_src_to_dst_conserv_002_001.nc
      - Conservative remapping gsh_15m to gnh_10m
      - na
+     - na
+     - na
    * - rmp_src_to_dst_conserv_003_001.nc
      - Conservative remapping aoc_9km to gnh_10m
+     - na
+     - na
      - na
 
 
 .. _WW3_FixFilesp:
 
-.. list-table:: *Input grid information for single global configurations*
-   :widths: 35 35 30
+.. list-table:: *Input grid information for single global/regional configurations*
+   :widths: 30 50 20 10 10
+   :header-rows: 1
+
+   * - Filename
+     - Description
+     - Spatial Resolution
+     - nFreq
+     - nDir
+   * - mod_def.ant_9km
+     - Regional polar stereo antarctic grid [90S 50S]
+     - 9km
+     - 36
+     - 24
+   * - mod_def.glo_10m
+     - Global grid [80S 80N]
+     - 10 min
+     - 36
+     - 24
+   * - mod_def.glo_30m
+     - Global grid [80S 80N]
+     - 30 min
+     - 36
+     - 36
+   * - mod_def.glo_1deg
+     - Global grid [85S 85N]
+     - 1 degree
+     - 25
+     - 24
+   * - mod_def.glo_2deg
+     - Global grid [85S 85N]
+     - 2 degree
+     - 20
+     - 18
+   * - mod_def.glo_5deg
+     - Global grid [85S 85N]
+     - 5 degree
+     - 18
+     - 12
+   * - mod_def.glo_gwes_30m
+     - Global NAWES 30 min wave grid [80S 80N]
+     - 30 min
+     - 36
+     - 36
+   * - mod_def.natl_6m
+     - Regional North Atlantic Basin [1.5N 45.5N; 98W 8W]
+     - 6 min
+     - 50
+     - 36
+
+Coupled regional configurations require forcing files to fill regions that cannot be interpolated from the atmospheric component. For a list of forcing files used to fill unmapped data points see :numref:`Table %s <WW3_ForcingFiles>`.
+
+.. _WW3_ForcingFiles:
+
+.. list-table:: *Forcing information for single regional configurations*
+   :widths: 30 50 20
    :header-rows: 1
 
    * - Filename
      - Description
      - Resolution
-   * - mod_def.ant_9km
-     - polar streo antarctic grid [90S 50S]
-     - 9km
-   * - mod_def.glo_10m
-     - Global grid [80S 80N]
-     - 10 min
-   * - mod_def.glo_30m
-     - Global grid [80S 80N]
-     - 30 min
-   * - mod_def.glo_1deg
-     - Global grid [85S 85N]
-     - 1 degree
-   * - mod_def.glo_2deg
-     - Global grid [85S 85N]
-     - 2 degree
-   * - mod_def.glo_gwes_30m
-     - Global NAWES 30 min wave grid [80S 80N]
-     - 30 min
+   * - wind.natl_6m
+     - Interpolated wind data from GFS
+     - 6 min
 
 The model driver input (ww3_multi.inp) includes the input, model and output grids definition, the starting and ending times for the entire model run and output types and intervals. The ww3_multi.inp.IN template is located under tests/parm/ directory. The inputs are described hereinafter:
 
@@ -422,14 +630,18 @@ The model driver input (ww3_multi.inp) includes the input, model and output grid
    * - FGRDPROC
      - Flag for grids sharing dedicated output processes
 
-If there are input data grids defined ( NFGRIDS > 0 ) then these grids are defined first (CPLILINE, WINDLINE, ICELINE, CURRLINE). These grids are defined as if they are wave model grids using the file mod_def.<grd>. Each grid is defined on a separate input line with <grd>, with eight input flags identifying
+If there are input data grids defined ( NFGRIDS > 0 ) then these grids are defined first (CPLILINE, WINDLINE, ICELINE, CURRLINE). These grids are defined as if they are wave model grids using the file mod_def.<grd>. Each grid is defined on a separate input line with <grd>, with nine input flags identifying
 $ the presence of 1) water levels 2) currents 3) winds 4) ice
 $ 5) momentum 6) air density and 7-9) assimilation data.
 
-The GRIDLINE defines actual wave model grids using 13 parameters to be
+The UNIPOINTS defines the name of this grid for all point output, which gathers the output spectral grid in a unified point output file.
+
+The WW3GRIDLINE defines actual wave model grids using 13 parameters to be
 read from a single line in the file for each. It includes (1) its own input grid mod_def.<grd>, (2-10) forcing grid ids, (3) rank number, (12) group number and (13-14) fraction of communicator (processes) used for this grid.
 
 RUN_BEG and RUN_END define the starting and end times,  FLAGMASKCOMP and FLAGMASKOUT are flags for masking at printout time (default F F), followed by the gridded and point outputs start time (OUT_BEG), interval (DTFLD and DTPNT) and end time (OUT_END). The restart outputs start time, interval and end time are define by RST_BEG, DTRST, RST_END respectively.
+
+The OUTPARS_WAV defines gridded output fields. The GOFILETYPE, POFILETYPE and RSTTYPE are gridded, point and restart output types respectively.
 
 No initial condition files are required for WW3.
 
@@ -445,9 +657,11 @@ No fix files are required for CDEPS
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Grid description and initial condition files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The input files containing grid information and the time-varying forcing files for global configurations are listed and described in :numref:`Table %s <CDEPS_Files>`.
+The input files containing grid information and the time-varying forcing files for global configurations are listed and described in :numref:`Table %s <CDEPS_FilesATM>` and :numref:`Table %s <CDEPS_FilesOCN>`.
 
-.. _CDEPS_Files:
+**Data Atmosphere**
+
+.. _CDEPS_FilesATM:
 
 .. list-table:: *Input files containing grid information and forcing files for global configurations*
    :widths: 35 50 15
@@ -462,11 +676,55 @@ The input files containing grid information and the time-varying forcing files f
    * - gefs_mesh.nc
      - ESMF mesh file for GEFS data source
      -
+   * - TL639_200618_ESMFmesh.nc
+     - ESMF mesh file for ERA5 data source
+     -
    * - cfsr.YYYYMMM.nc
      - CFSR forcing file for year YYYY and month MM
      - ✔
    * - gefs.YYYYMMM.nc
      - GEFS forcing file for year YYYY and month MM
+     - ✔
+   * - ERA5.TL639.YYYY.MM.nc
+     - ERA5 forcing file for year YYYY and month MM
+     - ✔
+
+**Data Ocean**
+
+.. _CDEPS_FilesOCN:
+
+.. list-table:: *Input files containing grid information and forcing files for global configurations*
+   :widths: 35 50 15
+   :header-rows: 1
+
+   * - Filename
+     - Description
+     - Date-dependent
+   * - TX025_210327_ESMFmesh_py.nc
+     - ESMF mesh file for OISST data source
+     -
+   * - sst.day.mean.YYYY.nc
+     - OISST forcing file for year YYYY
+     - ✔
+
+.. list-table:: *Input files containing grid information and forcing files for regional configurations*
+   :widths: 35 50 15
+   :header-rows: 1
+
+   * - Filename
+     - Description
+     - Date-dependent
+   * - hat10_210129_ESMFmesh_py.nc
+     - ESMF mesh file for MOM6 data source
+     -
+   * - GHRSST_mesh.nc
+     - ESMF mesh file for GHRSST data source
+     -
+   * - hycom_YYYYMM_surf_nolev.nc
+     - MOM6 forcing file for year YYYY and month MM
+     - ✔
+   * - ghrsst_YYYYMMDD.nc
+     - GHRSST forcing file for year YYYY, month MM and day DD
      - ✔
 
 -------
@@ -525,6 +783,7 @@ The configuration files used by the UFS Weather Model are listed here and descri
 - *suite_[suite_name].xml* (used only at build time)
 - *datm.streams* (used by cdeps)
 - *datm_in* (used by cdeps)
+- :ref:`blkdat.input<HYCOM_BlkdatInput>` (used by HYCOM)
 
 While the *input.nml* file is also a configuration file used by the UFS Weather Model, it is described in
 :numref:`Section %s <InputNML>`.  The run-time configuration of model output fields is controlled by the combination of *diag_table* and *model_configure*, and is described in detail in :numref:`Section %s <OutputFiles>`.
@@ -1140,6 +1399,10 @@ For the coupled NG_GODAS application, a sample *nems.configure* is shown below :
 	  mesh_atm  = DATM_INPUT/cfsr_mesh.nc
 	  diro = "."
 	  logfile = atm.log
+          stop_n = 24
+          stop_option = nhours
+          stop_ymd = -999
+          write_restart_at_endofrun = .true.
 	::
 
 	# OCN #
@@ -1234,6 +1497,117 @@ For the coupled NG_GODAS application, a sample *nems.configure* is shown below :
 	      orb_obliq = 1.e36
 	::
 
+For the coupled HAFS application, a sample *nems.configure* is shown below :
+
+.. code-block:: console
+
+        # EARTH #
+        EARTH_component_list: ATM OCN MED
+
+        # MED #
+        MED_model:                      cmeps
+        MED_petlist_bounds:             1340 1399
+        MED_attributes::
+          coupling_mode = hafs
+          system_type = ufs
+          normalization = none
+          merge_type = copy
+          ATM_model = fv3
+          OCN_model = hycom
+          history_ymd = -999
+          ScalarFieldCount = 0
+          ScalarFieldIdxGridNX = 0
+          ScalarFieldIdxGridNY = 0
+          ScalarFieldName = cpl_scalars
+        ::
+
+        # ATM #
+        ATM_model:                      fv3
+        ATM_petlist_bounds:             0000 1339
+        ATM_attributes::
+          Verbosity = 1
+          Diagnostic = 0
+        ::
+
+        # OCN #
+        OCN_model:                      hycom
+        OCN_petlist_bounds:             1340 1399
+        OCN_attributes::
+          Verbosity = 1
+          Diagnostic = 0
+          cdf_impexp_freq = 3
+          cpl_hour = 0
+          cpl_min = 0
+          cpl_sec = 360
+          base_dtg = 2020082512
+          merge_import = .true.
+          skip_first_import = .true.
+          hycom_arche_output = .false.
+          hyc_esmf_exp_output = .true.
+          hyc_esmf_imp_output = .true.
+          import_diagnostics = .false.
+          import_setting = flexible
+          hyc_impexp_file = nems.configure
+          espc_show_impexp_minmax = .true.
+          ocean_start_dtg = 43702.50000
+          start_hour = 0
+          start_min = 0
+          start_sec = 0
+          end_hour = 12
+          end_min = 0
+          end_sec = 0
+        ::
+
+        DRIVER_attributes::
+          start_type = startup
+        ::
+
+        ALLCOMP_attributes::
+          mediator_read_restart = false
+        ::
+
+        # CMEPS cold run sequence
+
+        runSeq::
+        @360
+          ATM -> MED :remapMethod=redist
+          MED med_phases_post_atm
+          OCN -> MED :remapMethod=redist
+          MED med_phases_post_ocn
+          MED med_phases_prep_atm
+          MED med_phases_prep_ocn_accum
+          MED med_phases_prep_ocn_avg
+          MED -> ATM :remapMethod=redist
+          MED -> OCN :remapMethod=redist
+          ATM
+          OCN
+        @
+        ::
+
+        # HYCOM field coupling configuration (location set by hyc_impexp_file)
+
+        ocn_export_fields::
+          'sst'     'sea_surface_temperature'   'K'
+          'mask'    'ocean_mask'                '1'
+        ::
+
+        ocn_import_fields::
+          'taux10'  'mean_zonal_moment_flx_atm' 'N_m-2'
+          'tauy10'  'mean_merid_moment_flx_atm' 'N_m-2'
+          'prcp'    'mean_prec_rate'            'kg_m-2_s-1'
+          'swflxd'  'mean_net_sw_flx'           'W_m-2'
+          'lwflxd'  'mean_net_lw_flx'           'W_m-2'
+          'mslprs'  'inst_pres_height_surface'  'Pa'
+          'sensflx' 'mean_sensi_heat_flx'       'W_m-2'
+          'latflx'  'mean_laten_heat_flx'       'W_m-2'
+        ::
+
+For more HAFS, HAFSW, and HAFS-ALL configurations please see the following nems.configure templates.
+
+- `HAFS ATM-OCN <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/nems.configure.hafs_atm_ocn.IN>`_
+- `HAFS ATM-WAV <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/nems.configure.hafs_atm_wav.IN>`_
+- `HAFS ATM-OCN-WAV <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/nems.configure.hafs_atm_ocn_wav.IN>`_
+- `HAFS ATM-DOCN <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/nems.configure.hafs_atm_docn.IN>`_
 
 .. TODO:: GOCART information in progress
 
@@ -1361,6 +1735,14 @@ A sample of the data stream namelist file is shown below:
   restfilm = "null"
   /
 
+.. _HYCOM_BlkdatInput:
+
+---------------------------------------
+*blkdat.input*
+---------------------------------------
+
+The HYCOM model reads parameters from a custom formatted configuraiton file, blkdat.input. The `HYCOM User's Guide <https://www.hycom.org/hycom/documentation>`_ provides an in depth description of the configuration settings.
+
 .. -------------------------------------------------------------------
 .. Include InputNML file describing the contents of the input.nml file
 .. -------------------------------------------------------------------
@@ -1439,6 +1821,50 @@ A brief example of the diag_table is shown below.  ``“...”`` denotes where l
    "ocean_model", "taux",      "taux",          "ocn%4yr%2mo%2dy%2hr","all",.true.,"none",2
    "ocean_model", "tauy",      "tauy",          "ocn%4yr%2mo%2dy%2hr","all",.true.,"none",2
    ...
+
+-------
+HYCOM
+-------
+
+HYCOM output configuration is set in the :ref:`blkdat.input<HYCOM_BlkdatInput>` file. A few common configuration options are described in :numref:`Table %s <HYCOM_OutputConfig>`
+
+.. _HYCOM_OutputConfig:
+
+.. list-table:: *The following table describes HYCOM output configuration.*
+   :widths: 10 25
+   :header-rows: 1
+
+   * - Parameter
+     - Description
+   * - dsurfq
+     - Number of days between model diagnostics at the surface
+   * - diagfq
+     - Number of days between model diagnostics
+   * - meanfq
+     - Number of days between model time averaged diagnostics
+   * - rstrfq
+     - Number of days between model restart output
+   * - itest
+     - i grid point where detailed diagnostics are desired
+   * - jtest
+     - j grid point where detailed diagnostics are desired
+
+HYCOM outpus multiple datasets. These datasets contain both dot-a (.a), dot-b (.b), and dot-txt (.txt) files. Dot-a files contain data written as 32-bit IEEE real values (idm*jdm). Dot-b files contain plain text metadata for each field in the dot-a file. Dot-txt files contain plain text data for a single sell for profiling purposes. Post-processing utilties are available in the `HYCOM-tools <https://github.com/HYCOM/HYCOM-tools>`_ repository.
+
+.. _HYCOM_OutputFiles:
+
+.. list-table:: *The following table describes HYCOM output files.*
+   :widths: 10 10
+   :header-rows: 1
+
+   * - Filename
+     - Description
+   * - archs.YYYY_DDD_HH.(a,b,txt)
+     - HYCOM surface archive data
+   * - archv.YYYY_DDD_HH.(a,b,txt)
+     - HYCOM archive data
+   * - restart_out.(a,b)
+     - HYCOM restart files
 
 -------
 CICE6

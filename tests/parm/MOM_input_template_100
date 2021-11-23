@@ -72,7 +72,7 @@ WRITE_GEOM = 2                  ! default = 1
                                 ! If =0, never write the geometry and vertical grid files. If =1, write the
                                 ! geometry and vertical grid files only for a new simulation. If =2, always
                                 ! write the geometry and vertical grid files. Other values are invalid.
-SAVE_INITIAL_CONDS = True       !   [Boolean] default = False
+SAVE_INITIAL_CONDS = False      !   [Boolean] default = False
                                 ! If true, write the initial conditions to a file given by IC_OUTPUT_FILE.
 
 ! === module MOM_oda_incupd ===
@@ -737,7 +737,7 @@ MIX_LEN_EXPONENT = 1.0          !   [nondim] default = 2.0
                                 ! The exponent applied to the ratio of the distance to the MLD and the MLD depth
                                 ! which determines the shape of the mixing length. This is only used if
                                 ! USE_MLD_ITERATION is True.
-USE_LA_LI2016 = @[MOM6_REPRO_LA]!   [nondim] default = False
+USE_LA_LI2016 = @[MOM6_USE_LI2016] !   [nondim] default = False
                                 ! A logical to use the Li et al. 2016 (submitted) formula to determine the
                                 ! Langmuir number.
 USE_WAVES = @[MOM6_USE_WAVES]   !   [Boolean] default = False
@@ -851,6 +851,11 @@ GUST_CONST = 0.02               !   [Pa] default = 0.0
 FIX_USTAR_GUSTLESS_BUG = False  !   [Boolean] default = True
                                 ! If true correct a bug in the time-averaging of the gustless wind friction
                                 ! velocity
+! === module ocean_stochastics ===
+DO_SPPT   = @[DO_OCN_SPPT]      ! [Boolean] default = False
+                                ! If true perturb the diabatic tendencies in MOM_diabadic_driver 
+PERT_EPBL = @[PERT_EPBL]        ! [Boolean] default = False 
+                                ! If true perturb the KE dissipation and destruction in MOM_energetic_PBL
 
 ! === module MOM_restart ===
 
