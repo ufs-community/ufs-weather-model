@@ -35,7 +35,6 @@ elif [[ $MACHINE_ID = wcoss_cray ]] ; then
         source /opt/modules/default/init/bash
     fi
     module purge
-    module purge
     # Workaround until module issues are fixed:
     unset _LMFILES_
     unset LOADEDMODULES
@@ -57,7 +56,7 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]] ; then
 elif [[ $MACHINE_ID = cheyenne* ]] ; then
     # We are on NCAR Cheyenne
     if ( ! eval module help > /dev/null 2>&1 ) ; then
-        . /glade/u/apps/ch/modulefiles/default/localinit/localinit.sh
+        source /glade/u/apps/ch/modulefiles/default/localinit/localinit.sh
     fi
     module purge
 
@@ -82,7 +81,7 @@ elif [[ $MACHINE_ID = gaea* ]] ; then
         __ms_source_etc_profile=no
     fi
     module purge
-# clean up after purge
+    # clean up after purge
     unset _LMFILES_
     unset _LMFILES_000
     unset _LMFILES_001
