@@ -129,7 +129,7 @@ find_package(sp REQUIRED)
 find_package(w3nco REQUIRED)
 
 # Configure Python
-find_package(Python 3 REQUIRED COMPONENTS Interpreter)
+find_package(Python 3.6 REQUIRED COMPONENTS Interpreter)
 message("Found Python: ${Python_EXECUTABLE}")
 
 ###############################################################################
