@@ -127,12 +127,9 @@ endif()
 find_package(bacio REQUIRED)
 find_package(sp REQUIRED)
 find_package(w3nco REQUIRED)
-if(INLINE_POST)
-  find_package(upp REQUIRED)
-endif()
 
 # Configure Python
-find_package(Python 3 REQUIRED COMPONENTS Interpreter)
+find_package(Python 3.6 REQUIRED COMPONENTS Interpreter)
 message("Found Python: ${Python_EXECUTABLE}")
 
 ###############################################################################

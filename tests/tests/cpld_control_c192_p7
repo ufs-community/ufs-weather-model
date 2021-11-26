@@ -5,18 +5,18 @@ export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C192 MX050 - 
 
 export CNTL_DIR="cpld_control_c192_p7"
 
-export LIST_FILES="sfcf048.tile1.nc \
-                   sfcf048.tile2.nc \
-                   sfcf048.tile3.nc \
-                   sfcf048.tile4.nc \
-                   sfcf048.tile5.nc \
-                   sfcf048.tile6.nc \
-                   atmf048.tile1.nc \
-                   atmf048.tile2.nc \
-                   atmf048.tile3.nc \
-                   atmf048.tile4.nc \
-                   atmf048.tile5.nc \
-                   atmf048.tile6.nc \
+export LIST_FILES="sfcf036.tile1.nc \
+                   sfcf036.tile2.nc \
+                   sfcf036.tile3.nc \
+                   sfcf036.tile4.nc \
+                   sfcf036.tile5.nc \
+                   sfcf036.tile6.nc \
+                   atmf036.tile1.nc \
+                   atmf036.tile2.nc \
+                   atmf036.tile3.nc \
+                   atmf036.tile4.nc \
+                   atmf036.tile5.nc \
+                   atmf036.tile6.nc \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -50,14 +50,14 @@ export LIST_FILES="sfcf048.tile1.nc \
                    RESTART/sfc_data.tile5.nc \
                    RESTART/sfc_data.tile6.nc \
                    RESTART/MOM.res.nc \
-                   RESTART/iced.2021-03-24-21600.nc \
-                   RESTART/ufs.cpld.cpl.r.2021-03-24-21600.nc"
+                   RESTART/iced.2021-03-23-64800.nc \
+                   RESTART/ufs.cpld.cpl.r.2021-03-23-64800.nc"
 
 export_fv3
 export_cpl
 
-export DAYS=2
-export FHMAX=48
+export DAYS=1.5
+export FHMAX=36
 export RESTART_N=12
 export RESTART_INTERVAL="${RESTART_N} -1"
 
@@ -84,14 +84,13 @@ export OCNRES=050
 export ICERES=0.50
 export NX_GLB=720
 export NY_GLB=576
-export NPROC_ICE=24
+export NPROC_ICE=$NPROC_ICE_cpl_c192
 export np2=`expr $NPROC_ICE / 2`
 export BLCKX=`expr $NX_GLB / $np2`
 export BLCKY=`expr $NY_GLB / 2`
 
 # resolution dependent setting
 export CDMBWD=${CDMBWD_c192}
-export RCELL=${RCELL_c192}
 
 # set component and coupling timesteps
 export DT_ATMOS=600
@@ -122,5 +121,11 @@ export FNVMNC="'C192.vegetation_greenness.tileX.nc'"
 export FNVMXC="'C192.vegetation_greenness.tileX.nc'"
 export FNSLPC="'C192.slope_type.tileX.nc'"
 export FNABSC="'C192.maximum_snow_albedo.tileX.nc'"
+
+export CPLWAV=.false.
+export CPLWAV2ATM=.false.
+export MOM6_USE_WAVES=False
+
+export NEMS_CONFIGURE=nems.configure.cpld.IN
 
 export FV3_RUN=cpld_control_run.IN
