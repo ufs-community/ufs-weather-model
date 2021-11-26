@@ -40,6 +40,10 @@ OCN_attributes::
   Verbosity = 1
   Diagnostic = 0
   mesh_ocn = @[ocn_mesh]
+  stop_n = @[FHMAX]
+  stop_option = nhours
+  stop_ymd = -999
+  write_restart_at_endofrun = .true.
 ::
 
 # Run Sequence #
@@ -63,7 +67,6 @@ runSeq::
 
 # Other Attributes #
 DRIVER_attributes::
-  start_type = @[RUNTYPE]
 ::
 
 ALLCOMP_attributes::
@@ -88,21 +91,8 @@ ALLCOMP_attributes::
   orb_mode = fixed_year
   orb_mvelp = 1.e36
   orb_obliq = 1.e36
-  mediator_read_restart = @[USE_COLDSTART]
   mediator_present = true
-::
-
-ATM_modelio::
-  diro = .
-  logfile = atm.log
-::
-
-OCN_modelio::
-  diro = .
-  logfile = ocn.log
-::
-
-MED_modelio::
-  diro = .
-  logfile = med.log
+  stop_n = @[FHMAX]
+  stop_option = nhours
+  stop_ymd = -999
 ::

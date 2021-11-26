@@ -56,6 +56,7 @@ message("CMEPS ............ ${CMEPS}")
 ###############################################################################
 set(32BIT           OFF CACHE BOOL "Enable 32BIT (single precision arithmetic in dycore)")
 set(AVX2            ON  CACHE BOOL "Enable AVX2 instruction set")
+set(AVX             OFF CACHE BOOL "Enable AVX-I instruction set")
 set(SIMDMULTIARCH   OFF CACHE BOOL "Enable multi-target SIMD instruction sets")
 set(DEBUG           OFF CACHE BOOL "Enable DEBUG mode")
 set(DEBUG_LINKMPI   ON  CACHE BOOL "Enable linkmpi option when DEBUG mode is on")
@@ -126,12 +127,9 @@ endif()
 find_package(bacio REQUIRED)
 find_package(sp REQUIRED)
 find_package(w3nco REQUIRED)
-if(INLINE_POST)
-  find_package(upp REQUIRED)
-endif()
 
 # Configure Python
-find_package(Python 3 REQUIRED COMPONENTS Interpreter)
+find_package(Python 3.6 REQUIRED COMPONENTS Interpreter)
 message("Found Python: ${Python_EXECUTABLE}")
 
 ###############################################################################
