@@ -18,7 +18,7 @@ write_fail_test() {
   if [[ ${OPNREQ_TEST} == true ]]; then
     echo ${TEST_NR} $TEST_NAME >> $PATHRT/fail_opnreq_test
   else
-    echo "${TEST_NAME} ${TEST_NR} failed in run_test" >> $PATHRT/fail_test
+    echo "${TEST_NAME} ${TEST_NR} failed in run_test" >> $PATHRT/fail_test_${TEST_NR}
   fi
   exit 1
 }
@@ -35,6 +35,7 @@ export TEST_NR=$4
 export COMPILE_NR=$5
 
 cd ${PATHRT}
+rm -f fail_test_${TEST_NR}
 
 [[ -e ${RUNDIR_ROOT}/run_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
 source default_vars.sh
@@ -66,6 +67,7 @@ source rt_utils.sh
 source atparse.bash
 source edit_inputs.sh
 
+rm -rf ${RUNDIR}
 mkdir -p ${RUNDIR}
 cd $RUNDIR
 
@@ -92,7 +94,7 @@ do
   atparse < ${PATHRT}/fv3_conf/${i} >> fv3_run
 done
 
-if [[ $DATM_NEMS = 'true' ]] || [[ $DATM_CDEPS = 'true' ]] || [[ $FV3 = 'true' ]] || [[ $S2S = 'true' ]]; then
+if [[ $DATM_CDEPS = 'true' ]] || [[ $FV3 = 'true' ]] || [[ $S2S = 'true' ]]; then
   if [[ $HAFS = 'false' ]] || [[ $FV3 = 'true' && $HAFS = 'true' ]]; then
     atparse < ${PATHRT}/parm/${INPUT_NML:-input.nml.IN} > input.nml
   fi
@@ -106,6 +108,11 @@ if [[ "Q${INPUT_NEST02_NML:-}" != Q ]] ; then
     atparse < ${PATHRT}/parm/${INPUT_NEST02_NML} > input_nest02.nml
 fi
 
+# Field table
+if [[ "Q${FIELD_TABLE:-}" != Q ]] ; then
+  cp ${PATHRT}/parm/field_table/${FIELD_TABLE} field_table
+fi
+
 # Field Dictionary
 cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
 
@@ -116,7 +123,7 @@ if [[ $CPLWAV == .true. ]]; then
   edit_ww3_input  < ${PATHRT}/parm/ww3_multi.inp.IN > ww3_multi.inp
 fi
 
-if [[ $DATM_NEMS = 'true' ]] || [[ $DATM_CDEPS = 'true' ]] || [[ $S2S = 'true' ]]; then
+if [[ $DATM_CDEPS = 'true' ]] || [[ $S2S = 'true' ]]; then
   if [[ $HAFS = 'false' ]]; then
     atparse < ${PATHRT}/parm/ice_in_template > ice_in
     atparse < ${PATHRT}/parm/${MOM_INPUT:-MOM_input_template_$OCNRES} > INPUT/MOM_input
@@ -125,9 +132,6 @@ if [[ $DATM_NEMS = 'true' ]] || [[ $DATM_CDEPS = 'true' ]] || [[ $S2S = 'true' ]
   fi
 fi
 
-if [[ $DATM_NEMS = 'true' ]]; then
-  cp ${PATHRT}/parm/datm_data_table.IN datm_data_table
-fi
 if [[ "${DIAG_TABLE_ADDITIONAL:-}Q" != Q ]] ; then
   # Append diagnostic outputs, to support tests that vary from others
   # only by adding diagnostics.
