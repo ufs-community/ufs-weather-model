@@ -520,10 +520,10 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
   TASKS_cpl_atmw_gdas=576; TPN_cpl_atmw_gdas=12; INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8
   THRD_cpl_atmw_gdas=3; WPG_cpl_atmw_gdas=24; APB_cpl_atmw_gdas="0 311"; WPB_cpl_atmw_gdas="312 575"
 
-  TASKS_cpl_c96=192; TPN_cpl_c96=36; INPES_cpl_c96=3; JNPES_cpl_c96=8
+  TASKS_cpl_c96=200; TPN_cpl_c96=36; INPES_cpl_c96=3; JNPES_cpl_c96=8
   THRD_cpl_c96=1; WPG_cpl_c96=6;  MPB_cpl_c96="0 143"; APB_cpl_c96="0 149"
-  OPB_cpl_c96="150 179"; IPB_cpl_c96="180 191"
-  NPROC_ICE_cpl_c96=12
+  OPB_cpl_c96="150 169"; IPB_cpl_c96="170 179"; WPB_cpl_c96="180 199"
+  NPROC_ICE_cpl_c96=10
 
   TASKS_cpl_dflt=200; TPN_cpl_dflt=36; INPES_cpl_dflt=3; JNPES_cpl_dflt=8
   THRD_cpl_dflt=1; WPG_cpl_dflt=6;  MPB_cpl_dflt="0 143"; APB_cpl_dflt="0 149"
@@ -545,9 +545,9 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
   OPB_cpl_mpi="198 231"; IPB_cpl_mpi="232 251"; WPB_cpl_mpi="252 279"
   NPROC_ICE_cpl_mpi=20
 
-  TASKS_cpl_c384=480; TPN_cpl_c384=36; INPES_cpl_c384=6; JNPES_cpl_c384=8
+  TASKS_cpl_c384=560; TPN_cpl_c384=36; INPES_cpl_c384=6; JNPES_cpl_c384=8
   THRD_cpl_c384=1; WPG_cpl_c384=24; MPB_cpl_c384="0 287"; APB_cpl_c384="0 311"
-  OPB_cpl_c384="312 431"; IPB_cpl_c384="432 479"
+  OPB_cpl_c384="312 431"; IPB_cpl_c384="432 479"; WPB_cpl_c384="480 559"
   NPROC_ICE_cpl_c384=48
 
   TASKS_cpl_bmrk=560; TPN_cpl_bmrk=36; INPES_cpl_bmrk=6; JNPES_cpl_bmrk=8
@@ -560,9 +560,9 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
   OPB_cpl_bmrk_mpi="312 431"; IPB_cpl_bmrk_mpi="432 479"; WPB_cpl_bmrk_mpi="480 599"
   NPROC_ICE_cpl_bmrk_mpi=48
 
-  TASKS_cpl_c192=288; TPN_cpl_c192=36; INPES_cpl_c192=4; JNPES_cpl_c192=8
+  TASKS_cpl_c192=348; TPN_cpl_c192=36; INPES_cpl_c192=4; JNPES_cpl_c192=8
   THRD_cpl_c192=1; WPG_cpl_c192=12;  MPB_cpl_c192="0 191"; APB_cpl_c192="0 203"
-  OPB_cpl_c192="204 263"; IPB_cpl_c192="264 287"
+  OPB_cpl_c192="204 263"; IPB_cpl_c192="264 287"; WPB_cpl_c192="288 347"
   NPROC_ICE_cpl_c192=24
 
   TASKS_cdeps_100=40; TPN_cdeps_100=36

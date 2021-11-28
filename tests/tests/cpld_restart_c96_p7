@@ -97,12 +97,16 @@ export med_petlist_bounds=$MPB_cpl_c96
 export atm_petlist_bounds=$APB_cpl_c96
 export ocn_petlist_bounds=$OPB_cpl_c96
 export ice_petlist_bounds=$IPB_cpl_c96
+export wav_petlist_bounds=$WPB_cpl_c96
 
-export CPLWAV=.false.
-export CPLWAV2ATM=.false.
-export MOM6_USE_WAVES=False
+export CPLWAV=.true.
+export CPLWAV2ATM=.true.
+export MOM6_USE_WAVES=True
 export eps_imesh=2.5e-1
 
-export NEMS_CONFIGURE=nems.configure.cpld.IN
+export TOPOEDITS=ufs.topo_edits_011818.nc
+export MOM6_ALLOW_LANDMASK_CHANGES=True
+
+export NEMS_CONFIGURE=nems.configure.cpld_wave.IN
 
 export FV3_RUN=cpld_control_run.IN
