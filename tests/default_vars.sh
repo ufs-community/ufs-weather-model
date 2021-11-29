@@ -513,6 +513,9 @@ export EFFR_IN=.false.
 export LRADAR=.true.
 export LTAEROSOL=.true.
 export EXT_DIAG_THOMPSON=.false.
+export sedi_semi=.false.
+export sedi_semi_update=.false.
+export sedi_semi_decfl=.false.
 
 # GWD
 export LDIAG_UGWP=.false.
@@ -534,16 +537,8 @@ export CDMBWD_c192='0.23,1.5,1.0,1.0'
 export CDMBWD_c384='1.1,0.72,1.0,1.0'
 export CDMBWD_c768='4.0,0.15,1.0,1.0'
 
-# CA tunable parameter
-export RCELL_c48=0.1
-export RCELL_c96=0.1
-export RCELL_c192=0.2
-export RCELL_c384=0.72
-export RCELL_c768=0.72
-
 # set default
 export CDMBWD=${CDMBWD_c96}
-export RCELL=${RCELL_c96}
 
 # PBL
 export SATMEDMF=.false.
@@ -660,8 +655,14 @@ export IAU_DRYMASSFIXER=.false.
 
 #waves
 export WW3RSTDTHR=12
+export DT_2_RST="$(printf "%02d" $(( ${WW3RSTDTHR}*3600 )))"
+export DTRST=0
+export RSTTYPE=T
 export WW3OUTDTHR=1
-export WW3OUTPUTTYPE=1
+export DTFLD="$(printf "%02d" $(( ${WW3OUTDTHR}*3600 )))"
+export DTPNT="$(printf "%02d" $(( ${WW3OUTDTHR}*3600 )))"
+export GOFILETYPE=1
+export POFILETYPE=1
 export OUTPARS_WAV="WND HS FP DP PHS PTP PDIR"
 export CPLILINE='$'
 export ICELINE='$'
@@ -669,7 +670,22 @@ export WINDLINE='$'
 export CURRLINE='$'
 export NFGRIDS=0
 export NMGRIDS=1
-export ww3gline="'glo_1deg'  'no' 'no' 'CPL:native' 'no' 'no' 'no' 'no' 'no' 'no'   1  1  0.00 1.00  F"
+export WW3GRIDLINE="'glo_1deg'  'no' 'no' 'CPL:native' 'no' 'no' 'no' 'no' 'no' 'no'   1  1  0.00 1.00  F"
+export FUNIPNT=T
+export IOSRV=1
+export FPNTPROC=T
+export FGRDPROC=T
+export UNIPOINTS='points'
+export FLAGMASKCOMP=' F'
+export FLAGMASKOUT=' F'
+export RUN_BEG="${SYEAR}${SMONTH}${SDAY} $(printf "%02d" $(( ${SHOUR}  )))0000"
+export RUN_END="2100${SMONTH}${SDAY} $(printf "%02d" $(( ${SHOUR}  )))0000"
+export OUT_BEG=$RUN_BEG
+export OUT_END=$RUN_END
+export RST_BEG=$RUN_BEG
+export RST_2_BEG=$RUN_BEG
+export RST_END=$RUN_END
+export RST_2_END=$RUN_END
 
 # Regional
 export WRITE_RESTART_WITH_BCS=.false.
@@ -805,8 +821,9 @@ export DO_CA=.true.
 export CA_SGS=.true.
 export CA_GLOBAL=.false.
 export NCA=1
-export SCELLS=2600
-export TLIVES=1800
+export NCELLS=5
+export NLIVES=12
+export NTHRESH=18
 export NSEED=1
 export NFRACSEED=0.5
 export CA_TRIGGER=.true.
@@ -892,8 +909,15 @@ export FRAZIL_FWSALT=.true.
 export CICE_HIST_AVG=.true.
 
 #wave
-export ww3gline="'glo_1deg'  'no' 'CPL:native' 'CPL:native' 'CPL:native' 'no' 'no' 'no' 'no' 'no'   1  1  0.00 1.00  F"
-export WW3OUTPUTTYPE=' 1'
+export WW3GRIDLINE="'glo_1deg'  'no' 'CPL:native' 'CPL:native' 'CPL:native' 'no' 'no' 'no' 'no' 'no'   1  1  0.00 1.00  F"
+export RUN_BEG="${SYEAR}${SMONTH}${SDAY} $(printf "%02d" $(( ${SHOUR}  )))0000"
+export RUN_END="2100${SMONTH}${SDAY} $(printf "%02d" $(( ${SHOUR}  )))0000"
+export OUT_BEG=$RUN_BEG
+export OUT_END=$RUN_END
+export RST_BEG=$RUN_BEG
+export RST_2_BEG=$RUN_BEG
+export RST_END=$RUN_END
+export RST_2_END=$RUN_END
 
 # checkpoint restarts
 export RESTART_FILE_PREFIX=''
@@ -1118,7 +1142,7 @@ export DLON=0.03
 export DLAT=0.03
 
 # input.nml
-export MERGE_IMPORT=.true.
+export CPL_IMP_MRG=.true.
 
 # nems.configure
 export med_model=cmeps
