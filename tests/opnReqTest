@@ -544,6 +544,12 @@ if [[ $ECFLOW == true ]]; then
   else
     error "ecflow is not supported on this machine $MACHINE_ID"
   fi
+
+  if [[ $MACHINE_ID == hera.* ]] && [[ ! $HOSTNAME == hecflow* ]]; then
+    echo "ERROR: To use ECFlow on Hera please use the 'hecflow01' login node: ssh hecflow01."
+    exit 1
+  fi
+
 fi
 
 opnreqtest_log=${PATHRT}/OpnReqTests_$MACHINE_ID.log
