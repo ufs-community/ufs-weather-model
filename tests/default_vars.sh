@@ -488,10 +488,16 @@ export NA_INIT=1
 
 # Radiation
 export DO_RRTMGP=.false.
+export DOGP_CLDOPTICS_LUT=.false.
+export DOGP_LWSCAT=.false.
+export USE_LW_JACOBIAN=.false.
+export DAMP_LW_FLUXADJ=.false.
 export ICLOUD=0
 export IAER=111
 export ICLIQ_SW=1
 export IOVR=1
+export LFNC_K=-999
+export LFNC_P0=-999
 
 # Microphysics
 export IMP_PHYSICS=11
@@ -551,6 +557,8 @@ export HURR_PBL=.false.
 export MONINQ_FAC=1.0
 
 # Shallow/deep convection
+export DO_DEEP=.true.
+export SHAL_CNV=.true.
 export IMFSHALCNV=2
 export HWRF_SAMFSHAL=.false.
 export IMFDEEPCNV=2

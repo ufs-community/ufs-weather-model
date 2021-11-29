@@ -17,6 +17,10 @@ SUFFIX=${RT_SUFFIX}
 if [ $WARM_START = .false. ]; then
   mkdir INPUT RESTART
   cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127/* ./INPUT/.
+  # DH*
+  # TODO: REPLACE ORIGINAL gfs_data.tile?.nc files with this version (contains aerosols)
+  cp -v /scratch1/BMC/gsd-hpcs/Dom.Heinzeller/GSL_C96_L127_INPUT_DATA_WITH_AEROSOLS/gfs_data.tile?.nc ./INPUT/
+  # *DH
 else
   mkdir INPUT RESTART
 
@@ -103,6 +107,10 @@ cp    @[INPUTDATA_ROOT]/${inputdir}/diag_table_gfsv16 ./diag_table
 if [ $NEW_DIAGTABLE != 'none' ]; then
   cp    @[INPUTDATA_ROOT]/${inputdir}/$NEW_DIAGTABLE ./diag_table
 fi
+# DH*
+# TODO: MOVE TO {inputdir} and rename to diag_table_gsl
+cp -v @[INPUTDATA_ROOT]/FV3_input_data_gsd/diag_table_gsd ./diag_table # *DH
+# *DH
 
 if [ $CPLWAV = .true. ]; then
   cp    @[INPUTDATA_ROOT_WW3]/mod_def.* .

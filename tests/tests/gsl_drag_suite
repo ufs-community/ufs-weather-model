@@ -1,43 +1,25 @@
-##########################################################################################
+###############################################################################
 #
-#  FV3 CCPP GSD RRTMGP (GF CU + Thompson MP + MYNN PBL + RUC LSM + RRTMGP) 24h test in DEBUG mode
+#  gsl drag suite test: GSLv1 with drag suite atmosphere only at C96L127
 #
-##########################################################################################
+###############################################################################
 
-export TEST_DESCR="Compare FV3 CCPP GSD RRTMGP DEBUG results with previous trunk version"
+export TEST_DESCR="Compare gsl drag suite results with previous trunk version"
 
-export CNTL_DIR=fv3_gsd_RRTMGP_debug
+export CNTL_DIR=gsl_drag_suite
 
-export LIST_FILES="atmos_4xdaily.tile1.nc \
-                   atmos_4xdaily.tile2.nc \
-                   atmos_4xdaily.tile3.nc \
-                   atmos_4xdaily.tile4.nc \
-                   atmos_4xdaily.tile5.nc \
-                   atmos_4xdaily.tile6.nc \
-                   sfcf000.tile1.nc \
-                   sfcf000.tile2.nc \
-                   sfcf000.tile3.nc \
-                   sfcf000.tile4.nc \
-                   sfcf000.tile5.nc \
-                   sfcf000.tile6.nc \
-                   sfcf003.tile1.nc \
-                   sfcf003.tile2.nc \
-                   sfcf003.tile3.nc \
-                   sfcf003.tile4.nc \
-                   sfcf003.tile5.nc \
-                   sfcf003.tile6.nc \
-                   atmf000.tile1.nc \
-                   atmf000.tile2.nc \
-                   atmf000.tile3.nc \
-                   atmf000.tile4.nc \
-                   atmf000.tile5.nc \
-                   atmf000.tile6.nc \
-                   atmf003.tile1.nc \
-                   atmf003.tile2.nc \
-                   atmf003.tile3.nc \
-                   atmf003.tile4.nc \
-                   atmf003.tile5.nc \
-                   atmf003.tile6.nc \
+export LIST_FILES="sfcf000.nc \
+                   sfcf021.nc \
+                   sfcf024.nc \
+                   atmf000.nc \
+                   atmf021.nc \
+                   atmf024.nc \
+                   GFSFLX.GrbF00 \
+                   GFSFLX.GrbF21 \
+                   GFSFLX.GrbF24 \
+                   GFSPRS.GrbF00 \
+                   GFSPRS.GrbF21 \
+                   GFSPRS.GrbF24 \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -72,25 +54,36 @@ export LIST_FILES="atmos_4xdaily.tile1.nc \
                    RESTART/sfc_data.tile6.nc"
 
 export_fv3
+export NPZ=127
+export NPZP=128
+export DT_ATMOS=720
+export SYEAR=2021
+export SMONTH=03
+export SDAY=22
+export SHOUR=06
+export RESTART_INTERVAL="12 -1"
+export OUTPUT_GRID='gaussian_grid'
+export NSTF_NAME='2,0,0,0,0'
+export WRITE_DOPOST=.true.
+export IAER=5111
+export OUTPUT_FH='0 21 24'
 
-export FHMAX=3
-export OUTPUT_FH="3 -1"
+export FV3_RUN=control_run.IN
+export CCPP_SUITE=FV3_GSL_v1_drag_suite
+export INPUT_NML=gsl.nml.IN
+export FIELD_TABLE=field_table_gsl
+# DH* TODO
+#export NEW_DIAGTABLE=diag_table_gsl
+# *DH
 
-export DO_RRTMGP=.true.
-export DT_ATMOS="450"
+export DT_ATMOS="300"
 export IMP_PHYSICS=8
 export DNATS=0
 export DO_SAT_ADJ=.false.
 export LRADAR=.true.
 export LTAEROSOL=.true.
-
 export IALB=2
 export IEMS=2
-
-export FV3_RUN=gsd_run.IN
-export CCPP_SUITE=FV3_GSD_v0_RRTMGP
-export INPUT_NML=gsd_rrtmgp.nml.IN
-
 export HYBEDMF=.false.
 export DO_MYNNEDMF=.true.
 export IMFSHALCNV=3
@@ -98,4 +91,13 @@ export IMFDEEPCNV=3
 export LSM=3
 export LSOIL_LSM=9
 export KICE=9
+
+export GWD_OPT=3
+export DO_UGWP_V0=.false.
+export DO_UGWP_V0_OROG_ONLY=.false.
+export DO_GSL_DRAG_LS_BL=.true.
+export DO_GSL_DRAG_SS=.true.
+export DO_GSL_DRAG_TOFD=.true.
+export DO_UGWP_V1=.false.
+export DO_UGWP_V1_OROG_ONLY=.false.
 
