@@ -1,12 +1,12 @@
 ###############################################################################
 #
-#  RAP test atmosphere only at C96L127
+#  RAP with sfcdiff domain decomposition test with different PEs
 #
 ###############################################################################
 
-export TEST_DESCR="Compare RAP results with previous trunk version"
+export TEST_DESCR="Compare RAP with sfcdiff decomp results with control"
 
-export CNTL_DIR=rap
+export CNTL_DIR=rap_sfcdiff
 
 export LIST_FILES="sfcf000.nc \
                    sfcf021.nc \
@@ -68,12 +68,15 @@ export WRITE_DOPOST=.true.
 export IAER=5111
 export OUTPUT_FH='0 21 24'
 
+export INPES=6
+export JNPES=4
+
 export FV3_RUN=control_run.IN
-export CCPP_SUITE=FV3_RAP
-export INPUT_NML=gsl.nml.IN
-export FIELD_TABLE=field_table_gsl
+export CCPP_SUITE=FV3_RAP_sfcdiff
+export INPUT_NML=rap.nml.IN
+export FIELD_TABLE=field_table_thompson_aero_tke
 # DH* TODO
-#export NEW_DIAGTABLE=diag_table_gsl
+#export NEW_DIAGTABLE=diag_table_rap
 # *DH
 
 export DT_ATMOS="300"
@@ -86,7 +89,6 @@ export IALB=2
 export IEMS=2
 export HYBEDMF=.false.
 export DO_MYNNEDMF=.true.
-export DO_MYNNSFCLAY=.true.
 export IMFSHALCNV=3
 export IMFDEEPCNV=3
 export LSM=3
@@ -101,5 +103,4 @@ export DO_GSL_DRAG_SS=.true.
 export DO_GSL_DRAG_TOFD=.true.
 export DO_UGWP_V1=.false.
 export DO_UGWP_V1_OROG_ONLY=.false.
-
 

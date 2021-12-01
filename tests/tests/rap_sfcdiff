@@ -1,12 +1,12 @@
 ###############################################################################
 #
-#  gsl drag suite unified ugwp test: GSLv1 with drag suite thrrough U-UGWP atmosphere only at C96L127
+#  RAP with sfcdiff test: atmosphere only at C96L127
 #
 ###############################################################################
 
-export TEST_DESCR="Compare gsl drag suite through unified ugwp results with previous trunk version"
+export TEST_DESCR="Compare RAP with sfcdiff results with previous trunk version"
 
-export CNTL_DIR=gsl_drag_suite
+export CNTL_DIR=rap_sfcdiff
 
 export LIST_FILES="sfcf000.nc \
                    sfcf021.nc \
@@ -69,11 +69,11 @@ export IAER=5111
 export OUTPUT_FH='0 21 24'
 
 export FV3_RUN=control_run.IN
-export CCPP_SUITE=FV3_GSL_v1_unified_ugwp_suite
-export INPUT_NML=gsl.nml.IN
-export FIELD_TABLE=field_table_gsl
+export CCPP_SUITE=FV3_RAP_sfcdiff
+export INPUT_NML=rap.nml.IN
+export FIELD_TABLE=field_table_thompson_aero_tke
 # DH* TODO
-#export NEW_DIAGTABLE=diag_table_gsl
+#export NEW_DIAGTABLE=diag_table_rap
 # *DH
 
 export DT_ATMOS="300"

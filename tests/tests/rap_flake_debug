@@ -1,12 +1,12 @@
-##########################################################################################
+###############################################################################
 #
-#  RRFS v1beta test atmosphere only at C96L127 in debug mode
+#  RAP with FLake debug test: atmosphere only at C96L127 in debug mode
 #
-##########################################################################################
+###############################################################################
 
-export TEST_DESCR="Compare RRFS_v1beta debug results with previous trunk version"
+export TEST_DESCR="Compare RAP with FLake debug results with previous trunk version"
 
-export CNTL_DIR=rrfs_v1beta_debug
+export CNTL_DIR=rap_flake_debug
 
 export LIST_FILES="sfcf000.nc \
                    sfcf001.nc \
@@ -28,9 +28,14 @@ export FHMAX=1
 export OUTPUT_FH="0 1"
 #export WRITE_DOPOST=.true.
 
+# DH* REMOVE?
+#export DO_SPPT=.true.
+#export DO_SHUM=.true.
+#export DO_SKEB=.true.
+# *DH
 
 export FV3_RUN=control_run.IN
-export CCPP_SUITE=FV3_RRFS_v1beta
+export CCPP_SUITE=FV3_RAP_flake
 export INPUT_NML=rap.nml.IN
 export FIELD_TABLE=field_table_thompson_aero_tke
 # DH* TODO
@@ -48,10 +53,18 @@ export IEMS=2
 export HYBEDMF=.false.
 export DO_MYNNEDMF=.true.
 export DO_MYNNSFCLAY=.true.
-export DO_DEEP=.false.
-export SHAL_CNV=.false.
-export IMFSHALCNV=-1
-export IMFDEEPCNV=-1
-export LSM=2
-export LSOIL_LSM=4
+export IMFSHALCNV=3
+export IMFDEEPCNV=3
+export LSM=3
+export LSOIL_LSM=9
+export KICE=9
+export LKM=1
 
+export GWD_OPT=3
+export DO_UGWP_V0=.false.
+export DO_UGWP_V0_OROG_ONLY=.false.
+export DO_GSL_DRAG_LS_BL=.true.
+export DO_GSL_DRAG_SS=.true.
+export DO_GSL_DRAG_TOFD=.true.
+export DO_UGWP_V1=.false.
+export DO_UGWP_V1_OROG_ONLY=.false.

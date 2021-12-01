@@ -1,12 +1,12 @@
 ###############################################################################
 #
-#  gsl mynnsfc debug test: GSLv1 + MYNN SFC atmosphere only at C96L127 in debug mode
+#  RAP with Unified UGWP debug test: atmosphere only at C96L127 in debug mode
 #
 ###############################################################################
 
-export TEST_DESCR="Compare gsl mynnsfc debug results with previous trunk version"
+export TEST_DESCR="Compare RAP with Unified UGWP debug results with previous trunk version"
 
-export CNTL_DIR=gsl_mynnsfc_debug
+export CNTL_DIR=rap_cires_ugwp_debug
 
 export LIST_FILES="sfcf000.nc \
                    sfcf001.nc \
@@ -30,11 +30,11 @@ export OUTPUT_FH="0 1"
 
 
 export FV3_RUN=control_run.IN
-export CCPP_SUITE=FV3_GSL_v1_mynnsfc
-export INPUT_NML=gsl.nml.IN
-export FIELD_TABLE=field_table_gsl
+export CCPP_SUITE=FV3_RAP_unified_ugwp
+export INPUT_NML=rap.nml.IN
+export FIELD_TABLE=field_table_thompson_aero_tke
 # DH* TODO
-#export NEW_DIAGTABLE=diag_table_gsl
+#export NEW_DIAGTABLE=diag_table_rap
 # *DH
 
 export DT_ATMOS="300"
@@ -53,4 +53,13 @@ export IMFDEEPCNV=3
 export LSM=3
 export LSOIL_LSM=9
 export KICE=9
+
+export GWD_OPT=2
+export DO_UGWP_V0=.true.
+export DO_UGWP_V0_OROG_ONLY=.false.
+export DO_GSL_DRAG_LS_BL=.false.
+export DO_GSL_DRAG_SS=.false.
+export DO_GSL_DRAG_TOFD=.false.
+export DO_UGWP_V1=.false.
+export DO_UGWP_V1_OROG_ONLY=.false.
 

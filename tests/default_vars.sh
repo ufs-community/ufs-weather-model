@@ -582,6 +582,8 @@ export OZ_PHYS_OLD=.true.
 export OZ_PHYS_NEW=.false.
 export H2O_PHYS=.false.
 
+# Flake model
+export LKM=0
 
 export CPL=.false.
 export CPLCHM=.false.

@@ -1,21 +1,25 @@
 ###############################################################################
 #
-#  gsl noah test: GSLv1 with Noah MP atmosphere only at C96L127
+#  HRRR control test: atmosphere only at C96L127
 #
 ###############################################################################
 
-export TEST_DESCR="Compare gsl noah results with previous trunk version"
+export TEST_DESCR="Compare HRRR results with previous trunk version"
 
-export CNTL_DIR=gsl_noah
+export CNTL_DIR=hrrr_control
 
 export LIST_FILES="sfcf000.nc \
-                   sfcf006.nc \
+                   sfcf021.nc \
+                   sfcf024.nc \
                    atmf000.nc \
-                   atmf006.nc \
+                   atmf021.nc \
+                   atmf024.nc \
                    GFSFLX.GrbF00 \
-                   GFSFLX.GrbF06 \
+                   GFSFLX.GrbF21 \
+                   GFSFLX.GrbF24 \
                    GFSPRS.GrbF00 \
-                   GFSPRS.GrbF06 \
+                   GFSPRS.GrbF21 \
+                   GFSPRS.GrbF24 \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -57,32 +61,46 @@ export SYEAR=2021
 export SMONTH=03
 export SDAY=22
 export SHOUR=06
-export RESTART_INTERVAL="6 -1"
+export RESTART_INTERVAL="12 -1"
 export OUTPUT_GRID='gaussian_grid'
 export NSTF_NAME='2,0,0,0,0'
 export WRITE_DOPOST=.true.
 export IAER=5111
-export FHMAX=6
-export OUTPUT_FH='0 6'
+export OUTPUT_FH='0 21 24'
 
 export FV3_RUN=control_run.IN
-export CCPP_SUITE=FV3_GSL_v1_noah
-export INPUT_NML=gsl.nml.IN
-export FIELD_TABLE=field_table_gsl
+export CCPP_SUITE=FV3_HRRR
+export INPUT_NML=rap.nml.IN
+export FIELD_TABLE=field_table_thompson_aero_tke
 # DH* TODO
-#export NEW_DIAGTABLE=diag_table_gsl
+#export NEW_DIAGTABLE=diag_table_rap
 # *DH
 
-export DT_ATMOS="150"
+export DT_ATMOS="300"
 export IMP_PHYSICS=8
 export DNATS=0
 export DO_SAT_ADJ=.false.
 export LRADAR=.true.
 export LTAEROSOL=.true.
+export IALB=2
+export IEMS=2
 export HYBEDMF=.false.
 export DO_MYNNEDMF=.true.
-export IMFSHALCNV=3
-export IMFDEEPCNV=3
-export LSM=1
-export LSOIL_LSM=4
+export DO_MYNNSFCLAY=.true.
+export DO_DEEP=.false.
+export SHAL_CNV=.false.
+export IMFSHALCNV=-1
+export IMFDEEPCNV=-1
+export LSM=3
+export LSOIL_LSM=9
+export KICE=9
+
+export GWD_OPT=3
+export DO_UGWP_V0=.false.
+export DO_UGWP_V0_OROG_ONLY=.false.
+export DO_GSL_DRAG_LS_BL=.true.
+export DO_GSL_DRAG_SS=.true.
+export DO_GSL_DRAG_TOFD=.true.
+export DO_UGWP_V1=.false.
+export DO_UGWP_V1_OROG_ONLY=.false.
 

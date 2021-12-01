@@ -1,12 +1,12 @@
 ###############################################################################
 #
-#  HRRR test atmosphere only at C96L127
+#  RAP control with 2 threads test
 #
 ###############################################################################
 
-export TEST_DESCR="Compare HRRR results with previous trunk version"
+export TEST_DESCR="Compare RAP controlwith 2 threads results with control test"
 
-export CNTL_DIR=hrrr
+export CNTL_DIR=rap_control
 
 export LIST_FILES="sfcf000.nc \
                    sfcf021.nc \
@@ -68,12 +68,19 @@ export WRITE_DOPOST=.true.
 export IAER=5111
 export OUTPUT_FH='0 21 24'
 
+export THRD=2
+export TASKS=$TASKS_thrd
+export TPN=$TPN_thrd
+export INPES=$INPES_thrd
+export JNPES=$JNPES_thrd
+export WRTTASK_PER_GROUP=6
+
 export FV3_RUN=control_run.IN
-export CCPP_SUITE=FV3_HRRR
-export INPUT_NML=gsl.nml.IN
-export FIELD_TABLE=field_table_gsl
+export CCPP_SUITE=FV3_RAP
+export INPUT_NML=rap.nml.IN
+export FIELD_TABLE=field_table_thompson_aero_tke
 # DH* TODO
-#export NEW_DIAGTABLE=diag_table_gsl
+#export NEW_DIAGTABLE=diag_table_rap
 # *DH
 
 export DT_ATMOS="300"
@@ -87,10 +94,8 @@ export IEMS=2
 export HYBEDMF=.false.
 export DO_MYNNEDMF=.true.
 export DO_MYNNSFCLAY=.true.
-export DO_DEEP=.false.
-export SHAL_CNV=.false.
-export IMFSHALCNV=-1
-export IMFDEEPCNV=-1
+export IMFSHALCNV=3
+export IMFDEEPCNV=3
 export LSM=3
 export LSOIL_LSM=9
 export KICE=9
@@ -103,5 +108,4 @@ export DO_GSL_DRAG_SS=.true.
 export DO_GSL_DRAG_TOFD=.true.
 export DO_UGWP_V1=.false.
 export DO_UGWP_V1_OROG_ONLY=.false.
-
 
