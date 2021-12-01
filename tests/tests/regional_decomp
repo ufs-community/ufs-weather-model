@@ -1,12 +1,12 @@
 ###############################################################################
 #
-#  FV3 CCPP regional control test using RRTMGP radiaiton
+#  FV3 regional control decomposition test
 #
 ###############################################################################
 
-export TEST_DESCR="Compare FV3 CCPP w/ RRTMGP regional quilt results with previous trunk version"
+export TEST_DESCR="Compare FV3 CCPP regional decomposition results with previous trunk version"
 
-export CNTL_DIR=fv3_regional_quilt_RRTMGP
+export CNTL_DIR=fv3_regional_control
 
 export LIST_FILES="dynf000.nc \
                    dynf024.nc \
@@ -18,8 +18,6 @@ export LIST_FILES="dynf000.nc \
                    NATLEV.GrbF24"
 
 export_fv3
-export DO_RRTMGP=.true.
-export TASKS=68
 
 export FV3_RUN=regional_run.IN
 
@@ -30,12 +28,12 @@ export HYBEDMF=.false.
 export WRITE_DOPOST=.true.
 export POSTAPP='lam'
 
-export CCPP_SUITE=FV3_GFS_v15_thompson_mynn_RRTMGP
-export INPUT_NML=regional_rrtmgp.nml.IN
+export CCPP_SUITE=FV3_GFS_v15_thompson_mynn
+export INPUT_NML=regional.nml.IN
 export MODEL_CONFIGURE=model_configure_regional.IN
 export FIELD_TABLE=field_table_regional
 
-export INPES=10
-export JNPES=6
+export TASKS=68
+export INPES=5
+export JNPES=12
 export OUTPUT_FH="12 -1"
-
