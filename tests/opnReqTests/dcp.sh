@@ -14,7 +14,7 @@ elif [[ $application == 'regional' ]]; then
   if [[ $CI_TEST == 'true' ]]; then
     INPES=10
     JNPES=3
-    TASKS=$((INPES*JNPES))
+    TASKS=$((INPES*JNPES + WRITE_GROUP*WRTTASK_PER_GROUP))
     NODES=$(((TASKS+TPN-1)/TPN))
   else
     INPES=5
