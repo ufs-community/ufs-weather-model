@@ -36,7 +36,7 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
 
   TASKS_cpl_dflt=196; TPN_cpl_dflt=28; INPES_cpl_dflt=3; JNPES_cpl_dflt=8
   THRD_cpl_dflt=1; WPG_cpl_dflt=6;  MPB_cpl_dflt="0 143"; APB_cpl_dflt="0 149"
-  OPB_cpl_dflt="150 169"; IPB_cpl_dflt="170 177"; WPB_cpl_dflt="178 195"  
+  OPB_cpl_dflt="150 169"; IPB_cpl_dflt="170 177"; WPB_cpl_dflt="178 195"
   NPROC_ICE_cpl_dflt=8
 
   TASKS_cpl_thrd=120; TPN_cpl_thrd=14; INPES_cpl_thrd=3; JNPES_cpl_thrd=4
@@ -170,7 +170,7 @@ elif [[ $MACHINE_ID = orion.* ]]; then
 
   TASKS_cpl_dflt=200; TPN_cpl_dflt=40; INPES_cpl_dflt=3; JNPES_cpl_dflt=8
   THRD_cpl_dflt=1; WPG_cpl_dflt=6;  MPB_cpl_dflt="0 143"; APB_cpl_dflt="0 149"
-  OPB_cpl_dflt="150 169"; IPB_cpl_dflt="170 179"; WPB_cpl_dflt="180 199"  
+  OPB_cpl_dflt="150 169"; IPB_cpl_dflt="170 179"; WPB_cpl_dflt="180 199"
   NPROC_ICE_cpl_dflt=10
 
   TASKS_cpl_thrd=120; TPN_cpl_thrd=20; INPES_cpl_thrd=3; JNPES_cpl_thrd=4
@@ -1036,7 +1036,7 @@ export eps_imesh=1.0e-1
 
 # FV3 defaults
 export FRAC_GRID=.true.
-export CCPP_SUITE=FV3_GFS_v16_coupled_nsstNoahmpUGWPv1
+export CCPP_SUITE=FV3_GFS_v16_coupled_p8
 export INPUT_NML=cpld_control.nml.IN
 export FIELD_TABLE=field_table_gfsv16
 export DIAG_TABLE=diag_table_template
@@ -1119,6 +1119,9 @@ export USE_CICE_ALB=.false.
 # P7 default mushy thermo
 export KTHERM=2
 export TFREEZE_OPTION=mushy
+
+# P8 RRTMGP
+export DO_RRTMGP=.true.
 
 export CPLFLX=.true.
 export CPLICE=.true.
