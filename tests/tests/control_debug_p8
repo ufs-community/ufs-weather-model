@@ -1,12 +1,12 @@
 ###############################################################################
 #
-#  Global control debug test: GFSv16 atmosphere only at C96L127, P7 configuration
+#  Global control debug test: GFSv16 atmosphere only at C96L127, P8 configuration
 #
 ###############################################################################
 
 export TEST_DESCR="Compare global control debug results with previous trunk version"
 
-export CNTL_DIR=control_debug_p7
+export CNTL_DIR=control_debug_p8
 
 export LIST_FILES="sfcf000.nc \
                    sfcf001.nc \
@@ -97,10 +97,11 @@ export LANDICE=".false."
 export FSICL=99999
 
 #required for NML.IN sharing
-export USE_CICE_ALB=.false.
 export MIN_SEAICE=0.15
 export FRAC_GRID=.true.
 export MOM6_RESTART_SETTING=n
+# P8
+export USE_CICE_ALB=.true.
 
 export FV3_RUN=control_run.IN
 export CCPP_SUITE=FV3_GFS_v16_nsstNoahmpUGWPv1

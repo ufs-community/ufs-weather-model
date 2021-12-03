@@ -1,16 +1,20 @@
 ###############################################################################
 #
-#  Global control restart test GFSv16 atmosphere only at C96L127, P7 configuration
+#  Global control domain decomp test with differrent PEs, C96L127, P8 configuration
 #
 ###############################################################################
 
-export TEST_DESCR="Compare global restart results with control_p7 test"
+export TEST_DESCR="Compare global decomp results with control_p8 test"
 
-export CNTL_DIR=control_p7
+export CNTL_DIR=control_p8
 
-export LIST_FILES="sfcf024.nc \
+export LIST_FILES="sfcf000.nc \
+                   sfcf024.nc \
+                   atmf000.nc \
                    atmf024.nc \
+                   GFSFLX.GrbF00 \
                    GFSFLX.GrbF24 \
+                   GFSPRS.GrbF00 \
                    GFSPRS.GrbF24 \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
@@ -53,17 +57,13 @@ export SYEAR=2021
 export SMONTH=03
 export SDAY=22
 export SHOUR=06
+export RESTART_INTERVAL=0
 export OUTPUT_GRID='gaussian_grid'
+export NSTF_NAME='2,0,0,0,0'
 export WRITE_DOPOST=.true.
-export FHROT=12
-export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${SHOUR} + ${FHROT}  )))0000"
 
-export WARM_START=.true.
-export NGGPS_IC=.false.
-export EXTERNAL_IC=.false.
-export MAKE_NH=.false.
-export MOUNTAIN=.true.
-export NA_INIT=0
+export INPES=6
+export JNPES=4
 
 #P7 default
 export IALB=2
@@ -85,7 +85,7 @@ export DDDMP=0.2
 # P7 Merra2 Aerosols & NSST
 export USE_MERRA2=.true.
 export IAER=1011
-export NSTF_NAME=2,0,0,0,0
+export NSTF_NAME=2,1,0,0,0
 
 export LHEATSTRG=.true.
 export LSEASPRAY=.true.
@@ -135,11 +135,13 @@ export LANDICE=".false."
 export FSICL=99999
 
 #required for NML.IN sharing
-export USE_CICE_ALB=.false.
 export MIN_SEAICE=0.15
 export FRAC_GRID=.true.
 export MOM6_RESTART_SETTING=n
+# P8
+export USE_CICE_ALB=.true.
 
+# P7
 export FV3_RUN=control_run.IN
 export CCPP_SUITE=FV3_GFS_v16_nsstNoahmpUGWPv1
 export NEW_DIAGTABLE=diag_table_gfsv16_merra2
