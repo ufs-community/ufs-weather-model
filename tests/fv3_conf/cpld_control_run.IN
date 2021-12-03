@@ -58,6 +58,11 @@ if [[ $CPLWAV == .true. ]]; then
   cp    @[INPUTDATA_ROOT_WW3]/mod_def.* .
 fi
 
+#rrtmgp
+if [ $DO_RRTMGP = .true. ]; then
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_RRTMGP/* .
+fi
+
 OPNREQ_TEST=${OPNREQ_TEST:-false}
 SUFFIX=${RT_SUFFIX}
 # No restart
