@@ -1,12 +1,12 @@
 ###############################################################################
 #
-#  Global control csawmg test
+#  global control_latlon test: GFSv16 atmosphere only at C96L127 with latlon output
 #
 ###############################################################################
 
-export TEST_DESCR="Compare global control csawmg results with previous trunk version"
+export TEST_DESCR="Compare global control latlon results with previous trunk version"
 
-export CNTL_DIR=control_csawmg
+export CNTL_DIR=control_latlon
 
 export LIST_FILES="sfcf000.nc \
                    sfcf024.nc \
@@ -20,21 +20,20 @@ export LIST_FILES="sfcf000.nc \
 export_fv3
 export NPZ=127
 export NPZP=128
+export DT_ATMOS=720
 export SYEAR=2021
 export SMONTH=03
 export SDAY=22
 export SHOUR=06
-export RESTART_INTERVAL=0
-export OUTPUT_GRID='gaussian_grid'
+export OUTPUT_GRID='global_latlon'
+export IMO=360
+export JMO=181
 export NSTF_NAME='2,0,0,0,0'
 export WRITE_DOPOST=.true.
+export IAER=5111
+export OUTPUT_FH='0 24'
 
-export DT_ATMOS=600
-export IAER=1011
-export DIAG_TABLE='diag_table_aod'
-export FIELD_TABLE='field_table_csawmgshoc'
-export USE_MERRA2=.true.
 
 export FV3_RUN=control_run.IN
-export CCPP_SUITE=FV3_GFS_v16_csawmg
-export INPUT_NML=control_csawmg.nml.IN
+export CCPP_SUITE=FV3_GFS_v16
+export INPUT_NML=control.nml.IN
