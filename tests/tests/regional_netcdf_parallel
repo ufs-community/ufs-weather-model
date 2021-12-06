@@ -1,15 +1,14 @@
 ###############################################################################
 #
-#  FV3 CCPP regional quilt test with parallel netcdf
+#  FV3 regional parallel netcdf test
 #
 ###############################################################################
 
-export TEST_DESCR="Compare FV3 CCPP regional quilt results with parallel netcdf with previous trunk version"
+export TEST_DESCR="Compare FV3 regional with parallel netcdf results with previous trunk version"
 
-export CNTL_DIR=fv3_regional_quilt_netcdf_parallel
+export CNTL_DIR=fv3_regional_netcdf_parallel
 
-export LIST_FILES="  atmos_4xdaily.nc \
-                           dynf000.nc \
+export LIST_FILES="        dynf000.nc \
                            dynf024.nc \
                            phyf000.nc \
                            phyf024.nc "
@@ -30,9 +29,9 @@ export IDEFLATE=1
 
 export CCPP_SUITE=FV3_GFS_v15_thompson_mynn
 export INPUT_NML=regional.nml.IN
+export DIAG_TABLE=diag_table_lam
 export FIELD_TABLE=field_table_regional
 
 export INPES=10
 export JNPES=6
 export OUTPUT_FH="12 -1"
-
