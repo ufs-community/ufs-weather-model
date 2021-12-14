@@ -8,6 +8,11 @@ if [[ $application == 'global' ]]; then
   TASKS=$((INPES*JNPES*6 + WRITE_GROUP*WRTTASK_PER_GROUP))
   NODES=$(((TASKS+TPN-1)/TPN))
 elif [[ $application == 'regional' ]]; then
+  if [[ $CI_TEST == 'true' ]]; then
+    INPES=4
+    JNPES=4
+    TASKS=$((INPES*JNPES + WRITE_GROUP*WRTTASK_PER_GROUP))
+  fi
   NODES=$(((TASKS+TPN-1)/TPN))
 elif [[ $application == 'cpld' ]]; then
   if [[ $CI_TEST != 'true' ]]; then
