@@ -201,18 +201,28 @@ submit_and_wait() {
   done
 
   if [[ $test_status = 'FAIL' ]]; then
-    if [[ ${OPNREQ_TEST} == false ]]; then
+    if [[ ${WEEKLY_TEST} == true ]]; then
+      echo "${TEST_NAME} ${TEST_NR}" >> $PATHRT/fail_weekly_test_${TEST_NR}
+      echo "Test ${TEST_NR} ${TEST_NAME} FAIL" >> ${REGRESSIONTEST_LOG}
+      echo;echo;echo                           >> ${REGRESSIONTEST_LOG}
+    elif [[ ${OPNREQ_TEST} == true ]]; then
+      echo ${TEST_NR} $TEST_NAME >> $PATHRT/fail_opnreq_test
+    else
       echo "${TEST_NAME} ${TEST_NR} failed" >> $PATHRT/fail_test_${TEST_NR}
       echo "Test ${TEST_NR} ${TEST_NAME} FAIL" >> ${REGRESSIONTEST_LOG}
       echo;echo;echo                           >> ${REGRESSIONTEST_LOG}
       echo "Test ${TEST_NR} ${TEST_NAME} FAIL"
-    else
-      echo ${TEST_NR} $TEST_NAME >> $PATHRT/fail_opnreq_test
     fi
 
     if [[ $ROCOTO == true || $ECFLOW == true ]]; then
       exit 1
     fi
+  fi
+
+  if [[ $test_status = 'PASS' || $test_status = 'DONE' ]]; then
+    echo "Test ${TEST_NR} ${TEST_NAME} RUN_SUCCESS" >> ${REGRESSIONTEST_LOG}
+    echo;echo;echo                           >> ${REGRESSIONTEST_LOG}
+    echo "Test ${TEST_NR} ${TEST_NAME} RUN_SUCCESS"
   fi
 
   eval "$set_x"
@@ -356,7 +366,6 @@ check_results() {
 
   eval "$set_x"
 }
-
 
 kill_job() {
 
