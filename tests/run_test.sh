@@ -131,9 +131,24 @@ if [[ "Q${INPUT_NEST05_NML:-}" != Q ]] ; then
     atparse < ${PATHRT}/parm/${INPUT_NEST05_NML} > input_nest05.nml
 fi
 
+# diag table
+if [[ "Q${DIAG_TABLE:-}" != Q ]] ; then
+  cp ${PATHRT}/parm/diag_table/${DIAG_TABLE} diag_table
+fi
 # Field table
 if [[ "Q${FIELD_TABLE:-}" != Q ]] ; then
   cp ${PATHRT}/parm/field_table/${FIELD_TABLE} field_table
+fi
+
+# fix files
+if [[ $FV3 == true ]]; then
+  cp ${INPUTDATA_ROOT}/FV3_fix/*.txt .
+  cp ${INPUTDATA_ROOT}/FV3_fix/*.f77 .
+  cp ${INPUTDATA_ROOT}/FV3_fix/*.dat .
+  cp ${INPUTDATA_ROOT}/FV3_fix/fix_co2_proj/* .
+  if [[ $TILEDFIX != .true. ]]; then
+    cp ${INPUTDATA_ROOT}/FV3_fix/*.grb .
+  fi
 fi
 
 # Field Dictionary
@@ -150,19 +165,19 @@ if [[ $DATM_CDEPS = 'true' ]] || [[ $S2S = 'true' ]]; then
   if [[ $HAFS = 'false' ]]; then
     atparse < ${PATHRT}/parm/ice_in_template > ice_in
     atparse < ${PATHRT}/parm/${MOM_INPUT:-MOM_input_template_$OCNRES} > INPUT/MOM_input
-    atparse < ${PATHRT}/parm/${DIAG_TABLE:-diag_table_template} > diag_table
+    atparse < ${PATHRT}/parm/diag_table/${DIAG_TABLE:-diag_table_template} > diag_table
     atparse < ${PATHRT}/parm/data_table_template > data_table
   fi
 fi
 
 if [[ $HAFS = 'true' ]] && [[ $DATM_CDEPS = 'false' ]]; then
-  atparse < ${PATHRT}/parm/${DIAG_TABLE:-diag_table_template} > diag_table
+  atparse < ${PATHRT}/parm/diag_table/${DIAG_TABLE:-diag_table_template} > diag_table
 fi
 
 if [[ "${DIAG_TABLE_ADDITIONAL:-}Q" != Q ]] ; then
   # Append diagnostic outputs, to support tests that vary from others
   # only by adding diagnostics.
-  atparse < "${PATHRT}/parm/${DIAG_TABLE_ADDITIONAL:-}" >> diag_table
+  atparse < "${PATHRT}/parm/diag_table/${DIAG_TABLE_ADDITIONAL:-}" >> diag_table
 fi
 
 if [[ $DATM_CDEPS = 'true' ]]; then

@@ -12,6 +12,7 @@ if [[ $MACHINE_ID = wcoss_cray ]]; then
   TASKS_dflt=150 ; TPN_dflt=24 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=78  ; TPN_thrd=12 ; INPES_thrd=3 ; JNPES_thrd=4
   TASKS_c384=336 ; TPN_c384=20 ; INPES_c384=8 ; JNPES_c384=6
+  TASKS_c768=928 ; TPN_c768=12 ; INPES_c768=8 ; JNPES_c768=16
   TASKS_stretch=48 ; TPN_stretch=24 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=24 ; INPES_strnest=2 ; JNPES_strnest=4
 
@@ -20,6 +21,7 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
   TASKS_dflt=150 ; TPN_dflt=28 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=78  ; TPN_thrd=14 ; INPES_thrd=3 ; JNPES_thrd=4
   TASKS_c384=336 ; TPN_c384=20 ; INPES_c384=8 ; JNPES_c384=6
+  TASKS_c768=928 ; TPN_c768=14 ; INPES_c768=8 ; JNPES_c768=16
   TASKS_stretch=48 ; TPN_stretch=28 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=28 ; INPES_strnest=2 ; JNPES_strnest=4
 
@@ -87,6 +89,7 @@ elif [[ $MACHINE_ID = wcoss2 ]]; then
   TASKS_dflt=150 ; TPN_dflt=128 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=78  ; TPN_thrd=64 ; INPES_thrd=3 ; JNPES_thrd=4
   TASKS_c384=336 ; TPN_c384=128 ; INPES_c384=8 ; JNPES_c384=6
+  TASKS_c768=928 ; TPN_c768=32 ; INPES_c768=8 ; JNPES_c768=16
   TASKS_stretch=48 ; TPN_stretch=128 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=128 ; INPES_strnest=2 ; JNPES_strnest=4
 
@@ -154,6 +157,7 @@ elif [[ $MACHINE_ID = orion.* ]]; then
   TASKS_dflt=150 ; TPN_dflt=40 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=78  ; TPN_thrd=20 ; INPES_thrd=3 ; JNPES_thrd=4
   TASKS_c384=336 ; TPN_c384=20 ; INPES_c384=8 ; JNPES_c384=6
+  TASKS_c768=928 ; TPN_c768=10 ; INPES_c768=8 ; JNPES_c768=16
   TASKS_stretch=48 ; TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=12 ; INPES_strnest=2 ; JNPES_strnest=4
 
@@ -221,6 +225,7 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   TASKS_dflt=150 ; TPN_dflt=40 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=78  ; TPN_thrd=20 ; INPES_thrd=3 ; JNPES_thrd=4
   TASKS_c384=336 ; TPN_c384=20 ; INPES_c384=6 ; JNPES_c384=8
+  TASKS_c768=928 ; TPN_c768=10 ; INPES_c768=8 ; JNPES_c768=16
   TASKS_stretch=48 ; TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=12 ; INPES_strnest=2 ; JNPES_strnest=4
 
@@ -293,12 +298,24 @@ elif [[ $MACHINE_ID = linux.* ]]; then
   TASKS_cpl_c96=192; TPN_cpl_c96=40; INPES_cpl_c96=3; JNPES_cpl_c96=8
   THRD_cpl_c96=1; WPG_cpl_c96=6;  MPB_cpl_c96="0 143"; APB_cpl_c96="0 149"
   OPB_cpl_c96="150 179"; IPB_cpl_c96="180 191"
+  NPROC_ICE_cpl_c96=12
+
+  TASKS_cpl_dflt=200; TPN_cpl_dflt=40; INPES_cpl_dflt=3; JNPES_cpl_dflt=8
+  THRD_cpl_dflt=1; WPG_cpl_dflt=6;  MPB_cpl_dflt="0 143"; APB_cpl_dflt="0 149"
+  OPB_cpl_dflt="150 169"; IPB_cpl_dflt="170 179"; WPB_cpl_dflt="180 199"
+  NPROC_ICE_cpl_dflt=10
+
+  TASKS_cpl_thrd=120; TPN_cpl_thrd=40; INPES_cpl_thrd=3; JNPES_cpl_thrd=4
+  THRD_cpl_thrd=2; WPG_cpl_thrd=6;  MPB_cpl_thrd="0 71";  APB_cpl_thrd="0 77"
+  OPB_cpl_thrd="78 97";  IPB_cpl_thrd="98 107"; WPB_cpl_thrd="108 119"
+  NPROC_ICE_cpl_thrd=10
 
 elif [[ $MACHINE_ID = jet.* ]]; then
 
   TASKS_dflt=150 ; TPN_dflt=24 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=78  ; TPN_thrd=12 ; INPES_thrd=3 ; JNPES_thrd=4
-  TASKS_c384=480 ; TPN_c384=12 ; INPES_c384=12 ; JNPES_c384=6
+  TASKS_c384=480 ; TPN_c384=12 ; INPES_c384=6 ; JNPES_c384=12
+  TASKS_c768=928 ; TPN_c768=6 ;  INPES_c768=8 ; JNPES_c768=16
   TASKS_stretch=48 ; TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=12 ; INPES_strnest=2 ; JNPES_strnest=4
 
@@ -366,6 +383,7 @@ elif [[ $MACHINE_ID = s4.* ]]; then
   TASKS_dflt=150 ; TPN_dflt=32 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=78  ; TPN_thrd=16 ; INPES_thrd=3 ; JNPES_thrd=4
   TASKS_c384=336 ; TPN_c384=16 ; INPES_c384=6 ; JNPES_c384=8
+  TASKS_c768=928 ; TPN_c768=8  ; INPES_c768=8 ; JNPES_c768=16
   TASKS_stretch=48 ; TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=12 ; INPES_strnest=2 ; JNPES_strnest=4
 
@@ -433,6 +451,7 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
   TASKS_dflt=150 ; TPN_dflt=36 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=78  ; TPN_thrd=18 ; INPES_thrd=3 ; JNPES_thrd=4
   TASKS_c384=336 ; TPN_c384=18 ; INPES_c384=6 ; JNPES_c384=8
+  TASKS_c768=928 ; TPN_c768=9  ; INPES_c768=8 ; JNPES_c768=16
   TASKS_stretch=48 ; TPN_stretch=18 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=18 ; INPES_strnest=2 ; JNPES_strnest=4
 
@@ -500,6 +519,7 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
   TASKS_dflt=150 ; TPN_dflt=36 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=78  ; TPN_thrd=18 ; INPES_thrd=3 ; JNPES_thrd=4
   TASKS_c384=336 ; TPN_c384=18 ; INPES_c384=8 ; JNPES_c384=6
+  TASKS_c768=992 ; TPN_c768=18 ; INPES_c768=8 ; JNPES_c768=16
   TASKS_stretch=48 ; TPN_stretch=18 ; INPES_stretch=2 ; JNPES_stretch=4
   TASKS_strnest=96 ; TPN_strnest=18 ; INPES_strnest=2 ; JNPES_strnest=4
 
@@ -567,6 +587,7 @@ elif [[ $MACHINE_ID = stampede.* ]]; then
   TASKS_dflt=150 ; TPN_dflt=48 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=78  ; TPN_thrd=24 ; INPES_thrd=3 ; JNPES_thrd=4
   TASKS_c384=336 ; TPN_c384=20 ; INPES_c384=8 ; JNPES_c384=6
+  TASKS_c768=992 ; TPN_c768=20 ; INPES_c768=8 ; JNPES_c768=16
   TASKS_stretch=48 ; TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
 
   TASKS_cpl_atmw=192; TPN_cpl_atmw=48; INPES_cpl_atmw=3; JNPES_cpl_atmw=8
@@ -713,8 +734,6 @@ export DATM_CDEPS=false
 export DOCN_CDEPS=false
 export THRD=1
 export POSTAPP='global'
-export NEW_DIAGTABLE='none'
-export NEW_FIELDTABLE='none'
 export USE_MERRA2=.false.
 
 export INPES=$INPES_dflt
@@ -733,10 +752,14 @@ export OUTPUT_GRID="'cubed_sphere_grid'"
 export OUTPUT_FILE="'netcdf'"
 export IDEFLATE=0
 export NBITS=0
+export ICHUNK3D=0
+export JCHUNK3D=0
+export KCHUNK3D=0
 export IMO=384
 export JMO=190
 
 #input file
+export DIAG_TABLE=diag_table_gfsv16
 export FIELD_TABLE=field_table_gfsv16
 
 # Coldstart/warmstart
@@ -754,10 +777,16 @@ export NA_INIT=1
 
 # Radiation
 export DO_RRTMGP=.false.
+export DOGP_CLDOPTICS_LUT=.false.
+export DOGP_LWSCAT=.false.
+export USE_LW_JACOBIAN=.false.
+export DAMP_LW_FLUXADJ=.false.
 export ICLOUD=0
 export IAER=111
 export ICLIQ_SW=1
 export IOVR=1
+export LFNC_K=-999
+export LFNC_P0=-999
 
 # Microphysics
 export IMP_PHYSICS=11
@@ -774,8 +803,7 @@ export LRADAR=.true.
 export LTAEROSOL=.true.
 export EXT_DIAG_THOMPSON=.false.
 export sedi_semi=.false.
-export sedi_semi_update=.false.
-export sedi_semi_decfl=.false.
+export decfl=8
 
 # GWD
 export LDIAG_UGWP=.false.
@@ -812,6 +840,8 @@ export HURR_PBL=.false.
 export MONINQ_FAC=1.0
 
 # Shallow/deep convection
+export DO_DEEP=.true.
+export SHAL_CNV=.true.
 export IMFSHALCNV=2
 export HWRF_SAMFSHAL=.false.
 export IMFDEEPCNV=2
@@ -840,6 +870,8 @@ export OZ_PHYS_OLD=.true.
 export OZ_PHYS_NEW=.false.
 export H2O_PHYS=.false.
 
+# Flake model
+export LKM=0
 
 export CPL=.false.
 export CPLCHM=.false.
@@ -1402,6 +1434,8 @@ export DLAT=0.03
 
 # input.nml
 export CPL_IMP_MRG=.true.
+export DIAG_TABLE=diag_table_hafs
+export FIELD_TABLE=field_table_hafs
 
 # nems.configure
 export med_model=cmeps
