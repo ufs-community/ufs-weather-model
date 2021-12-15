@@ -14,7 +14,8 @@ elif [[ $application == 'regional' ]]; then
   if [[ $CI_TEST == 'true' ]]; then
     INPES=4
     JNPES=6
-    TASKS=$((INPES*JNPES))
+    WRTTASK_PER_GROUP=8
+    TASKS=$((INPES*JNPES + WRITE_GROUP*WRTTASK_PER_GROUP))
   fi
 elif [[ $application == 'cpld' ]]; then
   if [ $CI_TEST == 'true' ]; then
