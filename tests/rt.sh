@@ -115,7 +115,7 @@ export RT_COMPILER=${RT_COMPILER:-intel}
 source detect_machine.sh
 source rt_utils.sh
 
-source $PATHTR/NEMS/src/conf/module-setup.sh.inc
+source module-setup.sh
 
 if [[ $MACHINE_ID = wcoss_cray ]]; then
 
