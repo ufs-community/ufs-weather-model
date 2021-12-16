@@ -9,7 +9,7 @@ die() { echo "$@" >&2; exit 1; }
 usage() {
   set +x
   echo
-  echo "Usage: $0 -c | -e | -h | -k | -l <file> | -m | -n <name> | -r "
+  echo "Usage: $0 -c | -e | -h | -k | -w  | -l <file> | -m | -n <name> | -r "
   echo
   echo "  -c  create new baseline results"
   echo "  -e  use ecFlow workflow manager"
@@ -19,6 +19,7 @@ usage() {
   echo "  -m  compare against new baseline results"
   echo "  -n  run single test <name>"
   echo "  -r  use Rocoto workflow manager"
+  echo "  -w  for weekly_test, skip comparing baseline results"
   echo
   set -x
   exit 1
@@ -407,10 +408,11 @@ ECFLOW=false
 KEEP_RUNDIR=false
 SINGLE_NAME=''
 TEST_35D=false
+export skip_check_results=false
 
 TESTS_FILE='rt.conf'
 
-while getopts ":cl:mn:kreh" opt; do
+while getopts ":cl:mn:wkreh" opt; do
   case $opt in
     c)
       CREATE_BASELINE=true
@@ -426,6 +428,9 @@ while getopts ":cl:mn:kreh" opt; do
       SINGLE_NAME=$OPTARG
       TESTS_FILE='rt.conf.single'
       rm -f $TESTS_FILE
+      ;;
+    w)
+      export skip_check_results=true
       ;;
     k)
       KEEP_RUNDIR=true
@@ -482,7 +487,11 @@ if [[ $CREATE_BASELINE == true ]]; then
   mkdir -p "${NEW_BASELINE}"
 fi
 
-REGRESSIONTEST_LOG=${PATHRT}/RegressionTests_$MACHINE_ID.log
+if [[ $skip_check_results == true ]]; then
+  REGRESSIONTEST_LOG=${PATHRT}/RegressionTests_weekly_$MACHINE_ID.log
+else
+  REGRESSIONTEST_LOG=${PATHRT}/RegressionTests_$MACHINE_ID.log
+fi
 
 date > ${REGRESSIONTEST_LOG}
 echo "Start Regression test" >> ${REGRESSIONTEST_LOG}
