@@ -17,8 +17,6 @@ cleanup() {
 write_fail_test() {
   if [[ ${OPNREQ_TEST} == true ]]; then
     echo ${TEST_NR} $TEST_NAME >> $PATHRT/fail_opnreq_test
-  elif [[ ${WEEKLY_TEST} == true ]]; then
-    echo "${TEST_NAME} ${TEST_NR} failed in run_test" >> $PATHRT/fail_weekly_test_${TEST_NR}
   else
     echo "${TEST_NAME} ${TEST_NR} failed in run_test" >> $PATHRT/fail_test_${TEST_NR}
   fi
@@ -56,12 +54,10 @@ export JBNME=$(basename $RUNDIR_ROOT)_${TEST_NR}
 echo -n "${TEST_NAME}, $( date +%s )," > ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
 
 OPNREQ_TEST=${OPNREQ_TEST:-false}
-if [[ ${WEEKLY_TEST} == true ]]; then
-  REGRESSIONTEST_LOG=${LOG_DIR}/rt_weekly_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log
-elif [[ ${OPNREQ_TEST} == true ]]; then
-  REGRESSIONTEST_LOG=${LOG_DIR}/opnReqTest_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log
-else
+if [[ ${OPNREQ_TEST} == false ]]; then
   REGRESSIONTEST_LOG=${LOG_DIR}/rt_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log
+else
+  REGRESSIONTEST_LOG=${LOG_DIR}/opnReqTest_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log
 fi
 export REGRESSIONTEST_LOG
 
@@ -241,7 +237,7 @@ else
 
 fi
 
-if [[ $WEEKLY_TEST = false ]]; then
+if [[ $skip_check_results = false ]]; then
   check_results
 fi
 

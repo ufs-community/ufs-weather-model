@@ -9,7 +9,7 @@ die() { echo "$@" >&2; exit 1; }
 usage() {
   set +x
   echo
-  echo "Usage: $0 -c | -e | -h | -k | -l <file> | -m | -n <name> | -r "
+  echo "Usage: $0 -c | -e | -h | -k | -w  | -l <file> | -m | -n <name> | -r "
   echo
   echo "  -c  create new baseline results"
   echo "  -e  use ecFlow workflow manager"
@@ -19,6 +19,7 @@ usage() {
   echo "  -m  compare against new baseline results"
   echo "  -n  run single test <name>"
   echo "  -r  use Rocoto workflow manager"
+  echo "  -w  for weekly_test, skip comparing baseline results"
   echo
   set -x
   exit 1
@@ -407,10 +408,11 @@ ECFLOW=false
 KEEP_RUNDIR=false
 SINGLE_NAME=''
 TEST_35D=false
+export skip_check_results=false
 
 TESTS_FILE='rt.conf'
 
-while getopts ":cl:mn:kreh" opt; do
+while getopts ":cl:mn:wkreh" opt; do
   case $opt in
     c)
       CREATE_BASELINE=true
@@ -426,6 +428,9 @@ while getopts ":cl:mn:kreh" opt; do
       SINGLE_NAME=$OPTARG
       TESTS_FILE='rt.conf.single'
       rm -f $TESTS_FILE
+      ;;
+    w)
+      export skip_check_results=true
       ;;
     k)
       KEEP_RUNDIR=true
@@ -460,11 +465,6 @@ if [[ $TESTS_FILE =~ '35d' ]]; then
   TEST_35D=true
 fi
 
-export WEEKLY_TEST=false
-if [[ $TESTS_FILE =~ 'weekly' ]]; then
-  export WEEKLY_TEST=true
-fi
-
 BL_DATE=20211213
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]] || [[ $MACHINE_ID = s4.* ]]; then
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
@@ -487,7 +487,7 @@ if [[ $CREATE_BASELINE == true ]]; then
   mkdir -p "${NEW_BASELINE}"
 fi
 
-if [[ $TESTS_FILE =~ 'weekly' ]]; then
+if [[ $skip_check_results == true ]]; then
   REGRESSIONTEST_LOG=${PATHRT}/RegressionTests_weekly_$MACHINE_ID.log
 else
   REGRESSIONTEST_LOG=${PATHRT}/RegressionTests_$MACHINE_ID.log
@@ -503,7 +503,7 @@ JOB_NR=0
 TEST_NR=0
 COMPILE_NR=0
 COMPILE_PREV_WW3_NR=''
-rm -f fail_test* fail_weekly_test* fail_compile*
+rm -f fail_test* fail_compile*
 
 export LOG_DIR=${PATHRT}/log_$MACHINE_ID
 rm -rf ${LOG_DIR}
@@ -841,7 +841,7 @@ set +e
 cat ${LOG_DIR}/compile_*_time.log              >> ${REGRESSIONTEST_LOG}
 cat ${LOG_DIR}/rt_*.log                        >> ${REGRESSIONTEST_LOG}
 
-FILES="fail_test_* fail_weekly_* fail_compile_*"
+FILES="fail_test_* fail_compile_*"
 for f in $FILES; do
   if [[ -f "$f" ]]; then
     cat "$f" >> fail_test
