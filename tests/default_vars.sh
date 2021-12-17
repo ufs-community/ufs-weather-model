@@ -909,7 +909,7 @@ export SMONTH=10
 export SDAY=03
 export SHOUR=00
 export SECS=`expr $SHOUR \* 3600`
-export FHMAX=${FHMAX:-`expr $DAYS \* 24`}
+export FHMAX=$(( DAYS*24 ))
 export DT_ATMOS=1800
 export FHCYC=24
 export FHROT=0
@@ -1055,6 +1055,7 @@ export use_mommesh=true
 export RUNTYPE=startup
 export CICERUNTYPE=initial
 export eps_imesh=1.0e-1
+export ATMTILESIZE=`expr $NPX - 1`
 
 # FV3 defaults
 export FRAC_GRID=.true.

@@ -82,7 +82,7 @@ cp ${PATHRT}/modules.fv3_${COMPILE_NR}             modules.fv3
 cp ${PATHTR}/modulefiles/ufs_common*               .
 
 # Get the shell file that loads the "module" command and purges modules:
-cp ${PATHRT}/../NEMS/src/conf/module-setup.sh.inc  module-setup.sh
+cp ${PATHRT}/module-setup.sh                       module-setup.sh
 
 SRCD="${PATHTR}"
 RUND="${RUNDIR}"
@@ -237,7 +237,9 @@ else
 
 fi
 
-check_results
+if [[ $skip_check_results = false ]]; then
+  check_results
+fi
 
 if [[ $SCHEDULER != 'none' ]]; then
   cat ${RUNDIR}/job_timestamp.txt >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
