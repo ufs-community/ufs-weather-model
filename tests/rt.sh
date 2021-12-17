@@ -798,6 +798,7 @@ EOF
       export REGRESSIONTEST_LOG=${REGRESSIONTEST_LOG}
       export LOG_DIR=${LOG_DIR}
       export DEP_RUN=${DEP_RUN}
+      export skip_check_results=${skip_check_results}
 EOF
 
       if [[ $ROCOTO == true ]]; then
