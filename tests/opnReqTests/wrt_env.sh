@@ -15,6 +15,7 @@ export med_petlist_bounds="${med_petlist_bounds:-}"
 export atm_petlist_bounds="${atm_petlist_bounds:-}"
 export ocn_petlist_bounds="${ocn_petlist_bounds:-}"
 export ice_petlist_bounds="${ice_petlist_bounds:-}"
+export wav_petlist_bounds="${wav_petlist_bounds:-}"
 export THRD=${THRD}
 export TASKS=${TASKS}
 export TPN=${TPN}
