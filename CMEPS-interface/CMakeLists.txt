@@ -19,16 +19,11 @@ else()
 endif()
 
 list(APPEND _nems_util_files
-  CMEPS/util/shr_abort_mod.F90
-  CMEPS/util/shr_log_mod.F90
-  CMEPS/util/shr_sys_mod.F90
-  CMEPS/util/shr_flux_mod.F90
-  CMEPS/util/shr_mpi_mod.F90
-  CMEPS/util/glc_elevclass_mod.F90
-  CMEPS/util/shr_mem_mod.F90
-  CMEPS/util/shr_kind_mod.F90
-  CMEPS/util/perf_mod.F90
-  CMEPS/util/shr_const_mod.F90)
+  CMEPS/ufs/flux_atmocn_mod.F90
+  CMEPS/ufs/glc_elevclass_mod.F90
+  CMEPS/ufs/ufs_kind_mod.F90
+  CMEPS/ufs/perf_mod.F90
+  CMEPS/ufs/ufs_const_mod.F90)
 
 list(APPEND _mediator_files
   CMEPS/mediator/med_phases_restart_mod.F90
