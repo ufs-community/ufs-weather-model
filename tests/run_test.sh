@@ -237,7 +237,9 @@ else
 
 fi
 
-check_results
+if [[ $skip_check_results = false ]]; then
+  check_results
+fi
 
 if [[ $SCHEDULER != 'none' ]]; then
   cat ${RUNDIR}/job_timestamp.txt >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
