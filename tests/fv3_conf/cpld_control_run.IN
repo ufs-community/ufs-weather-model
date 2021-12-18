@@ -129,3 +129,9 @@ if [ $DO_UGWP_V1 = .true. ]; then
   cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127/oro_data_ls* ./INPUT
   cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127/oro_data_ss* ./INPUT
 fi
+
+#prognostic aerosols
+if [ $CPLCHM = .true. ]; then
+  cp      /scratch1/NCEPDEV/nems/Raffaele.Montuoro/emc.nemspara/RT/NEMSfv3gfs/input-data-20211210/GOCART/p7/rc/*.rc .
+  ln -sf  /scratch1/NCEPDEV/nems/Raffaele.Montuoro/emc.nemspara/RT/NEMSfv3gfs/input-data-20211210/GOCART/p7/ExtData .
+fi

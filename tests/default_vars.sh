@@ -242,7 +242,7 @@ elif [[ $MACHINE_ID = hera.* ]]; then
 
   TASKS_cpl_dflt=200; TPN_cpl_dflt=40; INPES_cpl_dflt=3; JNPES_cpl_dflt=8
   THRD_cpl_dflt=1; WPG_cpl_dflt=6;  MPB_cpl_dflt="0 143"; APB_cpl_dflt="0 149"
-  OPB_cpl_dflt="150 169"; IPB_cpl_dflt="170 179"; WPB_cpl_dflt="180 199"
+  CHM_cpl_dflt="0 143"; OPB_cpl_dflt="150 169"; IPB_cpl_dflt="170 179"; WPB_cpl_dflt="180 199"
   NPROC_ICE_cpl_dflt=10
 
   TASKS_cpl_thrd=120; TPN_cpl_thrd=20; INPES_cpl_thrd=3; JNPES_cpl_thrd=4
@@ -267,7 +267,7 @@ elif [[ $MACHINE_ID = hera.* ]]; then
 
   TASKS_cpl_bmrk=560; TPN_cpl_bmrk=40; INPES_cpl_bmrk=6; JNPES_cpl_bmrk=8
   THRD_cpl_bmrk=1; WPG_cpl_bmrk=24; MPB_cpl_bmrk="0 287"; APB_cpl_bmrk="0 311"
-  OPB_cpl_bmrk="312 431"; IPB_cpl_bmrk="432 479"; WPB_cpl_bmrk="480 559"
+  CHM_cpl_bmrk="0 287"; OPB_cpl_bmrk="312 431"; IPB_cpl_bmrk="432 479"; WPB_cpl_bmrk="480 559"
   NPROC_ICE_cpl_bmrk=48
 
   TASKS_cpl_bmrk_mpi=600; TPN_cpl_bmrk_mpi=40; INPES_cpl_bmrk_mpi=6; JNPES_cpl_bmrk_mpi=8
@@ -1017,6 +1017,8 @@ export NPZ=127
 export NPZP=128
 
 # default resources
+export DOMAINS_STACK_SIZE=3000000
+
 export TASKS=$TASKS_cpl_dflt
 export TPN=$TPN_cpl_dflt
 export INPES=$INPES_cpl_dflt
@@ -1026,6 +1028,7 @@ export WRTTASK_PER_GROUP=$WPG_cpl_dflt
 
 export med_petlist_bounds=$MPB_cpl_dflt
 export atm_petlist_bounds=$APB_cpl_dflt
+export chm_petlist_bounds=$CHM_cpl_dflt
 export ocn_petlist_bounds=$OPB_cpl_dflt
 export ice_petlist_bounds=$IPB_cpl_dflt
 export wav_petlist_bounds=$WPB_cpl_dflt
@@ -1040,6 +1043,7 @@ export DT_THERM_MOM6=3600
 export NEMS_CONFIGURE=nems.configure.cpld_wave.IN
 export med_model=cmeps
 export atm_model=fv3
+export chm_model=gocart
 export ocn_model=mom6
 export ice_model=cice6
 export wav_model=ww3
