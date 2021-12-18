@@ -16,7 +16,7 @@ cleanup() {
 
 write_fail_test() {
   if [[ ${OPNREQ_TEST} == true ]]; then
-    echo ${TEST_NR} $TEST_NAME >> $PATHRT/fail_opnreq_test
+    echo "${TEST_NAME} ${TEST_NR} failed in run_test" >> $PATHRT/fail_opnreq_test_${TEST_NR}
   else
     echo "${TEST_NAME} ${TEST_NR} failed in run_test" >> $PATHRT/fail_test_${TEST_NR}
   fi
@@ -35,7 +35,11 @@ export TEST_NR=$4
 export COMPILE_NR=$5
 
 cd ${PATHRT}
-rm -f fail_test_${TEST_NR}
+if [[ ${OPNREQ_TEST} == true ]]; then
+  rm -f fail_opnreq_test_${TEST_NR}
+else
+  rm -f fail_test_${TEST_NR}
+fi
 
 [[ -e ${RUNDIR_ROOT}/run_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
 source default_vars.sh
@@ -57,7 +61,7 @@ OPNREQ_TEST=${OPNREQ_TEST:-false}
 if [[ ${OPNREQ_TEST} == false ]]; then
   REGRESSIONTEST_LOG=${LOG_DIR}/rt_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log
 else
-  REGRESSIONTEST_LOG=${LOG_DIR}/opnReqTest_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log
+  REGRESSIONTEST_LOG=${LOG_DIR}/opnReqTest_${TEST_NAME}${RT_SUFFIX}.log
 fi
 export REGRESSIONTEST_LOG
 

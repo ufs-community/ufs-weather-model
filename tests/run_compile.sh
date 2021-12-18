@@ -16,7 +16,7 @@ cleanup() {
 
 write_fail_test() {
   if [[ ${OPNREQ_TEST} == true ]]; then
-    echo compile ${COMPILE_NR} >> $PATHRT/fail_opnreq_test
+    echo "compile_${COMPILE_NR} failed in run_compile" >> $PATHRT/fail_opnreq_compile_${COMPILE_NR}
   else
     echo "compile_${COMPILE_NR} failed in run_compile" >> $PATHRT/fail_compile_${COMPILE_NR}
   fi
@@ -34,7 +34,11 @@ export MAKE_OPT=$3
 export COMPILE_NR=$4
 
 cd ${PATHRT}
-rm -rf fail_compile_${COMPILE_NR}
+if [[ ${OPNREQ_TEST} == true ]]; then
+  rm -f fail_opnreq_compile_${COMPILE_NR}
+else
+  rm -f fail_compile_${COMPILE_NR}
+fi
 
 [[ -e ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env ]] && source ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env
 source default_vars.sh
