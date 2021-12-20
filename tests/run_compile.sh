@@ -34,6 +34,7 @@ export MAKE_OPT=$3
 export COMPILE_NR=$4
 
 cd ${PATHRT}
+OPNREQ_TEST=${OPNREQ_TEST:-false}
 if [[ ${OPNREQ_TEST} == true ]]; then
   rm -f fail_opnreq_compile_${COMPILE_NR}
 else
