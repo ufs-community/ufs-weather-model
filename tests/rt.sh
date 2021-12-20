@@ -9,7 +9,7 @@ die() { echo "$@" >&2; exit 1; }
 usage() {
   set +x
   echo
-  echo "Usage: $0 -c | -e | -h | -k | -l <file> | -m | -n <name> | -r "
+  echo "Usage: $0 -c | -e | -h | -k | -w  | -l <file> | -m | -n <name> | -r "
   echo
   echo "  -c  create new baseline results"
   echo "  -e  use ecFlow workflow manager"
@@ -19,6 +19,7 @@ usage() {
   echo "  -m  compare against new baseline results"
   echo "  -n  run single test <name>"
   echo "  -r  use Rocoto workflow manager"
+  echo "  -w  for weekly_test, skip comparing baseline results"
   echo
   set -x
   exit 1
@@ -115,7 +116,7 @@ export RT_COMPILER=${RT_COMPILER:-intel}
 source detect_machine.sh
 source rt_utils.sh
 
-source $PATHTR/NEMS/src/conf/module-setup.sh.inc
+source module-setup.sh
 
 if [[ $MACHINE_ID = wcoss_cray ]]; then
 
@@ -407,10 +408,11 @@ ECFLOW=false
 KEEP_RUNDIR=false
 SINGLE_NAME=''
 TEST_35D=false
+export skip_check_results=false
 
 TESTS_FILE='rt.conf'
 
-while getopts ":cl:mn:kreh" opt; do
+while getopts ":cl:mn:wkreh" opt; do
   case $opt in
     c)
       CREATE_BASELINE=true
@@ -426,6 +428,9 @@ while getopts ":cl:mn:kreh" opt; do
       SINGLE_NAME=$OPTARG
       TESTS_FILE='rt.conf.single'
       rm -f $TESTS_FILE
+      ;;
+    w)
+      export skip_check_results=true
       ;;
     k)
       KEEP_RUNDIR=true
@@ -460,7 +465,7 @@ if [[ $TESTS_FILE =~ '35d' ]]; then
   TEST_35D=true
 fi
 
-BL_DATE=20211209
+BL_DATE=20211214
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]] || [[ $MACHINE_ID = s4.* ]]; then
   #RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
   RTPWD="/glade/scratch/worthen/FV3_RT/wave_bl_20211128"
@@ -468,8 +473,8 @@ else
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}}
 fi
 
-#INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20211203}
 INPUTDATA_ROOT="/glade/scratch/worthen/input-data-20211130"
+#INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20211210}
 INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20211113
 INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC:-$DISKNM/NEMSfv3gfs/BM_IC-20210717}
 
@@ -484,7 +489,11 @@ if [[ $CREATE_BASELINE == true ]]; then
   mkdir -p "${NEW_BASELINE}"
 fi
 
-REGRESSIONTEST_LOG=${PATHRT}/RegressionTests_$MACHINE_ID.log
+if [[ $skip_check_results == true ]]; then
+  REGRESSIONTEST_LOG=${PATHRT}/RegressionTests_weekly_$MACHINE_ID.log
+else
+  REGRESSIONTEST_LOG=${PATHRT}/RegressionTests_$MACHINE_ID.log
+fi
 
 date > ${REGRESSIONTEST_LOG}
 echo "Start Regression test" >> ${REGRESSIONTEST_LOG}

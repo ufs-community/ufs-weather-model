@@ -777,10 +777,16 @@ export NA_INIT=1
 
 # Radiation
 export DO_RRTMGP=.false.
+export DOGP_CLDOPTICS_LUT=.false.
+export DOGP_LWSCAT=.false.
+export USE_LW_JACOBIAN=.false.
+export DAMP_LW_FLUXADJ=.false.
 export ICLOUD=0
 export IAER=111
 export ICLIQ_SW=1
 export IOVR=1
+export LFNC_K=-999
+export LFNC_P0=-999
 
 # Microphysics
 export IMP_PHYSICS=11
@@ -834,6 +840,8 @@ export HURR_PBL=.false.
 export MONINQ_FAC=1.0
 
 # Shallow/deep convection
+export DO_DEEP=.true.
+export SHAL_CNV=.true.
 export IMFSHALCNV=2
 export HWRF_SAMFSHAL=.false.
 export IMFDEEPCNV=2
@@ -862,6 +870,8 @@ export OZ_PHYS_OLD=.true.
 export OZ_PHYS_NEW=.false.
 export H2O_PHYS=.false.
 
+# Flake model
+export LKM=0
 
 export CPL=.false.
 export CPLCHM=.false.
@@ -899,7 +909,7 @@ export SMONTH=10
 export SDAY=03
 export SHOUR=00
 export SECS=`expr $SHOUR \* 3600`
-export FHMAX=${FHMAX:-`expr $DAYS \* 24`}
+export FHMAX=$(( DAYS*24 ))
 export DT_ATMOS=1800
 export FHCYC=24
 export FHROT=0
@@ -1045,6 +1055,7 @@ export use_mommesh=true
 export RUNTYPE=startup
 export CICERUNTYPE=initial
 export eps_imesh=1.0e-1
+export ATMTILESIZE=`expr $NPX - 1`
 
 # FV3 defaults
 export FRAC_GRID=.true.
