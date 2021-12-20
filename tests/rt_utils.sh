@@ -154,7 +154,7 @@ submit_and_wait() {
         echo "Slurm unknown status ${status}. Check sacct ..."
         sacct -n -j ${slurm_id} --format=JobID,state%20,Jobname%20
         status_label=$( sacct -n -j ${slurm_id} --format=JobID,state%20,Jobname%20 | grep "^${slurm_id}" | grep ${JBNME} | awk '{print $2}' )
-        if [[ $status_label = 'FAILED' ]] || [[ $status_label = 'TIMEOUT' ]]; then
+        if [[ $status_label = 'FAILED' ]] || [[ $status_label = 'TIMEOUT' ]] || [[ $status_label = 'CANCELLED' ]] ; then
             test_status='FAIL'
         fi
       fi
@@ -178,7 +178,7 @@ submit_and_wait() {
         test_status='DONE'
         exit_status=$( bjobs ${bsub_id} 2>/dev/null | grep ${bsub_id} | awk '{print $3}' ); status=${status:--}
         if [[ $exit_status = 'EXIT' ]];  then
-        status_label='failed'
+          status_label='failed'
           test_status='FAIL'
         fi
       fi
@@ -202,7 +202,6 @@ submit_and_wait() {
 
   if [[ $test_status = 'FAIL' ]]; then
     if [[ ${OPNREQ_TEST} == false ]]; then
-      echo "${TEST_NAME} ${TEST_NR}" >> $PATHRT/fail_test_${TEST_NR}
       echo "Test ${TEST_NR} ${TEST_NAME} FAIL" >> ${REGRESSIONTEST_LOG}
       echo;echo;echo                           >> ${REGRESSIONTEST_LOG}
       echo "Test ${TEST_NR} ${TEST_NAME} FAIL"
@@ -213,12 +212,6 @@ submit_and_wait() {
     if [[ $ROCOTO == true || $ECFLOW == true ]]; then
       exit 1
     fi
-  fi
-
-  if [[ $test_status = 'PASS' || $test_status = 'DONE' ]]; then
-    echo "Test ${TEST_NR} ${TEST_NAME} RUN_SUCCESS" >> ${REGRESSIONTEST_LOG}
-    echo;echo;echo                           >> ${REGRESSIONTEST_LOG}
-    echo "Test ${TEST_NR} ${TEST_NAME} RUN_SUCCESS"
   fi
 
   eval "$set_x"

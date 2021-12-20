@@ -61,6 +61,8 @@ else
 fi
 export REGRESSIONTEST_LOG
 
+rm -f ${REGRESSIONTEST_LOG}
+
 echo "Test ${TEST_NR} ${TEST_NAME} ${TEST_DESCR}"
 
 source rt_utils.sh
@@ -239,6 +241,9 @@ fi
 
 if [[ $skip_check_results = false ]]; then
   check_results
+else
+  echo "Test ${TEST_NR} ${TEST_NAME} RUN_SUCCESS" >  ${REGRESSIONTEST_LOG}
+  echo;echo;echo                                  >> ${REGRESSIONTEST_LOG}
 fi
 
 if [[ $SCHEDULER != 'none' ]]; then
