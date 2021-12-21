@@ -17,7 +17,6 @@ export LIST_FILES="sfcf036.tile1.nc \
                    atmf036.tile4.nc \
                    atmf036.tile5.nc \
                    atmf036.tile6.nc \
-                   20210323.180000.restart.ww3 \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -124,6 +123,13 @@ export FNVMNC="'C192.vegetation_greenness.tileX.nc'"
 export FNVMXC="'C192.vegetation_greenness.tileX.nc'"
 export FNSLPC="'C192.slope_type.tileX.nc'"
 export FNABSC="'C192.maximum_snow_albedo.tileX.nc'"
+
+export WW3RSTDTHR=3
+export WW3OUTDTHR=3
+export WW3RSTDTHR=3
+export DT_2_RST="$(printf "%02d" $(( ${WW3RSTDTHR}*3600 )))"
+export DTFLD="$(printf "%02d" $(( ${WW3OUTDTHR}*3600 )))"
+export DTPNT="$(printf "%02d" $(( ${WW3OUTDTHR}*3600 )))"
 
 export CPLWAV=.true.
 export CPLWAV2ATM=.true.

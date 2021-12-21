@@ -7,7 +7,6 @@ export CNTL_DIR="cpld_control_c384_p7"
 
 export LIST_FILES="sfcf006.nc \
                    atmf006.nc \
-                   20210322.120000.restart.ww3 \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -60,6 +59,7 @@ export FHZERO=3
 export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${FHROT} + ${SHOUR} )))0000"
 export RESTART_FILE_SUFFIX_HRS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%02d" $(( ${FHROT} + ${SHOUR})))"
 export RESTART_FILE_SUFFIX_SECS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%02d" $(( (${FHROT}+ ${SHOUR})*3600 )))"
+export RUN_BEG="${SYEAR}${SMONTH}${SDAY} $(printf "%02d" $(( ${FHROT}+${SHOUR}  )))0000"
 
 export TASKS=$TASKS_cpl_c384
 export TPN=$TPN_cpl_c384
@@ -141,6 +141,16 @@ export USE_RESTART_TIME=.true.
 
 # MOM6 warm start
 export MOM6_RESTART_SETTING=r
+
+export OUT_BEG=$RUN_BEG
+export RST_BEG=$RUN_BEG
+export RST_2_BEG=$RUN_BEG
+export WW3RSTDTHR=3
+export WW3OUTDTHR=3
+export WW3RSTDTHR=3
+export DT_2_RST="$(printf "%02d" $(( ${WW3RSTDTHR}*3600 )))"
+export DTFLD="$(printf "%02d" $(( ${WW3OUTDTHR}*3600 )))"
+export DTPNT="$(printf "%02d" $(( ${WW3OUTDTHR}*3600 )))"
 
 export CPLWAV=.true.
 export CPLWAV2ATM=.true.
