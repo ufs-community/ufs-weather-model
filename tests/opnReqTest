@@ -237,6 +237,7 @@ run_opnReqTests() {
 			export ECFLOW=${ECFLOW}
 			export REGRESSIONTEST_LOG=${REGRESSIONTEST_LOG}
 			export LOG_DIR=${LOG_DIR}
+			export skip_check_results=${skip_check_results}
 			EOF
 
     if [[ $ECFLOW == true ]]; then
@@ -257,7 +258,7 @@ run_opnReqTests() {
       echo "Running test for $rc with"
       echo "    THRD: $THRD; INPES: $INPES; JNPES: $JNPES; TASKS: $TASKS; TPN: $TPN"
       TEST_NR=${RT_SUFFIX:1}
-      ./run_test.sh $PATHRT $RUNDIR_ROOT $TEST_NAME $TEST_NR $comp_nm > $LOG_DIR/run_${TEST_NAME}_${TEST_NR}.log 2>&1
+      ./run_test.sh $PATHRT $RUNDIR_ROOT $TEST_NAME $TEST_NR $comp_nm > $LOG_DIR/run_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log 2>&1
     fi
 
   done
@@ -400,6 +401,7 @@ dbg_compare=false
 keep_rundir=false
 skip_compile=false
 skip_run=false
+skip_check_results=false
 
 # parse command line arguments to fill-in/modify the above default variables
 while getopts :n:c:ekhbdsxz opt; do
@@ -553,8 +555,13 @@ if [[ $ECFLOW == true ]]; then
 
 fi
 
-opnreqtest_log=${PATHRT}/OpnReqTests_$MACHINE_ID.log
+opnreqtest_log=${PATHRT}/OpnReqTests_${TEST_NAME}_$MACHINE_ID.log
 REGRESSIONTEST_LOG=$opnreqtest_log
+rm -f fail_opnreq_test* fail_opnreq_compile*
+
+date >${opnreqtest_log}
+echo "Start Operation Requirement Test" >> ${opnreqtest_log}
+echo                                    >> ${opnreqtest_log}
 
 ########################################################################
 ####                            COMPILE                             ####
@@ -615,8 +622,6 @@ INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC:-$DISKNM/NEMSfv3gfs/BM_IC-20210717}
 rm -rf $NEW_BASELINE
 mkdir -p $NEW_BASELINE
 
-rm -f fail_opnreq_test ${opnreqtest_log}
-
 echo "cases to run: $run_case"
 run_opnReqTests
 
@@ -629,7 +634,15 @@ fi
 ####               OPERATION REQUIREMENT TEST STATUS                ####
 ########################################################################
 set +e
+cat ${LOG_DIR}/compile_*_time.log | tee -a ${opnreqtest_log}
 cat ${LOG_DIR}/opnReqTest_*.log | tee -a ${opnreqtest_log}
+
+FILES="fail_opnreq_test_* fail_opnreq_compile_*"
+for f in $FILES; do
+  if [[ -f "$f" ]]; then
+    cat "$f" >> fail_opnreq_test
+  fi
+done
 
 if [[ -e fail_opnreq_test ]]; then
   echo "FAILED TESTS: " | tee -a ${opnreqtest_log}
