@@ -206,7 +206,9 @@ submit_and_wait() {
       echo;echo;echo                           >> ${REGRESSIONTEST_LOG}
       echo "Test ${TEST_NR} ${TEST_NAME} FAIL"
     else
-      echo ${TEST_NR} $TEST_NAME >> $PATHRT/fail_opnreq_test
+      echo "Test ${TEST_NAME} ${TEST_NR} FAIL" >> ${REGRESSIONTEST_LOG}
+      echo;echo;echo                           >> ${REGRESSIONTEST_LOG}
+      echo "Test ${TEST_NAME} ${TEST_NR} FAIL"
     fi
 
     if [[ $ROCOTO == true || $ECFLOW == true ]]; then
@@ -345,7 +347,7 @@ check_results() {
     if [[ ${OPNREQ_TEST} == false ]]; then
       echo "${TEST_NAME} ${TEST_NR} failed in check_result" >> $PATHRT/fail_test_${TEST_NR}
     else
-      echo ${TEST_NR} $TEST_NAME >> $PATHRT/fail_opnreq_test
+      echo "${TEST_NAME} ${TEST_NR} failed in check_result" >> $PATHRT/fail_opnreq_test_${TEST_NR}
     fi
 
     if [[ $ROCOTO = true || $ECFLOW == true ]]; then
