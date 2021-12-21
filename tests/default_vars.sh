@@ -762,6 +762,8 @@ export JMO=190
 export DIAG_TABLE=diag_table_gfsv16
 export FIELD_TABLE=field_table_gfsv16
 
+export DOMAINS_STACK_SIZE=3000000
+
 # Coldstart/warmstart
 #rt script for ICs
 export MODEL_INITIALIZATION=false
