@@ -248,6 +248,7 @@ if [[ $skip_check_results = false ]]; then
 else
   echo                                               >> ${REGRESSIONTEST_LOG}
   grep "The total amount of wall time" ${RUNDIR}/out >> ${REGRESSIONTEST_LOG}
+  grep "The maximum resident set size" ${RUNDIR}/out >> ${REGRESSIONTEST_LOG}
   echo                                               >> ${REGRESSIONTEST_LOG}
   echo "Test ${TEST_NR} ${TEST_NAME} RUN_SUCCESS"    >> ${REGRESSIONTEST_LOG}
   echo;echo;echo                                     >> ${REGRESSIONTEST_LOG}
