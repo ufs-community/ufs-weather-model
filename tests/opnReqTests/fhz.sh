@@ -12,6 +12,7 @@ if [[ $application == 'global' ]]; then
                                    | sed -e "s/^ *//" -e "s/ *$//")
 else
   echo "This test is not yet set up for the fhzero test"
+  exit 1
 fi
 
 source $PATHRT/opnReqTests/wrt_env.sh
