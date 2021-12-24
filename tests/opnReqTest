@@ -249,7 +249,7 @@ run_opnReqTests() {
       TEST_NR=${RT_SUFFIX:1}
       COMPILE_NR=$comp_nm
       DEP_RUN=
-      if [[ ${RT_SUFFIX} == _std || ${RT_SUFFIX} == _thr || ${RT_SUFFIX} == _mpi || ${RT_SUFFIX} == _dcp || ${RT_SUFFIX} == _rst ]]; then
+      if [[ ${RT_SUFFIX} == _std || ${RT_SUFFIX} == _thr || ${RT_SUFFIX} == _mpi || ${RT_SUFFIX} == _dcp || ${RT_SUFFIX} == _rst || ${RT_SUFFIX} == _fhz ]]; then
         DEP_RUN="${TEST_NAME}_std_base"
       elif [[ ${RT_SUFFIX} == _bit ]]; then
         DEP_RUN="${TEST_NAME}_bit_base"
@@ -397,7 +397,7 @@ fi
 # default variable values
 TEST_NAME=
 CREATE_BASELINE=
-test_case="std thr mpi dcp rst bit dbg"
+test_case="std thr mpi dcp rst bit dbg fhz"
 ECFLOW=false
 ROCOTO=false
 std_compare=false

@@ -43,11 +43,14 @@ MOUNTAIN=.T.
 NA_INIT=0
 
 FHMAX_2D=$(printf "%02d" $FHMAX)
-LIST_FILES=$(echo -n $LIST_FILES | sed -E "s/phyf00[0-9][0-9]/phyf00$FHMAX_2D/g" \
-                                 | sed -E "s/dynf00[0-9][0-9]/dynf00$FHMAX_2D/g" \
-                                 | sed -E "s/sfcf0[0-9][0-9]/sfcf0$FHMAX_2D/g" | sed -E "s/atmf0[0-9][0-9]/atmf0$FHMAX_2D/g" \
-                                 | sed -E "s/GFSFLX.GrbF[0-9][0-9]/GFSFLX.GrbF$FHMAX_2D/g" | sed -E "s/GFSPRS.GrbF[0-9][0-9]/GFSPRS.GrbF$FHMAX_2D/g" \
-                                 | sed -E "s/atmos_4xdaily\.tile[1-6]\.nc ?//g" | sed -e "s/^ *//" -e "s/ *$//")
+LIST_FILES=$(echo -n $LIST_FILES | sed -E "s/phyf0[0-9][0-9]/phyf0$FHMAX_2D/g" \
+                                 | sed -E "s/dynf0[0-9][0-9]/dynf0$FHMAX_2D/g" \
+                                 | sed -E "s/sfcf0[0-9][0-9]/sfcf0$FHMAX_2D/g" \
+                                 | sed -E "s/atmf0[0-9][0-9]/atmf0$FHMAX_2D/g" \
+                                 | sed -E "s/GFSFLX.GrbF[0-9][0-9]/GFSFLX.GrbF$FHMAX_2D/g" \
+                                 | sed -E "s/GFSPRS.GrbF[0-9][0-9]/GFSPRS.GrbF$FHMAX_2D/g" \
+                                 | sed -E "s/atmos_4xdaily\.tile[1-6]\.nc ?//g" \
+                                 | sed -e "s/^ *//" -e "s/ *$//")
 LIST_FILES=$(echo $LIST_FILES | xargs -n1 | sort -u | xargs)
 
 
