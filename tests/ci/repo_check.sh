@@ -13,8 +13,8 @@ result() {
 }
 
 # Declare variables
-declare -A base fv3 mom6 cice ww3 stoch gocart nems cmeps cdeps hycom cmake
-submodules="fv3 mom6 cice ww3 stoch gocart nems cmeps cdeps hycom cmake"
+declare -A base fv3 mom6 cice ww3 stoch gocart cmeps cdeps hycom cmake
+submodules="fv3 mom6 cice ww3 stoch gocart cmeps cdeps hycom cmake"
 comment=''
 ownerID=$1
 
@@ -46,10 +46,6 @@ stoch[dir]='stochastic_physics'
 gocart[repo]='https://github.com/GEOS-ESM/GOCART'
 gocart[branch]='develop'
 gocart[dir]='GOCART'
-
-nems[repo]='https://github.com/NOAA-EMC/NEMS'
-nems[branch]='develop'
-nems[dir]='NEMS'
 
 cmeps[repo]='https://github.com/NOAA-EMC/CMEPS'
 cmeps[branch]='emc/develop'
