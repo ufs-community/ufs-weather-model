@@ -11,14 +11,8 @@ export CC=${CC:-mpicc}
 export CXX=${CXX:-mpicxx}
 export FC=${FC:-mpif90}
 
-export ESMFMKFILE=${ESMFMKFILE:?"Please set ESMFMKFILE environment variable"}
-
-export CCPP_SUITES="FV3_RRFS_v1beta"
-
 BUILD_DIR=${BUILD_DIR:-${UFS_MODEL_DIR}/build}
 mkdir -p ${BUILD_DIR}
-
-[[ -n "${MAPL_ROOT:-""}" ]] && CMAKE_FLAGS+=" -DCMAKE_MODULE_PATH=${MAPL_ROOT}/share/MAPL/cmake"
 
 cd ${BUILD_DIR}
 cmake ${UFS_MODEL_DIR} ${CMAKE_FLAGS}
