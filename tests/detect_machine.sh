@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Default account "nems"
-export ACCNR=${ACCNR:-P48503002}
+export ACCNR=${ACCNR:-nems}
 
 case $(hostname -f) in
 
