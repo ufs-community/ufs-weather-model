@@ -6,9 +6,9 @@ $ T/F flag for definition as a homogeneous field.
 $
 $ Include ice and mud parameters only if IC1/2/3/4 used :
    F F     Water levels
-   T F     Currents
+   @[INPUT_CURFLD]
    T F     Winds
-   T F     Ice concentrations
+   @[INPUT_ICEFLD]
    F F     Atmospheric momentum
    F F     Air density
    F       Assimilation data : Mean parameters
@@ -25,11 +25,11 @@ $
 $ IOSTYP
    1
 $
-   @[RUN_BEG]   @[DTFLD]  @[RUN_END] 1
+   @[RUN_BEG]   @[DTFLD]  @[RUN_END] @[GOFILETYPE]
    N
-   WND HS FP DP PHS PTP PDIR
+   @[OUTPARS_WAV]
 $
-   @[RUN_BEG]   @[DTPNT]  @[RUN_END] 1
+   @[RUN_BEG]   @[DTPNT]  @[RUN_END] @[POFILETYPE]
 $
 $ Global output point data file for global wave ensembles
 $

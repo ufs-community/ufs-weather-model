@@ -1202,6 +1202,8 @@ export FRAZIL_FWSALT=.true.
 export CICE_HIST_AVG=.true.
 
 #wave
+export INPUT_CURFLD='T F     Currents'
+export INPUT_ICEFLD='T F     Ice concentrations'
 export WW3GRIDLINE="'glo_1deg'  'no' 'CPL:native' 'CPL:native' 'CPL:native' 'no' 'no' 'no' 'no' 'no'   1  1  0.00 1.00  F"
 export RUN_BEG="${SYEAR}${SMONTH}${SDAY} $(printf "%02d" $(( ${SHOUR}  )))0000"
 export RUN_END="2100${SMONTH}${SDAY} $(printf "%02d" $(( ${SHOUR}  )))0000"
@@ -1433,6 +1435,10 @@ export LAT2=55.0
 export DLON=0.03
 export DLAT=0.03
 
+# shel.inp
+export INPUT_CURFLD='F F     Currents'
+export INPUT_ICEFLD='F F     Ice concentrations'
+
 # input.nml
 export CPL_IMP_MRG=.true.
 export DIAG_TABLE=diag_table_hafs
@@ -1445,4 +1451,5 @@ export RESTART_N=${FHMAX}
 export CPLMODE=hafs
 export RUNTYPE=startup
 export USE_COLDSTART=false
+export MESH_WAV=mesh.hafs.nc
 }
