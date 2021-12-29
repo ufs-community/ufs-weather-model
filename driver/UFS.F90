@@ -371,7 +371,9 @@
         CALL ESMF_TimeIntervalSet(restartOffset, h=fhrot, rc=RC)
         ESMF_ERR_ABORT(RC)
         CURRTIME = STARTTIME + restartOffset
-        call ESMF_ClockSet(CLOCK_MAIN, currTime=CURRTIME, rc=RC)
+        call ESMF_ClockSet(CLOCK_MAIN, currTime=CURRTIME, &
+                                       timeStep=(TIMESTEP-restartOffset), &
+                                       rc=RC)
         ESMF_ERR_ABORT(RC)
       endif
 ! ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
