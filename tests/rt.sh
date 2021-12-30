@@ -63,6 +63,7 @@ rt_single() {
 }
 
 rt_35d() {
+if [[ $TEST_NAME =~ 'cpld_bmark_p7_35d' ]] ; then
   local sy=$(echo ${DATE_35D} | cut -c 1-4)
   local sm=$(echo ${DATE_35D} | cut -c 5-6)
   local new_test_name="tests/${TEST_NAME}_${DATE_35D}"
@@ -73,6 +74,7 @@ rt_35d() {
   sed -i -e "s/\(export SMONTH\)/\1=\"$sm\"/" $new_test_name
 
   TEST_NAME=${new_test_name#tests/}
+fi
 }
 
 rt_trap() {
