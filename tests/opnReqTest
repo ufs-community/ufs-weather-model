@@ -18,8 +18,8 @@ usage() {
   echo "  -n  specify <test-name>"
   echo
   echo "  -c  specify <test-case>"
-  echo "      defaults to all test-cases: thr,mpi,dcp,rst,bit,dbg"
-  echo "      comma-separated list of any combination of std,thr,mpi,dcp,rst,bit,dbg"
+  echo "      defaults to all test-cases: thr,mpi,dcp,rst,bit,dbg,fhz"
+  echo "      comma-separated list of any combination of std,thr,mpi,dcp,rst,bit,dbg,fhz"
   echo
   echo "  -b  test reproducibility for bit; compare against baseline"
   echo "  -d  test reproducibility for dbg; compare against baseline"
@@ -214,6 +214,11 @@ run_opnReqTests() {
         source $PATHRT/opnReqTests/dbg.sh
         WLCLK=60
         ;;
+      fhz)
+        CREATE_BASELINE=false
+        BL_SUFFIX=_std_base
+        source $PATHRT/opnReqTests/fhz.sh
+        ;;
     esac
 
     cat <<- EOF > ${RUNDIR_ROOT}/run_test${RT_SUFFIX}.env
@@ -244,7 +249,7 @@ run_opnReqTests() {
       TEST_NR=${RT_SUFFIX:1}
       COMPILE_NR=$comp_nm
       DEP_RUN=
-      if [[ ${RT_SUFFIX} == _std || ${RT_SUFFIX} == _thr || ${RT_SUFFIX} == _mpi || ${RT_SUFFIX} == _dcp || ${RT_SUFFIX} == _rst ]]; then
+      if [[ ${RT_SUFFIX} == _std || ${RT_SUFFIX} == _thr || ${RT_SUFFIX} == _mpi || ${RT_SUFFIX} == _dcp || ${RT_SUFFIX} == _rst || ${RT_SUFFIX} == _fhz ]]; then
         DEP_RUN="${TEST_NAME}_std_base"
       elif [[ ${RT_SUFFIX} == _bit ]]; then
         DEP_RUN="${TEST_NAME}_bit_base"
@@ -392,7 +397,7 @@ fi
 # default variable values
 TEST_NAME=
 CREATE_BASELINE=
-test_case="std thr mpi dcp rst bit dbg"
+test_case="std thr mpi dcp rst bit dbg fhz"
 ECFLOW=false
 ROCOTO=false
 std_compare=false
@@ -414,7 +419,7 @@ while getopts :n:c:ekhbdsxz opt; do
       test_case=$OPTARG
       test_case=$(echo $test_case | sed -e 's/^ *//' -e 's/ *$//' -e 's/,/ /g')
       for i in $test_case; do
-        if [[ $i != std && $i != thr && $i != mpi && $i != dcp && $i != rst && $i != bit && $i != dbg ]]; then
+        if [[ $i != std && $i != thr && $i != mpi && $i != dcp && $i != rst && $i != bit && $i != dbg && $i != fhz ]]; then
           error "invalid test case specified: $i"
         fi
       done
@@ -470,7 +475,7 @@ fi
 compile_case=
 run_case=
 for i in $test_case; do
-  if [[ $i == thr || $i == mpi || $i == dcp || $i == rst ]]; then
+  if [[ $i == thr || $i == mpi || $i == dcp || $i == rst || $i == fhz ]]; then
     if [[ ! $compile_case =~ std ]]; then
       compile_case+=" std"
     fi
