@@ -1059,7 +1059,7 @@ export ATMTILESIZE=`expr $NPX - 1`
 
 # FV3 defaults
 export FRAC_GRID=.true.
-export CCPP_SUITE=FV3_GFS_v16_coupled_nsstNoahmpUGWPv1
+export CCPP_SUITE=FV3_GFS_v16_coupled_p8
 export INPUT_NML=cpld_control.nml.IN
 export FIELD_TABLE=field_table_gfsv16
 export DIAG_TABLE=diag_table_template

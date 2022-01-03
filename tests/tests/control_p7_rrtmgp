@@ -1,12 +1,12 @@
 ###############################################################################
 #
-#  Global control test GFSv16 atmosphere only at C96L127, P8 configuration + RRTMGP
+#  Global control test GFSv16 atmosphere only at C96L127, P7 configuration + RRTMGP
 #
 ###############################################################################
 
 export TEST_DESCR="Compare global control results with previous trunk version"
 
-export CNTL_DIR=control_p8_rrtmgp
+export CNTL_DIR=control_p7_rrtmgp
 
 export LIST_FILES="sfcf000.nc \
                    sfcf021.nc \
@@ -144,12 +144,8 @@ export MOM6_RESTART_SETTING=n
 
 # RRTMGP
 export DO_RRTMGP=.true.
-# P8
-export USE_CICE_ALB=.true.
 
 export FV3_RUN=control_run.IN
-#TODO:need naming convention which does not require
-#updating suite file each prototype
 export CCPP_SUITE=FV3_GFS_v16_p7_rrtmgp
 export DIAG_TABLE=diag_table_gfsv16_merra2
 # use same namelist for standalone,coupled P7
