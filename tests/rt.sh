@@ -461,11 +461,11 @@ if [[ $SINGLE_NAME != '' ]]; then
   rt_single
 fi
 
-if [[ $TESTS_FILE =~ '35d' ]]; then
+if [[ $TESTS_FILE =~ '35d' ]] || [[ $TESTS_FILE =~ 'weekly' ]]; then
   TEST_35D=true
 fi
 
-BL_DATE=20211214
+BL_DATE=20211229
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]] || [[ $MACHINE_ID = s4.* ]]; then
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
 else
@@ -709,8 +709,7 @@ EOF
     elif [[ $ECFLOW == true ]]; then
       ecflow_create_compile_task
     else
-      ./compile.sh $MACHINE_ID "${MAKE_OPT}" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
-      mv compile_${COMPILE_NR}_time.log ${LOG_DIR}
+      ./run_compile.sh ${PATHRT} ${RUNDIR_ROOT} "${MAKE_OPT}" ${COMPILE_NR} > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
     fi
 
     # Set RT_SUFFIX (regression test run directories and log files) and BL_SUFFIX
@@ -799,6 +798,7 @@ EOF
       export REGRESSIONTEST_LOG=${REGRESSIONTEST_LOG}
       export LOG_DIR=${LOG_DIR}
       export DEP_RUN=${DEP_RUN}
+      export skip_check_results=${skip_check_results}
 EOF
 
       if [[ $ROCOTO == true ]]; then
