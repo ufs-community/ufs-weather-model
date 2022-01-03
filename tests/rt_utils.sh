@@ -330,6 +330,7 @@ check_results() {
 
   echo                                               >> ${REGRESSIONTEST_LOG}
   grep "The total amount of wall time" ${RUNDIR}/out >> ${REGRESSIONTEST_LOG}
+  grep "The maximum resident set size" ${RUNDIR}/out >> ${REGRESSIONTEST_LOG}
   echo                                               >> ${REGRESSIONTEST_LOG}
 
   TRIES=''

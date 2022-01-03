@@ -63,6 +63,7 @@ rt_single() {
 }
 
 rt_35d() {
+if [[ $TEST_NAME =~ 'cpld_bmark_p7_35d' ]] ; then
   local sy=$(echo ${DATE_35D} | cut -c 1-4)
   local sm=$(echo ${DATE_35D} | cut -c 5-6)
   local new_test_name="tests/${TEST_NAME}_${DATE_35D}"
@@ -73,6 +74,7 @@ rt_35d() {
   sed -i -e "s/\(export SMONTH\)/\1=\"$sm\"/" $new_test_name
 
   TEST_NAME=${new_test_name#tests/}
+fi
 }
 
 rt_trap() {
@@ -461,11 +463,11 @@ if [[ $SINGLE_NAME != '' ]]; then
   rt_single
 fi
 
-if [[ $TESTS_FILE =~ '35d' ]]; then
+if [[ $TESTS_FILE =~ '35d' ]] || [[ $TESTS_FILE =~ 'weekly' ]]; then
   TEST_35D=true
 fi
 
-BL_DATE=20211222
+BL_DATE=20211230
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]] || [[ $MACHINE_ID = s4.* ]]; then
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
 else
