@@ -1,0 +1,22 @@
+rm -rf INPUT RESTART
+mkdir  INPUT RESTART
+
+for file in $(find @[INPUTDATA_ROOT]/FV3_hafs_input_data/ -maxdepth 1 -type f); do
+  cp $file ./
+done
+
+if [ ${CNTL_DIR} = "hafs_regional_atm" ] || \
+   [ ${CNTL_DIR} = "hafs_regional_atm_ocn" ] || \
+   [ ${CNTL_DIR} = "hafs_regional_atm_wav" ] || \
+   [ ${CNTL_DIR} = "hafs_regional_atm_ocn_wav" ] || \
+   [ ${CNTL_DIR} = "hafs_regional_docn" ] || \
+   [ ${CNTL_DIR} = "hafs_regional_docn_oisst" ]; then
+  cp -r @[INPUTDATA_ROOT]/FV3_hafs_input_data/INPUT_hafs_regional_atm/* ./INPUT/
+elif [ ${CNTL_DIR} = "hafs_regional_1nest_atm" ] || \
+   [ ${CNTL_DIR} = "hafs_regional_telescopic_2nests_atm" ] || \
+   [ ${CNTL_DIR} = "hafs_global_1nest_atm" ] || \
+   [ ${CNTL_DIR} = "hafs_global_multiple_4nests_atm" ]; then
+  cp -r @[INPUTDATA_ROOT]/FV3_hafs_input_data/INPUT_${CNTL_DIR}/* ./INPUT/
+else
+  echo "Error: unsupported experiments ${CNTL_DIR}"
+fi

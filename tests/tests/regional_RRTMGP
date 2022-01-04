@@ -1,0 +1,41 @@
+###############################################################################
+#
+#  FV3 regional control test using RRTMGP radiaiton
+#
+###############################################################################
+
+export TEST_DESCR="Compare FV3 w/ RRTMGP regional results with previous trunk version"
+
+export CNTL_DIR=fv3_regional_RRTMGP
+
+export LIST_FILES="dynf000.nc \
+                   dynf024.nc \
+                   phyf000.nc \
+                   phyf024.nc \
+                   PRSLEV.GrbF00 \
+                   PRSLEV.GrbF24 \
+                   NATLEV.GrbF00 \
+                   NATLEV.GrbF24"
+
+export_fv3
+export DO_RRTMGP=.true.
+export TASKS=68
+
+export FV3_RUN=regional_run.IN
+
+export OZ_PHYS_OLD=.false.
+export OZ_PHYS_NEW=.true.
+export H2O_PHYS=.true.
+export HYBEDMF=.false.
+export WRITE_DOPOST=.true.
+export POSTAPP='lam'
+
+export CCPP_SUITE=FV3_GFS_v15_thompson_mynn_RRTMGP
+export INPUT_NML=regional_rrtmgp.nml.IN
+export MODEL_CONFIGURE=model_configure_regional.IN
+export DIAG_TABLE=diag_table_lam
+export FIELD_TABLE=field_table_regional
+
+export INPES=10
+export JNPES=6
+export OUTPUT_FH="12 -1"

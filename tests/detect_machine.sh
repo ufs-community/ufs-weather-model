@@ -104,13 +104,17 @@ case $(hostname -f) in
   login2.stampede2.tacc.utexas.edu) MACHINE_ID=stampede ;; ### stampede2
   login3.stampede2.tacc.utexas.edu) MACHINE_ID=stampede ;; ### stampede3
   login4.stampede2.tacc.utexas.edu) MACHINE_ID=stampede ;; ### stampede4
+
+  login01.expanse.sdsc.edu) MACHINE_ID=expanse ;; ### expanse1
+  login02.expanse.sdsc.edu) MACHINE_ID=expanse ;; ### expanse2
 esac
 
 # Overwrite auto-detect with RT_MACHINE if set
 MACHINE_ID=${RT_MACHINE:-${MACHINE_ID}}
 
 # Append compiler
-if [ $MACHINE_ID = orion ] || [ $MACHINE_ID = hera ] || [ $MACHINE_ID = cheyenne ] || [ $MACHINE_ID = jet ] || [ $MACHINE_ID = gaea ] || [ $MACHINE_ID = stampede ] || [ $MACHINE_ID = s4 ] ; then
+if [ $MACHINE_ID = orion ] || [ $MACHINE_ID = hera ] || [ $MACHINE_ID = cheyenne ] || [ $MACHINE_ID = jet ] || \
+   [ $MACHINE_ID = gaea ] || [ $MACHINE_ID = stampede ] || [ $MACHINE_ID = s4 ] || [ $MACHINE_ID = expanse ] ; then
     MACHINE_ID=${MACHINE_ID}.${RT_COMPILER}
 fi
 

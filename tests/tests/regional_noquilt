@@ -1,0 +1,39 @@
+###############################################################################
+#
+#  FV3 regional noquilt test
+#
+###############################################################################
+
+export TEST_DESCR="Compare FV3 regional noquilt test results with previous trunk version"
+
+export CNTL_DIR=fv3_regional_noquilt
+
+export LIST_FILES="  atmos_4xdaily.nc \
+                     fv3_history2d.nc \
+                       fv3_history.nc \
+     RESTART/fv_core.res.tile1_new.nc \
+   RESTART/fv_tracer.res.tile1_new.nc"
+
+export_fv3
+
+export TASKS=60
+
+export FV3_RUN=regional_run.IN
+
+export OZ_PHYS_OLD=.false.
+export OZ_PHYS_NEW=.true.
+export H2O_PHYS=.true.
+export HYBEDMF=.false.
+export RESTART_INTERVAL="12 -1"
+export QUILTING=.false.
+export MODEL_CONFIGURE=model_configure_regional.IN
+
+export CCPP_SUITE=FV3_GFS_v15_thompson_mynn
+export INPUT_NML=regional.nml.IN
+export DIAG_TABLE=diag_table_regional
+export FIELD_TABLE=field_table_regional
+
+export INPES=10
+export JNPES=6
+export WRITE_RESTART_WITH_BCS=.true.
+export OUTPUT_FH="3 6 9 12 15 18 21 24"

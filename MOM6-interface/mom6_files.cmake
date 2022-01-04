@@ -181,6 +181,8 @@ list(APPEND mom6_src_files
   MOM6/src/parameterizations/CVmix/cvmix_tidal.F90
   MOM6/src/parameterizations/CVmix/cvmix_utils.F90
 
+  MOM6/src/parameterizations/stochastic/MOM_stochastics.F90
+
   MOM6/src/tracer/DOME_tracer.F90
 
   MOM6/src/tracer/ISOMIP_tracer.F90
@@ -189,6 +191,7 @@ list(APPEND mom6_src_files
   MOM6/src/tracer/MOM_generic_tracer.F90
   MOM6/src/tracer/MOM_lateral_boundary_diffusion.F90
   MOM6/src/tracer/MOM_neutral_diffusion.F90
+  MOM6/src/tracer/nw2_tracers.F90
   MOM6/src/tracer/MOM_offline_aux.F90
   MOM6/src/tracer/MOM_offline_main.F90
   MOM6/src/tracer/MOM_tracer_Z_init.F90
