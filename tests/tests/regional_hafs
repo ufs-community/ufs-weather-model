@@ -1,0 +1,38 @@
+###############################################################################
+#
+#  FV3 regional hafs test
+#
+###############################################################################
+
+export TEST_DESCR="Compare FV3 regional hafs results with previous trunk version"
+
+export CNTL_DIR=fv3_regional_hafs
+
+export LIST_FILES="dynf000.nc \
+                   dynf024.nc \
+                   phyf000.nc \
+                   phyf024.nc \
+                   HURPRS.GrbF00 \
+                   HURPRS.GrbF24"
+
+export_fv3
+
+export TASKS=68
+
+export FV3_RUN=regional_run.IN
+
+export OZ_PHYS_OLD=.false.
+export OZ_PHYS_NEW=.true.
+export H2O_PHYS=.true.
+export HYBEDMF=.false.
+export WRITE_DOPOST=.true.
+export POSTAPP='hafs'
+
+export CCPP_SUITE=FV3_GFS_v15_thompson_mynn
+export INPUT_NML=regional.nml.IN
+export MODEL_CONFIGURE=model_configure_hafs.IN
+export DIAG_TABLE=diag_table_lam
+export FIELD_TABLE=field_table_regional
+
+export INPES=10
+export JNPES=6

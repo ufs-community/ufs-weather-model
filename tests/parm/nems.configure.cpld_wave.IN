@@ -90,8 +90,8 @@ runSeq::
 # CMEPS variables
 
 DRIVER_attributes::
-      mediator_read_restart = @[use_coldstart]
 ::
+
 MED_attributes::
       ATM_model = @[atm_model]
       ICE_model = @[ice_model]
@@ -100,6 +100,7 @@ MED_attributes::
       history_option = nhours
       history_ymd = -999
       coupling_mode = @[CPLMODE]
+      history_tile_atm = @[ATMTILESIZE]
 ::
 ALLCOMP_attributes::
       ScalarFieldCount = 2
@@ -116,4 +117,7 @@ ALLCOMP_attributes::
       use_coldstart = @[use_coldstart]
       use_mommesh = @[use_mommesh]
       eps_imesh = @[eps_imesh]
+      stop_n = @[FHMAX]
+      stop_option = nhours
+      stop_ymd = -999
 ::

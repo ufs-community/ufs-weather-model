@@ -15,10 +15,10 @@ cleanup() {
 }
 
 write_fail_test() {
-  if [[ ${UNIT_TEST} == true ]]; then
-    echo ${TEST_NR} $TEST_NAME >> $PATHRT/fail_unit_test
+  if [[ ${OPNREQ_TEST} == true ]]; then
+    echo "${TEST_NAME} ${TEST_NR} failed in run_test" >> $PATHRT/fail_opnreq_test_${TEST_NR}
   else
-    echo "${TEST_NAME} ${TEST_NR} failed in run_test" >> $PATHRT/fail_test
+    echo "${TEST_NAME} ${TEST_NR} failed in run_test" >> $PATHRT/fail_test_${TEST_NR}
   fi
   exit 1
 }
@@ -35,11 +35,17 @@ export TEST_NR=$4
 export COMPILE_NR=$5
 
 cd ${PATHRT}
+OPNREQ_TEST=${OPNREQ_TEST:-false}
+if [[ ${OPNREQ_TEST} == true ]]; then
+  rm -f fail_opnreq_test_${TEST_NR}
+else
+  rm -f fail_test_${TEST_NR}
+fi
 
 [[ -e ${RUNDIR_ROOT}/run_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
 source default_vars.sh
 source tests/$TEST_NAME
-[[ -e ${RUNDIR_ROOT}/unit_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/unit_test_${TEST_NR}.env
+[[ -e ${RUNDIR_ROOT}/opnreq_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/opnreq_test_${TEST_NR}.env
 
 # Save original CNTL_DIR name as INPUT_DIR for regression
 # tests that try to copy input data from CNTL_DIR
@@ -52,20 +58,21 @@ export JBNME=$(basename $RUNDIR_ROOT)_${TEST_NR}
 
 echo -n "${TEST_NAME}, $( date +%s )," > ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
 
-UNIT_TEST=${UNIT_TEST:-false}
-if [[ ${UNIT_TEST} == false ]]; then
+if [[ ${OPNREQ_TEST} == false ]]; then
   REGRESSIONTEST_LOG=${LOG_DIR}/rt_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log
 else
-  REGRESSIONTEST_LOG=${LOG_DIR}/ut_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log
+  REGRESSIONTEST_LOG=${LOG_DIR}/opnReqTest_${TEST_NAME}${RT_SUFFIX}.log
 fi
 export REGRESSIONTEST_LOG
+
+rm -f ${REGRESSIONTEST_LOG}
 
 echo "Test ${TEST_NR} ${TEST_NAME} ${TEST_DESCR}"
 
 source rt_utils.sh
 source atparse.bash
-source edit_inputs.sh
 
+rm -rf ${RUNDIR}
 mkdir -p ${RUNDIR}
 cd $RUNDIR
 
@@ -81,7 +88,7 @@ cp ${PATHRT}/modules.fv3_${COMPILE_NR}             modules.fv3
 cp ${PATHTR}/modulefiles/ufs_common*               .
 
 # Get the shell file that loads the "module" command and purges modules:
-cp ${PATHRT}/../NEMS/src/conf/module-setup.sh.inc  module-setup.sh
+cp ${PATHRT}/module-setup.sh                       module-setup.sh
 
 SRCD="${PATHTR}"
 RUND="${RUNDIR}"
@@ -92,7 +99,7 @@ do
   atparse < ${PATHRT}/fv3_conf/${i} >> fv3_run
 done
 
-if [[ $DATM_NEMS = 'true' ]] || [[ $DATM_CDEPS = 'true' ]] || [[ $FV3 = 'true' ]] || [[ $S2S = 'true' ]]; then
+if [[ $DATM_CDEPS = 'true' ]] || [[ $FV3 = 'true' ]] || [[ $S2S = 'true' ]]; then
   if [[ $HAFS = 'false' ]] || [[ $FV3 = 'true' && $HAFS = 'true' ]]; then
     atparse < ${PATHRT}/parm/${INPUT_NML:-input.nml.IN} > input.nml
   fi
@@ -103,7 +110,51 @@ atparse < ${PATHRT}/parm/${MODEL_CONFIGURE:-model_configure.IN} > model_configur
 atparse < ${PATHRT}/parm/${NEMS_CONFIGURE:-nems.configure} > nems.configure
 
 if [[ "Q${INPUT_NEST02_NML:-}" != Q ]] ; then
+    INPES_NEST=$INPES_NEST02; JNPES_NEST=$JNPES_NEST02
+    NPX_NEST=$NPX_NEST02; NPY_NEST=$NPY_NEST02
+    K_SPLIT_NEST=$K_SPLIT_NEST02; N_SPLIT_NEST=$N_SPLIT_NEST02
     atparse < ${PATHRT}/parm/${INPUT_NEST02_NML} > input_nest02.nml
+fi
+
+if [[ "Q${INPUT_NEST03_NML:-}" != Q ]] ; then
+    INPES_NEST=$INPES_NEST03; JNPES_NEST=$JNPES_NEST03
+    NPX_NEST=$NPX_NEST03; NPY_NEST=$NPY_NEST03
+    K_SPLIT_NEST=$K_SPLIT_NEST03; N_SPLIT_NEST=$N_SPLIT_NEST03
+    atparse < ${PATHRT}/parm/${INPUT_NEST03_NML} > input_nest03.nml
+fi
+
+if [[ "Q${INPUT_NEST04_NML:-}" != Q ]] ; then
+    INPES_NEST=$INPES_NEST04; JNPES_NEST=$JNPES_NEST04
+    NPX_NEST=$NPX_NEST04; NPY_NEST=$NPY_NEST04
+    K_SPLIT_NEST=$K_SPLIT_NEST04; N_SPLIT_NEST=$N_SPLIT_NEST04
+    atparse < ${PATHRT}/parm/${INPUT_NEST04_NML} > input_nest04.nml
+fi
+
+if [[ "Q${INPUT_NEST05_NML:-}" != Q ]] ; then
+    INPES_NEST=$INPES_NEST05; JNPES_NEST=$JNPES_NEST05
+    NPX_NEST=$NPX_NEST05; NPY_NEST=$NPY_NEST05
+    K_SPLIT_NEST=$K_SPLIT_NEST05; N_SPLIT_NEST=$N_SPLIT_NEST05
+    atparse < ${PATHRT}/parm/${INPUT_NEST05_NML} > input_nest05.nml
+fi
+
+# diag table
+if [[ "Q${DIAG_TABLE:-}" != Q ]] ; then
+  cp ${PATHRT}/parm/diag_table/${DIAG_TABLE} diag_table
+fi
+# Field table
+if [[ "Q${FIELD_TABLE:-}" != Q ]] ; then
+  cp ${PATHRT}/parm/field_table/${FIELD_TABLE} field_table
+fi
+
+# fix files
+if [[ $FV3 == true ]]; then
+  cp ${INPUTDATA_ROOT}/FV3_fix/*.txt .
+  cp ${INPUTDATA_ROOT}/FV3_fix/*.f77 .
+  cp ${INPUTDATA_ROOT}/FV3_fix/*.dat .
+  cp ${INPUTDATA_ROOT}/FV3_fix/fix_co2_proj/* .
+  if [[ $TILEDFIX != .true. ]]; then
+    cp ${INPUTDATA_ROOT}/FV3_fix/*.grb .
+  fi
 fi
 
 # Field Dictionary
@@ -113,25 +164,26 @@ cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
 source ./fv3_run
 
 if [[ $CPLWAV == .true. ]]; then
-  edit_ww3_input  < ${PATHRT}/parm/ww3_multi.inp.IN > ww3_multi.inp
+  atparse < ${PATHRT}/parm/ww3_multi.inp.IN > ww3_multi.inp
 fi
 
-if [[ $DATM_NEMS = 'true' ]] || [[ $DATM_CDEPS = 'true' ]] || [[ $S2S = 'true' ]]; then
+if [[ $DATM_CDEPS = 'true' ]] || [[ $S2S = 'true' ]]; then
   if [[ $HAFS = 'false' ]]; then
-    edit_ice_in     < ${PATHRT}/parm/ice_in_template > ice_in
-    edit_mom_input  < ${PATHRT}/parm/${MOM_INPUT:-MOM_input_template_$OCNRES} > INPUT/MOM_input
-    edit_diag_table < ${PATHRT}/parm/${DIAG_TABLE:-diag_table_template} > diag_table
-    edit_data_table < ${PATHRT}/parm/data_table_template > data_table
+    atparse < ${PATHRT}/parm/ice_in_template > ice_in
+    atparse < ${PATHRT}/parm/${MOM_INPUT:-MOM_input_template_$OCNRES} > INPUT/MOM_input
+    atparse < ${PATHRT}/parm/diag_table/${DIAG_TABLE:-diag_table_template} > diag_table
+    atparse < ${PATHRT}/parm/data_table_template > data_table
   fi
 fi
 
-if [[ $DATM_NEMS = 'true' ]]; then
-  cp ${PATHRT}/parm/datm_data_table.IN datm_data_table
+if [[ $HAFS = 'true' ]] && [[ $DATM_CDEPS = 'false' ]]; then
+  atparse < ${PATHRT}/parm/diag_table/${DIAG_TABLE:-diag_table_template} > diag_table
 fi
+
 if [[ "${DIAG_TABLE_ADDITIONAL:-}Q" != Q ]] ; then
   # Append diagnostic outputs, to support tests that vary from others
   # only by adding diagnostics.
-  atparse < "${PATHRT}/parm/${DIAG_TABLE_ADDITIONAL:-}" >> diag_table
+  atparse < "${PATHRT}/parm/diag_table/${DIAG_TABLE_ADDITIONAL:-}" >> diag_table
 fi
 
 if [[ $DATM_CDEPS = 'true' ]]; then
@@ -191,7 +243,16 @@ else
 
 fi
 
-check_results
+if [[ $skip_check_results = false ]]; then
+  check_results
+else
+  echo                                               >> ${REGRESSIONTEST_LOG}
+  grep "The total amount of wall time" ${RUNDIR}/out >> ${REGRESSIONTEST_LOG}
+  grep "The maximum resident set size" ${RUNDIR}/out >> ${REGRESSIONTEST_LOG}
+  echo                                               >> ${REGRESSIONTEST_LOG}
+  echo "Test ${TEST_NR} ${TEST_NAME} RUN_SUCCESS"    >> ${REGRESSIONTEST_LOG}
+  echo;echo;echo                                     >> ${REGRESSIONTEST_LOG}
+fi
 
 if [[ $SCHEDULER != 'none' ]]; then
   cat ${RUNDIR}/job_timestamp.txt >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt

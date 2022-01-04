@@ -13,8 +13,8 @@ result() {
 }
 
 # Declare variables
-declare -A base fv3 mom6 cice ww3 stoch gocart nems cmeps datm cdeps cmake
-submodules="fv3 mom6 cice ww3 stoch gocart nems cmeps datm cdeps cmake"
+declare -A base fv3 mom6 cice ww3 stoch gocart cmeps cdeps hycom cmake
+submodules="fv3 mom6 cice ww3 stoch gocart cmeps cdeps hycom cmake"
 comment=''
 ownerID=$1
 
@@ -36,7 +36,7 @@ cice[branch]='emc/develop'
 cice[dir]='CICE-interface/CICE'
 
 ww3[repo]='https://github.com/NOAA-EMC/WW3'
-ww3[branch]='develop'
+ww3[branch]='dev/ufs-weather-model'
 ww3[dir]='WW3'
 
 stoch[repo]='https://github.com/noaa-psd/stochastic_physics'
@@ -47,21 +47,17 @@ gocart[repo]='https://github.com/GEOS-ESM/GOCART'
 gocart[branch]='develop'
 gocart[dir]='GOCART'
 
-nems[repo]='https://github.com/NOAA-EMC/NEMS'
-nems[branch]='develop'
-nems[dir]='NEMS'
-
 cmeps[repo]='https://github.com/NOAA-EMC/CMEPS'
 cmeps[branch]='emc/develop'
 cmeps[dir]='CMEPS-interface/CMEPS'
 
-datm[repo]='https://github.com/NOAA-EMC/NEMSdatm'
-datm[branch]='develop'
-datm[dir]='DATM'
-
 cdeps[repo]='https://github.com/NOAA-EMC/CDEPS'
 cdeps[branch]='develop'
 cdeps[dir]='CDEPS-interface/CDEPS'
+
+hycom[repo]='https://github.com/NOAA-EMC/HYCOM-src'
+hycom[branch]='emc/develop'
+hycom[dir]='HYCOM-interface/HYCOM'
 
 cmake[repo]='https://github.com/NOAA-EMC/CMakeModules'
 cmake[branch]='develop'

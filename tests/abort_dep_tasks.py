@@ -1,6 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 from __future__ import print_function
-import ecflow
+import ecflow as ecflow
 import re
 
 # this script will work ONLY for standalone nmmb regression test ecflow workflow

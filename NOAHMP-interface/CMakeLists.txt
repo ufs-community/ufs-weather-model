@@ -17,6 +17,8 @@ endif()
 list(APPEND _noahmp_cap_files NOAHMP/drivers/nuopc/lnd_comp_kind.F90
                               NOAHMP/drivers/nuopc/lnd_comp_types.F90
                               NOAHMP/drivers/nuopc/lnd_comp_shr.F90
+                              NOAHMP/drivers/nuopc/lnd_comp_io.F90
+                              NOAHMP/drivers/nuopc/lnd_comp_domain.F90
                               NOAHMP/drivers/nuopc/lnd_import_export.F90
                               NOAHMP/drivers/nuopc/lnd_comp_nuopc.F90
                               NOAHMP/drivers/nuopc/lnd_comp_driver.F90)
@@ -32,7 +34,9 @@ if(EXISTS ${FV3_PATH})
     ${FV3_PATH}/ccpp/physics/physics/set_soilveg.f
     ${FV3_PATH}/ccpp/physics/physics/namelist_soilveg.f
     ${FV3_PATH}/ccpp/physics/physics/module_sf_noahmplsm.f90
+    ${FV3_PATH}/ccpp/physics/physics/sfc_diff.f
     ${FV3_PATH}/ccpp/physics/physics/module_sf_noahmp_glacier.f90
+    ${FV3_PATH}/ccpp/physics/physics/noahmp_tables.f90
     ${FV3_PATH}/ccpp/physics/physics/sfc_noahmp_drv.F90)
   add_definitions(-DCCPP)
 endif()

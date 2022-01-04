@@ -1,0 +1,61 @@
+###############################################################################
+#
+#  global control test: GFSv16 atmosphere only at C768L127
+#
+###############################################################################
+
+export TEST_DESCR="Compare global control C768L127 results with previous trunk version"
+
+export CNTL_DIR=control_c768
+
+export LIST_FILES="sfcf000.nc \
+                   sfcf003.nc \
+                   atmf000.nc \
+                   atmf003.nc \
+                   GFSFLX.GrbF00 \
+                   GFSFLX.GrbF03 \
+                   GFSPRS.GrbF00 \
+                   GFSPRS.GrbF03"
+
+export_fv3
+export TASKS=${TASKS_c768}
+export TPN=${TPN_c768}
+export INPES=${INPES_c768}
+export JNPES=${JNPES_c768}
+export THRD=2
+export WRITE_GROUP=2
+export WRTTASK_PER_GROUP=80
+export FHMAX=03
+export NPZ=127
+export NPZP=128
+export NPX=769
+export NPY=769
+export SYEAR=2021
+export SMONTH=03
+export SDAY=22
+export SHOUR=06
+export DT_ATMOS=150
+export RESTART_INTERVAL=0
+export CDMBWD=${CDMBWD_c768}
+export OUTPUT_GRID='gaussian_grid'
+export OUTPUT_FILE="'netcdf_parallel' 'netcdf_parallel'"
+export NSTF_NAME='2,0,0,0,0'
+export WRITE_DOPOST=.true.
+export IAER=5111
+export IMO=3072
+export JMO=1536
+export IDEFLATE=1
+export NBITS=14
+export ICHUNK3D=${IMO}
+export JCHUNK3D=${JMO}
+export KCHUNK3D=1
+export OUTPUT_FH="3 -1"
+
+export FNALBC="'global_snowfree_albedo.bosu.t1534.3072.1536.rg.grb',"
+export FNVETC="'global_vegtype.igbp.t1534.3072.1536.rg.grb',"
+export FNSOTC="'global_soiltype.statsgo.t1534.3072.1536.rg.grb',"
+export FNABSC="'global_mxsnoalb.uariz.t1534.3072.1536.rg.grb',"
+
+export FV3_RUN=control_run.IN
+export CCPP_SUITE=FV3_GFS_v16
+export INPUT_NML=control.nml.IN

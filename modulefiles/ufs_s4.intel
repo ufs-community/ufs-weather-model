@@ -1,41 +1,20 @@
-#%Module######################################################################
-##
-##    NEMS FV3 Prerequisites: S4
+#%Module
 
 proc ModulesHelp {} {
-  puts stderr "\tcit - loads modules required for building and running FV3 under NEMS on S4"
+  puts stderr "\tcit - loads modules required for building and running UFS Model on S4"
 }
 
-module-whatis "loads NEMS FV3 prerequisites for S4"
+module-whatis "loads UFS Model prerequisites for S4"
 
-# NOTE: the "module purge" and loading of the module command are
-# handled by the module-setup.sh (or .csh) script.
-
-##
-## load programming environment
-## this typically includes compiler, MPI and job scheduler
-##
 module load license_intel/S4
-module load intel/18.0.3
-module load hdf/4.2.14
-module load hdf5/1.8.21
-module load netcdf4/4.6.2
+module use /data/prod/hpc-stack/modulefiles/stack
+module load hpc/1.1.0
+module load hpc-intel/18.0.4
+module load hpc-impi/18.0.4
 
-##
-## load nwprod libraries
-##
-module use -a /data/prod/ncep_libs/intel/18.0.3/modulefiles
-module load bacio/v2.0.2
-module load sp/v2.0.2
-module load ip/v3.0.0
-module load w3nco/v2.0.6
-module load w3emc/v2.3.0
-module load nemsio/v2.2.3
-module load g2/v3.1.0
-module load g2tmpl/v1.5.0
-module load crtm/v2.3.0
-module load jasper/v1.900.1
-module load png/v1.2.44
-module load z/v1.2.6
+module load ufs_common
 
-module load esmf/v8.0.0
+setenv CC mpiicc
+setenv CXX mpiicpc
+setenv FC mpiifort
+setenv CMAKE_Platform s4.intel

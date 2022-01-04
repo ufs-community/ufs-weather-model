@@ -48,7 +48,7 @@ if [[ $MACHINE_ID == cheyenne.* ]] ; then
     BUILD_JOBS=${BUILD_JOBS:-3}
 elif [[ $MACHINE_ID == wcoss_dell_p3 ]] ; then
     BUILD_JOBS=${BUILD_JOBS:-4}
-    source $PATHTR/NEMS/src/conf/module-setup.sh.inc
+    source $PATHTR/tests/module-setup.sh
 fi
 
 BUILD_JOBS=${BUILD_JOBS:-8}
@@ -59,9 +59,6 @@ set +x
 if [[ $MACHINE_ID == macosx.* ]] || [[ $MACHINE_ID == linux.* ]]; then
   source $PATHTR/modulefiles/ufs_${MACHINE_ID}
 else
-  if [[ $MACHINE_ID == wcoss2 ]]; then
-    source /apps/prod/lmodules/startLmod
-  fi
   # Activate lua environment for gaea
   if [[ $MACHINE_ID == gaea.* ]] ; then
     source /lustre/f2/pdata/esrl/gsd/contrib/lua-5.1.4.9/init/init_lmod.sh
