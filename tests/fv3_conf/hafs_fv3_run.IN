@@ -6,7 +6,7 @@ for file in $(find @[INPUTDATA_ROOT]/FV3_hafs_input_data/ -maxdepth 1 -type f); 
 done
 
 if [ ${CNTL_DIR} = "hafs_regional_atm" ] || \
-   [ ${CNTL_DIR} = "hafs_regional_atm_hwrf_suite" ] || \
+   [ ${CNTL_DIR} = "hafs_regional_atm_thompson_gfdlsf" ] || \
    [ ${CNTL_DIR} = "hafs_regional_atm_ocn" ] || \
    [ ${CNTL_DIR} = "hafs_regional_atm_wav" ] || \
    [ ${CNTL_DIR} = "hafs_regional_atm_ocn_wav" ] || \
@@ -22,7 +22,7 @@ else
   echo "Error: unsupported experiments ${CNTL_DIR}"
 fi
 
-if [ ${CNTL_DIR} = "hafs_regional_atm_hwrf_suite" ]; then
+if [ ${CNTL_DIR} = "hafs_regional_atm_thompson_gfdlsf" ]; then
   cp @[INPUTDATA_ROOT]/FV3_input_data_gsd/qr_acr_qsV2.dat .
   cp @[INPUTDATA_ROOT]/FV3_input_data_gsd/qr_acr_qgV2.dat .
   cp @[INPUTDATA_ROOT]/FV3_input_data_gsd/freezeH2O.dat .

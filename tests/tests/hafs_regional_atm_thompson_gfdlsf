@@ -6,7 +6,7 @@
 
 export TEST_DESCR="Compare HAFS regional atmosphere only results with previous trunk version"
 
-export CNTL_DIR=hafs_regional_atm_hwrf_suite
+export CNTL_DIR=hafs_regional_atm_thompson_gfdlsf
 
 export LIST_FILES="atmf006.nc \
                    sfcf006.nc"
@@ -65,6 +65,8 @@ export BC_UPDATE_INTERVAL=3
 export NROWS_BLEND=10
 export FULL_ZS_FILTER=.false.
 export N_ZS_FILTER=0
+export DNATS=0
+export DO_SAT_ADJ=.false.
 
 export GRID_PES="240"
 export TILE_COARSE="0"
@@ -76,6 +78,7 @@ export NEST_JOFFSETS="999"
 export FHCYC=0
 export FHSWR=1800
 export FHLWR=1800
+export IMP_PHYSICS=8
 export NSTF_NAME=2,0,0,0,0
 export CPLFLX=.false.
 export CPLOCN2ATM=.true.
@@ -87,9 +90,9 @@ export CMEPS=false
 export RUNTYPE="startup"
 export USE_COLDSTART="false"
 
-export FIELD_TABLE=field_table_hafs_hwrf_suite
+export FIELD_TABLE=field_table_hafs_thompson
 export DIAG_TABLE=diag_table_hafs_template
-export INPUT_NML=input_regional_hafs_hwrf_suite.nml.IN
+export INPUT_NML=input_regional_hafs.nml.IN
 export MODEL_CONFIGURE="model_configure_hafs_shared.IN"
 export NEMS_CONFIGURE="nems.configure.hafs_atm.IN"
 export FV3_RUN="hafs_fv3_run.IN"
