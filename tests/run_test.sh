@@ -238,7 +238,10 @@ else
     submit_and_wait job_card
   else
     chmod u+x job_card
-    ./job_card
+    ( ./job_card 2>&1 1>&3 3>&- | tee err ) 3>&1 1>&2 | tee out
+    # The above shell redirection copies stdout to "out" and stderr to "err"
+    # while still sending them to stdout and stderr. It does this without
+    # relying on bash-specific extensions or non-standard OS features.
   fi
 
 fi
