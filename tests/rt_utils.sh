@@ -385,8 +385,10 @@ rocoto_create_compile_task() {
 
   # serialize WW3 builds. FIXME
   DEP_STRING=""
-  if [[ ${MAKE_OPT^^} =~ "WW3=Y" && ${COMPILE_PREV_WW3_NR} != '' ]]; then
-    DEP_STRING="<dependency><taskdep task=\"compile_${COMPILE_PREV_WW3_NR}\"/></dependency>"
+  if [[ ${COMPILE_PREV_WW3_NR} != '' ]]; then
+      if [[ ${MAKE_OPT^^} =~ "-DAPP=ATMW" ]] || [[ ${MAKE_OPT^^} =~ "-DAPP=S2SW" ]] || [[ ${MAKE_OPT^^} =~ "-DAPP=HAFSW" ]] || [[ ${MAKE_OPT^^} =~ "-DAPP=HAFS-ALL" ]] ; then
+          DEP_STRING="<dependency><taskdep task=\"compile_${COMPILE_PREV_WW3_NR}\"/></dependency>"
+      fi
   fi
 
   NATIVE=""
@@ -401,7 +403,7 @@ rocoto_create_compile_task() {
     BUILD_CORES=24
     NATIVE="<exclusive></exclusive> <envar><name>PATHTR</name><value>&PATHTR;</value></envar>"
   fi
-  if [[ ${MACHINE_ID} == jet ]]; then
+  if [[ ${MACHINE_ID} == jet.* ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
   if [[ ${MACHINE_ID} == orion.* ]]; then
@@ -421,8 +423,7 @@ rocoto_create_compile_task() {
     <partition>${PARTITION}</partition>
     <cores>${BUILD_CORES}</cores>
     <walltime>${BUILD_WALLTIME}</walltime>
-    <stdout>&RUNDIR_ROOT;/compile_${COMPILE_NR}/out</stdout>
-    <stderr>&RUNDIR_ROOT;/compile_${COMPILE_NR}/err</stderr>
+    <join>&RUNDIR_ROOT;/compile_${COMPILE_NR}.log</join>
     ${NATIVE}
   </task>
 EOF
@@ -459,8 +460,8 @@ rocoto_create_run_task() {
       <partition>${PARTITION}</partition>
       <nodes>${NODES}:ppn=${TPN}</nodes>
       <walltime>00:${WLCLK}:00</walltime>
-      <stdout>&RUNDIR_ROOT;/${TEST_NAME}${RT_SUFFIX}/out</stdout>
-      <stderr>&RUNDIR_ROOT;/${TEST_NAME}${RT_SUFFIX}/err</stderr>
+      <stdout>&RUNDIR_ROOT;/${TEST_NAME}${RT_SUFFIX}.out</stdout>
+      <stderr>&RUNDIR_ROOT;/${TEST_NAME}${RT_SUFFIX}.err</stderr>
       ${NATIVE}
     </task>
 EOF
