@@ -62,8 +62,27 @@ list(APPEND _mediator_files
   CMEPS/mediator/med_phases_post_rof_mod.F90
   CMEPS/mediator/med_phases_post_wav_mod.F90)
 
+### Build required files for CCPP aoflux calculation
+get_filename_component(FV3_PATH "../FV3" REALPATH)
+if(EXISTS ${FV3_PATH})
+  message("FV3_PATH = ${FV3_PATH}")
+  message("Compiling CMEPS with UFS atmosphere-ocean flux calculation support.")
+  list(APPEND _ccpp_physics
+    ${FV3_PATH}/ccpp/physics/physics/machine.F
+    ${FV3_PATH}/ccpp/physics/physics/physcons.F90
+    ${FV3_PATH}/ccpp/physics/physics/physparam.f
+    ${FV3_PATH}/ccpp/physics/physics/funcphys.f90
+    ${FV3_PATH}/ccpp/physics/physics/sfc_diff.f
+    ${FV3_PATH}/ccpp/physics/physics/sfc_ocean.F
+    ${FV3_PATH}/ccpp/physics/physics/GFS_surface_composites.F90
+    ${FV3_PATH}/ccpp/physics/physics/GFS_surface_loop_control.F90)
+  list(APPEND _nems_util_files
+    CMEPS/ufs/flux_atmocn_ccpp_mod.F90)
+  add_definitions(-DUFS_AOFLUX)
+endif()
+
 ### Create target library and set PUBLIC interfaces on the library
-add_library(cmeps STATIC ${_nems_util_files} ${_mediator_files})
+add_library(cmeps STATIC ${_nems_util_files} ${_mediator_files} ${_ccpp_physics})
 set_target_properties(cmeps PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(cmeps PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                         $<INSTALL_INTERFACE:mod>)
