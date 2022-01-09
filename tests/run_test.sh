@@ -269,26 +269,18 @@ echo " $( date +%s )" >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
 ################################################################################
 # Remove RUN_DIRs if they are no longer needed by other tests
 ################################################################################
-keep_run_dir=false
-if [[ ${TEST_NAME} == 'cpld_control_c96_p7' || ${TEST_NAME} == 'cpld_control_c192_p7' ]]; then
-  keep_run_dir=true
-fi
-if [[ ${TEST_NAME} == 'cpld_control_c384_p7' || ${TEST_NAME} == 'control' ]]; then
-  keep_run_dir=true
-fi
-if [[ ${TEST_NAME} == 'control_stochy' || ${TEST_NAME} == 'control_p7' ]]; then
-  keep_run_dir=true
-fi
-if [[ ${TEST_NAME} == 'regional_control' || ${TEST_NAME} == 'rap_control' ]]; then
-  keep_run_dir=true
-fi
-if [[ ${TEST_NAME} == 'rap_sfcdiff' || ${TEST_NAME} == 'datm_cdeps_control_cfsr' ]]; then
-  keep_run_dir=true
-fi
+if [[ ${delete_rundir} = true ]]; then
+  keep_run_dir=false
+  while  read -r line; do
+    keep_test=$(echo $line| sed -e 's/^ *//' -e 's/ *$//')
+    if [[ $TEST_NAME == ${keep_test} ]]; then
+      keep_run_dir=true
+    fi
+  done < ${PATHRT}/keep_tests.tmp
 
-if [[ ${keep_run_dir} == false ]]; then
-  cd ${RUNDIR_ROOT}
-  rm -rf ${RUNDIR}
+  if [[ ${keep_run_dir} == false ]]; then
+    rm -rf ${RUNDIR}
+  fi
 fi
 
 elapsed=$SECONDS

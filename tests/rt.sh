@@ -14,12 +14,13 @@ usage() {
   echo "  -c  create new baseline results"
   echo "  -e  use ecFlow workflow manager"
   echo "  -h  display this help"
-  echo "  -k  keep run directory"
+  echo "  -k  keep run directory after rt.sh is completed"
   echo "  -l  runs test specified in <file>"
   echo "  -m  compare against new baseline results"
   echo "  -n  run single test <name>"
   echo "  -r  use Rocoto workflow manager"
   echo "  -w  for weekly_test, skip comparing baseline results"
+  echo "  -d  delete run direcotries that are not used by other tests"
   echo
   set -x
   exit 1
@@ -411,10 +412,11 @@ KEEP_RUNDIR=false
 SINGLE_NAME=''
 TEST_35D=false
 export skip_check_results=false
+export delete_rundir=false
 
 TESTS_FILE='rt.conf'
 
-while getopts ":cl:mn:wkreh" opt; do
+while getopts ":cl:mn:dwkreh" opt; do
   case $opt in
     c)
       CREATE_BASELINE=true
@@ -430,6 +432,9 @@ while getopts ":cl:mn:wkreh" opt; do
       SINGLE_NAME=$OPTARG
       TESTS_FILE='rt.conf.single'
       rm -f $TESTS_FILE
+      ;;
+    d)
+      export delete_rundir=true
       ;;
     w)
       export skip_check_results=true
@@ -458,6 +463,8 @@ while getopts ":cl:mn:wkreh" opt; do
       ;;
   esac
 done
+
+awk -F "|" '{print $5}' rt.conf | grep "\S" > keep_tests.tmp
 
 if [[ $SINGLE_NAME != '' ]]; then
   rt_single
@@ -800,6 +807,7 @@ EOF
       export LOG_DIR=${LOG_DIR}
       export DEP_RUN=${DEP_RUN}
       export skip_check_results=${skip_check_results}
+      export delete_rundir=${delete_rundir}
 EOF
 
       if [[ $ROCOTO == true ]]; then
@@ -864,7 +872,7 @@ else
    echo ; echo REGRESSION TEST WAS SUCCESSFUL
   (echo ; echo REGRESSION TEST WAS SUCCESSFUL) >> ${REGRESSIONTEST_LOG}
 
-  rm -f fv3_*.x fv3_*.exe modules.fv3_*
+  rm -f fv3_*.x fv3_*.exe modules.fv3_* keep_tests.tmp
   [[ ${KEEP_RUNDIR} == false ]] && rm -rf ${RUNDIR_ROOT}
   [[ ${ROCOTO} == true ]] && rm -f ${ROCOTO_XML} ${ROCOTO_DB} *_lock.db
   [[ ${TEST_35D} == true ]] && rm -f tests/cpld_bmark*_20*
