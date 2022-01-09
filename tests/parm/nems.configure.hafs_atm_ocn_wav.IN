@@ -24,6 +24,7 @@ MED_attributes::
   coupling_mode = @[CPLMODE]
   normalization = none
   merge_type = copy
+  dststatus_print = true
 ::
 
 # ATM #
@@ -82,22 +83,23 @@ WAV_attributes::
 # Run Sequence #
 runSeq::
 @@[coupling_interval_sec]
+  MED med_phases_prep_atm
+  MED med_phases_prep_wav
+  MED med_phases_prep_ocn_avg
+  MED -> ATM :remapMethod=redist
+  MED -> OCN :remapMethod=redist
+  MED -> WAV :remapMethod=redist
+  ATM
+  OCN
+  WAV
   ATM -> MED :remapMethod=redist
   MED med_phases_post_atm
   OCN -> MED :remapMethod=redist
   MED med_phases_post_ocn
   WAV -> MED :remapMethod=redist
   MED med_phases_post_wav
-  MED med_phases_prep_atm
-  MED -> ATM :remapMethod=redist
   MED med_phases_prep_ocn_accum
-  MED med_phases_prep_ocn_avg
-  MED -> OCN :remapMethod=redist
-  MED med_phases_prep_wav
-  MED -> WAV :remapMethod=redist
-  ATM
-  OCN
-  WAV
+  MED med_phases_history_write
 @
 ::
 
