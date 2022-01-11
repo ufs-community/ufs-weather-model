@@ -1140,6 +1140,7 @@ export FSICL=99999
 
 # P8
 export USE_CICE_ALB=.true.
+export IOPT_SFC=3
 
 # P7 default mushy thermo
 export KTHERM=2
@@ -1150,7 +1151,7 @@ export CPLICE=.true.
 export CPL=.true.
 export CPLWAV=.true.
 export CPLWAV2ATM=.true.
-export MIN_SEAICE=1.0e-11
+export MIN_SEAICE=1.0e-6
 
 # for FV3: default values will be changed if doing a warm-warm restart
 export WARM_START=.false.
