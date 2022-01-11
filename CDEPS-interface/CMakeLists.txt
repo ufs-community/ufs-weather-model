@@ -68,6 +68,7 @@ add_library(docn OBJECT ${cdeps_docn_files})
 add_dependencies(docn share streams dshr)
 set_target_properties(docn PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(docn PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
+target_include_directories(docn PRIVATE ${PIO_INCLUDE_DIR})
 target_link_libraries(docn PRIVATE dshr share streams)
 target_link_libraries(docn PRIVATE esmf)
 
