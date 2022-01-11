@@ -300,12 +300,12 @@ elif [[ $MACHINE_ID = jet.* ]]; then
 
   QUEUE=batch
   COMPILE_QUEUE=batch
-  ACCNR=h-nems
+  ACCNR=${ACCNR:-h-nems}
   PARTITION=xjet
   DISKNM=/lfs4/HFIP/h-nems/emc.nemspara/RT
-  dprefix=/lfs4/HFIP/h-nems/$USER
-  STMP=$dprefix/RT_BASELINE
-  PTMP=$dprefix/RT_RUNDIRS
+  dprefix=${dprefix:-/lfs4/HFIP/$ACCNR/$USER}
+  STMP=${STMP:-$dprefix/RT_BASELINE}
+  PTMP=${PTMP:-$dprefix/RT_RUNDIRS}
 
   SCHEDULER=slurm
   cp fv3_conf/fv3_slurm.IN_jet fv3_conf/fv3_slurm.IN
@@ -467,7 +467,7 @@ if [[ $TESTS_FILE =~ '35d' ]] || [[ $TESTS_FILE =~ 'weekly' ]]; then
   TEST_35D=true
 fi
 
-BL_DATE=20211230
+BL_DATE=20220107
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]] || [[ $MACHINE_ID = s4.* ]]; then
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
 else
