@@ -937,6 +937,7 @@ export LNDP_PRT_LIST=-999
 #IAU
 export IAU_INC_FILES="''"
 
+export FH_DFI_RADAR='-2e10'
 
 #Cellular automata
 export DO_CA=.false.
