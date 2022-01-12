@@ -554,9 +554,9 @@ ecflow_run() {
     echo "ecflow_server is NOT running on ${ECF_HOST}:${ECF_PORT}"
     if [[ ${MACHINE_ID} == wcoss2 ]]; then
       # Annoying "Has NCO assigned port $ECF_PORT for use by this account? (yes/no) ".
-      echo yes | ${ECFLOW_START} -p ${ECF_PORT}
+      echo yes | ${ECFLOW_START} -p ${ECF_PORT} -d ${RUNDIR_ROOT}/ecflow_server
     else
-      ${ECFLOW_START} -p ${ECF_PORT}
+      ${ECFLOW_START} -p ${ECF_PORT} -d ${RUNDIR_ROOT}/ecflow_server
     fi
   else
     echo "ecflow_server is already running on ${ECF_HOST}:${ECF_PORT}"
