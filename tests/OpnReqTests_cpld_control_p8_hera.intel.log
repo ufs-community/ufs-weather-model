@@ -1,15 +1,23 @@
-Fri Dec 24 15:04:01 UTC 2021
+Fri Jan  7 15:33:16 UTC 2022
 Start Operation Requirement Test
 
-Compile std elapsed time 420 seconds. -DAPP=S2SW -DCCPP_SUITES=FV3_GFS_v16_coupled_nsstNoahmpUGWPv1,FV3_GFS_v16_coupled_p7_rrtmgp -DMPI=ON -DCMAKE_BUILD_TYPE=Release -DMOM6SOLO=ON
+Compile std elapsed time 428 seconds. -DAPP=S2SW -DCCPP_SUITES=FV3_GFS_v16_coupled_nsstNoahmpUGWPv1,FV3_GFS_v16_coupled_p7_rrtmgp,FV3_GFS_v16_coupled_p8 -DMPI=ON -DCMAKE_BUILD_TYPE=Release -DMOM6SOLO=ON
 
-baseline dir = /scratch1/NCEPDEV/stmp4/Minsuk.Ji/FV3_OPNREQ_TEST/OPNREQ_TEST/cpld_bmark_p7_std_base
-working dir  = /scratch1/NCEPDEV/stmp2/Minsuk.Ji/FV3_OPNREQ_TEST/opnReqTest_19689/cpld_bmark_p7_dcp
-Checking test dcp cpld_bmark_p7 results ....
- Comparing sfcf006.nc .........OK
- Comparing atmf006.nc .........OK
- Comparing 20130401.060000.out_grd.gwes_30m .........OK
- Comparing 20130401.060000.out_pnt.points .........OK
+baseline dir = /scratch1/NCEPDEV/stmp4/Denise.Worthen/FV3_OPNREQ_TEST/OPNREQ_TEST/cpld_control_p8_std_base
+working dir  = /scratch1/NCEPDEV/stmp2/Denise.Worthen/FV3_OPNREQ_TEST/opnReqTest_14011/cpld_control_p8_dcp
+Checking test dcp cpld_control_p8 results ....
+ Comparing sfcf024.tile1.nc .........OK
+ Comparing sfcf024.tile2.nc .........OK
+ Comparing sfcf024.tile3.nc .........OK
+ Comparing sfcf024.tile4.nc .........OK
+ Comparing sfcf024.tile5.nc .........OK
+ Comparing sfcf024.tile6.nc .........OK
+ Comparing atmf024.tile1.nc .........OK
+ Comparing atmf024.tile2.nc .........OK
+ Comparing atmf024.tile3.nc .........OK
+ Comparing atmf024.tile4.nc .........OK
+ Comparing atmf024.tile5.nc .........OK
+ Comparing atmf024.tile6.nc .........OK
  Comparing RESTART/coupler.res .........OK
  Comparing RESTART/fv_core.res.nc .........OK
  Comparing RESTART/fv_core.res.tile1.nc .........OK
@@ -43,25 +51,34 @@ Checking test dcp cpld_bmark_p7 results ....
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
  Comparing RESTART/MOM.res.nc .........OK
- Comparing RESTART/MOM.res_1.nc .........OK
- Comparing RESTART/MOM.res_2.nc .........OK
- Comparing RESTART/MOM.res_3.nc .........OK
- Comparing RESTART/iced.2013-04-01-21600.nc .........OK
- Comparing RESTART/ufs.cpld.cpl.r.2013-04-01-21600.nc .........OK
+ Comparing RESTART/iced.2021-03-23-21600.nc .........OK
+ Comparing RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc .........OK
+ Comparing 20210323.060000.out_grd.glo_1deg .........OK
+ Comparing 20210323.060000.out_pnt.points .........OK
+ Comparing 20210323.060000.restart.glo_1deg .........OK
 
-  0: The total amount of wall time                        = 1073.218179
+  0: The total amount of wall time                        = 222.764538
+  0: The maximum resident set size (KB)                   = 620636
 
-Test dcp cpld_bmark_p7 PASS
+Test dcp cpld_control_p8 PASS
 
 
-baseline dir = /scratch1/NCEPDEV/stmp4/Minsuk.Ji/FV3_OPNREQ_TEST/OPNREQ_TEST/cpld_bmark_p7_std_base
-working dir  = /scratch1/NCEPDEV/stmp2/Minsuk.Ji/FV3_OPNREQ_TEST/opnReqTest_19689/cpld_bmark_p7_std_base
-Checking test std_base cpld_bmark_p7 results ....
-Moving baseline std_base cpld_bmark_p7 files ....
- Moving sfcf006.nc .........OK
- Moving atmf006.nc .........OK
- Moving 20130401.060000.out_grd.gwes_30m .........OK
- Moving 20130401.060000.out_pnt.points .........OK
+baseline dir = /scratch1/NCEPDEV/stmp4/Denise.Worthen/FV3_OPNREQ_TEST/OPNREQ_TEST/cpld_control_p8_std_base
+working dir  = /scratch1/NCEPDEV/stmp2/Denise.Worthen/FV3_OPNREQ_TEST/opnReqTest_14011/cpld_control_p8_std_base
+Checking test std_base cpld_control_p8 results ....
+Moving baseline std_base cpld_control_p8 files ....
+ Moving sfcf024.tile1.nc .........OK
+ Moving sfcf024.tile2.nc .........OK
+ Moving sfcf024.tile3.nc .........OK
+ Moving sfcf024.tile4.nc .........OK
+ Moving sfcf024.tile5.nc .........OK
+ Moving sfcf024.tile6.nc .........OK
+ Moving atmf024.tile1.nc .........OK
+ Moving atmf024.tile2.nc .........OK
+ Moving atmf024.tile3.nc .........OK
+ Moving atmf024.tile4.nc .........OK
+ Moving atmf024.tile5.nc .........OK
+ Moving atmf024.tile6.nc .........OK
  Moving RESTART/coupler.res .........OK
  Moving RESTART/fv_core.res.nc .........OK
  Moving RESTART/fv_core.res.tile1.nc .........OK
@@ -95,24 +112,33 @@ Moving baseline std_base cpld_bmark_p7 files ....
  Moving RESTART/sfc_data.tile5.nc .........OK
  Moving RESTART/sfc_data.tile6.nc .........OK
  Moving RESTART/MOM.res.nc .........OK
- Moving RESTART/MOM.res_1.nc .........OK
- Moving RESTART/MOM.res_2.nc .........OK
- Moving RESTART/MOM.res_3.nc .........OK
- Moving RESTART/iced.2013-04-01-21600.nc .........OK
- Moving RESTART/ufs.cpld.cpl.r.2013-04-01-21600.nc .........OK
+ Moving RESTART/iced.2021-03-23-21600.nc .........OK
+ Moving RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc .........OK
+ Moving 20210323.060000.out_grd.glo_1deg .........OK
+ Moving 20210323.060000.out_pnt.points .........OK
+ Moving 20210323.060000.restart.glo_1deg .........OK
 
-  0: The total amount of wall time                        = 1072.613249
+  0: The total amount of wall time                        = 206.284805
+  0: The maximum resident set size (KB)                   = 629128
 
-Test std_base cpld_bmark_p7 PASS
+Test std_base cpld_control_p8 PASS
 
 
-baseline dir = /scratch1/NCEPDEV/stmp4/Minsuk.Ji/FV3_OPNREQ_TEST/OPNREQ_TEST/cpld_bmark_p7_std_base
-working dir  = /scratch1/NCEPDEV/stmp2/Minsuk.Ji/FV3_OPNREQ_TEST/opnReqTest_19689/cpld_bmark_p7_thr
-Checking test thr cpld_bmark_p7 results ....
- Comparing sfcf006.nc .........OK
- Comparing atmf006.nc .........OK
- Comparing 20130401.060000.out_grd.gwes_30m .........OK
- Comparing 20130401.060000.out_pnt.points .........OK
+baseline dir = /scratch1/NCEPDEV/stmp4/Denise.Worthen/FV3_OPNREQ_TEST/OPNREQ_TEST/cpld_control_p8_std_base
+working dir  = /scratch1/NCEPDEV/stmp2/Denise.Worthen/FV3_OPNREQ_TEST/opnReqTest_14011/cpld_control_p8_thr
+Checking test thr cpld_control_p8 results ....
+ Comparing sfcf024.tile1.nc .........OK
+ Comparing sfcf024.tile2.nc .........OK
+ Comparing sfcf024.tile3.nc .........OK
+ Comparing sfcf024.tile4.nc .........OK
+ Comparing sfcf024.tile5.nc .........OK
+ Comparing sfcf024.tile6.nc .........OK
+ Comparing atmf024.tile1.nc .........OK
+ Comparing atmf024.tile2.nc .........OK
+ Comparing atmf024.tile3.nc .........OK
+ Comparing atmf024.tile4.nc .........OK
+ Comparing atmf024.tile5.nc .........OK
+ Comparing atmf024.tile6.nc .........OK
  Comparing RESTART/coupler.res .........OK
  Comparing RESTART/fv_core.res.nc .........OK
  Comparing RESTART/fv_core.res.tile1.nc .........OK
@@ -146,16 +172,17 @@ Checking test thr cpld_bmark_p7 results ....
  Comparing RESTART/sfc_data.tile5.nc .........OK
  Comparing RESTART/sfc_data.tile6.nc .........OK
  Comparing RESTART/MOM.res.nc .........OK
- Comparing RESTART/MOM.res_1.nc .........OK
- Comparing RESTART/MOM.res_2.nc .........OK
- Comparing RESTART/MOM.res_3.nc .........OK
- Comparing RESTART/iced.2013-04-01-21600.nc .........OK
- Comparing RESTART/ufs.cpld.cpl.r.2013-04-01-21600.nc .........OK
+ Comparing RESTART/iced.2021-03-23-21600.nc .........OK
+ Comparing RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc .........OK
+ Comparing 20210323.060000.out_grd.glo_1deg .........OK
+ Comparing 20210323.060000.out_pnt.points .........OK
+ Comparing 20210323.060000.restart.glo_1deg .........OK
 
-  0: The total amount of wall time                        = 866.169961
+  0: The total amount of wall time                        = 239.846368
+  0: The maximum resident set size (KB)                   = 686584
 
-Test thr cpld_bmark_p7 PASS
+Test thr cpld_control_p8 PASS
 
 OPERATION REQUIREMENT TEST WAS SUCCESSFUL
-Fri Dec 24 15:59:28 UTC 2021
-Elapsed time: 00h:55m:27s. Have a nice day!
+Fri Jan  7 15:58:06 UTC 2022
+Elapsed time: 00h:24m:51s. Have a nice day!
