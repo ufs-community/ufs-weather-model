@@ -1,0 +1,56 @@
+#######################################################################################
+#
+#  Regional control restart test with stochastically perturbed parameterizations (SPP)
+#
+#######################################################################################
+
+export TEST_DESCR="Compare regional restart control SPP results with previous trunk version"
+
+export CNTL_DIR=control_spp_restart
+
+export LIST_FILES="dynf024.nc \
+                   phyf024.nc \
+                   PRSLEV.GrbF24 \
+                   NATLEV.GrbF24"
+
+export_fv3
+
+export FV3_RUN=regional_run.IN
+
+export OZ_PHYS_OLD=.false.
+export OZ_PHYS_NEW=.true.
+export H2O_PHYS=.true.
+export HYBEDMF=.false.
+export WRITE_DOPOST=.true.
+export POSTAPP='lam'
+
+export CCPP_SUITE=FV3_HRRR
+export INPUT_NML=regional.nml.IN
+export MODEL_CONFIGURE=model_configure_regional.IN
+export DIAG_TABLE=diag_table_lam
+export FIELD_TABLE=field_table_regional
+
+export WARM_START=.true.
+export NGGPS_IC=.false.
+export EXTERNAL_IC=.false.
+export MAKE_NH=.false.
+export MOUNTAIN=.true.
+export NA_INIT=0
+
+export TASKS=68
+export INPES=10
+export JNPES=6
+export OUTPUT_FH="15 18 21 24"
+
+export FHROT=12
+            
+export DO_SPP=.true.
+export N_VAR_SPP=5
+export SPP_VAR_LIST="'pbl','sfc','mp','rad','gwd'"
+export SPP_PRT_LIST='0.2,0.2,0.75,0.2,0.2'
+export SPP_LSCALE='150000.0,150000.0,150000.0,150000.0,150000.0'
+export SPP_TAU='21600.0,21600.0,21600.0,21600.0,21600.0'
+export SIGTOP1='0.1,0.1,0.1,0.1,0.1'
+export SIGTOP2='0.025,0.025,0.025,0.025,0.025'
+export SPP_STDDEV_CUTOFF='1.5,1.5,1.5,1.5,1.5'
+export ISEED_SPP='4,4,4,4,4'  
