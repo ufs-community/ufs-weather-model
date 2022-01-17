@@ -1,10 +1,10 @@
 #
-#  cpld_control C96 P7 test
+#  cpld_mpi P8 test
 #
 
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C96MX100"
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system - C96MX100 - change mpi task test"
 
-export CNTL_DIR="cpld_control_c96_p7"
+export CNTL_DIR="cpld_control_p8"
 
 export LIST_FILES="sfcf024.tile1.nc \
                    sfcf024.tile2.nc \
@@ -52,9 +52,10 @@ export LIST_FILES="sfcf024.tile1.nc \
                    RESTART/sfc_data.tile6.nc \
                    RESTART/MOM.res.nc \
                    RESTART/iced.2021-03-23-21600.nc \
-                   RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc"
-
-#TODO: add comparison of CA restart files?
+                   RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc \
+                   20210323.060000.out_grd.glo_1deg \
+                   20210323.060000.out_pnt.points \
+                   20210323.060000.restart.glo_1deg"
 
 export_fv3
 export_cpl
@@ -62,28 +63,24 @@ export_cpl
 export RESTART_N=12
 export RESTART_INTERVAL="${RESTART_N} -1"
 
-export TASKS=$TASKS_cpl_c96
-export TPN=$TPN_cpl_c96
-export INPES=$INPES_cpl_c96
-export JNPES=$JNPES_cpl_c96
-export THRD=$THRD_cpl_c96
-export WRTTASK_PER_GROUP=$WPG_cpl_c96
+export TASKS=$TASKS_cpl_mpi
+export TPN=$TPN_cpl_mpi
+export INPES=$INPES_cpl_mpi
+export JNPES=$JNPES_cpl_mpi
+export THRD=$THRD_cpl_mpi
+export WRTTASK_PER_GROUP=$WPG_cpl_mpi
 
-export NPROC_ICE=$NPROC_ICE_cpl_c96
+export med_petlist_bounds=$MPB_cpl_mpi
+export atm_petlist_bounds=$APB_cpl_mpi
+export ocn_petlist_bounds=$OPB_cpl_mpi
+export ice_petlist_bounds=$IPB_cpl_mpi
+export wav_petlist_bounds=$WPB_cpl_mpi
+
+export NPROC_ICE=$NPROC_ICE_cpl_mpi
 export np2=`expr $NPROC_ICE / 2`
 export BLCKX=`expr $NX_GLB / $np2`
 export BLCKY=`expr $NY_GLB / 2`
 
-export med_petlist_bounds=$MPB_cpl_c96
-export atm_petlist_bounds=$APB_cpl_c96
-export ocn_petlist_bounds=$OPB_cpl_c96
-export ice_petlist_bounds=$IPB_cpl_c96
-
-export CPLWAV=.false.
-export CPLWAV2ATM=.false.
-export MOM6_USE_WAVES=False
 export eps_imesh=2.5e-1
-
-export NEMS_CONFIGURE=nems.configure.cpld.IN
 
 export FV3_RUN=cpld_control_run.IN
