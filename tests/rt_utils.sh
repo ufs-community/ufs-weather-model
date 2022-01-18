@@ -154,7 +154,7 @@ submit_and_wait() {
         echo "Slurm unknown status ${status}. Check sacct ..."
         sacct -n -j ${slurm_id} --format=JobID,state%20,Jobname%20
         status_label=$( sacct -n -j ${slurm_id} --format=JobID,state%20,Jobname%20 | grep "^${slurm_id}" | grep ${JBNME} | awk '{print $2}' )
-        if [[ $status_label = 'FAILED' ]] || [[ $status_label = 'TIMEOUT' ]]; then
+        if [[ $status_label = 'FAILED' ]] || [[ $status_label = 'TIMEOUT' ]] || [[ $status_label = 'CANCELLED' ]] ; then
             test_status='FAIL'
         fi
       fi
@@ -178,7 +178,7 @@ submit_and_wait() {
         test_status='DONE'
         exit_status=$( bjobs ${bsub_id} 2>/dev/null | grep ${bsub_id} | awk '{print $3}' ); status=${status:--}
         if [[ $exit_status = 'EXIT' ]];  then
-        status_label='failed'
+          status_label='failed'
           test_status='FAIL'
         fi
       fi
@@ -202,12 +202,13 @@ submit_and_wait() {
 
   if [[ $test_status = 'FAIL' ]]; then
     if [[ ${OPNREQ_TEST} == false ]]; then
-      echo "${TEST_NAME} ${TEST_NR} failed" >> $PATHRT/fail_test_${TEST_NR}
       echo "Test ${TEST_NR} ${TEST_NAME} FAIL" >> ${REGRESSIONTEST_LOG}
       echo;echo;echo                           >> ${REGRESSIONTEST_LOG}
       echo "Test ${TEST_NR} ${TEST_NAME} FAIL"
     else
-      echo ${TEST_NR} $TEST_NAME >> $PATHRT/fail_opnreq_test
+      echo "Test ${TEST_NAME} ${TEST_NR} FAIL" >> ${REGRESSIONTEST_LOG}
+      echo;echo;echo                           >> ${REGRESSIONTEST_LOG}
+      echo "Test ${TEST_NAME} ${TEST_NR} FAIL"
     fi
 
     if [[ $ROCOTO == true || $ECFLOW == true ]]; then
@@ -329,6 +330,7 @@ check_results() {
 
   echo                                               >> ${REGRESSIONTEST_LOG}
   grep "The total amount of wall time" ${RUNDIR}/out >> ${REGRESSIONTEST_LOG}
+  grep "The maximum resident set size" ${RUNDIR}/out >> ${REGRESSIONTEST_LOG}
   echo                                               >> ${REGRESSIONTEST_LOG}
 
   TRIES=''
@@ -346,7 +348,7 @@ check_results() {
     if [[ ${OPNREQ_TEST} == false ]]; then
       echo "${TEST_NAME} ${TEST_NR} failed in check_result" >> $PATHRT/fail_test_${TEST_NR}
     else
-      echo ${TEST_NR} $TEST_NAME >> $PATHRT/fail_opnreq_test
+      echo "${TEST_NAME} ${TEST_NR} failed in check_result" >> $PATHRT/fail_opnreq_test_${TEST_NR}
     fi
 
     if [[ $ROCOTO = true || $ECFLOW == true ]]; then
@@ -383,8 +385,10 @@ rocoto_create_compile_task() {
 
   # serialize WW3 builds. FIXME
   DEP_STRING=""
-  if [[ ${MAKE_OPT^^} =~ "WW3=Y" && ${COMPILE_PREV_WW3_NR} != '' ]]; then
-    DEP_STRING="<dependency><taskdep task=\"compile_${COMPILE_PREV_WW3_NR}\"/></dependency>"
+  if [[ ${COMPILE_PREV_WW3_NR} != '' ]]; then
+      if [[ ${MAKE_OPT^^} =~ "-DAPP=ATMW" ]] || [[ ${MAKE_OPT^^} =~ "-DAPP=S2SW" ]] || [[ ${MAKE_OPT^^} =~ "-DAPP=HAFSW" ]] || [[ ${MAKE_OPT^^} =~ "-DAPP=HAFS-ALL" ]] ; then
+          DEP_STRING="<dependency><taskdep task=\"compile_${COMPILE_PREV_WW3_NR}\"/></dependency>"
+      fi
   fi
 
   NATIVE=""
@@ -399,7 +403,7 @@ rocoto_create_compile_task() {
     BUILD_CORES=24
     NATIVE="<exclusive></exclusive> <envar><name>PATHTR</name><value>&PATHTR;</value></envar>"
   fi
-  if [[ ${MACHINE_ID} == jet ]]; then
+  if [[ ${MACHINE_ID} == jet.* ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
   if [[ ${MACHINE_ID} == orion.* ]]; then
@@ -419,8 +423,7 @@ rocoto_create_compile_task() {
     <partition>${PARTITION}</partition>
     <cores>${BUILD_CORES}</cores>
     <walltime>${BUILD_WALLTIME}</walltime>
-    <stdout>&RUNDIR_ROOT;/compile_${COMPILE_NR}/out</stdout>
-    <stderr>&RUNDIR_ROOT;/compile_${COMPILE_NR}/err</stderr>
+    <join>&RUNDIR_ROOT;/compile_${COMPILE_NR}.log</join>
     ${NATIVE}
   </task>
 EOF
@@ -457,8 +460,8 @@ rocoto_create_run_task() {
       <partition>${PARTITION}</partition>
       <nodes>${NODES}:ppn=${TPN}</nodes>
       <walltime>00:${WLCLK}:00</walltime>
-      <stdout>&RUNDIR_ROOT;/${TEST_NAME}${RT_SUFFIX}/out</stdout>
-      <stderr>&RUNDIR_ROOT;/${TEST_NAME}${RT_SUFFIX}/err</stderr>
+      <stdout>&RUNDIR_ROOT;/${TEST_NAME}${RT_SUFFIX}.out</stdout>
+      <stderr>&RUNDIR_ROOT;/${TEST_NAME}${RT_SUFFIX}.err</stderr>
       ${NATIVE}
     </task>
 EOF
@@ -551,9 +554,9 @@ ecflow_run() {
     echo "ecflow_server is NOT running on ${ECF_HOST}:${ECF_PORT}"
     if [[ ${MACHINE_ID} == wcoss2 ]]; then
       # Annoying "Has NCO assigned port $ECF_PORT for use by this account? (yes/no) ".
-      echo yes | ${ECFLOW_START} -p ${ECF_PORT}
+      echo yes | ${ECFLOW_START} -p ${ECF_PORT} -d ${RUNDIR_ROOT}/ecflow_server
     else
-      ${ECFLOW_START} -p ${ECF_PORT}
+      ${ECFLOW_START} -p ${ECF_PORT} -d ${RUNDIR_ROOT}/ecflow_server
     fi
   else
     echo "ecflow_server is already running on ${ECF_HOST}:${ECF_PORT}"
