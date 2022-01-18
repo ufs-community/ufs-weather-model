@@ -1,5 +1,5 @@
 #
-#  cpld_control P7 test
+#  cpld_control P7 test with RRTMGP
 #
 
 export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system - C96MX100 + RRTMGP"
@@ -64,6 +64,10 @@ export RESTART_N=12
 export RESTART_INTERVAL="${RESTART_N} -1"
 
 export eps_imesh=2.5e-1
+#P7
+export USE_CICE_ALB=.false.
+export MIN_SEAICE=1.0e-11
+export IOPT_SFC=1
 
 export FV3_RUN=cpld_control_run.IN
 export DO_RRTMGP=.true.
