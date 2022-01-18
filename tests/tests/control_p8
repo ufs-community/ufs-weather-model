@@ -1,20 +1,24 @@
 ###############################################################################
 #
-#  Global control domain decomp test with differrent PEs, C96L127, P7 configuration
+#  Global control test GFSv16 atmosphere only at C96L127, P8 configuration
 #
 ###############################################################################
 
-export TEST_DESCR="Compare global decomp results with control_p7 test"
+export TEST_DESCR="Compare global control results with previous trunk version"
 
-export CNTL_DIR=control_p7
+export CNTL_DIR=control_p8
 
 export LIST_FILES="sfcf000.nc \
+                   sfcf021.nc \
                    sfcf024.nc \
                    atmf000.nc \
+                   atmf021.nc \
                    atmf024.nc \
                    GFSFLX.GrbF00 \
+                   GFSFLX.GrbF21 \
                    GFSFLX.GrbF24 \
                    GFSPRS.GrbF00 \
+                   GFSPRS.GrbF21 \
                    GFSPRS.GrbF24 \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
@@ -57,15 +61,13 @@ export SYEAR=2021
 export SMONTH=03
 export SDAY=22
 export SHOUR=06
-export RESTART_INTERVAL=0
+export RESTART_INTERVAL="12 -1"
 export OUTPUT_GRID='gaussian_grid'
 export NSTF_NAME='2,0,0,0,0'
 export WRITE_DOPOST=.true.
+export OUTPUT_FH='0 21 24'
 
-export INPES=6
-export JNPES=4
-
-#P7 default
+# P7 default
 export IALB=2
 export IEMS=2
 export LSM=2
@@ -74,13 +76,16 @@ export IOPT_CRS=2
 export IOPT_RAD=3
 export IOPT_ALB=1
 export IOPT_STC=3
+# P8
+export IOPT_SFC=3
 
 # FV3 P7 settings
 export D2_BG_K1=0.20
 export D2_BG_K2=0.04
 export DZ_MIN=2
 export PSM_BC=1
-export DDDMP=0.2
+# P8
+export DDDMP=0.1
 
 # P7 Merra2 Aerosols & NSST
 export USE_MERRA2=.true.
@@ -102,6 +107,7 @@ export DO_GSL_DRAG_TOFD=.true.
 export DO_UGWP_V1_OROG_ONLY=.false.
 export DO_UGWP_V0_NST_ONLY=.false.
 export LDIAG_UGWP=.false.
+export CDMBWD='1.0,2.2,1.0,1.0'
 
 # P7 CA
 export DO_CA=.true.
@@ -135,13 +141,14 @@ export LANDICE=".false."
 export FSICL=99999
 
 #required for NML.IN sharing
-export USE_CICE_ALB=.false.
 export MIN_SEAICE=0.15
 export FRAC_GRID=.true.
 export MOM6_RESTART_SETTING=n
+# P8 (not used for standalone)
+export USE_CICE_ALB=.false.
 
 export FV3_RUN=control_run.IN
-export CCPP_SUITE=FV3_GFS_v16_nsstNoahmpUGWPv1
+export CCPP_SUITE=FV3_GFS_v16_p8
 export DIAG_TABLE=diag_table_gfsv16_merra2
 # use same namelist for standalone,coupled P7
 export INPUT_NML=cpld_control.nml.IN

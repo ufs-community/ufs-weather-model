@@ -1,10 +1,10 @@
 #
-#  cpld_2threads P7 test
+#  cpld_decomp P8 test
 #
 
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system - C96MX100 - 2 threads"
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system - C96MX100 - decomp test"
 
-export CNTL_DIR="cpld_control_p7"
+export CNTL_DIR="cpld_control_p8"
 
 export LIST_FILES="sfcf024.tile1.nc \
                    sfcf024.tile2.nc \
@@ -63,20 +63,20 @@ export_cpl
 export RESTART_N=12
 export RESTART_INTERVAL="${RESTART_N} -1"
 
-export TASKS=$TASKS_cpl_thrd
-export TPN=$TPN_cpl_thrd
-export INPES=$INPES_cpl_thrd
-export JNPES=$JNPES_cpl_thrd
-export THRD=$THRD_cpl_thrd
-export WRTTASK_PER_GROUP=$WPG_cpl_thrd
+export TASKS=$TASKS_cpl_dcmp
+export TPN=$TPN_cpl_dcmp
+export INPES=$INPES_cpl_dcmp
+export JNPES=$JNPES_cpl_dcmp
+export THRD=$THRD_cpl_dcmp
+export WRTTASK_PER_GROUP=$WPG_cpl_dcmp
 
-export med_petlist_bounds=$MPB_cpl_thrd
-export atm_petlist_bounds=$APB_cpl_thrd
-export ocn_petlist_bounds=$OPB_cpl_thrd
-export ice_petlist_bounds=$IPB_cpl_thrd
-export wav_petlist_bounds=$WPB_cpl_thrd
+export med_petlist_bounds=$MPB_cpl_dcmp
+export atm_petlist_bounds=$APB_cpl_dcmp
+export ocn_petlist_bounds=$OPB_cpl_dcmp
+export ice_petlist_bounds=$IPB_cpl_dcmp
+export wav_petlist_bounds=$WPB_cpl_dcmp
 
-export NPROC_ICE=$NPROC_ICE_cpl_thrd
+export NPROC_ICE=$NPROC_ICE_cpl_dcmp
 export np2=`expr $NPROC_ICE / 2`
 export BLCKX=`expr $NX_GLB / $np2`
 export BLCKY=`expr $NY_GLB / 2`
