@@ -157,27 +157,9 @@ endif()
 ### Wave components [WW3]
 ###############################################################################
 if(WW3)
-  if(CMAKE_Platform)
-    if(${CMAKE_Platform} MATCHES "linux*" OR ${CMAKE_Platform} MATCHES "macosx*")
-      if (CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
-        set(WW3_COMP "gnu")
-      elseif (CMAKE_Fortran_COMPILER_ID MATCHES "Intel")
-        set(WW3_COMP "intel")
-      endif()
-    else()
-      set(WW3_COMP ${CMAKE_Platform})
-    endif()
-  endif()
-  message("Build WW3:")
-  message("   run: ${CMAKE_BUILD_TOOL} WW3_PARCOMPN=4 WW3_COMP=${WW3_COMP} ww3_nemslibonly")
-  message("   in:  ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/esmf")
-  message("")
-
-  add_custom_target(ww3_nems
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/esmf
-    COMMAND ${CMAKE_BUILD_TOOL} WW3_PARCOMPN=4 WW3_COMP=${WW3_COMP} ww3_nemslibonly > ${CMAKE_CURRENT_BINARY_DIR}/ww3_make.log 2>&1)
-
-  set(WW3_LIBS ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/obj/libww3_multi_esmf.a)
+  set(SWITCH "multi_esmf")
+  set(MULTI_ESMF ON)
+  add_subdirectory(WW3)
 endif()
 
 ###############################################################################
@@ -233,10 +215,8 @@ if(UFS_GOCART)
 endif()
 
 if(WW3)
-  add_dependencies(ufs ww3_nems)
   list(APPEND _ufs_defs_private FRONT_WW3=WMESMFMD)
-  target_include_directories(ufs PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/mod)
-  list(APPEND _ufs_libs_public ${WW3_LIBS})
+  target_link_libraries(ufs PUBLIC WW3::WW3)
 endif()
 
 list(APPEND _ufs_libs_public esmf)
