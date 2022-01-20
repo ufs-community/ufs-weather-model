@@ -9,7 +9,7 @@ die() { echo "$@" >&2; exit 1; }
 usage() {
   set +x
   echo
-  echo "Usage: $0 -c | -e | -h | -k | -w  | -l <file> | -m | -n <name> | -r "
+  echo "Usage: $0 -c | -e | -h | -k | -w | -d | -l <file> | -m | -n <name> | -r "
   echo
   echo "  -c  create new baseline results"
   echo "  -e  use ecFlow workflow manager"
@@ -64,7 +64,7 @@ rt_single() {
 }
 
 rt_35d() {
-if [[ $TEST_NAME =~ 'cpld_bmark_p7_35d' ]] ; then
+if [[ $TEST_NAME =~ '35d' ]] ; then
   local sy=$(echo ${DATE_35D} | cut -c 1-4)
   local sm=$(echo ${DATE_35D} | cut -c 5-6)
   local new_test_name="tests/${TEST_NAME}_${DATE_35D}"
@@ -435,6 +435,7 @@ while getopts ":cl:mn:dwkreh" opt; do
       ;;
     d)
       export delete_rundir=true
+      awk -F "|" '{print $5}' rt.conf | grep "\S" > keep_tests.tmp
       ;;
     w)
       export skip_check_results=true
@@ -463,8 +464,6 @@ while getopts ":cl:mn:dwkreh" opt; do
       ;;
   esac
 done
-
-awk -F "|" '{print $5}' rt.conf | grep "\S" > keep_tests.tmp
 
 if [[ $SINGLE_NAME != '' ]]; then
   rt_single
