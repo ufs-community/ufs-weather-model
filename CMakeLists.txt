@@ -157,8 +157,9 @@ endif()
 ### Wave components [WW3]
 ###############################################################################
 if(WW3)
-  set(SWITCH "multi_esmf" CACHE STRING "" FORCE)
-  set(MULTI_ESMF ON CACHE BOOL "" FORCE)
+  # Set options for WW3 build
+  set(SWITCH "multi_esmf" CACHE STRING "Default to switch_multi_esmf")
+  set(MULTI_ESMF ON CACHE BOOL "Enable ESMF for WW3")
   add_subdirectory(WW3)
 endif()
 
