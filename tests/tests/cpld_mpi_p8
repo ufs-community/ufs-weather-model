@@ -1,24 +1,12 @@
 #
-#  cpld_control P7 test
+#  cpld_mpi P8 test
 #
 
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system - C96MX100"
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system - C96MX100 - change mpi task test"
 
-export CNTL_DIR="cpld_control_p7"
+export CNTL_DIR="cpld_control_p8"
 
-export LIST_FILES="sfcf021.tile1.nc \
-                   sfcf021.tile2.nc \
-                   sfcf021.tile3.nc \
-                   sfcf021.tile4.nc \
-                   sfcf021.tile5.nc \
-                   sfcf021.tile6.nc \
-                   atmf021.tile1.nc \
-                   atmf021.tile2.nc \
-                   atmf021.tile3.nc \
-                   atmf021.tile4.nc \
-                   atmf021.tile5.nc \
-                   atmf021.tile6.nc \
-                   sfcf024.tile1.nc \
+export LIST_FILES="sfcf024.tile1.nc \
                    sfcf024.tile2.nc \
                    sfcf024.tile3.nc \
                    sfcf024.tile4.nc \
@@ -74,7 +62,24 @@ export_cpl
 
 export RESTART_N=12
 export RESTART_INTERVAL="${RESTART_N} -1"
-export OUTPUT_FH='0 21 24'
+
+export TASKS=$TASKS_cpl_mpi
+export TPN=$TPN_cpl_mpi
+export INPES=$INPES_cpl_mpi
+export JNPES=$JNPES_cpl_mpi
+export THRD=$THRD_cpl_mpi
+export WRTTASK_PER_GROUP=$WPG_cpl_mpi
+
+export med_petlist_bounds=$MPB_cpl_mpi
+export atm_petlist_bounds=$APB_cpl_mpi
+export ocn_petlist_bounds=$OPB_cpl_mpi
+export ice_petlist_bounds=$IPB_cpl_mpi
+export wav_petlist_bounds=$WPB_cpl_mpi
+
+export NPROC_ICE=$NPROC_ICE_cpl_mpi
+export np2=`expr $NPROC_ICE / 2`
+export BLCKX=`expr $NX_GLB / $np2`
+export BLCKY=`expr $NY_GLB / 2`
 
 export eps_imesh=2.5e-1
 

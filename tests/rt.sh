@@ -9,17 +9,18 @@ die() { echo "$@" >&2; exit 1; }
 usage() {
   set +x
   echo
-  echo "Usage: $0 -c | -e | -h | -k | -w  | -l <file> | -m | -n <name> | -r "
+  echo "Usage: $0 -c | -e | -h | -k | -w | -d | -l <file> | -m | -n <name> | -r "
   echo
   echo "  -c  create new baseline results"
   echo "  -e  use ecFlow workflow manager"
   echo "  -h  display this help"
-  echo "  -k  keep run directory"
+  echo "  -k  keep run directory after rt.sh is completed"
   echo "  -l  runs test specified in <file>"
   echo "  -m  compare against new baseline results"
   echo "  -n  run single test <name>"
   echo "  -r  use Rocoto workflow manager"
   echo "  -w  for weekly_test, skip comparing baseline results"
+  echo "  -d  delete run direcotries that are not used by other tests"
   echo
   set -x
   exit 1
@@ -63,7 +64,7 @@ rt_single() {
 }
 
 rt_35d() {
-if [[ $TEST_NAME =~ 'cpld_bmark_p7_35d' ]] ; then
+if [[ $TEST_NAME =~ '35d' ]] ; then
   local sy=$(echo ${DATE_35D} | cut -c 1-4)
   local sm=$(echo ${DATE_35D} | cut -c 5-6)
   local new_test_name="tests/${TEST_NAME}_${DATE_35D}"
@@ -411,10 +412,11 @@ KEEP_RUNDIR=false
 SINGLE_NAME=''
 TEST_35D=false
 export skip_check_results=false
+export delete_rundir=false
 
 TESTS_FILE='rt.conf'
 
-while getopts ":cl:mn:wkreh" opt; do
+while getopts ":cl:mn:dwkreh" opt; do
   case $opt in
     c)
       CREATE_BASELINE=true
@@ -430,6 +432,10 @@ while getopts ":cl:mn:wkreh" opt; do
       SINGLE_NAME=$OPTARG
       TESTS_FILE='rt.conf.single'
       rm -f $TESTS_FILE
+      ;;
+    d)
+      export delete_rundir=true
+      awk -F "|" '{print $5}' rt.conf | grep "\S" > keep_tests.tmp
       ;;
     w)
       export skip_check_results=true
@@ -467,7 +473,7 @@ if [[ $TESTS_FILE =~ '35d' ]] || [[ $TESTS_FILE =~ 'weekly' ]]; then
   TEST_35D=true
 fi
 
-BL_DATE=20220107
+BL_DATE=20220120
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]] || [[ $MACHINE_ID = s4.* ]]; then
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
 else
@@ -800,6 +806,7 @@ EOF
       export LOG_DIR=${LOG_DIR}
       export DEP_RUN=${DEP_RUN}
       export skip_check_results=${skip_check_results}
+      export delete_rundir=${delete_rundir}
 EOF
 
       if [[ $ROCOTO == true ]]; then
@@ -864,7 +871,7 @@ else
    echo ; echo REGRESSION TEST WAS SUCCESSFUL
   (echo ; echo REGRESSION TEST WAS SUCCESSFUL) >> ${REGRESSIONTEST_LOG}
 
-  rm -f fv3_*.x fv3_*.exe modules.fv3_*
+  rm -f fv3_*.x fv3_*.exe modules.fv3_* keep_tests.tmp
   [[ ${KEEP_RUNDIR} == false ]] && rm -rf ${RUNDIR_ROOT}
   [[ ${ROCOTO} == true ]] && rm -f ${ROCOTO_XML} ${ROCOTO_DB} *_lock.db
   [[ ${TEST_35D} == true ]] && rm -f tests/cpld_bmark*_20*
