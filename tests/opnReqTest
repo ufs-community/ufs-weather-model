@@ -243,6 +243,7 @@ run_opnReqTests() {
 			export REGRESSIONTEST_LOG=${REGRESSIONTEST_LOG}
 			export LOG_DIR=${LOG_DIR}
 			export skip_check_results=${skip_check_results}
+			export delete_rundir=${delete_rundir}
 			EOF
 
     if [[ $ECFLOW == true ]]; then
@@ -407,6 +408,7 @@ keep_rundir=false
 skip_compile=false
 skip_run=false
 skip_check_results=false
+delete_rundir=false
 
 # parse command line arguments to fill-in/modify the above default variables
 while getopts :n:c:ekhbdsxz opt; do
