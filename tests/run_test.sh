@@ -266,5 +266,22 @@ fi
 
 echo " $( date +%s )" >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
 
+################################################################################
+# Remove RUN_DIRs if they are no longer needed by other tests
+################################################################################
+if [[ ${delete_rundir} = true ]]; then
+  keep_run_dir=false
+  while  read -r line; do
+    keep_test=$(echo $line| sed -e 's/^ *//' -e 's/ *$//')
+    if [[ $TEST_NAME == ${keep_test} ]]; then
+      keep_run_dir=true
+    fi
+  done < ${PATHRT}/keep_tests.tmp
+
+  if [[ ${keep_run_dir} == false ]]; then
+    rm -rf ${RUNDIR}
+  fi
+fi
+
 elapsed=$SECONDS
 echo "Elapsed time $elapsed seconds. Test ${TEST_NAME}"
