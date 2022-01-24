@@ -46,9 +46,6 @@
 #ifdef FRONT_FV3
       use FRONT_FV3,        only: FV3_SS   => SetServices
 #endif
-#ifdef FRONT_NEMS_DATM
-      use FRONT_NEMS_DATM,  only: DATM_SS  => SetServices
-#endif
 #ifdef FRONT_CDEPS_DATM
       use FRONT_CDEPS_DATM, only: DATM_SS  => SetServices
 #endif
@@ -366,8 +363,8 @@
             found_comp = .true.
           end if
 #endif
-#if defined FRONT_NEMS_DATM || defined FRONT_CDEPS_DATM
-          if (trim(model) == "nems_datm" .or. trim(model) == "datm" ) then
+#if defined FRONT_CDEPS_DATM
+          if (trim(model) == "datm" ) then
             !TODO: Remove bail code and pass info and SetVM to DriverAddComp
             !TODO: once component supports threading.
             if (ompNumThreads > 1) then
