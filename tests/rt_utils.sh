@@ -5,6 +5,10 @@ if [[ "$0" = "${BASH_SOURCE[0]}" ]]; then
   exit 1
 fi
 
+# Note: this file must only contain subroutines, and variables that
+# are not dependent on the caller. Most regression test variables
+# (such as ACCNR) are not set until after rt.sh sources this file.
+
 OPNREQ_TEST=${OPNREQ_TEST:-false}
 
 qsub_id=0
