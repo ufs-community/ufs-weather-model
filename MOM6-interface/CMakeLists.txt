@@ -19,7 +19,7 @@ endif()
 set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} ${MOM6_Extra_FORTRAN_FLAGS}")
 
 # User option to build MOM6 solo executable
-set(MOM6SOLO OFF CACHE BOOL "Build MOM6 solo")
+set(MOM6SOLO ON CACHE BOOL "Build MOM6 solo")
 
 # Too many files to list, so include them via this file
 include("mom6_files.cmake")
