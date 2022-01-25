@@ -1,13 +1,13 @@
 ### MOM6 Fortran compiler flags
 if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
-  set(CMAKE_Fortran_FLAGS "-g -fbacktrace")
+  set(CMAKE_Fortran_FLAGS "-g -fbacktrace -I${CMAKE_CURRENT_BINARY_DIR}/../../../../gsw/module")
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fdefault-real-8 -fdefault-double-8")
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Waliasing -fcray-pointer -fconvert=big-endian -ffree-line-length-none -fno-range-check -fbacktrace")
   set(CMAKE_Fortran_FLAGS_RELEASE "-O2")
   set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -fcheck=bounds -ffpe-trap=invalid,zero,overflow,underflow" )
   set(CMAKE_Fortran_LINK_FLAGS "")
 elseif(CMAKE_Fortran_COMPILER_ID MATCHES "Intel")
-  set(CMAKE_Fortran_FLAGS "-g -traceback")
+  set(CMAKE_Fortran_FLAGS "-g -traceback -I${CMAKE_CURRENT_BINARY_DIR}/../../../../gsw/module")
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -i4 -r8")
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -sox")
   set(CMAKE_Fortran_FLAGS_RELEASE "-O2 -debug minimal -fp-model source")
@@ -47,6 +47,7 @@ target_include_directories(mom6_nuopc_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURR
                                                   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/src/framework>)
 target_link_libraries(mom6_nuopc_obj PRIVATE mom6_obj
                                              fms
+                                             gsw
                                              esmf)
 # OpenMP is disabled in MOM6
 #if(OpenMP_Fortran_FOUND)
@@ -83,6 +84,7 @@ if(MOM6SOLO)
                                          fms
                                          stochastic_physics
                                          esmf
+                                         gsw
                                          NetCDF::NetCDF_Fortran)
   # OpenMP is disabled in MOM6
   #if(OpenMP_Fortran_FOUND)
