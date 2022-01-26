@@ -78,6 +78,10 @@
 #ifdef FRONT_IPE
       use FRONT_IPE,        only: IPE_SS   => SetServices
 #endif
+  ! - Handle build time AQM options:
+#ifdef FRONT_AQM
+      use FRONT_AQM,        only: AQM_SS  => SetServices
+#endif
   ! - Handle build time GOCART options:
 #ifdef FRONT_GOCART
       use FRONT_GOCART,     only: GOCART_SS  => SetServices
