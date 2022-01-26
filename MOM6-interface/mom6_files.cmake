@@ -248,6 +248,10 @@ list(APPEND mom6_nuopc_src_files
   MOM6/config_src/drivers/nuopc_cap/mom_cap_time.F90
   MOM6/config_src/drivers/nuopc_cap/mom_ocean_model_nuopc.F90
   MOM6/config_src/drivers/nuopc_cap/mom_surface_forcing_nuopc.F90
+  MOM6/config_src/drivers/solo_driver/MESO_surface_forcing.F90
+  MOM6/config_src/drivers/solo_driver/MOM_surface_forcing.F90
+  MOM6/config_src/drivers/solo_driver/atmos_ocean_fluxes.F90
+  MOM6/config_src/drivers/solo_driver/user_surface_forcing.F90
 )
 
 list(APPEND mom6_solo_src_files
