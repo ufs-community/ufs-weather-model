@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# Default account "nems"
-export ACCNR=${ACCNR:-nems}
+# Do not set ACCNR here or it will break the per-system defaults in rt.sh.
 
 case $(hostname -f) in
 
@@ -117,5 +116,3 @@ if [ $MACHINE_ID = orion ] || [ $MACHINE_ID = hera ] || [ $MACHINE_ID = cheyenne
    [ $MACHINE_ID = gaea ] || [ $MACHINE_ID = stampede ] || [ $MACHINE_ID = s4 ] || [ $MACHINE_ID = expanse ] ; then
     MACHINE_ID=${MACHINE_ID}.${RT_COMPILER}
 fi
-
-echo "Machine: " $MACHINE_ID "    Account: " $ACCNR

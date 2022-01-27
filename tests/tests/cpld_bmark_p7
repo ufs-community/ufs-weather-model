@@ -94,9 +94,6 @@ export np2=`expr $NPROC_ICE / 2`
 export BLCKX=`expr $NX_GLB / $np2`
 export BLCKY=`expr $NY_GLB / 2`
 
-# resolution dependent setting
-export CDMBWD=${CDMBWD_c384}
-
 # set component and coupling timesteps
 export DT_ATMOS=300
 export DT_CICE=${DT_ATMOS}
@@ -129,6 +126,11 @@ export FNABSC="'C384.maximum_snow_albedo.tileX.nc'"
 
 export MOM6_RIVER_RUNOFF=True
 export MOM6_RESTART_SETTING=r
+
+#P7
+export USE_CICE_ALB=.false.
+export MIN_SEAICE=1.0e-11
+export IOPT_SFC=1
 
 export WW3GRIDLINE="'gwes_30m' 'no' 'CPL:native' 'CPL:native' 'CPL:native' 'no' 'no' 'no' 'no' 'no'  1  1  0.00 1.00  F"
 export WW3RSTDTHR=${FHMAX}
