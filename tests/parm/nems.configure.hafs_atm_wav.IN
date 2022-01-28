@@ -78,16 +78,17 @@ WAV_attributes::
 # Run Sequence #
 runSeq::
 @@[coupling_interval_sec]
-  ATM -> MED :remapMethod=redist
-  MED med_phases_post_atm
-  WAV -> MED :remapMethod=redist
-  MED med_phases_post_wav
   MED med_phases_prep_atm
+  MED med_phases_prep_wav_accum
+  MED med_phases_prep_wav_avg
   MED -> ATM :remapMethod=redist
-  MED med_phases_prep_wav
   MED -> WAV :remapMethod=redist
   ATM
   WAV
+  ATM -> MED :remapMethod=redist
+  WAV -> MED :remapMethod=redist
+  MED med_phases_post_atm
+  MED med_phases_post_wav
 @
 ::
 
