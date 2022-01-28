@@ -16,7 +16,7 @@ cleanup() {
 
 write_fail_test() {
   if [[ ${OPNREQ_TEST} == true ]]; then
-    echo ${TEST_NR} $TEST_NAME >> $PATHRT/fail_opnreq_test
+    echo "${TEST_NAME} ${TEST_NR} failed in run_test" >> $PATHRT/fail_opnreq_test_${TEST_NR}
   else
     echo "${TEST_NAME} ${TEST_NR} failed in run_test" >> $PATHRT/fail_test_${TEST_NR}
   fi
@@ -35,7 +35,12 @@ export TEST_NR=$4
 export COMPILE_NR=$5
 
 cd ${PATHRT}
-rm -f fail_test_${TEST_NR}
+OPNREQ_TEST=${OPNREQ_TEST:-false}
+if [[ ${OPNREQ_TEST} == true ]]; then
+  rm -f fail_opnreq_test_${TEST_NR}
+else
+  rm -f fail_test_${TEST_NR}
+fi
 
 [[ -e ${RUNDIR_ROOT}/run_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
 source default_vars.sh
@@ -53,11 +58,10 @@ export JBNME=$(basename $RUNDIR_ROOT)_${TEST_NR}
 
 echo -n "${TEST_NAME}, $( date +%s )," > ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
 
-OPNREQ_TEST=${OPNREQ_TEST:-false}
 if [[ ${OPNREQ_TEST} == false ]]; then
   REGRESSIONTEST_LOG=${LOG_DIR}/rt_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log
 else
-  REGRESSIONTEST_LOG=${LOG_DIR}/opnReqTest_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log
+  REGRESSIONTEST_LOG=${LOG_DIR}/opnReqTest_${TEST_NAME}${RT_SUFFIX}.log
 fi
 export REGRESSIONTEST_LOG
 
@@ -236,7 +240,10 @@ else
     submit_and_wait job_card
   else
     chmod u+x job_card
-    ./job_card
+    ( ./job_card 2>&1 1>&3 3>&- | tee err ) 3>&1 1>&2 | tee out
+    # The above shell redirection copies stdout to "out" and stderr to "err"
+    # while still sending them to stdout and stderr. It does this without
+    # relying on bash-specific extensions or non-standard OS features.
   fi
 
 fi
@@ -244,8 +251,12 @@ fi
 if [[ $skip_check_results = false ]]; then
   check_results
 else
-  echo "Test ${TEST_NR} ${TEST_NAME} RUN_SUCCESS" >  ${REGRESSIONTEST_LOG}
-  echo;echo;echo                                  >> ${REGRESSIONTEST_LOG}
+  echo                                               >> ${REGRESSIONTEST_LOG}
+  grep "The total amount of wall time" ${RUNDIR}/out >> ${REGRESSIONTEST_LOG}
+  grep "The maximum resident set size" ${RUNDIR}/out >> ${REGRESSIONTEST_LOG}
+  echo                                               >> ${REGRESSIONTEST_LOG}
+  echo "Test ${TEST_NR} ${TEST_NAME} RUN_SUCCESS"    >> ${REGRESSIONTEST_LOG}
+  echo;echo;echo                                     >> ${REGRESSIONTEST_LOG}
 fi
 
 if [[ $SCHEDULER != 'none' ]]; then
@@ -256,6 +267,23 @@ fi
 ################################################################################
 
 echo " $( date +%s )" >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+
+################################################################################
+# Remove RUN_DIRs if they are no longer needed by other tests
+################################################################################
+if [[ ${delete_rundir} = true ]]; then
+  keep_run_dir=false
+  while  read -r line; do
+    keep_test=$(echo $line| sed -e 's/^ *//' -e 's/ *$//')
+    if [[ $TEST_NAME == ${keep_test} ]]; then
+      keep_run_dir=true
+    fi
+  done < ${PATHRT}/keep_tests.tmp
+
+  if [[ ${keep_run_dir} == false ]]; then
+    rm -rf ${RUNDIR}
+  fi
+fi
 
 elapsed=$SECONDS
 echo "Elapsed time $elapsed seconds. Test ${TEST_NAME}"

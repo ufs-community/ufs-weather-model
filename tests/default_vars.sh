@@ -935,6 +935,7 @@ export LNDP_PRT_LIST=-999
 #IAU
 export IAU_INC_FILES="''"
 
+export FH_DFI_RADAR='-2e10'
 
 #Cellular automata
 export DO_CA=.false.
@@ -1059,7 +1060,7 @@ export ATMTILESIZE=`expr $NPX - 1`
 
 # FV3 defaults
 export FRAC_GRID=.true.
-export CCPP_SUITE=FV3_GFS_v16_coupled_nsstNoahmpUGWPv1
+export CCPP_SUITE=FV3_GFS_v16_coupled_p8
 export INPUT_NML=cpld_control.nml.IN
 export FIELD_TABLE=field_table_gfsv16
 export DIAG_TABLE=diag_table_template
@@ -1070,7 +1071,7 @@ export FHROT=0
 export NSOUT=-1
 export OUTPUT_FH='6 -1'
 
-#P7 default
+# P7 default
 export IALB=2
 export IEMS=2
 export LSM=2
@@ -1079,13 +1080,15 @@ export IOPT_CRS=2
 export IOPT_RAD=3
 export IOPT_ALB=1
 export IOPT_STC=3
+# P8
+export IOPT_SFC=3
 
 # FV3 P7 settings
 export D2_BG_K1=0.20
 export D2_BG_K2=0.04
 export DZ_MIN=2
 export PSM_BC=1
-export DDDMP=0.2
+export DDDMP=0.1
 
 # P7 Merra2 Aerosols & NSST
 export USE_MERRA2=.true.
@@ -1107,6 +1110,7 @@ export DO_GSL_DRAG_TOFD=.true.
 export DO_UGWP_V1_OROG_ONLY=.false.
 export DO_UGWP_V0_NST_ONLY=.false.
 export LDIAG_UGWP=.false.
+export CDMBWD='1.0,2.2,1.0,1.0'
 
 # P7 CA
 export DO_CA=.true.
@@ -1137,7 +1141,10 @@ export FNSLPC="'C96.slope_type.tileX.nc'"
 export FNABSC="'C96.maximum_snow_albedo.tileX.nc'"
 export LANDICE=".false."
 export FSICL=99999
-export USE_CICE_ALB=.false.
+
+# P8
+export USE_CICE_ALB=.true.
+export MIN_SEAICE=1.0e-6
 
 # P7 default mushy thermo
 export KTHERM=2
@@ -1148,7 +1155,6 @@ export CPLICE=.true.
 export CPL=.true.
 export CPLWAV=.true.
 export CPLWAV2ATM=.true.
-export MIN_SEAICE=1.0e-11
 
 # for FV3: default values will be changed if doing a warm-warm restart
 export WARM_START=.false.

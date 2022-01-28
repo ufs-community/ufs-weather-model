@@ -18,8 +18,8 @@ usage() {
   echo "  -n  specify <test-name>"
   echo
   echo "  -c  specify <test-case>"
-  echo "      defaults to all test-cases: thr,mpi,dcp,rst,bit,dbg"
-  echo "      comma-separated list of any combination of std,thr,mpi,dcp,rst,bit,dbg"
+  echo "      defaults to all test-cases: thr,mpi,dcp,rst,bit,dbg,fhz"
+  echo "      comma-separated list of any combination of std,thr,mpi,dcp,rst,bit,dbg,fhz"
   echo
   echo "  -b  test reproducibility for bit; compare against baseline"
   echo "  -d  test reproducibility for dbg; compare against baseline"
@@ -214,6 +214,11 @@ run_opnReqTests() {
         source $PATHRT/opnReqTests/dbg.sh
         WLCLK=60
         ;;
+      fhz)
+        CREATE_BASELINE=false
+        BL_SUFFIX=_std_base
+        source $PATHRT/opnReqTests/fhz.sh
+        ;;
     esac
 
     cat <<- EOF > ${RUNDIR_ROOT}/run_test${RT_SUFFIX}.env
@@ -237,13 +242,15 @@ run_opnReqTests() {
 			export ECFLOW=${ECFLOW}
 			export REGRESSIONTEST_LOG=${REGRESSIONTEST_LOG}
 			export LOG_DIR=${LOG_DIR}
+			export skip_check_results=${skip_check_results}
+			export delete_rundir=${delete_rundir}
 			EOF
 
     if [[ $ECFLOW == true ]]; then
       TEST_NR=${RT_SUFFIX:1}
       COMPILE_NR=$comp_nm
       DEP_RUN=
-      if [[ ${RT_SUFFIX} == _std || ${RT_SUFFIX} == _thr || ${RT_SUFFIX} == _mpi || ${RT_SUFFIX} == _dcp || ${RT_SUFFIX} == _rst ]]; then
+      if [[ ${RT_SUFFIX} == _std || ${RT_SUFFIX} == _thr || ${RT_SUFFIX} == _mpi || ${RT_SUFFIX} == _dcp || ${RT_SUFFIX} == _rst || ${RT_SUFFIX} == _fhz ]]; then
         DEP_RUN="${TEST_NAME}_std_base"
       elif [[ ${RT_SUFFIX} == _bit ]]; then
         DEP_RUN="${TEST_NAME}_bit_base"
@@ -257,7 +264,7 @@ run_opnReqTests() {
       echo "Running test for $rc with"
       echo "    THRD: $THRD; INPES: $INPES; JNPES: $JNPES; TASKS: $TASKS; TPN: $TPN"
       TEST_NR=${RT_SUFFIX:1}
-      ./run_test.sh $PATHRT $RUNDIR_ROOT $TEST_NAME $TEST_NR $comp_nm > $LOG_DIR/run_${TEST_NAME}_${TEST_NR}.log 2>&1
+      ./run_test.sh $PATHRT $RUNDIR_ROOT $TEST_NAME $TEST_NR $comp_nm > $LOG_DIR/run_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log 2>&1
     fi
 
   done
@@ -324,6 +331,7 @@ if [[ $MACHINE_ID = hera.* ]]; then
   PARTITION=
   QUEUE=batch
   COMPILE_QUEUE=batch
+  ACCNR="${ACCNR:-nems}"
   dprefix=/scratch1/NCEPDEV
   DISKNM=$dprefix/nems/emc.nemspara/RT
   STMP=${dprefix}/stmp4
@@ -342,7 +350,7 @@ elif [[ $MACHINE_ID = orion.* ]]; then
   ECF_PORT=$(( $(id -u) + 1500 ))
   QUEUE=batch
   COMPILE_QUEUE=batch
-#  ACCNR= # detected in detect_machine.sh
+  ACCNR="${ACCNR:-nems}"
   PARTITION=orion
   dprefix=/work/noaa/stmp/${USER}
   DISKNM=/work/noaa/nems/emc.nemspara/RT
@@ -365,8 +373,8 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
   DISKNM=/gpfs/dell2/emc/modeling/noscrub/emc.nemspara/RT
   QUEUE=debug
   COMPILE_QUEUE=dev_transfer
+  ACCNR="${ACCNR:-GFS-DEV}"
   PARTITION=
-  ACCNR=GFS-DEV
   STMP=/gpfs/dell2/stmp
   PTMP=/gpfs/dell2/ptmp
   SCHEDULER=lsf
@@ -378,6 +386,7 @@ elif [[ $MACHINE_ID = linux.* ]]; then
   PARTITION=
   QUEUE=
   COMPILE_QUEUE=
+  ACCNR=
   dprefix=/home/builder
   DISKNM=${dprefix}/data
   STMP=${dprefix}/stmp4
@@ -391,7 +400,7 @@ fi
 # default variable values
 TEST_NAME=
 CREATE_BASELINE=
-test_case="std thr mpi dcp rst bit dbg"
+test_case="std thr mpi dcp rst bit dbg fhz"
 ECFLOW=false
 ROCOTO=false
 std_compare=false
@@ -400,6 +409,8 @@ dbg_compare=false
 keep_rundir=false
 skip_compile=false
 skip_run=false
+skip_check_results=false
+delete_rundir=false
 
 # parse command line arguments to fill-in/modify the above default variables
 while getopts :n:c:ekhbdsxz opt; do
@@ -412,7 +423,7 @@ while getopts :n:c:ekhbdsxz opt; do
       test_case=$OPTARG
       test_case=$(echo $test_case | sed -e 's/^ *//' -e 's/ *$//' -e 's/,/ /g')
       for i in $test_case; do
-        if [[ $i != std && $i != thr && $i != mpi && $i != dcp && $i != rst && $i != bit && $i != dbg ]]; then
+        if [[ $i != std && $i != thr && $i != mpi && $i != dcp && $i != rst && $i != bit && $i != dbg && $i != fhz ]]; then
           error "invalid test case specified: $i"
         fi
       done
@@ -468,7 +479,7 @@ fi
 compile_case=
 run_case=
 for i in $test_case; do
-  if [[ $i == thr || $i == mpi || $i == dcp || $i == rst ]]; then
+  if [[ $i == thr || $i == mpi || $i == dcp || $i == rst || $i == fhz ]]; then
     if [[ ! $compile_case =~ std ]]; then
       compile_case+=" std"
     fi
@@ -553,8 +564,13 @@ if [[ $ECFLOW == true ]]; then
 
 fi
 
-opnreqtest_log=${PATHRT}/OpnReqTests_$MACHINE_ID.log
+opnreqtest_log=${PATHRT}/OpnReqTests_${TEST_NAME}_$MACHINE_ID.log
 REGRESSIONTEST_LOG=$opnreqtest_log
+rm -f fail_opnreq_test* fail_opnreq_compile*
+
+date >${opnreqtest_log}
+echo "Start Operation Requirement Test" >> ${opnreqtest_log}
+echo                                    >> ${opnreqtest_log}
 
 ########################################################################
 ####                            COMPILE                             ####
@@ -615,8 +631,6 @@ INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC:-$DISKNM/NEMSfv3gfs/BM_IC-20210717}
 rm -rf $NEW_BASELINE
 mkdir -p $NEW_BASELINE
 
-rm -f fail_opnreq_test ${opnreqtest_log}
-
 echo "cases to run: $run_case"
 run_opnReqTests
 
@@ -629,7 +643,15 @@ fi
 ####               OPERATION REQUIREMENT TEST STATUS                ####
 ########################################################################
 set +e
+cat ${LOG_DIR}/compile_*_time.log | tee -a ${opnreqtest_log}
 cat ${LOG_DIR}/opnReqTest_*.log | tee -a ${opnreqtest_log}
+
+FILES="fail_opnreq_test_* fail_opnreq_compile_*"
+for f in $FILES; do
+  if [[ -f "$f" ]]; then
+    cat "$f" >> fail_opnreq_test
+  fi
+done
 
 if [[ -e fail_opnreq_test ]]; then
   echo "FAILED TESTS: " | tee -a ${opnreqtest_log}
