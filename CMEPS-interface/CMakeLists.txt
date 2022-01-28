@@ -63,22 +63,52 @@ list(APPEND _mediator_files
   CMEPS/mediator/med_phases_post_wav_mod.F90)
 
 ### Build required files for CCPP aoflux calculation
+
+### Query FV3 path
 get_filename_component(FV3_PATH "../FV3" REALPATH)
+
+### If FV3 is available then use CMEPS as CCPP host model
 if(EXISTS ${FV3_PATH})
+  ### Print out information
   message("FV3_PATH = ${FV3_PATH}")
-  message("Compiling CMEPS with UFS atmosphere-ocean flux calculation support.")
-  list(APPEND _ccpp_physics
-    ${FV3_PATH}/ccpp/physics/physics/machine.F
-    ${FV3_PATH}/ccpp/physics/physics/physcons.F90
-    ${FV3_PATH}/ccpp/physics/physics/physparam.f
-    ${FV3_PATH}/ccpp/physics/physics/funcphys.f90
-    ${FV3_PATH}/ccpp/physics/physics/sfc_diff.f
-    ${FV3_PATH}/ccpp/physics/physics/sfc_ocean.F
-    ${FV3_PATH}/ccpp/physics/physics/GFS_surface_composites.F90
-    ${FV3_PATH}/ccpp/physics/physics/GFS_surface_loop_control.F90)
+  message("Compiling CMEPS with CCPP support.")
+
+  ### Set environment variable for FV3 directory, used by config file
+  set(ENV{FV3_PATH} ${FV3_PATH})
+
+  ### Parse CMAKE_FLAGS variable to get CCPP suites
+  set(CMAKE_FLAGS_LIST $ENV{CMAKE_FLAGS}) 
+  separate_arguments(CMAKE_FLAGS_LIST)
+  foreach(myflag ${CMAKE_FLAGS_LIST})
+    if(${myflag} MATCHES "-DCCPP_SUITES*")
+      string(REGEX REPLACE "-DCCPP_SUITES=" "" CCPP_SUITES ${myflag})
+      set(_ccpp_suites_arg "--suites=${CCPP_SUITES}")
+    endif()
+  endforeach()
+
+  ### Trigger ccpp_prebuild.py script to connect host model with CCPP physics
+  execute_process(
+                  COMMAND ${Python_EXECUTABLE} 
+                  "${FV3_PATH}/ccpp/framework/scripts/ccpp_prebuild.py"
+                  "--config=CMEPS/ufs/ccpp/config/ccpp_prebuild_config.py"
+                  "--builddir=${CMAKE_CURRENT_BINARY_DIR}" ${_ccpp_suites_arg}
+                  "--debug"
+                  "--verbose"
+                  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+                  OUTPUT_FILE ${CMAKE_CURRENT_BINARY_DIR}/ccpp_prebuild.out
+                  ERROR_FILE  ${CMAKE_CURRENT_BINARY_DIR}/ccpp_prebuild.err
+                  RESULT_VARIABLE return_code)
+
+  ### Check return code from CCPP prebuild.py
+  if(return_code EQUAL 0)
+     message (STATUS "CCPP prebuild step completed successfully")
+  else(return_code EQUAL 0)
+     message (FATAL_ERROR "CCPP prebuild step failed, check ccpp_prebuild.out/ccpp_prebuild.err")
+  endif(return_code EQUAL 0)
+
   list(APPEND _nems_util_files
     CMEPS/ufs/flux_atmocn_ccpp_mod.F90)
-  add_definitions(-DUFS_AOFLUX)
+  #add_definitions(-DUFS_AOFLUX)
 endif()
 
 ### Create target library and set PUBLIC interfaces on the library
