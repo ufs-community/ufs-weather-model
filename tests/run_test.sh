@@ -238,7 +238,10 @@ else
     submit_and_wait job_card
   else
     chmod u+x job_card
-    ./job_card
+    ( ./job_card 2>&1 1>&3 3>&- | tee err ) 3>&1 1>&2 | tee out
+    # The above shell redirection copies stdout to "out" and stderr to "err"
+    # while still sending them to stdout and stderr. It does this without
+    # relying on bash-specific extensions or non-standard OS features.
   fi
 
 fi
@@ -262,6 +265,23 @@ fi
 ################################################################################
 
 echo " $( date +%s )" >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+
+################################################################################
+# Remove RUN_DIRs if they are no longer needed by other tests
+################################################################################
+if [[ ${delete_rundir} = true ]]; then
+  keep_run_dir=false
+  while  read -r line; do
+    keep_test=$(echo $line| sed -e 's/^ *//' -e 's/ *$//')
+    if [[ $TEST_NAME == ${keep_test} ]]; then
+      keep_run_dir=true
+    fi
+  done < ${PATHRT}/keep_tests.tmp
+
+  if [[ ${keep_run_dir} == false ]]; then
+    rm -rf ${RUNDIR}
+  fi
+fi
 
 elapsed=$SECONDS
 echo "Elapsed time $elapsed seconds. Test ${TEST_NAME}"
