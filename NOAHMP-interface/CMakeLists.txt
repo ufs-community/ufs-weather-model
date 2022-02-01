@@ -19,7 +19,7 @@ list(APPEND _noahmp_cap_files NOAHMP/drivers/nuopc/lnd_comp_kind.F90
                               NOAHMP/drivers/nuopc/lnd_comp_shr.F90
                               NOAHMP/drivers/nuopc/lnd_comp_io.F90
                               NOAHMP/drivers/nuopc/lnd_comp_domain.F90
-                              NOAHMP/drivers/nuopc/lnd_import_export.F90
+                              NOAHMP/drivers/nuopc/lnd_comp_import_export.F90
                               NOAHMP/drivers/nuopc/lnd_comp_nuopc.F90
                               NOAHMP/drivers/nuopc/lnd_comp_driver.F90)
 

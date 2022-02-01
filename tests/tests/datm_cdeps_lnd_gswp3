@@ -1,0 +1,84 @@
+#
+#  DATM_CDEPS_NOAHMP_GSWP test
+#
+
+export TEST_DESCR="DATM_CDEPS_NOAHMP_GSWP3 - control "
+
+export CNTL_DIR="datm_cdeps_lnd_gswp3"
+
+export LIST_FILES="ufs.cpld.cpl.hi.lnd.2000-01-01-43200.nc \
+                   ufs.cpld.cpl.hi.lnd.2000-01-02-00000.nc \
+                   ufs.cpld.lnd.out.2000-01-01-43200.tile1.nc \
+                   ufs.cpld.lnd.out.2000-01-01-43200.tile2.nc \
+                   ufs.cpld.lnd.out.2000-01-01-43200.tile3.nc \
+                   ufs.cpld.lnd.out.2000-01-01-43200.tile4.nc \
+                   ufs.cpld.lnd.out.2000-01-01-43200.tile5.nc \
+                   ufs.cpld.lnd.out.2000-01-01-43200.tile6.nc \
+                   ufs.cpld.lnd.out.2000-01-02-00000.tile1.nc \
+                   ufs.cpld.lnd.out.2000-01-02-00000.tile2.nc \
+                   ufs.cpld.lnd.out.2000-01-02-00000.tile3.nc \
+                   ufs.cpld.lnd.out.2000-01-02-00000.tile4.nc \
+                   ufs.cpld.lnd.out.2000-01-02-00000.tile5.nc \
+                   ufs.cpld.lnd.out.2000-01-02-00000.tile6.nc"
+
+export_datm_cdeps
+
+export DATM_IN_CONFIGURE=datm_in
+export atm_datamode="CLMNCEP"
+export MESH_ATM="INPUT_DATM/fv1.9x2.5_141008_ESMFmesh.nc"
+export ATM_NX_GLB=144
+export ATM_NY_GLB=96
+export DATM_STREAM_CONFIGURE=datm.streams.multi.IN
+export MESH_ATM_DATA="INPUT_DATM/clmforc.GSWP3.c2011.0.5x0.5.TPQWL.SCRIP.210520_ESMFmesh.nc"
+export MESH_ATM_TOPO="INPUT_DATM/topodata_0.9x1.SCRIP.210520_ESMFmesh.nc"
+export SDATE=1999
+export EDATE=2000
+export DATA_ATM01="\"INPUT_DATM/clmforc.GSWP3.c2011.0.5x0.5.Solr.1999-12.nc\" \"INPUT_DATM/clmforc.GSWP3.c2011.0.5x0.5.Solr.2000-01.nc\""
+export DATA_ATM02="\"INPUT_DATM/clmforc.GSWP3.c2011.0.5x0.5.Prec.1999-12.nc\" \"INPUT_DATM/clmforc.GSWP3.c2011.0.5x0.5.Prec.2000-01.nc\""
+export DATA_ATM03="\"INPUT_DATM/clmforc.GSWP3.c2011.0.5x0.5.TPQWL.1999-12.nc\" \"INPUT_DATM/clmforc.GSWP3.c2011.0.5x0.5.TPQWL.2000-01.nc\""
+export DATA_ATM04="\"INPUT_DATM/topodata_0.9x1.25_USGS_070110_stream_c151201.nc\""
+
+export SYEAR=2000
+export SMONTH=01
+export SDAY=01
+export SHOUR=00
+export FHMAX=24
+export FHROT=0
+# --- followings are no effect on this configuration, just stisfy used model_configure.IN
+export DT_ATMOS=900
+export RESTART_INTERVAL=0
+export QUILTING=.true.
+export WRITE_GROUP=1
+export WRTTASK_PER_GROUP=1
+export OUTPUT_HISTORY=.true.
+export WRITE_DOPOST=.false.
+export NUM_FILES=2
+export FILENAME_BASE="'atm' 'sfc'"
+export OUTPUT_GRID='cubed_sphere_grid'
+export OUTPUT_FILE='netcdf'
+export IDEFLATE=0
+export NBITS=0
+export ICHUNK3D=0
+export JCHUNK3D=0
+export KCHUNK3D=0
+export IMO=384
+export JMO=190
+export OUTPUT_FH="6 -1"
+export IAU_OFFSET=0
+# --- end of model_configure.IN section
+
+export TASKS=288
+export med_model="cmeps"
+export atm_model="datm"
+export lnd_model="noahmp"
+export CPLMODE="nems_orig_data"
+export med_petlist_bounds="0 143"
+export atm_petlist_bounds="0 143"
+export lnd_petlist_bounds="144 287"
+export layout_x=3
+export layout_y=8
+export coupling_interval_sec=3600
+
+export MODEL_CONFIGURE="model_configure.IN"
+export NEMS_CONFIGURE="nems.configure.datm_cdeps_lnd.IN"
+export FV3_RUN="lnd_datm_cdeps_gswp.IN noahmp_run.IN"
