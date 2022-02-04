@@ -744,6 +744,7 @@ export RESTART_INTERVAL=0
 export QUILTING=.true.
 export WRITE_GROUP=1
 export WRTTASK_PER_GROUP=6
+export ITASKS=1
 export OUTPUT_HISTORY=.true.
 export WRITE_DOPOST=.false.
 export NUM_FILES=2
