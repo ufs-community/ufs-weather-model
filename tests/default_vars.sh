@@ -1442,6 +1442,7 @@ export DLAT=0.03
 
 # input.nml
 export CPL_IMP_MRG=.true.
+
 export DIAG_TABLE=diag_table_hafs
 export FIELD_TABLE=field_table_hafs
 
@@ -1452,4 +1453,78 @@ export RESTART_N=${FHMAX}
 export CPLMODE=hafs
 export RUNTYPE=startup
 export USE_COLDSTART=false
+}
+
+export_hafs ()
+{
+export FV3=true
+export S2S=false
+export HAFS=true
+export DATM_CDEPS=false
+export DOCN_CDEPS=false
+export THRD=1
+export INPES=$INPES_dflt
+export JNPES=$JNPES_dflt
+export TASKS=$TASKS_dflt
+export TPN=$TPN_dflt
+
+export OUTPUT_GRID='global_latlon'
+export CEN_LON=180.0
+export CEN_LAT=0.0
+export LON1=0.00
+export LAT1=-90.00
+export LON2=360.00
+export LAT2=90.00
+export DLON=1.0
+export DLAT=1.0
+export IMO=360
+export JMO=181
+
+export OUTPUT_GRID_2='regional_latlon'
+export CEN_LON_2=-175.0
+export CEN_LAT_2=0.0
+export LON1_2=-220.00
+export LAT1_2=-45.00
+export LON2_2=-130.00
+export LAT2_2=45.00
+export DLON_2=0.25
+export DLAT_2=0.25
+
+export OUTPUT_GRID_3='rotated_latlon'
+export CEN_LON_3=-86.0
+export CEN_LAT_3=23.0
+export LON1_3=-45.00
+export LAT1_3=-40.00
+export LON2_3=45.00
+export LAT2_3=40.00
+export DLON_3=0.25
+export DLAT_3=0.25
+
+export OUTPUT_GRID_4='rotated_latlon'
+export CEN_LON_4=-86.0
+export CEN_LAT_4=23.0
+export LON1_4=-45.00
+export LAT1_4=-40.00
+export LON2_4=45.00
+export LAT2_4=40.00
+export DLON_4=0.1
+export DLAT_4=0.1
+
+export OUTPUT_GRID_5='rotated_latlon'
+export CEN_LON_5=-86.0
+export CEN_LAT_5=23.0
+export LON1_5=-35.00
+export LAT1_5=-30.00
+export LON2_5=35.00
+export LAT2_5=30.00
+export DLON_5=0.05
+export DLAT_5=0.05
+
+export IS_MOVING_NEST=".false."
+export VORTEX_TRACKER=0
+export NTRACK=0
+export MOVE_CD_X=0
+export MOVE_CD_Y=0
+export CPL_IMP_MRG=.true.
+
 }
