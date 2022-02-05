@@ -106,6 +106,7 @@ if(EXISTS ${FV3_PATH})
   #endif()
 
   ### Trigger ccpp_prebuild.py script to connect host model with CCPP physics
+  message("Calling CCPP code generator (ccpp_prebuild.py) for suites ${_ccpp_suites_arg} ...")
   execute_process(
                   COMMAND ${Python_EXECUTABLE} 
                   "${FV3_PATH}/ccpp/framework/scripts/ccpp_prebuild.py"
@@ -128,6 +129,7 @@ if(EXISTS ${FV3_PATH})
 
   ### Add extra driver file to the source
   list(APPEND _nems_util_files
+    CMEPS/ufs/ccpp/driver/med_ccpp_driver.F90
     CMEPS/ufs/flux_atmocn_ccpp_mod.F90)
 
   ### Set the sources: type definitions
