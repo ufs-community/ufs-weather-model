@@ -826,8 +826,15 @@ export CDMBWD_c192='0.23,1.5,1.0,1.0'
 export CDMBWD_c384='1.1,0.72,1.0,1.0'
 export CDMBWD_c768='4.0,0.15,1.0,1.0'
 
+export DT_INNER_c96='120'
+export DT_INNER_c192='120'
+export DT_INNER_c384='120'
+export DT_INNER_c768='75'
+
+
 # set default
 export CDMBWD=${CDMBWD_c96}
+export DT_INNER=${DT_INNER_c96}
 
 # PBL
 export SATMEDMF=.false.
@@ -1061,9 +1068,9 @@ export ATMTILESIZE=`expr $NPX - 1`
 
 # FV3 defaults
 export FRAC_GRID=.true.
-export CCPP_SUITE=FV3_GFS_v16_coupled_p8
+export CCPP_SUITE=FV3_GFS_v17_coupled_p8b
 export INPUT_NML=cpld_control.nml.IN
-export FIELD_TABLE=field_table_gfsv16
+export FIELD_TABLE=field_table_thompson_noaero_tke 
 export DIAG_TABLE=diag_table_template
 
 export DIAG_TABLE_ADDITIONAL=''
@@ -1146,6 +1153,8 @@ export FSICL=99999
 # P8
 export USE_CICE_ALB=.true.
 export MIN_SEAICE=1.0e-6
+export DNATS=0
+export IMP_PHYSICS=8
 
 # P7 default mushy thermo
 export KTHERM=2
