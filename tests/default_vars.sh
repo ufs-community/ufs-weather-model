@@ -1108,10 +1108,8 @@ export LSEASPRAY=.true.
 
 # P7 UGWP1
 export GWD_OPT=2
-export DO_UGWP_V1=.true.
 export KNOB_UGWP_VERSION=1
 export KNOB_UGWP_NSLOPE=1
-export DO_UGWP_V0=.false.
 export DO_GSL_DRAG_LS_BL=.true.
 export DO_GSL_DRAG_SS=.true.
 export DO_GSL_DRAG_TOFD=.true.
@@ -1119,6 +1117,11 @@ export DO_UGWP_V1_OROG_ONLY=.false.
 export DO_UGWP_V0_NST_ONLY=.false.
 export LDIAG_UGWP=.false.
 export CDMBWD='1.0,2.2,1.0,1.0'
+
+#P8 UGWD
+export DO_UGWP_V0=.true.
+export DO_UGWP_V1=.false.
+export DO_GSL_DRAG_LS_BL=.false.
 
 # P7 CA
 export DO_CA=.true.
@@ -1148,13 +1151,16 @@ export FNVMXC="'C96.vegetation_greenness.tileX.nc'"
 export FNSLPC="'C96.slope_type.tileX.nc'"
 export FNABSC="'C96.maximum_snow_albedo.tileX.nc'"
 export LANDICE=".false."
-export FSICL=99999
+#P8 
+export FSICL=0
+export FSICS=0
 
 # P8
 export USE_CICE_ALB=.true.
 export MIN_SEAICE=1.0e-6
 export DNATS=0
 export IMP_PHYSICS=8
+export LGFDLMPRAD=.false. 
 
 # P7 default mushy thermo
 export KTHERM=2
