@@ -804,6 +804,13 @@ export LTAEROSOL=.true.
 export EXT_DIAG_THOMPSON=.false.
 export sedi_semi=.false.
 export decfl=8
+# NSSL MP
+export NSSL_CCCN=0.6e9
+export NSSL_ALPHAH=0.0
+export NSSL_ALPHAL=1.0
+export NSSL_HAIL_ON=.false.
+export NSSL_CCN_ON=.true.
+export NSSL_INVERTCCN=.true.
 
 # GWD
 export LDIAG_UGWP=.false.
