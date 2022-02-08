@@ -1115,7 +1115,8 @@ export DO_GSL_DRAG_TOFD=.true.
 export DO_UGWP_V1_OROG_ONLY=.false.
 export DO_UGWP_V0_NST_ONLY=.false.
 export LDIAG_UGWP=.false.
-export CDMBWD='1.0,2.2,1.0,1.0'
+#P8 
+export CDMBWD=${CDMBWD_c96}
 
 #P8 UGWD
 export DO_UGWP_V0=.true.
