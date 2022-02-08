@@ -2,7 +2,7 @@ help([[
 Load environment to compile ufs-weather-model on Orion using Intel
 ]])
 
-cmake_ver=os.getenv("cmake_ver") or "3.18.1"
+cmake_ver=os.getenv("cmake_ver") or "3.20.2"
 load(pathJoin("cmake", cmake_ver))
 
 python_ver=os.getenv("python_ver") or "3.7.5"
@@ -67,4 +67,8 @@ load(pathJoin("netcdf", netcdf_ver))
 esmf_ver=os.getenv("esmf_ver") or "8_0_1"
 load(pathJoin("esmf", esmf_ver))
 
+setenv("CMAKE_C_COMPILER",mpiicc)
+setenv("CMAKE_CXX_COMPILER",mpiicpc)
+setenv("CMAKE_Fortran_COMPILER",mpiifort)
+setenv("CMAKE_Platform",orion.intel)
 whatis("Description: ufs-weather-model build environment")

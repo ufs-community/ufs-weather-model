@@ -2,7 +2,7 @@ help([[
 Load environment to compile ufs-weather-model on Hera using Intel
 ]])
 
-cmake_ver=os.getenv("cmake_ver") or "3.16.1"
+cmake_ver=os.getenv("cmake_ver") or "3.20.2"
 load(pathJoin("cmake", cmake_ver))
 
 prepend_path("MODULEPATH", " /contrib/anaconda/modulefiles")
@@ -68,5 +68,10 @@ load(pathJoin("netcdf", netcdf_ver))
 
 esmf_ver=os.getenv("esmf_ver") or "8_0_1"
 load(pathJoin("esmf", esmf_ver))
+
+setenv("CMAKE_C_COMPILER",mpiicc)
+setenv("CMAKE_CXX_COMPILER",mpiicpc)
+setenv("CMAKE_Fortran_COMPILER",mpiifort)
+setenv("CMAKE_Platform",hera.intel)
 
 whatis("Description: ufs-weather-model build environment")
