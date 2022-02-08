@@ -112,6 +112,7 @@ if(EXISTS ${FV3_PATH})
                   "${FV3_PATH}/ccpp/framework/scripts/ccpp_prebuild.py"
                   "--config=CMEPS/ufs/ccpp/config/ccpp_prebuild_config.py"
                   "--builddir=${CMAKE_CURRENT_BINARY_DIR}"
+                  "--namespace=med"
                   ${_ccpp_suites_arg}
                   ${_ccpp_debug_arg}
                   ${_ccpp_verbose_arg}
