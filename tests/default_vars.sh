@@ -1108,7 +1108,6 @@ export LSEASPRAY=.true.
 
 # P7 UGWP1
 export GWD_OPT=2
-export KNOB_UGWP_VERSION=1
 export KNOB_UGWP_NSLOPE=1
 export DO_GSL_DRAG_LS_BL=.true.
 export DO_GSL_DRAG_SS=.true.
@@ -1122,6 +1121,7 @@ export CDMBWD='1.0,2.2,1.0,1.0'
 export DO_UGWP_V0=.true.
 export DO_UGWP_V1=.false.
 export DO_GSL_DRAG_LS_BL=.false.
+export KNOB_UGWP_VERSION=0
 
 # P7 CA
 export DO_CA=.true.
@@ -1161,6 +1161,7 @@ export MIN_SEAICE=1.0e-6
 export DNATS=0
 export IMP_PHYSICS=8
 export LGFDLMPRAD=.false. 
+export DO_SAT_ADJ=.false.
 
 # P7 default mushy thermo
 export KTHERM=2
