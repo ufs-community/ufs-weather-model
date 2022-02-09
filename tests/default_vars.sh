@@ -826,11 +826,11 @@ export CDMBWD_c192='0.23,1.5,1.0,1.0'
 export CDMBWD_c384='1.1,0.72,1.0,1.0'
 export CDMBWD_c768='4.0,0.15,1.0,1.0'
 
-export DT_INNER_c96='120'
-export DT_INNER_c192='120'
+#DT_INNER=(Time step)/2
+export DT_INNER_c96='350'
+export DT_INNER_c192='300'
 export DT_INNER_c384='120'
 export DT_INNER_c768='75'
-
 
 # set default
 export CDMBWD=${CDMBWD_c96}
@@ -1094,9 +1094,12 @@ export IOPT_SFC=3
 # FV3 P7 settings
 export D2_BG_K1=0.20
 export D2_BG_K2=0.04
-export DZ_MIN=2
+#export DZ_MIN=2
 export PSM_BC=1
 export DDDMP=0.1
+
+#P8 
+export DZ_MIN=6
 
 # P7 Merra2 Aerosols & NSST
 export USE_MERRA2=.true.
