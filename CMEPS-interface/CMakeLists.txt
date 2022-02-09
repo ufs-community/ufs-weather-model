@@ -98,12 +98,12 @@ if(EXISTS ${FV3_PATH})
   endforeach()
 
   ### Set options for ccpp_prebuild.py
-  #if(DEBUG)
+  if(DEBUG)
     ### Enable debugging features in auto-generated physics caps
     set(_ccpp_debug_arg "--debug")
     ### Enable verbose output from ccpp_prebuild.py
     set(_ccpp_verbose_arg "--verbose")
-  #endif()
+  endif()
 
   ### Trigger ccpp_prebuild.py script to connect host model with CCPP physics
   message("Calling CCPP code generator (ccpp_prebuild.py) for suites ${_ccpp_suites_arg} ...")
@@ -156,7 +156,7 @@ if(EXISTS ${FV3_PATH})
     list(APPEND MODULES_F90 ${CMAKE_CURRENT_BINARY_DIR}/${module_f90})
   endforeach()
 
-  ### Add special flag for CMEPS/CCPP aoflux support
+  ### Add special CPP flag for CMEPS/CCPP support
   add_definitions(-DUFS_AOFLUX)
 endif()
 
