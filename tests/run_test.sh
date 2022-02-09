@@ -115,9 +115,7 @@ if [[ "Q${INPUT_NEST02_NML:-}" != Q ]] ; then
     K_SPLIT_NEST=$K_SPLIT_NEST02; N_SPLIT_NEST=$N_SPLIT_NEST02
     atparse < ${PATHRT}/parm/${INPUT_NEST02_NML} > input_nest02.nml
 else
-    lnbeg=$(grep -i -n "<output_grid_02>" model_configure | cut -d: -f1)
-    lnend=$(grep -i -n "</output_grid_02>" model_configure | cut -d: -f1)
-    [[ ! -z "$lnbeg" ]] && [[ ! -z "$lnend" ]] && sed -i -e "${lnbeg},${lnend}d" model_configure
+    sed -i -e "/<output_grid_02>/,/<\/output_grid_02>/d" model_configure
 fi
 
 if [[ "Q${INPUT_NEST03_NML:-}" != Q ]] ; then
@@ -126,9 +124,7 @@ if [[ "Q${INPUT_NEST03_NML:-}" != Q ]] ; then
     K_SPLIT_NEST=$K_SPLIT_NEST03; N_SPLIT_NEST=$N_SPLIT_NEST03
     atparse < ${PATHRT}/parm/${INPUT_NEST03_NML} > input_nest03.nml
 else
-    lnbeg=$(grep -i -n "<output_grid_03>" model_configure | cut -d: -f1)
-    lnend=$(grep -i -n "</output_grid_03>" model_configure | cut -d: -f1)
-    [[ ! -z "$lnbeg" ]] && [[ ! -z "$lnend" ]] && sed -i -e "${lnbeg},${lnend}d" model_configure
+    sed -i -e "/<output_grid_03>/,/<\/output_grid_03>/d" model_configure
 fi
 
 if [[ "Q${INPUT_NEST04_NML:-}" != Q ]] ; then
@@ -137,9 +133,7 @@ if [[ "Q${INPUT_NEST04_NML:-}" != Q ]] ; then
     K_SPLIT_NEST=$K_SPLIT_NEST04; N_SPLIT_NEST=$N_SPLIT_NEST04
     atparse < ${PATHRT}/parm/${INPUT_NEST04_NML} > input_nest04.nml
 else
-    lnbeg=$(grep -i -n "<output_grid_04>" model_configure | cut -d: -f1)
-    lnend=$(grep -i -n "</output_grid_04>" model_configure | cut -d: -f1)
-    [[ ! -z "$lnbeg" ]] && [[ ! -z "$lnend" ]] && sed -i -e "${lnbeg},${lnend}d" model_configure
+    sed -i -e "/<output_grid_04>/,/<\/output_grid_04>/d" model_configure
 fi
 
 if [[ "Q${INPUT_NEST05_NML:-}" != Q ]] ; then
@@ -148,9 +142,7 @@ if [[ "Q${INPUT_NEST05_NML:-}" != Q ]] ; then
     K_SPLIT_NEST=$K_SPLIT_NEST05; N_SPLIT_NEST=$N_SPLIT_NEST05
     atparse < ${PATHRT}/parm/${INPUT_NEST05_NML} > input_nest05.nml
 else
-    lnbeg=$(grep -i -n "<output_grid_05>" model_configure | cut -d: -f1)
-    lnend=$(grep -i -n "</output_grid_05>" model_configure | cut -d: -f1)
-    [[ ! -z "$lnbeg" ]] && [[ ! -z "$lnend" ]] && sed -i -e "${lnbeg},${lnend}d" model_configure
+    sed -i -e "/<output_grid_05>/,/<\/output_grid_05>/d" model_configure
 fi
 
 if [[ "Q${INPUT_NEST06_NML:-}" != Q ]] ; then
@@ -159,9 +151,7 @@ if [[ "Q${INPUT_NEST06_NML:-}" != Q ]] ; then
     K_SPLIT_NEST=$K_SPLIT_NEST06; N_SPLIT_NEST=$N_SPLIT_NEST06
     atparse < ${PATHRT}/parm/${INPUT_NEST06_NML} > input_nest06.nml
 else
-    lnbeg=$(grep -i -n "<output_grid_06>" model_configure | cut -d: -f1)
-    lnend=$(grep -i -n "</output_grid_06>" model_configure | cut -d: -f1)
-    [[ ! -z "$lnbeg" ]] && [[ ! -z "$lnend" ]] && sed -i -e "${lnbeg},${lnend}d" model_configure
+    sed -i -e "/<output_grid_06>/,/<\/output_grid_06>/d" model_configure
 fi
 
 # diag table
