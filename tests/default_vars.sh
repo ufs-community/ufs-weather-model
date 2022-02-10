@@ -828,8 +828,15 @@ export CDMBWD_c192='0.23,1.5,1.0,1.0'
 export CDMBWD_c384='1.0,2.2,1.0,1.0'
 export CDMBWD_c768='4.0,0.15,1.0,1.0'
 
+#DT_INNER=(Time step)/2
+export DT_INNER_c96='350'
+export DT_INNER_c192='300'
+export DT_INNER_c384='120'
+export DT_INNER_c768='75'
+
 # set default
 export CDMBWD=${CDMBWD_c96}
+export DT_INNER=${DT_INNER_c96}
 
 # PBL
 export SATMEDMF=.false.
@@ -1067,9 +1074,9 @@ export ATMTILESIZE=`expr $NPX - 1`
 
 # FV3 defaults
 export FRAC_GRID=.true.
-export CCPP_SUITE=FV3_GFS_v16_coupled_p8
+export CCPP_SUITE=FV3_GFS_v17_coupled_p8b
 export INPUT_NML=cpld_control.nml.IN
-export FIELD_TABLE=field_table_gfsv16
+export FIELD_TABLE=field_table_thompson_noaero_tke 
 export DIAG_TABLE=diag_table_template
 
 export DIAG_TABLE_ADDITIONAL=''
@@ -1093,9 +1100,12 @@ export IOPT_SFC=3
 # FV3 P7 settings
 export D2_BG_K1=0.20
 export D2_BG_K2=0.04
-export DZ_MIN=2
+#export DZ_MIN=2
 export PSM_BC=1
 export DDDMP=0.1
+
+#P8 
+export DZ_MIN=6
 
 # P7 Merra2 Aerosols & NSST
 export USE_MERRA2=.true.
@@ -1107,17 +1117,21 @@ export LSEASPRAY=.true.
 
 # P7 UGWP1
 export GWD_OPT=2
-export DO_UGWP_V1=.true.
-export KNOB_UGWP_VERSION=1
 export KNOB_UGWP_NSLOPE=1
-export DO_UGWP_V0=.false.
 export DO_GSL_DRAG_LS_BL=.true.
 export DO_GSL_DRAG_SS=.true.
 export DO_GSL_DRAG_TOFD=.true.
 export DO_UGWP_V1_OROG_ONLY=.false.
 export DO_UGWP_V0_NST_ONLY=.false.
 export LDIAG_UGWP=.false.
-export CDMBWD='1.0,2.2,1.0,1.0'
+#P8 
+export CDMBWD=${CDMBWD_c96}
+
+#P8 UGWD
+export DO_UGWP_V0=.true.
+export DO_UGWP_V1=.false.
+export DO_GSL_DRAG_LS_BL=.false.
+export KNOB_UGWP_VERSION=0
 
 # P7 CA
 export DO_CA=.true.
@@ -1147,11 +1161,17 @@ export FNVMXC="'C96.vegetation_greenness.tileX.nc'"
 export FNSLPC="'C96.slope_type.tileX.nc'"
 export FNABSC="'C96.maximum_snow_albedo.tileX.nc'"
 export LANDICE=".false."
-export FSICL=99999
+#P8 
+export FSICL=0
+export FSICS=0
 
 # P8
 export USE_CICE_ALB=.true.
 export MIN_SEAICE=1.0e-6
+export DNATS=0
+export IMP_PHYSICS=8
+export LGFDLMPRAD=.false. 
+export DO_SAT_ADJ=.false.
 
 # P7 default mushy thermo
 export KTHERM=2
