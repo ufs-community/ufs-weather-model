@@ -18,6 +18,7 @@ export_fv3
 export_hafs_regional
 export_hafs_docn_cdeps
 
+export HAFS=true
 export FHMAX=6
 export RESTART_N=${FHMAX}
 export TASKS=360
@@ -33,6 +34,7 @@ export DT_ATMOS=180
 export IDEFLATE=1
 export NFHMAX_HF=-1
 export NFHOUT_HF=3
+export NFHOUT=3
 export OUTPUT_FILE="'netcdf_parallel' 'netcdf_parallel'"
 export OUTPUT_GRID='regional_latlon'
 export SDAY=29
@@ -41,13 +43,48 @@ export SMONTH=08
 export SYEAR=2019
 export WRTTASK_PER_GROUP=60
 
-export CPLFLX=.true.
-export CPLWAV=.false.
-export CPLWAV2ATM=.false.
-export MERGE_IMPORT=.true.
-export NSTF_NAME=0,0,0,0,0
+export BLOCKSIZE=40
+export CCPP_SUITE="FV3_HAFS_v0_gfdlmp_tedmf_nonsst"
+export DEFLATE_LEVEL=-1
 export INPES=20
 export JNPES=12
+export NPX=721
+export NPY=601
+export NPZ=91
+export NPZP=$(($NPZ + 1))
+export K_SPLIT=2
+export N_SPLIT=5
+export NWAT=6
+export NA_INIT=1
+export EXTERNAL_IC=.true.
+export NGGPS_IC=.true.
+export MOUNTAIN=.false.
+export WARM_START=.false.
+export TARGET_LAT="22.0"
+export TARGET_LON="-62.0"
+export STRETCH_FAC=1.0001
+export REGIONAL=.true.
+export BC_UPDATE_INTERVAL=3
+export NROWS_BLEND=10
+export FULL_ZS_FILTER=.false.
+export N_ZS_FILTER=0
+
+export GRID_PES="240"
+export TILE_COARSE="0"
+export NUM_TILE_TOP=1
+export NEST_REFINE="0"
+export NEST_IOFFSETS="999"
+export NEST_JOFFSETS="999"
+
+export FHCYC=0
+export FHSWR=1800
+export FHLWR=1800
+export NSTF_NAME=0,0,0,0,0
+export CPLFLX=.true.
+export CPLOCN2ATM=.true.
+export CPLWAV=.false.
+export CPLWAV2ATM=.false.
+export CPL_IMP_MRG=.true.
 
 export atm_model="fv3"
 export ocn_model="docn"
@@ -63,8 +100,9 @@ export ocn_data_var="temp"
 export ocn_nx_global=1135
 export ocn_ny_global=633
 
-export CCPP_SUITE=FV3_HAFS_v0_gfdlmp_tedmf_nonsst
-export INPUT_NML=input_hafs_regional.nml.IN
-export MODEL_CONFIGURE="model_configure_hafs_regional.IN"
+export FIELD_TABLE=field_table_hafs
+export DIAG_TABLE=diag_table_hafs_template
+export INPUT_NML=input_regional_hafs.nml.IN
+export MODEL_CONFIGURE="model_configure_hafs_shared.IN"
 export NEMS_CONFIGURE="nems.configure.hafs_atm_docn.IN"
-export FV3_RUN="hafs_regional_run.IN hafs_docn_cdeps_mom6.IN"
+export FV3_RUN="hafs_fv3_run.IN hafs_docn_cdeps_mom6.IN"

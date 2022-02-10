@@ -2,14 +2,19 @@ set -eu
 source $PATHRT/opnReqTests/std.sh
 
 if [[ $application == 'global' ]]; then
-  temp=$INPES
-  INPES=$JNPES
-  JNPES=$temp
+  if [[ $CI_TEST == 'true' ]]; then
+    temp=$INPES
+    INPES=$JNPES
+    JNPES=$temp
+  else
+    INPES=6
+    JNPES=4
+  fi
 elif [[ $application == 'regional' ]]; then
   if [[ $CI_TEST == 'true' ]]; then
     INPES=10
     JNPES=3
-    TASKS=$((INPES*JNPES))
+    TASKS=$((INPES*JNPES + WRITE_GROUP*WRTTASK_PER_GROUP))
     NODES=$(((TASKS+TPN-1)/TPN))
   else
     INPES=5

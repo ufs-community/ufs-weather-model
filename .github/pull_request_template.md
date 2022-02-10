@@ -1,13 +1,15 @@
 # PR Checklist
 
-- [ ] Ths PR is up-to-date with the top of all sub-component repositories except for those sub-components which are the subject of this PR. Please consult the ufs-weather-model [wiki](https://github.com/ufs-community/ufs-weather-model/wiki/Making-code-changes-in-the-UFS-weather-model-and-its-subcomponents) if you are unsure how to do this.
+- [ ] This PR is up-to-date with the top of all sub-component repositories except for those sub-components which are the subject of this PR. Please consult the ufs-weather-model [wiki](https://github.com/ufs-community/ufs-weather-model/wiki/Making-code-changes-in-the-UFS-weather-model-and-its-subcomponents) if you are unsure how to do this.
 
 - [ ] This PR has been tested using a branch which is up-to-date with the top of all sub-component repositories except for those sub-components which are the subject of this PR
 
 - [ ] An Issue describing the work contained in this PR has been created either in the subcomponent(s) or in the ufs-weather-model. The Issue should be created in the repository that is most relevant to the changes in contained in the PR. The Issue and the dependent sub-component PR 
 are specified below.
 
-- [ ] If new or updated input data is required by this PR, it is clearly stated in the text of the PR.
+- [ ] Results for one or more of the regression tests change and the reasons for the changes are understood and explained below.
+
+- [ ] New or updated input data is required by this PR. If checked, please work with the code managers to update input data sets on all platforms.
 
 ## Instructions: All subsequent sections of text should be filled in as appropriate.
 
@@ -37,6 +39,7 @@ How were these changes tested? What compilers / HPCs was it tested with? Are the
 - [ ] jet.intel
 - [ ] wcoss_cray
 - [ ] wcoss_dell_p3
+- [ ] opnReqTest for newly added/changed feature
 - [ ] CI
 
 ## Dependencies

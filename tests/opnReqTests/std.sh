@@ -8,11 +8,14 @@ if [[ $application == 'global' ]]; then
     WRTTASK_PER_GROUP=12
     TASKS=$((INPES*JNPES*6 + WRITE_GROUP*WRTTASK_PER_GROUP))
   fi
+  RESTART_N=$(( FHMAX/2 ))
+  RESTART_INTERVAL="${RESTART_N} -1"
 elif [[ $application == 'regional' ]]; then
   if [[ $CI_TEST == 'true' ]]; then
     INPES=4
     JNPES=6
-    TASKS=$((INPES*JNPES))
+    WRTTASK_PER_GROUP=8
+    TASKS=$((INPES*JNPES + WRITE_GROUP*WRTTASK_PER_GROUP))
   fi
 elif [[ $application == 'cpld' ]]; then
   if [ $CI_TEST == 'true' ]; then
