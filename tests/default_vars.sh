@@ -825,7 +825,7 @@ export DO_UGWP_V1_OROG_ONLY=.false.
 export CDMBWD_c48='0.071,2.1,1.0,1.0'
 export CDMBWD_c96='0.14,1.8,1.0,1.0'
 export CDMBWD_c192='0.23,1.5,1.0,1.0'
-export CDMBWD_c384='1.0,2.2,1.0,1.0'
+export CDMBWD_c384='1.1,0.72,1.0,1.0'
 export CDMBWD_c768='4.0,0.15,1.0,1.0'
 
 #DT_INNER=(Time step)/2
