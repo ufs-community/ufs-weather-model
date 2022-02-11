@@ -1,9 +1,9 @@
 #
-#  cpld_bmark_p7_aero test
+#  cpld_bmark_p8_aero test
 #
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-GOCART-WW3 system - C384L127 MX025 - Benchmark P7.2 test"
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-GOCART-WW3 system - C384L127 MX025 - Benchmark P8 test"
 
-export CNTL_DIR="cpld_bmark_p7"
+export CNTL_DIR="cpld_bmark_p8_aero"
 
 export LIST_FILES="sfcf006.nc \
                    atmf006.nc \
@@ -89,6 +89,7 @@ export NPY=385
 export IMO=1536
 export JMO=768
 export OUTPUT_GRID="'gaussian_grid'"
+export ATMTILESIZE=`expr $NPX - 1`
 
 export OCNRES=025
 export ICERES=0.25
@@ -98,9 +99,6 @@ export NPROC_ICE=$NPROC_ICE_cpl_bmrk
 export np2=`expr $NPROC_ICE / 2`
 export BLCKX=`expr $NX_GLB / $np2`
 export BLCKY=`expr $NY_GLB / 2`
-
-# resolution dependent setting
-export CDMBWD=${CDMBWD_c384}
 
 # set component and coupling timesteps
 export DT_ATMOS=300
@@ -133,6 +131,9 @@ export FNVMNC="'C384.vegetation_greenness.tileX.nc'"
 export FNVMXC="'C384.vegetation_greenness.tileX.nc'"
 export FNSLPC="'C384.slope_type.tileX.nc'"
 export FNABSC="'C384.maximum_snow_albedo.tileX.nc'"
+
+export CDMBWD=${CDMBWD_c384}
+export DT_INNER=${DT_INNER_c384}
 
 export MOM6_RIVER_RUNOFF=True
 export MOM6_RESTART_SETTING=r

@@ -237,7 +237,7 @@ elif [[ $MACHINE_ID = hera.* ]]; then
 
   TASKS_cpl_c96=192; TPN_cpl_c96=40; INPES_cpl_c96=3; JNPES_cpl_c96=8
   THRD_cpl_c96=1; WPG_cpl_c96=6;  MPB_cpl_c96="0 143"; APB_cpl_c96="0 149"
-  OPB_cpl_c96="150 179"; IPB_cpl_c96="180 191"
+  CHM_cpl_c96="0 143"  OPB_cpl_c96="150 179"; IPB_cpl_c96="180 191"
   NPROC_ICE_cpl_c96=12
 
   TASKS_cpl_dflt=200; TPN_cpl_dflt=40; INPES_cpl_dflt=3; JNPES_cpl_dflt=8
