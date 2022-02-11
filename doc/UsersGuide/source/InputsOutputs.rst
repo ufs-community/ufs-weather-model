@@ -1146,10 +1146,6 @@ shows the following parameters that can be set in *model_configure* at run-time.
      - frequency to output restart file or forecast hours to write out restart file
      - integer
      - 0 (0: write restart file at the end of integration; 12, -1: write out restart every 12 hours; 12 24 write out restart files at fh=12 and 24)
-   * - atm_coupling_interval_sec
-     - fast coupling interval in seconds for atmosphere
-     - real(8)
-     - 900
    * - quilting
      - flag to turn on quilt
      - logical

@@ -16,7 +16,7 @@ cleanup() {
 
 write_fail_test() {
   if [[ ${OPNREQ_TEST} == true ]]; then
-    echo compile ${COMPILE_NR} >> $PATHRT/fail_opnreq_test
+    echo "compile_${COMPILE_NR} failed in run_compile" >> $PATHRT/fail_opnreq_compile_${COMPILE_NR}
   else
     echo "compile_${COMPILE_NR} failed in run_compile" >> $PATHRT/fail_compile_${COMPILE_NR}
   fi
@@ -34,7 +34,12 @@ export MAKE_OPT=$3
 export COMPILE_NR=$4
 
 cd ${PATHRT}
-rm -rf fail_compile_${COMPILE_NR}
+OPNREQ_TEST=${OPNREQ_TEST:-false}
+if [[ ${OPNREQ_TEST} == true ]]; then
+  rm -f fail_opnreq_compile_${COMPILE_NR}
+else
+  rm -f fail_compile_${COMPILE_NR}
+fi
 
 [[ -e ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env ]] && source ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env
 source default_vars.sh
@@ -70,7 +75,10 @@ if [[ $ROCOTO = 'false' ]]; then
   submit_and_wait job_card
 else
   chmod u+x job_card
-  ./job_card
+  ( ./job_card 2>&1 1>&3 3>&- | tee err ) 3>&1 1>&2 | tee out
+  # The above shell redirection copies stdout to "out" and stderr to "err"
+  # while still sending them to stdout and stderr. It does this without
+  # relying on bash-specific extensions or non-standard OS features.
 fi
 
 ls -l ${PATHTR}/tests/fv3_${COMPILE_NR}.exe
