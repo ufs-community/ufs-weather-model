@@ -163,10 +163,12 @@ cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
 # Set up the run directory
 source ./fv3_run
 
-#TODO: optionally do the right inp
 if [[ $CPLWAV == .true. ]]; then
-  atparse < ${PATHRT}/parm/ww3_multi.inp.IN > ww3_multi.inp
-  atparse < ${PATHRT}/parm/ww3_shel.inp.IN > ww3_shel.inp
+  if [[ $MULTIGRID = 'true' ]]; then
+    atparse < ${PATHRT}/parm/ww3_multi.inp.IN > ww3_multi.inp
+  else
+    atparse < ${PATHRT}/parm/ww3_shel.inp.IN > ww3_shel.inp
+  fi
 fi
 
 if [[ $DATM_CDEPS = 'true' ]] || [[ $S2S = 'true' ]]; then

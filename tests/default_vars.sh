@@ -1058,6 +1058,7 @@ export RUNTYPE=startup
 export CICERUNTYPE=initial
 export eps_imesh=1.0e-1
 export ATMTILESIZE=`expr $NPX - 1`
+export MULTIGRID=false
 
 # FV3 defaults
 export FRAC_GRID=.true.
@@ -1459,4 +1460,5 @@ export CPLMODE=hafs
 export RUNTYPE=startup
 export USE_COLDSTART=false
 export MESH_WAV=mesh.hafs.nc
+export MULTIGRID=false
 }
