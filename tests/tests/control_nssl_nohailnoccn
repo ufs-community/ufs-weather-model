@@ -1,0 +1,53 @@
+###############################################################################
+#
+#  global control nssl_nohailnoccn test: GFSv16 atmosphere only at C96L127
+#
+###############################################################################
+
+export TEST_DESCR="Compare global control nssl_nohailnoccn results with previous trunk version"
+
+export CNTL_DIR=control_nssl_nohailnoccn
+
+export LIST_FILES="sfcf000.nc \
+                   sfcf021.nc \
+                   sfcf024.nc \
+                   atmf000.nc \
+                   atmf021.nc \
+                   atmf024.nc \
+                   GFSFLX.GrbF00 \
+                   GFSFLX.GrbF21 \
+                   GFSFLX.GrbF24 \
+                   GFSPRS.GrbF00 \
+                   GFSPRS.GrbF21 \
+                   GFSPRS.GrbF24 "
+
+export_fv3
+export NPZ=127
+export NPZP=128
+export DT_ATMOS=720
+export SYEAR=2021
+export SMONTH=03
+export SDAY=22
+export SHOUR=06
+export RESTART_INTERVAL="12 -1"
+export OUTPUT_GRID='gaussian_grid'
+export NSTF_NAME='2,0,0,0,0'
+export WRITE_DOPOST=.true.
+export IAER=5111
+export OUTPUT_FH='0 21 24'
+
+
+export FV3_RUN=control_run.IN
+export CCPP_SUITE=FV3_GFS_v16_nssl
+export FIELD_TABLE=field_table_gfsv16_nssl_nohailnoccn
+export INPUT_NML=control.nml.IN
+export DNATS=0
+export NWAT=6
+export DO_SAT_ADJ=.false.
+export IMP_PHYSICS=17
+export NSSL_CCCN=0.6e9
+export NSSL_ALPHAH=0.0
+export NSSL_ALPHAHL=1.0
+export NSSL_HAIL_ON=.false.
+export NSSL_CCN_ON=.false.
+export NSSL_INVERTCCN=.true.
