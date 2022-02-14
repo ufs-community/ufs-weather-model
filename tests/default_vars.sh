@@ -270,6 +270,11 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   CHM_cpl_bmrk="0 287"; OPB_cpl_bmrk="312 431"; IPB_cpl_bmrk="432 479"; WPB_cpl_bmrk="480 559"
   NPROC_ICE_cpl_bmrk=48
 
+  TASKS_cpl_bmrk_aero=560; TPN_cpl_bmrk_aero=20; INPES_cpl_bmrk_aero=6; JNPES_cpl_bmrk_aero=8
+  THRD_cpl_bmrk_aero=2; WPG_cpl_bmrk_aero=24; MPB_cpl_bmrk_aero="0 287"; APB_cpl_bmrk_aero="0 311"
+  CHM_cpl_bmrk_aero="0 287"; OPB_cpl_bmrk_aero="312 431"; IPB_cpl_bmrk_aero="432 479"; WPB_cpl_bmrk_aero="480 559"
+  NPROC_ICE_cpl_bmrk_aero=48
+
   TASKS_cpl_bmrk_mpi=600; TPN_cpl_bmrk_mpi=40; INPES_cpl_bmrk_mpi=6; JNPES_cpl_bmrk_mpi=8
   THRD_cpl_bmrk_mpi=1; WPG_cpl_bmrk_mpi=24; MPB_cpl_bmrk_mpi="0 287"; APB_cpl_bmrk_mpi="0 311"
   OPB_cpl_bmrk_mpi="312 431"; IPB_cpl_bmrk_mpi="432 479"; WPB_cpl_bmrk_mpi="480 599"
