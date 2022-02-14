@@ -1212,7 +1212,8 @@ export CICE_HIST_AVG=.true.
 #wave
 export INPUT_CURFLD='T F     Currents'
 export INPUT_ICEFLD='T F     Ice concentrations'
-export WW3GRIDLINE="'glo_1deg'  'no' 'CPL:native' 'CPL:native' 'CPL:native' 'no' 'no' 'no' 'no' 'no'   1  1  0.00 1.00  F"
+export WW3GRIDLINE="'ww3'  'no' 'CPL:native' 'CPL:native' 'CPL:native' 'no' 'no' 'no' 'no' 'no'   1  1  0.00 1.00  F"
+export UNIPOINTS='ww3'
 export RUN_BEG="${SYEAR}${SMONTH}${SDAY} $(printf "%02d" $(( ${SHOUR}  )))0000"
 export RUN_END="2100${SMONTH}${SDAY} $(printf "%02d" $(( ${SHOUR}  )))0000"
 export OUT_BEG=$RUN_BEG
