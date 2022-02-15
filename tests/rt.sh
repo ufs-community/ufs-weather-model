@@ -248,7 +248,8 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   #ACCNR=fv3-cpu
   PARTITION=
   dprefix=/scratch1/NCEPDEV
-  DISKNM=$dprefix/nems/emc.nemspara/RT
+  DISKNM=/scratch2/BMC/wrfruc/RT
+  #DISKNM=$dprefix/nems/emc.nemspara/RT
   STMP=$dprefix/stmp4
   PTMP=$dprefix/stmp2
 
@@ -299,7 +300,7 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   COMPILE_QUEUE=batch
   ACCNR=${ACCNR:-h-nems}
   PARTITION=xjet
-  DISKNM=/lfs4/HFIP/h-nems/emc.nemspara/RT
+  DISKNM=/lfs4/BMC/wrfruc/RT
   dprefix=${dprefix:-/lfs4/HFIP/$ACCNR/$USER}
   STMP=${STMP:-$dprefix/RT_BASELINE}
   PTMP=${PTMP:-$dprefix/RT_RUNDIRS}
@@ -460,11 +461,11 @@ if [[ $TESTS_FILE =~ '35d' ]]; then
   TEST_35D=true
 fi
 
-BL_DATE=20211214
+BL_DATE=20220210
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]] || [[ $MACHINE_ID = s4.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/gsl-develop-${BL_DATE}/${RT_COMPILER^^}}
 else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}}
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/gsl-develop-${BL_DATE}}
 fi
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20211210}
