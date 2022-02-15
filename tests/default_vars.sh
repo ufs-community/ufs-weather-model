@@ -836,7 +836,7 @@ export CDMBWD_c768='4.0,0.15,1.0,1.0'
 #DT_INNER=(Time step)/2
 export DT_INNER_c96='350'
 export DT_INNER_c192='300'
-export DT_INNER_c384='120'
+export DT_INNER_c384='150'
 export DT_INNER_c768='75'
 
 # set default
