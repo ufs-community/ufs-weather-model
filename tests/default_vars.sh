@@ -1473,6 +1473,7 @@ export DLAT=0.03
 
 # input.nml
 export CPL_IMP_MRG=.true.
+
 export DIAG_TABLE=diag_table_hafs
 export FIELD_TABLE=field_table_hafs
 
@@ -1483,4 +1484,132 @@ export RESTART_N=${FHMAX}
 export CPLMODE=hafs
 export RUNTYPE=startup
 export USE_COLDSTART=false
+}
+
+export_hafs ()
+{
+export FV3=true
+export S2S=false
+export HAFS=true
+export DATM_CDEPS=false
+export DOCN_CDEPS=false
+export THRD=1
+export INPES=$INPES_dflt
+export JNPES=$JNPES_dflt
+export TASKS=$TASKS_dflt
+export TPN=$TPN_dflt
+
+export OUTPUT_GRID=''
+export IMO=''
+export JMO=''
+export CEN_LON=''
+export CEN_LAT=''
+export LON1=''
+export LAT1=''
+export LON2=''
+export LAT2=''
+export DLON=''
+export DLAT=''
+export STDLAT1=''
+export STDLAT2=''
+export NX=''
+export NY=''
+export DX=''
+export DY=''
+
+export OUTPUT_GRID_2=''
+export IMO_2=''
+export JMO_2=''
+export CEN_LON_2=''
+export CEN_LAT_2=''
+export LON1_2=''
+export LAT1_2=''
+export LON2_2=''
+export LAT2_2=''
+export DLON_2=''
+export DLAT_2=''
+export STDLAT1_2=''
+export STDLAT2_2=''
+export NX_2=''
+export NY_2=''
+export DX_2=''
+export DY_2=''
+
+export OUTPUT_GRID_3=''
+export IMO_3=''
+export JMO_3=''
+export CEN_LON_3=''
+export CEN_LAT_3=''
+export LON1_3=''
+export LAT1_3=''
+export LON2_3=''
+export LAT2_3=''
+export DLON_3=''
+export DLAT_3=''
+export STDLAT1_3=''
+export STDLAT2_3=''
+export NX_3=''
+export NY_3=''
+export DX_3=''
+export DY_3=''
+
+export OUTPUT_GRID_4=''
+export IMO_4=''
+export JMO_4=''
+export CEN_LON_4=''
+export CEN_LAT_4=''
+export LON1_4=''
+export LAT1_4=''
+export LON2_4=''
+export LAT2_4=''
+export DLON_4=''
+export DLAT_4=''
+export STDLAT1_4=''
+export STDLAT2_4=''
+export NX_4=''
+export NY_4=''
+export DX_4=''
+export DY_4=''
+
+export OUTPUT_GRID_5=''
+export IMO_5=''
+export JMO_5=''
+export CEN_LON_5=''
+export CEN_LAT_5=''
+export LON1_5=''
+export LAT1_5=''
+export LON2_5=''
+export LAT2_5=''
+export DLON_5=''
+export DLAT_5=''
+export STDLAT1_5=''
+export STDLAT2_5=''
+export NX_5=''
+export NY_5=''
+export DX_5=''
+export DY_5=''
+
+export OUTPUT_GRID_6=''
+export IMO_6=''
+export JMO_6=''
+export CEN_LON_6=''
+export CEN_LAT_6=''
+export LON1_6=''
+export LAT1_6=''
+export LON2_6=''
+export LAT2_6=''
+export DLON_6=''
+export DLAT_6=''
+export STDLAT1_6=''
+export STDLAT2_6=''
+export NX_6=''
+export NY_6=''
+export DX_6=''
+export DY_6=''
+
+export NFHOUT=3
+export NFHMAX_HF=-1
+export NFHOUT_HF=3
+export NSOUT=-1
+export OUTPUT_FH=-1
 }
