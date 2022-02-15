@@ -33,95 +33,12 @@
     prepend_date = .false.
 /
 
-<<<<<<< HEAD
 &external_ic_nml
     checker_tr = .false.
     filtered_terrain = .true.
     gfs_dwinds = .true.
     levp = 65
     nt_checker = 0
-=======
- &fv_core_nml
-       layout   =  @[INPES],@[JNPES]
-       io_layout = 1,1
-       npx      = 841
-       npy      = 601
-       ntiles   = 1,
-       npz    = 60
-       !grid_type = -1
-       make_nh = .true.
-       fv_debug = .false.
-       range_warn = .true.
-       reset_eta = .false.
-       n_sponge = 9
-       nudge_qv = .false.
-       tau = 5.0
-       rf_cutoff = 20.e2
-       d2_bg_k1 = 0.20
-       d2_bg_k2 = 0.04
-       kord_tm = -9
-       kord_mt =  9
-       kord_wz =  9
-       kord_tr =  9
-       hydrostatic = .false.
-       phys_hydrostatic = .false.
-       use_hydro_pressure = .false.
-       beta = 0.
-       a_imp = 1.
-       p_fac = 0.1
-       k_split  = 2
-       n_split  = 6
-       nwat = 6
-       na_init = 1
-       d_ext = 0.0
-       dnats = 0
-       fv_sg_adj = 300
-       d2_bg = 0.
-       nord =  2
-       dddmp = 0.1
-       d4_bg = 0.15
-       vtdm4 = 0.075
-       delt_max = 0.008
-       ke_bg = 0.
-       do_vort_damp = .true.
-       external_ic = .true.
-       external_eta = .true.
-       gfs_phil = .false.
-       nggps_ic = .true.
-       mountain = .false.
-       ncep_ic = .false.
-       d_con = 1.0
-       hord_mt =  6
-       hord_vt =  6
-       hord_tm =  6
-       hord_dp =  6
-       hord_tr =  10
-       adjust_dry_mass = .false.
-       consv_te = 0.
-       do_sat_adj = .false.
-       consv_am = .false.
-       fill = .true.
-       dwind_2d = .false.
-       print_freq = 6
-       warm_start = .false.
-       no_dycore = .false.
-       z_tracer = .true.
-       agrid_vel_rst = .true.
-       read_increment = .false.
-       res_latlon_dynamics = "fv3_increment.nc"
-
-       do_schmidt = .true.
-       target_lat = 35.5
-       target_lon = -97.5
-       stretch_fac = 1.5
-!!     nord_zs_filter = 4
-       n_zs_filter = 0
-       regional = .true.
-       bc_update_interval = 1
-       regional_bcs_from_gsi = .false.
-       write_restart_with_bcs = .false.
-       nrows_blend = 0
->>>>>>> c003557dc9f4029e37e931de28d7e7007aa8db7e
 /
 
 &fms_io_nml
@@ -158,7 +75,7 @@
     dwind_2d = .false.
     dz_min = 2
     external_eta = .true.
-    external_ic = .true.
+    external_ic = @[EXTERNAL_IC]
     fill = .true.
     full_zs_filter = .false.
     fv_debug = .false.
@@ -178,14 +95,14 @@
     kord_tr = 9
     kord_wz = 9
     layout = @[INPES],@[JNPES]
-    make_nh = .true.
-    mountain = .false.
+    make_nh = @[MAKE_NH]
+    mountain = @[MOUNTAIN]
     n_split = 5
     n_sponge = 24
     n_zs_filter = 0
-    na_init = 1
+    na_init = @[NA_INIT]
     ncep_ic = .false.
-    nggps_ic = .true.
+    nggps_ic = @[NGGPS_IC]
     no_dycore = .false.
     nord = 3
     nord_tr = 2
@@ -201,7 +118,7 @@
     print_freq = 6
     psm_bc = 1
     range_warn = .true.
-    read_increment = .false.
+    read_increment = @[READ_INCREMENT]
     regional = .true.
     regional_bcs_from_gsi = .false.
     res_latlon_dynamics = 'fv3_increment.nc'
@@ -213,8 +130,8 @@
     tau = 5.0
     use_hydro_pressure = .false.
     vtdm4 = 0.075
-    warm_start = .false.
-    write_restart_with_bcs = .false.
+    warm_start = @[WARM_START]
+    write_restart_with_bcs = @[WRITE_RESTART_WITH_BCS]
     z_tracer = .true.
 /
 
@@ -254,7 +171,7 @@
     iaer = 5111
     ialb = 1
     iau_delthrs = 6
-    iau_inc_files = ''
+    iau_inc_files = @[IAU_INC_FILES] 
     iaufhrs = 30
     icliq_sw = 2
     icloud_bl = 1
@@ -283,7 +200,7 @@
     ivegsrc = 1
     kice = 9
     ldiag3d = .false.
-    lheatstrg = .false.
+    lheatstrg = @[LHEATSTRG]
     lndp_each_step = .true.
     lndp_type = 0
     lradar = .true.
@@ -305,7 +222,7 @@
     prslrd0 = 0.0
     random_clds = .false.
     redrag = .true.
-    satmedmf = .false.
+    satmedmf = @[SATMEDMF]
     shal_cnv = .false.
     swhtr = .true.
     trans_trac = .true.
@@ -326,15 +243,15 @@
     lndp_var_list = 'smc', 'vgf'
 /
 
-&nam_sppperts
-    iseed_spp = @[ISEED_SPP]
-    spp_lscale = @[SPP_LSCALE]
-    spp_prt_list = @[SPP_PRT_LIST]
-    spp_sigtop1 = @[SPP_SIGTOP1]
-    spp_sigtop2 = @[SPP_SIGTOP2]
-    spp_stddev_cutoff = @[SPP_STDDEV_CUTOFF]
-    spp_tau = @[SPP_TAU]
-    spp_var_list = @[SPP_VAR_LIST]
+&nam_spperts
+    iseed_spp = 4, 4, 4, 4, 4
+    spp_lscale = 150000.0, 150000.0, 150000.0, 150000.0, 150000.0
+    spp_prt_list = 0.2, 0.2, 0.75, 0.2, 0.2
+    spp_sigtop1 = 0.1, 0.1, 0.1, 0.1, 0.1
+    spp_sigtop2 = 0.025, 0.025, 0.025, 0.025, 0.025
+    spp_stddev_cutoff = 1.5, 1.5, 2.5, 1.5, 1.5
+    spp_tau = 21600.0, 21600.0, 21600.0, 21600.0, 21600.0
+    spp_var_list = 'pbl', 'sfc', 'mp', 'rad', 'gwd'
 /
 
 &nam_stochy
