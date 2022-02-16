@@ -75,7 +75,7 @@
     dwind_2d = .false.
     dz_min = 2
     external_eta = .true.
-    external_ic = .true.
+    external_ic = @[EXTERNAL_IC]
     fill = .true.
     full_zs_filter = .false.
     fv_debug = .false.
@@ -95,14 +95,14 @@
     kord_tr = 9
     kord_wz = 9
     layout = @[INPES],@[JNPES]
-    make_nh = .true.
-    mountain = .false.
+    make_nh = @[MAKE_NH]
+    mountain = @[MOUNTAIN]
     n_split = 5
     n_sponge = 24
     n_zs_filter = 0
-    na_init = 1
+    na_init = @[NA_INIT]
     ncep_ic = .false.
-    nggps_ic = .true.
+    nggps_ic = @[NGGPS_IC]
     no_dycore = .false.
     nord = 3
     nord_tr = 2
@@ -118,7 +118,7 @@
     print_freq = 6
     psm_bc = 1
     range_warn = .true.
-    read_increment = .false.
+    read_increment = @[READ_INCREMENT]
     regional = .true.
     regional_bcs_from_gsi = .false.
     res_latlon_dynamics = 'fv3_increment.nc'
@@ -130,8 +130,8 @@
     tau = 5.0
     use_hydro_pressure = .false.
     vtdm4 = 0.075
-    warm_start = .false.
-    write_restart_with_bcs = .false.
+    warm_start = @[WARM_START]
+    write_restart_with_bcs = @[WRITE_RESTART_WITH_BCS]
     z_tracer = .true.
 /
 
@@ -171,7 +171,7 @@
     iaer = 5111
     ialb = 1
     iau_delthrs = 6
-    iau_inc_files = ''
+    iau_inc_files = @[IAU_INC_FILES] 
     iaufhrs = 30
     icliq_sw = 2
     icloud_bl = 1
@@ -200,7 +200,7 @@
     ivegsrc = 1
     kice = 9
     ldiag3d = .false.
-    lheatstrg = .false.
+    lheatstrg = @[LHEATSTRG]
     lndp_each_step = .true.
     lndp_type = 0
     lradar = .true.
@@ -222,7 +222,7 @@
     prslrd0 = 0.0
     random_clds = .false.
     redrag = .true.
-    satmedmf = .false.
+    satmedmf = @[SATMEDMF]
     shal_cnv = .false.
     swhtr = .true.
     trans_trac = .true.
