@@ -75,7 +75,7 @@
     dwind_2d = .false.
     dz_min = 2
     external_eta = .true.
-    external_ic = @[EXTERNAL_IC]
+    external_ic = .true.
     fill = .true.
     full_zs_filter = .false.
     fv_debug = .false.
@@ -95,14 +95,14 @@
     kord_tr = 9
     kord_wz = 9
     layout = @[INPES],@[JNPES]
-    make_nh = @[MAKE_NH]
-    mountain = @[MOUNTAIN]
+    make_nh = .true.
+    mountain = .false.
     n_split = 5
     n_sponge = 24
     n_zs_filter = 0
-    na_init = @[NA_INIT]
+    na_init = 1
     ncep_ic = .false.
-    nggps_ic = @[NGGPS_IC]
+    nggps_ic = .true.
     no_dycore = .false.
     nord = 3
     nord_tr = 2
@@ -118,7 +118,7 @@
     print_freq = 6
     psm_bc = 1
     range_warn = .true.
-    read_increment = @[READ_INCREMENT]
+    read_increment = .false.
     regional = .true.
     regional_bcs_from_gsi = .false.
     res_latlon_dynamics = 'fv3_increment.nc'
@@ -130,8 +130,8 @@
     tau = 5.0
     use_hydro_pressure = .false.
     vtdm4 = 0.075
-    warm_start = @[WARM_START]
-    write_restart_with_bcs = @[WRITE_RESTART_WITH_BCS]
+    warm_start = .false.
+    write_restart_with_bcs = .false.
     z_tracer = .true.
 /
 
@@ -171,7 +171,7 @@
     iaer = 5111
     ialb = 1
     iau_delthrs = 6
-    iau_inc_files = @[IAU_INC_FILES] 
+    iau_inc_files = ''
     iaufhrs = 30
     icliq_sw = 2
     icloud_bl = 1
@@ -200,7 +200,7 @@
     ivegsrc = 1
     kice = 9
     ldiag3d = .false.
-    lheatstrg = @[LHEATSTRG]
+    lheatstrg = .false.
     lndp_each_step = .true.
     lndp_type = 0
     lradar = .true.
@@ -222,7 +222,7 @@
     prslrd0 = 0.0
     random_clds = .false.
     redrag = .true.
-    satmedmf = @[SATMEDMF]
+    satmedmf = .false.
     shal_cnv = .false.
     swhtr = .true.
     trans_trac = .true.
@@ -243,15 +243,15 @@
     lndp_var_list = 'smc', 'vgf'
 /
 
-&nam_spperts
-    iseed_spp = 4, 4, 4, 4, 4
-    spp_lscale = 150000.0, 150000.0, 150000.0, 150000.0, 150000.0
-    spp_prt_list = 0.2, 0.2, 0.75, 0.2, 0.2
-    spp_sigtop1 = 0.1, 0.1, 0.1, 0.1, 0.1
-    spp_sigtop2 = 0.025, 0.025, 0.025, 0.025, 0.025
-    spp_stddev_cutoff = 1.5, 1.5, 2.5, 1.5, 1.5
-    spp_tau = 21600.0, 21600.0, 21600.0, 21600.0, 21600.0
-    spp_var_list = 'pbl', 'sfc', 'mp', 'rad', 'gwd'
+&nam_sppperts
+    iseed_spp = @[ISEED_SPP]
+    spp_lscale = @[SPP_LSCALE]
+    spp_prt_list = @[SPP_PRT_LIST]
+    spp_sigtop1 = @[SPP_SIGTOP1]
+    spp_sigtop2 = @[SPP_SIGTOP2]
+    spp_stddev_cutoff = @[SPP_STDDEV_CUTOFF]
+    spp_tau = @[SPP_TAU]
+    spp_var_list = @[SPP_VAR_LIST]
 /
 
 &nam_stochy
