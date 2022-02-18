@@ -187,8 +187,8 @@ elif [[ $MACHINE_ID = orion.* ]]; then
   CHM_cpl_dflt="0 143"; OPB_cpl_dflt="150 169"; IPB_cpl_dflt="170 179"; WPB_cpl_dflt="180 199"
   NPROC_ICE_cpl_dflt=10
 
-  TASKS_cpl_thrd=120; TPN_cpl_thrd=20; INPES_cpl_thrd=3; JNPES_cpl_thrd=4
-  THRD_cpl_thrd=2; WPG_cpl_thrd=6;  MPB_cpl_thrd="0 71"; APB_cpl_thrd="0 77"
+  TASKS_cpl_thrd=120; TPN_cpl_thrd=10; INPES_cpl_thrd=3; JNPES_cpl_thrd=4
+  THRD_cpl_thrd=4; WPG_cpl_thrd=6;  MPB_cpl_thrd="0 71"; APB_cpl_thrd="0 77"
   CHM_cpl_thrd="0 71"; OPB_cpl_thrd="78 97"; IPB_cpl_thrd="98 107"; WPB_cpl_thrd="108 119"
   NPROC_ICE_cpl_thrd=10
 
