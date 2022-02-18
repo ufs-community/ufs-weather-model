@@ -39,8 +39,8 @@ LND_petlist_bounds:             @[lnd_petlist_bounds]
 LND_attributes::
   Verbosity = 1
   Diagnostic = 0
-  mosaic_lnd = INPUT/grid_spec.nc
-  mosaic_tile_dir = INPUT/
+  mosaic_file = INPUT/C96_mosaic.nc
+  input_dir = INPUT/
   layout = @[layout_x]:@[layout_y] # need to be consistent with number of PEs
   num_soil_levels = 4
   forcing_height = 10
@@ -60,7 +60,7 @@ LND_attributes::
   soil_temp_time_scheme_option = 3
   surface_evap_resistance_option = 1
   glacier_option = 1
-  output_freq = 6
+  output_freq = 1
 ::
 
 # cold
@@ -89,7 +89,7 @@ ALLCOMP_attributes::
   ScalarFieldIdxGridNY = 2
   ScalarFieldIdxNextSwCday = 3 # required for data atmosphere configurations
   ScalarFieldName = cpl_scalars
-  start_type = startup
+  start_type = @[RUNTYPE]
   restart_dir = RESTART/
   case_name = ufs.cpld
   restart_n = 12
@@ -108,4 +108,5 @@ ALLCOMP_attributes::
   stop_n = @[FHMAX]
   stop_option = nhours
   stop_ymd = -999
+  read_restart = @[READRESTART] 
 ::
