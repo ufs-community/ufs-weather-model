@@ -51,9 +51,9 @@ rt_single() {
       tmp_test=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
       if [[ $SINGLE_NAME == $tmp_test && $compile_line != '' ]]; then
         echo $compile_line >$TESTS_FILE
-        dep_test=$(echo $line | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
+        dep_test=$(echo $line | grep -w $tmp_test | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
         if [[ $dep_test != '' ]]; then
-          dep_line=$(cat rt.conf | grep "$dep_test" | grep -v "$tmp_test")
+          dep_line=$(cat rt.conf | grep -w "$dep_test" | grep -v "$tmp_test")
           dep_line="${dep_line#"${dep_line%%[![:space:]]*}"}"
           echo $dep_line >>$TESTS_FILE
         fi
