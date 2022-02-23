@@ -808,6 +808,7 @@ export JCHUNK3D=0
 export KCHUNK3D=0
 export IMO=384
 export JMO=190
+export WRITE_NSFLIP=.false.
 
 #input file
 export DIAG_TABLE=diag_table_gfsv16
@@ -1068,6 +1069,8 @@ export FHMAX=24
 export FDIAG=6
 export FHZERO=6
 
+export WRITE_NSFLIP=.true.
+
 # default atm/ocn/ice resolution
 export ATMRES=C96
 export OCNRES=100
@@ -1319,6 +1322,7 @@ export FHMAX=24
 export THRD=1
 export FHROT=0
 export WARM_START=.false.
+export WRITE_NSFLIP=.false.
 
 # atm/ocn/ice resolution
 export IATM=1760
