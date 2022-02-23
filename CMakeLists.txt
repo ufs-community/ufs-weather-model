@@ -16,7 +16,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules/Modules)
 ###############################################################################
 
 # Valid applications and choices
-list(APPEND VALID_APPS ATM ATMAERO ATMW S2S S2SW HAFS HAFSW HAFS-ALL NG-GODAS NG-GODAS-NEMSDATM)
+list(APPEND VALID_APPS ATM ATMAERO ATMW S2S S2SW HAFS HAFSW HAFS-ALL NG-GODAS)
 set(APP NONE CACHE BOOL "Application Name")
 if(NOT (APP IN_LIST VALID_APPS))
   message(FATAL_ERROR "${APP} is not a valid application.\nValid Applications are: ${VALID_APPS}")
@@ -30,7 +30,6 @@ set(HYCOM           OFF CACHE BOOL "Enable HYCOM")
 set(CICE6           OFF CACHE BOOL "Enable CICE6")
 set(WW3             OFF CACHE BOOL "Enable WW3")
 set(STOCH_PHYS      OFF CACHE BOOL "Enable Stochastic Physics")
-set(NEMSdatm        OFF CACHE BOOL "Enable NEMSdatm")
 set(CMEPS           OFF CACHE BOOL "Enable CMEPS")
 set(CDEPS           OFF CACHE BOOL "Enable CDEPS")
 
@@ -47,7 +46,6 @@ message("HYCOM ............ ${HYCOM}")
 message("CICE6 ............ ${CICE6}")
 message("WW3 .............. ${WW3}")
 message("STOCH_PHYS ....... ${STOCH_PHYS}")
-message("NEMSdatm ......... ${NEMSdatm}")
 message("CDEPS ............ ${CDEPS}")
 message("CMEPS ............ ${CMEPS}")
 
@@ -186,12 +184,8 @@ if(CMEPS)
 endif()
 
 ###############################################################################
-### Data Components [NEMSdatm, CDEPS]
+### Data Components [CDEPS]
 ###############################################################################
-if(NEMSdatm)
-  add_subdirectory(DATM/DATM)
-endif()
-
 if(CDEPS)
   add_subdirectory(CDEPS-interface)
 endif()
@@ -224,12 +218,6 @@ list(APPEND _ufs_libs_public esmf)
 
 if(STOCH_PHYS)
   list(APPEND _ufs_libs_public stochastic_physics)
-endif()
-
-if(NEMSdatm)
-  add_dependencies(ufs datatm)
-  list(APPEND _ufs_defs_private FRONT_NEMS_DATM=datm)
-  list(APPEND _ufs_libs_public datatm)
 endif()
 
 if(FV3)

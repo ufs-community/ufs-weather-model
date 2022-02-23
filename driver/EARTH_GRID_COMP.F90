@@ -46,9 +46,6 @@
 #ifdef FRONT_FV3
       use FRONT_FV3,        only: FV3_SS   => SetServices
 #endif
-#ifdef FRONT_NEMS_DATM
-      use FRONT_NEMS_DATM,  only: DATM_SS  => SetServices
-#endif
 #ifdef FRONT_CDEPS_DATM
       use FRONT_CDEPS_DATM, only: DATM_SS  => SetServices
 #endif
@@ -57,18 +54,21 @@
       use FRONT_HYCOM,      only: HYCOM_SS  => SetServices
 #endif
 #ifdef FRONT_MOM6
-      use FRONT_MOM6,       only: MOM6_SS   => SetServices
+      use FRONT_MOM6,       only: MOM6_SS   => SetServices, &
+                                  MOM6_SV   => SetVM
 #endif
 #ifdef FRONT_CDEPS_DOCN
       use FRONT_CDEPS_DOCN, only: DOCN_SS  => SetServices
 #endif
   ! - Handle build time ICE options:
 #ifdef FRONT_CICE6
-      use FRONT_CICE6,      only: CICE6_SS => SetServices
+      use FRONT_CICE6,      only: CICE6_SS => SetServices, &
+                                  CICE6_SV => SetVM
 #endif
   ! - Handle build time WAV options:
 #ifdef FRONT_WW3
-      use FRONT_WW3,        only: WW3_SS  => SetServices
+      use FRONT_WW3,        only: WW3_SS  => SetServices, &
+                                  WW3_SV  => SetVM
 #endif
   ! - Handle build time LND options:
 #ifdef FRONT_NOAH
@@ -87,7 +87,8 @@
 #endif
   ! - Mediator
 #ifdef FRONT_CMEPS
-      use MED,              only: MED_SS     => SetServices
+      use MED,              only: MED_SS     => SetServices, &
+                                  MED_SV     => SetVM
 #endif
 !
 !-----------------------------------------------------------------------
@@ -229,12 +230,14 @@
         character(ESMF_MAXSTR)          :: name
         type(ESMF_GridComp)             :: comp
         type(ESMF_Config)               :: config
+        type(ESMF_Info)                 :: info
         character(len=32), allocatable  :: compLabels(:)
         integer, allocatable            :: petList(:)
         character(len=10)               :: value
         character(len=20)               :: model, prefix
         character(len=160)              :: msg
         integer                         :: petListBounds(2)
+        integer                         :: ompNumThreads
         integer                         :: componentCount
         type(NUOPC_FreeFormat)          :: attrFF, fdFF
         logical                         :: found_comp
@@ -335,17 +338,42 @@
             petList(j-petListBounds(1)+1) = j ! PETs are 0 based
           enddo
 
+! *** read in number of OpenMP threads for this component
+          call ESMF_ConfigGetAttribute(config, ompNumThreads, &
+            label=trim(prefix)//"_omp_num_threads:", default=-1, rc=rc)
+          if (ChkErr(rc,__LINE__,u_FILE_u)) return
+
+! *** create info object
+          info = ESMF_InfoCreate(rc=rc)
+          if (ChkErr(rc,__LINE__,u_FILE_u)) return
+
+! *** set up PePerPet NUOPC hints
+          if (ompNumThreads /= -1) then
+            call ESMF_InfoSet(info, key="/NUOPC/Hint/PePerPet/MaxCount", &
+              value=ompNumThreads, rc=rc)
+            if (ChkErr(rc,__LINE__,u_FILE_u)) return
+          endif
+
           found_comp = .false.
 #ifdef FRONT_FV3
           if (trim(model) == "fv3") then
             call NUOPC_DriverAddComp(driver, trim(prefix), FV3_SS, &
-              petList=petList, comp=comp, rc=rc)
+              info=info, petList=petList, comp=comp, rc=rc)
             if (ChkErr(rc,__LINE__,u_FILE_u)) return
             found_comp = .true.
           end if
 #endif
-#if defined FRONT_NEMS_DATM || defined FRONT_CDEPS_DATM
-          if (trim(model) == "nems_datm" .or. trim(model) == "datm" ) then
+#if defined FRONT_CDEPS_DATM
+          if (trim(model) == "datm" ) then
+            !TODO: Remove bail code and pass info and SetVM to DriverAddComp
+            !TODO: once component supports threading.
+            if (ompNumThreads > 1) then
+              write (msg, *) "ESMF-aware threading NOT implemented for model: "//&
+                trim(model)
+              call ESMF_LogSetError(ESMF_RC_NOT_VALID, msg=msg, line=__LINE__, &
+                file=__FILE__, rcToReturn=rc)
+              return  ! bail out
+            endif
             call NUOPC_DriverAddComp(driver, trim(prefix), DATM_SS, &
               petList=petList, comp=comp, rc=rc)
             if (ChkErr(rc,__LINE__,u_FILE_u)) return
@@ -354,6 +382,15 @@
 #endif
 #ifdef FRONT_HYCOM
           if (trim(model) == "hycom") then
+            !TODO: Remove bail code and pass info and SetVM to DriverAddComp
+            !TODO: once component supports threading.
+            if (ompNumThreads > 1) then
+              write (msg, *) "ESMF-aware threading NOT implemented for model: "//&
+                trim(model)
+              call ESMF_LogSetError(ESMF_RC_NOT_VALID, msg=msg, line=__LINE__, &
+                file=__FILE__, rcToReturn=rc)
+              return  ! bail out
+            endif
             call NUOPC_DriverAddComp(driver, trim(prefix), HYCOM_SS, &
               petList=petList, comp=comp, rc=rc)
             if (ChkErr(rc,__LINE__,u_FILE_u)) return
@@ -363,13 +400,22 @@
 #ifdef FRONT_MOM6
           if (trim(model) == "mom6") then
             call NUOPC_DriverAddComp(driver, trim(prefix), MOM6_SS, &
-              petList=petList, comp=comp, rc=rc)
+               MOM6_SV, info=info, petList=petList, comp=comp, rc=rc)
             if (ChkErr(rc,__LINE__,u_FILE_u)) return
             found_comp = .true.
           end if
 #endif
 #ifdef FRONT_CDEPS_DOCN
           if (trim(model) == "docn") then
+            !TODO: Remove bail code and pass info and SetVM to DriverAddComp
+            !TODO: once component supports threading.
+            if (ompNumThreads > 1) then
+              write (msg, *) "ESMF-aware threading NOT implemented for model: "//&
+                trim(model)
+              call ESMF_LogSetError(ESMF_RC_NOT_VALID, msg=msg, line=__LINE__, &
+                file=__FILE__, rcToReturn=rc)
+              return  ! bail out
+            endif
             call NUOPC_DriverAddComp(driver, trim(prefix), DOCN_SS, &
               petList=petList, comp=comp, rc=rc)
             if (ChkErr(rc,__LINE__,u_FILE_u)) return
@@ -379,7 +425,7 @@
 #ifdef FRONT_CICE6
           if (trim(model) == "cice6") then
             call NUOPC_DriverAddComp(driver, trim(prefix), CICE6_SS, &
-              petList=petList, comp=comp, rc=rc)
+              CICE6_SV, info=info, petList=petList, comp=comp, rc=rc)
             if (ChkErr(rc,__LINE__,u_FILE_u)) return
             found_comp = .true.
           end if
@@ -387,13 +433,22 @@
 #ifdef FRONT_WW3
           if (trim(model) == "ww3") then
             call NUOPC_DriverAddComp(driver, trim(prefix), WW3_SS, &
-              petList=petList, comp=comp, rc=rc)
+              WW3_SV, info=info, petList=petList, comp=comp, rc=rc)
             if (ChkErr(rc,__LINE__,u_FILE_u)) return
             found_comp = .true.
           end if
 #endif
 #ifdef FRONT_NOAH
           if (trim(model) == "noah") then
+            !TODO: Remove bail code and pass info and SetVM to DriverAddComp
+            !TODO: once component supports threading.
+            if (ompNumThreads > 1) then
+              write (msg, *) "ESMF-aware threading NOT implemented for model: "//&
+                trim(model)
+              call ESMF_LogSetError(ESMF_RC_NOT_VALID, msg=msg, line=__LINE__, &
+                file=__FILE__, rcToReturn=rc)
+              return  ! bail out
+            endif
             call NUOPC_DriverAddComp(driver, trim(prefix), NOAH_SS, &
               petList=petList, comp=comp, rc=rc)
             if (ChkErr(rc,__LINE__,u_FILE_u)) return
@@ -402,6 +457,15 @@
 #endif
 #ifdef FRONT_LIS
           if (trim(model) == "lis") then
+            !TODO: Remove bail code and pass info and SetVM to DriverAddComp
+            !TODO: once component supports threading.
+            if (ompNumThreads > 1) then
+              write (msg, *) "ESMF-aware threading NOT implemented for model: "//&
+                trim(model)
+              call ESMF_LogSetError(ESMF_RC_NOT_VALID, msg=msg, line=__LINE__, &
+                file=__FILE__, rcToReturn=rc)
+              return  ! bail out
+            endif
             call NUOPC_DriverAddComp(driver, trim(prefix), LIS_SS, &
               petList=petList, comp=comp, rc=rc)
             if (ChkErr(rc,__LINE__,u_FILE_u)) return
@@ -410,6 +474,15 @@
 #endif
 #ifdef FRONT_IPE
           if (trim(model) == "ipe") then
+            !TODO: Remove bail code and pass info and SetVM to DriverAddComp
+            !TODO: once component supports threading.
+            if (ompNumThreads > 1) then
+              write (msg, *) "ESMF-aware threading NOT implemented for model: "//&
+                trim(model)
+              call ESMF_LogSetError(ESMF_RC_NOT_VALID, msg=msg, line=__LINE__, &
+                file=__FILE__, rcToReturn=rc)
+              return  ! bail out
+            endif
             call NUOPC_DriverAddComp(driver, trim(prefix), IPE_SS, &
               petList=petList, comp=comp, rc=rc)
             if (ChkErr(rc,__LINE__,u_FILE_u)) return
@@ -418,6 +491,15 @@
 #endif
 #ifdef FRONT_GOCART
           if (trim(model) == "gocart") then
+            !TODO: Remove bail code and pass info and SetVM to DriverAddComp
+            !TODO: once component supports threading.
+            if (ompNumThreads > 1) then
+              write (msg, *) "ESMF-aware threading NOT implemented for model: "//&
+                trim(model)
+              call ESMF_LogSetError(ESMF_RC_NOT_VALID, msg=msg, line=__LINE__, &
+                file=__FILE__, rcToReturn=rc)
+              return  ! bail out
+            endif
             call NUOPC_DriverAddComp(driver, trim(prefix), GOCART_SS, &
               petList=petList, comp=comp, rc=rc)
             if (ChkErr(rc,__LINE__,u_FILE_u)) return
@@ -427,7 +509,7 @@
 #ifdef FRONT_CMEPS
           if (trim(model) == "cmeps") then
             call NUOPC_DriverAddComp(driver, trim(prefix), MED_SS, &
-              petList=petList, comp=comp, rc=rc)
+               MED_SV, info=info, petList=petList, comp=comp, rc=rc)
             if (ChkErr(rc,__LINE__,u_FILE_u)) return
             found_comp = .true.
           end if
@@ -444,6 +526,8 @@
 
           ! clean-up
           deallocate(petList)
+          call ESMF_InfoDestroy(info, rc=rc)
+          if (ChkErr(rc,__LINE__,u_FILE_u)) return
         enddo
 
         ! clean-up
