@@ -125,7 +125,7 @@ if(EXISTS ${FV3_PATH})
   if(return_code EQUAL 0)
      message (STATUS "CCPP prebuild step completed successfully")
   else(return_code EQUAL 0)
-     message (FATAL_ERROR "CCPP prebuild step failed, check ccpp_prebuild.out/ccpp_prebuild.err")
+     message (FATAL_ERROR "CCPP prebuild step failed, check ${CMAKE_CURRENT_BINARY_DIR}/ccpp_prebuild.{out,err}")
   endif(return_code EQUAL 0)
 
   ### Add extra driver file to the source

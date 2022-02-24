@@ -38,7 +38,7 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
 
   TASKS_cpl_dflt=196; TPN_cpl_dflt=28; INPES_cpl_dflt=3; JNPES_cpl_dflt=8
   THRD_cpl_dflt=1; WPG_cpl_dflt=6;  MPB_cpl_dflt="0 143"; APB_cpl_dflt="0 149"
-  OPB_cpl_dflt="150 169"; IPB_cpl_dflt="170 177"; WPB_cpl_dflt="178 195"  
+  OPB_cpl_dflt="150 169"; IPB_cpl_dflt="170 177"; WPB_cpl_dflt="178 195"
   NPROC_ICE_cpl_dflt=8
 
   TASKS_cpl_thrd=120; TPN_cpl_thrd=14; INPES_cpl_thrd=3; JNPES_cpl_thrd=4
@@ -174,7 +174,7 @@ elif [[ $MACHINE_ID = orion.* ]]; then
 
   TASKS_cpl_dflt=200; TPN_cpl_dflt=40; INPES_cpl_dflt=3; JNPES_cpl_dflt=8
   THRD_cpl_dflt=1; WPG_cpl_dflt=6;  MPB_cpl_dflt="0 143"; APB_cpl_dflt="0 149"
-  OPB_cpl_dflt="150 169"; IPB_cpl_dflt="170 179"; WPB_cpl_dflt="180 199"  
+  OPB_cpl_dflt="150 169"; IPB_cpl_dflt="170 179"; WPB_cpl_dflt="180 199"
   NPROC_ICE_cpl_dflt=10
 
   TASKS_cpl_thrd=120; TPN_cpl_thrd=20; INPES_cpl_thrd=3; JNPES_cpl_thrd=4
@@ -744,6 +744,7 @@ export RESTART_INTERVAL=0
 export QUILTING=.true.
 export WRITE_GROUP=1
 export WRTTASK_PER_GROUP=6
+export ITASKS=1
 export OUTPUT_HISTORY=.true.
 export WRITE_DOPOST=.false.
 export NUM_FILES=2
@@ -936,6 +937,7 @@ export LNDP_PRT_LIST=-999
 #IAU
 export IAU_INC_FILES="''"
 
+export FH_DFI_RADAR='-2e10'
 
 #Cellular automata
 export DO_CA=.false.
@@ -1060,7 +1062,7 @@ export ATMTILESIZE=`expr $NPX - 1`
 
 # FV3 defaults
 export FRAC_GRID=.true.
-export CCPP_SUITE=FV3_GFS_v16_coupled_nsstNoahmpUGWPv1
+export CCPP_SUITE=FV3_GFS_v16_coupled_p8
 export INPUT_NML=cpld_control.nml.IN
 export FIELD_TABLE=field_table_gfsv16
 export DIAG_TABLE=diag_table_template
@@ -1071,7 +1073,7 @@ export FHROT=0
 export NSOUT=-1
 export OUTPUT_FH='6 -1'
 
-#P7 default
+# P7 default
 export IALB=2
 export IEMS=2
 export LSM=2
@@ -1080,13 +1082,15 @@ export IOPT_CRS=2
 export IOPT_RAD=3
 export IOPT_ALB=1
 export IOPT_STC=3
+# P8
+export IOPT_SFC=3
 
 # FV3 P7 settings
 export D2_BG_K1=0.20
 export D2_BG_K2=0.04
 export DZ_MIN=2
 export PSM_BC=1
-export DDDMP=0.2
+export DDDMP=0.1
 
 # P7 Merra2 Aerosols & NSST
 export USE_MERRA2=.true.
@@ -1108,6 +1112,7 @@ export DO_GSL_DRAG_TOFD=.true.
 export DO_UGWP_V1_OROG_ONLY=.false.
 export DO_UGWP_V0_NST_ONLY=.false.
 export LDIAG_UGWP=.false.
+export CDMBWD='1.0,2.2,1.0,1.0'
 
 # P7 CA
 export DO_CA=.true.
@@ -1138,7 +1143,10 @@ export FNSLPC="'C96.slope_type.tileX.nc'"
 export FNABSC="'C96.maximum_snow_albedo.tileX.nc'"
 export LANDICE=".false."
 export FSICL=99999
-export USE_CICE_ALB=.false.
+
+# P8
+export USE_CICE_ALB=.true.
+export MIN_SEAICE=1.0e-6
 
 # P7 default mushy thermo
 export KTHERM=2
@@ -1150,7 +1158,6 @@ export CPL=.true.
 export CPLWAV=.true.
 export CPLWAV2ATM=.true.
 export USE_MED_FLUX=.false.
-export MIN_SEAICE=1.0e-11
 
 # for FV3: default values will be changed if doing a warm-warm restart
 export WARM_START=.false.
@@ -1437,6 +1444,7 @@ export DLAT=0.03
 
 # input.nml
 export CPL_IMP_MRG=.true.
+
 export DIAG_TABLE=diag_table_hafs
 export FIELD_TABLE=field_table_hafs
 
@@ -1447,4 +1455,132 @@ export RESTART_N=${FHMAX}
 export CPLMODE=hafs
 export RUNTYPE=startup
 export USE_COLDSTART=false
+}
+
+export_hafs ()
+{
+export FV3=true
+export S2S=false
+export HAFS=true
+export DATM_CDEPS=false
+export DOCN_CDEPS=false
+export THRD=1
+export INPES=$INPES_dflt
+export JNPES=$JNPES_dflt
+export TASKS=$TASKS_dflt
+export TPN=$TPN_dflt
+
+export OUTPUT_GRID=''
+export IMO=''
+export JMO=''
+export CEN_LON=''
+export CEN_LAT=''
+export LON1=''
+export LAT1=''
+export LON2=''
+export LAT2=''
+export DLON=''
+export DLAT=''
+export STDLAT1=''
+export STDLAT2=''
+export NX=''
+export NY=''
+export DX=''
+export DY=''
+
+export OUTPUT_GRID_2=''
+export IMO_2=''
+export JMO_2=''
+export CEN_LON_2=''
+export CEN_LAT_2=''
+export LON1_2=''
+export LAT1_2=''
+export LON2_2=''
+export LAT2_2=''
+export DLON_2=''
+export DLAT_2=''
+export STDLAT1_2=''
+export STDLAT2_2=''
+export NX_2=''
+export NY_2=''
+export DX_2=''
+export DY_2=''
+
+export OUTPUT_GRID_3=''
+export IMO_3=''
+export JMO_3=''
+export CEN_LON_3=''
+export CEN_LAT_3=''
+export LON1_3=''
+export LAT1_3=''
+export LON2_3=''
+export LAT2_3=''
+export DLON_3=''
+export DLAT_3=''
+export STDLAT1_3=''
+export STDLAT2_3=''
+export NX_3=''
+export NY_3=''
+export DX_3=''
+export DY_3=''
+
+export OUTPUT_GRID_4=''
+export IMO_4=''
+export JMO_4=''
+export CEN_LON_4=''
+export CEN_LAT_4=''
+export LON1_4=''
+export LAT1_4=''
+export LON2_4=''
+export LAT2_4=''
+export DLON_4=''
+export DLAT_4=''
+export STDLAT1_4=''
+export STDLAT2_4=''
+export NX_4=''
+export NY_4=''
+export DX_4=''
+export DY_4=''
+
+export OUTPUT_GRID_5=''
+export IMO_5=''
+export JMO_5=''
+export CEN_LON_5=''
+export CEN_LAT_5=''
+export LON1_5=''
+export LAT1_5=''
+export LON2_5=''
+export LAT2_5=''
+export DLON_5=''
+export DLAT_5=''
+export STDLAT1_5=''
+export STDLAT2_5=''
+export NX_5=''
+export NY_5=''
+export DX_5=''
+export DY_5=''
+
+export OUTPUT_GRID_6=''
+export IMO_6=''
+export JMO_6=''
+export CEN_LON_6=''
+export CEN_LAT_6=''
+export LON1_6=''
+export LAT1_6=''
+export LON2_6=''
+export LAT2_6=''
+export DLON_6=''
+export DLAT_6=''
+export STDLAT1_6=''
+export STDLAT2_6=''
+export NX_6=''
+export NY_6=''
+export DX_6=''
+export DY_6=''
+
+export NFHOUT=3
+export NFHMAX_HF=-1
+export NFHOUT_HF=3
+export NSOUT=-1
+export OUTPUT_FH=-1
 }

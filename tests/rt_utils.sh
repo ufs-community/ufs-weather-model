@@ -5,6 +5,10 @@ if [[ "$0" = "${BASH_SOURCE[0]}" ]]; then
   exit 1
 fi
 
+# Note: this file must only contain subroutines, and variables that
+# are not dependent on the caller. Most regression test variables
+# (such as ACCNR) are not set until after rt.sh sources this file.
+
 OPNREQ_TEST=${OPNREQ_TEST:-false}
 
 qsub_id=0
@@ -554,9 +558,9 @@ ecflow_run() {
     echo "ecflow_server is NOT running on ${ECF_HOST}:${ECF_PORT}"
     if [[ ${MACHINE_ID} == wcoss2 ]]; then
       # Annoying "Has NCO assigned port $ECF_PORT for use by this account? (yes/no) ".
-      echo yes | ${ECFLOW_START} -p ${ECF_PORT}
+      echo yes | ${ECFLOW_START} -p ${ECF_PORT} -d ${RUNDIR_ROOT}/ecflow_server
     else
-      ${ECFLOW_START} -p ${ECF_PORT}
+      ${ECFLOW_START} -p ${ECF_PORT} -d ${RUNDIR_ROOT}/ecflow_server
     fi
   else
     echo "ecflow_server is already running on ${ECF_HOST}:${ECF_PORT}"
