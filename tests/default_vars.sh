@@ -1221,7 +1221,7 @@ export FSICS=0
 # P8
 export USE_CICE_ALB=.true.
 export MIN_SEAICE=1.0e-6
-export DNATS=0
+export DNATS=2
 export IMP_PHYSICS=8
 export LGFDLMPRAD=.false. 
 export DO_SAT_ADJ=.false.
