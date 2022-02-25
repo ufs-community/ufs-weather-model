@@ -85,17 +85,15 @@ if(EXISTS ${FV3_PATH})
   ### Set environment variable for FV3 directory, used by config file
   set(ENV{FV3_PATH} ${FV3_PATH})
 
-  ### Parse CMAKE_FLAGS variable to get CCPP suites
-  set(CMAKE_FLAGS_LIST $ENV{CMAKE_FLAGS}) 
-  separate_arguments(CMAKE_FLAGS_LIST)
-  foreach(myflag ${CMAKE_FLAGS_LIST})
-    if(${myflag} MATCHES "-DCCPP_SUITES*")
-      string(REGEX REPLACE "-DCCPP_SUITES=" "" CCPP_SUITES ${myflag})
-      #set(_ccpp_suites_arg "--suites=${CCPP_SUITES}")
-      #set(_ccpp_suites_arg "--suites=FV3_GFS_v16_coupled_med_NoahmpUGWPv1")
-      set(_ccpp_suites_arg "--suites=FV3_sfc_ocean")
-    endif()
+  ### Look for CMEPS CCPP suites and get list of them to provide CCPP preprocessor
+  set(_ccpp_suites_arg "--suites=")
+  FILE(GLOB FILES "CMEPS/ufs/ccpp/suites/*.xml")
+  foreach(MYFILE ${FILES})
+    get_filename_component(TMPVAR ${MYFILE} NAME_WE)
+    string(REGEX REPLACE "suite_" "" CCPP_SUITE ${TMPVAR})
+    set(_ccpp_suites_arg "${_ccpp_suites_arg}${CCPP_SUITE},")
   endforeach()
+  string(REGEX REPLACE ",$" "" _ccpp_suites_arg ${_ccpp_suites_arg})
 
   ### Set options for ccpp_prebuild.py
   if(DEBUG)
