@@ -301,8 +301,8 @@ elif [[ $MACHINE_ID = jet.* ]]; then
 
   export PATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/bin:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/bin:$PATH
   export PYTHONPATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/lib/python3.8/site-packages
-  ssh tfe1 -t 'bash -l -c "module load ecflow && ecflow_stop.sh || true && ecflow_start.sh"'
   module load ecflow
+  ssh $ECF_HOST -t 'bash -l -c "module load ecflow && ecflow_stop.sh || true && ecflow_start.sh"'
   ECFLOW_START=/apps/ecflow/5.5.3/bin/ecflow_start.sh
 
   QUEUE=batch
