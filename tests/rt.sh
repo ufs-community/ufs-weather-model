@@ -51,6 +51,12 @@ rt_single() {
       tmp_test=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
       if [[ $SINGLE_NAME == $tmp_test && $compile_line != '' ]]; then
         echo $compile_line >$TESTS_FILE
+        dep_test=$(echo $line | grep -w $tmp_test | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
+        if [[ $dep_test != '' ]]; then
+          dep_line=$(cat rt.conf | grep -w "$dep_test" | grep -v "$tmp_test")
+          dep_line="${dep_line#"${dep_line%%[![:space:]]*}"}"
+          echo $dep_line >>$TESTS_FILE
+        fi
         echo $line >>$TESTS_FILE
         break
       fi
@@ -249,7 +255,7 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   QUEUE=batch
   COMPILE_QUEUE=batch
 
-  #ACCNR="${ACCNR:-fv3-cpu}  
+  #ACCNR="${ACCNR:-fv3-cpu}
   PARTITION=
   dprefix=/scratch1/NCEPDEV
   DISKNM=$dprefix/nems/emc.nemspara/RT
@@ -479,7 +485,7 @@ if [[ $TESTS_FILE =~ '35d' ]] || [[ $TESTS_FILE =~ 'weekly' ]]; then
   TEST_35D=true
 fi
 
-BL_DATE=20220215
+BL_DATE=20220222
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]] || [[ $MACHINE_ID = s4.* ]]; then
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
 else
