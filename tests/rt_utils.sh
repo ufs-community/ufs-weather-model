@@ -549,7 +549,7 @@ ecflow_run() {
   # in rare instances when UID is greater then 58500 (like Ratko's UID on theia)
   [[ $ECF_PORT -gt 49151 ]] && ECF_PORT=12179
 
-  ECF_HOST=$( hostname )
+  ECF_HOST="${ECF_HOST:-$HOSTNAME}"
 
   set +e
   ecflow_client --ping --host=${ECF_HOST} --port=${ECF_PORT}
