@@ -1322,7 +1322,7 @@ export FHMAX=24
 export THRD=1
 export FHROT=0
 export WARM_START=.false.
-export WRITE_NSFLIP=.false.
+export WRITE_NSFLIP=.true.
 
 # atm/ocn/ice resolution
 export IATM=1760
