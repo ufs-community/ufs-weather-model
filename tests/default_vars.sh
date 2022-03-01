@@ -1130,7 +1130,7 @@ export FRAC_GRID=.true.
 export CCPP_SUITE=FV3_GFS_v17_coupled_p8
 export INPUT_NML=cpld_control.nml.IN
 export FIELD_TABLE=field_table_thompson_noaero_tke 
-export DIAG_TABLE=diag_table_template
+export DIAG_TABLE=diag_table_p7.2_template
 
 export DIAG_TABLE_ADDITIONAL=''
 
