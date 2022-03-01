@@ -526,9 +526,9 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
   CHM_cpl_bmrk="0 287"; OPB_cpl_bmrk="312 431"; IPB_cpl_bmrk="432 479"; WPB_cpl_bmrk="480 559"
   NPROC_ICE_cpl_bmrk=48
 
-  TASKS_cpl_bmrk_aero=560; TPN_cpl_bmrk_aero=36; INPES_cpl_bmrk_aero=6; JNPES_cpl_bmrk_aero=8
+  TASKS_cpl_bmrk_aero=576; TPN_cpl_bmrk_aero=18; INPES_cpl_bmrk_aero=6; JNPES_cpl_bmrk_aero=8
   THRD_cpl_bmrk_aero=2; WPG_cpl_bmrk_aero=24; MPB_cpl_bmrk_aero="0 287"; APB_cpl_bmrk_aero="0 311"
-  CHM_cpl_bmrk_aero="0 287"; OPB_cpl_bmrk_aero="312 431"; IPB_cpl_bmrk_aero="432 479"; WPB_cpl_bmrk_aero="480 559"
+  CHM_cpl_bmrk_aero="0 287"; OPB_cpl_bmrk_aero="312 431"; IPB_cpl_bmrk_aero="432 479"; WPB_cpl_bmrk_aero="480 575"
   NPROC_ICE_cpl_bmrk_aero=48
 
   TASKS_cpl_bmrk_mpi=600; TPN_cpl_bmrk_mpi=36; INPES_cpl_bmrk_mpi=6; JNPES_cpl_bmrk_mpi=8
@@ -589,8 +589,8 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
   CHM_cpl_mpi="0 191"; OPB_cpl_mpi="198 231"; IPB_cpl_mpi="232 251"; WPB_cpl_mpi="252 279"
   NPROC_ICE_cpl_mpi=20
 
-  TASKS_cpl_c384=480; TPN_cpl_c384=18; INPES_cpl_c384=6; JNPES_cpl_c384=8
-  THRD_cpl_c384=2; WPG_cpl_c384=24; MPB_cpl_c384="0 287"; APB_cpl_c384="0 311"
+  TASKS_cpl_c384=480; TPN_cpl_c384=12; INPES_cpl_c384=6; JNPES_cpl_c384=8
+  THRD_cpl_c384=3; WPG_cpl_c384=24; MPB_cpl_c384="0 287"; APB_cpl_c384="0 311"
   CHM_cpl_c384="0 287"; OPB_cpl_c384="312 431"; IPB_cpl_c384="432 479"
   NPROC_ICE_cpl_c384=48
 
@@ -599,9 +599,9 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
   CHM_cpl_bmrk="0 287"; OPB_cpl_bmrk="312 431"; IPB_cpl_bmrk="432 479"; WPB_cpl_bmrk="480 559"
   NPROC_ICE_cpl_bmrk=48
 
-  TASKS_cpl_bmrk_aero=560; TPN_cpl_bmrk_aero=36; INPES_cpl_bmrk_aero=6; JNPES_cpl_bmrk_aero=8
+  TASKS_cpl_bmrk_aero=576; TPN_cpl_bmrk_aero=18; INPES_cpl_bmrk_aero=6; JNPES_cpl_bmrk_aero=8
   THRD_cpl_bmrk_aero=2; WPG_cpl_bmrk_aero=24; MPB_cpl_bmrk_aero="0 287"; APB_cpl_bmrk_aero="0 311"
-  CHM_cpl_bmrk_aero="0 287"; OPB_cpl_bmrk_aero="312 431"; IPB_cpl_bmrk_aero="432 479"; WPB_cpl_bmrk_aero="480 559"
+  CHM_cpl_bmrk_aero="0 287"; OPB_cpl_bmrk_aero="312 431"; IPB_cpl_bmrk_aero="432 479"; WPB_cpl_bmrk_aero="480 575"
   NPROC_ICE_cpl_bmrk_aero=48
 
   TASKS_cpl_bmrk_mpi=600; TPN_cpl_bmrk_mpi=36; INPES_cpl_bmrk_mpi=6; JNPES_cpl_bmrk_mpi=8
