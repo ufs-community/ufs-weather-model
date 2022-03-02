@@ -14,32 +14,28 @@ else()
   message(WARNING "Fortran compiler with ID ${CMAKE_Fortran_COMPILER_ID} will be used with CMake default options")
 endif()
 
-list(APPEND _noahmp_cap_files NOAHMP/drivers/nuopc/lnd_comp_kind.F90
-                              NOAHMP/drivers/nuopc/lnd_comp_types.F90
-                              NOAHMP/drivers/nuopc/lnd_comp_shr.F90
-                              NOAHMP/drivers/nuopc/lnd_comp_io.F90
-                              NOAHMP/drivers/nuopc/lnd_comp_domain.F90
-                              NOAHMP/drivers/nuopc/lnd_comp_import_export.F90
-                              NOAHMP/drivers/nuopc/lnd_comp_nuopc.F90
-                              NOAHMP/drivers/nuopc/lnd_comp_driver.F90)
+# Add source files for NUOPC cap
+list(APPEND _noahmp_cap_files noahmp/drivers/nuopc/lnd_comp_kind.F90
+                              noahmp/drivers/nuopc/lnd_comp_types.F90
+                              noahmp/drivers/nuopc/lnd_comp_shr.F90
+                              noahmp/drivers/nuopc/lnd_comp_io.F90
+                              noahmp/drivers/nuopc/lnd_comp_domain.F90
+                              noahmp/drivers/nuopc/lnd_comp_import_export.F90
+                              noahmp/drivers/nuopc/lnd_comp_nuopc.F90
+                              noahmp/drivers/nuopc/lnd_comp_driver.F90)
 
-get_filename_component(FV3_PATH "../FV3" REALPATH)
-if(EXISTS ${FV3_PATH})
-  message("FV3_PATH = ${FV3_PATH}")
-  message("Compiling NOAHMP using CCPP source code")
-  list(APPEND _ccpp_physics
-    ${FV3_PATH}/ccpp/physics/physics/machine.F
-    ${FV3_PATH}/ccpp/physics/physics/funcphys.f90
-    ${FV3_PATH}/ccpp/physics/physics/physcons.F90
-    ${FV3_PATH}/ccpp/physics/physics/set_soilveg.f
-    ${FV3_PATH}/ccpp/physics/physics/namelist_soilveg.f
-    ${FV3_PATH}/ccpp/physics/physics/module_sf_noahmplsm.f90
-    ${FV3_PATH}/ccpp/physics/physics/sfc_diff.f
-    ${FV3_PATH}/ccpp/physics/physics/module_sf_noahmp_glacier.f90
-    ${FV3_PATH}/ccpp/physics/physics/noahmp_tables.f90
-    ${FV3_PATH}/ccpp/physics/physics/sfc_noahmp_drv.F90)
-  add_definitions(-DCCPP)
-endif()
+# Add source files for NoahMP and its dependencies
+list(APPEND _ccpp_physics noahmp/drivers/ccpp/sfc_noahmp_drv.F90
+                          noahmp/src/module_sf_noahmplsm.f90
+                          noahmp/src/module_sf_noahmp_glacier.f90
+                          noahmp/src/sfc_diff.f
+                          noahmp/src/machine.F
+                          noahmp/src/noahmp_tables.f90
+                          noahmp/src/namelist_soilveg.f
+                          noahmp/src/set_soilveg.f
+                          noahmp/src/funcphys.f90
+                          noahmp/src/physcons.F90)
+add_definitions(-DCCPP)
 
 # NOAHMP
 add_library(noahmp STATIC ${_noahmp_cap_files} ${_ccpp_physics})
