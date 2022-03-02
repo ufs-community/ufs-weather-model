@@ -1057,6 +1057,8 @@ export HAFS=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
 
+export FV3BMIC='gfs_p8a'
+
 export SYEAR=2021
 export SMONTH=03
 export SDAY=22
