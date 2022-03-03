@@ -24,21 +24,23 @@ list(APPEND _noahmp_cap_files noahmp/drivers/nuopc/lnd_comp_kind.F90
                               noahmp/drivers/nuopc/lnd_comp_nuopc.F90
                               noahmp/drivers/nuopc/lnd_comp_driver.F90)
 
-# Add source files for NoahMP and its dependencies
-list(APPEND _ccpp_physics noahmp/drivers/ccpp/sfc_noahmp_drv.F90
-                          noahmp/src/module_sf_noahmplsm.f90
-                          noahmp/src/module_sf_noahmp_glacier.f90
-                          noahmp/src/sfc_diff.f
-                          noahmp/src/machine.F
-                          noahmp/src/noahmp_tables.f90
-                          noahmp/src/namelist_soilveg.f
-                          noahmp/src/set_soilveg.f
-                          noahmp/src/funcphys.f90
-                          noahmp/src/physcons.F90)
+# Add source files for CCPP interface 
+list(APPEND _noahmp_ccpp_files noahmp/drivers/ccpp/sfc_noahmp_drv.F90
+                               noahmp/drivers/ccpp/sfc_diff.f
+                               noahmp/drivers/ccpp/machine.F
+                               noahmp/drivers/ccpp/noahmp_tables.f90
+                               noahmp/drivers/ccpp/namelist_soilveg.f
+                               noahmp/drivers/ccpp/set_soilveg.f
+                               noahmp/drivers/ccpp/funcphys.f90
+                               noahmp/drivers/ccpp/physcons.F90)
+
+# Add source files for NoahMP
+list(APPEND _noahmp_files noahmp/src/module_sf_noahmplsm.f90
+                          noahmp/src/module_sf_noahmp_glacier.f90)
 add_definitions(-DCCPP)
 
 # NOAHMP
-add_library(noahmp STATIC ${_noahmp_cap_files} ${_ccpp_physics})
+add_library(noahmp STATIC ${_noahmp_cap_files} ${_noahmp_ccpp_files} ${_noahmp_files})
 set_target_properties(noahmp PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 set_target_properties(noahmp PROPERTIES COMPILE_FLAGS ${FORTRAN_PREPROCESS_FLAG})
 target_include_directories(noahmp PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
