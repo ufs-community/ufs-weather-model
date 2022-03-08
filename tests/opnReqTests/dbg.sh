@@ -23,9 +23,12 @@ elif [[ $application == 'cpld' ]]; then
   NFHOUT_HF=1
   RESTART_INTERVAL=${FHMAX}
   RESTART_N=${FHMAX}
+  OUTPUT_FH="0 ${FHMAX}"
   LIST_FILES=$(echo -n $LIST_FILES | sed -E "s/sfcf024/sfcf006/g" \
                                    | sed -E "s/atmf024/atmf006/g" \
                                    | sed -E "s/2021-03-23-21600/2021-03-22-43200/g" \
+                                   | sed -E "s/sfcf021.tile[1-6].nc ?//g" \
+                                   | sed -E "s/atmf021.tile[1-6].nc ?//g" \
                                    | sed -e "s/^ *//" -e "s/ *$//")
 fi
 

@@ -5,6 +5,10 @@ if [[ "$0" = "${BASH_SOURCE[0]}" ]]; then
   exit 1
 fi
 
+# Note: this file must only contain subroutines, and variables that
+# are not dependent on the caller. Most regression test variables
+# (such as ACCNR) are not set until after rt.sh sources this file.
+
 OPNREQ_TEST=${OPNREQ_TEST:-false}
 
 qsub_id=0
@@ -154,7 +158,7 @@ submit_and_wait() {
         echo "Slurm unknown status ${status}. Check sacct ..."
         sacct -n -j ${slurm_id} --format=JobID,state%20,Jobname%20
         status_label=$( sacct -n -j ${slurm_id} --format=JobID,state%20,Jobname%20 | grep "^${slurm_id}" | grep ${JBNME} | awk '{print $2}' )
-        if [[ $status_label = 'FAILED' ]] || [[ $status_label = 'TIMEOUT' ]]; then
+        if [[ $status_label = 'FAILED' ]] || [[ $status_label = 'TIMEOUT' ]] || [[ $status_label = 'CANCELLED' ]] ; then
             test_status='FAIL'
         fi
       fi
@@ -178,7 +182,7 @@ submit_and_wait() {
         test_status='DONE'
         exit_status=$( bjobs ${bsub_id} 2>/dev/null | grep ${bsub_id} | awk '{print $3}' ); status=${status:--}
         if [[ $exit_status = 'EXIT' ]];  then
-        status_label='failed'
+          status_label='failed'
           test_status='FAIL'
         fi
       fi
@@ -202,12 +206,13 @@ submit_and_wait() {
 
   if [[ $test_status = 'FAIL' ]]; then
     if [[ ${OPNREQ_TEST} == false ]]; then
-      echo "${TEST_NAME} ${TEST_NR} failed" >> $PATHRT/fail_test_${TEST_NR}
       echo "Test ${TEST_NR} ${TEST_NAME} FAIL" >> ${REGRESSIONTEST_LOG}
       echo;echo;echo                           >> ${REGRESSIONTEST_LOG}
       echo "Test ${TEST_NR} ${TEST_NAME} FAIL"
     else
-      echo ${TEST_NR} $TEST_NAME >> $PATHRT/fail_opnreq_test
+      echo "Test ${TEST_NAME} ${TEST_NR} FAIL" >> ${REGRESSIONTEST_LOG}
+      echo;echo;echo                           >> ${REGRESSIONTEST_LOG}
+      echo "Test ${TEST_NAME} ${TEST_NR} FAIL"
     fi
 
     if [[ $ROCOTO == true || $ECFLOW == true ]]; then
@@ -329,6 +334,7 @@ check_results() {
 
   echo                                               >> ${REGRESSIONTEST_LOG}
   grep "The total amount of wall time" ${RUNDIR}/out >> ${REGRESSIONTEST_LOG}
+  grep "The maximum resident set size" ${RUNDIR}/out >> ${REGRESSIONTEST_LOG}
   echo                                               >> ${REGRESSIONTEST_LOG}
 
   TRIES=''
@@ -346,7 +352,7 @@ check_results() {
     if [[ ${OPNREQ_TEST} == false ]]; then
       echo "${TEST_NAME} ${TEST_NR} failed in check_result" >> $PATHRT/fail_test_${TEST_NR}
     else
-      echo ${TEST_NR} $TEST_NAME >> $PATHRT/fail_opnreq_test
+      echo "${TEST_NAME} ${TEST_NR} failed in check_result" >> $PATHRT/fail_opnreq_test_${TEST_NR}
     fi
 
     if [[ $ROCOTO = true || $ECFLOW == true ]]; then
@@ -552,9 +558,9 @@ ecflow_run() {
     echo "ecflow_server is NOT running on ${ECF_HOST}:${ECF_PORT}"
     if [[ ${MACHINE_ID} == wcoss2 ]]; then
       # Annoying "Has NCO assigned port $ECF_PORT for use by this account? (yes/no) ".
-      echo yes | ${ECFLOW_START} -p ${ECF_PORT}
+      echo yes | ${ECFLOW_START} -p ${ECF_PORT} -d ${RUNDIR_ROOT}/ecflow_server
     else
-      ${ECFLOW_START} -p ${ECF_PORT}
+      ${ECFLOW_START} -p ${ECF_PORT} -d ${RUNDIR_ROOT}/ecflow_server
     fi
   else
     echo "ecflow_server is already running on ${ECF_HOST}:${ECF_PORT}"

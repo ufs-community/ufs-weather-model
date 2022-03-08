@@ -16,7 +16,7 @@ cleanup() {
 
 write_fail_test() {
   if [[ ${OPNREQ_TEST} == true ]]; then
-    echo ${TEST_NR} $TEST_NAME >> $PATHRT/fail_opnreq_test
+    echo "${TEST_NAME} ${TEST_NR} failed in run_test" >> $PATHRT/fail_opnreq_test_${TEST_NR}
   else
     echo "${TEST_NAME} ${TEST_NR} failed in run_test" >> $PATHRT/fail_test_${TEST_NR}
   fi
@@ -35,7 +35,12 @@ export TEST_NR=$4
 export COMPILE_NR=$5
 
 cd ${PATHRT}
-rm -f fail_test_${TEST_NR}
+OPNREQ_TEST=${OPNREQ_TEST:-false}
+if [[ ${OPNREQ_TEST} == true ]]; then
+  rm -f fail_opnreq_test_${TEST_NR}
+else
+  rm -f fail_test_${TEST_NR}
+fi
 
 [[ -e ${RUNDIR_ROOT}/run_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
 source default_vars.sh
@@ -53,13 +58,14 @@ export JBNME=$(basename $RUNDIR_ROOT)_${TEST_NR}
 
 echo -n "${TEST_NAME}, $( date +%s )," > ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
 
-OPNREQ_TEST=${OPNREQ_TEST:-false}
 if [[ ${OPNREQ_TEST} == false ]]; then
   REGRESSIONTEST_LOG=${LOG_DIR}/rt_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log
 else
-  REGRESSIONTEST_LOG=${LOG_DIR}/opnReqTest_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log
+  REGRESSIONTEST_LOG=${LOG_DIR}/opnReqTest_${TEST_NAME}${RT_SUFFIX}.log
 fi
 export REGRESSIONTEST_LOG
+
+rm -f ${REGRESSIONTEST_LOG}
 
 echo "Test ${TEST_NR} ${TEST_NAME} ${TEST_DESCR}"
 
@@ -82,7 +88,7 @@ cp ${PATHRT}/modules.fv3_${COMPILE_NR}             modules.fv3
 cp ${PATHTR}/modulefiles/ufs_common*               .
 
 # Get the shell file that loads the "module" command and purges modules:
-cp ${PATHRT}/../NEMS/src/conf/module-setup.sh.inc  module-setup.sh
+cp ${PATHRT}/module-setup.sh                       module-setup.sh
 
 SRCD="${PATHTR}"
 RUND="${RUNDIR}"
@@ -108,6 +114,8 @@ if [[ "Q${INPUT_NEST02_NML:-}" != Q ]] ; then
     NPX_NEST=$NPX_NEST02; NPY_NEST=$NPY_NEST02
     K_SPLIT_NEST=$K_SPLIT_NEST02; N_SPLIT_NEST=$N_SPLIT_NEST02
     atparse < ${PATHRT}/parm/${INPUT_NEST02_NML} > input_nest02.nml
+else
+    sed -i -e "/<output_grid_02>/,/<\/output_grid_02>/d" model_configure
 fi
 
 if [[ "Q${INPUT_NEST03_NML:-}" != Q ]] ; then
@@ -115,6 +123,8 @@ if [[ "Q${INPUT_NEST03_NML:-}" != Q ]] ; then
     NPX_NEST=$NPX_NEST03; NPY_NEST=$NPY_NEST03
     K_SPLIT_NEST=$K_SPLIT_NEST03; N_SPLIT_NEST=$N_SPLIT_NEST03
     atparse < ${PATHRT}/parm/${INPUT_NEST03_NML} > input_nest03.nml
+else
+    sed -i -e "/<output_grid_03>/,/<\/output_grid_03>/d" model_configure
 fi
 
 if [[ "Q${INPUT_NEST04_NML:-}" != Q ]] ; then
@@ -122,6 +132,8 @@ if [[ "Q${INPUT_NEST04_NML:-}" != Q ]] ; then
     NPX_NEST=$NPX_NEST04; NPY_NEST=$NPY_NEST04
     K_SPLIT_NEST=$K_SPLIT_NEST04; N_SPLIT_NEST=$N_SPLIT_NEST04
     atparse < ${PATHRT}/parm/${INPUT_NEST04_NML} > input_nest04.nml
+else
+    sed -i -e "/<output_grid_04>/,/<\/output_grid_04>/d" model_configure
 fi
 
 if [[ "Q${INPUT_NEST05_NML:-}" != Q ]] ; then
@@ -129,6 +141,17 @@ if [[ "Q${INPUT_NEST05_NML:-}" != Q ]] ; then
     NPX_NEST=$NPX_NEST05; NPY_NEST=$NPY_NEST05
     K_SPLIT_NEST=$K_SPLIT_NEST05; N_SPLIT_NEST=$N_SPLIT_NEST05
     atparse < ${PATHRT}/parm/${INPUT_NEST05_NML} > input_nest05.nml
+else
+    sed -i -e "/<output_grid_05>/,/<\/output_grid_05>/d" model_configure
+fi
+
+if [[ "Q${INPUT_NEST06_NML:-}" != Q ]] ; then
+    INPES_NEST=$INPES_NEST06; JNPES_NEST=$JNPES_NEST06
+    NPX_NEST=$NPX_NEST06; NPY_NEST=$NPY_NEST06
+    K_SPLIT_NEST=$K_SPLIT_NEST06; N_SPLIT_NEST=$N_SPLIT_NEST06
+    atparse < ${PATHRT}/parm/${INPUT_NEST06_NML} > input_nest06.nml
+else
+    sed -i -e "/<output_grid_06>/,/<\/output_grid_06>/d" model_configure
 fi
 
 # diag table
@@ -240,7 +263,16 @@ else
 
 fi
 
-check_results
+if [[ $skip_check_results = false ]]; then
+  check_results
+else
+  echo                                               >> ${REGRESSIONTEST_LOG}
+  grep "The total amount of wall time" ${RUNDIR}/out >> ${REGRESSIONTEST_LOG}
+  grep "The maximum resident set size" ${RUNDIR}/out >> ${REGRESSIONTEST_LOG}
+  echo                                               >> ${REGRESSIONTEST_LOG}
+  echo "Test ${TEST_NR} ${TEST_NAME} RUN_SUCCESS"    >> ${REGRESSIONTEST_LOG}
+  echo;echo;echo                                     >> ${REGRESSIONTEST_LOG}
+fi
 
 if [[ $SCHEDULER != 'none' ]]; then
   cat ${RUNDIR}/job_timestamp.txt >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
@@ -250,6 +282,23 @@ fi
 ################################################################################
 
 echo " $( date +%s )" >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+
+################################################################################
+# Remove RUN_DIRs if they are no longer needed by other tests
+################################################################################
+if [[ ${delete_rundir} = true ]]; then
+  keep_run_dir=false
+  while  read -r line; do
+    keep_test=$(echo $line| sed -e 's/^ *//' -e 's/ *$//')
+    if [[ $TEST_NAME == ${keep_test} ]]; then
+      keep_run_dir=true
+    fi
+  done < ${PATHRT}/keep_tests.tmp
+
+  if [[ ${keep_run_dir} == false ]]; then
+    rm -rf ${RUNDIR}
+  fi
+fi
 
 elapsed=$SECONDS
 echo "Elapsed time $elapsed seconds. Test ${TEST_NAME}"

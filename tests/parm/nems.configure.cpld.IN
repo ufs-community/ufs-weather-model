@@ -2,6 +2,9 @@
 ####  NEMS Run-Time Configuration File  #####
 #############################################
 
+# ESMF #
+logKindFlag:            ESMF_LOGKIND_MULTI
+
 # EARTH #
 EARTH_component_list: MED ATM OCN ICE
 EARTH_attributes::
@@ -86,6 +89,7 @@ MED_attributes::
       history_option = nhours
       history_ymd = -999
       coupling_mode = @[CPLMODE]
+      history_tile_atm = @[ATMTILESIZE]
 ::
 ALLCOMP_attributes::
       ScalarFieldCount = 2

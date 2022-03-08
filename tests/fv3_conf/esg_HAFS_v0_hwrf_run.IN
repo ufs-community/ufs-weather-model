@@ -1,9 +1,0 @@
-rm -fr INPUT RESTART
-mkdir INPUT RESTART
-
-if [ $WARM_START = .false. ]; then
-  rsync -av @[INPUTDATA_ROOT]/FV3_input_data_regional_esg/ ./
-else
-  echo "ERROR, warmstart runs not configured for regional HAFs runs on ESG grid"
-  exit 1
-fi

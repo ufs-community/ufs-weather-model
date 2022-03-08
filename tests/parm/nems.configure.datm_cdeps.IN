@@ -2,6 +2,9 @@
 ####  NEMS Run-Time Configuration File  #####
 #############################################
 
+# ESMF #
+logKindFlag:            ESMF_LOGKIND_MULTI
+
 # EARTH #
 EARTH_component_list: MED ATM OCN ICE
 EARTH_attributes::
@@ -11,10 +14,6 @@ EARTH_attributes::
 # MED #
 MED_model:                      @[med_model]
 MED_petlist_bounds:             @[med_petlist_bounds]
-  Verbosity = 5
-  dbug_flag = 5
-
-::
 
 # ATM #
 ATM_model:                      @[atm_model]
@@ -87,6 +86,8 @@ DRIVER_attributes::
 ::
 
 MED_attributes::
+      Verbosity = 5
+      dbug_flag = 5
       ATM_model = @[atm_model]
       ICE_model = @[ice_model]
       OCN_model = @[ocn_model]
