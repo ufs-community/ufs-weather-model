@@ -2,7 +2,7 @@
 #  cpld_debug_p8 test
 #
 
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C96MX100 - P8 debug"
+export TEST_DESCR="Fully coupled FV3-CCPP-GOCART-MOM6-CICE-CMEPS system - C96MX100 - P8 debug"
 
 export CNTL_DIR="cpld_debug_p8"
 
@@ -18,6 +18,7 @@ export LIST_FILES="sfcf006.tile1.nc \
                    atmf006.tile4.nc \
                    atmf006.tile5.nc \
                    atmf006.tile6.nc \
+                   gocart.inst_aod.20210322_1200z.nc4 \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -77,6 +78,7 @@ export BLCKY=`expr $NY_GLB / 2`
 
 export med_petlist_bounds=$MPB_cpl_c96
 export atm_petlist_bounds=$APB_cpl_c96
+export chm_petlist_bounds=$CHM_cpl_c96
 export ocn_petlist_bounds=$OPB_cpl_c96
 export ice_petlist_bounds=$IPB_cpl_c96
 
@@ -84,6 +86,8 @@ export CPLWAV=.false.
 export CPLWAV2ATM=.false.
 export MOM6_USE_WAVES=False
 
-export NEMS_CONFIGURE=nems.configure.cpld.IN
+export CPLCHM=.true.
+export NEMS_CONFIGURE=nems.configure.cpld_aero.IN
+export FIELD_TABLE=field_table_thompson_noaero_tke_GOCART
 
 export FV3_RUN=cpld_control_run.IN
