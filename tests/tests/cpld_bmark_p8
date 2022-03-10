@@ -1,12 +1,13 @@
 #
 #  cpld_bmark_p8 test
 #
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system - C384L127 MX025 - Benchmark P8 test"
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-GOCART-WW3 system - C384L127 MX025 - Benchmark P8 test"
 
 export CNTL_DIR="cpld_bmark_p8"
 
 export LIST_FILES="sfcf006.nc \
                    atmf006.nc \
+                   gocart.inst_aod.20130401_0600z.nc4 \
                    20130401.060000.out_grd.gwes_30m \
                    20130401.060000.out_pnt.points \
                    RESTART/coupler.res \
@@ -63,18 +64,23 @@ export FHMAX=6
 export RESTART_N=`expr ${FHMAX} - ${FHROT}`
 export RESTART_INTERVAL="${RESTART_N} -1"
 
-export TASKS=$TASKS_cpl_bmrk
-export TPN=$TPN_cpl_bmrk
-export INPES=$INPES_cpl_bmrk
-export JNPES=$JNPES_cpl_bmrk
-export THRD=$THRD_cpl_bmrk
-export WRTTASK_PER_GROUP=$WPG_cpl_bmrk
+export WLCLK=45
 
-export med_petlist_bounds=$MPB_cpl_bmrk
-export atm_petlist_bounds=$APB_cpl_bmrk
-export ocn_petlist_bounds=$OPB_cpl_bmrk
-export ice_petlist_bounds=$IPB_cpl_bmrk
-export wav_petlist_bounds=$WPB_cpl_bmrk
+export DOMAINS_STACK_SIZE=16000000
+
+export TASKS=$TASKS_cpl_bmrk_aero
+export TPN=$TPN_cpl_bmrk_aero
+export INPES=$INPES_cpl_bmrk_aero
+export JNPES=$JNPES_cpl_bmrk_aero
+export THRD=$THRD_cpl_bmrk_aero
+export WRTTASK_PER_GROUP=$WPG_cpl_bmrk_aero
+
+export med_petlist_bounds=$MPB_cpl_bmrk_aero
+export atm_petlist_bounds=$APB_cpl_bmrk_aero
+export chm_petlist_bounds=$CHM_cpl_bmrk_aero
+export ocn_petlist_bounds=$OPB_cpl_bmrk_aero
+export ice_petlist_bounds=$IPB_cpl_bmrk_aero
+export wav_petlist_bounds=$WPB_cpl_bmrk_aero
 
 # atm/ocn/ice resolution
 export ATMRES=C384
@@ -89,7 +95,7 @@ export OCNRES=025
 export ICERES=0.25
 export NX_GLB=1440
 export NY_GLB=1080
-export NPROC_ICE=$NPROC_ICE_cpl_bmrk
+export NPROC_ICE=$NPROC_ICE_cpl_bmrk_aero
 export np2=`expr $NPROC_ICE / 2`
 export BLCKX=`expr $NX_GLB / $np2`
 export BLCKY=`expr $NY_GLB / 2`
@@ -100,8 +106,10 @@ export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6=900
 export DT_THERM_MOM6=1800
 
+export CPLCHM=.true.
+
 # nems.configure
-export NEMS_CONFIGURE=nems.configure.cpld_wave.IN
+export NEMS_CONFIGURE=nems.configure.cpld_aero_wave.IN
 export coupling_interval_slow_sec=${DT_THERM_MOM6}
 export coupling_interval_fast_sec=${DT_ATMOS}
 
@@ -124,6 +132,9 @@ export FNVMXC="'C384.vegetation_greenness.tileX.nc'"
 export FNSLPC="'C384.slope_type.tileX.nc'"
 export FNABSC="'C384.maximum_snow_albedo.tileX.nc'"
 
+export CDMBWD=${CDMBWD_c384}
+export DT_INNER=${DT_INNER_c384}
+
 export MOM6_RIVER_RUNOFF=True
 export MOM6_RESTART_SETTING=r
 
@@ -140,3 +151,4 @@ export RST_END=$RUN_END
 export RST_2_END=$RUN_END
 
 export FV3_RUN=cpld_control_run.IN
+export FIELD_TABLE=field_table_thompson_noaero_tke_GOCART
