@@ -2,7 +2,7 @@ help([[
 Load environment to compile ufs-weather-model on Hera using Intel
 ]])
 
-cmake_ver=os.getenv("cmake_ver") or "3.20.2"
+cmake_ver=os.getenv("cmake_ver") or "3.20.1"
 load(pathJoin("cmake", cmake_ver))
 
 prepend_path("MODULEPATH", "/contrib/anaconda/modulefiles")
@@ -10,9 +10,9 @@ prepend_path("MODULEPATH", "/contrib/anaconda/modulefiles")
 anaconda_ver=os.getenv("anaconda_ver") or "anaconda3-5.3.1"
 load(pathJoin("anaconda", anaconda_ver))
 
-prepend_path("MODULEPATH", "/scratch2/NCEPDEV/nwprod/hpc-stack/libs/hpc-stack/modulefiles/stack")
+prepend_path("MODULEPATH", "/scratch2/NCEPDEV/nwprod/hpc-stack/libs/hpc-stack-gfsv16/modulefiles/stack")
 
-hpc_ver=os.getenv("hpc_ver") or "1.1.0"
+hpc_ver=os.getenv("hpc_ver") or "1.2.0"
 load(pathJoin("hpc", hpc_ver))
 
 hpc_intel_ver=os.getenv("hpc_intel_ver") or "18.0.5.274"
@@ -57,8 +57,8 @@ load(pathJoin("jasper", jasper_ver))
 zlib_ver=os.getenv("zlib_ver") or "1.2.11"
 load(pathJoin("zlib", zlib_ver))
 
-png_ver=os.getenv("png_ver") or "1.6.37"
-load(pathJoin("png", png_ver))
+libpng_ver=os.getenv("libpng_ver") or "1.6.37"
+load(pathJoin("libpng", libpng_ver))
 
 hdf5_ver=os.getenv("hdf5_ver") or "1.10.6"
 load(pathJoin("hdf5", hdf5_ver))
@@ -69,9 +69,9 @@ load(pathJoin("netcdf", netcdf_ver))
 esmf_ver=os.getenv("esmf_ver") or "8_0_1"
 load(pathJoin("esmf", esmf_ver))
 
-setenv("CMAKE_C_COMPILER",mpiicc)
-setenv("CMAKE_CXX_COMPILER",mpiicpc)
-setenv("CMAKE_Fortran_COMPILER",mpiifort)
-setenv("CMAKE_Platform",hera.intel)
+setenv("CMAKE_C_COMPILER","mpiicc")
+setenv("CMAKE_CXX_COMPILER","mpiicpc")
+setenv("CMAKE_Fortran_COMPILER","mpiifort")
+setenv("CMAKE_Platform","hera.intel")
 
 whatis("Description: ufs-weather-model build environment")
