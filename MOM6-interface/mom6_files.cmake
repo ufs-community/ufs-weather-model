@@ -149,8 +149,6 @@ list(APPEND mom6_src_files
   MOM6/src/parameterizations/CVmix/cvmix_tidal.F90
   MOM6/src/parameterizations/CVmix/cvmix_utils.F90
 
-  MOM6/src/parameterizations/stochastic/MOM_stochastics.F90
-
   MOM6/src/tracer/DOME_tracer.F90
 
   MOM6/src/tracer/ISOMIP_tracer.F90
