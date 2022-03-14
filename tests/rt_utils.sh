@@ -387,8 +387,6 @@ rocoto_create_compile_task() {
     echo "  </metatask>" >> $ROCOTO_XML
   fi
 
-  ## serialize WW3 builds. FIXME
-
   NATIVE=""
   BUILD_CORES=8
   BUILD_WALLTIME="00:30:00"
