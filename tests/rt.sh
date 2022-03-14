@@ -522,7 +522,6 @@ source default_vars.sh
 JOB_NR=0
 TEST_NR=0
 COMPILE_NR=0
-COMPILE_PREV_WW3_NR=''
 rm -f fail_test* fail_compile*
 
 export LOG_DIR=${PATHRT}/log_$MACHINE_ID
@@ -739,10 +738,6 @@ EOF
     else
       RT_SUFFIX=""
       BL_SUFFIX=""
-    fi
-
-    if [[ ${MAKE_OPT^^} =~ "-DAPP=ATMW" ]] || [[ ${MAKE_OPT^^} =~ "-DAPP=S2SW" ]] || [[ ${MAKE_OPT^^} =~ "-DAPP=HAFSW" ]] || [[ ${MAKE_OPT^^} =~ "-DAPP=HAFS-ALL" ]] ; then
-       COMPILE_PREV_WW3_NR=${COMPILE_NR}
     fi
 
     continue
