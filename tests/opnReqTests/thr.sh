@@ -20,6 +20,7 @@ elif [[ $application == 'cpld' ]]; then
       INPES=3
       JNPES=4
       med_petlist_bounds="0 71"
+      chm_petlist_bounds="0 71"
       atm_petlist_bounds="0 77"
       ocn_petlist_bounds="78 107"
       ice_petlist_bounds="108 119"
@@ -29,6 +30,7 @@ elif [[ $application == 'cpld' ]]; then
       INPES=3
       JNPES=4
       med_petlist_bounds="0 71"
+      chm_petlist_bounds="0 71"
       atm_petlist_bounds="0 77"
       ocn_petlist_bounds="78 97"
       ice_petlist_bounds="98 107"
