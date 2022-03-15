@@ -51,6 +51,12 @@ rt_single() {
       tmp_test=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
       if [[ $SINGLE_NAME == $tmp_test && $compile_line != '' ]]; then
         echo $compile_line >$TESTS_FILE
+        dep_test=$(echo $line | grep -w $tmp_test | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
+        if [[ $dep_test != '' ]]; then
+          dep_line=$(cat rt.conf | grep -w "$dep_test" | grep -v "$tmp_test")
+          dep_line="${dep_line#"${dep_line%%[![:space:]]*}"}"
+          echo $dep_line >>$TESTS_FILE
+        fi
         echo $line >>$TESTS_FILE
         break
       fi
@@ -116,7 +122,7 @@ fi
 # Default compiler "intel"
 export RT_COMPILER=${RT_COMPILER:-intel}
 
-source detect_machine.sh
+source detect_machine.sh # Note: this does not set ACCNR. The "if" block below does.
 source rt_utils.sh
 
 source module-setup.sh
@@ -142,7 +148,7 @@ if [[ $MACHINE_ID = wcoss_cray ]]; then
   QUEUE=debug
   COMPILE_QUEUE=dev
   PARTITION=
-  ACCNR=GFS-DEV
+  ACCNR="${ACCNR:-GFS-DEV}"
   if [[ -d /gpfs/hps3/ptmp ]] ; then
       STMP=/gpfs/hps3/stmp
       PTMP=/gpfs/hps3/stmp
@@ -175,7 +181,7 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
   QUEUE=debug
   COMPILE_QUEUE=dev_transfer
   PARTITION=
-  ACCNR=GFS-DEV
+  ACCNR="${ACCNR:-GFS-DEV}"
   STMP=/gpfs/dell2/stmp
   PTMP=/gpfs/dell2/ptmp
   SCHEDULER=lsf
@@ -205,7 +211,7 @@ elif [[ $MACHINE_ID = wcoss2 ]]; then
   QUEUE=dev
   COMPILE_QUEUE=dev
   PARTITION=
-  ACCNR=GFS-DEV
+  ACCNR="${ACCNR:-GFS-DEV}"
   STMP=/lfs/h1/emc/ptmp
   PTMP=/lfs/h1/emc/ptmp
   SCHEDULER=pbs
@@ -222,7 +228,7 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
   DISKNM=/lustre/f2/pdata/ncep_shared/emc.nemspara/RT
   QUEUE=normal
   COMPILE_QUEUE=normal
-#  ACCNR=cmp
+#  ACCNR="${ACCNR:-cmp}"
   PARTITION=c4
   STMP=/lustre/f2/scratch
   PTMP=/lustre/f2/scratch
@@ -249,7 +255,7 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   QUEUE=batch
   COMPILE_QUEUE=batch
 
-  #ACCNR=fv3-cpu
+  #ACCNR="${ACCNR:-fv3-cpu}
   PARTITION=
   dprefix=/scratch1/NCEPDEV
   DISKNM=$dprefix/nems/emc.nemspara/RT
@@ -275,7 +281,6 @@ elif [[ $MACHINE_ID = orion.* ]]; then
 
   QUEUE=batch
   COMPILE_QUEUE=batch
-#  ACCNR= # detected in detect_machine.sh
   PARTITION=orion
   dprefix=/work/noaa/stmp/${USER}
   DISKNM=/work/noaa/nems/emc.nemspara/RT
@@ -301,7 +306,7 @@ elif [[ $MACHINE_ID = jet.* ]]; then
 
   QUEUE=batch
   COMPILE_QUEUE=batch
-  ACCNR=${ACCNR:-h-nems}
+  ACCNR="${ACCNR:-h-nems}"
   PARTITION=xjet
   DISKNM=/lfs4/HFIP/h-nems/emc.nemspara/RT
   dprefix=${dprefix:-/lfs4/HFIP/$ACCNR/$USER}
@@ -328,7 +333,7 @@ elif [[ $MACHINE_ID = s4.* ]]; then
   QUEUE=s4
   COMPILE_QUEUE=s4
 
-  ACCNR=star
+  ACCNR="${ACCNR:-star}"
   PARTITION=s4
   dprefix=/data/users/dhuber/save
   DISKNM=$dprefix/nems/emc.nemspara/RT
@@ -364,7 +369,7 @@ elif [[ $MACHINE_ID = stampede.* ]]; then
   QUEUE=skx-normal
   COMPILE_QUEUE=skx-dev
   PARTITION=
-  ACCNR=TG-EES200015
+  ACCNR="${ACCNR:-TG-EES200015}"
   dprefix=$SCRATCH/ufs-weather-model/run
   DISKNM=/work2/07736/minsukji/stampede2/ufs-weather-model/RT
   STMP=$dprefix
@@ -381,7 +386,7 @@ elif [[ $MACHINE_ID = expanse.* ]]; then
   QUEUE=compute
   COMPILE_QUEUE=shared
   PARTITION=
-  ACCNR=TG-EES200015
+  ACCNR="${ACCNR:-TG-EES200015}"
   dprefix=/expanse/lustre/scratch/$USER/temp_project/run
   DISKNM=/expanse/lustre/scratch/domh/temp_project/RT
   STMP=$dprefix
@@ -392,6 +397,13 @@ elif [[ $MACHINE_ID = expanse.* ]]; then
 else
   die "Unknown machine ID, please edit detect_machine.sh file"
 fi
+
+# If account is unspecified, assume the machine has a "nems"
+# accounting code.
+export ACCNR="${ACCNR:-nems}"
+
+# Display the machine and account using the format detect_machine.sh used:
+echo "Machine: " $MACHINE_ID "    Account: " $ACCNR
 
 mkdir -p ${STMP}/${USER}
 
@@ -473,7 +485,7 @@ if [[ $TESTS_FILE =~ '35d' ]] || [[ $TESTS_FILE =~ 'weekly' ]]; then
   TEST_35D=true
 fi
 
-BL_DATE=20220120
+BL_DATE=20220304
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]] || [[ $MACHINE_ID = s4.* ]]; then
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
 else
@@ -482,7 +494,7 @@ fi
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20211210}
 INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20211113
-INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC:-$DISKNM/NEMSfv3gfs/BM_IC-20210717}
+INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC:-$DISKNM/NEMSfv3gfs/BM_IC-20220207}
 
 shift $((OPTIND-1))
 [[ $# -gt 1 ]] && usage

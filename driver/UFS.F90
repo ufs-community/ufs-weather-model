@@ -77,8 +77,6 @@
 !
       TYPE(ESMF_Config) :: CF_MAIN                                         !<-- The Configure object
 !
-      LOGICAL :: PRINT_ESMF                                                !<-- Flag for ESMF PET files
-!
       CHARACTER(ESMF_MAXSTR) :: MESSAGE_CHECK
 !
       INTEGER :: RC, RC_USER                                               !<-- The running error signal
@@ -89,28 +87,20 @@
 !-----------------------------------------------------------------------
 !
 !-----------------------------------------------------------------------
-!***  Check if we want ESMF PET files or not
-!-----------------------------------------------------------------------
-!
-      CALL CHECK_ESMF_PET(PRINT_ESMF)
-!
-!-----------------------------------------------------------------------
 !***  Initialize the ESMF framework.
 !-----------------------------------------------------------------------
 !
-      IF(PRINT_ESMF) THEN
-        CALL ESMF_Initialize(VM             =VM                         & !<-- The ESMF Virtual Machine
-                            ,defaultCalKind =ESMF_CALKIND_GREGORIAN     & !<-- Set up the default calendar.
-                            ,logkindflag    =ESMF_LOGKIND_MULTI         & !<-- Define multiple log error output files;
-                            ,rc             =RC)
-        ESMF_ERR_ABORT(RC)
-      ELSE
-        CALL ESMF_Initialize(VM             =VM                         & !<-- The ESMF Virtual Machine
-                            ,defaultCalKind =ESMF_CALKIND_GREGORIAN     & !<-- Set up the default calendar.
-                            ,logkindflag    =ESMF_LOGKIND_NONE          & !<-- Define no log error output files;
-                            ,rc             =RC)
-        ESMF_ERR_ABORT(RC)
-      ENDIF
+      CALL ESMF_Initialize(configFileName="nems.configure"              & !<-- top level configuration
+                          ,defaultCalKind =ESMF_CALKIND_GREGORIAN       & !<-- Set up the default calendar.
+                          ,VM             =VM                           & !<-- The ESMF Virtual Machine
+                          ,rc             =RC)
+      ESMF_ERR_ABORT(RC)
+
+#if 0
+!***  Useful when debugging ESMF-managed threading and resource control
+      call ESMF_VMLog(vm, rc=rc)
+      ESMF_ERR_ABORT(RC)
+#endif
 !
 !-----------------------------------------------------------------------
 !***  Extract the MPI task ID.
@@ -142,12 +132,10 @@
 !     CALL ESMF_LogWrite(MESSAGE_CHECK,ESMF_LOGMSG_INFO,rc=RC)
 ! ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 !
-      IF(PRINT_ESMF) THEN
-        CALL ESMF_LogSet(flush      =.false.                            &
-                        ,trace      =.false.                            &
-                        ,rc         =RC)
-        ESMF_ERR_ABORT(RC)
-      ENDIF
+      CALL ESMF_LogSet(flush      =.false.                            &
+                      ,trace      =.false.                            &
+                      ,rc         =RC)
+      ESMF_ERR_ABORT(RC)
 
 ! ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 !
@@ -479,39 +467,6 @@
 !
 !-----------------------------------------------------------------------
 !
-contains
-      subroutine check_esmf_pet(print_esmf)
-
-      implicit none
-      integer :: i,n
-      character *256 :: c1,c2
-      logical :: opened,print_esmf
-
-      do n=101,201
-        inquire(n,opened=opened)
-        if(.not.opened)then
-          open(n,file='model_configure',status='old')  !<-- Open configure file
-          exit
-        endif
-      enddo
-
-      print_esmf=.false.
-
-      do i=1,10000
-        read(n,*,end=22)c1,c2
-        if(c1(1:10) == 'print_esmf') then              !<-- Search for print_esmf flag
-          if( c2 == 'true'   .or.          &           !<-- Check if print_esmf is true or false
-              c2 == '.true.' .or.          &
-              c2 == 'TRUE'   .or.          &
-              c2 == '.TRUE.' ) print_esmf=.true.
-          exit
-        endif
-      enddo
-  22  close(n)
-      return
-
-      end subroutine check_esmf_pet
-
       END PROGRAM UFS
 !
 !-----------------------------------------------------------------------
