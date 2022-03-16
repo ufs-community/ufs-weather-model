@@ -29,6 +29,7 @@ elif [[ $application == 'cpld' ]]; then
                                    | sed -E "s/2021-03-23-21600/2021-03-22-43200/g" \
                                    | sed -E "s/sfcf021.tile[1-6].nc ?//g" \
                                    | sed -E "s/atmf021.tile[1-6].nc ?//g" \
+                                   | sed -E "s/(gocart.inst_aod.202103)23_0600z.nc4/\122_1200z.nc4/g" \
                                    | sed -e "s/^ *//" -e "s/ *$//")
 fi
 
