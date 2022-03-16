@@ -1,0 +1,22 @@
+rm -rf INPUT RESTART
+mkdir  INPUT RESTART
+
+rsync -arv @[INPUTDATA_ROOT]/FV3_input_data_regional_stoch/. INPUT/.
+
+cp    @[INPUTDATA_ROOT]/FV3_fix/CCN_ACTIVATE.BIN .
+
+if [[ $POSTAPP = 'lam' ]]; then
+    cp ${PATHRT}/parm/post_itag_fv3lam itag
+    cp ${PATHRT}/parm/postxconfig-NT-fv3lam.txt postxconfig-NT.txt
+    cp ${PATHRT}/parm/postxconfig-NT-fv3lam.txt postxconfig-NT_FH00.txt
+    cp ${PATHRT}/parm/params_grib2_tbl_new params_grib2_tbl_new
+elif [[ $POSTAPP = 'hafs' ]]; then
+    cp ${PATHRT}/parm/post_itag_hafs itag
+    cp ${PATHRT}/parm/postxconfig-NT-hafs.txt postxconfig-NT.txt
+    cp ${PATHRT}/parm/postxconfig-NT-hafs.txt postxconfig-NT_FH00.txt
+    cp ${PATHRT}/parm/params_grib2_tbl_new params_grib2_tbl_new
+fi
+
+if [ $DO_RRTMGP = .true. ]; then
+  cp @[INPUTDATA_ROOT]/FV3_input_data_RRTMGP/* .
+fi
