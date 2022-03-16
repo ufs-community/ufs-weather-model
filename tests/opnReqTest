@@ -53,6 +53,7 @@ cleanup() {
 }
 
 find_build() {
+  cat rt.conf rt_gnu.conf >rt.temp
   local compile_line=''
   local run_line=''
   while read -r line || [ "$line" ]; do
@@ -70,7 +71,7 @@ find_build() {
         break
       fi
     fi
-  done <'rt.conf'
+  done <'rt.temp'
 }
 
 build_opnReqTests() {
