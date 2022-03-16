@@ -149,6 +149,8 @@ list(APPEND mom6_src_files
   MOM6/src/parameterizations/CVmix/cvmix_tidal.F90
   MOM6/src/parameterizations/CVmix/cvmix_utils.F90
 
+  MOM6/src/parameterizations/stochastic/MOM_stochastics.F90
+
   MOM6/src/tracer/DOME_tracer.F90
 
   MOM6/src/tracer/ISOMIP_tracer.F90
@@ -236,9 +238,6 @@ list(APPEND mom6_src_files
   MOM6/config_src/infra/FMS1/MOM_interp_infra.F90
   MOM6/config_src/infra/FMS1/MOM_io_infra.F90
   MOM6/config_src/infra/FMS1/MOM_time_manager.F90
-  MOM6/config_src/external/drifters/MOM_particles_types.F90
-  MOM6/config_src/external/drifters/MOM_particles.F90
-
 
 )
 
