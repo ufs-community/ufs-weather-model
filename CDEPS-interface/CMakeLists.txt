@@ -69,7 +69,7 @@ add_dependencies(docn share streams dshr)
 set_target_properties(docn PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(docn PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
 target_link_libraries(docn PRIVATE dshr share streams)
-target_link_libraries(docn PRIVATE esmf)
+target_link_libraries(docn PRIVATE esmf PIO::PIO_Fortran)
 
 # CDEPS/drof
 add_library(drof OBJECT ${cdeps_drof_files})
