@@ -1206,6 +1206,7 @@ shows the following parameters that can be set in *model_configure* at run-time.
      - history file output forecast hours or history file output frequency if the second elelment is -1
      - real
      - -1 (negative: turn off the option, otherwise overwritten nfhout/nfhout_fh; 6 -1: output every 6 hoursr; 6 9: output history files at fh=6 and 9)
+     - -1 (negative: turn off the option, otherwise overwritten nfhout/nfhout_fh; 6 -1: output every 6 hoursr; 6 9: output history files at fh=6 and 9. Note: output_fh can only take 277 elements)
 
 :numref:`Table %s <ModelConfigParamsNotChanged>` shows the following parameters in *model_configure* that
 are not usually changed.
