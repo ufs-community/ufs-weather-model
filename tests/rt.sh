@@ -485,7 +485,7 @@ if [[ $TESTS_FILE =~ '35d' ]] || [[ $TESTS_FILE =~ 'weekly' ]]; then
   TEST_35D=true
 fi
 
-BL_DATE=20220304
+BL_DATE=20220321
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]] || [[ $MACHINE_ID = s4.* ]]; then
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
 else
@@ -522,7 +522,6 @@ source default_vars.sh
 JOB_NR=0
 TEST_NR=0
 COMPILE_NR=0
-COMPILE_PREV_WW3_NR=''
 rm -f fail_test* fail_compile*
 
 export LOG_DIR=${PATHRT}/log_$MACHINE_ID
@@ -739,10 +738,6 @@ EOF
     else
       RT_SUFFIX=""
       BL_SUFFIX=""
-    fi
-
-    if [[ ${MAKE_OPT^^} =~ "-DAPP=ATMW" ]] || [[ ${MAKE_OPT^^} =~ "-DAPP=S2SW" ]] || [[ ${MAKE_OPT^^} =~ "-DAPP=HAFSW" ]] || [[ ${MAKE_OPT^^} =~ "-DAPP=HAFS-ALL" ]] ; then
-       COMPILE_PREV_WW3_NR=${COMPILE_NR}
     fi
 
     continue
