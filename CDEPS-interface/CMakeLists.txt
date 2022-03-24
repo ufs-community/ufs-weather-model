@@ -1,6 +1,9 @@
 # CDEPS compiler flags
 if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
   set(CMAKE_Fortran_FLAGS "-g -fbacktrace -ffree-line-length-none")
+  if(${CMAKE_Fortran_COMPILER_VERSION} VERSION_GREATER_EQUAL 10)
+    set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fallow-argument-mismatch -fallow-invalid-boz")
+  endif()
   set(CMAKE_Fortran_FLAGS_RELEASE "-O2")
   set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -fcheck=bounds -ffpe-trap=invalid,zero,overflow,underflow" )
 elseif(CMAKE_Fortran_COMPILER_ID MATCHES "Intel")
@@ -69,7 +72,7 @@ add_dependencies(docn share streams dshr)
 set_target_properties(docn PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(docn PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
 target_link_libraries(docn PRIVATE dshr share streams)
-target_link_libraries(docn PRIVATE esmf)
+target_link_libraries(docn PRIVATE esmf PIO::PIO_Fortran)
 
 # CDEPS/drof
 add_library(drof OBJECT ${cdeps_drof_files})
