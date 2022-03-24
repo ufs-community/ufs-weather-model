@@ -418,7 +418,7 @@ rocoto_create_compile_task() {
   fi
 
   cat << EOF >> $ROCOTO_XML
-  <task name="compile_${COMPILE_NR}" maxtries="3">
+  <task name="compile_${COMPILE_NR}" maxtries="${ROCOTO_COMPILE_MAXTRIES:-3}">
     $DEP_STRING
     <command>&PATHRT;/run_compile.sh &PATHRT; &RUNDIR_ROOT; "${MAKE_OPT}" ${COMPILE_NR}</command>
     <jobname>compile_${COMPILE_NR}</jobname>
@@ -455,7 +455,7 @@ rocoto_create_run_task() {
   fi
 
   cat << EOF >> $ROCOTO_XML
-    <task name="${TEST_NAME}${RT_SUFFIX}" maxtries="1">
+    <task name="${TEST_NAME}${RT_SUFFIX}" maxtries="${ROCOTO_TEST_MAXTRIES:-3}">
       <dependency> $DEP_STRING </dependency>
       <command>&PATHRT;/run_test.sh &PATHRT; &RUNDIR_ROOT; ${TEST_NAME} ${TEST_NR} ${COMPILE_NR} </command>
       <jobname>${TEST_NAME}${RT_SUFFIX}</jobname>
@@ -478,22 +478,65 @@ rocoto_kill() {
    done
 }
 
-rocoto_run() {
-
-  state="Active"
-  while [[ $state != "Done" ]]
-  do
+rocoto_step() {
+    set -e
+    echo "Unknown" > rocoto_workflow.state
+    # Run one iteration of rocotorun and rocotostat.
     $ROCOTORUN -v 10 -w $ROCOTO_XML -d $ROCOTO_DB
-    sleep 10
+    sleep 1
+    #   Is it done?
     state=$($ROCOTOSTAT -w $ROCOTO_XML -d $ROCOTO_DB -s | grep 197001010000 | awk -F" " '{print $2}')
+    echo "$state" > $ROCOTO_STATE
     dead_compile=$($ROCOTOSTAT -w $ROCOTO_XML -d $ROCOTO_DB | grep compile_ | grep DEAD | head -1 | awk -F" " '{print $2}')
     if [[ ! -z ${dead_compile} ]]; then
-      echo "y" | ${ROCOTOCOMPLETE} -w $ROCOTO_XML -d $ROCOTO_DB -m ${dead_compile}_tasks
-      ${ROCOTOCOMPLETE} -w $ROCOTO_XML -d $ROCOTO_DB -t ${dead_compile}
+        echo "y" | ${ROCOTOCOMPLETE} -w $ROCOTO_XML -d $ROCOTO_DB -m ${dead_compile}_tasks
+        ${ROCOTOCOMPLETE} -w $ROCOTO_XML -d $ROCOTO_DB -t ${dead_compile}
     fi
-    sleep 20
-  done
+}
 
+rocoto_run() {
+  # Run the rocoto workflow until it is complete
+  local naptime=60
+  local step_attempts=0
+  local max_step_attempts=100 # infinite loop safeguard; should never reach this
+  local start_time=0
+  local now_time=0
+  local max_time=3600 # seconds to wait for Rocoto to start working again
+  local result=0
+  state="Active"
+  while [[ $state != "Done" ]]; do
+      # Run one iteration of rocotorun and rocotostat.  Use an
+      # exponential backoff algorithm to handle temporary system
+      # failures breaking Rocoto.
+      start_time=$( env TZ=UTC date +%s )
+      for step_attempts in $( seq 1 "$max_step_attempts" ) ; do
+          now_time=$( env TZ=UTC date +%s )
+
+          set +e
+          ( rocoto_step )
+          result=$?
+          state=$( cat $ROCOTO_STATE )
+          set -e
+
+          if [[ "${state:-Unknown}" == Done ]] ; then
+              set +x
+              echo "Rocoto workflow has completed."
+              set -x
+              return 0
+          elif [[ $result == 0 ]] ; then
+              break # rocoto_step succeeded
+          elif (( now_time-start_time > max_time || step_attempts >= max_step_attempts )) ; then
+              set +x
+              echo "Rocoto commands have failed $step_attempts times, for $(( (now_time-start_time+30)/60 )) minutes."
+              echo "There may be something wrong with the $( hostname ) node or the batch system."
+              echo "I'm giving up. Sorry."
+              set -x
+              return 2
+          fi
+          sleep $(( naptime * 2**((step_attempts-1)%4) * RANDOM/32767 ))
+      done
+      sleep $naptime
+  done
 }
 
 

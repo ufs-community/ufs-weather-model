@@ -486,7 +486,7 @@ if [[ $TESTS_FILE =~ '35d' ]] || [[ $TESTS_FILE =~ 'weekly' ]]; then
   TEST_35D=true
 fi
 
-BL_DATE=20220304
+BL_DATE=20220323
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]] || [[ $MACHINE_ID = s4.* ]]; then
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/gsl-develop-${BL_DATE}/${RT_COMPILER^^}}
 else
@@ -533,9 +533,10 @@ mkdir ${LOG_DIR}
 if [[ $ROCOTO == true ]]; then
 
   ROCOTO_XML=${PATHRT}/rocoto_workflow.xml
+  ROCOTO_STATE=${PATHRT}/rocoto_workflow.state
   ROCOTO_DB=${PATHRT}/rocoto_workflow.db
 
-  rm -f $ROCOTO_XML $ROCOTO_DB *_lock.db
+  rm -f $ROCOTO_XML $ROCOTO_DB $ROCOTO_STATE *_lock.db
 
   if [[ $MACHINE_ID = wcoss ]]; then
     QUEUE=dev
@@ -886,7 +887,7 @@ else
 
   rm -f fv3_*.x fv3_*.exe modules.fv3_* keep_tests.tmp
   [[ ${KEEP_RUNDIR} == false ]] && rm -rf ${RUNDIR_ROOT}
-  [[ ${ROCOTO} == true ]] && rm -f ${ROCOTO_XML} ${ROCOTO_DB} *_lock.db
+  [[ ${ROCOTO} == true ]] && rm -f ${ROCOTO_XML} ${ROCOTO_DB} ${ROCOTO_STATE} *_lock.db
   [[ ${TEST_35D} == true ]] && rm -f tests/cpld_bmark*_20*
   [[ ${SINGLE_NAME} != '' ]] && rm -f rt.conf.single
 fi
