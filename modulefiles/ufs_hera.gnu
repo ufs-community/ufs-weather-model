@@ -23,9 +23,6 @@ module load hpc-mpich/3.3.2
 
 module load ufs_common
 
-module unload fms
-module load fms/2021.03-avx
-
 setenv CC mpicc
 setenv CXX mpicxx
 setenv FC mpif90
