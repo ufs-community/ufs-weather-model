@@ -53,6 +53,7 @@ cleanup() {
 }
 
 find_build() {
+  cat rt.conf rt_gnu.conf >rt.temp
   local compile_line=''
   local run_line=''
   while read -r line || [ "$line" ]; do
@@ -70,7 +71,7 @@ find_build() {
         break
       fi
     fi
-  done <'rt.conf'
+  done <'rt.temp'
 }
 
 build_opnReqTests() {
@@ -531,7 +532,6 @@ mkdir -p ${RUNDIR_ROOT}
 if [[ $ECFLOW == true ]]; then
   ECFLOW_RUN=${PATHRT}/ecflow_opnReqTest_run
   ECFLOW_SUITE=opnreqtest_$$
-  COMPILE_PREV_WW3_NR=
   rm -rf ${ECFLOW_RUN}
   mkdir -p ${ECFLOW_RUN}/${ECFLOW_SUITE}
   cp head.h tail.h ${ECFLOW_RUN}
@@ -624,9 +624,9 @@ fi
 mkdir -p ${STMP}/${USER}
 NEW_BASELINE=${STMP}/${USER}/FV3_OPNREQ_TEST/OPNREQ_TEST
 RTPWD=${NEW_BASELINE}
-INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20211203}
+INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20211210}
 INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20211113/
-INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC:-$DISKNM/NEMSfv3gfs/BM_IC-20210717}
+INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC:-$DISKNM/NEMSfv3gfs/BM_IC-20220207}
 
 rm -rf $NEW_BASELINE
 mkdir -p $NEW_BASELINE
