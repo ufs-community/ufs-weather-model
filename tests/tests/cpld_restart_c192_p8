@@ -1,7 +1,7 @@
 #
 #  cpld_restart_c192_p8 test
 #
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C192 MX050 - 24h P8 restart test"
+export TEST_DESCR="Fully coupled FV3-CCPP-GOCART-MOM6-CICE-CMEPS-WW3 system - C192 MX050 - P8 test"
 
 export CNTL_DIR="cpld_control_c192_p8"
 
@@ -17,8 +17,7 @@ export LIST_FILES="sfcf036.tile1.nc \
                    atmf036.tile4.nc \
                    atmf036.tile5.nc \
                    atmf036.tile6.nc \
-                   20210323.180000.out_grd.ww3 \
-                   20210323.180000.out_pnt.ww3 \
+                   gocart.inst_aod.20210323_1800z.nc4 \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -53,7 +52,9 @@ export LIST_FILES="sfcf036.tile1.nc \
                    RESTART/sfc_data.tile6.nc \
                    RESTART/MOM.res.nc \
                    RESTART/iced.2021-03-23-64800.nc \
-                   RESTART/ufs.cpld.cpl.r.2021-03-23-64800.nc"
+                   RESTART/ufs.cpld.cpl.r.2021-03-23-64800.nc \
+                   20210323.180000.out_grd.ww3 \
+                   20210323.180000.out_pnt.ww3 "
 
 export_fv3
 export_cpl
@@ -68,6 +69,7 @@ export RESTART_FILE_SUFFIX_HRS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%02d" $(( $
 export RESTART_FILE_SUFFIX_SECS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%02d" $(( (${FHROT}+ ${SHOUR})*3600 )))"
 export RUN_BEG="${SYEAR}${SMONTH}${SDAY} $(printf "%02d" $(( ${FHROT}+${SHOUR}  )))0000"
 
+export DOMAINS_STACK_SIZE=16000000
 export TASKS=$TASKS_cpl_c192
 export TPN=$TPN_cpl_c192
 export INPES=$INPES_cpl_c192
@@ -77,6 +79,7 @@ export WRTTASK_PER_GROUP=$WPG_cpl_c192
 
 export med_petlist_bounds=$MPB_cpl_c192
 export atm_petlist_bounds=$APB_cpl_c192
+export chm_petlist_bounds=$CHM_cpl_c192
 export ocn_petlist_bounds=$OPB_cpl_c192
 export ice_petlist_bounds=$IPB_cpl_c192
 export wav_petlist_bounds=$WPB_cpl_c192
@@ -128,6 +131,9 @@ export FNVMXC="'C192.vegetation_greenness.tileX.nc'"
 export FNSLPC="'C192.slope_type.tileX.nc'"
 export FNABSC="'C192.maximum_snow_albedo.tileX.nc'"
 
+export CDMBWD=${CDMBWD_c192}
+export DT_INNER=${DT_INNER_c192}
+
 # ATM warm start
 export WARM_START=.true.
 export MAKE_NH=.false.
@@ -145,20 +151,9 @@ export USE_RESTART_TIME=.true.
 # MOM6 warm start
 export MOM6_RESTART_SETTING=r
 
+#Waves
 export OUT_BEG=$RUN_BEG
 export RST_BEG=$RUN_BEG
 export RST_2_BEG=$RUN_BEG
-export WW3RSTDTHR=3
-export WW3OUTDTHR=3
-export WW3RSTDTHR=3
-export DT_2_RST="$(printf "%02d" $(( ${WW3RSTDTHR}*3600 )))"
-export DTFLD="$(printf "%02d" $(( ${WW3OUTDTHR}*3600 )))"
-export DTPNT="$(printf "%02d" $(( ${WW3OUTDTHR}*3600 )))"
-
-export CPLWAV=.true.
-export CPLWAV2ATM=.true.
-export MOM6_USE_WAVES=True
-
-export NEMS_CONFIGURE=nems.configure.cpld_wave.IN
 
 export FV3_RUN=cpld_control_run.IN

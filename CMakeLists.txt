@@ -216,10 +216,6 @@ if(UFS_GOCART)
 endif()
 
 if(WW3)
-#  add_dependencies(ufs ww3_nuopc)
-#  list(APPEND _ufs_defs_private FRONT_WW3=wav_comp_nuopc)
-#  target_include_directories(ufs PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/mod)
-#  list(APPEND _ufs_libs_public ${WW3_LIBS})
   target_link_libraries(ufs PUBLIC WW3::WW3)
 endif()
 

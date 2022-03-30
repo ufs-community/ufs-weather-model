@@ -1,5 +1,5 @@
 #
-#  cpld_decomp P8 test
+#  cpld_control P8 test
 #
 
 export TEST_DESCR="Fully coupled FV3-CCPP-GOCART-MOM6-CICE-CMEPS-WW3 system - C96MX100 - decomp test"
@@ -18,6 +18,7 @@ export LIST_FILES="sfcf024.tile1.nc \
                    atmf024.tile4.nc \
                    atmf024.tile5.nc \
                    atmf024.tile6.nc \
+                   gocart.inst_aod.20210323_0600z.nc4 \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -53,10 +54,8 @@ export LIST_FILES="sfcf024.tile1.nc \
                    RESTART/MOM.res.nc \
                    RESTART/iced.2021-03-23-21600.nc \
                    RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc \
-                   gocart.inst_aod.20210323_0600z.nc4 \
-                   20210323.060000.out_grd.glo_1deg \
-                   20210323.060000.out_pnt.points \
-                   20210323.060000.restart.glo_1deg"
+                   20210323.060000.out_pnt.ww3 \
+                   20210323.060000.out_grd.ww3 "
 
 export_fv3
 export_cpl
@@ -83,10 +82,8 @@ export np2=`expr $NPROC_ICE / 2`
 export BLCKX=`expr $NX_GLB / $np2`
 export BLCKY=`expr $NY_GLB / 2`
 
-export CPLCHM=.true.
-export NEMS_CONFIGURE=nems.configure.cpld_aero_wave.IN
-export FIELD_TABLE=field_table_thompson_noaero_tke_GOCART
-
+export TOPOEDITS=ufs.topo_edits_011818.nc
+export MOM6_ALLOW_LANDMASK_CHANGES=True
 export eps_imesh=2.5e-1
 
 export FV3_RUN=cpld_control_run.IN
