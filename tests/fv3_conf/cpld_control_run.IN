@@ -131,15 +131,20 @@ cp    @[INPUTDATA_ROOT]/FV3_input_data/ugwp_c384_tau.nc ./ugwp_limb_tau.nc
 cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127/oro_data_ls* ./INPUT
 cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127/oro_data_ss* ./INPUT
 
-if [ $IMP_PHYSICS = 8 ]; then 
-  cp    @[INPUTDATA_ROOT]/FV3_input_data_gsd/CCN_ACTIVATE.BIN CCN_ACTIVATE.BIN 
-  cp    @[INPUTDATA_ROOT]/FV3_input_data_gsd/freezeH2O.dat freezeH2O.dat   
+if [ $IMP_PHYSICS = 8 ]; then
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_gsd/CCN_ACTIVATE.BIN CCN_ACTIVATE.BIN
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_gsd/freezeH2O.dat freezeH2O.dat
   cp    @[INPUTDATA_ROOT]/FV3_input_data_gsd/qr_acr_qg.dat qr_acr_qg.dat
-  cp    @[INPUTDATA_ROOT]/FV3_input_data_gsd/qr_acr_qs.dat qr_acr_qs.dat 
-fi 
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_gsd/qr_acr_qs.dat qr_acr_qs.dat
+fi
 
-#prognostic aerosols
+#prognostic aerosols; explictly list files since AERO_HIST.rc is from parm/gocart
 if [ $CPLCHM = .true. ]; then
-  cp      @[INPUTDATA_ROOT]/GOCART/p8/rc/*.rc .
+  cp      @[INPUTDATA_ROOT]/GOCART/p8/rc/*instance* .
+  cp      @[INPUTDATA_ROOT]/GOCART/p8/rc/AERO_ExtData.rc .
+  cp      @[INPUTDATA_ROOT]/GOCART/p8/rc/AERO.rc .
+  cp      @[INPUTDATA_ROOT]/GOCART/p8/rc/AGCM.rc .
+  cp      @[INPUTDATA_ROOT]/GOCART/p8/rc/CAP.rc .
+  cp      @[INPUTDATA_ROOT]/GOCART/p8/rc/GOCART2G_GridComp.rc .
   ln -sf  @[INPUTDATA_ROOT]/GOCART/p8/ExtData .
 fi

@@ -18,6 +18,7 @@ export LIST_FILES="sfcf003.tile1.nc \
                    atmf003.tile4.nc \
                    atmf003.tile5.nc \
                    atmf003.tile6.nc \
+                   gocart.inst_aod.20210322_0900z.nc4 \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -56,9 +57,6 @@ export LIST_FILES="sfcf003.tile1.nc \
                    20210322.090000.out_pnt.ww3 \
                    20210322.090000.out_grd.ww3 "
 
-# TODO: need fix to produce at fhmax
-#                   gocart.inst_aod.20210322_0900z.nc4 \
-
 export_fv3
 export_cpl
 
@@ -66,6 +64,7 @@ export FHMAX=3
 export DAYS=0.125
 export RESTART_N=${FHMAX}
 export OUTPUT_FH="3 -1"
+export AOD_FRQ=030000
 
 export TOPOEDITS=ufs.topo_edits_011818.nc
 export MOM6_ALLOW_LANDMASK_CHANGES=True
