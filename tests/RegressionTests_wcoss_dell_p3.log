@@ -1,12 +1,11 @@
-Wed Mar 23 12:44:34 UTC 2022
+Wed Mar 30 18:40:28 UTC 2022
 Start Regression test
 
-Compile 001 elapsed time 1098 seconds. -DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16,FV3_GFS_v15_thompson_mynn,FV3_GFS_v15_thompson_mynn_RRTMGP,FV3_GFS_v16_p7_rrtmgp,FV3_GFS_v16_p8 -D32BIT=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile 001 elapsed time 1121 seconds. -DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16,FV3_GFS_v15_thompson_mynn,FV3_GFS_v15_thompson_mynn_RRTMGP,FV3_GFS_v16_p7_rrtmgp,FV3_GFS_v16_p8 -D32BIT=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release
 
 baseline dir = /gpfs/dell2/stmp/Jesse.Meng/FV3_RT/REGRESSION_TEST/control
-working dir  = /gpfs/dell2/ptmp/Jesse.Meng/FV3_RT/rt_55312/control_2dwrtdecomp
+working dir  = /gpfs/dell2/ptmp/Jesse.Meng/FV3_RT/rt_48568/control_2dwrtdecomp
 Checking test 001 control_2dwrtdecomp results ....
-
  Comparing sfcf000.nc .........OK
  Comparing sfcf024.nc .........OK
  Comparing atmf000.nc .........OK
@@ -14,17 +13,35 @@ Checking test 001 control_2dwrtdecomp results ....
  Comparing GFSFLX.GrbF00 .........OK
  Comparing GFSFLX.GrbF24 .........OK
  Comparing GFSPRS.GrbF00 .........OK
- Comparing GFSPRS.GrbF24 .........NOT OK
+ Comparing GFSPRS.GrbF24 .........OK
 
-[0] The total amount of wall time                        = 149.471456
-[0] The maximum resident set size (KB)                   = 469884
+[0] The total amount of wall time                        = 146.170648
+[0] The maximum resident set size (KB)                   = 466464
 
-Test 001 control_2dwrtdecomp FAIL
+Test 001 control_2dwrtdecomp PASS
+
+
+baseline dir = /gpfs/dell2/stmp/Jesse.Meng/FV3_RT/REGRESSION_TEST/fv3_regional_control
+working dir  = /gpfs/dell2/ptmp/Jesse.Meng/FV3_RT/rt_48568/regional_control_2dwrtdecomp
+Checking test 002 regional_control_2dwrtdecomp results ....
+ Comparing dynf000.nc .........OK
+ Comparing dynf024.nc .........OK
+ Comparing phyf000.nc .........OK
+ Comparing phyf024.nc .........OK
+ Comparing PRSLEV.GrbF00 .........NOT OK
+ Comparing PRSLEV.GrbF24 .........NOT OK
+ Comparing NATLEV.GrbF00 .........NOT OK
+ Comparing NATLEV.GrbF24 .........NOT OK
+
+[0] The total amount of wall time                        = 367.161039
+[0] The maximum resident set size (KB)                   = 573988
+
+Test 002 regional_control_2dwrtdecomp FAIL
 
 FAILED TESTS: 
-Test control_2dwrtdecomp 001 failed in check_result failed 
-Test control_2dwrtdecomp 001 failed in run_test failed 
+Test regional_control_2dwrtdecomp 002 failed in check_result failed 
+Test regional_control_2dwrtdecomp 002 failed in run_test failed 
 
 REGRESSION TEST FAILED
-Wed Mar 23 13:08:17 UTC 2022
-Elapsed time: 00h:23m:45s. Have a nice day!
+Wed Mar 30 19:09:22 UTC 2022
+Elapsed time: 00h:28m:55s. Have a nice day!
