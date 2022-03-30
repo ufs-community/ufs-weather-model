@@ -188,7 +188,7 @@ if [[ $CPLWAV == .true. ]]; then
   fi
 fi
 
-if [[ $S2SWA = 'true' ]]; then
+if [[ $S2S = 'true' ]] && [[ $CPLCHM == .true. ]]; then
     atparse < ${PATHRT}/parm/gocart/AERO_HISTORY.rc.IN > AERO_HISTORY.rc
 fi
 
