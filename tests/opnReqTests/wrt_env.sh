@@ -12,6 +12,7 @@ export WRITE_GROUP=${WRITE_GROUP}
 export WRTTASK_PER_GROUP=${WRTTASK_PER_GROUP}
 export NPROC_ICE=${NPROC_ICE:-}
 export med_petlist_bounds="${med_petlist_bounds:-}"
+export chm_petlist_bounds="${chm_petlist_bounds:-}"
 export atm_petlist_bounds="${atm_petlist_bounds:-}"
 export ocn_petlist_bounds="${ocn_petlist_bounds:-}"
 export ice_petlist_bounds="${ice_petlist_bounds:-}"
