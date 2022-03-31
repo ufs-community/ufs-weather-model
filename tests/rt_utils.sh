@@ -286,7 +286,7 @@ check_results() {
           if [[ ${MACHINE_ID} =~ orion || ${MACHINE_ID} =~ hera || ${MACHINE_ID} =~ wcoss_dell_p3 || ${MACHINE_ID} =~ wcoss_cray || ${MACHINE_ID} =~ cheyenne || ${MACHINE_ID} =~ gaea || ${MACHINE_ID} =~ jet || ${MACHINE_ID} =~ s4 ]] ; then
             printf ".......ALT CHECK.." >> ${REGRESSIONTEST_LOG}
             printf ".......ALT CHECK.."
-            ${PATHRT}/compare_ncfile.py ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i >/dev/null 2>&1 && d=$? || d=$?
+            ${PATHRT}/compare_ncfile.py ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i > compare_ncfile.log 2>&1 && d=$? || d=$?
             if [[ $d -eq 1 ]]; then
               echo "....ERROR" >> ${REGRESSIONTEST_LOG}
               echo "....ERROR"
@@ -534,7 +534,7 @@ ecflow_run() {
   # in rare instances when UID is greater then 58500 (like Ratko's UID on theia)
   [[ $ECF_PORT -gt 49151 ]] && ECF_PORT=12179
 
-  ECF_HOST=$( hostname )
+  ECF_HOST="${ECF_HOST:-$HOSTNAME}"
 
   set +e
   ecflow_client --ping --host=${ECF_HOST} --port=${ECF_PORT}
@@ -544,6 +544,11 @@ ecflow_run() {
     if [[ ${MACHINE_ID} == wcoss2 ]]; then
       # Annoying "Has NCO assigned port $ECF_PORT for use by this account? (yes/no) ".
       echo yes | ${ECFLOW_START} -p ${ECF_PORT} -d ${RUNDIR_ROOT}/ecflow_server
+    elif [[ ${MACHINE_ID} == jet.* ]]; then
+      module load ecflow
+      echo "Using special Jet ECFLOW start procedure"
+      MYCOMM="bash -l -c \"module load ecflow && ${ECFLOW_START} -d ${RUNDIR_ROOT}/ecflow_server\""
+      ssh $ECF_HOST "${MYCOMM}" 
     else
       ${ECFLOW_START} -p ${ECF_PORT} -d ${RUNDIR_ROOT}/ecflow_server
     fi
