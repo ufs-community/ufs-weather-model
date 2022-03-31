@@ -301,8 +301,8 @@ elif [[ $MACHINE_ID = jet.* ]]; then
 
   export PATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/bin:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/bin:$PATH
   export PYTHONPATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/lib/python3.8/site-packages
-  ECFLOW_START=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/bin/ecflow_start.sh
-  ECF_PORT=$(( $(id -u) + 1500 ))
+  module load ecflow
+  ECFLOW_START=/apps/ecflow/5.5.3/bin/ecflow_start.sh
 
   QUEUE=batch
   COMPILE_QUEUE=batch
@@ -355,7 +355,7 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
   COMPILE_QUEUE=regular
   PARTITION=
   dprefix=/glade/scratch
-  DISKNM=/glade/p/ral/jntp/GMTB/ufs-weather-model/RT
+  DISKNM=/glade/scratch/epicufsrt/GMTB/ufs-weather-model/RT
   STMP=$dprefix
   PTMP=$dprefix
   SCHEDULER=pbs
@@ -485,7 +485,7 @@ if [[ $TESTS_FILE =~ '35d' ]] || [[ $TESTS_FILE =~ 'weekly' ]]; then
   TEST_35D=true
 fi
 
-BL_DATE=20220325
+BL_DATE=20220329
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]] || [[ $MACHINE_ID = s4.* ]]; then
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
 else
@@ -816,6 +816,12 @@ EOF
       export skip_check_results=${skip_check_results}
       export delete_rundir=${delete_rundir}
 EOF
+      if [[ $MACHINE_ID = jet.* ]]; then
+        cat << EOF >> ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
+      export PATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/bin:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/bin:$PATH
+      export PYTHONPATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/lib/python3.8/site-packages
+EOF
+      fi
 
       if [[ $ROCOTO == true ]]; then
         rocoto_create_run_task
