@@ -85,17 +85,15 @@ if [ $TILEDFIX = .true. ]; then
 else
     cp    @[INPUTDATA_ROOT]/${inputdir}/*grb .
 fi
-cp    @[INPUTDATA_ROOT]/${inputdir}/diag_table_gfsv16 ./diag_table
-cp    @[INPUTDATA_ROOT]/${inputdir}/field_table_gfsv16 ./field_table
 
 if [ $NEW_DIAGTABLE != 'none' ]; then
-  cp    @[INPUTDATA_ROOT]/${inputdir}/$NEW_DIAGTABLE ./diag_table
+  ##cp    @[INPUTDATA_ROOT]/${inputdir}/$NEW_DIAGTABLE ./diag_table
+  cp    /gpfs/dell2/emc/modeling/noscrub/Anning.Cheng/fd_tables/diag_table_mr2 ./diag_table
 fi
-cp    /scratch1/NCEPDEV/global/Anning.Cheng/fd_tables/diag_table_mr2 ./diag_table
 
-if [ $NEW_FIELDTABLE != 'none' ]; then
-  cp    @[INPUTDATA_ROOT]/${inputdir}/$NEW_FIELDTABLE ./field_table
-fi
+##if [ $NEW_FIELDTABLE != 'none' ]; then
+##  cp    @[INPUTDATA_ROOT]/${inputdir}/$NEW_FIELDTABLE ./field_table
+##fi
 
 if [ $CPLWAV = .true. ]; then
   cp    @[INPUTDATA_ROOT_WW3]/mod_def.* .
@@ -142,9 +140,9 @@ if [ $IMP_PHYSICS = 8 ]; then
     fi
   elif [ $MRAEROSOL = .true. ]; then
     if [ $DO_MYNNEDMF = .true. ] || [ $SATMEDMF = .true. ]; then
-      cp   /scratch1/NCEPDEV/global/Anning.Cheng/fd_tables/field_table_mr2 field_table
+      cp   /gpfs/dell2/emc/modeling/noscrub/Anning.Cheng/fd_tables/field_table_mr2 field_table
     else
-      cp   /scratch1/NCEPDEV/global/Anning.Cheng/fd_tables/field_table_gf_mr2 field_table
+      cp    /gpfs/dell2/emc/modeling/noscrub/Anning.Cheng/fd_tables/field_table_gf_mr2 field_table
     fi
   else
     if [ $DO_MYNNEDMF = .true. ] || [ $SATMEDMF = .true. ]; then
