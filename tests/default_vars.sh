@@ -390,9 +390,9 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   OPB_cpl_bmrk_mpi="312 431"; IPB_cpl_bmrk_mpi="432 479"; WPB_cpl_bmrk_mpi="480 599"
   NPROC_ICE_cpl_bmrk_mpi=48
 
-  TASKS_cpl_c192=564; TPN_cpl_c192=12; INPES_cpl_c192=8; JNPES_cpl_c192=8
-  THRD_cpl_c192=2; WPG_cpl_c192=12;  MPB_cpl_c192="0 287"; APB_cpl_c192="0 395"
-  CHM_cpl_c192="0 383"; OPB_cpl_c192="396 515"; IPB_cpl_c192="516 563"
+  TASKS_cpl_c192=1324; TPN_cpl_c192=12; INPES_cpl_c192=12; JNPES_cpl_c192=16
+  THRD_cpl_c192=2; WPG_cpl_c192=24;  MPB_cpl_c192="0 287"; APB_cpl_c192="0 1175"
+  CHM_cpl_c192="0 1151"; OPB_cpl_c192="1176 1275"; IPB_cpl_c192="1276 1323"
   NPROC_ICE_cpl_c192=48
 
   TASKS_cdeps_100=40; TPN_cdeps_100=24
