@@ -1189,6 +1189,11 @@ export LDIAG_UGWP=.false.
 #P8 
 export CDMBWD=${CDMBWD_c96}
 
+# P8 RRTMGP
+export DO_RRTMGP=.true.
+export DOGP_CLDOPTICS_LUT=.true.
+export DOGP_LWSCAT=.true
+
 #P8 UGWD
 export DO_UGWP_V0=.true.
 export DO_UGWP_V1=.false.
