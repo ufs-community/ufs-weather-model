@@ -1193,6 +1193,7 @@ export CDMBWD=${CDMBWD_c96}
 export DO_RRTMGP=.true.
 export DOGP_CLDOPTICS_LUT=.true.
 export DOGP_LWSCAT=.true
+export DOGP_SGS_CNV=.true.
 
 #P8 UGWD
 export DO_UGWP_V0=.true.
