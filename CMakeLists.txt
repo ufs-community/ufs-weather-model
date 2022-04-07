@@ -16,7 +16,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules/Modules)
 ###############################################################################
 
 # Valid applications and choices
-list(APPEND VALID_APPS ATM ATMAERO ATMW S2S S2SA S2SW S2SWA HAFS HAFSW HAFS-ALL NG-GODAS)
+list(APPEND VALID_APPS ATM ATMAERO ATMAQ ATMW S2S S2SA S2SW S2SWA HAFS HAFSW HAFS-ALL NG-GODAS)
 set(APP NONE CACHE BOOL "Application Name")
 if(NOT (APP IN_LIST VALID_APPS))
   message(FATAL_ERROR "${APP} is not a valid application.\nValid Applications are: ${VALID_APPS}")
@@ -24,6 +24,7 @@ endif()
 
 set(FMS             OFF CACHE BOOL "Enable FMS")
 set(FV3             OFF CACHE BOOL "Enable FV3")
+set(AQM             OFF CACHE BOOL "Enable AQM")
 set(UFS_GOCART      OFF CACHE BOOL "Enable GOCART")
 set(MOM6            OFF CACHE BOOL "Enable MOM6")
 set(HYCOM           OFF CACHE BOOL "Enable HYCOM")
@@ -40,6 +41,7 @@ include(cmake/configure_apps.cmake)
 message("")
 message("FMS .............. ${FMS}")
 message("FV3 .............. ${FV3}")
+message("AQM .............. ${AQM}")
 message("GOCART ........... ${UFS_GOCART}")
 message("MOM6 ............. ${MOM6}")
 message("HYCOM ............ ${HYCOM}")
@@ -145,6 +147,13 @@ if(FV3)
 endif()
 
 ###############################################################################
+### AQM
+###############################################################################
+if(AQM)
+  add_subdirectory(AQM)
+endif()
+
+###############################################################################
 ### GOCART
 ###############################################################################
 if(UFS_GOCART)
@@ -207,6 +216,12 @@ target_include_directories(ufs INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINAR
 
 if(JEDI_DRIVER)
   list(APPEND _ufs_defs_private JEDI_DRIVER=ON)
+endif()
+
+if(AQM)
+  add_dependencies(ufs aqm)
+  list(APPEND _ufs_defs_private FRONT_AQM=aqm)
+  list(APPEND _ufs_libs_public aqm)
 endif()
 
 if(UFS_GOCART)
