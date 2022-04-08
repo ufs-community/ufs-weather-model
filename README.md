@@ -2,7 +2,7 @@
 
 # ufs-weather-model
 
-This is the UFS weather model source code.
+This is the UFS weather model source code
 
 # Where to find information
 
