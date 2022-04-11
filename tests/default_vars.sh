@@ -1563,6 +1563,13 @@ export JNPES=$JNPES_dflt
 export TASKS=$TASKS_dflt
 export TPN=$TPN_dflt
 
+export IS_MOVING_NEST=".false."
+export VORTEX_TRACKER=0
+export NTRACK=0
+export MOVE_CD_X=0
+export MOVE_CD_Y=0
+export CPL_IMP_MRG=.true.
+
 export OUTPUT_GRID=''
 export IMO=''
 export JMO=''
