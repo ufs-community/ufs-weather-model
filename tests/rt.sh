@@ -730,15 +730,8 @@ EOF
       ./run_compile.sh ${PATHRT} ${RUNDIR_ROOT} "${MAKE_OPT}" ${COMPILE_NR} > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
     fi
 
-    # Set RT_SUFFIX (regression test run directories and log files) and BL_SUFFIX
-    # (regression test baseline directories) for REPRO or PROD runs
-    if [[ ${MAKE_OPT^^} =~ "-DREPRO=ON" ]]; then
-      RT_SUFFIX="_repro"
-      BL_SUFFIX="_repro"
-    else
-      RT_SUFFIX=""
-      BL_SUFFIX=""
-    fi
+    RT_SUFFIX=""
+    BL_SUFFIX=""
 
     continue
 
