@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.18)
+cmake_minimum_required(VERSION 3.19)
 
 project(ufs
         VERSION 1.0
@@ -16,7 +16,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules/Modules)
 ###############################################################################
 
 # Valid applications and choices
-list(APPEND VALID_APPS ATM ATMAERO ATMW LND LND-ALL S2S S2SW HAFS HAFSW HAFS-ALL NG-GODAS NG-GODAS-NEMSDATM)
+list(APPEND VALID_APPS ATM ATMAERO ATMAQ ATMW ATML LND S2S S2SA S2SW S2SWA S2SL HAFS HAFSW HAFS-ALL NG-GODAS)
 set(APP NONE CACHE BOOL "Application Name")
 if(NOT (APP IN_LIST VALID_APPS))
   message(FATAL_ERROR "${APP} is not a valid application.\nValid Applications are: ${VALID_APPS}")
@@ -24,13 +24,13 @@ endif()
 
 set(FMS             OFF CACHE BOOL "Enable FMS")
 set(FV3             OFF CACHE BOOL "Enable FV3")
+set(AQM             OFF CACHE BOOL "Enable AQM")
 set(UFS_GOCART      OFF CACHE BOOL "Enable GOCART")
 set(MOM6            OFF CACHE BOOL "Enable MOM6")
 set(HYCOM           OFF CACHE BOOL "Enable HYCOM")
 set(CICE6           OFF CACHE BOOL "Enable CICE6")
 set(WW3             OFF CACHE BOOL "Enable WW3")
 set(STOCH_PHYS      OFF CACHE BOOL "Enable Stochastic Physics")
-set(NEMSdatm        OFF CACHE BOOL "Enable NEMSdatm")
 set(CMEPS           OFF CACHE BOOL "Enable CMEPS")
 set(CDEPS           OFF CACHE BOOL "Enable CDEPS")
 set(NOAHMP          OFF CACHE BOOL "Enable NOAHMP")
@@ -42,13 +42,13 @@ include(cmake/configure_apps.cmake)
 message("")
 message("FMS .............. ${FMS}")
 message("FV3 .............. ${FV3}")
+message("AQM .............. ${AQM}")
 message("GOCART ........... ${UFS_GOCART}")
 message("MOM6 ............. ${MOM6}")
 message("HYCOM ............ ${HYCOM}")
 message("CICE6 ............ ${CICE6}")
 message("WW3 .............. ${WW3}")
 message("STOCH_PHYS ....... ${STOCH_PHYS}")
-message("NEMSdatm ......... ${NEMSdatm}")
 message("CDEPS ............ ${CDEPS}")
 message("CMEPS ............ ${CMEPS}")
 message("NOAHMP ........... ${NOAHMP}")
@@ -149,6 +149,13 @@ if(FV3)
 endif()
 
 ###############################################################################
+### AQM
+###############################################################################
+if(AQM)
+  add_subdirectory(AQM)
+endif()
+
+###############################################################################
 ### GOCART
 ###############################################################################
 if(UFS_GOCART)
@@ -159,27 +166,10 @@ endif()
 ### Wave components [WW3]
 ###############################################################################
 if(WW3)
-  if(CMAKE_Platform)
-    if(${CMAKE_Platform} MATCHES "linux*" OR ${CMAKE_Platform} MATCHES "macosx*")
-      if (CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
-        set(WW3_COMP "gnu")
-      elseif (CMAKE_Fortran_COMPILER_ID MATCHES "Intel")
-        set(WW3_COMP "intel")
-      endif()
-    else()
-      set(WW3_COMP ${CMAKE_Platform})
-    endif()
-  endif()
-  message("Build WW3:")
-  message("   run: ${CMAKE_BUILD_TOOL} WW3_PARCOMPN=4 WW3_COMP=${WW3_COMP} ww3_nemslibonly")
-  message("   in:  ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/esmf")
-  message("")
-
-  add_custom_target(ww3_nems
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/esmf
-    COMMAND ${CMAKE_BUILD_TOOL} WW3_PARCOMPN=4 WW3_COMP=${WW3_COMP} ww3_nemslibonly > ${CMAKE_CURRENT_BINARY_DIR}/ww3_make.log 2>&1)
-
-  set(WW3_LIBS ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/obj/libww3_multi_esmf.a)
+  # Set options for WW3 build
+  set(SWITCH "multi_esmf" CACHE STRING "Default to switch_multi_esmf")
+  set(MULTI_ESMF ON CACHE BOOL "Enable ESMF for WW3")
+  add_subdirectory(WW3)
 endif()
 
 ###############################################################################
@@ -205,12 +195,8 @@ if(CMEPS)
 endif()
 
 ###############################################################################
-### Data Components [NEMSdatm, CDEPS]
+### Data Components [CDEPS]
 ###############################################################################
-if(NEMSdatm)
-  add_subdirectory(DATM/DATM)
-endif()
-
 if(CDEPS)
   add_subdirectory(CDEPS-interface)
 endif()
@@ -235,6 +221,12 @@ if(JEDI_DRIVER)
   list(APPEND _ufs_defs_private JEDI_DRIVER=ON)
 endif()
 
+if(AQM)
+  add_dependencies(ufs aqm)
+  list(APPEND _ufs_defs_private FRONT_AQM=aqm)
+  list(APPEND _ufs_libs_public aqm)
+endif()
+
 if(UFS_GOCART)
   add_dependencies(ufs UFS_Aerosols)
   list(APPEND _ufs_defs_private FRONT_GOCART=Aerosol_Cap)
@@ -242,22 +234,14 @@ if(UFS_GOCART)
 endif()
 
 if(WW3)
-  add_dependencies(ufs ww3_nems)
   list(APPEND _ufs_defs_private FRONT_WW3=WMESMFMD)
-  target_include_directories(ufs PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/mod)
-  list(APPEND _ufs_libs_public ${WW3_LIBS})
+  target_link_libraries(ufs PUBLIC WW3::WW3)
 endif()
 
 list(APPEND _ufs_libs_public esmf)
 
 if(STOCH_PHYS)
   list(APPEND _ufs_libs_public stochastic_physics)
-endif()
-
-if(NEMSdatm)
-  add_dependencies(ufs datatm)
-  list(APPEND _ufs_defs_private FRONT_NEMS_DATM=datm)
-  list(APPEND _ufs_libs_public datatm)
 endif()
 
 if(FV3)
