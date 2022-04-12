@@ -13,10 +13,16 @@ if [ ${CNTL_DIR} = "hafs_regional_atm" ] || \
    [ ${CNTL_DIR} = "hafs_regional_docn" ] || \
    [ ${CNTL_DIR} = "hafs_regional_docn_oisst" ]; then
   cp -r @[INPUTDATA_ROOT]/FV3_hafs_input_data/INPUT_hafs_regional_atm/* ./INPUT/
+elif [ ${CNTL_DIR} = "hafs_regional_storm_following_1nest_atm" ] || \
+     [ ${CNTL_DIR} = "hafs_regional_specified_moving_1nest_atm" ] || \
+     [ ${CNTL_DIR} = "hafs_regional_storm_following_1nest_atm_ocn" ] || \
+     [ ${CNTL_DIR} = "hafs_regional_storm_following_1nest_atm_ocn_wav" ]; then
+  cp -r @[INPUTDATA_ROOT]/FV3_hafs_input_data/INPUT_hafs_regional_storm_following_1nest_atm/* ./INPUT/
 elif [ ${CNTL_DIR} = "hafs_regional_1nest_atm" ] || \
-   [ ${CNTL_DIR} = "hafs_regional_telescopic_2nests_atm" ] || \
-   [ ${CNTL_DIR} = "hafs_global_1nest_atm" ] || \
-   [ ${CNTL_DIR} = "hafs_global_multiple_4nests_atm" ]; then
+     [ ${CNTL_DIR} = "hafs_regional_telescopic_2nests_atm" ] || \
+     [ ${CNTL_DIR} = "hafs_global_1nest_atm" ] || \
+     [ ${CNTL_DIR} = "hafs_global_multiple_4nests_atm" ] || \
+     [ ${CNTL_DIR} = "hafs_global_storm_following_1nest_atm" ]; then
   cp -r @[INPUTDATA_ROOT]/FV3_hafs_input_data/INPUT_${CNTL_DIR}/* ./INPUT/
 else
   echo "Error: unsupported experiments ${CNTL_DIR}"
@@ -27,4 +33,11 @@ if [ ${CNTL_DIR} = "hafs_regional_atm_thompson_gfdlsf" ]; then
   cp @[INPUTDATA_ROOT]/FV3_input_data_gsd/qr_acr_qgV2.dat .
   cp @[INPUTDATA_ROOT]/FV3_input_data_gsd/freezeH2O.dat .
   cp @[INPUTDATA_ROOT]/FV3_input_data_gsd/CCN_ACTIVATE.BIN .
+fi
+
+if [[ $POSTAPP = 'hafs' ]]; then
+    cp ${PATHRT}/parm/post_itag_hafs itag
+    cp ${PATHRT}/parm/postxconfig-NT-hafs.txt postxconfig-NT.txt
+    cp ${PATHRT}/parm/postxconfig-NT-hafs.txt postxconfig-NT_FH00.txt
+    cp ${PATHRT}/parm/params_grib2_tbl_new params_grib2_tbl_new
 fi
