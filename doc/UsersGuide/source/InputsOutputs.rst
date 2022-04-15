@@ -806,7 +806,7 @@ GOCART inputs defined in AERO_ExtData are listed and described in :numref:`Table
    * - ExtData/volcanic
      - SO2 volcanic pointwise sources
      
-The static input files for when using climatology (MERRA2) are listed and described in :numref:`Table %s <Climatology_InputFiles>`.
+The static input files when using climatology (MERRA2) are listed and described in :numref:`Table %s <Climatology_InputFiles>`.
 
 .. _Climatology_InputFiles:
 
