@@ -18,7 +18,6 @@ export LIST_FILES="dynf000.nc \
                    NATLEV.GrbF24"
 
 export_fv3
-export DO_RRTMGP=.true.
 export TASKS=68
 
 export FV3_RUN=regional_run.IN
@@ -30,8 +29,7 @@ export HYBEDMF=.false.
 export WRITE_DOPOST=.true.
 export POSTAPP='lam'
 
-export CCPP_SUITE=FV3_GFS_v15_thompson_mynn_RRTMGP
-export INPUT_NML=regional_rrtmgp.nml.IN
+export INPUT_NML=regional.nml.IN
 export MODEL_CONFIGURE=model_configure_regional.IN
 export DIAG_TABLE=diag_table_lam
 export FIELD_TABLE=field_table_regional
@@ -39,3 +37,9 @@ export FIELD_TABLE=field_table_regional
 export INPES=10
 export JNPES=6
 export OUTPUT_FH="12 -1"
+
+# RRTMGP
+export CCPP_SUITE=FV3_GFS_v15_thompson_mynn_RRTMGP
+export DO_RRTMGP=.true.
+export DOGP_CLDOPTICS_LUT=.true.
+export DOGP_LWSCAT=.true.
