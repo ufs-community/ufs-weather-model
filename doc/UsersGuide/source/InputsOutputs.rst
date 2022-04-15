@@ -738,41 +738,104 @@ GOCART
 Static datasets (i.e., *fix files*)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. TODO:: GOCART information in progress
+The static input files for GOCART configurations are listed and described in :numref:`Table %s <GOCART_ControlFiles>`.
 
-The static input files for global configurations are listed and described in :numref:`Table %s <GOCART_FixFiles>`.
+.. _GOCART_ControFiles:
 
-.. _GOCART_FixFiles:
-
-.. list-table:: *Fix files containing climatological information*
+.. list-table:: *GOCART run control files*
    :widths: 40 50
    :header-rows: 1
 
    * - Filename
      - Description
-   * -
-     -
+   * - AERO.rc
+     - Atmospheric Model Configuration Parameters
+   * - AERO_ExtData.rc
+     - Model Inputs related to aerosol emissions
+   * - AERO_HISTORY.rc
+     - Create History List for Output
+   * - AGCM.rc
+     - Atmospheric Model Configuration Parameters
+   * - CA2G_instance_CA.bc.rc
+     - Resource file for Black Carbon parameters
+   * - CA2G_instance_CA.br.rc
+     - Resource file for Brown Carbon parameters
+   * - CA2G_instance_CA.oc.rc
+     - Resource file for Organic Carbon parameters
+   * - CAP.rc
+     - Meteorological fields imported from atmospheric model (CAP_imports) & Prognostic Tracers Table (CAP_exports)
+   * - DU2G_instance_DU.rc
+     - Resource file for Dust parameters
+   * - GOCART2G_GridComp.rc
+     - The basic properties of the GOCART2G Grid Components
+   * - NI2G_instance_NI.rc
+     - Resource file for Nitrate parameters               
+   * - SS2G_instance_SS.rc
+     - Resource file for Sea Salt parameters
+   * - SU2G_instance_SU.rc
+     - Resource file for Sulfur parameters
 
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Grid description and initial condition files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+GOCART inputs defined in AERO_ExtData are listed and described in :numref:`Table %s <GOCART_InputFiles>`.
 
-.. TODO:: GOCART information in progress
+.. _GOCART_InputFiles:
 
-The input files containing grid information and the initial conditions for global configurations are listed and described in :numref:`Table %s <GOCART_GridICFiles>`.
-
-.. _GOCART_GridICFiles:
-
-.. list-table:: *Input files containing grid information and initial conditions for global configurations*
-   :widths: 35 50 15
+.. list-table:: *GOCART inputs defined in AERO_ExtData.rc*
+   :widths: 40 50
    :header-rows: 1
 
    * - Filename
      - Description
-     - Date-dependent
-   * -
-     -
-     -
+   * - ExtData/dust 
+     - FENGSHA input files
+   * - ExtData/QFED
+     - QFED biomass burning emissions     
+   * - ExtData/CEDS
+     - Anthropogenic emissions
+   * - ExtData/MERRA2
+     - DMS concentration
+   * - ExtData/PIESA/sfc
+     - Aviation emissions
+   * - ExtData/PIESA/L127
+     - H2O2, OH and NO3 mixing ratios     
+   * - ExtData/MEGAN_OFFLINE_BVOC
+     - VOCs MEGAN biogenic emissions
+   * - ExtData/monochromatic
+     - aerosol monochromatic optics files 
+   * - ExtData/optics
+     - aerosol radiation bands optic files for RRTMG
+   * - ExtData/volcanic
+     - SO2 volcanic pointwise sources
+     
+The static input files for when using climatology (MERRA2) are listed and described in :numref:`Table %s <Climatology_InputFiles>`.
+
+.. _Climatology_InputFiles:
+
+.. list-table:: *Inputs when using climatology (MERRA2)*
+   :widths: 40 50
+   :header-rows: 1
+
+   * - Filename
+     - Description             
+   * - merra2.aerclim.2003-2014.m$(month).nc
+     - MERRA2 aerosol climatology mixing ratio 
+   * - Optics_BC.dat
+     - BC optical look-up table for MERAA2 
+   * - Optics_DU.dat
+     - DUST optical look-up table for MERAA2
+   * - Optics_OC.dat
+     - OC optical look-up table for MERAA2
+   * - Optics_SS.dat
+     - Sea Salt optical look-up table for MERAA2
+   * - Optics_SU.dat
+     - Sulfate optical look-up table for MERAA2
+                    
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Grid description and initial condition files
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Running GOCART in UFS does not require aerosol initial conditions, as aerosol models can always start from scratch (cold start), however, this approach does require more than two weeks of model spin-up to obtain reasonable aerosol simulation results. Therefore, the most popular method is to take previous aerosol simulation results. The result is not necessarily from the same model, it could be from a climatology result, such as MERAA2, or a different model but with the same aerosol species and bin/size distribution.
+
+The aerosol initial input currently read by GOCART is the same format as the UFSAtm initial input data format of "gfs_data_tile[1-6].nc" in :numref:`Table %s <GridICFiles>`, so the aerosol initial conditions should be combined with the meteorological initial conditions as one initial input file. There are many tools available for this purpose. The global workflow that supports UFS models always provides a solution for this.
 
 ==========================
 Model configuration files
