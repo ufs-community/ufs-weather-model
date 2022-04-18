@@ -625,10 +625,6 @@ else
 fi
 
 WLCLK_dflt=30
-# Longer default walltime on Gaea
-if [[ $MACHINE_ID = gaea.* ]]; then
-  WLCLK_dflt=180
-fi
 
 export WLCLK=$WLCLK_dflt
 
@@ -925,7 +921,7 @@ export HAFS=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
 
-export FV3BMIC='gfs_p8a'
+export FV3BMIC='gfs_p8c'
 
 export SYEAR=2021
 export SMONTH=03
