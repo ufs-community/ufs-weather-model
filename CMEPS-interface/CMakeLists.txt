@@ -85,15 +85,8 @@ if(EXISTS ${FV3_PATH})
   ### Set environment variable for FV3 directory, used by config file
   set(ENV{FV3_PATH} ${FV3_PATH})
 
-  ### Look for CMEPS CCPP suites and get list of them to provide CCPP preprocessor
-  set(_ccpp_suites_arg "--suites=")
-  FILE(GLOB FILES "CMEPS/ufs/ccpp/suites/*.xml")
-  foreach(MYFILE ${FILES})
-    get_filename_component(TMPVAR ${MYFILE} NAME_WE)
-    string(REGEX REPLACE "suite_" "" CCPP_SUITE ${TMPVAR})
-    set(_ccpp_suites_arg "${_ccpp_suites_arg}${CCPP_SUITE},")
-  endforeach()
-  string(REGEX REPLACE ",$" "" _ccpp_suites_arg ${_ccpp_suites_arg})
+  ### Set suite file that needs to be compiled
+  set(_ccpp_suites_arg "--suites=FV3_sfc_ocean")
 
   ### Set options for ccpp_prebuild.py
   if(DEBUG)
