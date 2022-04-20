@@ -317,11 +317,11 @@ elemental function shr_infnan_isposinf_double(x) result(isposinf)
   use, intrinsic :: ieee_arithmetic, only: &
        ieee_class, &
        ieee_positive_inf, &
-       operator(==)
+       operator(.eq.)
   real(r8), intent(in) :: x
   logical :: isposinf
 
-  isposinf = (ieee_positive_inf == ieee_class(x))
+  isposinf = (ieee_positive_inf .eq. ieee_class(x))
 
 # 202 "shr_infnan_mod.F90.in"
 end function shr_infnan_isposinf_double
@@ -331,11 +331,11 @@ elemental function shr_infnan_isposinf_real(x) result(isposinf)
   use, intrinsic :: ieee_arithmetic, only: &
        ieee_class, &
        ieee_positive_inf, &
-       operator(==)
+       operator(.eq.)
   real(r4), intent(in) :: x
   logical :: isposinf
 
-  isposinf = (ieee_positive_inf == ieee_class(x))
+  isposinf = (ieee_positive_inf .eq. ieee_class(x))
 
 # 202 "shr_infnan_mod.F90.in"
 end function shr_infnan_isposinf_real
@@ -346,11 +346,11 @@ elemental function shr_infnan_isneginf_double(x) result(isneginf)
   use, intrinsic :: ieee_arithmetic, only: &
        ieee_class, &
        ieee_negative_inf, &
-       operator(==)
+       operator(.eq.)
   real(r8), intent(in) :: x
   logical :: isneginf
 
-  isneginf = (ieee_negative_inf == ieee_class(x))
+  isneginf = (ieee_negative_inf .eq. ieee_class(x))
 
 # 215 "shr_infnan_mod.F90.in"
 end function shr_infnan_isneginf_double
@@ -360,11 +360,11 @@ elemental function shr_infnan_isneginf_real(x) result(isneginf)
   use, intrinsic :: ieee_arithmetic, only: &
        ieee_class, &
        ieee_negative_inf, &
-       operator(==)
+       operator(.eq.)
   real(r4), intent(in) :: x
   logical :: isneginf
 
-  isneginf = (ieee_negative_inf == ieee_class(x))
+  isneginf = (ieee_negative_inf .eq. ieee_class(x))
 
 # 215 "shr_infnan_mod.F90.in"
 end function shr_infnan_isneginf_real
