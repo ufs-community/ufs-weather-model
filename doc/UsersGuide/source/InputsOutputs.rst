@@ -1672,7 +1672,7 @@ For more HAFS, HAFSW, and HAFS-ALL configurations please see the following nems.
 - `HAFS ATM-OCN-WAV <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/nems.configure.hafs_atm_ocn_wav.IN>`_
 - `HAFS ATM-DOCN <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/nems.configure.hafs_atm_docn.IN>`_
 
-For the coupled GOCART in S2SW application, a sample *nems.configure* is shown below :
+For the coupled GOCART in S2SAW application, a sample *nems.configure* is shown below :
 
 .. code-block:: console
 
