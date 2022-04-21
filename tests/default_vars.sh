@@ -806,6 +806,10 @@ export EXT_DIAG_THOMPSON=.false.
 export sedi_semi=.false.
 export decfl=8
 
+# Smoke
+export RRFS_SMOKE=.false.
+export SEAS_OPT=2
+
 # GWD
 export LDIAG_UGWP=.false.
 export DO_UGWP=.false.
