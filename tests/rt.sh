@@ -207,13 +207,13 @@ elif [[ $MACHINE_ID = wcoss2 ]]; then
   mkdir -p ${ECF_COMDIR}
   export colonifnco=":output"  # hack
 
-  DISKNM=/lfs/h1/emc/eib/noscrub/Dusan.Jovic
+  DISKNM=/lfs/h2/emc/eib/noscrub/Dusan.Jovic
   QUEUE=dev
   COMPILE_QUEUE=dev
   PARTITION=
   ACCNR="${ACCNR:-GFS-DEV}"
-  STMP=/lfs/h1/emc/ptmp
-  PTMP=/lfs/h1/emc/ptmp
+  STMP=/lfs/h2/emc/ptmp
+  PTMP=/lfs/h2/emc/ptmp
   SCHEDULER=pbs
   cp fv3_conf/fv3_qsub.IN_wcoss2 fv3_conf/fv3_qsub.IN
   cp fv3_conf/compile_qsub.IN_wcoss2 fv3_conf/compile_qsub.IN
