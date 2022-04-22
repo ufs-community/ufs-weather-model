@@ -19,7 +19,7 @@ else()
 endif()
 
 list(APPEND _nems_util_files
-  CMEPS/ufs/flux_atmocn_mod.F90
+# CMEPS/ufs/flux_atmocn_mod.F90
   CMEPS/ufs/glc_elevclass_mod.F90
   CMEPS/ufs/ufs_kind_mod.F90
   CMEPS/ufs/perf_mod.F90
