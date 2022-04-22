@@ -81,6 +81,10 @@
 #ifdef FRONT_IPE
       use FRONT_IPE,        only: IPE_SS   => SetServices
 #endif
+  ! - Handle build time AQM options:
+#ifdef FRONT_AQM
+      use FRONT_AQM,        only: AQM_SS  => SetServices
+#endif
   ! - Handle build time GOCART options:
 #ifdef FRONT_GOCART
       use FRONT_GOCART,     only: GOCART_SS  => SetServices
@@ -484,6 +488,23 @@
               return  ! bail out
             endif
             call NUOPC_DriverAddComp(driver, trim(prefix), IPE_SS, &
+              petList=petList, comp=comp, rc=rc)
+            if (ChkErr(rc,__LINE__,u_FILE_u)) return
+            found_comp = .true.
+          end if
+#endif
+#ifdef FRONT_AQM
+          if (trim(model) == "aqm") then
+            !TODO: Remove bail code and pass info and SetVM to DriverAddComp
+            !TODO: once component supports threading.
+            if (ompNumThreads > 1) then
+              write (msg, *) "ESMF-aware threading NOT implemented for model: "//&
+                trim(model)
+              call ESMF_LogSetError(ESMF_RC_NOT_VALID, msg=msg, line=__LINE__, &
+                file=__FILE__, rcToReturn=rc)
+              return  ! bail out
+            endif
+            call NUOPC_DriverAddComp(driver, trim(prefix), AQM_SS, &
               petList=petList, comp=comp, rc=rc)
             if (ChkErr(rc,__LINE__,u_FILE_u)) return
             found_comp = .true.

@@ -2,7 +2,7 @@
 #  cpld_mpi P8 test
 #
 
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system - C96MX100 - change mpi task test"
+export TEST_DESCR="Fully coupled FV3-CCPP-GOCART-MOM6-CICE-CMEPS-WW3 system - C96MX100 - change mpi task test"
 
 export CNTL_DIR="cpld_control_p8"
 
@@ -53,6 +53,7 @@ export LIST_FILES="sfcf024.tile1.nc \
                    RESTART/MOM.res.nc \
                    RESTART/iced.2021-03-23-21600.nc \
                    RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc \
+                   gocart.inst_aod.20210323_0600z.nc4 \
                    20210323.060000.out_grd.glo_1deg \
                    20210323.060000.out_pnt.points \
                    20210323.060000.restart.glo_1deg"
@@ -72,6 +73,7 @@ export WRTTASK_PER_GROUP=$WPG_cpl_mpi
 
 export med_petlist_bounds=$MPB_cpl_mpi
 export atm_petlist_bounds=$APB_cpl_mpi
+export chm_petlist_bounds=$CHM_cpl_mpi
 export ocn_petlist_bounds=$OPB_cpl_mpi
 export ice_petlist_bounds=$IPB_cpl_mpi
 export wav_petlist_bounds=$WPB_cpl_mpi
@@ -81,6 +83,12 @@ export np2=`expr $NPROC_ICE / 2`
 export BLCKX=`expr $NX_GLB / $np2`
 export BLCKY=`expr $NY_GLB / 2`
 
+export TOPOEDITS=ufs.topo_edits_011818.nc
+export MOM6_ALLOW_LANDMASK_CHANGES=True
 export eps_imesh=2.5e-1
+
+export CPLCHM=.true.
+export NEMS_CONFIGURE=nems.configure.cpld_aero_wave.IN
+export FIELD_TABLE=field_table_thompson_noaero_tke_GOCART
 
 export FV3_RUN=cpld_control_run.IN

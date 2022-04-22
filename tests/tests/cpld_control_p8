@@ -2,7 +2,7 @@
 #  cpld_control P8 test
 #
 
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system - C96MX100"
+export TEST_DESCR="Fully coupled FV3-CCPP-GOCART-MOM6-CICE-CMEPS-WW3 system - C96MX100"
 
 export CNTL_DIR="cpld_control_p8"
 
@@ -65,6 +65,7 @@ export LIST_FILES="sfcf021.tile1.nc \
                    RESTART/MOM.res.nc \
                    RESTART/iced.2021-03-23-21600.nc \
                    RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc \
+                   gocart.inst_aod.20210323_0600z.nc4 \
                    20210323.060000.out_grd.glo_1deg \
                    20210323.060000.out_pnt.points \
                    20210323.060000.restart.glo_1deg"
@@ -76,6 +77,12 @@ export RESTART_N=12
 export RESTART_INTERVAL="${RESTART_N} -1"
 export OUTPUT_FH='0 21 24'
 
+export CPLCHM=.true.
+export NEMS_CONFIGURE=nems.configure.cpld_aero_wave.IN
+export FIELD_TABLE=field_table_thompson_noaero_tke_GOCART
+
 export eps_imesh=2.5e-1
+export TOPOEDITS=ufs.topo_edits_011818.nc
+export MOM6_ALLOW_LANDMASK_CHANGES=True
 
 export FV3_RUN=cpld_control_run.IN
