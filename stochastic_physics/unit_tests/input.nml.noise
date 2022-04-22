@@ -1,0 +1,72 @@
+&amip_interp_nml
+       interp_oi_sst = .true.
+       use_ncep_sst = .true.
+       use_ncep_ice = .false.
+       no_anom_sst = .false.
+       data_set = 'reynolds_oi',
+       date_out_of_range = 'climo',
+/
+
+&atmos_model_nml
+       blocksize = 32
+       chksum_debug = .false.
+       dycore_only = .false.
+       fhout = 1
+       fhmax = 800
+       fhmaxhf = -1
+       ccpp_suite = 'FV3_GFS_v15p2_coupled'
+/
+
+&diag_manager_nml
+       prepend_date = .F.
+/
+
+&fms_io_nml
+       checksum_required   = .false.
+       max_files_r = 100,
+       max_files_w = 100,
+/
+
+&fms_nml
+       clock_grain = 'ROUTINE',
+       domains_stack_size = 3000000,
+       print_memory_usage = .false.
+/
+
+&fv_grid_nml
+       grid_file = 'INPUT/C768_grid_spec.nc'
+/
+
+&fv_core_nml
+       layout   = 8,8
+       io_layout = 1,1
+       npx      = 769,
+       npy      = 769,
+       ntiles   = 6,
+       grid_type = -1
+/
+
+&gfs_physics_nml
+  do_ca          = .true.
+  ca_sgs         = .true.
+  ca_global      = .true.
+  nca            = 1
+  scells         = 2600
+  tlives         = 1800
+  nseed          = 100
+  nfracseed      = 0.5
+  rcell          = 0.72
+  ca_trigger     = .True.
+  ca_entr        = .False.
+  ca_closure     = .False.
+  nca_g          = 3
+  ncells_g       = 1
+  nlives_g       = 100
+  nseed_g        = 100
+  ca_smooth      = .True.
+  nspinup        = 100
+  iseed_ca       = 12345
+  nsmooth        = 100
+  ca_amplitude   = 0.35
+  noise_option   = NOISE
+/

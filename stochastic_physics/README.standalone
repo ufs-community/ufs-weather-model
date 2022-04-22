@@ -1,0 +1,33 @@
+Instructions on how to build and run the stand alone ca_global code on hera
+1.  Copy enitre directory strucure
+  cd /scratch2/BMC/gsienkf/Philip.Pegion
+  cp -r NEMSfv3gfs_develop  <your path>
+
+2. Optional Compile full model: (I alredy built is, so you should not have to)
+    cd <your path>/tests/
+    ./compile.sh $PWD/../FV3 hera.intel '32BIT=Y HYDRO=N' 1 NO NO
+
+4.  compile standalone model  
+    cd ../stochastic_physics
+   # my loaded modules:
+    1) intel/18.0.5.274   3) netcdf/4.7.0   5) contrib       7) anaconda/latest
+    2) impi/2018.0.4      4) hdf5/1.10.5    6) grads/2.2.1
+
+
+    compile_standalone_ca OR compile_standalone
+
+5.  There is an input.nml which is currently set to run at C96, and the INPUT directory points to
+    C96 grid files. If you want to run at C384, you will need to rm INPUT and link in the C384 
+    directory (ln -sf INPUT_C384 INPUT) and make npx and npy 385 in input.nml
+
+5.  get an interactive session
+ 
+    salloc --x11=first -q debug -t 0:30:00 --nodes=1 -A <your account> -n 6
+
+6.  run job
+    srun standalone_ca OR standalone_stochy
+
+7.  post-process job to 360x180 grid (script is on hera in ~Philip.Pegion)
+    run_fregrid.sh (OR run_fregrid_c384.sh)
+
+    output file is ca_out.nc

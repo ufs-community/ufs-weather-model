@@ -1,0 +1,83 @@
+&amip_interp_nml
+       interp_oi_sst = .true.
+       use_ncep_sst = .true.
+       use_ncep_ice = .false.
+       no_anom_sst = .false.
+       data_set = 'reynolds_oi',
+       date_out_of_range = 'climo',
+/
+
+&atmos_model_nml
+       blocksize = 32
+       chksum_debug = .false.
+       dycore_only = .false.
+       fhout = 1
+       fhmax = 800
+       fhmaxhf = -1
+       ccpp_suite = 'FV3_GFS_v15p2_coupled'
+/
+
+&diag_manager_nml
+       prepend_date = .F.
+/
+
+&fms_io_nml
+       checksum_required   = .false.
+       max_files_r = 100,
+       max_files_w = 100,
+/
+
+&fms_nml
+       clock_grain = 'ROUTINE',
+       domains_stack_size = 40000000,
+       print_memory_usage = .false.
+/
+
+&fv_grid_nml
+       grid_file = 'INPUT/CRES_grid_spec.nc'
+/
+
+&fv_core_nml
+       layout   = LOX,LOY
+       io_layout = 1,1
+       npx      = NPX,
+       npy      = NPY,
+       ntiles   = 6,
+       grid_type = -1
+/
+
+&gfs_physics_nml
+       do_sppt        = .true.
+       do_shum        = .true.
+       do_skeb        = .true.
+       lndp_type      = 2
+       n_var_lndp     = 2
+/
+&nam_stochy
+  SKEBNORM=1,
+  SKEB_NPASS=30,
+  SKEB_VDOF=5,
+  SKEB=0.5,
+  SKEB_TAU=2.16E4,
+  SKEB_LSCALE=1000.E3,
+  SHUM=0.01,
+  SHUM_TAU=21600,
+  SHUM_LSCALE=500000,
+  SPPT=0.8,0.4,0.1
+  SPPT_TAU=21600,86400,216000
+  SPPT_LSCALE=500000,1000000,2000000
+  SPPT_LOGIT=.TRUE.,
+  SPPT_SFCLIMIT=.TRUE.,
+  ISEED_SHUM=1,
+  ISEED_SKEB=2,
+  ISEED_SPPT=3,
+  STOCHINI=_STOCHINI_
+/
+&nam_sfcperts
+  lndp_type=2
+  lndp_var_list='vgf','smc'
+  lndp_prt_list=1.0,0.5
+  iseed_lndp=4,5
+  lndp_tau= 86400,
+  lndp_lscale = 250000,
+/

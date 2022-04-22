@@ -1,0 +1,149 @@
+&amip_interp_nml
+       interp_oi_sst = .true.
+       use_ncep_sst = .true.
+       use_ncep_ice = .false.
+       no_anom_sst = .false.
+       data_set = 'reynolds_oi',
+       date_out_of_range = 'climo',
+/
+
+&atmos_model_nml
+       blocksize = 32
+       chksum_debug = .false.
+       dycore_only = .false.
+       fhout = 1
+       fhmax = 800
+       fhmaxhf = -1
+       ccpp_suite = 'FV3_GFS_v15p2_coupled'
+/
+
+&diag_manager_nml
+       prepend_date = .F.
+/
+
+&fms_io_nml
+       checksum_required   = .false.
+       max_files_r = 100,
+       max_files_w = 100,
+/
+
+&fms_nml
+       clock_grain = 'ROUTINE',
+       domains_stack_size = 3000000,
+       print_memory_usage = .false.
+/
+
+&fv_grid_nml
+       grid_file = 'INPUT/grid_spec.nc'
+/
+
+&fv_core_nml
+       layout   = 2,2
+       io_layout = 1,1
+       npx      = 97,
+       npy      = 97,
+       ntiles   = 6,
+       grid_type = -1
+/
+
+#&coupler_nml
+#       months = 0
+#       days  = 1
+#       hours = 0
+#       dt_atmos = 225
+#       dt_ocean = 225
+#       current_date =  2016,10,03,00,0,0
+#       calendar = 'julian'
+#       memuse_verbose = .false.
+#       atmos_nthreads = 1
+#       use_hyper_thread = .false.
+#       ncores_per_node = 24
+#/
+
+&external_ic_nml
+       filtered_terrain = .true.
+       levp = 65
+       gfs_dwinds = .true.
+       checker_tr = .F.
+       nt_checker = 0
+/
+
+&interpolator_nml
+       interp_method = 'conserve_great_circle'
+/
+
+&namsfc
+       FNGLAC   = "global_glacier.2x2.grb",
+       FNMXIC   = "global_maxice.2x2.grb",
+       FNTSFC   = "RTGSST.1982.2012.monthly.clim.grb",
+       FNSNOC   = "global_snoclim.1.875.grb",
+       FNZORC   = "igbp",
+       FNALBC   = 'global_snowfree_albedo.bosu.t126.384.190.rg.grb',
+       FNALBC2  = "global_albedo4.1x1.grb",
+       FNAISC   = "CFSR.SEAICE.1982.2012.monthly.clim.grb",
+       FNTG3C   = "global_tg3clim.2.6x1.5.grb",
+       FNVEGC   = "global_vegfrac.0.144.decpercent.grb",
+       FNVETC   = 'global_vegtype.igbp.t126.384.190.rg.grb',
+       FNSOTC   = 'global_soiltype.statsgo.t126.384.190.rg.grb',
+       FNSMCC   = 'global_soilmgldas.t126.384.190.grb',
+       FNMSKH   = "seaice_newland.grb",
+       FNTSFA   = "",
+       FNACNA   = "",
+       FNSNOA   = "",
+       FNVMNC   = "global_shdmin.0.144x0.144.grb",
+       FNVMXC   = "global_shdmax.0.144x0.144.grb",
+       FNSLPC   = "global_slope.1x1.grb",
+       FNABSC   = 'global_mxsnoalb.uariz.t126.384.190.rg.grb',
+       LDEBUG   =.false.,
+       FSMCL(2) = 99999
+       FSMCL(3) = 99999
+       FSMCL(4) = 99999
+       FTSFS    = 90
+       FAISS    = 99999
+       FSNOL    = 99999
+       FSICL    = 99999
+       FTSFL    = 99999,
+       FAISL    = 99999,
+       FVETL    = 99999,
+       FSOTL    = 99999,
+       FvmnL    = 99999,
+       FvmxL    = 99999,
+       FSLPL    = 99999,
+       FABSL    = 99999,
+       FSNOS    = 99999,
+       FSICS    = 99999,
+/
+&gfs_physics_nml
+       do_sppt        = .true.
+       do_shum        = .true.
+       do_skeb        = .true.
+       lndp_type      = 2
+       n_var_lndp     = 2
+/
+&nam_stochy
+  SKEBNORM=1,
+  SKEB_NPASS=30,
+  SKEB_VDOF=5,
+  SKEB=0.5,
+  SKEB_TAU=2.16E4,
+  SKEB_LSCALE=1000.E3,
+  SHUM=0.01,
+  SHUM_TAU=21600,
+  SHUM_LSCALE=500000,
+  SPPT=1.0,
+  SPPT_TAU=21600,
+  SPPT_LSCALE=500000,
+  SPPT_LOGIT=.TRUE.,
+  SPPT_SFCLIMIT=.TRUE.,
+  ISEED_SHUM=1,
+  ISEED_SKEB=2,
+  ISEED_SPPT=3,
+/
+&nam_sfcperts
+  lndp_type=2
+  lndp_var_list='rz0','rzt'
+  lndp_prt_list=1.0,0.5
+  iseed_lndp=4,5
+  lndp_tau= 86400,
+  lndp_lscale = 250000,
+/
