@@ -536,9 +536,9 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
   OPB_cpl_bmrk_mpi="312 431"; IPB_cpl_bmrk_mpi="432 479"; WPB_cpl_bmrk_mpi="480 599"
   NPROC_ICE_cpl_bmrk_mpi=48
 
-  TASKS_cpl_c192=288; TPN_cpl_c192=36; INPES_cpl_c192=4; JNPES_cpl_c192=8
-  THRD_cpl_c192=1; WPG_cpl_c192=12;  MPB_cpl_c192="0 191"; APB_cpl_c192="0 203"
-  CHM_cpl_c192="0 191"; OPB_cpl_c192="204 263"; IPB_cpl_c192="264 287"
+  TASKS_cpl_c192=384; TPN_cpl_c192=36; INPES_cpl_c192=6; JNPES_cpl_c192=8
+  THRD_cpl_c192=1; WPG_cpl_c192=12;  MPB_cpl_c192="0 287"; APB_cpl_c192="0 299"
+  CHM_cpl_c192="0 287"; OPB_cpl_c192="300 359"; IPB_cpl_c192="360 383"
   NPROC_ICE_cpl_c192=24
 
   TASKS_cdeps_100=40; TPN_cdeps_100=36
@@ -1064,7 +1064,7 @@ export HAFS=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
 
-export FV3BMIC='gfs_p8a'
+export FV3BMIC='gfs_p8c'
 
 export SYEAR=2021
 export SMONTH=03
