@@ -816,6 +816,7 @@ EOF
       export DEP_RUN=${DEP_RUN}
       export skip_check_results=${skip_check_results}
       export delete_rundir=${delete_rundir}
+EOF
       if [[ $MACHINE_ID = jet.* ]]; then
         cat << EOF >> ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
       export PATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/bin:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/bin:$PATH
