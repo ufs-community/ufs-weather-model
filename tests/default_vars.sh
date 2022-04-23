@@ -910,6 +910,7 @@ export DO_MYNNEDMF=.false.
 export DO_MYJPBL=.false.
 export HURR_PBL=.false.
 export MONINQ_FAC=1.0
+export SFCLAY_COMPUTE_FLUX=.false.
 
 # Shallow/deep convection
 export DO_DEEP=.true.
