@@ -16,12 +16,26 @@ export LIST_FILES="atmf006.nc \
                    ufs.hafs.cpl.r.2019-08-29-21600.nc"
 
 export_fv3
+export_hafs
 export_hafs_regional
 
 export HAFS=true
 export FHMAX=6
 export RESTART_N=${FHMAX}
 export TASKS=360
+export DT_ATMOS=180
+export IDEFLATE=1
+export NFHMAX_HF=-1
+export NFHOUT_HF=3
+export NFHOUT=3
+export OUTPUT_FILE="'netcdf_parallel' 'netcdf'"
+export SDAY=29
+export SHOUR=00
+export SMONTH=08
+export SYEAR=2019
+export WRTTASK_PER_GROUP=60
+
+export OUTPUT_GRID='regional_latlon'
 export CEN_LON=-62.0
 export CEN_LAT=22.0
 export LON1=-116.90
@@ -30,18 +44,6 @@ export LON2=-7.10
 export LAT2=58.45
 export DLON=0.1
 export DLAT=0.1
-export DT_ATMOS=180
-export IDEFLATE=1
-export NFHMAX_HF=-1
-export NFHOUT_HF=3
-export NFHOUT=3
-export OUTPUT_FILE="'netcdf_parallel' 'netcdf_parallel'"
-export OUTPUT_GRID='regional_latlon'
-export SDAY=29
-export SHOUR=00
-export SMONTH=08
-export SYEAR=2019
-export WRTTASK_PER_GROUP=60
 
 export BLOCKSIZE=40
 export CCPP_SUITE="FV3_HAFS_v0_gfdlmp_tedmf_nonsst"
@@ -100,6 +102,6 @@ export MESH_ATM="unset"
 export FIELD_TABLE=field_table_hafs
 export DIAG_TABLE=diag_table_hafs_template
 export INPUT_NML=input_regional_hafs.nml.IN
-export MODEL_CONFIGURE="model_configure_hafs_shared.IN"
+export MODEL_CONFIGURE="model_configure_hafs.IN"
 export NEMS_CONFIGURE="nems.configure.hafs_atm_ocn.IN"
 export FV3_RUN="hafs_fv3_run.IN hycom_hat10_run.IN"

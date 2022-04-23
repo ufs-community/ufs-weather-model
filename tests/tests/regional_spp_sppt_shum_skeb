@@ -1,0 +1,60 @@
+####################################################################
+#
+#  Regional test with stochastic physics (SPP, SPPT, SHUM, and SKEB)
+#  
+####################################################################
+
+export TEST_DESCR="Compare regional stochastic physics results with previous trunk version"
+
+export CNTL_DIR=regional_spp_sppt_shum_skeb
+
+export LIST_FILES="dynf000.nc \
+                   dynf001.nc \
+                   phyf000.nc \
+                   phyf001.nc \
+                   PRSLEV.GrbF00 \
+                   PRSLEV.GrbF01 \
+                   NATLEV.GrbF00 \
+                   NATLEV.GrbF01"
+
+export_fv3
+
+export FV3_RUN=regional_run_stoch.IN
+
+export OZ_PHYS_OLD=.false.
+export OZ_PHYS_NEW=.true.
+export H2O_PHYS=.true.
+export HYBEDMF=.false.
+export RESTART_INTERVAL="12 -1"
+export WRITE_DOPOST=.true.
+export POSTAPP='lam'
+export OUTPUT_FH="1 -1"
+
+export CCPP_SUITE=FV3_HRRR
+export INPUT_NML=regional_stoch.nml.IN
+export MODEL_CONFIGURE=model_configure_regional_stoch.IN
+export DIAG_TABLE=diag_table_hrrr_stoch
+export FIELD_TABLE=field_table_regional_stoch
+
+export INPES=15
+export JNPES=12
+export FHMAX=1
+export THRD=2
+export TPN=$TPN_thrd
+export TASKS=192
+export WRITE_GROUP=1
+export WRTTASK_PER_GROUP=12
+
+export DO_SPP=.true.
+export DO_SPPT=.true.
+export DO_SHUM=.true.
+export DO_SKEB=.true.
+export N_VAR_SPP=5
+export SPP_VAR_LIST="'pbl','sfc','mp','rad','gwd'"
+export SPP_PRT_LIST='0.2,0.2,0.75,0.2,0.2'
+export SPP_LSCALE='150000.0,150000.0,150000.0,150000.0,150000.0'
+export SPP_TAU='21600.0,21600.0,21600.0,21600.0,21600.0'
+export SPP_SIGTOP1='0.1,0.1,0.1,0.1,0.1'
+export SPP_SIGTOP2='0.025,0.025,0.025,0.025,0.025'
+export SPP_STDDEV_CUTOFF='1.5,1.5,2.5,1.5,1.5'
+export ISEED_SPP='4,4,4,4,4'  

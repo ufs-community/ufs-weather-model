@@ -9,9 +9,14 @@ export TEST_DESCR="Compare HAFS regional with two telescopic nests and atmospher
 export CNTL_DIR=hafs_regional_telescopic_2nests_atm
 
 export LIST_FILES="atmf006.nc \
-                   sfcf006.nc"
+                   sfcf006.nc \
+                   atm.nest02.f006.nc \
+                   sfc.nest02.f006.nc \
+                   atm.nest03.f006.nc \
+                   sfc.nest03.f006.nc"
 
 export_fv3
+export_hafs
 
 export HAFS=true
 export FHMAX=6
@@ -19,26 +24,47 @@ export RESTART_N=${FHMAX}
 export TASKS=240
 export THRD=2
 export TPN=$TPN_thrd
+export DT_ATMOS=90
+export IDEFLATE=1
+export NFHMAX_HF=-1
+export NFHOUT_HF=3
+export NFHOUT=3
+export OUTPUT_FILE="'netcdf_parallel' 'netcdf'"
+export SDAY=25
+export SHOUR=12
+export SMONTH=08
+export SYEAR=2020
+export WRTTASK_PER_GROUP=60
+
+export OUTPUT_GRID='rotated_latlon'
 export CEN_LON=-86.0
 export CEN_LAT=23.0
 export LON1=-45.00
 export LAT1=-40.00
 export LON2=45.00
 export LAT2=40.00
-export DLON=0.1
-export DLAT=0.1
-export DT_ATMOS=90
-export IDEFLATE=1
-export NFHMAX_HF=-1
-export NFHOUT_HF=3
-export NFHOUT=3
-export OUTPUT_FILE="'netcdf_parallel' 'netcdf_parallel'"
-export OUTPUT_GRID='rotated_latlon'
-export SDAY=25
-export SHOUR=12
-export SMONTH=08
-export SYEAR=2020
-export WRTTASK_PER_GROUP=60
+export DLON=0.25
+export DLAT=0.25
+
+export OUTPUT_GRID_2='lambert_conformal'
+export CEN_LON_2=-86.0
+export CEN_LAT_2=23.0
+export LON1_2=-107.00
+export LAT1_2=-1.00
+export STDLAT1_2=10.00
+export STDLAT2_2=40.00
+export NX_2=980
+export NY_2=980
+export DX_2=5000.0
+export DY_2=5000.0
+
+export OUTPUT_GRID_3='regional_latlon'
+export LON1_3=-95.00
+export LAT1_3=14.00
+export LON2_3=-77.00
+export LAT2_3=31.00
+export DLON_3=0.05
+export DLAT_3=0.05
 
 export BLOCKSIZE=${BLOCKSIZE:-24}
 export CCPP_SUITE="FV3_HAFS_v0_gfdlmp_tedmf"
@@ -106,7 +132,7 @@ export DIAG_TABLE=diag_table_hafs_template
 export INPUT_NML=input_regional_hafs.nml.IN
 export INPUT_NEST02_NML=input_nest_hafs.nml.IN
 export INPUT_NEST03_NML=input_nest_hafs.nml.IN
-export MODEL_CONFIGURE="model_configure_hafs_shared.IN"
+export MODEL_CONFIGURE="model_configure_hafs.IN"
 export NEMS_CONFIGURE="nems.configure.hafs_atm.IN"
 export FV3_RUN="hafs_fv3_run.IN"
 

@@ -22,8 +22,12 @@ The ufs-weather-model can be configured as one of several applications, from a s
      - UFSAtm coupled to GOCART
    * - S2S
      - Coupled UFSATM-MOM6-CICE6-CMEPS
+   * - S2SA
+     - Coupled UFSATM-MOM6-CICE6-GOCART-CMEPS
    * - S2SW
      - Coupled UFSATM-MOM6-CICE6-WW3-CMEPS
+   * - S2SWA
+     - Coupled UFSATM-MOM6-CICE6-WW3-GOCART-CMEPS
    * - NG-GODAS
      - Coupled CDEPS-DATM-MOM6-CICE6-CMEPS
    * - HAFS
@@ -1146,10 +1150,6 @@ shows the following parameters that can be set in *model_configure* at run-time.
      - frequency to output restart file or forecast hours to write out restart file
      - integer
      - 0 (0: write restart file at the end of integration; 12, -1: write out restart every 12 hours; 12 24 write out restart files at fh=12 and 24)
-   * - atm_coupling_interval_sec
-     - fast coupling interval in seconds for atmosphere
-     - real(8)
-     - 900
    * - quilting
      - flag to turn on quilt
      - logical
@@ -1209,7 +1209,7 @@ shows the following parameters that can be set in *model_configure* at run-time.
    * - output_fh
      - history file output forecast hours or history file output frequency if the second elelment is -1
      - real
-     - -1 (negative: turn off the option, otherwise overwritten nfhout/nfhout_fh; 6 -1: output every 6 hoursr; 6 9: output history files at fh=6 and 9)
+     - -1 (negative: turn off the option, otherwise overwritten nfhout/nfhout_fh; 6 -1: output every 6 hoursr; 6 9: output history files at fh=6 and 9. Note: output_fh can only take 1032 characters)
 
 :numref:`Table %s <ModelConfigParamsNotChanged>` shows the following parameters in *model_configure* that
 are not usually changed.

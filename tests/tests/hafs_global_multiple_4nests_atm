@@ -9,9 +9,18 @@ export TEST_DESCR="Compare HAFS global with 4 multiple nests and atmosphere only
 export CNTL_DIR=hafs_global_multiple_4nests_atm
 
 export LIST_FILES="atmf006.nc \
-                   sfcf006.nc"
+                   sfcf006.nc \
+                   atm.nest02.f006.nc \
+                   sfc.nest02.f006.nc \
+                   atm.nest03.f006.nc \
+                   atm.nest03.f006.nc \
+                   sfc.nest04.f006.nc \
+                   sfc.nest04.f006.nc \
+                   atm.nest05.f006.nc \
+                   sfc.nest05.f006.nc"
 
 export_fv3
+export_hafs
 
 export HAFS=true
 export FHMAX=6
@@ -19,26 +28,61 @@ export RESTART_N=${FHMAX}
 export TASKS=420
 export THRD=2
 export TPN=$TPN_thrd
-export CEN_LON=-86.0
-export CEN_LAT=23.0
-export LON1=-45.00
-export LAT1=-40.00
-export LON2=45.00
-export LAT2=40.00
-export DLON=0.1
-export DLAT=0.1
 export DT_ATMOS=90
 export IDEFLATE=1
 export NFHMAX_HF=-1
 export NFHOUT_HF=3
 export NFHOUT=3
-export OUTPUT_FILE="'netcdf_parallel' 'netcdf_parallel'"
-export OUTPUT_GRID='rotated_latlon'
+export OUTPUT_FILE="'netcdf_parallel' 'netcdf'"
 export SDAY=25
 export SHOUR=12
 export SMONTH=08
 export SYEAR=2020
 export WRTTASK_PER_GROUP=60
+
+export OUTPUT_GRID='global_latlon'
+export IMO=360
+export JMO=181
+
+export OUTPUT_GRID_2='regional_latlon'
+export CEN_LON_2=-175.0
+export CEN_LAT_2=0.0
+export LON1_2=-220.00
+export LAT1_2=-45.00
+export LON2_2=-130.00
+export LAT2_2=45.00
+export DLON_2=0.25
+export DLAT_2=0.25
+
+export OUTPUT_GRID_3='rotated_latlon'
+export CEN_LON_3=-86.0
+export CEN_LAT_3=23.0
+export LON1_3=-45.00
+export LAT1_3=-40.00
+export LON2_3=45.00
+export LAT2_3=40.00
+export DLON_3=0.25
+export DLAT_3=0.25
+
+export OUTPUT_GRID_4='rotated_latlon'
+export CEN_LON_4=-86.0
+export CEN_LAT_4=23.0
+export LON1_4=-45.00
+export LAT1_4=-40.00
+export LON2_4=45.00
+export LAT2_4=40.00
+export DLON_4=0.1
+export DLAT_4=0.1
+
+export OUTPUT_GRID_5='rotated_latlon'
+export CEN_LON_5=-86.0
+export CEN_LAT_5=23.0
+export LON1_5=-35.00
+export LAT1_5=-30.00
+export LON2_5=35.00
+export LAT2_5=30.00
+export DLON_5=0.05
+export DLAT_5=0.05
 
 export BLOCKSIZE=${BLOCKSIZE:-24}
 export CCPP_SUITE="FV3_HAFS_v0_gfdlmp_tedmf"
@@ -123,7 +167,7 @@ export INPUT_NEST02_NML=input_nest_hafs.nml.IN
 export INPUT_NEST03_NML=input_nest_hafs.nml.IN
 export INPUT_NEST04_NML=input_nest_hafs.nml.IN
 export INPUT_NEST05_NML=input_nest_hafs.nml.IN
-export MODEL_CONFIGURE="model_configure_hafs_shared.IN"
+export MODEL_CONFIGURE="model_configure_hafs.IN"
 export NEMS_CONFIGURE="nems.configure.hafs_atm.IN"
 export FV3_RUN="hafs_fv3_run.IN"
 

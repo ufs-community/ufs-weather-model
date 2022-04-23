@@ -1,60 +1,150 @@
-print_esmf:              .true.
-start_year:              2018
-start_month:             10
-start_day:               15
-start_hour:              00
+start_year:              @[SYEAR]
+start_month:             @[SMONTH]
+start_day:               @[SDAY]
+start_hour:              @[SHOUR]
 start_minute:            0
 start_second:            0
-nhours_fcst:             24
-
-dt_atmos:                225
+nhours_fcst:             @[FHMAX]
+dt_atmos:                @[DT_ATMOS]
 calendar:                'julian'
-restart_interval:        0
+restart_interval:        @[RESTART_INTERVAL]
 output_1st_tstep_rst:    .false.
 
-quilting:                .true.
-write_groups:            1
-write_tasks_per_group:   8
+quilting:                @[QUILTING]
+write_groups:            @[WRITE_GROUP]
+write_tasks_per_group:   @[WRTTASK_PER_GROUP]
+num_files:               @[NUM_FILES]
+filename_base:           @[FILENAME_BASE]
+output_file:             @[OUTPUT_FILE]
 write_dopost:            @[WRITE_DOPOST]
-num_files:               2
-filename_base:           'dyn' 'phy'
-output_file:             'netcdf'
+ichunk2d:                -1
+jchunk2d:                -1
+ichunk3d:                -1
+jchunk3d:                -1
+kchunk3d:                -1
+ideflate:                @[IDEFLATE]
+nbits:                   @[NBITS]
 
-# output_grid:             'gaussian_grid'
-# imo:                     384
-# jmo:                     190
+output_grid:             @[OUTPUT_GRID]     # gaussian_grid, global_latlon, regional_latlon[_moving], rotated_latlon[_moving], lambert_conformal, cubed_sphere_grid
+imo:                     @[IMO]             # number of grid points along longitude/latitude direction
+jmo:                     @[JMO]             # needed for gaussian_grid, global_latlon, regional_latlon_moving, or rotated_latlon_moving
+cen_lon:                 @[CEN_LON]         # central longitude/latitude (degrees)
+cen_lat:                 @[CEN_LAT]         # needed for rotated_latlon, lambert_conformal
+lon1:                    @[LON1]            # longitude/latitude of lower-left corner
+lat1:                    @[LAT1]            # needed for regional_latlon, rotated_latlon, lambert_conformal
+lon2:                    @[LON2]            # longitude/latitude of upper-right corner
+lat2:                    @[LAT2]            # needed for regional_latlon, rotated_latlon
+dlon:                    @[DLON]            # grid spacing in longitude/latitude direction (degrees)
+dlat:                    @[DLAT]            # needed for regional_latlon[_moving], rotated_latlon[_moving]
+stdlat1:                 @[STDLAT1]         # latitude of first/second standard parallel (degrees)
+stdlat2:                 @[STDLAT2]         # needed for lambert_conformal
+nx:                      @[NX]              # number of grid cells along x/y-axis
+ny:                      @[NY]              # needed for lambert_conformal
+dx:                      @[DX]              # grid cell size in x/y direction (meters)
+dy:                      @[DY]              # needed for lambert_conformal
 
- output_grid:             'regional_latlon'
- lon1:                    225.0
- lon2:                    300.0
- lat1:                    10.0
- lat2:                    60.0
- dlon:                    0.2
- dlat:                    0.2
+<output_grid_02>
+output_grid:             @[OUTPUT_GRID_2]
+imo:                     @[IMO_2]
+jmo:                     @[JMO_2]
+cen_lon:                 @[CEN_LON_2]
+cen_lat:                 @[CEN_LAT_2]
+lon1:                    @[LON1_2]
+lat1:                    @[LAT1_2]
+lon2:                    @[LON2_2]
+lat2:                    @[LAT2_2]
+dlon:                    @[DLON_2]
+dlat:                    @[DLAT_2]
+stdlat1:                 @[STDLAT1_2]
+stdlat2:                 @[STDLAT2_2]
+nx:                      @[NX_2]
+ny:                      @[NY_2]
+dx:                      @[DX_2]
+dy:                      @[DY_2]
+</output_grid_02>
+<output_grid_03>
+output_grid:             @[OUTPUT_GRID_3]
+imo:                     @[IMO_3]
+jmo:                     @[JMO_3]
+cen_lon:                 @[CEN_LON_3]
+cen_lat:                 @[CEN_LAT_3]
+lon1:                    @[LON1_3]
+lat1:                    @[LAT1_3]
+lon2:                    @[LON2_3]
+lat2:                    @[LAT2_3]
+dlon:                    @[DLON_3]
+dlat:                    @[DLAT_3]
+stdlat1:                 @[STDLAT1_3]
+stdlat2:                 @[STDLAT2_3]
+nx:                      @[NX_3]
+ny:                      @[NY_3]
+dx:                      @[DX_3]
+dy:                      @[DY_3]
+</output_grid_03>
+<output_grid_04>
+output_grid:             @[OUTPUT_GRID_4]
+imo:                     @[IMO_4]
+jmo:                     @[JMO_4]
+cen_lon:                 @[CEN_LON_4]
+cen_lat:                 @[CEN_LAT_4]
+lon1:                    @[LON1_4]
+lat1:                    @[LAT1_4]
+lon2:                    @[LON2_4]
+lat2:                    @[LAT2_4]
+dlon:                    @[DLON_4]
+dlat:                    @[DLAT_4]
+stdlat1:                 @[STDLAT1_4]
+stdlat2:                 @[STDLAT2_4]
+nx:                      @[NX_4]
+ny:                      @[NY_4]
+dx:                      @[DX_4]
+dy:                      @[DY_4]
+</output_grid_04>
+<output_grid_05>
+output_grid:             @[OUTPUT_GRID_5]
+imo:                     @[IMO_5]
+jmo:                     @[JMO_5]
+cen_lon:                 @[CEN_LON_5]
+cen_lat:                 @[CEN_LAT_5]
+lon1:                    @[LON1_5]
+lat1:                    @[LAT1_5]
+lon2:                    @[LON2_5]
+lat2:                    @[LAT2_5]
+dlon:                    @[DLON_5]
+dlat:                    @[DLAT_5]
+stdlat1:                 @[STDLAT1_5]
+stdlat2:                 @[STDLAT2_5]
+nx:                      @[NX_5]
+ny:                      @[NY_5]
+dx:                      @[DX_5]
+dy:                      @[DY_5]
+</output_grid_05>
+<output_grid_06>
+output_grid:             @[OUTPUT_GRID_6]
+imo:                     @[IMO_6]
+jmo:                     @[JMO_6]
+cen_lon:                 @[CEN_LON_6]
+cen_lat:                 @[CEN_LAT_6]
+lon1:                    @[LON1_6]
+lat1:                    @[LAT1_6]
+lon2:                    @[LON2_6]
+lat2:                    @[LAT2_6]
+dlon:                    @[DLON_6]
+dlat:                    @[DLAT_6]
+stdlat1:                 @[STDLAT1_6]
+stdlat2:                 @[STDLAT2_6]
+nx:                      @[NX_6]
+ny:                      @[NY_6]
+dx:                      @[DX_6]
+dy:                      @[DY_6]
+</output_grid_06>
 
-# output_grid:             'rotated_latlon'
-# cen_lon:                 -97.5   # central longitude
-# cen_lat:                  34.5   # central latitude
-# lon1:                    -24.0   # longitude of lower-left point in rotated coordinate system (in degrees)
-# lat1:                    -22.0   # latitude of lower-left . . . .
-# lon2:                     24.0   # longitude of upper-right . . . .
-# lat2:                     22.0   # latitude of upper-right . . . .
-# dlon:                      0.2
-# dlat:                      0.2
-
-# output_grid:             'lambert_conformal'
-# cen_lon:                 -97.5   # central longitude
-# cen_lat:                  34.0   # central latitude
-# stdlat1:                  30.0
-# stdlat2:                  60.0
-# nx:                       450     # Number of points along x-axis.
-# ny:                       430     # Number of points along y-axis.
-# lon1:                    -116.0   # longitude of first grid point (lower-left) (in degrees)
-# lat1:                     13.0    # latitude of first grid point (lower-left) (in degrees)
-# dx:                       10000.0 # x-direction grid length
-# dy:                       10000.0 # y-direction grid length
-
-nfhout:                  3
-nfhmax_hf:               12
-nfhout_hf:               1
-nsout:                   -1
+nfhout:                  @[NFHOUT]          # Output frequency in hours after forecast hour nfhmax_hf
+nfhmax_hf:               @[NFHMAX_HF]       # Number of forecast hours until output frequency nfhout takes affect
+nfhout_hf:               @[NFHOUT_HF]       # Output frequency in hours until forecast hour nfhmax_hf
+nsout:                   @[NSOUT]           # Output frequency in time steps (positive values override nfhout and nfhout_hf)
+output_fh:               @[OUTPUT_FH]       # Output forecast hours controlled by output_fh (see notes below)
+# a) An array of output_fh means to output history files at those forecast time (e.g., "output_fh: 0 1 2 3 12 24 48")
+#    If the first elelment is zero, it means the first time step output
+# b) If there are two elements in output_fh and the second one is -1, then the first element is output frequency. e.g.
+#    For example, "output_fh: 6 -1" will output the history file every 6 hours.
