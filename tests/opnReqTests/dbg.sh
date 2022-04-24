@@ -15,8 +15,18 @@ if [[ $application == 'global' ]]; then
     LIST_FILES="sfcf0$FHMAX_2D.nc sfcf0$FHMAX_2D.nc"
   fi
 elif [[ $application == 'regional' ]]; then
-  echo "Regional application not yet implemented for debug"
-  exit 1
+  FHMAX=1
+  OUTPUT_FH="0 1"
+
+  FHMAX_2D=$(printf "%02d" $FHMAX)
+  LIST_FILES=$(echo -n $LIST_FILES | sed -E "s/phyf0[0-9][1-9]/phyf0$FHMAX_2D/g" \
+                                   | sed -E "s/dynf0[0-9][1-9]/dynf0$FHMAX_2D/g" \
+                                   | sed -E "s/PRSLEV.GrbF[0-9][0-9]//g" \
+                                   | sed -E "s/NATLEV.GrbF[0-9][0-9]//g" \
+                                   | sed -e "s/^ *//" -e "s/ *$//")
+
+  WLCLK=30
+  WRITE_DOPOST=.false.
 elif [[ $application == 'cpld' ]]; then
   FHMAX=6
   DAYS=0.25
