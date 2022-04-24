@@ -17,8 +17,14 @@ elif [[ $application == 'regional' ]]; then
     TASKS=$((INPES*JNPES + WRITE_GROUP*WRTTASK_PER_GROUP))
     NODES=$(((TASKS+TPN-1)/TPN))
   else
-    INPES=5
-    JNPES=12
+    if [[ $TEST_NAME == 'regional_control' ]]; then
+      INPES=5
+      JNPES=12
+    elif [[ $TEST_NAME =~ 'regional_3km' ]]; then
+      temp=$INPES
+      INPES=$JNPES
+      JNPES=$temp
+    fi
   fi
 elif [[ $application == 'cpld' ]]; then
   if [[ $CI_TEST == 'true' ]]; then

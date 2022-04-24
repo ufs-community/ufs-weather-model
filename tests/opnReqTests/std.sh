@@ -17,6 +17,8 @@ elif [[ $application == 'regional' ]]; then
     WRTTASK_PER_GROUP=8
     TASKS=$((INPES*JNPES + WRITE_GROUP*WRTTASK_PER_GROUP))
   fi
+  RESTART_N=$(( FHMAX/2 ))
+  RESTART_INTERVAL="${RESTART_N} -1"
 elif [[ $application == 'cpld' ]]; then
   if [ $CI_TEST == 'true' ]; then
     INPES=2
