@@ -68,7 +68,7 @@ The umbrella repository for the UFS Weather Model is named ufs-weather-model.  U
    ├── CICE-interface
    │    └── CICE                               https://github.com/NOAA-EMC/CICE
    ├── WW3                                     https://github.com/NOAA-EMC/WW3
-   ├── GOCART                                     https://github.com/GEOS-ESM/GOCART
+   ├── GOCART                                  https://github.com/GEOS-ESM/GOCART
    ├── CMEPS-interface
    │    └── CMEPS                              https://github.com/NOAA-EMC/CMEPS
    ├── CDEPS-interface
