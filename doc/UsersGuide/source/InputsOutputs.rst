@@ -740,7 +740,7 @@ Static datasets (i.e., *fix files*)
 
 The static input files for GOCART configurations are listed and described in :numref:`Table %s <GOCART_ControlFiles>`.
 
-.. _GOCART_ControFiles:
+.. _GOCART_ControlFiles:
 
 .. list-table:: *GOCART run control files*
    :widths: 40 50
@@ -800,9 +800,9 @@ GOCART inputs defined in AERO_ExtData are listed and described in :numref:`Table
    * - ExtData/MEGAN_OFFLINE_BVOC
      - VOCs MEGAN biogenic emissions
    * - ExtData/monochromatic
-     - aerosol monochromatic optics files 
+     - Aerosol monochromatic optics files 
    * - ExtData/optics
-     - aerosol radiation bands optic files for RRTMG
+     - Aerosol radiation bands optic files for RRTMG
    * - ExtData/volcanic
      - SO2 volcanic pointwise sources
      
@@ -833,9 +833,11 @@ The static input files when using climatology (MERRA2) are listed and described 
 Grid description and initial condition files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Running GOCART in UFS does not require aerosol initial conditions, as aerosol models can always start from scratch (cold start), however, this approach does require more than two weeks of model spin-up to obtain reasonable aerosol simulation results. Therefore, the most popular method is to take previous aerosol simulation results. The result is not necessarily from the same model, it could be from a climatology result, such as MERAA2, or a different model but with the same aerosol species and bin/size distribution.
+Running GOCART in UFS does not require aerosol initial conditions, as aerosol models can always start from scratch (cold start), however, this approach does require more than two weeks of model spin-up to obtain reasonable aerosol simulation results. 
 
-The aerosol initial input currently read by GOCART is the same format as the UFSAtm initial input data format of "gfs_data_tile[1-6].nc" in :numref:`Table %s <GridICFiles>`, so the aerosol initial conditions should be combined with the meteorological initial conditions as one initial input file. There are many tools available for this purpose. The global workflow that supports UFS models always provides a solution for this.
+Therefore, the most popular method is to take previous aerosol simulation results. The result is not necessarily from the same model, it could be from a climatology result, such as MERAA2, or a different model but with the same aerosol species and bin/size distribution.
+
+The aerosol initial input currently read by GOCART is the same format as the UFSAtm initial input data format of "gfs_data_tile[1-6].nc" in :numref:`Table %s <GridICFiles>`, so the aerosol initial conditions should be combined with the meteorological initial conditions as one initial input file. There are many tools available for this purpose. Ufs-utils in the global workflow that supports UFS models always provides a solution for this.
 
 ==========================
 Model configuration files
