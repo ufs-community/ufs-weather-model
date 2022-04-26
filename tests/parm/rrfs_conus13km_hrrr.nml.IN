@@ -41,7 +41,7 @@
 
 &fms_nml
     clock_grain = 'ROUTINE'
-    domains_stack_size = 3000000
+    domains_stack_size = 5000000 ! Smoke needs a higher value than 3000000 default.
     print_memory_usage = .false.
 /
 
@@ -238,6 +238,8 @@
     lwhtr = .true.
     n_var_lndp = @[N_VAR_LNDP]
     nsradar_reset = 3600
+    nst_anl = .false.
+    nstf_name = 2, 0, 0, 0, 0
     oz_phys = .false.
     oz_phys_2015 = .true.
     pdfcld = .false.
