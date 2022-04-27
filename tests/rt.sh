@@ -258,8 +258,7 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   #ACCNR="${ACCNR:-fv3-cpu}
   PARTITION=
   dprefix=/scratch1/NCEPDEV
-  DISKNM=/scratch2/BMC/wrfruc/RT
-  #DISKNM=$dprefix/nems/emc.nemspara/RT
+  DISKNM=$dprefix/nems/emc.nemspara/RT
   STMP=$dprefix/stmp4
   PTMP=$dprefix/stmp2
 
