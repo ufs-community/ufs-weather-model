@@ -1,0 +1,73 @@
+###############################################################################
+#
+#  aqm control test: GFSv15p2 atmosphere with aqm (CMAQ) C96L64
+#
+###############################################################################
+
+export TEST_DESCR="AQM (CMAQ) control test for comparison of results with previous trunk version"
+
+export CNTL_DIR=aqm_control
+
+export LIST_FILES="sfcf000.nc \
+                   sfcf006.nc \
+                   sfcf012.nc \
+                   atmf000.nc \
+                   atmf006.nc \
+                   atmf012.nc \
+                   RESTART/coupler.res \
+                   RESTART/fv_core.res.nc \
+                   RESTART/fv_core.res.tile1.nc \
+                   RESTART/fv_srf_wnd.res.tile1.nc \
+                   RESTART/fv_tracer.res.tile1.nc \
+                   RESTART/phy_data.nc \
+                   RESTART/sfc_data.nc" 
+
+export_fv3
+
+# Checked w/model_configure
+export SYEAR=2019
+export SMONTH=08
+export SDAY=1
+export SHOUR=12
+export FHMAX=12
+export DT_ATMOS=180
+export WRTTASK_PER_GROUP=8
+export NSOUT=-1
+export OUTPUT_GRID='lambert_conformal'
+
+export NSTF_NAME='2,0,0,0,0'
+export IAER=5111
+export IOVR=3
+export OUTPUT_FH='0 6 12'
+
+#AQM Specifics
+export ATMOS_NTHREADS=2
+export PE_MEMBER01=272
+export CALENDAR='julian'
+export OUTPUT_GRID='regional_latlon'
+export CEN_LON=-97.5
+export CEN_LAT=38.5
+export LON1=-121.70231097
+export LAT1=22.57417972
+export STDLAT1=38.5
+export STDLAT2=38.5
+export NX=393
+export NY=225
+export DX=13000.0
+export DY=13000.0
+
+export TASKS=272
+export INPES=33
+export JNPES=8
+export atm_model='fv3'
+export atm_petlist_bounds="0 271"
+export aqm_model='aqm'
+export aqm_petlist_bounds="0 271"
+
+export FIELD_TABLE=field_table_aqm
+export DIAG_TABLE=diag_table_aqm
+export INPUT_NML="control_atmaq.nml.IN"
+export MODEL_CONFIGURE="model_configure_atmaq.IN"
+export NEMS_CONFIGURE="nems.configure.atmaq.IN"
+export FV3_RUN="aqm_run.IN"
+export CCPP_SUITE=FV3_GFS_v15p2

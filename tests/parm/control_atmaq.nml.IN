@@ -1,0 +1,364 @@
+&amip_interp_nml
+    data_set = 'reynolds_oi'
+    date_out_of_range = 'climo'
+    interp_oi_sst = .true.
+    no_anom_sst = .false.
+    use_ncep_ice = .false.
+    use_ncep_sst = .true.
+/
+
+&atmos_model_nml
+    blocksize = 29
+    ccpp_suite = 'FV3_GFS_v15p2'
+    chksum_debug = .false.
+    dycore_only = .false.
+/
+
+&cires_ugwp_nml
+    knob_ugwp_azdir = 2, 4, 4, 4
+    knob_ugwp_doaxyz = 1
+    knob_ugwp_doheat = 1
+    knob_ugwp_dokdis = 1
+    knob_ugwp_effac = 1, 1, 1, 1
+    knob_ugwp_ndx4lh = 1
+    knob_ugwp_solver = 2
+    knob_ugwp_source = 1, 1, 0, 0
+    knob_ugwp_stoch = 0, 0, 0, 0
+    knob_ugwp_version = 0
+    knob_ugwp_wvspec = 1, 25, 25, 25
+    launch_level = 25
+/
+
+&diag_manager_nml
+    max_output_fields = 450
+    prepend_date = .false.
+/
+
+&external_ic_nml
+    checker_tr = .false.
+    filtered_terrain = .true.
+    gfs_dwinds = .true.
+    levp = 65
+    nt_checker = 0
+/
+
+&fms_io_nml
+    checksum_required = .false.
+    max_files_r = 100
+    max_files_w = 100
+/
+
+&fms_nml
+    clock_grain = 'ROUTINE'
+    domains_stack_size = 12000000
+    print_memory_usage = .false.
+/
+
+&fv_core_nml
+    a_imp = 1.0
+    adjust_dry_mass = .false.
+    agrid_vel_rst = .false.
+    bc_update_interval = 6
+    beta = 0.0
+    consv_am = .false.
+    consv_te = 0.0
+    d2_bg = 0.0
+    d2_bg_k1 = 0.15
+    d2_bg_k2 = 0.02
+    d4_bg = 0.12
+    d_con = 1.0
+    d_ext = 0.0
+    dddmp = 0.1
+    delt_max = 0.008
+    dnats = 4
+    do_sat_adj = .true.
+    do_schmidt = .true.
+    do_vort_damp = .true.
+    dwind_2d = .false.
+    dz_min = 2
+    external_eta = .true.
+    external_ic = .true.
+    fill = .true.
+    full_zs_filter = .false.
+    fv_debug = .false.
+    fv_sg_adj = 600
+    gfs_phil = .false.
+    hord_dp = 6
+    hord_mt = 6
+    hord_tm = 6
+    hord_tr = 10
+    hord_vt = 6
+    hydrostatic = .false.
+    io_layout = 1, 1
+    k_split = 1
+    ke_bg = 0.0
+    kord_mt = 9
+    kord_tm = -9
+    kord_tr = 9
+    kord_wz = 9
+    layout = 33, 8
+    make_nh = .true.
+    mountain = .false.
+    n_split = 8
+    n_sponge = 30
+    n_zs_filter = 0
+    na_init = 1
+    ncep_ic = .false.
+    nggps_ic = .true.
+    no_dycore = .false.
+    nord = 3
+    npx = 397
+    npy = 233
+    npz = 64
+    nrows_blend = 0
+    ntiles = 1
+    nudge_qv = .true.
+    nwat = 6
+    p_fac = 0.1
+    phys_hydrostatic = .false.
+    print_freq = 6
+    psm_bc = 1
+    range_warn = .false.
+    read_increment = .false.
+    regional = .true.
+    regional_bcs_from_gsi = .false.
+    res_latlon_dynamics = 'fv3_increment.nc'
+    reset_eta = .false.
+    rf_cutoff = 750.0
+    rf_fast = .false.
+    stretch_fac = 0.999
+    target_lat = 38.5
+    target_lon = -97.5
+    tau = 5.0
+    use_hydro_pressure = .false.
+    vtdm4 = 0.075
+    warm_start = .false.
+    write_restart_with_bcs = .false.
+    z_tracer = .true.
+/
+
+&fv_grid_nml
+    grid_file = 'INPUT/grid_spec.nc'
+/
+
+&gfdl_cloud_microphysics_nml
+    c_cracw = 0.8
+    c_paut = 0.5
+    c_pgacs = 0.01
+    c_psaci = 0.05
+    ccn_l = 300.0
+    ccn_o = 100.0
+    const_vg = .false.
+    const_vi = .false.
+    const_vr = .false.
+    const_vs = .false.
+    de_ice = .false.
+    do_qa = .true.
+    do_sedi_heat = .false.
+    dw_land = 0.16
+    dw_ocean = 0.1
+    fast_sat_adj = .true.
+    fix_negative = .true.
+    icloud_f = 1
+    mono_prof = .true.
+    mp_time = 90.0
+    prog_ccn = .false.
+    qi0_crt = 8e-05
+    qi_lim = 1.0
+    ql_gen = 0.001
+    ql_mlt = 0.001
+    qs0_crt = 0.001
+    rad_graupel = .true.
+    rad_rain = .true.
+    rad_snow = .true.
+    rh_inc = 0.3
+    rh_inr = 0.3
+    rh_ins = 0.3
+    rthresh = 1e-05
+    sedi_transport = .true.
+    tau_g2v = 900.0
+    tau_i2s = 1000.0
+    tau_l2v = 225.0
+    tau_v2l = 150.0
+    use_ccn = .true.
+    use_ppm = .false.
+    vg_max = 12.0
+    vi_max = 1.0
+    vr_max = 12.0
+    vs_max = 2.0
+    z_slope_ice = .true.
+    z_slope_liq = .true.
+/
+
+&gfs_physics_nml
+    cal_pre = .false.
+    cdmbgwd = 3.5, 0.25
+    cnvcld = .true.
+    cnvgwd = .true.
+    cplaqm = .true.
+    cplocn2atm = .false.
+    debug = .false.
+    do_myjpbl = .false.
+    do_myjsfc = .false.
+    do_shum = .false.
+    do_skeb = .false.
+    do_spp = .false.
+    do_sppt = .false.
+    do_tofd = .false.
+    do_ugwp = .false.
+    do_ysu = .false.
+    dspheat = .true.
+    effr_in = .true.
+    fhcyc = 0
+    fhlwr = 3600.0
+    fhswr = 3600.0
+    fhzero = 1.0
+    fscav_aero = 'aacd:0.0', 'acet:0.0', 'acrolein:0.0', 'acro_primary:0.0',
+                 'ald2:0.0', 'ald2_primary:0.0', 'aldx:0.0', 'benzene:0.0',
+                 'butadiene13:0.0', 'cat1:0.0', 'cl2:0.0', 'clno2:0.0',
+                 'co:0.0', 'cres:0.0', 'cron:0.0', 'ech4:0.0', 'epox:0.0',
+                 'eth:0.0', 'etha:0.0', 'ethy:0.0', 'etoh:0.0', 'facd:0.0',
+                 'fmcl:0.0', 'form:0.0', 'form_primary:0.0', 'gly:0.0',
+                 'glyd:0.0', 'h2o2:0.0', 'hcl:0.0', 'hg:0.0', 'hgiigas:0.0',
+                 'hno3:0.0', 'hocl:0.0', 'hono:0.0', 'hpld:0.0', 'intr:0.0',
+                 'iole:0.0', 'isop:0.0', 'ispd:0.0', 'ispx:0.0', 'ket:0.0',
+                 'meoh:0.0', 'mepx:0.0', 'mgly:0.0', 'n2o5:0.0', 'naph:0.0',
+                 'no:0.0', 'no2:0.0', 'no3:0.0', 'ntr1:0.0', 'ntr2:0.0',
+                 'o3:0.0', 'ole:0.0', 'opan:0.0', 'open:0.0', 'opo3:0.0',
+                 'pacd:0.0', 'pan:0.0', 'panx:0.0', 'par:0.0', 'pcvoc:0.0',
+                 'pna:0.0', 'prpa:0.0', 'rooh:0.0', 'sesq:0.0', 'so2:0.0',
+                 'soaalk:0.0', 'sulf:0.0', 'terp:0.0', 'tol:0.0', 'tolu:0.0',
+                 'vivpo1:0.0', 'vlvoo1:0.0', 'vlvoo2:0.0', 'vlvpo1:0.0',
+                 'vsvoo1:0.0', 'vsvoo2:0.0', 'vsvoo3:0.0', 'vsvpo1:0.0',
+                 'vsvpo2:0.0', 'vsvpo3:0.0', 'xopn:0.0', 'xylmn:0.0', '*:0.2'
+    h2o_phys = .true.
+    hybedmf = .true.
+    iaer = 111
+    ialb = 1
+    iau_inc_files = ''
+    ico2 = 2
+    iems = 1
+    imfdeepcnv = 2
+    imfshalcnv = 2
+    imp_physics = 11
+    iopt_alb = 2
+    iopt_btr = 1
+    iopt_crs = 1
+    iopt_dveg = 2
+    iopt_frz = 1
+    iopt_inf = 1
+    iopt_rad = 1
+    iopt_run = 1
+    iopt_sfc = 1
+    iopt_snf = 4
+    iopt_stc = 1
+    iopt_tbot = 2
+    isol = 2
+    isot = 1
+    isubc_lw = 2
+    isubc_sw = 2
+    ivegsrc = 1
+    ldiag3d = .false.
+    ldiag_ugwp = .false.
+    lgfdlmprad = .true.
+    lheatstrg = .false.
+    lndp_each_step = .true.
+    lndp_type = 0
+    lsm = 1
+    lsoil = 4
+    lwhtr = .true.
+    n_var_lndp = 0
+    n_var_spp = 0
+    nsradar_reset = 3600
+    nst_anl = .true.
+    nstf_name = 2, 1, 0, 0, 0
+    oz_phys = .false.
+    oz_phys_2015 = .true.
+    pdfcld = .false.
+    pre_rad = .false.
+    print_diff_pgr = .false.
+    prslrd0 = 0.0
+    random_clds = .false.
+    redrag = .true.
+    satmedmf = .false.
+    shal_cnv = .true.
+    shinhong = .false.
+    swhtr = .true.
+    trans_trac = .true.
+    use_ufo = .true.
+    xkzm_h = 1.0
+    xkzm_m = 1.0
+    xkzminv = 0.3
+/
+
+&interpolator_nml
+    interp_method = 'conserve_great_circle'
+/
+
+&nam_sfcperts
+/
+
+&nam_sppperts
+/
+
+&nam_stochy
+    shum = -999.0
+    shum_lscale = 150000
+    shum_tau = 21600
+    shumint = 3600
+    skeb = -999.0
+    skeb_lscale = 150000
+    skeb_tau = 21600
+    skeb_vdof = 10
+    skebint = 3600
+    sppt = -999.0
+    sppt_lscale = 150000
+    sppt_tau = 21600
+    spptint = 3600
+    use_zmtnblck = .false.
+/
+
+&namsfc
+    fabsl = 99999
+    faisl = 99999
+    faiss = 99999
+    fnabsc = '../fix_lam/C775.maximum_snow_albedo.tileX.nc'
+    fnacna = ''
+    fnaisc = '../fix_am/CFSR.SEAICE.1982.2012.monthly.clim.grb'
+    fnalbc = '../fix_lam/C775.snowfree_albedo.tileX.nc'
+    fnalbc2 = '../fix_lam/C775.facsf.tileX.nc'
+    fnglac = '../fix_am/global_glacier.2x2.grb'
+    fnmskh = '../fix_am/seaice_newland.grb'
+    fnmxic = '../fix_am/global_maxice.2x2.grb'
+    fnslpc = '../fix_lam/C775.slope_type.tileX.nc'
+    fnsmcc = '../fix_am/global_soilmgldas.t126.384.190.grb'
+    fnsnoa = ''
+    fnsnoc = '../fix_am/global_snoclim.1.875.grb'
+    fnsotc = '../fix_lam/C775.soil_type.tileX.nc'
+    fntg3c = '../fix_lam/C775.substrate_temperature.tileX.nc'
+    fntsfa = ''
+    fntsfc = '../fix_am/RTGSST.1982.2012.monthly.clim.grb'
+    fnvegc = '../fix_lam/C775.vegetation_greenness.tileX.nc'
+    fnvetc = '../fix_lam/C775.vegetation_type.tileX.nc'
+    fnvmnc = '../fix_lam/C775.vegetation_greenness.tileX.nc'
+    fnvmxc = '../fix_lam/C775.vegetation_greenness.tileX.nc'
+    fnzorc = 'igbp'
+    fsicl = 99999
+    fsics = 99999
+    fslpl = 99999
+    fsmcl = 99999, 99999, 99999
+    fsnol = 99999
+    fsnos = 99999
+    fsotl = 99999
+    ftsfl = 99999
+    ftsfs = 90
+    fvetl = 99999
+    fvmnl = 99999
+    fvmxl = 99999
+    landice = .true.
+    ldebug = .false.
+/
+
+&surf_map_nml
+/
+
