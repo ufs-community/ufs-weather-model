@@ -590,6 +590,11 @@ ecflow_run() {
     if [[ ${MACHINE_ID} == wcoss2 ]]; then
       # Annoying "Has NCO assigned port $ECF_PORT for use by this account? (yes/no) ".
       echo yes | ${ECFLOW_START} -p ${ECF_PORT} -d ${RUNDIR_ROOT}/ecflow_server
+    elif [[ ${MACHINE_ID} == jet.* ]]; then
+      module load ecflow
+      echo "Using special Jet ECFLOW start procedure"
+      MYCOMM="bash -l -c \"module load ecflow && ${ECFLOW_START} -d ${RUNDIR_ROOT}/ecflow_server\""
+      ssh $ECF_HOST "${MYCOMM}" 
     else
       ${ECFLOW_START} -p ${ECF_PORT} -d ${RUNDIR_ROOT}/ecflow_server
     fi
