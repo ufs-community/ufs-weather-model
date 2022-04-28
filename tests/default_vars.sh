@@ -993,12 +993,12 @@ export DO_SHUM=.false.
 export DO_SKEB=.false.
 export LNDP_TYPE=0
 export N_VAR_LNDP=0
-export LNDP_EACH_STEP=.false.
 export SKEB=-999.
 export SPPT=-999.
 export SHUM=-999.
-export LNDP_VAR_LIST='XXX'
+export LNDP_VAR_LIST="'XXX'"
 export LNDP_PRT_LIST=-999
+export LNDP_MODEL_TYPE=0
 
 #IAU
 export IAU_INC_FILES="''"
