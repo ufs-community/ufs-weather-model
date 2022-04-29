@@ -36,9 +36,6 @@ else
   clean_after=${5:-YES}
 fi
 
-clean_before=NO
-clean_after=NO
-
 BUILD_NAME=fv3${COMPILE_NR}
 
 PATHTR=${PATHTR:-$( cd ${MYDIR}/.. && pwd )}
