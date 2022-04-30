@@ -98,6 +98,8 @@ export NPY_NEST02=361
 export K_SPLIT_NEST02=4
 export N_SPLIT_NEST02=5
 
+ATM_compute_tasks=$(( INPES*JNPES + INPES_NEST02*JNPES_NEST02 ))
+
 export FHCYC=0
 export FHSWR=1800
 export FHLWR=1800
@@ -121,9 +123,7 @@ export OCEAN_START_DTG=43702.50000
 
 export atm_model="fv3"
 export ocn_model="hycom"
-export atm_petlist_bounds="0000 0179"
-export ocn_petlist_bounds="0180 0239"
-export med_petlist_bounds="0180 0239"
+OCN_tasks=60
 export coupling_interval_sec=360
 export MESH_ATM="unset"
 
