@@ -125,6 +125,7 @@ endif()
 find_package(bacio REQUIRED)
 find_package(sp REQUIRED)
 find_package(w3nco REQUIRED)
+find_package(gsw REQUIRED)
 
 # Configure Python
 find_package(Python 3.6 REQUIRED COMPONENTS Interpreter)
