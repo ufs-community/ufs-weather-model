@@ -856,8 +856,8 @@ export EFFR_IN=.false.
 export LRADAR=.true.
 export LTAEROSOL=.true.
 export EXT_DIAG_THOMPSON=.false.
-export sedi_semi=.true.
-export decfl=10
+export SEDI_SEMI=.true.
+export DECFL=10
 # NSSL MP
 export NSSL_CCCN=0.6e9
 export NSSL_ALPHAH=0.0
