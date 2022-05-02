@@ -40,12 +40,12 @@ The ufs-weather-model repository supports the short- and medium-range UFS applic
     - https://github.com/NOAA-EMC/CICE
   * - NOAA/NCEP WAVEWATCH III Model (WW3)
     - https://github.com/NOAA-EMC/WW3
+  * - The Goddard Chemistry Aerosol Radiation and Transport (GOCART)
+    - https://github.com/GEOS-ESM/GOCART 
   * - NUOPC Community Mediator for Earth Prediction Systems (CMEPS)
     - https://github.com/NOAA-EMC/CMEPS
   * - Community Data Models for Earth Prediction Systems (CDEPS)
     - https://github.com/NOAA-EMC/CDEPS
-
-.. TODO:: GOCART information in progress
 
 In the table, the left column contains a description of each repository, and the right column shows the component repositories which are pointing to (or will point to) the authoritative repositories. The ufs-weather-model currently uses git submodule to manage the sub-components.
 
@@ -68,6 +68,7 @@ The umbrella repository for the UFS Weather Model is named ufs-weather-model.  U
    ├── CICE-interface
    │    └── CICE                               https://github.com/NOAA-EMC/CICE
    ├── WW3                                     https://github.com/NOAA-EMC/WW3
+   ├── GOCART                                  https://github.com/GEOS-ESM/GOCART
    ├── CMEPS-interface
    │    └── CMEPS                              https://github.com/NOAA-EMC/CMEPS
    ├── CDEPS-interface
@@ -118,6 +119,8 @@ When the ufs-weather-model is cloned, the basic directory structure will be simi
    ├── WW3
    │    └── model                                --------- WW3 model
    │        └── esmf                             --------- NUOPC WW3 cap
+   ├── GOCART
+   │    └── ESMF                                 --------- GOCART model
    ├── CDEPS-interface
    │     └── CDEPS
    │         ├── datm                            --------- CDEPS DATM
@@ -126,9 +129,7 @@ When the ufs-weather-model is cloned, the basic directory structure will be simi
    ├── tests                -------- regression test infrastructure
    │   └── parm
    │   └── tests
-   │   └── fv3_conf
-   
-.. TODO:: GOCART information in progress
+   │   └── fv3_conf   
 
 The physics subdirectory in the *gfsphysics* directory  is not used or supported
 as part of this release (all physics is available through the :term:`CCPP` using
