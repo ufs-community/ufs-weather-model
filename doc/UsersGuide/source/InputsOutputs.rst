@@ -738,41 +738,106 @@ GOCART
 Static datasets (i.e., *fix files*)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. TODO:: GOCART information in progress
+The static input files for GOCART configurations are listed and described in :numref:`Table %s <GOCART_ControlFiles>`.
 
-The static input files for global configurations are listed and described in :numref:`Table %s <GOCART_FixFiles>`.
+.. _GOCART_ControlFiles:
 
-.. _GOCART_FixFiles:
-
-.. list-table:: *Fix files containing climatological information*
+.. list-table:: *GOCART run control files*
    :widths: 40 50
    :header-rows: 1
 
    * - Filename
      - Description
-   * -
-     -
+   * - AERO.rc
+     - Atmospheric Model Configuration Parameters
+   * - AERO_ExtData.rc
+     - Model Inputs related to aerosol emissions
+   * - AERO_HISTORY.rc
+     - Create History List for Output
+   * - AGCM.rc
+     - Atmospheric Model Configuration Parameters
+   * - CA2G_instance_CA.bc.rc
+     - Resource file for Black Carbon parameters
+   * - CA2G_instance_CA.br.rc
+     - Resource file for Brown Carbon parameters
+   * - CA2G_instance_CA.oc.rc
+     - Resource file for Organic Carbon parameters
+   * - CAP.rc
+     - Meteorological fields imported from atmospheric model (CAP_imports) & Prognostic Tracers Table (CAP_exports)
+   * - DU2G_instance_DU.rc
+     - Resource file for Dust parameters
+   * - GOCART2G_GridComp.rc
+     - The basic properties of the GOCART2G Grid Components
+   * - NI2G_instance_NI.rc
+     - Resource file for Nitrate parameters               
+   * - SS2G_instance_SS.rc
+     - Resource file for Sea Salt parameters
+   * - SU2G_instance_SU.rc
+     - Resource file for Sulfur parameters
 
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Grid description and initial condition files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+GOCART inputs defined in AERO_ExtData are listed and described in :numref:`Table %s <GOCART_InputFiles>`.
 
-.. TODO:: GOCART information in progress
+.. _GOCART_InputFiles:
 
-The input files containing grid information and the initial conditions for global configurations are listed and described in :numref:`Table %s <GOCART_GridICFiles>`.
-
-.. _GOCART_GridICFiles:
-
-.. list-table:: *Input files containing grid information and initial conditions for global configurations*
-   :widths: 35 50 15
+.. list-table:: *GOCART inputs defined in AERO_ExtData.rc*
+   :widths: 40 50
    :header-rows: 1
 
    * - Filename
      - Description
-     - Date-dependent
-   * -
-     -
-     -
+   * - ExtData/dust 
+     - FENGSHA input files
+   * - ExtData/QFED
+     - QFED biomass burning emissions     
+   * - ExtData/CEDS
+     - Anthropogenic emissions
+   * - ExtData/MERRA2
+     - DMS concentration
+   * - ExtData/PIESA/sfc
+     - Aviation emissions
+   * - ExtData/PIESA/L127
+     - H2O2, OH and NO3 mixing ratios     
+   * - ExtData/MEGAN_OFFLINE_BVOC
+     - VOCs MEGAN biogenic emissions
+   * - ExtData/monochromatic
+     - Aerosol monochromatic optics files 
+   * - ExtData/optics
+     - Aerosol radiation bands optic files for RRTMG
+   * - ExtData/volcanic
+     - SO2 volcanic pointwise sources
+     
+The static input files when using climatology (MERRA2) are listed and described in :numref:`Table %s <Climatology_InputFiles>`.
+
+.. _Climatology_InputFiles:
+
+.. list-table:: *Inputs when using climatology (MERRA2)*
+   :widths: 40 50
+   :header-rows: 1
+
+   * - Filename
+     - Description             
+   * - merra2.aerclim.2003-2014.m$(month).nc
+     - MERRA2 aerosol climatology mixing ratio 
+   * - Optics_BC.dat
+     - BC optical look-up table for MERAA2 
+   * - Optics_DU.dat
+     - DUST optical look-up table for MERAA2
+   * - Optics_OC.dat
+     - OC optical look-up table for MERAA2
+   * - Optics_SS.dat
+     - Sea Salt optical look-up table for MERAA2
+   * - Optics_SU.dat
+     - Sulfate optical look-up table for MERAA2
+                    
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Grid description and initial condition files
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Running GOCART in UFS does not require aerosol initial conditions, as aerosol models can always start from scratch (cold start), however, this approach does require more than two weeks of model spin-up to obtain reasonable aerosol simulation results. 
+
+Therefore, the most popular method is to take previous aerosol simulation results. The result is not necessarily from the same model, it could be from a climatology result, such as MERAA2, or a different model but with the same aerosol species and bin/size distribution.
+
+The aerosol initial input currently read by GOCART is the same format as the UFSAtm initial input data format of "gfs_data_tile[1-6].nc" in :numref:`Table %s <GridICFiles>`, so the aerosol initial conditions should be combined with the meteorological initial conditions as one initial input file. There are many tools available for this purpose. Ufs-utils in the global workflow that supports UFS models always provides a solution for this.
 
 ==========================
 Model configuration files
@@ -1609,7 +1674,140 @@ For more HAFS, HAFSW, and HAFS-ALL configurations please see the following nems.
 - `HAFS ATM-OCN-WAV <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/nems.configure.hafs_atm_ocn_wav.IN>`_
 - `HAFS ATM-DOCN <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/nems.configure.hafs_atm_docn.IN>`_
 
-.. TODO:: GOCART information in progress
+For the coupled GOCART in S2SAW application, a sample *nems.configure* is shown below :
+
+.. code-block:: console
+
+	# EARTH #
+	EARTH_component_list: MED ATM CHM OCN ICE WAV
+	EARTH_attributes::
+	  Verbosity = 0
+	::
+
+	# MED #
+	MED_model:                      cmeps
+	MED_petlist_bounds:             0 287
+	::
+
+	# ATM #
+	ATM_model:                      fv3
+	ATM_petlist_bounds:             0 311
+	ATM_attributes::
+	  Verbosity = 0
+	  DumpFields = false
+	  ProfileMemory = false
+	  OverwriteSlice = true
+	::
+
+	# CHM #
+	CHM_model:                      gocart
+	CHM_petlist_bounds:             0 287
+	CHM_attributes::
+	  Verbosity = 0
+	::
+
+	# OCN #
+	OCN_model:                      mom6
+	OCN_petlist_bounds:             312 431
+	OCN_attributes::
+	  Verbosity = 0
+	  DumpFields = false
+	  ProfileMemory = false
+	  OverwriteSlice = true
+	  mesh_ocn = mesh.mx025.nc
+	::
+
+	# ICE #
+	ICE_model:                      cice6
+	ICE_petlist_bounds:             432 479
+	ICE_attributes::
+	  Verbosity = 0
+	  DumpFields = false
+	  ProfileMemory = false
+	  OverwriteSlice = true
+	  mesh_ice = mesh.mx025.nc
+	  stop_n = 6
+	  stop_option = nhours
+	  stop_ymd = -999
+	::
+
+	# WAV #
+	WAV_model:                      ww3
+	WAV_petlist_bounds:             480 559
+	WAV_attributes::
+	  Verbosity = 0
+	  OverwriteSlice = false
+	::
+
+	# CMEPS warm run sequence
+	runSeq::
+	@1800
+	   MED med_phases_prep_ocn_avg
+	   MED -> OCN :remapMethod=redist
+	   OCN -> WAV
+	   WAV -> OCN :srcMaskValues=1
+	   OCN
+	   @300
+	     MED med_phases_prep_atm
+	     MED med_phases_prep_ice
+	     MED -> ATM :remapMethod=redist
+	     MED -> ICE :remapMethod=redist
+	     WAV -> ATM :srcMaskValues=1
+	     ATM -> WAV
+	     ICE -> WAV
+	     ATM phase1
+	     ATM -> CHM
+	     CHM
+	     CHM -> ATM
+	     ATM phase2
+	     ICE
+	     WAV
+	     ATM -> MED :remapMethod=redist
+	     MED med_phases_post_atm
+	     ICE -> MED :remapMethod=redist
+	     MED med_phases_post_ice
+	     MED med_phases_prep_ocn_accum
+	   @
+	   OCN -> MED :remapMethod=redist
+	   MED med_phases_post_ocn
+	   MED med_phases_restart_write
+	@
+	::
+
+	# CMEPS variables
+
+	DRIVER_attributes::
+	::
+
+	MED_attributes::
+	      ATM_model = fv3
+	      ICE_model = cice6
+	      OCN_model = mom6
+	      history_n = 1
+	      history_option = nhours
+	      history_ymd = -999
+	      coupling_mode = nems_frac
+	      history_tile_atm = 384
+	::
+	ALLCOMP_attributes::
+	      ScalarFieldCount = 2
+	      ScalarFieldIdxGridNX = 1
+	      ScalarFieldIdxGridNY = 2
+	      ScalarFieldName = cpl_scalars
+	      start_type = startup
+	      restart_dir = RESTART/
+	      case_name = ufs.cpld
+	      restart_n = 6
+	      restart_option = nhours
+	      restart_ymd = -999
+	      dbug_flag = 0
+	      use_coldstart = false
+	      use_mommesh = true
+	      eps_imesh = 1.0e-1
+	      stop_n = 6
+	      stop_option = nhours
+	      stop_ymd = -999
+	::
 
 ---------------------------------------
 *The SDF (Suite Definition File) file*
