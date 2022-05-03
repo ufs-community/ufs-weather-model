@@ -1,12 +1,12 @@
 ###############################################################################
 #
-#  Global control test GFSv16 atmosphere only at C96L127, P7 configuration + RRTMGP
+#  RAP control test with RRTMGP: atmosphere only at C96L127
 #
 ###############################################################################
 
-export TEST_DESCR="Compare global control results with previous trunk version"
+export TEST_DESCR="Compare RAP control results with previous trunk version"
 
-export CNTL_DIR=control_p7_rrtmgp
+export CNTL_DIR=rap_rrtmgp
 
 export LIST_FILES="sfcf000.nc \
                    sfcf021.nc \
@@ -56,7 +56,7 @@ export LIST_FILES="sfcf000.nc \
 export_fv3
 export NPZ=127
 export NPZP=128
-export DT_ATMOS=720
+export DT_ATMOS=300
 export SYEAR=2021
 export SMONTH=03
 export SDAY=22
@@ -65,92 +65,41 @@ export RESTART_INTERVAL="12 -1"
 export OUTPUT_GRID='gaussian_grid'
 export NSTF_NAME='2,0,0,0,0'
 export WRITE_DOPOST=.true.
+export IAER=5111
 export OUTPUT_FH='0 21 24'
 
-#P7 default
+export FV3_RUN=control_run.IN
+export INPUT_NML=rap.nml.IN
+export FIELD_TABLE=field_table_thompson_aero_tke
+export NEW_DIAGTABLE=diag_table_rap
+
+export IMP_PHYSICS=8
+export DNATS=0
+export DO_SAT_ADJ=.false.
+export LRADAR=.true.
+export LTAEROSOL=.true.
 export IALB=2
 export IEMS=2
-export LSM=2
-export IOPT_DVEG=4
-export IOPT_CRS=2
-export IOPT_RAD=3
-export IOPT_ALB=1
-export IOPT_STC=3
+export HYBEDMF=.false.
+export DO_MYNNEDMF=.true.
+export DO_MYNNSFCLAY=.true.
+export IMFSHALCNV=3
+export IMFDEEPCNV=3
+export LSM=3
+export LSOIL_LSM=9
+export KICE=9
 
-# FV3 P7 settings
-export D2_BG_K1=0.20
-export D2_BG_K2=0.04
-export DZ_MIN=2
-export PSM_BC=1
-export DDDMP=0.1
-
-# P7 Merra2 Aerosols & NSST
-export USE_MERRA2=.true.
-export IAER=1011
-export NSTF_NAME=2,1,0,0,0
-
-export LHEATSTRG=.true.
-export LSEASPRAY=.true.
-
-# P7 UGWP1
-export GWD_OPT=2
-export DO_UGWP_V1=.true.
-export KNOB_UGWP_VERSION=1
-export KNOB_UGWP_NSLOPE=1
+export GWD_OPT=3
 export DO_UGWP_V0=.false.
+export DO_UGWP_V0_OROG_ONLY=.false.
 export DO_GSL_DRAG_LS_BL=.true.
 export DO_GSL_DRAG_SS=.true.
 export DO_GSL_DRAG_TOFD=.true.
+export DO_UGWP_V1=.false.
 export DO_UGWP_V1_OROG_ONLY=.false.
-export DO_UGWP_V0_NST_ONLY=.false.
-export LDIAG_UGWP=.false.
-export CDMBWD='1.0,2.2,1.0,1.0'
-
-# P7 CA
-export DO_CA=.true.
-export CA_SGS=.true.
-export CA_GLOBAL=.false.
-export NCA=1
-export NCELLS=5
-export NLIVES=12
-export NTHRESH=18
-export NSEED=1
-export NFRACSEED=0.5
-export CA_TRIGGER=.true.
-export NSPINUP=1
-export ISEED_CA=12345
-
-# P7 settings
-export TILEDFIX=.true.
-export FNALBC="'C96.snowfree_albedo.tileX.nc'"
-export FNALBC2="'C96.facsf.tileX.nc'"
-export FNTG3C="'C96.substrate_temperature.tileX.nc'"
-export FNVEGC="'C96.vegetation_greenness.tileX.nc'"
-export FNVETC="'C96.vegetation_type.tileX.nc'"
-export FNSOTC="'C96.soil_type.tileX.nc'"
-export FNSMCC=${FNSMCC_control}
-export FNMSKH=${FNMSKH_control}
-export FNVMNC="'C96.vegetation_greenness.tileX.nc'"
-export FNVMXC="'C96.vegetation_greenness.tileX.nc'"
-export FNSLPC="'C96.slope_type.tileX.nc'"
-export FNABSC="'C96.maximum_snow_albedo.tileX.nc'"
-export LANDICE=".false."
-export FSICL=99999
-
-#P7
-export IOPT_SFC=1
-
-#required for NML.IN sharing
-export USE_CICE_ALB=.false.
-export MIN_SEAICE=0.15
-export FRAC_GRID=.true.
-export MOM6_RESTART_SETTING=n
 
 # RRTMGP
+export CCPP_SUITE=FV3_RAP_RRTMGP
 export DO_RRTMGP=.true.
-
-export FV3_RUN=control_run.IN
-export CCPP_SUITE=FV3_GFS_v16_p7_rrtmgp
-export DIAG_TABLE=diag_table_gfsv16_merra2
-# use same namelist for standalone,coupled P7
-export INPUT_NML=cpld_control_rrtmgp.nml.IN
+export DOGP_CLDOPTICS_LUT=.true.
+export DOGP_LWSCAT=.true.

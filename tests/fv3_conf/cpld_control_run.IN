@@ -9,7 +9,7 @@ fi
 ICERES=${OCNRES:0:1}.${OCNRES:1}
 
 if [[ $BMIC == .true. ]]; then
-  FV3_IC=@[INPUTDATA_ROOT_BMIC]/${SYEAR}${SMONTH}${SDAY}${SHOUR}/gfs_p7/@[ATMRES]_L@[NPZ]/INPUT
+  FV3_IC=@[INPUTDATA_ROOT_BMIC]/${SYEAR}${SMONTH}${SDAY}${SHOUR}/@[FV3BMIC]/@[ATMRES]_L@[NPZ]/INPUT
   MOM_IC=@[INPUTDATA_ROOT_BMIC]/${SYEAR}${SMONTH}${SDAY}${SHOUR}/mom6_da
   ICE_IC=@[INPUTDATA_ROOT_BMIC]/${SYEAR}${SMONTH}${SDAY}${SHOUR}/cpc
 else
@@ -123,9 +123,19 @@ if [ $IAER = 1011 ]; then
   cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_SU.v1_3.dat  optics_SU.dat
 fi
 
-#ugwpv1
-if [ $DO_UGWP_V1 = .true. ]; then
-  cp    @[INPUTDATA_ROOT]/FV3_input_data/ugwp_c384_tau.nc ./ugwp_limb_tau.nc
-  cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127/oro_data_ls* ./INPUT
-  cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127/oro_data_ss* ./INPUT
+cp    @[INPUTDATA_ROOT]/FV3_input_data/ugwp_c384_tau.nc ./ugwp_limb_tau.nc
+cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127/oro_data_ls* ./INPUT
+cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127/oro_data_ss* ./INPUT
+
+if [ $IMP_PHYSICS = 8 ]; then 
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_gsd/CCN_ACTIVATE.BIN CCN_ACTIVATE.BIN 
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_gsd/freezeH2O.dat freezeH2O.dat   
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_gsd/qr_acr_qg.dat qr_acr_qg.dat
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_gsd/qr_acr_qs.dat qr_acr_qs.dat 
+fi 
+
+#prognostic aerosols
+if [ $CPLCHM = .true. ]; then
+  cp      @[INPUTDATA_ROOT]/GOCART/p8/rc/*.rc .
+  ln -sf  @[INPUTDATA_ROOT]/GOCART/p8/ExtData .
 fi

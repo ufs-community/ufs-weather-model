@@ -1,12 +1,24 @@
 #
-#  cpld_control P7 test with RRTMGP
+#  cpld_control C96 noaero P8 test
 #
 
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system - C96MX100 + RRTMGP"
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C96MX100"
 
-export CNTL_DIR="cpld_control_p7_rrtmgp"
+export CNTL_DIR="cpld_control_c96_noaero_p8"
 
-export LIST_FILES="sfcf024.tile1.nc \
+export LIST_FILES="sfcf021.tile1.nc \
+                   sfcf021.tile2.nc \
+                   sfcf021.tile3.nc \
+                   sfcf021.tile4.nc \
+                   sfcf021.tile5.nc \
+                   sfcf021.tile6.nc \
+                   atmf021.tile1.nc \
+                   atmf021.tile2.nc \
+                   atmf021.tile3.nc \
+                   atmf021.tile4.nc \
+                   atmf021.tile5.nc \
+                   atmf021.tile6.nc \
+                   sfcf024.tile1.nc \
                    sfcf024.tile2.nc \
                    sfcf024.tile3.nc \
                    sfcf024.tile4.nc \
@@ -52,24 +64,43 @@ export LIST_FILES="sfcf024.tile1.nc \
                    RESTART/sfc_data.tile6.nc \
                    RESTART/MOM.res.nc \
                    RESTART/iced.2021-03-23-21600.nc \
-                   RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc \
-                   20210323.060000.out_grd.glo_1deg \
-                   20210323.060000.out_pnt.points \
-                   20210323.060000.restart.glo_1deg"
+                   RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc"
+
+#TODO: add comparison of CA restart files?
 
 export_fv3
 export_cpl
 
 export RESTART_N=12
 export RESTART_INTERVAL="${RESTART_N} -1"
+export OUTPUT_FH='0 21 24'
 
+export TASKS=$TASKS_cpl_c96
+export TPN=$TPN_cpl_c96
+export INPES=$INPES_cpl_c96
+export JNPES=$JNPES_cpl_c96
+export THRD=$THRD_cpl_c96
+export WRTTASK_PER_GROUP=$WPG_cpl_c96
+
+export NPROC_ICE=$NPROC_ICE_cpl_c96
+export np2=`expr $NPROC_ICE / 2`
+export BLCKX=`expr $NX_GLB / $np2`
+export BLCKY=`expr $NY_GLB / 2`
+
+export med_petlist_bounds=$MPB_cpl_c96
+export atm_petlist_bounds=$APB_cpl_c96
+export ocn_petlist_bounds=$OPB_cpl_c96
+export ice_petlist_bounds=$IPB_cpl_c96
+
+export CPLWAV=.false.
+export CPLWAV2ATM=.false.
+export MOM6_USE_WAVES=False
 export eps_imesh=2.5e-1
-#P7
-export USE_CICE_ALB=.false.
-export MIN_SEAICE=1.0e-11
-export IOPT_SFC=1
+
+export TOPOEDITS=ufs.topo_edits_011818.nc
+export MOM6_ALLOW_LANDMASK_CHANGES=True
+
+export DIAG_TABLE=diag_table_template
+export NEMS_CONFIGURE=nems.configure.cpld.IN
 
 export FV3_RUN=cpld_control_run.IN
-export DO_RRTMGP=.true.
-export CCPP_SUITE=FV3_GFS_v16_coupled_p7_rrtmgp
-export INPUT_NML=cpld_control_rrtmgp.nml.IN

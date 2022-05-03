@@ -23,7 +23,7 @@ deflate_level=1
 
 &fms_nml
   clock_grain = 'ROUTINE'
-  domains_stack_size = 3000000
+  domains_stack_size = @[DOMAINS_STACK_SIZE]
   print_memory_usage = .false.
 /
 
@@ -39,12 +39,12 @@ deflate_level=1
   grid_type = -1
   make_nh = @[MAKE_NH]
   fv_debug = .false.
-  range_warn = .false.
+  range_warn = .true.
   reset_eta = .false.
   n_sponge = 42
   nudge_qv = .true.
   nudge_dz = .false.
-  tau = 10.
+  tau = 10.0
   rf_cutoff = 7.5e2
   d2_bg_k1 = @[D2_BG_K1]
   d2_bg_k2 = @[D2_BG_K2]
@@ -86,8 +86,9 @@ deflate_level=1
   hord_dp = -5
   hord_tr = 8
   adjust_dry_mass = .false.
+  dry_mass=98320.0
   consv_te = 1.
-  do_sat_adj = .true.
+  do_sat_adj = @[DO_SAT_ADJ]
   consv_am = .false.
   fill = .true.
   dwind_2d = .false.
@@ -117,7 +118,35 @@ deflate_level=1
   fhcyc        = @[FHCYC]
   use_ufo      = .true.
   pre_rad      = .false.
-  imp_physics  = 11
+  imp_physics  = @[IMP_PHYSICS] 
+  iovr         = 3
+  ltaerosol    = .false.
+  lradar       = .false.
+  ttendlim     = -999
+  dt_inner     = @[DT_INNER]
+  oz_phys      = .false.
+  oz_phys_2015 = .true.
+  lsoil_lsm    = 4
+  do_mynnedmf  = .false.
+  do_mynnsfclay = .false.
+  icloud_bl    = 1
+  bl_mynn_edmf = 1
+  bl_mynn_tkeadvect = .true.
+  bl_mynn_edmf_mom = 1
+  do_ugwp      = .false.
+  do_tofd      = .false.
+  gwd_opt      = @[GWD_OPT]
+  do_ugwp_v0   = @[DO_UGWP_V0]
+  do_ugwp_v1   = @[DO_UGWP_V1]
+  do_ugwp_v0_orog_only = .false.
+  do_ugwp_v0_nst_only  = @[DO_UGWP_V0_NST_ONLY]
+  do_gsl_drag_ls_bl    = @[DO_GSL_DRAG_LS_BL]
+  do_gsl_drag_ss       = @[DO_GSL_DRAG_SS]
+  do_gsl_drag_tofd     = @[DO_GSL_DRAG_TOFD]
+  do_ugwp_v1_orog_only = @[DO_UGWP_V1_OROG_ONLY]
+  min_lakeice  = 0.15
+  min_seaice   = @[MIN_SEAICE]
+  use_cice_alb = @[USE_CICE_ALB]
   pdfcld       = .false.
   fhswr        = 3600.
   fhlwr        = 3600.
@@ -125,7 +154,6 @@ deflate_level=1
   iems         = @[IEMS]
   iaer         = @[IAER]
   icliq_sw     = 2
-  iovr         = 3
   ico2         = 2
   isubc_sw     = 2
   isubc_lw     = 2
@@ -167,31 +195,36 @@ deflate_level=1
   iopt_tbot    = 2
   iopt_stc     = @[IOPT_STC]
   debug        = .false.
-  oz_phys      = .false.
-  oz_phys_2015 = .true.
   nstf_name    = @[NSTF_NAME]
   nst_anl      = .true.
   psautco      = 0.0008,0.0005
   prautco      = 0.00015,0.00015
-  lgfdlmprad   = .true.
-  cplchm       = @[CPLCHM]
-  cplwav       = @[CPLWAV]
-  cplwav2atm   = @[CPLWAV2ATM]
-  cplflx       = @[CPLFLX]
-  cplice       = @[CPLICE]
-  min_seaice   = @[MIN_SEAICE]
-  use_cice_alb = @[USE_CICE_ALB]
-  frac_grid    = @[FRAC_GRID]
+  lgfdlmprad   = @[LGFDLMPRAD]
   effr_in      = .true.
   ldiag_ugwp   = @[LDIAG_UGWP]
-  do_ugwp      = .false.
-  do_tofd      = .false.
+  fscav_aero   = @[FSCAV_AERO]
   do_sppt      = @[DO_SPPT]
   do_shum      = @[DO_SHUM]
   do_skeb      = @[DO_SKEB]
-  lndp_type    = @[LNDP_TYPE]
-  n_var_lndp   = @[N_VAR_LNDP]
-  fscav_aero   = @[FSCAV_AERO]
+  do_RRTMGP          = @[DO_RRTMGP]
+  active_gases       = 'h2o_co2_o3_n2o_ch4_o2'
+  ngases             = 6
+  lw_file_gas        = 'rrtmgp-data-lw-g128-210809.nc'
+  lw_file_clouds     = 'rrtmgp-cloud-optics-coeffs-lw.nc'
+  sw_file_gas        = 'rrtmgp-data-sw-g112-210809.nc'
+  sw_file_clouds     = 'rrtmgp-cloud-optics-coeffs-sw.nc'
+  rrtmgp_nGptsSW     = 112
+  rrtmgp_nGptsLW     = 128
+  rrtmgp_nBandsLW    = 16
+  rrtmgp_nBandsSW    = 14
+  doGP_cldoptics_LUT = @[DOGP_CLDOPTICS_LUT]
+  doGP_lwscat        = @[DOGP_LWSCAT]
+  frac_grid    = @[FRAC_GRID]
+  cplchm       = @[CPLCHM]
+  cplflx       = @[CPLFLX]
+  cplice       = @[CPLICE]
+  cplwav       = @[CPLWAV]
+  cplwav2atm   = @[CPLWAV2ATM]
   do_ca        = @[DO_CA]
   ca_global    = @[CA_GLOBAL]
   ca_sgs       = @[CA_SGS]
@@ -204,14 +237,23 @@ deflate_level=1
   ca_trigger   = @[CA_TRIGGER]
   nspinup      = @[NSPINUP]
   iseed_ca     = @[ISEED_CA]
-  gwd_opt      = @[GWD_OPT]
-  do_ugwp_v0   = @[DO_UGWP_V0]
-  do_ugwp_v1   = @[DO_UGWP_V1]
-  do_gsl_drag_ls_bl    = @[DO_GSL_DRAG_LS_BL]
-  do_gsl_drag_ss       = @[DO_GSL_DRAG_SS]
-  do_gsl_drag_tofd     = @[DO_GSL_DRAG_TOFD]
-  do_ugwp_v1_orog_only = @[DO_UGWP_V1_OROG_ONLY]
-  do_ugwp_v0_nst_only  = @[DO_UGWP_V0_NST_ONLY]
+  lndp_type    = @[LNDP_TYPE]
+  n_var_lndp   = @[N_VAR_LNDP]
+/
+
+&cires_ugwp_nml
+  knob_ugwp_solver  = 2
+  knob_ugwp_source  = 1,1,0,0
+  knob_ugwp_wvspec  = 1,25,25,25
+  knob_ugwp_azdir   = 2,4,4,4
+  knob_ugwp_stoch   = 0,0,0,0
+  knob_ugwp_effac   = 1,1,1,1
+  knob_ugwp_doaxyz  = 1
+  knob_ugwp_doheat  = 1
+  knob_ugwp_dokdis  = 1
+  knob_ugwp_ndx4lh  = 1 
+  knob_ugwp_version = @[KNOB_UGWP_VERSION]
+  launch_level = 54
 /
 
 &gfdl_cloud_microphysics_nml
@@ -301,7 +343,7 @@ deflate_level=1
   FSNOL    = 99999
   FSNOS    = 99999
   FSICL    = @[FSICL]
-  FSICS    = 99999
+  FSICS    = @[FSICS]
   FTSFL    = 99999
   FVETL    = 99999
   FSOTL    = 99999
@@ -316,59 +358,16 @@ deflate_level=1
 /
 
 &nam_stochy
-  STOCHINI=@[STOCHINI]
-  SKEBNORM=1
-  SKEB_NPASS=30
-  SKEB_VDOF=5
-  SKEB=@[SKEB]
-  SKEB_TAU=2.16E4
-  SKEB_LSCALE=1000.E3
-  SKEBINT=1800
-  SHUM=@[SHUM]
-  SHUM_TAU=21600
-  SHUM_LSCALE=500000
-  SHUMINT=3600
-  SPPT=@[SPPT]
-  SPPT_TAU=21600
-  SPPT_LSCALE=500000
-  SPPT_LOGIT=.TRUE.
-  SPPT_SFCLIMIT=.TRUE.
-  SPPTINT=1800
-  ISEED_SHUM=1
-  ISEED_SKEB=2
-  ISEED_SPPT=3
 /
 
 &nam_sfcperts
   lndp_type      = @[LNDP_TYPE]
-  LNDP_TAU=21600
-  LNDP_LSCALE=500000
-  ISEED_LNDP=2010
+  lndp_model_type = @[LNDP_MODEL_TYPE]
+  LNDP_TAU=21600,
+  LNDP_LSCALE=500000,
+  ISEED_LNDP=2010,
   lndp_var_list = @[LNDP_VAR_LIST]
   lndp_prt_list = @[LNDP_PRT_LIST]
-/
-
-&cires_ugwp_nml
-  knob_ugwp_solver  = 2
-  knob_ugwp_version = @[KNOB_UGWP_VERSION]
-  knob_ugwp_source  = 1,1,0,0
-  knob_ugwp_wvspec  = 1,25,25,25
-  knob_ugwp_azdir   = 2,4,4,4
-  knob_ugwp_stoch   = 0,0,0,0
-  knob_ugwp_effac   = 1,1,1,1
-  knob_ugwp_doaxyz  = 1
-  knob_ugwp_doheat  = 1
-  knob_ugwp_dokdis  = 2
-  knob_ugwp_ndx4lh  = 4
-  knob_ugwp_palaunch = 275.0e2
-  knob_ugwp_nslope   = @[KNOB_UGWP_NSLOPE]
-  knob_ugwp_lzmax    = 15.750e3
-  knob_ugwp_lzmin    = 0.75e3
-  knob_ugwp_lzstar   = 2.0e3
-  knob_ugwp_taumin   = 0.25e-3
-  knob_ugwp_tauamp   = 3.0e-3
-  knob_ugwp_lhmet    = 200.0e3
-  knob_ugwp_orosolv  = 'pss-1986'
 /
 
 &MOM_input_nml
@@ -378,4 +377,3 @@ deflate_level=1
   restart_output_dir = 'RESTART/',
   parameter_filename = 'INPUT/MOM_input',
   'INPUT/MOM_override'/
-
