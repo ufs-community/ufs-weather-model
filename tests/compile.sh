@@ -91,8 +91,6 @@ CMAKE_FLAGS+=" -DMPI=ON"
 
 if [[ "${MAKE_OPT}" == *"-DDEBUG=ON"* ]]; then
   CMAKE_FLAGS+=" -DCMAKE_BUILD_TYPE=Debug"
-elif [[ "${MAKE_OPT}" == *"-DREPRO=ON"* ]]; then
-  CMAKE_FLAGS+=" -DCMAKE_BUILD_TYPE=Bitforbit"
 else
   CMAKE_FLAGS+=" -DCMAKE_BUILD_TYPE=Release"
   if [[ "${MACHINE_ID}" == "jet.intel" ]]; then
