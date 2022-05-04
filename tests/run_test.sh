@@ -284,26 +284,20 @@ if [[ $DOCN_CDEPS = 'true' ]]; then
   atparse < ${PATHRT}/parm/${DOCN_STREAM_CONFIGURE:-docn.streams.IN} > docn.streams
 fi
 
+TPN=$(( TPN / THRD ))
+if (( TASKS < TPN )); then
+  TPN=${TASKS}
+fi
+NODES=$(( TASKS / TPN ))
+if (( NODES * TPN < TASKS )); then
+  NODES=$(( NODES + 1 ))
+fi
+
 if [[ $SCHEDULER = 'pbs' ]]; then
-  NODES=$(( TASKS / TPN ))
-  if (( NODES * TPN < TASKS )); then
-    NODES=$(( NODES + 1 ))
-  fi
   atparse < $PATHRT/fv3_conf/fv3_qsub.IN > job_card
 elif [[ $SCHEDULER = 'slurm' ]]; then
-  NODES=$(( TASKS / TPN ))
-  if (( NODES * TPN < TASKS )); then
-    NODES=$(( NODES + 1 ))
-  fi
   atparse < $PATHRT/fv3_conf/fv3_slurm.IN > job_card
 elif [[ $SCHEDULER = 'lsf' ]]; then
-  if (( TASKS < TPN )); then
-    TPN=${TASKS}
-  fi
-  NODES=$(( TASKS / TPN ))
-  if (( NODES * TPN < TASKS )); then
-    NODES=$(( NODES + 1 ))
-  fi
   atparse < $PATHRT/fv3_conf/fv3_bsub.IN > job_card
 fi
 
