@@ -58,8 +58,8 @@ endif()
 ###############################################################################
 ### Build Options
 ###############################################################################
-set(32BIT           OFF CACHE BOOL "Enable 32-bit (single precision) arithmetic in dycore")
-set(CCPP_32BIT      OFF CACHE BOOL "Enable 32-bit (single precision) arithmetic in CCPP")
+set(32BIT           OFF CACHE BOOL "Enable 32-bit (single precision) arithmetic in dycore and CCPP fast physics")
+set(CCPP_32BIT      OFF CACHE BOOL "Enable 32-bit (single precision) arithmetic in CCPP slow physics")
 set(AVX2            ON  CACHE BOOL "Enable AVX2 instruction set")
 set(AVX             OFF CACHE BOOL "Enable AVX-I instruction set")
 set(SIMDMULTIARCH   OFF CACHE BOOL "Enable multi-target SIMD instruction sets")
@@ -70,7 +70,6 @@ set(MULTI_GASES     OFF CACHE BOOL "Enable MULTI_GASES")
 set(MOVING_NEST     OFF CACHE BOOL "Enable moving nest code")
 set(OPENMP          ON  CACHE BOOL "Enable OpenMP threading")
 set(PARALLEL_NETCDF OFF CACHE BOOL "Enable parallel NetCDF")
-set(REPRO           OFF CACHE BOOL "Enable REPRO mode")
 set(JEDI_DRIVER     OFF CACHE BOOL "Enable JEDI as top level driver")
 
 set(CMAKE_Platform $ENV{CMAKE_Platform})
@@ -96,7 +95,6 @@ message("MULTI_GASES ...... ${MULTI_GASES}")
 message("MOVING_NEST ...... ${MOVING_NEST}")
 message("OPENMP ........... ${OPENMP}")
 message("PARALLEL_NETCDF .. ${PARALLEL_NETCDF}")
-message("REPRO ............ ${REPRO}")
 message("JEDI_DRIVER ...... ${JEDI_DRIVER}")
 message("")
 
