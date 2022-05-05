@@ -240,7 +240,7 @@ elif [[ $MACHINE_ID = hera.* ]]; then
 
   TASKS_dflt=150 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=78  ; INPES_thrd=3 ; JNPES_thrd=4
-  TASKS_c384=336 ; INPES_c384=6 ; JNPES_c384=8  ; TPN_c768=20
+  TASKS_c384=336 ; INPES_c384=6 ; JNPES_c384=8  ; TPN_c384=20
   TASKS_c768=928 ; INPES_c768=8 ; JNPES_c768=16 ; TPN_c768=10
 
   TASKS_cpl_atmw=200; THRD_cpl_atmw=1
