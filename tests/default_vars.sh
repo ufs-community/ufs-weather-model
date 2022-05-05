@@ -80,12 +80,12 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
   OCN_tasks_cpl_c192=60
   ICE_tasks_cpl_c192=24
 
-  TASKS_cdeps_100=40;
+  TASKS_cdeps_100=40
   ATM_compute_tasks_cdeps_100=12
   OCN_tasks_cdeps_100=16
   ICE_tasks_cdeps_100=12
 
-  TASKS_cdeps_025=208;
+  TASKS_cdeps_025=208
   ATM_compute_tasks_cdeps_025=40
   OCN_tasks_cdeps_025=120
   ICE_tasks_cdeps_025=48
@@ -224,12 +224,12 @@ elif [[ $MACHINE_ID = orion.* ]]; then
   OCN_tasks_cpl_c192=60
   ICE_tasks_cpl_c192=24
 
-  TASKS_cdeps_100=40;
+  TASKS_cdeps_100=40
   ATM_compute_tasks_cdeps_100=12
   OCN_tasks_cdeps_100=16
   ICE_tasks_cdeps_100=12
 
-  TASKS_cdeps_025=208;
+  TASKS_cdeps_025=208
   ATM_compute_tasks_cdeps_025=40
   OCN_tasks_cdeps_025=120
   ICE_tasks_cdeps_025=48
@@ -296,12 +296,12 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   OCN_tasks_cpl_c192=60
   ICE_tasks_cpl_c192=24
 
-  TASKS_cdeps_100=40;
+  TASKS_cdeps_100=40
   ATM_compute_tasks_cdeps_100=12
   OCN_tasks_cdeps_100=16
   ICE_tasks_cdeps_100=12
 
-  TASKS_cdeps_025=208;
+  TASKS_cdeps_025=208
   ATM_compute_tasks_cdeps_025=40
   OCN_tasks_cdeps_025=120
   ICE_tasks_cdeps_025=48
