@@ -485,7 +485,7 @@ if [[ $TESTS_FILE =~ '35d' ]] || [[ $TESTS_FILE =~ 'weekly' ]]; then
   TEST_35D=true
 fi
 
-BL_DATE=20220425
+BL_DATE=20220503
 if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]] || [[ $MACHINE_ID = s4.* ]]; then
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
 else
@@ -730,15 +730,8 @@ EOF
       ./run_compile.sh ${PATHRT} ${RUNDIR_ROOT} "${MAKE_OPT}" ${COMPILE_NR} > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
     fi
 
-    # Set RT_SUFFIX (regression test run directories and log files) and BL_SUFFIX
-    # (regression test baseline directories) for REPRO or PROD runs
-    if [[ ${MAKE_OPT^^} =~ "-DREPRO=ON" ]]; then
-      RT_SUFFIX="_repro"
-      BL_SUFFIX="_repro"
-    else
-      RT_SUFFIX=""
-      BL_SUFFIX=""
-    fi
+    RT_SUFFIX=""
+    BL_SUFFIX=""
 
     continue
 
