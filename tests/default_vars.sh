@@ -15,8 +15,8 @@ if [[ $MACHINE_ID = wcoss_cray ]]; then
 
   TASKS_dflt=150 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=78  ; INPES_thrd=3 ; JNPES_thrd=4
-  TASKS_c384=336 ; INPES_c384=8 ; JNPES_c384=6  ; TPN_c384=20
-  TASKS_c768=928 ; INPES_c768=8 ; JNPES_c768=16 ; TPN_c768=12
+  TASKS_c384=336 ; INPES_c384=8 ; JNPES_c384=6  ; THRD_c384=2
+  TASKS_c768=928 ; INPES_c768=8 ; JNPES_c768=16 ; THRD_c768=2
 
 elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
 
@@ -24,8 +24,8 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
 
   TASKS_dflt=150 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=78  ; INPES_thrd=3 ; JNPES_thrd=4
-  TASKS_c384=336 ; INPES_c384=8 ; JNPES_c384=6  ; TPN_c384=20
-  TASKS_c768=928 ; INPES_c768=8 ; JNPES_c768=16 ; TPN_c768=14
+  TASKS_c384=336 ; INPES_c384=8 ; JNPES_c384=6  ; THRD_c384=2
+  TASKS_c768=928 ; INPES_c768=8 ; JNPES_c768=16 ; THRD_c768=2
 
   TASKS_cpl_atmw=196; THRD_cpl_atmw=1
   INPES_cpl_atmw=3; JNPES_cpl_atmw=8; WPG_cpl_atmw=6
@@ -96,8 +96,8 @@ elif [[ $MACHINE_ID = wcoss2 ]]; then
 
   TASKS_dflt=150 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=78  ; INPES_thrd=3 ; JNPES_thrd=4
-  TASKS_c384=336 ; INPES_c384=8 ; JNPES_c384=6  ; TPN_c384=128
-  TASKS_c768=928 ; INPES_c768=8 ; JNPES_c768=16 ; TPN_c768=32
+  TASKS_c384=336 ; INPES_c384=8 ; JNPES_c384=6  ; THRD_c384=2
+  TASKS_c768=928 ; INPES_c768=8 ; JNPES_c768=16 ; THRD_c768=2
 
   TASKS_cpl_atmw=196; THRD_cpl_atmw=1
   INPES_cpl_atmw=3; JNPES_cpl_atmw=8; WPG_cpl_atmw=6
@@ -168,8 +168,8 @@ elif [[ $MACHINE_ID = orion.* ]]; then
 
   TASKS_dflt=150 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=78  ; INPES_thrd=3 ; JNPES_thrd=4
-  TASKS_c384=336 ; INPES_c384=8 ; JNPES_c384=6  ; TPN_c384=20
-  TASKS_c768=928 ; INPES_c768=8 ; JNPES_c768=16 ; TPN_c768=10
+  TASKS_c384=336 ; INPES_c384=8 ; JNPES_c384=6  ; THRD_c384=2
+  TASKS_c768=928 ; INPES_c768=8 ; JNPES_c768=16 ; THRD_c768=2
 
   TASKS_cpl_atmw=200; THRD_cpl_atmw=1
   INPES_cpl_atmw=3; JNPES_cpl_atmw=8; WPG_cpl_atmw=6
@@ -240,8 +240,8 @@ elif [[ $MACHINE_ID = hera.* ]]; then
 
   TASKS_dflt=150 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=78  ; INPES_thrd=3 ; JNPES_thrd=4
-  TASKS_c384=336 ; INPES_c384=6 ; JNPES_c384=8  ; TPN_c384=20
-  TASKS_c768=928 ; INPES_c768=8 ; JNPES_c768=16 ; TPN_c768=10
+  TASKS_c384=336 ; INPES_c384=6 ; JNPES_c384=8  ; THRD_c384=2
+  TASKS_c768=928 ; INPES_c768=8 ; JNPES_c768=16 ; THRD_c768=2
 
   TASKS_cpl_atmw=200; THRD_cpl_atmw=1
   INPES_cpl_atmw=3; JNPES_cpl_atmw=8; WPG_cpl_atmw=6
@@ -336,8 +336,8 @@ elif [[ $MACHINE_ID = jet.* ]]; then
 
   TASKS_dflt=150 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=78  ; INPES_thrd=3 ; JNPES_thrd=4
-  TASKS_c384=480 ; INPES_c384=6 ; JNPES_c384=12 ; TPN_c384=12
-  TASKS_c768=928 ; INPES_c768=8 ; JNPES_c768=16 ; TPN_c768=6
+  TASKS_c384=480 ; INPES_c384=6 ; JNPES_c384=12 ; THRD_c384=2
+  TASKS_c768=928 ; INPES_c768=8 ; JNPES_c768=16 ; THRD_c768=2
 
   TASKS_cpl_atmw=192; THRD_cpl_atmw=1
   INPES_cpl_atmw=3; JNPES_cpl_atmw=8; WPG_cpl_atmw=6
@@ -484,8 +484,8 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
 
   TASKS_dflt=150 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=78  ; INPES_thrd=3 ; JNPES_thrd=4
-  TASKS_c384=336 ; INPES_c384=6 ; JNPES_c384=8  ; TPN_c384=18
-  TASKS_c768=928 ; INPES_c768=8 ; JNPES_c768=16 ; TPN_c768=9
+  TASKS_c384=336 ; INPES_c384=6 ; JNPES_c384=8  ; THRD_c384=2
+  TASKS_c768=928 ; INPES_c768=8 ; JNPES_c768=16 ; THRD_c768=2
 
   TASKS_cpl_atmw=180; THRD_cpl_atmw=1
   INPES_cpl_atmw=3; JNPES_cpl_atmw=8; WPG_cpl_atmw=6
@@ -556,8 +556,8 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
 
   TASKS_dflt=150 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=78  ; INPES_thrd=3 ; JNPES_thrd=4
-  TASKS_c384=336 ; INPES_c384=8 ; JNPES_c384=6  ; TPN_c384=18
-  TASKS_c768=992 ; INPES_c768=8 ; JNPES_c768=16 ; TPN_c768=18
+  TASKS_c384=336 ; INPES_c384=8 ; JNPES_c384=6  ; THRD_c384=2
+  TASKS_c768=992 ; INPES_c768=8 ; JNPES_c768=16 ; THRD_c768=2
 
   TASKS_cpl_atmw=180; THRD_cpl_atmw=1
   INPES_cpl_atmw=3; JNPES_cpl_atmw=8; WPG_cpl_atmw=6
