@@ -51,15 +51,10 @@ message("STOCH_PHYS ....... ${STOCH_PHYS}")
 message("CDEPS ............ ${CDEPS}")
 message("CMEPS ............ ${CMEPS}")
 
-if(CCPP_32BIT AND NOT 32BIT)
-  message(FATAL_ERROR "When compiling CCPP 32-bit (CCPP_32BIT=ON), you must also compile dynamics 32-bit (32BIT=ON)")
-endif()
-
 ###############################################################################
 ### Build Options
 ###############################################################################
-set(32BIT           OFF CACHE BOOL "Enable 32-bit (single precision) arithmetic in dycore and CCPP fast physics")
-set(CCPP_32BIT      OFF CACHE BOOL "Enable 32-bit (single precision) arithmetic in CCPP slow physics")
+set(32BIT           OFF CACHE BOOL "Enable 32BIT (single precision arithmetic in dycore)")
 set(AVX2            ON  CACHE BOOL "Enable AVX2 instruction set")
 set(AVX             OFF CACHE BOOL "Enable AVX-I instruction set")
 set(SIMDMULTIARCH   OFF CACHE BOOL "Enable multi-target SIMD instruction sets")
@@ -85,7 +80,6 @@ endif()
 
 message("")
 message("32BIT ............ ${32BIT}")
-message("CCPP_32BIT ....... ${CCPP_32BIT}")
 message("AVX2 ............. ${AVX2}")
 message("SIMDMULTIARCH .... ${SIMDMULTIARCH}")
 message("DEBUG ............ ${DEBUG}")
