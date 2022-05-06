@@ -1,32 +1,8 @@
-&amip_interp_nml
-    data_set = 'reynolds_oi'
-    date_out_of_range = 'climo'
-    interp_oi_sst = .true.
-    no_anom_sst = .false.
-    use_ncep_ice = .false.
-    use_ncep_sst = .true.
-/
-
 &atmos_model_nml
     blocksize = 29
     ccpp_suite = 'FV3_GFS_v15p2'
     chksum_debug = .false.
     dycore_only = .false.
-/
-
-&cires_ugwp_nml
-    knob_ugwp_azdir = 2, 4, 4, 4
-    knob_ugwp_doaxyz = 1
-    knob_ugwp_doheat = 1
-    knob_ugwp_dokdis = 1
-    knob_ugwp_effac = 1, 1, 1, 1
-    knob_ugwp_ndx4lh = 1
-    knob_ugwp_solver = 2
-    knob_ugwp_source = 1, 1, 0, 0
-    knob_ugwp_stoch = 0, 0, 0, 0
-    knob_ugwp_version = 0
-    knob_ugwp_wvspec = 1, 25, 25, 25
-    launch_level = 25
 /
 
 &diag_manager_nml
@@ -52,6 +28,10 @@
     clock_grain = 'ROUTINE'
     domains_stack_size = 12000000
     print_memory_usage = .false.
+/
+
+&fv_grid_nml
+    grid_file = 'INPUT/grid_spec.nc'
 /
 
 &fv_core_nml
@@ -137,9 +117,6 @@
     z_tracer = .true.
 /
 
-&fv_grid_nml
-    grid_file = 'INPUT/grid_spec.nc'
-/
 
 &gfdl_cloud_microphysics_nml
     c_cracw = 0.8
@@ -322,26 +299,26 @@
     fabsl = 99999
     faisl = 99999
     faiss = 99999
-    fnabsc = '../fix_lam/C775.maximum_snow_albedo.tileX.nc'
+    fnabsc = 'C775.maximum_snow_albedo.tileX.nc'
     fnacna = ''
-    fnaisc = '../fix_am/CFSR.SEAICE.1982.2012.monthly.clim.grb'
-    fnalbc = '../fix_lam/C775.snowfree_albedo.tileX.nc'
-    fnalbc2 = '../fix_lam/C775.facsf.tileX.nc'
-    fnglac = '../fix_am/global_glacier.2x2.grb'
-    fnmskh = '../fix_am/seaice_newland.grb'
-    fnmxic = '../fix_am/global_maxice.2x2.grb'
-    fnslpc = '../fix_lam/C775.slope_type.tileX.nc'
-    fnsmcc = '../fix_am/global_soilmgldas.t126.384.190.grb'
+    fnaisc = 'CFSR.SEAICE.1982.2012.monthly.clim.grb'
+    fnalbc = 'C775.snowfree_albedo.tileX.nc'
+    fnalbc2 = 'C775.facsf.tileX.nc'
+    fnglac = 'global_glacier.2x2.grb'
+    fnmskh = 'seaice_newland.grb'
+    fnmxic = 'global_maxice.2x2.grb'
+    fnslpc = 'C775.slope_type.tileX.nc'
+    fnsmcc = 'global_soilmgldas.t126.384.190.grb'
     fnsnoa = ''
-    fnsnoc = '../fix_am/global_snoclim.1.875.grb'
-    fnsotc = '../fix_lam/C775.soil_type.tileX.nc'
-    fntg3c = '../fix_lam/C775.substrate_temperature.tileX.nc'
+    fnsnoc = 'global_snoclim.1.875.grb'
+    fnsotc = 'C775.soil_type.tileX.nc'
+    fntg3c = 'C775.substrate_temperature.tileX.nc'
     fntsfa = ''
-    fntsfc = '../fix_am/RTGSST.1982.2012.monthly.clim.grb'
-    fnvegc = '../fix_lam/C775.vegetation_greenness.tileX.nc'
-    fnvetc = '../fix_lam/C775.vegetation_type.tileX.nc'
-    fnvmnc = '../fix_lam/C775.vegetation_greenness.tileX.nc'
-    fnvmxc = '../fix_lam/C775.vegetation_greenness.tileX.nc'
+    fntsfc = 'RTGSST.1982.2012.monthly.clim.grb'
+    fnvegc = 'C775.vegetation_greenness.tileX.nc'
+    fnvetc = 'C775.vegetation_type.tileX.nc'
+    fnvmnc = 'C775.vegetation_greenness.tileX.nc'
+    fnvmxc = 'C775.vegetation_greenness.tileX.nc'
     fnzorc = 'igbp'
     fsicl = 99999
     fsics = 99999
