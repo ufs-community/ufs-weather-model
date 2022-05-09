@@ -709,8 +709,8 @@ export EFFR_IN=.false.
 export LRADAR=.true.
 export LTAEROSOL=.true.
 export EXT_DIAG_THOMPSON=.false.
-export sedi_semi=.false.
-export decfl=8
+export SEDI_SEMI=.true.
+export DECFL=10
 # NSSL MP
 export NSSL_CCCN=0.6e9
 export NSSL_ALPHAH=0.0
@@ -1016,6 +1016,7 @@ export IOPT_ALB=1
 export IOPT_STC=3
 # P8
 export IOPT_SFC=3
+export IOPT_TRS=2
 
 # FV3 P7 settings
 export D2_BG_K1=0.20
@@ -1048,7 +1049,7 @@ export LDIAG_UGWP=.false.
 export CDMBWD=${CDMBWD_c96}
 
 # P8 RRTMGP
-export DO_RRTMGP=.true.
+export DO_RRTMGP=.false.
 export DOGP_CLDOPTICS_LUT=.true.
 export DOGP_LWSCAT=.true
 export DOGP_SGS_CNV=.true.
