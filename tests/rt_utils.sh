@@ -286,7 +286,7 @@ check_results() {
           if [[ ${MACHINE_ID} =~ orion || ${MACHINE_ID} =~ hera || ${MACHINE_ID} =~ wcoss_dell_p3 || ${MACHINE_ID} =~ wcoss_cray || ${MACHINE_ID} =~ cheyenne || ${MACHINE_ID} =~ gaea || ${MACHINE_ID} =~ jet || ${MACHINE_ID} =~ s4 ]] ; then
             printf ".......ALT CHECK.." >> ${REGRESSIONTEST_LOG}
             printf ".......ALT CHECK.."
-            ${PATHRT}/compare_ncfile.py ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i >/dev/null 2>&1 && d=$? || d=$?
+            ${PATHRT}/compare_ncfile.py ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i > compare_ncfile.log 2>&1 && d=$? || d=$?
             if [[ $d -eq 1 ]]; then
               echo "....ERROR" >> ${REGRESSIONTEST_LOG}
               echo "....ERROR"
@@ -387,14 +387,6 @@ rocoto_create_compile_task() {
     echo "  </metatask>" >> $ROCOTO_XML
   fi
 
-  # serialize WW3 builds. FIXME
-  DEP_STRING=""
-  if [[ ${COMPILE_PREV_WW3_NR} != '' ]]; then
-      if [[ ${MAKE_OPT^^} =~ "-DAPP=ATMW" ]] || [[ ${MAKE_OPT^^} =~ "-DAPP=S2SW" ]] || [[ ${MAKE_OPT^^} =~ "-DAPP=HAFSW" ]] || [[ ${MAKE_OPT^^} =~ "-DAPP=HAFS-ALL" ]] ; then
-          DEP_STRING="<dependency><taskdep task=\"compile_${COMPILE_PREV_WW3_NR}\"/></dependency>"
-      fi
-  fi
-
   NATIVE=""
   BUILD_CORES=8
   BUILD_WALLTIME="00:30:00"
@@ -419,7 +411,6 @@ rocoto_create_compile_task() {
 
   cat << EOF >> $ROCOTO_XML
   <task name="compile_${COMPILE_NR}" maxtries="3">
-    $DEP_STRING
     <command>&PATHRT;/run_compile.sh &PATHRT; &RUNDIR_ROOT; "${MAKE_OPT}" ${COMPILE_NR}</command>
     <jobname>compile_${COMPILE_NR}</jobname>
     <account>${ACCNR}</account>
@@ -513,12 +504,6 @@ EOF
   echo "      label job_id ''" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   echo "      label job_status ''" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   echo "      inlimit max_builds" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
-  # serialize WW3 builds. FIXME
-  if [[ ${MAKE_OPT^^} =~ "-DAPP=ATMW" ]] || [[ ${MAKE_OPT^^} =~ "-DAPP=S2SW" ]] || [[ ${MAKE_OPT^^} =~ "-DAPP=HAFSW" ]] || [[ ${MAKE_OPT^^} =~ "-DAPP=HAFS-ALL" ]] ; then
-    if [[ ${COMPILE_PREV_WW3_NR} != '' ]]; then
-      echo "    trigger compile_${COMPILE_PREV_WW3_NR} == complete"  >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
-    fi
-  fi
 }
 
 ecflow_create_run_task() {
@@ -549,7 +534,7 @@ ecflow_run() {
   # in rare instances when UID is greater then 58500 (like Ratko's UID on theia)
   [[ $ECF_PORT -gt 49151 ]] && ECF_PORT=12179
 
-  ECF_HOST=$( hostname )
+  ECF_HOST="${ECF_HOST:-$HOSTNAME}"
 
   set +e
   ecflow_client --ping --host=${ECF_HOST} --port=${ECF_PORT}
@@ -559,6 +544,11 @@ ecflow_run() {
     if [[ ${MACHINE_ID} == wcoss2 ]]; then
       # Annoying "Has NCO assigned port $ECF_PORT for use by this account? (yes/no) ".
       echo yes | ${ECFLOW_START} -p ${ECF_PORT} -d ${RUNDIR_ROOT}/ecflow_server
+    elif [[ ${MACHINE_ID} == jet.* ]]; then
+      module load ecflow
+      echo "Using special Jet ECFLOW start procedure"
+      MYCOMM="bash -l -c \"module load ecflow && ${ECFLOW_START} -d ${RUNDIR_ROOT}/ecflow_server\""
+      ssh $ECF_HOST "${MYCOMM}" 
     else
       ${ECFLOW_START} -p ${ECF_PORT} -d ${RUNDIR_ROOT}/ecflow_server
     fi
