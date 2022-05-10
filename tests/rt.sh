@@ -777,6 +777,7 @@ EOF
     (
       source ${PATHRT}/tests/$TEST_NAME
 
+      TPN=$(( TPN / THRD ))
       NODES=$(( TASKS / TPN ))
       if (( NODES * TPN < TASKS )); then
         NODES=$(( NODES + 1 ))
