@@ -65,20 +65,16 @@ export RESTART_N=12
 export RESTART_INTERVAL="${RESTART_N} -1"
 
 export TASKS=$TASKS_cpl_mpi
-export TPN=$TPN_cpl_mpi
 export INPES=$INPES_cpl_mpi
 export JNPES=$JNPES_cpl_mpi
 export THRD=$THRD_cpl_mpi
 export WRTTASK_PER_GROUP=$WPG_cpl_mpi
 
-export med_petlist_bounds=$MPB_cpl_mpi
-export atm_petlist_bounds=$APB_cpl_mpi
-export chm_petlist_bounds=$CHM_cpl_mpi
-export ocn_petlist_bounds=$OPB_cpl_mpi
-export ice_petlist_bounds=$IPB_cpl_mpi
-export wav_petlist_bounds=$WPB_cpl_mpi
+OCN_tasks=$OCN_tasks_cpl_mpi
+ICE_tasks=$ICE_tasks_cpl_mpi
+WAV_tasks=$WAV_tasks_cpl_mpi
 
-export NPROC_ICE=$NPROC_ICE_cpl_mpi
+export NPROC_ICE=${ICE_tasks}
 export np2=`expr $NPROC_ICE / 2`
 export BLCKX=`expr $NX_GLB / $np2`
 export BLCKY=`expr $NY_GLB / 2`
