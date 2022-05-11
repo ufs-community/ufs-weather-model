@@ -185,6 +185,19 @@ deflate_level=1
   lndp_type    = @[LNDP_TYPE]
   n_var_lndp   = @[N_VAR_LNDP]
   fscav_aero   = @[FSCAV_AERO]
+  do_RRTMGP          = @[DO_RRTMGP]
+  active_gases       = 'h2o_co2_o3_n2o_ch4_o2'
+  ngases             = 6
+  lw_file_gas        = 'rrtmgp-data-lw-g128-210809.nc'
+  lw_file_clouds     = 'rrtmgp-cloud-optics-coeffs-lw.nc'
+  sw_file_gas        = 'rrtmgp-data-sw-g112-210809.nc'
+  sw_file_clouds     = 'rrtmgp-cloud-optics-coeffs-sw.nc'
+  rrtmgp_nGptsSW     = 112
+  rrtmgp_nGptsLW     = 128
+  rrtmgp_nBandsLW    = 16
+  rrtmgp_nBandsSW    = 14
+  doGP_cldoptics_LUT = @[DOGP_CLDOPTICS_LUT]
+  doGP_lwscat        = @[DOGP_LWSCAT]
 /
 
 &gfdl_cloud_microphysics_nml
@@ -314,9 +327,12 @@ deflate_level=1
 
 &nam_sfcperts
   lndp_type      = @[LNDP_TYPE]
+  lndp_model_type = @[LNDP_MODEL_TYPE]
   LNDP_TAU=21600,
   LNDP_LSCALE=500000,
   ISEED_LNDP=2010,
+  lndp_var_list = @[LNDP_VAR_LIST]
+  lndp_prt_list = @[LNDP_PRT_LIST]
 /
 
 &cires_ugwp_nml

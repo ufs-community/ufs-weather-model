@@ -1,0 +1,119 @@
+###############################################################################
+#
+#  HAFS global with 1 storm-following moving nest and atmosphere only
+#
+###############################################################################
+
+export TEST_DESCR="Compare HAFS global with 1 storm-following moving nest and atmosphere only results with previous trunk version"
+
+export CNTL_DIR=hafs_global_storm_following_1nest_atm
+
+export LIST_FILES="atmf006.nc \
+                   sfcf006.nc \
+                   atm.nest02.f006.nc \
+                   sfc.nest02.f006.nc"
+
+export_fv3
+export_hafs
+
+export HAFS=true
+export FHMAX=6
+export RESTART_N=${FHMAX}
+export TASKS=240
+export THRD=2
+export TPN=$TPN_thrd
+
+export DT_ATMOS=180
+export IDEFLATE=1
+export NFHMAX_HF=-1
+export NFHOUT_HF=3
+export NFHOUT=3
+export OUTPUT_FILE="'netcdf_parallel' 'netcdf'"
+export SDAY=25
+export SHOUR=12
+export SMONTH=08
+export SYEAR=2020
+export WRTTASK_PER_GROUP=60
+
+export OUTPUT_GRID='global_latlon'
+export IMO=360
+export JMO=181
+
+export OUTPUT_GRID_2='rotated_latlon'
+export CEN_LON_2=-86.3
+export CEN_LAT_2=23.3
+export LON1_2=-45.00
+export LAT1_2=-40.00
+export LON2_2=45.00
+export LAT2_2=40.00
+export DLON_2=0.25
+export DLAT_2=0.25
+
+export BLOCKSIZE=${BLOCKSIZE:-24}
+export CCPP_SUITE="FV3_HAFS_v0_gfdlmp_tedmf"
+export DEFLATE_LEVEL=-1
+export INPES=4
+export JNPES=5
+export NPX=97
+export NPY=97
+export NPZ=64
+export NPZP=$(($NPZ + 1))
+export K_SPLIT=4
+export N_SPLIT=5
+export NWAT=6
+export NA_INIT=1
+export EXTERNAL_IC=.true.
+export NGGPS_IC=.true.
+export MOUNTAIN=.false.
+export WARM_START=.false.
+export TARGET_LAT="23.3"
+export TARGET_LON="-86.3"
+export STRETCH_FAC=1.0001
+export FULL_ZS_FILTER=.false.
+export N_ZS_FILTER=0
+
+export GRID_PES="120,60"
+export TILE_COARSE="0,6"
+export NUM_TILE_TOP=6
+export NEST_REFINE="0,3"
+export NEST_IOFFSETS="1,37"
+export NEST_JOFFSETS="1,37"
+export IS_MOVING_NEST=".false.,.true."
+export VORTEX_TRACKER="0,7"
+export NTRACK="0,2"
+export MOVE_CD_X="0,0"
+export MOVE_CD_Y="0,0"
+
+export FHCYC=0
+export FHSWR=1800
+export FHLWR=1800
+export NSTF_NAME=2,0,0,0,0
+export CPLFLX=.false.
+export CPLOCN2ATM=.true.
+export CPLWAV=.false.
+export CPLWAV2ATM=.false.
+export CPL_IMP_MRG=.false.
+
+export INPES_NEST02=6
+export JNPES_NEST02=10
+export NPX_NEST02=73
+export NPY_NEST02=73
+export K_SPLIT_NEST02=4
+export N_SPLIT_NEST02=5
+
+export NESTED=.true.
+export FULL_ZS_FILTER=.false.
+export N_ZS_FILTER=0
+
+export CMEPS=false
+export RUNTYPE="startup"
+export USE_COLDSTART="false"
+
+export FIELD_TABLE=field_table_hafs
+export DIAG_TABLE=diag_table_hafs_template
+export INPUT_NML=input_global_hafs.nml.IN
+export INPUT_NEST02_NML=input_nest_hafs.nml.IN
+export MODEL_CONFIGURE="model_configure_hafs.IN"
+export NEMS_CONFIGURE="nems.configure.hafs_atm.IN"
+export FV3_RUN="hafs_fv3_run.IN"
+
