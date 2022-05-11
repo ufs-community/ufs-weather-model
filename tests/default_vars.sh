@@ -89,7 +89,7 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
   MPB_cdeps_025="0 39"; APB_cdeps_025="0 39"
   OPB_cdeps_025="40 159"; IPB_cdeps_025="160 207"
 
-elif [[ $MACHINE_ID = wcoss2 ]]; then
+elif [[ $MACHINE_ID = wcoss2.* ]]; then
 
   TASKS_dflt=150 ; TPN_dflt=128 ; INPES_dflt=3 ; JNPES_dflt=8
   TASKS_thrd=78  ; TPN_thrd=64 ; INPES_thrd=3 ; JNPES_thrd=4

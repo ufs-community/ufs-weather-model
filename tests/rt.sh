@@ -188,7 +188,7 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
   cp fv3_conf/fv3_bsub.IN_wcoss_dell_p3 fv3_conf/fv3_bsub.IN
   cp fv3_conf/compile_bsub.IN_wcoss_dell_p3 fv3_conf/compile_bsub.IN
 
-elif [[ $MACHINE_ID = wcoss2 ]]; then
+elif [[ $MACHINE_ID = wcoss2.* ]]; then
 
   #module use /usrx/local/dev/emc_rocoto/modulefiles
   #module load ruby/2.5.1 rocoto/1.3.0rc2
@@ -207,7 +207,7 @@ elif [[ $MACHINE_ID = wcoss2 ]]; then
   mkdir -p ${ECF_COMDIR}
   export colonifnco=":output"  # hack
 
-  DISKNM=/lfs/h2/emc/eib/noscrub/Dusan.Jovic
+  DISKNM=/lfs/h2/emc/nems/noscrub/emc.nems/RT
   QUEUE=dev
   COMPILE_QUEUE=dev
   PARTITION=
@@ -409,7 +409,7 @@ mkdir -p ${STMP}/${USER}
 
 # Different own baseline directories for different compilers on Theia/Cheyenne
 NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST
-if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]] || [[ $MACHINE_ID = s4.* ]] ; then
+if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]] || [[ $MACHINE_ID = s4.* ]] || [[ $MACHINE_ID = wcoss2.* ]]; then
     NEW_BASELINE=${NEW_BASELINE}_${RT_COMPILER^^}
 fi
 
@@ -486,7 +486,7 @@ if [[ $TESTS_FILE =~ '35d' ]] || [[ $TESTS_FILE =~ 'weekly' ]]; then
 fi
 
 BL_DATE=20220503
-if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]] || [[ $MACHINE_ID = s4.* ]]; then
+if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]] || [[ $MACHINE_ID = s4.* ]] || [[ $MACHINE_ID = wcoss2.* ]]; then
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
 else
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}}
@@ -547,7 +547,7 @@ if [[ $ROCOTO == true ]]; then
     QUEUE=dev
     COMPILE_QUEUE=dev_transfer
     ROCOTO_SCHEDULER=lsf
-  elif [[ $MACHINE_ID = wcoss2 ]]; then
+  elif [[ $MACHINE_ID = wcoss2.* ]]; then
     QUEUE=dev
     COMPILE_QUEUE=dev
     ROCOTO_SCHEDULER=pbs
@@ -639,7 +639,7 @@ EOF
     QUEUE=dev
   elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
     QUEUE=dev
-  elif [[ $MACHINE_ID = wcoss2 ]]; then
+  elif [[ $MACHINE_ID = wcoss2.* ]]; then
     QUEUE=dev
   elif [[ $MACHINE_ID = hera.* ]]; then
     QUEUE=batch
