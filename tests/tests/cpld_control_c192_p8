@@ -65,17 +65,13 @@ export RESTART_INTERVAL="${RESTART_N} -1"
 export DOMAINS_STACK_SIZE=16000000
 
 export TASKS=$TASKS_cpl_c192
-export TPN=$TPN_cpl_c192
 export INPES=$INPES_cpl_c192
 export JNPES=$JNPES_cpl_c192
 export THRD=$THRD_cpl_c192
 export WRTTASK_PER_GROUP=$WPG_cpl_c192
 
-export med_petlist_bounds=$MPB_cpl_c192
-export atm_petlist_bounds=$APB_cpl_c192
-export chm_petlist_bounds=$CHM_cpl_c192
-export ocn_petlist_bounds=$OPB_cpl_c192
-export ice_petlist_bounds=$IPB_cpl_c192
+OCN_tasks=$OCN_tasks_cpl_c192
+ICE_tasks=$ICE_tasks_cpl_c192
 
 # atm/ocn/ice resolution
 export ATMRES=C192
@@ -89,7 +85,7 @@ export OCNRES=050
 export ICERES=0.50
 export NX_GLB=720
 export NY_GLB=576
-export NPROC_ICE=$NPROC_ICE_cpl_c192
+export NPROC_ICE=$ICE_tasks
 export np2=`expr $NPROC_ICE / 2`
 export BLCKX=`expr $NX_GLB / $np2`
 export BLCKY=`expr $NY_GLB / 2`
@@ -125,7 +121,7 @@ export FNSLPC="'C192.slope_type.tileX.nc'"
 export FNABSC="'C192.maximum_snow_albedo.tileX.nc'"
 
 export CDMBWD=${CDMBWD_c192}
-export DT_INNER=${DT_INNER_c384}
+export DT_INNER=${DT_INNER_c192}
 
 export CPLWAV=.false.
 export CPLWAV2ATM=.false.
