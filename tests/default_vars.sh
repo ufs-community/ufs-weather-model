@@ -1171,7 +1171,7 @@ export DZ_MIN=6
 # P7 Merra2 Aerosols & NSST
 export USE_MERRA2=.true.
 export IAER=1011
-export NSTF_NAME=2,1,0,0,0
+export NSTF_NAME=2,0,0,0,0
 
 export LHEATSTRG=.true.
 export LSEASPRAY=.true.
