@@ -1330,6 +1330,7 @@ export HAFS=false
 export DATM_CDEPS=true
 export DOCN_CDEPS=false
 export CPLWAV=.false.
+export CPLCHM=.false.
 export DAYS=1
 export FHMAX=24
 export FHROT=0
