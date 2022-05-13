@@ -69,18 +69,14 @@ export WLCLK=45
 export DOMAINS_STACK_SIZE=16000000
 
 export TASKS=$TASKS_cpl_bmrk_aero
-export TPN=$TPN_cpl_bmrk_aero
 export INPES=$INPES_cpl_bmrk_aero
 export JNPES=$JNPES_cpl_bmrk_aero
 export THRD=$THRD_cpl_bmrk_aero
 export WRTTASK_PER_GROUP=$WPG_cpl_bmrk_aero
 
-export med_petlist_bounds=$MPB_cpl_bmrk_aero
-export atm_petlist_bounds=$APB_cpl_bmrk_aero
-export chm_petlist_bounds=$CHM_cpl_bmrk_aero
-export ocn_petlist_bounds=$OPB_cpl_bmrk_aero
-export ice_petlist_bounds=$IPB_cpl_bmrk_aero
-export wav_petlist_bounds=$WPB_cpl_bmrk_aero
+OCN_tasks=$OCN_tasks_cpl_bmrk_aero
+ICE_tasks=$ICE_tasks_cpl_bmrk_aero
+WAV_tasks=$WAV_tasks_cpl_bmrk_aero
 
 # atm/ocn/ice resolution
 export ATMRES=C384
@@ -95,7 +91,7 @@ export OCNRES=025
 export ICERES=0.25
 export NX_GLB=1440
 export NY_GLB=1080
-export NPROC_ICE=$NPROC_ICE_cpl_bmrk_aero
+export NPROC_ICE=${ICE_tasks}
 export np2=`expr $NPROC_ICE / 2`
 export BLCKX=`expr $NX_GLB / $np2`
 export BLCKY=`expr $NY_GLB / 2`

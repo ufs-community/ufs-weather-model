@@ -21,7 +21,6 @@ export FHMAX=6
 export RESTART_N=${FHMAX}
 export TASKS=180
 export THRD=2
-export TPN=$TPN_thrd
 export DT_ATMOS=90
 export IDEFLATE=1
 export NFHMAX_HF=-1
@@ -104,6 +103,8 @@ export NPY_NEST02=361
 export K_SPLIT_NEST02=4
 export N_SPLIT_NEST02=5
 
+ATM_compute_tasks=$(( INPES*JNPES + INPES_NEST02*JNPES_NEST02 ))
+
 export CMEPS=false
 export RUNTYPE="startup"
 export USE_COLDSTART="false"
@@ -112,7 +113,7 @@ export FIELD_TABLE=field_table_hafs
 export DIAG_TABLE=diag_table_hafs_template
 export INPUT_NML=input_regional_hafs.nml.IN
 export INPUT_NEST02_NML=input_nest_hafs.nml.IN
-export MODEL_CONFIGURE="model_configure_hafs_shared.IN"
+export MODEL_CONFIGURE="model_configure_hafs.IN"
 export NEMS_CONFIGURE="nems.configure.hafs_atm.IN"
 export FV3_RUN="hafs_fv3_run.IN"
 
