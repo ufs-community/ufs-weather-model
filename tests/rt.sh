@@ -279,6 +279,7 @@ elif [[ $MACHINE_ID = orion.* ]]; then
   ECFLOW_START=/work/noaa/nems/emc.nemspara/soft/miniconda3/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
+  ACCNR="${ACCNR:-fv3-cpu}"
   QUEUE=batch
   COMPILE_QUEUE=batch
   PARTITION=orion
