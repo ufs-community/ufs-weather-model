@@ -1191,7 +1191,7 @@ export CDMBWD=${CDMBWD_c96}
 # P8 RRTMGP
 export DO_RRTMGP=.false.
 export DOGP_CLDOPTICS_LUT=.true.
-export DOGP_LWSCAT=.true
+export DOGP_LWSCAT=.true.
 export DOGP_SGS_CNV=.true.
 
 #P8 UGWD
