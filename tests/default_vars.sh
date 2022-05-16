@@ -205,6 +205,13 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   ICE_tasks_cpl_bmrk=48
   WAV_tasks_cpl_bmrk=100
 
+  # run only in weekly test
+  TASKS_cpl_c192=1404; THRD_cpl_c192=2
+  INPES_cpl_c192=12; JNPES_cpl_c192=16; WPG_cpl_c192=24
+  OCN_tasks_cpl_c192=100
+  ICE_tasks_cpl_c192=48
+  WAV_tasks_cpl_c192=80
+
   TASKS_cdeps_100=40
   ATM_compute_tasks_cdeps_100=12
   OCN_tasks_cdeps_100=16
@@ -340,7 +347,6 @@ elif [[ $MACHINE_ID = expanse.* ]]; then
 
   TASKS_cpl_atmw_gdas=560; TPN_cpl_atmw_gdas=12; INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8
   THRD_cpl_atmw_gdas=2; WPG_cpl_atmw_gdas=24; APB_cpl_atmw_gdas="0 311"; WPB_cpl_atmw_gdas="312 559"
-
 
 else
 
@@ -861,7 +867,7 @@ export EPBL=-999.
 
 # CICE6 defaults; 1 degree
 export CICE_DECOMP=slenderX2
-export NPROC_ICE=$ICE_tasks_cpl_dflt
+export NPROC_ICE=$ICE_tasks
 # SlenderX2
 export CICE_DECOMP=slenderX2
 export np2=`expr $NPROC_ICE / 2`
