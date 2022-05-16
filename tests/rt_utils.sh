@@ -548,7 +548,7 @@ ecflow_run() {
       module load ecflow
       echo "Using special Jet ECFLOW start procedure"
       MYCOMM="bash -l -c \"module load ecflow && ${ECFLOW_START} -d ${RUNDIR_ROOT}/ecflow_server\""
-      ssh $ECF_HOST "${MYCOMM}" 
+      ssh $ECF_HOST "${MYCOMM}"
     else
       ${ECFLOW_START} -p ${ECF_PORT} -d ${RUNDIR_ROOT}/ecflow_server
     fi

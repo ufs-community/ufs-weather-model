@@ -64,26 +64,22 @@ export RESTART_N=12
 export RESTART_INTERVAL="${RESTART_N} -1"
 
 export TASKS=$TASKS_cpl_dcmp
-export TPN=$TPN_cpl_dcmp
 export INPES=$INPES_cpl_dcmp
 export JNPES=$JNPES_cpl_dcmp
 export THRD=$THRD_cpl_dcmp
 export WRTTASK_PER_GROUP=$WPG_cpl_dcmp
 
-export med_petlist_bounds=$MPB_cpl_dcmp
-export atm_petlist_bounds=$APB_cpl_dcmp
-export chm_petlist_bounds=$CHM_cpl_dcmp
-export ocn_petlist_bounds=$OPB_cpl_dcmp
-export ice_petlist_bounds=$IPB_cpl_dcmp
-export wav_petlist_bounds=$WPB_cpl_dcmp
+OCN_tasks=$OCN_tasks_cpl_dcmp
+ICE_tasks=$ICE_tasks_cpl_dcmp
+WAV_tasks=$WAV_tasks_cpl_dcmp
 
-export NPROC_ICE=$NPROC_ICE_cpl_dcmp
+export NPROC_ICE=$ICE_tasks
 export np2=`expr $NPROC_ICE / 2`
 export BLCKX=`expr $NX_GLB / $np2`
 export BLCKY=`expr $NY_GLB / 2`
 
-export eps_imesh=2.5e-1
 export TOPOEDITS=ufs.topo_edits_011818.nc
 export MOM6_ALLOW_LANDMASK_CHANGES=True
+export eps_imesh=2.5e-1
 
 export FV3_RUN=cpld_control_run.IN

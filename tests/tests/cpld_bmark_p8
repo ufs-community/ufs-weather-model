@@ -68,19 +68,17 @@ export FHZERO=3
 
 export DOMAINS_STACK_SIZE=16000000
 
+export RUN_BEG="${SYEAR}${SMONTH}${SDAY} $(printf "%02d" $(( ${SHOUR}  )))0000"
+
 export TASKS=$TASKS_cpl_bmrk
-export TPN=$TPN_cpl_bmrk
 export INPES=$INPES_cpl_bmrk
 export JNPES=$JNPES_cpl_bmrk
 export THRD=$THRD_cpl_bmrk
 export WRTTASK_PER_GROUP=$WPG_cpl_bmrk
 
-export med_petlist_bounds=$MPB_cpl_bmrk
-export atm_petlist_bounds=$APB_cpl_bmrk
-export chm_petlist_bounds=$CHM_cpl_bmrk
-export ocn_petlist_bounds=$OPB_cpl_bmrk
-export ice_petlist_bounds=$IPB_cpl_bmrk
-export wav_petlist_bounds=$WPB_cpl_bmrk
+OCN_tasks=$OCN_tasks_cpl_bmrk
+ICE_tasks=$ICE_tasks_cpl_bmrk
+WAV_tasks=$WAV_tasks_cpl_bmrk
 
 # atm/ocn/ice resolution
 export ATMRES=C384
@@ -95,7 +93,7 @@ export OCNRES=025
 export ICERES=0.25
 export NX_GLB=1440
 export NY_GLB=1080
-export NPROC_ICE=$NPROC_ICE_cpl_bmrk
+export NPROC_ICE=$ICE_tasks
 export np2=`expr $NPROC_ICE / 2`
 export BLCKX=`expr $NX_GLB / $np2`
 export BLCKY=`expr $NY_GLB / 2`
@@ -117,6 +115,8 @@ export CICEGRID=grid_cice_NEMS_mx${OCNRES}.nc
 export CICEMASK=kmtu_cice_NEMS_mx${OCNRES}.nc
 export CHLCLIM=seawifs-clim-1997-2010.${NX_GLB}x${NY_GLB}.v20180328.nc
 export FRUNOFF=runoff.daitren.clim.${NX_GLB}x${NY_GLB}.v20180328.nc
+export MOM6_RIVER_RUNOFF=True
+export MOM6_RESTART_SETTING=r
 
 export FNALBC="'C384.snowfree_albedo.tileX.nc'"
 export FNALBC2="'C384.facsf.tileX.nc'"
@@ -132,10 +132,6 @@ export FNABSC="'C384.maximum_snow_albedo.tileX.nc'"
 export CDMBWD=${CDMBWD_c384}
 export DT_INNER=${DT_INNER_c384}
 
-export MOM6_RIVER_RUNOFF=True
-export MOM6_RESTART_SETTING=r
-
-export RUN_BEG="${SYEAR}${SMONTH}${SDAY} $(printf "%02d" $(( ${SHOUR}  )))0000"
 export OUT_BEG=$RUN_BEG
 export RST_BEG=$RUN_BEG
 export RST_2_BEG=$RUN_BEG

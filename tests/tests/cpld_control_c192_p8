@@ -5,19 +5,19 @@ export TEST_DESCR="Fully coupled FV3-CCPP-GOCART-MOM6-CICE-CMEPS-WW3 system - C1
 
 export CNTL_DIR="cpld_control_c192_p8"
 
-export LIST_FILES="sfcf036.tile1.nc \
-                   sfcf036.tile2.nc \
-                   sfcf036.tile3.nc \
-                   sfcf036.tile4.nc \
-                   sfcf036.tile5.nc \
-                   sfcf036.tile6.nc \
-                   atmf036.tile1.nc \
-                   atmf036.tile2.nc \
-                   atmf036.tile3.nc \
-                   atmf036.tile4.nc \
-                   atmf036.tile5.nc \
-                   atmf036.tile6.nc \
-                   gocart.inst_aod.20210323_1800z.nc4 \
+export LIST_FILES="sfcf030.tile1.nc \
+                   sfcf030.tile2.nc \
+                   sfcf030.tile3.nc \
+                   sfcf030.tile4.nc \
+                   sfcf030.tile5.nc \
+                   sfcf030.tile6.nc \
+                   atmf030.tile1.nc \
+                   atmf030.tile2.nc \
+                   atmf030.tile3.nc \
+                   atmf030.tile4.nc \
+                   atmf030.tile5.nc \
+                   atmf030.tile6.nc \
+                   gocart.inst_aod.20210323_1200z.nc4 \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -51,34 +51,32 @@ export LIST_FILES="sfcf036.tile1.nc \
                    RESTART/sfc_data.tile5.nc \
                    RESTART/sfc_data.tile6.nc \
                    RESTART/MOM.res.nc \
-                   RESTART/iced.2021-03-23-64800.nc \
-                   RESTART/ufs.cpld.cpl.r.2021-03-23-64800.nc \
-                   20210323.180000.out_grd.ww3 \
-                   20210323.180000.out_pnt.ww3 "
+                   RESTART/iced.2021-03-23-43200.nc \
+                   RESTART/ufs.cpld.cpl.r.2021-03-23-43200.nc \
+                   20210323.120000.out_grd.ww3 \
+                   20210323.120000.out_pnt.ww3 "
 
 export_fv3
 export_cpl
 
-export DAYS=1.5
-export FHMAX=36
-export RESTART_N=12
+export DAYS=1.25
+export FHMAX=30
+export RESTART_N=15
 export RESTART_INTERVAL="${RESTART_N} -1"
+export OUTPUT_FH="0 15 30"
+export FHZERO=3
 
 export DOMAINS_STACK_SIZE=16000000
 
 export TASKS=$TASKS_cpl_c192
-export TPN=$TPN_cpl_c192
 export INPES=$INPES_cpl_c192
 export JNPES=$JNPES_cpl_c192
 export THRD=$THRD_cpl_c192
 export WRTTASK_PER_GROUP=$WPG_cpl_c192
 
-export med_petlist_bounds=$MPB_cpl_c192
-export atm_petlist_bounds=$APB_cpl_c192
-export chm_petlist_bounds=$CHM_cpl_c192
-export ocn_petlist_bounds=$OPB_cpl_c192
-export ice_petlist_bounds=$IPB_cpl_c192
-export wav_petlist_bounds=$WPB_cpl_c192
+OCN_tasks=$OCN_tasks_cpl_c192
+ICE_tasks=$ICE_tasks_cpl_c192
+WAV_tasks=$WAV_tasks_cpl_c192
 
 # atm/ocn/ice resolution
 export ATMRES=C192
@@ -92,7 +90,7 @@ export OCNRES=050
 export ICERES=0.50
 export NX_GLB=720
 export NY_GLB=576
-export NPROC_ICE=$NPROC_ICE_cpl_c192
+export NPROC_ICE=$ICE_tasks
 export np2=`expr $NPROC_ICE / 2`
 export BLCKX=`expr $NX_GLB / $np2`
 export BLCKY=`expr $NY_GLB / 2`
