@@ -73,6 +73,10 @@ export LIST_FILES="sfcf021.tile1.nc \
 export_fv3
 export_cpl
 
+OCN_tasks=$OCN_tasks_cpl_dflt
+ICE_tasks=$ICE_tasks_cpl_dflt
+WAV_tasks=$WAV_tasks_cpl_dflt
+
 export RESTART_N=12
 export RESTART_INTERVAL="${RESTART_N} -1"
 export OUTPUT_FH='0 21 24'
@@ -82,5 +86,7 @@ export NEMS_CONFIGURE=nems.configure.cpld_aero_wave.IN
 export FIELD_TABLE=field_table_thompson_noaero_tke_GOCART
 
 export eps_imesh=2.5e-1
+export TOPOEDITS=ufs.topo_edits_011818.nc
+export MOM6_ALLOW_LANDMASK_CHANGES=True
 
 export FV3_RUN=cpld_control_run.IN
