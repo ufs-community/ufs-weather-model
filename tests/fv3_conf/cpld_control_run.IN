@@ -97,6 +97,12 @@ else
   cp  ../${DEP_RUN}${SUFFIX}/RESTART/${RFILE} .
   ls -1 ${RFILE}>rpointer.cpl
 
+  # CMEPS/CCPP restart file
+  if [[ $CPLMODE =~ 'nems_frac_aoflux' ]]; then 
+    RFILE_CCPP=ufs.cpld.cpl.ccpp.${RESTART_FILE_SUFFIX_SECS}.nc
+    cp ../${DEP_RUN}${SUFFIX}/${RFILE_CCPP} .
+  fi
+
   # CICE restart and pointer files
   RFILE=iced.${RESTART_FILE_SUFFIX_SECS}.nc
   cp  ../${DEP_RUN}${SUFFIX}/RESTART/${RFILE} ./INPUT
