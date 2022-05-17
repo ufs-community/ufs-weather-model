@@ -26,25 +26,25 @@ case $(hostname -f) in
   m72a2.ncep.noaa.gov)     MACHINE_ID=wcoss_dell_p3 ;; ### mars
   m72a3.ncep.noaa.gov)     MACHINE_ID=wcoss_dell_p3 ;; ### mars
 
-  clogin01.cactus.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### cactus
-  clogin02.cactus.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### cactus
-  clogin03.cactus.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### cactus
-  clogin04.cactus.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### cactus
-  clogin05.cactus.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### cactus
-  clogin06.cactus.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### cactus
-  clogin07.cactus.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### cactus
-  clogin08.cactus.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### cactus
-  clogin09.cactus.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### cactus
+  clogin01.cactus.wcoss2.ncep.noaa.gov)	  MACHINE_ID=wcoss2 ;; ### cactus
+  clogin02.cactus.wcoss2.ncep.noaa.gov)	  MACHINE_ID=wcoss2 ;; ### cactus
+  clogin03.cactus.wcoss2.ncep.noaa.gov)	  MACHINE_ID=wcoss2 ;; ### cactus
+  clogin04.cactus.wcoss2.ncep.noaa.gov)	  MACHINE_ID=wcoss2 ;; ### cactus
+  clogin05.cactus.wcoss2.ncep.noaa.gov)	  MACHINE_ID=wcoss2 ;; ### cactus
+  clogin06.cactus.wcoss2.ncep.noaa.gov)	  MACHINE_ID=wcoss2 ;; ### cactus
+  clogin07.cactus.wcoss2.ncep.noaa.gov)	  MACHINE_ID=wcoss2 ;; ### cactus
+  clogin08.cactus.wcoss2.ncep.noaa.gov)	  MACHINE_ID=wcoss2 ;; ### cactus
+  clogin09.cactus.wcoss2.ncep.noaa.gov)	  MACHINE_ID=wcoss2 ;; ### cactus
 
-  dlogin01.cactus.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### dogwood
-  dlogin02.cactus.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### dogwood
-  dlogin03.cactus.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### dogwood
-  dlogin04.cactus.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### dogwood
-  dlogin05.cactus.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### dogwood
-  dlogin06.cactus.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### dogwood
-  dlogin07.cactus.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### dogwood
-  dlogin08.cactus.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### dogwood
-  dlogin09.cactus.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### dogwood
+  dlogin01.dogwood.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### dogwood
+  dlogin02.dogwood.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### dogwood
+  dlogin03.dogwood.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### dogwood
+  dlogin04.dogwood.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### dogwood
+  dlogin05.dogwood.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### dogwood
+  dlogin06.dogwood.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### dogwood
+  dlogin07.dogwood.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### dogwood
+  dlogin08.dogwood.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### dogwood
+  dlogin09.dogwood.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### dogwood
 
   gaea9)                   MACHINE_ID=gaea ;; ### gaea9
   gaea10)                  MACHINE_ID=gaea ;; ### gaea10
