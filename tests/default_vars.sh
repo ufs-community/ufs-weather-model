@@ -871,6 +871,10 @@ export NSSL_HAIL_ON=.false.
 export NSSL_CCN_ON=.true.
 export NSSL_INVERTCCN=.true.
 
+# Smoke
+export RRFS_SMOKE=.false.
+export SEAS_OPT=2
+
 # GWD
 export LDIAG_UGWP=.false.
 export DO_UGWP=.false.
@@ -911,6 +915,7 @@ export DO_MYNNEDMF=.false.
 export DO_MYJPBL=.false.
 export HURR_PBL=.false.
 export MONINQ_FAC=1.0
+export SFCLAY_COMPUTE_FLUX=.false.
 
 # Shallow/deep convection
 export DO_DEEP=.true.
