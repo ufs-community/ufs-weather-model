@@ -590,8 +590,8 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
   ICE_tasks_cpl_dcmp=10
   WAV_tasks_cpl_dcmp=20
 
-  TASKS_cpl_mpi=450; THRD_cpl_mpi=1
-  INPES_cpl_mpi=8; JNPES_cpl_mpi=8; WPG_cpl_mpi=6
+  TASKS_cpl_mpi=498; THRD_cpl_mpi=1
+  INPES_cpl_mpi=6; JNPES_cpl_mpi=12; WPG_cpl_mpi=6
   OCN_tasks_cpl_mpi=24
   ICE_tasks_cpl_mpi=12
   WAV_tasks_cpl_mpi=24
