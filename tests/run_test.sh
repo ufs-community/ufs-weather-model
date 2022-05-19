@@ -255,6 +255,10 @@ if [[ $CPLWAV == .true. ]]; then
   atparse < ${PATHRT}/parm/ww3_multi.inp.IN > ww3_multi.inp
 fi
 
+if [[ $CPLCHM == .true. ]]; then
+  cp ${PATHRT}/parm/gocart/*.rc .
+fi
+
 if [[ $DATM_CDEPS = 'true' ]] || [[ $S2S = 'true' ]]; then
   if [[ $HAFS = 'false' ]]; then
     atparse < ${PATHRT}/parm/ice_in_template > ice_in
