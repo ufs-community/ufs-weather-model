@@ -259,8 +259,9 @@ if [[ $CPLWAV == .true. ]]; then
   fi
 fi
 
-if [[ $S2S = 'true' ]] && [[ $CPLCHM == .true. ]]; then
-    atparse < ${PATHRT}/parm/gocart/AERO_HISTORY.rc.IN > AERO_HISTORY.rc
+if [[ $CPLCHM == .true. ]]; then
+  cp ${PATHRT}/parm/gocart/*.rc .
+  atparse < ${PATHRT}/parm/gocart/AERO_HISTORY.rc.IN > AERO_HISTORY.rc
 fi
 
 if [[ $DATM_CDEPS = 'true' ]] || [[ $S2S = 'true' ]]; then

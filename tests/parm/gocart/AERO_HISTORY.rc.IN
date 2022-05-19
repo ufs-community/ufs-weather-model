@@ -9,7 +9,22 @@ EXPSRC: GEOSgcm-v10.16.0
 
 
 COLLECTIONS: 'inst_aod'
-#            'tavg_cmass'
+#	     'inst_du_ss'
+#            'inst_ca'
+#            'inst_ni'
+#            'inst_su'
+#            'inst_du_bin'
+#            'inst_ss_bin'
+#            'inst_ca_bin'
+#            'inst_ni_bin'
+#            'inst_su_bin'
+#            'inst_2d'
+#            'inst_3d'
+#            'inst_aod'
+#            'tavg_du_ss'
+#            'tavg_du_bin'
+#            'tavg_2d_rad'
+#            'tavg_3d_rad'
              ::
 
 ##################################################
@@ -43,11 +58,25 @@ PC720x361-DC.LM: 72
   inst_du_ss.mode:        'instantaneous',
   inst_du_ss.grid_label:  PC720x361-DC ,
   inst_du_ss.splitField:  1,
-  inst_du_ss.frequency:   010000 ,
+  inst_du_ss.frequency:   120000 ,
   inst_du_ss.duration:    010000 ,
   inst_du_ss.ref_time:    000000 ,
   inst_du_ss.nbits:       10,
   inst_du_ss.fields:      'DU' , 'DU' ,
+                          'SS' , 'SS' ,
+                          ::
+
+  tavg_du_ss.format:      'CFIO' ,
+  tavg_du_ss.descr:       '3d,Hourly,Instantaneous,Model-Level,Aerosol Concentrations',
+  tavg_du_ss.template:    '%y4%m2%d2_%h2%n2z.nc4',
+  tavg_du_ss.mode:        'time-averaged',
+  tavg_du_ss.grid_label:  PC720x361-DC ,
+  tavg_du_ss.splitField:  1,
+  tavg_du_ss.frequency:   120000 ,
+  tavg_du_ss.duration:    010000 ,
+  tavg_du_ss.ref_time:    000000 ,
+  tavg_du_ss.nbits:       10,
+  tavg_du_ss.fields:      'DU' , 'DU' ,
                           'SS' , 'SS' ,
                           ::
 
@@ -56,7 +85,7 @@ PC720x361-DC.LM: 72
   inst_ca.template:       '%y4%m2%d2_%h2%n2z.nc4',
   inst_ca.mode:           'instantaneous',
   inst_ca.grid_label:     PC720x361-DC ,
-  inst_ca.frequency:      010000 ,
+  inst_ca.frequency:      120000 ,
   inst_ca.duration:       010000 ,
   inst_ca.ref_time:       000000 ,
   inst_ca.nbits:          10,
@@ -71,7 +100,7 @@ PC720x361-DC.LM: 72
   inst_ni.template:       '%y4%m2%d2_%h2%n2z.nc4',
   inst_ni.mode:           'instantaneous',
   inst_ni.grid_label:     PC720x361-DC ,
-  inst_ni.frequency:      010000 ,
+  inst_ni.frequency:      120000 ,
   inst_ni.duration:       010000 ,
   inst_ni.ref_time:       000000 ,
   inst_ni.nbits:          10,
@@ -87,7 +116,7 @@ PC720x361-DC.LM: 72
   inst_su.template:       '%y4%m2%d2_%h2%n2z.nc4',
   inst_su.mode:           'instantaneous',
   inst_su.grid_label:     PC720x361-DC ,
-  inst_su.frequency:      010000 ,
+  inst_su.frequency:      120000 ,
   inst_su.duration:       010000 ,
   inst_su.ref_time:       000000 ,
   inst_su.nbits:          10,
@@ -117,13 +146,30 @@ PC720x361-DC.LM: 72
                           'DUSV' , 'DU' ,
                           ::
 
+  tavg_du_bin.format:     'CFIO' ,
+  tavg_du_bin.descr:      '2d,Hourly,Instantaneous'
+  tavg_du_bin.template:   '%y4%m2%d2_%h2%n2z.nc4',
+  tavg_du_bin.mode:       'time-averaged'
+  tavg_du_bin.grid_label: PC720x361-DC ,
+  tavg_du_bin.splitField: 1,
+  tavg_du_bin.frequency:  030000 ,
+  tavg_du_bin.duration:   010000 ,
+  tavg_du_bin.ref_time:   000000 ,
+  tavg_du_bin.nbits:      10,
+  tavg_du_bin.fields:     'DUEM' , 'DU' ,
+                          'DUSD' , 'DU' ,
+                          'DUDP' , 'DU' ,
+                          'DUWT' , 'DU' ,
+                          'DUSV' , 'DU' ,
+                          ::
+
   inst_ss_bin.format:     'CFIO' ,
   inst_ss_bin.descr:      '2d,Hourly,Instantaneous'
   inst_ss_bin.template:   '%y4%m2%d2_%h2%n2z.nc4',
   inst_ss_bin.mode:       'instantaneous'
   inst_ss_bin.grid_label: PC720x361-DC ,
   inst_ss_bin.splitField: 1,
-  inst_ss_bin.frequency:  010000 ,
+  inst_ss_bin.frequency:  060000 ,
   inst_ss_bin.duration:   010000 ,
   inst_ss_bin.ref_time:   000000 ,
   inst_ss_bin.nbits:      10,
@@ -140,7 +186,7 @@ PC720x361-DC.LM: 72
   inst_ca_bin.mode:       'instantaneous'
   inst_ca_bin.grid_label:  PC720x361-DC ,
   inst_ca_bin.splitField:  1,
-  inst_ca_bin.frequency:   010000 ,
+  inst_ca_bin.frequency:   120000 ,
   inst_ca_bin.duration:    010000 ,
   inst_ca_bin.ref_time:    000000 ,
   inst_ca_bin.nbits:      10,
@@ -162,7 +208,7 @@ PC720x361-DC.LM: 72
   inst_ni_bin.mode:       'instantaneous',
   inst_ni_bin.grid_label:  PC720x361-DC ,
   inst_ni_bin.splitField:  1,
-  inst_ni_bin.frequency:   010000 ,
+  inst_ni_bin.frequency:   120000 ,
   inst_ni_bin.duration:    010000 ,
   inst_ni_bin.ref_time:    000000 ,
   inst_ni_bin.nbits:      10,
@@ -179,7 +225,7 @@ PC720x361-DC.LM: 72
   inst_su_bin.mode:       'instantaneous',
   inst_su_bin.grid_label:  PC720x361-DC ,
   inst_su_bin.splitField:  1,
-  inst_su_bin.frequency:   010000 ,
+  inst_su_bin.frequency:   120000 ,
   inst_su_bin.duration:    010000 ,
   inst_su_bin.ref_time:    000000 ,
   inst_su_bin.nbits:      10,
@@ -198,8 +244,8 @@ PC720x361-DC.LM: 72
   inst_2d.template:   '%y4%m2%d2_%h2%n2z.nc4',
   inst_2d.archive:    '%c/Y%y4',
   inst_2d.mode:       'instantaneous'
-  inst_2d.frequency:  010000,
-  inst_2d.duration:   010000,
+  inst_2d.frequency:  030000,
+  inst_2d.duration:   030000,
   inst_2d.ref_time:   000000,
   inst_2d.grid_label: PC720x361-DC
   inst_2d.fields:     'DUSMASS'       , 'DU' ,
@@ -290,32 +336,6 @@ PC720x361-DC.LM: 72
                       'SO2EMVE'       , 'SU' ,
                       ::
 
-  tavg_cmass.format:     'CFIO' ,
-  tavg_cmass.descr:      '2d,3-hourly,Time-averaged'
-  tavg_cmass.template:   '%y4%m2%d2_%h2%n2z.nc4',
-  tavg_cmass.archive:    '%c/Y%y4',
-  tavg_cmass.mode:       'time-averaged'
-  tavg_cmass.frequency:  030000,
-  tavg_cmass.duration:   030000,
-  tavg_cmass.ref_time:   000000,
-  tavg_cmass.grid_label: PC720x361-DC
-  tavg_cmass.fields:    'DUCMASS'       , 'DU' ,
-                        'DUCMASS25'     , 'DU' ,
-                        'SSCMASS'       , 'SS' ,
-                        'SSCMASS25'     , 'SS' ,
-                        'CACMASSCA.bc'  , 'CA.bc' ,
-                        'CACMASSCA.oc'  , 'CA.oc' ,
-                        'HNO3CMASS'     , 'NI' ,
-                        'NH3CMASS'      , 'NI' ,
-                        'NH4CMASS'      , 'NI' ,
-                        'NICMASS'       , 'NI' ,
-                        'NICMASS25'     , 'NI' ,
-                        'SO2CMASS'      , 'SU' ,
-                        'SO4CMASS'      , 'SU' ,
-                        'DMSCMASS'      , 'SU' ,
-                        'MSACMASS'      , 'SU' ,
-                        ::
-
 #
 # 3d diagnostics
 #
@@ -323,7 +343,7 @@ PC720x361-DC.LM: 72
   inst_3d.template:   '%y4%m2%d2_%h2%n2z.nc4' ,
   inst_3d.archive:    '%c/Y%y4' ,
   inst_3d.mode:       'instantaneous'
-  inst_3d.frequency:  010000,
+  inst_3d.frequency:  060000,
   inst_3d.duration:   010000,
   inst_3d.ref_time:   000000,
   inst_3d.grid_label: PC720x361-DC
@@ -379,8 +399,8 @@ PC720x361-DC.LM: 72
   tavg_2d_rad.template:   '%y4%m2%d2_%h2%n2z.nc4',
   tavg_2d_rad.archive:    '%c/Y%y4',
   tavg_2d_rad.mode:       'time-averaged',
-  tavg_2d_rad.frequency:  030000,
-  tavg_2d_rad.duration:   030000,
+  tavg_2d_rad.frequency:  120000,
+  tavg_2d_rad.duration:   120000,
   tavg_2d_rad.ref_time:   000000,
   tavg_2d_rad.grid_label: PC720x361-DC
   tavg_2d_rad.fields:     'CAEXTTAUCA.bc' , 'CA.bc' ,
@@ -413,8 +433,8 @@ PC720x361-DC.LM: 72
   tavg_3d_rad.template:   '%y4%m2%d2_%h2%n2z.nc4',
   tavg_3d_rad.archive:    '%c/Y%y4',
   tavg_3d_rad.mode:       'time-averaged',
-  tavg_3d_rad.frequency:  030000,
-  tavg_3d_rad.duration:   030000,
+  tavg_3d_rad.frequency:  120000,
+  tavg_3d_rad.duration:   120000,
   tavg_3d_rad.ref_time:   000000,
   tavg_3d_rad.grid_label: PC720x361-DC
   tavg_3d_rad.splitField: 1,

@@ -292,6 +292,30 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
   INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
   WAV_tasks_atmw_gdas=264
 
+  TASKS_cpl_dflt=344; THRD_cpl_dflt=1
+  INPES_cpl_dflt=6; JNPES_cpl_dflt=8; WPG_cpl_dflt=6
+  OCN_tasks_cpl_dflt=20
+  ICE_tasks_cpl_dflt=10
+  WAV_tasks_cpl_dflt=20
+
+  TASKS_cpl_thrd=200; THRD_cpl_thrd=2
+  INPES_cpl_thrd=6; JNPES_cpl_thrd=4; WPG_cpl_thrd=6
+  OCN_tasks_cpl_thrd=20
+  ICE_tasks_cpl_thrd=10
+  WAV_tasks_cpl_thrd=20
+
+  TASKS_cpl_dcmp=344; THRD_cpl_dcmp=1
+  INPES_cpl_dcmp=4; JNPES_cpl_dcmp=12; WPG_cpl_dcmp=6
+  OCN_tasks_cpl_dcmp=20
+  ICE_tasks_cpl_dcmp=10
+  WAV_tasks_cpl_dcmp=20
+
+  TASKS_cpl_mpi=498; THRD_cpl_mpi=1
+  INPES_cpl_mpi=6; JNPES_cpl_mpi=12; WPG_cpl_mpi=6
+  OCN_tasks_cpl_mpi=24
+  ICE_tasks_cpl_mpi=12
+  WAV_tasks_cpl_mpi=24
+
   TASKS_cpl_bmrk=868; THRD_cpl_bmrk=2
   INPES_cpl_bmrk=12; JNPES_cpl_bmrk=8; WPG_cpl_bmrk=24
   OCN_tasks_cpl_bmrk=120
@@ -507,7 +531,7 @@ export RANDOM_CLDS=.false.
 export CNVCLD=.true.
 
 # Aerosol convective scavenging
-export FSCAV_AERO="'*:0.0'"
+export FSCAV_AERO='"*:0.3","so2:0.0","msa:0.0","dms:0.0","nh3:0.4","nh4:0.6","bc1:0.6","bc2:0.6","dust1:0.6","dust2:0.6","dust3:0.6","dust4:0.6","dust5:0.6","seas1:0.5","seas2:0.5","seas3:0.5","seas4:0.5","seas5:0.5"'
 
 # SFC
 export DO_MYJSFC=.false.
@@ -636,7 +660,7 @@ export RST_2_END=$RUN_END
 # ATMW
 export MULTIGRID=true
 # ATMA
-export AOD_FRQ=010000
+export AOD_FRQ=060000
 
 # Regional
 export WRITE_RESTART_WITH_BCS=.false.
@@ -834,7 +858,6 @@ export DO_SAT_ADJ=.false.
 # P7 default mushy thermo
 export KTHERM=2
 export TFREEZE_OPTION=mushy
-
 export CPLFLX=.true.
 export CPLICE=.true.
 export CPL=.true.
@@ -933,6 +956,7 @@ export HAFS=false
 export DATM_CDEPS=true
 export DOCN_CDEPS=false
 export CPLWAV=.false.
+export CPLCHM=.false.
 export DAYS=1
 export FHMAX=24
 export FHROT=0
