@@ -1,3 +1,6 @@
+! This configuration is supposed to match the rrfs_dev1 parallel, so
+! do not change the namelist without checking the current parallel.
+
 &atmos_model_nml
     blocksize = 32
     ccpp_suite = '@[CCPP_SUITE]'
@@ -41,7 +44,7 @@
 
 &fms_nml
     clock_grain = 'ROUTINE'
-    domains_stack_size = 3000000
+    domains_stack_size = 5000000 ! Smoke needs a higher value than 3000000 default.
     print_memory_usage = .false.
 /
 
@@ -132,7 +135,9 @@
     grid_file = 'INPUT/grid_spec.nc'
 /
 
+
 &gfs_physics_nml
+    sfclay_compute_flux = @[SFCLAY_COMPUTE_FLUX]
     fh_dfi_radar = @[FH_DFI_RADAR]
     bl_mynn_edmf = 1
     bl_mynn_edmf_mom = 1
@@ -201,6 +206,8 @@
     imfdeepcnv = @[IMFDEEPCNV]
     imfshalcnv = @[IMFSHALCNV]
     imp_physics = @[IMP_PHYSICS]
+    ! Yes, really, I mean it. Stop changing the iopt settings too.
+    ! They need to match the RRFS_dev1 parallel.
     iopt_alb = 2
     iopt_btr = 1
     iopt_crs = 1
@@ -213,6 +220,8 @@
     iopt_snf = 4
     iopt_stc = 1
     iopt_tbot = 2
+    sedi_semi   = @[SEDI_SEMI]
+    decfl       = @[DECFL]
     iovr = @[IOVR]
     isol = 2
     isot = 1
@@ -226,9 +235,9 @@
 !    lfnc_p0 = @[LFNC_P0]
     lheatstrg = @[LHEATSTRG]
 !    lkm = @[LKM]
-!    lndp_each_step = @[LNDP_EACH_STEP]
     lndp_type = @[LNDP_TYPE]
     lradar = @[LRADAR]
+    lrefres = .true.
 !    lseaspray = @[LSEASPRAY]
     lsm = @[LSM]
     lsoil = 9

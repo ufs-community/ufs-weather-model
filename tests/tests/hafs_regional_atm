@@ -9,7 +9,8 @@ export TEST_DESCR="Compare HAFS regional atmosphere only results with previous t
 export CNTL_DIR=hafs_regional_atm
 
 export LIST_FILES="atmf006.nc \
-                   sfcf006.nc"
+                   sfcf006.nc \
+                   HURPRS.GrbF06"
 
 export_fv3
 export_hafs
@@ -19,7 +20,6 @@ export FHMAX=6
 export RESTART_N=${FHMAX}
 export TASKS=300
 export THRD=2
-export TPN=$TPN_thrd
 export DT_ATMOS=180
 export IDEFLATE=1
 export NFHMAX_HF=-1
@@ -31,6 +31,8 @@ export SHOUR=00
 export SMONTH=08
 export SYEAR=2019
 export WRTTASK_PER_GROUP=60
+export WRITE_DOPOST=.true.
+export POSTAPP='hafs'
 
 export OUTPUT_GRID='regional_latlon'
 export CEN_LON=-62.0
@@ -92,6 +94,6 @@ export USE_COLDSTART="false"
 export FIELD_TABLE=field_table_hafs
 export DIAG_TABLE=diag_table_hafs_template
 export INPUT_NML=input_regional_hafs.nml.IN
-export MODEL_CONFIGURE="model_configure_hafs_shared.IN"
+export MODEL_CONFIGURE="model_configure_hafs.IN"
 export NEMS_CONFIGURE="nems.configure.hafs_atm.IN"
 export FV3_RUN="hafs_fv3_run.IN"
