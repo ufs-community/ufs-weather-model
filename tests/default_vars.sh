@@ -45,6 +45,16 @@
   ICE_tasks_cpl_c192=24
   WAV_tasks_cpl_c192=80
 
+  TASKS_cdeps_100=40
+  ATM_compute_tasks_cdeps_100=12
+  OCN_tasks_cdeps_100=16
+  ICE_tasks_cdeps_100=12
+
+  TASKS_cdeps_025=208
+  ATM_compute_tasks_cdeps_025=40
+  OCN_tasks_cdeps_025=120
+  ICE_tasks_cdeps_025=48
+
 if [[ $MACHINE_ID = wcoss_cray ]]; then
 
   TPN=24
@@ -71,16 +81,6 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
   INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
   WAV_tasks_atmw_gdas=248
 
-  TASKS_cdeps_100=40
-  ATM_compute_tasks_cdeps_100=12
-  OCN_tasks_cdeps_100=16
-  ICE_tasks_cdeps_100=12
-
-  TASKS_cdeps_025=208
-  ATM_compute_tasks_cdeps_025=40
-  OCN_tasks_cdeps_025=120
-  ICE_tasks_cdeps_025=48
-
 elif [[ $MACHINE_ID = wcoss2 ]]; then
 
   TPN=128
@@ -97,16 +97,6 @@ elif [[ $MACHINE_ID = wcoss2 ]]; then
   TASKS_cpl_atmw_gdas=560; THRD_cpl_atmw_gdas=2
   INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
   WAV_tasks_atmw_gdas=248
-
-  TASKS_cdeps_100=40
-  ATM_compute_tasks_cdeps_100=12
-  OCN_tasks_cdeps_100=16
-  ICE_tasks_cdeps_100=12
-
-  TASKS_cdeps_025=208
-  ATM_compute_tasks_cdeps_025=40
-  OCN_tasks_cdeps_025=120
-  ICE_tasks_cdeps_025=48
 
 elif [[ $MACHINE_ID = orion.* ]]; then
 
@@ -125,16 +115,6 @@ elif [[ $MACHINE_ID = orion.* ]]; then
   INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
   WAV_tasks_atmw_gdas=248
 
-  TASKS_cdeps_100=40
-  ATM_compute_tasks_cdeps_100=12
-  OCN_tasks_cdeps_100=16
-  ICE_tasks_cdeps_100=12
-
-  TASKS_cdeps_025=208
-  ATM_compute_tasks_cdeps_025=40
-  OCN_tasks_cdeps_025=120
-  ICE_tasks_cdeps_025=48
-
 elif [[ $MACHINE_ID = hera.* ]]; then
 
   TPN=40
@@ -151,16 +131,6 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   TASKS_cpl_atmw_gdas=560; THRD_cpl_atmw_gdas=2
   INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
   WAV_tasks_atmw_gdas=248
-
-  TASKS_cdeps_100=40
-  ATM_compute_tasks_cdeps_100=12
-  OCN_tasks_cdeps_100=16
-  ICE_tasks_cdeps_100=12
-
-  TASKS_cdeps_025=208
-  ATM_compute_tasks_cdeps_025=40
-  OCN_tasks_cdeps_025=120
-  ICE_tasks_cdeps_025=48
 
 elif [[ $MACHINE_ID = linux.* ]]; then
 
@@ -212,16 +182,6 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   ICE_tasks_cpl_c192=48
   WAV_tasks_cpl_c192=80
 
-  TASKS_cdeps_100=40
-  ATM_compute_tasks_cdeps_100=12
-  OCN_tasks_cdeps_100=16
-  ICE_tasks_cdeps_100=12
-
-  TASKS_cdeps_025=208
-  ATM_compute_tasks_cdeps_025=40
-  OCN_tasks_cdeps_025=120
-  ICE_tasks_cdeps_025=48
-
 elif [[ $MACHINE_ID = s4.* ]]; then
 
   echo "Unknown MACHINE_ID ${MACHINE_ID}. Please update tasks configurations in default_vars.sh"
@@ -240,14 +200,6 @@ elif [[ $MACHINE_ID = s4.* ]]; then
   TASKS_cpl_atmw_gdas=560; TPN_cpl_atmw_gdas=16; INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8
   THRD_cpl_atmw_gdas=2; WPG_cpl_atmw_gdas=24; APB_cpl_atmw_gdas="0 311"; WPB_cpl_atmw_gdas="312 559"
 
-  TASKS_cdeps_100=40; TPN_cdeps_100=32
-  MPB_cdeps_100="0 11"; APB_cdeps_100="0 11"
-  OPB_cdeps_100="12 27"; IPB_cdeps_100="28 39"
-
-  TASKS_cdeps_025=208; TPN_cdeps_025=32
-  MPB_cdeps_025="0 39"; APB_cdeps_025="0 39"
-  OPB_cdeps_025="40 159"; IPB_cdeps_025="160 207"
-
 elif [[ $MACHINE_ID = gaea.* ]]; then
 
   TPN=36
@@ -264,16 +216,6 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
   TASKS_cpl_atmw_gdas=576; THRD_cpl_atmw_gdas=3
   INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
   WAV_tasks_atmw_gdas=264
-
-  TASKS_cdeps_100=40
-  ATM_compute_tasks_cdeps_100=12
-  OCN_tasks_cdeps_100=16
-  ICE_tasks_cdeps_100=12
-
-  TASKS_cdeps_025=208
-  ATM_compute_tasks_cdeps_025=40
-  OCN_tasks_cdeps_025=120
-  ICE_tasks_cdeps_025=48
 
 elif [[ $MACHINE_ID = cheyenne.* ]]; then
 
@@ -322,16 +264,6 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
   ICE_tasks_cpl_bmrk=48
   WAV_tasks_cpl_bmrk=100
 
-  TASKS_cdeps_100=40
-  ATM_compute_tasks_cdeps_100=12
-  OCN_tasks_cdeps_100=16
-  ICE_tasks_cdeps_100=12
-
-  TASKS_cdeps_025=208
-  ATM_compute_tasks_cdeps_025=40
-  OCN_tasks_cdeps_025=120
-  ICE_tasks_cdeps_025=48
-
 elif [[ $MACHINE_ID = stampede.* ]]; then
 
   echo "Unknown MACHINE_ID ${MACHINE_ID}. Please update tasks configurations in default_vars.sh"
@@ -348,14 +280,6 @@ elif [[ $MACHINE_ID = stampede.* ]]; then
 
   TASKS_cpl_atmw_gdas=560; TPN_cpl_atmw_gdas=12; INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8
   THRD_cpl_atmw_gdas=4; WPG_cpl_atmw_gdas=24; APB_cpl_atmw_gdas="0 311"; WPB_cpl_atmw_gdas="312 559"
-
-  TASKS_cdeps_100=40; TPN_cdeps_100=48
-  MPB_cdeps_100="0 11"; APB_cdeps_100="0 11"
-  OPB_cdeps_100="12 27"; IPB_cdeps_100="28 39"
-
-  TASKS_cdeps_025=208; TPN_cdeps_025=48
-  MPB_cdeps_025="0 39"; APB_cdeps_025="0 39"
-  OPB_cdeps_025="40 159"; IPB_cdeps_025="160 207"
 
 elif [[ $MACHINE_ID = expanse.* ]]; then
 
