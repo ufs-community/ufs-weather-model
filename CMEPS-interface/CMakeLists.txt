@@ -124,7 +124,7 @@ if(CMEPS_AOFLUX)
     list(APPEND _nems_util_files
       CMEPS/ufs/ccpp/driver/med_ccpp_driver.F90
       CMEPS/ufs/flux_atmocn_ccpp_mod.F90
-      CMEPS/ufs/ufs_io.F90)
+      CMEPS/ufs/ufs_io_mod.F90)
 
     ### Set the sources: type definitions
     include(${CMAKE_CURRENT_BINARY_DIR}/physics/CCPP_TYPEDEFS.cmake)
