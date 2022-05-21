@@ -59,7 +59,7 @@
   OCN_tasks_cdeps_025=120
   ICE_tasks_cdeps_025=48
 
-elif [[ $MACHINE_ID = wcoss2.* ]]; then
+if [[ $MACHINE_ID = wcoss_cray ]]; then
 
   TPN=24
 
@@ -81,7 +81,7 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
   INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
   WAV_tasks_atmw_gdas=248
 
-elif [[ $MACHINE_ID = wcoss2 ]]; then
+elif [[ $MACHINE_ID = wcoss2.* ]]; then
 
   TPN=128
 
