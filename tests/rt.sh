@@ -600,7 +600,7 @@ if [[ $ECFLOW == true ]]; then
   MAX_JOBS=30
 
   # Default number of tries to run jobs - on wcoss, no error tolerance
-  ECF_TRIES=1
+  ECF_TRIES=2
   if [[ $MACHINE_ID = wcoss* ]]; then
     ECF_TRIES=1
   fi
