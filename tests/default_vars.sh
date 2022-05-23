@@ -875,6 +875,11 @@ export NSSL_INVERTCCN=.true.
 export RRFS_SMOKE=.false.
 export SEAS_OPT=2
 
+# The rrfs*conus13km* tests are all warm starts off of data
+# assimilation output, so we need another flag to indicate a restart
+# test:
+export RRFS_RESTART=NO
+
 # GWD
 export LDIAG_UGWP=.false.
 export DO_UGWP=.false.

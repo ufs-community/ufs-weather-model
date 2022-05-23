@@ -1,10 +1,10 @@
 ###############################################################################
 #
-#  HRRR control test: atmosphere only at C96L127
+#  HRRR control with 2 threads test
 #
 ###############################################################################
 
-export TEST_DESCR="Compare HRRR results with previous trunk version"
+export TEST_DESCR="Compare HRRR with 2 threads results with control test"
 
 export CNTL_DIR=hrrr_control
 
@@ -67,6 +67,12 @@ export NSTF_NAME='2,0,0,0,0'
 export WRITE_DOPOST=.true.
 export IAER=5111
 export OUTPUT_FH='0 21 24'
+
+export THRD=2
+export TASKS=$TASKS_thrd
+export INPES=$INPES_thrd
+export JNPES=$JNPES_thrd
+export WRTTASK_PER_GROUP=6
 
 export FV3_RUN=control_run.IN
 export CCPP_SUITE=FV3_HRRR

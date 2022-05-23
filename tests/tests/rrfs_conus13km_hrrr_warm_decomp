@@ -1,13 +1,13 @@
 ###############################################################################
 #
-#  HRRR physics on 13km domain, control run
+#  HRRR physics on 13km domain, alternative decomposition
 #
 ###############################################################################
 
 # This configuration is supposed to match the rrfs_dev1 parallel, so
 # do not change the namelist without checking the current parallel.
 
-export TEST_DESCR="HRRR physics on 13km domain, control run"
+export TEST_DESCR="HRRR physics on 13km domain, alternative decomposition"
 
 export CNTL_DIR=rrfs_conus13km_hrrr_warm
 
@@ -36,6 +36,10 @@ export OUTPUT_HISTORY=.true.
 export OUTPUT_GRID=lambert_conformal
 export OUTPUT_FILE="'netcdf'"
 
+export INPES=16
+export JNPES=9
+# Total tasks are unchanged
+
 # Revert these two to GFS_typedefs defaults to avoid a crash:
 export SEDI_SEMI=.false.
 export DECFL=8
@@ -57,8 +61,6 @@ export SHAL_CNV=.false.
 export DO_SAT_ADJ=.false.
 export DO_DEEP=.false.
 export CCPP_SUITE='FV3_HRRR'
-export INPES=12
-export JNPES=12
 export NPX=397
 export NPY=233
 export NPZ=65

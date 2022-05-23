@@ -1,15 +1,15 @@
 ###############################################################################
 #
-#  HRRR physics on 13km domain, control run
+#  HRRR smoke physics on 13km domain, debug run
 #
 ###############################################################################
 
 # This configuration is supposed to match the rrfs_dev1 parallel, so
 # do not change the namelist without checking the current parallel.
 
-export TEST_DESCR="HRRR physics on 13km domain, control run"
+export TEST_DESCR="HRRR smoke physics on 13km domain, debug run"
 
-export CNTL_DIR=rrfs_conus13km_hrrr_warm
+export CNTL_DIR=rrfs_smoke_conus13km_hrrr_warm_debug
 
 export LIST_FILES="sfcf000.nc \
                    sfcf001.nc \
@@ -40,6 +40,9 @@ export OUTPUT_FILE="'netcdf'"
 export SEDI_SEMI=.false.
 export DECFL=8
 
+export RRFS_SMOKE=.true.
+export SEAS_OPT=0
+
 export LKM=1
 export SFCLAY_COMPUTE_FLUX=.true.
 export IALB=2
@@ -56,7 +59,7 @@ export HYBEDMF=.false.
 export SHAL_CNV=.false.
 export DO_SAT_ADJ=.false.
 export DO_DEEP=.false.
-export CCPP_SUITE='FV3_HRRR'
+export CCPP_SUITE='FV3_HRRR_smoke'
 export INPES=12
 export JNPES=12
 export NPX=397
@@ -102,6 +105,7 @@ export DO_UGWP_V1_OROG_ONLY=.false.
 
 export FV3_RUN=rrfs_warm_run.IN
 export INPUT_NML=rrfs_conus13km_hrrr.nml.IN
-export FIELD_TABLE=field_table_thompson_aero_tke
+export FIELD_TABLE=field_table_thompson_aero_tke_smoke
 export DIAG_TABLE=diag_table_hrrr
 export MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
+export DIAG_TABLE_ADDITIONAL=diag_additional_rrfs_smoke
