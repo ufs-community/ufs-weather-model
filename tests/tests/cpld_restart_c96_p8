@@ -83,22 +83,18 @@ export USE_RESTART_TIME=.true.
 export MOM6_RESTART_SETTING=r
 
 export TASKS=$TASKS_cpl_c96
-export TPN=$TPN_cpl_c96
 export INPES=$INPES_cpl_c96
 export JNPES=$JNPES_cpl_c96
 export THRD=$THRD_cpl_c96
 export WRTTASK_PER_GROUP=$WPG_cpl_c96
 
-export NPROC_ICE=$NPROC_ICE_cpl_c96
+OCN_tasks=$OCN_tasks_cpl_c96
+ICE_tasks=$ICE_tasks_cpl_c96
+
+export NPROC_ICE=$ICE_tasks
 export np2=`expr $NPROC_ICE / 2`
 export BLCKX=`expr $NX_GLB / $np2`
 export BLCKY=`expr $NY_GLB / 2`
-
-export med_petlist_bounds=$MPB_cpl_c96
-export atm_petlist_bounds=$APB_cpl_c96
-export chm_petlist_bounds=$CHM_cpl_c96
-export ocn_petlist_bounds=$OPB_cpl_c96
-export ice_petlist_bounds=$IPB_cpl_c96
 
 export CPLWAV=.false.
 export CPLWAV2ATM=.false.

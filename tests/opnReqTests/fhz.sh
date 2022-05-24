@@ -11,7 +11,7 @@ if [[ $application == 'global' ]]; then
                                    | sed -E "s/GFSPRS.GrbF24 ?//g" \
                                    | sed -e "s/^ *//" -e "s/ *$//")
 elif [[ $application == 'cpld' ]]; then
-  if [[ $TEST_NAME == 'cpld_control_c96_p8' ]] || [[ $TEST_NAME == 'cpld_control_p8' ]]; then
+  if [[ $TEST_NAME =~ 'cpld_control_c96_p8' ]] || [[ $TEST_NAME =~ 'cpld_control_p8' ]] || [[ $TEST_NAME =~ 'cpld_control_c96_noaero_p8' ]]; then
     FHZERO=3
     LIST_FILES=$(echo -n $LIST_FILES | sed -E "s/sfcf024.tile[1-6].nc ?//g" \
                                      | sed -E "s/atmf024.tile[1-6].nc ?//g" \
