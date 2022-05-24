@@ -90,6 +90,8 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
   OCN_tasks_cdeps_025=120
   ICE_tasks_cdeps_025=48
 
+  TASKS_aqm=272; INPES_aqm=33; JNPES_aqm=8
+
 elif [[ $MACHINE_ID = wcoss2.* ]]; then
 
   TPN=128
@@ -161,6 +163,8 @@ elif [[ $MACHINE_ID = wcoss2.* ]]; then
   ATM_compute_tasks_cdeps_025=40
   OCN_tasks_cdeps_025=120
   ICE_tasks_cdeps_025=48
+
+  TASKS_aqm=272; INPES_aqm=33; JNPES_aqm=8
 
 elif [[ $MACHINE_ID = orion.* ]]; then
 
@@ -234,6 +238,8 @@ elif [[ $MACHINE_ID = orion.* ]]; then
   OCN_tasks_cdeps_025=120
   ICE_tasks_cdeps_025=48
 
+  TASKS_aqm=272; INPES_aqm=33; JNPES_aqm=8
+
 elif [[ $MACHINE_ID = hera.* ]]; then
 
   TPN=40
@@ -305,6 +311,8 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   ATM_compute_tasks_cdeps_025=40
   OCN_tasks_cdeps_025=120
   ICE_tasks_cdeps_025=48
+
+  TASKS_aqm=272; INPES_aqm=33; JNPES_aqm=8
 
 elif [[ $MACHINE_ID = linux.* ]]; then
 
@@ -402,6 +410,8 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   OCN_tasks_cdeps_025=120
   ICE_tasks_cdeps_025=48
 
+  TASKS_aqm=272; INPES_aqm=33; JNPES_aqm=8
+
 elif [[ $MACHINE_ID = s4.* ]]; then
 
   echo "Unknown MACHINE_ID ${MACHINE_ID}. Please update tasks configurations in default_vars.sh"
@@ -478,6 +488,8 @@ elif [[ $MACHINE_ID = s4.* ]]; then
   MPB_cdeps_025="0 39"; APB_cdeps_025="0 39"
   OPB_cdeps_025="40 159"; IPB_cdeps_025="160 207"
 
+  TASKS_aqm=272; INPES_aqm=33; JNPES_aqm=8
+
 elif [[ $MACHINE_ID = gaea.* ]]; then
 
   TPN=36
@@ -550,6 +562,8 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
   OCN_tasks_cdeps_025=120
   ICE_tasks_cdeps_025=48
 
+  TASKS_aqm=272; INPES_aqm=33; JNPES_aqm=8
+
 elif [[ $MACHINE_ID = cheyenne.* ]]; then
 
   TPN=36
@@ -621,6 +635,8 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
   ATM_compute_tasks_cdeps_025=40
   OCN_tasks_cdeps_025=120
   ICE_tasks_cdeps_025=48
+
+  TASKS_aqm=272; INPES_aqm=33; JNPES_aqm=8
 
 elif [[ $MACHINE_ID = stampede.* ]]; then
 
@@ -697,6 +713,8 @@ elif [[ $MACHINE_ID = stampede.* ]]; then
   MPB_cdeps_025="0 39"; APB_cdeps_025="0 39"
   OPB_cdeps_025="40 159"; IPB_cdeps_025="160 207"
 
+  TASKS_aqm=272; INPES_aqm=33; JNPES_aqm=8
+
 elif [[ $MACHINE_ID = expanse.* ]]; then
 
   echo "Unknown MACHINE_ID ${MACHINE_ID}. Please update tasks configurations in default_vars.sh"
@@ -766,6 +784,8 @@ elif [[ $MACHINE_ID = expanse.* ]]; then
   CHM_cpl_c384="0 143"; OPB_cpl_c384="150 269"; IPB_cpl_c384="270 317"
   NPROC_ICE_cpl_c384=48
 
+  TASKS_aqm=272; INPES_aqm=33; JNPES_aqm=8
+
 else
 
   echo "Unknown MACHINE_ID ${MACHINE_ID}"
@@ -786,6 +806,7 @@ export_fv3 ()
 export FV3=true
 export S2S=false
 export HAFS=false
+export AQM=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
 export POSTAPP='global'
