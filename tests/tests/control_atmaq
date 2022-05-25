@@ -40,8 +40,16 @@ export IOVR=3
 export OUTPUT_FH='0 6 12'
 
 #AQM Specifics
+#NPX input.nml 397
+#NPY input.nml 233
+#NPZ input.nml 64
+#DNATS input.nml 4
+#RES_LATLON_DYNAMICS input.nml 'fv3_increment.nc'
+#fhzero = 1.0 input.nml
+#fhcyc = 0 input.nml
+#cdmbgwd = 3.5, 0.25 input.nml
 export AQM=.true.
-#export TILEDFIX=true
+export MAX_OUTPUT_FIELDS=450
 export CALENDAR='julian'
 export OUTPUT_GRID='lambert_conformal'
 export CEN_LON=-97.5
@@ -50,11 +58,16 @@ export LON1=-121.70231097
 export LAT1=22.57417972
 export STDLAT1=38.5
 export STDLAT2=38.5
-export NPX=97
-export NX=393
-export NY=225
+export NPX=397
+export NPY=233
+#export NX=393
+#export NY=225
 export DX=13000.0
 export DY=13000.0
+export FNALBC="'C775.snowfree_albedo.tileX.nc'"
+export FNVETC="'C775.vegetation_type.tileX.nc'"
+export FNSOTC="'C775.soil_type.tileX.nc'"
+export FNABSC="'C775.maximum_snow_albedo.tileX.nc'"
 
 export TASKS=${TASKS_aqm}
 export INPES=${INPES_aqm}
