@@ -203,7 +203,7 @@ endif()
 ###############################################################################
 ### UFS Library
 ###############################################################################
-add_library(ufs driver/EARTH_GRID_COMP.F90)
+add_library(ufs driver/UFSDriver.F90)
 set_target_properties(ufs PROPERTIES Fortran_MODULE_DIRECTORY
                                      ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(ufs INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
