@@ -13,7 +13,7 @@ are specified below.
 
 ## Instructions: All subsequent sections of text should be filled in as appropriate.
 
-The information provided below allows the code managers to understand the changes relevant to this PR, whether those changes are in the ufs-weather-model repository or in a subcomponent repository. Ufs-weather-model code managers will use the information provided to add any applicable labels, assign reviewers and place it in the Commit Queue. Once the PR is in the Commit Queue, it is the PR owner's responsiblity to keep the PR up-to-date with the develop branch of ufs-weather-model. 
+The information provided below allows the code managers to understand the changes relevant to this PR, whether those changes are in the ufs-weather-model repository or in a subcomponent repository. Ufs-weather-model code managers will use the information provided to add any applicable labels, assign reviewers and place it in the Commit Queue. Once the PR is in the Commit Queue, it is the PR owner's responsibility to keep the PR up-to-date with the develop branch of ufs-weather-model. 
 
 ## Description
 
@@ -37,6 +37,7 @@ How were these changes tested? What compilers / HPCs was it tested with? Are the
 - [ ] cheyenne.gnu
 - [ ] gaea.intel 
 - [ ] jet.intel
+- [ ] wcoss2.intel
 - [ ] wcoss_cray
 - [ ] wcoss_dell_p3
 - [ ] opnReqTest for newly added/changed feature

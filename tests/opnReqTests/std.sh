@@ -6,7 +6,7 @@ if [[ $application == 'global' ]]; then
     JNPES=2
     WRITE_GROUP=1
     WRTTASK_PER_GROUP=12
-    TASKS=$((INPES*JNPES*6 + WRITE_GROUP*WRTTASK_PER_GROUP))
+    TASKS=$((INPES*JNPES*NTILES + WRITE_GROUP*WRTTASK_PER_GROUP))
   fi
   RESTART_N=$(( FHMAX/2 ))
   RESTART_INTERVAL="${RESTART_N} -1"
@@ -14,19 +14,18 @@ elif [[ $application == 'regional' ]]; then
   if [[ $CI_TEST == 'true' ]]; then
     INPES=4
     JNPES=6
+    NTILES=1
     WRTTASK_PER_GROUP=8
-    TASKS=$((INPES*JNPES + WRITE_GROUP*WRTTASK_PER_GROUP))
+    TASKS=$((INPES*JNPES*NTILES + WRITE_GROUP*WRTTASK_PER_GROUP))
   fi
 elif [[ $application == 'cpld' ]]; then
   if [ $CI_TEST == 'true' ]; then
     INPES=2
     JNPES=2
-    NPROC_ICE=6
-    med_petlist_bounds="0 23"
-    atm_petlist_bounds="0 29"
-    ocn_petlist_bounds="30 39"
-    ice_petlist_bounds="40 45"
-    TASKS=$((INPES*JNPES*6 + WRITE_GROUP*WRTTASK_PER_GROUP + 10 + 6))
+    OCN_tasks=10
+    ICE_tasks=6
+    NPROC_ICE=$ICE_tasks
+    TASKS=$((INPES*JNPES*NTILES + WRITE_GROUP*WRTTASK_PER_GROUP + OCN_tasks + ICE_tasks))
   fi
   RESTART_N=$(( FHMAX/2 ))
   RESTART_INTERVAL="${RESTART_N} -1"
