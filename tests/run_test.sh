@@ -252,11 +252,16 @@ cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
 source ./fv3_run
 
 if [[ $CPLWAV == .true. ]]; then
-  atparse < ${PATHRT}/parm/ww3_multi.inp.IN > ww3_multi.inp
+  if [[ $MULTIGRID = 'true' ]]; then
+    atparse < ${PATHRT}/parm/ww3_multi.inp.IN > ww3_multi.inp
+  else
+    atparse < ${PATHRT}/parm/ww3_shel.inp.IN > ww3_shel.inp
+  fi
 fi
 
 if [[ $CPLCHM == .true. ]]; then
   cp ${PATHRT}/parm/gocart/*.rc .
+  atparse < ${PATHRT}/parm/gocart/AERO_HISTORY.rc.IN > AERO_HISTORY.rc
 fi
 
 if [[ $DATM_CDEPS = 'true' ]] || [[ $S2S = 'true' ]]; then
