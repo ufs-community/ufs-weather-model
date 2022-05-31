@@ -1,12 +1,12 @@
 ###############################################################################
 #
-#  aqm control test: GFSv15p2 atmosphere with aqm (CMAQ) C96L64
+#  regional aqm test: GFSv15p2 atmosphere with aqm (CMAQ) C96L64
 #
 ###############################################################################
 
-export TEST_DESCR="AQM (CMAQ) control test for comparison of results with previous trunk version"
+export TEST_DESCR="AQM (CMAQ) regional test for comparison of results with previous trunk version"
 
-export CNTL_DIR=aqm_control
+export CNTL_DIR=regional_atmaq
 
 export LIST_FILES="sfcf000.nc \
                    sfcf006.nc \
@@ -40,6 +40,16 @@ export IOVR=3
 export OUTPUT_FH='0 6 12'
 
 #AQM Specifics
+#NPX input.nml 397
+#NPY input.nml 233
+#NPZ input.nml 64
+#DNATS input.nml 4
+#RES_LATLON_DYNAMICS input.nml 'fv3_increment.nc'
+#fhzero = 1.0 input.nml
+#fhcyc = 0 input.nml
+#cdmbgwd = 3.5, 0.25 input.nml
+export AQM=.true.
+export MAX_OUTPUT_FIELDS=450
 export CALENDAR='julian'
 export OUTPUT_GRID='lambert_conformal'
 export CEN_LON=-97.5
@@ -48,23 +58,28 @@ export LON1=-121.70231097
 export LAT1=22.57417972
 export STDLAT1=38.5
 export STDLAT2=38.5
-export NX=393
-export NY=225
+export NPX=397
+export NPY=233
+#export NX=393
+#export NY=225
 export DX=13000.0
 export DY=13000.0
+export FNALBC="'C775.snowfree_albedo.tileX.nc'"
+export FNVETC="'C775.vegetation_type.tileX.nc'"
+export FNSOTC="'C775.soil_type.tileX.nc'"
+export FNABSC="'C775.maximum_snow_albedo.tileX.nc'"
 
-export TASKS=272
-export INPES=33
-export JNPES=8
+export TASKS=${TASKS_aqm}
+export INPES=${INPES_aqm}
+export JNPES=${JNPES_aqm}
+export NTILES=1
 export atm_model='fv3'
-export atm_petlist_bounds="0 271"
 export aqm_model='aqm'
-export aqm_petlist_bounds="0 271"
 
 export FIELD_TABLE=field_table_aqm
 export DIAG_TABLE=diag_table_aqm
-export INPUT_NML="control_atmaq.nml.IN"
+export INPUT_NML="regional_atmaq.nml.IN"
 export MODEL_CONFIGURE="model_configure_atmaq.IN"
 export NEMS_CONFIGURE="nems.configure.atmaq.IN"
-export FV3_RUN="aqm_run.IN"
+export FV3_RUN="fv3_aqm.IN"
 export CCPP_SUITE=FV3_GFS_v15p2

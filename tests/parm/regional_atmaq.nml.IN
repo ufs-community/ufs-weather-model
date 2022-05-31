@@ -1,12 +1,12 @@
 &atmos_model_nml
-    blocksize = 29
-    ccpp_suite = 'FV3_GFS_v15p2'
+    blocksize = 32
+    ccpp_suite = '@[CCPP_SUITE]'
     chksum_debug = .false.
     dycore_only = .false.
 /
 
 &diag_manager_nml
-    max_output_fields = 450
+    max_output_fields = @[MAX_OUTPUT_FIELDS]
     prepend_date = .false.
 /
 
@@ -43,14 +43,14 @@
     d_ext = 0.0
     dddmp = 0.1
     delt_max = 0.008
-    dnats = 4
+    dnats = @[DNATS]
     do_sat_adj = .true.
     do_schmidt = .true.
     do_vort_damp = .true.
     dwind_2d = .false.
     dz_min = 2
     external_eta = .true.
-    external_ic = .true.
+    external_ic = @[EXTERNAL_IC]
     fill = .true.
     full_zs_filter = .false.
     fv_debug = .false.
@@ -69,22 +69,22 @@
     kord_tm = -9
     kord_tr = 9
     kord_wz = 9
-    layout = 33, 8
-    make_nh = .true.
-    mountain = .false.
+    layout = @[INPES],@[JNPES]
+    make_nh = @[MAKE_NH]
+    mountain = @[MOUNTAIN]
     n_split = 8
     n_sponge = 30
     n_zs_filter = 0
-    na_init = 1
+    na_init = @[NA_INIT]
     ncep_ic = .false.
-    nggps_ic = .true.
+    nggps_ic = @[NGGPS_IC]
     no_dycore = .false.
     nord = 3
-    npx = 397
-    npy = 233
-    npz = 64
+    npx = @[NPX]
+    npy = @[NPY]
+    npz = @[NPZ]
     nrows_blend = 0
-    ntiles = 1
+    ntiles = @[NTILES]
     nudge_qv = .true.
     nwat = 6
     p_fac = 0.1
@@ -92,10 +92,10 @@
     print_freq = 6
     psm_bc = 1
     range_warn = .false.
-    read_increment = .false.
+    read_increment = @[READ_INCREMENT]
     regional = .true.
     regional_bcs_from_gsi = .false.
-    res_latlon_dynamics = 'fv3_increment.nc'
+    res_latlon_dynamics = @[RES_LATLON_DYNAMICS]
     reset_eta = .false.
     rf_cutoff = 750.0
     stretch_fac = 0.999
@@ -104,7 +104,7 @@
     tau = 5.0
     use_hydro_pressure = .false.
     vtdm4 = 0.075
-    warm_start = .false.
+    warm_start = @[WARM_START]
     write_restart_with_bcs = .false.
     z_tracer = .true.
 /
@@ -113,7 +113,7 @@
     checker_tr = .false.
     filtered_terrain = .true.
     gfs_dwinds = .true.
-    levp = 65
+    levp = @[NPZP]
     nt_checker = 0
 /
 
@@ -169,36 +169,43 @@
 
 &gfs_physics_nml
     cal_pre = .false.
-    cdmbgwd = 3.5, 0.25
-    cnvcld = .true.
+    cdmbgwd = @[CDMBWD]
+    cnvcld = @[CNVCLD]
     cnvgwd = .true.
-    cplaqm = .true.
+    cplaqm = @[AQM]
+    cplchm = @[CPLCHM]
+    cplwav = @[CPLWAV]
+    cplwav2atm = @[CPLWAV2ATM]
     cplocn2atm = .false.
     debug = .false.
     do_myjpbl = .false.
     do_myjsfc = .false.
-    do_shum = .false.
-    do_skeb = .false.
+    do_RRTMGP = @[DO_RRTMGP]
+    do_shum = @[DO_SHUM]
+    do_skeb = @[DO_SKEB]
     do_spp = .false.
-    do_sppt = .false.
+    do_sppt = @[DO_SPPT]
     do_tofd = .false.
     do_ugwp = .false.
     do_ysu = .false.
+    doGP_cldoptics_LUT = @[DOGP_CLDOPTICS_LUT]
+    doGP_lwscat = @[DOGP_LWSCAT]
     dspheat = .true.
     effr_in = .true.
-    fhcyc = 0
+    fhcyc = @[FHCYC]
     fhlwr = 3600.0
     fhswr = 3600.0
-    fhzero = 1.0
+    fhzero = @[FHZERO]
+    fscav_aero = @[FSCAV_AERO]
     h2o_phys = .true.
     hybedmf = .true.
-    iaer = 111
+    iaer = @[IAER]
     ialb = 1
     iau_inc_files = ''
     ico2 = 2
     iems = 1
-    imfdeepcnv = 2
-    imfshalcnv = 2
+    imfdeepcnv = @[IMFDEEPCNV]
+    imfshalcnv = @[IMFSHALCNV]
     imp_physics = 11
     iopt_alb = 2
     iopt_btr = 1
@@ -212,20 +219,22 @@
     iopt_snf = 4
     iopt_stc = 1
     iopt_tbot = 2
+    iovr = @[IOVR]
     isol = 2
     isot = 1
     isubc_lw = 2
     isubc_sw = 2
     ivegsrc = 1
-    ldiag3d = .false.
+    ldiag3d = @[LDIAG3D]
     ldiag_ugwp = .false.
     lgfdlmprad = .true.
-    lheatstrg = .false.
-    lndp_type = 0
+    lheatstrg = @[LHEATSTRG]
+    lndp_type = @[LNDP_TYPE]
+    lseaspray = @[LSEASPRAY]
     lsm = 1
     lsoil = 4
     lwhtr = .true.
-    n_var_lndp = 0
+    n_var_lndp = @[N_VAR_LNDP]
     n_var_spp = 0
     nsradar_reset = 3600
     nst_anl = .true.
@@ -234,9 +243,11 @@
     oz_phys_2015 = .true.
     pdfcld = .false.
     pre_rad = .false.
-    print_diff_pgr = .false.
+    print_diff_pgr = @[PRINT_DIFF_PGR]
     prslrd0 = 0.0
-    random_clds = .false.
+    qdiag3d = @[QDIAG3D]
+    random_clds = @[RANDOM_CLDS]
+    ras = @[RAS]
     redrag = .true.
     satmedmf = .false.
     shal_cnv = .true.
@@ -254,33 +265,62 @@
 /
 
 &nam_sfcperts
+  lndp_type      = @[LNDP_TYPE]
+  lndp_model_type = @[LNDP_MODEL_TYPE]
+  LNDP_TAU=21600,
+  LNDP_LSCALE=500000,
+  ISEED_LNDP=2010,
+  lndp_var_list = @[LNDP_VAR_LIST]
+  lndp_prt_list = @[LNDP_PRT_LIST]
 /
 
 &nam_stochy
+  STOCHINI=@[STOCHINI],
+  SKEBNORM=1,
+  SKEB_NPASS=30,
+  SKEB_VDOF=5,
+  SKEB=@[SKEB],
+  SKEB_TAU=2.16E4,
+  SKEB_LSCALE=1000.E3,
+  SKEBINT=1800,
+  SHUM=@[SHUM],
+  SHUM_TAU=21600,
+  SHUM_LSCALE=500000,
+  SHUMINT=3600,
+  SPPT=@[SPPT],
+  SPPT_TAU=21600,
+  SPPT_LSCALE=500000,
+  SPPT_LOGIT=.TRUE.,
+  SPPT_SFCLIMIT=.TRUE.,
+  SPPTINT=1800,
+  ISEED_SHUM=1,
+  ISEED_SKEB=2,
+  ISEED_SPPT=3,
 /
+
 
 &namsfc
     fabsl = 99999
     faisl = 99999
     faiss = 99999
-    fnabsc = 'C775.maximum_snow_albedo.tileX.nc'
+    fnabsc = @[FNABSC]
     fnacna = ''
     fnaisc = 'CFSR.SEAICE.1982.2012.monthly.clim.grb'
-    fnalbc = 'C775.snowfree_albedo.tileX.nc'
+    fnalbc = @[FNALBC]
     fnalbc2 = 'C775.facsf.tileX.nc'
     fnglac = 'global_glacier.2x2.grb'
     fnmskh = 'seaice_newland.grb'
     fnmxic = 'global_maxice.2x2.grb'
     fnslpc = 'C775.slope_type.tileX.nc'
-    fnsmcc = 'global_soilmgldas.t126.384.190.grb'
+    fnsmcc = @[FNSMCC]
     fnsnoa = ''
     fnsnoc = 'global_snoclim.1.875.grb'
-    fnsotc = 'C775.soil_type.tileX.nc'
+    fnsotc = @[FNSOTC]
     fntg3c = 'C775.substrate_temperature.tileX.nc'
     fntsfa = ''
     fntsfc = 'RTGSST.1982.2012.monthly.clim.grb'
     fnvegc = 'C775.vegetation_greenness.tileX.nc'
-    fnvetc = 'C775.vegetation_type.tileX.nc'
+    fnvetc = @[FNVETC]
     fnvmnc = 'C775.vegetation_greenness.tileX.nc'
     fnvmxc = 'C775.vegetation_greenness.tileX.nc'
     fnzorc = 'igbp'
