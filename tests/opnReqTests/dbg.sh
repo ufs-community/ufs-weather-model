@@ -18,18 +18,21 @@ elif [[ $application == 'regional' ]]; then
   echo "Regional application not yet implemented for debug"
   exit 1
 elif [[ $application == 'cpld' ]]; then
-  FHMAX=6
-  DAYS=0.25
+  FHMAX=3
+  DAYS=0.125
   NFHOUT_HF=1
   RESTART_INTERVAL=${FHMAX}
   RESTART_N=${FHMAX}
   OUTPUT_FH="0 ${FHMAX}"
-  LIST_FILES=$(echo -n $LIST_FILES | sed -E "s/sfcf024/sfcf006/g" \
-                                   | sed -E "s/atmf024/atmf006/g" \
-                                   | sed -E "s/2021-03-23-21600/2021-03-22-43200/g" \
-                                   | sed -E "s/sfcf021.tile[1-6].nc ?//g" \
-                                   | sed -E "s/atmf021.tile[1-6].nc ?//g" \
-                                   | sed -E "s/(gocart.inst_aod.202103)23_0600z.nc4/\122_1200z.nc4/g" \
+  AOD_FRQ=030000
+  LIST_FILES=$(echo -n $LIST_FILES | sed -E "s/sfcf024/sfcf003/g" \
+                                   | sed -E "s/atmf024/atmf003/g" \
+                                   | sed -E "s/2021-03-23-21600/2021-03-22-32400/g" \
+                                   | sed -E "s/sfcf021\.tile[1-6]\.nc ?//g" \
+                                   | sed -E "s/atmf021\.tile[1-6]\.nc ?//g" \
+                                   | sed -E "s/(gocart\.inst_aod\.202103)23_0600z\.nc4/\122_0900z\.nc4/g" \
+                                   | sed -E "s/20210323\.060000\.out_pnt\.ww3/20210322\.090000\.out_pnt\.ww3/g" \
+                                   | sed -E "s/20210323\.060000\.out_grd\.ww3/20210322\.090000\.out_grd\.ww3/g" \
                                    | sed -e "s/^ *//" -e "s/ *$//")
 fi
 
