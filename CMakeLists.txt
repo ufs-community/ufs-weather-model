@@ -125,9 +125,9 @@ if(CMEPS)
   find_package(PIO 2.5.3 REQUIRED COMPONENTS C Fortran STATIC)
 endif()
 
-find_package(bacio 2.4.1 REQUIRED)
+find_package(bacio 2.4.0 REQUIRED)
 find_package(sp 2.3.3 REQUIRED)
-find_package(w3nco 2.4.1 REQUIRED)
+find_package(w3nco 2.4.0 REQUIRED)
 
 # Configure Python
 find_package(Python 3.6 REQUIRED COMPONENTS Interpreter)
