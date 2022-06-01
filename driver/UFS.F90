@@ -54,8 +54,9 @@
       INTEGER :: MYPE                                                   &  !<-- The MPI task ID
                 ,NSECONDS_FCST                                          &  !<-- Length of forecast in seconds
                 ,YY,MM,DD                                               &  !<-- Time variables for date
-                ,HH,MNS,SEC                                             &  !<-- Time variables for time of day
-                ,fhrot
+                ,HH,MNS,SEC                                                !<-- Time variables for time of day
+
+      REAL(ESMF_KIND_R8) :: fhrot                                          !< forecast hour at restart time
 !
       REAL :: NHOURS_FCST                                                  !<-- Length of forecast in hours
 
@@ -347,16 +348,15 @@
 !***  This will correctly set the UFS Driver clocks in case of
 !***  Restart-From-History.
 !-----------------------------------------------------------------------
-
-      CALL ESMF_ConfigGetAttribute(config   = CF_MAIN  &
-                                   ,value   = fhrot    &
-                                   ,label   = 'fhrot:' &
-                                   ,default = 0        &
+      CALL ESMF_ConfigGetAttribute(config   = CF_MAIN          &
+                                   ,value   = fhrot            &
+                                   ,label   = 'fhrot:'         &
+                                   ,default = 0.0_ESMF_KIND_R8 &
                                    ,rc      = RC)
       ESMF_ERR_ABORT(RC)
 
       if (fhrot > 0) then
-        CALL ESMF_TimeIntervalSet(restartOffset, h=fhrot, rc=RC)
+        CALL ESMF_TimeIntervalSet(restartOffset, h_r8=fhrot, rc=RC)
         ESMF_ERR_ABORT(RC)
         CURRTIME = STARTTIME + restartOffset
         call ESMF_ClockSet(CLOCK_MAIN, currTime=CURRTIME, &
