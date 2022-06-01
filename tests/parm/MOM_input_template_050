@@ -419,6 +419,9 @@ GILL_EQUATORIAL_LD = True       !   [Boolean] default = False
                                 ! radius, otherwise, if false, use Pedlosky's definition. These definitions
                                 ! differ by a factor of 2 in front of the beta term in the denominator. Gill's
                                 ! is the more appropriate definition.
+INTERNAL_WAVE_SPEED_BETTER_EST = False !   [Boolean] default = True 
+                                ! If true, use a more robust estimate of the first mode wave speed as the
+                                ! starting point for iterations.
 
 ! === module MOM_set_visc ===
 CHANNEL_DRAG = True             !   [Boolean] default = False
@@ -754,6 +757,11 @@ MSTAR2_COEF1 = 0.29             !   [nondim] default = 0.3
 MSTAR2_COEF2 = 0.152            !   [nondim] default = 0.085
                                 ! Coefficient in computing mstar when only rotation limits the total mixing
                                 ! (used if EPBL_MSTAR_SCHEME = OM4)
+EPBL_MLD_BISECTION = True       !   [Boolean] default = False 
+                                ! If true, use bisection with the iterative determination of the self-consistent
+                                ! mixed layer depth.  Otherwise use the false position after a maximum and
+                                ! minimum bound have been evaluated and the returned value or bisection before
+                                ! this.
 NSTAR = 0.06                    !   [nondim] default = 0.2
                                 ! The portion of the buoyant potential energy imparted by surface fluxes that is
                                 ! available to drive entrainment at the base of mixed layer when that energy is
@@ -822,15 +830,6 @@ LT_MOD_LAC5 = 0.22              !   [nondim] default = 0.95
 ! === module MOM_regularize_layers ===
 
 ! === module MOM_opacity ===
-VAR_PEN_SW = True               !   [Boolean] default = False
-                                ! If true, use one of the CHL_A schemes specified by
-                                ! OPACITY_SCHEME to determine the e-folding depth of
-                                ! incoming short wave radiation.
-CHL_FILE = @[CHLCLIM]           ! CHL_FILE is the file containing chl_a concentrations in
-                                ! the variable CHL_A. It is used when VAR_PEN_SW and
-                                ! CHL_FROM_FILE are true.
-CHL_VARNAME = "chlor_a"         ! default = "CHL_A"
-                                ! Name of CHL_A variable in CHL_FILE.
 PEN_SW_NBANDS = 3               ! default = 1
                                 ! The number of bands of penetrating shortwave radiation.
 

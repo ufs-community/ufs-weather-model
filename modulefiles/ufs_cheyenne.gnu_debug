@@ -6,7 +6,8 @@ proc ModulesHelp {} {
 
 module-whatis "loads UFS Model prerequisites for Cheyenne/GNU"
 
-module load cmake/3.18.2
+module load cmake/3.22.0
+module load python/3.7.9
 
 # load programming environment
 module load ncarenv/1.3
@@ -15,7 +16,7 @@ module load mpt/2.22
 module load ncarcompilers/0.5.0
 module unload netcdf
 
-module use /glade/p/ral/jntp/GMTB/tools/hpc-stack-v1.2.0/modulefiles/stack
+module use /glade/work/epicufsrt/GMTB/tools/gnu/10.1.0/hpc-stack-v1.2.0/modulefiles/stack
 module load hpc/1.2.0
 module load hpc-gnu/10.1.0
 module load hpc-mpt/2.22

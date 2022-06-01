@@ -152,6 +152,24 @@ For the ufs-weather-model S2SW app (atm/ice/ocean/wave):
 
     export CMAKE_FLAGS="-DAPP=S2SW -DCCPP_SUITES=FV3_GFS_2017_coupled,FV3_GFS_v15p2_coupled,FV3_GFS_v16_coupled,FV3_GFS_v16_coupled_noahmp"
 
+For the ufs-weather-model HAFS app (atm/ocean) in 32 bit:
+
+.. code-block:: console
+
+    export CMAKE_FLAGS="-DAPP=HAFS -D32BIT=ON -DCCPP_SUITES=FV3_HAFS_v0_gfdlmp_tedmf_nonsst,FV3_HAFS_v0_gfdlmp_tedmf,FV3_HAFS_v0_hwrf_thompson,FV3_HAFS_v0_hwrf"
+
+For the ufs-weather-model HAFSW app (atm/ocean/wave) in 32 bit:
+
+.. code-block:: console
+
+    export CMAKE_FLAGS="-DAPP=HAFSW -D32BIT=ON -DCCPP_SUITES=FV3_HAFS_v0_gfdlmp_tedmf_nonsst,FV3_HAFS_v0_gfdlmp_tedmf,FV3_HAFS_v0_hwrf_thompson,FV3_HAFS_v0_hwrf"
+
+For the ufs-weather-model HAFS-ALL app (data/atm/ocean/wave) in 32 bit:
+
+.. code-block:: console
+
+    export CMAKE_FLAGS="-DAPP=HAFS-ALL -D32BIT=ON -DCCPP_SUITES=FV3_HAFS_v0_gfdlmp_tedmf_nonsst,FV3_HAFS_v0_gfdlmp_tedmf,FV3_HAFS_v0_hwrf_thompson,FV3_HAFS_v0_hwrf"
+
 ------------------
 Building the model
 ------------------

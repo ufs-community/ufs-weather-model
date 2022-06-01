@@ -225,6 +225,30 @@
        canonical_units: kg kg -1
        description: atmosphere export - specifc humidity height 2m
      #
+     - standard_name: canopy_moisture_storage
+       canonical_units: m
+       description: canopy moisture content
+     #
+     - standard_name: inst_aerodynamic_conductance
+       canonical_units: m
+       description: aerodynamic conductance
+     #
+     - standard_name: inst_canopy_resistance
+       canonical_units: s m-1
+       description: canopy aerodynamic resistance
+     #
+     - standard_name: leaf_area_index
+       canonical_units: 1
+       description: leaf area index
+     #
+     - standard_name: temperature_of_soil_layer
+       canonical_units: K
+       description: temperature in soil layer
+     #
+     - standard_name: height
+       canonical_units: m
+       description: orography
+     #
      #-----------------------------------
      # section: sea-ice export
      #-----------------------------------
@@ -380,8 +404,7 @@
      - standard_name: Si_vice
        alias: mean_ice_volume
        canonical_units: m
-       description: sea-ice export
-         volume of ice per unit area
+       description: sea-ice export - volume of ice per unit are
      #
      - standard_name: Si_snowh
        canonical_units: m
@@ -405,6 +428,13 @@
        alias: mixed_layer_depth
        canonical_units: m
        description: ocean export
+     #
+     - standard_name: So_h
+       alias: sea_surface_height_above_sea_level
+       canonical_units: m
+       description: ocean export
+     - standard_name: So_h
+       alias: seahgt
      #
      - standard_name: So_dhdx
        alias: sea_surface_slope_zonal
@@ -716,6 +746,7 @@
      - standard_name: lake_fraction
        canonical_units: 1
      - standard_name: ice_fraction_in_atm
+       alias: sea_ice_area_fraction
        canonical_units: 1
      - standard_name: ocean_fraction
        canonical_units: 1
@@ -760,85 +791,121 @@
        canonical_units: 1
        description: ww3 import
      #
-     #
+     #-----------------------------------
      # WW3 export
+     #-----------------------------------
      #
-     - standard_name: wave_induced_charnock_parameter
+     - standard_name: Sw_ch
+       alias: wave_induced_charnock_parameter
        canonical_units: 1
        description: ww3 export
+     - standard_name: Sw_ch
+       alias: charno
      #
-     - standard_name: Sw_zo
+     - standard_name: Sw_z0
        alias: wave_z0_roughness_length
        canonical_units: 1
        description: ww3 export
+     - standard_name: Sw_z0
+       alias: z0rlen
      #
-     - standard_name: northward_stokes_drift_current
+     - standard_name: Sw_ustokes
+       alias: eastward_stokes_drift_current
+       canonical_units: m s-1
+       description: ww3 export using ungridded dimension for drift components
+     - standard_name: Sw_ustokes
+       alias: uscurr
+     #
+     - standard_name: Sw_vstokes
+       alias: northward_stokes_drift_current
+       canonical_units: m s-1
+       description: ww3 export using ungridded dimension for drift components
+     - standard_name: Sw_vstokes
+       alias: vscurr
+     #
+     - standard_name: Sw_ustokes1
+       alias: eastward_partitioned_stokes_drift_1
        canonical_units: m s-1
        description: ww3 export
+     - standard_name: Sw_ustokes1
+       alias: x1pstk
      #
-     - standard_name: eastward_stokes_drift_current
+     - standard_name: Sw_ustokes2
+       alias: eastward_partitioned_stokes_drift_2
        canonical_units: m s-1
        description: ww3 export
+     - standard_name: Sw_ustokes2
+       alias: x2pstk
      #
-     - standard_name: eastward_partitioned_stokes_drift_1
+     - standard_name: Sw_ustokes3
+       alias: eastward_partitioned_stokes_drift_3
        canonical_units: m s-1
        description: ww3 export
+     - standard_name: Sw_ustokes3
+       alias: x3pstk
      #
-     - standard_name: eastward_partitioned_stokes_drift_2
+     - standard_name: Sw_vstokes1
+       alias: northward_partitioned_stokes_drift_1
        canonical_units: m s-1
        description: ww3 export
+     - standard_name: Sw_vstokes1
+       alias: y1pstk
      #
-     - standard_name: eastward_partitioned_stokes_drift_3
+     - standard_name: Sw_vstokes2
+       alias: northward_partitioned_stokes_drift_2
        canonical_units: m s-1
        description: ww3 export
+     - standard_name: Sw_vstokes2
+       alias: y2pstk
      #
-     - standard_name: northward_partitioned_stokes_drift_1
+     - standard_name: Sw_vstokes3
+       alias: northward_partitioned_stokes_drift_3
        canonical_units: m s-1
        description: ww3 export
+     - standard_name: Sw_vstokes3
+       alias: y3pstk
      #
-     - standard_name: northward_partitioned_stokes_drift_2
+     - standard_name: Sw_wbcuru
+       alias: eastward_wave_bottom_current
        canonical_units: m s-1
        description: ww3 export
+     - standard_name: Sw_wbcuru
+       alias: wbcuru
      #
-     - standard_name: northward_partitioned_stokes_drift_3
+     - standard_name: Sw_wbcurv
+       alias: northward_wave_bottom_current
        canonical_units: m s-1
        description: ww3 export
+     - standard_name: Sw_wbcurv
+       alias: wbcurv
      #
-     - standard_name: eastward_wave_bottom_current
-       canonical_units: m s-1
-       description: ww3 export
-     #
-     - standard_name: northward_wave_bottom_current
-       canonical_units: m s-1
-       description: ww3 export
-     #
-     - standard_name: wave_bottom_current_radian_frequency
-       canonical_units: rad s-1
-       description: ww3 export
-     #
-     - standard_name: eastward_wave_radiation_stress_gradient
-       canonical_units: Pa
-       description: ww3 export
-     #
-     - standard_name: northward_wave_radiation_stress_gradient
-       canonical_units: Pa
-       description: ww3 export
-     #
-     - standard_name: eastward_wave_radiation_stress
-       canonical_units: N m-1
-       description: ww3 export
-     #
-     - standard_name: eastward_northward_wave_radiation_stress
-       canonical_units: N m-1
-       description: ww3 export
-     #
-     - standard_name: wave_bottom_current_period
+     - standard_name: Sw_wbcurp
+       alias: wave_bottom_current_period
        canonical_units: s
        description: ww3 export
+     - standard_name: Sw_wbcurp
+       alias: wbcurp
      #
-     - standard_name: northward_wave_radiation_stress
+     - standard_name: Sw_wavsuu
+       alias: eastward_wave_radiation_stress
+       canonical_units: N m-1
+       description: ww3 export
+     - standard_name: Sw_wavsuu
+       alias: wavsuu
+     #
+     - standard_name: Sw_wavsuv
+       alias: eastward_northward_wave_radiation_stress
+       canonical_units: N m-1
+       description: ww3 export
+     - standard_name: Sw_wavsuv
+       alias: wavsuv
+     #
+     - standard_name: Sw_wavsvv
+       alias: northward_wave_radiation_stress
        canonical_units: Pa
        description: ww3 export
+     - standard_name: Sw_wavsvv
+       alias: wavsvv
      #
      #-----------------------------------
      # section: FV3 atm export/import to/from JEDI
@@ -931,3 +998,7 @@
      - standard_name: t2m
        canonical_units: K
        description: two meter temperature
+     #
+     - standard_name: inst_tracer_diag_aod
+       canonical_units: 1
+       description: AOD

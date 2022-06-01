@@ -1,4 +1,4 @@
-#!/bin/sh -l
+#!/bin/bash -l
 #PBS -o out
 #PBS -e err
 #PBS -N @[JBNME]
@@ -11,11 +11,11 @@ set -eux
 echo -n " $( date +%s )," >  job_timestamp.txt
 
 set +x
+MACHINE_ID=cheyenne
 source ./module-setup.sh
 module use $( pwd -P )
 module load modules.fv3
 module list
-
 set -x
 
 echo "Model started:  " `date`

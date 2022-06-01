@@ -39,6 +39,7 @@ list(APPEND mom6_src_files
   MOM6/src/core/MOM_interface_heights.F90
   MOM6/src/core/MOM_isopycnal_slopes.F90
   MOM6/src/core/MOM_open_boundary.F90
+  MOM6/src/core/MOM_porous_barriers.F90
   MOM6/src/core/MOM_transcribe_grid.F90
   MOM6/src/core/MOM_unit_tests.F90
   MOM6/src/core/MOM_variables.F90
@@ -181,6 +182,8 @@ list(APPEND mom6_src_files
   MOM6/src/parameterizations/CVmix/cvmix_tidal.F90
   MOM6/src/parameterizations/CVmix/cvmix_utils.F90
 
+  MOM6/src/parameterizations/stochastic/MOM_stochastics.F90
+
   MOM6/src/tracer/DOME_tracer.F90
 
   MOM6/src/tracer/ISOMIP_tracer.F90
@@ -189,6 +192,7 @@ list(APPEND mom6_src_files
   MOM6/src/tracer/MOM_generic_tracer.F90
   MOM6/src/tracer/MOM_lateral_boundary_diffusion.F90
   MOM6/src/tracer/MOM_neutral_diffusion.F90
+  MOM6/src/tracer/nw2_tracers.F90
   MOM6/src/tracer/MOM_offline_aux.F90
   MOM6/src/tracer/MOM_offline_main.F90
   MOM6/src/tracer/MOM_tracer_Z_init.F90
@@ -254,7 +258,8 @@ list(APPEND mom6_src_files
   MOM6/config_src/external/ODA_hooks/ocean_da_core.F90
   MOM6/config_src/external/ODA_hooks/ocean_da_types.F90
   MOM6/config_src/external/ODA_hooks/write_ocean_obs.F90
-  MOM6/config_src/external/OCEAN_stochastic_phyiscs/MOM_stochastics.F90
+  MOM6/config_src/external/drifters/MOM_particles.F90
+  MOM6/config_src/external/drifters/MOM_particles_types.F90
 
   MOM6/config_src/infra/FMS1/MOM_coms_infra.F90
   MOM6/config_src/infra/FMS1/MOM_constants.F90
