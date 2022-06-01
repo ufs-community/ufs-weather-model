@@ -323,7 +323,7 @@ The small set of variables used in ``&gfs_physics_nml`` are described in :numref
      - logical
      - .false.
    * - use_med_flux
-     - Flag to receive atmosphere-ocean fluxes from mediator. If true, turn on using fluxes in the CCPP/Physics.
+     - Flag to receive atmosphere-ocean fluxes from mediator. If true, atmosphere-ocean fluxes will be received into the CCPP physics and used there, instead of calculating them.
      - logical
      - .false.
 

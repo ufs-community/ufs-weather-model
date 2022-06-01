@@ -1809,7 +1809,7 @@ For the coupled GOCART in S2SAW application, a sample *nems.configure* is shown 
 	      stop_ymd = -999
 	::
 
-For the fully coupled S2S application that receives atmosphere-ocean fluxes from mediatory, a sample *nems.configure* is shown below :
+For the fully coupled S2S application that receives atmosphere-ocean fluxes from mediator, a sample *nems.configure* is shown below :
 
 .. code-block:: console
 
@@ -1900,7 +1900,7 @@ For the fully coupled S2S application that receives atmosphere-ocean fluxes from
               history_ymd = -999
               coupling_mode = nems_frac_aoflux
               history_tile_atm = 96
-              aoflux_grid = 'agrid'
+              aoflux_grid = 'xgrid'
               aoflux_code = 'ccpp'
               aoflux_ccpp_suite = 'FV3_sfc_ocean'
               ccpp_restart_interval = -1
@@ -1929,6 +1929,10 @@ For the fully coupled S2S application that receives atmosphere-ocean fluxes from
               stop_option = nhours
               stop_ymd = -999
         ::
+
+.. note:: The *aoflux_grid* option is used to select the grid/mesh to perform atmosphere-ocean flux calculation. The possible options are *xgrid* (exchange grid), *agrid* (atmosphere model grid) and *ogrid* (ocean model grid).
+
+.. note:: The *aoflux_code* option is used to define the algorithm that will be used to calculate atmosphere-ocean fluxes. The possible options are *cesm* and *ccpp*. If *ccpp* is selected then the suite file provided in the *aoflux_ccpp_suite* option is used to calculate atmosphere-ocean fluxes through the use of CCPP host model.
 
 ---------------------------------------
 *The SDF (Suite Definition File) file*
