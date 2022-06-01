@@ -165,9 +165,15 @@ endif()
 ### Wave components [WW3]
 ###############################################################################
 if(WW3)
-  # Set options for WW3 build
-  set(SWITCH "multi_esmf" CACHE STRING "Default to switch_multi_esmf")
-  set(MULTI_ESMF ON CACHE BOOL "Enable ESMF for WW3")
+  if(APP MATCHES "^(ATMW)$")
+    set(SWITCH "multi_esmf" CACHE STRING "ESMF cap")
+    set(UFS_CAP "MULTI_ESMF" CACHE STRING "Build with MULTI_ESMF cap")
+    list(APPEND _ufs_defs_private FRONT_WW3=WMESMFMD)
+  else()
+    set(SWITCH "meshcap" CACHE STRING "NUOPC mesh cap")
+    set(UFS_CAP "NUOPC_MESH" CACHE STRING "Build with NUOPC_MESH cap")
+    list(APPEND _ufs_defs_private FRONT_WW3=wav_comp_nuopc)
+  endif()
   add_subdirectory(WW3)
 endif()
 
@@ -226,7 +232,6 @@ if(UFS_GOCART)
 endif()
 
 if(WW3)
-  list(APPEND _ufs_defs_private FRONT_WW3=WMESMFMD)
   target_link_libraries(ufs PUBLIC WW3::WW3)
 endif()
 
