@@ -20,6 +20,8 @@ The ufs-weather-model can be configured as one of several applications, from a s
      - UFSAtm coupled to WW3
    * - ATMAERO
      - UFSAtm coupled to GOCART
+   * - ATMAQ
+     - UFSAtm coupled to CMAQ
    * - S2S
      - Coupled UFSATM-MOM6-CICE6-CMEPS
    * - S2SA
@@ -839,6 +841,59 @@ Therefore, the most popular method is to take previous aerosol simulation result
 
 The aerosol initial input currently read by GOCART is the same format as the UFSAtm initial input data format of "gfs_data_tile[1-6].nc" in :numref:`Table %s <GridICFiles>`, so the aerosol initial conditions should be combined with the meteorological initial conditions as one initial input file. There are many tools available for this purpose. Ufs-utils in the global workflow that supports UFS models always provides a solution for this.
 
+-------
+AQM (CMAQ)
+-------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Static datasets (i.e., *fix files*)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The static input files for AQM configurations are listed and described in :numref:`Table %s <AQM_ControlFiles>`.
+
+.. _AQM_ControlFiles:
+
+.. list-table:: *AQM run control files*
+   :widths: 40 50
+   :header-rows: 1
+
+   * - Filename
+     - Description
+   * - AQM.rc
+     - NOAA Air Quality Model Parameters
+
+AQM inputs defined in aqm.rc are listed and described in :numref:`Table %s <AQM_InputFiles>`.
+
+.. _AQM_InputFiles:
+
+.. list-table:: *AQM inputs defined in aqm.rc*
+   :widths: 40 50
+   :header-rows: 1
+
+   * - Filename
+     - Description
+   * - AE_cb6r3_ae6_aq.nml 
+     - AE Matrix NML
+   * - GC_cb6r3_ae6_aq.nml 
+     - GC Matrix NML
+   * - NR_cb6r3_ae6_aq.nml 
+     - NR Matrix NML
+   * - Species_Table_TR_0.nml 
+     - TR Matrix NML
+   * - CSQY_DATA_cb6r3_ae6_aq
+     - CSQY Data
+   * - PHOT_OPTICS.dat
+     - Optics Data
+   * - omi_cmaq_2015_361X179.dat
+     - OMI data
+   * - NEXUS/NEXUS_Expt.nc
+     - Emissions File
+   * - BEIS_RRFScmaq_C775.ncf
+     - Biogenic File
+   * - gspro_biogenics_1mar2017.txt
+     - Biogenic Speciation File
+   * - Hourly_Emissions_regrid_rrfs_13km_20190801_t12z_h72.nc
+     - File Emissions File 
+     
 ==========================
 Model configuration files
 ==========================
@@ -1808,6 +1863,41 @@ For the coupled GOCART in S2SAW application, a sample *nems.configure* is shown 
 	      stop_option = nhours
 	      stop_ymd = -999
 	::
+
+For the ATMAQ application, a sample *nems.configure* is shown below :
+
+.. code-block:: console
+
+        # EARTH #
+        EARTH_component_list: ATM AQM
+        EARTH_attributes::
+          Verbosity = 0
+        ::
+        
+        # ATM #
+        ATM_model:                      fv3
+        ATM_petlist_bounds:             0 271
+        ATM_attributes::
+          Verbosity = 0
+        ::
+        
+        # AQM #
+        AQM_model:                      aqm
+        AQM_petlist_bounds:             0 271
+        AQM_attributes::
+          Verbosity = 0
+        ::
+        
+        # Run Sequence #
+        runSeq::
+          @180
+            ATM phase1
+            ATM -> AQM
+            AQM
+            AQM -> ATM
+            ATM phase2
+          @
+        ::
 
 ---------------------------------------
 *The SDF (Suite Definition File) file*
