@@ -53,6 +53,14 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]] ; then
     fi
     module purge
 
+elif [[ $MACHINE_ID = wcoss2* ]] ; then
+    # We are on NOAA Cactus or Dogwood
+    if ( ! eval module help > /dev/null 2>&1 ) ; then
+        source /usr/share/lmod/lmod/init/bash
+    fi
+    module purge
+    module reset
+
 elif [[ $MACHINE_ID = cheyenne* ]] ; then
     # We are on NCAR Cheyenne
     if ( ! eval module help > /dev/null 2>&1 ) ; then

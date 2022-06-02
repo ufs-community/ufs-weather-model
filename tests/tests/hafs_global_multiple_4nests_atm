@@ -27,18 +27,18 @@ export FHMAX=6
 export RESTART_N=${FHMAX}
 export TASKS=420
 export THRD=2
-export TPN=$TPN_thrd
 export DT_ATMOS=90
 export IDEFLATE=1
 export NFHMAX_HF=-1
 export NFHOUT_HF=3
 export NFHOUT=3
-export OUTPUT_FILE="'netcdf_parallel' 'netcdf'"
+export OUTPUT_FILE="'netcdf' 'netcdf'"
 export SDAY=25
 export SHOUR=12
 export SMONTH=08
 export SYEAR=2020
 export WRTTASK_PER_GROUP=60
+export NTILES=6
 
 export OUTPUT_GRID='global_latlon'
 export IMO=360
@@ -151,6 +151,8 @@ export NPX_NEST05=361
 export NPY_NEST05=361
 export K_SPLIT_NEST05=4
 export N_SPLIT_NEST05=5
+
+ATM_compute_tasks=$(( INPES*JNPES*NTILES + INPES_NEST02*JNPES_NEST02 + INPES_NEST03*JNPES_NEST03 + INPES_NEST04*JNPES_NEST04 + INPES_NEST05*JNPES_NEST05 ))
 
 export NESTED=.true.
 export FULL_ZS_FILTER=.false.
