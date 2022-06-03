@@ -175,7 +175,7 @@ elif [[ $MACHINE_ID = s4.* ]]; then
   TASKS_c384=336 ; INPES_c384=6 ; JNPES_c384=8 ; THRD_c384=2
   TASKS_c768=928 ; INPES_c768=8 ; JNPES_c768=16 ; THRD_c768=1
 
-  TASKS_cpl_atmw_gdas=544; THRD_cpl_atmw_gdas=2
+  TASKS_cpl_atmw_gdas=560; THRD_cpl_atmw_gdas=2
   INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
   WAV_tasks_atmw_gdas=248
 
