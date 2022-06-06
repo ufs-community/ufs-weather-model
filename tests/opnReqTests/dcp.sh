@@ -7,8 +7,9 @@ if [[ $application == 'global' ]]; then
     INPES=$JNPES
     JNPES=$temp
   else
-    INPES=6
-    JNPES=4
+    temp=$INPES
+    INPES=$JNPES
+    JNPES=$temp
   fi
 elif [[ $application == 'regional' ]]; then
   if [[ $CI_TEST == 'true' ]]; then

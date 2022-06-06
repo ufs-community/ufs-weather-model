@@ -170,18 +170,16 @@ elif [[ $MACHINE_ID = jet.* ]]; then
 
 elif [[ $MACHINE_ID = s4.* ]]; then
 
-  echo "Unknown MACHINE_ID ${MACHINE_ID}. Please update tasks configurations in default_vars.sh"
-  exit 1
+  TPN=32
 
-  TASKS_dflt=150 ; TPN_dflt=32 ; INPES_dflt=3 ; JNPES_dflt=8
-  TASKS_thrd=78  ; TPN_thrd=16 ; INPES_thrd=3 ; JNPES_thrd=4
-  TASKS_c384=336 ; TPN_c384=16 ; INPES_c384=6 ; JNPES_c384=8
-  TASKS_c768=928 ; TPN_c768=8  ; INPES_c768=8 ; JNPES_c768=16
-  TASKS_stretch=48 ; TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
-  TASKS_strnest=96 ; TPN_strnest=12 ; INPES_strnest=2 ; JNPES_strnest=4
+  TASKS_dflt=150 ; INPES_dflt=3 ; JNPES_dflt=8
+  TASKS_thrd=78  ; INPES_thrd=3 ; JNPES_thrd=4
+  TASKS_c384=336 ; INPES_c384=6 ; JNPES_c384=8 ; THRD_c384=2
+  TASKS_c768=928 ; INPES_c768=8 ; JNPES_c768=16 ; THRD_c768=1
 
-  TASKS_cpl_atmw_gdas=560; TPN_cpl_atmw_gdas=16; INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8
-  THRD_cpl_atmw_gdas=2; WPG_cpl_atmw_gdas=24; APB_cpl_atmw_gdas="0 311"; WPB_cpl_atmw_gdas="312 559"
+  TASKS_cpl_atmw_gdas=560; THRD_cpl_atmw_gdas=2
+  INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
+  WAV_tasks_atmw_gdas=248
 
 elif [[ $MACHINE_ID = gaea.* ]]; then
 
@@ -423,6 +421,7 @@ export HWRF_SAMFDEEP=.false.
 export RAS=.false.
 export RANDOM_CLDS=.false.
 export CNVCLD=.true.
+export PROGSIGMA=.false.
 
 # Aerosol convective scavenging
 export FSCAV_AERO='"*:0.3","so2:0.0","msa:0.0","dms:0.0","nh3:0.4","nh4:0.6","bc1:0.6","bc2:0.6","dust1:0.6","dust2:0.6","dust3:0.6","dust4:0.6","dust5:0.6","seas1:0.5","seas2:0.5","seas3:0.5","seas4:0.5","seas5:0.5"'
