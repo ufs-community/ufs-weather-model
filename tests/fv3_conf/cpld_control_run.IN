@@ -108,7 +108,9 @@ else
   ls -1 ./INPUT/${RFILE}>ice.restart_file
 
   # WAVE restart file
-  cp ../${DEP_RUN}${SUFFIX}/${RESTART_FILE_PREFIX}.restart.ww3 ./restart.ww3
+  if [[ $CPLWAV == .true. ]]; then
+    cp ../${DEP_RUN}${SUFFIX}/${RESTART_FILE_PREFIX}.restart.ww3 ./restart.ww3
+  fi
 fi
 
 #inline post
