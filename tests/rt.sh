@@ -214,7 +214,7 @@ elif [[ $MACHINE_ID = orion.* ]]; then
   # Re-instantiate COMPILER in case it gets deleted by module purge
   COMPILER=${NEMS_COMPILER:-intel}
 
-  module load rocoto/1.3.1
+  module load contrib rocoto/1.3.1
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
@@ -378,11 +378,7 @@ while getopts ":cfsl:mkreh" opt; do
   esac
 done
 
-if [[ $MACHINE_ID = cheyenne.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/develop-20200210/${COMPILER^^}}
-else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200624}
-fi
+RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-20200626}
 
 shift $((OPTIND-1))
 [[ $# -gt 1 ]] && usage
