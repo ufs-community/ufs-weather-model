@@ -66,6 +66,7 @@ set(MOVING_NEST     OFF CACHE BOOL "Enable moving nest code")
 set(OPENMP          ON  CACHE BOOL "Enable OpenMP threading")
 set(PARALLEL_NETCDF OFF CACHE BOOL "Enable parallel NetCDF")
 set(JEDI_DRIVER     OFF CACHE BOOL "Enable JEDI as top level driver")
+set(CMEPS_AOFLUX    OFF CACHE BOOL "Enable atmosphere-ocean flux calculation in mediator") 
 
 set(CMAKE_Platform $ENV{CMAKE_Platform})
 if(CMAKE_Platform)
@@ -90,6 +91,8 @@ message("MOVING_NEST ...... ${MOVING_NEST}")
 message("OPENMP ........... ${OPENMP}")
 message("PARALLEL_NETCDF .. ${PARALLEL_NETCDF}")
 message("JEDI_DRIVER ...... ${JEDI_DRIVER}")
+message("CMEPS_AOFLUX ..... ${CMEPS_AOFLUX}")
+
 message("")
 
 ###############################################################################
