@@ -299,3 +299,42 @@ A sample of this namelist is shown below:
    /
 
 The namelist section relating to the FMS diagnostic manager ``&diag_manager_nml`` is described in :numref:`Section %s <DiagManagerNML>`.
+
+---------------
+gfs_physics_nml
+---------------
+
+The namelist section ``&gfs_physics_nml`` contains physics-related information used by the atmosphere model and
+some of the variables are only relevant for specific parameterizations and/or configurations.
+The small set of variables used in ``&gfs_physics_nml`` are described in :numref:`Table %s <gfs_physics_nml>`.
+
+.. _gfs_physics_nml:
+
+.. list-table:: *List of common variables in the *gfs_physics_nml* namelist section.
+   :widths: 10 40 15 15
+   :header-rows: 1
+
+   * - Variable Name
+     - Description
+     - Data Type
+     - Default Value
+   * - cplflx
+     - Flag to activate atmosphere-ocean coupling. If true, turn on receiving exchange fields from other components such as ocean.
+     - logical
+     - .false.
+   * - use_med_flux
+     - Flag to receive atmosphere-ocean fluxes from mediator. If true, atmosphere-ocean fluxes will be received into the CCPP physics and used there, instead of calculating them.
+     - logical
+     - .false.
+
+A sample subset of this namelist is shown below:
+
+.. code-block:: console
+
+   &gfs_physics_nml
+     use_med_flux = .true.
+     cplflx       = .true.
+   /
+
+Additional variables for the ``&gfs_physics_nml`` namelist can be found in the ``FV3/ccpp/data/GFS_typedefs.F90``
+file.
