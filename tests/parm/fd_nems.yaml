@@ -181,15 +181,39 @@
        canonical_units: N m-2
        description: atmosphere export - meridional component of momentum flux
      #
+     - standard_name: Faxx_evap
+       canonical_units: kg m-2 s-1
+       description: atmosphere import
+     #
      - standard_name: Faxa_lat
        alias: mean_laten_heat_flx
        canonical_units: W m-2
        description: atmosphere export - latent heat flux
      #
+     - standard_name: Faxx_lat
+       alias: mean_laten_heat_flx
+       canonical_units: W m-2
+       description: atmosphere import
+     #
      - standard_name: Faxx_lwup
        alias: mean_up_lw_flx
        canonical_units: W m-2
        description: atmosphere import - merged ocn/ice flux
+     #
+     - standard_name: Faxx_sen
+       alias: mean_sensi_heat_flx
+       canonical_units: W m-2
+       description: atmosphere import
+     #
+     - standard_name: Faxx_taux
+       alias: mean_zonal_moment_flx
+       canonical_units: N m-2
+       description: atmosphere import - zonal component of momentum flux
+     #
+     - standard_name: Faxx_tauy
+       alias: mean_merid_moment_flx
+       canonical_units: N m-2
+       description: atmosphere import - meridional component of momentum flux
      #
      - standard_name: Sa_ofrac
        alias: openwater_frac_in_atm
@@ -623,6 +647,35 @@
      - alias: Faox_evap
        standard_name : mean_evap_rate
        description: mediator calculation - atm/ocn specific humidity flux
+     #
+     #-----------------------------------
+     # fields to use fluxes from mediator
+     #-----------------------------------
+     #
+     - standard_name: Faox_lat
+       alias: mean_laten_heat_flx_atm_into_ocn
+       canonical_units: W m-2
+       description: mediator export - atm/ocn surface latent heat flux
+     #
+     - standard_name: Faox_sen
+       alias: mean_sensi_heat_flx_atm_into_ocn
+       canonical_units: W m-2
+       description: mediator export - atm/ocn surface sensible heat flux
+     #
+     - standard_name: Faox_lwup
+       alias: mean_up_lw_flx_ocn
+       canonical_units: W m-2
+       description: mediator export - long wave radiation flux over the ocean
+     #
+     - standard_name: Faox_taux
+       alias: stress_on_air_ocn_zonal
+       canonical_units: N m-2
+       description: mediator export
+     #
+     - standard_name: Faox_tauy
+       alias: stress_on_air_ocn_merid
+       canonical_units: N m-2
+       description: mediator export
      #
      #-----------------------------------
      # section: atmosphere fields that need to be defined but are not used
