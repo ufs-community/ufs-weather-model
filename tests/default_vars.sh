@@ -139,7 +139,7 @@ elif [[ $MACHINE_ID = linux.* ]]; then
   INPES_cpl_thrd=3; JNPES_cpl_thrd=4; WPG_cpl_thrd=6
   OCN_tasks_cpl_thrd=20
   ICE_tasks_cpl_thrd=10
-  WAV_tasks_cpl_thrd=12 
+  WAV_tasks_cpl_thrd=12
 
 elif [[ $MACHINE_ID = jet.* ]]; then
 
