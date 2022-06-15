@@ -188,7 +188,7 @@ elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
   cp fv3_conf/fv3_bsub.IN_wcoss_dell_p3 fv3_conf/fv3_bsub.IN
   cp fv3_conf/compile_bsub.IN_wcoss_dell_p3 fv3_conf/compile_bsub.IN
 
-elif [[ $MACHINE_ID = wcoss2 ]]; then
+elif [[ $MACHINE_ID = wcoss2.* ]]; then
 
   #module use /usrx/local/dev/emc_rocoto/modulefiles
   #module load ruby/2.5.1 rocoto/1.3.0rc2
@@ -207,13 +207,13 @@ elif [[ $MACHINE_ID = wcoss2 ]]; then
   mkdir -p ${ECF_COMDIR}
   export colonifnco=":output"  # hack
 
-  DISKNM=/lfs/h1/emc/eib/noscrub/Dusan.Jovic
+  DISKNM=/lfs/h2/emc/nems/noscrub/emc.nems/RT
   QUEUE=dev
   COMPILE_QUEUE=dev
   PARTITION=
   ACCNR="${ACCNR:-GFS-DEV}"
-  STMP=/lfs/h1/emc/ptmp
-  PTMP=/lfs/h1/emc/ptmp
+  STMP=/lfs/h2/emc/ptmp
+  PTMP=/lfs/h2/emc/ptmp
   SCHEDULER=pbs
   cp fv3_conf/fv3_qsub.IN_wcoss2 fv3_conf/fv3_qsub.IN
   cp fv3_conf/compile_qsub.IN_wcoss2 fv3_conf/compile_qsub.IN
@@ -409,7 +409,7 @@ mkdir -p ${STMP}/${USER}
 
 # Different own baseline directories for different compilers on Theia/Cheyenne
 NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST
-if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]] || [[ $MACHINE_ID = s4.* ]] ; then
+if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]] || [[ $MACHINE_ID = s4.* ]] || [[ $MACHINE_ID = wcoss2.* ]]; then
     NEW_BASELINE=${NEW_BASELINE}_${RT_COMPILER^^}
 fi
 
@@ -485,15 +485,15 @@ if [[ $TESTS_FILE =~ '35d' ]] || [[ $TESTS_FILE =~ 'weekly' ]]; then
   TEST_35D=true
 fi
 
-BL_DATE=20220502
-if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]] || [[ $MACHINE_ID = s4.* ]]; then
+BL_DATE=20220613
+if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]] || [[ $MACHINE_ID = s4.* ]] || [[ $MACHINE_ID = wcoss2.* ]]; then
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
 else
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}}
 fi
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20220414}
-INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20211113
+INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20220418
 INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC:-$DISKNM/NEMSfv3gfs/BM_IC-20220207}
 
 shift $((OPTIND-1))
@@ -531,9 +531,10 @@ mkdir ${LOG_DIR}
 if [[ $ROCOTO == true ]]; then
 
   ROCOTO_XML=${PATHRT}/rocoto_workflow.xml
+  ROCOTO_STATE=${PATHRT}/rocoto_workflow.state
   ROCOTO_DB=${PATHRT}/rocoto_workflow.db
 
-  rm -f $ROCOTO_XML $ROCOTO_DB *_lock.db
+  rm -f $ROCOTO_XML $ROCOTO_DB $ROCOTO_STATE *_lock.db
 
   if [[ $MACHINE_ID = wcoss ]]; then
     QUEUE=dev
@@ -547,7 +548,7 @@ if [[ $ROCOTO == true ]]; then
     QUEUE=dev
     COMPILE_QUEUE=dev_transfer
     ROCOTO_SCHEDULER=lsf
-  elif [[ $MACHINE_ID = wcoss2 ]]; then
+  elif [[ $MACHINE_ID = wcoss2.* ]]; then
     QUEUE=dev
     COMPILE_QUEUE=dev
     ROCOTO_SCHEDULER=pbs
@@ -639,7 +640,7 @@ EOF
     QUEUE=dev
   elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
     QUEUE=dev
-  elif [[ $MACHINE_ID = wcoss2 ]]; then
+  elif [[ $MACHINE_ID = wcoss2.* ]]; then
     QUEUE=dev
   elif [[ $MACHINE_ID = hera.* ]]; then
     QUEUE=batch
@@ -777,6 +778,7 @@ EOF
     (
       source ${PATHRT}/tests/$TEST_NAME
 
+      TPN=$(( TPN / THRD ))
       NODES=$(( TASKS / TPN ))
       if (( NODES * TPN < TASKS )); then
         NODES=$(( NODES + 1 ))
@@ -879,7 +881,7 @@ else
 
   rm -f fv3_*.x fv3_*.exe modules.fv3_* keep_tests.tmp
   [[ ${KEEP_RUNDIR} == false ]] && rm -rf ${RUNDIR_ROOT}
-  [[ ${ROCOTO} == true ]] && rm -f ${ROCOTO_XML} ${ROCOTO_DB} *_lock.db
+  [[ ${ROCOTO} == true ]] && rm -f ${ROCOTO_XML} ${ROCOTO_DB} ${ROCOTO_STATE} *_lock.db
   [[ ${TEST_35D} == true ]] && rm -f tests/cpld_bmark*_20*
   [[ ${SINGLE_NAME} != '' ]] && rm -f rt.conf.single
 fi

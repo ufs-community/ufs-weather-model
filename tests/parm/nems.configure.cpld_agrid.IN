@@ -6,7 +6,7 @@
 logKindFlag:            ESMF_LOGKIND_MULTI
 
 # EARTH #
-EARTH_component_list: MED ATM OCN ICE WAV
+EARTH_component_list: MED ATM OCN ICE
 EARTH_attributes::
   Verbosity = 0
 ::
@@ -14,6 +14,7 @@ EARTH_attributes::
 # MED #
 MED_model:                      @[med_model]
 MED_petlist_bounds:             @[med_petlist_bounds]
+::
 
 # ATM #
 ATM_model:                      @[atm_model]
@@ -50,33 +51,20 @@ ICE_attributes::
   stop_ymd = -999
 ::
 
-# WAV #
-WAV_model:                      @[wav_model]
-WAV_petlist_bounds:             @[wav_petlist_bounds]
-WAV_attributes::
-  Verbosity = 0
-  OverwriteSlice = false
-::
-
 # CMEPS warm run sequence
 runSeq::
 @@[coupling_interval_slow_sec]
    MED med_phases_prep_ocn_avg
    MED -> OCN :remapMethod=redist
-   OCN -> WAV
-   WAV -> OCN :srcMaskValues=1
    OCN
    @@[coupling_interval_fast_sec]
+     MED med_phases_aofluxes_run
      MED med_phases_prep_atm
      MED med_phases_prep_ice
      MED -> ATM :remapMethod=redist
      MED -> ICE :remapMethod=redist
-     WAV -> ATM :srcMaskValues=1
-     ATM -> WAV
-     ICE -> WAV
      ATM
      ICE
-     WAV
      ATM -> MED :remapMethod=redist
      MED med_phases_post_atm
      ICE -> MED :remapMethod=redist
@@ -86,6 +74,7 @@ runSeq::
    OCN -> MED :remapMethod=redist
    MED med_phases_post_ocn
    MED med_phases_restart_write
+   MED med_phases_history_write
 @
 ::
 
@@ -103,6 +92,16 @@ MED_attributes::
       history_ymd = -999
       coupling_mode = @[CPLMODE]
       history_tile_atm = @[ATMTILESIZE]
+      aoflux_grid = 'agrid'
+      aoflux_code = 'ccpp'
+      aoflux_ccpp_suite = 'FV3_sfc_ocean'
+      ccpp_restart_interval = @[RESTART_N_SEC]
+      ccpp_input_dir = 'INPUT/'
+      ccpp_nstf_name = @[NSTF_NAME]
+      ccpp_ini_mosaic_file = 'INPUT/C96_mosaic.nc'
+      ccpp_ini_file_prefix = 'INPUT/sfc_data.tile'
+      ccpp_ini_layout = @[INPES],@[JNPES]
+      ccpp_ini_read = false
 ::
 ALLCOMP_attributes::
       ScalarFieldCount = 2

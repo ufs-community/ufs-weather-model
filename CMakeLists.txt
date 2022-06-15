@@ -66,6 +66,7 @@ set(MOVING_NEST     OFF CACHE BOOL "Enable moving nest code")
 set(OPENMP          ON  CACHE BOOL "Enable OpenMP threading")
 set(PARALLEL_NETCDF OFF CACHE BOOL "Enable parallel NetCDF")
 set(JEDI_DRIVER     OFF CACHE BOOL "Enable JEDI as top level driver")
+set(CMEPS_AOFLUX    OFF CACHE BOOL "Enable atmosphere-ocean flux calculation in mediator") 
 
 set(CMAKE_Platform $ENV{CMAKE_Platform})
 if(CMAKE_Platform)
@@ -90,6 +91,8 @@ message("MOVING_NEST ...... ${MOVING_NEST}")
 message("OPENMP ........... ${OPENMP}")
 message("PARALLEL_NETCDF .. ${PARALLEL_NETCDF}")
 message("JEDI_DRIVER ...... ${JEDI_DRIVER}")
+message("CMEPS_AOFLUX ..... ${CMEPS_AOFLUX}")
+
 message("")
 
 ###############################################################################
@@ -110,10 +113,11 @@ find_package(MPI REQUIRED)
 if(OPENMP)
   find_package(OpenMP REQUIRED)
 endif()
-find_package(NetCDF REQUIRED C Fortran)
-find_package(ESMF MODULE REQUIRED)
+
+find_package(NetCDF 4.7.4 REQUIRED C Fortran)
+find_package(ESMF 8.3.0 MODULE REQUIRED)
 if(FMS)
-  find_package(FMS REQUIRED COMPONENTS R4 R8)
+  find_package(FMS 2022.01 REQUIRED COMPONENTS R4 R8)
   if(32BIT)
     add_library(fms ALIAS FMS::fms_r4)
   else()
@@ -121,12 +125,12 @@ if(FMS)
   endif()
 endif()
 if(CMEPS)
-  find_package(PIO REQUIRED COMPONENTS C Fortran STATIC)
+  find_package(PIO 2.5.3 REQUIRED COMPONENTS C Fortran STATIC)
 endif()
 
-find_package(bacio REQUIRED)
-find_package(sp REQUIRED)
-find_package(w3nco REQUIRED)
+find_package(bacio 2.4.0 REQUIRED)
+find_package(sp 2.3.3 REQUIRED)
+find_package(w3nco 2.4.0 REQUIRED)
 
 # Configure Python
 find_package(Python 3.6 REQUIRED COMPONENTS Interpreter)
@@ -164,9 +168,15 @@ endif()
 ### Wave components [WW3]
 ###############################################################################
 if(WW3)
-  # Set options for WW3 build
-  set(SWITCH "multi_esmf" CACHE STRING "Default to switch_multi_esmf")
-  set(MULTI_ESMF ON CACHE BOOL "Enable ESMF for WW3")
+  if(APP MATCHES "^(ATMW)$")
+    set(SWITCH "multi_esmf" CACHE STRING "ESMF cap")
+    set(UFS_CAP "MULTI_ESMF" CACHE STRING "Build with MULTI_ESMF cap")
+    list(APPEND _ufs_defs_private FRONT_WW3=WMESMFMD)
+  else()
+    set(SWITCH "meshcap" CACHE STRING "NUOPC mesh cap")
+    set(UFS_CAP "NUOPC_MESH" CACHE STRING "Build with NUOPC_MESH cap")
+    list(APPEND _ufs_defs_private FRONT_WW3=wav_comp_nuopc)
+  endif()
   add_subdirectory(WW3)
 endif()
 
@@ -202,7 +212,7 @@ endif()
 ###############################################################################
 ### UFS Library
 ###############################################################################
-add_library(ufs driver/EARTH_GRID_COMP.F90)
+add_library(ufs driver/UFSDriver.F90)
 set_target_properties(ufs PROPERTIES Fortran_MODULE_DIRECTORY
                                      ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(ufs INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
@@ -225,7 +235,6 @@ if(UFS_GOCART)
 endif()
 
 if(WW3)
-  list(APPEND _ufs_defs_private FRONT_WW3=WMESMFMD)
   target_link_libraries(ufs PUBLIC WW3::WW3)
 endif()
 

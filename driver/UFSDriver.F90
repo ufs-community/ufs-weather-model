@@ -1,13 +1,13 @@
 !-----------------------------------------------------------------------
 !
-      MODULE module_EARTH_GRID_COMP
+      MODULE UFSDriver
 !
 !-----------------------------------------------------------------------
-!***  This module contains codes directly related to the EARTH component.
+!***  This module contains codes directly related to the UFS Driver component.
 !-----------------------------------------------------------------------
 !
 !-----------------------------------------------------------------------
-!  2010-03-24  Black - Created Earth component module.
+!  2010-03-24  Black - Created UFS Driver component module.
 !  2010-04     Yang  - Added Ensemble capability.
 !  2011-05-11  Theurich & Yang - Modified for using the ESMF 5.2.0r_beta_snapshot_07.
 !  2011-10-04  Yang - Modified for using the ESMF 5.2.0r library.
@@ -16,11 +16,11 @@
 !  2013-07     Theurich - Macro based ESMF error handling
 !-----------------------------------------------------------------------
 !
-!***  The EARTH component lies in the hierarchy seen here:
+!***  The UFS Driver component lies in the hierarchy seen here:
 !
 !          Main program
 !               |
-!          EARTH component
+!          UFS Driver component
 !              /|\
 !             / | \
 !          ATM/OCN/ICE/WAV/LND/IPM/HYD .. components
@@ -103,8 +103,7 @@
 !
       private
 !
-      public :: earth_register
-      public :: verbose_diagnostics
+      public :: UFSDriver_SS
 !
 !-----------------------------------------------------------------------
 !
@@ -114,19 +113,7 @@
       character(len=*),parameter :: u_FILE_u = &
            __FILE__
 
-      CONTAINS
-
-      logical function verbose_diagnostics(set)
-        !! Mutator for the verbose diagnostics flag; returns true if
-        !! verbose diagnostics should be used, and false otherwise.
-        !! If the "set" argument is present, then the flag is set to
-        !! the given value.
-        logical, optional :: set
-        if(present(set)) then
-           flag_verbose_diagnostics=set
-        endif
-        verbose_diagnostics=flag_verbose_diagnostics
-      end function verbose_diagnostics
+      contains
 
       logical function ChkErr(rc, line, file)
         integer, intent(in) :: rc            !< return code to check
@@ -144,7 +131,7 @@
 !#######################################################################
 !-----------------------------------------------------------------------
 !
-      SUBROUTINE EARTH_REGISTER(EARTH_GRID_COMP,RC)
+      SUBROUTINE UFSDriver_SS(driver,RC)
 !
 !-----------------------------------------------------------------------
 !
@@ -152,9 +139,9 @@
 !***  Argument Variables
 !------------------------
 !
-      type(ESMF_GridComp) :: EARTH_GRID_COMP                               !<-- The EARTH component
+      type(ESMF_GridComp) :: driver
 !
-      integer,intent(out) :: rc                                            !<-- Error return code
+      integer,intent(out) :: rc
 !
 !---------------------
 !***  Local Variables
@@ -173,33 +160,33 @@
 !-----------------------------------------------------------------------
 !
       ! Derive from NUOPC_Driver
-      call NUOPC_CompDerive(EARTH_GRID_COMP, Driver_routine_SS, rc=RC)
+      call NUOPC_CompDerive(driver, Driver_routine_SS, rc=RC)
       if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
       ! specializations:
 
-      call NUOPC_CompSpecialize(EARTH_GRID_COMP, &
+      call NUOPC_CompSpecialize(driver, &
         specLabel=Driver_label_SetModelServices, specRoutine=SetModelServices, &
         rc=RC)
       if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
-      call NUOPC_CompSpecialize(EARTH_GRID_COMP, &
+      call NUOPC_CompSpecialize(driver, &
         specLabel=Driver_label_SetRunSequence, specRoutine=SetRunSequence, &
         rc=RC)
       if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
 #ifndef JEDI_DRIVER
-      ! The NEMS Earth component is currently the top-level driver and
+      ! The UFS Driver component is currently the top-level driver and
       ! does not need to coordinate Clocks with its parent.
-      call ESMF_MethodRemove(EARTH_GRID_COMP, Driver_label_SetRunClock, rc=RC)
+      call ESMF_MethodRemove(driver, Driver_label_SetRunClock, rc=RC)
       if (ChkErr(rc,__LINE__,u_FILE_u)) return
-      call NUOPC_CompSpecialize(EARTH_GRID_COMP, &
+      call NUOPC_CompSpecialize(driver, &
         specLabel=Driver_label_SetRunClock, specRoutine=NUOPC_NoOp, rc=RC)
       if (ChkErr(rc,__LINE__,u_FILE_u)) return
 #endif
 
       ! register an internal initialization method
-      call NUOPC_CompSetInternalEntryPoint(EARTH_GRID_COMP, ESMF_METHOD_INITIALIZE, &
+      call NUOPC_CompSetInternalEntryPoint(driver, ESMF_METHOD_INITIALIZE, &
         phaseLabelList=(/"IPDv04p2"/), userRoutine=ModifyCplLists, rc=rc)
       if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
@@ -208,7 +195,7 @@
       if (ChkErr(rc,__LINE__,u_FILE_u)) return
       call ESMF_ConfigLoadFile(config, "nems.configure", rc=RC)
       if (ChkErr(rc,__LINE__,u_FILE_u)) return
-      call ESMF_GridCompSet(EARTH_GRID_COMP, config=config, rc=RC)
+      call ESMF_GridCompSet(driver, config=config, rc=RC)
       if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
       ! Load the required entries from the fd_nems.yaml file
@@ -217,7 +204,7 @@
 
 !-----------------------------------------------------------------------
 !
-      END SUBROUTINE EARTH_REGISTER
+      END SUBROUTINE UFSDriver_SS
 !
 !-----------------------------------------------------------------------
 !#######################################################################
@@ -584,7 +571,7 @@
     if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
     ! Diagnostic output
-    if(verbose_diagnostics()) then
+    if(flag_verbose_diagnostics) then
        call NUOPC_DriverPrint(driver, orderflag=.true., rc=rc)
        if (ChkErr(rc,__LINE__,u_FILE_u)) return
     endif
@@ -673,7 +660,7 @@
 
     ! local variables
     type(NUOPC_FreeFormat)  :: attrFF
-    character(len=*), parameter :: subname = "(module_EARTH_GRID_COMP.F90:ReadAttributes)"
+    character(len=*), parameter :: subname = "(UFSDriver.F90:ReadAttributes)"
     !-------------------------------------------
 
     rc = ESMF_SUCCESS
@@ -720,7 +707,7 @@
     logical           :: read_restart   ! read the restart file, based on start_type
     character(len=ESMF_MAXSTR) :: cvalue         ! temporary
     character(len=ESMF_MAXSTR) :: attribute      !
-    character(len=*) , parameter :: subname = "(module_EARTH_GRID_COMP.F90:InitRestart)"
+    character(len=*) , parameter :: subname = "(UFSDriver.F90:InitRestart)"
     !-------------------------------------------
 
     rc = ESMF_SUCCESS
@@ -764,7 +751,7 @@
     character(len=*) , parameter :: start_type_start = "startup"
     character(len=*) , parameter :: start_type_cont  = "continue"
     character(len=*) , parameter :: start_type_brnch = "branch"
-    character(len=*) , parameter  :: subname = "(module_EARTH_GRID_COMP.F90:IsRestart)"
+    character(len=*) , parameter  :: subname = "(UFSDriver.F90:IsRestart)"
     !---------------------------------------
 
     rc = ESMF_SUCCESS
@@ -819,7 +806,7 @@
     character(len=32), allocatable :: compLabels(:)
     character(len=32), allocatable :: attrList(:)
     integer                        :: componentCount
-    character(len=*), parameter    :: subname = "(module_EARTH_GRID_COMP.F90:AddAttributes)"
+    character(len=*), parameter    :: subname = "(UFSDriver.F90:AddAttributes)"
     logical                        :: lvalue = .false.
     !-------------------------------------------
 
@@ -878,6 +865,6 @@
 !
 !-----------------------------------------------------------------------
 !
-      END MODULE module_EARTH_GRID_COMP
+      END MODULE UFSDriver
 !
 !-----------------------------------------------------------------------

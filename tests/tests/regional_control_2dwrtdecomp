@@ -11,7 +11,11 @@ export CNTL_DIR=fv3_regional_control
 export LIST_FILES="dynf000.nc \
                    dynf024.nc \
                    phyf000.nc \
-                   phyf024.nc"
+                   phyf024.nc \
+                   PRSLEV.GrbF00 \
+                   PRSLEV.GrbF24 \
+                   NATLEV.GrbF00 \
+                   NATLEV.GrbF24"
 
 export_fv3
 
@@ -22,7 +26,7 @@ export OZ_PHYS_NEW=.true.
 export H2O_PHYS=.true.
 export HYBEDMF=.false.
 export RESTART_INTERVAL="12 -1"
-export WRITE_DOPOST=.false.
+export WRITE_DOPOST=.true.
 export POSTAPP='lam'
 
 export CCPP_SUITE=FV3_GFS_v15_thompson_mynn
@@ -36,3 +40,6 @@ export INPES=10
 export JNPES=6
 export ITASKS=2
 export OUTPUT_FH="12 -1"
+WRITE_GROUP=1
+WRTTASK_PER_GROUP=8
+NTILES=1
