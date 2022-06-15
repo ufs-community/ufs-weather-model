@@ -449,6 +449,7 @@ export CPLFLX=.false.
 export CPLICE=.false.
 export CPLWAV=.false.
 export CPLWAV2ATM=.false.
+export USE_MED_FLUX=.false.
 export DAYS=1
 export NPX=97
 export NPY=97
@@ -753,6 +754,7 @@ export CPLICE=.true.
 export CPL=.true.
 export CPLWAV=.true.
 export CPLWAV2ATM=.true.
+export USE_MED_FLUX=.false.
 export CPLCHM=.true.
 
 # for FV3: default values will be changed if doing a warm-warm restart
