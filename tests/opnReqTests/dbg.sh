@@ -14,6 +14,7 @@ if [[ $application == 'global' ]]; then
   else
     LIST_FILES="sfcf0$FHMAX_2D.nc sfcf0$FHMAX_2D.nc"
   fi
+  WRITE_DOPOST=.false.
 elif [[ $application == 'regional' ]]; then
   echo "Regional application not yet implemented for debug"
   exit 1
