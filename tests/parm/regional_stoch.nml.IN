@@ -140,6 +140,7 @@
 /
 
 &gfs_physics_nml
+    sfclay_compute_flux = @[SFCLAY_COMPUTE_FLUX]
     bl_mynn_edmf = 1
     bl_mynn_edmf_mom = 1
     bl_mynn_tkeadvect = .true.
@@ -180,6 +181,8 @@
     imfdeepcnv = -1
     imfshalcnv = -1
     imp_physics = 8
+    sedi_semi   = @[SEDI_SEMI]
+    decfl       = @[DECFL]
     iopt_alb = 2
     iopt_btr = 1
     iopt_crs = 1
@@ -191,6 +194,7 @@
     iopt_sfc = 1
     iopt_snf = 4
     iopt_stc = 1
+    iopt_trs = 2
     iopt_tbot = 2
     iovr = 3
     isol = 2
@@ -201,7 +205,6 @@
     kice = 9
     ldiag3d = .false.
     lheatstrg = @[LHEATSTRG]
-    lndp_each_step = .true.
     lndp_type = 0
     lradar = .true.
     lsm = 3
@@ -236,6 +239,7 @@
 
 &nam_sfcperts
     iseed_lndp = 2010
+    lndp_model_type = 2
     lndp_lscale = 500000
     lndp_prt_list = 0.2, 0.1
     lndp_tau = 21600

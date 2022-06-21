@@ -11,7 +11,9 @@ export CNTL_DIR=hafs_regional_atm_wav
 export LIST_FILES="atmf006.nc \
                    sfcf006.nc \
                    out_grd.ww3 \
-                   out_pnt.ww3"
+                   out_pnt.ww3 \
+                   20190829.060000.restart.ww3 \
+                   ufs.hafs.cpl.r.2019-08-29-21600.nc"
 
 export_fv3
 export_hafs
@@ -20,13 +22,13 @@ export_hafs_regional
 export HAFS=true
 export FHMAX=6
 export RESTART_N=${FHMAX}
-export TASKS=420
+export TASKS=360
 export DT_ATMOS=180
 export IDEFLATE=1
 export NFHMAX_HF=-1
 export NFHOUT_HF=3
 export NFHOUT=3
-export OUTPUT_FILE="'netcdf_parallel' 'netcdf'"
+export OUTPUT_FILE="'netcdf' 'netcdf'"
 export SDAY=29
 export SHOUR=00
 export SMONTH=08
@@ -86,8 +88,8 @@ export CPLWAV=.true.
 export CPLWAV2ATM=.true.
 export CPL_IMP_MRG=.true.
 
-export FLD_DT="10800"
-export PNT_DT="10800"
+export DTFLD="10800"
+export DTPNT="10800"
 export GOFILETYPE=""
 export POFILETYPE=""
 export OUTPARS_WAV="WND HS T01 T02 DIR FP DP PHS PTP PDIR UST CHA USP"
@@ -110,10 +112,7 @@ export OCEAN_START_DTG=43340.00000
 export atm_model="fv3"
 export ocn_model=""
 export wav_model="ww3"
-export atm_petlist_bounds="0000 0299"
-export ocn_petlist_bounds=""
-export med_petlist_bounds="0300 0359"
-export wav_petlist_bounds="0360 0419"
+WAV_tasks=60
 export coupling_interval_sec=360
 export MESH_ATM="unset"
 

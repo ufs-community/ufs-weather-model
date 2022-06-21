@@ -10,7 +10,7 @@ if [[ $application == 'global' ]]; then
   fi
   WRITE_GROUP=2
   WRTTASK_PER_GROUP=12
-  TASKS=$(( INPES*JNPES*6 + WRITE_GROUP*WRTTASK_PER_GROUP ))
+  TASKS=$(( INPES*JNPES*NTILES + WRITE_GROUP*WRTTASK_PER_GROUP ))
   NODES=$(((TASKS+TPN-1)/TPN))
 elif [[ $application == 'regional' ]]; then
   echo "Regional application not yet implemented for mpi"

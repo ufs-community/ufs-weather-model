@@ -107,6 +107,7 @@ deflate_level=1
 /
 
 &gfs_physics_nml
+  sfclay_compute_flux = @[SFCLAY_COMPUTE_FLUX]
   fhzero       = @[FHZERO]
   h2o_phys     = .true.
   ldiag3d      = @[LDIAG3D]
@@ -118,6 +119,8 @@ deflate_level=1
   imp_physics  = @[IMP_PHYSICS]
   ltaerosol    = @[LTAEROSOL]
   lradar       = @[LRADAR]
+  sedi_semi    = @[SEDI_SEMI]
+  decfl        = @[DECFL]
   nssl_cccn    = @[NSSL_CCCN]
   nssl_alphah  = @[NSSL_ALPHAH]
   nssl_alphahl = @[NSSL_ALPHAHL]
@@ -180,6 +183,7 @@ deflate_level=1
   iopt_snf     = 4
   iopt_tbot    = 2
   iopt_stc     = 3
+  iopt_trs     = 2
   debug        = .false.
   oz_phys      = .false.
   oz_phys_2015 = .true.
@@ -210,7 +214,6 @@ deflate_level=1
   do_skeb      = @[DO_SKEB]
   lndp_type    = @[LNDP_TYPE]
   n_var_lndp   = @[N_VAR_LNDP]
-  lndp_each_step = @[LNDP_EACH_STEP]
   fscav_aero   = @[FSCAV_AERO]
   icloud_bl         = 1
   bl_mynn_tkeadvect = .true.
@@ -358,11 +361,12 @@ deflate_level=1
 
 &nam_sfcperts
   lndp_type      = @[LNDP_TYPE]
+  lndp_model_type = @[LNDP_MODEL_TYPE]
   LNDP_TAU=21600,
   LNDP_LSCALE=500000,
   ISEED_LNDP=2010,
   lndp_var_list = 'smc', 'vgf', 'alb', 'sal', 'emi', 'zol'
-  lndp_prt_list = 0.200, 0.001, 0.001, 0.001, 0.001, 0.001
+  lndp_prt_list = 0.017, 0.001, 0.001, 0.001, 0.001, 0.001
 /
 
 &cires_ugwp_nml

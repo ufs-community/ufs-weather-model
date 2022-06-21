@@ -67,7 +67,6 @@ set(MULTI_GASES     OFF CACHE BOOL "Enable MULTI_GASES")
 set(MOVING_NEST     OFF CACHE BOOL "Enable moving nest code")
 set(OPENMP          ON  CACHE BOOL "Enable OpenMP threading")
 set(PARALLEL_NETCDF OFF CACHE BOOL "Enable parallel NetCDF")
-set(REPRO           OFF CACHE BOOL "Enable REPRO mode")
 set(JEDI_DRIVER     OFF CACHE BOOL "Enable JEDI as top level driver")
 
 set(CMAKE_Platform $ENV{CMAKE_Platform})
@@ -92,7 +91,6 @@ message("MULTI_GASES ...... ${MULTI_GASES}")
 message("MOVING_NEST ...... ${MOVING_NEST}")
 message("OPENMP ........... ${OPENMP}")
 message("PARALLEL_NETCDF .. ${PARALLEL_NETCDF}")
-message("REPRO ............ ${REPRO}")
 message("JEDI_DRIVER ...... ${JEDI_DRIVER}")
 message("")
 
@@ -168,9 +166,15 @@ endif()
 ### Wave components [WW3]
 ###############################################################################
 if(WW3)
-  # Set options for WW3 build
-  set(SWITCH "multi_esmf" CACHE STRING "Default to switch_multi_esmf")
-  set(MULTI_ESMF ON CACHE BOOL "Enable ESMF for WW3")
+  if(APP MATCHES "^(ATMW)$")
+    set(SWITCH "multi_esmf" CACHE STRING "ESMF cap")
+    set(UFS_CAP "MULTI_ESMF" CACHE STRING "Build with MULTI_ESMF cap")
+    list(APPEND _ufs_defs_private FRONT_WW3=WMESMFMD)
+  else()
+    set(SWITCH "meshcap" CACHE STRING "NUOPC mesh cap")
+    set(UFS_CAP "NUOPC_MESH" CACHE STRING "Build with NUOPC_MESH cap")
+    list(APPEND _ufs_defs_private FRONT_WW3=wav_comp_nuopc)
+  endif()
   add_subdirectory(WW3)
 endif()
 
@@ -236,7 +240,6 @@ if(UFS_GOCART)
 endif()
 
 if(WW3)
-  list(APPEND _ufs_defs_private FRONT_WW3=WMESMFMD)
   target_link_libraries(ufs PUBLIC WW3::WW3)
 endif()
 
