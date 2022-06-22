@@ -36,12 +36,12 @@
       USE ESMF
 !
 !-----------------------------------------------------------------------
-!***  USE the EARTH gridded component module.  Although it
+!***  USE the UFSDriver module.  Although it
 !***  contains the calls to Register and the top level Initialize,
 !***  Run, and Finalize, only the Register routine is public.
 !-----------------------------------------------------------------------
 !
-      USE module_EARTH_GRID_COMP
+      USE UFSDriver, only : UFSDriver_SS
 !
 !-----------------------------------------------------------------------
 !
@@ -54,8 +54,9 @@
       INTEGER :: MYPE                                                   &  !<-- The MPI task ID
                 ,NSECONDS_FCST                                          &  !<-- Length of forecast in seconds
                 ,YY,MM,DD                                               &  !<-- Time variables for date
-                ,HH,MNS,SEC                                             &  !<-- Time variables for time of day
-                ,fhrot
+                ,HH,MNS,SEC                                                !<-- Time variables for time of day
+
+      REAL(ESMF_KIND_R8) :: fhrot                                          !< forecast hour at restart time
 !
       REAL :: NHOURS_FCST                                                  !<-- Length of forecast in hours
 
@@ -71,7 +72,7 @@
                                                                            !    the computer CPU resource
                                                                            !    for the ESMF grid components.
 !
-      TYPE(ESMF_GridComp) :: EARTH_GRID_COMP                               !<-- The EARTH gridded component.
+      TYPE(ESMF_GridComp) :: UFSDriverComp                                 !<-- The UFS Driver gridded component.
 !
       TYPE(ESMF_Clock) :: CLOCK_MAIN                                       !<-- The ESMF time management clock
 !
@@ -158,33 +159,33 @@
 ! ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 !
 !-----------------------------------------------------------------------
-!***  Create the EARTH gridded component which will create and
+!***  Create the UFS Driver gridded component which will create and
 !***  control the ATM (atmoshpere), OCN (ocean), ICE (sea ice), etc.
 !***  gridded components.
 !-----------------------------------------------------------------------
 !
 ! ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-      MESSAGE_CHECK="Create the EARTH Gridded Component"
+      MESSAGE_CHECK="Create the UFS Driver Gridded Component"
 !     CALL ESMF_LogWrite(MESSAGE_CHECK,ESMF_LOGMSG_INFO,rc=RC)
 ! ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 !
-      EARTH_GRID_COMP=ESMF_GridCompCreate(name   ='EARTH Grid Comp'     &  !<-- EARTH component name
+      UFSDriverComp=ESMF_GridCompCreate(name   ='UFS Driver Grid Comp'  &
                                          ,rc     = RC)
       ESMF_ERR_ABORT(RC)
 ! ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 !
 !-----------------------------------------------------------------------
-!***  Register the EARTH gridded component's Initialize, Run and
+!***  Register the UFS Driver gridded component's Initialize, Run and
 !***  Finalize routines.
 !-----------------------------------------------------------------------
 !
 ! ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-      MESSAGE_CHECK="Register EARTH Gridded Component Init, Run, Finalize"
+      MESSAGE_CHECK="Register UFS Driver Gridded Component Init, Run, Finalize"
 !     CALL ESMF_LogWrite(MESSAGE_CHECK,ESMF_LOGMSG_INFO,rc=RC)
 ! ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 !
-      CALL ESMF_GridCompSetServices(EARTH_GRID_COMP                     &  !<-- The EARTH component
-                                   ,EARTH_REGISTER                      &  !<-- User's subroutineName
+      CALL ESMF_GridCompSetServices(UFSDriverComp                       &
+                                   ,UFSDriver_SS                        &
                                    ,rc=RC)
       ESMF_ERR_ABORT(RC)
 ! ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -344,19 +345,18 @@
 !-----------------------------------------------------------------------
 !***  Adjust the currTime of the main clock: CLOCK_MAIN
 !***  if the fhrot is > 0
-!***  This will correctly set the EARTH clocks in case of
+!***  This will correctly set the UFS Driver clocks in case of
 !***  Restart-From-History.
 !-----------------------------------------------------------------------
-
-      CALL ESMF_ConfigGetAttribute(config   = CF_MAIN  &
-                                   ,value   = fhrot    &
-                                   ,label   = 'fhrot:' &
-                                   ,default = 0        &
+      CALL ESMF_ConfigGetAttribute(config   = CF_MAIN          &
+                                   ,value   = fhrot            &
+                                   ,label   = 'fhrot:'         &
+                                   ,default = 0.0_ESMF_KIND_R8 &
                                    ,rc      = RC)
       ESMF_ERR_ABORT(RC)
 
       if (fhrot > 0) then
-        CALL ESMF_TimeIntervalSet(restartOffset, h=fhrot, rc=RC)
+        CALL ESMF_TimeIntervalSet(restartOffset, h_r8=fhrot, rc=RC)
         ESMF_ERR_ABORT(RC)
         CURRTIME = STARTTIME + restartOffset
         call ESMF_ClockSet(CLOCK_MAIN, currTime=CURRTIME, &
@@ -367,19 +367,19 @@
 ! ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 !
 !-----------------------------------------------------------------------
-!***  Execute the INITIALIZE step for the EARTH component.
+!***  Execute the INITIALIZE step for the UFS Driver component.
 !***  The Initialize routine that is called here as well as the
 !***  Run and Finalize routines invoked below are those specified
 !***  in the Register routine called in ESMF_GridCompSetServices above.
 !-----------------------------------------------------------------------
 !
 ! ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-      MESSAGE_CHECK="Execute the EARTH Component Initialize Step"
+      MESSAGE_CHECK="Execute the UFS Driver Component Initialize Step"
 !     CALL ESMF_LogWrite(MESSAGE_CHECK,ESMF_LOGMSG_INFO,rc=RC)
 ! ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 !
-      CALL ESMF_GridCompInitialize(gridcomp   =EARTH_GRID_COMP          &  !<-- The EARTH component
-                                  ,clock      =CLOCK_MAIN               &  !<-- The ESMF clock
+      CALL ESMF_GridCompInitialize(gridcomp   =UFSDriverComp            &
+                                  ,clock      =CLOCK_MAIN               &
                                   ,userRc     =RC_USER                  &
                                   ,rc         =RC)
       ESMF_ERR_ABORT(RC)
@@ -387,16 +387,16 @@
 ! ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 !
 !-----------------------------------------------------------------------
-!***  Execute the RUN step for the EARTH component.
+!***  Execute the RUN step for the UFS Driver component.
 !-----------------------------------------------------------------------
 !
 ! ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-      MESSAGE_CHECK="Execute the EARTH Component Run Step"
+      MESSAGE_CHECK="Execute the UFS Driver Component Run Step"
 !     CALL ESMF_LogWrite(MESSAGE_CHECK,ESMF_LOGMSG_INFO,rc=RC)
 ! ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 !
-      CALL ESMF_GridCompRun(gridcomp   =EARTH_GRID_COMP                 &  !<-- The EARTH component
-                           ,clock      =CLOCK_MAIN                      &  !<-- The ESMF clock
+      CALL ESMF_GridCompRun(gridcomp   =UFSDriverComp                   &
+                           ,clock      =CLOCK_MAIN                      &
                            ,userRc     =RC_USER                         &
                            ,rc         =RC)
       ESMF_ERR_ABORT(RC)
@@ -404,16 +404,16 @@
 ! ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 !
 !-----------------------------------------------------------------------
-!***  Execute the FINALIZE step for the EARTH component.
+!***  Execute the FINALIZE step for the UFS Driver component.
 !-----------------------------------------------------------------------
 !
 ! ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-      MESSAGE_CHECK="Execute the EARTH Component Finalize Step"
+      MESSAGE_CHECK="Execute the UFS Driver Component Finalize Step"
 !     CALL ESMF_LogWrite(MESSAGE_CHECK,ESMF_LOGMSG_INFO,rc=RC)
 ! ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 !
-      CALL ESMF_GridCompFinalize(gridcomp   =EARTH_GRID_COMP            &  !<-- The EARTH component
-                                ,clock      =CLOCK_MAIN                 &  !<-- The Main ESMF clock
+      CALL ESMF_GridCompFinalize(gridcomp   =UFSDriverComp              &
+                                ,clock      =CLOCK_MAIN                 &
                                 ,userRc     =RC_USER                    &
                                 ,rc         =RC)
       ESMF_ERR_ABORT(RC)
@@ -451,7 +451,7 @@
 !      CALL ESMF_LogWrite(MESSAGE_CHECK, ESMF_LOGMSG_INFO, rc = RC)
 ! ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 !
-      CALL ESMF_GridCompDestroy(gridcomp=EARTH_GRID_COMP                &
+      CALL ESMF_GridCompDestroy(gridcomp=UFSDriverComp                  &
                                ,rc      =RC)
       ESMF_ERR_ABORT(RC)
 
