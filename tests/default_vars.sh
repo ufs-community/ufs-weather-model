@@ -61,6 +61,8 @@
   OCN_tasks_cdeps_025=120
   ICE_tasks_cdeps_025=48
 
+  TASKS_aqm=272; INPES_aqm=33; JNPES_aqm=8
+
 if [[ $MACHINE_ID = wcoss_cray ]]; then
 
   TPN=24
@@ -279,6 +281,7 @@ export_fv3 ()
 export FV3=true
 export S2S=false
 export HAFS=false
+export AQM=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
 export POSTAPP='global'

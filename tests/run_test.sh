@@ -32,7 +32,7 @@ function compute_petbounds() {
   # CHM component and mediator are running on ATM compute tasks only.
 
   local n=0
-  unset atm_petlist_bounds ocn_petlist_bounds ice_petlist_bounds wav_petlist_bounds chm_petlist_bounds med_petlist_bounds
+  unset atm_petlist_bounds ocn_petlist_bounds ice_petlist_bounds wav_petlist_bounds chm_petlist_bounds med_petlist_bounds aqm_petlist_bounds
 
   # ATM
   ATM_io_tasks=${ATM_io_tasks:-0}
@@ -65,6 +65,9 @@ function compute_petbounds() {
   # MED
   med_petlist_bounds="0 $((ATM_compute_tasks - 1))"
 
+  # AQM
+  aqm_petlist_bounds="0 $((ATM_compute_tasks - 1))"
+
   UFS_tasks=${n}
 
   echo "ATM_petlist_bounds: ${atm_petlist_bounds:-}"
@@ -73,6 +76,7 @@ function compute_petbounds() {
   echo "WAV_petlist_bounds: ${wav_petlist_bounds:-}"
   echo "CHM_petlist_bounds: ${chm_petlist_bounds:-}"
   echo "MED_petlist_bounds: ${med_petlist_bounds:-}"
+  echo "AQM_petlist_bounds: ${aqm_petlist_bounds:-}"
   echo "UFS_tasks         : ${UFS_tasks:-}"
 
 }
@@ -243,6 +247,11 @@ if [[ $FV3 == true ]]; then
   if [[ $TILEDFIX != .true. ]]; then
     cp ${INPUTDATA_ROOT}/FV3_fix/*.grb .
   fi
+fi
+
+# AQM
+if [[ $AQM == .true. ]]; then
+  cp ${PATHRT}/parm/aqm/aqm.rc .
 fi
 
 # Field Dictionary
