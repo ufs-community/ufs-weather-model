@@ -14,6 +14,9 @@ list(APPEND mom6_src_files
   MOM6/src/ALE/coord_sigma.F90
   MOM6/src/ALE/coord_slight.F90
   MOM6/src/ALE/coord_zlike.F90
+  MOM6/src/ALE/MOM_hybgen_regrid.F90
+  MOM6/src/ALE/MOM_hybgen_remap.F90
+  MOM6/src/ALE/MOM_hybgen_unmix.F90
   MOM6/src/ALE/polynomial_functions.F90
   MOM6/src/ALE/regrid_consts.F90
   MOM6/src/ALE/regrid_edge_values.F90
@@ -28,6 +31,7 @@ list(APPEND mom6_src_files
   MOM6/src/core/MOM_barotropic.F90
   MOM6/src/core/MOM_boundary_update.F90
   MOM6/src/core/MOM_checksum_packages.F90
+  MOM6/src/core/MOM_check_scaling.F90
   MOM6/src/core/MOM_continuity.F90
   MOM6/src/core/MOM_continuity_PPM.F90
   MOM6/src/core/MOM_density_integrals.F90
@@ -116,11 +120,13 @@ list(APPEND mom6_src_files
   MOM6/src/framework/MOM_interpolate.F90
   MOM6/src/framework/MOM_intrinsic_functions.F90
   MOM6/src/framework/MOM_io.F90
+  MOM6/src/framework/posix.F90
   MOM6/src/framework/MOM_random.F90
   MOM6/src/framework/MOM_restart.F90
   MOM6/src/framework/MOM_safe_alloc.F90
   MOM6/src/framework/MOM_string_functions.F90
   MOM6/src/framework/MOM_unit_scaling.F90
+  MOM6/src/framework/MOM_unique_scales.F90
   MOM6/src/framework/MOM_write_cputime.F90
 
   MOM6/src/ice_shelf/MOM_ice_shelf.F90
