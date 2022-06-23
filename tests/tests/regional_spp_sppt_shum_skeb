@@ -1,7 +1,7 @@
 ####################################################################
 #
 #  Regional test with stochastic physics (SPP, SPPT, SHUM, and SKEB)
-#  
+#
 ####################################################################
 
 export TEST_DESCR="Compare regional stochastic physics results with previous trunk version"
@@ -36,14 +36,16 @@ export MODEL_CONFIGURE=model_configure_regional_stoch.IN
 export DIAG_TABLE=diag_table_hrrr_stoch
 export FIELD_TABLE=field_table_regional_stoch
 
+export SFCLAY_COMPUTE_FLUX=.true.
+
 export INPES=15
 export JNPES=12
 export FHMAX=1
 export THRD=2
-export TPN=$TPN_thrd
 export TASKS=192
 export WRITE_GROUP=1
 export WRTTASK_PER_GROUP=12
+NTILES=1
 
 export DO_SPP=.true.
 export DO_SPPT=.true.
@@ -57,4 +59,4 @@ export SPP_TAU='21600.0,21600.0,21600.0,21600.0,21600.0'
 export SPP_SIGTOP1='0.1,0.1,0.1,0.1,0.1'
 export SPP_SIGTOP2='0.025,0.025,0.025,0.025,0.025'
 export SPP_STDDEV_CUTOFF='1.5,1.5,2.5,1.5,1.5'
-export ISEED_SPP='4,4,4,4,4'  
+export ISEED_SPP='4,4,4,4,4'
