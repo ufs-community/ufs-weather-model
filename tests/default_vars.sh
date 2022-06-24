@@ -344,7 +344,6 @@ export NWAT=6
 # GFDL MP
 export DNATS=1
 export DO_SAT_ADJ=.true.
-export LHEATSTRG=.false.
 export LSEASPRAY=.false.
 export LGFDLMPRAD=.false.
 export EFFR_IN=.false.
@@ -679,7 +678,6 @@ export USE_MERRA2=.true.
 export IAER=1011
 export NSTF_NAME=2,0,0,0,0
 
-export LHEATSTRG=.true.
 export LSEASPRAY=.true.
 
 # P7 UGWP1
@@ -756,6 +754,12 @@ export CPLWAV=.true.
 export CPLWAV2ATM=.true.
 export USE_MED_FLUX=.false.
 export CPLCHM=.true.
+
+if [[ $LSM = 2 ]]; then
+  export LHEATSTRG=.flase.
+else
+  export LHEATSTRG=.true.
+fi
 
 # for FV3: default values will be changed if doing a warm-warm restart
 export WARM_START=.false.
