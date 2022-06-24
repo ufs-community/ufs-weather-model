@@ -678,8 +678,8 @@ For the sub-global 1/2-deg domain extending from latitude 80.0S
 
 .. code-block:: console
 
-   ncremap -g glo_30m.SCRIP.nc -G latlon=321,720#snwe=-80.25,80.25,-0.25,359.75#lat_typ=uni#lat_drc=s2n
-   ESMF_Scrip2Unstruct glo_30m.SCRIP.nc mesh.glo_30m.nc 0
+   ncremap -g gwes_30m.SCRIP.nc -G latlon=321,720#snwe=-80.25,80.25,-0.25,359.75#lat_typ=uni#lat_drc=s2n
+   ESMF_Scrip2Unstruct gwes_30m.SCRIP.nc mesh.gwes_30m.nc 0
 
 For the tripole grid, the mesh file is generated as part of the cpld_gridgen utility in
 `UFS_UTILS <https://ufs-community.github.io/UFS_UTILS/cpld_gridgen/index.html>`__.
