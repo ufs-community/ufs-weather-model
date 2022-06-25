@@ -344,6 +344,7 @@ export NWAT=6
 # GFDL MP
 export DNATS=1
 export DO_SAT_ADJ=.true.
+export LHEATSTRG=.flase.
 export LSEASPRAY=.false.
 export LGFDLMPRAD=.false.
 export EFFR_IN=.false.
@@ -755,9 +756,7 @@ export CPLWAV2ATM=.true.
 export USE_MED_FLUX=.false.
 export CPLCHM=.true.
 
-if [[ $LSM = 2 ]]; then
-  export LHEATSTRG=.flase.
-else
+if [[ $LSM = 1 ]]; then
   export LHEATSTRG=.true.
 fi
 
