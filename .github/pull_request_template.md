@@ -38,8 +38,6 @@ How were these changes tested? What compilers / HPCs was it tested with? Are the
 - [ ] gaea.intel 
 - [ ] jet.intel
 - [ ] wcoss2.intel
-- [ ] wcoss_cray
-- [ ] wcoss_dell_p3
 - [ ] opnReqTest for newly added/changed feature
 - [ ] CI
 
