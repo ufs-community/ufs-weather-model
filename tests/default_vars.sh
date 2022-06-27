@@ -270,12 +270,6 @@ fi
 
 WLCLK_dflt=30
 
-if [[ $MACHINE_ID = jet.* ]]; then
-  WLCLK_dflt=45
-elif [[ $MACHINE_ID = hera.gnu ]]; then
-  WLCLK_dflt=45
-fi
-
 export WLCLK=$WLCLK_dflt
 
 export_fv3 ()
