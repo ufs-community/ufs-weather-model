@@ -9,7 +9,7 @@
 
   THRD=1
 
-  TASKS_atmaero=198 ; INPES_atmaero=4 ; JNPES_atmaero=8; WPG_atmaero=6
+  TASKS_atmaero=198; INPES_atmaero=4; JNPES_atmaero=8; WPG_atmaero=6
 
   TASKS_cpl_atmw=180; THRD_cpl_atmw=1
   INPES_cpl_atmw=3; JNPES_cpl_atmw=8; WPG_cpl_atmw=6
