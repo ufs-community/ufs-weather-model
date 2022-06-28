@@ -1,48 +1,54 @@
 list(APPEND mom6_src_files
-  MOM6/src/ALE/MOM_ALE.F90
-  MOM6/src/ALE/MOM_regridding.F90
-  MOM6/src/ALE/MOM_remapping.F90
-  MOM6/src/ALE/P1M_functions.F90
-  MOM6/src/ALE/P3M_functions.F90
-  MOM6/src/ALE/PCM_functions.F90
-  MOM6/src/ALE/PLM_functions.F90
-  MOM6/src/ALE/PPM_functions.F90
-  MOM6/src/ALE/PQM_functions.F90
-  MOM6/src/ALE/coord_adapt.F90
-  MOM6/src/ALE/coord_hycom.F90
-  MOM6/src/ALE/coord_rho.F90
-  MOM6/src/ALE/coord_sigma.F90
-  MOM6/src/ALE/coord_slight.F90
-  MOM6/src/ALE/coord_zlike.F90
-  MOM6/src/ALE/polynomial_functions.F90
-  MOM6/src/ALE/regrid_consts.F90
-  MOM6/src/ALE/regrid_edge_values.F90
-  MOM6/src/ALE/regrid_interp.F90
-  MOM6/src/ALE/regrid_solvers.F90
+MOM6/src/ALE/coord_adapt.F90
+MOM6/src/ALE/coord_hycom.F90
+MOM6/src/ALE/coord_rho.F90
+MOM6/src/ALE/coord_sigma.F90
+MOM6/src/ALE/coord_slight.F90
+MOM6/src/ALE/coord_zlike.F90
+MOM6/src/ALE/MOM_ALE.F90
+MOM6/src/ALE/MOM_hybgen_regrid.F90
+MOM6/src/ALE/MOM_hybgen_remap.F90
+MOM6/src/ALE/MOM_hybgen_unmix.F90
+MOM6/src/ALE/MOM_regridding.F90
+MOM6/src/ALE/MOM_remapping.F90
+MOM6/src/ALE/P1M_functions.F90
+MOM6/src/ALE/P3M_functions.F90
+MOM6/src/ALE/PCM_functions.F90
+MOM6/src/ALE/PLM_functions.F90
+MOM6/src/ALE/polynomial_functions.F90
+MOM6/src/ALE/PPM_functions.F90
+MOM6/src/ALE/PQM_functions.F90
+MOM6/src/ALE/regrid_consts.F90
+MOM6/src/ALE/regrid_edge_values.F90
+MOM6/src/ALE/regrid_interp.F90
+MOM6/src/ALE/regrid_solvers.F90
 
-  MOM6/src/core/MOM.F90
-  MOM6/src/core/MOM_CoriolisAdv.F90
-  MOM6/src/core/MOM_PressureForce.F90
-  MOM6/src/core/MOM_PressureForce_Montgomery.F90
-  MOM6/src/core/MOM_PressureForce_FV.F90
-  MOM6/src/core/MOM_barotropic.F90
-  MOM6/src/core/MOM_boundary_update.F90
-  MOM6/src/core/MOM_checksum_packages.F90
-  MOM6/src/core/MOM_continuity.F90
-  MOM6/src/core/MOM_continuity_PPM.F90
-  MOM6/src/core/MOM_density_integrals.F90
-  MOM6/src/core/MOM_dynamics_split_RK2.F90
-  MOM6/src/core/MOM_dynamics_unsplit.F90
-  MOM6/src/core/MOM_dynamics_unsplit_RK2.F90
-  MOM6/src/core/MOM_forcing_type.F90
-  MOM6/src/core/MOM_grid.F90
-  MOM6/src/core/MOM_interface_heights.F90
-  MOM6/src/core/MOM_isopycnal_slopes.F90
-  MOM6/src/core/MOM_open_boundary.F90
-  MOM6/src/core/MOM_transcribe_grid.F90
-  MOM6/src/core/MOM_unit_tests.F90
-  MOM6/src/core/MOM_variables.F90
-  MOM6/src/core/MOM_verticalGrid.F90
+
+MOM6/src/core/MOM_barotropic.F90
+MOM6/src/core/MOM_boundary_update.F90
+MOM6/src/core/MOM_check_scaling.F90
+MOM6/src/core/MOM_checksum_packages.F90
+MOM6/src/core/MOM_continuity.F90
+MOM6/src/core/MOM_continuity_PPM.F90
+MOM6/src/core/MOM_CoriolisAdv.F90
+MOM6/src/core/MOM_density_integrals.F90
+MOM6/src/core/MOM_dynamics_split_RK2.F90
+MOM6/src/core/MOM_dynamics_unsplit.F90
+MOM6/src/core/MOM_dynamics_unsplit_RK2.F90
+MOM6/src/core/MOM.F90
+MOM6/src/core/MOM_forcing_type.F90
+MOM6/src/core/MOM_grid.F90
+MOM6/src/core/MOM_interface_heights.F90
+MOM6/src/core/MOM_isopycnal_slopes.F90
+MOM6/src/core/MOM_open_boundary.F90
+MOM6/src/core/MOM_porous_barriers.F90
+MOM6/src/core/MOM_PressureForce.F90
+MOM6/src/core/MOM_PressureForce_FV.F90
+MOM6/src/core/MOM_PressureForce_Montgomery.F90
+MOM6/src/core/MOM_transcribe_grid.F90
+MOM6/src/core/MOM_unit_tests.F90
+MOM6/src/core/MOM_variables.F90
+MOM6/src/core/MOM_verticalGrid.F90
 
   MOM6/src/diagnostics/MOM_PointAccel.F90
   MOM6/src/diagnostics/MOM_debugging.F90
@@ -87,8 +93,10 @@ list(APPEND mom6_src_files
   MOM6/src/framework/MOM_restart.F90
   MOM6/src/framework/MOM_safe_alloc.F90
   MOM6/src/framework/MOM_string_functions.F90
+  MOM6/src/framework/MOM_unique_scales.F90
   MOM6/src/framework/MOM_unit_scaling.F90
   MOM6/src/framework/MOM_write_cputime.F90
+  MOM6/src/framework/posix.F90
 
   MOM6/src/ice_shelf/MOM_ice_shelf.F90
   MOM6/src/ice_shelf/MOM_ice_shelf_diag_mediator.F90
@@ -225,6 +233,9 @@ list(APPEND mom6_src_files
   MOM6/config_src/external/ODA_hooks/ocean_da_core.F90
   MOM6/config_src/external/ODA_hooks/ocean_da_types.F90
   MOM6/config_src/external/ODA_hooks/write_ocean_obs.F90
+  MOM6/config_src/external/drifters/MOM_particles.F90
+  MOM6/config_src/external/drifters/MOM_particles_types.F90
+
 
   MOM6/config_src/infra/FMS1/MOM_coms_infra.F90
   MOM6/config_src/infra/FMS1/MOM_constants.F90
