@@ -61,7 +61,7 @@
   OCN_tasks_cdeps_025=120
   ICE_tasks_cdeps_025=48
 
-if [[ $MACHINE_ID = wcoss2.* ]]; then
+if [[ $MACHINE_ID = wcoss2.* || $MACHINE_ID = acorn.* ]]; then
 
   TPN=128
 
