@@ -1,16 +1,20 @@
 ###############################################################################
 #
-#  Global control restart test GFSv16 atmosphere only at C96L127, P8 configuration
+#  Global control 2thread test GFSv16 atmosphere only at C96L127, P8 configuration
 #
 ###############################################################################
 
-export TEST_DESCR="Compare global restart results with control_p8_gf_mynn_hfip test"
+export TEST_DESCR="Compare global control with 2 threads results with control_p8_gf_hfip test"
 
-export CNTL_DIR=control_p8_gf_mynn_hfip
+export CNTL_DIR=control_p8_gf_hfip
 
-export LIST_FILES="sfcf024.nc \
+export LIST_FILES="sfcf000.nc \
+                   sfcf024.nc \
+                   atmf000.nc \
                    atmf024.nc \
+                   GFSFLX.GrbF00 \
                    GFSFLX.GrbF24 \
+                   GFSPRS.GrbF00 \
                    GFSPRS.GrbF24 \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
@@ -55,15 +59,12 @@ export SDAY=22
 export SHOUR=06
 export OUTPUT_GRID='gaussian_grid'
 export WRITE_DOPOST=.true.
-export FHROT=12
-export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${SHOUR} + ${FHROT}  )))0000"
 
-export WARM_START=.true.
-export NGGPS_IC=.false.
-export EXTERNAL_IC=.false.
-export MAKE_NH=.false.
-export MOUNTAIN=.true.
-export NA_INIT=0
+export THRD=2
+export TASKS=$TASKS_thrd
+export INPES=$INPES_thrd
+export JNPES=$JNPES_thrd
+export WRTTASK_PER_GROUP=6
 
 # P7 default
 export IALB=2
@@ -88,7 +89,7 @@ export DDDMP=0.1
 # P7 Merra2 Aerosols & NSST
 export USE_MERRA2=.true.
 export IAER=1011
-export NSTF_NAME=2,0,0,0,0
+export NSTF_NAME=2,1,0,0,0
 
 export LHEATSTRG=.true.
 export LSEASPRAY=.true.
@@ -154,14 +155,18 @@ export USE_CICE_ALB=.false.
 export WRITE_NSFLIP=.true.
 
 export FV3_RUN=control_run.IN
-export CCPP_SUITE=FV3_GFS_v17_p8_gf_mynn
+export CCPP_SUITE=FV3_GFS_v17_p8_gf
 export FIELD_TABLE=field_table_thompson_noaero_tke
 export DIAG_TABLE=diag_table_gfsv16_merra2
 # use same namelist for standalone,coupled P7
-export INPUT_NML=cpld_control_gf_mynn.nml.IN
+export INPUT_NML=cpld_control.nml.IN
 
 # P8 RRTMGP
 export DO_RRTMGP=.false.
 export DOGP_CLDOPTICS_LUT=.true.
 export DOGP_LWSCAT=.true.
 export DOGP_SGS_CNV=.true.
+
+# turn on GF
+export IMFSHALCNV=3
+export IMFDEEPCNV=3

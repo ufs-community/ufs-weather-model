@@ -4,9 +4,9 @@
 #
 ###############################################################################
 
-export TEST_DESCR="Compare global restart results with control_p8_gf_mynn_hfip test"
+export TEST_DESCR="Compare global restart results with control_p8_gf_hfip test"
 
-export CNTL_DIR=control_p8_gf_mynn_hfip
+export CNTL_DIR=control_p8_gf_hfip
 
 export LIST_FILES="sfcf024.nc \
                    atmf024.nc \
@@ -154,14 +154,18 @@ export USE_CICE_ALB=.false.
 export WRITE_NSFLIP=.true.
 
 export FV3_RUN=control_run.IN
-export CCPP_SUITE=FV3_GFS_v17_p8_gf_mynn
+export CCPP_SUITE=FV3_GFS_v17_p8_gf
 export FIELD_TABLE=field_table_thompson_noaero_tke
 export DIAG_TABLE=diag_table_gfsv16_merra2
 # use same namelist for standalone,coupled P7
-export INPUT_NML=cpld_control_gf_mynn.nml.IN
+export INPUT_NML=cpld_control.nml.IN
 
 # P8 RRTMGP
 export DO_RRTMGP=.false.
 export DOGP_CLDOPTICS_LUT=.true.
 export DOGP_LWSCAT=.true.
 export DOGP_SGS_CNV=.true.
+
+# turn on GF
+export IMFSHALCNV=3
+export IMFDEEPCNV=3
