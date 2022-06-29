@@ -22,8 +22,11 @@
   TASKS_cpl_thrd=120; THRD_cpl_thrd=2
   INPES_cpl_thrd=3; JNPES_cpl_thrd=4; WPG_cpl_thrd=6
   OCN_tasks_cpl_thrd=20
+  OCN_thrds_cpl_thrd=1
   ICE_tasks_cpl_thrd=10
+  ICE_thrds_cpl_thrd=1
   WAV_tasks_cpl_thrd=12
+  WAV_thrds_cpl_thrd=2
 
   TASKS_cpl_dcmp=200; THRD_cpl_dcmp=1
   INPES_cpl_dcmp=4; JNPES_cpl_dcmp=6; WPG_cpl_dcmp=6
