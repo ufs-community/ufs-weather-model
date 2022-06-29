@@ -61,6 +61,8 @@
   OCN_tasks_cdeps_025=120
   ICE_tasks_cdeps_025=48
 
+  TASKS_aqm=272; INPES_aqm=33; JNPES_aqm=8
+
 if [[ $MACHINE_ID = wcoss2.* ]]; then
 
   TPN=128
