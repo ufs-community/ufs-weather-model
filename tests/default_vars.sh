@@ -257,6 +257,7 @@ export_fv3 ()
 export FV3=true
 export S2S=false
 export HAFS=false
+export AQM=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
 export POSTAPP='global'
@@ -548,6 +549,7 @@ export_cpl ()
 export FV3=true
 export S2S=true
 export HAFS=false
+export AQM=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
 
@@ -825,6 +827,7 @@ export_datm_cdeps ()
 export FV3=false
 export S2S=false
 export HAFS=false
+export AQM=false
 export DATM_CDEPS=true
 export DOCN_CDEPS=false
 export CPLWAV=.false.
@@ -949,6 +952,7 @@ export_hafs_datm_cdeps ()
 export FV3=false
 export S2S=false
 export HAFS=true
+export AQM=false
 export DATM_CDEPS=true
 export DOCN_CDEPS=false
 export INPES=$INPES_dflt
@@ -966,6 +970,7 @@ export_hafs_docn_cdeps ()
 export FV3=true
 export S2S=false
 export HAFS=true
+export AQM=false
 export DOCN_CDEPS=true
 export INPES=$INPES_dflt
 export JNPES=$JNPES_dflt
@@ -983,6 +988,7 @@ export_hafs_regional ()
 export FV3=true
 export S2S=false
 export HAFS=true
+export AQM=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
 export INPES=$INPES_dflt
@@ -1051,6 +1057,7 @@ export_hafs ()
 export FV3=true
 export S2S=false
 export HAFS=true
+export AQM=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
 export INPES=$INPES_dflt
