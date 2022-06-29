@@ -127,68 +127,7 @@ source rt_utils.sh
 
 source module-setup.sh
 
-if [[ $MACHINE_ID = wcoss_cray ]]; then
-
-  module load xt-lsfhpc
-
-  module use /usrx/local/emc_rocoto/modulefiles
-  module load rocoto/1.3.0rc2
-  ROCOTORUN=$(which rocotorun)
-  ROCOTOSTAT=$(which rocotostat)
-  ROCOTOCOMPLETE=$(which rocotocomplete)
-  ROCOTO_SCHEDULER=lsfcray
-
-  module use /gpfs/hps/nco/ops/nwtest/modulefiles
-  module load ecflow/intel/4.17.0.1
-  ECFLOW_START=${ECF_ROOT}/bin/ecflow_start.sh
-  ECF_PORT=$(grep $USER /usrx/local/sys/ecflow/assigned_ports.txt | awk '{print $2}')
-  module load python/3.6.3
-
-  DISKNM=/gpfs/hps3/emc/nems/noscrub/emc.nemspara/RT
-  QUEUE=debug
-  COMPILE_QUEUE=dev
-  PARTITION=
-  ACCNR="${ACCNR:-GFS-DEV}"
-  if [[ -d /gpfs/hps3/ptmp ]] ; then
-      STMP=/gpfs/hps3/stmp
-      PTMP=/gpfs/hps3/stmp
-  else
-      STMP=/gpfs/hps3/stmp
-      PTMP=/gpfs/hps3/ptmp
-  fi
-  SCHEDULER=lsf
-  cp fv3_conf/fv3_bsub.IN_wcoss_cray fv3_conf/fv3_bsub.IN
-  cp fv3_conf/compile_bsub.IN_wcoss_cray fv3_conf/compile_bsub.IN
-
-elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
-
-  module load lsf/10.1
-  module load python/3.6.3
-
-  module use /usrx/local/dev/emc_rocoto/modulefiles
-  module load ruby/2.5.1 rocoto/1.3.0rc2
-  ROCOTORUN=$(which rocotorun)
-  ROCOTOSTAT=$(which rocotostat)
-  ROCOTOCOMPLETE=$(which rocotocomplete)
-  ROCOTO_SCHEDULER=lsf
-
-  module load ips/18.0.1.163
-  module load ecflow/4.17.0
-  ECFLOW_START=${ECF_ROOT}/bin/ecflow_start.sh
-  ECF_PORT=$(grep $USER /usrx/local/sys/ecflow/assigned_ports.txt | awk '{print $2}')
-
-  DISKNM=/gpfs/dell2/emc/modeling/noscrub/emc.nemspara/RT
-  QUEUE=debug
-  COMPILE_QUEUE=dev_transfer
-  PARTITION=
-  ACCNR="${ACCNR:-GFS-DEV}"
-  STMP=/gpfs/dell2/stmp
-  PTMP=/gpfs/dell2/ptmp
-  SCHEDULER=lsf
-  cp fv3_conf/fv3_bsub.IN_wcoss_dell_p3 fv3_conf/fv3_bsub.IN
-  cp fv3_conf/compile_bsub.IN_wcoss_dell_p3 fv3_conf/compile_bsub.IN
-
-elif [[ $MACHINE_ID = wcoss2.* ]]; then
+if [[ $MACHINE_ID = wcoss2.* ]]; then
 
   #module use /usrx/local/dev/emc_rocoto/modulefiles
   #module load ruby/2.5.1 rocoto/1.3.0rc2
@@ -407,11 +346,7 @@ echo "Machine: " $MACHINE_ID "    Account: " $ACCNR
 
 mkdir -p ${STMP}/${USER}
 
-# Different own baseline directories for different compilers on Theia/Cheyenne
-NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST
-if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]] || [[ $MACHINE_ID = s4.* ]] || [[ $MACHINE_ID = wcoss2.* ]]; then
-    NEW_BASELINE=${NEW_BASELINE}_${RT_COMPILER^^}
-fi
+NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST_${RT_COMPILER^^}
 
 # Overwrite default RUNDIR_ROOT if environment variable RUNDIR_ROOT is set
 RUNDIR_ROOT=${RUNDIR_ROOT:-${PTMP}/${USER}/FV3_RT}/rt_$$
@@ -486,11 +421,8 @@ if [[ $TESTS_FILE =~ '35d' ]] || [[ $TESTS_FILE =~ 'weekly' ]]; then
 fi
 
 BL_DATE=20220623
-if [[ $MACHINE_ID = hera.* ]] || [[ $MACHINE_ID = orion.* ]] || [[ $MACHINE_ID = cheyenne.* ]] || [[ $MACHINE_ID = gaea.* ]] || [[ $MACHINE_ID = jet.* ]] || [[ $MACHINE_ID = s4.* ]] || [[ $MACHINE_ID = wcoss2.* ]]; then
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
-else
-  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}}
-fi
+
+RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20220414}
 INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20220418
@@ -536,19 +468,7 @@ if [[ $ROCOTO == true ]]; then
 
   rm -f $ROCOTO_XML $ROCOTO_DB $ROCOTO_STATE *_lock.db
 
-  if [[ $MACHINE_ID = wcoss ]]; then
-    QUEUE=dev
-    COMPILE_QUEUE=dev
-    ROCOTO_SCHEDULER=lsf
-  elif [[ $MACHINE_ID = wcoss_cray ]]; then
-    QUEUE=dev
-    COMPILE_QUEUE=dev
-    ROCOTO_SCHEDULER=lsfcray
-  elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
-    QUEUE=dev
-    COMPILE_QUEUE=dev_transfer
-    ROCOTO_SCHEDULER=lsf
-  elif [[ $MACHINE_ID = wcoss2.* ]]; then
+  if [[ $MACHINE_ID = wcoss2.* ]]; then
     QUEUE=dev
     COMPILE_QUEUE=dev
     ROCOTO_SCHEDULER=pbs
@@ -634,13 +554,7 @@ suite ${ECFLOW_SUITE}
     limit max_jobs ${MAX_JOBS}
 EOF
 
-  if [[ $MACHINE_ID = wcoss ]]; then
-    QUEUE=dev
-  elif [[ $MACHINE_ID = wcoss_cray ]]; then
-    QUEUE=dev
-  elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
-    QUEUE=dev
-  elif [[ $MACHINE_ID = wcoss2.* ]]; then
+  if [[ $MACHINE_ID = wcoss2.* ]]; then
     QUEUE=dev
   elif [[ $MACHINE_ID = hera.* ]]; then
     QUEUE=batch

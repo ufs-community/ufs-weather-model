@@ -46,9 +46,6 @@ BUILD_DIR=$(pwd)/build_${BUILD_NAME}
 
 if [[ $MACHINE_ID == cheyenne.* ]] ; then
     BUILD_JOBS=${BUILD_JOBS:-3}
-elif [[ $MACHINE_ID == wcoss_dell_p3 ]] ; then
-    BUILD_JOBS=${BUILD_JOBS:-2}
-    source $PATHTR/tests/module-setup.sh
 fi
 
 BUILD_JOBS=${BUILD_JOBS:-8}
