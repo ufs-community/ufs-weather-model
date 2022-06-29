@@ -127,5 +127,8 @@ export FNABSC="'C192.maximum_snow_albedo.tileX.nc'"
 
 export CDMBWD=${CDMBWD_c192}
 export DT_INNER=${DT_INNER_c192}
+if [[ $SEDI_SEMI = .true. ]]; then
+ export DT_INNER=$DT_ATMOS
+fi
 
 export FV3_RUN=cpld_control_run.IN
