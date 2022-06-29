@@ -361,27 +361,6 @@ elif [[ $MACHINE_ID = orion.* ]]; then
   cp fv3_conf/fv3_slurm.IN_orion fv3_conf/fv3_slurm.IN
   cp fv3_conf/compile_slurm.IN_orion fv3_conf/compile_slurm.IN
 
-elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
-
-  module load lsf/10.1
-  module load python/3.6.3
-
-  module load ips/18.0.1.163
-  module load ecflow/4.17.0
-  ECFLOW_START=${ECF_ROOT}/bin/ecflow_start.sh
-  ECF_PORT=$(grep $USER /usrx/local/sys/ecflow/assigned_ports.txt | awk '{print $2}')
-
-  DISKNM=/gpfs/dell2/emc/modeling/noscrub/emc.nemspara/RT
-  QUEUE=debug
-  COMPILE_QUEUE=dev_transfer
-  ACCNR="${ACCNR:-GFS-DEV}"
-  PARTITION=
-  STMP=/gpfs/dell2/stmp
-  PTMP=/gpfs/dell2/ptmp
-  SCHEDULER=lsf
-  cp fv3_conf/fv3_bsub.IN_wcoss_dell_p3 fv3_conf/fv3_bsub.IN
-  cp fv3_conf/compile_bsub.IN_wcoss_dell_p3 fv3_conf/compile_bsub.IN
-
 elif [[ $MACHINE_ID = linux.* ]]; then
 
   PARTITION=
@@ -551,8 +530,6 @@ if [[ $ECFLOW == true ]]; then
     QUEUE=batch
   elif [[ $MACHINE_ID == orion.* ]]; then
     QUEUE=batch
-  elif [[ $MACHINE_ID == wcoss_dell_p3 ]]; then
-    QUEUE=dev
   else
     error "ecflow is not supported on this machine $MACHINE_ID"
   fi
