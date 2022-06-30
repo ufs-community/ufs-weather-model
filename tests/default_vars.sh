@@ -386,15 +386,8 @@ export CDMBWD_c192='0.23,1.5,1.0,1.0'
 export CDMBWD_c384='1.1,0.72,1.0,1.0'
 export CDMBWD_c768='4.0,0.15,1.0,1.0'
 
-#DT_INNER=(Time step)/2
-export DT_INNER_c96=360
-export DT_INNER_c192=300
-export DT_INNER_c384=150
-export DT_INNER_c768=75
-
 # set default
 export CDMBWD=${CDMBWD_c96}
-export DT_INNER=${DT_INNER_c96}
 
 # PBL
 export SATMEDMF=.false.
@@ -482,6 +475,7 @@ export SHOUR=00
 export SECS=`expr $SHOUR \* 3600`
 export FHMAX=$(( DAYS*24 ))
 export DT_ATMOS=1800
+export DT_INNER=${DT_ATMOS}
 export FHCYC=24
 export FHROT=0
 export LDIAG3D=.false.
@@ -611,9 +605,11 @@ WAV_tasks=$WAV_tasks_cpl_dflt
 
 # component and coupling timesteps
 export DT_ATMOS=720
+export DT_INNER=${DT_ATMOS}
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6=1800
 export DT_THERM_MOM6=3600
+
 
 # nems.configure defaults
 export NEMS_CONFIGURE=nems.configure.cpld.IN
