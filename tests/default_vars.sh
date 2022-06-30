@@ -280,6 +280,10 @@ export WLCLK=$WLCLK_dflt
 
 export_fv3 ()
 {
+# nems.configure defaults
+export NEMS_CONFIGURE=nems.configure.atm.IN
+export atm_model=fv3
+
 export FV3=true
 export S2S=false
 export HAFS=false
