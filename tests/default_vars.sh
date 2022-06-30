@@ -43,8 +43,11 @@
   TASKS_cpl_bmrk=656; THRD_cpl_bmrk=2
   INPES_cpl_bmrk=8; JNPES_cpl_bmrk=8; WPG_cpl_bmrk=24
   OCN_tasks_cpl_bmrk=120
+  OCN_thrds_cpl_bmrk=1
   ICE_tasks_cpl_bmrk=48
+  ICE_thrds_cpl_bmrk=1
   WAV_tasks_cpl_bmrk=80
+  WAV_thrds_cpl_bmrk=2
 
   TASKS_cpl_c192=464; THRD_cpl_c192=2
   INPES_cpl_c192=6; JNPES_cpl_c192=8; WPG_cpl_c192=12
