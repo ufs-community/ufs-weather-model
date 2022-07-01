@@ -174,11 +174,7 @@ compute_petbounds
 
 atparse < ${PATHRT}/parm/${NEMS_CONFIGURE:-nems.configure} > nems.configure
 
-# remove after all tests pass
-#if [[ $TASKS -ne $UFS_tasks ]]; then
-#   echo "$TASKS -ne $UFS_tasks "
-#  exit 1
-#fi
+# TASKS is now set to UFS_TASKS
 export TASKS=$UFS_tasks
 
 if [[ "Q${INPUT_NEST02_NML:-}" != Q ]] ; then
