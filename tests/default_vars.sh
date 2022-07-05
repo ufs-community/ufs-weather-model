@@ -324,7 +324,7 @@ export NWAT=6
 # GFDL MP
 export DNATS=1
 export DO_SAT_ADJ=.true.
-export LHEATSTRG=.false.
+export LHEATSTRG=.true.
 export LSEASPRAY=.false.
 export LGFDLMPRAD=.false.
 export EFFR_IN=.false.
@@ -591,6 +591,7 @@ WAV_tasks=$WAV_tasks_cpl_dflt
 
 # component and coupling timesteps
 export DT_ATMOS=720
+export DT_INNER=${DT_ATMOS}
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6=1800
 export DT_THERM_MOM6=3600
@@ -659,7 +660,7 @@ export USE_MERRA2=.true.
 export IAER=1011
 export NSTF_NAME=2,0,0,0,0
 
-export LHEATSTRG=.true.
+export LHEATSTRG=.false.
 export LSEASPRAY=.true.
 
 # P7 UGWP1
