@@ -26,9 +26,9 @@ write_fail_test() {
 remove_fail_test() {
     echo "Removing test failure flag file for compile_${COMPILE_NR}"
     if [[ ${OPNREQ_TEST} == true ]] ; then
-        rm -f $PATHRT/fail_opnreq_test_${COMPILE_NR}
+        rm -f $PATHRT/fail_opnreq_compile_${COMPILE_NR}
     else
-        rm -f $PATHRT/fail_test_${COMPILE_NR}
+        rm -f $PATHRT/fail_compile_${COMPILE_NR}
     fi
 }
 
