@@ -551,7 +551,7 @@ export HAFS=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
 
-export FV3BMIC='gfs_p8c'
+export FV3BMIC='p8c'
 
 export SYEAR=2021
 export SMONTH=03
@@ -775,6 +775,8 @@ export np2=`expr $NPROC_ICE / 2`
 export BLCKX=`expr $NX_GLB / $np2`
 export BLCKY=`expr $NY_GLB / 2`
 export MESHOCN_ICE=mesh.mx${OCNRES}.nc
+export WAVDOMAIN=mx${OCNRES}
+export MESH_WAV=mesh.${WAVDOMAIN}.nc
 export CICEGRID=grid_cice_NEMS_mx${OCNRES}.nc
 export CICEMASK=kmtu_cice_NEMS_mx${OCNRES}.nc
 export RUNID=unknown
