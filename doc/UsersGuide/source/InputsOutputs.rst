@@ -649,6 +649,41 @@ The OUTPARS_WAV defines gridded output fields. The GOFILETYPE, POFILETYPE and RS
 
 No initial condition files are required for WW3.
 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Mesh generation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+For coupled applications using the CMEPS mediator, an ESMF Mesh file describing the WW3 domain is required. For regional and sub-global domains, the mesh can be created using a two-step procedure.
+ 
+1. Generate a SCRIP format file for the domain
+2. Generate the ESMF Mesh.
+
+In each case, the SCRIP file needs to be checked that it contains the right start and end latitudes and longitudes to match the mod_def file being used.
+
+For the HAFS regional domain, the following commands can be used:
+
+.. code-block:: console
+
+   ncremap -g hafswav.SCRIP.nc -G latlon=441,901#snwe=1.45,45.55,-98.05,-7.95#lat_typ=uni#lat_drc=s2n
+   ESMF_Scrip2Unstruct hafswav.SCRIP.nc mesh.hafs.nc 0
+
+For the sub-global 1-deg domain extending from latitude 85.0S
+
+.. code-block:: console
+
+   ncremap -g glo_1deg.SCRIP.nc -G latlon=171,360#snwe=-85.5,85.5,-0.5,359.5#lat_typ=uni#lat_drc=s2n
+   ESMF_Scrip2Unstruct glo_1deg.SCRIP.nc mesh.glo_1deg.nc 0
+
+For the sub-global 1/2-deg domain extending from latitude 80.0S
+
+.. code-block:: console
+
+   ncremap -g gwes_30m.SCRIP.nc -G latlon=321,720#snwe=-80.25,80.25,-0.25,359.75#lat_typ=uni#lat_drc=s2n
+   ESMF_Scrip2Unstruct gwes_30m.SCRIP.nc mesh.gwes_30m.nc 0
+
+For the tripole grid, the mesh file is generated as part of the cpld_gridgen utility in
+`UFS_UTILS <https://ufs-community.github.io/UFS_UTILS/cpld_gridgen/index.html>`__.
+
 -------
 CDEPS
 -------
@@ -769,7 +804,7 @@ The static input files for GOCART configurations are listed and described in :nu
    * - GOCART2G_GridComp.rc
      - The basic properties of the GOCART2G Grid Components
    * - NI2G_instance_NI.rc
-     - Resource file for Nitrate parameters               
+     - Resource file for Nitrate parameters
    * - SS2G_instance_SS.rc
      - Resource file for Sea Salt parameters
    * - SU2G_instance_SU.rc
@@ -785,10 +820,10 @@ GOCART inputs defined in AERO_ExtData are listed and described in :numref:`Table
 
    * - Filename
      - Description
-   * - ExtData/dust 
+   * - ExtData/dust
      - FENGSHA input files
    * - ExtData/QFED
-     - QFED biomass burning emissions     
+     - QFED biomass burning emissions
    * - ExtData/CEDS
      - Anthropogenic emissions
    * - ExtData/MERRA2
@@ -796,11 +831,11 @@ GOCART inputs defined in AERO_ExtData are listed and described in :numref:`Table
    * - ExtData/PIESA/sfc
      - Aviation emissions
    * - ExtData/PIESA/L127
-     - H2O2, OH and NO3 mixing ratios     
+     - H2O2, OH and NO3 mixing ratios
    * - ExtData/MEGAN_OFFLINE_BVOC
      - VOCs MEGAN biogenic emissions
    * - ExtData/monochromatic
-     - Aerosol monochromatic optics files 
+     - Aerosol monochromatic optics files
    * - ExtData/optics
      - Aerosol radiation bands optic files for RRTMG
    * - ExtData/volcanic
@@ -815,11 +850,11 @@ The static input files when using climatology (MERRA2) are listed and described 
    :header-rows: 1
 
    * - Filename
-     - Description             
+     - Description
    * - merra2.aerclim.2003-2014.m$(month).nc
-     - MERRA2 aerosol climatology mixing ratio 
+     - MERRA2 aerosol climatology mixing ratio
    * - Optics_BC.dat
-     - BC optical look-up table for MERAA2 
+     - BC optical look-up table for MERAA2
    * - Optics_DU.dat
      - DUST optical look-up table for MERAA2
    * - Optics_OC.dat
@@ -833,7 +868,7 @@ The static input files when using climatology (MERRA2) are listed and described 
 Grid description and initial condition files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Running GOCART in UFS does not require aerosol initial conditions, as aerosol models can always start from scratch (cold start), however, this approach does require more than two weeks of model spin-up to obtain reasonable aerosol simulation results. 
+Running GOCART in UFS does not require aerosol initial conditions, as aerosol models can always start from scratch (cold start), however, this approach does require more than two weeks of model spin-up to obtain reasonable aerosol simulation results.
 
 Therefore, the most popular method is to take previous aerosol simulation results. The result is not necessarily from the same model, it could be from a climatology result, such as MERAA2, or a different model but with the same aerosol species and bin/size distribution.
 
@@ -1854,7 +1889,7 @@ For the fully coupled S2S application that receives atmosphere-ocean fluxes from
           ProfileMemory = false
           OverwriteSlice = true
           mesh_ice = mesh.mx025.nc
-          stop_n = 840 
+          stop_n = 840
           stop_option = nhours
           stop_ymd = -999
         ::
