@@ -56,8 +56,6 @@ export LIST_FILES="sfcf024.tile1.nc \
 export_fv3
 export_cpl
 
-export DAYS=1
-export FHMAX=24
 export RESTART_N=12
 export RESTART_INTERVAL="${RESTART_N} -1"
 
@@ -119,15 +117,13 @@ export FNABSC="'C48.maximum_snow_albedo.tileX.nc'"
 
 # resolution dependent setting
 export CDMBWD=${CDMBWD_c48}
-export DT_INNER=600
+export DT_INNER=${DT_ATMOS}
 
 # no aero, no waves
 export CPLCHM=.false.
 export CPLWAV=.false.
 export CPLWAV2ATM=.false.
 export MOM6_USE_WAVES=False
-#export TOPOEDITS=ufs.topo_edits_011818.nc
-#export MOM6_ALLOW_LANDMASK_CHANGES=True
 export eps_imesh=4.0e-1
 
 export DIAG_TABLE=diag_table_template
