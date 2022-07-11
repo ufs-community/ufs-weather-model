@@ -45,10 +45,13 @@ cp    @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/mesh.mx@[OCNRES].nc .
 # WW3 fix/input
 if [[ $CPLWAV == .true. ]]; then
   cp    @[INPUTDATA_ROOT_WW3]/mod_def.points .
-  if [[ $OCNRES == 025 ]]; then
-     cp    @[INPUTDATA_ROOT_WW3]/mod_def.mx@[OCNRES]lite mod_def.ww3
+  if [[ $WAVDOMAIN == mx025 ]]; then
+     cp  @[INPUTDATA_ROOT_WW3]/mod_def.@[WAVDOMAIN]lite mod_def.ww3
   else
-     cp    @[INPUTDATA_ROOT_WW3]/mod_def.mx@[OCNRES] mod_def.ww3
+     cp  @[INPUTDATA_ROOT_WW3]/mod_def.@[WAVDOMAIN] mod_def.ww3
+  fi
+  if [[ ${WAVDOMAIN:0:2} != mx ]]; then
+     cp  @[INPUTDATA_ROOT_WW3]/@[MESH_WAV] .
   fi
 fi
 
@@ -106,13 +109,21 @@ else
   cp  ../${DEP_RUN}${SUFFIX}/RESTART/${RFILE} .
   ls -1 ${RFILE}>rpointer.cpl
 
+  # CMEPS/CCPP restart file
+  if [[ $CPLMODE =~ 'nems_frac_aoflux' ]]; then
+    RFILE_CCPP=ufs.cpld.cpl.ccpp.${RESTART_FILE_SUFFIX_SECS}.nc
+    cp ../${DEP_RUN}${SUFFIX}/${RFILE_CCPP} .
+  fi
+
   # CICE restart and pointer files
   RFILE=iced.${RESTART_FILE_SUFFIX_SECS}.nc
   cp  ../${DEP_RUN}${SUFFIX}/RESTART/${RFILE} ./INPUT
   ls -1 ./INPUT/${RFILE}>ice.restart_file
 
   # WAVE restart file
-  cp ../${DEP_RUN}${SUFFIX}/${RESTART_FILE_PREFIX}.restart.ww3 ./restart.ww3
+  if [[ $CPLWAV == .true. ]]; then
+    cp ../${DEP_RUN}${SUFFIX}/${RESTART_FILE_PREFIX}.restart.ww3 ./restart.ww3
+  fi
 fi
 
 #inline post

@@ -23,6 +23,15 @@ write_fail_test() {
   exit 1
 }
 
+remove_fail_test() {
+    echo "Removing test failure flag file for ${TEST_NAME} ${TEST_NR}"
+    if [[ ${OPNREQ_TEST} == true ]] ; then
+        rm -f $PATHRT/fail_opnreq_test_${TEST_NR}
+    else
+        rm -f $PATHRT/fail_test_${TEST_NR}
+    fi
+}
+
 function compute_petbounds() {
 
   # each test MUST define ${COMPONENT}_tasks variable for all components it is using
@@ -90,11 +99,7 @@ export COMPILE_NR=$5
 
 cd ${PATHRT}
 OPNREQ_TEST=${OPNREQ_TEST:-false}
-if [[ ${OPNREQ_TEST} == true ]]; then
-  rm -f fail_opnreq_test_${TEST_NR}
-else
-  rm -f fail_test_${TEST_NR}
-fi
+remove_fail_test
 
 [[ -e ${RUNDIR_ROOT}/run_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
 source default_vars.sh
@@ -283,6 +288,11 @@ if [[ "${DIAG_TABLE_ADDITIONAL:-}Q" != Q ]] ; then
   atparse < "${PATHRT}/parm/diag_table/${DIAG_TABLE_ADDITIONAL:-}" >> diag_table
 fi
 
+# ATMAERO
+if [[ $CPLCHM == .true. ]] && [[ $S2S = 'false' ]]; then
+  atparse < ${PATHRT}/parm/diag_table/${DIAG_TABLE:-diag_table_template} > diag_table
+fi
+
 if [[ $DATM_CDEPS = 'true' ]]; then
   atparse < ${PATHRT}/parm/${DATM_IN_CONFIGURE:-datm_in} > datm_in
   atparse < ${PATHRT}/parm/${DATM_STREAM_CONFIGURE:-datm.streams.IN} > datm.streams
@@ -351,6 +361,9 @@ fi
 if [[ $SCHEDULER != 'none' ]]; then
   cat ${RUNDIR}/job_timestamp.txt >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
 fi
+
+remove_fail_test
+
 ################################################################################
 # End test
 ################################################################################

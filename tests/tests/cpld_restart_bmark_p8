@@ -100,6 +100,8 @@ export NPROC_ICE=$ICE_tasks
 export np2=`expr $NPROC_ICE / 2`
 export BLCKX=`expr $NX_GLB / $np2`
 export BLCKY=`expr $NY_GLB / 2`
+export WAVDOMAIN=gwes_30m
+export MESH_WAV=mesh.${WAVDOMAIN}.nc
 
 # set component and coupling timesteps
 export DT_ATMOS=300
@@ -142,7 +144,6 @@ export NA_INIT=0
 export EXTERNAL_IC=.false.
 export NGGPS_IC=.false.
 export MOUNTAIN=.true.
-export NSTF_NAME=2,0,0,0,0
 
 # ICE warm start
 export CICERUNTYPE=continue
