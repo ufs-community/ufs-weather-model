@@ -66,6 +66,11 @@ export THRD=$THRD_cpl_c48
 export WRTTASK_PER_GROUP=$WPG_cpl_c48
 export OUTPUT_GRID='gaussian_grid'
 
+export WAV_tasks=0
+export CHM_tasks=0
+OCN_tasks=$OCN_tasks_cpl_c48
+ICE_tasks=$ICE_tasks_cpl_c48
+
 # atm/ocn/ice resolution
 export ATMRES=C48
 export NPX=49
@@ -81,7 +86,7 @@ export NY_GLB=35
 export NPROC_ICE=$ICE_tasks
 export CICE_DECOMP=slenderX1
 export BLCKX=`expr $NX_GLB / $NPROC_ICE`
-export BLCKY=NY_GLB
+export BLCKY=$NY_GLB
 
 # set component and coupling timesteps
 export DT_ATMOS=1200
@@ -112,8 +117,8 @@ export FNVMNC="'C48.vegetation_greenness.tileX.nc'"
 export FNVMXC="'C48.vegetation_greenness.tileX.nc'"
 export FNSLPC="'C48.slope_type.tileX.nc'"
 export FNABSC="'C48.maximum_snow_albedo.tileX.nc'"
-#export FNSMCC="'global_soilmgldas.statsgo.t92.192.94.grb'"
-#export FNMSKH="'global_slmask.t62.192.94.grb'"
+export FNSMCC="'global_soilmgldas.statsgo.t92.192.94.grb'"
+export FNMSKH="'global_slmask.t62.192.94.grb'"
 
 # resolution dependent setting
 export CDMBWD=${CDMBWD_c48}

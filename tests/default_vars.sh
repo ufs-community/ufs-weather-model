@@ -17,8 +17,8 @@
 
   TASKS_cpl_c48=20; THRD_cpl_c48=1 
   INPES_cpl_c48=1; JNPES_cpl_c48=1; WPG_cpl_c48=6
-  OCN_tasks_cpl_dflt=4
-  ICE_tasks_cpl_dflt=4
+  OCN_tasks_cpl_c48=4
+  ICE_tasks_cpl_c48=4
 
   TASKS_cpl_dflt=200; THRD_cpl_dflt=1
   INPES_cpl_dflt=3; JNPES_cpl_dflt=8; WPG_cpl_dflt=6
