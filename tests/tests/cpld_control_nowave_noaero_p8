@@ -103,3 +103,14 @@ export DIAG_TABLE=diag_table_template
 export NEMS_CONFIGURE=nems.configure.cpld_noaero_nowave.IN
 
 export FV3_RUN=cpld_control_run.IN
+
+if [[ $MACHINE_ID = cheyenne.* ]]; then
+
+  TPN=18
+
+else
+
+  echo "Unknown MACHINE_ID ${MACHINE_ID}"
+  exit 1
+
+fi
