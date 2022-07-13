@@ -97,9 +97,12 @@ export NPROC_ICE=$ICE_tasks
 export np2=`expr $NPROC_ICE / 2`
 export BLCKX=`expr $NX_GLB / $np2`
 export BLCKY=`expr $NY_GLB / 2`
+export WAVDOMAIN=gwes_30m
+export MESH_WAV=mesh.${WAVDOMAIN}.nc
 
 # set component and coupling timesteps
 export DT_ATMOS=300
+export DT_INNER=${DT_ATMOS}
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6=900
 export DT_THERM_MOM6=1800
@@ -133,7 +136,6 @@ export FNABSC="'C384.maximum_snow_albedo.tileX.nc'"
 export NSTF_NAME=2,1,0,0,0
 
 export CDMBWD=${CDMBWD_c384}
-export DT_INNER=${DT_INNER_c384}
 
 export OUT_BEG=$RUN_BEG
 export RST_BEG=$RUN_BEG
