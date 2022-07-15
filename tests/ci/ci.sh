@@ -65,7 +65,7 @@ if [ $BUILD = "true" ]; then
   docker build --build-arg test_name=$TEST_NAME \
                --build-arg build_case=$BUILD_CASE \
                --no-cache \
-               --squash --compress \
+               --compress \
                -f Dockerfile -t ${IMG_NAME} ../..
 
   docker create --name tmp-container ${IMG_NAME}
