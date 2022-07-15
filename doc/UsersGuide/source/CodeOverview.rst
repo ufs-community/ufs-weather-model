@@ -46,6 +46,8 @@ The ufs-weather-model repository supports the short- and medium-range UFS applic
     - https://github.com/NOAA-EMC/CMEPS
   * - Community Data Models for Earth Prediction Systems (CDEPS)
     - https://github.com/NOAA-EMC/CDEPS
+  * - Air Quality Model (AQM)
+    - https://github.com/NOAA-EMC/AQM
 
 In the table, the left column contains a description of each repository, and the right column shows the component repositories which are pointing to (or will point to) the authoritative repositories. The ufs-weather-model currently uses git submodule to manage the sub-components.
 
@@ -73,6 +75,8 @@ The umbrella repository for the UFS Weather Model is named ufs-weather-model.  U
    │    └── CMEPS                              https://github.com/NOAA-EMC/CMEPS
    ├── CDEPS-interface
    │    └── CDEPS                              https://github.com/NOAA-EMC/CDEPS
+   ├── AQM
+   │    └── CMAQ                               https://github.com/NOAA-EMC/AQM
    
 ===================
 Directory Structure
@@ -125,6 +129,10 @@ When the ufs-weather-model is cloned, the basic directory structure will be simi
    │     └── CDEPS
    │         ├── datm                            --------- CDEPS DATM
    │         └── docn                            --------- CDEPS DOCN
+   ├── AQM
+   │     └── src
+   │         ├── model
+   │            └── CMAQ                         --------- EPA AQ Model
    ├── modulefiles          -------- system module files for supported HPC systems
    ├── tests                -------- regression test infrastructure
    │   └── parm
