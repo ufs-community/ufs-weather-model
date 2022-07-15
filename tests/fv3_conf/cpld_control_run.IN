@@ -18,9 +18,9 @@ else
      MOM_IC=@[INPUTDATA_ROOT]/MOM6_IC/${OCNRES}/${SYEAR}${SMONTH}${SDAY}${SHOUR}
      ICE_IC=@[INPUTDATA_ROOT]/CICE_IC/${OCNRES}/${SYEAR}${SMONTH}${SDAY}${SHOUR}
   else
-  FV3_IC=@[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127_mx${OCNRES}
-  MOM_IC=@[INPUTDATA_ROOT]/MOM6_IC
-  ICE_IC=@[INPUTDATA_ROOT]/CICE_IC/${OCNRES}
+     FV3_IC=@[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127_mx${OCNRES}
+     MOM_IC=@[INPUTDATA_ROOT]/MOM6_IC
+     ICE_IC=@[INPUTDATA_ROOT]/CICE_IC/${OCNRES}
   fi
 fi
 
@@ -80,7 +80,7 @@ if [ $WARM_START = .false. ]; then
   else
     if [[ $ATMRES == C48 ]]; then
       cp    ${MOM_IC}/MOM.res.nc ./INPUT
-      cp    ${ICE_IC}/cice5_model_@[ICERES].res_* ./cice_model.res.nc
+      cp    ${ICE_IC}/cice_model_@[ICERES].cpc.res_* ./cice_model.res.nc
     else
       cp    ${MOM_IC}/MOM6_IC_TS_${SYEAR}${SMONTH}${SDAY}${SHOUR}.nc ./INPUT/MOM6_IC_TS.nc
       cp    ${ICE_IC}/cice_model_@[ICERES].cpc.res_${SYEAR}${SMONTH}${SDAY}.nc ./cice_model.res.nc
@@ -99,7 +99,7 @@ else
      for RFILE in INPUT/${RESTART_FILE_PREFIX}.*; do
        [ -e $RFILE ] || exit 1
        RFILE_OLD=$(basename $RFILE)
-          mv -f $RFILE INPUT/"${RFILE_OLD}/${RESTART_FILE_PREFIX}./}"
+          mv -f $RFILE INPUT/"${RFILE_OLD//${RESTART_FILE_PREFIX}./}"
      done
 
      #if not mx025, then mom6 restart is a single file
@@ -135,9 +135,7 @@ else
 
   else
      # C48mx500 warm start from ICs
-     cp    ${FV3_IC}/sfc_data*.nc ./INPUT
-     cp    ${FV3_IC}/gfs_data*.nc ./INPUT
-     cp    ${FV3_IC}/gfs_ctrl.nc ./INPUT
+     cp    ${FV3_IC}/*.nc ./INPUT
      cp    ${MOM_IC}/MOM.res.nc ./INPUT
      cp    ${ICE_IC}/* .
      cp    @[INPUTDATA_ROOT]/CMEPS_IC/${ATMRES}mx${OCNRES}/${SYEAR}${SMONTH}${SDAY}${SHOUR}/* .
