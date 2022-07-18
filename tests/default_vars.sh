@@ -140,6 +140,7 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   OCN_tasks_cpl_bmrk=100
   ICE_tasks_cpl_bmrk=48
   WAV_tasks_cpl_bmrk=100
+  WLCLK_cpl_bmrk=120
 
   # run only in weekly test
   TASKS_cpl_c192=1404; THRD_cpl_c192=2
@@ -147,6 +148,7 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   OCN_tasks_cpl_c192=100
   ICE_tasks_cpl_c192=48
   WAV_tasks_cpl_c192=80
+  WLCLK_cpl_c192=120
 
 elif [[ $MACHINE_ID = s4.* ]]; then
 
