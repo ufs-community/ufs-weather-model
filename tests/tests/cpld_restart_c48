@@ -1,22 +1,22 @@
 #
 #  cpld_restart_c48 test
 #
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C48MX500"
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C48MX500 restart test"
 
-export CNTL_DIR="cpld_control_c48"
+export CNTL_DIR="cpld_warmstart_c48"
 
-export LIST_FILES="sfcf024.tile1.nc \
-                   sfcf024.tile2.nc \
-                   sfcf024.tile3.nc \
-                   sfcf024.tile4.nc \
-                   sfcf024.tile5.nc \
-                   sfcf024.tile6.nc \
-                   atmf024.tile1.nc \
-                   atmf024.tile2.nc \
-                   atmf024.tile3.nc \
-                   atmf024.tile4.nc \
-                   atmf024.tile5.nc \
-                   atmf024.tile6.nc \
+export LIST_FILES="sfcf006.tile1.nc \
+                   sfcf006.tile2.nc \
+                   sfcf006.tile3.nc \
+                   sfcf006.tile4.nc \
+                   sfcf006.tile5.nc \
+                   sfcf006.tile6.nc \
+                   atmf006.tile1.nc \
+                   atmf006.tile2.nc \
+                   atmf006.tile3.nc \
+                   atmf006.tile4.nc \
+                   atmf006.tile5.nc \
+                   atmf006.tile6.nc \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -50,14 +50,24 @@ export LIST_FILES="sfcf024.tile1.nc \
                    RESTART/sfc_data.tile5.nc \
                    RESTART/sfc_data.tile6.nc \
                    RESTART/MOM.res.nc \
-                   RESTART/iced.2021-03-23-21600.nc \
-                   RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc"
+                   RESTART/iced.2021-03-23-43200.nc \
+                   RESTART/ufs.cpld.cpl.r.2021-03-23-43200.nc"
 
 export_fv3
 export_cpl
 
-export FHROT=12
-export RESTART_N=$((FHMAX-$FHROT))
+export SYEAR=2021
+export SMONTH=03
+export SDAY=23
+export SHOUR=06
+export SECS=`expr $SHOUR \* 3600`
+export DAYS=0.25
+export FHMAX=6
+export FHROT=3
+export RESTART_N=1
+export RESTART_INTERVAL="${RESTART_N} -1"
+export OUTPUT_FH="3 -1"
+export FHZERO=3
 
 export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${FHROT} + ${SHOUR} )))0000"
 export RESTART_FILE_SUFFIX_HRS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%02d" $(( ${FHROT} + ${SHOUR})))"
