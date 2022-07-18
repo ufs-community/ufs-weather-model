@@ -68,9 +68,9 @@ if [ $BUILD = "true" ]; then
                --compress \
                -f Dockerfile -t ${IMG_NAME} ../..
 
-  docker create --name tmp-container ${IMG_NAME}
-  docker cp -a tmp-container:/home/builder/ufs-weather-model/tests/fv3.tar.gz ~
-  docker rm tmp-container
+  docker create --name "${TEST_NAME}_${BUILD_CASE}" "${IMG_NAME}"
+  docker cp -a "${TEST_NAME}_${BUILD_CASE}:/home/builder/ufs-weather-model/tests/fv3.tar.gz" ~
+  docker rm "${TEST_NAME}_${BUILD_CASE}"
 
 elif [ $RUN == "true" ]; then
 
