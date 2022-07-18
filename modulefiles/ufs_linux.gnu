@@ -1,10 +1,34 @@
 #!/bin/bash
 
-#%Module######################################################################
-##
-##    UFS prerequisites: Linux (tested: Ubuntu) with gcc/gfortran compilers
+source /usr/share/lmod/6.6/init/bash
 
-echo "Setting environment variables for NEMSfv3gfs on Linux with gcc/gfortran"
+module use /home/builder/opt/hpc-modules/modulefiles/stack
+
+module load hpc/1.2.0
+module load hpc-gnu/9.3.0
+module load hpc-openmpi/4.0.1
+
+module load jasper/2.0.25
+module load zlib/1.2.11
+module load png/1.6.35
+
+module load hdf5/1.10.6
+module load netcdf/4.7.4
+module load pio/2.5.3
+module load esmf/v8.3.0b09
+module load fms/2022.01
+
+module load bacio/2.4.1
+module load crtm/2.3.0
+module load g2/3.4.5
+module load g2tmpl/1.10.0
+module load ip/3.3.3
+module load sp/2.3.3
+module load w3nco/2.4.1
+
+module load gftl-shared/v1.5.0
+module load yafyaml/v0.5.1
+module load mapl/2.22.0-esmf-v8.3.0b09
 
 ##
 ## load programming environment: compiler, flags, paths
@@ -19,29 +43,3 @@ export FC=${FC:-mpif90}
 ## set up variables for ../cmake/configure_linux.gnu.cmake
 ##
 export CMAKE_Platform=linux.gnu
-
-##
-## use own NetCDF library
-##
-export NETCDF=${NETCDF:-/home/builder/opt}
-
-##
-## use SIONlib library if installed and environment variable is set
-##
-SIONLIB=${SIONLIB:-}
-if [ ! "x$SIONLIB" == "x" ]; then
-  echo "Use SIONlib installation in ${SIONLIB}"
-  export SIONLIB_INC="-I${SIONLIB}/include -I${SIONLIB}/include/mod_64"
-  export SIONLIB_LIB="-L${SIONLIB}/lib -lsionmpi_f90_64 -lsionser_f90_64 -lsionmpi_64 -lsiongen_64 -lsionser_64 -lsioncom_64 -lsioncom_64_lock_none"
-fi
-
-##
-## use pre-compiled EMSF library for above compiler / MPI combination
-##
-export ESMFMKFILE=${ESMFMKFILE:-/home/builder/opt/lib/esmf.mk}
-
-##
-## NCEP libraries (need to download and build manually, see doc/README_{UBUNTU,CENTOS,...}.txt and https://github.com/NCAR/NCEPlibs)
-##
-export NCEPLIBS_DIR=${NCEPLIBS_DIR:-/home/builder/opt}
-export CMAKE_PREFIX_PATH=${NCEPLIBS_DIR}
