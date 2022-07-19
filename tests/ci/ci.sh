@@ -88,12 +88,8 @@ elif [ $RUN == "true" ]; then
   docker cp . "${TEST_NAME}_${TEST_CASE}:/home/builder/ufs-weather-model"
   docker start "${TEST_NAME}_${TEST_CASE}"
 
-  echo 'cache,rss,shmem' >memory_stat
   sleep 3
-  containerID=$(docker ps -q --no-trunc)
-  check_memory_usage $containerID >>memory_stat &
 
-  docker logs -f $containerID
   exit $(docker inspect $containerID --format='{{.State.ExitCode}}')
 
 fi
