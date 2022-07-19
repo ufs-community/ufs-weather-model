@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu
+set -eu -x
 
 check_memory_usage() {
   dirName=/sys/fs/cgroup/memory/docker/$1
