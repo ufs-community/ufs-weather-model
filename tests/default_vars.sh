@@ -799,6 +799,10 @@ export RESTART_EXT=.false.
 export FRAZIL_FWSALT=.true.
 # default to write CICE average history files
 export CICE_HIST_AVG=.true.
+# default CICE B-grid, ATM and OCN are provided by cap on A grid
+export GRIDATM=A
+export GRIDOCN=A
+export GRIDICE=B
 
 #wave
 export INPUT_CURFLD='T F     Currents'
@@ -951,6 +955,9 @@ export RESTART_EXT=.false.
 export FRAZIL_FWSALT=.true.
 # default to write CICE average history files
 export CICE_HIST_AVG=.true.
+export GRIDATM=A
+export GRIDOCN=A
+export GRIDICE=B
 # default non-mushy thermo
 export KTHERM=1
 export TFREEZE_OPTION=linear_salt
