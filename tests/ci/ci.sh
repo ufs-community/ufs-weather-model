@@ -74,9 +74,6 @@ if [ $BUILD = "true" ]; then
 
 elif [ $RUN == "true" ]; then
 
-  docker volume rm -f DataVolume >/dev/null &&
-    docker run -d --rm -v DataVolume:/tmp noaaepic/input-data:20220414
-
   docker create -u builder -e "CI_TEST=true" -e "USER=builder" \
                 -e "RT_MACHINE=linux.gnu" -e "RT_COMPILER=gnu" \
                 -w "/home/builder/ufs-weather-model/tests" \
@@ -90,6 +87,5 @@ elif [ $RUN == "true" ]; then
 
   sleep 3
 
-  exit $(docker inspect $containerID --format='{{.State.ExitCode}}')
-
+  exit $(docker inspect "${TEST_NAME}_${TEST_CASE}" --format='{{.State.ExitCode}}')
 fi
