@@ -78,7 +78,7 @@ elif [ $RUN == "true" ]; then
                 -e "RT_MACHINE=linux.gnu" -e "RT_COMPILER=gnu" \
                 -w "/home/builder/ufs-weather-model/tests" \
                 -v DataVolume:/home/builder/data/NEMSfv3gfs \
-                --shm-size=512m --name "${TEST_NAME}_${TEST_CASE}" noaaepic/ubuntu20.04-gnu9.3-hpc-stack:v1.2 \
+                --shm-size=512m --name "${TEST_NAME}_${TEST_CASE}" noaaepic/ubuntu20.04-gnu9.3-hpc-stack:v1.2b \
                 /bin/bash -c "./opnReqTest -n ${TEST_NAME} -c ${TEST_CASE} -x"
 
   cd $GITHUB_WORKSPACE
