@@ -87,5 +87,7 @@ elif [ $RUN == "true" ]; then
 
   sleep 3
 
+  docker logs --details --timestamps "${TEST_NAME}_${TEST_CASE}"
+
   exit $(docker inspect "${TEST_NAME}_${TEST_CASE}" --format='{{.State.ExitCode}}')
 fi
