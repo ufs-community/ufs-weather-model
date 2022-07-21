@@ -107,9 +107,9 @@ jobs:
         cd tests/ci && ./ci.sh -n ${{ matrix.name }} -b ${{ matrix.case }}
         sudo docker image ls
 
-    - name: Free up disk space
-      run: |
-        sudo    docker images --no-trunc --all --quiet --filter="dangling=true" | sudo xargs --no-run-if-empty docker rmi  
+    #- name: Free up disk space
+    #  run: |
+    #    sudo    docker images --no-trunc --all --quiet --filter="dangling=true" | sudo xargs --no-run-if-empty docker rmi  
         
     - uses: actions/upload-artifact@v2
       with:
