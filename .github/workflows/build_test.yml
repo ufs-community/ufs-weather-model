@@ -105,6 +105,7 @@ jobs:
         sudo systemctl restart docker
         sleep 10
         cd tests/ci && ./ci.sh -n ${{ matrix.name }} -b ${{ matrix.case }}
+        sudo docker image ls
 
     - name: Free up disk space
       run: |
