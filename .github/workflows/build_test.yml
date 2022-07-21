@@ -109,7 +109,7 @@ jobs:
 
     - name: Free up disk space
       run: |
-        sudo docker images --no-trunc --all --quiet --filter="dangling=true" | sudo xargs --no-run-if-empty docker rmi
+        sudo docker rmi $(sudo docker images -f dangling=true -q)     
         
     - uses: actions/upload-artifact@v2
       with:
