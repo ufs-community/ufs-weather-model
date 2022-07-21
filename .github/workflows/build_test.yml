@@ -109,9 +109,8 @@ jobs:
 
     - name: Free up disk space
       run: |
-        sudo docker rmi $(sudo docker image ls | grep -E -m1 '<none>' | awk '{ print $3 }')
-        sudo docker rmi $(sudo docker image ls | awk '/ubuntu-hpc/ { print $3 }')
-
+        sudo docker images --no-trunc --all --quiet --filter="dangling=true" | sudo xargs --no-run-if-empty docker rmi
+        
     - uses: actions/upload-artifact@v2
       with:
         name: ${{ matrix.bld_set }}.artifact
