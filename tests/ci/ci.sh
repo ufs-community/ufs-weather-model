@@ -74,8 +74,12 @@ if [ $BUILD = "true" ]; then
 
 elif [ $RUN == "true" ]; then
 
-  docker container ls -a | awk '{print ($NF)}'
-  
+  CONTAINER_NAME="${TEST_NAME}_${TEST_CASE}"
+  OLD="$(docker ps --all --quiet --filter=name="$CONTAINER_NAME")"
+  if [ -n "$OLD" ]; then
+    docker stop $OLD && docker rm $OLD
+  fi
+
   docker pull noaaepic/ubuntu20.04-gnu9.3-hpc-stack:v1.2b
 
   docker create -u builder -e "CI_TEST=true" -e "USER=builder" \
