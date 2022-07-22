@@ -1,6 +1,8 @@
 #!/bin/bash
 set -eux
 
+echo kimmmmmmmmm2
+
 echo "PID=$$"
 SECONDS=0
 
