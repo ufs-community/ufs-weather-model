@@ -96,3 +96,18 @@ if [[ $# != 5 ]]; then
   echo "Usage: $0 PATHRT RUNDIR_ROOT TEST_NAME TEST_NR COMPILE_NR"
   exit 1
 fi
+
+export PATHRT=$1
+export RUNDIR_ROOT=$2
+export TEST_NAME=$3
+export TEST_NR=$4
+export COMPILE_NR=$5
+
+cd ${PATHRT}
+OPNREQ_TEST=${OPNREQ_TEST:-false}
+remove_fail_test
+
+[[ -e ${RUNDIR_ROOT}/run_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
+source default_vars.sh
+source tests/$TEST_NAME
+[[ -e ${RUNDIR_ROOT}/opnreq_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/opnreq_test_${TEST_NR}.env
