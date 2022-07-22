@@ -74,6 +74,8 @@ if [ $BUILD = "true" ]; then
 
 elif [ $RUN == "true" ]; then
 
+  docker container ls -a | awk '{print ($NF)}'
+  
   docker pull noaaepic/ubuntu20.04-gnu9.3-hpc-stack:v1.2b
 
   docker create -u builder -e "CI_TEST=true" -e "USER=builder" \
