@@ -266,7 +266,7 @@ run_opnReqTests() {
       echo "    THRD: $THRD; INPES: $INPES; JNPES: $JNPES; TASKS: $TASKS; TPN: $TPN"
       TEST_NR=${RT_SUFFIX:1}
       echo kimmmmmmmmm1
-      #jk ./run_test.sh $PATHRT $RUNDIR_ROOT $TEST_NAME $TEST_NR $comp_nm > $LOG_DIR/run_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log 2>&1
+      #./run_test.sh $PATHRT $RUNDIR_ROOT $TEST_NAME $TEST_NR $comp_nm > $LOG_DIR/run_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log 2>&1
     fi
 
   done
@@ -612,3 +612,46 @@ mkdir -p $NEW_BASELINE
 echo "cases to run: $run_case"
 run_opnReqTests
 
+if [[ $ECFLOW == true ]]; then
+  echo "endsuite" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+  ecflow_run
+fi
+
+########################################################################
+####               OPERATION REQUIREMENT TEST STATUS                ####
+########################################################################
+set +e
+cat ${LOG_DIR}/compile_*_time.log | tee -a ${opnreqtest_log}
+cat ${LOG_DIR}/opnReqTest_*.log | tee -a ${opnreqtest_log}
+
+FILES="fail_opnreq_test_* fail_opnreq_compile_*"
+for f in $FILES; do
+  if [[ -f "$f" ]]; then
+    cat "$f" >> fail_opnreq_test
+  fi
+done
+
+if [[ -e fail_opnreq_test ]]; then
+  echo "FAILED TESTS: " | tee -a ${opnreqtest_log}
+  while read -r failed_test_name; do
+    echo "Test ${failed_test_name} failed " | tee -a ${opnreqtest_log}
+  done < fail_opnreq_test
+
+  echo "OPERATION REQUIREMENT TEST FAILED" | tee -a ${opnreqtest_log}
+  date >>${opnreqtest_log}
+  hrs=$(( $SECONDS%86400/3600 )); mins=$(( $SECONDS%3600/60 )); secs=$(( $SECONDS%60 ))
+  elapsed_time=$(printf '%02dh:%02dm:%02ds\n' $hrs $mins $secs)
+  echo "Elapsed time: ${elapsed_time}. Have a nice day!" | tee -a ${opnreqtest_log}
+
+  exit 1
+else
+  [[ ${keep_rundir} == false ]] && rm -rf ${RUNDIR_ROOT}
+
+  echo "OPERATION REQUIREMENT TEST WAS SUCCESSFUL" | tee -a ${opnreqtest_log}
+  date >>${opnreqtest_log}
+  hrs=$(( $SECONDS%86400/3600 )); mins=$(( $SECONDS%3600/60 )); secs=$(( $SECONDS%60 ))
+  elapsed_time=$(printf '%02dh:%02dm:%02ds\n' $hrs $mins $secs)
+  echo "Elapsed time: ${elapsed_time}. Have a nice day!" | tee -a ${opnreqtest_log}
+
+  exit 0
+fi
