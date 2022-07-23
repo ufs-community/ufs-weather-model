@@ -141,3 +141,132 @@ source atparse.bash
 rm -rf ${RUNDIR}
 mkdir -p ${RUNDIR}
 cd $RUNDIR
+
+#------------
+###############################################################################
+# Make configure and run files
+###############################################################################
+
+# FV3 executable:
+cp ${PATHRT}/fv3_${COMPILE_NR}.exe                 fv3.exe
+
+# modulefile for FV3 prerequisites:
+cp ${PATHRT}/modules.fv3_${COMPILE_NR}             modules.fv3
+cp ${PATHTR}/modulefiles/ufs_common*               .
+
+# Get the shell file that loads the "module" command and purges modules:
+cp ${PATHRT}/module-setup.sh                       module-setup.sh
+
+SRCD="${PATHTR}"
+RUND="${RUNDIR}"
+
+# FV3_RUN could have multiple entry seperated by space
+for i in ${FV3_RUN:-fv3_run.IN}
+do
+  atparse < ${PATHRT}/fv3_conf/${i} >> fv3_run
+done
+
+if [[ $DATM_CDEPS = 'true' ]] || [[ $FV3 = 'true' ]] || [[ $S2S = 'true' ]]; then
+  if [[ $HAFS = 'false' ]] || [[ $FV3 = 'true' && $HAFS = 'true' ]]; then
+    atparse < ${PATHRT}/parm/${INPUT_NML:-input.nml.IN} > input.nml
+  fi
+fi
+
+atparse < ${PATHRT}/parm/${MODEL_CONFIGURE:-model_configure.IN} > model_configure
+
+if [[ $DATM_CDEPS = 'false' ]]; then
+  if [[ ${ATM_compute_tasks:-0} -eq 0 ]]; then
+    ATM_compute_tasks=$((INPES * JNPES * NTILES))
+  fi
+  if [[ $QUILTING = '.true.' ]]; then
+    ATM_io_tasks=$((WRITE_GROUP * WRTTASK_PER_GROUP))
+  fi
+fi
+
+compute_petbounds
+
+atparse < ${PATHRT}/parm/${NEMS_CONFIGURE:-nems.configure} > nems.configure
+
+# remove after all tests pass
+if [[ $TASKS -ne $UFS_tasks ]]; then
+   echo "$TASKS -ne $UFS_tasks "
+  exit 1
+fi
+
+if [[ "Q${INPUT_NEST02_NML:-}" != Q ]] ; then
+    INPES_NEST=$INPES_NEST02; JNPES_NEST=$JNPES_NEST02
+    NPX_NEST=$NPX_NEST02; NPY_NEST=$NPY_NEST02
+    K_SPLIT_NEST=$K_SPLIT_NEST02; N_SPLIT_NEST=$N_SPLIT_NEST02
+    atparse < ${PATHRT}/parm/${INPUT_NEST02_NML} > input_nest02.nml
+else
+    sed -i -e "/<output_grid_02>/,/<\/output_grid_02>/d" model_configure
+fi
+
+if [[ "Q${INPUT_NEST03_NML:-}" != Q ]] ; then
+    INPES_NEST=$INPES_NEST03; JNPES_NEST=$JNPES_NEST03
+    NPX_NEST=$NPX_NEST03; NPY_NEST=$NPY_NEST03
+    K_SPLIT_NEST=$K_SPLIT_NEST03; N_SPLIT_NEST=$N_SPLIT_NEST03
+    atparse < ${PATHRT}/parm/${INPUT_NEST03_NML} > input_nest03.nml
+else
+    sed -i -e "/<output_grid_03>/,/<\/output_grid_03>/d" model_configure
+fi
+
+if [[ "Q${INPUT_NEST04_NML:-}" != Q ]] ; then
+    INPES_NEST=$INPES_NEST04; JNPES_NEST=$JNPES_NEST04
+    NPX_NEST=$NPX_NEST04; NPY_NEST=$NPY_NEST04
+    K_SPLIT_NEST=$K_SPLIT_NEST04; N_SPLIT_NEST=$N_SPLIT_NEST04
+    atparse < ${PATHRT}/parm/${INPUT_NEST04_NML} > input_nest04.nml
+else
+    sed -i -e "/<output_grid_04>/,/<\/output_grid_04>/d" model_configure
+fi
+
+if [[ "Q${INPUT_NEST05_NML:-}" != Q ]] ; then
+    INPES_NEST=$INPES_NEST05; JNPES_NEST=$JNPES_NEST05
+    NPX_NEST=$NPX_NEST05; NPY_NEST=$NPY_NEST05
+    K_SPLIT_NEST=$K_SPLIT_NEST05; N_SPLIT_NEST=$N_SPLIT_NEST05
+    atparse < ${PATHRT}/parm/${INPUT_NEST05_NML} > input_nest05.nml
+else
+    sed -i -e "/<output_grid_05>/,/<\/output_grid_05>/d" model_configure
+fi
+
+if [[ "Q${INPUT_NEST06_NML:-}" != Q ]] ; then
+    INPES_NEST=$INPES_NEST06; JNPES_NEST=$JNPES_NEST06
+    NPX_NEST=$NPX_NEST06; NPY_NEST=$NPY_NEST06
+    K_SPLIT_NEST=$K_SPLIT_NEST06; N_SPLIT_NEST=$N_SPLIT_NEST06
+    atparse < ${PATHRT}/parm/${INPUT_NEST06_NML} > input_nest06.nml
+else
+    sed -i -e "/<output_grid_06>/,/<\/output_grid_06>/d" model_configure
+fi
+
+# diag table
+if [[ "Q${DIAG_TABLE:-}" != Q ]] ; then
+  cp ${PATHRT}/parm/diag_table/${DIAG_TABLE} diag_table
+fi
+# Field table
+if [[ "Q${FIELD_TABLE:-}" != Q ]] ; then
+  cp ${PATHRT}/parm/field_table/${FIELD_TABLE} field_table
+fi
+
+# fix files
+if [[ $FV3 == true ]]; then
+  cp ${INPUTDATA_ROOT}/FV3_fix/*.txt .
+  cp ${INPUTDATA_ROOT}/FV3_fix/*.f77 .
+  cp ${INPUTDATA_ROOT}/FV3_fix/*.dat .
+  cp ${INPUTDATA_ROOT}/FV3_fix/fix_co2_proj/* .
+  if [[ $TILEDFIX != .true. ]]; then
+    cp ${INPUTDATA_ROOT}/FV3_fix/*.grb .
+  fi
+fi
+
+# AQM
+if [[ $AQM == .true. ]]; then
+  cp ${PATHRT}/parm/aqm/aqm.rc .
+fi
+
+# Field Dictionary
+cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
+
+# Set up the run directory
+source ./fv3_run
+
+#--------------------------jk
