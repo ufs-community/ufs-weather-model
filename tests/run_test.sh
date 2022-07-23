@@ -111,3 +111,33 @@ remove_fail_test
 source default_vars.sh
 source tests/$TEST_NAME
 [[ -e ${RUNDIR_ROOT}/opnreq_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/opnreq_test_${TEST_NR}.env
+
+#----
+# Save original CNTL_DIR name as INPUT_DIR for regression
+# tests that try to copy input data from CNTL_DIR
+export INPUT_DIR=${CNTL_DIR}
+# Append RT_SUFFIX to RUNDIR, and BL_SUFFIX to CNTL_DIR
+export RUNDIR=${RUNDIR_ROOT}/${TEST_NAME}${RT_SUFFIX}
+export CNTL_DIR=${CNTL_DIR}${BL_SUFFIX}
+
+export JBNME=$(basename $RUNDIR_ROOT)_${TEST_NR}
+
+echo -n "${TEST_NAME}, $( date +%s )," > ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+
+if [[ ${OPNREQ_TEST} == false ]]; then
+  REGRESSIONTEST_LOG=${LOG_DIR}/rt_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log
+else
+  REGRESSIONTEST_LOG=${LOG_DIR}/opnReqTest_${TEST_NAME}${RT_SUFFIX}.log
+fi
+export REGRESSIONTEST_LOG
+
+rm -f ${REGRESSIONTEST_LOG}
+
+echo "Test ${TEST_NR} ${TEST_NAME} ${TEST_DESCR}"
+
+source rt_utils.sh
+source atparse.bash
+
+rm -rf ${RUNDIR}
+mkdir -p ${RUNDIR}
+cd $RUNDIR
