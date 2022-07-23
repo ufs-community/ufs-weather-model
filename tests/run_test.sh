@@ -248,15 +248,15 @@ if [[ "Q${FIELD_TABLE:-}" != Q ]] ; then
 fi
 
 # fix files
-#if [[ $FV3 == true ]]; then
-#  cp ${INPUTDATA_ROOT}/FV3_fix/*.txt .
-#  cp ${INPUTDATA_ROOT}/FV3_fix/*.f77 .
-#  cp ${INPUTDATA_ROOT}/FV3_fix/*.dat .
-#  cp ${INPUTDATA_ROOT}/FV3_fix/fix_co2_proj/* .
-#  if [[ $TILEDFIX != .true. ]]; then
-#    cp ${INPUTDATA_ROOT}/FV3_fix/*.grb .
-#  fi
-#fi
+if [[ $FV3 == true ]]; then
+  cp ${INPUTDATA_ROOT}/FV3_fix/*.txt .
+  cp ${INPUTDATA_ROOT}/FV3_fix/*.f77 .
+  cp ${INPUTDATA_ROOT}/FV3_fix/*.dat .
+  cp ${INPUTDATA_ROOT}/FV3_fix/fix_co2_proj/* .
+  if [[ $TILEDFIX != .true. ]]; then
+    cp ${INPUTDATA_ROOT}/FV3_fix/*.grb .
+  fi
+fi
 
 
 
