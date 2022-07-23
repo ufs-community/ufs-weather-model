@@ -95,8 +95,6 @@ elif [ $RUN == "true" ]; then
   cd $GITHUB_WORKSPACE
   docker cp . "${TEST_NAME}_${TEST_CASE}:/home/builder/ufs-weather-model"
   docker start "${TEST_NAME}_${TEST_CASE}"
-  docker cp "${TEST_NAME}_${TEST_CASE}:/home/builder/log.out" .
-  cat log.out
 
   sleep 3
 
