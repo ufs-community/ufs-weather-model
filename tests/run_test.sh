@@ -112,7 +112,6 @@ source default_vars.sh
 source tests/$TEST_NAME
 [[ -e ${RUNDIR_ROOT}/opnreq_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/opnreq_test_${TEST_NR}.env
 
-#----
 # Save original CNTL_DIR name as INPUT_DIR for regression
 # tests that try to copy input data from CNTL_DIR
 export INPUT_DIR=${CNTL_DIR}
@@ -142,7 +141,6 @@ rm -rf ${RUNDIR}
 mkdir -p ${RUNDIR}
 cd $RUNDIR
 
-#------------
 ###############################################################################
 # Make configure and run files
 ###############################################################################
@@ -247,9 +245,6 @@ if [[ "Q${FIELD_TABLE:-}" != Q ]] ; then
   cp ${PATHRT}/parm/field_table/${FIELD_TABLE} field_table
 fi
 
-ls -al ${INPUTDATA_ROOT} 
-#> /home/builder/log.out
-
 # fix files
 if [[ $FV3 == true ]]; then
   cp ${INPUTDATA_ROOT}/FV3_fix/*.txt .
@@ -261,10 +256,147 @@ if [[ $FV3 == true ]]; then
   fi
 fi
 
+# AQM
+if [[ $AQM == .true. ]]; then
+  cp ${PATHRT}/parm/aqm/aqm.rc .
+fi
 
-
+# Field Dictionary
+cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
 
 # Set up the run directory
-#source ./fv3_run
+source ./fv3_run
 
-#--------------------------jk
+if [[ $CPLWAV == .true. ]]; then
+  if [[ $MULTIGRID = 'true' ]]; then
+    atparse < ${PATHRT}/parm/ww3_multi.inp.IN > ww3_multi.inp
+  else
+    atparse < ${PATHRT}/parm/ww3_shel.inp.IN > ww3_shel.inp
+  fi
+fi
+
+if [[ $CPLCHM == .true. ]]; then
+  cp ${PATHRT}/parm/gocart/*.rc .
+  atparse < ${PATHRT}/parm/gocart/AERO_HISTORY.rc.IN > AERO_HISTORY.rc
+fi
+
+if [[ $DATM_CDEPS = 'true' ]] || [[ $S2S = 'true' ]]; then
+  if [[ $HAFS = 'false' ]]; then
+    atparse < ${PATHRT}/parm/ice_in_template > ice_in
+    atparse < ${PATHRT}/parm/${MOM_INPUT:-MOM_input_template_$OCNRES} > INPUT/MOM_input
+    atparse < ${PATHRT}/parm/diag_table/${DIAG_TABLE:-diag_table_template} > diag_table
+    atparse < ${PATHRT}/parm/data_table_template > data_table
+  fi
+fi
+
+if [[ $HAFS = 'true' ]] && [[ $DATM_CDEPS = 'false' ]]; then
+  atparse < ${PATHRT}/parm/diag_table/${DIAG_TABLE:-diag_table_template} > diag_table
+fi
+
+if [[ "${DIAG_TABLE_ADDITIONAL:-}Q" != Q ]] ; then
+  # Append diagnostic outputs, to support tests that vary from others
+  # only by adding diagnostics.
+  atparse < "${PATHRT}/parm/diag_table/${DIAG_TABLE_ADDITIONAL:-}" >> diag_table
+fi
+
+# ATMAERO
+if [[ $CPLCHM == .true. ]] && [[ $S2S = 'false' ]]; then
+  atparse < ${PATHRT}/parm/diag_table/${DIAG_TABLE:-diag_table_template} > diag_table
+fi
+
+if [[ $DATM_CDEPS = 'true' ]]; then
+  atparse < ${PATHRT}/parm/${DATM_IN_CONFIGURE:-datm_in} > datm_in
+  atparse < ${PATHRT}/parm/${DATM_STREAM_CONFIGURE:-datm.streams.IN} > datm.streams
+fi
+
+if [[ $DOCN_CDEPS = 'true' ]]; then
+  atparse < ${PATHRT}/parm/${DOCN_IN_CONFIGURE:-docn_in} > docn_in
+  atparse < ${PATHRT}/parm/${DOCN_STREAM_CONFIGURE:-docn.streams.IN} > docn.streams
+fi
+
+TPN=$(( TPN / THRD ))
+if (( TASKS < TPN )); then
+  TPN=${TASKS}
+fi
+NODES=$(( TASKS / TPN ))
+if (( NODES * TPN < TASKS )); then
+  NODES=$(( NODES + 1 ))
+fi
+
+if [[ $SCHEDULER = 'pbs' ]]; then
+  atparse < $PATHRT/fv3_conf/fv3_qsub.IN > job_card
+elif [[ $SCHEDULER = 'slurm' ]]; then
+  atparse < $PATHRT/fv3_conf/fv3_slurm.IN > job_card
+elif [[ $SCHEDULER = 'lsf' ]]; then
+  atparse < $PATHRT/fv3_conf/fv3_bsub.IN > job_card
+fi
+
+################################################################################
+# Submit test job
+################################################################################
+
+if [[ $SCHEDULER = 'none' ]]; then
+
+  ulimit -s unlimited
+  if [[ $CI_TEST = 'true' ]]; then
+    eval ${OMP_ENV} mpiexec -n ${TASKS} ${MPI_PROC_BIND} ./fv3.exe >out 2> >(tee err >&3)
+  else
+    mpiexec -n ${TASKS} ./fv3.exe >out 2> >(tee err >&3)
+  fi
+
+else
+
+  if [[ $ROCOTO = 'false' ]]; then
+    submit_and_wait job_card
+  else
+    chmod u+x job_card
+    ( ./job_card 2>&1 1>&3 3>&- | tee err ) 3>&1 1>&2 | tee out
+    # The above shell redirection copies stdout to "out" and stderr to "err"
+    # while still sending them to stdout and stderr. It does this without
+    # relying on bash-specific extensions or non-standard OS features.
+  fi
+
+fi
+
+if [[ $skip_check_results = false ]]; then
+  check_results
+else
+  echo                                               >> ${REGRESSIONTEST_LOG}
+  grep "The total amount of wall time" ${RUNDIR}/out >> ${REGRESSIONTEST_LOG}
+  grep "The maximum resident set size" ${RUNDIR}/out >> ${REGRESSIONTEST_LOG}
+  echo                                               >> ${REGRESSIONTEST_LOG}
+  echo "Test ${TEST_NR} ${TEST_NAME} RUN_SUCCESS"    >> ${REGRESSIONTEST_LOG}
+  echo;echo;echo                                     >> ${REGRESSIONTEST_LOG}
+fi
+
+if [[ $SCHEDULER != 'none' ]]; then
+  cat ${RUNDIR}/job_timestamp.txt >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+fi
+
+remove_fail_test
+
+################################################################################
+# End test
+################################################################################
+
+echo " $( date +%s ), ${NODES}" >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+
+################################################################################
+# Remove RUN_DIRs if they are no longer needed by other tests
+################################################################################
+if [[ ${delete_rundir} = true ]]; then
+  keep_run_dir=false
+  while  read -r line; do
+    keep_test=$(echo $line| sed -e 's/^ *//' -e 's/ *$//')
+    if [[ $TEST_NAME == ${keep_test} ]]; then
+      keep_run_dir=true
+    fi
+  done < ${PATHRT}/keep_tests.tmp
+
+  if [[ ${keep_run_dir} == false ]]; then
+    rm -rf ${RUNDIR}
+  fi
+fi
+
+elapsed=$SECONDS
+echo "Elapsed time $elapsed seconds. Test ${TEST_NAME}"
