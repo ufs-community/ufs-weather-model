@@ -82,6 +82,9 @@ elif [ $RUN == "true" ]; then
 
   docker pull noaaepic/ubuntu20.04-gnu9.3-hpc-stack:v1.2b
 
+  docker volume rm -f DataVolume >/dev/null &&
+    docker run -d --rm -v DataVolume:/tmp noaaepic/input-data:20220414
+
   docker create -u builder -e "CI_TEST=true" -e "USER=builder" \
                 -e "RT_MACHINE=linux.gnu" -e "RT_COMPILER=gnu" \
                 -w "/home/builder/ufs-weather-model/tests" \
