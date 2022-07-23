@@ -247,6 +247,8 @@ if [[ "Q${FIELD_TABLE:-}" != Q ]] ; then
   cp ${PATHRT}/parm/field_table/${FIELD_TABLE} field_table
 fi
 
+ls -al ${INPUTDATA_ROOT} > /home/builder/log.out
+
 # fix files
 if [[ $FV3 == true ]]; then
   cp ${INPUTDATA_ROOT}/FV3_fix/*.txt .
