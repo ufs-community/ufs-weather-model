@@ -177,7 +177,7 @@ jobs:
     - name: Clean up
       if: ${{ always() }}
       run: |
-        docker stop my-container && docker rm my-container
+        #docker stop my-container && docker rm my-container
         #docker volume rm DataVolume
 
   cleanvolume:
@@ -190,4 +190,6 @@ jobs:
     - name: Clean up DataVolume
       run: |
         docker volume rm DataVolume
+        
+        
 
