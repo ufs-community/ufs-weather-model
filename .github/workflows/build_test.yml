@@ -109,8 +109,7 @@ jobs:
     - name: Free up disk space
       run: |
         sudo docker rmi $(sudo docker image ls | grep -E -m1 '<none>' | awk '{ print $3 }')
-        imgs=$(sudo docker image ls | awk '/ubuntu-hpc/ { print $3 }') 
-        [[ ! -z $imgs ]] && sudo docker rmi $imgs
+        sudo docker rmi $(sudo docker image ls | awk '/ubuntu20.04-gnu9.3-hpc-stack/ { print $3 }')
 
     - uses: actions/upload-artifact@v2
       with:
