@@ -1,4 +1,6 @@
-From noaaemc/ubuntu-hpc:v1.11b
+From noaaepic/ubuntu20.04-gnu9.3-hpc-stack:v1.2b
+
+CMD ["/bin/bash"]
 
 ENV HOME=/home/builder
 COPY --chown=builder:builder . $HOME/ufs-weather-model
@@ -15,5 +17,5 @@ ENV RT_COMPILER=gnu
 ENV RT_MACHINE=linux.gnu
 
 WORKDIR $HOME/ufs-weather-model/tests
-RUN ./opnReqTest -n $test_name -c $build_case -z && tar -cvzf fv3.tar.gz fv3_*.exe modules.fv3_*
-CMD ./opnReqTest -n $test_name -c $test_case -x
+RUN /bin/bash -l $HOME/ufs-weather-model/modulefiles/ufs_linux.gnu && ./opnReqTest -n $test_name -c $build_case -z && tar -cvzf fv3.tar.gz fv3_*.exe modules.fv3_*
+CMD /bin/bash -l $HOME/ufs-weather-model/modulefiles/ufs_linux.gnu && ./opnReqTest -n $test_name -c $test_case -x
