@@ -179,3 +179,15 @@ jobs:
       run: |
         docker stop my-container && docker rm my-container
         #docker volume rm DataVolume
+
+  cleanvolume:
+    name: Clean DataVolume
+    needs: [setup,build,wait,utest]
+    runs-on: self-hosted
+    #runs-on: ubuntu-20.04
+
+    steps:
+    - name: Clean up DataVolume
+      run: |
+        docker volume rm DataVolume
+
