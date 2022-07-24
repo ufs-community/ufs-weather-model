@@ -174,14 +174,8 @@ jobs:
         cd ${{ github.workspace }}/tests/ci
         ./ci.sh -n ${{ matrix.name }} -r ${{ matrix.case }}
 
-    - uses: actions/upload-artifact@v2
-      if: ${{ always() }}
-      with:
-        name: memory_stat_${{ matrix.test_set }}
-        path: memory_stat
-
     - name: Clean up
       if: ${{ always() }}
       run: |
         docker stop my-container && docker rm my-container
-        docker volume rm DataVolume
+        #docker volume rm DataVolume
