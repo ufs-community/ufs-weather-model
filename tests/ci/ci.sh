@@ -1,17 +1,6 @@
 #!/bin/bash
 set -eu
 
-check_memory_usage() {
-  dirName=/sys/fs/cgroup/memory/docker/$1
-  # /sys/fs/cgroup/memory/actions_job/${containerID}
-  set +x
-  while [ -d $dirName ] ; do
-    awk '/(^cache |^rss |^shmem )/' $dirName/memory.stat | cut -f2 -d' ' | paste -s -d,
-    sleep 1
-  done
-  set -x
-}
-
 usage_and_exit() {
   echo
   echo "Note: main purpose of this script is to interface between CI automation and opnReqTest script"
