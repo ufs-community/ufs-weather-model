@@ -80,7 +80,6 @@ elif [ $RUN == "true" ]; then
   echo 'cache,rss,shmem' >memory_stat
   sleep 3
   containerID=$(docker ps -q --no-trunc)
-  check_memory_usage $containerID >>memory_stat &
 
   docker logs -f $containerID
   exit $(docker inspect $containerID --format='{{.State.ExitCode}}')
