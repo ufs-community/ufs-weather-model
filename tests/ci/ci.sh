@@ -79,6 +79,6 @@ elif [ $RUN == "true" ]; then
 
   sleep 3
   containerID=$(docker ps -q --no-trunc)
-  [[ ! -z $containerID]] && {docker logs -f $containerID ; exit $(docker inspect $containerID --format='{{.State.ExitCode}}')}
+  [[ ! -z $containerID ]] && { docker logs -f $containerID ; exit $(docker inspect $containerID --format='{{.State.ExitCode}}') ; }
 
 fi
