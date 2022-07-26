@@ -297,8 +297,8 @@ elif [[ $MACHINE_ID = s4.* ]]; then
 
   ACCNR="${ACCNR:-star}"
   PARTITION=s4
-  dprefix=/data/users/dhuber/save
-  DISKNM=$dprefix/nems/emc.nemspara/RT
+  dprefix=/data/prod
+  DISKNM=$dprefix/emc.nemspara/RT
   STMP=/scratch/short/users
   PTMP=/scratch/users
 
