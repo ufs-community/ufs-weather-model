@@ -44,6 +44,7 @@ list(APPEND mom6_src_files
   MOM6/src/core/MOM_isopycnal_slopes.F90
   MOM6/src/core/MOM_open_boundary.F90
   MOM6/src/core/MOM_porous_barriers.F90
+  MOM6/src/core/MOM_stoch_eos.F90
   MOM6/src/core/MOM_transcribe_grid.F90
   MOM6/src/core/MOM_unit_tests.F90
   MOM6/src/core/MOM_variables.F90
@@ -77,6 +78,7 @@ list(APPEND mom6_src_files
   MOM6/src/equation_of_state/TEOS10/gsw_gibbs.f90
   MOM6/src/equation_of_state/TEOS10/gsw_gibbs_ice.f90
   MOM6/src/equation_of_state/TEOS10/gsw_gibbs_pt0_pt0.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_mod_error_functions.f90
   MOM6/src/equation_of_state/TEOS10/gsw_mod_freezing_poly_coefficients.f90
   MOM6/src/equation_of_state/TEOS10/gsw_mod_gibbs_ice_coefficients.f90
   MOM6/src/equation_of_state/TEOS10/gsw_mod_kinds.f90
@@ -207,6 +209,7 @@ list(APPEND mom6_src_files
   MOM6/src/tracer/MOM_tracer_flow_control.F90
   MOM6/src/tracer/MOM_tracer_hor_diff.F90
   MOM6/src/tracer/MOM_tracer_registry.F90
+  MOM6/src/tracer/MOM_tracer_types.F90
   MOM6/src/tracer/RGC_tracer.F90
   MOM6/src/tracer/advection_test_tracer.F90
   MOM6/src/tracer/boundary_impulse_tracer.F90

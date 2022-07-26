@@ -61,6 +61,8 @@
   OCN_tasks_cdeps_025=120
   ICE_tasks_cdeps_025=48
 
+  TASKS_aqm=272; INPES_aqm=33; JNPES_aqm=8
+
 if [[ $MACHINE_ID = wcoss2.* ]]; then
 
   TPN=128
@@ -263,6 +265,7 @@ export_fv3 ()
 export FV3=true
 export S2S=false
 export HAFS=false
+export AQM=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
 export POSTAPP='global'
@@ -330,7 +333,7 @@ export NWAT=6
 # GFDL MP
 export DNATS=1
 export DO_SAT_ADJ=.true.
-export LHEATSTRG=.false.
+export LHEATSTRG=.true.
 export LSEASPRAY=.false.
 export LGFDLMPRAD=.false.
 export EFFR_IN=.false.
@@ -554,6 +557,7 @@ export_cpl ()
 export FV3=true
 export S2S=true
 export HAFS=false
+export AQM=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
 
@@ -597,6 +601,7 @@ WAV_tasks=$WAV_tasks_cpl_dflt
 
 # component and coupling timesteps
 export DT_ATMOS=720
+export DT_INNER=${DT_ATMOS}
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6=1800
 export DT_THERM_MOM6=3600
@@ -665,7 +670,7 @@ export USE_MERRA2=.true.
 export IAER=1011
 export NSTF_NAME=2,0,0,0,0
 
-export LHEATSTRG=.true.
+export LHEATSTRG=.false.
 export LSEASPRAY=.true.
 
 # P7 UGWP1
@@ -795,6 +800,10 @@ export RESTART_EXT=.false.
 export FRAZIL_FWSALT=.true.
 # default to write CICE average history files
 export CICE_HIST_AVG=.true.
+# default CICE B-grid, ATM and OCN are provided by cap on A grid
+export GRIDATM=A
+export GRIDOCN=A
+export GRIDICE=B
 
 #wave
 export INPUT_CURFLD='T F     Currents'
@@ -833,6 +842,7 @@ export_datm_cdeps ()
 export FV3=false
 export S2S=false
 export HAFS=false
+export AQM=false
 export DATM_CDEPS=true
 export DOCN_CDEPS=false
 export CPLWAV=.false.
@@ -946,6 +956,9 @@ export RESTART_EXT=.false.
 export FRAZIL_FWSALT=.true.
 # default to write CICE average history files
 export CICE_HIST_AVG=.true.
+export GRIDATM=A
+export GRIDOCN=A
+export GRIDICE=B
 # default non-mushy thermo
 export KTHERM=1
 export TFREEZE_OPTION=linear_salt
@@ -957,6 +970,7 @@ export_hafs_datm_cdeps ()
 export FV3=false
 export S2S=false
 export HAFS=true
+export AQM=false
 export DATM_CDEPS=true
 export DOCN_CDEPS=false
 export INPES=$INPES_dflt
@@ -974,6 +988,7 @@ export_hafs_docn_cdeps ()
 export FV3=true
 export S2S=false
 export HAFS=true
+export AQM=false
 export DOCN_CDEPS=true
 export INPES=$INPES_dflt
 export JNPES=$JNPES_dflt
@@ -991,6 +1006,7 @@ export_hafs_regional ()
 export FV3=true
 export S2S=false
 export HAFS=true
+export AQM=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
 export INPES=$INPES_dflt
@@ -1059,6 +1075,7 @@ export_hafs ()
 export FV3=true
 export S2S=false
 export HAFS=true
+export AQM=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
 export INPES=$INPES_dflt
