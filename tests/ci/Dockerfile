@@ -18,5 +18,6 @@ ENV RT_MACHINE=linux
 ENV MACHINE_ID=linux
 
 WORKDIR $HOME/ufs-weather-model/tests
-#RUN ./opnReqTest -n $test_name -c $build_case -z && tar -cvzf fv3.tar.gz fv3_*.exe modules.fv3_*
+RUN ./opnReqTest -n $test_name -c $build_case -z
+#&& tar -cvzf fv3.tar.gz fv3_*.exe modules.fv3_*
 #CMD ./opnReqTest -n $test_name -c $test_case -x
