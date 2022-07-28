@@ -90,7 +90,7 @@ elif [ $RUN == "true" ]; then
                 -w "/home/builder/ufs-weather-model/tests" \
                 -v DataVolume:/home/builder/data/NEMSfv3gfs \
                 --shm-size=512m --name "${TEST_NAME}_${TEST_CASE}" noaaepic/ubuntu20.04-gnu9.3-hpc-stack:v1.2e \
-                /bin/bash -c "./opnReqTest -n ${TEST_NAME} -c ${TEST_CASE} -x"
+                /bin/bash -c "./opnReqTest -n ${TEST_NAME} -c ${TEST_CASE} -z  && ./opnReqTest -n ${TEST_NAME} -c ${TEST_CASE} -x"
 
   cd $GITHUB_WORKSPACE
   docker cp . "${TEST_NAME}_${TEST_CASE}:/home/builder/ufs-weather-model"
