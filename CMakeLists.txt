@@ -94,10 +94,6 @@ if(BUILD_WITH_IFI)
   endif()
 endif()
 
-if(NOT IFI_FOUND)
-  message(FATAL_ERROR "UFS DID NOT FIND IFI")
-endif()
-
 message("")
 message("32BIT ............ ${32BIT}")
 message("CCPP_32BIT ....... ${CCPP_32BIT}")
