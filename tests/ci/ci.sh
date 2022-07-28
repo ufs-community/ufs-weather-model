@@ -87,10 +87,10 @@ elif [ $RUN == "true" ]; then
 
   docker create -u builder -e "CI_TEST=true" -e "USER=builder" \
                 -e "RT_MACHINE=linux" -e "RT_COMPILER=gnu" \
-                -w "/home/builder/ufs-weather-model/tests" \
-                -v DataVolume:/home/builder/data/NEMSfv3gfs \
+                #-w "/home/builder/ufs-weather-model/tests" \
+                #-v DataVolume:/home/builder/data/NEMSfv3gfs \
                 --shm-size=512m --name "${TEST_NAME}_${TEST_CASE}" noaaepic/ubuntu20.04-gnu9.3-hpc-stack:v1.2e \
-                /bin/bash -c "./opnReqTest -n ${TEST_NAME} -c ${TEST_CASE}"
+                /bin/bash -c "./opnReqTest -n ${TEST_NAME} -c ${TEST_CASE} -z"
 
   cd $GITHUB_WORKSPACE
   docker cp . "${TEST_NAME}_${TEST_CASE}:/home/builder/ufs-weather-model"
