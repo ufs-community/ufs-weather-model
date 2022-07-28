@@ -98,20 +98,26 @@ elif [ $RUN == "true" ]; then
                --compress \
                -f Dockerfile -t my_image ../..
                
-  #docker create --name my_image "${IMG_NAME}"
+  #docker create --name my_container my_iamge
   
   docker create -u builder -e "CI_TEST=true" -e "USER=builder" \
                 -e "RT_MACHINE=linux" -e "RT_COMPILER=gnu" \
-                --name "${TEST_NAME}_${TEST_CASE}" my_image \
+                --name "${TEST_NAME}_${TEST_CASE}" my_container \
                 /bin/bash -c "./opnReqTest -n ${TEST_NAME} -c ${TEST_CASE} -z"
+                
+  docker start my_container
+  
+  docker rm my_container
+  
+  docker rmi my_image
+ 
+  #cd $GITHUB_WORKSPACE
+  #docker cp . "${TEST_NAME}_${TEST_CASE}:/home/builder/ufs-weather-model"
+  #docker start "${TEST_NAME}_${TEST_CASE}"
 
-  cd $GITHUB_WORKSPACE
-  docker cp . "${TEST_NAME}_${TEST_CASE}:/home/builder/ufs-weather-model"
-  docker start "${TEST_NAME}_${TEST_CASE}"
+  #sleep 3
 
-  sleep 3
-
-  docker logs --details --timestamps "${TEST_NAME}_${TEST_CASE}"
+  #docker logs --details --timestamps "${TEST_NAME}_${TEST_CASE}"
 
   #exit $(docker inspect "${TEST_NAME}_${TEST_CASE}" --format='{{.State.ExitCode}}')
 fi
