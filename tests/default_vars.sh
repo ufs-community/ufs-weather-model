@@ -42,8 +42,8 @@
   ICE_tasks_cpl_mpi=20
   WAV_tasks_cpl_mpi=28
 
-  TASKS_cpl_bmrk=656; THRD_cpl_bmrk=2
-  INPES_cpl_bmrk=8; JNPES_cpl_bmrk=8; WPG_cpl_bmrk=24
+  TASKS_cpl_bmrk=680; THRD_cpl_bmrk=2
+  INPES_cpl_bmrk=8; JNPES_cpl_bmrk=8; WPG_cpl_bmrk=48
   OCN_tasks_cpl_bmrk=120
   OCN_thrds_cpl_bmrk=1
   ICE_tasks_cpl_bmrk=48
@@ -141,8 +141,8 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   WAV_tasks_atmw_gdas=240
 
   # run only in weekly test
-  TASKS_cpl_bmrk=1808; THRD_cpl_bmrk=2
-  INPES_cpl_bmrk=16; JNPES_cpl_bmrk=16; WPG_cpl_bmrk=24
+  TASKS_cpl_bmrk=1832; THRD_cpl_bmrk=2
+  INPES_cpl_bmrk=16; JNPES_cpl_bmrk=16; WPG_cpl_bmrk=48
   OCN_tasks_cpl_bmrk=100
   ICE_tasks_cpl_bmrk=48
   WAV_tasks_cpl_bmrk=100
@@ -217,8 +217,8 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
   ICE_tasks_cpl_mpi=12
   WAV_tasks_cpl_mpi=24
 
-  TASKS_cpl_bmrk=868; THRD_cpl_bmrk=2
-  INPES_cpl_bmrk=12; JNPES_cpl_bmrk=8; WPG_cpl_bmrk=24
+  TASKS_cpl_bmrk=892; THRD_cpl_bmrk=2
+  INPES_cpl_bmrk=12; JNPES_cpl_bmrk=8; WPG_cpl_bmrk=48
   OCN_tasks_cpl_bmrk=120
   ICE_tasks_cpl_bmrk=48
   WAV_tasks_cpl_bmrk=100
