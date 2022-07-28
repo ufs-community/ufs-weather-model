@@ -4,4 +4,4 @@ export RT_MACHINE=linux
 
 export RT_COMPILER=gnu
 
-../opnReqTest -n control -c thr -z
+/bin/bash ../modulefiles/ufs_linux.gnu && MACHINE_ID=linux && ./opnReqTest -n control -c thr -z
