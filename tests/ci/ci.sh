@@ -98,16 +98,16 @@ elif [ $RUN == "true" ]; then
                --compress \
                -f Dockerfile -t my_image ../..
                
-  #docker create --name my_container my_iamge
+  #docker create --name my_container my_image
   
   docker create -u builder -e "CI_TEST=true" -e "USER=builder" \
                 -e "RT_MACHINE=linux" -e "RT_COMPILER=gnu" \
-                --name "${TEST_NAME}_${TEST_CASE}" my_container \
+                --name my_container my_image \
                 /bin/bash -c "./opnReqTest -n ${TEST_NAME} -c ${TEST_CASE} -z"
                 
   docker start my_container
   
-  docker rm my_container
+  #docker rm my_container
   
   docker rmi my_image
  
