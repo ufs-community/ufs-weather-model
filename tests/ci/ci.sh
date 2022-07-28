@@ -74,23 +74,23 @@ if [ $BUILD = "true" ]; then
 
 elif [ $RUN == "true" ]; then
 
-  CONTAINER_NAME="${TEST_NAME}_${TEST_CASE}"
-  OLD="$(docker ps --all --quiet --filter=name="$CONTAINER_NAME")"
-  if [ -n "$OLD" ]; then
-    docker stop $OLD && docker rm $OLD
-  fi
+  #CONTAINER_NAME="${TEST_NAME}_${TEST_CASE}"
+  #OLD="$(docker ps --all --quiet --filter=name="$CONTAINER_NAME")"
+  #if [ -n "$OLD" ]; then
+  #  docker stop $OLD && docker rm $OLD
+  #fi
 
-  docker pull noaaepic/ubuntu20.04-gnu9.3-hpc-stack:v1.2e
+  #docker pull noaaepic/ubuntu20.04-gnu9.3-hpc-stack:v1.2e
 
   #docker volume rm -f DataVolume >/dev/null &&
-  docker run -d --rm -v DataVolume:/tmp noaaepic/input-data:20220414
+  #docker run -d --rm -v DataVolume:/tmp noaaepic/input-data:20220414
 
   docker create -u builder -e "CI_TEST=true" -e "USER=builder" \
                 -e "RT_MACHINE=linux" -e "RT_COMPILER=gnu" \
                 -w "/home/builder/ufs-weather-model/tests" \
                 -v DataVolume:/home/builder/data/NEMSfv3gfs \
                 --shm-size=512m --name "${TEST_NAME}_${TEST_CASE}" noaaepic/ubuntu20.04-gnu9.3-hpc-stack:v1.2e \
-                /bin/bash -c "./opnReqTest -n ${TEST_NAME} -c ${TEST_CASE} -z  && ./opnReqTest -n ${TEST_NAME} -c ${TEST_CASE} -x"
+                /bin/bash -c "./opnReqTest -n ${TEST_NAME} -c ${TEST_CASE}"
 
   cd $GITHUB_WORKSPACE
   docker cp . "${TEST_NAME}_${TEST_CASE}:/home/builder/ufs-weather-model"
