@@ -91,9 +91,18 @@ elif [ $RUN == "true" ]; then
   #              -v DataVolume:/home/builder/data/NEMSfv3gfs \
   #              --shm-size=512m --name "${TEST_NAME}_${TEST_CASE}" noaaepic/ubuntu20.04-gnu9.3-hpc-stack:v1.2e \
   #              /bin/bash -c "./opnReqTest -n ${TEST_NAME} -c ${TEST_CASE} -z"
+  
+    docker build --build-arg test_name=$TEST_NAME \
+               --build-arg build_case=$BUILD_CASE \
+               --no-cache \
+               --compress \
+               -f Dockerfile -t my_image ../..
+               
+  #docker create --name my_image "${IMG_NAME}"
+  
   docker create -u builder -e "CI_TEST=true" -e "USER=builder" \
                 -e "RT_MACHINE=linux" -e "RT_COMPILER=gnu" \
-                --name "${TEST_NAME}_${TEST_CASE}" noaaepic/ubuntu20.04-gnu9.3-hpc-stack:v1.2e \
+                --name "${TEST_NAME}_${TEST_CASE}" my_image \
                 /bin/bash -c "./opnReqTest -n ${TEST_NAME} -c ${TEST_CASE} -z"
 
   cd $GITHUB_WORKSPACE
