@@ -69,7 +69,7 @@ if [ $BUILD = "true" ]; then
                -f Dockerfile -t ${IMG_NAME} ../..
 
   docker create --name "${TEST_NAME}_${BUILD_CASE}" "${IMG_NAME}"
-  docker cp -a "${TEST_NAME}_${BUILD_CASE}:/home/builder/ufs-weather-model/tests/fv3.tar.gz" ~
+  docker cp -a "${TEST_NAME}_${BUILD_CASE}:/home/builder/ufs-weather-model/tests/fv3.tar.gz" /home/maintuser/workspace/sandbox/ufs-wm-ci-debug/
   docker rm "${TEST_NAME}_${BUILD_CASE}"
 
 elif [ $RUN == "true" ]; then
