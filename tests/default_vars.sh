@@ -68,7 +68,7 @@
 
   TASKS_aqm=272; INPES_aqm=33; JNPES_aqm=8
 
-if [[ $MACHINE_ID = wcoss2.* ]]; then
+if [[ $MACHINE_ID = wcoss2.* || $MACHINE_ID = acorn.* ]]; then
 
   TPN=128
 
@@ -165,6 +165,12 @@ elif [[ $MACHINE_ID = s4.* ]]; then
   TASKS_cpl_atmw_gdas=560; THRD_cpl_atmw_gdas=2
   INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
   WAV_tasks_atmw_gdas=248
+
+  TASKS_cpl_bmrk=560; THRD_cpl_bmrk=2
+  INPES_cpl_bmrk=6; JNPES_cpl_bmrk=8; WPG_cpl_bmrk=24
+  OCN_tasks_cpl_bmrk=120
+  ICE_tasks_cpl_bmrk=48
+  WAV_tasks_cpl_bmrk=80
 
 elif [[ $MACHINE_ID = gaea.* ]]; then
 
