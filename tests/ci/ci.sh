@@ -92,7 +92,7 @@ elif [ $RUN == "true" ]; then
   #              --shm-size=512m --name "${TEST_NAME}_${TEST_CASE}" noaaepic/ubuntu20.04-gnu9.3-hpc-stack:v1.2e \
   #              /bin/bash -c "./opnReqTest -n ${TEST_NAME} -c ${TEST_CASE} -z"
   
-    docker build --build-arg test_name=$TEST_NAME \
+  docker build --build-arg test_name=$TEST_NAME \
                --build-arg build_case=$BUILD_CASE \
                --no-cache \
                --compress \
@@ -100,16 +100,16 @@ elif [ $RUN == "true" ]; then
                
   #docker create --name my_container my_image
   
-  docker create -u builder -e "CI_TEST=true" -e "USER=builder" \
-                -e "RT_MACHINE=linux" -e "RT_COMPILER=gnu" \
-                --name my_container my_image \
-                /bin/bash -c "./opnReqTest -n ${TEST_NAME} -c ${TEST_CASE} -z"
+  #docker create -u builder -e "CI_TEST=true" -e "USER=builder" \
+  #              -e "RT_MACHINE=linux" -e "RT_COMPILER=gnu" \
+  #              --name my_container my_image \
+  #              /bin/bash -c "./opnReqTest -n ${TEST_NAME} -c ${TEST_CASE} -z"
                 
-  docker start my_container
+  #docker start my_container
   
   #docker rm my_container
   
-  docker rmi my_image
+  #docker rmi my_image
  
   #cd $GITHUB_WORKSPACE
   #docker cp . "${TEST_NAME}_${TEST_CASE}:/home/builder/ufs-weather-model"
