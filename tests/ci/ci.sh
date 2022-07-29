@@ -62,6 +62,12 @@ fi
 
 if [ $BUILD = "true" ]; then
 
+  CONTAINER_NAME="${TEST_NAME}_${BUILD_CASE}"
+  OLD="$(docker ps --all --quiet --filter=name="$CONTAINER_NAME")"
+  if [ -n "$OLD" ]; then
+    docker stop $OLD && docker rm $OLD
+  fi
+
   docker build --build-arg test_name=$TEST_NAME \
                --build-arg build_case=$BUILD_CASE \
                --no-cache \
