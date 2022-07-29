@@ -49,7 +49,8 @@ list(APPEND cice_shared_files
   CICE/cicecore/cicedynB/infrastructure/ice_read_write.F90
   CICE/cicecore/cicedynB/infrastructure/ice_restart_driver.F90
   CICE/cicecore/cicedynB/infrastructure/ice_restoring.F90
-)
+  CICE/cicecore/cicedynB/infrastructure/ice_memusage.F90
+  CICE/cicecore/cicedynB/infrastructure/ice_memusage_gptl.c)
 
 
 #Icepack List:

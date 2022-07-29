@@ -29,7 +29,7 @@ elif [[ $MACHINE_ID = s4* ]] ; then
     fi
     module purge
 
-elif [[ $MACHINE_ID = wcoss2* ]] ; then
+elif [[ $MACHINE_ID = wcoss2* || $MACHINE_ID = acorn* ]] ; then
     # We are on NOAA Cactus or Dogwood
     if ( ! eval module help > /dev/null 2>&1 ) ; then
         source /usr/share/lmod/lmod/init/bash
