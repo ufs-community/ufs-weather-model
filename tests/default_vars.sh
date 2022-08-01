@@ -15,6 +15,11 @@
   INPES_cpl_atmw=3; JNPES_cpl_atmw=8; WPG_cpl_atmw=6
   WAV_tasks_atmw=30
 
+  TASKS_cpl_c48=20; THRD_cpl_c48=1 
+  INPES_cpl_c48=1; JNPES_cpl_c48=1; WPG_cpl_c48=6
+  OCN_tasks_cpl_c48=4
+  ICE_tasks_cpl_c48=4
+
   TASKS_cpl_dflt=200; THRD_cpl_dflt=1
   INPES_cpl_dflt=3; JNPES_cpl_dflt=8; WPG_cpl_dflt=6
   OCN_tasks_cpl_dflt=20
@@ -69,7 +74,7 @@
 
   TASKS_aqm=272; INPES_aqm=33; JNPES_aqm=8
 
-if [[ $MACHINE_ID = wcoss2.* ]]; then
+if [[ $MACHINE_ID = wcoss2.* || $MACHINE_ID = acorn.* ]]; then
 
   TPN=128
 
@@ -166,6 +171,12 @@ elif [[ $MACHINE_ID = s4.* ]]; then
   TASKS_cpl_atmw_gdas=560; THRD_cpl_atmw_gdas=2
   INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
   WAV_tasks_atmw_gdas=248
+
+  TASKS_cpl_bmrk=560; THRD_cpl_bmrk=2
+  INPES_cpl_bmrk=6; JNPES_cpl_bmrk=8; WPG_cpl_bmrk=24
+  OCN_tasks_cpl_bmrk=120
+  ICE_tasks_cpl_bmrk=48
+  WAV_tasks_cpl_bmrk=80
 
 elif [[ $MACHINE_ID = gaea.* ]]; then
 
@@ -804,6 +815,10 @@ export RESTART_EXT=.false.
 export FRAZIL_FWSALT=.true.
 # default to write CICE average history files
 export CICE_HIST_AVG=.true.
+# default CICE B-grid, ATM and OCN are provided by cap on A grid
+export GRIDATM=A
+export GRIDOCN=A
+export GRIDICE=B
 
 #wave
 export INPUT_CURFLD='T F     Currents'
@@ -956,6 +971,9 @@ export RESTART_EXT=.false.
 export FRAZIL_FWSALT=.true.
 # default to write CICE average history files
 export CICE_HIST_AVG=.true.
+export GRIDATM=A
+export GRIDOCN=A
+export GRIDICE=B
 # default non-mushy thermo
 export KTHERM=1
 export TFREEZE_OPTION=linear_salt
