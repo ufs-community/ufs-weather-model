@@ -283,7 +283,7 @@ check_results() {
         fi
 
         if [[ $d -eq 1 && ${i##*.} == 'nc' ]] ; then
-          if [[ ${MACHINE_ID} =~ orion || ${MACHINE_ID} =~ hera || ${MACHINE_ID} =~ wcoss_dell_p3 || ${MACHINE_ID} =~ wcoss_cray || ${MACHINE_ID} =~ wcoss2 || ${MACHINE_ID} =~ cheyenne || ${MACHINE_ID} =~ gaea || ${MACHINE_ID} =~ jet || ${MACHINE_ID} =~ s4 ]] ; then
+          if [[ ${MACHINE_ID} =~ orion || ${MACHINE_ID} =~ hera || ${MACHINE_ID} =~ wcoss2 || ${MACHINE_ID} =~ acorn || ${MACHINE_ID} =~ cheyenne || ${MACHINE_ID} =~ gaea || ${MACHINE_ID} =~ jet || ${MACHINE_ID} =~ s4 ]] ; then
             printf ".......ALT CHECK.." >> ${REGRESSIONTEST_LOG}
             printf ".......ALT CHECK.."
             ${PATHRT}/compare_ncfile.py ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i > compare_ncfile.log 2>&1 && d=$? || d=$?
@@ -390,15 +390,6 @@ rocoto_create_compile_task() {
   NATIVE=""
   BUILD_CORES=8
   BUILD_WALLTIME="00:30:00"
-  if [[ ${MACHINE_ID} == wcoss_dell_p3 ]]; then
-    BUILD_CORES=1
-    NATIVE="<memory>8G</memory> <native>-R 'affinity[core(1)]'</native>"
-    BUILD_WALLTIME="01:00:00"
-  fi
-  if [[ ${MACHINE_ID} == wcoss_cray ]]; then
-    BUILD_CORES=24
-    NATIVE="<exclusive></exclusive> <envar><name>PATHTR</name><value>&PATHTR;</value></envar>"
-  fi
   if [[ ${MACHINE_ID} == jet.* ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
@@ -441,12 +432,6 @@ rocoto_create_run_task() {
   fi
 
   NATIVE=""
-  if [[ ${MACHINE_ID} == wcoss_dell_p3 ]]; then
-    NATIVE="<nodesize>28</nodesize><native>-R 'affinity[core(${THRD})]'</native>"
-  fi
-  if [[ ${MACHINE_ID} == wcoss_cray ]]; then
-    NATIVE="<exclusive></exclusive>"
-  fi
 
   cat << EOF >> $ROCOTO_XML
     <task name="${TEST_NAME}${RT_SUFFIX}" maxtries="${ROCOTO_TEST_MAXTRIES:-3}">
@@ -481,11 +466,6 @@ rocoto_step() {
     #   Is it done?
     state=$($ROCOTOSTAT -w $ROCOTO_XML -d $ROCOTO_DB -s | grep 197001010000 | awk -F" " '{print $2}')
     echo "$state" > $ROCOTO_STATE
-    dead_compile=$($ROCOTOSTAT -w $ROCOTO_XML -d $ROCOTO_DB | grep compile_ | grep DEAD | head -1 | awk -F" " '{print $2}')
-    if [[ ! -z ${dead_compile} ]]; then
-        echo "y" | ${ROCOTOCOMPLETE} -w $ROCOTO_XML -d $ROCOTO_DB -m ${dead_compile}_tasks
-        ${ROCOTOCOMPLETE} -w $ROCOTO_XML -d $ROCOTO_DB -t ${dead_compile}
-    fi
 }
 
 rocoto_run() {
@@ -587,7 +567,7 @@ ecflow_run() {
   not_running=$?
   if [[ $not_running -eq 1 ]]; then
     echo "ecflow_server is NOT running on ${ECF_HOST}:${ECF_PORT}"
-    if [[ ${MACHINE_ID} == wcoss2.* ]]; then
+    if [[ ${MACHINE_ID} == wcoss2.* || ${MACHINE_ID} == acorn.* ]]; then
       # Annoying "Has NCO assigned port $ECF_PORT for use by this account? (yes/no) ".
       echo yes | ${ECFLOW_START} -p ${ECF_PORT} -d ${RUNDIR_ROOT}/ecflow_server
     elif [[ ${MACHINE_ID} == jet.* ]]; then

@@ -54,6 +54,7 @@ export_fv3
 export NPZ=127
 export NPZP=128
 export DT_ATMOS=720
+export DT_INNER=${DT_ATMOS}
 export SYEAR=2021
 export SMONTH=03
 export SDAY=22
@@ -70,6 +71,11 @@ export NEMS_CONFIGURE=nems.configure.atmaero.IN
 export atm_model='fv3'
 export chm_model='gocart'
 export coupling_interval_sec=${DT_ATMOS}
+
+export TASKS=${TASKS_atmaero}
+export INPES=${INPES_atmaero}
+export JNPES=${JNPES_atmaero}
+export WRTTASK_PER_GROUP=${WPG_atmaero}
 
 # default resources
 export DOMAINS_STACK_SIZE=8000000
@@ -99,7 +105,7 @@ export USE_MERRA2=.true.
 export IAER=1011
 export NSTF_NAME=2,0,0,0,0
 
-export LHEATSTRG=.true.
+export LHEATSTRG=.false.
 export LSEASPRAY=.true.
 
 # P7 UGWP1
@@ -174,3 +180,7 @@ export DO_RRTMGP=.false.
 export DOGP_CLDOPTICS_LUT=.true.
 export DOGP_LWSCAT=.true.
 export DOGP_SGS_CNV=.true.
+
+if [[ $MACHINE_ID = cheyenne.* ]]; then
+  TPN=18
+fi
