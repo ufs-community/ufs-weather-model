@@ -821,8 +821,8 @@ export GRIDOCN=A
 export GRIDICE=B
 
 #wave
-export INPUT_CURFLD='T F     Currents'
-export INPUT_ICEFLD='T F     Ice concentrations'
+export INPUT_CURFLD='C F     Currents'
+export INPUT_ICEFLD='C F     Ice concentrations'
 export WW3RSTDTHR=3
 export WW3OUTDTHR=3
 export DT_2_RST="$(printf "%02d" $(( ${WW3RSTDTHR}*3600 )))"
@@ -1066,8 +1066,8 @@ export DLON=0.03
 export DLAT=0.03
 
 # shel.inp
-export INPUT_CURFLD='F F     Currents'
-export INPUT_ICEFLD='F F     Ice concentrations'
+export INPUT_CURFLD='C F     Currents'
+export INPUT_ICEFLD='C F     Ice concentrations'
 # input.nml
 export CPL_IMP_MRG=.true.
 
