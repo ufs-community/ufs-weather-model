@@ -15,7 +15,7 @@ usage_and_exit() {
 IMG_NAME=my-image
 CNT_NAME=ci-test-weather
 TEST_NAME=""
-BUILD_CASE=""
+RUN_CASE=""
 
 while getopts :b:c: opt; do
   case $opt in
@@ -35,12 +35,12 @@ if [ -n "$OLD" ]; then
 fi
 
 docker build --build-arg test_name=$TEST_NAME \
-             --build-arg build_case=$BUILD_CASE \
+             --build-arg build_case=$RUN_CASE \
              --no-cache \
              --compress \
             -f Dockerfile -t ${IMG_NAME} ../..
 
-docker create --name "${CNT_NAME}_${BUILD_CASE}" "${IMG_NAME}"
+docker create --name "${CNT_NAME}" "${IMG_NAME}"
 
 #docker logs --details --timestamps "${TEST_NAME}_${TEST_CASE}"
 #exit $(docker inspect "${TEST_NAME}_${TEST_CASE}" --format='{{.State.ExitCode}}')
