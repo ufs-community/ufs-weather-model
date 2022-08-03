@@ -59,4 +59,5 @@ Glossary
       A prognostic model that can be used for short- and medium-range research and 
       operational forecasts. It can be an atmosphere-only model or be an atmospheric
       model coupled with one or more additional components, such as a wave or ocean model.
+      The UFS Weather Model repository is publicly available on `GitHub <https://github.com/ufs-community/ufs-weather-model>`__. 
 

@@ -8,7 +8,7 @@ Code Overview
 UFS Weather Model Hierarchical Repository Structure
 ===================================================
 
-The ``ufs-weather-model`` repository supports the :term:`UFS` short- and medium-range weather applications. It contains atmosphere and wave components and some infrastructure components. Each of these subcomponents has its own repository. All the repositories are currently located in GitHub with public access to the broad community. :numref:`Table %s <Repo_Structure>` describes the list of repositories that comprises the UFS Weather Model (WM).
+The ``ufs-weather-model`` repository supports the :term:`UFS` short- and medium-range weather applications (`SRW <https://github.com/ufs-community/ufs-srweather-app>`__ / `MRW <https://github.com/ufs-community/ufs-mrweather-app>`__ Apps). It contains atmosphere and wave components and some infrastructure components. Each of these subcomponents has its own repository. All the repositories are currently located in GitHub with public access to the broad community. :numref:`Table %s <Repo_Structure>` describes the list of repositories that comprises the UFS :term:`Weather Model` (WM).
 
 .. _Repo_Structure:
 
@@ -63,30 +63,29 @@ The umbrella repository for the UFS Weather Model is named ``ufs-weather-model``
 .. code-block:: console
 
    ufs-weather-model/
-   ├── build.sh             -------- script for building the WM
-   ├── cmake                -------- cmake configuration files
-   ├── CMakeLists.txt       # Omit? (I added)
-   ├── CMakeModules         # Omit? (I added)
-   ├── doc                  -------- User Guide files
-   ├── driver               # Omit? (I added)
-   ├── FV3                  -------- UFSAtm atmosphere model
-   │   ├── (atmos_cubed_sphere) ------ FV3 dynamical core
+   ├── build.sh                 -------- script for building the WM
+   ├── cmake                    -------- cmake configuration files
+   ├── CMakeLists.txt         
+   ├── CMakeModules           
+   ├── doc                      -------- User Guide files
+   ├── driver                 
+   ├── FV3                      -------- UFSAtm atmosphere model
+   │   ├── (atmos_cubed_sphere) -------- FV3 dynamical core
    │   │   ├── (docs)
    │   │   ├── (driver)
    │   │   ├── (model)
    │   │   └── (tools)
-   │   ├── (ccpp)             -------- Common Community Physics Package
+   │   ├── (ccpp)               -------- Common Community Physics Package
    │   │   ├── (config)
    │   │   ├── (driver)
-   │   │   ├── (framework)    -------- CCPP framework
-   │   │   ├── (physics)      -------- CCPP compliant physics schemes
-   │   │   └── (suites)       -------- CCPP physics suite definition files (SDFs)
-   │   ├── (cpl)              -------- Coupling field data structures
-   │   ├── (io)               -------- UFSAtm write grid comp code
-   │   └── (stochastic_physics) ------ Wrapper for stochastic physics
+   │   │   ├── (framework)      -------- CCPP framework
+   │   │   ├── (physics)        -------- CCPP compliant physics schemes
+   │   │   └── (suites)         -------- CCPP physics suite definition files (SDFs)
+   │   ├── (cpl)                -------- Coupling field data structures
+   │   ├── (io)                 -------- UFSAtm write grid comp code
+   │   └── (stochastic_physics) -------- Wrapper for stochastic physics
    │
-   #├── NEMS                 -------- NOAA Earth Modeling System framework ---- Delete?
-   ├── stochastic_physics   -------- stochastic physics pattern generator
+   ├── stochastic_physics       -------- stochastic physics pattern generator
    ├── AQM
    │     └── (src)
    │         ├── (model)
@@ -123,3 +122,8 @@ The umbrella repository for the UFS Weather Model is named ``ufs-weather-model``
 The physics subdirectory in the ``gfsphysics`` directory  is not used or supported
 as part of this release (all physics is available through the :term:`CCPP` using
 the repository described in :numref:`Table %s <Repo_Structure>`).
+
+..
+   COMMENT: Should we omit CMakeLists.txt, CMakeModules, driver (which I added) or add a description?
+   COMMENT: Should we omit NEMS directory, which doesn't seem to be part of the repo anymore?
+   ├── NEMS                  -------- NOAA Earth Modeling System framework
