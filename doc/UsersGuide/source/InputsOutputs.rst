@@ -20,6 +20,8 @@ The ufs-weather-model can be configured as one of several applications, from a s
      - UFSAtm coupled to WW3
    * - ATMAERO
      - UFSAtm coupled to GOCART
+   * - ATMAQ
+     - UFSAtm coupled to CMAQ
    * - S2S
      - Coupled UFSATM-MOM6-CICE6-CMEPS
    * - S2SA
@@ -649,6 +651,41 @@ The OUTPARS_WAV defines gridded output fields. The GOFILETYPE, POFILETYPE and RS
 
 No initial condition files are required for WW3.
 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Mesh generation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+For coupled applications using the CMEPS mediator, an ESMF Mesh file describing the WW3 domain is required. For regional and sub-global domains, the mesh can be created using a two-step procedure.
+ 
+1. Generate a SCRIP format file for the domain
+2. Generate the ESMF Mesh.
+
+In each case, the SCRIP file needs to be checked that it contains the right start and end latitudes and longitudes to match the mod_def file being used.
+
+For the HAFS regional domain, the following commands can be used:
+
+.. code-block:: console
+
+   ncremap -g hafswav.SCRIP.nc -G latlon=441,901#snwe=1.45,45.55,-98.05,-7.95#lat_typ=uni#lat_drc=s2n
+   ESMF_Scrip2Unstruct hafswav.SCRIP.nc mesh.hafs.nc 0
+
+For the sub-global 1-deg domain extending from latitude 85.0S
+
+.. code-block:: console
+
+   ncremap -g glo_1deg.SCRIP.nc -G latlon=171,360#snwe=-85.5,85.5,-0.5,359.5#lat_typ=uni#lat_drc=s2n
+   ESMF_Scrip2Unstruct glo_1deg.SCRIP.nc mesh.glo_1deg.nc 0
+
+For the sub-global 1/2-deg domain extending from latitude 80.0S
+
+.. code-block:: console
+
+   ncremap -g gwes_30m.SCRIP.nc -G latlon=321,720#snwe=-80.25,80.25,-0.25,359.75#lat_typ=uni#lat_drc=s2n
+   ESMF_Scrip2Unstruct gwes_30m.SCRIP.nc mesh.gwes_30m.nc 0
+
+For the tripole grid, the mesh file is generated as part of the cpld_gridgen utility in
+`UFS_UTILS <https://ufs-community.github.io/UFS_UTILS/cpld_gridgen/index.html>`__.
+
 -------
 CDEPS
 -------
@@ -769,7 +806,7 @@ The static input files for GOCART configurations are listed and described in :nu
    * - GOCART2G_GridComp.rc
      - The basic properties of the GOCART2G Grid Components
    * - NI2G_instance_NI.rc
-     - Resource file for Nitrate parameters               
+     - Resource file for Nitrate parameters
    * - SS2G_instance_SS.rc
      - Resource file for Sea Salt parameters
    * - SU2G_instance_SU.rc
@@ -785,10 +822,10 @@ GOCART inputs defined in AERO_ExtData are listed and described in :numref:`Table
 
    * - Filename
      - Description
-   * - ExtData/dust 
+   * - ExtData/dust
      - FENGSHA input files
    * - ExtData/QFED
-     - QFED biomass burning emissions     
+     - QFED biomass burning emissions
    * - ExtData/CEDS
      - Anthropogenic emissions
    * - ExtData/MERRA2
@@ -796,11 +833,11 @@ GOCART inputs defined in AERO_ExtData are listed and described in :numref:`Table
    * - ExtData/PIESA/sfc
      - Aviation emissions
    * - ExtData/PIESA/L127
-     - H2O2, OH and NO3 mixing ratios     
+     - H2O2, OH and NO3 mixing ratios
    * - ExtData/MEGAN_OFFLINE_BVOC
      - VOCs MEGAN biogenic emissions
    * - ExtData/monochromatic
-     - Aerosol monochromatic optics files 
+     - Aerosol monochromatic optics files
    * - ExtData/optics
      - Aerosol radiation bands optic files for RRTMG
    * - ExtData/volcanic
@@ -815,11 +852,11 @@ The static input files when using climatology (MERRA2) are listed and described 
    :header-rows: 1
 
    * - Filename
-     - Description             
+     - Description
    * - merra2.aerclim.2003-2014.m$(month).nc
-     - MERRA2 aerosol climatology mixing ratio 
+     - MERRA2 aerosol climatology mixing ratio
    * - Optics_BC.dat
-     - BC optical look-up table for MERAA2 
+     - BC optical look-up table for MERAA2
    * - Optics_DU.dat
      - DUST optical look-up table for MERAA2
    * - Optics_OC.dat
@@ -833,12 +870,65 @@ The static input files when using climatology (MERRA2) are listed and described 
 Grid description and initial condition files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Running GOCART in UFS does not require aerosol initial conditions, as aerosol models can always start from scratch (cold start), however, this approach does require more than two weeks of model spin-up to obtain reasonable aerosol simulation results. 
+Running GOCART in UFS does not require aerosol initial conditions, as aerosol models can always start from scratch (cold start), however, this approach does require more than two weeks of model spin-up to obtain reasonable aerosol simulation results.
 
 Therefore, the most popular method is to take previous aerosol simulation results. The result is not necessarily from the same model, it could be from a climatology result, such as MERAA2, or a different model but with the same aerosol species and bin/size distribution.
 
 The aerosol initial input currently read by GOCART is the same format as the UFSAtm initial input data format of "gfs_data_tile[1-6].nc" in :numref:`Table %s <GridICFiles>`, so the aerosol initial conditions should be combined with the meteorological initial conditions as one initial input file. There are many tools available for this purpose. Ufs-utils in the global workflow that supports UFS models always provides a solution for this.
 
+--------------
+AQM (CMAQ)
+--------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Static datasets (i.e., *fix files*)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The static input files for AQM configurations are listed and described in :numref:`Table %s <AQM_ControlFiles>`.
+
+.. _AQM_ControlFiles:
+
+.. list-table:: *AQM run control files*
+   :widths: 40 50
+   :header-rows: 1
+
+   * - Filename
+     - Description
+   * - AQM.rc
+     - NOAA Air Quality Model Parameters
+
+AQM inputs defined in aqm.rc are listed and described in :numref:`Table %s <AQM_InputFiles>`.
+
+.. _AQM_InputFiles:
+
+.. list-table:: *AQM inputs defined in aqm.rc*
+   :widths: 40 50
+   :header-rows: 1
+
+   * - Filename
+     - Description
+   * - AE_cb6r3_ae6_aq.nml 
+     - AE Matrix NML
+   * - GC_cb6r3_ae6_aq.nml 
+     - GC Matrix NML
+   * - NR_cb6r3_ae6_aq.nml 
+     - NR Matrix NML
+   * - Species_Table_TR_0.nml 
+     - TR Matrix NML
+   * - CSQY_DATA_cb6r3_ae6_aq
+     - CSQY Data
+   * - PHOT_OPTICS.dat
+     - Optics Data
+   * - omi_cmaq_2015_361X179.dat
+     - OMI data
+   * - NEXUS/NEXUS_Expt.nc
+     - Emissions File
+   * - BEIS_RRFScmaq_C775.ncf
+     - Biogenic File
+   * - gspro_biogenics_1mar2017.txt
+     - Biogenic Speciation File
+   * - Hourly_Emissions_regrid_rrfs_13km_20190801_t12z_h72.nc
+     - File Emissions File 
+     
 ==========================
 Model configuration files
 ==========================
@@ -1854,7 +1944,7 @@ For the fully coupled S2S application that receives atmosphere-ocean fluxes from
           ProfileMemory = false
           OverwriteSlice = true
           mesh_ice = mesh.mx025.nc
-          stop_n = 840 
+          stop_n = 840
           stop_option = nhours
           stop_ymd = -999
         ::
@@ -1933,6 +2023,40 @@ For the fully coupled S2S application that receives atmosphere-ocean fluxes from
 .. note:: The *aoflux_grid* option is used to select the grid/mesh to perform atmosphere-ocean flux calculation. The possible options are *xgrid* (exchange grid), *agrid* (atmosphere model grid) and *ogrid* (ocean model grid).
 
 .. note:: The *aoflux_code* option is used to define the algorithm that will be used to calculate atmosphere-ocean fluxes. The possible options are *cesm* and *ccpp*. If *ccpp* is selected then the suite file provided in the *aoflux_ccpp_suite* option is used to calculate atmosphere-ocean fluxes through the use of CCPP host model.
+
+For the ATMAQ application, a sample *nems.configure* is shown below :
+
+.. code-block:: console
+
+        EARTH_component_list: ATM AQM
+        EARTH_attributes::
+          Verbosity = 0
+        ::
+        
+        # ATM #
+        ATM_model:                      fv3
+        ATM_petlist_bounds:             0 271
+        ATM_attributes::
+          Verbosity = 0
+        ::
+        
+        # AQM #
+        AQM_model:                      aqm
+        AQM_petlist_bounds:             0 271
+        AQM_attributes::
+          Verbosity = 0
+        ::
+        
+        # Run Sequence #
+        runSeq::
+          @180
+            ATM phase1
+            ATM -> AQM
+            AQM
+            AQM -> ATM
+            ATM phase2
+          @
+        ::
 
 ---------------------------------------
 *The SDF (Suite Definition File) file*

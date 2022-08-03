@@ -23,6 +23,15 @@ write_fail_test() {
   exit 1
 }
 
+remove_fail_test() {
+    echo "Removing test failure flag file for ${TEST_NAME} ${TEST_NR}"
+    if [[ ${OPNREQ_TEST} == true ]] ; then
+        rm -f $PATHRT/fail_opnreq_test_${TEST_NR}
+    else
+        rm -f $PATHRT/fail_test_${TEST_NR}
+    fi
+}
+
 function compute_petbounds() {
 
   # each test MUST define ${COMPONENT}_tasks variable for all components it is using
@@ -32,7 +41,7 @@ function compute_petbounds() {
   # CHM component and mediator are running on ATM compute tasks only.
 
   local n=0
-  unset atm_petlist_bounds ocn_petlist_bounds ice_petlist_bounds wav_petlist_bounds chm_petlist_bounds med_petlist_bounds
+  unset atm_petlist_bounds ocn_petlist_bounds ice_petlist_bounds wav_petlist_bounds chm_petlist_bounds med_petlist_bounds aqm_petlist_bounds
 
   # ATM
   ATM_io_tasks=${ATM_io_tasks:-0}
@@ -65,6 +74,9 @@ function compute_petbounds() {
   # MED
   med_petlist_bounds="0 $((ATM_compute_tasks - 1))"
 
+  # AQM
+  aqm_petlist_bounds="0 $((ATM_compute_tasks - 1))"
+
   UFS_tasks=${n}
 
   echo "ATM_petlist_bounds: ${atm_petlist_bounds:-}"
@@ -73,6 +85,7 @@ function compute_petbounds() {
   echo "WAV_petlist_bounds: ${wav_petlist_bounds:-}"
   echo "CHM_petlist_bounds: ${chm_petlist_bounds:-}"
   echo "MED_petlist_bounds: ${med_petlist_bounds:-}"
+  echo "AQM_petlist_bounds: ${aqm_petlist_bounds:-}"
   echo "UFS_tasks         : ${UFS_tasks:-}"
 
 }
@@ -90,11 +103,7 @@ export COMPILE_NR=$5
 
 cd ${PATHRT}
 OPNREQ_TEST=${OPNREQ_TEST:-false}
-if [[ ${OPNREQ_TEST} == true ]]; then
-  rm -f fail_opnreq_test_${TEST_NR}
-else
-  rm -f fail_test_${TEST_NR}
-fi
+remove_fail_test
 
 [[ -e ${RUNDIR_ROOT}/run_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
 source default_vars.sh
@@ -245,6 +254,11 @@ if [[ $FV3 == true ]]; then
   fi
 fi
 
+# AQM
+if [[ $AQM == .true. ]]; then
+  cp ${PATHRT}/parm/aqm/aqm.rc .
+fi
+
 # Field Dictionary
 cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
 
@@ -356,6 +370,9 @@ fi
 if [[ $SCHEDULER != 'none' ]]; then
   cat ${RUNDIR}/job_timestamp.txt >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
 fi
+
+remove_fail_test
+
 ################################################################################
 # End test
 ################################################################################
