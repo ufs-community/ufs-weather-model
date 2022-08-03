@@ -415,7 +415,7 @@ export CNVCLD=.true.
 export PROGSIGMA=.false.
 
 # Aerosol convective scavenging
-export FSCAV_AERO='"*:0.3","so2:0.0","msa:0.0","dms:0.0","nh3:0.4","nh4:0.6","bc1:0.6","bc2:0.6","dust1:0.6","dust2:0.6","dust3:0.6","dust4:0.6","dust5:0.6","seas1:0.5","seas2:0.5","seas3:0.5","seas4:0.5","seas5:0.5"'
+export FSCAV_AERO='"*:0.3","so2:0.0","msa:0.0","dms:0.0","nh3:0.4","nh4:0.6","bc1:0.6","bc2:0.6","oc1:0.4","oc2:0.4","dust1:0.6","dust2:0.6","dust3:0.6","dust4:0.6","dust5:0.6","seas1:0.5","seas2:0.5","seas3:0.5","seas4:0.5","seas5:0.5"'
 
 # SFC
 export DO_MYJSFC=.false.
@@ -683,11 +683,11 @@ export GWD_OPT=2
 export KNOB_UGWP_NSLOPE=1
 export DO_GSL_DRAG_LS_BL=.true.
 export DO_GSL_DRAG_SS=.true.
-export DO_GSL_DRAG_TOFD=.true.
 export DO_UGWP_V1_OROG_ONLY=.false.
 export DO_UGWP_V0_NST_ONLY=.false.
 export LDIAG_UGWP=.false.
 #P8
+export DO_GSL_DRAG_TOFD=.false.
 export CDMBWD=${CDMBWD_c96}
 
 # P8 RRTMGP
