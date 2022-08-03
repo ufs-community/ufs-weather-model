@@ -8,14 +8,13 @@ COPY --chown=builder:builder . $HOME/ufs-weather-model
 USER builder
 ENV USER=builder
 ARG test_name
-ARG build_case
+ARG run_case
 ENV test_name=$test_name
-ENV build_case=$build_case
-ENV test_case=thr
+ENV run_case=$run_case
 ENV CI_TEST=true
 ENV RT_COMPILER=gnu
 ENV RT_MACHINE=linux
 ENV MACHINE_ID=linux
 
 WORKDIR $HOME/ufs-weather-model/tests
-CMD ./opnReqTest -n $test_name -c $build_case
+CMD ./opnReqTest -n $test_name -c $run_case
