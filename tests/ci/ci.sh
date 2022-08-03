@@ -23,11 +23,11 @@ while getopts :b: opt; do
   esac
 done
 
-CONTAINER_NAME="${CNT_NAME}"
-OLD="$(docker ps --all --quiet --filter=name="$CONTAINER_NAME")"
-if [ -n "$OLD" ]; then
-   docker stop $OLD && docker rm $OLD
-fi
+#CONTAINER_NAME="${CNT_NAME}"
+#OLD="$(docker ps --all --quiet --filter=name="$CONTAINER_NAME")"
+#if [ -n "$OLD" ]; then
+#   docker stop $OLD && docker rm $OLD
+#fi
 
 docker build --build-arg test_name=$TEST_NAME \
              --build-arg build_case=$RUN_CASE \
