@@ -15,6 +15,11 @@
   INPES_cpl_atmw=3; JNPES_cpl_atmw=8; WPG_cpl_atmw=6
   WAV_tasks_atmw=30
 
+  TASKS_cpl_c48=20; THRD_cpl_c48=1 
+  INPES_cpl_c48=1; JNPES_cpl_c48=1; WPG_cpl_c48=6
+  OCN_tasks_cpl_c48=4
+  ICE_tasks_cpl_c48=4
+
   TASKS_cpl_dflt=200; THRD_cpl_dflt=1
   INPES_cpl_dflt=3; JNPES_cpl_dflt=8; WPG_cpl_dflt=6
   OCN_tasks_cpl_dflt=20
@@ -61,7 +66,9 @@
   OCN_tasks_cdeps_025=120
   ICE_tasks_cdeps_025=48
 
-if [[ $MACHINE_ID = wcoss2.* ]]; then
+  TASKS_aqm=272; INPES_aqm=33; JNPES_aqm=8
+
+if [[ $MACHINE_ID = wcoss2.* || $MACHINE_ID = acorn.* ]]; then
 
   TPN=128
 
@@ -138,6 +145,7 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   OCN_tasks_cpl_bmrk=100
   ICE_tasks_cpl_bmrk=48
   WAV_tasks_cpl_bmrk=100
+  WLCLK_cpl_bmrk=120
 
   # run only in weekly test
   TASKS_cpl_c192=1404; THRD_cpl_c192=2
@@ -145,6 +153,7 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   OCN_tasks_cpl_c192=100
   ICE_tasks_cpl_c192=48
   WAV_tasks_cpl_c192=80
+  WLCLK_cpl_c192=120
 
 elif [[ $MACHINE_ID = s4.* ]]; then
 
@@ -158,6 +167,12 @@ elif [[ $MACHINE_ID = s4.* ]]; then
   TASKS_cpl_atmw_gdas=560; THRD_cpl_atmw_gdas=2
   INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
   WAV_tasks_atmw_gdas=248
+
+  TASKS_cpl_bmrk=560; THRD_cpl_bmrk=2
+  INPES_cpl_bmrk=6; JNPES_cpl_bmrk=8; WPG_cpl_bmrk=24
+  OCN_tasks_cpl_bmrk=120
+  ICE_tasks_cpl_bmrk=48
+  WAV_tasks_cpl_bmrk=80
 
 elif [[ $MACHINE_ID = gaea.* ]]; then
 
@@ -257,6 +272,7 @@ export_fv3 ()
 export FV3=true
 export S2S=false
 export HAFS=false
+export AQM=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
 export POSTAPP='global'
@@ -324,7 +340,7 @@ export NWAT=6
 # GFDL MP
 export DNATS=1
 export DO_SAT_ADJ=.true.
-export LHEATSTRG=.false.
+export LHEATSTRG=.true.
 export LSEASPRAY=.false.
 export LGFDLMPRAD=.false.
 export EFFR_IN=.false.
@@ -401,7 +417,7 @@ export CNVCLD=.true.
 export PROGSIGMA=.false.
 
 # Aerosol convective scavenging
-export FSCAV_AERO='"*:0.3","so2:0.0","msa:0.0","dms:0.0","nh3:0.4","nh4:0.6","bc1:0.6","bc2:0.6","dust1:0.6","dust2:0.6","dust3:0.6","dust4:0.6","dust5:0.6","seas1:0.5","seas2:0.5","seas3:0.5","seas4:0.5","seas5:0.5"'
+export FSCAV_AERO='"*:0.3","so2:0.0","msa:0.0","dms:0.0","nh3:0.4","nh4:0.6","bc1:0.6","bc2:0.6","oc1:0.4","oc2:0.4","dust1:0.6","dust2:0.6","dust3:0.6","dust4:0.6","dust5:0.6","seas1:0.5","seas2:0.5","seas3:0.5","seas4:0.5","seas5:0.5"'
 
 # SFC
 export DO_MYJSFC=.false.
@@ -548,6 +564,7 @@ export_cpl ()
 export FV3=true
 export S2S=true
 export HAFS=false
+export AQM=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
 
@@ -591,6 +608,7 @@ WAV_tasks=$WAV_tasks_cpl_dflt
 
 # component and coupling timesteps
 export DT_ATMOS=720
+export DT_INNER=${DT_ATMOS}
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6=1800
 export DT_THERM_MOM6=3600
@@ -659,7 +677,7 @@ export USE_MERRA2=.true.
 export IAER=1011
 export NSTF_NAME=2,0,0,0,0
 
-export LHEATSTRG=.true.
+export LHEATSTRG=.false.
 export LSEASPRAY=.true.
 
 # P7 UGWP1
@@ -667,11 +685,11 @@ export GWD_OPT=2
 export KNOB_UGWP_NSLOPE=1
 export DO_GSL_DRAG_LS_BL=.true.
 export DO_GSL_DRAG_SS=.true.
-export DO_GSL_DRAG_TOFD=.true.
 export DO_UGWP_V1_OROG_ONLY=.false.
 export DO_UGWP_V0_NST_ONLY=.false.
 export LDIAG_UGWP=.false.
 #P8
+export DO_GSL_DRAG_TOFD=.false.
 export CDMBWD=${CDMBWD_c96}
 
 # P8 RRTMGP
@@ -789,6 +807,10 @@ export RESTART_EXT=.false.
 export FRAZIL_FWSALT=.true.
 # default to write CICE average history files
 export CICE_HIST_AVG=.true.
+# default CICE B-grid, ATM and OCN are provided by cap on A grid
+export GRIDATM=A
+export GRIDOCN=A
+export GRIDICE=B
 
 #wave
 export INPUT_CURFLD='T F     Currents'
@@ -827,6 +849,7 @@ export_datm_cdeps ()
 export FV3=false
 export S2S=false
 export HAFS=false
+export AQM=false
 export DATM_CDEPS=true
 export DOCN_CDEPS=false
 export CPLWAV=.false.
@@ -940,6 +963,9 @@ export RESTART_EXT=.false.
 export FRAZIL_FWSALT=.true.
 # default to write CICE average history files
 export CICE_HIST_AVG=.true.
+export GRIDATM=A
+export GRIDOCN=A
+export GRIDICE=B
 # default non-mushy thermo
 export KTHERM=1
 export TFREEZE_OPTION=linear_salt
@@ -951,6 +977,7 @@ export_hafs_datm_cdeps ()
 export FV3=false
 export S2S=false
 export HAFS=true
+export AQM=false
 export DATM_CDEPS=true
 export DOCN_CDEPS=false
 export INPES=$INPES_dflt
@@ -968,6 +995,7 @@ export_hafs_docn_cdeps ()
 export FV3=true
 export S2S=false
 export HAFS=true
+export AQM=false
 export DOCN_CDEPS=true
 export INPES=$INPES_dflt
 export JNPES=$JNPES_dflt
@@ -985,6 +1013,7 @@ export_hafs_regional ()
 export FV3=true
 export S2S=false
 export HAFS=true
+export AQM=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
 export INPES=$INPES_dflt
@@ -1053,6 +1082,7 @@ export_hafs ()
 export FV3=true
 export S2S=false
 export HAFS=true
+export AQM=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
 export INPES=$INPES_dflt
