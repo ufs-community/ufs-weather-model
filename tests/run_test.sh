@@ -233,7 +233,7 @@ fi
 
 # diag table
 if [[ "Q${DIAG_TABLE:-}" != Q ]] ; then
-  cp ${PATHRT}/parm/diag_table/${DIAG_TABLE} diag_table
+  atparse < ${PATHRT}/parm/diag_table/${DIAG_TABLE} > diag_table
 fi
 # Field table
 if [[ "Q${FIELD_TABLE:-}" != Q ]] ; then
