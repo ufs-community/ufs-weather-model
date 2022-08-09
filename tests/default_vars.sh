@@ -29,8 +29,11 @@
   TASKS_cpl_thrd=120; THRD_cpl_thrd=2
   INPES_cpl_thrd=3; JNPES_cpl_thrd=4; WPG_cpl_thrd=6
   OCN_tasks_cpl_thrd=20
+  OCN_thrds_cpl_thrd=1
   ICE_tasks_cpl_thrd=10
+  ICE_thrds_cpl_thrd=1
   WAV_tasks_cpl_thrd=12
+  WAV_thrds_cpl_thrd=2
 
   TASKS_cpl_dcmp=200; THRD_cpl_dcmp=1
   INPES_cpl_dcmp=4; JNPES_cpl_dcmp=6; WPG_cpl_dcmp=6
@@ -44,11 +47,14 @@
   ICE_tasks_cpl_mpi=20
   WAV_tasks_cpl_mpi=28
 
-  TASKS_cpl_bmrk=656; THRD_cpl_bmrk=2
-  INPES_cpl_bmrk=8; JNPES_cpl_bmrk=8; WPG_cpl_bmrk=24
+  TASKS_cpl_bmrk=680; THRD_cpl_bmrk=2
+  INPES_cpl_bmrk=8; JNPES_cpl_bmrk=8; WPG_cpl_bmrk=48
   OCN_tasks_cpl_bmrk=120
+  OCN_thrds_cpl_bmrk=1
   ICE_tasks_cpl_bmrk=48
+  ICE_thrds_cpl_bmrk=1
   WAV_tasks_cpl_bmrk=80
+  WAV_thrds_cpl_bmrk=2
 
   TASKS_cpl_c192=464; THRD_cpl_c192=2
   INPES_cpl_c192=6; JNPES_cpl_c192=8; WPG_cpl_c192=12
@@ -140,8 +146,8 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   WAV_tasks_atmw_gdas=240
 
   # run only in weekly test
-  TASKS_cpl_bmrk=1808; THRD_cpl_bmrk=2
-  INPES_cpl_bmrk=16; JNPES_cpl_bmrk=16; WPG_cpl_bmrk=24
+  TASKS_cpl_bmrk=1832; THRD_cpl_bmrk=2
+  INPES_cpl_bmrk=16; JNPES_cpl_bmrk=16; WPG_cpl_bmrk=48
   OCN_tasks_cpl_bmrk=100
   ICE_tasks_cpl_bmrk=48
   WAV_tasks_cpl_bmrk=100
@@ -224,8 +230,8 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
   ICE_tasks_cpl_mpi=12
   WAV_tasks_cpl_mpi=24
 
-  TASKS_cpl_bmrk=868; THRD_cpl_bmrk=2
-  INPES_cpl_bmrk=12; JNPES_cpl_bmrk=8; WPG_cpl_bmrk=24
+  TASKS_cpl_bmrk=892; THRD_cpl_bmrk=2
+  INPES_cpl_bmrk=12; JNPES_cpl_bmrk=8; WPG_cpl_bmrk=48
   OCN_tasks_cpl_bmrk=120
   ICE_tasks_cpl_bmrk=48
   WAV_tasks_cpl_bmrk=100
@@ -269,6 +275,10 @@ export WLCLK=$WLCLK_dflt
 
 export_fv3 ()
 {
+# nems.configure defaults
+export NEMS_CONFIGURE=nems.configure.atm.IN
+export atm_model=fv3
+
 export FV3=true
 export S2S=false
 export HAFS=false
@@ -641,7 +651,7 @@ export FRAC_GRID=.true.
 export CCPP_SUITE=FV3_GFS_v17_coupled_p8
 export INPUT_NML=cpld_control.nml.IN
 export FIELD_TABLE=field_table_thompson_noaero_tke_GOCART
-export DIAG_TABLE=diag_table_p7.2_template
+export DIAG_TABLE=diag_table_p8_template
 
 export DIAG_TABLE_ADDITIONAL=''
 
@@ -813,8 +823,8 @@ export GRIDOCN=A
 export GRIDICE=B
 
 #wave
-export INPUT_CURFLD='T F     Currents'
-export INPUT_ICEFLD='T F     Ice concentrations'
+export INPUT_CURFLD='C F     Currents'
+export INPUT_ICEFLD='C F     Ice concentrations'
 export WW3RSTDTHR=3
 export WW3OUTDTHR=3
 export DT_2_RST="$(printf "%02d" $(( ${WW3RSTDTHR}*3600 )))"
@@ -1058,8 +1068,8 @@ export DLON=0.03
 export DLAT=0.03
 
 # shel.inp
-export INPUT_CURFLD='F F     Currents'
-export INPUT_ICEFLD='F F     Ice concentrations'
+export INPUT_CURFLD='C F     Currents'
+export INPUT_ICEFLD='C F     Ice concentrations'
 # input.nml
 export CPL_IMP_MRG=.true.
 
