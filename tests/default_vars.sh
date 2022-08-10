@@ -15,6 +15,11 @@
   INPES_cpl_atmw=3; JNPES_cpl_atmw=8; WPG_cpl_atmw=6
   WAV_tasks_atmw=30
 
+  TASKS_cpl_c48=20; THRD_cpl_c48=1 
+  INPES_cpl_c48=1; JNPES_cpl_c48=1; WPG_cpl_c48=6
+  OCN_tasks_cpl_c48=4
+  ICE_tasks_cpl_c48=4
+
   TASKS_cpl_dflt=200; THRD_cpl_dflt=1
   INPES_cpl_dflt=3; JNPES_cpl_dflt=8; WPG_cpl_dflt=6
   OCN_tasks_cpl_dflt=20
@@ -24,8 +29,11 @@
   TASKS_cpl_thrd=120; THRD_cpl_thrd=2
   INPES_cpl_thrd=3; JNPES_cpl_thrd=4; WPG_cpl_thrd=6
   OCN_tasks_cpl_thrd=20
+  OCN_thrds_cpl_thrd=1
   ICE_tasks_cpl_thrd=10
+  ICE_thrds_cpl_thrd=1
   WAV_tasks_cpl_thrd=12
+  WAV_thrds_cpl_thrd=2
 
   TASKS_cpl_dcmp=200; THRD_cpl_dcmp=1
   INPES_cpl_dcmp=4; JNPES_cpl_dcmp=6; WPG_cpl_dcmp=6
@@ -39,11 +47,14 @@
   ICE_tasks_cpl_mpi=20
   WAV_tasks_cpl_mpi=28
 
-  TASKS_cpl_bmrk=656; THRD_cpl_bmrk=2
-  INPES_cpl_bmrk=8; JNPES_cpl_bmrk=8; WPG_cpl_bmrk=24
+  TASKS_cpl_bmrk=680; THRD_cpl_bmrk=2
+  INPES_cpl_bmrk=8; JNPES_cpl_bmrk=8; WPG_cpl_bmrk=48
   OCN_tasks_cpl_bmrk=120
+  OCN_thrds_cpl_bmrk=1
   ICE_tasks_cpl_bmrk=48
+  ICE_thrds_cpl_bmrk=1
   WAV_tasks_cpl_bmrk=80
+  WAV_thrds_cpl_bmrk=2
 
   TASKS_cpl_c192=464; THRD_cpl_c192=2
   INPES_cpl_c192=6; JNPES_cpl_c192=8; WPG_cpl_c192=12
@@ -63,7 +74,7 @@
 
   TASKS_aqm=272; INPES_aqm=33; JNPES_aqm=8
 
-if [[ $MACHINE_ID = wcoss2.* ]]; then
+if [[ $MACHINE_ID = wcoss2.* || $MACHINE_ID = acorn.* ]]; then
 
   TPN=128
 
@@ -135,11 +146,12 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   WAV_tasks_atmw_gdas=240
 
   # run only in weekly test
-  TASKS_cpl_bmrk=1808; THRD_cpl_bmrk=2
-  INPES_cpl_bmrk=16; JNPES_cpl_bmrk=16; WPG_cpl_bmrk=24
+  TASKS_cpl_bmrk=1832; THRD_cpl_bmrk=2
+  INPES_cpl_bmrk=16; JNPES_cpl_bmrk=16; WPG_cpl_bmrk=48
   OCN_tasks_cpl_bmrk=100
   ICE_tasks_cpl_bmrk=48
   WAV_tasks_cpl_bmrk=100
+  WLCLK_cpl_bmrk=120
 
   # run only in weekly test
   TASKS_cpl_c192=1404; THRD_cpl_c192=2
@@ -147,6 +159,7 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   OCN_tasks_cpl_c192=100
   ICE_tasks_cpl_c192=48
   WAV_tasks_cpl_c192=80
+  WLCLK_cpl_c192=120
 
 elif [[ $MACHINE_ID = s4.* ]]; then
 
@@ -160,6 +173,12 @@ elif [[ $MACHINE_ID = s4.* ]]; then
   TASKS_cpl_atmw_gdas=560; THRD_cpl_atmw_gdas=2
   INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
   WAV_tasks_atmw_gdas=248
+
+  TASKS_cpl_bmrk=560; THRD_cpl_bmrk=2
+  INPES_cpl_bmrk=6; JNPES_cpl_bmrk=8; WPG_cpl_bmrk=24
+  OCN_tasks_cpl_bmrk=120
+  ICE_tasks_cpl_bmrk=48
+  WAV_tasks_cpl_bmrk=80
 
 elif [[ $MACHINE_ID = gaea.* ]]; then
 
@@ -211,8 +230,8 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
   ICE_tasks_cpl_mpi=12
   WAV_tasks_cpl_mpi=24
 
-  TASKS_cpl_bmrk=868; THRD_cpl_bmrk=2
-  INPES_cpl_bmrk=12; JNPES_cpl_bmrk=8; WPG_cpl_bmrk=24
+  TASKS_cpl_bmrk=892; THRD_cpl_bmrk=2
+  INPES_cpl_bmrk=12; JNPES_cpl_bmrk=8; WPG_cpl_bmrk=48
   OCN_tasks_cpl_bmrk=120
   ICE_tasks_cpl_bmrk=48
   WAV_tasks_cpl_bmrk=100
@@ -256,6 +275,10 @@ export WLCLK=$WLCLK_dflt
 
 export_fv3 ()
 {
+# nems.configure defaults
+export NEMS_CONFIGURE=nems.configure.atm.IN
+export atm_model=fv3
+
 export FV3=true
 export S2S=false
 export HAFS=false
@@ -404,7 +427,7 @@ export CNVCLD=.true.
 export PROGSIGMA=.false.
 
 # Aerosol convective scavenging
-export FSCAV_AERO='"*:0.3","so2:0.0","msa:0.0","dms:0.0","nh3:0.4","nh4:0.6","bc1:0.6","bc2:0.6","dust1:0.6","dust2:0.6","dust3:0.6","dust4:0.6","dust5:0.6","seas1:0.5","seas2:0.5","seas3:0.5","seas4:0.5","seas5:0.5"'
+export FSCAV_AERO='"*:0.3","so2:0.0","msa:0.0","dms:0.0","nh3:0.4","nh4:0.6","bc1:0.6","bc2:0.6","oc1:0.4","oc2:0.4","dust1:0.6","dust2:0.6","dust3:0.6","dust4:0.6","dust5:0.6","seas1:0.5","seas2:0.5","seas3:0.5","seas4:0.5","seas5:0.5"'
 
 # SFC
 export DO_MYJSFC=.false.
@@ -628,7 +651,7 @@ export FRAC_GRID=.true.
 export CCPP_SUITE=FV3_GFS_v17_coupled_p8
 export INPUT_NML=cpld_control.nml.IN
 export FIELD_TABLE=field_table_thompson_noaero_tke_GOCART
-export DIAG_TABLE=diag_table_p7.2_template
+export DIAG_TABLE=diag_table_p8_template
 
 export DIAG_TABLE_ADDITIONAL=''
 
@@ -672,11 +695,11 @@ export GWD_OPT=2
 export KNOB_UGWP_NSLOPE=1
 export DO_GSL_DRAG_LS_BL=.true.
 export DO_GSL_DRAG_SS=.true.
-export DO_GSL_DRAG_TOFD=.true.
 export DO_UGWP_V1_OROG_ONLY=.false.
 export DO_UGWP_V0_NST_ONLY=.false.
 export LDIAG_UGWP=.false.
 #P8
+export DO_GSL_DRAG_TOFD=.false.
 export CDMBWD=${CDMBWD_c96}
 
 # P8 RRTMGP
@@ -794,10 +817,14 @@ export RESTART_EXT=.false.
 export FRAZIL_FWSALT=.true.
 # default to write CICE average history files
 export CICE_HIST_AVG=.true.
+# default CICE B-grid, ATM and OCN are provided by cap on A grid
+export GRIDATM=A
+export GRIDOCN=A
+export GRIDICE=B
 
 #wave
-export INPUT_CURFLD='T F     Currents'
-export INPUT_ICEFLD='T F     Ice concentrations'
+export INPUT_CURFLD='C F     Currents'
+export INPUT_ICEFLD='C F     Ice concentrations'
 export WW3RSTDTHR=3
 export WW3OUTDTHR=3
 export DT_2_RST="$(printf "%02d" $(( ${WW3RSTDTHR}*3600 )))"
@@ -946,6 +973,9 @@ export RESTART_EXT=.false.
 export FRAZIL_FWSALT=.true.
 # default to write CICE average history files
 export CICE_HIST_AVG=.true.
+export GRIDATM=A
+export GRIDOCN=A
+export GRIDICE=B
 # default non-mushy thermo
 export KTHERM=1
 export TFREEZE_OPTION=linear_salt
@@ -1038,8 +1068,8 @@ export DLON=0.03
 export DLAT=0.03
 
 # shel.inp
-export INPUT_CURFLD='F F     Currents'
-export INPUT_ICEFLD='F F     Ice concentrations'
+export INPUT_CURFLD='C F     Currents'
+export INPUT_ICEFLD='C F     Ice concentrations'
 # input.nml
 export CPL_IMP_MRG=.true.
 
