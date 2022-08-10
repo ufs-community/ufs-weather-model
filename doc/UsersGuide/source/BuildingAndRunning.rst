@@ -4,38 +4,53 @@
 Building and Running the UFS Weather Model
 ******************************************
 
+===================================
+Supported Platforms & Compilers
+===================================
+Before running the Weather Model (WM), users should determine which of the 
+`four levels of support <https://github.com/ufs-community/ufs/wiki/Supported-Platforms-and-Compilers>` 
+is applicable to their system. Generally, Level 1 & 2 systems are restricted to those with access 
+through NOAA and its affiliates. These systems are named (e.g., Hera, Orion, Cheyenne). 
+Level 3 & 4 systems include certain personal computers or non-NOAA-affiliated HPC systems. 
+The prerequisite software libraries for building the WM already exist on Level 1/preconfigured 
+systems, so users may skip directly :ref:`downloading the code <DownloadingWMCode>`. 
+On other systems, users will need to build the prerequisite libraries using 
+`HPC-Stack <https://github.com/NOAA-EMC/hpc-stack>`__ or 
+`spack-stack <https://github.com/NOAA-EMC/spack-stack>`__. 
+
+..
+   COMMENT: Update link!
+
 ======================
 Prerequisite Libraries
 ======================
 
-The UFS Weather Model requires a number of libraries for it to compile.
-There are two categories of libraries that are needed:
+The UFS Weather Model (WM) requires a number of libraries for it to compile.
+The WM uses two categories of libraries, which are available as a bundle via 
+`HPC-Stack <https://github.com/NOAA-EMC/hpc-stack>`__ or `spack-stack <https://github.com/NOAA-EMC/spack-stack>`__:
 
-#. Bundled libraries (NCEPLIBS). These are libraries developed for use with NOAA weather models.
-   Most have an NCEPLIBS prefix in the repository, e.g. NCEPLIBS-bacio. Select tools from the UFS
-   Utilities repository (UFS-UTILS) are also included in this category. A list of the bundled
-   libraries tested with this WM release is in the top-level ``README`` of the `NCEPLIBS repository
-   <https://github.com/NOAA-EMC/NCEPLIBS/tree/ufs-v2.0.0>`_ (**be sure to look at the tag in that repository that
-   matches the tag on this WM release**).
+#. :term:`NCEP` libraries (NCEPLIBS). These are libraries developed for use with NOAA weather models.
+   Most have an NCEPLIBS prefix in the repository, e.g., NCEPLIBS-bacio. Select tools from the UFS
+   Utilities repository (`UFS-UTILS <https://github.com/ufs-community/UFS_UTILS>`__) are also included in this category. 
+   A list of the bundled libraries tested with this WM release is available in the top-level ``README`` of the 
+   `NCEPLIBS repository <https://github.com/NOAA-EMC/NCEPLIBS/tree/ufs-v2.0.0>`__ (**be sure to look at 
+   the tag in that repository that matches the tag on the most recent WM release**).
 
 #. Third-party libraries (NCEPLIBS-external). These are libraries that were developed external to
-   the UFS Weather Model. They are general software packages that are also used by other models in
-   the community. Building these is optional, since existing builds of these libraries can be pointed
-   to instead. A list of the external libraries tested with this WM release is in the top-level ``README``
-   of the `NCEPLIBS-external repository <https://github.com/NOAA-EMC/NCEPLIBS-external/tree/ufs-v2.0.0>`_. Again, be
+   the UFS Weather Model. They are general software packages that are also used by other community models. 
+   Building these is optional if users can point to existing builds of these libraries on their system
+   instead. A list of the external libraries tested with this WM release is in the top-level ``README``
+   of the `NCEPLIBS-external repository <https://github.com/NOAA-EMC/NCEPLIBS-external/tree/ufs-v2.0.0>`__. Again, be
    sure to look at the tag in that repository that matches the tag on this WM release.
 
 .. note::
-   The libraries in NCEPLIBS-external must be built *before* the libraries in NCEPLIBS.
+   Documentation is available for installing `HPC-Stack <https://hpc-stack.readthedocs.io/en/latest/>`__ 
+   and `spack-stack <https://spack-stack.readthedocs.io/en/latest/>`__, respectively. 
+   One of these software stacks (or the libraries they contain) must be installed before running the Weather Model. 
 
-See this `wiki link <https://github.com/ufs-community/ufs/wiki/Supported-Platforms-and-Compilers>`_ for
-an explanation of which platforms and compilers are supported. This will help to determine if you need
-to build NCEPLIBS and NCEPLIBS-external or are working on a system that is already pre-configured. On
-pre-configured platforms, the libraries are already available.
-
-If you do have to build the libraries, it is a good idea to check the platform- and compiler-specific
-``README`` files in the doc/ directory of the `NCEPLIBS-external repository <https://github.com/NOAA-EMC/NCEPLIBS-external/tree/ufs-v 2.0.0>`_
-as a first step, to see if your system or one similar to it is included. These files have detailed
+For users who *do* need to build the prerequisite libraries, it is a good idea to check the platform- and compiler-specific
+``README`` files in the ``doc`` directory of the `NCEPLIBS-external repository <https://github.com/NOAA-EMC/NCEPLIBS-external/tree/ufs-v2.0.0>`_
+as a first step, to see if their system or one similar to it is included. These files have detailed
 instructions for building NCEPLIBS-external, NCEPLIBS, and the UFS Weather Model. They may be all the
 documentation you need. Be sure to use the tag that corresponds to this version of the WM, and define a
 WORK directory path before you get started.
@@ -48,7 +63,7 @@ and compiler-specific ``README`` files as a guide. Again, be sure to use the tag
 
 The top-level ``README`` in the NCEPLIBS-external repository includes a troubleshooting section that may be helpful.
 
-You can also get expert help through a `user support forum <https://forums.ufscommunity.org/forum/build-dependencies>`_
+You can also get expert help through a `user support forum <https://forums.ufscommunity.org/forum/build-dependencies>`__
 set up specifically for issues related to build dependencies.
 
 .. _DownloadingWMCode:
@@ -205,7 +220,7 @@ Once ``build.sh`` is finished, you should see the executable, named ``ufs_model`
 If it is desired to build in a different directory, specify the ``BUILD_DIR`` environment variable: e.g. ``export BUILD_DIR=test_cpld``
 will build in the `ufs-weather-model/test_cpld` directory instead.
 
-Expert help is available through a `user support forum <https://forums.ufscommunity.org/forum/ufs-weather-model>`_
+Expert help is available through a `user support forum <https://forums.ufscommunity.org/forum/ufs-weather-model>`__
 set up specifically for issues related to the Weather Model.
 
 =================
