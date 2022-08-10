@@ -7,6 +7,8 @@ export CNTL_DIR="cpld_bmark_p8"
 
 export LIST_FILES="sfcf006.nc \
                    atmf006.nc \
+                   GFSFLX.GrbF06 \
+                   GFSPRS.GrbF06 \
                    gocart.inst_aod.20130401_0600z.nc4 \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
@@ -77,6 +79,7 @@ export TASKS=$TASKS_cpl_bmrk
 export INPES=$INPES_cpl_bmrk
 export JNPES=$JNPES_cpl_bmrk
 export THRD=$THRD_cpl_bmrk
+export WRITE_DOPOST=.true.
 export WRTTASK_PER_GROUP=$WPG_cpl_bmrk
 
 OCN_tasks=$OCN_tasks_cpl_bmrk
@@ -159,3 +162,7 @@ export RST_BEG=$RUN_BEG
 export RST_2_BEG=$RUN_BEG
 
 export FV3_RUN=cpld_control_run.IN
+
+if [[ $MACHINE_ID = cheyenne.* ]]; then
+  TPN=15
+fi
