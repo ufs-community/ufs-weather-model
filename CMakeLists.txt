@@ -291,7 +291,7 @@ target_link_libraries(ufs PUBLIC "${_ufs_libs_public}")
 ###############################################################################
 add_executable(ufs_model driver/UFS.F90)
 add_dependencies(ufs_model ufs)
-target_link_libraries(ufs_model ufs esmf w3nco::w3nco_d)
+target_link_libraries(ufs_model ufs esmf)
 
 ###############################################################################
 ### Install
