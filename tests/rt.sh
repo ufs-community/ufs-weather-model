@@ -157,6 +157,29 @@ if [[ $MACHINE_ID = wcoss2.* ]]; then
   cp fv3_conf/fv3_qsub.IN_wcoss2 fv3_conf/fv3_qsub.IN
   cp fv3_conf/compile_qsub.IN_wcoss2 fv3_conf/compile_qsub.IN
 
+elif [[ $MACHINE_ID = acorn.* ]]; then
+
+  module load ecflow/5.6.0.6
+  module load gcc/10.3.0 python/3.8.6
+  ECFLOW_START=${ECF_ROOT}/scripts/server_check.sh
+  export ECF_OUTPUTDIR=${PATHRT}/ecf_outputdir
+  export ECF_COMDIR=${PATHRT}/ecf_comdir
+  rm -rf ${ECF_OUTPUTDIR} ${ECF_COMDIR}
+  mkdir -p ${ECF_OUTPUTDIR}
+  mkdir -p ${ECF_COMDIR}
+  export colonifnco=":output"  # hack
+
+  DISKNM=/lfs/h1/emc/nems/noscrub/emc.nems/RT
+  QUEUE=dev
+  COMPILE_QUEUE=dev
+  PARTITION=
+  ACCNR="${ACCNR:-GFS-DEV}"
+  STMP=/lfs/h2/emc/ptmp
+  PTMP=/lfs/h2/emc/ptmp
+  SCHEDULER=pbs
+  cp fv3_conf/fv3_qsub.IN_wcoss2 fv3_conf/fv3_qsub.IN
+  cp fv3_conf/compile_qsub.IN_wcoss2 fv3_conf/compile_qsub.IN
+
 elif [[ $MACHINE_ID = gaea.* ]]; then
 
   export PATH=/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/envs/ufs-weather-model/bin:/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/bin:$PATH
@@ -274,8 +297,8 @@ elif [[ $MACHINE_ID = s4.* ]]; then
 
   ACCNR="${ACCNR:-star}"
   PARTITION=s4
-  dprefix=/data/users/dhuber/save
-  DISKNM=$dprefix/nems/emc.nemspara/RT
+  dprefix=/data/prod
+  DISKNM=$dprefix/emc.nemspara/RT
   STMP=/scratch/short/users
   PTMP=/scratch/users
 
@@ -420,7 +443,7 @@ if [[ $TESTS_FILE =~ '35d' ]] || [[ $TESTS_FILE =~ 'weekly' ]]; then
   TEST_35D=true
 fi
 
-BL_DATE=20220722
+BL_DATE=20220805
 
 RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
 
@@ -468,7 +491,7 @@ if [[ $ROCOTO == true ]]; then
 
   rm -f $ROCOTO_XML $ROCOTO_DB $ROCOTO_STATE *_lock.db
 
-  if [[ $MACHINE_ID = wcoss2.* ]]; then
+  if [[ $MACHINE_ID = wcoss2.* || $MACHINE_ID = acorn.* ]]; then
     QUEUE=dev
     COMPILE_QUEUE=dev
     ROCOTO_SCHEDULER=pbs
@@ -554,7 +577,7 @@ suite ${ECFLOW_SUITE}
     limit max_jobs ${MAX_JOBS}
 EOF
 
-  if [[ $MACHINE_ID = wcoss2.* ]]; then
+  if [[ $MACHINE_ID = wcoss2.* || $MACHINE_ID = acorn.* ]]; then
     QUEUE=dev
   elif [[ $MACHINE_ID = hera.* ]]; then
     QUEUE=batch
