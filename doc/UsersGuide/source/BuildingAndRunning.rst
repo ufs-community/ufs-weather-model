@@ -8,7 +8,7 @@ Building and Running the UFS Weather Model
 Supported Platforms & Compilers
 ===================================
 Before running the Weather Model (WM), users should determine which of the 
-`four levels of support <https://github.com/ufs-community/ufs/wiki/Supported-Platforms-and-Compilers>` 
+`four levels of support <https://github.com/ufs-community/ufs/wiki/Supported-Platforms-and-Compilers>`__ 
 is applicable to their system. Generally, Level 1 & 2 systems are restricted to those with access 
 through NOAA and its affiliates. These systems are named (e.g., Hera, Orion, Cheyenne). 
 Level 3 & 4 systems include certain personal computers or non-NOAA-affiliated HPC systems. 
