@@ -87,7 +87,8 @@
 #endif
   ! - Handle build time GOCART options:
 #ifdef FRONT_GOCART
-      use FRONT_GOCART,     only: GOCART_SS  => SetServices
+      use FRONT_GOCART,     only: GOCART_SS  => SetServices, &
+                                  GOCART_SV  => SetVM
 #endif
   ! - Mediator
 #ifdef FRONT_CMEPS
@@ -499,17 +500,8 @@
 #endif
 #ifdef FRONT_GOCART
           if (trim(model) == "gocart") then
-            !TODO: Remove bail code and pass info and SetVM to DriverAddComp
-            !TODO: once component supports threading.
-            if (ompNumThreads > 1) then
-              write (msg, *) "ESMF-aware threading NOT implemented for model: "//&
-                trim(model)
-              call ESMF_LogSetError(ESMF_RC_NOT_VALID, msg=msg, line=__LINE__, &
-                file=__FILE__, rcToReturn=rc)
-              return  ! bail out
-            endif
             call NUOPC_DriverAddComp(driver, trim(prefix), GOCART_SS, &
-              petList=petList, comp=comp, rc=rc)
+              GOCART_SV, info=info, petList=petList, comp=comp, rc=rc)
             if (ChkErr(rc,__LINE__,u_FILE_u)) return
             found_comp = .true.
           end if
