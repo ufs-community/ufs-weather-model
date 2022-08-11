@@ -132,7 +132,7 @@ endif()
 
 find_package(bacio 2.4.0 REQUIRED)
 find_package(sp 2.3.3 REQUIRED)
-find_package(w3nco 2.4.0 REQUIRED)
+find_package(w3emc 2.9.2 REQUIRED)
 
 # Configure Python
 find_package(Python 3.6 REQUIRED COMPONENTS Interpreter)
@@ -291,7 +291,7 @@ target_link_libraries(ufs PUBLIC "${_ufs_libs_public}")
 ###############################################################################
 add_executable(ufs_model driver/UFS.F90)
 add_dependencies(ufs_model ufs)
-target_link_libraries(ufs_model ufs esmf w3nco::w3nco_d)
+target_link_libraries(ufs_model ufs esmf w3emc::w3emc_d)
 
 ###############################################################################
 ### Install
