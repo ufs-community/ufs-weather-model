@@ -10,6 +10,9 @@ Glossary
    Air Quality Model
       The AQM is a UFS Application that dynamically couples the Community Multiscale Air Quality (:term:`CMAQ`) model with the UFS Weather Model through the :term:`NUOPC` Layer to simulate temporal and spatial variations of atmospheric compositions (e.g., ozone and aerosol compositions). The CMAQ, treated as a column chemistry model, updates concentrations of chemical species (e.g., ozone and aerosol compositions) at each integration time step. The transport terms (e.g., advection and diffusion) of all chemical species are handled by the UFS Weather Model as tracers.
 
+   ATM
+      The Weather Model configuration that runs the standalone atmospheric model only. 
+
    CCPP
       The `Common Community Physics Package <https://dtcenter.org/community-code/common-community-physics-package-ccpp>`__ is a forecast-model agnostic, vetted collection of code containing atmospheric physical parameterizations and suites of parameterizations for use in Numerical Weather Prediction (:term:`NWP`) along with a framework that connects the physics to the host forecast model.
 
@@ -26,12 +29,14 @@ Glossary
    CICE
    Sea Ice Model
       `CICE <https://github.com/CICE-Consortium/CICE>`__ is a computationally efficient model for simulating the growth, melting, and movement of polar sea ice. It was designed as one component of coupled atmosphere-ocean-land-ice global climate models. CICE has several interacting components, including a model of ice dynamics, a transport model that describes advection of different state variables; and a vertical physics package called "Icepack". When coupled with other earth system model components, routines external to the CICE model prepare and execute data exchanges with an external "flux coupler".
+
       ..
          COMMENT: Clarify definition!!!
 
    CDEPS
    Community Data Models for Earth Predictive Systems
       The Community Data Models for Earth Predictive Systems repository (`CDEPS <https://github.com/ESCOMP/CDEPS>`__) contains a set of :term:`NUOPC`-compliant data components along with :term:`ESMF`-based "stream" code that enables new capabilities in selectively removing feedbacks in coupled model systems. The CDEPS data models perform the basic function of reading external data files, modifying those data, and then sending the data back to the :term:`CMEPS` mediator. The fields sent to the :term:`mediator` are the same as those that would be sent by an active component. This takes advantage of the fact that the mediator and other CMEPS-compliant model components have no fundamental knowledge of whether another component is fully active or just a data component.
+
       ..
          COMMENT: Clarify definition!!!
 
@@ -99,6 +104,9 @@ Glossary
    NWP
    Numerical Weather Prediction
       Numerical Weather Prediction (NWP) takes current observations of weather and processes them with computer models to forecast the future state of the weather. 
+
+   NCAR
+      The `National Center for Atmospheric Research <https://ncar.ucar.edu/>`__. 
 
    NCEP
    National Centers for Environmental Prediction

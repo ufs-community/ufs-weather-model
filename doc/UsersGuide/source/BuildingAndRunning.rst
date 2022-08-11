@@ -169,13 +169,12 @@ For the ``ufs-weather-model ATMAERO`` configuration (standalone ATM coupled to :
 
     export CMAKE_FLAGS="-DAPP=ATMAERO -DCCPP_SUITES=FV3_GFS_v16"
 
-.. CHECK DAPP
-
 For the ``ufs-weather-model ATMAQ`` configuration (standalone ATM coupled to :term:`CMAQ`):
 
 .. code-block:: console
 
     export CMAKE_FLAGS="-DAPP=ATMAQ -DCCPP_SUITES=FV3_GFS_v15p2"
+
 
 S2S Configurations 
 ----------------------
@@ -224,7 +223,7 @@ For the ``ufs-weather-model S2SWA`` configuration (atm/ice/ocean/wave/aerosols):
     export CMAKE_FLAGS="-DAPP=S2SWA -DCCPP_SUITES=FV3_GFS_2017_coupled,FV3_GFS_v15p2_coupled,FV3_GFS_v16_coupled,FV3_GFS_v16_coupled_noahmp"
 
 ..
-   CHECK: DAPP flag and physics suites
+   CHECK: physics suites
 
 NG-GODAS Configuration
 ------------------------
@@ -234,9 +233,10 @@ For the ``ufs-weather-model NG-GODAS`` configuration (DATM/MOM6/CICE):
 
 .. code-block:: console
 
-    export CMAKE_FLAGS="-DAPP=S2SWA -DCCPP_SUITES=FV3_GFS_2017_coupled,FV3_GFS_v15p2_coupled,FV3_GFS_v16_coupled,FV3_GFS_v16_coupled_noahmp"
+    export CMAKE_FLAGS="-DAPP=NG-GODAS -DCCPP_SUITES=FV3_GFS_2017_coupled,FV3_GFS_v15p2_coupled,FV3_GFS_v16_coupled"
 ..
    COMMENT: NG-GODAS --> Coupled CDEPS-DATM-MOM6-CICE6-CMEPS
+   What is the DAPP argument? And the physics suites?
 
 HAFS Configurations
 ----------------------
@@ -258,7 +258,6 @@ For the ``ufs-weather-model HAFS-ALL`` configuration (data/atm/ocean/wave) in 32
 .. code-block:: console
 
     export CMAKE_FLAGS="-DAPP=HAFS-ALL -D32BIT=ON -DCCPP_SUITES=FV3_HAFS_v0_gfdlmp_tedmf_nonsst,FV3_HAFS_v0_gfdlmp_tedmf,FV3_HAFS_v0_hwrf_thompson,FV3_HAFS_v0_hwrf"
-
 
 ------------------
 Building the Model

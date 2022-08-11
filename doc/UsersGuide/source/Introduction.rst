@@ -14,17 +14,19 @@ development. More information about the UFS can be found in its portal at https:
 Key architectural elements of the UFS WM, along with links to external detailed documentation
 for those elements, are listed below:
 
-- `The Finite-Volume Cubed-Sphere (FV3) dynamical core <https://noaa-emc.github.io/FV3_Dycore_ufs-v2.0.0/html/index.html>`_.
+- The `Finite-Volume Cubed-Sphere (FV3) dynamical core <https://noaa-emc.github.io/FV3_Dycore_ufs-v2.0.0/html/index.html>`__ is the computational part of an atmospheric model that solves the equations of fluid motion..
 
-- `The Flexible Modeling System <https://www.gfdl.noaa.gov/fms/>`_ (:term:`FMS`), a software infrastructure used for functions such as parallelization.
+- The `Flexible Modeling System <https://www.gfdl.noaa.gov/fms/>`__ (:term:`FMS`), is a software framework for supporting the efficient development, construction, execution, and scientific interpretation of atmospheric, oceanic, and climate system models. It is used for functions such as parallelization. 
 
-- `The Common-Community Physics Package <https://dtcenter.org/community-code/common-community-physics-package-ccpp>`_ (:term:`CCPP`), a library of
-  physical parameterizations and the framework to use it with the model. :term:`Parameterization or physics scheme` is defined here.
+- `The Common-Community Physics Package <https://dtcenter.org/community-code/common-community-physics-package-ccpp>`__ (:term:`CCPP`), provides a framework and library of physics schemes, or :term:`parameterizations`, that support interoperable atmospheric physics. Atmospheric physics is a set of numerical methods approximating the effects of small-scale processes such as clouds, turbulence, radiation, and their interactions. 
 
-- `The stochastic physics capability <https://stochastic-physics.readthedocs.io/en/ufs-v2.0.0/>`_, including the Stochastic Kinetic Backscatter Scheme (SKEBS), the Stochastically Perturbed Parameterization Tendencies (SPPT) scheme, the perturbed boundary layer humidity (SHUM) scheme, and the cellular automata method.
+- `Stochastic physics <https://stochastic-physics.readthedocs.io/en/ufs-v2.0.0/>`__ schemes apply randomized perturbations to the physical tendencies, or physical parameters, of a model in order to compensate for model uncertainty. They include Stochastic Kinetic Backscatter Scheme (SKEBS), the Stochastically Perturbed Parameterization Tendencies (SPPT) scheme, the perturbed boundary layer humidity (SHUM) scheme, and the cellular automata method.
+
+..
+   COMMENT: Add SPP and SPP LSM? Remove cellular automata method?
 
 .. COMMENT: Remove?: 
-   - `The NOAA Environmental Modeling System <https://noaa-emc.github.io/NEMS_doc_ufs-v2.0.0/index.html>`_ (:term:`NEMS`) model driver used to create the main program.
+   - `The NOAA Environmental Modeling System <https://noaa-emc.github.io/NEMS_doc_ufs-v2.0.0/index.html>`__ (:term:`NEMS`) is a software infrastructure that supports NCEP/EMC's forecast products. In particular, the model driver is used to organize calls to various WM components hierarchically.
 
 - The libraries needed to build the system, such as:
     - `National Centers for Environmental Prediction (NCEP) Libraries <https://github.com/NOAA-EMC/NCEPLIBS/wiki>`__
