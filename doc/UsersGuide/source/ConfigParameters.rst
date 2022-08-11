@@ -8,9 +8,15 @@ Configuration Parameters
 Build Configuration Parameters
 =================================
 
+Configuration Options
+=========================
+
 ``-DAPP``:
    Sets the :term:`WM` configuration to build. 
    Valid values: ``ATM``, ``ATMW``, ``ATMAERO``, ``ATMAQ``, ``S2S``, ``S2SA``, ``S2SW``, ``S2SWA``, ``NG-GODAS``, ``HAFS``, ``HAFSW``, ``HAFS-ALL``
+
+Physics Options
+=======================
 
 ``-DCCPP_SUITES``:
    Sets the physics suites that will be made available when the :term:`WM` is built. 
@@ -108,8 +114,54 @@ Build Configuration Parameters
    | ``FV3_RRFS_v1beta``
    | ``FV3_RRFS_v1nssl``
 
+Other Build Options
+=======================
+
+``-DCMEPS_AOFLUX``: (Default: OFF)
+   Enables atmosphere-ocean flux calculation in mediator. 
+   Valid values: ``ON`` | ``OFF``
+
+   .. COMMENT: But when/why would you do this?
+
+``-DDEBUG``: (Default: OFF)
+   Enables DEBUG mode.
+   Valid values: ``ON`` | ``OFF``
+
+   .. COMMENT: And what extras does DEBUG mode provide (that VERBOSE) doesn't?
+
+``-D32BIT``: (Default: OFF)
+   Enables 32-bit, single precision arithmetic in dycore and fast physics.
+   Valid values: ``ON`` | ``OFF``
+
+   .. COMMENT: But when/why would you do this?
+
+``-DCCPP_32BIT``: (Default: OFF)
+   Enables 32-bit, single precision arithmetic in slow physics.
+   Valid values: ``ON`` | ``OFF``
+
+   .. COMMENT: But when/why would you do this?
+
+``-DMOVING_NEST``: (Default: OFF)
+   Enables moving nest code.
+   Valid values: ``ON`` | ``OFF``
+
+   .. COMMENT: But what does that mean? When/why is the moving nest used?
+
+``-DMULTI_GASES``: (Default: OFF)
+   Enable MULTI_GASES. 
+   Valid values: ``ON`` | ``OFF``
+
+   .. COMMENT: But what does this DO?! And when/why is it used?
 
 
-
+.. COMMENT: Add any of the following options with -D in front???
+      set(AVX2            ON  CACHE BOOL "Enable AVX2 instruction set")
+      set(AVX             OFF CACHE BOOL "Enable AVX-I instruction set")
+      set(SIMDMULTIARCH   OFF CACHE BOOL "Enable multi-target SIMD instruction sets")
+      set(DEBUG_LINKMPI   ON  CACHE BOOL "Enable linkmpi option when DEBUG mode is on")
+      set(INLINE_POST     OFF CACHE BOOL "Enable inline post")
+      set(OPENMP          ON  CACHE BOOL "Enable OpenMP threading")
+      set(PARALLEL_NETCDF OFF CACHE BOOL "Enable parallel NetCDF")
+      set(JEDI_DRIVER     OFF CACHE BOOL "Enable JEDI as top level driver")
 
 
