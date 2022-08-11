@@ -4,6 +4,8 @@
 Glossary
 *************************
 
+.. UPDATE links to NOAA-EMC repo instead of community one
+
 .. glossary::
 
    AQM
@@ -85,6 +87,12 @@ Glossary
          
    HPC-Stack
       The `HPC-Stack <https://github.com/NOAA-EMC/hpc-stack>`__ is a repository that provides a unified, shell script-based build system for building the software stack required for numerical weather prediction (NWP) tools such as the `Unified Forecast System (UFS) <https://ufscommunity.org/>`__ and the `Joint Effort for Data assimilation Integration (JEDI) <https://jointcenterforsatellitedataassimilation-jedi-docs.readthedocs-hosted.com/en/latest/>`__ framework.
+
+   HAFS
+   Hurricane Analysis and Forecast System
+      The Hurricane Analysis and Forecast System (`HAFS <https://github.com/NOAA-EMC/HAFS>`__), as a Unified Forecast System (UFS) application, is the :term:`FV3`-based multi-scale model and data assimilation system capable of providing tropical cyclone (TC) --- including hurricane and typhoon --- analyses and forecasts of the inner core structure key to improving size and intensity predictions, as well as the large-scale environment that is known to influence the TC's motion. HAFS development targets an operational analysis and forecast system for hurricane forecasters with reliable, robust and skillful guidance on TC track and intensity (including rapid intensification), storm size, genesis, storm surge, rainfall, and tornadoes associated with TCs. It will provide an advanced analysis and forecast system for cutting-edge research on modeling, physics, data assimilation, and coupling to earth system components for high-resolution TC predictions within the outlined Next Generation Global Prediction System (NGGPS)/Strategic Implementation Plan (SIP) objectives of the Unified Forecast System (UFS). Currently, HAFS is under active development with collaborative efforts among NCEP/EMC, AOML/HRD, GFDL, ESRL/GSD, ESRL/NESII, OFCM/AOC, and NCAR/DTC.
+
+   .. Make definition clearer/more concise
 
    HYCOM
    Hybrid Coordinate Ocean Model
