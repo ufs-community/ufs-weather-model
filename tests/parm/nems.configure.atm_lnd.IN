@@ -1,4 +1,5 @@
- Run-Time Configuration File  #####
+#############################################
+####  NEMS Run-Time Configuration File  #####
 #############################################
 
 # EARTH #
@@ -41,7 +42,7 @@ LND_attributes::
   Diagnostic = 0
   mosaic_file = INPUT/C96_mosaic.nc
   input_dir = INPUT/
-  ic_type = 'custom'
+  ic_type = @[lnd_ic_type] 
   layout = @[layout_x]:@[layout_y] # need to be consistent with number of PEs
   num_soil_levels = 4
   forcing_height = 10
@@ -62,7 +63,7 @@ LND_attributes::
   surface_evap_resistance_option = 1 # not used, it is fixed to 4 in sfc_noahmp_drv.F90 
   glacier_option = 1
   surface_thermal_roughness_option = 2
-  output_freq = 1
+  output_freq = 10800
 ::
 
 # cold
