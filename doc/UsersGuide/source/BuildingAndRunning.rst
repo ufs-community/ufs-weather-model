@@ -15,11 +15,10 @@ Level 3 & 4 systems include certain personal computers or non-NOAA-affiliated HP
 The prerequisite software libraries for building the WM already exist on Level 1/preconfigured 
 systems, so users may skip directly :ref:`downloading the code <DownloadingWMCode>`. 
 On other systems, users will need to build the prerequisite libraries using 
-`HPC-Stack <https://github.com/NOAA-EMC/hpc-stack>`__ or 
-`spack-stack <https://github.com/NOAA-EMC/spack-stack>`__. 
+:term:`HPC-Stack` or :term:`spack-stack`. 
 
 ..
-   COMMENT: Update link!
+   COMMENT: Update link w/supported platforms and compilers!
 
 ======================
 Prerequisite Libraries
@@ -27,20 +26,20 @@ Prerequisite Libraries
 
 The UFS Weather Model (WM) requires a number of libraries for it to compile.
 The WM uses two categories of libraries, which are available as a bundle via 
-`HPC-Stack <https://github.com/NOAA-EMC/hpc-stack>`__ or `spack-stack <https://github.com/NOAA-EMC/spack-stack>`__:
+:term:`HPC-Stack` or :term:`spack-stack`:
 
-#. :term:`NCEP` libraries (NCEPLIBS). These are libraries developed for use with NOAA weather models.
-   Most have an NCEPLIBS prefix in the repository, e.g., NCEPLIBS-bacio. Select tools from the UFS
-   Utilities repository (`UFS-UTILS <https://github.com/ufs-community/UFS_UTILS>`__) are also included in this category. 
+#. :term:`NCEP` libraries (NCEPLIBS): These are libraries developed for use with NOAA weather models.
+   Most have an NCEPLIBS prefix in the repository (e.g., NCEPLIBS-bacio). Select tools from the UFS
+   Utilities repository (:term:`UFS_UTILS`) are also included in this category. 
    A list of the bundled libraries tested with this WM release is available in the top-level ``README`` of the 
    `NCEPLIBS repository <https://github.com/NOAA-EMC/NCEPLIBS/tree/ufs-v2.0.0>`__ (**be sure to look at 
    the tag in that repository that matches the tag on the most recent WM release**).
 
-#. Third-party libraries (NCEPLIBS-external). These are libraries that were developed external to
+#. Third-party libraries (NCEPLIBS-external): These are libraries that were developed external to
    the UFS Weather Model. They are general software packages that are also used by other community models. 
-   Building these is optional if users can point to existing builds of these libraries on their system
+   Building these libraries is optional if users can point to existing builds of these libraries on their system
    instead. A list of the external libraries tested with this WM release is in the top-level ``README``
-   of the `NCEPLIBS-external repository <https://github.com/NOAA-EMC/NCEPLIBS-external/tree/ufs-v2.0.0>`__. Again, be
+   of the `NCEPLIBS-external <https://github.com/NOAA-EMC/NCEPLIBS-external/tree/ufs-v2.0.0>`__ repository. Again, be
    sure to look at the tag in that repository that matches the tag on this WM release.
 
 .. note::
@@ -50,15 +49,18 @@ The WM uses two categories of libraries, which are available as a bundle via
 
 For users who *do* need to build the prerequisite libraries, it is a good idea to check the platform- and compiler-specific
 ``README`` files in the ``doc`` directory of the `NCEPLIBS-external repository <https://github.com/NOAA-EMC/NCEPLIBS-external/tree/ufs-v2.0.0>`_
-as a first step, to see if their system or one similar to it is included. These files have detailed
+first, to see if their system or one similar to it is included. These files have detailed
 instructions for building NCEPLIBS-external, NCEPLIBS, and the UFS Weather Model. They may be all the
 documentation you need. Be sure to use the tag that corresponds to this version of the WM, and define a
 WORK directory path before you get started.
 
+..
+   COMMENT: What is meant by a WORK directory path?
+
 If your platform is not included in these platform- and compiler-specific ``README`` files, there is a more
 generic set of instructions in the ``README`` file at the top level of the `NCEPLIBS-external repository
-<https://github.com/NOAA-EMC/NCEPLIBS-external/tree/ufs-v2.0.0>`_, and at the top level of the `NCEPLIBS repository
-<https://github.com/NOAA-EMC/NCEPLIBS/tree/ufs-v2.0.0>`_. It may still be a good idea to look at some of the platform-
+<https://github.com/NOAA-EMC/NCEPLIBS-external/tree/ufs-v2.0.0>`__ and at the top level of the `NCEPLIBS repository
+<https://github.com/NOAA-EMC/NCEPLIBS/tree/ufs-v2.0.0>`__. It may still be a good idea to look at some of the platform-
 and compiler-specific ``README`` files as a guide. Again, be sure to use the tag that corresponds to this version of the WM.
 
 The top-level ``README`` in the NCEPLIBS-external repository includes a troubleshooting section that may be helpful.
@@ -66,13 +68,16 @@ The top-level ``README`` in the NCEPLIBS-external repository includes a troubles
 You can also get expert help through a `user support forum <https://forums.ufscommunity.org/forum/build-dependencies>`__
 set up specifically for issues related to build dependencies.
 
+..
+   COMMENT: Will this be deprecated? When?
+
 .. _DownloadingWMCode:
 
 ==================================
 Downloading the Weather Model Code
 ==================================
 
-To clone the develop branch of the ufs-weather-model repository, execute the following commands:
+To clone the develop branch of the ``ufs-weather-model`` repository and update its submodules, execute the following commands:
 
 .. code-block:: console
 
@@ -80,19 +85,19 @@ To clone the develop branch of the ufs-weather-model repository, execute the fol
   cd ufs-weather-model
   git submodule update --init --recursive
 
-Compiling the model will take place within the `ufs-weather-model` directory you just created.
+Compiling the model will take place within the ``ufs-weather-model`` directory you just created.
 
 ==========================
 Building the Weather Model
 ==========================
 
 ----------------------------
-Loading the required modules
+Loading the Required Modules
 ----------------------------
 
 Modulefiles for `pre-configured platforms <https://github.com/ufs-community/ufs/wiki/Supported-Platforms-and-Compilers>`_
-are located in ``modulefiles/ufs_<platform>.<compiler>``. For example, to load the modules from the `ufs-weather-model`
-directory on hera:
+are located in ``modulefiles/ufs_<platform>.<compiler>``. For example, to load the modules from the ``ufs-weather-model``
+directory on Hera:
 
 .. code-block:: console
 
@@ -119,86 +124,144 @@ Note that loading this module file will also set the CMake environment variables
    +-------------------------+----------------------------------------------+----------------------+
 
 If you are not running on one of the pre-configured platforms, you will need to set the environment variables
-in a different way.
+manually. For example, in a bash shell, a command in the following form will set the C compiler environment variable:
+
+.. code-block:: console
+
+   export CMAKE_C_COMPILER=</path/to/C/compiler>
+
 
 -------------------------------------------------------------
-Setting the CMAKE_FLAGS and CCPP_SUITES environment variables
+Setting the CMAKE_FLAGS and CCPP_SUITES Environment Variables
 -------------------------------------------------------------
 
-You need to use the ``CMAKE_FLAGS`` environment variable to specify which application to build.
-In order to have one or more CCPP physics suites available at runtime, you also need to select those suites at
-build time by setting the ``CCPP_SUITES`` environment variable. Multiple suites can be set. Following
-examples are for the bash shell.
+The UFS Weather Model can be built in one of twelve configurations (cf. :numref:`Table %s <UFS-configurations>`). 
+The ``CMAKE_FLAGS`` environment variable specifies which configuration to build.
+Additionally, users must select the :term:`CCPP` suite(s) by setting the ``CCPP_SUITES`` environment variable at
+build time in order to have one or more CCPP physics suites available at runtime. Multiple suites can be set. The following
+examples assume a bash shell.
 
-For the ufs-weather-model ATM app (standalone ATM):
+ATM Configurations
+---------------------
+
+For the ``ufs-weather-model ATM`` configuration (standalone :term:`ATM`):
 
 .. code-block:: console
 
     export CMAKE_FLAGS="-DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16"
 
-For the ufs-weather-model ATM app (standalone ATM) in 32 bit:
+To build in 32-bit, users can add the ``-D32BIT=ON`` flag after ``-DAPP=ATM``. 
+
+..
+   COMMENT: Update CCPP flags to FV3_GFS_v17?
+
+For the ``ufs-weather-model ATMW`` configuration (standalone ATM coupled to :term:`WW3`):
 
 .. code-block:: console
 
-    export CMAKE_FLAGS="-DAPP=ATM -D32BIT=ON -DCCPP_SUITES=FV3_GFS_v16"
+    export CMAKE_FLAGS="-DAPP=ATMW -DCCPP_SUITES=FV3_GFS_2017_coupled,FV3_GFS_v16_coupled"
 
-For the ufs-weather-model ATMW app (standalone ATM with wave):
+.. CHECK above!!
 
-.. code-block:: console
-
-    export CMAKE_FLAGS="-DAPP=ATMW -DCCPP_SUITES=FV3_GFS_v16"
-
-For the ufs-weather-model S2S app (atm/ice/ocean):
+For the ``ufs-weather-model ATMAERO`` configuration (standalone ATM coupled to :term:`GOCART`):
 
 .. code-block:: console
 
-    export CMAKE_FLAGS="-DAPP=S2S -DCCPP_SUITES=FV3_GFS_2017_coupled,FV3_GFS_2017_satmedmf_coupled,FV3_GFS_v15p2_coupled,FV3_GFS_v16_coupled,FV3_GFS_v16_couplednsst"
+    export CMAKE_FLAGS="-DAPP=ATMAERO -DCCPP_SUITES=FV3_GFS_v16"
 
-For the ufs-weather-model S2S app (atm/ice/ocean) with debugging flags turned on, with verbose build messages:
+.. CHECK DAPP
 
-.. code-block:: console
-
-    export CMAKE_FLAGS="-DAPP=S2S -DDEBUG=ON -DCCPP_SUITES=FV3_GFS_2017_coupled,FV3_GFS_2017_satmedmf_coupled,FV3_GFS_v15p2_coupled,FV3_GFS_v16_coupled,FV3_GFS_v16_couplednsst"
-    export BUILD_VERBOSE=1
-
-For the ufs-weather-model S2S app (atm/ice/ocean) with activating CCPP host model under CMEPS and receiving atmosphere-ocean fluxes from mediator:
-
-.. code-block:: console
-
-    export CMAKE_FLAGS="-DAPP=S2S -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_sfcocn -DCMEPS_AOFLUX=ON"
-
-For the ufs-weather-model S2SW app (atm/ice/ocean/wave):
-
-.. code-block:: console
-
-    export CMAKE_FLAGS="-DAPP=S2SW -DCCPP_SUITES=FV3_GFS_2017_coupled,FV3_GFS_v15p2_coupled,FV3_GFS_v16_coupled,FV3_GFS_v16_coupled_noahmp"
-
-For the ufs-weather-model HAFS app (atm/ocean) in 32 bit:
-
-.. code-block:: console
-
-    export CMAKE_FLAGS="-DAPP=HAFS -D32BIT=ON -DCCPP_SUITES=FV3_HAFS_v0_gfdlmp_tedmf_nonsst,FV3_HAFS_v0_gfdlmp_tedmf,FV3_HAFS_v0_hwrf_thompson,FV3_HAFS_v0_hwrf"
-
-For the ufs-weather-model HAFSW app (atm/ocean/wave) in 32 bit:
-
-.. code-block:: console
-
-    export CMAKE_FLAGS="-DAPP=HAFSW -D32BIT=ON -DCCPP_SUITES=FV3_HAFS_v0_gfdlmp_tedmf_nonsst,FV3_HAFS_v0_gfdlmp_tedmf,FV3_HAFS_v0_hwrf_thompson,FV3_HAFS_v0_hwrf"
-
-For the ufs-weather-model HAFS-ALL app (data/atm/ocean/wave) in 32 bit:
-
-.. code-block:: console
-
-    export CMAKE_FLAGS="-DAPP=HAFS-ALL -D32BIT=ON -DCCPP_SUITES=FV3_HAFS_v0_gfdlmp_tedmf_nonsst,FV3_HAFS_v0_gfdlmp_tedmf,FV3_HAFS_v0_hwrf_thompson,FV3_HAFS_v0_hwrf"
-
-For the ufs-weather-model AQM app (atm/aqm):
+For the ``ufs-weather-model ATMAQ`` configuration (standalone ATM coupled to :term:`CMAQ`):
 
 .. code-block:: console
 
     export CMAKE_FLAGS="-DAPP=ATMAQ -DCCPP_SUITES=FV3_GFS_v15p2"
 
+S2S Configurations 
+----------------------
+
+For the ``ufs-weather-model S2S`` configuration (atm/ice/ocean):
+
+.. code-block:: console
+
+    export CMAKE_FLAGS="-DAPP=S2S -DCCPP_SUITES=FV3_GFS_2017_coupled,FV3_GFS_2017_satmedmf_coupled,FV3_GFS_v15p2_coupled,FV3_GFS_v16_coupled,FV3_GFS_v16_couplednsst"
+
+To turn on debugging flags, add ``-DDEBUG=ON`` flag after ``-DAPP=S2S``. Users can allow verbose build messages by running: 
+
+.. code-block:: console
+
+    export BUILD_VERBOSE=1
+
+For the ``ufs-weather-model S2S`` configuration (atm/ice/ocean) with activating CCPP host model under CMEPS and receiving atmosphere-ocean fluxes from mediator:
+
+.. code-block:: console
+
+    export CMAKE_FLAGS="-DAPP=S2S -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_sfcocn -DCMEPS_AOFLUX=ON"
+
+..
+   COMMENT: Need some clarification on what the above code does with CCPP/CMEPS... not clear from description. 
+
+For the ``ufs-weather-model S2SW`` configuration (atm/ice/ocean/wave):
+
+.. code-block:: console
+
+    export CMAKE_FLAGS="-DAPP=S2SW -DCCPP_SUITES=FV3_GFS_2017_coupled,FV3_GFS_v15p2_coupled,FV3_GFS_v16_coupled,FV3_GFS_v16_coupled_noahmp"
+
+For the ``ufs-weather-model S2SA`` configuration (atm/ice/ocean/aerosols):
+
+.. code-block:: console
+
+    export CMAKE_FLAGS="-DAPP=S2SA -DCCPP_SUITES=FV3_GFS_2017_coupled,FV3_GFS_v15p2_coupled,FV3_GFS_v16_coupled,FV3_GFS_v16_coupled_noahmp"
+
+..
+   CHECK: DAPP flag and physics suites
+
+For the ``ufs-weather-model S2SWA`` configuration (atm/ice/ocean/wave/aerosols):
+
+
+.. code-block:: console
+
+    export CMAKE_FLAGS="-DAPP=S2SWA -DCCPP_SUITES=FV3_GFS_2017_coupled,FV3_GFS_v15p2_coupled,FV3_GFS_v16_coupled,FV3_GFS_v16_coupled_noahmp"
+
+..
+   CHECK: DAPP flag and physics suites
+
+NG-GODAS Configuration
+------------------------
+
+For the ``ufs-weather-model NG-GODAS`` configuration (DATM/MOM6/CICE): 
+
+
+.. code-block:: console
+
+    export CMAKE_FLAGS="-DAPP=S2SWA -DCCPP_SUITES=FV3_GFS_2017_coupled,FV3_GFS_v15p2_coupled,FV3_GFS_v16_coupled,FV3_GFS_v16_coupled_noahmp"
+..
+   COMMENT: NG-GODAS --> Coupled CDEPS-DATM-MOM6-CICE6-CMEPS
+
+HAFS Configurations
+----------------------
+
+For the ``ufs-weather-model HAFS`` configuration (atm/ocean) in 32 bit:
+
+.. code-block:: console
+
+    export CMAKE_FLAGS="-DAPP=HAFS -D32BIT=ON -DCCPP_SUITES=FV3_HAFS_v0_gfdlmp_tedmf_nonsst,FV3_HAFS_v0_gfdlmp_tedmf,FV3_HAFS_v0_hwrf_thompson,FV3_HAFS_v0_hwrf"
+
+For the ``ufs-weather-model HAFSW`` configuration (atm/ocean/wave) in 32 bit:
+
+.. code-block:: console
+
+    export CMAKE_FLAGS="-DAPP=HAFSW -D32BIT=ON -DCCPP_SUITES=FV3_HAFS_v0_gfdlmp_tedmf_nonsst,FV3_HAFS_v0_gfdlmp_tedmf,FV3_HAFS_v0_hwrf_thompson,FV3_HAFS_v0_hwrf"
+
+For the ``ufs-weather-model HAFS-ALL`` configuration (data/atm/ocean/wave) in 32 bit:
+
+.. code-block:: console
+
+    export CMAKE_FLAGS="-DAPP=HAFS-ALL -D32BIT=ON -DCCPP_SUITES=FV3_HAFS_v0_gfdlmp_tedmf_nonsst,FV3_HAFS_v0_gfdlmp_tedmf,FV3_HAFS_v0_hwrf_thompson,FV3_HAFS_v0_hwrf"
+
+
 ------------------
-Building the model
+Building the Model
 ------------------
 The UFS Weather Model uses the CMake build system.  There is a build script called ``build.sh`` in the
 top-level directory of the WM repository that configures the build environment and runs the ``make``
@@ -224,13 +287,13 @@ Expert help is available through a `user support forum <https://forums.ufscommun
 set up specifically for issues related to the Weather Model.
 
 =================
-Running the model
+Running the Model
 =================
 
 .. _UsingRegressionTest:
 
 --------------------------------
-Using the regression test script
+Using the Regression Test Script
 --------------------------------
 The regression test script ``rt.sh`` in the tests/ directory can be
 used to run a number of preconfigured test cases. It is the top-level script
@@ -320,7 +383,7 @@ input data directory of a given platform to the ``$RUNDIR`` directory.
 
 .. _RTSubDirs:
 
-.. table:: *Regression test subdirectories*
+.. table:: *Regression Test Subdirectories*
 
    +-----------------+--------------------------------------------------------------------------------------+
    | **Name**        | **Description**                                                                      |
@@ -376,7 +439,7 @@ test case refers to any one of ``thr``, ``mpi``, ``dcp``, ``rst``, ``bit`` and `
 
 .. _OperationalRequirement:
 
-.. table:: *Operational requirements*
+.. table:: *Operational Requirements*
 
   +----------+------------------------------------------------------------------------+
   | **Case** | **Description**                                                        |
