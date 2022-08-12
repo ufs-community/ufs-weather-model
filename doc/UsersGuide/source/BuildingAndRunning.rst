@@ -132,14 +132,16 @@ manually. For example, in a bash shell, a command in the following form will set
 
 
 -------------------------------------------------------------
-Setting the CMAKE_FLAGS and CCPP_SUITES Environment Variables
+Setting the ``CMAKE_FLAGS`` and ``CCPP_SUITES`` Environment Variables
 -------------------------------------------------------------
 
 The UFS Weather Model can be built in one of twelve configurations (cf. :numref:`Table %s <UFS-configurations>`). 
 The ``CMAKE_FLAGS`` environment variable specifies which configuration to build.
 Additionally, users must select the :term:`CCPP` suite(s) by setting the ``CCPP_SUITES`` environment variable at
-build time in order to have one or more CCPP physics suites available at runtime. Multiple suites can be set. The following
-examples assume a bash shell.
+build time in order to have one or more CCPP physics suites available at runtime. Multiple suites can be set. 
+Additional environment variables, such as ``-D32BIT=ON``, can be set if the user chooses. These options are documented 
+in :numref:`Section %s <other-build-options>`. 
+The following examples assume a bash shell.
 
 ATM Configurations
 ---------------------
@@ -149,11 +151,6 @@ For the ``ufs-weather-model ATM`` configuration (standalone :term:`ATM`):
 .. code-block:: console
 
     export CMAKE_FLAGS="-DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16"
-
-To build in 32-bit, users can add the ``-D32BIT=ON`` flag after ``-DAPP=ATM``. 
-
-..
-   COMMENT: Update CCPP flags to FV3_GFS_v17?
 
 For the ``ufs-weather-model ATMW`` configuration (standalone ATM coupled to :term:`WW3`):
 
@@ -179,11 +176,13 @@ For the ``ufs-weather-model ATMAQ`` configuration (standalone ATM coupled to :te
 S2S Configurations 
 ----------------------
 
-For the ``ufs-weather-model S2S`` configuration (atm/ice/ocean):
+For the ``ufs-weather-model S2S`` configuration (coupled atm/ice/ocean):
 
 .. code-block:: console
 
     export CMAKE_FLAGS="-DAPP=S2S -DCCPP_SUITES=FV3_GFS_2017_coupled,FV3_GFS_2017_satmedmf_coupled,FV3_GFS_v15p2_coupled,FV3_GFS_v16_coupled,FV3_GFS_v16_couplednsst"
+
+.. Which ocean model is it coupled to? All? 
 
 To turn on debugging flags, add ``-DDEBUG=ON`` flag after ``-DAPP=S2S``. Users can allow verbose build messages by running: 
 
@@ -228,7 +227,7 @@ For the ``ufs-weather-model S2SWA`` configuration (atm/ice/ocean/wave/aerosols):
 NG-GODAS Configuration
 ------------------------
 
-For the ``ufs-weather-model NG-GODAS`` configuration (DATM/MOM6/CICE): 
+For the ``ufs-weather-model NG-GODAS`` configuration (atm/ocean/ice/data assimilation): 
 
 
 .. code-block:: console

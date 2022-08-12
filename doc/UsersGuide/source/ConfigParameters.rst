@@ -114,6 +114,8 @@ Physics Options
    | ``FV3_RRFS_v1beta``
    | ``FV3_RRFS_v1nssl``
 
+.. _other-build-options:
+
 Other Build Options
 =======================
 
