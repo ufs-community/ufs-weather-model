@@ -31,6 +31,6 @@ load("ufs_common_debug")
 setenv("CC", "cc")
 setenv("CXX", "CC")
 setenv("FC", "ftn")
-setenv("CMake_Platform", "acorn")
+setenv("CMAKE_Platform", "acorn")
 
 whatis("Description: UFS build environment")

@@ -28,6 +28,6 @@ load("ufs_common_debug")
 setenv("CC", "mpiicc")
 setenv("CXX", "mpiicpc")
 setenv("FC", "mpiifort")
-setenv("CMake_Platform", "hera.intel")
+setenv("CMAKE_Platform", "hera.intel")
 
 whatis("Description: UFS build environment")
