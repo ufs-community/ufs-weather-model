@@ -48,7 +48,7 @@ load(pathJoin("crtm", crtm_ver))
 g2_ver=os.getenv("g2_ver") or "3.4.5"
 load(pathJoin("g2", g2_ver))
 
-upp_ver=os.getenv("upp_ver") or "8.1.0"
+upp_ver=os.getenv("upp_ver") or "8.2.0"
 load(pathJoin("upp", upp_ver))
 
 jasper_ver=os.getenv("jasper_ver") or "2.0.25"
