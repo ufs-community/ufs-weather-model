@@ -129,7 +129,9 @@ list(APPEND mom6_src_files
   MOM6/src/framework/MOM_string_functions.F90
   MOM6/src/framework/MOM_unit_scaling.F90
   MOM6/src/framework/MOM_unique_scales.F90
+  MOM6/src/framework/MOM_unit_testing.F90
   MOM6/src/framework/MOM_write_cputime.F90
+  MOM6/src/framework/testing/MOM_file_parser_tests.F90
 
   MOM6/src/ice_shelf/MOM_ice_shelf.F90
   MOM6/src/ice_shelf/MOM_ice_shelf_diag_mediator.F90
@@ -292,6 +294,7 @@ list(APPEND mom6_nuopc_src_files
   MOM6/config_src/drivers/nuopc_cap/mom_cap_time.F90
   MOM6/config_src/drivers/nuopc_cap/mom_ocean_model_nuopc.F90
   MOM6/config_src/drivers/nuopc_cap/mom_surface_forcing_nuopc.F90
+  MOM6/config_src/drivers/unit_tests/MOM_unit_test_driver.F90
 )
 
 list(APPEND mom6_solo_src_files
