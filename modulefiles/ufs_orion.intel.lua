@@ -1,14 +1,20 @@
 help([[
-loads UFS Model prerequisites for Jet/Intel
+loads UFS Model prerequisites for Orion/Intel
 ]])
 
-prepend_path("MODULEPATH", "/contrib/sutils/modulefiles")
-load("sutils")
+load("contrib")
+load("noaatools")
 
-cmake_ver=os.getenv("cmake_ver") or "3.20.1"
+cmake_ver=os.getenv("cmake_ver") or "3.22.1"
 load(pathJoin("cmake", cmake_ver))
+--module load cmake/3.22.1
 
-prepend_path("MODULEPATH", "/lfs4/HFIP/hfv3gfs/nwprod/hpc-stack/libs/modulefiles/stack")
+python_ver=os.getenv("python_ver") or "3.7.5"
+load(pathJoin("python", python_ver))
+module load python/3.7.5
+
+
+prepend_path("MODULEPATH", "/apps/contrib/NCEP/libs/hpc-stack/modulefiles/stack")
 
 hpc_ver=os.getenv("hpc_ver") or "1.1.0"
 load(pathJoin("hpc", hpc_ver))
@@ -24,6 +30,6 @@ load("ufs_common")
 setenv("CC", "mpiicc")
 setenv("CXX", "mpiicpc")
 setenv("FC", "mpiifort")
-setenv("CMAKE_Platform", "jet.intel")
+setenv("CMAKE_Platform", "orion.intel")
 
 whatis("Description: UFS build environment")
