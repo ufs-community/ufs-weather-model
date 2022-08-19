@@ -8,7 +8,6 @@ load(pathJoin("cmake", cmake_ver))
 python_ver=os.getenv("python_ver") or "3.7.9"
 load(pathJoin("python", python_ver))
 
-# load programming environment
 ncarenv_ver=os.getenv("ncarenv_ver") or "1.3"
 load(pathJoin("ncarenv", ncarenv_ver))
 
@@ -36,7 +35,7 @@ load(pathJoin("hpc-mpt", hpc_mpt_ver))
 
 load("ufs_common_debug")
 
-setenv("C", "mpicc")
+setenv("CC", "mpicc")
 setenv("CXX", "mpicxx")
 setenv("FC", "mpif90")
 setenv("CMAKE_Platform", "cheyenne.gnu")
