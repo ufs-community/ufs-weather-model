@@ -7,12 +7,9 @@ load("noaatools")
 
 cmake_ver=os.getenv("cmake_ver") or "3.22.1"
 load(pathJoin("cmake", cmake_ver))
---module load cmake/3.22.1
 
 python_ver=os.getenv("python_ver") or "3.7.5"
 load(pathJoin("python", python_ver))
-module load python/3.7.5
-
 
 prepend_path("MODULEPATH", "/apps/contrib/NCEP/libs/hpc-stack/modulefiles/stack")
 
