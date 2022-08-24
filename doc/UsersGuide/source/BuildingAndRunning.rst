@@ -131,9 +131,9 @@ manually. For example, in a bash shell, a command in the following form will set
    export CMAKE_C_COMPILER=</path/to/C/compiler>
 
 
--------------------------------------------------------------
+------------------------------------------------------------------------
 Setting the ``CMAKE_FLAGS`` and ``CCPP_SUITES`` Environment Variables
--------------------------------------------------------------
+------------------------------------------------------------------------
 
 The UFS Weather Model can be built in one of twelve configurations (cf. :numref:`Table %s <UFS-configurations>`). 
 The ``CMAKE_FLAGS`` environment variable specifies which configuration to build.

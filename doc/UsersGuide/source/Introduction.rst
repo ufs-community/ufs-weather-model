@@ -56,13 +56,11 @@ Support for the UFS WM is provided through the `UFS Forum <https://forums.ufscom
 
 This WM User's Guide is organized as follows:
 
-   * :numref:`Chapter %s <CodeOverview>` (Code Overview) provides a description of the various
-  code repositories from which source code is pulled and an overview of the directory structure.
+   * :numref:`Chapter %s <CodeOverview>` (Code Overview) provides a description of the various code repositories from which source code is pulled and an overview of the directory structure.
 
    * :numref:`Chapter %s <BuildingAndRunning>` (Building and Running the WM) explains how to use the WM without an application.
 
-   * :numref:`Chapter %s <InputsOutputs>` (Inputs and Outputs) lists the model inputs and outputs
-  and has a description of the key files.
+   * :numref:`Chapter %s <InputsOutputs>` (Inputs and Outputs) lists the model inputs and outputs and has a description of the key files.
 
    * :numref:`Chapter %s <FAQ>` (FAQ) lists frequently asked questions and answers.
 
