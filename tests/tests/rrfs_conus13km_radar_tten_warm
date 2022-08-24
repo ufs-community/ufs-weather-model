@@ -4,6 +4,9 @@
 #
 ###############################################################################
 
+# This configuration is supposed to match the rrfs_dev1 parallel, so
+# do not change the namelist without checking the current parallel.
+
 export TEST_DESCR="HRRR physics on 13km domain, with radar-derived MP temperature tendencies for 1 hour"
 
 export CNTL_DIR=rrfs_conus13km_radar_tten_warm
@@ -29,11 +32,18 @@ export RESTART_INTERVAL=1
 export QUILTING=.true.
 export WRITE_GROUP=1
 export WRTTASK_PER_GROUP=6
+export NTILES=1
 export WRITE_DOPOST=.false.
 export OUTPUT_HISTORY=.true.
 export OUTPUT_GRID=lambert_conformal
 export OUTPUT_FILE="'netcdf'"
 
+# Revert these two to GFS_typedefs defaults to avoid a crash:
+export SEDI_SEMI=.false.
+export DECFL=8
+
+export LKM=1
+export SFCLAY_COMPUTE_FLUX=.true.
 export IALB=2
 export ICLIQ_SW=2
 export IEMS=2
@@ -68,7 +78,7 @@ export FHZERO=1.0
 export IMP_PHYSICS=8
 export LDIAG3D=.false.
 export QDIAG3D=.false.
-export PRINT_DIFF_PGR=.false.
+export PRINT_DIFF_PGR=.true.
 export FHCYC=0.0
 export IAER=5111
 export LHEATSTRG=.false.

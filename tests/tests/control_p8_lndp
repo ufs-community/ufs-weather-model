@@ -29,6 +29,7 @@ export_fv3
 export NPZ=127
 export NPZP=128
 export DT_ATMOS=720
+export DT_INNER=${DT_ATMOS}
 export SYEAR=2021
 export SMONTH=03
 export SDAY=22
@@ -50,6 +51,7 @@ export IOPT_ALB=1
 export IOPT_STC=3
 # P8
 export IOPT_SFC=3
+export IOPT_TRS=2
 
 # FV3 P7 settings
 export D2_BG_K1=0.20
@@ -63,7 +65,7 @@ export USE_MERRA2=.true.
 export IAER=1011
 export NSTF_NAME=2,1,0,0,0
 
-export LHEATSTRG=.true.
+export LHEATSTRG=.false.
 export LSEASPRAY=.true.
 
 # P7 UGWP1
@@ -74,7 +76,7 @@ export KNOB_UGWP_NSLOPE=1
 export DO_UGWP_V0=.true.
 export DO_GSL_DRAG_LS_BL=.false.
 export DO_GSL_DRAG_SS=.true.
-export DO_GSL_DRAG_TOFD=.true.
+export DO_GSL_DRAG_TOFD=.false.
 export DO_UGWP_V1_OROG_ONLY=.false.
 export DO_UGWP_V0_NST_ONLY=.false.
 export LDIAG_UGWP=.false.
@@ -114,7 +116,7 @@ export FSICS=0
 export IMP_PHYSICS=8
 export LGFDLMPRAD=.false.
 export DO_SAT_ADJ=.false.
-export DNATS=2
+export DNATS=0
 export DZ_MIN=6
 
 #required for NML.IN sharing
@@ -129,7 +131,7 @@ export WRITE_NSFLIP=.true.
 export FV3_RUN=control_run.IN
 export CCPP_SUITE=FV3_GFS_v17_p8
 export FIELD_TABLE=field_table_thompson_noaero_tke
-export DIAG_TABLE=diag_table_gfsv16_merra2
+export DIAG_TABLE=diag_table_p8_template
 # use same namelist for standalone,coupled P7
 export INPUT_NML=cpld_control.nml.IN
 export LNDP_TYPE=2
@@ -139,7 +141,11 @@ export LNDP_PRT_LIST='0.05,'
 export LNDP_MODEL_TYPE=1
 
 # RRTMGP
-export DO_RRTMGP=.true.
+export DO_RRTMGP=.false.
 export DOGP_CLDOPTICS_LUT=.true.
 export DOGP_LWSCAT=.true.
 export DOGP_SGS_CNV=.true.
+
+if [[ $MACHINE_ID = cheyenne.* ]]; then
+  TPN=18
+fi

@@ -146,6 +146,12 @@ For the ufs-weather-model S2S app (atm/ice/ocean) with debugging flags turned on
     export CMAKE_FLAGS="-DAPP=S2S -DDEBUG=ON -DCCPP_SUITES=FV3_GFS_2017_coupled,FV3_GFS_2017_satmedmf_coupled,FV3_GFS_v15p2_coupled,FV3_GFS_v16_coupled,FV3_GFS_v16_couplednsst"
     export BUILD_VERBOSE=1
 
+For the ufs-weather-model S2S app (atm/ice/ocean) with activating CCPP host model under CMEPS and receiving atmosphere-ocean fluxes from mediator:
+
+.. code-block:: console
+
+    export CMAKE_FLAGS="-DAPP=S2S -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_sfcocn -DCMEPS_AOFLUX=ON"
+
 For the ufs-weather-model S2SW app (atm/ice/ocean/wave):
 
 .. code-block:: console
@@ -169,6 +175,12 @@ For the ufs-weather-model HAFS-ALL app (data/atm/ocean/wave) in 32 bit:
 .. code-block:: console
 
     export CMAKE_FLAGS="-DAPP=HAFS-ALL -D32BIT=ON -DCCPP_SUITES=FV3_HAFS_v0_gfdlmp_tedmf_nonsst,FV3_HAFS_v0_gfdlmp_tedmf,FV3_HAFS_v0_hwrf_thompson,FV3_HAFS_v0_hwrf"
+
+For the ufs-weather-model AQM app (atm/aqm):
+
+.. code-block:: console
+
+    export CMAKE_FLAGS="-DAPP=ATMAQ -DCCPP_SUITES=FV3_GFS_v15p2"
 
 ------------------
 Building the model
