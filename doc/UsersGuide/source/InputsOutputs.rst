@@ -2061,11 +2061,20 @@ For the ATMAQ application, a sample *nems.configure* is shown below :
 ---------------------------------------
 *The SDF (Suite Definition File) file*
 ---------------------------------------
-There are two SDFs currently supported for the UFS Medium Range Weather App configuration: *suite_FV3_GFS_v15p2.xml* and *suite_FV3_GFS_v16beta.xml*.
 
-There are two SDFs currently supported for the UFS Short Range Weather App configuration: *suite_FV3_GFS_v15p2.xml* and *suite_FV3_RRFS_v1alpha.xml*.
+There are two SDFs currently supported for the UFS Medium Range Weather App configuration: 
 
-Detailed descriptions of the supported suites can be found with the `CCPP v5.0.0 Scientific Documentation <https://dtcenter.ucar.edu/GMTB/v5.0.0/sci_doc/>`_.
+   * ``suite_FV3_GFS_v15p2.xml`` 
+   * ``suite_FV3_GFS_v16beta.xml``
+
+There are four SDFs currently supported for the UFS Short Range Weather App configuration: 
+
+   * ``suite_FV3_GFS_v16.xml`` 
+   * ``suite_FV3_RRFS_v1beta.xml``
+   * ``suite_FV3_HRRR.xml``
+   * ``suite_FV3_WoFS_v0.xml``
+
+Detailed descriptions of the supported suites can be found with the `CCPP v6.0.0 Scientific Documentation <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/index.html>`__.
 
 ---------------------------------------
 *datm.streams*
