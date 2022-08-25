@@ -114,10 +114,10 @@ The umbrella repository for the UFS Weather Model is named ``ufs-weather-model``
    │    └── CMEPS
    │         └── (cesm)                            --------- CMEPS CESM
    ├── modulefiles          -------- system module files for supported HPC systems
-   ├── tests                -------- regression test infrastructure
-   │   └── parm
-   │   └── tests
-   │   └── fv3_conf   
+   └── tests                -------- regression test infrastructure
+       └── parm
+       └── tests
+       └── fv3_conf   
 
 The physics subdirectory in the ``gfsphysics`` directory  is not used or supported
 as part of this release (all physics is available through the :term:`CCPP` using

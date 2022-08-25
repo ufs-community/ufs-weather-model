@@ -28,19 +28,19 @@ The UFS Weather Model (WM) requires a number of libraries for it to compile.
 The WM uses two categories of libraries, which are available as a bundle via 
 :term:`HPC-Stack` or :term:`spack-stack`:
 
-#. :term:`NCEP` libraries (NCEPLIBS): These are libraries developed for use with NOAA weather models.
-   Most have an NCEPLIBS prefix in the repository (e.g., NCEPLIBS-bacio). Select tools from the UFS
-   Utilities repository (:term:`UFS_UTILS`) are also included in this category. 
-   A list of the bundled libraries tested with this WM release is available in the top-level ``README`` of the 
-   `NCEPLIBS repository <https://github.com/NOAA-EMC/NCEPLIBS/tree/ufs-v2.0.0>`__ (**be sure to look at 
-   the tag in that repository that matches the tag on the most recent WM release**).
+   #. :term:`NCEP` libraries (NCEPLIBS): These are libraries developed for use with NOAA weather models.
+      Most have an NCEPLIBS prefix in the repository (e.g., NCEPLIBS-bacio). Select tools from the UFS
+      Utilities repository (:term:`UFS_UTILS`) are also included in this category. 
+      A list of the bundled libraries tested with this WM release is available in the top-level ``README`` of the 
+      `NCEPLIBS repository <https://github.com/NOAA-EMC/NCEPLIBS/tree/ufs-v2.0.0>`__ (**be sure to look at 
+      the tag in that repository that matches the tag on the most recent WM release**).
 
-#. Third-party libraries (NCEPLIBS-external): These are libraries that were developed external to
-   the UFS Weather Model. They are general software packages that are also used by other community models. 
-   Building these libraries is optional if users can point to existing builds of these libraries on their system
-   instead. A list of the external libraries tested with this WM release is in the top-level ``README``
-   of the `NCEPLIBS-external <https://github.com/NOAA-EMC/NCEPLIBS-external/tree/ufs-v2.0.0>`__ repository. Again, be
-   sure to look at the tag in that repository that matches the tag on this WM release.
+   #. Third-party libraries (NCEPLIBS-external): These are libraries that were developed external to
+      the UFS Weather Model. They are general software packages that are also used by other community models. 
+      Building these libraries is optional if users can point to existing builds of these libraries on their system
+      instead. A list of the external libraries tested with this WM release is in the top-level ``README``
+      of the `NCEPLIBS-external <https://github.com/NOAA-EMC/NCEPLIBS-external/tree/ufs-v2.0.0>`__ repository. Again, be
+      sure to look at the tag in that repository that matches the tag on this WM release.
 
 .. note::
    Documentation is available for installing `HPC-Stack <https://hpc-stack.readthedocs.io/en/latest/>`__ 
