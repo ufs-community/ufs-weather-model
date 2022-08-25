@@ -394,7 +394,7 @@ The input files containing time dependent configuration and forcing data are lis
 .. _HYCOM_GridICFiles:
 
 .. list-table:: *Input files containing grid information, initial conditions, and forcing data for regional configurations.*
-   :widths: 15 30 15 5
+   :widths: 12 30 18 5
    :header-rows: 1
 
    * - Filename
@@ -513,7 +513,7 @@ The WW3 version number in mod_def.<grd> files must be consistent with version of
 .. _WW3_FixFiles:
 
 .. list-table:: *Input files containing grid information and conservative remapping for global configurations (GFSv16 Wave)*
-   :widths: 35 35 25 10 10
+   :widths: 30 35 20 10 10
    :header-rows: 1
 
    * - Filename
@@ -646,18 +646,21 @@ The model driver input (ww3_multi.inp) includes the input, model and output grid
    * - FGRDPROC
      - Flag for grids sharing dedicated output processes
 
-If there are input data grids defined ( NFGRIDS > 0 ) then these grids are defined first (CPLILINE, WINDLINE, ICELINE, CURRLINE). These grids are defined as if they are wave model grids using the file mod_def.<grd>. Each grid is defined on a separate input line with <grd>, with nine input flags identifying
+If there are input data grids defined ( ``NFGRIDS > 0`` ) then these grids are defined first (``CPLILINE``, 
+``WINDLINE``, ``ICELINE``, ``CURRLINE``). These grids are defined as if they are wave model grids using the 
+file ``mod_def.<grd>``. Each grid is defined on a separate input line with ``<grd>``, with nine input flags identifying
 $ the presence of 1) water levels 2) currents 3) winds 4) ice
 $ 5) momentum 6) air density and 7-9) assimilation data.
 
-The UNIPOINTS defines the name of this grid for all point output, which gathers the output spectral grid in a unified point output file.
+The ``UNIPOINTS`` defines the name of this grid for all point output, which gathers the output spectral grid in a unified point output file.
 
-The WW3GRIDLINE defines actual wave model grids using 13 parameters to be
-read from a single line in the file for each. It includes (1) its own input grid ``mod_def.<grd>``, (2-10) forcing grid ids, (3) rank number, (12) group number and (13-14) fraction of communicator (processes) used for this grid.
+The ``WW3GRIDLINE`` defines actual wave model grids using 13 parameters to be
+read from a single line in the file for each. It includes (1) its own input grid ``mod_def.<grd>``, (2-10) 
+forcing grid ids, (3) rank number, (12) group number and (13-14) fraction of communicator (processes) used for this grid.
 
 ``RUN_BEG`` and ``RUN_END`` define the starting and end times, ``FLAGMASKCOMP`` and ``FLAGMASKOUT`` are flags for masking at printout time (default F F), followed by the gridded and point outputs start time (``OUT_BEG``), interval (``DTFLD`` and ``DTPNT``) and end time (``OUT_END``). The restart outputs start time, interval and end time are define by ``RST_BEG``, ``DTRST``, ``RST_END`` respectively.
 
-The OUTPARS_WAV defines gridded output fields. The ``GOFILETYPE``, ``POFILETYPE`` and ``RSTTYPE`` are gridded, point and restart output types respectively.
+The ``OUTPARS_WAV`` defines gridded output fields. The ``GOFILETYPE``, ``POFILETYPE`` and ``RSTTYPE`` are gridded, point and restart output types respectively.
 
 No initial condition files are required for WW3.
 
@@ -679,14 +682,14 @@ For the HAFS regional domain, the following commands can be used:
    ncremap -g hafswav.SCRIP.nc -G latlon=441,901#snwe=1.45,45.55,-98.05,-7.95#lat_typ=uni#lat_drc=s2n
    ESMF_Scrip2Unstruct hafswav.SCRIP.nc mesh.hafs.nc 0
 
-For the sub-global 1-deg domain extending from latitude 85.0S
+For the sub-global 1-deg domain extending from latitude 85.0S:
 
 .. code-block:: console
 
    ncremap -g glo_1deg.SCRIP.nc -G latlon=171,360#snwe=-85.5,85.5,-0.5,359.5#lat_typ=uni#lat_drc=s2n
    ESMF_Scrip2Unstruct glo_1deg.SCRIP.nc mesh.glo_1deg.nc 0
 
-For the sub-global 1/2-deg domain extending from latitude 80.0S
+For the sub-global 1/2-deg domain extending from latitude 80.0S:
 
 .. code-block:: console
 
@@ -952,7 +955,7 @@ The configuration files used by the UFS Weather Model are listed here and descri
    * ``suite_[suite_name].xml`` (used only at build time)
    * ``datm.streams`` (used by CDEPS)
    * ``datm_in`` (used by CDEPS)
-   * :ref:`blkdat.input<HYCOM_BlkdatInput>` (used by HYCOM)
+   * ``blkdat.input`` (used by HYCOM)
 
 While the ``input.nml`` file is also a configuration file used by the UFS Weather Model, it is described in
 :numref:`Section %s <InputNML>`. The run-time configuration of model output fields is controlled by the combination of ``diag_table`` and ``model_configure``, and is described in detail in :numref:`Section %s <OutputFiles>`.
@@ -1200,7 +1203,7 @@ The first string will be an identifier that the querying module will ask for. Th
 that the querying module can use to set up values for the module. The third string, if present, can supply
 parameters to the calling module that can be parsed and used to further modify values.
 
-An entry is ended with a  forward slash (/) as the final character in a row.  Comments can be inserted in the field table by having a hash symbol (#) as the first character in the line.
+An entry is ended with a  forward slash (/) as the final character in a row.  Comments can be inserted in the field table by adding a hash symbol (#) as the first character in the line.
 
 Below is an example of a field table entry for the tracer called ``"sphum"``:
 
@@ -1213,7 +1216,7 @@ Below is an example of a field table entry for the tracer called ``"sphum"``:
               "units",        "kg/kg"
               "profile_type", "fixed", "surface_value=3.e-6" /
 
-In this case, methods applied to this tracer include setting the long name to "specific humidity", the units
+In this case, methods applied to this :term:`tracer` include setting the long name to "specific humidity", the units
 to "kg/kg". Finally a field named "profile_type" will be given a child field called "fixed", and that field
 will be given a field called "surface_value" with a real value of 3.E-6.  The "profile_type" options are listed
 in :numref:`Table %s <TracerTable>`.  If the profile type is "fixed" then the tracer field values are set equal
@@ -1222,7 +1225,7 @@ and an exponential profile is calculated, with the profile being dependent on th
 
 .. _TracerTable:
 
-.. list-table:: *Tracer profile setup from FMS/tracer_manager/tracer_manager.F90.*
+.. list-table:: *Tracer Profile Setup from FMS/tracer_manager/tracer_manager.F90.*
    :widths: 20 25 55
    :header-rows: 1
 
