@@ -8,12 +8,17 @@ Configuration Parameters
 Build Configuration Parameters
 =================================
 
+.. _dapp:
+
 Configuration Options
 =========================
 
 ``-DAPP``:
    Sets the :term:`WM` configuration to build. 
    Valid values: ``ATM``, ``ATMW``, ``ATMAERO``, ``ATMAQ``, ``S2S``, ``S2SA``, ``S2SW``, ``S2SWA``, ``NG-GODAS``, ``HAFS``, ``HAFSW``, ``HAFS-ALL``
+
+
+.. _suites:
 
 Physics Options
 =======================
