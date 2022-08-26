@@ -8,7 +8,7 @@ Code Overview
 UFS Weather Model Hierarchical Repository Structure
 ===================================================
 
-The ``ufs-weather-model`` repository supports the :term:`UFS` short- and medium-range weather applications (`SRW <https://github.com/ufs-community/ufs-srweather-app>`__ / `MRW <https://github.com/ufs-community/ufs-mrweather-app>`__ Apps). It contains atmosphere and wave components and some infrastructure components. Each of these subcomponents has its own repository. All the repositories are currently located in GitHub with public access to the broad community. :numref:`Table %s <Repo_Structure>` describes the list of repositories that comprises the UFS :term:`Weather Model` (WM).
+The UFS Weather Model (:term:`WM`) repository supports the :term:`UFS` short- and medium-range weather applications (:term:`SRW` / :term:`MRW` Apps). The WM repository contains atmosphere, ocean, sea ice, and wave components, as well as some infrastructure components. Each of these subcomponents has its own repository. All the repositories are currently located in GitHub with public access to the broad community. :numref:`Table %s <Repo_Structure>` describes the list of repositories that comprises the UFS WM.
 
 .. _Repo_Structure:
 
@@ -20,8 +20,6 @@ The ``ufs-weather-model`` repository supports the :term:`UFS` short- and medium-
     - Authoritative repository URL
   * - Umbrella repository for the UFS Weather Model
     - https://github.com/ufs-community/ufs-weather-model
-  * - Infrastructure: NOAA Environmental Modeling System                
-    - https://github.com/NOAA-EMC/NEMS
   * - Framework to connect the CCPP library to a host model
     - https://github.com/NCAR/ccpp-framework
   * - CCPP library of physical parameterizations
@@ -49,10 +47,7 @@ The ``ufs-weather-model`` repository supports the :term:`UFS` short- and medium-
   * - Air Quality Model (AQM)
     - https://github.com/NOAA-EMC/AQM
 
-..
-   COMMENT: Delete NEMS?
-
-In the table, the left column contains a description of each repository, and the right column shows the component repositories which are pointing to (or will point to) the authoritative repositories. The ufs-weather-model currently uses git submodule to manage the sub-components.
+In the table, the left column contains a description of each repository, and the right column shows the component repositories which are pointing to (or will point to) the authoritative repositories. The UFS WM currently uses Git submodules to manage the sub-components.
    
 ===================
 Directory Structure
@@ -123,7 +118,5 @@ The physics subdirectory in the ``gfsphysics`` directory  is not used or support
 as part of this release (all physics is available through the :term:`CCPP` using
 the repository described in :numref:`Table %s <Repo_Structure>`).
 
-..
-   COMMENT: Should we omit CMakeLists.txt, CMakeModules, driver (which I added) or add a description?
-   COMMENT: Should we omit NEMS directory, which doesn't seem to be part of the repo anymore?
-   ├── NEMS                  -------- NOAA Earth Modeling System framework
+.. COMMENT: Should we omit CMakeLists.txt, CMakeModules, driver (which I added) or add a description?
+.. COMMENT: I don't see a "gfsphysics" directory... Can we remove it or be more specific about where it is? There are two CCPP repos in the table referenced above... Framework and Physics.

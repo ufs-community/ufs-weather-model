@@ -177,11 +177,10 @@ Glossary
       According to the American Meteorological Society (AMS) `definition <https://glossary.ametsoc.org/wiki/Tracer>`__, a tracer is "Any substance in the atmosphere that can be used to track the history [i.e., movement] of an air mass." Tracers are carried around by the motion of the atmosphere (i.e., by :term:`advection`). These substances are usually gases (e.g., water vapor, CO2), but they can also be non-gaseous (e.g., rain drops in microphysics parameterizations). In weather models, temperature (or potential temperature), absolute humidity, and radioactivity are also usually treated as tracers. According to AMS, "The main requirement for a tracer is that its lifetime be substantially longer than the transport process under study."
 
    UFS
-      A Unified Forecast System (UFS) is a community-based, coupled comprehensive Earth
-      system modeling system. The UFS numerical applications span local to global domains
-      and predictive time scales from sub-hourly analyses to seasonal predictions. It is
-      designed to support the Weather Enterprise and to be the source system for NOAA's
-      operational numerical weather prediction applications
+   Unified Forecast System
+      The Unified Forecast System (UFS) is a community-based, coupled, comprehensive Earth 
+      system modeling system. The UFS numerical applications span regional to global domains 
+      and sub-hourly to seasonal time scales. The UFS is designed to support the :term:`Weather Enterprise` and to be the source system for NOAA's operational numerical weather prediction (:term:`NWP`) applications. For more information, visit https://ufscommunity.org/.
 
    UFS_UTILS
       The :term:`UFS` Utilities repository contains a collection of pre-processing programs for use with the UFS Weather Model and UFS applications. These programs set up the model grid and create coldstart initial conditions. The code is publicly available on the `UFS_UTILS <https://github.com/ufs-community/UFS_UTILS>`__ Github repository. 
@@ -196,10 +195,14 @@ Glossary
    WaveWatch III
       WAVEWATCH III (WW3) is a community wave modeling framework that includes the latest scientific advancements in the field of wind-wave modeling and dynamics. The core of the framework consists of the WAVEWATCH III third-generation wave model (WAVE-height, WATer depth and Current Hindcasting), developed at NOAA/:term:`NCEP`. WAVEWATCH III differs from its predecessors in many important points such as governing equations, model structure, numerical methods and physical parameterizations. The model code is publicly available on GitHub at https://github.com/NOAA-EMC/WW3. 
 
+   Weather Enterprise
+      Individuals and organizations from public, private, and academic sectors that contribute to the research, development, and production of weather forecast products; primary consumers of these weather forecast products.
+
    WM
    Weather Model
       A prognostic model that can be used for short- and medium-range research and 
       operational forecasts. It can be an atmosphere-only model or be an atmospheric
       model coupled with one or more additional components, such as a wave or ocean model.
       The UFS Weather Model repository is publicly available on `GitHub <https://github.com/ufs-community/ufs-weather-model>`__. 
+   
 
