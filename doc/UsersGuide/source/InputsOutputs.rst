@@ -869,21 +869,21 @@ The static input files when using climatology (MERRA2) are listed and described 
    * - merra2.aerclim.2003-2014.m$(month).nc
      - MERRA2 aerosol climatology mixing ratio
    * - Optics_BC.dat
-     - BC optical look-up table for MERAA2
+     - BC optical look-up table for MERRA2
    * - Optics_DU.dat
-     - DUST optical look-up table for MERAA2
+     - DUST optical look-up table for MERRA2
    * - Optics_OC.dat
-     - OC optical look-up table for MERAA2
+     - OC optical look-up table for MERRA2
    * - Optics_SS.dat
-     - Sea Salt optical look-up table for MERAA2
+     - Sea Salt optical look-up table for MERRA2
    * - Optics_SU.dat
-     - Sulfate optical look-up table for MERAA2
+     - Sulfate optical look-up table for MERRA2
                     
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Grid Description and Initial Condition Files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Running GOCART in UFS does not require aerosol initial conditions, as aerosol models can always start from scratch (cold start). However, this approach does require more than two weeks of model spin-up to obtain reasonable aerosol simulation results. Therefore, the most popular method is to take previous aerosol simulation results. The result is not necessarily from the same model; it could be from a climatology result, such as MERAA2, or from a different model but with the same aerosol species and bin/size distribution.
+Running GOCART in UFS does not require aerosol initial conditions, as aerosol models can always start from scratch (cold start). However, this approach does require more than two weeks of model spin-up to obtain reasonable aerosol simulation results. Therefore, the most popular method is to take previous aerosol simulation results. The result is not necessarily from the same model; it could be from a climatology result, such as MERRA2, or from a different model but with the same aerosol species and bin/size distribution.
 
 The aerosol initial input currently read by GOCART is the same format as the UFSAtm initial input data format of ``gfs_data_tile[1-6].nc`` in :numref:`Table %s <GridICFiles>`, so the aerosol initial conditions should be combined with the meteorological initial conditions as one initial input file. There are many tools available for this purpose. The `UFS_UTILS <https://github.com/ufs-community/UFS_UTILS>`__ preprocessing utilities provide a solution for this within the `Global Workflow <https://github.com/NOAA-EMC/global-workflow>`__.
 
@@ -1378,6 +1378,9 @@ shows the following parameters that can be set in ``model_configure`` at run-tim
      - history file output forecast hours or history file output frequency if the second elelment is -1
      - real
      - -1 (negative: turn off the option, otherwise overwritten nfhout/nfhout_fh; 6 -1: output every 6 hoursr; 6 9: output history files at fh=6 and 9. Note: output_fh can only take 1032 characters)
+
+.. COMMENT: Where options are listed (in addition to a default value), these should eventually be added to ConfigParameters chapter. 
+   restart_interval, nsout, output_fh 
 
 :numref:`Table %s <ModelConfigParamsNotChanged>` shows the following parameters in ``model_configure`` that
 are not usually changed.
@@ -2568,7 +2571,7 @@ Two files (``model_configure`` and ``diag_table``) control the output that is ge
 Standard output files are ``logfHHH`` (one per forecast hour), and out and err as specified by the job submission. ESMF may also produce log
 files (controlled by variable print_esmf in the ``model_configure`` file), called ``PETnnn.ESMF_LogFile`` (one per MPI task).
 
-Additional output files include: nemsusage.xml, a timing log file; time_stamp.out, contains the model init time; ``RESTART/*nc``, files needed for restart runs.
+Additional output files include: ``nemsusage.xml``, a timing log file; `time_stamp.out`, contains the model init time; ``RESTART/*nc``, files needed for restart runs.
 
 -------
 MOM6
@@ -2637,7 +2640,7 @@ HYCOM output configuration is set in the :ref:`blkdat.input<HYCOM_BlkdatInput>` 
    * - jtest
      - j grid point where detailed diagnostics are desired
 
-HYCOM outpus multiple datasets. These datasets contain both dot-a (.a), dot-b (.b), and dot-txt (.txt) files. Dot-a files contain data written as 32-bit IEEE real values (idm*jdm). Dot-b files contain plain text metadata for each field in the dot-a file. Dot-txt files contain plain text data for a single sell for profiling purposes. Post-processing utilties are available in the `HYCOM-tools <https://github.com/HYCOM/HYCOM-tools>`_ repository.
+HYCOM outpus multiple datasets. These datasets contain both dot-a (.a), dot-b (.b), and dot-txt (.txt) files. Dot-a files contain data written as 32-bit IEEE real values (idm*jdm). Dot-b files contain plain text metadata for each field in the dot-a file. Dot-txt files contain plain text data for a single cell for profiling purposes. Post-processing utilties are available in the `HYCOM-tools <https://github.com/HYCOM/HYCOM-tools>`_ repository.
 
 .. _HYCOM_OutputFiles:
 
@@ -2715,9 +2718,12 @@ https://data1.gfdl.noaa.gov/summer-school/Lectures/July16/03_Seth1_DiagManager.p
 ------------------------------
 Diagnostic Manager Namelist
 ------------------------------
-The ``diag_manager_nml`` namelist contains values to control the behavior of the diagnostic manager.   Some
-of the more common namelist options are described in :numref:`Table %s <DiagManager>`.  See
-``FMS/diag_manager/diag_manager.F90`` for the complete list.
+The ``diag_manager_nml`` namelist contains values to control the behavior of the diagnostic manager. Some
+of the more common namelist options are described in :numref:`Table %s <DiagManager>`. See
+``FMS/diag_manager/diag_manager.F90`` for the complete list or view the FMS documentation 
+`here <http://noaa-gfdl.github.io/FMS/group__diag__manager__mod.html>`__ for additional information.
+
+.. COMMENT: Is it worth linking to the FMS docs? WM just deals with the namelist file...
 
 .. _DiagManager:
 

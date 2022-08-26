@@ -13,8 +13,8 @@ Welcome to the UFS Weather Model User's Guide
    Introduction
    CodeOverview
    BuildingAndRunning
-   ConfigParameters
    InputsOutputs
+   ConfigParameters
    AutomatedTesting
    FAQ
    Acronyms

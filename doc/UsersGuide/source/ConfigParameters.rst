@@ -155,7 +155,7 @@ Other Build Options
    .. COMMENT: But what does that mean? When/why is the moving nest used?
 
 ``-DMULTI_GASES``: (Default: OFF)
-   Enable MULTI_GASES. 
+   Enable ``MULTI_GASES``. 
    Valid values: ``ON`` | ``OFF``
 
    .. COMMENT: But what does this DO?! And when/why is it used?
