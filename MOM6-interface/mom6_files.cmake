@@ -271,19 +271,21 @@ list(APPEND mom6_src_files
   MOM6/config_src/external/ODA_hooks/write_ocean_obs.F90
   MOM6/config_src/external/drifters/MOM_particles.F90
   MOM6/config_src/external/drifters/MOM_particles_types.F90
+  MOM6/config_src/external/database_comms/MOM_database_comms.F90
+  MOM6/config_src/external/database_comms/database_client_interface.F90
 
-  MOM6/config_src/infra/FMS1/MOM_coms_infra.F90
-  MOM6/config_src/infra/FMS1/MOM_constants.F90
-  MOM6/config_src/infra/FMS1/MOM_couplertype_infra.F90
-  MOM6/config_src/infra/FMS1/MOM_cpu_clock_infra.F90
-  MOM6/config_src/infra/FMS1/MOM_data_override_infra.F90
-  MOM6/config_src/infra/FMS1/MOM_diag_manager_infra.F90
-  MOM6/config_src/infra/FMS1/MOM_domain_infra.F90
-  MOM6/config_src/infra/FMS1/MOM_ensemble_manager_infra.F90
-  MOM6/config_src/infra/FMS1/MOM_error_infra.F90
-  MOM6/config_src/infra/FMS1/MOM_interp_infra.F90
-  MOM6/config_src/infra/FMS1/MOM_io_infra.F90
-  MOM6/config_src/infra/FMS1/MOM_time_manager.F90
+  MOM6/config_src/infra/FMS2/MOM_coms_infra.F90
+  MOM6/config_src/infra/FMS2/MOM_constants.F90
+  MOM6/config_src/infra/FMS2/MOM_couplertype_infra.F90
+  MOM6/config_src/infra/FMS2/MOM_cpu_clock_infra.F90
+  MOM6/config_src/infra/FMS2/MOM_data_override_infra.F90
+  MOM6/config_src/infra/FMS2/MOM_diag_manager_infra.F90
+  MOM6/config_src/infra/FMS2/MOM_domain_infra.F90
+  MOM6/config_src/infra/FMS2/MOM_ensemble_manager_infra.F90
+  MOM6/config_src/infra/FMS2/MOM_error_infra.F90
+  MOM6/config_src/infra/FMS2/MOM_interp_infra.F90
+  MOM6/config_src/infra/FMS2/MOM_io_infra.F90
+  MOM6/config_src/infra/FMS2/MOM_time_manager.F90
 
 )
 
