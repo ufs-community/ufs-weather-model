@@ -341,6 +341,7 @@ export ICLOUD=0
 export IAER=111
 export ICLIQ_SW=1
 export IOVR=1
+export ICOND=.false.
 export LFNC_K=-999
 export LFNC_P0=-999
 
