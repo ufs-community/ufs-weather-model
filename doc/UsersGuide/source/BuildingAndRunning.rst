@@ -8,7 +8,7 @@ Building and Running the UFS Weather Model
 Supported Platforms & Compilers
 ===================================
 Before running the Weather Model (:term:`WM`), users should determine which of the 
-`four levels of support <https://github.com/ufs-community/ufs/wiki/Supported-Platforms-and-Compilers>`__ 
+`four levels of support <https://github.com/ufs-community/ufs-weather-model/wiki/Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>`__ 
 is applicable to their system. Generally, Level 1 & 2 systems are restricted to those with access 
 through NOAA and its affiliates. These systems are named (e.g., Hera, Orion, Cheyenne). 
 Level 3 & 4 systems include certain personal computers or non-NOAA-affiliated HPC systems. 
@@ -148,11 +148,17 @@ The following examples assume a bash shell.
 ATM Configurations
 ---------------------
 
+Standalone ATM
+^^^^^^^^^^^^^^^^^^
+
 For the ``ufs-weather-model ATM`` configuration (standalone :term:`ATM`):
 
 .. code-block:: console
 
     export CMAKE_FLAGS="-DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16"
+
+ATMW
+^^^^^^^
 
 For the ``ufs-weather-model ATMW`` configuration (standalone ATM coupled to :term:`WW3`):
 
@@ -162,11 +168,17 @@ For the ``ufs-weather-model ATMW`` configuration (standalone ATM coupled to :ter
 
 .. CHECK above!!
 
+ATMAERO
+^^^^^^^^^^
+
 For the ``ufs-weather-model ATMAERO`` configuration (standalone ATM coupled to :term:`GOCART`):
 
 .. code-block:: console
 
     export CMAKE_FLAGS="-DAPP=ATMAERO -DCCPP_SUITES=FV3_GFS_v16"
+
+ATMAQ
+^^^^^^^^
 
 For the ``ufs-weather-model ATMAQ`` configuration (standalone ATM coupled to :term:`CMAQ`):
 
@@ -178,7 +190,10 @@ For the ``ufs-weather-model ATMAQ`` configuration (standalone ATM coupled to :te
 S2S Configurations 
 ----------------------
 
-For the ``ufs-weather-model S2S`` configuration (coupled atm/ice/ocean):
+S2S
+^^^^^^
+
+For the ``ufs-weather-model S2S`` configuration (coupled atm/ice/ocean/):
 
 .. code-block:: console
 
@@ -192,20 +207,15 @@ To turn on debugging flags, add ``-DDEBUG=ON`` flag after ``-DAPP=S2S``. Users c
 
     export BUILD_VERBOSE=1
 
-For the ``ufs-weather-model S2S`` configuration (atm/ice/ocean) with activating CCPP host model under CMEPS and receiving atmosphere-ocean fluxes from mediator:
+To receive atmosphere-ocean fluxes from the CMEPS :term:`mediator`, add the argument ``-DCMEPS_AOFLUX=ON``.
+For example:
 
 .. code-block:: console
 
     export CMAKE_FLAGS="-DAPP=S2S -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_sfcocn -DCMEPS_AOFLUX=ON"
 
-..
-   COMMENT: Need some clarification on what the above code does with CCPP/CMEPS... not clear from description. 
-
-For the ``ufs-weather-model S2SW`` configuration (atm/ice/ocean/wave):
-
-.. code-block:: console
-
-    export CMAKE_FLAGS="-DAPP=S2SW -DCCPP_SUITES=FV3_GFS_2017_coupled,FV3_GFS_v15p2_coupled,FV3_GFS_v16_coupled,FV3_GFS_v16_coupled_noahmp"
+S2SA
+^^^^^^^
 
 For the ``ufs-weather-model S2SA`` configuration (atm/ice/ocean/aerosols):
 
@@ -216,8 +226,19 @@ For the ``ufs-weather-model S2SA`` configuration (atm/ice/ocean/aerosols):
 ..
    CHECK: DAPP flag and physics suites
 
-For the ``ufs-weather-model S2SWA`` configuration (atm/ice/ocean/wave/aerosols):
+S2SW
+^^^^^^^
 
+For the ``ufs-weather-model S2SW`` configuration (atm/ice/ocean/wave):
+
+.. code-block:: console
+
+    export CMAKE_FLAGS="-DAPP=S2SW -DCCPP_SUITES=FV3_GFS_2017_coupled,FV3_GFS_v15p2_coupled,FV3_GFS_v16_coupled,FV3_GFS_v16_coupled_noahmp"
+
+S2SWA
+^^^^^^^^
+
+For the ``ufs-weather-model S2SWA`` configuration (atm/ice/ocean/wave/aerosols):
 
 .. code-block:: console
 
@@ -242,17 +263,26 @@ For the ``ufs-weather-model NG-GODAS`` configuration (atm/ocean/ice/data assimil
 HAFS Configurations
 ----------------------
 
+HAFS
+^^^^^^^
+
 For the ``ufs-weather-model HAFS`` configuration (atm/ocean) in 32 bit:
 
 .. code-block:: console
 
     export CMAKE_FLAGS="-DAPP=HAFS -D32BIT=ON -DCCPP_SUITES=FV3_HAFS_v0_gfdlmp_tedmf_nonsst,FV3_HAFS_v0_gfdlmp_tedmf,FV3_HAFS_v0_hwrf_thompson,FV3_HAFS_v0_hwrf"
 
+HAFSW
+^^^^^^^^
+
 For the ``ufs-weather-model HAFSW`` configuration (atm/ocean/wave) in 32 bit:
 
 .. code-block:: console
 
     export CMAKE_FLAGS="-DAPP=HAFSW -D32BIT=ON -DCCPP_SUITES=FV3_HAFS_v0_gfdlmp_tedmf_nonsst,FV3_HAFS_v0_gfdlmp_tedmf,FV3_HAFS_v0_hwrf_thompson,FV3_HAFS_v0_hwrf"
+
+HAFS-ALL
+^^^^^^^^^^^
 
 For the ``ufs-weather-model HAFS-ALL`` configuration (data/atm/ocean/wave) in 32 bit:
 
@@ -286,25 +316,87 @@ will build in the ``ufs-weather-model/test_cpld`` directory instead.
 Expert help is available through a `user support forum <https://forums.ufscommunity.org/forum/ufs-weather-model>`__
 set up specifically for issues related to the Weather Model.
 
+.. _run-wm:
+
 =================
 Running the Model
 =================
-
-.. _UsingRegressionTest:
 
 .. attention::
    The following discussions are general, but users may not be able to successfully execute the script "as is" unless they are on a 
    `Tier-1 platform <https://github.com/ufs-community/ ufs-weather-model/wiki/Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>`__.
 
+.. _UsingRegressionTest:
+
 --------------------------------
 Using the Regression Test Script
 --------------------------------
 
-The regression test script ``rt.sh`` in the ``tests`` directory can be
-used to run a number of preconfigured regression test cases. It is the top-level script
-that calls lower-level scripts to build, set up environments, and run tests.
+Users can run a number of preconfigured regression test cases using the regression test script 
+``rt.sh`` in the ``tests`` directory. This script is the top-level script
+that calls lower-level scripts to build specified WM configurations, set up environments, and run tests.
 
-To display information on how to use ``rt.sh``, users can simply run ``./rt.sh``, which will output the following: 
+On `Tier-1 platforms <https://github.com/ufs-community/ufs-weather-model/wiki
+/Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>`__, users can run 
+regression tests by (1) editing the ``rt.conf`` file and (2) executing:
+
+.. code-block:: console
+
+    ./rt.sh -l rt.conf
+
+Users *may* need to add additional command line arguments or change information in the ``rt.sh`` file as well. 
+This information is provided in :numref:`Section %s <rt.sh>` below. 
+
+.. _rt.conf:
+
+The ``rt.conf`` File
+------------------------
+
+Each line in the PSV (Pipe-separated values) file ``rt.conf`` contains four columns of information. 
+The first column specifies whether to build a test (``COMPILE``) or run a test (``RUN``). 
+The second column specifies either configuration information for building a test or 
+the name of a test to run.
+Thus, the second column in a ``COMPILE`` line will list the application to build (e.g., ``APP=S2S``), 
+the CCPP suite to use (e.g., ``SUITES=FV3_GFS_2017_coupled``), and additional build options 
+(e.g., ``DEBUG=Y``) as needed. On a ``RUN`` line, the second column will contain a test name 
+(e.g., ``control_p8``). The test name should match the name of one of the test files in the 
+``tests/tests`` directory or, if the user is adding a new test, the name of the new test file. 
+The third column of ``rt.conf`` relates to the platform; 
+if blank, the test can run on any WM Tier-1 platform. 
+The fourth column deals with baseline creation 
+(see information on ``-c`` option :ref:`below <cmd-line-opts>` for more), 
+and ``fv3`` means that the test will be included during baseline creation.
+
+The order of lines in ``rt.conf`` matters
+since ``rt.sh`` processes them sequentially; a ``RUN`` line should be preceeded
+by a ``COMPILE`` line that builds the model used in the test. The following
+``rt.conf`` file excerpt builds the standalone ATM model in 32-bit mode and then runs the
+``control`` test:
+
+.. COMMENT: Is the control test just the test with which other tests are compared?
+
+.. code-block:: console
+
+    COMPILE | -DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16 -D32BIT=ON | | fv3
+    RUN     | control                                        | | fv3
+
+The ``rt.conf`` file includes a large number of tests. If the user wants to run
+only specific tests, s/he can either (1) comment out the tests to be skipped (using the ``#`` prefix)
+or (2) create a new file (e.g., ``my_rt.conf``) and execute ``./rt.sh -l my_rt.conf``.
+
+.. _rt.sh:
+
+The ``rt.sh`` File
+---------------------
+
+This section contains additional information on command line options and troubleshooting for the ``rt.sh`` file. 
+
+.. _cmd-line-opts:
+
+Optional Arguments
+^^^^^^^^^^^^^^^^^^^^^
+
+To display detailed information on how to use ``rt.sh``, users can simply run ``./rt.sh``, which will output the following options: 
 
 .. code-block:: console
 
@@ -318,20 +410,20 @@ To display information on how to use ``rt.sh``, users can simply run ``./rt.sh``
       -e: use ecFlow workflow manager
       -h: display help (same as ./rt.sh)
 
-More information on these options is provided below in :numref:`Section %s <cmd-line-opts>`. 
+.. COMMENT: Remove -f option? The wiki says: "Update 01/06/2021: On January 6, 2021, the argument -f was removed. 
+   Adding it will force rt.sh to exit immediately. The default for rt.sh is to run the full regression tests in rt.conf unless -l xyz.conf is provided."
+.. COMMENT: An -n option is discussed below. Why is this not printed when running ./rt.sh? 
 
-.. COMMENT: wiki says: "Update 01/06/2021: On January 6, 2021, the argument -f was removed. Adding it will force rt.sh to exit immediately. The default for rt.sh is to run the full regression tests in rt.conf unless -l xyz.conf is provided."
+When running a large number (10's or 100's) of tests, the ``-e`` or ``-r`` options can significantly
+decrease testing time by using a workflow manager (ecFlow or Rocoto, respectively) to queue the jobs 
+according to dependencies and run them concurrently. 
+The ``-n`` option can be used to run a single test; for example, ``./rt.sh -n control`` 
+will build the ATM model and run the ``control`` test. 
+The ``-c`` option is used to create a baseline. New baslines are needed when code changes lead 
+to result changes and therefore deviate from existing baselines on a bit-for-bit basis.
 
-On `Tier-1 platforms <https://github.com/ufs-community/ ufs-weather-model/wiki
-/Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>`__, users can run 
-regression tests by (1) editing the ``rt.conf`` file and (2) executing:
-
-.. code-block:: console
-
-    ./rt.sh -l rt.conf
-
-The ``rt.sh`` File
----------------------
+Troubleshooting
+^^^^^^^^^^^^^^^^^^
 
 Users may need to adjust certain information in the ``rt.sh`` file, such as 
 the ``'Machine'`` and ``'Account'`` variables (``$ACCNR`` and ``$MACHINE_ID``), for the tests to run 
@@ -348,42 +440,6 @@ correctly. If there is a problem with these or other variables (e.g., file paths
    rt.sh error on line 370
 
 Then, users can adjust the information in ``rt.sh`` accordingly. 
-
-.. _rt.conf:
-
-The ``rt.conf`` File
-------------------------
-
-Each line in the PSV (Pipe-separated values) file ``rt.conf`` contains four columns of information. 
-The first column specifies whether to build a test (``COMPILE``) or run a test (``RUN``). 
-The second column specifies either configuration information for building a test or 
-the name of a test to run.
-Thus, the second column in a ``COMPILE`` line will specify the application to build (e.g., ``APP=S2S``), the CCPP suite to use (e.g., ``SUITES=FV3_GFS_2017_coupled``), and
-additional build options (e.g., ``DEBUG=Y``) as needed. On a ``RUN`` line, the second column will contain a test name (e.g., ``control_p8``). The test name should match the name of one
-of the test files in the ``tests/tests`` directory or, if the user is adding a new
-test, the name of the new test file. The third column of ``rt.conf`` relates to the platform; 
-if blank, the test can run on any WM Tier-1 platform. 
-The fourth column deals with baseline creation (more on this later), 
-and ``fv3`` means that the test will be included during baseline creation.
-
-.. COMMENT: What is baseline creation? 
-
-The order of lines in ``rt.conf`` matters
-since ``rt.sh`` processes them sequentially; a ``RUN`` line should be preceeded
-by a ``COMPILE`` line that builds the model used in the test. The following
-``rt.conf`` file excerpt builds the standalone ATM model in 32-bit mode and then runs the
-``control`` test:
-
-.. COMMENT: Is the control test just the test with which other tests are compared?
-
-.. code-block:: console
-
-    COMPILE | -DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16 -D32BIT=ON | | fv3
-    RUN     | control                                        | | fv3
-
-The ``rt.conf`` file includes a large number of tests. If the user wants to run
-only a specific test, s/he can either comment out the tests to be skipped (using the ``#`` prefix)
-or create a new file (e.g., ``my_rt.conf``) and execute ``./rt.sh -l my_rt.conf``.
 
 Log Files
 ------------
@@ -453,22 +509,6 @@ input data directory of a given platform to the ``$RUNDIR`` directory.
    +-----------------+--------------------------------------------------------------------------------------+
 
 
-.. _cmd-line-opts:
-
-Command Line Options
-------------------------
-
-There are a number of command line options available to the ``rt.sh`` script.
-The user can execute ``./rt.sh`` to see information on these options. A couple
-of them are discussed here. When running a large number (10's or 100's) of
-tests, the ``-e`` option to use the ecFlow workflow manager can significantly
-decrease the testing time by queuing the jobs according to dependencies and
-running them concurrently. The ``-n`` option can be used to run a single test;
-for example, ``./rt.sh -n control`` will build the ATM model and run the
-``control`` test. The ``-c`` option is used to create baseline. New
-baslines are needed when code changes lead to result changes, and therefore
-deviate from existing baselines on a bit-for-bit basis.
-
 .. _new-test:
 
 Creating a New Test
@@ -524,7 +564,7 @@ test case refers to any one of ``thr``, ``mpi``, ``dcp``, ``rst``, ``bit`` and `
 The operational requirement testing uses the same testing framework used by the regression
 test, and therefore it is recommened that the user first read
 :numref:`Section %s <UsingRegressionTest>`. All the files in
-the subdirectories shown in :numref:`Table %s <RTSubDirs>` are relavant to the
+the subdirectories shown in :numref:`Table %s <RTSubDirs>` are relevant to the
 operational requirement test except that the ``opnReqTest`` script replaces ``rt.sh``.
 The ``tests/opnReqTests`` directory contains
 opnReqTest-specific lower-level scripts used to set up run configurations.
