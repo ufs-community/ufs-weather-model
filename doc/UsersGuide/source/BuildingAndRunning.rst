@@ -7,7 +7,7 @@ Building and Running the UFS Weather Model
 ===================================
 Supported Platforms & Compilers
 ===================================
-Before running the Weather Model (WM), users should determine which of the 
+Before running the Weather Model (:term:`WM`), users should determine which of the 
 `four levels of support <https://github.com/ufs-community/ufs/wiki/Supported-Platforms-and-Compilers>`__ 
 is applicable to their system. Generally, Level 1 & 2 systems are restricted to those with access 
 through NOAA and its affiliates. These systems are named (e.g., Hera, Orion, Cheyenne). 
@@ -15,10 +15,10 @@ Level 3 & 4 systems include certain personal computers or non-NOAA-affiliated HP
 The prerequisite software libraries for building the WM already exist on Level 1/preconfigured 
 systems, so users may skip directly :ref:`downloading the code <DownloadingWMCode>`. 
 On other systems, users will need to build the prerequisite libraries using 
-:term:`HPC-Stack` or :term:`spack-stack`. 
+:term:`HPC-Stack`. 
 
-..
-   COMMENT: Update link w/supported platforms and compilers!
+.. COMMENT: Update link w/supported platforms and compilers!
+   COMMENT: Add spack-stack once validated "or :term:`spack-stack`"
 
 ======================
 Prerequisite Libraries
@@ -26,16 +26,18 @@ Prerequisite Libraries
 
 The UFS Weather Model (WM) requires a number of libraries for it to compile.
 The WM uses two categories of libraries, which are available as a bundle via 
-:term:`HPC-Stack` or :term:`spack-stack`:
+:term:`HPC-Stack`:
 
-   #. :term:`NCEP` libraries (NCEPLIBS): These are libraries developed for use with NOAA weather models.
+      .. COMMENT: "or :term:`spack-stack`"
+
+   #. :term:`NCEP` libraries (:term:`NCEPLIBS`): These are libraries developed for use with NOAA weather models.
       Most have an NCEPLIBS prefix in the repository (e.g., NCEPLIBS-bacio). Select tools from the UFS
       Utilities repository (:term:`UFS_UTILS`) are also included in this category. 
       A list of the bundled libraries tested with this WM release is available in the top-level ``README`` of the 
       `NCEPLIBS repository <https://github.com/NOAA-EMC/NCEPLIBS/tree/ufs-v2.0.0>`__ (**be sure to look at 
       the tag in that repository that matches the tag on the most recent WM release**).
 
-   #. Third-party libraries (NCEPLIBS-external): These are libraries that were developed external to
+   #. Third-party libraries (:term:`NCEPLIBS-external`): These are libraries that were developed external to
       the UFS Weather Model. They are general software packages that are also used by other community models. 
       Building these libraries is optional if users can point to existing builds of these libraries on their system
       instead. A list of the external libraries tested with this WM release is in the top-level ``README``
@@ -43,13 +45,14 @@ The WM uses two categories of libraries, which are available as a bundle via
       sure to look at the tag in that repository that matches the tag on this WM release.
 
 .. note::
-   Documentation is available for installing `HPC-Stack <https://hpc-stack.readthedocs.io/en/latest/>`__ 
-   and `spack-stack <https://spack-stack.readthedocs.io/en/latest/>`__, respectively. 
+   Documentation is available for installing `HPC-Stack <https://hpc-stack.readthedocs.io/en/latest/>`__. 
    One of these software stacks (or the libraries they contain) must be installed before running the Weather Model. 
+
+.. COMMENT: "and `spack-stack <https://spack-stack.readthedocs.io/en/latest/>`__, respectively"
 
 For users who *do* need to build the prerequisite libraries, it is a good idea to check the platform- and compiler-specific
 ``README`` files in the ``doc`` directory of the `NCEPLIBS-external repository <https://github.com/NOAA-EMC/NCEPLIBS-external/tree/ufs-v2.0.0>`_
-first, to see if their system or one similar to it is included. These files have detailed
+first to see if their system or one similar to it is included. These files have detailed
 instructions for building NCEPLIBS-external, NCEPLIBS, and the UFS Weather Model. They may be all the
 documentation you need. Be sure to use the tag that corresponds to this version of the WM, and define a
 WORK directory path before you get started.
@@ -263,7 +266,7 @@ Building the Model
 ------------------
 The UFS Weather Model uses the CMake build system.  There is a build script called ``build.sh`` in the
 top-level directory of the WM repository that configures the build environment and runs the ``make``
-command.  This script also checks that all necessary environment variables have been set.
+command. This script also checks that all necessary environment variables have been set.
 
 If any of the environment variables have not been set, the ``build.sh`` script will exit with a message similar to:
 
@@ -271,15 +274,15 @@ If any of the environment variables have not been set, the ``build.sh`` script w
 
    ./build.sh: line 11: CMAKE_Platform: Please set the CMAKE_Platform environment variable, e.g. [macosx.gnu|linux.gnu|linux.intel|hera.intel|...]
 
-The WM can be built by running the following command from the `ufs-weather-model` directory:
+The WM can be built by running the following command from the ``ufs-weather-model`` directory:
 
 .. code-block:: console
 
    ./build.sh
 
-Once ``build.sh`` is finished, you should see the executable, named ``ufs_model``, in the `ufs-weather-model/build/` directory.
+Once ``build.sh`` is finished, you should see the executable, named ``ufs_model``, in the ``ufs-weather-model/build/`` directory.
 If it is desired to build in a different directory, specify the ``BUILD_DIR`` environment variable: e.g. ``export BUILD_DIR=test_cpld``
-will build in the `ufs-weather-model/test_cpld` directory instead.
+will build in the ``ufs-weather-model/test_cpld`` directory instead.
 
 Expert help is available through a `user support forum <https://forums.ufscommunity.org/forum/ufs-weather-model>`__
 set up specifically for issues related to the Weather Model.
@@ -293,7 +296,7 @@ Running the Model
 --------------------------------
 Using the Regression Test Script
 --------------------------------
-The regression test script ``rt.sh`` in the tests/ directory can be
+The regression test script ``rt.sh`` in the ``tests`` directory can be
 used to run a number of preconfigured test cases. It is the top-level script
 that calls lower-level scripts to build, set up environments and run tests.
 On `Tier-1 platforms <https://github.com/ufs-community/ ufs-weather-model/wiki
