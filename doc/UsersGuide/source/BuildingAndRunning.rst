@@ -8,7 +8,7 @@ Building and Running the UFS Weather Model
 Supported Platforms & Compilers
 ===================================
 Before running the Weather Model (:term:`WM`), users should determine which of the 
-`four levels of support <https://github.com/ufs-community/ufs-weather-model/wiki/Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>`__ 
+`levels of support <https://github.com/ufs-community/ufs-weather-model/wiki/Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>`__ 
 is applicable to their system. Generally, Level 1 & 2 systems are restricted to those with access 
 through NOAA and its affiliates. These systems are named (e.g., Hera, Orion, Cheyenne). 
 Level 3 & 4 systems include certain personal computers or non-NOAA-affiliated HPC systems. 
@@ -148,8 +148,7 @@ The following examples assume a bash shell.
 ATM Configurations
 ---------------------
 
-Standalone ATM
-^^^^^^^^^^^^^^^^^^
+**Standalone ATM**
 
 For the ``ufs-weather-model ATM`` configuration (standalone :term:`ATM`):
 
@@ -157,28 +156,23 @@ For the ``ufs-weather-model ATM`` configuration (standalone :term:`ATM`):
 
     export CMAKE_FLAGS="-DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16"
 
-ATMW
-^^^^^^^
+**ATMW**
 
 For the ``ufs-weather-model ATMW`` configuration (standalone ATM coupled to :term:`WW3`):
 
 .. code-block:: console
 
-    export CMAKE_FLAGS="-DAPP=ATMW -DCCPP_SUITES=FV3_GFS_2017_coupled,FV3_GFS_v16_coupled"
+    export CMAKE_FLAGS="-DAPP=ATMW -DCCPP_SUITES=FV3_GFS_v16"
 
-.. CHECK above!!
-
-ATMAERO
-^^^^^^^^^^
+**ATMAERO**
 
 For the ``ufs-weather-model ATMAERO`` configuration (standalone ATM coupled to :term:`GOCART`):
 
 .. code-block:: console
 
-    export CMAKE_FLAGS="-DAPP=ATMAERO -DCCPP_SUITES=FV3_GFS_v16"
+    export CMAKE_FLAGS="-DAPP=ATMAERO -DCCPP_SUITES=FV3_GFS_v17_p8"
 
-ATMAQ
-^^^^^^^^
+**ATMAQ**
 
 For the ``ufs-weather-model ATMAQ`` configuration (standalone ATM coupled to :term:`CMAQ`):
 
@@ -186,18 +180,16 @@ For the ``ufs-weather-model ATMAQ`` configuration (standalone ATM coupled to :te
 
     export CMAKE_FLAGS="-DAPP=ATMAQ -DCCPP_SUITES=FV3_GFS_v15p2"
 
-
 S2S Configurations 
 ----------------------
 
-S2S
-^^^^^^
+**S2S**
 
-For the ``ufs-weather-model S2S`` configuration (coupled atm/ice/ocean/):
+For the ``ufs-weather-model S2S`` configuration (coupled atm/ice/ocean):
 
 .. code-block:: console
 
-    export CMAKE_FLAGS="-DAPP=S2S -DCCPP_SUITES=FV3_GFS_2017_coupled,FV3_GFS_2017_satmedmf_coupled,FV3_GFS_v15p2_coupled,FV3_GFS_v16_coupled,FV3_GFS_v16_couplednsst"
+    export CMAKE_FLAGS="-DAPP=S2S -DCCPP_SUITES=FV3_GFS_v17_coupled_p8"
 
 .. Which ocean model is it coupled to? All? 
 
@@ -214,8 +206,7 @@ For example:
 
     export CMAKE_FLAGS="-DAPP=S2S -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_sfcocn -DCMEPS_AOFLUX=ON"
 
-S2SA
-^^^^^^^
+**S2SA**
 
 For the ``ufs-weather-model S2SA`` configuration (atm/ice/ocean/aerosols):
 
@@ -226,69 +217,60 @@ For the ``ufs-weather-model S2SA`` configuration (atm/ice/ocean/aerosols):
 ..
    CHECK: DAPP flag and physics suites
 
-S2SW
-^^^^^^^
+**S2SW**
 
 For the ``ufs-weather-model S2SW`` configuration (atm/ice/ocean/wave):
 
 .. code-block:: console
 
-    export CMAKE_FLAGS="-DAPP=S2SW -DCCPP_SUITES=FV3_GFS_2017_coupled,FV3_GFS_v15p2_coupled,FV3_GFS_v16_coupled,FV3_GFS_v16_coupled_noahmp"
+    export CMAKE_FLAGS="-DAPP=S2SW -DCCPP_SUITES=FV3_GFS_v17_coupled_p8"
 
-S2SWA
-^^^^^^^^
+**S2SWA**
 
 For the ``ufs-weather-model S2SWA`` configuration (atm/ice/ocean/wave/aerosols):
 
 .. code-block:: console
 
-    export CMAKE_FLAGS="-DAPP=S2SWA -DCCPP_SUITES=FV3_GFS_2017_coupled,FV3_GFS_v15p2_coupled,FV3_GFS_v16_coupled,FV3_GFS_v16_coupled_noahmp"
-
-..
-   CHECK: physics suites
+    export CMAKE_FLAGS="-DAPP=S2SWA -DCCPP_SUITES=FV3_GFS_v17_coupled_p8,FV3_GFS_cpld_rasmgshocnsstnoahmp_ugwp"
 
 NG-GODAS Configuration
 ------------------------
 
 For the ``ufs-weather-model NG-GODAS`` configuration (atm/ocean/ice/data assimilation): 
 
-
 .. code-block:: console
 
-    export CMAKE_FLAGS="-DAPP=NG-GODAS -DCCPP_SUITES=FV3_GFS_2017_coupled,FV3_GFS_v15p2_coupled,FV3_GFS_v16_coupled"
-..
-   COMMENT: NG-GODAS --> Coupled CDEPS-DATM-MOM6-CICE6-CMEPS
-   What is the DAPP argument? And the physics suites?
+    export CMAKE_FLAGS="-DAPP=NG-GODAS"
+
+.. COMMENT: Check! --> In rt.conf, no CCPP suite is set. Is there a default one?
 
 HAFS Configurations
 ----------------------
 
-HAFS
-^^^^^^^
+**HAFS**
 
 For the ``ufs-weather-model HAFS`` configuration (atm/ocean) in 32 bit:
 
 .. code-block:: console
 
-    export CMAKE_FLAGS="-DAPP=HAFS -D32BIT=ON -DCCPP_SUITES=FV3_HAFS_v0_gfdlmp_tedmf_nonsst,FV3_HAFS_v0_gfdlmp_tedmf,FV3_HAFS_v0_hwrf_thompson,FV3_HAFS_v0_hwrf"
+    export CMAKE_FLAGS="-DAPP=HAFS -D32BIT=ON -DCCPP_SUITES=FV3_HAFS_v0_gfdlmp_tedmf_nonsst,FV3_HAFS_v0_gfdlmp_tedmf"
 
-HAFSW
-^^^^^^^^
+**HAFSW**
 
-For the ``ufs-weather-model HAFSW`` configuration (atm/ocean/wave) in 32 bit:
+For the ``ufs-weather-model HAFSW`` configuration (atm/ocean/wave) in 32-bit with moving nest:
 
 .. code-block:: console
 
-    export CMAKE_FLAGS="-DAPP=HAFSW -D32BIT=ON -DCCPP_SUITES=FV3_HAFS_v0_gfdlmp_tedmf_nonsst,FV3_HAFS_v0_gfdlmp_tedmf,FV3_HAFS_v0_hwrf_thompson,FV3_HAFS_v0_hwrf"
+    export CMAKE_FLAGS="-DAPP=HAFSW -D32BIT=ON -DMOVING_NEST=ON -DCCPP_SUITES=FV3_HAFS_v0_gfdlmp_tedmf,FV3_HAFS_v0_gfdlmp_tedmf_nonsst,FV3_HAFS_v0_thompson_tedmf_gfdlsf"
 
-HAFS-ALL
-^^^^^^^^^^^
+**HAFS-ALL**
 
 For the ``ufs-weather-model HAFS-ALL`` configuration (data/atm/ocean/wave) in 32 bit:
 
 .. code-block:: console
 
-    export CMAKE_FLAGS="-DAPP=HAFS-ALL -D32BIT=ON -DCCPP_SUITES=FV3_HAFS_v0_gfdlmp_tedmf_nonsst,FV3_HAFS_v0_gfdlmp_tedmf,FV3_HAFS_v0_hwrf_thompson,FV3_HAFS_v0_hwrf"
+    export CMAKE_FLAGS="-DAPP=HAFS-ALL -D32BIT=ON -DCCPP_SUITES=FV3_HAFS_v0_gfdlmp_tedmf,FV3_HAFS_v0_gfdlmp_tedmf_nonsst"
+
 
 ------------------
 Building the Model
@@ -323,7 +305,7 @@ Running the Model
 =================
 
 .. attention::
-   The following discussions are general, but users may not be able to successfully execute the script "as is" unless they are on a 
+   Although the following discussions are general, users may not be able to execute the script successfully "as is" unless they are on a 
    `Tier-1 platform <https://github.com/ufs-community/ ufs-weather-model/wiki/Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>`__.
 
 .. _UsingRegressionTest:
@@ -451,7 +433,7 @@ reports the outcome:
 
    * ``'Missing file'`` results when the expected files from the simulation are not found and typically occurs when the simulation did not run to completion; 
    * ``'OK'`` means that the simulation results are bit-for-bit identical to those of the baseline; 
-   * ``'NOT OK'`` when the results are not bit-for-bit identical; and 
+   * ``'NOT OK'`` when the results are **not** bit-for-bit identical; and 
    * ``'Missing baseline'`` when there is no baseline data to compare against.
 
 More detailed log files are located in the ``tests/log_<machine>.<compiler>/`` directory.
@@ -475,13 +457,11 @@ dependent files (e.g., ``ice_in`` for the Subseasonal-to-Seasonal application).
 These model configuration files are
 generated by ``rt.sh`` from the template files in the ``tests/parm`` directory.
 Specific values used to fill in the template files are test-dependent and
-are set in two stages. First, default values are specified in ``tests/default_vars.sh`` and
-the default values are overriden if necessary by those specified in a test file
-``tests/tests/<test-name>``. For example, the variable ``DT_ATMOS``, which is
-substituted into the template file ``model_configure.IN`` to generate
-``model_configure``, is initially assigned 1800 in the function ``export_fv3`` of the
-script ``default_vars.sh``, but the test file ``tests/tests/control`` overrides this setting by
-reassigning 720 to the variable.
+are set in two stages. First, default values are specified in ``tests/default_vars.sh``, and
+the default values are overriden if necessary by values specified in a test file
+``tests/tests/<test-name>``. For example, the variable ``DT_ATMOS`` is initially assigned 1800 
+in the function ``export_fv3`` of the script ``default_vars.sh``, but the test file 
+``tests/tests/control`` overrides this setting by reassigning 720 to the variable.
 
 The files ``fv3_run`` and ``job_card`` also reside in the ``$RUNDIR`` directory. 
 These files are generated from the template files in the ``tests/fv3_conf``
