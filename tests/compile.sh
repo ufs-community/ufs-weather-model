@@ -130,9 +130,13 @@ bash -x ${PATHTR}/build.sh
 
 mv ${BUILD_DIR}/ufs_model ${PATHTR}/tests/${BUILD_NAME}.exe
 if [[ "${MAKE_OPT}" == "-DDEBUG=ON" ]]; then
-  cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}_debug ${PATHTR}/tests/modules.${BUILD_NAME}
+  cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}_debug* ${PATHTR}/tests/modules.${BUILD_NAME}
 else
-  cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}       ${PATHTR}/tests/modules.${BUILD_NAME}
+  if [[ $MACHINE_ID == gaea.* ]] ; then
+    cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}       ${PATHTR}/tests/modules.${BUILD_NAME}
+  else
+    cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}.lua       ${PATHTR}/tests/modules.${BUILD_NAME}
+  fi
 fi
 
 if [ $clean_after = YES ] ; then
