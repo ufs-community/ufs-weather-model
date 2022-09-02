@@ -1379,9 +1379,6 @@ shows the following parameters that can be set in ``model_configure`` at run-tim
      - real
      - -1 (negative: turn off the option, otherwise overwritten nfhout/nfhout_fh; 6 -1: output every 6 hoursr; 6 9: output history files at fh=6 and 9. Note: output_fh can only take 1032 characters)
 
-.. COMMENT: Where options are listed (in addition to a default value), these should eventually be added to ConfigParameters chapter. 
-   restart_interval, nsout, output_fh 
-
 :numref:`Table %s <ModelConfigParamsNotChanged>` shows the following parameters in ``model_configure`` that
 are not usually changed.
 

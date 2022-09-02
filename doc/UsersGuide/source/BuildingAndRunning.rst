@@ -16,9 +16,6 @@ The prerequisite software libraries for building the WM already exist on Level 1
 systems, so users may skip directly :ref:`downloading the code <DownloadingWMCode>`. 
 On other systems, users will need to build the prerequisite libraries using :term:`HPC-Stack`. 
 
-.. COMMENT: Update link w/supported platforms and compilers!
-   COMMENT: Add spack-stack once validated "or :term:`spack-stack`"
-
 ======================
 Prerequisite Libraries
 ======================
@@ -26,8 +23,6 @@ Prerequisite Libraries
 The UFS Weather Model (WM) requires a number of libraries for it to compile.
 The WM uses two categories of libraries, which are available as a bundle via 
 :term:`HPC-Stack`:
-
-      .. COMMENT: "or :term:`spack-stack`"
 
    #. :term:`NCEP` libraries (:term:`NCEPLIBS`): These are libraries developed for use with NOAA weather models.
       Most have an NCEPLIBS prefix in the repository (e.g., NCEPLIBS-bacio). Select tools from the UFS
@@ -69,9 +64,6 @@ The top-level ``README`` in the NCEPLIBS-external repository includes a troubles
 
 You can also get expert help through a `user support forum <https://forums.ufscommunity.org/forum/build-dependencies>`__
 set up specifically for issues related to build dependencies.
-
-..
-   COMMENT: Will this be deprecated? When?
 
 .. _DownloadingWMCode:
 
@@ -190,8 +182,6 @@ For the ``ufs-weather-model S2S`` configuration (coupled atm/ice/ocean):
 .. code-block:: console
 
     export CMAKE_FLAGS="-DAPP=S2S -DCCPP_SUITES=FV3_GFS_v17_coupled_p8"
-
-.. Which ocean model is it coupled to? All? 
 
 To turn on debugging flags, add ``-DDEBUG=ON`` flag after ``-DAPP=S2S``. Users can allow verbose build messages by running: 
 

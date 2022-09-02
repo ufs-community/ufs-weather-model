@@ -95,8 +95,6 @@ which uses the Github API (through pyGitHub) to check the labels on pull request
 with the compiler and job information to run a test or task on the machine. 
 If no PR label matches HPC name, the script exits.
 
-.. COMMENT: What are supported HPC systems?
-
 For example, a PR labeled ``gaea-intel-BL`` will be recognized by the HPC machine 'Gaea'. 
 It will set the ``RT_COMPILER`` variable to 'intel' and run the baseline creation script (``bl.py``).
 This script creats a job class that contains all information from the machine that the job will need to run.
