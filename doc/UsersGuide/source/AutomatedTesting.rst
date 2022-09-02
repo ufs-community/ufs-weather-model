@@ -24,7 +24,7 @@ The following summarizes the CI/CD used in the UFS Weather Model:
 
 
 When a developer makes a pull request (PR) to the UFS Weather Model repository, and a code
-manager subsequently adds the `run-ci` label, the CI/CD workflow is triggerd:
+manager subsequently adds the `run-ci` label, the CI/CD workflow is triggered:
 
    #. A check is performed to make sure the UFS Weather Model and its first level
       subcomponents are up to date with the top of develop branch.

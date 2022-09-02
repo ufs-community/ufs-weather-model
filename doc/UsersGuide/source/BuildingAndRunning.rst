@@ -441,7 +441,7 @@ The run directory path, which corresponds to the value of ``RUNDIR`` in the ``ru
 is particularly useful. ``$RUNDIR`` is a self-contained (i.e., sandboxed) 
 directory with the executable file, initial conditions, model configuration files, 
 environment setup scripts and a batch job submission script. The user can run the test 
-by ``cd``'ing into ``$RUNDIR`` and invoking the command:
+by ``cd``-ing into ``$RUNDIR`` and invoking the command:
 
 .. code-block:: console
 
@@ -498,26 +498,27 @@ When a developer needs to create a new test for his/her implementation, the
 first step would be to identify a test in the ``tests/tests`` directory that can
 be used as a basis and to examine the variables defined in the test file. As
 mentioned above, some of the variables may be overrides for those defined in
-``default_vars.sh``; others may be new variables that are needed specifically
-for the test. Default variables and their values are defined in the ``export_fv3``
-function of the ``default_vars.sh`` script for ATM application, ``export_cpl``
-function for S2S application and ``export_datm`` function for GODAS application.
+``default_vars.sh``. Others may be new variables that are needed specifically
+for that test. Default variables and their values are defined in the ``export_fv3``
+function of the ``default_vars.sh`` script for ATM configurations, the ``export_cpl``
+function for S2S configurations, and the ``export_datm`` function for the NG-GODAS configuration.
 Also, the names of template files for model configuration and initial conditions
-can be identified via variables ``INPUT_NML``, ``NEMS_CONFIGURE`` and ``FV3_RUN``;
-for example, by trying ``grep -n INPUT_NML *`` inside the ``tests`` and ``tests/tests``
-directories.
+can be identified via variables ``INPUT_NML``, ``NEMS_CONFIGURE`` and ``FV3_RUN`` 
+by running ``grep -n INPUT_NML *`` inside the ``tests`` and ``tests/tests`` directories.
+
+.. COMMENT: Is NEMS_CONFIGURE still in there?
 
 .. _UsingOpnReqTest:
 
 ---------------------------------------------
-Using the operational requirement test script
+Using the Operational Requirement Test Script
 ---------------------------------------------
-The operational requirement test script ``opnReqTest`` in the ``tests`` directory can also be used to run
-tests. Given the name of a test, ``opnReqTest`` carries out a suite of test cases.
+The operational requirement test script ``opnReqTest`` in the ``tests`` directory can be used to run
+tests in place of ``rt.sh``. Given the name of a test, ``opnReqTest`` carries out a suite of test cases.
 Each test case addresses an aspect of the requirements new implementations
 should satisfy, which are shown in :numref:`Table %s <OperationalRequirement>`.
 For the following discussions on opnReqTest, the user should note the distinction between
-``'test name'`` and ``'test case'``. Examples of test name are ``control``, ``cpld_control``
+``'test name'`` and ``'test case'``. Examples of test names are ``control``, ``cpld_control``
 and ``regional_control`` which are all found in the ``tests/tests`` directory, whereas
 test case refers to any one of ``thr``, ``mpi``, ``dcp``, ``rst``, ``bit`` and ``dbg``.
 
