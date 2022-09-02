@@ -53,7 +53,8 @@ file responsible for (1) checking that the PR branch is up-to-date and
 Other CI-related scrips are located in the ``tests/ci/`` directory. ``ci.sh`` is the main script that 
 invokes Docker build and run. ``Dockerfile`` is used to build the UFS Weather Model. 
 Other shell and python scripts help with various tasks. For example:
-   * ``repo_check.sh``checks that the PR branch is up-to-date.
+
+   * ``repo_check.sh`` checks that the PR branch is up-to-date.
    * ``check_status.py`` checks the status of EC2 instances.
    * ``setup.py`` and ``ci.test`` configure the test cases to execute in the CI/CD workflow.
 
