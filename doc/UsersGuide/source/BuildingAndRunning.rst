@@ -423,6 +423,8 @@ correctly. If there is a problem with these or other variables (e.g., file paths
 
 Then, users can adjust the information in ``rt.sh`` accordingly. 
 
+.. _log-files:
+
 Log Files
 ------------
 
@@ -515,8 +517,8 @@ Using the Operational Requirement Test Script
 ---------------------------------------------
 The operational requirement test script ``opnReqTest`` in the ``tests`` directory can be used to run
 tests in place of ``rt.sh``. Given the name of a test, ``opnReqTest`` carries out a suite of test cases.
-Each test case addresses an aspect of the requirements new implementations
-should satisfy, which are shown in :numref:`Table %s <OperationalRequirement>`.
+Each test case addresses an aspect of the requirements that new operational implementations
+should satisfy. These requirements are shown in :numref:`Table %s <OperationalRequirement>`.
 For the following discussions on opnReqTest, the user should note the distinction between
 ``'test name'`` and ``'test case'``. Examples of test names are ``control``, ``cpld_control``
 and ``regional_control`` which are all found in the ``tests/tests`` directory, whereas
@@ -526,27 +528,26 @@ test case refers to any one of ``thr``, ``mpi``, ``dcp``, ``rst``, ``bit`` and `
 
 .. table:: *Operational Requirements*
 
-  +----------+------------------------------------------------------------------------+
-  | **Case** | **Description**                                                        |
-  +==========+========================================================================+
-  | thr      | Varying the number of threads produces the same results                |
-  +----------+------------------------------------------------------------------------+
-  | mpi      | Varying the number of MPI tasks reproduces                             |
-  +----------+------------------------------------------------------------------------+
-  | dcp      | Varying the decomposition (i.e. tile layout of FV3) reproduces         |
-  +----------+------------------------------------------------------------------------+
-  | rst      | Restarting reproduces                                                  |
-  +----------+------------------------------------------------------------------------+
-  | bit      | Model can be compiled in double/single precision and run to completion |
-  +----------+------------------------------------------------------------------------+
-  | dbg      | Model can be compiled and run to completion in debug mode              |
-  +----------+------------------------------------------------------------------------+
+  +----------+-------------------------------------------------------------------------------+
+  | **Case** | **Description**                                                               |
+  +==========+===============================================================================+
+  | thr      | Varying the number of threads produces the same results                       |
+  +----------+-------------------------------------------------------------------------------+
+  | mpi      | Varying the number of MPI tasks produces the same results                     |
+  +----------+-------------------------------------------------------------------------------+
+  | dcp      | Varying the decomposition (i.e. tile layout of FV3) produces the same results |
+  +----------+-------------------------------------------------------------------------------+
+  | rst      | Restarting produces the same results                                          |
+  +----------+-------------------------------------------------------------------------------+
+  | bit      | Model can be compiled in double/single precision and run to completion        |
+  +----------+-------------------------------------------------------------------------------+
+  | dbg      | Model can be compiled and run to completion in debug mode                     |
+  +----------+-------------------------------------------------------------------------------+
 
-The operational requirement testing uses the same testing framework used by the regression
-test, and therefore it is recommened that the user first read
-:numref:`Section %s <UsingRegressionTest>`. All the files in
-the subdirectories shown in :numref:`Table %s <RTSubDirs>` are relevant to the
-operational requirement test except that the ``opnReqTest`` script replaces ``rt.sh``.
+The operational requirement testing uses the same testing framework as the regression
+tests, so it is recommened that the user first read :numref:`Section %s <UsingRegressionTest>`. 
+All the files in the subdirectories shown in :numref:`Table %s <RTSubDirs>` are relevant to the
+operational requirement test. The only difference is that the ``opnReqTest`` script replaces ``rt.sh``.
 The ``tests/opnReqTests`` directory contains
 opnReqTest-specific lower-level scripts used to set up run configurations.
 
@@ -559,9 +560,9 @@ be run by invoking
     ./opnReqTest -n <test-name>
 
 For example, ``./opnReqTest -n control`` performs all six test cases
-listed in :numref:`Table %s <OperationalRequirement>` for ``control``
+listed in :numref:`Table %s <OperationalRequirement>` for the ``control``
 test. At the end of the run, a log file ``OpnReqTests_<machine>.<compiler>.log``
-is generated in ``tests`` directory, which informs the user whether each test case
+is generated in the ``tests`` directory, which informs the user whether each test case
 passed or failed. The user can choose to run a specific test case by invoking
 
 .. code-block:: console
@@ -572,30 +573,52 @@ where ``<test-case>`` is one or
 more comma-separated values selected from ``thr``, ``mpi``, ``dcp``, ``rst``,
 ``bit``, ``dbg``. For example, ``./opnReqTest -n control -c thr,rst`` runs the
 ``control`` test and checks the reproducibility of threading and restart.
-The user can see different command line options available to ``opnReqTest`` by
-executing ``./opnReqTest -h``; frequently used options are ``-e`` to use the ecFlow
-workflow manager, and ``-k`` to keep the ``$RUNDIR``. In the following,
-comparisons are made between the regression and operational requirement tests on how they handle
-different reproducibility tests.
 
-As discussed in :numref:`Section %s <UsingRegressionTest>`, the variables and
+
+The user can see different command line options available to ``opnReqTest`` by
+executing ``./opnReqTest -h``, which produces the following results:
+
+.. code-block:: console
+ 
+   Usage: opnReqTest -n <test-name> [ -c <test-case> ] [-b] [-d] [-e] [-k] [-h] [-x] [-z]
+
+      -n  specify <test-name>
+
+      -c  specify <test-case>
+            defaults to all test-cases: thr,mpi,dcp,rst,bit,dbg,fhz
+            comma-separated list of any combination of std,thr,mpi,dcp,rst,bit,dbg,fhz
+            
+      -b  test reproducibility for bit; compare against baseline
+      -d  test reproducibility for dbg; compare against baseline
+      -s  test reproducibility for std; compare against baseline
+      -e  use ecFlow workflow manager
+      -k  keep run directory
+      -h  display this help and exit
+      -x  skip compile
+      -z  skip run
+
+Frequently used options are ``-e`` to use the ecFlow
+workflow manager, and ``-k`` to keep the ``$RUNDIR``. Not that the Rocoto workflow manager 
+is not used operationally and therefore is not an option. 
+
+As discussed in :numref:`Section %s <log-files>`, the variables and
 values used to configure model parameters and to set up initial conditions in the
-``$RUNDIR`` directory are set up in two stages: first, ``tests/default_vars.sh``
+``$RUNDIR`` directory are set up in two stages. First, ``tests/default_vars.sh``
 define default values; then a specific test file in the ``tests/tests`` subdirectory
 either overrides the default values or creates new variables if required by the test.
 The regression test treats the different test cases shown in
 :numref:`Table %s <OperationalRequirement>` as different tests. Therefore, each
-test case requires a test file in the ``tests/tests`` subdirectory; examples are
+test case requires a test file in the ``tests/tests`` subdirectory. Examples include
 ``control_2threads``, ``control_decomp``, ``control_restart`` and ``control_debug``,
-which are just variations of ``control`` test to check various reproducibilities.
+which are just variations of the ``control`` test to check various reproducibilities.
 There are two potential issues with this approach. First, if several different
-variations of a given test were to be created and included in the ``rt.conf`` file,
-there are too many tests to run. Second, if a new test is added by the user, s/he
+variations of a given test were created and included in the ``rt.conf`` file,
+there would be too many tests to run. Second, if a new test is added by the user, s/he
 will also have to create these variations. The idea behind the operational requirement test is to
 automatically configure and run these variations, or test cases, given a test file.
 For example, ``./opnReqTest -n control`` will run all six test cases in
 :numref:`Table %s <OperationalRequirement>` based on a single ``control`` test file.
 Similarly, if the user adds a new test ``new_test``, then ``./opnReqTest -n new_test`` will
 run all test cases. This is done by the operational requirement test script ``opnReqTest`` by adding a third
-stage of variable overrides, and the related scripts can be found in the ``tests/opnReqTests``
+stage of variable overrides. The related scripts can be found in the ``tests/opnReqTests``
 directory.
