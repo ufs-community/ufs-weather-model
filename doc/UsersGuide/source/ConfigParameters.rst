@@ -25,8 +25,8 @@ Physics Options
 
 ``-DCCPP_SUITES``:
    Sets the physics suites that will be made available when the :term:`WM` is built. 
-   Supported values:
    
+   Physics suites supported in regression testing:
    
    | ``FV3_GFS_cpld_rasmgshocnsstnoahmp_ugwp``
    | ``FV3_GFS_v15p2``
@@ -42,7 +42,6 @@ Physics Options
    | ``FV3_GFS_v17_p8_rrtmgp``
    | ``FV3_GFS_v17_coupled_p8``
    | ``FV3_GFS_v17_coupled_p8_sfcocn``
-
    | ``FV3_HAFS_v0_gfdlmp_tedmf``
    | ``FV3_HAFS_v0_gfdlmp_tedmf_nonsst``
    | ``FV3_HAFS_v0_thompson_tedmf_gfdlsf``
@@ -54,7 +53,7 @@ Physics Options
    | ``FV3_RRFS_v1beta``
    | ``FV3_RRFS_v1nssl``
 
-   Valid values: 
+   Other valid values: 
 
    | ``FV3_CPT_v0``
    | ``FV3_GFS_2017``

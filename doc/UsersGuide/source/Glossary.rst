@@ -54,6 +54,12 @@ Glossary
    CMEPS
       The Community Mediator for Earth Prediction Systems (`CMEPS <https://github.com/NOAA-EMC/CMEPS>`__) is a :term:`NUOPC`-compliant :term:`mediator` used for coupling Earth system model components. It is currently being used in NCAR's Community Earth System Model (:term:`CESM`) and NOAA's subseasonal-to-seasonal (S2S) coupled system. More information is available in the `CMEPS Documentation <https://escomp.github.io/CMEPS/versions/master/html/index.html>`__.
 
+   cron
+   cron job
+   crontab
+   cron table
+      Cron is a job scheduler accessed through the command-line on UNIX-like operating systems. It is useful for automating tasks such as regression testing. Cron periodically checks a cron table (aka crontab) to see if any tasks are are ready to execute. If so, it runs them. 
+
    DATM
       DATM is the *Data Atmosphere* component of :term:`CDEPS`. It uses static atmospheric field files instead of a dynamic atmospheric model, which reduces computational costs. This is particularly useful when employing computationally intensive Data Assimilation (DA) techniques to update ocean and/or sea ice fields in a coupled model. In general, use of DATM in place of :term:`ATM` can be appropriate when users are running a coupled model and only want certain components of the model to be active. More information about DATM is available in the `CDEPS Documentation <https://escomp.github.io/CDEPS/html/datm.html>`__.
    
@@ -183,7 +189,7 @@ Glossary
       and sub-hourly to seasonal time scales. The UFS is designed to support the :term:`Weather Enterprise` and to be the source system for NOAA's operational numerical weather prediction (:term:`NWP`) applications. For more information, visit https://ufscommunity.org/.
 
    UFS_UTILS
-      The :term:`UFS` Utilities repository contains a collection of pre-processing programs for use with the UFS Weather Model and UFS applications. These programs set up the model grid and create coldstart initial conditions. The code is publicly available on the `UFS_UTILS <https://github.com/ufs-community/UFS_UTILS>`__ Github repository. 
+      The UFS Utilities repository (`UFS_UTILS <https://github.com/ufs-community/UFS_UTILS>`__) contains a collection of pre-processing programs for use with the UFS Weather Model and UFS applications. These programs set up the model grid and create coldstart initial conditions. The code is publicly available on the `UFS_UTILS <https://github.com/ufs-community/UFS_UTILS>`__ Github repository. 
 
    UPP
    Unified Post Processor
