@@ -20,7 +20,7 @@ load(pathJoin("hpc-intel", hpc_intel_ver))
 hpc_impi_ver=os.getenv("hpc_impi_ver") or "2022.1"
 load(pathJoin("hpc-impi", hpc_impi_ver))
 
-load("ufs_common")
+load("ufs_common_debug")
 
 setenv("CC", "mpiicc")
 setenv("CXX", "mpiicpc")
