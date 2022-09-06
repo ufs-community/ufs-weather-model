@@ -64,7 +64,9 @@ else
   module use $PATHTR/modulefiles
   modulefile="ufs_${MACHINE_ID}"
   if [[ "${MAKE_OPT}" == *"-DDEBUG=ON"* ]]; then
-    [[ -f $PATHTR/modulefiles/ufs_${MACHINE_ID}_debug ]] && modulefile="ufs_${MACHINE_ID}_debug"
+    if [[ -f $PATHTR/modulefiles/ufs_${MACHINE_ID}_debug ]] || [[ -f $PATHTR/modulefiles/ufs_${MACHINE_ID}_debug.lua ]]; then
+      modulefile="ufs_${MACHINE_ID}_debug"
+    fi
   fi
   module load $modulefile
   module list
