@@ -1,5 +1,5 @@
 help([[
-loads UFS Model prerequisites for Hera/Intel
+loads UFS Model prerequisites for S4
 ]])
 
 miniconda3_ver=os.getenv("miniconda3_ver") or "3.8-s4"
