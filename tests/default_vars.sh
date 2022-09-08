@@ -1069,7 +1069,7 @@ export DLAT=0.03
 
 # shel.inp
 export INPUT_CURFLD='C F     Currents'
-export INPUT_ICEFLD='C F     Ice concentrations'
+export INPUT_ICEFLD='F F     Ice concentrations'
 # input.nml
 export CPL_IMP_MRG=.true.
 
