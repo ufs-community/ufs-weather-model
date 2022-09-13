@@ -142,12 +142,16 @@ cd $RUNDIR
 ###############################################################################
 # Make configure and run files
 ###############################################################################
-
+MACHINE_ID=${MACHINE_ID:-false}
 # FV3 executable:
 cp ${PATHRT}/fv3_${COMPILE_NR}.exe                 fv3.exe
 
 # modulefile for FV3 prerequisites:
-cp ${PATHRT}/modules.fv3_${COMPILE_NR}             modules.fv3
+if [[ $MACHINE_ID == gaea.* ]]; then
+  cp ${PATHRT}/modules.fv3_${COMPILE_NR}             modules.fv3
+else
+  cp ${PATHRT}/modules.fv3_${COMPILE_NR}.lua             modules.fv3.lua
+fi
 cp ${PATHTR}/modulefiles/ufs_common*               .
 
 # Get the shell file that loads the "module" command and purges modules:
