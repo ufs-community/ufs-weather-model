@@ -68,17 +68,17 @@ bacio_ver=os.getenv("bacio_ver") or "2.4.1"
 load(pathJoin("bacio", bacio_ver))
 --module load bacio/2.4.1
 
-crtm_ver=os.getenv("crtm_ver") or "2.3.0"
+crtm_ver=os.getenv("crtm_ver") or "2.4.0"
 load(pathJoin("crtm", crtm_ver))
---module load crtm/2.3.0
+--module load crtm/2.4.0
 
 g2_ver=os.getenv("g2_ver") or "3.4.5"
 load(pathJoin("g2", g2_ver))
 --module load g2/3.4.5
 
-g2tmpl_ver=os.getenv("g2tmpl_ver") or "1.10.0"
+g2tmpl_ver=os.getenv("g2tmpl_ver") or "1.10.2"
 load(pathJoin("g2tmpl", g2tmpl_ver))
---module load g2tmpl/1.10.0
+--module load g2tmpl/1.10.2
 
 ip_ver=os.getenv("ip_ver") or "3.3.3"
 load(pathJoin("ip", ip_ver))
@@ -93,7 +93,6 @@ load(pathJoin("w3emc", w3emc_ver))
 --module load w3emc/2.9.2
 
 --#module load gftl-shared/v1.3.3
---#module load yafyaml/v0.5.1
 --#module load mapl/2.11.0-esmf-8.3.0b09
 
 setenv("CC", "cc")
