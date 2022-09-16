@@ -1,12 +1,12 @@
 ###############################################################################
 #
-#  HRRR control with 2 threads test
+#  HRRR control test with different PEs
 #
 ###############################################################################
 
-export TEST_DESCR="Compare HRRR with 2 threads results with control test"
+export TEST_DESCR="Compare HRRR CLM Lake decomp results with control"
 
-export CNTL_DIR=hrrr_control_dyn32_phy32
+export CNTL_DIR=hrrr_clm_lake
 
 export LIST_FILES="sfcf000.nc \
                    sfcf009.nc \
@@ -67,16 +67,12 @@ export NSTF_NAME='2,0,0,0,0'
 export WRITE_DOPOST=.true.
 export IAER=5111
 export OUTPUT_FH='0 09 12'
-export FHMAX=12
 
-export THRD=2
-export TASKS=$TASKS_thrd
-export INPES=$INPES_thrd
-export JNPES=$JNPES_thrd
-export WRTTASK_PER_GROUP=6
+export INPES=6
+export JNPES=4
 
 export FV3_RUN=flake_control_run.IN
-export CCPP_SUITE=FV3_HRRR
+export CCPP_SUITE=FV3_HRRR_clm_lake
 export INPUT_NML=rap.nml.IN
 export FIELD_TABLE=field_table_thompson_aero_tke
 export NEW_DIAGTABLE=diag_table_rap
@@ -84,6 +80,7 @@ export NEW_DIAGTABLE=diag_table_rap
 export SFCLAY_COMPUTE_FLUX=.true.
 
 export LKM=1
+export IOPT_LAKE=2
 export IMP_PHYSICS=8
 export DNATS=0
 export DO_SAT_ADJ=.false.
