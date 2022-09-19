@@ -15,7 +15,7 @@ cd $RUNDIR
 cp ${PATHRT}/$FV3X                                 fv3.exe
 
 # modulefile for FV3 prerequisites:
-cp ${PATHRT}/modules.fv3_${COMPILE_NR}             modules.fv3
+cp ${PATHRT}/modules.fv3_${COMPILE_NR}             modules.fv3.lua
 
 # Get the shell file that loads the "module" command and purges modules:
 cp ${PATHRT}/../NEMS/src/conf/module-setup.sh.inc  module-setup.sh

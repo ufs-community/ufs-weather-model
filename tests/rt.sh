@@ -67,111 +67,28 @@ export COMPILER=${NEMS_COMPILER:-intel}
 source detect_machine.sh
 source rt_utils.sh
 
-if [[ $MACHINE_ID = wcoss ]]; then
+if [[ $MACHINE_ID = wcoss2 ]]; then
 
   source $PATHTR/NEMS/src/conf/module-setup.sh.inc
 
-  set +u
-  source /usrx/local/ecflow/setup.sh
-  ECFLOW_START=/usrx/local/ecflow/bin/ecflow_start.sh
-  set -u
-  ROCOTORUN="/u/Christopher.W.Harrop/rocoto/bin/rocotorun"
-  ROCOTOSTAT="/u/Christopher.W.Harrop/rocoto/bin/rocotostat"
-  DISKNM=/nems/noscrub/emc.nemspara/RT
-  QUEUE=debug
+  module load ecflow/5.6.0.6
+  module load gcc/10.3.0 python/3.8.6
+  ECFLOW_START=${ECF_ROOT}/scripts/server_check.sh
+  export ECF_OUTPUTDIR=${PATHRT}/ecf_outputdir
+  export ECF_COMDIR=${PATHRT}/ecf_comdir
+  rm -rf ${ECF_OUTPUTDIR} ${ECF_COMDIR}
+  mkdir -p ${ECF_OUTPUTDIR}
+  mkdir -p ${ECF_COMDIR}
+  export colonifnco=":output"  # hack
+
+  DISKNM=/lfs/h2/emc/nems/noscrub/emc.nems/RT
+  QUEUE=dev
+  COMPILE_QUEUE=dev
   PARTITION=
-  ACCNR=GFS-DEV
-  STMP=/ptmpp$pex
-  PTMP=/ptmpp$pex
-  SCHEDULER=lsf
-# cp fv3_conf/fv3_bsub.IN_wcoss fv3_conf/fv3_bsub.IN
-
-elif [[ $MACHINE_ID = wcoss_cray ]]; then
-
-  source $PATHTR/NEMS/src/conf/module-setup.sh.inc
-  module load xt-lsfhpc
-
-  module use $PATHTR/modulefiles/${MACHINE_ID}
-  module load fv3
-
-  module load python/2.7.14
-
-  module use /usrx/local/emc_rocoto/modulefiles
-  module load rocoto/1.3.0rc2
-  ROCOTORUN=$(which rocotorun)
-  ROCOTOSTAT=$(which rocotostat)
-  ROCOTOCOMPLETE=$(which rocotocomplete)
-
-  module load ecflow/intel/4.7.1
-  ECFLOW_START=${ECF_ROOT}/intel/bin/ecflow_start.sh
-  ECF_PORT=$(grep $USER /usrx/local/sys/ecflow/assigned_ports.txt | awk '{print $2}')
-
-  DISKNM=/gpfs/hps3/emc/nems/noscrub/emc.nemspara/RT
-  QUEUE=debug
-  PARTITION=
-  ACCNR=GFS-DEV
-  if [[ -d /gpfs/hps3/ptmp ]] ; then
-      STMP=/gpfs/hps3/stmp
-      PTMP=/gpfs/hps3/stmp
-  else
-      STMP=/gpfs/hps3/stmp
-      PTMP=/gpfs/hps3/ptmp
-  fi
-  SCHEDULER=lsf
-  cp fv3_conf/fv3_bsub.IN_wcoss_cray fv3_conf/fv3_bsub.IN
-
-elif [[ $MACHINE_ID = wcoss_dell_p3 ]]; then
-
-  source $PATHTR/NEMS/src/conf/module-setup.sh.inc
-  module load lsf/10.1
-
-  module use $PATHTR/modulefiles/${MACHINE_ID}
-  module load fv3
-
-  module load python/2.7.14
-
-  module use /usrx/local/dev/emc_rocoto/modulefiles
-  module load ruby/2.5.1 rocoto/1.3.0rc2
-  ROCOTORUN=$(which rocotorun)
-  ROCOTOSTAT=$(which rocotostat)
-  ROCOTOCOMPLETE=$(which rocotocomplete)
-
-  module load ips/18.0.1.163
-  module load ecflow/4.7.1
-  ECFLOW_START=${ECF_ROOT}/intel/bin/ecflow_start.sh
-  ECF_PORT=$(grep $USER /usrx/local/sys/ecflow/assigned_ports.txt | awk '{print $2}')
-
-  DISKNM=/gpfs/dell2/emc/modeling/noscrub/emc.nemspara/RT
-  QUEUE=debug
-  PARTITION=
-  ACCNR=GFS-DEV
-  STMP=/gpfs/dell2/stmp
-  PTMP=/gpfs/dell2/ptmp
-  SCHEDULER=lsf
-  cp fv3_conf/fv3_bsub.IN_wcoss_dell_p3 fv3_conf/fv3_bsub.IN
-
-elif [[ $MACHINE_ID = gaea.* ]]; then
-
-  source $PATHTR/NEMS/src/conf/module-setup.sh.inc
-
-#  export PATH=/gpfs/hps/nco/ops/ecf/ecfdir/ecflow.v4.1.0.intel/bin:$PATH
-  export PYTHONPATH=
-  ECFLOW_START=
-  # DH* 20190717 temporary
-  #DISKNM=/lustre/f2/pdata/ncep_shared/emc.nemspara/RT
-  DISKNM=/lustre/f2/pdata/esrl/gsd/ufs/ufs-weather-model/RT
-  # *DH 20190717
-  QUEUE=debug
-#  DO NOT SET AN ACCOUNT EVERYONE IS NOT A MEMBER OF
-#  USE AN ENVIRONMENT VARIABLE TO SET ACCOUNT
-#  ACCNR=cmp
-  PARTITION=c4
-  STMP=/lustre/f2/scratch
-  PTMP=/lustre/f2/scratch
-
-  # default scheduler on Gaea
-  SCHEDULER=slurm
-  cp fv3_conf/fv3_slurm.IN_gaea fv3_conf/fv3_slurm.IN
+  ACCNR="${ACCNR:-GFS-DEV}"
+  STMP=/lfs/h2/emc/ptmp
+  PTMP=/lfs/h2/emc/ptmp
+  SCHEDULER=pbs
 
 elif [[ $MACHINE_ID = hera.* ]]; then
 
@@ -179,7 +96,7 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   source $PATHTR/NEMS/src/conf/module-setup.sh.inc
 
   module use $PATHTR/modulefiles/${MACHINE_ID}
-  module load fv3
+  module load fv3.lua
 
   # Re-instantiate COMPILER in case it gets deleted by module purge
   COMPILER=${NEMS_COMPILER:-intel}
@@ -196,7 +113,7 @@ elif [[ $MACHINE_ID = hera.* ]]; then
 #  ACCNR=fv3-cpu
   PARTITION=
   dprefix=/scratch1/NCEPDEV
-  DISKNM=$dprefix/nems/emc.nemspara/RT
+  DISKNM=$dprefix/nems/Jun.Wang/RT
   STMP=$dprefix/stmp4
   PTMP=$dprefix/stmp2
 
@@ -208,7 +125,7 @@ elif [[ $MACHINE_ID = orion.* ]]; then
   source $PATHTR/NEMS/src/conf/module-setup.sh.inc
 
   module use $PATHTR/modulefiles/${MACHINE_ID}
-  module load fv3
+  module load fv3.lua
   module load gcc/8.3.0
 
   # Re-instantiate COMPILER in case it gets deleted by module purge
@@ -238,7 +155,7 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   source $PATHTR/NEMS/src/conf/module-setup.sh.inc
 
   module use $PATHTR/modulefiles/${MACHINE_ID}
-  module load fv3
+  module load fv3.lua
 
   # Re-instantiate COMPILER in case it gets deleted by module purge
   COMPILER=${NEMS_COMPILER:-intel}
@@ -280,25 +197,6 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
   PTMP=$dprefix
   SCHEDULER=pbs
   cp fv3_conf/fv3_qsub.IN_cheyenne fv3_conf/fv3_qsub.IN
-
-elif [[ $MACHINE_ID = stampede.* ]]; then
-
-  source $PATHTR/NEMS/src/conf/module-setup.sh.inc
-  # Re-instantiate COMPILER in case it gets deleted by module purge
-  COMPILER=${NEMS_COMPILER:-intel}
-
-  export PYTHONPATH=
-  ECFLOW_START=
-  QUEUE=skx-dev
-  PARTITION=
-  dprefix=$WORK/NEMSfv3gfs/run
-  DISKNM=$WORK/NEMSfv3gfs/RT
-  STMP=$dprefix/stmp4
-  PTMP=$dprefix/stmp3
-  SCHEDULER=sbatch
-  MPIEXEC=ibrun
-  MPIEXECOPTS=
-  cp fv3_conf/fv3_qsub.IN_stampede fv3_conf/fv3_qsub.IN
 
 else
   die "Unknown machine ID, please edit detect_machine.sh file"

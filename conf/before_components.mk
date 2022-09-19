@@ -14,7 +14,7 @@
 # ----------------------------------------------------------------------
 # Decide the conf and modulefile names.
 
-CHOSEN_MODULE=$(BUILD_TARGET)/fv3
+CHOSEN_MODULE=$(BUILD_TARGET)/fv3.lua
 
 ifneq (,$(findstring INTEL16=Y,$(FV3_MAKEOPT)))
   ifeq ($(CHOSEN_MODULE),gaea.intel/fv3)
