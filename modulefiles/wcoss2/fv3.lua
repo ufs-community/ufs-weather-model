@@ -38,7 +38,8 @@ load(pathJoin("nemsio", nemsio_ver))
 g2tmpl_ver=os.getenv("g2tmpl_ver") or "1.9.1"
 load(pathJoin("g2tmpl", g2tmpl_ver))
 
-crtm_ver=os.getenv("crtm_ver") or "2.4.0"
+-- prod upp library is not available, need to update later
+crtm_ver=os.getenv("crtm_ver") or "2.3.0"
 load(pathJoin("crtm", crtm_ver))
 
 g2_ver=os.getenv("g2_ver") or "3.4.5"
