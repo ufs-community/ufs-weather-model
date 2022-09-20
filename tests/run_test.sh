@@ -149,12 +149,16 @@ cd $RUNDIR
 ###############################################################################
 # Make configure and run files
 ###############################################################################
-
+MACHINE_ID=${MACHINE_ID:-false}
 # FV3 executable:
 cp ${PATHRT}/fv3_${COMPILE_NR}.exe                 fv3.exe
 
 # modulefile for FV3 prerequisites:
-cp ${PATHRT}/modules.fv3_${COMPILE_NR}             modules.fv3
+if [[ $MACHINE_ID == gaea.* ]]; then
+  cp ${PATHRT}/modules.fv3_${COMPILE_NR}             modules.fv3
+else
+  cp ${PATHRT}/modules.fv3_${COMPILE_NR}.lua             modules.fv3.lua
+fi
 cp ${PATHTR}/modulefiles/ufs_common*               .
 
 # Get the shell file that loads the "module" command and purges modules:
@@ -190,11 +194,8 @@ compute_petbounds
 
 atparse < ${PATHRT}/parm/${NEMS_CONFIGURE:-nems.configure} > nems.configure
 
-# remove after all tests pass
-if [[ $TASKS -ne $UFS_tasks ]]; then
-   echo "$TASKS -ne $UFS_tasks "
-  exit 1
-fi
+# TASKS is now set to UFS_TASKS
+export TASKS=$UFS_tasks
 
 if [[ "Q${INPUT_NEST02_NML:-}" != Q ]] ; then
     INPES_NEST=$INPES_NEST02; JNPES_NEST=$JNPES_NEST02
@@ -243,7 +244,7 @@ fi
 
 # diag table
 if [[ "Q${DIAG_TABLE:-}" != Q ]] ; then
-  cp ${PATHRT}/parm/diag_table/${DIAG_TABLE} diag_table
+  atparse < ${PATHRT}/parm/diag_table/${DIAG_TABLE} > diag_table
 fi
 # Field table
 if [[ "Q${FIELD_TABLE:-}" != Q ]] ; then
@@ -327,6 +328,7 @@ NODES=$(( TASKS / TPN ))
 if (( NODES * TPN < TASKS )); then
   NODES=$(( NODES + 1 ))
 fi
+TASKS=$(( NODES * TPN ))
 
 if [[ $SCHEDULER = 'pbs' ]]; then
   atparse < $PATHRT/fv3_conf/fv3_qsub.IN > job_card
