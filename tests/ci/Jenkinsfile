@@ -48,14 +48,24 @@ pipeline {
                     }
                 }
 
-                environment {
-                    WRAPPER_GIT_BRANCH = "${env.CHANGE_ID ? env.CHANGE_BRANCH : env.BRANCH_NAME}"
-                }
-
                 stages {
                     stage('Test') {
+                        when {
+                            expression {
+                                !changeRequest()
+                            }
+                        }
+
                         steps {
-                            build job: 'ufs-weather-model/ort-docker-pipeline', parameters: [string(name: 'TEST_NAME', value: "${env.TEST_NAME}"), string(name: 'TEST_CASE', value: "${env.TEST_CASE}"), string(name: 'WRAPPER_GIT_BRANCH', value: "${env.WRAPPER_GIT_BRANCH}")]
+                            build job: 'ufs-weather-model/ort-docker-pipeline', parameters: [string(name: 'TEST_NAME', value: "${env.TEST_NAME}"), string(name: 'TEST_CASE', value: "${env.TEST_CASE}"), string(name: 'WRAPPER_GIT_BRANCH', value: "${env.BRANCH_NAME}")]
+                        }
+                    }
+
+                    stage('Test for Change Request') {
+                        when { changeRequest() }
+
+                        steps {
+                            build job: 'ufs-weather-model/ort-docker-pipeline', parameters: [string(name: 'TEST_NAME', value: "${env.TEST_NAME}"), string(name: 'TEST_CASE', value: "${env.TEST_CASE}"), booleanParam(name: 'WRAPPER_CHANGE_REQUEST', value: true), string(name: 'WRAPPER_GIT_BRANCH', value: "${env.CHANGE_TARGET}"), string(name: 'WRAPPER_CHANGE_BRANCH', value: "${env.CHANGE_BRANCH}"), string(name: 'WRAPPER_CHANGE_FORK', value: "${env.CHANGE_FORK}")]
                         }
                     }
                 }
