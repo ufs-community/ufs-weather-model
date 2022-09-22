@@ -715,6 +715,8 @@ EOF
     (
       source ${PATHRT}/tests/$TEST_NAME
 
+      compute_petbounds_and_tasks
+
       TPN=$(( TPN / THRD ))
       NODES=$(( TASKS / TPN ))
       if (( NODES * TPN < TASKS )); then
