@@ -17,7 +17,7 @@ load(pathJoin("hdf5", hdf5_ver))
 netcdf_ver=os.getenv("netcdf_ver") or "4.7.4"
 load(pathJoin("netcdf", netcdf_ver))
 
-pio_ver=os.getenv("pio_ver") or "2.5.3"
+pio_ver=os.getenv("pio_ver") or "2.5.7"
 load(pathJoin("pio", pio_ver))
 
 esmf_ver=os.getenv("esmf_ver") or "8.3.0b09-debug"
