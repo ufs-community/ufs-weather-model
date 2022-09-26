@@ -60,9 +60,9 @@ esmf_ver=os.getenv("esmf_ver") or "8.3.0b09"
 load(pathJoin("esmf", esmf_ver))
 --module load esmf/8.3.0b09
 
-fms_ver=os.getenv("fms_ver") or "2022.01"
+fms_ver=os.getenv("fms_ver") or "2022.03"
 load(pathJoin("fms", fms_ver))
---module load fms/2022.01
+--module load fms/2022.03
 
 bacio_ver=os.getenv("bacio_ver") or "2.4.1"
 load(pathJoin("bacio", bacio_ver))
