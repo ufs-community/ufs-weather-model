@@ -29,7 +29,7 @@ load(pathJoin("fms",fms_ver))
 bacio_ver=os.getenv("bacio_ver") or "2.4.1"
 load(pathJoin("bacio", bacio_ver))
 
-crtm_ver=os.getenv("crtm_ver") or "2.3.0"
+crtm_ver=os.getenv("crtm_ver") or "2.4.0"
 load(pathJoin("crtm", crtm_ver))
 
 g2_ver=os.getenv("g2_ver") or "3.4.5"
@@ -49,9 +49,6 @@ load(pathJoin("w3emc", w3emc_ver))
 
 gftl_shared_ver=os.getenv("gftl_shared_ver") or "v1.5.0"
 load(pathJoin("gftl-shared", gftl_shared_ver))
-
-yafyaml_ver=os.getenv("yafyaml_ver") or "v0.5.1"
-load(pathJoin("yafyaml", yafyaml_ver))
 
 mapl_ver=os.getenv("mapl_ver") or "2.22.0-esmf-8.3.0b09"
 load(pathJoin("mapl", mapl_ver))
