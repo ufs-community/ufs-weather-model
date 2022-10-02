@@ -1,4 +1,4 @@
-From jongkim2004/ubuntu-hpc:v1.2
+From noaaepic/ubuntu20.04-gnu9.3-hpc-stack:v1.2
 
 CMD ["/bin/bash"]
 
