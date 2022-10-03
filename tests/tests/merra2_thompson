@@ -1,12 +1,12 @@
 ###############################################################################
 #
-#  Global control test GFSv16 atmosphere-land only at C96L127, P8 configuration
+#  Global control test GFSv16 atmosphere only at C96L127, P8 configuration
 #
 ###############################################################################
 
-export TEST_DESCR="Compare global control results with previous trunk version"
+export TEST_DESCR="Compare global control merra2 thompson results with previous trunk version"
 
-export CNTL_DIR=control_p8_atmlnd_sbs
+export CNTL_DIR=merra2_thompson
 
 export LIST_FILES="sfcf000.nc \
                    sfcf021.nc \
@@ -51,21 +51,7 @@ export LIST_FILES="sfcf000.nc \
                    RESTART/sfc_data.tile3.nc \
                    RESTART/sfc_data.tile4.nc \
                    RESTART/sfc_data.tile5.nc \
-                   RESTART/sfc_data.tile6.nc \
-                   ufs.cpld.cpl.hi.lnd.2021-03-22-43200.nc \
-                   ufs.cpld.cpl.hi.lnd.2021-03-23-21600.nc \
-                   ufs.cpld.lnd.out.2021-03-22-43200.tile1.nc \
-                   ufs.cpld.lnd.out.2021-03-22-43200.tile2.nc \
-                   ufs.cpld.lnd.out.2021-03-22-43200.tile3.nc \
-                   ufs.cpld.lnd.out.2021-03-22-43200.tile4.nc \
-                   ufs.cpld.lnd.out.2021-03-22-43200.tile5.nc \
-                   ufs.cpld.lnd.out.2021-03-22-43200.tile6.nc \
-                   ufs.cpld.lnd.out.2021-03-23-21600.tile1.nc \
-                   ufs.cpld.lnd.out.2021-03-23-21600.tile2.nc \
-                   ufs.cpld.lnd.out.2021-03-23-21600.tile3.nc \
-                   ufs.cpld.lnd.out.2021-03-23-21600.tile4.nc \
-                   ufs.cpld.lnd.out.2021-03-23-21600.tile5.nc \
-                   ufs.cpld.lnd.out.2021-03-23-21600.tile6.nc"
+                   RESTART/sfc_data.tile6.nc"
 
 export_fv3
 export NPZ=127
@@ -103,6 +89,8 @@ export DDDMP=0.1
 
 # P7 Merra2 Aerosols & NSST
 export USE_MERRA2=.true.
+export LTAEROSOL=.false.
+export MRAEROSOL=.true.
 export IAER=1011
 export NSTF_NAME=2,1,0,0,0
 
@@ -138,18 +126,18 @@ export ISEED_CA=12345
 
 # P7 settings
 export TILEDFIX=.true.
-export FNALBC="'INPUT/C96.snowfree_albedo.tileX.nc'"
-export FNALBC2="'INPUT/C96.facsf.tileX.nc'"
-export FNTG3C="'INPUT/C96.substrate_temperature.tileX.nc'"
-export FNVEGC="'INPUT/C96.vegetation_greenness.tileX.nc'"
-export FNVETC="'INPUT/C96.vegetation_type.tileX.nc'"
-export FNSOTC="'INPUT/C96.soil_type.tileX.nc'"
+export FNALBC="'C96.snowfree_albedo.tileX.nc'"
+export FNALBC2="'C96.facsf.tileX.nc'"
+export FNTG3C="'C96.substrate_temperature.tileX.nc'"
+export FNVEGC="'C96.vegetation_greenness.tileX.nc'"
+export FNVETC="'C96.vegetation_type.tileX.nc'"
+export FNSOTC="'C96.soil_type.tileX.nc'"
 export FNSMCC=${FNSMCC_control}
 export FNMSKH=${FNMSKH_control}
-export FNVMNC="'INPUT/C96.vegetation_greenness.tileX.nc'"
-export FNVMXC="'INPUT/C96.vegetation_greenness.tileX.nc'"
-export FNSLPC="'INPUT/C96.slope_type.tileX.nc'"
-export FNABSC="'INPUT/C96.maximum_snow_albedo.tileX.nc'"
+export FNVMNC="'C96.vegetation_greenness.tileX.nc'"
+export FNVMXC="'C96.vegetation_greenness.tileX.nc'"
+export FNSLPC="'C96.slope_type.tileX.nc'"
+export FNABSC="'C96.maximum_snow_albedo.tileX.nc'"
 export LANDICE=".false."
 export FSICL=0
 export FSICS=0
@@ -157,7 +145,7 @@ export FSICS=0
 export IMP_PHYSICS=8
 export LGFDLMPRAD=.false.
 export DO_SAT_ADJ=.false.
-export DNATS=0
+export DNATS=2
 export DZ_MIN=6
 
 #required for NML.IN sharing
@@ -171,10 +159,10 @@ export WRITE_NSFLIP=.true.
 
 export FV3_RUN=control_run.IN
 export CCPP_SUITE=FV3_GFS_v17_p8
-export FIELD_TABLE=field_table_thompson_noaero_tke
-export DIAG_TABLE=diag_table_p8_template
+export FIELD_TABLE=field_table_mr2
+export DIAG_TABLE=diag_table_mr2
 # use same namelist for standalone,coupled P7
-export INPUT_NML=cpld_control.nml.IN
+export INPUT_NML=merra2_thompson.nml.IN
 
 # RRTMGP
 export DO_RRTMGP=.false.
@@ -185,27 +173,3 @@ export DOGP_SGS_CNV=.true.
 if [[ $MACHINE_ID = cheyenne.* ]]; then
   TPN=18
 fi
-
-export CPLLND=.true.
-
-export NEMS_CONFIGURE="nems.configure.atm_lnd.IN"
-export med_model="cmeps"
-export atm_model="fv3"
-export lnd_model="noahmp"
-export CPLMODE="nems_frac"
-export RUNTYPE="startup"
-export READRESTART=.false.
-export TASKS=294
-export ATM_tasks=144
-export OCN_tasks=0
-export ICE_tasks=0
-export LND_tasks=144
-export lnd_ic_type='sfc'
-export CALC_SNET=.false.
-export layout_x=3
-export layout_y=8
-export coupling_interval_sec=720
-export TOPOEDITS=""
-# need for getting some files from coupled RT to fix land-sea mask inconsistency
-# can be removed after fixing files for control_p8 
-export OCNRES=100

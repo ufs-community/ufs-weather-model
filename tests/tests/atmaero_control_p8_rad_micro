@@ -1,25 +1,22 @@
 ###############################################################################
 #
-#  Global control test GFSv16 atmosphere-land only at C96L127, P8 configuration
+#  global control test with prognostic aerosols: GFSv17 P8 FV3-GOCART at C96L127
 #
 ###############################################################################
 
-export TEST_DESCR="Compare global control results with previous trunk version"
+export TEST_DESCR="Compare global results for prognostic aerosols with previous trunk version"
 
-export CNTL_DIR=control_p8_atmlnd_sbs
+export CNTL_DIR=atmaero_control_p8_rad_micro
 
 export LIST_FILES="sfcf000.nc \
-                   sfcf021.nc \
                    sfcf024.nc \
                    atmf000.nc \
-                   atmf021.nc \
                    atmf024.nc \
                    GFSFLX.GrbF00 \
-                   GFSFLX.GrbF21 \
                    GFSFLX.GrbF24 \
                    GFSPRS.GrbF00 \
-                   GFSPRS.GrbF21 \
                    GFSPRS.GrbF24 \
+                   gocart.inst_aod.20210323_0600z.nc4 \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -51,35 +48,31 @@ export LIST_FILES="sfcf000.nc \
                    RESTART/sfc_data.tile3.nc \
                    RESTART/sfc_data.tile4.nc \
                    RESTART/sfc_data.tile5.nc \
-                   RESTART/sfc_data.tile6.nc \
-                   ufs.cpld.cpl.hi.lnd.2021-03-22-43200.nc \
-                   ufs.cpld.cpl.hi.lnd.2021-03-23-21600.nc \
-                   ufs.cpld.lnd.out.2021-03-22-43200.tile1.nc \
-                   ufs.cpld.lnd.out.2021-03-22-43200.tile2.nc \
-                   ufs.cpld.lnd.out.2021-03-22-43200.tile3.nc \
-                   ufs.cpld.lnd.out.2021-03-22-43200.tile4.nc \
-                   ufs.cpld.lnd.out.2021-03-22-43200.tile5.nc \
-                   ufs.cpld.lnd.out.2021-03-22-43200.tile6.nc \
-                   ufs.cpld.lnd.out.2021-03-23-21600.tile1.nc \
-                   ufs.cpld.lnd.out.2021-03-23-21600.tile2.nc \
-                   ufs.cpld.lnd.out.2021-03-23-21600.tile3.nc \
-                   ufs.cpld.lnd.out.2021-03-23-21600.tile4.nc \
-                   ufs.cpld.lnd.out.2021-03-23-21600.tile5.nc \
-                   ufs.cpld.lnd.out.2021-03-23-21600.tile6.nc"
+                   RESTART/sfc_data.tile6.nc"
 
 export_fv3
 export NPZ=127
 export NPZP=128
 export DT_ATMOS=720
-export DT_INNER=${DT_ATMOS}
 export SYEAR=2021
 export SMONTH=03
 export SDAY=22
 export SHOUR=06
-export RESTART_INTERVAL="12 -1"
+export RESTART_INTERVAL='12 -1'
 export OUTPUT_GRID='gaussian_grid'
+export NSTF_NAME='2,0,0,0,0'
 export WRITE_DOPOST=.true.
-export OUTPUT_FH='0 21 24'
+
+export CPL=.true.
+export CPLCHM=.true.
+export NEMS_CONFIGURE=nems.configure.atmaero.IN
+
+export atm_model='fv3'
+export chm_model='gocart'
+export coupling_interval_sec=${DT_ATMOS}
+
+# default resources
+export DOMAINS_STACK_SIZE=8000000
 
 # P7 default
 export IALB=2
@@ -102,11 +95,13 @@ export PSM_BC=1
 export DDDMP=0.1
 
 # P7 Merra2 Aerosols & NSST
-export USE_MERRA2=.true.
-export IAER=1011
-export NSTF_NAME=2,1,0,0,0
+export USE_MERRA2=.false.
+export LTAEROSOL=.false.
+export MRAEROSOL=.true.
+export IAER=2011
+export NSTF_NAME=2,0,0,0,0
 
-export LHEATSTRG=.false.
+export LHEATSTRG=.true.
 export LSEASPRAY=.true.
 
 # P7 UGWP1
@@ -138,18 +133,18 @@ export ISEED_CA=12345
 
 # P7 settings
 export TILEDFIX=.true.
-export FNALBC="'INPUT/C96.snowfree_albedo.tileX.nc'"
-export FNALBC2="'INPUT/C96.facsf.tileX.nc'"
-export FNTG3C="'INPUT/C96.substrate_temperature.tileX.nc'"
-export FNVEGC="'INPUT/C96.vegetation_greenness.tileX.nc'"
-export FNVETC="'INPUT/C96.vegetation_type.tileX.nc'"
-export FNSOTC="'INPUT/C96.soil_type.tileX.nc'"
+export FNALBC="'C96.snowfree_albedo.tileX.nc'"
+export FNALBC2="'C96.facsf.tileX.nc'"
+export FNTG3C="'C96.substrate_temperature.tileX.nc'"
+export FNVEGC="'C96.vegetation_greenness.tileX.nc'"
+export FNVETC="'C96.vegetation_type.tileX.nc'"
+export FNSOTC="'C96.soil_type.tileX.nc'"
 export FNSMCC=${FNSMCC_control}
 export FNMSKH=${FNMSKH_control}
-export FNVMNC="'INPUT/C96.vegetation_greenness.tileX.nc'"
-export FNVMXC="'INPUT/C96.vegetation_greenness.tileX.nc'"
-export FNSLPC="'INPUT/C96.slope_type.tileX.nc'"
-export FNABSC="'INPUT/C96.maximum_snow_albedo.tileX.nc'"
+export FNVMNC="'C96.vegetation_greenness.tileX.nc'"
+export FNVMXC="'C96.vegetation_greenness.tileX.nc'"
+export FNSLPC="'C96.slope_type.tileX.nc'"
+export FNABSC="'C96.maximum_snow_albedo.tileX.nc'"
 export LANDICE=".false."
 export FSICL=0
 export FSICS=0
@@ -157,7 +152,7 @@ export FSICS=0
 export IMP_PHYSICS=8
 export LGFDLMPRAD=.false.
 export DO_SAT_ADJ=.false.
-export DNATS=0
+export DNATS=4
 export DZ_MIN=6
 
 #required for NML.IN sharing
@@ -171,10 +166,10 @@ export WRITE_NSFLIP=.true.
 
 export FV3_RUN=control_run.IN
 export CCPP_SUITE=FV3_GFS_v17_p8
-export FIELD_TABLE=field_table_thompson_noaero_tke
-export DIAG_TABLE=diag_table_p8_template
+export FIELD_TABLE=field_table_thompson_aero_tke_GOCART
+export DIAG_TABLE=diag_table_p8_gocart_micro
 # use same namelist for standalone,coupled P7
-export INPUT_NML=cpld_control.nml.IN
+export INPUT_NML=merra2_thompson.nml.IN
 
 # RRTMGP
 export DO_RRTMGP=.false.
@@ -185,27 +180,3 @@ export DOGP_SGS_CNV=.true.
 if [[ $MACHINE_ID = cheyenne.* ]]; then
   TPN=18
 fi
-
-export CPLLND=.true.
-
-export NEMS_CONFIGURE="nems.configure.atm_lnd.IN"
-export med_model="cmeps"
-export atm_model="fv3"
-export lnd_model="noahmp"
-export CPLMODE="nems_frac"
-export RUNTYPE="startup"
-export READRESTART=.false.
-export TASKS=294
-export ATM_tasks=144
-export OCN_tasks=0
-export ICE_tasks=0
-export LND_tasks=144
-export lnd_ic_type='sfc'
-export CALC_SNET=.false.
-export layout_x=3
-export layout_y=8
-export coupling_interval_sec=720
-export TOPOEDITS=""
-# need for getting some files from coupled RT to fix land-sea mask inconsistency
-# can be removed after fixing files for control_p8 
-export OCNRES=100

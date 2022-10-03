@@ -14,7 +14,6 @@ load(pathJoin("python", python_ver))
 --prepend_path("MODULEPATH", "/apps/contrib/NCEP/libs/hpc-stack/modulefiles/stack")
 prepend_path("MODULEPATH", "/work/noaa/epic-ps/hpc-stack/libs/intel/2022.1.2/modulefiles/stack")
 
---hpc_ver=os.getenv("hpc_ver") or "1.1.0"
 hpc_ver=os.getenv("hpc_ver") or "1.2.0"
 load(pathJoin("hpc", hpc_ver))
 
