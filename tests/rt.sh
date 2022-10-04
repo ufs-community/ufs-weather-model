@@ -217,11 +217,10 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   QUEUE=batch
   COMPILE_QUEUE=batch
 
-  ACCNR=gmtb
+  #ACCNR="${ACCNR:-fv3-cpu}
   PARTITION=
   dprefix=/scratch1/NCEPDEV
   DISKNM=$dprefix/nems/emc.nemspara/RT
-  dprefix=/scratch1/BMC/gmtb/dswales/UFS
   STMP=$dprefix/stmp4
   PTMP=$dprefix/stmp2
 
@@ -314,14 +313,11 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
   ECFLOW_START=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
-
-  ACCNR=P48503002
   QUEUE=regular
   COMPILE_QUEUE=regular
   PARTITION=
   dprefix=/glade/scratch
   DISKNM=/glade/scratch/epicufsrt/GMTB/ufs-weather-model/RT
-  dprefix=/glade/scratch/dswales/UFS
   STMP=$dprefix
   PTMP=$dprefix
   SCHEDULER=pbs
@@ -447,7 +443,7 @@ if [[ $TESTS_FILE =~ '35d' ]] || [[ $TESTS_FILE =~ 'weekly' ]]; then
   TEST_35D=true
 fi
 
-BL_DATE=20220919
+BL_DATE=20220929
 
 RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
 
