@@ -105,12 +105,12 @@ jobs:
         sudo systemctl restart docker
         sleep 10
         cd tests/ci && ./ci.sh -n ${{ matrix.name }} -b ${{ matrix.case }}
+        sudo docker image ls
 
-    - name: Free up disk space
-      run: |
-        sudo docker rmi $(sudo docker image ls | grep -E -m1 '<none>' | awk '{ print $3 }')
-        sudo docker rmi $(sudo docker image ls | awk '/ubuntu-hpc/ { print $3 }')
-
+    #- name: Free up disk space
+    #  run: |
+    #    sudo    docker images --no-trunc --all --quiet --filter="dangling=true" | sudo xargs --no-run-if-empty docker rmi  
+        
     - uses: actions/upload-artifact@v2
       with:
         name: ${{ matrix.bld_set }}.artifact
@@ -174,14 +174,14 @@ jobs:
         cd ${{ github.workspace }}/tests/ci
         ./ci.sh -n ${{ matrix.name }} -r ${{ matrix.case }}
 
-    - uses: actions/upload-artifact@v2
-      if: ${{ always() }}
-      with:
-        name: memory_stat_${{ matrix.test_set }}
-        path: memory_stat
+    #- uses: actions/upload-artifact@v2
+    #  if: ${{ always() }}
+    #  with:
+    #    name: memory_stat_${{ matrix.test_set }}
+    #    path: memory_stat
 
-    - name: Clean up
-      if: ${{ always() }}
-      run: |
-        docker stop my-container && docker rm my-container
-        docker volume rm DataVolume
+    #- name: Clean up
+    #  if: ${{ always() }}
+    #  run: |
+        #docker stop my-container && docker rm my-container
+        #docker volume rm DataVolume
