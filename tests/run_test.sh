@@ -147,7 +147,7 @@ MACHINE_ID=${MACHINE_ID:-false}
 cp ${PATHRT}/fv3_${COMPILE_NR}.exe                 fv3.exe
 
 # modulefile for FV3 prerequisites:
-if [[ $MACHINE_ID == gaea.* ]]; then
+if [[ $MACHINE_ID == gaea.* ]] || [[ $MACHINE_ID == linux.* ]]; then
   cp ${PATHRT}/modules.fv3_${COMPILE_NR}             modules.fv3
 else
   cp ${PATHRT}/modules.fv3_${COMPILE_NR}.lua             modules.fv3.lua
