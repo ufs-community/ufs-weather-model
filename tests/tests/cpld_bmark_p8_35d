@@ -1,7 +1,7 @@
 #
-#  cpld_bmark_p8 35 day test
+#  cpld_bmark_p8 5-day test
 #
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system - C384L127 MX025 - Benchmark P7 35 day test"
+export TEST_DESCR="Fully coupled FV3-CCPP-GOCART-MOM6-CICE-CMEPS-WW3 system - C384L127 OCN/ICE/0.25-degree WAVE/30m - Benchmark P8 test"
 
 export CNTL_DIR="cpld_bmark_p8"
 
@@ -19,18 +19,26 @@ export BMIC=.true.
 
 export DAYS=5
 export FHMAX=120
-export RESTART_N=`expr ${FHMAX} - ${FHROT}`
-export WLCLK=120
+export RESTART_N=$FHMAX
+export RESTART_INTERVAL="${RESTART_N} -1"
+export OUTPUT_FH="6 -1"
+export FHZERO=6
+export WLCLK=240
 
-export TASKS=1700
-export INPES=12
-export JNPES=16
-export THRD=2
-export WRTTASK_PER_GROUP=88
+export DOMAINS_STACK_SIZE=16000000
 
-OCN_tasks=220
-ICE_tasks=80
-WAV_tasks=160
+export RUN_BEG="${SYEAR}${SMONTH}${SDAY} $(printf "%02d" $(( ${SHOUR}  )))0000"
+
+export TASKS=$TASKS_cpl_bmrk
+export INPES=$INPES_cpl_bmrk
+export JNPES=$JNPES_cpl_bmrk
+export THRD=$THRD_cpl_bmrk
+export WRITE_DOPOST=.true.
+export WRTTASK_PER_GROUP=$WPG_cpl_bmrk
+
+OCN_tasks=$OCN_tasks_cpl_bmrk
+ICE_tasks=$ICE_tasks_cpl_bmrk
+WAV_tasks=$WAV_tasks_cpl_bmrk
 
 # atm/ocn/ice resolution
 export ATMRES=C384
@@ -45,19 +53,21 @@ export OCNRES=025
 export ICERES=0.25
 export NX_GLB=1440
 export NY_GLB=1080
-export NPROC_ICE=80
+export NPROC_ICE=$ICE_tasks
 export np2=`expr $NPROC_ICE / 2`
 export BLCKX=`expr $NX_GLB / $np2`
 export BLCKY=`expr $NY_GLB / 2`
+export WAVDOMAIN=gwes_30m
+export MESH_WAV=mesh.${WAVDOMAIN}.nc
 
 # set component and coupling timesteps
 export DT_ATMOS=300
+export DT_INNER=${DT_ATMOS}
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6=900
 export DT_THERM_MOM6=1800
 
 # nems.configure
-export NEMS_CONFIGURE=nems.configure.cpld_wave.IN
 export coupling_interval_slow_sec=${DT_THERM_MOM6}
 export coupling_interval_fast_sec=${DT_ATMOS}
 
@@ -68,6 +78,8 @@ export CICEGRID=grid_cice_NEMS_mx${OCNRES}.nc
 export CICEMASK=kmtu_cice_NEMS_mx${OCNRES}.nc
 export CHLCLIM=seawifs-clim-1997-2010.${NX_GLB}x${NY_GLB}.v20180328.nc
 export FRUNOFF=runoff.daitren.clim.${NX_GLB}x${NY_GLB}.v20180328.nc
+export MOM6_RIVER_RUNOFF=True
+export MOM6_RESTART_SETTING=r
 
 export FNALBC="'C384.snowfree_albedo.tileX.nc'"
 export FNALBC2="'C384.facsf.tileX.nc'"
@@ -80,24 +92,13 @@ export FNVMXC="'C384.vegetation_greenness.tileX.nc'"
 export FNSLPC="'C384.slope_type.tileX.nc'"
 export FNABSC="'C384.maximum_snow_albedo.tileX.nc'"
 
+#BMICs do not contain NSST spinup
+export NSTF_NAME=2,1,0,0,0
+
 export CDMBWD=${CDMBWD_c384}
-export DT_INNER=${DT_INNER_c384}
 
-export MOM6_RIVER_RUNOFF=True
-export MOM6_RESTART_SETTING=r
-
-export WW3GRIDLINE="'gwes_30m' 'no' 'CPL:native' 'CPL:native' 'CPL:native' 'no' 'no' 'no' 'no' 'no'  1  1  0.00 1.00  F"
-export WW3RSTDTHR=${FHMAX}
-export DT_2_RST="$(printf "%02d" $(( ${WW3RSTDTHR}*3600 )))"
-export RUN_BEG="${SYEAR}${SMONTH}${SDAY} $(printf "%02d" $(( ${SHOUR}  )))0000"
-export RUN_END="2100${SMONTH}${SDAY} $(printf "%02d" $(( ${SHOUR}  )))0000"
 export OUT_BEG=$RUN_BEG
-export OUT_END=$RUN_END
 export RST_BEG=$RUN_BEG
 export RST_2_BEG=$RUN_BEG
-export RST_END=$RUN_END
-export RST_2_END=$RUN_END
-
-export DIAG_TABLE=diag_table_template
 
 export FV3_RUN=cpld_control_run.IN

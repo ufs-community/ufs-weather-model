@@ -26,4 +26,6 @@ export NFHMAX_HF=${NFHMAX_HF}
 export NFHOUT_HF=${NFHOUT_HF}
 export LIST_FILES="${LIST_FILES}"
 export OUTPUT_FH="${OUTPUT_FH}"
+export AOD_FRQ=${AOD_FRQ:-}
+export WRITE_DOPOST=${WRITE_DOPOST:-}
 EOF

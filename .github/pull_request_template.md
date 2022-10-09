@@ -4,7 +4,7 @@
 
 - [ ] This PR has been tested using a branch which is up-to-date with the top of all sub-component repositories except for those sub-components which are the subject of this PR
 
-- [ ] An Issue describing the work contained in this PR has been created either in the subcomponent(s) or in the ufs-weather-model. The Issue should be created in the repository that is most relevant to the changes in contained in the PR. The Issue and the dependent sub-component PR 
+- [ ] An Issue describing the work contained in this PR has been created either in the subcomponent(s) or in the ufs-weather-model. The Issue should be created in the repository that is most relevant to the changes in contained in the PR. The Issue and the dependent sub-component PR
 are specified below.
 
 - [ ] Results for one or more of the regression tests change and the reasons for the changes are understood and explained below.
@@ -13,7 +13,7 @@ are specified below.
 
 ## Instructions: All subsequent sections of text should be filled in as appropriate.
 
-The information provided below allows the code managers to understand the changes relevant to this PR, whether those changes are in the ufs-weather-model repository or in a subcomponent repository. Ufs-weather-model code managers will use the information provided to add any applicable labels, assign reviewers and place it in the Commit Queue. Once the PR is in the Commit Queue, it is the PR owner's responsibility to keep the PR up-to-date with the develop branch of ufs-weather-model. 
+The information provided below allows the code managers to understand the changes relevant to this PR, whether those changes are in the ufs-weather-model repository or in a subcomponent repository. Ufs-weather-model code managers will use the information provided to add any applicable labels, assign reviewers and place it in the Commit Queue. Once the PR is in the Commit Queue, it is the PR owner's responsibility to keep the PR up-to-date with the develop branch of ufs-weather-model.
 
 ## Description
 
@@ -22,7 +22,7 @@ Provide a detailed description of what this PR does. What bug does it fix, or wh
 ### Issue(s) addressed
 
 Link the issues to be closed with this PR, whether in this repository, or in another repository.
-(Remember, issues must always be created before starting work on a PR branch!) 
+(Remember, issues must always be created before starting work on a PR branch!)
 - fixes #<issue_number>
 - fixes noaa-emc/fv3atm/issues/<issue_number>
 
@@ -33,13 +33,12 @@ How were these changes tested? What compilers / HPCs was it tested with? Are the
 - [ ] hera.intel
 - [ ] hera.gnu
 - [ ] orion.intel
-- [ ] cheyenne.intel 
+- [ ] cheyenne.intel
 - [ ] cheyenne.gnu
-- [ ] gaea.intel 
+- [ ] gaea.intel
 - [ ] jet.intel
 - [ ] wcoss2.intel
-- [ ] wcoss_cray
-- [ ] wcoss_dell_p3
+- [ ] acorn.intel
 - [ ] opnReqTest for newly added/changed feature
 - [ ] CI
 
