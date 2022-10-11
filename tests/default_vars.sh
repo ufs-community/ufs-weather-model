@@ -651,6 +651,7 @@ export MULTIGRID=false
 
 # FV3 defaults
 export FRAC_GRID=.true.
+export FRAC_ICE=.false.
 export CCPP_SUITE=FV3_GFS_v17_coupled_p8
 export INPUT_NML=cpld_control.nml.IN
 export FIELD_TABLE=field_table_thompson_noaero_tke_GOCART
