@@ -43,7 +43,6 @@ load(pathJoin("upp", upp_ver))
 
 crtm_ver=os.getenv("crtm_ver") or "2.4.0"
 load(pathJoin("crtm", crtm_ver))
-message("crtm version is ${crtm_ver}")
 
 g2_ver=os.getenv("g2_ver") or "3.4.5"
 load(pathJoin("g2", g2_ver))
