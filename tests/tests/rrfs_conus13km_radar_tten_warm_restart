@@ -11,11 +11,7 @@ export TEST_DESCR="HRRR physics on 13km domain, with radar-derived MP temperatur
 
 export CNTL_DIR=rrfs_conus13km_radar_tten_warm
 
-export LIST_FILES="sfcf000.nc \
-                   sfcf001.nc \
-                   sfcf002.nc \
-                   atmf000.nc \
-                   atmf001.nc \
+export LIST_FILES="sfcf002.nc \
                    atmf002.nc"
 
 export_fv3
@@ -28,7 +24,6 @@ export SDAY=12
 export SHOUR=16
 export FHMAX=2
 export DT_ATMOS=120
-export RESTART_INTERVAL=1
 export QUILTING=.true.
 export WRITE_GROUP=1
 export WRTTASK_PER_GROUP=6
@@ -37,6 +32,10 @@ export WRITE_DOPOST=.false.
 export OUTPUT_HISTORY=.true.
 export OUTPUT_GRID=lambert_conformal
 export OUTPUT_FILE="'netcdf'"
+
+export FHROT=1
+export RESTART_FILE_PREFIX=$( printf %04d%02d%02d.%02d0000 $SYEAR $SMONTH $SDAY $(( SHOUR+FHROT )) )
+export RRFS_RESTART=YES
 
 # Revert these two to GFS_typedefs defaults to avoid a crash:
 export SEDI_SEMI=.false.
