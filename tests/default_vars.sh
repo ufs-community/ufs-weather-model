@@ -370,6 +370,7 @@ export NSSL_INVERTCCN=.true.
 
 # Smoke
 export RRFS_SMOKE=.false.
+export RRFS_RESTART=NO
 export SEAS_OPT=2
 
 # GWD
