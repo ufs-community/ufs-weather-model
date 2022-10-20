@@ -1,7 +1,8 @@
 ### MOM6 Fortran compiler flags
 if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
-# set(CMAKE_Fortran_FLAGS "-g -fbacktrace -I${CMAKE_CURRENT_BINARY_DIR}/../../../../gsw/module -fPIC")
-  set(CMAKE_Fortran_FLAGS "-g -fbacktrace -I/home/mpotts/jedi/ufs-jedi-bundle/build/gsw/module -I${CMAKE_CURRENT_BINARY_DIR}/../../../../gsw/module -fPIC")
+  set(CMAKE_Fortran_FLAGS "-g -fbacktrace -I${CMAKE_CURRENT_BINARY_DIR}/../../../../gsw/module -fPIC")
+  #message(FATAL_ERROR "DH DEBUG: CMAKE_CURRENT_BINARY_DIR is ${CMAKE_CURRENT_BINARY_DIR}")
+  #set(CMAKE_Fortran_FLAGS "-g -fbacktrace -I/home/mpotts/jedi/ufs-jedi-bundle/build/gsw/module -I${CMAKE_CURRENT_BINARY_DIR}/../../../../gsw/module -fPIC")
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fdefault-real-8 -fdefault-double-8")
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Waliasing -fcray-pointer -fconvert=big-endian -ffree-line-length-none -fno-range-check -fbacktrace")
   set(CMAKE_Fortran_FLAGS_RELEASE "-O2")
