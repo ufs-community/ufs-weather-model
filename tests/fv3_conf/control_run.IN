@@ -147,27 +147,3 @@ if [ $CPLCHM = .true. ]; then
   cp      ${PATHRT}/parm/gocart/*.rc .
   ln -sf  @[INPUTDATA_ROOT]/GOCART/p8/ExtData .
 fi
-
-#fix for land-sea mask inconsistency between fixed files and oro*, sfc* and gfs*
-#it will overwrite some files from coupled model input files
-#can be removed after fixing files for control_p8 
-if [[ $CCPP_SUITE = FV3_GFS_v17_p8 ]]; then
-  if [[ $ATMRES == C96 ]]; then
-    FV3_DIR=FV3_input_data
-  else
-    FV3_DIR=FV3_input_data${ATMRES#C}
-  fi
-  if [[ $ATMRES == C48 ]]; then
-     FV3_IC=@[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127_mx${OCNRES}/${SYEAR}${SMONTH}${SDAY}${SHOUR}
-  else
-     FV3_IC=@[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127_mx${OCNRES}
-  fi
-  cp -r ${FV3_IC}/sfc_data*.nc ./INPUT
-  cp -r ${FV3_IC}/gfs_data*.nc ./INPUT
-  cp -r @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/oro_@[ATMRES].mx@[OCNRES].tile1.nc INPUT/oro_data.tile1.nc
-  cp -r @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/oro_@[ATMRES].mx@[OCNRES].tile2.nc INPUT/oro_data.tile2.nc
-  cp -r @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/oro_@[ATMRES].mx@[OCNRES].tile3.nc INPUT/oro_data.tile3.nc
-  cp -r @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/oro_@[ATMRES].mx@[OCNRES].tile4.nc INPUT/oro_data.tile4.nc
-  cp -r @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/oro_@[ATMRES].mx@[OCNRES].tile5.nc INPUT/oro_data.tile5.nc
-  cp -r @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/oro_@[ATMRES].mx@[OCNRES].tile6.nc INPUT/oro_data.tile6.nc  
-fi
