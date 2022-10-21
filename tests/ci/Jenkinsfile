@@ -48,25 +48,47 @@ pipeline {
                     }
                 }
 
-                stages {
-                    stage('Test') {
-                        when {
-                            expression {
-                                !changeRequest()
-                            }
-                        }
+                agent {
+                    label 'docker-ufs-wm-ci'
+                }
 
+                environment {
+                    IMG_NAME = 'ci-test-weather'
+                }
+
+                stages {
+                    stage('Initialize') {
                         steps {
-                            build job: 'ufs-weather-model/ort-docker-pipeline', parameters: [string(name: 'TEST_NAME', value: "${env.TEST_NAME}"), string(name: 'TEST_CASE', value: "${env.TEST_CASE}"), string(name: 'WRAPPER_GIT_BRANCH', value: "${env.BRANCH_NAME}")]
+                            cleanWs()
+                            checkout scm
                         }
                     }
 
-                    stage('Test for Change Request') {
-                        when { changeRequest() }
-
+                    stage('Build') {
                         steps {
-                            build job: 'ufs-weather-model/ort-docker-pipeline', parameters: [string(name: 'TEST_NAME', value: "${env.TEST_NAME}"), string(name: 'TEST_CASE', value: "${env.TEST_CASE}"), booleanParam(name: 'WRAPPER_CHANGE_REQUEST', value: true), string(name: 'WRAPPER_GIT_BRANCH', value: "${env.CHANGE_TARGET}"), string(name: 'WRAPPER_CHANGE_BRANCH', value: "${env.CHANGE_BRANCH}"), string(name: 'WRAPPER_CHANGE_FORK', value: "${env.CHANGE_FORK}")]
+                            sh 'docker build --build-arg test_name="" --build-arg build_case="" --no-cache --compress --file "${WORKSPACE}/tests/ci/Dockerfile" --tag "${IMG_NAME}" "${WORKSPACE}"'
                         }
+                    }
+
+                    stage('Stage Test Data') {
+                        steps {
+                            sh 'docker volume rm --force DataVolume && docker run --detach --rm --volume DataVolume:/tmp noaaepic/input-data:20220414'
+                        }
+                    }
+
+                    stage('Test') {
+                        steps {
+                            sh 'docker run --rm --env test_name="${TEST_NAME}" --env run_case="${TEST_CASE}" --workdir /home/builder/ufs-weather-model/tests --volume DataVolume:/home/builder/data/NEMSfv3gfs --interactive --shm-size=512m "${IMG_NAME}"'
+                        }
+                    }
+                }
+
+                post {
+                    always {
+                        sh '''
+                            docker rmi -f "$(docker image ls | grep -E -m1 "${IMG_NAME}" | awk '{ print $3 }')"
+                            docker rmi -f "$(docker image ls | grep -E -m1 'noaaepic' | awk '{ print $3 }')"
+                        '''
                     }
                 }
             }

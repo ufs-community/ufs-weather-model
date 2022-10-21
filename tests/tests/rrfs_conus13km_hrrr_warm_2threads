@@ -1,15 +1,15 @@
 ###############################################################################
 #
-#  HRRR physics on 13km domain, with radar-derived MP temperature tendencies for 1 hour
+#  HRRR physics on 13km domain, different threads
 #
 ###############################################################################
 
 # This configuration is supposed to match the rrfs_dev1 parallel, so
 # do not change the namelist without checking the current parallel.
 
-export TEST_DESCR="HRRR physics on 13km domain, with radar-derived MP temperature tendencies for 1 hour"
+export TEST_DESCR="HRRR physics on 13km domain, different threads"
 
-export CNTL_DIR=rrfs_conus13km_radar_tten_warm
+export CNTL_DIR=rrfs_conus13km_hrrr_warm
 
 export LIST_FILES="sfcf000.nc \
                    sfcf001.nc \
@@ -19,8 +19,6 @@ export LIST_FILES="sfcf000.nc \
                    atmf002.nc"
 
 export_fv3
-
-export FH_DFI_RADAR='0.0, 0.25, 0.50, 0.75, 1.0'
 
 export SYEAR=2021
 export SMONTH=5
@@ -37,6 +35,12 @@ export WRITE_DOPOST=.false.
 export OUTPUT_HISTORY=.true.
 export OUTPUT_GRID=lambert_conformal
 export OUTPUT_FILE="'netcdf'"
+
+export THRD=2
+export TASKS=$TASKS_thrd
+export INPES=$INPES_thrd
+export JNPES=$JNPES_thrd
+export WRTTASK_PER_GROUP=6
 
 # Revert these two to GFS_typedefs defaults to avoid a crash:
 export SEDI_SEMI=.false.
