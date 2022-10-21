@@ -569,10 +569,6 @@ export PRINT_DIFF_PGR=.false.
 
 # Coupling
 export coupling_interval_fast_sec=0
-
-# Fix for land-sea mask inconsistency
-# Can be removed after fixing files for control_p8 and the ones that uses same files
-export OCNRES=100
 }
 
 export_cpl ()
