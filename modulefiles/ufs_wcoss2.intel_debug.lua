@@ -48,7 +48,7 @@ load(pathJoin("fms", fms_ver))
 bacio_ver=os.getenv("bacio_ver") or "2.4.1"
 load(pathJoin("bacio", bacio_ver))
 
-crtm_ver=os.getenv("crtm_ver") or "2.3.0"
+crtm_ver=os.getenv("crtm_ver") or "2.4.0"
 load(pathJoin("crtm", crtm_ver))
 
 g2_ver=os.getenv("g2_ver") or "3.4.5"

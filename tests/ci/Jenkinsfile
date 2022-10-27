@@ -1,0 +1,75 @@
+pipeline {
+    agent none
+
+    options {
+        disableConcurrentBuilds()
+        overrideIndexTriggers(false)
+        skipDefaultCheckout(true)
+    }
+
+    stages {
+        stage('ORT') {
+            matrix {
+                axes {
+                    axis {
+                        name 'TEST_NAME'
+                        values 'control', 'regional_control', 'cpld_control_nowave_noaero_p8'
+                    }
+
+                    axis {
+                        name 'TEST_CASE'
+                        values 'thr', 'mpi', 'dcp', 'rst', 'bit', 'dbg'
+                    }
+                }
+
+                excludes {
+                    exclude {
+                        axis {
+                            name 'TEST_NAME'
+                            values 'regional_control'
+                        }
+
+                        axis {
+                            name 'TEST_CASE'
+                            values 'mpi', 'rst', 'bit', 'dbg'
+                        }
+                    }
+
+                    exclude {
+                        axis {
+                            name 'TEST_NAME'
+                            values 'cpld_control_nowave_noaero_p8'
+                        }
+
+                        axis {
+                            name 'TEST_CASE'
+                            values 'mpi', 'dcp', 'rst', 'bit', 'thr' // TODO: Remove thr case from cpld_control_nowave_noaero_p8 exclusions when it is passing again
+                        }
+                    }
+                }
+
+                stages {
+                    stage('Test') {
+                        when {
+                            expression {
+                                !changeRequest()
+                            }
+                        }
+
+                        steps {
+                            build job: 'ufs-weather-model/ort-docker-pipeline', parameters: [string(name: 'TEST_NAME', value: "${env.TEST_NAME}"), string(name: 'TEST_CASE', value: "${env.TEST_CASE}"), string(name: 'WRAPPER_GIT_BRANCH', value: "${env.BRANCH_NAME}")]
+                        }
+                    }
+
+                    stage('Test for Change Request') {
+                        when { changeRequest() }
+
+                        steps {
+                            build job: 'ufs-weather-model/ort-docker-pipeline', parameters: [string(name: 'TEST_NAME', value: "${env.TEST_NAME}"), string(name: 'TEST_CASE', value: "${env.TEST_CASE}"), booleanParam(name: 'WRAPPER_CHANGE_REQUEST', value: true), string(name: 'WRAPPER_GIT_BRANCH', value: "${env.CHANGE_TARGET}"), string(name: 'WRAPPER_CHANGE_BRANCH', value: "${env.CHANGE_BRANCH}"), string(name: 'WRAPPER_CHANGE_FORK', value: "${env.CHANGE_FORK}")]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
