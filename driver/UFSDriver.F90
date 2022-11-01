@@ -74,6 +74,9 @@
 #ifdef FRONT_NOAH
       use FRONT_NOAH,       only: NOAH_SS  => SetServices
 #endif
+#ifdef FRONT_NOAHMP
+      use FRONT_NOAHMP,     only: NOAHMP_SS  => SetServices
+#endif
 #ifdef FRONT_LIS
       use FRONT_LIS,        only: LIS_SS   => SetServices
 #endif
@@ -442,6 +445,14 @@
               return  ! bail out
             endif
             call NUOPC_DriverAddComp(driver, trim(prefix), NOAH_SS, &
+              petList=petList, comp=comp, rc=rc)
+            if (ChkErr(rc,__LINE__,u_FILE_u)) return
+            found_comp = .true.
+          end if
+#endif
+#ifdef FRONT_NOAHMP
+          if (trim(model) == "noahmp") then
+            call NUOPC_DriverAddComp(driver, trim(prefix), NOAHMP_SS, &
               petList=petList, comp=comp, rc=rc)
             if (ChkErr(rc,__LINE__,u_FILE_u)) return
             found_comp = .true.
