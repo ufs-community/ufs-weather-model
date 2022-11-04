@@ -11,7 +11,7 @@ load(pathJoin("intel", intel_ver))
 craype_ver=os.getenv("craype_ver") or "2.7.13"
 load(pathJoin("craype", craype_ver))
 
-cray_mpich_ver=os.getenv("cray_mpich_ver") or "8.1.7"
+cray_mpich_ver=os.getenv("cray_mpich_ver") or "8.1.9"
 load(pathJoin("cray-mpich", cray_mpich_ver))
 
 cmake_ver=os.getenv("cmake_ver") or "3.20.2"
@@ -21,7 +21,7 @@ prepend_path("MODULEPATH", "/lfs/h1/emc/nceplibs/noscrub/hpc-stack/libs/hpc-stac
 
 hpc_ver=os.getenv("hpc_ver") or "1.2.0"
 hpc_intel_ver=os.getenv("hpc_intel_ver") or "19.1.3.304"
-hpc_cray_mpich_ver=os.getenv("hpc_cray_mpich_ver") or "8.1.7"
+hpc_cray_mpich_ver=os.getenv("hpc_cray_mpich_ver") or "8.1.9"
 load(pathJoin("hpc", hpc_ver))
 load(pathJoin("hpc-intel", hpc_intel_ver))
 load(pathJoin("hpc-cray-mpich", hpc_cray_mpich_ver))
