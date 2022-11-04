@@ -1,0 +1,102 @@
+pipeline {
+    agent none
+
+    options {
+        disableConcurrentBuilds()
+        overrideIndexTriggers(false)
+        skipDefaultCheckout(true)
+    }
+
+    parameters {
+
+        booleanParam name: 'WM_WE2E_COMPREHENSIVE_TESTS', defaultValue: false, description: 'Whether to execute the comprehensive end-to-end tests'
+    }
+
+    env {
+        WM_PLATFORM = 'orion'
+        WM_COMPILER = 'intel'
+    }
+
+    stages {
+
+        // Build and test the WM application on Orion platform using the intel compiler
+        stage('Build and Test') {
+
+            agent {
+                label ${env.WM_PLATFORM}
+            }
+
+            environment {
+                BRANCH_NAME_ESCAPED = env.BRANCH_NAME.replace('/', '_')
+                BUILD_VERSION = "${env.WM_PLATFORM}-${env.WM_COMPILER}-${env.BRANCH_NAME_ESCAPED}-${env.BUILD_NUMBER}"
+                BUILD_NAME = "ufs-weather-model${env.BUILD_VERSION}"
+                INSTALL_NAME = "install_${env.WM_COMPILER}"
+            }
+
+ //           stages {
+                // Clean the workspace, checkout the repository, and run checkout_externals
+                stage('Initialize') {
+                    steps {
+                        echo "Initializing WM (${env.WM_COMPILER}) build environment on ${env.WM_PLATFORM} (using ${env.WORKSPACE})"
+//                        cleanWs()
+//                        checkout scm
+//                        sh '"${WORKSPACE}/manage_externals/checkout_externals"'
+                    }
+                }
+
+                // // Run the unified build script; if successful create a tarball of the build and upload to S3
+                // stage('Build') {
+                //     steps {
+                //         echo "Building WM (${env.WM_COMPILER}) on ${env.WM_PLATFORM} (using ${env.WORKSPACE})"
+                //         sh 'bash --login "${WORKSPACE}/.cicd/scripts/ufs-wm_build.sh"'
+                //     }
+
+                //     post {
+                //         success {
+                //             sh 'cd "${WORKSPACE}/${INSTALL_NAME}" && tar --create --gzip --verbose --file "${WORKSPACE}/${BUILD_NAME}.tgz" *'
+                //             s3Upload consoleLogLevel: 'INFO', dontSetBuildResultOnFailure: false, dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'woc-epic-jenkins-artifacts', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false, managedArtifacts: true, noUploadOnFailure: true, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: "${env.BUILD_NAME}.tgz", storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false], [bucket: 'woc-epic-jenkins-artifacts', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false, managedArtifacts: true, noUploadOnFailure: true, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: "build_${env.WM_COMPILER}/wm_build-${env.WM_PLATFORM}-${env.WM_COMPILER}.log", storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'main', userMetadata: []
+                //         }
+                //     }
+                // }
+
+                // // Run the unified test script
+                // stage('Test') {
+                //     environment {
+                //         WM_WE2E_EXPERIMENT_BASE_DIR = "${env.WORKSPACE}/expt_dirs"
+                //     }
+
+                //     steps {
+                //         echo "Testing WM (${env.WM_COMPILER}) on ${env.WM_PLATFORM} (using ${env.WORKSPACE})"
+
+                //         // If executing for a Pull Request, check for the run_we2e_comprehensive_tests. If set,
+                //         // override the value of the WM_WE2E_COMPREHENSIVE_TESTS parameter
+                //         script {
+                //             def run_we2e_comprehensive_tests = params.WM_WE2E_COMPREHENSIVE_TESTS
+                //             def run_we2e_comprehensive_tests_label = 'run_we2e_comprehensive_tests'
+
+                //             if (env.CHANGE_ID) {
+                //                 pullRequest.labels.each {
+                //                     if (it == run_we2e_comprehensive_tests_label) {
+                //                         run_we2e_comprehensive_tests = true
+                //                     }
+                //                 }
+                //             }
+
+                //             sh "WM_WE2E_COMPREHENSIVE_TESTS=${run_we2e_comprehensive_tests}" + ' bash --login "${WORKSPACE}/.cicd/scripts/ufs-wm_test.sh"'
+                //         }
+                //     }
+
+                //     post {
+                //         always {
+                //             // Archive the test log files
+                //             sh 'cd "${WM_WE2E_EXPERIMENT_BASE_DIR}" && tar --create --gzip --verbose --file "${WORKSPACE}/we2e_test_logs-${WM_PLATFORM}-${WM_COMPILER}.tgz" */log.generate_FV3LAM_wflow */log.launch_FV3LAM_wflow */log/*'
+                //             // Remove the data sets from the experiments directory to conserve disk space
+                //             sh 'find "${WM_WE2E_EXPERIMENT_BASE_DIR}" -regextype posix-extended -regex "^.*(orog|[0-9]{10})$" -type d | xargs rm -rf'
+                //             s3Upload consoleLogLevel: 'INFO', dontSetBuildResultOnFailure: false, dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'woc-epic-jenkins-artifacts', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false, managedArtifacts: true, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: 'we2e_test_results-*-*.txt', storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false], [bucket: 'woc-epic-jenkins-artifacts', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false, managedArtifacts: true, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: 'we2e_test_logs-*-*.tgz', storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'main', userMetadata: []
+                //         }
+                //     }
+                // }
+//            }
+        }
+    }
+}
