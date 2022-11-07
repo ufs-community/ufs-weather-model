@@ -60,6 +60,10 @@ else
   if [[ $MACHINE_ID == gaea.* ]] ; then
     source /lustre/f2/pdata/esrl/gsd/contrib/lua-5.1.4.9/init/init_lmod.sh
   fi
+  # Needed for spack-stack
+  if [[ $MACHINE_ID == cheyenne.gnu ]] ; then
+    module purge
+  fi
   # Load fv3 module
   module use $PATHTR/modulefiles
   modulefile="ufs_${MACHINE_ID}"
