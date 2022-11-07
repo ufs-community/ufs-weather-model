@@ -39,9 +39,6 @@ elif [[ $MACHINE_ID = wcoss2* || $MACHINE_ID = acorn* ]] ; then
 
 elif [[ $MACHINE_ID = cheyenne* ]] ; then
     # We are on NCAR Cheyenne
-    if ( ! eval module help > /dev/null 2>&1 ) ; then
-        source /glade/u/apps/ch/modulefiles/default/localinit/localinit.sh
-    fi
     module purge
 
 elif [[ $MACHINE_ID = stampede* ]] ; then
