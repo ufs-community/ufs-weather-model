@@ -5,11 +5,6 @@ Load environment to compile ufs-weather-model on Hera using Intel
 cmake_ver=os.getenv("cmake_ver") or "3.20.1"
 load(pathJoin("cmake", cmake_ver))
 
-prepend_path("MODULEPATH", "/contrib/anaconda/modulefiles")
-
-anaconda_ver=os.getenv("anaconda_ver") or "anaconda3-5.3.1"
-load(pathJoin("anaconda", anaconda_ver))
-
 prepend_path("MODULEPATH", "/scratch2/NCEPDEV/nwprod/hpc-stack/libs/hpc-stack-gfsv16/modulefiles/stack")
 
 hpc_ver=os.getenv("hpc_ver") or "1.2.0"
