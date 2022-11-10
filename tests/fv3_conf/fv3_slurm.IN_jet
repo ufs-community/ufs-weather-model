@@ -36,7 +36,7 @@ export ESMF_RUNTIME_PROFILE_OUTPUT="SUMMARY"
 # Avoid job errors because of filesystem synchronization delays
 sync && sleep 1
 
-srun --label -n @[TASKS] ./fv3.exe
+srun --label -n @[TASKS] --cpus-per-task=@[THRD] ./fv3.exe
 
 echo "Model ended:    " `date`
 echo -n " $( date +%s )," >> job_timestamp.txt
