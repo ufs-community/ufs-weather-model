@@ -4,7 +4,7 @@
 #PBS -N @[JBNME]
 #PBS -A @[ACCNR]
 #PBS -q @[QUEUE]
-#PBS -l select=@[NODES]:ncpus=@[TPN]:mpiprocs=@[TPN]
+#PBS -l select=@[NODES]:ncpus=@[TPN]:mpiprocs=@[TPN]:ompthreads=@[THRD]
 #PBS -l walltime=00:@[WLCLK]:00
 
 set -eux
@@ -34,7 +34,7 @@ export ESMF_RUNTIME_PROFILE_OUTPUT="SUMMARY"
 # Avoid job errors because of filesystem synchronization delays
 sync && sleep 1
 
-mpiexec_mpt -p %g: -np @[TASKS] ./fv3.exe
+mpiexec_mpt -p %g: -np @[TASKS] omplace ./fv3.exe
 
 echo "Model ended:    " `date`
 echo -n " $( date +%s )," >> job_timestamp.txt
