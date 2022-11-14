@@ -1,12 +1,12 @@
 ###############################################################################
 #
-#  FV3 regional hi-res 3km test
+#  FV3 regional 2D write decomposition domain test
 #
 ###############################################################################
 
-export TEST_DESCR="Compare FV3 regional hi-res 3km results with previous trunk version"
+export TEST_DESCR="Compare FV3 regional 2D write decomposition domain with control test"
 
-export CNTL_DIR=fv3_regional_3km
+export CNTL_DIR=regional_control
 
 export LIST_FILES="dynf000.nc \
                    dynf006.nc \
@@ -19,19 +19,19 @@ export LIST_FILES="dynf000.nc \
 
 export_fv3
 
-export FV3_RUN=regional_3km_run.IN
+export FV3_RUN=regional_run.IN
 
 export OZ_PHYS_OLD=.false.
 export OZ_PHYS_NEW=.true.
 export H2O_PHYS=.true.
 export HYBEDMF=.false.
-export RESTART_INTERVAL="0"
+export RESTART_INTERVAL="3 -1"
 export WRITE_DOPOST=.true.
 export POSTAPP='lam'
 
 export CCPP_SUITE=FV3_GFS_v15_thompson_mynn_lam3km
-export INPUT_NML=regional_3km.nml.IN
-export MODEL_CONFIGURE=model_configure_regional_3km.IN
+export INPUT_NML=regional.nml.IN
+export MODEL_CONFIGURE=model_configure_regional.IN
 export DIAG_TABLE=diag_table_lam
 export FIELD_TABLE=field_table_regional
 
@@ -44,3 +44,4 @@ export OUTPUT_FH="3 -1"
 WRITE_GROUP=1
 WRTTASK_PER_GROUP=10
 NTILES=1
+export ITASKS=2
