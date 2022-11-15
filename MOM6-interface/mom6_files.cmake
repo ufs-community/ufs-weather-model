@@ -1,54 +1,54 @@
 list(APPEND mom6_src_files
-MOM6/src/ALE/coord_adapt.F90
-MOM6/src/ALE/coord_hycom.F90
-MOM6/src/ALE/coord_rho.F90
-MOM6/src/ALE/coord_sigma.F90
-MOM6/src/ALE/coord_slight.F90
-MOM6/src/ALE/coord_zlike.F90
-MOM6/src/ALE/MOM_ALE.F90
-MOM6/src/ALE/MOM_hybgen_regrid.F90
-MOM6/src/ALE/MOM_hybgen_remap.F90
-MOM6/src/ALE/MOM_hybgen_unmix.F90
-MOM6/src/ALE/MOM_regridding.F90
-MOM6/src/ALE/MOM_remapping.F90
-MOM6/src/ALE/P1M_functions.F90
-MOM6/src/ALE/P3M_functions.F90
-MOM6/src/ALE/PCM_functions.F90
-MOM6/src/ALE/PLM_functions.F90
-MOM6/src/ALE/polynomial_functions.F90
-MOM6/src/ALE/PPM_functions.F90
-MOM6/src/ALE/PQM_functions.F90
-MOM6/src/ALE/regrid_consts.F90
-MOM6/src/ALE/regrid_edge_values.F90
-MOM6/src/ALE/regrid_interp.F90
-MOM6/src/ALE/regrid_solvers.F90
+  MOM6/src/ALE/MOM_ALE.F90
+  MOM6/src/ALE/MOM_regridding.F90
+  MOM6/src/ALE/MOM_remapping.F90
+  MOM6/src/ALE/P1M_functions.F90
+  MOM6/src/ALE/P3M_functions.F90
+  MOM6/src/ALE/PCM_functions.F90
+  MOM6/src/ALE/PLM_functions.F90
+  MOM6/src/ALE/PPM_functions.F90
+  MOM6/src/ALE/PQM_functions.F90
+  MOM6/src/ALE/coord_adapt.F90
+  MOM6/src/ALE/coord_hycom.F90
+  MOM6/src/ALE/coord_rho.F90
+  MOM6/src/ALE/coord_sigma.F90
+  MOM6/src/ALE/coord_slight.F90
+  MOM6/src/ALE/coord_zlike.F90
+  MOM6/src/ALE/MOM_hybgen_regrid.F90
+  MOM6/src/ALE/MOM_hybgen_remap.F90
+  MOM6/src/ALE/MOM_hybgen_unmix.F90
+  MOM6/src/ALE/polynomial_functions.F90
+  MOM6/src/ALE/regrid_consts.F90
+  MOM6/src/ALE/regrid_edge_values.F90
+  MOM6/src/ALE/regrid_interp.F90
+  MOM6/src/ALE/regrid_solvers.F90
 
-
-MOM6/src/core/MOM_barotropic.F90
-MOM6/src/core/MOM_boundary_update.F90
-MOM6/src/core/MOM_check_scaling.F90
-MOM6/src/core/MOM_checksum_packages.F90
-MOM6/src/core/MOM_continuity.F90
-MOM6/src/core/MOM_continuity_PPM.F90
-MOM6/src/core/MOM_CoriolisAdv.F90
-MOM6/src/core/MOM_density_integrals.F90
-MOM6/src/core/MOM_dynamics_split_RK2.F90
-MOM6/src/core/MOM_dynamics_unsplit.F90
-MOM6/src/core/MOM_dynamics_unsplit_RK2.F90
-MOM6/src/core/MOM.F90
-MOM6/src/core/MOM_forcing_type.F90
-MOM6/src/core/MOM_grid.F90
-MOM6/src/core/MOM_interface_heights.F90
-MOM6/src/core/MOM_isopycnal_slopes.F90
-MOM6/src/core/MOM_open_boundary.F90
-MOM6/src/core/MOM_porous_barriers.F90
-MOM6/src/core/MOM_PressureForce.F90
-MOM6/src/core/MOM_PressureForce_FV.F90
-MOM6/src/core/MOM_PressureForce_Montgomery.F90
-MOM6/src/core/MOM_transcribe_grid.F90
-MOM6/src/core/MOM_unit_tests.F90
-MOM6/src/core/MOM_variables.F90
-MOM6/src/core/MOM_verticalGrid.F90
+  MOM6/src/core/MOM.F90
+  MOM6/src/core/MOM_CoriolisAdv.F90
+  MOM6/src/core/MOM_PressureForce.F90
+  MOM6/src/core/MOM_PressureForce_Montgomery.F90
+  MOM6/src/core/MOM_PressureForce_FV.F90
+  MOM6/src/core/MOM_barotropic.F90
+  MOM6/src/core/MOM_boundary_update.F90
+  MOM6/src/core/MOM_checksum_packages.F90
+  MOM6/src/core/MOM_check_scaling.F90
+  MOM6/src/core/MOM_continuity.F90
+  MOM6/src/core/MOM_continuity_PPM.F90
+  MOM6/src/core/MOM_density_integrals.F90
+  MOM6/src/core/MOM_dynamics_split_RK2.F90
+  MOM6/src/core/MOM_dynamics_unsplit.F90
+  MOM6/src/core/MOM_dynamics_unsplit_RK2.F90
+  MOM6/src/core/MOM_forcing_type.F90
+  MOM6/src/core/MOM_grid.F90
+  MOM6/src/core/MOM_interface_heights.F90
+  MOM6/src/core/MOM_isopycnal_slopes.F90
+  MOM6/src/core/MOM_open_boundary.F90
+  MOM6/src/core/MOM_porous_barriers.F90
+  MOM6/src/core/MOM_stoch_eos.F90
+  MOM6/src/core/MOM_transcribe_grid.F90
+  MOM6/src/core/MOM_unit_tests.F90
+  MOM6/src/core/MOM_variables.F90
+  MOM6/src/core/MOM_verticalGrid.F90
 
   MOM6/src/diagnostics/MOM_PointAccel.F90
   MOM6/src/diagnostics/MOM_debugging.F90
@@ -67,6 +67,39 @@ MOM6/src/core/MOM_verticalGrid.F90
   MOM6/src/equation_of_state/MOM_EOS_Wright.F90
   MOM6/src/equation_of_state/MOM_EOS_linear.F90
   MOM6/src/equation_of_state/MOM_TFreeze.F90
+
+  MOM6/src/equation_of_state/TEOS10/gsw_chem_potential_water_t_exact.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_ct_freezing_exact.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_ct_freezing_poly.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_ct_from_pt.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_ct_from_t.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_entropy_part.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_entropy_part_zerop.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_gibbs.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_gibbs_ice.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_gibbs_pt0_pt0.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_mod_error_functions.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_mod_freezing_poly_coefficients.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_mod_gibbs_ice_coefficients.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_mod_kinds.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_mod_specvol_coefficients.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_mod_teos10_constants.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_mod_toolbox.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_pt0_from_t.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_pt_from_ct.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_pt_from_t.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_rho.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_rho_first_derivatives.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_rho_second_derivatives.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_sp_from_sr.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_specvol.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_specvol_first_derivatives.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_specvol_second_derivatives.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_sr_from_sp.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_t_deriv_chem_potential_water_t_exact.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_t_freezing_exact.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_t_freezing_poly.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_t_from_ct.f90
 
   MOM6/src/framework/MOM_array_transform.F90
   MOM6/src/framework/MOM_checksums.F90
@@ -89,14 +122,18 @@ MOM6/src/core/MOM_verticalGrid.F90
   MOM6/src/framework/MOM_interpolate.F90
   MOM6/src/framework/MOM_intrinsic_functions.F90
   MOM6/src/framework/MOM_io.F90
+  MOM6/src/framework/posix.F90
   MOM6/src/framework/MOM_random.F90
   MOM6/src/framework/MOM_restart.F90
   MOM6/src/framework/MOM_safe_alloc.F90
   MOM6/src/framework/MOM_string_functions.F90
   MOM6/src/framework/MOM_unique_scales.F90
   MOM6/src/framework/MOM_unit_scaling.F90
+  MOM6/src/framework/MOM_unique_scales.F90
+  MOM6/src/framework/MOM_unit_testing.F90
   MOM6/src/framework/MOM_write_cputime.F90
   MOM6/src/framework/posix.F90
+  MOM6/src/framework/testing/MOM_file_parser_tests.F90
 
   MOM6/src/ice_shelf/MOM_ice_shelf.F90
   MOM6/src/ice_shelf/MOM_ice_shelf_diag_mediator.F90
@@ -176,6 +213,7 @@ MOM6/src/core/MOM_verticalGrid.F90
   MOM6/src/tracer/MOM_tracer_flow_control.F90
   MOM6/src/tracer/MOM_tracer_hor_diff.F90
   MOM6/src/tracer/MOM_tracer_registry.F90
+  MOM6/src/tracer/MOM_tracer_types.F90
   MOM6/src/tracer/RGC_tracer.F90
   MOM6/src/tracer/advection_test_tracer.F90
   MOM6/src/tracer/boundary_impulse_tracer.F90
@@ -235,20 +273,21 @@ MOM6/src/core/MOM_verticalGrid.F90
   MOM6/config_src/external/ODA_hooks/write_ocean_obs.F90
   MOM6/config_src/external/drifters/MOM_particles.F90
   MOM6/config_src/external/drifters/MOM_particles_types.F90
+  MOM6/config_src/external/database_comms/MOM_database_comms.F90
+  MOM6/config_src/external/database_comms/database_client_interface.F90
 
-
-  MOM6/config_src/infra/FMS1/MOM_coms_infra.F90
-  MOM6/config_src/infra/FMS1/MOM_constants.F90
-  MOM6/config_src/infra/FMS1/MOM_couplertype_infra.F90
-  MOM6/config_src/infra/FMS1/MOM_cpu_clock_infra.F90
-  MOM6/config_src/infra/FMS1/MOM_data_override_infra.F90
-  MOM6/config_src/infra/FMS1/MOM_diag_manager_infra.F90
-  MOM6/config_src/infra/FMS1/MOM_domain_infra.F90
-  MOM6/config_src/infra/FMS1/MOM_ensemble_manager_infra.F90
-  MOM6/config_src/infra/FMS1/MOM_error_infra.F90
-  MOM6/config_src/infra/FMS1/MOM_interp_infra.F90
-  MOM6/config_src/infra/FMS1/MOM_io_infra.F90
-  MOM6/config_src/infra/FMS1/MOM_time_manager.F90
+  MOM6/config_src/infra/FMS2/MOM_coms_infra.F90
+  MOM6/config_src/infra/FMS2/MOM_constants.F90
+  MOM6/config_src/infra/FMS2/MOM_couplertype_infra.F90
+  MOM6/config_src/infra/FMS2/MOM_cpu_clock_infra.F90
+  MOM6/config_src/infra/FMS2/MOM_data_override_infra.F90
+  MOM6/config_src/infra/FMS2/MOM_diag_manager_infra.F90
+  MOM6/config_src/infra/FMS2/MOM_domain_infra.F90
+  MOM6/config_src/infra/FMS2/MOM_ensemble_manager_infra.F90
+  MOM6/config_src/infra/FMS2/MOM_error_infra.F90
+  MOM6/config_src/infra/FMS2/MOM_interp_infra.F90
+  MOM6/config_src/infra/FMS2/MOM_io_infra.F90
+  MOM6/config_src/infra/FMS2/MOM_time_manager.F90
 
 )
 
@@ -263,6 +302,7 @@ list(APPEND mom6_nuopc_src_files
   MOM6/config_src/drivers/solo_driver/MOM_surface_forcing.F90
   MOM6/config_src/drivers/solo_driver/atmos_ocean_fluxes.F90
   MOM6/config_src/drivers/solo_driver/user_surface_forcing.F90
+  MOM6/config_src/drivers/unit_tests/MOM_unit_test_driver.F90
 )
 
 list(APPEND mom6_solo_src_files

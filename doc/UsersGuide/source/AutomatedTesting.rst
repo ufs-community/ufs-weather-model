@@ -4,69 +4,71 @@
 Automated Testing
 *****************
 
-The UFS Weather Model repository on GitHub employs two types of automated testing.
-One is the CI/CD on cloud and the other is the AutoRT on NOAA R&D platforms.
-Both are application level tests, and utilize the regression testing framework
+The UFS Weather Model repository on GitHub employs two types of automated testing:
+
+   #. CI/CD (Continuous Integration/Continuous Development) testing on the cloud 
+   #. AutoRT on NOAA R&D platforms
+
+Both are application level tests and utilize the regression testing framework
 discussed in :numref:`Section %s <UsingRegressionTest>`.
 
 =====
 CI/CD
 =====
 
-The following summarizes the CI/CD used in the UFS Weather Model:
+The UFS Weather Model (:term:`WM`) uses GitHub Actions (GHA), a GitHub-hosted continuous integration service, 
+to perform CI/CD testing. Build jobs are done on GHA-provided virtual machines. Test jobs are 
+performed on the Amazon Web Services (AWS) cloud platform using a number of EC2 instances. 
+Builds and tests are carried out in a Docker container. The container includes a pre-installed version of the
+:term:`HPC-Stack`, which includes all prerequisite libraries. Input data needed to run the tests 
+are stored as a separate Docker container.
 
-* GitHub Actions (GHA), a GitHub-hosted continuous integration service is used.
-* Build jobs are done on GHA-provided virtual machines.
-* Test jobs are performed on Amazon cloud using a number of EC2 instances.
-* Builds and tests are carried out using a Docker container.
-* Docker container has prerequisite libraries installed via the hpc-stack.
-* Input data needed to run tests are stored as a separate Docker container.
+When a developer makes a pull request (PR) to the UFS WM repository, a code
+manager may add the `run-ci` label, which triggers the CI/CD workflow. 
+The CI/CD workflow then executes the following steps:
 
+   #. A check is performed to make sure the UFS Weather Model and its first level
+      subcomponents are up to date with the top of the ``develop`` branch.
 
-When a developer makes a pull request (PR) to the UFS Weather Model repository, and a code
-manager subsequently adds the `run-ci` label, the CI/CD workflow is triggerd:
+   #. If the check is successful, build jobs are started on GHA-provided virtual machines
+      by downloading the hpc-stack Docker container stored in Docker Hub.
 
-#. A check is performed to make sure the UFS Weather Model and its first level
-   subcomponents are up to date with the top of develop branch.
+   #. Once all build jobs are successful, the created executable files are stored as
+      artifacts in GHA.
 
-#. If the check is successful, build jobs are started on GHA-provided virtual machines
-   by downloading the hpc-stack Docker container stored in Docker Hub.
+   #. A number of AWS EC2 instances are started.
 
-#. Once all build jobs are successful, the created executable files are stored as
-   artifacts in GHA.
+   #. Test jobs are started on AWS after downloading the hpc-stack Docker container,
+      the executable file from the build job, and the input-data Docker container.
 
-#. A number of AWS EC2 instances are started.
-
-#. Test jobs are started on Amazon cloud by downloading the hpc-stack Docker container,
-   the executable file from the build job, and the input-data Docker container.
-
-#. When all tests are finished, EC2 instances are stopped. Test results are reported
-   on GitHub.
+   #. When all tests are complete, EC2 instances are stopped. Test results are reported
+      on GitHub.
 
 
-The GHA-related yaml scripts are located in the ``.github/workflows/`` directory.
+The GHA-related ``yaml`` scripts are located in the ``.github/workflows/`` directory.
 ``build_test.yml`` is the main workflow file, and ``aux.yml`` is an auxiliary
-file responsible for checking the up-to-dateness of the PR branch, and starting
-and stopping the EC2 instances. Other CI-related scrips are located in the ``tests/ci/``
-directory. ``ci.sh`` is the main script that invokes Docker build and run. ``Dockerfile``
-is used to build UFS Weather Model. Other shell and python scripts help with various
-tasks such as checking the up-to-dateness of the PR branch (``repo_check.sh``),
-checking the status of EC2 instances (``check_status.py``), and configuring the test cases
-to carry out in the CI/CD workflow (``setup.py`` and ``ci.test``).
+file responsible for (1) checking that the PR branch is up-to-date and 
+(2) starting/stopping the EC2 instances. 
 
+Other CI-related scrips are located in the ``tests/ci/`` directory. ``ci.sh`` is the main script that 
+invokes Docker build and run. ``Dockerfile`` is used to build the UFS Weather Model. 
+Other shell and python scripts help with various tasks. For example:
+
+   * ``repo_check.sh`` checks that the PR branch is up-to-date.
+   * ``check_status.py`` checks the status of EC2 instances.
+   * ``setup.py`` and ``ci.test`` configure the test cases to execute in the CI/CD workflow.
+
+.. COMMENT: It sounds like aux.yml and repo_check.sh do the same thing... What's the difference?
 
 =======
 Auto RT
 =======
 
-The Automated Regression Testing (AutoRT) system:
+The Automated Regression Testing (AutoRT) system is a python program that automates the process 
+of regression testing on NOAA HPC platforms. 
+It contains the files in :numref:`Table %s <autoRT-files>` below:
 
-* Automates the process of regression testing on NOAA HPC platforms.
-
-* Written in python.
-
-* Contains the following files:
-
+.. _autoRT-files:
 .. table:: *Files for Automated Regression Testing (AutoRT) system*
 
    +-------------------+-----------------------------------------------------+
@@ -81,56 +83,46 @@ The Automated Regression Testing (AutoRT) system:
    |  jobs/rt.py       | Functions for the regression test job               |
    +-------------------+-----------------------------------------------------+
 
-~~~~~~~~~~~~~~~
+-----------------
 AutoRT Workflow
-~~~~~~~~~~~~~~~
-* Cron-job on supported HPC systems runs start_rt_auto.sh bash script every
-  15 minutes.
+-----------------
 
-  * This script verifies the HPC name, and sets the python paths. Runs
-    rt_auto.py.
+On supported HPC systems, a :term:`cron job` runs the ``start_rt_auto.sh`` bash script every 15 minutes. 
+This script checks the HPC name and sets certain python paths. Then, it runs ``rt_auto.py``, 
+which uses the Github API (through pyGitHub) to check the labels on pull requests to 
+``ufs-weather-model``. If a PR label matches the HPC name 
+(e.g., hera-intel-RT or cheyenne-gnu-BL), the label provides the HPC  
+with the compiler and job information to run a test or task on the machine. 
+If no PR label matches HPC name, the script exits.
 
-* rt_auto.py: Uses the Github API (Through pyGitHub)
+For example, a PR labeled ``gaea-intel-BL`` will be recognized by the HPC machine 'Gaea'. 
+It will set the ``RT_COMPILER`` variable to 'intel' and run the baseline creation script (``bl.py``).
+This script creats a job class that contains all information from the machine that the job will need to run.
+That information is sent into the ``jobs/rt[bl].py`` script. 
 
-  * Checks the pull requests to ufs-community/ufs-weather-model for
-    labels specific to the HPC name. If no match to HPC name, exits.
-    (i.e. hera-intel-RT or cheyenne-gnu-BL)
-
-  * If the HPC name matches the label in ufs-weather-model pull
-    request, the label provides the HPC with the compiler and job to run on
-    the machine.
-
-    * For example the label gaea-intel-BL will be recognized by the HPC
-      machine 'Gaea', set the RT_COMPILER variable to 'intel' and run the
-      baseline creation script (bl.py).
-
-  * Creates a Job class that contains all information from the machine
-    that the job will need to run. That is sent into the jobs/rt[bl].py script.
-
-* rt.py: Sets directories for storage, gets repo information, runs RT,
-  post processes.
+``rt.py`` sets directories for storage, gets repo information, runs the regression test, and 
+completes any required post processing.
 
 .. code-block:: python3
 
-    def run(job_obj):
-        logger = logging.getLogger('RT/RUN')
-        workdir = set_directories(job_obj)
-        branch, pr_repo_loc, repo_dir_str = clone_pr_repo(job_obj, workdir)
-        run_regression_test(job_obj, pr_repo_loc)
-        post_process(job_obj, pr_repo_loc, repo_dir_str, branch)
+   def run(job_obj):
+      logger = logging.getLogger('RT/RUN')
+      workdir = set_directories(job_obj)
+      branch, pr_repo_loc, repo_dir_str = clone_pr_repo(job_obj, workdir)
+      run_regression_test(job_obj, pr_repo_loc)
+      post_process(job_obj, pr_repo_loc, repo_dir_str, branch)
 
-* bl.py: (similar to rt.py) Adds functionality to create baselines before
-  running regression testing.
+``bl.py``: (similar to ``rt.py``) Adds functionality to create baselines before running regression testing.
 
 .. code-block:: python3
-  :emphasize-lines: 5,6,7
+   :emphasize-lines: 5,6,7
 
-    def run(job_obj):
-        logger = logging.getLogger('BL/RUN')
-        workdir, rtbldir, blstore = set_directories(job_obj)
-        pr_repo_loc, repo_dir_str = clone_pr_repo(job_obj, workdir)
-        bldate = get_bl_date(job_obj, pr_repo_loc)
-        bldir = f'{blstore}/develop-{bldate}/{job_obj.compiler.upper()}'
-        bldirbool = check_for_bl_dir(bldir, job_obj)
-        run_regression_test(job_obj, pr_repo_loc)
-        post_process(job_obj, pr_repo_loc, repo_dir_str, rtbldir, bldir)
+      def run(job_obj):
+         logger = logging.getLogger('BL/RUN')
+         workdir, rtbldir, blstore = set_directories(job_obj)
+         pr_repo_loc, repo_dir_str = clone_pr_repo(job_obj, workdir)
+         bldate = get_bl_date(job_obj, pr_repo_loc)
+         bldir = f'{blstore}/develop-{bldate}/{job_obj.compiler.upper()}'
+         bldirbool = check_for_bl_dir(bldir, job_obj)
+         run_regression_test(job_obj, pr_repo_loc)
+         post_process(job_obj, pr_repo_loc, repo_dir_str, rtbldir, bldir)

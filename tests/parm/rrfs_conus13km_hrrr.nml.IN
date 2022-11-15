@@ -1,3 +1,6 @@
+! This configuration is supposed to match the rrfs_dev1 parallel, so
+! do not change the namelist without checking the current parallel.
+
 &atmos_model_nml
     blocksize = 32
     ccpp_suite = '@[CCPP_SUITE]'
@@ -41,7 +44,7 @@
 
 &fms_nml
     clock_grain = 'ROUTINE'
-    domains_stack_size = 3000000
+    domains_stack_size = 5000000 ! Smoke needs a higher value than 3000000 default.
     print_memory_usage = .false.
 /
 
@@ -132,11 +135,28 @@
     grid_file = 'INPUT/grid_spec.nc'
 /
 
+
 &gfs_physics_nml
+    sfclay_compute_flux = @[SFCLAY_COMPUTE_FLUX]
     fh_dfi_radar = @[FH_DFI_RADAR]
     bl_mynn_edmf = 1
     bl_mynn_edmf_mom = 1
     bl_mynn_tkeadvect = .true.
+    rrfs_smoke = @[RRFS_SMOKE]
+    rrfs_smoke_debug = .false.
+    seas_opt = @[SEAS_OPT]
+    mix_chem = @[RRFS_SMOKE]
+    fire_turb = @[RRFS_SMOKE]
+    dust_opt = 5
+    drydep_opt = 1 
+    smoke_forecast = @[RRFS_SMOKE]
+    aero_ind_fdb = .false.
+    aero_dir_fdb = .false.
+    addsmoke_flag = 1
+    biomass_burn_opt = 1
+    wetdep_ls_opt = 1    
+    do_plumerise = @[RRFS_SMOKE]
+    plumerisefire_frq = 60
     cal_pre = .false.
     cdmbgwd = @[CDMBWD]
     cnvcld = .false.
@@ -186,21 +206,22 @@
     imfdeepcnv = @[IMFDEEPCNV]
     imfshalcnv = @[IMFSHALCNV]
     imp_physics = @[IMP_PHYSICS]
+    ! Yes, really, I mean it. Stop changing the iopt settings too.
+    ! They need to match the RRFS_dev1 parallel.
+    iopt_alb = 2
+    iopt_btr = 1
+    iopt_crs = 1
+    iopt_dveg = 2
+    iopt_frz = 1
+    iopt_inf = 1
+    iopt_rad = 1
+    iopt_run = 1
+    iopt_sfc = 1
+    iopt_snf = 4
+    iopt_stc = 1
+    iopt_tbot = 2
     sedi_semi   = @[SEDI_SEMI]
     decfl       = @[DECFL]
-    iopt_dveg = 4
-    iopt_crs  = 2
-    iopt_btr  = 1
-    iopt_run  = 1
-    iopt_sfc  = 3
-    iopt_frz  = 1
-    iopt_inf  = 1
-    iopt_rad  = 3
-    iopt_alb  = 1
-    iopt_snf  = 4
-    iopt_tbot = 2
-    iopt_stc  = 3
-    iopt_trs  = 2
     iovr = @[IOVR]
     isol = 2
     isot = 1
@@ -213,9 +234,10 @@
 !    lfnc_k = @[LFNC_K]
 !    lfnc_p0 = @[LFNC_P0]
     lheatstrg = @[LHEATSTRG]
-!    lkm = @[LKM]
+    lkm = @[LKM]
     lndp_type = @[LNDP_TYPE]
     lradar = @[LRADAR]
+    lrefres = .true.
 !    lseaspray = @[LSEASPRAY]
     lsm = @[LSM]
     lsoil = 9

@@ -37,6 +37,10 @@
        canonical_units: kg m-2 s-1
        description: atmosphere export
      #
+     - standard_name: Faxa_ocph
+       canonical_units: kg m-2 s-1
+       description: atmosphere export
+     #
      - standard_name: Faxa_dstdry
        canonical_units: kg m-2 s-1
        description: atmosphere export
@@ -65,6 +69,7 @@
        description: atmosphere export
      #
      - standard_name: Faxa_rainc
+       alias: mean_prec_rate_conv
        canonical_units: kg m-2 s-1
        description: atmosphere export
      #
@@ -120,6 +125,11 @@
        canonical_units: Pa
        description: atmosphere export - pressure at lowest model layer
      #
+     - standard_name: Sa_prsl
+       alias: inst_pres_height_lowest_from_phys
+       canonical_units: Pa
+       description: atmosphere export - pressure at lowest model layer
+     #
      - standard_name: Sa_pslv
        alias: inst_pres_height_surface
        canonical_units: Pa
@@ -131,6 +141,11 @@
      #
      - standard_name: Sa_shum
        alias: inst_spec_humid_height_lowest
+       canonical_units: kg kg-1
+       description: atmosphere export - bottom layer specific humidity
+     #
+     - standard_name: Sa_qa
+       alias: inst_spec_humid_height_lowest_from_phys
        canonical_units: kg kg-1
        description: atmosphere export - bottom layer specific humidity
      #
@@ -146,6 +161,11 @@
        canonical_units: K
        description: atmosphere export - sea surface skin temperature
      #
+     - standard_name: Sa_ta
+       alias: inst_temp_height_lowest_from_phys
+       canonical_units: K
+       description: atmosphere export - bottom layer temperature
+     #
      - standard_name: Sa_u
        alias: inst_zonal_wind_height_lowest
        canonical_units: m s-1
@@ -153,6 +173,16 @@
      #
      - standard_name: Sa_v
        alias: inst_merid_wind_height_lowest
+       canonical_units: m s-1
+       description: atmosphere export - bottom layer meridional wind
+     #
+     - standard_name: Sa_ua
+       alias: inst_zonal_wind_height_lowest_from_phys
+       canonical_units: m s-1
+       description: atmosphere export - bottom layer zonal wind
+     #
+     - standard_name: Sa_va
+       alias: inst_merid_wind_height_lowest_from_phys
        canonical_units: m s-1
        description: atmosphere export - bottom layer meridional wind
      #
@@ -181,15 +211,39 @@
        canonical_units: N m-2
        description: atmosphere export - meridional component of momentum flux
      #
+     - standard_name: Faxx_evap
+       canonical_units: kg m-2 s-1
+       description: atmosphere import
+     #
      - standard_name: Faxa_lat
        alias: mean_laten_heat_flx
        canonical_units: W m-2
        description: atmosphere export - latent heat flux
      #
+     - standard_name: Faxx_lat
+       alias: mean_laten_heat_flx
+       canonical_units: W m-2
+       description: atmosphere import
+     #
      - standard_name: Faxx_lwup
        alias: mean_up_lw_flx
        canonical_units: W m-2
        description: atmosphere import - merged ocn/ice flux
+     #
+     - standard_name: Faxx_sen
+       alias: mean_sensi_heat_flx
+       canonical_units: W m-2
+       description: atmosphere import
+     #
+     - standard_name: Faxx_taux
+       alias: mean_zonal_moment_flx
+       canonical_units: N m-2
+       description: atmosphere import - zonal component of momentum flux
+     #
+     - standard_name: Faxx_tauy
+       alias: mean_merid_moment_flx
+       canonical_units: N m-2
+       description: atmosphere import - meridional component of momentum flux
      #
      - standard_name: Sa_ofrac
        alias: openwater_frac_in_atm
@@ -248,6 +302,16 @@
      - standard_name: height
        canonical_units: m
        description: orography
+     #
+     - standard_name: Sa_exner
+       alias: inst_exner_function_height_lowest
+       canonical_units: 1
+       description: dimensionless exner function at surface adjacent layer
+     #
+     - standard_name: Sa_ustar
+       alias: surface_friction_velocity
+       canonical_units: m s-1
+       description: surface friction velocity
      #
      #-----------------------------------
      # section: sea-ice export
@@ -414,6 +478,14 @@
        alias: mean_snow_volume
        canonical_units: m
        description: sea-ice export - volume of snow per unit area
+     #
+     - standard_name: Si_thick
+       canonical_units: m
+       description: sea-ice export - ice thickness
+     #
+     - standard_name: Si_floediam
+       canonical_units: m
+       description: sea-ice export - ice floe diameter
      #
      #-----------------------------------
      # section: ocean export to mediator
@@ -623,6 +695,35 @@
      - alias: Faox_evap
        standard_name : mean_evap_rate
        description: mediator calculation - atm/ocn specific humidity flux
+     #
+     #-----------------------------------
+     # fields to use fluxes from mediator
+     #-----------------------------------
+     #
+     - standard_name: Faox_lat
+       alias: mean_laten_heat_flx_atm_into_ocn
+       canonical_units: W m-2
+       description: mediator export - atm/ocn surface latent heat flux
+     #
+     - standard_name: Faox_sen
+       alias: mean_sensi_heat_flx_atm_into_ocn
+       canonical_units: W m-2
+       description: mediator export - atm/ocn surface sensible heat flux
+     #
+     - standard_name: Faox_lwup
+       alias: mean_up_lw_flx_ocn
+       canonical_units: W m-2
+       description: mediator export - long wave radiation flux over the ocean
+     #
+     - standard_name: Faox_taux
+       alias: stress_on_air_ocn_zonal
+       canonical_units: N m-2
+       description: mediator export
+     #
+     - standard_name: Faox_tauy
+       alias: stress_on_air_ocn_merid
+       canonical_units: N m-2
+       description: mediator export
      #
      #-----------------------------------
      # section: atmosphere fields that need to be defined but are not used
@@ -907,6 +1008,11 @@
      - standard_name: Sw_wavsvv
        alias: wavsvv
      #
+     - standard_name: Sw_elevation_spectrum
+       alias: wave_elevation_spectrum
+       canonical_units: m2/s
+       description: wave elevation spectrum
+     #
      #-----------------------------------
      # section: FV3 atm export/import to/from JEDI
      #-----------------------------------
@@ -999,6 +1105,32 @@
        canonical_units: K
        description: two meter temperature
      #
+     #-----------------------------------
+     # section: land export
+     #-----------------------------------
+     #
+     - standard_name: Sl_lfrac
+       canonical_units: 1
+       description: land export
+     #
+     - standard_name: Sl_lfrin
+       canonical_units: 1
+       description: land export
+     #
+     - standard_name: Sl_t
+       canonical_units: K
+       description: land export
+     #
      - standard_name: inst_tracer_diag_aod
        canonical_units: 1
        description: AOD
+     #
+     - standard_name: Fall_lat
+       alias: mean_laten_heat_flx_lnd_to_atm
+       canonical_units: W m-2
+       description: land export to atm - atm/lnd latent heat flux
+     #
+     - standard_name: Fall_sen
+       alias: mean_sensi_heat_flx_lnd_to_atm
+       canonical_units: W m-2
+       description: land export to atm - atm/lnd sensible heat flux

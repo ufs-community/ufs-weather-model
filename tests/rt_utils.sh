@@ -15,6 +15,82 @@ qsub_id=0
 slurm_id=0
 bsub_id=0
 
+function compute_petbounds_and_tasks() {
+
+  # each test MUST define ${COMPONENT}_tasks variable for all components it is using
+  # and MUST NOT define those that it's not using or set the value to 0.
+
+  # ATM is a special case since it is running on the sum of compute and io tasks.
+  # CHM component and mediator are running on ATM compute tasks only.
+
+  if [[ $DATM_CDEPS = 'false' ]]; then
+    if [[ ${ATM_compute_tasks:-0} -eq 0 ]]; then
+      ATM_compute_tasks=$((INPES * JNPES * NTILES))
+    fi
+    if [[ $QUILTING = '.true.' ]]; then
+      ATM_io_tasks=$((WRITE_GROUP * WRTTASK_PER_GROUP))
+    fi
+  fi
+
+  local n=0
+  unset atm_petlist_bounds ocn_petlist_bounds ice_petlist_bounds wav_petlist_bounds chm_petlist_bounds med_petlist_bounds aqm_petlist_bounds
+
+  # ATM
+  ATM_io_tasks=${ATM_io_tasks:-0}
+  if [[ $((ATM_compute_tasks + ATM_io_tasks)) -gt 0 ]]; then
+     atm_petlist_bounds="${n} $((n + ATM_compute_tasks + ATM_io_tasks -1))"
+     n=$((n + ATM_compute_tasks + ATM_io_tasks))
+  fi
+
+  # OCN
+  if [[ ${OCN_tasks:-0} -gt 0 ]]; then
+     ocn_petlist_bounds="${n} $((n + OCN_tasks - 1))"
+     n=$((n + OCN_tasks))
+  fi
+
+  # ICE
+  if [[ ${ICE_tasks:-0} -gt 0 ]]; then
+     ice_petlist_bounds="${n} $((n + ICE_tasks - 1))"
+     n=$((n + ICE_tasks))
+  fi
+
+  # WAV
+  if [[ ${WAV_tasks:-0} -gt 0 ]]; then
+     wav_petlist_bounds="${n} $((n + WAV_tasks - 1))"
+     n=$((n + WAV_tasks))
+  fi
+
+  # CHM
+  chm_petlist_bounds="0 $((ATM_compute_tasks - 1))"
+
+  # MED
+  med_petlist_bounds="0 $((ATM_compute_tasks - 1))"
+
+  # AQM
+  aqm_petlist_bounds="0 $((ATM_compute_tasks - 1))"
+
+  # LND 
+  if [[ ${LND_tasks:-0} -gt 0 ]]; then
+     lnd_petlist_bounds="${n} $((n + LND_tasks - 1))"
+     n=$((n + LND_tasks))
+  fi
+
+  UFS_tasks=${n}
+
+  echo "ATM_petlist_bounds: ${atm_petlist_bounds:-}"
+  echo "OCN_petlist_bounds: ${ocn_petlist_bounds:-}"
+  echo "ICE_petlist_bounds: ${ice_petlist_bounds:-}"
+  echo "WAV_petlist_bounds: ${wav_petlist_bounds:-}"
+  echo "CHM_petlist_bounds: ${chm_petlist_bounds:-}"
+  echo "MED_petlist_bounds: ${med_petlist_bounds:-}"
+  echo "AQM_petlist_bounds: ${aqm_petlist_bounds:-}"
+  echo "LND_petlist_bounds: ${lnd_petlist_bounds:-}"
+  echo "UFS_tasks         : ${UFS_tasks:-}"
+
+  # TASKS is now set to UFS_TASKS
+  export TASKS=$UFS_tasks
+}
+
 interrupt_job() {
   set -x
   if [[ $SCHEDULER = 'pbs' ]]; then
@@ -283,7 +359,7 @@ check_results() {
         fi
 
         if [[ $d -eq 1 && ${i##*.} == 'nc' ]] ; then
-          if [[ ${MACHINE_ID} =~ orion || ${MACHINE_ID} =~ hera || ${MACHINE_ID} =~ wcoss_dell_p3 || ${MACHINE_ID} =~ wcoss_cray || ${MACHINE_ID} =~ cheyenne || ${MACHINE_ID} =~ gaea || ${MACHINE_ID} =~ jet || ${MACHINE_ID} =~ s4 ]] ; then
+          if [[ ${MACHINE_ID} =~ orion || ${MACHINE_ID} =~ hera || ${MACHINE_ID} =~ wcoss2 || ${MACHINE_ID} =~ acorn || ${MACHINE_ID} =~ cheyenne || ${MACHINE_ID} =~ gaea || ${MACHINE_ID} =~ jet || ${MACHINE_ID} =~ s4 ]] ; then
             printf ".......ALT CHECK.." >> ${REGRESSIONTEST_LOG}
             printf ".......ALT CHECK.."
             ${PATHRT}/compare_ncfile.py ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i > compare_ncfile.log 2>&1 && d=$? || d=$?
@@ -390,16 +466,10 @@ rocoto_create_compile_task() {
   NATIVE=""
   BUILD_CORES=8
   BUILD_WALLTIME="00:30:00"
-  if [[ ${MACHINE_ID} == wcoss_dell_p3 ]]; then
-    BUILD_CORES=1
-    NATIVE="<memory>8G</memory> <native>-R 'affinity[core(1)]'</native>"
+  if [[ ${MACHINE_ID} == jet.* ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
-  if [[ ${MACHINE_ID} == wcoss_cray ]]; then
-    BUILD_CORES=24
-    NATIVE="<exclusive></exclusive> <envar><name>PATHTR</name><value>&PATHTR;</value></envar>"
-  fi
-  if [[ ${MACHINE_ID} == jet.* ]]; then
+  if [[ ${MACHINE_ID} == hera.* ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
   if [[ ${MACHINE_ID} == orion.* ]]; then
@@ -410,7 +480,7 @@ rocoto_create_compile_task() {
   fi
 
   cat << EOF >> $ROCOTO_XML
-  <task name="compile_${COMPILE_NR}" maxtries="3">
+  <task name="compile_${COMPILE_NR}" maxtries="${ROCOTO_COMPILE_MAXTRIES:-3}">
     <command>&PATHRT;/run_compile.sh &PATHRT; &RUNDIR_ROOT; "${MAKE_OPT}" ${COMPILE_NR}</command>
     <jobname>compile_${COMPILE_NR}</jobname>
     <account>${ACCNR}</account>
@@ -438,15 +508,9 @@ rocoto_create_run_task() {
   fi
 
   NATIVE=""
-  if [[ ${MACHINE_ID} == wcoss_dell_p3 ]]; then
-    NATIVE="<nodesize>28</nodesize><native>-R 'affinity[core(${THRD})]'</native>"
-  fi
-  if [[ ${MACHINE_ID} == wcoss_cray ]]; then
-    NATIVE="<exclusive></exclusive>"
-  fi
 
   cat << EOF >> $ROCOTO_XML
-    <task name="${TEST_NAME}${RT_SUFFIX}" maxtries="1">
+    <task name="${TEST_NAME}${RT_SUFFIX}" maxtries="${ROCOTO_TEST_MAXTRIES:-3}">
       <dependency> $DEP_STRING </dependency>
       <command>&PATHRT;/run_test.sh &PATHRT; &RUNDIR_ROOT; ${TEST_NAME} ${TEST_NR} ${COMPILE_NR} </command>
       <jobname>${TEST_NAME}${RT_SUFFIX}</jobname>
@@ -469,22 +533,60 @@ rocoto_kill() {
    done
 }
 
-rocoto_run() {
-
-  state="Active"
-  while [[ $state != "Done" ]]
-  do
+rocoto_step() {
+    set -e
+    echo "Unknown" > rocoto_workflow.state
+    # Run one iteration of rocotorun and rocotostat.
     $ROCOTORUN -v 10 -w $ROCOTO_XML -d $ROCOTO_DB
-    sleep 10
+    sleep 1
+    #   Is it done?
     state=$($ROCOTOSTAT -w $ROCOTO_XML -d $ROCOTO_DB -s | grep 197001010000 | awk -F" " '{print $2}')
-    dead_compile=$($ROCOTOSTAT -w $ROCOTO_XML -d $ROCOTO_DB | grep compile_ | grep DEAD | head -1 | awk -F" " '{print $2}')
-    if [[ ! -z ${dead_compile} ]]; then
-      echo "y" | ${ROCOTOCOMPLETE} -w $ROCOTO_XML -d $ROCOTO_DB -m ${dead_compile}_tasks
-      ${ROCOTOCOMPLETE} -w $ROCOTO_XML -d $ROCOTO_DB -t ${dead_compile}
-    fi
-    sleep 20
-  done
+    echo "$state" > $ROCOTO_STATE
+}
 
+rocoto_run() {
+  # Run the rocoto workflow until it is complete
+  local naptime=60
+  local step_attempts=0
+  local max_step_attempts=100 # infinite loop safeguard; should never reach this
+  local start_time=0
+  local now_time=0
+  local max_time=3600 # seconds to wait for Rocoto to start working again
+  local result=0
+  state="Active"
+  while [[ $state != "Done" ]]; do
+      # Run one iteration of rocotorun and rocotostat.  Use an
+      # exponential backoff algorithm to handle temporary system
+      # failures breaking Rocoto.
+      start_time=$( env TZ=UTC date +%s )
+      for step_attempts in $( seq 1 "$max_step_attempts" ) ; do
+          now_time=$( env TZ=UTC date +%s )
+
+          set +e
+          ( rocoto_step )
+          result=$?
+          state=$( cat $ROCOTO_STATE )
+          set -e
+
+          if [[ "${state:-Unknown}" == Done ]] ; then
+              set +x
+              echo "Rocoto workflow has completed."
+              set -x
+              return 0
+          elif [[ $result == 0 ]] ; then
+              break # rocoto_step succeeded
+          elif (( now_time-start_time > max_time || step_attempts >= max_step_attempts )) ; then
+              set +x
+              echo "Rocoto commands have failed $step_attempts times, for $(( (now_time-start_time+30)/60 )) minutes."
+              echo "There may be something wrong with the $( hostname ) node or the batch system."
+              echo "I'm giving up. Sorry."
+              set -x
+              return 2
+          fi
+          sleep $(( naptime * 2**((step_attempts-1)%4) * RANDOM/32767 ))
+      done
+      sleep $naptime
+  done
 }
 
 
@@ -541,7 +643,7 @@ ecflow_run() {
   not_running=$?
   if [[ $not_running -eq 1 ]]; then
     echo "ecflow_server is NOT running on ${ECF_HOST}:${ECF_PORT}"
-    if [[ ${MACHINE_ID} == wcoss2 ]]; then
+    if [[ ${MACHINE_ID} == wcoss2.* || ${MACHINE_ID} == acorn.* ]]; then
       # Annoying "Has NCO assigned port $ECF_PORT for use by this account? (yes/no) ".
       echo yes | ${ECFLOW_START} -p ${ECF_PORT} -d ${RUNDIR_ROOT}/ecflow_server
     elif [[ ${MACHINE_ID} == jet.* ]]; then

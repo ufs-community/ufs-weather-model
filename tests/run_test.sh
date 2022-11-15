@@ -23,58 +23,13 @@ write_fail_test() {
   exit 1
 }
 
-function compute_petbounds() {
-
-  # each test MUST define ${COMPONENT}_tasks variable for all components it is using
-  # and MUST NOT define those that it's not using or set the value to 0.
-
-  # ATM is a special case since it is running on the sum of compute and io tasks.
-  # CHM component and mediator are running on ATM compute tasks only.
-
-  local n=0
-  unset atm_petlist_bounds ocn_petlist_bounds ice_petlist_bounds wav_petlist_bounds chm_petlist_bounds med_petlist_bounds
-
-  # ATM
-  ATM_io_tasks=${ATM_io_tasks:-0}
-  if [[ $((ATM_compute_tasks + ATM_io_tasks)) -gt 0 ]]; then
-     atm_petlist_bounds="${n} $((n + ATM_compute_tasks + ATM_io_tasks -1))"
-     n=$((n + ATM_compute_tasks + ATM_io_tasks))
-  fi
-
-  # OCN
-  if [[ ${OCN_tasks:-0} -gt 0 ]]; then
-     ocn_petlist_bounds="${n} $((n + OCN_tasks - 1))"
-     n=$((n + OCN_tasks))
-  fi
-
-  # ICE
-  if [[ ${ICE_tasks:-0} -gt 0 ]]; then
-     ice_petlist_bounds="${n} $((n + ICE_tasks - 1))"
-     n=$((n + ICE_tasks))
-  fi
-
-  # WAV
-  if [[ ${WAV_tasks:-0} -gt 0 ]]; then
-     wav_petlist_bounds="${n} $((n + WAV_tasks - 1))"
-     n=$((n + WAV_tasks))
-  fi
-
-  # CHM
-  chm_petlist_bounds="0 $((ATM_compute_tasks - 1))"
-
-  # MED
-  med_petlist_bounds="0 $((ATM_compute_tasks - 1))"
-
-  UFS_tasks=${n}
-
-  echo "ATM_petlist_bounds: ${atm_petlist_bounds:-}"
-  echo "OCN_petlist_bounds: ${ocn_petlist_bounds:-}"
-  echo "ICE_petlist_bounds: ${ice_petlist_bounds:-}"
-  echo "WAV_petlist_bounds: ${wav_petlist_bounds:-}"
-  echo "CHM_petlist_bounds: ${chm_petlist_bounds:-}"
-  echo "MED_petlist_bounds: ${med_petlist_bounds:-}"
-  echo "UFS_tasks         : ${UFS_tasks:-}"
-
+remove_fail_test() {
+    echo "Removing test failure flag file for ${TEST_NAME} ${TEST_NR}"
+    if [[ ${OPNREQ_TEST} == true ]] ; then
+        rm -f $PATHRT/fail_opnreq_test_${TEST_NR}
+    else
+        rm -f $PATHRT/fail_test_${TEST_NR}
+    fi
 }
 
 if [[ $# != 5 ]]; then
@@ -90,11 +45,7 @@ export COMPILE_NR=$5
 
 cd ${PATHRT}
 OPNREQ_TEST=${OPNREQ_TEST:-false}
-if [[ ${OPNREQ_TEST} == true ]]; then
-  rm -f fail_opnreq_test_${TEST_NR}
-else
-  rm -f fail_test_${TEST_NR}
-fi
+remove_fail_test
 
 [[ -e ${RUNDIR_ROOT}/run_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
 source default_vars.sh
@@ -133,12 +84,16 @@ cd $RUNDIR
 ###############################################################################
 # Make configure and run files
 ###############################################################################
-
+MACHINE_ID=${MACHINE_ID:-false}
 # FV3 executable:
 cp ${PATHRT}/fv3_${COMPILE_NR}.exe                 fv3.exe
 
 # modulefile for FV3 prerequisites:
-cp ${PATHRT}/modules.fv3_${COMPILE_NR}             modules.fv3
+if [[ $MACHINE_ID == gaea.* ]] || [[ $MACHINE_ID == linux.* ]]; then
+  cp ${PATHRT}/modules.fv3_${COMPILE_NR}             modules.fv3
+else
+  cp ${PATHRT}/modules.fv3_${COMPILE_NR}.lua             modules.fv3.lua
+fi
 cp ${PATHTR}/modulefiles/ufs_common*               .
 
 # Get the shell file that loads the "module" command and purges modules:
@@ -161,24 +116,9 @@ fi
 
 atparse < ${PATHRT}/parm/${MODEL_CONFIGURE:-model_configure.IN} > model_configure
 
-if [[ $DATM_CDEPS = 'false' ]]; then
-  if [[ ${ATM_compute_tasks:-0} -eq 0 ]]; then
-    ATM_compute_tasks=$((INPES * JNPES * NTILES))
-  fi
-  if [[ $QUILTING = '.true.' ]]; then
-    ATM_io_tasks=$((WRITE_GROUP * WRTTASK_PER_GROUP))
-  fi
-fi
-
-compute_petbounds
+compute_petbounds_and_tasks
 
 atparse < ${PATHRT}/parm/${NEMS_CONFIGURE:-nems.configure} > nems.configure
-
-# remove after all tests pass
-if [[ $TASKS -ne $UFS_tasks ]]; then
-   echo "$TASKS -ne $UFS_tasks "
-  exit 1
-fi
 
 if [[ "Q${INPUT_NEST02_NML:-}" != Q ]] ; then
     INPES_NEST=$INPES_NEST02; JNPES_NEST=$JNPES_NEST02
@@ -227,7 +167,7 @@ fi
 
 # diag table
 if [[ "Q${DIAG_TABLE:-}" != Q ]] ; then
-  cp ${PATHRT}/parm/diag_table/${DIAG_TABLE} diag_table
+  atparse < ${PATHRT}/parm/diag_table/${DIAG_TABLE} > diag_table
 fi
 # Field table
 if [[ "Q${FIELD_TABLE:-}" != Q ]] ; then
@@ -245,6 +185,11 @@ if [[ $FV3 == true ]]; then
   fi
 fi
 
+# AQM
+if [[ $AQM == .true. ]]; then
+  cp ${PATHRT}/parm/aqm/aqm.rc .
+fi
+
 # Field Dictionary
 cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
 
@@ -252,7 +197,16 @@ cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
 source ./fv3_run
 
 if [[ $CPLWAV == .true. ]]; then
-  atparse < ${PATHRT}/parm/ww3_multi.inp.IN > ww3_multi.inp
+  if [[ $MULTIGRID = 'true' ]]; then
+    atparse < ${PATHRT}/parm/ww3_multi.inp.IN > ww3_multi.inp
+  else
+    atparse < ${PATHRT}/parm/ww3_shel.inp.IN > ww3_shel.inp
+  fi
+fi
+
+if [[ $CPLCHM == .true. ]]; then
+  cp ${PATHRT}/parm/gocart/*.rc .
+  atparse < ${PATHRT}/parm/gocart/AERO_HISTORY.rc.IN > AERO_HISTORY.rc
 fi
 
 if [[ $DATM_CDEPS = 'true' ]] || [[ $S2S = 'true' ]]; then
@@ -274,6 +228,11 @@ if [[ "${DIAG_TABLE_ADDITIONAL:-}Q" != Q ]] ; then
   atparse < "${PATHRT}/parm/diag_table/${DIAG_TABLE_ADDITIONAL:-}" >> diag_table
 fi
 
+# ATMAERO
+if [[ $CPLCHM == .true. ]] && [[ $S2S = 'false' ]]; then
+  atparse < ${PATHRT}/parm/diag_table/${DIAG_TABLE:-diag_table_template} > diag_table
+fi
+
 if [[ $DATM_CDEPS = 'true' ]]; then
   atparse < ${PATHRT}/parm/${DATM_IN_CONFIGURE:-datm_in} > datm_in
   atparse < ${PATHRT}/parm/${DATM_STREAM_CONFIGURE:-datm.streams.IN} > datm.streams
@@ -292,6 +251,7 @@ NODES=$(( TASKS / TPN ))
 if (( NODES * TPN < TASKS )); then
   NODES=$(( NODES + 1 ))
 fi
+TASKS=$(( NODES * TPN ))
 
 if [[ $SCHEDULER = 'pbs' ]]; then
   atparse < $PATHRT/fv3_conf/fv3_qsub.IN > job_card
@@ -342,6 +302,9 @@ fi
 if [[ $SCHEDULER != 'none' ]]; then
   cat ${RUNDIR}/job_timestamp.txt >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
 fi
+
+remove_fail_test
+
 ################################################################################
 # End test
 ################################################################################
