@@ -43,7 +43,7 @@ pipeline {
 
                         axis {
                             name 'TEST_CASE'
-                            values 'mpi', 'dcp', 'rst', 'bit', 'thr' // TODO: Remove thr case from cpld_control_nowave_noaero_p8 exclusions when it is passing again
+                            values 'mpi', 'dcp', 'bit', 'thr' // TODO: Remove thr case from cpld_control_nowave_noaero_p8 exclusions when it is passing again
                         }
                     }
                 }
@@ -72,7 +72,7 @@ pipeline {
 
                     stage('Stage Test Data') {
                         steps {
-                            sh 'docker volume rm --force DataVolume && docker run --detach --rm --volume DataVolume:/tmp noaaepic/input-data:20220414'
+                            sh 'docker volume rm --force DataVolume && docker run --detach --rm --volume DataVolume:/tmp noaaepic/input-data:20221101'
                         }
                     }
 
