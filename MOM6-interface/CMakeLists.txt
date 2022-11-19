@@ -1,6 +1,6 @@
 ### MOM6 Fortran compiler flags
 if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
-  #set(CMAKE_Fortran_FLAGS "-g -fbacktrace -I${CMAKE_CURRENT_BINARY_DIR}/../../../../gsw/module -fPIC")
+  #set(CMAKE_Fortran_FLAGS "-g -fbacktrac")e -I${CMAKE_CURRENT_BINARY_DIR}/../../../../gsw/module -fPIC")
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fdefault-real-8 -fdefault-double-8")
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Waliasing -fcray-pointer -fconvert=big-endian -ffree-line-length-none -fno-range-check -fbacktrace")
   set(CMAKE_Fortran_FLAGS_RELEASE "-O2")
@@ -24,8 +24,21 @@ set(MOM6SOLO ON CACHE BOOL "Build MOM6 solo")
 # Too many files to list, so include them via this file
 include("mom6_files.cmake")
 
-### Use common object library for building target library
-add_library(mom6_obj OBJECT ${mom6_src_files})
+### Use common object library for building target library,
+### link against external gsw if found.
+# GSW
+find_package( gsw QUIET )
+if( ${gsw_FOUND} )
+    message(STATUS "GSW FOUND; link against external gsw")
+else( ${gsw_FOUND} )
+    message(STATUS "GSW NOT FOUND: build internal gsw")
+endif( ${gsw_FOUND} )
+
+if(${gsw_FOUND})
+  add_library(mom6_obj OBJECT ${mom6_src_files})
+else()
+  add_library(mom6_obj OBJECT ${mom6_src_files} ${gsw_src_files})
+endif()
 set_target_properties(mom6_obj PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(mom6_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
 target_include_directories(mom6_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/config_src/memory/dynamic_nonsymmetric>
@@ -34,6 +47,10 @@ target_link_libraries(mom6_obj PRIVATE fms
                                        esmf
                                        stochastic_physics
                                        NetCDF::NetCDF_Fortran)
+if(${gsw_FOUND})
+  target_link_libraries(mom6_obj PRIVATE gsw)
+endif()
+
 # OpenMP is disabled in MOM6
 #if(OpenMP_Fortran_FOUND)
 # target_link_libraries(mom6_obj PRIVATE OpenMP::OpenMP_Fortran)
@@ -47,8 +64,11 @@ target_include_directories(mom6_nuopc_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURR
                                                   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/src/framework>)
 target_link_libraries(mom6_nuopc_obj PRIVATE mom6_obj
                                              fms
-                                             gsw
                                              esmf)
+if(${gsw_FOUND})
+  target_link_libraries(mom6_nuopc_obj PRIVATE PRIVATE gsw)
+endif()
+
 # OpenMP is disabled in MOM6
 #if(OpenMP_Fortran_FOUND)
 # target_link_libraries(mom6_nuopc_obj PRIVATE OpenMP::OpenMP_Fortran)
@@ -84,8 +104,11 @@ if(MOM6SOLO)
                                          fms
                                          stochastic_physics
                                          esmf
-                                         gsw
                                          NetCDF::NetCDF_Fortran)
+  if(${gsw_FOUND})
+    target_link_libraries(mom6_nuopc_obj PRIVATE PRIVATE gsw)
+  endif()
+
   # OpenMP is disabled in MOM6
   #if(OpenMP_Fortran_FOUND)
   #  target_link_libraries(mom6solo PRIVATE OpenMP::OpenMP_Fortran)

@@ -1,3 +1,38 @@
+list(APPEND gsw_src_files
+  MOM6/src/equation_of_state/TEOS10/gsw_chem_potential_water_t_exact.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_ct_freezing_exact.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_ct_freezing_poly.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_ct_from_pt.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_ct_from_t.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_entropy_part.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_entropy_part_zerop.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_gibbs.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_gibbs_ice.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_gibbs_pt0_pt0.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_mod_error_functions.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_mod_freezing_poly_coefficients.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_mod_gibbs_ice_coefficients.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_mod_kinds.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_mod_specvol_coefficients.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_mod_teos10_constants.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_mod_toolbox.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_pt0_from_t.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_pt_from_ct.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_pt_from_t.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_rho.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_rho_first_derivatives.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_rho_second_derivatives.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_sp_from_sr.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_specvol.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_specvol_first_derivatives.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_specvol_second_derivatives.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_sr_from_sp.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_t_deriv_chem_potential_water_t_exact.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_t_freezing_exact.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_t_freezing_poly.f90
+  MOM6/src/equation_of_state/TEOS10/gsw_t_from_ct.f90
+)
+
 list(APPEND mom6_src_files
   MOM6/src/ALE/MOM_ALE.F90
   MOM6/src/ALE/MOM_regridding.F90
@@ -67,39 +102,6 @@ list(APPEND mom6_src_files
   MOM6/src/equation_of_state/MOM_EOS_Wright.F90
   MOM6/src/equation_of_state/MOM_EOS_linear.F90
   MOM6/src/equation_of_state/MOM_TFreeze.F90
-
-  MOM6/src/equation_of_state/TEOS10/gsw_chem_potential_water_t_exact.f90
-  MOM6/src/equation_of_state/TEOS10/gsw_ct_freezing_exact.f90
-  MOM6/src/equation_of_state/TEOS10/gsw_ct_freezing_poly.f90
-  MOM6/src/equation_of_state/TEOS10/gsw_ct_from_pt.f90
-  MOM6/src/equation_of_state/TEOS10/gsw_ct_from_t.f90
-  MOM6/src/equation_of_state/TEOS10/gsw_entropy_part.f90
-  MOM6/src/equation_of_state/TEOS10/gsw_entropy_part_zerop.f90
-  MOM6/src/equation_of_state/TEOS10/gsw_gibbs.f90
-  MOM6/src/equation_of_state/TEOS10/gsw_gibbs_ice.f90
-  MOM6/src/equation_of_state/TEOS10/gsw_gibbs_pt0_pt0.f90
-  MOM6/src/equation_of_state/TEOS10/gsw_mod_error_functions.f90
-  MOM6/src/equation_of_state/TEOS10/gsw_mod_freezing_poly_coefficients.f90
-  MOM6/src/equation_of_state/TEOS10/gsw_mod_gibbs_ice_coefficients.f90
-  MOM6/src/equation_of_state/TEOS10/gsw_mod_kinds.f90
-  MOM6/src/equation_of_state/TEOS10/gsw_mod_specvol_coefficients.f90
-  MOM6/src/equation_of_state/TEOS10/gsw_mod_teos10_constants.f90
-  MOM6/src/equation_of_state/TEOS10/gsw_mod_toolbox.f90
-  MOM6/src/equation_of_state/TEOS10/gsw_pt0_from_t.f90
-  MOM6/src/equation_of_state/TEOS10/gsw_pt_from_ct.f90
-  MOM6/src/equation_of_state/TEOS10/gsw_pt_from_t.f90
-  MOM6/src/equation_of_state/TEOS10/gsw_rho.f90
-  MOM6/src/equation_of_state/TEOS10/gsw_rho_first_derivatives.f90
-  MOM6/src/equation_of_state/TEOS10/gsw_rho_second_derivatives.f90
-  MOM6/src/equation_of_state/TEOS10/gsw_sp_from_sr.f90
-  MOM6/src/equation_of_state/TEOS10/gsw_specvol.f90
-  MOM6/src/equation_of_state/TEOS10/gsw_specvol_first_derivatives.f90
-  MOM6/src/equation_of_state/TEOS10/gsw_specvol_second_derivatives.f90
-  MOM6/src/equation_of_state/TEOS10/gsw_sr_from_sp.f90
-  MOM6/src/equation_of_state/TEOS10/gsw_t_deriv_chem_potential_water_t_exact.f90
-  MOM6/src/equation_of_state/TEOS10/gsw_t_freezing_exact.f90
-  MOM6/src/equation_of_state/TEOS10/gsw_t_freezing_poly.f90
-  MOM6/src/equation_of_state/TEOS10/gsw_t_from_ct.f90
 
   MOM6/src/framework/MOM_array_transform.F90
   MOM6/src/framework/MOM_checksums.F90
@@ -288,7 +290,6 @@ list(APPEND mom6_src_files
   MOM6/config_src/infra/FMS2/MOM_interp_infra.F90
   MOM6/config_src/infra/FMS2/MOM_io_infra.F90
   MOM6/config_src/infra/FMS2/MOM_time_manager.F90
-
 )
 
 list(APPEND mom6_nuopc_src_files
