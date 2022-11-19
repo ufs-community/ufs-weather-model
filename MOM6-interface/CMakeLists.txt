@@ -24,19 +24,8 @@ set(MOM6SOLO ON CACHE BOOL "Build MOM6 solo")
 # Too many files to list, so include them via this file
 include("mom6_files.cmake")
 
-# Need to preprocess MOM6/src/framework/posix.H.in to
-# get the correct sigsetjmp_name for macOS, Linux, ...
-add_custom_command(
-  OUTPUT MOM6/src/framework/posix.h
-  COMMAND "${CMAKE_C_COMPILER}" -E MOM6/src/framework/posix.H.in
-  MAIN_DEPENDENCY MOM6/src/framework/posix.H.in
-  COMMENT "Preprocessing MOM6/src/framework/posix.H.in"
-  VERBATIM)
-
 ### Use common object library for building target library
 add_library(mom6_obj OBJECT ${mom6_src_files})
-# Again, workaround for posix stuff
-add_dependencies(mom6_obj MOM6/src/framework/posix.h)
 set_target_properties(mom6_obj PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(mom6_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
 target_include_directories(mom6_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/config_src/memory/dynamic_nonsymmetric>
