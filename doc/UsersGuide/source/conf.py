@@ -81,7 +81,7 @@ language = None
 exclude_patterns = []
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = None
+pygments_style = 'sphinx'
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -89,7 +89,9 @@ pygments_style = None
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'classic'
+#html_theme = 'classic'
+html_theme = 'sphinx_rtd_theme'
+html_theme_path = ["_themes", ]
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -102,9 +104,11 @@ html_theme_options = {"body_max_width": "none"}
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+html_context = {}
 
 def setup(app):
     app.add_css_file('custom.css')  # may also be an URL
+    app.add_css_file('theme_overrides.css')  # may also be an URL
 
 # Custom sidebar templates, must be a dictionary that maps document names
 # to template names.

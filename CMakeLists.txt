@@ -16,7 +16,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules/Modules)
 ###############################################################################
 
 # Valid applications and choices
-list(APPEND VALID_APPS ATM ATMAERO ATMAQ ATMW S2S S2SA S2SW S2SWA HAFS HAFSW HAFS-ALL NG-GODAS)
+list(APPEND VALID_APPS ATM ATMAERO ATMAQ ATMW ATML LND S2S S2SA S2SW S2SWA S2SWAL HAFS HAFSW HAFS-ALL NG-GODAS)
 set(APP NONE CACHE BOOL "Application Name")
 if(NOT (APP IN_LIST VALID_APPS))
   message(FATAL_ERROR "${APP} is not a valid application.\nValid Applications are: ${VALID_APPS}")
@@ -33,6 +33,7 @@ set(WW3             OFF CACHE BOOL "Enable WW3")
 set(STOCH_PHYS      OFF CACHE BOOL "Enable Stochastic Physics")
 set(CMEPS           OFF CACHE BOOL "Enable CMEPS")
 set(CDEPS           OFF CACHE BOOL "Enable CDEPS")
+set(NOAHMP          OFF CACHE BOOL "Enable NOAHMP")
 
 # Configure selected application specific components
 message("")
@@ -50,6 +51,7 @@ message("WW3 .............. ${WW3}")
 message("STOCH_PHYS ....... ${STOCH_PHYS}")
 message("CDEPS ............ ${CDEPS}")
 message("CMEPS ............ ${CMEPS}")
+message("NOAHMP ........... ${NOAHMP}")
 
 ###############################################################################
 ### Build Options
@@ -132,7 +134,7 @@ endif()
 
 find_package(bacio 2.4.0 REQUIRED)
 find_package(sp 2.3.3 REQUIRED)
-find_package(w3nco 2.4.0 REQUIRED)
+find_package(w3emc 2.9.2 REQUIRED)
 
 # Configure Python
 find_package(Python 3.6 REQUIRED COMPONENTS Interpreter)
@@ -212,6 +214,13 @@ if(CDEPS)
 endif()
 
 ###############################################################################
+### Land Components [NOAHMP]
+###############################################################################
+if(NOAHMP)
+  add_subdirectory(NOAHMP-interface)
+endif()
+
+###############################################################################
 ### UFS Library
 ###############################################################################
 add_library(ufs driver/UFSDriver.F90)
@@ -283,6 +292,12 @@ if(CDEPS)
   target_link_libraries(ufs PUBLIC cdeps::cdeps)
 endif()
 
+if(NOAHMP)
+  add_dependencies(ufs noahmp)
+  list(APPEND _ufs_defs_private FRONT_NOAHMP=lnd_comp_nuopc)
+  list(APPEND _ufs_libs_public noahmp)
+endif()
+
 target_compile_definitions(ufs PRIVATE "${_ufs_defs_private}")
 target_link_libraries(ufs PUBLIC "${_ufs_libs_public}")
 
@@ -291,7 +306,7 @@ target_link_libraries(ufs PUBLIC "${_ufs_libs_public}")
 ###############################################################################
 add_executable(ufs_model driver/UFS.F90)
 add_dependencies(ufs_model ufs)
-target_link_libraries(ufs_model ufs esmf w3nco::w3nco_d)
+target_link_libraries(ufs_model ufs esmf w3emc::w3emc_d)
 
 ###############################################################################
 ### Install

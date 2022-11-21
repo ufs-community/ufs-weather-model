@@ -370,6 +370,7 @@ export NSSL_INVERTCCN=.true.
 
 # Smoke
 export RRFS_SMOKE=.false.
+export RRFS_RESTART=NO
 export SEAS_OPT=2
 
 # GWD
@@ -458,6 +459,7 @@ export CPLFLX=.false.
 export CPLICE=.false.
 export CPLWAV=.false.
 export CPLWAV2ATM=.false.
+export CPLLND=.false.
 export USE_MED_FLUX=.false.
 export DAYS=1
 export NPX=97
@@ -768,6 +770,7 @@ export CPLWAV=.true.
 export CPLWAV2ATM=.true.
 export USE_MED_FLUX=.false.
 export CPLCHM=.true.
+export CPLLND=.false.
 
 # for FV3: default values will be changed if doing a warm-warm restart
 export WARM_START=.false.
@@ -1073,7 +1076,7 @@ export DLAT=0.03
 
 # shel.inp
 export INPUT_CURFLD='C F     Currents'
-export INPUT_ICEFLD='C F     Ice concentrations'
+export INPUT_ICEFLD='F F     Ice concentrations'
 # input.nml
 export CPL_IMP_MRG=.true.
 

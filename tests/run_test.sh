@@ -32,64 +32,6 @@ remove_fail_test() {
     fi
 }
 
-function compute_petbounds() {
-
-  # each test MUST define ${COMPONENT}_tasks variable for all components it is using
-  # and MUST NOT define those that it's not using or set the value to 0.
-
-  # ATM is a special case since it is running on the sum of compute and io tasks.
-  # CHM component and mediator are running on ATM compute tasks only.
-
-  local n=0
-  unset atm_petlist_bounds ocn_petlist_bounds ice_petlist_bounds wav_petlist_bounds chm_petlist_bounds med_petlist_bounds aqm_petlist_bounds
-
-  # ATM
-  ATM_io_tasks=${ATM_io_tasks:-0}
-  if [[ $((ATM_compute_tasks + ATM_io_tasks)) -gt 0 ]]; then
-     atm_petlist_bounds="${n} $((n + ATM_compute_tasks + ATM_io_tasks -1))"
-     n=$((n + ATM_compute_tasks + ATM_io_tasks))
-  fi
-
-  # OCN
-  if [[ ${OCN_tasks:-0} -gt 0 ]]; then
-     ocn_petlist_bounds="${n} $((n + OCN_tasks - 1))"
-     n=$((n + OCN_tasks))
-  fi
-
-  # ICE
-  if [[ ${ICE_tasks:-0} -gt 0 ]]; then
-     ice_petlist_bounds="${n} $((n + ICE_tasks - 1))"
-     n=$((n + ICE_tasks))
-  fi
-
-  # WAV
-  if [[ ${WAV_tasks:-0} -gt 0 ]]; then
-     wav_petlist_bounds="${n} $((n + WAV_tasks - 1))"
-     n=$((n + WAV_tasks))
-  fi
-
-  # CHM
-  chm_petlist_bounds="0 $((ATM_compute_tasks - 1))"
-
-  # MED
-  med_petlist_bounds="0 $((ATM_compute_tasks - 1))"
-
-  # AQM
-  aqm_petlist_bounds="0 $((ATM_compute_tasks - 1))"
-
-  UFS_tasks=${n}
-
-  echo "ATM_petlist_bounds: ${atm_petlist_bounds:-}"
-  echo "OCN_petlist_bounds: ${ocn_petlist_bounds:-}"
-  echo "ICE_petlist_bounds: ${ice_petlist_bounds:-}"
-  echo "WAV_petlist_bounds: ${wav_petlist_bounds:-}"
-  echo "CHM_petlist_bounds: ${chm_petlist_bounds:-}"
-  echo "MED_petlist_bounds: ${med_petlist_bounds:-}"
-  echo "AQM_petlist_bounds: ${aqm_petlist_bounds:-}"
-  echo "UFS_tasks         : ${UFS_tasks:-}"
-
-}
-
 if [[ $# != 5 ]]; then
   echo "Usage: $0 PATHRT RUNDIR_ROOT TEST_NAME TEST_NR COMPILE_NR"
   exit 1
@@ -142,12 +84,16 @@ cd $RUNDIR
 ###############################################################################
 # Make configure and run files
 ###############################################################################
-
+MACHINE_ID=${MACHINE_ID:-false}
 # FV3 executable:
 cp ${PATHRT}/fv3_${COMPILE_NR}.exe                 fv3.exe
 
 # modulefile for FV3 prerequisites:
-cp ${PATHRT}/modules.fv3_${COMPILE_NR}             modules.fv3
+if [[ $MACHINE_ID == gaea.* ]] || [[ $MACHINE_ID == linux.* ]]; then
+  cp ${PATHRT}/modules.fv3_${COMPILE_NR}             modules.fv3
+else
+  cp ${PATHRT}/modules.fv3_${COMPILE_NR}.lua             modules.fv3.lua
+fi
 cp ${PATHTR}/modulefiles/ufs_common*               .
 
 # Get the shell file that loads the "module" command and purges modules:
@@ -170,21 +116,9 @@ fi
 
 atparse < ${PATHRT}/parm/${MODEL_CONFIGURE:-model_configure.IN} > model_configure
 
-if [[ $DATM_CDEPS = 'false' ]]; then
-  if [[ ${ATM_compute_tasks:-0} -eq 0 ]]; then
-    ATM_compute_tasks=$((INPES * JNPES * NTILES))
-  fi
-  if [[ $QUILTING = '.true.' ]]; then
-    ATM_io_tasks=$((WRITE_GROUP * WRTTASK_PER_GROUP))
-  fi
-fi
-
-compute_petbounds
+compute_petbounds_and_tasks
 
 atparse < ${PATHRT}/parm/${NEMS_CONFIGURE:-nems.configure} > nems.configure
-
-# TASKS is now set to UFS_TASKS
-export TASKS=$UFS_tasks
 
 if [[ "Q${INPUT_NEST02_NML:-}" != Q ]] ; then
     INPES_NEST=$INPES_NEST02; JNPES_NEST=$JNPES_NEST02
