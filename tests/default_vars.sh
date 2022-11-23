@@ -452,6 +452,7 @@ export LKM=0 # 0=no lake, 1=run lake model, 2=run both lake and nsst on lake poi
 export IOPT_LAKE=1 # 1=flake, 2=clm lake
 export LAKEFRAC_THRESHOLD=0.0 # lake fraction must be higher for lake model to run it
 export LAKEDEPTH_THRESHOLD=1.0 # lake must be deeper (in meters) for a lake model to run it
+export FRAC_ICE=.false.
 
 export CPL=.false.
 export CPLCHM=.false.
@@ -653,7 +654,6 @@ export MULTIGRID=false
 
 # FV3 defaults
 export FRAC_GRID=.true.
-export FRAC_ICE=.false.
 export CCPP_SUITE=FV3_GFS_v17_coupled_p8
 export INPUT_NML=cpld_control.nml.IN
 export FIELD_TABLE=field_table_thompson_noaero_tke_GOCART
