@@ -307,11 +307,14 @@ target_link_libraries(ufs PUBLIC "${_ufs_libs_public}")
 add_executable(ufs_model driver/UFS.F90)
 add_dependencies(ufs_model ufs)
 
+# Note to self - this needs to be inside an if block for the JEDI-UFS build,
+# and the commmented line below needs to be reinstantiated as "else" (or similar)
 if(APP MATCHES "^(ATM)$")
   target_link_libraries(ufs_model ufs esmf w3emc::w3emc_d)
 else()
   target_link_libraries(ufs_model ufs esmf w3emc::w3emc_d gsw)
 endif()
+#target_link_libraries(ufs_model ufs esmf w3emc::w3emc_d)
 
 ###############################################################################
 ### Install
