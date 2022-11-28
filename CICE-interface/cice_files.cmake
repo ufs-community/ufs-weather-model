@@ -68,7 +68,6 @@ list(APPEND icepack_files
   CICE/icepack/columnphysics/icepack_itd.F90
   CICE/icepack/columnphysics/icepack_kinds.F90
   CICE/icepack/columnphysics/icepack_mechred.F90
-  CICE/icepack/columnphysics/icepack_meltpond_cesm.F90
   CICE/icepack/columnphysics/icepack_meltpond_lvl.F90
   CICE/icepack/columnphysics/icepack_meltpond_topo.F90
   CICE/icepack/columnphysics/icepack_mushy_physics.F90
@@ -77,7 +76,6 @@ list(APPEND icepack_files
   CICE/icepack/columnphysics/icepack_parameters.F90
   CICE/icepack/columnphysics/icepack_shortwave.F90
   CICE/icepack/columnphysics/icepack_snow.F90
-  CICE/icepack/columnphysics/icepack_therm_0layer.F90
   CICE/icepack/columnphysics/icepack_therm_bl99.F90
   CICE/icepack/columnphysics/icepack_therm_itd.F90
   CICE/icepack/columnphysics/icepack_therm_mushy.F90
@@ -138,14 +136,6 @@ list(APPEND cice_pio2_io_files
   CICE/cicecore/cicedynB/infrastructure/io/io_pio2/ice_restart.F90
 )
 
-#-- Using standalone driver
-list(APPEND cice_standalone_driver_files
-  CICE/cicecore/drivers/standalone/cice/CICE.F90
-  CICE/cicecore/drivers/standalone/cice/CICE_FinalMod.F90
-  CICE/cicecore/drivers/standalone/cice/CICE_InitMod.F90
-  CICE/cicecore/drivers/standalone/cice/CICE_RunMod.F90
-)
-
 #-- Using NUOPC CMEPS driver
 list(APPEND cice_nuopc_cmeps_driver_files
   CICE/cicecore/drivers/nuopc/cmeps/CICE_FinalMod.F90
@@ -158,33 +148,4 @@ list(APPEND cice_nuopc_cmeps_driver_files
   CICE/cicecore/drivers/nuopc/cmeps/ice_scam.F90
   CICE/cicecore/drivers/nuopc/cmeps/ice_shr_methods.F90
   CICE/cicecore/drivers/nuopc/cmeps/ice_mesh_mod.F90
-)
-
-#-- Using NUOPC DMI driver
-list(APPEND cice_nuopc_dmi_driver_files
-  CICE/cicecore/drivers/nuopc/dmi/CICE.F90
-  CICE/cicecore/drivers/nuopc/dmi/CICE_FinalMod.F90
-  CICE/cicecore/drivers/nuopc/dmi/CICE_InitMod.F90
-  CICE/cicecore/drivers/nuopc/dmi/CICE_RunMod.F90
-)
-
-#-- Using direct driver
-list(APPEND cice_direct_driver_files
-  CICE/cicecore/drivers/direct/hadgem3/CICE.F90
-  CICE/cicecore/drivers/direct/hadgem3/CICE_FinalMod.F90
-  CICE/cicecore/drivers/direct/hadgem3/CICE_InitMod.F90
-  CICE/cicecore/drivers/direct/hadgem3/CICE_RunMod.F90
-)
-
-#-- Using MCT driver
-list(APPEND cice_mct_driver_files
-  CICE/cicecore/drivers/mct/cesm1/CICE_FinalMod.F90
-  CICE/cicecore/drivers/mct/cesm1/CICE_InitMod.F90
-  CICE/cicecore/drivers/mct/cesm1/CICE_RunMod.F90
-  CICE/cicecore/drivers/mct/cesm1/ice_comp_esmf.F90
-  CICE/cicecore/drivers/mct/cesm1/ice_comp_mct.F90
-  CICE/cicecore/drivers/mct/cesm1/ice_cpl_indices.F90
-  CICE/cicecore/drivers/mct/cesm1/ice_import_export.F90
-  CICE/cicecore/drivers/mct/cesm1/ice_prescribed_mod.F90
-  CICE/cicecore/drivers/mct/cesm1/ice_scam.F90
 )
