@@ -29,16 +29,21 @@ export DOMAINS_STACK_SIZE=16000000
 
 export RUN_BEG="${SYEAR}${SMONTH}${SDAY} $(printf "%02d" $(( ${SHOUR}  )))0000"
 
-export TASKS=$TASKS_cpl_bmrk
 export INPES=$INPES_cpl_bmrk
 export JNPES=$JNPES_cpl_bmrk
-export THRD=$THRD_cpl_bmrk
 export WRITE_DOPOST=.true.
 export WRTTASK_PER_GROUP=$WPG_cpl_bmrk
 
 OCN_tasks=$OCN_tasks_cpl_bmrk
 ICE_tasks=$ICE_tasks_cpl_bmrk
 WAV_tasks=$WAV_tasks_cpl_bmrk
+
+export atm_omp_num_threads=$THRD_cpl_bmrk
+export chm_omp_num_threads=$atm_omp_num_threads
+export med_omp_num_threads=$atm_omp_num_threads
+export ocn_omp_num_threads=$OCN_thrds_cpl_bmrk
+export ice_omp_num_threads=$ICE_thrds_cpl_bmrk
+export wav_omp_num_threads=$WAV_thrds_cpl_bmrk
 
 # atm/ocn/ice resolution
 export ATMRES=C384
