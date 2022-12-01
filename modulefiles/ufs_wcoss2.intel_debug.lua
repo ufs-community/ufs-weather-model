@@ -39,9 +39,6 @@ load(pathJoin("netcdf", netcdf_ver))
 pio_ver=os.getenv("pio_ver") or "2.5.7"
 load(pathJoin("pio", pio_ver))
 
-esmf_ver=os.getenv("esmf_ver") or "8.3.0b09"
-load(pathJoin("esmf", esmf_ver))
-
 fms_ver=os.getenv("fms_ver") or "2022.01"
 load(pathJoin("fms", fms_ver))
 
@@ -65,6 +62,19 @@ load(pathJoin("sp", sp_ver))
 
 w3emc_ver=os.getenv("w3emc_ver") or "2.9.2"
 load(pathJoin("w3emc", w3emc_ver))
+
+prepend_path("MODULEPATH", "/apps/dev/lmodules/intel/19.1.3.304")
+
+gftl_shared_ver=os.getenv("gftl_shared_ver") or "1.5.0"
+load(pathJoin("gftl_shared", gftl_shared_ver))
+
+prepend_path("MODULEPATH", "/apps/dev/modulefiles/mpi/intel/19.1.3.304/cray-mpich/8.1.9")
+
+esmf_ver=os.getenv("esmf_ver") or "8.3.0b09-debug"
+load(pathJoin("esmf", esmf_ver))
+
+mapl_ver=os.getenv("mapl_ver") or "2.23.1-esmf-8.3.0b09"
+load(pathJoin("mapl", mapl_ver))
 
 setenv("CC", "cc")
 setenv("CXX", "CC")

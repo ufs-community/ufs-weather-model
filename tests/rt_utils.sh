@@ -69,6 +69,12 @@ function compute_petbounds_and_tasks() {
   # AQM
   aqm_petlist_bounds="0 $((ATM_compute_tasks - 1))"
 
+  # LND 
+  if [[ ${LND_tasks:-0} -gt 0 ]]; then
+     lnd_petlist_bounds="${n} $((n + LND_tasks - 1))"
+     n=$((n + LND_tasks))
+  fi
+
   UFS_tasks=${n}
 
   echo "ATM_petlist_bounds: ${atm_petlist_bounds:-}"
@@ -78,6 +84,7 @@ function compute_petbounds_and_tasks() {
   echo "CHM_petlist_bounds: ${chm_petlist_bounds:-}"
   echo "MED_petlist_bounds: ${med_petlist_bounds:-}"
   echo "AQM_petlist_bounds: ${aqm_petlist_bounds:-}"
+  echo "LND_petlist_bounds: ${lnd_petlist_bounds:-}"
   echo "UFS_tasks         : ${UFS_tasks:-}"
 
   # TASKS is now set to UFS_TASKS
