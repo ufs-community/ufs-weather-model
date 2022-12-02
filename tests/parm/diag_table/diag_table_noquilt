@@ -1,11 +1,11 @@
-20190801.12Z.C775.32bit.non-hydro.regional
-2019 08 01 12 00 00
+20181015.00Z
+2018 10 15 00 0 0
 
-"grid_spec",              -1,  "months",  1, "days",  "time"
-"atmos_4xdaily",           6,  "hours",   1, "days",  "time"
-"atmos_static",           -1,  "hours",   1, "hours", "time"
-"fv3_history",             1,  "years",   1, "hours", "time"
-"fv3_history2d",           1,  "years",   1, "hours", "time"
+"grid_spec",              -1,  "months",   1, "days",  "time"
+"atmos_static",           -1,  "hours",    1, "hours", "time"
+"atmos_4xdaily",           6,  "hours",    1, "days",  "time"
+"fv3_history",             3,  "hours",    1, "hours", "time"
+"fv3_history2d",           3,  "hours",    1, "hours", "time"
 
 #
 #=======================
@@ -54,14 +54,14 @@
  "dynamics",  "t50",         "t50",        "atmos_4xdaily", "all", .false.,  "none", 2
  "dynamics",  "t10",         "t10",        "atmos_4xdaily", "all", .false.,  "none", 2
 ####
- "dynamics",  "h1000",       "h1000",      "atmos_4xdaily", "all", .false.,  "none", 2
- "dynamics",  "h850",        "h850",       "atmos_4xdaily", "all", .false.,  "none", 2
- "dynamics",  "h700",        "h700",       "atmos_4xdaily", "all", .false.,  "none", 2
- "dynamics",  "h500",        "h500",       "atmos_4xdaily", "all", .false.,  "none", 2
- "dynamics",  "h200",        "h200",       "atmos_4xdaily", "all", .false.,  "none", 2
- "dynamics",  "h100",        "h100",       "atmos_4xdaily", "all", .false.,  "none", 2
- "dynamics",  "h50",         "h50",        "atmos_4xdaily", "all", .false.,  "none", 2
- "dynamics",  "h10",         "h10",        "atmos_4xdaily", "all", .false.,  "none", 2
+ "dynamics",  "z1000",       "z1000",      "atmos_4xdaily", "all", .false.,  "none", 2
+ "dynamics",  "z850",        "z850",       "atmos_4xdaily", "all", .false.,  "none", 2
+ "dynamics",  "z700",        "z700",       "atmos_4xdaily", "all", .false.,  "none", 2
+ "dynamics",  "z500",        "z500",       "atmos_4xdaily", "all", .false.,  "none", 2
+ "dynamics",  "z200",        "z200",       "atmos_4xdaily", "all", .false.,  "none", 2
+ "dynamics",  "z100",        "z100",       "atmos_4xdaily", "all", .false.,  "none", 2
+ "dynamics",  "z50",         "z50",        "atmos_4xdaily", "all", .false.,  "none", 2
+ "dynamics",  "z10",         "z10",        "atmos_4xdaily", "all", .false.,  "none", 2
 ####
 #"dynamics",  "w1000",       "w1000",      "atmos_4xdaily", "all", .false.,  "none", 2
  "dynamics",  "w850",        "w850",       "atmos_4xdaily", "all", .false.,  "none", 2
@@ -115,10 +115,37 @@
 "gfs_dyn",     "rainwat",     "rwmr",      "fv3_history",    "all",  .false.,  "none",  2
 "gfs_dyn",     "snowwat",     "snmr",      "fv3_history",    "all",  .false.,  "none",  2
 "gfs_dyn",     "graupel",     "grle",      "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "q_rimef",     "q_rimef",   "fv3_history",    "all",  .false.,  "none",  2
 "gfs_dyn",     "ps",          "pressfc",   "fv3_history",    "all",  .false.,  "none",  2
 "gfs_dyn",     "hs",          "hgtsfc",    "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "pfnh",        "pfnh",      "fv3_history",    "all",  .false.,  "none",  2
 #"gfs_dyn",     "ice_nc",      "nicp",      "fv3_history",  "all",  .false.,  "none",  2
 #"gfs_dyn",     "rain_nc",     "ntrnc",     "fv3_history",  "all",  .false.,  "none",  2
+"gfs_dyn",     "cld_amt",     "cld_amt",    "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "wmaxup",      "upvvelmax",    "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "wmaxdn",      "dnvvelmax",    "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "uhmax03",     "uhmax03",    "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "uhmax25",     "uhmax25",    "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "uhmin03",     "uhmin03",    "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "uhmin25",     "uhmin25",    "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "maxvort01",   "maxvort01",   "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "maxvort02",   "maxvort02",   "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "maxvorthy1",  "maxvorthy1", "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "ustm",        "ustm",       "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "vstm",        "vstm",       "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "srh01",        "srh01",       "fv3_history",    "all",  .false.,  "none",  2
+"gfs_dyn",     "srh03",        "srh03",       "fv3_history",    "all",  .false.,  "none",  2
+"gfs_phys",    "u10max",     "u10max",   "fv3_history2d",  "all",  .false.,  "none",  2
+"gfs_phys",    "v10max",     "v10max",   "fv3_history2d",  "all",  .false.,  "none",  2
+"gfs_phys",    "spd10max",   "spd10max",   "fv3_history2d",  "all",  .false.,  "none",  2
+"gfs_phys",    "refdmax",    "refdmax",    "fv3_history2d",  "all",  .false.,  "none",  2
+"gfs_phys",    "refdmax263k","refdmax263k","fv3_history2d",  "all",  .false.,  "none",  2
+"gfs_phys",    "t02max",     "t02max",    "fv3_history2d",  "all",  .false.,  "none",  2
+"gfs_phys",    "t02min",     "t02min",    "fv3_history2d",  "all",  .false.,  "none",  2
+"gfs_phys",    "rh02max",    "rh02max",    "fv3_history2d",  "all",  .false.,  "none",  2
+"gfs_phys",    "rh02min",    "rh02min",    "fv3_history2d",  "all",  .false.,  "none",  2
+"gfs_phys",    "pratemax",   "pratemax",    "fv3_history2d",  "all",  .false.,  "none",  2
+"gfs_phys",    "refl_10cm",  "refl_10cm",  "fv3_history2d",  "all",  .false.,  "none",  2
 
 "gfs_phys",  "ALBDO_ave",     "albdo_ave",   "fv3_history2d",         "all",  .false.,  "none",  2
 "gfs_phys",  "cnvprcp_ave",   "cprat_ave",   "fv3_history2d",         "all",  .false.,  "none",  2
@@ -140,7 +167,7 @@
 "gfs_phys",  "hpbl",          "hpbl",        "fv3_history2d",         "all",  .false.,  "none",  2
 "gfs_phys",  "lhtfl_ave",     "lhtfl_ave",   "fv3_history2d",         "all",  .false.,  "none",  2
 "gfs_phys",  "shtfl_ave",     "shtfl_ave",   "fv3_history2d",         "all",  .false.,  "none",  2
-"gfs_phys",  "pwat",          "pwatclm",     "fv3_history2d",         "all",  .false.,  "none",  2
+"gfs_phys",  "pwat",          "pwat",        "fv3_history2d",         "all",  .false.,  "none",  2
 "gfs_phys",  "soilm",         "soilm",       "fv3_history2d",         "all",  .false.,  "none",  2
 "gfs_phys",  "TCDC_aveclm",   "tcdc_aveclm", "fv3_history2d",         "all",  .false.,  "none",  2
 "gfs_phys",  "TCDC_avebndcl", "tcdc_avebndcl",  "fv3_history2d",         "all",  .false.,  "none",  2
@@ -270,208 +297,12 @@
 "gfs_phys",    "nbdsf_ave",    "nbdsf_ave",     "fv3_history2d",  "all",  .false.,  "none",  2
 "gfs_phys",    "nddsf_ave",    "nddsf_ave",     "fv3_history2d",  "all",  .false.,  "none",  2
 "gfs_phys",    "trans_ave",    "trans_ave",     "fv3_history2d",  "all",  .false.,  "none",  2
-# Stochastic physics
-"gfs_phys",    "sppt_wts",      "sppt_wts",      "fv3_history",  "all", .false., "none", 2
-"gfs_phys",    "skebu_wts",     "skebu_wts",     "fv3_history",  "all", .false., "none", 2
-"gfs_phys",    "skebv_wts",     "skebv_wts",     "fv3_history",  "all", .false., "none", 2
-"dynamics",    "diss_est",      "diss_est",      "fv3_history",  "all", .false., "none", 2
-"gfs_phys",    "shum_wts",      "shum_wts",      "fv3_history",  "all", .false., "none", 2
+# Aerosols (CCN, IN) from Thompson microphysics
+"gfs_phys",    "nwfa",         "nwfa",          "fv3_history",    "all",  .false.,  "none",  2
+"gfs_phys",    "nifa",         "nifa",          "fv3_history",    "all",  .false.,  "none",  2
+"gfs_sfc",     "nwfa2d",       "nwfa2d",        "fv3_history2d",  "all",  .false.,  "none",  2
+"gfs_sfc",     "nifa2d",       "nifa2d",        "fv3_history2d",  "all",  .false.,  "none",  2
 
-###
-# chemical tracers advected by FV3
-###
-"gfs_dyn",         "no2",           "no2",           "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "no",            "no",            "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "o3",            "o3",            "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "no3",           "no3",           "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "h2o2",          "h2o2",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "n2o5",          "n2o5",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "hno3",          "hno3",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "hono",          "hono",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "pna",           "pna",           "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "so2",           "so2",           "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "sulf",          "sulf",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "pan",           "pan",           "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "pacd",          "pacd",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "aacd",          "aacd",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "ald2",          "ald2",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "panx",          "panx",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "form",          "form",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "mepx",          "mepx",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "meoh",          "meoh",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "rooh",          "rooh",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "ntr1",          "ntr1",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "ntr2",          "ntr2",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "facd",          "facd",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "co",            "co",            "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "aldx",          "aldx",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "glyd",          "glyd",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "gly",           "gly",           "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "mgly",          "mgly",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "etha",          "etha",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "etoh",          "etoh",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "ket",           "ket",           "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "par",           "par",           "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "acet",          "acet",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "prpa",          "prpa",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "ethy",          "ethy",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "eth",           "eth",           "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "ole",           "ole",           "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "iole",          "iole",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "isop",          "isop",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "ispd",          "ispd",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "intr",          "intr",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "ispx",          "ispx",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "hpld",          "hpld",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "opo3",          "opo3",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "epox",          "epox",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "terp",          "terp",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "benzene",       "benzene",       "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "cres",          "cres",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "open",          "open",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "tol",           "tol",           "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "xopn",          "xopn",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "xylmn",         "xylmn",         "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "naph",          "naph",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "cat1",          "cat1",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "cron",          "cron",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "opan",          "opan",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "ech4",          "ech4",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "cl2",           "cl2",           "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "hocl",          "hocl",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "fmcl",          "fmcl",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "hcl",           "hcl",           "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "clno2",         "clno2",         "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "sesq",          "sesq",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "soaalk",        "soaalk",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "vlvpo1",        "vlvpo1",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "vsvpo1",        "vsvpo1",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "vsvpo2",        "vsvpo2",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "vsvpo3",        "vsvpo3",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "vivpo1",        "vivpo1",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "vlvoo1",        "vlvoo1",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "vlvoo2",        "vlvoo2",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "vsvoo1",        "vsvoo1",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "vsvoo2",        "vsvoo2",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "vsvoo3",        "vsvoo3",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "pcvoc",         "pcvoc",         "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "form_primary",  "form_primary",  "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "ald2_primary",  "ald2_primary",  "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "butadiene13",   "butadiene13",   "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "acrolein",      "acrolein",      "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "acro_primary",  "acro_primary",  "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "tolu",          "tolu",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "hg",            "hg",            "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "hgiigas",       "hgiigas",       "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "aso4j",         "aso4j",         "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "aso4i",         "aso4i",         "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "anh4j",         "anh4j",         "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "anh4i",         "anh4i",         "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "ano3j",         "ano3j",         "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "ano3i",         "ano3i",         "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "aalk1j",        "aalk1j",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "aalk2j",        "aalk2j",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "axyl1j",        "axyl1j",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "axyl2j",        "axyl2j",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "axyl3j",        "axyl3j",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "atol1j",        "atol1j",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "atol2j",        "atol2j",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "atol3j",        "atol3j",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "abnz1j",        "abnz1j",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "abnz2j",        "abnz2j",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "abnz3j",        "abnz3j",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "apah1j",        "apah1j",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "apah2j",        "apah2j",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "apah3j",        "apah3j",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "atrp1j",        "atrp1j",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "atrp2j",        "atrp2j",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "aiso1j",        "aiso1j",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "aiso2j",        "aiso2j",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "asqtj",         "asqtj",         "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "aorgcj",        "aorgcj",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "aecj",          "aecj",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "aeci",          "aeci",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "aothrj",        "aothrj",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "aothri",        "aothri",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "afej",          "afej",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "aalj",          "aalj",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "asij",          "asij",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "atij",          "atij",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "acaj",          "acaj",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "amgj",          "amgj",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "akj",           "akj",           "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "amnj",          "amnj",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "acors",         "acors",         "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "asoil",         "asoil",         "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "numatkn",       "numatkn",       "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "numacc",        "numacc",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "numcor",        "numcor",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "srfatkn",       "srfatkn",       "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "srfacc",        "srfacc",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "srfcor",        "srfcor",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "ah2oj",         "ah2oj",         "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "ah2oi",         "ah2oi",         "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "ah3opj",        "ah3opj",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "ah3opi",        "ah3opi",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "anaj",          "anaj",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "anai",          "anai",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "aclj",          "aclj",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "acli",          "acli",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "aseacat",       "aseacat",       "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "aclk",          "aclk",          "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "aso4k",         "aso4k",         "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "anh4k",         "anh4k",         "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "ano3k",         "ano3k",         "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "ah2ok",         "ah2ok",         "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "ah3opk",        "ah3opk",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "aiso3j",        "aiso3j",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "aolgaj",        "aolgaj",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "aolgbj",        "aolgbj",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "aglyj",         "aglyj",         "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "apcsoj",        "apcsoj",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "alvpo1i",       "alvpo1i",       "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "asvpo1i",       "asvpo1i",       "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "asvpo2i",       "asvpo2i",       "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "alvpo1j",       "alvpo1j",       "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "asvpo1j",       "asvpo1j",       "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "asvpo2j",       "asvpo2j",       "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "asvpo3j",       "asvpo3j",       "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "aivpo1j",       "aivpo1j",       "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "alvoo1i",       "alvoo1i",       "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "alvoo2i",       "alvoo2i",       "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "asvoo1i",       "asvoo1i",       "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "asvoo2i",       "asvoo2i",       "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "alvoo1j",       "alvoo1j",       "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "alvoo2j",       "alvoo2j",       "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "asvoo1j",       "asvoo1j",       "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "asvoo2j",       "asvoo2j",       "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "asvoo3j",       "asvoo3j",       "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "nh3",           "nh3",           "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "sv_alk1",       "sv_alk1",       "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "sv_alk2",       "sv_alk2",       "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "sv_xyl1",       "sv_xyl1",       "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "sv_xyl2",       "sv_xyl2",       "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "sv_tol1",       "sv_tol1",       "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "sv_tol2",       "sv_tol2",       "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "sv_bnz1",       "sv_bnz1",       "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "sv_bnz2",       "sv_bnz2",       "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "sv_pah1",       "sv_pah1",       "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "sv_pah2",       "sv_pah2",       "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "sv_trp1",       "sv_trp1",       "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "sv_trp2",       "sv_trp2",       "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "sv_iso1",       "sv_iso1",       "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "sv_iso2",       "sv_iso2",       "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "sv_sqt",        "sv_sqt",        "fv3_history",  "all",  .false.,  "none",  2
-"gfs_dyn",         "lv_pcsog",      "lv_pcsog",      "fv3_history",  "all",  .false.,  "none",  2
-
-###
-# aerosol diagnostics
-###
-"gfs_dyn",   "pm25at",        "pm25at",      "fv3_history",           "all",  .false.,  "none",  2
-"gfs_dyn",   "pm25ac",        "pm25ac",      "fv3_history",           "all",  .false.,  "none",  2
-"gfs_dyn",   "pm25co",        "pm25co",      "fv3_history",           "all",  .false.,  "none",  2
-"gfs_dyn",   "pm25_tot",      "pm25_tot",    "fv3_history",           "all",  .false.,  "none",  2
-"gfs_phys",  "aod",           "aod",         "fv3_history2d",         "all",  .false.,  "none",  2
 #=============================================================================================
 #
 #====> This file can be used with diag_manager/v2.0a (or higher) <====
