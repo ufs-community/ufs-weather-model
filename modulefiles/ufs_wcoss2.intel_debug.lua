@@ -39,7 +39,7 @@ load(pathJoin("netcdf", netcdf_ver))
 pio_ver=os.getenv("pio_ver") or "2.5.7"
 load(pathJoin("pio", pio_ver))
 
-fms_ver=os.getenv("fms_ver") or "2022.01"
+fms_ver=os.getenv("fms_ver") or "2022.04"
 load(pathJoin("fms", fms_ver))
 
 bacio_ver=os.getenv("bacio_ver") or "2.4.1"
