@@ -2,24 +2,28 @@ help([[
 loads UFS Model prerequisites on Cactus and Dogwood
 ]])
 
-PrgEnv_intel_ver=os.getenv("PrgEnv_intel_ver") or "8.1.0"
+PrgEnv_intel_ver=os.getenv("PrgEnv_intel_ver") or "8.3.3"
 load(pathJoin("PrgEnv-intel", PrgEnv_intel_ver))
 
-intel_ver=os.getenv("intel_ver") or "19.1.3.304"
-load(pathJoin("intel", intel_ver))
+-- intel_ver=os.getenv("intel_ver") or "19.1.3.304"
+-- load(pathJoin("intel", intel_ver))
+intel_oneapi_ver=os.getenv("intel_oneapi_ver") or "2022.2.0.262"
+load(pathJoin("intel-oneapi", intel_oneapi_ver))
 
-craype_ver=os.getenv("craype_ver") or "2.7.13"
+craype_ver=os.getenv("craype_ver") or "2.7.17"
 load(pathJoin("craype", craype_ver))
 
-cray_mpich_ver=os.getenv("cray_mpich_ver") or "8.1.7"
+cray_mpich_ver=os.getenv("cray_mpich_ver") or "8.1.19"
 load(pathJoin("cray-mpich", cray_mpich_ver))
 
 cmake_ver=os.getenv("cmake_ver") or "3.20.2"
 load(pathJoin("cmake", cmake_ver))
 
 setenv("HPC_OPT", "/apps/ops/para/libs")
-prepend_path("MODULEPATH", "/apps/ops/para/libs/modulefiles/compiler/intel/19.1.3.304")
-prepend_path("MODULEPATH", "/apps/ops/para/libs/modulefiles/mpi/intel/19.1.3.304/cray-mpich/8.1.7")
+-- prepend_path("MODULEPATH", "/apps/ops/para/libs/modulefiles/compiler/intel/19.1.3.304")
+-- prepend_path("MODULEPATH", "/apps/ops/para/libs/modulefiles/mpi/intel/19.1.3.304/cray-mpich/8.1.7")
+prepend_path("MODULEPATH", "/apps/ops/para/libs/modulefiles/compiler/intel/2022.2.0.262")
+prepend_path("MODULEPATH", "/apps/ops/para/libs/modulefiles/mpi/intel/2022.2.0.262/cray-mpich/8.1.19")
 
 jasper_ver=os.getenv("jasper_ver") or "2.0.25"
 load(pathJoin("jasper", jasper_ver))
