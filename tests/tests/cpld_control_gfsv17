@@ -1,10 +1,10 @@
 #
-#  cpld_control C96 noaero P8 test but receives atm-ocn fluxes from mediator
+#  cpld_control GFSv17 test
 #
 
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C96MX100"
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system - C96MX100"
 
-export CNTL_DIR="cpld_control_noaero_p8_agrid"
+export CNTL_DIR="cpld_control_gfsv17"
 
 export LIST_FILES="sfcf021.tile1.nc \
                    sfcf021.tile2.nc \
@@ -64,38 +64,32 @@ export LIST_FILES="sfcf021.tile1.nc \
                    RESTART/sfc_data.tile6.nc \
                    RESTART/MOM.res.nc \
                    RESTART/iced.2021-03-23-21600.nc \
-                   RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc"
-
-#TODO: add comparison of CA restart files?
+                   RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc \
+                   20210323.060000.out_pnt.ww3 \
+                   20210323.060000.out_grd.ww3 "
 
 export_fv3
 export_cpl
 
-#OCN_tasks=$OCN_tasks_cpl_dflt
-#ICE_tasks=$ICE_tasks_cpl_dflt
-#WAV_tasks=$WAV_tasks_cpl_dflt
+export CPLCHM=.false.
+export DNATS=0
 
 export RESTART_N=12
-export RESTART_N_SEC=$((RESTART_N*3600))
 export RESTART_INTERVAL="${RESTART_N} -1"
 export OUTPUT_FH='0 21 24'
 
-export CPLCHM=.false.
-export DNATS=0
-export CPLWAV=.false.
-export CPLWAV2ATM=.false.
-export CPLMODE=nems_frac_aoflux
-export CCPP_SUITE="FV3_GFS_v17_coupled_p8_sfcocn"
-export USE_MED_FLUX=.true.
-export MOM6_USE_WAVES=False
 export TOPOEDITS=ufs.topo_edits_011818.nc
 export MOM6_ALLOW_LANDMASK_CHANGES=True
 export eps_imesh=2.5e-1
 
-export DIAG_TABLE=diag_table_template
-export NEMS_CONFIGURE=nems.configure.cpld_agrid.IN
-
 export FV3_RUN=cpld_control_run.IN
+export FIELD_TABLE=field_table_thompson_noaero_tke_progsigma
+export DIAG_TABLE=diag_table_gfsv17_template
+export INPUT_NML=cpld_control_gfsv17.nml.IN
+export NEMS_CONFIGURE=nems.configure.cpld_noaero_outwav.IN
+
+#GFSv17	settings
+export PROGSIGMA=.true.
 
 if [[ $MACHINE_ID = cheyenne.* ]]; then
   TPN=18
