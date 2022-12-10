@@ -21,9 +21,9 @@ def set_directories(job_obj):
     elif job_obj.machine == 'gaea':
         workdir = '/lustre/f2/pdata/ncep/emc.nemspara/autort/pr'
     elif job_obj.machine == 'orion':
-        workdir = '/work/noaa/nems/emc.nemspara/autort/pr'
+        workdir = '/work/noaa/epic-ps/role-epic-ps/autort/tests/auto/pr'
     elif job_obj.machine == 'cheyenne':
-        workdir = '/glade/scratch/dtcufsrt/autort/tests/auto/pr'
+        workdir = '/glade/scratch/epicufsrt/autort/tests/auto/pr'
     else:
         print(f'Machine {job_obj.machine} is not supported for this job')
         raise KeyError
@@ -60,18 +60,18 @@ def clone_pr_repo(job_obj, workdir):
     logger = logging.getLogger('RT/CLONE_PR_REPO')
     repo_name = job_obj.preq_dict['preq'].head.repo.name
     branch = job_obj.preq_dict['preq'].head.ref
-    git_url = job_obj.preq_dict['preq'].head.repo.html_url.split('//')
-    git_url = f'{git_url[0]}//${{ghapitoken}}@{git_url[1]}'
-    logger.debug(f'GIT URL: {git_url}')
+    #git_url = job_obj.preq_dict['preq'].head.repo.html_url.split('//')
+    git_ssh_url = job_obj.preq_dict['preq'].head.repo.ssh_url
+    logger.debug(f'GIT SSH_URL: {git_ssh_url}')
     logger.info('Starting repo clone')
     repo_dir_str = f'{workdir}/'\
                    f'{str(job_obj.preq_dict["preq"].id)}/'\
                    f'{datetime.datetime.now().strftime("%Y%m%d%H%M%S")}'
     pr_repo_loc = f'{repo_dir_str}/{repo_name}'
-    job_obj.comment_text_append(f'Repo location: {pr_repo_loc}')
+    job_obj.comment_text_append(f'[RT] Repo location: {pr_repo_loc}')
     create_repo_commands = [
         [f'mkdir -p "{repo_dir_str}"', os.getcwd()],
-        [f'git clone -b {branch} {git_url}', repo_dir_str],
+        [f'git clone -b {branch} {git_ssh_url}', repo_dir_str],
         ['git submodule update --init --recursive',
          f'{repo_dir_str}/{repo_name}'],
         ['git config user.email "brian.curtis@noaa.gov"',
@@ -94,25 +94,22 @@ def post_process(job_obj, pr_repo_loc, repo_dir_str, branch):
     filepath = f'{pr_repo_loc}/{rt_log}'
     rt_dir, logfile_pass = process_logfile(job_obj, filepath)
     if logfile_pass:
-        if job_obj.preq_dict['preq'].maintainer_can_modify:
-            move_rt_commands = [
-                [f'git pull --ff-only origin {branch}', pr_repo_loc],
-                [f'git add {rt_log}', pr_repo_loc],
-                [f'git commit -m "RT JOBS PASSED: {job_obj.machine}'
-                 f'.{job_obj.compiler}. Log file uploaded.\n\n'
-                  'on-behalf-of @ufs-community"',
-                 pr_repo_loc],
-                ['sleep 10', pr_repo_loc],
-                [f'git push origin {branch}', pr_repo_loc]
-            ]
-            job_obj.run_commands(logger, move_rt_commands)
-            remove_pr_data(job_obj, pr_repo_loc, repo_dir_str, rt_dir)
-        else:
-            job_obj.comment_text_append(f'Cannot upload {job_obj.machine}.'\
-                                        f'{job_obj.compiler} RT Log'\
-                                        'It is blocked by PR owner')
-            job_obj.comment_text_append(f'Please obtain logs from {pr_repo_loc}')
-            job_obj.preq_dict['preq'].create_issue_comment(job_obj.comment_text)
+        #if job_obj.preq_dict['preq'].maintainer_can_modify:
+        move_rt_commands = [
+            [f'git pull --ff-only origin {branch}', pr_repo_loc],
+            [f'git add {rt_log}', pr_repo_loc],
+            [f'git commit -m "[AutoRT] {job_obj.machine}'
+             f'.{job_obj.compiler} Job Completed.\n\n\n'
+              'on-behalf-of @ufs-community <brian.curtis@noaa.gov>"',
+             pr_repo_loc],
+            ['sleep 10', pr_repo_loc],
+            [f'git push origin {branch}', pr_repo_loc]
+        ]
+        job_obj.run_commands(logger, move_rt_commands)
+    else:
+        job_obj.comment_text_append(f'[RT] Log file shows failures.')
+        job_obj.comment_text_append(f'[RT] Please obtain logs from {pr_repo_loc}')
+        job_obj.preq_dict['preq'].create_issue_comment(job_obj.comment_text)
 
 
 def process_logfile(job_obj, logfile):
@@ -124,11 +121,9 @@ def process_logfile(job_obj, logfile):
             for line in f:
                 if all(x in line for x in fail_string_list):
                 # if 'FAIL' in line and 'Test' in line:
-                    job_obj.comment_text_append(f'{line.rstrip(chr(10))}')
+                    job_obj.comment_text_append(f'[RT] Error: {line.rstrip(chr(10))}')
                 elif 'working dir' in line and not rt_dir:
                     rt_dir = os.path.split(line.split()[-1])[0]
-                    job_obj.comment_text_append(f'Please manually delete: '
-                                                f'{rt_dir}')
                 elif 'SUCCESSFUL' in line:
                     return rt_dir, True
         job_obj.job_failed(logger, f'{job_obj.preq_dict["action"]}')
