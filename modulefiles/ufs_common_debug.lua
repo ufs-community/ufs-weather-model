@@ -23,7 +23,7 @@ load(pathJoin("pio", pio_ver))
 esmf_ver=os.getenv("esmf_ver") or "8.3.0b09-debug"
 load(pathJoin("esmf", esmf_ver))
 
-fms_ver=os.getenv("fms_ver") or "2022.01"
+fms_ver=os.getenv("fms_ver") or "2022.04"
 load(pathJoin("fms",fms_ver))
 
 bacio_ver=os.getenv("bacio_ver") or "2.4.1"
