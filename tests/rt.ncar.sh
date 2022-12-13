@@ -444,7 +444,7 @@ if [[ $TESTS_FILE =~ '35d' ]] || [[ $TESTS_FILE =~ 'weekly' ]]; then
   TEST_35D=true
 fi
 
-BL_DATE=20221109
+BL_DATE=20221201
 
 RTPWD=${RTPWD:-$DISKNM/NCAR/main-${BL_DATE}/${RT_COMPILER^^}}
 
@@ -715,6 +715,8 @@ EOF
 
     (
       source ${PATHRT}/tests/$TEST_NAME
+
+      compute_petbounds_and_tasks
 
       TPN=$(( TPN / THRD ))
       NODES=$(( TASKS / TPN ))
