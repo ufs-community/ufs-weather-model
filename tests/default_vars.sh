@@ -940,6 +940,7 @@ export mesh_file=cfsr_mesh.nc
 export MESH_ATM=DATM_INPUT/${mesh_file}
 export atm_datamode=${DATM_SRC}
 export stream_files=DATM_INPUT/${FILENAME_BASE}201110.nc
+export EXPORT_ALL=.false.
 
 # MOM6 defaults; 1 degree
 export MOM_INPUT=MOM_input_template_100
@@ -1002,6 +1003,7 @@ export atm_model=datm
 
 export DATM_IN_CONFIGURE=datm_in
 export DATM_STREAM_CONFIGURE=hafs_datm.streams.era5.IN
+export EXPORT_ALL=.false.
 }
 export_hafs_docn_cdeps ()
 {
