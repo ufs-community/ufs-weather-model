@@ -1,12 +1,13 @@
 mkdir -p INPUT RESTART
 
 cd INPUT
-rsync -arv @[INPUTDATA_ROOT]/NOAHMP_IC/ufs-land_C96_init_fields.tile1.nc C96.initial.tile1.nc
-rsync -arv @[INPUTDATA_ROOT]/NOAHMP_IC/ufs-land_C96_init_fields.tile2.nc C96.initial.tile2.nc
-rsync -arv @[INPUTDATA_ROOT]/NOAHMP_IC/ufs-land_C96_init_fields.tile3.nc C96.initial.tile3.nc
-rsync -arv @[INPUTDATA_ROOT]/NOAHMP_IC/ufs-land_C96_init_fields.tile4.nc C96.initial.tile4.nc
-rsync -arv @[INPUTDATA_ROOT]/NOAHMP_IC/ufs-land_C96_init_fields.tile5.nc C96.initial.tile5.nc
-rsync -arv @[INPUTDATA_ROOT]/NOAHMP_IC/ufs-land_C96_init_fields.tile6.nc C96.initial.tile6.nc
+
+rsync -arv @[INPUTDATA_ROOT]/NOAHMP_IC/$atm_datamode/ufs-land_C96_init_fields.tile1.nc C96.initial.tile1.nc
+rsync -arv @[INPUTDATA_ROOT]/NOAHMP_IC/$atm_datamode/ufs-land_C96_init_fields.tile2.nc C96.initial.tile2.nc
+rsync -arv @[INPUTDATA_ROOT]/NOAHMP_IC/$atm_datamode/ufs-land_C96_init_fields.tile3.nc C96.initial.tile3.nc
+rsync -arv @[INPUTDATA_ROOT]/NOAHMP_IC/$atm_datamode/ufs-land_C96_init_fields.tile4.nc C96.initial.tile4.nc
+rsync -arv @[INPUTDATA_ROOT]/NOAHMP_IC/$atm_datamode/ufs-land_C96_init_fields.tile5.nc C96.initial.tile5.nc
+rsync -arv @[INPUTDATA_ROOT]/NOAHMP_IC/$atm_datamode/ufs-land_C96_init_fields.tile6.nc C96.initial.tile6.nc
 
 rsync -arv @[INPUTDATA_ROOT]/FV3_fix_tiled/C96/C96.maximum_snow_albedo.tile*.nc .
 rsync -arv @[INPUTDATA_ROOT]/FV3_fix_tiled/C96/C96.slope_type.tile*.nc .
