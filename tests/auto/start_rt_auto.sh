@@ -25,6 +25,7 @@ else
   exit 1
 fi
 
+echo "!!!Now start auo RT!!!"
 python rt_auto.py
 
 exit 0
