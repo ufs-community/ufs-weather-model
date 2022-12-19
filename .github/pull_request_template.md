@@ -1,18 +1,19 @@
 ## Description
 <!--
 Provide a detailed description of what this PR does. What bug does it fix, or what feature does it add? Is a change of answers expected from this PR? Are any library updates included in this PR (modulefiles etc.)?
-- If Results for one or more of the regression tests change, PLEASE:
-** Add "Baseline Change" or "No Baseline Change" label
-** Add an explanation for the changes below.
-- If there is new or updated input data required by this PR, PLEASE:
-** Add "New Input Data Req'd" or "input data change" Label
-** Work with the code managers to update input data sets on all platforms.
 -->
 
 ### Top of commit queue on: TBD
 <!-- Please have sub-component Code Managers ready for merging sub-component PR's on the date above and the day after the date above -->
 
+### Input data additions/changes
+- [ ] No changes are expected to input data.
+- [ ] There will be new input data. <!-- Add "input data change" Label -->
+- [ ] Input data will be updated. <!-- Add "New Input Data Req'd" Label -->
+
 ### Anticipated changes to regression tests:
+- [ ] No changes are expected to any regression test. <!-- Add "No Baseline Change" Label -->
+- [ ] Changes are expected to the following tests: <!-- Add "Baseline Change" Label -->
 <!-- Please insert what RT's change and why you expect them to change -->
 
 ## Subcomponents involved:
@@ -41,16 +42,14 @@ Please complete all items in list. Make sure to attach logs from RT testing in c
 - [ ] Add all appropriate labels to this PR.
 - [ ] Run full RT suite on either Hera/Cheyenne with both Intel/GNU compilers
 - [ ] Add list of any failed regression tests to "Anticipated changes to regression tests" section.
-<!--
-Please uncomment the following two task items if you have new/updated input data. Please let us know in this PR if you need any help with them.
-- [ ] Move new/updated input data on RDHPCS Hera.
-- [ ] Propagate input data changes to all supported systems.
--->
 
 ## Linked PR's and Issues:
 <!--
-Please link dependent pull requests: EXAMPLE: Depends on NOAA-EMC/fv3atm/pull/<pullrequest_number>
-Please link the related issues to be closed with this PR, whether in this repository, or in another repository. EXAMPLE: NOAA-EMC/fv3atm/issues/<issue_number>
+Please link dependent pull requests.
+EXAMPLE: Depends on NOAA-EMC/fv3atm/pull/<pullrequest_number>
+
+Please link the related issues to be closed with this PR, whether in this repository, or in another repository.
+EXAMPLE: Closes NOAA-EMC/fv3atm/issues/<issue_number>
 -->
 
 ## Testing Day Checklist:
@@ -58,6 +57,7 @@ Please link the related issues to be closed with this PR, whether in this reposi
 Please consult the ufs-weather-model [wiki](https://github.com/ufs-community/ufs-weather-model/wiki/Making-code-changes-in-the-UFS-weather-model-and-its-subcomponents) if you are unsure how to do this.
 -->
 - [ ] This PR is up-to-date with the top of all sub-component repositories except for those sub-components which are the subject of this PR.
+- [ ] Move new/updated input data on RDHPCS Hera and propagate input data changes to all supported systems.
 
 ### Testing Log (for CM's):
 - RDHPCS
