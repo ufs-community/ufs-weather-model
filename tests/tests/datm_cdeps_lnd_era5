@@ -1,17 +1,17 @@
 #
-#  DATM_CDEPS_NOAHMP_GSWP test
+#  DATM_CDEPS_NOAHMP_ERA5 test
 #
 
-export TEST_DESCR="DATM_CDEPS_NOAHMP_GSWP3 - control "
+export TEST_DESCR="DATM_CDEPS_NOAHMP_ERA5 - control "
 
 export CNTL_DIR="datm_cdeps_lnd_era5"
 
-export LIST_FILES="ufs.cpld.lnd.out.2011-01-01-82800.tile1.nc \
-                   ufs.cpld.lnd.out.2011-01-01-82800.tile2.nc \
-                   ufs.cpld.lnd.out.2011-01-01-82800.tile3.nc \
-                   ufs.cpld.lnd.out.2011-01-01-82800.tile4.nc \
-                   ufs.cpld.lnd.out.2011-01-01-82800.tile5.nc \
-                   ufs.cpld.lnd.out.2011-01-01-82800.tile6.nc"
+export LIST_FILES="ufs.cpld.lnd.out.2011-01-01-39600.tile1.nc \
+                   ufs.cpld.lnd.out.2011-01-01-39600.tile2.nc \
+                   ufs.cpld.lnd.out.2011-01-01-39600.tile3.nc \
+                   ufs.cpld.lnd.out.2011-01-01-39600.tile4.nc \
+                   ufs.cpld.lnd.out.2011-01-01-39600.tile5.nc \
+                   ufs.cpld.lnd.out.2011-01-01-39600.tile6.nc"
 
 export_datm_cdeps
 
@@ -19,6 +19,7 @@ export SYEAR=2011
 export SMONTH=01
 export SDAY=01
 export SHOUR=00
+export FHMAX=12
 
 export DATM_IN_CONFIGURE=datm_in
 export MESH_ATM="INPUT_DATM/ERA5_mesh.nc"
@@ -52,5 +53,6 @@ export mosaic_file="INPUT/C96_mosaic.nc"
 export coupling_interval_sec=3600
 export snow_albedo_option=2
 export precip_partition_option=1
+export initial_albedo=0.25
 export TOPOEDITS=""
 export FV3_RUN="lnd_datm_cdeps_era5.IN noahmp_run.IN"
