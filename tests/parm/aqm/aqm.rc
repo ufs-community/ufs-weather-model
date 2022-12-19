@@ -29,7 +29,7 @@ ctm_pmdiag: true
 #
 #  Input emissions
 #
-emission_sources: anthro bio fire
+emission_sources: anthro fire prod
 
 #
 #  Anthropogenic
@@ -238,6 +238,26 @@ bio_species::
 ::
 
 #
+# FENGSHA
+#
+fengsha_yn: true 
+
+fengsha_type: fengsha
+
+fengsha_format: netcdf
+
+fengsha_file: FENGSHA_p8_10km_inputs_RRFS_CONUScompact_13km.nc
+
+fengsha_frequency: monthly
+
+fengsha_species::
+    CLAYF       1.00000   clayfrac     1
+    SANDF       1.00000   sandfrac     1
+    DRAG        1.00000   albedo_drag  1
+    UTHR        1.00000   uthres       1
+::
+
+#
 #  Fire emissions from GBBEPx
 #
 fire_type: gbbepx
@@ -297,4 +317,26 @@ fire_species::
     UNR     0.0100516  CO          KG/M2/S
     XYL     0.0002964  CO          KG/M2/S
     FRP     1000000    MeanFRP     1
+::
+
+#
+#  Output products
+#
+prod_type: product
+
+prod_file: aqm.prod.nc
+
+prod_frequency: hourly
+
+prod_sync: true
+
+prod_species::
+    O3      ozone       instantaneous
+    O3      o3min       min
+    O3      o3max       max
+    O3      o3ave       average
+    PM2.5   pm25        instantaneous
+    PM2.5   pm25min     min
+    PM2.5   pm25max     max
+    PM2.5   pm25ave     average
 ::
