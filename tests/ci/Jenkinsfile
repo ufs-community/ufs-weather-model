@@ -13,7 +13,7 @@ pipeline {
                 axes {
                     axis {
                         name 'TEST_NAME'
-                        values 'control', 'regional_control', 'cpld_control_nowave_noaero_p8'
+                        values 'control_p8', 'cpld_control_nowave_noaero_p8'
                     }
 
                     axis {
@@ -23,18 +23,6 @@ pipeline {
                 }
 
                 excludes {
-                    exclude {
-                        axis {
-                            name 'TEST_NAME'
-                            values 'regional_control'
-                        }
-
-                        axis {
-                            name 'TEST_CASE'
-                            values 'mpi', 'rst', 'bit', 'dbg'
-                        }
-                    }
-
                     exclude {
                         axis {
                             name 'TEST_NAME'
@@ -95,3 +83,4 @@ pipeline {
         }
     }
 }
+         
