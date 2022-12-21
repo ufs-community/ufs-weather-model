@@ -33,7 +33,7 @@ elif [[ $application == 'cpld' ]]; then
       NPROC_ICE=$ICE_tasks
       TASKS=$((INPES*JNPES*NTILES + WRITE_GROUP*WRTTASK_PER_GROUP + OCN_tasks + ICE_tasks))
       NODES=$(((TASKS+TPN-1)/TPN))
-    elif [[ $TEST_NAME =~ 'cpld_control_p8' ]] || [[ $TEST_NAME =~ 'cpld_control_ciceC_p8' ]]; then
+    elif [[ $TEST_NAME =~ 'cpld_control_p8' ]] || [[ $TEST_NAME =~ 'cpld_control_ciceC_p8' ]] || [[ $TEST_NAME =~ 'cpld_control_gfsv17' ]]; then
       INPES=3
       JNPES=4
       OCN_tasks=20
