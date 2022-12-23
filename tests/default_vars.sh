@@ -193,7 +193,7 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
 
   INPES_dflt=3 ; JNPES_dflt=8
   INPES_thrd=3 ; JNPES_thrd=4
-  INPES_c384=6 ; JNPES_c384=8  ; THRD_c384=2
+  INPES_c384=6 ; JNPES_c384=8  ; THRD_c384=1
   INPES_c768=8 ; JNPES_c768=16 ; THRD_c768=2
 
   THRD_cpl_atmw_gdas=3
