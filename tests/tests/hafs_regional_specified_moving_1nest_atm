@@ -11,7 +11,9 @@ export CNTL_DIR=hafs_regional_specified_moving_1nest_atm
 export LIST_FILES="atmf006.nc \
                    sfcf006.nc \
                    atm.nest02.f006.nc \
-                   sfc.nest02.f006.nc"
+                   sfc.nest02.f006.nc \
+                   HURPRS.GrbF06 \
+                   HURPRS.GrbF06.nest02"
 
 export_fv3
 export_hafs
@@ -19,8 +21,7 @@ export_hafs
 export HAFS=true
 export FHMAX=6
 export RESTART_N=${FHMAX}
-export TASKS=180
-export THRD=2
+export atm_omp_num_threads=2
 export DT_ATMOS=180
 export IDEFLATE=1
 export NFHMAX_HF=-1
@@ -32,6 +33,8 @@ export SHOUR=12
 export SMONTH=08
 export SYEAR=2020
 export WRTTASK_PER_GROUP=60
+export WRITE_DOPOST=.true.
+export POSTAPP='hafs'
 
 export OUTPUT_GRID='rotated_latlon'
 export CEN_LON=-86.3
@@ -50,7 +53,7 @@ export DLON_2=0.1
 export DLAT_2=0.1
 
 export BLOCKSIZE=${BLOCKSIZE:-24}
-export CCPP_SUITE="FV3_HAFS_v0_gfdlmp_tedmf"
+export CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf"
 export DEFLATE_LEVEL=-1
 export INPES=6
 export JNPES=10

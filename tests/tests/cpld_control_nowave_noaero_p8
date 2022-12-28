@@ -77,13 +77,12 @@ export OUTPUT_FH='0 21 24'
 
 export INPES=$INPES_cpl_dflt
 export JNPES=$JNPES_cpl_dflt
-export THRD=$THRD_cpl_dflt
+export atm_omp_num_threads=$THRD_cpl_dflt
 export WRTTASK_PER_GROUP=$WPG_cpl_dflt
 
 OCN_tasks=$OCN_tasks_cpl_dflt
 ICE_tasks=$ICE_tasks_cpl_dflt
 export WAV_tasks=0
-export TASKS=$(( INPES*JNPES*NTILES + WRITE_GROUP*WRTTASK_PER_GROUP + OCN_tasks + ICE_tasks + WAV_tasks ))
 
 export NPROC_ICE=$ICE_tasks
 export np2=`expr $NPROC_ICE / 2`
@@ -96,6 +95,7 @@ export MOM6_USE_WAVES=False
 export eps_imesh=2.5e-1
 
 export CPLCHM=.false.
+export DNATS=0
 export TOPOEDITS=ufs.topo_edits_011818.nc
 export MOM6_ALLOW_LANDMASK_CHANGES=True
 

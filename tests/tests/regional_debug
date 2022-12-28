@@ -6,7 +6,7 @@
 
 export TEST_DESCR="Compare FV3 regional debug results with previous trunk version"
 
-export CNTL_DIR=fv3_regional_debug
+export CNTL_DIR=regional_debug
 
 export LIST_FILES="dynf000.nc \
                    dynf001.nc \
@@ -17,27 +17,22 @@ export_fv3
 
 export FV3_RUN=regional_run.IN
 
-export LHEATSTRG=.false.
-export OZ_PHYS_OLD=.F.
-export OZ_PHYS_NEW=.T.
-export H2O_PHYS=.T.
-export HYBEDMF=.F.
-export POSTAPP='lam'
+export OZ_PHYS_OLD=.false.
+export OZ_PHYS_NEW=.true.
+export H2O_PHYS=.true.
+export HYBEDMF=.false.
 
-export CCPP_SUITE=FV3_GFS_v15_thompson_mynn
+export CCPP_SUITE=FV3_GFS_v15_thompson_mynn_lam3km
 export INPUT_NML=regional.nml.IN
 export MODEL_CONFIGURE=model_configure_regional.IN
 export DIAG_TABLE=diag_table_lam
 export FIELD_TABLE=field_table_regional
 
-export FDIAG=1
+export WLCLK=30
 export FHMAX=1
-export TASKS=68
 export INPES=10
-export JNPES=6
+export JNPES=11
 export OUTPUT_FH="0 1"
 WRITE_GROUP=1
-WRTTASK_PER_GROUP=8
+WRTTASK_PER_GROUP=10
 NTILES=1
-
-export WLCLK=30

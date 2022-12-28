@@ -1,41 +1,40 @@
 ###############################################################################
 #
-#  FV3 regional parallel netcdf test
+#  FV3 regional parallel netcdfparallel netcdf test
 #
 ###############################################################################
 
-export TEST_DESCR="Compare FV3 regional with parallel netcdf results with previous trunk version"
+export TEST_DESCR="Compare FV3 regional parallel netcdf results with previous trunk version"
 
-export CNTL_DIR=fv3_regional_netcdf_parallel
+export CNTL_DIR=regional_netcdf_parallel
 
-export LIST_FILES="        dynf000.nc \
-                           dynf024.nc \
-                           phyf000.nc \
-                           phyf024.nc "
+export LIST_FILES="dynf000.nc \
+                   dynf006.nc \
+                   phyf000.nc \
+                   phyf006.nc"
 
 export_fv3
 
-export TASKS=68
-
 export FV3_RUN=regional_run.IN
 
-export LHEATSTRG=.false.
 export OZ_PHYS_OLD=.false.
 export OZ_PHYS_NEW=.true.
 export H2O_PHYS=.true.
 export HYBEDMF=.false.
+
+export CCPP_SUITE=FV3_GFS_v15_thompson_mynn_lam3km
+export INPUT_NML=regional.nml.IN
 export MODEL_CONFIGURE=model_configure_regional.IN
+export DIAG_TABLE=diag_table_lam
+export FIELD_TABLE=field_table_regional
 export OUTPUT_FILE="'netcdf_parallel' 'netcdf_parallel'"
 export IDEFLATE=1
 
-export CCPP_SUITE=FV3_GFS_v15_thompson_mynn
-export INPUT_NML=regional.nml.IN
-export DIAG_TABLE=diag_table_lam
-export FIELD_TABLE=field_table_regional
-
+export WLCLK=15
+export FHMAX=6
 export INPES=10
-export JNPES=6
-export OUTPUT_FH="12 -1"
+export JNPES=11
+export OUTPUT_FH="3 -1"
 WRITE_GROUP=1
-WRTTASK_PER_GROUP=8
+WRTTASK_PER_GROUP=10
 NTILES=1

@@ -1,0 +1,65 @@
+###############################################################################
+#
+#  FV3_WoFS_v0 test atmosphere only with hi-res 3km
+#
+###############################################################################
+
+export TEST_DESCR="Compare FV3_WoFS_v0 hi-res 3km results with previous trunk version"
+
+export CNTL_DIR=fv3_regional_wofs
+
+export LIST_FILES="dynf000.nc \
+                   dynf006.nc \
+                   phyf000.nc \
+                   phyf006.nc \
+                   PRSLEV.GrbF00 \
+                   PRSLEV.GrbF06 \
+                   NATLEV.GrbF00 \
+                   NATLEV.GrbF06"
+
+export_fv3
+
+export FV3_RUN=regional_run.IN
+
+export OZ_PHYS_OLD=.false.
+export OZ_PHYS_NEW=.true.
+export H2O_PHYS=.true.
+export RESTART_INTERVAL="0"
+export WRITE_DOPOST=.true.
+export POSTAPP='lam'
+
+export CCPP_SUITE=FV3_WoFS_v0
+export INPUT_NML=regional_wofs.nml.IN
+export MODEL_CONFIGURE=model_configure_regional.IN
+export FIELD_TABLE=field_table_nssl_tke
+export DIAG_TABLE=diag_table_lam
+
+export WLCLK=15
+export FHMAX=6
+export INPES=10
+export JNPES=11
+export OUTPUT_FH="3 -1"
+WRITE_GROUP=1
+WRTTASK_PER_GROUP=10
+NTILES=1
+
+export IMP_PHYSICS=17
+export DNATS=0
+export NWAT=7
+export NSSL_CCN_ON=.true.
+export NSSL_HAIL_ON=.true.
+export NSSL_INVERTCCN=.true.
+export DO_SAT_ADJ=.false.
+export LTAEROSOL=.false.
+export IALB=1
+export IEMS=1
+export HYBEDMF=.false.
+export DO_MYNNEDMF=.true.
+export DO_MYNNSFCLAY=.true.
+export DO_DEEP=.false.
+export SHAL_CNV=.false.
+export IMFSHALCNV=-1
+export IMFDEEPCNV=-1
+export LSM=1
+export LSOIL_LSM=4
+export NSTF_NAME="2, 1, 0, 0, 0"
