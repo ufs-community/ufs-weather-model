@@ -17,6 +17,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    
+    - name: Share helper id
+      run: echo -n ${{ github.run_id }} >~/id_file    
 
     - name: Wait for caching source
       run: sleep 30
