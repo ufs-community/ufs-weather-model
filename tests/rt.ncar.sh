@@ -444,7 +444,7 @@ if [[ $TESTS_FILE =~ '35d' ]] || [[ $TESTS_FILE =~ 'weekly' ]]; then
   TEST_35D=true
 fi
 
-BL_DATE=20221230
+BL_DATE=20221230a
 
 RTPWD=${RTPWD:-$DISKNM/NCAR/main-${BL_DATE}/${RT_COMPILER^^}}
 
