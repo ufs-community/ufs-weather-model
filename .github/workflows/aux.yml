@@ -27,10 +27,18 @@ jobs:
   repocheck:
     name: Repo check
     runs-on: ubuntu-20.04
+    
+    outputs:
+      current: ${{ steps.check.outputs.current }}    
 
     steps:
+    - uses: actions/checkout@v2
+
+    - name: Wait for caching source
+      run: sleep 30      
+    
     - name: Share helper id
-      run: echo -n ${{ github.run_id }} >~/id_file    
+      run: echo -n ${{ github.run_id }} >~/id_file
     
     - name: Check up-to-dateness and post comment
       run: |
