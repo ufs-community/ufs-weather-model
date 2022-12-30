@@ -24,22 +24,22 @@ jobs:
         path: ~/id_file
         key: helperid-${{ github.event.workflow_run.id }}
 
+    - name: Delete run-ci label
+      run: |
+        head_sha=${{ github.event.workflow_run.head_sha }}
+        url=$GITHUB_API_URL/repos/$GITHUB_REPOSITORY
+        pr_number=$(curl -sS -H $app $url/pulls \
+          | jq -r '.[] | select(.head.sha == "'"$head_sha"'") | .number')
+        echo "pr_number is $pr_number"
+        curl -sS -X DELETE -H $app -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          $url/issues/$pr_number/labels/run-ci
+
+
   repocheck:
     name: Repo check
     runs-on: ubuntu-20.04
-    
-    outputs:
-      current: ${{ steps.check.outputs.current }}    
 
     steps:
-    - uses: actions/checkout@v2
-
-    - name: Wait for caching source
-      run: sleep 30      
-    
-    - name: Share helper id
-      run: echo -n ${{ github.run_id }} >~/id_file
-    
     - name: Check up-to-dateness and post comment
       run: |
         head_sha=${{ github.event.workflow_run.head_sha }}

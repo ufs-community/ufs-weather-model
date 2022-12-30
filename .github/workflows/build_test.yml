@@ -8,51 +8,46 @@ env:
 
 
 jobs:
-  pre:
-    name: Preprocess
+  repocheck:
+    name: Check if repos are up to date
     runs-on: ubuntu-20.04
 
+    outputs:
+      current: ${{ steps.check.outputs.current }}
+
     steps:
-    - name: Share helper id
-      run: echo -n ${{ github.run_id }} >~/id_file
+    - uses: actions/checkout@v2
+
+    - name: Wait for caching source
+      run: sleep 30
 
     - uses: actions/cache@v2
       with:
         path: ~/id_file
-        key: helperid-${{ github.event.workflow_run.id }}
+        key: helperid-${{ github.run_id }}
 
-  repocheck:
-    name: Repo check
-    runs-on: ubuntu-20.04
-
-    steps:
-    - name: Share helper id
-      run: echo -n ${{ github.run_id }} >~/id_file    
-    
-    - name: Check up-to-dateness and post comment
+    - name: Wait until repocheck in aux is complete
       run: |
-        head_sha=${{ github.event.workflow_run.head_sha }}
-        git clone -q ${{ github.event.workflow_run.head_repository.html_url }} .
-        git checkout -q $head_sha
-        git submodule -q update --init --recursive
+        helper_id=$(cat ~/id_file)
         cd ${{ github.workspace }}/tests/ci
-        url=$GITHUB_API_URL/repos/$GITHUB_REPOSITORY
-        pr_number=$(curl -sS -H $app $url/pulls \
-          | jq -r '.[] | select(.head.sha == "'"$head_sha"'") | .number')
-        echo "pr_number is $pr_number"
-        pr_uid=${{ github.event.workflow_run.head_repository.owner.login }}
-        echo "pr_uid is $pr_uid"
-        comment="$(./repo_check.sh $pr_uid 2>/dev/null)"
-        echo "comment is $comment"
-        if [[ -n $comment ]]; then
-          curl -sS -X POST -H $app -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            $url/issues/$pr_number/comments -d '{"body": "'"${comment}"'"}'
-          echo -n "failure" >~/repocheck_file
-        else
-          echo -n "success" >~/repocheck_file
+        jobs_url=$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/actions/runs/$helper_id/jobs
+        conclusion=$(echo $jobs_url | ./check_status.py completion "Repo check")
+        if [[ $conclusion == "failure" ]]; then
+          exit 1
         fi
+
     - uses: actions/cache@v2
       with:
         path: ~/repocheck_file
-        key: repocheck-${{ github.event.workflow_run.id }}  
-  
+        key: repocheck-${{ github.run_id }}
+
+    - name: Set repocheck currency flag
+      id: check
+      run: |
+        repocheck_result=$(cat ~/repocheck_file)
+        if [[ $repocheck_result == success ]]; then
+          echo "::set-output name=current::yes"
+        elif [[ $repocheck_result == failure ]]; then
+          echo "::set-output name=current::no"
+        fi
+
