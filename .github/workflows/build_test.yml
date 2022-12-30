@@ -8,6 +8,19 @@ env:
 
 
 jobs:
+  pretest:
+    name: Preprocess
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: Share helper id
+      run: echo -n ${{ github.run_id }} >~/id_file
+
+    - uses: actions/cache@v2
+      with:
+        path: ~/id_file
+        key: helperid-${{ github.event.workflow_run.id }}
+
   repocheck:
     name: Check if repos are up to date
     runs-on: ubuntu-20.04
@@ -18,9 +31,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     
-    - name: Share helper id
-      run: echo -n ${{ github.run_id }} >~/id_file    
-
     - name: Wait for caching source
       run: sleep 30
 
