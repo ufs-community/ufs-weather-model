@@ -35,19 +35,3 @@ jobs:
         if [[ $conclusion == "failure" ]]; then
           exit 1
         fi
-
-    - uses: actions/cache@v2
-      with:
-        path: ~/repocheck_file
-        key: repocheck-${{ github.run_id }}
-
-    - name: Set repocheck currency flag
-      id: check
-      run: |
-        repocheck_result=$(cat ~/repocheck_file)
-        if [[ $repocheck_result == success ]]; then
-          echo "::set-output name=current::yes"
-        elif [[ $repocheck_result == failure ]]; then
-          echo "::set-output name=current::no"
-        fi
-
