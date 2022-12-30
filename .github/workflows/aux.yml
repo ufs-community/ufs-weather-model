@@ -9,7 +9,6 @@ env:
   base_url: $GITHUB_API_URL/repos/$GITHUB_REPOSITORY/actions/runs
   AUTH: ${{ secrets.GITHUB_TOKEN }}
 
-
 jobs:
   pre:
     name: Preprocess
@@ -24,17 +23,6 @@ jobs:
         path: ~/id_file
         key: helperid-${{ github.event.workflow_run.id }}
 
-    - name: Delete run-ci label
-      run: |
-        head_sha=${{ github.event.workflow_run.head_sha }}
-        url=$GITHUB_API_URL/repos/$GITHUB_REPOSITORY
-        pr_number=$(curl -sS -H $app $url/pulls \
-          | jq -r '.[] | select(.head.sha == "'"$head_sha"'") | .number')
-        echo "pr_number is $pr_number"
-        curl -sS -X DELETE -H $app -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-          $url/issues/$pr_number/labels/run-ci
-
-
   repocheck:
     name: Repo check
     runs-on: ubuntu-20.04
@@ -46,7 +34,6 @@ jobs:
         git clone -q ${{ github.event.workflow_run.head_repository.html_url }} .
         git checkout -q $head_sha
         git submodule -q update --init --recursive
-
         cd ${{ github.workspace }}/tests/ci
         url=$GITHUB_API_URL/repos/$GITHUB_REPOSITORY
         pr_number=$(curl -sS -H $app $url/pulls \
@@ -56,7 +43,6 @@ jobs:
         echo "pr_uid is $pr_uid"
         comment="$(./repo_check.sh $pr_uid 2>/dev/null)"
         echo "comment is $comment"
-
         if [[ -n $comment ]]; then
           curl -sS -X POST -H $app -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             $url/issues/$pr_number/comments -d '{"body": "'"${comment}"'"}'
@@ -64,10 +50,4 @@ jobs:
         else
           echo -n "success" >~/repocheck_file
         fi
-
-    - uses: actions/cache@v2
-      with:
-        path: ~/repocheck_file
-        key: repocheck-${{ github.event.workflow_run.id }}
-
-
+        
