@@ -29,6 +29,9 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
+    - name: Share helper id
+      run: echo -n ${{ github.run_id }} >~/id_file    
+    
     - name: Check up-to-dateness and post comment
       run: |
         head_sha=${{ github.event.workflow_run.head_sha }}
