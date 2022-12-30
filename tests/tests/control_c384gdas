@@ -50,8 +50,7 @@ export LIST_FILES="sfcf000.nc \
                    RESTART/sfc_data.tile6.nc"
 
 export_fv3
-export TASKS=${TASKS_c384}
-export THRD=${THRD_c384}
+export atm_omp_num_threads=${THRD_c384}
 export INPES=${INPES_c384}
 export JNPES=${JNPES_c384}
 export WRITE_GROUP=1
@@ -95,3 +94,7 @@ export MODEL_INITIALIZATION=true
 export FV3_RUN=control_run.IN
 export CCPP_SUITE=FV3_GFS_v16
 export INPUT_NML=control_gdas.nml.IN
+
+if [[ $MACHINE_ID = gaea.* || $MACHINE_ID = cheyenne.* ]]; then
+  TPN=18
+fi
