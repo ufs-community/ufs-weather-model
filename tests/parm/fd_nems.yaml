@@ -896,13 +896,6 @@
      # WW3 export
      #-----------------------------------
      #
-     - standard_name: Sw_ch
-       alias: wave_induced_charnock_parameter
-       canonical_units: 1
-       description: ww3 export
-     - standard_name: Sw_ch
-       alias: charno
-     #
      - standard_name: Sw_z0
        alias: wave_z0_roughness_length
        canonical_units: 1
@@ -910,61 +903,53 @@
      - standard_name: Sw_z0
        alias: z0rlen
      #
-     - standard_name: Sw_ustokes
-       alias: eastward_stokes_drift_current
+     - standard_name: Sw_pstokes_x
+       alias: eastward_partitioned_stokes_drift_current
        canonical_units: m s-1
-       description: ww3 export using ungridded dimension for drift components
-     - standard_name: Sw_ustokes
+       description: ww3 export partitioned drift components using ungridded dimension
+     #
+     - standard_name: Sw_pstokes_y
+       alias: northward_partitioned_stokes_drift_current
+       canonical_units: m s-1
+       description: ww3 export partitioned drift components using ungridded dimension
+     #
+     - standard_name: Sw_elevation_spectrum
+       alias: wave_elevation_spectrum
+       canonical_units: m2/s
+       description: wave elevation spectrum
+     #
+     # remaining fields are unused but required to be present
+     #
+     - standard_name: Sw_ch
+       alias: wave_induced_charnock_parameter
+       canonical_units: 1
+       description: ww3 export
+     - standard_name: Sw_ch
+       alias: charno
+     #
+     - standard_name: eastward_stokes_drift_current
        alias: uscurr
-     #
-     - standard_name: Sw_vstokes
-       alias: northward_stokes_drift_current
        canonical_units: m s-1
-       description: ww3 export using ungridded dimension for drift components
-     - standard_name: Sw_vstokes
+       description: ww3 export spectrum of drift components
+     #
+     - standard_name: northward_stokes_drift_current
        alias: vscurr
-     #
-     - standard_name: Sw_ustokes1
-       alias: eastward_partitioned_stokes_drift_1
        canonical_units: m s-1
-       description: ww3 export
-     - standard_name: Sw_ustokes1
-       alias: x1pstk
+       description: ww3 export spectrum of drift components
      #
-     - standard_name: Sw_ustokes2
-       alias: eastward_partitioned_stokes_drift_2
+     - standard_name: Sw_ustokes
+       alias: eastward_surface_stokes_drift_current
        canonical_units: m s-1
-       description: ww3 export
-     - standard_name: Sw_ustokes2
-       alias: x2pstk
+       description: ww3 export surface drift components
+     - standard_name: Sw_ustokes
+       alias: ussx
      #
-     - standard_name: Sw_ustokes3
-       alias: eastward_partitioned_stokes_drift_3
+     - standard_name: Sw_vstokes
+       alias: northward_surface_stokes_drift_current
        canonical_units: m s-1
-       description: ww3 export
-     - standard_name: Sw_ustokes3
-       alias: x3pstk
-     #
-     - standard_name: Sw_vstokes1
-       alias: northward_partitioned_stokes_drift_1
-       canonical_units: m s-1
-       description: ww3 export
-     - standard_name: Sw_vstokes1
-       alias: y1pstk
-     #
-     - standard_name: Sw_vstokes2
-       alias: northward_partitioned_stokes_drift_2
-       canonical_units: m s-1
-       description: ww3 export
-     - standard_name: Sw_vstokes2
-       alias: y2pstk
-     #
-     - standard_name: Sw_vstokes3
-       alias: northward_partitioned_stokes_drift_3
-       canonical_units: m s-1
-       description: ww3 export
-     - standard_name: Sw_vstokes3
-       alias: y3pstk
+       description: ww3 export using surface drift components
+     - standard_name: Sw_vstokes
+       alias: ussy
      #
      - standard_name: Sw_wbcuru
        alias: eastward_wave_bottom_current
@@ -1008,10 +993,47 @@
      - standard_name: Sw_wavsvv
        alias: wavsvv
      #
-     - standard_name: Sw_elevation_spectrum
-       alias: wave_elevation_spectrum
-       canonical_units: m2/s
-       description: wave elevation spectrum
+     - standard_name: Sw_ustokes1
+       alias: eastward_partitioned_stokes_drift_1
+       canonical_units: m s-1
+       description: ww3 export
+     - standard_name: Sw_ustokes1
+       alias: x1pstk
+     #
+     - standard_name: Sw_ustokes2
+       alias: eastward_partitioned_stokes_drift_2
+       canonical_units: m s-1
+       description: ww3 export
+     - standard_name: Sw_ustokes2
+       alias: x2pstk
+     #
+     - standard_name: Sw_ustokes3
+       alias: eastward_partitioned_stokes_drift_3
+       canonical_units: m s-1
+       description: ww3 export
+     - standard_name: Sw_ustokes3
+       alias: x3pstk
+     #
+     - standard_name: Sw_vstokes1
+       alias: northward_partitioned_stokes_drift_1
+       canonical_units: m s-1
+       description: ww3 export
+     - standard_name: Sw_vstokes1
+       alias: y1pstk
+     #
+     - standard_name: Sw_vstokes2
+       alias: northward_partitioned_stokes_drift_2
+       canonical_units: m s-1
+       description: ww3 export
+     - standard_name: Sw_vstokes2
+       alias: y2pstk
+     #
+     - standard_name: Sw_vstokes3
+       alias: northward_partitioned_stokes_drift_3
+       canonical_units: m s-1
+       description: ww3 export
+     - standard_name: Sw_vstokes3
+       alias: y3pstk
      #
      #-----------------------------------
      # section: FV3 atm export/import to/from JEDI

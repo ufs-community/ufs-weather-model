@@ -1,18 +1,33 @@
- logKindFlag:            ESMF_LOGKIND_MULTI
+#############################################
+####  NEMS Run-Time Configuration File  #####
+#############################################
 
- EARTH_component_list: ATM
+# ESMF #
+logKindFlag:            ESMF_LOGKIND_MULTI
+globalResourceControl:  true
 
- ATM_model:            @[atm_model]
- ATM_petlist_bounds:   @[atm_petlist_bounds]
- ATM_attributes::
- ::
+# EARTH #
+EARTH_component_list: ATM
+EARTH_attributes::
+  Verbosity = 0
+::
 
- runSeq::
-   ATM
- ::
+# ATM #
+ATM_model:                      @[atm_model]
+ATM_petlist_bounds:             @[atm_petlist_bounds]
+ATM_omp_num_threads:            @[atm_omp_num_threads]
+ATM_attributes::
+  Verbosity = 0
+  Diagnostic = 0
+::
 
- DRIVER_attributes::
- ::
+# Run Sequence #
+runSeq::
+  ATM
+::
 
- ALLCOMP_attributes::
- ::
+DRIVER_attributes::
+::
+
+ALLCOMP_attributes::
+::

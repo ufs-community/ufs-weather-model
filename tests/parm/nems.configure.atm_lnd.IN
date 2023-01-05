@@ -2,6 +2,10 @@
 ####  NEMS Run-Time Configuration File  #####
 #############################################
 
+# ESMF #
+logKindFlag:            ESMF_LOGKIND_MULTI
+globalResourceControl:  true
+
 # EARTH #
 EARTH_component_list: MED ATM LND
 EARTH_attributes::
@@ -11,6 +15,7 @@ EARTH_attributes::
 # MED #
 MED_model:                      @[med_model]
 MED_petlist_bounds:             @[med_petlist_bounds]
+MED_omp_num_threads:            @[med_omp_num_threads]
 MED_attributes::
   Verbosity = 1
   Diagnostic = 0
@@ -29,6 +34,7 @@ MED_attributes::
 # ATM #
 ATM_model:                      @[atm_model]
 ATM_petlist_bounds:             @[atm_petlist_bounds]
+ATM_omp_num_threads:             @[atm_omp_num_threads]
 ATM_attributes::
   Verbosity = 0
   Diagnostic = 0
@@ -37,12 +43,13 @@ ATM_attributes::
 # LND #
 LND_model:                      @[lnd_model]
 LND_petlist_bounds:             @[lnd_petlist_bounds]
+LND_omp_num_threads:            @[lnd_omp_num_threads]
 LND_attributes::
   Verbosity = 1
   Diagnostic = 0
   mosaic_file = @[mosaic_file]
   input_dir = INPUT/
-  ic_type = @[lnd_ic_type] 
+  ic_type = @[lnd_ic_type]
   layout = @[layout_x]:@[layout_y] # need to be consistent with number of PEs
   num_soil_levels = 4
   forcing_height = 10
@@ -60,7 +67,7 @@ LND_attributes::
   precip_partition_option = 4
   soil_temp_lower_bdy_option = 2
   soil_temp_time_scheme_option = 3
-  surface_evap_resistance_option = 1 # not used, it is fixed to 4 in sfc_noahmp_drv.F90 
+  surface_evap_resistance_option = 1 # not used, it is fixed to 4 in sfc_noahmp_drv.F90
   glacier_option = 1
   surface_thermal_roughness_option = 2
   output_freq = 10800
@@ -114,6 +121,6 @@ ALLCOMP_attributes::
   stop_n = @[FHMAX]
   stop_option = nhours
   stop_ymd = -999
-  read_restart = @[READRESTART] 
+  read_restart = @[READRESTART]
   mediator_present = true
 ::
