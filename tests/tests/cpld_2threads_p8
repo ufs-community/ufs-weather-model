@@ -63,15 +63,20 @@ export_cpl
 export RESTART_N=12
 export RESTART_INTERVAL="${RESTART_N} -1"
 
-export TASKS=$TASKS_cpl_thrd
 export INPES=$INPES_cpl_thrd
 export JNPES=$JNPES_cpl_thrd
-export THRD=$THRD_cpl_thrd
-export WRTTASK_PER_GROUP=$WPG_cpl_thrd
+export WRTTASK_PER_GROUP=$(( WPG_cpl_thrd * THRD_cpl_thrd ))
 
-OCN_tasks=$OCN_tasks_cpl_thrd
-ICE_tasks=$ICE_tasks_cpl_thrd
-WAV_tasks=$WAV_tasks_cpl_thrd
+export OCN_tasks=${OCN_tasks_cpl_thrd}
+export ICE_tasks=${ICE_tasks_cpl_thrd}
+export WAV_tasks=${WAV_tasks_cpl_thrd}
+
+export atm_omp_num_threads=$THRD_cpl_thrd
+export chm_omp_num_threads=$atm_omp_num_threads
+export med_omp_num_threads=$atm_omp_num_threads
+export ocn_omp_num_threads=$OCN_thrds_cpl_thrd
+export ice_omp_num_threads=$ICE_thrds_cpl_thrd
+export wav_omp_num_threads=$WAV_thrds_cpl_thrd
 
 export NPROC_ICE=${ICE_tasks}
 export np2=`expr $NPROC_ICE / 2`
