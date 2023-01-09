@@ -60,21 +60,16 @@ export LIST_FILES="sfcf024.tile1.nc \
 export_fv3
 export_cpl
 
-export NEMS_CONFIGURE=nems.configure.cpld_esmfthreads.IN
-
 export RESTART_N=12
 export RESTART_INTERVAL="${RESTART_N} -1"
 
-export TASKS=$TASKS_cpl_thrd
 export INPES=$INPES_cpl_thrd
 export JNPES=$JNPES_cpl_thrd
-export THRD=1
-export ATM_compute_tasks=$(( INPES * JNPES * NTILES * THRD_cpl_thrd ))
 export WRTTASK_PER_GROUP=$(( WPG_cpl_thrd * THRD_cpl_thrd ))
 
-export OCN_tasks=$(( OCN_tasks_cpl_thrd * OCN_thrds_cpl_thrd ))
-export ICE_tasks=$(( ICE_tasks_cpl_thrd * ICE_thrds_cpl_thrd ))
-export WAV_tasks=$(( WAV_tasks_cpl_thrd * WAV_thrds_cpl_thrd ))
+export OCN_tasks=${OCN_tasks_cpl_thrd}
+export ICE_tasks=${ICE_tasks_cpl_thrd}
+export WAV_tasks=${WAV_tasks_cpl_thrd}
 
 export atm_omp_num_threads=$THRD_cpl_thrd
 export chm_omp_num_threads=$atm_omp_num_threads
