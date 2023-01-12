@@ -1110,6 +1110,7 @@
      #-----------------------------------
      #
      - standard_name: Sl_lfrac
+       alias: land_fraction
        canonical_units: 1
        description: land export
      #
@@ -1125,12 +1126,37 @@
        canonical_units: 1
        description: AOD
      #
+     - standard_name: Sl_sfrac
+       alias: mean_snow_area_fraction_lnd
+       canonical_units: 1
+       description: land export 
+     #
+     - standard_name: Sl_tref
+       alias: inst_temp_height2m_lnd
+       canonical_units: K
+       description: mediator export to glc - no levation classes
+     #
+     - standard_name: Sl_qref
+       alias: inst_spec_humid_height2m_lnd
+       canonical_units: kg kg-1
+       description: land export
+     #
+     - standard_name: Sl_q
+       alias: inst_spec_humid_lnd
+       canonical_units: kg kg-1
+       description: land export
+     #
      - standard_name: Fall_lat
-       alias: mean_laten_heat_flx_lnd_to_atm
-       canonical_units: W m-2
+       alias: mean_laten_heat_flx_lnd
+       canonical_units: kg kg-1 m s-1
        description: land export to atm - atm/lnd latent heat flux
      #
      - standard_name: Fall_sen
-       alias: mean_sensi_heat_flx_lnd_to_atm
-       canonical_units: W m-2
+       alias: mean_sensi_heat_flx_lnd
+       canonical_units: K m s-1
        description: land export to atm - atm/lnd sensible heat flux
+     #
+     - standard_name: Fall_evap
+       alias: mean_potential_laten_heat_flx_lnd
+       canonical_units: W m-2
+       description: land export

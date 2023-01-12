@@ -457,6 +457,7 @@ export CPLICE=.false.
 export CPLWAV=.false.
 export CPLWAV2ATM=.false.
 export CPLLND=.false.
+export CPLLND2ATM=.false.
 export USE_MED_FLUX=.false.
 export DAYS=1
 export NPX=97
