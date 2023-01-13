@@ -16,7 +16,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules/Modules)
 ###############################################################################
 
 # Valid applications and choices
-list(APPEND VALID_APPS ATM ATMAERO ATMAQ ATMW S2S S2SA S2SW S2SWA HAFS HAFSW HAFS-ALL NG-GODAS)
+list(APPEND VALID_APPS ATM ATMAERO ATMAQ ATMW ATML LND S2S S2SA S2SW S2SWA S2SWAL HAFS HAFSW HAFS-ALL NG-GODAS)
 set(APP NONE CACHE BOOL "Application Name")
 if(NOT (APP IN_LIST VALID_APPS))
   message(FATAL_ERROR "${APP} is not a valid application.\nValid Applications are: ${VALID_APPS}")
@@ -33,6 +33,7 @@ set(WW3             OFF CACHE BOOL "Enable WW3")
 set(STOCH_PHYS      OFF CACHE BOOL "Enable Stochastic Physics")
 set(CMEPS           OFF CACHE BOOL "Enable CMEPS")
 set(CDEPS           OFF CACHE BOOL "Enable CDEPS")
+set(NOAHMP          OFF CACHE BOOL "Enable NOAHMP")
 
 # Configure selected application specific components
 message("")
@@ -50,6 +51,7 @@ message("WW3 .............. ${WW3}")
 message("STOCH_PHYS ....... ${STOCH_PHYS}")
 message("CDEPS ............ ${CDEPS}")
 message("CMEPS ............ ${CMEPS}")
+message("NOAHMP ........... ${NOAHMP}")
 
 ###############################################################################
 ### Build Options
@@ -61,7 +63,7 @@ set(AVX             OFF CACHE BOOL "Enable AVX-I instruction set")
 set(SIMDMULTIARCH   OFF CACHE BOOL "Enable multi-target SIMD instruction sets")
 set(DEBUG           OFF CACHE BOOL "Enable DEBUG mode")
 set(DEBUG_LINKMPI   ON  CACHE BOOL "Enable linkmpi option when DEBUG mode is on")
-set(INLINE_POST     OFF CACHE BOOL "Enable inline post")
+set(INLINE_POST     ON  CACHE BOOL "Enable inline post")
 set(MULTI_GASES     OFF CACHE BOOL "Enable MULTI_GASES")
 set(MOVING_NEST     OFF CACHE BOOL "Enable moving nest code")
 set(OPENMP          ON  CACHE BOOL "Enable OpenMP threading")
@@ -119,13 +121,21 @@ endif()
 find_package(NetCDF 4.7.4 REQUIRED C Fortran)
 find_package(ESMF 8.3.0 MODULE REQUIRED)
 if(FMS)
-  find_package(FMS 2022.01 REQUIRED COMPONENTS R4 R8)
-  if(32BIT)
+  find_package(FMS 2022.04 REQUIRED COMPONENTS R4 R8)
+  if(APP MATCHES "^(HAFSW)$")
     add_library(fms ALIAS FMS::fms_r4)
-  else()
+  elseif (APP MATCHES "^(S2S|S2SA|S2SW|S2SWA|S2SWAL|NG-GODAS)$")
     add_library(fms ALIAS FMS::fms_r8)
   endif()
+  if(APP MATCHES "^(ATM|ATMAERO|ATMAQ|ATMW|ATML|LND|HAFS|HAFS-ALL)$")
+    if(32BIT)
+      add_library(fms ALIAS FMS::fms_r4)
+    else()
+      add_library(fms ALIAS FMS::fms_r8)
+    endif()
+  endif()
 endif()
+
 if(CMEPS)
   find_package(PIO 2.5.3 REQUIRED COMPONENTS C Fortran STATIC)
 endif()
@@ -212,6 +222,13 @@ if(CDEPS)
 endif()
 
 ###############################################################################
+### Land Components [NOAHMP]
+###############################################################################
+if(NOAHMP)
+  add_subdirectory(NOAHMP-interface)
+endif()
+
+###############################################################################
 ### UFS Library
 ###############################################################################
 add_library(ufs driver/UFSDriver.F90)
@@ -281,6 +298,12 @@ if(CDEPS)
   list(APPEND _ufs_defs_private FRONT_CDEPS_DATM=cdeps_datm_comp)
   list(APPEND _ufs_defs_private FRONT_CDEPS_DOCN=cdeps_docn_comp)
   target_link_libraries(ufs PUBLIC cdeps::cdeps)
+endif()
+
+if(NOAHMP)
+  add_dependencies(ufs noahmp)
+  list(APPEND _ufs_defs_private FRONT_NOAHMP=lnd_comp_nuopc)
+  list(APPEND _ufs_libs_public noahmp)
 endif()
 
 target_compile_definitions(ufs PRIVATE "${_ufs_defs_private}")

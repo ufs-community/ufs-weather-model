@@ -18,8 +18,7 @@ export LIST_FILES="sfcf000.nc \
                    GFSPRS.GrbF12"
 
 export_fv3
-export TASKS=${TASKS_c384}
-export THRD=${THRD_c384}
+export atm_omp_num_threads=${THRD_c384}
 export INPES=${INPES_c384}
 export JNPES=${JNPES_c384}
 export WRITE_GROUP=1
@@ -53,3 +52,6 @@ export FNABSC="'global_mxsnoalb.uariz.t766.1536.768.rg.grb',"
 export FV3_RUN=control_run.IN
 export CCPP_SUITE=FV3_GFS_v16
 export INPUT_NML=control.nml.IN
+
+if [[ $MACHINE_ID = gaea.* || $MACHINE_ID = cheyenne.* || $MACHINE_ID = jet.* ]]; then                                                                       TPN=18
+fi

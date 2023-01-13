@@ -37,6 +37,10 @@
        canonical_units: kg m-2 s-1
        description: atmosphere export
      #
+     - standard_name: Faxa_ocph
+       canonical_units: kg m-2 s-1
+       description: atmosphere export
+     #
      - standard_name: Faxa_dstdry
        canonical_units: kg m-2 s-1
        description: atmosphere export
@@ -65,6 +69,7 @@
        description: atmosphere export
      #
      - standard_name: Faxa_rainc
+       alias: mean_prec_rate_conv
        canonical_units: kg m-2 s-1
        description: atmosphere export
      #
@@ -120,6 +125,11 @@
        canonical_units: Pa
        description: atmosphere export - pressure at lowest model layer
      #
+     - standard_name: Sa_prsl
+       alias: inst_pres_height_lowest_from_phys
+       canonical_units: Pa
+       description: atmosphere export - pressure at lowest model layer
+     #
      - standard_name: Sa_pslv
        alias: inst_pres_height_surface
        canonical_units: Pa
@@ -131,6 +141,11 @@
      #
      - standard_name: Sa_shum
        alias: inst_spec_humid_height_lowest
+       canonical_units: kg kg-1
+       description: atmosphere export - bottom layer specific humidity
+     #
+     - standard_name: Sa_qa
+       alias: inst_spec_humid_height_lowest_from_phys
        canonical_units: kg kg-1
        description: atmosphere export - bottom layer specific humidity
      #
@@ -146,6 +161,11 @@
        canonical_units: K
        description: atmosphere export - sea surface skin temperature
      #
+     - standard_name: Sa_ta
+       alias: inst_temp_height_lowest_from_phys
+       canonical_units: K
+       description: atmosphere export - bottom layer temperature
+     #
      - standard_name: Sa_u
        alias: inst_zonal_wind_height_lowest
        canonical_units: m s-1
@@ -153,6 +173,16 @@
      #
      - standard_name: Sa_v
        alias: inst_merid_wind_height_lowest
+       canonical_units: m s-1
+       description: atmosphere export - bottom layer meridional wind
+     #
+     - standard_name: Sa_ua
+       alias: inst_zonal_wind_height_lowest_from_phys
+       canonical_units: m s-1
+       description: atmosphere export - bottom layer zonal wind
+     #
+     - standard_name: Sa_va
+       alias: inst_merid_wind_height_lowest_from_phys
        canonical_units: m s-1
        description: atmosphere export - bottom layer meridional wind
      #
@@ -272,6 +302,16 @@
      - standard_name: height
        canonical_units: m
        description: orography
+     #
+     - standard_name: Sa_exner
+       alias: inst_exner_function_height_lowest
+       canonical_units: 1
+       description: dimensionless exner function at surface adjacent layer
+     #
+     - standard_name: Sa_ustar
+       alias: surface_friction_velocity
+       canonical_units: m s-1
+       description: surface friction velocity
      #
      #-----------------------------------
      # section: sea-ice export
@@ -856,13 +896,6 @@
      # WW3 export
      #-----------------------------------
      #
-     - standard_name: Sw_ch
-       alias: wave_induced_charnock_parameter
-       canonical_units: 1
-       description: ww3 export
-     - standard_name: Sw_ch
-       alias: charno
-     #
      - standard_name: Sw_z0
        alias: wave_z0_roughness_length
        canonical_units: 1
@@ -870,61 +903,53 @@
      - standard_name: Sw_z0
        alias: z0rlen
      #
-     - standard_name: Sw_ustokes
-       alias: eastward_stokes_drift_current
+     - standard_name: Sw_pstokes_x
+       alias: eastward_partitioned_stokes_drift_current
        canonical_units: m s-1
-       description: ww3 export using ungridded dimension for drift components
-     - standard_name: Sw_ustokes
+       description: ww3 export partitioned drift components using ungridded dimension
+     #
+     - standard_name: Sw_pstokes_y
+       alias: northward_partitioned_stokes_drift_current
+       canonical_units: m s-1
+       description: ww3 export partitioned drift components using ungridded dimension
+     #
+     - standard_name: Sw_elevation_spectrum
+       alias: wave_elevation_spectrum
+       canonical_units: m2/s
+       description: wave elevation spectrum
+     #
+     # remaining fields are unused but required to be present
+     #
+     - standard_name: Sw_ch
+       alias: wave_induced_charnock_parameter
+       canonical_units: 1
+       description: ww3 export
+     - standard_name: Sw_ch
+       alias: charno
+     #
+     - standard_name: eastward_stokes_drift_current
        alias: uscurr
-     #
-     - standard_name: Sw_vstokes
-       alias: northward_stokes_drift_current
        canonical_units: m s-1
-       description: ww3 export using ungridded dimension for drift components
-     - standard_name: Sw_vstokes
+       description: ww3 export spectrum of drift components
+     #
+     - standard_name: northward_stokes_drift_current
        alias: vscurr
-     #
-     - standard_name: Sw_ustokes1
-       alias: eastward_partitioned_stokes_drift_1
        canonical_units: m s-1
-       description: ww3 export
-     - standard_name: Sw_ustokes1
-       alias: x1pstk
+       description: ww3 export spectrum of drift components
      #
-     - standard_name: Sw_ustokes2
-       alias: eastward_partitioned_stokes_drift_2
+     - standard_name: Sw_ustokes
+       alias: eastward_surface_stokes_drift_current
        canonical_units: m s-1
-       description: ww3 export
-     - standard_name: Sw_ustokes2
-       alias: x2pstk
+       description: ww3 export surface drift components
+     - standard_name: Sw_ustokes
+       alias: ussx
      #
-     - standard_name: Sw_ustokes3
-       alias: eastward_partitioned_stokes_drift_3
+     - standard_name: Sw_vstokes
+       alias: northward_surface_stokes_drift_current
        canonical_units: m s-1
-       description: ww3 export
-     - standard_name: Sw_ustokes3
-       alias: x3pstk
-     #
-     - standard_name: Sw_vstokes1
-       alias: northward_partitioned_stokes_drift_1
-       canonical_units: m s-1
-       description: ww3 export
-     - standard_name: Sw_vstokes1
-       alias: y1pstk
-     #
-     - standard_name: Sw_vstokes2
-       alias: northward_partitioned_stokes_drift_2
-       canonical_units: m s-1
-       description: ww3 export
-     - standard_name: Sw_vstokes2
-       alias: y2pstk
-     #
-     - standard_name: Sw_vstokes3
-       alias: northward_partitioned_stokes_drift_3
-       canonical_units: m s-1
-       description: ww3 export
-     - standard_name: Sw_vstokes3
-       alias: y3pstk
+       description: ww3 export using surface drift components
+     - standard_name: Sw_vstokes
+       alias: ussy
      #
      - standard_name: Sw_wbcuru
        alias: eastward_wave_bottom_current
@@ -968,10 +993,47 @@
      - standard_name: Sw_wavsvv
        alias: wavsvv
      #
-     - standard_name: Sw_elevation_spectrum
-       alias: wave_elevation_spectrum
-       canonical_units: m2/s
-       description: wave elevation spectrum
+     - standard_name: Sw_ustokes1
+       alias: eastward_partitioned_stokes_drift_1
+       canonical_units: m s-1
+       description: ww3 export
+     - standard_name: Sw_ustokes1
+       alias: x1pstk
+     #
+     - standard_name: Sw_ustokes2
+       alias: eastward_partitioned_stokes_drift_2
+       canonical_units: m s-1
+       description: ww3 export
+     - standard_name: Sw_ustokes2
+       alias: x2pstk
+     #
+     - standard_name: Sw_ustokes3
+       alias: eastward_partitioned_stokes_drift_3
+       canonical_units: m s-1
+       description: ww3 export
+     - standard_name: Sw_ustokes3
+       alias: x3pstk
+     #
+     - standard_name: Sw_vstokes1
+       alias: northward_partitioned_stokes_drift_1
+       canonical_units: m s-1
+       description: ww3 export
+     - standard_name: Sw_vstokes1
+       alias: y1pstk
+     #
+     - standard_name: Sw_vstokes2
+       alias: northward_partitioned_stokes_drift_2
+       canonical_units: m s-1
+       description: ww3 export
+     - standard_name: Sw_vstokes2
+       alias: y2pstk
+     #
+     - standard_name: Sw_vstokes3
+       alias: northward_partitioned_stokes_drift_3
+       canonical_units: m s-1
+       description: ww3 export
+     - standard_name: Sw_vstokes3
+       alias: y3pstk
      #
      #-----------------------------------
      # section: FV3 atm export/import to/from JEDI
@@ -1065,6 +1127,32 @@
        canonical_units: K
        description: two meter temperature
      #
+     #-----------------------------------
+     # section: land export
+     #-----------------------------------
+     #
+     - standard_name: Sl_lfrac
+       canonical_units: 1
+       description: land export
+     #
+     - standard_name: Sl_lfrin
+       canonical_units: 1
+       description: land export
+     #
+     - standard_name: Sl_t
+       canonical_units: K
+       description: land export
+     #
      - standard_name: inst_tracer_diag_aod
        canonical_units: 1
        description: AOD
+     #
+     - standard_name: Fall_lat
+       alias: mean_laten_heat_flx_lnd_to_atm
+       canonical_units: W m-2
+       description: land export to atm - atm/lnd latent heat flux
+     #
+     - standard_name: Fall_sen
+       alias: mean_sensi_heat_flx_lnd_to_atm
+       canonical_units: W m-2
+       description: land export to atm - atm/lnd sensible heat flux
