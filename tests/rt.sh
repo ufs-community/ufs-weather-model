@@ -139,7 +139,7 @@ if [[ $MACHINE_ID = wcoss2.* ]]; then
   #ROCOTOCOMPLETE=$(which rocotocomplete)
   #ROCOTO_SCHEDULER=lsf
 
-  module load ecflow/5.6.0.6
+  module load ecflow/5.6.0.13
   module load gcc/10.3.0 python/3.8.6
   ECFLOW_START=${ECF_ROOT}/scripts/server_check.sh
   export ECF_OUTPUTDIR=${PATHRT}/ecf_outputdir
@@ -162,7 +162,7 @@ if [[ $MACHINE_ID = wcoss2.* ]]; then
 
 elif [[ $MACHINE_ID = acorn.* ]]; then
 
-  module load ecflow/5.6.0.6
+  module load ecflow/5.6.0.13
   module load gcc/10.3.0 python/3.8.6
   ECFLOW_START=${ECF_ROOT}/scripts/server_check.sh
   export ECF_OUTPUTDIR=${PATHRT}/ecf_outputdir
@@ -445,7 +445,7 @@ if [[ $TESTS_FILE =~ '35d' ]] || [[ $TESTS_FILE =~ 'weekly' ]]; then
   TEST_35D=true
 fi
 
-BL_DATE=20230110
+BL_DATE=20230112
 
 RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
 
