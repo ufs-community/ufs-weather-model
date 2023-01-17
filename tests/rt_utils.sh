@@ -648,8 +648,15 @@ ecflow_run() {
   if [[ $not_running -eq 1 ]]; then
     echo "ecflow_server is NOT running on ${ECF_HOST}:${ECF_PORT}"
     if [[ ${MACHINE_ID} == wcoss2.* || ${MACHINE_ID} == acorn.* ]]; then
-      # Annoying "Has NCO assigned port $ECF_PORT for use by this account? (yes/no) ".
-      echo yes | ${ECFLOW_START} -p ${ECF_PORT} -d ${RUNDIR_ROOT}/ecflow_server
+      if [[ "${HOST::1}" == "a" ]]; then
+	export ECF_HOST=adecflow01
+      elif [[ "${HOST::1}" == "c" ]]; then
+	export ECF_HOST=cdecflow01
+      elif [[ "${HOST::1}" == "d" ]]; then
+	export ECF_HOST=ddecflow01
+      fi
+      MYCOMM="bash -l -c \"module load ecflow && ecflow_start.sh -p ${ECF_PORT} \""
+      ssh $ECF_HOST "${MYCOMM}"
     elif [[ ${MACHINE_ID} == jet.* ]]; then
       module load ecflow
       echo "Using special Jet ECFLOW start procedure"
