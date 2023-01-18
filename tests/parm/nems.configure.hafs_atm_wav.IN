@@ -4,6 +4,7 @@
 
 # ESMF #
 logKindFlag:            ESMF_LOGKIND_MULTI_ON
+globalResourceControl:  true
 
 # EARTH #
 EARTH_component_list: MED ATM WAV
@@ -14,6 +15,7 @@ EARTH_attributes::
 # MED #
 MED_model:                      @[med_model]
 MED_petlist_bounds:             @[med_petlist_bounds]
+MED_omp_num_threads:            @[med_omp_num_threads]
 MED_attributes::
   Verbosity = 0
   Diagnostic = 0
@@ -31,6 +33,7 @@ MED_attributes::
 # ATM #
 ATM_model:                      @[atm_model]
 ATM_petlist_bounds:             @[atm_petlist_bounds]
+ATM_omp_num_threads:            @[atm_omp_num_threads]
 ATM_attributes::
   Verbosity = 0
   Diagnostic = 0
@@ -41,36 +44,10 @@ ATM_attributes::
   write_restart_at_endofrun = .true.
 ::
 
-# OCN #
-OCN_attributes::
-  Verbosity = 0
-  Diagnostic = 0
-  cdf_impexp_freq = 3
-  cpl_hour = 0
-  cpl_min = 0
-  cpl_sec = @[coupling_interval_sec]
-  base_dtg = @[SYEAR]@[SMONTH]@[SDAY]@[SHOUR]
-  merge_import = .true.
-  skip_first_import = .true.
-  hycom_arche_output = .false.
-  hyc_esmf_exp_output = .true.
-  hyc_esmf_imp_output = .true.
-  import_diagnostics = .false.
-  import_setting = flexible
-  hyc_impexp_file = nems.configure
-  espc_show_impexp_minmax = .true.
-  ocean_start_dtg = @[OCEAN_START_DTG]
-  start_hour = 0
-  start_min = 0
-  start_sec = 0
-  end_hour = @[FHMAX]
-  end_min = 0
-  end_sec = 0
-::
-
 # WAV #
 WAV_model:                      @[wav_model]
 WAV_petlist_bounds:             @[wav_petlist_bounds]
+WAV_omp_num_threads:            @[wav_omp_num_threads]
 WAV_attributes::
   Verbosity = 0
   Diagnostic = 0

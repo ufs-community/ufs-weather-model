@@ -1,0 +1,150 @@
+name: Helpers
+on:
+  workflow_run:
+    workflows: ["Pull Request Tests"]
+    types:
+      - requested
+env:
+  app: Accept:application/vnd.github.v3+json
+  base_url: $GITHUB_API_URL/repos/$GITHUB_REPOSITORY/actions/runs
+  AUTH: ${{ secrets.GITHUB_TOKEN }}
+  aws_instance_id: ${{ secrets.AWS_INSTANCE_ID }}
+  no_instances: 10
+
+
+jobs:
+  pre:
+    name: Preprocess
+    runs-on: ubuntu-20.04
+
+#    steps:
+#    - name: Share helper id
+#      run: echo -n ${{ github.run_id }} >~/id_file
+#
+#    - uses: actions/cache@v2
+#      with:
+#        path: ~/id_file
+#        key: helperid-${{ github.event.workflow_run.id }}
+#
+#    - name: Delete run-ci label
+#      run: |
+#        head_sha=${{ github.event.workflow_run.head_sha }}
+#        url=$GITHUB_API_URL/repos/$GITHUB_REPOSITORY
+#        pr_number=$(curl -sS -H $app $url/pulls \
+#          | jq -r '.[] | select(.head.sha == "'"$head_sha"'") | .number')
+#        echo "pr_number is $pr_number"
+#        curl -sS -X DELETE -H $app -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+#          $url/issues/$pr_number/labels/run-ci
+
+
+  repocheck:
+    name: Repo check
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: Check up-to-dateness and post comment
+      run: |
+        head_sha=${{ github.event.workflow_run.head_sha }}
+        git clone -q ${{ github.event.workflow_run.head_repository.html_url }} .
+        git checkout -q $head_sha
+        git submodule -q update --init --recursive
+
+        cd ${{ github.workspace }}/tests/ci
+        url=$GITHUB_API_URL/repos/$GITHUB_REPOSITORY
+        pr_number=$(curl -sS -H $app $url/pulls \
+          | jq -r '.[] | select(.head.sha == "'"$head_sha"'") | .number')
+        echo "pr_number is $pr_number"
+        pr_uid=${{ github.event.workflow_run.head_repository.owner.login }}
+        echo "pr_uid is $pr_uid"
+        comment="$(./repo_check.sh $pr_uid 2>/dev/null)"
+        echo "comment is $comment"
+
+        if [[ -n $comment ]]; then
+          curl -sS -X POST -H $app -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            $url/issues/$pr_number/comments -d '{"body": "'"${comment}"'"}'
+          echo -n "failure" >~/repocheck_file
+        else
+          echo -n "success" >~/repocheck_file
+        fi
+
+    - uses: actions/cache@v2
+      with:
+        path: ~/repocheck_file
+        key: repocheck-${{ github.event.workflow_run.id }}
+
+
+  startrunner:
+    name: Start runners
+    needs: repocheck
+    runs-on: ubuntu-20.04
+    outputs:
+      started: ${{ steps.ec2.outputs.started }}
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Check all builds are complete and successful
+      id: current
+      run: |
+        cd ${{ github.workspace }}/tests/ci
+        eval url=$base_url/${{ github.event.workflow_run.id }}/jobs
+        b_r=$(echo -n $url | ./check_status.py build)
+        if [ $b_r == 'success' ]; then
+          echo "::set-output name=check::pass"
+        elif [ $b_r == 'failure' ]; then
+          echo "::set-output name=check::fail"
+        fi
+
+    - name: Check all previous runs finish using ec2
+      id: previous
+      if: steps.current.outputs.check == 'pass'
+      run: |
+        cd ${{ github.workspace }}/tests/ci
+        eval url=$base_url
+        echo -n $url | ./check_status.py ec2 ${{ github.run_id }}
+
+    - uses: aws-actions/configure-aws-credentials@v1
+      if: steps.current.outputs.check == 'pass'
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+
+    - name: Start ec2 instances
+      id: ec2
+      if: steps.current.outputs.check == 'pass'
+      run: |
+        no_stopped=0
+        while [ $no_stopped -lt $no_instances ]; do
+          sleep 20
+          no_stopped=$(aws ec2 describe-instances --instance-ids $aws_instance_id \
+            | jq -r '.Reservations[].Instances[].State.Name' | grep stopped | wc -l)
+          echo "no_stopped: $no_stopped"
+        done
+        aws ec2 start-instances --instance-ids $aws_instance_id
+        echo "::set-output name=started::yes"
+
+
+  stoprunner:
+    name: Stop runners
+    needs: startrunner
+    runs-on: ubuntu-20.04
+    if: needs.startrunner.outputs.started == 'yes'
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Check all tests are complete
+      run: |
+        cd ${{ github.workspace }}/tests/ci
+        eval url=$base_url/${{ github.event.workflow_run.id }}
+        echo $url | ./check_status.py test
+
+    - uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+
+    - name: Stop ec2 instances
+      run: aws ec2 stop-instances --instance-ids $aws_instance_id
