@@ -303,7 +303,9 @@ if [[ $SCHEDULER != 'none' ]]; then
   cat ${RUNDIR}/job_timestamp.txt >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
 fi
 
-remove_fail_test
+if [[ $ROCOTO = true ]]; then
+  remove_fail_test
+fi
 
 ################################################################################
 # End test

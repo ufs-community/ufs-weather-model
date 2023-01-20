@@ -4,6 +4,7 @@
 
 # ESMF #
 logKindFlag:            ESMF_LOGKIND_MULTI
+globalResourceControl:  true
 
 # EARTH #
 EARTH_component_list: ATM WAV
@@ -14,6 +15,7 @@ EARTH_attributes::
 # ATM #
 ATM_model:                      @[atm_model]
 ATM_petlist_bounds:             @[atm_petlist_bounds]
+ATM_omp_num_threads:            @[atm_omp_num_threads]
 ATM_attributes::
   Verbosity = 0
   DumpFields = false
@@ -22,6 +24,7 @@ ATM_attributes::
 # WAV #
 WAV_model:                      @[wav_model]
 WAV_petlist_bounds:             @[wav_petlist_bounds]
+WAV_omp_num_threads:            @[wav_omp_num_threads]
 WAV_attributes::
   Verbosity = 0
 ::
@@ -31,7 +34,7 @@ WAV_attributes::
 # Run Sequence #
 runSeq::
   @@[coupling_interval_sec]
-    ATM -> WAV 
+    ATM -> WAV
     ATM
     WAV
   @
