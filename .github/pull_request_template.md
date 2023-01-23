@@ -1,52 +1,80 @@
-# PR Checklist
-
-- [ ] This PR is up-to-date with the top of all sub-component repositories except for those sub-components which are the subject of this PR. Please consult the ufs-weather-model [wiki](https://github.com/ufs-community/ufs-weather-model/wiki/Making-code-changes-in-the-UFS-weather-model-and-its-subcomponents) if you are unsure how to do this.
-
-- [ ] This PR has been tested using a branch which is up-to-date with the top of all sub-component repositories except for those sub-components which are the subject of this PR
-
-- [ ] An Issue describing the work contained in this PR has been created either in the subcomponent(s) or in the ufs-weather-model. The Issue should be created in the repository that is most relevant to the changes in contained in the PR. The Issue and the dependent sub-component PR
-are specified below.
-
-- [ ] Results for one or more of the regression tests change and the reasons for the changes are understood and explained below.
-
-- [ ] New or updated input data is required by this PR. If checked, please work with the code managers to update input data sets on all platforms.
-
-## Instructions: All subsequent sections of text should be filled in as appropriate.
-
-The information provided below allows the code managers to understand the changes relevant to this PR, whether those changes are in the ufs-weather-model repository or in a subcomponent repository. Ufs-weather-model code managers will use the information provided to add any applicable labels, assign reviewers and place it in the Commit Queue. Once the PR is in the Commit Queue, it is the PR owner's responsibility to keep the PR up-to-date with the develop branch of ufs-weather-model.
-
 ## Description
-
+<!--
 Provide a detailed description of what this PR does. What bug does it fix, or what feature does it add? Is a change of answers expected from this PR? Are any library updates included in this PR (modulefiles etc.)?
+-->
 
-### Issue(s) addressed
+### Top of commit queue on: TBD
+<!-- Please have sub-component Code Managers ready for merging sub-component PR's on the date above and the day after the date above -->
 
-Link the issues to be closed with this PR, whether in this repository, or in another repository.
-(Remember, issues must always be created before starting work on a PR branch!)
-- fixes #<issue_number>
-- fixes noaa-emc/fv3atm/issues/<issue_number>
+### Input data additions/changes
+- [ ] No changes are expected to input data.
+- [ ] There will be new input data. <!-- Add "input data change" Label -->
+- [ ] Input data will be updated. <!-- Add "New Input Data Req'd" Label -->
 
-## Testing
+### Anticipated changes to regression tests:
+- [ ] No changes are expected to any regression test. <!-- Add "No Baseline Change" Label -->
+- [ ] Changes are expected to the following tests: <!-- Add "Baseline Change" Label -->
+<!-- Please insert what RT's change and why you expect them to change -->
 
-How were these changes tested? What compilers / HPCs was it tested with? Are the changes covered by regression tests? (If not, why? Do new tests need to be added?) Have regression tests and unit tests (utests) been run? On which platforms and with which compilers? (Note that unit tests can only be run on tier-1 platforms)
+## Subcomponents involved:
+- [ ] AQM
+- [ ] CDEPS
+- [ ] CICE
+- [ ] CMEPS
+- [ ] CMakeModules
+- [ ] FV3
+- [ ] GOCART
+- [ ] HYCOM
+- [ ] MOM6
+- [ ] NOAHMP
+- [ ] WW3
+- [ ] stochastic_physics
+- [ ] none
 
-- [ ] hera.intel
-- [ ] hera.gnu
-- [ ] orion.intel
-- [ ] cheyenne.intel
-- [ ] cheyenne.gnu
-- [ ] gaea.intel
-- [ ] jet.intel
-- [ ] wcoss2.intel
-- [ ] acorn.intel
-- [ ] opnReqTest for newly added/changed feature
-- [ ] CI
+### Combined with PR's (If Applicable):
 
-## Dependencies
+## Commit Queue Checklist:
+<!-- 
+Please complete all items in list. Make sure to attach logs from RT testing in comment, not in repository. Once all boxes are checked, please add the label "Ready for Commit Queue".
+-->
+- [ ] Link PR's from all sub-components involved
+- [ ] Confirm reviews completed in sub-component PR's
+- [ ] Add all appropriate labels to this PR.
+- [ ] Run full RT suite on either Hera/Cheyenne with both Intel/GNU compilers
+- [ ] Add list of any failed regression tests to "Anticipated changes to regression tests" section.
 
-If testing this branch requires non-default branches in other repositories, list them. Those branches should have matching names (ideally).
+## Linked PR's and Issues:
+<!--
+Please link dependent pull requests.
+EXAMPLE: Depends on NOAA-EMC/fv3atm/pull/<pullrequest_number>
 
-Do PRs in upstream repositories need to be merged first?
-If so add the "waiting for other repos" label and list the upstream PRs
-- waiting on noaa-emc/nems/pull/<pr_number>
-- waiting on noaa-emc/fv3atm/pull/<pr_number>
+Please link the related issues to be closed with this PR, whether in this repository, or in another repository.
+EXAMPLE: Closes NOAA-EMC/fv3atm/issues/<issue_number>
+-->
+
+## Testing Day Checklist:
+<!--
+Please consult the ufs-weather-model [wiki](https://github.com/ufs-community/ufs-weather-model/wiki/Making-code-changes-in-the-UFS-weather-model-and-its-subcomponents) if you are unsure how to do this.
+-->
+- [ ] This PR is up-to-date with the top of all sub-component repositories except for those sub-components which are the subject of this PR.
+- [ ] Move new/updated input data on RDHPCS Hera and propagate input data changes to all supported systems.
+
+### Testing Log (for CM's):
+- RDHPCS
+  - Intel
+    - [ ] Hera
+    - [ ] Orion
+    - [ ] Jet
+    - [ ] Gaea
+    - [ ] Cheyenne
+  - GNU
+    - [ ] Hera
+    - [ ] Cheyenne
+- WCOSS2
+  - [ ] Dogwood/Cactus
+  - [ ] Acorn
+- CI
+  - [ ] Completed
+- opnReqTest
+  - [ ] N/A
+  - [ ] Log attached to comment
