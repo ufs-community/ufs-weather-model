@@ -125,7 +125,7 @@ def post_process(job_obj, pr_repo_loc, repo_dir_str, branch):
             [f'git add {rt_log}', pr_repo_loc],
             [f'git commit -m "[AutoRT] {job_obj.machine}'
              f'.{job_obj.compiler} Job Completed.\n\n\n'
-              'on-behalf-of @ufs-community <brian.curtis@noaa.gov>"',
+              'on-behalf-of @ufs-community <ecc.platform@noaa.gov>"',
              pr_repo_loc],
             ['sleep 10', pr_repo_loc],
             [f'git push httpsorigin {branch}', pr_repo_loc]
