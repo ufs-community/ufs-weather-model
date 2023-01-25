@@ -13,7 +13,7 @@ pipeline {
                 axes {
                     axis {
                         name 'TEST_NAME'
-                        values 'control_p8', 'cpld_control_nowave_noaero_p8'
+                        values 'control_p8', 'regional_control', 'cpld_control_nowave_noaero_p8'
                     }
 
                     axis {
@@ -32,8 +32,19 @@ pipeline {
                         axis {
                             name 'TEST_CASE'
                             values 'mpi', 'dcp', 'bit', 'thr' // TODO: Remove thr case from cpld_control_nowave_noaero_p8 exclusions when it is passing again
-                        }
+                            }
                     }
+                    exclude {
+                        axis {
+                            name 'TEST_NAME'
+                            values 'regional_control'
+                        }
+
+                        axis {
+                            name 'TEST_CASE'
+                            values 'mpi', 'rst', 'bit', 'dbg'
+                        }
+                    }   
                 }
 
                 agent {
