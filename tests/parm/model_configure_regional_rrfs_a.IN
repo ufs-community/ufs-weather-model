@@ -1,0 +1,90 @@
+start_year:              2021
+start_month:             5
+start_day:               31
+start_hour:              3
+start_minute:            0
+start_second:            0
+nhours_fcst:             @[FHMAX]
+dt_atmos:                60
+cpl:                     .false.
+restart_interval:        @[RESTART_INTERVAL]
+output_1st_tstep_rst:    .false.
+quilting:                @[QUILTING]
+
+
+#
+# Write-component (quilting) computational parameters.
+#
+write_groups:            @[WRITE_GROUP]
+write_tasks_per_group:   @[WRTTASK_PER_GROUP]
+num_files:               2
+filename_base:           'dyn''phy'
+output_file:             'netcdf'
+write_nemsioflip:        .false.
+#
+# Write-component output frequency parameter definitions:
+#
+# nfhout:
+# Output frequency in hours after forecast hour "nfhmax_hf".
+#
+# nfhmax_hf:
+# Number of forecast hours until output frequency "nfhout" takes affect.
+#
+# nfhout_hf:
+# Output frequency in hours until forecast hour "nfhmax_hf".
+#
+# nsout:
+# Output frequency in time steps (positive values override "nfhout" and 
+# "nfhout_hf").
+#
+nfhout:     1
+nfhmax_hf:  60
+nfhout_hf:  1
+nsout:      0
+#
+# Coordinate system used by the output grid.
+#
+output_grid:  'lambert_conformal'
+#
+# Parameter definitions for an output grid of type "lambert_conformal":
+#
+# cen_lon:
+# Longitude of center of grid (degrees).
+#
+# cen_lat:
+# Latitude of center of grid (degrees).
+#
+# stdlat1:
+# Latitude of first standard parallel (degrees).
+#
+# stdlat2:
+# Latitude of second standard parallel (degrees).
+#
+# nx:
+# Number of grid cells along x-axis in Lambert conformal (x,y) plane.
+#
+# ny:
+# Number of grid cells along y-axis in Lambert conformal (x,y) plane.
+#
+# lon1:
+# Longitude of center of grid cell at bottom-left corner of grid (degrees).
+#
+# lat1:
+# Latitude of center of grid cell at bottom-left corner of grid (degrees).
+#
+# dx:
+# Grid cell size in x direction (meters).
+#
+# dy:
+# Grid cell size in y direction (meters).
+#
+cen_lon:  -97.5
+cen_lat:  38.5
+stdlat1:  38.5
+stdlat2:  38.5
+nx:       1799
+ny:       1059
+lon1:     -122.719528
+lat1:     21.138123
+dx:       3000.0
+dy:       3000.0

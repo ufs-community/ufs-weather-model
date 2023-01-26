@@ -13,11 +13,16 @@ export LIST_FILES="atmf006.nc \
                    atm.nest02.f006.nc \
                    sfc.nest02.f006.nc \
                    atm.nest03.f006.nc \
-                   atm.nest03.f006.nc \
-                   sfc.nest04.f006.nc \
+                   sfc.nest03.f006.nc \
+                   atm.nest04.f006.nc \
                    sfc.nest04.f006.nc \
                    atm.nest05.f006.nc \
-                   sfc.nest05.f006.nc"
+                   sfc.nest05.f006.nc \
+                   HURPRS.GrbF06 \
+                   HURPRS.GrbF06.nest02 \
+                   HURPRS.GrbF06.nest03 \
+                   HURPRS.GrbF06.nest04 \
+                   HURPRS.GrbF06.nest05"
 
 export_fv3
 export_hafs
@@ -25,8 +30,7 @@ export_hafs
 export HAFS=true
 export FHMAX=6
 export RESTART_N=${FHMAX}
-export TASKS=420
-export THRD=2
+export atm_omp_num_threads=2
 export DT_ATMOS=90
 export IDEFLATE=1
 export NFHMAX_HF=-1
@@ -38,6 +42,8 @@ export SHOUR=12
 export SMONTH=08
 export SYEAR=2020
 export WRTTASK_PER_GROUP=60
+export WRITE_DOPOST=.true.
+export POSTAPP='hafs'
 export NTILES=6
 
 export OUTPUT_GRID='global_latlon'
@@ -85,7 +91,7 @@ export DLON_5=0.05
 export DLAT_5=0.05
 
 export BLOCKSIZE=${BLOCKSIZE:-24}
-export CCPP_SUITE="FV3_HAFS_v0_gfdlmp_tedmf"
+export CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf"
 export DEFLATE_LEVEL=-1
 export INPES=4
 export JNPES=5
@@ -173,3 +179,6 @@ export MODEL_CONFIGURE="model_configure_hafs.IN"
 export NEMS_CONFIGURE="nems.configure.hafs_atm.IN"
 export FV3_RUN="hafs_fv3_run.IN"
 
+if [[ $MACHINE_ID = cheyenne.* ]]; then
+  TPN=18
+fi

@@ -42,6 +42,8 @@
         Driver_label_SetRunSequence   => label_SetRunSequence, &
         Driver_label_SetRunClock      => label_SetRunClock
       use NUOPC_Connector, only: conSS => SetServices
+      use NUOPC_Model, only: SetVM
+
   ! - Handle build time ATM options:
 #ifdef FRONT_FV3
       use FRONT_FV3,        only: FV3_SS   => SetServices
@@ -74,6 +76,9 @@
 #ifdef FRONT_NOAH
       use FRONT_NOAH,       only: NOAH_SS  => SetServices
 #endif
+#ifdef FRONT_NOAHMP
+      use FRONT_NOAHMP,     only: NOAHMP_SS  => SetServices
+#endif
 #ifdef FRONT_LIS
       use FRONT_LIS,        only: LIS_SS   => SetServices
 #endif
@@ -87,7 +92,8 @@
 #endif
   ! - Handle build time GOCART options:
 #ifdef FRONT_GOCART
-      use FRONT_GOCART,     only: GOCART_SS  => SetServices
+      use FRONT_GOCART,     only: GOCART_SS  => SetServices, &
+                                  GOCART_SV  => SetVM
 #endif
   ! - Mediator
 #ifdef FRONT_CMEPS
@@ -373,17 +379,8 @@
 #endif
 #ifdef FRONT_HYCOM
           if (trim(model) == "hycom") then
-            !TODO: Remove bail code and pass info and SetVM to DriverAddComp
-            !TODO: once component supports threading.
-            if (ompNumThreads > 1) then
-              write (msg, *) "ESMF-aware threading NOT implemented for model: "//&
-                trim(model)
-              call ESMF_LogSetError(ESMF_RC_NOT_VALID, msg=msg, line=__LINE__, &
-                file=__FILE__, rcToReturn=rc)
-              return  ! bail out
-            endif
             call NUOPC_DriverAddComp(driver, trim(prefix), HYCOM_SS, &
-              petList=petList, comp=comp, rc=rc)
+              SetVM, info=info, petList=petList, comp=comp, rc=rc)
             if (ChkErr(rc,__LINE__,u_FILE_u)) return
             found_comp = .true.
           end if
@@ -446,6 +443,14 @@
             found_comp = .true.
           end if
 #endif
+#ifdef FRONT_NOAHMP
+          if (trim(model) == "noahmp") then
+            call NUOPC_DriverAddComp(driver, trim(prefix), NOAHMP_SS, &
+              petList=petList, comp=comp, rc=rc)
+            if (ChkErr(rc,__LINE__,u_FILE_u)) return
+            found_comp = .true.
+          end if
+#endif
 #ifdef FRONT_LIS
           if (trim(model) == "lis") then
             !TODO: Remove bail code and pass info and SetVM to DriverAddComp
@@ -499,17 +504,8 @@
 #endif
 #ifdef FRONT_GOCART
           if (trim(model) == "gocart") then
-            !TODO: Remove bail code and pass info and SetVM to DriverAddComp
-            !TODO: once component supports threading.
-            if (ompNumThreads > 1) then
-              write (msg, *) "ESMF-aware threading NOT implemented for model: "//&
-                trim(model)
-              call ESMF_LogSetError(ESMF_RC_NOT_VALID, msg=msg, line=__LINE__, &
-                file=__FILE__, rcToReturn=rc)
-              return  ! bail out
-            endif
             call NUOPC_DriverAddComp(driver, trim(prefix), GOCART_SS, &
-              petList=petList, comp=comp, rc=rc)
+              GOCART_SV, info=info, petList=petList, comp=comp, rc=rc)
             if (ChkErr(rc,__LINE__,u_FILE_u)) return
             found_comp = .true.
           end if

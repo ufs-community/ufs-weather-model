@@ -22,8 +22,6 @@ export_hafs_regional
 export HAFS=true
 export FHMAX=6
 export RESTART_N=${FHMAX}
-export TASKS=240
-export THRD=2
 export DT_ATMOS=180
 export IDEFLATE=1
 export NFHMAX_HF=-1
@@ -34,7 +32,7 @@ export SDAY=25
 export SHOUR=12
 export SMONTH=08
 export SYEAR=2020
-export WRTTASK_PER_GROUP=60
+export WRTTASK_PER_GROUP=120
 
 export OUTPUT_GRID='regional_latlon'
 export CEN_LON=-86.3
@@ -53,7 +51,7 @@ export DLON_2=0.1
 export DLAT_2=0.1
 
 export BLOCKSIZE=${BLOCKSIZE:-24}
-export CCPP_SUITE="FV3_HAFS_v0_gfdlmp_tedmf_nonsst"
+export CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf_nonsst"
 export DEFLATE_LEVEL=-1
 export INPES=6
 export JNPES=10
@@ -97,8 +95,6 @@ export NPY_NEST02=361
 export K_SPLIT_NEST02=4
 export N_SPLIT_NEST02=5
 
-ATM_compute_tasks=$(( INPES*JNPES + INPES_NEST02*JNPES_NEST02 ))
-
 export FHCYC=0
 export FHSWR=1800
 export FHLWR=1800
@@ -122,7 +118,14 @@ export OCEAN_START_DTG=43702.50000
 
 export atm_model="fv3"
 export ocn_model="hycom"
+
+ATM_compute_tasks=$(( INPES*JNPES + INPES_NEST02*JNPES_NEST02 ))
 OCN_tasks=60
+
+export atm_omp_num_threads=2
+export med_omp_num_threads=2
+export ocn_omp_num_threads=2
+
 export coupling_interval_sec=360
 export MESH_ATM="unset"
 
