@@ -1,0 +1,39 @@
+###############################################################################
+#
+#  FV3 regional debug control test
+#
+###############################################################################
+
+export TEST_DESCR="Compare FV3 regional debug results with previous trunk version"
+
+export CNTL_DIR=regional_debug
+
+export LIST_FILES="dynf000.nc \
+                   dynf001.nc \
+                   phyf000.nc \
+                   phyf001.nc"
+
+export_fv3
+
+export FV3_RUN=regional_run.IN
+
+export OZ_PHYS_OLD=.false.
+export OZ_PHYS_NEW=.true.
+export H2O_PHYS=.true.
+export HYBEDMF=.false.
+
+export CCPP_SUITE=FV3_GFS_v15_thompson_mynn_lam3km
+export INPUT_NML=regional.nml.IN
+export MODEL_CONFIGURE=model_configure_regional.IN
+export DIAG_TABLE=diag_table_lam
+export FIELD_TABLE=field_table_regional
+
+export WLCLK=30
+export FHMAX=1
+export TASKS=120
+export INPES=10
+export JNPES=11
+export OUTPUT_FH="0 1"
+WRITE_GROUP=1
+WRTTASK_PER_GROUP=10
+NTILES=1

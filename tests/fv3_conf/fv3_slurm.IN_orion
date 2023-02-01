@@ -15,11 +15,11 @@ set -eux
 echo -n " $( date +%s )," >  job_timestamp.txt
 
 set +x
+MACHINE_ID=orion
 source ./module-setup.sh
 module use $( pwd -P )
 module load modules.fv3
 module list
-
 set -x
 
 ulimit -s unlimited
@@ -33,6 +33,8 @@ export OMP_NUM_THREADS=@[THRD]
 #export ESMF_RUNTIME_COMPLIANCECHECK=OFF:depth=4
 #export PSM_RANKS_PER_CONTEXT=4
 #export PSM_SHAREDCONTEXTS=1
+export ESMF_RUNTIME_PROFILE=ON
+export ESMF_RUNTIME_PROFILE_OUTPUT="SUMMARY"
 
 # Avoid job errors because of filesystem synchronization delays
 sync && sleep 1

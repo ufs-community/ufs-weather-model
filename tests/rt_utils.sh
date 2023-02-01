@@ -5,11 +5,91 @@ if [[ "$0" = "${BASH_SOURCE[0]}" ]]; then
   exit 1
 fi
 
-UNIT_TEST=${UNIT_TEST:-false}
+# Note: this file must only contain subroutines, and variables that
+# are not dependent on the caller. Most regression test variables
+# (such as ACCNR) are not set until after rt.sh sources this file.
+
+OPNREQ_TEST=${OPNREQ_TEST:-false}
 
 qsub_id=0
 slurm_id=0
 bsub_id=0
+
+function compute_petbounds_and_tasks() {
+
+  # each test MUST define ${COMPONENT}_tasks variable for all components it is using
+  # and MUST NOT define those that it's not using or set the value to 0.
+
+  # ATM is a special case since it is running on the sum of compute and io tasks.
+  # CHM component and mediator are running on ATM compute tasks only.
+
+  if [[ $DATM_CDEPS = 'false' ]]; then
+    if [[ ${ATM_compute_tasks:-0} -eq 0 ]]; then
+      ATM_compute_tasks=$((INPES * JNPES * NTILES))
+    fi
+    if [[ $QUILTING = '.true.' ]]; then
+      ATM_io_tasks=$((WRITE_GROUP * WRTTASK_PER_GROUP))
+    fi
+  fi
+
+  local n=0
+  unset atm_petlist_bounds ocn_petlist_bounds ice_petlist_bounds wav_petlist_bounds chm_petlist_bounds med_petlist_bounds aqm_petlist_bounds
+
+  # ATM
+  ATM_io_tasks=${ATM_io_tasks:-0}
+  if [[ $((ATM_compute_tasks + ATM_io_tasks)) -gt 0 ]]; then
+     atm_petlist_bounds="${n} $((n + ATM_compute_tasks + ATM_io_tasks -1))"
+     n=$((n + ATM_compute_tasks + ATM_io_tasks))
+  fi
+
+  # OCN
+  if [[ ${OCN_tasks:-0} -gt 0 ]]; then
+     ocn_petlist_bounds="${n} $((n + OCN_tasks - 1))"
+     n=$((n + OCN_tasks))
+  fi
+
+  # ICE
+  if [[ ${ICE_tasks:-0} -gt 0 ]]; then
+     ice_petlist_bounds="${n} $((n + ICE_tasks - 1))"
+     n=$((n + ICE_tasks))
+  fi
+
+  # WAV
+  if [[ ${WAV_tasks:-0} -gt 0 ]]; then
+     wav_petlist_bounds="${n} $((n + WAV_tasks - 1))"
+     n=$((n + WAV_tasks))
+  fi
+
+  # CHM
+  chm_petlist_bounds="0 $((ATM_compute_tasks - 1))"
+
+  # MED
+  med_petlist_bounds="0 $((ATM_compute_tasks - 1))"
+
+  # AQM
+  aqm_petlist_bounds="0 $((ATM_compute_tasks - 1))"
+
+  # LND 
+  if [[ ${LND_tasks:-0} -gt 0 ]]; then
+     lnd_petlist_bounds="${n} $((n + LND_tasks - 1))"
+     n=$((n + LND_tasks))
+  fi
+
+  UFS_tasks=${n}
+
+  echo "ATM_petlist_bounds: ${atm_petlist_bounds:-}"
+  echo "OCN_petlist_bounds: ${ocn_petlist_bounds:-}"
+  echo "ICE_petlist_bounds: ${ice_petlist_bounds:-}"
+  echo "WAV_petlist_bounds: ${wav_petlist_bounds:-}"
+  echo "CHM_petlist_bounds: ${chm_petlist_bounds:-}"
+  echo "MED_petlist_bounds: ${med_petlist_bounds:-}"
+  echo "AQM_petlist_bounds: ${aqm_petlist_bounds:-}"
+  echo "LND_petlist_bounds: ${lnd_petlist_bounds:-}"
+  echo "UFS_tasks         : ${UFS_tasks:-}"
+
+  # TASKS is now set to UFS_TASKS
+  export TASKS=$UFS_tasks
+}
 
 interrupt_job() {
   set -x
@@ -154,7 +234,7 @@ submit_and_wait() {
         echo "Slurm unknown status ${status}. Check sacct ..."
         sacct -n -j ${slurm_id} --format=JobID,state%20,Jobname%20
         status_label=$( sacct -n -j ${slurm_id} --format=JobID,state%20,Jobname%20 | grep "^${slurm_id}" | grep ${JBNME} | awk '{print $2}' )
-        if [[ $status_label = 'FAILED' ]] || [[ $status_label = 'TIMEOUT' ]]; then
+        if [[ $status_label = 'FAILED' ]] || [[ $status_label = 'TIMEOUT' ]] || [[ $status_label = 'CANCELLED' ]] ; then
             test_status='FAIL'
         fi
       fi
@@ -178,7 +258,7 @@ submit_and_wait() {
         test_status='DONE'
         exit_status=$( bjobs ${bsub_id} 2>/dev/null | grep ${bsub_id} | awk '{print $3}' ); status=${status:--}
         if [[ $exit_status = 'EXIT' ]];  then
-        status_label='failed'
+          status_label='failed'
           test_status='FAIL'
         fi
       fi
@@ -201,13 +281,14 @@ submit_and_wait() {
   done
 
   if [[ $test_status = 'FAIL' ]]; then
-    if [[ ${UNIT_TEST} == false ]]; then
-      echo "${TEST_NAME} ${TEST_NR} failed" >> $PATHRT/fail_test
+    if [[ ${OPNREQ_TEST} == false ]]; then
       echo "Test ${TEST_NR} ${TEST_NAME} FAIL" >> ${REGRESSIONTEST_LOG}
       echo;echo;echo                           >> ${REGRESSIONTEST_LOG}
       echo "Test ${TEST_NR} ${TEST_NAME} FAIL"
     else
-      echo ${TEST_NR} $TEST_NAME >> $PATHRT/fail_unit_test
+      echo "Test ${TEST_NAME} ${TEST_NR} FAIL" >> ${REGRESSIONTEST_LOG}
+      echo;echo;echo                           >> ${REGRESSIONTEST_LOG}
+      echo "Test ${TEST_NAME} ${TEST_NR} FAIL"
     fi
 
     if [[ $ROCOTO == true || $ECFLOW == true ]]; then
@@ -278,10 +359,10 @@ check_results() {
         fi
 
         if [[ $d -eq 1 && ${i##*.} == 'nc' ]] ; then
-          if [[ ${MACHINE_ID} =~ orion || ${MACHINE_ID} =~ hera || ${MACHINE_ID} =~ wcoss_dell_p3 || ${MACHINE_ID} =~ wcoss_cray || ${MACHINE_ID} =~ cheyenne || ${MACHINE_ID} =~ gaea || ${MACHINE_ID} =~ jet || ${MACHINE_ID} =~ s4 ]] ; then
+          if [[ ${MACHINE_ID} =~ orion || ${MACHINE_ID} =~ hera || ${MACHINE_ID} =~ wcoss2 || ${MACHINE_ID} =~ acorn || ${MACHINE_ID} =~ cheyenne || ${MACHINE_ID} =~ gaea || ${MACHINE_ID} =~ jet || ${MACHINE_ID} =~ s4 ]] ; then
             printf ".......ALT CHECK.." >> ${REGRESSIONTEST_LOG}
             printf ".......ALT CHECK.."
-            ${PATHRT}/compare_ncfile.py ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i >/dev/null 2>&1 && d=$? || d=$?
+            ${PATHRT}/compare_ncfile.py ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i > compare_ncfile.log 2>&1 && d=$? || d=$?
             if [[ $d -eq 1 ]]; then
               echo "....ERROR" >> ${REGRESSIONTEST_LOG}
               echo "....ERROR"
@@ -329,18 +410,25 @@ check_results() {
 
   echo                                               >> ${REGRESSIONTEST_LOG}
   grep "The total amount of wall time" ${RUNDIR}/out >> ${REGRESSIONTEST_LOG}
+  grep "The maximum resident set size" ${RUNDIR}/out >> ${REGRESSIONTEST_LOG}
   echo                                               >> ${REGRESSIONTEST_LOG}
 
-  echo "Test ${TEST_NR} ${TEST_NAME} ${test_status}" >> ${REGRESSIONTEST_LOG}
-  echo                                               >> ${REGRESSIONTEST_LOG}
-  echo "Test ${TEST_NR} ${TEST_NAME} ${test_status}"
+  TRIES=''
+  if [[ $ECFLOW == true ]]; then
+    if [[ $ECF_TRYNO -gt 1 ]]; then
+      TRIES=" Tries: $ECF_TRYNO"
+    fi
+  fi
+  echo "Test ${TEST_NR} ${TEST_NAME} ${test_status}${TRIES}" >> ${REGRESSIONTEST_LOG}
+  echo                                                       >> ${REGRESSIONTEST_LOG}
+  echo "Test ${TEST_NR} ${TEST_NAME} ${test_status}${TRIES}"
   echo
 
   if [[ $test_status = 'FAIL' ]]; then
-    if [[ ${UNIT_TEST} == false ]]; then
-      echo "${TEST_NAME} ${TEST_NR} failed in check_result" >> $PATHRT/fail_test
+    if [[ ${OPNREQ_TEST} == false ]]; then
+      echo "${TEST_NAME} ${TEST_NR} failed in check_result" >> $PATHRT/fail_test_${TEST_NR}
     else
-      echo ${TEST_NR} $TEST_NAME >> $PATHRT/fail_unit_test
+      echo "${TEST_NAME} ${TEST_NR} failed in check_result" >> $PATHRT/fail_opnreq_test_${TEST_NR}
     fi
 
     if [[ $ROCOTO = true || $ECFLOW == true ]]; then
@@ -375,25 +463,13 @@ rocoto_create_compile_task() {
     echo "  </metatask>" >> $ROCOTO_XML
   fi
 
-  # serialize WW3 builds. FIXME
-  DEP_STRING=""
-  if [[ ${MAKE_OPT^^} =~ "WW3=Y" && ${COMPILE_PREV_WW3_NR} != '' ]]; then
-    DEP_STRING="<dependency><taskdep task=\"compile_${COMPILE_PREV_WW3_NR}\"/></dependency>"
-  fi
-
   NATIVE=""
   BUILD_CORES=8
   BUILD_WALLTIME="00:30:00"
-  if [[ ${MACHINE_ID} == wcoss_dell_p3 ]]; then
-    BUILD_CORES=1
-    NATIVE="<memory>8G</memory> <native>-R 'affinity[core(1)]'</native>"
+  if [[ ${MACHINE_ID} == jet.* ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
-  if [[ ${MACHINE_ID} == wcoss_cray ]]; then
-    BUILD_CORES=24
-    NATIVE="<exclusive></exclusive> <envar><name>PATHTR</name><value>&PATHTR;</value></envar>"
-  fi
-  if [[ ${MACHINE_ID} == jet ]]; then
+  if [[ ${MACHINE_ID} == hera.* ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
   if [[ ${MACHINE_ID} == orion.* ]]; then
@@ -404,8 +480,7 @@ rocoto_create_compile_task() {
   fi
 
   cat << EOF >> $ROCOTO_XML
-  <task name="compile_${COMPILE_NR}" maxtries="3">
-    $DEP_STRING
+  <task name="compile_${COMPILE_NR}" maxtries="${ROCOTO_COMPILE_MAXTRIES:-3}">
     <command>&PATHRT;/run_compile.sh &PATHRT; &RUNDIR_ROOT; "${MAKE_OPT}" ${COMPILE_NR}</command>
     <jobname>compile_${COMPILE_NR}</jobname>
     <account>${ACCNR}</account>
@@ -413,8 +488,7 @@ rocoto_create_compile_task() {
     <partition>${PARTITION}</partition>
     <cores>${BUILD_CORES}</cores>
     <walltime>${BUILD_WALLTIME}</walltime>
-    <stdout>&RUNDIR_ROOT;/compile_${COMPILE_NR}/out</stdout>
-    <stderr>&RUNDIR_ROOT;/compile_${COMPILE_NR}/err</stderr>
+    <join>&RUNDIR_ROOT;/compile_${COMPILE_NR}.log</join>
     ${NATIVE}
   </task>
 EOF
@@ -434,15 +508,9 @@ rocoto_create_run_task() {
   fi
 
   NATIVE=""
-  if [[ ${MACHINE_ID} == wcoss_dell_p3 ]]; then
-    NATIVE="<nodesize>28</nodesize><native>-R 'affinity[core(${THRD})]'</native>"
-  fi
-  if [[ ${MACHINE_ID} == wcoss_cray ]]; then
-    NATIVE="<exclusive></exclusive>"
-  fi
 
   cat << EOF >> $ROCOTO_XML
-    <task name="${TEST_NAME}${RT_SUFFIX}" maxtries="1">
+    <task name="${TEST_NAME}${RT_SUFFIX}" maxtries="${ROCOTO_TEST_MAXTRIES:-3}">
       <dependency> $DEP_STRING </dependency>
       <command>&PATHRT;/run_test.sh &PATHRT; &RUNDIR_ROOT; ${TEST_NAME} ${TEST_NR} ${COMPILE_NR} </command>
       <jobname>${TEST_NAME}${RT_SUFFIX}</jobname>
@@ -451,8 +519,8 @@ rocoto_create_run_task() {
       <partition>${PARTITION}</partition>
       <nodes>${NODES}:ppn=${TPN}</nodes>
       <walltime>00:${WLCLK}:00</walltime>
-      <stdout>&RUNDIR_ROOT;/${TEST_NAME}${RT_SUFFIX}/out</stdout>
-      <stderr>&RUNDIR_ROOT;/${TEST_NAME}${RT_SUFFIX}/err</stderr>
+      <stdout>&RUNDIR_ROOT;/${TEST_NAME}${RT_SUFFIX}.out</stdout>
+      <stderr>&RUNDIR_ROOT;/${TEST_NAME}${RT_SUFFIX}.err</stderr>
       ${NATIVE}
     </task>
 EOF
@@ -465,22 +533,60 @@ rocoto_kill() {
    done
 }
 
-rocoto_run() {
-
-  state="Active"
-  while [[ $state != "Done" ]]
-  do
+rocoto_step() {
+    set -e
+    echo "Unknown" > rocoto_workflow.state
+    # Run one iteration of rocotorun and rocotostat.
     $ROCOTORUN -v 10 -w $ROCOTO_XML -d $ROCOTO_DB
-    sleep 10
+    sleep 1
+    #   Is it done?
     state=$($ROCOTOSTAT -w $ROCOTO_XML -d $ROCOTO_DB -s | grep 197001010000 | awk -F" " '{print $2}')
-    dead_compile=$($ROCOTOSTAT -w $ROCOTO_XML -d $ROCOTO_DB | grep compile_ | grep DEAD | head -1 | awk -F" " '{print $2}')
-    if [[ ! -z ${dead_compile} ]]; then
-      echo "y" | ${ROCOTOCOMPLETE} -w $ROCOTO_XML -d $ROCOTO_DB -m ${dead_compile}_tasks
-      ${ROCOTOCOMPLETE} -w $ROCOTO_XML -d $ROCOTO_DB -t ${dead_compile}
-    fi
-    sleep 20
-  done
+    echo "$state" > $ROCOTO_STATE
+}
 
+rocoto_run() {
+  # Run the rocoto workflow until it is complete
+  local naptime=60
+  local step_attempts=0
+  local max_step_attempts=100 # infinite loop safeguard; should never reach this
+  local start_time=0
+  local now_time=0
+  local max_time=3600 # seconds to wait for Rocoto to start working again
+  local result=0
+  state="Active"
+  while [[ $state != "Done" ]]; do
+      # Run one iteration of rocotorun and rocotostat.  Use an
+      # exponential backoff algorithm to handle temporary system
+      # failures breaking Rocoto.
+      start_time=$( env TZ=UTC date +%s )
+      for step_attempts in $( seq 1 "$max_step_attempts" ) ; do
+          now_time=$( env TZ=UTC date +%s )
+
+          set +e
+          ( rocoto_step )
+          result=$?
+          state=$( cat $ROCOTO_STATE )
+          set -e
+
+          if [[ "${state:-Unknown}" == Done ]] ; then
+              set +x
+              echo "Rocoto workflow has completed."
+              set -x
+              return 0
+          elif [[ $result == 0 ]] ; then
+              break # rocoto_step succeeded
+          elif (( now_time-start_time > max_time || step_attempts >= max_step_attempts )) ; then
+              set +x
+              echo "Rocoto commands have failed $step_attempts times, for $(( (now_time-start_time+30)/60 )) minutes."
+              echo "There may be something wrong with the $( hostname ) node or the batch system."
+              echo "I'm giving up. Sorry."
+              set -x
+              return 2
+          fi
+          sleep $(( naptime * 2**((step_attempts-1)%4) * RANDOM/32767 ))
+      done
+      sleep $naptime
+  done
 }
 
 
@@ -500,12 +606,6 @@ EOF
   echo "      label job_id ''" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   echo "      label job_status ''" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   echo "      inlimit max_builds" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
-  # serialize WW3 builds. FIXME
-  if [[ ${MAKE_OPT^^} =~ "-DAPP=ATMW" ]] || [[ ${MAKE_OPT^^} =~ "-DAPP=S2SW" ]] || [[ ${MAKE_OPT^^} =~ "-DAPP=HAFSW" ]] || [[ ${MAKE_OPT^^} =~ "-DAPP=HAFS-ALL" ]] ; then
-    if [[ ${COMPILE_PREV_WW3_NR} != '' ]]; then
-      echo "    trigger compile_${COMPILE_PREV_WW3_NR} == complete"  >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
-    fi
-  fi
 }
 
 ecflow_create_run_task() {
@@ -521,7 +621,7 @@ EOF
   echo "      label job_status ''" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   echo "      inlimit max_jobs" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   if [[ $DEP_RUN != '' ]]; then
-    if [[ ${UNIT_TEST} == false ]]; then
+    if [[ ${OPNREQ_TEST} == false ]]; then
       echo "      trigger compile_${COMPILE_NR} == complete and ${DEP_RUN}${RT_SUFFIX} == complete" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
     else
       echo "      trigger compile_${COMPILE_NR} == complete and ${DEP_RUN} == complete" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
@@ -536,18 +636,23 @@ ecflow_run() {
   # in rare instances when UID is greater then 58500 (like Ratko's UID on theia)
   [[ $ECF_PORT -gt 49151 ]] && ECF_PORT=12179
 
-  ECF_HOST=$( hostname )
+  ECF_HOST="${ECF_HOST:-$HOSTNAME}"
 
   set +e
   ecflow_client --ping --host=${ECF_HOST} --port=${ECF_PORT}
   not_running=$?
   if [[ $not_running -eq 1 ]]; then
     echo "ecflow_server is NOT running on ${ECF_HOST}:${ECF_PORT}"
-    if [[ ${MACHINE_ID} == wcoss2 ]]; then
+    if [[ ${MACHINE_ID} == wcoss2.* || ${MACHINE_ID} == acorn.* ]]; then
       # Annoying "Has NCO assigned port $ECF_PORT for use by this account? (yes/no) ".
-      echo yes | ${ECFLOW_START} -p ${ECF_PORT}
+      echo yes | ${ECFLOW_START} -p ${ECF_PORT} -d ${RUNDIR_ROOT}/ecflow_server
+    elif [[ ${MACHINE_ID} == jet.* ]]; then
+      module load ecflow
+      echo "Using special Jet ECFLOW start procedure"
+      MYCOMM="bash -l -c \"module load ecflow && ${ECFLOW_START} -d ${RUNDIR_ROOT}/ecflow_server\""
+      ssh $ECF_HOST "${MYCOMM}"
     else
-      ${ECFLOW_START} -p ${ECF_PORT}
+      ${ECFLOW_START} -p ${ECF_PORT} -d ${RUNDIR_ROOT}/ecflow_server
     fi
   else
     echo "ecflow_server is already running on ${ECF_HOST}:${ECF_PORT}"

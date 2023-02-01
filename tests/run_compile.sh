@@ -15,12 +15,21 @@ cleanup() {
 }
 
 write_fail_test() {
-  if [[ ${UNIT_TEST} == true ]]; then
-    echo compile ${COMPILE_NR} >> $PATHRT/fail_unit_test
+  if [[ ${OPNREQ_TEST} == true ]]; then
+    echo "compile_${COMPILE_NR} failed in run_compile" >> $PATHRT/fail_opnreq_compile_${COMPILE_NR}
   else
-    echo "compile_${COMPILE_NR} failed in run_compile" >> $PATHRT/fail_test
+    echo "compile_${COMPILE_NR} failed in run_compile" >> $PATHRT/fail_compile_${COMPILE_NR}
   fi
   exit 1
+}
+
+remove_fail_test() {
+    echo "Removing test failure flag file for compile_${COMPILE_NR}"
+    if [[ ${OPNREQ_TEST} == true ]] ; then
+        rm -f $PATHRT/fail_opnreq_compile_${COMPILE_NR}
+    else
+        rm -f $PATHRT/fail_compile_${COMPILE_NR}
+    fi
 }
 
 if [[ $# != 4 ]]; then
@@ -34,6 +43,8 @@ export MAKE_OPT=$3
 export COMPILE_NR=$4
 
 cd ${PATHRT}
+OPNREQ_TEST=${OPNREQ_TEST:-false}
+remove_fail_test
 
 [[ -e ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env ]] && source ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env
 source default_vars.sh
@@ -49,6 +60,7 @@ echo -n "${JBNME}, $( date +%s )," > ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
 source rt_utils.sh
 source atparse.bash
 
+rm -rf ${RUNDIR}
 mkdir -p ${RUNDIR}
 cd $RUNDIR
 
@@ -68,18 +80,24 @@ if [[ $ROCOTO = 'false' ]]; then
   submit_and_wait job_card
 else
   chmod u+x job_card
-  ./job_card
+  ( ./job_card 2>&1 1>&3 3>&- | tee err ) 3>&1 1>&2 | tee out
+  # The above shell redirection copies stdout to "out" and stderr to "err"
+  # while still sending them to stdout and stderr. It does this without
+  # relying on bash-specific extensions or non-standard OS features.
 fi
 
 ls -l ${PATHTR}/tests/fv3_${COMPILE_NR}.exe
 
 cp ${RUNDIR}/compile_*_time.log ${LOG_DIR}
 cat ${RUNDIR}/job_timestamp.txt >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+
+remove_fail_test
+
 ################################################################################
 # End compile job
 ################################################################################
 
-echo " $( date +%s )" >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+echo " $( date +%s ), 1" >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
 
 elapsed=$SECONDS
 echo "Elapsed time $elapsed seconds. Compile ${COMPILE_NR}"

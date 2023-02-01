@@ -1,0 +1,26 @@
+mkdir -p INPUT RESTART history 
+
+if [[ $ATMRES == C96 ]]; then
+  FV3_DIR=FV3_input_data
+else
+  FV3_DIR=FV3_input_data${ATMRES#C}
+fi
+# for now during development, use this path for inputdata
+INPUTDATA_LM4=/lustre/f2/pdata/gfdl/cmip6/datasets/CM4/common
+
+# out of the box, LM4 expects aXl referenced in grid_spec.nc for grid land area. Include them for now.
+if [[ $ATMRES == 'C96' ]]; then
+   ln -s $INPUTDATA_LM4/c96_grid/c96_OM4_025_grid_No_mg_drag_v20160808/C96_mosaic_tile?XC96_mosaic_tile?.nc ./
+else
+   echo 'Only setup for C96 for now during development'
+fi	
+
+ln -s $INPUTDATA_LM4/common_LM4/biodata.nc                 ./INPUT/
+ln -s $INPUTDATA_LM4/common_LM4/cover_type.nc              ./INPUT/
+ln -s $INPUTDATA_LM4/common_LM4/geohydrology.nc            ./INPUT/
+ln -s $INPUTDATA_LM4/common_LM4/geohydrology_table_2a2n.nc ./INPUT/
+ln -s $INPUTDATA_LM4/common_LM4/ground_type.nc             ./INPUT/
+ln -s $INPUTDATA_LM4/common_LM4/landuse.nc                 ./INPUT/
+ln -s $INPUTDATA_LM4/common_LM4/soil_brdf.nc               ./INPUT/
+ln -s $INPUTDATA_LM4/common_LM4/soil_type_hwsd_5minute.nc  ./INPUT/soil_type.nc
+##

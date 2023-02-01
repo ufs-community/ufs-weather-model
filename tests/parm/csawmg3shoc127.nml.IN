@@ -94,20 +94,6 @@
        res_latlon_dynamics = "fv3_increment.nc"
 /
 
-#&coupler_nml
-#       months   = 0
-#       days     = 1
-#       hours    = 0
-#       dt_atmos = 225
-#       dt_ocean = 225
-#       current_date =  2016,10,03,00,0,0
-#       calendar = 'julian'
-#       memuse_verbose = .false.
-#       atmos_nthreads = 1
-#       use_hyper_thread = .false.
-#       ncores_per_node = 24
-#/
-
 &external_ic_nml
        filtered_terrain = .true.
        levp       = @[NPZP]
@@ -168,6 +154,7 @@
        iopt_snf       = 4
        iopt_tbot      = 2
        iopt_stc       = 1
+       iopt_trs       = 2
        debug          = .false.
 
        ras            = .false.

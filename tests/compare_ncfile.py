@@ -10,6 +10,8 @@ with Dataset(sys.argv[1]) as nc1, Dataset(sys.argv[2]) as nc2:
     sys.exit(2)
 
   for varname in nc1.variables.keys():
+    if varname == "time_iso":
+      continue
     # First check if each variable has the same dimension
     if np.shape(nc1[varname][:])!=np.shape(nc2[varname][:]):
       print(varname,"dimension is different")

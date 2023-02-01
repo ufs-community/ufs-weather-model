@@ -46,9 +46,6 @@ BUILD_DIR=$(pwd)/build_${BUILD_NAME}
 
 if [[ $MACHINE_ID == cheyenne.* ]] ; then
     BUILD_JOBS=${BUILD_JOBS:-3}
-elif [[ $MACHINE_ID == wcoss_dell_p3 ]] ; then
-    BUILD_JOBS=${BUILD_JOBS:-4}
-    source $PATHTR/NEMS/src/conf/module-setup.sh.inc
 fi
 
 BUILD_JOBS=${BUILD_JOBS:-8}
@@ -67,7 +64,9 @@ else
   module use $PATHTR/modulefiles
   modulefile="ufs_${MACHINE_ID}"
   if [[ "${MAKE_OPT}" == *"-DDEBUG=ON"* ]]; then
-    [[ -f $PATHTR/modulefiles/ufs_${MACHINE_ID}_debug ]] && modulefile="ufs_${MACHINE_ID}_debug"
+    if [[ -f $PATHTR/modulefiles/ufs_${MACHINE_ID}_debug ]] || [[ -f $PATHTR/modulefiles/ufs_${MACHINE_ID}_debug.lua ]]; then
+      modulefile="ufs_${MACHINE_ID}_debug"
+    fi
   fi
   module load $modulefile
   module list
@@ -91,8 +90,6 @@ CMAKE_FLAGS+=" -DMPI=ON"
 
 if [[ "${MAKE_OPT}" == *"-DDEBUG=ON"* ]]; then
   CMAKE_FLAGS+=" -DCMAKE_BUILD_TYPE=Debug"
-elif [[ "${MAKE_OPT}" == *"-DREPRO=ON"* ]]; then
-  CMAKE_FLAGS+=" -DCMAKE_BUILD_TYPE=Bitforbit"
 else
   CMAKE_FLAGS+=" -DCMAKE_BUILD_TYPE=Release"
   if [[ "${MACHINE_ID}" == "jet.intel" ]]; then
@@ -135,9 +132,17 @@ bash -x ${PATHTR}/build.sh
 
 mv ${BUILD_DIR}/ufs_model ${PATHTR}/tests/${BUILD_NAME}.exe
 if [[ "${MAKE_OPT}" == "-DDEBUG=ON" ]]; then
-  cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}_debug ${PATHTR}/tests/modules.${BUILD_NAME}
+  if [[ $MACHINE_ID == gaea.* ]] || [[ $MACHINE_ID == linux.* ]]; then
+    cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}_debug ${PATHTR}/tests/modules.${BUILD_NAME}
+  else
+    cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}_debug.lua ${PATHTR}/tests/modules.${BUILD_NAME}.lua
+  fi
 else
-  cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}       ${PATHTR}/tests/modules.${BUILD_NAME}
+  if [[ $MACHINE_ID == gaea.* ]] || [[ $MACHINE_ID == linux.* ]]; then
+    cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}       ${PATHTR}/tests/modules.${BUILD_NAME}
+  else
+    cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}.lua       ${PATHTR}/tests/modules.${BUILD_NAME}.lua
+  fi
 fi
 
 if [ $clean_after = YES ] ; then

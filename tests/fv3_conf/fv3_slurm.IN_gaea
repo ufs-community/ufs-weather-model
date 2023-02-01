@@ -13,18 +13,21 @@ set -eux
 echo -n " $( date +%s )," >  job_timestamp.txt
 
 set +x
+MACHINE_ID=gaea
 source ./module-setup.sh
 source /lustre/f2/pdata/esrl/gsd/contrib/lua-5.1.4.9/init/init_lmod.sh
 module use $( pwd -P )
 module load modules.fv3
-set -x
 module list
+set -x
 
 echo "Model started:  " `date`
 
 export OMP_NUM_THREADS=@[THRD]
 export OMP_STACKSIZE=1024M
 export NC_BLKSZ=1M
+export ESMF_RUNTIME_PROFILE=ON
+export ESMF_RUNTIME_PROFILE_OUTPUT="SUMMARY"
 
 # Avoid job errors because of filesystem synchronization delays
 sync && sleep 1

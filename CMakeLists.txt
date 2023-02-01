@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.18)
+cmake_minimum_required(VERSION 3.19)
 
 project(ufs
         VERSION 1.0
@@ -16,7 +16,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules/Modules)
 ###############################################################################
 
 # Valid applications and choices
-list(APPEND VALID_APPS ATM ATMAERO ATMW S2S S2SW S2S-LM4 HAFS HAFSW HAFS-ALL NG-GODAS NG-GODAS-NEMSDATM)
+list(APPEND VALID_APPS ATM ATMAERO ATMAQ ATMW ATML ATML-LM4 LND LND-LM4 S2S S2SA S2SW S2SWA S2SWAL S2S-LM4 HAFS HAFSW HAFS-ALL NG-GODAS MS2SWA)
 set(APP NONE CACHE BOOL "Application Name")
 if(NOT (APP IN_LIST VALID_APPS))
   message(FATAL_ERROR "${APP} is not a valid application.\nValid Applications are: ${VALID_APPS}")
@@ -24,17 +24,17 @@ endif()
 
 set(FMS             OFF CACHE BOOL "Enable FMS")
 set(FV3             OFF CACHE BOOL "Enable FV3")
+set(AQM             OFF CACHE BOOL "Enable AQM")
 set(UFS_GOCART      OFF CACHE BOOL "Enable GOCART")
 set(MOM6            OFF CACHE BOOL "Enable MOM6")
 set(HYCOM           OFF CACHE BOOL "Enable HYCOM")
 set(CICE6           OFF CACHE BOOL "Enable CICE6")
-set(Noah-Comp       OFF CACHE BOOL "Enable Noah-Comp")
 set(LM4             OFF CACHE BOOL "Enable LM4")
 set(WW3             OFF CACHE BOOL "Enable WW3")
 set(STOCH_PHYS      OFF CACHE BOOL "Enable Stochastic Physics")
-set(NEMSdatm        OFF CACHE BOOL "Enable NEMSdatm")
 set(CMEPS           OFF CACHE BOOL "Enable CMEPS")
 set(CDEPS           OFF CACHE BOOL "Enable CDEPS")
+set(NOAHMP          OFF CACHE BOOL "Enable NOAHMP")
 
 # Configure selected application specific components
 message("")
@@ -43,33 +43,35 @@ include(cmake/configure_apps.cmake)
 message("")
 message("FMS .............. ${FMS}")
 message("FV3 .............. ${FV3}")
+message("AQM .............. ${AQM}")
 message("GOCART ........... ${UFS_GOCART}")
 message("MOM6 ............. ${MOM6}")
 message("HYCOM ............ ${HYCOM}")
 message("CICE6 ............ ${CICE6}")
-message("Noah-Comp ........ ${Noah-Comp}")
 message("LM4 .............. ${LM4}")
 message("WW3 .............. ${WW3}")
 message("STOCH_PHYS ....... ${STOCH_PHYS}")
-message("NEMSdatm ......... ${NEMSdatm}")
 message("CDEPS ............ ${CDEPS}")
 message("CMEPS ............ ${CMEPS}")
+message("NOAHMP ........... ${NOAHMP}")
 
 ###############################################################################
 ### Build Options
 ###############################################################################
-set(32BIT           OFF CACHE BOOL "Enable 32BIT (single precision arithmetic in dycore)")
+set(32BIT           OFF CACHE BOOL "Enable 32BIT (single precision arithmetic in dycore and fast physics)")
+set(CCPP_32BIT      OFF CACHE BOOL "Enable CCPP_32BIT (single precision arithmetic in slow physics)")
 set(AVX2            ON  CACHE BOOL "Enable AVX2 instruction set")
 set(AVX             OFF CACHE BOOL "Enable AVX-I instruction set")
 set(SIMDMULTIARCH   OFF CACHE BOOL "Enable multi-target SIMD instruction sets")
 set(DEBUG           OFF CACHE BOOL "Enable DEBUG mode")
 set(DEBUG_LINKMPI   ON  CACHE BOOL "Enable linkmpi option when DEBUG mode is on")
-set(INLINE_POST     OFF CACHE BOOL "Enable inline post")
+set(INLINE_POST     ON  CACHE BOOL "Enable inline post")
 set(MULTI_GASES     OFF CACHE BOOL "Enable MULTI_GASES")
+set(MOVING_NEST     OFF CACHE BOOL "Enable moving nest code")
 set(OPENMP          ON  CACHE BOOL "Enable OpenMP threading")
 set(PARALLEL_NETCDF OFF CACHE BOOL "Enable parallel NetCDF")
-set(REPRO           OFF CACHE BOOL "Enable REPRO mode")
 set(JEDI_DRIVER     OFF CACHE BOOL "Enable JEDI as top level driver")
+set(CMEPS_AOFLUX    OFF CACHE BOOL "Enable atmosphere-ocean flux calculation in mediator") 
 
 set(CMAKE_Platform $ENV{CMAKE_Platform})
 if(CMAKE_Platform)
@@ -84,16 +86,19 @@ endif()
 
 message("")
 message("32BIT ............ ${32BIT}")
+message("CCPP_32BIT ....... ${CCPP_32BIT}")
 message("AVX2 ............. ${AVX2}")
-message("SIMDMULTIARCH ...  ${SIMDMULTIARCH}")
+message("SIMDMULTIARCH .... ${SIMDMULTIARCH}")
 message("DEBUG ............ ${DEBUG}")
 message("DEBUG_LINKMPI .... ${DEBUG_LINKMPI}")
 message("INLINE_POST ...... ${INLINE_POST}")
 message("MULTI_GASES ...... ${MULTI_GASES}")
+message("MOVING_NEST ...... ${MOVING_NEST}")
 message("OPENMP ........... ${OPENMP}")
 message("PARALLEL_NETCDF .. ${PARALLEL_NETCDF}")
-message("REPRO ............ ${REPRO}")
 message("JEDI_DRIVER ...... ${JEDI_DRIVER}")
+message("CMEPS_AOFLUX ..... ${CMEPS_AOFLUX}")
+
 message("")
 
 ###############################################################################
@@ -114,29 +119,35 @@ find_package(MPI REQUIRED)
 if(OPENMP)
   find_package(OpenMP REQUIRED)
 endif()
-find_package(NetCDF REQUIRED C Fortran)
-find_package(ESMF MODULE REQUIRED)
+
+find_package(NetCDF 4.7.4 REQUIRED C Fortran)
+find_package(ESMF 8.3.0 MODULE REQUIRED)
 if(FMS)
-  find_package(FMS REQUIRED COMPONENTS R4 R8)
-  if(32BIT)
+  find_package(FMS 2022.04 REQUIRED COMPONENTS R4 R8)
+  if(APP MATCHES "^(HAFSW)$")
     add_library(fms ALIAS FMS::fms_r4)
-  else()
+  elseif (APP MATCHES "^(MS2SWA)$")
     add_library(fms ALIAS FMS::fms_r8)
   endif()
-endif()
-if(CMEPS)
-  find_package(PIO REQUIRED COMPONENTS C Fortran STATIC)
+  if(APP MATCHES "^(ATM|ATMAERO|ATMAQ|ATMW|ATML|ATML-LM4|LND|LND-LM4|S2S|S2SA|S2SW|S2SWA|S2SWAL|S2S-LM4|HAFS|HAFS-ALL|NG-GODAS)$")
+    if(32BIT)
+      add_library(fms ALIAS FMS::fms_r4)
+    else()
+      add_library(fms ALIAS FMS::fms_r8)
+    endif()
+  endif()
 endif()
 
-find_package(bacio REQUIRED)
-find_package(sp REQUIRED)
-find_package(w3nco REQUIRED)
-if(INLINE_POST)
-  find_package(upp REQUIRED)
+if(CMEPS)
+  find_package(PIO 2.5.3 REQUIRED COMPONENTS C Fortran STATIC)
 endif()
+
+find_package(bacio 2.4.0 REQUIRED)
+find_package(sp 2.3.3 REQUIRED)
+find_package(w3emc 2.9.2 REQUIRED)
 
 # Configure Python
-find_package(Python 3 REQUIRED COMPONENTS Interpreter)
+find_package(Python 3.6 REQUIRED COMPONENTS Interpreter)
 message("Found Python: ${Python_EXECUTABLE}")
 
 ###############################################################################
@@ -154,6 +165,13 @@ if(FV3)
 endif()
 
 ###############################################################################
+### AQM
+###############################################################################
+if(AQM)
+  add_subdirectory(AQM)
+endif()
+
+###############################################################################
 ### GOCART
 ###############################################################################
 if(UFS_GOCART)
@@ -164,27 +182,16 @@ endif()
 ### Wave components [WW3]
 ###############################################################################
 if(WW3)
-  if(CMAKE_Platform)
-    if(${CMAKE_Platform} MATCHES "linux*" OR ${CMAKE_Platform} MATCHES "macosx*")
-      if (CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
-        set(WW3_COMP "gnu")
-      elseif (CMAKE_Fortran_COMPILER_ID MATCHES "Intel")
-        set(WW3_COMP "intel")
-      endif()
-    else()
-      set(WW3_COMP ${CMAKE_Platform})
-    endif()
+  if(APP MATCHES "^(ATMW)$")
+    set(SWITCH "multi_esmf" CACHE STRING "ESMF cap")
+    set(UFS_CAP "MULTI_ESMF" CACHE STRING "Build with MULTI_ESMF cap")
+    list(APPEND _ufs_defs_private FRONT_WW3=WMESMFMD)
+  else()
+    set(SWITCH "meshcap" CACHE STRING "NUOPC mesh cap")
+    set(UFS_CAP "NUOPC_MESH" CACHE STRING "Build with NUOPC_MESH cap")
+    list(APPEND _ufs_defs_private FRONT_WW3=wav_comp_nuopc)
   endif()
-  message("Build WW3:")
-  message("   run: ${CMAKE_BUILD_TOOL} WW3_PARCOMPN=4 WW3_COMP=${WW3_COMP} ww3_nemslibonly")
-  message("   in:  ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/esmf")
-  message("")
-
-  add_custom_target(ww3_nems
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/esmf
-    COMMAND ${CMAKE_BUILD_TOOL} WW3_PARCOMPN=4 WW3_COMP=${WW3_COMP} ww3_nemslibonly > ${CMAKE_CURRENT_BINARY_DIR}/ww3_make.log 2>&1)
-
-  set(WW3_LIBS ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/obj/libww3_multi_esmf.a)
+  add_subdirectory(WW3)
 endif()
 
 ###############################################################################
@@ -222,24 +229,23 @@ if(CMEPS)
 endif()
 
 ###############################################################################
-### Data Components [NEMSdatm, CDEPS]
+### Data Components [CDEPS]
 ###############################################################################
-if(NEMSdatm)
-  add_subdirectory(DATM/DATM)
-endif()
-
 if(CDEPS)
   add_subdirectory(CDEPS-interface)
 endif()
 
 ###############################################################################
-### UFS Library [NEMS]
+### Land Components [NOAHMP]
 ###############################################################################
-list(APPEND _nems_srcs NEMS/src/module_EARTH_GRID_COMP.F90
-                       NEMS/src/module_NEMS_Rusage.F90
-                       NEMS/src/nems_c_rusage.c)
+if(NOAHMP)
+  add_subdirectory(NOAHMP-interface)
+endif()
 
-add_library(ufs ${_nems_srcs})
+###############################################################################
+### UFS Library
+###############################################################################
+add_library(ufs driver/UFSDriver.F90)
 set_target_properties(ufs PROPERTIES Fortran_MODULE_DIRECTORY
                                      ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(ufs INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
@@ -249,6 +255,12 @@ if(JEDI_DRIVER)
   list(APPEND _ufs_defs_private JEDI_DRIVER=ON)
 endif()
 
+if(AQM)
+  add_dependencies(ufs aqm)
+  list(APPEND _ufs_defs_private FRONT_AQM=aqm)
+  list(APPEND _ufs_libs_public aqm)
+endif()
+
 if(UFS_GOCART)
   add_dependencies(ufs UFS_Aerosols)
   list(APPEND _ufs_defs_private FRONT_GOCART=Aerosol_Cap)
@@ -256,22 +268,13 @@ if(UFS_GOCART)
 endif()
 
 if(WW3)
-  add_dependencies(ufs ww3_nems)
-  list(APPEND _ufs_defs_private FRONT_WW3=WMESMFMD)
-  target_include_directories(ufs PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/mod)
-  list(APPEND _ufs_libs_public ${WW3_LIBS})
+  target_link_libraries(ufs PUBLIC WW3::WW3)
 endif()
 
 list(APPEND _ufs_libs_public esmf)
 
 if(STOCH_PHYS)
   list(APPEND _ufs_libs_public stochastic_physics)
-endif()
-
-if(NEMSdatm)
-  add_dependencies(ufs datatm)
-  list(APPEND _ufs_defs_private FRONT_NEMS_DATM=datm)
-  list(APPEND _ufs_libs_public datatm)
 endif()
 
 if(FV3)
@@ -296,12 +299,6 @@ if(CICE6)
   add_dependencies(ufs cice)
   list(APPEND _ufs_defs_private FRONT_CICE6=ice_comp_nuopc)
   list(APPEND _ufs_libs_public cice)
-endif()
-
-if (Noah-Comp)
-   add_dependencies(ufs lnd_comp)
-   list(APPEND _ufs_defs_private FRONT_NOAH=lnd_comp_nuopc)
-   list(APPEND _ufs_libs_public lnd_comp)   
 endif()
 
 if (LM4)
@@ -343,15 +340,21 @@ if(CDEPS)
   target_link_libraries(ufs PUBLIC cdeps::cdeps)
 endif()
 
+if(NOAHMP)
+  add_dependencies(ufs noahmp)
+  list(APPEND _ufs_defs_private FRONT_NOAHMP=lnd_comp_nuopc)
+  list(APPEND _ufs_libs_public noahmp)
+endif()
+
 target_compile_definitions(ufs PRIVATE "${_ufs_defs_private}")
 target_link_libraries(ufs PUBLIC "${_ufs_libs_public}")
 
 ###############################################################################
 ### UFS executable
 ###############################################################################
-add_executable(ufs_model NEMS/src/MAIN_NEMS.F90)
+add_executable(ufs_model driver/UFS.F90)
 add_dependencies(ufs_model ufs)
-target_link_libraries(ufs_model ufs esmf w3nco::w3nco_d)
+target_link_libraries(ufs_model ufs esmf w3emc::w3emc_d)
 
 ###############################################################################
 ### Install

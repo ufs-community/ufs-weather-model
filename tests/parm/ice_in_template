@@ -4,6 +4,7 @@
     year_init      = @[SYEAR]
     month_init     = @[SMONTH]
     day_init       = @[SDAY]
+    sec_init       = @[SECS]
     dt             = @[DT_CICE]
     npt            = 999
     ndtd           = 1
@@ -56,6 +57,9 @@
     nslyr        = 1
     nblyr        = 1
     nfsd         = 1
+    grid_atm     = '@[GRIDATM]'
+    grid_ocn     = '@[GRIDOCN]'
+    grid_ice     = '@[GRIDICE]'
 /
 
 &tracer_nml
@@ -65,8 +69,6 @@
     restart_FY   = .false.
     tr_lvl       = .true.
     restart_lvl  = .false.
-    tr_pond_cesm = .false.
-    restart_pond_cesm = .false.
     tr_pond_topo = .false.
     restart_pond_topo = .false.
     tr_pond_lvl  = .true.
@@ -104,7 +106,8 @@
     mu_rdg          = 3
     Cf              = 17.
     Ktens           = 0.
-    e_ratio         = 2.
+    e_yieldcurve    = 2.
+    e_plasticpot    = 2.
     coriolis        = 'latitude'
     kridge          = 1
     ktransport      = 1

@@ -2,22 +2,23 @@
 #  cpld_lm4_debug test
 #
 
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-LM4-CMEPS-Land system - C96MX100 - debug"
+export TEST_DESCR="Fully coupled FV3-CCPP-GOCART-MOM6-LM4-CICE-CMEPS-WW3 system - C96MX100 P8 debug"
 
 export CNTL_DIR="cpld_lm4_debug"
 
-export LIST_FILES="sfcf006.tile1.nc \
-                   sfcf006.tile2.nc \
-                   sfcf006.tile3.nc \
-                   sfcf006.tile4.nc \
-                   sfcf006.tile5.nc \
-                   sfcf006.tile6.nc \
-                   atmf006.tile1.nc \
-                   atmf006.tile2.nc \
-                   atmf006.tile3.nc \
-                   atmf006.tile4.nc \
-                   atmf006.tile5.nc \
-                   atmf006.tile6.nc \
+export LIST_FILES="sfcf003.tile1.nc \
+                   sfcf003.tile2.nc \
+                   sfcf003.tile3.nc \
+                   sfcf003.tile4.nc \
+                   sfcf003.tile5.nc \
+                   sfcf003.tile6.nc \
+                   atmf003.tile1.nc \
+                   atmf003.tile2.nc \
+                   atmf003.tile3.nc \
+                   atmf003.tile4.nc \
+                   atmf003.tile5.nc \
+                   atmf003.tile6.nc \
+                   gocart.inst_aod.20210322_0900z.nc4 \
                    RESTART/coupler.res \
                    RESTART/fv_core.res.nc \
                    RESTART/fv_core.res.tile1.nc \
@@ -51,37 +52,46 @@ export LIST_FILES="sfcf006.tile1.nc \
                    RESTART/sfc_data.tile5.nc \
                    RESTART/sfc_data.tile6.nc \
                    RESTART/MOM.res.nc \
-                   RESTART/iced.2016-10-03-21600.nc \
-                   RESTART/ufs.cpld.cpl.r.2016-10-03-21600.nc"
+                   RESTART/iced.2021-03-22-32400.nc \
+                   RESTART/ufs.cpld.cpl.r.2021-03-22-32400.nc \
+                   20210322.090000.out_pnt.ww3 \
+                   20210322.090000.out_grd.ww3 "
 
 export_fv3
 export_cpl
 export lnd_model='lm4'
 
-export DAYS="0.25"
-export FHMAX="6"
-export NFHOUT_HF="1"
-
+export FHMAX=3
+export DAYS=0.125
 export RESTART_N=${FHMAX}
-export eps_imesh='2.5e-1'
+export OUTPUT_FH="3 -1"
+export AOD_FRQ=030000
+
+export TOPOEDITS=ufs.topo_edits_011818.nc
+export MOM6_ALLOW_LANDMASK_CHANGES=True
+export eps_imesh=2.5e-1
 
 export FV3_RUN=cpld_lm4_run.IN
-export NEMS_CONFIGURE="nems.configure.cpld_lnd.IN"
-export INPUT_NML=input.mom6_lm4_ccpp.nml.IN
+export NEMS_CONFIGURE=nems.configure.cpld_lnd_noaero_nowave.IN
+export INPUT_NML=cpld_lm4.nml.IN
 
-# # try to make job smaller for faster testing
-export TASKS=96
-export NODES=3
-export TPN=32
-export PARTITION=c3
-export WLCLK=30
-export INPES=2
-export JNPES=4
-# # export THRD=1
-# # export WRTTASK_PER_GROUP=6
-# # export WRITE_GROUP=1
+# # # try to make job smaller for faster testing
+# export TASKS=96
+# export NODES=3
+# export TPN=32
+# export PARTITION=c3
+# export WLCLK=30
+# export INPES=2
+# export JNPES=4
+# # # export THRD=1
+# # # export WRTTASK_PER_GROUP=6
+# # # export WRITE_GROUP=1
 
-export med_petlist_bounds="0 47"
-export atm_petlist_bounds="0 53"
-export ocn_petlist_bounds="54 83"
-export ice_petlist_bounds="84 95"
+# export med_petlist_bounds="0 47"
+# export atm_petlist_bounds="0 53"
+# export ocn_petlist_bounds="54 83"
+# export ice_petlist_bounds="84 95"
+
+if [[ $MACHINE_ID = cheyenne.* ]]; then
+  TPN=18
+fi
