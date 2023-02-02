@@ -341,7 +341,6 @@ export NA_INIT=1
 export DO_RRTMGP=.false.
 export DOGP_CLDOPTICS_LUT=.false.
 export DOGP_LWSCAT=.false.
-export DOGP_SGS_CNV=.false.
 export USE_LW_JACOBIAN=.false.
 export DAMP_LW_FLUXADJ=.false.
 export ICLOUD=0
