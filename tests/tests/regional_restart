@@ -1,17 +1,17 @@
 ###############################################################################
 #
-#  FV3 regional restart test
+#  FV3 regional restart (hi-res 3km, small domain) test
 #
 ###############################################################################
 
 export TEST_DESCR="Compare FV3 regional restart results with previous trunk version"
 
-export CNTL_DIR=fv3_regional_control
+export CNTL_DIR=regional_control
 
-export LIST_FILES="dynf024.nc \
-                   phyf024.nc \
-                   PRSLEV.GrbF24 \
-                   NATLEV.GrbF24"
+export LIST_FILES="dynf006.nc \
+                   phyf006.nc \
+                   PRSLEV.GrbF06 \
+                   NATLEV.GrbF06"
 
 export_fv3
 
@@ -24,13 +24,12 @@ export HYBEDMF=.false.
 export WRITE_DOPOST=.true.
 export POSTAPP='lam'
 
-export CCPP_SUITE=FV3_GFS_v15_thompson_mynn
+export CCPP_SUITE=FV3_GFS_v15_thompson_mynn_lam3km
 export INPUT_NML=regional.nml.IN
 export MODEL_CONFIGURE=model_configure_regional.IN
 export DIAG_TABLE=diag_table_lam
 export FIELD_TABLE=field_table_regional
 
-export LHEATSTRG=.false.
 export WARM_START=.true.
 export NGGPS_IC=.false.
 export EXTERNAL_IC=.false.
@@ -38,12 +37,12 @@ export MAKE_NH=.false.
 export MOUNTAIN=.true.
 export NA_INIT=0
 
-export TASKS=68
+export WLCLK=15
+export FHMAX=6
 export INPES=10
-export JNPES=6
-export OUTPUT_FH="15 18 21 24"
-
-export FHROT=12
+export JNPES=11
+export OUTPUT_FH="4 6"
 WRITE_GROUP=1
-WRTTASK_PER_GROUP=8
+WRTTASK_PER_GROUP=10
 NTILES=1
+export FHROT=3

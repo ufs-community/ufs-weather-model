@@ -1,21 +1,21 @@
 ###############################################################################
 #
-#  FV3 CCPP regional control threading test
+#  FV3 regional threading test
 #
 ###############################################################################
 
 export TEST_DESCR="Compare FV3 regional threading results with previous trunk version"
 
-export CNTL_DIR=fv3_regional_control
+export CNTL_DIR=regional_control
 
 export LIST_FILES="dynf000.nc \
-                   dynf024.nc \
+                   dynf006.nc \
                    phyf000.nc \
-                   phyf024.nc \
+                   phyf006.nc \
                    PRSLEV.GrbF00 \
-                   PRSLEV.GrbF24 \
+                   PRSLEV.GrbF06 \
                    NATLEV.GrbF00 \
-                   NATLEV.GrbF24"
+                   NATLEV.GrbF06"
 
 export_fv3
 
@@ -28,18 +28,18 @@ export HYBEDMF=.false.
 export WRITE_DOPOST=.true.
 export POSTAPP='lam'
 
-export CCPP_SUITE=FV3_GFS_v15_thompson_mynn
+export CCPP_SUITE=FV3_GFS_v15_thompson_mynn_lam3km
 export INPUT_NML=regional.nml.IN
 export MODEL_CONFIGURE=model_configure_regional.IN
 export DIAG_TABLE=diag_table_lam
 export FIELD_TABLE=field_table_regional
 
-export LHEATSTRG=.false.
-export TASKS=68
+export WLCLK=15
+export FHMAX=6
 export INPES=10
-export JNPES=6
-export THRD=2
-export OUTPUT_FH="12 -1"
+export JNPES=11
+export atm_omp_num_threads=2
+export OUTPUT_FH="3 -1"
 WRITE_GROUP=1
-WRTTASK_PER_GROUP=8
+WRTTASK_PER_GROUP=10
 NTILES=1
