@@ -18,7 +18,6 @@ export NPROC_ICE=${NPROC_ICE:-}
 export THRD=${THRD}
 export TPN=${TPN}
 export OMP_ENV="${OMP_ENV:-}"
-export MPI_PROC_BIND="${MPI_PROC_BIND:-}"
 export NFHOUT=${NFHOUT}
 export NFHMAX_HF=${NFHMAX_HF}
 export NFHOUT_HF=${NFHOUT_HF}
