@@ -16,8 +16,8 @@ elif [[ $application == 'regional' ]]; then
     INPES=10
     JNPES=3
     NTILES=1
-    TASKS=$((INPES*JNPES*NTILES + WRITE_GROUP*WRTTASK_PER_GROUP))
-    NODES=$(((TASKS+TPN-1)/TPN))
+    #TASKS=$((INPES*JNPES*NTILES + WRITE_GROUP*WRTTASK_PER_GROUP))
+    #NODES=$(((TASKS+TPN-1)/TPN))
   else
     INPES=5
     JNPES=12
@@ -30,7 +30,7 @@ elif [[ $application == 'cpld' ]]; then
     OCN_tasks=10
     ICE_tasks=6
     NPROC_ICE=$ICE_tasks
-    TASKS=$((INPES*JNPES*NTILES + WRITE_GROUP*WRTTASK_PER_GROUP + OCN_tasks + ICE_tasks))
+    #TASKS=$((INPES*JNPES*NTILES + WRITE_GROUP*WRTTASK_PER_GROUP + OCN_tasks + ICE_tasks))
   else
     temp=$INPES
     INPES=$JNPES
