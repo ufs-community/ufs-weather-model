@@ -9,10 +9,11 @@ if [[ $application == 'global' ]]; then
   #NODES=$(((TASKS+TPN-1)/TPN))
 elif [[ $application == 'regional' ]]; then
   if [[ $CI_TEST == 'true' ]]; then
-    INPES=4
-    JNPES=4
+    INPES=5
+    JNPES=11
     NTILES=1
-    #TASKS=$((INPES*JNPES*NTILES + WRITE_GROUP*WRTTASK_PER_GROUP))
+    WRTTASK_PER_GROUP=10
+    TASKS=$((INPES*JNPES*NTILES + WRITE_GROUP*WRTTASK_PER_GROUP))
   fi
   #NODES=$(((TASKS+TPN-1)/TPN))
 elif [[ $application == 'cpld' ]]; then
@@ -51,5 +52,5 @@ elif [[ $application == 'cpld' ]]; then
   fi
 fi
 
-(test $CI_TEST == 'true') && source $PATHRT/opnReqTests/cmp_proc_bind.sh
+#outdated (test $CI_TEST == 'true') && source $PATHRT/opnReqTests/cmp_proc_bind.sh
 source $PATHRT/opnReqTests/wrt_env.sh
