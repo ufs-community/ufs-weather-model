@@ -12,10 +12,10 @@ if [[ $application == 'global' ]]; then
   RESTART_INTERVAL="${RESTART_N} -1"
 elif [[ $application == 'regional' ]]; then
   if [[ $CI_TEST == 'true' ]]; then
-    INPES=4
-    JNPES=6
+    INPES=10
+    JNPES=11
     NTILES=1
-    WRTTASK_PER_GROUP=8
+    WRTTASK_PER_GROUP=10
     TASKS=$((INPES*JNPES*NTILES + WRITE_GROUP*WRTTASK_PER_GROUP))
   fi
 elif [[ $application == 'cpld' ]]; then
