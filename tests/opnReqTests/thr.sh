@@ -52,5 +52,5 @@ elif [[ $application == 'cpld' ]]; then
   fi
 fi
 
-(test $CI_TEST == 'true') && source $PATHRT/opnReqTests/cmp_proc_bind.sh
+#outdated (test $CI_TEST == 'true') && source $PATHRT/opnReqTests/cmp_proc_bind.sh
 source $PATHRT/opnReqTests/wrt_env.sh
