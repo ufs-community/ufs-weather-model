@@ -4,7 +4,7 @@ OMP_ENV=""
 MPI_PROC_BIND="-bind-to user:"
 
 if [[ $rc != 'thr' ]]; then
-  for i in $(seq 0 $((TASKS-1))); do
+  for i in $(seq 0 $((INPES*JNPES*NTILES + WRITE_GROUP*WRTTASK_PER_GROUP))-1); do
     MPI_PROC_BIND="$MPI_PROC_BIND$i,"
   done
 elif [[ $rc == 'thr' ]]; then
@@ -18,7 +18,7 @@ elif [[ $rc == 'thr' ]]; then
   for i in $(seq 0 $((atm_total-1))); do
     MPI_PROC_BIND="$MPI_PROC_BIND$((i*2))+$((i*2+1)),"
   done
-  for i in $(seq $((atm_total*2)) $((TASKS+atm_total-1))); do
+  for i in $(seq $((atm_total*2)) $((INPES*JNPES*NTILES + WRITE_GROUP*WRTTASK_PER_GROUP))+((atm_total-1))); do
     MPI_PROC_BIND="$MPI_PROC_BIND$i,"
   done
 fi
