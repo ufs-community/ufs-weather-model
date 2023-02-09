@@ -14,8 +14,9 @@ elif [[ $application == 'regional' ]]; then
     NTILES=1
     WRTTASK_PER_GROUP=10
     TASKS=$((INPES*JNPES*NTILES + WRITE_GROUP*WRTTASK_PER_GROUP))
+    NODES=$(((TASKS+TPN-1)/TPN))
   fi
-  NODES=$(((TASKS+TPN-1)/TPN))
+  #NODES=$(((TASKS+TPN-1)/TPN))
 elif [[ $application == 'cpld' ]]; then
   if [[ $CI_TEST != 'true' ]]; then
     if [[ $TEST_NAME =~ 'cpld_control_c96_p8' ]]; then
@@ -44,7 +45,7 @@ elif [[ $application == 'cpld' ]]; then
       TASKS=$((INPES*JNPES*NTILES + WRITE_GROUP*WRTTASK_PER_GROUP + OCN_tasks + ICE_tasks + WAV_tasks))
       NODES=$(((TASKS+TPN-1)/TPN))
     elif [[ $TEST_NAME == 'cpld_bmark_p8' ]]; then
-      NODES=$(((TASKS+TPN-1)/TPN))
+      #NODES=$(((TASKS+TPN-1)/TPN))
     else
       echo "This test is not yet set up for the thread test"
       exit 1
