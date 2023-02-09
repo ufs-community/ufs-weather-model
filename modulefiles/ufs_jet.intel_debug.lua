@@ -1,5 +1,5 @@
 help([[
-loads UFS Model prerequisites for Jet/Intel
+loads UFS Model prerequisites for Jet/Intel Debugging
 ]])
 
 prepend_path("MODULEPATH", "/contrib/sutils/modulefiles")
