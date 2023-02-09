@@ -1,5 +1,5 @@
 help([[
-loads UFS Model prerequisites for Cheyenne/GNU
+loads UFS Model prerequisites for Cheyenne/GNU Debugging
 ]])
 
 cmake_ver=os.getenv("cmake_ver") or "3.22.0"
