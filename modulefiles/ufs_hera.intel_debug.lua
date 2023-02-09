@@ -1,5 +1,5 @@
 help([[
-loads UFS Model prerequisites for Hera/Intel
+loads UFS Model prerequisites for Hera/Intel Debugging
 ]])
 
 prepend_path("MODULEPATH", "/scratch1/NCEPDEV/nems/role.epic/miniconda3/modulefiles")
