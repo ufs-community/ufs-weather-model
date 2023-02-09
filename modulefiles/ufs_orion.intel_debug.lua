@@ -1,5 +1,5 @@
 help([[
-loads UFS Model prerequisites for Orion/Intel
+loads UFS Model prerequisites for Orion/Intel Debugging
 ]])
 
 load("contrib")
