@@ -46,6 +46,7 @@ elif [[ $application == 'cpld' ]]; then
       NODES=$(((TASKS+TPN-1)/TPN))
     elif [[ $TEST_NAME == 'cpld_bmark_p8' ]]; then
       #NODES=$(((TASKS+TPN-1)/TPN))
+      echo $TEST_NAME
     else
       echo "This test is not yet set up for the thread test"
       exit 1
