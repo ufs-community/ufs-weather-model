@@ -1,9 +1,9 @@
 help([[
-loads UFS Model prerequisites for Hera/Intel
+loads UFS Model prerequisites for Hera/Intel Debugging
 ]])
 
-prepend_path("MODULEPATH", "/scratch1/NCEPDEV/nems/emc.nemspara/soft/modulefiles")
-miniconda3_ver=os.getenv("miniconda3_ver") or "3.7.3"
+prepend_path("MODULEPATH", "/scratch1/NCEPDEV/nems/role.epic/miniconda3/modulefiles")
+miniconda3_ver=os.getenv("miniconda3_ver") or "4.12.0"
 load(pathJoin("miniconda3", miniconda3_ver))
 
 prepend_path("MODULEPATH", "/contrib/sutils/modulefiles")

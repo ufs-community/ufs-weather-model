@@ -55,7 +55,7 @@ LIST_FILES=$(echo -n $LIST_FILES | sed -E "s/phyf0[0-9][0-9]/phyf0$FHMAX_2D/g" \
 LIST_FILES=$(echo $LIST_FILES | xargs -n1 | sort -u | xargs)
 
 
-(test $CI_TEST == 'true') && source $PATHRT/opnReqTests/cmp_proc_bind.sh
+
 source $PATHRT/opnReqTests/wrt_env.sh
 
 cat <<EOF >>${RUNDIR_ROOT}/opnreq_test${RT_SUFFIX}.env
