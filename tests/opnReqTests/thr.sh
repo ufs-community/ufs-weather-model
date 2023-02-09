@@ -44,7 +44,7 @@ elif [[ $application == 'cpld' ]]; then
       TASKS=$((INPES*JNPES*NTILES + WRITE_GROUP*WRTTASK_PER_GROUP + OCN_tasks + ICE_tasks + WAV_tasks))
       NODES=$(((TASKS+TPN-1)/TPN))
     elif [[ $TEST_NAME == 'cpld_bmark_p8' ]]; then
-      #need to overhaul soon NODES=$(((TASKS+TPN-1)/TPN))
+      #need to overhaul NODES=$(((TASKS+TPN-1)/TPN))
       echo $TEST_NAME
     else
       echo "This test is not yet set up for the thread test"
