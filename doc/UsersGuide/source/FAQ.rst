@@ -15,7 +15,7 @@ and is described in the UFS WM GitHub `wiki <https://github.com/ufs-community/uf
    * It does not require a workflow, pre- or post-processing steps.
    * The batch submission script is generated.
    * Any required input data is already available for machines used by the regression test.
-   * Once the ``rt.sh`` test completes, you will have a working copy in your run directory where you can 
+   * Once the ``rt.sh`` test completes, you will have a working copy in your run directory where you can
      make modifications to the namelist and other files, and then re-run the executable.
 
 The steps are:
@@ -105,7 +105,7 @@ places, and depends on whether you are using the write component to generate you
 .. _OutputControl:
 
 .. list-table:: *Namelist variables used to control the output file frequency.*
-   :widths: 15 10 10 30 
+   :widths: 15 10 10 30
    :header-rows: 1
 
    * - Namelist variable
@@ -150,10 +150,314 @@ places, and depends on whether you are using the write component to generate you
 ==============================================================
 How do I set the total number of tasks for my job?
 ==============================================================
-The total number of MPI tasks used by the UFS Weather Model is a combination of compute and quilt tasks, and can be calculated using the following relationship:
 
-   * total tasks = ``compute tasks + quilt tasks``
-   * compute tasks = ``x layout * y layout * number of tiles``
-   * quilt tasks = ``write_groups * write_tasks_per_group`` if ``quilting==.true.``
+In the UFS WM, each component's MPI task information, including the
+starting task and end ending task numbers and the number of threads,
+are specified using the component specific ``petlist_bounds`` and
+``omp_num_threads`` in the ``nems.configure``. In general, the total
+number of tasks required is the sum of all the component tasks, as
+long as those components do not overlap (i.e., share the same
+PETs). An example of a global 5 component coupled configuration
+nems.configure at the end of this section.
 
-The layout and tiles settings are in ``input.nml``, and the quilt task settings are in ``model_configure``
+FV3
+^^^
+FV3ATM consists of one or more forecast grid components and a write
+grid component.
+
+The MPI tasks for the forecast grid components are specified in the
+layout variable in one or more namelist files ``input*.nml``
+(e.g. input.nml and input_nest02.nml). The total number of mpi
+tasks is the product of the specified layout, summed over all
+domains. For example, for a global domain with 6 tiles and ``layout
+= 6,8``, the total number of forecast tasks is ``6*6*8 = 288``. For
+two regional domains using ``input.nml`` and ``input_nest02.nml``,
+each with ``layout = 6,10``, the total number of forecast tasks is
+``6*10 + 6*10 = 120``.
+
+FV3ATM will utilize the write grid component if ``quilting`` is set
+to .true. In this case, the mpi tasks of the write grid components is
+the product of the ``write_groups`` and the ``write_tasks_per_group``
+in the ``model_configure`` file.
+
+::
+
+   quilting:                .true.
+   write_groups:            1
+   write_tasks_per_group:   60
+
+
+The total number of write tasks is 60.
+
+The total number of MPI tasks for FV3ATM is the sum of the forecast
+MPI tasks and any write grid component tasks.
+
+::
+
+   total tasks = number of forecast tasks + number of write grid component tasks
+
+If ESMF-managed threading is used, the total number of tasks for
+the atmosphere component is given by the product of the number of
+threads requested and the MPI tasks (both forecast and write grid
+component). Since the ATM component is listed first in the
+``nems.configure``, the ATM tasks are given by
+
+::
+
+   ATM_petlist_bounds     0 total_tasks*number_of_threads-1
+   ATM_omp_num_threads    number_of_threads
+
+GOCART
+^^^^^^
+GOCART shares the same grid and forecast tasks as FV3ATM but it does
+not have a separate write grid component in its NUOPC CAP. So the
+total number of MPI tasks and threads in GOCART is the same as
+FV3ATM forecast tasks and threads. Currently GOCART only runs on
+the global forecast grid component, for which only one namelist is
+needed. GOCART does not have threading capability, but since it
+shares the same data structure as FV3TAM, it has to use the same
+number of threads used by FV3ATM.
+
+::
+
+   total tasks = number of forecast tasks
+
+   CHM_petlist_bounds:             0 total_tasks*number_of_threads-1
+   CHM_omp_num_threads:            number_of_threads
+
+CMEPS
+^^^^^
+The mediator MPI tasks can overlap with other components and in UFS
+the tasks are normally shared on the FV3ATM forecast tasks. However, a
+large number of tasks for the mediator is generally not recommended
+since it may cause slow performance. This means that the number of
+MPI tasks for CMEPS is given by
+
+::
+
+   total tasks = smaller of (300, FV3ATM forecast tasks)
+
+and in ``nems.configure``
+
+::
+
+   MED_petlist_bounds:             0 total_tasks*number_of_threads-1
+   MED_omp_num_threads:            number_of_threads
+
+
+CICE
+^^^^
+CICE requires setting the decomposition shape, the number of requested
+processors and the calculated block sizes in the ``ice_in``
+namelist. In UFS, the decomposition shape is always ``SlenderX2``,
+except for the 5 deg configuration, which is ``SlenderX1``.
+
+For ``SlenderX2`` decomposition, a given ``nprocs``, and global domain
+``nx_global``, ``ny_global``, the block sizes are given by
+
+::
+
+  block_size_y = ny_global/2
+  block_size_x = nx_global/(nprocs/2)
+
+Similarily, for ``SlenderX1``
+
+::
+
+   block_size_y = ny_global
+   block_size_x = nx_global/nprocs
+
+
+For the 1-deg CICE domain for example, ``ice_in`` would be
+
+::
+
+    nprocs            = 10
+    nx_global         = 360
+    ny_global         = 320
+    block_size_x      = 72
+    block_size_y      = 160
+    max_blocks        = -1
+    processor_shape   = 'slenderX2'
+
+
+In UFS, only a single thread is used for CICE so for ``nprocs`` set in
+``ice_in``, the tasks in ``nems.configure`` are set as:
+
+::
+
+   ICE_petlist_bounds:            starting_CICE_PET  nprocs+starting_CICE_PET-1
+   ICE_omp_num_threads:           1
+
+WW3
+^^^
+
+The WW3 component requires setting only the number of tasks available
+for WW3 and the number of threads to be used. No other change is
+required. For ``nprocs`` and ``number_of_threads``, the settings in
+``nems.configure`` are:
+
+::
+
+   WAV_petlist_bounds:         starting_WW3_PET nprocs*number_of_threads+starting_WW3_PET-1
+   WAV_omp_num_threads:        number_of_threads
+
+
+Example: 5-component nems.configure
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+For the fully coupled S2SWA application, a sample ``nems.configure`` is shown below :
+
+
+.. code-block:: console
+
+		#############################################
+		####  NEMS Run-Time Configuration File  #####
+		#############################################
+
+		# ESMF #
+		logKindFlag:            ESMF_LOGKIND_MULTI
+		globalResourceControl:  true
+
+		# EARTH #
+		EARTH_component_list: MED ATM CHM OCN ICE WAV
+		EARTH_attributes::
+		  Verbosity = 0
+		::
+
+		# MED #
+		MED_model:                      cmeps
+		MED_petlist_bounds:             0 767
+		MED_omp_num_threads:            2
+		::
+
+
+		# ATM #
+		ATM_model:                      fv3
+		ATM_petlist_bounds:             0 863
+		ATM_omp_num_threads:            2
+		ATM_attributes::
+		  Verbosity = 0
+		  DumpFields = false
+		  ProfileMemory = false
+		  OverwriteSlice = true
+		::
+
+		 # CHM #
+		 CHM_model:                      gocart
+		 CHM_petlist_bounds:             0 767
+		 CHM_omp_num_threads:            2
+		 CHM_attributes::
+		   Verbosity = 0
+		 ::
+
+		 # OCN #
+		 OCN_model:                      mom6
+		 OCN_petlist_bounds:             864 983
+		 OCN_omp_num_threads:            1
+		 OCN_attributes::
+		   Verbosity = 0
+		   DumpFields = false
+		   ProfileMemory = false
+		   OverwriteSlice = true
+		   mesh_ocn = mesh.mx025.nc
+		 ::
+
+		 # ICE #
+		 ICE_model:                      cice6
+		 ICE_petlist_bounds:             984 1031
+		 ICE_omp_num_threads:            1
+		 ICE_attributes::
+		   Verbosity = 0
+		   DumpFields = false
+		   ProfileMemory = false
+		   OverwriteSlice = true
+		   mesh_ice = mesh.mx025.nc
+		   stop_n = 3
+		   stop_option = nhours
+		   stop_ymd = -999
+		 ::
+
+		 # WAV #
+		 WAV_model:                      ww3
+		 WAV_petlist_bounds:             1032 1191
+		 WAV_omp_num_threads:            2
+		 WAV_attributes::
+		   Verbosity = 0
+		   OverwriteSlice = false
+		   diro = "."
+		   logfile = wav.log
+		   mesh_wav = mesh.gwes_30m.nc
+		   multigrid = false
+		 ::
+
+		 CMEPS warm run sequence
+		 runSeq::
+		 @1800
+		 MED med_phases_prep_ocn_avg
+		 MED -> OCN :remapMethod=redist
+		 OCN
+		 @300
+		   MED med_phases_prep_atm
+		   MED med_phases_prep_ice
+		   MED med_phases_prep_wav_accum
+		   MED med_phases_prep_wav_avg
+		   MED -> ATM :remapMethod=redist
+		   MED -> ICE :remapMethod=redist
+		   MED -> WAV :remapMethod=redist
+		   ATM phase1
+		   ATM -> CHM
+		   CHM
+		   CHM -> ATM
+		   ATM phase2
+		   ICE
+		   WAV
+		   ATM -> MED :remapMethod=redist
+		   MED med_phases_post_atm
+		   ICE -> MED :remapMethod=redist
+		   MED med_phases_post_ice
+		   WAV -> MED :remapMethod=redist
+		   MED med_phases_post_wav
+		   MED med_phases_prep_ocn_accum
+		 @
+		 OCN -> MED :remapMethod=redist
+		 MED med_phases_post_ocn
+		 MED med_phases_restart_write
+		@
+		::
+
+		# CMEPS variables
+
+		DRIVER_attributes::
+		::
+
+		MED_attributes::
+		  ATM_model = fv3
+		  ICE_model = cice6
+		  OCN_model = mom6
+		  WAV_model = ww3
+		  history_n = 1
+		  history_option = nhours
+		  history_ymd = -999
+		  coupling_mode = nems_frac
+		  history_tile_atm = 384
+		::
+		ALLCOMP_attributes::
+		  ScalarFieldCount = 2
+		  ScalarFieldIdxGridNX = 1
+		  ScalarFieldIdxGridNY = 2
+		  ScalarFieldName = cpl_scalars
+		  start_type = startup
+		  restart_dir = RESTART/
+		  case_name = ufs.cpld
+		  restart_n = 3
+		  restart_option = nhours
+		  restart_ymd = -999
+		  dbug_flag = 0
+		  use_coldstart = false
+		  use_mommesh = true
+		  eps_imesh = 1.0e-1
+		  stop_n = 6
+		  stop_option = nhours
+		  stop_ymd = -999
+		::
