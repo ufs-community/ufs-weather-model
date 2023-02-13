@@ -86,14 +86,6 @@ How do I change the length of the model run?
 In your run directory, there is a file named ``model_configure``.  Change the
 variable ``nhours_fcst`` to the desired number of hours.
 
-========================================================================
-How do I select the file format for the model output (netCDF or NEMSIO)?
-========================================================================
-In your run directory, there is a file named ``model_configure``.  Change the
-variable ``output_file`` to ``'netcdf'`` or ``'nemsio'``. The variable ``output_file``
-is only valid when the write component is activated by setting ``quilting`` to ``.true.``
-in the ``model_configure`` file.
-
 ==============================================================
 How do I set the output history interval?
 ==============================================================
@@ -259,7 +251,7 @@ and in ``nems.configure``
 
 ::
 
-   MED_petlist_bounds:             0 total_tasks_med*num__threads_atm-1
+   MED_petlist_bounds:             0 total_tasks_med*num_threads_atm-1
    MED_omp_num_threads:            num_threads_atm
 
 MOM6
