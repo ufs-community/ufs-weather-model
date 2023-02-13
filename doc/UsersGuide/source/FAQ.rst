@@ -152,33 +152,44 @@ How do I set the total number of tasks for my job?
 ==============================================================
 
 In the UFS WM, each component's MPI task information, including the
-starting task and end ending task numbers and the number of threads,
-are specified using the component specific ``petlist_bounds`` and
-``omp_num_threads`` in the ``nems.configure``. In general, the total
-number of tasks required is the sum of all the component tasks, as
-long as those components do not overlap (i.e., share the same
-PETs). An example of a global 5 component coupled configuration
+starting and ending tasks and the number of threads, are specified
+using the component-specific ``petlist_bounds`` and
+``omp_num_threads`` in ``nems.configure``. In general, the total
+number of MPI tasks required is the sum of all the sub-component
+tasks, as long as those components do not overlap (i.e., share the
+same PETs). An example of a global 5 component coupled configuration
 nems.configure at the end of this section.
 
-FV3
-^^^
-FV3ATM consists of one or more forecast grid components and a write
-grid component.
+FV3atm
+^^^^^^
+
+The FV3atm component consists of one or more forecast grid components
+and write grid components.
 
 The MPI tasks for the forecast grid components are specified in the
 layout variable in one or more namelist files ``input*.nml``
-(e.g. input.nml and input_nest02.nml). The total number of mpi
-tasks is the product of the specified layout, summed over all
-domains. For example, for a global domain with 6 tiles and ``layout
-= 6,8``, the total number of forecast tasks is ``6*6*8 = 288``. For
+(e.g. input.nml and input_nest02.nml). The total number of mpi tasks
+required is given by the product of the specified layout, summed over
+all domains. For example, for a global domain with 6 tiles and
+``layout = 6,8``, the total number required is ``6*6*8 = 288``. For
 two regional domains using ``input.nml`` and ``input_nest02.nml``,
-each with ``layout = 6,10``, the total number of forecast tasks is
-``6*10 + 6*10 = 120``.
+each with ``layout = 6,10``, the total required is the sum ``6*10 +
+6*10 = 120``.
 
-FV3ATM will utilize the write grid component if ``quilting`` is set
-to .true. In this case, the mpi tasks of the write grid components is
-the product of the ``write_groups`` and the ``write_tasks_per_group``
-in the ``model_configure`` file.
+For the global configuration, an additional requirement is that the
+layout specified must be a multiple of the ``blocksize`` parameter in
+``input.nml``.  For example, using ``layout=8,8`` for C96 yields
+subdomains of ``12 x 12``. The subdomain product is ``12*12 = 144``,
+which is not divisible by a ``blocksize=32``. Therefore, the C96 does
+not support an ``8,8`` layout for a blocksize of 32. If ``layout =
+4,6``, the subdomain product is ``24*16 = 384``, which is divisible by
+a ``blocksize=32``. A layout of ``4,6`` is supported for C96 with a
+blocksize of 32.
+
+The FV3atm will utilize the write grid component if ``quilting`` is
+set to .true. In this case, the required mpi tasks for the
+write grid components is the product of the ``write_groups`` and the
+``write_tasks_per_group`` in the ``model_configure`` file.
 
 ::
 
@@ -187,66 +198,86 @@ in the ``model_configure`` file.
    write_tasks_per_group:   60
 
 
-The total number of write tasks is 60.
+In the above case, the write grid component requires 60 tasks.
 
-The total number of MPI tasks for FV3ATM is the sum of the forecast
-MPI tasks and any write grid component tasks.
-
-::
-
-   total tasks = number of forecast tasks + number of write grid component tasks
-
-If ESMF-managed threading is used, the total number of tasks for
-the atmosphere component is given by the product of the number of
-threads requested and the MPI tasks (both forecast and write grid
-component). Since the ATM component is listed first in the
-``nems.configure``, the ATM tasks are given by
+The total number of MPI ranks for FV3atm is the sum of the forecast tasks and any
+write grid component tasks.
 
 ::
 
-   ATM_petlist_bounds     0 total_tasks*number_of_threads-1
-   ATM_omp_num_threads    number_of_threads
+   total_tasks_atm = forecast tasks +  write grid component tasks
+
+If ESMF-managed threading is used, the total number of PETs for the
+atmosphere component is given by the product of the number of threads
+requested and the total number of MPI ranks (both forecast and write
+grid component). If ``num_threads_atm`` is the number of threads
+specified for the FV3atm component, in ``nems.configure`` the ATM PET
+bounds are given by
+
+::
+
+   ATM_petlist_bounds     0 total_tasks_atm*num_threads_atm-1
+   ATM_omp_num_threads    num_threads_atm
+
+Note that in UWM, the ATM component is normally listed first in
+``nems.configure`` so that the starting PET for the ATM is 0.
 
 GOCART
 ^^^^^^
-GOCART shares the same grid and forecast tasks as FV3ATM but it does
-not have a separate write grid component in its NUOPC CAP. So the
-total number of MPI tasks and threads in GOCART is the same as
-FV3ATM forecast tasks and threads. Currently GOCART only runs on
-the global forecast grid component, for which only one namelist is
-needed. GOCART does not have threading capability, but since it
-shares the same data structure as FV3TAM, it has to use the same
-number of threads used by FV3ATM.
+
+GOCART shares the same grid and forecast tasks as FV3atm but it does
+not have a separate write grid component in its NUOPC CAP. Also, while
+GOCART does not have threading capability, it shares the same data
+structure as FV3atm and so it has to use the same number of threads
+used by FV3atm. Therefore, the total number of MPI ranks and threads
+in GOCART is the same as the those for the FV3atm forecast component
+(i.e., excluding any write grid component). Currently GOCART only runs
+on the global forecast grid component, for which only one namelist is
+needed.
 
 ::
 
-   total tasks = number of forecast tasks
+   total_tasks_chm = FV3atm forecast tasks
 
-   CHM_petlist_bounds:             0 total_tasks*number_of_threads-1
-   CHM_omp_num_threads:            number_of_threads
+   CHM_petlist_bounds:             0 total_tasks_chm*num_threads_atm-1
+   CHM_omp_num_threads:            num_threads_atm
 
 CMEPS
 ^^^^^
+
 The mediator MPI tasks can overlap with other components and in UFS
-the tasks are normally shared on the FV3ATM forecast tasks. However, a
+the tasks are normally shared on the FV3atm forecast tasks. However, a
 large number of tasks for the mediator is generally not recommended
 since it may cause slow performance. This means that the number of
 MPI tasks for CMEPS is given by
 
 ::
 
-   total tasks = smaller of (300, FV3ATM forecast tasks)
+   total_tasks_med = smaller of (300, FV3atm forecast tasks)
 
 and in ``nems.configure``
 
 ::
 
-   MED_petlist_bounds:             0 total_tasks*number_of_threads-1
-   MED_omp_num_threads:            number_of_threads
+   MED_petlist_bounds:             0 total_tasks_med*num__threads_atm-1
+   MED_omp_num_threads:            num_threads_atm
 
+MOM6
+^^^^
+
+For MOM6 the only restriction currently on the number of MPI ranks
+used by MOM6 is that it is divisible by 2. The starting PET in
+``nems.configure`` will be the last PET of the preceding component,
+incremented by one. Threading in MOM6 is not recommended at this time.
+
+::
+
+   OCN_petlist_bounds:             starting_OCN_PET  total_tasks_ocn+starting_OCN_PET-1
+   OCN_omp_num_threads:            1
 
 CICE
 ^^^^
+
 CICE requires setting the decomposition shape, the number of requested
 processors and the calculated block sizes in the ``ice_in``
 namelist. In UFS, the decomposition shape is always ``SlenderX2``,
@@ -286,21 +317,25 @@ In UFS, only a single thread is used for CICE so for ``nprocs`` set in
 
 ::
 
-   ICE_petlist_bounds:            starting_CICE_PET  nprocs+starting_CICE_PET-1
+   ICE_petlist_bounds:            starting_ICE_PET  nprocs+starting_ICE_PET-1
    ICE_omp_num_threads:           1
+
+The starting ICE PET in ``nems.configure`` will be the last PET of the
+preceding component, incremented by one.
 
 WW3
 ^^^
 
-The WW3 component requires setting only the number of tasks available
-for WW3 and the number of threads to be used. No other change is
-required. For ``nprocs`` and ``number_of_threads``, the settings in
-``nems.configure`` are:
+The WW3 component requires setting only the MPI ranks available
+for WW3 and the number of threads to be used.
 
 ::
 
-   WAV_petlist_bounds:         starting_WW3_PET nprocs*number_of_threads+starting_WW3_PET-1
-   WAV_omp_num_threads:        number_of_threads
+   WAV_petlist_bounds:         starting_WAV_PET  num_tasks_wav*num_threads_wav+starting_WAV_PET-1
+   WAV_omp_num_threads:        num_threads_wav
+
+The starting WAV PET in ``nems.configure`` will be the last PET of the
+preceding component, incremented by one.
 
 
 Example: 5-component nems.configure
