@@ -165,8 +165,7 @@ add_library(cmeps STATIC ${_nems_util_files} ${_mediator_files} ${SCHEMES} ${CAP
 set_target_properties(cmeps PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(cmeps PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                         $<INSTALL_INTERFACE:mod>)
-target_link_libraries(cmeps PUBLIC fms
-                                   esmf
+target_link_libraries(cmeps PUBLIC esmf
                                    PIO::PIO_Fortran)
 if(OpenMP_Fortran_FOUND)
   target_link_libraries(cmeps PRIVATE OpenMP::OpenMP_Fortran)

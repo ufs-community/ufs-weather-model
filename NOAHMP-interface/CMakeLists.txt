@@ -64,7 +64,7 @@ add_library(noahmp STATIC ${_noahmp_cap_files} ${_noahmp_ccpp_files} ${_noahmp_f
 set_target_properties(noahmp PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(noahmp PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                        $<INSTALL_INTERFACE:mod>)
-target_link_libraries(noahmp PUBLIC esmf fms)
+target_link_libraries(noahmp PUBLIC esmf)
 
 ###############################################################################
 ### Install
