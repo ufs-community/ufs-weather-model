@@ -4463,3 +4463,42 @@ Test 148 regional_atmaq PASS
 REGRESSION TEST WAS SUCCESSFUL
 Thu Feb  9 18:29:06 MST 2023
 Elapsed time: 01h:05m:22s. Have a nice day!
+Tue Feb 14 10:07:20 MST 2023
+Start Regression test
+
+Compile 001 elapsed time 1102 seconds. -DAPP=HAFSW -DMOVING_NEST=ON -DCCPP_SUITES=FV3_HAFS_v1_gfdlmp_tedmf,FV3_HAFS_v1_gfdlmp_tedmf_nonsst,FV3_HAFS_v1_thompson_tedmf_gfdlsf -D32BIT=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile 002 elapsed time 320 seconds. -DAPP=HAFSW -DMOVING_NEST=ON -DCCPP_SUITES=FV3_HAFS_v1_gfdlmp_tedmf,FV3_HAFS_v1_gfdlmp_tedmf_nonsst,FV3_HAFS_v1_thompson_tedmf_gfdlsf -D32BIT=ON -DDEBUG=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Debug
+
+baseline dir = /glade/scratch/epicufsrt/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20230201/INTEL/hafs_regional_storm_following_1nest_atm_ocn
+working dir  = /glade/scratch/jongkim/rt-1606/jongkim/FV3_RT/rt_9395/hafs_regional_storm_following_1nest_atm_ocn
+Checking test 001 hafs_regional_storm_following_1nest_atm_ocn results ....
+ Comparing atmf006.nc .........OK
+ Comparing sfcf006.nc .........OK
+ Comparing atm.nest02.f006.nc .........OK
+ Comparing sfc.nest02.f006.nc .........OK
+ Comparing archv.2020_238_18.a .........OK
+ Comparing archs.2020_238_18.a .........OK
+
+0:The total amount of wall time                        = 276.884494
+0:The maximum resident set size (KB)                   = 347216
+
+Test 001 hafs_regional_storm_following_1nest_atm_ocn PASS
+
+
+baseline dir = /glade/scratch/epicufsrt/GMTB/ufs-weather-model/RT/NEMSfv3gfs/develop-20230201/INTEL/hafs_regional_storm_following_1nest_atm_ocn_debug
+working dir  = /glade/scratch/jongkim/rt-1606/jongkim/FV3_RT/rt_9395/hafs_regional_storm_following_1nest_atm_ocn_debug
+Checking test 002 hafs_regional_storm_following_1nest_atm_ocn_debug results ....
+ Comparing atmf001.nc .........OK
+ Comparing sfcf001.nc .........OK
+ Comparing atm.nest02.f001.nc .........OK
+ Comparing sfc.nest02.f001.nc .........OK
+
+0:The total amount of wall time                        = 819.104678
+0:The maximum resident set size (KB)                   = 383008
+
+Test 002 hafs_regional_storm_following_1nest_atm_ocn_debug PASS
+
+
+REGRESSION TEST WAS SUCCESSFUL
+Tue Feb 14 10:35:33 MST 2023
+Elapsed time: 00h:28m:13s. Have a nice day!
