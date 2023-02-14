@@ -139,6 +139,76 @@ places, and depends on whether you are using the write component to generate you
      - 3
      - history file output frequency
 
+=============================================================
+How do I turn off IO for the components of the coupled model?
+=============================================================
+
+FV3atm restart and history files
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In ``model_configure``, set the ``restart_interval`` and ``output_fh``
+variables greater than the forecast length. Also remove the history
+output file definitions and fields in the ``diag_table``.
+
+MOM6, CICE6 and CMEPS restart files
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In ``nems.configure``, set the ALLCOMP_attribute ``restart_n`` to a
+value greater than the forecast length.
+
+MOM6 history files
+^^^^^^^^^^^^^^^^^^
+
+In the ``diag_table`` file, remove the ``ocn`` and ``SST`` history
+output file definitions and fields.
+
+MOM6 history output speed can also be increased by setting the
+``IO_LAYOUT`` parameter in ``INPUT/MOM_input``.
+
+::
+
+   IO_LAYOUT = 4,2
+
+CICE history files
+^^^^^^^^^^^^^^^^^^
+
+In the CICE namelist ``ice_in``, set the ``histfreq`` to none with
+
+::
+
+   histfreq = 'x','x','x','x','x'
+
+The initial condition file can be turned off using
+
+::
+
+   write_ic = .false.
+
+GOCART history files
+^^^^^^^^^^^^^^^^^^^^
+
+In AERO_HISTORY.rc, remove all the fields listed in ``COLLECTIONS``
+
+::
+
+   COLLECTIONS:
+   ::
+
+WW3 history and restart files
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In ``ww3_shel.inp``, change the output interval for gridded frequency from
+3600 to 0 on `line 68
+<https://github.com/NOAA-EMC/WW3/blob/5ebed915755da0b21cf4d20e21726411fb2948c4/model/inp/ww3_shel.inp#L68>`_. To
+turn off point output, change the output frequency from 900 to 0 on
+`line 296
+<https://github.com/NOAA-EMC/WW3/blob/5ebed915755da0b21cf4d20e21726411fb2948c4/model/inp/ww3_shel.inp#L296>`_. To
+turn off restart files, change the frequency from 3600 to 0 on `line
+321
+<https://github.com/NOAA-EMC/WW3/blob/5ebed915755da0b21cf4d20e21726411fb2948c4/model/inp/ww3_shel.inp#L321>`_.
+
+
+
 ==============================================================
 How do I set the total number of tasks for my job?
 ==============================================================
