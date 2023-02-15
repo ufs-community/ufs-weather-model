@@ -20,5 +20,5 @@ elif [[ $application == 'cpld' ]]; then
   exit 1
 fi
 
-(test $CI_TEST == 'true') && source $PATHRT/opnReqTests/cmp_proc_bind.sh
+
 source $PATHRT/opnReqTests/wrt_env.sh

@@ -13,7 +13,7 @@ pipeline {
                 axes {
                     axis {
                         name 'TEST_NAME'
-                        values 'control_p8', 'cpld_control_nowave_noaero_p8'
+                        values 'control_p8', 'regional_control', 'cpld_control_nowave_noaero_p8'
                     }
 
                     axis {
@@ -32,8 +32,19 @@ pipeline {
                         axis {
                             name 'TEST_CASE'
                             values 'mpi', 'dcp', 'bit', 'thr' // TODO: Remove thr case from cpld_control_nowave_noaero_p8 exclusions when it is passing again
-                        }
+                            }
                     }
+                    exclude {
+                        axis {
+                            name 'TEST_NAME'
+                            values 'regional_control'
+                        }
+
+                        axis {
+                            name 'TEST_CASE'
+                            values 'mpi', 'rst', 'bit', 'dbg'
+                        }
+                    }   
                 }
 
                 agent {
@@ -66,7 +77,7 @@ pipeline {
 
                     stage('Test') {
                         steps {
-                            sh 'docker run --rm --env test_name="${TEST_NAME}" --env run_case="${TEST_CASE}" --workdir /home/builder/ufs-weather-model/tests --volume DataVolume:/home/builder/data/NEMSfv3gfs --interactive --shm-size=512m "${IMG_NAME}"'
+                            sh 'docker run --rm --env test_name="${TEST_NAME}" --env run_case="${TEST_CASE}" --workdir /home/builder/ufs-weather-model/tests --volume DataVolume:/home/builder/data/NEMSfv3gfs --interactive --shm-size=1gb "${IMG_NAME}"'
                         }
                     }
                 }
