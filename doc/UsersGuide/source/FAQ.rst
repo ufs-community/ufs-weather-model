@@ -146,9 +146,22 @@ How do I turn off IO for the components of the coupled model?
 FV3atm restart and history files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In ``model_configure``, set the ``restart_interval`` and ``output_fh``
-variables greater than the forecast length. Also remove the history
-output file definitions and fields in the ``diag_table``.
+To turn off FV3atm restart files, set the ``restart_interval`` in
+``model_configure`` to a value greater than the forecast length.
+
+To turn off history files, in ``model_configure`` there are two
+options:
+
+If ``quilting`` is .false., then in ``diag_table``, remove
+the history output file definitions ``fv3_history`` and
+``fv3_history2d`` and the associated fields. This will turn off the
+write_grid component and the number of tasks used by FV3atm must also
+be adjusted to remove the tasks assigned to the write grid.
+
+If ``quilting`` is .true., then in ``model_configure`` set
+``write_dopost`` to .false. and set ``output_fh`` to a value greater
+than the forecast length. This will turn off the writing of output but the
+write grid component tasks will still be necessary.
 
 MOM6, CICE6 and CMEPS restart files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
