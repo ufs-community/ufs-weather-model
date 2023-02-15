@@ -152,16 +152,16 @@ To turn off FV3atm restart files, set the ``restart_interval`` in
 To turn off history files, in ``model_configure`` there are two
 options:
 
-If ``quilting`` is .false., then in ``diag_table``, remove
-the history output file definitions ``fv3_history`` and
-``fv3_history2d`` and the associated fields. This will turn off the
-write_grid component and the number of tasks used by FV3atm must also
-be adjusted to remove the tasks assigned to the write grid.
+* Set ``quilting`` to .false., then in ``diag_table``, remove the history
+  output file definitions ``fv3_history`` and ``fv3_history2d`` and the
+  associated fields. This will turn off the write_grid component and the
+  number of tasks used by FV3atm must also be adjusted to remove the
+  tasks assigned to the write grid component.
 
-If ``quilting`` is .true., then in ``model_configure`` set
-``write_dopost`` to .false. and set ``output_fh`` to a value greater
-than the forecast length. This will turn off the writing of output but the
-write grid component tasks will still be necessary.
+* Set ``quilting`` to .true., then in ``model_configure`` set
+  ``write_dopost`` to .false. and set ``output_fh`` to a value greater
+  than the forecast length. This will turn off the writing of output but
+  the write grid component tasks will still be necessary.
 
 MOM6, CICE6 and CMEPS restart files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
