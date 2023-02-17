@@ -190,7 +190,7 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
   ECFLOW_START=/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/envs/ufs-weather-model/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
-  DISKNM=/lustre/f2/pdata/ncep_shared/emc.nemspara/RT
+  DISKNM=/lustre/f2/pdata/ncep/role.epic/RT
   QUEUE=normal
   COMPILE_QUEUE=normal
 #  ACCNR="${ACCNR:-cmp}"
@@ -273,7 +273,7 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   COMPILE_QUEUE=batch
   ACCNR="${ACCNR:-h-nems}"
   PARTITION=xjet
-  DISKNM=/lfs4/HFIP/h-nems/emc.nemspara/RT
+  DISKNM=/mnt/lfs4/HFIP/hfv3gfs/role.epic/RT
   dprefix=${dprefix:-/lfs4/HFIP/$ACCNR/$USER}
   STMP=${STMP:-$dprefix/RT_BASELINE}
   PTMP=${PTMP:-$dprefix/RT_RUNDIRS}
@@ -446,7 +446,7 @@ if [[ $TESTS_FILE =~ '35d' ]] || [[ $TESTS_FILE =~ 'weekly' ]]; then
 fi
 
 
-BL_DATE=20230201
+BL_DATE=20230215
 
 RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
 
