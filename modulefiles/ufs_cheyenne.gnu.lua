@@ -14,7 +14,7 @@ load(pathJoin("ncarenv", ncarenv_ver))
 gnu_ver=os.getenv("gnu_ver") or "10.1.0"
 load(pathJoin("gnu", gnu_ver))
 
-mpt_ver=os.getenv("mpt_ver") or "2.22"
+mpt_ver=os.getenv("mpt_ver") or "2.25"
 load(pathJoin("mpt", mpt_ver))
 
 ncarcompilers_ver=os.getenv("ncarcompilers_ver") or "0.5.0"
@@ -22,7 +22,7 @@ load(pathJoin("ncarcompilers", ncarcompilers_ver))
 
 unload("netcdf")
 
-prepend_path("MODULEPATH", "/glade/work/epicufsrt/GMTB/tools/gnu/10.1.0/hpc-stack-v1.2.0/modulefiles/stack")
+prepend_path("MODULEPATH", "/glade/work/epicufsrt/contrib/hpc-stack/gnu10.1.0/modulefiles/stack")
 
 hpc_ver=os.getenv("hpc_ver") or "1.2.0"
 load(pathJoin("hpc", hpc_ver))
@@ -30,7 +30,7 @@ load(pathJoin("hpc", hpc_ver))
 hpc_gnu_ver=os.getenv("hpc_gnu_ver") or "10.1.0"
 load(pathJoin("hpc-gnu", hpc_gnu_ver))
 
-hpc_mpt_ver=os.getenv("hpc_mpt_ver") or "2.22"
+hpc_mpt_ver=os.getenv("hpc_mpt_ver") or "2.25"
 load(pathJoin("hpc-mpt", hpc_mpt_ver))
 
 load("ufs_common")
