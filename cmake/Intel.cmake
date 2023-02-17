@@ -16,11 +16,6 @@ if(DEBUG)
       endif()
     endif()
     set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -O0 -ftrapuv")
-    if(DISABLE_FMA)
-      # Should not be needed in DEBUG mode, but just to be safe.
-      set(CMAKE_Fortran_FLAGS_DEBUG "${CMAKE_Fortran_FLAGS_DEBUG} -no-fma")
-      set(CMAKE_C_FLAGS_DEBUG "${CMAKE_Fortran_FLAGS_DEBUG} -no-fma")
-    endif()
 else()
     if(FASTER)
       set(CMAKE_Fortran_FLAGS_RELEASE "-O3 -fp-model precise -assume buffered_stdout -fno-alias -align all -debug minimal -qoverride-limits -ftz -no-ip")
@@ -41,14 +36,16 @@ else()
         set(CMAKE_Fortran_FLAGS_RELEASE "${CMAKE_Fortran_FLAGS_RELEASE} -march=core-avx-i")
         set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -march=core-avx-i")
     endif()
-    if(DISABLE_FMA)
-      set(CMAKE_Fortran_FLAGS_RELEASE "${CMAKE_Fortran_FLAGS_RELEASE} -no-fma")
-      set(CMAKE_C_FLAGS_RELEASE "${CMAKE_Fortran_FLAGS_RELEASE} -no-fma")
-    endif()
 endif()
 
 if(APPLE)
   # The linker on macOS does not include `common symbols` by default
   # Passing the -c flag includes them and fixes an error with undefined symbols
   set(CMAKE_Fortran_ARCHIVE_FINISH "<CMAKE_RANLIB> -c <TARGET>")
+endif()
+
+# This must be last, to override all other optimization settings.
+if(DISABLE_FMA)
+  set(CMAKE_Fortran_FLAGS_RELEASE "${CMAKE_Fortran_FLAGS_RELEASE} -no-fma")
+  set(CMAKE_C_FLAGS_RELEASE "${CMAKE_Fortran_FLAGS_RELEASE} -no-fma")
 endif()
