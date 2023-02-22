@@ -2,8 +2,11 @@
 ####  NEMS Run-Time Configuration File  #####
 #############################################
 
+# ESMF #
+logKindFlag:            ESMF_LOGKIND_MULTI
+
 # EARTH #
-EARTH_component_list: MED ATM LND OCN ICE
+EARTH_component_list: MED ATM LND CHM OCN ICE WAV
 EARTH_attributes::
   Verbosity = 0
 ::
@@ -25,7 +28,7 @@ ATM_attributes::
 
 # LND #
 LND_model:                      @[lnd_model]
-LND_petlist_bounds:             @[med_petlist_bounds]
+LND_petlist_bounds:             @[lnd_petlist_bounds]
 LND_attributes::
   Verbosity = 0
   DumpFields = false
@@ -33,6 +36,13 @@ LND_attributes::
   OverwriteSlice = true
 ::
 
+# CHM #
+CHM_model:                      @[chm_model]
+CHM_petlist_bounds:             @[chm_petlist_bounds]
+CHM_attributes::
+  Verbosity = 0
+::
+  
 # OCN #
 OCN_model:                      @[ocn_model]
 OCN_petlist_bounds:             @[ocn_petlist_bounds]
@@ -58,6 +68,18 @@ ICE_attributes::
   stop_ymd = -999
 ::
 
+# WAV #
+WAV_model:                      @[wav_model]
+WAV_petlist_bounds:             @[wav_petlist_bounds]
+WAV_attributes::
+  Verbosity = 0
+  OverwriteSlice = false
+  diro = "."
+  logfile = wav.log
+  mesh_wav = @[MESH_WAV]
+  multigrid = @[MULTIGRID]
+::
+
 # CMEPS warm run sequence
 runSeq::
 @@[coupling_interval_slow_sec]
@@ -67,19 +89,29 @@ runSeq::
    @@[coupling_interval_fast_sec]
      MED med_phases_prep_atm
      MED med_phases_prep_ice
+     MED med_phases_prep_wav_accum
+     MED med_phases_prep_wav_avg     
      MED med_phases_prep_lnd
      MED -> ATM :remapMethod=redist
      MED -> ICE :remapMethod=redist
      MED -> LND :remapMethod=redist
-     ATM
+     MED -> WAV :remapMethod=redist
+     ATM phase1
+     ATM -> CHM
+     CHM
+     CHM -> ATM
+     ATM phase2
      LND
      ICE
+     WAV
      ATM -> MED :remapMethod=redist
      MED med_phases_post_atm
      LND -> MED :remapMethod=redist
      MED med_phases_post_lnd
      ICE -> MED :remapMethod=redist
      MED med_phases_post_ice
+     WAV -> MED :remapMethod=redist
+     MED med_phases_post_wav
      MED med_phases_prep_ocn_accum
    @
    OCN -> MED :remapMethod=redist
@@ -91,17 +123,18 @@ runSeq::
 # CMEPS variables
 
 DRIVER_attributes::
-      mediator_read_restart = @[use_coldstart]
 ::
 MED_attributes::
       ATM_model = @[atm_model]
       ICE_model = @[ice_model]
       OCN_model = @[ocn_model]
+      WAV_model = @[wav_model]
       LND_model = @[lnd_model]
       history_n = 1
       history_option = nhours
       history_ymd = -999
       coupling_mode = @[CPLMODE]
+      history_tile_atm = @[ATMTILESIZE]
 ::
 ALLCOMP_attributes::
       ScalarFieldCount = 2
@@ -118,4 +151,7 @@ ALLCOMP_attributes::
       use_coldstart = @[use_coldstart]
       use_mommesh = @[use_mommesh]
       eps_imesh = @[eps_imesh]
+      stop_n = @[FHMAX]
+      stop_option = nhours
+      stop_ymd = -999
 ::

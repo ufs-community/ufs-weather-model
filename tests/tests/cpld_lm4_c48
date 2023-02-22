@@ -45,18 +45,32 @@ export LIST_FILES="sfcf000.nc \
 
 export_fv3
 export_cpl
+export CPLLND=.true.
 export lnd_model='lm4'
 
 export RESTART_N=12
 export RESTART_INTERVAL="${RESTART_N} -1"
 
-export TASKS=$TASKS_cpl_c48
-export INPES=$INPES_cpl_c48
-export JNPES=$JNPES_cpl_c48
+### Default c48 setup is:
+  # TASKS_cpl_c48=20; THRD_cpl_c48=1
+  # INPES_cpl_c48=1; JNPES_cpl_c48=1; WPG_cpl_c48=6
+  # OCN_tasks_cpl_c48=4
+  # ICE_tasks_cpl_c48=4
+###
+# But LM4 needs to share the ATM compute threads.
+# It also needs strictly greater than 6 tasks.
+# So explicitly set these for the test:
+
+export TASKS=26
+export INPES=1
+export JNPES=2
 export THRD=$THRD_cpl_c48
-export WRTTASK_PER_GROUP=$WPG_cpl_c48
+export WRITE_GROUP=1
+export WRTTASK_PER_GROUP=6
+
 export OUTPUT_GRID='cubed_sphere_grid'
 
+export LND_tasks=12
 export WAV_tasks=0
 export CHM_tasks=0
 OCN_tasks=$OCN_tasks_cpl_c48
@@ -125,10 +139,12 @@ export eps_imesh=4.0e-1
 
 export DIAG_TABLE=diag_table_template
 export FIELD_TABLE=field_table_thompson_noaero_tke
-#export NEMS_CONFIGURE=nems.configure.cpld_noaero_nowave.IN
+export FIELD_TABLE_ADDITIONAL=field_table_lm4
 export NEMS_CONFIGURE="nems.configure.cpld_lnd_noaero_nowave.IN"
 
 #export FV3_RUN=cpld_control_run.IN
 export FV3_RUN=cpld_lm4_run.IN
 
-export INPUT_NML=cpld_lm4.nml.IN
+#export INPUT_NML=cpld_lm4.nml.IN
+# need to compute topo_rough cor c48:
+export INPUT_NML=cpld_lm4_c48.nml.IN

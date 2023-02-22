@@ -69,10 +69,15 @@ function compute_petbounds_and_tasks() {
   # AQM
   aqm_petlist_bounds="0 $((ATM_compute_tasks - 1))"
 
-  # LND 
-  if [[ ${LND_tasks:-0} -gt 0 ]]; then
-     lnd_petlist_bounds="${n} $((n + LND_tasks - 1))"
-     n=$((n + LND_tasks))
+  # LND
+  if [[ ${lnd_model} = "lm4" ]]; then
+      # set lnd_petlist_bounds to be same as ATM_compute_tasks
+      lnd_petlist_bounds="0 $((ATM_compute_tasks - 1))"
+  else # noahmp component or other
+      if [[ ${LND_tasks:-0} -gt 0 ]]; then
+	  lnd_petlist_bounds="${n} $((n + LND_tasks - 1))"
+	  n=$((n + LND_tasks))
+      fi
   fi
 
   UFS_tasks=${n}

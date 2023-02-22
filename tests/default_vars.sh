@@ -656,6 +656,7 @@ export FIELD_TABLE=field_table_thompson_noaero_tke_GOCART
 export DIAG_TABLE=diag_table_p8_template
 
 export DIAG_TABLE_ADDITIONAL=''
+export FIELD_TABLE_ADDITIONAL=''
 
 export FHROT=0
 export NSOUT=-1
