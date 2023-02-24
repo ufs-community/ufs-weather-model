@@ -190,7 +190,7 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
   ECFLOW_START=/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/envs/ufs-weather-model/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
-  DISKNM=/lustre/f2/pdata/ncep/role.epic/RT
+  DISKNM=/lustre/f2/pdata/ncep_shared/role.epic/RT
   QUEUE=normal
   COMPILE_QUEUE=normal
 #  ACCNR="${ACCNR:-cmp}"
