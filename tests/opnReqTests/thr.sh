@@ -9,12 +9,13 @@ if [[ $application == 'global' ]]; then
   NODES=$(((TASKS+TPN-1)/TPN))
 elif [[ $application == 'regional' ]]; then
   if [[ $CI_TEST == 'true' ]]; then
-    INPES=4
-    JNPES=4
+    INPES=5
+    JNPES=11
     NTILES=1
+    WRTTASK_PER_GROUP=10
     TASKS=$((INPES*JNPES*NTILES + WRITE_GROUP*WRTTASK_PER_GROUP))
+    NODES=$(((TASKS+TPN-1)/TPN))
   fi
-  NODES=$(((TASKS+TPN-1)/TPN))
 elif [[ $application == 'cpld' ]]; then
   if [[ $CI_TEST != 'true' ]]; then
     if [[ $TEST_NAME =~ 'cpld_control_c96_p8' ]]; then
@@ -43,7 +44,8 @@ elif [[ $application == 'cpld' ]]; then
       TASKS=$((INPES*JNPES*NTILES + WRITE_GROUP*WRTTASK_PER_GROUP + OCN_tasks + ICE_tasks + WAV_tasks))
       NODES=$(((TASKS+TPN-1)/TPN))
     elif [[ $TEST_NAME == 'cpld_bmark_p8' ]]; then
-      NODES=$(((TASKS+TPN-1)/TPN))
+      #need to overhaul NODES=$(((TASKS+TPN-1)/TPN))
+      echo $TEST_NAME
     else
       echo "This test is not yet set up for the thread test"
       exit 1
@@ -51,5 +53,5 @@ elif [[ $application == 'cpld' ]]; then
   fi
 fi
 
-(test $CI_TEST == 'true') && source $PATHRT/opnReqTests/cmp_proc_bind.sh
+
 source $PATHRT/opnReqTests/wrt_env.sh
