@@ -201,7 +201,6 @@ DTFREEZE_DP = -7.75E-08         !   [deg C Pa-1] default = 0.0
 PARALLEL_RESTARTFILES = True    !   [Boolean] default = False
                                 ! If true, each processor writes its own restart file, otherwise a single
                                 ! restart file is generated
-STORE_CORIOLIS_ACCEL = False
 
 ! === module MOM_tracer_flow_control ===
 USE_IDEAL_AGE_TRACER = False    !   [Boolean] default = False
@@ -406,7 +405,7 @@ GILL_EQUATORIAL_LD = True       !   [Boolean] default = False
                                 ! radius, otherwise, if false, use Pedlosky's definition. These definitions
                                 ! differ by a factor of 2 in front of the beta term in the denominator. Gill's
                                 ! is the more appropriate definition.
-INTERNAL_WAVE_SPEED_BETTER_EST = False !   [Boolean] default = True 
+INTERNAL_WAVE_SPEED_BETTER_EST = False !   [Boolean] default = True
                                 ! If true, use a more robust estimate of the first mode wave speed as the
                                 ! starting point for iterations.
 
@@ -734,7 +733,7 @@ NSTAR = 0.06                    !   [nondim] default = 0.2
                                 ! The portion of the buoyant potential energy imparted by surface fluxes that is
                                 ! available to drive entrainment at the base of mixed layer when that energy is
                                 ! positive.
-EPBL_MLD_BISECTION = True       !   [Boolean] default = False 
+EPBL_MLD_BISECTION = True       !   [Boolean] default = False
                                 ! If true, use bisection with the iterative determination of the self-consistent
                                 ! mixed layer depth.  Otherwise use the false position after a maximum and
                                 ! minimum bound have been evaluated and the returned value or bisection before
@@ -871,8 +870,8 @@ LIQUID_RUNOFF_FROM_DATA = @[MOM6_RIVER_RUNOFF]  !   [Boolean] default = False
                                 ! the data_table using the component name 'OCN'.
 ! === module ocean_stochastics ===
 DO_SPPT   = @[DO_OCN_SPPT]      ! [Boolean] default = False
-                                ! If true perturb the diabatic tendencies in MOM_diabadic_driver 
-PERT_EPBL = @[PERT_EPBL]        ! [Boolean] default = False 
+                                ! If true perturb the diabatic tendencies in MOM_diabadic_driver
+PERT_EPBL = @[PERT_EPBL]        ! [Boolean] default = False
                                 ! If true perturb the KE dissipation and destruction in MOM_energetic_PBL
 ! === module MOM_restart ===
 RESTART_CHECKSUMS_REQUIRED = False

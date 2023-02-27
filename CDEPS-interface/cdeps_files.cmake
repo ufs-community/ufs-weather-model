@@ -14,7 +14,6 @@ list(APPEND cdeps_share_files
   CDEPS/share/shr_const_mod.F90
   CDEPS/share/shr_kind_mod.F90
   CDEPS/share/shr_log_mod.F90
-  CDEPS/share/shr_mpi_mod.F90
   CDEPS/share/shr_orb_mod.F90
   CDEPS/share/shr_precip_mod.F90
   CDEPS/share/shr_strconvert_mod.F90
