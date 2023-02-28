@@ -82,8 +82,16 @@ if(CMAKE_Platform)
   endif()
 endif()
 
-option(BUILD_WITH_IFI "Build NCEPpost with In-Flight Icing (IFI) library if present" ON)
+option(BUILD_WITH_IFI "Build NCEPpost with In-Flight Icing (IFI) library if present" OFF)
 option(REQUIRE_IFI "Abort if libIFI is not found ; enables BUILD_WITH_IFI=ON" OFF)
+option(INTERNAL_IFI "Compile with IFI inside the executable, instead of a library" OFF)
+
+if(INTERNAL_IFI)
+  message("Building with libIFI inside executable. Do not distribute executable outside of WCOSS2.")
+  set(BUILD_WITH_IFI OFF)
+  set(REQUIRE_IFI OFF)
+endif()
+
 if(REQUIRE_IFI)
   set(BUILD_WITH_IFI ON)
 endif()
@@ -329,6 +337,7 @@ target_link_libraries(ufs PUBLIC "${_ufs_libs_public}")
 add_executable(ufs_model driver/UFS.F90)
 add_dependencies(ufs_model ufs)
 target_link_libraries(ufs_model ufs esmf w3emc::w3emc_d)
+set_target_properties(ufs_model PROPERTIES LINKER_LANGUAGE Fortran)
 
 ###############################################################################
 ### Install
