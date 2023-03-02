@@ -755,6 +755,7 @@ EOF
       export REGRESSIONTEST_LOG=${REGRESSIONTEST_LOG}
       export LOG_DIR=${LOG_DIR}
       export DEP_RUN=${DEP_RUN}
+      export LAKE_DATA_PATH=${LAKE_DATA_PATH}
       export skip_check_results=${skip_check_results}
       export delete_rundir=${delete_rundir}
 EOF
