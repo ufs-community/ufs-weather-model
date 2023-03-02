@@ -23,7 +23,7 @@ load(pathJoin("pio", pio_ver))
 esmf_ver=os.getenv("esmf_ver") or "8.3.0b09"
 load(pathJoin("esmf", esmf_ver))
 
-fms_ver=os.getenv("fms_ver") or "2022.01"
+fms_ver=os.getenv("fms_ver") or "2022.04"
 load(pathJoin("fms",fms_ver))
 
 bacio_ver=os.getenv("bacio_ver") or "2.4.1"
@@ -35,7 +35,7 @@ load(pathJoin("crtm", crtm_ver))
 g2_ver=os.getenv("g2_ver") or "3.4.5"
 load(pathJoin("g2", g2_ver))
 
-g2tmpl_ver=os.getenv("g2tmpl_ver") or "1.10.0"
+g2tmpl_ver=os.getenv("g2tmpl_ver") or "1.10.2"
 load(pathJoin("g2tmpl", g2tmpl_ver))
 
 ip_ver=os.getenv("ip_ver") or "3.3.3"
