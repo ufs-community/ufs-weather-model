@@ -456,7 +456,7 @@ export H2O_PHYS=.false.
 
 # Lake models
 export LKM=0 # 0=no lake, 1=run lake model, 2=run both lake and nsst on lake points
-export IOPT_LAKE=1 # 1=flake, 2=clm lake
+export IOPT_LAKE=2 # 1=flake, 2=clm lake
 export LAKEFRAC_THRESHOLD=0.0 # lake fraction must be higher for lake model to run it
 export LAKEDEPTH_THRESHOLD=1.0 # lake must be deeper (in meters) for a lake model to run it
 export FRAC_ICE=.false.
