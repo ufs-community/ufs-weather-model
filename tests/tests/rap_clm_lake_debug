@@ -1,12 +1,12 @@
-##############################################################################
+###############################################################################
 #
-#  HRRR debug CLM Lake control test: atmosphere only at C96L127
+#  RAP control test: lake coupled at C96L127 (debug mode)
 #
 ###############################################################################
 
-export TEST_DESCR="Compare HRRR CLM Lake debug results with previous trunk version"
+export TEST_DESCR="Compare RAP lake coupled results in debug mode with previous trunk version"
 
-export CNTL_DIR=hrrr_clm_lake_debug_dyn32_phy32
+export CNTL_DIR=rap_clm_lake_debug
 
 export LIST_FILES="sfcf000.nc \
                    sfcf001.nc \
@@ -23,23 +23,21 @@ export SDAY=22
 export SHOUR=06
 export OUTPUT_GRID='gaussian_grid'
 export NSTF_NAME='2,0,0,0,0'
+export WRITE_DOPOST=.true.
 export IAER=5111
 export OUTPUT_FH='0 1'
 export FHMAX=1
 
-export FRAC_GRID=.false.
-export FRAC_ICE=.true.
-
-export FV3_RUN=flake_control_run.IN
-export CCPP_SUITE=FV3_HRRR_clm_lake
+export FV3_RUN=lake_control_run.IN
+export CCPP_SUITE=FV3_RAP_clm_lake
 export INPUT_NML=rap.nml.IN
 export FIELD_TABLE=field_table_thompson_aero_tke
-export NEW_DIAGTABLE=diag_table_rap
-
-export SFCLAY_COMPUTE_FLUX=.true.
+export DIAG_TABLE=diag_table_rap
 
 export LKM=1
 export IOPT_LAKE=2
+
+export LHEATSTRG=.false.
 export IMP_PHYSICS=8
 export DNATS=0
 export DO_SAT_ADJ=.false.
@@ -50,11 +48,8 @@ export IEMS=2
 export HYBEDMF=.false.
 export DO_MYNNEDMF=.true.
 export DO_MYNNSFCLAY=.true.
-export DO_DEEP=.false.
-export SHAL_CNV=.false.
-export IMFSHALCNV=-1
-export IMFDEEPCNV=-1
-export LHEATSTRG=.false.
+export IMFSHALCNV=3
+export IMFDEEPCNV=3
 export LSM=3
 export LSOIL_LSM=9
 export KICE=9

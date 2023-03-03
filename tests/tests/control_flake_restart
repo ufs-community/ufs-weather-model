@@ -8,13 +8,9 @@ export TEST_DESCR="Compare global control flake results with previous trunk vers
 
 export CNTL_DIR=control_flake
 
-export LIST_FILES="sfcf000.nc \
-                   sfcf024.nc \
-                   atmf000.nc \
+export LIST_FILES="sfcf024.nc \
                    atmf024.nc \
-                   GFSFLX.GrbF00 \
                    GFSFLX.GrbF24 \
-                   GFSPRS.GrbF00 \
                    GFSPRS.GrbF24"
 
 export_fv3
@@ -29,7 +25,15 @@ export OUTPUT_GRID='gaussian_grid'
 export NSTF_NAME='2,0,0,0,0'
 export WRITE_DOPOST=.true.
 export IAER=5111
-export RESTART_INTERVAL=6
+export FHROT=6
+export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${SHOUR} + ${FHROT}  )))0000"
+
+export WARM_START=.true.
+export NGGPS_IC=.false.
+export EXTERNAL_IC=.false.
+export MAKE_NH=.false.
+export MOUNTAIN=.true.
+export NA_INIT=0
 
 export LKM=1
 export IOPT_LAKE=1
