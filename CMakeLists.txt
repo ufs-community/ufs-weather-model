@@ -137,7 +137,7 @@ if(FMS)
 endif()
 
 if(CMEPS)
-  find_package(PIO 2.5.3 REQUIRED COMPONENTS C Fortran STATIC)
+  find_package(PIO 2.5.3 REQUIRED COMPONENTS C Fortran)
 endif()
 
 find_package(bacio 2.4.0 REQUIRED)
