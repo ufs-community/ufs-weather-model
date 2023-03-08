@@ -102,6 +102,12 @@ if [[ $POSTAPP = 'global' ]]; then
   cp    ${PATHRT}/parm/postxconfig-NT.txt postxconfig-NT.txt
   cp    ${PATHRT}/parm/postxconfig-NT_FH00.txt postxconfig-NT_FH00.txt
   cp    ${PATHRT}/parm/params_grib2_tbl_new params_grib2_tbl_new
+elif [[ $POSTAPP = 'fv3lam_global' ]]; then
+  # This awkward combination of files is because this is the RRFS post run on a C96 global domain:
+  cp    ${PATHRT}/parm/post_itag_fv3lam itag
+  cp    ${PATHRT}/parm/postxconfig-NT-fv3lam.txt postxconfig-NT.txt
+  cp    ${PATHRT}/parm/postxconfig-NT-fv3lam.txt postxconfig-NT_FH00.txt
+  cp    ${PATHRT}/parm/params_grib2_tbl_new params_grib2_tbl_new
 fi
 
 #rrtmgp
