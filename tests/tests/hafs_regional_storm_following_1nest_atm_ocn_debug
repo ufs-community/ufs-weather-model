@@ -1,0 +1,136 @@
+###############################################################################
+#
+#  HAFS regional with 1 storm-following moving nest and atmosphere-ocean coupled with HYCOM
+#
+###############################################################################
+
+export TEST_DESCR="Compare HAFS regional with 1 storm-following moving nest and atmosphere-ocean coupled results with previous trunk version"
+
+export CNTL_DIR=hafs_regional_storm_following_1nest_atm_ocn_debug
+
+export LIST_FILES="atmf001.nc \
+                   sfcf001.nc \
+                   atm.nest02.f001.nc \
+                   sfc.nest02.f001.nc"
+
+export_fv3
+export_hafs
+export_hafs_regional
+
+export HAFS=true
+export FHMAX=1
+export RESTART_N=${FHMAX}
+export DT_ATMOS=180
+export IDEFLATE=1
+export NFHMAX_HF=-1
+export NFHOUT_HF=1
+export NFHOUT=1
+export OUTPUT_FILE="'netcdf' 'netcdf'"
+export SDAY=25
+export SHOUR=12
+export SMONTH=08
+export SYEAR=2020
+export WRTTASK_PER_GROUP=120
+
+export OUTPUT_GRID='regional_latlon'
+export CEN_LON=-86.3
+export CEN_LAT=23.3
+export LON1=-131.30
+export LAT1=-16.70
+export LON2=-41.30
+export LAT2=63.30
+export DLON=0.25
+export DLAT=0.25
+
+export OUTPUT_GRID_2='regional_latlon_moving'
+export IMO_2=501
+export JMO_2=501
+export DLON_2=0.1
+export DLAT_2=0.1
+
+export BLOCKSIZE=${BLOCKSIZE:-24}
+export CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf_nonsst"
+export DEFLATE_LEVEL=-1
+export INPES=6
+export JNPES=10
+export NPX=241
+export NPY=241
+export NPZ=64
+export NPZP=$(($NPZ + 1))
+export K_SPLIT=4
+export N_SPLIT=5
+export NWAT=6
+export NA_INIT=1
+export EXTERNAL_IC=.true.
+export NGGPS_IC=.true.
+export MOUNTAIN=.false.
+export WARM_START=.false.
+export TARGET_LAT="23.3"
+export TARGET_LON="-86.3"
+export STRETCH_FAC=1.0001
+export REGIONAL=.true.
+export BC_UPDATE_INTERVAL=3
+export NROWS_BLEND=10
+export FULL_ZS_FILTER=.false.
+export N_ZS_FILTER=0
+
+export GRID_PES="60,60"
+export TILE_COARSE="0,1"
+export NUM_TILE_TOP=1
+export NEST_REFINE="0,3"
+export NEST_IOFFSETS="999,61"
+export NEST_JOFFSETS="999,61"
+export IS_MOVING_NEST=".false.,.true."
+export VORTEX_TRACKER="0,7"
+export NTRACK="0,5"
+export MOVE_CD_X="0,0"
+export MOVE_CD_Y="0,0"
+
+export INPES_NEST02=6
+export JNPES_NEST02=10
+export NPX_NEST02=361
+export NPY_NEST02=361
+export K_SPLIT_NEST02=4
+export N_SPLIT_NEST02=5
+
+export FHCYC=0
+export FHSWR=1800
+export FHLWR=1800
+export NSTF_NAME=0,0,0,0,0
+export CPLFLX=.true.
+export CPLOCN2ATM=.true.
+export CPLWAV=.false.
+export CPLWAV2ATM=.false.
+export CPL_IMP_MRG=.true.
+
+# nems.configure
+export med_model=cmeps
+export CAP_DBUG_FLAG=0
+export RESTART_N=${FHMAX}
+export CPLMODE=hafs
+export RUNTYPE=startup
+export USE_COLDSTART=false
+
+export CDEPS_DOCN=false
+export OCEAN_START_DTG=43702.50000
+
+export atm_model="fv3"
+export ocn_model="hycom"
+
+ATM_compute_tasks=$(( INPES*JNPES + INPES_NEST02*JNPES_NEST02 ))
+OCN_tasks=60
+
+export atm_omp_num_threads=2
+export med_omp_num_threads=2
+export ocn_omp_num_threads=2
+
+export coupling_interval_sec=360
+export MESH_ATM="unset"
+
+export FIELD_TABLE=field_table_hafs
+export DIAG_TABLE=diag_table_hafs_template
+export INPUT_NML=input_regional_hafs.nml.IN
+export INPUT_NEST02_NML=input_nest_hafs.nml.IN
+export MODEL_CONFIGURE="model_configure_hafs.IN"
+export NEMS_CONFIGURE="nems.configure.hafs_atm_ocn.IN"
+export FV3_RUN="hafs_fv3_run.IN hycom_hat10_run.IN"
