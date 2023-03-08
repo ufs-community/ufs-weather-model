@@ -821,7 +821,7 @@ else
    echo ; echo REGRESSION TEST WAS SUCCESSFUL
   (echo ; echo REGRESSION TEST WAS SUCCESSFUL) >> ${REGRESSIONTEST_LOG}
 
-  rm -f fv3_*.x fv3_*.exe modules.fv3_* keep_tests.tmp
+  rm -f fv3_*.x fv3_*.exe modules.fv3_* modulefiles/modules.fv3_* keep_tests.tmp
   [[ ${KEEP_RUNDIR} == false ]] && rm -rf ${RUNDIR_ROOT}
   [[ ${ROCOTO} == true ]] && rm -f ${ROCOTO_XML} ${ROCOTO_DB} ${ROCOTO_STATE} *_lock.db
   [[ ${TEST_35D} == true ]] && rm -f tests/cpld_bmark*_20*
