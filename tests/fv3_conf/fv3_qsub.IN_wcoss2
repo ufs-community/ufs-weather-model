@@ -15,8 +15,8 @@ echo -n " $( date +%s )," >  job_timestamp.txt
 cd $PBS_O_WORKDIR
 
 set +x
-module use modulefiles
-module load $PWD/modules.fv3
+module use $PWD/modulefiles
+module load modules.fv3
 module load cray-pals
 module list
 set -x
