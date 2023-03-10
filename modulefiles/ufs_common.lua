@@ -17,10 +17,10 @@ load(pathJoin("hdf5", hdf5_ver))
 netcdf_ver=os.getenv("netcdf_ver") or "4.7.4"
 load(pathJoin("netcdf", netcdf_ver))
 
-pio_ver=os.getenv("pio_ver") or "2.5.8"
+pio_ver=os.getenv("pio_ver") or "2.5.10"
 load(pathJoin("pio", pio_ver))
 
-esmf_ver=os.getenv("esmf_ver") or "8.5.0b10"
+esmf_ver=os.getenv("esmf_ver") or "8.5.0b17"
 load(pathJoin("esmf", esmf_ver))
 
 fms_ver=os.getenv("fms_ver") or "2022.04"
@@ -50,7 +50,7 @@ load(pathJoin("w3emc", w3emc_ver))
 gftl_shared_ver=os.getenv("gftl_shared_ver") or "v1.5.0"
 load(pathJoin("gftl-shared", gftl_shared_ver))
 
-mapl_ver=os.getenv("mapl_ver") or "2.22.0-esmf-8.3.0b09"
+mapl_ver=os.getenv("mapl_ver") or "2.22.0-esmf-8.5.0b17"
 load(pathJoin("mapl", mapl_ver))
 
 whatis("Description: UFS build environment common libraries")
