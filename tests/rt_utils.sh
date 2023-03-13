@@ -38,39 +38,43 @@ function compute_petbounds_and_tasks() {
   # ATM
   ATM_io_tasks=${ATM_io_tasks:-0}
   if [[ $((ATM_compute_tasks + ATM_io_tasks)) -gt 0 ]]; then
-     atm_petlist_bounds="${n} $((n + ATM_compute_tasks + ATM_io_tasks -1))"
-     n=$((n + ATM_compute_tasks + ATM_io_tasks))
+     atm_petlist_bounds="${n} $((n + ATM_compute_tasks*atm_omp_num_threads + ATM_io_tasks - 1))"
+     n=$((n + ATM_compute_tasks*atm_omp_num_threads + ATM_io_tasks))
   fi
 
   # OCN
   if [[ ${OCN_tasks:-0} -gt 0 ]]; then
+     OCN_tasks=$((OCN_tasks * ocn_omp_num_threads))
      ocn_petlist_bounds="${n} $((n + OCN_tasks - 1))"
      n=$((n + OCN_tasks))
   fi
 
   # ICE
   if [[ ${ICE_tasks:-0} -gt 0 ]]; then
+     ICE_tasks=$((ICE_tasks * ice_omp_num_threads))
      ice_petlist_bounds="${n} $((n + ICE_tasks - 1))"
      n=$((n + ICE_tasks))
   fi
 
   # WAV
   if [[ ${WAV_tasks:-0} -gt 0 ]]; then
+     WAV_tasks=$((WAV_tasks * wav_omp_num_threads))
      wav_petlist_bounds="${n} $((n + WAV_tasks - 1))"
      n=$((n + WAV_tasks))
   fi
 
   # CHM
-  chm_petlist_bounds="0 $((ATM_compute_tasks - 1))"
+  chm_petlist_bounds="0 $((ATM_compute_tasks * atm_omp_num_threads - 1))"
 
   # MED
-  med_petlist_bounds="0 $((ATM_compute_tasks - 1))"
+  med_petlist_bounds="0 $((ATM_compute_tasks * atm_omp_num_threads - 1))"
 
   # AQM
-  aqm_petlist_bounds="0 $((ATM_compute_tasks - 1))"
+  aqm_petlist_bounds="0 $((ATM_compute_tasks * atm_omp_num_threads - 1))"
 
-  # LND 
+  # LND
   if [[ ${LND_tasks:-0} -gt 0 ]]; then
+     LND_tasks=$((LND_tasks * lnd_omp_num_threads))
      lnd_petlist_bounds="${n} $((n + LND_tasks - 1))"
      n=$((n + LND_tasks))
   fi
@@ -644,8 +648,15 @@ ecflow_run() {
   if [[ $not_running -eq 1 ]]; then
     echo "ecflow_server is NOT running on ${ECF_HOST}:${ECF_PORT}"
     if [[ ${MACHINE_ID} == wcoss2.* || ${MACHINE_ID} == acorn.* ]]; then
-      # Annoying "Has NCO assigned port $ECF_PORT for use by this account? (yes/no) ".
-      echo yes | ${ECFLOW_START} -p ${ECF_PORT} -d ${RUNDIR_ROOT}/ecflow_server
+      if [[ "${HOST::1}" == "a" ]]; then
+	export ECF_HOST=adecflow01
+      elif [[ "${HOST::1}" == "c" ]]; then
+	export ECF_HOST=cdecflow01
+      elif [[ "${HOST::1}" == "d" ]]; then
+	export ECF_HOST=ddecflow01
+      fi
+      MYCOMM="bash -l -c \"module load ecflow && ecflow_start.sh -p ${ECF_PORT} \""
+      ssh $ECF_HOST "${MYCOMM}"
     elif [[ ${MACHINE_ID} == jet.* ]]; then
       module load ecflow
       echo "Using special Jet ECFLOW start procedure"
