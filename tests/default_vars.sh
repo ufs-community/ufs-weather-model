@@ -377,6 +377,7 @@ export NSSL_INVERTCCN=.true.
 
 # Smoke
 export RRFS_SMOKE=.false.
+export SMOKE_FORECAST=0
 export RRFS_RESTART=NO
 export SEAS_OPT=2
 
