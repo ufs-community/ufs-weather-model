@@ -58,7 +58,7 @@ if [[ $MACHINE_ID == macosx.* ]] || [[ $MACHINE_ID == linux.* ]]; then
 else
   # Activate lua environment for gaea
   if [[ $MACHINE_ID == gaea.* ]] ; then
-    source /lustre/f2/pdata/esrl/gsd/contrib/lua-5.1.4.9/init/init_lmod.sh
+    source /lustre/f2/dev/role.epic/contrib/Lmod_init.sh
   fi
   # Load fv3 module
   module use $PATHTR/modulefiles
@@ -132,13 +132,13 @@ bash -x ${PATHTR}/build.sh
 
 mv ${BUILD_DIR}/ufs_model ${PATHTR}/tests/${BUILD_NAME}.exe
 if [[ "${MAKE_OPT}" == "-DDEBUG=ON" ]]; then
-  if [[ $MACHINE_ID == gaea.* ]] || [[ $MACHINE_ID == linux.* ]]; then
+  if [[ $MACHINE_ID == linux.* ]]; then
     cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}_debug ${PATHTR}/tests/modules.${BUILD_NAME}
   else
     cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}_debug.lua ${PATHTR}/tests/modules.${BUILD_NAME}.lua
   fi
 else
-  if [[ $MACHINE_ID == gaea.* ]] || [[ $MACHINE_ID == linux.* ]]; then
+  if [[ $MACHINE_ID == linux.* ]]; then
     cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}       ${PATHTR}/tests/modules.${BUILD_NAME}
   else
     cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}.lua       ${PATHTR}/tests/modules.${BUILD_NAME}.lua

@@ -29,6 +29,7 @@ usage() {
 [[ $# -eq 0 ]] && usage
 
 rt_single() {
+  rm -f $RT_SINGLE_CONF
   local compile_line=''
   local run_line=''
   while read -r line || [ "$line" ]; do
@@ -50,20 +51,20 @@ rt_single() {
     if [[ $line =~ RUN ]]; then
       tmp_test=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
       if [[ $SINGLE_NAME == $tmp_test && $compile_line != '' ]]; then
-        echo $compile_line >$TESTS_FILE
+        echo $compile_line > $RT_SINGLE_CONF
         dep_test=$(echo $line | grep -w $tmp_test | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
         if [[ $dep_test != '' ]]; then
           dep_line=$(cat rt.conf | grep -w "$dep_test" | grep -v "$tmp_test")
           dep_line="${dep_line#"${dep_line%%[![:space:]]*}"}"
-          echo $dep_line >>$TESTS_FILE
+          echo $dep_line >> $RT_SINGLE_CONF
         fi
-        echo $line >>$TESTS_FILE
+        echo $line >> $RT_SINGLE_CONF
         break
       fi
     fi
-  done <'rt.conf'
+  done < $TESTS_FILE
 
-  if [[ ! -f $TESTS_FILE ]]; then
+  if [[ ! -f $RT_SINGLE_CONF ]]; then
     echo "$SINGLE_NAME does not exist or cannot be run on $MACHINE_ID"
     exit 1
   fi
@@ -119,6 +120,8 @@ else
   exit 1
 fi
 
+readonly RT_SINGLE_CONF='rt_single.conf'
+
 # Default compiler "intel"
 export RT_COMPILER=${RT_COMPILER:-intel}
 
@@ -136,7 +139,7 @@ if [[ $MACHINE_ID = wcoss2.* ]]; then
   #ROCOTOCOMPLETE=$(which rocotocomplete)
   #ROCOTO_SCHEDULER=lsf
 
-  module load ecflow/5.6.0.6
+  module load ecflow/5.6.0.13
   module load gcc/10.3.0 python/3.8.6
   ECFLOW_START=${ECF_ROOT}/scripts/server_check.sh
   export ECF_OUTPUTDIR=${PATHRT}/ecf_outputdir
@@ -159,7 +162,7 @@ if [[ $MACHINE_ID = wcoss2.* ]]; then
 
 elif [[ $MACHINE_ID = acorn.* ]]; then
 
-  module load ecflow/5.6.0.6
+  module load ecflow/5.6.0.13
   module load gcc/10.3.0 python/3.8.6
   ECFLOW_START=${ECF_ROOT}/scripts/server_check.sh
   export ECF_OUTPUTDIR=${PATHRT}/ecf_outputdir
@@ -270,7 +273,7 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   COMPILE_QUEUE=batch
   ACCNR="${ACCNR:-h-nems}"
   PARTITION=xjet
-  DISKNM=/lfs4/HFIP/h-nems/emc.nemspara/RT
+  DISKNM=/mnt/lfs4/HFIP/hfv3gfs/role.epic/RT
   dprefix=${dprefix:-/lfs4/HFIP/$ACCNR/$USER}
   STMP=${STMP:-$dprefix/RT_BASELINE}
   PTMP=${PTMP:-$dprefix/RT_RUNDIRS}
@@ -400,8 +403,6 @@ while getopts ":cl:mn:dwkreh" opt; do
       ;;
     n)
       SINGLE_NAME=$OPTARG
-      TESTS_FILE='rt.conf.single'
-      rm -f $TESTS_FILE
       ;;
     d)
       export delete_rundir=true
@@ -437,13 +438,15 @@ done
 
 if [[ $SINGLE_NAME != '' ]]; then
   rt_single
+  TESTS_FILE=$RT_SINGLE_CONF
 fi
 
 if [[ $TESTS_FILE =~ '35d' ]] || [[ $TESTS_FILE =~ 'weekly' ]]; then
   TEST_35D=true
 fi
 
-BL_DATE=20221212
+
+BL_DATE=20230308
 
 RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
 
@@ -818,11 +821,11 @@ else
    echo ; echo REGRESSION TEST WAS SUCCESSFUL
   (echo ; echo REGRESSION TEST WAS SUCCESSFUL) >> ${REGRESSIONTEST_LOG}
 
-  rm -f fv3_*.x fv3_*.exe modules.fv3_* keep_tests.tmp
+  rm -f fv3_*.x fv3_*.exe modules.fv3_* modulefiles/modules.fv3_* keep_tests.tmp
   [[ ${KEEP_RUNDIR} == false ]] && rm -rf ${RUNDIR_ROOT}
   [[ ${ROCOTO} == true ]] && rm -f ${ROCOTO_XML} ${ROCOTO_DB} ${ROCOTO_STATE} *_lock.db
   [[ ${TEST_35D} == true ]] && rm -f tests/cpld_bmark*_20*
-  [[ ${SINGLE_NAME} != '' ]] && rm -f rt.conf.single
+  [[ ${SINGLE_NAME} != '' ]] && rm -f $RT_SINGLE_CONF
 fi
 
 date >> ${REGRESSIONTEST_LOG}

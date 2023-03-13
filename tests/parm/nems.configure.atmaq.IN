@@ -2,6 +2,9 @@
 ####  NEMS Run-Time Configuration File  #####
 #############################################
 
+# ESMF #
+logKindFlag:            ESMF_LOGKIND_MULTI
+globalResourceControl:  true
 
 # EARTH #
 EARTH_component_list: ATM AQM
@@ -12,6 +15,7 @@ EARTH_attributes::
 # ATM #
 ATM_model:                      @[atm_model]
 ATM_petlist_bounds:             @[atm_petlist_bounds]
+ATM_omp_num_threads:            @[atm_omp_num_threads]
 ATM_attributes::
   Verbosity = 0
 ::
@@ -19,6 +23,7 @@ ATM_attributes::
 # AQM #
 AQM_model:                      @[aqm_model]
 AQM_petlist_bounds:             @[aqm_petlist_bounds]
+AQM_omp_num_threads:            @[aqm_omp_num_threads]
 AQM_attributes::
   Verbosity = 0
 ::

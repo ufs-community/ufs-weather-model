@@ -1,5 +1,5 @@
 help([[
-loads UFS Model prerequisites for Cheyenne/Intel
+loads UFS Model prerequisites for Cheyenne/Intel Debugging
 ]])
 
 cmake_ver=os.getenv("cmake_ver") or "3.22.0"
@@ -23,7 +23,7 @@ load(pathJoin("ncarcompilers", ncarcompilers_ver))
 
 unload("netcdf")
 
-prepend_path("MODULEPATH", "/glade/work/epicufsrt/GMTB/tools/intel/2022.1/hpc-stack-v1.2.0_6eb6/modulefiles/stack")
+prepend_path("MODULEPATH", "/glade/work/epicufsrt/contrib/hpc-stack/intel2022.1/modulefiles/stack")
 
 hpc_ver=os.getenv("hpc_ver") or "1.2.0"
 load(pathJoin("hpc", hpc_ver))

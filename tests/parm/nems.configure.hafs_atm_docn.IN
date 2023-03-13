@@ -4,6 +4,7 @@
 
 # ESMF #
 logKindFlag:            ESMF_LOGKIND_MULTI
+globalResourceControl:  true
 
 # EARTH #
 EARTH_component_list: MED ATM OCN
@@ -14,6 +15,7 @@ EARTH_attributes::
 # MED #
 MED_model:                      @[med_model]
 MED_petlist_bounds:             @[med_petlist_bounds]
+MED_omp_num_threads:            @[med_omp_num_threads]
 MED_attributes::
   Verbosity = 1
   Diagnostic = 0
@@ -31,6 +33,7 @@ MED_attributes::
 # ATM #
 ATM_model:                      @[atm_model]
 ATM_petlist_bounds:             @[atm_petlist_bounds]
+ATM_omp_num_threads:            @[atm_omp_num_threads]
 ATM_attributes::
   Verbosity = 1
   Diagnostic = 0
@@ -39,6 +42,7 @@ ATM_attributes::
 # OCN #
 OCN_model:                      @[ocn_model]
 OCN_petlist_bounds:             @[ocn_petlist_bounds]
+OCN_omp_num_threads:            @[ocn_omp_num_threads]
 OCN_attributes::
   Verbosity = 1
   Diagnostic = 0
