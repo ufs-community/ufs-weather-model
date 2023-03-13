@@ -43,3 +43,9 @@ if(APPLE)
   # Passing the -c flag includes them and fixes an error with undefined symbols
   set(CMAKE_Fortran_ARCHIVE_FINISH "<CMAKE_RANLIB> -c <TARGET>")
 endif()
+
+# This must be last, to override all other optimization settings.
+if(DISABLE_FMA)
+  set(CMAKE_Fortran_FLAGS_RELEASE "${CMAKE_Fortran_FLAGS_RELEASE} -no-fma")
+  set(CMAKE_C_FLAGS_RELEASE "${CMAKE_Fortran_FLAGS_RELEASE} -no-fma")
+endif()
