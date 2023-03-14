@@ -57,12 +57,7 @@ load(pathJoin("sp", sp_ver))
 w3emc_ver=os.getenv("w3emc_ver") or "2.9.2"
 load(pathJoin("w3emc", w3emc_ver))
 
--- Second, look for libraries in "para"
-setenv("HPC_OPT", "/apps/ops/para/libs")
-prepend_path("MODULEPATH", "/apps/ops/para/libs/modulefiles/compiler/intel/19.1.3.304")
-prepend_path("MODULEPATH", "/apps/ops/para/libs/modulefiles/mpi/intel/19.1.3.304/cray-mpich/8.1.7")
-
-pio_ver=os.getenv("pio_ver") or "2.5.7"
+pio_ver=os.getenv("pio_ver") or "2.5.3"
 load(pathJoin("pio", pio_ver))
 
 -- Finally, look for libraries in "dev" space
