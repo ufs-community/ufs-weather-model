@@ -89,12 +89,13 @@ MACHINE_ID=${MACHINE_ID:-false}
 cp ${PATHRT}/fv3_${COMPILE_NR}.exe                 fv3.exe
 
 # modulefile for FV3 prerequisites:
-if [[ $MACHINE_ID == gaea.* ]] || [[ $MACHINE_ID == linux.* ]]; then
-  cp ${PATHRT}/modules.fv3_${COMPILE_NR}             modules.fv3
+mkdir -p modulefiles
+if [[ $MACHINE_ID == linux.* ]]; then
+  cp ${PATHRT}/modules.fv3_${COMPILE_NR}             ./modulefiles/modules.fv3
 else
-  cp ${PATHRT}/modules.fv3_${COMPILE_NR}.lua             modules.fv3.lua
+  cp ${PATHRT}/modules.fv3_${COMPILE_NR}.lua             ./modulefiles/modules.fv3.lua
 fi
-cp ${PATHTR}/modulefiles/ufs_common*               .
+cp ${PATHTR}/modulefiles/ufs_common*               ./modulefiles/.
 
 # Get the shell file that loads the "module" command and purges modules:
 cp ${PATHRT}/module-setup.sh                       module-setup.sh
