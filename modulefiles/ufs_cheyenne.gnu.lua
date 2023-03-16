@@ -18,8 +18,26 @@ load("stack-gcc/10.1.0")
 load("stack-openmpi/4.1.1")
 load("stack-python/3.9.12")
 
-load("ufs-weather-model-env/1.0.0")
-load("w3emc/2.9.2")
+mpt_ver=os.getenv("mpt_ver") or "2.25"
+load(pathJoin("mpt", mpt_ver))
+
+ncarcompilers_ver=os.getenv("ncarcompilers_ver") or "0.5.0"
+load(pathJoin("ncarcompilers", ncarcompilers_ver))
+
+unload("netcdf")
+
+prepend_path("MODULEPATH", "/glade/work/epicufsrt/contrib/hpc-stack/gnu10.1.0/modulefiles/stack")
+
+hpc_ver=os.getenv("hpc_ver") or "1.2.0"
+load(pathJoin("hpc", hpc_ver))
+
+hpc_gnu_ver=os.getenv("hpc_gnu_ver") or "10.1.0"
+load(pathJoin("hpc-gnu", hpc_gnu_ver))
+
+hpc_mpt_ver=os.getenv("hpc_mpt_ver") or "2.25"
+load(pathJoin("hpc-mpt", hpc_mpt_ver))
+
+load("ufs_common")
 
 setenv("CC", "mpicc")
 setenv("CXX", "mpicxx")

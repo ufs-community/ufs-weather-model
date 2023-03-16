@@ -343,6 +343,7 @@ export DOGP_CLDOPTICS_LUT=.false.
 export DOGP_LWSCAT=.false.
 export USE_LW_JACOBIAN=.false.
 export DAMP_LW_FLUXADJ=.false.
+export RRTMGP_LW_PHYS_BLKSZ=2
 export ICLOUD=0
 export IAER=111
 export ICLIQ_SW=1
@@ -501,7 +502,7 @@ export FHROT=0
 export LDIAG3D=.false.
 export QDIAG3D=.false.
 export PRINT_DIFF_PGR=.false.
-export MAX_OUTPUT_FIELDS=300
+export MAX_OUTPUT_FIELDS=310
 
 # Stochastic physics
 export STOCHINI=.false.
@@ -853,7 +854,6 @@ export AOD_FRQ=060000
 
 # checkpoint restarts
 export RESTART_FILE_PREFIX=''
-export RESTART_FILE_SUFFIX_HRS=''
 export RESTART_FILE_SUFFIX_SECS=''
 export RT35D=''
 }
