@@ -1,20 +1,24 @@
 ###############################################################################
 #
-#  Global control domain decomp test with differrent PEs, C96L127, P8 configuration
+#  Global control test GFSv16 atmosphere only at C96L127, P8 configuration
 #
 ###############################################################################
 
-export TEST_DESCR="Compare global decomp results with control_p8 test"
+export TEST_DESCR="Compare global control results with previous trunk version"
 
-export CNTL_DIR=control_p8
+export CNTL_DIR=control_p8_faster
 
 export LIST_FILES="sfcf000.nc \
+                   sfcf021.nc \
                    sfcf024.nc \
                    atmf000.nc \
+                   atmf021.nc \
                    atmf024.nc \
                    GFSFLX.GrbF00 \
+                   GFSFLX.GrbF21 \
                    GFSFLX.GrbF24 \
                    GFSPRS.GrbF00 \
+                   GFSPRS.GrbF21 \
                    GFSPRS.GrbF24 \
                    RESTART/20210323.060000.coupler.res \
                    RESTART/20210323.060000.fv_core.res.nc \
@@ -58,13 +62,10 @@ export SYEAR=2021
 export SMONTH=03
 export SDAY=22
 export SHOUR=06
-export RESTART_INTERVAL=0
+export RESTART_INTERVAL="12 -1"
 export OUTPUT_GRID='gaussian_grid'
 export WRITE_DOPOST=.true.
 export OUTPUT_FH='0 21 24'
-
-export INPES=6
-export JNPES=4
 
 # P7 default
 export IALB=2
@@ -161,7 +162,7 @@ export DIAG_TABLE=diag_table_p8_template
 # use same namelist for standalone,coupled P7
 export INPUT_NML=cpld_control.nml.IN
 
-# P8 RRTMGP
+# RRTMGP
 export DO_RRTMGP=.false.
 export DOGP_CLDOPTICS_LUT=.true.
 export DOGP_LWSCAT=.true.

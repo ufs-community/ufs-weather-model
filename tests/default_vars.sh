@@ -502,7 +502,7 @@ export FHROT=0
 export LDIAG3D=.false.
 export QDIAG3D=.false.
 export PRINT_DIFF_PGR=.false.
-export MAX_OUTPUT_FIELDS=300
+export MAX_OUTPUT_FIELDS=310
 
 # Stochastic physics
 export STOCHINI=.false.
@@ -854,7 +854,6 @@ export AOD_FRQ=060000
 
 # checkpoint restarts
 export RESTART_FILE_PREFIX=''
-export RESTART_FILE_SUFFIX_HRS=''
 export RESTART_FILE_SUFFIX_SECS=''
 export RT35D=''
 }
