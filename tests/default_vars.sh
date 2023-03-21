@@ -268,7 +268,64 @@ elif [[ $MACHINE_ID = expanse.* ]]; then
 
   TPN_cpl_atmw_gdas=12; INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8
   THRD_cpl_atmw_gdas=2; WPG_cpl_atmw_gdas=24; APB_cpl_atmw_gdas="0 311"; WPB_cpl_atmw_gdas="312 559"
+  
+elif [[ $MACHINE_ID = AWS_cloud.* ]]; then
 
+  TPN=36
+
+  INPES_dflt=3 ; JNPES_dflt=8
+  INPES_thrd=3 ; JNPES_thrd=4
+  
+  THRD_cpl_dflt=1
+  INPES_cpl_dflt=3; JNPES_cpl_dflt=8; WPG_cpl_dflt=6
+  OCN_tasks_cpl_dflt=20
+  ICE_tasks_cpl_dflt=10
+  WAV_tasks_cpl_dflt=20
+  
+  THRD_cpl_thrd=2
+  INPES_cpl_thrd=3; JNPES_cpl_thrd=4; WPG_cpl_thrd=6
+  OCN_tasks_cpl_thrd=20
+  ICE_tasks_cpl_thrd=10
+  WAV_tasks_cpl_thrd=12
+  
+elif [[ $MACHINE_ID = Azure_cloud.* ]]; then
+
+  TPN=44
+
+  INPES_dflt=3 ; JNPES_dflt=8
+  INPES_thrd=3 ; JNPES_thrd=4
+  
+  THRD_cpl_dflt=1
+  INPES_cpl_dflt=3; JNPES_cpl_dflt=8; WPG_cpl_dflt=6
+  OCN_tasks_cpl_dflt=20
+  ICE_tasks_cpl_dflt=10
+  WAV_tasks_cpl_dflt=20
+  
+  THRD_cpl_thrd=2
+  INPES_cpl_thrd=3; JNPES_cpl_thrd=4; WPG_cpl_thrd=6
+  OCN_tasks_cpl_thrd=20
+  ICE_tasks_cpl_thrd=10
+  WAV_tasks_cpl_thrd=12
+  
+elif [[ $MACHINE_ID = GCP_cloud.* ]]; then
+
+  TPN=30
+
+  INPES_dflt=3 ; JNPES_dflt=8
+  INPES_thrd=3 ; JNPES_thrd=4
+  
+  THRD_cpl_dflt=1
+  INPES_cpl_dflt=3; JNPES_cpl_dflt=8; WPG_cpl_dflt=6
+  OCN_tasks_cpl_dflt=20
+  ICE_tasks_cpl_dflt=10
+  WAV_tasks_cpl_dflt=20
+  
+  THRD_cpl_thrd=2
+  INPES_cpl_thrd=3; JNPES_cpl_thrd=4; WPG_cpl_thrd=6
+  OCN_tasks_cpl_thrd=20
+  ICE_tasks_cpl_thrd=10
+  WAV_tasks_cpl_thrd=12
+  
 else
 
   echo "Unknown MACHINE_ID ${MACHINE_ID}"
