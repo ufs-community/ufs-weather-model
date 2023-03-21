@@ -1,12 +1,12 @@
 ###############################################################################
 #
-#  FV3 regional control with IFI (hi-res 3km, small domain) test
+#  FV3 regional threading test
 #
 ###############################################################################
 
-export TEST_DESCR="Compare FV3 regional control results with IFI against previous trunk version"
+export TEST_DESCR="Compare FV3 regional threading results with previous trunk version"
 
-export CNTL_DIR=regional_control_ifi
+export CNTL_DIR=regional_ifi_control
 
 export LIST_FILES="dynf000.nc \
                    dynf006.nc \
@@ -25,7 +25,6 @@ export OZ_PHYS_OLD=.false.
 export OZ_PHYS_NEW=.true.
 export H2O_PHYS=.true.
 export HYBEDMF=.false.
-export RESTART_INTERVAL="3 -1"
 export WRITE_DOPOST=.true.
 export POSTAPP='lam'
 
@@ -39,6 +38,7 @@ export WLCLK=15
 export FHMAX=6
 export INPES=10
 export JNPES=11
+export atm_omp_num_threads=2
 export OUTPUT_FH="3 -1"
 WRITE_GROUP=1
 WRTTASK_PER_GROUP=10
