@@ -377,8 +377,8 @@ elif [[ $MACHINE_ID = expanse.* ]]; then
   STMP=$dprefix/stmp4
   PTMP=$dprefix/stmp2
   SCHEDULER=slurm
-  cp fv3_conf/fv3_slurm.IN_cloud fv3_conf/fv3_slurm.IN
-  cp fv3_conf/compile_slurm.IN_cloud fv3_conf/compile_slurm.IN
+  cp fv3_conf/fv3_slurm.IN_AWS_cloud fv3_conf/fv3_slurm.IN
+  cp fv3_conf/compile_slurm.IN_AWS_cloud fv3_conf/compile_slurm.IN
   
   elif [[ $MACHINE_ID = Azure_cloud.* ]]; then
    
@@ -398,8 +398,8 @@ elif [[ $MACHINE_ID = expanse.* ]]; then
   STMP=$dprefix/stmp4
   PTMP=$dprefix/stmp2
   SCHEDULER=slurm
-  cp fv3_conf/fv3_slurm.IN_cloud fv3_conf/fv3_slurm.IN
-  cp fv3_conf/compile_slurm.IN_cloud fv3_conf/compile_slurm.IN
+  cp fv3_conf/fv3_slurm.IN_Azure_cloud fv3_conf/fv3_slurm.IN
+  cp fv3_conf/compile_slurm.IN_Azure_cloud fv3_conf/compile_slurm.IN
   
 elif [[ $MACHINE_ID = GCP_cloud.* ]]; then
    
@@ -419,8 +419,8 @@ elif [[ $MACHINE_ID = GCP_cloud.* ]]; then
   STMP=$dprefix/stmp4
   PTMP=$dprefix/stmp2
   SCHEDULER=slurm
-  cp fv3_conf/fv3_slurm.IN_cloud fv3_conf/fv3_slurm.IN
-  cp fv3_conf/compile_slurm.IN_cloud fv3_conf/compile_slurm.IN
+  cp fv3_conf/fv3_slurm.IN_GCP_cloud fv3_conf/fv3_slurm.IN
+  cp fv3_conf/compile_slurm.IN_GCP_cloud fv3_conf/compile_slurm.IN
 
 else
   die "Unknown machine ID, please edit detect_machine.sh file"
