@@ -55,6 +55,12 @@ hostname
 set +x
 if [[ $MACHINE_ID == macosx.* ]] || [[ $MACHINE_ID == linux.* ]]; then
   source $PATHTR/modulefiles/ufs_${MACHINE_ID}
+elif [[ $MACHINE_ID == AWS_cloud.* ]]; then
+  source $PATHTR/modulefiles/ufs_${MACHINE_ID}.lua
+elif [[ $MACHINE_ID == Azure_cloud.* ]]; then
+  source $PATHTR/modulefiles/ufs_${MACHINE_ID}.lua
+elif [[ $MACHINE_ID == GCP_cloud.* ]]; then
+  source $PATHTR/modulefiles/ufs_${MACHINE_ID}.lua
 else
   # Activate lua environment for gaea
   if [[ $MACHINE_ID == gaea.* ]] ; then
