@@ -217,8 +217,8 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   module load ecflow
   ECFLOW_START=ecflow_start.sh
 
-  QUEUE=batch
-  COMPILE_QUEUE=batch
+  QUEUE=debug
+  COMPILE_QUEUE=debug
 
   ACCNR=gsienkf
   PARTITION=
