@@ -43,6 +43,27 @@ elif [[ $MACHINE_ID = cheyenne* ]] ; then
         source /glade/u/apps/ch/modulefiles/default/localinit/localinit.sh
     fi
     module purge
+    
+elif [[ $MACHINE_ID = AWS_cloud* ]] ; then
+    # We are on AWS Cloud
+    if ( ! eval module help > /dev/null 2>&1 ) ; then
+        source /apps/lmod/8.5.2/init/bash
+    fi
+    module purge
+    
+elif [[ $MACHINE_ID = Azure_cloud* ]] ; then
+    # We are on Azure cloud
+    if ( ! eval module help > /dev/null 2>&1 ) ; then
+        source /apps/lmod/8.5.2/init/bash
+    fi
+    module purge
+    
+elif [[ $MACHINE_ID = GCP_cloud* ]] ; then
+    # We are on GCP Cloud
+    if ( ! eval module help > /dev/null 2>&1 ) ; then
+        source /apps/lmod/8.5.2/init/bash
+    fi
+    module purge    
 
 elif [[ $MACHINE_ID = stampede* ]] ; then
     # We are on TACC Stampede
