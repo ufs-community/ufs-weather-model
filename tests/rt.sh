@@ -360,19 +360,25 @@ elif [[ $MACHINE_ID = expanse.* ]]; then
   cp fv3_conf/fv3_slurm.IN_expanse fv3_conf/fv3_slurm.IN
   
  elif [[ $MACHINE_ID = cloud.* ]]; then
+   
+  module use /apps/modules/modulefiles
+  module load rocoto/1.3.3
+   
+  ROCOTORUN=$(which rocotorun)
+  ROCOTOSTAT=$(which rocotostat)
+  ROCOTOCOMPLETE=$(which rocotocomplete)
+  ROCOTO_SCHEDULER=slurm
 
-  export PYTHONPATH=
-  ECFLOW_START=
-  QUEUE=compute
-  COMPILE_QUEUE=shared
+  QUEUE=batch
+  COMPILE_QUEUE=batch
   PARTITION=
-  ACCNR="${ACCNR:-TG-EES200015}"
-  dprefix=/expanse/lustre/scratch/$USER/temp_project/run
-  DISKNM=/expanse/lustre/scratch/domh/temp_project/RT
-  STMP=$dprefix
-  PTMP=$dprefix
+  dprefix=/lustre/
+  DISKNM=/contrib/Zachary.Shrader/RT
+  STMP=$dprefix/stmp4
+  PTMP=$dprefix/stmp2
   SCHEDULER=slurm
-  cp fv3_conf/fv3_slurm.IN_expanse fv3_conf/fv3_slurm.IN
+  cp fv3_conf/fv3_slurm.IN_cloud fv3_conf/fv3_slurm.IN
+  cp fv3_conf/compile_slurm.IN_cloud fv3_conf/compile_slurm.IN
 
 else
   die "Unknown machine ID, please edit detect_machine.sh file"
@@ -524,6 +530,10 @@ if [[ $ROCOTO == true ]]; then
   elif [[ $MACHINE_ID = s4.* ]]; then
     QUEUE=s4
     COMPILE_QUEUE=s4
+    ROCOTO_SCHEDULER=slurm
+  elif [[ $MACHINE_ID = cloud.* ]]; then
+    QUEUE=batch
+    COMPILE_QUEUE=batch
     ROCOTO_SCHEDULER=slurm
   elif [[ $MACHINE_ID = jet.* ]]; then
     QUEUE=batch
