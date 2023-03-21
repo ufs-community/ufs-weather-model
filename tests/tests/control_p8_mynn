@@ -1,12 +1,12 @@
 ###############################################################################
 #
-#  Global control test GFSv16 atmosphere only at C96L127, P8 configuration
+#  Global control test GFSv16 atmosphere only at C96L127, P8 + MYNN configuration
 #
 ###############################################################################
 
 export TEST_DESCR="Compare global control results with previous trunk version"
 
-export CNTL_DIR=control_p8
+export CNTL_DIR=control_p8_mynn
 
 export LIST_FILES="sfcf000.nc \
                    sfcf021.nc \
@@ -156,7 +156,7 @@ export USE_CICE_ALB=.false.
 export WRITE_NSFLIP=.true.
 
 export FV3_RUN=control_run.IN
-export CCPP_SUITE=FV3_GFS_v17_p8
+export CCPP_SUITE=FV3_GFS_v17_p8_mynn
 export FIELD_TABLE=field_table_thompson_noaero_tke
 export DIAG_TABLE=diag_table_p8_template
 # use same namelist for standalone,coupled P7
@@ -168,7 +168,9 @@ export DOGP_CLDOPTICS_LUT=.true.
 export DOGP_LWSCAT=.true.
 export DOGP_SGS_CNV=.true.
 
-export SATMEDMF=.true.
+export IMFSHALCNV=-1
+export SHAL_CNV=.false.
+export DO_MYNNEDMF=.true.
 
 if [[ $MACHINE_ID = cheyenne.* ]]; then
   TPN=18

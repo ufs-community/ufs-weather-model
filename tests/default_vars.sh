@@ -761,6 +761,7 @@ export DNATS=2
 export IMP_PHYSICS=8
 export LGFDLMPRAD=.false.
 export DO_SAT_ADJ=.false.
+export SATMEDMF=.true.
 
 # P7 default mushy thermo
 export KTHERM=2
