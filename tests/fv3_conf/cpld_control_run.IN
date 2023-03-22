@@ -104,12 +104,12 @@ else
 
      #if not mx025, then mom6 restart is a single file
      if [[ $OCNRES == 025 ]]; then
-      cp ../${DEP_RUN}${SUFFIX}/RESTART/MOM.res.${RESTART_FILE_SUFFIX_HRS}-00-00.nc ./INPUT/MOM.res.nc
-      cp ../${DEP_RUN}${SUFFIX}/RESTART/MOM.res.${RESTART_FILE_SUFFIX_HRS}-00-00_1.nc ./INPUT/MOM.res_1.nc
-      cp ../${DEP_RUN}${SUFFIX}/RESTART/MOM.res.${RESTART_FILE_SUFFIX_HRS}-00-00_2.nc ./INPUT/MOM.res_2.nc
-      cp ../${DEP_RUN}${SUFFIX}/RESTART/MOM.res.${RESTART_FILE_SUFFIX_HRS}-00-00_3.nc ./INPUT/MOM.res_3.nc
+      cp ../${DEP_RUN}${SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.MOM.res.nc ./INPUT/MOM.res.nc
+      cp ../${DEP_RUN}${SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.MOM.res_1.nc ./INPUT/MOM.res_1.nc
+      cp ../${DEP_RUN}${SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.MOM.res_2.nc ./INPUT/MOM.res_2.nc
+      cp ../${DEP_RUN}${SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.MOM.res_3.nc ./INPUT/MOM.res_3.nc
      else
-      cp ../${DEP_RUN}${SUFFIX}/RESTART/MOM.res.${RESTART_FILE_SUFFIX_HRS}-00-00.nc ./INPUT/MOM.res.nc
+      cp ../${DEP_RUN}${SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.MOM.res.nc ./INPUT/MOM.res.nc
      fi
 
      # CMEPS restart and pointer files
