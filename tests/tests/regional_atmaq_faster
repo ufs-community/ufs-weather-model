@@ -1,0 +1,99 @@
+###############################################################################
+#
+#  regional aqm test: GFSv15p2 atmosphere with aqm (CMAQ) C96L64
+#
+###############################################################################
+
+export TEST_DESCR="AQM (CMAQ) regional test for comparison of results with previous trunk version"
+
+export CNTL_DIR=regional_atmaq_faster
+
+export LIST_FILES="sfcf000.nc \
+                   sfcf003.nc \
+                   sfcf006.nc \
+                   atmf000.nc \
+                   atmf003.nc \
+                   atmf006.nc \
+                   RESTART/20190801.180000.coupler.res \
+                   RESTART/20190801.180000.fv_core.res.nc \
+                   RESTART/20190801.180000.fv_core.res.tile1.nc \
+                   RESTART/20190801.180000.fv_srf_wnd.res.tile1.nc \
+                   RESTART/20190801.180000.fv_tracer.res.tile1.nc \
+                   RESTART/20190801.180000.phy_data.nc \
+                   RESTART/20190801.180000.sfc_data.nc" 
+
+export_fv3
+
+export SYEAR=2019
+export SMONTH=08
+export SDAY=1
+export SHOUR=12
+export FHMAX=6
+export DT_ATMOS=180
+export WRTTASK_PER_GROUP=8
+export NSOUT=-1
+export OUTPUT_GRID='lambert_conformal'
+export NSTF_NAME='2,0,0,0,0'
+export IAER=5111
+export IOVR=3
+export OUTPUT_FH='0 3 6'
+
+#AQM Specifics
+#NPZ input.nml 64
+#DNATS input.nml 4
+#RES_LATLON_DYNAMICS input.nml 'fv3_increment.nc'
+#fhzero = 1.0 input.nml
+#fhcyc = 0 input.nml
+#cdmbgwd = 3.5, 0.25 input.nml
+export AQM=.true.
+export MAX_OUTPUT_FIELDS=450
+export OUTPUT_GRID='lambert_conformal'
+export CEN_LON=-97.5
+export CEN_LAT=38.5
+export LON1=-121.70231097
+export LAT1=22.57417972
+export STDLAT1=38.5
+export STDLAT2=38.5
+export NPX=397
+export NPY=233
+export NX=393
+export NY=225
+export DX=13000.0
+export DY=13000.0
+export FNALBC="'C775.snowfree_albedo.tileX.nc'"
+export FNVETC="'C775.vegetation_type.tileX.nc'"
+export FNSOTC="'C775.soil_type.tileX.nc'"
+export FNABSC="'C775.maximum_snow_albedo.tileX.nc'"
+
+export INPES=${INPES_aqm}
+export JNPES=${JNPES_aqm}
+export NTILES=1
+export atm_model='fv3'
+export aqm_model='aqm'
+
+export FIELD_TABLE=field_table_aqm
+export DIAG_TABLE=diag_table_aqm
+export DNATS=5
+export FSCAV_AERO="'aacd:0.0', 'acet:0.0', 'acrolein:0.0', 'acro_primary:0.0',
+                   'ald2:0.0', 'ald2_primary:0.0', 'aldx:0.0', 'benzene:0.0',
+                   'butadiene13:0.0', 'cat1:0.0', 'cl2:0.0', 'clno2:0.0',
+                   'co:0.0', 'cres:0.0', 'cron:0.0', 'ech4:0.0', 'epox:0.0',
+                   'eth:0.0', 'etha:0.0', 'ethy:0.0', 'etoh:0.0', 'facd:0.0',
+                   'fmcl:0.0', 'form:0.0', 'form_primary:0.0', 'gly:0.0',
+                   'glyd:0.0', 'h2o2:0.0', 'hcl:0.0', 'hg:0.0', 'hgiigas:0.0',
+                   'hno3:0.0', 'hocl:0.0', 'hono:0.0', 'hpld:0.0', 'intr:0.0',
+                   'iole:0.0', 'isop:0.0', 'ispd:0.0', 'ispx:0.0', 'ket:0.0',
+                   'meoh:0.0', 'mepx:0.0', 'mgly:0.0', 'n2o5:0.0', 'naph:0.0',
+                   'no:0.0', 'no2:0.0', 'no3:0.0', 'ntr1:0.0', 'ntr2:0.0',
+                   'o3:0.0', 'ole:0.0', 'opan:0.0', 'open:0.0', 'opo3:0.0',
+                   'pacd:0.0', 'pan:0.0', 'panx:0.0', 'par:0.0', 'pcvoc:0.0',
+                   'pna:0.0', 'prpa:0.0', 'rooh:0.0', 'sesq:0.0', 'so2:0.0',
+                   'soaalk:0.0', 'sulf:0.0', 'terp:0.0', 'tol:0.0', 'tolu:0.0',
+                   'vivpo1:0.0', 'vlvoo1:0.0', 'vlvoo2:0.0', 'vlvpo1:0.0',
+                   'vsvoo1:0.0', 'vsvoo2:0.0', 'vsvoo3:0.0', 'vsvpo1:0.0',
+                   'vsvpo2:0.0', 'vsvpo3:0.0', 'xopn:0.0', 'xylmn:0.0', '*:0.2'"
+export INPUT_NML="regional_atmaq.nml.IN"
+export MODEL_CONFIGURE="model_configure_atmaq.IN"
+export NEMS_CONFIGURE="nems.configure.atmaq.IN"
+export FV3_RUN="fv3_aqm.IN"
+export CCPP_SUITE=FV3_GFS_v15p2
