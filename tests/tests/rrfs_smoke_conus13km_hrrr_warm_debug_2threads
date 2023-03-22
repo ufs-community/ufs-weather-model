@@ -9,14 +9,12 @@
 
 export TEST_DESCR="HRRR smoke physics on 13km domain, control run"
 
-export CNTL_DIR=rrfs_smoke_conus13km_hrrr_warm
+export CNTL_DIR=rrfs_smoke_conus13km_hrrr_warm_debug
 
 export LIST_FILES="sfcf000.nc \
                    sfcf001.nc \
-                   sfcf002.nc \
                    atmf000.nc \
-                   atmf001.nc \
-                   atmf002.nc"
+                   atmf001.nc"
 
 export_fv3
 
@@ -24,7 +22,7 @@ export SYEAR=2021
 export SMONTH=5
 export SDAY=12
 export SHOUR=16
-export FHMAX=2
+export FHMAX=1
 export DT_ATMOS=120
 export RESTART_INTERVAL=1
 export QUILTING=.true.
@@ -35,6 +33,11 @@ export WRITE_DOPOST=.false.
 export OUTPUT_HISTORY=.true.
 export OUTPUT_GRID=lambert_conformal
 export OUTPUT_FILE="'netcdf'"
+
+export atm_omp_num_threads=2
+export INPES=$INPES_thrd
+export JNPES=$JNPES_thrd
+export WRTTASK_PER_GROUP=6
 
 # Revert these two to GFS_typedefs defaults to avoid a crash:
 export SEDI_SEMI=.false.
