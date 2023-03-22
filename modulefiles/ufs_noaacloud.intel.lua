@@ -16,4 +16,4 @@ module load crtm/2.4.0
 export CC=mpiicc
 export CXX=mpiicpc
 export FC=mpiifort
-export CMAKE_Platform=AWS_cloud.intel
+export CMAKE_Platform=noaacloud.intel
