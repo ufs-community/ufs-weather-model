@@ -359,7 +359,7 @@ elif [[ $MACHINE_ID = expanse.* ]]; then
   SCHEDULER=slurm
   cp fv3_conf/fv3_slurm.IN_expanse fv3_conf/fv3_slurm.IN
   
- elif [[ $MACHINE_ID = AWS_cloud.* ]]; then
+ elif [[ $MACHINE_ID = noaacloud.* ]]; then
    
   module use /apps/modules/modulefiles
   module load rocoto/1.3.3
@@ -373,55 +373,14 @@ elif [[ $MACHINE_ID = expanse.* ]]; then
   COMPILE_QUEUE=batch
   PARTITION=
   dprefix=/lustre/
-  DISKNM=/contrib/Zachary.Shrader/RT
+  DISKNM=/contrib/ufs-weather-model/RT
   STMP=$dprefix/stmp4
   PTMP=$dprefix/stmp2
   SCHEDULER=slurm
-  cp fv3_conf/fv3_slurm.IN_AWS_cloud fv3_conf/fv3_slurm.IN
-  cp fv3_conf/compile_slurm.IN_AWS_cloud fv3_conf/compile_slurm.IN
+  cp fv3_conf/fv3_slurm.IN_noaacloud fv3_conf/fv3_slurm.IN
+  cp fv3_conf/compile_slurm.IN_noaacloud fv3_conf/compile_slurm.IN
   
-  elif [[ $MACHINE_ID = Azure_cloud.* ]]; then
-   
-  module use /apps/modules/modulefiles
-  module load rocoto/1.3.3
-   
-  ROCOTORUN=$(which rocotorun)
-  ROCOTOSTAT=$(which rocotostat)
-  ROCOTOCOMPLETE=$(which rocotocomplete)
-  ROCOTO_SCHEDULER=slurm
-
-  QUEUE=batch
-  COMPILE_QUEUE=batch
-  PARTITION=
-  dprefix=/lustre/
-  DISKNM=/contrib/Zachary.Shrader/RT
-  STMP=$dprefix/stmp4
-  PTMP=$dprefix/stmp2
-  SCHEDULER=slurm
-  cp fv3_conf/fv3_slurm.IN_Azure_cloud fv3_conf/fv3_slurm.IN
-  cp fv3_conf/compile_slurm.IN_Azure_cloud fv3_conf/compile_slurm.IN
   
-elif [[ $MACHINE_ID = GCP_cloud.* ]]; then
-   
-  module use /apps/modules/modulefiles
-  module load rocoto/1.3.3
-   
-  ROCOTORUN=$(which rocotorun)
-  ROCOTOSTAT=$(which rocotostat)
-  ROCOTOCOMPLETE=$(which rocotocomplete)
-  ROCOTO_SCHEDULER=slurm
-
-  QUEUE=batch
-  COMPILE_QUEUE=batch
-  PARTITION=
-  dprefix=/lustre/
-  DISKNM=/contrib/Zachary.Shrader/RT
-  STMP=$dprefix/stmp4
-  PTMP=$dprefix/stmp2
-  SCHEDULER=slurm
-  cp fv3_conf/fv3_slurm.IN_GCP_cloud fv3_conf/fv3_slurm.IN
-  cp fv3_conf/compile_slurm.IN_GCP_cloud fv3_conf/compile_slurm.IN
-
 else
   die "Unknown machine ID, please edit detect_machine.sh file"
 fi
@@ -573,15 +532,7 @@ if [[ $ROCOTO == true ]]; then
     QUEUE=s4
     COMPILE_QUEUE=s4
     ROCOTO_SCHEDULER=slurm
-  elif [[ $MACHINE_ID = AWS_cloud.* ]]; then
-    QUEUE=batch
-    COMPILE_QUEUE=batch
-    ROCOTO_SCHEDULER=slurm
-  elif [[ $MACHINE_ID = Azure_cloud.* ]]; then
-    QUEUE=batch
-    COMPILE_QUEUE=batch
-    ROCOTO_SCHEDULER=slurm
-  elif [[ $MACHINE_ID = GCP_cloud.* ]]; then
+  elif [[ $MACHINE_ID = noaacloud.* ]]; then
     QUEUE=batch
     COMPILE_QUEUE=batch
     ROCOTO_SCHEDULER=slurm
