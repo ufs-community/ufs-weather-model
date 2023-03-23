@@ -285,7 +285,7 @@ submit_and_wait() {
   done
 
   if [[ $test_status = 'FAIL' ]]; then
-    if [[ ${OPNREQ_TEST} == false ]]; then
+    if [[ "$OPNREQ_TEST" = false ]]; then
       echo "Test ${TEST_NR} ${TEST_NAME} FAIL" >> ${REGRESSIONTEST_LOG}
       echo;echo;echo                           >> ${REGRESSIONTEST_LOG}
       echo "Test ${TEST_NR} ${TEST_NAME} FAIL"
@@ -310,6 +310,7 @@ check_results() {
 
   ROCOTO=${ROCOTO:-false}
   ECFLOW=${ECFLOW:-false}
+  REGRESSIONTEST_LOG=${REGRESSIONTEST_LOG:-""}
 
   local test_status='PASS'
 
@@ -429,7 +430,7 @@ check_results() {
   echo
 
   if [[ $test_status = 'FAIL' ]]; then
-    if [[ ${OPNREQ_TEST} == false ]]; then
+    if [[ "$OPNREQ_TEST" = false ]]; then
       echo "${TEST_NAME} ${TEST_NR} failed in check_result" >> $PATHRT/fail_test_${TEST_NR}
     else
       echo "${TEST_NAME} ${TEST_NR} failed in check_result" >> $PATHRT/fail_opnreq_test_${TEST_NR}
@@ -470,16 +471,16 @@ rocoto_create_compile_task() {
   NATIVE=""
   BUILD_CORES=8
   BUILD_WALLTIME="00:30:00"
-  if [[ ${MACHINE_ID} == jet.* ]]; then
+  if [[ ${MACHINE_ID} == jet ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
-  if [[ ${MACHINE_ID} == hera.* ]]; then
+  if [[ ${MACHINE_ID} == hera ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
-  if [[ ${MACHINE_ID} == orion.* ]]; then
+  if [[ ${MACHINE_ID} == orion ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
-  if [[ ${MACHINE_ID} == s4.* ]]; then
+  if [[ ${MACHINE_ID} == s4 ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
 
@@ -514,9 +515,9 @@ rocoto_create_run_task() {
   NATIVE=""
 
   cat << EOF >> $ROCOTO_XML
-    <task name="${TEST_NAME}${RT_SUFFIX}" maxtries="${ROCOTO_TEST_MAXTRIES:-3}">
+    <task name="${TEST_NAME}${RT_SUFFIX}_${RT_COMPILER}" maxtries="${ROCOTO_TEST_MAXTRIES:-3}">
       <dependency> $DEP_STRING </dependency>
-      <command>&PATHRT;/run_test.sh &PATHRT; &RUNDIR_ROOT; ${TEST_NAME} ${TEST_NR} ${COMPILE_NR} </command>
+      <command>&PATHRT;/run_test.sh &PATHRT; &RUNDIR_ROOT; ${TEST_NAME} ${TEST_NR} ${COMPILE_NR} ${RT_COMPILER} </command>
       <jobname>${TEST_NAME}${RT_SUFFIX}</jobname>
       <account>${ACCNR}</account>
       <queue>${QUEUE}</queue>
@@ -593,7 +594,6 @@ rocoto_run() {
   done
 }
 
-
 ecflow_create_compile_task() {
 
   new_compile=true
@@ -614,18 +614,18 @@ EOF
 
 ecflow_create_run_task() {
 
-  cat << EOF > ${ECFLOW_RUN}/${ECFLOW_SUITE}/${TEST_NAME}${RT_SUFFIX}.ecf
+  cat << EOF > ${ECFLOW_RUN}/${ECFLOW_SUITE}/${TEST_NAME}${RT_SUFFIX}_${RT_COMPILER}.ecf
 %include <head.h>
-$PATHRT/run_test.sh ${PATHRT} ${RUNDIR_ROOT} ${TEST_NAME} ${TEST_NR} ${COMPILE_NR} > ${LOG_DIR}/run_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log 2>&1 &
+$PATHRT/run_test.sh ${PATHRT} ${RUNDIR_ROOT} ${TEST_NAME} ${TEST_NR} ${COMPILE_NR} ${RT_COMPILER} > ${LOG_DIR}/run_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}_${RT_COMPILER}.log 2>&1 &
 %include <tail.h>
 EOF
 
-  echo "    task ${TEST_NAME}${RT_SUFFIX}" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+  echo "    task ${TEST_NAME}${RT_SUFFIX}_${RT_COMPILER}" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   echo "      label job_id ''" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   echo "      label job_status ''" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   echo "      inlimit max_jobs" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   if [[ $DEP_RUN != '' ]]; then
-    if [[ ${OPNREQ_TEST} == false ]]; then
+    if [[ "$OPNREQ_TEST" = false ]]; then
       echo "      trigger compile_${COMPILE_NR} == complete and ${DEP_RUN}${RT_SUFFIX} == complete" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
     else
       echo "      trigger compile_${COMPILE_NR} == complete and ${DEP_RUN} == complete" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
@@ -647,7 +647,7 @@ ecflow_run() {
   not_running=$?
   if [[ $not_running -eq 1 ]]; then
     echo "ecflow_server is NOT running on ${ECF_HOST}:${ECF_PORT}"
-    if [[ ${MACHINE_ID} == wcoss2.* || ${MACHINE_ID} == acorn.* ]]; then
+    if [[ ${MACHINE_ID} == wcoss2 || ${MACHINE_ID} == acorn ]]; then
       if [[ "${HOST::1}" == "a" ]]; then
 	export ECF_HOST=adecflow01
       elif [[ "${HOST::1}" == "c" ]]; then
@@ -657,7 +657,7 @@ ecflow_run() {
       fi
       MYCOMM="bash -l -c \"module load ecflow && ecflow_start.sh -p ${ECF_PORT} \""
       ssh $ECF_HOST "${MYCOMM}"
-    elif [[ ${MACHINE_ID} == jet.* ]]; then
+    elif [[ ${MACHINE_ID} == jet ]]; then
       module load ecflow
       echo "Using special Jet ECFLOW start procedure"
       MYCOMM="bash -l -c \"module load ecflow && ${ECFLOW_START} -d ${RUNDIR_ROOT}/ecflow_server\""

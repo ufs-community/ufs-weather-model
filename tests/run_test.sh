@@ -15,7 +15,7 @@ cleanup() {
 }
 
 write_fail_test() {
-  if [[ ${OPNREQ_TEST} == true ]]; then
+  if [[ "$OPNREQ_TEST" = true ]]; then
     echo "${TEST_NAME} ${TEST_NR} failed in run_test" >> $PATHRT/fail_opnreq_test_${TEST_NR}
   else
     echo "${TEST_NAME} ${TEST_NR} failed in run_test" >> $PATHRT/fail_test_${TEST_NR}
@@ -25,15 +25,15 @@ write_fail_test() {
 
 remove_fail_test() {
     echo "Removing test failure flag file for ${TEST_NAME} ${TEST_NR}"
-    if [[ ${OPNREQ_TEST} == true ]] ; then
+    if [[ "$OPNREQ_TEST" = true ]] ; then
         rm -f $PATHRT/fail_opnreq_test_${TEST_NR}
     else
         rm -f $PATHRT/fail_test_${TEST_NR}
     fi
 }
 
-if [[ $# != 5 ]]; then
-  echo "Usage: $0 PATHRT RUNDIR_ROOT TEST_NAME TEST_NR COMPILE_NR"
+if [[ $# != 6 ]]; then
+  echo "Usage: $0 PATHRT RUNDIR_ROOT TEST_NAME TEST_NR COMPILE_NR RT_COMPILER"
   exit 1
 fi
 
@@ -42,6 +42,7 @@ export RUNDIR_ROOT=$2
 export TEST_NAME=$3
 export TEST_NR=$4
 export COMPILE_NR=$5
+export RT_COMPILER=$6
 
 cd ${PATHRT}
 OPNREQ_TEST=${OPNREQ_TEST:-false}
@@ -56,17 +57,17 @@ source tests/$TEST_NAME
 # tests that try to copy input data from CNTL_DIR
 export INPUT_DIR=${CNTL_DIR}
 # Append RT_SUFFIX to RUNDIR, and BL_SUFFIX to CNTL_DIR
-export RUNDIR=${RUNDIR_ROOT}/${TEST_NAME}${RT_SUFFIX}
-export CNTL_DIR=${CNTL_DIR}${BL_SUFFIX}
+export RUNDIR=${RUNDIR_ROOT}/${TEST_NAME}${RT_SUFFIX}_${RT_COMPILER}
+export CNTL_DIR=${CNTL_DIR}${BL_SUFFIX}_${RT_COMPILER}
 
 export JBNME=$(basename $RUNDIR_ROOT)_${TEST_NR}
 
 echo -n "${TEST_NAME}, $( date +%s )," > ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
 
-if [[ ${OPNREQ_TEST} == false ]]; then
-  REGRESSIONTEST_LOG=${LOG_DIR}/rt_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log
+if [[ "$OPNREQ_TEST" = false ]]; then
+  REGRESSIONTEST_LOG=${LOG_DIR}/rt_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}_${RT_COMPILER}.log
 else
-  REGRESSIONTEST_LOG=${LOG_DIR}/opnReqTest_${TEST_NAME}${RT_SUFFIX}.log
+  REGRESSIONTEST_LOG=${LOG_DIR}/opnReqTest_${TEST_NAME}${RT_SUFFIX}_${RT_COMPILER}.log
 fi
 export REGRESSIONTEST_LOG
 
@@ -90,7 +91,7 @@ cp ${PATHRT}/fv3_${COMPILE_NR}.exe                 fv3.exe
 
 # modulefile for FV3 prerequisites:
 mkdir -p modulefiles
-if [[ $MACHINE_ID == linux.* ]]; then
+if [[ $MACHINE_ID == linux ]]; then
   cp ${PATHRT}/modules.fv3_${COMPILE_NR}             ./modulefiles/modules.fv3
 else
   cp ${PATHRT}/modules.fv3_${COMPILE_NR}.lua             ./modulefiles/modules.fv3.lua
@@ -290,7 +291,7 @@ else
 
 fi
 
-if [[ $skip_check_results = false ]]; then
+if [[ "$skip_check_results" = false ]]; then
   check_results
 else
   echo                                               >> ${REGRESSIONTEST_LOG}

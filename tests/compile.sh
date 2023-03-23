@@ -44,7 +44,7 @@ BUILD_DIR=$(pwd)/build_${BUILD_NAME}
 # ----------------------------------------------------------------------
 # Make sure we have reasonable number of threads.
 
-if [[ $MACHINE_ID == cheyenne.* ]] ; then
+if [[ $MACHINE_ID == cheyenne ]] ; then
     BUILD_JOBS=${BUILD_JOBS:-3}
 fi
 
@@ -53,19 +53,19 @@ BUILD_JOBS=${BUILD_JOBS:-8}
 hostname
 
 set +x
-if [[ $MACHINE_ID == macosx.* ]] || [[ $MACHINE_ID == linux.* ]]; then
-  source $PATHTR/modulefiles/ufs_${MACHINE_ID}
+if [[ $MACHINE_ID == macosx ]] || [[ $MACHINE_ID == linux ]]; then
+  source $PATHTR/modulefiles/ufs_${MACHINE_ID}.${RT_COMPILER}
 else
   # Activate lua environment for gaea
-  if [[ $MACHINE_ID == gaea.* ]] ; then
+  if [[ $MACHINE_ID == gaea ]]; then
     source /lustre/f2/dev/role.epic/contrib/Lmod_init.sh
   fi
   # Load fv3 module
   module use $PATHTR/modulefiles
-  modulefile="ufs_${MACHINE_ID}"
+  modulefile="ufs_${MACHINE_ID}.${RT_COMPILER}"
   if [[ "${MAKE_OPT}" == *"-DDEBUG=ON"* ]]; then
-    if [[ -f $PATHTR/modulefiles/ufs_${MACHINE_ID}_debug ]] || [[ -f $PATHTR/modulefiles/ufs_${MACHINE_ID}_debug.lua ]]; then
-      modulefile="ufs_${MACHINE_ID}_debug"
+    if [[ -f $PATHTR/modulefiles/ufs_${MACHINE_ID}.${RT_COMPILER}_debug ]] || [[ -f $PATHTR/modulefiles/ufs_${MACHINE_ID}.${RT_COMPILER}_debug.lua ]]; then
+      modulefile="ufs_${MACHINE_ID}.${RT_COMPILER}_debug"
     fi
   fi
   module load $modulefile
@@ -73,7 +73,7 @@ else
 fi
 set -x
 
-echo "Compiling ${MAKE_OPT} into $BUILD_NAME.exe on $MACHINE_ID"
+echo "Compiling ${MAKE_OPT} into $BUILD_NAME.exe on $MACHINE_ID.$RT_COMPILER"
 
 # set CMAKE_FLAGS based on $MAKE_OPT
 
@@ -92,7 +92,7 @@ if [[ "${MAKE_OPT}" == *"-DDEBUG=ON"* ]]; then
   CMAKE_FLAGS+=" -DCMAKE_BUILD_TYPE=Debug"
 else
   CMAKE_FLAGS+=" -DCMAKE_BUILD_TYPE=Release"
-  if [[ "${MACHINE_ID}" == "jet.intel" ]]; then
+  if [[ $MACHINE_ID == jet ]]; then
     CMAKE_FLAGS+=" -DSIMDMULTIARCH=ON"
   fi
 fi
@@ -132,16 +132,16 @@ bash -x ${PATHTR}/build.sh
 
 mv ${BUILD_DIR}/ufs_model ${PATHTR}/tests/${BUILD_NAME}.exe
 if [[ "${MAKE_OPT}" == "-DDEBUG=ON" ]]; then
-  if [[ $MACHINE_ID == linux.* ]]; then
-    cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}_debug ${PATHTR}/tests/modules.${BUILD_NAME}
+  if [[ $MACHINE_ID == linux ]]; then
+    cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}.${RT_COMPILER}_debug ${PATHTR}/tests/modules.${BUILD_NAME}
   else
-    cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}_debug.lua ${PATHTR}/tests/modules.${BUILD_NAME}.lua
+    cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}.${RT_COMPILER}_debug.lua ${PATHTR}/tests/modules.${BUILD_NAME}.lua
   fi
 else
-  if [[ $MACHINE_ID == linux.* ]]; then
-    cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}       ${PATHTR}/tests/modules.${BUILD_NAME}
+  if [[ $MACHINE_ID == linux ]]; then
+    cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}.${RT_COMPILER}       ${PATHTR}/tests/modules.${BUILD_NAME}
   else
-    cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}.lua       ${PATHTR}/tests/modules.${BUILD_NAME}.lua
+    cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}.${RT_COMPILER}.lua       ${PATHTR}/tests/modules.${BUILD_NAME}.lua
   fi
 fi
 
