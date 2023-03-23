@@ -375,7 +375,7 @@ mkdir -p ${STMP}/${USER}
 NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST
 
 # Overwrite default RUNDIR_ROOT if environment variable RUNDIR_ROOT is set
-RUNDIR_ROOT=${RUNDIR_ROOT:-${PTMP}/${USER}/FV3_RT/rt_$$}
+RUNDIR_ROOT=${RUNDIR_ROOT:-${PTMP}/${USER}/FV3_RT}/rt_$$
 mkdir -p ${RUNDIR_ROOT}
 
 CREATE_BASELINE=false
@@ -798,9 +798,7 @@ fi
 ##
 set +e
 cat ${LOG_DIR}/compile_*_time.log              >> ${RTEST_LOG}
-if compgen -G "${LOG_DIR}/rt_*.log" > /dev/null; then
-  cat ${LOG_DIR}/rt_*.log                      >> ${RTEST_LOG}
-fi
+cat ${LOG_DIR}/rt_*.log                        >> ${RTEST_LOG}
 
 FILES="fail_test_* fail_compile_*"
 for f in $FILES; do
@@ -814,8 +812,8 @@ if [[ -e fail_test ]]; then
   echo "FAILED TESTS: "                        >> ${RTEST_LOG}
   while read -r failed_test_name
   do
-    echo "Test ${failed_test_name} failed "
-    echo "Test ${failed_test_name} failed "    >> ${RTEST_LOG}
+    echo "Test ${failed_test_name}"
+    echo "Test ${failed_test_name}"            >> ${RTEST_LOG}
   done < fail_test
    echo ; echo REGRESSION TEST FAILED
   (echo ; echo REGRESSION TEST FAILED)         >> ${RTEST_LOG}

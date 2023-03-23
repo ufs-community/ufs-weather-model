@@ -320,11 +320,11 @@ check_results() {
   echo                                                       >  ${REGRESSIONTEST_LOG}
   echo "baseline dir = ${RTPWD}/${CNTL_DIR}"                 >> ${REGRESSIONTEST_LOG}
   echo "working dir  = ${RUNDIR}"                            >> ${REGRESSIONTEST_LOG}
-  echo "Checking test ${TEST_NR} ${TEST_NAME} results ...."  >> ${REGRESSIONTEST_LOG}
+  echo "Checking test ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} results ...."  >> ${REGRESSIONTEST_LOG}
   echo
   echo "baseline dir = ${RTPWD}/${CNTL_DIR}"
   echo "working dir  = ${RUNDIR}"
-  echo "Checking test ${TEST_NR} ${TEST_NAME} results ...."
+  echo "Checking test ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} results ...."
 
   if [[ ${CREATE_BASELINE} = false ]]; then
     #
@@ -393,8 +393,8 @@ check_results() {
     #
     # --- create baselines
     #
-    echo;echo "Moving baseline ${TEST_NR} ${TEST_NAME} files ...."
-    echo;echo "Moving baseline ${TEST_NR} ${TEST_NAME} files ...." >> ${REGRESSIONTEST_LOG}
+    echo;echo "Moving baseline ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} files ...."
+    echo;echo "Moving baseline ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} files ...." >> ${REGRESSIONTEST_LOG}
 
     for i in ${LIST_FILES} ; do
       printf %s " Moving " $i " ....."
@@ -424,16 +424,16 @@ check_results() {
       TRIES=" Tries: $ECF_TRYNO"
     fi
   fi
-  echo "Test ${TEST_NR} ${TEST_NAME} ${test_status}${TRIES}" >> ${REGRESSIONTEST_LOG}
+  echo "Test ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} ${test_status}${TRIES}" >> ${REGRESSIONTEST_LOG}
   echo                                                       >> ${REGRESSIONTEST_LOG}
-  echo "Test ${TEST_NR} ${TEST_NAME} ${test_status}${TRIES}"
+  echo "Test ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} ${test_status}${TRIES}"
   echo
 
   if [[ $test_status = 'FAIL' ]]; then
     if [[ "$OPNREQ_TEST" = false ]]; then
-      echo "${TEST_NAME} ${TEST_NR} failed in check_result" >> $PATHRT/fail_test_${TEST_NR}
+      echo "${TEST_NAME}_${RT_COMPILER} ${TEST_NR} failed in check_result" >> $PATHRT/fail_test_${TEST_NR}
     else
-      echo "${TEST_NAME} ${TEST_NR} failed in check_result" >> $PATHRT/fail_opnreq_test_${TEST_NR}
+      echo "${TEST_NAME}_${RT_COMPILER} ${TEST_NR} failed in check_result" >> $PATHRT/fail_opnreq_test_${TEST_NR}
     fi
 
     if [[ $ROCOTO = true || $ECFLOW == true ]]; then
@@ -601,7 +601,7 @@ ecflow_create_compile_task() {
 
   cat << EOF > ${ECFLOW_RUN}/${ECFLOW_SUITE}/compile_${COMPILE_NR}.ecf
 %include <head.h>
-$PATHRT/run_compile.sh ${PATHRT} ${RUNDIR_ROOT} "${MAKE_OPT}" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1 &
+$PATHRT/run_compile.sh ${PATHRT} ${RUNDIR_ROOT} "${MAKE_OPT}" ${COMPILE_NR} > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1 &
 %include <tail.h>
 EOF
 

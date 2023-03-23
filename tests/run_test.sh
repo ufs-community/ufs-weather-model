@@ -16,9 +16,9 @@ cleanup() {
 
 write_fail_test() {
   if [[ "$OPNREQ_TEST" = true ]]; then
-    echo "${TEST_NAME} ${TEST_NR} failed in run_test" >> $PATHRT/fail_opnreq_test_${TEST_NR}
+    echo "${TEST_NAME}_${RT_COMPILER} ${TEST_NR} failed in run_test" >> $PATHRT/fail_opnreq_test_${TEST_NR}
   else
-    echo "${TEST_NAME} ${TEST_NR} failed in run_test" >> $PATHRT/fail_test_${TEST_NR}
+    echo "${TEST_NAME}_${RT_COMPILER} ${TEST_NR} failed in run_test" >> $PATHRT/fail_test_${TEST_NR}
   fi
   exit 1
 }
@@ -58,7 +58,7 @@ source tests/$TEST_NAME
 export INPUT_DIR=${CNTL_DIR}
 # Append RT_SUFFIX to RUNDIR, and BL_SUFFIX to CNTL_DIR
 export RUNDIR=${RUNDIR_ROOT}/${TEST_NAME}${RT_SUFFIX}_${RT_COMPILER}
-export CNTL_DIR=${CNTL_DIR}${BL_SUFFIX}_${RT_COMPILER}
+export CNTL_DIR=${CNTL_DIR}${BL_SUFFIX}
 
 export JBNME=$(basename $RUNDIR_ROOT)_${TEST_NR}
 
