@@ -660,7 +660,6 @@ while read -r line || [ "$line" ]; do
     export QUEUE=${COMPILE_QUEUE}
     export PARTITION=${PARTITION}
     export ROCOTO=${ROCOTO}
-    export REGRESSIONTEST_LOG=${REGRESSIONTEST_LOG}
     export ECFLOW=${ECFLOW}
     export LOG_DIR=${LOG_DIR}
 EOF
@@ -716,7 +715,12 @@ EOF
     fi
 
     TEST_NR=$( printf '%03d' $(( 10#$TEST_NR + 1 )) )
-
+    if [[ "$OPNREQ_TEST" = false ]]; then
+      REGRESSIONTEST_LOG=${LOG_DIR}/rt_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}_${RT_COMPILER}.log
+    else
+      REGRESSIONTEST_LOG=${LOG_DIR}/opnReqTest_${TEST_NAME}${RT_SUFFIX}_${RT_COMPILER}.log
+    fi
+    export REGRESSIONTEST_LOG
     (
       source ${PATHRT}/tests/$TEST_NAME
 
