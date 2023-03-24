@@ -317,12 +317,12 @@ check_results() {
   # Give one minute for data to show up on file system
   #sleep 60
 
-  echo                                                       >  ${REGRESSIONTEST_LOG}
-  echo "baseline dir = ${RTPWD}/${CNTL_DIR}"                 >> ${REGRESSIONTEST_LOG}
-  echo "working dir  = ${RUNDIR}"                            >> ${REGRESSIONTEST_LOG}
+  echo                                                                      >  ${REGRESSIONTEST_LOG}
+  echo "baseline dir = ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}"                 >> ${REGRESSIONTEST_LOG}
+  echo "working dir  = ${RUNDIR}"                                           >> ${REGRESSIONTEST_LOG}
   echo "Checking test ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} results ...."  >> ${REGRESSIONTEST_LOG}
   echo
-  echo "baseline dir = ${RTPWD}/${CNTL_DIR}"
+  echo "baseline dir = ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}"
   echo "working dir  = ${RUNDIR}"
   echo "Checking test ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} results ...."
 
