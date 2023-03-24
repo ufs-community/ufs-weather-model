@@ -32,7 +32,7 @@ else
   MACHINE_ID=$1
   MAKE_OPT=${2:-}
   COMPILE_NR=${3:+_$3}
-  RT_COMPILER=${4:+_$4}
+  RT_COMPILER=${4:+$4}
   clean_before=${5:-YES}
   clean_after=${6:-YES}
 fi
