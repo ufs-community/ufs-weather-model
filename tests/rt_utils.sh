@@ -340,7 +340,7 @@ check_results() {
         echo ".......MISSING file"
         test_status='FAIL'
 
-      elif [[ ! -f ${RTPWD}/${CNTL_DIR}/$i ]] ; then
+      elif [[ ! -f ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/$i ]] ; then
 
         echo ".......MISSING baseline" >> ${REGRESSIONTEST_LOG}
         echo ".......MISSING baseline"
@@ -356,7 +356,7 @@ check_results() {
 
       else
 
-        cmp ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i >/dev/null 2>&1 && d=$? || d=$?
+        cmp ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/$i ${RUNDIR}/$i >/dev/null 2>&1 && d=$? || d=$?
         if [[ $d -eq 2 ]]; then
           echo "....CMP ERROR" >> ${REGRESSIONTEST_LOG}
           echo "....CMP ERROR"
@@ -367,7 +367,7 @@ check_results() {
           if [[ ${MACHINE_ID} =~ orion || ${MACHINE_ID} =~ hera || ${MACHINE_ID} =~ wcoss2 || ${MACHINE_ID} =~ acorn || ${MACHINE_ID} =~ cheyenne || ${MACHINE_ID} =~ gaea || ${MACHINE_ID} =~ jet || ${MACHINE_ID} =~ s4 ]] ; then
             printf ".......ALT CHECK.." >> ${REGRESSIONTEST_LOG}
             printf ".......ALT CHECK.."
-            ${PATHRT}/compare_ncfile.py ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i > compare_ncfile.log 2>&1 && d=$? || d=$?
+            ${PATHRT}/compare_ncfile.py ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/$i ${RUNDIR}/$i > compare_ncfile.log 2>&1 && d=$? || d=$?
             if [[ $d -eq 1 ]]; then
               echo "....ERROR" >> ${REGRESSIONTEST_LOG}
               echo "....ERROR"
@@ -400,8 +400,8 @@ check_results() {
       printf %s " Moving " $i " ....."
       printf %s " Moving " $i " ....."   >> ${REGRESSIONTEST_LOG}
       if [[ -f ${RUNDIR}/$i ]] ; then
-        mkdir -p ${NEW_BASELINE}/${CNTL_DIR}/$(dirname ${i})
-        cp ${RUNDIR}/${i} ${NEW_BASELINE}/${CNTL_DIR}/${i}
+        mkdir -p ${NEW_BASELINE}/${CNTL_DIR}_${RT_COMPILER}/$(dirname ${i})
+        cp ${RUNDIR}/${i} ${NEW_BASELINE}/${CNTL_DIR}_${RT_COMPILER}/${i}
         echo "....OK" >>${REGRESSIONTEST_LOG}
         echo "....OK"
       else
