@@ -660,6 +660,7 @@ while read -r line || [ "$line" ]; do
     export QUEUE=${COMPILE_QUEUE}
     export PARTITION=${PARTITION}
     export ROCOTO=${ROCOTO}
+    export REGRESSIONTEST_LOG=${REGRESSIONTEST_LOG}
     export ECFLOW=${ECFLOW}
     export LOG_DIR=${LOG_DIR}
 EOF
@@ -749,6 +750,7 @@ EOF
       export ECFLOW=${ECFLOW}
       export LOG_DIR=${LOG_DIR}
       export DEP_RUN=${DEP_RUN}
+      export REGRESSIONTEST_LOG=${REGRESSIONTEST_LOG}
       export skip_check_results=${skip_check_results}
       export delete_rundir=${delete_rundir}
 EOF

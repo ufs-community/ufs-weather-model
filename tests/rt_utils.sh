@@ -285,7 +285,7 @@ submit_and_wait() {
   done
 
   if [[ $test_status = 'FAIL' ]]; then
-    if [[ "$OPNREQ_TEST" = false ]]; then
+    if [[ $OPNREQ_TEST == false ]]; then
       echo "Test ${TEST_NR} ${TEST_NAME} FAIL" >> ${REGRESSIONTEST_LOG}
       echo;echo;echo                           >> ${REGRESSIONTEST_LOG}
       echo "Test ${TEST_NR} ${TEST_NAME} FAIL"
@@ -310,7 +310,6 @@ check_results() {
 
   ROCOTO=${ROCOTO:-false}
   ECFLOW=${ECFLOW:-false}
-  REGRESSIONTEST_LOG=${REGRESSIONTEST_LOG:-""}
 
   local test_status='PASS'
 
