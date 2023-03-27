@@ -1,4 +1,6 @@
-help([[loads UFS Model prerequisites for cloud/intel]])
+help([[
+loads UFS Model prerequisites for cloud/intel
+]])
 
 prepend_path("MODULE_PATH", "/contrib/spack-stack/envs/ufs-wm/install/modulefiles/Core")
 
