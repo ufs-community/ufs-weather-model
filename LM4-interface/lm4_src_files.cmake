@@ -61,11 +61,8 @@ list(APPEND lm4_src_files
      LM4/nuopc_cap/lm4_driver.F90
      LM4/nuopc_cap/lm4_type.F90
      LM4/nuopc_cap/lnd_import_export.F90
-     LM4/nuopc_cap/nuopc_shr_methods.F90
-     LM4/nuopc_cap/shr_file_mod.F90
-     LM4/nuopc_cap/shr_kind_mod.F90
-     LM4/nuopc_cap/shr_log_mod.F90
-     LM4/nuopc_cap/shr_sys_mod.F90
+     LM4/nuopc_cap/nuopc_lm4_methods.F90
+     LM4/nuopc_cap/lm4_kind_mod.F90
      LM4/nuopc_cap/domain_create.F90
      LM4/nuopc_cap/proc_bounds.F90
 
