@@ -110,6 +110,7 @@ case $(hostname -f) in
   mgmt-firstnamelastname-azurev2-00067) MACHINE_ID=Azure_cloud ;; ### Azure_cloud
   mgmt-firstnamelastname-gcpv2-00124) MACHINE_ID=GCP_cloud ;; ### GCP_cloud
 esac
+[[ ${MACHINE_ID} =~ "AWS_cloud" || ${MACHINE_ID} =~ "Azure_cloud" || ${MACHINE_ID} =~ "GCP_cloud" ]] && MACHINE_ID=noaacloud
 
 # Overwrite auto-detect with RT_MACHINE if set
 MACHINE_ID=${RT_MACHINE:-${MACHINE_ID}}
