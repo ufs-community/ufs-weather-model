@@ -377,6 +377,7 @@ export NSSL_INVERTCCN=.true.
 
 # Smoke
 export RRFS_SMOKE=.false.
+export SMOKE_FORECAST=0
 export RRFS_RESTART=NO
 export SEAS_OPT=2
 
@@ -761,6 +762,7 @@ export DNATS=2
 export IMP_PHYSICS=8
 export LGFDLMPRAD=.false.
 export DO_SAT_ADJ=.false.
+export SATMEDMF=.true.
 
 # P7 default mushy thermo
 export KTHERM=2
