@@ -104,13 +104,16 @@ case $(hostname -f) in
   login01.expanse.sdsc.edu) MACHINE_ID=expanse ;; ### expanse1
   login02.expanse.sdsc.edu) MACHINE_ID=expanse ;; ### expanse2
   
-# Use command 'hostname -f' to find specific machine name for a Cloud platform
-# Names below for AWS, Azure and GCP are examples
-  mgmt-firstnamelastname-awsv2-00072) MACHINE_ID=AWS_cloud ;; ### AWS_cloud
-  mgmt-firstnamelastname-azurev2-00067) MACHINE_ID=Azure_cloud ;; ### Azure_cloud
-  mgmt-firstnamelastname-gcpv2-00124) MACHINE_ID=GCP_cloud ;; ### GCP_cloud
 esac
-[[ ${MACHINE_ID} =~ "AWS_cloud" || ${MACHINE_ID} =~ "Azure_cloud" || ${MACHINE_ID} =~ "GCP_cloud" ]] && MACHINE_ID=noaacloud
+
+case $(echo $PW_CSP) in
+
+  aws) MACHINE_ID=aws ;; ### parallelworks aws
+  google) MACHINE_ID=gcp ;; ### parallelworks gcp
+  azure) MACHINE_ID=azure ;; ### parallelworks azure
+  
+esac
+[[ ${MACHINE_ID} =~ "aws" || ${MACHINE_ID} =~ "gcp" || ${MACHINE_ID} =~ "azure" ]] && MACHINE_ID=noaacloud
 
 # Overwrite auto-detect with RT_MACHINE if set
 MACHINE_ID=${RT_MACHINE:-${MACHINE_ID}}
