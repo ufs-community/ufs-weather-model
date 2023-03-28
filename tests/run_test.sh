@@ -100,6 +100,11 @@ cp ${PATHTR}/modulefiles/ufs_common*               ./modulefiles/.
 # Get the shell file that loads the "module" command and purges modules:
 cp ${PATHRT}/module-setup.sh                       module-setup.sh
 
+if [[ $MACHINE_ID == wcoss2.* ]] || [[ $MACHINE_ID == acorn.* ]] ; then
+  # for compare_ncfile.py
+  module load gcc/10.3.0 python/3.8.6
+fi
+
 SRCD="${PATHTR}"
 RUND="${RUNDIR}"
 
