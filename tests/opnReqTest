@@ -301,7 +301,7 @@ export CI_TEST=${CI_TEST:-false}
 [[ $# -eq 0 ]] && usage_and_exit 1
 
 # specify compiler
-export RT_COMPILER=${RT_COMPILER:-intel}
+# export RT_COMPILER=${RT_COMPILER:-intel}
 # detect_machine sets ACCNR and MACHINE_ID
 RT_MACHINE=${RT_MACHINE:-}
 source detect_machine.sh
@@ -500,7 +500,7 @@ if [[ $run_case =~ std_base && ! $run_case =~ ^std_base ]]; then
 fi
 
 # log directory
-export LOG_DIR=${PATHRT}/log_opnReqTest_$MACHINE_ID
+export LOG_DIR=${PATHRT}/logs/log_opnReqTest_$MACHINE_ID
 rm -rf ${LOG_DIR}
 mkdir ${LOG_DIR}
 
