@@ -466,9 +466,9 @@ if [[ $CREATE_BASELINE == true ]]; then
 fi
 
 if [[ $skip_check_results == true ]]; then
-  RTEST_LOG=${PATHRT}/RegressionTests_weekly_$MACHINE_ID.log
+  RTEST_LOG=${PATHRT}/logs/RegressionTests_weekly_$MACHINE_ID.log
 else
-  RTEST_LOG=${PATHRT}/RegressionTests_$MACHINE_ID.log
+  RTEST_LOG=${PATHRT}/logs/RegressionTests_$MACHINE_ID.log
 fi
 
 date > ${RTEST_LOG}
