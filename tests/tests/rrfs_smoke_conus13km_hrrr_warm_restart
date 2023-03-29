@@ -1,30 +1,27 @@
 ###############################################################################
 #
-#  HRRR physics on 13km domain, debug run
+#  HRRR smoke physics on 13km domain, restart run
 #
 ###############################################################################
 
 # This configuration is supposed to match the rrfs_dev1 parallel, so
 # do not change the namelist without checking the current parallel.
 
-export TEST_DESCR="HRRR physics on 13km domain, debug run"
+export TEST_DESCR="HRRR smoke physics on 13km domain, restart run"
 
-export CNTL_DIR=rrfs_conus13km_hrrr_warm_debugs
+export CNTL_DIR=rrfs_smoke_conus13km_hrrr_warm
 
-export LIST_FILES="sfcf000.nc \
-                   sfcf001.nc \
-                   atmf000.nc \
-                   atmf001.nc"
+export LIST_FILES="sfcf002.nc \
+                   atmf002.nc"
 
 export_fv3
 
 export SYEAR=2021
-export SMONTH=5
+export SMONTH=05
 export SDAY=12
 export SHOUR=16
-export FHMAX=1
+export FHMAX=2
 export DT_ATMOS=120
-export RESTART_INTERVAL=1
 export QUILTING=.true.
 export WRITE_GROUP=1
 export WRTTASK_PER_GROUP=6
@@ -34,9 +31,16 @@ export OUTPUT_HISTORY=.true.
 export OUTPUT_GRID=lambert_conformal
 export OUTPUT_FILE="'netcdf'"
 
+export FHROT=1
+export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${SHOUR} + ${FHROT}  )))0000"
+export RRFS_RESTART=YES
+
 # Revert these two to GFS_typedefs defaults to avoid a crash:
 export SEDI_SEMI=.false.
 export DECFL=8
+
+export RRFS_SMOKE=.true.
+export SEAS_OPT=0
 
 export LKM=1
 export SFCLAY_COMPUTE_FLUX=.true.
@@ -100,6 +104,7 @@ export DO_UGWP_V1_OROG_ONLY=.false.
 
 export FV3_RUN=rrfs_warm_run.IN
 export INPUT_NML=rrfs_conus13km_hrrr.nml.IN
-export FIELD_TABLE=field_table_thompson_aero_tke
+export FIELD_TABLE=field_table_thompson_aero_tke_smoke
 export DIAG_TABLE=diag_table_hrrr
 export MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
+export DIAG_TABLE_ADDITIONAL=diag_additional_rrfs_smoke
