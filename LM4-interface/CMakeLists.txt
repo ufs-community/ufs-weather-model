@@ -18,8 +18,13 @@ else()
 endif()
 set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} ${LM4_Extra_FORTRAN_FLAGS}")
 
-# Add preprocessor flag
+# Add preprocessor flag for namelist
 add_definitions(-DINTERNAL_FILE_NML)
+
+# Set MPI flags 
+if(MPI)
+  add_definitions(-DMPI)
+endif()
 
 # LM4 src files
 include("lm4_src_files.cmake")
