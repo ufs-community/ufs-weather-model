@@ -14,7 +14,7 @@ load(pathJoin("libpng", libpng_ver))
 hdf5_ver=os.getenv("hdf5_ver") or "1.14.0"
 load(pathJoin("hdf5", hdf5_ver))
 
-netcdf_ver=os.getenv("netcdf_ver") or "4.9.1"
+netcdf_ver=os.getenv("netcdf_ver") or "4.9.2"
 load(pathJoin("netcdf", netcdf_ver))
 
 pio_ver=os.getenv("pio_ver") or "2.5.10"

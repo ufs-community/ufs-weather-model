@@ -16,7 +16,7 @@ prepend_path("MODULEPATH", "/work/noaa/epic-ps/role-epic-ps/miniconda3/modulefil
 miniconda3_ver=os.getenv("miniconda3_ver") or "4.12.0"
 load(pathJoin("miniconda3", miniconda3_ver))
 
-prepend_path("MODULEPATH", "/work/noaa/epic-ps/role-epic-ps/hpc-stack/libs/intel-2022.1.2_ncdf49/modulefiles/stack")
+prepend_path("MODULEPATH", "/work/noaa/epic-ps/role-epic-ps/hpc-stack/libs/intel-2022.1.2_ncdf492/modulefiles/stack")
 
 hpc_ver=os.getenv("hpc_ver") or "1.2.0"
 load(pathJoin("hpc", hpc_ver))
