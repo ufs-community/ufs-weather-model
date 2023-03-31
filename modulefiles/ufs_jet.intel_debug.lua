@@ -13,7 +13,7 @@ miniconda3_ver=os.getenv("miniconda3_ver") or "4.12.0"
 load(pathJoin("miniconda3", miniconda3_ver))
 
 
-prepend_path("MODULEPATH", "/mnt/lfs4/HFIP/hfv3gfs/role.epic/hpc-stack/libs/intel-2022.1.2/modulefiles/stack")
+prepend_path("MODULEPATH", "/mnt/lfs4/HFIP/hfv3gfs/role.epic/hpc-stack/libs/intel-2022.1.2_ncdf492/modulefiles/stack")
 
 hpc_ver=os.getenv("hpc_ver") or "1.2.0"
 load(pathJoin("hpc", hpc_ver))
