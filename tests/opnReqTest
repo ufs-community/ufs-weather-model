@@ -250,13 +250,14 @@ run_opnReqTests() {
     if [[ $ECFLOW == true ]]; then
       TEST_NR=${RT_SUFFIX:1}
       COMPILE_NR=$comp_nm
+      RT_COMPILER="intel"
       DEP_RUN=
       if [[ ${RT_SUFFIX} == _std || ${RT_SUFFIX} == _thr || ${RT_SUFFIX} == _mpi || ${RT_SUFFIX} == _dcp || ${RT_SUFFIX} == _rst || ${RT_SUFFIX} == _fhz ]]; then
-        DEP_RUN="${TEST_NAME}_std_base"
+        DEP_RUN="${TEST_NAME}_std_base_${RT_COMPILER}"
       elif [[ ${RT_SUFFIX} == _bit ]]; then
-        DEP_RUN="${TEST_NAME}_bit_base"
+        DEP_RUN="${TEST_NAME}_bit_base_${RT_COMPILER}"
       elif [[ ${RT_SUFFIX} == _dbg ]]; then
-        DEP_RUN="${TEST_NAME}_dbg_base"
+        DEP_RUN="${TEST_NAME}_dbg_base_${RT_COMPILER}"
       else
         DEP_RUN=''
       fi
@@ -265,7 +266,7 @@ run_opnReqTests() {
       echo "Running test for $rc"
       echo "    THRD: $THRD; INPES: $INPES; JNPES: $JNPES; TPN: $TPN"
       TEST_NR=${RT_SUFFIX:1}
-      ./run_test.sh $PATHRT $RUNDIR_ROOT $TEST_NAME $TEST_NR $comp_nm > $LOG_DIR/run_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log 2>&1
+      ./run_test.sh $PATHRT $RUNDIR_ROOT $TEST_NAME $TEST_NR $comp_nm "intel" > $LOG_DIR/run_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log 2>&1
     fi
 
   done
