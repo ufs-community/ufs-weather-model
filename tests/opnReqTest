@@ -53,7 +53,7 @@ cleanup() {
 }
 
 find_build() {
-  cat rt.conf rt_gnu.conf >rt.temp
+  cat rt.conf >rt.temp
   local compile_line=''
   local run_line=''
   while read -r line || [ "$line" ]; do
@@ -62,7 +62,7 @@ find_build() {
     [[ $line == \#* ]] && continue
 
     if [[ $line =~ COMPILE ]] ; then
-      compile_opt=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
+      compile_opt=$(echo $line | cut -d'|' -f4 | sed -e 's/^ *//' -e 's/ *$//')
     elif [[ $line =~ RUN ]]; then
       tmp_test_name=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
       if [[ $TEST_NAME == $tmp_test_name && $compile_opt != '' ]]; then
@@ -125,7 +125,7 @@ build_opnReqTests() {
       ecflow_create_compile_task
     else
       echo "compiling $name with compile option $MAKE_OPT"
-      ./compile.sh $MACHINE_ID "${MAKE_OPT}" $name >${LOG_DIR}/compile_${TEST_NAME}_$name.log 2>&1
+      ./compile.sh $MACHINE_ID "${MAKE_OPT}" $name "intel" >${LOG_DIR}/compile_${TEST_NAME}_$name.log 2>&1
       echo "done compiling $name"
     fi
   done
