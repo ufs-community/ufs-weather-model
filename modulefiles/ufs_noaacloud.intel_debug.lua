@@ -1,16 +1,16 @@
 help([[
-loads UFS Model prerequisites for cloud/intel
+loads UFS Model prerequisites for noaacloud/intel
 ]])
 
-prepend_path("MODULE_PATH", "/contrib/spack-stack/envs/ufs-wm/install/modulefiles/Core")
 
-hpc_intel_ver=os.getenv("hpc_intel_ver") or "2021.3.0"
-load(pathJoin("stack-intel", hpc_intel_ver))
+prepend_path("MODULEPATH", "/contrib/EPIC/spack-stack/spack-stack-1.3.0/envs/unified-dev/install/modulefiles/Core")
 
-hpc_impi_ver=os.getenv("hpc_impi_ver") or "2021.3.0"
-load(pathJoin("stack-intel-oneapi-mpi", hpc_impi_ver))
+load("stack-intel/2021.3.0")
+load("stack-intel-oneapi-mpi/2021.3.0")
+load("stack-python/3.9.12")
+load("cmake/3.23.1")
 
-load("ufs_common_spack")
+load("ufs_common_spack_debug")
 
 setenv("CC", "mpiicc")
 setenv("CXX", "mpiicpc")
