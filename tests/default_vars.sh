@@ -300,6 +300,7 @@ export INPES=$INPES_dflt
 export JNPES=$JNPES_dflt
 export RESTART_INTERVAL=0
 export QUILTING=.true.
+export QUILTING_RESTART=.false.
 export WRITE_GROUP=1
 export WRTTASK_PER_GROUP=6
 export ITASKS=1
@@ -377,6 +378,7 @@ export NSSL_INVERTCCN=.true.
 
 # Smoke
 export RRFS_SMOKE=.false.
+export SMOKE_FORECAST=0
 export RRFS_RESTART=NO
 export SEAS_OPT=2
 
@@ -765,6 +767,7 @@ export DNATS=2
 export IMP_PHYSICS=8
 export LGFDLMPRAD=.false.
 export DO_SAT_ADJ=.false.
+export SATMEDMF=.true.
 
 # P7 default mushy thermo
 export KTHERM=2
