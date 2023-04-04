@@ -300,6 +300,7 @@ export INPES=$INPES_dflt
 export JNPES=$JNPES_dflt
 export RESTART_INTERVAL=0
 export QUILTING=.true.
+export QUILTING_RESTART=.false.
 export WRITE_GROUP=1
 export WRTTASK_PER_GROUP=6
 export ITASKS=1
