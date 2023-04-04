@@ -63,6 +63,7 @@ set(AVX             OFF CACHE BOOL "Enable AVX-I instruction set")
 set(SIMDMULTIARCH   OFF CACHE BOOL "Enable multi-target SIMD instruction sets")
 set(DEBUG           OFF CACHE BOOL "Enable DEBUG mode")
 set(DEBUG_LINKMPI   ON  CACHE BOOL "Enable linkmpi option when DEBUG mode is on")
+set(DISABLE_FMA     OFF CACHE BOOL "Disable Fused Multiply-Add instructions (workaround needed for AMD EPYC)" FORCE)
 set(INLINE_POST     ON  CACHE BOOL "Enable inline post")
 set(MULTI_GASES     OFF CACHE BOOL "Enable MULTI_GASES")
 set(MOVING_NEST     OFF CACHE BOOL "Enable moving nest code")
@@ -79,6 +80,28 @@ if(CMAKE_Platform)
     include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/configure_${CMAKE_Platform}.cmake)
   else()
     message("Platform '${CMAKE_Platform}' configuration file does not exist")
+  endif()
+endif()
+
+option(BUILD_WITH_IFI "Build NCEPpost with In-Flight Icing (IFI) library if present" OFF)
+option(REQUIRE_IFI "Abort if libIFI is not found ; enables BUILD_WITH_IFI=ON" OFF)
+option(INTERNAL_IFI "Compile with IFI inside the executable, instead of a library" OFF)
+
+if(INTERNAL_IFI)
+  message("Building with libIFI inside executable. Do not distribute executable outside of WCOSS2.")
+  set(BUILD_WITH_IFI OFF)
+  set(REQUIRE_IFI OFF)
+endif()
+
+if(REQUIRE_IFI)
+  set(BUILD_WITH_IFI ON)
+endif()
+
+if(BUILD_WITH_IFI)
+  if(REQUIRE_IFI)
+    find_package(IFI CONFIG REQUIRED)
+  else()
+    find_package(IFI CONFIG)
   endif()
 endif()
 
@@ -137,7 +160,7 @@ if(FMS)
 endif()
 
 if(CMEPS)
-  find_package(PIO 2.5.3 REQUIRED COMPONENTS C Fortran STATIC)
+  find_package(PIO 2.5.3 REQUIRED COMPONENTS C Fortran)
 endif()
 
 find_package(bacio 2.4.0 REQUIRED)
@@ -315,6 +338,7 @@ target_link_libraries(ufs PUBLIC "${_ufs_libs_public}")
 add_executable(ufs_model driver/UFS.F90)
 add_dependencies(ufs_model ufs)
 target_link_libraries(ufs_model ufs esmf w3emc::w3emc_d)
+set_target_properties(ufs_model PROPERTIES LINKER_LANGUAGE Fortran)
 
 ###############################################################################
 ### Install

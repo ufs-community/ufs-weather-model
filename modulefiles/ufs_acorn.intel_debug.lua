@@ -28,6 +28,9 @@ load(pathJoin("hpc-cray-mpich", hpc_cray_mpich_ver))
 
 load("ufs_common_debug")
 
+prepend_path("MODULEPATH", "/lfs/h1/emc/nceplibs/noscrub/UPP_IFI/modulefiles")
+load("ifi/20230118-intel-19.1.3.304")
+
 setenv("CC", "cc")
 setenv("CXX", "CC")
 setenv("FC", "ftn")
