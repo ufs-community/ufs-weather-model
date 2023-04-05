@@ -257,6 +257,25 @@ elif [[ $MACHINE_ID = stampede.* ]]; then
   TPN_cpl_atmw_gdas=12; INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8
   THRD_cpl_atmw_gdas=4; WPG_cpl_atmw_gdas=24; APB_cpl_atmw_gdas="0 311"; WPB_cpl_atmw_gdas="312 559"
 
+elif [[ ${MACHINE_ID} = noaacloud.* ]] ; then
+
+    TPN=36 ; TPN=44 ; TPN=30
+
+    INPES_dflt=3 ; JNPES_dflt=8
+    INPES_thrd=3 ; JNPES_thrd=4
+
+    THRD_cpl_dflt=1
+    INPES_cpl_dflt=3; JNPES_cpl_dflt=8; WPG_cpl_dflt=6
+    OCN_tasks_cpl_dflt=20
+    ICE_tasks_cpl_dflt=10
+    WAV_tasks_cpl_dflt=20
+
+    THRD_cpl_thrd=2
+    INPES_cpl_thrd=3; JNPES_cpl_thrd=4; WPG_cpl_thrd=6
+    OCN_tasks_cpl_thrd=20
+    ICE_tasks_cpl_thrd=10
+    WAV_tasks_cpl_thrd=12
+
 elif [[ $MACHINE_ID = expanse.* ]]; then
 
   echo "Unknown MACHINE_ID ${MACHINE_ID}. Please update tasks configurations in default_vars.sh"
@@ -269,66 +288,6 @@ elif [[ $MACHINE_ID = expanse.* ]]; then
   TPN_cpl_atmw_gdas=12; INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8
   THRD_cpl_atmw_gdas=2; WPG_cpl_atmw_gdas=24; APB_cpl_atmw_gdas="0 311"; WPB_cpl_atmw_gdas="312 559"
   
-elif [[ $MACHINE_ID = noaacloud.* ]]; then
-
-  if [[ $PW_CSP_ID = aws ]]; then
-  
-    TPN=36
-  
-    INPES_dflt=3 ; JNPES_dflt=8
-    INPES_thrd=3 ; JNPES_thrd=4
-    
-    THRD_cpl_dflt=1
-    INPES_cpl_dflt=3; JNPES_cpl_dflt=8; WPG_cpl_dflt=6
-    OCN_tasks_cpl_dflt=20
-    ICE_tasks_cpl_dflt=10
-    WAV_tasks_cpl_dflt=20
-    
-    THRD_cpl_thrd=2
-    INPES_cpl_thrd=3; JNPES_cpl_thrd=4; WPG_cpl_thrd=6
-    OCN_tasks_cpl_thrd=20
-    ICE_tasks_cpl_thrd=10
-    WAV_tasks_cpl_thrd=12
-    
-  elif [[ $PW_CSP_ID = azure ]]; then
-  
-    TPN=44
-  
-    INPES_dflt=3 ; JNPES_dflt=8
-    INPES_thrd=3 ; JNPES_thrd=4
-    
-    THRD_cpl_dflt=1
-    INPES_cpl_dflt=3; JNPES_cpl_dflt=8; WPG_cpl_dflt=6
-    OCN_tasks_cpl_dflt=20
-    ICE_tasks_cpl_dflt=10
-    WAV_tasks_cpl_dflt=20
-    
-    THRD_cpl_thrd=2
-    INPES_cpl_thrd=3; JNPES_cpl_thrd=4; WPG_cpl_thrd=6
-    OCN_tasks_cpl_thrd=20
-    ICE_tasks_cpl_thrd=10
-    WAV_tasks_cpl_thrd=12
-    
-  elif [[ $PW_CSP_ID = gcp ]]; then
-  
-    TPN=30
-  
-    INPES_dflt=3 ; JNPES_dflt=8
-    INPES_thrd=3 ; JNPES_thrd=4
-    
-    THRD_cpl_dflt=1
-    INPES_cpl_dflt=3; JNPES_cpl_dflt=8; WPG_cpl_dflt=6
-    OCN_tasks_cpl_dflt=20
-    ICE_tasks_cpl_dflt=10
-    WAV_tasks_cpl_dflt=20
-    
-    THRD_cpl_thrd=2
-    INPES_cpl_thrd=3; JNPES_cpl_thrd=4; WPG_cpl_thrd=6
-    OCN_tasks_cpl_thrd=20
-    ICE_tasks_cpl_thrd=10
-    WAV_tasks_cpl_thrd=12
-
- fi
   
 else
 
