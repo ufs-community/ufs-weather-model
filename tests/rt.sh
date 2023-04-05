@@ -123,7 +123,7 @@ fi
 readonly RT_SINGLE_CONF='rt_single.conf'
 
 # Default compiler "intel"
-#export RT_COMPILER=${RT_COMPILER:-intel}
+export RT_COMPILER=${RT_COMPILER:-intel}
 
 source detect_machine.sh # Note: this does not set ACCNR. The "if" block below does.
 source rt_utils.sh
@@ -551,7 +551,7 @@ if [[ $ECFLOW == true ]]; then
     ECF_TRIES=1
   fi
 
-  # Reduce maximum number of compile jobs on jet.intel and s4.intel because of licensing issues
+  # Reduce maximum number of compile jobs on jet and s4 because of licensing issues
   if [[ $MACHINE_ID = jet ]]; then
     MAX_BUILDS=5
   elif [[ $MACHINE_ID = s4 ]]; then
