@@ -14,6 +14,7 @@
   THRD_cpl_atmw=1
   INPES_cpl_atmw=3; JNPES_cpl_atmw=8; WPG_cpl_atmw=6
   WAV_tasks_cpl_atmw=30
+  WAV_thrds_cpl_atmw=1
 
   THRD_cpl_c48=1
   INPES_cpl_c48=1; JNPES_cpl_c48=1; WPG_cpl_c48=6
