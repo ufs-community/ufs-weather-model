@@ -815,6 +815,7 @@ export BLCKX=`expr $NX_GLB / $np2`
 export BLCKY=`expr $NY_GLB / 2`
 export MESHOCN_ICE=mesh.mx${OCNRES}.nc
 export WAVDOMAIN=mx${OCNRES}
+export MODDEF_WAV=mod_def.mx${OCNRES}
 export MESH_WAV=mesh.${WAVDOMAIN}.nc
 export CICEGRID=grid_cice_NEMS_mx${OCNRES}.nc
 export CICEMASK=kmtu_cice_NEMS_mx${OCNRES}.nc
@@ -1091,6 +1092,7 @@ export CPLMODE=hafs
 export RUNTYPE=startup
 export USE_COLDSTART=false
 export MESH_WAV=mesh.hafs.nc
+export MODDEF_WAV=mod_def.natl_6m
 export MULTIGRID=false
 }
 
