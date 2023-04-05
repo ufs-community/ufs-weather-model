@@ -63,11 +63,6 @@ else
   # Load fv3 module
   module use $PATHTR/modulefiles
   modulefile="ufs_${MACHINE_ID}"
-  if [[ "${MAKE_OPT}" == *"-DDEBUG=ON"* ]]; then
-    if [[ -f $PATHTR/modulefiles/ufs_${MACHINE_ID}_debug ]] || [[ -f $PATHTR/modulefiles/ufs_${MACHINE_ID}_debug.lua ]]; then
-      modulefile="ufs_${MACHINE_ID}_debug"
-    fi
-  fi
   module load $modulefile
   module list
 fi
@@ -131,18 +126,10 @@ export CMAKE_FLAGS
 bash -x ${PATHTR}/build.sh
 
 mv ${BUILD_DIR}/ufs_model ${PATHTR}/tests/${BUILD_NAME}.exe
-if [[ "${MAKE_OPT}" == "-DDEBUG=ON" ]]; then
-  if [[ $MACHINE_ID == linux.* ]]; then
-    cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}_debug ${PATHTR}/tests/modules.${BUILD_NAME}
-  else
-    cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}_debug.lua ${PATHTR}/tests/modules.${BUILD_NAME}.lua
-  fi
+if [[ $MACHINE_ID == linux.* ]]; then
+  cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}       ${PATHTR}/tests/modules.${BUILD_NAME}
 else
-  if [[ $MACHINE_ID == linux.* ]]; then
-    cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}       ${PATHTR}/tests/modules.${BUILD_NAME}
-  else
-    cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}.lua       ${PATHTR}/tests/modules.${BUILD_NAME}.lua
-  fi
+  cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}.lua       ${PATHTR}/tests/modules.${BUILD_NAME}.lua
 fi
 
 if [ $clean_after = YES ] ; then
