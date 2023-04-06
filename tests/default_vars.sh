@@ -572,6 +572,9 @@ export WAV_IC1='F'
 export WAV_IC5='F'
 # ATMW
 export MULTIGRID=true
+export MODDEF_WAV=mod_def.glo_1deg
+export MESH_WAV=mesh.glo_1deg.nc
+
 # ATMA
 export AOD_FRQ=060000
 
