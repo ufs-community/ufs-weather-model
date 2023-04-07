@@ -21,8 +21,8 @@ list(APPEND _noahmp_ccpp_files noahmp/drivers/ccpp/noahmpdrv.F90
                                noahmp/drivers/ccpp/physcons.F90)
 
 # NoahMP
-list(APPEND _noahmp_files noahmp/src/module_sf_noahmplsm.f90
-                          noahmp/src/module_sf_noahmp_glacier.f90)
+list(APPEND _noahmp_files noahmp/src/module_sf_noahmplsm.F90
+                          noahmp/src/module_sf_noahmp_glacier.F90)
 
 #------------------------------------------------------------------------------
 # Set CCPP flags for C/C++/Fortran preprocessor 
