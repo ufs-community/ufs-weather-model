@@ -169,7 +169,6 @@ Other Build Options
       set(AVX2            ON  CACHE BOOL "Enable AVX2 instruction set")
       set(AVX             OFF CACHE BOOL "Enable AVX-I instruction set")
       set(SIMDMULTIARCH   OFF CACHE BOOL "Enable multi-target SIMD instruction sets")
-      set(DEBUG_LINKMPI   ON  CACHE BOOL "Enable linkmpi option when DEBUG mode is on")
       set(INLINE_POST     OFF CACHE BOOL "Enable inline post")
       set(OPENMP          ON  CACHE BOOL "Enable OpenMP threading")
       set(PARALLEL_NETCDF OFF CACHE BOOL "Enable parallel NetCDF")
