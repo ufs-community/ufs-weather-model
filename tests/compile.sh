@@ -44,7 +44,7 @@ BUILD_DIR=$(pwd)/build_${BUILD_NAME}
 # ----------------------------------------------------------------------
 # Make sure we have reasonable number of threads.
 
-if [[ $MACHINE_ID == cheyenne.* ]] ; then
+if [[ $MACHINE_ID == cheyenne ]] ; then
     BUILD_JOBS=${BUILD_JOBS:-3}
 fi
 
@@ -53,11 +53,11 @@ BUILD_JOBS=${BUILD_JOBS:-8}
 hostname
 
 set +x
-if [[ $MACHINE_ID == macosx.* ]] || [[ $MACHINE_ID == linux.* ]]; then
+if [[ $MACHINE_ID == macosx ]] || [[ $MACHINE_ID == linux ]]; then
   source $PATHTR/modulefiles/ufs_${MACHINE_ID}
 else
   # Activate lua environment for gaea
-  if [[ $MACHINE_ID == gaea.* ]] ; then
+  if [[ $MACHINE_ID == gaea ]] ; then
     source /lustre/f2/dev/role.epic/contrib/Lmod_init.sh
   fi
   # Load fv3 module
@@ -87,7 +87,7 @@ if [[ "${MAKE_OPT}" == *"-DDEBUG=ON"* ]]; then
   CMAKE_FLAGS+=" -DCMAKE_BUILD_TYPE=Debug"
 else
   CMAKE_FLAGS+=" -DCMAKE_BUILD_TYPE=Release"
-  if [[ "${MACHINE_ID}" == "jet.intel" ]]; then
+  if [[ "${MACHINE_ID}" == "jet" ]] && [[ "${RT_COMPILER}" == "intel"]]; then
     CMAKE_FLAGS+=" -DSIMDMULTIARCH=ON"
   fi
 fi
@@ -126,7 +126,7 @@ export CMAKE_FLAGS
 bash -x ${PATHTR}/build.sh
 
 mv ${BUILD_DIR}/ufs_model ${PATHTR}/tests/${BUILD_NAME}.exe
-if [[ $MACHINE_ID == linux.* ]]; then
+if [[ $MACHINE_ID == linux ]]; then
   cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}       ${PATHTR}/tests/modules.${BUILD_NAME}
 else
   cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}.lua       ${PATHTR}/tests/modules.${BUILD_NAME}.lua

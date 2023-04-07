@@ -130,7 +130,7 @@ source rt_utils.sh
 
 source module-setup.sh
 
-if [[ $MACHINE_ID = wcoss2.* ]]; then
+if [[ $MACHINE_ID = wcoss2 ]]; then
 
   #module use /usrx/local/dev/emc_rocoto/modulefiles
   #module load ruby/2.5.1 rocoto/1.3.0rc2
@@ -160,7 +160,7 @@ if [[ $MACHINE_ID = wcoss2.* ]]; then
   cp fv3_conf/fv3_qsub.IN_wcoss2 fv3_conf/fv3_qsub.IN
   cp fv3_conf/compile_qsub.IN_wcoss2 fv3_conf/compile_qsub.IN
 
-elif [[ $MACHINE_ID = acorn.* ]]; then
+elif [[ $MACHINE_ID = acorn ]]; then
 
   module load ecflow/5.6.0.13
   module load gcc/10.3.0 python/3.8.6
@@ -183,7 +183,7 @@ elif [[ $MACHINE_ID = acorn.* ]]; then
   cp fv3_conf/fv3_qsub.IN_wcoss2 fv3_conf/fv3_qsub.IN
   cp fv3_conf/compile_qsub.IN_wcoss2 fv3_conf/compile_qsub.IN
 
-elif [[ $MACHINE_ID = gaea.* ]]; then
+elif [[ $MACHINE_ID = gaea ]]; then
 
   export PATH=/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/envs/ufs-weather-model/bin:/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/bin:$PATH
   export PYTHONPATH=/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/lib/python3.8/site-packages
@@ -202,7 +202,7 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
   cp fv3_conf/fv3_slurm.IN_gaea fv3_conf/fv3_slurm.IN
   cp fv3_conf/compile_slurm.IN_gaea fv3_conf/compile_slurm.IN
 
-elif [[ $MACHINE_ID = hera.* ]]; then
+elif [[ $MACHINE_ID = hera ]]; then
 
   module load rocoto
   ROCOTORUN=$(which rocotorun)
@@ -231,7 +231,7 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   cp fv3_conf/fv3_slurm.IN_hera fv3_conf/fv3_slurm.IN
   cp fv3_conf/compile_slurm.IN_hera fv3_conf/compile_slurm.IN
 
-elif [[ $MACHINE_ID = orion.* ]]; then
+elif [[ $MACHINE_ID = orion ]]; then
 
   module load gcc/8.3.0
 
@@ -256,7 +256,7 @@ elif [[ $MACHINE_ID = orion.* ]]; then
   cp fv3_conf/fv3_slurm.IN_orion fv3_conf/fv3_slurm.IN
   cp fv3_conf/compile_slurm.IN_orion fv3_conf/compile_slurm.IN
 
-elif [[ $MACHINE_ID = jet.* ]]; then
+elif [[ $MACHINE_ID = jet ]]; then
 
   module load rocoto/1.3.2
   ROCOTORUN=$(which rocotorun)
@@ -282,7 +282,7 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   cp fv3_conf/fv3_slurm.IN_jet fv3_conf/fv3_slurm.IN
   cp fv3_conf/compile_slurm.IN_jet fv3_conf/compile_slurm.IN
 
-elif [[ $MACHINE_ID = s4.* ]]; then
+elif [[ $MACHINE_ID = s4 ]]; then
 
   module load rocoto/1.3.2
   module load ecflow/5.6.0
@@ -309,7 +309,7 @@ elif [[ $MACHINE_ID = s4.* ]]; then
   cp fv3_conf/fv3_slurm.IN_s4 fv3_conf/fv3_slurm.IN
   cp fv3_conf/compile_slurm.IN_s4 fv3_conf/compile_slurm.IN
 
-elif [[ $MACHINE_ID = cheyenne.* ]]; then
+elif [[ $MACHINE_ID = cheyenne ]]; then
 
   export PATH=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/bin:/glade/p/ral/jntp/tools/miniconda3/4.8.3/bin:$PATH
   export PYTHONPATH=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/glade/p/ral/jntp/tools/miniconda3/4.8.3/lib/python3.8/site-packages
@@ -327,7 +327,7 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
   cp fv3_conf/fv3_qsub.IN_cheyenne fv3_conf/fv3_qsub.IN
   cp fv3_conf/compile_qsub.IN_cheyenne fv3_conf/compile_qsub.IN
 
-elif [[ $MACHINE_ID = stampede.* ]]; then
+elif [[ $MACHINE_ID = stampede ]]; then
 
   export PYTHONPATH=
   ECFLOW_START=
@@ -344,7 +344,7 @@ elif [[ $MACHINE_ID = stampede.* ]]; then
   MPIEXECOPTS=
   cp fv3_conf/fv3_slurm.IN_stampede fv3_conf/fv3_slurm.IN
 
-elif [[ $MACHINE_ID = expanse.* ]]; then
+elif [[ $MACHINE_ID = expanse ]]; then
 
   export PYTHONPATH=
   ECFLOW_START=
@@ -494,23 +494,23 @@ if [[ $ROCOTO == true ]]; then
 
   rm -f $ROCOTO_XML $ROCOTO_DB $ROCOTO_STATE *_lock.db
 
-  if [[ $MACHINE_ID = wcoss2.* || $MACHINE_ID = acorn.* ]]; then
+  if [[ $MACHINE_ID = wcoss2 || $MACHINE_ID = acorn ]]; then
     QUEUE=dev
     COMPILE_QUEUE=dev
     ROCOTO_SCHEDULER=pbs
-  elif [[ $MACHINE_ID = hera.* ]]; then
+  elif [[ $MACHINE_ID = hera ]]; then
     QUEUE=batch
     COMPILE_QUEUE=batch
     ROCOTO_SCHEDULER=slurm
-  elif [[ $MACHINE_ID = orion.* ]]; then
+  elif [[ $MACHINE_ID = orion ]]; then
     QUEUE=batch
     COMPILE_QUEUE=batch
     ROCOTO_SCHEDULER=slurm
-  elif [[ $MACHINE_ID = s4.* ]]; then
+  elif [[ $MACHINE_ID = s4 ]]; then
     QUEUE=s4
     COMPILE_QUEUE=s4
     ROCOTO_SCHEDULER=slurm
-  elif [[ $MACHINE_ID = jet.* ]]; then
+  elif [[ $MACHINE_ID = jet ]]; then
     QUEUE=batch
     COMPILE_QUEUE=batch
     ROCOTO_SCHEDULER=slurm
@@ -547,18 +547,18 @@ if [[ $ECFLOW == true ]]; then
 
   # Default number of tries to run jobs - on wcoss, no error tolerance
   ECF_TRIES=2
-  if [[ $MACHINE_ID = wcoss* ]]; then
+  if [[ $MACHINE_ID = wcoss ]]; then
     ECF_TRIES=1
   fi
 
   # Reduce maximum number of compile jobs on jet.intel and s4.intel because of licensing issues
-  if [[ $MACHINE_ID = jet.intel ]]; then
+  if [[ $MACHINE_ID = jet ]]; then
     MAX_BUILDS=5
-  elif [[ $MACHINE_ID = s4.intel ]]; then
+  elif [[ $MACHINE_ID = s4 ]]; then
     MAX_BUILDS=1
   fi
 
-  if [[ $MACHINE_ID = hera.* ]] && [[ ! $HOSTNAME = hecflow* ]]; then
+  if [[ $MACHINE_ID = hera ]] && [[ ! $HOSTNAME = hecflow* ]]; then
     echo "ERROR: To use ECFlow on Hera we must be logged into 'hecflow01' login node."
     exit 1
   fi
@@ -580,19 +580,19 @@ suite ${ECFLOW_SUITE}
     limit max_jobs ${MAX_JOBS}
 EOF
 
-  if [[ $MACHINE_ID = wcoss2.* || $MACHINE_ID = acorn.* ]]; then
+  if [[ $MACHINE_ID = wcoss2 || $MACHINE_ID = acorn ]]; then
     QUEUE=dev
-  elif [[ $MACHINE_ID = hera.* ]]; then
+  elif [[ $MACHINE_ID = hera ]]; then
     QUEUE=batch
-  elif [[ $MACHINE_ID = orion.* ]]; then
+  elif [[ $MACHINE_ID = orion ]]; then
     QUEUE=batch
-  elif [[ $MACHINE_ID = jet.* ]]; then
+  elif [[ $MACHINE_ID = jet ]]; then
     QUEUE=batch
-  elif [[ $MACHINE_ID = s4.* ]]; then
+  elif [[ $MACHINE_ID = s4 ]]; then
     QUEUE=s4
-  elif [[ $MACHINE_ID = gaea.* ]]; then
+  elif [[ $MACHINE_ID = gaea ]]; then
     QUEUE=normal
-  elif [[ $MACHINE_ID = cheyenne.* ]]; then
+  elif [[ $MACHINE_ID = cheyenne ]]; then
     QUEUE=regular
   else
     die "ecFlow is not supported on this machine $MACHINE_ID"
@@ -600,7 +600,7 @@ EOF
 
 else
 
-  if [[ $MACHINE_ID = hera.* ]] && [[ $HOSTNAME = hecflow* ]]; then
+  if [[ $MACHINE_ID = hera ]] && [[ $HOSTNAME = hecflow* ]]; then
     echo "ERROR: To run without using ECFlow on Hera, please do not use ecflow node."
     exit 1
   fi
@@ -752,7 +752,7 @@ EOF
       export skip_check_results=${skip_check_results}
       export delete_rundir=${delete_rundir}
 EOF
-      if [[ $MACHINE_ID = jet.* ]]; then
+      if [[ $MACHINE_ID = jet ]]; then
         cat << EOF >> ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
       export PATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/bin:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/bin:$PATH
       export PYTHONPATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/lib/python3.8/site-packages

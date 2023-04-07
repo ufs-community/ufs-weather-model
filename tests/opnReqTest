@@ -320,7 +320,7 @@ source rt_utils.sh
 source module-setup.sh
 
 # Machine-dependent libraries, modules, variables, etc.
-if [[ $MACHINE_ID = hera.* ]]; then
+if [[ $MACHINE_ID = hera ]]; then
 
   PYTHONHOME=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3_new_20210629
   export PATH=$PYTHONHOME/bin:$PATH
@@ -341,7 +341,7 @@ if [[ $MACHINE_ID = hera.* ]]; then
   cp fv3_conf/fv3_slurm.IN_hera fv3_conf/fv3_slurm.IN
   cp fv3_conf/compile_slurm.IN_hera fv3_conf/compile_slurm.IN
 
-elif [[ $MACHINE_ID = orion.* ]]; then
+elif [[ $MACHINE_ID = orion ]]; then
 
   module load gcc/8.3.0
 
@@ -361,7 +361,7 @@ elif [[ $MACHINE_ID = orion.* ]]; then
   cp fv3_conf/fv3_slurm.IN_orion fv3_conf/fv3_slurm.IN
   cp fv3_conf/compile_slurm.IN_orion fv3_conf/compile_slurm.IN
 
-elif [[ $MACHINE_ID = linux.* ]]; then
+elif [[ $MACHINE_ID = linux ]]; then
 
   PARTITION=
   QUEUE=
@@ -526,15 +526,15 @@ if [[ $ECFLOW == true ]]; then
 		limit max_builds 6
 		limit max_jobs 30
 		EOF
-  if [[ $MACHINE_ID == hera.* ]]; then
+  if [[ $MACHINE_ID == hera ]]; then
     QUEUE=batch
-  elif [[ $MACHINE_ID == orion.* ]]; then
+  elif [[ $MACHINE_ID == orion ]]; then
     QUEUE=batch
   else
     error "ecflow is not supported on this machine $MACHINE_ID"
   fi
 
-  if [[ $MACHINE_ID == hera.* ]] && [[ ! $HOSTNAME == hecflow* ]]; then
+  if [[ $MACHINE_ID == hera ]] && [[ ! $HOSTNAME == hecflow* ]]; then
     echo "ERROR: To use ECFlow on Hera please use the 'hecflow01' login node: ssh hecflow01."
     exit 1
   fi

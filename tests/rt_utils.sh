@@ -470,16 +470,16 @@ rocoto_create_compile_task() {
   NATIVE=""
   BUILD_CORES=8
   BUILD_WALLTIME="00:30:00"
-  if [[ ${MACHINE_ID} == jet.* ]]; then
+  if [[ ${MACHINE_ID} == jet ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
-  if [[ ${MACHINE_ID} == hera.* ]]; then
+  if [[ ${MACHINE_ID} == hera ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
-  if [[ ${MACHINE_ID} == orion.* ]]; then
+  if [[ ${MACHINE_ID} == orion ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
-  if [[ ${MACHINE_ID} == s4.* ]]; then
+  if [[ ${MACHINE_ID} == s4 ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
 
@@ -647,7 +647,7 @@ ecflow_run() {
   not_running=$?
   if [[ $not_running -eq 1 ]]; then
     echo "ecflow_server is NOT running on ${ECF_HOST}:${ECF_PORT}"
-    if [[ ${MACHINE_ID} == wcoss2.* || ${MACHINE_ID} == acorn.* ]]; then
+    if [[ ${MACHINE_ID} == wcoss2 || ${MACHINE_ID} == acorn ]]; then
       if [[ "${HOST::1}" == "a" ]]; then
 	export ECF_HOST=adecflow01
       elif [[ "${HOST::1}" == "c" ]]; then
@@ -657,7 +657,7 @@ ecflow_run() {
       fi
       MYCOMM="bash -l -c \"module load ecflow && ecflow_start.sh -p ${ECF_PORT} \""
       ssh $ECF_HOST "${MYCOMM}"
-    elif [[ ${MACHINE_ID} == jet.* ]]; then
+    elif [[ ${MACHINE_ID} == jet ]]; then
       module load ecflow
       echo "Using special Jet ECFLOW start procedure"
       MYCOMM="bash -l -c \"module load ecflow && ${ECFLOW_START} -d ${RUNDIR_ROOT}/ecflow_server\""
