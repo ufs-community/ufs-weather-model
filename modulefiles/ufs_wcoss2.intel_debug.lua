@@ -57,9 +57,6 @@ load(pathJoin("sp", sp_ver))
 w3emc_ver=os.getenv("w3emc_ver") or "2.9.2"
 load(pathJoin("w3emc", w3emc_ver))
 
-prepend_path("MODULEPATH", "/apps/dev/lmodules/intel/19.1.3.304")
-prepend_path("MODULEPATH", "/apps/dev/lmodules/intel_cray_mpich/19.1.3.304/cray-mpich/8.1.4")
-
 pio_ver=os.getenv("pio_ver") or "2.5.10"
 load(pathJoin("pio", pio_ver))
 
