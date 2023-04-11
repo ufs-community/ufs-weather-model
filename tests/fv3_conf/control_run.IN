@@ -12,6 +12,16 @@ elif [ $NPX = 769 ]; then
 fi
 echo "inputdir=$inputdir,NPX=$NPX"
 
+copy_lake_oro() {
+    local lakeC
+    local laketile
+    lakeC=C$(( NPX - 1 ))
+    for laketile in 1 2 3 4 5 6 ; do
+        cp @[INPUTDATA_ROOT]/lake_p8_water_fraction2020/oro_${lakeC}.mx100.tile${laketile}.nc \
+            ./INPUT/oro_data.tile${laketile}.nc
+    done
+}
+
 OPNREQ_TEST=${OPNREQ_TEST:-false}
 SUFFIX=${RT_SUFFIX}
 if [ $WARM_START = .false. ]; then
@@ -39,12 +49,21 @@ else
       cp ${FILEDIR}/../INPUT/fv3_increment.nc INPUT/.
       cp ${FILEDIR}/../INPUT/grid_spec.nc INPUT/.
       cp ${FILEDIR}/../INPUT/*_grid.tile*.nc INPUT/.
-      cp ${FILEDIR}/../INPUT/oro_data.tile*.nc INPUT/.
+
+      if [ ${LKM:-0} != 0 ] ; then
+          copy_lake_oro
+      else
+          cp ${FILEDIR}/../INPUT/oro_data.tile*.nc INPUT/.
+      fi
     else
       cp ${FILEDIR}/fv_increment*.nc INPUT/.
       cp ${FILEDIR}/grid_spec.nc INPUT/.
       cp ${FILEDIR}/*_grid.tile*.nc INPUT/.
-      cp ${FILEDIR}/oro_data.tile*.nc INPUT/.
+      if [ ${LKM:-0} != 0 ] ; then
+          copy_lake_oro
+      else
+          cp ${FILEDIR}/oro_data.tile*.nc INPUT/.
+      fi
     fi
     cp ${FILEDIR}/coupler.res INPUT/.
     cp ${FILEDIR}/fv_core.res.* INPUT/.
@@ -62,7 +81,11 @@ else
     rm -f INPUT/sfc_data.*
     cp ${FILEDIR}/../INPUT/grid_spec.nc INPUT/.
     cp ${FILEDIR}/../INPUT/*_grid.tile*.nc INPUT/.
-    cp ${FILEDIR}/../INPUT/oro_data*.nc INPUT/.
+    if [ ${LKM:-0} != 0 ] ; then
+        copy_lake_oro
+    else
+        cp ${FILEDIR}/../INPUT/oro_data*.nc INPUT/.
+    fi
     for RFILE in ../${DEP_RUN}${SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.*; do
       [ -e $RFILE ] || exit 1
       RFILE_OLD=$(basename $RFILE)
@@ -83,7 +106,11 @@ if [ $TILEDFIX = .true. ]; then
     cp    @[INPUTDATA_ROOT]/FV3_fix/global_maxice.2x2.grb .
     cp    @[INPUTDATA_ROOT]/FV3_fix/RTGSST.1982.2012.monthly.clim.grb .
     cp    @[INPUTDATA_ROOT]/FV3_fix/global_snoclim.1.875.grb .
-    cp    @[INPUTDATA_ROOT]/FV3_fix/IMS-NIC.blended.ice.monthly.clim.grb .
+    if [ ${LKM:-0} != 0 ] ; then
+        cp    @[INPUTDATA_ROOT]/FV3_fix/CFSR.SEAICE.1982.2012.monthly.clim.grb .
+    else
+        cp    @[INPUTDATA_ROOT]/FV3_fix/IMS-NIC.blended.ice.monthly.clim.grb .
+    fi
     cp    @[INPUTDATA_ROOT]/${inputdir}/@[FNSMCC] .
     cp    @[INPUTDATA_ROOT]/${inputdir}/@[FNMSKH_control] .
 else
