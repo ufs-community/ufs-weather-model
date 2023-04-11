@@ -71,9 +71,6 @@ export OUTPUT_FH="3 -1"
 export FHZERO=3
 
 export DOMAINS_STACK_SIZE=16000000
-
-export RUN_BEG="${SYEAR}${SMONTH}${SDAY} $(printf "%02d" $(( ${SHOUR}  )))0000"
-
 export INPES=$INPES_cpl_bmrk
 export JNPES=$JNPES_cpl_bmrk
 export WRTTASK_PER_GROUP=$(( WPG_cpl_bmrk * THRD_cpl_bmrk ))
@@ -110,6 +107,7 @@ export BLCKX=`expr $NX_GLB / $np2`
 export BLCKY=`expr $NY_GLB / 2`
 export WAVDOMAIN=gwes_30m
 export MESH_WAV=mesh.${WAVDOMAIN}.nc
+export MODDEF_WAV=mod_def.${WAVDOMAIN}
 
 # set component and coupling timesteps
 export DT_ATMOS=300
@@ -147,9 +145,5 @@ export FNABSC="'C384.maximum_snow_albedo.tileX.nc'"
 export NSTF_NAME=2,1,0,0,0
 
 export CDMBWD=${CDMBWD_c384}
-
-export OUT_BEG=$RUN_BEG
-export RST_BEG=$RUN_BEG
-export RST_2_BEG=$RUN_BEG
 
 export FV3_RUN=cpld_control_run.IN
