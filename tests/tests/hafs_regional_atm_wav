@@ -10,8 +10,8 @@ export CNTL_DIR=hafs_regional_atm_wav
 
 export LIST_FILES="atmf006.nc \
                    sfcf006.nc \
-                   out_grd.ww3 \
-                   out_pnt.ww3 \
+                   20190829.060000.out_grd.ww3 \
+                   20190829.060000.out_pnt.ww3 \
                    ufs.hafs.ww3.r.2019-08-29-21600 \
                    ufs.hafs.cpl.r.2019-08-29-21600.nc"
 
@@ -87,26 +87,6 @@ export CPLWAV=.true.
 export CPLWAV2ATM=.true.
 export CPL_IMP_MRG=.true.
 
-# shel.inp
-export INPUT_CURFLD='F F     Currents'
-export DTFLD="10800"
-export DTPNT="10800"
-export GOFILETYPE=""
-export POFILETYPE=""
-export OUTPARS_WAV="WND HS T01 T02 DIR FP DP PHS PTP PDIR UST CHA USP"
-export UNIPOINTS='ww3'
-export WW3GRIDLINE="'ww3' 'no' 'no' 'CPL:native' 'no' 'no' 'no' 'no' 'no' 'no'  1  1  0.00 1.00  F"
-export WW3RSTDTHR=${FHMAX}
-export DT_2_RST="$(printf "%02d" $(( ${WW3RSTDTHR}*3600 )))"
-export RUN_BEG="${SYEAR}${SMONTH}${SDAY} $(printf "%02d" $(( ${SHOUR}  )))0000"
-export RUN_END="20190829 060000"
-export OUT_BEG=$RUN_BEG
-export OUT_END=$RUN_END
-export RST_BEG=$RUN_BEG
-export RST_2_BEG=$RUN_BEG
-export RST_END=$RUN_END
-export RST_2_END=$RUN_END
-
 export CDEPS_DOCN=false
 export OCEAN_START_DTG=43340.00000
 
@@ -116,6 +96,8 @@ export wav_model="ww3"
 WAV_tasks=60
 export coupling_interval_sec=360
 export MESH_ATM="unset"
+# ATM-WAV coupling only
+export WAV_CUR='F'
 
 export FIELD_TABLE=field_table_hafs
 export DIAG_TABLE=diag_table_hafs_template
