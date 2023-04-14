@@ -130,8 +130,6 @@ source rt_utils.sh
 
 source module-setup.sh
 
-export LAKE_DATA_PATH=/no/lake/data
-
 if [[ $MACHINE_ID = wcoss2.* ]]; then
 
   #module use /usrx/local/dev/emc_rocoto/modulefiles
@@ -216,8 +214,6 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   export PATH=$PYTHONHOME/bin:$PATH
   export PYTHONPATH=$PYTHONHOME/lib/python3.7/site-packages
 
-  export LAKE_DATA_PATH=/scratch1/BMC/gsd-fv3-dev/fv3data/lake_p8_water_fraction2020
-
   module load ecflow
   ECFLOW_START=ecflow_start.sh
 
@@ -272,8 +268,6 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   export PYTHONPATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/lib/python3.8/site-packages
   module load ecflow
   ECFLOW_START=/apps/ecflow/5.5.3/bin/ecflow_start.sh
-
-  export LAKE_DATA_PATH=/lfs4/BMC/gsd-fv3-dev/fv3data/lake_p8_water_fraction2020
 
   QUEUE=batch
   COMPILE_QUEUE=batch
@@ -755,7 +749,6 @@ EOF
       export REGRESSIONTEST_LOG=${REGRESSIONTEST_LOG}
       export LOG_DIR=${LOG_DIR}
       export DEP_RUN=${DEP_RUN}
-      export LAKE_DATA_PATH=${LAKE_DATA_PATH}
       export skip_check_results=${skip_check_results}
       export delete_rundir=${delete_rundir}
 EOF
