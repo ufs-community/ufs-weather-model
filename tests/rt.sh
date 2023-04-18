@@ -813,8 +813,8 @@ if [[ -e fail_test ]]; then
   echo "FAILED TESTS: "                        >> ${REGRESSIONTEST_LOG}
   while read -r failed_test_name
   do
-    echo "Test ${failed_test_name} failed "
-    echo "Test ${failed_test_name} failed "    >> ${REGRESSIONTEST_LOG}
+    echo "${failed_test_name}"
+    echo "${failed_test_name}"    >> ${REGRESSIONTEST_LOG}
   done < fail_test
    echo ; echo REGRESSION TEST FAILED
   (echo ; echo REGRESSION TEST FAILED)         >> ${REGRESSIONTEST_LOG}
