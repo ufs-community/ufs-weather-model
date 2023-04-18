@@ -15,21 +15,13 @@ cleanup() {
 }
 
 write_fail_test() {
-  if [[ ${OPNREQ_TEST} == true ]]; then
-    echo "${TEST_NAME} ${TEST_NR} failed in run_test" >> $PATHRT/fail_opnreq_test_${TEST_NR}
-  else
-    echo "${TEST_NAME} ${TEST_NR} failed in run_test" >> $PATHRT/fail_test_${TEST_NR}
-  fi
+  echo "${TEST_NAME}_${RT_COMPILER} ${TEST_NR} failed in run_test" >> $PATHRT/fail_test_${TEST_NR}
   exit 1
 }
 
 remove_fail_test() {
-    echo "Removing test failure flag file for ${TEST_NAME} ${TEST_NR}"
-    if [[ ${OPNREQ_TEST} == true ]] ; then
-        rm -f $PATHRT/fail_opnreq_test_${TEST_NR}
-    else
-        rm -f $PATHRT/fail_test_${TEST_NR}
-    fi
+    echo "Removing test failure flag file for ${TEST_NAME}_${RT_COMPILER} ${TEST_NR}"
+    rm -f $PATHRT/fail_test_${TEST_NR}
 }
 
 if [[ $# != 5 ]]; then
@@ -43,36 +35,38 @@ export TEST_NAME=$3
 export TEST_NR=$4
 export COMPILE_NR=$5
 
+echo "PATHRT: ${PATHRT}"
+echo "RUNDIR_ROOT: ${RUNDIR_ROOT}"
+echo "TEST_NAME: ${TEST_NAME}"
+echo "TEST_NR: ${TEST_NR}"
+echo "COMPILE_NR: ${COMPILE_NR}"
+
 cd ${PATHRT}
-OPNREQ_TEST=${OPNREQ_TEST:-false}
 remove_fail_test
+
+unset MODEL_CONFIGURE
+unset NEMS_CONFIGURE
 
 [[ -e ${RUNDIR_ROOT}/run_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
 source default_vars.sh
 source tests/$TEST_NAME
-[[ -e ${RUNDIR_ROOT}/opnreq_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/opnreq_test_${TEST_NR}.env
 
 # Save original CNTL_DIR name as INPUT_DIR for regression
 # tests that try to copy input data from CNTL_DIR
+
 export INPUT_DIR=${CNTL_DIR}
+
 # Append RT_SUFFIX to RUNDIR, and BL_SUFFIX to CNTL_DIR
-export RUNDIR=${RUNDIR_ROOT}/${TEST_NAME}${RT_SUFFIX}
-export CNTL_DIR=${CNTL_DIR}${BL_SUFFIX}
+export RUNDIR=${RUNDIR_ROOT}/${TEST_NAME}${RT_SUFFIX}_${RT_COMPILER}
+export CNTL_DIR=${CNTL_DIR}${BL_SUFFIX}_${RT_COMPILER}
 
 export JBNME=$(basename $RUNDIR_ROOT)_${TEST_NR}
 
-echo -n "${TEST_NAME}, $( date +%s )," > ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+echo -n "${TEST_NAME}_${RT_COMPILER}, $( date +%s )," > ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
 
-if [[ ${OPNREQ_TEST} == false ]]; then
-  REGRESSIONTEST_LOG=${LOG_DIR}/rt_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log
-else
-  REGRESSIONTEST_LOG=${LOG_DIR}/opnReqTest_${TEST_NAME}${RT_SUFFIX}.log
-fi
-export REGRESSIONTEST_LOG
+RT_LOG=${LOG_DIR}/rt_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}_${RT_COMPILER}.log
 
-rm -f ${REGRESSIONTEST_LOG}
-
-echo "Test ${TEST_NR} ${TEST_NAME} ${TEST_DESCR}"
+echo "Test ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} ${TEST_DESCR}"
 
 source rt_utils.sh
 source atparse.bash
@@ -84,7 +78,7 @@ cd $RUNDIR
 ###############################################################################
 # Make configure and run files
 ###############################################################################
-MACHINE_ID=${MACHINE_ID:-false}
+# MACHINE_ID=${MACHINE_ID:-false}
 # FV3 executable:
 cp ${PATHRT}/fv3_${COMPILE_NR}.exe                 fv3.exe
 
@@ -109,10 +103,15 @@ SRCD="${PATHTR}"
 RUND="${RUNDIR}"
 
 # FV3_RUN could have multiple entry seperated by space
-for i in ${FV3_RUN:-fv3_run.IN}
-do
-  atparse < ${PATHRT}/fv3_conf/${i} >> fv3_run
-done
+if [ ! -z "$FV3_RUN" ]; then
+  for i in ${FV3_RUN}
+  do
+    atparse < ${PATHRT}/fv3_conf/${i} >> fv3_run
+  done
+else
+  echo "No FV3_RUN set in test file"
+  exit 1
+fi
 
 if [[ $DATM_CDEPS = 'true' ]] || [[ $FV3 = 'true' ]] || [[ $S2S = 'true' ]]; then
   if [[ $HAFS = 'false' ]] || [[ $FV3 = 'true' && $HAFS = 'true' ]]; then
@@ -120,11 +119,21 @@ if [[ $DATM_CDEPS = 'true' ]] || [[ $FV3 = 'true' ]] || [[ $S2S = 'true' ]]; the
   fi
 fi
 
-atparse < ${PATHRT}/parm/${MODEL_CONFIGURE:-model_configure.IN} > model_configure
+if [[ -f ${PATHRT}/parm/${MODEL_CONFIGURE} ]]; then
+  atparse < ${PATHRT}/parm/${MODEL_CONFIGURE:-model_configure.IN} > model_configure
+else
+  echo "Cannot find file ${MODEL_CONFIGURE} set by variable MODEL_CONFIGURE"
+  exit 1
+fi
 
 compute_petbounds_and_tasks
 
-atparse < ${PATHRT}/parm/${NEMS_CONFIGURE:-nems.configure} > nems.configure
+if [[ -f ${PATHRT}/parm/${NEMS_CONFIGURE} ]]; then
+  atparse < ${PATHRT}/parm/${NEMS_CONFIGURE:-nems.configure.atm.IN} > nems.configure
+else
+  echo "Cannot find file ${NEMS_CONFIGURE} set by variable NEMS_CONFIGURE"
+  exit 1
+fi
 
 if [[ "Q${INPUT_NEST02_NML:-}" != Q ]] ; then
     INPES_NEST=$INPES_NEST02; JNPES_NEST=$JNPES_NEST02
@@ -253,11 +262,16 @@ TPN=$(( TPN / THRD ))
 if (( TASKS < TPN )); then
   TPN=${TASKS}
 fi
+export TPN
+
 NODES=$(( TASKS / TPN ))
 if (( NODES * TPN < TASKS )); then
   NODES=$(( NODES + 1 ))
 fi
+export NODES
+
 TASKS=$(( NODES * TPN ))
+export TASKS
 
 if [[ $SCHEDULER = 'pbs' ]]; then
   atparse < $PATHRT/fv3_conf/fv3_qsub.IN > job_card
@@ -298,12 +312,12 @@ fi
 if [[ $skip_check_results = false ]]; then
   check_results
 else
-  echo                                               >> ${REGRESSIONTEST_LOG}
-  grep "The total amount of wall time" ${RUNDIR}/out >> ${REGRESSIONTEST_LOG}
-  grep "The maximum resident set size" ${RUNDIR}/out >> ${REGRESSIONTEST_LOG}
-  echo                                               >> ${REGRESSIONTEST_LOG}
-  echo "Test ${TEST_NR} ${TEST_NAME} RUN_SUCCESS"    >> ${REGRESSIONTEST_LOG}
-  echo;echo;echo                                     >> ${REGRESSIONTEST_LOG}
+  echo                                               >> ${RT_LOG}
+  grep "The total amount of wall time" ${RUNDIR}/out >> ${RT_LOG}
+  grep "The maximum resident set size" ${RUNDIR}/out >> ${RT_LOG}
+  echo                                               >> ${RT_LOG}
+  echo "Test ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} RUN_SUCCESS"    >> ${RT_LOG}
+  echo;echo;echo                                     >> ${RT_LOG}
 fi
 
 if [[ $SCHEDULER != 'none' ]]; then
@@ -338,4 +352,4 @@ if [[ ${delete_rundir} = true ]]; then
 fi
 
 elapsed=$SECONDS
-echo "Elapsed time $elapsed seconds. Test ${TEST_NAME}"
+echo "Elapsed time $elapsed seconds. Test ${TEST_NAME}_${RT_COMPILER}"

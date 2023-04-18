@@ -32,8 +32,9 @@ else
   MACHINE_ID=$1
   MAKE_OPT=${2:-}
   COMPILE_NR=${3:+_$3}
-  clean_before=${4:-YES}
-  clean_after=${5:-YES}
+  RT_COMPILER=${4:-intel}
+  clean_before=${5:-YES}
+  clean_after=${6:-YES}
 fi
 
 BUILD_NAME=fv3${COMPILE_NR}
@@ -44,7 +45,7 @@ BUILD_DIR=$(pwd)/build_${BUILD_NAME}
 # ----------------------------------------------------------------------
 # Make sure we have reasonable number of threads.
 
-if [[ $MACHINE_ID == cheyenne ]] ; then
+if [[ $MACHINE_ID == cheyenne ]]; then
     BUILD_JOBS=${BUILD_JOBS:-3}
 fi
 
@@ -57,12 +58,12 @@ if [[ $MACHINE_ID == macosx ]] || [[ $MACHINE_ID == linux ]]; then
   source $PATHTR/modulefiles/ufs_${MACHINE_ID}
 else
   # Activate lua environment for gaea
-  if [[ $MACHINE_ID == gaea ]] ; then
+  if [[ $MACHINE_ID == gaea ]]; then
     source /lustre/f2/dev/role.epic/contrib/Lmod_init.sh
   fi
   # Load fv3 module
   module use $PATHTR/modulefiles
-  modulefile="ufs_${MACHINE_ID}"
+  modulefile="ufs_${MACHINE_ID}.${RT_COMPILER}"
   module load $modulefile
   module list
 fi
@@ -79,15 +80,15 @@ CMAKE_FLAGS=$MAKE_OPT
 # -Wno-missing-include-dirs) to the GNU compiler flags does not work,
 # see also https://gcc.gnu.org/bugzilla/show_bug.cgi?id=55534);
 # this line can be removed once FMS becomes a pre-installed library
-mkdir -p $PATHTR/FV3/ccpp/include
+# mkdir -p $PATHTR/FV3/ccpp/include
 
 CMAKE_FLAGS+=" -DMPI=ON"
 
-if [[ "${MAKE_OPT}" == *"-DDEBUG=ON"* ]]; then
+if [[ ${MAKE_OPT} == *-DDEBUG=ON* ]]; then
   CMAKE_FLAGS+=" -DCMAKE_BUILD_TYPE=Debug"
 else
   CMAKE_FLAGS+=" -DCMAKE_BUILD_TYPE=Release"
-  if [[ "${MACHINE_ID}" == "jet" ]] && [[ "${RT_COMPILER}" == "intel"]]; then
+  if [[ ${MACHINE_ID} == jet ]] && [[ ${RT_COMPILER} == intel ]]; then
     CMAKE_FLAGS+=" -DSIMDMULTIARCH=ON"
   fi
 fi
@@ -127,9 +128,9 @@ bash -x ${PATHTR}/build.sh
 
 mv ${BUILD_DIR}/ufs_model ${PATHTR}/tests/${BUILD_NAME}.exe
 if [[ $MACHINE_ID == linux ]]; then
-  cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}       ${PATHTR}/tests/modules.${BUILD_NAME}
+  cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}.${RT_COMPILER}       ${PATHTR}/tests/modules.${BUILD_NAME}
 else
-  cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}.lua       ${PATHTR}/tests/modules.${BUILD_NAME}.lua
+  cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}.${RT_COMPILER}.lua       ${PATHTR}/tests/modules.${BUILD_NAME}.lua
 fi
 
 if [ $clean_after = YES ] ; then

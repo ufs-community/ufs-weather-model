@@ -123,7 +123,7 @@ fi
 readonly RT_SINGLE_CONF='rt_single.conf'
 
 # Default compiler "intel"
-export RT_COMPILER=${RT_COMPILER:-intel}
+#export RT_COMPILER=${RT_COMPILER:-intel}
 
 source detect_machine.sh # Note: this does not set ACCNR. The "if" block below does.
 source rt_utils.sh
@@ -372,7 +372,7 @@ echo "Machine: " $MACHINE_ID "    Account: " $ACCNR
 
 mkdir -p ${STMP}/${USER}
 
-NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST_${RT_COMPILER^^}
+NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST
 
 # Overwrite default RUNDIR_ROOT if environment variable RUNDIR_ROOT is set
 RUNDIR_ROOT=${RUNDIR_ROOT:-${PTMP}/${USER}/FV3_RT}/rt_$$
@@ -448,7 +448,7 @@ fi
 
 BL_DATE=20230405
 
-RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
+RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}}
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20221101}
 INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20220624
@@ -466,9 +466,9 @@ if [[ $CREATE_BASELINE == true ]]; then
 fi
 
 if [[ $skip_check_results == true ]]; then
-  REGRESSIONTEST_LOG=${PATHRT}/RegressionTests_weekly_$MACHINE_ID.log
+  REGRESSIONTEST_LOG=${PATHRT}/logs/RegressionTests_weekly_$MACHINE_ID.log
 else
-  REGRESSIONTEST_LOG=${PATHRT}/RegressionTests_$MACHINE_ID.log
+  REGRESSIONTEST_LOG=${PATHRT}/logs/RegressionTests_$MACHINE_ID.log
 fi
 
 date > ${REGRESSIONTEST_LOG}
@@ -479,10 +479,9 @@ source default_vars.sh
 
 JOB_NR=0
 TEST_NR=0
-COMPILE_NR=0
 rm -f fail_test* fail_compile*
 
-export LOG_DIR=${PATHRT}/log_$MACHINE_ID
+export LOG_DIR=${PATHRT}/logs/log_$MACHINE_ID
 rm -rf ${LOG_DIR}
 mkdir ${LOG_DIR}
 
@@ -627,9 +626,11 @@ while read -r line || [ "$line" ]; do
 
   if [[ $line == COMPILE* ]] ; then
 
-    MAKE_OPT=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
-    MACHINES=$(echo $line | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
-    CB=$(      echo $line | cut -d'|' -f4)
+    COMPILE_NR=$( echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
+    RT_COMPILER=$(echo $line | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
+    MAKE_OPT=$(   echo $line | cut -d'|' -f4 | sed -e 's/^ *//' -e 's/ *$//')
+    MACHINES=$(   echo $line | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
+    CB=$(         echo $line | cut -d'|' -f6)
 
     [[ $CREATE_BASELINE == true && $CB != *fv3* ]] && continue
 
@@ -644,7 +645,7 @@ while read -r line || [ "$line" ]; do
       fi
     fi
 
-    export COMPILE_NR=$( printf '%03d' $(( 10#$COMPILE_NR + 1 )) )
+    COMPILE_NR=$( printf '%03d' $(( 10#$COMPILE_NR )) )
 
     cat << EOF > ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env
     export JOB_NR=${JOB_NR}
@@ -764,7 +765,7 @@ EOF
       elif [[ $ECFLOW == true ]]; then
         ecflow_create_run_task
       else
-        ./run_test.sh ${PATHRT} ${RUNDIR_ROOT} ${TEST_NAME} ${TEST_NR} ${COMPILE_NR} > ${LOG_DIR}/run_${TEST_NAME}${RT_SUFFIX}.log 2>&1
+        ./run_test.sh ${PATHRT} ${RUNDIR_ROOT} ${TEST_NAME} ${TEST_NR} ${COMPILE_NR} > ${LOG_DIR}/run_${TEST_NAME}${RT_SUFFIX}_${RT_COMPILER}.log 2>&1
       fi
     )
 
