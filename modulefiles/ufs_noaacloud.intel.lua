@@ -18,7 +18,7 @@ prepend_path("MODULEPATH", "/contrib/spack-stack/modulefiles/core")
 stack_python_ver=os.getenv("stack_python_ver") or "3.9.12"
 load(pathJoin("stack-python", stack_python_ver))
 
-load("ufs_common")
+load("ufs_common_spack")
 
 setenv("CC", "mpiicc")
 setenv("CXX", "mpiicpc")
