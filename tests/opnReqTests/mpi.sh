@@ -13,11 +13,11 @@ if [[ $application == 'global' ]]; then
   TASKS=$(( INPES*JNPES*NTILES + WRITE_GROUP*WRTTASK_PER_GROUP ))
   NODES=$(((TASKS+TPN-1)/TPN))
 elif [[ $application == 'regional' ]]; then
-  echo "Regional application not yet implemented for mpi"
-  exit 1
+  echo "Regional application not yet implemented for mpi, skipping..."
+  continue 1
 elif [[ $application == 'cpld' ]]; then
-  echo "Coupled application not yet implemented for mpi"
-  exit 1
+  echo "Coupled application not yet implemented for mpi, skipping..."
+  continue 1
 fi
 
 
