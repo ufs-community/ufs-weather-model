@@ -57,14 +57,14 @@ source tests/$TEST_NAME
 export INPUT_DIR=${CNTL_DIR}
 
 # Append RT_SUFFIX to RUNDIR, and BL_SUFFIX to CNTL_DIR
-export RUNDIR=${RUNDIR_ROOT}/${TEST_NAME}${RT_SUFFIX}_${RT_COMPILER}
-export CNTL_DIR=${CNTL_DIR}${BL_SUFFIX}_${RT_COMPILER}
+export RUNDIR=${RUNDIR_ROOT}/${TEST_NAME}_${RT_COMPILER}${RT_SUFFIX}
+export CNTL_DIR=${CNTL_DIR}${BL_SUFFIX}
 
 export JBNME=$(basename $RUNDIR_ROOT)_${TEST_NR}
 
 echo -n "${TEST_NAME}_${RT_COMPILER}, $( date +%s )," > ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
 
-RT_LOG=${LOG_DIR}/rt_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}_${RT_COMPILER}.log
+RT_LOG=${LOG_DIR}/rt_${TEST_NR}_${TEST_NAME}_${RT_COMPILER}${RT_SUFFIX}.log
 
 echo "Test ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} ${TEST_DESCR}"
 

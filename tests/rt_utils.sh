@@ -309,11 +309,11 @@ check_results() {
   #sleep 60
 
   echo                                                                      >  ${RT_LOG}
-  echo "baseline dir = ${RTPWD}/${CNTL_DIR}"                 >> ${RT_LOG}
+  echo "baseline dir = ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}"                 >> ${RT_LOG}
   echo "working dir  = ${RUNDIR}"                                           >> ${RT_LOG}
   echo "Checking test ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} results ...."  >> ${RT_LOG}
   echo
-  echo "baseline dir = ${RTPWD}/${CNTL_DIR}"
+  echo "baseline dir = ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}"
   echo "working dir  = ${RUNDIR}"
   echo "Checking test ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} results ...."
 
@@ -331,7 +331,7 @@ check_results() {
         echo ".......MISSING file"
         test_status='FAIL'
 
-      elif [[ ! -f ${RTPWD}/${CNTL_DIR}/$i ]] ; then
+      elif [[ ! -f ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/$i ]] ; then
 
         echo ".......MISSING baseline" >> ${RT_LOG}
         echo ".......MISSING baseline"
@@ -347,7 +347,7 @@ check_results() {
 
       else
 
-        cmp ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i >/dev/null 2>&1 && d=$? || d=$?
+        cmp ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/$i ${RUNDIR}/$i >/dev/null 2>&1 && d=$? || d=$?
         if [[ $d -eq 2 ]]; then
           echo "....CMP ERROR" >> ${RT_LOG}
           echo "....CMP ERROR"
@@ -358,7 +358,7 @@ check_results() {
           if [[ ${MACHINE_ID} =~ orion || ${MACHINE_ID} =~ hera || ${MACHINE_ID} =~ wcoss2 || ${MACHINE_ID} =~ acorn || ${MACHINE_ID} =~ cheyenne || ${MACHINE_ID} =~ gaea || ${MACHINE_ID} =~ jet || ${MACHINE_ID} =~ s4 ]] ; then
             printf ".......ALT CHECK.." >> ${RT_LOG}
             printf ".......ALT CHECK.."
-            ${PATHRT}/compare_ncfile.py ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i > compare_ncfile.log 2>&1 && d=$? || d=$?
+            ${PATHRT}/compare_ncfile.py ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/$i ${RUNDIR}/$i > compare_ncfile.log 2>&1 && d=$? || d=$?
             if [[ $d -eq 1 ]]; then
               echo "....ERROR" >> ${RT_LOG}
               echo "....ERROR"
@@ -391,8 +391,8 @@ check_results() {
       printf %s " Moving " $i " ....."
       printf %s " Moving " $i " ....."   >> ${RT_LOG}
       if [[ -f ${RUNDIR}/$i ]] ; then
-        mkdir -p ${NEW_BASELINE}/${CNTL_DIR}/$(dirname ${i})
-        cp ${RUNDIR}/${i} ${NEW_BASELINE}/${CNTL_DIR}/${i}
+        mkdir -p ${NEW_BASELINE}/${CNTL_DIR}_${RT_COMPILER}/$(dirname ${i})
+        cp ${RUNDIR}/${i} ${NEW_BASELINE}/${CNTL_DIR}_${RT_COMPILER}/${i}
         echo "....OK" >>${RT_LOG}
         echo "....OK"
       else
@@ -502,17 +502,17 @@ rocoto_create_run_task() {
   NATIVE=""
 
   cat << EOF >> $ROCOTO_XML
-    <task name="${TEST_NAME}${RT_SUFFIX}_${RT_COMPILER}" maxtries="${ROCOTO_TEST_MAXTRIES:-3}">
+    <task name="${TEST_NAME}_${RT_COMPILER}${RT_SUFFIX}" maxtries="${ROCOTO_TEST_MAXTRIES:-3}">
       <dependency> $DEP_STRING </dependency>
       <command>&PATHRT;/run_test.sh &PATHRT; &RUNDIR_ROOT; ${TEST_NAME} ${TEST_NR} ${COMPILE_NR} </command>
-      <jobname>${TEST_NAME}${RT_SUFFIX}_${RT+COMPILER}</jobname>
+      <jobname>${TEST_NAME}_${RT_COMPILER}${RT_SUFFIX}</jobname>
       <account>${ACCNR}</account>
       <queue>${QUEUE}</queue>
       <partition>${PARTITION}</partition>
       <nodes>${NODES}:ppn=${TPN}</nodes>
       <walltime>00:${WLCLK}:00</walltime>
-      <stdout>&RUNDIR_ROOT;/${TEST_NAME}${RT_SUFFIX}_${RT_COMPILER}.out</stdout>
-      <stderr>&RUNDIR_ROOT;/${TEST_NAME}${RT_SUFFIX}_${RT_COMPILER}.err</stderr>
+      <stdout>&RUNDIR_ROOT;/${TEST_NAME}_${RT_COMPILER}${RT_SUFFIX}.out</stdout>
+      <stderr>&RUNDIR_ROOT;/${TEST_NAME}_${RT_COMPILER}${RT_SUFFIX}.err</stderr>
       ${NATIVE}
     </task>
 EOF
@@ -602,18 +602,18 @@ EOF
 
 ecflow_create_run_task() {
 
-  cat << EOF > ${ECFLOW_RUN}/${ECFLOW_SUITE}/${TEST_NAME}${RT_SUFFIX}_${RT_COMPILER}.ecf
+  cat << EOF > ${ECFLOW_RUN}/${ECFLOW_SUITE}/${TEST_NAME}_${RT_COMPILER}${RT_SUFFIX}.ecf
 %include <head.h>
-$PATHRT/run_test.sh ${PATHRT} ${RUNDIR_ROOT} ${TEST_NAME} ${TEST_NR} ${COMPILE_NR} > ${LOG_DIR}/run_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}_${RT_COMPILER}.log 2>&1 &
+$PATHRT/run_test.sh ${PATHRT} ${RUNDIR_ROOT} ${TEST_NAME} ${TEST_NR} ${COMPILE_NR} > ${LOG_DIR}/run_${TEST_NR}_${TEST_NAME}_${RT_COMPILER}${RT_SUFFIX}.log 2>&1 &
 %include <tail.h>
 EOF
 
-  echo "    task ${TEST_NAME}${RT_SUFFIX}_${RT_COMPILER}" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+  echo "    task ${TEST_NAME}_${RT_COMPILER}${RT_SUFFIX}" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   echo "      label job_id ''"                            >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   echo "      label job_status ''"                        >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   echo "      inlimit max_jobs"                           >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   if [[ $DEP_RUN != '' ]]; then
-    echo "      trigger compile_${COMPILE_NR} == complete and ${DEP_RUN}${RT_SUFFIX}_${RT_COMPILER} == complete" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+    echo "      trigger compile_${COMPILE_NR} == complete and ${DEP_RUN} == complete" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   else
     echo "      trigger compile_${COMPILE_NR} == complete" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   fi
