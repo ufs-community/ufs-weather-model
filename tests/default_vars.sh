@@ -73,6 +73,18 @@
 
   INPES_aqm=33; JNPES_aqm=8
 
+  THRD_cpl_unstr=1
+  INPES_cpl_unstr=3; JNPES_cpl_unstr=8; WPG_cpl_unstr=6
+  OCN_tasks_cpl_unstr=20
+  ICE_tasks_cpl_unstr=10
+  WAV_tasks_cpl_unstr=60
+
+  THRD_cpl_unstr_mpi=1
+  INPES_cpl_unstr_mpi=4; JNPES_cpl_unstr_mpi=8; WPG_cpl_unstr_mpi=6
+  OCN_tasks_cpl_unstr_mpi=34
+  ICE_tasks_cpl_unstr_mpi=20
+  WAV_tasks_cpl_unstr_mpi=50
+
   aqm_omp_num_threads=1
   atm_omp_num_threads=1
   chm_omp_num_threads=1
