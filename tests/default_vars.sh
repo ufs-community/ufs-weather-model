@@ -1054,6 +1054,7 @@ export RESTART_INTERVAL=0
 export FHROT=0
 export coupling_interval_fast_sec=0
 export QUILTING=.true.
+export QUILTING_RESTART=.false.
 export WRITE_GROUP=1
 export WRTTASK_PER_GROUP=6
 export OUTPUT_HISTORY=.true.
