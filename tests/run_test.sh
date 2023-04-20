@@ -42,7 +42,7 @@ echo "TEST_NR: ${TEST_NR}"
 echo "COMPILE_NR: ${COMPILE_NR}"
 
 cd ${PATHRT}
-remove_fail_test
+
 
 unset MODEL_CONFIGURE
 unset NEMS_CONFIGURE
@@ -50,6 +50,8 @@ unset NEMS_CONFIGURE
 [[ -e ${RUNDIR_ROOT}/run_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
 source default_vars.sh
 source tests/$TEST_NAME
+
+remove_fail_test
 
 # Save original CNTL_DIR name as INPUT_DIR for regression
 # tests that try to copy input data from CNTL_DIR
