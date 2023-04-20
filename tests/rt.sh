@@ -474,6 +474,9 @@ fi
 date > ${REGRESSIONTEST_LOG}
 echo "Start Regression test" >> ${REGRESSIONTEST_LOG}
 echo                         >> ${REGRESSIONTEST_LOG}
+echo "Testing UFSWM Hash:" `git rev-parse HEAD` >> ${REGRESSIONTEST_LOG}
+echo "Testing With Submodule Hashes:" >> ${REGRESSIONTEST_LOG}
+git submodule status >> ${REGRESSIONTEST_LOG}
 
 source default_vars.sh
 
