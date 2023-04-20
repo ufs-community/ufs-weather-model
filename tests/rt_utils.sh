@@ -649,7 +649,7 @@ ecflow_run() {
     echo "ecflow_server is NOT running on ${ECF_HOST}:${ECF_PORT}"
     if [[ ${MACHINE_ID} == wcoss2.* || ${MACHINE_ID} == acorn.* ]]; then
       if [[ "${HOST::1}" == "a" ]]; then
-	export ECF_HOST=adecflow01
+	export ECF_HOST=aecflow01
       elif [[ "${HOST::1}" == "c" ]]; then
 	export ECF_HOST=cdecflow01
       elif [[ "${HOST::1}" == "d" ]]; then
