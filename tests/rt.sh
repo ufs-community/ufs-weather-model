@@ -38,7 +38,11 @@ rt_single() {
     [[ $line == \#* ]] && continue
 
     if [[ $line == COMPILE* ]] ; then
-      MACHINES=$(echo $line | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
+      MACHINES=$(echo $line | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
+      RT_COMPILER_IN=$(echo $line | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
+      if [[ ! $RT_COMPILER_IN == $RT_COMPILER ]]; then
+        continue
+      fi
       if [[ ${MACHINES} == '' ]]; then
         compile_line=$line
       elif [[ ${MACHINES} == -* ]]; then
@@ -121,9 +125,6 @@ else
 fi
 
 readonly RT_SINGLE_CONF='rt_single.conf'
-
-# Default compiler "intel"
-#export RT_COMPILER=${RT_COMPILER:-intel}
 
 source detect_machine.sh # Note: this does not set ACCNR. The "if" block below does.
 source rt_utils.sh
@@ -402,7 +403,27 @@ while getopts ":cl:mn:dwkreh" opt; do
       RTPWD=${NEW_BASELINE}
       ;;
     n)
-      SINGLE_NAME=$OPTARG
+      SINGLE_OPTS=("$OPTARG")
+      until [[ $(eval "echo \${$OPTIND}") =~ ^-.* ]] || [ -z $(eval "echo \${$OPTIND}") ]; do
+        SINGLE_OPTS+=($(eval "echo \${$OPTIND}"))
+        OPTIND=$((OPTIND + 1))
+      done
+
+      if [[ ${#SINGLE_OPTS[@]} != 2 ]]; then
+        echo "The -n option needs <testname> AND <compiler>, i.e. -n control_p8 intel"
+        exit 1
+      fi
+      SINGLE_NAME=${SINGLE_OPTS[0],,}
+      export RT_COMPILER=${SINGLE_OPTS[1],,}
+      echo "SINGLE_NAME: ${SINGLE_NAME}"
+      echo "RT_COMPILER: ${RT_COMPILER}"
+      
+      if [[ "$RT_COMPILER" == "intel" ]] || [[ "$RT_COMPILER" == "gnu" ]]; then
+        echo "COMPILER set to ${RT_COMPILER}"
+      else
+        echo "Compiler must be either 'intel' or 'gnu'."
+        exit 1
+      fi
       ;;
     d)
       export delete_rundir=true
@@ -482,6 +503,7 @@ source default_vars.sh
 
 JOB_NR=0
 TEST_NR=0
+COMPILE_COUNTER=0
 rm -f fail_test* fail_compile*
 
 export LOG_DIR=${PATHRT}/logs/log_$MACHINE_ID
@@ -627,13 +649,24 @@ while read -r line || [ "$line" ]; do
 
   JOB_NR=$( printf '%03d' $(( 10#$JOB_NR + 1 )) )
 
-  if [[ $line == COMPILE* ]] ; then
-
+  if [[ $line == COMPILE* ]]; then
+    
     COMPILE_NR=$( echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
     RT_COMPILER=$(echo $line | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
     MAKE_OPT=$(   echo $line | cut -d'|' -f4 | sed -e 's/^ *//' -e 's/ *$//')
     MACHINES=$(   echo $line | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
     CB=$(         echo $line | cut -d'|' -f6)
+    
+    COMPILE_COUNTER=$( printf '%03d' $(( 10#$COMPILE_COUNTER + 1 )) )
+    COMPILE_NR=$( printf '%03d' $(( 10#$COMPILE_NR )) )
+    echo "COMPILER_COUNTER: " $COMPILE_COUNTER
+    echo "COMPILER_NR: " $COMPILE_NR
+    if [[ ${SINGLE_NAME} == '' ]]; then
+      if [[ ! $COMPILE_COUNTER == $COMPILE_NR ]]; then
+        echo "Compile numbers in '.conf' file are not in order"
+        exit 1
+      fi
+    fi
 
     [[ $CREATE_BASELINE == true && $CB != *fv3* ]] && continue
 
@@ -647,8 +680,6 @@ while read -r line || [ "$line" ]; do
         die "MACHINES spec must be either an empty string or start with either '+' or '-'"
       fi
     fi
-
-    COMPILE_NR=$( printf '%03d' $(( 10#$COMPILE_NR )) )
 
     cat << EOF > ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env
     export JOB_NR=${JOB_NR}

@@ -80,7 +80,7 @@ cd $RUNDIR
 ###############################################################################
 # Make configure and run files
 ###############################################################################
-# MACHINE_ID=${MACHINE_ID:-false}
+
 # FV3 executable:
 cp ${PATHRT}/fv3_${COMPILE_NR}.exe                 fv3.exe
 
@@ -122,7 +122,7 @@ if [[ $DATM_CDEPS = 'true' ]] || [[ $FV3 = 'true' ]] || [[ $S2S = 'true' ]]; the
 fi
 
 if [[ -f ${PATHRT}/parm/${MODEL_CONFIGURE} ]]; then
-  atparse < ${PATHRT}/parm/${MODEL_CONFIGURE:-model_configure.IN} > model_configure
+  atparse < ${PATHRT}/parm/${MODEL_CONFIGURE} > model_configure
 else
   echo "Cannot find file ${MODEL_CONFIGURE} set by variable MODEL_CONFIGURE"
   exit 1
@@ -131,7 +131,7 @@ fi
 compute_petbounds_and_tasks
 
 if [[ -f ${PATHRT}/parm/${NEMS_CONFIGURE} ]]; then
-  atparse < ${PATHRT}/parm/${NEMS_CONFIGURE:-nems.configure.atm.IN} > nems.configure
+  atparse < ${PATHRT}/parm/${NEMS_CONFIGURE} > nems.configure
 else
   echo "Cannot find file ${NEMS_CONFIGURE} set by variable NEMS_CONFIGURE"
   exit 1
