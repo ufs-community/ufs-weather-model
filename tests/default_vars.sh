@@ -260,7 +260,13 @@ elif [[ $MACHINE_ID = stampede.* ]]; then
 
 elif [[ ${MACHINE_ID} = noaacloud.* ]] ; then
 
-    TPN=36 ; TPN=44 ; TPN=30
+    if [[ $PW_CSP == aws ]]; then
+    TPN=36
+    elif [[ $PW_CSP == azure ]]; then
+    TPN=44
+    elif [[ $PW_CSP == google ]]; then
+    TPN=30
+    fi
 
     INPES_dflt=3 ; JNPES_dflt=8
     INPES_thrd=3 ; JNPES_thrd=4
