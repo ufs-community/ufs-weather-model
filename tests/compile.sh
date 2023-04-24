@@ -73,14 +73,6 @@ echo "Compiling ${MAKE_OPT} into $BUILD_NAME.exe on $MACHINE_ID"
 # set CMAKE_FLAGS based on $MAKE_OPT
 
 CMAKE_FLAGS=$MAKE_OPT
-
-# FIXME - create CCPP include directory before building FMS to avoid
-# gfortran warnings of non-existent include directory (adding
-# -Wno-missing-include-dirs) to the GNU compiler flags does not work,
-# see also https://gcc.gnu.org/bugzilla/show_bug.cgi?id=55534);
-# this line can be removed once FMS becomes a pre-installed library
-mkdir -p $PATHTR/FV3/ccpp/include
-
 CMAKE_FLAGS+=" -DMPI=ON"
 
 if [[ "${MAKE_OPT}" == *"-DDEBUG=ON"* ]]; then
