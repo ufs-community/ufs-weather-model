@@ -387,6 +387,7 @@ SINGLE_NAME=''
 TEST_35D=false
 export skip_check_results=false
 export delete_rundir=false
+SKIP_ORDER=false
 
 TESTS_FILE='rt.conf'
 
@@ -397,6 +398,7 @@ while getopts ":cl:mn:dwkreh" opt; do
       ;;
     l)
       TESTS_FILE=$OPTARG
+      SKIP_ORDER=true
       ;;
     m)
       # redefine RTPWD to point to newly created baseline outputs
@@ -465,7 +467,7 @@ if [[ $TESTS_FILE =~ '35d' ]] || [[ $TESTS_FILE =~ 'weekly' ]]; then
 fi
 
 
-BL_DATE=20230418
+BL_DATE=99999999
 
 RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}}
 
@@ -659,10 +661,12 @@ while read -r line || [ "$line" ]; do
     COMPILE_NR=$( printf '%03d' $(( 10#$COMPILE_NR )) )
     echo "COMPILER_COUNTER: " $COMPILE_COUNTER
     echo "COMPILER_NR: " $COMPILE_NR
-    if [[ ${SINGLE_NAME} == '' ]]; then
-      if [[ ! $COMPILE_COUNTER == $COMPILE_NR ]]; then
-        echo "Compile numbers in '.conf' file are not in order"
-        exit 1
+    if [[ ${SKIP_ORDER} == false ]]; then
+      if [[ ${SINGLE_NAME} == '' ]]; then
+        if [[ ! $COMPILE_COUNTER == $COMPILE_NR ]]; then
+          echo "Compile numbers in '.conf' file are not in order"
+          exit 1
+        fi
       fi
     fi
 
