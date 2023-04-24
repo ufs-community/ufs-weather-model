@@ -415,8 +415,6 @@ while getopts ":cl:mn:dwkreh" opt; do
       fi
       SINGLE_NAME=${SINGLE_OPTS[0],,}
       export RT_COMPILER=${SINGLE_OPTS[1],,}
-      echo "SINGLE_NAME: ${SINGLE_NAME}"
-      echo "RT_COMPILER: ${RT_COMPILER}"
       
       if [[ "$RT_COMPILER" == "intel" ]] || [[ "$RT_COMPILER" == "gnu" ]]; then
         echo "COMPILER set to ${RT_COMPILER}"
