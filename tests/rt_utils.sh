@@ -417,7 +417,7 @@ check_results() {
   echo
 
   if [[ $test_status = 'FAIL' ]]; then
-    echo "${TEST_NAME} ${TEST_NR} failed in check_result" >> $PATHRT/fail_test_${TEST_NR}
+    echo "${TEST_NR} ${TEST_NAME}_${RT_COMPILER} failed in check_result" >> $PATHRT/fail_test_${TEST_NR}
 
     if [[ $ROCOTO = true || $ECFLOW == true ]]; then
       exit 1
