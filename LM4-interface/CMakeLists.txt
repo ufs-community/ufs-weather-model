@@ -1,3 +1,7 @@
+### Dependent
+# Is C needed?
+find_package(HDF5 COMPONENTS C Fortran REQUIRED)
+
 ### LM4 Fortran compiler flags
 if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
   set(CMAKE_Fortran_FLAGS "-g -fbacktrace")
@@ -35,7 +39,8 @@ set_target_properties(lm4 PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BI
 target_include_directories(lm4 PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                        $<INSTALL_INTERFACE:mod>)
 
-target_link_libraries(lm4 PUBLIC esmf fms)
+find_package(HDF5 COMPONENTS C Fortran REQUIRED)
+target_link_libraries(lm4 PUBLIC esmf fms ${HDF5_Fortran_LIBRARIES})
 
 ###############################################################################
 ### Install

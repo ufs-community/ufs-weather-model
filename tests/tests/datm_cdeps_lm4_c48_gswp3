@@ -1,10 +1,10 @@
 #
-#  DATM_CDEPS_LM4_GSWP test
+#  DATM_CDEPS_LM4_C48_GSWP test
 #
 
 export TEST_DESCR="DATM_CDEPS_LM4_GSWP3 - control "
 
-export CNTL_DIR="datm_cdeps_lm4_gswp3"
+export CNTL_DIR="datm_cdeps_c_48_lm4_gswp3"
 
 export LIST_FILES="ufs.cpld.lnd.out.2000-01-02-00000.tile1.nc \
                    ufs.cpld.lnd.out.2000-01-02-00000.tile2.nc \
@@ -14,16 +14,7 @@ export LIST_FILES="ufs.cpld.lnd.out.2000-01-02-00000.tile1.nc \
                    ufs.cpld.lnd.out.2000-01-02-00000.tile6.nc"
 
 export_datm_cdeps
-
-# these are not in export_datm_cdeps, but needed with LM4
-export LNDRES=C96
-export INPES=$INPES_cpl_dflt
-export JNPES=$JNPES_cpl_dflt
-export THRD=$THRD_cpl_dflt
-export WRTTASK_PER_GROUP=$WPG_cpl_dflt
-export NPX=97
-export NPY=97
-
+export LNDRES=C48
 
 export SYEAR=2000
 export SMONTH=01
@@ -53,10 +44,11 @@ export lnd_model="lm4"
 export CPLMODE="nems_orig_data"
 export RUNTYPE="startup"
 export READRESTART=.false.
-export ATM_compute_tasks=144
+export TASKS=26
+export ATM_compute_tasks=24
 export OCN_tasks=0
 export ICE_tasks=0
-export LND_tasks=144
+export LND_tasks=24
 export lnd_ic_type='custom'
 export CALC_SNET=.true.
 export layout_x=3
@@ -67,3 +59,4 @@ export TOPOEDITS=""
 export FV3_RUN="lnd_datm_cdeps_gswp.IN lm4_run.IN"
 export FIELD_TABLE_ADDITIONAL=field_table_lm4
 export INPUT_NML="input_datm_lm4.nml.IN"
+# TODO: switch to export INPUT_NML=cpld_lm4_c48.nml.IN
