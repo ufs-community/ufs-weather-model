@@ -30,19 +30,18 @@ fi
 
 
 ## LM4
-# for now during development, use this path for inputdata
-INPUTDATA_LM4=/lustre/f2/pdata/gfdl/cmip6/datasets/CM4/common
 
 # out of the box, LM4 expects aXl referenced in grid_spec.nc for grid land area. Include them for now.
 
 # check if ATMRES or LNDRES is equal to C96:
 if [[ $ATMRES == 'C96' || $LNDRES == 'C96' ]]; then
-  tar -xf $INPUTDATA_LM4/c96_grid/c96_OM4_025_grid_No_mg_drag_v20160808.tar -C ./INPUT/ \
+  tar -xf @[INPUTDATA_LM4]/c96_grid/c96_OM4_025_grid_No_mg_drag_v20160808.tar -C ./INPUT/ \
     --wildcards "C96_mosaic_tile?XC96_mosaic_tile?.nc"
 
-  tar -xvf $INPUTDATA_LM4/c96_LM4/c96_topo_rough_land.nc.tar -C ./INPUT/
+  tar -xvf @[INPUTDATA_LM4]/c96_LM4/c96_topo_rough_land.nc.tar -C ./INPUT/
   
 elif [[ $ATMRES == 'C48' || $LNDRES == 'C48' ]]; then
+  # Currently only on Gaea.
   # these are not available at /lustre/f2/pdata/gfdl/cmip6/datasets/CM4/common, so generated here:
   cp /lustre/f2/dev/gfdl/Justin.Perket/cpl_mosaic_gen/ufs_c48/C48_mosaic_tile?XC48_mosaic_tile?.nc ./INPUT
 
@@ -52,11 +51,11 @@ else
    echo 'Only setup for C48 or C96 for now during development'
 fi
 
-ln -s $INPUTDATA_LM4/common_LM4/biodata.nc                 ./INPUT/
-ln -s $INPUTDATA_LM4/common_LM4/cover_type.nc              ./INPUT/
-ln -s $INPUTDATA_LM4/common_LM4/geohydrology.nc            ./INPUT/
-ln -s $INPUTDATA_LM4/common_LM4/geohydrology_table_2a2n.nc ./INPUT/
-ln -s $INPUTDATA_LM4/common_LM4/ground_type.nc             ./INPUT/
-ln -s $INPUTDATA_LM4/common_LM4/landuse.nc                 ./INPUT/
-ln -s $INPUTDATA_LM4/common_LM4/soil_brdf.nc               ./INPUT/
-ln -s $INPUTDATA_LM4/common_LM4/soil_type_hwsd_5minute.nc  ./INPUT/soil_type.nc
+ln -s @[INPUTDATA_LM4]/common_LM4/biodata.nc                 ./INPUT/
+ln -s @[INPUTDATA_LM4]/common_LM4/cover_type.nc              ./INPUT/
+ln -s @[INPUTDATA_LM4]/common_LM4/geohydrology.nc            ./INPUT/
+ln -s @[INPUTDATA_LM4]/common_LM4/geohydrology_table_2a2n.nc ./INPUT/
+ln -s @[INPUTDATA_LM4]/common_LM4/ground_type.nc             ./INPUT/
+ln -s @[INPUTDATA_LM4]/common_LM4/landuse.nc                 ./INPUT/
+ln -s @[INPUTDATA_LM4]/common_LM4/soil_brdf.nc               ./INPUT/
+ln -s @[INPUTDATA_LM4]/common_LM4/soil_type_hwsd_5minute.nc  ./INPUT/soil_type.nc

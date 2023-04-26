@@ -190,6 +190,9 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
   ECFLOW_START=/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/envs/ufs-weather-model/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
+  # TMP use this path for LM4 cap
+  INPUTDATA_LM4=${INPUTDATA_LM4:-/lustre/f2/pdata/gfdl/cmip6/datasets/CM4/common}
+
   # revert when permissions are fixed
   #DISKNM=/lustre/f2/pdata/ncep/role.epic/RT
   DISKNM=/lustre/f2/pdata/ncep_shared/emc.nemspara/RT
@@ -246,10 +249,13 @@ elif [[ $MACHINE_ID = orion.* ]]; then
   ECFLOW_START=/work/noaa/nems/emc.nemspara/soft/miniconda3/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
+  # TMP use this path for LM4 cap 
+  INPUTDATA_LM4=${INPUTDATA_LM4:-/work/noaa/gfdlscr/pdata/gfdl/cmip6/datasets/CM4/common}
+
   QUEUE=batch
   COMPILE_QUEUE=batch
   PARTITION=orion
-  dprefix=/work/noaa/stmp/${USER}
+  dprefix=/work/noaa/gfdlscr/${USER}
   DISKNM=/work/noaa/nems/emc.nemspara/RT
   STMP=$dprefix/stmp
   PTMP=$dprefix/stmp
@@ -736,6 +742,7 @@ EOF
       export INPUTDATA_ROOT=${INPUTDATA_ROOT}
       export INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT_WW3}
       export INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC}
+      export INPUTDATA_LM4=${INPUTDATA_LM4}
       export PATHRT=${PATHRT}
       export PATHTR=${PATHTR}
       export NEW_BASELINE=${NEW_BASELINE}
