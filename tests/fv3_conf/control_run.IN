@@ -91,16 +91,21 @@ else
 fi
 
 if [ $CPLWAV = .true. ]; then
-  cp    @[INPUTDATA_ROOT_WW3]/mod_def.pointsatmw mod_def.points
-  cp    @[INPUTDATA_ROOT_WW3]/mod_def.* .
-  cp    @[INPUTDATA_ROOT_WW3]/rmp_src* .
+  if [ $MULTIGRID = 'true' ]; then
+    cp    @[INPUTDATA_ROOT_WW3]/mod_def.pointsatmw mod_def.points
+    cp    @[INPUTDATA_ROOT_WW3]/@[MODDEF_WAV] .
+    cp    @[INPUTDATA_ROOT_WW3]/rmp_src* .
+  else
+    cp    @[INPUTDATA_ROOT_WW3]/@[MODDEF_WAV] mod_def.ww3
+    cp    @[INPUTDATA_ROOT_WW3]/@[MESH_WAV] .
+  fi
 fi
 
 #inline post
 if [[ $POSTAPP = 'global' ]]; then
-  cp    ${PATHRT}/parm/post_itag itag
-  cp    ${PATHRT}/parm/postxconfig-NT.txt postxconfig-NT.txt
-  cp    ${PATHRT}/parm/postxconfig-NT_FH00.txt postxconfig-NT_FH00.txt
+  cp    ${PATHRT}/parm/post_itag_gfs itag
+  cp    ${PATHRT}/parm/postxconfig-NT-gfs.txt postxconfig-NT.txt
+  cp    ${PATHRT}/parm/postxconfig-NT-gfs_FH00.txt postxconfig-NT_FH00.txt
   cp    ${PATHRT}/parm/params_grib2_tbl_new params_grib2_tbl_new
 fi
 

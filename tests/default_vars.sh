@@ -13,7 +13,8 @@
 
   THRD_cpl_atmw=1
   INPES_cpl_atmw=3; JNPES_cpl_atmw=8; WPG_cpl_atmw=6
-  WAV_tasks_atmw=30
+  WAV_tasks_cpl_atmw=30
+  WAV_thrds_cpl_atmw=1
 
   THRD_cpl_c48=1
   INPES_cpl_c48=1; JNPES_cpl_c48=1; WPG_cpl_c48=6
@@ -535,11 +536,11 @@ export IAU_DRYMASSFIXER=.false.
 #waves
 export WW3RSTDTHR=12
 export DT_2_RST="$(printf "%02d" $(( ${WW3RSTDTHR}*3600 )))"
-export DTRST=0
-export RSTTYPE=T
 export WW3OUTDTHR=1
 export DTFLD="$(printf "%02d" $(( ${WW3OUTDTHR}*3600 )))"
 export DTPNT="$(printf "%02d" $(( ${WW3OUTDTHR}*3600 )))"
+export DTRST=0
+export RSTTYPE=T
 export GOFILETYPE=1
 export POFILETYPE=1
 export OUTPARS_WAV="WND HS FP DP PHS PTP PDIR"
@@ -565,8 +566,15 @@ export RST_BEG=$RUN_BEG
 export RST_2_BEG=$RUN_BEG
 export RST_END=$RUN_END
 export RST_2_END=$RUN_END
+export WAV_CUR='F'
+export WAV_ICE='F'
+export WAV_IC1='F'
+export WAV_IC5='F'
 # ATMW
 export MULTIGRID=true
+export MODDEF_WAV=mod_def.glo_1deg
+export MESH_WAV=mesh.glo_1deg.nc
+
 # ATMA
 export AOD_FRQ=060000
 
@@ -815,6 +823,7 @@ export BLCKX=`expr $NX_GLB / $np2`
 export BLCKY=`expr $NY_GLB / 2`
 export MESHOCN_ICE=mesh.mx${OCNRES}.nc
 export WAVDOMAIN=mx${OCNRES}
+export MODDEF_WAV=mod_def.mx${OCNRES}
 export MESH_WAV=mesh.${WAVDOMAIN}.nc
 export CICEGRID=grid_cice_NEMS_mx${OCNRES}.nc
 export CICEMASK=kmtu_cice_NEMS_mx${OCNRES}.nc
@@ -835,23 +844,16 @@ export GRIDOCN=A
 export GRIDICE=B
 
 #wave
-export INPUT_CURFLD='C F     Currents'
-export INPUT_ICEFLD='C F     Ice concentrations'
 export WW3RSTDTHR=3
-export WW3OUTDTHR=3
 export DT_2_RST="$(printf "%02d" $(( ${WW3RSTDTHR}*3600 )))"
+export WW3OUTDTHR=3
 export DTFLD="$(printf "%02d" $(( ${WW3OUTDTHR}*3600 )))"
 export DTPNT="$(printf "%02d" $(( ${WW3OUTDTHR}*3600 )))"
-export WW3GRIDLINE="'ww3'  'no' 'CPL:native' 'CPL:native' 'CPL:native' 'no' 'no' 'no' 'no' 'no'   1  1  0.00 1.00  F"
-export UNIPOINTS='points'
-export RUN_BEG="${SYEAR}${SMONTH}${SDAY} $(printf "%02d" $(( ${SHOUR}  )))0000"
-export RUN_END="2100${SMONTH}${SDAY} $(printf "%02d" $(( ${SHOUR}  )))0000"
-export OUT_BEG=$RUN_BEG
-export OUT_END=$RUN_END
-export RST_BEG=$RUN_BEG
-export RST_2_BEG=$RUN_BEG
-export RST_END=$RUN_END
-export RST_2_END=$RUN_END
+# waves when using shel.nml.IN
+export WAV_CUR='C'
+export WAV_ICE='C'
+export WAV_IC1='F'
+export WAV_IC5='F'
 # gocart inst_aod output; uses AERO_HIST.rc.IN from parm/gocart directory
 export AOD_FRQ=060000
 
@@ -1075,13 +1077,18 @@ export DLON=0.03
 export DLAT=0.03
 
 # shel.inp
-export INPUT_CURFLD='C F     Currents'
-export INPUT_ICEFLD='F F     Ice concentrations'
 # input.nml
 export CPL_IMP_MRG=.true.
 
 export DIAG_TABLE=diag_table_hafs
 export FIELD_TABLE=field_table_hafs
+export WW3RSTDTHR=${FHMAX}
+export DT_2_RST="$(printf "%02d" $(( ${WW3RSTDTHR}*3600 )))"
+export WW3OUTDTHR=3
+export DTFLD="$(printf "%02d" $(( ${WW3OUTDTHR}*3600 )))"
+export DTPNT="$(printf "%02d" $(( ${WW3OUTDTHR}*3600 )))"
+export OUTPARS_WAV="WND HS T01 T02 DIR FP DP PHS PTP PDIR UST CHA USP"
+export WAV_CUR='C'
 
 # nems.configure
 export med_model=cmeps
@@ -1091,6 +1098,7 @@ export CPLMODE=hafs
 export RUNTYPE=startup
 export USE_COLDSTART=false
 export MESH_WAV=mesh.hafs.nc
+export MODDEF_WAV=mod_def.natl_6m
 export MULTIGRID=false
 }
 

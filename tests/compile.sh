@@ -67,11 +67,6 @@ else
   # Load fv3 module
   module use $PATHTR/modulefiles
   modulefile="ufs_${MACHINE_ID}"
-  if [[ "${MAKE_OPT}" == *"-DDEBUG=ON"* ]]; then
-    if [[ -f $PATHTR/modulefiles/ufs_${MACHINE_ID}_debug ]] || [[ -f $PATHTR/modulefiles/ufs_${MACHINE_ID}_debug.lua ]]; then
-      modulefile="ufs_${MACHINE_ID}_debug"
-    fi
-  fi
   module load $modulefile
   module list
 fi
@@ -82,14 +77,6 @@ echo "Compiling ${MAKE_OPT} into $BUILD_NAME.exe on $MACHINE_ID"
 # set CMAKE_FLAGS based on $MAKE_OPT
 
 CMAKE_FLAGS=$MAKE_OPT
-
-# FIXME - create CCPP include directory before building FMS to avoid
-# gfortran warnings of non-existent include directory (adding
-# -Wno-missing-include-dirs) to the GNU compiler flags does not work,
-# see also https://gcc.gnu.org/bugzilla/show_bug.cgi?id=55534);
-# this line can be removed once FMS becomes a pre-installed library
-mkdir -p $PATHTR/FV3/ccpp/include
-
 CMAKE_FLAGS+=" -DMPI=ON"
 
 if [[ "${MAKE_OPT}" == *"-DDEBUG=ON"* ]]; then
@@ -135,18 +122,10 @@ export CMAKE_FLAGS
 bash -x ${PATHTR}/build.sh
 
 mv ${BUILD_DIR}/ufs_model ${PATHTR}/tests/${BUILD_NAME}.exe
-if [[ "${MAKE_OPT}" == "-DDEBUG=ON" ]]; then
-  if [[ $MACHINE_ID == linux.* ]]; then
-    cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}_debug ${PATHTR}/tests/modules.${BUILD_NAME}
-  else
-    cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}_debug.lua ${PATHTR}/tests/modules.${BUILD_NAME}.lua
-  fi
+if [[ $MACHINE_ID == linux.* ]]; then
+  cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}       ${PATHTR}/tests/modules.${BUILD_NAME}
 else
-  if [[ $MACHINE_ID == linux.* ]]; then
-    cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}       ${PATHTR}/tests/modules.${BUILD_NAME}
-  else
-    cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}.lua       ${PATHTR}/tests/modules.${BUILD_NAME}.lua
-  fi
+  cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}.lua       ${PATHTR}/tests/modules.${BUILD_NAME}.lua
 fi
 
 if [ $clean_after = YES ] ; then
