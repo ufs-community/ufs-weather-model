@@ -105,6 +105,11 @@ if [[ $MACHINE_ID == wcoss2.* ]] || [[ $MACHINE_ID == acorn.* ]] ; then
   module load gcc/10.3.0 python/3.8.6
 fi
 
+# load nccmp module
+if [[ $MACHINE_ID == hera.* ]] || [[ $MACHINE_ID == orion.* ]] || [[ $MACHINE_ID == gaea.* ]] || [[ $MACHINE_ID == jet.* ]] || [[ $MACHINE_ID == cheyenne.* ]]; then
+  module load nccmp
+fi
+
 SRCD="${PATHTR}"
 RUND="${RUNDIR}"
 
@@ -206,7 +211,8 @@ if [[ $CPLWAV == .true. ]]; then
   if [[ $MULTIGRID = 'true' ]]; then
     atparse < ${PATHRT}/parm/ww3_multi.inp.IN > ww3_multi.inp
   else
-    atparse < ${PATHRT}/parm/ww3_shel.inp.IN > ww3_shel.inp
+    atparse < ${PATHRT}/parm/ww3_shel.nml.IN > ww3_shel.nml
+    cp ${PATHRT}/parm/ww3_points.list .
   fi
 fi
 
@@ -275,7 +281,6 @@ if [[ $SCHEDULER = 'none' ]]; then
 
   ulimit -s unlimited
   if [[ $CI_TEST = 'true' ]]; then
-    
     eval ${OMP_ENV} mpiexec -n ${TASKS} ./fv3.exe >out 2> >(tee err >&3)
   else
     mpiexec -n ${TASKS} ./fv3.exe >out 2> >(tee err >&3)
