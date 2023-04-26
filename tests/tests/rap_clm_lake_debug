@@ -1,17 +1,17 @@
 ###############################################################################
 #
-#  HRRR CLM Lake restart test
+#  RAP control test: lake coupled at C96L127 (debug mode)
 #
 ###############################################################################
 
-export TEST_DESCR="Compare HRRR CLM Lake restart results with control"
+export TEST_DESCR="Compare RAP lake coupled results in debug mode with previous trunk version"
 
-export CNTL_DIR=hrrr_control_dyn32_phy32
+export CNTL_DIR=rap_clm_lake_debug
 
-export LIST_FILES="sfcf012.nc \
-                   atmf012.nc \
-                   GFSFLX.GrbF12 \
-                   GFSPRS.GrbF12"
+export LIST_FILES="sfcf000.nc \
+                   sfcf001.nc \
+                   atmf000.nc \
+                   atmf001.nc"
 
 export_fv3
 export NPZ=127
@@ -25,30 +25,20 @@ export OUTPUT_GRID='gaussian_grid'
 export NSTF_NAME='2,0,0,0,0'
 export WRITE_DOPOST=.true.
 export IAER=5111
-export FHROT=6
-export FHMAX=12
-
-export FRAC_GRID=.false.
-export FRAC_ICE=.true.
-
-export WARM_START=.true.
-export NGGPS_IC=.false.
-export EXTERNAL_IC=.false.
-export MAKE_NH=.false.
-export MOUNTAIN=.true.
-export NA_INIT=0
+export OUTPUT_FH='0 1'
+export FHMAX=1
 
 export FV3_RUN=lake_control_run.IN
-export CCPP_SUITE=FV3_HRRR
+export CCPP_SUITE=FV3_RAP_clm_lake
 export INPUT_NML=rap.nml.IN
 export FIELD_TABLE=field_table_thompson_aero_tke
-export NEW_DIAGTABLE=diag_table_rap
-export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${SHOUR} + ${FHROT}  )))0000"
+export DIAG_TABLE=diag_table_rap
 
-export SFCLAY_COMPUTE_FLUX=.true.
-export LHEATSTRG=.false.
 export LKM=1
 export IOPT_LAKE=2
+export FRAC_ICE=.true.
+
+export LHEATSTRG=.false.
 export IMP_PHYSICS=8
 export DNATS=0
 export DO_SAT_ADJ=.false.
@@ -59,11 +49,8 @@ export IEMS=2
 export HYBEDMF=.false.
 export DO_MYNNEDMF=.true.
 export DO_MYNNSFCLAY=.true.
-export DO_DEEP=.false.
-export SHAL_CNV=.false.
-export IMFSHALCNV=-1
-export IMFDEEPCNV=-1
-export LHEATSTRG=.false.
+export IMFSHALCNV=3
+export IMFDEEPCNV=3
 export LSM=3
 export LSOIL_LSM=9
 export KICE=9

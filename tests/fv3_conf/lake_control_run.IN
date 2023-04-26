@@ -12,11 +12,20 @@ elif [ $NPX = 769 ]; then
 fi
 echo "inputdir=$inputdir,NPX=$NPX"
 
+LAKE_DATA_PATH=@[INPUTDATA_ROOT]/lake_p8_water_fraction2020
+
 OPNREQ_TEST=${OPNREQ_TEST:-false}
 SUFFIX=${RT_SUFFIX}
 if [ $WARM_START = .false. ]; then
   mkdir INPUT RESTART
   cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127/* ./INPUT/.
+#  cp -r @[INPUTDATA_ROOT]/${inputdir}/ORO_FLAKE/* ./INPUT/.
+  cp $LAKE_DATA_PATH/oro_C96.mx100.tile1.nc ./INPUT/oro_data.tile1.nc
+  cp $LAKE_DATA_PATH/oro_C96.mx100.tile2.nc ./INPUT/oro_data.tile2.nc
+  cp $LAKE_DATA_PATH/oro_C96.mx100.tile3.nc ./INPUT/oro_data.tile3.nc
+  cp $LAKE_DATA_PATH/oro_C96.mx100.tile4.nc ./INPUT/oro_data.tile4.nc
+  cp $LAKE_DATA_PATH/oro_C96.mx100.tile5.nc ./INPUT/oro_data.tile5.nc
+  cp $LAKE_DATA_PATH/oro_C96.mx100.tile6.nc ./INPUT/oro_data.tile6.nc
 else
   mkdir INPUT RESTART
 
@@ -44,7 +53,14 @@ else
       cp ${FILEDIR}/fv_increment*.nc INPUT/.
       cp ${FILEDIR}/grid_spec.nc INPUT/.
       cp ${FILEDIR}/*_grid.tile*.nc INPUT/.
-      cp ${FILEDIR}/oro_data.tile*.nc INPUT/.
+      cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127/* ./INPUT/.
+#     cp -r @[INPUTDATA_ROOT]/${inputdir}/ORO_FLAKE/* ./INPUT/.
+      cp $LAKE_DATA_PATH/oro_C96.mx100.tile1.nc ./INPUT/oro_data.tile1.nc
+      cp $LAKE_DATA_PATH/oro_C96.mx100.tile2.nc ./INPUT/oro_data.tile2.nc
+      cp $LAKE_DATA_PATH/oro_C96.mx100.tile3.nc ./INPUT/oro_data.tile3.nc
+      cp $LAKE_DATA_PATH/oro_C96.mx100.tile4.nc ./INPUT/oro_data.tile4.nc
+      cp $LAKE_DATA_PATH/oro_C96.mx100.tile5.nc ./INPUT/oro_data.tile5.nc
+      cp $LAKE_DATA_PATH/oro_C96.mx100.tile6.nc ./INPUT/oro_data.tile6.nc
     fi
     cp ${FILEDIR}/coupler.res INPUT/.
     cp ${FILEDIR}/fv_core.res.* INPUT/.
@@ -74,16 +90,12 @@ else
 fi
 
 if [ $TILEDFIX = .true. ]; then
-    if [ $CPLLND == .true. ]; then
-        cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/@[ATMRES]*.nc INPUT/.
-    else
-        cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/@[ATMRES]*.nc .
-    fi
+    cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/@[ATMRES]*.nc .
     cp    @[INPUTDATA_ROOT]/FV3_fix/global_glacier.2x2.grb .
     cp    @[INPUTDATA_ROOT]/FV3_fix/global_maxice.2x2.grb .
     cp    @[INPUTDATA_ROOT]/FV3_fix/RTGSST.1982.2012.monthly.clim.grb .
     cp    @[INPUTDATA_ROOT]/FV3_fix/global_snoclim.1.875.grb .
-    cp    @[INPUTDATA_ROOT]/FV3_fix/IMS-NIC.blended.ice.monthly.clim.grb .
+    cp    @[INPUTDATA_ROOT]/FV3_fix/CFSR.SEAICE.1982.2012.monthly.clim.grb .
     cp    @[INPUTDATA_ROOT]/${inputdir}/@[FNSMCC] .
     cp    @[INPUTDATA_ROOT]/${inputdir}/@[FNMSKH_control] .
 else
@@ -91,14 +103,8 @@ else
 fi
 
 if [ $CPLWAV = .true. ]; then
-  if [ $MULTIGRID = 'true' ]; then
-    cp    @[INPUTDATA_ROOT_WW3]/mod_def.pointsatmw mod_def.points
-    cp    @[INPUTDATA_ROOT_WW3]/@[MODDEF_WAV] .
-    cp    @[INPUTDATA_ROOT_WW3]/rmp_src* .
-  else
-    cp    @[INPUTDATA_ROOT_WW3]/@[MODDEF_WAV] mod_def.ww3
-    cp    @[INPUTDATA_ROOT_WW3]/@[MESH_WAV] .
-  fi
+  cp    @[INPUTDATA_ROOT_WW3]/mod_def.* .
+  cp    @[INPUTDATA_ROOT_WW3]/rmp_src* .
 fi
 
 #inline post
@@ -126,14 +132,6 @@ if [ $USE_MERRA2 = .true. ]; then
   cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_SU.v1_3.dat  optics_SU.dat
 fi
 
-#rad_c_gocart
-if [ $IAER = 2011 ]; then
-  cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_BC.v1_3.dat  optics_BC.dat
-  cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_OC.v1_3.dat  optics_OC.dat
-  cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_DU.v15_3.dat optics_DU.dat
-  cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_SS.v3_3.dat  optics_SS.dat
-  cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_SU.v1_3.dat  optics_SU.dat
-fi
 #ugwpv1
 if [ $DO_UGWP_V1 = .true. ]; then
   cp    @[INPUTDATA_ROOT]/FV3_input_data/ugwp_c384_tau.nc ./ugwp_limb_tau.nc
@@ -141,14 +139,14 @@ fi
 
 #Thompson
 if [ $IMP_PHYSICS = 8 ]; then
-  cp    @[INPUTDATA_ROOT]/FV3_fix/qr_acr_qsV2.dat .
-  cp    @[INPUTDATA_ROOT]/FV3_fix/qr_acr_qgV2.dat .
-  cp    @[INPUTDATA_ROOT]/FV3_fix/freezeH2O.dat .
-  cp    @[INPUTDATA_ROOT]/FV3_fix/CCN_ACTIVATE.BIN .
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_gsd/qr_acr_qsV2.dat .
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_gsd/qr_acr_qgV2.dat .
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_gsd/freezeH2O.dat .
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_gsd/CCN_ACTIVATE.BIN .
 fi
 
 #prognostic aerosols
 if [ $CPLCHM = .true. ]; then
   cp      ${PATHRT}/parm/gocart/*.rc .
-  ln -sf  @[INPUTDATA_ROOT]/GOCART/p8/ExtData .
+  ln -sf  @[INPUTDATA_ROOT]/GOCART/ExtData .
 fi
