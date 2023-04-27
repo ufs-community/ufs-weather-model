@@ -508,7 +508,7 @@ rm -f fail_test* fail_compile*
 
 export LOG_DIR=${PATHRT}/logs/log_$MACHINE_ID
 rm -rf ${LOG_DIR}
-mkdir ${LOG_DIR}
+mkdir -p ${LOG_DIR}
 
 if [[ $ROCOTO == true ]]; then
 
