@@ -55,7 +55,7 @@ hostname
 
 set +x
 if [[ $MACHINE_ID == macosx ]] || [[ $MACHINE_ID == linux ]]; then
-  source $PATHTR/modulefiles/ufs_${MACHINE_ID}
+  source $PATHTR/modulefiles/ufs_${MACHINE_ID}.${RT_COMPILER}
 else
   # Activate lua environment for gaea
   if [[ $MACHINE_ID == gaea ]]; then
