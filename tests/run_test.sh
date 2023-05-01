@@ -106,7 +106,7 @@ if [[ $MACHINE_ID == wcoss2.* ]] || [[ $MACHINE_ID == acorn.* ]] ; then
 fi
 
 # load nccmp module
-if [[ $MACHINE_ID == hera.* ]] || [[ $MACHINE_ID == orion.* ]] || [[ $MACHINE_ID == gaea.* ]] || [[ $MACHINE_ID == jet.* ]] ; then
+if [[ $MACHINE_ID == hera.* ]] || [[ $MACHINE_ID == orion.* ]] || [[ $MACHINE_ID == gaea.* ]] || [[ $MACHINE_ID == jet.* ]] || [[ $MACHINE_ID == cheyenne.* ]]; then
   module load nccmp
 fi
 
@@ -211,7 +211,8 @@ if [[ $CPLWAV == .true. ]]; then
   if [[ $MULTIGRID = 'true' ]]; then
     atparse < ${PATHRT}/parm/ww3_multi.inp.IN > ww3_multi.inp
   else
-    atparse < ${PATHRT}/parm/ww3_shel.inp.IN > ww3_shel.inp
+    atparse < ${PATHRT}/parm/ww3_shel.nml.IN > ww3_shel.nml
+    cp ${PATHRT}/parm/ww3_points.list .
   fi
 fi
 
