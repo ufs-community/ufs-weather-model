@@ -277,8 +277,8 @@ elif [[ $MACHINE_ID = hercules.* ]]; then
   PTMP=$dprefix/stmp
 
   SCHEDULER=slurm
-  cp fv3_conf/fv3_slurm.IN_orion fv3_conf/fv3_slurm.IN
-  cp fv3_conf/compile_slurm.IN_orion fv3_conf/compile_slurm.IN
+  cp fv3_conf/fv3_slurm.IN_hercules fv3_conf/fv3_slurm.IN
+  cp fv3_conf/compile_slurm.IN_hercules fv3_conf/compile_slurm.IN
 
 elif [[ $MACHINE_ID = jet.* ]]; then
 
@@ -470,7 +470,7 @@ if [[ $TESTS_FILE =~ '35d' ]] || [[ $TESTS_FILE =~ 'weekly' ]]; then
 fi
 
 
-BL_DATE=20230413
+BL_DATE=20230430
 
 RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
 
@@ -614,6 +614,8 @@ EOF
     QUEUE=batch
   elif [[ $MACHINE_ID = orion.* ]]; then
     QUEUE=batch
+  elif [[ $MACHINE_ID = hercules.* ]]; then
+    QUEUE=windfall
   elif [[ $MACHINE_ID = jet.* ]]; then
     QUEUE=batch
   elif [[ $MACHINE_ID = s4.* ]]; then
