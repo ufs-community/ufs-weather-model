@@ -531,8 +531,8 @@ if [[ $ROCOTO == true ]]; then
     COMPILE_QUEUE=batch
     ROCOTO_SCHEDULER=slurm
   elif [[ $MACHINE_ID = hercules.* ]]; then
-    QUEUE=batch
-    COMPILE_QUEUE=batch
+    QUEUE=windfall
+    COMPILE_QUEUE=windfall
     ROCOTO_SCHEDULER=slurm
   elif [[ $MACHINE_ID = s4.* ]]; then
     QUEUE=s4
