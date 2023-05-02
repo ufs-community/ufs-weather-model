@@ -12,6 +12,9 @@ set -eux
 echo -n " $( date +%s )," >  job_timestamp.txt
 echo "Compile started:  " `date`
 
+# Remove NCAR pre-loaded modules from $MODULEPATH before compiling (causes conflict w/ spack-stack)
+module purge
+
 @[PATHRT]/compile.sh @[MACHINE_ID] "@[MAKE_OPT]" @[COMPILE_NR]
 
 echo "Compile ended:    " `date`

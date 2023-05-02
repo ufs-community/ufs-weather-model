@@ -1,6 +1,7 @@
 #!/bin/bash -l
 #PBS -o out
 #PBS -e err
+#PBS -V
 #PBS -N @[JBNME]
 #PBS -A @[ACCNR]
 #PBS -q @[QUEUE]
@@ -34,7 +35,7 @@ export ESMF_RUNTIME_PROFILE_OUTPUT="SUMMARY"
 # Avoid job errors because of filesystem synchronization delays
 sync && sleep 1
 
-mpiexec_mpt -p %g: -np @[TASKS] omplace ./fv3.exe
+mpiexec -np @[TASKS] ./fv3.exe
 
 echo "Model ended:    " `date`
 echo -n " $( date +%s )," >> job_timestamp.txt
