@@ -256,6 +256,30 @@ elif [[ $MACHINE_ID = orion.* ]]; then
   cp fv3_conf/fv3_slurm.IN_orion fv3_conf/fv3_slurm.IN
   cp fv3_conf/compile_slurm.IN_orion fv3_conf/compile_slurm.IN
 
+elif [[ $MACHINE_ID = hercules.* ]]; then
+
+  #rocoto is not yet installed on Hercules
+  #module load contrib rocoto/1.3.1
+  #ROCOTORUN=$(which rocotorun)
+  #ROCOTOSTAT=$(which rocotostat)
+  #ROCOTOCOMPLETE=$(which rocotocomplete)
+  export PATH=/apps/spack-managed/gcc-11.3.1/miniconda3-4.10.3-un3f2xdus7rbrzgso5ketsq4gp2iociv/bin:$PATH
+  export PYTHONPATH=/apps/spack-managed/gcc-11.3.1/miniconda3-4.10.3-un3f2xdus7rbrzgso5ketsq4gp2iociv/lib/python3.9/site-packages
+  ECFLOW_START=/work/noaa/epic-ps/role-epic-ps/spack-stack/ecflow-5.8.4-hercules/bin/ecflow_start.sh
+  ECF_PORT=$(( $(id -u) + 1500 ))
+
+  QUEUE=batch
+  COMPILE_QUEUE=batch
+  PARTITION=hercules
+  dprefix=/work/noaa/stmp/${USER}
+  DISKNM=/work/noaa/nems/emc.nemspara/RT
+  STMP=$dprefix/stmp
+  PTMP=$dprefix/stmp
+
+  SCHEDULER=slurm
+  cp fv3_conf/fv3_slurm.IN_orion fv3_conf/fv3_slurm.IN
+  cp fv3_conf/compile_slurm.IN_orion fv3_conf/compile_slurm.IN
+
 elif [[ $MACHINE_ID = jet.* ]]; then
 
   module load rocoto/1.3.2
@@ -446,7 +470,7 @@ if [[ $TESTS_FILE =~ '35d' ]] || [[ $TESTS_FILE =~ 'weekly' ]]; then
 fi
 
 
-BL_DATE=20230430
+BL_DATE=20230413
 
 RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
 
@@ -503,6 +527,10 @@ if [[ $ROCOTO == true ]]; then
     COMPILE_QUEUE=batch
     ROCOTO_SCHEDULER=slurm
   elif [[ $MACHINE_ID = orion.* ]]; then
+    QUEUE=batch
+    COMPILE_QUEUE=batch
+    ROCOTO_SCHEDULER=slurm
+  elif [[ $MACHINE_ID = hercules.* ]]; then
     QUEUE=batch
     COMPILE_QUEUE=batch
     ROCOTO_SCHEDULER=slurm

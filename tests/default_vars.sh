@@ -108,6 +108,20 @@ elif [[ $MACHINE_ID = orion.* ]]; then
   INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
   WAV_tasks_atmw_gdas=248
 
+elif [[ $MACHINE_ID = hercules.* ]]; then
+
+  TPN=80
+
+  INPES_dflt=3 ; JNPES_dflt=8
+  INPES_thrd=3 ; JNPES_thrd=4
+  INPES_c384=8 ; JNPES_c384=6  ; THRD_c384=2
+  INPES_c768=8 ; JNPES_c768=16 ; THRD_c768=2
+
+  THRD_cpl_atmw_gdas=2
+  INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
+  WAV_tasks_atmw_gdas=248
+
+
 elif [[ $MACHINE_ID = hera.* ]]; then
 
   TPN=40
@@ -457,12 +471,8 @@ export OZ_PHYS_OLD=.true.
 export OZ_PHYS_NEW=.false.
 export H2O_PHYS=.false.
 
-# Lake models
-export LKM=0 # 0=no lake, 1=run lake model, 2=run both lake and nsst on lake points
-export IOPT_LAKE=2 # 1=flake, 2=clm lake
-export LAKEFRAC_THRESHOLD=0.0 # lake fraction must be higher for lake model to run it
-export LAKEDEPTH_THRESHOLD=1.0 # lake must be deeper (in meters) for a lake model to run it
-export FRAC_ICE=.false.
+# Flake model
+export LKM=0
 
 export CPL=.false.
 export CPLCHM=.false.
