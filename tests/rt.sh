@@ -268,8 +268,8 @@ elif [[ $MACHINE_ID = hercules.* ]]; then
   ECFLOW_START=/work/noaa/epic-ps/role-epic-ps/spack-stack/ecflow-5.8.4-hercules/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
-  QUEUE=batch
-  COMPILE_QUEUE=batch
+  QUEUE=windfall
+  COMPILE_QUEUE=windfall
   PARTITION=hercules
   dprefix=/work/noaa/stmp/${USER}
   DISKNM=/work/noaa/nems/emc.nemspara/RT
