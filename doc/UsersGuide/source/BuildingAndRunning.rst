@@ -335,7 +335,7 @@ For the ``ufs-weather-model ATML`` configuration (standalone ATM coupled to :ter
 
 .. code-block:: console
 
-    export CMAKE_FLAGS="-DAPP=ATML -DCCPP_SUITES=datm_cdeps_lnd_gswp3"
+    export CMAKE_FLAGS="-DAPP=ATML -DCCPP_SUITES=control_p8_atmlnd_sbs"
 
 S2S Configurations 
 ----------------------
