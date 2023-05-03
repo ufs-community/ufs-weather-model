@@ -99,10 +99,21 @@ case $(hostname -f) in
   login2.stampede2.tacc.utexas.edu) MACHINE_ID=stampede ;; ### stampede2
   login3.stampede2.tacc.utexas.edu) MACHINE_ID=stampede ;; ### stampede3
   login4.stampede2.tacc.utexas.edu) MACHINE_ID=stampede ;; ### stampede4
-
+  
+  
   login01.expanse.sdsc.edu) MACHINE_ID=expanse ;; ### expanse1
   login02.expanse.sdsc.edu) MACHINE_ID=expanse ;; ### expanse2
+  
 esac
+
+case $(echo $PW_CSP) in
+
+  aws) MACHINE_ID=aws ;; ### parallelworks aws
+  google)  MACHINE_ID=gcp ;; ### parallelworks gcp
+  azure)  MACHINE_ID=azure ;; ### parallelworks azure
+  
+esac
+[[ ${MACHINE_ID} =~ "aws" || ${MACHINE_ID} =~ "gcp" || ${MACHINE_ID} =~ "azure" ]] && MACHINE_ID=noaacloud
 
 # Overwrite auto-detect with RT_MACHINE if set
 MACHINE_ID=${RT_MACHINE:-${MACHINE_ID}}
