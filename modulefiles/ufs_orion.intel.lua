@@ -2,7 +2,7 @@ help([[
 loads UFS Model prerequisites for Orion/Intel
 ]])
 
-prepend_path("MODULEPATH", "/work/noaa/epic-ps/role-epic-ps/spack-stack/spack-stack-1.3.0/envs/unified-env/install/modulefiles/Core")
+prepend_path("MODULEPATH", "/work/noaa/epic-ps/role-epic-ps/spack-stack/spack-stack-1.3.1/envs/unified-env/install/modulefiles/Core")
 prepend_path("MODULEPATH", "/work/noaa/da/role-da/spack-stack/modulefiles")
 
 stack_intel_ver=os.getenv("stack_intel_ver") or "2022.0.2"
@@ -19,9 +19,9 @@ load(pathJoin("cmake", cmake_ver))
 
 load("ufs_common")
 
-setenv("CC", "mpiicc")
-setenv("CXX", "mpiicpc")
-setenv("FC", "mpiifort")
+setenv("CC", "icc")
+setenv("CXX", "icpc")
+setenv("FC", "ifort")
 setenv("CMAKE_Platform", "orion.intel")
 
 whatis("Description: UFS build environment")
