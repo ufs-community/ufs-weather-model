@@ -8,62 +8,206 @@ Building and Running the UFS Weather Model
 Supported Platforms & Compilers
 ===================================
 Before running the Weather Model (:term:`WM`), users should determine which of the 
-`levels of support <https://github.com/ufs-community/ufs-weather-model/wiki/Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>`__ 
+:ref:`levels of support <SupportedPlatforms>` 
 is applicable to their system. Generally, Level 1 & 2 systems are restricted to those with access 
 through NOAA and its affiliates. These systems are named (e.g., Hera, Orion, Cheyenne). 
 Level 3 & 4 systems include certain personal computers or non-NOAA-affiliated HPC systems. 
 The prerequisite software libraries for building the WM already exist on Level 1/preconfigured 
-systems, so users may skip directly :ref:`downloading the code <DownloadingWMCode>`. 
-On other systems, users will need to build the prerequisite libraries using :term:`HPC-Stack`. 
+systems, so users may skip directly to :ref:`getting the data <GetData>` and downloading the code. 
+On other systems, users will need to build the prerequisite libraries using :term:`HPC-Stack` or :term:`spack-stack`. 
 
-======================
+=======================
 Prerequisite Libraries
-======================
+=======================
 
-The UFS Weather Model (WM) requires a number of libraries for it to compile.
+The UFS Weather Model (:term:`WM`) requires a number of libraries.
 The WM uses two categories of libraries, which are available as a bundle via 
-:term:`HPC-Stack`:
+:term:`HPC-Stack` or :term:`spack-stack`:
 
    #. :term:`NCEP` libraries (:term:`NCEPLIBS`): These are libraries developed for use with NOAA weather models.
       Most have an NCEPLIBS prefix in the repository (e.g., NCEPLIBS-bacio). Select tools from the UFS
       Utilities repository (:term:`UFS_UTILS`) are also included in this category. 
-      A list of the bundled libraries tested with this WM release is available in the top-level ``README`` of the 
-      `NCEPLIBS repository <https://github.com/NOAA-EMC/NCEPLIBS/tree/ufs-v2.0.0>`__ (**be sure to look at 
-      the tag in that repository that matches the tag on the most recent WM release**).
 
    #. Third-party libraries (:term:`NCEPLIBS-external`): These are libraries that were developed external to
       the UFS Weather Model. They are general software packages that are also used by other community models. 
       Building these libraries is optional if users can point to existing builds of these libraries on their system
-      instead. A list of the external libraries tested with this WM release is in the top-level ``README``
-      of the `NCEPLIBS-external <https://github.com/NOAA-EMC/NCEPLIBS-external/tree/ufs-v2.0.0>`__ repository. Again, be
-      sure to look at the tag in that repository that matches the tag on this WM release.
+      instead. 
 
-.. note::
-   Documentation is available for installing `HPC-Stack <https://hpc-stack.readthedocs.io/en/latest/>`__. 
-   One of these software stacks (or the libraries they contain) must be installed before running the Weather Model. 
+Currently, HPC-Stack is the software stack validated by the UFS WM for running regression tests. 
+However, UFS applications are shifting to spack-stack, which is a Spack-based 
+method for installing UFS prerequisite software libraries. The spack-stack is currently 
+used on NOAA Cloud platforms and in containers, while HPC-Stack is still used on NOAA
+Research & Development HPC Systems (RDHPCS). The spack-stack locations listed in :numref:`Table %s <stack-locations>` are still being validated. 
 
-.. COMMENT: "and `spack-stack <https://spack-stack.readthedocs.io/en/latest/>`__, respectively"
+----------------
+Common Modules
+----------------
 
-For users who *do* need to build the prerequisite libraries, it is a good idea to check the platform- and compiler-specific
-``README`` files in the ``doc`` directory of the `NCEPLIBS-external repository <https://github.com/NOAA-EMC/NCEPLIBS-external/tree/ufs-v2.0.0>`_
-first to see if their system or one similar to it is included. These files have detailed
-instructions for building NCEPLIBS-external, NCEPLIBS, and the UFS Weather Model. They may be all the
-documentation you need. Be sure to use the tag that corresponds to this version of the WM, and define a
-WORK directory path before you get started.
+As of March 23, 2023, the UFS WM Regression Tests on Level 1 systems use the following common modules: 
 
-..
-   COMMENT: What is meant by a WORK directory path?
+.. code-block:: console
 
-If your platform is not included in these platform- and compiler-specific ``README`` files, there is a more
-generic set of instructions in the ``README`` file at the top level of the `NCEPLIBS-external repository
-<https://github.com/NOAA-EMC/NCEPLIBS-external/tree/ufs-v2.0.0>`__ and at the top level of the `NCEPLIBS repository
-<https://github.com/NOAA-EMC/NCEPLIBS/tree/ufs-v2.0.0>`__. It may still be a good idea to look at some of the platform-
-and compiler-specific ``README`` files as a guide. Again, be sure to use the tag that corresponds to this version of the WM.
+   bacio/2.4.1
+   crtm/2.4.0
+   esmf/8.3.0b09
+   fms/2022.04
+   g2/3.4.5
+   g2tmpl/1.10.2
+   gftl-shared/v1.5.0
+   hdf5/1.10.6
+   ip/3.3.3
+   jasper/2.0.25
+   libpng/1.6.37
+   mapl/2.22.0-esmf-8.3.0b09
+   netcdf/4.7.4
+   pio/2.5.7
+   sp/2.3.3
+   w3emc/2.9.2
+   zlib/1.2.11
 
-The top-level ``README`` in the NCEPLIBS-external repository includes a troubleshooting section that may be helpful.
+The most updated list of modules can be viewed in ``ufs_common.lua`` 
+`here <https://github.com/ufs-community/ufs-weather-model/blob/develop/modulefiles/ufs_common.lua>`__.
 
-You can also get expert help through a `user support forum <https://forums.ufscommunity.org/forum/build-dependencies>`__
-set up specifically for issues related to build dependencies.
+.. attention::
+   Documentation is available for installing `HPC-Stack <https://hpc-stack.readthedocs.io/en/latest/>`__ 
+   and `spack-stack <https://spack-stack.readthedocs.io/en/latest/>`__, respectively. 
+   One of these software stacks (or the libraries they contain) must be installed before running the UFS Weather Model. 
+
+.. COMMENT: Add spack stack (and HPC-Stack?) locations: 
+   On Level 1 systems, HPC-Stack and spack-stack are installed in the following locations:
+
+   .. _stack-locations:
+
+   .. table:: Stack Locations
+
+      +--------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+      | Platform     | HPC-Stack/spack-stack Installation                                                                                                      |
+      +==============+=========================================================================================================================================+
+      | WCOSS2       | N/A                                                                                                                                     |
+      +--------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+      | Hera (Intel) | HPC-Stack: /scratch1/NCEPDEV/nems/role.epic/hpc-stack/libs/intel-2022.1.2/modulefiles/stack                                             |
+      |              |                                                                                                                                         |
+      |              | spack-stack: /scratch1/NCEPDEV/jcsda/jedipara/spack-stack/modulefiles                                                                   |
+      +--------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+      | Hera (GNU)   | HPC-Stack: /scratch1/NCEPDEV/nems/role.epic/hpc-stack/libs/gnu-9.2/modulefiles/stack                                                    |
+      |              |                                                                                                                                         |
+      |              | spack-stack: /scratch1/NCEPDEV/global/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2021.5.0/install/modulefiles/Core              |
+      +--------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+      | Gaea         | HPC-Stack: /lustre/f2/dev/role.epic/contrib/hpc-stack/intel-2021.3.0_noarch/modulefiles/stack                                           |
+      |              |                                                                                                                                         |
+      |              | spack-stack: /lustre/f2/pdata/esrl/gsd/spack-stack/modulefiles                                                                          |
+      +--------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+      | Jet          | HPC-Stack: /mnt/lfs4/HFIP/hfv3gfs/role.epic/hpc-stack/libs/intel-2022.1.2/modulefiles/stack                                             |
+      |              |                                                                                                                                         |
+      |              | spack-stack: Coming soon!                                                                                                               |
+      +--------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+      | Orion        | HPC-Stack: /work/noaa/epic-ps/role-epic-ps/hpc-stack/libs/intel-2022.1.2/modulefiles/stack                                              |
+      |              |                                                                                                                                         |
+      |              | spack-stack: /work/noaa/da/role-da/spack-stack/modulefiles                                                                              |
+      +--------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+      | Cheyenne     | HPC-Stack: /glade/work/epicufsrt/contrib/hpc-stack/intel2022.1/modulefiles/stack                                                        |
+      | (Intel)      |                                                                                                                                         |
+      |              | spack-stack: /glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc                                                                 |
+      +--------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+      | Cheyenne     | HPC-Stack: /glade/work/epicufsrt/contrib/hpc-stack/gnu10.1.0/modulefiles/stack                                                          |
+      | (GNU)        |                                                                                                                                         |
+      |              | spack-stack: /glade/work/jedipara/cheyenne/spack-stack/spack-stack-feature-r2d2-mysql/envs/unified-4.0.0-rc1/install/modulefiles/Core   |
+      +--------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+      | NOAA Cloud   | HPC-Stack: N/A                                                                                                                          |
+      | (AWS/GCP/    |                                                                                                                                         |
+      | Azure)       | spack-stack: /contrib/spack-stack/modulefiles/core                                                                                      |
+      +--------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+
+   On Level 2-4 Systems, users will need to install the HPC-Stack or the spack-stack and load the appropriate modules. 
+   The `HPC-Stack <https://hpc-stack.readthedocs.io/en/latest/>`__ and 
+   `spack-stack <https://spack-stack.readthedocs.io/en/latest/>`__ documentation is the authoritative 
+   source for details on installation and configuration of each respective stack. 
+
+.. _GetData:
+
+============
+Get Data
+============
+
+The WM regression tests (RTs) require input files to run. 
+These include static datasets, files that depend on grid resolution and 
+initial/boundary conditions, and model configuration files. On Level 1 systems, 
+the data required to run the WM RTs are already available in the following locations: 
+
+.. _DataLocations:
+.. table:: Data Locations for Level 1 Systems
+
+   +--------------+-----------------------------------------------------+
+   | Machine      | File location                                       |
+   +==============+=====================================================+
+   | Cheyenne     | /glade/scratch/epicufsrt/GMTB/ufs-weather-model/RT  |
+   +--------------+-----------------------------------------------------+
+   | Gaea         | /lustre/f2/pdata/ncep_shared/emc.nemspara/RT        |
+   +--------------+-----------------------------------------------------+
+   | Hera         | /scratch1/NCEPDEV/nems/emc.nemspara/RT              |
+   +--------------+-----------------------------------------------------+
+   | Jet          | /mnt/lfs4/HFIP/hfv3gfs/role.epic/RT                 |
+   +--------------+-----------------------------------------------------+
+   | Orion        | /work/noaa/nems/emc.nemspara/RT                     |
+   +--------------+-----------------------------------------------------+
+   | WCOSS2       | /lfs/h2/emc/nems/noscrub/emc.nems/RT                |
+   +--------------+-----------------------------------------------------+ 
+
+For Level 2-4 systems, the data must be added to the user's system. 
+Publicly available RT data is available in the `UFS WM Data Bucket <https://registry.opendata.aws/noaa-ufs-regtests/>`__. 
+Data for running RTs off of the develop branch is available for the most recent 60 days. 
+To view the data, users can visit https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html. 
+To download data, users must select the data they want from the bucket and either download it in their browser or via a ``wget`` command. 
+For example, to get the data for ``control_p8`` (specifically the March 20, 2023 ``develop`` branch version of the WM), run: 
+
+.. code-block:: console
+
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/atmf000.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/atmf021.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/atmf024.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/GFSFLX.GrbF00
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/GFSFLX.GrbF21
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/GFSFLX.GrbF24
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/GFSPRS.GrbF00
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/GFSPRS.GrbF21
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/GFSPRS.GrbF24
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/sfcf000.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/sfcf021.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/sfcf024.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.coupler.res
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_core.res.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_core.res.tile1.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_core.res.tile2.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_core.res.tile3.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_core.res.tile4.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_core.res.tile5.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_core.res.tile6.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_srf_wnd.res.tile1.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_srf_wnd.res.tile2.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_srf_wnd.res.tile3.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_srf_wnd.res.tile4.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_srf_wnd.res.tile5.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_srf_wnd.res.tile6.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_tracer.res.tile1.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_tracer.res.tile2.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_tracer.res.tile3.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_tracer.res.tile4.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_tracer.res.tile5.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_tracer.res.tile6.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.phy_data.tile1.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.phy_data.tile2.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.phy_data.tile3.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.phy_data.tile4.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.phy_data.tile5.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.phy_data.tile6.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.sfc_data.tile1.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.sfc_data.tile2.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.sfc_data.tile3.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.sfc_data.tile4.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.sfc_data.tile5.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.sfc_data.tile6.nc
+
+Detailed information on input files can be found in :numref:`Chapter %s <InputsOutputs>`. 
 
 .. _DownloadingWMCode:
 
@@ -75,9 +219,8 @@ To clone the develop branch of the ``ufs-weather-model`` repository and update i
 
 .. code-block:: console
 
-  git clone https://github.com/ufs-community/ufs-weather-model.git ufs-weather-model
+  git clone --recursive https://github.com/ufs-community/ufs-weather-model.git ufs-weather-model
   cd ufs-weather-model
-  git submodule update --init --recursive
 
 Compiling the model will take place within the ``ufs-weather-model`` directory you just created.
 
@@ -89,9 +232,16 @@ Building the Weather Model
 Loading the Required Modules
 ----------------------------
 
-Modulefiles for `pre-configured platforms <https://github.com/ufs-community/ufs/wiki/Supported-Platforms-and-Compilers>`_
-are located in ``modulefiles/ufs_<platform>.<compiler>``. For example, to load the modules from the ``ufs-weather-model``
-directory on Hera:
+The process for loading modules is fairly straightforward on NOAA :ref:`Level 1 Systems <SupportedPlatforms>`. 
+Users may need to make adjustments when running on other systems. 
+
+
+On NOAA Level 1 Systems
+---------------------------
+
+Modulefiles for :ref:`preconfigured platforms <SupportedPlatforms>` are located in 
+``modulefiles/ufs_<platform>.<compiler>``. For example, to load the modules from the 
+``ufs-weather-model`` directory on Hera:
 
 .. code-block:: console
 
@@ -117,6 +267,9 @@ Note that loading this module file will also set the CMake environment variables
    |  CMAKE_Platform         | String containing platform and compiler name | hera.intel           |
    +-------------------------+----------------------------------------------+----------------------+
 
+On Other Systems
+-------------------
+
 If you are not running on one of the pre-configured platforms, you will need to set the environment variables
 manually. For example, in a bash shell, a command in the following form will set the C compiler environment variable:
 
@@ -124,12 +277,13 @@ manually. For example, in a bash shell, a command in the following form will set
 
    export CMAKE_C_COMPILER=</path/to/C/compiler>
 
+.. COMMENT: Update after Zach's PR is merged. 
 
 ------------------------------------------------------------------------
 Setting the ``CMAKE_FLAGS`` and ``CCPP_SUITES`` Environment Variables
 ------------------------------------------------------------------------
 
-The UFS Weather Model can be built in one of twelve configurations (cf. :numref:`Table %s <UFS-configurations>`). 
+The UFS Weather Model can be built in one of several configurations (cf. :numref:`Table %s <UFS-configurations>` for common options). 
 The ``CMAKE_FLAGS`` environment variable specifies which configuration to build.
 Additionally, users must select the :term:`CCPP` suite(s) by setting the ``CCPP_SUITES`` environment variable at
 build time in order to have one or more CCPP physics suites available at runtime. Multiple suites can be set. 
@@ -265,7 +419,10 @@ For the ``ufs-weather-model HAFS-ALL`` configuration (data/atm/ocean/wave) in 32
 ------------------
 Building the Model
 ------------------
-The UFS Weather Model uses the CMake build system.  There is a build script called ``build.sh`` in the
+
+.. COMMENT: Is the "Building the Model" section necessary? Can users just run the RT without?
+
+The UFS Weather Model uses the CMake build system. There is a build script called ``build.sh`` in the
 top-level directory of the WM repository that configures the build environment and runs the ``make``
 command. This script also checks that all necessary environment variables have been set.
 
@@ -282,11 +439,10 @@ The WM can be built by running the following command from the ``ufs-weather-mode
    ./build.sh
 
 Once ``build.sh`` is finished, you should see the executable, named ``ufs_model``, in the ``ufs-weather-model/build/`` directory.
-If it is desired to build in a different directory, specify the ``BUILD_DIR`` environment variable: e.g. ``export BUILD_DIR=test_cpld``
+If it is desired to build in a different directory, specify the ``BUILD_DIR`` environment variable. For example: ``export BUILD_DIR=test_cpld``
 will build in the ``ufs-weather-model/test_cpld`` directory instead.
 
-Expert help is available through a `user support forum <https://forums.ufscommunity.org/forum/ufs-weather-model>`__
-set up specifically for issues related to the Weather Model.
+Expert help is available through `GitHub Discussions <https://github.com/ufs-community/ufs-weather-model/discussions/categories/q-a>`__. Users may post questions there for help with difficulties related to the UFS WM.
 
 .. _run-wm:
 
@@ -304,20 +460,11 @@ Running the Model
 Using the Regression Test Script
 --------------------------------
 
-Users can run a number of preconfigured regression test cases using the regression test script 
-``rt.sh`` in the ``tests`` directory. This script is the top-level script
-that calls lower-level scripts to build specified WM configurations, set up environments, and run tests.
-
-On `Tier-1 platforms <https://github.com/ufs-community/ufs-weather-model/wiki
-/Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>`__, users can run 
-regression tests by (1) editing the ``rt.conf`` file and (2) executing:
-
-.. code-block:: console
-
-    ./rt.sh -l rt.conf
-
-Users *may* need to add additional command line arguments or change information in the ``rt.sh`` file as well. 
-This information is provided in :numref:`Section %s <rt.sh>` below. 
+Users can run a number of preconfigured regression test cases from the ``rt.conf`` file 
+using the regression test script ``rt.sh`` in the ``tests`` directory. 
+``rt.sh`` is the top-level script that calls lower-level scripts to build specified 
+WM configurations, set up environments, and run tests. 
+Users must edit the ``rt.conf`` file to indicate which tests/configurations to run. 
 
 .. _rt.conf:
 
@@ -354,7 +501,38 @@ by a ``COMPILE`` line that builds the model used in the test. The following
 
 The ``rt.conf`` file includes a large number of tests. If the user wants to run
 only specific tests, s/he can either (1) comment out the tests to be skipped (using the ``#`` prefix)
-or (2) create a new file (e.g., ``my_rt.conf``) and execute ``./rt.sh -l my_rt.conf``.
+or (2) create a new file (e.g., ``my_rt.conf``), add the tests, and execute ``./rt.sh -l my_rt.conf``.
+
+On NOAA RDHPCS
+------------------
+
+On `Tier-1 platforms <https://github.com/ufs-community/ufs-weather-model/wiki
+/Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>`__, users can run 
+regression tests by editing the ``rt.conf`` file and executing:
+
+.. code-block:: console
+
+    ./rt.sh -l rt.conf
+
+Users may need to add additional command line arguments or change information in the ``rt.sh`` file as well. 
+This information is provided in :numref:`Section %s <rt.sh>` below. 
+
+On Other Systems
+------------------
+
+Users on non-NOAA systems will need to make adjustments to several files in the 
+``tests`` directory before running ``rt.sh``, including:
+  
+   * rt.sh
+   * run_test.sh
+   * detect_machine.sh
+   * default_vars.sh
+   * fv3_conf/fv3_slurm.IN_*
+   * fv3_conf/compile_slurm.IN_*
+   * compile.sh
+   * module-setup.sh
+
+.. COMMENT: Add details when Zach's PR is merged.
 
 .. _rt.sh:
 
@@ -372,18 +550,18 @@ To display detailed information on how to use ``rt.sh``, users can simply run ``
 
 .. code-block:: console
 
-   ./rt.sh -c | -f | -l | -m | -k | -r | -e | -h
-      -c: create baseline
-      -f: use rt.conf
-      -l: use instead of rt.conf
-      -m: compare against new baseline results
-      -k: keep run directory
-      -r: use Rocoto workflow manager
-      -e: use ecFlow workflow manager
-      -h: display help (same as ./rt.sh)
+   ./rt.sh -c | -e | -h | -k | -w | -d | -l <file> | -m | -n <name> | -r 
+      -c  create new baseline results
+      -e  use ecFlow workflow manager
+      -h  display this help 
+      -k  keep run directory after rt.sh is completed
+      -l  runs test specified in <file>
+      -m  compare against new baseline results
+      -n  run single test <name>
+      -r  use Rocoto workflow manager
+      -w  for weekly_test, skip comparing baseline results
+      -d  delete run direcotries that are not used by other tests
 
-.. COMMENT: Remove -f option? The wiki says: "Update 01/06/2021: On January 6, 2021, the argument -f was removed. 
-   Adding it will force rt.sh to exit immediately. The default for rt.sh is to run the full regression tests in rt.conf unless -l xyz.conf is provided."
 .. COMMENT: An -n option is discussed below. Why is this not printed when running ./rt.sh? 
 
 When running a large number (10's or 100's) of tests, the ``-e`` or ``-r`` options can significantly
@@ -391,8 +569,24 @@ decrease testing time by using a workflow manager (ecFlow or Rocoto, respectivel
 according to dependencies and run them concurrently. 
 The ``-n`` option can be used to run a single test; for example, ``./rt.sh -n control`` 
 will build the ATM model and run the ``control`` test. 
-The ``-c`` option is used to create a baseline. New baslines are needed when code changes lead 
+The ``-c`` option is used to create a baseline. New baselines are needed when code changes lead 
 to result changes and therefore deviate from existing baselines on a bit-for-bit basis.
+
+To run ``rt.sh`` using a custom configuration file and the Rocoto workflow manager, 
+creat the configuration file (e.g. ``my_rt.conf``) based on the desired tests in 
+``rt.conf``, and run:
+
+.. code-block:: console
+
+   ./rt.sh -r -l my_rt.conf
+
+adding additional arguments as desired. 
+
+To run a single test, users can try the following command instead of creating a ``my_rt.conf`` file:
+
+.. code-block:: console
+
+   ./rt.sh -r -k -n control_p8
 
 Troubleshooting
 ^^^^^^^^^^^^^^^^^^
@@ -445,7 +639,7 @@ specifying the ``-k`` option retains the ``$RUNDIR``, e.g. ``./rt.sh -l rt.conf 
 
 Inside the ``$RUNDIR`` directory are a number of model configuration files (``input.nml``, 
 ``model_configure``, ``nems.configure``) and other application
-dependent files (e.g., ``ice_in`` for the Subseasonal-to-Seasonal application).
+dependent files (e.g., ``ice_in`` for the Subseasonal-to-Seasonal Application).
 These model configuration files are
 generated by ``rt.sh`` from the template files in the ``tests/parm`` directory.
 Specific values used to fill in the template files are test-dependent and
@@ -508,11 +702,11 @@ Using the Operational Requirement Test Script
 The operational requirement test script ``opnReqTest`` in the ``tests`` directory can be used to run
 tests in place of ``rt.sh``. Given the name of a test, ``opnReqTest`` carries out a suite of test cases.
 Each test case addresses an aspect of the requirements that new operational implementations
-should satisfy. These requirements are shown in :numref:`Table %s <OperationalRequirement>`.
+must satisfy. These requirements are shown in :numref:`Table %s <OperationalRequirement>`.
 For the following discussions on opnReqTest, the user should note the distinction between
 ``'test name'`` and ``'test case'``. Examples of test names are ``control``, ``cpld_control``
 and ``regional_control`` which are all found in the ``tests/tests`` directory, whereas
-test case refers to any one of ``thr``, ``mpi``, ``dcp``, ``rst``, ``bit`` and ``dbg``.
+test case refers to any one of the operational requirements: ``thr``, ``mpi``, ``dcp``, ``rst``, ``bit`` and ``dbg``.
 
 .. _OperationalRequirement:
 
