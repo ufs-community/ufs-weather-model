@@ -37,7 +37,10 @@ Currently, HPC-Stack is the software stack validated by the UFS WM for running r
 However, UFS applications are shifting to spack-stack, which is a Spack-based 
 method for installing UFS prerequisite software libraries. The spack-stack is currently 
 used on NOAA Cloud platforms and in containers, while HPC-Stack is still used on NOAA
-Research & Development HPC Systems (RDHPCS). The spack-stack locations listed in :numref:`Table %s <stack-locations>` are still being validated. 
+Research & Development HPC Systems (RDHPCS). 
+
+.. COMMENT: Is this still true? 
+   The spack-stack locations listed in :numref:`Table %s <stack-locations>` are still being validated. 
 
 ----------------
 Common Modules
