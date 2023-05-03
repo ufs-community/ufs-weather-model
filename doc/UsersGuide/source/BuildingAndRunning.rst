@@ -326,6 +326,14 @@ For the ``ufs-weather-model ATMAQ`` configuration (standalone ATM coupled to :te
 
     export CMAKE_FLAGS="-DAPP=ATMAQ -DCCPP_SUITES=FV3_GFS_v15p2"
 
+**ATML**
+
+For the ``ufs-weather-model ATML`` configuration (standalone ATM coupled to :term:`LND`):
+
+.. code-block:: console
+
+    export CMAKE_FLAGS="-DAPP=ATML -DCCPP_SUITES=datm_cdeps_lnd_gswp3"
+
 S2S Configurations 
 ----------------------
 
@@ -415,6 +423,16 @@ For the ``ufs-weather-model HAFS-ALL`` configuration (data/atm/ocean/wave) in 32
 
     export CMAKE_FLAGS="-DAPP=HAFS-ALL -D32BIT=ON -DCCPP_SUITES=FV3_HAFS_v0_gfdlmp_tedmf,FV3_HAFS_v0_gfdlmp_tedmf_nonsst"
 
+LND Configurations
+----------------------
+
+**LND**
+
+For the ``ufs-weather-model LND`` configuration (datm/land):
+
+.. code-block:: console
+
+    export CMAKE_FLAGS="-DAPP=LND"
 
 ------------------
 Building the Model
