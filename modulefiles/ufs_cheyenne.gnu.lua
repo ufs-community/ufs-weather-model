@@ -8,7 +8,7 @@ unload("ncarcompilers/0.5.0")
 unload("mpt/2.25")
 unload("netcdf/4.8.1")
 
-prepend_path("MODULEPATH", "/glade/work/epicufsrt/contrib/spack-stack/spack-stack-1.3.0/envs/unified-env/install/modulefiles/Core")
+prepend_path("MODULEPATH", "/glade/work/epicufsrt/contrib/spack-stack/spack-stack-1.3.1/envs/unified-env/install/modulefiles/Core")
 prepend_path("MODULEPATH", "/glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc")
 
 stack_gnu_ver=os.getenv("stack_gnu_ver") or "10.1.0"
