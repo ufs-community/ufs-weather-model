@@ -1,0 +1,17 @@
+#!/bin/sh
+#SBATCH -e err
+#SBATCH -o out
+#SBATCH --qos=batch
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=@[TPN]
+#SBATCH --job-name="@[JBNME]"
+
+set -eux
+
+echo -n " $( date +%s )," >  job_timestamp.txt
+echo "Compile started:  " `date`
+
+@[PATHRT]/compile.sh @[MACHINE_ID] "@[MAKE_OPT]" @[COMPILE_NR]
+
+echo "Compile ended:    " `date`
+echo -n " $( date +%s )," >> job_timestamp.txt
