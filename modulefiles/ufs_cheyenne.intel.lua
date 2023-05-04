@@ -8,7 +8,7 @@ unload("ncarcompilers/0.5.0")
 unload("mpt/2.25")
 unload("netcdf/4.8.1")
 
-prepend_path("MODULEPATH", "/glade/work/epicufsrt/contrib/spack-stack/spack-stack-1.3.0/envs/unified-env/install/modulefiles/Core")
+prepend_path("MODULEPATH", "/glade/work/epicufsrt/contrib/spack-stack/spack-stack-1.3.1/envs/unified-env/install/modulefiles/Core")
 prepend_path("MODULEPATH", "/glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc")
 
 stack_intel_ver=os.getenv("stack_intel_ver") or "19.1.1.217"
