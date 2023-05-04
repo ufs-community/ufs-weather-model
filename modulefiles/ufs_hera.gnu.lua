@@ -19,9 +19,9 @@ load(pathJoin("cmake", cmake_ver))
 
 load("ufs_common")
 
-setenv("CC", "mpicc")
-setenv("CXX", "mpicxx")
-setenv("FC", "mpif90")
+setenv("CC", "gcc")
+setenv("CXX", "g++")
+setenv("FC", "gfortran")
 setenv("CMAKE_Platform", "hera.gnu")
 
 whatis("Description: UFS build environment")
