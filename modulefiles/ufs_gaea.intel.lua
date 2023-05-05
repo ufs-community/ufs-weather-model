@@ -5,7 +5,12 @@ help([[
 
 whatis([===[Loads libraries needed for building the UFS Weather Model on Gaea ]===])
 
-prepend_path("MODULEPATH", "/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/spack-stack-1.3.0/envs/unified-env/install/modulefiles/Core")
+unload("intel")
+unload("cray-mpich")
+unload("cray-python")
+unload("darshan")
+
+prepend_path("MODULEPATH", "/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/spack-stack-1.3.1/envs/unified-env/install/modulefiles/Core")
 prepend_path("MODULEPATH", "/lustre/f2/pdata/esrl/gsd/spack-stack/modulefiles")
 prepend_path("MODULEPATH", "/lustre/f2/dev/role.epic/contrib/modulefiles")
 
@@ -25,14 +30,10 @@ load(pathJoin("cmake", cmake_ver))
 load(pathJoin("gcc", os.getenv("gcc_ver") or "8.3.0"))
 -- Needed at runtime:
 load("alps")
-load("rocoto")
 
 load("ufs_common")
 
 setenv("CC","cc")
-setenv("FC","ftn")
 setenv("CXX","CC")
-setenv("CMAKE_C_COMPILER","cc")
-setenv("CMAKE_CXX_COMPILER","CC")
-setenv("CMAKE_Fortran_COMPILER","ftn")
+setenv("FC","ftn")
 setenv("CMAKE_Platform","gaea.intel")
