@@ -14,8 +14,8 @@ export LIST_FILES="atmf006.nc \
                    sfc.nest02.f006.nc \
                    archv.2020_238_18.a \
                    archs.2020_238_18.a \
-                   out_grd.ww3 \
-                   out_pnt.ww3"
+                   20200825.180000.out_grd.ww3 \
+                   20200825.180000.out_pnt.ww3"
 
 export_fv3
 export_hafs
@@ -110,24 +110,6 @@ export CPLOCN2ATM=.true.
 export CPLWAV=.true.
 export CPLWAV2ATM=.false.
 export CPL_IMP_MRG=.true.
-
-export DTFLD="10800"
-export DTPNT="10800"
-export GOFILETYPE=""
-export POFILETYPE=""
-export UNIPOINTS='ww3'
-export OUTPARS_WAV="WND HS T01 T02 DIR FP DP PHS PTP PDIR UST CHA USP"
-export WW3GRIDLINE="'ww3' 'no' 'no' 'CPL:native' 'no' 'no' 'no' 'no' 'no' 'no'  1  1  0.00 1.00  F"
-export WW3RSTDTHR=${FHMAX}
-export DT_2_RST="$(printf "%02d" $(( ${WW3RSTDTHR}*3600 )))"
-export RUN_BEG="${SYEAR}${SMONTH}${SDAY} $(printf "%02d" $(( ${SHOUR}  )))0000"
-export RUN_END="20200825 180000"
-export OUT_BEG=$RUN_BEG
-export OUT_END=$RUN_END
-export RST_BEG=$RUN_BEG
-export RST_2_BEG=$RUN_BEG
-export RST_END=$RUN_END
-export RST_2_END=$RUN_END
 
 # nems.configure
 export med_model=cmeps
