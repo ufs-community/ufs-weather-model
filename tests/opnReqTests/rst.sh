@@ -35,7 +35,7 @@ elif [[ $application == 'cpld' ]]; then
   RUN_BEG="${SYEAR}${SMONTH}${SDAY} $(printf "%02d" $(( ${FHROT}+${SHOUR} )))0000"
 elif [[ $application == 'atmw' ]]; then
   FHROT=$(( FHMAX/2 ))
-
+  RUNTYPE='continue'
   USE_RESTART_TIME='.true.'
   RESTART_N=$(( FHMAX - FHROT ))
   RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( SHOUR + FHROT  )))0000"
