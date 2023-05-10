@@ -236,6 +236,9 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   cp fv3_conf/fv3_slurm.IN_hera fv3_conf/fv3_slurm.IN
   cp fv3_conf/compile_slurm.IN_hera fv3_conf/compile_slurm.IN
 
+  # TMP use this path for LM4 cap
+  INPUTDATA_LM4=${INPUTDATA_LM4:-/scratch2/GFDL/gfdlscr/Justin.Perket/cmip6/datasets/CM4/common}
+
 elif [[ $MACHINE_ID = orion.* ]]; then
 
   module load gcc/8.3.0
