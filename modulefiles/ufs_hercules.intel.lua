@@ -17,6 +17,9 @@ cmake_ver=os.getenv("cmake_ver") or "3.23.1"
 load(pathJoin("cmake", cmake_ver))
 
 load("ufs_common")
+load("esmf/8.4.2")
+load("mapl/2.35.2")
+
 
 setenv("CC", "icc")
 setenv("CXX", "icpc")

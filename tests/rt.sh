@@ -258,11 +258,10 @@ elif [[ $MACHINE_ID = orion.* ]]; then
 
 elif [[ $MACHINE_ID = hercules.* ]]; then
 
-  #rocoto is not yet installed on Hercules
-  #module load contrib rocoto/1.3.1
-  #ROCOTORUN=$(which rocotorun)
-  #ROCOTOSTAT=$(which rocotostat)
-  #ROCOTOCOMPLETE=$(which rocotocomplete)
+  module load contrib rocoto/1.3.5
+  ROCOTORUN=$(which rocotorun)
+  ROCOTOSTAT=$(which rocotostat)
+  ROCOTOCOMPLETE=$(which rocotocomplete)
   export PATH=/apps/spack-managed/gcc-11.3.1/miniconda3-4.10.3-un3f2xdus7rbrzgso5ketsq4gp2iociv/bin:$PATH
   export PYTHONPATH=/apps/spack-managed/gcc-11.3.1/miniconda3-4.10.3-un3f2xdus7rbrzgso5ketsq4gp2iociv/lib/python3.9/site-packages
   ECFLOW_START=/work/noaa/epic-ps/role-epic-ps/spack-stack/ecflow-5.8.4-hercules/bin/ecflow_start.sh
@@ -271,7 +270,7 @@ elif [[ $MACHINE_ID = hercules.* ]]; then
   QUEUE=windfall
   COMPILE_QUEUE=windfall
   PARTITION=hercules
-  dprefix=/work/noaa/stmp/${USER}
+  dprefix=/work2/noaa/epic-ps/${USER}
   DISKNM=/work/noaa/nems/emc.nemspara/RT
   STMP=$dprefix/stmp
   PTMP=$dprefix/stmp
