@@ -8,7 +8,7 @@ load("sutils")
 cmake_ver=os.getenv("cmake_ver") or "3.20.1"
 load(pathJoin("cmake", cmake_ver))
 
-prepend_path("MODULEPATH", "/lfs4/HFIP/hfv3gfs/nwprod/hpc-stack.epic/libs/intel/2022.1.2/modulefiles/stack")
+prepend_path("MODULEPATH", "/mnt/lfs4/HFIP/hfv3gfs/role.epic/hpc-stack/libs/intel-2022.1.2/modulefiles/stack")
 
 hpc_ver=os.getenv("hpc_ver") or "1.2.0"
 load(pathJoin("hpc", hpc_ver))
@@ -25,5 +25,8 @@ setenv("CC", "mpiicc")
 setenv("CXX", "mpiicpc")
 setenv("FC", "mpiifort")
 setenv("CMAKE_Platform", "jet.intel")
+
+prepend_path("MODULEPATH", "/lfs4/BMC/ifi/modulefiles")
+try_load("ifi/20230118-intel-2022.1.2")
 
 whatis("Description: UFS build environment")

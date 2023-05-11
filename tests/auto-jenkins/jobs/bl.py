@@ -34,9 +34,9 @@ def set_directories(job_obj):
         rtbldir = '/lustre/f2/scratch/emc.nemspara/FV3_RT/'\
                  f'REGRESSION_TEST_{job_obj.compiler.upper()}'
     elif job_obj.machine == 'orion':
-        workdir = '/work/noaa/nems/emc.nemspara/autort/pr'
-        blstore = '/work/noaa/nems/emc.nemspara/RT/NEMSfv3gfs'
-        rtbldir = '/work/noaa/stmp/bcurtis/stmp/bcurtis/FV3_RT/'\
+        workdir = '/work/noaa/epic-ps/role-epic-ps/autort/tests/auto/pr'
+        blstore = '/work2/noaa/epic-ps/RT/NEMSfv3gfs'
+        rtbldir = '/work/noaa/stmp/role-epic-ps/stmp/role-epic-ps/FV3_RT/'\
                  f'REGRESSION_TEST_{job_obj.compiler.upper()}'
     elif job_obj.machine == 'cheyenne':
         workdir = '/glade/scratch/epicufsrt/autort/jenkins/autort/pr'

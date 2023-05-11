@@ -273,7 +273,7 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   COMPILE_QUEUE=batch
   ACCNR="${ACCNR:-h-nems}"
   PARTITION=xjet
-  DISKNM=/lfs4/HFIP/h-nems/emc.nemspara/RT
+  DISKNM=/mnt/lfs4/HFIP/hfv3gfs/role.epic/RT
   dprefix=${dprefix:-/lfs4/HFIP/$ACCNR/$USER}
   STMP=${STMP:-$dprefix/RT_BASELINE}
   PTMP=${PTMP:-$dprefix/RT_RUNDIRS}
@@ -358,7 +358,29 @@ elif [[ $MACHINE_ID = expanse.* ]]; then
   PTMP=$dprefix
   SCHEDULER=slurm
   cp fv3_conf/fv3_slurm.IN_expanse fv3_conf/fv3_slurm.IN
+  
+ elif [[ $MACHINE_ID = noaacloud.* ]]; then
+   
+  module use /apps/modules/modulefiles
+  module load rocoto/1.3.3
+   
+  ROCOTORUN=$(which rocotorun)
+  ROCOTOSTAT=$(which rocotostat)
+  ROCOTOCOMPLETE=$(which rocotocomplete)
+  ROCOTO_SCHEDULER=slurm
 
+  QUEUE=batch
+  COMPILE_QUEUE=batch
+  PARTITION=
+  dprefix=/lustre/
+  DISKNM=/contrib/ufs-weather-model/RT
+  STMP=$dprefix/stmp4
+  PTMP=$dprefix/stmp2
+  SCHEDULER=slurm
+  cp fv3_conf/fv3_slurm.IN_noaacloud fv3_conf/fv3_slurm.IN
+  cp fv3_conf/compile_slurm.IN_noaacloud fv3_conf/compile_slurm.IN
+  
+  
 else
   die "Unknown machine ID, please edit detect_machine.sh file"
 fi
@@ -445,7 +467,8 @@ if [[ $TESTS_FILE =~ '35d' ]] || [[ $TESTS_FILE =~ 'weekly' ]]; then
   TEST_35D=true
 fi
 
-BL_DATE=20230126
+
+BL_DATE=20230504
 
 RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
 
@@ -508,6 +531,10 @@ if [[ $ROCOTO == true ]]; then
   elif [[ $MACHINE_ID = s4.* ]]; then
     QUEUE=s4
     COMPILE_QUEUE=s4
+    ROCOTO_SCHEDULER=slurm
+  elif [[ $MACHINE_ID = noaacloud.* ]]; then
+    QUEUE=batch
+    COMPILE_QUEUE=batch
     ROCOTO_SCHEDULER=slurm
   elif [[ $MACHINE_ID = jet.* ]]; then
     QUEUE=batch
@@ -820,7 +847,7 @@ else
    echo ; echo REGRESSION TEST WAS SUCCESSFUL
   (echo ; echo REGRESSION TEST WAS SUCCESSFUL) >> ${REGRESSIONTEST_LOG}
 
-  rm -f fv3_*.x fv3_*.exe modules.fv3_* keep_tests.tmp
+  rm -f fv3_*.x fv3_*.exe modules.fv3_* modulefiles/modules.fv3_* keep_tests.tmp
   [[ ${KEEP_RUNDIR} == false ]] && rm -rf ${RUNDIR_ROOT}
   [[ ${ROCOTO} == true ]] && rm -f ${ROCOTO_XML} ${ROCOTO_DB} ${ROCOTO_STATE} *_lock.db
   [[ ${TEST_35D} == true ]] && rm -f tests/cpld_bmark*_20*

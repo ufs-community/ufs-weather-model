@@ -2,10 +2,6 @@ help([[
 loads UFS Model prerequisites for Hera/GNU
 ]])
 
-prepend_path("MODULEPATH", "/scratch1/NCEPDEV/nems/emc.nemspara/soft/modulefiles")
-miniconda3_ver=os.getenv("miniconda3_ver") or "3.7.3"
-load(pathJoin("miniconda3", miniconda3_ver))
-
 prepend_path("MODULEPATH", "/contrib/sutils/modulefiles")
 load("sutils")
 
