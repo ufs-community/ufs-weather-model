@@ -68,7 +68,6 @@ source $PATHRT/opnReqTests/wrt_env.sh
 
 cat <<EOF >>${RUNDIR_ROOT}/opnreq_test${RT_SUFFIX}.env
 export FHROT=${FHROT}
-export OUTPUT_FH=${OUTPUT_FH:-}
 export RESTART_FILE_PREFIX=${RESTART_FILE_PREFIX}
 export NSTF_NAME=${NSTF_NAME}
 export CICERUNTYPE=${CICERUNTYPE:-}
