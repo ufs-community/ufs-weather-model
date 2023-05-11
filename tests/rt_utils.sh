@@ -348,17 +348,22 @@ check_results() {
 
         if [[ $d -eq 1 && ${i##*.} == 'nc' ]] ; then
           if [[ ${MACHINE_ID} =~ orion || ${MACHINE_ID} =~ hera || ${MACHINE_ID} =~ wcoss2 || ${MACHINE_ID} =~ acorn || ${MACHINE_ID} =~ cheyenne || ${MACHINE_ID} =~ gaea || ${MACHINE_ID} =~ jet || ${MACHINE_ID} =~ s4 || ${MACHINE_ID} =~ noaacloud ]] ; then
-            printf ".......ALT CHECK.." >> ${REGRESSIONTEST_LOG}
+            printf ".......ALT CHECK.." >> ${RT_LOG}
             printf ".......ALT CHECK.."
             if [[ ${MACHINE_ID} =~ orion || ${MACHINE_ID} =~ hera || ${MACHINE_ID} =~ gaea || ${MACHINE_ID} =~ jet || ${MACHINE_ID} =~ cheyenne ]] ; then
-              nccmp -d -f -g --Attribute=checksum --warn=format ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i} ${RUNDIR}/${i} > ${i}_nccmp.log 2>&1 && d=$? || d=$?
+              nccmp -d -f -g -B --Attribute=checksum --warn=format ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i} ${RUNDIR}/${i} > ${i}_nccmp.log 2>&1 && d=$? || d=$?
+              if [[ $d -ne 0 && $d -ne 1 ]]; then
+		  echo "....ERROR" >> ${RT_LOG}
+		  echo "....ERROR"
+		  exit 1
+              fi
             else
               ${PATHRT}/compare_ncfile.py ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/$i ${RUNDIR}/$i > compare_ncfile.log 2>&1 && d=$? || d=$?
-            fi
-            if [[ $d -eq 1 ]]; then
-              echo "....ERROR" >> ${RT_LOG}
-              echo "....ERROR"
-              exit 1
+	      if [[ $d -eq 1 ]]; then
+		  echo "....ERROR" >> ${RT_LOG}
+		  echo "....ERROR"
+		  exit 1
+              fi
             fi
           fi
         fi
