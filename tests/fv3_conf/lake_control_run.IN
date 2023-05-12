@@ -1,0 +1,152 @@
+rm -fr INPUT RESTART
+if [ $NPX = 97 ]; then
+  inputdir=FV3_input_data
+elif [ $NPX = 49 ]; then
+  inputdir=FV3_input_data48
+elif [ $NPX = 193 ]; then
+  inputdir=FV3_input_data192
+elif [ $NPX = 385 ]; then
+  inputdir=FV3_input_data384
+elif [ $NPX = 769 ]; then
+  inputdir=FV3_input_data768
+fi
+echo "inputdir=$inputdir,NPX=$NPX"
+
+LAKE_DATA_PATH=@[INPUTDATA_ROOT]/lake_p8_water_fraction2020
+
+OPNREQ_TEST=${OPNREQ_TEST:-false}
+SUFFIX=${RT_SUFFIX}
+if [ $WARM_START = .false. ]; then
+  mkdir INPUT RESTART
+  cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127/* ./INPUT/.
+#  cp -r @[INPUTDATA_ROOT]/${inputdir}/ORO_FLAKE/* ./INPUT/.
+  cp $LAKE_DATA_PATH/oro_C96.mx100.tile1.nc ./INPUT/oro_data.tile1.nc
+  cp $LAKE_DATA_PATH/oro_C96.mx100.tile2.nc ./INPUT/oro_data.tile2.nc
+  cp $LAKE_DATA_PATH/oro_C96.mx100.tile3.nc ./INPUT/oro_data.tile3.nc
+  cp $LAKE_DATA_PATH/oro_C96.mx100.tile4.nc ./INPUT/oro_data.tile4.nc
+  cp $LAKE_DATA_PATH/oro_C96.mx100.tile5.nc ./INPUT/oro_data.tile5.nc
+  cp $LAKE_DATA_PATH/oro_C96.mx100.tile6.nc ./INPUT/oro_data.tile6.nc
+else
+  mkdir INPUT RESTART
+
+  if [[ ${OPNREQ_TEST} == true ]]; then
+    SUFFIX=${BL_SUFFIX}
+  fi
+
+  if [ $MODEL_INITIALIZATION = false ]; then
+    #read_inc and iau tests restart from fh=24
+    CURRDIR=`pwd`
+    FILEDIR=${CURRDIR}/../${DEP_RUN}${SUFFIX}/RESTART
+  else
+    #for warm start from initialiation time
+    FILEDIR=@[INPUTDATA_ROOT]/${inputdir}/INPUT_L127_GDAS
+  fi
+
+  if [[ ${IAU_OFFSET} != 0 ]] || [[ $READ_INCREMENT = .true. ]]; then
+
+    if [ $MODEL_INITIALIZATION = false ]; then
+      cp ${FILEDIR}/../INPUT/fv3_increment.nc INPUT/.
+      cp ${FILEDIR}/../INPUT/grid_spec.nc INPUT/.
+      cp ${FILEDIR}/../INPUT/*_grid.tile*.nc INPUT/.
+      cp ${FILEDIR}/../INPUT/oro_data.tile*.nc INPUT/.
+    else
+      cp ${FILEDIR}/fv_increment*.nc INPUT/.
+      cp ${FILEDIR}/grid_spec.nc INPUT/.
+      cp ${FILEDIR}/*_grid.tile*.nc INPUT/.
+      cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127/* ./INPUT/.
+#     cp -r @[INPUTDATA_ROOT]/${inputdir}/ORO_FLAKE/* ./INPUT/.
+      cp $LAKE_DATA_PATH/oro_C96.mx100.tile1.nc ./INPUT/oro_data.tile1.nc
+      cp $LAKE_DATA_PATH/oro_C96.mx100.tile2.nc ./INPUT/oro_data.tile2.nc
+      cp $LAKE_DATA_PATH/oro_C96.mx100.tile3.nc ./INPUT/oro_data.tile3.nc
+      cp $LAKE_DATA_PATH/oro_C96.mx100.tile4.nc ./INPUT/oro_data.tile4.nc
+      cp $LAKE_DATA_PATH/oro_C96.mx100.tile5.nc ./INPUT/oro_data.tile5.nc
+      cp $LAKE_DATA_PATH/oro_C96.mx100.tile6.nc ./INPUT/oro_data.tile6.nc
+    fi
+    cp ${FILEDIR}/coupler.res INPUT/.
+    cp ${FILEDIR}/fv_core.res.* INPUT/.
+    cp ${FILEDIR}/fv_srf_wnd.res.* INPUT/.
+    cp ${FILEDIR}/fv_tracer.* INPUT/.
+    cp ${FILEDIR}/phy_data.* INPUT/.
+    cp ${FILEDIR}/sfc_data.* INPUT/.
+  else
+    #restart test start from fh FHROT
+    cp -r ../${DEP_RUN}${SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.* ./INPUT
+    rm -f INPUT/fv_core.res.*
+    rm -f INPUT/fv_srf_wnd.res.*
+    rm -f INPUT/fv_tracer.res.*
+    rm -f INPUT/phy_data.*
+    rm -f INPUT/sfc_data.*
+    cp ${FILEDIR}/../INPUT/grid_spec.nc INPUT/.
+    cp ${FILEDIR}/../INPUT/*_grid.tile*.nc INPUT/.
+    cp ${FILEDIR}/../INPUT/oro_data*.nc INPUT/.
+    for RFILE in ../${DEP_RUN}${SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.*; do
+      [ -e $RFILE ] || exit 1
+      RFILE_OLD=$(basename $RFILE)
+      RFILE_NEW="${RFILE_OLD//${RESTART_FILE_PREFIX}./}"
+      cp $RFILE INPUT/${RFILE_NEW}
+    done
+  fi
+
+fi
+
+if [ $TILEDFIX = .true. ]; then
+    cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/@[ATMRES]*.nc .
+    cp    @[INPUTDATA_ROOT]/FV3_fix/global_glacier.2x2.grb .
+    cp    @[INPUTDATA_ROOT]/FV3_fix/global_maxice.2x2.grb .
+    cp    @[INPUTDATA_ROOT]/FV3_fix/RTGSST.1982.2012.monthly.clim.grb .
+    cp    @[INPUTDATA_ROOT]/FV3_fix/global_snoclim.1.875.grb .
+    cp    @[INPUTDATA_ROOT]/FV3_fix/CFSR.SEAICE.1982.2012.monthly.clim.grb .
+    cp    @[INPUTDATA_ROOT]/${inputdir}/@[FNSMCC] .
+    cp    @[INPUTDATA_ROOT]/${inputdir}/@[FNMSKH_control] .
+else
+    cp    @[INPUTDATA_ROOT]/${inputdir}/*grb .
+fi
+
+if [ $CPLWAV = .true. ]; then
+  cp    @[INPUTDATA_ROOT_WW3]/mod_def.* .
+  cp    @[INPUTDATA_ROOT_WW3]/rmp_src* .
+fi
+
+#inline post
+if [[ $POSTAPP = 'global' ]]; then
+  cp    ${PATHRT}/parm/post_itag_gfs itag
+  cp    ${PATHRT}/parm/postxconfig-NT-gfs.txt postxconfig-NT.txt
+  cp    ${PATHRT}/parm/postxconfig-NT-gfs_FH00.txt postxconfig-NT_FH00.txt
+  cp    ${PATHRT}/parm/params_grib2_tbl_new params_grib2_tbl_new
+fi
+
+#rrtmgp
+if [ $DO_RRTMGP = .true. ]; then
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_RRTMGP/* .
+fi
+
+#merra2
+if [ $USE_MERRA2 = .true. ]; then
+  for n in 01 02 03 04 05 06 07 08 09 10 11 12; do
+    cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/MERRA2/merra2.aerclim.2003-2014.m${n}.nc aeroclim.m${n}.nc
+  done
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_BC.v1_3.dat  optics_BC.dat
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_OC.v1_3.dat  optics_OC.dat
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_DU.v15_3.dat optics_DU.dat
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_SS.v3_3.dat  optics_SS.dat
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_SU.v1_3.dat  optics_SU.dat
+fi
+
+#ugwpv1
+if [ $DO_UGWP_V1 = .true. ]; then
+  cp    @[INPUTDATA_ROOT]/FV3_input_data/ugwp_c384_tau.nc ./ugwp_limb_tau.nc
+fi
+
+#Thompson
+if [ $IMP_PHYSICS = 8 ]; then
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_gsd/qr_acr_qsV2.dat .
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_gsd/qr_acr_qgV2.dat .
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_gsd/freezeH2O.dat .
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_gsd/CCN_ACTIVATE.BIN .
+fi
+
+#prognostic aerosols
+if [ $CPLCHM = .true. ]; then
+  cp      ${PATHRT}/parm/gocart/*.rc .
+  ln -sf  @[INPUTDATA_ROOT]/GOCART/ExtData .
+fi
