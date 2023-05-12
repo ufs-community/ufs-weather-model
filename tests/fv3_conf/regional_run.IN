@@ -25,13 +25,13 @@ cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_SS.v3_3.
 cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_SU.v1_3.dat  optics_SU.dat
 
 if [ $WARM_START = .true. ]; then
-    cp ../regional_control${RT_SUFFIX}/RESTART/20220824.030000.coupler.res             INPUT/coupler.res
-    cp ../regional_control${RT_SUFFIX}/RESTART/20220824.030000.fv_core.res.nc          INPUT/fv_core.res.nc
-    cp ../regional_control${RT_SUFFIX}/RESTART/20220824.030000.fv_core.res.tile1.nc    INPUT/fv_core.res.tile1.nc
-    cp ../regional_control${RT_SUFFIX}/RESTART/20220824.030000.fv_srf_wnd.res.tile1.nc INPUT/fv_srf_wnd.res.tile1.nc
-    cp ../regional_control${RT_SUFFIX}/RESTART/20220824.030000.fv_tracer.res.tile1.nc  INPUT/fv_tracer.res.tile1.nc
-    cp ../regional_control${RT_SUFFIX}/RESTART/20220824.030000.phy_data.nc             INPUT/phy_data.nc
-    cp ../regional_control${RT_SUFFIX}/RESTART/20220824.030000.sfc_data.nc             INPUT/sfc_data.nc
+    cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/20220824.030000.coupler.res             INPUT/coupler.res
+    cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/20220824.030000.fv_core.res.nc          INPUT/fv_core.res.nc
+    cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/20220824.030000.fv_core.res.tile1.nc    INPUT/fv_core.res.tile1.nc
+    cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/20220824.030000.fv_srf_wnd.res.tile1.nc INPUT/fv_srf_wnd.res.tile1.nc
+    cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/20220824.030000.fv_tracer.res.tile1.nc  INPUT/fv_tracer.res.tile1.nc
+    cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/20220824.030000.phy_data.nc             INPUT/phy_data.nc
+    cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/20220824.030000.sfc_data.nc             INPUT/sfc_data.nc
 fi
 if [ $WRITE_RESTART_WITH_BCS = .true. ]; then
     cp @[INPUTDATA_ROOT]/FV3_regional/RESTART/fv_core.res.tile1_new.nc                           RESTART/fv_core.res.tile1_new.nc

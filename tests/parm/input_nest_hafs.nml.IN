@@ -69,7 +69,7 @@
        nwat = @[NWAT]
        na_init = @[NA_INIT]
        d_ext = 0.0
-       dnats = 1
+       dnats = @[DNATS]
        fv_sg_adj = 300
        d2_bg = 0.
        nord =  2
@@ -93,7 +93,7 @@
        hord_tr = 8
        adjust_dry_mass = .false.
        consv_te = 0.
-       do_sat_adj = .true.
+       do_sat_adj = @[DO_SAT_ADJ]
        consv_am = .false.
        fill = .true.
        dwind_2d = .false.
@@ -143,7 +143,14 @@
        fhcyc          = @[FHCYC]
        use_ufo        = .true.
        pre_rad        = .false.
-       imp_physics    = 11
+       imp_physics    = @[IMP_PHYSICS]
+       ltaerosol    = .false.
+       lradar       = .true.
+       ttendlim     = -999
+       dt_inner     = @[DT_INNER]
+       sedi_semi    = @[SEDI_SEMI]
+       decfl        = @[DECFL]
+       ext_diag_thompson = .false.
        pdfcld         = .false.
        fhswr          = @[FHSWR]
        fhlwr          = @[FHLWR]
@@ -174,7 +181,7 @@
        cnvcld         = .true.
        imfshalcnv     = 2
        imfdeepcnv     = 2
-       cdmbgwd        = 0.88,0.04
+       cdmbgwd        = 1.0,1.0,1.0,1.0
        sfc_z0_type    = 6
        prslrd0        = 0.
        ivegsrc        = 1
@@ -218,6 +225,15 @@
        do_skeb        = .false.
        lndp_type      = 0
        n_var_lndp     = 0
+       gwd_opt        = 2
+       do_ugwp_v0     = .false.
+       do_ugwp_v1     = .false.
+       do_ugwp_v1_w_gsldrag = .false.
+       do_ugwp_v1_orog_only = .false.
+       do_gsl_drag_ls_bl    = .true.
+       do_gsl_drag_ss       = .true.
+       do_gsl_drag_tofd     = .true.
+       do_ugwp_v0_orog_only = .false.
 /
 
  &gfdl_cloud_microphysics_nml

@@ -29,6 +29,7 @@ elif [[ $application == 'cpld' ]]; then
   LIST_FILES=$(echo -n $LIST_FILES | sed -E "s/sfcf024/sfcf003/g" \
                                    | sed -E "s/atmf024/atmf003/g" \
                                    | sed -E "s/2021-03-23-21600/2021-03-22-32400/g" \
+                                   | sed -E "s/20210323\.060000/20210322\.090000/g" \
                                    | sed -E "s/sfcf021\.tile[1-6]\.nc ?//g" \
                                    | sed -E "s/atmf021\.tile[1-6]\.nc ?//g" \
                                    | sed -E "s/(gocart\.inst_aod\.202103)23_0600z\.nc4/\122_0900z\.nc4/g" \

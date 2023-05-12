@@ -1,0 +1,45 @@
+#!/bin/sh
+#SBATCH -e err
+#SBATCH -o out
+#SBATCH --qos=batch
+### #SBATCH --ntasks=@[TASKS]
+#SBATCH --nodes=@[NODES]
+#SBATCH --ntasks-per-node=@[TPN]
+#SBATCH --job-name="@[JBNME]"
+#SBATCH --exclusive
+
+set -eux
+echo -n " $( date +%s )," >  job_timestamp.txt
+
+set +x
+MACHINE_ID=noaacloud
+module use $( pwd -P )
+module use /contrib/EPIC/spack-stack/spack-stack-1.3.0/envs/unified-dev/install/modulefiles/Core
+module load stack-intel/2021.3.0  stack-intel-oneapi-mpi/2021.3.0
+module load ufs-weather-model-env/unified-dev
+module list
+
+set -x
+
+ulimit -s unlimited
+ulimit -l unlimited
+
+echo "Model started:  " `date`
+
+#export MPI_TYPE_DEPTH=20
+export OMP_STACKSIZE=512M
+export KMP_AFFINITY=scatter
+export OMP_NUM_THREADS=1
+#export ESMF_RUNTIME_COMPLIANCECHECK=OFF:depth=4
+#export PSM_RANKS_PER_CONTEXT=4
+#export PSM_SHAREDCONTEXTS=1
+#export ESMF_RUNTIME_PROFILE=ON
+#export ESMF_RUNTIME_PROFILE_OUTPUT="SUMMARY"
+
+# Avoid job errors because of filesystem synchronization delays
+sync && sleep 1
+
+srun --mpi=pmi2 --label -n @[TASKS] ./fv3.exe
+
+echo "Model ended:    " `date`
+echo -n " $( date +%s )," >> job_timestamp.txt
