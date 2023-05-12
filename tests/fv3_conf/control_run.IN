@@ -70,15 +70,6 @@ else
       cp $RFILE INPUT/${RFILE_NEW}
     done
   fi
-
-  if [ $CPLLND = .true. ]; then
-    # land restart file
-    cp ../${DEP_RUN}${SUFFIX}/ufs.cpld.lnd.out.${RESTART_FILE_SUFFIX_SECS}.tile*.nc RESTART/.
-    # CMEPS restart and pointer files
-    RFILE=ufs.cpld.cpl.r.${RESTART_FILE_SUFFIX_SECS}.nc
-    cp  ../${DEP_RUN}${SUFFIX}/RESTART/${RFILE} .
-    ls -1 ${RFILE}>rpointer.cpl
-  fi
 fi
 
 if [ $TILEDFIX = .true. ]; then

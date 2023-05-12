@@ -199,7 +199,7 @@ export USE_CICE_ALB=.false.
 
 export WRITE_NSFLIP=.true.
 
-export FV3_RUN=control_run.IN
+export FV3_RUN="control_run.IN noahmp_run.IN"
 export CCPP_SUITE=FV3_GFS_v17_p8
 export FIELD_TABLE=field_table_thompson_noaero_tke
 export DIAG_TABLE=diag_table_p8_template
@@ -236,10 +236,17 @@ export lnd_ic_type='sfc'
 export CALC_SNET=.false.
 export layout_x=3
 export layout_y=8
-export mosaic_file="INPUT/grid_spec.nc"
+export LNDRES=C96
 export coupling_interval_sec=720
 export snow_albedo_option=1
 export precip_partition_option=4
 export initial_albedo=0.2
 export TOPOEDITS=""
 export OUTPUT_FH="1 -1"
+if [[ "$ATMRES" = "$LNDRES" ]]; then
+  export lnd_input_dir="INPUT/"
+  export mosaic_file="INPUT/${LNDRES}_mosaic.nc"
+else
+  export lnd_input_dir="INPUT/${LNDRES}/"
+  export mosaic_file="INPUT/${LNDRES}/${LNDRES}_mosaic.nc"
+fi
