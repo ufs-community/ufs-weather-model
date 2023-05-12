@@ -1446,7 +1446,7 @@ However, ``nems.configure`` files for other configurations of the Weather Model 
          .. COMMENT: Is this a regular S2S nems.configure file, or is it special? What's the talk about "atmosphere-oceans fluxes"?
 
    * :doc:`S2SW <samples/nems.configure.S2SW>` (fully coupled ``S2SW`` configuration)
-   * :doc:`S2SWA <samples/nems.configure.S2SAW>` (coupled GOCART in the S2SAW configuration)
+   * :doc:`S2SWA <samples/nems.configure.S2SWA>` (coupled GOCART in the S2SAW configuration)
    * :doc:`NG-GODAS <samples/nems.configure.NG-GODAS>` (coupled NG-GODAS configuration)
    * :doc:`HAFS <samples/nems.configure.HAFS>` (coupled HAFS configuration)
 
