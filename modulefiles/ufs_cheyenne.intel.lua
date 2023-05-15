@@ -34,6 +34,9 @@ load(pathJoin("hpc-intel", hpc_intel_ver))
 hpc_mpt_ver=os.getenv("hpc_mpt_ver") or "2.25"
 load(pathJoin("hpc-mpt", hpc_mpt_ver))
 
+scotch_ver=os.getenv("scotch_ver") or "7.0.3"
+load(pathJoin("scotch", scotch_ver))
+
 load("ufs_common")
 
 setenv("CC", "mpicc")
