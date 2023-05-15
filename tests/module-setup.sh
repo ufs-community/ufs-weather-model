@@ -43,7 +43,14 @@ elif [[ $MACHINE_ID = cheyenne* ]] ; then
         source /glade/u/apps/ch/modulefiles/default/localinit/localinit.sh
     fi
     module purge
-
+    
+elif [[ $MACHINE_ID = noaacloud* ]] ; then
+    # We are on NOAA Cloud
+    if ( ! eval module help > /dev/null 2>&1 ) ; then
+        source /apps/lmod/8.5.2/init/bash
+    fi
+    module purge
+    
 elif [[ $MACHINE_ID = stampede* ]] ; then
     # We are on TACC Stampede
     if ( ! eval module help > /dev/null 2>&1 ) ; then

@@ -73,6 +73,18 @@
 
   INPES_aqm=33; JNPES_aqm=8
 
+  THRD_cpl_unstr=1
+  INPES_cpl_unstr=3; JNPES_cpl_unstr=8; WPG_cpl_unstr=6
+  OCN_tasks_cpl_unstr=20
+  ICE_tasks_cpl_unstr=10
+  WAV_tasks_cpl_unstr=60
+
+  THRD_cpl_unstr_mpi=1
+  INPES_cpl_unstr_mpi=4; JNPES_cpl_unstr_mpi=8; WPG_cpl_unstr_mpi=6
+  OCN_tasks_cpl_unstr_mpi=34
+  ICE_tasks_cpl_unstr_mpi=20
+  WAV_tasks_cpl_unstr_mpi=50
+
   aqm_omp_num_threads=1
   atm_omp_num_threads=1
   chm_omp_num_threads=1
@@ -258,6 +270,34 @@ elif [[ $MACHINE_ID = stampede.* ]]; then
   TPN_cpl_atmw_gdas=12; INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8
   THRD_cpl_atmw_gdas=4; WPG_cpl_atmw_gdas=24; APB_cpl_atmw_gdas="0 311"; WPB_cpl_atmw_gdas="312 559"
 
+elif [[ ${MACHINE_ID} = noaacloud.* ]] ; then
+
+    if [[ $PW_CSP == aws ]]; then
+    TPN=36
+    elif [[ $PW_CSP == azure ]]; then
+    TPN=44
+    elif [[ $PW_CSP == google ]]; then
+    TPN=30
+    fi
+
+    INPES_dflt=3 ; JNPES_dflt=8
+    INPES_thrd=3 ; JNPES_thrd=4
+    
+    INPES_c384=8 ; JNPES_c384=6  ; THRD_c384=2
+    INPES_c768=8 ; JNPES_c768=16 ; THRD_c768=2
+
+    THRD_cpl_dflt=1
+    INPES_cpl_dflt=3; JNPES_cpl_dflt=8; WPG_cpl_dflt=6
+    OCN_tasks_cpl_dflt=20
+    ICE_tasks_cpl_dflt=10
+    WAV_tasks_cpl_dflt=20
+
+    THRD_cpl_thrd=2
+    INPES_cpl_thrd=3; JNPES_cpl_thrd=4; WPG_cpl_thrd=6
+    OCN_tasks_cpl_thrd=20
+    ICE_tasks_cpl_thrd=10
+    WAV_tasks_cpl_thrd=12
+
 elif [[ $MACHINE_ID = expanse.* ]]; then
 
   echo "Unknown MACHINE_ID ${MACHINE_ID}. Please update tasks configurations in default_vars.sh"
@@ -269,7 +309,8 @@ elif [[ $MACHINE_ID = expanse.* ]]; then
 
   TPN_cpl_atmw_gdas=12; INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8
   THRD_cpl_atmw_gdas=2; WPG_cpl_atmw_gdas=24; APB_cpl_atmw_gdas="0 311"; WPB_cpl_atmw_gdas="312 559"
-
+  
+  
 else
 
   echo "Unknown MACHINE_ID ${MACHINE_ID}"
