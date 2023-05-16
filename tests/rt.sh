@@ -264,6 +264,9 @@ elif [[ $MACHINE_ID = hercules.* ]]; then
   ROCOTOCOMPLETE=$(which rocotocomplete)
   export PATH=/apps/spack-managed/gcc-11.3.1/miniconda3-4.10.3-un3f2xdus7rbrzgso5ketsq4gp2iociv/bin:$PATH
   export PYTHONPATH=/apps/spack-managed/gcc-11.3.1/miniconda3-4.10.3-un3f2xdus7rbrzgso5ketsq4gp2iociv/lib/python3.9/site-packages
+
+  module use /work/noaa/epic-ps/role-epic-ps/spack-stack/modulefiles
+  module load ecflow/5.8.4-hercules
   ECFLOW_START=/work/noaa/epic-ps/role-epic-ps/spack-stack/ecflow-5.8.4-hercules/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
