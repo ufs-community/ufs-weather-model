@@ -35,7 +35,7 @@ elif [[ $application == 'cpld' ]]; then
   RUN_BEG="${SYEAR}${SMONTH}${SDAY} $(printf "%02d" $(( ${FHROT}+${SHOUR} )))0000"
 elif [[ $application == 'atmw' ]]; then
   FHROT=$(( FHMAX/2 ))
-  RUNTYPE='continue'
+  RUNTYPE='startup'
   USE_RESTART_TIME='.true.'
   MOM6_RESTART_SETTING="n"
   RESTART_N=$(( FHMAX - FHROT ))
