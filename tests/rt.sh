@@ -188,6 +188,9 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
   export PATH=/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/envs/ufs-weather-model/bin:/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/bin:$PATH
   export PATH=/lustre/f2/pdata/esrl/gsd/spack-stack/miniconda-3.9.12/bin:$PATH
   export PYTHONPATH=/lustre/f2/pdata/esrl/gsd/spack-stack/miniconda-3.9.12/lib/python3.9/site-packages
+  
+  module use /lustre/f2/pdata/esrl/gsd/spack-stack/modulefiles
+  module load ecflow/5.8.4
   ECFLOW_START=/lustre/f2/pdata/esrl/gsd/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
@@ -214,8 +217,8 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   PYTHONHOME=/scratch1/NCEPDEV/jcsda/jedipara/spack-stack/miniconda-3.9.12
   export PATH=$PYTHONHOME/bin:$PATH
   export PYTHONPATH=$PYTHONHOME/lib/python3.9/site-packages
-
-  module load ecflow
+  
+  module load ecflow/5.5.3
   ECFLOW_START=ecflow_start.sh
 
   QUEUE=batch
@@ -242,6 +245,9 @@ elif [[ $MACHINE_ID = orion.* ]]; then
   ROCOTOCOMPLETE=$(which rocotocomplete)
   export PATH=/work/noaa/da/role-da/spack-stack/miniconda-3.9.7/bin:$PATH
   export PYTHONPATH=/work/noaa/da/role-da/spack-stack/miniconda-3.9.7/lib/python3.9/site-packages
+
+  module use /work/noaa/da/role-da/spack-stack/modulefiles
+  module load ecflow/5.8.4
   ECFLOW_START=/work/noaa/da/role-da/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
@@ -293,7 +299,9 @@ elif [[ $MACHINE_ID = s4.* ]]; then
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=slurm
 
-  ECFLOW_START=/opt/ecflow/5.6.0/bin/ecflow_start.sh
+  module use /data/prod/jedi/spack-stack/modulefiles
+  module load ecflow/5.8.4
+  ECFLOW_START=/data/prod/jedi/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh 
   ECF_PORT=$(( $(id -u) + 1500 ))
 
   QUEUE=s4
@@ -315,6 +323,9 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
   export PATH=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/bin:/glade/p/ral/jntp/tools/miniconda3/4.8.3/bin:$PATH
   export PATH=/glade/work/jedipara/cheyenne/spack-stack/miniconda-3.9.12/bin:$PATH
   export PYTHONPATH=/glade/work/jedipara/cheyenne/spack-stack/miniconda-3.9.12/lib/python3.9/site-packages
+
+  module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc
+  module load ecflow/5.8.4
   ECFLOW_START=/glade/work/jedipara/cheyenne/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
