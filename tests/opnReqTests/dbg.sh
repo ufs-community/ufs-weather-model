@@ -37,8 +37,8 @@ elif [[ $application == 'cpld' ]]; then
                                    | sed -E "s/20210323\.060000\.out_grd\.ww3/20210322\.090000\.out_grd\.ww3/g" \
                                    | sed -e "s/^ *//" -e "s/ *$//")
 elif [[ $application == 'atmw' ]]; then
-  FHMAX=3
-  DAYS=0.125
+  FHMAX=12
+  DAYS=0.5
   NFHOUT_HF=1
   RESTART_INTERVAL=${FHMAX}
   RESTART_N=${FHMAX}
