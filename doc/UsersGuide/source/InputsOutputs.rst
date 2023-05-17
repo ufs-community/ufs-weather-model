@@ -4,44 +4,52 @@
 Data: Input, Model Configuration, and Output Files
 *****************************************************
 
-The UFS Weather Model can be run in one of several configurations, from a single component atmospheric 
+The UFS Weather Model can be run in one of several configurations (sometimes referred to as "applications"), from a single-component atmospheric 
 model to a fully coupled model with multiple earth system components (e.g., atmosphere, ocean, sea-ice and 
-mediator). Currently the supported configurations are:
+mediator). Currently, supported configurations include:
 
 .. _UFS-configurations:
 
 .. list-table:: *Supported ufs-weather-model applications*
    :widths: 10 70
    :header-rows: 1
-   
+
    * - Configuration Name
      - Description
-   * - ATM
-     - Standalone UFSAtm
-   * - ATMW
-     - UFSAtm coupled to WW3
-   * - ATMAERO
-     - UFSAtm coupled to GOCART
-   * - ATMAQ
-     - UFSAtm coupled to CMAQ
-   * - S2S
-     - Coupled UFSATM-MOM6-CICE6-CMEPS
-   * - S2SA
-     - Coupled UFSATM-MOM6-CICE6-GOCART-CMEPS
-   * - S2SW
-     - Coupled UFSATM-MOM6-CICE6-WW3-CMEPS
-   * - S2SWA
-     - Coupled UFSATM-MOM6-CICE6-WW3-GOCART-CMEPS
-   * - NG-GODAS
-     - Coupled CDEPS-DATM-MOM6-CICE6-CMEPS
-   * - HAFS
-     - Coupled UFSATM-HYCOM-CMEPS
-   * - HAFSW
-     - Coupled UFSATM-HYCOM-WW3-CMEPS
-   * - HAFS-ALL
-     - Coupled CDEPS-UFSATM-HYCOM-WW3-CMEPS
+   * - :ref:`ATM <atm>`
+     - Standalone Atmospheric Model (:term:`ATM`)
+   * - :ref:`ATMW <atmw>`
+     - :term:`ATM` coupled to :term:`WW3`
+   * - :ref:`ATMAERO <atmaero>`
+     - :term:`ATM` coupled to :term:`GOCART`
+   * - :ref:`ATMAQ <atmaq>`
+     - :term:`ATM` coupled to :term:`CMAQ`
+   * - :ref:`ATML <atml>`
+     - Coupled :term:`ATM`- :term:`LND` - :term:`MOM6` - :term:`CICE6` - :term:`CMEPS`
+   * - :ref:`S2S <s2s>`
+     - Coupled :term:`ATM` - :term:`MOM6` - :term:`CICE6` - :term:`CMEPS`
+   * - :ref:`S2SA <s2sa>`
+     - Coupled :term:`ATM` - :term:`MOM6` - :term:`CICE6` - :term:`GOCART` - :term:`CMEPS`
+   * - :ref:`S2SW <s2sw>`
+     - Coupled :term:`ATM` - :term:`MOM6` - :term:`CICE6` - :term:`WW3` - :term:`CMEPS`
+   * - :ref:`S2SWA <s2swa>`
+     - Coupled :term:`ATM` - :term:`MOM6` - :term:`CICE6` - :term:`GOCART` - :term:`WW3` - :term:`CMEPS`
+   * - :ref:`NG-GODAS <ng-godas>`
+     - Coupled :term:`CDEPS` - :term:`DATM` - :term:`MOM6` - :term:`CICE6` - :term:`CMEPS`
+   * - :ref:`LND <lnd>`
+     - Coupled :term:`CDEPS` - :term:`DATM` - :term:`LND` -:term:`CMEPS`
+   * - :ref:`HAFS <hafs>`
+     - Coupled :term:`ATM` - :term:`HYCOM` - :term:`CMEPS`
+   * - :ref:`HAFSW <hafsw>`
+     - Coupled :term:`ATM` - :term:`HYCOM` - :term:`WW3` - :term:`CMEPS`
+   * - :ref:`HAFS-ALL <hafs-all>`
+     - Coupled :term:`CDEPS` - :term:`ATM` - :term:`HYCOM` - :term:`WW3` - :term:`CMEPS`
 
-Each of the component models for a given configuration requires specific input files, and each component model outputs a particular set of files. Each configuration requires a set of model configuration files, as well. This chapter describes the input and output files involved with each component model. It also discusses the various configuration files involved in running the model. Users will need to view the input file requirements for each component model involved in the configuration they are running. For example, users running the *S2S* configuration would need to gather input data required for the *ATM*, *MOM6*, and *CICE6* component models. Then, they would need to alter certain model configuration files to reflect the ``ufs-weather-model`` configuration they plan to run. 
+
+.. COMMENT: CMEPS for LND? Are those the right components for ATML?
+.. COMMENT: Should HAFS-ALL be DATM instead of ATM?
+
+This chapter describes the input and output files needed for executing the model in the various supported configurations (see :numref:`Table %s <UFS-configurations>`). Each of the component models for a given configuration requires specific input files, and each component model outputs a particular set of files. Each configuration requires a set of model configuration files, as well. This chapter describes the input and output files involved with each component model. It also discusses the various configuration files involved in running the model. Users will need to view the input file requirements for each component model involved in the configuration they are running. For example, users running the *S2S* configuration would need to gather input data required for the *ATM*, *MOM6*, and *CICE6* component models. Then, they would need to alter certain model configuration files to reflect the ``ufs-weather-model`` configuration they plan to run. 
 
 =============
 Input files
@@ -940,6 +948,92 @@ AQM inputs defined in ``aqm.rc`` are listed and described in :numref:`Table %s <
    * - Hourly_Emissions_regrid_rrfs_13km_20190801_t12z_h72.nc
      - File Emissions File 
 
+.. _lnd-io:
+
+-------
+LND
+-------
+
+LND component datasets are available from the Land Data Assimilation (DA) System Data Bucket and can be retrieved using a ``wget`` command: 
+
+.. code-block:: console
+
+   wget https://noaa-ufs-land-da-pds.s3.amazonaws.com/current_land_da_release_data/landda-test-inps.tar.gz
+   tar xvfz landda-test-inps.tar.gz
+
+These files will be untarred into an ``inputs`` directory if the user does not specify a different name. They include data for Jan 1-2, 2016 with restarts available for Jan. 3-4, 2016. :numref:`Table %s <LndInputFiles>` describes the file types. In each file name, ``YYYY`` refers to a valid 4-digit year, ``MM`` refers to a valid 2-digit month, and ``DD`` refers to a valid 2-digit day of the month. 
+
+.. _LndInputFiles:
+
+.. list-table:: *LND input files*
+   :widths: 30 60 10
+   :header-rows: 1
+
+   * - Filename
+     - Description
+     - File Type
+   * - ufs-land_C96_static_fields.nc
+     - Static file that includes information on location, time, soil layers, and fixed (invariant) experiment parameters.
+     - Fix/static file
+   * - ufs-land_C96_init_fields_1hr.nc
+     - Initial conditions file that includes the initial state variables that are required for the UFS land snow DA to begin a cycling run.
+     - Initial conditions
+   * - C96_grid.tileN.nc
+     - C96 grid information for tiles 1-6, where N is the grid tile number [1-6]. 
+     - Grid
+   * - C96_oro_data.tileN.nc / oro_C96.mx100.tileN.nc
+     - Orography files that contain grid and land mask information, where N is the grid tile number [1-6]. ``mx100`` refers to the ocean resolution (100=1º).
+     - Grid
+   * - ufs-land.namelist.gdas
+     - Land component model configuration (namelist) file
+     - Model configuration
+   * - ghcn_snwd_ioda_YYYYMMDD.nc
+     - Snow depth data assimilation files
+     - DA
+   * - C96_GDAS_forcing_YYYY-MM-DD.nc
+     - GDAS forcing files
+     - Forcing
+   * - ufs_land_restart.2015-09-01_18-00-00.nc
+     - Restart file
+     - Restart
+   * - ufs_land_restart.2016-01-01_18-00-00.nc
+     - Restart file
+     - Restart
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Static Datasets (i.e., *fix files*)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The static file (listed in :numref:`Table %s <LndInputFiles>`) includes specific information on location, time, soil layers, and fixed (invariant) experiment parameters that are required for the land component to run. The data must be provided in :term:`netCDF` format.
+
+The static file is available in the ``inputs`` data directory at the following path:
+
+.. code-block:: 
+
+   inputs/forcing/gdas/static/ufs-land_C96_static_fields.nc
+
+Details on the configuration variables included in this file are available from the :ref:`Land DA documentation <landda:InputFiles>`. 
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Grid Description and Initial Condition Files
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The input files containing grid information and the initial conditions for global configurations are listed and described in :numref:`Table %s <LndInputFiles>`. 
+
+The initial conditions file includes the initial state variables that are required for the UFS land snow DA to begin a cycling run. The data must be provided in :term:`netCDF` format.
+
+The initial conditions file is available in the ``inputs`` data directory (downloaded :ref:`above <lnd-io>`) at the following path:
+
+.. code-block:: 
+
+   inputs/forcing/GDAS/init/ufs-land_C96_init_fields_1hr.nc
+
+^^^^^^^^^^^^^^^^^^^^
+Additional Files
+^^^^^^^^^^^^^^^^^^^^
+
+The LND component uses a model configuration namelist file as well as atmospheric forcing files, data assimilation files, and restart files, which are also listed in :numref:`Table %s <LndInputFiles>`. 
+
 .. _model-config-files:
 
 ==========================
@@ -1438,7 +1532,7 @@ A sample of the file contents is shown below:
     ATM
   ::
 
-However, ``nems.configure`` files for other configurations of the Weather Model are more complex. A number of samples are available below: 
+However, ``nems.configure`` files for other configurations of the Weather Model are more complex. A full set of ``nems.configure`` templates is available in the ``ufs-weather-model/tests/parm/`` directory `here <https://github.com/ufs-community/ufs-weather-model/tree/develop/tests/parm>`__. Template names follow the pattern ``nems.configure.*.IN``. A number of samples are available below: 
 
    * :doc:`ATMAQ <samples/nems.configure.ATMAQ>` configuration
    * :doc:`S2S <samples/nems.configure.S2S>` (fully coupled ``S2S`` configuration that receives atmosphere-ocean fluxes from a mediator)
@@ -1449,6 +1543,7 @@ However, ``nems.configure`` files for other configurations of the Weather Model 
    * :doc:`S2SWA <samples/nems.configure.S2SWA>` (coupled GOCART in the S2SAW configuration)
    * :doc:`NG-GODAS <samples/nems.configure.NG-GODAS>` (coupled NG-GODAS configuration)
    * :doc:`HAFS <samples/nems.configure.HAFS>` (coupled HAFS configuration)
+   * :doc:`LND <samples/nems.configure.ATM_LND>` (ATML configuration)
 
    * For more HAFS, HAFSW, and HAFS-ALL configurations please see the following ``nems.configure`` templates:
 
