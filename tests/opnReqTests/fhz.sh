@@ -22,8 +22,8 @@ elif [[ $application == 'cpld' ]]; then
   fi
 elif [[ $application == 'atmw' ]]; then
   FHZERO=3
-  LIST_FILES=$(echo -n $LIST_FILES | sed -E "s/sfcf024.nc ?//g" \
-                                   | sed -E "s/atmf024.nc ?//g" \
+  LIST_FILES=$(echo -n $LIST_FILES | sed -E "s/sfcf012.nc ?//g" \
+                                   | sed -E "s/atmf012.nc ?//g" \
                                    | sed -e "s/^ *//" -e "s/ *$//")
 else
   echo "This test is not yet set up for the fhzero test"
