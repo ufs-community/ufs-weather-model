@@ -360,12 +360,12 @@ elif [[ $MACHINE_ID = expanse ]]; then
   PTMP=$dprefix
   SCHEDULER=slurm
   cp fv3_conf/fv3_slurm.IN_expanse fv3_conf/fv3_slurm.IN
-  
+
  elif [[ $MACHINE_ID = noaacloud.* ]]; then
-   
+
   module use /apps/modules/modulefiles
   module load rocoto/1.3.3
-   
+
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
@@ -381,8 +381,8 @@ elif [[ $MACHINE_ID = expanse ]]; then
   SCHEDULER=slurm
   cp fv3_conf/fv3_slurm.IN_noaacloud fv3_conf/fv3_slurm.IN
   cp fv3_conf/compile_slurm.IN_noaacloud fv3_conf/compile_slurm.IN
-  
-  
+
+
 else
   die "Unknown machine ID, please edit detect_machine.sh file"
 fi
