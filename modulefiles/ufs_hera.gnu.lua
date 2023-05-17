@@ -22,6 +22,9 @@ load(pathJoin("hpc-gnu", hpc_gnu_ver))
 hpc_mpich_ver=os.getenv("hpc_mpich_ver") or "3.3.2"
 load(pathJoin("hpc-mpich", hpc_mpich_ver))
 
+scotch_ver=os.getenv("scotch_ver") or "7.0.3"
+load(pathJoin("scotch", scotch_ver))
+
 load("ufs_common")
 
 setenv("CC", "mpicc")
