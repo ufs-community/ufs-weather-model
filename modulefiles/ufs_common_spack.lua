@@ -1,26 +1,27 @@
 help([[
-loads UFS Model common libraries for debug
+loads UFS Model common libraries
 ]])
 
-jasper_ver=os.getenv("jasper_ver") or "2.0.25"
+jasper_ver=os.getenv("jasper_ver") or "2.0.32"
 load(pathJoin("jasper", jasper_ver))
 
-zlib_ver=os.getenv("zlib_ver") or "1.2.11"
+zlib_ver=os.getenv("zlib_ver") or "1.2.13"
 load(pathJoin("zlib", zlib_ver))
 
 libpng_ver=os.getenv("libpng_ver") or "1.6.37"
 load(pathJoin("libpng", libpng_ver))
 
-hdf5_ver=os.getenv("hdf5_ver") or "1.10.6"
+hdf5_ver=os.getenv("hdf5_ver") or "1.14.0"
 load(pathJoin("hdf5", hdf5_ver))
 
-netcdf_ver=os.getenv("netcdf_ver") or "4.7.4"
-load(pathJoin("netcdf", netcdf_ver))
+netcdf_ver=os.getenv("netcdf_ver") or "4.9.0"
+load(pathJoin("netcdf-c", netcdf_ver))
+load(pathJoin("netcdf-fortran", "4.6.0"))
 
-pio_ver=os.getenv("pio_ver") or "2.5.7"
-load(pathJoin("pio", pio_ver))
+pio_ver=os.getenv("pio_ver") or "2.5.9"
+load(pathJoin("parallelio", pio_ver))
 
-esmf_ver=os.getenv("esmf_ver") or "8.3.0b09-debug"
+esmf_ver=os.getenv("esmf_ver") or "8.3.0b09"
 load(pathJoin("esmf", esmf_ver))
 
 fms_ver=os.getenv("fms_ver") or "2022.04"
@@ -53,4 +54,4 @@ load(pathJoin("gftl-shared", gftl_shared_ver))
 mapl_ver=os.getenv("mapl_ver") or "2.22.0-esmf-8.3.0b09"
 load(pathJoin("mapl", mapl_ver))
 
-whatis("Description: UFS build environment common libraries for debug")
+whatis("Description: UFS build environment common libraries")

@@ -1,0 +1,66 @@
+###############################################################################
+#
+#  RAP control test: lake coupled at C96L127 (debug mode)
+#
+###############################################################################
+
+export TEST_DESCR="Compare RAP lake coupled results in debug mode with previous trunk version"
+
+export CNTL_DIR=rap_clm_lake_debug
+
+export LIST_FILES="sfcf000.nc \
+                   sfcf001.nc \
+                   atmf000.nc \
+                   atmf001.nc"
+
+export_fv3
+export NPZ=127
+export NPZP=128
+export DT_ATMOS=300
+export SYEAR=2021
+export SMONTH=03
+export SDAY=22
+export SHOUR=06
+export OUTPUT_GRID='gaussian_grid'
+export NSTF_NAME='2,0,0,0,0'
+export WRITE_DOPOST=.true.
+export IAER=5111
+export OUTPUT_FH='0 1'
+export FHMAX=1
+
+export FV3_RUN=lake_control_run.IN
+export CCPP_SUITE=FV3_RAP_clm_lake
+export INPUT_NML=rap.nml.IN
+export FIELD_TABLE=field_table_thompson_aero_tke
+export DIAG_TABLE=diag_table_rap
+
+export LKM=1
+export IOPT_LAKE=2
+export FRAC_ICE=.true.
+
+export LHEATSTRG=.false.
+export IMP_PHYSICS=8
+export DNATS=0
+export DO_SAT_ADJ=.false.
+export LRADAR=.true.
+export LTAEROSOL=.true.
+export IALB=2
+export IEMS=2
+export HYBEDMF=.false.
+export DO_MYNNEDMF=.true.
+export DO_MYNNSFCLAY=.true.
+export IMFSHALCNV=3
+export IMFDEEPCNV=3
+export LSM=3
+export LSOIL_LSM=9
+export KICE=9
+
+export GWD_OPT=3
+export DO_UGWP_V0=.false.
+export DO_UGWP_V0_OROG_ONLY=.false.
+export DO_GSL_DRAG_LS_BL=.true.
+export DO_GSL_DRAG_SS=.true.
+export DO_GSL_DRAG_TOFD=.true.
+export DO_UGWP_V1=.false.
+export DO_UGWP_V1_OROG_ONLY=.false.
+

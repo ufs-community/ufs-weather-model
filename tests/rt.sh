@@ -193,8 +193,6 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
   # TMP use this path for LM4 cap
   INPUTDATA_LM4=${INPUTDATA_LM4:-/lustre/f2/pdata/gfdl/cmip6/datasets/CM4/common}
 
-  # revert when permissions are fixed
-  #DISKNM=/lustre/f2/pdata/ncep/role.epic/RT
   DISKNM=/lustre/f2/pdata/ncep_shared/emc.nemspara/RT
   QUEUE=normal
   COMPILE_QUEUE=normal
@@ -370,6 +368,28 @@ elif [[ $MACHINE_ID = expanse.* ]]; then
   SCHEDULER=slurm
   cp fv3_conf/fv3_slurm.IN_expanse fv3_conf/fv3_slurm.IN
 
+ elif [[ $MACHINE_ID = noaacloud.* ]]; then
+
+  module use /apps/modules/modulefiles
+  module load rocoto/1.3.3
+
+  ROCOTORUN=$(which rocotorun)
+  ROCOTOSTAT=$(which rocotostat)
+  ROCOTOCOMPLETE=$(which rocotocomplete)
+  ROCOTO_SCHEDULER=slurm
+
+  QUEUE=batch
+  COMPILE_QUEUE=batch
+  PARTITION=
+  dprefix=/lustre/
+  DISKNM=/contrib/ufs-weather-model/RT
+  STMP=$dprefix/stmp4
+  PTMP=$dprefix/stmp2
+  SCHEDULER=slurm
+  cp fv3_conf/fv3_slurm.IN_noaacloud fv3_conf/fv3_slurm.IN
+  cp fv3_conf/compile_slurm.IN_noaacloud fv3_conf/compile_slurm.IN
+
+
 else
   die "Unknown machine ID, please edit detect_machine.sh file"
 fi
@@ -457,7 +477,7 @@ if [[ $TESTS_FILE =~ '35d' ]] || [[ $TESTS_FILE =~ 'weekly' ]]; then
 fi
 
 
-BL_DATE=20230215
+BL_DATE=20230515
 
 RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
 
@@ -520,6 +540,10 @@ if [[ $ROCOTO == true ]]; then
   elif [[ $MACHINE_ID = s4.* ]]; then
     QUEUE=s4
     COMPILE_QUEUE=s4
+    ROCOTO_SCHEDULER=slurm
+  elif [[ $MACHINE_ID = noaacloud.* ]]; then
+    QUEUE=batch
+    COMPILE_QUEUE=batch
     ROCOTO_SCHEDULER=slurm
   elif [[ $MACHINE_ID = jet.* ]]; then
     QUEUE=batch
@@ -833,7 +857,7 @@ else
    echo ; echo REGRESSION TEST WAS SUCCESSFUL
   (echo ; echo REGRESSION TEST WAS SUCCESSFUL) >> ${REGRESSIONTEST_LOG}
 
-  rm -f fv3_*.x fv3_*.exe modules.fv3_* keep_tests.tmp
+  rm -f fv3_*.x fv3_*.exe modules.fv3_* modulefiles/modules.fv3_* keep_tests.tmp
   [[ ${KEEP_RUNDIR} == false ]] && rm -rf ${RUNDIR_ROOT}
   [[ ${ROCOTO} == true ]] && rm -f ${ROCOTO_XML} ${ROCOTO_DB} ${ROCOTO_STATE} *_lock.db
   [[ ${TEST_35D} == true ]] && rm -f tests/cpld_bmark*_20*
