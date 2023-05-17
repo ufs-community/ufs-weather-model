@@ -9,8 +9,9 @@ die() { echo "$@" >&2; exit 1; }
 usage() {
   set +x
   echo
-  echo "Usage: $0 -c | -e | -h | -k | -w | -d | -l <file> | -m | -n <name> | -r "
+  echo "Usage: $0 -a <account> | -c | -e | -h | -k | -w | -d | -l <file> | -m | -n <name> | -r "
   echo
+  echo "  -a  <account> to use on for HPC queue"
   echo "  -c  create new baseline results"
   echo "  -e  use ecFlow workflow manager"
   echo "  -h  display this help"
@@ -154,7 +155,7 @@ if [[ $MACHINE_ID = wcoss2 ]]; then
   QUEUE=dev
   COMPILE_QUEUE=dev
   PARTITION=
-  ACCNR="${ACCNR:-GFS-DEV}"
+  #ACCNR="${ACCNR:-GFS-DEV}"
   STMP=/lfs/h2/emc/ptmp
   PTMP=/lfs/h2/emc/ptmp
   SCHEDULER=pbs
@@ -177,7 +178,7 @@ elif [[ $MACHINE_ID = acorn ]]; then
   QUEUE=dev
   COMPILE_QUEUE=dev
   PARTITION=
-  ACCNR="${ACCNR:-GFS-DEV}"
+  #ACCNR="${ACCNR:-GFS-DEV}"
   STMP=/lfs/h2/emc/ptmp
   PTMP=/lfs/h2/emc/ptmp
   SCHEDULER=pbs
@@ -272,7 +273,7 @@ elif [[ $MACHINE_ID = jet ]]; then
 
   QUEUE=batch
   COMPILE_QUEUE=batch
-  ACCNR="${ACCNR:-h-nems}"
+  #ACCNR="${ACCNR:-h-nems}"
   PARTITION=xjet
   DISKNM=/mnt/lfs4/HFIP/hfv3gfs/role.epic/RT
   dprefix=${dprefix:-/lfs4/HFIP/$ACCNR/$USER}
@@ -299,7 +300,7 @@ elif [[ $MACHINE_ID = s4 ]]; then
   QUEUE=s4
   COMPILE_QUEUE=s4
 
-  ACCNR="${ACCNR:-star}"
+  #ACCNR="${ACCNR:-star}"
   PARTITION=s4
   dprefix=/data/prod
   DISKNM=$dprefix/emc.nemspara/RT
@@ -335,7 +336,7 @@ elif [[ $MACHINE_ID = stampede ]]; then
   QUEUE=skx-normal
   COMPILE_QUEUE=skx-dev
   PARTITION=
-  ACCNR="${ACCNR:-TG-EES200015}"
+  #ACCNR="${ACCNR:-TG-EES200015}"
   dprefix=$SCRATCH/ufs-weather-model/run
   DISKNM=/work2/07736/minsukji/stampede2/ufs-weather-model/RT
   STMP=$dprefix
@@ -352,7 +353,7 @@ elif [[ $MACHINE_ID = expanse ]]; then
   QUEUE=compute
   COMPILE_QUEUE=shared
   PARTITION=
-  ACCNR="${ACCNR:-TG-EES200015}"
+  #ACCNR="${ACCNR:-TG-EES200015}"
   dprefix=/expanse/lustre/scratch/$USER/temp_project/run
   DISKNM=/expanse/lustre/scratch/domh/temp_project/RT
   STMP=$dprefix
@@ -388,10 +389,8 @@ fi
 
 # If account is unspecified, assume the machine has a "nems"
 # accounting code.
-export ACCNR="${ACCNR:-nems}"
+#export ACCNR="${ACCNR:-nems}"
 
-# Display the machine and account using the format detect_machine.sh used:
-echo "Machine: " $MACHINE_ID "    Account: " $ACCNR
 
 mkdir -p ${STMP}/${USER}
 
@@ -413,8 +412,11 @@ SKIP_ORDER=false
 
 TESTS_FILE='rt.conf'
 
-while getopts ":cl:mn:dwkreh" opt; do
+while getopts ":a:cl:mn:dwkreh" opt; do
   case $opt in
+    a)
+      ACCNR=$OPTARG
+      ;;
     c)
       CREATE_BASELINE=true
       ;;
@@ -478,6 +480,15 @@ while getopts ":cl:mn:dwkreh" opt; do
       ;;
   esac
 done
+
+ACCNR=${ACCNR:-""}
+if [[ -z "$ACCNR" ]]; then
+  echo "Please use -a <account> to set group account to use on HPC"
+  exit 1
+fi
+
+# Display the machine and account using the format detect_machine.sh used:
+echo "Machine: " $MACHINE_ID "    Account: " $ACCNR
 
 if [[ $SINGLE_NAME != '' ]]; then
   rt_single
