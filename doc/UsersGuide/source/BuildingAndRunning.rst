@@ -297,6 +297,8 @@ The following examples assume a bash shell.
 ATM Configurations
 ---------------------
 
+.. _atm:
+
 **Standalone ATM**
 
 For the ``ufs-weather-model ATM`` configuration (standalone :term:`ATM`):
@@ -304,6 +306,8 @@ For the ``ufs-weather-model ATM`` configuration (standalone :term:`ATM`):
 .. code-block:: console
 
     export CMAKE_FLAGS="-DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16"
+
+.. _atmw:
 
 **ATMW**
 
@@ -313,6 +317,8 @@ For the ``ufs-weather-model ATMW`` configuration (standalone ATM coupled to :ter
 
     export CMAKE_FLAGS="-DAPP=ATMW -DCCPP_SUITES=FV3_GFS_v16"
 
+.. _atmaero:
+
 **ATMAERO**
 
 For the ``ufs-weather-model ATMAERO`` configuration (standalone ATM coupled to :term:`GOCART`):
@@ -321,6 +327,8 @@ For the ``ufs-weather-model ATMAERO`` configuration (standalone ATM coupled to :
 
     export CMAKE_FLAGS="-DAPP=ATMAERO -DCCPP_SUITES=FV3_GFS_v17_p8"
 
+.. _atmaq:
+
 **ATMAQ**
 
 For the ``ufs-weather-model ATMAQ`` configuration (standalone ATM coupled to :term:`CMAQ`):
@@ -328,6 +336,8 @@ For the ``ufs-weather-model ATMAQ`` configuration (standalone ATM coupled to :te
 .. code-block:: console
 
     export CMAKE_FLAGS="-DAPP=ATMAQ -DCCPP_SUITES=FV3_GFS_v15p2"
+
+.. _atml:
 
 **ATML**
 
@@ -339,6 +349,8 @@ For the ``ufs-weather-model ATML`` configuration (standalone ATM coupled to :ter
 
 S2S Configurations 
 ----------------------
+
+.. _s2s:
 
 **S2S**
 
@@ -361,6 +373,8 @@ For example:
 
     export CMAKE_FLAGS="-DAPP=S2S -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_sfcocn -DCMEPS_AOFLUX=ON"
 
+.. _s2sa:
+
 **S2SA**
 
 For the ``ufs-weather-model S2SA`` configuration (atm/ice/ocean/aerosols):
@@ -372,6 +386,8 @@ For the ``ufs-weather-model S2SA`` configuration (atm/ice/ocean/aerosols):
 ..
    CHECK: DAPP flag and physics suites
 
+.. _s2sw:
+
 **S2SW**
 
 For the ``ufs-weather-model S2SW`` configuration (atm/ice/ocean/wave):
@@ -380,6 +396,8 @@ For the ``ufs-weather-model S2SW`` configuration (atm/ice/ocean/wave):
 
     export CMAKE_FLAGS="-DAPP=S2SW -DCCPP_SUITES=FV3_GFS_v17_coupled_p8"
 
+.. _s2swa:
+
 **S2SWA**
 
 For the ``ufs-weather-model S2SWA`` configuration (atm/ice/ocean/wave/aerosols):
@@ -387,6 +405,8 @@ For the ``ufs-weather-model S2SWA`` configuration (atm/ice/ocean/wave/aerosols):
 .. code-block:: console
 
     export CMAKE_FLAGS="-DAPP=S2SWA -DCCPP_SUITES=FV3_GFS_v17_coupled_p8,FV3_GFS_cpld_rasmgshocnsstnoahmp_ugwp"
+
+.. _ng-godas:
 
 NG-GODAS Configuration
 ------------------------
@@ -402,6 +422,8 @@ For the ``ufs-weather-model NG-GODAS`` configuration (atm/ocean/ice/data assimil
 HAFS Configurations
 ----------------------
 
+.. _hafs:
+
 **HAFS**
 
 For the ``ufs-weather-model HAFS`` configuration (atm/ocean) in 32 bit:
@@ -410,6 +432,8 @@ For the ``ufs-weather-model HAFS`` configuration (atm/ocean) in 32 bit:
 
     export CMAKE_FLAGS="-DAPP=HAFS -D32BIT=ON -DCCPP_SUITES=FV3_HAFS_v0_gfdlmp_tedmf_nonsst,FV3_HAFS_v0_gfdlmp_tedmf"
 
+.. _hafsw:
+
 **HAFSW**
 
 For the ``ufs-weather-model HAFSW`` configuration (atm/ocean/wave) in 32-bit with moving nest:
@@ -417,6 +441,8 @@ For the ``ufs-weather-model HAFSW`` configuration (atm/ocean/wave) in 32-bit wit
 .. code-block:: console
 
     export CMAKE_FLAGS="-DAPP=HAFSW -D32BIT=ON -DMOVING_NEST=ON -DCCPP_SUITES=FV3_HAFS_v0_gfdlmp_tedmf,FV3_HAFS_v0_gfdlmp_tedmf_nonsst,FV3_HAFS_v0_thompson_tedmf_gfdlsf"
+
+.. _hafs-all:
 
 **HAFS-ALL**
 
@@ -428,6 +454,8 @@ For the ``ufs-weather-model HAFS-ALL`` configuration (data/atm/ocean/wave) in 32
 
 LND Configurations
 ----------------------
+
+.. _lnd:
 
 **LND**
 
