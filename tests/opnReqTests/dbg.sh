@@ -49,6 +49,7 @@ elif [[ $application == 'atmw' ]]; then
                                    | sed -E "s/20210322\.180000/20210322\.090000/g" \
                                    | sed -E "s/20210322\.180000\.out_pnt\.ww3/20210322\.090000\.out_pnt\.ww3/g" \
                                    | sed -E "s/20210322\.180000\.out_grd\.ww3/20210322\.090000\.out_grd\.ww3/g" \
+                                   | sed -E "s/ufs\.atmw\.ww3\.r\.2021-03-22-64800/ufs\.atmw\.ww3\.r\.2021-03-22-32400/g" \
                                    | sed -e "s/^ *//" -e "s/ *$//")
                                    
 fi
