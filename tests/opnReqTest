@@ -13,8 +13,10 @@ error() {
 usage() {
   #set +x
   echo
-  echo "Usage: $program -n <test-name> [ -c <test-case> ] [-b] [-d] [-e] [-k] [-h] [-x] [-z]"
+  echo "Usage: $program -n <test-name> -a <account> [ -c <test-case> ] [-b] [-d] [-e] [-k] [-h] [-x] [-z]"
   echo
+  echo "  -a  specify HPC <account> to use for batch job"
+  echo 
   echo "  -n  specify <test-name>"
   echo
   echo "  -c  specify <test-case>"
@@ -336,7 +338,7 @@ if [[ $MACHINE_ID = hera ]]; then
   PARTITION=
   QUEUE=batch
   COMPILE_QUEUE=batch
-  ACCNR="${ACCNR:-nems}"
+  #ACCNR="${ACCNR:-nems}"
   dprefix=/scratch1/NCEPDEV
   DISKNM=$dprefix/nems/emc.nemspara/RT
   STMP=${dprefix}/stmp4
@@ -355,7 +357,7 @@ elif [[ $MACHINE_ID = orion ]]; then
   ECF_PORT=$(( $(id -u) + 1500 ))
   QUEUE=batch
   COMPILE_QUEUE=batch
-  ACCNR="${ACCNR:-nems}"
+  #ACCNR="${ACCNR:-nems}"
   PARTITION=orion
   dprefix=/work/noaa/stmp/${USER}
   DISKNM=/work/noaa/nems/emc.nemspara/RT
@@ -370,7 +372,7 @@ elif [[ $MACHINE_ID = linux ]]; then
   PARTITION=
   QUEUE=
   COMPILE_QUEUE=
-  ACCNR=
+  #ACCNR=
   dprefix=/home/builder
   DISKNM=${dprefix}/data
   STMP=${dprefix}/stmp4
@@ -397,8 +399,11 @@ skip_check_results=false
 delete_rundir=false
 
 # parse command line arguments to fill-in/modify the above default variables
-while getopts :n:c:ekhbdsxz opt; do
+while getopts :a:n:c:ekhbdsxz opt; do
   case $opt in
+    a)
+      ACCNR=$OPTARG
+      ;;
     n)
       TEST_NAME=$OPTARG
       echo "test name: ${TEST_NAME}"
@@ -443,6 +448,11 @@ while getopts :n:c:ekhbdsxz opt; do
 done
 
 # some safety guards for input arguments
+ACCNR=${ACCNR:-""}
+if [[ -z "$ACCNR" ]]; then
+  echo "Please use -a <account> to set group account to use on HPC"
+  exit 1
+fi
 if [[ -z $TEST_NAME ]]; then
   error "$program: test name is required. try 'opnReqTest -h' for usage"
 fi
