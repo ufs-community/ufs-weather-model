@@ -46,6 +46,7 @@ elif [[ $application == 'atmw' ]]; then
   LIST_FILES=$(echo -n $LIST_FILES | sed -E "s/sfcf012/sfcf003/g" \
                                    | sed -E "s/atmf012/atmf003/g" \
                                    | sed -E "s/2021-03-22-64800/2021-03-22-32400/g" \
+                                   | sed -E "s/2021-03-23-21600/2021-03-22-32400/g" \
                                    | sed -E "s/20210322\.180000/20210322\.090000/g" \
                                    | sed -E "s/20210322\.180000\.out_pnt\.ww3/20210322\.090000\.out_pnt\.ww3/g" \
                                    | sed -E "s/20210322\.180000\.out_grd\.ww3/20210322\.090000\.out_grd\.ww3/g" \
