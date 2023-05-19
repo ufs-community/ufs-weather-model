@@ -63,6 +63,8 @@ There are three types of files needed to execute a run:
 
 Information on the first two types of file appears in detail below for each component model. Information on Model Configuration files can be viewed in :numref:`Section %s <model-config-files>`. 
 
+.. _atm-io:
+
 -------
 ATM
 -------
@@ -1514,6 +1516,8 @@ are not usually changed.
      - IAU offset lengdth
      - integer
      - 0
+
+.. _nems-conf:
 
 ------------------------
 ``nems.configure`` file
