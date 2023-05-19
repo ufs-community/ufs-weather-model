@@ -20,7 +20,7 @@ On other systems, users will need to build the prerequisite libraries using :ter
 Prerequisite Libraries
 =======================
 
-The UFS Weather Model (:term:`WM`) requires a number of libraries.
+The UFS WM requires a number of libraries.
 The WM uses two categories of libraries, which are available as a bundle via 
 :term:`HPC-Stack` or :term:`spack-stack`:
 
@@ -28,25 +28,23 @@ The WM uses two categories of libraries, which are available as a bundle via
       Most have an NCEPLIBS prefix in the repository (e.g., NCEPLIBS-bacio). Select tools from the UFS
       Utilities repository (:term:`UFS_UTILS`) are also included in this category. 
 
-   #. Third-party libraries (:term:`NCEPLIBS-external`): These are libraries that were developed external to
+   #. Third-party libraries (:term:`NCEPLIBS-external`): These are libraries that were developed externally to
       the UFS Weather Model. They are general software packages that are also used by other community models. 
       Building these libraries is optional if users can point to existing builds of these libraries on their system
       instead. 
 
-Currently, HPC-Stack is the software stack validated by the UFS WM for running regression tests. 
-However, UFS applications are shifting to spack-stack, which is a Spack-based 
-method for installing UFS prerequisite software libraries. The spack-stack is currently 
-used on NOAA Cloud platforms and in containers, while HPC-Stack is still used on NOAA
-Research & Development HPC Systems (RDHPCS). 
-
-.. COMMENT: Is this still true? 
-   The spack-stack locations listed in :numref:`Table %s <stack-locations>` are still being validated. 
+.. note::
+   Currently, HPC-Stack is the software stack validated by the UFS WM for running :term:`regression tests <RT>`. 
+   However, UFS applications are shifting to spack-stack, which is a Spack-based 
+   method for installing UFS prerequisite software libraries. The spack-stack is currently 
+   used on NOAA Cloud platforms and in containers, while HPC-Stack is still used on NOAA
+   Research & Development HPC Systems (RDHPCS). 
 
 ----------------
 Common Modules
 ----------------
 
-As of March 23, 2023, the UFS WM Regression Tests (:term:`RTs <RT>`) on Level 1 systems use the following common modules: 
+As of May 19, 2023, the UFS WM Regression Tests (:term:`RTs <RT>`) on Level 1 systems use the following common modules: 
 
 .. code-block:: console
 
@@ -68,63 +66,13 @@ As of March 23, 2023, the UFS WM Regression Tests (:term:`RTs <RT>`) on Level 1 
    w3emc/2.9.2
    zlib/1.2.11
 
-The most updated list of modules can be viewed in ``ufs_common.lua`` 
+The most updated list of common modules can be viewed in ``ufs_common.lua`` 
 `here <https://github.com/ufs-community/ufs-weather-model/blob/develop/modulefiles/ufs_common.lua>`__.
 
 .. attention::
    Documentation is available for installing `HPC-Stack <https://hpc-stack.readthedocs.io/en/latest/>`__ 
    and `spack-stack <https://spack-stack.readthedocs.io/en/latest/>`__, respectively. 
    One of these software stacks (or the libraries they contain) must be installed before running the UFS Weather Model. 
-
-.. COMMENT: Add spack stack (and HPC-Stack?) locations: 
-   On Level 1 systems, HPC-Stack and spack-stack are installed in the following locations:
-
-   .. _stack-locations:
-
-   .. table:: Stack Locations
-
-      +--------------+-----------------------------------------------------------------------------------------------------------------------------------------+
-      | Platform     | HPC-Stack/spack-stack Installation                                                                                                      |
-      +==============+=========================================================================================================================================+
-      | WCOSS2       | N/A                                                                                                                                     |
-      +--------------+-----------------------------------------------------------------------------------------------------------------------------------------+
-      | Hera (Intel) | HPC-Stack: /scratch1/NCEPDEV/nems/role.epic/hpc-stack/libs/intel-2022.1.2/modulefiles/stack                                             |
-      |              |                                                                                                                                         |
-      |              | spack-stack: /scratch1/NCEPDEV/jcsda/jedipara/spack-stack/modulefiles                                                                   |
-      +--------------+-----------------------------------------------------------------------------------------------------------------------------------------+
-      | Hera (GNU)   | HPC-Stack: /scratch1/NCEPDEV/nems/role.epic/hpc-stack/libs/gnu-9.2/modulefiles/stack                                                    |
-      |              |                                                                                                                                         |
-      |              | spack-stack: /scratch1/NCEPDEV/global/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2021.5.0/install/modulefiles/Core              |
-      +--------------+-----------------------------------------------------------------------------------------------------------------------------------------+
-      | Gaea         | HPC-Stack: /lustre/f2/dev/role.epic/contrib/hpc-stack/intel-2021.3.0_noarch/modulefiles/stack                                           |
-      |              |                                                                                                                                         |
-      |              | spack-stack: /lustre/f2/pdata/esrl/gsd/spack-stack/modulefiles                                                                          |
-      +--------------+-----------------------------------------------------------------------------------------------------------------------------------------+
-      | Jet          | HPC-Stack: /mnt/lfs4/HFIP/hfv3gfs/role.epic/hpc-stack/libs/intel-2022.1.2/modulefiles/stack                                             |
-      |              |                                                                                                                                         |
-      |              | spack-stack: Coming soon!                                                                                                               |
-      +--------------+-----------------------------------------------------------------------------------------------------------------------------------------+
-      | Orion        | HPC-Stack: /work/noaa/epic-ps/role-epic-ps/hpc-stack/libs/intel-2022.1.2/modulefiles/stack                                              |
-      |              |                                                                                                                                         |
-      |              | spack-stack: /work/noaa/da/role-da/spack-stack/modulefiles                                                                              |
-      +--------------+-----------------------------------------------------------------------------------------------------------------------------------------+
-      | Cheyenne     | HPC-Stack: /glade/work/epicufsrt/contrib/hpc-stack/intel2022.1/modulefiles/stack                                                        |
-      | (Intel)      |                                                                                                                                         |
-      |              | spack-stack: /glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc                                                                 |
-      +--------------+-----------------------------------------------------------------------------------------------------------------------------------------+
-      | Cheyenne     | HPC-Stack: /glade/work/epicufsrt/contrib/hpc-stack/gnu10.1.0/modulefiles/stack                                                          |
-      | (GNU)        |                                                                                                                                         |
-      |              | spack-stack: /glade/work/jedipara/cheyenne/spack-stack/spack-stack-feature-r2d2-mysql/envs/unified-4.0.0-rc1/install/modulefiles/Core   |
-      +--------------+-----------------------------------------------------------------------------------------------------------------------------------------+
-      | NOAA Cloud   | HPC-Stack: N/A                                                                                                                          |
-      | (AWS/GCP/    |                                                                                                                                         |
-      | Azure)       | spack-stack: /contrib/spack-stack/modulefiles/core                                                                                      |
-      +--------------+-----------------------------------------------------------------------------------------------------------------------------------------+
-
-   On Level 2-4 Systems, users will need to install the HPC-Stack or the spack-stack and load the appropriate modules. 
-   The `HPC-Stack <https://hpc-stack.readthedocs.io/en/latest/>`__ and 
-   `spack-stack <https://spack-stack.readthedocs.io/en/latest/>`__ documentation is the authoritative 
-   source for details on installation and configuration of each respective stack. 
 
 .. _GetData:
 
@@ -161,54 +109,54 @@ Publicly available RT data is available in the `UFS WM Data Bucket <https://regi
 Data for running RTs off of the develop branch is available for the most recent 60 days. 
 To view the data, users can visit https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html. 
 To download data, users must select the data they want from the bucket and either download it in their browser or via a ``wget`` command. 
-For example, to get the data for ``control_p8`` (specifically the March 20, 2023 ``develop`` branch version of the WM), run: 
+For example, to get the data for ``control_p8`` (specifically the May 17, 2023 ``develop`` branch version of the WM), run: 
 
 .. code-block:: console
 
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/atmf000.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/atmf021.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/atmf024.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/GFSFLX.GrbF00
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/GFSFLX.GrbF21
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/GFSFLX.GrbF24
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/GFSPRS.GrbF00
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/GFSPRS.GrbF21
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/GFSPRS.GrbF24
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/sfcf000.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/sfcf021.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/sfcf024.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.coupler.res
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_core.res.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_core.res.tile1.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_core.res.tile2.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_core.res.tile3.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_core.res.tile4.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_core.res.tile5.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_core.res.tile6.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_srf_wnd.res.tile1.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_srf_wnd.res.tile2.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_srf_wnd.res.tile3.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_srf_wnd.res.tile4.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_srf_wnd.res.tile5.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_srf_wnd.res.tile6.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_tracer.res.tile1.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_tracer.res.tile2.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_tracer.res.tile3.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_tracer.res.tile4.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_tracer.res.tile5.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.fv_tracer.res.tile6.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.phy_data.tile1.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.phy_data.tile2.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.phy_data.tile3.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.phy_data.tile4.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.phy_data.tile5.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.phy_data.tile6.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.sfc_data.tile1.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.sfc_data.tile2.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.sfc_data.tile3.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.sfc_data.tile4.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.sfc_data.tile5.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230426/INTEL/control_p8/RESTART/20210323.060000.sfc_data.tile6.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/atmf000.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/atmf021.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/atmf024.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/GFSFLX.GrbF00
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/GFSFLX.GrbF21
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/GFSFLX.GrbF24
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/GFSPRS.GrbF00
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/GFSPRS.GrbF21
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/GFSPRS.GrbF24
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/sfcf000.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/sfcf021.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/sfcf024.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.coupler.res
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_core.res.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_core.res.tile1.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_core.res.tile2.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_core.res.tile3.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_core.res.tile4.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_core.res.tile5.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_core.res.tile6.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_srf_wnd.res.tile1.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_srf_wnd.res.tile2.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_srf_wnd.res.tile3.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_srf_wnd.res.tile4.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_srf_wnd.res.tile5.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_srf_wnd.res.tile6.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_tracer.res.tile1.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_tracer.res.tile2.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_tracer.res.tile3.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_tracer.res.tile4.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_tracer.res.tile5.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_tracer.res.tile6.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.phy_data.tile1.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.phy_data.tile2.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.phy_data.tile3.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.phy_data.tile4.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.phy_data.tile5.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.phy_data.tile6.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.sfc_data.tile1.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.sfc_data.tile2.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.sfc_data.tile3.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.sfc_data.tile4.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.sfc_data.tile5.nc
+   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.sfc_data.tile6.nc
 
 Detailed information on input files can be found in :numref:`Chapter %s <InputsOutputs>`. 
 
@@ -225,7 +173,7 @@ To clone the develop branch of the ``ufs-weather-model`` repository and update i
   git clone --recursive https://github.com/ufs-community/ufs-weather-model.git ufs-weather-model
   cd ufs-weather-model
 
-Compiling the model will take place within the ``ufs-weather-model`` directory you just created.
+Compiling the model will take place within the ``ufs-weather-model`` directory created by this command.
 
 ==========================
 Building the Weather Model
@@ -286,12 +234,12 @@ manually. For example, in a bash shell, a command in the following form will set
 Setting the ``CMAKE_FLAGS`` and ``CCPP_SUITES`` Environment Variables
 ------------------------------------------------------------------------
 
-The UFS Weather Model can be built in one of several configurations (cf. :numref:`Table %s <UFS-configurations>` for common options). 
-The ``CMAKE_FLAGS`` environment variable specifies which configuration to build.
-Additionally, users must select the :term:`CCPP` suite(s) by setting the ``CCPP_SUITES`` environment variable at
-build time in order to have one or more CCPP physics suites available at runtime. Multiple suites can be set. 
-Additional environment variables, such as ``-D32BIT=ON``, can be set if the user chooses. These options are documented 
-in :numref:`Section %s <other-build-options>`. 
+The UFS Weather Model can be built in one of several configurations (see :numref:`Table %s <UFS-configurations>` for common options). 
+The ``CMAKE_FLAGS`` environment variable specifies which configuration to build using the ``-DAPP`` and ``-DCCPP_SUITES`` variables.
+Users set which components to build using ``-DAPP``. Users select the :term:`CCPP` suite(s) by setting the 
+``CCPP_SUITES`` environment variable at build time in order to have one or more CCPP physics suites available at runtime. 
+Multiple suites can be set. Additional variables, such as ``-D32BIT=ON``, 
+can be set if the user chooses. These options are documented in :numref:`Section %s <other-build-options>`. 
 The following examples assume a bash shell.
 
 ATM Configurations
@@ -452,7 +400,7 @@ For the ``ufs-weather-model HAFS-ALL`` configuration (data/atm/ocean/wave) in 32
 
     export CMAKE_FLAGS="-DAPP=HAFS-ALL -D32BIT=ON -DCCPP_SUITES=FV3_HAFS_v0_gfdlmp_tedmf,FV3_HAFS_v0_gfdlmp_tedmf_nonsst"
 
-LND Configurations
+LND Configuration
 ----------------------
 
 .. _lnd:
@@ -487,8 +435,8 @@ The WM can be built by running the following command from the ``ufs-weather-mode
 
    ./build.sh
 
-Once ``build.sh`` is finished, you should see the executable, named ``ufs_model``, in the ``ufs-weather-model/build/`` directory.
-If it is desired to build in a different directory, specify the ``BUILD_DIR`` environment variable. For example: ``export BUILD_DIR=test_cpld``
+Once ``build.sh`` is finished, users should see the executable, named ``ufs_model``, in the ``ufs-weather-model/build/`` directory.
+If users prefer to build in a different directory, specify the ``BUILD_DIR`` environment variable. For example: ``export BUILD_DIR=test_cpld``
 will build in the ``ufs-weather-model/test_cpld`` directory instead.
 
 Expert help is available through `GitHub Discussions <https://github.com/ufs-community/ufs-weather-model/discussions/categories/q-a>`__. Users may post questions there for help with difficulties related to the UFS WM.
@@ -520,13 +468,13 @@ Users must edit the ``rt.conf`` file to indicate which tests/configurations to r
 The ``rt.conf`` File
 ------------------------
 
-Each line in the PSV (Pipe-separated values) file ``rt.conf`` contains four columns of information. 
+Each line in the PSV (Pipe-separated values) file, ``rt.conf``, contains four columns of information. 
 The first column specifies whether to build a test (``COMPILE``) or run a test (``RUN``). 
 The second column specifies either configuration information for building a test or 
 the name of a test to run.
-Thus, the second column in a ``COMPILE`` line will list the application to build (e.g., ``APP=S2S``), 
-the CCPP suite to use (e.g., ``SUITES=FV3_GFS_2017_coupled``), and additional build options 
-(e.g., ``DEBUG=Y``) as needed. On a ``RUN`` line, the second column will contain a test name 
+Thus, the second column in a ``COMPILE`` line will list the application to build (e.g., ``-DAPP=S2S``), 
+the CCPP suite to use (e.g., ``-DCCPP_SUITES=FV3_GFS_2017_coupled``), and additional build options 
+(e.g., ``-DDEBUG=ON``) as needed. On a ``RUN`` line, the second column will contain a test name 
 (e.g., ``control_p8``). The test name should match the name of one of the test files in the 
 ``tests/tests`` directory or, if the user is adding a new test, the name of the new test file. 
 The third column of ``rt.conf`` relates to the platform; 
@@ -538,10 +486,8 @@ and ``fv3`` means that the test will be included during baseline creation.
 The order of lines in ``rt.conf`` matters
 since ``rt.sh`` processes them sequentially; a ``RUN`` line should be preceeded
 by a ``COMPILE`` line that builds the model used in the test. The following
-``rt.conf`` file excerpt builds the standalone ATM model in 32-bit mode and then runs the
-``control`` test:
-
-.. COMMENT: Is the control test just the test with which other tests are compared?
+``rt.conf`` file excerpt builds the standalone ATM model with GFS_v16 physics 
+in 32-bit mode and then runs the ``control`` test:
 
 .. code-block:: console
 
@@ -572,16 +518,14 @@ On Other Systems
 Users on non-NOAA systems will need to make adjustments to several files in the 
 ``tests`` directory before running ``rt.sh``, including:
   
-   * rt.sh
-   * run_test.sh
-   * detect_machine.sh
-   * default_vars.sh
-   * fv3_conf/fv3_slurm.IN_*
-   * fv3_conf/compile_slurm.IN_*
-   * compile.sh
-   * module-setup.sh
-
-.. COMMENT: Add details when Zach's PR is merged.
+   * ``rt.sh``
+   * ``run_test.sh``
+   * ``detect_machine.sh``
+   * ``default_vars.sh``
+   * ``fv3_conf/fv3_slurm.IN_*``
+   * ``fv3_conf/compile_slurm.IN_*``
+   * ``compile.sh``
+   * ``module-setup.sh``
 
 .. _rt.sh:
 
@@ -622,7 +566,7 @@ The ``-c`` option is used to create a baseline. New baselines are needed when co
 to result changes and therefore deviate from existing baselines on a bit-for-bit basis.
 
 To run ``rt.sh`` using a custom configuration file and the Rocoto workflow manager, 
-creat the configuration file (e.g. ``my_rt.conf``) based on the desired tests in 
+create the configuration file (e.g. ``my_rt.conf``) based on the desired tests in 
 ``rt.conf``, and run:
 
 .. code-block:: console
@@ -641,7 +585,7 @@ Troubleshooting
 ^^^^^^^^^^^^^^^^^^
 
 Users may need to adjust certain information in the ``rt.sh`` file, such as 
-the ``'Machine'`` and ``'Account'`` variables (``$ACCNR`` and ``$MACHINE_ID``), for the tests to run 
+the *Machine* and *Account* variables (``$MACHINE_ID`` and ``$ACCNR``), for the tests to run 
 correctly. If there is a problem with these or other variables (e.g., file paths), the output should indicate where: 
 
 .. code-block:: console
@@ -676,7 +620,7 @@ The run directory path, which corresponds to the value of ``RUNDIR`` in the ``ru
 is particularly useful. ``$RUNDIR`` is a self-contained (i.e., sandboxed) 
 directory with the executable file, initial conditions, model configuration files, 
 environment setup scripts and a batch job submission script. The user can run the test 
-by ``cd``-ing into ``$RUNDIR`` and invoking the command:
+by navigating into ``$RUNDIR`` and invoking the command:
 
 .. code-block:: console
 
