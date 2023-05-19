@@ -46,7 +46,7 @@ Research & Development HPC Systems (RDHPCS).
 Common Modules
 ----------------
 
-As of March 23, 2023, the UFS WM Regression Tests on Level 1 systems use the following common modules: 
+As of March 23, 2023, the UFS WM Regression Tests (:term:`RTs <RT>`) on Level 1 systems use the following common modules: 
 
 .. code-block:: console
 
@@ -132,7 +132,7 @@ The most updated list of modules can be viewed in ``ufs_common.lua``
 Get Data
 ============
 
-The WM regression tests (RTs) require input files to run. 
+The WM RTs require input files to run. 
 These include static datasets, files that depend on grid resolution and 
 initial/boundary conditions, and model configuration files. On Level 1 systems, 
 the data required to run the WM RTs are already available in the following locations: 
@@ -345,7 +345,7 @@ For the ``ufs-weather-model ATML`` configuration (standalone ATM coupled to :ter
 
 .. code-block:: console
 
-    export CMAKE_FLAGS="-DAPP=ATML -DCCPP_SUITES=control_p8_atmlnd_sbs"
+    export CMAKE_FLAGS="-DAPP=ATML -DCCPP_SUITES=FV3_GFS_v17_p8"
 
 S2S Configurations 
 ----------------------
