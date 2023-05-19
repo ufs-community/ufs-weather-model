@@ -25,7 +25,7 @@ mediator). Currently, supported configurations include:
    * - :ref:`ATMAQ <atmaq>`
      - :term:`ATM` coupled to :term:`CMAQ`
    * - :ref:`ATML <atml>`
-     - Coupled :term:`ATM`- :term:`LND` - :term:`MOM6` - :term:`CICE6` - :term:`CMEPS`
+     - :term:`ATM` coupled to :term:`LND`
    * - :ref:`S2S <s2s>`
      - Coupled :term:`ATM` - :term:`MOM6` - :term:`CICE6` - :term:`CMEPS`
    * - :ref:`S2SA <s2sa>`
@@ -45,11 +45,9 @@ mediator). Currently, supported configurations include:
    * - :ref:`HAFS-ALL <hafs-all>`
      - Coupled :term:`CDEPS` - :term:`ATM` - :term:`HYCOM` - :term:`WW3` - :term:`CMEPS`
 
-
-.. COMMENT: CMEPS for LND? Are those the right components for ATML?
 .. COMMENT: Should HAFS-ALL be DATM instead of ATM?
 
-This chapter describes the input and output files needed for executing the model in the various supported configurations (see :numref:`Table %s <UFS-configurations>`). Each of the component models for a given configuration requires specific input files, and each component model outputs a particular set of files. Each configuration requires a set of model configuration files, as well. This chapter describes the input and output files involved with each component model. It also discusses the various configuration files involved in running the model. Users will need to view the input file requirements for each component model involved in the configuration they are running. For example, users running the *S2S* configuration would need to gather input data required for the *ATM*, *MOM6*, and *CICE6* component models. Then, they would need to alter certain model configuration files to reflect the ``ufs-weather-model`` configuration they plan to run. 
+This chapter describes the input and output files needed for executing the model in the various supported configurations (see :numref:`Table %s <UFS-configurations>`). Each of the component models for a given configuration requires specific input files, and each component model outputs a particular set of files. Each configuration requires a set of model configuration files, as well. This chapter describes the input and output files involved with each component model. It also discusses the various configuration files involved in running the model. Users will need to view the input file requirements for each component model involved in the configuration they are running. For example, users running the *S2S* configuration would need to gather input data required for the *ATM*, *MOM6*, and *CICE6* component models. Then, they would need to alter certain model configuration files to reflect the ``ufs-weather-model`` configuration that they plan to run. 
 
 =============
 Input files
@@ -1540,9 +1538,6 @@ However, ``nems.configure`` files for other configurations of the Weather Model 
 
    * :doc:`ATMAQ <samples/nems.configure.ATMAQ>` configuration
    * :doc:`S2S <samples/nems.configure.S2S>` (fully coupled ``S2S`` configuration that receives atmosphere-ocean fluxes from a mediator)
-
-         .. COMMENT: Is this a regular S2S nems.configure file, or is it special? What's the talk about "atmosphere-oceans fluxes"?
-
    * :doc:`S2SW <samples/nems.configure.S2SW>` (fully coupled ``S2SW`` configuration)
    * :doc:`S2SWA <samples/nems.configure.S2SWA>` (coupled GOCART in the S2SAW configuration)
    * :doc:`NG-GODAS <samples/nems.configure.NG-GODAS>` (coupled NG-GODAS configuration)
