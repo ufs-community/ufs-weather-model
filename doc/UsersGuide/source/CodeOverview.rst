@@ -29,7 +29,7 @@ Currently, Level 1 (or Tier-1) platforms for regression testing are:
    * Hera (Intel/GNU compilers)
    * Jet (Intel)
    * Orion (Intel)
-   * AWS Docker container (GNU)
+   * AWS Docker container (Intel)
 
 More information is available in the `UFS WM wiki <https://github.com/ufs-community/ufs-weather-model/wiki/Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>`__. 
 
