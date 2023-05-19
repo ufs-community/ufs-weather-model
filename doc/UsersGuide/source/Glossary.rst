@@ -154,8 +154,8 @@ Glossary
    Post-processor
       Software that enhances the value of the raw forecasts produced by the modeling application to make them more useful. At :term:`NCEP`, the :term:`UPP` (Unified Post Processor) software is used to convert data from spectral to gridded format, de-stagger grids, interpolate data vertically (e.g., to isobaric levels) and horizontally (to various predefined grids), and to compute derived variables. Some types of post-processors, such as statistical post-processors, use historical information of previous runs and observations to de-bias and calibrate its output.
 
-   Regression test
    RT
+   Regression test
       Tests to validate that software still performs as expected after a change. In general, RTs ensure that the code should produce the same results and performance, within predefined measures of variance. When a code change is designed to change results or performance, then a new baseline is created. From these baselines, regression tests determine whether a change has occurred. 
 
    SRW
