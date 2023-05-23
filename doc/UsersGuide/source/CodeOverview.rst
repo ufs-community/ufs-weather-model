@@ -12,9 +12,9 @@ Supported Systems for Running the UFS Weather Model
 
 Four levels of support have been defined for :term:`UFS` applications, and the UFS Weather Model (:term:`WM`) operates under this paradigm: 
 
-* **Level 1** *(Preconfigured)*: Prerequisite software libraries are pre-built and available in a central location; code builds; full testing of model.
-* **Level 2** *(Configurable)*: Prerequisite libraries are not available in a centralized location but are expected to install successfully; code builds; full testing of model.
-* **Level 3** *(Limited-test platforms)*: Libraries and code build on these systems, but there is limited testing of the model.
+* **Level 1** *(Preconfigured)*: Prerequisite software libraries are pre-built and available in a central location; code builds and runs; full testing of model.
+* **Level 2** *(Configurable)*: Prerequisite libraries are not available in a centralized location but are expected to install successfully; code builds and runs; full testing of model.
+* **Level 3** *(Limited-test platforms)*: Libraries and code build on these systems, but there is limited testing with running the model.
 * **Level 4** *(Build-only platforms)*: Libraries and code build, but running the model is not tested.
 
 Level 1 Systems
@@ -157,4 +157,4 @@ The umbrella repository for the UFS WM is named ``ufs-weather-model``. Under thi
     │   └── fv3_conf   
     └── WW3
          └── (model)                             -------- WW3 model
-             └── (esmf)                          -------- NUOPC WW3 cap
+             └── (src)                           -------- NUOPC WW3 caps
