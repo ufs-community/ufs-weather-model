@@ -20,6 +20,8 @@ elif [[ $application == 'regional' ]]; then
   exit 1
 elif [[ $application == 'cpld' ]]; then
   FHMAX=3
+  export WW3RSTDTHR=${FHMAX}
+  export DT_2_RST="$(printf "%02d" $(( ${WW3RSTDTHR}*3600 )))"
   DAYS=0.125
   NFHOUT_HF=1
   RESTART_INTERVAL=${FHMAX}
