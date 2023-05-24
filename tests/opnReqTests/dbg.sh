@@ -38,8 +38,6 @@ elif [[ $application == 'cpld' ]]; then
                                    | sed -e "s/^ *//" -e "s/ *$//")
 elif [[ $application == 'atmw' ]]; then
   FHMAX=3
-  export WW3RSTDTHR=${FHMAX}
-  export DT_2_RST="$(printf "%02d" $(( ${WW3RSTDTHR}*3600 )))"
   DAYS=0.125
   NFHOUT_HF=1
   RESTART_INTERVAL=${FHMAX}
