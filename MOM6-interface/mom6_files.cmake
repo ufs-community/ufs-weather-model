@@ -12,7 +12,6 @@ list(APPEND mom6_src_files
   MOM6/src/ALE/coord_hycom.F90
   MOM6/src/ALE/coord_rho.F90
   MOM6/src/ALE/coord_sigma.F90
-  MOM6/src/ALE/coord_slight.F90
   MOM6/src/ALE/coord_zlike.F90
   MOM6/src/ALE/MOM_hybgen_regrid.F90
   MOM6/src/ALE/MOM_hybgen_remap.F90
@@ -22,6 +21,7 @@ list(APPEND mom6_src_files
   MOM6/src/ALE/regrid_edge_values.F90
   MOM6/src/ALE/regrid_interp.F90
   MOM6/src/ALE/regrid_solvers.F90
+  MOM6/src/ALE/remapping_attic.F90
 
   MOM6/src/core/MOM.F90
   MOM6/src/core/MOM_CoriolisAdv.F90
@@ -109,7 +109,6 @@ list(APPEND mom6_src_files
   MOM6/src/framework/MOM_data_override.F90
   MOM6/src/framework/MOM_diag_mediator.F90
   MOM6/src/framework/MOM_diag_remap.F90
-  MOM6/src/framework/MOM_diag_vkernels.F90
   MOM6/src/framework/MOM_document.F90
   MOM6/src/framework/MOM_domains.F90
   MOM6/src/framework/MOM_dyn_horgrid.F90
@@ -122,6 +121,8 @@ list(APPEND mom6_src_files
   MOM6/src/framework/MOM_interpolate.F90
   MOM6/src/framework/MOM_intrinsic_functions.F90
   MOM6/src/framework/MOM_io.F90
+  MOM6/src/framework/MOM_io_file.F90
+  MOM6/src/framework/MOM_netcdf.F90
   MOM6/src/framework/posix.F90
   MOM6/src/framework/MOM_random.F90
   MOM6/src/framework/MOM_restart.F90
