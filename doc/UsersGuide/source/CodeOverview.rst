@@ -19,7 +19,7 @@ Four levels of support have been defined for :term:`UFS` applications, and the U
 
 Level 1 Systems
 ==================
-Preconfigured (Level 1) systems for the UFS WM already have the required external libraries available in a central location via :term:`HPC-Stack` or :term:`spack-stack`. The WM is expected to build and run out-of-the-box on these systems, and users can download the WM code without first installing prerequisite software. In general, users must have access to these Level 1 systems in order to use them.
+Preconfigured (Level 1) systems for the UFS WM already have the required external libraries available in a central location via :term:`HPC-Stack` or :term:`spack-stack`. The WM is expected to build and run out-of-the-box on these systems, and users can download the WM code without first installing prerequisite software. Additionally, regression test data is already available on these systems. In general, users must have access to these Level 1 systems in order to use them.
 
 Currently, Level 1 (or Tier-1) platforms for regression testing are: 
 
@@ -36,7 +36,7 @@ More information is available in the `UFS WM wiki <https://github.com/ufs-commun
 Level 2-4 Systems
 ===================
 
-On non-Level 1 platforms, users must install the required libraries before building the UFS WM. Once these prerequisite libraries are installed, applications and the WM should build and run successfully. However, users may need to perform additional troubleshooting on Level 3 or 4 systems since little or no testing is conducted on these systems.
+On non-Level 1 platforms, users must install the required libraries before building the UFS WM. Additionally, users must stage the required data in order to run regression tests. Once the prerequisite libraries are installed, and the data has been staged, the WM should build and run successfully. However, users may need to perform additional troubleshooting on Level 3 or 4 systems since little or no testing is conducted on these systems.
 
 ===================================================
 UFS Weather Model Hierarchical Repository Structure
