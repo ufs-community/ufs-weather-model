@@ -48,6 +48,8 @@ export RUNDIR=${RUNDIR_ROOT}/${TEST_NAME}_${TEST_NR}
 
 echo -n "${JBNME}, $( date +%s )," > ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
 
+export RT_LOG=${LOG_DIR}/compile_${TEST_NR}.log
+
 source rt_utils.sh
 source atparse.bash
 
