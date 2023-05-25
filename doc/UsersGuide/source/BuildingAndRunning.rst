@@ -12,7 +12,7 @@ Before running the Weather Model (:term:`WM`), users should determine which of t
 is applicable to their system. Generally, Level 1 & 2 systems are restricted to those with access 
 through NOAA and its affiliates. These systems are named (e.g., Hera, Orion, Cheyenne). 
 Level 3 & 4 systems include certain personal computers or non-NOAA-affiliated HPC systems. 
-The prerequisite software libraries for building the WM already exist on Level 1/preconfigured 
+The prerequisite software libraries for building the WM already exist in a centralized location on Level 1/preconfigured 
 systems, so users may skip directly to :ref:`getting the data <GetData>` and downloading the code. 
 On other systems, users will need to build the prerequisite libraries using :term:`HPC-Stack` or :term:`spack-stack`. 
 
@@ -82,11 +82,11 @@ Get Data
 
 The WM RTs require input files to run. 
 These include static datasets, files that depend on grid resolution and 
-initial/boundary conditions, and model configuration files. On Level 1 systems, 
+initial/boundary conditions, and model configuration files. On Level 1 and 2 systems, 
 the data required to run the WM RTs are already available in the following locations: 
 
 .. _DataLocations:
-.. table:: Data Locations for Level 1 Systems
+.. table:: Data Locations for Level 1 & 2 Systems
 
    +--------------+-----------------------------------------------------+
    | Machine      | File location                                       |
@@ -101,10 +101,12 @@ the data required to run the WM RTs are already available in the following locat
    +--------------+-----------------------------------------------------+
    | Orion        | /work/noaa/nems/emc.nemspara/RT                     |
    +--------------+-----------------------------------------------------+
+   | S4           | /data/prod/emc.nemspara/RT                          |
+   +--------------+-----------------------------------------------------+ 
    | WCOSS2       | /lfs/h2/emc/nems/noscrub/emc.nems/RT                |
    +--------------+-----------------------------------------------------+ 
 
-For Level 2-4 systems, the data must be added to the user's system. 
+For Level 3-4 systems, the data must be added to the user's system. 
 Publicly available RT data is available in the `UFS WM Data Bucket <https://registry.opendata.aws/noaa-ufs-regtests/>`__. 
 Data for running RTs off of the develop branch is available for the most recent 60 days. 
 To view the data, users can visit https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html. 
@@ -187,8 +189,8 @@ The process for loading modules is fairly straightforward on NOAA :ref:`Level 1 
 Users may need to make adjustments when running on other systems. 
 
 
-On NOAA Level 1 Systems
----------------------------
+On NOAA Level 1 & 2 Systems
+-----------------------------
 
 Modulefiles for :ref:`preconfigured platforms <SupportedPlatforms>` are located in 
 ``modulefiles/ufs_<platform>.<compiler>``. For example, to load the modules from the 
