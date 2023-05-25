@@ -155,7 +155,6 @@ if [[ $MACHINE_ID = wcoss2 ]]; then
   QUEUE=dev
   COMPILE_QUEUE=dev
   PARTITION=
-  #ACCNR="${ACCNR:-GFS-DEV}"
   STMP=/lfs/h2/emc/ptmp
   PTMP=/lfs/h2/emc/ptmp
   SCHEDULER=pbs
@@ -178,7 +177,6 @@ elif [[ $MACHINE_ID = acorn ]]; then
   QUEUE=dev
   COMPILE_QUEUE=dev
   PARTITION=
-  #ACCNR="${ACCNR:-GFS-DEV}"
   STMP=/lfs/h2/emc/ptmp
   PTMP=/lfs/h2/emc/ptmp
   SCHEDULER=pbs
@@ -195,7 +193,6 @@ elif [[ $MACHINE_ID = gaea ]]; then
   DISKNM=/lustre/f2/pdata/ncep_shared/emc.nemspara/RT
   QUEUE=normal
   COMPILE_QUEUE=normal
-#  ACCNR="${ACCNR:-cmp}"
   PARTITION=c4
   STMP=/lustre/f2/scratch
   PTMP=/lustre/f2/scratch
@@ -222,7 +219,6 @@ elif [[ $MACHINE_ID = hera ]]; then
   QUEUE=batch
   COMPILE_QUEUE=batch
 
-  #ACCNR="${ACCNR:-fv3-cpu}
   PARTITION=
   dprefix=/scratch1/NCEPDEV
   DISKNM=$dprefix/nems/emc.nemspara/RT
@@ -273,7 +269,6 @@ elif [[ $MACHINE_ID = jet ]]; then
 
   QUEUE=batch
   COMPILE_QUEUE=batch
-  #ACCNR="${ACCNR:-h-nems}"
   PARTITION=xjet
   DISKNM=/mnt/lfs4/HFIP/hfv3gfs/role.epic/RT
   dprefix=${dprefix:-/lfs4/HFIP/$ACCNR/$USER}
@@ -300,7 +295,6 @@ elif [[ $MACHINE_ID = s4 ]]; then
   QUEUE=s4
   COMPILE_QUEUE=s4
 
-  #ACCNR="${ACCNR:-star}"
   PARTITION=s4
   dprefix=/data/prod
   DISKNM=$dprefix/emc.nemspara/RT
@@ -336,7 +330,6 @@ elif [[ $MACHINE_ID = stampede ]]; then
   QUEUE=skx-normal
   COMPILE_QUEUE=skx-dev
   PARTITION=
-  #ACCNR="${ACCNR:-TG-EES200015}"
   dprefix=$SCRATCH/ufs-weather-model/run
   DISKNM=/work2/07736/minsukji/stampede2/ufs-weather-model/RT
   STMP=$dprefix
@@ -353,7 +346,6 @@ elif [[ $MACHINE_ID = expanse ]]; then
   QUEUE=compute
   COMPILE_QUEUE=shared
   PARTITION=
-  #ACCNR="${ACCNR:-TG-EES200015}"
   dprefix=/expanse/lustre/scratch/$USER/temp_project/run
   DISKNM=/expanse/lustre/scratch/domh/temp_project/RT
   STMP=$dprefix
@@ -386,11 +378,6 @@ elif [[ $MACHINE_ID = expanse ]]; then
 else
   die "Unknown machine ID, please edit detect_machine.sh file"
 fi
-
-# If account is unspecified, assume the machine has a "nems"
-# accounting code.
-#export ACCNR="${ACCNR:-nems}"
-
 
 mkdir -p ${STMP}/${USER}
 
