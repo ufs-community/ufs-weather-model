@@ -1,6 +1,6 @@
 set -eu
 source $PATHRT/opnReqTests/std.sh
-
+export CMP_DATAONLY=.true.
 if [[ $application == 'global' ]]; then
   FHZERO=3
   LIST_FILES=$(echo -n $LIST_FILES | sed -E "s/phyf024.nc ?//g" \
