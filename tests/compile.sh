@@ -24,7 +24,7 @@ fi
 readonly ARGC=$#
 
 if [[ $ARGC -lt 2 ]]; then
-  echo "Usage: $0 MACHINE_ID [ MAKE_OPT [ BUILD_NR ] [ COMPILE_NR ] [ RT_COMPILER ] [ clean_before ] [ clean_after ] ]"
+  echo "Usage: $0 MACHINE_ID [ MAKE_OPT [ COMPILE_NR ] [ RT_COMPILER ] [ clean_before ] [ clean_after ] ]"
   echo Valid MACHINE_IDs:
   echo $( ls -1 ../cmake/configure_* | sed s:.*configure_::g | sed s:\.cmake:: ) | fold -sw72
   exit 1
