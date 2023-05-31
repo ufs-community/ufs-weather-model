@@ -1,0 +1,249 @@
+###############################################################################
+#
+#  HAFS global with 4 multiple nests and atmosphere only
+#
+###############################################################################
+
+export TEST_DESCR="Compare HAFS global with 4 multiple nests and atmosphere only results with previous trunk version"
+
+export CNTL_DIR=hafs_global_multiple_4nests_atm
+
+export LIST_FILES="atmf006.nc \
+                   sfcf006.nc \
+                   atm.nest02.f006.nc \
+                   sfc.nest02.f006.nc \
+                   atm.nest03.f006.nc \
+                   sfc.nest03.f006.nc \
+                   atm.nest04.f006.nc \
+                   sfc.nest04.f006.nc \
+                   atm.nest05.f006.nc \
+                   sfc.nest05.f006.nc \
+                   HURPRS.GrbF06 \
+                   HURPRS.GrbF06.nest02 \
+                   HURPRS.GrbF06.nest03 \
+                   HURPRS.GrbF06.nest04 \
+                   HURPRS.GrbF06.nest05 \
+                   RESTART/20200825.180000.coupler.res \
+                   RESTART/20200825.180000.fv_core.res.nc \
+                   RESTART/20200825.180000.fv_core.res.nest02.nc \
+                   RESTART/20200825.180000.fv_core.res.nest02.tile7.nc \
+                   RESTART/20200825.180000.fv_core.res.nest03.nc \
+                   RESTART/20200825.180000.fv_core.res.nest03.tile8.nc \
+                   RESTART/20200825.180000.fv_core.res.nest04.nc \
+                   RESTART/20200825.180000.fv_core.res.nest04.tile9.nc \
+                   RESTART/20200825.180000.fv_core.res.nest05.nc \
+                   RESTART/20200825.180000.fv_core.res.nest05.tile10.nc \
+                   RESTART/20200825.180000.fv_core.res.tile1.nc \
+                   RESTART/20200825.180000.fv_core.res.tile2.nc \
+                   RESTART/20200825.180000.fv_core.res.tile3.nc \
+                   RESTART/20200825.180000.fv_core.res.tile4.nc \
+                   RESTART/20200825.180000.fv_core.res.tile5.nc \
+                   RESTART/20200825.180000.fv_core.res.tile6.nc \
+                   RESTART/20200825.180000.fv_srf_wnd.res.nest02.tile7.nc \
+                   RESTART/20200825.180000.fv_srf_wnd.res.nest03.tile8.nc \
+                   RESTART/20200825.180000.fv_srf_wnd.res.nest04.tile9.nc \
+                   RESTART/20200825.180000.fv_srf_wnd.res.nest05.tile10.nc \
+                   RESTART/20200825.180000.fv_srf_wnd.res.tile1.nc \
+                   RESTART/20200825.180000.fv_srf_wnd.res.tile2.nc \
+                   RESTART/20200825.180000.fv_srf_wnd.res.tile3.nc \
+                   RESTART/20200825.180000.fv_srf_wnd.res.tile4.nc \
+                   RESTART/20200825.180000.fv_srf_wnd.res.tile5.nc \
+                   RESTART/20200825.180000.fv_srf_wnd.res.tile6.nc \
+                   RESTART/20200825.180000.fv_tracer.res.nest02.tile7.nc \
+                   RESTART/20200825.180000.fv_tracer.res.nest03.tile8.nc \
+                   RESTART/20200825.180000.fv_tracer.res.nest04.tile9.nc \
+                   RESTART/20200825.180000.fv_tracer.res.nest05.tile10.nc \
+                   RESTART/20200825.180000.fv_tracer.res.tile1.nc \
+                   RESTART/20200825.180000.fv_tracer.res.tile2.nc \
+                   RESTART/20200825.180000.fv_tracer.res.tile3.nc \
+                   RESTART/20200825.180000.fv_tracer.res.tile4.nc \
+                   RESTART/20200825.180000.fv_tracer.res.tile5.nc \
+                   RESTART/20200825.180000.fv_tracer.res.tile6.nc \
+                   RESTART/20200825.180000.phy_data.nest02.tile7.nc \
+                   RESTART/20200825.180000.phy_data.nest03.tile8.nc \
+                   RESTART/20200825.180000.phy_data.nest04.tile9.nc \
+                   RESTART/20200825.180000.phy_data.nest05.tile10.nc \
+                   RESTART/20200825.180000.phy_data.tile1.nc \
+                   RESTART/20200825.180000.phy_data.tile2.nc \
+                   RESTART/20200825.180000.phy_data.tile3.nc \
+                   RESTART/20200825.180000.phy_data.tile4.nc \
+                   RESTART/20200825.180000.phy_data.tile5.nc \
+                   RESTART/20200825.180000.phy_data.tile6.nc \
+                   RESTART/20200825.180000.sfc_data.nest02.tile7.nc \
+                   RESTART/20200825.180000.sfc_data.nest03.tile8.nc \
+                   RESTART/20200825.180000.sfc_data.nest04.tile9.nc \
+                   RESTART/20200825.180000.sfc_data.nest05.tile10.nc \
+                   RESTART/20200825.180000.sfc_data.tile1.nc \
+                   RESTART/20200825.180000.sfc_data.tile2.nc \
+                   RESTART/20200825.180000.sfc_data.tile3.nc \
+                   RESTART/20200825.180000.sfc_data.tile4.nc \
+                   RESTART/20200825.180000.sfc_data.tile5.nc \
+                   RESTART/20200825.180000.sfc_data.tile6.nc \
+                   RESTART/fv_BC_ne.res.nest02.nc \
+                   RESTART/fv_BC_ne.res.nest03.nc \
+                   RESTART/fv_BC_ne.res.nest04.nc \
+                   RESTART/fv_BC_ne.res.nest05.nc \
+                   RESTART/fv_BC_sw.res.nest02.nc \
+                   RESTART/fv_BC_sw.res.nest03.nc \
+                   RESTART/fv_BC_sw.res.nest04.nc \
+                   RESTART/fv_BC_sw.res.nest05.nc"
+
+export_fv3
+export_hafs
+
+export HAFS=true
+export FHMAX=6
+export RESTART_N=${FHMAX}
+export atm_omp_num_threads=2
+export DT_ATMOS=90
+export IDEFLATE=1
+export NFHMAX_HF=-1
+export NFHOUT_HF=3
+export NFHOUT=3
+export OUTPUT_FILE="'netcdf' 'netcdf'"
+export SDAY=25
+export SHOUR=12
+export SMONTH=08
+export SYEAR=2020
+export WRTTASK_PER_GROUP=60
+export WRITE_DOPOST=.true.
+export POSTAPP='hafs'
+export NTILES=6
+
+export QUILTING_RESTART=.true.
+export OUTPUT_GRID='global_latlon'
+export IMO=360
+export JMO=181
+
+export OUTPUT_GRID_2='regional_latlon'
+export CEN_LON_2=-175.0
+export CEN_LAT_2=0.0
+export LON1_2=-220.00
+export LAT1_2=-45.00
+export LON2_2=-130.00
+export LAT2_2=45.00
+export DLON_2=0.25
+export DLAT_2=0.25
+
+export OUTPUT_GRID_3='rotated_latlon'
+export CEN_LON_3=-86.0
+export CEN_LAT_3=23.0
+export LON1_3=-45.00
+export LAT1_3=-40.00
+export LON2_3=45.00
+export LAT2_3=40.00
+export DLON_3=0.25
+export DLAT_3=0.25
+
+export OUTPUT_GRID_4='rotated_latlon'
+export CEN_LON_4=-86.0
+export CEN_LAT_4=23.0
+export LON1_4=-45.00
+export LAT1_4=-40.00
+export LON2_4=45.00
+export LAT2_4=40.00
+export DLON_4=0.1
+export DLAT_4=0.1
+
+export OUTPUT_GRID_5='rotated_latlon'
+export CEN_LON_5=-86.0
+export CEN_LAT_5=23.0
+export LON1_5=-35.00
+export LAT1_5=-30.00
+export LON2_5=35.00
+export LAT2_5=30.00
+export DLON_5=0.05
+export DLAT_5=0.05
+
+export BLOCKSIZE=${BLOCKSIZE:-24}
+export CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf"
+export DEFLATE_LEVEL=-1
+export INPES=4
+export JNPES=5
+export NPX=97
+export NPY=97
+export NPZ=64
+export NPZP=$(($NPZ + 1))
+export K_SPLIT=4
+export N_SPLIT=5
+export NWAT=6
+export NA_INIT=1
+export EXTERNAL_IC=.true.
+export NGGPS_IC=.true.
+export MOUNTAIN=.false.
+export WARM_START=.false.
+export TARGET_LAT="23.0"
+export TARGET_LON="-86.0"
+export STRETCH_FAC=1.0001
+export FULL_ZS_FILTER=.false.
+export N_ZS_FILTER=0
+
+export GRID_PES="120,60,60,60,60"
+export TILE_COARSE="0,2,6,8,9"
+export NUM_TILE_TOP=6
+export NEST_REFINE="0,3,3,3,3"
+export NEST_IOFFSETS="1,9,9,61,121"
+export NEST_JOFFSETS="1,9,9,61,121"
+
+export FHCYC=0
+export FHSWR=1800
+export FHLWR=1800
+export NSTF_NAME=2,0,0,0,0
+export CPLFLX=.false.
+export CPLOCN2ATM=.true.
+export CPLWAV=.false.
+export CPLWAV2ATM=.false.
+export CPL_IMP_MRG=.false.
+
+export INPES_NEST02=6
+export JNPES_NEST02=10
+export NPX_NEST02=241
+export NPY_NEST02=241
+export K_SPLIT_NEST02=4
+export N_SPLIT_NEST02=5
+
+export INPES_NEST03=6
+export JNPES_NEST03=10
+export NPX_NEST03=241
+export NPY_NEST03=241
+export K_SPLIT_NEST03=4
+export N_SPLIT_NEST03=5
+
+export INPES_NEST04=6
+export JNPES_NEST04=10
+export NPX_NEST04=361
+export NPY_NEST04=361
+export K_SPLIT_NEST04=4
+export N_SPLIT_NEST04=5
+
+export INPES_NEST05=6
+export JNPES_NEST05=10
+export NPX_NEST05=361
+export NPY_NEST05=361
+export K_SPLIT_NEST05=4
+export N_SPLIT_NEST05=5
+
+ATM_compute_tasks=$(( INPES*JNPES*NTILES + INPES_NEST02*JNPES_NEST02 + INPES_NEST03*JNPES_NEST03 + INPES_NEST04*JNPES_NEST04 + INPES_NEST05*JNPES_NEST05 ))
+
+export NESTED=.true.
+export FULL_ZS_FILTER=.false.
+export N_ZS_FILTER=0
+
+export CMEPS=false
+export RUNTYPE="startup"
+export USE_COLDSTART="false"
+
+export FIELD_TABLE=field_table_hafs
+export DIAG_TABLE=diag_table_hafs_template
+export INPUT_NML=input_global_hafs.nml.IN
+export INPUT_NEST02_NML=input_nest_hafs.nml.IN
+export INPUT_NEST03_NML=input_nest_hafs.nml.IN
+export INPUT_NEST04_NML=input_nest_hafs.nml.IN
+export INPUT_NEST05_NML=input_nest_hafs.nml.IN
+export MODEL_CONFIGURE="model_configure_hafs.IN"
+export NEMS_CONFIGURE="nems.configure.hafs_atm.IN"
+export FV3_RUN="hafs_fv3_run.IN"
+
+if [[ $MACHINE_ID = cheyenne ]]; then
+  TPN=18
+fi

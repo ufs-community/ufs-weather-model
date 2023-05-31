@@ -23,6 +23,9 @@ load(pathJoin("stack-python", stack_python_ver))
 cmake_ver=os.getenv("cmake_ver") or "3.22.0"
 load(pathJoin("cmake", cmake_ver))
 
+scotch_ver=os.getenv("scotch_ver") or "7.0.3"
+load(pathJoin("scotch", scotch_ver))
+
 load("ufs_common")
 
 setenv("CC", "icc")
