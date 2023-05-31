@@ -470,8 +470,7 @@ fi
 
 BL_DATE=20230517
 
-#RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
-RTPWD=/scratch2/BMC/zrtrr/Samuel.Trahan/clm-sd-restart/step-by-step/RT/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}
+RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}/${RT_COMPILER^^}}
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20221101}
 INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20220624
