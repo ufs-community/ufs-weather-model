@@ -42,6 +42,8 @@ elif [[ $application == 'atmw' ]]; then
   fi
   RESTART_N=$(( FHMAX/2 ))
   RESTART_INTERVAL="${RESTART_N} -1"
+  WW3RSTDTHR=3
+  DT_2_RST="$(printf "%02d" $(( ${WW3RSTDTHR}*3600 )))"
 fi
 
 
@@ -49,3 +51,7 @@ fi
 if [[ $RT_SUFFIX =~ std ]]; then
   source $PATHRT/opnReqTests/wrt_env.sh
 fi
+
+cat <<EOF >>${RUNDIR_ROOT}/opnreq_test${RT_SUFFIX}.env
+export DT_2_RST=${DT_2_RST:-}
+EOF
