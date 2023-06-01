@@ -2,10 +2,6 @@ help([[
 loads UFS Model prerequisites for Hera/GNU
 ]])
 
-prepend_path("MODULEPATH", "/scratch1/NCEPDEV/nems/role.epic/miniconda3/modulefiles")
-miniconda3_ver=os.getenv("miniconda3_ver") or "4.12.0"
-load(pathJoin("miniconda3", miniconda3_ver))
-
 prepend_path("MODULEPATH", "/contrib/sutils/modulefiles")
 load("sutils")
 
@@ -25,6 +21,9 @@ load(pathJoin("hpc-gnu", hpc_gnu_ver))
 
 hpc_mpich_ver=os.getenv("hpc_mpich_ver") or "3.3.2"
 load(pathJoin("hpc-mpich", hpc_mpich_ver))
+
+scotch_ver=os.getenv("scotch_ver") or "7.0.3"
+load(pathJoin("scotch", scotch_ver))
 
 load("ufs_common")
 
