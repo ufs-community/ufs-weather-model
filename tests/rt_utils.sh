@@ -468,14 +468,10 @@ rocoto_create_compile_task() {
   if [[ ${MACHINE_ID} == orion ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
-<<<<<<< HEAD
-  if [[ ${MACHINE_ID} == hercules.* ]]; then
+  if [[ ${MACHINE_ID} == hercules ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
-  if [[ ${MACHINE_ID} == s4.* ]]; then
-=======
   if [[ ${MACHINE_ID} == s4 ]]; then
->>>>>>> 5d47ea8b820596930e5d82a486b8bf97c4c283bc
     BUILD_WALLTIME="01:00:00"
   fi
 
