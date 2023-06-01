@@ -20,8 +20,8 @@ if [[ $application == 'global' ]]; then
   fi
 
 elif [[ $application == 'regional' ]]; then
-  echo "Regional application not yet implemented for restart"
-  exit 1
+  echo "Regional application not yet implemented for restart, skipping..."
+  continue 1
 elif [[ $application == 'cpld' ]]; then
   FHROT=$(( FHMAX/2 ))
 

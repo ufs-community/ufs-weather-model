@@ -18,8 +18,8 @@ elif [[ $application == 'cpld' ]]; then
                                      | sed -E "s/atmf024.tile[1-6].nc ?//g" \
                                      | sed -e "s/^ *//" -e "s/ *$//")
   else
-    echo "This test is not yet set up for the fhzero test"
-    exit 1
+    echo "This test is not yet set up for the fhzero test, skipping..."
+    continue 1
   fi
 elif [[ $application == 'atmw' ]]; then
   FHZERO=3
@@ -27,8 +27,8 @@ elif [[ $application == 'atmw' ]]; then
                                    | sed -E "s/atmf012.nc ?//g" \
                                    | sed -e "s/^ *//" -e "s/ *$//")
 else
-  echo "This test is not yet set up for the fhzero test"
-  exit 1
+  echo "This test is not yet set up for the fhzero test, skipping..."
+  continue 1
 fi
 
 source $PATHRT/opnReqTests/wrt_env.sh
