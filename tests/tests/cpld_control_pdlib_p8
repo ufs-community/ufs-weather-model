@@ -102,6 +102,10 @@ export NEMS_CONFIGURE=nems.configure.cpld_noaero.IN
 
 export FV3_RUN=cpld_control_run.IN
 
-if [[ $MACHINE_ID = cheyenne.* ]]; then
+if [[ $MACHINE_ID = cheyenne ]]; then
   TPN=18
+fi
+
+if [[ $MACHINE_ID = hera ]] && [[ $RT_COMPILER = gnu ]]; then
+  WLCLK=40
 fi
