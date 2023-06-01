@@ -6,7 +6,7 @@ local ufs_modules = {
   {["jasper"]          = "2.0.32"},
   {["zlib"]            = "1.2.13"},
   {["libpng"]          = "1.6.37"},
-  {["hdf5"]            = "1.14.1"},
+  {["hdf5"]            = "1.14.0"},
   {["netcdf-c"]        = "4.9.2"},
   {["netcdf-fortran"]  = "4.6.0"},
   {["parallelio"]      = "2.5.9"},
@@ -21,6 +21,7 @@ local ufs_modules = {
   {["w3emc"]           = "2.9.2"},
   {["gftl-shared"]     = "1.5.0"},
   {["mapl"]            = "2.35.2-esmf-8.4.2"},
+  {["scotch"]          = "7.0.3"},
 }
 
 for i = 1, #ufs_modules do
