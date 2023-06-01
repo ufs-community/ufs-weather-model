@@ -35,7 +35,7 @@ elif [[ $application == 'cpld' ]]; then
   RUN_BEG="${SYEAR}${SMONTH}${SDAY} $(printf "%02d" $(( ${FHROT}+${SHOUR} )))0000"
 elif [[ $application == 'atmw' ]]; then
   FHROT=$(( FHMAX/2 ))
-  WW3RSTDTHR=3
+  WW3RSTDTHR=6
   DT_2_RST="$(printf "%02d" $(( ${WW3RSTDTHR}*3600 )))"
   RUNTYPE='continue'
   USE_RESTART_TIME='.true.'
