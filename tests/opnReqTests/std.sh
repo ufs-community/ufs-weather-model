@@ -44,7 +44,6 @@ elif [[ $application == 'atmw' ]]; then
   RESTART_INTERVAL="${RESTART_N} -1"
 fi
 
-
 #outdated (test $CI_TEST == 'true') && source $PATHRT/opnReqTests/cmp_proc_bind.sh
 if [[ $RT_SUFFIX =~ std ]]; then
   source $PATHRT/opnReqTests/wrt_env.sh
