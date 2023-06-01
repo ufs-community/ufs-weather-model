@@ -4,44 +4,50 @@
 Data: Input, Model Configuration, and Output Files
 *****************************************************
 
-The UFS Weather Model can be run in one of several configurations, from a single component atmospheric 
+The UFS Weather Model can be run in one of several configurations (sometimes referred to as "applications"), from a single-component atmospheric 
 model to a fully coupled model with multiple earth system components (e.g., atmosphere, ocean, sea-ice and 
-mediator). Currently the supported configurations are:
+mediator). Currently, supported configurations include:
 
 .. _UFS-configurations:
 
 .. list-table:: *Supported ufs-weather-model applications*
    :widths: 10 70
    :header-rows: 1
-   
+
    * - Configuration Name
      - Description
-   * - ATM
-     - Standalone UFSAtm
-   * - ATMW
-     - UFSAtm coupled to WW3
-   * - ATMAERO
-     - UFSAtm coupled to GOCART
-   * - ATMAQ
-     - UFSAtm coupled to CMAQ
-   * - S2S
-     - Coupled UFSATM-MOM6-CICE6-CMEPS
-   * - S2SA
-     - Coupled UFSATM-MOM6-CICE6-GOCART-CMEPS
-   * - S2SW
-     - Coupled UFSATM-MOM6-CICE6-WW3-CMEPS
-   * - S2SWA
-     - Coupled UFSATM-MOM6-CICE6-WW3-GOCART-CMEPS
-   * - NG-GODAS
-     - Coupled CDEPS-DATM-MOM6-CICE6-CMEPS
-   * - HAFS
-     - Coupled UFSATM-HYCOM-CMEPS
-   * - HAFSW
-     - Coupled UFSATM-HYCOM-WW3-CMEPS
-   * - HAFS-ALL
-     - Coupled CDEPS-UFSATM-HYCOM-WW3-CMEPS
+   * - :ref:`ATM <atm>`
+     - Standalone Atmospheric Model (:term:`ATM`)
+   * - :ref:`ATMW <atmw>`
+     - :term:`ATM` coupled to :term:`WW3`
+   * - :ref:`ATMAERO <atmaero>`
+     - :term:`ATM` coupled to :term:`GOCART`
+   * - :ref:`ATMAQ <atmaq>`
+     - :term:`ATM` coupled to :term:`CMAQ`
+   * - :ref:`ATML <atml>`
+     - :term:`ATM` coupled to :term:`LND`
+   * - :ref:`S2S <s2s>`
+     - Coupled :term:`ATM` - :term:`MOM6` - :term:`CICE6` - :term:`CMEPS`
+   * - :ref:`S2SA <s2sa>`
+     - Coupled :term:`ATM` - :term:`MOM6` - :term:`CICE6` - :term:`GOCART` - :term:`CMEPS`
+   * - :ref:`S2SW <s2sw>`
+     - Coupled :term:`ATM` - :term:`MOM6` - :term:`CICE6` - :term:`WW3` - :term:`CMEPS`
+   * - :ref:`S2SWA <s2swa>`
+     - Coupled :term:`ATM` - :term:`MOM6` - :term:`CICE6` - :term:`GOCART` - :term:`WW3` - :term:`CMEPS`
+   * - :ref:`NG-GODAS <ng-godas>`
+     - Coupled :term:`CDEPS` - :term:`DATM` - :term:`MOM6` - :term:`CICE6` - :term:`CMEPS`
+   * - :ref:`LND <lnd>`
+     - Coupled :term:`CDEPS` - :term:`DATM` - :term:`LND` -:term:`CMEPS`
+   * - :ref:`HAFS <hafs>`
+     - Coupled :term:`ATM` - :term:`HYCOM` - :term:`CMEPS`
+   * - :ref:`HAFSW <hafsw>`
+     - Coupled :term:`ATM` - :term:`HYCOM` - :term:`WW3` - :term:`CMEPS`
+   * - :ref:`HAFS-ALL <hafs-all>`
+     - Coupled :term:`CDEPS` - :term:`ATM` - :term:`HYCOM` - :term:`WW3` - :term:`CMEPS`
 
-Each of the component models for a given configuration requires specific input files, and each component model outputs a particular set of files. Each configuration requires a set of model configuration files, as well. This chapter describes the input and output files involved with each component model. It also discusses the various configuration files involved in running the model. Users will need to view the input file requirements for each component model involved in the configuration they are running. For example, users running the *S2S* configuration would need to gather input data required for the *ATM*, *MOM6*, and *CICE6* component models. Then, they would need to alter certain model configuration files to reflect the ``ufs-weather-model`` configuration they plan to run. 
+.. COMMENT: Should HAFS-ALL be DATM instead of ATM?
+
+This chapter describes the input and output files needed for executing the model in the various supported configurations (see :numref:`Table %s <UFS-configurations>`). Each of the component models for a given configuration requires specific input files, and each component model outputs a particular set of files. Each configuration requires a set of model configuration files, as well. This chapter describes the input and output files involved with each component model. It also discusses the various configuration files involved in running the model. Users will need to view the input file requirements for each component model involved in the configuration they are running. For example, users running the *S2S* configuration would need to gather input data required for the *ATM*, *MOM6*, and *CICE6* component models. Then, they would need to alter certain model configuration files to reflect the ``ufs-weather-model`` configuration that they plan to run. 
 
 =============
 Input files
@@ -54,6 +60,8 @@ There are three types of files needed to execute a run:
    #. Model configuration files (such as namelists)
 
 Information on the first two types of file appears in detail below for each component model. Information on Model Configuration files can be viewed in :numref:`Section %s <model-config-files>`. 
+
+.. _atm-io:
 
 -------
 ATM
@@ -940,6 +948,92 @@ AQM inputs defined in ``aqm.rc`` are listed and described in :numref:`Table %s <
    * - Hourly_Emissions_regrid_rrfs_13km_20190801_t12z_h72.nc
      - File Emissions File 
 
+.. _lnd-io:
+
+-------
+LND
+-------
+
+LND component datasets are available from the Land Data Assimilation (DA) System Data Bucket and can be retrieved using a ``wget`` command: 
+
+.. code-block:: console
+
+   wget https://noaa-ufs-land-da-pds.s3.amazonaws.com/current_land_da_release_data/landda-test-inps.tar.gz
+   tar xvfz landda-test-inps.tar.gz
+
+These files will be untarred into an ``inputs`` directory if the user does not specify a different name. They include data for Jan 1-2, 2016 with restarts available for Jan. 3-4, 2016. :numref:`Table %s <LndInputFiles>` describes the file types. In each file name, ``YYYY`` refers to a valid 4-digit year, ``MM`` refers to a valid 2-digit month, and ``DD`` refers to a valid 2-digit day of the month. 
+
+.. _LndInputFiles:
+
+.. list-table:: *LND input files*
+   :widths: 30 60 10
+   :header-rows: 1
+
+   * - Filename
+     - Description
+     - File Type
+   * - ufs-land_C96_static_fields.nc
+     - Static file that includes information on location, time, soil layers, and fixed (invariant) experiment parameters.
+     - Fix/static file
+   * - ufs-land_C96_init_fields_1hr.nc
+     - Initial conditions file that includes the initial state variables that are required for the UFS land snow DA to begin a cycling run.
+     - Initial conditions
+   * - C96_grid.tileN.nc
+     - C96 grid information for tiles 1-6, where N is the grid tile number [1-6]. 
+     - Grid
+   * - C96_oro_data.tileN.nc / oro_C96.mx100.tileN.nc
+     - Orography files that contain grid and land mask information, where N is the grid tile number [1-6]. ``mx100`` refers to the ocean resolution (100=1º).
+     - Grid
+   * - ufs-land.namelist.gdas
+     - Land component model configuration (namelist) file
+     - Model configuration
+   * - ghcn_snwd_ioda_YYYYMMDD.nc
+     - Snow depth data assimilation files
+     - DA
+   * - C96_GDAS_forcing_YYYY-MM-DD.nc
+     - GDAS forcing files
+     - Forcing
+   * - ufs_land_restart.2015-09-01_18-00-00.nc
+     - Restart file
+     - Restart
+   * - ufs_land_restart.2016-01-01_18-00-00.nc
+     - Restart file
+     - Restart
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Static Datasets (i.e., *fix files*)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The static file (listed in :numref:`Table %s <LndInputFiles>`) includes specific information on location, time, soil layers, and fixed (invariant) experiment parameters that are required for the land component to run. The data must be provided in :term:`netCDF` format.
+
+The static file is available in the ``inputs`` data directory at the following path:
+
+.. code-block:: 
+
+   inputs/forcing/gdas/static/ufs-land_C96_static_fields.nc
+
+Details on the configuration variables included in this file are available from the :ref:`Land DA documentation <landda:InputFiles>`. 
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Grid Description and Initial Condition Files
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The input files containing grid information and the initial conditions for global configurations are listed and described in :numref:`Table %s <LndInputFiles>`. 
+
+The initial conditions file includes the initial state variables that are required for the UFS land snow DA to begin a cycling run. The data must be provided in :term:`netCDF` format.
+
+The initial conditions file is available in the ``inputs`` data directory (downloaded :ref:`above <lnd-io>`) at the following path:
+
+.. code-block:: 
+
+   inputs/forcing/GDAS/init/ufs-land_C96_init_fields_1hr.nc
+
+^^^^^^^^^^^^^^^^^^^^
+Additional Files
+^^^^^^^^^^^^^^^^^^^^
+
+The LND component uses a model configuration namelist file as well as atmospheric forcing files, data assimilation files, and restart files, which are also listed in :numref:`Table %s <LndInputFiles>`. 
+
 .. _model-config-files:
 
 ==========================
@@ -1421,11 +1515,13 @@ are not usually changed.
      - integer
      - 0
 
+.. _nems-conf:
+
 ------------------------
 ``nems.configure`` file
 ------------------------
 
-This file contains  information about the various NEMS components  and their run sequence. The active  components for a particular model configuration are given in the *EARTH_component_list*. For  each active component, the model name  and compute tasks assigned to the component are given. A  specific component might  also require additional configuration information to be present.  The ``runSeq`` describes the order and time intervals  over which one or  more component models integrate  in time. Additional *attributes*, if present, provide additional configuration of the model components when coupled with the CMEPS mediator.
+This file contains information about the various NEMS components and their run sequence. The active components for a particular model configuration are given in the *EARTH_component_list*. For each active component, the model name and compute tasks assigned to the component are given. A specific component might also require additional configuration information to be present. The ``runSeq`` describes the order and time intervals over which one or more component models integrate in time. Additional *attributes*, if present, provide additional configuration of the model components when coupled with the CMEPS mediator.
 
 For the ATM application, since it consists of a single component, the ``nems.configure`` is simple and does not need to be changed.
 A sample of the file contents is shown below:
@@ -1438,638 +1534,26 @@ A sample of the file contents is shown below:
     ATM
   ::
 
+However, ``nems.configure`` files for other configurations of the Weather Model are more complex. A full set of ``nems.configure`` templates is available in the ``ufs-weather-model/tests/parm/`` directory `here <https://github.com/ufs-community/ufs-weather-model/tree/develop/tests/parm>`__. Template names follow the pattern ``nems.configure.*.IN``. A number of samples are available below: 
 
-For the fully coupled S2SW application, a sample ``nems.configure`` is shown below :
+   * :doc:`ATMAQ <samples/nems.configure.ATMAQ>` configuration
+   * :doc:`S2S <samples/nems.configure.S2S>` (fully coupled ``S2S`` configuration that receives atmosphere-ocean fluxes from a mediator)
+   * :doc:`S2SW <samples/nems.configure.S2SW>` (fully coupled ``S2SW`` configuration)
+   * :doc:`S2SWA <samples/nems.configure.S2SWA>` (coupled GOCART in the S2SAW configuration)
+   * :doc:`NG-GODAS <samples/nems.configure.NG-GODAS>` (coupled NG-GODAS configuration)
+   * :doc:`HAFS <samples/nems.configure.HAFS>` (coupled HAFS configuration)
+   * :doc:`LND <samples/nems.configure.ATM_LND>` (ATML configuration)
 
-.. code-block:: console
+   * For more HAFS, HAFSW, and HAFS-ALL configurations please see the following ``nems.configure`` templates:
 
-	# EARTH #
-	EARTH_component_list: MED ATM OCN ICE WAV
-	EARTH_attributes::
-	  Verbosity = 0
-	::
-
-	# MED #
-	MED_model:                      cmeps
-	MED_petlist_bounds:             0 143
-	::
-
-	# ATM #
-	ATM_model:                      fv3
-	ATM_petlist_bounds:             0 149
-	ATM_attributes::
-	::
-
-	# OCN #
-	OCN_model:                      mom6
-	OCN_petlist_bounds:             150 179
-	OCN_attributes::
-	  mesh_ocn = mesh.mx100.nc
-	::
-
-	# ICE #
-	ICE_model:                      cice6
-	ICE_petlist_bounds:             180 191
-	ICE_attributes::
-	  mesh_ice = mesh.mx100.nc
-	::
-
-	# WAV #
-	WAV_model:                      ww3
-	WAV_petlist_bounds:             192 395
-	WAV_attributes::
-	::
-
-	# CMEPS warm run sequence
-	runSeq::
-	@3600
-	   MED med_phases_prep_ocn_avg
-	   MED -> OCN :remapMethod=redist
-	   OCN -> WAV
-	   WAV -> OCN :srcMaskValues=1
-	   OCN
-	   @900
-	     MED med_phases_prep_atm
-	     MED med_phases_prep_ice
-	     MED -> ATM :remapMethod=redist
-	     MED -> ICE :remapMethod=redist
-	     WAV -> ATM :srcMaskValues=1
-	     ATM -> WAV
-	     ICE -> WAV
-	     ATM
-	     ICE
-	     WAV
-	     ATM -> MED :remapMethod=redist
-	     MED med_phases_post_atm
-	     ICE -> MED :remapMethod=redist
-	     MED med_phases_post_ice
-	     MED med_phases_prep_ocn_accum
-	   @
-	   OCN -> MED :remapMethod=redist
-	   MED med_phases_post_ocn
-	   MED med_phases_restart_write
-	@
-	::
-
-	# CMEPS variables
-
-	::
-	MED_attributes::
-	      ATM_model = fv3
-	      ICE_model = cice6
-	      OCN_model = mom6
-	      history_n = 1
-	      history_option = nhours
-	      history_ymd = -999
-	      coupling_mode = nems_orig
-	::
-	ALLCOMP_attributes::
-	      ScalarFieldCount = 2
-	      ScalarFieldIdxGridNX = 1
-	      ScalarFieldIdxGridNY = 2
-	      ScalarFieldName = cpl_scalars
-	      start_type = startup
-	      restart_dir = RESTART/
-	      case_name = ufs.cpld
-	      restart_n = 24
-	      restart_option = nhours
-	      restart_ymd = -999
-	      dbug_flag = 0
-	      use_coldstart = false
-	      use_mommesh = true
-	::
-
-
-For the coupled NG_GODAS application, a sample ``nems.configure`` is shown below :
-
-.. code-block:: console
-
-	# EARTH #
-	EARTH_component_list: MED ATM OCN ICE
-	EARTH_attributes::
-	  Verbosity = 0
-	::
-
-	# MED #
-	MED_model:                      cmeps
-	MED_petlist_bounds:             0 11
-	  Verbosity = 5
-	  dbug_flag = 5
-
-	::
-
-	# ATM #
-	ATM_model:                      datm
-	ATM_petlist_bounds:             0 11
-	ATM_attributes::
-	  Verbosity = 0
-	  DumpFields = false
-	  mesh_atm  = DATM_INPUT/cfsr_mesh.nc
-	  diro = "."
-	  logfile = atm.log
-          stop_n = 24
-          stop_option = nhours
-          stop_ymd = -999
-          write_restart_at_endofrun = .true.
-	::
-
-	# OCN #
-	OCN_model:                      mom6
-	OCN_petlist_bounds:             12 27
-	OCN_attributes::
-	  Verbosity = 0
-	  DumpFields = false
-	  ProfileMemory = false
-	  OverwriteSlice = true
-	  mesh_ocn = mesh.mx100.nc
-	::
-
-	# ICE #
-	ICE_model:                      cice6
-	ICE_petlist_bounds:             28 39
-	ICE_attributes::
-	  Verbosity = 0
-	  DumpFields = false
-	  ProfileMemory = false
-	  OverwriteSlice = true
-	  mesh_ice = mesh.mx100.nc
-	  stop_n = 12
-	  stop_option = nhours
-	  stop_ymd = -999
-	::
-
-	# CMEPS concurrent warm run sequence
-
-	runSeq::
-	@3600
-	   MED med_phases_prep_ocn_avg
-	   MED -> OCN :remapMethod=redist
-	   OCN
-	   @900
-	     MED med_phases_prep_ice
-	     MED -> ICE :remapMethod=redist
-	     ATM
-	     ICE
-	     ATM -> MED :remapMethod=redist
-	     MED med_phases_post_atm
-	     ICE -> MED :remapMethod=redist
-	     MED med_phases_post_ice
-	     MED med_phases_aofluxes_run
-	     MED med_phases_prep_ocn_accum
-	   @
-	   OCN -> MED :remapMethod=redist
-	   MED med_phases_post_ocn
-	   MED med_phases_restart_write
-	@
-	::
-
-	# CMEPS variables
-
-	DRIVER_attributes::
-	      mediator_read_restart = false
-	::
-	MED_attributes::
-	      ATM_model = datm
-	      ICE_model = cice6
-	      OCN_model = mom6
-	      history_n = 1
-	      history_option = nhours
-	      history_ymd = -999
-	      coupling_mode = nems_orig_data
-	::
-	ALLCOMP_attributes::
-	      ScalarFieldCount = 3
-	      ScalarFieldIdxGridNX = 1
-	      ScalarFieldIdxGridNY = 2
-	      ScalarFieldIdxNextSwCday = 3
-	      ScalarFieldName = cpl_scalars
-	      start_type = startup
-	      restart_dir = RESTART/
-	      case_name = DATM_CFSR
-	      restart_n = 12
-	      restart_option = nhours
-	      restart_ymd = -999
-	      dbug_flag = 0
-	      use_coldstart = false
-	      use_mommesh = true
-	      coldair_outbreak_mod = .false.
-	      flds_wiso = .false.
-	      flux_convergence = 0.0
-	      flux_max_iteration = 2
-	      ocn_surface_flux_scheme = 0
-	      orb_eccen = 1.e36
-	      orb_iyear = 2000
-	      orb_iyear_align = 2000
-	      orb_mode = fixed_year
-	      orb_mvelp = 1.e36
-	      orb_obliq = 1.e36
-	::
-
-For the coupled HAFS application, a sample ``nems.configure`` is shown below :
-
-.. code-block:: console
-
-        # EARTH #
-        EARTH_component_list: ATM OCN MED
-
-        # MED #
-        MED_model:                      cmeps
-        MED_petlist_bounds:             1340 1399
-        MED_attributes::
-          coupling_mode = hafs
-          system_type = ufs
-          normalization = none
-          merge_type = copy
-          ATM_model = fv3
-          OCN_model = hycom
-          history_ymd = -999
-          ScalarFieldCount = 0
-          ScalarFieldIdxGridNX = 0
-          ScalarFieldIdxGridNY = 0
-          ScalarFieldName = cpl_scalars
-        ::
-
-        # ATM #
-        ATM_model:                      fv3
-        ATM_petlist_bounds:             0000 1339
-        ATM_attributes::
-          Verbosity = 1
-          Diagnostic = 0
-        ::
-
-        # OCN #
-        OCN_model:                      hycom
-        OCN_petlist_bounds:             1340 1399
-        OCN_attributes::
-          Verbosity = 1
-          Diagnostic = 0
-          cdf_impexp_freq = 3
-          cpl_hour = 0
-          cpl_min = 0
-          cpl_sec = 360
-          base_dtg = 2020082512
-          merge_import = .true.
-          skip_first_import = .true.
-          hycom_arche_output = .false.
-          hyc_esmf_exp_output = .true.
-          hyc_esmf_imp_output = .true.
-          import_diagnostics = .false.
-          import_setting = flexible
-          hyc_impexp_file = nems.configure
-          espc_show_impexp_minmax = .true.
-          ocean_start_dtg = 43702.50000
-          start_hour = 0
-          start_min = 0
-          start_sec = 0
-          end_hour = 12
-          end_min = 0
-          end_sec = 0
-        ::
-
-        DRIVER_attributes::
-          start_type = startup
-        ::
-
-        ALLCOMP_attributes::
-          mediator_read_restart = false
-        ::
-
-        # CMEPS cold run sequence
-
-        runSeq::
-        @360
-          ATM -> MED :remapMethod=redist
-          MED med_phases_post_atm
-          OCN -> MED :remapMethod=redist
-          MED med_phases_post_ocn
-          MED med_phases_prep_atm
-          MED med_phases_prep_ocn_accum
-          MED med_phases_prep_ocn_avg
-          MED -> ATM :remapMethod=redist
-          MED -> OCN :remapMethod=redist
-          ATM
-          OCN
-        @
-        ::
-
-        # HYCOM field coupling configuration (location set by hyc_impexp_file)
-
-        ocn_export_fields::
-          'sst'     'sea_surface_temperature'   'K'
-          'mask'    'ocean_mask'                '1'
-        ::
-
-        ocn_import_fields::
-          'taux10'  'mean_zonal_moment_flx_atm' 'N_m-2'
-          'tauy10'  'mean_merid_moment_flx_atm' 'N_m-2'
-          'prcp'    'mean_prec_rate'            'kg_m-2_s-1'
-          'swflxd'  'mean_net_sw_flx'           'W_m-2'
-          'lwflxd'  'mean_net_lw_flx'           'W_m-2'
-          'mslprs'  'inst_pres_height_surface'  'Pa'
-          'sensflx' 'mean_sensi_heat_flx'       'W_m-2'
-          'latflx'  'mean_laten_heat_flx'       'W_m-2'
-        ::
-
-For more HAFS, HAFSW, and HAFS-ALL configurations please see the following nems.configure templates.
-
-   * `HAFS ATM-OCN <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/nems.configure.hafs_atm_ocn.IN>`_
-   * `HAFS ATM-WAV <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/nems.configure.hafs_atm_wav.IN>`_
-   * `HAFS ATM-OCN-WAV <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/nems.configure.hafs_atm_ocn_wav.IN>`_
-   * `HAFS ATM-DOCN <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/nems.configure.hafs_atm_docn.IN>`_
-
-For the coupled GOCART in S2SAW application, a sample ``nems.configure`` is shown below :
-
-.. code-block:: console
-
-	# EARTH #
-	EARTH_component_list: MED ATM CHM OCN ICE WAV
-	EARTH_attributes::
-	  Verbosity = 0
-	::
-
-	# MED #
-	MED_model:                      cmeps
-	MED_petlist_bounds:             0 287
-	::
-
-	# ATM #
-	ATM_model:                      fv3
-	ATM_petlist_bounds:             0 311
-	ATM_attributes::
-	  Verbosity = 0
-	  DumpFields = false
-	  ProfileMemory = false
-	  OverwriteSlice = true
-	::
-
-	# CHM #
-	CHM_model:                      gocart
-	CHM_petlist_bounds:             0 287
-	CHM_attributes::
-	  Verbosity = 0
-	::
-
-	# OCN #
-	OCN_model:                      mom6
-	OCN_petlist_bounds:             312 431
-	OCN_attributes::
-	  Verbosity = 0
-	  DumpFields = false
-	  ProfileMemory = false
-	  OverwriteSlice = true
-	  mesh_ocn = mesh.mx025.nc
-	::
-
-	# ICE #
-	ICE_model:                      cice6
-	ICE_petlist_bounds:             432 479
-	ICE_attributes::
-	  Verbosity = 0
-	  DumpFields = false
-	  ProfileMemory = false
-	  OverwriteSlice = true
-	  mesh_ice = mesh.mx025.nc
-	  stop_n = 6
-	  stop_option = nhours
-	  stop_ymd = -999
-	::
-
-	# WAV #
-	WAV_model:                      ww3
-	WAV_petlist_bounds:             480 559
-	WAV_attributes::
-	  Verbosity = 0
-	  OverwriteSlice = false
-	::
-
-	# CMEPS warm run sequence
-	runSeq::
-	@1800
-	   MED med_phases_prep_ocn_avg
-	   MED -> OCN :remapMethod=redist
-	   OCN -> WAV
-	   WAV -> OCN :srcMaskValues=1
-	   OCN
-	   @300
-	     MED med_phases_prep_atm
-	     MED med_phases_prep_ice
-	     MED -> ATM :remapMethod=redist
-	     MED -> ICE :remapMethod=redist
-	     WAV -> ATM :srcMaskValues=1
-	     ATM -> WAV
-	     ICE -> WAV
-	     ATM phase1
-	     ATM -> CHM
-	     CHM
-	     CHM -> ATM
-	     ATM phase2
-	     ICE
-	     WAV
-	     ATM -> MED :remapMethod=redist
-	     MED med_phases_post_atm
-	     ICE -> MED :remapMethod=redist
-	     MED med_phases_post_ice
-	     MED med_phases_prep_ocn_accum
-	   @
-	   OCN -> MED :remapMethod=redist
-	   MED med_phases_post_ocn
-	   MED med_phases_restart_write
-	@
-	::
-
-	# CMEPS variables
-
-	DRIVER_attributes::
-	::
-
-	MED_attributes::
-	      ATM_model = fv3
-	      ICE_model = cice6
-	      OCN_model = mom6
-	      history_n = 1
-	      history_option = nhours
-	      history_ymd = -999
-	      coupling_mode = nems_frac
-	      history_tile_atm = 384
-	::
-	ALLCOMP_attributes::
-	      ScalarFieldCount = 2
-	      ScalarFieldIdxGridNX = 1
-	      ScalarFieldIdxGridNY = 2
-	      ScalarFieldName = cpl_scalars
-	      start_type = startup
-	      restart_dir = RESTART/
-	      case_name = ufs.cpld
-	      restart_n = 6
-	      restart_option = nhours
-	      restart_ymd = -999
-	      dbug_flag = 0
-	      use_coldstart = false
-	      use_mommesh = true
-	      eps_imesh = 1.0e-1
-	      stop_n = 6
-	      stop_option = nhours
-	      stop_ymd = -999
-	::
-
-For the fully coupled S2S application that receives atmosphere-ocean fluxes from mediator, a sample ``nems.configure`` is shown below :
-
-.. code-block:: console
-
-        # EARTH #
-        EARTH_component_list: MED ATM CHM OCN ICE WAV
-        EARTH_attributes::
-          Verbosity = 0
-        ::
-
-        # MED #
-        MED_model:                      cmeps
-        MED_petlist_bounds:             0 143
-        ::
-        
-        # ATM #
-        ATM_model:                      fv3
-        ATM_petlist_bounds:             0 149
-        ATM_attributes::
-          Verbosity = 0
-          DumpFields = false
-          ProfileMemory = false
-          OverwriteSlice = true
-        ::
-        
-        # OCN #
-        OCN_model:                      mom6
-        OCN_petlist_bounds:             150 269
-        OCN_attributes::
-          Verbosity = 0
-          DumpFields = false
-          ProfileMemory = false
-          OverwriteSlice = true
-          mesh_ocn = mesh.mx025.nc
-        ::
-        
-        # ICE #
-        ICE_model:                      cice6
-        ICE_petlist_bounds:             270 317
-        ICE_attributes::
-          Verbosity = 0
-          DumpFields = false
-          ProfileMemory = false
-          OverwriteSlice = true
-          mesh_ice = mesh.mx025.nc
-          stop_n = 840
-          stop_option = nhours
-          stop_ymd = -999
-        ::
-        
-        # CMEPS warm run sequence
-        runSeq::
-        @720
-           MED med_phases_prep_ocn_avg
-           MED -> OCN :remapMethod=redist
-           OCN
-           @720
-             MED med_phases_aofluxes_run
-             MED med_phases_prep_atm
-             MED med_phases_prep_ice
-             MED -> ATM :remapMethod=redist
-             MED -> ICE :remapMethod=redist
-             ATM
-             ICE
-             ATM -> MED :remapMethod=redist
-             MED med_phases_post_atm
-             ICE -> MED :remapMethod=redist
-             MED med_phases_post_ice
-             MED med_phases_prep_ocn_accum
-           @
-           OCN -> MED :remapMethod=redist
-           MED med_phases_post_ocn
-           MED med_phases_restart_write
-           MED med_phases_history_write
-        @
-        ::
-        
-        # CMEPS variables
-        
-        DRIVER_attributes::
-        ::
-        
-        MED_attributes::
-              ATM_model = fv3
-              ICE_model = cice6
-              OCN_model = mom6
-              history_n = 3
-              history_option = nhours
-              history_ymd = -999
-              coupling_mode = nems_frac_aoflux
-              history_tile_atm = 96
-              aoflux_grid = 'xgrid'
-              aoflux_code = 'ccpp'
-              aoflux_ccpp_suite = 'FV3_sfc_ocean'
-              ccpp_restart_interval = -1
-              ccpp_ini_mosaic_file = 'INPUT/C96_mosaic.nc'
-              ccpp_input_dir = 'INPUT/'
-              ccpp_ini_file_prefix = 'INPUT/sfc_data.tile'
-              ccpp_nstf_name = 2,1,0,0,0
-              ccpp_ini_read = true
-        ::
-        ALLCOMP_attributes::
-              ScalarFieldCount = 2
-              ScalarFieldIdxGridNX = 1
-              ScalarFieldIdxGridNY = 2
-              ScalarFieldName = cpl_scalars
-              start_type = startup
-              restart_dir = RESTART/
-              case_name = ufs.cpld
-              restart_n = 12
-              restart_option = nhours
-              restart_ymd = -999
-              dbug_flag = 0
-              use_coldstart = false
-              use_mommesh = true
-              eps_imesh = 1.0e-1
-              stop_n = 840
-              stop_option = nhours
-              stop_ymd = -999
-        ::
+      * `HAFS ATM-OCN <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/nems.configure.hafs_atm_ocn.IN>`_
+      * `HAFS ATM-WAV <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/nems.configure.hafs_atm_wav.IN>`_
+      * `HAFS ATM-OCN-WAV <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/nems.configure.hafs_atm_ocn_wav.IN>`_
+      * `HAFS ATM-DOCN <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/nems.configure.hafs_atm_docn.IN>`_
 
 .. note:: The ``aoflux_grid`` option is used to select the grid/mesh to perform atmosphere-ocean flux calculation. The possible options are ``xgrid`` (exchange grid), ``agrid`` (atmosphere model grid) and ``ogrid`` (ocean model grid).
 
 .. note:: The ``aoflux_code`` option is used to define the algorithm that will be used to calculate atmosphere-ocean fluxes. The possible options are ``cesm`` and ``ccpp``. If ``ccpp`` is selected then the suite file provided in the ``aoflux_ccpp_suite`` option is used to calculate atmosphere-ocean fluxes through the use of CCPP host model.
-
-For the ATMAQ application, a sample ``nems.configure`` is shown below :
-
-.. code-block:: console
-
-        EARTH_component_list: ATM AQM
-        EARTH_attributes::
-          Verbosity = 0
-        ::
-        
-        # ATM #
-        ATM_model:                      fv3
-        ATM_petlist_bounds:             0 271
-        ATM_attributes::
-          Verbosity = 0
-        ::
-        
-        # AQM #
-        AQM_model:                      aqm
-        AQM_petlist_bounds:             0 271
-        AQM_attributes::
-          Verbosity = 0
-        ::
-        
-        # Run Sequence #
-        runSeq::
-          @180
-            ATM phase1
-            ATM -> AQM
-            AQM
-            AQM -> ATM
-            ATM phase2
-          @
-        ::
 
 ---------------------------------------
 The Suite Definition File (SDF) File
