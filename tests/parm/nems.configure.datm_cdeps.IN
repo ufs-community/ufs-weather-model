@@ -76,6 +76,7 @@ runSeq::
      MED med_phases_post_atm
      ICE -> MED :remapMethod=redist
      MED med_phases_post_ice
+     MED med_phases_ocnalb_run
      MED med_phases_aofluxes_run
      MED med_phases_prep_ocn_accum
    @
@@ -101,6 +102,7 @@ MED_attributes::
       history_ymd = -999
       coupling_mode = nems_orig_data
       pio_rearranger = @[pio_rearranger]
+      limit_ocean_albedo = @[limit_ocean_albedo]
 ::
 ALLCOMP_attributes::
       ScalarFieldCount = 3
@@ -129,6 +131,7 @@ ALLCOMP_attributes::
       orb_mode = fixed_year
       orb_mvelp = 1.e36
       orb_obliq = 1.e36
+      flux_albav = @[use_mean_albedos]
       stop_n = @[FHMAX]
       stop_option = nhours
       stop_ymd = -999
