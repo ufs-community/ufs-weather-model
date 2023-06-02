@@ -2,7 +2,7 @@ help([[
 loads UFS Model prerequisites for Hera/GNU
 ]])
 
-prepend_path("MODULEPATH", "/scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.3.1/envs/unified-env/install/modulefiles/Core")
+prepend_path("MODULEPATH", "/scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.4.0/envs/unified-env-v2/install/modulefiles/Core")
 prepend_path("MODULEPATH", "/scratch1/NCEPDEV/jcsda/jedipara/spack-stack/modulefiles")
 
 stack_gnu_ver=os.getenv("stack_gnu_ver") or "9.2.0"
@@ -16,9 +16,6 @@ load(pathJoin("stack-python", stack_python_ver))
 
 cmake_ver=os.getenv("cmake_ver") or "3.23.1"
 load(pathJoin("cmake", cmake_ver))
-
-scotch_ver=os.getenv("scotch_ver") or "7.0.3"
-load(pathJoin("scotch", scotch_ver))
 
 load("ufs_common")
 
