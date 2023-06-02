@@ -10,7 +10,7 @@ def run(job_obj):
     workdir, rtbldir, blstore = set_directories(job_obj)
     pr_repo_loc, repo_dir_str = clone_pr_repo(job_obj, workdir)
     bldate = get_bl_date(job_obj, pr_repo_loc)
-    bldir = f'{blstore}/develop-{bldate}/{job_obj.compiler.upper()}'
+    bldir = f'{blstore}/develop-{bldate}'
     bldirbool = check_for_bl_dir(bldir, job_obj)
     run_regression_test(job_obj, pr_repo_loc)
     post_process(job_obj, pr_repo_loc, repo_dir_str, rtbldir, bldir)
@@ -22,27 +22,27 @@ def set_directories(job_obj):
         workdir = '/scratch1/NCEPDEV/nems/emc.nemspara/autort/pr'
         blstore = '/scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs'
         rtbldir = '/scratch1/NCEPDEV/stmp4/emc.nemspara/FV3_RT/'\
-                 f'REGRESSION_TEST_{job_obj.compiler.upper()}'
+                 f'REGRESSION_TEST'
     elif job_obj.machine == 'jet':
         workdir = '/lfs4/HFIP/h-nems/emc.nemspara/autort/pr'
         blstore = '/lfs4/HFIP/h-nems/emc.nemspara/RT/NEMSfv3gfs/'
         rtbldir = '/lfs4/HFIP/h-nems/emc.nemspara/RT_BASELINE/'\
-                 f'emc.nemspara/FV3_RT/REGRESSION_TEST_{job_obj.compiler.upper()}'
+                 f'emc.nemspara/FV3_RT/REGRESSION_TEST'
     elif job_obj.machine == 'gaea':
         workdir = '/lustre/f2/pdata/ncep/emc.nemspara/autort/pr'
         blstore = '/lustre/f2/pdata/ncep_shared/emc.nemspara/RT/NEMSfv3gfs'
         rtbldir = '/lustre/f2/scratch/emc.nemspara/FV3_RT/'\
-                 f'REGRESSION_TEST_{job_obj.compiler.upper()}'
+                 f'REGRESSION_TEST'
     elif job_obj.machine == 'orion':
         workdir = '/work/noaa/epic-ps/role-epic-ps/autort/tests/auto/pr'
         blstore = '/work2/noaa/epic-ps/RT/NEMSfv3gfs'
         rtbldir = '/work/noaa/stmp/role-epic-ps/stmp/role-epic-ps/FV3_RT/'\
-                 f'REGRESSION_TEST_{job_obj.compiler.upper()}'
+                 f'REGRESSION_TEST'
     elif job_obj.machine == 'cheyenne':
         workdir = '/glade/scratch/epicufsrt/autort/jenkins/autort/pr'
         blstore = '/glade/scratch/epicufsrt/GMTB/ufs-weather-model/RT/NEMSfv3gfs'
         rtbldir = '/glade/scratch/epicufsrt/FV3_RT/'\
-                 f'REGRESSION_TEST_{job_obj.compiler.upper()}'
+                 f'REGRESSION_TEST'
     else:
         logger.critical(f'Machine {job_obj.machine} is not supported for this job')
         raise KeyError
@@ -99,20 +99,10 @@ def create_bl_dir(bldir, job_obj):
 
 def run_regression_test(job_obj, pr_repo_loc):
     logger = logging.getLogger('RT/RUN_REGRESSION_TEST')
-    if job_obj.compiler == 'gnu' and job_obj.machine != 'hera':
-        rt_command = [[f'export RT_COMPILER="{job_obj.compiler}" && cd tests '
-                       '&& /bin/bash --login ./rt.sh -e -c -l rt_gnu.conf',
-                       pr_repo_loc]]
-    elif job_obj.compiler == 'gnu' and job_obj.machine == 'hera':
-        rt_command = [[f'export RT_COMPILER="{job_obj.compiler}" && cd tests '
-                       '&& /bin/bash --login ./rt.sh -r -c -l rt_gnu.conf',
-                       pr_repo_loc]]
-    elif job_obj.compiler == 'intel' and job_obj.machine != 'hera':
-        rt_command = [[f'export RT_COMPILER="{job_obj.compiler}" && cd tests '
-                       '&& /bin/bash --login ./rt.sh -e -c', pr_repo_loc]]
-    elif job_obj.compiler == 'intel' and job_obj.machine == 'hera':
-        rt_command = [[f'export RT_COMPILER="{job_obj.compiler}" && cd tests '
-                       '&& /bin/bash --login ./rt.sh -r -c', pr_repo_loc]]
+    if job_obj.machine != 'hera':
+        rt_command = [[f'cd tests && /bin/bash --login ./rt.sh -e -c', pr_repo_loc]]
+    elif job_obj.machine == 'hera':
+        rt_command = [[f'cd tests && /bin/bash --login ./rt.sh -r -c', pr_repo_loc]]
     job_obj.run_commands(logger, rt_command)
 
 
@@ -158,15 +148,15 @@ def clone_pr_repo(job_obj, workdir):
 
 def post_process(job_obj, pr_repo_loc, repo_dir_str, rtbldir, bldir):
     logger = logging.getLogger('BL/MOVE_RT_LOGS')
-    rt_log = f'tests/RegressionTests_{job_obj.machine}'\
-             f'.{job_obj.compiler}.log'
+    rt_log = f'tests/logs/RegressionTests_{job_obj.machine}.log'
     filepath = f'{pr_repo_loc}/{rt_log}'
     rt_dir, logfile_pass = process_logfile(job_obj, filepath)
     if logfile_pass:
         create_bl_dir(bldir, job_obj)
         move_bl_command = [[f'mv {rtbldir}/* {bldir}/', pr_repo_loc]]
-        if job_obj.machine == 'orion':
-            move_bl_command.append([f'/bin/bash --login adjust_permissions.sh orion develop-{bldate}', blstore])
+# bldate and blstore are not defined in this and will fail on Orion, currently.
+#        if job_obj.machine == 'orion':
+#            move_bl_command.append([f'/bin/bash --login adjust_permissions.sh orion develop-{bldate}', blstore])
         job_obj.run_commands(logger, move_bl_command)
         job_obj.comment_text_append('Baseline creation and move successful')
         logger.info('Starting RT Job')
@@ -228,6 +218,5 @@ def process_logfile(job_obj, logfile):
         job_obj.job_failed(logger, f'{job_obj.preq_dict["action"]}')
     else:
         logger.critical(f'Could not find {job_obj.machine}'
-                        f'.{job_obj.compiler} '
                         f'{job_obj.preq_dict["action"]} log')
         raise FileNotFoundError

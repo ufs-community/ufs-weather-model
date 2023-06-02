@@ -116,6 +116,3 @@ esac
 
 # Overwrite auto-detect with RT_MACHINE if set
 MACHINE_ID=${RT_MACHINE:-${MACHINE_ID}}
-
-# Append compiler
-MACHINE_ID=${MACHINE_ID}.${RT_COMPILER}
