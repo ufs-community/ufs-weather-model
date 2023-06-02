@@ -8,7 +8,7 @@ unload("ncarcompilers/0.5.0")
 unload("mpt/2.25")
 unload("netcdf/4.8.1")
 
-prepend_path("MODULEPATH", "/glade/work/epicufsrt/contrib/spack-stack/spack-stack-1.3.1/envs/unified-env/install/modulefiles/Core")
+prepend_path("MODULEPATH", "/glade/work/epicufsrt/contrib/spack-stack/spack-stack-1.4.0/envs/unified-env-v2/install/modulefiles/Core")
 prepend_path("MODULEPATH", "/glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc")
 
 stack_intel_ver=os.getenv("stack_intel_ver") or "19.1.1.217"
@@ -22,9 +22,6 @@ load(pathJoin("stack-python", stack_python_ver))
 
 cmake_ver=os.getenv("cmake_ver") or "3.22.0"
 load(pathJoin("cmake", cmake_ver))
-
-scotch_ver=os.getenv("scotch_ver") or "7.0.3"
-load(pathJoin("scotch", scotch_ver))
 
 load("ufs_common")
 
