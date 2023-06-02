@@ -207,6 +207,10 @@ if [[ $FV3 == true ]]; then
   fi
 fi
 
+# NoahMP table file
+  cp ${PATHRT}/parm/noahmptable.tbl .
+
+
 # AQM
 if [[ $AQM == .true. ]]; then
   cp ${PATHRT}/parm/aqm/aqm.rc .
