@@ -351,7 +351,7 @@ check_results() {
             printf ".......ALT CHECK.." >> ${RT_LOG}
             printf ".......ALT CHECK.."
             if [[ ${MACHINE_ID} =~ orion || ${MACHINE_ID} =~ hera || ${MACHINE_ID} =~ gaea || ${MACHINE_ID} =~ jet || ${MACHINE_ID} =~ cheyenne ]] ; then
-              nccmp -d -f -g -B --Attribute=checksum --warn=format ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i} ${RUNDIR}/${i} > ${i}_nccmp.log 2>&1 && d=$? || d=$?
+              nccmp -d -S -q -f -g -B --Attribute=checksum --warn=format ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i} ${RUNDIR}/${i} > ${i}_nccmp.log 2>&1 && d=$? || d=$?
               if [[ $d -ne 0 && $d -ne 1 ]]; then
 		  echo "....ERROR" >> ${RT_LOG}
 		  echo "....ERROR"
