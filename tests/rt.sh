@@ -97,13 +97,11 @@ rt_trap() {
 }
 
 cleanup() {
-  [[ ${delete_lock:-FALSE} == TRUE ]] && rm -rf ${LOCKDIR}
+  [[ $(awk '{print $2}' < "${LOCKDIR}/PID") == $$ ]] && rm -rf ${LOCKDIR}
   [[ ${ECFLOW:-false} == true ]] && ecflow_stop
   trap 0
   exit
 }
-
-delete_lock=TRUE
 
 trap '{ echo "rt.sh interrupted"; rt_trap ; }' INT
 trap '{ echo "rt.sh quit"; rt_trap ; }' QUIT
@@ -124,7 +122,6 @@ if mkdir "${LOCKDIR}" ; then
   echo $(hostname) $$ > "${LOCKDIR}/PID"
 else
   echo "Only one instance of rt.sh can be running at a time"
-  delete_lock=FALSE
   exit 1
 fi
 
