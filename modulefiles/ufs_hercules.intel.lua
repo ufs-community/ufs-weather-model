@@ -2,7 +2,7 @@ help([[
 loads UFS Model prerequisites for Hercules/Intel
 ]])
 
-prepend_path("MODULEPATH", "/work/noaa/epic-ps/role-epic-ps/spack-stack/spack-stack-1.3.1-hercules/envs/unified-env/install/modulefiles/Core")
+prepend_path("MODULEPATH", "/work/noaa/epic-ps/role-epic-ps/spack-stack/spack-stack-1.4.0-hercules/envs/unified-env/install/modulefiles/Core")
 
 stack_intel_ver=os.getenv("stack_intel_ver") or "2021.7.1"
 load(pathJoin("stack-intel", stack_intel_ver))
@@ -17,9 +17,6 @@ cmake_ver=os.getenv("cmake_ver") or "3.23.1"
 load(pathJoin("cmake", cmake_ver))
 
 load("ufs_common")
-load("esmf/8.4.2")
-load("mapl/2.35.2")
-
 
 setenv("CC", "icc")
 setenv("CXX", "icpc")
