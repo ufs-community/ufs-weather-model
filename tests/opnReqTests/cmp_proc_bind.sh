@@ -1,8 +1,7 @@
 set -eu
 
-OMP_ENV=""
 MPI_PROC_BIND="-bind-to user:"
-
+export OMP_ENV=${OMP_ENV:-""}
 if [[ $rc != 'thr' ]]; then
   for i in $(seq 0 $((TASKS-1))); do
     MPI_PROC_BIND="$MPI_PROC_BIND$i,"
