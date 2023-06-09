@@ -2,7 +2,7 @@ help([[
 loads UFS Model prerequisites for Hercules/Intel
 ]])
 
-prepend_path("MODULEPATH", "/work/noaa/epic-ps/role-epic-ps/spack-stack/spack-stack-1.4.0-hercules/envs/unified-env/install/modulefiles/Core")
+prepend_path("MODULEPATH", "/work/noaa/epic-ps/role-epic-ps/spack-stack/spack-stack-1.4.0-hercules/envs/unified-env-v2/install/modulefiles/Core")
 
 stack_intel_ver=os.getenv("stack_intel_ver") or "2021.7.1"
 load(pathJoin("stack-intel", stack_intel_ver))
