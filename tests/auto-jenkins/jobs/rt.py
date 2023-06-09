@@ -45,20 +45,10 @@ def set_directories(job_obj):
 
 def run_regression_test(job_obj, pr_repo_loc):
     logger = logging.getLogger('RT/RUN_REGRESSION_TEST')
-    if job_obj.compiler == 'gnu' and job_obj.machine != 'hera':
-        rt_command = [[f'export RT_COMPILER="{job_obj.compiler}" && cd tests '
-                       '&& /bin/bash --login ./rt.sh -e -l rt_gnu.conf',
-                       pr_repo_loc]]
-    elif job_obj.compiler == 'gnu' and job_obj.machine == 'hera':
-        rt_command = [[f'export RT_COMPILER="{job_obj.compiler}" && cd tests '
-                       '&& /bin/bash --login ./rt.sh -r -l rt_gnu.conf',
-                       pr_repo_loc]]
-    elif job_obj.compiler == 'intel' and job_obj.machine != 'hera':
-        rt_command = [[f'export RT_COMPILER="{job_obj.compiler}" && cd tests '
-                       '&& /bin/bash --login ./rt.sh -e', pr_repo_loc]]
-    elif job_obj.compiler == 'intel' and job_obj.machine == 'hera':
-        rt_command = [[f'export RT_COMPILER="{job_obj.compiler}" && cd tests '
-                       '&& /bin/bash --login ./rt.sh -r', pr_repo_loc]]
+    if job_obj.machine != 'hera':
+        rt_command = [[f'cd tests && /bin/bash --login ./rt.sh -e', pr_repo_loc]]
+    elif job_obj.machine == 'hera':
+        rt_command = [[f'cd tests && /bin/bash --login ./rt.sh -r', pr_repo_loc]]
     job_obj.run_commands(logger, rt_command)
 
 
@@ -114,8 +104,7 @@ def clone_pr_repo(job_obj, workdir):
 def post_process(job_obj, pr_repo_loc, repo_dir_str, branch):
     ''' This is the callback function associated with the "RT" command '''
     logger = logging.getLogger('RT/MOVE_RT_LOGS')
-    rt_log = f'tests/RegressionTests_{job_obj.machine}'\
-             f'.{job_obj.compiler}.log'
+    rt_log = f'tests/logs/RegressionTests_{job_obj.machine}.log'
     filepath = f'{pr_repo_loc}/{rt_log}'
     rt_dir, logfile_pass = process_logfile(job_obj, filepath)
     if logfile_pass:
@@ -123,8 +112,7 @@ def post_process(job_obj, pr_repo_loc, repo_dir_str, branch):
         move_rt_commands = [
             [f'git pull --ff-only origin {branch}', pr_repo_loc],
             [f'git add {rt_log}', pr_repo_loc],
-            [f'git commit -m "[AutoRT] {job_obj.machine}'
-             f'.{job_obj.compiler} Job Completed.\n\n\n'
+            [f'git commit -m "[AutoRT] {job_obj.machine} Job Completed.\n\n\n'
               'on-behalf-of @ufs-community <ecc.platform@noaa.gov>"',
              pr_repo_loc],
             ['sleep 10', pr_repo_loc],
@@ -154,8 +142,7 @@ def process_logfile(job_obj, logfile):
         job_obj.job_failed(logger, f'{job_obj.preq_dict["action"]}')
     else:
         logger.critical(f'Could not find {job_obj.machine}'
-                        f'.{job_obj.compiler} '
                         f'{job_obj.preq_dict["action"]} log')
-        print(f'Could not find {job_obj.machine}.{job_obj.compiler} '
+        print(f'Could not find {job_obj.machine}'
               f'{job_obj.preq_dict["action"]} log')
         raise FileNotFoundError

@@ -26,8 +26,8 @@ case $(hostname -f) in
 
   alogin01.acorn.wcoss2.ncep.noaa.gov)  MACHINE_ID=acorn ;; ### acorn
   alogin02.acorn.wcoss2.ncep.noaa.gov)  MACHINE_ID=acorn ;; ### acorn
+  alogin03.acorn.wcoss2.ncep.noaa.gov)  MACHINE_ID=acorn ;; ### acorn
 
-  gaea9)                   MACHINE_ID=gaea ;; ### gaea9
   gaea10)                  MACHINE_ID=gaea ;; ### gaea10
   gaea11)                  MACHINE_ID=gaea ;; ### gaea11
   gaea12)                  MACHINE_ID=gaea ;; ### gaea12
@@ -35,7 +35,6 @@ case $(hostname -f) in
   gaea14)                  MACHINE_ID=gaea ;; ### gaea14
   gaea15)                  MACHINE_ID=gaea ;; ### gaea15
   gaea16)                  MACHINE_ID=gaea ;; ### gaea16
-  gaea9.ncrc.gov)          MACHINE_ID=gaea ;; ### gaea9
   gaea10.ncrc.gov)         MACHINE_ID=gaea ;; ### gaea10
   gaea11.ncrc.gov)         MACHINE_ID=gaea ;; ### gaea11
   gaea12.ncrc.gov)         MACHINE_ID=gaea ;; ### gaea12
@@ -117,6 +116,3 @@ esac
 
 # Overwrite auto-detect with RT_MACHINE if set
 MACHINE_ID=${RT_MACHINE:-${MACHINE_ID}}
-
-# Append compiler
-MACHINE_ID=${MACHINE_ID}.${RT_COMPILER}
