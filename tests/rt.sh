@@ -177,8 +177,10 @@ elif [[ $MACHINE_ID = acorn.* ]]; then
   COMPILE_QUEUE=dev
   PARTITION=
   ACCNR="${ACCNR:-GFS-DEV}"
-  STMP=/lfs/h2/emc/ptmp
-  PTMP=/lfs/h2/emc/ptmp
+#  STMP=/lfs/h2/emc/ptmp
+#  PTMP=/lfs/h2/emc/ptmp
+  STMP=/lfs/h1/hpc/support
+  PTMP=/lfs/h1/hpc/support
   SCHEDULER=pbs
   cp fv3_conf/fv3_qsub.IN_wcoss2 fv3_conf/fv3_qsub.IN
   cp fv3_conf/compile_qsub.IN_wcoss2 fv3_conf/compile_qsub.IN
