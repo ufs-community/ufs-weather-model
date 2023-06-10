@@ -47,8 +47,8 @@ elif [[ $application == 'cpld' ]]; then
       #need to overhaul NODES=$(((TASKS+TPN-1)/TPN))
       echo $TEST_NAME
     else
-      echo "This test is not yet set up for the thread test"
-      exit 1
+      echo "This test is not yet set up for the thread test, skipping..."
+      continue 1
     fi
   fi
 fi

@@ -16,8 +16,8 @@ if [[ $application == 'global' ]]; then
   fi
   WRITE_DOPOST=.false.
 elif [[ $application == 'regional' ]]; then
-  echo "Regional application not yet implemented for debug"
-  exit 1
+  echo "Regional application not yet implemented for debug, skipping..."
+  continue 1
 elif [[ $application == 'cpld' ]]; then
   FHMAX=3
   DAYS=0.125
