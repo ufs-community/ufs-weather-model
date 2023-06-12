@@ -697,7 +697,7 @@ export ocn_model=mom6
 export ice_model=cice6
 export wav_model=ww3
 export pio_rearranger=box
-export limit_ocean_albedo=true
+export ocean_albedo_limit=0.06
 export use_mean_albedos=.false.
 export coupling_interval_slow_sec=${DT_THERM_MOM6}
 export coupling_interval_fast_sec=${DT_ATMOS}
@@ -950,7 +950,7 @@ export atm_model=datm
 export ocn_model=mom6
 export ice_model=cice6
 export pio_rearranger=box
-export limit_ocean_albedo=true
+export ocean_albedo_limit=0.06
 export use_mean_albedos=.false.
 
 export ATM_compute_tasks=$ATM_compute_tasks_cdeps_100
