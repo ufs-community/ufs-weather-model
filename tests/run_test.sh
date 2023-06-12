@@ -102,7 +102,7 @@ if [[ $MACHINE_ID == wcoss2 ]] || [[ $MACHINE_ID == acorn ]] ; then
 fi
 
 # load nccmp module
-if [[ $MACHINE_ID == hera ]] || [[ $MACHINE_ID == orion ]] || [[ $MACHINE_ID == gaea ]] || [[ $MACHINE_ID == jet ]] || [[ $MACHINE_ID == cheyenne ]]; then
+if [[ $MACHINE_ID == hera ]] || [[ $MACHINE_ID == orion ]] || [[ $MACHINE_ID == hercules ]] || [[ $MACHINE_ID == gaea ]] || [[ $MACHINE_ID == jet ]] || [[ $MACHINE_ID == cheyenne ]]; then
   module load nccmp
 fi
 
