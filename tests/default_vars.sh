@@ -320,6 +320,7 @@ fi
 WLCLK_dflt=30
 
 export WLCLK=$WLCLK_dflt
+export CMP_DATAONLY=false
 
 export_fv3 ()
 {
