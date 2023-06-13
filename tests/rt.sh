@@ -318,7 +318,6 @@ elif [[ $MACHINE_ID = s4 ]]; then
 
 elif [[ $MACHINE_ID = cheyenne ]]; then
 
-  export PATH=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/bin:/glade/p/ral/jntp/tools/miniconda3/4.8.3/bin:$PATH
   export PATH=/glade/work/jedipara/cheyenne/spack-stack/miniconda-3.9.12/bin:$PATH
   export PYTHONPATH=/glade/work/jedipara/cheyenne/spack-stack/miniconda-3.9.12/lib/python3.9/site-packages
 
