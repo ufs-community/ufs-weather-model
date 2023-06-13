@@ -64,5 +64,5 @@ list(APPEND lm4_src_files
      LM4/nuopc_cap/nuopc_lm4_methods.F90
      LM4/nuopc_cap/lm4_kind_mod.F90
      LM4/nuopc_cap/domain_create.F90
-
+     LM4/nuopc_cap/lm4_surface_flux.F90
     )
