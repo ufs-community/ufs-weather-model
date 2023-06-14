@@ -26,6 +26,7 @@ case $(hostname -f) in
 
   alogin01.acorn.wcoss2.ncep.noaa.gov)  MACHINE_ID=acorn ;; ### acorn
   alogin02.acorn.wcoss2.ncep.noaa.gov)  MACHINE_ID=acorn ;; ### acorn
+  alogin03.acorn.wcoss2.ncep.noaa.gov)  MACHINE_ID=acorn ;; ### acorn
 
   gaea10)                  MACHINE_ID=gaea ;; ### gaea10
   gaea11)                  MACHINE_ID=gaea ;; ### gaea11
@@ -115,6 +116,3 @@ esac
 
 # Overwrite auto-detect with RT_MACHINE if set
 MACHINE_ID=${RT_MACHINE:-${MACHINE_ID}}
-
-# Append compiler
-MACHINE_ID=${MACHINE_ID}.${RT_COMPILER}

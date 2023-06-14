@@ -83,6 +83,7 @@ export MESH_WAV=mesh.glo_1deg.nc
 # nems.configure
 export coupling_interval_sec=${DT_ATMOS}
 export NEMS_CONFIGURE="nems.configure.atmw.IN"
+export pio_rearranger=box
 
 # P7 default
 export IALB=2
@@ -198,6 +199,6 @@ export DOGP_CLDOPTICS_LUT=.true.
 export DOGP_LWSCAT=.true.
 export DOGP_SGS_CNV=.true.
 export SATMEDMF=.true.
-if [[ $MACHINE_ID = cheyenne.* ]]; then
+if [[ $MACHINE_ID = cheyenne ]]; then
   TPN=18
 fi

@@ -24,7 +24,7 @@ fi
 readonly ARGC=$#
 
 if [[ $ARGC -lt 2 ]]; then
-  echo "Usage: $0 MACHINE_ID [ MAKE_OPT [ BUILD_NR ] [ clean_before ] [ clean_after ] ]"
+  echo "Usage: $0 MACHINE_ID [ MAKE_OPT [ COMPILE_NR ] [ RT_COMPILER ] [ clean_before ] [ clean_after ] ]"
   echo Valid MACHINE_IDs:
   echo $( ls -1 ../cmake/configure_* | sed s:.*configure_::g | sed s:\.cmake:: ) | fold -sw72
   exit 1
@@ -32,8 +32,9 @@ else
   MACHINE_ID=$1
   MAKE_OPT=${2:-}
   COMPILE_NR=${3:+_$3}
-  clean_before=${4:-YES}
-  clean_after=${5:-YES}
+  RT_COMPILER=${4:-intel}
+  clean_before=${5:-YES}
+  clean_after=${6:-YES}
 fi
 
 BUILD_NAME=fv3${COMPILE_NR}
@@ -44,7 +45,7 @@ BUILD_DIR=$(pwd)/build_${BUILD_NAME}
 # ----------------------------------------------------------------------
 # Make sure we have reasonable number of threads.
 
-if [[ $MACHINE_ID == cheyenne.* ]] ; then
+if [[ $MACHINE_ID == cheyenne ]]; then
     BUILD_JOBS=${BUILD_JOBS:-3}
 fi
 
@@ -53,16 +54,16 @@ BUILD_JOBS=${BUILD_JOBS:-8}
 hostname
 
 set +x
-if [[ $MACHINE_ID == macosx.* ]] || [[ $MACHINE_ID == linux.* ]]; then
-  source $PATHTR/modulefiles/ufs_${MACHINE_ID}
+if [[ $MACHINE_ID == macosx ]] || [[ $MACHINE_ID == linux ]]; then
+  source $PATHTR/modulefiles/ufs_${MACHINE_ID}.${RT_COMPILER}
 else
   # Activate lua environment for gaea
-  if [[ $MACHINE_ID == gaea.* ]] ; then
+  if [[ $MACHINE_ID == gaea ]]; then
     source /lustre/f2/dev/role.epic/contrib/Lmod_init.sh
   fi
   # Load fv3 module
   module use $PATHTR/modulefiles
-  modulefile="ufs_${MACHINE_ID}"
+  modulefile="ufs_${MACHINE_ID}.${RT_COMPILER}"
   module load $modulefile
   module list
 fi
@@ -75,11 +76,11 @@ echo "Compiling ${MAKE_OPT} into $BUILD_NAME.exe on $MACHINE_ID"
 CMAKE_FLAGS=$MAKE_OPT
 CMAKE_FLAGS+=" -DMPI=ON"
 
-if [[ "${MAKE_OPT}" == *"-DDEBUG=ON"* ]]; then
+if [[ ${MAKE_OPT} == *-DDEBUG=ON* ]]; then
   CMAKE_FLAGS+=" -DCMAKE_BUILD_TYPE=Debug"
 else
   CMAKE_FLAGS+=" -DCMAKE_BUILD_TYPE=Release"
-  if [[ "${MACHINE_ID}" == "jet.intel" ]]; then
+  if [[ ${MACHINE_ID} == jet ]] && [[ ${RT_COMPILER} == intel ]]; then
     CMAKE_FLAGS+=" -DSIMDMULTIARCH=ON"
   fi
 fi
@@ -118,10 +119,10 @@ export CMAKE_FLAGS
 bash -x ${PATHTR}/build.sh
 
 mv ${BUILD_DIR}/ufs_model ${PATHTR}/tests/${BUILD_NAME}.exe
-if [[ $MACHINE_ID == linux.* ]]; then
-  cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}       ${PATHTR}/tests/modules.${BUILD_NAME}
+if [[ $MACHINE_ID == linux ]]; then
+  cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}.${RT_COMPILER}       ${PATHTR}/tests/modules.${BUILD_NAME}
 else
-  cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}.lua       ${PATHTR}/tests/modules.${BUILD_NAME}.lua
+  cp ${PATHTR}/modulefiles/ufs_${MACHINE_ID}.${RT_COMPILER}.lua       ${PATHTR}/tests/modules.${BUILD_NAME}.lua
 fi
 
 if [ $clean_after = YES ] ; then
