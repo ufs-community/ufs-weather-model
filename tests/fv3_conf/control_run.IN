@@ -24,6 +24,18 @@ else
     SUFFIX=${BL_SUFFIX}
   fi
 
+  # WAVE restart file for ATMW ORT tests
+  if [[ $CPLWAV == .true. ]]; then
+    if [[ $med_model == cmeps ]] && [[ $RUNTYPE == continue ]]; then
+      # CMEPS restart and pointer files
+      RFILE=ufs.atmw.cpl.r.${RESTART_FILE_SUFFIX_SECS}.nc
+      cp  ../${DEP_RUN}${SUFFIX}/RESTART/${RFILE} .
+      ls -1 ${RFILE}>rpointer.cpl
+    fi
+    RFILE=ufs.atmw.ww3.r.${RESTART_FILE_SUFFIX_SECS}
+    cp ../${DEP_RUN}${SUFFIX}/${RFILE} .
+  fi
+
   if [ $MODEL_INITIALIZATION = false ]; then
     #read_inc and iau tests restart from fh=24
     CURRDIR=`pwd`
