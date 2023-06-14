@@ -202,7 +202,7 @@ elif [[ $MACHINE_ID = s4 ]]; then
 
 elif [[ $MACHINE_ID = gaea ]]; then
 
-  TPN=36
+  TPN=24
 
   INPES_dflt=3 ; JNPES_dflt=8
   INPES_thrd=3 ; JNPES_thrd=4
@@ -320,6 +320,7 @@ fi
 WLCLK_dflt=30
 
 export WLCLK=$WLCLK_dflt
+export CMP_DATAONLY=false
 
 export_fv3 ()
 {
@@ -699,6 +700,7 @@ export wav_model=ww3
 export pio_rearranger=box
 export ocean_albedo_limit=0.06
 export use_mean_albedos=.false.
+
 export coupling_interval_slow_sec=${DT_THERM_MOM6}
 export coupling_interval_fast_sec=${DT_ATMOS}
 
