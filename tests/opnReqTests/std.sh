@@ -32,6 +32,16 @@ elif [[ $application == 'cpld' ]]; then
   fi
   RESTART_N=$(( FHMAX/2 ))
   RESTART_INTERVAL="${RESTART_N} -1"
+elif [[ $application == 'atmw' ]]; then
+  if [ $CI_TEST == 'true' ]; then
+    INPES=3
+    JNPES=8
+    WRTTASK_PER_GROUP=6
+    TASKS=$((INPES*JNPES + WRITE_GROUP*WRTTASK_PER_GROUP))
+    NODES=$(((TASKS+TPN-1)/TPN))
+  fi
+  RESTART_N=$(( FHMAX/2 ))
+  RESTART_INTERVAL="${RESTART_N} -1"
 fi
 
 #outdated (test $CI_TEST == 'true') && source $PATHRT/opnReqTests/cmp_proc_bind.sh
