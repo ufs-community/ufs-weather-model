@@ -475,9 +475,9 @@ or in the `UFS WM RT Data Bucket <https://registry.opendata.aws/noaa-ufs-regtest
        
        fv_core.res.nc
        
-       fv_core.res.tile[`1\nobreakdash-6`].nc &#8209
+       fv_core.res.tile[`1\nobreakdash-6`].nc
        
-       fv_srf_wnd.res.tile[1\\nobreakdash-6].nc
+       fv_srf_wnd.res.tile[`1\\nobreakdash-6`].nc
        
        fv_tracer.res.tile[1\nobreakdash-6].nc
        
