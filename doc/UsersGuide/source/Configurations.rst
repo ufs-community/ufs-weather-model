@@ -475,15 +475,15 @@ or in the `UFS WM RT Data Bucket <https://registry.opendata.aws/noaa-ufs-regtest
        
        fv_core.res.nc
        
-       fv_core.res.tile[`1\nobreakdash-6`].nc
+       fv_core.res.tile[`1\nobreakdash-\6`].nc
        
-       fv_srf_wnd.res.tile[`1\\nobreakdash-6`].nc
+       fv_srf_wnd.res.tile[`1\\nobreakdash-\6`].nc
        
-       fv_tracer.res.tile[1\nobreakdash-6].nc
+       fv_tracer.res.tile[1:math:`\nobreakdash-`\6].nc
        
        phy_data.tile[:math:`1\\nobreakdash-6`].nc        
        
-       sfc_data.tile[:math:`1\nobreakdash-6`].nc
+       sfc_data.tile[:math:`1\nobreakdash-6`\].nc
    * - rrfs_v1beta_debug
        rrfs_conus13km_hrrr_warm_debug
        rrfs_smoke_conus13km_hrrr_warm_debug
@@ -599,6 +599,22 @@ Hurricane Analysis and Reforecast System Configurations
 **COMING SOON!**
 
 
+fv_core.res.tile[`1\nobreakdash-\6`].nc
+       
+fv_srf_wnd.res.tile[`1\\nobreakdash-\6`].nc
+       
+fv_tracer.res.tile[1:math:`\nobreakdash-`\6].nc
+       
+phy_data.tile[:math:`1\\nobreakdash-6`].nc        
+       
+sfc_data.tile[:math:`1\nobreakdash-6`\].nc
 
+sfc_data.tile[1 :math:`\nobreakdash-`\ 6].nc
+
+sfc_data.tile[1 :math:`\nobreakdash-\` 6].nc
+
+sfc_data.tile[1 :math:`\\nobreakdash-`\ 6].nc
+
+sfc_data.tile[1 :math:`\\nobreakdash-\` 6].nc
 
 
