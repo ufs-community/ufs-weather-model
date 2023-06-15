@@ -395,7 +395,6 @@ SINGLE_NAME=''
 TEST_35D=false
 export skip_check_results=false
 export delete_rundir=false
-SKIP_ORDER=false
 
 TESTS_FILE='rt.conf'
 
@@ -409,7 +408,6 @@ while getopts ":a:cl:mn:dwkreh" opt; do
       ;;
     l)
       TESTS_FILE=$OPTARG
-      SKIP_ORDER=true
       ;;
     m)
       # redefine RTPWD to point to newly created baseline outputs
@@ -488,7 +486,8 @@ fi
 
 source bl_date.conf
 
-RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}}
+#RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}}
+RTPWD=${RTPWD:-/scratch2/BMC/zrtrr/Samuel.Trahan/clm-sd-restart/step-by-step/RT/NEMSfv3gfs/develop-${BL_DATE}}
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20221101}
 INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20220624
@@ -664,6 +663,8 @@ in_metatask=false
 
 [[ -f $TESTS_FILE ]] || die "$TESTS_FILE does not exist"
 
+LAST_COMPILER_NR=-9999
+
 while read -r line || [ "$line" ]; do
 
   line="${line#"${line%%[![:space:]]*}"}"
@@ -684,14 +685,11 @@ while read -r line || [ "$line" ]; do
     COMPILE_NR=$( printf '%03d' $(( 10#$COMPILE_NR )) )
     echo "COMPILER_COUNTER: " $COMPILE_COUNTER
     echo "COMPILER_NR: " $COMPILE_NR
-    if [[ ${SKIP_ORDER} == false ]]; then
-      if [[ ${SINGLE_NAME} == '' ]]; then
-        if [[ ! $COMPILE_COUNTER == $COMPILE_NR ]]; then
-          echo "Compile numbers in '.conf' file are not in order"
-          exit 1
-        fi
-      fi
+    if [[ "$COMPILE_NR" -le "$LAST_COMPILER_NR" ]] ; then
+        echo "Compiler numbers in '.conf' file are not monotonically increasing ($LAST_COMPILER_NR ... $COMPILER_NR)"
+        exit 1
     fi
+    LAST_COMPILE_NR="$COMPILE_NR"
 
     [[ $CREATE_BASELINE == true && $CB != *fv3* ]] && continue
 
