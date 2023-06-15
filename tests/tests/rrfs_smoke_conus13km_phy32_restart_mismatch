@@ -1,15 +1,15 @@
 ###############################################################################
 #
-#  HRRR smoke physics on 13km domain, quilt 32-bit FASTER=ON control run
+#  HRRR smoke physics on 13km domain, quilt 32-bit control run
 #
 ###############################################################################
 
 # This configuration is supposed to match the rrfs_dev1 parallel, so
 # do not change the namelist without checking the current parallel.
 
-export TEST_DESCR="HRRR smoke physics on 13km domain, quilt 32-bit FASTER=ON restart run"
+export TEST_DESCR="HRRR smoke physics on 13km domain, quilt 32-bit restart run"
 
-export CNTL_DIR=rrfs_smoke_conus13km_fast_phy32_restart_mismatch
+export CNTL_DIR=rrfs_smoke_conus13km_phy32_restart_mismatch
 
 export LIST_FILES="sfcf002.nc \
                    atmf002.nc"
@@ -30,7 +30,6 @@ export WRITE_DOPOST=.false.
 export OUTPUT_HISTORY=.true.
 export OUTPUT_GRID=lambert_conformal
 export OUTPUT_FILE="'netcdf'"
-export QUILTING_RESTART=.true.
 export FHROT=1
 export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${SHOUR} + ${FHROT}  )))0000"
 export RRFS_RESTART=YES
