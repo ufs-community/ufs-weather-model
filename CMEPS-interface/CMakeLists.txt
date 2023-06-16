@@ -69,6 +69,7 @@ list(APPEND _mediator_files
   CMEPS/mediator/med_io_mod.F90
   CMEPS/mediator/med_diag_mod.F90
   CMEPS/mediator/med_phases_post_atm_mod.F90
+  CMEPS/mediator/med_phases_post_dat_mod.F90
   CMEPS/mediator/med_phases_post_ice_mod.F90
   CMEPS/mediator/med_phases_post_ocn_mod.F90
   CMEPS/mediator/med_phases_post_lnd_mod.F90
