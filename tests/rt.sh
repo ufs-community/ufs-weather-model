@@ -667,6 +667,8 @@ in_metatask=false
 
 LAST_COMPILER_NR=-9999
 
+declare -A compiles
+
 while read -r line || [ "$line" ]; do
 
   line="${line#"${line%%[![:space:]]*}"}"
@@ -677,21 +679,21 @@ while read -r line || [ "$line" ]; do
 
   if [[ $line == COMPILE* ]]; then
     
-    COMPILE_NR=$( echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
+    COMPILE_NAME=$( echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
     RT_COMPILER=$(echo $line | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
     MAKE_OPT=$(   echo $line | cut -d'|' -f4 | sed -e 's/^ *//' -e 's/ *$//')
     MACHINES=$(   echo $line | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
     CB=$(         echo $line | cut -d'|' -f6)
-    
-    COMPILE_COUNTER=$( printf '%03d' $(( 10#$COMPILE_COUNTER + 1 )) )
-    COMPILE_NR=$( printf '%03d' $(( 10#$COMPILE_NR )) )
-    echo "COMPILER_COUNTER: " $COMPILE_COUNTER
-    echo "COMPILER_NR: " $COMPILE_NR
-    if [[ "$COMPILE_NR" -le "$LAST_COMPILER_NR" ]] ; then
-        echo "Compiler numbers in '.conf' file are not monotonically increasing ($LAST_COMPILER_NR ... $COMPILER_NR)"
+    COMPILE_NR=${COMPILE_NAME}_${RT_COMPILER}
+
+    set +u
+    if [[ ! -z ${compiles[$COMPILE_NR]} ]] ; then
+        echo "Error! Duplicated compilation $COMPILE_NAME for compiler $RT_COMPILER!"
         exit 1
     fi
-    LAST_COMPILE_NR="$COMPILE_NR"
+    set -u
+    compiles[$COMPILE_NR]=$COMPILE_NR
+    echo "COMPILING ${compiles[${COMPILE_NR}]}"
 
     [[ $CREATE_BASELINE == true && $CB != *fv3* ]] && continue
 
