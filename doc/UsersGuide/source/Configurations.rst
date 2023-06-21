@@ -293,7 +293,7 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
    :widths: 10 10 10 10 10 10 10 10 10
    :header-rows: 1
 
-   * - Test |nbsp| Name
+   * - Test |nbsp| Name |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp|
      - Description
      - Physics Suite (see namelist options `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_c_c_p_psuite_nml_desp.html>`__)
      - DT_ATMOS
