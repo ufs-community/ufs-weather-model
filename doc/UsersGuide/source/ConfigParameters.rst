@@ -173,3 +173,4 @@ Other Build Options
       set(OPENMP          ON  CACHE BOOL "Enable OpenMP threading")
       set(PARALLEL_NETCDF OFF CACHE BOOL "Enable parallel NetCDF")
       set(JEDI_DRIVER     OFF CACHE BOOL "Enable JEDI as top level driver")
+

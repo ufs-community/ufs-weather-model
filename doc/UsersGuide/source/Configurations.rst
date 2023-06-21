@@ -284,8 +284,7 @@ regional grid with data assimilation capabilities.
 These tests use default values set in the ``export_fv3`` function of ``default_vars.sh``. 
 
 Current RRFS regression tests cover a wide variety of functionality and involve several 
-physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality; 
-in other words, : 
+physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality.  
 
 
 .. _rrfs-rts:
@@ -294,7 +293,7 @@ in other words, :
    :widths: 10 10 10 10 10 10 10 10 10
    :header-rows: 1
 
-   * - Test Name
+   * - Test |nbsp| Name
      - Description
      - Physics Suite (see namelist options `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_c_c_p_psuite_nml_desp.html>`__)
      - DT_ATMOS
