@@ -97,7 +97,7 @@ rt_trap() {
 }
 
 cleanup() {
-  rm -rf ${LOCKDIR}
+  [[ $(awk '{print $2}' < "${LOCKDIR}/PID") == $$ ]] && rm -rf ${LOCKDIR}
   [[ ${ECFLOW:-false} == true ]] && ecflow_stop
   trap 0
   exit
