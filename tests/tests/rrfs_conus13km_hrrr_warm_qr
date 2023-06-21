@@ -7,7 +7,7 @@
 # This configuration is supposed to match the rrfs_dev1 parallel, so
 # do not change the namelist without checking the current parallel.
 
-export TEST_DESCR="HRRR physics on 13km domain, control run"
+export TEST_DESCR="HRRR physics on 13km domain, control run with quilt restart"
 
 export CNTL_DIR=rrfs_conus13km_hrrr_warm
 
@@ -16,14 +16,7 @@ export LIST_FILES="sfcf000.nc \
                    sfcf002.nc \
                    atmf000.nc \
                    atmf001.nc \
-                   atmf002.nc \
-                   RESTART/20210512.170000.coupler.res \
-                   RESTART/20210512.170000.fv_core.res.nc \
-                   RESTART/20210512.170000.fv_core.res.tile1.nc \
-                   RESTART/20210512.170000.fv_srf_wnd.res.tile1.nc \
-                   RESTART/20210512.170000.fv_tracer.res.tile1.nc \
-                   RESTART/20210512.170000.phy_data.nc \
-                   RESTART/20210512.170000.sfc_data.nc"
+                   atmf002.nc"
 
 export_fv3
 
@@ -42,6 +35,7 @@ export WRITE_DOPOST=.false.
 export OUTPUT_HISTORY=.true.
 export OUTPUT_GRID=lambert_conformal
 export OUTPUT_FILE="'netcdf'"
+export QUILTING_RESTART=.true.
 
 # Revert these two to GFS_typedefs defaults to avoid a crash:
 export SEDI_SEMI=.false.
