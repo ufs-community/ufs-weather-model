@@ -594,13 +594,10 @@ if [[ $ECFLOW == true ]]; then
   MAX_BUILDS=10
   MAX_JOBS=30
 
-  # Default number of tries to run jobs - on wcoss, no error tolerance
+  # Default number of tries to run jobs
   ECF_TRIES=2
-  if [[ $MACHINE_ID = wcoss ]]; then
-    ECF_TRIES=1
-  fi
 
-  # Reduce maximum number of compile jobs on jet.intel and s4.intel because of licensing issues
+  # Reduce maximum number of compile jobs on jet and s4 because of licensing issues
   if [[ $MACHINE_ID = jet ]]; then
     MAX_BUILDS=5
   elif [[ $MACHINE_ID = s4 ]]; then
