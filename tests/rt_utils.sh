@@ -357,16 +357,16 @@ check_results() {
                 nccmp -d -S -q -f -B --Attribute=checksum --warn=format ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i} ${RUNDIR}/${i} > ${i}_nccmp.log 2>&1 && d=$? || d=$?
               fi
               if [[ $d -ne 0 && $d -ne 1 ]]; then
-		  echo "....ERROR" >> ${RT_LOG}
-		  echo "....ERROR"
-		  exit 1
+                echo "....ERROR" >> ${RT_LOG}
+                echo "....ERROR"
+                exit 1
               fi
             else
               ${PATHRT}/compare_ncfile.py ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/$i ${RUNDIR}/$i > compare_ncfile.log 2>&1 && d=$? || d=$?
-	      if [[ $d -eq 1 ]]; then
-		  echo "....ERROR" >> ${RT_LOG}
-		  echo "....ERROR"
-		  exit 1
+              if [[ $d -eq 1 ]]; then
+                echo "....ERROR" >> ${RT_LOG}
+                echo "....ERROR"
+                exit 1
               fi
             fi
           fi
@@ -638,11 +638,11 @@ ecflow_run() {
     echo "ecflow_server is NOT running on ${ECF_HOST}:${ECF_PORT}"
     if [[ ${MACHINE_ID} == wcoss2 || ${MACHINE_ID} == acorn ]]; then
       if [[ "${HOST::1}" == "a" ]]; then
-	export ECF_HOST=aecflow01
+        export ECF_HOST=aecflow01
       elif [[ "${HOST::1}" == "c" ]]; then
-	export ECF_HOST=cdecflow01
+        export ECF_HOST=cdecflow01
       elif [[ "${HOST::1}" == "d" ]]; then
-	export ECF_HOST=ddecflow01
+        export ECF_HOST=ddecflow01
       fi
       MYCOMM="bash -l -c \"module load ecflow && ecflow_start.sh -p ${ECF_PORT} \""
       ssh $ECF_HOST "${MYCOMM}"

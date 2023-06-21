@@ -430,7 +430,7 @@ while getopts ":a:cl:mn:dwkreh" opt; do
       fi
       SINGLE_NAME=${SINGLE_OPTS[0],,}
       export RT_COMPILER=${SINGLE_OPTS[1],,}
-      
+
       if [[ "$RT_COMPILER" == "intel" ]] || [[ "$RT_COMPILER" == "gnu" ]]; then
         echo "COMPILER set to ${RT_COMPILER}"
       else
@@ -675,13 +675,13 @@ while read -r line || [ "$line" ]; do
   JOB_NR=$( printf '%03d' $(( 10#$JOB_NR + 1 )) )
 
   if [[ $line == COMPILE* ]]; then
-    
+
     COMPILE_NR=$( echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
     RT_COMPILER=$(echo $line | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
     MAKE_OPT=$(   echo $line | cut -d'|' -f4 | sed -e 's/^ *//' -e 's/ *$//')
     MACHINES=$(   echo $line | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
     CB=$(         echo $line | cut -d'|' -f6)
-    
+
     COMPILE_COUNTER=$( printf '%03d' $(( 10#$COMPILE_COUNTER + 1 )) )
     COMPILE_NR=$( printf '%03d' $(( 10#$COMPILE_NR )) )
     echo "COMPILER_COUNTER: " $COMPILE_COUNTER
