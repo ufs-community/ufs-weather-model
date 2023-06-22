@@ -97,7 +97,7 @@ rt_trap() {
 }
 
 cleanup() {
-  rm -rf ${LOCKDIR}
+  [[ $(awk '{print $2}' < "${LOCKDIR}/PID") == $$ ]] && rm -rf ${LOCKDIR}
   [[ ${ECFLOW:-false} == true ]] && ecflow_stop
   trap 0
   exit
@@ -230,6 +230,8 @@ elif [[ $MACHINE_ID = hera ]]; then
   cp fv3_conf/compile_slurm.IN_hera fv3_conf/compile_slurm.IN
 
 elif [[ $MACHINE_ID = orion ]]; then
+
+  module load git/2.28.0
 
   module load gcc/8.3.0
 
