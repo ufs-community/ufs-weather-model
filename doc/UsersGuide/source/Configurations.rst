@@ -290,13 +290,12 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
 .. _rrfs-rts:
 
 .. list-table:: *RRFS regression test descriptions*
-   :widths: 10 10 10 10 10 10 10 10 10
+   :widths: 50 10 50 10 10 10 10 10
    :header-rows: 1
 
    * - Test |nbsp| Name |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp|
      - Description
-     - Physics Suite (see namelist options `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_c_c_p_psuite_nml_desp.html>`__)
-     - DT_ATMOS
+     - Physics |nbsp| Parameters |nbsp| (see |nbsp| namelist |nbsp| options |nbsp| `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_c_c_p_psuite_nml_desp.html>`__ for variable definitions)
      - Start Date
      - Forecast Length (hours)
      - Output Grid
@@ -304,105 +303,160 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
      - Notes
    * - `rrfs_v1beta <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_v1beta>`__ / `rrfs_v1beta_debug <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_v1beta_debug>`__
      - Compare RRFS_v1beta / rrfs_v1beta_debug results with previous trunk version
-     - FV3_RRFS_v1beta; IMP_PHYSICS=8
-     - 300
+     - FV3_RRFS_v1beta
+       IMP_PHYSICS=8
+       DT_ATMOS=300
+       **Set to FALSE:** DO_SAT_ADJ, HYBEDMF, DO_DEEP, SHAL_CNV, LHEATSTRG
+       **Set to TRUE:** LRADAR, LTAEROSOL, DO_MYNNEDMF, DO_MYNNSFCLAY
+       **Set to value:** IAER=5111; DNATS=0; IALB=2; IEMS=2; IMFSHALCNV=-1; IMFDEEPCNV=-1; LSM=2; LSOIL_LSM=4
      - 2021-03-22 06:00:00
      - 24
      - gaussian_grid
-     - INPUT_NML=rap.nml.IN | FIELD_TABLE=field_table_thompson_aero_tke | DIAG_TABLE=diag_table_rap_noah
+     - NEMS_CONFIGURE=nems.configure.atm.IN
+       MODEL_CONFIGURE=model_configure.IN
+       FV3_RUN=control_run.IN
+       INPUT_NML=rap.nml.IN
+       FIELD_TABLE=field_table_thompson_aero_tke
+       DIAG_TABLE=diag_table_rap_noah
      - Notes: DO_SAT_ADJ=.false. ; LRADAR=.true. ; LTAEROSOL=.true. ; IALB=2; IEMS=2; HYBEDMF=.false. ; DO_MYNNEDMF=.true. ; DO_MYNNSFCLAY=.true. ; DO_DEEP=.false. ; SHAL_CNV=.false. ; IMFSHALCNV=-1 ; IMFDEEPCNV=-1 ; LHEATSTRG=.false. ; LSM=2 ; LSOIL_LSM=4
    * - `rrfs_v1nssl <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_v1nssl>`__
      - Compare RRFS_v1nssl results with previous trunk version
-     - FV3_RRFS_v1nssl; IMP_PHYSICS=17
-     - 300
+     - FV3_RRFS_v1nssl; IMP_PHYSICS=17; DT_ATMOS=300
      - 2021-03-22 06:00:00
      - 24
      - gaussian_grid
-     - INPUT_NML=rap.nml.IN | FIELD_TABLE=field_table_nssl_tke | DIAG_TABLE=diag_table_rap_noah; NSSL_CCN_ON=.true.
-     - Notes: NSSL_HAIL_ON=.true. ; NSSL_INVERTCCN=.true. ; DO_SAT_ADJ=.false. ; LTAEROSOL=.false. ; IALB=2 ; IEMS=2 ; HYBEDMF=.false. ; DO_MYNNEDMF=.true. ; DO_MYNNSFCLAY=.true. ; DO_DEEP=.false. ; SHAL_CNV=.false. ; IMFSHALCNV=-1 ; IMFDEEPCNV=-1 ; LHEATSTRG=.false. ; LSM=2 ; LSOIL_LSM=4
+     - NEMS_CONFIGURE=nems.configure.atm.IN
+       MODEL_CONFIGURE=model_configure.IN
+       FV3_RUN=control_run.IN
+       INPUT_NML=rap.nml.IN 
+       FIELD_TABLE=field_table_nssl_tke
+       DIAG_TABLE=diag_table_rap_noah
+     - Notes: NSSL_CCN_ON=.true. ; NSSL_HAIL_ON=.true. ; NSSL_INVERTCCN=.true. ; DO_SAT_ADJ=.false. ; LTAEROSOL=.false. ; IALB=2 ; IEMS=2 ; HYBEDMF=.false. ; DO_MYNNEDMF=.true. ; DO_MYNNSFCLAY=.true. ; DO_DEEP=.false. ; SHAL_CNV=.false. ; IMFSHALCNV=-1 ; IMFDEEPCNV=-1 ; LHEATSTRG=.false. ; LSM=2 ; LSOIL_LSM=4
    * - `rrfs_v1nssl_nohailnoccn <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_v1nssl_nohailnoccn>`__
      - Compare RRFS_v1nssl_nohailnoccn results with previous trunk version
-     - FV3_RRFS_v1nssl; IMP_PHYSICS=17
-     - 300
+     - FV3_RRFS_v1nssl; IMP_PHYSICS=17; DT_ATMOS=300
      - 2021-03-22 06:00:00
      - 24
      - gaussian_grid
-     - FV3_RUN=control_run.IN | INPUT_NML=rap.nml.IN | FIELD_TABLE=field_table_nssl_nohailnoccn_tke | DIAG_TABLE=diag_table_rap_noah
+     - NEMS_CONFIGURE=nems.configure.atm.IN
+       MODEL_CONFIGURE=model_configure.IN
+       FV3_RUN=control_run.IN
+       INPUT_NML=rap.nml.IN
+       FIELD_TABLE=field_table_nssl_nohailnoccn_tke
+       DIAG_TABLE=diag_table_rap_noah
      - Notes: DNATS=0 ; NWAT=6 ; NSSL_CCN_ON=.false. ; NSSL_HAIL_ON=.false. ; NSSL_INVERTCCN=.true. ; DO_SAT_ADJ=.false. ; LTAEROSOL=.false. ; IALB=2 ; IEMS=2 ; HYBEDMF=.false. ; DO_MYNNEDMF=.true. ; DO_MYNNSFCLAY=.true. ; DO_DEEP=.false. ; SHAL_CNV=.false. ; IMFSHALCNV=-1 ; IMFDEEPCNV=-1 ; LHEATSTRG=.false. ; LSM=2 ; LSOIL_LSM=4
    * - `rrfs_conus13km_hrrr_warm <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_conus13km_hrrr_warm>`__
      - HRRR physics on 13km domain, control run
-     - FV3_HRRR; IMP_PHYSICS=8
-     - 120
+     - FV3_HRRR; IMP_PHYSICS=8; DT_ATMOS=120
      - 2021-05-12 16:00:00
      - 2
      - lambert_conformal
-     - FV3_RUN=rrfs_warm_run.IN | INPUT_NML=rrfs_conus13km_hrrr.nml.IN | FIELD_TABLE=field_table_thompson_aero_tke | DIAG_TABLE=diag_table_hrrr | MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
+     - NEMS_CONFIGURE=nems.configure.atm.IN
+       MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
+       FV3_RUN=rrfs_warm_run.IN
+       INPUT_NML=rrfs_conus13km_hrrr.nml.IN
+       FIELD_TABLE=field_table_thompson_aero_tke
+       DIAG_TABLE=diag_table_hrrr
      - Notes: LKM=1; IOPT_LAKE=2; SFCLAY_COMPUTE_FLUX=.true.; IALB=2; ICLIQ_SW=2; IEMS=2; IOVR=3; KICE=9; LSM=3; LSOIL_LSM=9; DO_MYNNSFCLAY=.true.; DO_MYNNEDMF=.true.; DO_MYJPBL=.true; HYBEDMF=.false.; SHAL_CNV=.false.; DO_SAT_ADJ=.false.; DO_DEEP=.false. ; MAKE_NH=.false.; NA_INIT=0; DNATS=0; EXTERNAL_IC=.false.; NGGPS_IC=.false.; MOUNTAIN=.true.; WARM_START=.true.; READ_INCREMENT=.false.; RES_LATLON_DYNAMICS="'fv3_increment.nc'"; FHZERO=1.0; LDIAG3D=.false.; QDIAG3D=.false.; FHCYC=0.0; IAER=1011; LHEATSTRG=.false.; RANDOM_CLDS=.false.; CNVCLD=.false.; IMFSHALCNV=-1; IMFDEEPCNV=-1; CDMBWD='3.5,1.0'; DO_SPPT=.false.; DO_SHUM=.false.; DO_SKEB=.false.; LNDP_TYPE=0; N_VAR_LNDP=0; GWD_OPT=3; DO_UGWP_V0=.false.; DO_UGWP_V0_OROG_ONLY=.false.; DO_GSL_DRAG_LS_BL=.true.; DO_GSL_DRAG_SS=.true.; DO_GSL_DRAG_TOFD=.true.; DO_UGWP_V1=.false.; DO_UGWP_V1_OROG_ONLY=.false.; FRAC_ICE=.true.
    * - `rrfs_conus13km_hrrr_warm_debug <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_conus13km_hrrr_warm_debug>`__
      - HRRR physics on 13km domain, debug run
-     - FV3_HRRR; IMP_PHYSICS=8
-     - 120
+     - FV3_HRRR; IMP_PHYSICS=8; DT_ATMOS=120
      - 2021-05-12 16:00:00
      - 1
      - lambert_conformal
-     - 
+     - NEMS_CONFIGURE=nems.configure.atm.IN
+       MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
+       FV3_RUN=rrfs_warm_run.IN
+       INPUT_NML=rrfs_conus13km_hrrr.nml.IN
+       FIELD_TABLE=field_table_thompson_aero_tke
+       DIAG_TABLE=diag_table_hrrr
      - Notes: 
    * - `rrfs_conus13km_hrrr_warm_restart_mismatch <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_conus13km_hrrr_warm_restart_mismatch>`__
      - HRRR physics on 13km domain, control run
-     - FV3_HRRR; IMP_PHYSICS=8
-     - 120
+     - FV3_HRRR; IMP_PHYSICS=8; DT_ATMOS=120
      - 2021-05-12 16:00:00
      - 2
      - lambert_conformal
-     - 
+     - NEMS_CONFIGURE=nems.configure.atm.IN
+       MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
+       FV3_RUN=rrfs_warm_run.IN
+       INPUT_NML=rrfs_conus13km_hrrr.nml.IN
+       FIELD_TABLE=field_table_thompson_aero_tke
+       DIAG_TABLE=diag_table_hrrr
      - Notes: 
    * - `rrfs_smoke_conus13km_hrrr_warm <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_smoke_conus13km_hrrr_warm>`__
      - HRRR smoke physics on 13km domain, control run
-     - FV3_HRRR; IMP_PHYSICS=8
-     - 120
+     - FV3_HRRR; IMP_PHYSICS=8; DT_ATMOS=120
      - 2021-05-12 16:00:00
      - 2
      - lambert_conformal
-     - 
+     - NEMS_CONFIGURE=nems.configure.atm.IN
+       MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
+       FV3_RUN=rrfs_warm_run.IN
+       INPUT_NML=rrfs_conus13km_hrrr.nml.IN
+       FIELD_TABLE=field_table_thompson_aero_tke_smoke
+       DIAG_TABLE=diag_table_hrrr
+       DIAG_TABLE_ADDITIONAL=diag_additional_rrfs_smoke
      - Notes: 
    * - `rrfs_smoke_conus13km_hrrr_warm_2threads <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_smoke_conus13km_hrrr_warm_2threads>`__
      - HRRR smoke physics on 13km domain, different threads
-     - FV3_HRRR; IMP_PHYSICS=8
-     - 120
+     - FV3_HRRR; IMP_PHYSICS=8; DT_ATMOS=120
      - 2021-05-12 16:00:00
      - 2
      - lambert_conformal
-     - 
+     - NEMS_CONFIGURE=nems.configure.atm.IN
+       MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
+       FV3_RUN=rrfs_warm_run.IN
+       INPUT_NML=rrfs_conus13km_hrrr.nml.IN
+       FIELD_TABLE=field_table_thompson_aero_tke_smoke
+       DIAG_TABLE=diag_table_hrrr
+       DIAG_TABLE_ADDITIONAL=diag_additional_rrfs_smoke
      - Notes: 
    * - `rrfs_smoke_conus13km_hrrr_warm_debug <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_smoke_conus13km_hrrr_warm_debug>`__
      - HRRR smoke physics on 13km domain, control run
-     - FV3_HRRR; IMP_PHYSICS=8
-     - 120
+     - FV3_HRRR; IMP_PHYSICS=8; DT_ATMOS=120
      - 2021-05-12 16:00:00
      - 1
      - lambert_conformal
-     - 
+     - NEMS_CONFIGURE=nems.configure.atm.IN
+       MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
+       FV3_RUN=rrfs_warm_run.IN
+       INPUT_NML=rrfs_conus13km_hrrr.nml.IN
+       FIELD_TABLE=field_table_thompson_aero_tke_smoke
+       DIAG_TABLE=diag_table_hrrr
+       DIAG_TABLE_ADDITIONAL=diag_additional_rrfs_smoke
      - Notes: 
    * - `rrfs_smoke_conus13km_hrrr_warm_debug_2threads <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_smoke_conus13km_hrrr_warm_debug_2threads>`__
      - HRRR smoke physics on 13km domain, control run
-     - FV3_HRRR; IMP_PHYSICS=8
-     - 120
+     - FV3_HRRR; IMP_PHYSICS=8; DT_ATMOS=120
      - 2021-05-12 16:00:00
      - 1
      - lambert_conformal
-     - 
+     - NEMS_CONFIGURE=nems.configure.atm.IN
+       MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
+       FV3_RUN=rrfs_warm_run.IN
+       INPUT_NML=rrfs_conus13km_hrrr.nml.IN
+       FIELD_TABLE=field_table_thompson_aero_tke_smoke
+       DIAG_TABLE=diag_table_hrrr
+       MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
+       DIAG_TABLE_ADDITIONAL=diag_additional_rrfs_smoke
      - Notes: 
    * - `rrfs_smoke_conus13km_radar_tten_warm <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_smoke_conus13km_radar_tten_warm>`__
      - HRRR smoke physics on 13km domain with radar-derived temperature tendencies
-     - FV3_HRRR; IMP_PHYSICS=8
-     - 120
+     - FV3_HRRR; IMP_PHYSICS=8; DT_ATMOS=120
      - 2021-05-12 16:00:00
      - 2
      - lambert_conformal
-     - 
+     - NEMS_CONFIGURE=nems.configure.atm.IN
+       MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
+       FV3_RUN=rrfs_warm_run.IN
+       INPUT_NML=rrfs_conus13km_hrrr.nml.IN
+       FIELD_TABLE=field_table_thompson_aero_tke
+       DIAG_TABLE=diag_table_hrrr
      - Notes: 
 
 .. COMMENT: What are PEs??? And check rrfs_conus13km_hrrr_warm_restart_mismatch description. It's the same as the rrfs_conus13km_hrrr_warm description
+.. COMMENT: What is DNATS? Remove from Physics???
 
 **Sample** ``CMAKE_FLAGS`` **Setting**
 
@@ -533,6 +587,9 @@ or in the `UFS WM RT Data Bucket <https://registry.opendata.aws/noaa-ufs-regtest
      - 
      - 
      - 
+
+.. COMMENT: Add grid info!
+
 
 .. _lnd-documented:
 
