@@ -377,7 +377,11 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
      - Notes: 
    * - `rrfs_conus13km_hrrr_warm_debug <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_conus13km_hrrr_warm_debug>`__
      - HRRR physics on 13km domain, debug run
-     - FV3_HRRR; IMP_PHYSICS=8; DT_ATMOS=120
+     - **Suite:** CCPP_SUITE=FV3_HRRR
+
+       **Microphysics:** IMP_PHYSICS=8
+
+       **Time Step:** DT_ATMOS=120
      - 2021-05-12 16:00:00
      - 1
      - lambert_conformal
@@ -390,7 +394,11 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
      - Notes: 
    * - `rrfs_conus13km_hrrr_warm_restart_mismatch <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_conus13km_hrrr_warm_restart_mismatch>`__
      - HRRR physics on 13km domain, control run
-     - FV3_HRRR; IMP_PHYSICS=8; DT_ATMOS=120
+     - **Suite:** CCPP_SUITE=FV3_HRRR
+
+       **Microphysics:** IMP_PHYSICS=8
+
+       **Time Step:** DT_ATMOS=120
      - 2021-05-12 16:00:00
      - 2
      - lambert_conformal
@@ -403,7 +411,11 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
      - Notes: 
    * - `rrfs_smoke_conus13km_hrrr_warm <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_smoke_conus13km_hrrr_warm>`__
      - HRRR smoke physics on 13km domain, control run
-     - FV3_HRRR; IMP_PHYSICS=8; DT_ATMOS=120
+     - **Suite:** CCPP_SUITE=FV3_HRRR
+
+       **Microphysics:** IMP_PHYSICS=8
+
+       **Time Step:** DT_ATMOS=120
      - 2021-05-12 16:00:00
      - 2
      - lambert_conformal
@@ -417,7 +429,11 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
      - Notes: 
    * - `rrfs_smoke_conus13km_hrrr_warm_2threads <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_smoke_conus13km_hrrr_warm_2threads>`__
      - HRRR smoke physics on 13km domain, different threads
-     - FV3_HRRR; IMP_PHYSICS=8; DT_ATMOS=120
+     - **Suite:** CCPP_SUITE=FV3_HRRR
+
+       **Microphysics:** IMP_PHYSICS=8
+
+       **Time Step:** DT_ATMOS=120
      - 2021-05-12 16:00:00
      - 2
      - lambert_conformal
@@ -431,7 +447,11 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
      - Notes: 
    * - `rrfs_smoke_conus13km_hrrr_warm_debug <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_smoke_conus13km_hrrr_warm_debug>`__
      - HRRR smoke physics on 13km domain, control run
-     - FV3_HRRR; IMP_PHYSICS=8; DT_ATMOS=120
+     - **Suite:** CCPP_SUITE=FV3_HRRR
+
+       **Microphysics:** IMP_PHYSICS=8
+
+       **Time Step:** DT_ATMOS=120
      - 2021-05-12 16:00:00
      - 1
      - lambert_conformal
@@ -445,7 +465,11 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
      - Notes: 
    * - `rrfs_smoke_conus13km_hrrr_warm_debug_2threads <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_smoke_conus13km_hrrr_warm_debug_2threads>`__
      - HRRR smoke physics on 13km domain, control run
-     - FV3_HRRR; IMP_PHYSICS=8; DT_ATMOS=120
+     - **Suite:** CCPP_SUITE=FV3_HRRR
+
+       **Microphysics:** IMP_PHYSICS=8
+
+       **Time Step:** DT_ATMOS=120
      - 2021-05-12 16:00:00
      - 1
      - lambert_conformal
@@ -460,7 +484,11 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
      - Notes: 
    * - `rrfs_smoke_conus13km_radar_tten_warm <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_smoke_conus13km_radar_tten_warm>`__
      - HRRR smoke physics on 13km domain with radar-derived temperature tendencies
-     - FV3_HRRR; IMP_PHYSICS=8; DT_ATMOS=120
+     - **Suite:** CCPP_SUITE=FV3_HRRR
+
+       **Microphysics:** IMP_PHYSICS=8
+
+       **Time Step:** DT_ATMOS=120
      - 2021-05-12 16:00:00
      - 2
      - lambert_conformal
@@ -479,13 +507,11 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
 
 .. code-block:: console
 
-    export CMAKE_FLAGS="-DAPP=ATM -DCCPP_SUITES=FV3_RAP,FV3_RAP_sfcdiff,FV3_HRRR,FV3_HRRR_flake,FV3_RRFS_v1beta,FV3_RRFS_v1nssl -D32BIT=ON"
+    export CMAKE_FLAGS="-DAPP=ATM -DCCPP_SUITES=FV3_RAP,FV3_HRRR,FV3_RRFS_v1beta,FV3_RRFS_v1nssl -D32BIT=ON"
 
 .. COMMENT: Edit this section! 
 
 **Supported Physics Suites**
-
-.. COMMENT: Edit this section! 
 
 .. list-table:: *Physics suites used in the RRFS configurations above*
    :widths: 10 50
@@ -495,16 +521,13 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
      - Description
    * - FV3_RAP
      - The FV3_RAP physics suite is described in the :term:`CCPP` documentation `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/rap_suite_page.html>`__.
-   * - FV3_RAP_sfcdiff
-     - The FV3_RAP_sfcdiff physics suite is described in the CCPP documentation `here <>`__. 
    * - FV3_HRRR
      - The FV3_HRRR physics suite is described in the CCPP documentation `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_h_r_r_r_suite_page.html>`__.
-   * - FV3_HRRR_flake
-     - The FV3_HRRR_flake physics suite is described in the CCPP documentation `here <>`__.
    * - FV3_RRFS_v1beta 
      - The FV3_RRFS_v1beta physics suite is described in the CCPP documentation `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_r_r_f_s_v1beta_page.html>`__.
    * - FV3_RRFS_v1nssl
-     - The FV3_RRFS_v1nssl physics suite is described in the CCPP documentation `here <>`__.
+     - The FV3_RRFS_v1nssl physics suite is similar to the *FV3_RRFS_v1beta* suite; the only difference is that it uses the NSSL 2-moment microphysics scheme instead of the Thompson microphysics scheme.
+
 
 **Additional Information**
 
