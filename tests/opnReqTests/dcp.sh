@@ -37,6 +37,16 @@ elif [[ $application == 'cpld' ]]; then
     INPES=$JNPES
     JNPES=$temp
   fi
+elif [[ $application == 'atmw' ]]; then
+  if [[ $CI_TEST == 'true' ]]; then
+    INPES=3
+    JNPES=1
+    TASKS=$((INPES*JNPES + WRITE_GROUP*WRTTASK_PER_GROUP))
+  else
+    temp=$INPES
+    INPES=$JNPES
+    JNPES=$temp
+  fi
 fi
 
 
