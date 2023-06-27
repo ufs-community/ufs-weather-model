@@ -291,7 +291,7 @@ endif()
 
 if(FV3)
   add_dependencies(ufs fv3atm)
-  list(APPEND _ufs_defs_private FRONT_FV3=fv3gfs_cap_mod)
+  list(APPEND _ufs_defs_private FRONT_FV3=fv3atm_cap_mod)
   list(APPEND _ufs_libs_public fv3atm)
 endif()
 
