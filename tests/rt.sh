@@ -471,7 +471,6 @@ while getopts ":a:cl:mn:dwkreh" opt; do
 done
 
 ACCNR=${ACCNR:-""}
-ACCNR=fv3-cpu
 if [[ -z "$ACCNR" ]]; then
   echo "Please use -a <account> to set group account to use on HPC"
   exit 1
