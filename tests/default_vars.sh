@@ -282,7 +282,7 @@ elif [[ ${MACHINE_ID} = noaacloud ]] ; then
 
     INPES_dflt=3 ; JNPES_dflt=8
     INPES_thrd=3 ; JNPES_thrd=4
-    
+
     INPES_c384=8 ; JNPES_c384=6  ; THRD_c384=2
     INPES_c768=8 ; JNPES_c768=16 ; THRD_c768=2
 
@@ -309,8 +309,7 @@ elif [[ $MACHINE_ID = expanse ]]; then
 
   TPN_cpl_atmw_gdas=12; INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8
   THRD_cpl_atmw_gdas=2; WPG_cpl_atmw_gdas=24; APB_cpl_atmw_gdas="0 311"; WPB_cpl_atmw_gdas="312 559"
-  
-  
+
 else
 
   echo "Unknown MACHINE_ID ${MACHINE_ID}"
@@ -321,6 +320,7 @@ fi
 WLCLK_dflt=30
 
 export WLCLK=$WLCLK_dflt
+export CMP_DATAONLY=false
 
 export_fv3 ()
 {
@@ -697,6 +697,7 @@ export chm_model=gocart
 export ocn_model=mom6
 export ice_model=cice6
 export wav_model=ww3
+export pio_rearranger=box
 
 export coupling_interval_slow_sec=${DT_THERM_MOM6}
 export coupling_interval_fast_sec=${DT_ATMOS}
@@ -948,6 +949,8 @@ export med_model=cmeps
 export atm_model=datm
 export ocn_model=mom6
 export ice_model=cice6
+export pio_rearranger=box
+
 export ATM_compute_tasks=$ATM_compute_tasks_cdeps_100
 export OCN_tasks=$OCN_tasks_cdeps_100
 export ICE_tasks=$ICE_tasks_cdeps_100
@@ -997,6 +1000,7 @@ export mesh_file=cfsr_mesh.nc
 export MESH_ATM=DATM_INPUT/${mesh_file}
 export atm_datamode=${DATM_SRC}
 export stream_files=DATM_INPUT/${FILENAME_BASE}201110.nc
+export STREAM_OFFSET=0
 
 # MOM6 defaults; 1 degree
 export MOM_INPUT=MOM_input_template_100
@@ -1072,6 +1076,7 @@ export NTILES=1
 
 export ocn_model=docn
 export ocn_datamode=sstdata
+export pio_rearranger=box
 
 export DOCN_IN_CONFIGURE=docn_in
 export DOCN_STREAM_CONFIGURE=hafs_docn.streams.IN
@@ -1141,6 +1146,7 @@ export WAV_CUR='C'
 
 # nems.configure
 export med_model=cmeps
+export pio_rearranger=box
 export CAP_DBUG_FLAG=0
 export RESTART_N=${FHMAX}
 export CPLMODE=hafs
