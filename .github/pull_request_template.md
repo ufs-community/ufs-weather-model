@@ -13,20 +13,20 @@ PLEASE DO NOT MODIFY THE TEMPLATE BEYOND FILLING OUT THE PROPER SECTIONS -->
 <!-- Provide a detailed description of what this PR does in the space provided below-->
 
 
-### Associated UFSSWM Issue to close
+### Associated UFSWM Issue to close
 <!-- Example: "- Closes #1698" -->
 
 
-### UFSWM Dependencies
-<!-- Example: "- Depends on #1733" -->
+### UFSWM PR Dependencies
+<!-- Example: "- Depends on #1733" or "None"-->
 
 
 ## Subcomponents involved:
-<!-- Options are: AQM CDEPS CICE CMEPS CMakeModules FV3 GOCART HYCOM MOM6 NOAHMP WW3 stochastic_physics none -->
+<!-- Options are: AQM CDEPS CICE CMEPS CMakeModules FV3 GOCART HYCOM MOM6 NOAHMP WW3 stochastic_physics None -->
 
 
 ### Subcomponent Pull Requests
-<!-- format: - <community>/<repo>/pull/<PR number> i.e.: - NOAA-EMC/fv3atm/pull/33 -->
+<!-- format: - <community>/<repo>/pull/<PR number> i.e.: - NOAA-EMC/fv3atm/pull/33 or "None" -->
 
 
 ## Anticipated Changes
@@ -40,20 +40,21 @@ PLEASE DO NOT MODIFY THE TEMPLATE BEYOND FILLING OUT THE PROPER SECTIONS -->
 - [ ] No changes are expected to any regression test.
 - [ ] Changes are expected to the following tests:
 <!-- Please insert what RT's change and why you expect them to change in the space provided below -->
-  - <details><summary>Tests effected by changes in this PR:</summary>
+<details><summary>Tests effected by changes in this PR:</summary>
   <!-- ADD ITEMS HERE -->
-  </details>
+</details>
 
 ### Libraries
 <!-- Library updates take time. If this PR needs updates to libraries, please make sure to accomplish the following tasks -->
 - [ ] Not Needed
-- [ ] Create separate issue in [JCSDA/spack-stack](https://github.com/JCSDA/spack-stack) asking for update to library. Include library name, library version.
-- [ ] Add issue link from JCSDA/spack-stack following this item
-<!-- for example: "- JCSDA/spack-stack/issue/1757" -->
+- [ ] Needed
+  - [ ] Create separate issue in [JCSDA/spack-stack](https://github.com/JCSDA/spack-stack) asking for update to library. Include library name, library version.
+  - [ ] Add issue link from JCSDA/spack-stack following this item <!-- for example: "- JCSDA/spack-stack/issue/1757" -->
 
 
 <!-- THE FOLLOWING IS FOR CODE MANAGERS ONLY DO NOT FILL OUT -->
-- <details><summary>Code Managers Log</summary>
+<details><summary>Code Managers Log</summary>
+
 - [ ] This PR is up-to-date with the top of all sub-component repositories except for those sub-components which are the subject of this PR.
 - [ ] Move new/updated input data on RDHPCS Hera and propagate input data changes to all supported systems.
   - [ ] N/A
