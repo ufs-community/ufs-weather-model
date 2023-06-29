@@ -626,9 +626,6 @@ EOF
 
 ecflow_run() {
 
-  # in rare instances when UID is greater then 58500 (like Ratko's UID on theia)
-  [[ $ECF_PORT -gt 49151 ]] && ECF_PORT=12179
-
   ECF_HOST="${ECF_HOST:-$HOSTNAME}"
 
   set +e
@@ -646,9 +643,9 @@ ecflow_run() {
       fi
       MYCOMM="bash -l -c \"module load ecflow && ecflow_start.sh -p ${ECF_PORT} \""
       ssh $ECF_HOST "${MYCOMM}"
-    elif [[ ${MACHINE_ID} == jet ]]; then
+    elif [[ ${MACHINE_ID} == hera || ${MACHINE_ID} == jet ]]; then
       module load ecflow
-      echo "Using special Jet ECFLOW start procedure"
+      echo "On ${MACHINE_ID}, start ecFlow server on dedicated node ${ECF_HOST}"
       MYCOMM="bash -l -c \"module load ecflow && ${ECFLOW_START} -d ${RUNDIR_ROOT}/ecflow_server\""
       ssh $ECF_HOST "${MYCOMM}"
     else
