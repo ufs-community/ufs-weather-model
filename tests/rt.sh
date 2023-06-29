@@ -158,8 +158,6 @@ if [[ $MACHINE_ID = wcoss2 ]]; then
   STMP=/lfs/h2/emc/ptmp
   PTMP=/lfs/h2/emc/ptmp
   SCHEDULER=pbs
-  cp fv3_conf/fv3_qsub.IN_wcoss2 fv3_conf/fv3_qsub.IN
-  cp fv3_conf/compile_qsub.IN_wcoss2 fv3_conf/compile_qsub.IN
 
 elif [[ $MACHINE_ID = acorn ]]; then
 
@@ -180,8 +178,6 @@ elif [[ $MACHINE_ID = acorn ]]; then
   STMP=/lfs/h2/emc/ptmp
   PTMP=/lfs/h2/emc/ptmp
   SCHEDULER=pbs
-  cp fv3_conf/fv3_qsub.IN_wcoss2 fv3_conf/fv3_qsub.IN
-  cp fv3_conf/compile_qsub.IN_wcoss2 fv3_conf/compile_qsub.IN
 
 elif [[ $MACHINE_ID = gaea ]]; then
 
@@ -198,8 +194,6 @@ elif [[ $MACHINE_ID = gaea ]]; then
   PTMP=/lustre/f2/scratch
 
   SCHEDULER=slurm
-  cp fv3_conf/fv3_slurm.IN_gaea fv3_conf/fv3_slurm.IN
-  cp fv3_conf/compile_slurm.IN_gaea fv3_conf/compile_slurm.IN
 
 elif [[ $MACHINE_ID = hera ]]; then
 
@@ -226,8 +220,6 @@ elif [[ $MACHINE_ID = hera ]]; then
   PTMP=$dprefix/stmp2
 
   SCHEDULER=slurm
-  cp fv3_conf/fv3_slurm.IN_hera fv3_conf/fv3_slurm.IN
-  cp fv3_conf/compile_slurm.IN_hera fv3_conf/compile_slurm.IN
 
 elif [[ $MACHINE_ID = orion ]]; then
 
@@ -253,8 +245,6 @@ elif [[ $MACHINE_ID = orion ]]; then
   PTMP=$dprefix/stmp
 
   SCHEDULER=slurm
-  cp fv3_conf/fv3_slurm.IN_orion fv3_conf/fv3_slurm.IN
-  cp fv3_conf/compile_slurm.IN_orion fv3_conf/compile_slurm.IN
 
 elif [[ $MACHINE_ID = jet ]]; then
 
@@ -278,8 +268,6 @@ elif [[ $MACHINE_ID = jet ]]; then
   PTMP=${PTMP:-$dprefix/RT_RUNDIRS}
 
   SCHEDULER=slurm
-  cp fv3_conf/fv3_slurm.IN_jet fv3_conf/fv3_slurm.IN
-  cp fv3_conf/compile_slurm.IN_jet fv3_conf/compile_slurm.IN
 
 elif [[ $MACHINE_ID = s4 ]]; then
 
@@ -304,8 +292,6 @@ elif [[ $MACHINE_ID = s4 ]]; then
   PTMP=/scratch/users
 
   SCHEDULER=slurm
-  cp fv3_conf/fv3_slurm.IN_s4 fv3_conf/fv3_slurm.IN
-  cp fv3_conf/compile_slurm.IN_s4 fv3_conf/compile_slurm.IN
 
 elif [[ $MACHINE_ID = cheyenne ]]; then
 
@@ -322,8 +308,6 @@ elif [[ $MACHINE_ID = cheyenne ]]; then
   STMP=$dprefix
   PTMP=$dprefix
   SCHEDULER=pbs
-  cp fv3_conf/fv3_qsub.IN_cheyenne fv3_conf/fv3_qsub.IN
-  cp fv3_conf/compile_qsub.IN_cheyenne fv3_conf/compile_qsub.IN
 
 elif [[ $MACHINE_ID = stampede ]]; then
 
@@ -339,7 +323,6 @@ elif [[ $MACHINE_ID = stampede ]]; then
   SCHEDULER=slurm
   MPIEXEC=ibrun
   MPIEXECOPTS=
-  cp fv3_conf/fv3_slurm.IN_stampede fv3_conf/fv3_slurm.IN
 
 elif [[ $MACHINE_ID = expanse ]]; then
 
@@ -353,7 +336,6 @@ elif [[ $MACHINE_ID = expanse ]]; then
   STMP=$dprefix
   PTMP=$dprefix
   SCHEDULER=slurm
-  cp fv3_conf/fv3_slurm.IN_expanse fv3_conf/fv3_slurm.IN
 
  elif [[ $MACHINE_ID = noaacloud.* ]]; then
 
@@ -373,8 +355,6 @@ elif [[ $MACHINE_ID = expanse ]]; then
   STMP=$dprefix/stmp4
   PTMP=$dprefix/stmp2
   SCHEDULER=slurm
-  cp fv3_conf/fv3_slurm.IN_noaacloud fv3_conf/fv3_slurm.IN
-  cp fv3_conf/compile_slurm.IN_noaacloud fv3_conf/compile_slurm.IN
 
 
 else
@@ -805,6 +785,7 @@ EOF
       export DEP_RUN=${DEP_RUN}
       export skip_check_results=${skip_check_results}
       export delete_rundir=${delete_rundir}
+      export WLCLK=${WLCLK}
 EOF
       if [[ $MACHINE_ID = jet ]]; then
         cat << EOF >> ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
