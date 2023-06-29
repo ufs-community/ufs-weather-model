@@ -1,72 +1,64 @@
-## Description
-<!--
-Provide a detailed description of what this PR does. What bug does it fix, or what feature does it add? Is a change of answers expected from this PR? Are any library updates included in this PR (modulefiles etc.)?
--->
+<!-- THE FOLLOWING IS FOR THE PR AUTHOR TO FILL OUT
+PLEASE DO NOT MODIFY THE TEMPLATE BEYOND FILLING OUT THE PROPER SECTIONS -->
+## PR Author Checklist:
+<!--  Please complete all items in list. -->
+- [ ] I have linked PR's from all sub-components involved in section below. <!-- PLEASE DO NOT LINK SUBCOMPONENT ISSUES -->
+- [ ] I am confirming reviews are completed in ALL sub-component PR's.
+- [ ] I have run the full RT suite on either Hera/Cheyenne AND have attached the log to this PR below this line:
+  - LOG: 
+- [ ] I have added the list of all failed regression tests to "Anticipated changes to regression tests" section.
+- [ ] I have filled out all sections of the template.
 
-### Input data additions/changes
+## Description
+<!-- Provide a detailed description of what this PR does in the space provided below-->
+
+
+### Associated UFSSWM Issue to close
+<!-- Example: "- Closes #1698" -->
+
+
+### UFSWM Dependencies
+<!-- Example: "- Depends on #1733" -->
+
+
+## Subcomponents involved:
+<!-- Options are: AQM CDEPS CICE CMEPS CMakeModules FV3 GOCART HYCOM MOM6 NOAHMP WW3 stochastic_physics none -->
+
+
+### Subcomponent Pull Requests
+<!-- format: - <community>/<repo>/pull/<PR number> i.e.: - NOAA-EMC/fv3atm/pull/33 -->
+
+
+## Anticipated Changes
+### Input data
 - [ ] No changes are expected to input data.
 - [ ] Changes are expected to input data:
   - [ ] New input data.
   - [ ] Updated input data.
 
-### Anticipated changes to regression tests:
+### Regression Tests:
 - [ ] No changes are expected to any regression test.
 - [ ] Changes are expected to the following tests:
-<!-- Please insert what RT's change and why you expect them to change -->
+<!-- Please insert what RT's change and why you expect them to change in the space provided below -->
+  - <details><summary>Tests effected by changes in this PR:</summary>
+  <!-- ADD ITEMS HERE -->
+  </details>
 
-## Subcomponents involved:
-- [ ] AQM
-- [ ] CDEPS
-- [ ] CICE
-- [ ] CMEPS
-- [ ] CMakeModules
-- [ ] FV3
-- [ ] GOCART
-- [ ] HYCOM
-- [ ] MOM6
-- [ ] NOAHMP
-- [ ] WW3
-- [ ] stochastic_physics
-- [ ] none
-
-### Library Updates/Changes
+### Libraries
 <!-- Library updates take time. If this PR needs updates to libraries, please make sure to accomplish the following tasks -->
 - [ ] Not Needed
 - [ ] Create separate issue in [JCSDA/spack-stack](https://github.com/JCSDA/spack-stack) asking for update to library. Include library name, library version.
 - [ ] Add issue link from JCSDA/spack-stack following this item
 <!-- for example: "- JCSDA/spack-stack/issue/1757" -->
 
-### Combined with PR's (If Applicable):
 
-## Commit Queue Checklist:
-<!-- 
-Please complete all items in list. Make sure to attach logs from RT testing in comment, not in repository. Once all boxes are checked, please add the label "Ready for Commit Queue".
--->
-- [ ] Link PR's from all sub-components involved in section below
-- [ ] Confirm reviews completed in ALL sub-component PR's
-- [ ] Add all appropriate labels to this PR.
-- [ ] Run full RT suite on either Hera/Cheyenne AND attach log to a PR comment.
-- [ ] Add list of any failed regression tests to "Anticipated changes to regression tests" section.
-
-## Linked PR's and Issues:
-<!--
-Please link dependent pull requests.
-EXAMPLE: "- Depends on NOAA-EMC/fv3atm/pull/<pullrequest_number>"
-
-Please link the related issues to be closed with this PR, whether in this repository, or in another repository.
-EXAMPLE: "- Closes NOAA-EMC/fv3atm/issues/<issue_number>"
-
-PLEASE MAKE SURE TO USE THE - with a space before the "Depends on" or "Closes" as they show up well on github.
--->
-
-## Testing Day Checklist:
-<!--
-Please consult the ufs-weather-model [wiki](https://github.com/ufs-community/ufs-weather-model/wiki/Making-code-changes-in-the-UFS-weather-model-and-its-subcomponents) if you are unsure how to do this.
--->
+<!-- THE FOLLOWING IS FOR CODE MANAGERS ONLY DO NOT FILL OUT -->
+- <details><summary>Code Managers Log</summary>
 - [ ] This PR is up-to-date with the top of all sub-component repositories except for those sub-components which are the subject of this PR.
 - [ ] Move new/updated input data on RDHPCS Hera and propagate input data changes to all supported systems.
+  - [ ] N/A
 
-### Testing Log (for CM's):
+### Testing Log:
 - RDHPCS
   - [ ] Hera
   - [ ] Orion
@@ -81,3 +73,4 @@ Please consult the ufs-weather-model [wiki](https://github.com/ufs-community/ufs
 - opnReqTest
   - [ ] N/A
   - [ ] Log attached to comment
+</details>
