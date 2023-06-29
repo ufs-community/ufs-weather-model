@@ -1,6 +1,9 @@
 .. |nbsp| unicode:: 0xA0 
    :trim:
 
+.. role:: raw-html(raw)
+    :format: html
+
 .. _Configurations:
 
 *************************
@@ -307,16 +310,17 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
 
        **Microphysics:** IMP_PHYSICS=8
 
-       **Time Step:** DT_ATMOS=300
+       **Time Step:** DT_ATMOS=300 :raw-html:`<br/> <br/>`
 
-       **Set to FALSE:** DO_SAT_ADJ, HYBEDMF, DO_DEEP, SHAL_CNV, LHEATSTRG
-       
-       **Set to TRUE:** LRADAR, LTAEROSOL, DO_MYNNEDMF, DO_MYNNSFCLAY
-       
+       **Set to FALSE:** DO_SAT_ADJ, HYBEDMF, DO_DEEP, SHAL_CNV, LHEATSTRG :raw-html:`<br/> <br/>`
+
+       **Set to TRUE:** LRADAR, LTAEROSOL, DO_MYNNEDMF, DO_MYNNSFCLAY :raw-html:`<br/> <br/>`
+
        **Set to value:** IAER=5111; DNATS=0; IALB=2; IEMS=2; IMFSHALCNV=-1; IMFDEEPCNV=-1; LSM=2; LSOIL_LSM=4
      - 2021-03-22 06:00:00
      - 24
-     - gaussian_grid
+     - gaussian_grid :raw-html:`<br/> <br/>`
+       **Grid Parameters:** 
      - NEMS_CONFIGURE=nems.configure.atm.IN
        MODEL_CONFIGURE=model_configure.IN
        FV3_RUN=control_run.IN
@@ -330,10 +334,17 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
 
        **Microphysics:** IMP_PHYSICS=17
 
-       **Time Step:** DT_ATMOS=300
+       **Time Step:** DT_ATMOS=300 :raw-html:`<br/ br/>`
+
+       **Set to FALSE:** DO_SAT_ADJ, LTAEROSOL, HYBEDMF, DO_DEEP, SHAL_CNV, LHEATSTRG :raw-html:`<br/> <br/>`
+
+       **Set to TRUE:** NSSL_CCN_ON, NSSL_HAIL_ON, NSSL_INVERTCCN, DO_MYNNEDMF, DO_MYNNSFCLAY :raw-html:`<br/> <br/>`
+
+       **Set to value:** NPZ=127, NPZP=128, IAER=5111, CS=17, DNATS=0, NWAT=7, IALB=2, IEMS=2, IMFSHALCNV=-1, IMFDEEPCNV=-1, LSM=2, LSOIL_LSM=4
      - 2021-03-22 06:00:00
      - 24
-     - gaussian_grid
+     - gaussian_grid :raw-html:`<br/> <br/>`
+       **Grid Parameters:** 
      - NEMS_CONFIGURE=nems.configure.atm.IN
        MODEL_CONFIGURE=model_configure.IN
        FV3_RUN=control_run.IN
@@ -347,10 +358,17 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
 
        **Microphysics:** IMP_PHYSICS=17
 
-       **Time Step:** DT_ATMOS=300
+       **Time Step:** DT_ATMOS=300 :raw-html:`<br/> <br/>`
+
+       **Set to FALSE:** NSSL_CCN_ON, NSSL_HAIL_ON, DO_SAT_ADJ, LTAEROSOL, HYBEDMF, DO_DEEP, SHAL_CNV, LHEATSTRG :raw-html:`<br/> <br/>`
+
+       **Set to TRUE:** NSSL_INVERTCCN, DO_MYNNEDMF, DO_MYNNSFCLAY :raw-html:`<br/> <br/>`
+
+       **Set to value:** NPZ=127, NPZP=128, IAER=5111, DNATS=0, NWAT=6, IALB=2, IEMS=2, IMFSHALCNV=-1, IMFDEEPCNV=-1, LSM=2, LSOIL_LSM=4 :raw-html:`<br/> <br/>`
      - 2021-03-22 06:00:00
      - 24
-     - gaussian_grid
+     - gaussian_grid :raw-html:`<br/> <br/>`
+       **Grid Parameters:** 
      - NEMS_CONFIGURE=nems.configure.atm.IN
        MODEL_CONFIGURE=model_configure.IN
        FV3_RUN=control_run.IN
@@ -364,10 +382,19 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
 
        **Microphysics:** IMP_PHYSICS=8
 
-       **Time Step:** DT_ATMOS=120
+       **Time Step:** DT_ATMOS=120 :raw-html:`<br/> <br/>`
+
+       **Set to FALSE:** SEDI_SEMI, HYBEDMF, SHAL_CNV, DO_SAT_ADJ, DO_DEEP, MAKE_NH, EXTERNAL_IC, NGGPS_IC, READ_INCREMENT, LDIAG3D, QDIAG3D, LHEATSTRG, RANDOM_CLDS, CNVCLD, DO_SPPT, DO_SHUM, DO_SKEB, DO_UGWP_V0, DO_UGWP_V0_OROG_ONLY, DO_UGWP_V1, DO_UGWP_V1_OROG_ONLY :raw-html:`<br/> <br/>`
+       
+       **Set to TRUE:** SFCLAY_COMPUTE_FLUX, DO_MYNNSFCLAY, DO_MYNNEDMF, DO_MYJPBL, MOUNTAIN, WARM_START, PRINT_DIFF_PGR, DO_GSL_DRAG_LS_BL, DO_GSL_DRAG_SS, DO_GSL_DRAG_TOFD, FRAC_ICE :raw-html:`<br/> <br/>`
+       
+       **Set to value:** DECFL=8, LKM=1, IOPT_LAKE=2, IALB=2, ICLIQ_SW=2, IEMS=2, IOVR=3, KICE=9, LSM=3, LSOIL_LSM=9, INPES=12, JNPES=12, NPX=397, NPY=233, NPZ=65, NA_INIT=0, DNATS=0, NPZP=66, FHZERO=1.0, FHCYC=0.0, IAER=1011, IMFSHALCNV=-1, IMFDEEPCNV=-1, CDMBWD='3.5,1.0', RES_LATLON_DYNAMICS="'fv3_increment.nc'", LNDP_TYPE=0, N_VAR_LNDP=0, GWD_OPT=3 :raw-html:`<br/> <br/>`
+
+         .. COMMENT: Check whether all params are for physics... vs grid or something else. INPES/JNPES?
      - 2021-05-12 16:00:00
      - 2
-     - lambert_conformal
+     - lambert_conformal :raw-html:`<br/> <br/>`
+       **Grid Parameters:** 
      - NEMS_CONFIGURE=nems.configure.atm.IN
        MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
        FV3_RUN=rrfs_warm_run.IN
@@ -381,10 +408,18 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
 
        **Microphysics:** IMP_PHYSICS=8
 
-       **Time Step:** DT_ATMOS=120
+       **Time Step:** DT_ATMOS=120 :raw-html:`<br/> <br/>`
+
+       **Set to FALSE:** SEDI_SEMI, HYBEDMF, SHAL_CNV, DO_SAT_ADJ, DO_DEEP, MAKE_NH, EXTERNAL_IC, NGGPS_IC, READ_INCREMENT, LDIAG3D, QDIAG3D, LHEATSTRG, RANDOM_CLDS, CNVCLD, DO_SPPT, DO_SHUM, DO_SKEB, DO_UGWP_V0, DO_UGWP_V0_OROG_ONLY, DO_UGWP_V1, DO_UGWP_V1_OROG_ONLY :raw-html:`<br/> <br/>`
+       
+       **Set to TRUE:** SFCLAY_COMPUTE_FLUX, DO_MYNNSFCLAY, DO_MYNNEDMF, DO_MYJPBL=.true, MOUNTAIN, WARM_START, PRINT_DIFF_PGR, DO_GSL_DRAG_LS_BL, DO_GSL_DRAG_SS, DO_GSL_DRAG_TOFD, FRAC_ICE :raw-html:`<br/> <br/>`
+       
+       **Set to value:** RESTART_INTERVAL=1, DECFL=8, LKM=1, IOPT_LAKE=2, IALB=2, ICLIQ_SW=2, IEMS=2, IOVR=3, KICE=9, LSM=3, LSOIL_LSM=9, INPES=12, JNPES=12, NPX=397, NPY=233, NPZ=65, NA_INIT=0, DNATS=0, RES_LATLON_DYNAMICS="'fv3_increment.nc'", NPZP=66, FHZERO=1.0, FHCYC=0.0, IAER=1011, IMFSHALCNV=-1, IMFDEEPCNV=-1, CDMBWD='3.5,1.0', LNDP_TYPE=0, N_VAR_LNDP=0, GWD_OPT=3
+
      - 2021-05-12 16:00:00
      - 1
-     - lambert_conformal
+     - lambert_conformal :raw-html:`<br/> <br/>`
+       **Grid Parameters:** 
      - NEMS_CONFIGURE=nems.configure.atm.IN
        MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
        FV3_RUN=rrfs_warm_run.IN
@@ -398,10 +433,17 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
 
        **Microphysics:** IMP_PHYSICS=8
 
-       **Time Step:** DT_ATMOS=120
+       **Time Step:** DT_ATMOS=120 :raw-html:`<br/> <br/>`
+
+       **Set to FALSE:** SEDI_SEMI, HYBEDMF, SHAL_CNV, DO_SAT_ADJ, DO_DEEP, MAKE_NH, EXTERNAL_IC, NGGPS_IC, READ_INCREMENT, LDIAG3D, QDIAG3D, LHEATSTRG, RANDOM_CLDS, CNVCLD, DO_SPPT, DO_SHUM, DO_SKEB, DO_UGWP_V0, DO_UGWP_V0_OROG_ONLY, DO_UGWP_V1, DO_UGWP_V1_OROG_ONLY :raw-html:`<br/> <br/>`
+       
+       **Set to TRUE:** RRFS_RESTART=YES, SFCLAY_COMPUTE_FLUX, DO_MYNNSFCLAY, DO_MYNNEDMF, DO_MYJPBL=.true, MOUNTAIN, WARM_START, PRINT_DIFF_PGR, DO_GSL_DRAG_LS_BL, DO_GSL_DRAG_SS, DO_GSL_DRAG_TOFD, FRAC_ICE :raw-html:`<br/> <br/>`
+
+       **Set to value:** FHROT=1, RESTART_FILE_PREFIX=$( printf %04d%02d%02d.%02d0000 $SYEAR $SMONTH $SDAY $(( SHOUR+FHROT )) ), DECFL=8, LKM=1, IALB=2, ICLIQ_SW=2, IEMS=2, IOVR=3, KICE=9, LSM=3, LSOIL_LSM=9, INPES=12, JNPES=12, NPX=397, NPY=233, NPZ=65, NA_INIT=0, DNATS=0, RES_LATLON_DYNAMICS="'fv3_increment.nc'", NPZP=66, FHZERO=1.0, FHCYC=0.0, IAER=5111, IMFSHALCNV=-1, IMFDEEPCNV=-1, CDMBWD='3.5,1.0', LNDP_TYPE=0, N_VAR_LNDP=0, GWD_OPT=3
      - 2021-05-12 16:00:00
      - 2
-     - lambert_conformal
+     - lambert_conformal :raw-html:`<br/> <br/>`
+       **Grid Parameters:** 
      - NEMS_CONFIGURE=nems.configure.atm.IN
        MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
        FV3_RUN=rrfs_warm_run.IN
@@ -415,10 +457,18 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
 
        **Microphysics:** IMP_PHYSICS=8
 
-       **Time Step:** DT_ATMOS=120
+       **Time Step:** DT_ATMOS=120 :raw-html:`<br/> <br/>`
+
+       **Set to FALSE:** SEDI_SEMI, HYBEDMF, SHAL_CNV, DO_SAT_ADJ, DO_DEEP, MAKE_NH, EXTERNAL_IC, NGGPS_IC, READ_INCREMENT, LDIAG3D, QDIAG3D, LHEATSTRG, RANDOM_CLDS, CNVCLD, DO_SPPT, DO_SHUM, DO_SKEB, DO_UGWP_V0, DO_UGWP_V0_OROG_ONLY, DO_UGWP_V1, DO_UGWP_V1_OROG_ONLY :raw-html:`<br/> <br/>`
+       
+       **Set to TRUE:** RRFS_SMOKE, SFCLAY_COMPUTE_FLUX, DO_MYNNSFCLAY, DO_MYNNEDMF, DO_MYJPBL=.true, MOUNTAIN, WARM_START, PRINT_DIFF_PGR, DO_GSL_DRAG_LS_BL, DO_GSL_DRAG_SS, DO_GSL_DRAG_TOFD, FRAC_ICE :raw-html:`<br/> <br/>`
+       
+       **Set to value:** RESTART_INTERVAL=1, DECFL=8, SEAS_OPT=0, LKM=1, IOPT_LAKE=2, IALB=2, ICLIQ_SW=2, IEMS=2, IOVR=3, KICE=9, LSM=3, LSOIL_LSM=9, NA_INIT=0, DNATS=0, FHZERO=1.0, FHCYC=0.0, IAER=1011, IMFSHALCNV=-1, IMFDEEPCNV=-1, CDMBWD='3.5,1.0', LNDP_TYPE=0, N_VAR_LNDP=0, GWD_OPT=3
+
      - 2021-05-12 16:00:00
      - 2
-     - lambert_conformal
+     - lambert_conformal :raw-html:`<br/> <br/>`
+       **Grid Parameters:** INPES=12, JNPES=12, NPX=397, NPY=233, NPZ=65, RES_LATLON_DYNAMICS="'fv3_increment.nc'", NPZP=66, 
      - NEMS_CONFIGURE=nems.configure.atm.IN
        MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
        FV3_RUN=rrfs_warm_run.IN
@@ -433,10 +483,17 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
 
        **Microphysics:** IMP_PHYSICS=8
 
-       **Time Step:** DT_ATMOS=120
+       **Time Step:** DT_ATMOS=120 :raw-html:`<br/> <br/>`
+
+       **Set to FALSE:** SEDI_SEMI, HYBEDMF, SHAL_CNV, DO_SAT_ADJ, DO_DEEP, MAKE_NH, EXTERNAL_IC, NGGPS_IC, READ_INCREMENT, LDIAG3D, QDIAG3D, LHEATSTRG, RANDOM_CLDS, CNVCLD, DO_SPPT, DO_SHUM, DO_SKEB, DO_UGWP_V0, DO_UGWP_V0_OROG_ONLY, DO_UGWP_V1, DO_UGWP_V1_OROG_ONLY :raw-html:`<br/> <br/>`
+       
+       **Set to TRUE:** RRFS_SMOKE, SFCLAY_COMPUTE_FLUX, DO_MYNNSFCLAY, DO_MYNNEDMF, DO_MYJPBL=.true, MOUNTAIN, WARM_START, PRINT_DIFF_PGR, DO_GSL_DRAG_LS_BL, DO_GSL_DRAG_SS, DO_GSL_DRAG_TOFD, FRAC_ICE :raw-html:`<br/> <br/>`
+       
+       **Set to value:** RESTART_INTERVAL=1, DECFL=8, SEAS_OPT=0, LKM=1, IALB=2, ICLIQ_SW=2, IEMS=2, IOVR=3, KICE=9, LSM=3, LSOIL_LSM=9, NA_INIT=0, DNATS=0, FHZERO=1.0, FHCYC=0.0, IAER=1011, IMFSHALCNV=-1, IMFDEEPCNV=-1, CDMBWD='3.5,1.0', LNDP_TYPE=0, N_VAR_LNDP=0, GWD_OPT=3
      - 2021-05-12 16:00:00
      - 2
-     - lambert_conformal
+     - lambert_conformal :raw-html:`<br/> <br/>`
+       **Grid Parameters:** INPES=$INPES_thrd, JNPES=$JNPES_thrd, INPES=12, JNPES=12, NPX=397, NPY=233, NPZ=65, NPZP=66, RES_LATLON_DYNAMICS="'fv3_increment.nc'"
      - NEMS_CONFIGURE=nems.configure.atm.IN
        MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
        FV3_RUN=rrfs_warm_run.IN
@@ -451,7 +508,13 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
 
        **Microphysics:** IMP_PHYSICS=8
 
-       **Time Step:** DT_ATMOS=120
+       **Time Step:** DT_ATMOS=120 :raw-html:`<br/> <br/>`
+
+       **Set to FALSE:** 
+       
+       **Set to TRUE:** 
+       
+       **Set to value:** 
      - 2021-05-12 16:00:00
      - 1
      - lambert_conformal
@@ -469,7 +532,13 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
 
        **Microphysics:** IMP_PHYSICS=8
 
-       **Time Step:** DT_ATMOS=120
+       **Time Step:** DT_ATMOS=120 :raw-html:`<br/> <br/>`
+
+       **Set to FALSE:** 
+       
+       **Set to TRUE:** 
+       
+       **Set to value:** 
      - 2021-05-12 16:00:00
      - 1
      - lambert_conformal
@@ -488,7 +557,13 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
 
        **Microphysics:** IMP_PHYSICS=8
 
-       **Time Step:** DT_ATMOS=120
+       **Time Step:** DT_ATMOS=120 :raw-html:`<br/> <br/>`
+
+       **Set to FALSE:** 
+       
+       **Set to TRUE:** 
+       
+       **Set to value:** 
      - 2021-05-12 16:00:00
      - 2
      - lambert_conformal
@@ -502,6 +577,7 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
 
 .. COMMENT: What are PEs??? And check rrfs_conus13km_hrrr_warm_restart_mismatch description. It's the same as the rrfs_conus13km_hrrr_warm description
 .. COMMENT: What is DNATS? Remove from Physics???
+            - DNATS is the number of tracers at the end of the tracer array that are not advected by the dycore
 
 **Sample** ``CMAKE_FLAGS`` **Setting**
 
