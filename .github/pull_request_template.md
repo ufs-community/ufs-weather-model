@@ -22,8 +22,19 @@ PLEASE DO NOT MODIFY THE TEMPLATE BEYOND FILLING OUT THE PROPER SECTIONS -->
 
 
 ## Subcomponents involved:
-<!-- Options are: AQM CDEPS CICE CMEPS CMakeModules FV3 GOCART HYCOM MOM6 NOAHMP WW3 stochastic_physics None -->
-
+- [ ] AQM
+- [ ] CDEPS
+- [ ] CICE
+- [ ] CMEPS
+- [ ] CMakeModules
+- [ ] FV3
+- [ ] GOCART
+- [ ] HYCOM
+- [ ] MOM6
+- [ ] NOAHMP
+- [ ] WW3
+- [ ] stochastic_physics
+- [ ] none
 
 ### Subcomponent Pull Requests
 <!-- format: - <community>/<repo>/pull/<PR number> i.e.: - NOAA-EMC/fv3atm/pull/33 or "None" -->
