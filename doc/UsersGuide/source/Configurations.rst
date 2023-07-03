@@ -284,39 +284,49 @@ Rapid Refresh Forecast System (RRFS)
 
 The RRFS configurations use an :term:`ATM`-only configuration on a high-resolution 
 regional grid with data assimilation capabilities. 
-These tests use default values set in the ``export_fv3`` function of ``default_vars.sh``. 
+These tests use the default values set in the ``export_fv3`` function of ``default_vars.sh`` unless other values are explicitly set. 
 
 Current RRFS regression tests cover a wide variety of functionality and involve several 
-physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality.  
+physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality. 
 
+.. attention:: 
+   
+   Certain physics-related settings are common to all of the supported RRFS configurations. These values are set in each test's configuration file because they differ from the ``default_vars.sh`` values:
+
+      * **Set to FALSE:** DO_SAT_ADJ, HYBEDMF, DO_DEEP, SHAL_CNV, LHEATSTRG
+      * **Set to TRUE:** DO_MYNNEDMF, DO_MYNNSFCLAY
+      * **Set to VALUE:** DNATS=0, IALB=2, IEMS=2, IMFSHALCNV=-1, IMFDEEPCNV=-1
+   
+   The "Detailed Physics Parameters" column in :numref:`Table %s <rrfs-rts>` details physics settings that differ from both the ``default_vars.sh`` values and these RRFS-specific defaults. 
+   
 
 .. _rrfs-rts:
 
 .. list-table:: *RRFS regression test descriptions*
-   :widths: 50 10 50 10 10 10 10 10
+   :widths: 50 10 30 30 10 10 10 10 10
    :header-rows: 1
 
    * - Test |nbsp| Name |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp|
      - Description
-     - Physics |nbsp| Parameters |nbsp| (see |nbsp| namelist |nbsp| options |nbsp| `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_c_c_p_psuite_nml_desp.html>`__ for variable definitions)
-     - Start Date
-     - Forecast Length (hours)
+     - General Physics Parameters
+     - Detailed |nbsp| Physics |nbsp| Parameters |nbsp| (see |nbsp| namelist |nbsp| options |nbsp| `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_c_c_p_psuite_nml_desp.html>`__ |nbsp| for variable definitions)
+     - Start |nbsp| Date |nbsp| |nbsp| |nbsp| |nbsp|
+     - Fcst Length (hours)
      - Output Grid
      - Configuration Files
-     - Notes
+     - Restart
    * - `rrfs_v1beta <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_v1beta>`__ / `rrfs_v1beta_debug <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_v1beta_debug>`__
      - Compare RRFS_v1beta / rrfs_v1beta_debug results with previous trunk version
      - **Suite:** CCPP_SUITE=FV3_RRFS_v1beta
 
        **Microphysics:** IMP_PHYSICS=8
 
-       **Time Step:** DT_ATMOS=300 :raw-html:`<br/> <br/>`
+       **Time Step:** DT_ATMOS=300
+     - **Set to FALSE:** Default RRFS values only :raw-html:`<br/> <br/>`
 
-       **Set to FALSE:** DO_SAT_ADJ, HYBEDMF, DO_DEEP, SHAL_CNV, LHEATSTRG :raw-html:`<br/> <br/>`
+       **Set to TRUE:** LRADAR, LTAEROSOL :raw-html:`<br/> <br/>`
 
-       **Set to TRUE:** LRADAR, LTAEROSOL, DO_MYNNEDMF, DO_MYNNSFCLAY :raw-html:`<br/> <br/>`
-
-       **Set to value:** IAER=5111; DNATS=0; IALB=2; IEMS=2; IMFSHALCNV=-1; IMFDEEPCNV=-1; LSM=2; LSOIL_LSM=4
+       **Set to VALUE:** IAER=5111, LSM=2, LSOIL_LSM=4
      - 2021-03-22 06:00:00
      - 24
      - gaussian_grid :raw-html:`<br/> <br/>`
@@ -327,144 +337,134 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
        INPUT_NML=rap.nml.IN
        FIELD_TABLE=field_table_thompson_aero_tke
        DIAG_TABLE=diag_table_rap_noah
-     - Notes: 
+     - 
    * - `rrfs_v1nssl <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_v1nssl>`__
      - Compare RRFS_v1nssl results with previous trunk version
      - **Suite:** CCPP_SUITE=FV3_RRFS_v1nssl
 
        **Microphysics:** IMP_PHYSICS=17
 
-       **Time Step:** DT_ATMOS=300 :raw-html:`<br/ br/>`
+       **Time Step:** DT_ATMOS=300
+     - **Set to FALSE:** LTAEROSOL :raw-html:`<br/> <br/>`
 
-       **Set to FALSE:** DO_SAT_ADJ, LTAEROSOL, HYBEDMF, DO_DEEP, SHAL_CNV, LHEATSTRG :raw-html:`<br/> <br/>`
+       **Set to TRUE:** NSSL_CCN_ON, NSSL_HAIL_ON, NSSL_INVERTCCN :raw-html:`<br/> <br/>`
 
-       **Set to TRUE:** NSSL_CCN_ON, NSSL_HAIL_ON, NSSL_INVERTCCN, DO_MYNNEDMF, DO_MYNNSFCLAY :raw-html:`<br/> <br/>`
-
-       **Set to value:** NPZ=127, NPZP=128, IAER=5111, CS=17, DNATS=0, NWAT=7, IALB=2, IEMS=2, IMFSHALCNV=-1, IMFDEEPCNV=-1, LSM=2, LSOIL_LSM=4
+       **Set to VALUE:** IAER=5111, CS=17, NWAT=7, LSM=2, LSOIL_LSM=4
      - 2021-03-22 06:00:00
      - 24
      - gaussian_grid :raw-html:`<br/> <br/>`
-       **Grid Parameters:** 
+       **Grid Parameters:** NPZ=127, NPZP=128
      - NEMS_CONFIGURE=nems.configure.atm.IN
        MODEL_CONFIGURE=model_configure.IN
        FV3_RUN=control_run.IN
        INPUT_NML=rap.nml.IN 
        FIELD_TABLE=field_table_nssl_tke
        DIAG_TABLE=diag_table_rap_noah
-     - Notes: 
+     - 
    * - `rrfs_v1nssl_nohailnoccn <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_v1nssl_nohailnoccn>`__
      - Compare RRFS_v1nssl_nohailnoccn results with previous trunk version
      - **Suite:** CCPP_SUITE=FV3_RRFS_v1nssl
 
        **Microphysics:** IMP_PHYSICS=17
 
-       **Time Step:** DT_ATMOS=300 :raw-html:`<br/> <br/>`
+       **Time Step:** DT_ATMOS=300
+     - **Set to FALSE:** NSSL_CCN_ON, NSSL_HAIL_ON, LTAEROSOL :raw-html:`<br/> <br/>`
 
-       **Set to FALSE:** NSSL_CCN_ON, NSSL_HAIL_ON, DO_SAT_ADJ, LTAEROSOL, HYBEDMF, DO_DEEP, SHAL_CNV, LHEATSTRG :raw-html:`<br/> <br/>`
+       **Set to TRUE:** NSSL_INVERTCCN :raw-html:`<br/> <br/>`
 
-       **Set to TRUE:** NSSL_INVERTCCN, DO_MYNNEDMF, DO_MYNNSFCLAY :raw-html:`<br/> <br/>`
-
-       **Set to value:** NPZ=127, NPZP=128, IAER=5111, DNATS=0, NWAT=6, IALB=2, IEMS=2, IMFSHALCNV=-1, IMFDEEPCNV=-1, LSM=2, LSOIL_LSM=4 :raw-html:`<br/> <br/>`
+       **Set to VALUE:** IAER=5111, NWAT=6, LSM=2, LSOIL_LSM=4 :raw-html:`<br/> <br/>`
      - 2021-03-22 06:00:00
      - 24
      - gaussian_grid :raw-html:`<br/> <br/>`
-       **Grid Parameters:** 
+       **Grid Parameters:** NPZ=127, NPZP=128
      - NEMS_CONFIGURE=nems.configure.atm.IN
        MODEL_CONFIGURE=model_configure.IN
        FV3_RUN=control_run.IN
        INPUT_NML=rap.nml.IN
        FIELD_TABLE=field_table_nssl_nohailnoccn_tke
        DIAG_TABLE=diag_table_rap_noah
-     - Notes: 
+     - 
    * - `rrfs_conus13km_hrrr_warm <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_conus13km_hrrr_warm>`__
      - HRRR physics on 13km domain, control run
      - **Suite:** CCPP_SUITE=FV3_HRRR
 
        **Microphysics:** IMP_PHYSICS=8
 
-       **Time Step:** DT_ATMOS=120 :raw-html:`<br/> <br/>`
-
-       **Set to FALSE:** SEDI_SEMI, HYBEDMF, SHAL_CNV, DO_SAT_ADJ, DO_DEEP, MAKE_NH, EXTERNAL_IC, NGGPS_IC, READ_INCREMENT, LDIAG3D, QDIAG3D, LHEATSTRG, RANDOM_CLDS, CNVCLD, DO_SPPT, DO_SHUM, DO_SKEB, DO_UGWP_V0, DO_UGWP_V0_OROG_ONLY, DO_UGWP_V1, DO_UGWP_V1_OROG_ONLY :raw-html:`<br/> <br/>`
+       **Time Step:** DT_ATMOS=120
+     - **Set to FALSE:** SEDI_SEMI, MAKE_NH, EXTERNAL_IC, NGGPS_IC, LDIAG3D, QDIAG3D, RANDOM_CLDS, CNVCLD, DO_SPPT, DO_SHUM, DO_SKEB, DO_UGWP_* :raw-html:`<br/> <br/>`
        
-       **Set to TRUE:** SFCLAY_COMPUTE_FLUX, DO_MYNNSFCLAY, DO_MYNNEDMF, DO_MYJPBL, MOUNTAIN, WARM_START, PRINT_DIFF_PGR, DO_GSL_DRAG_LS_BL, DO_GSL_DRAG_SS, DO_GSL_DRAG_TOFD, FRAC_ICE :raw-html:`<br/> <br/>`
+       **Set to TRUE:** SFCLAY_COMPUTE_FLUX, DO_MYJPBL, MOUNTAIN, WARM_START, PRINT_DIFF_PGR, DO_GSL_DRAG_*, FRAC_ICE :raw-html:`<br/> <br/>`
        
-       **Set to value:** DECFL=8, LKM=1, IOPT_LAKE=2, IALB=2, ICLIQ_SW=2, IEMS=2, IOVR=3, KICE=9, LSM=3, LSOIL_LSM=9, INPES=12, JNPES=12, NPX=397, NPY=233, NPZ=65, NA_INIT=0, DNATS=0, NPZP=66, FHZERO=1.0, FHCYC=0.0, IAER=1011, IMFSHALCNV=-1, IMFDEEPCNV=-1, CDMBWD='3.5,1.0', RES_LATLON_DYNAMICS="'fv3_increment.nc'", LNDP_TYPE=0, N_VAR_LNDP=0, GWD_OPT=3 :raw-html:`<br/> <br/>`
-
-         .. COMMENT: Check whether all params are for physics... vs grid or something else. INPES/JNPES?
+       **Set to VALUE:** DECFL=8, LKM=1, IOPT_LAKE=2, ICLIQ_SW=2, IOVR=3, KICE=9, LSM=3, LSOIL_LSM=9, NA_INIT=0, FHZERO=1.0, FHCYC=0.0, IAER=1011, CDMBWD='3.5,1.0', LNDP_TYPE=0, N_VAR_LNDP=0, GWD_OPT=3
      - 2021-05-12 16:00:00
      - 2
      - lambert_conformal :raw-html:`<br/> <br/>`
-       **Grid Parameters:** 
+       **Grid Parameters:** INPES=12, JNPES=12, NPX=397, NPY=233, NPZ=65, NPZP=66
      - NEMS_CONFIGURE=nems.configure.atm.IN
        MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
        FV3_RUN=rrfs_warm_run.IN
        INPUT_NML=rrfs_conus13km_hrrr.nml.IN
        FIELD_TABLE=field_table_thompson_aero_tke
        DIAG_TABLE=diag_table_hrrr
-     - Notes: 
+     - READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
    * - `rrfs_conus13km_hrrr_warm_debug <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_conus13km_hrrr_warm_debug>`__
      - HRRR physics on 13km domain, debug run
      - **Suite:** CCPP_SUITE=FV3_HRRR
 
        **Microphysics:** IMP_PHYSICS=8
 
-       **Time Step:** DT_ATMOS=120 :raw-html:`<br/> <br/>`
-
-       **Set to FALSE:** SEDI_SEMI, HYBEDMF, SHAL_CNV, DO_SAT_ADJ, DO_DEEP, MAKE_NH, EXTERNAL_IC, NGGPS_IC, READ_INCREMENT, LDIAG3D, QDIAG3D, LHEATSTRG, RANDOM_CLDS, CNVCLD, DO_SPPT, DO_SHUM, DO_SKEB, DO_UGWP_V0, DO_UGWP_V0_OROG_ONLY, DO_UGWP_V1, DO_UGWP_V1_OROG_ONLY :raw-html:`<br/> <br/>`
+       **Time Step:** DT_ATMOS=120
+     - **Set to FALSE:** SEDI_SEMI, MAKE_NH, EXTERNAL_IC, NGGPS_IC, READ_INCREMENT, LDIAG3D, QDIAG3D, RANDOM_CLDS, CNVCLD, DO_SPPT, DO_SHUM, DO_SKEB, DO_UGWP_* :raw-html:`<br/> <br/>`
        
-       **Set to TRUE:** SFCLAY_COMPUTE_FLUX, DO_MYNNSFCLAY, DO_MYNNEDMF, DO_MYJPBL=.true, MOUNTAIN, WARM_START, PRINT_DIFF_PGR, DO_GSL_DRAG_LS_BL, DO_GSL_DRAG_SS, DO_GSL_DRAG_TOFD, FRAC_ICE :raw-html:`<br/> <br/>`
+       **Set to TRUE:** SFCLAY_COMPUTE_FLUX, DO_MYJPBL, MOUNTAIN, WARM_START, PRINT_DIFF_PGR, DO_GSL_DRAG_*, FRAC_ICE :raw-html:`<br/> <br/>`
        
-       **Set to value:** RESTART_INTERVAL=1, DECFL=8, LKM=1, IOPT_LAKE=2, IALB=2, ICLIQ_SW=2, IEMS=2, IOVR=3, KICE=9, LSM=3, LSOIL_LSM=9, INPES=12, JNPES=12, NPX=397, NPY=233, NPZ=65, NA_INIT=0, DNATS=0, RES_LATLON_DYNAMICS="'fv3_increment.nc'", NPZP=66, FHZERO=1.0, FHCYC=0.0, IAER=1011, IMFSHALCNV=-1, IMFDEEPCNV=-1, CDMBWD='3.5,1.0', LNDP_TYPE=0, N_VAR_LNDP=0, GWD_OPT=3
-
+       **Set to VALUE:** DECFL=8, LKM=1, IOPT_LAKE=2, ICLIQ_SW=2, IOVR=3, KICE=9, LSM=3, LSOIL_LSM=9, NA_INIT=0, FHZERO=1.0, FHCYC=0.0, IAER=1011, CDMBWD='3.5,1.0', LNDP_TYPE=0, N_VAR_LNDP=0, GWD_OPT=3
      - 2021-05-12 16:00:00
      - 1
      - lambert_conformal :raw-html:`<br/> <br/>`
-       **Grid Parameters:** 
+       **Grid Parameters:** INPES=12, JNPES=12, NPX=397, NPY=233, NPZ=65, NPZP=66
      - NEMS_CONFIGURE=nems.configure.atm.IN
        MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
        FV3_RUN=rrfs_warm_run.IN
        INPUT_NML=rrfs_conus13km_hrrr.nml.IN
        FIELD_TABLE=field_table_thompson_aero_tke
        DIAG_TABLE=diag_table_hrrr
-     - Notes: 
+     - RESTART_INTERVAL=1, READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
    * - `rrfs_conus13km_hrrr_warm_restart_mismatch <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_conus13km_hrrr_warm_restart_mismatch>`__
      - HRRR physics on 13km domain, control run
      - **Suite:** CCPP_SUITE=FV3_HRRR
 
        **Microphysics:** IMP_PHYSICS=8
 
-       **Time Step:** DT_ATMOS=120 :raw-html:`<br/> <br/>`
-
-       **Set to FALSE:** SEDI_SEMI, HYBEDMF, SHAL_CNV, DO_SAT_ADJ, DO_DEEP, MAKE_NH, EXTERNAL_IC, NGGPS_IC, READ_INCREMENT, LDIAG3D, QDIAG3D, LHEATSTRG, RANDOM_CLDS, CNVCLD, DO_SPPT, DO_SHUM, DO_SKEB, DO_UGWP_V0, DO_UGWP_V0_OROG_ONLY, DO_UGWP_V1, DO_UGWP_V1_OROG_ONLY :raw-html:`<br/> <br/>`
+       **Time Step:** DT_ATMOS=120
+     - **Set to FALSE:** SEDI_SEMI, MAKE_NH, EXTERNAL_IC, NGGPS_IC, LDIAG3D, QDIAG3D, RANDOM_CLDS, CNVCLD, DO_SPPT, DO_SHUM, DO_SKEB, DO_UGWP_* :raw-html:`<br/> <br/>`
        
-       **Set to TRUE:** RRFS_RESTART=YES, SFCLAY_COMPUTE_FLUX, DO_MYNNSFCLAY, DO_MYNNEDMF, DO_MYJPBL=.true, MOUNTAIN, WARM_START, PRINT_DIFF_PGR, DO_GSL_DRAG_LS_BL, DO_GSL_DRAG_SS, DO_GSL_DRAG_TOFD, FRAC_ICE :raw-html:`<br/> <br/>`
+       **Set to TRUE:** SFCLAY_COMPUTE_FLUX, DO_MYJPBL, MOUNTAIN, WARM_START, PRINT_DIFF_PGR, DO_GSL_DRAG_*, FRAC_ICE :raw-html:`<br/> <br/>`
 
-       **Set to value:** FHROT=1, RESTART_FILE_PREFIX=$( printf %04d%02d%02d.%02d0000 $SYEAR $SMONTH $SDAY $(( SHOUR+FHROT )) ), DECFL=8, LKM=1, IALB=2, ICLIQ_SW=2, IEMS=2, IOVR=3, KICE=9, LSM=3, LSOIL_LSM=9, INPES=12, JNPES=12, NPX=397, NPY=233, NPZ=65, NA_INIT=0, DNATS=0, RES_LATLON_DYNAMICS="'fv3_increment.nc'", NPZP=66, FHZERO=1.0, FHCYC=0.0, IAER=5111, IMFSHALCNV=-1, IMFDEEPCNV=-1, CDMBWD='3.5,1.0', LNDP_TYPE=0, N_VAR_LNDP=0, GWD_OPT=3
+       **Set to VALUE:** DECFL=8, LKM=1, ICLIQ_SW=2, IOVR=3, KICE=9, LSM=3, LSOIL_LSM=9, NA_INIT=0, FHZERO=1.0, FHCYC=0.0, IAER=5111, CDMBWD='3.5,1.0', LNDP_TYPE=0, N_VAR_LNDP=0, GWD_OPT=3
      - 2021-05-12 16:00:00
      - 2
      - lambert_conformal :raw-html:`<br/> <br/>`
-       **Grid Parameters:** 
+       **Grid Parameters:** INPES=12, JNPES=12, NPX=397, NPY=233, NPZ=65, NPZP=66
      - NEMS_CONFIGURE=nems.configure.atm.IN
        MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
        FV3_RUN=rrfs_warm_run.IN
        INPUT_NML=rrfs_conus13km_hrrr.nml.IN
        FIELD_TABLE=field_table_thompson_aero_tke
        DIAG_TABLE=diag_table_hrrr
-     - Notes: 
+     - RRFS_RESTART=YES, READ_INCREMENT=.false., FHROT=1, RESTART_FILE_PREFIX=$( printf %04d%02d%02d.%02d0000 $SYEAR $SMONTH $SDAY $(( SHOUR+FHROT )) ), RES_LATLON_DYNAMICS="'fv3_increment.nc'", 
    * - `rrfs_smoke_conus13km_hrrr_warm <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_smoke_conus13km_hrrr_warm>`__
      - HRRR smoke physics on 13km domain, control run
      - **Suite:** CCPP_SUITE=FV3_HRRR
 
        **Microphysics:** IMP_PHYSICS=8
 
-       **Time Step:** DT_ATMOS=120 :raw-html:`<br/> <br/>`
-
-       **Set to FALSE:** SEDI_SEMI, HYBEDMF, SHAL_CNV, DO_SAT_ADJ, DO_DEEP, MAKE_NH, EXTERNAL_IC, NGGPS_IC, READ_INCREMENT, LDIAG3D, QDIAG3D, LHEATSTRG, RANDOM_CLDS, CNVCLD, DO_SPPT, DO_SHUM, DO_SKEB, DO_UGWP_V0, DO_UGWP_V0_OROG_ONLY, DO_UGWP_V1, DO_UGWP_V1_OROG_ONLY :raw-html:`<br/> <br/>`
+       **Time Step:** DT_ATMOS=120
+     - **Set to FALSE:** SEDI_SEMI, MAKE_NH, EXTERNAL_IC, NGGPS_IC, LDIAG3D, QDIAG3D, RANDOM_CLDS, CNVCLD, DO_SPPT, DO_SHUM, DO_SKEB, DO_UGWP_* :raw-html:`<br/> <br/>`
        
-       **Set to TRUE:** RRFS_SMOKE, SFCLAY_COMPUTE_FLUX, DO_MYNNSFCLAY, DO_MYNNEDMF, DO_MYJPBL=.true, MOUNTAIN, WARM_START, PRINT_DIFF_PGR, DO_GSL_DRAG_LS_BL, DO_GSL_DRAG_SS, DO_GSL_DRAG_TOFD, FRAC_ICE :raw-html:`<br/> <br/>`
+       **Set to TRUE:** RRFS_SMOKE, SFCLAY_COMPUTE_FLUX, DO_MYJPBL, MOUNTAIN, WARM_START, PRINT_DIFF_PGR, DO_GSL_DRAG_*, FRAC_ICE :raw-html:`<br/> <br/>`
        
-       **Set to value:** RESTART_INTERVAL=1, DECFL=8, SEAS_OPT=0, LKM=1, IOPT_LAKE=2, IALB=2, ICLIQ_SW=2, IEMS=2, IOVR=3, KICE=9, LSM=3, LSOIL_LSM=9, NA_INIT=0, DNATS=0, FHZERO=1.0, FHCYC=0.0, IAER=1011, IMFSHALCNV=-1, IMFDEEPCNV=-1, CDMBWD='3.5,1.0', LNDP_TYPE=0, N_VAR_LNDP=0, GWD_OPT=3
-
+       **Set to VALUE:** DECFL=8, SEAS_OPT=0, LKM=1, IOPT_LAKE=2, ICLIQ_SW=2, IOVR=3, KICE=9, LSM=3, LSOIL_LSM=9, NA_INIT=0, FHZERO=1.0, FHCYC=0.0, IAER=1011, CDMBWD='3.5,1.0', LNDP_TYPE=0, N_VAR_LNDP=0, GWD_OPT=3
      - 2021-05-12 16:00:00
      - 2
      - lambert_conformal :raw-html:`<br/> <br/>`
@@ -476,24 +476,23 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
        FIELD_TABLE=field_table_thompson_aero_tke_smoke
        DIAG_TABLE=diag_table_hrrr
        DIAG_TABLE_ADDITIONAL=diag_additional_rrfs_smoke
-     - Notes: 
+     - RESTART_INTERVAL=1, READ_INCREMENT=.false.
    * - `rrfs_smoke_conus13km_hrrr_warm_2threads <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_smoke_conus13km_hrrr_warm_2threads>`__
      - HRRR smoke physics on 13km domain, different threads
      - **Suite:** CCPP_SUITE=FV3_HRRR
 
        **Microphysics:** IMP_PHYSICS=8
 
-       **Time Step:** DT_ATMOS=120 :raw-html:`<br/> <br/>`
-
-       **Set to FALSE:** SEDI_SEMI, HYBEDMF, SHAL_CNV, DO_SAT_ADJ, DO_DEEP, MAKE_NH, EXTERNAL_IC, NGGPS_IC, READ_INCREMENT, LDIAG3D, QDIAG3D, LHEATSTRG, RANDOM_CLDS, CNVCLD, DO_SPPT, DO_SHUM, DO_SKEB, DO_UGWP_V0, DO_UGWP_V0_OROG_ONLY, DO_UGWP_V1, DO_UGWP_V1_OROG_ONLY :raw-html:`<br/> <br/>`
+       **Time Step:** DT_ATMOS=120
+     - **Set to FALSE:** SEDI_SEMI, MAKE_NH, EXTERNAL_IC, NGGPS_IC, LDIAG3D, QDIAG3D, RANDOM_CLDS, CNVCLD, DO_SPPT, DO_SHUM, DO_SKEB, DO_UGWP_* :raw-html:`<br/> <br/>`
        
-       **Set to TRUE:** RRFS_SMOKE, SFCLAY_COMPUTE_FLUX, DO_MYNNSFCLAY, DO_MYNNEDMF, DO_MYJPBL=.true, MOUNTAIN, WARM_START, PRINT_DIFF_PGR, DO_GSL_DRAG_LS_BL, DO_GSL_DRAG_SS, DO_GSL_DRAG_TOFD, FRAC_ICE :raw-html:`<br/> <br/>`
+       **Set to TRUE:** RRFS_SMOKE, SFCLAY_COMPUTE_FLUX, DO_MYJPBL, MOUNTAIN, WARM_START, PRINT_DIFF_PGR, DO_GSL_DRAG_*, FRAC_ICE :raw-html:`<br/> <br/>`
        
-       **Set to value:** RESTART_INTERVAL=1, DECFL=8, SEAS_OPT=0, LKM=1, IALB=2, ICLIQ_SW=2, IEMS=2, IOVR=3, KICE=9, LSM=3, LSOIL_LSM=9, NA_INIT=0, DNATS=0, FHZERO=1.0, FHCYC=0.0, IAER=1011, IMFSHALCNV=-1, IMFDEEPCNV=-1, CDMBWD='3.5,1.0', LNDP_TYPE=0, N_VAR_LNDP=0, GWD_OPT=3
+       **Set to VALUE:** DECFL=8, SEAS_OPT=0, LKM=1, ICLIQ_SW=2, IOVR=3, KICE=9, LSM=3, LSOIL_LSM=9, NA_INIT=0, FHZERO=1.0, FHCYC=0.0, IAER=1011, CDMBWD='3.5,1.0', LNDP_TYPE=0, N_VAR_LNDP=0, GWD_OPT=3
      - 2021-05-12 16:00:00
      - 2
      - lambert_conformal :raw-html:`<br/> <br/>`
-       **Grid Parameters:** INPES=$INPES_thrd, JNPES=$JNPES_thrd, INPES=12, JNPES=12, NPX=397, NPY=233, NPZ=65, NPZP=66, RES_LATLON_DYNAMICS="'fv3_increment.nc'"
+       **Grid Parameters:** INPES=$INPES_thrd, JNPES=$JNPES_thrd, INPES=12, JNPES=12, NPX=397, NPY=233, NPZ=65, NPZP=66
      - NEMS_CONFIGURE=nems.configure.atm.IN
        MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
        FV3_RUN=rrfs_warm_run.IN
@@ -501,21 +500,19 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
        FIELD_TABLE=field_table_thompson_aero_tke_smoke
        DIAG_TABLE=diag_table_hrrr
        DIAG_TABLE_ADDITIONAL=diag_additional_rrfs_smoke
-     - Notes: 
+     - RESTART_INTERVAL=1, READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
    * - `rrfs_smoke_conus13km_hrrr_warm_debug <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_smoke_conus13km_hrrr_warm_debug>`__
      - HRRR smoke physics on 13km domain, control run
      - **Suite:** CCPP_SUITE=FV3_HRRR
 
        **Microphysics:** IMP_PHYSICS=8
 
-       **Time Step:** DT_ATMOS=120 :raw-html:`<br/> <br/>`
-
-       **Set to FALSE:** SEDI_SEMI, HYBEDMF, SHAL_CNV, DO_SAT_ADJ, DO_DEEP, MAKE_NH, EXTERNAL_IC, NGGPS_IC, READ_INCREMENT, LDIAG3D, QDIAG3D, LHEATSTRG, RANDOM_CLDS, CNVCLD, DO_SPPT, DO_SHUM, DO_SKEB, DO_UGWP_V0, DO_UGWP_V0_OROG_ONLY, DO_UGWP_V1, DO_UGWP_V1_OROG_ONLY :raw-html:`<br/> <br/>`
+       **Time Step:** DT_ATMOS=120
+     - **Set to FALSE:** SEDI_SEMI, MAKE_NH, EXTERNAL_IC, NGGPS_IC, LDIAG3D, QDIAG3D, RANDOM_CLDS, CNVCLD, DO_SPPT, DO_SHUM, DO_SKEB, DO_UGWP_* :raw-html:`<br/> <br/>`
        
-       **Set to TRUE:** RRFS_SMOKE, SFCLAY_COMPUTE_FLUX, DO_MYNNSFCLAY, DO_MYNNEDMF, DO_MYJPBL, MOUNTAIN, WARM_START, PRINT_DIFF_PGR, DO_GSL_DRAG_LS_BL, DO_GSL_DRAG_SS, DO_GSL_DRAG_TOFD, FRAC_ICE :raw-html:`<br/> <br/>`
+       **Set to TRUE:** RRFS_SMOKE, SFCLAY_COMPUTE_FLUX, DO_MYJPBL, MOUNTAIN, WARM_START, PRINT_DIFF_PGR, DO_GSL_DRAG_*, FRAC_ICE :raw-html:`<br/> <br/>`
        
-       **Set to value:** RESTART_INTERVAL=1, DECFL=8, SEAS_OPT=0, LKM=1, IALB=2, ICLIQ_SW=2, IEMS=2, IOVR=3, KICE=9, LSM=3, LSOIL_LSM=9, NA_INIT=0, DNATS=0, RES_LATLON_DYNAMICS="'fv3_increment.nc'", FHZERO=1.0, FHCYC=0.0, IAER=1011, IMFSHALCNV=-1, IMFDEEPCNV=-1, CDMBWD='3.5,1.0', LNDP_TYPE=0, N_VAR_LNDP=0, GWD_OPT=3 
-
+       **Set to VALUE:** DECFL=8, SEAS_OPT=0, LKM=1, ICLIQ_SW=2, IOVR=3, KICE=9, LSM=3, LSOIL_LSM=9, NA_INIT=0, FHZERO=1.0, FHCYC=0.0, IAER=1011, CDMBWD='3.5,1.0', LNDP_TYPE=0, N_VAR_LNDP=0, GWD_OPT=3 
      - 2021-05-12 16:00:00
      - 1
      - lambert_conformal
@@ -527,20 +524,19 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
        FIELD_TABLE=field_table_thompson_aero_tke_smoke
        DIAG_TABLE=diag_table_hrrr
        DIAG_TABLE_ADDITIONAL=diag_additional_rrfs_smoke
-     - Notes: 
+     - RESTART_INTERVAL=1, READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
    * - `rrfs_smoke_conus13km_hrrr_warm_debug_2threads <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_smoke_conus13km_hrrr_warm_debug_2threads>`__
      - HRRR smoke physics on 13km domain, control run
      - **Suite:** CCPP_SUITE=FV3_HRRR
 
        **Microphysics:** IMP_PHYSICS=8
 
-       **Time Step:** DT_ATMOS=120 :raw-html:`<br/> <br/>`
-
-       **Set to FALSE:** SEDI_SEMI, HYBEDMF, SHAL_CNV, DO_SAT_ADJ, DO_DEEP, MAKE_NH, EXTERNAL_IC, NGGPS_IC, READ_INCREMENT, LDIAG3D, QDIAG3D, LHEATSTRG, RANDOM_CLDS, CNVCLD, DO_SPPT, DO_SHUM, DO_SKEB, DO_UGWP_V0, DO_UGWP_V0_OROG_ONLY, DO_UGWP_V1, DO_UGWP_V1_OROG_ONLY :raw-html:`<br/> <br/>`
+       **Time Step:** DT_ATMOS=120
+     - **Set to FALSE:** SEDI_SEMI, MAKE_NH, EXTERNAL_IC, NGGPS_IC, LDIAG3D, QDIAG3D, RANDOM_CLDS, CNVCLD, DO_SPPT, DO_SHUM, DO_SKEB, DO_UGWP_* :raw-html:`<br/> <br/>`
        
-       **Set to TRUE:** RRFS_SMOKE, SFCLAY_COMPUTE_FLUX, DO_MYNNSFCLAY, DO_MYNNEDMF, DO_MYJPBL, MOUNTAIN, WARM_START, PRINT_DIFF_PGR, DO_GSL_DRAG_LS_BL, DO_GSL_DRAG_SS, DO_GSL_DRAG_TOFD, FRAC_ICE :raw-html:`<br/> <br/>`
+       **Set to TRUE:** RRFS_SMOKE, SFCLAY_COMPUTE_FLUX, DO_MYJPBL, MOUNTAIN, WARM_START, PRINT_DIFF_PGR, DO_GSL_DRAG_*, FRAC_ICE :raw-html:`<br/> <br/>`
        
-       **Set to value:** RESTART_INTERVAL=1, DECFL=8, SEAS_OPT=0, LKM=1, IALB=2, ICLIQ_SW=2, IEMS=2, IOVR=3, KICE=9, LSM=3, LSOIL_LSM=9, NA_INIT=0, DNATS=0, RES_LATLON_DYNAMICS="'fv3_increment.nc'", FHZERO=1.0, FHCYC=0.0, IAER=1011, IMFSHALCNV=-1, IMFDEEPCNV=-1, CDMBWD='3.5,1.0', LNDP_TYPE=0, N_VAR_LNDP=0, GWD_OPT=3
+       **Set to VALUE:** DECFL=8, SEAS_OPT=0, LKM=1, ICLIQ_SW=2, IOVR=3, KICE=9, LSM=3, LSOIL_LSM=9, NA_INIT=0, FHZERO=1.0, FHCYC=0.0, IAER=1011, CDMBWD='3.5,1.0', LNDP_TYPE=0, N_VAR_LNDP=0, GWD_OPT=3
      - 2021-05-12 16:00:00
      - 1
      - lambert_conformal
@@ -553,21 +549,19 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
        DIAG_TABLE=diag_table_hrrr
        MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
        DIAG_TABLE_ADDITIONAL=diag_additional_rrfs_smoke
-     - Notes: 
+     - RESTART_INTERVAL=1, READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
    * - `rrfs_smoke_conus13km_radar_tten_warm <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_smoke_conus13km_radar_tten_warm>`__
      - HRRR smoke physics on 13km domain with radar-derived temperature tendencies
      - **Suite:** CCPP_SUITE=FV3_HRRR
 
        **Microphysics:** IMP_PHYSICS=8
 
-       **Time Step:** DT_ATMOS=120 :raw-html:`<br/> <br/>`
-
-       **Set to FALSE:** SEDI_SEMI, HYBEDMF, SHAL_CNV, DO_SAT_ADJ, DO_DEEP, MAKE_NH, EXTERNAL_IC, NGGPS_IC, READ_INCREMENT, LDIAG3D, QDIAG3D, LHEATSTRG, RANDOM_CLDS, CNVCLD, DO_SPPT, DO_SHUM, DO_SKEB, DO_UGWP_V0, DO_UGWP_V0_OROG_ONLY, DO_UGWP_V1, DO_UGWP_V1_OROG_ONLY :raw-html:`<br/> <br/>`
+       **Time Step:** DT_ATMOS=120
+     - **Set to FALSE:** SEDI_SEMI, MAKE_NH, EXTERNAL_IC, NGGPS_IC, LDIAG3D, QDIAG3D, RANDOM_CLDS, CNVCLD, DO_SPPT, DO_SHUM, DO_SKEB, DO_UGWP_* :raw-html:`<br/> <br/>`
        
-       **Set to TRUE:** RRFS_SMOKE, SFCLAY_COMPUTE_FLUX, DO_MYNNSFCLAY, DO_MYNNEDMF, DO_MYJPBL, MOUNTAIN, WARM_START, PRINT_DIFF_PGR, DO_GSL_DRAG_LS_BL, DO_GSL_DRAG_SS, DO_GSL_DRAG_TOFD, FRAC_ICE :raw-html:`<br/> <br/>`
+       **Set to TRUE:** RRFS_SMOKE, SFCLAY_COMPUTE_FLUX, DO_MYJPBL, MOUNTAIN, WARM_START, PRINT_DIFF_PGR, DO_GSL_DRAG_*, FRAC_ICE :raw-html:`<br/> <br/>`
        
-       **Set to value:** FH_DFI_RADAR='0.0, 0.25, 0.50, 0.75, 1.0', RESTART_INTERVAL=1, DECFL=8, SEAS_OPT=0, LKM=1, IALB=2, ICLIQ_SW=2, IEMS=2, IOVR=3, KICE=9, LSM=3, LSOIL_LSM=9, NA_INIT=0, DNATS=0, RES_LATLON_DYNAMICS="'fv3_increment.nc'", FHZERO=1.0, FHCYC=0.0, IAER=1011, IMFSHALCNV=-1, IMFDEEPCNV=-1, CDMBWD='3.5,1.0', LNDP_TYPE=0, N_VAR_LNDP=0, GWD_OPT=3
-
+       **Set to VALUE:** FH_DFI_RADAR='0.0, 0.25, 0.50, 0.75, 1.0', DECFL=8, SEAS_OPT=0, LKM=1, ICLIQ_SW=2, IOVR=3, KICE=9, LSM=3, LSOIL_LSM=9, NA_INIT=0, FHZERO=1.0, FHCYC=0.0, IAER=1011, CDMBWD='3.5,1.0', LNDP_TYPE=0, N_VAR_LNDP=0, GWD_OPT=3
      - 2021-05-12 16:00:00
      - 2
      - lambert_conformal
@@ -578,7 +572,9 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
        INPUT_NML=rrfs_conus13km_hrrr.nml.IN
        FIELD_TABLE=field_table_thompson_aero_tke
        DIAG_TABLE=diag_table_hrrr
-     - Notes: 
+     - RESTART_INTERVAL=1, READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
+
+
 
 .. COMMENT: What are PEs??? And check rrfs_conus13km_hrrr_warm_restart_mismatch description. It's the same as the rrfs_conus13km_hrrr_warm description
 .. COMMENT: What is DNATS? 
@@ -589,8 +585,6 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
 .. code-block:: console
 
     export CMAKE_FLAGS="-DAPP=ATM -DCCPP_SUITES=FV3_RAP,FV3_HRRR,FV3_RRFS_v1beta,FV3_RRFS_v1nssl -D32BIT=ON"
-
-.. COMMENT: Edit this section! 
 
 **Supported Physics Suites**
 
@@ -607,21 +601,17 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
    * - FV3_RRFS_v1beta 
      - The FV3_RRFS_v1beta physics suite is described in the CCPP documentation `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_r_r_f_s_v1beta_page.html>`__.
    * - FV3_RRFS_v1nssl
-     - The FV3_RRFS_v1nssl physics suite is similar to the *FV3_RRFS_v1beta* suite; the only difference is that it uses the NSSL 2-moment microphysics scheme instead of the Thompson microphysics scheme.
+     - The FV3_RRFS_v1nssl physics suite is similar to the *FV3_RRFS_v1beta* suite; however, it uses the NSSL 2-moment microphysics scheme instead of the Thompson microphysics scheme.
 
 
 **Additional Information**
 
-.. COMMENT: Edit this section! 
-
 Input files required for RRFS ATM configurations can be viewed in :numref:`Table %s <rrfs-files>`
-or in the `UFS WM RT Data Bucket <https://registry.opendata.aws/noaa-ufs-regtests/>`__. 
+or in the `UFS WM RT Data Bucket <https://registry.opendata.aws/noaa-ufs-regtests/>`__. Users who wish to run additional (unsupported) cases may also find useful data `here <https://registry.opendata.aws/noaa-rrfs/>`__. 
 
-.. COMMENT: Edit this section before adding!
+Information on ``nems.configure`` files is available in :numref:`Section %s <nems-conf>`. The supported RRFS WM RTs use the same ``nems.configure`` file that ATM-only tests do (``nems.configure.atm.IN``). This file can be viewed in the ``ufs-weather-model/tests/parm`` directory `here <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/nems.configure.atm.IN>`__. 
 
-   Information on ``nems.configure`` files is available in :numref:`Section %s <nems-conf>`,
-   and a sample RRFS ``nems.configure`` file (``nems.configure.atm.IN``) is available 
-   `here <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/nems.configure.atm.IN>`__.
+Additionally, users can find examples of various RRFS configuration files in ``ufs-weather-model/tests/parm`` `here <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/>`__. These files include ``model_configure_*``, ``*_run.IN`` (input run), ``*.nml.IN`` (input namelist), ``field_table_*``, and ``diag_table_*`` files.  
 
 .. _rrfs-files:
 
@@ -708,9 +698,6 @@ or in the `UFS WM RT Data Bucket <https://registry.opendata.aws/noaa-ufs-regtest
      - 
      - 
      - 
-
-.. COMMENT: Add grid info!
-
 
 .. _lnd-documented:
 
