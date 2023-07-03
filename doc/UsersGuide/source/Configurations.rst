@@ -303,7 +303,7 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
 .. _rrfs-rts:
 
 .. list-table:: *RRFS regression test descriptions*
-   :widths: 50 10 30 30 10 10 10 10 10
+   :widths: 50 10 30 50 10 10 10 10 10
    :header-rows: 1
 
    * - Test |nbsp| Name |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp|
@@ -314,30 +314,49 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
      - Fcst Length (hours)
      - Output Grid
      - Configuration Files
-     - Restart
-   * - `rrfs_v1beta <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_v1beta>`__ / `rrfs_v1beta_debug <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_v1beta_debug>`__
-     - Compare RRFS_v1beta / rrfs_v1beta_debug results with previous trunk version
+     - Other
+   * - `rrfs_v1beta <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_v1beta>`__
+     - Compare RRFS_v1beta results with previous trunk version
      - **Suite:** CCPP_SUITE=FV3_RRFS_v1beta
 
        **Microphysics:** IMP_PHYSICS=8
 
        **Time Step:** DT_ATMOS=300
      - **Set to FALSE:** Default RRFS values only :raw-html:`<br/> <br/>`
-
        **Set to TRUE:** LRADAR, LTAEROSOL :raw-html:`<br/> <br/>`
-
-       **Set to VALUE:** IAER=5111, LSM=2, LSOIL_LSM=4
+       **Set to VALUE:** NSTF_NAME='2,0,0,0,0', IAER=5111, LSM=2, LSOIL_LSM=4
      - 2021-03-22 06:00:00
      - 24
-     - gaussian_grid :raw-html:`<br/> <br/>`
-       **Grid Parameters:** 
+     - OUTPUT_GRID=gaussian_grid :raw-html:`<br/> <br/>`
+       **Grid Parameters:** NPZ=127, NPZP=128
      - NEMS_CONFIGURE=nems.configure.atm.IN
        MODEL_CONFIGURE=model_configure.IN
        FV3_RUN=control_run.IN
        INPUT_NML=rap.nml.IN
        FIELD_TABLE=field_table_thompson_aero_tke
        DIAG_TABLE=diag_table_rap_noah
-     - 
+     - RESTART_INTERVAL="6 -1", OUTPUT_FH='0 09 12'
+   * - `rrfs_v1beta_debug <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_v1beta_debug>`__
+     - Compare rrfs_v1beta_debug results with previous trunk version
+     - **Suite:** CCPP_SUITE=FV3_RRFS_v1beta
+
+       **Microphysics:** IMP_PHYSICS=8
+
+       **Time Step:** DT_ATMOS=300
+     - **Set to FALSE:** Default RRFS values only :raw-html:`<br/> <br/>`
+       **Set to TRUE:** LRADAR, LTAEROSOL :raw-html:`<br/> <br/>`
+       **Set to VALUE:** NSTF_NAME='2,0,0,0,0', IAER=5111, LSM=2, LSOIL_LSM=4
+     - 2021-03-22 06:00:00
+     - 1
+     - OUTPUT_GRID=gaussian_grid :raw-html:`<br/> <br/>`
+       **Grid Parameters:** NPZ=127, NPZP=128
+     - NEMS_CONFIGURE=nems.configure.atm.IN
+       MODEL_CONFIGURE=model_configure.IN
+       FV3_RUN=control_run.IN
+       INPUT_NML=rap.nml.IN
+       FIELD_TABLE=field_table_thompson_aero_tke
+       DIAG_TABLE=diag_table_rap_noah
+     - OUTPUT_FH="0 1"
    * - `rrfs_v1nssl <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_v1nssl>`__
      - Compare RRFS_v1nssl results with previous trunk version
      - **Suite:** CCPP_SUITE=FV3_RRFS_v1nssl
@@ -346,13 +365,11 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
 
        **Time Step:** DT_ATMOS=300
      - **Set to FALSE:** LTAEROSOL :raw-html:`<br/> <br/>`
-
        **Set to TRUE:** NSSL_CCN_ON, NSSL_HAIL_ON, NSSL_INVERTCCN :raw-html:`<br/> <br/>`
-
-       **Set to VALUE:** IAER=5111, CS=17, NWAT=7, LSM=2, LSOIL_LSM=4
+       **Set to VALUE:** NSTF_NAME='2,0,0,0,0', IAER=5111, CS=17, NWAT=7, LSM=2, LSOIL_LSM=4
      - 2021-03-22 06:00:00
      - 24
-     - gaussian_grid :raw-html:`<br/> <br/>`
+     - OUTPUT_GRID=gaussian_grid :raw-html:`<br/> <br/>`
        **Grid Parameters:** NPZ=127, NPZP=128
      - NEMS_CONFIGURE=nems.configure.atm.IN
        MODEL_CONFIGURE=model_configure.IN
@@ -360,7 +377,7 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
        INPUT_NML=rap.nml.IN 
        FIELD_TABLE=field_table_nssl_tke
        DIAG_TABLE=diag_table_rap_noah
-     - 
+     - RESTART_INTERVAL="6 -1", OUTPUT_FH='0 09 12'
    * - `rrfs_v1nssl_nohailnoccn <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_v1nssl_nohailnoccn>`__
      - Compare RRFS_v1nssl_nohailnoccn results with previous trunk version
      - **Suite:** CCPP_SUITE=FV3_RRFS_v1nssl
@@ -369,13 +386,11 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
 
        **Time Step:** DT_ATMOS=300
      - **Set to FALSE:** NSSL_CCN_ON, NSSL_HAIL_ON, LTAEROSOL :raw-html:`<br/> <br/>`
-
        **Set to TRUE:** NSSL_INVERTCCN :raw-html:`<br/> <br/>`
-
-       **Set to VALUE:** IAER=5111, NWAT=6, LSM=2, LSOIL_LSM=4 :raw-html:`<br/> <br/>`
+       **Set to VALUE:** NSTF_NAME='2,0,0,0,0', IAER=5111, NWAT=6, LSM=2, LSOIL_LSM=4
      - 2021-03-22 06:00:00
      - 24
-     - gaussian_grid :raw-html:`<br/> <br/>`
+     - OUTPUT_GRID=gaussian_grid :raw-html:`<br/> <br/>`
        **Grid Parameters:** NPZ=127, NPZP=128
      - NEMS_CONFIGURE=nems.configure.atm.IN
        MODEL_CONFIGURE=model_configure.IN
@@ -383,7 +398,7 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
        INPUT_NML=rap.nml.IN
        FIELD_TABLE=field_table_nssl_nohailnoccn_tke
        DIAG_TABLE=diag_table_rap_noah
-     - 
+     - RESTART_INTERVAL="6 -1", OUTPUT_FH='0 09 12'
    * - `rrfs_conus13km_hrrr_warm <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_conus13km_hrrr_warm>`__
      - HRRR physics on 13km domain, control run
      - **Suite:** CCPP_SUITE=FV3_HRRR
@@ -398,7 +413,7 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
        **Set to VALUE:** DECFL=8, LKM=1, IOPT_LAKE=2, ICLIQ_SW=2, IOVR=3, KICE=9, LSM=3, LSOIL_LSM=9, NA_INIT=0, FHZERO=1.0, FHCYC=0.0, IAER=1011, CDMBWD='3.5,1.0', LNDP_TYPE=0, N_VAR_LNDP=0, GWD_OPT=3
      - 2021-05-12 16:00:00
      - 2
-     - lambert_conformal :raw-html:`<br/> <br/>`
+     - OUTPUT_GRID=lambert_conformal :raw-html:`<br/> <br/>`
        **Grid Parameters:** INPES=12, JNPES=12, NPX=397, NPY=233, NPZ=65, NPZP=66
      - NEMS_CONFIGURE=nems.configure.atm.IN
        MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
@@ -415,13 +430,11 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
 
        **Time Step:** DT_ATMOS=120
      - **Set to FALSE:** SEDI_SEMI, MAKE_NH, EXTERNAL_IC, NGGPS_IC, READ_INCREMENT, LDIAG3D, QDIAG3D, RANDOM_CLDS, CNVCLD, DO_SPPT, DO_SHUM, DO_SKEB, DO_UGWP_* :raw-html:`<br/> <br/>`
-       
        **Set to TRUE:** SFCLAY_COMPUTE_FLUX, DO_MYJPBL, MOUNTAIN, WARM_START, PRINT_DIFF_PGR, DO_GSL_DRAG_*, FRAC_ICE :raw-html:`<br/> <br/>`
-       
        **Set to VALUE:** DECFL=8, LKM=1, IOPT_LAKE=2, ICLIQ_SW=2, IOVR=3, KICE=9, LSM=3, LSOIL_LSM=9, NA_INIT=0, FHZERO=1.0, FHCYC=0.0, IAER=1011, CDMBWD='3.5,1.0', LNDP_TYPE=0, N_VAR_LNDP=0, GWD_OPT=3
      - 2021-05-12 16:00:00
      - 1
-     - lambert_conformal :raw-html:`<br/> <br/>`
+     - OUTPUT_GRID=lambert_conformal :raw-html:`<br/> <br/>`
        **Grid Parameters:** INPES=12, JNPES=12, NPX=397, NPY=233, NPZ=65, NPZP=66
      - NEMS_CONFIGURE=nems.configure.atm.IN
        MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
@@ -438,13 +451,11 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
 
        **Time Step:** DT_ATMOS=120
      - **Set to FALSE:** SEDI_SEMI, MAKE_NH, EXTERNAL_IC, NGGPS_IC, LDIAG3D, QDIAG3D, RANDOM_CLDS, CNVCLD, DO_SPPT, DO_SHUM, DO_SKEB, DO_UGWP_* :raw-html:`<br/> <br/>`
-       
        **Set to TRUE:** SFCLAY_COMPUTE_FLUX, DO_MYJPBL, MOUNTAIN, WARM_START, PRINT_DIFF_PGR, DO_GSL_DRAG_*, FRAC_ICE :raw-html:`<br/> <br/>`
-
        **Set to VALUE:** DECFL=8, LKM=1, ICLIQ_SW=2, IOVR=3, KICE=9, LSM=3, LSOIL_LSM=9, NA_INIT=0, FHZERO=1.0, FHCYC=0.0, IAER=5111, CDMBWD='3.5,1.0', LNDP_TYPE=0, N_VAR_LNDP=0, GWD_OPT=3
      - 2021-05-12 16:00:00
      - 2
-     - lambert_conformal :raw-html:`<br/> <br/>`
+     - OUTPUT_GRID=lambert_conformal :raw-html:`<br/> <br/>`
        **Grid Parameters:** INPES=12, JNPES=12, NPX=397, NPY=233, NPZ=65, NPZP=66
      - NEMS_CONFIGURE=nems.configure.atm.IN
        MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
@@ -461,13 +472,11 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
 
        **Time Step:** DT_ATMOS=120
      - **Set to FALSE:** SEDI_SEMI, MAKE_NH, EXTERNAL_IC, NGGPS_IC, LDIAG3D, QDIAG3D, RANDOM_CLDS, CNVCLD, DO_SPPT, DO_SHUM, DO_SKEB, DO_UGWP_* :raw-html:`<br/> <br/>`
-       
        **Set to TRUE:** RRFS_SMOKE, SFCLAY_COMPUTE_FLUX, DO_MYJPBL, MOUNTAIN, WARM_START, PRINT_DIFF_PGR, DO_GSL_DRAG_*, FRAC_ICE :raw-html:`<br/> <br/>`
-       
        **Set to VALUE:** DECFL=8, SEAS_OPT=0, LKM=1, IOPT_LAKE=2, ICLIQ_SW=2, IOVR=3, KICE=9, LSM=3, LSOIL_LSM=9, NA_INIT=0, FHZERO=1.0, FHCYC=0.0, IAER=1011, CDMBWD='3.5,1.0', LNDP_TYPE=0, N_VAR_LNDP=0, GWD_OPT=3
      - 2021-05-12 16:00:00
      - 2
-     - lambert_conformal :raw-html:`<br/> <br/>`
+     - OUTPUT_GRID=lambert_conformal :raw-html:`<br/> <br/>`
        **Grid Parameters:** INPES=12, JNPES=12, NPX=397, NPY=233, NPZ=65, RES_LATLON_DYNAMICS="'fv3_increment.nc'", NPZP=66, 
      - NEMS_CONFIGURE=nems.configure.atm.IN
        MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
@@ -485,13 +494,11 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
 
        **Time Step:** DT_ATMOS=120
      - **Set to FALSE:** SEDI_SEMI, MAKE_NH, EXTERNAL_IC, NGGPS_IC, LDIAG3D, QDIAG3D, RANDOM_CLDS, CNVCLD, DO_SPPT, DO_SHUM, DO_SKEB, DO_UGWP_* :raw-html:`<br/> <br/>`
-       
        **Set to TRUE:** RRFS_SMOKE, SFCLAY_COMPUTE_FLUX, DO_MYJPBL, MOUNTAIN, WARM_START, PRINT_DIFF_PGR, DO_GSL_DRAG_*, FRAC_ICE :raw-html:`<br/> <br/>`
-       
        **Set to VALUE:** DECFL=8, SEAS_OPT=0, LKM=1, ICLIQ_SW=2, IOVR=3, KICE=9, LSM=3, LSOIL_LSM=9, NA_INIT=0, FHZERO=1.0, FHCYC=0.0, IAER=1011, CDMBWD='3.5,1.0', LNDP_TYPE=0, N_VAR_LNDP=0, GWD_OPT=3
      - 2021-05-12 16:00:00
      - 2
-     - lambert_conformal :raw-html:`<br/> <br/>`
+     - OUTPUT_GRID=lambert_conformal :raw-html:`<br/> <br/>`
        **Grid Parameters:** INPES=$INPES_thrd, JNPES=$JNPES_thrd, INPES=12, JNPES=12, NPX=397, NPY=233, NPZ=65, NPZP=66
      - NEMS_CONFIGURE=nems.configure.atm.IN
        MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
@@ -509,13 +516,11 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
 
        **Time Step:** DT_ATMOS=120
      - **Set to FALSE:** SEDI_SEMI, MAKE_NH, EXTERNAL_IC, NGGPS_IC, LDIAG3D, QDIAG3D, RANDOM_CLDS, CNVCLD, DO_SPPT, DO_SHUM, DO_SKEB, DO_UGWP_* :raw-html:`<br/> <br/>`
-       
        **Set to TRUE:** RRFS_SMOKE, SFCLAY_COMPUTE_FLUX, DO_MYJPBL, MOUNTAIN, WARM_START, PRINT_DIFF_PGR, DO_GSL_DRAG_*, FRAC_ICE :raw-html:`<br/> <br/>`
-       
        **Set to VALUE:** DECFL=8, SEAS_OPT=0, LKM=1, ICLIQ_SW=2, IOVR=3, KICE=9, LSM=3, LSOIL_LSM=9, NA_INIT=0, FHZERO=1.0, FHCYC=0.0, IAER=1011, CDMBWD='3.5,1.0', LNDP_TYPE=0, N_VAR_LNDP=0, GWD_OPT=3 
      - 2021-05-12 16:00:00
      - 1
-     - lambert_conformal
+     - OUTPUT_GRID=lambert_conformal
        **Grid Parameters**: INPES=12, JNPES=12, NPX=397, NPY=233, NPZ=65, NPZP=66
      - NEMS_CONFIGURE=nems.configure.atm.IN
        MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
@@ -533,13 +538,11 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
 
        **Time Step:** DT_ATMOS=120
      - **Set to FALSE:** SEDI_SEMI, MAKE_NH, EXTERNAL_IC, NGGPS_IC, LDIAG3D, QDIAG3D, RANDOM_CLDS, CNVCLD, DO_SPPT, DO_SHUM, DO_SKEB, DO_UGWP_* :raw-html:`<br/> <br/>`
-       
        **Set to TRUE:** RRFS_SMOKE, SFCLAY_COMPUTE_FLUX, DO_MYJPBL, MOUNTAIN, WARM_START, PRINT_DIFF_PGR, DO_GSL_DRAG_*, FRAC_ICE :raw-html:`<br/> <br/>`
-       
        **Set to VALUE:** DECFL=8, SEAS_OPT=0, LKM=1, ICLIQ_SW=2, IOVR=3, KICE=9, LSM=3, LSOIL_LSM=9, NA_INIT=0, FHZERO=1.0, FHCYC=0.0, IAER=1011, CDMBWD='3.5,1.0', LNDP_TYPE=0, N_VAR_LNDP=0, GWD_OPT=3
      - 2021-05-12 16:00:00
      - 1
-     - lambert_conformal
+     - OUTPUT_GRID=lambert_conformal
        **Grid Parameters**: INPES=$INPES_thrd, JNPES=$JNPES_thrd, INPES=12, JNPES=12, NPX=397, NPY=233, NPZ=65, NPZP=66
      - NEMS_CONFIGURE=nems.configure.atm.IN
        MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
@@ -558,13 +561,11 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
 
        **Time Step:** DT_ATMOS=120
      - **Set to FALSE:** SEDI_SEMI, MAKE_NH, EXTERNAL_IC, NGGPS_IC, LDIAG3D, QDIAG3D, RANDOM_CLDS, CNVCLD, DO_SPPT, DO_SHUM, DO_SKEB, DO_UGWP_* :raw-html:`<br/> <br/>`
-       
        **Set to TRUE:** RRFS_SMOKE, SFCLAY_COMPUTE_FLUX, DO_MYJPBL, MOUNTAIN, WARM_START, PRINT_DIFF_PGR, DO_GSL_DRAG_*, FRAC_ICE :raw-html:`<br/> <br/>`
-       
        **Set to VALUE:** FH_DFI_RADAR='0.0, 0.25, 0.50, 0.75, 1.0', DECFL=8, SEAS_OPT=0, LKM=1, ICLIQ_SW=2, IOVR=3, KICE=9, LSM=3, LSOIL_LSM=9, NA_INIT=0, FHZERO=1.0, FHCYC=0.0, IAER=1011, CDMBWD='3.5,1.0', LNDP_TYPE=0, N_VAR_LNDP=0, GWD_OPT=3
      - 2021-05-12 16:00:00
      - 2
-     - lambert_conformal
+     - OUTPUT_GRID=lambert_conformal
        **Grid Parameters:** INPES=12, JNPES=12, NPX=397, NPY=233, NPZ=65, NPZP=66
      - NEMS_CONFIGURE=nems.configure.atm.IN
        MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
@@ -573,12 +574,6 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
        FIELD_TABLE=field_table_thompson_aero_tke
        DIAG_TABLE=diag_table_hrrr
      - RESTART_INTERVAL=1, READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
-
-
-
-.. COMMENT: What are PEs??? And check rrfs_conus13km_hrrr_warm_restart_mismatch description. It's the same as the rrfs_conus13km_hrrr_warm description
-.. COMMENT: What is DNATS? 
-            - DNATS is the number of tracers at the end of the tracer array that are not advected by the dycore
 
 **Sample** ``CMAKE_FLAGS`` **Setting**
 
@@ -616,7 +611,7 @@ Additionally, users can find examples of various RRFS configuration files in ``u
 .. _rrfs-files:
 
 .. list-table:: Files Required for RRFS RTs
-   :widths: 50 10 10 10 10 100
+   :widths: 50 10 10 10 10 110
    :header-rows: 1
 
    * - Tests
@@ -624,7 +619,7 @@ Additionally, users can find examples of various RRFS configuration files in ``u
      - atmf*.nc
      - GFSFLX.GrbF*
      - GFSPRS.GrbF*
-     - Other |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp|
+     - Other |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp|
    * - rrfs_v1beta
      - sfcf000.nc
        sfcf009.nc
@@ -638,19 +633,19 @@ Additionally, users can find examples of various RRFS configuration files in ``u
      - GFSPRS.GrbF00
        GFSPRS.GrbF09
        GFSPRS.GrbF12
-     - coupler.research
+     - 20210323.060000.coupler.research
        
-       fv_core.res.nc
+       20210323.060000.fv_core.res.nc
        
-       fv_core.res.tile[1-6].nc
+       20210323.060000.fv_core.res.tile[1-6].nc
        
-       fv_srf_wnd.res.tile[1-6].nc
+       20210323.060000.fv_srf_wnd.res.tile[1-6].nc
        
-       fv_tracer.res.tile[1-6].nc
+       20210323.060000.fv_tracer.res.tile[1-6].nc
        
-       phy_data.tile[1-6].nc        
+       20210323.060000.phy_data.tile[1-6].nc        
        
-       sfc_data.tile[1-6].nc
+       20210323.060000.sfc_data.tile[1-6].nc
    * - rrfs_v1beta_debug
        rrfs_conus13km_hrrr_warm_debug
        rrfs_smoke_conus13km_hrrr_warm_debug
@@ -663,6 +658,7 @@ Additionally, users can find examples of various RRFS configuration files in ``u
      - 
      - 
    * - rrfs_v1nssl
+
        rrfs_v1nssl_nohailnoccn
      - sfcf000.nc
        sfcf009.nc
@@ -679,7 +675,22 @@ Additionally, users can find examples of various RRFS configuration files in ``u
      - 
    * - rrfs_conus13km_hrrr_warm
        rrfs_smoke_conus13km_hrrr_warm
-       rrfs_smoke_conus13km_hrrr_warm_2threads
+     - sfcf000.nc
+       sfcf001.nc
+       sfcf002.nc
+     - atmf000.nc
+       atmf001.nc
+       atmf002.nc
+     - 
+     - 
+     - 20210512.170000.coupler.res
+       20210512.170000.fv_core.res.nc
+       20210512.170000.fv_core.res.tile1.nc
+       20210512.170000.fv_srf_wnd.res.tile1.nc
+       20210512.170000.fv_tracer.res.tile1.nc
+       20210512.170000.phy_data.nc
+       20210512.170000.sfc_data.nc
+   * - rrfs_smoke_conus13km_hrrr_warm_2threads
        rrfs_conus13km_radar_tten_warm
      - sfcf000.nc
        sfcf001.nc
@@ -687,9 +698,7 @@ Additionally, users can find examples of various RRFS configuration files in ``u
      - atmf000.nc
        atmf001.nc
        atmf002.nc
-     - atmf000.nc
-       atmf009.nc
-       atmf012.nc
+     - 
      - 
      - 
    * - rrfs_conus13km_hrrr_warm_restart_mismatch
