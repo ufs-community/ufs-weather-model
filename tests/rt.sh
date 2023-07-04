@@ -97,7 +97,7 @@ rt_trap() {
 }
 
 cleanup() {
-  rm -rf ${LOCKDIR}
+  [[ $(awk '{print $2}' < "${LOCKDIR}/PID") == $$ ]] && rm -rf ${LOCKDIR}
   [[ ${ECFLOW:-false} == true ]] && ecflow_stop
   trap 0
   exit
@@ -607,11 +607,6 @@ if [[ $ECFLOW == true ]]; then
     MAX_BUILDS=1
   fi
 
-  if [[ $MACHINE_ID = hera ]] && [[ ! $HOSTNAME = hecflow* ]]; then
-    echo "ERROR: To use ECFlow on Hera we must be logged into 'hecflow01' login node."
-    exit 1
-  fi
-
   ECFLOW_RUN=${PATHRT}/ecflow_run
   ECFLOW_SUITE=regtest_$$
   rm -rf ${ECFLOW_RUN}
@@ -645,13 +640,6 @@ EOF
     QUEUE=regular
   else
     die "ecFlow is not supported on this machine $MACHINE_ID"
-  fi
-
-else
-
-  if [[ $MACHINE_ID = hera ]] && [[ $HOSTNAME = hecflow* ]]; then
-    echo "ERROR: To run without using ECFlow on Hera, please do not use ecflow node."
-    exit 1
   fi
 
 fi
