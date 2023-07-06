@@ -1,29 +1,18 @@
 ###############################################################################
 #
-#  HRRR physics on 13km domain, control run
+#  HRRR physics on 13km domain, restart run with quilt restart
 #
 ###############################################################################
 
 # This configuration is supposed to match the rrfs_dev1 parallel, so
 # do not change the namelist without checking the current parallel.
 
-export TEST_DESCR="HRRR physics on 13km domain, control run"
+export TEST_DESCR="HRRR physics on 13km domain, restart run with quilt restart"
 
-export CNTL_DIR=rrfs_conus13km_hrrr_warm
+export CNTL_DIR=rrfs_conus13km_hrrr_warm_restart_mismatch
 
-export LIST_FILES="sfcf000.nc \
-                   sfcf001.nc \
-                   sfcf002.nc \
-                   atmf000.nc \
-                   atmf001.nc \
-                   atmf002.nc \
-                   RESTART/20210512.170000.coupler.res \
-                   RESTART/20210512.170000.fv_core.res.nc \
-                   RESTART/20210512.170000.fv_core.res.tile1.nc \
-                   RESTART/20210512.170000.fv_srf_wnd.res.tile1.nc \
-                   RESTART/20210512.170000.fv_tracer.res.tile1.nc \
-                   RESTART/20210512.170000.phy_data.nc \
-                   RESTART/20210512.170000.sfc_data.nc"
+export LIST_FILES="sfcf002.nc \
+                   atmf002.nc"
 
 export_fv3
 
@@ -33,7 +22,6 @@ export SDAY=12
 export SHOUR=16
 export FHMAX=2
 export DT_ATMOS=120
-export RESTART_INTERVAL=1
 export QUILTING=.true.
 export WRITE_GROUP=1
 export WRTTASK_PER_GROUP=6
@@ -42,13 +30,16 @@ export WRITE_DOPOST=.false.
 export OUTPUT_HISTORY=.true.
 export OUTPUT_GRID=lambert_conformal
 export OUTPUT_FILE="'netcdf'"
+export QUILTING_RESTART=.true.
+export FHROT=1
+export RESTART_FILE_PREFIX=$( printf %04d%02d%02d.%02d0000 $SYEAR $SMONTH $SDAY $(( SHOUR+FHROT )) )
+export RRFS_RESTART=YES
 
 # Revert these two to GFS_typedefs defaults to avoid a crash:
 export SEDI_SEMI=.false.
 export DECFL=8
 
 export LKM=1
-export IOPT_LAKE=2
 export SFCLAY_COMPUTE_FLUX=.true.
 export IALB=2
 export ICLIQ_SW=2
@@ -86,7 +77,7 @@ export LDIAG3D=.false.
 export QDIAG3D=.false.
 export PRINT_DIFF_PGR=.true.
 export FHCYC=0.0
-export IAER=1011
+export IAER=5111
 export LHEATSTRG=.false.
 export RANDOM_CLDS=.false.
 export CNVCLD=.false.

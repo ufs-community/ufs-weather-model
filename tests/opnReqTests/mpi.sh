@@ -18,6 +18,17 @@ elif [[ $application == 'regional' ]]; then
 elif [[ $application == 'cpld' ]]; then
   echo "Coupled application not yet implemented for mpi, skipping..."
   continue 1
+elif [[ $application == 'atmw' ]]; then
+  if [ $CI_TEST == 'true' ]; then
+    INPES=2
+    JNPES=2
+  else
+    JNPES=$((JNPES/2))
+  fi
+  WRITE_GROUP=2
+  WRTTASK_PER_GROUP=12
+  TASKS=$(( INPES*JNPES + WRITE_GROUP*WRTTASK_PER_GROUP ))
+  NODES=$(((TASKS+TPN-1)/TPN))
 fi
 
 
