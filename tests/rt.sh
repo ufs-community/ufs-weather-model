@@ -129,8 +129,98 @@ readonly RT_SINGLE_CONF='rt_single.conf'
 
 source detect_machine.sh # Note: this does not set ACCNR. The "if" block below does.
 source rt_utils.sh
-
 source module-setup.sh
+
+CREATE_BASELINE=false
+ROCOTO=false
+ECFLOW=false
+KEEP_RUNDIR=false
+SINGLE_NAME=''
+TEST_35D=false
+export skip_check_results=false
+export delete_rundir=false
+SKIP_ORDER=false
+
+TESTS_FILE='rt.conf'
+
+while getopts ":a:cl:mn:dwkreh" opt; do
+  case $opt in
+    a)
+      ACCNR=$OPTARG
+      ;;
+    c)
+      CREATE_BASELINE=true
+      ;;
+    l)
+      TESTS_FILE=$OPTARG
+      SKIP_ORDER=true
+      ;;
+    m)
+      # redefine RTPWD to point to newly created baseline outputs
+      RTPWD=${NEW_BASELINE}
+      ;;
+    n)
+      SINGLE_OPTS=("$OPTARG")
+      until [[ $(eval "echo \${$OPTIND}") =~ ^-.* ]] || [ -z $(eval "echo \${$OPTIND}") ]; do
+        SINGLE_OPTS+=($(eval "echo \${$OPTIND}"))
+        OPTIND=$((OPTIND + 1))
+      done
+
+      if [[ ${#SINGLE_OPTS[@]} != 2 ]]; then
+        echo "The -n option needs <testname> AND <compiler>, i.e. -n control_p8 intel"
+        exit 1
+      fi
+      SINGLE_NAME=${SINGLE_OPTS[0],,}
+      export RT_COMPILER=${SINGLE_OPTS[1],,}
+      
+      if [[ "$RT_COMPILER" == "intel" ]] || [[ "$RT_COMPILER" == "gnu" ]]; then
+        echo "COMPILER set to ${RT_COMPILER}"
+      else
+        echo "Compiler must be either 'intel' or 'gnu'."
+        exit 1
+      fi
+      ;;
+    d)
+      export delete_rundir=true
+      awk -F "|" '{print $5}' rt.conf | grep "\S" > keep_tests.tmp
+      ;;
+    w)
+      export skip_check_results=true
+      ;;
+    k)
+      KEEP_RUNDIR=true
+      ;;
+    r)
+      ROCOTO=true
+      ECFLOW=false
+      ;;
+    e)
+      ECFLOW=true
+      ROCOTO=false
+      ;;
+    h)
+      usage
+      ;;
+    \?)
+      usage
+      die "Invalid option: -$OPTARG"
+      ;;
+    :)
+      usage
+      die "Option -$OPTARG requires an argument."
+      ;;
+  esac
+done
+
+ACCNR=${ACCNR:-""}
+if [[ -z "$ACCNR" ]]; then
+  echo "Please use -a <account> to set group account to use on HPC"
+  exit 1
+fi
+
+# Display the machine and account using the format detect_machine.sh used:
+echo "Machine: " $MACHINE_ID "    Account: " $ACCNR
+
 
 if [[ $MACHINE_ID = wcoss2 ]]; then
 
@@ -368,96 +458,6 @@ NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST
 # Overwrite default RUNDIR_ROOT if environment variable RUNDIR_ROOT is set
 RUNDIR_ROOT=${RUNDIR_ROOT:-${PTMP}/${USER}/FV3_RT}/rt_$$
 mkdir -p ${RUNDIR_ROOT}
-
-CREATE_BASELINE=false
-ROCOTO=false
-ECFLOW=false
-KEEP_RUNDIR=false
-SINGLE_NAME=''
-TEST_35D=false
-export skip_check_results=false
-export delete_rundir=false
-SKIP_ORDER=false
-
-TESTS_FILE='rt.conf'
-
-while getopts ":a:cl:mn:dwkreh" opt; do
-  case $opt in
-    a)
-      ACCNR=$OPTARG
-      ;;
-    c)
-      CREATE_BASELINE=true
-      ;;
-    l)
-      TESTS_FILE=$OPTARG
-      SKIP_ORDER=true
-      ;;
-    m)
-      # redefine RTPWD to point to newly created baseline outputs
-      RTPWD=${NEW_BASELINE}
-      ;;
-    n)
-      SINGLE_OPTS=("$OPTARG")
-      until [[ $(eval "echo \${$OPTIND}") =~ ^-.* ]] || [ -z $(eval "echo \${$OPTIND}") ]; do
-        SINGLE_OPTS+=($(eval "echo \${$OPTIND}"))
-        OPTIND=$((OPTIND + 1))
-      done
-
-      if [[ ${#SINGLE_OPTS[@]} != 2 ]]; then
-        echo "The -n option needs <testname> AND <compiler>, i.e. -n control_p8 intel"
-        exit 1
-      fi
-      SINGLE_NAME=${SINGLE_OPTS[0],,}
-      export RT_COMPILER=${SINGLE_OPTS[1],,}
-      
-      if [[ "$RT_COMPILER" == "intel" ]] || [[ "$RT_COMPILER" == "gnu" ]]; then
-        echo "COMPILER set to ${RT_COMPILER}"
-      else
-        echo "Compiler must be either 'intel' or 'gnu'."
-        exit 1
-      fi
-      ;;
-    d)
-      export delete_rundir=true
-      awk -F "|" '{print $5}' rt.conf | grep "\S" > keep_tests.tmp
-      ;;
-    w)
-      export skip_check_results=true
-      ;;
-    k)
-      KEEP_RUNDIR=true
-      ;;
-    r)
-      ROCOTO=true
-      ECFLOW=false
-      ;;
-    e)
-      ECFLOW=true
-      ROCOTO=false
-      ;;
-    h)
-      usage
-      ;;
-    \?)
-      usage
-      die "Invalid option: -$OPTARG"
-      ;;
-    :)
-      usage
-      die "Option -$OPTARG requires an argument."
-      ;;
-  esac
-done
-
-ACCNR=${ACCNR:-""}
-if [[ -z "$ACCNR" ]]; then
-  echo "Please use -a <account> to set group account to use on HPC"
-  exit 1
-fi
-
-# Display the machine and account using the format detect_machine.sh used:
-echo "Machine: " $MACHINE_ID "    Account: " $ACCNR
 
 if [[ $SINGLE_NAME != '' ]]; then
   rt_single

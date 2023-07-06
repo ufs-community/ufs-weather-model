@@ -37,7 +37,7 @@ export COMPILE_NR=$4
 cd ${PATHRT}
 remove_fail_test
 
-source detect_machine.sh
+[[ -e ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env ]] && source ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env
 source default_vars.sh
 [[ -e ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env ]] && source ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env
 
