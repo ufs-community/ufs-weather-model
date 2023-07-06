@@ -47,9 +47,8 @@ cd ${PATHRT}
 unset MODEL_CONFIGURE
 unset NEMS_CONFIGURE
 
-source detect_machine.sh
-source default_vars.sh
 [[ -e ${RUNDIR_ROOT}/run_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
+source default_vars.sh
 source tests/$TEST_NAME
 
 remove_fail_test
@@ -283,26 +282,11 @@ TASKS=$(( NODES * TPN ))
 export TASKS
 
 if [[ $SCHEDULER = 'pbs' ]]; then
-  if [[ -e $PATHRT/fv3_conf/fv3_qsub.IN_${MACHINE_ID} ]]; then 
-    atparse < $PATHRT/fv3_conf/fv3_qsub.IN_${MACHINE_ID} > job_card
-  else
-    echo "Looking for fv3_conf/fv3_qsub.IN_${MACHINE_ID} but it is not found. Exiting"
-    exit 1
-  fi
+  atparse < $PATHRT/fv3_conf/fv3_qsub.IN > job_card
 elif [[ $SCHEDULER = 'slurm' ]]; then
-  if [[ -e $PATHRT/fv3_conf/fv3_slurm.IN_${MACHINE_ID} ]]; then
-    atparse < $PATHRT/fv3_conf/fv3_slurm.IN_${MACHINE_ID} > job_card
-  else
-    echo "Looking for fv3_conf/fv3_slurm.IN_${MACHINE_ID} but it is not found. Exiting"
-    exit 1
-  fi
+  atparse < $PATHRT/fv3_conf/fv3_slurm.IN > job_card
 elif [[ $SCHEDULER = 'lsf' ]]; then
-  if [[ -e $PATHRT/fv3_conf/fv3_bsub.IN_${MACHINE_ID} ]]; then
-    atparse < $PATHRT/fv3_conf/fv3_bsub.IN_${MACHINE_ID} > job_card
-  else
-    echo "Looking for fv3_conf/fv3_bsub.IN_${MACHINE_ID} but it is not found. Exiting"
-    exit 1
-  fi
+  atparse < $PATHRT/fv3_conf/fv3_bsub.IN > job_card
 fi
 
 ################################################################################

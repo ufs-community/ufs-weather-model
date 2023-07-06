@@ -37,10 +37,8 @@ export COMPILE_NR=$4
 cd ${PATHRT}
 remove_fail_test
 
-source detect_machine.sh
-source default_vars.sh
 [[ -e ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env ]] && source ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env
-
+source default_vars.sh
 
 
 export TEST_NAME=compile
@@ -59,27 +57,12 @@ rm -rf ${RUNDIR}
 mkdir -p ${RUNDIR}
 cd $RUNDIR
 
-if [[ $SCHEDULER = 'pbs' ]]; then
-  if [[ -e $PATHRT/fv3_conf/compile_qsub.IN_${MACHINE_ID} ]]; then 
-    atparse < $PATHRT/fv3_conf/compile_qsub.IN_${MACHINE_ID} > job_card
-  else
-    echo "Looking for fv3_conf/compile_qsub.IN_${MACHINE_ID} but it is not found. Exiting"
-    exit 1
-  fi
-elif [[ $SCHEDULER = 'slurm' ]]; then
-  if [[ -e $PATHRT/fv3_conf/compile_slurm.IN_${MACHINE_ID} ]]; then
-    atparse < $PATHRT/fv3_conf/compile_slurm.IN_${MACHINE_ID} > job_card
-  else
-    echo "Looking for fv3_conf/compile_slurm.IN_${MACHINE_ID} but it is not found. Exiting"
-    exit 1
-  fi
+if [[ $SCHEDULER = 'slurm' ]]; then
+  atparse < $PATHRT/fv3_conf/compile_slurm.IN > job_card
 elif [[ $SCHEDULER = 'lsf' ]]; then
-  if [[ -e $PATHRT/fv3_conf/compile_bsub.IN_${MACHINE_ID} ]]; then
-    atparse < $PATHRT/fv3_conf/compile_bsub.IN_${MACHINE_ID} > job_card
-  else
-    echo "Looking for fv3_conf/compile_bsub.IN_${MACHINE_ID} but it is not found. Exiting"
-    exit 1
-  fi
+  atparse < $PATHRT/fv3_conf/compile_bsub.IN > job_card
+elif [[ $SCHEDULER = 'pbs' ]]; then
+  atparse < $PATHRT/fv3_conf/compile_qsub.IN > job_card
 fi
 
 ################################################################################
