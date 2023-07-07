@@ -81,6 +81,8 @@ def delete_pr_dirs(each_pr, machine):
         workdir = '/lustre/f2/pdata/ncep/role.epic/autort/pr'
     elif machine == 'orion':
         workdir = '/work/noaa/epic-ps/role-epic-ps/autort/pr'
+    elif machine == 'hercules':
+        workdir = '/work/noaa/epic/role-epic/autort/pr'
     elif machine == 'cheyenne':
         workdir = '/glade/scratch/epicufsrt/autort/jenkins/autort/pr'
     else:
@@ -115,6 +117,8 @@ def delete_rt_dirs(in_dir, machine, workdir):
     elif machine == 'gaea':
         rt_dir = '/lustre/f2/scratch/role.epic/FV3_RT'
     elif machine == 'orion':
+        rt_dir = '/work/noaa/stmp/bcurtis/stmp/bcurtis/FV3_RT'
+    elif machine == 'hercules':
         rt_dir = '/work/noaa/stmp/bcurtis/stmp/bcurtis/FV3_RT'
     elif machine == 'cheyenne':
         rt_dir = '/glade/scratch/epicufsrt/FV3_RT'
@@ -294,6 +298,9 @@ def setup_env():
     elif bool(re.match(re.compile('Orion-login.+'), hostname)):
         machine = 'orion'
         os.environ['ACCNR'] = 'epic-ps'
+    elif bool(re.match(re.compile('Hercules-login.+'), hostname)):
+        machine = 'hercules'
+        os.environ['ACCNR'] = 'epic'
     elif bool(re.match(re.compile('cheyenne.+'), hostname)):
         machine = 'cheyenne'
         os.environ['ACCNR'] = 'SCSG0002'
