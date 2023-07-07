@@ -131,6 +131,15 @@ source detect_machine.sh # Note: this does not set ACCNR. The "if" block below d
 source rt_utils.sh
 source module-setup.sh
 
+ACCNR=${ACCNR:-""}
+if [[ -z "$ACCNR" ]]; then
+  echo "Please use -a <account> to set group account to use on HPC"
+  exit 1
+fi
+
+# Display the machine and account using the format detect_machine.sh used:
+echo "Machine: " $MACHINE_ID "    Account: " $ACCNR
+
 CREATE_BASELINE=false
 ROCOTO=false
 ECFLOW=false
@@ -140,7 +149,7 @@ TEST_35D=false
 export skip_check_results=false
 export delete_rundir=false
 SKIP_ORDER=false
-
+RTPWD_NEW_BASELINE=false
 TESTS_FILE='rt.conf'
 
 while getopts ":a:cl:mn:dwkreh" opt; do
@@ -157,7 +166,7 @@ while getopts ":a:cl:mn:dwkreh" opt; do
       ;;
     m)
       # redefine RTPWD to point to newly created baseline outputs
-      RTPWD=${NEW_BASELINE}
+      RTPWD_NEW_BASELINE=true
       ;;
     n)
       SINGLE_OPTS=("$OPTARG")
@@ -211,15 +220,6 @@ while getopts ":a:cl:mn:dwkreh" opt; do
       ;;
   esac
 done
-
-ACCNR=${ACCNR:-""}
-if [[ -z "$ACCNR" ]]; then
-  echo "Please use -a <account> to set group account to use on HPC"
-  exit 1
-fi
-
-# Display the machine and account using the format detect_machine.sh used:
-echo "Machine: " $MACHINE_ID "    Account: " $ACCNR
 
 
 if [[ $MACHINE_ID = wcoss2 ]]; then
@@ -470,7 +470,12 @@ fi
 
 source bl_date.conf
 
-RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}}
+if [[ "$RTPWD_NEW_BASELINE" == true ]] ; then
+  RTPWD=${NEW_BASELINE}
+else
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}}
+fi
+
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20221101}
 INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20220624
