@@ -29,6 +29,13 @@ Provide a detailed description of what this PR does. What bug does it fix, or wh
 - [ ] stochastic_physics
 - [ ] none
 
+### Library Updates/Changes
+<!-- Library updates take time. If this PR needs updates to libraries, please make sure to accomplish the following tasks -->
+- [ ] Not Needed
+- [ ] Create separate issue in [JCSDA/spack-stack](https://github.com/JCSDA/spack-stack) asking for update to library. Include library name, library version.
+- [ ] Add issue link from JCSDA/spack-stack following this item
+<!-- for example: "- JCSDA/spack-stack/issue/1757" -->
+
 ### Combined with PR's (If Applicable):
 
 ## Commit Queue Checklist:
