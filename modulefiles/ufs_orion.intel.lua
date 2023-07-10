@@ -2,7 +2,7 @@ help([[
 loads UFS Model prerequisites for Orion/Intel
 ]])
 
-prepend_path("MODULEPATH", "/work/noaa/epic-ps/role-epic-ps/spack-stack/spack-stack-1.4.0/envs/unified-env-v2/install/modulefiles/Core")
+prepend_path("MODULEPATH", "/work/noaa/epic/role-epic/spack-stack/spack-stack-1.4.1/envs/unified-env/install/modulefiles/Core")
 prepend_path("MODULEPATH", "/work/noaa/da/role-da/spack-stack/modulefiles")
 
 stack_intel_ver=os.getenv("stack_intel_ver") or "2022.0.2"
