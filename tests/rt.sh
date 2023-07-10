@@ -131,15 +131,6 @@ source detect_machine.sh # Note: this does not set ACCNR. The "if" block below d
 source rt_utils.sh
 source module-setup.sh
 
-ACCNR=${ACCNR:-""}
-if [[ -z "$ACCNR" ]]; then
-  echo "Please use -a <account> to set group account to use on HPC"
-  exit 1
-fi
-
-# Display the machine and account using the format detect_machine.sh used:
-echo "Machine: " $MACHINE_ID "    Account: " $ACCNR
-
 CREATE_BASELINE=false
 ROCOTO=false
 ECFLOW=false
@@ -151,6 +142,7 @@ export delete_rundir=false
 SKIP_ORDER=false
 RTPWD_NEW_BASELINE=false
 TESTS_FILE='rt.conf'
+ACCNR=${ACCNR:-""}
 
 while getopts ":a:cl:mn:dwkreh" opt; do
   case $opt in
@@ -221,6 +213,13 @@ while getopts ":a:cl:mn:dwkreh" opt; do
   esac
 done
 
+if [[ -z "$ACCNR" ]]; then
+  echo "Please use -a <account> to set group account to use on HPC"
+  exit 1
+fi
+
+# Display the machine and account using the format detect_machine.sh used:
+echo "Machine: " $MACHINE_ID "    Account: " $ACCNR
 
 if [[ $MACHINE_ID = wcoss2 ]]; then
 
