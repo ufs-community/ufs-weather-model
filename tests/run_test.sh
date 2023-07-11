@@ -47,7 +47,7 @@ cd ${PATHRT}
 unset MODEL_CONFIGURE
 unset NEMS_CONFIGURE
 
-source detect_machine.sh
+[[ -e ${RUNDIR_ROOT}/run_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
 source default_vars.sh
 [[ -e ${RUNDIR_ROOT}/run_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
 source tests/$TEST_NAME
