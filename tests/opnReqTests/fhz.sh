@@ -1,6 +1,7 @@
 set -eu
 source $PATHRT/opnReqTests/std.sh
 
+
 if [[ $application == 'global' ]]; then
   FHZERO=3
   LIST_FILES=$(echo -n $LIST_FILES | sed -E "s/phyf024.nc ?//g" \
@@ -17,16 +18,22 @@ elif [[ $application == 'cpld' ]]; then
                                      | sed -E "s/atmf024.tile[1-6].nc ?//g" \
                                      | sed -e "s/^ *//" -e "s/ *$//")
   else
-    echo "This test is not yet set up for the fhzero test"
-    exit 1
+    echo "This test is not yet set up for the fhzero test, skipping..."
+    continue 1
   fi
+elif [[ $application == 'atmw' ]]; then
+  FHZERO=3
+  LIST_FILES=$(echo -n $LIST_FILES | sed -E "s/sfcf012.nc ?//g" \
+                                   | sed -E "s/atmf012.nc ?//g" \
+                                   | sed -e "s/^ *//" -e "s/ *$//")
 else
-  echo "This test is not yet set up for the fhzero test"
-  exit 1
+  echo "This test is not yet set up for the fhzero test, skipping..."
+  continue 1
 fi
 
 source $PATHRT/opnReqTests/wrt_env.sh
 
 cat <<EOF >>${RUNDIR_ROOT}/opnreq_test${RT_SUFFIX}.env
 export FHZERO=${FHZERO}
+export CMP_DATAONLY=true
 EOF

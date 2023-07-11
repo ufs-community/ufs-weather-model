@@ -44,6 +44,7 @@ list(APPEND cdeps_datm_files
   CDEPS/datm/datm_datamode_era5_mod.F90
   CDEPS/datm/datm_datamode_gefs_mod.F90
   CDEPS/datm/datm_datamode_gfs_mod.F90
+  CDEPS/datm/datm_datamode_gfs_hafs_mod.F90
   CDEPS/datm/datm_datamode_jra_mod.F90
 )
 
@@ -62,6 +63,8 @@ list(APPEND cdeps_docn_files
   CDEPS/docn/docn_datamode_copyall_mod.F90
   CDEPS/docn/docn_datamode_iaf_mod.F90
   CDEPS/docn/docn_datamode_som_mod.F90
+  CDEPS/docn/docn_datamode_cplhist_mod.F90
+  CDEPS/docn/docn_import_data_mod.F90
   CDEPS/docn/ocn_comp_nuopc.F90
 )
 

@@ -53,28 +53,24 @@ class GHInterface:
 
 def set_action_from_label(machine, actions, label):
     ''' Match the label that initiates a job with an action in the dict'''
-    # <machine>-<compiler>-<test> i.e. hera-gnu-RT
+    # <machine>-<test> i.e. hera-RT
     logger = logging.getLogger('MATCH_LABEL_WITH_ACTIONS')
     logger.info('Setting action from Label')
     split_label = label.name.split('-')
-    # Make sure it has three parts
-    if len(split_label) != 3:
-        return False, False
+    # Make sure it has two parts
+    if len(split_label) != 2:
+        return False
     # Break the parts into their variables
     label_machine = split_label[0]
-    label_compiler = split_label[1]
-    label_action = split_label[2]
+    label_action = split_label[1]
     # check machine name matches
     if not re.match(label_machine, machine):
-        return False, False
-    # Compiler must be intel or gnu
-    if not str(label_compiler) in ["intel", "gnu"]:
-        return False, False
+        return False
     action_match = next((action for action in actions
                          if re.match(action, label_action)), False)
 
-    logging.info(f'Compiler: {label_compiler}, Action: {action_match}')
-    return label_compiler, action_match
+    logging.info(f'Action: {action_match}')
+    return action_match
 
 def delete_pr_dirs(each_pr, machine):
     if machine == 'hera':                                                                                     
@@ -166,12 +162,12 @@ def get_preqs_with_actions(repos, machine, ghinterface_obj, actions):
     jobs = []
     # return_preq = []
     for pr_label in preq_labels:
-        compiler, match = set_action_from_label(machine, actions,
+        match = set_action_from_label(machine, actions,
                                                 pr_label['label'])
         if match:
             pr_label['action'] = match
             # return_preq.append(pr_label.copy())
-            jobs.append(Job(pr_label.copy(), ghinterface_obj, machine, compiler))
+            jobs.append(Job(pr_label.copy(), ghinterface_obj, machine))
 
     return jobs
 
@@ -193,14 +189,13 @@ class Job:
         provided by the bash script
     '''
 
-    def __init__(self, preq_dict, ghinterface_obj, machine, compiler):
+    def __init__(self, preq_dict, ghinterface_obj, machine):
         self.logger = logging.getLogger('JOB')
         self.preq_dict = preq_dict
         self.job_mod = importlib.import_module(
                        f'jobs.{self.preq_dict["action"].lower()}')
         self.ghinterface_obj = ghinterface_obj
         self.machine = machine
-        self.compiler = compiler
         self.comment_text = '***Automated RT Failure Notification***\n'
         self.failed_tests = []
 
@@ -216,7 +211,6 @@ class Job:
         # LETS Check the label still exists before the start of the job in the
         # case of multiple jobs
         label_to_check = f'{self.machine}'\
-                         f'-{self.compiler}'\
                          f'-{self.preq_dict["action"]}'
         labels = self.preq_dict['preq'].get_labels()
         label_match = next((label for label in labels
@@ -250,7 +244,6 @@ class Job:
         logger = logging.getLogger('JOB/RUN')
         logger.info(f'Starting Job: {self.preq_dict["label"]}')
         self.comment_text_append(newtext=f'Machine: {self.machine}')
-        self.comment_text_append(f'Compiler: {self.compiler}')
         self.comment_text_append(f'Job: {self.preq_dict["action"]}')
         if self.check_label_before_job_start():
             try:
@@ -271,7 +264,6 @@ class Job:
         self.comment_text_append('Please make changes and add '
                                  'the following label back: '
                                  f'{self.machine}'
-                                 f'-{self.compiler}'
                                  f'-{self.preq_dict["action"]}')
 
         self.preq_dict['preq'].create_issue_comment(self.comment_text)
