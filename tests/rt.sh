@@ -129,8 +129,97 @@ readonly RT_SINGLE_CONF='rt_single.conf'
 
 source detect_machine.sh # Note: this does not set ACCNR. The "if" block below does.
 source rt_utils.sh
-
 source module-setup.sh
+
+CREATE_BASELINE=false
+ROCOTO=false
+ECFLOW=false
+KEEP_RUNDIR=false
+SINGLE_NAME=''
+TEST_35D=false
+export skip_check_results=false
+export delete_rundir=false
+SKIP_ORDER=false
+RTPWD_NEW_BASELINE=false
+TESTS_FILE='rt.conf'
+ACCNR=${ACCNR:-""}
+
+while getopts ":a:cl:mn:dwkreh" opt; do
+  case $opt in
+    a)
+      ACCNR=$OPTARG
+      ;;
+    c)
+      CREATE_BASELINE=true
+      ;;
+    l)
+      TESTS_FILE=$OPTARG
+      SKIP_ORDER=true
+      ;;
+    m)
+      # redefine RTPWD to point to newly created baseline outputs
+      RTPWD_NEW_BASELINE=true
+      ;;
+    n)
+      SINGLE_OPTS=("$OPTARG")
+      until [[ $(eval "echo \${$OPTIND}") =~ ^-.* ]] || [ -z $(eval "echo \${$OPTIND}") ]; do
+        SINGLE_OPTS+=($(eval "echo \${$OPTIND}"))
+        OPTIND=$((OPTIND + 1))
+      done
+
+      if [[ ${#SINGLE_OPTS[@]} != 2 ]]; then
+        echo "The -n option needs <testname> AND <compiler>, i.e. -n control_p8 intel"
+        exit 1
+      fi
+      SINGLE_NAME=${SINGLE_OPTS[0],,}
+      export RT_COMPILER=${SINGLE_OPTS[1],,}
+      
+      if [[ "$RT_COMPILER" == "intel" ]] || [[ "$RT_COMPILER" == "gnu" ]]; then
+        echo "COMPILER set to ${RT_COMPILER}"
+      else
+        echo "Compiler must be either 'intel' or 'gnu'."
+        exit 1
+      fi
+      ;;
+    d)
+      export delete_rundir=true
+      awk -F "|" '{print $5}' rt.conf | grep "\S" > keep_tests.tmp
+      ;;
+    w)
+      export skip_check_results=true
+      ;;
+    k)
+      KEEP_RUNDIR=true
+      ;;
+    r)
+      ROCOTO=true
+      ECFLOW=false
+      ;;
+    e)
+      ECFLOW=true
+      ROCOTO=false
+      ;;
+    h)
+      usage
+      ;;
+    \?)
+      usage
+      die "Invalid option: -$OPTARG"
+      ;;
+    :)
+      usage
+      die "Option -$OPTARG requires an argument."
+      ;;
+  esac
+done
+
+if [[ -z "$ACCNR" ]]; then
+  echo "Please use -a <account> to set group account to use on HPC"
+  exit 1
+fi
+
+# Display the machine and account using the format detect_machine.sh used:
+echo "Machine: " $MACHINE_ID "    Account: " $ACCNR
 
 if [[ $MACHINE_ID = wcoss2 ]]; then
 
@@ -369,96 +458,6 @@ NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST
 RUNDIR_ROOT=${RUNDIR_ROOT:-${PTMP}/${USER}/FV3_RT}/rt_$$
 mkdir -p ${RUNDIR_ROOT}
 
-CREATE_BASELINE=false
-ROCOTO=false
-ECFLOW=false
-KEEP_RUNDIR=false
-SINGLE_NAME=''
-TEST_35D=false
-export skip_check_results=false
-export delete_rundir=false
-SKIP_ORDER=false
-
-TESTS_FILE='rt.conf'
-
-while getopts ":a:cl:mn:dwkreh" opt; do
-  case $opt in
-    a)
-      ACCNR=$OPTARG
-      ;;
-    c)
-      CREATE_BASELINE=true
-      ;;
-    l)
-      TESTS_FILE=$OPTARG
-      SKIP_ORDER=true
-      ;;
-    m)
-      # redefine RTPWD to point to newly created baseline outputs
-      RTPWD=${NEW_BASELINE}
-      ;;
-    n)
-      SINGLE_OPTS=("$OPTARG")
-      until [[ $(eval "echo \${$OPTIND}") =~ ^-.* ]] || [ -z $(eval "echo \${$OPTIND}") ]; do
-        SINGLE_OPTS+=($(eval "echo \${$OPTIND}"))
-        OPTIND=$((OPTIND + 1))
-      done
-
-      if [[ ${#SINGLE_OPTS[@]} != 2 ]]; then
-        echo "The -n option needs <testname> AND <compiler>, i.e. -n control_p8 intel"
-        exit 1
-      fi
-      SINGLE_NAME=${SINGLE_OPTS[0],,}
-      export RT_COMPILER=${SINGLE_OPTS[1],,}
-      
-      if [[ "$RT_COMPILER" == "intel" ]] || [[ "$RT_COMPILER" == "gnu" ]]; then
-        echo "COMPILER set to ${RT_COMPILER}"
-      else
-        echo "Compiler must be either 'intel' or 'gnu'."
-        exit 1
-      fi
-      ;;
-    d)
-      export delete_rundir=true
-      awk -F "|" '{print $5}' rt.conf | grep "\S" > keep_tests.tmp
-      ;;
-    w)
-      export skip_check_results=true
-      ;;
-    k)
-      KEEP_RUNDIR=true
-      ;;
-    r)
-      ROCOTO=true
-      ECFLOW=false
-      ;;
-    e)
-      ECFLOW=true
-      ROCOTO=false
-      ;;
-    h)
-      usage
-      ;;
-    \?)
-      usage
-      die "Invalid option: -$OPTARG"
-      ;;
-    :)
-      usage
-      die "Option -$OPTARG requires an argument."
-      ;;
-  esac
-done
-
-ACCNR=${ACCNR:-""}
-if [[ -z "$ACCNR" ]]; then
-  echo "Please use -a <account> to set group account to use on HPC"
-  exit 1
-fi
-
-# Display the machine and account using the format detect_machine.sh used:
-echo "Machine: " $MACHINE_ID "    Account: " $ACCNR
-
 if [[ $SINGLE_NAME != '' ]]; then
   rt_single
   TESTS_FILE=$RT_SINGLE_CONF
@@ -470,7 +469,12 @@ fi
 
 source bl_date.conf
 
-RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}}
+if [[ "$RTPWD_NEW_BASELINE" == true ]] ; then
+  RTPWD=${NEW_BASELINE}
+else
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}}
+fi
+
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20221101}
 INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20220624
@@ -634,6 +638,10 @@ in_metatask=false
 
 [[ -f $TESTS_FILE ]] || die "$TESTS_FILE does not exist"
 
+LAST_COMPILER_NR=-9999
+
+declare -A compiles
+
 while read -r line || [ "$line" ]; do
 
   line="${line#"${line%%[![:space:]]*}"}"
@@ -644,24 +652,21 @@ while read -r line || [ "$line" ]; do
 
   if [[ $line == COMPILE* ]]; then
     
-    COMPILE_NR=$( echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
+    COMPILE_NAME=$( echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
     RT_COMPILER=$(echo $line | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
     MAKE_OPT=$(   echo $line | cut -d'|' -f4 | sed -e 's/^ *//' -e 's/ *$//')
     MACHINES=$(   echo $line | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
     CB=$(         echo $line | cut -d'|' -f6)
-    
-    COMPILE_COUNTER=$( printf '%03d' $(( 10#$COMPILE_COUNTER + 1 )) )
-    COMPILE_NR=$( printf '%03d' $(( 10#$COMPILE_NR )) )
-    echo "COMPILER_COUNTER: " $COMPILE_COUNTER
-    echo "COMPILER_NR: " $COMPILE_NR
-    if [[ ${SKIP_ORDER} == false ]]; then
-      if [[ ${SINGLE_NAME} == '' ]]; then
-        if [[ ! $COMPILE_COUNTER == $COMPILE_NR ]]; then
-          echo "Compile numbers in '.conf' file are not in order"
-          exit 1
-        fi
-      fi
+    COMPILE_NR=${COMPILE_NAME}_${RT_COMPILER}
+
+    set +u
+    if [[ ! -z ${compiles[$COMPILE_NR]} ]] ; then
+        echo "Error! Duplicated compilation $COMPILE_NAME for compiler $RT_COMPILER!"
+        exit 1
     fi
+    set -u
+    compiles[$COMPILE_NR]=$COMPILE_NR
+    echo "COMPILING ${compiles[${COMPILE_NR}]}"
 
     [[ $CREATE_BASELINE == true && $CB != *fv3* ]] && continue
 
