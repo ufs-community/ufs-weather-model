@@ -129,265 +129,7 @@ readonly RT_SINGLE_CONF='rt_single.conf'
 
 source detect_machine.sh # Note: this does not set ACCNR. The "if" block below does.
 source rt_utils.sh
-
 source module-setup.sh
-
-if [[ $MACHINE_ID = wcoss2 ]]; then
-
-  #module use /usrx/local/dev/emc_rocoto/modulefiles
-  #module load ruby/2.5.1 rocoto/1.3.0rc2
-  #ROCOTORUN=$(which rocotorun)
-  #ROCOTOSTAT=$(which rocotostat)
-  #ROCOTOCOMPLETE=$(which rocotocomplete)
-  #ROCOTO_SCHEDULER=lsf
-
-  module load ecflow/5.6.0.13
-  module load gcc/10.3.0 python/3.8.6
-  ECFLOW_START=${ECF_ROOT}/scripts/server_check.sh
-  export ECF_OUTPUTDIR=${PATHRT}/ecf_outputdir
-  export ECF_COMDIR=${PATHRT}/ecf_comdir
-  rm -rf ${ECF_OUTPUTDIR} ${ECF_COMDIR}
-  mkdir -p ${ECF_OUTPUTDIR}
-  mkdir -p ${ECF_COMDIR}
-  export colonifnco=":output"  # hack
-
-  DISKNM=/lfs/h2/emc/nems/noscrub/emc.nems/RT
-  QUEUE=dev
-  COMPILE_QUEUE=dev
-  PARTITION=
-  STMP=/lfs/h2/emc/ptmp
-  PTMP=/lfs/h2/emc/ptmp
-  SCHEDULER=pbs
-  cp fv3_conf/fv3_qsub.IN_wcoss2 fv3_conf/fv3_qsub.IN
-  cp fv3_conf/compile_qsub.IN_wcoss2 fv3_conf/compile_qsub.IN
-
-elif [[ $MACHINE_ID = acorn ]]; then
-
-  module load ecflow/5.6.0.13
-  module load gcc/10.3.0 python/3.8.6
-  ECFLOW_START=${ECF_ROOT}/scripts/server_check.sh
-  export ECF_OUTPUTDIR=${PATHRT}/ecf_outputdir
-  export ECF_COMDIR=${PATHRT}/ecf_comdir
-  rm -rf ${ECF_OUTPUTDIR} ${ECF_COMDIR}
-  mkdir -p ${ECF_OUTPUTDIR}
-  mkdir -p ${ECF_COMDIR}
-  export colonifnco=":output"  # hack
-
-  DISKNM=/lfs/h1/emc/nems/noscrub/emc.nems/RT
-  QUEUE=dev
-  COMPILE_QUEUE=dev
-  PARTITION=
-  STMP=/lfs/h2/emc/ptmp
-  PTMP=/lfs/h2/emc/ptmp
-  SCHEDULER=pbs
-  cp fv3_conf/fv3_qsub.IN_wcoss2 fv3_conf/fv3_qsub.IN
-  cp fv3_conf/compile_qsub.IN_wcoss2 fv3_conf/compile_qsub.IN
-
-elif [[ $MACHINE_ID = gaea ]]; then
-
-  export PATH=/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/envs/ufs-weather-model/bin:/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/bin:$PATH
-  export PYTHONPATH=/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/lib/python3.8/site-packages
-  ECFLOW_START=/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/envs/ufs-weather-model/bin/ecflow_start.sh
-  ECF_PORT=$(( $(id -u) + 1500 ))
-
-  DISKNM=/lustre/f2/pdata/ncep_shared/emc.nemspara/RT
-  QUEUE=normal
-  COMPILE_QUEUE=normal
-  PARTITION=c4
-  STMP=/lustre/f2/scratch
-  PTMP=/lustre/f2/scratch
-
-  SCHEDULER=slurm
-  cp fv3_conf/fv3_slurm.IN_gaea fv3_conf/fv3_slurm.IN
-  cp fv3_conf/compile_slurm.IN_gaea fv3_conf/compile_slurm.IN
-
-elif [[ $MACHINE_ID = hera ]]; then
-
-  module load rocoto
-  ROCOTORUN=$(which rocotorun)
-  ROCOTOSTAT=$(which rocotostat)
-  ROCOTOCOMPLETE=$(which rocotocomplete)
-  ROCOTO_SCHEDULER=slurm
-
-  PYTHONHOME=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3_new_20210629
-  export PATH=$PYTHONHOME/bin:$PATH
-  export PYTHONPATH=$PYTHONHOME/lib/python3.7/site-packages
-
-  module load ecflow
-  ECFLOW_START=ecflow_start.sh
-
-  QUEUE=batch
-  COMPILE_QUEUE=batch
-
-  PARTITION=
-  dprefix=/scratch1/NCEPDEV
-  DISKNM=$dprefix/nems/emc.nemspara/RT
-  STMP=$dprefix/stmp4
-  PTMP=$dprefix/stmp2
-
-  SCHEDULER=slurm
-  cp fv3_conf/fv3_slurm.IN_hera fv3_conf/fv3_slurm.IN
-  cp fv3_conf/compile_slurm.IN_hera fv3_conf/compile_slurm.IN
-
-elif [[ $MACHINE_ID = orion ]]; then
-
-  module load git/2.28.0
-
-  module load gcc/8.3.0
-
-  module load contrib rocoto/1.3.1
-  ROCOTORUN=$(which rocotorun)
-  ROCOTOSTAT=$(which rocotostat)
-  ROCOTOCOMPLETE=$(which rocotocomplete)
-  export PATH=/work/noaa/nems/emc.nemspara/soft/miniconda3/bin:$PATH
-  export PYTHONPATH=/work/noaa/nems/emc.nemspara/soft/miniconda3/lib/python3.8/site-packages
-  ECFLOW_START=/work/noaa/nems/emc.nemspara/soft/miniconda3/bin/ecflow_start.sh
-  ECF_PORT=$(( $(id -u) + 1500 ))
-
-  QUEUE=batch
-  COMPILE_QUEUE=batch
-  PARTITION=orion
-  dprefix=/work/noaa/stmp/${USER}
-  DISKNM=/work/noaa/nems/emc.nemspara/RT
-  STMP=$dprefix/stmp
-  PTMP=$dprefix/stmp
-
-  SCHEDULER=slurm
-  cp fv3_conf/fv3_slurm.IN_orion fv3_conf/fv3_slurm.IN
-  cp fv3_conf/compile_slurm.IN_orion fv3_conf/compile_slurm.IN
-
-elif [[ $MACHINE_ID = jet ]]; then
-
-  module load rocoto/1.3.2
-  ROCOTORUN=$(which rocotorun)
-  ROCOTOSTAT=$(which rocotostat)
-  ROCOTOCOMPLETE=$(which rocotocomplete)
-  ROCOTO_SCHEDULER=slurm
-
-  export PATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/bin:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/bin:$PATH
-  export PYTHONPATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/lib/python3.8/site-packages
-  module load ecflow
-  ECFLOW_START=/apps/ecflow/5.5.3/bin/ecflow_start.sh
-
-  QUEUE=batch
-  COMPILE_QUEUE=batch
-  PARTITION=xjet
-  DISKNM=/mnt/lfs4/HFIP/hfv3gfs/role.epic/RT
-  dprefix=${dprefix:-/lfs4/HFIP/$ACCNR/$USER}
-  STMP=${STMP:-$dprefix/RT_BASELINE}
-  PTMP=${PTMP:-$dprefix/RT_RUNDIRS}
-
-  SCHEDULER=slurm
-  cp fv3_conf/fv3_slurm.IN_jet fv3_conf/fv3_slurm.IN
-  cp fv3_conf/compile_slurm.IN_jet fv3_conf/compile_slurm.IN
-
-elif [[ $MACHINE_ID = s4 ]]; then
-
-  module load rocoto/1.3.2
-  module load ecflow/5.6.0
-  module load miniconda/3.8-s4
-  ROCOTORUN=$(which rocotorun)
-  ROCOTOSTAT=$(which rocotostat)
-  ROCOTOCOMPLETE=$(which rocotocomplete)
-  ROCOTO_SCHEDULER=slurm
-
-  ECFLOW_START=/opt/ecflow/5.6.0/bin/ecflow_start.sh
-  ECF_PORT=$(( $(id -u) + 1500 ))
-
-  QUEUE=s4
-  COMPILE_QUEUE=s4
-
-  PARTITION=s4
-  dprefix=/data/prod
-  DISKNM=$dprefix/emc.nemspara/RT
-  STMP=/scratch/short/users
-  PTMP=/scratch/users
-
-  SCHEDULER=slurm
-  cp fv3_conf/fv3_slurm.IN_s4 fv3_conf/fv3_slurm.IN
-  cp fv3_conf/compile_slurm.IN_s4 fv3_conf/compile_slurm.IN
-
-elif [[ $MACHINE_ID = cheyenne ]]; then
-
-  export PATH=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/bin:/glade/p/ral/jntp/tools/miniconda3/4.8.3/bin:$PATH
-  export PYTHONPATH=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/glade/p/ral/jntp/tools/miniconda3/4.8.3/lib/python3.8/site-packages
-  ECFLOW_START=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/bin/ecflow_start.sh
-  ECF_PORT=$(( $(id -u) + 1500 ))
-
-  QUEUE=regular
-  COMPILE_QUEUE=regular
-  PARTITION=
-  dprefix=/glade/scratch
-  DISKNM=/glade/scratch/epicufsrt/GMTB/ufs-weather-model/RT
-  STMP=$dprefix
-  PTMP=$dprefix
-  SCHEDULER=pbs
-  cp fv3_conf/fv3_qsub.IN_cheyenne fv3_conf/fv3_qsub.IN
-  cp fv3_conf/compile_qsub.IN_cheyenne fv3_conf/compile_qsub.IN
-
-elif [[ $MACHINE_ID = stampede ]]; then
-
-  export PYTHONPATH=
-  ECFLOW_START=
-  QUEUE=skx-normal
-  COMPILE_QUEUE=skx-dev
-  PARTITION=
-  dprefix=$SCRATCH/ufs-weather-model/run
-  DISKNM=/work2/07736/minsukji/stampede2/ufs-weather-model/RT
-  STMP=$dprefix
-  PTMP=$dprefix
-  SCHEDULER=slurm
-  MPIEXEC=ibrun
-  MPIEXECOPTS=
-  cp fv3_conf/fv3_slurm.IN_stampede fv3_conf/fv3_slurm.IN
-
-elif [[ $MACHINE_ID = expanse ]]; then
-
-  export PYTHONPATH=
-  ECFLOW_START=
-  QUEUE=compute
-  COMPILE_QUEUE=shared
-  PARTITION=
-  dprefix=/expanse/lustre/scratch/$USER/temp_project/run
-  DISKNM=/expanse/lustre/scratch/domh/temp_project/RT
-  STMP=$dprefix
-  PTMP=$dprefix
-  SCHEDULER=slurm
-  cp fv3_conf/fv3_slurm.IN_expanse fv3_conf/fv3_slurm.IN
-
- elif [[ $MACHINE_ID = noaacloud.* ]]; then
-
-  module use /apps/modules/modulefiles
-  module load rocoto/1.3.3
-
-  ROCOTORUN=$(which rocotorun)
-  ROCOTOSTAT=$(which rocotostat)
-  ROCOTOCOMPLETE=$(which rocotocomplete)
-  ROCOTO_SCHEDULER=slurm
-
-  QUEUE=batch
-  COMPILE_QUEUE=batch
-  PARTITION=
-  dprefix=/lustre/
-  DISKNM=/contrib/ufs-weather-model/RT
-  STMP=$dprefix/stmp4
-  PTMP=$dprefix/stmp2
-  SCHEDULER=slurm
-  cp fv3_conf/fv3_slurm.IN_noaacloud fv3_conf/fv3_slurm.IN
-  cp fv3_conf/compile_slurm.IN_noaacloud fv3_conf/compile_slurm.IN
-
-
-else
-  die "Unknown machine ID, please edit detect_machine.sh file"
-fi
-
-mkdir -p ${STMP}/${USER}
-
-NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST
-
-# Overwrite default RUNDIR_ROOT if environment variable RUNDIR_ROOT is set
-RUNDIR_ROOT=${RUNDIR_ROOT:-${PTMP}/${USER}/FV3_RT}/rt_$$
-mkdir -p ${RUNDIR_ROOT}
 
 CREATE_BASELINE=false
 ROCOTO=false
@@ -398,8 +140,9 @@ TEST_35D=false
 export skip_check_results=false
 export delete_rundir=false
 SKIP_ORDER=false
-
+RTPWD_NEW_BASELINE=false
 TESTS_FILE='rt.conf'
+ACCNR=${ACCNR:-""}
 
 while getopts ":a:cl:mn:dwkreh" opt; do
   case $opt in
@@ -415,7 +158,7 @@ while getopts ":a:cl:mn:dwkreh" opt; do
       ;;
     m)
       # redefine RTPWD to point to newly created baseline outputs
-      RTPWD=${NEW_BASELINE}
+      RTPWD_NEW_BASELINE=true
       ;;
     n)
       SINGLE_OPTS=("$OPTARG")
@@ -470,7 +213,6 @@ while getopts ":a:cl:mn:dwkreh" opt; do
   esac
 done
 
-ACCNR=${ACCNR:-""}
 if [[ -z "$ACCNR" ]]; then
   echo "Please use -a <account> to set group account to use on HPC"
   exit 1
@@ -478,6 +220,243 @@ fi
 
 # Display the machine and account using the format detect_machine.sh used:
 echo "Machine: " $MACHINE_ID "    Account: " $ACCNR
+
+if [[ $MACHINE_ID = wcoss2 ]]; then
+
+  #module use /usrx/local/dev/emc_rocoto/modulefiles
+  #module load ruby/2.5.1 rocoto/1.3.0rc2
+  #ROCOTORUN=$(which rocotorun)
+  #ROCOTOSTAT=$(which rocotostat)
+  #ROCOTOCOMPLETE=$(which rocotocomplete)
+  #ROCOTO_SCHEDULER=lsf
+
+  module load ecflow/5.6.0.13
+  module load gcc/10.3.0 python/3.8.6
+  ECFLOW_START=${ECF_ROOT}/scripts/server_check.sh
+  export ECF_OUTPUTDIR=${PATHRT}/ecf_outputdir
+  export ECF_COMDIR=${PATHRT}/ecf_comdir
+  rm -rf ${ECF_OUTPUTDIR} ${ECF_COMDIR}
+  mkdir -p ${ECF_OUTPUTDIR}
+  mkdir -p ${ECF_COMDIR}
+  export colonifnco=":output"  # hack
+
+  DISKNM=/lfs/h2/emc/nems/noscrub/emc.nems/RT
+  QUEUE=dev
+  COMPILE_QUEUE=dev
+  PARTITION=
+  STMP=/lfs/h2/emc/ptmp
+  PTMP=/lfs/h2/emc/ptmp
+  SCHEDULER=pbs
+
+elif [[ $MACHINE_ID = acorn ]]; then
+
+  module load ecflow/5.6.0.13
+  module load gcc/10.3.0 python/3.8.6
+  ECFLOW_START=${ECF_ROOT}/scripts/server_check.sh
+  export ECF_OUTPUTDIR=${PATHRT}/ecf_outputdir
+  export ECF_COMDIR=${PATHRT}/ecf_comdir
+  rm -rf ${ECF_OUTPUTDIR} ${ECF_COMDIR}
+  mkdir -p ${ECF_OUTPUTDIR}
+  mkdir -p ${ECF_COMDIR}
+  export colonifnco=":output"  # hack
+
+  DISKNM=/lfs/h1/emc/nems/noscrub/emc.nems/RT
+  QUEUE=dev
+  COMPILE_QUEUE=dev
+  PARTITION=
+  STMP=/lfs/h2/emc/ptmp
+  PTMP=/lfs/h2/emc/ptmp
+  SCHEDULER=pbs
+
+elif [[ $MACHINE_ID = gaea ]]; then
+
+  export PATH=/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/envs/ufs-weather-model/bin:/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/bin:$PATH
+  export PYTHONPATH=/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/lib/python3.8/site-packages
+  ECFLOW_START=/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/envs/ufs-weather-model/bin/ecflow_start.sh
+  ECF_PORT=$(( $(id -u) + 1500 ))
+
+  DISKNM=/lustre/f2/pdata/ncep_shared/emc.nemspara/RT
+  QUEUE=normal
+  COMPILE_QUEUE=normal
+  PARTITION=c4
+  STMP=/lustre/f2/scratch
+  PTMP=/lustre/f2/scratch
+
+  SCHEDULER=slurm
+
+elif [[ $MACHINE_ID = hera ]]; then
+
+  module load rocoto
+  ROCOTORUN=$(which rocotorun)
+  ROCOTOSTAT=$(which rocotostat)
+  ROCOTOCOMPLETE=$(which rocotocomplete)
+  ROCOTO_SCHEDULER=slurm
+
+  PYTHONHOME=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3_new_20210629
+  export PATH=$PYTHONHOME/bin:$PATH
+  export PYTHONPATH=$PYTHONHOME/lib/python3.7/site-packages
+
+  module load ecflow
+  ECFLOW_START=ecflow_start.sh
+
+  QUEUE=batch
+  COMPILE_QUEUE=batch
+
+  PARTITION=
+  dprefix=/scratch1/NCEPDEV
+  DISKNM=$dprefix/nems/emc.nemspara/RT
+  STMP=$dprefix/stmp4
+  PTMP=$dprefix/stmp2
+
+  SCHEDULER=slurm
+
+elif [[ $MACHINE_ID = orion ]]; then
+
+  module load git/2.28.0
+
+  module load gcc/8.3.0
+
+  module load contrib rocoto/1.3.1
+  ROCOTORUN=$(which rocotorun)
+  ROCOTOSTAT=$(which rocotostat)
+  ROCOTOCOMPLETE=$(which rocotocomplete)
+  export PATH=/work/noaa/nems/emc.nemspara/soft/miniconda3/bin:$PATH
+  export PYTHONPATH=/work/noaa/nems/emc.nemspara/soft/miniconda3/lib/python3.8/site-packages
+  ECFLOW_START=/work/noaa/nems/emc.nemspara/soft/miniconda3/bin/ecflow_start.sh
+  ECF_PORT=$(( $(id -u) + 1500 ))
+
+  QUEUE=batch
+  COMPILE_QUEUE=batch
+  PARTITION=orion
+  dprefix=/work/noaa/stmp/${USER}
+  DISKNM=/work/noaa/nems/emc.nemspara/RT
+  STMP=$dprefix/stmp
+  PTMP=$dprefix/stmp
+
+  SCHEDULER=slurm
+
+elif [[ $MACHINE_ID = jet ]]; then
+
+  module load rocoto/1.3.2
+  ROCOTORUN=$(which rocotorun)
+  ROCOTOSTAT=$(which rocotostat)
+  ROCOTOCOMPLETE=$(which rocotocomplete)
+  ROCOTO_SCHEDULER=slurm
+
+  export PATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/bin:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/bin:$PATH
+  export PYTHONPATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/lib/python3.8/site-packages
+  module load ecflow
+  ECFLOW_START=/apps/ecflow/5.5.3/bin/ecflow_start.sh
+
+  QUEUE=batch
+  COMPILE_QUEUE=batch
+  PARTITION=xjet
+  DISKNM=/mnt/lfs4/HFIP/hfv3gfs/role.epic/RT
+  dprefix=${dprefix:-/lfs4/HFIP/$ACCNR/$USER}
+  STMP=${STMP:-$dprefix/RT_BASELINE}
+  PTMP=${PTMP:-$dprefix/RT_RUNDIRS}
+
+  SCHEDULER=slurm
+
+elif [[ $MACHINE_ID = s4 ]]; then
+
+  module load rocoto/1.3.2
+  module load ecflow/5.6.0
+  module load miniconda/3.8-s4
+  ROCOTORUN=$(which rocotorun)
+  ROCOTOSTAT=$(which rocotostat)
+  ROCOTOCOMPLETE=$(which rocotocomplete)
+  ROCOTO_SCHEDULER=slurm
+
+  ECFLOW_START=/opt/ecflow/5.6.0/bin/ecflow_start.sh
+  ECF_PORT=$(( $(id -u) + 1500 ))
+
+  QUEUE=s4
+  COMPILE_QUEUE=s4
+
+  PARTITION=s4
+  dprefix=/data/prod
+  DISKNM=$dprefix/emc.nemspara/RT
+  STMP=/scratch/short/users
+  PTMP=/scratch/users
+
+  SCHEDULER=slurm
+
+elif [[ $MACHINE_ID = cheyenne ]]; then
+
+  export PATH=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/bin:/glade/p/ral/jntp/tools/miniconda3/4.8.3/bin:$PATH
+  export PYTHONPATH=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/glade/p/ral/jntp/tools/miniconda3/4.8.3/lib/python3.8/site-packages
+  ECFLOW_START=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/bin/ecflow_start.sh
+  ECF_PORT=$(( $(id -u) + 1500 ))
+
+  QUEUE=regular
+  COMPILE_QUEUE=regular
+  PARTITION=
+  dprefix=/glade/scratch
+  DISKNM=/glade/scratch/epicufsrt/GMTB/ufs-weather-model/RT
+  STMP=$dprefix
+  PTMP=$dprefix
+  SCHEDULER=pbs
+
+elif [[ $MACHINE_ID = stampede ]]; then
+
+  export PYTHONPATH=
+  ECFLOW_START=
+  QUEUE=skx-normal
+  COMPILE_QUEUE=skx-dev
+  PARTITION=
+  dprefix=$SCRATCH/ufs-weather-model/run
+  DISKNM=/work2/07736/minsukji/stampede2/ufs-weather-model/RT
+  STMP=$dprefix
+  PTMP=$dprefix
+  SCHEDULER=slurm
+  MPIEXEC=ibrun
+  MPIEXECOPTS=
+
+elif [[ $MACHINE_ID = expanse ]]; then
+
+  export PYTHONPATH=
+  ECFLOW_START=
+  QUEUE=compute
+  COMPILE_QUEUE=shared
+  PARTITION=
+  dprefix=/expanse/lustre/scratch/$USER/temp_project/run
+  DISKNM=/expanse/lustre/scratch/domh/temp_project/RT
+  STMP=$dprefix
+  PTMP=$dprefix
+  SCHEDULER=slurm
+
+ elif [[ $MACHINE_ID = noaacloud.* ]]; then
+
+  module use /apps/modules/modulefiles
+  module load rocoto/1.3.3
+
+  ROCOTORUN=$(which rocotorun)
+  ROCOTOSTAT=$(which rocotostat)
+  ROCOTOCOMPLETE=$(which rocotocomplete)
+  ROCOTO_SCHEDULER=slurm
+
+  QUEUE=batch
+  COMPILE_QUEUE=batch
+  PARTITION=
+  dprefix=/lustre/
+  DISKNM=/contrib/ufs-weather-model/RT
+  STMP=$dprefix/stmp4
+  PTMP=$dprefix/stmp2
+  SCHEDULER=slurm
+
+
+else
+  die "Unknown machine ID, please edit detect_machine.sh file"
+fi
+
+mkdir -p ${STMP}/${USER}
+
+NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST
+
+# Overwrite default RUNDIR_ROOT if environment variable RUNDIR_ROOT is set
+RUNDIR_ROOT=${RUNDIR_ROOT:-${PTMP}/${USER}/FV3_RT}/rt_$$
+mkdir -p ${RUNDIR_ROOT}
 
 if [[ $SINGLE_NAME != '' ]]; then
   rt_single
@@ -490,7 +469,12 @@ fi
 
 source bl_date.conf
 
-RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}}
+if [[ "$RTPWD_NEW_BASELINE" == true ]] ; then
+  RTPWD=${NEW_BASELINE}
+else
+  RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}}
+fi
+
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20221101}
 INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20220624
@@ -654,6 +638,10 @@ in_metatask=false
 
 [[ -f $TESTS_FILE ]] || die "$TESTS_FILE does not exist"
 
+LAST_COMPILER_NR=-9999
+
+declare -A compiles
+
 while read -r line || [ "$line" ]; do
 
   line="${line#"${line%%[![:space:]]*}"}"
@@ -664,24 +652,21 @@ while read -r line || [ "$line" ]; do
 
   if [[ $line == COMPILE* ]]; then
     
-    COMPILE_NR=$( echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
+    COMPILE_NAME=$( echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
     RT_COMPILER=$(echo $line | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
     MAKE_OPT=$(   echo $line | cut -d'|' -f4 | sed -e 's/^ *//' -e 's/ *$//')
     MACHINES=$(   echo $line | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
     CB=$(         echo $line | cut -d'|' -f6)
-    
-    COMPILE_COUNTER=$( printf '%03d' $(( 10#$COMPILE_COUNTER + 1 )) )
-    COMPILE_NR=$( printf '%03d' $(( 10#$COMPILE_NR )) )
-    echo "COMPILER_COUNTER: " $COMPILE_COUNTER
-    echo "COMPILER_NR: " $COMPILE_NR
-    if [[ ${SKIP_ORDER} == false ]]; then
-      if [[ ${SINGLE_NAME} == '' ]]; then
-        if [[ ! $COMPILE_COUNTER == $COMPILE_NR ]]; then
-          echo "Compile numbers in '.conf' file are not in order"
-          exit 1
-        fi
-      fi
+    COMPILE_NR=${COMPILE_NAME}_${RT_COMPILER}
+
+    set +u
+    if [[ ! -z ${compiles[$COMPILE_NR]} ]] ; then
+        echo "Error! Duplicated compilation $COMPILE_NAME for compiler $RT_COMPILER!"
+        exit 1
     fi
+    set -u
+    compiles[$COMPILE_NR]=$COMPILE_NR
+    echo "COMPILING ${compiles[${COMPILE_NR}]}"
 
     [[ $CREATE_BASELINE == true && $CB != *fv3* ]] && continue
 
@@ -805,6 +790,7 @@ EOF
       export DEP_RUN=${DEP_RUN}
       export skip_check_results=${skip_check_results}
       export delete_rundir=${delete_rundir}
+      export WLCLK=${WLCLK}
 EOF
       if [[ $MACHINE_ID = jet ]]; then
         cat << EOF >> ${RUNDIR_ROOT}/run_test_${TEST_NR}.env

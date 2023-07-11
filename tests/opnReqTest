@@ -137,16 +137,13 @@ build_opnReqTests() {
 run_opnReqTests() {
   JOB_NR=0
   for rc in $run_case; do
-    # load default variables and override as necessary
-    source default_vars.sh
-    source ${PATHRT}/tests/$TEST_NAME
 
     # if TEST_NAME specifies WARM_START true, error and exit
+    source ${PATHRT}/tests/$TEST_NAME
     if [[ ${WARM_START} == .T. ]]; then
       error "test-name cannot be a restart run (i.e. WARM_START=.T.)"
     fi
 
-    application=''
     if [[ $TEST_NAME =~ regional ]]; then
       application=regional
     elif [[ $TEST_NAME =~ cpld ]]; then
@@ -251,6 +248,7 @@ run_opnReqTests() {
 			export skip_check_results=${skip_check_results}
 			export delete_rundir=${delete_rundir}
       export RT_COMPILER=${RT_COMPILER}
+      export WLCLK=${WLCLK}
 			EOF
 
     if [[ $ECFLOW == true ]]; then
@@ -345,8 +343,6 @@ if [[ $MACHINE_ID = hera ]]; then
   STMP=${dprefix}/stmp4
   PTMP=${dprefix}/stmp2
   SCHEDULER=slurm
-  cp fv3_conf/fv3_slurm.IN_hera fv3_conf/fv3_slurm.IN
-  cp fv3_conf/compile_slurm.IN_hera fv3_conf/compile_slurm.IN
 
 elif [[ $MACHINE_ID = orion ]]; then
 
@@ -364,8 +360,6 @@ elif [[ $MACHINE_ID = orion ]]; then
   STMP=$dprefix/stmp
   PTMP=$dprefix/stmp
   SCHEDULER=slurm
-  cp fv3_conf/fv3_slurm.IN_orion fv3_conf/fv3_slurm.IN
-  cp fv3_conf/compile_slurm.IN_orion fv3_conf/compile_slurm.IN
 
 elif [[ $MACHINE_ID = linux ]]; then
 
@@ -468,6 +462,9 @@ if [[ $dbg_compare == true && ! $test_case =~ dbg ]]; then
   error "$program: debug reproducibility test requires specifying dbg"
 fi
 
+# load default variables and override as necessary
+source default_vars.sh
+
 # enumerate which case to compile and run
 compile_case=
 run_case=
@@ -545,11 +542,6 @@ if [[ $ECFLOW == true ]]; then
     QUEUE=batch
   else
     error "ecflow is not supported on this machine $MACHINE_ID"
-  fi
-
-  if [[ $MACHINE_ID == hera ]] && [[ ! $HOSTNAME == hecflow* ]]; then
-    echo "ERROR: To use ECFlow on Hera please use the 'hecflow01' login node: ssh hecflow01."
-    exit 1
   fi
 
 fi
