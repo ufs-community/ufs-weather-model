@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eux
+set -eu
 
 SECONDS=0
 
@@ -9,10 +9,12 @@ die() { echo "$@" >&2; exit 1; }
 usage() {
   set +x
   echo
-  echo "Usage: $0 -a <account> | -c | -e | -h | -k | -w | -d | -l <file> | -m | -n <name> | -r "
+  echo "Usage: $0 -a <account> | -b <file> | -c | -d | -e | -h | -k | -l <file> | -m | -n <name> | -r | -w"
   echo
   echo "  -a  <account> to use on for HPC queue"
+  echo "  -b  create new baselines only for tests listed in <file>"
   echo "  -c  create new baseline results"
+  echo "  -d  delete run direcotries that are not used by other tests"
   echo "  -e  use ecFlow workflow manager"
   echo "  -h  display this help"
   echo "  -k  keep run directory after rt.sh is completed"
@@ -21,7 +23,6 @@ usage() {
   echo "  -n  run single test <name>"
   echo "  -r  use Rocoto workflow manager"
   echo "  -w  for weekly_test, skip comparing baseline results"
-  echo "  -d  delete run direcotries that are not used by other tests"
   echo
   set -x
   exit 1
@@ -142,12 +143,16 @@ export delete_rundir=false
 SKIP_ORDER=false
 RTPWD_NEW_BASELINE=false
 TESTS_FILE='rt.conf'
+NEW_BASELINES_FILE=''
 ACCNR=${ACCNR:-""}
 
-while getopts ":a:cl:mn:dwkreh" opt; do
+while getopts ":a:b:cl:mn:dwkreh" opt; do
   case $opt in
     a)
       ACCNR=$OPTARG
+      ;;
+    b)
+      NEW_BASELINES_FILE=$OPTARG
       ;;
     c)
       CREATE_BASELINE=true
@@ -171,9 +176,9 @@ while getopts ":a:cl:mn:dwkreh" opt; do
         echo "The -n option needs <testname> AND <compiler>, i.e. -n control_p8 intel"
         exit 1
       fi
-      SINGLE_NAME=${SINGLE_OPTS[0],,}
-      export RT_COMPILER=${SINGLE_OPTS[1],,}
-      
+      SINGLE_NAME=${SINGLE_OPTS[0]}
+      export RT_COMPILER=${SINGLE_OPTS[1]}
+
       if [[ "$RT_COMPILER" == "intel" ]] || [[ "$RT_COMPILER" == "gnu" ]]; then
         echo "COMPILER set to ${RT_COMPILER}"
       else
@@ -489,6 +494,16 @@ if [[ $CREATE_BASELINE == true ]]; then
   #
   rm -rf "${NEW_BASELINE}"
   mkdir -p "${NEW_BASELINE}"
+
+  NEW_BASELINES_TESTS=()
+  if [[ $NEW_BASELINES_FILE != '' ]]; then
+    readarray -t NEW_BASELINES_TESTS < $NEW_BASELINES_FILE
+    echo "New baselines will be created for:"
+    for test_name in "${NEW_BASELINES_TESTS[@]}"
+    do
+      echo "  $test_name"
+    done
+  fi
 fi
 
 if [[ $skip_check_results == true ]]; then
@@ -575,7 +590,7 @@ fi
 if [[ $ECFLOW == true ]]; then
 
   # Default maximum number of compile and run jobs
-  MAX_BUILDS=10
+  MAX_BUILDS=30
   MAX_JOBS=30
 
   # Default number of tries to run jobs - on wcoss, no error tolerance
@@ -651,7 +666,7 @@ while read -r line || [ "$line" ]; do
   JOB_NR=$( printf '%03d' $(( 10#$JOB_NR + 1 )) )
 
   if [[ $line == COMPILE* ]]; then
-    
+
     COMPILE_NAME=$( echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
     RT_COMPILER=$(echo $line | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
     MAKE_OPT=$(   echo $line | cut -d'|' -f4 | sed -e 's/^ *//' -e 's/ *$//')
@@ -734,6 +749,17 @@ EOF
       else
         echo "MACHINES=|${MACHINES}|"
         die "MACHINES spec must be either an empty string or start with either '+' or '-'"
+      fi
+    fi
+
+    if [[ $CREATE_BASELINE == true && $NEW_BASELINES_FILE != '' ]]; then
+      if [[ ! " ${NEW_BASELINES_TESTS[*]} " =~ " ${TEST_NAME} " ]]; then
+        echo "Link current baselines for test ${TEST_NAME}_${RT_COMPILER}"
+        source ${PATHRT}/tests/$TEST_NAME
+        ln -s ${RTPWD}/${CNTL_DIR}_${RT_COMPILER} ${NEW_BASELINE}
+        continue
+      else
+        echo "Create new baselines for test ${TEST_NAME}_${RT_COMPILER}"
       fi
     fi
 
