@@ -350,7 +350,7 @@ export OUTPUT_HISTORY=.true.
 export WRITE_DOPOST=.false.
 export NUM_FILES=2
 export FILENAME_BASE="'atm' 'sfc'"
-export OUTPUT_GRID="'cubed_sphere_grid'"
+export OUTPUT_GRID='gaussian_grid'
 export OUTPUT_FILE="'netcdf'"
 export IDEFLATE=0
 export NBITS=0
@@ -488,12 +488,12 @@ export DO_MYJSFC=.false.
 export DO_MYNNSFCLAY=.false.
 
 # LSM
-export LSM=1
+export LSM=2
 export LSOIL_LSM=4
 export LANDICE=.true.
 export KICE=2
-export IALB=1
-export IEMS=1
+export IALB=2
+export IEMS=2
 
 # Ozone / stratospheric H2O
 export OZ_PHYS_OLD=.true.
@@ -518,8 +518,8 @@ export USE_MED_FLUX=.false.
 export DAYS=1
 export NPX=97
 export NPY=97
-export NPZ=64
-export NPZP=65
+export NPZ=127
+export NPZP=128
 export NSTF_NAME=2,1,1,0,5
 export OUTPUT_FH="12 -1"
 export NFHOUT=12
@@ -540,10 +540,10 @@ export ATMRES=C96
 export TILEDFIX=.false.
 
 export ENS_NUM=1
-export SYEAR=2016
-export SMONTH=10
-export SDAY=03
-export SHOUR=00
+export SYEAR=2021
+export SMONTH=03
+export SDAY=22
+export SHOUR=06
 export SECS=`expr $SHOUR \* 3600`
 export FHMAX=$(( DAYS*24 ))
 export DT_ATMOS=1800
