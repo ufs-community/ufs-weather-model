@@ -267,7 +267,7 @@ elif [[ $MACHINE_ID = hercules ]]; then
 
   module use /work/noaa/epic/role-epic/spack-stack/hercules/modulefiles
   module load ecflow/5.8.4-hercules
-  ECFLOW_START=/work/noaa/epic/role-epic/spack-stack/ecflow-5.8.4-hercules/bin/ecflow_start.sh
+  ECFLOW_START=/work/noaa/epic/role-epic/spack-stack/hercules/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
   QUEUE=windfall
@@ -381,7 +381,7 @@ elif [[ $MACHINE_ID = expanse ]]; then
   SCHEDULER=slurm
   cp fv3_conf/fv3_slurm.IN_expanse fv3_conf/fv3_slurm.IN
 
- elif [[ $MACHINE_ID = noaacloud.* ]]; then
+ elif [[ $MACHINE_ID = noaacloud ]]; then
 
   module use /apps/modules/modulefiles
   module load rocoto/1.3.3
