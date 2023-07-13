@@ -265,15 +265,15 @@ elif [[ $MACHINE_ID = hercules ]]; then
   export PATH=/apps/spack-managed/gcc-11.3.1/miniconda3-4.10.3-un3f2xdus7rbrzgso5ketsq4gp2iociv/bin:$PATH
   export PYTHONPATH=/apps/spack-managed/gcc-11.3.1/miniconda3-4.10.3-un3f2xdus7rbrzgso5ketsq4gp2iociv/lib/python3.9/site-packages
 
-  module use /work/noaa/epic-ps/role-epic-ps/spack-stack/modulefiles
-  module load ecflow/5.8.4-hercules
-  ECFLOW_START=/work/noaa/epic-ps/role-epic-ps/spack-stack/ecflow-5.8.4-hercules/bin/ecflow_start.sh
+  module use /work/noaa/epic/role-epic/spack-stack/hercules/modulefiles
+  module load ecflow/5.8.4
+  ECFLOW_START=/work/noaa/epic/role-epic/spack-stack/hercules/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
   QUEUE=windfall
   COMPILE_QUEUE=windfall
   PARTITION=hercules
-  dprefix=/work2/noaa/epic-ps/${USER}
+  dprefix=/work2/noaa/epic/${USER}
   DISKNM=/work/noaa/nems/emc.nemspara/RT
   STMP=$dprefix/stmp
   PTMP=$dprefix/stmp
@@ -381,7 +381,7 @@ elif [[ $MACHINE_ID = expanse ]]; then
   SCHEDULER=slurm
   cp fv3_conf/fv3_slurm.IN_expanse fv3_conf/fv3_slurm.IN
 
- elif [[ $MACHINE_ID = noaacloud.* ]]; then
+ elif [[ $MACHINE_ID = noaacloud ]]; then
 
   module use /apps/modules/modulefiles
   module load rocoto/1.3.3
