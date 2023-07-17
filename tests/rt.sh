@@ -622,7 +622,7 @@ fi
 if [[ $ECFLOW == true ]]; then
 
   # Default maximum number of compile and run jobs
-  MAX_BUILDS=30
+  MAX_BUILDS=10
   MAX_JOBS=30
 
   # Default number of tries to run jobs - on wcoss, no error tolerance
