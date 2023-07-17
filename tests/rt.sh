@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu
+set -eux
 
 SECONDS=0
 
@@ -74,6 +74,37 @@ rt_single() {
     echo "$SINGLE_NAME does not exist or cannot be run on $MACHINE_ID"
     exit 1
   fi
+}
+
+create_or_run_compile_task() {
+
+  cat << EOF > ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env
+  export JOB_NR=${JOB_NR}
+  export COMPILE_NR=${COMPILE_NR}
+  export MACHINE_ID=${MACHINE_ID}
+  export RT_COMPILER=${RT_COMPILER}
+  export PATHRT=${PATHRT}
+  export PATHTR=${PATHTR}
+  export SCHEDULER=${SCHEDULER}
+  export ACCNR=${ACCNR}
+  export QUEUE=${COMPILE_QUEUE}
+  export PARTITION=${PARTITION}
+  export ROCOTO=${ROCOTO}
+  export ECFLOW=${ECFLOW}
+  export REGRESSIONTEST_LOG=${REGRESSIONTEST_LOG}
+  export LOG_DIR=${LOG_DIR}
+EOF
+
+  if [[ $ROCOTO == true ]]; then
+    rocoto_create_compile_task
+  elif [[ $ECFLOW == true ]]; then
+    ecflow_create_compile_task
+  else
+    ./run_compile.sh ${PATHRT} ${RUNDIR_ROOT} "${MAKE_OPT}" ${COMPILE_NR} > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
+  fi
+
+  RT_SUFFIX=""
+  BL_SUFFIX=""
 }
 
 rt_35d() {
@@ -462,6 +493,7 @@ NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST
 # Overwrite default RUNDIR_ROOT if environment variable RUNDIR_ROOT is set
 RUNDIR_ROOT=${RUNDIR_ROOT:-${PTMP}/${USER}/FV3_RT}/rt_$$
 mkdir -p ${RUNDIR_ROOT}
+echo "Run regression test in: ${RUNDIR_ROOT}"
 
 if [[ $SINGLE_NAME != '' ]]; then
   rt_single
@@ -654,6 +686,7 @@ in_metatask=false
 [[ -f $TESTS_FILE ]] || die "$TESTS_FILE does not exist"
 
 LAST_COMPILER_NR=-9999
+COMPILE_PREV==''
 
 declare -A compiles
 
@@ -673,6 +706,7 @@ while read -r line || [ "$line" ]; do
     MACHINES=$(   echo $line | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
     CB=$(         echo $line | cut -d'|' -f6)
     COMPILE_NR=${COMPILE_NAME}_${RT_COMPILER}
+    COMPILE_PREV=${COMPILE_NR}
 
     set +u
     if [[ ! -z ${compiles[$COMPILE_NR]} ]] ; then
@@ -696,33 +730,11 @@ while read -r line || [ "$line" ]; do
       fi
     fi
 
-    cat << EOF > ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env
-    export JOB_NR=${JOB_NR}
-    export COMPILE_NR=${COMPILE_NR}
-    export MACHINE_ID=${MACHINE_ID}
-    export RT_COMPILER=${RT_COMPILER}
-    export PATHRT=${PATHRT}
-    export PATHTR=${PATHTR}
-    export SCHEDULER=${SCHEDULER}
-    export ACCNR=${ACCNR}
-    export QUEUE=${COMPILE_QUEUE}
-    export PARTITION=${PARTITION}
-    export ROCOTO=${ROCOTO}
-    export ECFLOW=${ECFLOW}
-    export REGRESSIONTEST_LOG=${REGRESSIONTEST_LOG}
-    export LOG_DIR=${LOG_DIR}
-EOF
-
-    if [[ $ROCOTO == true ]]; then
-      rocoto_create_compile_task
-    elif [[ $ECFLOW == true ]]; then
-      ecflow_create_compile_task
-    else
-      ./run_compile.sh ${PATHRT} ${RUNDIR_ROOT} "${MAKE_OPT}" ${COMPILE_NR} > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
+    if [[ $CREATE_BASELINE == true && $NEW_BASELINES_FILE != '' ]]; then
+      continue
     fi
 
-    RT_SUFFIX=""
-    BL_SUFFIX=""
+    create_or_run_compile_task
 
     continue
 
@@ -752,14 +764,23 @@ EOF
       fi
     fi
 
+    COMPILE_METATASK_NAME=${COMPILE_NR}
     if [[ $CREATE_BASELINE == true && $NEW_BASELINES_FILE != '' ]]; then
       if [[ ! " ${NEW_BASELINES_TESTS[*]} " =~ " ${TEST_NAME} " ]]; then
         echo "Link current baselines for test ${TEST_NAME}_${RT_COMPILER}"
-        source ${PATHRT}/tests/$TEST_NAME
-        ln -s ${RTPWD}/${CNTL_DIR}_${RT_COMPILER} ${NEW_BASELINE}
+        (
+          source ${PATHRT}/tests/$TEST_NAME
+          ln -s ${RTPWD}/${CNTL_DIR}_${RT_COMPILER} ${NEW_BASELINE}
+        )
         continue
       else
         echo "Create new baselines for test ${TEST_NAME}_${RT_COMPILER}"
+        # look at COMPILE_PREV, and if it's not an empty string run compile step
+        # and reset it to empty so that we do not run compile more than once
+        if [[ ${COMPILE_PREV} != '' ]]; then
+          create_or_run_compile_task
+          [[ $ROCOTO == true || $ECFLOW == true ]] && COMPILE_PREV=''
+        fi
       fi
     fi
 
@@ -774,7 +795,7 @@ EOF
       new_compile=false
       in_metatask=true
       cat << EOF >> $ROCOTO_XML
-  <metatask name="compile_${COMPILE_NR}_tasks"><var name="zero">0</var>
+  <metatask name="compile_${COMPILE_METATASK_NAME}_tasks"><var name="zero">0</var>
 EOF
     fi
 
