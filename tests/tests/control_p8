@@ -60,57 +60,11 @@ export RESTART_INTERVAL="12 -1"
 export WRITE_DOPOST=.true.
 export OUTPUT_FH='0 21 24'
 
-# P7 default
-export IOPT_DVEG=4
-export IOPT_CRS=2
-export IOPT_RAD=3
-export IOPT_ALB=1
-export IOPT_STC=3
-# P8
-export IOPT_SFC=3
-export IOPT_TRS=2
-
-# FV3 P7 settings
-export D2_BG_K1=0.20
-export D2_BG_K2=0.04
-export PSM_BC=1
-# P8
-export DDDMP=0.1
-
 # P7 Merra2 Aerosols & NSST
-export USE_MERRA2=.true.
-export IAER=1011
 export NSTF_NAME=2,1,0,0,0
 
-export LHEATSTRG=.false.
-export LSEASPRAY=.true.
-
 # P7 UGWP1
-export GWD_OPT=2
-export DO_UGWP_V1=.false.
-export KNOB_UGWP_VERSION=0
-export KNOB_UGWP_NSLOPE=1
-export DO_UGWP_V0=.true.
 export DO_GSL_DRAG_LS_BL=.false.
-export DO_GSL_DRAG_SS=.true.
-export DO_GSL_DRAG_TOFD=.false.
-export DO_UGWP_V1_OROG_ONLY=.false.
-export DO_UGWP_V0_NST_ONLY=.false.
-export LDIAG_UGWP=.false.
-
-# P7 CA
-export DO_CA=.true.
-export CA_SGS=.true.
-export CA_GLOBAL=.false.
-export NCA=1
-export NCELLS=5
-export NLIVES=12
-export NTHRESH=18
-export NSEED=1
-export NFRACSEED=0.5
-export CA_TRIGGER=.true.
-export NSPINUP=1
-export ISEED_CA=12345
 
 # P7 settings
 export TILEDFIX=.true.
@@ -120,43 +74,34 @@ export FNTG3C="'C96.substrate_temperature.tileX.nc'"
 export FNVEGC="'C96.vegetation_greenness.tileX.nc'"
 export FNVETC="'C96.vegetation_type.tileX.nc'"
 export FNSOTC="'C96.soil_type.tileX.nc'"
-export FNSMCC=${FNSMCC_control}  # general
-export FNMSKH=${FNMSKH_control}  #  general
 export FNVMNC="'C96.vegetation_greenness.tileX.nc'"
 export FNVMXC="'C96.vegetation_greenness.tileX.nc'"
 export FNSLPC="'C96.slope_type.tileX.nc'"
 export FNABSC="'C96.maximum_snow_albedo.tileX.nc'"
-export LANDICE=".false." # check with general
-export FSICL=0  # check with general
-export FSICS=0  # check with general
 
-export IMP_PHYSICS=8     #general
-export LGFDLMPRAD=.false.   #general
-export DO_SAT_ADJ=.false.   #general
+# P8
 export DNATS=0    #general
-export DZ_MIN=6   #general
 
 #required for NML.IN sharing   #general
 export MIN_SEAICE=0.15   #general
-export FRAC_GRID=.true.   #general
+
 export MOM6_RESTART_SETTING=n   #general
+
 # P8 (not used for standalone)  #general
 export USE_CICE_ALB=.false.    #general
 
 export WRITE_NSFLIP=.true.  #general
 
 export FV3_RUN=control_run.IN   #general
+
 export CCPP_SUITE=FV3_GFS_v17_p8   # double check GW and see if we can drop _p8
+
 export FIELD_TABLE=field_table_thompson_noaero_tke #general
+
 export DIAG_TABLE=diag_table_p8_template 
+
 # use same namelist for standalone,coupled P7
 export INPUT_NML=cpld_control.nml.IN #general
-
-# RRTMGP
-export DO_RRTMGP=.false.  #general
-export DOGP_CLDOPTICS_LUT=.true.  #general
-export DOGP_LWSCAT=.true.  #general
-export DOGP_SGS_CNV=.true. #general
 
 export SATMEDMF=.true.  #general
 
