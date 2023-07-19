@@ -15,21 +15,13 @@ cleanup() {
 }
 
 write_fail_test() {
-  if [[ ${OPNREQ_TEST} == true ]]; then
-    echo "compile_${COMPILE_NR} failed in run_compile" >> $PATHRT/fail_opnreq_compile_${COMPILE_NR}
-  else
-    echo "compile_${COMPILE_NR} failed in run_compile" >> $PATHRT/fail_compile_${COMPILE_NR}
-  fi
+  echo "compile_${COMPILE_NR} failed in run_compile" >> $PATHRT/fail_compile_${COMPILE_NR}
   exit 1
 }
 
 remove_fail_test() {
     echo "Removing test failure flag file for compile_${COMPILE_NR}"
-    if [[ ${OPNREQ_TEST} == true ]] ; then
-        rm -f $PATHRT/fail_opnreq_compile_${COMPILE_NR}
-    else
-        rm -f $PATHRT/fail_compile_${COMPILE_NR}
-    fi
+    rm -f $PATHRT/fail_compile_${COMPILE_NR}
 }
 
 if [[ $# != 4 ]]; then
@@ -43,11 +35,12 @@ export MAKE_OPT=$3
 export COMPILE_NR=$4
 
 cd ${PATHRT}
-OPNREQ_TEST=${OPNREQ_TEST:-false}
 remove_fail_test
 
 [[ -e ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env ]] && source ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env
 source default_vars.sh
+[[ -e ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env ]] && source ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env
+
 
 
 export TEST_NAME=compile
@@ -57,6 +50,8 @@ export RUNDIR=${RUNDIR_ROOT}/${TEST_NAME}_${TEST_NR}
 
 echo -n "${JBNME}, $( date +%s )," > ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
 
+export RT_LOG=${LOG_DIR}/compile_${TEST_NR}.log
+
 source rt_utils.sh
 source atparse.bash
 
@@ -64,12 +59,27 @@ rm -rf ${RUNDIR}
 mkdir -p ${RUNDIR}
 cd $RUNDIR
 
-if [[ $SCHEDULER = 'slurm' ]]; then
-  atparse < $PATHRT/fv3_conf/compile_slurm.IN > job_card
+if [[ $SCHEDULER = 'pbs' ]]; then
+  if [[ -e $PATHRT/fv3_conf/compile_qsub.IN_${MACHINE_ID} ]]; then 
+    atparse < $PATHRT/fv3_conf/compile_qsub.IN_${MACHINE_ID} > job_card
+  else
+    echo "Looking for fv3_conf/compile_qsub.IN_${MACHINE_ID} but it is not found. Exiting"
+    exit 1
+  fi
+elif [[ $SCHEDULER = 'slurm' ]]; then
+  if [[ -e $PATHRT/fv3_conf/compile_slurm.IN_${MACHINE_ID} ]]; then
+    atparse < $PATHRT/fv3_conf/compile_slurm.IN_${MACHINE_ID} > job_card
+  else
+    echo "Looking for fv3_conf/compile_slurm.IN_${MACHINE_ID} but it is not found. Exiting"
+    exit 1
+  fi
 elif [[ $SCHEDULER = 'lsf' ]]; then
-  atparse < $PATHRT/fv3_conf/compile_bsub.IN > job_card
-elif [[ $SCHEDULER = 'pbs' ]]; then
-  atparse < $PATHRT/fv3_conf/compile_qsub.IN > job_card
+  if [[ -e $PATHRT/fv3_conf/compile_bsub.IN_${MACHINE_ID} ]]; then
+    atparse < $PATHRT/fv3_conf/compile_bsub.IN_${MACHINE_ID} > job_card
+  else
+    echo "Looking for fv3_conf/compile_bsub.IN_${MACHINE_ID} but it is not found. Exiting"
+    exit 1
+  fi
 fi
 
 ################################################################################

@@ -73,6 +73,18 @@
 
   INPES_aqm=33; JNPES_aqm=8
 
+  THRD_cpl_unstr=1
+  INPES_cpl_unstr=3; JNPES_cpl_unstr=8; WPG_cpl_unstr=6
+  OCN_tasks_cpl_unstr=20
+  ICE_tasks_cpl_unstr=10
+  WAV_tasks_cpl_unstr=60
+
+  THRD_cpl_unstr_mpi=1
+  INPES_cpl_unstr_mpi=4; JNPES_cpl_unstr_mpi=8; WPG_cpl_unstr_mpi=6
+  OCN_tasks_cpl_unstr_mpi=34
+  ICE_tasks_cpl_unstr_mpi=20
+  WAV_tasks_cpl_unstr_mpi=50
+
   aqm_omp_num_threads=1
   atm_omp_num_threads=1
   chm_omp_num_threads=1
@@ -82,7 +94,7 @@
   ocn_omp_num_threads=1
   wav_omp_num_threads=1
 
-if [[ $MACHINE_ID = wcoss2.* || $MACHINE_ID = acorn.* ]]; then
+if [[ $MACHINE_ID = wcoss2 || $MACHINE_ID = acorn ]]; then
 
   TPN=128
 
@@ -95,7 +107,7 @@ if [[ $MACHINE_ID = wcoss2.* || $MACHINE_ID = acorn.* ]]; then
   INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
   WAV_tasks_atmw_gdas=248
 
-elif [[ $MACHINE_ID = orion.* ]]; then
+elif [[ $MACHINE_ID = orion ]]; then
 
   TPN=40
 
@@ -108,7 +120,7 @@ elif [[ $MACHINE_ID = orion.* ]]; then
   INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
   WAV_tasks_atmw_gdas=248
 
-elif [[ $MACHINE_ID = hera.* ]]; then
+elif [[ $MACHINE_ID = hera ]]; then
 
   TPN=40
 
@@ -121,7 +133,7 @@ elif [[ $MACHINE_ID = hera.* ]]; then
   INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
   WAV_tasks_atmw_gdas=248
 
-elif [[ $MACHINE_ID = linux.* ]]; then
+elif [[ $MACHINE_ID = linux ]]; then
 
   TPN=40
 
@@ -140,7 +152,7 @@ elif [[ $MACHINE_ID = linux.* ]]; then
   ICE_tasks_cpl_thrd=10
   WAV_tasks_cpl_thrd=12
 
-elif [[ $MACHINE_ID = jet.* ]]; then
+elif [[ $MACHINE_ID = jet ]]; then
 
   TPN=24
 
@@ -169,7 +181,7 @@ elif [[ $MACHINE_ID = jet.* ]]; then
   WAV_tasks_cpl_c192=80
   WLCLK_cpl_c192=120
 
-elif [[ $MACHINE_ID = s4.* ]]; then
+elif [[ $MACHINE_ID = s4 ]]; then
 
   TPN=32
 
@@ -188,9 +200,9 @@ elif [[ $MACHINE_ID = s4.* ]]; then
   ICE_tasks_cpl_bmrk=48
   WAV_tasks_cpl_bmrk=80
 
-elif [[ $MACHINE_ID = gaea.* ]]; then
+elif [[ $MACHINE_ID = gaea ]]; then
 
-  TPN=36
+  TPN=24
 
   INPES_dflt=3 ; JNPES_dflt=8
   INPES_thrd=3 ; JNPES_thrd=4
@@ -201,7 +213,7 @@ elif [[ $MACHINE_ID = gaea.* ]]; then
   INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
   WAV_tasks_atmw_gdas=264
 
-elif [[ $MACHINE_ID = cheyenne.* ]]; then
+elif [[ $MACHINE_ID = cheyenne ]]; then
 
   TPN=36
 
@@ -244,7 +256,7 @@ elif [[ $MACHINE_ID = cheyenne.* ]]; then
   ICE_tasks_cpl_bmrk=48
   WAV_tasks_cpl_bmrk=100
 
-elif [[ $MACHINE_ID = stampede.* ]]; then
+elif [[ $MACHINE_ID = stampede ]]; then
 
   echo "Unknown MACHINE_ID ${MACHINE_ID}. Please update tasks configurations in default_vars.sh"
   exit 1
@@ -258,7 +270,7 @@ elif [[ $MACHINE_ID = stampede.* ]]; then
   TPN_cpl_atmw_gdas=12; INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8
   THRD_cpl_atmw_gdas=4; WPG_cpl_atmw_gdas=24; APB_cpl_atmw_gdas="0 311"; WPB_cpl_atmw_gdas="312 559"
 
-elif [[ ${MACHINE_ID} = noaacloud.* ]] ; then
+elif [[ ${MACHINE_ID} = noaacloud ]] ; then
 
     if [[ $PW_CSP == aws ]]; then
     TPN=36
@@ -270,7 +282,7 @@ elif [[ ${MACHINE_ID} = noaacloud.* ]] ; then
 
     INPES_dflt=3 ; JNPES_dflt=8
     INPES_thrd=3 ; JNPES_thrd=4
-    
+
     INPES_c384=8 ; JNPES_c384=6  ; THRD_c384=2
     INPES_c768=8 ; JNPES_c768=16 ; THRD_c768=2
 
@@ -286,7 +298,7 @@ elif [[ ${MACHINE_ID} = noaacloud.* ]] ; then
     ICE_tasks_cpl_thrd=10
     WAV_tasks_cpl_thrd=12
 
-elif [[ $MACHINE_ID = expanse.* ]]; then
+elif [[ $MACHINE_ID = expanse ]]; then
 
   echo "Unknown MACHINE_ID ${MACHINE_ID}. Please update tasks configurations in default_vars.sh"
   exit 1
@@ -297,8 +309,7 @@ elif [[ $MACHINE_ID = expanse.* ]]; then
 
   TPN_cpl_atmw_gdas=12; INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8
   THRD_cpl_atmw_gdas=2; WPG_cpl_atmw_gdas=24; APB_cpl_atmw_gdas="0 311"; WPB_cpl_atmw_gdas="312 559"
-  
-  
+
 else
 
   echo "Unknown MACHINE_ID ${MACHINE_ID}"
@@ -309,11 +320,13 @@ fi
 WLCLK_dflt=30
 
 export WLCLK=$WLCLK_dflt
+export CMP_DATAONLY=false
 
 export_fv3 ()
 {
 # nems.configure defaults
 export NEMS_CONFIGURE=nems.configure.atm.IN
+export MODEL_CONFIGURE=model_configure.IN
 export atm_model=fv3
 
 export FV3=true
@@ -342,6 +355,8 @@ export OUTPUT_GRID="'cubed_sphere_grid'"
 export OUTPUT_FILE="'netcdf'"
 export IDEFLATE=0
 export NBITS=0
+export ICHUNK2D=0
+export JCHUNK2D=0
 export ICHUNK3D=0
 export JCHUNK3D=0
 export KCHUNK3D=0
@@ -516,6 +531,7 @@ export FHZERO=6
 export FNALBC="'global_snowfree_albedo.bosu.t126.384.190.rg.grb'"
 export FNVETC="'global_vegtype.igbp.t126.384.190.rg.grb'"
 export FNSOTC="'global_soiltype.statsgo.t126.384.190.rg.grb'"
+export FNSOCC="''"
 export FNSMCC="'global_soilmgldas.t126.384.190.grb'"
 export FNSMCC_control="'global_soilmgldas.statsgo.t1534.3072.1536.grb'"
 export FNMSKH_control="'global_slmask.t1534.3072.1536.grb'"
@@ -682,6 +698,7 @@ export chm_model=gocart
 export ocn_model=mom6
 export ice_model=cice6
 export wav_model=ww3
+export pio_rearranger=box
 
 export coupling_interval_slow_sec=${DT_THERM_MOM6}
 export coupling_interval_fast_sec=${DT_ATMOS}
@@ -722,6 +739,7 @@ export IOPT_STC=3
 # P8
 export IOPT_SFC=3
 export IOPT_TRS=2
+export IOPT_DIAG=2
 
 # FV3 P7 settings
 export D2_BG_K1=0.20
@@ -786,6 +804,7 @@ export FNTG3C="'C96.substrate_temperature.tileX.nc'"
 export FNVEGC="'C96.vegetation_greenness.tileX.nc'"
 export FNVETC="'C96.vegetation_type.tileX.nc'"
 export FNSOTC="'C96.soil_type.tileX.nc'"
+export FNSOCC="'C96.soil_color.tileX.nc'"
 export FNSMCC=${FNSMCC_control}
 export FNMSKH=${FNMSKH_control}
 export FNVMNC="'C96.vegetation_greenness.tileX.nc'"
@@ -933,6 +952,8 @@ export med_model=cmeps
 export atm_model=datm
 export ocn_model=mom6
 export ice_model=cice6
+export pio_rearranger=box
+
 export ATM_compute_tasks=$ATM_compute_tasks_cdeps_100
 export OCN_tasks=$OCN_tasks_cdeps_100
 export ICE_tasks=$ICE_tasks_cdeps_100
@@ -982,6 +1003,7 @@ export mesh_file=cfsr_mesh.nc
 export MESH_ATM=DATM_INPUT/${mesh_file}
 export atm_datamode=${DATM_SRC}
 export stream_files=DATM_INPUT/${FILENAME_BASE}201110.nc
+export STREAM_OFFSET=0
 
 # MOM6 defaults; 1 degree
 export MOM_INPUT=MOM_input_template_100
@@ -1057,6 +1079,7 @@ export NTILES=1
 
 export ocn_model=docn
 export ocn_datamode=sstdata
+export pio_rearranger=box
 
 export DOCN_IN_CONFIGURE=docn_in
 export DOCN_STREAM_CONFIGURE=hafs_docn.streams.IN
@@ -1087,6 +1110,7 @@ export RESTART_INTERVAL=0
 export FHROT=0
 export coupling_interval_fast_sec=0
 export QUILTING=.true.
+export QUILTING_RESTART=.false.
 export WRITE_GROUP=1
 export WRTTASK_PER_GROUP=6
 export OUTPUT_HISTORY=.true.
@@ -1125,6 +1149,7 @@ export WAV_CUR='C'
 
 # nems.configure
 export med_model=cmeps
+export pio_rearranger=box
 export CAP_DBUG_FLAG=0
 export RESTART_N=${FHMAX}
 export CPLMODE=hafs

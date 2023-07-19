@@ -1,5 +1,4 @@
 cat <<EOF >${RUNDIR_ROOT}/opnreq_test${RT_SUFFIX}.env
-export OPNREQ_TEST=${OPNREQ_TEST}
 export CI_TEST=${CI_TEST}
 export RT_COMPILER=${RT_COMPILER}
 export FHMAX=${FHMAX}

@@ -3,17 +3,15 @@
 Provide a detailed description of what this PR does. What bug does it fix, or what feature does it add? Is a change of answers expected from this PR? Are any library updates included in this PR (modulefiles etc.)?
 -->
 
-### Top of commit queue on: TBD
-<!-- Please have sub-component Code Managers ready for merging sub-component PR's on the date above and the day after the date above -->
-
 ### Input data additions/changes
 - [ ] No changes are expected to input data.
-- [ ] There will be new input data. <!-- Add "input data change" Label -->
-- [ ] Input data will be updated. <!-- Add "New Input Data Req'd" Label -->
+- [ ] Changes are expected to input data:
+  - [ ] New input data.
+  - [ ] Updated input data.
 
 ### Anticipated changes to regression tests:
-- [ ] No changes are expected to any regression test. <!-- Add "No Baseline Change" Label -->
-- [ ] Changes are expected to the following tests: <!-- Add "Baseline Change" Label -->
+- [ ] No changes are expected to any regression test.
+- [ ] Changes are expected to the following tests:
 <!-- Please insert what RT's change and why you expect them to change -->
 
 ## Subcomponents involved:
@@ -31,25 +29,34 @@ Provide a detailed description of what this PR does. What bug does it fix, or wh
 - [ ] stochastic_physics
 - [ ] none
 
+### Library Updates/Changes
+<!-- Library updates take time. If this PR needs updates to libraries, please make sure to accomplish the following tasks -->
+- [ ] Not Needed
+- [ ] Create separate issue in [JCSDA/spack-stack](https://github.com/JCSDA/spack-stack) asking for update to library. Include library name, library version.
+- [ ] Add issue link from JCSDA/spack-stack following this item
+<!-- for example: "- JCSDA/spack-stack/issue/1757" -->
+
 ### Combined with PR's (If Applicable):
 
 ## Commit Queue Checklist:
 <!-- 
 Please complete all items in list. Make sure to attach logs from RT testing in comment, not in repository. Once all boxes are checked, please add the label "Ready for Commit Queue".
 -->
-- [ ] Link PR's from all sub-components involved
-- [ ] Confirm reviews completed in sub-component PR's
+- [ ] Link PR's from all sub-components involved in section below
+- [ ] Confirm reviews completed in ALL sub-component PR's
 - [ ] Add all appropriate labels to this PR.
-- [ ] Run full RT suite on either Hera/Cheyenne with both Intel/GNU compilers
+- [ ] Run full RT suite on either Hera/Cheyenne AND attach log to a PR comment.
 - [ ] Add list of any failed regression tests to "Anticipated changes to regression tests" section.
 
 ## Linked PR's and Issues:
 <!--
 Please link dependent pull requests.
-EXAMPLE: Depends on NOAA-EMC/fv3atm/pull/<pullrequest_number>
+EXAMPLE: "- Depends on NOAA-EMC/fv3atm/pull/<pullrequest_number>"
 
 Please link the related issues to be closed with this PR, whether in this repository, or in another repository.
-EXAMPLE: Closes NOAA-EMC/fv3atm/issues/<issue_number>
+EXAMPLE: "- Closes NOAA-EMC/fv3atm/issues/<issue_number>"
+
+PLEASE MAKE SURE TO USE THE - with a space before the "Depends on" or "Closes" as they show up well on github.
 -->
 
 ## Testing Day Checklist:
@@ -61,15 +68,11 @@ Please consult the ufs-weather-model [wiki](https://github.com/ufs-community/ufs
 
 ### Testing Log (for CM's):
 - RDHPCS
-  - Intel
-    - [ ] Hera
-    - [ ] Orion
-    - [ ] Jet
-    - [ ] Gaea
-    - [ ] Cheyenne
-  - GNU
-    - [ ] Hera
-    - [ ] Cheyenne
+  - [ ] Hera
+  - [ ] Orion
+  - [ ] Jet
+  - [ ] Gaea
+  - [ ] Cheyenne
 - WCOSS2
   - [ ] Dogwood/Cactus
   - [ ] Acorn
