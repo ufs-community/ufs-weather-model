@@ -637,6 +637,292 @@ export PRINT_DIFF_PGR=.false.
 export coupling_interval_fast_sec=0
 }
 
+
+
+
+
+
+export_cpl_v17 ()
+{
+export FV3=true
+export S2S=true
+export HAFS=false
+export AQM=false
+export DATM_CDEPS=false
+export DOCN_CDEPS=false
+
+export FV3BMIC='p8c'
+
+export SYEAR=2021
+export SMONTH=03
+export SDAY=22
+export SHOUR=06
+export SECS=`expr $SHOUR \* 3600`
+export BMIC=.false.
+
+export DAYS=1
+export FHMAX=24
+export FDIAG=6
+export FHZERO=6
+
+export WRITE_NSFLIP=.true.
+
+# default atm/ocn/ice resolution
+export ATMRES=C96
+export OCNRES=100
+export ICERES=1.00
+export NX_GLB=360
+export NY_GLB=320
+export NPZ=127
+export NPZP=128
+
+# default resources
+export DOMAINS_STACK_SIZE=8000000
+
+export INPES=$INPES_cpl_dflt
+export JNPES=$JNPES_cpl_dflt
+export THRD=$THRD_cpl_dflt
+export WRTTASK_PER_GROUP=$WPG_cpl_dflt
+
+OCN_tasks=$OCN_tasks_cpl_dflt
+ICE_tasks=$ICE_tasks_cpl_dflt
+WAV_tasks=$WAV_tasks_cpl_dflt
+
+# component and coupling timesteps
+export DT_ATMOS=720
+export DT_INNER=${DT_ATMOS}
+export DT_CICE=${DT_ATMOS}
+export DT_DYNAM_MOM6=1800
+export DT_THERM_MOM6=3600
+
+# nems.configure defaults
+export NEMS_CONFIGURE=nems.configure.cpld.IN
+export med_model=cmeps
+export atm_model=fv3
+export chm_model=gocart
+export ocn_model=mom6
+export ice_model=cice6
+export wav_model=ww3
+export pio_rearranger=box
+
+export coupling_interval_slow_sec=${DT_THERM_MOM6}
+export coupling_interval_fast_sec=${DT_ATMOS}
+
+export RESTART_N=${FHMAX}
+export CPLMODE=nems_frac
+export cap_dbug_flag=0
+export use_coldstart=false
+export use_mommesh=true
+export RUNTYPE=startup
+export CICERUNTYPE=initial
+export eps_imesh=1.0e-1
+export ATMTILESIZE=`expr $NPX - 1`
+export MULTIGRID=false
+
+# FV3 defaults
+export FRAC_GRID=.true.
+export CCPP_SUITE=FV3_GFS_v17_coupled_p8
+export INPUT_NML=cpld_control.nml.IN
+export FIELD_TABLE=field_table_thompson_noaero_tke_GOCART
+export DIAG_TABLE=diag_table_p8_template
+
+export DIAG_TABLE_ADDITIONAL=''
+
+export FHROT=0
+export NSOUT=-1
+export OUTPUT_FH='6 -1'
+
+# P7 default
+export IALB=2
+export IEMS=2
+export LSM=2
+export IOPT_DVEG=4
+export IOPT_CRS=2
+export IOPT_RAD=3
+export IOPT_ALB=1
+export IOPT_STC=3
+# P8
+export IOPT_SFC=3
+export IOPT_TRS=2
+export IOPT_DIAG=2
+
+# FV3 P7 settings
+export D2_BG_K1=0.20
+export D2_BG_K2=0.04
+#export DZ_MIN=2
+export PSM_BC=1
+export DDDMP=0.1
+
+#P8
+export DZ_MIN=6
+
+# P7 Merra2 Aerosols & NSST
+export USE_MERRA2=.true.
+export IAER=1011
+export NSTF_NAME=2,0,0,0,0
+
+export LHEATSTRG=.false.
+export LSEASPRAY=.true.
+
+# P7 UGWP1
+export GWD_OPT=2
+export KNOB_UGWP_NSLOPE=1
+export DO_GSL_DRAG_LS_BL=.true.
+export DO_GSL_DRAG_SS=.true.
+export DO_UGWP_V1_OROG_ONLY=.false.
+export DO_UGWP_V0_NST_ONLY=.false.
+export LDIAG_UGWP=.false.
+#P8
+export DO_GSL_DRAG_TOFD=.false.
+export CDMBWD=${CDMBWD_c96}
+
+# P8 RRTMGP
+export DO_RRTMGP=.false.
+export DOGP_CLDOPTICS_LUT=.true.
+export DOGP_LWSCAT=.true.
+export DOGP_SGS_CNV=.true.
+
+#P8 UGWD
+export DO_UGWP_V0=.true.
+export DO_UGWP_V1=.false.
+export DO_GSL_DRAG_LS_BL=.false.
+export KNOB_UGWP_VERSION=0
+
+# P7 CA
+export DO_CA=.true.
+export CA_SGS=.true.
+export CA_GLOBAL=.false.
+export NCA=1
+export NCELLS=5
+export NLIVES=12
+export NTHRESH=18
+export NSEED=1
+export NFRACSEED=0.5
+export CA_TRIGGER=.true.
+export NSPINUP=1
+export ISEED_CA=12345
+
+# P7 settings
+export FNALBC="'C96.snowfree_albedo.tileX.nc'"
+export FNALBC2="'C96.facsf.tileX.nc'"
+export FNTG3C="'C96.substrate_temperature.tileX.nc'"
+export FNVEGC="'C96.vegetation_greenness.tileX.nc'"
+export FNVETC="'C96.vegetation_type.tileX.nc'"
+export FNSOTC="'C96.soil_type.tileX.nc'"
+export FNSOCC="'C96.soil_color.tileX.nc'"
+export FNSMCC=${FNSMCC_control}
+export FNMSKH=${FNMSKH_control}
+export FNVMNC="'C96.vegetation_greenness.tileX.nc'"
+export FNVMXC="'C96.vegetation_greenness.tileX.nc'"
+export FNSLPC="'C96.slope_type.tileX.nc'"
+export FNABSC="'C96.maximum_snow_albedo.tileX.nc'"
+export LANDICE=".false."
+#P8
+export FSICL=0
+export FSICS=0
+
+# P8
+export USE_CICE_ALB=.true.
+export MIN_SEAICE=1.0e-6
+export DNATS=2
+export IMP_PHYSICS=8
+export LGFDLMPRAD=.false.
+export DO_SAT_ADJ=.false.
+export SATMEDMF=.true.
+
+# P7 default mushy thermo
+export KTHERM=2
+export TFREEZE_OPTION=mushy
+export CPLFLX=.true.
+export CPLICE=.true.
+export CPL=.true.
+export CPLWAV=.true.
+export CPLWAV2ATM=.true.
+export USE_MED_FLUX=.false.
+export CPLCHM=.true.
+export CPLLND=.false.
+
+# for FV3: default values will be changed if doing a warm-warm restart
+export WARM_START=.false.
+export MAKE_NH=.true.
+export NA_INIT=1
+export EXTERNAL_IC=.true.
+export NGGPS_IC=.true.
+export MOUNTAIN=.false.
+
+# MOM6 defaults; 1 degree
+export MOM_INPUT=MOM_input_template_100
+export MOM6_RESTART_SETTING=n
+export MOM6_RIVER_RUNOFF=False
+export FRUNOFF=''
+export CHLCLIM=seawifs_1998-2006_smoothed_2X.nc
+export MOM6_USE_LI2016=True
+# since CPL_SLOW is set to DT_THERM, this should be always be false
+export MOM6_THERMO_SPAN=False
+export MOM6_USE_WAVES=True
+export MOM6_ALLOW_LANDMASK_CHANGES=False
+# MOM6 IAU
+export MOM_IAU=False
+export MOM_IAU_HRS=6
+# MOM6 stochastics
+export DO_OCN_SPPT=False
+export PERT_EPBL=False
+export OCN_SPPT=-999.
+export EPBL=-999.
+
+# CICE6 defaults; 1 degree
+export CICE_DECOMP=slenderX2
+export NPROC_ICE=$ICE_tasks
+# SlenderX2
+export CICE_DECOMP=slenderX2
+export np2=`expr $NPROC_ICE / 2`
+export BLCKX=`expr $NX_GLB / $np2`
+export BLCKY=`expr $NY_GLB / 2`
+export MESHOCN_ICE=mesh.mx${OCNRES}.nc
+export WAVDOMAIN=mx${OCNRES}
+export MODDEF_WAV=mod_def.mx${OCNRES}
+export MESH_WAV=mesh.${WAVDOMAIN}.nc
+export CICEGRID=grid_cice_NEMS_mx${OCNRES}.nc
+export CICEMASK=kmtu_cice_NEMS_mx${OCNRES}.nc
+export RUNID=unknown
+# set large; restart frequency now controlled by restart_n in nems.configure
+export DUMPFREQ=d
+export DUMPFREQ_N=1000
+export USE_RESTART_TIME=.false.
+export RESTART_EXT=.false.
+# setting to true will allow Frazil FW and Salt to be
+# included in fluxes sent to ocean
+export FRAZIL_FWSALT=.true.
+# default to write CICE average history files
+export CICE_HIST_AVG=.true.
+# default CICE B-grid, ATM and OCN are provided by cap on A grid
+export GRIDATM=A
+export GRIDOCN=A
+export GRIDICE=B
+
+#wave
+export WW3RSTDTHR=3
+export DT_2_RST="$(printf "%02d" $(( ${WW3RSTDTHR}*3600 )))"
+export WW3OUTDTHR=3
+export DTFLD="$(printf "%02d" $(( ${WW3OUTDTHR}*3600 )))"
+export DTPNT="$(printf "%02d" $(( ${WW3OUTDTHR}*3600 )))"
+# waves when using shel.nml.IN
+export WAV_CUR='C'
+export WAV_ICE='C'
+export WAV_IC1='F'
+export WAV_IC5='F'
+# gocart inst_aod output; uses AERO_HIST.rc.IN from parm/gocart directory
+export AOD_FRQ=060000
+
+# checkpoint restarts
+export RESTART_FILE_PREFIX=''
+export RESTART_FILE_SUFFIX_SECS=''
+export RT35D=''
+}
+
+
+
+
 export_fv3 ()
 {
 # nems.configure defaults
