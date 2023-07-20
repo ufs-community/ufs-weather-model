@@ -948,6 +948,7 @@ export FHZERO=6
 export FNALBC="'global_snowfree_albedo.bosu.t126.384.190.rg.grb'"
 export FNVETC="'global_vegtype.igbp.t126.384.190.rg.grb'"
 export FNSOTC="'global_soiltype.statsgo.t126.384.190.rg.grb'"
+export FNSOCC="''"
 export FNSMCC="'global_soilmgldas.t126.384.190.grb'"
 export FNSMCC_control="'global_soilmgldas.statsgo.t1534.3072.1536.grb'"
 export FNMSKH_control="'global_slmask.t1534.3072.1536.grb'"
