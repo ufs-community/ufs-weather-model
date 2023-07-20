@@ -1142,103 +1142,103 @@ export DIAG_TABLE_ADDITIONAL=''
 export FHROT=0
 export NSOUT=-1
 export OUTPUT_FH='6 -1'
-###
-## P7 default
-#export IALB=2
-#export IEMS=2
-#export LSM=2
-#export IOPT_DVEG=4
-#export IOPT_CRS=2
-#export IOPT_RAD=3
-#export IOPT_ALB=1
-#export IOPT_STC=3
-## P8
-#export IOPT_SFC=3
-#export IOPT_TRS=2
+# P7 default
+export IALB=2
+export IEMS=2
+export LSM=2
+export IOPT_DVEG=4
+export IOPT_CRS=2
+export IOPT_RAD=3
+export IOPT_ALB=1
+export IOPT_STC=3
+# P8
+export IOPT_SFC=3
+export IOPT_TRS=2
+export IOPT_DIAG=2
 
-## FV3 P7 settings
-#export D2_BG_K1=0.20
-#export D2_BG_K2=0.04
-##export DZ_MIN=2
-#export PSM_BC=1
-#export DDDMP=0.1
+# FV3 P7 settings
+export D2_BG_K1=0.20
+export D2_BG_K2=0.04
+#export DZ_MIN=2
+export PSM_BC=1
+export DDDMP=0.1
 
-##P8
-#export DZ_MIN=6
+#P8
+export DZ_MIN=6
 
-## P7 Merra2 Aerosols & NSST
-#export USE_MERRA2=.true.
-#export IAER=1011
-#export NSTF_NAME=2,0,0,0,0
+# P7 Merra2 Aerosols & NSST
+export USE_MERRA2=.true.
+export IAER=1011
+export NSTF_NAME=2,0,0,0,0
 
-#export LHEATSTRG=.false.
-#export LSEASPRAY=.true.
+export LHEATSTRG=.false.
+export LSEASPRAY=.true.
 
-## P7 UGWP1
-#export GWD_OPT=2
-#export KNOB_UGWP_NSLOPE=1
-#export DO_GSL_DRAG_LS_BL=.true.
-#export DO_GSL_DRAG_SS=.true.
-#export DO_UGWP_V1_OROG_ONLY=.false.
-#export DO_UGWP_V0_NST_ONLY=.false.
-#export LDIAG_UGWP=.false.
-##P8
-#export DO_GSL_DRAG_TOFD=.false.
-#export CDMBWD=${CDMBWD_c96}
+# P7 UGWP1
+export GWD_OPT=2
+export KNOB_UGWP_NSLOPE=1
+export DO_GSL_DRAG_LS_BL=.true.
+export DO_GSL_DRAG_SS=.true.
+export DO_UGWP_V1_OROG_ONLY=.false.
+export DO_UGWP_V0_NST_ONLY=.false.
+export LDIAG_UGWP=.false.
+#P8
+export DO_GSL_DRAG_TOFD=.false.
+export CDMBWD=${CDMBWD_c96}
 
-## P8 RRTMGP
-#export DO_RRTMGP=.false.
-#export DOGP_CLDOPTICS_LUT=.true.
-#export DOGP_LWSCAT=.true.
-#export DOGP_SGS_CNV=.true.
+# P8 RRTMGP
+export DO_RRTMGP=.false.
+export DOGP_CLDOPTICS_LUT=.true.
+export DOGP_LWSCAT=.true.
+export DOGP_SGS_CNV=.true.
 
-##P8 UGWD
-#export DO_UGWP_V0=.true.
-#export DO_UGWP_V1=.false.
-#export DO_GSL_DRAG_LS_BL=.false.
-#export KNOB_UGWP_VERSION=0
+#P8 UGWD
+export DO_UGWP_V0=.true.
+export DO_UGWP_V1=.false.
+export DO_GSL_DRAG_LS_BL=.false.
+export KNOB_UGWP_VERSION=0
 
-## P7 CA
-#export DO_CA=.true.
-#export CA_SGS=.true.
-#export CA_GLOBAL=.false.
-#export NCA=1
-#export NCELLS=5
-#export NLIVES=12
-#export NTHRESH=18
-#export NSEED=1
-#export NFRACSEED=0.5
-#export CA_TRIGGER=.true.
-#export NSPINUP=1
-#export ISEED_CA=12345
+# P7 CA
+export DO_CA=.true.
+export CA_SGS=.true.
+export CA_GLOBAL=.false.
+export NCA=1
+export NCELLS=5
+export NLIVES=12
+export NTHRESH=18
+export NSEED=1
+export NFRACSEED=0.5
+export CA_TRIGGER=.true.
+export NSPINUP=1
+export ISEED_CA=12345
 
-## P7 settings
-#export FNALBC="'C96.snowfree_albedo.tileX.nc'"
-#export FNALBC2="'C96.facsf.tileX.nc'"
-#export FNTG3C="'C96.substrate_temperature.tileX.nc'"
-#export FNVEGC="'C96.vegetation_greenness.tileX.nc'"
-#export FNVETC="'C96.vegetation_type.tileX.nc'"
-#export FNSOTC="'C96.soil_type.tileX.nc'"
-#export FNSMCC=${FNSMCC_control}
-#export FNMSKH=${FNMSKH_control}
-#export FNVMNC="'C96.vegetation_greenness.tileX.nc'"
-#export FNVMXC="'C96.vegetation_greenness.tileX.nc'"
-#export FNSLPC="'C96.slope_type.tileX.nc'"
-#export FNABSC="'C96.maximum_snow_albedo.tileX.nc'"
-#export LANDICE=".false."
+# P7 settings
+export FNALBC="'C96.snowfree_albedo.tileX.nc'"
+export FNALBC2="'C96.facsf.tileX.nc'"
+export FNTG3C="'C96.substrate_temperature.tileX.nc'"
+export FNVEGC="'C96.vegetation_greenness.tileX.nc'"
+export FNVETC="'C96.vegetation_type.tileX.nc'"
+export FNSOTC="'C96.soil_type.tileX.nc'"
+export FNSOCC="'C96.soil_color.tileX.nc'"
+export FNSMCC=${FNSMCC_control}
+export FNMSKH=${FNMSKH_control}
+export FNVMNC="'C96.vegetation_greenness.tileX.nc'"
+export FNVMXC="'C96.vegetation_greenness.tileX.nc'"
+export FNSLPC="'C96.slope_type.tileX.nc'"
+export FNABSC="'C96.maximum_snow_albedo.tileX.nc'"
+export LANDICE=".false."
+#P8
+export FSICL=0
+export FSICS=0
 
-##P8
-#export FSICL=0
-#export FSICS=0
-
-## P8
-#export USE_CICE_ALB=.true.
-#export MIN_SEAICE=1.0e-6
-#export DNATS=2
-#export IMP_PHYSICS=8
-#export LGFDLMPRAD=.false.
-#export DO_SAT_ADJ=.false.
-#export SATMEDMF=.true.
+# P8
+export USE_CICE_ALB=.true.
+export MIN_SEAICE=1.0e-6
+export DNATS=2
+export IMP_PHYSICS=8
+export LGFDLMPRAD=.false.
+export DO_SAT_ADJ=.false.
+export SATMEDMF=.true.
 
 # P7 default mushy thermo
 export KTHERM=2
