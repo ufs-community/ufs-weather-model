@@ -62,7 +62,6 @@ else
     source /lustre/f2/dev/role.epic/contrib/Lmod_init.sh
   fi
   # Load fv3 module
-  module purge
   module use $PATHTR/modulefiles
   modulefile="ufs_${MACHINE_ID}.${RT_COMPILER}"
   module load $modulefile
