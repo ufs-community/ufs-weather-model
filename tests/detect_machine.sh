@@ -105,7 +105,7 @@ case $(hostname -f) in
   
 esac
 
-case $(echo $PW_CSP:-nono) in
+case $(echo ${PW_CSP:-nono}) in
 
   aws) MACHINE_ID=aws ;; ### parallelworks aws
   google)  MACHINE_ID=gcp ;; ### parallelworks gcp
