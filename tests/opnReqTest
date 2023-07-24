@@ -13,8 +13,10 @@ error() {
 usage() {
   #set +x
   echo
-  echo "Usage: $program -n <test-name> [ -c <test-case> ] [-b] [-d] [-e] [-k] [-h] [-x] [-z]"
+  echo "Usage: $program -n <test-name> -a <account> [ -c <test-case> ] [-b] [-d] [-e] [-k] [-h] [-x] [-z]"
   echo
+  echo "  -a  specify HPC <account> to use for batch job"
+  echo 
   echo "  -n  specify <test-name>"
   echo
   echo "  -c  specify <test-case>"
@@ -53,7 +55,7 @@ cleanup() {
 }
 
 find_build() {
-  cat rt.conf rt_gnu.conf >rt.temp
+  cat rt.conf >rt.temp
   local compile_line=''
   local run_line=''
   while read -r line || [ "$line" ]; do
@@ -62,7 +64,7 @@ find_build() {
     [[ $line == \#* ]] && continue
 
     if [[ $line =~ COMPILE ]] ; then
-      compile_opt=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
+      compile_opt=$(echo $line | cut -d'|' -f4 | sed -e 's/^ *//' -e 's/ *$//')
     elif [[ $line =~ RUN ]]; then
       tmp_test_name=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
       if [[ $TEST_NAME == $tmp_test_name && $compile_opt != '' ]]; then
@@ -118,6 +120,7 @@ build_opnReqTests() {
 				export ECFLOW=${ECFLOW}
 				export REGRESSIONTEST_LOG=${REGRESSIONTEST_LOG}
 				export LOG_DIR=${LOG_DIR}
+        export RT_COMPILER=${RT_COMPILER}
 				EOF
 
     if [[ $ECFLOW == true ]]; then
@@ -125,7 +128,7 @@ build_opnReqTests() {
       ecflow_create_compile_task
     else
       echo "compiling $name with compile option $MAKE_OPT"
-      ./compile.sh $MACHINE_ID "${MAKE_OPT}" $name >${LOG_DIR}/compile_${TEST_NAME}_$name.log 2>&1
+      ./compile.sh $MACHINE_ID "${MAKE_OPT}" $name ${RT_COMPILER} >${LOG_DIR}/compile_${TEST_NAME}_$name.log 2>&1
       echo "done compiling $name"
     fi
   done
@@ -134,22 +137,21 @@ build_opnReqTests() {
 run_opnReqTests() {
   JOB_NR=0
   for rc in $run_case; do
-    # load default variables and override as necessary
-    source default_vars.sh
-    source ${PATHRT}/tests/$TEST_NAME
 
     # if TEST_NAME specifies WARM_START true, error and exit
+    source ${PATHRT}/tests/$TEST_NAME
     if [[ ${WARM_START} == .T. ]]; then
       error "test-name cannot be a restart run (i.e. WARM_START=.T.)"
     fi
 
-    application=''
     if [[ $TEST_NAME =~ regional ]]; then
       application=regional
     elif [[ $TEST_NAME =~ cpld ]]; then
       application=cpld
     elif [[ $TEST_NAME =~ datm ]]; then
       application=datm
+    elif [[ $TEST_NAME =~ atmw ]]; then
+      application=atmw
     else
       application=global
     fi
@@ -245,18 +247,21 @@ run_opnReqTests() {
 			export LOG_DIR=${LOG_DIR}
 			export skip_check_results=${skip_check_results}
 			export delete_rundir=${delete_rundir}
+      export RT_COMPILER=${RT_COMPILER}
+      export WLCLK=${WLCLK}
 			EOF
 
     if [[ $ECFLOW == true ]]; then
       TEST_NR=${RT_SUFFIX:1}
       COMPILE_NR=$comp_nm
+      RT_COMPILER=${RT_COMPILER:-intel}
       DEP_RUN=
       if [[ ${RT_SUFFIX} == _std || ${RT_SUFFIX} == _thr || ${RT_SUFFIX} == _mpi || ${RT_SUFFIX} == _dcp || ${RT_SUFFIX} == _rst || ${RT_SUFFIX} == _fhz ]]; then
-        DEP_RUN="${TEST_NAME}_std_base"
+        DEP_RUN="${TEST_NAME}_${RT_COMPILER}_std_base"
       elif [[ ${RT_SUFFIX} == _bit ]]; then
-        DEP_RUN="${TEST_NAME}_bit_base"
+        DEP_RUN="${TEST_NAME}_${RT_COMPILER}_bit_base"
       elif [[ ${RT_SUFFIX} == _dbg ]]; then
-        DEP_RUN="${TEST_NAME}_dbg_base"
+        DEP_RUN="${TEST_NAME}_${RT_COMPILER}_dbg_base"
       else
         DEP_RUN=''
       fi
@@ -265,7 +270,7 @@ run_opnReqTests() {
       echo "Running test for $rc"
       echo "    THRD: $THRD; INPES: $INPES; JNPES: $JNPES; TPN: $TPN"
       TEST_NR=${RT_SUFFIX:1}
-      ./run_test.sh $PATHRT $RUNDIR_ROOT $TEST_NAME $TEST_NR $comp_nm > $LOG_DIR/run_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log 2>&1
+      ./run_test.sh $PATHRT $RUNDIR_ROOT $TEST_NAME $TEST_NR $comp_nm > $LOG_DIR/run_${TEST_NR}_${TEST_NAME}_${RT_COMPILER}${RT_SUFFIX}.log #2>&1
     fi
 
   done
@@ -295,14 +300,13 @@ readonly PATHRT=$(cd $(dirname $0) && pwd -P)
 # PATHTR - Path to trunk directory
 readonly PATHTR=$(cd ${PATHRT}/.. && pwd)
 readonly lockdir=${PATHRT}/lock_opnReqTest
-export OPNREQ_TEST=true
 export CI_TEST=${CI_TEST:-false}
 
 [[ $# -eq 0 ]] && usage_and_exit 1
 
 # specify compiler
 export RT_COMPILER=${RT_COMPILER:-intel}
-# detect_machine sets ACCNR and MACHINE_ID
+# detect_machine sets MACHINE_ID
 RT_MACHINE=${RT_MACHINE:-}
 source detect_machine.sh
 cd $PATHRT
@@ -319,8 +323,10 @@ source rt_utils.sh
 
 source module-setup.sh
 
+rm -f fail_test* fail_compile*
+
 # Machine-dependent libraries, modules, variables, etc.
-if [[ $MACHINE_ID = hera.* ]]; then
+if [[ $MACHINE_ID = hera ]]; then
 
   PYTHONHOME=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3_new_20210629
   export PATH=$PYTHONHOME/bin:$PATH
@@ -332,16 +338,13 @@ if [[ $MACHINE_ID = hera.* ]]; then
   PARTITION=
   QUEUE=batch
   COMPILE_QUEUE=batch
-  ACCNR="${ACCNR:-nems}"
   dprefix=/scratch1/NCEPDEV
   DISKNM=$dprefix/nems/emc.nemspara/RT
   STMP=${dprefix}/stmp4
   PTMP=${dprefix}/stmp2
   SCHEDULER=slurm
-  cp fv3_conf/fv3_slurm.IN_hera fv3_conf/fv3_slurm.IN
-  cp fv3_conf/compile_slurm.IN_hera fv3_conf/compile_slurm.IN
 
-elif [[ $MACHINE_ID = orion.* ]]; then
+elif [[ $MACHINE_ID = orion ]]; then
 
   module load gcc/8.3.0
 
@@ -351,22 +354,18 @@ elif [[ $MACHINE_ID = orion.* ]]; then
   ECF_PORT=$(( $(id -u) + 1500 ))
   QUEUE=batch
   COMPILE_QUEUE=batch
-  ACCNR="${ACCNR:-nems}"
   PARTITION=orion
   dprefix=/work/noaa/stmp/${USER}
   DISKNM=/work/noaa/nems/emc.nemspara/RT
   STMP=$dprefix/stmp
   PTMP=$dprefix/stmp
   SCHEDULER=slurm
-  cp fv3_conf/fv3_slurm.IN_orion fv3_conf/fv3_slurm.IN
-  cp fv3_conf/compile_slurm.IN_orion fv3_conf/compile_slurm.IN
 
-elif [[ $MACHINE_ID = linux.* ]]; then
+elif [[ $MACHINE_ID = linux ]]; then
 
   PARTITION=
   QUEUE=
   COMPILE_QUEUE=
-  ACCNR=
   dprefix=/home/builder
   DISKNM=${dprefix}/data
   STMP=${dprefix}/stmp4
@@ -393,8 +392,11 @@ skip_check_results=false
 delete_rundir=false
 
 # parse command line arguments to fill-in/modify the above default variables
-while getopts :n:c:ekhbdsxz opt; do
+while getopts :a:n:c:ekhbdsxz opt; do
   case $opt in
+    a)
+      ACCNR=$OPTARG
+      ;;
     n)
       TEST_NAME=$OPTARG
       echo "test name: ${TEST_NAME}"
@@ -439,6 +441,11 @@ while getopts :n:c:ekhbdsxz opt; do
 done
 
 # some safety guards for input arguments
+ACCNR=${ACCNR:-""}
+if [[ -z "$ACCNR" ]]; then
+  echo "Please use -a <account> to set group account to use on HPC"
+  exit 1
+fi
 if [[ -z $TEST_NAME ]]; then
   error "$program: test name is required. try 'opnReqTest -h' for usage"
 fi
@@ -454,6 +461,9 @@ fi
 if [[ $dbg_compare == true && ! $test_case =~ dbg ]]; then
   error "$program: debug reproducibility test requires specifying dbg"
 fi
+
+# load default variables and override as necessary
+source default_vars.sh
 
 # enumerate which case to compile and run
 compile_case=
@@ -500,9 +510,9 @@ if [[ $run_case =~ std_base && ! $run_case =~ ^std_base ]]; then
 fi
 
 # log directory
-export LOG_DIR=${PATHRT}/log_opnReqTest_$MACHINE_ID
+export LOG_DIR=${PATHRT}/logs/log_opnReqTest_$MACHINE_ID
 rm -rf ${LOG_DIR}
-mkdir ${LOG_DIR}
+mkdir -p ${LOG_DIR}
 
 # directory where all simulations are run
 RUNDIR_ROOT=${RUNDIR_ROOT:-${PTMP}/${USER}}/FV3_OPNREQ_TEST/opnReqTest_$$
@@ -526,24 +536,19 @@ if [[ $ECFLOW == true ]]; then
 		limit max_builds 6
 		limit max_jobs 30
 		EOF
-  if [[ $MACHINE_ID == hera.* ]]; then
+  if [[ $MACHINE_ID == hera ]]; then
     QUEUE=batch
-  elif [[ $MACHINE_ID == orion.* ]]; then
+  elif [[ $MACHINE_ID == orion ]]; then
     QUEUE=batch
   else
     error "ecflow is not supported on this machine $MACHINE_ID"
   fi
 
-  if [[ $MACHINE_ID == hera.* ]] && [[ ! $HOSTNAME == hecflow* ]]; then
-    echo "ERROR: To use ECFlow on Hera please use the 'hecflow01' login node: ssh hecflow01."
-    exit 1
-  fi
-
 fi
 
-opnreqtest_log=${PATHRT}/OpnReqTests_${TEST_NAME}_$MACHINE_ID.log
+opnreqtest_log=${PATHRT}/logs/OpnReqTests_${TEST_NAME}_$MACHINE_ID.log
 REGRESSIONTEST_LOG=$opnreqtest_log
-rm -f fail_opnreq_test* fail_opnreq_compile*
+rm -f fail_test* fail_compile*
 
 date >${opnreqtest_log}
 echo "Start Operation Requirement Test" >> ${opnreqtest_log}
@@ -621,20 +626,20 @@ fi
 ########################################################################
 set +e
 cat ${LOG_DIR}/compile_*_time.log | tee -a ${opnreqtest_log}
-cat ${LOG_DIR}/opnReqTest_*.log | tee -a ${opnreqtest_log}
+cat ${LOG_DIR}/rt_*.log | tee -a ${opnreqtest_log}
 
-FILES="fail_opnreq_test_* fail_opnreq_compile_*"
+FILES="fail_test_* fail_compile_*"
 for f in $FILES; do
   if [[ -f "$f" ]]; then
-    cat "$f" >> fail_opnreq_test
+    cat "$f" >> fail_test
   fi
 done
 
-if [[ -e fail_opnreq_test ]]; then
+if [[ -e fail_test ]]; then
   echo "FAILED TESTS: " | tee -a ${opnreqtest_log}
   while read -r failed_test_name; do
     echo "Test ${failed_test_name} failed " | tee -a ${opnreqtest_log}
-  done < fail_opnreq_test
+  done < fail_test
 
   echo "OPERATION REQUIREMENT TEST FAILED" | tee -a ${opnreqtest_log}
   date >>${opnreqtest_log}

@@ -77,7 +77,7 @@ pipeline {
 
                     stage('Test') {
                         steps {
-                            sh 'docker run --rm --env test_name="${TEST_NAME}" --env run_case="${TEST_CASE}" --workdir /home/builder/ufs-weather-model/tests --volume DataVolume:/home/builder/data/NEMSfv3gfs --interactive --shm-size=1gb "${IMG_NAME}"'
+                            sh 'docker run --rm --env test_name="${TEST_NAME}" --env run_case="${TEST_CASE}" --workdir /home/builder/ufs-weather-model/tests --volume DataVolume:/home/builder/data/NEMSfv3gfs --interactive --shm-size=16gb "${IMG_NAME}"'
                         }
                     }
                 }
