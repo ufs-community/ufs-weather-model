@@ -49,6 +49,7 @@ unset NEMS_CONFIGURE
 
 [[ -e ${RUNDIR_ROOT}/run_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
 source default_vars.sh
+[[ -e ${RUNDIR_ROOT}/run_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
 source tests/$TEST_NAME
 
 remove_fail_test
@@ -67,7 +68,6 @@ export JBNME=$(basename $RUNDIR_ROOT)_${TEST_NR}
 echo -n "${TEST_NAME}_${RT_COMPILER}, $( date +%s )," > ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
 
 export RT_LOG=${LOG_DIR}/rt_${TEST_NR}_${TEST_NAME}_${RT_COMPILER}${RT_SUFFIX}.log
-
 echo "Test ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} ${TEST_DESCR}"
 
 source rt_utils.sh
@@ -207,6 +207,10 @@ if [[ $FV3 == true ]]; then
   fi
 fi
 
+# NoahMP table file
+  cp ${PATHRT}/parm/noahmptable.tbl .
+
+
 # AQM
 if [[ $AQM == .true. ]]; then
   cp ${PATHRT}/parm/aqm/aqm.rc .
@@ -282,11 +286,26 @@ TASKS=$(( NODES * TPN ))
 export TASKS
 
 if [[ $SCHEDULER = 'pbs' ]]; then
-  atparse < $PATHRT/fv3_conf/fv3_qsub.IN > job_card
+  if [[ -e $PATHRT/fv3_conf/fv3_qsub.IN_${MACHINE_ID} ]]; then 
+    atparse < $PATHRT/fv3_conf/fv3_qsub.IN_${MACHINE_ID} > job_card
+  else
+    echo "Looking for fv3_conf/fv3_qsub.IN_${MACHINE_ID} but it is not found. Exiting"
+    exit 1
+  fi
 elif [[ $SCHEDULER = 'slurm' ]]; then
-  atparse < $PATHRT/fv3_conf/fv3_slurm.IN > job_card
+  if [[ -e $PATHRT/fv3_conf/fv3_slurm.IN_${MACHINE_ID} ]]; then
+    atparse < $PATHRT/fv3_conf/fv3_slurm.IN_${MACHINE_ID} > job_card
+  else
+    echo "Looking for fv3_conf/fv3_slurm.IN_${MACHINE_ID} but it is not found. Exiting"
+    exit 1
+  fi
 elif [[ $SCHEDULER = 'lsf' ]]; then
-  atparse < $PATHRT/fv3_conf/fv3_bsub.IN > job_card
+  if [[ -e $PATHRT/fv3_conf/fv3_bsub.IN_${MACHINE_ID} ]]; then
+    atparse < $PATHRT/fv3_conf/fv3_bsub.IN_${MACHINE_ID} > job_card
+  else
+    echo "Looking for fv3_conf/fv3_bsub.IN_${MACHINE_ID} but it is not found. Exiting"
+    exit 1
+  fi
 fi
 
 ################################################################################
