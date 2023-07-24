@@ -62,6 +62,8 @@ list(APPEND cdeps_docn_files
   CDEPS/docn/docn_datamode_copyall_mod.F90
   CDEPS/docn/docn_datamode_iaf_mod.F90
   CDEPS/docn/docn_datamode_som_mod.F90
+  CDEPS/docn/docn_datamode_cplhist_mod.F90
+  CDEPS/docn/docn_import_data_mod.F90
   CDEPS/docn/ocn_comp_nuopc.F90
 )
 
