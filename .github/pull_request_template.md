@@ -6,22 +6,27 @@ PLEASE DO NOT MODIFY THE TEMPLATE BEYOND FILLING OUT THE PROPER SECTIONS -->
 - [ ] I am confirming reviews are completed in ALL sub-component PR's.
 - [ ] I have run the full RT suite on either Hera/Cheyenne AND have attached the log to this PR below this line:
   - LOG: 
-- [ ] I have added the list of all failed regression tests to "Anticipated changes to regression tests" section.
+- [ ] I have added the list of all failed regression tests to "Anticipated changes" section.
 - [ ] I have filled out all sections of the template.
 
 ## Description
 <!-- Provide a detailed description of what this PR does in the space provided below-->
 
 
+## Linked Issues and Pull Requests
 ### Associated UFSWM Issue to close
 <!-- Example: "- Closes #1698" -->
 
 
-### UFSWM PR Dependencies
-<!-- Example: "- Depends on #1733" or "None"-->
+### Subcomponent Pull Requests
+<!-- format: - <community>/<repo>/pull/<PR number> i.e.: - NOAA-EMC/fv3atm/pull/33 or "None" -->
 
 
-## Subcomponents involved:
+### Blocking Dependencies
+<!-- Example: "- Depends on #1733" or "None" -->
+
+
+### Subcomponents involved:
 - [ ] AQM
 - [ ] CDEPS
 - [ ] CICE
@@ -36,10 +41,6 @@ PLEASE DO NOT MODIFY THE TEMPLATE BEYOND FILLING OUT THE PROPER SECTIONS -->
 - [ ] stochastic_physics
 - [ ] none
 
-### Subcomponent Pull Requests
-<!-- format: - <community>/<repo>/pull/<PR number> i.e.: - NOAA-EMC/fv3atm/pull/33 or "None" -->
-
-
 ## Anticipated Changes
 ### Input data
 - [ ] No changes are expected to input data.
@@ -52,7 +53,8 @@ PLEASE DO NOT MODIFY THE TEMPLATE BEYOND FILLING OUT THE PROPER SECTIONS -->
 - [ ] Changes are expected to the following tests:
 <!-- Please insert what RT's change and why you expect them to change in the space provided below -->
 <details><summary>Tests effected by changes in this PR:</summary>
-  <!-- ADD ITEMS HERE -->
+<!-- ADD ITEMS HERE or add "None" -->
+
 </details>
 
 ### Libraries
