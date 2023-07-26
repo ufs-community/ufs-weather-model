@@ -47,9 +47,17 @@ elif [[ $application == 'cpld' ]]; then
       #need to overhaul NODES=$(((TASKS+TPN-1)/TPN))
       echo $TEST_NAME
     else
-      echo "This test is not yet set up for the thread test"
-      exit 1
+      echo "This test is not yet set up for the thread test, skipping..."
+      continue 1
     fi
+  fi
+elif [[ $application == 'atmw' ]]; then
+  if [[ $CI_TEST == 'true' ]]; then
+    INPES=5
+    JNPES=11
+    WRTTASK_PER_GROUP=10
+    TASKS=$((INPES*JNPES + WRITE_GROUP*WRTTASK_PER_GROUP))
+    NODES=$(((TASKS+TPN-1)/TPN))
   fi
 fi
 

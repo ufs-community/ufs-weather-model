@@ -9,8 +9,6 @@ fi
 # are not dependent on the caller. Most regression test variables
 # (such as ACCNR) are not set until after rt.sh sources this file.
 
-OPNREQ_TEST=${OPNREQ_TEST:-false}
-
 qsub_id=0
 slurm_id=0
 bsub_id=0
@@ -150,7 +148,7 @@ submit_and_wait() {
   local job_running=0
   until [[ $job_running -eq 1 ]]
   do
-    echo "TEST ${TEST_NR} ${TEST_NAME} is waiting to enter the queue"
+    echo "TEST ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} is waiting to enter the queue"
     [[ ${ECFLOW:-false} == true ]] && ecflow_client --label=job_status "waiting to enter the queue"
     if [[ $SCHEDULER = 'pbs' ]]; then
       job_running=$( qstat ${qsub_id} | grep ${qsub_id} | wc -l )
@@ -178,7 +176,7 @@ submit_and_wait() {
     echo "Unknown SCHEDULER $SCHEDULER"
     exit 1
   fi
-  echo "TEST ${TEST_NR} ${TEST_NAME} is submitted "
+  echo "TEST ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} is submitted "
   if [[ ${ECFLOW:-false} == true ]]; then
     ecflow_client --label=job_id "${jobid}"
     ecflow_client --label=job_status "submitted"
@@ -273,7 +271,7 @@ submit_and_wait() {
 
     fi
 
-    echo "$n min. TEST ${TEST_NR} ${TEST_NAME} is ${status_label},  status: $status jobid ${jobid}"
+    echo "$n min. TEST ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} is ${status_label},  status: $status jobid ${jobid}"
     [[ ${ECFLOW:-false} == true ]] && ecflow_client --label=job_status "$status_label"
 
     if [[ $test_status = 'FAIL' || $test_status = 'DONE' ]]; then
@@ -285,15 +283,9 @@ submit_and_wait() {
   done
 
   if [[ $test_status = 'FAIL' ]]; then
-    if [[ ${OPNREQ_TEST} == false ]]; then
-      echo "Test ${TEST_NR} ${TEST_NAME} FAIL" >> ${REGRESSIONTEST_LOG}
-      echo;echo;echo                           >> ${REGRESSIONTEST_LOG}
-      echo "Test ${TEST_NR} ${TEST_NAME} FAIL"
-    else
-      echo "Test ${TEST_NAME} ${TEST_NR} FAIL" >> ${REGRESSIONTEST_LOG}
-      echo;echo;echo                           >> ${REGRESSIONTEST_LOG}
-      echo "Test ${TEST_NAME} ${TEST_NR} FAIL"
-    fi
+    echo "Test ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} FAIL" >> ${RT_LOG}
+    echo;echo;echo                           >> ${RT_LOG}
+    echo "Test ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} FAIL"
 
     if [[ $ROCOTO == true || $ECFLOW == true ]]; then
       exit 1
@@ -316,71 +308,76 @@ check_results() {
   # Give one minute for data to show up on file system
   #sleep 60
 
-  echo                                                       >  ${REGRESSIONTEST_LOG}
-  echo "baseline dir = ${RTPWD}/${CNTL_DIR}"                 >> ${REGRESSIONTEST_LOG}
-  echo "working dir  = ${RUNDIR}"                            >> ${REGRESSIONTEST_LOG}
-  echo "Checking test ${TEST_NR} ${TEST_NAME} results ...."  >> ${REGRESSIONTEST_LOG}
+  echo                                                                      >  ${RT_LOG}
+  echo "baseline dir = ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}"                 >> ${RT_LOG}
+  echo "working dir  = ${RUNDIR}"                                           >> ${RT_LOG}
+  echo "Checking test ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} results ...."  >> ${RT_LOG}
   echo
-  echo "baseline dir = ${RTPWD}/${CNTL_DIR}"
+  echo "baseline dir = ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}"
   echo "working dir  = ${RUNDIR}"
-  echo "Checking test ${TEST_NR} ${TEST_NAME} results ...."
+  echo "Checking test ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} results ...."
 
   if [[ ${CREATE_BASELINE} = false ]]; then
     #
     # --- regression test comparison
     #
     for i in ${LIST_FILES} ; do
-      printf %s " Comparing " $i " ....." >> ${REGRESSIONTEST_LOG}
+      printf %s " Comparing " $i " ....." >> ${RT_LOG}
       printf %s " Comparing " $i " ....."
 
       if [[ ! -f ${RUNDIR}/$i ]] ; then
 
-        echo ".......MISSING file" >> ${REGRESSIONTEST_LOG}
+        echo ".......MISSING file" >> ${RT_LOG}
         echo ".......MISSING file"
         test_status='FAIL'
 
-      elif [[ ! -f ${RTPWD}/${CNTL_DIR}/$i ]] ; then
+      elif [[ ! -f ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/$i ]] ; then
 
-        echo ".......MISSING baseline" >> ${REGRESSIONTEST_LOG}
+        echo ".......MISSING baseline" >> ${RT_LOG}
         echo ".......MISSING baseline"
         test_status='FAIL'
 
-      elif [[ $RT_COMPILER == "gnu" && $i == "RESTART/fv_core.res.nc" ]] ; then
-
-        # Although identical in ncdiff, RESTART/fv_core.res.nc differs in byte 469, line 3,
-        # for the fv3_control_32bit test between each run (without changing the source code)
-        # for GNU compilers - skip comparison.
-        echo ".......SKIP for gnu compilers" >> ${REGRESSIONTEST_LOG}
-        echo ".......SKIP for gnu compilers"
-
       else
 
-        cmp ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i >/dev/null 2>&1 && d=$? || d=$?
+        cmp ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/$i ${RUNDIR}/$i >/dev/null 2>&1 && d=$? || d=$?
         if [[ $d -eq 2 ]]; then
-          echo "....CMP ERROR" >> ${REGRESSIONTEST_LOG}
+          echo "....CMP ERROR" >> ${RT_LOG}
           echo "....CMP ERROR"
           exit 1
         fi
 
         if [[ $d -eq 1 && ${i##*.} == 'nc' ]] ; then
-          if [[ ${MACHINE_ID} =~ orion || ${MACHINE_ID} =~ hera || ${MACHINE_ID} =~ wcoss2 || ${MACHINE_ID} =~ acorn || ${MACHINE_ID} =~ cheyenne || ${MACHINE_ID} =~ gaea || ${MACHINE_ID} =~ jet || ${MACHINE_ID} =~ s4 ]] ; then
-            printf ".......ALT CHECK.." >> ${REGRESSIONTEST_LOG}
+          if [[ ${MACHINE_ID} =~ orion || ${MACHINE_ID} =~ hera || ${MACHINE_ID} =~ wcoss2 || ${MACHINE_ID} =~ acorn || ${MACHINE_ID} =~ cheyenne || ${MACHINE_ID} =~ gaea || ${MACHINE_ID} =~ jet || ${MACHINE_ID} =~ s4 || ${MACHINE_ID} =~ noaacloud ]] ; then
+            printf ".......ALT CHECK.." >> ${RT_LOG}
             printf ".......ALT CHECK.."
-            ${PATHRT}/compare_ncfile.py ${RTPWD}/${CNTL_DIR}/$i ${RUNDIR}/$i > compare_ncfile.log 2>&1 && d=$? || d=$?
-            if [[ $d -eq 1 ]]; then
-              echo "....ERROR" >> ${REGRESSIONTEST_LOG}
-              echo "....ERROR"
-              exit 1
+            if [[ ${MACHINE_ID} =~ orion || ${MACHINE_ID} =~ hera || ${MACHINE_ID} =~ gaea || ${MACHINE_ID} =~ jet || ${MACHINE_ID} =~ cheyenne ]] ; then
+              if [[ $CMP_DATAONLY == false ]]; then
+                nccmp -d -S -q -f -g -B --Attribute=checksum --warn=format ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i} ${RUNDIR}/${i} > ${i}_nccmp.log 2>&1 && d=$? || d=$?
+              else
+                nccmp -d -S -q -f -B --Attribute=checksum --warn=format ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i} ${RUNDIR}/${i} > ${i}_nccmp.log 2>&1 && d=$? || d=$?
+              fi
+              if [[ $d -ne 0 && $d -ne 1 ]]; then
+		  echo "....ERROR" >> ${RT_LOG}
+		  echo "....ERROR"
+		  exit 1
+              fi
+            else
+              ${PATHRT}/compare_ncfile.py ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/$i ${RUNDIR}/$i > compare_ncfile.log 2>&1 && d=$? || d=$?
+	      if [[ $d -eq 1 ]]; then
+		  echo "....ERROR" >> ${RT_LOG}
+		  echo "....ERROR"
+		  exit 1
+              fi
             fi
           fi
         fi
 
         if [[ $d -ne 0 ]]; then
-          echo "....NOT OK" >> ${REGRESSIONTEST_LOG}
+          echo "....NOT OK" >> ${RT_LOG}
           echo "....NOT OK"
           test_status='FAIL'
         else
-          echo "....OK" >> ${REGRESSIONTEST_LOG}
+          echo "....OK" >> ${RT_LOG}
           echo "....OK"
         fi
 
@@ -392,19 +389,19 @@ check_results() {
     #
     # --- create baselines
     #
-    echo;echo "Moving baseline ${TEST_NR} ${TEST_NAME} files ...."
-    echo;echo "Moving baseline ${TEST_NR} ${TEST_NAME} files ...." >> ${REGRESSIONTEST_LOG}
+    echo;echo "Moving baseline ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} files ...."
+    echo;echo "Moving baseline ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} files ...." >> ${RT_LOG}
 
     for i in ${LIST_FILES} ; do
       printf %s " Moving " $i " ....."
-      printf %s " Moving " $i " ....."   >> ${REGRESSIONTEST_LOG}
+      printf %s " Moving " $i " ....."   >> ${RT_LOG}
       if [[ -f ${RUNDIR}/$i ]] ; then
-        mkdir -p ${NEW_BASELINE}/${CNTL_DIR}/$(dirname ${i})
-        cp ${RUNDIR}/${i} ${NEW_BASELINE}/${CNTL_DIR}/${i}
-        echo "....OK" >>${REGRESSIONTEST_LOG}
+        mkdir -p ${NEW_BASELINE}/${CNTL_DIR}_${RT_COMPILER}/$(dirname ${i})
+        cp ${RUNDIR}/${i} ${NEW_BASELINE}/${CNTL_DIR}_${RT_COMPILER}/${i}
+        echo "....OK" >>${RT_LOG}
         echo "....OK"
       else
-        echo "....NOT OK. Missing " ${RUNDIR}/$i >>${REGRESSIONTEST_LOG}
+        echo "....NOT OK. Missing " ${RUNDIR}/$i >>${RT_LOG}
         echo "....NOT OK. Missing " ${RUNDIR}/$i
         test_status='FAIL'
       fi
@@ -412,10 +409,10 @@ check_results() {
 
   fi
 
-  echo                                               >> ${REGRESSIONTEST_LOG}
-  grep "The total amount of wall time" ${RUNDIR}/out >> ${REGRESSIONTEST_LOG}
-  grep "The maximum resident set size" ${RUNDIR}/out >> ${REGRESSIONTEST_LOG}
-  echo                                               >> ${REGRESSIONTEST_LOG}
+  echo                                               >> ${RT_LOG}
+  grep "The total amount of wall time" ${RUNDIR}/out >> ${RT_LOG}
+  grep "The maximum resident set size" ${RUNDIR}/out >> ${RT_LOG}
+  echo                                               >> ${RT_LOG}
 
   TRIES=''
   if [[ $ECFLOW == true ]]; then
@@ -423,17 +420,13 @@ check_results() {
       TRIES=" Tries: $ECF_TRYNO"
     fi
   fi
-  echo "Test ${TEST_NR} ${TEST_NAME} ${test_status}${TRIES}" >> ${REGRESSIONTEST_LOG}
-  echo                                                       >> ${REGRESSIONTEST_LOG}
-  echo "Test ${TEST_NR} ${TEST_NAME} ${test_status}${TRIES}"
+  echo "Test ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} ${test_status}${TRIES}" >> ${RT_LOG}
+  echo                                                                      >> ${RT_LOG}
+  echo "Test ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} ${test_status}${TRIES}"
   echo
 
   if [[ $test_status = 'FAIL' ]]; then
-    if [[ ${OPNREQ_TEST} == false ]]; then
-      echo "${TEST_NAME} ${TEST_NR} failed in check_result" >> $PATHRT/fail_test_${TEST_NR}
-    else
-      echo "${TEST_NAME} ${TEST_NR} failed in check_result" >> $PATHRT/fail_opnreq_test_${TEST_NR}
-    fi
+    echo "${TEST_NR} ${TEST_NAME}_${RT_COMPILER} failed in check_result" >> $PATHRT/fail_test_${TEST_NR}
 
     if [[ $ROCOTO = true || $ECFLOW == true ]]; then
       exit 1
@@ -470,16 +463,16 @@ rocoto_create_compile_task() {
   NATIVE=""
   BUILD_CORES=8
   BUILD_WALLTIME="00:30:00"
-  if [[ ${MACHINE_ID} == jet.* ]]; then
+  if [[ ${MACHINE_ID} == jet ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
-  if [[ ${MACHINE_ID} == hera.* ]]; then
+  if [[ ${MACHINE_ID} == hera ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
-  if [[ ${MACHINE_ID} == orion.* ]]; then
+  if [[ ${MACHINE_ID} == orion ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
-  if [[ ${MACHINE_ID} == s4.* ]]; then
+  if [[ ${MACHINE_ID} == s4 ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
 
@@ -501,7 +494,7 @@ EOF
 rocoto_create_run_task() {
 
   if [[ $DEP_RUN != '' ]]; then
-    DEP_STRING="<and> <taskdep task=\"compile_${COMPILE_NR}\"/> <taskdep task=\"${DEP_RUN}${RT_SUFFIX}\"/> </and>"
+    DEP_STRING="<and> <taskdep task=\"compile_${COMPILE_NR}\"/> <taskdep task=\"${DEP_RUN}\"/> </and>"
   else
     DEP_STRING="<taskdep task=\"compile_${COMPILE_NR}\"/>"
   fi
@@ -514,17 +507,17 @@ rocoto_create_run_task() {
   NATIVE=""
 
   cat << EOF >> $ROCOTO_XML
-    <task name="${TEST_NAME}${RT_SUFFIX}" maxtries="${ROCOTO_TEST_MAXTRIES:-3}">
+    <task name="${TEST_NAME}_${RT_COMPILER}${RT_SUFFIX}" maxtries="${ROCOTO_TEST_MAXTRIES:-3}">
       <dependency> $DEP_STRING </dependency>
       <command>&PATHRT;/run_test.sh &PATHRT; &RUNDIR_ROOT; ${TEST_NAME} ${TEST_NR} ${COMPILE_NR} </command>
-      <jobname>${TEST_NAME}${RT_SUFFIX}</jobname>
+      <jobname>${TEST_NAME}_${RT_COMPILER}${RT_SUFFIX}</jobname>
       <account>${ACCNR}</account>
       <queue>${QUEUE}</queue>
       <partition>${PARTITION}</partition>
       <nodes>${NODES}:ppn=${TPN}</nodes>
       <walltime>00:${WLCLK}:00</walltime>
-      <stdout>&RUNDIR_ROOT;/${TEST_NAME}${RT_SUFFIX}.out</stdout>
-      <stderr>&RUNDIR_ROOT;/${TEST_NAME}${RT_SUFFIX}.err</stderr>
+      <stdout>&RUNDIR_ROOT;/${TEST_NAME}_${RT_COMPILER}${RT_SUFFIX}.out</stdout>
+      <stderr>&RUNDIR_ROOT;/${TEST_NAME}_${RT_COMPILER}${RT_SUFFIX}.err</stderr>
       ${NATIVE}
     </task>
 EOF
@@ -614,31 +607,24 @@ EOF
 
 ecflow_create_run_task() {
 
-  cat << EOF > ${ECFLOW_RUN}/${ECFLOW_SUITE}/${TEST_NAME}${RT_SUFFIX}.ecf
+  cat << EOF > ${ECFLOW_RUN}/${ECFLOW_SUITE}/${TEST_NAME}_${RT_COMPILER}${RT_SUFFIX}.ecf
 %include <head.h>
-$PATHRT/run_test.sh ${PATHRT} ${RUNDIR_ROOT} ${TEST_NAME} ${TEST_NR} ${COMPILE_NR} > ${LOG_DIR}/run_${TEST_NR}_${TEST_NAME}${RT_SUFFIX}.log 2>&1 &
+$PATHRT/run_test.sh ${PATHRT} ${RUNDIR_ROOT} ${TEST_NAME} ${TEST_NR} ${COMPILE_NR} > ${LOG_DIR}/run_${TEST_NR}_${TEST_NAME}_${RT_COMPILER}${RT_SUFFIX}.log 2>&1 &
 %include <tail.h>
 EOF
 
-  echo "    task ${TEST_NAME}${RT_SUFFIX}" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
-  echo "      label job_id ''" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
-  echo "      label job_status ''" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
-  echo "      inlimit max_jobs" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+  echo "    task ${TEST_NAME}_${RT_COMPILER}${RT_SUFFIX}" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+  echo "      label job_id ''"                            >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+  echo "      label job_status ''"                        >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+  echo "      inlimit max_jobs"                           >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   if [[ $DEP_RUN != '' ]]; then
-    if [[ ${OPNREQ_TEST} == false ]]; then
-      echo "      trigger compile_${COMPILE_NR} == complete and ${DEP_RUN}${RT_SUFFIX} == complete" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
-    else
-      echo "      trigger compile_${COMPILE_NR} == complete and ${DEP_RUN} == complete" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
-    fi
+    echo "      trigger compile_${COMPILE_NR} == complete and ${DEP_RUN} == complete" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   else
     echo "      trigger compile_${COMPILE_NR} == complete" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   fi
 }
 
 ecflow_run() {
-
-  # in rare instances when UID is greater then 58500 (like Ratko's UID on theia)
-  [[ $ECF_PORT -gt 49151 ]] && ECF_PORT=12179
 
   ECF_HOST="${ECF_HOST:-$HOSTNAME}"
 
@@ -647,9 +633,9 @@ ecflow_run() {
   not_running=$?
   if [[ $not_running -eq 1 ]]; then
     echo "ecflow_server is NOT running on ${ECF_HOST}:${ECF_PORT}"
-    if [[ ${MACHINE_ID} == wcoss2.* || ${MACHINE_ID} == acorn.* ]]; then
+    if [[ ${MACHINE_ID} == wcoss2 || ${MACHINE_ID} == acorn ]]; then
       if [[ "${HOST::1}" == "a" ]]; then
-	export ECF_HOST=adecflow01
+	export ECF_HOST=aecflow01
       elif [[ "${HOST::1}" == "c" ]]; then
 	export ECF_HOST=cdecflow01
       elif [[ "${HOST::1}" == "d" ]]; then
@@ -657,9 +643,9 @@ ecflow_run() {
       fi
       MYCOMM="bash -l -c \"module load ecflow && ecflow_start.sh -p ${ECF_PORT} \""
       ssh $ECF_HOST "${MYCOMM}"
-    elif [[ ${MACHINE_ID} == jet.* ]]; then
+    elif [[ ${MACHINE_ID} == hera || ${MACHINE_ID} == jet ]]; then
       module load ecflow
-      echo "Using special Jet ECFLOW start procedure"
+      echo "On ${MACHINE_ID}, start ecFlow server on dedicated node ${ECF_HOST}"
       MYCOMM="bash -l -c \"module load ecflow && ${ECFLOW_START} -d ${RUNDIR_ROOT}/ecflow_server\""
       ssh $ECF_HOST "${MYCOMM}"
     else

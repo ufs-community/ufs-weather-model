@@ -8,10 +8,6 @@ load("noaatools")
 cmake_ver=os.getenv("cmake_ver") or "3.22.1"
 load(pathJoin("cmake", cmake_ver))
 
-prepend_path("MODULEPATH", "/work/noaa/epic-ps/role-epic-ps/miniconda3/modulefiles")
-miniconda3_ver=os.getenv("miniconda3_ver") or "4.12.0"
-load(pathJoin("miniconda3", miniconda3_ver))
-
 prepend_path("MODULEPATH", "/work/noaa/epic-ps/role-epic-ps/hpc-stack/libs/intel-2022.1.2/modulefiles/stack")
 
 hpc_ver=os.getenv("hpc_ver") or "1.2.0"
@@ -22,6 +18,9 @@ load(pathJoin("hpc-intel", hpc_intel_ver))
 
 hpc_impi_ver=os.getenv("hpc_impi_ver") or "2022.1.2"
 load(pathJoin("hpc-impi", hpc_impi_ver))
+
+scotch_ver=os.getenv("scotch_ver") or "7.0.3"
+load(pathJoin("scotch", scotch_ver))
 
 load("ufs_common")
 
