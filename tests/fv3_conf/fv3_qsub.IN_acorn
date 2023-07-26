@@ -1,0 +1,36 @@
+#!/bin/bash
+
+#PBS -o out
+#PBS -e err
+#PBS -N @[JBNME]
+#PBS -A @[ACCNR]
+#PBS -q @[QUEUE]
+#PBS -l place=vscatter,select=@[NODES]:ncpus=@[TPN]:mpiprocs=@[TPN]:mem=500G
+#PBS -l place=excl
+#PBS -l walltime=00:@[WLCLK]:00
+
+set -eux
+echo -n " $( date +%s )," >  job_timestamp.txt
+
+cd $PBS_O_WORKDIR
+
+set +x
+module use $PWD/modulefiles
+module load modules.fv3
+module load cray-pals
+module list
+set -x
+
+echo "Model started:  " `date`
+
+export OMP_STACKSIZE=512M
+export OMP_NUM_THREADS=@[THRD]
+export OMP_PLACES=cores
+export ESMF_RUNTIME_COMPLIANCECHECK=OFF:depth=4
+export ESMF_RUNTIME_PROFILE=ON
+export ESMF_RUNTIME_PROFILE_OUTPUT="SUMMARY"
+
+mpiexec -n @[TASKS] -ppn @[TPN] -depth @[THRD] ./fv3.exe
+
+echo "Model ended:    " `date`
+echo -n " $( date +%s )," >> job_timestamp.txt
