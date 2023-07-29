@@ -55,6 +55,7 @@ list(APPEND _mediator_files
   CMEPS/mediator/med_constants_mod.F90
   CMEPS/mediator/med_kind_mod.F90
   CMEPS/mediator/esmFldsExchange_nems_mod.F90
+  CMEPS/mediator/esmFldsExchange_ufs_mod.F90
   CMEPS/mediator/med_phases_prep_lnd_mod.F90
   CMEPS/mediator/med_phases_prep_atm_mod.F90
   CMEPS/mediator/med_phases_prep_ocn_mod.F90
