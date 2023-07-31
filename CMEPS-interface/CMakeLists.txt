@@ -31,6 +31,8 @@ list(APPEND _nems_util_files
   CMEPS/ufs/ufs_kind_mod.F90
   CMEPS/ufs/perf_mod.F90
   CMEPS/ufs/ufs_const_mod.F90
+  ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_orb_mod.F90
+  ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_const_mod.F90
   ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_abort_mod.F90
   ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_strconvert_mod.F90
   ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_log_mod.F90
