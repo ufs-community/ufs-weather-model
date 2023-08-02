@@ -47,6 +47,7 @@ export LIST_FILES="sfcf000.nc \
 
 export_fv3_v17
 export DT_ATMOS=1200
+export DT_INNER=${DT_ATMOS}
 export RESTART_INTERVAL=0
 export WRITE_DOPOST=.false.
 export OUTPUT_FH="6 -1"
@@ -57,10 +58,11 @@ export JNPES=1
 export WRTTASK_PER_GROUP=2
 export NPX=49
 export NPY=49
-export IAER=5111
+export IAER=5111 #1011
 export IOVR=3
 export IMO=192
-export JMO=94
+export JMO=94 #96
+
 
 ###
 #export FNALBC="'global_snowfree_albedo.bosu.t62.192.94.rg.grb',"
@@ -89,4 +91,4 @@ export FNABSC="'C48.maximum_snow_albedo.tileX.nc'"
 
 export FV3_RUN=control_run.IN
 export CCPP_SUITE=FV3_GFS_v17_p8
-export INPUT_NML=control.nml.IN
+export INPUT_NML=cpld_control.nml.IN
