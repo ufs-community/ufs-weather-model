@@ -19,6 +19,7 @@ export LIST_FILES="sfcf000.nc \
 
 export_fv3_v17
 export DT_ATMOS=225
+export DT_INNER=${DT_ATMOS}
 export RESTART_INTERVAL=0
 export WRITE_DOPOST=.true.
 export OUTPUT_FH="6 -1"
@@ -37,14 +38,38 @@ export IOVR=3
 export IMO=1536
 export JMO=768
 
-export FNALBC="'global_snowfree_albedo.bosu.t766.1536.768.rg.grb',"
-export FNVETC="'global_vegtype.igbp.t766.1536.768.rg.grb',"
-export FNSOTC="'global_soiltype.statsgo.t766.1536.768.rg.grb',"
-export FNABSC="'global_mxsnoalb.uariz.t766.1536.768.rg.grb',"
+###
+#export FNALBC="'global_snowfree_albedo.bosu.t766.1536.768.rg.grb',"
+#export FNVETC="'global_vegtype.igbp.t766.1536.768.rg.grb',"
+#export FNSOTC="'global_soiltype.statsgo.t766.1536.768.rg.grb',"
+#export FNABSC="'global_mxsnoalb.uariz.t766.1536.768.rg.grb',"
+
+# P7 settings
+export TILEDFIX=.true.
+export FNALBC="'C384.snowfree_albedo.tileX.nc'"
+export FNALBC2="'C384.facsf.tileX.nc'"
+export FNTG3C="'C384.substrate_temperature.tileX.nc'"
+export FNVEGC="'C384.vegetation_greenness.tileX.nc'"
+export FNVETC="'C384.vegetation_type.tileX.nc'"
+export FNSOTC="'C384.soil_type.tileX.nc'"
+export FNSOCC="'C384.soil_color.tileX.nc'"
+export FNSMCC="'global_soilmgldas.statsgo.t766.1536.768.grb'"
+export FNMSKH="'global_slmask.t1534.3072.1536.grb'"
+export FNVMNC="'C384.vegetation_greenness.tileX.nc'"
+export FNVMXC="'C384.vegetation_greenness.tileX.nc'"
+export FNSLPC="'C384.slope_type.tileX.nc'"
+export FNABSC="'C384.maximum_snow_albedo.tileX.nc'"
+
+# P8 (not used for standalone)
+export USE_CICE_ALB=.false.
+export MIN_SEAICE=0.15
+export FRAC_GRID=.true.
+export MOM6_RESTART_SETTING=n
+export DNATS=0
 
 export FV3_RUN=control_run.IN
-export CCPP_SUITE=FV3_GFS_v16
-export INPUT_NML=control.nml.IN
+export CCPP_SUITE=FV3_GFS_v17_p8
+export INPUT_NML=cpld_control.nml.IN
 
 if [[ $MACHINE_ID = gaea || $MACHINE_ID = cheyenne || $MACHINE_ID = jet ]]; then 
   TPN=18
