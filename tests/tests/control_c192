@@ -19,6 +19,7 @@ export LIST_FILES="sfcf000.nc \
 
 export_fv3_v17
 export DT_ATMOS=360
+export DT_INNER=${DT_ATMOS}
 export RESTART_INTERVAL=48
 export WRITE_DOPOST=.true.
 export CDMBWD=${CDMBWD_c192}
@@ -53,6 +54,13 @@ export FNVMXC="'C192.vegetation_greenness.tileX.nc'"
 export FNSLPC="'C192.slope_type.tileX.nc'"
 export FNABSC="'C192.maximum_snow_albedo.tileX.nc'"
 
+# P8 (not used for standalone)
+export USE_CICE_ALB=.false.
+export MIN_SEAICE=0.15
+export FRAC_GRID=.true.
+export MOM6_RESTART_SETTING=n
+export DNATS=0
+
 export FV3_RUN=control_run.IN
 export CCPP_SUITE=FV3_GFS_v17_p8
-export INPUT_NML=control.nml.IN
+export INPUT_NML=cpld_control.nml.IN
