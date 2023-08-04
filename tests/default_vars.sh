@@ -348,6 +348,7 @@ export WRITE_GROUP=1
 export WRTTASK_PER_GROUP=6
 export ITASKS=1
 export OUTPUT_HISTORY=.true.
+export HISTORY_FILE_ON_NATIVE_GRID=.false.
 export WRITE_DOPOST=.false.
 export NUM_FILES=2
 export FILENAME_BASE="'atm' 'sfc'"
@@ -883,6 +884,7 @@ export RUNID=unknown
 # set large; restart frequency now controlled by restart_n in nems.configure
 export DUMPFREQ=d
 export DUMPFREQ_N=1000
+export DIAG_FREQ=`expr $FHMAX \* 3600 / $DT_CICE`
 export USE_RESTART_TIME=.false.
 export RESTART_EXT=.false.
 # setting to true will allow Frazil FW and Salt to be
@@ -1033,6 +1035,7 @@ export RUNID=unknown
 # set large; restart frequency now controlled by restart_n in nems.configure
 export DUMPFREQ=d
 export DUMPFREQ_N=1000
+export DIAG_FREQ=`expr $FHMAX \* 3600 / $DT_CICE`
 export USE_RESTART_TIME=.false.
 export RESTART_EXT=.false.
 # setting to true will allow Frazil FW and Salt to be
