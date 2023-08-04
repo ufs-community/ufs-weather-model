@@ -40,7 +40,7 @@ fi
 BUILD_NAME=fv3${COMPILE_NR}
 
 PATHTR=${PATHTR:-$( cd ${MYDIR}/.. && pwd )}
-BUILD_DIR=$(pwd)/build_${BUILD_NAME}
+BUILD_DIR=${BUILD_DIR:-$(pwd)/build_${BUILD_NAME}}
 
 # ----------------------------------------------------------------------
 # Make sure we have reasonable number of threads.

@@ -282,7 +282,7 @@ elif [[ ${MACHINE_ID} = noaacloud ]] ; then
 
     INPES_dflt=3 ; JNPES_dflt=8
     INPES_thrd=3 ; JNPES_thrd=4
-    
+
     INPES_c384=8 ; JNPES_c384=6  ; THRD_c384=2
     INPES_c768=8 ; JNPES_c768=16 ; THRD_c768=2
 
@@ -309,8 +309,7 @@ elif [[ $MACHINE_ID = expanse ]]; then
 
   TPN_cpl_atmw_gdas=12; INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8
   THRD_cpl_atmw_gdas=2; WPG_cpl_atmw_gdas=24; APB_cpl_atmw_gdas="0 311"; WPB_cpl_atmw_gdas="312 559"
-  
-  
+
 else
 
   echo "Unknown MACHINE_ID ${MACHINE_ID}"
@@ -321,6 +320,7 @@ fi
 WLCLK_dflt=30
 
 export WLCLK=$WLCLK_dflt
+export CMP_DATAONLY=false
 
 export_fv3 ()
 {
@@ -348,6 +348,7 @@ export WRITE_GROUP=1
 export WRTTASK_PER_GROUP=6
 export ITASKS=1
 export OUTPUT_HISTORY=.true.
+export HISTORY_FILE_ON_NATIVE_GRID=.false.
 export WRITE_DOPOST=.false.
 export NUM_FILES=2
 export FILENAME_BASE="'atm' 'sfc'"
@@ -531,6 +532,7 @@ export FHZERO=6
 export FNALBC="'global_snowfree_albedo.bosu.t126.384.190.rg.grb'"
 export FNVETC="'global_vegtype.igbp.t126.384.190.rg.grb'"
 export FNSOTC="'global_soiltype.statsgo.t126.384.190.rg.grb'"
+export FNSOCC="''"
 export FNSMCC="'global_soilmgldas.t126.384.190.grb'"
 export FNSMCC_control="'global_soilmgldas.statsgo.t1534.3072.1536.grb'"
 export FNMSKH_control="'global_slmask.t1534.3072.1536.grb'"
@@ -697,6 +699,7 @@ export chm_model=gocart
 export ocn_model=mom6
 export ice_model=cice6
 export wav_model=ww3
+export pio_rearranger=box
 
 export coupling_interval_slow_sec=${DT_THERM_MOM6}
 export coupling_interval_fast_sec=${DT_ATMOS}
@@ -737,6 +740,7 @@ export IOPT_STC=3
 # P8
 export IOPT_SFC=3
 export IOPT_TRS=2
+export IOPT_DIAG=2
 
 # FV3 P7 settings
 export D2_BG_K1=0.20
@@ -801,6 +805,7 @@ export FNTG3C="'C96.substrate_temperature.tileX.nc'"
 export FNVEGC="'C96.vegetation_greenness.tileX.nc'"
 export FNVETC="'C96.vegetation_type.tileX.nc'"
 export FNSOTC="'C96.soil_type.tileX.nc'"
+export FNSOCC="'C96.soil_color.tileX.nc'"
 export FNSMCC=${FNSMCC_control}
 export FNMSKH=${FNMSKH_control}
 export FNVMNC="'C96.vegetation_greenness.tileX.nc'"
@@ -879,6 +884,7 @@ export RUNID=unknown
 # set large; restart frequency now controlled by restart_n in nems.configure
 export DUMPFREQ=d
 export DUMPFREQ_N=1000
+export DIAG_FREQ=`expr $FHMAX \* 3600 / $DT_CICE`
 export USE_RESTART_TIME=.false.
 export RESTART_EXT=.false.
 # setting to true will allow Frazil FW and Salt to be
@@ -948,6 +954,8 @@ export med_model=cmeps
 export atm_model=datm
 export ocn_model=mom6
 export ice_model=cice6
+export pio_rearranger=box
+
 export ATM_compute_tasks=$ATM_compute_tasks_cdeps_100
 export OCN_tasks=$OCN_tasks_cdeps_100
 export ICE_tasks=$ICE_tasks_cdeps_100
@@ -997,6 +1005,7 @@ export mesh_file=cfsr_mesh.nc
 export MESH_ATM=DATM_INPUT/${mesh_file}
 export atm_datamode=${DATM_SRC}
 export stream_files=DATM_INPUT/${FILENAME_BASE}201110.nc
+export STREAM_OFFSET=0
 
 # MOM6 defaults; 1 degree
 export MOM_INPUT=MOM_input_template_100
@@ -1026,6 +1035,7 @@ export RUNID=unknown
 # set large; restart frequency now controlled by restart_n in nems.configure
 export DUMPFREQ=d
 export DUMPFREQ_N=1000
+export DIAG_FREQ=`expr $FHMAX \* 3600 / $DT_CICE`
 export USE_RESTART_TIME=.false.
 export RESTART_EXT=.false.
 # setting to true will allow Frazil FW and Salt to be
@@ -1072,6 +1082,7 @@ export NTILES=1
 
 export ocn_model=docn
 export ocn_datamode=sstdata
+export pio_rearranger=box
 
 export DOCN_IN_CONFIGURE=docn_in
 export DOCN_STREAM_CONFIGURE=hafs_docn.streams.IN
@@ -1141,6 +1152,7 @@ export WAV_CUR='C'
 
 # nems.configure
 export med_model=cmeps
+export pio_rearranger=box
 export CAP_DBUG_FLAG=0
 export RESTART_N=${FHMAX}
 export CPLMODE=hafs
