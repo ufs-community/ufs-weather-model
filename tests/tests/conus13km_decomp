@@ -1,28 +1,34 @@
 ###############################################################################
 #
-#  HRRR smoke physics on 13km domain, quilt 32-bit FASTER=ON control run
+#  HRRR physics on 13km domain, different PEs
 #
 ###############################################################################
 
 # This configuration is supposed to match the rrfs_dev1 parallel, so
 # do not change the namelist without checking the current parallel.
 
-export TEST_DESCR="HRRR smoke physics on 13km domain, quilt 32-bit FASTER=ON restart run"
+export TEST_DESCR="HRRR physics on 13km domain, different PEs"
 
-export CNTL_DIR=rrfs_smoke_conus13km_fast_phy32_restart_mismatch
+export CNTL_DIR=conus13km_control
 
-export LIST_FILES="sfcf002.nc \
+export LIST_FILES="sfcf000.nc \
+                   sfcf001.nc \
+                   sfcf002.nc \
+                   atmf000.nc \
+                   atmf001.nc \
                    atmf002.nc"
 
 export_fv3
 
 export SYEAR=2021
-export SMONTH=05
+export SMONTH=5
 export SDAY=12
 export SHOUR=16
 export FHMAX=2
 export DT_ATMOS=120
+export RESTART_INTERVAL=1
 export QUILTING=.true.
+export QUILTING_RESTART=.true.
 export WRITE_GROUP=1
 export WRTTASK_PER_GROUP=6
 export NTILES=1
@@ -30,10 +36,9 @@ export WRITE_DOPOST=.false.
 export OUTPUT_HISTORY=.true.
 export OUTPUT_GRID=lambert_conformal
 export OUTPUT_FILE="'netcdf'"
-export QUILTING_RESTART=.true.
-export FHROT=1
-export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${SHOUR} + ${FHROT}  )))0000"
-export RRFS_RESTART=YES
+
+export INPES=16
+export JNPES=9
 
 # Revert these two to GFS_typedefs defaults to avoid a crash:
 export SEDI_SEMI=.false.
@@ -59,8 +64,6 @@ export SHAL_CNV=.false.
 export DO_SAT_ADJ=.false.
 export DO_DEEP=.false.
 export CCPP_SUITE='FV3_HRRR'
-export INPES=12
-export JNPES=12
 export NPX=397
 export NPY=233
 export NPZ=65
@@ -108,5 +111,4 @@ export FIELD_TABLE=field_table_thompson_aero_tke_smoke
 export DIAG_TABLE=diag_table_hrrr
 export MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
 export DIAG_TABLE_ADDITIONAL=diag_additional_rrfs_smoke
-
 export FRAC_ICE=.true.
