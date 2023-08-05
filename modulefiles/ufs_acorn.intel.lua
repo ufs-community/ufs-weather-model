@@ -2,7 +2,7 @@ help([[
 Load environment to build UFS on Acorn with Intel compiler
 ]])
 
-prepend_path("MODULEPATH", "/lfs/h1/emc/nceplibs/noscrub/spack-stack/spack-stack-1.4.1/envs/unified-env/install/modulefiles/Core")
+prepend_path("MODULEPATH", "/lfs/h1/emc/nceplibs/noscrub/spack-stack/spack-stack-1.4.1/envs/ufs-pio-2.5.10/install/modulefiles/Core")
 
 load("stack-intel")
 load("stack-cray-mpich")

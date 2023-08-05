@@ -3,7 +3,7 @@ loads UFS Model prerequisites for NOAA Parallelworks/Intel
 ]])
 
 
-prepend_path("MODULEPATH", "/contrib/EPIC/spack-stack/spack-stack-1.4.1/envs/unified-env/install/modulefiles/Core")
+prepend_path("MODULEPATH", "/contrib/EPIC/spack-stack/spack-stack-1.4.1/envs/ufs-pio-2.5.10/install/modulefiles/Core")
 prepend_path("MODULEPATH", "/contrib/spack-stack/modulefiles/core")
 
 stack_intel_ver=os.getenv("stack_intel_ver") or "2021.3.0"
