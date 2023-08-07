@@ -22,7 +22,7 @@ load(pathJoin("ncarcompilers", ncarcompilers_ver))
 
 unload("netcdf")
 
-prepend_path("MODULEPATH", "/glade/work/epicufsrt/contrib/hpc-stack/gnu10.1.0/modulefiles/stack")
+prepend_path("MODULEPATH", "/glade/work/epicufsrt/contrib/hpc-stack/gnu10.1.0_ncdf492/modulefiles/stack")
 
 hpc_ver=os.getenv("hpc_ver") or "1.2.0"
 load(pathJoin("hpc", hpc_ver))
