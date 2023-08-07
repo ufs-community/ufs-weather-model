@@ -11,7 +11,7 @@ load(pathJoin("cmake", cmake_ver))
 gnu_ver=os.getenv("gnu_ver") or "9.2.0"
 load(pathJoin("gnu", gnu_ver))
 
-prepend_path("MODULEPATH", "/scratch1/NCEPDEV/nems/role.epic/hpc-stack/libs/gnu-9.2/modulefiles/stack")
+prepend_path("MODULEPATH", "/scratch1/NCEPDEV/nems/role.epic/hpc-stack/libs/gnu-9.2_ncdf492/modulefiles/stack")
 
 hpc_ver=os.getenv("hpc_ver") or "1.2.0"
 load(pathJoin("hpc", hpc_ver))
