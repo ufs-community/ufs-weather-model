@@ -1,15 +1,15 @@
 ###############################################################################
 #
-#  HRRR smoke physics on 13km domain, control run
+#  HRRR physics on 13km domain, debug, with radar-derived temperature tendencies
 #
 ###############################################################################
 
 # This configuration is supposed to match the rrfs_dev1 parallel, so
 # do not change the namelist without checking the current parallel.
 
-export TEST_DESCR="HRRR smoke physics on 13km domain, control run"
+export TEST_DESCR="HRRR physics on 13km domain, debug, with radar-derived temperature tendencies"
 
-export CNTL_DIR=rrfs_smoke_conus13km_hrrr_warm_debug
+export CNTL_DIR=conus13km_radar_tten_debug
 
 export LIST_FILES="sfcf000.nc \
                    sfcf001.nc \
@@ -17,6 +17,8 @@ export LIST_FILES="sfcf000.nc \
                    atmf001.nc"
 
 export_fv3
+
+export FH_DFI_RADAR='0.0, 0.25, 0.50, 0.75, 1.0'
 
 export SYEAR=2021
 export SMONTH=5
@@ -26,6 +28,7 @@ export FHMAX=1
 export DT_ATMOS=120
 export RESTART_INTERVAL=1
 export QUILTING=.true.
+export QUILTING_RESTART=.true.
 export WRITE_GROUP=1
 export WRTTASK_PER_GROUP=6
 export NTILES=1
@@ -107,5 +110,4 @@ export FIELD_TABLE=field_table_thompson_aero_tke_smoke
 export DIAG_TABLE=diag_table_hrrr
 export MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
 export DIAG_TABLE_ADDITIONAL=diag_additional_rrfs_smoke
-
 export FRAC_ICE=.true.
