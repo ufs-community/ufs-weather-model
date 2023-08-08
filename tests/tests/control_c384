@@ -38,13 +38,8 @@ export IOVR=3
 export IMO=1536
 export JMO=768
 
-###
-#export FNALBC="'global_snowfree_albedo.bosu.t766.1536.768.rg.grb',"
-#export FNVETC="'global_vegtype.igbp.t766.1536.768.rg.grb',"
-#export FNSOTC="'global_soiltype.statsgo.t766.1536.768.rg.grb',"
-#export FNABSC="'global_mxsnoalb.uariz.t766.1536.768.rg.grb',"
-
 # P7 settings
+export ATMRES=C384
 export TILEDFIX=.true.
 export FNALBC="'C384.snowfree_albedo.tileX.nc'"
 export FNALBC2="'C384.facsf.tileX.nc'"
@@ -53,8 +48,10 @@ export FNVEGC="'C384.vegetation_greenness.tileX.nc'"
 export FNVETC="'C384.vegetation_type.tileX.nc'"
 export FNSOTC="'C384.soil_type.tileX.nc'"
 export FNSOCC="'C384.soil_color.tileX.nc'"
-export FNSMCC="'global_soilmgldas.statsgo.t766.1536.768.grb'"
-export FNMSKH="'global_slmask.t1534.3072.1536.grb'"
+export FNSMCC_control="'global_soilmgldas.statsgo.t766.1536.768.grb'"
+export FNMSKH_control="'global_slmask.t1534.3072.1536.grb'"
+export FNSMCC=${FNSMCC_control}
+export FNMSKH=${FNMSKH_control}
 export FNVMNC="'C384.vegetation_greenness.tileX.nc'"
 export FNVMXC="'C384.vegetation_greenness.tileX.nc'"
 export FNSLPC="'C384.slope_type.tileX.nc'"
@@ -69,6 +66,8 @@ export DNATS=0
 
 export FV3_RUN=control_run.IN
 export CCPP_SUITE=FV3_GFS_v17_p8
+export FIELD_TABLE=field_table_thompson_noaero_tke
+export DIAG_TABLE=diag_table_p8_template
 export INPUT_NML=cpld_control.nml.IN
 
 if [[ $MACHINE_ID = gaea || $MACHINE_ID = cheyenne || $MACHINE_ID = jet ]]; then 
