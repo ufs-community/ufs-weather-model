@@ -25,9 +25,9 @@ load(pathJoin("cmake", cmake_ver))
 
 load("ufs_common")
 
-setenv("CC", "icc")
-setenv("CXX", "icpc")
-setenv("FC", "ifort")
+setenv("CC", "mpiicc")
+setenv("CXX", "mpiicpc")
+setenv("FC", "mpiifort")
 setenv("CMAKE_Platform", "cheyenne.intel")
 
 whatis("Description: UFS build environment")
