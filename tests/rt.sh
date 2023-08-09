@@ -328,6 +328,7 @@ elif [[ $MACHINE_ID = orion ]]; then
   export PYTHONPATH=/work/noaa/da/role-da/spack-stack/miniconda-3.9.7/lib/python3.9/site-packages
 
   module use /work/noaa/da/role-da/spack-stack/modulefiles
+  module load miniconda/3.9.7
   module load ecflow/5.8.4
   ECFLOW_START=/work/noaa/da/role-da/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
