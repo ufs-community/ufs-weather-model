@@ -231,7 +231,7 @@ if [[ $MACHINE_ID = wcoss2 ]]; then
   #ROCOTO_SCHEDULER=lsf
 
   module load ecflow/5.6.0.13
-  module load gcc/10.3.0 python/3.8.6
+  module load intel/19.1.3.304 python/3.8.6
   ECFLOW_START=${ECF_ROOT}/scripts/server_check.sh
   export ECF_OUTPUTDIR=${PATHRT}/ecf_outputdir
   export ECF_COMDIR=${PATHRT}/ecf_comdir
@@ -251,7 +251,7 @@ if [[ $MACHINE_ID = wcoss2 ]]; then
 elif [[ $MACHINE_ID = acorn ]]; then
 
   module load ecflow/5.6.0.13
-  module load gcc/10.3.0 python/3.8.6
+  module load intel/19.1.3.304 python/3.8.6
   ECFLOW_START=${ECF_ROOT}/scripts/server_check.sh
   export ECF_OUTPUTDIR=${PATHRT}/ecf_outputdir
   export ECF_COMDIR=${PATHRT}/ecf_comdir
@@ -304,7 +304,7 @@ elif [[ $MACHINE_ID = hera ]]; then
 
   PARTITION=
   dprefix=/scratch1/NCEPDEV
-  DISKNM=$dprefix/nems/emc.nemspara/RT
+  DISKNM=/scratch2/NAGAPE/epic/UFS-WM_RT
   STMP=$dprefix/stmp4
   PTMP=$dprefix/stmp2
 
