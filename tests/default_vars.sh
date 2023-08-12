@@ -386,8 +386,8 @@ export NA_INIT=1
 
 # Radiation
 export DO_RRTMGP=.false.
-export DOGP_CLDOPTICS_LUT=.true.
-export DOGP_LWSCAT=.true.
+export DOGP_CLDOPTICS_LUT=.false.
+export DOGP_LWSCAT=.false.
 export USE_LW_JACOBIAN=.false.
 export DAMP_LW_FLUXADJ=.false.
 export RRTMGP_LW_PHYS_BLKSZ=2
@@ -397,7 +397,6 @@ export ICLIQ_SW=1
 export IOVR=1
 export LFNC_K=-999
 export LFNC_P0=-999
-export DOGP_SGS_CNV=.true.
 
 # Microphysics
 export IMP_PHYSICS=8
