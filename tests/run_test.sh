@@ -96,13 +96,11 @@ cp ${PATHTR}/modulefiles/ufs_common*               ./modulefiles/.
 # Get the shell file that loads the "module" command and purges modules:
 cp ${PATHRT}/module-setup.sh                       module-setup.sh
 
-if [[ $MACHINE_ID == wcoss2 ]] || [[ $MACHINE_ID == acorn ]] ; then
-  # for compare_ncfile.py
-  module load gcc/10.3.0 python/3.8.6
-fi
-
 # load nccmp module
-if [[ $MACHINE_ID == hera ]] || [[ $MACHINE_ID == orion ]] || [[ $MACHINE_ID == gaea ]] || [[ $MACHINE_ID == jet ]] || [[ $MACHINE_ID == cheyenne ]]; then
+if [[ " hera orion gaea jet cheyenne acorn wcoss2 " =~ " $MACHINE_ID " ]]; then
+  if [[ " wcoss2 acorn " =~ " ${MACHINE_ID} " ]] ; then
+    module load intel/19.1.3.304 netcdf/4.7.4
+  fi
   module load nccmp
 fi
 
