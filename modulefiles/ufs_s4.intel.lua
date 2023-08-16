@@ -16,9 +16,9 @@ load(pathJoin("stack-python", stack_python_ver))
 
 load("ufs_common")
 
-setenv("CC", "icc")
-setenv("CXX", "icpc")
-setenv("FC", "ifort")
+setenv("CC", "mpiicc")
+setenv("CXX", "mpiicpc")
+setenv("FC", "mpiifort")
 setenv("CMAKE_Platform", "s4.intel")
 
 whatis("Description: UFS build environment")

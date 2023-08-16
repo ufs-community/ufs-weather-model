@@ -21,6 +21,9 @@ load("ufs_common")
 prepend_path("MODULEPATH", "/lfs/h1/emc/nceplibs/noscrub/UPP_IFI/modulefiles")
 load("ifi/20230118-intel-19.1.3.304")
 
+setenv("CC", "cc")
+setenv("CXX", "CC")
+setenv("FC", "ftn")
 setenv("CMAKE_Platform", "acorn")
 
 whatis("Description: UFS build environment")
