@@ -37,6 +37,7 @@ export NPROC_ICE='48'
 export np2=`expr $NPROC_ICE / 2`
 export BLCKX=`expr $NX_GLB / $np2`
 export BLCKY=`expr $NY_GLB / 2`
+export DIAG_FREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
 
 # resolution dependent files
 export MOM_INPUT="MOM_input_template_${OCNRES}"
