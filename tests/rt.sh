@@ -369,14 +369,14 @@ elif [[ $MACHINE_ID = jet ]]; then
 elif [[ $MACHINE_ID = s4 ]]; then
 
   module load rocoto/1.3.2
-  module load ecflow/5.6.0
-  module load miniconda/3.8-s4
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=slurm
 
+  module load git/2.30.0
   module use /data/prod/jedi/spack-stack/modulefiles
+  module load miniconda/3.9.12
   module load ecflow/5.8.4
   module load git/2.30.0
   ECFLOW_START=/data/prod/jedi/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh 
