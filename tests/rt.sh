@@ -378,7 +378,6 @@ elif [[ $MACHINE_ID = s4 ]]; then
   module use /data/prod/jedi/spack-stack/modulefiles
   module load miniconda/3.9.12
   module load ecflow/5.8.4
-  module load git/2.30.0
   ECFLOW_START=/data/prod/jedi/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh 
   ECF_PORT=$(( $(id -u) + 1500 ))
 
