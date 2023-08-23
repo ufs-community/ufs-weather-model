@@ -57,8 +57,8 @@ set +x
 if [[ $MACHINE_ID == macosx ]] || [[ $MACHINE_ID == linux ]]; then
   source $PATHTR/modulefiles/ufs_${MACHINE_ID}.${RT_COMPILER}
 else
-  # Activate lua environment for gaea
-  if [[ $MACHINE_ID == gaea ]]; then
+  # Activate lua environment for gaea c4 / gaea c5
+  if [[ $MACHINE_ID == gaea* ]]; then
     source /lustre/f2/dev/role.epic/contrib/Lmod_init.sh
   fi
   # Load fv3 module

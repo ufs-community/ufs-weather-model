@@ -97,7 +97,7 @@ cp ${PATHTR}/modulefiles/ufs_common*               ./modulefiles/.
 cp ${PATHRT}/module-setup.sh                       module-setup.sh
 
 # load nccmp module
-if [[ " hera orion gaea jet cheyenne acorn wcoss2 " =~ " $MACHINE_ID " ]]; then
+if [[ " hera orion gaea gaea_c5 jet cheyenne acorn wcoss2 " =~ " $MACHINE_ID " ]]; then
   if [[ " wcoss2 acorn " =~ " ${MACHINE_ID} " ]] ; then
     module load intel/19.1.3.304 netcdf/4.7.4
   fi

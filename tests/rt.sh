@@ -284,6 +284,26 @@ elif [[ $MACHINE_ID = gaea ]]; then
 
   SCHEDULER=slurm
 
+elif [[ $MACHINE_ID = gaea_c5 ]]; then
+
+  module load PrgEnv-intel/8.3.3
+  module load intel-classic/2022.2.1
+  module load cray-mpich/8.1.25
+  module load python/3.9.12
+  module use /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/modulefiles
+  module load ecflow/5.8.4
+  ECFLOW_START=/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/ecflow-5.8.4/bin/ecflow_start.sh
+  ECF_PORT=$(( $(id -u) + 1500 ))
+
+  DISKNM=/lustre/f2/pdata/ncep_shared/emc.nemspara/RT
+  QUEUE=normal
+  COMPILE_QUEUE=normal
+  PARTITION=c5
+  STMP=/lustre/f2/scratch
+  PTMP=/lustre/f2/scratch
+
+  SCHEDULER=slurm
+
 elif [[ $MACHINE_ID = hera ]]; then
 
   module load rocoto
@@ -618,7 +638,7 @@ EOF
     QUEUE=batch
   elif [[ $MACHINE_ID = s4 ]]; then
     QUEUE=s4
-  elif [[ $MACHINE_ID = gaea ]]; then
+  elif [[ $MACHINE_ID = gaea* ]]; then
     QUEUE=normal
   elif [[ $MACHINE_ID = cheyenne ]]; then
     QUEUE=regular
