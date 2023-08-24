@@ -14,7 +14,7 @@ load(pathJoin("intel", intel_ver))
 impi_ver=os.getenv("impi_ver") or "2022.1.2"
 load(pathJoin("impi", impi_ver))
 
-prepend_path("MODULEPATH", "/scratch1/NCEPDEV/nems/role.epic/hpc-stack/libs/intel-2022.1.2/modulefiles/stack")
+prepend_path("MODULEPATH", "/scratch1/NCEPDEV/nems/role.epic/hpc-stack/libs/intel-2022.1.2_ncdf492/modulefiles/stack")
 
 hpc_ver=os.getenv("hpc_ver") or "1.2.0"
 load(pathJoin("hpc", hpc_ver))
