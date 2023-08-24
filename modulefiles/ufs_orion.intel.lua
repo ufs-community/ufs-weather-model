@@ -2,25 +2,20 @@ help([[
 loads UFS Model prerequisites for Orion/Intel
 ]])
 
-load("contrib")
-load("noaatools")
+prepend_path("MODULEPATH", "/work/noaa/epic/role-epic/spack-stack/spack-stack-1.4.1/envs/ufs-pio-2.5.10/install/modulefiles/Core")
+prepend_path("MODULEPATH", "/work/noaa/da/role-da/spack-stack/modulefiles")
 
-cmake_ver=os.getenv("cmake_ver") or "3.22.1"
+stack_intel_ver=os.getenv("stack_intel_ver") or "2022.0.2"
+load(pathJoin("stack-intel", stack_intel_ver))
+
+stack_impi_ver=os.getenv("stack_impi_ver") or "2021.5.1"
+load(pathJoin("stack-intel-oneapi-mpi", stack_impi_ver))
+
+stack_python_ver=os.getenv("stack_python_ver") or "3.9.7"
+load(pathJoin("stack-python", stack_python_ver))
+
+cmake_ver=os.getenv("cmake_ver") or "3.23.1"
 load(pathJoin("cmake", cmake_ver))
-
-prepend_path("MODULEPATH", "/work/noaa/epic-ps/role-epic-ps/hpc-stack/libs/intel-2022.1.2_ncdf492/modulefiles/stack")
-
-hpc_ver=os.getenv("hpc_ver") or "1.2.0"
-load(pathJoin("hpc", hpc_ver))
-
-hpc_intel_ver=os.getenv("hpc_intel_ver") or "2022.1.2"
-load(pathJoin("hpc-intel", hpc_intel_ver))
-
-hpc_impi_ver=os.getenv("hpc_impi_ver") or "2022.1.2"
-load(pathJoin("hpc-impi", hpc_impi_ver))
-
-scotch_ver=os.getenv("scotch_ver") or "7.0.3"
-load(pathJoin("scotch", scotch_ver))
 
 load("ufs_common")
 

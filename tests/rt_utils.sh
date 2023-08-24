@@ -455,7 +455,7 @@ rocoto_create_compile_task() {
   BUILD_CORES=8
   BUILD_WALLTIME="00:30:00"
   if [[ ${MACHINE_ID} == jet ]]; then
-    BUILD_WALLTIME="01:00:00"
+    BUILD_WALLTIME="02:00:00"
   fi
   if [[ ${MACHINE_ID} == hera ]]; then
     BUILD_WALLTIME="01:00:00"
