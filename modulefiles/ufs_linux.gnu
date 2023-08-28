@@ -4,7 +4,7 @@
 ##
 ##    UFS prerequisites: Linux (tested: Ubuntu) with gcc/gfortran compilers
 
-echo "Setting environment variables for NEMSfv3gfs on Linux with gcc/gfortran"
+echo "Setting environment variables for UFS Model on Linux with gcc/gfortran"
 
 ##
 ## load programming environment: compiler, flags, paths
@@ -24,16 +24,6 @@ export CMAKE_Platform=linux.gnu
 ## use own NetCDF library
 ##
 export NETCDF=${NETCDF:-/home/builder/opt}
-
-##
-## use SIONlib library if installed and environment variable is set
-##
-SIONLIB=${SIONLIB:-}
-if [ ! "x$SIONLIB" == "x" ]; then
-  echo "Use SIONlib installation in ${SIONLIB}"
-  export SIONLIB_INC="-I${SIONLIB}/include -I${SIONLIB}/include/mod_64"
-  export SIONLIB_LIB="-L${SIONLIB}/lib -lsionmpi_f90_64 -lsionser_f90_64 -lsionmpi_64 -lsiongen_64 -lsionser_64 -lsioncom_64 -lsioncom_64_lock_none"
-fi
 
 ##
 ## use pre-compiled EMSF library for above compiler / MPI combination

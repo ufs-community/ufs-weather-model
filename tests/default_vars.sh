@@ -507,7 +507,7 @@ export LKM=0 # 0=no lake, 1=run lake model, 2=run both lake and nsst on lake poi
 export IOPT_LAKE=2 # 1=flake, 2=clm lake
 export LAKEFRAC_THRESHOLD=0.0 # lake fraction must be higher for lake model to run it
 export LAKEDEPTH_THRESHOLD=1.0 # lake must be deeper (in meters) for a lake model to run it
-export FRAC_ICE=.false.
+export FRAC_ICE=.true. # should be false for flake, true for clm_lake
 
 export CPL=.false.
 export CPLCHM=.false.
@@ -700,6 +700,8 @@ export ocn_model=mom6
 export ice_model=cice6
 export wav_model=ww3
 export pio_rearranger=box
+export ocean_albedo_limit=0.06
+export use_mean_albedos=.false.
 
 export coupling_interval_slow_sec=${DT_THERM_MOM6}
 export coupling_interval_fast_sec=${DT_ATMOS}
@@ -955,6 +957,8 @@ export atm_model=datm
 export ocn_model=mom6
 export ice_model=cice6
 export pio_rearranger=box
+export ocean_albedo_limit=0.06
+export use_mean_albedos=.false.
 
 export ATM_compute_tasks=$ATM_compute_tasks_cdeps_100
 export OCN_tasks=$OCN_tasks_cdeps_100

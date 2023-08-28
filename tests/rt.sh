@@ -231,7 +231,7 @@ if [[ $MACHINE_ID = wcoss2 ]]; then
   #ROCOTO_SCHEDULER=lsf
 
   module load ecflow/5.6.0.13
-  module load gcc/10.3.0 python/3.8.6
+  module load intel/19.1.3.304 python/3.8.6
   ECFLOW_START=${ECF_ROOT}/scripts/server_check.sh
   export ECF_OUTPUTDIR=${PATHRT}/ecf_outputdir
   export ECF_COMDIR=${PATHRT}/ecf_comdir
@@ -251,7 +251,7 @@ if [[ $MACHINE_ID = wcoss2 ]]; then
 elif [[ $MACHINE_ID = acorn ]]; then
 
   module load ecflow/5.6.0.13
-  module load gcc/10.3.0 python/3.8.6
+  module load intel/19.1.3.304 python/3.8.6
   ECFLOW_START=${ECF_ROOT}/scripts/server_check.sh
   export ECF_OUTPUTDIR=${PATHRT}/ecf_outputdir
   export ECF_COMDIR=${PATHRT}/ecf_comdir
@@ -271,8 +271,12 @@ elif [[ $MACHINE_ID = acorn ]]; then
 elif [[ $MACHINE_ID = gaea ]]; then
 
   export PATH=/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/envs/ufs-weather-model/bin:/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/bin:$PATH
-  export PYTHONPATH=/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/lib/python3.8/site-packages
-  ECFLOW_START=/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/envs/ufs-weather-model/bin/ecflow_start.sh
+  export PATH=/lustre/f2/pdata/esrl/gsd/spack-stack/miniconda-3.9.12/bin:$PATH
+  export PYTHONPATH=/lustre/f2/pdata/esrl/gsd/spack-stack/miniconda-3.9.12/lib/python3.9/site-packages
+  
+  module use /lustre/f2/pdata/esrl/gsd/spack-stack/modulefiles
+  module load ecflow/5.8.4
+  ECFLOW_START=/lustre/f2/pdata/esrl/gsd/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
   DISKNM=/lustre/f2/pdata/ncep_shared/emc.nemspara/RT
@@ -292,11 +296,11 @@ elif [[ $MACHINE_ID = hera ]]; then
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=slurm
 
-  PYTHONHOME=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3_new_20210629
+  PYTHONHOME=/scratch1/NCEPDEV/jcsda/jedipara/spack-stack/miniconda-3.9.12
   export PATH=$PYTHONHOME/bin:$PATH
-  export PYTHONPATH=$PYTHONHOME/lib/python3.7/site-packages
-
-  module load ecflow
+  export PYTHONPATH=$PYTHONHOME/lib/python3.9/site-packages
+  
+  module load ecflow/5.5.3
   ECFLOW_START=ecflow_start.sh
 
   QUEUE=batch
@@ -320,9 +324,13 @@ elif [[ $MACHINE_ID = orion ]]; then
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
-  export PATH=/work/noaa/nems/emc.nemspara/soft/miniconda3/bin:$PATH
-  export PYTHONPATH=/work/noaa/nems/emc.nemspara/soft/miniconda3/lib/python3.8/site-packages
-  ECFLOW_START=/work/noaa/nems/emc.nemspara/soft/miniconda3/bin/ecflow_start.sh
+  export PATH=/work/noaa/da/role-da/spack-stack/miniconda-3.9.7/bin:$PATH
+  export PYTHONPATH=/work/noaa/da/role-da/spack-stack/miniconda-3.9.7/lib/python3.9/site-packages
+
+  module use /work/noaa/da/role-da/spack-stack/modulefiles
+  module load miniconda/3.9.7
+  module load ecflow/5.8.4
+  ECFLOW_START=/work/noaa/da/role-da/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
   QUEUE=batch
@@ -343,8 +351,8 @@ elif [[ $MACHINE_ID = jet ]]; then
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=slurm
 
-  export PATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/bin:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/bin:$PATH
-  export PYTHONPATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/lib/python3.8/site-packages
+  export PATH=/lfs4/HFIP/hfv3gfs/spack-stack/apps/miniconda/py39_4.12.0/bin:$PATH
+  export PYTHONPATH=/lfs4/HFIP/hfv3gfs/spack-stack/apps/miniconda/py39_4.12.0/lib/python3.9/site-packages
   module load ecflow
   ECFLOW_START=/apps/ecflow/5.5.3/bin/ecflow_start.sh
 
@@ -361,14 +369,16 @@ elif [[ $MACHINE_ID = jet ]]; then
 elif [[ $MACHINE_ID = s4 ]]; then
 
   module load rocoto/1.3.2
-  module load ecflow/5.6.0
-  module load miniconda/3.8-s4
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=slurm
 
-  ECFLOW_START=/opt/ecflow/5.6.0/bin/ecflow_start.sh
+  module load git/2.30.0
+  module use /data/prod/jedi/spack-stack/modulefiles
+  module load miniconda/3.9.12
+  module load ecflow/5.8.4
+  ECFLOW_START=/data/prod/jedi/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh 
   ECF_PORT=$(( $(id -u) + 1500 ))
 
   QUEUE=s4
@@ -384,12 +394,12 @@ elif [[ $MACHINE_ID = s4 ]]; then
 
 elif [[ $MACHINE_ID = cheyenne ]]; then
 
-  #export PATH=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/bin:/glade/p/ral/jntp/tools/miniconda3/4.8.3/bin:$PATH
-  #export PYTHONPATH=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/glade/p/ral/jntp/tools/miniconda3/4.8.3/lib/python3.8/site-packages
+  export PATH=/glade/work/jedipara/cheyenne/spack-stack/miniconda-3.9.12/bin:$PATH
+  export PYTHONPATH=/glade/work/jedipara/cheyenne/spack-stack/miniconda-3.9.12/lib/python3.9/site-packages
+
   module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc
-  module load miniconda/3.9.12
   module load ecflow/5.8.4
-  ECFLOW_START=`which ecflow_start.sh`
+  ECFLOW_START=/glade/work/jedipara/cheyenne/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
   QUEUE=regular
@@ -429,8 +439,9 @@ elif [[ $MACHINE_ID = expanse ]]; then
   PTMP=$dprefix
   SCHEDULER=slurm
 
- elif [[ $MACHINE_ID = noaacloud.* ]]; then
+ elif [[ $MACHINE_ID = noaacloud ]]; then
 
+  export PATH=/contrib/EPIC/bin:$PATH
   module use /apps/modules/modulefiles
   module load rocoto/1.3.3
 
