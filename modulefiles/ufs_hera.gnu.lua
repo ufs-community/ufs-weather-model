@@ -2,33 +2,25 @@ help([[
 loads UFS Model prerequisites for Hera/GNU
 ]])
 
-prepend_path("MODULEPATH", "/contrib/sutils/modulefiles")
-load("sutils")
+prepend_path("MODULEPATH", "/scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.4.1/envs/ufs-pio-2.5.10/install/modulefiles/Core")
+prepend_path("MODULEPATH", "/scratch1/NCEPDEV/jcsda/jedipara/spack-stack/modulefiles")
 
-cmake_ver=os.getenv("cmake_ver") or "3.20.1"
+stack_gnu_ver=os.getenv("stack_gnu_ver") or "9.2.0"
+load(pathJoin("stack-gcc", stack_gnu_ver))
+
+stack_openmpi_ver=os.getenv("stack_openmpi_ver") or "4.1.5"
+load(pathJoin("stack-openmpi", stack_openmpi_ver))
+
+stack_python_ver=os.getenv("stack_python_ver") or "3.9.12"
+load(pathJoin("stack-python", stack_python_ver))
+
+cmake_ver=os.getenv("cmake_ver") or "3.23.1"
 load(pathJoin("cmake", cmake_ver))
-
-gnu_ver=os.getenv("gnu_ver") or "9.2.0"
-load(pathJoin("gnu", gnu_ver))
-
-prepend_path("MODULEPATH", "/scratch1/NCEPDEV/nems/role.epic/hpc-stack/libs/gnu-9.2/modulefiles/stack")
-
-hpc_ver=os.getenv("hpc_ver") or "1.2.0"
-load(pathJoin("hpc", hpc_ver))
-
-hpc_gnu_ver=os.getenv("hpc_gnu_ver") or "9.2"
-load(pathJoin("hpc-gnu", hpc_gnu_ver))
-
-hpc_mpich_ver=os.getenv("hpc_mpich_ver") or "3.3.2"
-load(pathJoin("hpc-mpich", hpc_mpich_ver))
-
-scotch_ver=os.getenv("scotch_ver") or "7.0.3"
-load(pathJoin("scotch", scotch_ver))
 
 load("ufs_common")
 
 setenv("CC", "mpicc")
-setenv("CXX", "mpicxx")
+setenv("CXX", "mpic++")
 setenv("FC", "mpif90")
 setenv("CMAKE_Platform", "hera.gnu")
 
