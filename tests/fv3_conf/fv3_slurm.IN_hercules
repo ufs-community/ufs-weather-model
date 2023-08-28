@@ -39,7 +39,11 @@ export ESMF_RUNTIME_PROFILE_OUTPUT="SUMMARY"
 # Avoid job errors because of filesystem synchronization delays
 sync && sleep 1
 
-srun --label -n @[TASKS] ./fv3.exe
+if [[ @[RT_COMPILER] == intel ]]; then
+  srun --label -n @[TASKS] ./fv3.exe
+elif [[ @[RT_COMPILER] == gnu ]]; then
+  mpirun -n @[TASKS] -N @[TPN] ./fv3.exe
+fi
 
 echo "Model ended:    " `date`
 echo -n " $( date +%s )," >> job_timestamp.txt
