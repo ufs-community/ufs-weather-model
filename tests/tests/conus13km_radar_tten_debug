@@ -1,0 +1,22 @@
+###############################################################################
+#
+#  HRRR physics on 13km domain, debug, with radar-derived temperature tendencies
+#
+###############################################################################
+
+# This configuration is supposed to match the rrfs_dev1 parallel, so
+# do not change the namelist without checking the current parallel.
+
+export TEST_DESCR="HRRR physics on 13km domain, debug, with radar-derived temperature tendencies"
+
+export CNTL_DIR=conus13km_radar_tten_debug
+
+export LIST_FILES="sfcf000.nc \
+                   sfcf001.nc \
+                   atmf000.nc \
+                   atmf001.nc"
+
+export_hrrr_conus13km
+export RESTART_INTERVAL=1
+export FH_DFI_RADAR='0.0, 0.25, 0.50, 0.75, 1.0'
+export FHMAX=1
