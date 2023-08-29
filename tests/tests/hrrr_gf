@@ -1,12 +1,12 @@
 ###############################################################################
 #
-#  HRRR clm lake test: atmosphere only at C96L127
+#  HRRR GF scheme test: atmosphere only at C96L127
 #
 ###############################################################################
 
-export TEST_DESCR="Compare HRRR CLM Lake results with previous trunk version"
+export TEST_DESCR="Compare HRRR CLM Lake GF convection results with previous trunk version"
 
-export CNTL_DIR=hrrr_control_dyn32_phy32
+export CNTL_DIR=hrrr_gf
 
 export LIST_FILES="sfcf000.nc \
                    sfcf009.nc \
@@ -56,4 +56,8 @@ export LIST_FILES="sfcf000.nc \
 export_hrrr
 export RESTART_INTERVAL="6 -1"
 export OUTPUT_FH='0 09 12'
-export FHMAX=12
+export CCPP_SUITE=FV3_HRRR_gf
+export DO_DEEP=.true.
+export SHAL_CNV=.true.
+export IMFSHALCNV=3
+export IMFDEEPCNV=3
