@@ -348,6 +348,7 @@ export WRITE_GROUP=1
 export WRTTASK_PER_GROUP=6
 export ITASKS=1
 export OUTPUT_HISTORY=.true.
+export HISTORY_FILE_ON_NATIVE_GRID=.false.
 export WRITE_DOPOST=.false.
 export NUM_FILES=2
 export FILENAME_BASE="'atm' 'sfc'"
@@ -506,7 +507,7 @@ export LKM=0 # 0=no lake, 1=run lake model, 2=run both lake and nsst on lake poi
 export IOPT_LAKE=2 # 1=flake, 2=clm lake
 export LAKEFRAC_THRESHOLD=0.0 # lake fraction must be higher for lake model to run it
 export LAKEDEPTH_THRESHOLD=1.0 # lake must be deeper (in meters) for a lake model to run it
-export FRAC_ICE=.false.
+export FRAC_ICE=.true. # should be false for flake, true for clm_lake
 
 export CPL=.false.
 export CPLCHM=.false.
@@ -531,6 +532,7 @@ export FHZERO=6
 export FNALBC="'global_snowfree_albedo.bosu.t126.384.190.rg.grb'"
 export FNVETC="'global_vegtype.igbp.t126.384.190.rg.grb'"
 export FNSOTC="'global_soiltype.statsgo.t126.384.190.rg.grb'"
+export FNSOCC="''"
 export FNSMCC="'global_soilmgldas.t126.384.190.grb'"
 export FNSMCC_control="'global_soilmgldas.statsgo.t1534.3072.1536.grb'"
 export FNMSKH_control="'global_slmask.t1534.3072.1536.grb'"
@@ -698,6 +700,8 @@ export ocn_model=mom6
 export ice_model=cice6
 export wav_model=ww3
 export pio_rearranger=box
+export ocean_albedo_limit=0.06
+export use_mean_albedos=.false.
 
 export coupling_interval_slow_sec=${DT_THERM_MOM6}
 export coupling_interval_fast_sec=${DT_ATMOS}
@@ -738,6 +742,7 @@ export IOPT_STC=3
 # P8
 export IOPT_SFC=3
 export IOPT_TRS=2
+export IOPT_DIAG=2
 
 # FV3 P7 settings
 export D2_BG_K1=0.20
@@ -802,6 +807,7 @@ export FNTG3C="'C96.substrate_temperature.tileX.nc'"
 export FNVEGC="'C96.vegetation_greenness.tileX.nc'"
 export FNVETC="'C96.vegetation_type.tileX.nc'"
 export FNSOTC="'C96.soil_type.tileX.nc'"
+export FNSOCC="'C96.soil_color.tileX.nc'"
 export FNSMCC=${FNSMCC_control}
 export FNMSKH=${FNMSKH_control}
 export FNVMNC="'C96.vegetation_greenness.tileX.nc'"
@@ -880,6 +886,7 @@ export RUNID=unknown
 # set large; restart frequency now controlled by restart_n in nems.configure
 export DUMPFREQ=d
 export DUMPFREQ_N=1000
+export DIAG_FREQ=`expr $FHMAX \* 3600 / $DT_CICE`
 export USE_RESTART_TIME=.false.
 export RESTART_EXT=.false.
 # setting to true will allow Frazil FW and Salt to be
@@ -950,6 +957,8 @@ export atm_model=datm
 export ocn_model=mom6
 export ice_model=cice6
 export pio_rearranger=box
+export ocean_albedo_limit=0.06
+export use_mean_albedos=.false.
 
 export ATM_compute_tasks=$ATM_compute_tasks_cdeps_100
 export OCN_tasks=$OCN_tasks_cdeps_100
@@ -1030,6 +1039,7 @@ export RUNID=unknown
 # set large; restart frequency now controlled by restart_n in nems.configure
 export DUMPFREQ=d
 export DUMPFREQ_N=1000
+export DIAG_FREQ=`expr $FHMAX \* 3600 / $DT_CICE`
 export USE_RESTART_TIME=.false.
 export RESTART_EXT=.false.
 # setting to true will allow Frazil FW and Salt to be
@@ -1289,4 +1299,153 @@ export NFHMAX_HF=-1
 export NFHOUT_HF=3
 export NSOUT=-1
 export OUTPUT_FH=-1
+}
+export_hrrr() {
+export_fv3
+export NPZ=127
+export NPZP=128
+export DT_ATMOS=300
+export SYEAR=2021
+export SMONTH=03
+export SDAY=22
+export SHOUR=06
+export OUTPUT_GRID='gaussian_grid'
+export NSTF_NAME='2,0,0,0,0'
+export WRITE_DOPOST=.true.
+export IAER=5111
+
+export FRAC_GRID=.false.
+export FRAC_ICE=.true.
+
+export FV3_RUN=lake_control_run.IN
+export CCPP_SUITE=FV3_HRRR
+export INPUT_NML=rap.nml.IN
+export FIELD_TABLE=field_table_thompson_aero_tke
+export NEW_DIAGTABLE=diag_table_rap
+
+export SFCLAY_COMPUTE_FLUX=.true.
+
+export LKM=1
+export IOPT_LAKE=2
+export IMP_PHYSICS=8
+export DNATS=0
+export DO_SAT_ADJ=.false.
+export LRADAR=.true.
+export LTAEROSOL=.true.
+export IALB=2
+export IEMS=2
+export HYBEDMF=.false.
+export DO_MYNNEDMF=.true.
+export DO_MYNNSFCLAY=.true.
+export DO_DEEP=.false.
+export SHAL_CNV=.false.
+export IMFSHALCNV=-1
+export IMFDEEPCNV=-1
+export LHEATSTRG=.false.
+export LSM=3
+export LSOIL_LSM=9
+export KICE=9
+
+export GWD_OPT=3
+export DO_UGWP_V0=.false.
+export DO_UGWP_V0_OROG_ONLY=.false.
+export DO_GSL_DRAG_LS_BL=.true.
+export DO_GSL_DRAG_SS=.true.
+export DO_GSL_DRAG_TOFD=.true.
+export DO_UGWP_V1=.false.
+export DO_UGWP_V1_OROG_ONLY=.false.
+}
+export_hrrr_conus13km()
+{
+export_fv3
+export SYEAR=2021
+export SMONTH=05
+export SDAY=12
+export SHOUR=16
+export FHMAX=2
+export DT_ATMOS=120
+export RESTART_INTERVAL=1
+export QUILTING=.true.
+export WRITE_GROUP=1
+export WRTTASK_PER_GROUP=6
+export NTILES=1
+export WRITE_DOPOST=.false.
+export OUTPUT_HISTORY=.true.
+export OUTPUT_GRID=lambert_conformal
+export OUTPUT_FILE="'netcdf'"
+
+# Revert these two to GFS_typedefs defaults to avoid a crash:
+export SEDI_SEMI=.false.
+export DECFL=8
+
+export RRFS_SMOKE=.true.
+export SEAS_OPT=0
+
+export LKM=1
+export SFCLAY_COMPUTE_FLUX=.true.
+export IALB=2
+export ICLIQ_SW=2
+export IEMS=2
+export IOVR=3
+export KICE=9
+export LSM=3
+export LSOIL_LSM=9
+export DO_MYNNSFCLAY=.true.
+export DO_MYNNEDMF=.true.
+export DO_MYJPBL=.true
+export HYBEDMF=.false.
+export SHAL_CNV=.false.
+export DO_SAT_ADJ=.false.
+export DO_DEEP=.false.
+export CCPP_SUITE='FV3_HRRR'
+export INPES=12
+export JNPES=12
+export NPX=397
+export NPY=233
+export NPZ=65
+export MAKE_NH=.false.
+export NA_INIT=0
+export DNATS=0
+export EXTERNAL_IC=.false.
+export NGGPS_IC=.false.
+export MOUNTAIN=.true.
+export WARM_START=.true.
+export READ_INCREMENT=.false.
+export RES_LATLON_DYNAMICS="'fv3_increment.nc'"
+export NPZP=66
+export FHZERO=1.0
+export IMP_PHYSICS=8
+export LDIAG3D=.false.
+export QDIAG3D=.false.
+export PRINT_DIFF_PGR=.true.
+export FHCYC=0.0
+export IAER=1011
+export LHEATSTRG=.false.
+export RANDOM_CLDS=.false.
+export CNVCLD=.false.
+export IMFSHALCNV=-1
+export IMFDEEPCNV=-1
+export CDMBWD='3.5,1.0'
+export DO_SPPT=.false.
+export DO_SHUM=.false.
+export DO_SKEB=.false.
+export LNDP_TYPE=0
+export N_VAR_LNDP=0
+
+export GWD_OPT=3
+export DO_UGWP_V0=.false.
+export DO_UGWP_V0_OROG_ONLY=.false.
+export DO_GSL_DRAG_LS_BL=.true.
+export DO_GSL_DRAG_SS=.true.
+export DO_GSL_DRAG_TOFD=.true.
+export DO_UGWP_V1=.false.
+export DO_UGWP_V1_OROG_ONLY=.false.
+
+export FV3_RUN=rrfs_warm_run.IN
+export INPUT_NML=rrfs_conus13km_hrrr.nml.IN
+export FIELD_TABLE=field_table_thompson_aero_tke_smoke
+export DIAG_TABLE=diag_table_hrrr
+export MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
+export DIAG_TABLE_ADDITIONAL=diag_additional_rrfs_smoke
+export FRAC_ICE=.true.
 }
