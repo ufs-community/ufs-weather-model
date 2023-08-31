@@ -44,6 +44,13 @@ elif [[ $MACHINE_ID = cheyenne ]] ; then
     fi
     module purge
     
+elif [[ $MACHINE_ID = derecho ]] ; then
+    # We are on NCAR Cheyenne
+    if ( ! eval module help > /dev/null 2>&1 ) ; then
+        source /usr/share/lmod/lmod/init/bash
+    fi
+    module purge
+    
 elif [[ $MACHINE_ID = noaacloud ]] ; then
     # We are on NOAA Cloud
     if ( ! eval module help > /dev/null 2>&1 ) ; then

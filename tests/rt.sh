@@ -369,14 +369,14 @@ elif [[ $MACHINE_ID = jet ]]; then
 elif [[ $MACHINE_ID = s4 ]]; then
 
   module load rocoto/1.3.2
+  module load ecflow/5.6.0
+  module load miniconda/3.8-s4
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=slurm
 
-  module load git/2.30.0
   module use /data/prod/jedi/spack-stack/modulefiles
-  module load miniconda/3.9.12
   module load ecflow/5.8.4
   ECFLOW_START=/data/prod/jedi/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh 
   ECF_PORT=$(( $(id -u) + 1500 ))
@@ -391,6 +391,29 @@ elif [[ $MACHINE_ID = s4 ]]; then
   PTMP=/scratch/users
 
   SCHEDULER=slurm
+
+elif [[ $MACHINE_ID = derecho ]]; then
+
+  export PATH=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/bin:/glade/p/ral/jntp/tools/miniconda3/4.8.3/bin:$PATH
+  export PYTHONPATH=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/glade/p/ral/jntp/tools/miniconda3/4.8.3/lib/python3.8/site-packages
+  ECFLOW_START=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/bin/ecflow_start.sh
+  ECF_PORT=$(( $(id -u) + 1500 ))
+
+  QUEUE=main
+  COMPILE_QUEUE=main
+  PARTITION=
+  dprefix=/glade/derecho/scratch
+  DISKNM=/glade/cheyenne/scratch/epicufsrt/GMTB/ufs-weather-model/RT
+  STMP=$dprefix
+  PTMP=$dprefix
+  SCHEDULER=pbs
+  cp fv3_conf/fv3_qsub.IN_derecho fv3_conf/fv3_qsub.IN
+  cp fv3_conf/compile_qsub.IN_derecho fv3_conf/compile_qsub.IN
+
+  ROCOTORUN=$(which rocotorun)
+  ROCOTOSTAT=$(which rocotostat)
+  ROCOTOCOMPLETE=$(which rocotocomplete)
+  ROCOTO_SCHEDULER=pbspro
 
 elif [[ $MACHINE_ID = cheyenne ]]; then
 
@@ -561,6 +584,10 @@ if [[ $ROCOTO == true ]]; then
     QUEUE=batch
     COMPILE_QUEUE=batch
     ROCOTO_SCHEDULER=slurm
+  elif [[ $MACHINE_ID = derecho ]]; then
+    QUEUE=main
+    COMPILE_QUEUE=main
+    ROCOTO_SCHEDULER=pbspro
   else
     die "Rocoto is not supported on this machine $MACHINE_ID"
   fi
@@ -593,7 +620,7 @@ if [[ $ECFLOW == true ]]; then
   MAX_JOBS=30
 
   # Default number of tries to run jobs - on wcoss, no error tolerance
-  ECF_TRIES=2
+  ECF_TRIES=1
   if [[ $MACHINE_ID = wcoss ]]; then
     ECF_TRIES=1
   fi
@@ -636,6 +663,8 @@ EOF
     QUEUE=normal
   elif [[ $MACHINE_ID = cheyenne ]]; then
     QUEUE=regular
+  elif [[ $MACHINE_ID = derecho ]]; then
+    QUEUE=main
   else
     die "ecFlow is not supported on this machine $MACHINE_ID"
   fi

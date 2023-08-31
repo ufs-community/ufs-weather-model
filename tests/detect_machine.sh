@@ -75,6 +75,14 @@ case $(hostname -f) in
   Orion-login-3.HPC.MsState.Edu) MACHINE_ID=orion ;; ### orion3
   Orion-login-4.HPC.MsState.Edu) MACHINE_ID=orion ;; ### orion4
 
+  derecho1.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho1
+  derecho2.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho2
+  derecho3.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho3
+  derecho4.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho4
+  derecho5.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho5
+  derecho6.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho6
+  derecho7.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho7
+  derecho8.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho8
   cheyenne1.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne1
   cheyenne2.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne2
   cheyenne3.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne3
