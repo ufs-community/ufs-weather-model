@@ -10,12 +10,6 @@
       prepend_date = .false.
 /
 
- &fms_io_nml
-       checksum_required   = .false.
-       max_files_r = 100,
-       max_files_w = 100,
-/
-
  &fms_nml
        clock_grain = 'ROUTINE',
        domains_stack_size = 3000000,
@@ -24,6 +18,10 @@
 
  &fv_grid_nml
   grid_file = 'INPUT/grid_spec.nc'
+/
+
+&fms2_io_nml
+  netcdf_default_format = "netcdf4"
 /
 
  &fv_core_nml
@@ -110,7 +108,7 @@
        nrows_blend = 10
 /
 
- &external_ic_nml 
+ &external_ic_nml
        filtered_terrain = .true.
        levp = 65
        gfs_dwinds = .true.
@@ -131,7 +129,7 @@
        nst_anl        = .true.
        use_ufo        = .true.
        pre_rad        = .false.
-       imp_physics    = 8 
+       imp_physics    = 8
        ltaerosol      = .F.
        ttendlim       = -999.0
        pdfcld         = .false.
