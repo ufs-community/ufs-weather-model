@@ -104,6 +104,7 @@ export DT_ATMOS=1200
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6=3600
 export DT_THERM_MOM6=3600
+export DIAG_FREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
 
 # nems.configure
 export coupling_interval_slow_sec=${DT_THERM_MOM6}
