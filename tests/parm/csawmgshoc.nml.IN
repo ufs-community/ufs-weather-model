@@ -9,12 +9,6 @@
        prepend_date = .false.
 /
 
-&fms_io_nml
-       checksum_required   = .false.
-       max_files_r = 100,
-       max_files_w = 100,
-/
-
 &fms_nml
        clock_grain = 'ROUTINE',
        domains_stack_size = 3000000,
@@ -23,6 +17,10 @@
 
 &fv_grid_nml
        grid_file = 'INPUT/grid_spec.nc'
+/
+
+&fms2_io_nml
+  netcdf_default_format = "netcdf4"
 /
 
 &fv_core_nml
