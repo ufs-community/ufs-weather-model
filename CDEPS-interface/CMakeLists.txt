@@ -2,7 +2,7 @@
 if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
   set(CMAKE_Fortran_FLAGS "-g -fbacktrace -ffree-line-length-none")
   if(${CMAKE_Fortran_COMPILER_VERSION} VERSION_GREATER_EQUAL 10)
-    set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fallow-argument-mismatch -fallow-invalid-boz")
+    set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -ffree-line-length-none -fallow-argument-mismatch -fallow-invalid-boz -ffree-line-length-512 -DCPRGNU")
   endif()
   set(CMAKE_Fortran_FLAGS_RELEASE "-O2")
   set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -fcheck=bounds -ffpe-trap=invalid,zero,overflow,underflow" )
