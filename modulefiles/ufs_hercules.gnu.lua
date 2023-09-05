@@ -3,6 +3,7 @@ loads UFS Model prerequisites for Hercules/GNU
 ]])
 
 prepend_path("MODULEPATH", "/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-dev-20230825/envs/ufs-pio-2.5.10/install/modulefiles/Core")
+prepend_path("MODULEPATH", "/work/noaa/epic/role-epic/spack-stack/hercules/modulefiles")
 
 stack_gnu_ver=os.getenv("stack_gnu_ver") or "11.3.1"
 load(pathJoin("stack-gcc", stack_gnu_ver))
