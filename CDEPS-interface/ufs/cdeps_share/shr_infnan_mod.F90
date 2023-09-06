@@ -317,11 +317,11 @@ elemental function shr_infnan_isposinf_double(x) result(isposinf)
   use, intrinsic :: ieee_arithmetic, only: &
        ieee_class, &
        ieee_positive_inf, &
-       operator(.eq.)
+       operator(==)
   real(r8), intent(in) :: x
   logical :: isposinf
 
-  isposinf = (ieee_positive_inf .eq. ieee_class(x))
+  isposinf = (ieee_positive_inf == ieee_class(x))
 
 # 202 "shr_infnan_mod.F90.in"
 end function shr_infnan_isposinf_double
@@ -331,11 +331,11 @@ elemental function shr_infnan_isposinf_real(x) result(isposinf)
   use, intrinsic :: ieee_arithmetic, only: &
        ieee_class, &
        ieee_positive_inf, &
-       operator(.eq.)
+       operator(==)
   real(r4), intent(in) :: x
   logical :: isposinf
 
-  isposinf = (ieee_positive_inf .eq. ieee_class(x))
+  isposinf = (ieee_positive_inf == ieee_class(x))
 
 # 202 "shr_infnan_mod.F90.in"
 end function shr_infnan_isposinf_real
@@ -346,11 +346,11 @@ elemental function shr_infnan_isneginf_double(x) result(isneginf)
   use, intrinsic :: ieee_arithmetic, only: &
        ieee_class, &
        ieee_negative_inf, &
-       operator(.eq.)
+       operator(==)
   real(r8), intent(in) :: x
   logical :: isneginf
 
-  isneginf = (ieee_negative_inf .eq. ieee_class(x))
+  isneginf = (ieee_negative_inf == ieee_class(x))
 
 # 215 "shr_infnan_mod.F90.in"
 end function shr_infnan_isneginf_double
@@ -360,11 +360,11 @@ elemental function shr_infnan_isneginf_real(x) result(isneginf)
   use, intrinsic :: ieee_arithmetic, only: &
        ieee_class, &
        ieee_negative_inf, &
-       operator(.eq.)
+       operator(==)
   real(r4), intent(in) :: x
   logical :: isneginf
 
-  isneginf = (ieee_negative_inf .eq. ieee_class(x))
+  isneginf = (ieee_negative_inf == ieee_class(x))
 
 # 215 "shr_infnan_mod.F90.in"
 end function shr_infnan_isneginf_real
@@ -407,13 +407,13 @@ end function shr_infnan_isnan_real
 elemental function shr_infnan_isposinf_double(x) result(isposinf)
   real(r8), intent(in) :: x
   logical :: isposinf
-#if (102 .eq. TYPEREAL)
+#if (102 == TYPEREAL)
   integer(i4), parameter :: posinf_pat = sposinf_pat
 #else
   integer(i8), parameter :: posinf_pat = dposinf_pat
 #endif
 
-  isposinf = (x .eq. transfer(posinf_pat,x))
+  isposinf = (x == transfer(posinf_pat,x))
 
 # 250 "shr_infnan_mod.F90.in"
 end function shr_infnan_isposinf_double
@@ -422,13 +422,13 @@ end function shr_infnan_isposinf_double
 elemental function shr_infnan_isposinf_real(x) result(isposinf)
   real(r4), intent(in) :: x
   logical :: isposinf
-#if (101 .eq. TYPEREAL)
+#if (101 == TYPEREAL)
   integer(i4), parameter :: posinf_pat = sposinf_pat
 #else
   integer(i8), parameter :: posinf_pat = dposinf_pat
 #endif
 
-  isposinf = (x .eq. transfer(posinf_pat,x))
+  isposinf = (x == transfer(posinf_pat,x))
 
 # 250 "shr_infnan_mod.F90.in"
 end function shr_infnan_isposinf_real
@@ -438,13 +438,13 @@ end function shr_infnan_isposinf_real
 elemental function shr_infnan_isneginf_double(x) result(isneginf)
   real(r8), intent(in) :: x
   logical :: isneginf
-#if (102 .eq. TYPEREAL)
+#if (102 == TYPEREAL)
   integer(i4), parameter :: neginf_pat = sneginf_pat
 #else
   integer(i8), parameter :: neginf_pat = dneginf_pat
 #endif
 
-  isneginf = (x .eq. transfer(neginf_pat,x))
+  isneginf = (x == transfer(neginf_pat,x))
 
 # 264 "shr_infnan_mod.F90.in"
 end function shr_infnan_isneginf_double
@@ -453,13 +453,13 @@ end function shr_infnan_isneginf_double
 elemental function shr_infnan_isneginf_real(x) result(isneginf)
   real(r4), intent(in) :: x
   logical :: isneginf
-#if (101 .eq. TYPEREAL)
+#if (101 == TYPEREAL)
   integer(i4), parameter :: neginf_pat = sneginf_pat
 #else
   integer(i8), parameter :: neginf_pat = dneginf_pat
 #endif
 
-  isneginf = (x .eq. transfer(neginf_pat,x))
+  isneginf = (x == transfer(neginf_pat,x))
 
 # 264 "shr_infnan_mod.F90.in"
 end function shr_infnan_isneginf_real
@@ -493,7 +493,7 @@ pure subroutine set_nan_0d_double(output, nan)
        ieee_quiet_nan, &
        ieee_value
 #else
-#if (102 .eq. TYPEREAL)
+#if (102 == TYPEREAL)
   integer(i4), parameter :: snan_pat = ssnan_pat
   integer(i4), parameter :: qnan_pat = sqnan_pat
 #else
@@ -536,7 +536,7 @@ pure subroutine set_nan_1d_double(output, nan)
        ieee_quiet_nan, &
        ieee_value
 #else
-#if (102 .eq. TYPEREAL)
+#if (102 == TYPEREAL)
   integer(i4), parameter :: snan_pat = ssnan_pat
   integer(i4), parameter :: qnan_pat = sqnan_pat
 #else
@@ -579,7 +579,7 @@ pure subroutine set_nan_2d_double(output, nan)
        ieee_quiet_nan, &
        ieee_value
 #else
-#if (102 .eq. TYPEREAL)
+#if (102 == TYPEREAL)
   integer(i4), parameter :: snan_pat = ssnan_pat
   integer(i4), parameter :: qnan_pat = sqnan_pat
 #else
@@ -622,7 +622,7 @@ pure subroutine set_nan_3d_double(output, nan)
        ieee_quiet_nan, &
        ieee_value
 #else
-#if (102 .eq. TYPEREAL)
+#if (102 == TYPEREAL)
   integer(i4), parameter :: snan_pat = ssnan_pat
   integer(i4), parameter :: qnan_pat = sqnan_pat
 #else
@@ -665,7 +665,7 @@ pure subroutine set_nan_4d_double(output, nan)
        ieee_quiet_nan, &
        ieee_value
 #else
-#if (102 .eq. TYPEREAL)
+#if (102 == TYPEREAL)
   integer(i4), parameter :: snan_pat = ssnan_pat
   integer(i4), parameter :: qnan_pat = sqnan_pat
 #else
@@ -708,7 +708,7 @@ pure subroutine set_nan_5d_double(output, nan)
        ieee_quiet_nan, &
        ieee_value
 #else
-#if (102 .eq. TYPEREAL)
+#if (102 == TYPEREAL)
   integer(i4), parameter :: snan_pat = ssnan_pat
   integer(i4), parameter :: qnan_pat = sqnan_pat
 #else
@@ -751,7 +751,7 @@ pure subroutine set_nan_6d_double(output, nan)
        ieee_quiet_nan, &
        ieee_value
 #else
-#if (102 .eq. TYPEREAL)
+#if (102 == TYPEREAL)
   integer(i4), parameter :: snan_pat = ssnan_pat
   integer(i4), parameter :: qnan_pat = sqnan_pat
 #else
@@ -794,7 +794,7 @@ pure subroutine set_nan_7d_double(output, nan)
        ieee_quiet_nan, &
        ieee_value
 #else
-#if (102 .eq. TYPEREAL)
+#if (102 == TYPEREAL)
   integer(i4), parameter :: snan_pat = ssnan_pat
   integer(i4), parameter :: qnan_pat = sqnan_pat
 #else
@@ -837,7 +837,7 @@ pure subroutine set_nan_0d_real(output, nan)
        ieee_quiet_nan, &
        ieee_value
 #else
-#if (101 .eq. TYPEREAL)
+#if (101 == TYPEREAL)
   integer(i4), parameter :: snan_pat = ssnan_pat
   integer(i4), parameter :: qnan_pat = sqnan_pat
 #else
@@ -880,7 +880,7 @@ pure subroutine set_nan_1d_real(output, nan)
        ieee_quiet_nan, &
        ieee_value
 #else
-#if (101 .eq. TYPEREAL)
+#if (101 == TYPEREAL)
   integer(i4), parameter :: snan_pat = ssnan_pat
   integer(i4), parameter :: qnan_pat = sqnan_pat
 #else
@@ -923,7 +923,7 @@ pure subroutine set_nan_2d_real(output, nan)
        ieee_quiet_nan, &
        ieee_value
 #else
-#if (101 .eq. TYPEREAL)
+#if (101 == TYPEREAL)
   integer(i4), parameter :: snan_pat = ssnan_pat
   integer(i4), parameter :: qnan_pat = sqnan_pat
 #else
@@ -966,7 +966,7 @@ pure subroutine set_nan_3d_real(output, nan)
        ieee_quiet_nan, &
        ieee_value
 #else
-#if (101 .eq. TYPEREAL)
+#if (101 == TYPEREAL)
   integer(i4), parameter :: snan_pat = ssnan_pat
   integer(i4), parameter :: qnan_pat = sqnan_pat
 #else
@@ -1009,7 +1009,7 @@ pure subroutine set_nan_4d_real(output, nan)
        ieee_quiet_nan, &
        ieee_value
 #else
-#if (101 .eq. TYPEREAL)
+#if (101 == TYPEREAL)
   integer(i4), parameter :: snan_pat = ssnan_pat
   integer(i4), parameter :: qnan_pat = sqnan_pat
 #else
@@ -1052,7 +1052,7 @@ pure subroutine set_nan_5d_real(output, nan)
        ieee_quiet_nan, &
        ieee_value
 #else
-#if (101 .eq. TYPEREAL)
+#if (101 == TYPEREAL)
   integer(i4), parameter :: snan_pat = ssnan_pat
   integer(i4), parameter :: qnan_pat = sqnan_pat
 #else
@@ -1095,7 +1095,7 @@ pure subroutine set_nan_6d_real(output, nan)
        ieee_quiet_nan, &
        ieee_value
 #else
-#if (101 .eq. TYPEREAL)
+#if (101 == TYPEREAL)
   integer(i4), parameter :: snan_pat = ssnan_pat
   integer(i4), parameter :: qnan_pat = sqnan_pat
 #else
@@ -1138,7 +1138,7 @@ pure subroutine set_nan_7d_real(output, nan)
        ieee_quiet_nan, &
        ieee_value
 #else
-#if (101 .eq. TYPEREAL)
+#if (101 == TYPEREAL)
   integer(i4), parameter :: snan_pat = ssnan_pat
   integer(i4), parameter :: qnan_pat = sqnan_pat
 #else
@@ -1182,7 +1182,7 @@ pure subroutine set_inf_0d_double(output, inf)
        ieee_negative_inf, &
        ieee_value
 #else
-#if (102 .eq. TYPEREAL)
+#if (102 == TYPEREAL)
   integer(i4), parameter :: posinf_pat = sposinf_pat
   integer(i4), parameter :: neginf_pat = sneginf_pat
 #else
@@ -1225,7 +1225,7 @@ pure subroutine set_inf_1d_double(output, inf)
        ieee_negative_inf, &
        ieee_value
 #else
-#if (102 .eq. TYPEREAL)
+#if (102 == TYPEREAL)
   integer(i4), parameter :: posinf_pat = sposinf_pat
   integer(i4), parameter :: neginf_pat = sneginf_pat
 #else
@@ -1268,7 +1268,7 @@ pure subroutine set_inf_2d_double(output, inf)
        ieee_negative_inf, &
        ieee_value
 #else
-#if (102 .eq. TYPEREAL)
+#if (102 == TYPEREAL)
   integer(i4), parameter :: posinf_pat = sposinf_pat
   integer(i4), parameter :: neginf_pat = sneginf_pat
 #else
@@ -1311,7 +1311,7 @@ pure subroutine set_inf_3d_double(output, inf)
        ieee_negative_inf, &
        ieee_value
 #else
-#if (102 .eq. TYPEREAL)
+#if (102 == TYPEREAL)
   integer(i4), parameter :: posinf_pat = sposinf_pat
   integer(i4), parameter :: neginf_pat = sneginf_pat
 #else
@@ -1354,7 +1354,7 @@ pure subroutine set_inf_4d_double(output, inf)
        ieee_negative_inf, &
        ieee_value
 #else
-#if (102 .eq. TYPEREAL)
+#if (102 == TYPEREAL)
   integer(i4), parameter :: posinf_pat = sposinf_pat
   integer(i4), parameter :: neginf_pat = sneginf_pat
 #else
@@ -1397,7 +1397,7 @@ pure subroutine set_inf_5d_double(output, inf)
        ieee_negative_inf, &
        ieee_value
 #else
-#if (102 .eq. TYPEREAL)
+#if (102 == TYPEREAL)
   integer(i4), parameter :: posinf_pat = sposinf_pat
   integer(i4), parameter :: neginf_pat = sneginf_pat
 #else
@@ -1440,7 +1440,7 @@ pure subroutine set_inf_6d_double(output, inf)
        ieee_negative_inf, &
        ieee_value
 #else
-#if (102 .eq. TYPEREAL)
+#if (102 == TYPEREAL)
   integer(i4), parameter :: posinf_pat = sposinf_pat
   integer(i4), parameter :: neginf_pat = sneginf_pat
 #else
@@ -1483,7 +1483,7 @@ pure subroutine set_inf_7d_double(output, inf)
        ieee_negative_inf, &
        ieee_value
 #else
-#if (102 .eq. TYPEREAL)
+#if (102 == TYPEREAL)
   integer(i4), parameter :: posinf_pat = sposinf_pat
   integer(i4), parameter :: neginf_pat = sneginf_pat
 #else
@@ -1526,7 +1526,7 @@ pure subroutine set_inf_0d_real(output, inf)
        ieee_negative_inf, &
        ieee_value
 #else
-#if (101 .eq. TYPEREAL)
+#if (101 == TYPEREAL)
   integer(i4), parameter :: posinf_pat = sposinf_pat
   integer(i4), parameter :: neginf_pat = sneginf_pat
 #else
@@ -1569,7 +1569,7 @@ pure subroutine set_inf_1d_real(output, inf)
        ieee_negative_inf, &
        ieee_value
 #else
-#if (101 .eq. TYPEREAL)
+#if (101 == TYPEREAL)
   integer(i4), parameter :: posinf_pat = sposinf_pat
   integer(i4), parameter :: neginf_pat = sneginf_pat
 #else
@@ -1612,7 +1612,7 @@ pure subroutine set_inf_2d_real(output, inf)
        ieee_negative_inf, &
        ieee_value
 #else
-#if (101 .eq. TYPEREAL)
+#if (101 == TYPEREAL)
   integer(i4), parameter :: posinf_pat = sposinf_pat
   integer(i4), parameter :: neginf_pat = sneginf_pat
 #else
@@ -1655,7 +1655,7 @@ pure subroutine set_inf_3d_real(output, inf)
        ieee_negative_inf, &
        ieee_value
 #else
-#if (101 .eq. TYPEREAL)
+#if (101 == TYPEREAL)
   integer(i4), parameter :: posinf_pat = sposinf_pat
   integer(i4), parameter :: neginf_pat = sneginf_pat
 #else
@@ -1698,7 +1698,7 @@ pure subroutine set_inf_4d_real(output, inf)
        ieee_negative_inf, &
        ieee_value
 #else
-#if (101 .eq. TYPEREAL)
+#if (101 == TYPEREAL)
   integer(i4), parameter :: posinf_pat = sposinf_pat
   integer(i4), parameter :: neginf_pat = sneginf_pat
 #else
@@ -1741,7 +1741,7 @@ pure subroutine set_inf_5d_real(output, inf)
        ieee_negative_inf, &
        ieee_value
 #else
-#if (101 .eq. TYPEREAL)
+#if (101 == TYPEREAL)
   integer(i4), parameter :: posinf_pat = sposinf_pat
   integer(i4), parameter :: neginf_pat = sneginf_pat
 #else
@@ -1784,7 +1784,7 @@ pure subroutine set_inf_6d_real(output, inf)
        ieee_negative_inf, &
        ieee_value
 #else
-#if (101 .eq. TYPEREAL)
+#if (101 == TYPEREAL)
   integer(i4), parameter :: posinf_pat = sposinf_pat
   integer(i4), parameter :: neginf_pat = sneginf_pat
 #else
@@ -1827,7 +1827,7 @@ pure subroutine set_inf_7d_real(output, inf)
        ieee_negative_inf, &
        ieee_value
 #else
-#if (101 .eq. TYPEREAL)
+#if (101 == TYPEREAL)
   integer(i4), parameter :: posinf_pat = sposinf_pat
   integer(i4), parameter :: neginf_pat = sneginf_pat
 #else
