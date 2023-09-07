@@ -315,7 +315,7 @@ elif [[ $MACHINE_ID = gaea ]]; then
   ECFLOW_START=/lustre/f2/pdata/esrl/gsd/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
-  DISKNM=/lustre/f2/pdata/ncep_shared/emc.nemspara/RT
+  DISKNM=/lustre/f2/pdata/ncep/role.epic/RT
   QUEUE=normal
   COMPILE_QUEUE=normal
   PARTITION=c4
@@ -373,7 +373,7 @@ elif [[ $MACHINE_ID = orion ]]; then
   COMPILE_QUEUE=batch
   PARTITION=orion
   dprefix=/work/noaa/stmp/${USER}
-  DISKNM=/work/noaa/nems/emc.nemspara/RT
+  DISKNM=/work/noaa/epic/UFS-WM_RT
   STMP=$dprefix/stmp
   PTMP=$dprefix/stmp
 
@@ -395,7 +395,7 @@ elif [[ $MACHINE_ID = jet ]]; then
   QUEUE=batch
   COMPILE_QUEUE=batch
   PARTITION=xjet
-  DISKNM=/mnt/lfs4/HFIP/hfv3gfs/role.epic/RT
+  DISKNM=/lfs4/HFIP/hfv3gfs/UFS-WM_RT
   dprefix=${dprefix:-/lfs4/HFIP/$ACCNR/$USER}
   STMP=${STMP:-$dprefix/RT_BASELINE}
   PTMP=${PTMP:-$dprefix/RT_RUNDIRS}
