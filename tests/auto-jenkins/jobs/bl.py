@@ -25,17 +25,17 @@ def set_directories(job_obj):
                  f'REGRESSION_TEST'
     elif job_obj.machine == 'jet':
         workdir = '/lfs4/HFIP/h-nems/emc.nemspara/autort/pr'
-        blstore = '/lfs4/HFIP/h-nems/emc.nemspara/RT/NEMSfv3gfs/'
+        blstore = '/lfs4/HFIP/hfv3gfs/UFS-WM_RT/NEMSfv3gfs'
         rtbldir = '/lfs4/HFIP/h-nems/emc.nemspara/RT_BASELINE/'\
                  f'emc.nemspara/FV3_RT/REGRESSION_TEST'
     elif job_obj.machine == 'gaea':
         workdir = '/lustre/f2/pdata/ncep/emc.nemspara/autort/pr'
-        blstore = '/lustre/f2/pdata/ncep_shared/emc.nemspara/RT/NEMSfv3gfs'
+        blstore = '/lustre/f2/pdata/ncep/role.epic/RT/NEMSfv3gfs'
         rtbldir = '/lustre/f2/scratch/emc.nemspara/FV3_RT/'\
                  f'REGRESSION_TEST'
     elif job_obj.machine == 'orion':
         workdir = '/work/noaa/epic-ps/role-epic-ps/autort/tests/auto/pr'
-        blstore = '/work2/noaa/epic-ps/RT/NEMSfv3gfs'
+        blstore = '/work/noaa/epic/UFS-WM_RT/NEMSfv3gfs'
         rtbldir = '/work/noaa/stmp/role-epic-ps/stmp/role-epic-ps/FV3_RT/'\
                  f'REGRESSION_TEST'
     elif job_obj.machine == 'cheyenne':
