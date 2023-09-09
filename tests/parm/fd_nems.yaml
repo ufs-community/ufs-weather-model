@@ -29,6 +29,24 @@
        canonical_units: N m-2
        description: mediator calculation
      #
+     - standard_name: Foxx_lwnet
+       alias: mean_net_lw_flx
+       canonical_units: W m-2
+       description: mediator calculation - atm/ocn net longwave flux
+     #
+     - standard_name: Foxx_sen
+       canonical_units: W m-2
+       alias: mean_sensi_heat_flx
+       description: mediator calculation - atm/ocn surface sensible heat flux
+     #
+     - standard_name: Foxx_evap
+       canonical_units: kg m-2 s-1
+       alias: mean_evap_rate
+       description: mediator calculation - atm/ocn specific humidity flux
+     #
+     - standard_name: Faox_evap
+       canonical_units: kg m-2 s-1
+       description: mediator calculation - atm/ocn specific humidity flux
      #-----------------------------------
      # section: atmosphere export
      #-----------------------------------
@@ -210,6 +228,21 @@
        alias: mean_merid_moment_flx_atm
        canonical_units: N m-2
        description: atmosphere export - meridional component of momentum flux
+     #
+     - standard_name: Faxa_lwnet
+       canonical_units: W m-2
+       alias: mean_net_lw_flx
+       description: atmosphere export - mean net longwave flux from atm
+     #
+     - standard_name: Faxa_sen
+       canonical_units: W m-2
+       alias: mean_sensi_heat_flx
+       description: atmosphere export - sensible heat flux
+     #
+     - standard_name : Faxa_evap
+       canonical_units: kg m-2 s-1
+       alias: mean_evap_rate
+       description: atmosphere export - latent heat flux conversion
      #
      - standard_name: Faxx_evap
        canonical_units: kg m-2 s-1
@@ -652,36 +685,6 @@
        canonical_units: N m-2
        description: ocean import - meridional surface stress to ocean
      #
-     - standard_name: Foxx_hrain
-       alias: heat_content_lprec
-       canonical_units: W m-2
-       description: to ocn heat content of rain
-     #
-     - standard_name: Foxx_hsnow
-       alias: heat_content_fprec
-       canonical_units: W m-2
-       description: to ocn heat content of snow
-     #
-     - standard_name: Foxx_hevap
-       alias: heat_content_evap
-       canonical_units: W m-2
-       description: to ocn heat content of evaporation
-     #
-     - standard_name: Foxx_hcond
-       alias: heat_content_cond
-       canonical_units: W m-2
-       description: to ocn heat content of condensation
-     #
-     - standard_name: Foxx_hrofl
-       alias: heat_content_rofl
-       canonical_units: W m-2
-       description: to ocn heat content of liquid runoff
-     #
-     - standard_name: Foxx_hrofi
-       alias: heat_content_rofi
-       canonical_units: W m-2
-       description: to ocn heat content of ice runoff
-     #
      #-----------------------------------
      # mediator fields
      #-----------------------------------
@@ -694,47 +697,6 @@
      #
      - standard_name: mask
        canonical_units: 1
-     #
-     #-----------------------------------
-     # TODO: change description
-     # aliased fields for active and datm
-     #-----------------------------------
-     #
-     ########### TODO: move these to atm section
-     - standard_name: Faxa_lwnet
-       canonical_units: W m-2
-       alias: mean_net_lw_flx
-       description: atmosphere export - mean net longwave flux from atm
-     #
-     - standard_name: Faxa_sen
-       canonical_units: W m-2
-       alias: mean_sensi_heat_flx
-       description: atmosphere export - sensible heat flux
-     #
-     - standard_name : Faxa_evap
-       canonical_units: kg m-2 s-1
-       alias: mean_evap_rate
-       description: atmosphere export - latent heat flux conversion
-     #
-     ############## TODO: move these to atm section
-     - standard_name: Foxx_lwnet
-       alias: mean_net_lw_flx
-       canonical_units: W m-2
-       description: mediator calculation - atm/ocn net longwave flux
-     #
-     - standard_name: Foxx_sen
-       canonical_units: W m-2
-       alias: mean_sensi_heat_flx
-       description: mediator calculation - atm/ocn surface sensible heat flux
-     #
-     - standard_name: Foxx_evap
-       canonical_units: kg m-2 s-1
-       alias: mean_evap_rate
-       description: mediator calculation - atm/ocn specific humidity flux
-     #
-     - standard_name: Faox_evap
-       canonical_units: kg m-2 s-1
-       description: mediator calculation - atm/ocn specific humidity flux
      #
      #-----------------------------------
      # fields to use fluxes from mediator
