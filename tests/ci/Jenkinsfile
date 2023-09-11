@@ -100,11 +100,7 @@ pipeline {
                               repoOwner: 'your-github-username',
                               repoName: 'your-github-repo'
                             )
-                        }
-                    }
-                }           
-                post {
-                    always {
+                    
                         sh '''
                             docker rmi -f "$(docker image ls | grep -E -m1 "${IMG_NAME}" | awk '{ print $3 }')"
                             docker rmi -f "$(docker image ls | grep -E -m1 'noaaepic' | awk '{ print $3 }')"
