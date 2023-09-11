@@ -8,6 +8,16 @@ pipeline {
     }
 
     stages {
+        stage('Launch SonarQube') {
+            steps {
+                script {
+                    build job: '/ufs-weather-model/ufs-wm-sonarqube', parameters: [
+                        string(name: 'BRANCH_NAME', value: env.BRANCH_NAME ?: 'develop')
+                    ], wait: false
+                }
+            }
+        }
+    stages {
         stage('ORT') {
             matrix {
                 axes {
