@@ -92,34 +92,37 @@ pipeline {
                     }
                 }
 
-                post {
-                    always {
-                        script {
-                            def prNumber = currentBuild.changeSets[0].pullRequests[0].number
-                            def commitSha = currentBuild.changeSets[0].commit
-                            def buildStatus = currentBuild.resultIsBetterOrEqualTo('SUCCESS') ? 'SUCCESS' : 'FAILURE'
-                            def github = getGitHub()
+                void setBuildStatus(String message, String state) {
+                      step([
+                      $class: "GitHubCommitStatusSetter",
+                        reposSource: [$class: "ManuallyEnteredRepositorySource", url: "https://github.com/my-org/my-repo"],
+                        contextSource: [$class: "ManuallyEnteredCommitContextSource", context: "ci/jenkins/build-status"],
+                        errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "UNSTABLE"]],
+                        statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]] ]
+                  ]);
+                }
 
-                            // Set build status on the GitHub pull request
-                            github.notifyCommitStatus(
-                              context: 'Jenkins CI',
-                              state: buildStatus,
-                              targetUrl: currentBuild.absoluteUrl,
-                              description: 'Jenkins Build Status',
-                              sha1: commitSha,
-                              repoOwner: 'your-github-username',
-                              repoName: 'your-github-repo'
-                            )
-                    
-                        sh '''
-                            docker rmi -f "$(docker image ls | grep -E -m1 "${IMG_NAME}" | awk '{ print $3 }')"
-                            docker rmi -f "$(docker image ls | grep -E -m1 'noaaepic' | awk '{ print $3 }')"
-                        '''
+                        ... 
+
+                        pipeline {
+                          stages {
+                        ...
+                      }
+                      post {
+                        success {
+                            setBuildStatus("Build succeeded", "SUCCESS");
+                     }
+                        failure {
+                            setBuildStatus("Build failed", "FAILURE");
+                    }
+                  }
+                } 
+                sh '''
+                    docker rmi -f "$(docker image ls | grep -E -m1 "${IMG_NAME}" | awk '{ print $3 }')"
+                    docker rmi -f "$(docker image ls | grep -E -m1 'noaaepic' | awk '{ print $3 }')"
+                   '''
                     }
                 }
             }
          }
       }
-    } 
- }
-         
