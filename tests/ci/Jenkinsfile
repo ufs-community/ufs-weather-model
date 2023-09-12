@@ -21,7 +21,7 @@ pipeline {
             steps {
                 script {
                     build job: '/ufs-weather-model/ufs-wm-sonarqube', parameters: [
-                        string(name: 'BRANCH_NAME', value: env.BRANCH_NAME ?: 'develop')
+                        string(name: 'BRANCH_NAME', value: env.CHANGE_BRANCH ?: 'develop')
                     ], wait: false
                 }
             }
