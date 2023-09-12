@@ -1,3 +1,12 @@
+void setBuildStatus(String message, String state) {
+                      step([
+                      $class: "GitHubCommitStatusSetter",
+                        reposSource: [$class: "ManuallyEnteredRepositorySource", url: "https://github.com/ufs-community/ufs-weather-model"],
+                        contextSource: [$class: "ManuallyEnteredCommitContextSource", context: "ci/jenkins/build-status"],
+                        errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "UNSTABLE"]],
+                        statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]] ]
+                  ]);
+}
 pipeline {
     agent none
 
@@ -6,8 +15,8 @@ pipeline {
         overrideIndexTriggers(false)
         skipDefaultCheckout(true)
     }
-
     stages {
+        
         stage('Launch SonarQube') {
             steps {
                 script {
@@ -17,7 +26,7 @@ pipeline {
                 }
             }
         }
-    stages {
+        
         stage('ORT') {
             matrix {
                 axes {
@@ -91,34 +100,23 @@ pipeline {
                         }
                     }
                 }
+            
+            post {
 
-                void setBuildStatus(String message, String state) {
-                      step([
-                      $class: "GitHubCommitStatusSetter",
-                        reposSource: [$class: "ManuallyEnteredRepositorySource", url: "https://github.com/my-org/my-repo"],
-                        contextSource: [$class: "ManuallyEnteredCommitContextSource", context: "ci/jenkins/build-status"],
-                        errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "UNSTABLE"]],
-                        statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]] ]
-                  ]);
+                success {
+                    setBuildStatus("Build succeeded", "SUCCESS");
                 }
-                        pipeline {
-                          stages {
-                      }
-                      post {
-                        success {
-                            setBuildStatus("Build succeeded", "SUCCESS");
-                     }
-                        failure {
-                            setBuildStatus("Build failed", "FAILURE");
-                    }
-                  }
-                } 
-                sh '''
-                    docker rmi -f "$(docker image ls | grep -E -m1 "${IMG_NAME}" | awk '{ print $3 }')"
-                    docker rmi -f "$(docker image ls | grep -E -m1 'noaaepic' | awk '{ print $3 }')"
-                   '''
-                    }
-              }
+                failure {
+                    setBuildStatus("Build failed", "FAILURE");
+                }
+                always {
+                    sh '''
+                        docker rmi -f "$(docker image ls | grep -E -m1 "${IMG_NAME}" | awk '{ print $3 }')"
+                        docker rmi -f "$(docker image ls | grep -E -m1 'noaaepic' | awk '{ print $3 }')"
+                       '''
+                }
             }
-         }
-      }
+        }
+    }
+}
+}
