@@ -149,7 +149,6 @@ pipeline {
                 failure {
                     setBuildStatus("Build failed", "FAILURE");
                 }
-            }
                 always {
                     script {
                         def buildResult = currentBuild.resultIsBetterOrEqualTo("SUCCESS") ? "Success" : "Failure"
@@ -157,6 +156,7 @@ pipeline {
                         postGitHubCommentWithLogFile(commentMessage, "jenkins_console_log.txt")
                     }
                 }
-            }
         }
     }
+}
+}
