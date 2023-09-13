@@ -10,7 +10,7 @@ void setBuildStatus(String message, String state) {
 
 def postGitHubCommentWithLogFile(commentMessage, logFilePath) {
     script {
-        writeFile file: logFilePath, text: currentBuild.rawBuild.getLog(100000) 
+        writeFile file: logFilePath, text: currentBuild.rawBuild.getLog(1000000) as String
         
         def apiUrl = "https://api.github.com/repos/ufs-community/ufs-weather-model/issues/${env.CHANGE_ID}/comments"
         def headers = [
