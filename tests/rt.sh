@@ -296,9 +296,9 @@ elif [[ $MACHINE_ID = hera ]]; then
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=slurm
 
-  PYTHONHOME=/scratch1/NCEPDEV/jcsda/jedipara/spack-stack/miniconda-3.9.12
-  export PATH=$PYTHONHOME/bin:$PATH
-  export PYTHONPATH=$PYTHONHOME/lib/python3.9/site-packages
+  #PYTHONHOME=/scratch1/NCEPDEV/jcsda/jedipara/spack-stack/miniconda-3.9.12
+  #export PATH=$PYTHONHOME/bin:$PATH
+  #export PYTHONPATH=$PYTHONHOME/lib/python3.9/site-packages
   
   module load ecflow/5.5.3
   ECFLOW_START=ecflow_start.sh
