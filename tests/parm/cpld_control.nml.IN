@@ -10,21 +10,14 @@
   max_output_fields = @[MAX_OUTPUT_FIELDS]
 /
 
-&fms_io_nml
-  checksum_required = .false.
-  max_files_r = 100
-  max_files_w = 100
-/
-
-&mpp_io_nml
-shuffle=1
-deflate_level=1
-/
-
 &fms_nml
   clock_grain = 'ROUTINE'
   domains_stack_size = @[DOMAINS_STACK_SIZE]
   print_memory_usage = .false.
+/
+
+&fms2_io_nml
+  netcdf_default_format = "netcdf4"
 /
 
 &fv_core_nml
@@ -118,7 +111,7 @@ deflate_level=1
   fhcyc        = @[FHCYC]
   use_ufo      = .true.
   pre_rad      = .false.
-  imp_physics  = @[IMP_PHYSICS] 
+  imp_physics  = @[IMP_PHYSICS]
   iovr         = 3
   ltaerosol    = .false.
   lradar       = .false.
@@ -259,7 +252,7 @@ deflate_level=1
   knob_ugwp_doaxyz  = 1
   knob_ugwp_doheat  = 1
   knob_ugwp_dokdis  = 1
-  knob_ugwp_ndx4lh  = 1 
+  knob_ugwp_ndx4lh  = 1
   knob_ugwp_version = @[KNOB_UGWP_VERSION]
   launch_level      = 54
 /

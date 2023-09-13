@@ -3,31 +3,22 @@
   chksum_debug = .false.
   dycore_only = .false.
   ccpp_suite = '@[CCPP_SUITE]'
-  
+
 /
 
 &diag_manager_nml
   prepend_date = .false.
-  
-/
 
-&fms_io_nml
-  checksum_required = .false.
-  max_files_r = 100
-  max_files_w = 100
-  
-/
-
-&mpp_io_nml
-shuffle=1
-deflate_level=1
 /
 
 &fms_nml
   clock_grain = 'ROUTINE'
   domains_stack_size = 3000000
   print_memory_usage = .false.
-  
+/
+
+&fms2_io_nml
+  netcdf_default_format = "netcdf4"
 /
 
 &fv_core_nml
@@ -100,7 +91,7 @@ deflate_level=1
   agrid_vel_rst = .true.
   read_increment = .false.
   res_latlon_dynamics = ""
-  
+
 /
 
 &cires_ugwp_nml
@@ -115,7 +106,7 @@ deflate_level=1
        knob_ugwp_dokdis  = 1
        knob_ugwp_ndx4lh  = 1
        knob_ugwp_version = 0
-       launch_level      = 54                   
+       launch_level      = 54
 /
 
 &external_ic_nml
@@ -124,7 +115,7 @@ deflate_level=1
   gfs_dwinds = .true.
   checker_tr = .false.
   nt_checker = 0
-  
+
 /
 
 &gfs_physics_nml
@@ -204,7 +195,7 @@ deflate_level=1
   iau_delthrs  = 6
   iau_inc_files= @[IAU_INC_FILES]
   iau_drymassfixer = .false.
-  
+
 /
 
 &gfdl_cloud_microphysics_nml
@@ -256,12 +247,12 @@ deflate_level=1
   mp_time = 150.
   reiflag = 2
 
-  
+
 /
 
 &interpolator_nml
   interp_method = 'conserve_great_circle'
-  
+
 /
 
 &namsfc
@@ -306,12 +297,12 @@ deflate_level=1
   FvmxL = 99999
   FSLPL = 99999
   FABSL = 99999
-  
+
 /
 
 &fv_grid_nml
   grid_file = 'INPUT/grid_spec.nc'
-  
+
 /
 
 &nam_stochy
@@ -333,8 +324,8 @@ deflate_level=1
   sppt_logit = .true.
   sppt_sfclimit = .true.
   use_zmtnblck = .true.
-  
+
 /
 &nam_sfcperts
-  
+
 /
