@@ -142,7 +142,6 @@ pipeline {
                         docker rmi -f "$(docker image ls | grep -E -m1 'noaaepic' | awk '{ print $3 }')"
                        '''
                 }
-            }
                 success {
                     setBuildStatus("Build succeeded", "SUCCESS");
                 }
