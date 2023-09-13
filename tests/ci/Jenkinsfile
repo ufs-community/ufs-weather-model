@@ -135,27 +135,31 @@ pipeline {
                     }
                 }
             
-            post {     
-                always {
-                    sh '''
-                        docker rmi -f "$(docker image ls | grep -E -m1 "${IMG_NAME}" | awk '{ print $3 }')"
-                        docker rmi -f "$(docker image ls | grep -E -m1 'noaaepic' | awk '{ print $3 }')"
-                       '''
-                }
-                success {
-                    setBuildStatus("Build succeeded", "SUCCESS");
-                }
-                failure {
-                    setBuildStatus("Build failed", "FAILURE");
-                }
-                always {
-                    script {
-                        def buildResult = currentBuild.resultIsBetterOrEqualTo("SUCCESS") ? "Success" : "Failure"
-                        def commentMessage = "Build log for this run: ${buildResult}"
-                        postGitHubCommentWithLogFile(commentMessage, "jenkins_console_log.txt")
+                post {     
+                    always {
+                        sh '''
+                            docker rmi -f "$(docker image ls | grep -E -m1 "${IMG_NAME}" | awk '{ print $3 }')"
+                            docker rmi -f "$(docker image ls | grep -E -m1 'noaaepic' | awk '{ print $3 }')"
+                        '''
                     }
-                }
+                    
+                }   
+            }
         }
     }
-}
+    post {
+        success {
+            setBuildStatus("Build succeeded", "SUCCESS");
+        }
+        failure {
+            setBuildStatus("Build failed", "FAILURE");
+        }
+        always {
+            script {
+                def buildResult = currentBuild.resultIsBetterOrEqualTo("SUCCESS") ? "Success" : "Failure"
+                def commentMessage = "Build log for this run: ${buildResult}"
+                postGitHubCommentWithLogFile(commentMessage, "jenkins_console_log.txt")
+            }
+        }
+    }
 }
