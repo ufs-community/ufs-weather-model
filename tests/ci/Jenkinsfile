@@ -143,8 +143,6 @@ pipeline {
                        '''
                 }
             }
-            
-            post {
                 success {
                     setBuildStatus("Build succeeded", "SUCCESS");
                 }
@@ -152,8 +150,6 @@ pipeline {
                     setBuildStatus("Build failed", "FAILURE");
                 }
             }
-            
-            post {
                 always {
                     script {
                         def buildResult = currentBuild.resultIsBetterOrEqualTo("SUCCESS") ? "Success" : "Failure"
@@ -164,5 +160,3 @@ pipeline {
             }
         }
     }
-}
-}
