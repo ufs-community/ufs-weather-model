@@ -147,19 +147,21 @@ pipeline {
             }
         }
     }
-    post {
-        success {
-            setBuildStatus("Build succeeded", "SUCCESS");
-        }
-        failure {
-            setBuildStatus("Build failed", "FAILURE");
-        }
-        always {
-            script {
-                def buildResult = currentBuild.resultIsBetterOrEqualTo("SUCCESS") ? "Success" : "Failure"
-                def commentMessage = "Build log for this run: ${buildResult}"
-                postGitHubCommentWithLogFile(commentMessage, "jenkins_console_log.txt")
+    node { 
+        post {
+            success {
+                setBuildStatus("Build succeeded", "SUCCESS");
+            }
+            failure {
+                setBuildStatus("Build failed", "FAILURE");
+            }
+            always {
+                script {
+                    def buildResult = currentBuild.resultIsBetterOrEqualTo("SUCCESS") ? "Success" : "Failure"
+                    def commentMessage = "Build log for this run: ${buildResult}"
+                    postGitHubCommentWithLogFile(commentMessage, "jenkins_console_log.txt")
+                }
             }
         }
-    }
+    }    
 }
