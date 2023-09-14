@@ -4,14 +4,15 @@ void setBuildStatus(String message, String state) {
         reposSource: [$class: "ManuallyEnteredRepositorySource", url: "https://github.com/ufs-community/ufs-weather-model"],
         contextSource: [$class: "ManuallyEnteredCommitContextSource", context: "Jenkins Build Result"],
         errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "UNSTABLE"]],
-        statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]] ]
+        statusResultSource: [$class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]]]
     ]);
 }
 
 def postGitHubCommentWithLogFile(commentMessage, logFilePath) {
     script {
-        writeFile file: logFilePath, text: currentBuild.rawBuild.getLog(1000000) as String
-        
+        // Save the console log to a file
+        writeFile file: logFilePath, text: new File("${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_NUMBER}/log").text
+
         def apiUrl = "https://api.github.com/repos/ufs-community/ufs-weather-model/issues/${env.CHANGE_ID}/comments"
         def headers = [
             "Authorization": "token GitHubJenkins",
@@ -142,8 +143,7 @@ pipeline {
                             docker rmi -f "$(docker image ls | grep -E -m1 'noaaepic' | awk '{ print $3 }')"
                         '''
                     }
-                    
-                }   
+                }
             }
         }
     }
@@ -156,6 +156,7 @@ pipeline {
         }
         always {
             script {
+                archiveArtifacts artifacts: 'build.log', allowEmptyArchive: true
                 def buildResult = currentBuild.resultIsBetterOrEqualTo("SUCCESS") ? "Success" : "Failure"
                 def commentMessage = "Build log for this run: ${buildResult}"
                 postGitHubCommentWithLogFile(commentMessage, "jenkins_console_log.txt")
