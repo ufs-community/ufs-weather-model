@@ -9,10 +9,12 @@ die() { echo "$@" >&2; exit 1; }
 usage() {
   set +x
   echo
-  echo "Usage: $0 -a <account> | -c | -e | -h | -k | -w | -d | -l <file> | -m | -n <name> | -r "
+  echo "Usage: $0 -a <account> | -b <file> | -c | -d | -e | -h | -k | -l <file> | -m | -n <name> | -r | -w"
   echo
   echo "  -a  <account> to use on for HPC queue"
+  echo "  -b  create new baselines only for tests listed in <file>"
   echo "  -c  create new baseline results"
+  echo "  -d  delete run direcotries that are not used by other tests"
   echo "  -e  use ecFlow workflow manager"
   echo "  -h  display this help"
   echo "  -k  keep run directory after rt.sh is completed"
@@ -21,7 +23,6 @@ usage() {
   echo "  -n  run single test <name>"
   echo "  -r  use Rocoto workflow manager"
   echo "  -w  for weekly_test, skip comparing baseline results"
-  echo "  -d  delete run direcotries that are not used by other tests"
   echo
   set -x
   exit 1
@@ -73,6 +74,37 @@ rt_single() {
     echo "$SINGLE_NAME does not exist or cannot be run on $MACHINE_ID"
     exit 1
   fi
+}
+
+create_or_run_compile_task() {
+
+  cat << EOF > ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env
+  export JOB_NR=${JOB_NR}
+  export COMPILE_NR=${COMPILE_NR}
+  export MACHINE_ID=${MACHINE_ID}
+  export RT_COMPILER=${RT_COMPILER}
+  export PATHRT=${PATHRT}
+  export PATHTR=${PATHTR}
+  export SCHEDULER=${SCHEDULER}
+  export ACCNR=${ACCNR}
+  export QUEUE=${COMPILE_QUEUE}
+  export PARTITION=${PARTITION}
+  export ROCOTO=${ROCOTO}
+  export ECFLOW=${ECFLOW}
+  export REGRESSIONTEST_LOG=${REGRESSIONTEST_LOG}
+  export LOG_DIR=${LOG_DIR}
+EOF
+
+  if [[ $ROCOTO == true ]]; then
+    rocoto_create_compile_task
+  elif [[ $ECFLOW == true ]]; then
+    ecflow_create_compile_task
+  else
+    ./run_compile.sh ${PATHRT} ${RUNDIR_ROOT} "${MAKE_OPT}" ${COMPILE_NR} > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
+  fi
+
+  RT_SUFFIX=""
+  BL_SUFFIX=""
 }
 
 rt_35d() {
@@ -142,12 +174,16 @@ export delete_rundir=false
 SKIP_ORDER=false
 RTPWD_NEW_BASELINE=false
 TESTS_FILE='rt.conf'
+NEW_BASELINES_FILE=''
 ACCNR=${ACCNR:-""}
 
-while getopts ":a:cl:mn:dwkreh" opt; do
+while getopts ":a:b:cl:mn:dwkreh" opt; do
   case $opt in
     a)
       ACCNR=$OPTARG
+      ;;
+    b)
+      NEW_BASELINES_FILE=$OPTARG
       ;;
     c)
       CREATE_BASELINE=true
@@ -171,9 +207,9 @@ while getopts ":a:cl:mn:dwkreh" opt; do
         echo "The -n option needs <testname> AND <compiler>, i.e. -n control_p8 intel"
         exit 1
       fi
-      SINGLE_NAME=${SINGLE_OPTS[0],,}
-      export RT_COMPILER=${SINGLE_OPTS[1],,}
-      
+      SINGLE_NAME=${SINGLE_OPTS[0]}
+      export RT_COMPILER=${SINGLE_OPTS[1]}
+
       if [[ "$RT_COMPILER" == "intel" ]] || [[ "$RT_COMPILER" == "gnu" ]]; then
         echo "COMPILER set to ${RT_COMPILER}"
       else
@@ -271,8 +307,12 @@ elif [[ $MACHINE_ID = acorn ]]; then
 elif [[ $MACHINE_ID = gaea ]]; then
 
   export PATH=/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/envs/ufs-weather-model/bin:/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/bin:$PATH
-  export PYTHONPATH=/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/lib/python3.8/site-packages
-  ECFLOW_START=/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/envs/ufs-weather-model/bin/ecflow_start.sh
+  export PATH=/lustre/f2/pdata/esrl/gsd/spack-stack/miniconda-3.9.12/bin:$PATH
+  export PYTHONPATH=/lustre/f2/pdata/esrl/gsd/spack-stack/miniconda-3.9.12/lib/python3.9/site-packages
+
+  module use /lustre/f2/pdata/esrl/gsd/spack-stack/modulefiles
+  module load ecflow/5.8.4
+  ECFLOW_START=/lustre/f2/pdata/esrl/gsd/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
   DISKNM=/lustre/f2/pdata/ncep_shared/emc.nemspara/RT
@@ -292,11 +332,11 @@ elif [[ $MACHINE_ID = hera ]]; then
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=slurm
 
-  PYTHONHOME=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3_new_20210629
+  PYTHONHOME=/scratch1/NCEPDEV/jcsda/jedipara/spack-stack/miniconda-3.9.12
   export PATH=$PYTHONHOME/bin:$PATH
-  export PYTHONPATH=$PYTHONHOME/lib/python3.7/site-packages
+  export PYTHONPATH=$PYTHONHOME/lib/python3.9/site-packages
 
-  module load ecflow
+  module load ecflow/5.5.3
   ECFLOW_START=ecflow_start.sh
 
   QUEUE=batch
@@ -320,9 +360,13 @@ elif [[ $MACHINE_ID = orion ]]; then
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
-  export PATH=/work/noaa/nems/emc.nemspara/soft/miniconda3/bin:$PATH
-  export PYTHONPATH=/work/noaa/nems/emc.nemspara/soft/miniconda3/lib/python3.8/site-packages
-  ECFLOW_START=/work/noaa/nems/emc.nemspara/soft/miniconda3/bin/ecflow_start.sh
+  export PATH=/work/noaa/da/role-da/spack-stack/miniconda-3.9.7/bin:$PATH
+  export PYTHONPATH=/work/noaa/da/role-da/spack-stack/miniconda-3.9.7/lib/python3.9/site-packages
+
+  module use /work/noaa/da/role-da/spack-stack/modulefiles
+  module load miniconda/3.9.7
+  module load ecflow/5.8.4
+  ECFLOW_START=/work/noaa/da/role-da/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
   QUEUE=batch
@@ -343,8 +387,8 @@ elif [[ $MACHINE_ID = jet ]]; then
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=slurm
 
-  export PATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/bin:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/bin:$PATH
-  export PYTHONPATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/lib/python3.8/site-packages
+  export PATH=/lfs4/HFIP/hfv3gfs/spack-stack/apps/miniconda/py39_4.12.0/bin:$PATH
+  export PYTHONPATH=/lfs4/HFIP/hfv3gfs/spack-stack/apps/miniconda/py39_4.12.0/lib/python3.9/site-packages
   module load ecflow
   ECFLOW_START=/apps/ecflow/5.5.3/bin/ecflow_start.sh
 
@@ -361,14 +405,16 @@ elif [[ $MACHINE_ID = jet ]]; then
 elif [[ $MACHINE_ID = s4 ]]; then
 
   module load rocoto/1.3.2
-  module load ecflow/5.6.0
-  module load miniconda/3.8-s4
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=slurm
 
-  ECFLOW_START=/opt/ecflow/5.6.0/bin/ecflow_start.sh
+  module load git/2.30.0
+  module use /data/prod/jedi/spack-stack/modulefiles
+  module load miniconda/3.9.12
+  module load ecflow/5.8.4
+  ECFLOW_START=/data/prod/jedi/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
   QUEUE=s4
@@ -384,9 +430,12 @@ elif [[ $MACHINE_ID = s4 ]]; then
 
 elif [[ $MACHINE_ID = cheyenne ]]; then
 
-  export PATH=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/bin:/glade/p/ral/jntp/tools/miniconda3/4.8.3/bin:$PATH
-  export PYTHONPATH=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/glade/p/ral/jntp/tools/miniconda3/4.8.3/lib/python3.8/site-packages
-  ECFLOW_START=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/bin/ecflow_start.sh
+  export PATH=/glade/work/jedipara/cheyenne/spack-stack/miniconda-3.9.12/bin:$PATH
+  export PYTHONPATH=/glade/work/jedipara/cheyenne/spack-stack/miniconda-3.9.12/lib/python3.9/site-packages
+
+  module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc
+  module load ecflow/5.8.4
+  ECFLOW_START=/glade/work/jedipara/cheyenne/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
   QUEUE=regular
@@ -426,8 +475,9 @@ elif [[ $MACHINE_ID = expanse ]]; then
   PTMP=$dprefix
   SCHEDULER=slurm
 
- elif [[ $MACHINE_ID = noaacloud.* ]]; then
+ elif [[ $MACHINE_ID = noaacloud ]]; then
 
+  export PATH=/contrib/EPIC/bin:$PATH
   module use /apps/modules/modulefiles
   module load rocoto/1.3.3
 
@@ -457,6 +507,7 @@ NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST
 # Overwrite default RUNDIR_ROOT if environment variable RUNDIR_ROOT is set
 RUNDIR_ROOT=${RUNDIR_ROOT:-${PTMP}/${USER}/FV3_RT}/rt_$$
 mkdir -p ${RUNDIR_ROOT}
+echo "Run regression test in: ${RUNDIR_ROOT}"
 
 if [[ $SINGLE_NAME != '' ]]; then
   rt_single
@@ -489,6 +540,16 @@ if [[ $CREATE_BASELINE == true ]]; then
   #
   rm -rf "${NEW_BASELINE}"
   mkdir -p "${NEW_BASELINE}"
+
+  NEW_BASELINES_TESTS=()
+  if [[ $NEW_BASELINES_FILE != '' ]]; then
+    readarray -t NEW_BASELINES_TESTS < $NEW_BASELINES_FILE
+    echo "New baselines will be created for:"
+    for test_name in "${NEW_BASELINES_TESTS[@]}"
+    do
+      echo "  $test_name"
+    done
+  fi
 fi
 
 if [[ $skip_check_results == true ]]; then
@@ -578,13 +639,10 @@ if [[ $ECFLOW == true ]]; then
   MAX_BUILDS=10
   MAX_JOBS=30
 
-  # Default number of tries to run jobs - on wcoss, no error tolerance
+  # Default number of tries to run jobs
   ECF_TRIES=2
-  if [[ $MACHINE_ID = wcoss ]]; then
-    ECF_TRIES=1
-  fi
 
-  # Reduce maximum number of compile jobs on jet.intel and s4.intel because of licensing issues
+  # Reduce maximum number of compile jobs on jet and s4 because of licensing issues
   if [[ $MACHINE_ID = jet ]]; then
     MAX_BUILDS=5
   elif [[ $MACHINE_ID = s4 ]]; then
@@ -639,6 +697,7 @@ in_metatask=false
 [[ -f $TESTS_FILE ]] || die "$TESTS_FILE does not exist"
 
 LAST_COMPILER_NR=-9999
+COMPILE_PREV==''
 
 declare -A compiles
 
@@ -651,13 +710,14 @@ while read -r line || [ "$line" ]; do
   JOB_NR=$( printf '%03d' $(( 10#$JOB_NR + 1 )) )
 
   if [[ $line == COMPILE* ]]; then
-    
+
     COMPILE_NAME=$( echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
     RT_COMPILER=$(echo $line | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
     MAKE_OPT=$(   echo $line | cut -d'|' -f4 | sed -e 's/^ *//' -e 's/ *$//')
     MACHINES=$(   echo $line | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
     CB=$(         echo $line | cut -d'|' -f6)
     COMPILE_NR=${COMPILE_NAME}_${RT_COMPILER}
+    COMPILE_PREV=${COMPILE_NR}
 
     set +u
     if [[ ! -z ${compiles[$COMPILE_NR]} ]] ; then
@@ -681,33 +741,11 @@ while read -r line || [ "$line" ]; do
       fi
     fi
 
-    cat << EOF > ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env
-    export JOB_NR=${JOB_NR}
-    export COMPILE_NR=${COMPILE_NR}
-    export MACHINE_ID=${MACHINE_ID}
-    export RT_COMPILER=${RT_COMPILER}
-    export PATHRT=${PATHRT}
-    export PATHTR=${PATHTR}
-    export SCHEDULER=${SCHEDULER}
-    export ACCNR=${ACCNR}
-    export QUEUE=${COMPILE_QUEUE}
-    export PARTITION=${PARTITION}
-    export ROCOTO=${ROCOTO}
-    export ECFLOW=${ECFLOW}
-    export REGRESSIONTEST_LOG=${REGRESSIONTEST_LOG}
-    export LOG_DIR=${LOG_DIR}
-EOF
-
-    if [[ $ROCOTO == true ]]; then
-      rocoto_create_compile_task
-    elif [[ $ECFLOW == true ]]; then
-      ecflow_create_compile_task
-    else
-      ./run_compile.sh ${PATHRT} ${RUNDIR_ROOT} "${MAKE_OPT}" ${COMPILE_NR} > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
+    if [[ $CREATE_BASELINE == true && $NEW_BASELINES_FILE != '' ]]; then
+      continue
     fi
 
-    RT_SUFFIX=""
-    BL_SUFFIX=""
+    create_or_run_compile_task
 
     continue
 
@@ -737,6 +775,26 @@ EOF
       fi
     fi
 
+    COMPILE_METATASK_NAME=${COMPILE_NR}
+    if [[ $CREATE_BASELINE == true && $NEW_BASELINES_FILE != '' ]]; then
+      if [[ ! " ${NEW_BASELINES_TESTS[*]} " =~ " ${TEST_NAME} " ]]; then
+        echo "Link current baselines for test ${TEST_NAME}_${RT_COMPILER}"
+        (
+          source ${PATHRT}/tests/$TEST_NAME
+          ln -s ${RTPWD}/${CNTL_DIR}_${RT_COMPILER} ${NEW_BASELINE}
+        )
+        continue
+      else
+        echo "Create new baselines for test ${TEST_NAME}_${RT_COMPILER}"
+        # look at COMPILE_PREV, and if it's not an empty string run compile step
+        # and reset it to empty so that we do not run compile more than once
+        if [[ ${COMPILE_PREV} != '' ]]; then
+          create_or_run_compile_task
+          [[ $ROCOTO == true || $ECFLOW == true ]] && COMPILE_PREV=''
+        fi
+      fi
+    fi
+
     # 35 day tests
     [[ $TEST_35D == true ]] && rt_35d
 
@@ -748,7 +806,7 @@ EOF
       new_compile=false
       in_metatask=true
       cat << EOF >> $ROCOTO_XML
-  <metatask name="compile_${COMPILE_NR}_tasks"><var name="zero">0</var>
+  <metatask name="compile_${COMPILE_METATASK_NAME}_tasks"><var name="zero">0</var>
 EOF
     fi
 
