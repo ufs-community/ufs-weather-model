@@ -2,21 +2,17 @@ help([[
 loads UFS Model prerequisites for Cheyenne/GNU
 ]])
 
--- Fix module setup on Cheyenne
-remove_path ("MODULEPATH", "/glade/u/apps/ch/modulefiles/default/compilers")
-setenv("MODULEPATH_ROOT", "/glade/work/jedipara/cheyenne/spack-stack/modulefiles")
+cmake_ver=os.getenv("cmake_ver") or "3.22.0"
+load(pathJoin("cmake", cmake_ver))
 
--- Load spack-stack modules
-prepend_path("MODULEPATH", "/glade/work/jedipara/cheyenne/spack-stack/modulefiles/compilers")
-prepend_path("MODULEPATH", "/glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc")
-prepend_path("MODULEPATH", "/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-2.0.0-plus-ufs-gnu-10.1.0/install/modulefiles/Core")
+python_ver=os.getenv("python_ver") or "3.7.9"
+load(pathJoin("python", python_ver))
 
-load("miniconda/3.9.12")
-load("ecflow/5.8.4")
+ncarenv_ver=os.getenv("ncarenv_ver") or "1.3"
+load(pathJoin("ncarenv", ncarenv_ver))
 
-load("stack-gcc/10.1.0")
-load("stack-openmpi/4.1.1")
-load("stack-python/3.9.12")
+gnu_ver=os.getenv("gnu_ver") or "10.1.0"
+load(pathJoin("gnu", gnu_ver))
 
 mpt_ver=os.getenv("mpt_ver") or "2.25"
 load(pathJoin("mpt", mpt_ver))
