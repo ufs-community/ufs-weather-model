@@ -1,0 +1,991 @@
+Wed Sep 13 18:53:13 UTC 2023
+Start Regression test
+
+Testing UFSWM Hash: 181bed7dc89e0cf7792a108741ce12c0192b2245
+Testing With Submodule Hashes:
+ 37cbb7d6840ae7515a9a8f0dfd4d89461b3396d1 AQM (v0.2.0-37-g37cbb7d)
+ 2aa6bfbb62ebeecd7da964b8074f6c3c41c7d1eb CDEPS-interface/CDEPS (cdeps0.4.17-38-g2aa6bfb)
+ 2ed3c05c3c515eb70af3a726ff392283af97c4a5 CICE-interface/CICE (CICE6.0.0-442-g2ed3c05)
+ c24fb5999efafffaa393b886e21780ab7fd3aa08 CMEPS-interface/CMEPS (cmeps_v0.4.1-2297-gc24fb59)
+ cabd7753ae17f7bfcc6dad56daf10868aa51c3f4 CMakeModules (v1.0.0-28-gcabd775)
+ 9b5825b7a6c0c07a3d936d0222917677209a07f0 FV3 (heads/develop)
+ 6ea78fd79037b31a1dcdd30d8a315f6558d963e4 GOCART (sdr_v2.1.2.6-106-g6ea78fd)
+ 35789c757766e07f688b4c0c7c5229816f224b09 HYCOM-interface/HYCOM (2.3.00-121-g35789c7)
+ be40a41360b2eaed31ae86582aa57e1cf41241d5 MOM6-interface/MOM6 (dev/master/repository_split_2014.10.10-9801-gbe40a4136)
+ 569e354ababbde7a7cd68647533769a5c966468d NOAHMP-interface/noahmp (v3.7.1-303-g569e354)
+ 59c554a12df3a04e0402ce5f17bb32cbbac193b2 WW3 (6.07.1-341-g59c554a1)
+ 1ee7cc9a8b5d5733b391127ca31059b497ecdea8 stochastic_physics (ufs-v2.0.0-181-g1ee7cc9)
+Compile atmaq_faster_intel elapsed time 628 seconds. -DAPP=ATMAQ -DCCPP_SUITES=FV3_GFS_v15p2 -DFASTER=ON -D32BIT=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile atmaq_intel elapsed time 592 seconds. -DAPP=ATMAQ -DCCPP_SUITES=FV3_GFS_v15p2 -D32BIT=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile atm_dyn32_intel elapsed time 677 seconds. -DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16,FV3_GFS_v16_flake,FV3_GFS_v17_p8,FV3_GFS_v17_p8_rrtmgp,FV3_GFS_v15_thompson_mynn_lam3km,FV3_WoFS_v0,FV3_GFS_v17_p8_mynn -D32BIT=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile atm_faster_dyn32_intel elapsed time 618 seconds. -DAPP=ATM -DCCPP_SUITES=FV3_GFS_v17_p8,FV3_GFS_v15_thompson_mynn_lam3km -D32BIT=ON -DFASTER=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile atmw_intel elapsed time 634 seconds. -DAPP=ATMW -DCCPP_SUITES=FV3_GFS_v17_p8 -D32BIT=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile atmwm_intel elapsed time 615 seconds. -DAPP=ATMWM -DCCPP_SUITES=FV3_GFS_v16 -D32BIT=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile datm_cdeps_faster_intel elapsed time 187 seconds. -DAPP=NG-GODAS -DFASTER=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release -DMOM6SOLO=ON
+Compile datm_cdeps_intel elapsed time 187 seconds. -DAPP=NG-GODAS -DMPI=ON -DCMAKE_BUILD_TYPE=Release -DMOM6SOLO=ON
+Compile datm_cdeps_land_intel elapsed time 59 seconds. -DAPP=LND -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile hafsw_intel elapsed time 640 seconds. -DAPP=HAFSW -DMOVING_NEST=ON -DCCPP_SUITES=FV3_HAFS_v1_gfdlmp_tedmf,FV3_HAFS_v1_gfdlmp_tedmf_nonsst,FV3_HAFS_v1_thompson_tedmf_gfdlsf -D32BIT=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile rrfs_intel elapsed time 644 seconds. -DAPP=ATM -DCCPP_SUITES=FV3_RAP,FV3_RAP_sfcdiff,FV3_HRRR,FV3_RRFS_v1beta,FV3_RRFS_v1nssl,FV3_HRRR_gf,FV3_HRRR_c3 -D32BIT=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile s2s_aoflux_intel elapsed time 648 seconds. -DAPP=S2S -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_sfcocn -DCMEPS_AOFLUX=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release -DMOM6SOLO=ON
+Compile s2s_intel elapsed time 654 seconds. -DAPP=S2S -DCCPP_SUITES=FV3_GFS_v17_coupled_p8 -DMPI=ON -DCMAKE_BUILD_TYPE=Release -DMOM6SOLO=ON
+Compile s2swa_32bit_intel elapsed time 717 seconds. -DAPP=S2SWA -D32BIT=ON -DCCPP_SUITES=FV3_GFS_v17_coupled_p8 -DMPI=ON -DCMAKE_BUILD_TYPE=Release -DMOM6SOLO=ON
+Compile s2sw_intel elapsed time 705 seconds. -DAPP=S2SW -DCCPP_SUITES=FV3_GFS_v17_coupled_p8 -DMPI=ON -DCMAKE_BUILD_TYPE=Release -DMOM6SOLO=ON
+Thu Sep 14 12:45:30 UTC 2023
+Start Regression test
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/cpld_control_noaero_p8_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_12325/cpld_control_noaero_p8_intel
+Checking test 001 cpld_control_noaero_p8_intel results ....
+ Comparing sfcf021.tile1.nc .........OK
+ Comparing sfcf021.tile2.nc .........OK
+ Comparing sfcf021.tile3.nc .........OK
+ Comparing sfcf021.tile4.nc .........OK
+ Comparing sfcf021.tile5.nc .........OK
+ Comparing sfcf021.tile6.nc .........OK
+ Comparing atmf021.tile1.nc .........OK
+ Comparing atmf021.tile2.nc .........OK
+ Comparing atmf021.tile3.nc .........OK
+ Comparing atmf021.tile4.nc .........OK
+ Comparing atmf021.tile5.nc .........OK
+ Comparing atmf021.tile6.nc .........OK
+ Comparing sfcf024.tile1.nc .........OK
+ Comparing sfcf024.tile2.nc .........OK
+ Comparing sfcf024.tile3.nc .........OK
+ Comparing sfcf024.tile4.nc .........OK
+ Comparing sfcf024.tile5.nc .........OK
+ Comparing sfcf024.tile6.nc .........OK
+ Comparing atmf024.tile1.nc .........OK
+ Comparing atmf024.tile2.nc .........OK
+ Comparing atmf024.tile3.nc .........OK
+ Comparing atmf024.tile4.nc .........OK
+ Comparing atmf024.tile5.nc .........OK
+ Comparing atmf024.tile6.nc .........OK
+ Comparing RESTART/20210323.060000.coupler.res .........OK
+ Comparing RESTART/20210323.060000.fv_core.res.nc .........OK
+ Comparing RESTART/20210323.060000.fv_core.res.tile1.nc .........OK
+ Comparing RESTART/20210323.060000.fv_core.res.tile2.nc .........OK
+ Comparing RESTART/20210323.060000.fv_core.res.tile3.nc .........OK
+ Comparing RESTART/20210323.060000.fv_core.res.tile4.nc .........OK
+ Comparing RESTART/20210323.060000.fv_core.res.tile5.nc .........OK
+ Comparing RESTART/20210323.060000.fv_core.res.tile6.nc .........OK
+ Comparing RESTART/20210323.060000.fv_srf_wnd.res.tile1.nc .........OK
+ Comparing RESTART/20210323.060000.fv_srf_wnd.res.tile2.nc .........OK
+ Comparing RESTART/20210323.060000.fv_srf_wnd.res.tile3.nc .........OK
+ Comparing RESTART/20210323.060000.fv_srf_wnd.res.tile4.nc .........OK
+ Comparing RESTART/20210323.060000.fv_srf_wnd.res.tile5.nc .........OK
+ Comparing RESTART/20210323.060000.fv_srf_wnd.res.tile6.nc .........OK
+ Comparing RESTART/20210323.060000.fv_tracer.res.tile1.nc .........OK
+ Comparing RESTART/20210323.060000.fv_tracer.res.tile2.nc .........OK
+ Comparing RESTART/20210323.060000.fv_tracer.res.tile3.nc .........OK
+ Comparing RESTART/20210323.060000.fv_tracer.res.tile4.nc .........OK
+ Comparing RESTART/20210323.060000.fv_tracer.res.tile5.nc .........OK
+ Comparing RESTART/20210323.060000.fv_tracer.res.tile6.nc .........OK
+ Comparing RESTART/20210323.060000.phy_data.tile1.nc .........OK
+ Comparing RESTART/20210323.060000.phy_data.tile2.nc .........OK
+ Comparing RESTART/20210323.060000.phy_data.tile3.nc .........OK
+ Comparing RESTART/20210323.060000.phy_data.tile4.nc .........OK
+ Comparing RESTART/20210323.060000.phy_data.tile5.nc .........OK
+ Comparing RESTART/20210323.060000.phy_data.tile6.nc .........OK
+ Comparing RESTART/20210323.060000.sfc_data.tile1.nc .........OK
+ Comparing RESTART/20210323.060000.sfc_data.tile2.nc .........OK
+ Comparing RESTART/20210323.060000.sfc_data.tile3.nc .........OK
+ Comparing RESTART/20210323.060000.sfc_data.tile4.nc .........OK
+ Comparing RESTART/20210323.060000.sfc_data.tile5.nc .........OK
+ Comparing RESTART/20210323.060000.sfc_data.tile6.nc .........OK
+ Comparing RESTART/20210323.060000.MOM.res.nc .........OK
+ Comparing RESTART/iced.2021-03-23-21600.nc .........OK
+ Comparing RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc .........OK
+ Comparing 20210323.060000.out_pnt.ww3 .........OK
+ Comparing 20210323.060000.out_grd.ww3 .........OK
+
+  0: The total amount of wall time                        = 235.067933
+  0: The maximum resident set size (KB)                   = 1819976
+
+Test 001 cpld_control_noaero_p8_intel PASS
+
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/cpld_control_gfsv17_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_12325/cpld_control_gfsv17_intel
+Checking test 002 cpld_control_gfsv17_intel results ....
+ Comparing sfcf021.tile1.nc .........OK
+ Comparing sfcf021.tile2.nc .........OK
+ Comparing sfcf021.tile3.nc .........OK
+ Comparing sfcf021.tile4.nc .........OK
+ Comparing sfcf021.tile5.nc .........OK
+ Comparing sfcf021.tile6.nc .........OK
+ Comparing atmf021.tile1.nc .........OK
+ Comparing atmf021.tile2.nc .........OK
+ Comparing atmf021.tile3.nc .........OK
+ Comparing atmf021.tile4.nc .........OK
+ Comparing atmf021.tile5.nc .........OK
+ Comparing atmf021.tile6.nc .........OK
+ Comparing sfcf024.tile1.nc .........OK
+ Comparing sfcf024.tile2.nc .........OK
+ Comparing sfcf024.tile3.nc .........OK
+ Comparing sfcf024.tile4.nc .........OK
+ Comparing sfcf024.tile5.nc .........OK
+ Comparing sfcf024.tile6.nc .........OK
+ Comparing atmf024.tile1.nc .........OK
+ Comparing atmf024.tile2.nc .........OK
+ Comparing atmf024.tile3.nc .........OK
+ Comparing atmf024.tile4.nc .........OK
+ Comparing atmf024.tile5.nc .........OK
+ Comparing atmf024.tile6.nc .........OK
+ Comparing RESTART/20210323.060000.coupler.res .........OK
+ Comparing RESTART/20210323.060000.fv_core.res.nc .........OK
+ Comparing RESTART/20210323.060000.fv_core.res.tile1.nc .........OK
+ Comparing RESTART/20210323.060000.fv_core.res.tile2.nc .........OK
+ Comparing RESTART/20210323.060000.fv_core.res.tile3.nc .........OK
+ Comparing RESTART/20210323.060000.fv_core.res.tile4.nc .........OK
+ Comparing RESTART/20210323.060000.fv_core.res.tile5.nc .........OK
+ Comparing RESTART/20210323.060000.fv_core.res.tile6.nc .........OK
+ Comparing RESTART/20210323.060000.fv_srf_wnd.res.tile1.nc .........OK
+ Comparing RESTART/20210323.060000.fv_srf_wnd.res.tile2.nc .........OK
+ Comparing RESTART/20210323.060000.fv_srf_wnd.res.tile3.nc .........OK
+ Comparing RESTART/20210323.060000.fv_srf_wnd.res.tile4.nc .........OK
+ Comparing RESTART/20210323.060000.fv_srf_wnd.res.tile5.nc .........OK
+ Comparing RESTART/20210323.060000.fv_srf_wnd.res.tile6.nc .........OK
+ Comparing RESTART/20210323.060000.fv_tracer.res.tile1.nc .........OK
+ Comparing RESTART/20210323.060000.fv_tracer.res.tile2.nc .........OK
+ Comparing RESTART/20210323.060000.fv_tracer.res.tile3.nc .........OK
+ Comparing RESTART/20210323.060000.fv_tracer.res.tile4.nc .........OK
+ Comparing RESTART/20210323.060000.fv_tracer.res.tile5.nc .........OK
+ Comparing RESTART/20210323.060000.fv_tracer.res.tile6.nc .........OK
+ Comparing RESTART/20210323.060000.phy_data.tile1.nc .........OK
+ Comparing RESTART/20210323.060000.phy_data.tile2.nc .........OK
+ Comparing RESTART/20210323.060000.phy_data.tile3.nc .........OK
+ Comparing RESTART/20210323.060000.phy_data.tile4.nc .........OK
+ Comparing RESTART/20210323.060000.phy_data.tile5.nc .........OK
+ Comparing RESTART/20210323.060000.phy_data.tile6.nc .........OK
+ Comparing RESTART/20210323.060000.sfc_data.tile1.nc .........OK
+ Comparing RESTART/20210323.060000.sfc_data.tile2.nc .........OK
+ Comparing RESTART/20210323.060000.sfc_data.tile3.nc .........OK
+ Comparing RESTART/20210323.060000.sfc_data.tile4.nc .........OK
+ Comparing RESTART/20210323.060000.sfc_data.tile5.nc .........OK
+ Comparing RESTART/20210323.060000.sfc_data.tile6.nc .........OK
+ Comparing RESTART/20210323.060000.MOM.res.nc .........OK
+ Comparing RESTART/iced.2021-03-23-21600.nc .........OK
+ Comparing RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc .........OK
+ Comparing 20210323.060000.out_pnt.ww3 .........OK
+ Comparing 20210323.060000.out_grd.ww3 .........OK
+
+  0: The total amount of wall time                        = 194.486526
+  0: The maximum resident set size (KB)                   = 1780520
+
+Test 002 cpld_control_gfsv17_intel PASS
+
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/datm_cdeps_control_cfsr_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_12325/datm_cdeps_control_cfsr_intel
+Checking test 003 datm_cdeps_control_cfsr_intel results ....
+ Comparing RESTART/20111002.000000.MOM.res.nc .........OK
+ Comparing RESTART/iced.2011-10-02-00000.nc .........OK
+ Comparing RESTART/DATM_CFSR.cpl.r.2011-10-02-00000.nc .........OK
+
+ 0: The total amount of wall time                        = 140.720050
+ 0: The maximum resident set size (KB)                   = 1254256
+
+Test 003 datm_cdeps_control_cfsr_intel PASS
+
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/datm_cdeps_control_gefs_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_12325/datm_cdeps_control_gefs_intel
+Checking test 004 datm_cdeps_control_gefs_intel results ....
+ Comparing RESTART/20111002.000000.MOM.res.nc .........OK
+ Comparing RESTART/iced.2011-10-02-00000.nc .........OK
+ Comparing RESTART/DATM_GEFS_NEW.cpl.r.2011-10-02-00000.nc .........OK
+
+ 0: The total amount of wall time                        = 145.725806
+ 0: The maximum resident set size (KB)                   = 1137660
+
+Test 004 datm_cdeps_control_gefs_intel PASS
+
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/datm_cdeps_iau_gefs_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_12325/datm_cdeps_iau_gefs_intel
+Checking test 005 datm_cdeps_iau_gefs_intel results ....
+ Comparing RESTART/20111002.000000.MOM.res.nc .........OK
+ Comparing RESTART/iced.2011-10-02-00000.nc .........OK
+ Comparing RESTART/DATM_GEFS_NEW.cpl.r.2011-10-02-00000.nc .........OK
+
+ 0: The total amount of wall time                        = 138.806743
+ 0: The maximum resident set size (KB)                   = 1139260
+
+Test 005 datm_cdeps_iau_gefs_intel PASS
+
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/datm_cdeps_stochy_gefs_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_12325/datm_cdeps_stochy_gefs_intel
+Checking test 006 datm_cdeps_stochy_gefs_intel results ....
+ Comparing RESTART/20111002.000000.MOM.res.nc .........OK
+ Comparing RESTART/iced.2011-10-02-00000.nc .........OK
+ Comparing RESTART/DATM_GEFS_NEW.cpl.r.2011-10-02-00000.nc .........OK
+
+ 0: The total amount of wall time                        = 136.898247
+ 0: The maximum resident set size (KB)                   = 1135528
+
+Test 006 datm_cdeps_stochy_gefs_intel PASS
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/atmwav_control_noaero_p8_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_13056/atmwav_control_noaero_p8_intel
+Checking test 001 atmwav_control_noaero_p8_intel results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf012.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf012.nc .........OK
+ Comparing RESTART/20210322.180000.coupler.res .........OK
+ Comparing RESTART/20210322.180000.fv_core.res.nc .........OK
+ Comparing RESTART/20210322.180000.fv_core.res.tile1.nc .........OK
+ Comparing RESTART/20210322.180000.fv_core.res.tile2.nc .........OK
+ Comparing RESTART/20210322.180000.fv_core.res.tile3.nc .........OK
+ Comparing RESTART/20210322.180000.fv_core.res.tile4.nc .........OK
+ Comparing RESTART/20210322.180000.fv_core.res.tile5.nc .........OK
+ Comparing RESTART/20210322.180000.fv_core.res.tile6.nc .........OK
+ Comparing RESTART/20210322.180000.fv_srf_wnd.res.tile1.nc .........OK
+ Comparing RESTART/20210322.180000.fv_srf_wnd.res.tile2.nc .........OK
+ Comparing RESTART/20210322.180000.fv_srf_wnd.res.tile3.nc .........OK
+ Comparing RESTART/20210322.180000.fv_srf_wnd.res.tile4.nc .........OK
+ Comparing RESTART/20210322.180000.fv_srf_wnd.res.tile5.nc .........OK
+ Comparing RESTART/20210322.180000.fv_srf_wnd.res.tile6.nc .........OK
+ Comparing RESTART/20210322.180000.fv_tracer.res.tile1.nc .........OK
+ Comparing RESTART/20210322.180000.fv_tracer.res.tile2.nc .........OK
+ Comparing RESTART/20210322.180000.fv_tracer.res.tile3.nc .........OK
+ Comparing RESTART/20210322.180000.fv_tracer.res.tile4.nc .........OK
+ Comparing RESTART/20210322.180000.fv_tracer.res.tile5.nc .........OK
+ Comparing RESTART/20210322.180000.fv_tracer.res.tile6.nc .........OK
+ Comparing RESTART/20210322.180000.phy_data.tile1.nc .........OK
+ Comparing RESTART/20210322.180000.phy_data.tile2.nc .........OK
+ Comparing RESTART/20210322.180000.phy_data.tile3.nc .........OK
+ Comparing RESTART/20210322.180000.phy_data.tile4.nc .........OK
+ Comparing RESTART/20210322.180000.phy_data.tile5.nc .........OK
+ Comparing RESTART/20210322.180000.phy_data.tile6.nc .........OK
+ Comparing RESTART/20210322.180000.sfc_data.tile1.nc .........OK
+ Comparing RESTART/20210322.180000.sfc_data.tile2.nc .........OK
+ Comparing RESTART/20210322.180000.sfc_data.tile3.nc .........OK
+ Comparing RESTART/20210322.180000.sfc_data.tile4.nc .........OK
+ Comparing RESTART/20210322.180000.sfc_data.tile5.nc .........OK
+ Comparing RESTART/20210322.180000.sfc_data.tile6.nc .........OK
+ Comparing RESTART/ufs.atmw.cpl.r.2021-03-22-64800.nc .........OK
+ Comparing 20210322.180000.out_pnt.ww3 .........OK
+ Comparing 20210322.180000.out_grd.ww3 .........OK
+ Comparing ufs.atmw.ww3.r.2021-03-22-64800 .........OK
+
+  0: The total amount of wall time                        = 89.786822
+  0: The maximum resident set size (KB)                   = 1740024
+
+Test 007 atmwav_control_noaero_p8_intel PASS
+
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/control_atmwav_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_13056/control_atmwav_intel
+Checking test 002 control_atmwav_intel results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf012.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf012.nc .........OK
+ Comparing GFSFLX.GrbF00 .........OK
+ Comparing GFSFLX.GrbF12 .........OK
+ Comparing GFSPRS.GrbF00 .........OK
+ Comparing GFSPRS.GrbF12 .........OK
+ Comparing RESTART/20210322.180000.coupler.res .........OK
+ Comparing RESTART/20210322.180000.fv_core.res.nc .........OK
+ Comparing RESTART/20210322.180000.fv_core.res.tile1.nc .........OK
+ Comparing RESTART/20210322.180000.fv_core.res.tile2.nc .........OK
+ Comparing RESTART/20210322.180000.fv_core.res.tile3.nc .........OK
+ Comparing RESTART/20210322.180000.fv_core.res.tile4.nc .........OK
+ Comparing RESTART/20210322.180000.fv_core.res.tile5.nc .........OK
+ Comparing RESTART/20210322.180000.fv_core.res.tile6.nc .........OK
+ Comparing RESTART/20210322.180000.fv_srf_wnd.res.tile1.nc .........OK
+ Comparing RESTART/20210322.180000.fv_srf_wnd.res.tile2.nc .........OK
+ Comparing RESTART/20210322.180000.fv_srf_wnd.res.tile3.nc .........OK
+ Comparing RESTART/20210322.180000.fv_srf_wnd.res.tile4.nc .........OK
+ Comparing RESTART/20210322.180000.fv_srf_wnd.res.tile5.nc .........OK
+ Comparing RESTART/20210322.180000.fv_srf_wnd.res.tile6.nc .........OK
+ Comparing RESTART/20210322.180000.fv_tracer.res.tile1.nc .........OK
+ Comparing RESTART/20210322.180000.fv_tracer.res.tile2.nc .........OK
+ Comparing RESTART/20210322.180000.fv_tracer.res.tile3.nc .........OK
+ Comparing RESTART/20210322.180000.fv_tracer.res.tile4.nc .........OK
+ Comparing RESTART/20210322.180000.fv_tracer.res.tile5.nc .........OK
+ Comparing RESTART/20210322.180000.fv_tracer.res.tile6.nc .........OK
+ Comparing RESTART/20210322.180000.phy_data.tile1.nc .........OK
+ Comparing RESTART/20210322.180000.phy_data.tile2.nc .........OK
+ Comparing RESTART/20210322.180000.phy_data.tile3.nc .........OK
+ Comparing RESTART/20210322.180000.phy_data.tile4.nc .........OK
+ Comparing RESTART/20210322.180000.phy_data.tile5.nc .........OK
+ Comparing RESTART/20210322.180000.phy_data.tile6.nc .........OK
+ Comparing RESTART/20210322.180000.sfc_data.tile1.nc .........OK
+ Comparing RESTART/20210322.180000.sfc_data.tile2.nc .........OK
+ Comparing RESTART/20210322.180000.sfc_data.tile3.nc .........OK
+ Comparing RESTART/20210322.180000.sfc_data.tile4.nc .........OK
+ Comparing RESTART/20210322.180000.sfc_data.tile5.nc .........OK
+ Comparing RESTART/20210322.180000.sfc_data.tile6.nc .........OK
+ Comparing 20210322.180000.restart.glo_1deg .........OK
+
+  0: The total amount of wall time                        = 80.879828
+  0: The maximum resident set size (KB)                   = 760744
+
+Test 008 control_atmwav_intel PASS
+
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/regional_atmaq_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_13056/regional_atmaq_intel
+Checking test 003 regional_atmaq_intel results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf003.nc .........OK
+ Comparing sfcf006.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf003.nc .........OK
+ Comparing atmf006.nc .........OK
+ Comparing RESTART/20190801.180000.coupler.res .........OK
+ Comparing RESTART/20190801.180000.fv_core.res.nc .........OK
+ Comparing RESTART/20190801.180000.fv_core.res.tile1.nc .........OK
+ Comparing RESTART/20190801.180000.fv_srf_wnd.res.tile1.nc .........OK
+ Comparing RESTART/20190801.180000.fv_tracer.res.tile1.nc .........OK
+ Comparing RESTART/20190801.180000.phy_data.nc .........OK
+ Comparing RESTART/20190801.180000.sfc_data.nc .........OK
+
+  0: The total amount of wall time                        = 570.936950
+  0: The maximum resident set size (KB)                   = 5440640
+
+Test 009 regional_atmaq_intel PASS
+
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/regional_atmaq_faster_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_13056/regional_atmaq_faster_intel
+Checking test 004 regional_atmaq_faster_intel results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf003.nc .........OK
+ Comparing sfcf006.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf003.nc .........OK
+ Comparing atmf006.nc .........OK
+ Comparing RESTART/20190801.180000.coupler.res .........OK
+ Comparing RESTART/20190801.180000.fv_core.res.nc .........OK
+ Comparing RESTART/20190801.180000.fv_core.res.tile1.nc .........OK
+ Comparing RESTART/20190801.180000.fv_srf_wnd.res.tile1.nc .........OK
+ Comparing RESTART/20190801.180000.fv_tracer.res.tile1.nc .........OK
+ Comparing RESTART/20190801.180000.phy_data.nc .........OK
+ Comparing RESTART/20190801.180000.sfc_data.nc .........OK
+
+  0: The total amount of wall time                        = 461.022740
+  0: The maximum resident set size (KB)                   = 5443032
+
+Test 010 regional_atmaq_faster_intel PASS
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/control_c384_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_27559/control_c384_intel
+Checking test 001 control_c384_intel results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf012.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf012.nc .........OK
+ Comparing GFSFLX.GrbF00 .........OK
+ Comparing GFSFLX.GrbF12 .........OK
+ Comparing GFSPRS.GrbF00 .........OK
+ Comparing GFSPRS.GrbF12 .........OK
+
+  0: The total amount of wall time                        = 458.101623
+  0: The maximum resident set size (KB)                   = 1510240
+
+Test 011 control_c384_intel PASS
+
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/control_latlon_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_16411/control_latlon_intel
+Checking test 001 control_latlon_intel results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf024.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf024.nc .........OK
+ Comparing GFSFLX.GrbF00 .........OK
+ Comparing GFSFLX.GrbF24 .........OK
+ Comparing GFSPRS.GrbF00 .........OK
+ Comparing GFSPRS.GrbF24 .........OK
+
+  0: The total amount of wall time                        = 116.591935
+  0: The maximum resident set size (KB)                   = 739644
+
+Test 012 control_latlon_intel PASS
+
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/control_lndp_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_10694/control_lndp_intel
+Checking test 001 control_lndp_intel results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf012.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf012.nc .........OK
+ Comparing GFSFLX.GrbF00 .........OK
+ Comparing GFSFLX.GrbF12 .........OK
+ Comparing GFSPRS.GrbF00 .........OK
+ Comparing GFSPRS.GrbF12 .........OK
+
+  0: The total amount of wall time                        = 74.577322
+  0: The maximum resident set size (KB)                   = 744616
+
+Test 013 control_lndp_intel PASS
+
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/control_p8_lndp_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_29229/control_p8_lndp_intel
+Checking test 001 control_p8_lndp_intel results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf021.nc .........OK
+ Comparing sfcf024.nc .........OK
+ Comparing sfcf048.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf021.nc .........OK
+ Comparing atmf024.nc .........OK
+ Comparing atmf048.nc .........OK
+ Comparing GFSFLX.GrbF00 .........OK
+ Comparing GFSFLX.GrbF21 .........OK
+ Comparing GFSFLX.GrbF24 .........OK
+ Comparing GFSFLX.GrbF48 .........OK
+ Comparing GFSPRS.GrbF00 .........OK
+ Comparing GFSPRS.GrbF21 .........OK
+ Comparing GFSPRS.GrbF24 .........OK
+ Comparing GFSPRS.GrbF48 .........OK
+
+  0: The total amount of wall time                        = 270.886762
+  0: The maximum resident set size (KB)                   = 1711908
+
+Test 014 control_p8_lndp_intel PASS
+
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/control_stochy_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_29775/control_stochy_intel
+Checking test 001 control_stochy_intel results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf012.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf012.nc .........OK
+ Comparing GFSFLX.GrbF00 .........OK
+ Comparing GFSFLX.GrbF12 .........OK
+ Comparing GFSPRS.GrbF00 .........OK
+ Comparing GFSPRS.GrbF12 .........OK
+
+  0: The total amount of wall time                        = 79.032013
+  0: The maximum resident set size (KB)                   = 745464
+
+Test 015 control_stochy_intel PASS
+
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/regional_control_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_18036/regional_control_intel
+Checking test 001 regional_control_intel results ....
+ Comparing dynf000.nc .........OK
+ Comparing dynf006.nc .........OK
+ Comparing phyf000.nc .........OK
+ Comparing phyf006.nc .........OK
+ Comparing PRSLEV.GrbF00 .........OK
+ Comparing PRSLEV.GrbF06 .........OK
+ Comparing NATLEV.GrbF00 .........OK
+ Comparing NATLEV.GrbF06 .........OK
+
+  0: The total amount of wall time                        = 256.592547
+  0: The maximum resident set size (KB)                   = 1189296
+
+Test 016 regional_control_intel PASS
+
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/regional_noquilt_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_23590/regional_noquilt_intel
+Checking test 001 regional_noquilt_intel results ....
+ Comparing atmos_4xdaily.nc .........OK
+ Comparing fv3_history2d.nc .........OK
+ Comparing fv3_history.nc .........OK
+ Comparing RESTART/fv_core.res.tile1_new.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile1_new.nc .........OK
+
+  0: The total amount of wall time                        = 254.564088
+  0: The maximum resident set size (KB)                   = 1456300
+
+Test 017 regional_noquilt_intel PASS
+
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/control_flake_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_27499/control_flake_intel
+Checking test 002 control_flake_intel results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf024.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf024.nc .........OK
+ Comparing GFSFLX.GrbF00 .........OK
+ Comparing GFSFLX.GrbF24 .........OK
+ Comparing GFSPRS.GrbF00 .........OK
+ Comparing GFSPRS.GrbF24 .........OK
+
+  0: The total amount of wall time                        = 263.335844
+  0: The maximum resident set size (KB)                   = 791788
+
+Test 018 control_flake_intel PASS
+
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/control_iovr4_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_10694/control_iovr4_intel
+Checking test 002 control_iovr4_intel results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf021.nc .........OK
+ Comparing sfcf024.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf021.nc .........OK
+ Comparing atmf024.nc .........OK
+ Comparing GFSFLX.GrbF00 .........OK
+ Comparing GFSFLX.GrbF21 .........OK
+ Comparing GFSFLX.GrbF24 .........OK
+ Comparing GFSPRS.GrbF00 .........OK
+ Comparing GFSPRS.GrbF21 .........OK
+ Comparing GFSPRS.GrbF24 .........OK
+
+  0: The total amount of wall time                        = 118.289092
+  0: The maximum resident set size (KB)                   = 738932
+
+Test 019 control_iovr4_intel PASS
+
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/control_wrtGauss_netcdf_parallel_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_16411/control_wrtGauss_netcdf_parallel_intel
+Checking test 002 control_wrtGauss_netcdf_parallel_intel results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf024.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf024.nc .........OK
+ Comparing GFSFLX.GrbF00 .........OK
+ Comparing GFSFLX.GrbF24 .........OK
+ Comparing GFSPRS.GrbF00 .........OK
+ Comparing GFSPRS.GrbF24 .........OK
+
+  0: The total amount of wall time                        = 118.455093
+  0: The maximum resident set size (KB)                   = 738948
+
+Test 020 control_wrtGauss_netcdf_parallel_intel PASS
+
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/regional_netcdf_parallel_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_23590/regional_netcdf_parallel_intel
+Checking test 002 regional_netcdf_parallel_intel results ....
+ Comparing dynf000.nc .........OK
+ Comparing dynf006.nc .........OK
+ Comparing phyf000.nc .........OK
+ Comparing phyf006.nc .........OK
+
+  0: The total amount of wall time                        = 315.339534
+  0: The maximum resident set size (KB)                   = 1189296
+
+Test 021 regional_netcdf_parallel_intel PASS
+
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/control_c48_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_16411/control_c48_intel
+Checking test 003 control_c48_intel results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf024.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf024.nc .........OK
+ Comparing RESTART/20210323.060000.coupler.res .........OK
+ Comparing RESTART/20210323.060000.fv_core.res.nc .........OK
+ Comparing RESTART/20210323.060000.fv_core.res.tile1.nc .........OK
+ Comparing RESTART/20210323.060000.fv_core.res.tile2.nc .........OK
+ Comparing RESTART/20210323.060000.fv_core.res.tile3.nc .........OK
+ Comparing RESTART/20210323.060000.fv_core.res.tile4.nc .........OK
+ Comparing RESTART/20210323.060000.fv_core.res.tile5.nc .........OK
+ Comparing RESTART/20210323.060000.fv_core.res.tile6.nc .........OK
+ Comparing RESTART/20210323.060000.fv_srf_wnd.res.tile1.nc .........OK
+ Comparing RESTART/20210323.060000.fv_srf_wnd.res.tile2.nc .........OK
+ Comparing RESTART/20210323.060000.fv_srf_wnd.res.tile3.nc .........OK
+ Comparing RESTART/20210323.060000.fv_srf_wnd.res.tile4.nc .........OK
+ Comparing RESTART/20210323.060000.fv_srf_wnd.res.tile5.nc .........OK
+ Comparing RESTART/20210323.060000.fv_srf_wnd.res.tile6.nc .........OK
+ Comparing RESTART/20210323.060000.fv_tracer.res.tile1.nc .........OK
+ Comparing RESTART/20210323.060000.fv_tracer.res.tile2.nc .........OK
+ Comparing RESTART/20210323.060000.fv_tracer.res.tile3.nc .........OK
+ Comparing RESTART/20210323.060000.fv_tracer.res.tile4.nc .........OK
+ Comparing RESTART/20210323.060000.fv_tracer.res.tile5.nc .........OK
+ Comparing RESTART/20210323.060000.fv_tracer.res.tile6.nc .........OK
+ Comparing RESTART/20210323.060000.phy_data.tile1.nc .........OK
+ Comparing RESTART/20210323.060000.phy_data.tile2.nc .........OK
+ Comparing RESTART/20210323.060000.phy_data.tile3.nc .........OK
+ Comparing RESTART/20210323.060000.phy_data.tile4.nc .........OK
+ Comparing RESTART/20210323.060000.phy_data.tile5.nc .........OK
+ Comparing RESTART/20210323.060000.phy_data.tile6.nc .........OK
+ Comparing RESTART/20210323.060000.sfc_data.tile1.nc .........OK
+ Comparing RESTART/20210323.060000.sfc_data.tile2.nc .........OK
+ Comparing RESTART/20210323.060000.sfc_data.tile3.nc .........OK
+ Comparing RESTART/20210323.060000.sfc_data.tile4.nc .........OK
+ Comparing RESTART/20210323.060000.sfc_data.tile5.nc .........OK
+ Comparing RESTART/20210323.060000.sfc_data.tile6.nc .........OK
+
+0: The total amount of wall time                        = 355.289641
+0: The maximum resident set size (KB)                   = 725172
+
+Test 022 control_c48_intel PASS
+
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/control_CubedSphereGrid_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_27499/control_CubedSphereGrid_intel
+Checking test 003 control_CubedSphereGrid_intel results ....
+ Comparing sfcf000.tile1.nc .........OK
+ Comparing sfcf000.tile2.nc .........OK
+ Comparing sfcf000.tile3.nc .........OK
+ Comparing sfcf000.tile4.nc .........OK
+ Comparing sfcf000.tile5.nc .........OK
+ Comparing sfcf000.tile6.nc .........OK
+ Comparing sfcf024.tile1.nc .........OK
+ Comparing sfcf024.tile2.nc .........OK
+ Comparing sfcf024.tile3.nc .........OK
+ Comparing sfcf024.tile4.nc .........OK
+ Comparing sfcf024.tile5.nc .........OK
+ Comparing sfcf024.tile6.nc .........OK
+ Comparing atmf000.tile1.nc .........OK
+ Comparing atmf000.tile2.nc .........OK
+ Comparing atmf000.tile3.nc .........OK
+ Comparing atmf000.tile4.nc .........OK
+ Comparing atmf000.tile5.nc .........OK
+ Comparing atmf000.tile6.nc .........OK
+ Comparing atmf024.tile1.nc .........OK
+ Comparing atmf024.tile2.nc .........OK
+ Comparing atmf024.tile3.nc .........OK
+ Comparing atmf024.tile4.nc .........OK
+ Comparing atmf024.tile5.nc .........OK
+ Comparing atmf024.tile6.nc .........OK
+
+  0: The total amount of wall time                        = 156.608547
+  0: The maximum resident set size (KB)                   = 740744
+
+Test 023 control_CubedSphereGrid_intel PASS
+
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/control_iovr5_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_10694/control_iovr5_intel
+Checking test 003 control_iovr5_intel results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf021.nc .........OK
+ Comparing sfcf024.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf021.nc .........OK
+ Comparing atmf024.nc .........OK
+ Comparing GFSFLX.GrbF00 .........OK
+ Comparing GFSFLX.GrbF21 .........OK
+ Comparing GFSFLX.GrbF24 .........OK
+ Comparing GFSPRS.GrbF00 .........OK
+ Comparing GFSPRS.GrbF21 .........OK
+ Comparing GFSPRS.GrbF24 .........OK
+
+  0: The total amount of wall time                        = 180.745637
+  0: The maximum resident set size (KB)                   = 740216
+
+Test 024 control_iovr5_intel PASS
+
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/regional_control_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_23590/regional_2dwrtdecomp_intel
+Checking test 003 regional_2dwrtdecomp_intel results ....
+ Comparing dynf000.nc .........OK
+ Comparing dynf006.nc .........OK
+ Comparing phyf000.nc .........OK
+ Comparing phyf006.nc .........OK
+ Comparing PRSLEV.GrbF00 .........OK
+ Comparing PRSLEV.GrbF06 .........OK
+ Comparing NATLEV.GrbF00 .........OK
+ Comparing NATLEV.GrbF06 .........OK
+
+  0: The total amount of wall time                        = 258.266724
+  0: The maximum resident set size (KB)                   = 1189112
+
+Test 025 regional_2dwrtdecomp_intel PASS
+
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/fv3_regional_wofs_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_23590/regional_wofs_intel
+Checking test 004 regional_wofs_intel results ....
+ Comparing dynf000.nc .........OK
+ Comparing dynf006.nc .........OK
+ Comparing phyf000.nc .........OK
+ Comparing phyf006.nc .........OK
+ Comparing PRSLEV.GrbF00 .........OK
+ Comparing PRSLEV.GrbF06 .........OK
+ Comparing NATLEV.GrbF00 .........OK
+ Comparing NATLEV.GrbF06 .........OK
+
+  0: The total amount of wall time                        = 317.986202
+  0: The maximum resident set size (KB)                   = 997696
+
+Test 026 regional_wofs_intel PASS
+
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/rap_control_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_23590/rap_control_intel
+Checking test 005 rap_control_intel results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf021.nc .........OK
+ Comparing sfcf024.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf021.nc .........OK
+ Comparing atmf024.nc .........OK
+ Comparing GFSFLX.GrbF00 .........OK
+ Comparing GFSFLX.GrbF21 .........OK
+ Comparing GFSFLX.GrbF24 .........OK
+ Comparing GFSPRS.GrbF00 .........OK
+ Comparing GFSPRS.GrbF21 .........OK
+ Comparing GFSPRS.GrbF24 .........OK
+ Comparing RESTART/20210323.060000.coupler.res .........OK
+ Comparing RESTART/20210323.060000.fv_core.res.nc .........OK
+ Comparing RESTART/20210323.060000.fv_core.res.tile1.nc .........OK
+ Comparing RESTART/20210323.060000.fv_core.res.tile2.nc .........OK
+ Comparing RESTART/20210323.060000.fv_core.res.tile3.nc .........OK
+ Comparing RESTART/20210323.060000.fv_core.res.tile4.nc .........OK
+ Comparing RESTART/20210323.060000.fv_core.res.tile5.nc .........OK
+ Comparing RESTART/20210323.060000.fv_core.res.tile6.nc .........OK
+ Comparing RESTART/20210323.060000.fv_srf_wnd.res.tile1.nc .........OK
+ Comparing RESTART/20210323.060000.fv_srf_wnd.res.tile2.nc .........OK
+ Comparing RESTART/20210323.060000.fv_srf_wnd.res.tile3.nc .........OK
+ Comparing RESTART/20210323.060000.fv_srf_wnd.res.tile4.nc .........OK
+ Comparing RESTART/20210323.060000.fv_srf_wnd.res.tile5.nc .........OK
+ Comparing RESTART/20210323.060000.fv_srf_wnd.res.tile6.nc .........OK
+ Comparing RESTART/20210323.060000.fv_tracer.res.tile1.nc .........OK
+ Comparing RESTART/20210323.060000.fv_tracer.res.tile2.nc .........OK
+ Comparing RESTART/20210323.060000.fv_tracer.res.tile3.nc .........OK
+ Comparing RESTART/20210323.060000.fv_tracer.res.tile4.nc .........OK
+ Comparing RESTART/20210323.060000.fv_tracer.res.tile5.nc .........OK
+ Comparing RESTART/20210323.060000.fv_tracer.res.tile6.nc .........OK
+ Comparing RESTART/20210323.060000.phy_data.tile1.nc .........OK
+ Comparing RESTART/20210323.060000.phy_data.tile2.nc .........OK
+ Comparing RESTART/20210323.060000.phy_data.tile3.nc .........OK
+ Comparing RESTART/20210323.060000.phy_data.tile4.nc .........OK
+ Comparing RESTART/20210323.060000.phy_data.tile5.nc .........OK
+ Comparing RESTART/20210323.060000.phy_data.tile6.nc .........OK
+ Comparing RESTART/20210323.060000.sfc_data.tile1.nc .........OK
+ Comparing RESTART/20210323.060000.sfc_data.tile2.nc .........OK
+ Comparing RESTART/20210323.060000.sfc_data.tile3.nc .........OK
+ Comparing RESTART/20210323.060000.sfc_data.tile4.nc .........OK
+ Comparing RESTART/20210323.060000.sfc_data.tile5.nc .........OK
+ Comparing RESTART/20210323.060000.sfc_data.tile6.nc .........OK
+
+  0: The total amount of wall time                        = 376.232736
+  0: The maximum resident set size (KB)                   = 1313760
+
+Test 027 rap_control_intel PASS
+
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/regional_spp_sppt_shum_skeb_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_23590/regional_spp_sppt_shum_skeb_intel
+Checking test 006 regional_spp_sppt_shum_skeb_intel results ....
+ Comparing dynf000.nc .........OK
+ Comparing dynf001.nc .........OK
+ Comparing phyf000.nc .........OK
+ Comparing phyf001.nc .........OK
+ Comparing PRSLEV.GrbF00 .........OK
+ Comparing PRSLEV.GrbF01 .........OK
+ Comparing NATLEV.GrbF00 .........OK
+ Comparing NATLEV.GrbF01 .........OK
+
+  0: The total amount of wall time                        = 259.976109
+  0: The maximum resident set size (KB)                   = 1358860
+
+Test 028 regional_spp_sppt_shum_skeb_intel PASS
+
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/rrfs_v1beta_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_23590/rrfs_v1beta_intel
+Checking test 007 rrfs_v1beta_intel results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf009.nc .........OK
+ Comparing sfcf012.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf009.nc .........OK
+ Comparing atmf012.nc .........OK
+ Comparing GFSFLX.GrbF00 .........OK
+ Comparing GFSFLX.GrbF09 .........OK
+ Comparing GFSFLX.GrbF12 .........OK
+ Comparing GFSPRS.GrbF00 .........OK
+ Comparing GFSPRS.GrbF09 .........OK
+ Comparing GFSPRS.GrbF12 .........OK
+ Comparing RESTART/20210323.060000.coupler.res .........OK
+ Comparing RESTART/20210323.060000.fv_core.res.nc .........OK
+ Comparing RESTART/20210323.060000.fv_core.res.tile1.nc .........OK
+ Comparing RESTART/20210323.060000.fv_core.res.tile2.nc .........OK
+ Comparing RESTART/20210323.060000.fv_core.res.tile3.nc .........OK
+ Comparing RESTART/20210323.060000.fv_core.res.tile4.nc .........OK
+ Comparing RESTART/20210323.060000.fv_core.res.tile5.nc .........OK
+ Comparing RESTART/20210323.060000.fv_core.res.tile6.nc .........OK
+ Comparing RESTART/20210323.060000.fv_srf_wnd.res.tile1.nc .........OK
+ Comparing RESTART/20210323.060000.fv_srf_wnd.res.tile2.nc .........OK
+ Comparing RESTART/20210323.060000.fv_srf_wnd.res.tile3.nc .........OK
+ Comparing RESTART/20210323.060000.fv_srf_wnd.res.tile4.nc .........OK
+ Comparing RESTART/20210323.060000.fv_srf_wnd.res.tile5.nc .........OK
+ Comparing RESTART/20210323.060000.fv_srf_wnd.res.tile6.nc .........OK
+ Comparing RESTART/20210323.060000.fv_tracer.res.tile1.nc .........OK
+ Comparing RESTART/20210323.060000.fv_tracer.res.tile2.nc .........OK
+ Comparing RESTART/20210323.060000.fv_tracer.res.tile3.nc .........OK
+ Comparing RESTART/20210323.060000.fv_tracer.res.tile4.nc .........OK
+ Comparing RESTART/20210323.060000.fv_tracer.res.tile5.nc .........OK
+ Comparing RESTART/20210323.060000.fv_tracer.res.tile6.nc .........OK
+ Comparing RESTART/20210323.060000.phy_data.tile1.nc .........OK
+ Comparing RESTART/20210323.060000.phy_data.tile2.nc .........OK
+ Comparing RESTART/20210323.060000.phy_data.tile3.nc .........OK
+ Comparing RESTART/20210323.060000.phy_data.tile4.nc .........OK
+ Comparing RESTART/20210323.060000.phy_data.tile5.nc .........OK
+ Comparing RESTART/20210323.060000.phy_data.tile6.nc .........OK
+ Comparing RESTART/20210323.060000.sfc_data.tile1.nc .........OK
+ Comparing RESTART/20210323.060000.sfc_data.tile2.nc .........OK
+ Comparing RESTART/20210323.060000.sfc_data.tile3.nc .........OK
+ Comparing RESTART/20210323.060000.sfc_data.tile4.nc .........OK
+ Comparing RESTART/20210323.060000.sfc_data.tile5.nc .........OK
+ Comparing RESTART/20210323.060000.sfc_data.tile6.nc .........OK
+
+  0: The total amount of wall time                        = 367.928558
+  0: The maximum resident set size (KB)                   = 1275508
+
+Test 029 rrfs_v1beta_intel PASS
+
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/rrfs_v1nssl_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_23590/rrfs_v1nssl_intel
+Checking test 008 rrfs_v1nssl_intel results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf009.nc .........OK
+ Comparing sfcf012.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf009.nc .........OK
+ Comparing atmf012.nc .........OK
+ Comparing GFSFLX.GrbF00 .........OK
+ Comparing GFSFLX.GrbF09 .........OK
+ Comparing GFSFLX.GrbF12 .........OK
+ Comparing GFSPRS.GrbF00 .........OK
+ Comparing GFSPRS.GrbF09 .........OK
+ Comparing GFSPRS.GrbF12 .........OK
+
+  0: The total amount of wall time                        = 451.901667
+  0: The maximum resident set size (KB)                   = 878300
+
+Test 030 rrfs_v1nssl_intel PASS
+
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/rrfs_v1nssl_nohailnoccn_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_23590/rrfs_v1nssl_nohailnoccn_intel
+Checking test 009 rrfs_v1nssl_nohailnoccn_intel results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf009.nc .........OK
+ Comparing sfcf012.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf009.nc .........OK
+ Comparing atmf012.nc .........OK
+ Comparing GFSFLX.GrbF00 .........OK
+ Comparing GFSFLX.GrbF09 .........OK
+ Comparing GFSFLX.GrbF12 .........OK
+ Comparing GFSPRS.GrbF00 .........OK
+ Comparing GFSPRS.GrbF09 .........OK
+ Comparing GFSPRS.GrbF12 .........OK
+
+  0: The total amount of wall time                        = 434.283032
+  0: The maximum resident set size (KB)                   = 986664
+
+Test 031 rrfs_v1nssl_nohailnoccn_intel PASS
+
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/regional_control_faster_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_23590/regional_control_faster_intel
+Checking test 010 regional_control_faster_intel results ....
+ Comparing dynf000.nc .........OK
+ Comparing dynf006.nc .........OK
+ Comparing phyf000.nc .........OK
+ Comparing phyf006.nc .........OK
+ Comparing PRSLEV.GrbF00 .........OK
+ Comparing PRSLEV.GrbF06 .........OK
+ Comparing NATLEV.GrbF00 .........OK
+ Comparing NATLEV.GrbF06 .........OK
+
+  0: The total amount of wall time                        = 236.396016
+  0: The maximum resident set size (KB)                   = 1188316
+
+Test 032 regional_control_faster_intel PASS
+
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/hafs_regional_atm_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_23590/hafs_regional_atm_intel
+Checking test 011 hafs_regional_atm_intel results ....
+ Comparing atmf006.nc .........OK
+ Comparing sfcf006.nc .........OK
+ Comparing HURPRS.GrbF06 .........OK
+
+  0: The total amount of wall time                        = 217.543716
+  0: The maximum resident set size (KB)                   = 1363136
+
+Test 033 hafs_regional_atm_intel PASS
+
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/hafs_regional_atm_thompson_gfdlsf_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_23590/hafs_regional_atm_thompson_gfdlsf_intel
+Checking test 012 hafs_regional_atm_thompson_gfdlsf_intel results ....
+ Comparing atmf006.nc .........OK
+ Comparing sfcf006.nc .........OK
+
+  0: The total amount of wall time                        = 332.106259
+  0: The maximum resident set size (KB)                   = 1696880
+
+Test 034 hafs_regional_atm_thompson_gfdlsf_intel PASS
+
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/hafs_regional_atm_ocn_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_23590/hafs_regional_atm_ocn_intel
+Checking test 013 hafs_regional_atm_ocn_intel results ....
+ Comparing atmf006.nc .........OK
+ Comparing sfcf006.nc .........OK
+ Comparing archv.2019_241_06.a .........OK
+ Comparing archs.2019_241_06.a .........OK
+ Comparing ufs.hafs.cpl.hi.2019-08-29-21600.nc .........OK
+ Comparing ufs.hafs.cpl.r.2019-08-29-21600.nc .........OK
+
+  0: The total amount of wall time                        = 342.702251
+  0: The maximum resident set size (KB)                   = 1492844
+
+Test 035 hafs_regional_atm_ocn_intel PASS
+
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/hafs_regional_atm_wav_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_23590/hafs_regional_atm_wav_intel
+Checking test 014 hafs_regional_atm_wav_intel results ....
+ Comparing atmf006.nc .........OK
+ Comparing sfcf006.nc .........OK
+ Comparing 20190829.060000.out_grd.ww3 .........OK
+ Comparing 20190829.060000.out_pnt.ww3 .........OK
+ Comparing ufs.hafs.ww3.r.2019-08-29-21600 .........OK
+ Comparing ufs.hafs.cpl.r.2019-08-29-21600.nc .........OK
+
+  0: The total amount of wall time                        = 646.352130
+  0: The maximum resident set size (KB)                   = 1507564
+
+Test 036 hafs_regional_atm_wav_intel PASS
+
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/datm_cdeps_control_cfsr_faster_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_23590/datm_cdeps_control_cfsr_faster_intel
+Checking test 015 datm_cdeps_control_cfsr_faster_intel results ....
+ Comparing RESTART/20111002.000000.MOM.res.nc .........OK
+ Comparing RESTART/iced.2011-10-02-00000.nc .........OK
+ Comparing RESTART/DATM_CFSR.cpl.r.2011-10-02-00000.nc .........OK
+
+ 0: The total amount of wall time                        = 140.076360
+ 0: The maximum resident set size (KB)                   = 1268896
+
+Test 037 datm_cdeps_control_cfsr_faster_intel PASS
+
+
+baseline dir = /contrib/ufs-weather-model/RT/NEMSfv3gfs/develop-20230825/datm_cdeps_lnd_gswp3_intel
+working dir  = /lustre//stmp2/Zachary.Shrader/FV3_RT/rt_23590/datm_cdeps_lnd_gswp3_intel
+Checking test 016 datm_cdeps_lnd_gswp3_intel results ....
+ Comparing ufs.cpld.lnd.out.2000-01-02-00000.tile1.nc .........OK
+ Comparing ufs.cpld.lnd.out.2000-01-02-00000.tile2.nc .........OK
+ Comparing ufs.cpld.lnd.out.2000-01-02-00000.tile3.nc .........OK
+ Comparing ufs.cpld.lnd.out.2000-01-02-00000.tile4.nc .........OK
+ Comparing ufs.cpld.lnd.out.2000-01-02-00000.tile5.nc .........OK
+ Comparing ufs.cpld.lnd.out.2000-01-02-00000.tile6.nc .........OK
+
+  0: The total amount of wall time                        = 12.440630
+  0: The maximum resident set size (KB)                   = 401492
+
+Test 038 datm_cdeps_lnd_gswp3_intel PASS
+
+REGRESSION TEST WAS SUCCESSFUL
+Wed Sep 13 20:40:38 UTC 2023
+Elapsed time: 01h:47m:26s. Have a nice day!
