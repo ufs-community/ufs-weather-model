@@ -2,9 +2,9 @@
 
 #%Module######################################################################
 ##
-##    UFS prerequisites: MACOSX with clang/gfortran compilers
+##    UFS prerequisites: macOS with gcc/gfortran or clang/gfortran compilers
 
-echo "Setting environment variables for NEMSfv3gfs on MACOSX with gcc/gfortran or clang/gfortran"
+echo "Setting environment variables for UFS Model on macOS with gcc/gfortran or clang/gfortran"
 
 ##
 ## load programming environment: compiler, flags, paths
