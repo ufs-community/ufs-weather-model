@@ -40,7 +40,7 @@ def set_directories(job_obj):
                  f'REGRESSION_TEST'
     elif job_obj.machine == 'hercules':
         workdir = '/work/noaa/epic/role-epic/autort/tests/auto/pr'
-        blstore = '/work2/noaa/epic/RT/NEMSfv3gfs'
+        blstore = '/work/noaa/epic/hercules/UFS-WM_RT'
         rtbldir = '/work/noaa/stmp/role-epic/stmp/role-epic/FV3_RT/'\
                  f'REGRESSION_TEST'  
     elif job_obj.machine == 'cheyenne':
