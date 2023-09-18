@@ -81,7 +81,7 @@ pipeline {
 
                     stage('Stage Test Data') {
                         steps {
-                            sh 'docker volume rm --force DataVolume && docker run --detach --rm --volume DataVolume:/tmp noaaepic/input-data:20221101'
+                            sh 'docker run --detach --volume DataVolume:/tmp noaaepic/input-data:20221101'
                         }
                     }
 
