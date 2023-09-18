@@ -6,8 +6,18 @@ pipeline {
         overrideIndexTriggers(false)
         skipDefaultCheckout(true)
     }
-
     stages {
+        
+        stage('Launch SonarQube') {
+            steps {
+                script {
+                    build job: '/ufs-weather-model/ufs-wm-sonarqube', parameters: [
+                        string(name: 'BRANCH_NAME', value: env.CHANGE_BRANCH ?: 'develop')
+                    ], wait: false
+                }
+            }
+        }
+        
         stage('ORT') {
             matrix {
                 axes {
@@ -81,17 +91,17 @@ pipeline {
                         }
                     }
                 }
-
-                post {
+            
+                post {     
                     always {
                         sh '''
                             docker rmi -f "$(docker image ls | grep -E -m1 "${IMG_NAME}" | awk '{ print $3 }')"
                             docker rmi -f "$(docker image ls | grep -E -m1 'noaaepic' | awk '{ print $3 }')"
                         '''
                     }
-                }
+                    
+                }   
             }
         }
     }
 }
-         
