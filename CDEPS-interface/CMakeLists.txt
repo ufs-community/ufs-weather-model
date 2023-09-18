@@ -29,7 +29,7 @@ add_library(share OBJECT ${cdeps_share_files} ${ufs_cdeps_share_files})
 set_target_properties(share PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(share PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/ufs/cdeps_share)
 target_include_directories(share PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
-target_compile_definitions(share ${CDEPS_SHARE_DEFS})
+target_compile_definitions(share PRIVATE ${CDEPS_SHARE_DEFS})
 target_link_libraries(share PRIVATE esmf)
 
 # CDEPS/streams
