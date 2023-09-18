@@ -62,7 +62,7 @@ pipeline {
                 }
 
                 environment {
-                    IMG_NAME = 'ci-test-weather'
+                    IMG_NAME = 'BRANCH_NAME'
                 }
 
                 stages {
@@ -91,16 +91,7 @@ pipeline {
                         }
                     }
                 }
-            
-                post {     
-                    always {
-                        sh '''
-                            docker rmi -f "$(docker image ls | grep -E -m1 "${IMG_NAME}" | awk '{ print $3 }')"
-                            docker rmi -f "$(docker image ls | grep -E -m1 'noaaepic' | awk '{ print $3 }')"
-                        '''
-                    }
-                    
-                }   
+              
             }
         }
     }
