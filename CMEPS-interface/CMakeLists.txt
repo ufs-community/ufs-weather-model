@@ -4,10 +4,11 @@
 
 if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
   set(CMAKE_Fortran_FLAGS "-g -fbacktrace -ffree-line-length-none")
+  #Set CPP defintions for the ufs/cdeps_share source component of the cmeps target library
+  list(APPEND CDEPS_SHARE_DEFS "CPRGNU")
   if(${CMAKE_Fortran_COMPILER_VERSION} VERSION_GREATER_EQUAL 10)
     set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fallow-argument-mismatch -fallow-invalid-boz")
-    #Set CPP defintions for the ufs/cdeps_share source component of the cmeps target library
-    list(APPEND CDEPS_SHARE_DEFS "CPRGNU")
+    
   endif()
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS}")
   set(CMAKE_Fortran_FLAGS_RELEASE "-O2")
