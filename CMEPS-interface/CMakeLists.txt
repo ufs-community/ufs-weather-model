@@ -8,7 +8,6 @@ if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
   list(APPEND CDEPS_SHARE_DEFS "CPRGNU")
   if(${CMAKE_Fortran_COMPILER_VERSION} VERSION_GREATER_EQUAL 10)
     set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fallow-argument-mismatch -fallow-invalid-boz")
-    
   endif()
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS}")
   set(CMAKE_Fortran_FLAGS_RELEASE "-O2")
