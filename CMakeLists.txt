@@ -257,6 +257,7 @@ endif()
 ### Fire Components [FIRE_BEHAVIOR]
 ###############################################################################
 if(FIRE_BEHAVIOR)
+  set(NUOPC "ON" CACHE STRING "Build fire_behavior with NUOPC cap" FORCE)
   add_subdirectory(fire_behavior)
 endif()
 
