@@ -41,13 +41,13 @@ contains
   !===============================================================================
 
 # 37 "shr_frz_mod.F90.in"
-  subroutine shr_frz_freezetemp_init(tfreeze_option, mastertask)
+  subroutine shr_frz_freezetemp_init(tfreeze_option, maintask)
 
     implicit none
 
     character(len=*),parameter :: subname = "(shr_frz_freezetemp_init) "
     character(CS),intent(in)  :: tfreeze_option ! option for computing freezing point
-    logical, intent(in)  :: mastertask ! for io
+    logical, intent(in)  :: maintask ! for io
     ! minus1p8 is constant -1.8C
     ! linear_salt is linear equation
     ! mushy for CICE mushy-layer nonlinear equation
@@ -56,13 +56,13 @@ contains
     ! Check tfreeze_option
     !---------------------------------------------------------------
     if (trim(tfreeze_option) == 'minus1p8') then
-       if (mastertask .and. shr_log_level>0) write(s_logunit,*) ' tfreeze_option is minus1p8'
+       if (maintask .and. shr_log_level>0) write(s_logunit,*) ' tfreeze_option is minus1p8'
        tfrz_option = TFREEZE_OPTION_MINUS1P8
     elseif (trim(tfreeze_option) == 'linear_salt') then
-       if (mastertask .and. shr_log_level>0) write(s_logunit,*) ' tfreeze_option is linear_salt'
+       if (maintask .and. shr_log_level>0) write(s_logunit,*) ' tfreeze_option is linear_salt'
        tfrz_option = TFREEZE_OPTION_LINEAR_SALT
     elseif (trim(tfreeze_option) == 'mushy') then
-       if (mastertask .and. shr_log_level>0) write(s_logunit,*) ' tfreeze_option is mushy'
+       if (maintask .and. shr_log_level>0) write(s_logunit,*) ' tfreeze_option is mushy'
        tfrz_option = TFREEZE_OPTION_MUSHY
     else
        call shr_sys_abort(subname//' ERROR: not a valid tfreeze_option '//trim(tfreeze_option))
