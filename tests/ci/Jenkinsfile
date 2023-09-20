@@ -1,3 +1,46 @@
+void setBuildStatus(String message, String state) {
+    step([
+        $class: "GitHubCommitStatusSetter",
+        reposSource: [$class: "ManuallyEnteredRepositorySource", url: "https://github.com/ufs-community/ufs-weather-model"],
+        contextSource: [$class: "ManuallyEnteredCommitContextSource", context: "Jenkins Build Result"],
+        errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "UNSTABLE"]],
+        statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]] ]
+    ]);
+}
+
+def postGitHubCommentWithLogFile(commentMessage, logFilePath) {
+    script {
+        writeFile file: logFilePath, text: currentBuild.rawBuild.getLog(100000) 
+        
+        def apiUrl = "https://api.github.com/repos/ufs-community/ufs-weather-model/issues/${env.CHANGE_ID}/comments"
+        def headers = [
+            "Authorization": "token GitHubJenkins",
+            "User-Agent": "Jenkins",
+            "Content-Type": "application/json"
+        ]
+
+        def payload = [
+            body: commentMessage,
+            file: readFile(logFilePath)
+        ]
+
+        def response = httpRequest(
+            acceptType: 'APPLICATION_JSON',
+            contentType: 'APPLICATION_JSON',
+            httpMode: 'POST',
+            requestBody: jsonToString(payload),
+            url: apiUrl,
+            customHeaders: headers
+        )
+
+        if (response.getResponseCode() == 201) {
+            echo "Comment with log file added successfully to PR #${env.CHANGE_ID}"
+        } else {
+            error "Failed to add comment with log file to PR #${env.CHANGE_ID}: ${response.getResponseCode()} - ${response.getResponseMessage()}"
+        }
+    }
+}
+
 pipeline {
     agent none
 
@@ -104,4 +147,21 @@ pipeline {
             }
         }
     }
+    post {
+        success {
+            setBuildStatus("Build succeeded", "SUCCESS");
+        }
+        failure {
+            setBuildStatus("Build failed", "FAILURE");
+        }
+        always {
+            script {
+                node('master') {
+                    def buildResult = currentBuild.resultIsBetterOrEqualTo("SUCCESS") ? "Success" : "Failure"
+                    def commentMessage = "Build log for this run: ${buildResult}"
+                    postGitHubCommentWithLogFile(commentMessage, "jenkins_console_log.txt")
+                }
+            }
+        }
+    }    
 }
