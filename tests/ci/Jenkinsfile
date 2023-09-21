@@ -156,8 +156,8 @@ pipeline {
             setBuildStatus("Build failed", "FAILURE");
         }
         always {
-            script {
-                node('Built-In Node')
+            node('Built-In Node')
+                script {
                     def buildResult = currentBuild.resultIsBetterOrEqualTo("SUCCESS") ? "Success" : "Failure"
                     def commentMessage = "Build log for this run: ${buildResult}"
                     postGitHubCommentWithLogFile(commentMessage, "jenkins_console_log.txt")
