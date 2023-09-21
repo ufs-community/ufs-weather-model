@@ -20,6 +20,9 @@ module load modules.fv3
 module list
 set -x
 
+ulimit -s unlimited
+ulimit -l unlimited
+
 echo "Model started:  " `date`
 
 export OMP_NUM_THREADS=@[THRD]

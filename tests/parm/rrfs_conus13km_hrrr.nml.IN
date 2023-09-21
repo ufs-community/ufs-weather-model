@@ -36,16 +36,14 @@
     nt_checker = 0
 /
 
-&fms_io_nml
-    checksum_required = .false.
-    max_files_r = 100
-    max_files_w = 100
-/
-
 &fms_nml
     clock_grain = 'ROUTINE'
     domains_stack_size = 5000000 ! Smoke needs a higher value than 3000000 default.
     print_memory_usage = .false.
+/
+
+&fms2_io_nml
+  netcdf_default_format = "netcdf4"
 /
 
 &fv_core_nml
@@ -149,13 +147,13 @@
     mix_chem = @[RRFS_SMOKE]
     enh_mix = @[RRFS_SMOKE]
     dust_opt = 5
-    drydep_opt = 1 
+    drydep_opt = 1
     coarsepm_settling = 1
     smoke_forecast = @[SMOKE_FORECAST]
     aero_ind_fdb = .false.
     aero_dir_fdb = .false.
     addsmoke_flag = 1
-    wetdep_ls_opt = 1    
+    wetdep_ls_opt = 1
     do_plumerise = @[RRFS_SMOKE]
     plumerisefire_frq = 60
     dust_alpha = 0.01
@@ -333,9 +331,9 @@
     fntsfa = ''
     fntsfc = 'RTGSST.1982.2012.monthly.clim.grb'
     fnvegc = 'C775.vegetation_greenness.tileX.nc' ! should not exist
-    fnvetc = 'C775.vegetation_type.tileX.nc' ! should not exist 
-    fnvmnc = 'C775.vegetation_greenness.tileX.nc' ! should not exist 
-    fnvmxc = 'C775.vegetation_greenness.tileX.nc' ! should not exist 
+    fnvetc = 'C775.vegetation_type.tileX.nc' ! should not exist
+    fnvmnc = 'C775.vegetation_greenness.tileX.nc' ! should not exist
+    fnvmxc = 'C775.vegetation_greenness.tileX.nc' ! should not exist
     fnzorc = 'igbp'
     fsicl = 99999
     fsics = 99999

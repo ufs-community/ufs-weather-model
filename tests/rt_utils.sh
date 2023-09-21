@@ -347,7 +347,7 @@ check_results() {
         fi
 
         if [[ $d -eq 1 && ${i##*.} == 'nc' ]] ; then
-          if [[ " orion hera wcoss2 acorn cheyenne gaea jet s4 noaacloud " =~ " ${MACHINE_ID} " ]]; then
+          if [[ " orion hercules hera wcoss2 acorn cheyenne gaea jet s4 noaacloud " =~ " ${MACHINE_ID} " ]]; then
             printf ".......ALT CHECK.." >> ${RT_LOG}
             printf ".......ALT CHECK.."
               if [[ $CMP_DATAONLY == false ]]; then
@@ -455,12 +455,15 @@ rocoto_create_compile_task() {
   BUILD_CORES=8
   BUILD_WALLTIME="00:30:00"
   if [[ ${MACHINE_ID} == jet ]]; then
-    BUILD_WALLTIME="01:00:00"
+    BUILD_WALLTIME="02:00:00"
   fi
   if [[ ${MACHINE_ID} == hera ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
   if [[ ${MACHINE_ID} == orion ]]; then
+    BUILD_WALLTIME="01:00:00"
+  fi
+  if [[ ${MACHINE_ID} == hercules ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
   if [[ ${MACHINE_ID} == s4 ]]; then
