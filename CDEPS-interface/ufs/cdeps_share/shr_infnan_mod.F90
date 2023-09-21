@@ -71,7 +71,6 @@ public :: shr_infnan_isneginf
 
 ! Locally defined isnan.
 #ifndef HAVE_IEEE_ARITHMETIC
-# 69 "shr_infnan_mod.F90.in"
 interface shr_infnan_isnan
    ! TYPE double,real
    module procedure shr_infnan_isnan_double
@@ -80,7 +79,6 @@ interface shr_infnan_isnan
 end interface
 #endif
 
-# 75 "shr_infnan_mod.F90.in"
 interface shr_infnan_isinf
    ! TYPE double,real
    module procedure shr_infnan_isinf_double
@@ -88,7 +86,6 @@ interface shr_infnan_isinf
    module procedure shr_infnan_isinf_real
 end interface
 
-# 80 "shr_infnan_mod.F90.in"
 interface shr_infnan_isposinf
    ! TYPE double,real
    module procedure shr_infnan_isposinf_double
@@ -96,7 +93,6 @@ interface shr_infnan_isposinf
    module procedure shr_infnan_isposinf_real
 end interface
 
-# 85 "shr_infnan_mod.F90.in"
 interface shr_infnan_isneginf
    ! TYPE double,real
    module procedure shr_infnan_isneginf_double
@@ -124,7 +120,6 @@ type :: shr_infnan_inf_type
 end type shr_infnan_inf_type
 
 ! Allow assigning reals to NaN or Inf.
-# 110 "shr_infnan_mod.F90.in"
 interface assignment(=)
    ! TYPE double,real
    ! DIMS 0,1,2,3,4,5,6,7
@@ -225,13 +220,11 @@ interface assignment(=)
 end interface
 
 ! Conversion functions.
-# 120 "shr_infnan_mod.F90.in"
 interface shr_infnan_to_r8
    module procedure nan_r8
    module procedure inf_r8
 end interface
 
-# 125 "shr_infnan_mod.F90.in"
 interface shr_infnan_to_r4
    module procedure nan_r4
    module procedure inf_r4
@@ -272,7 +265,6 @@ integer(i8), parameter :: dposinf_pat = int(Z'7FF0000000000000',i8)
 integer(i8), parameter :: dneginf_pat = ibset(dposinf_pat,bit_size(1_i8)-1)
 #endif
 
-# 165 "shr_infnan_mod.F90.in"
 contains
 
 !---------------------------------------------------------------------
@@ -282,24 +274,20 @@ contains
 !---------------------------------------------------------------------
 
 ! TYPE double,real
-# 174 "shr_infnan_mod.F90.in"
 elemental function shr_infnan_isinf_double(x) result(isinf)
   real(r8), intent(in) :: x
   logical :: isinf
 
   isinf = shr_infnan_isposinf(x) .or. shr_infnan_isneginf(x)
 
-# 180 "shr_infnan_mod.F90.in"
 end function shr_infnan_isinf_double
 ! TYPE double,real
-# 174 "shr_infnan_mod.F90.in"
 elemental function shr_infnan_isinf_real(x) result(isinf)
   real(r4), intent(in) :: x
   logical :: isinf
 
   isinf = shr_infnan_isposinf(x) .or. shr_infnan_isneginf(x)
 
-# 180 "shr_infnan_mod.F90.in"
 end function shr_infnan_isinf_real
 
 #ifdef HAVE_IEEE_ARITHMETIC
@@ -311,7 +299,6 @@ end function shr_infnan_isinf_real
 !---------------------------------------------------------------------
 
 ! TYPE double,real
-# 191 "shr_infnan_mod.F90.in"
 elemental function shr_infnan_isposinf_double(x) result(isposinf)
   use, intrinsic :: ieee_arithmetic, only: &
        ieee_class, &
@@ -322,10 +309,8 @@ elemental function shr_infnan_isposinf_double(x) result(isposinf)
 
   isposinf = (ieee_positive_inf == ieee_class(x))
 
-# 201 "shr_infnan_mod.F90.in"
 end function shr_infnan_isposinf_double
 ! TYPE double,real
-# 191 "shr_infnan_mod.F90.in"
 elemental function shr_infnan_isposinf_real(x) result(isposinf)
   use, intrinsic :: ieee_arithmetic, only: &
        ieee_class, &
@@ -336,11 +321,9 @@ elemental function shr_infnan_isposinf_real(x) result(isposinf)
 
   isposinf = (ieee_positive_inf == ieee_class(x))
 
-# 201 "shr_infnan_mod.F90.in"
 end function shr_infnan_isposinf_real
 
 ! TYPE double,real
-# 204 "shr_infnan_mod.F90.in"
 elemental function shr_infnan_isneginf_double(x) result(isneginf)
   use, intrinsic :: ieee_arithmetic, only: &
        ieee_class, &
@@ -351,10 +334,8 @@ elemental function shr_infnan_isneginf_double(x) result(isneginf)
 
   isneginf = (ieee_negative_inf == ieee_class(x))
 
-# 214 "shr_infnan_mod.F90.in"
 end function shr_infnan_isneginf_double
 ! TYPE double,real
-# 204 "shr_infnan_mod.F90.in"
 elemental function shr_infnan_isneginf_real(x) result(isneginf)
   use, intrinsic :: ieee_arithmetic, only: &
        ieee_class, &
@@ -365,7 +346,6 @@ elemental function shr_infnan_isneginf_real(x) result(isneginf)
 
   isneginf = (ieee_negative_inf == ieee_class(x))
 
-# 214 "shr_infnan_mod.F90.in"
 end function shr_infnan_isneginf_real
 
 #else
@@ -374,24 +354,20 @@ end function shr_infnan_isneginf_real
 #ifdef CPRGNU
 ! NaN testing on gfortran.
 ! TYPE double,real
-# 222 "shr_infnan_mod.F90.in"
 elemental function shr_infnan_isnan_double(x) result(is_nan)
   real(r8), intent(in) :: x
   logical :: is_nan
 
   is_nan = isnan(x)
 
-# 228 "shr_infnan_mod.F90.in"
 end function shr_infnan_isnan_double
 ! TYPE double,real
-# 222 "shr_infnan_mod.F90.in"
 elemental function shr_infnan_isnan_real(x) result(is_nan)
   real(r4), intent(in) :: x
   logical :: is_nan
 
   is_nan = isnan(x)
 
-# 228 "shr_infnan_mod.F90.in"
 end function shr_infnan_isnan_real
 ! End GNU section.
 #endif
@@ -402,7 +378,6 @@ end function shr_infnan_isnan_real
 !---------------------------------------------------------------------
 
 ! TYPE double,real
-# 238 "shr_infnan_mod.F90.in"
 elemental function shr_infnan_isposinf_double(x) result(isposinf)
   real(r8), intent(in) :: x
   logical :: isposinf
@@ -414,10 +389,8 @@ elemental function shr_infnan_isposinf_double(x) result(isposinf)
 
   isposinf = (x == transfer(posinf_pat,x))
 
-# 249 "shr_infnan_mod.F90.in"
 end function shr_infnan_isposinf_double
 ! TYPE double,real
-# 238 "shr_infnan_mod.F90.in"
 elemental function shr_infnan_isposinf_real(x) result(isposinf)
   real(r4), intent(in) :: x
   logical :: isposinf
@@ -429,11 +402,9 @@ elemental function shr_infnan_isposinf_real(x) result(isposinf)
 
   isposinf = (x == transfer(posinf_pat,x))
 
-# 249 "shr_infnan_mod.F90.in"
 end function shr_infnan_isposinf_real
 
 ! TYPE double,real
-# 252 "shr_infnan_mod.F90.in"
 elemental function shr_infnan_isneginf_double(x) result(isneginf)
   real(r8), intent(in) :: x
   logical :: isneginf
@@ -445,10 +416,8 @@ elemental function shr_infnan_isneginf_double(x) result(isneginf)
 
   isneginf = (x == transfer(neginf_pat,x))
 
-# 263 "shr_infnan_mod.F90.in"
 end function shr_infnan_isneginf_double
 ! TYPE double,real
-# 252 "shr_infnan_mod.F90.in"
 elemental function shr_infnan_isneginf_real(x) result(isneginf)
   real(r4), intent(in) :: x
   logical :: isneginf
@@ -460,7 +429,6 @@ elemental function shr_infnan_isneginf_real(x) result(isneginf)
 
   isneginf = (x == transfer(neginf_pat,x))
 
-# 263 "shr_infnan_mod.F90.in"
 end function shr_infnan_isneginf_real
 
 ! End ieee_arithmetic conditional.
@@ -484,7 +452,6 @@ end function shr_infnan_isneginf_real
 
 ! TYPE double,real
 ! DIMS 0,1,2,3,4,5,6,7
-# 286 "shr_infnan_mod.F90.in"
 pure subroutine set_nan_0d_double(output, nan)
 #ifdef HAVE_IEEE_ARITHMETIC
   use, intrinsic :: ieee_arithmetic, only: &
@@ -523,11 +490,9 @@ pure subroutine set_nan_0d_double(output, nan)
 
   output = tmp
 
-# 324 "shr_infnan_mod.F90.in"
 end subroutine set_nan_0d_double
 ! TYPE double,real
 ! DIMS 0,1,2,3,4,5,6,7
-# 286 "shr_infnan_mod.F90.in"
 pure subroutine set_nan_1d_double(output, nan)
 #ifdef HAVE_IEEE_ARITHMETIC
   use, intrinsic :: ieee_arithmetic, only: &
@@ -566,11 +531,9 @@ pure subroutine set_nan_1d_double(output, nan)
 
   output = tmp
 
-# 324 "shr_infnan_mod.F90.in"
 end subroutine set_nan_1d_double
 ! TYPE double,real
 ! DIMS 0,1,2,3,4,5,6,7
-# 286 "shr_infnan_mod.F90.in"
 pure subroutine set_nan_2d_double(output, nan)
 #ifdef HAVE_IEEE_ARITHMETIC
   use, intrinsic :: ieee_arithmetic, only: &
@@ -609,11 +572,9 @@ pure subroutine set_nan_2d_double(output, nan)
 
   output = tmp
 
-# 324 "shr_infnan_mod.F90.in"
 end subroutine set_nan_2d_double
 ! TYPE double,real
 ! DIMS 0,1,2,3,4,5,6,7
-# 286 "shr_infnan_mod.F90.in"
 pure subroutine set_nan_3d_double(output, nan)
 #ifdef HAVE_IEEE_ARITHMETIC
   use, intrinsic :: ieee_arithmetic, only: &
@@ -652,11 +613,9 @@ pure subroutine set_nan_3d_double(output, nan)
 
   output = tmp
 
-# 324 "shr_infnan_mod.F90.in"
 end subroutine set_nan_3d_double
 ! TYPE double,real
 ! DIMS 0,1,2,3,4,5,6,7
-# 286 "shr_infnan_mod.F90.in"
 pure subroutine set_nan_4d_double(output, nan)
 #ifdef HAVE_IEEE_ARITHMETIC
   use, intrinsic :: ieee_arithmetic, only: &
@@ -695,11 +654,9 @@ pure subroutine set_nan_4d_double(output, nan)
 
   output = tmp
 
-# 324 "shr_infnan_mod.F90.in"
 end subroutine set_nan_4d_double
 ! TYPE double,real
 ! DIMS 0,1,2,3,4,5,6,7
-# 286 "shr_infnan_mod.F90.in"
 pure subroutine set_nan_5d_double(output, nan)
 #ifdef HAVE_IEEE_ARITHMETIC
   use, intrinsic :: ieee_arithmetic, only: &
@@ -738,11 +695,9 @@ pure subroutine set_nan_5d_double(output, nan)
 
   output = tmp
 
-# 324 "shr_infnan_mod.F90.in"
 end subroutine set_nan_5d_double
 ! TYPE double,real
 ! DIMS 0,1,2,3,4,5,6,7
-# 286 "shr_infnan_mod.F90.in"
 pure subroutine set_nan_6d_double(output, nan)
 #ifdef HAVE_IEEE_ARITHMETIC
   use, intrinsic :: ieee_arithmetic, only: &
@@ -781,11 +736,9 @@ pure subroutine set_nan_6d_double(output, nan)
 
   output = tmp
 
-# 324 "shr_infnan_mod.F90.in"
 end subroutine set_nan_6d_double
 ! TYPE double,real
 ! DIMS 0,1,2,3,4,5,6,7
-# 286 "shr_infnan_mod.F90.in"
 pure subroutine set_nan_7d_double(output, nan)
 #ifdef HAVE_IEEE_ARITHMETIC
   use, intrinsic :: ieee_arithmetic, only: &
@@ -824,11 +777,9 @@ pure subroutine set_nan_7d_double(output, nan)
 
   output = tmp
 
-# 324 "shr_infnan_mod.F90.in"
 end subroutine set_nan_7d_double
 ! TYPE double,real
 ! DIMS 0,1,2,3,4,5,6,7
-# 286 "shr_infnan_mod.F90.in"
 pure subroutine set_nan_0d_real(output, nan)
 #ifdef HAVE_IEEE_ARITHMETIC
   use, intrinsic :: ieee_arithmetic, only: &
@@ -867,11 +818,9 @@ pure subroutine set_nan_0d_real(output, nan)
 
   output = tmp
 
-# 324 "shr_infnan_mod.F90.in"
 end subroutine set_nan_0d_real
 ! TYPE double,real
 ! DIMS 0,1,2,3,4,5,6,7
-# 286 "shr_infnan_mod.F90.in"
 pure subroutine set_nan_1d_real(output, nan)
 #ifdef HAVE_IEEE_ARITHMETIC
   use, intrinsic :: ieee_arithmetic, only: &
@@ -910,11 +859,9 @@ pure subroutine set_nan_1d_real(output, nan)
 
   output = tmp
 
-# 324 "shr_infnan_mod.F90.in"
 end subroutine set_nan_1d_real
 ! TYPE double,real
 ! DIMS 0,1,2,3,4,5,6,7
-# 286 "shr_infnan_mod.F90.in"
 pure subroutine set_nan_2d_real(output, nan)
 #ifdef HAVE_IEEE_ARITHMETIC
   use, intrinsic :: ieee_arithmetic, only: &
@@ -953,11 +900,9 @@ pure subroutine set_nan_2d_real(output, nan)
 
   output = tmp
 
-# 324 "shr_infnan_mod.F90.in"
 end subroutine set_nan_2d_real
 ! TYPE double,real
 ! DIMS 0,1,2,3,4,5,6,7
-# 286 "shr_infnan_mod.F90.in"
 pure subroutine set_nan_3d_real(output, nan)
 #ifdef HAVE_IEEE_ARITHMETIC
   use, intrinsic :: ieee_arithmetic, only: &
@@ -996,11 +941,9 @@ pure subroutine set_nan_3d_real(output, nan)
 
   output = tmp
 
-# 324 "shr_infnan_mod.F90.in"
 end subroutine set_nan_3d_real
 ! TYPE double,real
 ! DIMS 0,1,2,3,4,5,6,7
-# 286 "shr_infnan_mod.F90.in"
 pure subroutine set_nan_4d_real(output, nan)
 #ifdef HAVE_IEEE_ARITHMETIC
   use, intrinsic :: ieee_arithmetic, only: &
@@ -1039,11 +982,9 @@ pure subroutine set_nan_4d_real(output, nan)
 
   output = tmp
 
-# 324 "shr_infnan_mod.F90.in"
 end subroutine set_nan_4d_real
 ! TYPE double,real
 ! DIMS 0,1,2,3,4,5,6,7
-# 286 "shr_infnan_mod.F90.in"
 pure subroutine set_nan_5d_real(output, nan)
 #ifdef HAVE_IEEE_ARITHMETIC
   use, intrinsic :: ieee_arithmetic, only: &
@@ -1082,11 +1023,9 @@ pure subroutine set_nan_5d_real(output, nan)
 
   output = tmp
 
-# 324 "shr_infnan_mod.F90.in"
 end subroutine set_nan_5d_real
 ! TYPE double,real
 ! DIMS 0,1,2,3,4,5,6,7
-# 286 "shr_infnan_mod.F90.in"
 pure subroutine set_nan_6d_real(output, nan)
 #ifdef HAVE_IEEE_ARITHMETIC
   use, intrinsic :: ieee_arithmetic, only: &
@@ -1125,11 +1064,9 @@ pure subroutine set_nan_6d_real(output, nan)
 
   output = tmp
 
-# 324 "shr_infnan_mod.F90.in"
 end subroutine set_nan_6d_real
 ! TYPE double,real
 ! DIMS 0,1,2,3,4,5,6,7
-# 286 "shr_infnan_mod.F90.in"
 pure subroutine set_nan_7d_real(output, nan)
 #ifdef HAVE_IEEE_ARITHMETIC
   use, intrinsic :: ieee_arithmetic, only: &
@@ -1168,12 +1105,10 @@ pure subroutine set_nan_7d_real(output, nan)
 
   output = tmp
 
-# 324 "shr_infnan_mod.F90.in"
 end subroutine set_nan_7d_real
 
 ! TYPE double,real
 ! DIMS 0,1,2,3,4,5,6,7
-# 328 "shr_infnan_mod.F90.in"
 pure subroutine set_inf_0d_double(output, inf)
 #ifdef HAVE_IEEE_ARITHMETIC
   use, intrinsic :: ieee_arithmetic, only: &
@@ -1212,11 +1147,9 @@ pure subroutine set_inf_0d_double(output, inf)
 
   output = tmp
 
-# 366 "shr_infnan_mod.F90.in"
 end subroutine set_inf_0d_double
 ! TYPE double,real
 ! DIMS 0,1,2,3,4,5,6,7
-# 328 "shr_infnan_mod.F90.in"
 pure subroutine set_inf_1d_double(output, inf)
 #ifdef HAVE_IEEE_ARITHMETIC
   use, intrinsic :: ieee_arithmetic, only: &
@@ -1255,11 +1188,9 @@ pure subroutine set_inf_1d_double(output, inf)
 
   output = tmp
 
-# 366 "shr_infnan_mod.F90.in"
 end subroutine set_inf_1d_double
 ! TYPE double,real
 ! DIMS 0,1,2,3,4,5,6,7
-# 328 "shr_infnan_mod.F90.in"
 pure subroutine set_inf_2d_double(output, inf)
 #ifdef HAVE_IEEE_ARITHMETIC
   use, intrinsic :: ieee_arithmetic, only: &
@@ -1298,11 +1229,9 @@ pure subroutine set_inf_2d_double(output, inf)
 
   output = tmp
 
-# 366 "shr_infnan_mod.F90.in"
 end subroutine set_inf_2d_double
 ! TYPE double,real
 ! DIMS 0,1,2,3,4,5,6,7
-# 328 "shr_infnan_mod.F90.in"
 pure subroutine set_inf_3d_double(output, inf)
 #ifdef HAVE_IEEE_ARITHMETIC
   use, intrinsic :: ieee_arithmetic, only: &
@@ -1341,11 +1270,9 @@ pure subroutine set_inf_3d_double(output, inf)
 
   output = tmp
 
-# 366 "shr_infnan_mod.F90.in"
 end subroutine set_inf_3d_double
 ! TYPE double,real
 ! DIMS 0,1,2,3,4,5,6,7
-# 328 "shr_infnan_mod.F90.in"
 pure subroutine set_inf_4d_double(output, inf)
 #ifdef HAVE_IEEE_ARITHMETIC
   use, intrinsic :: ieee_arithmetic, only: &
@@ -1384,11 +1311,9 @@ pure subroutine set_inf_4d_double(output, inf)
 
   output = tmp
 
-# 366 "shr_infnan_mod.F90.in"
 end subroutine set_inf_4d_double
 ! TYPE double,real
 ! DIMS 0,1,2,3,4,5,6,7
-# 328 "shr_infnan_mod.F90.in"
 pure subroutine set_inf_5d_double(output, inf)
 #ifdef HAVE_IEEE_ARITHMETIC
   use, intrinsic :: ieee_arithmetic, only: &
@@ -1427,11 +1352,9 @@ pure subroutine set_inf_5d_double(output, inf)
 
   output = tmp
 
-# 366 "shr_infnan_mod.F90.in"
 end subroutine set_inf_5d_double
 ! TYPE double,real
 ! DIMS 0,1,2,3,4,5,6,7
-# 328 "shr_infnan_mod.F90.in"
 pure subroutine set_inf_6d_double(output, inf)
 #ifdef HAVE_IEEE_ARITHMETIC
   use, intrinsic :: ieee_arithmetic, only: &
@@ -1470,11 +1393,9 @@ pure subroutine set_inf_6d_double(output, inf)
 
   output = tmp
 
-# 366 "shr_infnan_mod.F90.in"
 end subroutine set_inf_6d_double
 ! TYPE double,real
 ! DIMS 0,1,2,3,4,5,6,7
-# 328 "shr_infnan_mod.F90.in"
 pure subroutine set_inf_7d_double(output, inf)
 #ifdef HAVE_IEEE_ARITHMETIC
   use, intrinsic :: ieee_arithmetic, only: &
@@ -1513,11 +1434,9 @@ pure subroutine set_inf_7d_double(output, inf)
 
   output = tmp
 
-# 366 "shr_infnan_mod.F90.in"
 end subroutine set_inf_7d_double
 ! TYPE double,real
 ! DIMS 0,1,2,3,4,5,6,7
-# 328 "shr_infnan_mod.F90.in"
 pure subroutine set_inf_0d_real(output, inf)
 #ifdef HAVE_IEEE_ARITHMETIC
   use, intrinsic :: ieee_arithmetic, only: &
@@ -1556,11 +1475,9 @@ pure subroutine set_inf_0d_real(output, inf)
 
   output = tmp
 
-# 366 "shr_infnan_mod.F90.in"
 end subroutine set_inf_0d_real
 ! TYPE double,real
 ! DIMS 0,1,2,3,4,5,6,7
-# 328 "shr_infnan_mod.F90.in"
 pure subroutine set_inf_1d_real(output, inf)
 #ifdef HAVE_IEEE_ARITHMETIC
   use, intrinsic :: ieee_arithmetic, only: &
@@ -1599,11 +1516,9 @@ pure subroutine set_inf_1d_real(output, inf)
 
   output = tmp
 
-# 366 "shr_infnan_mod.F90.in"
 end subroutine set_inf_1d_real
 ! TYPE double,real
 ! DIMS 0,1,2,3,4,5,6,7
-# 328 "shr_infnan_mod.F90.in"
 pure subroutine set_inf_2d_real(output, inf)
 #ifdef HAVE_IEEE_ARITHMETIC
   use, intrinsic :: ieee_arithmetic, only: &
@@ -1642,11 +1557,9 @@ pure subroutine set_inf_2d_real(output, inf)
 
   output = tmp
 
-# 366 "shr_infnan_mod.F90.in"
 end subroutine set_inf_2d_real
 ! TYPE double,real
 ! DIMS 0,1,2,3,4,5,6,7
-# 328 "shr_infnan_mod.F90.in"
 pure subroutine set_inf_3d_real(output, inf)
 #ifdef HAVE_IEEE_ARITHMETIC
   use, intrinsic :: ieee_arithmetic, only: &
@@ -1685,11 +1598,9 @@ pure subroutine set_inf_3d_real(output, inf)
 
   output = tmp
 
-# 366 "shr_infnan_mod.F90.in"
 end subroutine set_inf_3d_real
 ! TYPE double,real
 ! DIMS 0,1,2,3,4,5,6,7
-# 328 "shr_infnan_mod.F90.in"
 pure subroutine set_inf_4d_real(output, inf)
 #ifdef HAVE_IEEE_ARITHMETIC
   use, intrinsic :: ieee_arithmetic, only: &
@@ -1728,11 +1639,9 @@ pure subroutine set_inf_4d_real(output, inf)
 
   output = tmp
 
-# 366 "shr_infnan_mod.F90.in"
 end subroutine set_inf_4d_real
 ! TYPE double,real
 ! DIMS 0,1,2,3,4,5,6,7
-# 328 "shr_infnan_mod.F90.in"
 pure subroutine set_inf_5d_real(output, inf)
 #ifdef HAVE_IEEE_ARITHMETIC
   use, intrinsic :: ieee_arithmetic, only: &
@@ -1771,11 +1680,9 @@ pure subroutine set_inf_5d_real(output, inf)
 
   output = tmp
 
-# 366 "shr_infnan_mod.F90.in"
 end subroutine set_inf_5d_real
 ! TYPE double,real
 ! DIMS 0,1,2,3,4,5,6,7
-# 328 "shr_infnan_mod.F90.in"
 pure subroutine set_inf_6d_real(output, inf)
 #ifdef HAVE_IEEE_ARITHMETIC
   use, intrinsic :: ieee_arithmetic, only: &
@@ -1814,11 +1721,9 @@ pure subroutine set_inf_6d_real(output, inf)
 
   output = tmp
 
-# 366 "shr_infnan_mod.F90.in"
 end subroutine set_inf_6d_real
 ! TYPE double,real
 ! DIMS 0,1,2,3,4,5,6,7
-# 328 "shr_infnan_mod.F90.in"
 pure subroutine set_inf_7d_real(output, inf)
 #ifdef HAVE_IEEE_ARITHMETIC
   use, intrinsic :: ieee_arithmetic, only: &
@@ -1857,7 +1762,6 @@ pure subroutine set_inf_7d_real(output, inf)
 
   output = tmp
 
-# 366 "shr_infnan_mod.F90.in"
 end subroutine set_inf_7d_real
 
 !---------------------------------------------------------------------
@@ -1866,44 +1770,36 @@ end subroutine set_inf_7d_real
 ! Function methods to get reals from nan/inf types.
 !---------------------------------------------------------------------
 
-# 374 "shr_infnan_mod.F90.in"
 pure function nan_r8(nan) result(output)
   class(shr_infnan_nan_type), intent(in) :: nan
   real(r8) :: output
 
   output = nan
 
-# 380 "shr_infnan_mod.F90.in"
 end function nan_r8
 
-# 382 "shr_infnan_mod.F90.in"
 pure function nan_r4(nan) result(output)
   class(shr_infnan_nan_type), intent(in) :: nan
   real(r4) :: output
 
   output = nan
 
-# 388 "shr_infnan_mod.F90.in"
 end function nan_r4
 
-# 390 "shr_infnan_mod.F90.in"
 pure function inf_r8(inf) result(output)
   class(shr_infnan_inf_type), intent(in) :: inf
   real(r8) :: output
 
   output = inf
 
-# 396 "shr_infnan_mod.F90.in"
 end function inf_r8
 
-# 398 "shr_infnan_mod.F90.in"
 pure function inf_r4(inf) result(output)
   class(shr_infnan_inf_type), intent(in) :: inf
   real(r4) :: output
 
   output = inf
 
-# 404 "shr_infnan_mod.F90.in"
 end function inf_r4
 
 end module shr_infnan_mod
