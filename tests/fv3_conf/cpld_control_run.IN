@@ -96,6 +96,10 @@ else
        RFILE_OLD=$(basename $RFILE)
           mv -f $RFILE INPUT/"${RFILE_OLD//${RESTART_FILE_PREFIX}./}"
      done
+     echo "IAU_OFFSET=$IAU_OFFSET, FHROT=$FHROT"
+     if [[ $IAU_OFFSET == 6 ]] && [[ $FHROT -le 6 ]]; then
+       cp /scratch1/NCEPDEV/nems/Jun.Wang/nems/vlab/inc/c96/atm/fv_increment*.nc ./INPUT/.
+     fi
 
      #if not mx025, then mom6 restart is a single file
      if [[ $OCNRES == 025 ]]; then
@@ -105,6 +109,12 @@ else
       cp ../${DEP_RUN}${SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.MOM.res_3.nc ./INPUT/MOM.res_3.nc
      else
       cp ../${DEP_RUN}${SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.MOM.res.nc ./INPUT/MOM.res.nc
+#      if [[ ${IAU_OFFSET} == 6 ]] && [[ $FHROT <= 6 ]] ; then
+       if [[ ${IAU_OFFSET} == 6 ]] ; then
+       if [[ $FHROT -le 6 ]] ; then
+        cp /scratch1/NCEPDEV/nems/Jun.Wang/nems/vlab/inc/c96/ocn/mom6_increment.nc ./INPUT/mom6_increment.nc
+       fi
+      fi
      fi
 
      # CMEPS restart and pointer files

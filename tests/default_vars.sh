@@ -527,7 +527,6 @@ export OUTPUT_FH="12 -1"
 export NFHOUT=12
 export NFHMAX_HF=12
 export NFHOUT_HF=6
-export IAU_OFFSET=0
 export FHZERO=6
 export FNALBC="'global_snowfree_albedo.bosu.t126.384.190.rg.grb'"
 export FNVETC="'global_vegtype.igbp.t126.384.190.rg.grb'"
@@ -573,6 +572,9 @@ export LNDP_MODEL_TYPE=0
 
 #IAU
 export IAU_INC_FILES="''"
+export IAU_DELTHRS=0
+export IAUFHRS=-1
+export IAU_OFFSET=0
 
 export FH_DFI_RADAR='-2e10'
 
@@ -580,8 +582,6 @@ export FH_DFI_RADAR='-2e10'
 export DO_CA=.false.
 export CA_SGS=.false.
 export CA_GLOBAL=.false.
-
-export IAU_DRYMASSFIXER=.false.
 
 #waves
 export WW3RSTDTHR=12
