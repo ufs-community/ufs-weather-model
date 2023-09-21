@@ -10,6 +10,9 @@ elif [[ $HOSTNAME == hecflow* ]]; then
 elif [[ $HOSTNAME == Orion-login-* ]]; then
   export PATH=/work/noaa/nems/emc.nemspara/soft/miniconda3/bin:$PATH
   export PYTHONPATH=/work/noaa/nems/emc.nemspara/soft/miniconda3/lib/python3.8/site-packages
+elif [[ $HOSTNAME == Hercules-login-* ]]; then
+  export PATH=/work/noaa/nems/emc.nemspara/soft/miniconda3/bin:$PATH
+  export PYTHONPATH=/work/noaa/nems/emc.nemspara/soft/miniconda3/lib/python3.8/site-packages  
 elif [[ $HOSTNAME == fe* ]]; then
   export PATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/bin:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/bin:$PATH
   export PYTHONPATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/lib/python3.8/site-packages
