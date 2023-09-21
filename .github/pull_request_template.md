@@ -76,6 +76,7 @@ PLEASE DO NOT MODIFY THE TEMPLATE BEYOND FILLING OUT THE PROPER SECTIONS -->
 - RDHPCS
   - [ ] Hera
   - [ ] Orion
+  - [ ] Hercules
   - [ ] Jet
   - [ ] Gaea
   - [ ] Cheyenne
