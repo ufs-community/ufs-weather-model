@@ -11,7 +11,8 @@ use shr_kind_mod, only: &
      r4 => shr_kind_r4, &
      r8 => shr_kind_r8, &
      i4 => shr_kind_i4, &
-     i8 => shr_kind_i8
+     i8 => shr_kind_i8, &
+     CL => shr_kind_CL
 
 use shr_sys_mod, only: &
      shr_sys_abort
@@ -35,7 +36,6 @@ public :: shr_assert_any
 ! Assert that a numerical value satisfies certain constraints.
 public :: shr_assert_in_domain
 
-# 33 "shr_assert_mod.F90.in"
 interface shr_assert_all
    module procedure shr_assert
    ! DIMS 1,2,3,4,5,6,7
@@ -54,7 +54,6 @@ interface shr_assert_all
    module procedure shr_assert_all_7d
 end interface
 
-# 39 "shr_assert_mod.F90.in"
 interface shr_assert_any
    module procedure shr_assert
    ! DIMS 1,2,3,4,5,6,7
@@ -73,7 +72,6 @@ interface shr_assert_any
    module procedure shr_assert_any_7d
 end interface
 
-# 45 "shr_assert_mod.F90.in"
 interface shr_assert_in_domain
    ! TYPE double,real,int,long
    ! DIMS 0,1,2,3,4,5,6,7
@@ -175,7 +173,6 @@ end interface
 
 ! Private utilities.
 
-# 53 "shr_assert_mod.F90.in"
 interface print_bad_loc
    ! TYPE double,real,int,long
    ! DIMS 0,1,2,3,4,5,6,7
@@ -275,7 +272,6 @@ interface print_bad_loc
    module procedure print_bad_loc_7d_long
 end interface
 
-# 59 "shr_assert_mod.F90.in"
 interface find_first_loc
    ! DIMS 0,1,2,3,4,5,6,7
    module procedure find_first_loc_0d
@@ -295,7 +291,6 @@ interface find_first_loc
    module procedure find_first_loc_7d
 end interface
 
-# 64 "shr_assert_mod.F90.in"
 interface within_tolerance
    ! TYPE double,real,int,long
    module procedure within_tolerance_double
@@ -307,10 +302,8 @@ interface within_tolerance
    module procedure within_tolerance_long
 end interface
 
-# 69 "shr_assert_mod.F90.in"
 contains
 
-# 71 "shr_assert_mod.F90.in"
 subroutine shr_assert(var, msg, file, line)
 
   ! Logical being asserted
@@ -322,8 +315,8 @@ subroutine shr_assert(var, msg, file, line)
   character(len=*), intent(in), optional :: file
   integer         , intent(in), optional :: line
 
-  character(len=:), allocatable :: full_msg
-  
+  character(len=CL) :: full_msg
+
   full_msg = ''
   if (.not. var) then
      full_msg = 'ERROR'
@@ -339,11 +332,9 @@ subroutine shr_assert(var, msg, file, line)
      call shr_sys_abort(full_msg)
   end if
 
-# 99 "shr_assert_mod.F90.in"
 end subroutine shr_assert
 
 ! DIMS 1,2,3,4,5,6,7
-# 102 "shr_assert_mod.F90.in"
 subroutine shr_assert_all_1d(var, msg, file, line)
 
   ! Logical being asserted
@@ -357,10 +348,8 @@ subroutine shr_assert_all_1d(var, msg, file, line)
 
   call shr_assert(all(var), msg=msg, file=file, line=line)
 
-# 115 "shr_assert_mod.F90.in"
 end subroutine shr_assert_all_1d
 ! DIMS 1,2,3,4,5,6,7
-# 102 "shr_assert_mod.F90.in"
 subroutine shr_assert_all_2d(var, msg, file, line)
 
   ! Logical being asserted
@@ -374,10 +363,8 @@ subroutine shr_assert_all_2d(var, msg, file, line)
 
   call shr_assert(all(var), msg=msg, file=file, line=line)
 
-# 115 "shr_assert_mod.F90.in"
 end subroutine shr_assert_all_2d
 ! DIMS 1,2,3,4,5,6,7
-# 102 "shr_assert_mod.F90.in"
 subroutine shr_assert_all_3d(var, msg, file, line)
 
   ! Logical being asserted
@@ -391,10 +378,8 @@ subroutine shr_assert_all_3d(var, msg, file, line)
 
   call shr_assert(all(var), msg=msg, file=file, line=line)
 
-# 115 "shr_assert_mod.F90.in"
 end subroutine shr_assert_all_3d
 ! DIMS 1,2,3,4,5,6,7
-# 102 "shr_assert_mod.F90.in"
 subroutine shr_assert_all_4d(var, msg, file, line)
 
   ! Logical being asserted
@@ -408,10 +393,8 @@ subroutine shr_assert_all_4d(var, msg, file, line)
 
   call shr_assert(all(var), msg=msg, file=file, line=line)
 
-# 115 "shr_assert_mod.F90.in"
 end subroutine shr_assert_all_4d
 ! DIMS 1,2,3,4,5,6,7
-# 102 "shr_assert_mod.F90.in"
 subroutine shr_assert_all_5d(var, msg, file, line)
 
   ! Logical being asserted
@@ -425,10 +408,8 @@ subroutine shr_assert_all_5d(var, msg, file, line)
 
   call shr_assert(all(var), msg=msg, file=file, line=line)
 
-# 115 "shr_assert_mod.F90.in"
 end subroutine shr_assert_all_5d
 ! DIMS 1,2,3,4,5,6,7
-# 102 "shr_assert_mod.F90.in"
 subroutine shr_assert_all_6d(var, msg, file, line)
 
   ! Logical being asserted
@@ -442,10 +423,8 @@ subroutine shr_assert_all_6d(var, msg, file, line)
 
   call shr_assert(all(var), msg=msg, file=file, line=line)
 
-# 115 "shr_assert_mod.F90.in"
 end subroutine shr_assert_all_6d
 ! DIMS 1,2,3,4,5,6,7
-# 102 "shr_assert_mod.F90.in"
 subroutine shr_assert_all_7d(var, msg, file, line)
 
   ! Logical being asserted
@@ -459,11 +438,9 @@ subroutine shr_assert_all_7d(var, msg, file, line)
 
   call shr_assert(all(var), msg=msg, file=file, line=line)
 
-# 115 "shr_assert_mod.F90.in"
 end subroutine shr_assert_all_7d
 
 ! DIMS 1,2,3,4,5,6,7
-# 118 "shr_assert_mod.F90.in"
 subroutine shr_assert_any_1d(var, msg, file, line)
 
   ! Logical being asserted
@@ -477,10 +454,8 @@ subroutine shr_assert_any_1d(var, msg, file, line)
 
   call shr_assert(any(var), msg=msg, file=file, line=line)
 
-# 131 "shr_assert_mod.F90.in"
 end subroutine shr_assert_any_1d
 ! DIMS 1,2,3,4,5,6,7
-# 118 "shr_assert_mod.F90.in"
 subroutine shr_assert_any_2d(var, msg, file, line)
 
   ! Logical being asserted
@@ -494,10 +469,8 @@ subroutine shr_assert_any_2d(var, msg, file, line)
 
   call shr_assert(any(var), msg=msg, file=file, line=line)
 
-# 131 "shr_assert_mod.F90.in"
 end subroutine shr_assert_any_2d
 ! DIMS 1,2,3,4,5,6,7
-# 118 "shr_assert_mod.F90.in"
 subroutine shr_assert_any_3d(var, msg, file, line)
 
   ! Logical being asserted
@@ -511,10 +484,8 @@ subroutine shr_assert_any_3d(var, msg, file, line)
 
   call shr_assert(any(var), msg=msg, file=file, line=line)
 
-# 131 "shr_assert_mod.F90.in"
 end subroutine shr_assert_any_3d
 ! DIMS 1,2,3,4,5,6,7
-# 118 "shr_assert_mod.F90.in"
 subroutine shr_assert_any_4d(var, msg, file, line)
 
   ! Logical being asserted
@@ -528,10 +499,8 @@ subroutine shr_assert_any_4d(var, msg, file, line)
 
   call shr_assert(any(var), msg=msg, file=file, line=line)
 
-# 131 "shr_assert_mod.F90.in"
 end subroutine shr_assert_any_4d
 ! DIMS 1,2,3,4,5,6,7
-# 118 "shr_assert_mod.F90.in"
 subroutine shr_assert_any_5d(var, msg, file, line)
 
   ! Logical being asserted
@@ -545,10 +514,8 @@ subroutine shr_assert_any_5d(var, msg, file, line)
 
   call shr_assert(any(var), msg=msg, file=file, line=line)
 
-# 131 "shr_assert_mod.F90.in"
 end subroutine shr_assert_any_5d
 ! DIMS 1,2,3,4,5,6,7
-# 118 "shr_assert_mod.F90.in"
 subroutine shr_assert_any_6d(var, msg, file, line)
 
   ! Logical being asserted
@@ -562,10 +529,8 @@ subroutine shr_assert_any_6d(var, msg, file, line)
 
   call shr_assert(any(var), msg=msg, file=file, line=line)
 
-# 131 "shr_assert_mod.F90.in"
 end subroutine shr_assert_any_6d
 ! DIMS 1,2,3,4,5,6,7
-# 118 "shr_assert_mod.F90.in"
 subroutine shr_assert_any_7d(var, msg, file, line)
 
   ! Logical being asserted
@@ -579,7 +544,6 @@ subroutine shr_assert_any_7d(var, msg, file, line)
 
   call shr_assert(any(var), msg=msg, file=file, line=line)
 
-# 131 "shr_assert_mod.F90.in"
 end subroutine shr_assert_any_7d
 
 !--------------------------------------------------------------------------
@@ -587,7 +551,6 @@ end subroutine shr_assert_any_7d
 
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 138 "shr_assert_mod.F90.in"
 subroutine shr_assert_in_domain_0d_double(var, varname, msg, &
      is_nan, lt, gt, le, ge, eq, ne, abs_tol)
 
@@ -783,11 +746,9 @@ subroutine shr_assert_in_domain_0d_double(var, varname, msg, &
 #undef GEN_SIZE
 #undef GEN_ALL
 
-# 333 "shr_assert_mod.F90.in"
 end subroutine shr_assert_in_domain_0d_double
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 138 "shr_assert_mod.F90.in"
 subroutine shr_assert_in_domain_1d_double(var, varname, msg, &
      is_nan, lt, gt, le, ge, eq, ne, abs_tol)
 
@@ -983,11 +944,9 @@ subroutine shr_assert_in_domain_1d_double(var, varname, msg, &
 #undef GEN_SIZE
 #undef GEN_ALL
 
-# 333 "shr_assert_mod.F90.in"
 end subroutine shr_assert_in_domain_1d_double
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 138 "shr_assert_mod.F90.in"
 subroutine shr_assert_in_domain_2d_double(var, varname, msg, &
      is_nan, lt, gt, le, ge, eq, ne, abs_tol)
 
@@ -1183,11 +1142,9 @@ subroutine shr_assert_in_domain_2d_double(var, varname, msg, &
 #undef GEN_SIZE
 #undef GEN_ALL
 
-# 333 "shr_assert_mod.F90.in"
 end subroutine shr_assert_in_domain_2d_double
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 138 "shr_assert_mod.F90.in"
 subroutine shr_assert_in_domain_3d_double(var, varname, msg, &
      is_nan, lt, gt, le, ge, eq, ne, abs_tol)
 
@@ -1383,11 +1340,9 @@ subroutine shr_assert_in_domain_3d_double(var, varname, msg, &
 #undef GEN_SIZE
 #undef GEN_ALL
 
-# 333 "shr_assert_mod.F90.in"
 end subroutine shr_assert_in_domain_3d_double
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 138 "shr_assert_mod.F90.in"
 subroutine shr_assert_in_domain_4d_double(var, varname, msg, &
      is_nan, lt, gt, le, ge, eq, ne, abs_tol)
 
@@ -1583,11 +1538,9 @@ subroutine shr_assert_in_domain_4d_double(var, varname, msg, &
 #undef GEN_SIZE
 #undef GEN_ALL
 
-# 333 "shr_assert_mod.F90.in"
 end subroutine shr_assert_in_domain_4d_double
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 138 "shr_assert_mod.F90.in"
 subroutine shr_assert_in_domain_5d_double(var, varname, msg, &
      is_nan, lt, gt, le, ge, eq, ne, abs_tol)
 
@@ -1783,11 +1736,9 @@ subroutine shr_assert_in_domain_5d_double(var, varname, msg, &
 #undef GEN_SIZE
 #undef GEN_ALL
 
-# 333 "shr_assert_mod.F90.in"
 end subroutine shr_assert_in_domain_5d_double
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 138 "shr_assert_mod.F90.in"
 subroutine shr_assert_in_domain_6d_double(var, varname, msg, &
      is_nan, lt, gt, le, ge, eq, ne, abs_tol)
 
@@ -1983,11 +1934,9 @@ subroutine shr_assert_in_domain_6d_double(var, varname, msg, &
 #undef GEN_SIZE
 #undef GEN_ALL
 
-# 333 "shr_assert_mod.F90.in"
 end subroutine shr_assert_in_domain_6d_double
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 138 "shr_assert_mod.F90.in"
 subroutine shr_assert_in_domain_7d_double(var, varname, msg, &
      is_nan, lt, gt, le, ge, eq, ne, abs_tol)
 
@@ -2183,11 +2132,9 @@ subroutine shr_assert_in_domain_7d_double(var, varname, msg, &
 #undef GEN_SIZE
 #undef GEN_ALL
 
-# 333 "shr_assert_mod.F90.in"
 end subroutine shr_assert_in_domain_7d_double
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 138 "shr_assert_mod.F90.in"
 subroutine shr_assert_in_domain_0d_real(var, varname, msg, &
      is_nan, lt, gt, le, ge, eq, ne, abs_tol)
 
@@ -2383,11 +2330,9 @@ subroutine shr_assert_in_domain_0d_real(var, varname, msg, &
 #undef GEN_SIZE
 #undef GEN_ALL
 
-# 333 "shr_assert_mod.F90.in"
 end subroutine shr_assert_in_domain_0d_real
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 138 "shr_assert_mod.F90.in"
 subroutine shr_assert_in_domain_1d_real(var, varname, msg, &
      is_nan, lt, gt, le, ge, eq, ne, abs_tol)
 
@@ -2583,11 +2528,9 @@ subroutine shr_assert_in_domain_1d_real(var, varname, msg, &
 #undef GEN_SIZE
 #undef GEN_ALL
 
-# 333 "shr_assert_mod.F90.in"
 end subroutine shr_assert_in_domain_1d_real
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 138 "shr_assert_mod.F90.in"
 subroutine shr_assert_in_domain_2d_real(var, varname, msg, &
      is_nan, lt, gt, le, ge, eq, ne, abs_tol)
 
@@ -2783,11 +2726,9 @@ subroutine shr_assert_in_domain_2d_real(var, varname, msg, &
 #undef GEN_SIZE
 #undef GEN_ALL
 
-# 333 "shr_assert_mod.F90.in"
 end subroutine shr_assert_in_domain_2d_real
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 138 "shr_assert_mod.F90.in"
 subroutine shr_assert_in_domain_3d_real(var, varname, msg, &
      is_nan, lt, gt, le, ge, eq, ne, abs_tol)
 
@@ -2983,11 +2924,9 @@ subroutine shr_assert_in_domain_3d_real(var, varname, msg, &
 #undef GEN_SIZE
 #undef GEN_ALL
 
-# 333 "shr_assert_mod.F90.in"
 end subroutine shr_assert_in_domain_3d_real
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 138 "shr_assert_mod.F90.in"
 subroutine shr_assert_in_domain_4d_real(var, varname, msg, &
      is_nan, lt, gt, le, ge, eq, ne, abs_tol)
 
@@ -3183,11 +3122,9 @@ subroutine shr_assert_in_domain_4d_real(var, varname, msg, &
 #undef GEN_SIZE
 #undef GEN_ALL
 
-# 333 "shr_assert_mod.F90.in"
 end subroutine shr_assert_in_domain_4d_real
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 138 "shr_assert_mod.F90.in"
 subroutine shr_assert_in_domain_5d_real(var, varname, msg, &
      is_nan, lt, gt, le, ge, eq, ne, abs_tol)
 
@@ -3383,11 +3320,9 @@ subroutine shr_assert_in_domain_5d_real(var, varname, msg, &
 #undef GEN_SIZE
 #undef GEN_ALL
 
-# 333 "shr_assert_mod.F90.in"
 end subroutine shr_assert_in_domain_5d_real
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 138 "shr_assert_mod.F90.in"
 subroutine shr_assert_in_domain_6d_real(var, varname, msg, &
      is_nan, lt, gt, le, ge, eq, ne, abs_tol)
 
@@ -3583,11 +3518,9 @@ subroutine shr_assert_in_domain_6d_real(var, varname, msg, &
 #undef GEN_SIZE
 #undef GEN_ALL
 
-# 333 "shr_assert_mod.F90.in"
 end subroutine shr_assert_in_domain_6d_real
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 138 "shr_assert_mod.F90.in"
 subroutine shr_assert_in_domain_7d_real(var, varname, msg, &
      is_nan, lt, gt, le, ge, eq, ne, abs_tol)
 
@@ -3783,11 +3716,9 @@ subroutine shr_assert_in_domain_7d_real(var, varname, msg, &
 #undef GEN_SIZE
 #undef GEN_ALL
 
-# 333 "shr_assert_mod.F90.in"
 end subroutine shr_assert_in_domain_7d_real
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 138 "shr_assert_mod.F90.in"
 subroutine shr_assert_in_domain_0d_int(var, varname, msg, &
      is_nan, lt, gt, le, ge, eq, ne, abs_tol)
 
@@ -3983,11 +3914,9 @@ subroutine shr_assert_in_domain_0d_int(var, varname, msg, &
 #undef GEN_SIZE
 #undef GEN_ALL
 
-# 333 "shr_assert_mod.F90.in"
 end subroutine shr_assert_in_domain_0d_int
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 138 "shr_assert_mod.F90.in"
 subroutine shr_assert_in_domain_1d_int(var, varname, msg, &
      is_nan, lt, gt, le, ge, eq, ne, abs_tol)
 
@@ -4183,11 +4112,9 @@ subroutine shr_assert_in_domain_1d_int(var, varname, msg, &
 #undef GEN_SIZE
 #undef GEN_ALL
 
-# 333 "shr_assert_mod.F90.in"
 end subroutine shr_assert_in_domain_1d_int
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 138 "shr_assert_mod.F90.in"
 subroutine shr_assert_in_domain_2d_int(var, varname, msg, &
      is_nan, lt, gt, le, ge, eq, ne, abs_tol)
 
@@ -4383,11 +4310,9 @@ subroutine shr_assert_in_domain_2d_int(var, varname, msg, &
 #undef GEN_SIZE
 #undef GEN_ALL
 
-# 333 "shr_assert_mod.F90.in"
 end subroutine shr_assert_in_domain_2d_int
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 138 "shr_assert_mod.F90.in"
 subroutine shr_assert_in_domain_3d_int(var, varname, msg, &
      is_nan, lt, gt, le, ge, eq, ne, abs_tol)
 
@@ -4583,11 +4508,9 @@ subroutine shr_assert_in_domain_3d_int(var, varname, msg, &
 #undef GEN_SIZE
 #undef GEN_ALL
 
-# 333 "shr_assert_mod.F90.in"
 end subroutine shr_assert_in_domain_3d_int
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 138 "shr_assert_mod.F90.in"
 subroutine shr_assert_in_domain_4d_int(var, varname, msg, &
      is_nan, lt, gt, le, ge, eq, ne, abs_tol)
 
@@ -4783,11 +4706,9 @@ subroutine shr_assert_in_domain_4d_int(var, varname, msg, &
 #undef GEN_SIZE
 #undef GEN_ALL
 
-# 333 "shr_assert_mod.F90.in"
 end subroutine shr_assert_in_domain_4d_int
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 138 "shr_assert_mod.F90.in"
 subroutine shr_assert_in_domain_5d_int(var, varname, msg, &
      is_nan, lt, gt, le, ge, eq, ne, abs_tol)
 
@@ -4983,11 +4904,9 @@ subroutine shr_assert_in_domain_5d_int(var, varname, msg, &
 #undef GEN_SIZE
 #undef GEN_ALL
 
-# 333 "shr_assert_mod.F90.in"
 end subroutine shr_assert_in_domain_5d_int
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 138 "shr_assert_mod.F90.in"
 subroutine shr_assert_in_domain_6d_int(var, varname, msg, &
      is_nan, lt, gt, le, ge, eq, ne, abs_tol)
 
@@ -5183,11 +5102,9 @@ subroutine shr_assert_in_domain_6d_int(var, varname, msg, &
 #undef GEN_SIZE
 #undef GEN_ALL
 
-# 333 "shr_assert_mod.F90.in"
 end subroutine shr_assert_in_domain_6d_int
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 138 "shr_assert_mod.F90.in"
 subroutine shr_assert_in_domain_7d_int(var, varname, msg, &
      is_nan, lt, gt, le, ge, eq, ne, abs_tol)
 
@@ -5383,11 +5300,9 @@ subroutine shr_assert_in_domain_7d_int(var, varname, msg, &
 #undef GEN_SIZE
 #undef GEN_ALL
 
-# 333 "shr_assert_mod.F90.in"
 end subroutine shr_assert_in_domain_7d_int
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 138 "shr_assert_mod.F90.in"
 subroutine shr_assert_in_domain_0d_long(var, varname, msg, &
      is_nan, lt, gt, le, ge, eq, ne, abs_tol)
 
@@ -5583,11 +5498,9 @@ subroutine shr_assert_in_domain_0d_long(var, varname, msg, &
 #undef GEN_SIZE
 #undef GEN_ALL
 
-# 333 "shr_assert_mod.F90.in"
 end subroutine shr_assert_in_domain_0d_long
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 138 "shr_assert_mod.F90.in"
 subroutine shr_assert_in_domain_1d_long(var, varname, msg, &
      is_nan, lt, gt, le, ge, eq, ne, abs_tol)
 
@@ -5783,11 +5696,9 @@ subroutine shr_assert_in_domain_1d_long(var, varname, msg, &
 #undef GEN_SIZE
 #undef GEN_ALL
 
-# 333 "shr_assert_mod.F90.in"
 end subroutine shr_assert_in_domain_1d_long
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 138 "shr_assert_mod.F90.in"
 subroutine shr_assert_in_domain_2d_long(var, varname, msg, &
      is_nan, lt, gt, le, ge, eq, ne, abs_tol)
 
@@ -5983,11 +5894,9 @@ subroutine shr_assert_in_domain_2d_long(var, varname, msg, &
 #undef GEN_SIZE
 #undef GEN_ALL
 
-# 333 "shr_assert_mod.F90.in"
 end subroutine shr_assert_in_domain_2d_long
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 138 "shr_assert_mod.F90.in"
 subroutine shr_assert_in_domain_3d_long(var, varname, msg, &
      is_nan, lt, gt, le, ge, eq, ne, abs_tol)
 
@@ -6183,11 +6092,9 @@ subroutine shr_assert_in_domain_3d_long(var, varname, msg, &
 #undef GEN_SIZE
 #undef GEN_ALL
 
-# 333 "shr_assert_mod.F90.in"
 end subroutine shr_assert_in_domain_3d_long
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 138 "shr_assert_mod.F90.in"
 subroutine shr_assert_in_domain_4d_long(var, varname, msg, &
      is_nan, lt, gt, le, ge, eq, ne, abs_tol)
 
@@ -6383,11 +6290,9 @@ subroutine shr_assert_in_domain_4d_long(var, varname, msg, &
 #undef GEN_SIZE
 #undef GEN_ALL
 
-# 333 "shr_assert_mod.F90.in"
 end subroutine shr_assert_in_domain_4d_long
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 138 "shr_assert_mod.F90.in"
 subroutine shr_assert_in_domain_5d_long(var, varname, msg, &
      is_nan, lt, gt, le, ge, eq, ne, abs_tol)
 
@@ -6583,11 +6488,9 @@ subroutine shr_assert_in_domain_5d_long(var, varname, msg, &
 #undef GEN_SIZE
 #undef GEN_ALL
 
-# 333 "shr_assert_mod.F90.in"
 end subroutine shr_assert_in_domain_5d_long
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 138 "shr_assert_mod.F90.in"
 subroutine shr_assert_in_domain_6d_long(var, varname, msg, &
      is_nan, lt, gt, le, ge, eq, ne, abs_tol)
 
@@ -6783,11 +6686,9 @@ subroutine shr_assert_in_domain_6d_long(var, varname, msg, &
 #undef GEN_SIZE
 #undef GEN_ALL
 
-# 333 "shr_assert_mod.F90.in"
 end subroutine shr_assert_in_domain_6d_long
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 138 "shr_assert_mod.F90.in"
 subroutine shr_assert_in_domain_7d_long(var, varname, msg, &
      is_nan, lt, gt, le, ge, eq, ne, abs_tol)
 
@@ -6983,7 +6884,6 @@ subroutine shr_assert_in_domain_7d_long(var, varname, msg, &
 #undef GEN_SIZE
 #undef GEN_ALL
 
-# 333 "shr_assert_mod.F90.in"
 end subroutine shr_assert_in_domain_7d_long
 
 !--------------------------------------------------------------------------
@@ -6991,7 +6891,6 @@ end subroutine shr_assert_in_domain_7d_long
 
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 340 "shr_assert_mod.F90.in"
 subroutine print_bad_loc_0d_double(var, loc_vec, varname)
   ! Print information about a bad location in an variable.
   ! For scalars, just print value.
@@ -7022,11 +6921,9 @@ subroutine print_bad_loc_0d_double(var, loc_vec, varname)
   if (.false.) write(*,*) loc_vec
 #endif
 
-# 370 "shr_assert_mod.F90.in"
 end subroutine print_bad_loc_0d_double
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 340 "shr_assert_mod.F90.in"
 subroutine print_bad_loc_1d_double(var, loc_vec, varname)
   ! Print information about a bad location in an variable.
   ! For scalars, just print value.
@@ -7057,11 +6954,9 @@ subroutine print_bad_loc_1d_double(var, loc_vec, varname)
   if (.false.) write(*,*) loc_vec
 #endif
 
-# 370 "shr_assert_mod.F90.in"
 end subroutine print_bad_loc_1d_double
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 340 "shr_assert_mod.F90.in"
 subroutine print_bad_loc_2d_double(var, loc_vec, varname)
   ! Print information about a bad location in an variable.
   ! For scalars, just print value.
@@ -7093,11 +6988,9 @@ loc_vec(2)), &
   if (.false.) write(*,*) loc_vec
 #endif
 
-# 370 "shr_assert_mod.F90.in"
 end subroutine print_bad_loc_2d_double
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 340 "shr_assert_mod.F90.in"
 subroutine print_bad_loc_3d_double(var, loc_vec, varname)
   ! Print information about a bad location in an variable.
   ! For scalars, just print value.
@@ -7130,11 +7023,9 @@ loc_vec(3)), &
   if (.false.) write(*,*) loc_vec
 #endif
 
-# 370 "shr_assert_mod.F90.in"
 end subroutine print_bad_loc_3d_double
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 340 "shr_assert_mod.F90.in"
 subroutine print_bad_loc_4d_double(var, loc_vec, varname)
   ! Print information about a bad location in an variable.
   ! For scalars, just print value.
@@ -7168,11 +7059,9 @@ loc_vec(4)), &
   if (.false.) write(*,*) loc_vec
 #endif
 
-# 370 "shr_assert_mod.F90.in"
 end subroutine print_bad_loc_4d_double
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 340 "shr_assert_mod.F90.in"
 subroutine print_bad_loc_5d_double(var, loc_vec, varname)
   ! Print information about a bad location in an variable.
   ! For scalars, just print value.
@@ -7207,11 +7096,9 @@ loc_vec(5)), &
   if (.false.) write(*,*) loc_vec
 #endif
 
-# 370 "shr_assert_mod.F90.in"
 end subroutine print_bad_loc_5d_double
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 340 "shr_assert_mod.F90.in"
 subroutine print_bad_loc_6d_double(var, loc_vec, varname)
   ! Print information about a bad location in an variable.
   ! For scalars, just print value.
@@ -7247,11 +7134,9 @@ loc_vec(6)), &
   if (.false.) write(*,*) loc_vec
 #endif
 
-# 370 "shr_assert_mod.F90.in"
 end subroutine print_bad_loc_6d_double
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 340 "shr_assert_mod.F90.in"
 subroutine print_bad_loc_7d_double(var, loc_vec, varname)
   ! Print information about a bad location in an variable.
   ! For scalars, just print value.
@@ -7288,11 +7173,9 @@ loc_vec(7)), &
   if (.false.) write(*,*) loc_vec
 #endif
 
-# 370 "shr_assert_mod.F90.in"
 end subroutine print_bad_loc_7d_double
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 340 "shr_assert_mod.F90.in"
 subroutine print_bad_loc_0d_real(var, loc_vec, varname)
   ! Print information about a bad location in an variable.
   ! For scalars, just print value.
@@ -7323,11 +7206,9 @@ subroutine print_bad_loc_0d_real(var, loc_vec, varname)
   if (.false.) write(*,*) loc_vec
 #endif
 
-# 370 "shr_assert_mod.F90.in"
 end subroutine print_bad_loc_0d_real
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 340 "shr_assert_mod.F90.in"
 subroutine print_bad_loc_1d_real(var, loc_vec, varname)
   ! Print information about a bad location in an variable.
   ! For scalars, just print value.
@@ -7358,11 +7239,9 @@ subroutine print_bad_loc_1d_real(var, loc_vec, varname)
   if (.false.) write(*,*) loc_vec
 #endif
 
-# 370 "shr_assert_mod.F90.in"
 end subroutine print_bad_loc_1d_real
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 340 "shr_assert_mod.F90.in"
 subroutine print_bad_loc_2d_real(var, loc_vec, varname)
   ! Print information about a bad location in an variable.
   ! For scalars, just print value.
@@ -7394,11 +7273,9 @@ loc_vec(2)), &
   if (.false.) write(*,*) loc_vec
 #endif
 
-# 370 "shr_assert_mod.F90.in"
 end subroutine print_bad_loc_2d_real
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 340 "shr_assert_mod.F90.in"
 subroutine print_bad_loc_3d_real(var, loc_vec, varname)
   ! Print information about a bad location in an variable.
   ! For scalars, just print value.
@@ -7431,11 +7308,9 @@ loc_vec(3)), &
   if (.false.) write(*,*) loc_vec
 #endif
 
-# 370 "shr_assert_mod.F90.in"
 end subroutine print_bad_loc_3d_real
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 340 "shr_assert_mod.F90.in"
 subroutine print_bad_loc_4d_real(var, loc_vec, varname)
   ! Print information about a bad location in an variable.
   ! For scalars, just print value.
@@ -7469,11 +7344,9 @@ loc_vec(4)), &
   if (.false.) write(*,*) loc_vec
 #endif
 
-# 370 "shr_assert_mod.F90.in"
 end subroutine print_bad_loc_4d_real
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 340 "shr_assert_mod.F90.in"
 subroutine print_bad_loc_5d_real(var, loc_vec, varname)
   ! Print information about a bad location in an variable.
   ! For scalars, just print value.
@@ -7508,11 +7381,9 @@ loc_vec(5)), &
   if (.false.) write(*,*) loc_vec
 #endif
 
-# 370 "shr_assert_mod.F90.in"
 end subroutine print_bad_loc_5d_real
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 340 "shr_assert_mod.F90.in"
 subroutine print_bad_loc_6d_real(var, loc_vec, varname)
   ! Print information about a bad location in an variable.
   ! For scalars, just print value.
@@ -7548,11 +7419,9 @@ loc_vec(6)), &
   if (.false.) write(*,*) loc_vec
 #endif
 
-# 370 "shr_assert_mod.F90.in"
 end subroutine print_bad_loc_6d_real
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 340 "shr_assert_mod.F90.in"
 subroutine print_bad_loc_7d_real(var, loc_vec, varname)
   ! Print information about a bad location in an variable.
   ! For scalars, just print value.
@@ -7589,11 +7458,9 @@ loc_vec(7)), &
   if (.false.) write(*,*) loc_vec
 #endif
 
-# 370 "shr_assert_mod.F90.in"
 end subroutine print_bad_loc_7d_real
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 340 "shr_assert_mod.F90.in"
 subroutine print_bad_loc_0d_int(var, loc_vec, varname)
   ! Print information about a bad location in an variable.
   ! For scalars, just print value.
@@ -7624,11 +7491,9 @@ subroutine print_bad_loc_0d_int(var, loc_vec, varname)
   if (.false.) write(*,*) loc_vec
 #endif
 
-# 370 "shr_assert_mod.F90.in"
 end subroutine print_bad_loc_0d_int
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 340 "shr_assert_mod.F90.in"
 subroutine print_bad_loc_1d_int(var, loc_vec, varname)
   ! Print information about a bad location in an variable.
   ! For scalars, just print value.
@@ -7659,11 +7524,9 @@ subroutine print_bad_loc_1d_int(var, loc_vec, varname)
   if (.false.) write(*,*) loc_vec
 #endif
 
-# 370 "shr_assert_mod.F90.in"
 end subroutine print_bad_loc_1d_int
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 340 "shr_assert_mod.F90.in"
 subroutine print_bad_loc_2d_int(var, loc_vec, varname)
   ! Print information about a bad location in an variable.
   ! For scalars, just print value.
@@ -7695,11 +7558,9 @@ loc_vec(2)), &
   if (.false.) write(*,*) loc_vec
 #endif
 
-# 370 "shr_assert_mod.F90.in"
 end subroutine print_bad_loc_2d_int
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 340 "shr_assert_mod.F90.in"
 subroutine print_bad_loc_3d_int(var, loc_vec, varname)
   ! Print information about a bad location in an variable.
   ! For scalars, just print value.
@@ -7732,11 +7593,9 @@ loc_vec(3)), &
   if (.false.) write(*,*) loc_vec
 #endif
 
-# 370 "shr_assert_mod.F90.in"
 end subroutine print_bad_loc_3d_int
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 340 "shr_assert_mod.F90.in"
 subroutine print_bad_loc_4d_int(var, loc_vec, varname)
   ! Print information about a bad location in an variable.
   ! For scalars, just print value.
@@ -7770,11 +7629,9 @@ loc_vec(4)), &
   if (.false.) write(*,*) loc_vec
 #endif
 
-# 370 "shr_assert_mod.F90.in"
 end subroutine print_bad_loc_4d_int
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 340 "shr_assert_mod.F90.in"
 subroutine print_bad_loc_5d_int(var, loc_vec, varname)
   ! Print information about a bad location in an variable.
   ! For scalars, just print value.
@@ -7809,11 +7666,9 @@ loc_vec(5)), &
   if (.false.) write(*,*) loc_vec
 #endif
 
-# 370 "shr_assert_mod.F90.in"
 end subroutine print_bad_loc_5d_int
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 340 "shr_assert_mod.F90.in"
 subroutine print_bad_loc_6d_int(var, loc_vec, varname)
   ! Print information about a bad location in an variable.
   ! For scalars, just print value.
@@ -7849,11 +7704,9 @@ loc_vec(6)), &
   if (.false.) write(*,*) loc_vec
 #endif
 
-# 370 "shr_assert_mod.F90.in"
 end subroutine print_bad_loc_6d_int
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 340 "shr_assert_mod.F90.in"
 subroutine print_bad_loc_7d_int(var, loc_vec, varname)
   ! Print information about a bad location in an variable.
   ! For scalars, just print value.
@@ -7890,11 +7743,9 @@ loc_vec(7)), &
   if (.false.) write(*,*) loc_vec
 #endif
 
-# 370 "shr_assert_mod.F90.in"
 end subroutine print_bad_loc_7d_int
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 340 "shr_assert_mod.F90.in"
 subroutine print_bad_loc_0d_long(var, loc_vec, varname)
   ! Print information about a bad location in an variable.
   ! For scalars, just print value.
@@ -7925,11 +7776,9 @@ subroutine print_bad_loc_0d_long(var, loc_vec, varname)
   if (.false.) write(*,*) loc_vec
 #endif
 
-# 370 "shr_assert_mod.F90.in"
 end subroutine print_bad_loc_0d_long
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 340 "shr_assert_mod.F90.in"
 subroutine print_bad_loc_1d_long(var, loc_vec, varname)
   ! Print information about a bad location in an variable.
   ! For scalars, just print value.
@@ -7960,11 +7809,9 @@ subroutine print_bad_loc_1d_long(var, loc_vec, varname)
   if (.false.) write(*,*) loc_vec
 #endif
 
-# 370 "shr_assert_mod.F90.in"
 end subroutine print_bad_loc_1d_long
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 340 "shr_assert_mod.F90.in"
 subroutine print_bad_loc_2d_long(var, loc_vec, varname)
   ! Print information about a bad location in an variable.
   ! For scalars, just print value.
@@ -7996,11 +7843,9 @@ loc_vec(2)), &
   if (.false.) write(*,*) loc_vec
 #endif
 
-# 370 "shr_assert_mod.F90.in"
 end subroutine print_bad_loc_2d_long
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 340 "shr_assert_mod.F90.in"
 subroutine print_bad_loc_3d_long(var, loc_vec, varname)
   ! Print information about a bad location in an variable.
   ! For scalars, just print value.
@@ -8033,11 +7878,9 @@ loc_vec(3)), &
   if (.false.) write(*,*) loc_vec
 #endif
 
-# 370 "shr_assert_mod.F90.in"
 end subroutine print_bad_loc_3d_long
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 340 "shr_assert_mod.F90.in"
 subroutine print_bad_loc_4d_long(var, loc_vec, varname)
   ! Print information about a bad location in an variable.
   ! For scalars, just print value.
@@ -8071,11 +7914,9 @@ loc_vec(4)), &
   if (.false.) write(*,*) loc_vec
 #endif
 
-# 370 "shr_assert_mod.F90.in"
 end subroutine print_bad_loc_4d_long
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 340 "shr_assert_mod.F90.in"
 subroutine print_bad_loc_5d_long(var, loc_vec, varname)
   ! Print information about a bad location in an variable.
   ! For scalars, just print value.
@@ -8110,11 +7951,9 @@ loc_vec(5)), &
   if (.false.) write(*,*) loc_vec
 #endif
 
-# 370 "shr_assert_mod.F90.in"
 end subroutine print_bad_loc_5d_long
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 340 "shr_assert_mod.F90.in"
 subroutine print_bad_loc_6d_long(var, loc_vec, varname)
   ! Print information about a bad location in an variable.
   ! For scalars, just print value.
@@ -8150,11 +7989,9 @@ loc_vec(6)), &
   if (.false.) write(*,*) loc_vec
 #endif
 
-# 370 "shr_assert_mod.F90.in"
 end subroutine print_bad_loc_6d_long
 ! TYPE double,real,int,long
 ! DIMS 0,1,2,3,4,5,6,7
-# 340 "shr_assert_mod.F90.in"
 subroutine print_bad_loc_7d_long(var, loc_vec, varname)
   ! Print information about a bad location in an variable.
   ! For scalars, just print value.
@@ -8191,14 +8028,12 @@ loc_vec(7)), &
   if (.false.) write(*,*) loc_vec
 #endif
 
-# 370 "shr_assert_mod.F90.in"
 end subroutine print_bad_loc_7d_long
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 
 ! DIMS 0,1,2,3,4,5,6,7
-# 376 "shr_assert_mod.F90.in"
 pure function find_first_loc_0d(mask) result (loc_vec)
   ! Inefficient but simple subroutine for finding the location of
   ! the first .true. value in an array.
@@ -8227,10 +8062,8 @@ pure function find_first_loc_0d(mask) result (loc_vec)
 
 #endif
 
-# 404 "shr_assert_mod.F90.in"
 end function find_first_loc_0d
 ! DIMS 0,1,2,3,4,5,6,7
-# 376 "shr_assert_mod.F90.in"
 pure function find_first_loc_1d(mask) result (loc_vec)
   ! Inefficient but simple subroutine for finding the location of
   ! the first .true. value in an array.
@@ -8259,10 +8092,8 @@ pure function find_first_loc_1d(mask) result (loc_vec)
 
 #endif
 
-# 404 "shr_assert_mod.F90.in"
 end function find_first_loc_1d
 ! DIMS 0,1,2,3,4,5,6,7
-# 376 "shr_assert_mod.F90.in"
 pure function find_first_loc_2d(mask) result (loc_vec)
   ! Inefficient but simple subroutine for finding the location of
   ! the first .true. value in an array.
@@ -8292,10 +8123,8 @@ size(mask,2))
 
 #endif
 
-# 404 "shr_assert_mod.F90.in"
 end function find_first_loc_2d
 ! DIMS 0,1,2,3,4,5,6,7
-# 376 "shr_assert_mod.F90.in"
 pure function find_first_loc_3d(mask) result (loc_vec)
   ! Inefficient but simple subroutine for finding the location of
   ! the first .true. value in an array.
@@ -8326,10 +8155,8 @@ size(mask,3))
 
 #endif
 
-# 404 "shr_assert_mod.F90.in"
 end function find_first_loc_3d
 ! DIMS 0,1,2,3,4,5,6,7
-# 376 "shr_assert_mod.F90.in"
 pure function find_first_loc_4d(mask) result (loc_vec)
   ! Inefficient but simple subroutine for finding the location of
   ! the first .true. value in an array.
@@ -8361,10 +8188,8 @@ size(mask,4))
 
 #endif
 
-# 404 "shr_assert_mod.F90.in"
 end function find_first_loc_4d
 ! DIMS 0,1,2,3,4,5,6,7
-# 376 "shr_assert_mod.F90.in"
 pure function find_first_loc_5d(mask) result (loc_vec)
   ! Inefficient but simple subroutine for finding the location of
   ! the first .true. value in an array.
@@ -8397,10 +8222,8 @@ size(mask,5))
 
 #endif
 
-# 404 "shr_assert_mod.F90.in"
 end function find_first_loc_5d
 ! DIMS 0,1,2,3,4,5,6,7
-# 376 "shr_assert_mod.F90.in"
 pure function find_first_loc_6d(mask) result (loc_vec)
   ! Inefficient but simple subroutine for finding the location of
   ! the first .true. value in an array.
@@ -8434,10 +8257,8 @@ size(mask,6))
 
 #endif
 
-# 404 "shr_assert_mod.F90.in"
 end function find_first_loc_6d
 ! DIMS 0,1,2,3,4,5,6,7
-# 376 "shr_assert_mod.F90.in"
 pure function find_first_loc_7d(mask) result (loc_vec)
   ! Inefficient but simple subroutine for finding the location of
   ! the first .true. value in an array.
@@ -8472,11 +8293,9 @@ size(mask,7))
 
 #endif
 
-# 404 "shr_assert_mod.F90.in"
 end function find_first_loc_7d
 
 ! TYPE double,real,int,long
-# 407 "shr_assert_mod.F90.in"
 elemental function within_tolerance_double(expected, actual, tolerance) &
      result(is_in_tol)
   ! Precondition: tolerance must be >= 0.
@@ -8504,10 +8323,8 @@ elemental function within_tolerance_double(expected, actual, tolerance) &
      end if
   end if
 
-# 434 "shr_assert_mod.F90.in"
 end function within_tolerance_double
 ! TYPE double,real,int,long
-# 407 "shr_assert_mod.F90.in"
 elemental function within_tolerance_real(expected, actual, tolerance) &
      result(is_in_tol)
   ! Precondition: tolerance must be >= 0.
@@ -8535,10 +8352,8 @@ elemental function within_tolerance_real(expected, actual, tolerance) &
      end if
   end if
 
-# 434 "shr_assert_mod.F90.in"
 end function within_tolerance_real
 ! TYPE double,real,int,long
-# 407 "shr_assert_mod.F90.in"
 elemental function within_tolerance_int(expected, actual, tolerance) &
      result(is_in_tol)
   ! Precondition: tolerance must be >= 0.
@@ -8566,10 +8381,8 @@ elemental function within_tolerance_int(expected, actual, tolerance) &
      end if
   end if
 
-# 434 "shr_assert_mod.F90.in"
 end function within_tolerance_int
 ! TYPE double,real,int,long
-# 407 "shr_assert_mod.F90.in"
 elemental function within_tolerance_long(expected, actual, tolerance) &
      result(is_in_tol)
   ! Precondition: tolerance must be >= 0.
@@ -8597,7 +8410,6 @@ elemental function within_tolerance_long(expected, actual, tolerance) &
      end if
   end if
 
-# 434 "shr_assert_mod.F90.in"
 end function within_tolerance_long
 
 end module shr_assert_mod
