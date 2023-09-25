@@ -10,7 +10,7 @@ unload("cray-mpich")
 unload("cray-python")
 unload("darshan")
 
-prepend_path("MODULEPATH", "/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/spack-stack-1.4.1-c4/envs/ufs-pio-2.5.10/install/modulefiles/Core")
+prepend_path("MODULEPATH", "/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c4/spack-stack-1.5.0/envs/unified-env/install/modulefiles/Core")
 prepend_path("MODULEPATH", "/lustre/f2/pdata/esrl/gsd/spack-stack/modulefiles")
 
 stack_intel_ver=os.getenv("stack_intel_ver") or "2022.0.2"
