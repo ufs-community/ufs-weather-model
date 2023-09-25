@@ -315,7 +315,7 @@ elif [[ $MACHINE_ID = gaea ]]; then
   ECFLOW_START=/lustre/f2/pdata/esrl/gsd/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
-  DISKNM=/lustre/f2/pdata/ncep_shared/emc.nemspara/RT
+  DISKNM=/lustre/f2/pdata/ncep/role.epic/RT
   QUEUE=normal
   COMPILE_QUEUE=normal
   PARTITION=c4
@@ -373,11 +373,35 @@ elif [[ $MACHINE_ID = orion ]]; then
   COMPILE_QUEUE=batch
   PARTITION=orion
   dprefix=/work/noaa/stmp/${USER}
-  DISKNM=/work/noaa/nems/emc.nemspara/RT
+  DISKNM=/work/noaa/epic/UFS-WM_RT
   STMP=$dprefix/stmp
   PTMP=$dprefix/stmp
 
   SCHEDULER=slurm
+
+elif [[ $MACHINE_ID = hercules ]]; then
+
+  module load contrib rocoto/1.3.5
+  ROCOTORUN=$(which rocotorun)
+  ROCOTOSTAT=$(which rocotostat)
+  ROCOTOCOMPLETE=$(which rocotocomplete)
+
+  module use /work/noaa/epic/role-epic/spack-stack/hercules/modulefiles
+  module load ecflow/5.8.4
+  ECFLOW_START=/work/noaa/epic/role-epic/spack-stack/hercules/ecflow-5.8.4/bin/ecflow_start.sh
+  ECF_PORT=$(( $(id -u) + 1500 ))
+
+  QUEUE=windfall
+  COMPILE_QUEUE=windfall
+  PARTITION=hercules
+  dprefix=/work2/noaa/stmp/${USER}
+  DISKNM=/work/noaa/epic/hercules/UFS-WM_RT
+  STMP=$dprefix/stmp
+  PTMP=$dprefix/stmp
+
+  SCHEDULER=slurm
+  cp fv3_conf/fv3_slurm.IN_hercules fv3_conf/fv3_slurm.IN
+  cp fv3_conf/compile_slurm.IN_hercules fv3_conf/compile_slurm.IN
 
 elif [[ $MACHINE_ID = jet ]]; then
 
@@ -563,7 +587,10 @@ echo "Start Regression test" >> ${REGRESSIONTEST_LOG}
 echo                         >> ${REGRESSIONTEST_LOG}
 echo "Testing UFSWM Hash:" `git rev-parse HEAD` >> ${REGRESSIONTEST_LOG}
 echo "Testing With Submodule Hashes:" >> ${REGRESSIONTEST_LOG}
+cd ..
 git submodule status >> ${REGRESSIONTEST_LOG}
+
+cd tests
 
 source default_vars.sh
 
@@ -595,6 +622,10 @@ if [[ $ROCOTO == true ]]; then
   elif [[ $MACHINE_ID = orion ]]; then
     QUEUE=batch
     COMPILE_QUEUE=batch
+    ROCOTO_SCHEDULER=slurm
+  elif [[ $MACHINE_ID = hercules ]]; then
+    QUEUE=windfall
+    COMPILE_QUEUE=windfall
     ROCOTO_SCHEDULER=slurm
   elif [[ $MACHINE_ID = s4 ]]; then
     QUEUE=s4
@@ -672,6 +703,8 @@ EOF
     QUEUE=batch
   elif [[ $MACHINE_ID = orion ]]; then
     QUEUE=batch
+  elif [[ $MACHINE_ID = hercules ]]; then
+    QUEUE=windfall
   elif [[ $MACHINE_ID = jet ]]; then
     QUEUE=batch
   elif [[ $MACHINE_ID = s4 ]]; then
