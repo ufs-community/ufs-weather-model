@@ -150,13 +150,17 @@ pipeline {
     }
     post {
         success {
-            setBuildStatus("Build succeeded", "SUCCESS");
+            node('Built-In Node') {
+                setBuildStatus("Build succeeded", "SUCCESS");
+            }
         }
         failure {
-            setBuildStatus("Build failed", "FAILURE");
+            node('Built-In Node') {            
+                setBuildStatus("Build failed", "FAILURE");
+            }
         }
         always {
-            node('Built-In Node')
+            node('Built-In Node') {
                 script {
                     def buildResult = currentBuild.resultIsBetterOrEqualTo("SUCCESS") ? "Success" : "Failure"
                     def commentMessage = "Build log for this run: ${buildResult}"
@@ -165,3 +169,4 @@ pipeline {
             }
         }
     }
+}
