@@ -10,21 +10,6 @@
        prepend_date = .false.
 /
 
- &mpp_io_nml
-       header_buffer_val = 16384,
-       global_field_on_root_pe = .true.,
-       io_clocks_on = .false.,
-       shuffle = 0,
-       deflate_level = @[DEFLATE_LEVEL],
-       cf_compliance = .false.
-/
-
- &fms_io_nml
-       checksum_required   = .false.
-       max_files_r = 100,
-       max_files_w = 100,
-/
-
  &fms_nml
        clock_grain = 'ROUTINE',
        domains_stack_size = 30000000,
@@ -33,6 +18,10 @@
 
  &fv_grid_nml
        !grid_file = 'INPUT/grid_spec.nc'
+/
+
+&fms2_io_nml
+  netcdf_default_format = "netcdf4"
 /
 
  &fv_core_nml
