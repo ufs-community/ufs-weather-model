@@ -33,6 +33,8 @@ OCN_attributes::
   Verbosity = 0
   DumpFields = false
   ProfileMemory = false
+  diro = "."
+  logfile = "mom6.log"
   OverwriteSlice = true
   mesh_ocn = @[MESHOCN_ICE]
 ::
@@ -84,6 +86,7 @@ runSeq::
      MED med_phases_post_atm
      ICE -> MED :remapMethod=redist
      MED med_phases_post_ice
+     MED med_phases_ocnalb_run
      MED med_phases_prep_ocn_accum
      MED med_phases_prep_wav_accum
    @
@@ -105,13 +108,12 @@ MED_attributes::
       ICE_model = @[ice_model]
       OCN_model = @[ocn_model]
       WAV_model = @[wav_model]
-      history_n = 1
-      history_option = nhours
-      history_ymd = -999
       coupling_mode = @[CPLMODE]
       history_tile_atm = @[ATMTILESIZE]
       pio_rearranger = @[pio_rearranger]
+      ocean_albedo_limit = @[ocean_albedo_limit]
 ::
+
 ALLCOMP_attributes::
       ScalarFieldCount = 2
       ScalarFieldIdxGridNX = 1
@@ -119,6 +121,7 @@ ALLCOMP_attributes::
       ScalarFieldName = cpl_scalars
       start_type = @[RUNTYPE]
       restart_dir = RESTART/
+      RunTimeLog = true
       case_name = ufs.cpld
       restart_n = @[RESTART_N]
       restart_option = nhours
@@ -130,4 +133,10 @@ ALLCOMP_attributes::
       stop_n = @[FHMAX]
       stop_option = nhours
       stop_ymd = -999
+      orb_eccen = 1.e36
+      orb_iyear = 2000
+      orb_iyear_align = 2000
+      orb_mode = fixed_year
+      orb_mvelp = 1.e36
+      orb_obliq = 1.e36
 ::

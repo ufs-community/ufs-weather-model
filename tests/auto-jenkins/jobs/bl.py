@@ -20,7 +20,7 @@ def set_directories(job_obj):
     logger = logging.getLogger('BL/SET_DIRECTORIES')
     if job_obj.machine == 'hera':
         workdir = '/scratch1/NCEPDEV/nems/emc.nemspara/autort/pr'
-        blstore = '/scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs'
+        blstore = '/scratch2/NAGAPE/epic/UFS-WM_RT/NEMSfv3gfs'
         rtbldir = '/scratch1/NCEPDEV/stmp4/emc.nemspara/FV3_RT/'\
                  f'REGRESSION_TEST'
     elif job_obj.machine == 'jet':

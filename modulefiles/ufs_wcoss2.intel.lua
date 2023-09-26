@@ -12,71 +12,45 @@ load(pathJoin("intel", intel_ver))
 craype_ver=os.getenv("craype_ver") or "2.7.13"
 load(pathJoin("craype", craype_ver))
 
-cray_mpich_ver=os.getenv("cray_mpich_ver") or "8.1.7"
+cray_mpich_ver=os.getenv("cray_mpich_ver") or "8.1.12"
 load(pathJoin("cray-mpich", cray_mpich_ver))
 
 cmake_ver=os.getenv("cmake_ver") or "3.20.2"
 load(pathJoin("cmake", cmake_ver))
 
-jasper_ver=os.getenv("jasper_ver") or "2.0.25"
-load(pathJoin("jasper", jasper_ver))
+prepend_path("MODULEPATH", "/apps/test/hpc-stack/i-19.1.3.304__m-8.1.12__h-1.14.0__n-4.9.2__p-2.5.10__e-8.4.2/modulefiles/compiler/intel/19.1.3.304")
+prepend_path("MODULEPATH", "/apps/test/hpc-stack/i-19.1.3.304__m-8.1.12__h-1.14.0__n-4.9.2__p-2.5.10__e-8.4.2/modulefiles/mpi/intel/19.1.3.304/cray-mpich/8.1.12")
 
-zlib_ver=os.getenv("zlib_ver") or "1.2.11"
-load(pathJoin("zlib", zlib_ver))
+local ufs_modules = {
+  {["jasper"]          = "2.0.25"},
+  {["zlib"]            = "1.2.11"},
+  {["libpng"]          = "1.6.37"},
+  {["hdf5"]            = "1.14.0"},
+  {["netcdf"]          = "4.9.2"},
+  {["pio"]             = "2.5.10"},
+  {["esmf"]            = "8.4.2"},
+  {["fms"]             = "2023.01"},
+  {["bacio"]           = "2.4.1"},
+  {["crtm"]            = "2.4.0"},
+  {["g2"]              = "3.4.5"},
+  {["g2tmpl"]          = "1.10.2"},
+  {["ip"]              = "3.3.3"},
+  {["sp"]              = "2.3.3"},
+  {["w3emc"]           = "2.9.2"},
+  {["gftl-shared"]     = "v1.5.0"},
+  {["mapl"]            = "2.35.2-esmf-8.4.2"},
+}
 
-libpng_ver=os.getenv("libpng_ver") or "1.6.37"
-load(pathJoin("libpng", libpng_ver))
+for i = 1, #ufs_modules do
+  for name, default_version in pairs(ufs_modules[i]) do
+    local env_version_name = string.gsub(name, "-", "_") .. "_ver"
+    load(pathJoin(name, os.getenv(env_version_name) or default_version))
+  end
+end
 
-hdf5_ver=os.getenv("hdf5_ver") or "1.10.6"
-load(pathJoin("hdf5", hdf5_ver))
-
-netcdf_ver=os.getenv("netcdf_ver") or "4.7.4"
-load(pathJoin("netcdf", netcdf_ver))
-
-fms_ver=os.getenv("fms_ver") or "2022.04"
-load(pathJoin("fms", fms_ver))
-
-bacio_ver=os.getenv("bacio_ver") or "2.4.1"
-load(pathJoin("bacio", bacio_ver))
-
-crtm_ver=os.getenv("crtm_ver") or "2.4.0"
-load(pathJoin("crtm", crtm_ver))
-
-g2_ver=os.getenv("g2_ver") or "3.4.5"
-load(pathJoin("g2", g2_ver))
-
-g2tmpl_ver=os.getenv("g2tmpl_ver") or "1.10.2"
-load(pathJoin("g2tmpl", g2tmpl_ver))
-
-ip_ver=os.getenv("ip_ver") or "3.3.3"
-load(pathJoin("ip", ip_ver))
-
-sp_ver=os.getenv("sp_ver") or "2.3.3"
-load(pathJoin("sp", sp_ver))
-
-w3emc_ver=os.getenv("w3emc_ver") or "2.9.2"
-load(pathJoin("w3emc", w3emc_ver))
-
--- Second, look for libraries in "para"
-setenv("HPC_OPT", "/apps/ops/para/libs")
-prepend_path("MODULEPATH", "/apps/ops/para/libs/modulefiles/compiler/intel/19.1.3.304")
-prepend_path("MODULEPATH", "/apps/ops/para/libs/modulefiles/mpi/intel/19.1.3.304/cray-mpich/8.1.7")
-
-pio_ver=os.getenv("pio_ver") or "2.5.7"
-load(pathJoin("pio", pio_ver))
-
--- Finally, look for libraries in "dev" space
-prepend_path("MODULEPATH", "/apps/dev/lmodules/intel/19.1.3.304")
-prepend_path("MODULEPATH", "/apps/dev/modulefiles/mpi/intel/19.1.3.304/cray-mpich/8.1.9")
-
-gftl_shared_ver=os.getenv("gftl_shared_ver") or "1.5.0"
-load(pathJoin("gftl_shared", gftl_shared_ver))
-
-esmf_ver=os.getenv("esmf_ver") or "8.3.0b09"
-load(pathJoin("esmf", esmf_ver))
-
-mapl_ver=os.getenv("mapl_ver") or "2.23.1-esmf-8.3.0b09"
-load(pathJoin("mapl", mapl_ver))
+prepend_path("MODULEPATH", "/apps/prod/lmodules/INTEL_cray_mpich/19.1.3.304/cray-mpich/8.1.9")
+scotch_ver=os.getenv("scotch_ver") or "7.0.3"
+load(pathJoin("scotch",scotch_ver))
 
 setenv("CC", "cc")
 setenv("CXX", "CC")

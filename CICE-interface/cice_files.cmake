@@ -86,7 +86,6 @@ list(APPEND icepack_files
   CICE/icepack/columnphysics/icepack_wavefracspec.F90
   CICE/icepack/columnphysics/icepack_zbgc.F90
   CICE/icepack/columnphysics/icepack_zbgc_shared.F90
-  CICE/icepack/columnphysics/icepack_zsalinity.F90
 )
 
 list(APPEND cice_shared_files_c
