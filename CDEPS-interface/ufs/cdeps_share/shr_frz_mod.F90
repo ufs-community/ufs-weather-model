@@ -19,7 +19,6 @@ module shr_frz_mod
   !----------------------------------------------------------------------------
   public :: shr_frz_freezetemp, shr_frz_freezetemp_init
 
-# 18 "shr_frz_mod.F90.in"
   interface shr_frz_freezetemp
      module procedure shr_frz_freezetemp_0d
      module procedure shr_frz_freezetemp_1d
@@ -36,11 +35,9 @@ module shr_frz_mod
   integer :: tfrz_option = TFREEZE_OPTION_UNINITIALIZED
 
   !===============================================================================
-# 34 "shr_frz_mod.F90.in"
 contains
   !===============================================================================
 
-# 37 "shr_frz_mod.F90.in"
   subroutine shr_frz_freezetemp_init(tfreeze_option, maintask)
 
     implicit none
@@ -68,11 +65,9 @@ contains
        call shr_sys_abort(subname//' ERROR: not a valid tfreeze_option '//trim(tfreeze_option))
     endif
 
-# 64 "shr_frz_mod.F90.in"
   end subroutine shr_frz_freezetemp_init
 
   ! DIMS 0,1,2
-# 67 "shr_frz_mod.F90.in"
   function shr_frz_freezetemp_0d(s) result(shr_frz_freezetemp)
 
     !----------------------------------------------------------------------------
@@ -115,10 +110,8 @@ contains
 
     shr_frz_freezetemp = max(shr_frz_freezetemp,-2.0_R8)
 
-# 109 "shr_frz_mod.F90.in"
   end function shr_frz_freezetemp_0d
   ! DIMS 0,1,2
-# 67 "shr_frz_mod.F90.in"
   function shr_frz_freezetemp_1d(s) result(shr_frz_freezetemp)
 
     !----------------------------------------------------------------------------
@@ -161,10 +154,8 @@ contains
 
     shr_frz_freezetemp = max(shr_frz_freezetemp,-2.0_R8)
 
-# 109 "shr_frz_mod.F90.in"
   end function shr_frz_freezetemp_1d
   ! DIMS 0,1,2
-# 67 "shr_frz_mod.F90.in"
   function shr_frz_freezetemp_2d(s) result(shr_frz_freezetemp)
 
     !----------------------------------------------------------------------------
@@ -207,7 +198,6 @@ contains
 
     shr_frz_freezetemp = max(shr_frz_freezetemp,-2.0_R8)
 
-# 109 "shr_frz_mod.F90.in"
   end function shr_frz_freezetemp_2d
 
   !===============================================================================
