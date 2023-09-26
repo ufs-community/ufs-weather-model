@@ -150,17 +150,17 @@ pipeline {
     }
     post {
         success {
-            node('Built-In Node') {
+            node('${JENKINS_URL}/computer/(built-in)/') {
                 setBuildStatus("Build succeeded", "SUCCESS");
             }
         }
         failure {
-            node('Built-In Node') {            
+            node('${JENKINS_URL}/computer/(built-in)/') {
                 setBuildStatus("Build failed", "FAILURE");
             }
         }
         always {
-            node('Built-In Node') {
+            node('${JENKINS_URL}/computer/(built-in)/') {
                 script {
                     def buildResult = currentBuild.resultIsBetterOrEqualTo("SUCCESS") ? "Success" : "Failure"
                     def commentMessage = "Build log for this run: ${buildResult}"
