@@ -48,6 +48,14 @@
         blocksize = -1
 /
 
+ &cana_nml                                                                                                                                         
+       turbulence_to_use = "lm3v"                                                                                                                  
+       init_co2 = 286.0e-6                                                                                                                         
+       canopy_air_mass_for_tracers = 10.0                                                                                                          
+       allow_small_z0 = .true.                                                                                                                     
+       sai_turb = .true.                                                                                                                           
+/     
+
 &glac_data_nml
        input_cover_types = 99
        use_lm2_awc = .true.,
@@ -134,9 +142,11 @@
        K_z_background  = 15.e-5
 /
 
-&land_conservation_nml
-        do_check_conservation = .FALSE.
-/
+ &land_conservation_nml                                                                                                                            
+       do_check_conservation=.true.                                                                                                                
+       water_cons_tol  = 1e-8                                                                                                                      
+       carbon_cons_tol = 1e-6                                                                                                                      
+/  
 
 &land_debug_nml
        watch_point = 0, 0, 0, 1
