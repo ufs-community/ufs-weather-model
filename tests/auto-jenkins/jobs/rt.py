@@ -31,6 +31,8 @@ def set_directories(job_obj):
         workdir = '/lustre/f2/pdata/ncep/role.epic/autort/pr'
     elif job_obj.machine == 'orion':
         workdir = '/work/noaa/epic-ps/role-epic-ps/autort/tests/auto/pr'
+    elif job_obj.machine == 'hercules':
+        workdir = '/work/noaa/epic/role-epic/autort/tests/auto/pr'
     elif job_obj.machine == 'cheyenne':
         workdir = '/glade/scratch/epicufsrt/autort/jenkins/autort/pr'
     else:

@@ -399,6 +399,30 @@ elif [[ $MACHINE_ID = orion ]]; then
 
   SCHEDULER=slurm
 
+elif [[ $MACHINE_ID = hercules ]]; then
+
+  module load contrib rocoto/1.3.5
+  ROCOTORUN=$(which rocotorun)
+  ROCOTOSTAT=$(which rocotostat)
+  ROCOTOCOMPLETE=$(which rocotocomplete)
+
+  module use /work/noaa/epic/role-epic/spack-stack/hercules/modulefiles
+  module load ecflow/5.8.4
+  ECFLOW_START=/work/noaa/epic/role-epic/spack-stack/hercules/ecflow-5.8.4/bin/ecflow_start.sh
+  ECF_PORT=$(( $(id -u) + 1500 ))
+
+  QUEUE=windfall
+  COMPILE_QUEUE=windfall
+  PARTITION=hercules
+  dprefix=/work2/noaa/stmp/${USER}
+  DISKNM=/work/noaa/epic/hercules/UFS-WM_RT
+  STMP=$dprefix/stmp
+  PTMP=$dprefix/stmp
+
+  SCHEDULER=slurm
+  cp fv3_conf/fv3_slurm.IN_hercules fv3_conf/fv3_slurm.IN
+  cp fv3_conf/compile_slurm.IN_hercules fv3_conf/compile_slurm.IN
+
 elif [[ $MACHINE_ID = jet ]]; then
 
   module load rocoto/1.3.2
@@ -619,6 +643,10 @@ if [[ $ROCOTO == true ]]; then
     QUEUE=batch
     COMPILE_QUEUE=batch
     ROCOTO_SCHEDULER=slurm
+  elif [[ $MACHINE_ID = hercules ]]; then
+    QUEUE=windfall
+    COMPILE_QUEUE=windfall
+    ROCOTO_SCHEDULER=slurm
   elif [[ $MACHINE_ID = s4 ]]; then
     QUEUE=s4
     COMPILE_QUEUE=s4
@@ -695,6 +723,8 @@ EOF
     QUEUE=batch
   elif [[ $MACHINE_ID = orion ]]; then
     QUEUE=batch
+  elif [[ $MACHINE_ID = hercules ]]; then
+    QUEUE=windfall
   elif [[ $MACHINE_ID = jet ]]; then
     QUEUE=batch
   elif [[ $MACHINE_ID = s4 ]]; then
