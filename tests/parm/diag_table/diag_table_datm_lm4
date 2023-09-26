@@ -1,22 +1,89 @@
 @[SYEAR]@[SMONTH]@[SDAY].@[SHOUR]Z.@[ATMRES].64bit.non-mono
 @[SYEAR] @[SMONTH] @[SDAY] @[SHOUR] 0 0
 
-"land_static",    -1, "hours",  1,  "hours",  "time"
-"land_static_sg", -1, "hours",  1,  "hours",  "time"
-"import_diag",    0, "hours",  1,  "hours",  "time"
-
-#####################
-# land static diag
+#output files
+"land_static",     -1,  "months", 1, "days", "time"
+"land_static_sg",  -1,  "months", 1, "days", "time"
+"land_daily",      24,  "hours",  1, "days", "time"
+"land_month",       1,  "months", 1, "days", "time"
+#
+#=======================
+# LAND MODEL DIAGNOSTICS
+#=======================
+#
 "land",    "geolon_t",   "geolon_t",   "land_static", "all", .false., "none", 1
 "land",    "geolat_t",   "geolat_t",   "land_static", "all", .false., "none", 1
+"land",    "geolon_t",   "geolon_t",   "land_month", "all", .false., "none", 1
+"land",    "geolat_t",   "geolat_t",   "land_month", "all", .false., "none", 1
+"land",    "geolon_t",   "geolon_t",   "land_daily", "all", .false., "none", 1
+"land",    "geolat_t",   "geolat_t",   "land_daily", "all", .false., "none", 1
+
+# land static output
+"lake",    "lake_depth", "lake_depth", "land_static", "all", .false., "none", 2
+"lake",    "lake_width", "lake_width", "land_static", "all", .false., "none", 2
 "land_sg", "cell_area",  "cell_area",  "land_static_sg", "all", .false., "none", 2
 "land",    "area_land",  "land_area",  "land_static", "all", .false., "none", 2
+"land",    "land_frac",  "land_frac",  "land_static", "all", .false., "none", 2
+#"land",    "no_riv",     "no_riv",     "land_static", "all", .false., "none", 2
+# "river",   "rv_basin",   "rv_basin",   "land_static", "all", .false., "none", 2
+# "river",   "rv_dir",     "rv_dir",     "land_static", "all", .false., "none", 2
+# "river",   "rv_length",  "rv_length",  "land_static", "all", .false., "none", 2
+# "river",   "rv_trav",    "rv_trav",    "land_static", "all", .false., "none", 2
+"soil",    "soil_Ksat",  "soil_Ksat",  "land_static", "all", .false., "none", 2
+"soil",    "soil_rlief", "soil_rlief", "land_static", "all", .false., "none", 2
+"soil",    "soil_sat",   "soil_sat",   "land_static", "all", .false., "none", 2
+"soil",    "soil_type",  "soil_type",  "land_static", "all", .false., "none", 2
+"soil",    "soil_wilt",  "soil_wilt",  "land_static", "all", .false., "none", 2
+# area fractions for different tile types
+"land",    "frac_glac",  "frac_glac",  "land_static", "all", .false., "none", 2
+"land",    "frac_lake",  "frac_lake",  "land_static", "all", .false., "none", 2
 
-"lm4_dbug_diag", "cell_area",  "cell_area",  "import_diag", "all", .false., "none", 1
-"lm4_dbug_diag", "sw_down_vis_dif",  "sw_down_vis_dif",  "import_diag", "all", .false., "none", 1
-"lm4_dbug_diag", "t_bot",  "t_bot",  "import_diag", "all", .false., "none", 1
-"lm4_dbug_diag", "p_bot",  "p_bot",  "import_diag", "all", .false., "none", 1
-"lm4_dbug_diag", "z_bot",  "z_bot",  "import_diag", "all", .false., "none", 1
+# land multi-level month-average output
+
+## land 2-band variables
+
+# land one-level month-average output
+#"flux",    "t_ref_land", "t_ref",      "land_month",  "all", .true., "none", 2
+"land",    "area_land",  "land_area",  "land_month",  "all", .false., "none", 2
+# "land",    "area_glac",  "glac_area",  "land_month",  "all", .false., "none", 2
+"land",    "area_lake",  "lake_area",  "land_month",  "all", .false., "none", 2
+"land",    "area_soil",  "soil_area",  "land_month",  "all", .false., "none", 2
+
+# land daily output
+"land",  "area_ntrl",  "area_ntrl",    "land_daily",  "all", .true.,  "none", 2
+
+# "flux",  "evap_land",  "evap_land",    "land_daily",  "all", .true., "none", 2
+# "flux",  "t_ref_land", "t_ref_max",    "land_daily",  "all",  max,   "none", 2
+# "flux",  "t_ref_land", "t_ref_min",    "land_daily",  "all",  min,   "none", 2
+"land",  "FWSg_lake",  "FWSg_lake",    "land_daily",  "all", .true., "none", 2
+"land",  "FWSg_soil",  "FWSg_soil",    "land_daily",  "all", .true., "none", 2
+"land",  "LWSg_lake",  "LWSg_lake",    "land_daily",  "all", .true., "none", 2
+"land",  "LWSg_soil",  "LWSg_soil",    "land_daily",  "all", .true., "none", 2
+"land",  "precip",     "precip",       "land_daily",  "all", .true., "none", 2
+"land",  "snow_lake",  "snow_lake",    "land_daily",  "all", .true., "none", 2
+"land",  "snow_soil",  "snow_soil",    "land_daily",  "all", .true., "none", 2
+"land",  "runf",       "runf",         "land_daily",  "all", .true., "none", 2
+# "river", "rv_o_h2o",   "rv_o_h2o",     "land_daily",  "all", .true., "none", 2
+# "river", "rv_T",       "rv_T",         "land_daily",  "all", .true., "none", 2
+"vegn",  "temp",       "vegn_T",       "land_daily",  "all",  .true., "none", 2
+"vegn",  "temp",       "vegn_T_max",   "land_daily",  "all",    max, "none", 2
+"vegn",  "temp",       "vegn_T_min",   "land_daily",  "all",    min, "none", 2
+"vegn",  "npp",        "npp",          "land_daily",  "all", .true., "none", 2
+"vegn",  "gpp",        "gpp",          "land_daily",  "all", .true., "none", 2
+"vegn",  "an_cl",      "an_cl",        "land_daily",  "all", .true., "none", 2
+"vegn",  "an_op",      "an_op",        "land_daily",  "all", .true., "none", 2
+"vegn",  "LAI",        "LAI",          "land_daily",  "all", .true., "none", 2
+"vegn",  "stomatal_cond_ntrl","gs_ntrl_max","land_daily","all", max, "none", 2
+"vegn",  "temp_ntrl",  "vegn_temp_ntrl_max","land_daily","all", max, "none", 2
+"vegn",  "temp_ntrl",  "vegn_temp_ntrl_min","land_daily","all", min, "none", 2
+# land daily variables used in post-processing "refinement"
+"soil",  "soil_liq",   "soil_liq",     "land_daily",  "all", .true., "-1 -1 -1 -1 0 0.1", 2
+"soil",  "soil_ice",   "soil_ice",     "land_daily",  "all", .true., "-1 -1 -1 -1 0 0.1", 2
+"land",  "runf_soil",  "runf_soil",    "land_daily",  "all", .true.,  "none", 2
+"land",  "FWSs",       "FWSs",         "land_daily",  "all", .true.,  "none", 2
+"land",  "soil_water_supply",   "water_supply", "land_daily", "all", .true., "none", 2
+"vegn",  "evap_demand",         "water_demand", "land_daily", "all", .true., "none", 2
+
 
 
 #=============================================================================================
