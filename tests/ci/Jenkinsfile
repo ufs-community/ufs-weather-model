@@ -150,26 +150,23 @@ pipeline {
     }
     post {
         success {
-            agent {
-                    label 'Jenkins'
-            }    
-            setBuildStatus("Build succeeded", "SUCCESS");
+            node('built-in') { 
+                setBuildStatus("Build succeeded", "SUCCESS");
+            }
         }
         failure {
-            agent {
-                    label 'Jenkins'
+            node('built-in') {
+                setBuildStatus("Build failed", "FAILURE");
             }
-            setBuildStatus("Build failed", "FAILURE");
         }
         always {
-            agent {
-                    label 'Jenkins'
-            }    
-            script {
+            node('built-in') {
+                script {
                     def buildResult = currentBuild.resultIsBetterOrEqualTo("SUCCESS") ? "Success" : "Failure"
                     def commentMessage = "Build log for this run: ${buildResult}"
                     postGitHubCommentWithLogFile(commentMessage, "jenkins_console_log.txt")
                 }
+            }
         }
     }
 }
