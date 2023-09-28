@@ -160,7 +160,7 @@ pipeline {
             }
         }
         always {
-            node('${JENKINS_URL}/computer/(built-in)/') {
+            node(null) {
                 script {
                     def buildResult = currentBuild.resultIsBetterOrEqualTo("SUCCESS") ? "Success" : "Failure"
                     def commentMessage = "Build log for this run: ${buildResult}"
