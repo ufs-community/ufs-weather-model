@@ -12,6 +12,8 @@ def postGitHubCommentWithLogFile(commentMessage, logFilePath) {
     script {
         writeFile file: logFilePath, text: currentBuild.rawBuild.logFile.text
         
+        pullRequest.comment(commentMessage)
+        
         def apiUrl = "https://api.github.com/repos/ufs-community/ufs-weather-model/issues/${env.CHANGE_ID}/comments"
         def headers = [
             "Authorization": "token GitHubJenkins",
@@ -28,7 +30,7 @@ def postGitHubCommentWithLogFile(commentMessage, logFilePath) {
             acceptType: 'APPLICATION_JSON',
             contentType: 'APPLICATION_JSON',
             httpMode: 'POST',
-            requestBody: jsonToString(payload),
+            requestBody: payload,
             url: apiUrl,
             customHeaders: headers
         )
