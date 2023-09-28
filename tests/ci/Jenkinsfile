@@ -10,13 +10,7 @@ void setBuildStatus(String message, String state) {
 
 def postGitHubCommentWithLogFile(commentMessage, logFilePath) {
     script {
-          def repository_url = scm.userRemoteConfigs[0].url
-          def repository_name = repository_url.replace("git@github.com:","").replace(".git","")
 
-          withCredentials([string(credentialsId: 'GitHubJenkins', variable: 'GITHUB_TOKEN')]) {
-            sh "curl -s -H \"Authorization: token ${GITHUB_TOKEN}\" -X POST -d '{\"body\": \"${commentMessage}\"}' \"https://api.github.com/repos/${repository_name}/issues/${ghprbPullId}/comments\""
-          }
-        
         writeFile file: logFilePath, text: currentBuild.rawBuild.logFile.text
         
         
@@ -36,7 +30,7 @@ def postGitHubCommentWithLogFile(commentMessage, logFilePath) {
             acceptType: 'APPLICATION_JSON',
             contentType: 'APPLICATION_JSON',
             httpMode: 'POST',
-            requestBody: payload,
+            requestBody: commentMessage,
             url: apiUrl,
             customHeaders: headers
         )
