@@ -310,6 +310,13 @@ elif [[ $MACHINE_ID = gaea ]]; then
   export PATH=/lustre/f2/pdata/esrl/gsd/spack-stack/miniconda-3.9.12/bin:$PATH
   export PYTHONPATH=/lustre/f2/pdata/esrl/gsd/spack-stack/miniconda-3.9.12/lib/python3.9/site-packages
 
+  module use /lustre/f2/dev/Samuel.Trahan/hafs/modulefiles/
+  module load rocoto
+  ROCOTORUN=$(which rocotorun)
+  ROCOTOSTAT=$(which rocotostat)
+  ROCOTOCOMPLETE=$(which rocotocomplete)
+  ROCOTO_SCHEDULER=slurm
+
   module use /lustre/f2/pdata/esrl/gsd/spack-stack/modulefiles
   module load ecflow/5.8.4
   ECFLOW_START=/lustre/f2/pdata/esrl/gsd/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
@@ -651,6 +658,10 @@ if [[ $ROCOTO == true ]]; then
     QUEUE=regular
     COMPILE_QUEUE=regular
     ROCOTO_SCHEDULER=pbspro
+  elif [[ $MACHINE_ID = gaea ]]; then
+    QUEUE=normal
+    COMPILE_QUEUE=normal
+    ROCOTO_SCHEDULER=slurm
   else
     die "Rocoto is not supported on this machine $MACHINE_ID"
   fi
