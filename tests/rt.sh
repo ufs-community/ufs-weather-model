@@ -457,6 +457,14 @@ elif [[ $MACHINE_ID = cheyenne ]]; then
   export PATH=/glade/work/jedipara/cheyenne/spack-stack/miniconda-3.9.12/bin:$PATH
   export PYTHONPATH=/glade/work/jedipara/cheyenne/spack-stack/miniconda-3.9.12/lib/python3.9/site-packages
 
+  module use /gpfs/fs1/work/strahan/rocoto/modulefiles
+  module load rocoto/1.3.3
+  ROCOTORUN=$(which rocotorun)
+  ROCOTOSTAT=$(which rocotostat)
+  ROCOTOCOMPLETE=$(which rocotocomplete)
+  ROCOTO_SCHEDULER=pbspro
+  ROCOTO_NODESIZE=36
+
   module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc
   module load ecflow/5.8.4
   ECFLOW_START=/glade/work/jedipara/cheyenne/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
@@ -639,6 +647,10 @@ if [[ $ROCOTO == true ]]; then
     QUEUE=batch
     COMPILE_QUEUE=batch
     ROCOTO_SCHEDULER=slurm
+  elif [[ $MACHINE_ID = cheyenne ]]; then
+    QUEUE=regular
+    COMPILE_QUEUE=regular
+    ROCOTO_SCHEDULER=pbspro
   else
     die "Rocoto is not supported on this machine $MACHINE_ID"
   fi

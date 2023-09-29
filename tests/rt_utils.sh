@@ -506,6 +506,7 @@ rocoto_create_run_task() {
       <command>&PATHRT;/run_test.sh &PATHRT; &RUNDIR_ROOT; ${TEST_NAME} ${TEST_NR} ${COMPILE_NR} </command>
       <jobname>${TEST_NAME}_${RT_COMPILER}${RT_SUFFIX}</jobname>
       <account>${ACCNR}</account>
+      ${ROCOTO_NODESIZE:+<nodesize>$ROCOTO_NODESIZE</nodesize>}
       <queue>${QUEUE}</queue>
       <partition>${PARTITION}</partition>
       <nodes>${NODES}:ppn=${TPN}</nodes>
