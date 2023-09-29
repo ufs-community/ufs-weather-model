@@ -565,6 +565,17 @@ else
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}}
 fi
 
+if [[ "$CREATE_BASELINE" == false ]] ; then
+  if [[ ! -d "$RTPWD" ]] ; then
+    echo "Baseline directory does not exist:"
+    echo "   $RTPWD"
+    exit 1
+  elif [[ $( ls -1 "$RTPWD/" | wc -l ) -lt 1 ]] ; then
+    echo "Baseline directory is empty:"
+    echo "   $RTPWD"
+    exit 1
+  fi
+fi
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20221101}
 INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20220624
