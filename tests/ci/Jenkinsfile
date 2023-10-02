@@ -7,40 +7,37 @@ void setBuildStatus(String message, String state) {
         statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]] ]
     ]);
 }
+import groovy.json.JsonBuilder
 
 def postGitHubCommentWithLogFile(commentMessage, logFilePath) {
     script {
-
-        writeFile file: logFilePath, text: currentBuild.rawBuild.logFile.text
-        
-        
         def apiUrl = "https://api.github.com/repos/ufs-community/ufs-weather-model/issues/${env.CHANGE_ID}/comments"
         def headers = [
             "Authorization": "token GitHubJenkins",
             "User-Agent": "Jenkins",
             "Content-Type": "application/json"
+
         ]
 
-        def payload = [
-            body: commentMessage,
-            file: readFile(logFilePath)
-        ]
-        
+        def payload = new JsonBuilder()
+        payload {
+            body(commentMessage)
+            file(readFile(logFilePath))
+        }
+
         def response = httpRequest(
             acceptType: 'APPLICATION_JSON',
             contentType: 'APPLICATION_JSON',
             httpMode: 'POST',
-            requestBody: JsonOutput.toJson(payload), 
+            requestBody: payload.toString(),
             url: apiUrl,
             customHeaders: headers
         )
 
-
-
-        if (response.getResponseCode() == 201) {
+        if (response.status == 201) {
             echo "Comment with log file added successfully to PR #${env.CHANGE_ID}"
         } else {
-            error "Failed to add comment with log file to PR #${env.CHANGE_ID}: ${response.getResponseCode()} - ${response.getResponseMessage()}"
+            error "Failed to add comment with log file to PR #${env.CHANGE_ID}: ${response.status} - ${response.response}"
         }
     }
 }
