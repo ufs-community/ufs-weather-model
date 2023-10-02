@@ -1,0 +1,54 @@
+pipeline {
+  agent none
+  stages {
+    stage('Start Hercules Cluster') {
+       agent {
+        label 'built-in'   
+       }
+      steps {
+        script {
+          for (label in pullRequest.labels) {
+            if ((label.matches("Stack_Build"))) {
+                 env.CHOICE_NODE='Hercules'
+            } 
+            else { 
+                env.CHOICE_NODE='none'
+            }
+         }
+// Why do I need another if..block, because it just works this way.
+
+            if (CHOICE_NODE == 'Hercules') {
+                echo "Starting up Hercules cluster ${CHOICE_NODE}...this might take 5-10 minutes...please be patient."
+            }
+             else {
+                echo "${CHOICE_NODE} is NOT a Parallelworks cluster, moving on..."
+            }
+       }    
+    }
+  } 
+  stage('Run Regression Tests script') {
+        agent {
+          label "${CHOICE_NODE}"
+        }
+        environment {
+        ACCNR = 'nems'
+        NODE_PATH = '/work/'
+      }
+      steps {
+          }
+        }
+        cleanWs()
+        checkout scm
+        sh '''
+        pwd
+        git submodule update --init --recursive
+        cd tests/
+        if [[ "${CREATE_BASELINES}" = true ]] 
+        then
+        echo "Creating baselines for regressions tests"
+        ./rt.sh -c -l rt.conf
+        echo "Sending regression test logs to $GIT_URL"
+        fi
+        '''
+            }
+        }
