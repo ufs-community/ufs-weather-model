@@ -12,34 +12,50 @@ import groovy.json.JsonBuilder
 def postGitHubCommentWithLogFile(commentMessage, logFilePath) {
     script {
         def apiUrl = "https://api.github.com/repos/ufs-community/ufs-weather-model/issues/${env.CHANGE_ID}/comments"
-        def headers = [
-            "Authorization": "token GitHubJenkins",
-            "User-Agent": "Jenkins",
-            "Content-Type": "application/json"
-
-        ]
-
-        def payloadMap = [
-            body: commentMessage,
-            file: readFile(logFilePath)
-        ]
-
-        def payloadJson = new JsonBuilder(payloadMap).toPrettyString()
-
-        def response = httpRequest(
-            acceptType: 'APPLICATION_JSON',
-            contentType: 'APPLICATION_JSON',
-            httpMode: 'POST',
-            requestBody: payloadJson, 
-            url: apiUrl,
-            customHeaders: headers
-        )
         
-        if (response.status == 201) {
-            echo "Comment with log file added successfully to PR #${env.CHANGE_ID}"
+        def curlCommand = """
+            curl -s -H "Authorization: token ${GitHubJenkins}" \\
+            -X POST -d '{"body": "${commentMessage}"}' \\
+            "${apiUrl}"
+        """
+        
+        def response = sh(script: curlCommand, returnStatus: true)
+        
+        if (response == 0) {
+            echo "Comment added successfully to PR #${env.CHANGE_ID}"
         } else {
-            error "Failed to add comment with log file to PR #${env.CHANGE_ID}: ${response.status} - ${response.response}"
+            error "Failed to add comment to PR #${env.CHANGE_ID}"
         }
+        
+    //     def apiUrl = "https://api.github.com/repos/ufs-community/ufs-weather-model/issues/${env.CHANGE_ID}/comments"
+    //     def headers = [
+    //         "Authorization": "token GitHubJenkins",
+    //         "User-Agent": "Jenkins",
+    //         "Content-Type": "application/json"
+
+    //     ]
+
+    //     def payloadMap = [
+    //         body: commentMessage,
+    //         file: readFile(logFilePath)
+    //     ]
+
+    //     def payloadJson = new JsonBuilder(payloadMap).toPrettyString()
+
+    //     def response = httpRequest(
+    //         acceptType: 'APPLICATION_JSON',
+    //         contentType: 'APPLICATION_JSON',
+    //         httpMode: 'POST',
+    //         requestBody: payloadJson, 
+    //         url: apiUrl,
+    //         customHeaders: headers
+    //     )
+        
+    //     if (response.status == 201) {
+    //         echo "Comment with log file added successfully to PR #${env.CHANGE_ID}"
+    //     } else {
+    //         error "Failed to add comment with log file to PR #${env.CHANGE_ID}: ${response.status} - ${response.response}"
+    //     }
     }
 }
 
