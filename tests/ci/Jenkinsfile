@@ -20,12 +20,22 @@ def postGitHubCommentWithLogFile(commentMessage, logFilePath) {
                 "${apiUrl}"
             """
             
-            def response = sh(script: curlCommand, returnStatus: true)
+            def response = sh(script: curlCommand, returnStatus: true, returnStdout: true)
             
             if (response == 0) {
                 echo "Comment added successfully to PR #${env.CHANGE_ID}"
             } else {
                 error "Failed to add comment to PR #${env.CHANGE_ID}"
+            }
+
+            // Check for a response from GitHub and extract the comment ID
+            def jsonResponse = readJSON(text: response)
+            def commentId = jsonResponse.id
+
+            if (commentId) {
+                echo "Comment ID: ${commentId}"
+            } else {
+                error "Failed to retrieve comment ID"
             }
         }
 
