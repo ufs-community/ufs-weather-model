@@ -14,7 +14,7 @@ def postGitHubCommentWithLogFile(commentMessage, jobName) {
             def apiUrl = "https://api.github.com/repos/ufs-community/ufs-weather-model/issues/${env.CHANGE_ID}/comments"
 
             def buildNumber = currentBuild.number
-            def logFilePath = "${JENKINS_HOME}/workspace/${jobName}/build-${buildNumber}-console.log"
+            def logFilePath = "${WORKSPACE}/build-${buildNumber}-console.log"
 
             def logContent = currentBuild.rawBuild.getLog(100000).join('\n') 
 
