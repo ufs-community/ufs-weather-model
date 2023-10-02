@@ -25,15 +25,16 @@ def postGitHubCommentWithLogFile(commentMessage, logFilePath) {
             body: commentMessage,
             file: readFile(logFilePath)
         ]
-
+        
         def response = httpRequest(
             acceptType: 'APPLICATION_JSON',
             contentType: 'APPLICATION_JSON',
             httpMode: 'POST',
-            requestBody: jsonSerialize(payload), 
+            requestBody: JsonOutput.toJson(payload), 
             url: apiUrl,
             customHeaders: headers
         )
+
 
 
         if (response.getResponseCode() == 201) {
