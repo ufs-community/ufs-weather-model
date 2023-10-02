@@ -11,34 +11,25 @@ import groovy.json.JsonBuilder
 
 def postGitHubCommentWithLogFile(commentMessage, logFilePath) {
     script {
-        withCredentials([usernamePassword(credentialsId: 'GitHubJenkins', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+        withCredentials([string(credentialsId: 'GithubJenkinsNew', variable: 'ACCESS_TOKEN')]) {
             def apiUrl = "https://api.github.com/repos/ufs-community/ufs-weather-model/issues/${env.CHANGE_ID}/comments"
             
             def curlCommand = """
-                curl -s -u ${USERNAME}:${PASSWORD} \\
-                -X POST -d '{"body": "${commentMessage}"}' \\
-                "${apiUrl}"
-            """
+                    curl -s -H "Authorization: token ${ACCESS_TOKEN}" \\
+                    -X POST -d '{"body": "${commentMessage}"}' \\
+                    "${apiUrl}"
+                """
             
-            def response = sh(script: curlCommand, returnStatus: true, returnStdout: true)
+            def response = sh(script: curlCommand, returnStatus: true)
             
             if (response == 0) {
                 echo "Comment added successfully to PR #${env.CHANGE_ID}"
             } else {
                 error "Failed to add comment to PR #${env.CHANGE_ID}"
             }
-
-            // Check for a response from GitHub and extract the comment ID
-            def jsonResponse = readJSON(text: response)
-            def commentId = jsonResponse.id
-
-            if (commentId) {
-                echo "Comment ID: ${commentId}"
-            } else {
-                error "Failed to retrieve comment ID"
-            }
         }
-
+    }
+}
         
     //     def apiUrl = "https://api.github.com/repos/ufs-community/ufs-weather-model/issues/${env.CHANGE_ID}/comments"
     //     def headers = [
@@ -68,9 +59,9 @@ def postGitHubCommentWithLogFile(commentMessage, logFilePath) {
     //         echo "Comment with log file added successfully to PR #${env.CHANGE_ID}"
     //     } else {
     //         error "Failed to add comment with log file to PR #${env.CHANGE_ID}: ${response.status} - ${response.response}"
-    //     }
-    }
-}
+//     //     }
+//     }
+// }
 
 pipeline {
     agent none
