@@ -12,18 +12,21 @@ def postGitHubCommentWithLogFile(commentMessage, jobName) {
     script {
         withCredentials([string(credentialsId: 'GithubJenkinsNew', variable: 'ACCESS_TOKEN')]) {
             def apiUrl = "https://api.github.com/repos/ufs-community/ufs-weather-model/issues/${env.CHANGE_ID}/comments"
-
+            
             def buildNumber = currentBuild.number
             // def logFilePath = "${WORKSPACE}/build-${buildNumber}-console.log"
             // "${JENKINS_URL}/job/${jobName}/${buildNumber}/consoleText"
-            def logContent = currentBuild.rawBuild.getLog(100000).join('\n') 
+            // def logContent = currentBuild.rawBuild.getLog(100000).join('\n') 
 
-            // writeFile file: logFilePath, text: logContent 
-            // archiveArtifacts artifacts: "build-${buildNumber}-console.log", allowEmptyArchive: true
+            def logFilePath = "https://jenkins.epic.oarcloud.noaa.gov/view/all/job/ufs-weather-model/job/ort-docker-pipeline/view/change-requests/job/PR-${env.CHANGE_ID}/${buildNumber}/artifact/build-${buildNumber}-console.log
+            echo "Console Log Link: ${logFilePath}"
             
-            // echo "Console Log Link: ${logFilePath}"
+            
+            // writeFile file: logFilePath, text: logContent 
+            archiveArtifacts artifacts: "build-${buildNumber}-console.log", allowEmptyArchive: true
 
-            def commentBody = "${commentMessage}\n\n${logContent}" 
+
+            def commentBody = "${logFilePath}" 
             echo "Comment Body: ${commentBody}"
             
             def curlCommand = """
