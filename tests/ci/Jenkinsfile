@@ -7,16 +7,16 @@ void setBuildStatus(String message, String state) {
         statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]] ]
     ]);
 }
-import groovy.json.JsonBuilder
 
-def postGitHubCommentWithLogFile(commentMessage, logFilePath) {
+def postGitHubCommentWithLogFile(commentMessage, jobName) {
     script {
         withCredentials([string(credentialsId: 'GithubJenkinsNew', variable: 'ACCESS_TOKEN')]) {
             def apiUrl = "https://api.github.com/repos/ufs-community/ufs-weather-model/issues/${env.CHANGE_ID}/comments"
+            def consoleLogLink = "${JENKINS_URL}/job/${jobName}/${buildNumber}/consoleText"
             
             def curlCommand = """
                     curl -s -H "Authorization: token ${ACCESS_TOKEN}" \\
-                    -X POST -d '{"body": "${commentMessage}"}' \\
+                    -X POST -d '{"body": "${commentMessage}\n\n[Console Log](${consoleLogLink})"}' \\
                     "${apiUrl}"
                 """
             
@@ -30,38 +30,6 @@ def postGitHubCommentWithLogFile(commentMessage, logFilePath) {
         }
     }
 }
-        
-    //     def apiUrl = "https://api.github.com/repos/ufs-community/ufs-weather-model/issues/${env.CHANGE_ID}/comments"
-    //     def headers = [
-    //         "Authorization": "token GitHubJenkins",
-    //         "User-Agent": "Jenkins",
-    //         "Content-Type": "application/json"
-
-    //     ]
-
-    //     def payloadMap = [
-    //         body: commentMessage,
-    //         file: readFile(logFilePath)
-    //     ]
-
-    //     def payloadJson = new JsonBuilder(payloadMap).toPrettyString()
-
-    //     def response = httpRequest(
-    //         acceptType: 'APPLICATION_JSON',
-    //         contentType: 'APPLICATION_JSON',
-    //         httpMode: 'POST',
-    //         requestBody: payloadJson, 
-    //         url: apiUrl,
-    //         customHeaders: headers
-    //     )
-        
-    //     if (response.status == 201) {
-    //         echo "Comment with log file added successfully to PR #${env.CHANGE_ID}"
-    //     } else {
-    //         error "Failed to add comment with log file to PR #${env.CHANGE_ID}: ${response.status} - ${response.response}"
-//     //     }
-//     }
-// }
 
 pipeline {
     agent none
@@ -186,7 +154,7 @@ pipeline {
                 script {
                     def buildResult = currentBuild.resultIsBetterOrEqualTo("SUCCESS") ? "Success" : "Failure"
                     def commentMessage = "Build log for this run: ${buildResult}"
-                    postGitHubCommentWithLogFile(commentMessage, "jenkins_console_log.txt")
+                    postGitHubCommentWithLogFile(commentMessage, env.JOB_NAME)
                 }
             }
         }
