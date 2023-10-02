@@ -14,12 +14,15 @@ def postGitHubCommentWithLogFile(commentMessage, jobName) {
             def apiUrl = "https://api.github.com/repos/ufs-community/ufs-weather-model/issues/${env.CHANGE_ID}/comments"
             
             def buildNumber = currentBuild.number
-            def consoleLogLink = "${JENKINS_URL}/job/${jobName}/${buildNumber}/consoleText"
+            def consoleLogLink = "${JENKINS_URL}job/${jobName}/${buildNumber}/consoleText"
             echo "Console Log Link:  ${consoleLogLink}"
+
+            def commentBody = "${commentMessage}\\n\\n${consoleLogLink}"
+            echo "Comment Body: ${commentBody}"
             
             def curlCommand = """
                     curl -s -H "Authorization: token ${ACCESS_TOKEN}" \\
-                    -X POST -d "{\"body\": \"${consoleLogLink}\\n"}" \\
+                    -X POST -d "{\"body\": \"${commentBody}\"}" \\
                     "${apiUrl}"
                 """
             
