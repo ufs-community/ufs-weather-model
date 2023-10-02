@@ -14,16 +14,16 @@ def postGitHubCommentWithLogFile(commentMessage, jobName) {
             def apiUrl = "https://api.github.com/repos/ufs-community/ufs-weather-model/issues/${env.CHANGE_ID}/comments"
 
             def buildNumber = currentBuild.number
-            def logFilePath = "${WORKSPACE}/build-${buildNumber}-console.log"
-
+            // def logFilePath = "${WORKSPACE}/build-${buildNumber}-console.log"
+            // "${JENKINS_URL}/job/${jobName}/${buildNumber}/consoleText"
             def logContent = currentBuild.rawBuild.getLog(100000).join('\n') 
 
-            writeFile file: logFilePath, text: logContent 
-            archiveArtifacts artifacts: "build-${buildNumber}-console.log", allowEmptyArchive: true
+            // writeFile file: logFilePath, text: logContent 
+            // archiveArtifacts artifacts: "build-${buildNumber}-console.log", allowEmptyArchive: true
             
             echo "Console Log Link: ${logFilePath}"
 
-            def commentBody = "${commentMessage}\n\n${logFilePath}" 
+            def commentBody = "${commentMessage}\n\n${logContent}" 
             echo "Comment Body: ${commentBody}"
             
             def curlCommand = """
