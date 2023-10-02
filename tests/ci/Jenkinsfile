@@ -12,6 +12,8 @@ def postGitHubCommentWithLogFile(commentMessage, jobName) {
     script {
         withCredentials([string(credentialsId: 'GithubJenkinsNew', variable: 'ACCESS_TOKEN')]) {
             def apiUrl = "https://api.github.com/repos/ufs-community/ufs-weather-model/issues/${env.CHANGE_ID}/comments"
+            
+            def buildNumber = currentBuild.number
             def consoleLogLink = "${JENKINS_URL}/job/${jobName}/${buildNumber}/consoleText"
             
             def curlCommand = """
