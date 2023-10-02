@@ -18,7 +18,7 @@ def postGitHubCommentWithLogFile(commentMessage, jobName) {
             
             def curlCommand = """
                     curl -s -H "Authorization: token ${ACCESS_TOKEN}" \\
-                    -X POST -d '{"body": "${commentMessage}\n\n[Console Log](${consoleLogLink})"}' \\
+                    -X POST -d "{\"body\": \"${commentMessage}\\n\\n[Console Log](${consoleLogLink})\"}" \\
                     "${apiUrl}"
                 """
             
