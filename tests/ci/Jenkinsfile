@@ -11,7 +11,7 @@ import groovy.json.JsonBuilder
 
 def postGitHubCommentWithLogFile(commentMessage, logFilePath) {
     script {
-        withCredentials([string(credentialsId: 'GithubJenkins', variable: 'ACCESS_TOKEN')]) {
+        withCredentials([string(credentialsId: 'GitHubJenkins', variable: 'ACCESS_TOKEN')]) {
             def apiUrl = "https://api.github.com/repos/ufs-community/ufs-weather-model/issues/${env.CHANGE_ID}/comments"
             
             def curlCommand = """
