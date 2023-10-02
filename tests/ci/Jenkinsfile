@@ -19,21 +19,22 @@ def postGitHubCommentWithLogFile(commentMessage, logFilePath) {
 
         ]
 
-        def payload = new JsonBuilder()
-        payload {
-            body(commentMessage)
-            file(readFile(logFilePath))
-        }
+        def payloadMap = [
+            body: commentMessage,
+            file: readFile(logFilePath)
+        ]
+
+        def payloadJson = new JsonBuilder(payloadMap).toPrettyString()
 
         def response = httpRequest(
             acceptType: 'APPLICATION_JSON',
             contentType: 'APPLICATION_JSON',
             httpMode: 'POST',
-            requestBody: payload.toString(),
+            requestBody: payloadJson, 
             url: apiUrl,
             customHeaders: headers
         )
-
+        
         if (response.status == 201) {
             echo "Comment with log file added successfully to PR #${env.CHANGE_ID}"
         } else {
