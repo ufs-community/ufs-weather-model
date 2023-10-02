@@ -18,20 +18,20 @@ def postGitHubCommentWithLogFile(commentMessage, jobName) {
             // "${JENKINS_URL}/job/${jobName}/${buildNumber}/consoleText"
             // def logContent = currentBuild.rawBuild.getLog(100000).join('\n') 
 
-            def logFilePath = "https://jenkins.epic.oarcloud.noaa.gov/view/all/job/ufs-weather-model/job/ort-docker-pipeline/view/change-requests/job/PR-${env.CHANGE_ID}/${buildNumber}/artifact/build-${buildNumber}-console.log"
-            echo "Console Log Link: ${logFilePath}"
+            // def logFilePath = "https://jenkins.epic.oarcloud.noaa.gov/view/all/job/ufs-weather-model/job/ort-docker-pipeline/view/change-requests/job/PR-${env.CHANGE_ID}/${buildNumber}/artifact/build-${buildNumber}-console.log"
+            // echo "Console Log Link: ${logFilePath}"
             
             
             // writeFile file: logFilePath, text: logContent 
             archiveArtifacts artifacts: "build-${buildNumber}-console.log", allowEmptyArchive: true
 
 
-            def commentBody = "${logFilePath}" 
-            echo "Comment Body: ${commentBody}"
+            // def commentBody = "${logFilePath}" 
+            // echo "Comment Body: ${commentBody}"
             
             def curlCommand = """
                 curl -s -H "Authorization: token ${ACCESS_TOKEN}" \\
-                -X POST -d "{\"body\": \"${commentBody}\"}" \\
+                -X POST -d "{\"body\": \"${commentMessage}\"}" \\
                 "${apiUrl}"
             """
             
@@ -167,7 +167,7 @@ pipeline {
             node('built-in') {
                 script {
                     def buildResult = currentBuild.resultIsBetterOrEqualTo("SUCCESS") ? "Success" : "Failure"
-                    def commentMessage = "Build log for this run: ${buildResult}"
+                    def commentMessage = "Build result for this run: ${buildResult}"
                     postGitHubCommentWithLogFile(commentMessage, env.JOB_NAME)
                 }
             }
