@@ -11,11 +11,11 @@ import groovy.json.JsonBuilder
 
 def postGitHubCommentWithLogFile(commentMessage, logFilePath) {
     script {
-        withCredentials([string(credentialsId: 'GitHubJenkins', variable: 'ACCESS_TOKEN')]) {
+        withCredentials([usernamePassword(credentialsId: 'GitHubJenkins', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
             def apiUrl = "https://api.github.com/repos/ufs-community/ufs-weather-model/issues/${env.CHANGE_ID}/comments"
             
             def curlCommand = """
-                curl -s -H "Authorization: token ${ACCESS_TOKEN}" \\
+                curl -s -u ${USERNAME}:${PASSWORD} \\
                 -X POST -d '{"body": "${commentMessage}"}' \\
                 "${apiUrl}"
             """
@@ -28,6 +28,7 @@ def postGitHubCommentWithLogFile(commentMessage, logFilePath) {
                 error "Failed to add comment to PR #${env.CHANGE_ID}"
             }
         }
+
         
     //     def apiUrl = "https://api.github.com/repos/ufs-community/ufs-weather-model/issues/${env.CHANGE_ID}/comments"
     //     def headers = [
