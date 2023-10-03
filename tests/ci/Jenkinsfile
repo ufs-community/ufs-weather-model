@@ -12,9 +12,9 @@ def postGitHubCommentWithLogFile(commentMessage) {
     script {
         withCredentials([string(credentialsId: 'GithubJenkinsNew', variable: 'ACCESS_TOKEN')]) {
             def apiUrl = "https://api.github.com/repos/ufs-community/ufs-weather-model/issues/${env.CHANGE_ID}/comments"
-
+            
             def curlCommand = """
-                    curl -s -H "Authorization: token ${ACCESS_TOKEN}" \\
+                    curl -s -H 'Authorization: token \${ACCESS_TOKEN}' \\
                     -X POST -d '{"body": "${commentMessage}"}' \\
                     "${apiUrl}"
                 """
@@ -29,7 +29,6 @@ def postGitHubCommentWithLogFile(commentMessage) {
         }
     }
 }
-
 
 pipeline {
     agent none
