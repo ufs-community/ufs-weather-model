@@ -1,3 +1,5 @@
+def commentMessage
+
 void setBuildStatus(String message, String state) {
     step([
         $class: "GitHubCommitStatusSetter",
@@ -151,7 +153,7 @@ pipeline {
             node('built-in') {
                 script {
                     def buildResult = currentBuild.resultIsBetterOrEqualTo("SUCCESS") ? "Success" : "Failure"
-                    def commentMessage = "Build result for this run: ${buildResult}"
+                    commentMessage = "Build result for this run: ${buildResult}"
                     postGitHubCommentWithLogFile(commentMessage)
                 }
             }
