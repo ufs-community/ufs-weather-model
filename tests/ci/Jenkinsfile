@@ -8,32 +8,16 @@ void setBuildStatus(String message, String state) {
     ]);
 }
 
-def postGitHubCommentWithLogFile(commentMessage, jobName) {
+def postGitHubCommentWithLogFile(commentMessage) {
     script {
         withCredentials([string(credentialsId: 'GithubJenkinsNew', variable: 'ACCESS_TOKEN')]) {
             def apiUrl = "https://api.github.com/repos/ufs-community/ufs-weather-model/issues/${env.CHANGE_ID}/comments"
-            
-            def buildNumber = currentBuild.number
-            // def logFilePath = "${WORKSPACE}/build-${buildNumber}-console.log"
-            // "${JENKINS_URL}/job/${jobName}/${buildNumber}/consoleText"
-            // def logContent = currentBuild.rawBuild.getLog(100000).join('\n') 
 
-            // def logFilePath = "https://jenkins.epic.oarcloud.noaa.gov/view/all/job/ufs-weather-model/job/ort-docker-pipeline/view/change-requests/job/PR-${env.CHANGE_ID}/${buildNumber}/artifact/build-${buildNumber}-console.log"
-            // echo "Console Log Link: ${logFilePath}"
-            
-            
-            // writeFile file: logFilePath, text: logContent 
-            archiveArtifacts artifacts: "build-${buildNumber}-console.log", allowEmptyArchive: true
-
-
-            // def commentBody = "${logFilePath}" 
-            // echo "Comment Body: ${commentBody}"
-            
             def curlCommand = """
-                curl -s -H "Authorization: token ${ACCESS_TOKEN}" \\
-                -X POST -d "{\"body\": \"${commentMessage}\"}" \\
-                "${apiUrl}"
-            """
+                    curl -s -H "Authorization: token ${ACCESS_TOKEN}" \\
+                    -X POST -d '{"body": "${commentMessage}"}' \\
+                    "${apiUrl}"
+                """
             
             def response = sh(script: curlCommand, returnStatus: true)
             
@@ -45,6 +29,8 @@ def postGitHubCommentWithLogFile(commentMessage, jobName) {
         }
     }
 }
+
+
 pipeline {
     agent none
 
@@ -168,7 +154,7 @@ pipeline {
                 script {
                     def buildResult = currentBuild.resultIsBetterOrEqualTo("SUCCESS") ? "Success" : "Failure"
                     def commentMessage = "Build result for this run: ${buildResult}"
-                    postGitHubCommentWithLogFile(commentMessage, env.JOB_NAME)
+                    postGitHubCommentWithLogFile(commentMessage)
                 }
             }
         }
