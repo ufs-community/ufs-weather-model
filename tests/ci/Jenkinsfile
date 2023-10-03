@@ -12,15 +12,15 @@ def postGitHubCommentWithLogFile(commentMessage) {
     script {
         withCredentials([string(credentialsId: 'GithubJenkinsNew', variable: 'ACCESS_TOKEN')]) {
             def apiUrl = "https://api.github.com/repos/ufs-community/ufs-weather-model/issues/${env.CHANGE_ID}/comments"
-            
+
             def curlCommand = """
                     curl -s -H 'Authorization: token \${ACCESS_TOKEN}' \\
                     -X POST -d '{"body": "${commentMessage}"}' \\
                     "${apiUrl}"
                 """
-            
-            def response = sh(script: curlCommand, returnStatus: true)
-            
+
+            sh(script: "export ACCESS_TOKEN=\$ACCESS_TOKEN && $curlCommand", returnStatus: true)
+
             if (response == 0) {
                 echo "Comment added successfully to PR #${env.CHANGE_ID}"
             } else {
