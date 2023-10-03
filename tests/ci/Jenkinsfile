@@ -10,7 +10,7 @@ void setBuildStatus(String message, String state) {
     ]);
 }
 
-postGitHubCommentWithLogFile(commentMessage) {
+def postGitHubCommentWithLogFile(commentMessage) {
     script {
         withCredentials([string(credentialsId: 'GithubJenkinsNew', variable: 'ACCESS_TOKEN')]) {
             def apiUrl = "https://api.github.com/repos/ufs-community/ufs-weather-model/issues/${env.CHANGE_ID}/comments"
