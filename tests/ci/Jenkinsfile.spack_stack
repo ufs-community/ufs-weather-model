@@ -41,12 +41,21 @@ pipeline {
         checkout scm
         sh '''
         pwd
-        git submodule update --init --recursive
+        git clone --recurse-submodules https://github.com/ufs-community/ufs-weather-model
+        cd ufs-weather-model/modulefiles/
+        sed -i 's|/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-dev-20230825/envs/ufs-pio-2.5.10/install/modulefiles/Core|/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.5.0/envs/unified-env/install/modulefiles/Core|g' ufs_hercules.gnu.lua 
+        sed -i 's|/work/noaa/epic/role-epic/spack-stack/hercules/modulefiles|/work/noaa/epic/role-epic/spack-stack/hercules/modulefiles|g' ufs_hercules.gnu.lua
+        sed -i 's|stack_python_ver=os.getenv("stack_python_ver") or "3.9.14"|stack_python_ver=os.getenv("stack_python_ver") or "3.10.8"|g' ufs_hercules.gnu.lua 
+        sed -i 's|3.3.3|4.3.0|g' ufs_hercules.gnu.lua 
+        sed -i 's|2.9.2|2.10.0|g' ufs_hercules.gnu.lua
+        sed -i 's|/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-dev-20230825/envs/ufs-pio-2.5.10/install/modulefiles/Core|/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.5.0/envs/unified-env/install/modulefiles/Core|g' ufs_hercules.intel.lua
+        sed -i 's|/work/noaa/epic/role-epic/spack-stack/hercules/modulefiles|/work/noaa/epic/role-epic/spack-stack/hercules/modulefiles|g' ufs_hercules.intel.lua  
+        sed -i 's|stack_python_ver=os.getenv("stack_python_ver") or "3.9.14"|stack_python_ver=os.getenv("stack_python_ver") or "3.10.8"|g' ufs_hercules.intel.lua 
+        sed -i 's|3.3.3|4.3.0|g' ufs_hercules.intel.lua 
+        sed -i 's|2.9.2|2.10.0|g' ufs_hercules.intel.lua
+        cd ..
         cd tests/
-        if [[ "${CREATE_BASELINES}" = true ]] 
-        then
-        echo "Creating baselines for regressions tests"
-        ./rt.sh -c -l rt.conf
+        ./rt.sh -a nems -c -l rt.conf
         echo "Sending regression test logs to $GIT_URL"
         fi
         '''
