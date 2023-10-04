@@ -15,11 +15,18 @@ def postGitHubCommentWithLogFile(commentMessage) {
         withCredentials([string(credentialsId: 'GithubJenkinsNew', variable: 'ACCESS_TOKEN')]) {
             def apiUrl = "https://api.github.com/repos/ufs-community/ufs-weather-model/issues/${env.CHANGE_ID}/comments"
 
-            def curlCommand = "curl -s -H \"Authorization: token " + ACCESS_TOKEN + "\" \\\n" +
-                 "-X POST -d '{\"body\": \"" + commentMessage + "\"}' \\\n" +
-                 "\"" + apiUrl + "\""
-
+            // def curlCommand = "curl -s -H \"Authorization: token " + ACCESS_TOKEN + "\" \\\n" +
+            //      "-X POST -d '{\"body\": \"" + commentMessage + "\"}' \\\n" +
+            //      "\"" + apiUrl + "\""
+            def logFile = "${WORKSPACE}/console.log"
+            writeFile file: logFile, text: currentBuild.rawBuild.getLog(100000)
             
+            def curlCommand = "curl -s -H \"Authorization: token " + ACCESS_TOKEN + "\" \\\n" +
+                              "-X POST \\\n" +
+                              "-H \"Content-Type: application/octet-stream\" \\\n" +
+                              "--data-binary @\"" + logFile + "\" \\\n" +
+                              "\"" + apiUrl + "\""
+                    
             def response = sh(script: curlCommand, returnStatus: true)
             
             if (response == 0) {
