@@ -1,15 +1,24 @@
 pipeline {
   agent none
   stages {
-    stage('Start Hercules Cluster') {
+    stage('Spack-stack-test') {
        agent {
         label 'built-in'   
        }
       steps {
         script {
           for (label in pullRequest.labels) {
-            if ((label.matches("Stack_Build"))) {
-                 env.CHOICE_NODE='Hercules'
+            if ((label.matches("orion"))) {
+                 env.CHOICE_NODE='orion'
+            }  
+            else if ((label.matches("hera"))) { 
+                env.CHOICE_NODE='hera'
+            }  
+            else if ((label.matches("hercules"))) { 
+                env.CHOICE_NODE='hercules'
+            }  
+            else if ((label.matches("jet"))) {
+                env.CHOICE_NODE='jet'
             } 
             else { 
                 env.CHOICE_NODE='none'
@@ -17,30 +26,38 @@ pipeline {
          }
 // Why do I need another if..block, because it just works this way.
 
-            if (CHOICE_NODE == 'Hercules') {
-                echo "Starting up Hercules cluster ${CHOICE_NODE}...this might take 5-10 minutes...please be patient."
+            if (CHOICE_NODE == 'orion') {
+                echo "Starting up orion ${CHOICE_NODE}...this might take 5-10 minutes...please be patient."
+               
+            } 
+             else if (CHOICE_NODE == 'jet') {
+                echo "Starting up jet ${CHOICE_NODE}...this might take 5-10 minutes...please be patient."
+            }
+             else if (CHOICE_NODE == 'hercules') {
+                 echo "Starting up hera ${CHOICE_NODE}...this might take 5-10 minutes...please be patient."
+            }
+             else if (CHOICE_NODE == 'hera') {
+                 echo "Starting up hera ${CHOICE_NODE}...this might take 5-10 minutes...please be patient."
             }
              else {
-                echo "${CHOICE_NODE} is NOT a Parallelworks cluster, moving on..."
+                echo "${CHOICE_NODE} is NOT a platform, moving on..."
             }
        }    
     }
   } 
-  stage('Run Regression Tests script') {
+  stage('Run Land DA Workflow on Hera') {
         agent {
-          label "${CHOICE_NODE}"
+          label "hercules"
         }
         environment {
-        ACCNR = 'nems'
-        NODE_PATH = '/work/'
+        ACCNR = 'epic'
+        NODE_PATH = '/scratch1/NCEPDEV/stmp2/role.epic/'
       }
       steps {
-          }
-        }
+          
         cleanWs()
         checkout scm
         sh '''
-        pwd
         git clone --recurse-submodules https://github.com/ufs-community/ufs-weather-model
         cd ufs-weather-model/modulefiles/
         sed -i 's|/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-dev-20230825/envs/ufs-pio-2.5.10/install/modulefiles/Core|/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.5.0/envs/unified-env/install/modulefiles/Core|g' ufs_hercules.gnu.lua 
@@ -53,11 +70,59 @@ pipeline {
         sed -i 's|stack_python_ver=os.getenv("stack_python_ver") or "3.9.14"|stack_python_ver=os.getenv("stack_python_ver") or "3.10.8"|g' ufs_hercules.intel.lua 
         sed -i 's|3.3.3|4.3.0|g' ufs_hercules.intel.lua 
         sed -i 's|2.9.2|2.10.0|g' ufs_hercules.intel.lua
-        cd ..
-        cd tests/
-        ./rt.sh -a nems -c -l rt.conf
-        echo "Sending regression test logs to $GIT_URL"
-        fi
         '''
-            }
+      }
+    }        
+    stage('Run Land DA Workflow on Orion') {
+        agent {
+          label "orion"
         }
+        environment {
+        ACCNR = 'nems'
+        NODE_PATH = '/work/noaa/epic/role-epic/'
+      }
+      steps {
+          
+        cleanWs()
+        checkout scm
+        sh '''
+        
+        '''
+      }
+    }    
+    stage('Run Land DA Workflow on Hercules') {
+        agent {
+          label "hera"
+        }
+        environment {
+        ACCNR = 'nems'
+        NODE_PATH = '/work/noaa/epic/role-epic/'
+      }
+      steps {
+          
+        cleanWs()
+        checkout scm
+        sh '''
+      
+        ''' 
+        }
+    } 
+        stage('Run Land DA Workflow on Jet') {
+        agent {
+          label "jet"
+        }
+        environment {
+        ACCNR = 'hfv3gfs'
+        NODE_PATH = '/mnt/lfs4/HFIP/hfv3gfs/role.epic/'
+      }
+      steps {
+          
+        cleanWs()
+        checkout scm
+        sh '''
+        
+        '''
+      }
+    }
+  }  
+}
