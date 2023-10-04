@@ -19,10 +19,14 @@ def postGitHubCommentWithLogFile(commentMessage) {
             //      "-X POST -d '{\"body\": \"" + commentMessage + "\"}' \\\n" +
             //      "\"" + apiUrl + "\""
             
-            def logFile = "${WORKSPACE}/console.log"
-            echo "${logFile}
+            def logFile = "build-${currentBuild.number}-console.log"
+            echo "Log File Name: ${logFile}"
+
+            def logContent = currentBuild.rawBuild.getLog(100000).join('\n')
+            echo "Log Content added" 
             
-            writeFile file: logFile, text: currentBuild.rawBuild.getLog(100000)
+            writeFile file: logFile, text: logContent
+            // archiveArtifacts artifacts: "build-${currentBuild.number}-console.log", allowEmptyArchive: true
             
             def curlCommand = "curl -s -H \"Authorization: token " + ACCESS_TOKEN + "\" \\\n" +
                               "-X POST \\\n" +
