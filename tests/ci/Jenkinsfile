@@ -26,13 +26,25 @@ def postGitHubCommentWithLogFile(commentMessage) {
             echo "Log Content added" 
             
             writeFile file: logFile, text: logContent
+            def encodedLogFile = new String(logFile.bytes).bytes.encodeBase64().toString()
             // archiveArtifacts artifacts: "build-${currentBuild.number}-console.log", allowEmptyArchive: true
             
-            def curlCommand = "curl -s -H \"Authorization: token " + ACCESS_TOKEN + "\" \\\n" +
-                              "-X POST \\\n" +
-                              "-H \"Content-Type: application/octet-stream\" \\\n" +
-                              "--data-binary @\"" + logFile + "\" \\\n" +
-                              "\"" + apiUrl + "\""
+             def curlCommand = '''
+                curl -s -H "Authorization: token ''' + ACCESS_TOKEN + '''" \\
+                -X POST \\
+                -H "Content-Type: application/json" \\
+                --data '{
+                    "body": "''' + commentMessage + '''",
+                    "created_from": "Jenkins",
+                    "attachments": [
+                        {
+                            "name": "console.log",
+                            "data": "''' + encodedLogFile + '''"
+                        }
+                    ]
+                }' \\
+                "''' + apiUrl + '''"
+            '''
                     
             def response = sh(script: curlCommand, returnStatus: true)
             
