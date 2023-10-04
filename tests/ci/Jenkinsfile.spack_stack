@@ -45,7 +45,7 @@ pipeline {
        }    
     }
   } 
-  stage('Run Land DA Workflow on Hera') {
+  stage('Test spack-stack on Hercules') {
         agent {
           label "hercules"
         }
@@ -73,7 +73,7 @@ pipeline {
         '''
       }
     }        
-    stage('Run Land DA Workflow on Orion') {
+    stage('Test spack-stack on Orion') {
         agent {
           label "orion"
         }
@@ -90,7 +90,7 @@ pipeline {
         '''
       }
     }    
-    stage('Run Land DA Workflow on Hercules') {
+    stage('Test spack-stack on Hera') {
         agent {
           label "hera"
         }
@@ -107,7 +107,7 @@ pipeline {
         ''' 
         }
     } 
-        stage('Run Land DA Workflow on Jet') {
+        stage('Test spack-stack on Jet') {
         agent {
           label "jet"
         }
