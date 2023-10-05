@@ -368,6 +368,7 @@ export NUM_FILES=2
 export FILENAME_BASE="'atm' 'sfc'"
 export OUTPUT_GRID="'cubed_sphere_grid'"
 export OUTPUT_FILE="'netcdf'"
+export ZSTANDARD_LEVEL=0
 export IDEFLATE=0
 export NBITS=0
 export ICHUNK2D=0

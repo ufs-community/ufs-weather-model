@@ -46,6 +46,9 @@ for i = 1, #ufs_modules do
   end
 end
 
+nccmp_ver=os.getenv("nccmp_ver") or "1.9.0.1"
+load(pathJoin("nccmp", nccmp_ver))
+
 setenv("CC", "mpicc")
 setenv("CXX", "mpic++")
 setenv("FC", "mpif90")

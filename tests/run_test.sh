@@ -89,9 +89,9 @@ mkdir -p modulefiles
 if [[ $MACHINE_ID == linux ]]; then
   cp ${PATHRT}/modules.fv3_${COMPILE_NR}             ./modulefiles/modules.fv3
 else
-  cp ${PATHRT}/modules.fv3_${COMPILE_NR}.lua             ./modulefiles/modules.fv3.lua
+  cp ${PATHRT}/modules.fv3_${COMPILE_NR}.lua         ./modulefiles/modules.fv3.lua
 fi
-cp ${PATHTR}/modulefiles/ufs_common*               ./modulefiles/.
+cp ${PATHTR}/modulefiles/ufs_common*                 ./modulefiles/.
 
 # Get the shell file that loads the "module" command and purges modules:
 cp ${PATHRT}/module-setup.sh                       module-setup.sh
@@ -106,6 +106,9 @@ if [[ " s4 hera orion hercules gaea jet cheyenne acorn wcoss2 " =~ " $MACHINE_ID
     module load stack-intel/2021.5.0 stack-intel-oneapi-mpi/2021.5.0
     module load miniconda/3.9.12
     module load nccmp/1.9.0.1
+  elif [[ " hera orion hercules gaea jet " =~ " ${MACHINE_ID} " ]] ; then
+    module use modulefiles
+    module load modules.fv3
   else
     module load nccmp
   fi
