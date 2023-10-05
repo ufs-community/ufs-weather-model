@@ -15,8 +15,8 @@ load(pathJoin("stack-intel-oneapi-mpi", stack_impi_ver))
 cmake_ver=os.getenv("cmake_ver") or "3.23.1"
 load(pathJoin("cmake", cmake_ver))
 
-stack_python_ver=os.getenv("stack_python_ver") or "3.9.12"
-load(pathJoin("stack-python", stack_python_ver))
+--stack_python_ver=os.getenv("stack_python_ver") or "3.10.8"
+--load(pathJoin("stack-python", stack_python_ver))
 
 load("ufs_common")
 

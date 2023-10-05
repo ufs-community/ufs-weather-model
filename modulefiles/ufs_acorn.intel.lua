@@ -6,7 +6,7 @@ prepend_path("MODULEPATH", "/lfs/h1/emc/nceplibs/noscrub/spack-stack/spack-stack
 
 load("stack-intel")
 load("stack-cray-mpich")
-load("stack-python")
+--load("stack-python")
 
 --Avoid production installations; use spack-stack only:
 remove_path("MODULEPATH", "/apps/ops/prod/libs/modulefiles/compiler/intel/19.1.3.304")
