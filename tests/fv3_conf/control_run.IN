@@ -17,7 +17,8 @@ SUFFIX=${RT_SUFFIX}
 if [ $WARM_START = .false. ]; then
   mkdir INPUT RESTART
   if [ "$V2_SFC_FILE" = "true" ]; then
-    cp -r /scratch1/NCEPDEV/da/George.Gayno/ufs_utils.git/chgres_cube.fractional/RT/FV3_input_data48/INPUT_L127.v2.sfc/* ./INPUT/.
+    cp -r /scratch1/NCEPDEV/da/George.Gayno/ufs_utils.git/chgres_cube.fractional/RT/${inputdir}/INPUT_L127.v2.sfc/* ./INPUT/.
+#   cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127.v2.sfc/* ./INPUT/.
   else
     cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127/* ./INPUT/.
   fi
