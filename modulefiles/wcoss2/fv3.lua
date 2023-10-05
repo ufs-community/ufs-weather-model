@@ -38,10 +38,10 @@ load(pathJoin("nemsio", nemsio_ver))
 g2tmpl_ver=os.getenv("g2tmpl_ver") or "1.9.1"
 load(pathJoin("g2tmpl", g2tmpl_ver))
 
-upp_ver=os.getenv("upp_ver") or "8.2.0"
+upp_ver=os.getenv("upp_ver") or "8.3.0"
 load(pathJoin("upp", upp_ver))
 
-crtm_ver=os.getenv("crtm_ver") or "2.4.0"
+crtm_ver=os.getenv("crtm_ver") or "2.4.0.1"
 load(pathJoin("crtm", crtm_ver))
 
 g2_ver=os.getenv("g2_ver") or "3.4.5"
