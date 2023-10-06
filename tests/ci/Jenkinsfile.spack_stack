@@ -40,7 +40,7 @@ pipeline {
         checkout scm
         sh '''
         groups
-        git clone --recurse-submodules https://github.com/ufs-community/ufs-weather-model
+        git clone -b Feature/ci_log_automation https://github.com/zach1221/ufs-weather-model
         cd ufs-weather-model/modulefiles/
         sed -i 's|/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-dev-20230825/envs/ufs-pio-2.5.10/install/modulefiles/Core|/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.5.0/envs/unified-env/install/modulefiles/Core|g' ufs_hercules.gnu.lua 
         sed -i 's|/work/noaa/epic/role-epic/spack-stack/hercules/modulefiles|/work/noaa/epic/role-epic/spack-stack/hercules/modulefiles|g' ufs_hercules.gnu.lua
