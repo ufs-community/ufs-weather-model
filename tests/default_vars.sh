@@ -1327,6 +1327,7 @@ export OUTPUT_GRID='gaussian_grid'
 export NSTF_NAME='2,0,0,0,0'
 export WRITE_DOPOST=.true.
 export IAER=5111
+export FHMAX=12
 
 export FRAC_GRID=.false.
 export FRAC_ICE=.true.
