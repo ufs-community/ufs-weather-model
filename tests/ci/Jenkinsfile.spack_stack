@@ -8,17 +8,8 @@ pipeline {
       steps {
         script {
           for (label in pullRequest.labels) {
-            if ((label.matches("orion"))) {
-                 env.CHOICE_NODE='orion'
-            }  
-            else if ((label.matches("hera"))) { 
-                env.CHOICE_NODE='hera'
-            }  
-            else if ((label.matches("hercules"))) { 
-                env.CHOICE_NODE='hercules'
-            }  
-            else if ((label.matches("jet"))) {
-                env.CHOICE_NODE='jet'
+            if ((label.matches("hercules"))) {
+                 env.CHOICE_NODE='hercules'
             } 
             else { 
                 env.CHOICE_NODE='none'
@@ -26,18 +17,8 @@ pipeline {
          }
 // Why do I need another if..block, because it just works this way.
 
-            if (CHOICE_NODE == 'orion') {
-                echo "Starting up orion ${CHOICE_NODE}...this might take 5-10 minutes...please be patient."
-               
-            } 
-             else if (CHOICE_NODE == 'jet') {
-                echo "Starting up jet ${CHOICE_NODE}...this might take 5-10 minutes...please be patient."
-            }
-             else if (CHOICE_NODE == 'hercules') {
-                 echo "Starting up hera ${CHOICE_NODE}...this might take 5-10 minutes...please be patient."
-            }
-             else if (CHOICE_NODE == 'hera') {
-                 echo "Starting up hera ${CHOICE_NODE}...this might take 5-10 minutes...please be patient."
+            if (CHOICE_NODE == 'hercules') {
+                echo "Starting up hercules ${CHOICE_NODE}...this might take 5-10 minutes...please be patient."
             }
              else {
                 echo "${CHOICE_NODE} is NOT a platform, moving on..."
@@ -76,57 +57,6 @@ pipeline {
         ./rt.sh -a epic -c -e -l rt.conf
         '''
       }
-    }        
-    stage('Test spack-stack on Orion') {
-        agent {
-          label "orion"
-        }
-        environment {
-        ACCNR = 'nems'
-        NODE_PATH = '/work/noaa/epic/role-epic/'
-      }
-      steps {
-          
-        cleanWs()
-        checkout scm
-        sh '''
-        
-        '''
-      }
-    }    
-    stage('Test spack-stack on Hera') {
-        agent {
-          label "hera"
-        }
-        environment {
-        ACCNR = 'nems'
-        NODE_PATH = '/scratch1/NCEPDEV/stmp2/role.epic/'
-      }
-      steps {
-          
-        cleanWs()
-        checkout scm
-        sh '''
-      
-        ''' 
-        }
-    } 
-        stage('Test spack-stack on Jet') {
-        agent {
-          label "jet"
-        }
-        environment {
-        ACCNR = 'hfv3gfs'
-        NODE_PATH = '/mnt/lfs4/HFIP/hfv3gfs/role.epic/'
-      }
-      steps {
-          
-        cleanWs()
-        checkout scm
-        sh '''
-        
-        '''
       }
     }
-  }  
-}
+  }
