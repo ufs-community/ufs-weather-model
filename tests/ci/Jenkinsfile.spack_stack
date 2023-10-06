@@ -70,6 +70,10 @@ pipeline {
         sed -i 's|stack_python_ver=os.getenv("stack_python_ver") or "3.9.14"|stack_python_ver=os.getenv("stack_python_ver") or "3.10.8"|g' ufs_hercules.intel.lua 
         sed -i 's|3.3.3|4.3.0|g' ufs_hercules.intel.lua 
         sed -i 's|2.9.2|2.10.0|g' ufs_hercules.intel.lua
+        cd ..
+        cd tests
+        module list
+        ./rt.sh -a epic -c -e -l rt.conf
         '''
       }
     }        
