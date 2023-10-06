@@ -874,8 +874,14 @@ export MOM6_THERMO_SPAN=False
 export MOM6_USE_WAVES=True
 export MOM6_ALLOW_LANDMASK_CHANGES=False
 # MOM6 IAU
-export MOM_IAU=False
-export MOM_IAU_HRS=6
+export ODA_INCUPD=False
+export ODA_INCUPD_NHOURS=6
+export ODA_TEMPINC_VAR="'pt_inc'"
+export ODA_SALTINC_VAR="'s_inc'"
+export ODA_THK_VAR="'h_fg'"
+export ODA_INCUPD_UV=False
+export ODA_UINC_VAR="'u_inc'"
+export ODA_VINC_VAR="'v_inc'"
 # MOM6 stochastics
 export DO_OCN_SPPT=False
 export PERT_EPBL=False
@@ -1032,8 +1038,14 @@ export MOM6_RIVER_RUNOFF=False
 export FRUNOFF=''
 export CHLCLIM=seawifs_1998-2006_smoothed_2X.nc
 # MOM6 IAU
-export MOM_IAU=False
-export MOM_IAU_HRS=6
+export ODA_INCUPD=False
+export ODA_INCUPD_NHOURS=6
+export ODA_TEMPINC_VAR="'pt_inc'"
+export ODA_SALTINC_VAR="'s_inc'"
+export ODA_THK_VAR="'h_fg'"
+export ODA_INCUPD_UV=False
+export ODA_UINC_VAR="'u_inc'"
+export ODA_VINC_VAR="'v_inc'"
 export MOM6_USE_LI2016=False
 # MOM6 stochastics
 export DO_OCN_SPPT=False
