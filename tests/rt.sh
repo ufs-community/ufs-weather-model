@@ -403,6 +403,8 @@ elif [[ $MACHINE_ID = jet ]]; then
 
   module load ecflow/5.5.3
   ECFLOW_START=ecflow_start.sh
+  # Bug fix for wrong Pythonpath in ecflow module
+  export PYTHONPATH="/apps/ecflow/5.5.3/lib/python3.8/site-packages:$PYTHONPATH"
 
   QUEUE=batch
   COMPILE_QUEUE=batch

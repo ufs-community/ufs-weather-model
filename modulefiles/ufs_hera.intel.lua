@@ -2,7 +2,7 @@ help([[
 loads UFS Model prerequisites for Hera/Intel
 ]])
 
-prepend_path("MODULEPATH", "/scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.5.0/envs/unified-env/install/modulefiles/Core")
+prepend_path("MODULEPATH", "/scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.5.0/envs/unified-env-noavx512/install/modulefiles/Core")
 prepend_path("MODULEPATH", "/scratch1/NCEPDEV/jcsda/jedipara/spack-stack/modulefiles")
 
 stack_intel_ver=os.getenv("stack_intel_ver") or "2021.5.0"
