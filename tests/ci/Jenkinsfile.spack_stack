@@ -40,22 +40,17 @@ pipeline {
         checkout scm
         sh '''
         groups
-        git clone -b Feature/ci_log_automation https://github.com/zach1221/ufs-weather-model
-        cd ufs-weather-model/modulefiles/
-        sed -i 's|/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-dev-20230825/envs/ufs-pio-2.5.10/install/modulefiles/Core|/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.5.0/envs/unified-env/install/modulefiles/Core|g' ufs_hercules.gnu.lua 
-        sed -i 's|/work/noaa/epic/role-epic/spack-stack/hercules/modulefiles|/work/noaa/epic/role-epic/spack-stack/hercules/modulefiles|g' ufs_hercules.gnu.lua
-        sed -i 's|stack_python_ver=os.getenv("stack_python_ver") or "3.9.14"|stack_python_ver=os.getenv("stack_python_ver") or "3.10.8"|g' ufs_hercules.gnu.lua 
-        sed -i 's|3.3.3|4.3.0|g' ufs_hercules.gnu.lua 
-        sed -i 's|2.9.2|2.10.0|g' ufs_hercules.gnu.lua
-        sed -i 's|/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-dev-20230825/envs/ufs-pio-2.5.10/install/modulefiles/Core|/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.5.0/envs/unified-env/install/modulefiles/Core|g' ufs_hercules.intel.lua
-        sed -i 's|/work/noaa/epic/role-epic/spack-stack/hercules/modulefiles|/work/noaa/epic/role-epic/spack-stack/hercules/modulefiles|g' ufs_hercules.intel.lua  
-        sed -i 's|stack_python_ver=os.getenv("stack_python_ver") or "3.9.14"|stack_python_ver=os.getenv("stack_python_ver") or "3.10.8"|g' ufs_hercules.intel.lua 
-        sed -i 's|3.3.3|4.3.0|g' ufs_hercules.intel.lua 
-        sed -i 's|2.9.2|2.10.0|g' ufs_hercules.intel.lua
-        cd ..
-        cd tests
-        module list
-        ./rt.sh -a nems -c -e -l rt.conf
+        cd /work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.5.0
+        module purge
+        module use /work/noaa/epic/role-epic/spack-stack/hercules/modulefiles
+        module load ecflow/5.8.4
+        module load mysql/8.0.31
+        source ./setup.sh
+        spack env activate -p envs/unified-env
+        spack concretize 2>&1 | tee log.concretize.unified-env.001
+        spack install --verbose 2>&1 | tee log.install.unified-env.001
+        spack module lmod refresh
+        spack stack setup-meta-modules
         '''
       }
       }
