@@ -40,6 +40,8 @@ pipeline {
         checkout scm
         sh '''
         cd /work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.5.0
+        rm -rf log.concretize.unified-env.001
+        rm -rf log.install.unified-env.001
         module purge
         module use /work/noaa/epic/role-epic/spack-stack/hercules/modulefiles
         module load ecflow/5.8.4
