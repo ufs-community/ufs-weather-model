@@ -51,7 +51,7 @@ pipeline {
         spack concretize 2>&1 | tee log.concretize.unified-env.001
         spack install --verbose 2>&1 | tee log.install.unified-env.001
         spack module lmod refresh
-        y
+        echo y | command
         spack stack setup-meta-modules
         module list
         '''
