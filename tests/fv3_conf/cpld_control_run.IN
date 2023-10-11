@@ -97,7 +97,7 @@ else
           mv -f $RFILE INPUT/"${RFILE_OLD//${RESTART_FILE_PREFIX}./}"
      done
      if [[ $IAU_OFFSET == 6 ]] && [[ $FHROT -le 6 ]]; then
-       cp /scratch1/NCEPDEV/nems/Jun.Wang/nems/vlab/inc/c96/atm/fv_increment*.nc ./INPUT/.
+       cp @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127_mx${OCNRES}/fv_increment*.nc ./INPUT/.
      fi
 
      #if not mx025, then mom6 restart is a single file
@@ -109,7 +109,7 @@ else
      else
       cp ../${DEP_RUN}${SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.MOM.res.nc ./INPUT/MOM.res.nc
       if [[ $ODA_INCUPD == 'True' ]] && [[ $FHROT -le 6 ]]; then
-        cp /scratch1/NCEPDEV/nems/Jun.Wang/nems/vlab/inc/c96/ocn/mom6_increment.nc ./INPUT/mom6_increment.nc
+        cp @[INPUTDATA_ROOT]/MOM6_IC/mom6_increment.nc ./INPUT/mom6_increment.nc
       fi
      fi
 
