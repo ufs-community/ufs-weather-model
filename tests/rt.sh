@@ -310,12 +310,19 @@ elif [[ $MACHINE_ID = gaea ]]; then
   export PATH=/lustre/f2/pdata/esrl/gsd/spack-stack/miniconda-3.9.12/bin:$PATH
   export PYTHONPATH=/lustre/f2/pdata/esrl/gsd/spack-stack/miniconda-3.9.12/lib/python3.9/site-packages
 
+  module use /lustre/f2/dev/Samuel.Trahan/hafs/modulefiles/
+  module load rocoto
+  ROCOTORUN=$(which rocotorun)
+  ROCOTOSTAT=$(which rocotostat)
+  ROCOTOCOMPLETE=$(which rocotocomplete)
+  ROCOTO_SCHEDULER=slurm
+
   module use /lustre/f2/pdata/esrl/gsd/spack-stack/modulefiles
   module load ecflow/5.8.4
   ECFLOW_START=/lustre/f2/pdata/esrl/gsd/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
-  DISKNM=/lustre/f2/pdata/ncep_shared/emc.nemspara/RT
+  DISKNM=/lustre/f2/pdata/ncep/role.epic/RT
   QUEUE=normal
   COMPILE_QUEUE=normal
   PARTITION=c4
@@ -373,11 +380,35 @@ elif [[ $MACHINE_ID = orion ]]; then
   COMPILE_QUEUE=batch
   PARTITION=orion
   dprefix=/work/noaa/stmp/${USER}
-  DISKNM=/work/noaa/nems/emc.nemspara/RT
+  DISKNM=/work/noaa/epic/UFS-WM_RT
   STMP=$dprefix/stmp
   PTMP=$dprefix/stmp
 
   SCHEDULER=slurm
+
+elif [[ $MACHINE_ID = hercules ]]; then
+
+  module load contrib rocoto/1.3.5
+  ROCOTORUN=$(which rocotorun)
+  ROCOTOSTAT=$(which rocotostat)
+  ROCOTOCOMPLETE=$(which rocotocomplete)
+
+  module use /work/noaa/epic/role-epic/spack-stack/hercules/modulefiles
+  module load ecflow/5.8.4
+  ECFLOW_START=/work/noaa/epic/role-epic/spack-stack/hercules/ecflow-5.8.4/bin/ecflow_start.sh
+  ECF_PORT=$(( $(id -u) + 1500 ))
+
+  QUEUE=windfall
+  COMPILE_QUEUE=windfall
+  PARTITION=hercules
+  dprefix=/work2/noaa/stmp/${USER}
+  DISKNM=/work/noaa/epic/hercules/UFS-WM_RT
+  STMP=$dprefix/stmp
+  PTMP=$dprefix/stmp
+
+  SCHEDULER=slurm
+  cp fv3_conf/fv3_slurm.IN_hercules fv3_conf/fv3_slurm.IN
+  cp fv3_conf/compile_slurm.IN_hercules fv3_conf/compile_slurm.IN
 
 elif [[ $MACHINE_ID = jet ]]; then
 
@@ -432,6 +463,14 @@ elif [[ $MACHINE_ID = cheyenne ]]; then
 
   export PATH=/glade/work/jedipara/cheyenne/spack-stack/miniconda-3.9.12/bin:$PATH
   export PYTHONPATH=/glade/work/jedipara/cheyenne/spack-stack/miniconda-3.9.12/lib/python3.9/site-packages
+
+  module use /gpfs/fs1/work/strahan/rocoto/modulefiles
+  module load rocoto/1.3.3
+  ROCOTORUN=$(which rocotorun)
+  ROCOTOSTAT=$(which rocotostat)
+  ROCOTOCOMPLETE=$(which rocotocomplete)
+  ROCOTO_SCHEDULER=pbspro
+  ROCOTO_NODESIZE=36
 
   module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc
   module load ecflow/5.8.4
@@ -526,6 +565,17 @@ else
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}}
 fi
 
+if [[ "$CREATE_BASELINE" == false ]] ; then
+  if [[ ! -d "$RTPWD" ]] ; then
+    echo "Baseline directory does not exist:"
+    echo "   $RTPWD"
+    exit 1
+  elif [[ $( ls -1 "$RTPWD/" | wc -l ) -lt 1 ]] ; then
+    echo "Baseline directory is empty:"
+    echo "   $RTPWD"
+    exit 1
+  fi
+fi
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20221101}
 INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20220624
@@ -563,7 +613,10 @@ echo "Start Regression test" >> ${REGRESSIONTEST_LOG}
 echo                         >> ${REGRESSIONTEST_LOG}
 echo "Testing UFSWM Hash:" `git rev-parse HEAD` >> ${REGRESSIONTEST_LOG}
 echo "Testing With Submodule Hashes:" >> ${REGRESSIONTEST_LOG}
+cd ..
 git submodule status >> ${REGRESSIONTEST_LOG}
+
+cd tests
 
 source default_vars.sh
 
@@ -596,6 +649,10 @@ if [[ $ROCOTO == true ]]; then
     QUEUE=batch
     COMPILE_QUEUE=batch
     ROCOTO_SCHEDULER=slurm
+  elif [[ $MACHINE_ID = hercules ]]; then
+    QUEUE=windfall
+    COMPILE_QUEUE=windfall
+    ROCOTO_SCHEDULER=slurm
   elif [[ $MACHINE_ID = s4 ]]; then
     QUEUE=s4
     COMPILE_QUEUE=s4
@@ -607,6 +664,14 @@ if [[ $ROCOTO == true ]]; then
   elif [[ $MACHINE_ID = jet ]]; then
     QUEUE=batch
     COMPILE_QUEUE=batch
+    ROCOTO_SCHEDULER=slurm
+  elif [[ $MACHINE_ID = cheyenne ]]; then
+    QUEUE=regular
+    COMPILE_QUEUE=regular
+    ROCOTO_SCHEDULER=pbspro
+  elif [[ $MACHINE_ID = gaea ]]; then
+    QUEUE=normal
+    COMPILE_QUEUE=normal
     ROCOTO_SCHEDULER=slurm
   else
     die "Rocoto is not supported on this machine $MACHINE_ID"
@@ -672,6 +737,8 @@ EOF
     QUEUE=batch
   elif [[ $MACHINE_ID = orion ]]; then
     QUEUE=batch
+  elif [[ $MACHINE_ID = hercules ]]; then
+    QUEUE=windfall
   elif [[ $MACHINE_ID = jet ]]; then
     QUEUE=batch
   elif [[ $MACHINE_ID = s4 ]]; then
