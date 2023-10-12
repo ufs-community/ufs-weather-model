@@ -310,6 +310,13 @@ elif [[ $MACHINE_ID = gaea ]]; then
   export PATH=/lustre/f2/pdata/esrl/gsd/spack-stack/miniconda-3.9.12/bin:$PATH
   export PYTHONPATH=/lustre/f2/pdata/esrl/gsd/spack-stack/miniconda-3.9.12/lib/python3.9/site-packages
 
+  module use /lustre/f2/dev/Samuel.Trahan/hafs/modulefiles/
+  module load rocoto
+  ROCOTORUN=$(which rocotorun)
+  ROCOTOSTAT=$(which rocotostat)
+  ROCOTOCOMPLETE=$(which rocotocomplete)
+  ROCOTO_SCHEDULER=slurm
+
   module use /lustre/f2/pdata/esrl/gsd/spack-stack/modulefiles
   module load ecflow/5.8.4
   ECFLOW_START=/lustre/f2/pdata/esrl/gsd/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
@@ -457,6 +464,14 @@ elif [[ $MACHINE_ID = cheyenne ]]; then
   export PATH=/glade/work/jedipara/cheyenne/spack-stack/miniconda-3.9.12/bin:$PATH
   export PYTHONPATH=/glade/work/jedipara/cheyenne/spack-stack/miniconda-3.9.12/lib/python3.9/site-packages
 
+  module use /gpfs/fs1/work/strahan/rocoto/modulefiles
+  module load rocoto/1.3.3
+  ROCOTORUN=$(which rocotorun)
+  ROCOTOSTAT=$(which rocotostat)
+  ROCOTOCOMPLETE=$(which rocotocomplete)
+  ROCOTO_SCHEDULER=pbspro
+  ROCOTO_NODESIZE=36
+
   module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc
   module load ecflow/5.8.4
   ECFLOW_START=/glade/work/jedipara/cheyenne/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
@@ -550,6 +565,17 @@ else
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}}
 fi
 
+if [[ "$CREATE_BASELINE" == false ]] ; then
+  if [[ ! -d "$RTPWD" ]] ; then
+    echo "Baseline directory does not exist:"
+    echo "   $RTPWD"
+    exit 1
+  elif [[ $( ls -1 "$RTPWD/" | wc -l ) -lt 1 ]] ; then
+    echo "Baseline directory is empty:"
+    echo "   $RTPWD"
+    exit 1
+  fi
+fi
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20221101}
 INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20220624
@@ -638,6 +664,14 @@ if [[ $ROCOTO == true ]]; then
   elif [[ $MACHINE_ID = jet ]]; then
     QUEUE=batch
     COMPILE_QUEUE=batch
+    ROCOTO_SCHEDULER=slurm
+  elif [[ $MACHINE_ID = cheyenne ]]; then
+    QUEUE=regular
+    COMPILE_QUEUE=regular
+    ROCOTO_SCHEDULER=pbspro
+  elif [[ $MACHINE_ID = gaea ]]; then
+    QUEUE=normal
+    COMPILE_QUEUE=normal
     ROCOTO_SCHEDULER=slurm
   else
     die "Rocoto is not supported on this machine $MACHINE_ID"
