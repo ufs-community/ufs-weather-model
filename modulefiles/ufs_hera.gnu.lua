@@ -3,7 +3,6 @@ loads UFS Model prerequisites for Hera/GNU
 ]])
 
 prepend_path("MODULEPATH", "/scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.5.0/envs/unified-env-noavx512/install/modulefiles/Core")
-prepend_path("MODULEPATH", "/scratch1/NCEPDEV/jcsda/jedipara/spack-stack/modulefiles")
 
 stack_gnu_ver=os.getenv("stack_gnu_ver") or "9.2.0"
 load(pathJoin("stack-gcc", stack_gnu_ver))
