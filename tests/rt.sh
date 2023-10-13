@@ -313,6 +313,8 @@ elif [[ $MACHINE_ID = gaea ]]; then
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=slurm
 
+  module use /lustre/f2/dev/role.epic/contrib/spack-stack/c4/modulefiles
+  module load ecflow/5.8.4
   ECFLOW_START=/lustre/f2/dev/role.epic/contrib/spack-stack/c4/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
@@ -358,6 +360,8 @@ elif [[ $MACHINE_ID = orion ]]; then
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
 
+  module use /work/noaa/epic/role-epic/spack-stack/orion/modulefiles
+  module load ecflow/5.8.4
   ECFLOW_START=/work/noaa/epic/role-epic/spack-stack/orion/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
@@ -378,6 +382,8 @@ elif [[ $MACHINE_ID = hercules ]]; then
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
 
+  module use /work/noaa/epic/role-epic/spack-stack/hercules/modulefiles
+  module load ecflow/5.8.4
   ECFLOW_START=/work/noaa/epic/role-epic/spack-stack/hercules/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
@@ -402,7 +408,7 @@ elif [[ $MACHINE_ID = jet ]]; then
   ROCOTO_SCHEDULER=slurm
 
   module load ecflow/5.5.3
-  ECFLOW_START=ecflow_start.sh
+  ECFLOW_START=/apps/ecflow/5.5.3/bin/ecflow_start.sh
 
   QUEUE=batch
   COMPILE_QUEUE=batch
@@ -422,6 +428,9 @@ elif [[ $MACHINE_ID = s4 ]]; then
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=slurm
 
+  module load git/2.30.0
+  module use /data/prod/jedi/spack-stack/modulefiles
+  module load ecflow/5.8.4
   ECFLOW_START=/data/prod/jedi/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
@@ -446,6 +455,8 @@ elif [[ $MACHINE_ID = cheyenne ]]; then
   ROCOTO_SCHEDULER=pbspro
   ROCOTO_NODESIZE=36
 
+  module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc
+  module load ecflow/5.8.4
   ECFLOW_START=/glade/work/jedipara/cheyenne/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
