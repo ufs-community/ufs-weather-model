@@ -448,6 +448,7 @@ export DO_UGWP=.false.
 export DO_TOFD=.false.
 export GWD_OPT=1
 export DO_UGWP_V0=.false.
+export DO_UGWP_V1_W_GSLDRAG=.false.
 export DO_UGWP_V0_OROG_ONLY=.false.
 export DO_GSL_DRAG_LS_BL=.false.
 export DO_GSL_DRAG_SS=.false.
@@ -502,6 +503,7 @@ export FSCAV_AERO='"*:0.3","so2:0.0","msa:0.0","dms:0.0","nh3:0.4","nh4:0.6","bc
 # SFC
 export DO_MYJSFC=.false.
 export DO_MYNNSFCLAY=.false.
+export BL_MYNN_TKEADVECT=.false.
 
 # LSM
 export LSM=1
@@ -1204,6 +1206,30 @@ export DOCN_CDEPS=false
 export INPES=$INPES_dflt
 export JNPES=$JNPES_dflt
 export NTILES=1
+export IMFSHALCNV=2
+export IMFDEEPCNV=2
+export HYBEDMF=.false.
+export SATMEDMF=.true.
+export MONINQ_FAC=-1.0
+export HURR_PBL=.true.
+export ISATMEDMF=1
+export IOPT_SFC=1
+export IOPT_DVEG=2
+export IOPT_CRS=1
+export IOPT_RAD=1
+export IOPT_ALB=2
+export IOPT_STC=1
+export LSM=1
+export DO_GSL_DRAG_LS_BL=.true.
+export DO_GSL_DRAG_SS=.true.
+export DO_GSL_DRAG_TOFD=.true.
+export IMP_PHYSICS=11
+export IAER=111
+export CNVGWD=.false.
+export LTAEROSOL=.false.
+export CDMBWD=1.0,1.0,1.0,1.0
+export LHEATSTRG=.false.
+export LRADAR=.true.
 
 export IS_MOVING_NEST=".false."
 export VORTEX_TRACKER=0
