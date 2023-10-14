@@ -352,8 +352,8 @@ elif [[ $MACHINE_ID = hera ]]; then
 elif [[ $MACHINE_ID = orion ]]; then
 
   module load git/2.28.0
-
-  module load gcc/8.3.0
+  module load gcc/10.2.0
+  module load python/3.9.2
 
   module load contrib rocoto/1.3.1
   ROCOTORUN=$(which rocotorun)
