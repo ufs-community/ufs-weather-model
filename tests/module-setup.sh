@@ -1,4 +1,5 @@
 #!/bin/bash
+set -eu
 
 if [[ $MACHINE_ID = jet ]] ; then
     # We are on NOAA Jet
