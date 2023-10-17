@@ -459,33 +459,6 @@ elif [[ $MACHINE_ID = s4 ]]; then
 
   SCHEDULER=slurm
 
-elif [[ $MACHINE_ID = cheyenne ]]; then
-
-  export PATH=/glade/work/jedipara/cheyenne/spack-stack/miniconda-3.9.12/bin:$PATH
-  export PYTHONPATH=/glade/work/jedipara/cheyenne/spack-stack/miniconda-3.9.12/lib/python3.9/site-packages
-
-  module use /gpfs/fs1/work/strahan/rocoto/modulefiles
-  module load rocoto/1.3.3
-  ROCOTORUN=$(which rocotorun)
-  ROCOTOSTAT=$(which rocotostat)
-  ROCOTOCOMPLETE=$(which rocotocomplete)
-  ROCOTO_SCHEDULER=pbspro
-  ROCOTO_NODESIZE=36
-
-  module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc
-  module load ecflow/5.8.4
-  ECFLOW_START=/glade/work/jedipara/cheyenne/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
-  ECF_PORT=$(( $(id -u) + 1500 ))
-
-  QUEUE=regular
-  COMPILE_QUEUE=regular
-  PARTITION=
-  dprefix=/glade/scratch
-  DISKNM=/glade/scratch/epicufsrt/GMTB/ufs-weather-model/RT
-  STMP=$dprefix
-  PTMP=$dprefix
-  SCHEDULER=pbs
-
 elif [[ $MACHINE_ID = stampede ]]; then
 
   export PYTHONPATH=
@@ -665,10 +638,6 @@ if [[ $ROCOTO == true ]]; then
     QUEUE=batch
     COMPILE_QUEUE=batch
     ROCOTO_SCHEDULER=slurm
-  elif [[ $MACHINE_ID = cheyenne ]]; then
-    QUEUE=regular
-    COMPILE_QUEUE=regular
-    ROCOTO_SCHEDULER=pbspro
   elif [[ $MACHINE_ID = gaea ]]; then
     QUEUE=normal
     COMPILE_QUEUE=normal
@@ -745,8 +714,6 @@ EOF
     QUEUE=s4
   elif [[ $MACHINE_ID = gaea ]]; then
     QUEUE=normal
-  elif [[ $MACHINE_ID = cheyenne ]]; then
-    QUEUE=regular
   else
     die "ecFlow is not supported on this machine $MACHINE_ID"
   fi
