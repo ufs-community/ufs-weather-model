@@ -477,10 +477,10 @@ elif [[ $MACHINE_ID = derecho ]]; then
   cp fv3_conf/fv3_qsub.IN_derecho fv3_conf/fv3_qsub.IN
   cp fv3_conf/compile_qsub.IN_derecho fv3_conf/compile_qsub.IN
 
-  ROCOTORUN=$(which rocotorun)
-  ROCOTOSTAT=$(which rocotostat)
-  ROCOTOCOMPLETE=$(which rocotocomplete)
-  ROCOTO_SCHEDULER=pbspro
+  #ROCOTORUN=$(which rocotorun)
+  #ROCOTOSTAT=$(which rocotostat)
+  #ROCOTOCOMPLETE=$(which rocotocomplete)
+  #ROCOTO_SCHEDULER=pbspro
 
 elif [[ $MACHINE_ID = stampede ]]; then
 
