@@ -1,0 +1,71 @@
+#
+#  cpld_control GFSv17 test
+#
+
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system - C96MX100 with IAU"
+
+export CNTL_DIR="cpld_control_gfsv17_iau"
+
+export LIST_FILES="sfcf012.nc \
+                   atmf012.nc \
+                   GFSFLX.GrbF12 \
+                   GFSPRS.GrbF12 \
+                   20210323.000000.out_pnt.ww3 \
+                   20210323.000000.out_grd.ww3 "
+
+export_fv3
+export_cpl
+
+export CPLCHM=.false.
+export DNATS=0
+export OUTPUT_GRID="gaussian_grid"
+export WRITE_DOPOST=.true.
+
+export FHROT=3
+export FHMAX=18
+export RESTART_N=$((FHMAX-$FHROT))
+export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${FHROT} + ${SHOUR} )))0000"
+export RESTART_FILE_SUFFIX_SECS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%05d" $(( (${FHROT}+ ${SHOUR})*3600 )))"
+
+# ATM warm start
+export WARM_START=.true.
+export MAKE_NH=.false.
+export NA_INIT=0
+export EXTERNAL_IC=.false.
+export NGGPS_IC=.false.
+export MOUNTAIN=.true.
+
+# ICE warm start
+export CICERUNTYPE=continue
+export RUNTYPE=continue
+export USE_RESTART_TIME=.true.
+
+# MOM6 warm start
+export MOM6_RESTART_SETTING=r
+
+export TOPOEDITS=ufs.topo_edits_011818.nc
+export MOM6_ALLOW_LANDMASK_CHANGES=True
+export eps_imesh=2.5e-1
+export DIAG_FREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
+
+export FV3_RUN=cpld_control_run.IN
+export FIELD_TABLE=field_table_thompson_noaero_tke_progsigma
+export DIAG_TABLE=diag_table_cpld_template
+export INPUT_NML=cpld_control.nml.IN
+export NEMS_CONFIGURE=nems.configure.cpld_noaero_outwav.IN
+
+#GFSv17	settings
+export PROGSIGMA=.true.
+
+#IAU
+export CHOUR=12
+export IAU_OFFSET=6
+export IAU_DELTHRS=6
+export IAUFHRS='3 6 9'
+export IAU_INC_FILES="'fv_increment3.nc','fv_increment6.nc','fv_increment9.nc'"
+export ODA_INCUPD="True"
+export ODA_INCUPD_UV="True"
+
+if [[ $MACHINE_ID = cheyenne ]]; then
+  TPN=18
+fi

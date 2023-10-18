@@ -352,8 +352,11 @@ elif [[ $MACHINE_ID = hera ]]; then
   PARTITION=
   dprefix=/scratch1/NCEPDEV
   DISKNM=/scratch2/NAGAPE/epic/UFS-WM_RT
-  STMP=$dprefix/stmp4
-  PTMP=$dprefix/stmp2
+  #STMP=$dprefix/stmp4
+  #PTMP=$dprefix/stmp2
+  STMP=/scratch1/BMC/gsd-fv3-dev/smirnova
+  PTMP=/scratch1/BMC/gsd-fv3-dev/smirnova
+
 
   SCHEDULER=slurm
 
