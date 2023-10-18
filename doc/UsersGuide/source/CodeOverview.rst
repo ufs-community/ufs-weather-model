@@ -24,11 +24,11 @@ Preconfigured (Level 1) systems for the UFS WM already have the required externa
 Currently, Level 1 (or Tier-1) platforms for regression testing are: 
 
    * WCOSS2 (Intel)
-   * Cheyenne (Intel/GNU compilers)
    * Gaea (Intel)
    * Hera (Intel/GNU compilers)
    * Jet (Intel)
    * Orion (Intel)
+   * Hercules (Intel/GNU compilers)
    * AWS Docker container (Intel)
 
 More information is available in the `UFS WM wiki <https://github.com/ufs-community/ufs-weather-model/wiki/Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>`__. 
