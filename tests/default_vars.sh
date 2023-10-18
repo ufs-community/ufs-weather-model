@@ -542,7 +542,6 @@ export OUTPUT_FH="12 -1"
 export NFHOUT=12
 export NFHMAX_HF=12
 export NFHOUT_HF=6
-export IAU_OFFSET=0
 export FHZERO=6
 export FNALBC="'global_snowfree_albedo.bosu.t126.384.190.rg.grb'"
 export FNVETC="'global_vegtype.igbp.t126.384.190.rg.grb'"
@@ -588,6 +587,9 @@ export LNDP_MODEL_TYPE=0
 
 #IAU
 export IAU_INC_FILES="''"
+export IAU_DELTHRS=0
+export IAUFHRS=-1
+export IAU_OFFSET=0
 
 export FH_DFI_RADAR='-2e10'
 
@@ -595,8 +597,6 @@ export FH_DFI_RADAR='-2e10'
 export DO_CA=.false.
 export CA_SGS=.false.
 export CA_GLOBAL=.false.
-
-export IAU_DRYMASSFIXER=.false.
 
 #waves
 export WW3RSTDTHR=12
@@ -875,8 +875,14 @@ export MOM6_THERMO_SPAN=False
 export MOM6_USE_WAVES=True
 export MOM6_ALLOW_LANDMASK_CHANGES=False
 # MOM6 IAU
-export MOM_IAU=False
-export MOM_IAU_HRS=6
+export ODA_INCUPD=False
+export ODA_INCUPD_NHOURS=6
+export ODA_TEMPINC_VAR="'pt_inc'"
+export ODA_SALTINC_VAR="'s_inc'"
+export ODA_THK_VAR="'h_fg'"
+export ODA_INCUPD_UV=False
+export ODA_UINC_VAR="'u_inc'"
+export ODA_VINC_VAR="'v_inc'"
 # MOM6 stochastics
 export DO_OCN_SPPT=False
 export PERT_EPBL=False
@@ -1033,8 +1039,14 @@ export MOM6_RIVER_RUNOFF=False
 export FRUNOFF=''
 export CHLCLIM=seawifs_1998-2006_smoothed_2X.nc
 # MOM6 IAU
-export MOM_IAU=False
-export MOM_IAU_HRS=6
+export ODA_INCUPD=False
+export ODA_INCUPD_NHOURS=6
+export ODA_TEMPINC_VAR="'pt_inc'"
+export ODA_SALTINC_VAR="'s_inc'"
+export ODA_THK_VAR="'h_fg'"
+export ODA_INCUPD_UV=False
+export ODA_UINC_VAR="'u_inc'"
+export ODA_VINC_VAR="'v_inc'"
 export MOM6_USE_LI2016=False
 # MOM6 stochastics
 export DO_OCN_SPPT=False

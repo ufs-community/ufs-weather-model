@@ -82,12 +82,12 @@
        description: atmosphere export - mean downward LW heat flux
      #
      - standard_name: Faxa_rain
-       alias: mean_prec_rate
+       alias: inst_prec_rate
        canonical_units: kg m-2 s-1
        description: atmosphere export
      #
      - standard_name: Faxa_rainc
-       alias: mean_prec_rate_conv
+       alias: inst_prec_rate_conv
        canonical_units: kg m-2 s-1
        description: atmosphere export
      #
@@ -96,7 +96,7 @@
        description: atmosphere export
      #
      - standard_name: Faxa_snow
-       alias: mean_fprec_rate
+       alias: inst_fprec_rate
        canonical_units: kg m-2 s-1
        description: atmosphere export
      #
@@ -351,22 +351,22 @@
      #-----------------------------------
      #
      - standard_name: Faii_evap
-       alias: mean_evap_rate_atm_into_ice
+       alias: evap_rate_atm_into_ice
        canonical_units: kg m-2 s-1
        description: sea-ice export
      #
      - standard_name: Faii_lat
-       alias: mean_laten_heat_flx_atm_into_ice
+       alias: laten_heat_flx_atm_into_ice
        canonical_units: W m-2
        description: sea-ice export to atm - atm/ice latent heat flux
      #
      - standard_name: Faii_sen
-       alias: mean_sensi_heat_flx_atm_into_ice
+       alias: sensi_heat_flx_atm_into_ice
        canonical_units: W m-2
        description: sea-ice export to atm - atm/ice sensible heat flux
      #
      - standard_name: Faii_lwup
-       alias: mean_up_lw_flx_ice
+       alias: lwup_flx_ice
        canonical_units: W m-2
        description: sea-ice export - outgoing logwave radiation
      #
@@ -499,16 +499,16 @@
        description: sea-ice export
      #
      - standard_name: Si_vice
-       alias: mean_ice_volume
+       alias: sea_ice_volume
        canonical_units: m
-       description: sea-ice export - volume of ice per unit are
+       description: sea-ice export - volume of ice per unit area
      #
      - standard_name: Si_snowh
        canonical_units: m
        description: sea-ice export - surface_snow_water_equivalent
      #
      - standard_name: Si_vsno
-       alias: mean_snow_volume
+       alias: snow_volume_on_sea_ice
        canonical_units: m
        description: sea-ice export - volume of snow per unit area
      #
@@ -710,17 +710,17 @@
      #-----------------------------------
      #
      - standard_name: Faox_lat
-       alias: mean_laten_heat_flx_atm_into_ocn
+       alias: laten_heat_flx_atm_into_ocn
        canonical_units: W m-2
        description: mediator export - atm/ocn surface latent heat flux
      #
      - standard_name: Faox_sen
-       alias: mean_sensi_heat_flx_atm_into_ocn
+       alias: sensi_heat_flx_atm_into_ocn
        canonical_units: W m-2
        description: mediator export - atm/ocn surface sensible heat flux
      #
      - standard_name: Faox_lwup
-       alias: mean_up_lw_flx_ocn
+       alias: lwup_flx_ocn
        canonical_units: W m-2
        description: mediator export - long wave radiation flux over the ocean
      #
@@ -738,6 +738,12 @@
      # section: atmosphere fields that need to be defined but are not used
      #-----------------------------------
      #
+     - standard_name: mean_prec_rate
+       canonical_units: kg m-2 s-1
+     - standard_name: mean_fprec_rate
+       canonical_units: kg m-2 s-1
+     - standard_name: mean_prec_rate_conv
+       canonical_units: kg m-2 s-1
      - standard_name: inst_down_lw_flx
        canonical_units: W m-2
      - standard_name: inst_net_lw_flx
