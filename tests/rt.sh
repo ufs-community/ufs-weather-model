@@ -459,6 +459,29 @@ elif [[ $MACHINE_ID = s4 ]]; then
 
   SCHEDULER=slurm
 
+elif [[ $MACHINE_ID = derecho ]]; then
+
+  export PATH=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/bin:/glade/p/ral/jntp/tools/miniconda3/4.8.3/bin:$PATH
+  export PYTHONPATH=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/glade/p/ral/jntp/tools/miniconda3/4.8.3/lib/python3.8/site-packages
+  ECFLOW_START=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/bin/ecflow_start.sh
+  ECF_PORT=$(( $(id -u) + 1500 ))
+
+  QUEUE=main
+  COMPILE_QUEUE=main
+  PARTITION=
+  dprefix=/glade/derecho/scratch
+  DISKNM=/glade/cheyenne/scratch/epicufsrt/GMTB/ufs-weather-model/RT
+  STMP=$dprefix
+  PTMP=$dprefix
+  SCHEDULER=pbs
+  cp fv3_conf/fv3_qsub.IN_derecho fv3_conf/fv3_qsub.IN
+  cp fv3_conf/compile_qsub.IN_derecho fv3_conf/compile_qsub.IN
+
+  ROCOTORUN=$(which rocotorun)
+  ROCOTOSTAT=$(which rocotostat)
+  ROCOTOCOMPLETE=$(which rocotocomplete)
+  ROCOTO_SCHEDULER=pbspro
+
 elif [[ $MACHINE_ID = stampede ]]; then
 
   export PYTHONPATH=
@@ -630,6 +653,10 @@ if [[ $ROCOTO == true ]]; then
     QUEUE=s4
     COMPILE_QUEUE=s4
     ROCOTO_SCHEDULER=slurm
+  elif [[ $MACHINE_ID = derecho ]]; then
+    QUEUE=main
+    COMPILE_QUEUE=main
+    ROCOTO_SCHEDULER=pbspro
   elif [[ $MACHINE_ID = noaacloud ]]; then
     QUEUE=batch
     COMPILE_QUEUE=batch
@@ -714,6 +741,8 @@ EOF
     QUEUE=s4
   elif [[ $MACHINE_ID = gaea ]]; then
     QUEUE=normal
+  elif [[ $MACHINE_ID = derecho ]]; then
+    QUEUE=main
   else
     die "ecFlow is not supported on this machine $MACHINE_ID"
   fi
