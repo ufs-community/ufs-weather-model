@@ -219,6 +219,10 @@
   do_sppt      = @[DO_SPPT]
   do_shum      = @[DO_SHUM]
   do_skeb      = @[DO_SKEB]
+  iaufhrs      = @[IAUFHRS]
+  iau_delthrs  = @[IAU_DELTHRS]
+  iau_inc_files= @[IAU_INC_FILES]
+  iau_drymassfixer = .false.
   use_med_flux = @[USE_MED_FLUX]
   frac_grid    = @[FRAC_GRID]
   cplchm       = @[CPLCHM]
@@ -245,7 +249,6 @@
 
 &cires_ugwp_nml
   knob_ugwp_solver   = 2
-  knob_ugwp_version  = @[KNOB_UGWP_VERSION]
   knob_ugwp_source   = 1,1,0,0
   knob_ugwp_wvspec   = 1,25,25,25
   knob_ugwp_azdir    = 2,4,4,4
@@ -253,8 +256,10 @@
   knob_ugwp_effac    = 1,1,1,1
   knob_ugwp_doaxyz   = 1
   knob_ugwp_doheat   = 1
-  knob_ugwp_dokdis   = 2
-  knob_ugwp_ndx4lh   = 4
+  knob_ugwp_dokdis   = @[KNOB_UGWP_DOKDIS]
+  knob_ugwp_ndx4lh   = @[KNOB_UGWP_NDX4LH]
+  knob_ugwp_version  = @[KNOB_UGWP_VERSION]
+  launch_level      = 54
   knob_ugwp_palaunch = 275.0e2
   knob_ugwp_nslope   = @[KNOB_UGWP_NSLOPE]
   knob_ugwp_lzmax    = 15.750e3
