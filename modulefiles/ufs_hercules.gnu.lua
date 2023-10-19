@@ -3,6 +3,8 @@ loads UFS Model prerequisites for Hercules/GNU
 ]])
 
 prepend_path("MODULEPATH", "/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.5.0/envs/unified-env/install/modulefiles/Core")
+-- for openmpi, need:
+prepend_path("MODULEPATH", "/work/noaa/epic/role-epic/spack-stack/hercules/modulefiles/")
 
 stack_gnu_ver=os.getenv("stack_gnu_ver") or "11.3.1"
 load(pathJoin("stack-gcc", stack_gnu_ver))
