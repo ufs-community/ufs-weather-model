@@ -38,7 +38,7 @@ The CI/CD workflow then executes the following steps:
 
    #. A number of AWS EC2 instances are started.
 
-   #. Test jobs are started on AWS after downloading the spack-stack Docker container,
+   #. Test jobs are started on AWS after downloading the HPC-Stack Docker container,
       the executable file from the build job, and the input-data Docker container.
 
    #. When all tests are complete, EC2 instances are stopped. Test results are reported
