@@ -20,7 +20,7 @@ The UFS Weather Model (:term:`WM`) uses GitHub Actions (GHA), a GitHub-hosted co
 to perform CI/CD testing. Build jobs are done on GHA-provided virtual machines. Test jobs are 
 performed on the Amazon Web Services (AWS) cloud platform using a number of EC2 instances. 
 Builds and tests are carried out in a Docker container. The container includes a pre-installed version of the
-:term:`spack-stack`, which includes all prerequisite libraries. Input data needed to run the tests 
+:term:`HPC-Stack`, which includes all prerequisite libraries. Input data needed to run the tests 
 are stored as a separate Docker container.
 
 When a developer makes a pull request (PR) to the UFS WM repository, a code
