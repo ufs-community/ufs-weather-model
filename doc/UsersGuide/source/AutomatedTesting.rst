@@ -31,7 +31,7 @@ The CI/CD workflow then executes the following steps:
       subcomponents are up to date with the top of the ``develop`` branch.
 
    #. If the check is successful, build jobs are started on GHA-provided virtual machines
-      by downloading the spack-stack Docker container stored in Docker Hub.
+      by downloading the HPC-Stack Docker container stored in Docker Hub.
 
    #. Once all build jobs are successful, the created executable files are stored as
       artifacts in GHA.
