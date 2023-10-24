@@ -1,4 +1,4 @@
-### CICE Fortran compiler flags
+CICE-interface/CMakeLists.txt### CICE Fortran compiler flags
 if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
   set(CMAKE_Fortran_FLAGS "-g -fbacktrace")
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fconvert=big-endian -ffree-line-length-none ")
