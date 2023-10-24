@@ -1,24 +1,13 @@
 #
-#  cpld_control GFSv17 with UGWPv1 test, i.e., GSL orographic drag +
+#  cpld_control GFSv17 with UGWPv1 test, i.e., GSL orographic drag + 
 #  version 1 non-stationary GWD
 #
 
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system - C96MX100 - unst WW3"
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system - C96MX100 - unst WW3 - Restart "
 
 export CNTL_DIR="cpld_control_gfsv17"
 
-export LIST_FILES="sfcf021.tile1.nc \
-                   sfcf021.tile2.nc \
-                   sfcf021.tile3.nc \
-                   sfcf021.tile4.nc \
-                   sfcf021.tile5.nc \
-                   sfcf021.tile6.nc \
-                   atmf021.tile1.nc \
-                   atmf021.tile2.nc \
-                   atmf021.tile3.nc \
-                   atmf021.tile4.nc \
-                   atmf021.tile5.nc \
-                   atmf021.tile6.nc \
+export LIST_FILES="sfcf024.tile1.nc \
                    sfcf024.tile1.nc \
                    sfcf024.tile2.nc \
                    sfcf024.tile3.nc \
@@ -75,9 +64,28 @@ export_cpl
 export CPLCHM=.false.
 export DNATS=0
 
-export RESTART_N=3
-export RESTART_INTERVAL="${RESTART_N} -1"
-export OUTPUT_FH='0 21 24'
+export FHROT=12
+export RESTART_N=$((FHMAX-$FHROT))
+
+export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${FHROT} + ${SHOUR} )))0000"
+export RESTART_FILE_SUFFIX_SECS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%05d" $(( (${FHROT}+ ${SHOUR})*3600 )))"
+
+# ATM warm start
+export WARM_START=.true.
+export MAKE_NH=.false.
+export NA_INIT=0
+export EXTERNAL_IC=.false.
+export NGGPS_IC=.false.
+export MOUNTAIN=.true.
+
+# ICE warm start
+export CICERUNTYPE=continue
+export RUNTYPE=continue
+export USE_RESTART_TIME=.true.
+
+# MOM6 warm start
+export MOM6_RESTART_SETTING=r
+
 
 export INPES=$INPES_cpl_unstr
 export JNPES=$JNPES_cpl_unstr
@@ -109,6 +117,7 @@ export KNOB_UGWP_NDX4LH=4
 export TOPOEDITS=ufs.topo_edits_011818.nc
 export MOM6_ALLOW_LANDMASK_CHANGES=True
 export eps_imesh=2.5e-1
+export DIAG_FREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
 
 export WAVDOMAIN=global_270k
 export MESH_WAV=mesh.${WAVDOMAIN}.nc
@@ -119,7 +128,7 @@ export CCPP_SUITE=FV3_GFS_v17_coupled_p8_ugwpv1
 export FIELD_TABLE=field_table_thompson_noaero_tke_progsigma
 export DIAG_TABLE=diag_table_cpld_template
 export INPUT_NML=cpld_control_ugwpv1.nml.IN
-export UFS_CONFIGURE=ufs.configure.cpld_noaero_outwav.IN
+export NEMS_CONFIGURE=nems.configure.cpld_noaero_outwav.IN
 
 #GFSv17	settings
 export PROGSIGMA=.true.
@@ -129,6 +138,3 @@ if [[ $MACHINE_ID = cheyenne ]]; then
   TPN=18
 fi
 
-if [[ $MACHINE_ID = hera ]] && [[ $RT_COMPILER = gnu ]]; then
-  WLCLK=40
-fi

@@ -1,5 +1,5 @@
 #
-#  cpld_control GFSv17 with UGWPv1 test, i.e., GSL orographic drag +
+#  cpld_control GFSv17 with UGWPv1 test, i.e., GSL orographic drag + 
 #  version 1 non-stationary GWD
 #
 
@@ -79,13 +79,22 @@ export RESTART_N=3
 export RESTART_INTERVAL="${RESTART_N} -1"
 export OUTPUT_FH='0 21 24'
 
-export INPES=$INPES_cpl_unstr
-export JNPES=$JNPES_cpl_unstr
-export WRTTASK_PER_GROUP=$(( WPG_cpl_unstr * THRD_cpl_unstr ))
 
-OCN_tasks=$OCN_tasks_cpl_unstr
-ICE_tasks=$ICE_tasks_cpl_unstr
-WAV_tasks=$WAV_tasks_cpl_unstr
+export INPES=$INPES_cpl_unstr_mpi
+export JNPES=$JNPES_cpl_unstr_mpi
+export atm_omp_num_threads=$THRD_cpl_unstr_mpi
+export WRTTASK_PER_GROUP=$(( WPG_cpl_unstr_mpi * THRD_cpl_unstr_mpi ))
+
+OCN_tasks=$OCN_tasks_cpl_unstr_mpi
+ICE_tasks=$ICE_tasks_cpl_unstr_mpi
+WAV_tasks=$WAV_tasks_cpl_unstr_mpi
+
+export NPROC_ICE=$ICE_tasks
+export np2=`expr $NPROC_ICE / 2`
+export BLCKX=`expr $NX_GLB / $np2`
+export BLCKY=`expr $NY_GLB / 2`
+
+
 
 export atm_omp_num_threads=$THRD_cpl_unstr
 export med_omp_num_threads=$atm_omp_num_threads
@@ -119,7 +128,7 @@ export CCPP_SUITE=FV3_GFS_v17_coupled_p8_ugwpv1
 export FIELD_TABLE=field_table_thompson_noaero_tke_progsigma
 export DIAG_TABLE=diag_table_cpld_template
 export INPUT_NML=cpld_control_ugwpv1.nml.IN
-export UFS_CONFIGURE=ufs.configure.cpld_noaero_outwav.IN
+export NEMS_CONFIGURE=nems.configure.cpld_noaero_outwav.IN
 
 #GFSv17	settings
 export PROGSIGMA=.true.
@@ -127,8 +136,4 @@ export IOPT_DIAG=1
 
 if [[ $MACHINE_ID = cheyenne ]]; then
   TPN=18
-fi
-
-if [[ $MACHINE_ID = hera ]] && [[ $RT_COMPILER = gnu ]]; then
-  WLCLK=40
 fi
