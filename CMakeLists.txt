@@ -71,6 +71,7 @@ set(PARALLEL_NETCDF OFF CACHE BOOL "Enable parallel NetCDF")
 set(JEDI_DRIVER     OFF CACHE BOOL "Enable JEDI as top level driver")
 set(CMEPS_AOFLUX    OFF CACHE BOOL "Enable atmosphere-ocean flux calculation in mediator")
 set(PDLIB           OFF CACHE BOOL "Enable Domain Decomposition in WW3 via PDLIB")
+set(CDEPS_INLINE    OFF CACHE BOOL "Enable CDEPS inline capability")
 
 set(CMAKE_Platform $ENV{CMAKE_Platform})
 if(CMAKE_Platform)
@@ -118,6 +119,7 @@ message("OPENMP ........... ${OPENMP}")
 message("PARALLEL_NETCDF .. ${PARALLEL_NETCDF}")
 message("JEDI_DRIVER ...... ${JEDI_DRIVER}")
 message("CMEPS_AOFLUX ..... ${CMEPS_AOFLUX}")
+message("CDEPS_INLINE ..... ${CDEPS_INLINE}")
 
 message("")
 
