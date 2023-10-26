@@ -29,6 +29,24 @@
        canonical_units: N m-2
        description: mediator calculation
      #
+     - standard_name: Foxx_lwnet
+       alias: mean_net_lw_flx
+       canonical_units: W m-2
+       description: mediator calculation - atm/ocn net longwave flux
+     #
+     - standard_name: Foxx_sen
+       canonical_units: W m-2
+       alias: mean_sensi_heat_flx
+       description: mediator calculation - atm/ocn surface sensible heat flux
+     #
+     - standard_name: Foxx_evap
+       canonical_units: kg m-2 s-1
+       alias: mean_evap_rate
+       description: mediator calculation - atm/ocn specific humidity flux
+     #
+     - standard_name: Faox_evap
+       canonical_units: kg m-2 s-1
+       description: mediator calculation - atm/ocn specific humidity flux
      #-----------------------------------
      # section: atmosphere export
      #-----------------------------------
@@ -64,12 +82,12 @@
        description: atmosphere export - mean downward LW heat flux
      #
      - standard_name: Faxa_rain
-       alias: mean_prec_rate
+       alias: inst_prec_rate
        canonical_units: kg m-2 s-1
        description: atmosphere export
      #
      - standard_name: Faxa_rainc
-       alias: mean_prec_rate_conv
+       alias: inst_prec_rate_conv
        canonical_units: kg m-2 s-1
        description: atmosphere export
      #
@@ -78,7 +96,7 @@
        description: atmosphere export
      #
      - standard_name: Faxa_snow
-       alias: mean_fprec_rate
+       alias: inst_fprec_rate
        canonical_units: kg m-2 s-1
        description: atmosphere export
      #
@@ -211,6 +229,21 @@
        canonical_units: N m-2
        description: atmosphere export - meridional component of momentum flux
      #
+     - standard_name: Faxa_lwnet
+       canonical_units: W m-2
+       alias: mean_net_lw_flx
+       description: atmosphere export - mean net longwave flux from atm
+     #
+     - standard_name: Faxa_sen
+       canonical_units: W m-2
+       alias: mean_sensi_heat_flx
+       description: atmosphere export - sensible heat flux
+     #
+     - standard_name : Faxa_evap
+       canonical_units: kg m-2 s-1
+       alias: mean_evap_rate
+       description: atmosphere export - latent heat flux conversion
+     #
      - standard_name: Faxx_evap
        canonical_units: kg m-2 s-1
        description: atmosphere import
@@ -318,22 +351,22 @@
      #-----------------------------------
      #
      - standard_name: Faii_evap
-       alias: mean_evap_rate_atm_into_ice
+       alias: evap_rate_atm_into_ice
        canonical_units: kg m-2 s-1
        description: sea-ice export
      #
      - standard_name: Faii_lat
-       alias: mean_laten_heat_flx_atm_into_ice
+       alias: laten_heat_flx_atm_into_ice
        canonical_units: W m-2
        description: sea-ice export to atm - atm/ice latent heat flux
      #
      - standard_name: Faii_sen
-       alias: mean_sensi_heat_flx_atm_into_ice
+       alias: sensi_heat_flx_atm_into_ice
        canonical_units: W m-2
        description: sea-ice export to atm - atm/ice sensible heat flux
      #
      - standard_name: Faii_lwup
-       alias: mean_up_lw_flx_ice
+       alias: lwup_flx_ice
        canonical_units: W m-2
        description: sea-ice export - outgoing logwave radiation
      #
@@ -466,16 +499,16 @@
        description: sea-ice export
      #
      - standard_name: Si_vice
-       alias: mean_ice_volume
+       alias: sea_ice_volume
        canonical_units: m
-       description: sea-ice export - volume of ice per unit are
+       description: sea-ice export - volume of ice per unit area
      #
      - standard_name: Si_snowh
        canonical_units: m
        description: sea-ice export - surface_snow_water_equivalent
      #
      - standard_name: Si_vsno
-       alias: mean_snow_volume
+       alias: snow_volume_on_sea_ice
        canonical_units: m
        description: sea-ice export - volume of snow per unit area
      #
@@ -583,28 +616,35 @@
      # section: ocean import
      #-----------------------------------
      #
-     - standard_name: mean_runoff_rate
-       canonical_units: kg m-2 s-1
-       description: ocean import - total runoff to ocean
+     - standard_name: Foxx_hrain
+       canonical_units: W m-2
+       description: to ocn heat content of rain
      #
-     - standard_name: mean_runoff_heat_flux
-       canonical_units: kg m-2 s-1
-       description: ocean import - heat content of runoff
+     - standard_name: Foxx_hsnow
+       canonical_units: W m-2
+       description: to ocn heat content of snow
      #
-     - standard_name: mean_calving_rate
-       canonical_units: kg m-2 s-1
-       description: ocean import - total calving to ocean
+     - standard_name: Foxx_hevap
+       canonical_units: W m-2
+       description: to ocn heat content of evaporation
      #
-     - standard_name: mean_calving_heat_flux
-       canonical_units: kg m-2 s-1
-       description: ocean import - heat content of calving
+     - standard_name: Foxx_hcond
+       canonical_units: W m-2
+       description: to ocn heat content of condensation
+     #
+     - standard_name: Foxx_hrofl
+       canonical_units: W m-2
+       description: to ocn heat content of liquid runoff
+     #
+     - standard_name: Foxx_hrofi
+       canonical_units: W m-2
+       description: to ocn heat content of ice runoff
      #
      - standard_name: Foxx_rofi
        canonical_units: kg m-2 s-1
        description: ocean import - water flux due to runoff (frozen)
      #
      - standard_name: Foxx_rofl
-       alias: mean_runoff_rate
        canonical_units: kg m-2 s-1
        description: ocean import - water flux due to runoff (liquid)
      #
@@ -666,52 +706,21 @@
        canonical_units: 1
      #
      #-----------------------------------
-     # aliased fields for active and datm
-     #-----------------------------------
-     #
-     - standard_name: mean_net_lw_flx
-       canonical_units: W m-2
-     - alias: Faxa_lwnet
-       standard_name : mean_net_lw_flx
-       description: atmosphere export - mean net longwave flux from atm
-     - alias: Foxx_lwnet
-       standard_name : mean_net_lw_flx
-       description: mediator calculation - atm/ocn net longwave flux
-     #
-     - standard_name: mean_sensi_heat_flx
-       canonical_units: W m-2
-     - alias: Faxa_sen
-       standard_name : mean_sensi_heat_flx
-       description: atmosphere export - sensible heat flux
-     - alias: Faox_sen
-       standard_name : mean_sensi_heat_flx
-       description: mediator calculation - atm/ocn surface sensible heat flux
-     #
-     - standard_name: mean_evap_rate
-       canonical_units: kg m-2 s-1
-     - alias: Faxa_evap
-       standard_name : mean_evap_rate
-       description:   atmosphere export - latent heat flux conversion
-     - alias: Faox_evap
-       standard_name : mean_evap_rate
-       description: mediator calculation - atm/ocn specific humidity flux
-     #
-     #-----------------------------------
      # fields to use fluxes from mediator
      #-----------------------------------
      #
      - standard_name: Faox_lat
-       alias: mean_laten_heat_flx_atm_into_ocn
+       alias: laten_heat_flx_atm_into_ocn
        canonical_units: W m-2
        description: mediator export - atm/ocn surface latent heat flux
      #
      - standard_name: Faox_sen
-       alias: mean_sensi_heat_flx_atm_into_ocn
+       alias: sensi_heat_flx_atm_into_ocn
        canonical_units: W m-2
        description: mediator export - atm/ocn surface sensible heat flux
      #
      - standard_name: Faox_lwup
-       alias: mean_up_lw_flx_ocn
+       alias: lwup_flx_ocn
        canonical_units: W m-2
        description: mediator export - long wave radiation flux over the ocean
      #
@@ -729,6 +738,12 @@
      # section: atmosphere fields that need to be defined but are not used
      #-----------------------------------
      #
+     - standard_name: mean_prec_rate
+       canonical_units: kg m-2 s-1
+     - standard_name: mean_fprec_rate
+       canonical_units: kg m-2 s-1
+     - standard_name: mean_prec_rate_conv
+       canonical_units: kg m-2 s-1
      - standard_name: inst_down_lw_flx
        canonical_units: W m-2
      - standard_name: inst_net_lw_flx

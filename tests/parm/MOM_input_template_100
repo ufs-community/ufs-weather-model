@@ -74,31 +74,6 @@ WRITE_GEOM = 2                  ! default = 1
 SAVE_INITIAL_CONDS = False      !   [Boolean] default = False
                                 ! If true, write the initial conditions to a file given by IC_OUTPUT_FILE.
 
-! === module MOM_oda_incupd ===
-ODA_INCUPD = @[MOM_IAU]         ! [Boolean] default = False
-                                ! If true, oda incremental updates will be applied
-                                ! everywhere in the domain.
-ODA_INCUPD_FILE = "mom6_increment.nc" ! The name of the file with the T,S,h increments.
-
-ODA_TEMPINC_VAR = "pt_inc"      ! default = "ptemp_inc"
-                                ! The name of the potential temperature inc. variable in
-                                ! ODA_INCUPD_FILE.
-ODA_SALTINC_VAR = "s_inc"       ! default = "sal_inc"
-                                ! The name of the salinity inc. variable in
-                                ! ODA_INCUPD_FILE.
-ODA_THK_VAR = "h_fg"            ! default = "h"
-                                ! The name of the int. depth inc. variable in
-                                ! ODA_INCUPD_FILE.
-
-ODA_UINC_VAR = "u_inc"          ! default = "u_inc"
-                                ! The name of the zonal vel. inc. variable in
-                                ! ODA_INCUPD_UV_FILE.
-ODA_VINC_VAR = "v_inc"          ! default = "v_inc"
-                                ! The name of the meridional vel. inc. variable in
-                                ! ODA_INCUPD_UV_FILE.
-ODA_INCUPD_NHOURS = @[MOM_IAU_HRS] ! default=3.0
-                                ! Number of hours for full update (0=direct insertion).
-
 ! === module MOM_domains ===
 TRIPOLAR_N = True               !   [Boolean] default = False
                                 ! Use tripolar connectivity at the northern edge of the domain.  With
@@ -831,6 +806,31 @@ ENERGYSAVEDAYS = 0.25           !   [days] default = 1.0
                                 ! other globally summed diagnostics.
 
 ! === module ocean_model_init ===
+
+! === module MOM_oda_incupd ===
+ODA_INCUPD = @[ODA_INCUPD]   ! [Boolean] default = False
+                             ! If true, oda incremental updates will be applied
+                             ! everywhere in the domain.
+ODA_INCUPD_FILE = "mom6_increment.nc"   ! The name of the file with the T,S,h increments.
+
+ODA_TEMPINC_VAR = @[ODA_TEMPINC_VAR]    ! default = "ptemp_inc"
+                                        ! The name of the potential temperature inc. variable in
+                                        ! ODA_INCUPD_FILE.
+ODA_SALTINC_VAR = @[ODA_SALTINC_VAR]    ! default = "sal_inc"
+                                        ! The name of the salinity inc. variable in
+                                        ! ODA_INCUPD_FILE.
+ODA_THK_VAR = @[ODA_THK_VAR]            ! default = "h"
+                                        ! The name of the int. depth inc. variable in
+                                        ! ODA_INCUPD_FILE.
+ODA_INCUPD_UV = @[ODA_INCUPD_UV]        !
+ODA_UINC_VAR = @[ODA_UINC_VAR]          ! default = "u_inc"
+                                        ! The name of the zonal vel. inc. variable in
+                                        ! ODA_INCUPD_UV_FILE.
+ODA_VINC_VAR = @[ODA_VINC_VAR]          ! default = "v_inc"
+                                        ! The name of the meridional vel. inc. variable in
+                                        ! ODA_INCUPD_UV_FILE.
+ODA_INCUPD_NHOURS = @[ODA_INCUPD_NHOURS]            ! default=3.0
+                                        ! Number of hours for full update (0=direct insertion).
 
 ! === module MOM_surface_forcing ===
 OCEAN_SURFACE_STAGGER = "A"     ! default = "C"
