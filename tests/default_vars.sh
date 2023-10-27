@@ -423,6 +423,9 @@ export DO_GSL_DRAG_SS=.false.
 export DO_GSL_DRAG_TOFD=.false.
 export DO_UGWP_V1=.false.
 export DO_UGWP_V1_OROG_ONLY=.false.
+export KNOB_UGWP_DOKDIS=1
+export KNOB_UGWP_NDX4LH=1
+
 
 # resolution dependent settings
 export CDMBWD_c48='0.071,2.1,1.0,1.0'
