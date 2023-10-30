@@ -45,7 +45,7 @@ cd ${PATHRT}
 
 
 unset MODEL_CONFIGURE
-unset NEMS_CONFIGURE
+unset UFS_CONFIGURE
 
 [[ -e ${RUNDIR_ROOT}/run_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
 source default_vars.sh
@@ -143,10 +143,10 @@ fi
 
 compute_petbounds_and_tasks
 
-if [[ -f ${PATHRT}/parm/${NEMS_CONFIGURE} ]]; then
-  atparse < ${PATHRT}/parm/${NEMS_CONFIGURE} > nems.configure
+if [[ -f ${PATHRT}/parm/${UFS_CONFIGURE} ]]; then
+  atparse < ${PATHRT}/parm/${UFS_CONFIGURE} > ufs.configure
 else
-  echo "Cannot find file ${NEMS_CONFIGURE} set by variable NEMS_CONFIGURE"
+  echo "Cannot find file ${UFS_CONFIGURE} set by variable UFS_CONFIGURE"
   exit 1
 fi
 
@@ -225,7 +225,7 @@ if [[ $AQM == .true. ]]; then
 fi
 
 # Field Dictionary
-cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
+cp ${PATHRT}/parm/fd_ufs.yaml fd_ufs.yaml
 
 # Set up the run directory
 source ./fv3_run
@@ -294,7 +294,7 @@ TASKS=$(( NODES * TPN ))
 export TASKS
 
 if [[ $SCHEDULER = 'pbs' ]]; then
-  if [[ -e $PATHRT/fv3_conf/fv3_qsub.IN_${MACHINE_ID} ]]; then 
+  if [[ -e $PATHRT/fv3_conf/fv3_qsub.IN_${MACHINE_ID} ]]; then
     atparse < $PATHRT/fv3_conf/fv3_qsub.IN_${MACHINE_ID} > job_card
   else
     echo "Looking for fv3_conf/fv3_qsub.IN_${MACHINE_ID} but it is not found. Exiting"

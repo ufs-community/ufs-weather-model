@@ -338,8 +338,8 @@ export CMP_DATAONLY=false
 
 export_fv3 ()
 {
-# nems.configure defaults
-export NEMS_CONFIGURE=nems.configure.atm.IN
+# ufs.configure defaults
+export UFS_CONFIGURE=ufs.configure.atm.IN
 export MODEL_CONFIGURE=model_configure.IN
 export atm_model=fv3
 
@@ -709,8 +709,8 @@ export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6=1800
 export DT_THERM_MOM6=3600
 
-# nems.configure defaults
-export NEMS_CONFIGURE=nems.configure.cpld.IN
+# ufs.configure defaults
+export UFS_CONFIGURE=ufs.configure.cpld.IN
 export med_model=cmeps
 export atm_model=fv3
 export chm_model=gocart
@@ -725,7 +725,7 @@ export coupling_interval_slow_sec=${DT_THERM_MOM6}
 export coupling_interval_fast_sec=${DT_ATMOS}
 
 export RESTART_N=${FHMAX}
-export CPLMODE=nems_frac
+export CPLMODE=ufs.frac
 export cap_dbug_flag=0
 export use_coldstart=false
 export use_mommesh=true
@@ -907,7 +907,7 @@ export MESH_WAV=mesh.${WAVDOMAIN}.nc
 export CICEGRID=grid_cice_NEMS_mx${OCNRES}.nc
 export CICEMASK=kmtu_cice_NEMS_mx${OCNRES}.nc
 export RUNID=unknown
-# set large; restart frequency now controlled by restart_n in nems.configure
+# set large; restart frequency now controlled by restart_n in ufs.configure
 export DUMPFREQ=d
 export DUMPFREQ_N=1000
 export DIAG_FREQ=`expr $FHMAX \* 3600 / $DT_CICE`
@@ -974,8 +974,8 @@ export ICERES=1.00
 export NX_GLB=360
 export NY_GLB=320
 
-# nems.configure
-export NEMS_CONFIGURE=nems.configure.datm_cdeps.IN
+# ufs.configure
+export UFS_CONFIGURE=ufs.configure.datm_cdeps.IN
 export med_model=cmeps
 export atm_model=datm
 export ocn_model=mom6
@@ -1011,7 +1011,7 @@ export coupling_interval_slow_sec=${DT_THERM_MOM6}
 export coupling_interval_fast_sec=${DT_ATMOS}
 
 export RESTART_N=${FHMAX}
-export CPLMODE=nems_orig_data
+export CPLMODE=ufs.nfrac.aoflux
 export cap_dbug_flag=0
 export use_coldstart=false
 export use_mommesh=true
@@ -1066,7 +1066,7 @@ export MESHOCN_ICE=mesh.mx${OCNRES}.nc
 export CICEGRID=grid_cice_NEMS_mx${OCNRES}.nc
 export CICEMASK=kmtu_cice_NEMS_mx${OCNRES}.nc
 export RUNID=unknown
-# set large; restart frequency now controlled by restart_n in nems.configure
+# set large; restart frequency now controlled by restart_n in ufs.configure
 export DUMPFREQ=d
 export DUMPFREQ_N=1000
 export DIAG_FREQ=`expr $FHMAX \* 3600 / $DT_CICE`
@@ -1184,7 +1184,7 @@ export DTPNT="$(printf "%02d" $(( ${WW3OUTDTHR}*3600 )))"
 export OUTPARS_WAV="WND HS T01 T02 DIR FP DP PHS PTP PDIR UST CHA USP"
 export WAV_CUR='C'
 
-# nems.configure
+# ufs.configure
 export med_model=cmeps
 export pio_rearranger=box
 export CAP_DBUG_FLAG=0

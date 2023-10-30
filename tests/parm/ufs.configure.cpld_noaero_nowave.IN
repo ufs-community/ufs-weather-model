@@ -1,5 +1,5 @@
 #############################################
-####  NEMS Run-Time Configuration File  #####
+####  UFS Run-Time Configuration File  ######
 #############################################
 
 # ESMF #
@@ -63,7 +63,6 @@ runSeq::
    MED -> OCN :remapMethod=redist
    OCN
    @@[coupling_interval_fast_sec]
-     MED med_phases_aofluxes_run
      MED med_phases_prep_atm
      MED med_phases_prep_ice
      MED -> ATM :remapMethod=redist
@@ -94,16 +93,6 @@ MED_attributes::
       OCN_model = @[ocn_model]
       coupling_mode = @[CPLMODE]
       history_tile_atm = @[ATMTILESIZE]
-      aoflux_grid = 'agrid'
-      aoflux_code = 'ccpp'
-      aoflux_ccpp_suite = 'FV3_sfc_ocean'
-      ccpp_restart_interval = @[RESTART_N_SEC]
-      ccpp_input_dir = 'INPUT/'
-      ccpp_nstf_name = @[NSTF_NAME]
-      ccpp_ini_mosaic_file = 'INPUT/C96_mosaic.nc'
-      ccpp_ini_file_prefix = 'INPUT/sfc_data.tile'
-      ccpp_ini_layout = @[INPES],@[JNPES]
-      ccpp_ini_read = false
       pio_rearranger = @[pio_rearranger]
       ocean_albedo_limit = @[ocean_albedo_limit]
 ::
