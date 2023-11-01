@@ -1,5 +1,5 @@
 help([[
-  This module loads libraries required for building and running UFS Weather Model 
+  This module loads libraries required for building and running UFS Weather Model
   on the NOAA RDHPC machine Gaea using Intel-2022.0.2
 ]])
 
@@ -25,6 +25,9 @@ load(pathJoin("cmake", cmake_ver))
 load("alps")
 
 load("ufs_common")
+
+nccmp_ver=os.getenv("nccmp_ver") or "1.9.0.1"
+load(pathJoin("nccmp", nccmp_ver))
 
 setenv("CC","cc")
 setenv("CXX","CC")
