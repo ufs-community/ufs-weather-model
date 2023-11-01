@@ -1,0 +1,127 @@
+#############################################
+####  UFS Run-Time Configuration File  ######
+#############################################
+
+# ESMF #
+logKindFlag:            ESMF_LOGKIND_MULTI
+globalResourceControl:  true
+
+# EARTH #
+EARTH_component_list: MED ATM LND
+EARTH_attributes::
+  Verbosity = 0
+::
+
+# MED #
+MED_model:                      @[med_model]
+MED_petlist_bounds:             @[med_petlist_bounds]
+MED_omp_num_threads:            @[med_omp_num_threads]
+MED_attributes::
+  Verbosity = 1
+  Diagnostic = 0
+  ATM_model = @[atm_model]
+  LND_model = @[lnd_model]
+  MED_model = cmeps
+  history_n = 6
+  history_option = nhours
+  history_ymd = -999
+  coupling_mode = @[CPLMODE]
+  history_tile_lnd = 96
+  history_n_lnd_inst = 6
+  history_option_lnd_inst = nhours
+  pio_rearranger = @[pio_rearranger]
+::
+
+# ATM #
+ATM_model:                      @[atm_model]
+ATM_petlist_bounds:             @[atm_petlist_bounds]
+ATM_omp_num_threads:            @[atm_omp_num_threads]
+ATM_attributes::
+  Verbosity = 0
+  Diagnostic = 0
+::
+
+# LND #
+LND_model:                      @[lnd_model]
+LND_petlist_bounds:             @[lnd_petlist_bounds]
+LND_omp_num_threads:            @[lnd_omp_num_threads]
+LND_attributes::
+  Verbosity = 1
+  Diagnostic = 0
+  mosaic_file = @[mosaic_file]
+  input_dir = INPUT/
+  ic_type = @[lnd_ic_type]
+  layout = @[layout_x]:@[layout_y] # need to be consistent with number of PEs
+  num_soil_levels = 4
+  forcing_height = 10
+  soil_level_thickness = 0.10:0.30:0.60:1.00
+  soil_level_nodes = 0.05:0.25:0.70:1.50
+  dynamic_vegetation_option = 4
+  canopy_stomatal_resistance_option = 2
+  soil_wetness_option = 1
+  runoff_option = 1
+  surface_exchange_option = 3
+  supercooled_soilwater_option = 1
+  frozen_soil_adjust_option = 1
+  radiative_transfer_option = 3
+  snow_albedo_option = 1
+  precip_partition_option = 4
+  soil_temp_lower_bdy_option = 2
+  soil_temp_time_scheme_option = 3
+  surface_evap_resistance_option = 1 # not used, it is fixed to 4 in sfc_noahmp_drv.F90
+  glacier_option = 1
+  surface_thermal_roughness_option = 2
+  output_freq = 10800
+  calc_snet = @[CALC_SNET]
+::
+
+# cold
+runSeq::
+@@[coupling_interval_sec]
+   MED med_phases_prep_atm
+   MED -> ATM :remapMethod=redist
+   ATM
+   ATM -> MED :remapMethod=redist
+   MED med_phases_post_atm
+   MED med_phases_prep_lnd
+   MED -> LND :remapMethod=redist
+   LND
+   LND -> MED :remapMethod=redist
+   MED med_phases_post_lnd
+   MED med_phases_restart_write
+   MED med_phases_history_write
+@
+::
+
+# Other Attributes #
+DRIVER_attributes::
+::
+
+ALLCOMP_attributes::
+  ScalarFieldCount = 3
+  ScalarFieldIdxGridNX = 1
+  ScalarFieldIdxGridNY = 2
+  ScalarFieldIdxNextSwCday = 3 # required for data atmosphere configurations
+  ScalarFieldName = cpl_scalars
+  start_type = @[RUNTYPE]
+  restart_dir = RESTART/
+  case_name = ufs.cpld
+  restart_n = 12
+  restart_option = nhours
+  restart_ymd = -999
+  dbug_flag = 0
+  use_coldstart = false
+  use_mommesh = true
+  eps_imesh = 2.5e-1
+  orb_eccen = 1.e36
+  orb_iyear = 2000
+  orb_iyear_align = 2000
+  orb_mode = fixed_year
+  orb_mvelp = 1.e36
+  orb_obliq = 1.e36
+  stop_n = @[FHMAX]
+  stop_option = nhours
+  stop_ymd = -999
+  read_restart = @[READRESTART]
+  mediator_present = true
+::

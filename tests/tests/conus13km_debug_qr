@@ -1,0 +1,29 @@
+###############################################################################
+#
+#  HRRR physics on 13km domain, control
+#
+###############################################################################
+
+# This configuration is supposed to match the rrfs_dev1 parallel, so
+# do not change the namelist without checking the current parallel.
+
+export TEST_DESCR="HRRR physics on 13km domain, control"
+
+export CNTL_DIR=conus13km_debug
+
+export LIST_FILES="sfcf000.nc \
+                   sfcf001.nc \
+                   atmf000.nc \
+                   atmf001.nc \
+                   RESTART/20210512.170000.coupler.res \
+                   RESTART/20210512.170000.fv_core.res.nc \
+                   RESTART/20210512.170000.fv_core.res.tile1.nc \
+                   RESTART/20210512.170000.fv_srf_wnd.res.tile1.nc \
+                   RESTART/20210512.170000.fv_tracer.res.tile1.nc \
+                   RESTART/20210512.170000.phy_data.nc \
+                   RESTART/20210512.170000.sfc_data.nc"
+
+export_hrrr_conus13km
+export RESTART_INTERVAL=1
+export QUILTING_RESTART=.true.
+export FHMAX=1
