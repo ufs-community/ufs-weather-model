@@ -36,14 +36,15 @@ export OMP_NUM_THREADS=@[THRD]
 export ESMF_RUNTIME_PROFILE=ON
 export ESMF_RUNTIME_PROFILE_OUTPUT="SUMMARY"
 
+# For mvapich2
+if [[ @[RT_COMPILER] == gnu ]]; then
+  export MV2_SHMEM_COLL_NUM_COMM=128
+fi
+
 # Avoid job errors because of filesystem synchronization delays
 sync && sleep 1
 
-if [[ @[RT_COMPILER] == intel ]]; then
-  srun --label -n @[TASKS] ./fv3.exe
-elif [[ @[RT_COMPILER] == gnu ]]; then
-  mpirun -n @[TASKS] -N @[TPN] ./fv3.exe
-fi
+srun --label -n @[TASKS] ./fv3.exe
 
 echo "Model ended:    " `date`
 echo -n " $( date +%s )," >> job_timestamp.txt

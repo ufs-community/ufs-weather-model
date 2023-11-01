@@ -1,9 +1,10 @@
 #############################################
-####  NEMS Run-Time Configuration File  #####
+####  UFS Run-Time Configuration File  ######
 #############################################
 
 # ESMF #
 logKindFlag:            ESMF_LOGKIND_MULTI
+globalResourceControl:  true
 
 # EARTH #
 EARTH_component_list: MED ATM OCN ICE WAV
@@ -14,11 +15,13 @@ EARTH_attributes::
 # MED #
 MED_model:                      @[med_model]
 MED_petlist_bounds:             @[med_petlist_bounds]
+MED_omp_num_threads:            @[med_omp_num_threads]
 ::
 
 # ATM #
 ATM_model:                      @[atm_model]
 ATM_petlist_bounds:             @[atm_petlist_bounds]
+ATM_omp_num_threads:            @[atm_omp_num_threads]
 ATM_attributes::
   Verbosity = 0
   DumpFields = false
@@ -29,12 +32,11 @@ ATM_attributes::
 # OCN #
 OCN_model:                      @[ocn_model]
 OCN_petlist_bounds:             @[ocn_petlist_bounds]
+OCN_omp_num_threads:            @[ocn_omp_num_threads]
 OCN_attributes::
   Verbosity = 0
   DumpFields = false
   ProfileMemory = false
-  diro = "."
-  logfile = "mom6.log"
   OverwriteSlice = true
   mesh_ocn = @[MESHOCN_ICE]
 ::
@@ -42,6 +44,7 @@ OCN_attributes::
 # ICE #
 ICE_model:                      @[ice_model]
 ICE_petlist_bounds:             @[ice_petlist_bounds]
+ICE_omp_num_threads:            @[ice_omp_num_threads]
 ICE_attributes::
   Verbosity = 0
   DumpFields = false
@@ -56,6 +59,7 @@ ICE_attributes::
 # WAV #
 WAV_model:                      @[wav_model]
 WAV_petlist_bounds:             @[wav_petlist_bounds]
+WAV_omp_num_threads:            @[wav_omp_num_threads]
 WAV_attributes::
   Verbosity = 0
   OverwriteSlice = false
@@ -69,31 +73,31 @@ WAV_attributes::
 # CMEPS warm run sequence
 runSeq::
 @@[coupling_interval_slow_sec]
-   MED med_phases_prep_wav_avg
    MED med_phases_prep_ocn_avg
-   MED -> WAV :remapMethod=redist
    MED -> OCN :remapMethod=redist
-   WAV
    OCN
    @@[coupling_interval_fast_sec]
      MED med_phases_prep_atm
      MED med_phases_prep_ice
+     MED med_phases_prep_wav_accum
+     MED med_phases_prep_wav_avg
      MED -> ATM :remapMethod=redist
      MED -> ICE :remapMethod=redist
+     MED -> WAV :remapMethod=redist
      ATM
      ICE
+     WAV
      ATM -> MED :remapMethod=redist
      MED med_phases_post_atm
      ICE -> MED :remapMethod=redist
      MED med_phases_post_ice
+     WAV -> MED :remapMethod=redist
+     MED med_phases_post_wav
      MED med_phases_ocnalb_run
      MED med_phases_prep_ocn_accum
-     MED med_phases_prep_wav_accum
    @
    OCN -> MED :remapMethod=redist
-   WAV -> MED :remapMethod=redist
    MED med_phases_post_ocn
-   MED med_phases_post_wav
    MED med_phases_restart_write
 @
 ::
@@ -121,7 +125,6 @@ ALLCOMP_attributes::
       ScalarFieldName = cpl_scalars
       start_type = @[RUNTYPE]
       restart_dir = RESTART/
-      RunTimeLog = true
       case_name = ufs.cpld
       restart_n = @[RESTART_N]
       restart_option = nhours
