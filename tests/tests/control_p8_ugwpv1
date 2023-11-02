@@ -1,49 +1,26 @@
 ###############################################################################
 #
-#  Global control test GFSv16 atmosphere-land only at C96L127, P8 configuration
+#  Global control test GFSv16 atmosphere only at C96L127, P8 configuration
+#  with UGWPv1, i.e., GSL orographic drag + version 1 non-stationary GWD
 #
 ###############################################################################
 
 export TEST_DESCR="Compare global control results with previous trunk version"
 
-export CNTL_DIR=control_p8_atmlnd_sbs
+export CNTL_DIR=control_p8_ugwpv1
 
-export LIST_FILES="sfcf000.tile1.nc \
-                   sfcf000.tile2.nc
-                   sfcf000.tile3.nc
-                   sfcf000.tile4.nc
-                   sfcf000.tile5.nc
-                   sfcf000.tile6.nc
-                   sfcf021.tile1.nc \
-                   sfcf021.tile2.nc \
-                   sfcf021.tile3.nc \
-                   sfcf021.tile4.nc \
-                   sfcf021.tile5.nc \
-                   sfcf021.tile6.nc \
-                   sfcf024.tile1.nc \
-                   sfcf024.tile2.nc \
-                   sfcf024.tile3.nc \
-                   sfcf024.tile4.nc \
-                   sfcf024.tile5.nc \
-                   sfcf024.tile6.nc \
-                   atmf000.tile1.nc \
-                   atmf000.tile2.nc \
-                   atmf000.tile3.nc \
-                   atmf000.tile4.nc \
-                   atmf000.tile5.nc \
-                   atmf000.tile6.nc \
-                   atmf021.tile1.nc \
-                   atmf021.tile2.nc \
-                   atmf021.tile3.nc \
-                   atmf021.tile4.nc \
-                   atmf021.tile5.nc \
-                   atmf021.tile6.nc \
-                   atmf024.tile1.nc \
-                   atmf024.tile2.nc \
-                   atmf024.tile3.nc \
-                   atmf024.tile4.nc \
-                   atmf024.tile5.nc \
-                   atmf024.tile6.nc \
+export LIST_FILES="sfcf000.nc \
+                   sfcf021.nc \
+                   sfcf024.nc \
+                   atmf000.nc \
+                   atmf021.nc \
+                   atmf024.nc \
+                   GFSFLX.GrbF00 \
+                   GFSFLX.GrbF21 \
+                   GFSFLX.GrbF24 \
+                   GFSPRS.GrbF00 \
+                   GFSPRS.GrbF21 \
+                   GFSPRS.GrbF24 \
                    RESTART/20210323.060000.coupler.res \
                    RESTART/20210323.060000.fv_core.res.nc \
                    RESTART/20210323.060000.fv_core.res.tile1.nc \
@@ -75,21 +52,7 @@ export LIST_FILES="sfcf000.tile1.nc \
                    RESTART/20210323.060000.sfc_data.tile3.nc \
                    RESTART/20210323.060000.sfc_data.tile4.nc \
                    RESTART/20210323.060000.sfc_data.tile5.nc \
-                   RESTART/20210323.060000.sfc_data.tile6.nc \
-                   ufs.cpld.cpl.hi.lnd.2021-03-22-43200.nc \
-                   ufs.cpld.cpl.hi.lnd.2021-03-23-21600.nc \
-                   ufs.cpld.lnd.out.2021-03-22-43200.tile1.nc \
-                   ufs.cpld.lnd.out.2021-03-22-43200.tile2.nc \
-                   ufs.cpld.lnd.out.2021-03-22-43200.tile3.nc \
-                   ufs.cpld.lnd.out.2021-03-22-43200.tile4.nc \
-                   ufs.cpld.lnd.out.2021-03-22-43200.tile5.nc \
-                   ufs.cpld.lnd.out.2021-03-22-43200.tile6.nc \
-                   ufs.cpld.lnd.out.2021-03-23-21600.tile1.nc \
-                   ufs.cpld.lnd.out.2021-03-23-21600.tile2.nc \
-                   ufs.cpld.lnd.out.2021-03-23-21600.tile3.nc \
-                   ufs.cpld.lnd.out.2021-03-23-21600.tile4.nc \
-                   ufs.cpld.lnd.out.2021-03-23-21600.tile5.nc \
-                   ufs.cpld.lnd.out.2021-03-23-21600.tile6.nc"
+                   RESTART/20210323.060000.sfc_data.tile6.nc"
 
 export_fv3
 export NPZ=127
@@ -101,8 +64,8 @@ export SMONTH=03
 export SDAY=22
 export SHOUR=06
 export RESTART_INTERVAL="12 -1"
-export OUTPUT_GRID='cubed_sphere_grid'
-export WRITE_DOPOST=.false.
+export OUTPUT_GRID='gaussian_grid'
+export WRITE_DOPOST=.true.
 export OUTPUT_FH='0 21 24'
 
 # P7 default
@@ -134,18 +97,21 @@ export NSTF_NAME=2,1,0,0,0
 export LHEATSTRG=.false.
 export LSEASPRAY=.true.
 
-# P7 UGWP1
+# P8 UGWP1
 export GWD_OPT=2
-export DO_UGWP_V1=.false.
-export KNOB_UGWP_VERSION=0
+export CDMBWD=20.0,2.5,1.0,1.0
+export DO_UGWP_V1=.true.
+export KNOB_UGWP_VERSION=1
 export KNOB_UGWP_NSLOPE=1
-export DO_UGWP_V0=.true.
-export DO_GSL_DRAG_LS_BL=.false.
+export DO_UGWP_V0=.false.
+export DO_GSL_DRAG_LS_BL=.true.
 export DO_GSL_DRAG_SS=.true.
-export DO_GSL_DRAG_TOFD=.false.
+export DO_GSL_DRAG_TOFD=.true.
 export DO_UGWP_V1_OROG_ONLY=.false.
 export DO_UGWP_V0_NST_ONLY=.false.
 export LDIAG_UGWP=.false.
+export KNOB_UGWP_DOKDIS=2
+export KNOB_UGWP_NDX4LH=4
 
 # P7 CA
 export DO_CA=.true.
@@ -163,19 +129,19 @@ export ISEED_CA=12345
 
 # P7 settings
 export TILEDFIX=.true.
-export FNALBC="'INPUT/C96.snowfree_albedo.tileX.nc'"
-export FNALBC2="'INPUT/C96.facsf.tileX.nc'"
-export FNTG3C="'INPUT/C96.substrate_temperature.tileX.nc'"
-export FNVEGC="'INPUT/C96.vegetation_greenness.tileX.nc'"
-export FNVETC="'INPUT/C96.vegetation_type.tileX.nc'"
-export FNSOTC="'INPUT/C96.soil_type.tileX.nc'"
-export FNSOCC="'INPUT/C96.soil_color.tileX.nc'"
+export FNALBC="'C96.snowfree_albedo.tileX.nc'"
+export FNALBC2="'C96.facsf.tileX.nc'"
+export FNTG3C="'C96.substrate_temperature.tileX.nc'"
+export FNVEGC="'C96.vegetation_greenness.tileX.nc'"
+export FNVETC="'C96.vegetation_type.tileX.nc'"
+export FNSOTC="'C96.soil_type.tileX.nc'"
+export FNSOCC="'C96.soil_color.tileX.nc'"
 export FNSMCC=${FNSMCC_control}
 export FNMSKH=${FNMSKH_control}
-export FNVMNC="'INPUT/C96.vegetation_greenness.tileX.nc'"
-export FNVMXC="'INPUT/C96.vegetation_greenness.tileX.nc'"
-export FNSLPC="'INPUT/C96.slope_type.tileX.nc'"
-export FNABSC="'INPUT/C96.maximum_snow_albedo.tileX.nc'"
+export FNVMNC="'C96.vegetation_greenness.tileX.nc'"
+export FNVMXC="'C96.vegetation_greenness.tileX.nc'"
+export FNSLPC="'C96.slope_type.tileX.nc'"
+export FNABSC="'C96.maximum_snow_albedo.tileX.nc'"
 export LANDICE=".false."
 export FSICL=0
 export FSICS=0
@@ -196,11 +162,11 @@ export USE_CICE_ALB=.false.
 export WRITE_NSFLIP=.true.
 
 export FV3_RUN=control_run.IN
-export CCPP_SUITE=FV3_GFS_v17_p8
+export CCPP_SUITE=FV3_GFS_v17_p8_ugwpv1
 export FIELD_TABLE=field_table_thompson_noaero_tke
 export DIAG_TABLE=diag_table_p8_template
 # use same namelist for standalone,coupled P7
-export INPUT_NML=cpld_control.nml.IN
+export INPUT_NML=cpld_control_ugwpv1.nml.IN
 
 # RRTMGP
 export DO_RRTMGP=.false.
@@ -213,28 +179,3 @@ export SATMEDMF=.true.
 if [[ $MACHINE_ID = cheyenne ]]; then
   TPN=18
 fi
-
-export CPLLND=.true.
-
-export UFS_CONFIGURE=ufs.configure.atm_lnd.IN
-export med_model=cmeps
-export atm_model=fv3
-export lnd_model=noahmp
-export pio_rearranger=box
-export CPLMODE=ufs.frac
-export RUNTYPE=startup
-export READRESTART=.false.
-export ATM_tasks=144
-export OCN_tasks=0
-export ICE_tasks=0
-export LND_tasks=144
-export lnd_ic_type=sfc
-export CALC_SNET=.false.
-export layout_x=3
-export layout_y=8
-export mosaic_file="INPUT/grid_spec.nc"
-export coupling_interval_sec=720
-export TOPOEDITS=""
-# need for getting some files from coupled RT to fix land-sea mask inconsistency
-# can be removed after fixing files for control_p8
-export OCNRES=100
