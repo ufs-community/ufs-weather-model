@@ -1,13 +1,12 @@
 #############################################
-####  NEMS Run-Time Configuration File  #####
+####  UFS Run-Time Configuration File  ######
 #############################################
 
 # ESMF #
 logKindFlag:            ESMF_LOGKIND_MULTI
-globalResourceControl:  true
 
 # EARTH #
-EARTH_component_list: MED ATM OCN ICE
+EARTH_component_list: MED ATM OCN ICE WAV
 EARTH_attributes::
   Verbosity = 0
 ::
@@ -15,32 +14,27 @@ EARTH_attributes::
 # MED #
 MED_model:                      @[med_model]
 MED_petlist_bounds:             @[med_petlist_bounds]
-MED_omp_num_threads:            @[med_omp_num_threads]
+::
 
 # ATM #
 ATM_model:                      @[atm_model]
 ATM_petlist_bounds:             @[atm_petlist_bounds]
-ATM_omp_num_threads:            @[atm_omp_num_threads]
 ATM_attributes::
   Verbosity = 0
   DumpFields = false
-  mesh_atm  = @[MESH_ATM]
-  diro = "."
-  logfile = atm.log
-  stop_n = 24
-  stop_option = nhours
-  stop_ymd = -999
-  write_restart_at_endofrun = .true.
+  ProfileMemory = false
+  OverwriteSlice = true
 ::
 
 # OCN #
 OCN_model:                      @[ocn_model]
 OCN_petlist_bounds:             @[ocn_petlist_bounds]
-OCN_omp_num_threads:            @[ocn_omp_num_threads]
 OCN_attributes::
   Verbosity = 0
   DumpFields = false
   ProfileMemory = false
+  diro = "."
+  logfile = "mom6.log"
   OverwriteSlice = true
   mesh_ocn = @[MESHOCN_ICE]
 ::
@@ -48,7 +42,6 @@ OCN_attributes::
 # ICE #
 ICE_model:                      @[ice_model]
 ICE_petlist_bounds:             @[ice_petlist_bounds]
-ICE_omp_num_threads:            @[ice_omp_num_threads]
 ICE_attributes::
   Verbosity = 0
   DumpFields = false
@@ -60,15 +53,32 @@ ICE_attributes::
   stop_ymd = -999
 ::
 
-# CMEPS concurrent warm run sequence
+# WAV #
+WAV_model:                      @[wav_model]
+WAV_petlist_bounds:             @[wav_petlist_bounds]
+WAV_attributes::
+  Verbosity = 0
+  OverwriteSlice = false
+  diro = "."
+  logfile = wav.log
+  mesh_wav = @[MESH_WAV]
+  multigrid = @[MULTIGRID]
+  user_sets_restname = true
+::
 
+# CMEPS warm run sequence
 runSeq::
 @@[coupling_interval_slow_sec]
+   MED med_phases_prep_wav_avg
    MED med_phases_prep_ocn_avg
+   MED -> WAV :remapMethod=redist
    MED -> OCN :remapMethod=redist
+   WAV
    OCN
    @@[coupling_interval_fast_sec]
+     MED med_phases_prep_atm
      MED med_phases_prep_ice
+     MED -> ATM :remapMethod=redist
      MED -> ICE :remapMethod=redist
      ATM
      ICE
@@ -77,11 +87,13 @@ runSeq::
      ICE -> MED :remapMethod=redist
      MED med_phases_post_ice
      MED med_phases_ocnalb_run
-     MED med_phases_aofluxes_run
      MED med_phases_prep_ocn_accum
+     MED med_phases_prep_wav_accum
    @
    OCN -> MED :remapMethod=redist
+   WAV -> MED :remapMethod=redist
    MED med_phases_post_ocn
+   MED med_phases_post_wav
    MED med_phases_restart_write
 @
 ::
@@ -92,27 +104,25 @@ DRIVER_attributes::
 ::
 
 MED_attributes::
-      Verbosity = 0
-      dbug_flag = 0
       ATM_model = @[atm_model]
       ICE_model = @[ice_model]
       OCN_model = @[ocn_model]
-      history_n = 1
-      history_option = nhours
-      history_ymd = -999
-      coupling_mode = nems_orig_data
+      WAV_model = @[wav_model]
+      coupling_mode = @[CPLMODE]
+      history_tile_atm = @[ATMTILESIZE]
       pio_rearranger = @[pio_rearranger]
+      ocean_albedo_limit = @[ocean_albedo_limit]
 ::
 
 ALLCOMP_attributes::
-      ScalarFieldCount = 3
+      ScalarFieldCount = 2
       ScalarFieldIdxGridNX = 1
       ScalarFieldIdxGridNY = 2
-      ScalarFieldIdxNextSwCday = 3
       ScalarFieldName = cpl_scalars
       start_type = @[RUNTYPE]
       restart_dir = RESTART/
-      case_name = DATM_@[DATM_SRC]
+      RunTimeLog = true
+      case_name = ufs.cpld
       restart_n = @[RESTART_N]
       restart_option = nhours
       restart_ymd = -999
@@ -120,18 +130,13 @@ ALLCOMP_attributes::
       use_coldstart = @[use_coldstart]
       use_mommesh = @[use_mommesh]
       eps_imesh = @[eps_imesh]
-      coldair_outbreak_mod = .false.
-      flds_wiso = .false.
-      flux_convergence = @[flux_convergence]
-      flux_max_iteration = @[flux_iteration]
-      ocn_surface_flux_scheme = @[flux_scheme]
+      stop_n = @[FHMAX]
+      stop_option = nhours
+      stop_ymd = -999
       orb_eccen = 1.e36
       orb_iyear = 2000
       orb_iyear_align = 2000
       orb_mode = fixed_year
       orb_mvelp = 1.e36
       orb_obliq = 1.e36
-      stop_n = @[FHMAX]
-      stop_option = nhours
-      stop_ymd = -999
 ::
