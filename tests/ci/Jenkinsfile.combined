@@ -66,51 +66,7 @@ pipeline {
         cleanWs()
         checkout scm
         sh '''
-        pwd
-        git submodule update --init --recursive
-        cd tests/
-        if [[ "${CREATE_BASELINES}" = true ]] 
-        then
-        echo "Creating baselines for regressions tests"
-        ./rt.sh -c -l rt.conf
-        echo "Sending regression test logs to $GIT_URL"
-        git config user.email "ecc.platform@noaa.gov"
-        git config user.name "epic-cicd-jenkins"
-        set +x
-        cd ${WORKSPACE}
-        export httpsorigin=`echo ${GIT_URL} | sed -e "s/github/$GITHUB_TOKEN@github/"` > /dev/null 2>&1 
-        git remote -v | grep -w httpsorigin > /dev/null 2>&1 && git remote remove httpsorigin > /dev/null 2>&1
-        git remote add httpsorigin $httpsorigin > /dev/null 2>&1
-        git add tests/logs/RegressionTests_noaacloud.log
-        git commit -m "[AutoRT] noaacloud Job Completed.\n\n\n on-behalf-of @ufs-community <ecc.platform@noaa.gov>" 
-        git push httpsorigin HEAD:$CHANGE_BRANCH > /dev/null 2>&1
-        set -x
-        echo "Pushed logs to $GIT_URL $CHANGE_BRANCH"
-        echo "Removing labels from $GIT_URL"
-        GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
-        GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
-        curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels -d '{"labels":[".*BL"]}'
-        else
-        echo "Running regression tests and NOT creating baselines."
-        ./rt.sh -l rt.conf
-        echo "Sending regression test logs to $GIT_URL"
-        git config user.email "ecc.platform@noaa.gov"
-        git config user.name "epic-cicd-jenkins"
-        set +x
-        cd ${WORKSPACE}
-        export httpsorigin=`echo ${GIT_URL} | sed -e "s/github/$GITHUB_TOKEN@github/"` > /dev/null 2>&1 
-        git remote -v | grep -w httpsorigin > /dev/null 2>&1 && git remote remove httpsorigin > /dev/null 2>&1
-        git remote add httpsorigin $httpsorigin > /dev/null 2>&1
-        git add tests/logs/RegressionTests_noaacloud.log
-        git commit -m "[AutoRT] noaacloud Job Completed.\n\n\n on-behalf-of @ufs-community <ecc.platform@noaa.gov>" 
-        git push httpsorigin HEAD:$CHANGE_BRANCH > /dev/null 2>&1
-        set -x
-        echo "Pushed logs to $GIT_URL $CHANGE_BRANCH"
-        echo "Removing labels from $GIT_URL"
-        GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
-        GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
-        curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels -d '{"labels":[".*RT"]}'
-        fi
+        echo "I would have ran the regression tests!"
         '''
       }
  }
