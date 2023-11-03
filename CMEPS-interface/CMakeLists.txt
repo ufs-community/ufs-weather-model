@@ -29,7 +29,7 @@ endif()
 ### Source files
 ###############################################################################
 
-list(APPEND _nems_util_files
+list(APPEND _ufs_util_files
   CMEPS/ufs/flux_atmocn_mod.F90
   CMEPS/ufs/glc_elevclass_mod.F90
   CMEPS/ufs/ufs_kind_mod.F90
@@ -60,7 +60,7 @@ list(APPEND _mediator_files
   CMEPS/mediator/med_merge_mod.F90
   CMEPS/mediator/med_constants_mod.F90
   CMEPS/mediator/med_kind_mod.F90
-  CMEPS/mediator/esmFldsExchange_nems_mod.F90
+  CMEPS/mediator/esmFldsExchange_ufs_mod.F90
   CMEPS/mediator/med_phases_prep_lnd_mod.F90
   CMEPS/mediator/med_phases_prep_atm_mod.F90
   CMEPS/mediator/med_phases_prep_ocn_mod.F90
@@ -134,7 +134,7 @@ if(CMEPS_AOFLUX)
     endif(return_code EQUAL 0)
 
     ### Add extra driver file to the source
-    list(APPEND _nems_util_files
+    list(APPEND _ufs_util_files
       CMEPS/ufs/ccpp/driver/med_ccpp_driver.F90
       CMEPS/ufs/flux_atmocn_ccpp_mod.F90
       CMEPS/ufs/ufs_io_mod.F90)
@@ -172,7 +172,7 @@ endif()
 ###############################################################################
 
 ### Create target library
-add_library(cmeps STATIC ${_nems_util_files} ${_mediator_files} ${SCHEMES} ${CAPS} ${API})
+add_library(cmeps STATIC ${_ufs_util_files} ${_mediator_files} ${SCHEMES} ${CAPS} ${API})
 
 ### Set PUBLIC interfaces on the library
 set_target_properties(cmeps PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
