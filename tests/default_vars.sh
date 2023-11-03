@@ -457,6 +457,7 @@ export DO_UGWP_V1=.false.
 export DO_UGWP_V1_OROG_ONLY=.false.
 export KNOB_UGWP_DOKDIS=1
 export KNOB_UGWP_NDX4LH=1
+export KNOB_UGWP_VERSION=0
 
 
 # resolution dependent settings
