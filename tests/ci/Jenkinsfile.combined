@@ -105,20 +105,37 @@ pipeline {
            pwd
            cd tests
            echo "Running Regression Tests on ${NODE_NAME}!"
-           if [[ $machine =~ "jet" ]] 
+           if [[ $machine =~ "jet" ]] && [[ $CREATE_BASELINES ]] 
+           then
+              export dprefix=/lfs1/NAGAPE/$ACCNR/$USER
+              ./rt.sh -a ${ACCNR} -c -r -l rt.conf
+           elif [[ $machine =~ "jet" ]] && [[ !$CREATE_BASELINES ]] 
            then
               export dprefix=/lfs1/NAGAPE/$ACCNR/$USER
               ./rt.sh -a ${ACCNR} -r -l rt.conf
-           elif [[ $machine =~ "hercules" ]] 
+           elif [[ $machine =~ "hercules" ]] && [[ $CREATE_BASELINES ]] 
+           then
+              export dprefix=/work2/noaa/$ACCNR/$USER
+              sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
+              ./rt.sh -a ${ACCNR} -c -r -l rt.conf
+           elif [[ $machine =~ "hercules" ]] && [[ !$CREATE_BASELINES ]] 
            then
               export dprefix=/work2/noaa/$ACCNR/$USER
               sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
               ./rt.sh -a ${ACCNR} -r -l rt.conf
-           elif [[ $machine =~ "orion" ]] 
+           elif [[ $machine =~ "orion" ]] && [[ $CREATE_BASELINES ]]
+           then
+              export dprefix=/work2/noaa/$ACCNR/$USER
+              sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
+              ./rt.sh -a ${ACCNR} -c -r -l rt.conf
+           elif [[ $machine =~ "orion" ]] && [[ !$CREATE_BASELINES ]]
            then
               export dprefix=/work2/noaa/$ACCNR/$USER
               sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
               ./rt.sh -a ${ACCNR} -r -l rt.conf
+           elif [[ $machine != (jet|hercules|orion) ]] && [[ $CREATE_BASELINES ]]
+           then
+              ./rt.sh -a ${ACCNR} -c -r -l rt.conf
            else
            ./rt.sh -a ${ACCNR} -r -l rt.conf
            fi
