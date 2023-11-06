@@ -97,13 +97,15 @@ pipeline {
             }
           }
         }
-        cleanWs()
-        checkout scm
+       // cleanWs()
+       // checkout scm
         sh '''
            export machine="${CHOICE_NODE}"
            echo $machine
            pwd
-           echo hostname=$(hostname)
+           cd tests
+           echo "Running Regression Tests on ${NODE_NAME}!"
+           ./rt.sh -a ${ACCNR} -r -l rt.conf
         '''
       }
  }
