@@ -1,5 +1,5 @@
 ##############################################
-#####  NEMS Run-Time Configuration File  #####
+#####  UFS Run-Time Configuration File  ######
 ##############################################
 
 # ESMF #
@@ -38,11 +38,6 @@ ATM_omp_num_threads:            @[atm_omp_num_threads]
 ATM_attributes::
   Verbosity = 1
   Diagnostic = 0
-  mesh_atm = @[MESH_ATM]
-  stop_n = @[FHMAX]
-  stop_option = nhours
-  stop_ymd = -999
-  write_restart_at_endofrun = .true.
 ::
 
 # OCN #
@@ -52,35 +47,11 @@ OCN_omp_num_threads:            @[ocn_omp_num_threads]
 OCN_attributes::
   Verbosity = 1
   Diagnostic = 0
-  cdf_impexp_freq = 3
-  cpl_hour = 0
-  cpl_min = 0
-  cpl_sec = @[coupling_interval_sec]
-  base_dtg = @[SYEAR]@[SMONTH]@[SDAY]@[SHOUR]
-  merge_import = .true.
-  skip_first_import = .true.
-  hycom_arche_output = .false.
-  hyc_esmf_exp_output = .true.
-  hyc_esmf_imp_output = .true.
-  import_diagnostics = .false.
-  import_setting = flexible
-  hyc_impexp_file = nems.configure
-  espc_show_impexp_minmax = .true.
-  ocean_start_dtg = @[OCEAN_START_DTG]
-  start_hour = 0
-  start_min = 0
-  start_sec = 0
-  end_hour = @[FHMAX]
-  end_min = 0
-  end_sec = 0
-::
-
-# WAV #
-WAV_attributes::
-  Verbosity = 1
-  Diagnostic = 0
-  OverwriteSlice = false
-  merge_import = .true.
+  mesh_ocn = @[ocn_mesh]
+  stop_n = @[FHMAX]
+  stop_option = nhours
+  stop_ymd = -999
+  write_restart_at_endofrun = .true.
 ::
 
 # Run Sequence #
@@ -132,21 +103,4 @@ ALLCOMP_attributes::
   stop_n = @[FHMAX]
   stop_option = nhours
   stop_ymd = -999
-::
-
-ocn_export_fields::
-  'sst'         'sea_surface_temperature'   'K'
-  'mask'        'ocean_mask'                '1'
-  'cpl_scalars' 'cpl_scalars'               '1'
-::
-
-ocn_import_fields::
-  'taux10'      'mean_zonal_moment_flx_atm' 'N_m-2'
-  'tauy10'      'mean_merid_moment_flx_atm' 'N_m-2'
-  'prcp'        'inst_prec_rate'            'kg_m-2_s-1'
-  'swflxd'      'mean_net_sw_flx'           'W_m-2'
-  'lwflxd'      'mean_net_lw_flx'           'W_m-2'
-  'mslprs'      'inst_pres_height_surface'  'Pa'
-  'sensflx'     'mean_sensi_heat_flx'       'W_m-2'
-  'latflx'      'mean_laten_heat_flx'       'W_m-2'
 ::

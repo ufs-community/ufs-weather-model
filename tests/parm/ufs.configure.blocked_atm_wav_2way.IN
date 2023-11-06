@@ -1,5 +1,5 @@
 #############################################
-####  NEMS Run-Time Configuration File  #####
+####  UFS Run-Time Configuration File  ######
 #############################################
 
 # ESMF #
@@ -7,7 +7,7 @@ logKindFlag:            ESMF_LOGKIND_MULTI
 globalResourceControl:  true
 
 # EARTH #
-EARTH_component_list: ATM
+EARTH_component_list: ATM WAV
 EARTH_attributes::
   Verbosity = 0
 ::
@@ -18,16 +18,25 @@ ATM_petlist_bounds:             @[atm_petlist_bounds]
 ATM_omp_num_threads:            @[atm_omp_num_threads]
 ATM_attributes::
   Verbosity = 0
-  Diagnostic = 0
+  DumpFields = false
 ::
+
+# WAV #
+WAV_model:                      @[wav_model]
+WAV_petlist_bounds:             @[wav_petlist_bounds]
+WAV_omp_num_threads:            @[wav_omp_num_threads]
+WAV_attributes::
+  Verbosity = 0
+::
+
+
 
 # Run Sequence #
 runSeq::
-  ATM
-::
-
-DRIVER_attributes::
-::
-
-ALLCOMP_attributes::
+  @@[coupling_interval_sec]
+    ATM -> WAV
+    WAV -> ATM :srcMaskValues=1
+    ATM
+    WAV
+  @
 ::
