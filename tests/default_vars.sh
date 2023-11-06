@@ -1388,6 +1388,9 @@ export FHMAX=12
 export FRAC_GRID=.false.
 export FRAC_ICE=.true.
 
+export FV_CORE_TAU=10.
+export RF_CUTOFF=7.5e2
+
 export FV3_RUN=lake_control_run.IN
 export CCPP_SUITE=FV3_HRRR
 export INPUT_NML=rap.nml.IN
