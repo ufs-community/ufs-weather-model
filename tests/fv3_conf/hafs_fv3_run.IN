@@ -38,6 +38,10 @@ if [ ${CNTL_DIR} = "hafs_regional_atm_thompson_gfdlsf" ] || [ $IMP_PHYSICS = 8 ]
   cp @[INPUTDATA_ROOT]/FV3_fix/freezeH2O.dat .
   cp @[INPUTDATA_ROOT]/FV3_fix/CCN_ACTIVATE.BIN .
 fi
+#ugwpv1
+if [ $DO_UGWP_V1 = .true. ]; then
+  cp    @[INPUTDATA_ROOT]/FV3_input_data/ugwp_c384_tau.nc ./ugwp_limb_tau.nc
+fi
 
 if [[ $POSTAPP = 'hafs' ]]; then
     cp ${PATHRT}/parm/post_itag_hafs itag
