@@ -107,7 +107,8 @@ pipeline {
            echo "Running Regression Tests on ${NODE_NAME}!"
            if [[ $machine =~ "jet" ]] 
            then
-              export dprefix=/lfs4/HFIP/$ACCNR/$USER && ./rt.sh -a ${ACCNR} -r -l rt.conf
+              export dprefix=/lfs1/NAGAPE/$ACCNR/$USER
+              ./rt.sh -a ${ACCNR} -r -l rt.conf
            else
            ./rt.sh -a ${ACCNR} -r -l rt.conf
            fi
