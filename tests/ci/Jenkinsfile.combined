@@ -23,6 +23,9 @@ pipeline {
             else if ((label.matches("jet-(.*)"))) {
                 env.CHOICE_NODE='jet'
             }  
+            else if ((label.matches("gaea-c5-(.*)"))) {
+                env.CHOICE_NODE='gaea-c5'
+            }  
             else if ((label.matches("gaea-(.*)"))) {
                 env.CHOICE_NODE='gaea'
             }  
@@ -68,9 +71,22 @@ pipeline {
         GITHUB_SSH_KEY = credentials('ParallelworksGithubPrivateKey')
         ACCNR = 'epic'
         GITHUB_TOKEN = credentials('zachgithubtoken')
-        NODE_PATH = '/lustre/'
+        PW_NODE_PATH = '/lustre/'
       }
       steps {
+          checkout([$class: 'GitSCM',
+                                  branches: [[name: "$BRANCH"]],
+                                  doGenerateSubmoduleConfigurations: false,
+                                  extensions: [[$class: 'SubmoduleOption',
+                                                disableSubmodules: false,
+                                                parentCredentials: false,
+                                                recursiveSubmodules: true,
+                                                reference: '',
+                                                trackingSubmodules: false],
+                                                [$class: 'CleanBeforeCheckout'], 
+                                                [$class: 'CleanCheckout']],
+                                  submoduleCfg: [], 
+                                  userRemoteConfigs: [[url: 'https://github.com/ufs-community/ufs-weather-model.git']]])
           script {
             for (label in pullRequest.labels) {
             if ((label.matches("(.*)-BL"))) {
@@ -84,8 +100,10 @@ pipeline {
         cleanWs()
         checkout scm
         sh '''
-        echo "Creation of baselines is ${CREATE_BASELINES}"
-        echo "I would have ran the regression tests!"
+           export machine="${CHOICE_NODE}"
+           echo $machine
+           pwd
+           echo hostname=$(hostname)
         '''
       }
  }
