@@ -63,7 +63,7 @@ pipeline {
        }    
     }
   } 
-  stage('Run Regression Tests script') {
+  stage('Run Regression Tests') {
         agent {
           label "${CHOICE_NODE}"
         }
@@ -108,6 +108,12 @@ pipeline {
            if [[ $machine =~ "jet" ]] 
            then
               export dprefix=/lfs1/NAGAPE/$ACCNR/$USER
+              ./rt.sh -a ${ACCNR} -r -l rt.conf
+           elif [[ $machine =~ "hercules" ]] 
+              export dprefix=/work2/noaa/$ACCNR/$USER
+              ./rt.sh -a ${ACCNR} -r -l rt.conf
+           elif [[ $machine =~ "orion" ]] 
+              export dprefix=/work2/noaa/$ACCNR/$USER
               ./rt.sh -a ${ACCNR} -r -l rt.conf
            else
            ./rt.sh -a ${ACCNR} -r -l rt.conf
