@@ -1,7 +1,7 @@
 pipeline {
   agent none
   stages {
-    stage('Start Parallelworks Cluster') {
+    stage('Parallelworks Cluster Check & Start (if applicable)') {
        agent {
         label 'built-in'   
        }
@@ -89,7 +89,7 @@ pipeline {
         '''
       }
  }
-  stage('Stop Parallelworks Cluster') {
+  stage('Stop Parallelworks Cluster (if applicable)') {
        agent {
         label 'built-in'   
        }
