@@ -105,7 +105,13 @@ pipeline {
            pwd
            cd tests
            echo "Running Regression Tests on ${NODE_NAME}!"
+           if [ $machine == 'jet']
+           then
+           export dprefix=/lfs4/HFIP/$ACCR/$USER
            ./rt.sh -a ${ACCNR} -r -l rt.conf
+           else
+           ./rt.sh -a ${ACCNR} -r -l rt.conf
+           fi
         '''
       }
  }
