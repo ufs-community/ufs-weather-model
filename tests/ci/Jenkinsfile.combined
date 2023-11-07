@@ -67,57 +67,53 @@ pipeline {
                                                 [$class: 'CleanCheckout']],
                                   submoduleCfg: [], 
                                   userRemoteConfigs: [[url: 'https://github.com/ufs-community/ufs-weather-model.git']]])
-       //   script {
-       // }
-       // cleanWs()
-       // checkout scm
+
+        // Determine node to run against and if new baselines should be created
         sh '''
            export machine="${CHOICE_NODE}"
-           echo $machine
            pwd
            cd tests
-           echo "Running Regression Tests on ${NODE_NAME}!"
            if [[ $machine =~ "jet" ]] && [[ $CREATE_BASELINES ]] 
            then
+              echo "Creating baselines on $machine" 
               #export dprefix=/lfs1/NAGAPE/$ACCNR/$USER
               #./rt.sh -a ${ACCNR} -c -r -l rt.conf
-              echo "I am $machine and create baselines $CREATE_BASELINES" 
            elif [[ $machine =~ "jet" ]] && [[ !$CREATE_BASELINES ]] 
            then
+              echo "Running regression tests on $machine" 
               #export dprefix=/lfs1/NAGAPE/$ACCNR/$USER
               #./rt.sh -a ${ACCNR} -r -l rt.conf
-              echo "I am $machine and create baselines $CREATE_BASELINES" 
            elif [[ $machine =~ "hercules" ]] && [[ $CREATE_BASELINES ]] 
            then
+              echo "Creating baselines on $machine" 
               #export dprefix=/work2/noaa/$ACCNR/$USER
               #sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
               #./rt.sh -a ${ACCNR} -c -r -l rt.conf
-              echo "I am $machine and create baselines $CREATE_BASELINES" 
            elif [[ $machine =~ "hercules" ]] && [[ !$CREATE_BASELINES ]] 
            then
+              echo "Running regression tests on $machine" 
               #export dprefix=/work2/noaa/$ACCNR/$USER
               #sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
               #./rt.sh -a ${ACCNR} -r -l rt.conf
-              echo "I am $machine and create baselines $CREATE_BASELINES" 
            elif [[ $machine =~ "orion" ]] && [[ $CREATE_BASELINES ]]
            then
+              echo "Creating baselines on $machine" 
               #export dprefix=/work2/noaa/$ACCNR/$USER
               #sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
               #./rt.sh -a ${ACCNR} -c -r -l rt.conf
-              echo "I am $machine and create baselines $CREATE_BASELINES" 
            elif [[ $machine =~ "orion" ]] && [[ !$CREATE_BASELINES ]]
            then
+              echo "Running regression tests on $machine" 
               #export dprefix=/work2/noaa/$ACCNR/$USER
               #sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
               #./rt.sh -a ${ACCNR} -r -l rt.conf
-              echo "I am $machine and create baselines $CREATE_BASELINES" 
            elif [[ ! $machine =~ (jet|hercules|orion) ]] && [[ $CREATE_BASELINES ]]
            then
+              echo "Creating baselines on $machine" 
               #./rt.sh -a ${ACCNR} -c -r -l rt.conf
-              echo "I am $machine and create baselines $CREATE_BASELINES" 
            else
+              echo "Running regression tests on $machine" 
              #./rt.sh -a ${ACCNR} -r -l rt.conf
-              echo "I am $machine and create baselines $CREATE_BASELINES" 
            fi
         '''
       }
