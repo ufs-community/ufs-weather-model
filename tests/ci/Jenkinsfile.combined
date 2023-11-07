@@ -1,29 +1,20 @@
 pipeline {
   agent none
   stages {
-    stage('Parallelworks Cluster Check & Start (if applicable)') {
+    stage('Determine HPC Platform') {
        agent {
         label 'built-in'   
        }
       steps {
         script {
           for (label in pullRequest.labels) {
-            if ((label.matches("(.*)-aws-(.*)"))) {
-                 env.CHOICE_NODE='pclusternoaav2use1'
-            }  
-            else if ((label.matches("(.*)-gcp-(.*)"))) { 
-                env.CHOICE_NODE='gclusternoaav2usc1'
-            }  
-            else if ((label.matches("(.*)-azure-(.*)"))) {
-                env.CHOICE_NODE='azclusternoaav2use1'
-            }  
-            else if ((label.matches("hera-(.*)"))) {
+            if ((label.matches("hera-(.*)"))) {
                 env.CHOICE_NODE='hera'
             }  
             else if ((label.matches("jet-(.*)"))) {
                 env.CHOICE_NODE='jet'
             }  
-            else if ((label.matches("gaea-c5-(.*)"))) {
+            else if ((label.matches("gaeac5-(.*)"))) {
                 env.CHOICE_NODE='gaea-c5'
             }  
             else if ((label.matches("gaea-(.*)"))) {
@@ -42,24 +33,15 @@ pipeline {
                 env.CHOICE_NODE='none'
             }
          }
-// Why do I need another if..block, because it just works this way.
-
-            if (CHOICE_NODE == 'azclusternoaav2use1') {
-                echo "Starting up Parallelworks cluster ${CHOICE_NODE}...this might take 5-10 minutes...please be patient."
-                build job: 'parallel-works-jenkins-client/start-cluster', parameters: [string(name: 'PW_CLUSTER_NAME', value: 'azclusternoaav2use1'), string(name: 'PW_CLUSTER_SSH_KEY', value: '~/.ssh/pw_id_rsa'), string(name: 'JAVA_VERSION', value: '11')]
-
+       // End first for loop
+            for (label in pullRequest.labels) {
+            if ((label.matches("(.*)-BL"))) {
+               env.CREATE_BASELINES='true'
             } 
-             else if (CHOICE_NODE == 'gclusternoaav2usc1') {
-                echo "Starting up Parallelworks cluster ${CHOICE_NODE}...this might take 5-10 minutes...please be patient."
-                build job: 'parallel-works-jenkins-client/start-cluster', parameters: [string(name: 'PW_CLUSTER_NAME', value: 'gclusternoaav2usc1'), string(name: 'PW_CLUSTER_SSH_KEY', value: '~/.ssh/pw_id_rsa'), string(name: 'JAVA_VERSION', value: '11')]
+            else {
+               env.CREATE_BASELINES='false'
             }
-             else if (CHOICE_NODE == 'pclusternoaav2use1') {
-                 echo "Starting up Parallelworks cluster ${CHOICE_NODE}...this might take 5-10 minutes...please be patient."
-                build job: 'parallel-works-jenkins-client/start-cluster', parameters: [string(name: 'PW_CLUSTER_NAME', value: 'pclusternoaav2use1'), string(name: 'PW_CLUSTER_SSH_KEY', value: '~/.ssh/pw_id_rsa'), string(name: 'JAVA_VERSION', value: '11')]
-            }
-             else {
-                echo "${CHOICE_NODE} is NOT a Parallelworks cluster, moving on..."
-            }
+          }
        }    
     }
   } 
@@ -68,10 +50,8 @@ pipeline {
           label "${CHOICE_NODE}"
         }
         environment {
-        GITHUB_SSH_KEY = credentials('ParallelworksGithubPrivateKey')
         ACCNR = 'epic'
         GITHUB_TOKEN = credentials('zachgithubtoken')
-        PW_NODE_PATH = '/lustre/'
       }
       steps {
           checkout([$class: 'GitSCM',
@@ -87,16 +67,8 @@ pipeline {
                                                 [$class: 'CleanCheckout']],
                                   submoduleCfg: [], 
                                   userRemoteConfigs: [[url: 'https://github.com/ufs-community/ufs-weather-model.git']]])
-          script {
-            for (label in pullRequest.labels) {
-            if ((label.matches("(.*)-BL"))) {
-               env.CREATE_BASELINES='true'
-            } 
-            else {
-               env.CREATE_BASELINES='false'
-            }
-          }
-        }
+       //   script {
+       // }
        // cleanWs()
        // checkout scm
         sh '''
@@ -148,32 +120,6 @@ pipeline {
               echo "I am $machine and create baselines $CREATE_BASELINES" 
            fi
         '''
-      }
- }
-  stage('Stop Parallelworks Cluster (if applicable)') {
-       agent {
-        label 'built-in'   
-       }
-      // Pedantic comment.
-      steps {
-        script {
-          if (CHOICE_NODE == 'azclusternoaav2use1') {
-                echo "Shutting Down Parallelworks cluster ${CHOICE_NODE}."
-                build job: 'parallel-works-jenkins-client/stop-cluster', parameters: [string(name: 'PW_CLUSTER_NAME', value: 'azclusternoaav2use1')]
-
-            } 
-          else if (CHOICE_NODE == 'gclusternoaav2usc1') {
-                echo "Shutting Down Parallelworks cluster ${CHOICE_NODE}."
-                build job: 'parallel-works-jenkins-client/stop-cluster', parameters: [string(name: 'PW_CLUSTER_NAME', value: 'gclusternoaav2usc1')]
-            }
-          else if (CHOICE_NODE == 'pclusternoaav2use1') {
-                echo "Shutting Down Parallelworks cluster ${CHOICE_NODE}."
-                build job: 'parallel-works-jenkins-client/stop-cluster', parameters: [string(name: 'PW_CLUSTER_NAME', value: 'pclusternoaav2use1')]
-            }
-          else {
-                echo "${CHOICE_NODE} is NOT a Parallelworks cluster, moving on..."
-            }
-        }    
       }
     }
   }
