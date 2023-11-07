@@ -139,7 +139,7 @@ pipeline {
               #sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
               #./rt.sh -a ${ACCNR} -r -l rt.conf
               echo "I am $machine and create baselines $CREATE_BASELINES" 
-           elif [[ $machine != (jet|hercules|orion) ]] && [[ $CREATE_BASELINES ]]
+           elif [[ ! $machine =~ (jet|hercules|orion) ]] && [[ $CREATE_BASELINES ]]
            then
               #./rt.sh -a ${ACCNR} -c -r -l rt.conf
               echo "I am $machine and create baselines $CREATE_BASELINES" 
