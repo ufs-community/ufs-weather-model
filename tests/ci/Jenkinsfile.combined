@@ -78,7 +78,7 @@ pipeline {
               echo "Creating baselines on $machine" 
               export dprefix=/lfs1/NAGAPE/$ACCNR/$USER
             #  ./rt.sh -a ${ACCNR} -c -r -l rt.conf
-            echo 'New content' > logs/RegressionTests_jet.log
+            echo 'More exclusive content. New content' > logs/RegressionTests_jet.log
            elif [[ $machine =~ "jet" ]] && [[ !$CREATE_BASELINES ]] 
            then
               echo "Running regression tests on $machine" 
@@ -130,8 +130,8 @@ pipeline {
            pwd
            git add logs/RegressionTests_$machine.log
            git commit -m "[AutoRT] $machine Job Completed.\n\n\n on-behalf-of @ufs-community <ecc.platform@noaa.gov>"
-           git push origin HEAD:refs/heads/$CHANGE_BRANCH > /dev/null 2>&1
-           echo "Pushed logs to $GIT_URL refs/remotes/origin/$CHANGE_BRANCH"
+           git push origin HEAD:refs/remotes/origin/PR-$CHANGE_ID > /dev/null 2>&1
+           echo "Pushed logs to $GIT_URL refs/remotes/origin/PR-$CHANGE_ID"
         '''
       }
     }
