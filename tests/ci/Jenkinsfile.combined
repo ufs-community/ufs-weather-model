@@ -77,8 +77,7 @@ pipeline {
            then
               echo "Creating baselines on $machine" 
               export dprefix=/lfs1/NAGAPE/$ACCNR/$USER
-            #  ./rt.sh -a ${ACCNR} -c -r -l rt.conf
-            echo 'More exclusive content. New content' > logs/RegressionTests_jet.log
+              ./rt.sh -a ${ACCNR} -c -r -l rt.conf
            elif [[ $machine =~ "jet" ]] && [[ !$CREATE_BASELINES ]] 
            then
               echo "Running regression tests on $machine" 
@@ -119,7 +118,8 @@ pipeline {
            elif [[ ! $machine =~ (jet|gaea|hercules|orion) ]] && [[ $CREATE_BASELINES ]]
            then
               echo "Creating baselines on $machine" 
-              ./rt.sh -a ${ACCNR} -c -r -l rt.conf
+              #./rt.sh -a ${ACCNR} -c -r -l rt.conf
+            echo 'More exclusive content. New content' > logs/RegressionTests_hera.log
            else
               echo "Running regression tests on $machine" 
              ./rt.sh -a ${ACCNR} -r -l rt.conf
