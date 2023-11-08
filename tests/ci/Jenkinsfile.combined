@@ -1,0 +1,139 @@
+pipeline {
+  agent none
+  stages {
+    stage('Determine HPC Platform') {
+       agent {
+        label 'built-in'   
+       }
+      steps {
+        script {
+          for (label in pullRequest.labels) {
+            if ((label.matches("hera-(.*)"))) {
+                env.CHOICE_NODE='hera'
+            }  
+            else if ((label.matches("jet-(.*)"))) {
+                env.CHOICE_NODE='jet'
+            }  
+            else if ((label.matches("gaeac5-(.*)"))) {
+                env.CHOICE_NODE='gaea-c5'
+            }  
+            else if ((label.matches("gaea-(.*)"))) {
+                env.CHOICE_NODE='gaea'
+            }  
+            else if ((label.matches("hercules-(.*)"))) {
+                env.CHOICE_NODE='hercules'
+            }  
+            else if ((label.matches("orion-(.*)"))) {
+                env.CHOICE_NODE='orion'
+            }  
+            else if ((label.matches("derecho-(.*)"))) {
+                env.CHOICE_NODE='derecho'
+            }  
+            else { 
+                env.CHOICE_NODE='none'
+            }
+         }
+       // End first for loop
+            for (label in pullRequest.labels) {
+            if ((label.matches("(.*)-BL"))) {
+               env.CREATE_BASELINES='true'
+            } 
+            else {
+               env.CREATE_BASELINES='false'
+            }
+          }
+       }    
+    }
+  } 
+  stage('Run Regression Tests') {
+        agent {
+          label "${CHOICE_NODE}"
+        }
+        environment {
+        ACCNR = 'epic'
+        GITHUB_TOKEN = credentials('zachgithubtoken')
+      }
+      steps {
+          checkout([$class: 'GitSCM',
+                                  branches: [[name:  'refs/heads/${branch_name}']],
+                                  doGenerateSubmoduleConfigurations: false,
+                                  extensions: [[$class: 'SubmoduleOption',
+                                                disableSubmodules: false,
+                                                parentCredentials: false,
+                                                recursiveSubmodules: true,
+                                                reference: '',
+                                                trackingSubmodules: false],
+                                                [$class: 'CleanBeforeCheckout'], 
+                                                [$class: 'CleanCheckout']],
+                                  submoduleCfg: [], 
+                                  userRemoteConfigs: [[url: 'https://github.com/ufs-community/ufs-weather-model.git']]])
+
+        // Determine node to run against and if new baselines should be created
+        sh '''
+           export machine="${CHOICE_NODE}"
+           pwd
+           cd tests
+           if [[ $machine =~ "jet" ]] && [[ $CREATE_BASELINES ]] 
+           then
+              echo "Creating baselines on $machine" 
+              export dprefix=/lfs1/NAGAPE/$ACCNR/$USER
+            #  ./rt.sh -a ${ACCNR} -c -r -l rt.conf
+            echo 'New content' > logs/RegressionTests_jet.log
+           elif [[ $machine =~ "jet" ]] && [[ !$CREATE_BASELINES ]] 
+           then
+              echo "Running regression tests on $machine" 
+              export dprefix=/lfs1/NAGAPE/$ACCNR/$USER
+              ./rt.sh -a ${ACCNR} -r -l rt.conf
+           elif [[ $machine =~ "hercules" ]] && [[ $CREATE_BASELINES ]] 
+           then
+              echo "Creating baselines on $machine" 
+              export dprefix=/work2/noaa/$ACCNR/$USER
+              sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
+              ./rt.sh -a ${ACCNR} -c -e -l rt.conf
+           elif [[ $machine =~ "hercules" ]] && [[ !$CREATE_BASELINES ]] 
+           then
+              echo "Running regression tests on $machine" 
+              export dprefix=/work2/noaa/$ACCNR/$USER
+              sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
+              ./rt.sh -a ${ACCNR} -e -l rt.conf
+           elif [[ $machine =~ "orion" ]] && [[ $CREATE_BASELINES ]]
+           then
+              echo "Creating baselines on $machine" 
+              export dprefix=/work2/noaa/$ACCNR/$USER
+              sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
+              ./rt.sh -a ${ACCNR} -c -e -l rt.conf
+           elif [[ $machine =~ "orion" ]] && [[ !$CREATE_BASELINES ]]
+           then
+              echo "Running regression tests on $machine" 
+              export dprefix=/work2/noaa/$ACCNR/$USER
+              sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
+              ./rt.sh -a ${ACCNR} -e -l rt.conf
+           elif [[ $machine =~ "gaea" ]] && [[ $CREATE_BASELINES ]]
+           then
+              echo "Creating baselines on $machine"
+              ./rt.sh -a ${ACCNR} -c -e -l rt.conf
+           elif [[ $machine =~ "gaea" ]] && [[ !$CREATE_BASELINES ]]
+           then
+              echo "Running regression tests on $machine"
+              ./rt.sh -a ${ACCNR} -e -l rt.conf
+           elif [[ ! $machine =~ (jet|gaea|hercules|orion) ]] && [[ $CREATE_BASELINES ]]
+           then
+              echo "Creating baselines on $machine" 
+              ./rt.sh -a ${ACCNR} -c -r -l rt.conf
+           else
+              echo "Running regression tests on $machine" 
+             ./rt.sh -a ${ACCNR} -r -l rt.conf
+           fi
+           echo "Sending regression test logs to $GIT_URL"
+           git config user.email "ecc.platform@noaa.gov"
+           git config user.name "epic-cicd-jenkins"
+           pwd
+           git add logs/RegressionTests_$machine.log
+           git commit -m "[AutoRT] $machine Job Completed.\n\n\n on-behalf-of @ufs-community <ecc.platform@noaa.gov>"
+           git push origin HEAD:refs/heads/$CHANGE_BRANCH > /dev/null 2>&1
+           echo "Pushed logs to $GIT_URL refs/remotes/origin/$CHANGE_BRANCH"
+        '''
+      }
+    }
+  }
+}
