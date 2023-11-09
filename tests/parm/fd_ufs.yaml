@@ -72,12 +72,12 @@
      #-----------------------------------
      #
      - standard_name: Faxa_swdn
-       alias: mean_down_sw_flx
+       alias: inst_down_sw_flx
        canonical_units: W m-2
        description: atmosphere export -  mean downward SW heat flux
      #
      - standard_name: Faxa_lwdn
-       alias: mean_down_lw_flx
+       alias: inst_down_lw_flx
        canonical_units: W m-2
        description: atmosphere export - mean downward LW heat flux
      #
@@ -109,27 +109,27 @@
        description: atmosphere export
      #
      - standard_name: Faxa_swnet
-       alias: mean_net_sw_flx
+       alias: inst_net_sw_flx
        canonical_units: W m-2
        description: atmosphere export
      #
      - standard_name: Faxa_swndf
-       alias: mean_down_sw_ir_dif_flx
+       alias: inst_down_sw_ir_dif_flx
        canonical_units: W m-2
        description: atmosphere export - mean surface downward nir diffuse flux
      #
      - standard_name: Faxa_swndr
-       alias: mean_down_sw_ir_dir_flx
+       alias: inst_down_sw_ir_dir_flx
        canonical_units: W m-2
        description: atmosphere export - mean surface downward nir direct flux
      #
      - standard_name: Faxa_swvdf
-       alias: mean_down_sw_vis_dif_flx
+       alias: inst_down_sw_vis_dif_flx
        canonical_units: W m-2
        description: atmosphere export - mean surface downward uv+vis diffuse flux
      #
      - standard_name: Faxa_swvdr
-       alias: mean_down_sw_vis_dir_flx
+       alias: inst_down_sw_vis_dir_flx
        canonical_units: W m-2
        description: atmosphere export - mean surface downward uv+visvdirect flux
      #
@@ -220,28 +220,32 @@
        description: atmosphere export - topographic height
      #
      - standard_name: Faxa_taux
-       alias: mean_zonal_moment_flx_atm
+       alias: inst_zonal_moment_flx
+     - standard_name: Faxa_taux
+       alias: inst_zonal_moment_flx_atm
        canonical_units: N m-2
        description: atmosphere export- zonal component of momentum flux
      #
      - standard_name: Faxa_tauy
-       alias: mean_merid_moment_flx_atm
+       alias: inst_merid_moment_flx
+     - standard_name: Faxa_tauy
+       alias: inst_merid_moment_flx_atm
        canonical_units: N m-2
        description: atmosphere export - meridional component of momentum flux
      #
      - standard_name: Faxa_lwnet
        canonical_units: W m-2
-       alias: mean_net_lw_flx
+       alias: inst_net_lw_flx
        description: atmosphere export - mean net longwave flux from atm
      #
      - standard_name: Faxa_sen
        canonical_units: W m-2
-       alias: mean_sensi_heat_flx
+       alias: inst_sensi_heat_flx
        description: atmosphere export - sensible heat flux
      #
      - standard_name : Faxa_evap
        canonical_units: kg m-2 s-1
-       alias: mean_evap_rate
+       alias: inst_evap_rate
        description: atmosphere export - latent heat flux conversion
      #
      - standard_name: Faxx_evap
@@ -249,7 +253,7 @@
        description: atmosphere import
      #
      - standard_name: Faxa_lat
-       alias: mean_laten_heat_flx
+       alias: inst_laten_heat_flx
        canonical_units: W m-2
        description: atmosphere export - latent heat flux
      #
@@ -744,13 +748,13 @@
        canonical_units: kg m-2 s-1
      - standard_name: mean_prec_rate_conv
        canonical_units: kg m-2 s-1
-     - standard_name: inst_down_lw_flx
+     - standard_name: mean_down_lw_flx
        canonical_units: W m-2
      - standard_name: inst_net_lw_flx
        canonical_units: W m-2
-     - standard_name: inst_down_sw_flx
+     - standard_name: mean_down_sw_flx
        canonical_units: W m-2
-     - standard_name: inst_net_sw_flx
+     - standard_name: mean_net_sw_flx
        canonical_units: W m-2
      - standard_name: inst_net_sw_ir_dir_flx
        canonical_units: W m-2
@@ -760,19 +764,23 @@
        canonical_units: W m-2
      - standard_name: inst_net_sw_vis_dif_flx
        canonical_units: W m-2
-     - standard_name: inst_down_sw_ir_dif_flx
+     - standard_name: mean_down_sw_ir_dif_flx
        canonical_units: W m-2
-     - standard_name: inst_down_sw_ir_dir_flx
+     - standard_name: mean_down_sw_ir_dir_flx
        canonical_units: W m-2
-     - standard_name: inst_down_sw_vis_dif_flx
+     - standard_name: mean_down_sw_vis_dif_flx
        canonical_units: W m-2
-     - standard_name: inst_down_sw_vis_dir_flx
+     - standard_name: mean_down_sw_vis_dir_flx
        canonical_units: W m-2
      - standard_name: inst_surface_height
        canonical_units: m
-     - standard_name: inst_zonal_moment_flx
+     - standard_name: mean_zonal_moment_flx_atm
        canonical_units: N m-2
-     - standard_name: inst_merid_moment_flx
+     - standard_name: mean_merid_moment_flx_atm
+       canonical_units: N m-2
+     - standard_name: inst_zonal_moment_flx_atm
+       canonical_units: N m-2
+     - standard_name: inst_merid_moment_flx_atm
        canonical_units: N m-2
      - standard_name: inst_sensi_heat_flx
        canonical_units: N m-2
@@ -843,10 +851,6 @@
        canonical_units: tbd
      - standard_name: inst_surface_roughness
        canonical_units: tbd
-     - standard_name: inst_zonal_moment_flx
-       canonical_units: N m-2
-     - standard_name: inst_merid_moment_flx
-       canonical_units: N m-2
      - standard_name: inst_laten_heat_flx
        canonical_units: W m-2
      - standard_name: inst_sensi_heat_flx
