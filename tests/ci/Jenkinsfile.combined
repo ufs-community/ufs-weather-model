@@ -118,18 +118,15 @@ pipeline {
            elif [[ $machine =~ !(jet|gaea|hercules|orion) ]] && [[ $CREATE_BASELINES ]]
            then
               echo "Creating baselines on $machine" 
-              echo "The values of create baselines is $CREATE_BASELINES"
-              #./rt.sh -a ${ACCNR} -c -r -l rt.conf
+              ./rt.sh -a ${ACCNR} -c -r -l rt.conf
            else
               echo "Running regression tests on $machine" 
-             #./rt.sh -a ${ACCNR} -r -l rt.conf
-              echo "Updating the contents of this file and more" > logs/RegressionTests_hera.log
+             ./rt.sh -a ${ACCNR} -r -l rt.conf
            fi
-           echo "Sending regression test logs to $GIT_URL"
            git config user.email "ecc.platform@noaa.gov"
            git config user.name "epic-cicd-jenkins"
-           pwd
            echo "Testing concluded...removing labels for $machine from $GIT_URL"
+
            GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
            GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
 
