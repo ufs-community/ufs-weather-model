@@ -119,7 +119,6 @@ pipeline {
            then
               echo "Creating baselines on $machine" 
               #./rt.sh -a ${ACCNR} -c -r -l rt.conf
-            echo 'More exclusive content. New content' > logs/RegressionTests_hera.log
            else
               echo "Running regression tests on $machine" 
              ./rt.sh -a ${ACCNR} -r -l rt.conf
@@ -128,10 +127,12 @@ pipeline {
            git config user.email "ecc.platform@noaa.gov"
            git config user.name "epic-cicd-jenkins"
            pwd
+           export httpsorigin=`echo ${GIT_URL} | sed -e "s/github/$GITHUB_TOKEN@github/"` > /dev/null 2>&1
+           git remote -v | grep -w httpsorigin > /dev/null 2>&1 && git remote remove httpsorigin > /dev/null 2>&1
+           git remote add httpsorigin $httpsorigin > /dev/null 2>&1
            git add logs/RegressionTests_$machine.log
            git commit -m "[AutoRT] $machine Job Completed.\n\n\n on-behalf-of @ufs-community <ecc.platform@noaa.gov>"
-           git push origin HEAD:refs/remotes/origin/PR-$CHANGE_ID > /dev/null 2>&1
-           echo "Pushed logs to $GIT_URL refs/remotes/origin/PR-$CHANGE_ID"
+            git push httpsorigin HEAD:$CHANGE_BRANCH > /dev/null 2>&1
         '''
       }
     }
