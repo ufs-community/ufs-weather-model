@@ -119,6 +119,7 @@ pipeline {
            then
               echo "Creating baselines on $machine" 
               #./rt.sh -a ${ACCNR} -c -r -l rt.conf
+              echo "Updating the contents of this file" > logs/RegressionTests_hera.log
            else
               echo "Running regression tests on $machine" 
              ./rt.sh -a ${ACCNR} -r -l rt.conf
