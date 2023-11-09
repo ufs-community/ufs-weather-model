@@ -115,7 +115,7 @@ pipeline {
            then
               echo "Running regression tests on $machine"
               ./rt.sh -a ${ACCNR} -e -l rt.conf
-           elif [[ $machine =~ ! (jet|gaea|hercules|orion) ]] && [[ $CREATE_BASELINES ]]
+           elif [[ ! $machine =~ (jet|gaea|hercules|orion) -a $CREATE_BASELINES ]]
            then
               echo "Creating baselines on $machine" 
               echo "The values of create baselines is $CREATE_BASELINES"
