@@ -144,9 +144,11 @@ pipeline {
   post {  
          success {  
              echo 'This will run only if successful'  
+             aws sns publish --topic-arn "arn:aws:sns:us-east-1:211527314271:Jenkins-CICD-Notifications" --region us-east-1 --message '{"version":"1.0","source":"custom","content":{"description":":warning: @here '" Jenkins Tests for PR-$CHANGE_ID on $machine has succeeded!*"}}'
          }  
          failure {  
              echo 'This will run only if the run was marked as unstable'  
+             aws sns publish --topic-arn "arn:aws:sns:us-east-1:211527314271:Jenkins-CICD-Notifications" --region us-east-1 --message '{"version":"1.0","source":"custom","content":{"description":":warning: @here '" Jenkins Tests for PR-$CHANGE_ID on $machine has failed!*"}}'
          }  
          unstable {  
              echo 'This will run only if the run was marked as unstable'  
