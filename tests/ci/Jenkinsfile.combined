@@ -1,5 +1,5 @@
 pipeline {
-  agent any 
+  agent none 
   stages {
     stage('Determine HPC Platform') {
        agent {
@@ -143,15 +143,21 @@ pipeline {
   }
   post {  
          success {  
-             echo 'This will run only if successful.'  
-               sh 'which aws' 
+             node('built-in') {
+                echo 'This will run only if successful.'  
+                sh 'which aws' 
+             }
          }  
          failure {  
-             echo 'This will run only if the run was marked as unstable'  
-               sh 'which aws' 
+             node('built-in') {
+                echo 'This will run only if the run was marked as unstable'  
+                sh 'which aws' 
+             }
          }  
          unstable {  
-             echo 'This will run only if the run was marked as unstable'  
+             node('built-in') {
+                echo 'This will run only if the run was marked as unstable'  
+             }
          }  
      }  
 }
