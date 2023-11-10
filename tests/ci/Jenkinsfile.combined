@@ -145,13 +145,13 @@ pipeline {
          success {  
              echo 'This will run only if successful.'  
              script {
-               aws sns publish --topic-arn "arn:aws:sns:us-east-1:211527314271:Jenkins-CICD-Notifications" --region us-east-1 --message '{"version":"1.0","source":"custom","content":{"description":":warning: @here Jenkins job has *succeeded!*"}}'
+               sh "aws sns publish --topic-arn "arn:aws:sns:us-east-1:211527314271:Jenkins-CICD-Notifications" --region us-east-1 --message '{"version":"1.0","source":"custom","content":{"description":":warning: @here Jenkins job has *succeeded!*"}}'"
              }
          }  
          failure {  
              echo 'This will run only if the run was marked as unstable'  
              script {
-               aws sns publish --topic-arn "arn:aws:sns:us-east-1:211527314271:Jenkins-CICD-Notifications" --region us-east-1 --message '{"version":"1.0","source":"custom","content":{"description":":warning: @here Jenkins job has *failed!*"}}'
+               sh "aws sns publish --topic-arn "arn:aws:sns:us-east-1:211527314271:Jenkins-CICD-Notifications" --region us-east-1 --message '{"version":"1.0","source":"custom","content":{"description":":warning: @here Jenkins job has *failed!*"}}'"
              }
          }  
          unstable {  
