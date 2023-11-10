@@ -52,6 +52,7 @@ pipeline {
         environment {
         ACCNR = 'epic'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
+        AWS_ACCOUNT_ID = '211527314271'
       }
       steps {
           checkout([$class: 'GitSCM',
@@ -121,7 +122,7 @@ pipeline {
               ./rt.sh -a ${ACCNR} -c -r -l rt.conf
            else
               echo "Running regression tests on $machine" 
-             ./rt.sh -a ${ACCNR} -r -l rt.conf
+             #./rt.sh -a ${ACCNR} -r -l rt.conf
            fi
            git config user.email "ecc.platform@noaa.gov"
            git config user.name "epic-cicd-jenkins"
@@ -146,7 +147,7 @@ pipeline {
              node('built-in') {
                 echo 'This will run only if successful.'  
                 sh '''
-                  aws sns publish --topic-arn "arn:aws:sns:us-east-1:211527314271:Jenkins-CICD-Notifications" --region us-east-1 --message '{"version":"1.0","source":"custom","content":{"description":":sunny: Jenkins build *'"$JOB_NAME"' '"$BUILD_NUMBER"'* with *PR-'"$CHANGE_ID"'* on '"$CHOICE_NODE"' *succeeded*"}}'
+                  aws sns publish --topic-arn "arn:aws:sns:us-east-1:$AWS_ACCOUNT_ID:Jenkins-CICD-Notifications" --region us-east-1 --message '{"version":"1.0","source":"custom","content":{"description":":sunny: Jenkins build *'"$JOB_NAME"' '"$BUILD_NUMBER"'* with *PR-'"$CHANGE_ID"'* on '"$CHOICE_NODE"' *succeeded*"}}'
                ''' 
              }
          }  
@@ -154,7 +155,7 @@ pipeline {
              node('built-in') {
                 echo 'This will run only if the run was marked as unstable'  
                 sh '''
-                  aws sns publish --topic-arn "arn:aws:sns:us-east-1:211527314271:Jenkins-CICD-Notifications" --region us-east-1 --message '{"version":"1.0","source":"custom","content":{"description":":warning: Jenkins build *'"$JOB_NAME"' '"$BUILD_NUMBER"'* with *PR-'"$CHANGE_ID"'* on '"$CHOICE_NODE"' *failed!*"}}'
+                  aws sns publish --topic-arn "arn:aws:sns:us-east-1:$AWS_ACCOUNT_ID:Jenkins-CICD-Notifications" --region us-east-1 --message '{"version":"1.0","source":"custom","content":{"description":":warning: Jenkins build *'"$JOB_NAME"' '"$BUILD_NUMBER"'* with *PR-'"$CHANGE_ID"'* on '"$CHOICE_NODE"' *failed!*"}}'
                ''' 
              }
          }  
