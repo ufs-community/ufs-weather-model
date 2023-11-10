@@ -357,7 +357,7 @@ export INPES=$INPES_dflt
 export JNPES=$JNPES_dflt
 export RESTART_INTERVAL=0
 export QUILTING=.true.
-export QUILTING_RESTART=.false.
+export QUILTING_RESTART=.true.
 export WRITE_GROUP=1
 export WRTTASK_PER_GROUP=6
 export ITASKS=1
@@ -709,6 +709,8 @@ export INPES=$INPES_cpl_dflt
 export JNPES=$JNPES_cpl_dflt
 export THRD=$THRD_cpl_dflt
 export WRTTASK_PER_GROUP=$WPG_cpl_dflt
+
+export QUILTING_RESTART=.false.
 
 OCN_tasks=$OCN_tasks_cpl_dflt
 ICE_tasks=$ICE_tasks_cpl_dflt
@@ -1159,7 +1161,6 @@ export RESTART_INTERVAL=0
 export FHROT=0
 export coupling_interval_fast_sec=0
 export QUILTING=.true.
-export QUILTING_RESTART=.false.
 export WRITE_GROUP=1
 export WRTTASK_PER_GROUP=6
 export OUTPUT_HISTORY=.true.
