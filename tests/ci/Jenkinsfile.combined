@@ -142,20 +142,13 @@ pipeline {
     }
   }
   post {  
-    agent {
-        label 'built-in'    
-       }  
          success {  
              echo 'This will run only if successful.'  
-             script {
                sh 'which aws' 
-             }
          }  
          failure {  
              echo 'This will run only if the run was marked as unstable'  
-             script {
                sh 'which aws' 
-             }
          }  
          unstable {  
              echo 'This will run only if the run was marked as unstable'  
