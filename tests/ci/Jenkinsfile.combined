@@ -142,6 +142,9 @@ pipeline {
     }
   }
   post {  
+    agent {
+        label 'built-in'    
+       }  
          success {  
              echo 'This will run only if successful.'  
              script {
