@@ -78,7 +78,7 @@ pipeline {
               echo "Creating baselines on $machine" 
               export dprefix=/lfs1/NAGAPE/$ACCNR/$USER
               ./rt.sh -a ${ACCNR} -c -r -l rt.conf
-           elif [[ $machine =~ "jet" ]] && !$CREATE_BASELINES
+           elif [[ $machine =~ "jet" ]] && [ !$CREATE_BASELINES ]
            then
               echo "Running regression tests on $machine" 
               export dprefix=/lfs1/NAGAPE/$ACCNR/$USER
@@ -89,7 +89,7 @@ pipeline {
               export dprefix=/work2/noaa/$ACCNR/$USER
               sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
               ./rt.sh -a ${ACCNR} -c -e -l rt.conf
-           elif [[ $machine =~ "hercules" ]] && !$CREATE_BASELINES
+           elif [[ $machine =~ "hercules" ]] && [ !$CREATE_BASELINES ]
            then
               echo "Running regression tests on $machine" 
               export dprefix=/work2/noaa/$ACCNR/$USER
@@ -101,7 +101,7 @@ pipeline {
               export dprefix=/work2/noaa/$ACCNR/$USER
               sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
               ./rt.sh -a ${ACCNR} -c -e -l rt.conf
-           elif [[ $machine =~ "orion" ]] && !$CREATE_BASELINES
+           elif [[ $machine =~ "orion" ]] && [ !$CREATE_BASELINES ]
            then
               echo "Running regression tests on $machine" 
               export dprefix=/work2/noaa/$ACCNR/$USER
@@ -111,7 +111,7 @@ pipeline {
            then
               echo "Creating baselines on $machine"
               ./rt.sh -a ${ACCNR} -c -e -l rt.conf
-           elif [[ $machine =~ "gaea" ]] && !$CREATE_BASELINES
+           elif [[ $machine =~ "gaea" ]] && [ !$CREATE_BASELINES ]
            then
               echo "Running regression tests on $machine"
               ./rt.sh -a ${ACCNR} -e -l rt.conf
