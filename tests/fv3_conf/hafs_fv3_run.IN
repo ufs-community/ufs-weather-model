@@ -39,7 +39,7 @@ if [ ${CNTL_DIR} = "hafs_regional_atm_thompson_gfdlsf" ] || [ $IMP_PHYSICS = 8 ]
   cp @[INPUTDATA_ROOT]/FV3_fix/CCN_ACTIVATE.BIN .
 fi
 #ugwpv1
-if [ $DO_UGWP_V1 = .true. ]; then
+if [[ $DO_UGWP_V1 == .true. && ${CNTL_DIR} == "gnv1_nested" ]]; then
   cp    @[INPUTDATA_ROOT]/FV3_input_data/ugwp_c384_tau.nc ./ugwp_limb_tau.nc
 fi
 
