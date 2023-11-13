@@ -174,6 +174,8 @@ elif [[ $MACHINE_ID = jet ]]; then
   INPES_thrd=3 ; JNPES_thrd=4
   INPES_c384=6 ; JNPES_c384=12 ; THRD_c384=1
   INPES_c768=8 ; JNPES_c768=16 ; THRD_c768=2
+  WRTTASK_PER_GROUP_c384=84
+  WRTTASK_PER_GROUP_c384gdas=88
 
   THRD_cpl_atmw_gdas=2
   INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
