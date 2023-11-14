@@ -45,6 +45,18 @@ pipeline {
        }    
     }
   } 
+
+  stage('SonarQube Testing') {
+            steps {
+                script {
+                    build job: '/ufs-weather-model/ufs-wm-sonarqube', parameters: [
+                        string(name: 'BRANCH_NAME', value: env.CHANGE_BRANCH ?: 'develop'),
+                        string(name: 'FORK_NAME', value: env.CHANGE_FORK ?: '')
+                    ], wait: false
+                }
+            }
+        }
+
   stage('Run Regression Tests') {
         agent {
           label "${CHOICE_NODE}"
@@ -132,9 +144,9 @@ pipeline {
 
            if $CREATE_BASELINES
            then
-              curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels -d '{"labels":["$machine-BL"]}' 
+              curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-BL
            else
-              curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels -d '{"labels":["$machine-RT"]}' 
+              curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-RT 
            fi
             
         '''
