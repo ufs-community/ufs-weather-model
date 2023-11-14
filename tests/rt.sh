@@ -438,8 +438,8 @@ elif [[ $MACHINE_ID = derecho ]]; then
   QUEUE=main
   COMPILE_QUEUE=main
   PARTITION=
-  dprefix=/glade/derecho/scratch
-  DISKNM=/glade/cheyenne/scratch/epicufsrt/GMTB/ufs-weather-model/RT
+  dprefix=/glade/scratch/epicufsrt
+  DISKNM=/glade/scratch/epicufsrt/GMTB/ufs-weather-model/RT
   STMP=$dprefix
   PTMP=$dprefix
   SCHEDULER=pbs
@@ -450,25 +450,6 @@ elif [[ $MACHINE_ID = derecho ]]; then
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=pbspro
-
-elif [[ $MACHINE_ID = cheyenne ]]; then
-
-  export PATH=/glade/work/jedipara/cheyenne/spack-stack/miniconda-3.9.12/bin:$PATH
-  export PYTHONPATH=/glade/work/jedipara/cheyenne/spack-stack/miniconda-3.9.12/lib/python3.9/site-packages
-
-  module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc
-  module load ecflow/5.8.4
-  ECFLOW_START=/glade/work/jedipara/cheyenne/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
-  ECF_PORT=$(( $(id -u) + 1500 ))
-
-  QUEUE=regular
-  COMPILE_QUEUE=regular
-  PARTITION=
-  dprefix=/glade/scratch
-  DISKNM=/glade/scratch/epicufsrt/GMTB/ufs-weather-model/RT
-  STMP=$dprefix
-  PTMP=$dprefix
-  SCHEDULER=pbs
 
 elif [[ $MACHINE_ID = stampede ]]; then
 
@@ -705,8 +686,6 @@ EOF
     QUEUE=s4
   elif [[ $MACHINE_ID = gaea ]]; then
     QUEUE=normal
-  elif [[ $MACHINE_ID = cheyenne ]]; then
-    QUEUE=regular
   elif [[ $MACHINE_ID = derecho ]]; then
     QUEUE=main
   else
