@@ -658,8 +658,22 @@ export PRINT_DIFF_PGR=.false.
 export coupling_interval_fast_sec=0
 }
 
+# Defaults for the CICE6 model
+export_cice6() {
+export CICE_NPT=999
+export CICE_RESTART_DIR="./RESTART/"
+export CICE_RESTART_FILE="iced"
+export CICE_HISTFREQ_N="0, 0, 6, 1, 1"
+export CICE_HISTORY_DIR="./history/"
+export CICE_INCOND_DIR="./history/"
+export CICE_TR_POND_LVL=".true."
+export CICE_RESTART_POND_LVL=".false."
+}
+
 export_cpl ()
 {
+export_cice6
+
 export FV3=true
 export S2S=true
 export HAFS=false
@@ -953,6 +967,7 @@ export LIST_FILES=""
 }
 export_datm_cdeps ()
 {
+export_cice6
 export FV3=false
 export S2S=false
 export HAFS=false

@@ -6,7 +6,7 @@
     day_init       = @[SDAY]
     sec_init       = @[SECS]
     dt             = @[DT_CICE]
-    npt            = 999
+    npt            = @[CICE_NPT]
     ndtd           = 1
     runtype        = '@[CICERUNTYPE]'
     runid          = '@[RUNID]'
@@ -18,8 +18,8 @@
     lcdf64         = .false.
     numin          = 21
     numax          = 89
-    restart_dir    = './RESTART/'
-    restart_file   = 'iced'
+    restart_dir    = '@[CICE_RESTART_DIR]'
+    restart_file   = '@[CICE_RESTART_FILE]'
     pointer_file   = './ice.restart_file'
     dumpfreq       = '@[DUMPFREQ]'
     dumpfreq_n     = @[DUMPFREQ_N]
@@ -35,12 +35,12 @@
     latpnt(2)      = -65.
     lonpnt(2)      = -45.
     histfreq       = 'm','d','h','x','x'
-    histfreq_n     =  0 , 0 , 6 , 1 , 1
+    histfreq_n     = @[CICE_HISTFREQ_N]
     hist_avg       = @[CICE_HIST_AVG]
-    history_dir    = './history/'
+    history_dir    = '@[CICE_HISTORY_DIR]'
     history_file   = 'iceh'
     write_ic       = .true.
-    incond_dir     = './history/'
+    incond_dir     = '@[CICE_INCOND_DIR]'
     incond_file    = 'iceh_ic'
     version_name   = 'CICE_6.0.2'
 /
@@ -71,8 +71,8 @@
     restart_lvl  = .false.
     tr_pond_topo = .false.
     restart_pond_topo = .false.
-    tr_pond_lvl  = .true.
-    restart_pond_lvl  = .false.
+    tr_pond_lvl  = @[CICE_TR_POND_LVL]
+    restart_pond_lvl  = @[CICE_RESTART_POND_LVL]
     tr_aero      = .false.
     restart_aero = .false.
     tr_fsd       = .false.
