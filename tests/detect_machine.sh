@@ -83,24 +83,6 @@ case $(hostname -f) in
   derecho6.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho6
   derecho7.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho7
   derecho8.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho8
-  cheyenne1.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne1
-  cheyenne2.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne2
-  cheyenne3.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne3
-  cheyenne4.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne4
-  cheyenne5.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne5
-  cheyenne6.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne6
-  cheyenne1.ib0.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne1
-  cheyenne2.ib0.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne2
-  cheyenne3.ib0.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne3
-  cheyenne4.ib0.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne4
-  cheyenne5.ib0.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne5
-  cheyenne6.ib0.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne6
-  chadmin1.ib0.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne1
-  chadmin2.ib0.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne1
-  chadmin3.ib0.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne1
-  chadmin4.ib0.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne1
-  chadmin5.ib0.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne1
-  chadmin6.ib0.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne1
 
   login1.stampede2.tacc.utexas.edu) MACHINE_ID=stampede ;; ### stampede1
   login2.stampede2.tacc.utexas.edu) MACHINE_ID=stampede ;; ### stampede2
