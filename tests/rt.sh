@@ -306,7 +306,7 @@ elif [[ $MACHINE_ID = acorn ]]; then
 
 elif [[ $MACHINE_ID = gaea ]]; then
 
-  module use /lustre/f2/dev/Samuel.Trahan/hafs/modulefiles/
+  module use /lustre/f2/dev/role.epic/contrib/rocoto/modulefiles
   module load rocoto
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
@@ -327,10 +327,17 @@ elif [[ $MACHINE_ID = gaea ]]; then
 
   SCHEDULER=slurm
 
-elif [[ $MACHINE_ID = gaea_c5 ]]; then
+elif [[ $MACHINE_ID = gaea-c5 ]]; then
+
+  module use /lustre/f2/dev/role.epic/contrib/C5/rocoto/modulefiles
+  module load rocoto
+  ROCOTORUN=$(which rocotorun)
+  ROCOTOSTAT=$(which rocotostat)
+  ROCOTOCOMPLETE=$(which rocotocomplete)
+  ROCOTO_SCHEDULER=slurm
 
   module load PrgEnv-intel/8.3.3
-  module load intel-classic/2022.2.1
+  module load intel-classic/2023.1.0
   module load cray-mpich/8.1.25
   module load python/3.9.12
   module use /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/modulefiles
@@ -673,6 +680,10 @@ if [[ $ROCOTO == true ]]; then
     COMPILE_QUEUE=regular
     ROCOTO_SCHEDULER=pbspro
   elif [[ $MACHINE_ID = gaea ]]; then
+    QUEUE=normal
+    COMPILE_QUEUE=normal
+    ROCOTO_SCHEDULER=slurm
+  elif [[ $MACHINE_ID = gaea-c5 ]]; then
     QUEUE=normal
     COMPILE_QUEUE=normal
     ROCOTO_SCHEDULER=slurm

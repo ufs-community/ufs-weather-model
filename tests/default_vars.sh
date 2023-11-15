@@ -227,7 +227,7 @@ elif [[ $MACHINE_ID = gaea ]]; then
   INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
   WAV_tasks_atmw_gdas=264
 
-elif [[ $MACHINE_ID = gaea_c5 ]]; then
+elif [[ $MACHINE_ID = gaea-c5 ]]; then
 
   TPN=128
 
