@@ -14,7 +14,7 @@ through NOAA and its affiliates. These systems are named (e.g., Hera, Orion, Che
 Level 3 & 4 systems include certain personal computers or non-NOAA-affiliated HPC systems. 
 The prerequisite software libraries for building the WM already exist in a centralized location on Level 1/preconfigured 
 systems, so users may skip directly to :ref:`getting the data <GetData>` and downloading the code. 
-On other systems, users will need to build the prerequisite libraries using :term:`HPC-Stack` or :term:`spack-stack`. 
+On other systems, users will need to build the prerequisite libraries using :term:`spack-stack` or :term:`HPC-Stack`. 
 
 =======================
 Prerequisite Libraries
@@ -22,7 +22,7 @@ Prerequisite Libraries
 
 The UFS WM requires a number of libraries.
 The WM uses two categories of libraries, which are available as a bundle via 
-:term:`HPC-Stack` or :term:`spack-stack`:
+:term:`spack-stack` or :term:`HPC-Stack`:
 
    #. :term:`NCEP` libraries (:term:`NCEPLIBS`): These are libraries developed for use with NOAA weather models.
       Most have an NCEPLIBS prefix in the repository (e.g., NCEPLIBS-bacio). Select tools from the UFS
@@ -34,11 +34,12 @@ The WM uses two categories of libraries, which are available as a bundle via
       instead. 
 
 .. note::
-   Currently, HPC-Stack is the software stack validated by the UFS WM for running :term:`regression tests <RT>`. 
-   However, UFS applications are shifting to spack-stack, which is a Spack-based 
-   method for installing UFS prerequisite software libraries. The spack-stack is currently 
-   used on NOAA Cloud platforms and in containers, while HPC-Stack is still used on NOAA
-   Research & Development HPC Systems (RDHPCS). 
+   Currently, spack-stack is the software stack validated by the UFS WM for running 
+   :term:`regression tests <RT>`. Spack-stack is a Spack-based method for installing UFS 
+   prerequisite software libraries. UFS applications and components are also shifting to 
+   spack-stack from HPC-Stack but are at various stages of this transition. 
+   Although users can still build and use HPC-Stack, the UFS WM no longer uses HPC-Stack 
+   for validation, and support for this option is being deprecated. 
 
 ----------------
 Common Modules
@@ -70,8 +71,8 @@ The most updated list of common modules can be viewed in ``ufs_common.lua``
 `here <https://github.com/ufs-community/ufs-weather-model/blob/develop/modulefiles/ufs_common.lua>`__.
 
 .. attention::
-   Documentation is available for installing `HPC-Stack <https://hpc-stack.readthedocs.io/en/latest/>`__ 
-   and `spack-stack <https://spack-stack.readthedocs.io/en/latest/>`__, respectively. 
+   Documentation is available for installing `spack-stack <https://spack-stack.readthedocs.io/en/latest/>`__
+   and `HPC-Stack <https://hpc-stack.readthedocs.io/en/latest/>`__, respectively. 
    One of these software stacks (or the libraries they contain) must be installed before running the UFS Weather Model. 
 
 .. _GetData:

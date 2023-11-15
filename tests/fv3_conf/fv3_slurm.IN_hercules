@@ -1,0 +1,50 @@
+#!/bin/sh
+#SBATCH -e err
+#SBATCH -o out
+#SBATCH --account=@[ACCNR]
+#SBATCH --qos=@[QUEUE]
+#SBATCH --partition=@[PARTITION]
+### #SBATCH --ntasks=@[TASKS]
+#SBATCH --nodes=@[NODES]
+#SBATCH --ntasks-per-node=@[TPN]
+#SBATCH --time=@[WLCLK]
+#SBATCH --job-name="@[JBNME]"
+#SBATCH --exclusive
+
+set -eux
+echo -n " $( date +%s )," >  job_timestamp.txt
+
+set +x
+MACHINE_ID=hercules
+source ./module-setup.sh
+module use $PWD/modulefiles
+module load modules.fv3
+module list
+set -x
+
+ulimit -s unlimited
+
+echo "Model started:  " `date`
+
+#export MPI_TYPE_DEPTH=20
+export OMP_STACKSIZE=512M
+export KMP_AFFINITY=scatter
+export OMP_NUM_THREADS=@[THRD]
+#export ESMF_RUNTIME_COMPLIANCECHECK=OFF:depth=4
+#export PSM_RANKS_PER_CONTEXT=4
+#export PSM_SHAREDCONTEXTS=1
+export ESMF_RUNTIME_PROFILE=ON
+export ESMF_RUNTIME_PROFILE_OUTPUT="SUMMARY"
+
+# For mvapich2
+if [[ @[RT_COMPILER] == gnu ]]; then
+  export MV2_SHMEM_COLL_NUM_COMM=128
+fi
+
+# Avoid job errors because of filesystem synchronization delays
+sync && sleep 1
+
+srun --label -n @[TASKS] ./fv3.exe
+
+echo "Model ended:    " `date`
+echo -n " $( date +%s )," >> job_timestamp.txt

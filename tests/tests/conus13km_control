@@ -27,3 +27,8 @@ export LIST_FILES="sfcf000.nc \
 
 export_hrrr_conus13km
 export RESTART_INTERVAL=1
+export QUILTING_RESTART=.false.
+
+if [[ " hera orion hercules gaea jet " =~ " ${MACHINE_ID} " ]] ; then
+  ZSTANDARD_LEVEL=5
+fi

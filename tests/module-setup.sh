@@ -22,6 +22,13 @@ elif [[ $MACHINE_ID = orion ]] ; then
     fi
     module purge
 
+elif [[ $MACHINE_ID = hercules ]] ; then
+    # We are on Hercules
+    if ( ! eval module help > /dev/null 2>&1 ) ; then
+        source  /apps/other/lmod/lmod/init/bash
+    fi
+    module purge
+
 elif [[ $MACHINE_ID = s4 ]] ; then
     # We are on SSEC Wisconsin S4
     if ( ! eval module help > /dev/null 2>&1 ) ; then

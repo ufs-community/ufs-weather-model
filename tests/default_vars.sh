@@ -120,6 +120,20 @@ elif [[ $MACHINE_ID = orion ]]; then
   INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
   WAV_tasks_atmw_gdas=248
 
+elif [[ $MACHINE_ID = hercules ]]; then
+
+  TPN=80
+
+  INPES_dflt=3 ; JNPES_dflt=8
+  INPES_thrd=3 ; JNPES_thrd=4
+  INPES_c384=8 ; JNPES_c384=6  ; THRD_c384=2
+  INPES_c768=8 ; JNPES_c768=16 ; THRD_c768=2
+
+  THRD_cpl_atmw_gdas=2
+  INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
+  WAV_tasks_atmw_gdas=248
+
+
 elif [[ $MACHINE_ID = hera ]]; then
 
   TPN=40
@@ -160,6 +174,8 @@ elif [[ $MACHINE_ID = jet ]]; then
   INPES_thrd=3 ; JNPES_thrd=4
   INPES_c384=6 ; JNPES_c384=12 ; THRD_c384=1
   INPES_c768=8 ; JNPES_c768=16 ; THRD_c768=2
+  WRTTASK_PER_GROUP_c384=84
+  WRTTASK_PER_GROUP_c384gdas=88
 
   THRD_cpl_atmw_gdas=2
   INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
@@ -293,8 +309,8 @@ export CMP_DATAONLY=false
 
 export_fv3 ()
 {
-# nems.configure defaults
-export NEMS_CONFIGURE=nems.configure.atm.IN
+# ufs.configure defaults
+export UFS_CONFIGURE=ufs.configure.atm.IN
 export MODEL_CONFIGURE=model_configure.IN
 export atm_model=fv3
 
@@ -312,7 +328,7 @@ export INPES=$INPES_dflt
 export JNPES=$JNPES_dflt
 export RESTART_INTERVAL=0
 export QUILTING=.true.
-export QUILTING_RESTART=.false.
+export QUILTING_RESTART=.true.
 export WRITE_GROUP=1
 export WRTTASK_PER_GROUP=6
 export ITASKS=1
@@ -323,6 +339,7 @@ export NUM_FILES=2
 export FILENAME_BASE="'atm' 'sfc'"
 export OUTPUT_GRID="'cubed_sphere_grid'"
 export OUTPUT_FILE="'netcdf'"
+export ZSTANDARD_LEVEL=0
 export IDEFLATE=0
 export NBITS=0
 export ICHUNK2D=0
@@ -409,6 +426,9 @@ export DO_GSL_DRAG_SS=.false.
 export DO_GSL_DRAG_TOFD=.false.
 export DO_UGWP_V1=.false.
 export DO_UGWP_V1_OROG_ONLY=.false.
+export KNOB_UGWP_DOKDIS=1
+export KNOB_UGWP_NDX4LH=1
+
 
 # resolution dependent settings
 export CDMBWD_c48='0.071,2.1,1.0,1.0'
@@ -496,7 +516,6 @@ export OUTPUT_FH="12 -1"
 export NFHOUT=12
 export NFHMAX_HF=12
 export NFHOUT_HF=6
-export IAU_OFFSET=0
 export FHZERO=6
 export FNALBC="'global_snowfree_albedo.bosu.t126.384.190.rg.grb'"
 export FNVETC="'global_vegtype.igbp.t126.384.190.rg.grb'"
@@ -542,6 +561,9 @@ export LNDP_MODEL_TYPE=0
 
 #IAU
 export IAU_INC_FILES="''"
+export IAU_DELTHRS=0
+export IAUFHRS=-1
+export IAU_OFFSET=0
 
 export FH_DFI_RADAR='-2e10'
 
@@ -549,8 +571,6 @@ export FH_DFI_RADAR='-2e10'
 export DO_CA=.false.
 export CA_SGS=.false.
 export CA_GLOBAL=.false.
-
-export IAU_DRYMASSFIXER=.false.
 
 #waves
 export WW3RSTDTHR=12
@@ -649,6 +669,8 @@ export JNPES=$JNPES_cpl_dflt
 export THRD=$THRD_cpl_dflt
 export WRTTASK_PER_GROUP=$WPG_cpl_dflt
 
+export QUILTING_RESTART=.false.
+
 OCN_tasks=$OCN_tasks_cpl_dflt
 ICE_tasks=$ICE_tasks_cpl_dflt
 WAV_tasks=$WAV_tasks_cpl_dflt
@@ -660,8 +682,8 @@ export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6=1800
 export DT_THERM_MOM6=3600
 
-# nems.configure defaults
-export NEMS_CONFIGURE=nems.configure.cpld.IN
+# ufs.configure defaults
+export UFS_CONFIGURE=ufs.configure.cpld.IN
 export med_model=cmeps
 export atm_model=fv3
 export chm_model=gocart
@@ -676,7 +698,7 @@ export coupling_interval_slow_sec=${DT_THERM_MOM6}
 export coupling_interval_fast_sec=${DT_ATMOS}
 
 export RESTART_N=${FHMAX}
-export CPLMODE=nems_frac
+export CPLMODE=ufs.frac
 export cap_dbug_flag=0
 export use_coldstart=false
 export use_mommesh=true
@@ -829,8 +851,14 @@ export MOM6_THERMO_SPAN=False
 export MOM6_USE_WAVES=True
 export MOM6_ALLOW_LANDMASK_CHANGES=False
 # MOM6 IAU
-export MOM_IAU=False
-export MOM_IAU_HRS=6
+export ODA_INCUPD=False
+export ODA_INCUPD_NHOURS=6
+export ODA_TEMPINC_VAR="'pt_inc'"
+export ODA_SALTINC_VAR="'s_inc'"
+export ODA_THK_VAR="'h_fg'"
+export ODA_INCUPD_UV=False
+export ODA_UINC_VAR="'u_inc'"
+export ODA_VINC_VAR="'v_inc'"
 # MOM6 stochastics
 export DO_OCN_SPPT=False
 export PERT_EPBL=False
@@ -852,7 +880,7 @@ export MESH_WAV=mesh.${WAVDOMAIN}.nc
 export CICEGRID=grid_cice_NEMS_mx${OCNRES}.nc
 export CICEMASK=kmtu_cice_NEMS_mx${OCNRES}.nc
 export RUNID=unknown
-# set large; restart frequency now controlled by restart_n in nems.configure
+# set large; restart frequency now controlled by restart_n in ufs.configure
 export DUMPFREQ=d
 export DUMPFREQ_N=1000
 export DIAG_FREQ=`expr $FHMAX \* 3600 / $DT_CICE`
@@ -919,8 +947,8 @@ export ICERES=1.00
 export NX_GLB=360
 export NY_GLB=320
 
-# nems.configure
-export NEMS_CONFIGURE=nems.configure.datm_cdeps.IN
+# ufs.configure
+export UFS_CONFIGURE=ufs.configure.datm_cdeps.IN
 export med_model=cmeps
 export atm_model=datm
 export ocn_model=mom6
@@ -956,7 +984,7 @@ export coupling_interval_slow_sec=${DT_THERM_MOM6}
 export coupling_interval_fast_sec=${DT_ATMOS}
 
 export RESTART_N=${FHMAX}
-export CPLMODE=nems_orig_data
+export CPLMODE=ufs.nfrac.aoflux
 export cap_dbug_flag=0
 export use_coldstart=false
 export use_mommesh=true
@@ -987,8 +1015,14 @@ export MOM6_RIVER_RUNOFF=False
 export FRUNOFF=''
 export CHLCLIM=seawifs_1998-2006_smoothed_2X.nc
 # MOM6 IAU
-export MOM_IAU=False
-export MOM_IAU_HRS=6
+export ODA_INCUPD=False
+export ODA_INCUPD_NHOURS=6
+export ODA_TEMPINC_VAR="'pt_inc'"
+export ODA_SALTINC_VAR="'s_inc'"
+export ODA_THK_VAR="'h_fg'"
+export ODA_INCUPD_UV=False
+export ODA_UINC_VAR="'u_inc'"
+export ODA_VINC_VAR="'v_inc'"
 export MOM6_USE_LI2016=False
 # MOM6 stochastics
 export DO_OCN_SPPT=False
@@ -1005,7 +1039,7 @@ export MESHOCN_ICE=mesh.mx${OCNRES}.nc
 export CICEGRID=grid_cice_NEMS_mx${OCNRES}.nc
 export CICEMASK=kmtu_cice_NEMS_mx${OCNRES}.nc
 export RUNID=unknown
-# set large; restart frequency now controlled by restart_n in nems.configure
+# set large; restart frequency now controlled by restart_n in ufs.configure
 export DUMPFREQ=d
 export DUMPFREQ_N=1000
 export DIAG_FREQ=`expr $FHMAX \* 3600 / $DT_CICE`
@@ -1086,7 +1120,6 @@ export RESTART_INTERVAL=0
 export FHROT=0
 export coupling_interval_fast_sec=0
 export QUILTING=.true.
-export QUILTING_RESTART=.false.
 export WRITE_GROUP=1
 export WRTTASK_PER_GROUP=6
 export OUTPUT_HISTORY=.true.
@@ -1123,7 +1156,7 @@ export DTPNT="$(printf "%02d" $(( ${WW3OUTDTHR}*3600 )))"
 export OUTPARS_WAV="WND HS T01 T02 DIR FP DP PHS PTP PDIR UST CHA USP"
 export WAV_CUR='C'
 
-# nems.configure
+# ufs.configure
 export med_model=cmeps
 export pio_rearranger=box
 export CAP_DBUG_FLAG=0
@@ -1282,6 +1315,7 @@ export OUTPUT_GRID='gaussian_grid'
 export NSTF_NAME='2,0,0,0,0'
 export WRITE_DOPOST=.true.
 export IAER=5111
+export FHMAX=12
 
 export FRAC_GRID=.false.
 export FRAC_ICE=.true.

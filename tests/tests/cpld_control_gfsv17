@@ -1,8 +1,9 @@
 #
-#  cpld_control GFSv17 test
+#  cpld_control GFSv17 with UGWPv1 test, i.e., GSL orographic drag +
+#  version 1 non-stationary GWD
 #
 
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system - C96MX100"
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system - C96MX100 - unst WW3"
 
 export CNTL_DIR="cpld_control_gfsv17"
 
@@ -74,23 +75,60 @@ export_cpl
 export CPLCHM=.false.
 export DNATS=0
 
-export RESTART_N=12
+export RESTART_N=3
 export RESTART_INTERVAL="${RESTART_N} -1"
 export OUTPUT_FH='0 21 24'
+
+export INPES=$INPES_cpl_unstr
+export JNPES=$JNPES_cpl_unstr
+export WRTTASK_PER_GROUP=$(( WPG_cpl_unstr * THRD_cpl_unstr ))
+
+OCN_tasks=$OCN_tasks_cpl_unstr
+ICE_tasks=$ICE_tasks_cpl_unstr
+WAV_tasks=$WAV_tasks_cpl_unstr
+
+export atm_omp_num_threads=$THRD_cpl_unstr
+export med_omp_num_threads=$atm_omp_num_threads
+
+# P8 UGWP1
+export GWD_OPT=2
+export CDMBWD=20.0,2.5,1.0,1.0
+export DO_UGWP_V1=.true.
+export KNOB_UGWP_VERSION=1
+export KNOB_UGWP_NSLOPE=1
+export DO_UGWP_V0=.false.
+export DO_GSL_DRAG_LS_BL=.true.
+export DO_GSL_DRAG_SS=.true.
+export DO_GSL_DRAG_TOFD=.true.
+export DO_UGWP_V1_OROG_ONLY=.false.
+export DO_UGWP_V0_NST_ONLY=.false.
+export LDIAG_UGWP=.false.
+export KNOB_UGWP_DOKDIS=2
+export KNOB_UGWP_NDX4LH=4
 
 export TOPOEDITS=ufs.topo_edits_011818.nc
 export MOM6_ALLOW_LANDMASK_CHANGES=True
 export eps_imesh=2.5e-1
 
+export WAVDOMAIN=global_270k
+export MESH_WAV=mesh.${WAVDOMAIN}.nc
+export MODDEF_WAV=mod_def.exp.${WAVDOMAIN}
+
 export FV3_RUN=cpld_control_run.IN
+export CCPP_SUITE=FV3_GFS_v17_coupled_p8_ugwpv1
 export FIELD_TABLE=field_table_thompson_noaero_tke_progsigma
 export DIAG_TABLE=diag_table_cpld_template
-export INPUT_NML=cpld_control.nml.IN
-export NEMS_CONFIGURE=nems.configure.cpld_noaero_outwav.IN
+export INPUT_NML=cpld_control_ugwpv1.nml.IN
+export UFS_CONFIGURE=ufs.configure.cpld_noaero_outwav.IN
 
 #GFSv17	settings
 export PROGSIGMA=.true.
+export IOPT_DIAG=1
 
 if [[ $MACHINE_ID = cheyenne ]]; then
   TPN=18
+fi
+
+if [[ $MACHINE_ID = hera ]] && [[ $RT_COMPILER = gnu ]]; then
+  WLCLK=40
 fi

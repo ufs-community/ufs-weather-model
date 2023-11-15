@@ -199,13 +199,13 @@
       ! create, open, and set the config
       config = ESMF_ConfigCreate(rc=RC)
       if (ChkErr(rc,__LINE__,u_FILE_u)) return
-      call ESMF_ConfigLoadFile(config, "nems.configure", rc=RC)
+      call ESMF_ConfigLoadFile(config, "ufs.configure", rc=RC)
       if (ChkErr(rc,__LINE__,u_FILE_u)) return
       call ESMF_GridCompSet(driver, config=config, rc=RC)
       if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
-      ! Load the required entries from the fd_nems.yaml file
-      call NUOPC_FieldDictionarySetup("fd_nems.yaml", rc=rc)
+      ! Load the required entries from the fd_ufs.yaml file
+      call NUOPC_FieldDictionarySetup("fd_ufs.yaml", rc=rc)
       if (ChkErr(rc,__LINE__,u_FILE_u)) return
 
 !-----------------------------------------------------------------------
