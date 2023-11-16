@@ -8,7 +8,10 @@ pipeline {
       steps {
         script {
           for (label in pullRequest.labels) {
-            println(label)
+             if ((label.matches("hera-(.*)" || "jet-(.*)" || "gaeac5-(.*)" || "gaea-(.*)" || "hercules-(.*)" || "orion-(.*)" || "derecho-(.*)"))) {
+               println(label) 
+            }
+ 
          }
        }
       }    
