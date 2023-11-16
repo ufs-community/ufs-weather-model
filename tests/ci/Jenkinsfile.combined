@@ -7,10 +7,24 @@ pipeline {
        }
       steps {
         script {
-          for (label in pullRequest.labels) {
-             if ((label.matches("hera-(.*)" || "jet-(.*)" || "gaeac5-(.*)" || "gaea-(.*)" || "hercules-(.*)" || "orion-(.*)" || "derecho-(.*)"))) {
-               println(label) 
-            }
+                //define what labels to select
+		labelToSelect = ['hera','jet']
+		listOfNodeNames = []
+		//iterate over each label
+		labelToSelect.each  { label ->
+   		listOfLabelNodeNames = jenkins.model.Jenkins.instance.nodes.collect {
+             	//for each label get the list of nodes that contain the label
+           	node -> node.getLabelString().contains(label) ? node.name : null
+     		}
+     		// if it's the first list then just keep the first list
+      		if(listOfNodeNames.size() == 0)
+          	  listOfNodeNames = listOfLabelNodeNames
+                else // do intersection with the next list of nodes that contain the next label
+         	   listOfNodeNames = listOfNodeNames.intersect(listOfLabelNodeNames)
+	        }
+		//remove all instances of null in our collection
+		listOfNodeNames.removeAll(Collections.singleton(null))
+		listOfNodeNames
  
          }
        }
