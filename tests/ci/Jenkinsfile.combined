@@ -22,14 +22,14 @@ pipeline {
               }
                          println(matchedNode)
                          modifiedLabels = matchedNode.collect{"'" + it + "'"} 
-                         myLabels = modifiedLabels.join(" && ")
                          println(myLabels)
             }
        }
  }    
+   for (runlabel in myLabels) {
      stage('Run Regression Tests') {
         agent {
-          label myLabels 
+          label runlabel
         }
         environment {
         ACCNR = 'epic'
@@ -41,4 +41,5 @@ pipeline {
              }
      } 
    }
+  }
 }
