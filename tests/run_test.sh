@@ -45,7 +45,7 @@ cd ${PATHRT}
 
 
 unset MODEL_CONFIGURE
-unset NEMS_CONFIGURE
+unset UFS_CONFIGURE
 
 [[ -e ${RUNDIR_ROOT}/run_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
 source default_vars.sh
@@ -89,9 +89,9 @@ mkdir -p modulefiles
 if [[ $MACHINE_ID == linux ]]; then
   cp ${PATHRT}/modules.fv3_${COMPILE_NR}             ./modulefiles/modules.fv3
 else
-  cp ${PATHRT}/modules.fv3_${COMPILE_NR}.lua             ./modulefiles/modules.fv3.lua
+  cp ${PATHRT}/modules.fv3_${COMPILE_NR}.lua         ./modulefiles/modules.fv3.lua
 fi
-cp ${PATHTR}/modulefiles/ufs_common*               ./modulefiles/.
+cp ${PATHTR}/modulefiles/ufs_common*                 ./modulefiles/.
 
 # Get the shell file that loads the "module" command and purges modules:
 cp ${PATHRT}/module-setup.sh                       module-setup.sh
@@ -106,6 +106,9 @@ if [[ " s4 hera orion hercules gaea jet cheyenne acorn wcoss2 " =~ " $MACHINE_ID
     module load stack-intel/2021.5.0 stack-intel-oneapi-mpi/2021.5.0
     module load miniconda/3.9.12
     module load nccmp/1.9.0.1
+  elif [[ " hera orion hercules gaea jet " =~ " ${MACHINE_ID} " ]] ; then
+    module use modulefiles
+    module load modules.fv3
   else
     module load nccmp
   fi
@@ -125,6 +128,15 @@ else
   exit 1
 fi
 
+# Magic to handle namelist versions of &cires_ugwp_nml
+if [[ ${DO_UGWP_V1:-.false.} == .true. ]] ; then
+  export HIDE_UGWPV0='!'
+  export HIDE_UGWPV1=' '
+else
+  export HIDE_UGWPV0=' '
+  export HIDE_UGWPV1='!'
+fi
+
 if [[ $DATM_CDEPS = 'true' ]] || [[ $FV3 = 'true' ]] || [[ $S2S = 'true' ]]; then
   if [[ $HAFS = 'false' ]] || [[ $FV3 = 'true' && $HAFS = 'true' ]]; then
     atparse < ${PATHRT}/parm/${INPUT_NML:-input.nml.IN} > input.nml
@@ -140,10 +152,10 @@ fi
 
 compute_petbounds_and_tasks
 
-if [[ -f ${PATHRT}/parm/${NEMS_CONFIGURE} ]]; then
-  atparse < ${PATHRT}/parm/${NEMS_CONFIGURE} > nems.configure
+if [[ -f ${PATHRT}/parm/${UFS_CONFIGURE} ]]; then
+  atparse < ${PATHRT}/parm/${UFS_CONFIGURE} > ufs.configure
 else
-  echo "Cannot find file ${NEMS_CONFIGURE} set by variable NEMS_CONFIGURE"
+  echo "Cannot find file ${UFS_CONFIGURE} set by variable UFS_CONFIGURE"
   exit 1
 fi
 
@@ -222,7 +234,7 @@ if [[ $AQM == .true. ]]; then
 fi
 
 # Field Dictionary
-cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
+cp ${PATHRT}/parm/fd_ufs.yaml fd_ufs.yaml
 
 # Set up the run directory
 source ./fv3_run
@@ -291,7 +303,7 @@ TASKS=$(( NODES * TPN ))
 export TASKS
 
 if [[ $SCHEDULER = 'pbs' ]]; then
-  if [[ -e $PATHRT/fv3_conf/fv3_qsub.IN_${MACHINE_ID} ]]; then 
+  if [[ -e $PATHRT/fv3_conf/fv3_qsub.IN_${MACHINE_ID} ]]; then
     atparse < $PATHRT/fv3_conf/fv3_qsub.IN_${MACHINE_ID} > job_card
   else
     echo "Looking for fv3_conf/fv3_qsub.IN_${MACHINE_ID} but it is not found. Exiting"

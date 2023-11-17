@@ -91,7 +91,7 @@
 !***  Initialize the ESMF framework.
 !-----------------------------------------------------------------------
 !
-      CALL ESMF_Initialize(configFileName="nems.configure"              & !<-- top level configuration
+      CALL ESMF_Initialize(configFileName="ufs.configure"               & !<-- top level configuration
                           ,defaultCalKind =ESMF_CALKIND_GREGORIAN       & !<-- Set up the default calendar.
                           ,VM             =VM                           & !<-- The ESMF Virtual Machine
                           ,rc             =RC)
