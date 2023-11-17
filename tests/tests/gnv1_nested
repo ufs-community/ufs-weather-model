@@ -1,12 +1,12 @@
 ###############################################################################
 #
-#  HAFS global with 1 nest and atmosphere only
+#  HAFS global with 1 nest and atmosphere only using global_nest_v1 physics
 #
 ###############################################################################
 
-export TEST_DESCR="Compare HAFS global with 1 nest and atmosphere only results with previous trunk version"
+export TEST_DESCR="Compare HAFS global with 1 nest and atmosphere only global_nest_v1 physics results with previous trunk version"
 
-export CNTL_DIR=hafs_global_1nest_atm
+export CNTL_DIR=gnv1_nested
 
 export LIST_FILES="atmf006.nc \
                    sfcf006.nc \
@@ -53,6 +53,7 @@ export LIST_FILES="atmf006.nc \
                    RESTART/fv_BC_ne.res.nest02.nc \
                    RESTART/fv_BC_sw.res.nest02.nc"
 
+
 export_fv3
 export_hafs
 
@@ -73,7 +74,22 @@ export SYEAR=2020
 export WRTTASK_PER_GROUP=60
 export NTILES=6
 
-export QUILTING_RESTART=.true.
+export GWD_OPT=2
+export DO_UGWP=.true.
+export DO_TOFD=.false.
+export DO_UGWP_V0=.false.
+export DO_UGWP_V0_OROG_ONLY=.false.
+export DO_GSL_DRAG_LS_BL=.false.
+export DO_GSL_DRAG_SS=.false.
+export DO_GSL_DRAG_TOFD=.false.
+export DO_UGWP_V1=.false.
+export DO_UGWP_V1_OROG_ONLY=.false.
+
+export FV_CORE_TAU=0.
+export RF_CUTOFF=10.
+export RF_CUTOFF_NEST=10.
+export FAST_TAU_W_SEC=0.2
+
 export OUTPUT_GRID='global_latlon'
 export IMO=360
 export JMO=181
@@ -89,7 +105,7 @@ export DLON_2=0.25
 export DLAT_2=0.25
 
 export BLOCKSIZE=${BLOCKSIZE:-24}
-export CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf"
+export CCPP_SUITE="FV3_global_nest_v1"
 export DEFLATE_LEVEL=-1
 export INPES=4
 export JNPES=5
@@ -145,11 +161,66 @@ export CMEPS=false
 export RUNTYPE="startup"
 export USE_COLDSTART="false"
 
-export FIELD_TABLE=field_table_hafs
 export DIAG_TABLE=diag_table_hafs_template
 export INPUT_NML=input_global_hafs.nml.IN
 export INPUT_NEST02_NML=input_nest_hafs.nml.IN
 export MODEL_CONFIGURE="model_configure_hafs.IN"
-export UFS_CONFIGURE="ufs.configure.hafs_atm.IN"
+export NEMS_CONFIGURE="nems.configure.hafs_atm.IN"
 export FV3_RUN="hafs_fv3_run.IN"
+export FIELD_TABLE=field_table_thompson_aero_tke_progsigma
 
+export IAER=5111
+export PROGSIGMA=.true.
+export BETASCU=8.0
+export BETAMCU=1.5
+export BETADCU=0.5
+
+export SFCLAY_COMPUTE_FLUX=.false.
+export BL_MYNN_TKEADVECT=.true.
+export LKM=0
+export IMP_PHYSICS=8
+export DNATS=0
+export DO_SAT_ADJ=.false.
+export HYBEDMF=.false.
+export DO_MYNNEDMF=.true.
+export DO_MYNNSFCLAY=.true.
+export DO_DEEP=.true.
+export SHAL_CNV=.true.
+export IMFSHALCNV=5
+export IMFDEEPCNV=5
+export LSM=2
+export IOPT_SFC=4
+export IOPT_DVEG=4
+export IOPT_CRS=2
+export IOPT_RAD=3
+export IOPT_ALB=1
+export IOPT_STC=3
+export CNVGWD=.true.
+export IOVR=3
+export LTAEROSOL=.true.
+export LRADAR=.true.
+export DT_INNER=45
+export SEDI_SEMI=.true.
+export DECFL=10
+export SATMEDMF=.false.
+export ISATMEDMF=1
+export LSEASPRAY=.false.
+
+export FV_CORE_TAU=0.
+export RF_CUTOFF=10.
+export FAST_TAU_W_SEC=0.2
+
+export CDMBWD=20.0,2.5,1.0,1.0
+export KNOB_UGWP_DOKDIS=2
+export KNOB_UGWP_NDX4LH=4
+export KNOB_UGWP_VERSION=1
+export KNOB_UGWP_PALAUNCH=275.0e2
+
+export GWD_OPT=2
+export DO_UGWP_V0=.false.
+export DO_UGWP_V0_OROG_ONLY=.false.
+export DO_GSL_DRAG_LS_BL=.true.
+export DO_GSL_DRAG_SS=.true.
+export DO_GSL_DRAG_TOFD=.true.
+export DO_UGWP_V1=.true.
+export DO_UGWP_V1_OROG_ONLY=.false.
