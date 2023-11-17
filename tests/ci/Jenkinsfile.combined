@@ -22,11 +22,10 @@ pipeline {
               }
                          println(matchedNode)
                          modifiedLabels = matchedNode.collect{"'" + it + "'"} 
-                         println(myLabels)
             }
        }
  }    
-   for (runlabel in myLabels) {
+   for (runlabel in modifiedLabels) {
      stage('Run Regression Tests') {
         agent {
           label runlabel
