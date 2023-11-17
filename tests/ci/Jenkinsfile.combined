@@ -7,18 +7,21 @@ pipeline {
        }
       steps {
         script {
-               matchedNode = []
+                matchedNode = []
                for (label in pullRequest.labels) {
                    listOfLabelNodeNames = jenkins.model.Jenkins.instance.nodes.collect {
                    node -> node.getLabelString().contains(label) ? node.name : null
                    //println("The value of label is "+label+" the value of node is "+node.name)
-                   if (node.name.toLowerCase().contains(label)) {
-                      matchedNode += node.name
-                   }
+                   
+                      if ((label.matches(node.name.toLowerCase()+"-(.*)"))) {
+                          matchedNode += node.getLabelString()
+                          println(matchedNode)
+                      }
+                  
                  }
 
                }
-               return matchedNode
+                         println(matchedNode)
          }
        }
       }    
