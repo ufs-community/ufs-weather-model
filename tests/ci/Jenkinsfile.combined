@@ -14,20 +14,21 @@ pipeline {
                    //println("The value of label is "+label+" the value of node is "+node.name)
                    
                       if ((label.matches(node.getLabelString()+"-(.*)"))) {
-                          matchedNode += node.getLabelString()
+                          matchedNode += node.getLabelString().collect{"'" + it + "'"}
                       }
                   
                  }
 
               }
                          println(matchedNode)
-                         def asString = matchedNode.join(" && ")
+                         myLabels = matchedNode.join(" && ")
+                         println(myLabels)
             }
        }
  }    
      stage('Run Regression Tests') {
         agent {
-          label asString 
+          label 'built-in' 
         }
         environment {
         ACCNR = 'epic'
