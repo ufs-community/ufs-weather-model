@@ -26,15 +26,20 @@ pipeline {
        }
  }    
      stage('Run Regression Tests') {
+        matrix {
+           axes {
+             axis {
+               name 'PLATFORM'
+               values 'hera', 'jet'
+
+             }
+
+           }
+   
+       }
         agent {
-          label "${PLATFORM}"  
+          label "${PLATFORM}" 
         }
-        axes {
-                    axis {
-                        name 'PLATFORM'
-                        values 'hera', 'jet'
-                    }
-                }
         environment {
         ACCNR = 'epic'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
