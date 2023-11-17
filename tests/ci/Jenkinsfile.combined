@@ -7,6 +7,12 @@ for (label in pullRequest.labels) {
      matchedNode += node.getLabelString()
    }
  }
+   if ((label.matches("(.*)-BL"))) {
+      env.CREATE_BASELINES='true'
+   } 
+   else {
+      env.CREATE_BASELINES='false'
+   }
 }
 
 modifiedLabels = matchedNode.collect{"'" + it + "'"} 
@@ -20,13 +26,7 @@ def generateStage(nodeLabel) {
                     echo '************************'
                     echo '*****BUILDING JOBS******'
                     echo '************************'
-                    if ((label.matches("(.*)-BL"))) {
-                       env.CREATE_BASELINES='true'
-                    } 
-                    else {
-                       env.CREATE_BASELINES='false'
-                    }
-                   echo "Create baselines is ${CREATE_BASELINES}"
+                    echo $CREATE_BASELINES
                 }
             }
         }
