@@ -14,14 +14,15 @@ pipeline {
                    //println("The value of label is "+label+" the value of node is "+node.name)
                    
                       if ((label.matches(node.getLabelString()+"-(.*)"))) {
-                          matchedNode += node.getLabelString().collect{"'" + it + "'"}
+                          matchedNode += node.getLabelString()
                       }
                   
                  }
 
               }
                          println(matchedNode)
-                         myLabels = matchedNode.join(" && ")
+                         modifiedLabels = matchedNode.collect{"'" + it + "'"} 
+                         myLabels = modifiedLabels.join(" && ")
                          println(myLabels)
             }
        }
