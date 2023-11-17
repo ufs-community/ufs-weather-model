@@ -25,10 +25,9 @@ pipeline {
             }
        }
  }    
-   for (runlabel in modifiedLabels) {
      stage('Run Regression Tests') {
         agent {
-          label runlabel
+          label 'hera && jet' 
         }
         environment {
         ACCNR = 'epic'
@@ -39,6 +38,5 @@ pipeline {
 
              }
      } 
-   }
   }
 }
