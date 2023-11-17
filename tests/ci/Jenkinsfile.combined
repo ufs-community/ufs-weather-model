@@ -31,11 +31,13 @@ pipeline {
         parallel {
        
            stage('Run Tests on my node') {
-             agent {
-               label 'built-in'
-             } 
+             for (mylabel in modifiedLabels) {
+                agent {
+                  label mylabel 
+                } 
+             }
              steps {
-               sh('I ran the tests')
+               sh('echo I ran the tests on ${NODE_NAME}')
              }
            }
 
