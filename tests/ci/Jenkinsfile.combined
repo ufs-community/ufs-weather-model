@@ -13,7 +13,8 @@ pipeline {
                    node -> node.getLabelString().contains(label) ? node.name : null
                    //println("The value of label is "+label+" the value of node is "+node.name)
                    
-                      if ((label.matches(node.name.toLowerCase()+"-(.*)"))) {
+                     // if ((label.matches(node.name.toLowerCase()+"-(.*)"))) {
+                      if ((label.matches(node.getLabelString()+"-(.*)"))) {
                           matchedNode += node.getLabelString()
                       }
                   
