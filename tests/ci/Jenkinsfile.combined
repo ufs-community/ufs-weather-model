@@ -29,26 +29,13 @@ pipeline {
  }    
      stage('Run Regression Tests') {
         agent {
-          label 'built-in' 
+          label myLabels 
         }
         environment {
         ACCNR = 'epic'
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
       }
       steps {
-          checkout([$class: 'GitSCM',
-                                  branches: [[name:  'refs/heads/${branch_name}']],
-                                  doGenerateSubmoduleConfigurations: false,
-                                  extensions: [[$class: 'SubmoduleOption',
-                                                disableSubmodules: false,
-                                                parentCredentials: false,
-                                                recursiveSubmodules: true,
-                                                reference: '',
-                                                trackingSubmodules: false],
-                                                [$class: 'CleanBeforeCheckout'],
-                                                [$class: 'CleanCheckout']],
-                                  submoduleCfg: [],
-                                  userRemoteConfigs: [[url: "$GIT_URL"]]])
            sh("echo I would have ran on $NODE_NAME")
 
              }
