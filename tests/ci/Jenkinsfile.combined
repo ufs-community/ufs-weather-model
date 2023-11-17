@@ -21,12 +21,13 @@ pipeline {
 
               }
                          println(matchedNode)
+                         def asString = matchedNode.join(" && ")
             }
        }
  }    
      stage('Run Regression Tests') {
         agent {
-          label matchedNode 
+          label asString 
         }
         environment {
         ACCNR = 'epic'
