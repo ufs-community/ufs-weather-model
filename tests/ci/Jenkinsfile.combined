@@ -1,48 +1,48 @@
-pipeline {
-  agent none 
-  stages {
-    stage('Determine HPC Platform') {
-       agent {
-        label 'built-in'   
-       }
-      steps {
-        script {
-                matchedNode = []
-               for (label in pullRequest.labels) {
-                   listOfLabelNodeNames = jenkins.model.Jenkins.instance.nodes.collect {
-                   node -> node.getLabelString().contains(label) ? node.name : null
-                   //println("The value of label is "+label+" the value of node is "+node.name)
-                   
-                      if ((label.matches(node.getLabelString()+"-(.*)"))) {
-                          matchedNode += node.getLabelString()
-                      }
-                  
-                 }
+matchedNode = []
+for (label in pullRequest.labels) {
+   listOfLabelNodeNames = jenkins.model.Jenkins.instance.nodes.collect {
+   node -> node.getLabelString().contains(label) ? node.name : null
 
-              }
-                         println(matchedNode)
-                         modifiedLabels = matchedNode.collect{"'" + it + "'"} 
+   if ((label.matches(node.getLabelString()+"-(.*)"))) {
+     matchedNode += node.getLabelString()
+   }
+ }
+}
+
+modifiedLabels = matchedNode.collect{"'" + it + "'"} 
+
+def generateStage(nodeLabel) {
+    return {
+        stage("Runs on ${nodeLabel}") {
+            node(nodeLabel) {
+               script {
+                    echo "Running on ${nodeLabel}"
+                    echo '************************'
+                    echo '*****BUILDING JOBS******'
+                    echo '************************'
+                }
             }
-         }
-     }    
-
-     stage('Run Tests'){
-      
-        parallel {
-       
-           stage('Run Tests on my node') {
-             for (mylabel in modifiedLabels) {
-                agent {
-                  label mylabel 
-                } 
-             }
-             steps {
-               sh('echo I ran the tests on ${NODE_NAME}')
-             }
-           }
-
         }
-     }
+    }
+}
+def parallelStagesMap = modifiedLabels.collectEntries {
+    ["${it}" : generateStage(it)]
+}
 
-  }
+pipeline {
+    agent none
+    stages {
+        stage('non-parallel stage') {
+            steps {
+                echo 'This stage will be executed first.'
+            }
+        }
+        stage('parallel stage') {
+            steps {
+                script {
+                    parallel parallelStagesMap
+                }
+            }
+        }       
+    }
 }
