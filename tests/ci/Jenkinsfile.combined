@@ -24,9 +24,10 @@ pipeline {
             }
          }
       }    
+    parallel {
      stage('Run Regression Tests') {
         agent {
-          label "${CHOICE_NODE}"
+          label matchedNode 
         }
         environment {
         ACCNR = 'epic'
@@ -49,6 +50,7 @@ pipeline {
            sh("echo I would have ran on $NODE_NAME")
 
              }
-    } 
+     } 
+   }
   }
 } 
