@@ -13,17 +13,42 @@ pipeline {
                    node -> node.getLabelString().contains(label) ? node.name : null
                    //println("The value of label is "+label+" the value of node is "+node.name)
                    
-                     // if ((label.matches(node.name.toLowerCase()+"-(.*)"))) {
                       if ((label.matches(node.getLabelString()+"-(.*)"))) {
                           matchedNode += node.getLabelString()
                       }
                   
                  }
 
-               }
+              }
                          println(matchedNode)
+            }
          }
-       }
       }    
-    }
- } 
+     stage('Run Regression Tests') {
+        agent {
+          label "${CHOICE_NODE}"
+        }
+        environment {
+        ACCNR = 'epic'
+        GITHUB_TOKEN = credentials('GithubJenkinsNew')
+      }
+      steps {
+          checkout([$class: 'GitSCM',
+                                  branches: [[name:  'refs/heads/${branch_name}']],
+                                  doGenerateSubmoduleConfigurations: false,
+                                  extensions: [[$class: 'SubmoduleOption',
+                                                disableSubmodules: false,
+                                                parentCredentials: false,
+                                                recursiveSubmodules: true,
+                                                reference: '',
+                                                trackingSubmodules: false],
+                                                [$class: 'CleanBeforeCheckout'],
+                                                [$class: 'CleanCheckout']],
+                                  submoduleCfg: [],
+                                  userRemoteConfigs: [[url: "$GIT_URL"]]])
+           sh("echo I would have ran on $NODE_NAME")
+
+             }
+    } 
+  }
+} 
