@@ -23,23 +23,26 @@ pipeline {
                          println(matchedNode)
                          modifiedLabels = matchedNode.collect{"'" + it + "'"} 
             }
-       }
- }    
-  stage('Run Regression Tests') {
-        matrix {
-           axes {
-             axis {
-               name 'PLATFORM'
-               values 'hera', 'jet'
+         }
+     }    
+  }
 
+  stages {
+     stage('Run Tests'){
+      
+        parallel {
+       
+           stage('Run Tests on my node') {
+             agent {
+               label 'built-in'
+             } 
+             steps {
+               sh('I ran the tests')
              }
-
            }
-   
-       }
-        agent {
-          label "${PLATFORM}" 
+
         }
-     } 
+     }
+
   }
 }
