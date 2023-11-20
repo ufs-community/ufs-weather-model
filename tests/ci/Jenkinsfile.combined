@@ -34,7 +34,7 @@ def generateStage(nodeLabel) {
                                                 [$class: 'CleanBeforeCheckout'],
                                                 [$class: 'CleanCheckout']],
                                   submoduleCfg: [],
-                                  userRemoteConfigs: [[url: "${GIT_URL}"]]])
+                                  userRemoteConfigs: [[url: "${env.GIT_URL}"]]])
                script {
                     echo "Running on ${nodeLabel}"
                     if (baselineLabels.contains(nodeLabel)) {
