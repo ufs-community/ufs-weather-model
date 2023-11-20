@@ -34,7 +34,17 @@ pipeline {
     stages {
         stage('non-parallel stage') {
             steps {
-                echo 'This stage will be executed first.'
+                //echo 'This stage will be executed first.'
+                for (label in pullRequest.labels) {
+                   if ((label.matches("(.*)-BL"))) {
+                     env.CREATE_BASELINES='true'
+                   }
+                   else {
+                      env.CREATE_BASELINES='false'
+                   }
+                }
+                echo "The value of create baselines is $CREATE_BASELINES" 
+
             }
         }
         stage('parallel stage') {
