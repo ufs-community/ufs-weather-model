@@ -8,7 +8,8 @@ for (label in pullRequest.labels) {
    }
  }
    if ((label.matches("(.*)-BL"))) {
-     println(label+"needs regression tests")  
+     //println(label+" needs regression tests")  
+    generateBaselineNode += node.getLabelString()
    }
 
 }
@@ -24,6 +25,10 @@ def generateStage(nodeLabel) {
                     echo '************************'
                     echo '*****BUILDING JOBS******'
                     echo '************************'
+                    if (generateBaselineNode.contains(nodeLabel)) {
+                      println(nodeLabel)
+
+                    }
                 }
             }
         }
