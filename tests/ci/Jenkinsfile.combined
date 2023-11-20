@@ -27,14 +27,38 @@ def generateStage(nodeLabel) {
                     if (baselineLabels.contains(nodeLabel)) {
                       //println(nodeLabel+" will need baselines generated.")
                        sh '''
-                         export machine=${NODE_NAME.toLowerCase()}
-                         pwd
+                         export machine=${NODE_NAME}
+                          if [[ $machine =~ "Jet" ]] 
+                          then
+                            echo "Creating baselines on $machine"
+                            export dprefix=/lfs1/NAGAPE/$ACCNR/$USER
+                            #./rt.sh -a ${ACCNR} -c -r -l rt.conf
+                          elif [[ $machine =~ "Hercules" ]] && $CREATE_BASELINES
+                          then
+                            echo "Creating baselines on $machine"
+                            export dprefix=/work2/noaa/$ACCNR/$USER
+                            sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
+                            #./rt.sh -a ${ACCNR} -c -e -l rt.conf
+                          elif [[ $machine =~ "Orion" ]] && $CREATE_BASELINES
+                          then
+                            echo "Creating baselines on $machine"
+                            export dprefix=/work2/noaa/$ACCNR/$USER
+                            sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
+                            #./rt.sh -a ${ACCNR} -c -e -l rt.conf
+                          elif [[ $machine =~ "Gaea" ]]
+                          then 
+                            echo "Creating baselines on $machine"
+                            #./rt.sh -a ${ACCNR} -c -e -l rt.conf
+                          else
+                            echo "Creating baselines on $machine"
+                           #./rt.sh -a ${ACCNR} -c -r -l rt.conf
+                          
                        '''
                     }
                     else {
                       //println(nodeLabel+" will NOT need baselines generated.")
                        sh '''
-                         export machine=${NODE_NAME.toLowerCase()}
+                         export machine=${NODE_NAME}
                          pwd
                        '''
                     }
