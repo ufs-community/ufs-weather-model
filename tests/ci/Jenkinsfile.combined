@@ -18,8 +18,8 @@ for (label in pullRequest.labels) {
 modifiedLabels = matchedNode.collect{"'" + it + "'"} 
 baselineLabels = generateBaselineNode.collect{"'" + it + "'"} 
 def generateStage(nodeLabel) {
-    nodeTitle = nodeLabel.capitalize()
     return {
+        nodeTitle = nodeLabel.capitalize()
         stage("Running on ${nodeTitle}") {
             node(nodeLabel) {
                cleanWs()
