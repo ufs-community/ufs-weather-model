@@ -20,7 +20,7 @@ baselineLabels = generateBaselineNode.collect{"'" + it + "'"}
 
 def generateStage(nodeLabel) {
     return {
-        stage("Runs on ${nodeLabel.toLowerCase().capitalize()}") {
+        stage("Runs on ${NODE_NAME}") {
             node(nodeLabel) {
                cleanWs()
                checkout scm
