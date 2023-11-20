@@ -22,21 +22,9 @@ def generateStage(nodeLabel) {
     return {
         stage("Runs on ${nodeLabel}") {
             node(nodeLabel) {
-               checkout([$class: 'GitSCM',
-                                  branches: [],
-                                  doGenerateSubmoduleConfigurations: false,
-                                  extensions: [[$class: 'SubmoduleOption',
-                                                disableSubmodules: false,
-                                                parentCredentials: false,
-                                                recursiveSubmodules: true,
-                                                reference: '',
-                                                trackingSubmodules: false],
-                                                [$class: 'CleanBeforeCheckout'],
-                                                [$class: 'CleanCheckout']],
-                                  submoduleCfg: [],
-                                  userRemoteConfigs: [[url: 'https://github.com/ufs-community/ufs-weather-model.git' ]]])
                script {
                     echo "Running on ${nodeLabel}"
+                    sh('git clone --recursive https://github.com/ufs-community/ufs-weather-model.git ufs-weather-model')
                     if (baselineLabels.contains(nodeLabel)) {
                       //println(nodeLabel+" will need baselines generated.")
                        sh '''
