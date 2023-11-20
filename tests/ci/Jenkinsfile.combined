@@ -33,13 +33,13 @@ def generateStage(nodeLabel) {
                             echo "Creating baselines on $machine"
                             export dprefix=/lfs1/NAGAPE/$ACCNR/$USER
                             #./rt.sh -a ${ACCNR} -c -r -l rt.conf
-                          elif [[ $machine =~ "Hercules" ]] && $CREATE_BASELINES
+                          elif [[ $machine =~ "Hercules" ]]
                           then
                             echo "Creating baselines on $machine"
                             export dprefix=/work2/noaa/$ACCNR/$USER
                             sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
                             #./rt.sh -a ${ACCNR} -c -e -l rt.conf
-                          elif [[ $machine =~ "Orion" ]] && $CREATE_BASELINES
+                          elif [[ $machine =~ "Orion" ]]
                           then
                             echo "Creating baselines on $machine"
                             export dprefix=/work2/noaa/$ACCNR/$USER
@@ -52,7 +52,6 @@ def generateStage(nodeLabel) {
                           else
                             echo "Creating baselines on $machine"
                            #./rt.sh -a ${ACCNR} -c -r -l rt.conf
-                          
                        '''
                     }
                     else {
