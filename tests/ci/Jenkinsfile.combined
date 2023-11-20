@@ -1,5 +1,5 @@
 matchedNode = []
-generateBaseline = []
+generateBaselineNode = []
 for (label in pullRequest.labels) {
    listOfLabelNodeNames = jenkins.model.Jenkins.instance.nodes.collect {
    node -> node.getLabelString().contains(label) ? node.name : null
@@ -9,8 +9,7 @@ for (label in pullRequest.labels) {
    }
 
    if ((label.matches("(.*)-BL"))) {
-     println(label+" needs regression tests")  
-     generateBaseline += node.getLabelString() 
+     generateBaselineNode += node.getLabelString() 
    }
 
  }
@@ -27,9 +26,9 @@ def generateStage(nodeLabel) {
                     echo '************************'
                     echo '*****BUILDING JOBS******'
                     echo '************************'
-                    //if (generateBaselineNode.contains(nodeLabel)) {
-                    //  println(nodeLabel)
-                    //}
+                    if (generateBaselineNode.contains(nodeLabel)) {
+                      println(nodeLabel)
+                    }
                 }
             }
         }
