@@ -22,7 +22,6 @@ def generateStage(nodeLabel) {
     return {
         stage("Runs on ${nodeLabel}") {
             node(nodeLabel) {
-               steps {
                  checkout([$class: 'GitSCM',
                                   branches: [[name:  'refs/heads/${branch_name}']],
                                   doGenerateSubmoduleConfigurations: false,
@@ -46,9 +45,8 @@ def generateStage(nodeLabel) {
                     }
                 }
               }
-            }
-        }
-    }
+           }
+       }
 }
 def parallelStagesMap = modifiedLabels.collectEntries {
     ["${it}" : generateStage(it)]
