@@ -37,9 +37,12 @@ def generateStage(nodeLabel) {
                                                 [$class: 'CleanCheckout']],
                                   submoduleCfg: [],
                                   userRemoteConfigs: [[url: "https://github.com/ufs-community/ufs-weather-model.git"]]])
+                    
                     if (baselineLabels.contains(nodeLabel)) {
                       //println(nodeLabel+" will need baselines generated.")
                        sh '''
+                       pwd
+                       cd tests
                         export machine=${NODE_NAME}
                           if [[ $machine =~ "Jet" ]] 
                           then
