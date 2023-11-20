@@ -25,7 +25,7 @@ def generateStage(nodeLabel) {
                script {
                     echo "Running on ${nodeLabel}"
                     checkout([$class: 'GitSCM',
-                                  branches: [[name:  env.GIT_BRANCH]],
+                                  branches: [[name:  ${env.BRANCH_NAME} ]],
                                   doGenerateSubmoduleConfigurations: false,
                                   extensions: [[$class: 'SubmoduleOption',
                                                 disableSubmodules: false,
