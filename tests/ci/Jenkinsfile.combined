@@ -80,6 +80,19 @@ pipeline {
     stages {
         stage('Run Tests in Parallel') {
             steps {
+                checkout([$class: 'GitSCM',
+                                  branches: [[name:  'refs/heads/${branch_name}']],
+                                  doGenerateSubmoduleConfigurations: false,
+                                  extensions: [[$class: 'SubmoduleOption',
+                                                disableSubmodules: false,
+                                                parentCredentials: false,
+                                                recursiveSubmodules: true,
+                                                reference: '',
+                                                trackingSubmodules: false],
+                                                [$class: 'CleanBeforeCheckout'],
+                                                [$class: 'CleanCheckout']],
+                                  submoduleCfg: [],
+                                  userRemoteConfigs: [[url: "$GIT_URL"]]])
                 script {
                     parallel parallelStagesMap
                 }
