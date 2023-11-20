@@ -23,7 +23,7 @@ def generateStage(nodeLabel) {
         stage("Runs on ${nodeLabel}") {
             node(nodeLabel) {
                checkout([$class: 'GitSCM',
-                                       branches: [[name:  'refs/heads/${env.BRANCH_NAME}']],
+                                       branches: [[name:  'refs/heads/${GIT_BRANCH}']],
                                   doGenerateSubmoduleConfigurations: false,
                                   extensions: [[$class: 'SubmoduleOption',
                                                 disableSubmodules: false,
