@@ -29,6 +29,13 @@ def generateStage(nodeLabel) {
                     echo '************************'
                     if (baselineLabels.contains(nodeLabel)) {
                       println(nodeLabel+" will need baselines generated.")
+                      env.CREATE_BASELINES='true'
+                      echo $CREATE_BASELINES
+                    }
+                    else {
+                      env.CREATE_BASELINES='false'
+                      println(nodeLabel+" will NOT need baselines generated.")
+                      echo $CREATE_BASELINES
                     }
                 }
             }
