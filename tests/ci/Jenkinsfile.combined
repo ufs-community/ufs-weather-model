@@ -27,14 +27,14 @@ def generateStage(nodeLabel) {
                     if (baselineLabels.contains(nodeLabel)) {
                       //println(nodeLabel+" will need baselines generated.")
                        sh '''
-                         export machine=${NODE_NAME}
+                         export machine="${NODE_NAME.toLowerCase()}"
                          pwd
                        '''
                     }
                     else {
                       //println(nodeLabel+" will NOT need baselines generated.")
                        sh '''
-                         export machine=${NODE_NAME}
+                         export machine="${NODE_NAME.toLowerCase()}"
                          pwd
                        '''
                     }
