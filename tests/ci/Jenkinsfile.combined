@@ -16,6 +16,7 @@ for (label in pullRequest.labels) {
 }
 
 modifiedLabels = matchedNode.collect{"'" + it + "'"} 
+baselineLabels = generateBaselineNode.collect{"'" + it + "'"} 
 
 def generateStage(nodeLabel) {
     return {
@@ -26,8 +27,8 @@ def generateStage(nodeLabel) {
                     echo '************************'
                     echo '*****BUILDING JOBS******'
                     echo '************************'
-                    if (generateBaselineNode.contains(nodeLabel)) {
-                      println(nodeLabel)
+                    if (baselineLabels.contains(nodeLabel)) {
+                      println(nodeLabel+" will need baselines generated.")
                     }
                 }
             }
