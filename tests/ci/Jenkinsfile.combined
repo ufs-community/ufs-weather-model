@@ -7,6 +7,10 @@ for (label in pullRequest.labels) {
      matchedNode += node.getLabelString()
    }
  }
+   if ((label.matches("(.*)-BL"))) {
+     println(label+"needs regression tests")  
+   }
+
 }
 
 modifiedLabels = matchedNode.collect{"'" + it + "'"} 
@@ -36,15 +40,6 @@ pipeline {
             steps {
               script {
                 //echo 'This stage will be executed first.'
-                for (label in pullRequest.labels) {
-                   if ((label.matches("(.*)-BL"))) {
-                     env.CREATE_BASELINES='true'
-                   }
-                   else {
-                      env.CREATE_BASELINES='false'
-                   }
-                }
-                echo "The value of create baselines is $CREATE_BASELINES" 
              }
            }
         }
