@@ -27,7 +27,7 @@ def generateStage(nodeLabel) {
                     if (baselineLabels.contains(nodeLabel)) {
                       //println(nodeLabel+" will need baselines generated.")
                        sh '''
-                         export machine=${NODE_NAME}
+                        export machine=${NODE_NAME}
                           if [[ $machine =~ "Jet" ]] 
                           then
                             echo "Creating baselines on $machine"
@@ -52,6 +52,7 @@ def generateStage(nodeLabel) {
                           else
                             echo "Creating baselines on $machine"
                            #./rt.sh -a ${ACCNR} -c -r -l rt.conf
+                          fi
                        '''
                     }
                     else {
