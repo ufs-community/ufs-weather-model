@@ -23,7 +23,7 @@ def generateStage(nodeLabel) {
         stage("Runs on ${nodeLabel}") {
             node(nodeLabel) {
                     checkout([$class: 'GitSCM',
-                                  branches: [[name:  "${env.BRANCH_NAME}" ]],
+                                  branches: [[name:  'origin' ]],
                                   doGenerateSubmoduleConfigurations: false,
                                   extensions: [[$class: 'SubmoduleOption',
                                                 disableSubmodules: false,
@@ -34,7 +34,7 @@ def generateStage(nodeLabel) {
                                                 [$class: 'CleanBeforeCheckout'],
                                                 [$class: 'CleanCheckout']],
                                   submoduleCfg: [],
-                                  userRemoteConfigs: [[url: "${env.GIT_URL}"]]])
+                                  userRemoteConfigs: [[url: "https://github.com/ufs-community/ufs-weather-model.git"]]])
                script {
                     echo "Running on ${nodeLabel}"
                     if (baselineLabels.contains(nodeLabel)) {
