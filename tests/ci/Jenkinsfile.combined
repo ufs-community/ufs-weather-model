@@ -34,7 +34,7 @@ def generateStage(nodeLabel) {
                                                 [$class: 'CleanBeforeCheckout'],
                                                 [$class: 'CleanCheckout']],
                                   submoduleCfg: [],
-                                  userRemoteConfigs: [[url: "https://github.com/ufs-community/ufs-weather-model.git"]]])
+                                  userRemoteConfigs: [[url: ${git_url}]]])
                script {
                     echo "Running on ${nodeLabel}"
                     if (baselineLabels.contains(nodeLabel)) {
