@@ -17,7 +17,6 @@ for (label in pullRequest.labels) {
 
 modifiedLabels = matchedNode.collect{"'" + it + "'"} 
 baselineLabels = generateBaselineNode.collect{"'" + it + "'"} 
-nodeTitle = nodeLabel.collect{ it.toLowerCase().capitalize() } 
 def generateStage(nodeLabel) {
     return {
         stage("Running on ${nodeTitle}") {
@@ -25,7 +24,7 @@ def generateStage(nodeLabel) {
                cleanWs()
                checkout scm
                script {
-                    echo "Running on ${nodeLabel}"
+                    echo "Running on ${nodeLabel.capitalize()}"
                     if (baselineLabels.contains(nodeLabel)) {
                       //println(nodeLabel+" will need baselines generated.")
                        sh '''
