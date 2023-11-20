@@ -19,12 +19,12 @@ modifiedLabels = matchedNode.collect{"'" + it + "'"}
 baselineLabels = generateBaselineNode.collect{"'" + it + "'"} 
 def generateStage(nodeLabel) {
     return {
-        stage("Running on ${nodeTitle}") {
+        stage("Running on ${nodeLabel.capitalize()}") {
             node(nodeLabel) {
                cleanWs()
                checkout scm
                script {
-                    echo "Running on ${nodeLabel.capitalize()}"
+                    echo "Running on ${nodeLabel}"
                     if (baselineLabels.contains(nodeLabel)) {
                       //println(nodeLabel+" will need baselines generated.")
                        sh '''
