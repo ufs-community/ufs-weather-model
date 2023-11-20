@@ -27,7 +27,7 @@ def generateStage(nodeLabel) {
                script {
                     echo "Running on ${nodeLabel}"
                     if (baselineLabels.contains(nodeLabel)) {
-                      println(nodeLabel+" will need baselines generated.")
+                      //println(nodeLabel+" will need baselines generated.")
                        sh '''
                        pwd
                        cd tests
@@ -60,7 +60,7 @@ def generateStage(nodeLabel) {
                           fi
                     }
                     else {
-                      println(nodeLabel+" will NOT need baselines generated.")
+                      //println(nodeLabel+" will NOT need baselines generated.")
                           if [[ $machine =~ "Jet" ]] 
                           then
                            echo "Running regression tests on $machine"
