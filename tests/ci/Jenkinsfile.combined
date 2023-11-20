@@ -22,26 +22,21 @@ def generateStage(nodeLabel) {
     return {
         stage("Runs on ${nodeLabel}") {
             node(nodeLabel) {
-                 checkout([$class: 'GitSCM',
-                                  branches: [[name:  'refs/heads/${branch_name}']],
-                                  doGenerateSubmoduleConfigurations: false,
-                                  extensions: [[$class: 'SubmoduleOption',
-                                                disableSubmodules: false,
-                                                parentCredentials: false,
-                                                recursiveSubmodules: true,
-                                                reference: '',
-                                                trackingSubmodules: false],
-                                                [$class: 'CleanBeforeCheckout'],
-                                                [$class: 'CleanCheckout']],
-                                  submoduleCfg: [],
-                                  userRemoteConfigs: [[url: "$GIT_URL"]]])
                script {
                     echo "Running on ${nodeLabel}"
                     if (baselineLabels.contains(nodeLabel)) {
-                      println(nodeLabel+" will need baselines generated.")
+                      //println(nodeLabel+" will need baselines generated.")
+                       sh '''
+                         export machine="${CHOICE_NODE}"
+                         pwd
+                       '''
                     }
                     else {
-                      println(nodeLabel+" will NOT need baselines generated.")
+                      //println(nodeLabel+" will NOT need baselines generated.")
+                       sh '''
+                         export machine="${CHOICE_NODE}"
+                         pwd
+                       '''
                     }
                 }
               }
@@ -54,6 +49,10 @@ def parallelStagesMap = modifiedLabels.collectEntries {
 
 pipeline {
     agent none
+    environment {
+        ACCNR = 'epic'
+        GITHUB_TOKEN = credentials('GithubJenkinsNew')
+    }
     stages {
         stage('Run Tests in Parallel') {
             steps {
