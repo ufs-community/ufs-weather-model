@@ -17,10 +17,10 @@ for (label in pullRequest.labels) {
 
 modifiedLabels = matchedNode.collect{"'" + it + "'"} 
 baselineLabels = generateBaselineNode.collect{"'" + it + "'"} 
-
+nodeTitle = nodeLabel.collect{ it.toLowerCase().capitalize() } 
 def generateStage(nodeLabel) {
     return {
-        stage("Runs on ${NODE_NAME}") {
+        stage("Running on ${nodeTitle}") {
             node(nodeLabel) {
                cleanWs()
                checkout scm
