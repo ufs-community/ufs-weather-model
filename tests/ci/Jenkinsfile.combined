@@ -1,5 +1,5 @@
 matchedNode = []
-generateBaselineNode = []
+generateBaseline = []
 for (label in pullRequest.labels) {
    listOfLabelNodeNames = jenkins.model.Jenkins.instance.nodes.collect {
    node -> node.getLabelString().contains(label) ? node.name : null
@@ -7,12 +7,13 @@ for (label in pullRequest.labels) {
    if ((label.matches(node.getLabelString()+"-(.*)"))) {
      matchedNode += node.getLabelString()
    }
- }
+
    if ((label.matches("(.*)-BL"))) {
-     //println(label+" needs regression tests")  
-     generateBaselineNode += node.getLabelString()
+     println(label+" needs regression tests")  
+     generateBaseline += node.getLabelString() 
    }
 
+ }
 }
 
 modifiedLabels = matchedNode.collect{"'" + it + "'"} 
