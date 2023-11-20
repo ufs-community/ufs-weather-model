@@ -8,7 +8,7 @@ for (label in pullRequest.labels) {
      matchedNode += node.getLabelString()
    }
 
-   if ((label.matches("(.*)-BL"))) {
+   if ((label.matches(node.getLabelString()+"(.*)-BL"))) {
      generateBaselineNode += node.getLabelString() 
    }
 
@@ -17,6 +17,7 @@ for (label in pullRequest.labels) {
 
 modifiedLabels = matchedNode.collect{"'" + it + "'"} 
 baselineLabels = generateBaselineNode.collect{"'" + it + "'"} 
+println(baselineLabels)
 def generateStage(nodeLabel) {
     return {
         stage("Running on ${nodeLabel}") {
@@ -36,26 +37,26 @@ def generateStage(nodeLabel) {
                           then
                             echo "Creating baselines on $machine"
                             export dprefix=/lfs1/NAGAPE/$ACCNR/$USER
-                            #./rt.sh -a ${ACCNR} -c -r -l rt.conf
+                            ./rt.sh -a ${ACCNR} -c -r -l rt.conf
                           elif [[ $machine =~ "Hercules" ]]
                           then
                             echo "Creating baselines on $machine"
                             export dprefix=/work2/noaa/$ACCNR/$USER
                             sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
-                            #./rt.sh -a ${ACCNR} -c -e -l rt.conf
+                            ./rt.sh -a ${ACCNR} -c -e -l rt.conf
                           elif [[ $machine =~ "Orion" ]]
                           then
                             echo "Creating baselines on $machine"
                             export dprefix=/work2/noaa/$ACCNR/$USER
                             sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
-                            #./rt.sh -a ${ACCNR} -c -e -l rt.conf
+                            ./rt.sh -a ${ACCNR} -c -e -l rt.conf
                           elif [[ $machine =~ "Gaea" ]]
                           then 
                             echo "Creating baselines on $machine"
-                            #./rt.sh -a ${ACCNR} -c -e -l rt.conf
+                            ./rt.sh -a ${ACCNR} -c -e -l rt.conf
                           else
                             echo "Creating baselines on $machine"
-                           #./rt.sh -a ${ACCNR} -c -r -l rt.conf
+                            ./rt.sh -a ${ACCNR} -c -r -l rt.conf
                           fi
                        '''
                     }
@@ -66,26 +67,26 @@ def generateStage(nodeLabel) {
                           then
                            echo "Running regression tests on $machine"
                             export dprefix=/lfs1/NAGAPE/$ACCNR/$USER
-                            #./rt.sh -a ${ACCNR} -r -l rt.conf
+                            ./rt.sh -a ${ACCNR} -r -l rt.conf
                           elif [[ $machine =~ "Hercules" ]]
                           then
                            echo "Running regression tests on $machine"
                             export dprefix=/work2/noaa/$ACCNR/$USER
                             sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
-                            #./rt.sh -a ${ACCNR} -e -l rt.conf
+                            ./rt.sh -a ${ACCNR} -e -l rt.conf
                           elif [[ $machine =~ "Orion" ]]
                           then
                            echo "Running regression tests on $machine"
                             export dprefix=/work2/noaa/$ACCNR/$USER
                             sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
-                            #./rt.sh -a ${ACCNR} -e -l rt.conf
+                            ./rt.sh -a ${ACCNR} -e -l rt.conf
                           elif [[ $machine =~ "Gaea" ]]
                           then 
                            echo "Running regression tests on $machine"
-                            #./rt.sh -a ${ACCNR} -e -l rt.conf
+                            ./rt.sh -a ${ACCNR} -e -l rt.conf
                           else
                            echo "Running regression tests on $machine"
-                           #./rt.sh -a ${ACCNR} -r -l rt.conf
+                           ./rt.sh -a ${ACCNR} -r -l rt.conf
                           fi
                         
                        '''
