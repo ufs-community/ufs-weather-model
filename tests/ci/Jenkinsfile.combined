@@ -22,22 +22,30 @@ def generateStage(nodeLabel) {
     return {
         stage("Runs on ${nodeLabel}") {
             node(nodeLabel) {
+               steps {
+                 checkout([$class: 'GitSCM',
+                                  branches: [[name:  'refs/heads/${branch_name}']],
+                                  doGenerateSubmoduleConfigurations: false,
+                                  extensions: [[$class: 'SubmoduleOption',
+                                                disableSubmodules: false,
+                                                parentCredentials: false,
+                                                recursiveSubmodules: true,
+                                                reference: '',
+                                                trackingSubmodules: false],
+                                                [$class: 'CleanBeforeCheckout'],
+                                                [$class: 'CleanCheckout']],
+                                  submoduleCfg: [],
+                                  userRemoteConfigs: [[url: "$GIT_URL"]]])
                script {
                     echo "Running on ${nodeLabel}"
-                    echo '************************'
-                    echo '*****BUILDING JOBS******'
-                    echo '************************'
                     if (baselineLabels.contains(nodeLabel)) {
                       println(nodeLabel+" will need baselines generated.")
-                      env.CREATE_BASELINES='true'
-                      echo $CREATE_BASELINES
                     }
                     else {
-                      env.CREATE_BASELINES='false'
                       println(nodeLabel+" will NOT need baselines generated.")
-                      echo $CREATE_BASELINES
                     }
                 }
+              }
             }
         }
     }
@@ -49,14 +57,7 @@ def parallelStagesMap = modifiedLabels.collectEntries {
 pipeline {
     agent none
     stages {
-        stage('non-parallel stage') {
-            steps {
-              script {
-                echo 'This stage will be executed first.'
-             }
-           }
-        }
-        stage('parallel stage') {
+        stage('Run Tests in Parallel') {
             steps {
                 script {
                     parallel parallelStagesMap
