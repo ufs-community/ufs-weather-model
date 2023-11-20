@@ -20,7 +20,7 @@ baselineLabels = generateBaselineNode.collect{"'" + it + "'"}
 
 def generateStage(nodeLabel) {
     return {
-        stage("Runs on ${nodeLabel}") {
+        stage("Runs on ${NODE_NAME}") {
             node(nodeLabel) {
                cleanWs()
                checkout scm
@@ -31,7 +31,8 @@ def generateStage(nodeLabel) {
                        sh '''
                        pwd
                        cd tests
-                        export machine=${NODE_NAME}
+                       export machine=${NODE_NAME}
+                         
                           if [[ $machine =~ "Jet" ]] 
                           then
                             echo "Creating baselines on $machine"
@@ -62,8 +63,32 @@ def generateStage(nodeLabel) {
                     else {
                       //println(nodeLabel+" will NOT need baselines generated.")
                        sh '''
-                         export machine=${NODE_NAME}
-                         pwd
+                          if [[ $machine =~ "Jet" ]] 
+                          then
+                           echo "Running regression tests on $machine"
+                            export dprefix=/lfs1/NAGAPE/$ACCNR/$USER
+                            #./rt.sh -a ${ACCNR} -r -l rt.conf
+                          elif [[ $machine =~ "Hercules" ]]
+                          then
+                           echo "Running regression tests on $machine"
+                            export dprefix=/work2/noaa/$ACCNR/$USER
+                            sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
+                            #./rt.sh -a ${ACCNR} -e -l rt.conf
+                          elif [[ $machine =~ "Orion" ]]
+                          then
+                           echo "Running regression tests on $machine"
+                            export dprefix=/work2/noaa/$ACCNR/$USER
+                            sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
+                            #./rt.sh -a ${ACCNR} -e -l rt.conf
+                          elif [[ $machine =~ "Gaea" ]]
+                          then 
+                           echo "Running regression tests on $machine"
+                            #./rt.sh -a ${ACCNR} -e -l rt.conf
+                          else
+                           echo "Running regression tests on $machine"
+                           #./rt.sh -a ${ACCNR} -r -l rt.conf
+                          fi
+                        
                        '''
                     }
                 }
