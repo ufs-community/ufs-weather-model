@@ -25,9 +25,8 @@ load(pathJoin("stack-python", stack_python_ver))
 load("ufs_common")
 
 unload("darshan-runtime")
-unload("cray-libsci")
 
 setenv("CC","cc")
 setenv("CXX","CC")
 setenv("FC","ftn")
-setenv("CMAKE_Platform","gaea_c5.intel")
+setenv("CMAKE_Platform","gaea-c5.intel")

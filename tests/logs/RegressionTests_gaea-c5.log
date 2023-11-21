@@ -1,0 +1,3745 @@
+Tue 14 Nov 2023 07:20:25 AM EST
+Start Regression test
+
+Testing UFSWM Hash: a0707e9e504ece93aff8f4a913e617caf8d8395b
+Testing With Submodule Hashes:
+ 37cbb7d6840ae7515a9a8f0dfd4d89461b3396d1 AQM (v0.2.0-37-g37cbb7d)
+ 2aa6bfbb62ebeecd7da964b8074f6c3c41c7d1eb CDEPS-interface/CDEPS (cdeps0.4.17-38-g2aa6bfb)
+ 50aa2c97882fbc9d4918813a22169fe97b424564 CICE-interface/CICE (CICE6.0.0-444-g50aa2c9)
+ e5d08d4233b0c783a4840dcbc3252a170e3c3bb1 CMEPS-interface/CMEPS (cmeps_v0.4.1-2299-ge5d08d4)
+ cabd7753ae17f7bfcc6dad56daf10868aa51c3f4 CMakeModules (v1.0.0-28-gcabd775)
+ 36500b6084014eb862176c810914206d2ddf2170 FV3 (heads/develop)
+ 041422934cae1570f2f0e67239d5d89f11c6e1b7 GOCART (sdr_v2.1.2.6-119-g0414229)
+ 35789c757766e07f688b4c0c7c5229816f224b09 HYCOM-interface/HYCOM (2.3.00-121-g35789c7)
+ 02d4dc455bb517b4c641c919dc6b9dc829e1e0d4 MOM6-interface/MOM6 (dev/master/repository_split_2014.10.10-9803-g02d4dc455)
+ 569e354ababbde7a7cd68647533769a5c966468d NOAHMP-interface/noahmp (v3.7.1-303-g569e354)
+ 02693d837f2cd99d20ed08515878c2b5e9525e64 WW3 (6.07.1-343-g02693d83)
+ 62b89146be1250f354cd50a14096c0c25f2f3952 stochastic_physics (ufs-v2.0.0-191-g62b8914)
+Compile atmaero_intel elapsed time 606 seconds. -DAPP=ATMAERO -DCCPP_SUITES=FV3_GFS_v17_p8 -D32BIT=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile atmaq_debug_intel elapsed time 399 seconds. -DAPP=ATMAQ -DCCPP_SUITES=FV3_GFS_v15p2 -DDEBUG=ON -D32BIT=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Debug
+Compile atmaq_faster_intel elapsed time 805 seconds. -DAPP=ATMAQ -DCCPP_SUITES=FV3_GFS_v15p2 -DFASTER=ON -D32BIT=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile atmaq_intel elapsed time 600 seconds. -DAPP=ATMAQ -DCCPP_SUITES=FV3_GFS_v15p2 -D32BIT=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile atm_debug_dyn32_intel elapsed time 493 seconds. -DAPP=ATM -DDEBUG=ON -D32BIT=ON -DCCPP_SUITES=FV3_HRRR,FV3_GFS_v16,FV3_GFS_v16_csawmg,FV3_GFS_v16_ras,FV3_GFS_v17_p8,FV3_GFS_v15_thompson_mynn_lam3km,FV3_RAP,FV3_RAP_unified_ugwp,FV3_RAP_cires_ugwp,FV3_RAP_flake,FV3_RAP_clm_lake,FV3_RAP_noah,FV3_RAP_sfcdiff,FV3_RAP_noah_sfcdiff_cires_ugwp,FV3_RRFS_v1beta,FV3_HRRR_c3,FV3_HRRR_gf -DMPI=ON -DCMAKE_BUILD_TYPE=Debug
+Compile atm_dyn32_intel elapsed time 688 seconds. -DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16,FV3_GFS_v16_flake,FV3_GFS_v17_p8,FV3_GFS_v17_p8_rrtmgp,FV3_GFS_v15_thompson_mynn_lam3km,FV3_WoFS_v0,FV3_GFS_v17_p8_mynn,FV3_GFS_v17_p8_ugwpv1 -D32BIT=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile atm_faster_dyn32_intel elapsed time 802 seconds. -DAPP=ATM -DCCPP_SUITES=FV3_GFS_v17_p8,FV3_GFS_v15_thompson_mynn_lam3km -D32BIT=ON -DFASTER=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile atml_intel elapsed time 611 seconds. -DAPP=ATML -DCCPP_SUITES=FV3_GFS_v16,FV3_GFS_v17_p8,FV3_GFS_v15_thompson_mynn_lam3km -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile atmw_intel elapsed time 632 seconds. -DAPP=ATMW -DCCPP_SUITES=FV3_GFS_v17_p8 -D32BIT=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile atmwm_intel elapsed time 658 seconds. -DAPP=ATMWM -DCCPP_SUITES=FV3_GFS_v16 -D32BIT=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile csawmg_intel elapsed time 619 seconds. -DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16_csawmg,FV3_GFS_v16_ras -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile datm_cdeps_debug_intel elapsed time 312 seconds. -DAPP=NG-GODAS -DDEBUG=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Debug -DMOM6SOLO=ON
+Compile datm_cdeps_faster_intel elapsed time 383 seconds. -DAPP=NG-GODAS -DFASTER=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release -DMOM6SOLO=ON
+Compile datm_cdeps_intel elapsed time 388 seconds. -DAPP=NG-GODAS -DMPI=ON -DCMAKE_BUILD_TYPE=Release -DMOM6SOLO=ON
+Compile datm_cdeps_land_intel elapsed time 152 seconds. -DAPP=LND -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile hafs_all_intel elapsed time 711 seconds. -DAPP=HAFS-ALL -DCCPP_SUITES=FV3_HAFS_v1_gfdlmp_tedmf,FV3_HAFS_v1_gfdlmp_tedmf_nonsst -D32BIT=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile hafsw_debug_intel elapsed time 443 seconds. -DAPP=HAFSW -DMOVING_NEST=ON -DCCPP_SUITES=FV3_HAFS_v1_gfdlmp_tedmf_nonsst -D32BIT=ON -DDEBUG=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Debug
+Compile hafsw_faster_intel elapsed time 888 seconds. -DAPP=HAFSW -DMOVING_NEST=ON -DCCPP_SUITES=FV3_HAFS_v1_gfdlmp_tedmf_nonsst -D32BIT=ON -DFASTER=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile hafsw_intel elapsed time 689 seconds. -DAPP=HAFSW -DMOVING_NEST=ON -DCCPP_SUITES=FV3_HAFS_v1_gfdlmp_tedmf,FV3_HAFS_v1_gfdlmp_tedmf_nonsst,FV3_HAFS_v1_thompson_tedmf_gfdlsf -D32BIT=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile rrfs_dyn32_phy32_debug_intel elapsed time 405 seconds. -DAPP=ATM -DCCPP_SUITES=FV3_RAP,FV3_HRRR,FV3_HRRR_gf -D32BIT=ON -DCCPP_32BIT=ON -DDEBUG=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Debug
+Compile rrfs_dyn32_phy32_faster_intel elapsed time 726 seconds. -DAPP=ATM -DFASTER=ON -DCCPP_SUITES=FV3_HRRR -D32BIT=ON -DCCPP_32BIT=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile rrfs_dyn32_phy32_intel elapsed time 595 seconds. -DAPP=ATM -DCCPP_SUITES=FV3_RAP,FV3_HRRR -D32BIT=ON -DCCPP_32BIT=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile rrfs_dyn64_phy32_debug_intel elapsed time 408 seconds. -DAPP=ATM -DCCPP_SUITES=FV3_RAP,FV3_HRRR -DCCPP_32BIT=ON -DDEBUG=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Debug
+Compile rrfs_dyn64_phy32_intel elapsed time 599 seconds. -DAPP=ATM -DCCPP_SUITES=FV3_RAP,FV3_HRRR -DCCPP_32BIT=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile rrfs_intel elapsed time 636 seconds. -DAPP=ATM -DCCPP_SUITES=FV3_RAP,FV3_RAP_sfcdiff,FV3_HRRR,FV3_RRFS_v1beta,FV3_RRFS_v1nssl -D32BIT=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile s2s_aoflux_intel elapsed time 766 seconds. -DAPP=S2S -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_sfcocn -DCMEPS_AOFLUX=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release -DMOM6SOLO=ON
+Compile s2s_intel elapsed time 748 seconds. -DAPP=S2S -DCCPP_SUITES=FV3_GFS_v17_coupled_p8 -DMPI=ON -DCMAKE_BUILD_TYPE=Release -DMOM6SOLO=ON
+Compile s2swa_32bit_intel elapsed time 896 seconds. -DAPP=S2SWA -D32BIT=ON -DCCPP_SUITES=FV3_GFS_v17_coupled_p8,FV3_GFS_v17_coupled_p8_ugwpv1 -DMPI=ON -DCMAKE_BUILD_TYPE=Release -DMOM6SOLO=ON
+Compile s2swa_debug_intel elapsed time 587 seconds. -DAPP=S2SWA -DDEBUG=ON -DCCPP_SUITES=FV3_GFS_v17_coupled_p8 -DMPI=ON -DCMAKE_BUILD_TYPE=Debug -DMOM6SOLO=ON
+Compile s2swa_faster_intel elapsed time 1101 seconds. -DAPP=S2SWA -DCCPP_SUITES=FV3_GFS_v17_coupled_p8 -DFASTER=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release -DMOM6SOLO=ON
+Compile s2swa_intel elapsed time 879 seconds. -DAPP=S2SWA -DCCPP_SUITES=FV3_GFS_v17_coupled_p8 -DMPI=ON -DCMAKE_BUILD_TYPE=Release -DMOM6SOLO=ON
+Compile s2sw_debug_intel elapsed time 539 seconds. -DAPP=S2SW -DDEBUG=ON -DCCPP_SUITES=FV3_GFS_v17_coupled_p8 -DMPI=ON -DCMAKE_BUILD_TYPE=Debug -DMOM6SOLO=ON
+Compile s2sw_intel elapsed time 819 seconds. -DAPP=S2SW -DCCPP_SUITES=FV3_GFS_v17_coupled_p8 -DMPI=ON -DCMAKE_BUILD_TYPE=Release -DMOM6SOLO=ON
+Compile wam_debug_intel elapsed time 411 seconds. -DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16_fv3wam -D32BIT=ON -DMULTI_GASES=ON -DDEBUG=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Debug
+Compile wam_intel elapsed time 599 seconds. -DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16_fv3wam -D32BIT=ON -DMULTI_GASES=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/cpld_control_p8_mixedmode_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/cpld_control_p8_mixedmode_intel
+Checking test 001 cpld_control_p8_mixedmode_intel results ....
+Moving baseline 001 cpld_control_p8_mixedmode_intel files ....
+ Moving sfcf021.tile1.nc .........OK
+ Moving sfcf021.tile2.nc .........OK
+ Moving sfcf021.tile3.nc .........OK
+ Moving sfcf021.tile4.nc .........OK
+ Moving sfcf021.tile5.nc .........OK
+ Moving sfcf021.tile6.nc .........OK
+ Moving atmf021.tile1.nc .........OK
+ Moving atmf021.tile2.nc .........OK
+ Moving atmf021.tile3.nc .........OK
+ Moving atmf021.tile4.nc .........OK
+ Moving atmf021.tile5.nc .........OK
+ Moving atmf021.tile6.nc .........OK
+ Moving sfcf024.tile1.nc .........OK
+ Moving sfcf024.tile2.nc .........OK
+ Moving sfcf024.tile3.nc .........OK
+ Moving sfcf024.tile4.nc .........OK
+ Moving sfcf024.tile5.nc .........OK
+ Moving sfcf024.tile6.nc .........OK
+ Moving atmf024.tile1.nc .........OK
+ Moving atmf024.tile2.nc .........OK
+ Moving atmf024.tile3.nc .........OK
+ Moving atmf024.tile4.nc .........OK
+ Moving atmf024.tile5.nc .........OK
+ Moving atmf024.tile6.nc .........OK
+ Moving gocart.inst_aod.20210323_0600z.nc4 .........OK
+ Moving RESTART/20210323.060000.coupler.res .........OK
+ Moving RESTART/20210323.060000.fv_core.res.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile6.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile6.nc .........OK
+ Moving RESTART/20210323.060000.MOM.res.nc .........OK
+ Moving RESTART/iced.2021-03-23-21600.nc .........OK
+ Moving RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc .........OK
+ Moving 20210323.060000.out_pnt.ww3 .........OK
+ Moving 20210323.060000.out_grd.ww3 .........OK
+
+  0: The total amount of wall time                        = 303.613774
+  0: The maximum resident set size (KB)                   = 3045044
+
+Test 001 cpld_control_p8_mixedmode_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/cpld_control_p8_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/cpld_control_p8_intel
+Checking test 002 cpld_control_p8_intel results ....
+Moving baseline 002 cpld_control_p8_intel files ....
+ Moving sfcf021.tile1.nc .........OK
+ Moving sfcf021.tile2.nc .........OK
+ Moving sfcf021.tile3.nc .........OK
+ Moving sfcf021.tile4.nc .........OK
+ Moving sfcf021.tile5.nc .........OK
+ Moving sfcf021.tile6.nc .........OK
+ Moving atmf021.tile1.nc .........OK
+ Moving atmf021.tile2.nc .........OK
+ Moving atmf021.tile3.nc .........OK
+ Moving atmf021.tile4.nc .........OK
+ Moving atmf021.tile5.nc .........OK
+ Moving atmf021.tile6.nc .........OK
+ Moving sfcf024.tile1.nc .........OK
+ Moving sfcf024.tile2.nc .........OK
+ Moving sfcf024.tile3.nc .........OK
+ Moving sfcf024.tile4.nc .........OK
+ Moving sfcf024.tile5.nc .........OK
+ Moving sfcf024.tile6.nc .........OK
+ Moving atmf024.tile1.nc .........OK
+ Moving atmf024.tile2.nc .........OK
+ Moving atmf024.tile3.nc .........OK
+ Moving atmf024.tile4.nc .........OK
+ Moving atmf024.tile5.nc .........OK
+ Moving atmf024.tile6.nc .........OK
+ Moving gocart.inst_aod.20210323_0600z.nc4 .........OK
+ Moving RESTART/20210323.060000.coupler.res .........OK
+ Moving RESTART/20210323.060000.fv_core.res.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile6.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile6.nc .........OK
+ Moving RESTART/20210323.060000.MOM.res.nc .........OK
+ Moving RESTART/iced.2021-03-23-21600.nc .........OK
+ Moving RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc .........OK
+ Moving 20210323.060000.out_pnt.ww3 .........OK
+ Moving 20210323.060000.out_grd.ww3 .........OK
+
+  0: The total amount of wall time                        = 348.896166
+  0: The maximum resident set size (KB)                   = 3070608
+
+Test 002 cpld_control_p8_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/cpld_control_ciceC_p8_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/cpld_control_ciceC_p8_intel
+Checking test 003 cpld_control_ciceC_p8_intel results ....
+Moving baseline 003 cpld_control_ciceC_p8_intel files ....
+ Moving sfcf021.tile1.nc .........OK
+ Moving sfcf021.tile2.nc .........OK
+ Moving sfcf021.tile3.nc .........OK
+ Moving sfcf021.tile4.nc .........OK
+ Moving sfcf021.tile5.nc .........OK
+ Moving sfcf021.tile6.nc .........OK
+ Moving atmf021.tile1.nc .........OK
+ Moving atmf021.tile2.nc .........OK
+ Moving atmf021.tile3.nc .........OK
+ Moving atmf021.tile4.nc .........OK
+ Moving atmf021.tile5.nc .........OK
+ Moving atmf021.tile6.nc .........OK
+ Moving sfcf024.tile1.nc .........OK
+ Moving sfcf024.tile2.nc .........OK
+ Moving sfcf024.tile3.nc .........OK
+ Moving sfcf024.tile4.nc .........OK
+ Moving sfcf024.tile5.nc .........OK
+ Moving sfcf024.tile6.nc .........OK
+ Moving atmf024.tile1.nc .........OK
+ Moving atmf024.tile2.nc .........OK
+ Moving atmf024.tile3.nc .........OK
+ Moving atmf024.tile4.nc .........OK
+ Moving atmf024.tile5.nc .........OK
+ Moving atmf024.tile6.nc .........OK
+ Moving gocart.inst_aod.20210323_0600z.nc4 .........OK
+ Moving RESTART/20210323.060000.coupler.res .........OK
+ Moving RESTART/20210323.060000.fv_core.res.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile6.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile6.nc .........OK
+ Moving RESTART/20210323.060000.MOM.res.nc .........OK
+ Moving RESTART/iced.2021-03-23-21600.nc .........OK
+ Moving RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc .........OK
+ Moving 20210323.060000.out_pnt.ww3 .........OK
+ Moving 20210323.060000.out_grd.ww3 .........OK
+
+  0: The total amount of wall time                        = 350.361497
+  0: The maximum resident set size (KB)                   = 3072296
+
+Test 003 cpld_control_ciceC_p8_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/cpld_control_c192_p8_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/cpld_control_c192_p8_intel
+Checking test 004 cpld_control_c192_p8_intel results ....
+Moving baseline 004 cpld_control_c192_p8_intel files ....
+ Moving sfcf030.tile1.nc .........OK
+ Moving sfcf030.tile2.nc .........OK
+ Moving sfcf030.tile3.nc .........OK
+ Moving sfcf030.tile4.nc .........OK
+ Moving sfcf030.tile5.nc .........OK
+ Moving sfcf030.tile6.nc .........OK
+ Moving atmf030.tile1.nc .........OK
+ Moving atmf030.tile2.nc .........OK
+ Moving atmf030.tile3.nc .........OK
+ Moving atmf030.tile4.nc .........OK
+ Moving atmf030.tile5.nc .........OK
+ Moving atmf030.tile6.nc .........OK
+ Moving gocart.inst_aod.20210323_1200z.nc4 .........OK
+ Moving RESTART/20210323.120000.coupler.res .........OK
+ Moving RESTART/20210323.120000.fv_core.res.nc .........OK
+ Moving RESTART/20210323.120000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20210323.120000.fv_core.res.tile2.nc .........OK
+ Moving RESTART/20210323.120000.fv_core.res.tile3.nc .........OK
+ Moving RESTART/20210323.120000.fv_core.res.tile4.nc .........OK
+ Moving RESTART/20210323.120000.fv_core.res.tile5.nc .........OK
+ Moving RESTART/20210323.120000.fv_core.res.tile6.nc .........OK
+ Moving RESTART/20210323.120000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20210323.120000.fv_srf_wnd.res.tile2.nc .........OK
+ Moving RESTART/20210323.120000.fv_srf_wnd.res.tile3.nc .........OK
+ Moving RESTART/20210323.120000.fv_srf_wnd.res.tile4.nc .........OK
+ Moving RESTART/20210323.120000.fv_srf_wnd.res.tile5.nc .........OK
+ Moving RESTART/20210323.120000.fv_srf_wnd.res.tile6.nc .........OK
+ Moving RESTART/20210323.120000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20210323.120000.fv_tracer.res.tile2.nc .........OK
+ Moving RESTART/20210323.120000.fv_tracer.res.tile3.nc .........OK
+ Moving RESTART/20210323.120000.fv_tracer.res.tile4.nc .........OK
+ Moving RESTART/20210323.120000.fv_tracer.res.tile5.nc .........OK
+ Moving RESTART/20210323.120000.fv_tracer.res.tile6.nc .........OK
+ Moving RESTART/20210323.120000.phy_data.tile1.nc .........OK
+ Moving RESTART/20210323.120000.phy_data.tile2.nc .........OK
+ Moving RESTART/20210323.120000.phy_data.tile3.nc .........OK
+ Moving RESTART/20210323.120000.phy_data.tile4.nc .........OK
+ Moving RESTART/20210323.120000.phy_data.tile5.nc .........OK
+ Moving RESTART/20210323.120000.phy_data.tile6.nc .........OK
+ Moving RESTART/20210323.120000.sfc_data.tile1.nc .........OK
+ Moving RESTART/20210323.120000.sfc_data.tile2.nc .........OK
+ Moving RESTART/20210323.120000.sfc_data.tile3.nc .........OK
+ Moving RESTART/20210323.120000.sfc_data.tile4.nc .........OK
+ Moving RESTART/20210323.120000.sfc_data.tile5.nc .........OK
+ Moving RESTART/20210323.120000.sfc_data.tile6.nc .........OK
+ Moving RESTART/20210323.120000.MOM.res.nc .........OK
+ Moving RESTART/iced.2021-03-23-43200.nc .........OK
+ Moving RESTART/ufs.cpld.cpl.r.2021-03-23-43200.nc .........OK
+ Moving 20210323.120000.out_grd.ww3 .........OK
+ Moving 20210323.120000.out_pnt.ww3 .........OK
+
+  0: The total amount of wall time                        = 594.808545
+  0: The maximum resident set size (KB)                   = 3255244
+
+Test 004 cpld_control_c192_p8_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/cpld_bmark_p8_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/cpld_bmark_p8_intel
+Checking test 005 cpld_bmark_p8_intel results ....
+Moving baseline 005 cpld_bmark_p8_intel files ....
+ Moving sfcf006.nc .........OK
+ Moving atmf006.nc .........OK
+ Moving GFSFLX.GrbF06 .........OK
+ Moving GFSPRS.GrbF06 .........OK
+ Moving gocart.inst_aod.20130401_0600z.nc4 .........OK
+ Moving RESTART/20130401.060000.coupler.res .........OK
+ Moving RESTART/20130401.060000.fv_core.res.nc .........OK
+ Moving RESTART/20130401.060000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20130401.060000.fv_core.res.tile2.nc .........OK
+ Moving RESTART/20130401.060000.fv_core.res.tile3.nc .........OK
+ Moving RESTART/20130401.060000.fv_core.res.tile4.nc .........OK
+ Moving RESTART/20130401.060000.fv_core.res.tile5.nc .........OK
+ Moving RESTART/20130401.060000.fv_core.res.tile6.nc .........OK
+ Moving RESTART/20130401.060000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20130401.060000.fv_srf_wnd.res.tile2.nc .........OK
+ Moving RESTART/20130401.060000.fv_srf_wnd.res.tile3.nc .........OK
+ Moving RESTART/20130401.060000.fv_srf_wnd.res.tile4.nc .........OK
+ Moving RESTART/20130401.060000.fv_srf_wnd.res.tile5.nc .........OK
+ Moving RESTART/20130401.060000.fv_srf_wnd.res.tile6.nc .........OK
+ Moving RESTART/20130401.060000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20130401.060000.fv_tracer.res.tile2.nc .........OK
+ Moving RESTART/20130401.060000.fv_tracer.res.tile3.nc .........OK
+ Moving RESTART/20130401.060000.fv_tracer.res.tile4.nc .........OK
+ Moving RESTART/20130401.060000.fv_tracer.res.tile5.nc .........OK
+ Moving RESTART/20130401.060000.fv_tracer.res.tile6.nc .........OK
+ Moving RESTART/20130401.060000.phy_data.tile1.nc .........OK
+ Moving RESTART/20130401.060000.phy_data.tile2.nc .........OK
+ Moving RESTART/20130401.060000.phy_data.tile3.nc .........OK
+ Moving RESTART/20130401.060000.phy_data.tile4.nc .........OK
+ Moving RESTART/20130401.060000.phy_data.tile5.nc .........OK
+ Moving RESTART/20130401.060000.phy_data.tile6.nc .........OK
+ Moving RESTART/20130401.060000.sfc_data.tile1.nc .........OK
+ Moving RESTART/20130401.060000.sfc_data.tile2.nc .........OK
+ Moving RESTART/20130401.060000.sfc_data.tile3.nc .........OK
+ Moving RESTART/20130401.060000.sfc_data.tile4.nc .........OK
+ Moving RESTART/20130401.060000.sfc_data.tile5.nc .........OK
+ Moving RESTART/20130401.060000.sfc_data.tile6.nc .........OK
+ Moving RESTART/20130401.060000.MOM.res.nc .........OK
+ Moving RESTART/20130401.060000.MOM.res_1.nc .........OK
+ Moving RESTART/20130401.060000.MOM.res_2.nc .........OK
+ Moving RESTART/20130401.060000.MOM.res_3.nc .........OK
+ Moving RESTART/iced.2013-04-01-21600.nc .........OK
+ Moving RESTART/ufs.cpld.cpl.r.2013-04-01-21600.nc .........OK
+ Moving 20130401.060000.out_pnt.ww3 .........OK
+ Moving 20130401.060000.out_grd.ww3 .........OK
+
+   0: The total amount of wall time                        = 753.438685
+   0: The maximum resident set size (KB)                   = 4020296
+
+Test 005 cpld_bmark_p8_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/cpld_control_noaero_p8_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/cpld_control_noaero_p8_intel
+Checking test 006 cpld_control_noaero_p8_intel results ....
+Moving baseline 006 cpld_control_noaero_p8_intel files ....
+ Moving sfcf021.tile1.nc .........OK
+ Moving sfcf021.tile2.nc .........OK
+ Moving sfcf021.tile3.nc .........OK
+ Moving sfcf021.tile4.nc .........OK
+ Moving sfcf021.tile5.nc .........OK
+ Moving sfcf021.tile6.nc .........OK
+ Moving atmf021.tile1.nc .........OK
+ Moving atmf021.tile2.nc .........OK
+ Moving atmf021.tile3.nc .........OK
+ Moving atmf021.tile4.nc .........OK
+ Moving atmf021.tile5.nc .........OK
+ Moving atmf021.tile6.nc .........OK
+ Moving sfcf024.tile1.nc .........OK
+ Moving sfcf024.tile2.nc .........OK
+ Moving sfcf024.tile3.nc .........OK
+ Moving sfcf024.tile4.nc .........OK
+ Moving sfcf024.tile5.nc .........OK
+ Moving sfcf024.tile6.nc .........OK
+ Moving atmf024.tile1.nc .........OK
+ Moving atmf024.tile2.nc .........OK
+ Moving atmf024.tile3.nc .........OK
+ Moving atmf024.tile4.nc .........OK
+ Moving atmf024.tile5.nc .........OK
+ Moving atmf024.tile6.nc .........OK
+ Moving RESTART/20210323.060000.coupler.res .........OK
+ Moving RESTART/20210323.060000.fv_core.res.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile6.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile6.nc .........OK
+ Moving RESTART/20210323.060000.MOM.res.nc .........OK
+ Moving RESTART/iced.2021-03-23-21600.nc .........OK
+ Moving RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc .........OK
+ Moving 20210323.060000.out_pnt.ww3 .........OK
+ Moving 20210323.060000.out_grd.ww3 .........OK
+
+  0: The total amount of wall time                        = 258.106472
+  0: The maximum resident set size (KB)                   = 1657592
+
+Test 006 cpld_control_noaero_p8_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/cpld_control_c96_noaero_p8_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/cpld_control_nowave_noaero_p8_intel
+Checking test 007 cpld_control_nowave_noaero_p8_intel results ....
+Moving baseline 007 cpld_control_nowave_noaero_p8_intel files ....
+ Moving sfcf021.tile1.nc .........OK
+ Moving sfcf021.tile2.nc .........OK
+ Moving sfcf021.tile3.nc .........OK
+ Moving sfcf021.tile4.nc .........OK
+ Moving sfcf021.tile5.nc .........OK
+ Moving sfcf021.tile6.nc .........OK
+ Moving atmf021.tile1.nc .........OK
+ Moving atmf021.tile2.nc .........OK
+ Moving atmf021.tile3.nc .........OK
+ Moving atmf021.tile4.nc .........OK
+ Moving atmf021.tile5.nc .........OK
+ Moving atmf021.tile6.nc .........OK
+ Moving sfcf024.tile1.nc .........OK
+ Moving sfcf024.tile2.nc .........OK
+ Moving sfcf024.tile3.nc .........OK
+ Moving sfcf024.tile4.nc .........OK
+ Moving sfcf024.tile5.nc .........OK
+ Moving sfcf024.tile6.nc .........OK
+ Moving atmf024.tile1.nc .........OK
+ Moving atmf024.tile2.nc .........OK
+ Moving atmf024.tile3.nc .........OK
+ Moving atmf024.tile4.nc .........OK
+ Moving atmf024.tile5.nc .........OK
+ Moving atmf024.tile6.nc .........OK
+ Moving RESTART/20210323.060000.coupler.res .........OK
+ Moving RESTART/20210323.060000.fv_core.res.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile6.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile6.nc .........OK
+ Moving RESTART/20210323.060000.MOM.res.nc .........OK
+ Moving RESTART/iced.2021-03-23-21600.nc .........OK
+ Moving RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc .........OK
+
+  0: The total amount of wall time                        = 263.423103
+  0: The maximum resident set size (KB)                   = 1718916
+
+Test 007 cpld_control_nowave_noaero_p8_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/cpld_debug_p8_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/cpld_debug_p8_intel
+Checking test 008 cpld_debug_p8_intel results ....
+Moving baseline 008 cpld_debug_p8_intel files ....
+ Moving sfcf003.tile1.nc .........OK
+ Moving sfcf003.tile2.nc .........OK
+ Moving sfcf003.tile3.nc .........OK
+ Moving sfcf003.tile4.nc .........OK
+ Moving sfcf003.tile5.nc .........OK
+ Moving sfcf003.tile6.nc .........OK
+ Moving atmf003.tile1.nc .........OK
+ Moving atmf003.tile2.nc .........OK
+ Moving atmf003.tile3.nc .........OK
+ Moving atmf003.tile4.nc .........OK
+ Moving atmf003.tile5.nc .........OK
+ Moving atmf003.tile6.nc .........OK
+ Moving gocart.inst_aod.20210322_0900z.nc4 .........OK
+ Moving RESTART/20210322.090000.coupler.res .........OK
+ Moving RESTART/20210322.090000.fv_core.res.nc .........OK
+ Moving RESTART/20210322.090000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20210322.090000.fv_core.res.tile2.nc .........OK
+ Moving RESTART/20210322.090000.fv_core.res.tile3.nc .........OK
+ Moving RESTART/20210322.090000.fv_core.res.tile4.nc .........OK
+ Moving RESTART/20210322.090000.fv_core.res.tile5.nc .........OK
+ Moving RESTART/20210322.090000.fv_core.res.tile6.nc .........OK
+ Moving RESTART/20210322.090000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20210322.090000.fv_srf_wnd.res.tile2.nc .........OK
+ Moving RESTART/20210322.090000.fv_srf_wnd.res.tile3.nc .........OK
+ Moving RESTART/20210322.090000.fv_srf_wnd.res.tile4.nc .........OK
+ Moving RESTART/20210322.090000.fv_srf_wnd.res.tile5.nc .........OK
+ Moving RESTART/20210322.090000.fv_srf_wnd.res.tile6.nc .........OK
+ Moving RESTART/20210322.090000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20210322.090000.fv_tracer.res.tile2.nc .........OK
+ Moving RESTART/20210322.090000.fv_tracer.res.tile3.nc .........OK
+ Moving RESTART/20210322.090000.fv_tracer.res.tile4.nc .........OK
+ Moving RESTART/20210322.090000.fv_tracer.res.tile5.nc .........OK
+ Moving RESTART/20210322.090000.fv_tracer.res.tile6.nc .........OK
+ Moving RESTART/20210322.090000.phy_data.tile1.nc .........OK
+ Moving RESTART/20210322.090000.phy_data.tile2.nc .........OK
+ Moving RESTART/20210322.090000.phy_data.tile3.nc .........OK
+ Moving RESTART/20210322.090000.phy_data.tile4.nc .........OK
+ Moving RESTART/20210322.090000.phy_data.tile5.nc .........OK
+ Moving RESTART/20210322.090000.phy_data.tile6.nc .........OK
+ Moving RESTART/20210322.090000.sfc_data.tile1.nc .........OK
+ Moving RESTART/20210322.090000.sfc_data.tile2.nc .........OK
+ Moving RESTART/20210322.090000.sfc_data.tile3.nc .........OK
+ Moving RESTART/20210322.090000.sfc_data.tile4.nc .........OK
+ Moving RESTART/20210322.090000.sfc_data.tile5.nc .........OK
+ Moving RESTART/20210322.090000.sfc_data.tile6.nc .........OK
+ Moving RESTART/20210322.090000.MOM.res.nc .........OK
+ Moving RESTART/iced.2021-03-22-32400.nc .........OK
+ Moving RESTART/ufs.cpld.cpl.r.2021-03-22-32400.nc .........OK
+ Moving 20210322.090000.out_pnt.ww3 .........OK
+ Moving 20210322.090000.out_grd.ww3 .........OK
+
+  0: The total amount of wall time                        = 488.911757
+  0: The maximum resident set size (KB)                   = 3085556
+
+Test 008 cpld_debug_p8_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/cpld_debug_noaero_p8_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/cpld_debug_noaero_p8_intel
+Checking test 009 cpld_debug_noaero_p8_intel results ....
+Moving baseline 009 cpld_debug_noaero_p8_intel files ....
+ Moving sfcf003.tile1.nc .........OK
+ Moving sfcf003.tile2.nc .........OK
+ Moving sfcf003.tile3.nc .........OK
+ Moving sfcf003.tile4.nc .........OK
+ Moving sfcf003.tile5.nc .........OK
+ Moving sfcf003.tile6.nc .........OK
+ Moving atmf003.tile1.nc .........OK
+ Moving atmf003.tile2.nc .........OK
+ Moving atmf003.tile3.nc .........OK
+ Moving atmf003.tile4.nc .........OK
+ Moving atmf003.tile5.nc .........OK
+ Moving atmf003.tile6.nc .........OK
+ Moving RESTART/20210322.090000.coupler.res .........OK
+ Moving RESTART/20210322.090000.fv_core.res.nc .........OK
+ Moving RESTART/20210322.090000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20210322.090000.fv_core.res.tile2.nc .........OK
+ Moving RESTART/20210322.090000.fv_core.res.tile3.nc .........OK
+ Moving RESTART/20210322.090000.fv_core.res.tile4.nc .........OK
+ Moving RESTART/20210322.090000.fv_core.res.tile5.nc .........OK
+ Moving RESTART/20210322.090000.fv_core.res.tile6.nc .........OK
+ Moving RESTART/20210322.090000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20210322.090000.fv_srf_wnd.res.tile2.nc .........OK
+ Moving RESTART/20210322.090000.fv_srf_wnd.res.tile3.nc .........OK
+ Moving RESTART/20210322.090000.fv_srf_wnd.res.tile4.nc .........OK
+ Moving RESTART/20210322.090000.fv_srf_wnd.res.tile5.nc .........OK
+ Moving RESTART/20210322.090000.fv_srf_wnd.res.tile6.nc .........OK
+ Moving RESTART/20210322.090000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20210322.090000.fv_tracer.res.tile2.nc .........OK
+ Moving RESTART/20210322.090000.fv_tracer.res.tile3.nc .........OK
+ Moving RESTART/20210322.090000.fv_tracer.res.tile4.nc .........OK
+ Moving RESTART/20210322.090000.fv_tracer.res.tile5.nc .........OK
+ Moving RESTART/20210322.090000.fv_tracer.res.tile6.nc .........OK
+ Moving RESTART/20210322.090000.phy_data.tile1.nc .........OK
+ Moving RESTART/20210322.090000.phy_data.tile2.nc .........OK
+ Moving RESTART/20210322.090000.phy_data.tile3.nc .........OK
+ Moving RESTART/20210322.090000.phy_data.tile4.nc .........OK
+ Moving RESTART/20210322.090000.phy_data.tile5.nc .........OK
+ Moving RESTART/20210322.090000.phy_data.tile6.nc .........OK
+ Moving RESTART/20210322.090000.sfc_data.tile1.nc .........OK
+ Moving RESTART/20210322.090000.sfc_data.tile2.nc .........OK
+ Moving RESTART/20210322.090000.sfc_data.tile3.nc .........OK
+ Moving RESTART/20210322.090000.sfc_data.tile4.nc .........OK
+ Moving RESTART/20210322.090000.sfc_data.tile5.nc .........OK
+ Moving RESTART/20210322.090000.sfc_data.tile6.nc .........OK
+ Moving RESTART/20210322.090000.MOM.res.nc .........OK
+ Moving RESTART/iced.2021-03-22-32400.nc .........OK
+ Moving RESTART/ufs.cpld.cpl.r.2021-03-22-32400.nc .........OK
+ Moving 20210322.090000.out_pnt.ww3 .........OK
+ Moving 20210322.090000.out_grd.ww3 .........OK
+
+  0: The total amount of wall time                        = 322.775138
+  0: The maximum resident set size (KB)                   = 1659460
+
+Test 009 cpld_debug_noaero_p8_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/cpld_control_noaero_p8_agrid_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/cpld_control_noaero_p8_agrid_intel
+Checking test 010 cpld_control_noaero_p8_agrid_intel results ....
+Moving baseline 010 cpld_control_noaero_p8_agrid_intel files ....
+ Moving sfcf021.tile1.nc .........OK
+ Moving sfcf021.tile2.nc .........OK
+ Moving sfcf021.tile3.nc .........OK
+ Moving sfcf021.tile4.nc .........OK
+ Moving sfcf021.tile5.nc .........OK
+ Moving sfcf021.tile6.nc .........OK
+ Moving atmf021.tile1.nc .........OK
+ Moving atmf021.tile2.nc .........OK
+ Moving atmf021.tile3.nc .........OK
+ Moving atmf021.tile4.nc .........OK
+ Moving atmf021.tile5.nc .........OK
+ Moving atmf021.tile6.nc .........OK
+ Moving sfcf024.tile1.nc .........OK
+ Moving sfcf024.tile2.nc .........OK
+ Moving sfcf024.tile3.nc .........OK
+ Moving sfcf024.tile4.nc .........OK
+ Moving sfcf024.tile5.nc .........OK
+ Moving sfcf024.tile6.nc .........OK
+ Moving atmf024.tile1.nc .........OK
+ Moving atmf024.tile2.nc .........OK
+ Moving atmf024.tile3.nc .........OK
+ Moving atmf024.tile4.nc .........OK
+ Moving atmf024.tile5.nc .........OK
+ Moving atmf024.tile6.nc .........OK
+ Moving RESTART/20210323.060000.coupler.res .........OK
+ Moving RESTART/20210323.060000.fv_core.res.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile6.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile6.nc .........OK
+ Moving RESTART/20210323.060000.MOM.res.nc .........OK
+ Moving RESTART/iced.2021-03-23-21600.nc .........OK
+ Moving RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc .........OK
+
+  0: The total amount of wall time                        = 267.374451
+  0: The maximum resident set size (KB)                   = 1715328
+
+Test 010 cpld_control_noaero_p8_agrid_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/cpld_control_c48_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/cpld_control_c48_intel
+Checking test 011 cpld_control_c48_intel results ....
+Moving baseline 011 cpld_control_c48_intel files ....
+ Moving sfcf024.tile1.nc .........OK
+ Moving sfcf024.tile2.nc .........OK
+ Moving sfcf024.tile3.nc .........OK
+ Moving sfcf024.tile4.nc .........OK
+ Moving sfcf024.tile5.nc .........OK
+ Moving sfcf024.tile6.nc .........OK
+ Moving atmf024.tile1.nc .........OK
+ Moving atmf024.tile2.nc .........OK
+ Moving atmf024.tile3.nc .........OK
+ Moving atmf024.tile4.nc .........OK
+ Moving atmf024.tile5.nc .........OK
+ Moving atmf024.tile6.nc .........OK
+ Moving RESTART/20210323.060000.coupler.res .........OK
+ Moving RESTART/20210323.060000.fv_core.res.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile6.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile6.nc .........OK
+ Moving RESTART/20210323.060000.MOM.res.nc .........OK
+ Moving RESTART/iced.2021-03-23-21600.nc .........OK
+ Moving RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc .........OK
+
+ 0: The total amount of wall time                        = 407.359359
+ 0: The maximum resident set size (KB)                   = 2642412
+
+Test 011 cpld_control_c48_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/cpld_control_p8_faster_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/cpld_control_p8_faster_intel
+Checking test 012 cpld_control_p8_faster_intel results ....
+Moving baseline 012 cpld_control_p8_faster_intel files ....
+ Moving sfcf021.tile1.nc .........OK
+ Moving sfcf021.tile2.nc .........OK
+ Moving sfcf021.tile3.nc .........OK
+ Moving sfcf021.tile4.nc .........OK
+ Moving sfcf021.tile5.nc .........OK
+ Moving sfcf021.tile6.nc .........OK
+ Moving atmf021.tile1.nc .........OK
+ Moving atmf021.tile2.nc .........OK
+ Moving atmf021.tile3.nc .........OK
+ Moving atmf021.tile4.nc .........OK
+ Moving atmf021.tile5.nc .........OK
+ Moving atmf021.tile6.nc .........OK
+ Moving sfcf024.tile1.nc .........OK
+ Moving sfcf024.tile2.nc .........OK
+ Moving sfcf024.tile3.nc .........OK
+ Moving sfcf024.tile4.nc .........OK
+ Moving sfcf024.tile5.nc .........OK
+ Moving sfcf024.tile6.nc .........OK
+ Moving atmf024.tile1.nc .........OK
+ Moving atmf024.tile2.nc .........OK
+ Moving atmf024.tile3.nc .........OK
+ Moving atmf024.tile4.nc .........OK
+ Moving atmf024.tile5.nc .........OK
+ Moving atmf024.tile6.nc .........OK
+ Moving gocart.inst_aod.20210323_0600z.nc4 .........OK
+ Moving RESTART/20210323.060000.coupler.res .........OK
+ Moving RESTART/20210323.060000.fv_core.res.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile6.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile6.nc .........OK
+ Moving RESTART/20210323.060000.MOM.res.nc .........OK
+ Moving RESTART/iced.2021-03-23-21600.nc .........OK
+ Moving RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc .........OK
+ Moving 20210323.060000.out_pnt.ww3 .........OK
+ Moving 20210323.060000.out_grd.ww3 .........OK
+
+  0: The total amount of wall time                        = 346.552872
+  0: The maximum resident set size (KB)                   = 3072280
+
+Test 012 cpld_control_p8_faster_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/control_flake_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/control_flake_intel
+Checking test 013 control_flake_intel results ....
+Moving baseline 013 control_flake_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf024.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf024.nc .........OK
+ Moving GFSFLX.GrbF00 .........OK
+ Moving GFSFLX.GrbF24 .........OK
+ Moving GFSPRS.GrbF00 .........OK
+ Moving GFSPRS.GrbF24 .........OK
+
+  0: The total amount of wall time                        = 194.671876
+  0: The maximum resident set size (KB)                   = 651340
+
+Test 013 control_flake_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/control_CubedSphereGrid_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/control_CubedSphereGrid_intel
+Checking test 014 control_CubedSphereGrid_intel results ....
+Moving baseline 014 control_CubedSphereGrid_intel files ....
+ Moving sfcf000.tile1.nc .........OK
+ Moving sfcf000.tile2.nc .........OK
+ Moving sfcf000.tile3.nc .........OK
+ Moving sfcf000.tile4.nc .........OK
+ Moving sfcf000.tile5.nc .........OK
+ Moving sfcf000.tile6.nc .........OK
+ Moving sfcf024.tile1.nc .........OK
+ Moving sfcf024.tile2.nc .........OK
+ Moving sfcf024.tile3.nc .........OK
+ Moving sfcf024.tile4.nc .........OK
+ Moving sfcf024.tile5.nc .........OK
+ Moving sfcf024.tile6.nc .........OK
+ Moving atmf000.tile1.nc .........OK
+ Moving atmf000.tile2.nc .........OK
+ Moving atmf000.tile3.nc .........OK
+ Moving atmf000.tile4.nc .........OK
+ Moving atmf000.tile5.nc .........OK
+ Moving atmf000.tile6.nc .........OK
+ Moving atmf024.tile1.nc .........OK
+ Moving atmf024.tile2.nc .........OK
+ Moving atmf024.tile3.nc .........OK
+ Moving atmf024.tile4.nc .........OK
+ Moving atmf024.tile5.nc .........OK
+ Moving atmf024.tile6.nc .........OK
+
+  0: The total amount of wall time                        = 122.748210
+  0: The maximum resident set size (KB)                   = 602964
+
+Test 014 control_CubedSphereGrid_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/control_CubedSphereGrid_parallel_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/control_CubedSphereGrid_parallel_intel
+Checking test 015 control_CubedSphereGrid_parallel_intel results ....
+Moving baseline 015 control_CubedSphereGrid_parallel_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf024.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf024.nc .........OK
+ Moving cubed_sphere_grid_sfcf000.nc .........OK
+ Moving cubed_sphere_grid_sfcf024.nc .........OK
+ Moving cubed_sphere_grid_atmf000.nc .........OK
+ Moving cubed_sphere_grid_atmf024.nc .........OK
+ Moving GFSFLX.GrbF00 .........OK
+ Moving GFSFLX.GrbF24 .........OK
+ Moving GFSPRS.GrbF00 .........OK
+ Moving GFSPRS.GrbF24 .........OK
+
+  0: The total amount of wall time                        = 133.010294
+  0: The maximum resident set size (KB)                   = 610508
+
+Test 015 control_CubedSphereGrid_parallel_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/control_latlon_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/control_latlon_intel
+Checking test 016 control_latlon_intel results ....
+Moving baseline 016 control_latlon_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf024.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf024.nc .........OK
+ Moving GFSFLX.GrbF00 .........OK
+ Moving GFSFLX.GrbF24 .........OK
+ Moving GFSPRS.GrbF00 .........OK
+ Moving GFSPRS.GrbF24 .........OK
+
+  0: The total amount of wall time                        = 122.408922
+  0: The maximum resident set size (KB)                   = 610308
+
+Test 016 control_latlon_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/control_wrtGauss_netcdf_parallel_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/control_wrtGauss_netcdf_parallel_intel
+Checking test 017 control_wrtGauss_netcdf_parallel_intel results ....
+Moving baseline 017 control_wrtGauss_netcdf_parallel_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf024.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf024.nc .........OK
+ Moving GFSFLX.GrbF00 .........OK
+ Moving GFSFLX.GrbF24 .........OK
+ Moving GFSPRS.GrbF00 .........OK
+ Moving GFSPRS.GrbF24 .........OK
+
+  0: The total amount of wall time                        = 126.092182
+  0: The maximum resident set size (KB)                   = 606676
+
+Test 017 control_wrtGauss_netcdf_parallel_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/control_c48_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/control_c48_intel
+Checking test 018 control_c48_intel results ....
+Moving baseline 018 control_c48_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf024.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf024.nc .........OK
+ Moving RESTART/20210323.060000.coupler.res .........OK
+ Moving RESTART/20210323.060000.fv_core.res.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile6.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile6.nc .........OK
+
+0: The total amount of wall time                        = 334.581142
+0: The maximum resident set size (KB)                   = 680916
+
+Test 018 control_c48_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/control_c192_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/control_c192_intel
+Checking test 019 control_c192_intel results ....
+Moving baseline 019 control_c192_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf024.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf024.nc .........OK
+ Moving GFSFLX.GrbF00 .........OK
+ Moving GFSFLX.GrbF24 .........OK
+ Moving GFSPRS.GrbF00 .........OK
+ Moving GFSPRS.GrbF24 .........OK
+
+  0: The total amount of wall time                        = 499.231788
+  0: The maximum resident set size (KB)                   = 705256
+
+Test 019 control_c192_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/control_c384_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/control_c384_intel
+Checking test 020 control_c384_intel results ....
+Moving baseline 020 control_c384_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf012.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf012.nc .........OK
+ Moving GFSFLX.GrbF00 .........OK
+ Moving GFSFLX.GrbF12 .........OK
+ Moving GFSPRS.GrbF00 .........OK
+ Moving GFSPRS.GrbF12 .........OK
+
+  0: The total amount of wall time                        = 954.278228
+  0: The maximum resident set size (KB)                   = 1105504
+
+Test 020 control_c384_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/control_c384gdas_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/control_c384gdas_intel
+Checking test 021 control_c384gdas_intel results ....
+Moving baseline 021 control_c384gdas_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf006.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf006.nc .........OK
+ Moving GFSFLX.GrbF00 .........OK
+ Moving GFSFLX.GrbF06 .........OK
+ Moving GFSPRS.GrbF00 .........OK
+ Moving GFSPRS.GrbF06 .........OK
+ Moving RESTART/20210322.060000.coupler.res .........OK
+ Moving RESTART/20210322.060000.fv_core.res.nc .........OK
+ Moving RESTART/20210322.060000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20210322.060000.fv_core.res.tile2.nc .........OK
+ Moving RESTART/20210322.060000.fv_core.res.tile3.nc .........OK
+ Moving RESTART/20210322.060000.fv_core.res.tile4.nc .........OK
+ Moving RESTART/20210322.060000.fv_core.res.tile5.nc .........OK
+ Moving RESTART/20210322.060000.fv_core.res.tile6.nc .........OK
+ Moving RESTART/20210322.060000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20210322.060000.fv_srf_wnd.res.tile2.nc .........OK
+ Moving RESTART/20210322.060000.fv_srf_wnd.res.tile3.nc .........OK
+ Moving RESTART/20210322.060000.fv_srf_wnd.res.tile4.nc .........OK
+ Moving RESTART/20210322.060000.fv_srf_wnd.res.tile5.nc .........OK
+ Moving RESTART/20210322.060000.fv_srf_wnd.res.tile6.nc .........OK
+ Moving RESTART/20210322.060000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20210322.060000.fv_tracer.res.tile2.nc .........OK
+ Moving RESTART/20210322.060000.fv_tracer.res.tile3.nc .........OK
+ Moving RESTART/20210322.060000.fv_tracer.res.tile4.nc .........OK
+ Moving RESTART/20210322.060000.fv_tracer.res.tile5.nc .........OK
+ Moving RESTART/20210322.060000.fv_tracer.res.tile6.nc .........OK
+ Moving RESTART/20210322.060000.phy_data.tile1.nc .........OK
+ Moving RESTART/20210322.060000.phy_data.tile2.nc .........OK
+ Moving RESTART/20210322.060000.phy_data.tile3.nc .........OK
+ Moving RESTART/20210322.060000.phy_data.tile4.nc .........OK
+ Moving RESTART/20210322.060000.phy_data.tile5.nc .........OK
+ Moving RESTART/20210322.060000.phy_data.tile6.nc .........OK
+ Moving RESTART/20210322.060000.sfc_data.tile1.nc .........OK
+ Moving RESTART/20210322.060000.sfc_data.tile2.nc .........OK
+ Moving RESTART/20210322.060000.sfc_data.tile3.nc .........OK
+ Moving RESTART/20210322.060000.sfc_data.tile4.nc .........OK
+ Moving RESTART/20210322.060000.sfc_data.tile5.nc .........OK
+ Moving RESTART/20210322.060000.sfc_data.tile6.nc .........OK
+
+  0: The total amount of wall time                        = 812.448838
+  0: The maximum resident set size (KB)                   = 1239568
+
+Test 021 control_c384gdas_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/control_stochy_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/control_stochy_intel
+Checking test 022 control_stochy_intel results ....
+Moving baseline 022 control_stochy_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf012.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf012.nc .........OK
+ Moving GFSFLX.GrbF00 .........OK
+ Moving GFSFLX.GrbF12 .........OK
+ Moving GFSPRS.GrbF00 .........OK
+ Moving GFSPRS.GrbF12 .........OK
+
+  0: The total amount of wall time                        = 83.372298
+  0: The maximum resident set size (KB)                   = 609984
+
+Test 022 control_stochy_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/control_lndp_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/control_lndp_intel
+Checking test 023 control_lndp_intel results ....
+Moving baseline 023 control_lndp_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf012.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf012.nc .........OK
+ Moving GFSFLX.GrbF00 .........OK
+ Moving GFSFLX.GrbF12 .........OK
+ Moving GFSPRS.GrbF00 .........OK
+ Moving GFSPRS.GrbF12 .........OK
+
+  0: The total amount of wall time                        = 75.966999
+  0: The maximum resident set size (KB)                   = 609956
+
+Test 023 control_lndp_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/control_iovr4_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/control_iovr4_intel
+Checking test 024 control_iovr4_intel results ....
+Moving baseline 024 control_iovr4_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf021.nc .........OK
+ Moving sfcf024.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf021.nc .........OK
+ Moving atmf024.nc .........OK
+ Moving GFSFLX.GrbF00 .........OK
+ Moving GFSFLX.GrbF21 .........OK
+ Moving GFSFLX.GrbF24 .........OK
+ Moving GFSPRS.GrbF00 .........OK
+ Moving GFSPRS.GrbF21 .........OK
+ Moving GFSPRS.GrbF24 .........OK
+
+  0: The total amount of wall time                        = 125.324964
+  0: The maximum resident set size (KB)                   = 597916
+
+Test 024 control_iovr4_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/control_iovr5_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/control_iovr5_intel
+Checking test 025 control_iovr5_intel results ....
+Moving baseline 025 control_iovr5_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf021.nc .........OK
+ Moving sfcf024.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf021.nc .........OK
+ Moving atmf024.nc .........OK
+ Moving GFSFLX.GrbF00 .........OK
+ Moving GFSFLX.GrbF21 .........OK
+ Moving GFSFLX.GrbF24 .........OK
+ Moving GFSPRS.GrbF00 .........OK
+ Moving GFSPRS.GrbF21 .........OK
+ Moving GFSPRS.GrbF24 .........OK
+
+  0: The total amount of wall time                        = 123.728136
+  0: The maximum resident set size (KB)                   = 607672
+
+Test 025 control_iovr5_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/control_p8_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/control_p8_intel
+Checking test 026 control_p8_intel results ....
+Moving baseline 026 control_p8_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf021.nc .........OK
+ Moving sfcf024.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf021.nc .........OK
+ Moving atmf024.nc .........OK
+ Moving GFSFLX.GrbF00 .........OK
+ Moving GFSFLX.GrbF21 .........OK
+ Moving GFSFLX.GrbF24 .........OK
+ Moving GFSPRS.GrbF00 .........OK
+ Moving GFSPRS.GrbF21 .........OK
+ Moving GFSPRS.GrbF24 .........OK
+ Moving RESTART/20210323.060000.coupler.res .........OK
+ Moving RESTART/20210323.060000.fv_core.res.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile6.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile6.nc .........OK
+
+  0: The total amount of wall time                        = 152.929828
+  0: The maximum resident set size (KB)                   = 1578236
+
+Test 026 control_p8_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/control_p8_ugwpv1_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/control_p8_ugwpv1_intel
+Checking test 027 control_p8_ugwpv1_intel results ....
+Moving baseline 027 control_p8_ugwpv1_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf021.nc .........OK
+ Moving sfcf024.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf021.nc .........OK
+ Moving atmf024.nc .........OK
+ Moving GFSFLX.GrbF00 .........OK
+ Moving GFSFLX.GrbF21 .........OK
+ Moving GFSFLX.GrbF24 .........OK
+ Moving GFSPRS.GrbF00 .........OK
+ Moving GFSPRS.GrbF21 .........OK
+ Moving GFSPRS.GrbF24 .........OK
+ Moving RESTART/20210323.060000.coupler.res .........OK
+ Moving RESTART/20210323.060000.fv_core.res.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile6.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile6.nc .........OK
+
+  0: The total amount of wall time                        = 147.523264
+  0: The maximum resident set size (KB)                   = 1577300
+
+Test 027 control_p8_ugwpv1_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/control_p8_lndp_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/control_p8_lndp_intel
+Checking test 028 control_p8_lndp_intel results ....
+Moving baseline 028 control_p8_lndp_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf021.nc .........OK
+ Moving sfcf024.nc .........OK
+ Moving sfcf048.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf021.nc .........OK
+ Moving atmf024.nc .........OK
+ Moving atmf048.nc .........OK
+ Moving GFSFLX.GrbF00 .........OK
+ Moving GFSFLX.GrbF21 .........OK
+ Moving GFSFLX.GrbF24 .........OK
+ Moving GFSFLX.GrbF48 .........OK
+ Moving GFSPRS.GrbF00 .........OK
+ Moving GFSPRS.GrbF21 .........OK
+ Moving GFSPRS.GrbF24 .........OK
+ Moving GFSPRS.GrbF48 .........OK
+
+  0: The total amount of wall time                        = 271.012782
+  0: The maximum resident set size (KB)                   = 1580632
+
+Test 028 control_p8_lndp_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/control_p8_rrtmgp_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/control_p8_rrtmgp_intel
+Checking test 029 control_p8_rrtmgp_intel results ....
+Moving baseline 029 control_p8_rrtmgp_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf021.nc .........OK
+ Moving sfcf024.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf021.nc .........OK
+ Moving atmf024.nc .........OK
+ Moving GFSFLX.GrbF00 .........OK
+ Moving GFSFLX.GrbF21 .........OK
+ Moving GFSFLX.GrbF24 .........OK
+ Moving GFSPRS.GrbF00 .........OK
+ Moving GFSPRS.GrbF21 .........OK
+ Moving GFSPRS.GrbF24 .........OK
+ Moving RESTART/20210323.060000.coupler.res .........OK
+ Moving RESTART/20210323.060000.fv_core.res.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile6.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile6.nc .........OK
+
+  0: The total amount of wall time                        = 202.489100
+  0: The maximum resident set size (KB)                   = 1628316
+
+Test 029 control_p8_rrtmgp_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/control_p8_mynn_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/control_p8_mynn_intel
+Checking test 030 control_p8_mynn_intel results ....
+Moving baseline 030 control_p8_mynn_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf021.nc .........OK
+ Moving sfcf024.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf021.nc .........OK
+ Moving atmf024.nc .........OK
+ Moving GFSFLX.GrbF00 .........OK
+ Moving GFSFLX.GrbF21 .........OK
+ Moving GFSFLX.GrbF24 .........OK
+ Moving GFSPRS.GrbF00 .........OK
+ Moving GFSPRS.GrbF21 .........OK
+ Moving GFSPRS.GrbF24 .........OK
+ Moving RESTART/20210323.060000.coupler.res .........OK
+ Moving RESTART/20210323.060000.fv_core.res.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile6.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile6.nc .........OK
+
+  0: The total amount of wall time                        = 151.110627
+  0: The maximum resident set size (KB)                   = 1587148
+
+Test 030 control_p8_mynn_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/merra2_thompson_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/merra2_thompson_intel
+Checking test 031 merra2_thompson_intel results ....
+Moving baseline 031 merra2_thompson_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf021.nc .........OK
+ Moving sfcf024.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf021.nc .........OK
+ Moving atmf024.nc .........OK
+ Moving GFSFLX.GrbF00 .........OK
+ Moving GFSFLX.GrbF21 .........OK
+ Moving GFSFLX.GrbF24 .........OK
+ Moving GFSPRS.GrbF00 .........OK
+ Moving GFSPRS.GrbF21 .........OK
+ Moving GFSPRS.GrbF24 .........OK
+ Moving RESTART/20210323.060000.coupler.res .........OK
+ Moving RESTART/20210323.060000.fv_core.res.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile6.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile6.nc .........OK
+
+  0: The total amount of wall time                        = 182.919615
+  0: The maximum resident set size (KB)                   = 1575596
+
+Test 031 merra2_thompson_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/regional_control_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/regional_control_intel
+Checking test 032 regional_control_intel results ....
+Moving baseline 032 regional_control_intel files ....
+ Moving dynf000.nc .........OK
+ Moving dynf006.nc .........OK
+ Moving phyf000.nc .........OK
+ Moving phyf006.nc .........OK
+ Moving PRSLEV.GrbF00 .........OK
+ Moving PRSLEV.GrbF06 .........OK
+ Moving NATLEV.GrbF00 .........OK
+ Moving NATLEV.GrbF06 .........OK
+
+  0: The total amount of wall time                        = 261.229216
+  0: The maximum resident set size (KB)                   = 867000
+
+Test 032 regional_control_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/regional_noquilt_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/regional_noquilt_intel
+Checking test 033 regional_noquilt_intel results ....
+Moving baseline 033 regional_noquilt_intel files ....
+ Moving atmos_4xdaily.nc .........OK
+ Moving fv3_history2d.nc .........OK
+ Moving fv3_history.nc .........OK
+ Moving RESTART/fv_core.res.tile1_new.nc .........OK
+ Moving RESTART/fv_tracer.res.tile1_new.nc .........OK
+
+  0: The total amount of wall time                        = 256.017355
+  0: The maximum resident set size (KB)                   = 1151660
+
+Test 033 regional_noquilt_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/regional_netcdf_parallel_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/regional_netcdf_parallel_intel
+Checking test 034 regional_netcdf_parallel_intel results ....
+Moving baseline 034 regional_netcdf_parallel_intel files ....
+ Moving dynf000.nc .........OK
+ Moving dynf006.nc .........OK
+ Moving phyf000.nc .........OK
+ Moving phyf006.nc .........OK
+
+  0: The total amount of wall time                        = 257.822253
+  0: The maximum resident set size (KB)                   = 861752
+
+Test 034 regional_netcdf_parallel_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/fv3_regional_wofs_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/regional_wofs_intel
+Checking test 035 regional_wofs_intel results ....
+Moving baseline 035 regional_wofs_intel files ....
+ Moving dynf000.nc .........OK
+ Moving dynf006.nc .........OK
+ Moving phyf000.nc .........OK
+ Moving phyf006.nc .........OK
+ Moving PRSLEV.GrbF00 .........OK
+ Moving PRSLEV.GrbF06 .........OK
+ Moving NATLEV.GrbF00 .........OK
+ Moving NATLEV.GrbF06 .........OK
+
+  0: The total amount of wall time                        = 339.679929
+  0: The maximum resident set size (KB)                   = 1897452
+
+Test 035 regional_wofs_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/rap_control_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/rap_control_intel
+Checking test 036 rap_control_intel results ....
+Moving baseline 036 rap_control_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf021.nc .........OK
+ Moving sfcf024.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf021.nc .........OK
+ Moving atmf024.nc .........OK
+ Moving GFSFLX.GrbF00 .........OK
+ Moving GFSFLX.GrbF21 .........OK
+ Moving GFSFLX.GrbF24 .........OK
+ Moving GFSPRS.GrbF00 .........OK
+ Moving GFSPRS.GrbF21 .........OK
+ Moving GFSPRS.GrbF24 .........OK
+ Moving RESTART/20210323.060000.coupler.res .........OK
+ Moving RESTART/20210323.060000.fv_core.res.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile6.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile6.nc .........OK
+
+  0: The total amount of wall time                        = 371.878050
+  0: The maximum resident set size (KB)                   = 985392
+
+Test 036 rap_control_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/regional_spp_sppt_shum_skeb_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/regional_spp_sppt_shum_skeb_intel
+Checking test 037 regional_spp_sppt_shum_skeb_intel results ....
+Moving baseline 037 regional_spp_sppt_shum_skeb_intel files ....
+ Moving dynf000.nc .........OK
+ Moving dynf001.nc .........OK
+ Moving phyf000.nc .........OK
+ Moving phyf001.nc .........OK
+ Moving PRSLEV.GrbF00 .........OK
+ Moving PRSLEV.GrbF01 .........OK
+ Moving NATLEV.GrbF00 .........OK
+ Moving NATLEV.GrbF01 .........OK
+
+  0: The total amount of wall time                        = 222.341726
+  0: The maximum resident set size (KB)                   = 1088716
+
+Test 037 regional_spp_sppt_shum_skeb_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/rap_sfcdiff_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/rap_sfcdiff_intel
+Checking test 038 rap_sfcdiff_intel results ....
+Moving baseline 038 rap_sfcdiff_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf009.nc .........OK
+ Moving sfcf012.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf009.nc .........OK
+ Moving atmf012.nc .........OK
+ Moving GFSFLX.GrbF00 .........OK
+ Moving GFSFLX.GrbF09 .........OK
+ Moving GFSFLX.GrbF12 .........OK
+ Moving GFSPRS.GrbF00 .........OK
+ Moving GFSPRS.GrbF09 .........OK
+ Moving GFSPRS.GrbF12 .........OK
+ Moving RESTART/20210323.060000.coupler.res .........OK
+ Moving RESTART/20210323.060000.fv_core.res.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile6.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile6.nc .........OK
+
+  0: The total amount of wall time                        = 370.911939
+  0: The maximum resident set size (KB)                   = 983348
+
+Test 038 rap_sfcdiff_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/hrrr_control_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/hrrr_control_intel
+Checking test 039 hrrr_control_intel results ....
+Moving baseline 039 hrrr_control_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf009.nc .........OK
+ Moving sfcf012.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf009.nc .........OK
+ Moving atmf012.nc .........OK
+ Moving GFSFLX.GrbF00 .........OK
+ Moving GFSFLX.GrbF09 .........OK
+ Moving GFSFLX.GrbF12 .........OK
+ Moving GFSPRS.GrbF00 .........OK
+ Moving GFSPRS.GrbF09 .........OK
+ Moving GFSPRS.GrbF12 .........OK
+ Moving RESTART/20210322.120000.coupler.res .........OK
+ Moving RESTART/20210322.120000.fv_core.res.nc .........OK
+ Moving RESTART/20210322.120000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20210322.120000.fv_core.res.tile2.nc .........OK
+ Moving RESTART/20210322.120000.fv_core.res.tile3.nc .........OK
+ Moving RESTART/20210322.120000.fv_core.res.tile4.nc .........OK
+ Moving RESTART/20210322.120000.fv_core.res.tile5.nc .........OK
+ Moving RESTART/20210322.120000.fv_core.res.tile6.nc .........OK
+ Moving RESTART/20210322.120000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20210322.120000.fv_srf_wnd.res.tile2.nc .........OK
+ Moving RESTART/20210322.120000.fv_srf_wnd.res.tile3.nc .........OK
+ Moving RESTART/20210322.120000.fv_srf_wnd.res.tile4.nc .........OK
+ Moving RESTART/20210322.120000.fv_srf_wnd.res.tile5.nc .........OK
+ Moving RESTART/20210322.120000.fv_srf_wnd.res.tile6.nc .........OK
+ Moving RESTART/20210322.120000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20210322.120000.fv_tracer.res.tile2.nc .........OK
+ Moving RESTART/20210322.120000.fv_tracer.res.tile3.nc .........OK
+ Moving RESTART/20210322.120000.fv_tracer.res.tile4.nc .........OK
+ Moving RESTART/20210322.120000.fv_tracer.res.tile5.nc .........OK
+ Moving RESTART/20210322.120000.fv_tracer.res.tile6.nc .........OK
+ Moving RESTART/20210322.120000.phy_data.tile1.nc .........OK
+ Moving RESTART/20210322.120000.phy_data.tile2.nc .........OK
+ Moving RESTART/20210322.120000.phy_data.tile3.nc .........OK
+ Moving RESTART/20210322.120000.phy_data.tile4.nc .........OK
+ Moving RESTART/20210322.120000.phy_data.tile5.nc .........OK
+ Moving RESTART/20210322.120000.phy_data.tile6.nc .........OK
+ Moving RESTART/20210322.120000.sfc_data.tile1.nc .........OK
+ Moving RESTART/20210322.120000.sfc_data.tile2.nc .........OK
+ Moving RESTART/20210322.120000.sfc_data.tile3.nc .........OK
+ Moving RESTART/20210322.120000.sfc_data.tile4.nc .........OK
+ Moving RESTART/20210322.120000.sfc_data.tile5.nc .........OK
+ Moving RESTART/20210322.120000.sfc_data.tile6.nc .........OK
+
+  0: The total amount of wall time                        = 193.282165
+  0: The maximum resident set size (KB)                   = 980964
+
+Test 039 hrrr_control_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/rrfs_v1beta_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/rrfs_v1beta_intel
+Checking test 040 rrfs_v1beta_intel results ....
+Moving baseline 040 rrfs_v1beta_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf009.nc .........OK
+ Moving sfcf012.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf009.nc .........OK
+ Moving atmf012.nc .........OK
+ Moving GFSFLX.GrbF00 .........OK
+ Moving GFSFLX.GrbF09 .........OK
+ Moving GFSFLX.GrbF12 .........OK
+ Moving GFSPRS.GrbF00 .........OK
+ Moving GFSPRS.GrbF09 .........OK
+ Moving GFSPRS.GrbF12 .........OK
+ Moving RESTART/20210323.060000.coupler.res .........OK
+ Moving RESTART/20210323.060000.fv_core.res.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile6.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile6.nc .........OK
+
+  0: The total amount of wall time                        = 372.640434
+  0: The maximum resident set size (KB)                   = 982848
+
+Test 040 rrfs_v1beta_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/rrfs_v1nssl_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/rrfs_v1nssl_intel
+Checking test 041 rrfs_v1nssl_intel results ....
+Moving baseline 041 rrfs_v1nssl_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf009.nc .........OK
+ Moving sfcf012.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf009.nc .........OK
+ Moving atmf012.nc .........OK
+ Moving GFSFLX.GrbF00 .........OK
+ Moving GFSFLX.GrbF09 .........OK
+ Moving GFSFLX.GrbF12 .........OK
+ Moving GFSPRS.GrbF00 .........OK
+ Moving GFSPRS.GrbF09 .........OK
+ Moving GFSPRS.GrbF12 .........OK
+
+  0: The total amount of wall time                        = 441.830233
+  0: The maximum resident set size (KB)                   = 1946748
+
+Test 041 rrfs_v1nssl_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/rrfs_v1nssl_nohailnoccn_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/rrfs_v1nssl_nohailnoccn_intel
+Checking test 042 rrfs_v1nssl_nohailnoccn_intel results ....
+Moving baseline 042 rrfs_v1nssl_nohailnoccn_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf009.nc .........OK
+ Moving sfcf012.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf009.nc .........OK
+ Moving atmf012.nc .........OK
+ Moving GFSFLX.GrbF00 .........OK
+ Moving GFSFLX.GrbF09 .........OK
+ Moving GFSFLX.GrbF12 .........OK
+ Moving GFSPRS.GrbF00 .........OK
+ Moving GFSPRS.GrbF09 .........OK
+ Moving GFSPRS.GrbF12 .........OK
+
+  0: The total amount of wall time                        = 436.416275
+  0: The maximum resident set size (KB)                   = 1932372
+
+Test 042 rrfs_v1nssl_nohailnoccn_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/control_csawmg_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/control_csawmg_intel
+Checking test 043 control_csawmg_intel results ....
+Moving baseline 043 control_csawmg_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf024.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf024.nc .........OK
+ Moving GFSFLX.GrbF00 .........OK
+ Moving GFSFLX.GrbF24 .........OK
+ Moving GFSPRS.GrbF00 .........OK
+ Moving GFSPRS.GrbF24 .........OK
+
+  0: The total amount of wall time                        = 318.870381
+  0: The maximum resident set size (KB)                   = 670184
+
+Test 043 control_csawmg_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/control_csawmgt_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/control_csawmgt_intel
+Checking test 044 control_csawmgt_intel results ....
+Moving baseline 044 control_csawmgt_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf024.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf024.nc .........OK
+ Moving GFSFLX.GrbF00 .........OK
+ Moving GFSFLX.GrbF24 .........OK
+ Moving GFSPRS.GrbF00 .........OK
+ Moving GFSPRS.GrbF24 .........OK
+
+  0: The total amount of wall time                        = 316.508576
+  0: The maximum resident set size (KB)                   = 675832
+
+Test 044 control_csawmgt_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/control_ras_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/control_ras_intel
+Checking test 045 control_ras_intel results ....
+Moving baseline 045 control_ras_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf024.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf024.nc .........OK
+ Moving GFSFLX.GrbF00 .........OK
+ Moving GFSFLX.GrbF24 .........OK
+ Moving GFSPRS.GrbF00 .........OK
+ Moving GFSPRS.GrbF24 .........OK
+
+  0: The total amount of wall time                        = 174.588049
+  0: The maximum resident set size (KB)                   = 633248
+
+Test 045 control_ras_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/control_wam_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/control_wam_intel
+Checking test 046 control_wam_intel results ....
+Moving baseline 046 control_wam_intel files ....
+ Moving sfcf024.nc .........OK
+ Moving atmf024.nc .........OK
+
+  0: The total amount of wall time                        = 114.657899
+  0: The maximum resident set size (KB)                   = 422232
+
+Test 046 control_wam_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/control_p8_faster_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/control_p8_faster_intel
+Checking test 047 control_p8_faster_intel results ....
+Moving baseline 047 control_p8_faster_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf021.nc .........OK
+ Moving sfcf024.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf021.nc .........OK
+ Moving atmf024.nc .........OK
+ Moving GFSFLX.GrbF00 .........OK
+ Moving GFSFLX.GrbF21 .........OK
+ Moving GFSFLX.GrbF24 .........OK
+ Moving GFSPRS.GrbF00 .........OK
+ Moving GFSPRS.GrbF21 .........OK
+ Moving GFSPRS.GrbF24 .........OK
+ Moving RESTART/20210323.060000.coupler.res .........OK
+ Moving RESTART/20210323.060000.fv_core.res.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile6.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile6.nc .........OK
+
+  0: The total amount of wall time                        = 146.672810
+  0: The maximum resident set size (KB)                   = 1579664
+
+Test 047 control_p8_faster_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/regional_control_faster_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/regional_control_faster_intel
+Checking test 048 regional_control_faster_intel results ....
+Moving baseline 048 regional_control_faster_intel files ....
+ Moving dynf000.nc .........OK
+ Moving dynf006.nc .........OK
+ Moving phyf000.nc .........OK
+ Moving phyf006.nc .........OK
+ Moving PRSLEV.GrbF00 .........OK
+ Moving PRSLEV.GrbF06 .........OK
+ Moving NATLEV.GrbF00 .........OK
+ Moving NATLEV.GrbF06 .........OK
+
+  0: The total amount of wall time                        = 248.663713
+  0: The maximum resident set size (KB)                   = 860408
+
+Test 048 regional_control_faster_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/control_CubedSphereGrid_debug_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/control_CubedSphereGrid_debug_intel
+Checking test 049 control_CubedSphereGrid_debug_intel results ....
+Moving baseline 049 control_CubedSphereGrid_debug_intel files ....
+ Moving sfcf000.tile1.nc .........OK
+ Moving sfcf000.tile2.nc .........OK
+ Moving sfcf000.tile3.nc .........OK
+ Moving sfcf000.tile4.nc .........OK
+ Moving sfcf000.tile5.nc .........OK
+ Moving sfcf000.tile6.nc .........OK
+ Moving sfcf001.tile1.nc .........OK
+ Moving sfcf001.tile2.nc .........OK
+ Moving sfcf001.tile3.nc .........OK
+ Moving sfcf001.tile4.nc .........OK
+ Moving sfcf001.tile5.nc .........OK
+ Moving sfcf001.tile6.nc .........OK
+ Moving atmf000.tile1.nc .........OK
+ Moving atmf000.tile2.nc .........OK
+ Moving atmf000.tile3.nc .........OK
+ Moving atmf000.tile4.nc .........OK
+ Moving atmf000.tile5.nc .........OK
+ Moving atmf000.tile6.nc .........OK
+ Moving atmf001.tile1.nc .........OK
+ Moving atmf001.tile2.nc .........OK
+ Moving atmf001.tile3.nc .........OK
+ Moving atmf001.tile4.nc .........OK
+ Moving atmf001.tile5.nc .........OK
+ Moving atmf001.tile6.nc .........OK
+
+  0: The total amount of wall time                        = 147.414170
+  0: The maximum resident set size (KB)                   = 755572
+
+Test 049 control_CubedSphereGrid_debug_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/control_wrtGauss_netcdf_parallel_debug_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/control_wrtGauss_netcdf_parallel_debug_intel
+Checking test 050 control_wrtGauss_netcdf_parallel_debug_intel results ....
+Moving baseline 050 control_wrtGauss_netcdf_parallel_debug_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf001.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf001.nc .........OK
+
+  0: The total amount of wall time                        = 151.690428
+  0: The maximum resident set size (KB)                   = 753996
+
+Test 050 control_wrtGauss_netcdf_parallel_debug_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/control_stochy_debug_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/control_stochy_debug_intel
+Checking test 051 control_stochy_debug_intel results ....
+Moving baseline 051 control_stochy_debug_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf001.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf001.nc .........OK
+
+  0: The total amount of wall time                        = 163.081869
+  0: The maximum resident set size (KB)                   = 758500
+
+Test 051 control_stochy_debug_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/control_lndp_debug_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/control_lndp_debug_intel
+Checking test 052 control_lndp_debug_intel results ....
+Moving baseline 052 control_lndp_debug_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf001.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf001.nc .........OK
+
+  0: The total amount of wall time                        = 148.051702
+  0: The maximum resident set size (KB)                   = 762888
+
+Test 052 control_lndp_debug_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/control_csawmg_debug_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/control_csawmg_debug_intel
+Checking test 053 control_csawmg_debug_intel results ....
+Moving baseline 053 control_csawmg_debug_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf001.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf001.nc .........OK
+
+  0: The total amount of wall time                        = 231.041517
+  0: The maximum resident set size (KB)                   = 779488
+
+Test 053 control_csawmg_debug_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/control_csawmgt_debug_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/control_csawmgt_debug_intel
+Checking test 054 control_csawmgt_debug_intel results ....
+Moving baseline 054 control_csawmgt_debug_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf001.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf001.nc .........OK
+
+  0: The total amount of wall time                        = 229.065619
+  0: The maximum resident set size (KB)                   = 797244
+
+Test 054 control_csawmgt_debug_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/control_ras_debug_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/control_ras_debug_intel
+Checking test 055 control_ras_debug_intel results ....
+Moving baseline 055 control_ras_debug_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf001.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf001.nc .........OK
+
+  0: The total amount of wall time                        = 149.895120
+  0: The maximum resident set size (KB)                   = 771016
+
+Test 055 control_ras_debug_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/control_diag_debug_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/control_diag_debug_intel
+Checking test 056 control_diag_debug_intel results ....
+Moving baseline 056 control_diag_debug_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf001.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf001.nc .........OK
+
+  0: The total amount of wall time                        = 150.834168
+  0: The maximum resident set size (KB)                   = 815812
+
+Test 056 control_diag_debug_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/control_debug_p8_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/control_debug_p8_intel
+Checking test 057 control_debug_p8_intel results ....
+Moving baseline 057 control_debug_p8_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf001.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf001.nc .........OK
+
+  0: The total amount of wall time                        = 151.358733
+  0: The maximum resident set size (KB)                   = 1570416
+
+Test 057 control_debug_p8_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/regional_debug_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/regional_debug_intel
+Checking test 058 regional_debug_intel results ....
+Moving baseline 058 regional_debug_intel files ....
+ Moving dynf000.nc .........OK
+ Moving dynf001.nc .........OK
+ Moving phyf000.nc .........OK
+ Moving phyf001.nc .........OK
+
+  0: The total amount of wall time                        = 943.785323
+  0: The maximum resident set size (KB)                   = 881860
+
+Test 058 regional_debug_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/rap_control_debug_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/rap_control_debug_intel
+Checking test 059 rap_control_debug_intel results ....
+Moving baseline 059 rap_control_debug_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf001.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf001.nc .........OK
+
+  0: The total amount of wall time                        = 275.776938
+  0: The maximum resident set size (KB)                   = 1128696
+
+Test 059 rap_control_debug_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/hrrr_control_debug_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/hrrr_control_debug_intel
+Checking test 060 hrrr_control_debug_intel results ....
+Moving baseline 060 hrrr_control_debug_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf001.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf001.nc .........OK
+
+  0: The total amount of wall time                        = 271.672844
+  0: The maximum resident set size (KB)                   = 1126632
+
+Test 060 hrrr_control_debug_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/hrrr_gf_debug_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/hrrr_gf_debug_intel
+Checking test 061 hrrr_gf_debug_intel results ....
+Moving baseline 061 hrrr_gf_debug_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf001.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf001.nc .........OK
+
+  0: The total amount of wall time                        = 279.733330
+  0: The maximum resident set size (KB)                   = 1120844
+
+Test 061 hrrr_gf_debug_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/hrrr_c3_debug_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/hrrr_c3_debug_intel
+Checking test 062 hrrr_c3_debug_intel results ....
+Moving baseline 062 hrrr_c3_debug_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf001.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf001.nc .........OK
+
+  0: The total amount of wall time                        = 279.641216
+  0: The maximum resident set size (KB)                   = 1134992
+
+Test 062 hrrr_c3_debug_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/rap_diag_debug_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/rap_diag_debug_intel
+Checking test 063 rap_diag_debug_intel results ....
+Moving baseline 063 rap_diag_debug_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf001.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf001.nc .........OK
+
+  0: The total amount of wall time                        = 290.902090
+  0: The maximum resident set size (KB)                   = 1218400
+
+Test 063 rap_diag_debug_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/rap_cires_ugwp_debug_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/rap_cires_ugwp_debug_intel
+Checking test 064 rap_cires_ugwp_debug_intel results ....
+Moving baseline 064 rap_cires_ugwp_debug_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf001.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf001.nc .........OK
+
+  0: The total amount of wall time                        = 280.992966
+  0: The maximum resident set size (KB)                   = 1132100
+
+Test 064 rap_cires_ugwp_debug_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/rap_lndp_debug_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/rap_lndp_debug_intel
+Checking test 065 rap_lndp_debug_intel results ....
+Moving baseline 065 rap_lndp_debug_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf001.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf001.nc .........OK
+
+  0: The total amount of wall time                        = 276.424055
+  0: The maximum resident set size (KB)                   = 1118840
+
+Test 065 rap_lndp_debug_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/rap_progcld_thompson_debug_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/rap_progcld_thompson_debug_intel
+Checking test 066 rap_progcld_thompson_debug_intel results ....
+Moving baseline 066 rap_progcld_thompson_debug_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf001.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf001.nc .........OK
+
+  0: The total amount of wall time                        = 276.825644
+  0: The maximum resident set size (KB)                   = 1130660
+
+Test 066 rap_progcld_thompson_debug_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/rap_noah_debug_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/rap_noah_debug_intel
+Checking test 067 rap_noah_debug_intel results ....
+Moving baseline 067 rap_noah_debug_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf001.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf001.nc .........OK
+
+  0: The total amount of wall time                        = 268.328950
+  0: The maximum resident set size (KB)                   = 1128440
+
+Test 067 rap_noah_debug_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/rap_sfcdiff_debug_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/rap_sfcdiff_debug_intel
+Checking test 068 rap_sfcdiff_debug_intel results ....
+Moving baseline 068 rap_sfcdiff_debug_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf001.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf001.nc .........OK
+
+  0: The total amount of wall time                        = 270.935257
+  0: The maximum resident set size (KB)                   = 1132428
+
+Test 068 rap_sfcdiff_debug_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/rap_noah_sfcdiff_cires_ugwp_debug_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/rap_noah_sfcdiff_cires_ugwp_debug_intel
+Checking test 069 rap_noah_sfcdiff_cires_ugwp_debug_intel results ....
+Moving baseline 069 rap_noah_sfcdiff_cires_ugwp_debug_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf001.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf001.nc .........OK
+
+  0: The total amount of wall time                        = 447.053241
+  0: The maximum resident set size (KB)                   = 1133164
+
+Test 069 rap_noah_sfcdiff_cires_ugwp_debug_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/rrfs_v1beta_debug_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/rrfs_v1beta_debug_intel
+Checking test 070 rrfs_v1beta_debug_intel results ....
+Moving baseline 070 rrfs_v1beta_debug_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf001.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf001.nc .........OK
+
+  0: The total amount of wall time                        = 269.772884
+  0: The maximum resident set size (KB)                   = 1127868
+
+Test 070 rrfs_v1beta_debug_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/rap_clm_lake_debug_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/rap_clm_lake_debug_intel
+Checking test 071 rap_clm_lake_debug_intel results ....
+Moving baseline 071 rap_clm_lake_debug_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf001.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf001.nc .........OK
+
+  0: The total amount of wall time                        = 327.670065
+  0: The maximum resident set size (KB)                   = 1133212
+
+Test 071 rap_clm_lake_debug_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/rap_flake_debug_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/rap_flake_debug_intel
+Checking test 072 rap_flake_debug_intel results ....
+Moving baseline 072 rap_flake_debug_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf001.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf001.nc .........OK
+
+  0: The total amount of wall time                        = 271.696727
+  0: The maximum resident set size (KB)                   = 1132148
+
+Test 072 rap_flake_debug_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/control_wam_debug_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/control_wam_debug_intel
+Checking test 073 control_wam_debug_intel results ....
+Moving baseline 073 control_wam_debug_intel files ....
+ Moving sfcf019.nc .........OK
+ Moving atmf019.nc .........OK
+
+  0: The total amount of wall time                        = 283.694343
+  0: The maximum resident set size (KB)                   = 440108
+
+Test 073 control_wam_debug_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/regional_spp_sppt_shum_skeb_dyn32_phy32_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/regional_spp_sppt_shum_skeb_dyn32_phy32_intel
+Checking test 074 regional_spp_sppt_shum_skeb_dyn32_phy32_intel results ....
+Moving baseline 074 regional_spp_sppt_shum_skeb_dyn32_phy32_intel files ....
+ Moving dynf000.nc .........OK
+ Moving dynf001.nc .........OK
+ Moving phyf000.nc .........OK
+ Moving phyf001.nc .........OK
+ Moving PRSLEV.GrbF00 .........OK
+ Moving PRSLEV.GrbF01 .........OK
+ Moving NATLEV.GrbF00 .........OK
+ Moving NATLEV.GrbF01 .........OK
+
+  0: The total amount of wall time                        = 210.963429
+  0: The maximum resident set size (KB)                   = 984956
+
+Test 074 regional_spp_sppt_shum_skeb_dyn32_phy32_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/rap_control_dyn32_phy32_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/rap_control_dyn32_phy32_intel
+Checking test 075 rap_control_dyn32_phy32_intel results ....
+Moving baseline 075 rap_control_dyn32_phy32_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf009.nc .........OK
+ Moving sfcf012.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf009.nc .........OK
+ Moving atmf012.nc .........OK
+ Moving GFSFLX.GrbF00 .........OK
+ Moving GFSFLX.GrbF09 .........OK
+ Moving GFSFLX.GrbF12 .........OK
+ Moving GFSPRS.GrbF00 .........OK
+ Moving GFSPRS.GrbF09 .........OK
+ Moving GFSPRS.GrbF12 .........OK
+ Moving RESTART/20210323.060000.coupler.res .........OK
+ Moving RESTART/20210323.060000.fv_core.res.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile6.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile6.nc .........OK
+
+  0: The total amount of wall time                        = 308.059016
+  0: The maximum resident set size (KB)                   = 867160
+
+Test 075 rap_control_dyn32_phy32_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/hrrr_control_dyn32_phy32_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/hrrr_control_dyn32_phy32_intel
+Checking test 076 hrrr_control_dyn32_phy32_intel results ....
+Moving baseline 076 hrrr_control_dyn32_phy32_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf009.nc .........OK
+ Moving sfcf012.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf009.nc .........OK
+ Moving atmf012.nc .........OK
+ Moving GFSFLX.GrbF00 .........OK
+ Moving GFSFLX.GrbF09 .........OK
+ Moving GFSFLX.GrbF12 .........OK
+ Moving GFSPRS.GrbF00 .........OK
+ Moving GFSPRS.GrbF09 .........OK
+ Moving GFSPRS.GrbF12 .........OK
+ Moving RESTART/20210322.120000.coupler.res .........OK
+ Moving RESTART/20210322.120000.fv_core.res.nc .........OK
+ Moving RESTART/20210322.120000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20210322.120000.fv_core.res.tile2.nc .........OK
+ Moving RESTART/20210322.120000.fv_core.res.tile3.nc .........OK
+ Moving RESTART/20210322.120000.fv_core.res.tile4.nc .........OK
+ Moving RESTART/20210322.120000.fv_core.res.tile5.nc .........OK
+ Moving RESTART/20210322.120000.fv_core.res.tile6.nc .........OK
+ Moving RESTART/20210322.120000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20210322.120000.fv_srf_wnd.res.tile2.nc .........OK
+ Moving RESTART/20210322.120000.fv_srf_wnd.res.tile3.nc .........OK
+ Moving RESTART/20210322.120000.fv_srf_wnd.res.tile4.nc .........OK
+ Moving RESTART/20210322.120000.fv_srf_wnd.res.tile5.nc .........OK
+ Moving RESTART/20210322.120000.fv_srf_wnd.res.tile6.nc .........OK
+ Moving RESTART/20210322.120000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20210322.120000.fv_tracer.res.tile2.nc .........OK
+ Moving RESTART/20210322.120000.fv_tracer.res.tile3.nc .........OK
+ Moving RESTART/20210322.120000.fv_tracer.res.tile4.nc .........OK
+ Moving RESTART/20210322.120000.fv_tracer.res.tile5.nc .........OK
+ Moving RESTART/20210322.120000.fv_tracer.res.tile6.nc .........OK
+ Moving RESTART/20210322.120000.phy_data.tile1.nc .........OK
+ Moving RESTART/20210322.120000.phy_data.tile2.nc .........OK
+ Moving RESTART/20210322.120000.phy_data.tile3.nc .........OK
+ Moving RESTART/20210322.120000.phy_data.tile4.nc .........OK
+ Moving RESTART/20210322.120000.phy_data.tile5.nc .........OK
+ Moving RESTART/20210322.120000.phy_data.tile6.nc .........OK
+ Moving RESTART/20210322.120000.sfc_data.tile1.nc .........OK
+ Moving RESTART/20210322.120000.sfc_data.tile2.nc .........OK
+ Moving RESTART/20210322.120000.sfc_data.tile3.nc .........OK
+ Moving RESTART/20210322.120000.sfc_data.tile4.nc .........OK
+ Moving RESTART/20210322.120000.sfc_data.tile5.nc .........OK
+ Moving RESTART/20210322.120000.sfc_data.tile6.nc .........OK
+
+  0: The total amount of wall time                        = 165.660354
+  0: The maximum resident set size (KB)                   = 866020
+
+Test 076 hrrr_control_dyn32_phy32_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/conus13km_control_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/conus13km_control_intel
+Checking test 077 conus13km_control_intel results ....
+Moving baseline 077 conus13km_control_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf001.nc .........OK
+ Moving sfcf002.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf001.nc .........OK
+ Moving atmf002.nc .........OK
+ Moving RESTART/20210512.170000.coupler.res .........OK
+ Moving RESTART/20210512.170000.fv_core.res.nc .........OK
+ Moving RESTART/20210512.170000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20210512.170000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20210512.170000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20210512.170000.phy_data.nc .........OK
+ Moving RESTART/20210512.170000.sfc_data.nc .........OK
+
+  0: The total amount of wall time                        = 106.130806
+  0: The maximum resident set size (KB)                   = 1140700
+
+Test 077 conus13km_control_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/conus13km_restart_mismatch_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/conus13km_restart_mismatch_intel
+Checking test 078 conus13km_restart_mismatch_intel results ....
+Moving baseline 078 conus13km_restart_mismatch_intel files ....
+ Moving sfcf002.nc .........OK
+ Moving atmf002.nc .........OK
+
+  0: The total amount of wall time                        = 63.791744
+  0: The maximum resident set size (KB)                   = 1037896
+
+Test 078 conus13km_restart_mismatch_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/rap_control_dyn64_phy32_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/rap_control_dyn64_phy32_intel
+Checking test 079 rap_control_dyn64_phy32_intel results ....
+Moving baseline 079 rap_control_dyn64_phy32_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf009.nc .........OK
+ Moving sfcf012.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf009.nc .........OK
+ Moving atmf012.nc .........OK
+ Moving GFSFLX.GrbF00 .........OK
+ Moving GFSFLX.GrbF09 .........OK
+ Moving GFSFLX.GrbF12 .........OK
+ Moving GFSPRS.GrbF00 .........OK
+ Moving GFSPRS.GrbF09 .........OK
+ Moving GFSPRS.GrbF12 .........OK
+ Moving RESTART/20210322.180000.coupler.res .........OK
+ Moving RESTART/20210322.180000.fv_core.res.nc .........OK
+ Moving RESTART/20210322.180000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20210322.180000.fv_core.res.tile2.nc .........OK
+ Moving RESTART/20210322.180000.fv_core.res.tile3.nc .........OK
+ Moving RESTART/20210322.180000.fv_core.res.tile4.nc .........OK
+ Moving RESTART/20210322.180000.fv_core.res.tile5.nc .........OK
+ Moving RESTART/20210322.180000.fv_core.res.tile6.nc .........OK
+ Moving RESTART/20210322.180000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20210322.180000.fv_srf_wnd.res.tile2.nc .........OK
+ Moving RESTART/20210322.180000.fv_srf_wnd.res.tile3.nc .........OK
+ Moving RESTART/20210322.180000.fv_srf_wnd.res.tile4.nc .........OK
+ Moving RESTART/20210322.180000.fv_srf_wnd.res.tile5.nc .........OK
+ Moving RESTART/20210322.180000.fv_srf_wnd.res.tile6.nc .........OK
+ Moving RESTART/20210322.180000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20210322.180000.fv_tracer.res.tile2.nc .........OK
+ Moving RESTART/20210322.180000.fv_tracer.res.tile3.nc .........OK
+ Moving RESTART/20210322.180000.fv_tracer.res.tile4.nc .........OK
+ Moving RESTART/20210322.180000.fv_tracer.res.tile5.nc .........OK
+ Moving RESTART/20210322.180000.fv_tracer.res.tile6.nc .........OK
+ Moving RESTART/20210322.180000.phy_data.tile1.nc .........OK
+ Moving RESTART/20210322.180000.phy_data.tile2.nc .........OK
+ Moving RESTART/20210322.180000.phy_data.tile3.nc .........OK
+ Moving RESTART/20210322.180000.phy_data.tile4.nc .........OK
+ Moving RESTART/20210322.180000.phy_data.tile5.nc .........OK
+ Moving RESTART/20210322.180000.phy_data.tile6.nc .........OK
+ Moving RESTART/20210322.180000.sfc_data.tile1.nc .........OK
+ Moving RESTART/20210322.180000.sfc_data.tile2.nc .........OK
+ Moving RESTART/20210322.180000.sfc_data.tile3.nc .........OK
+ Moving RESTART/20210322.180000.sfc_data.tile4.nc .........OK
+ Moving RESTART/20210322.180000.sfc_data.tile5.nc .........OK
+ Moving RESTART/20210322.180000.sfc_data.tile6.nc .........OK
+
+  0: The total amount of wall time                        = 215.347471
+  0: The maximum resident set size (KB)                   = 895744
+
+Test 079 rap_control_dyn64_phy32_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/rap_control_debug_dyn32_phy32_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/rap_control_debug_dyn32_phy32_intel
+Checking test 080 rap_control_debug_dyn32_phy32_intel results ....
+Moving baseline 080 rap_control_debug_dyn32_phy32_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf001.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf001.nc .........OK
+
+  0: The total amount of wall time                        = 262.598944
+  0: The maximum resident set size (KB)                   = 1016068
+
+Test 080 rap_control_debug_dyn32_phy32_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/hrrr_control_debug_dyn32_phy32_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/hrrr_control_debug_dyn32_phy32_intel
+Checking test 081 hrrr_control_debug_dyn32_phy32_intel results ....
+Moving baseline 081 hrrr_control_debug_dyn32_phy32_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf001.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf001.nc .........OK
+
+  0: The total amount of wall time                        = 273.871873
+  0: The maximum resident set size (KB)                   = 1011524
+
+Test 081 hrrr_control_debug_dyn32_phy32_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/conus13km_debug_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/conus13km_debug_intel
+Checking test 082 conus13km_debug_intel results ....
+Moving baseline 082 conus13km_debug_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf001.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf001.nc .........OK
+ Moving RESTART/20210512.170000.coupler.res .........OK
+ Moving RESTART/20210512.170000.fv_core.res.nc .........OK
+ Moving RESTART/20210512.170000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20210512.170000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20210512.170000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20210512.170000.phy_data.nc .........OK
+ Moving RESTART/20210512.170000.sfc_data.nc .........OK
+
+  0: The total amount of wall time                        = 799.053443
+  0: The maximum resident set size (KB)                   = 1163952
+
+Test 082 conus13km_debug_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/conus13km_radar_tten_debug_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/conus13km_radar_tten_debug_intel
+Checking test 083 conus13km_radar_tten_debug_intel results ....
+Moving baseline 083 conus13km_radar_tten_debug_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf001.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf001.nc .........OK
+
+  0: The total amount of wall time                        = 816.283533
+  0: The maximum resident set size (KB)                   = 1235844
+
+Test 083 conus13km_radar_tten_debug_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/rap_control_debug_dyn64_phy32_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/rap_control_dyn64_phy32_debug_intel
+Checking test 084 rap_control_dyn64_phy32_debug_intel results ....
+Moving baseline 084 rap_control_dyn64_phy32_debug_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf001.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf001.nc .........OK
+
+  0: The total amount of wall time                        = 271.296556
+  0: The maximum resident set size (KB)                   = 1039748
+
+Test 084 rap_control_dyn64_phy32_debug_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/hafs_regional_atm_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/hafs_regional_atm_intel
+Checking test 085 hafs_regional_atm_intel results ....
+Moving baseline 085 hafs_regional_atm_intel files ....
+ Moving atmf006.nc .........OK
+ Moving sfcf006.nc .........OK
+ Moving HURPRS.GrbF06 .........OK
+
+  0: The total amount of wall time                        = 237.406329
+  0: The maximum resident set size (KB)                   = 1061364
+
+Test 085 hafs_regional_atm_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/hafs_regional_atm_thompson_gfdlsf_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/hafs_regional_atm_thompson_gfdlsf_intel
+Checking test 086 hafs_regional_atm_thompson_gfdlsf_intel results ....
+Moving baseline 086 hafs_regional_atm_thompson_gfdlsf_intel files ....
+ Moving atmf006.nc .........OK
+ Moving sfcf006.nc .........OK
+
+  0: The total amount of wall time                        = 300.711296
+  0: The maximum resident set size (KB)                   = 1398208
+
+Test 086 hafs_regional_atm_thompson_gfdlsf_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/hafs_regional_atm_ocn_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/hafs_regional_atm_ocn_intel
+Checking test 087 hafs_regional_atm_ocn_intel results ....
+Moving baseline 087 hafs_regional_atm_ocn_intel files ....
+ Moving atmf006.nc .........OK
+ Moving sfcf006.nc .........OK
+ Moving archv.2019_241_06.a .........OK
+ Moving archs.2019_241_06.a .........OK
+ Moving ufs.hafs.cpl.hi.2019-08-29-21600.nc .........OK
+ Moving ufs.hafs.cpl.r.2019-08-29-21600.nc .........OK
+
+  0: The total amount of wall time                        = 417.950762
+  0: The maximum resident set size (KB)                   = 1102596
+
+Test 087 hafs_regional_atm_ocn_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/hafs_regional_atm_wav_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/hafs_regional_atm_wav_intel
+Checking test 088 hafs_regional_atm_wav_intel results ....
+Moving baseline 088 hafs_regional_atm_wav_intel files ....
+ Moving atmf006.nc .........OK
+ Moving sfcf006.nc .........OK
+ Moving 20190829.060000.out_grd.ww3 .........OK
+ Moving 20190829.060000.out_pnt.ww3 .........OK
+ Moving ufs.hafs.ww3.r.2019-08-29-21600 .........OK
+ Moving ufs.hafs.cpl.r.2019-08-29-21600.nc .........OK
+
+  0: The total amount of wall time                        = 667.647878
+  0: The maximum resident set size (KB)                   = 1125364
+
+Test 088 hafs_regional_atm_wav_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/hafs_regional_atm_ocn_wav_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/hafs_regional_atm_ocn_wav_intel
+Checking test 089 hafs_regional_atm_ocn_wav_intel results ....
+Moving baseline 089 hafs_regional_atm_ocn_wav_intel files ....
+ Moving atmf006.nc .........OK
+ Moving sfcf006.nc .........OK
+ Moving archv.2019_241_06.a .........OK
+ Moving archs.2019_241_06.a .........OK
+ Moving 20190829.060000.out_grd.ww3 .........OK
+ Moving 20190829.060000.out_pnt.ww3 .........OK
+ Moving ufs.hafs.ww3.r.2019-08-29-21600 .........OK
+ Moving ufs.hafs.cpl.r.2019-08-29-21600.nc .........OK
+
+  0: The total amount of wall time                        = 753.431383
+  0: The maximum resident set size (KB)                   = 1158464
+
+Test 089 hafs_regional_atm_ocn_wav_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/hafs_regional_1nest_atm_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/hafs_regional_1nest_atm_intel
+Checking test 090 hafs_regional_1nest_atm_intel results ....
+Moving baseline 090 hafs_regional_1nest_atm_intel files ....
+ Moving atmf006.nc .........OK
+ Moving sfcf006.nc .........OK
+ Moving atm.nest02.f006.nc .........OK
+ Moving sfc.nest02.f006.nc .........OK
+ Moving RESTART/20200825.180000.coupler.res .........OK
+ Moving RESTART/20200825.180000.fv_core.res.nc .........OK
+ Moving RESTART/20200825.180000.fv_core.res.nest02.nc .........OK
+ Moving RESTART/20200825.180000.fv_core.res.nest02.tile2.nc .........OK
+ Moving RESTART/20200825.180000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20200825.180000.fv_srf_wnd.res.nest02.tile2.nc .........OK
+ Moving RESTART/20200825.180000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20200825.180000.fv_tracer.res.nest02.tile2.nc .........OK
+ Moving RESTART/20200825.180000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20200825.180000.phy_data.nc .........OK
+ Moving RESTART/20200825.180000.phy_data.nest02.tile2.nc .........OK
+ Moving RESTART/20200825.180000.sfc_data.nc .........OK
+ Moving RESTART/20200825.180000.sfc_data.nest02.tile2.nc .........OK
+ Moving RESTART/fv_BC_ne.res.nest02.nc .........OK
+ Moving RESTART/fv_BC_sw.res.nest02.nc .........OK
+
+  0: The total amount of wall time                        = 294.388594
+  0: The maximum resident set size (KB)                   = 613540
+
+Test 090 hafs_regional_1nest_atm_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/hafs_regional_telescopic_2nests_atm_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/hafs_regional_telescopic_2nests_atm_intel
+Checking test 091 hafs_regional_telescopic_2nests_atm_intel results ....
+Moving baseline 091 hafs_regional_telescopic_2nests_atm_intel files ....
+ Moving atmf006.nc .........OK
+ Moving sfcf006.nc .........OK
+ Moving atm.nest02.f006.nc .........OK
+ Moving sfc.nest02.f006.nc .........OK
+ Moving atm.nest03.f006.nc .........OK
+ Moving sfc.nest03.f006.nc .........OK
+
+  0: The total amount of wall time                        = 356.947558
+  0: The maximum resident set size (KB)                   = 622000
+
+Test 091 hafs_regional_telescopic_2nests_atm_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/hafs_global_1nest_atm_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/hafs_global_1nest_atm_intel
+Checking test 092 hafs_global_1nest_atm_intel results ....
+Moving baseline 092 hafs_global_1nest_atm_intel files ....
+ Moving atmf006.nc .........OK
+ Moving sfcf006.nc .........OK
+ Moving atm.nest02.f006.nc .........OK
+ Moving sfc.nest02.f006.nc .........OK
+ Moving RESTART/20200825.180000.coupler.res .........OK
+ Moving RESTART/20200825.180000.fv_core.res.nc .........OK
+ Moving RESTART/20200825.180000.fv_core.res.nest02.nc .........OK
+ Moving RESTART/20200825.180000.fv_core.res.nest02.tile7.nc .........OK
+ Moving RESTART/20200825.180000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20200825.180000.fv_core.res.tile2.nc .........OK
+ Moving RESTART/20200825.180000.fv_core.res.tile3.nc .........OK
+ Moving RESTART/20200825.180000.fv_core.res.tile4.nc .........OK
+ Moving RESTART/20200825.180000.fv_core.res.tile5.nc .........OK
+ Moving RESTART/20200825.180000.fv_core.res.tile6.nc .........OK
+ Moving RESTART/20200825.180000.fv_srf_wnd.res.nest02.tile7.nc .........OK
+ Moving RESTART/20200825.180000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20200825.180000.fv_srf_wnd.res.tile2.nc .........OK
+ Moving RESTART/20200825.180000.fv_srf_wnd.res.tile3.nc .........OK
+ Moving RESTART/20200825.180000.fv_srf_wnd.res.tile4.nc .........OK
+ Moving RESTART/20200825.180000.fv_srf_wnd.res.tile5.nc .........OK
+ Moving RESTART/20200825.180000.fv_srf_wnd.res.tile6.nc .........OK
+ Moving RESTART/20200825.180000.fv_tracer.res.nest02.tile7.nc .........OK
+ Moving RESTART/20200825.180000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20200825.180000.fv_tracer.res.tile2.nc .........OK
+ Moving RESTART/20200825.180000.fv_tracer.res.tile3.nc .........OK
+ Moving RESTART/20200825.180000.fv_tracer.res.tile4.nc .........OK
+ Moving RESTART/20200825.180000.fv_tracer.res.tile5.nc .........OK
+ Moving RESTART/20200825.180000.fv_tracer.res.tile6.nc .........OK
+ Moving RESTART/20200825.180000.phy_data.nest02.tile7.nc .........OK
+ Moving RESTART/20200825.180000.phy_data.tile1.nc .........OK
+ Moving RESTART/20200825.180000.phy_data.tile2.nc .........OK
+ Moving RESTART/20200825.180000.phy_data.tile3.nc .........OK
+ Moving RESTART/20200825.180000.phy_data.tile4.nc .........OK
+ Moving RESTART/20200825.180000.phy_data.tile5.nc .........OK
+ Moving RESTART/20200825.180000.phy_data.tile6.nc .........OK
+ Moving RESTART/20200825.180000.sfc_data.nest02.tile7.nc .........OK
+ Moving RESTART/20200825.180000.sfc_data.tile1.nc .........OK
+ Moving RESTART/20200825.180000.sfc_data.tile2.nc .........OK
+ Moving RESTART/20200825.180000.sfc_data.tile3.nc .........OK
+ Moving RESTART/20200825.180000.sfc_data.tile4.nc .........OK
+ Moving RESTART/20200825.180000.sfc_data.tile5.nc .........OK
+ Moving RESTART/20200825.180000.sfc_data.tile6.nc .........OK
+ Moving RESTART/fv_BC_ne.res.nest02.nc .........OK
+ Moving RESTART/fv_BC_sw.res.nest02.nc .........OK
+
+  0: The total amount of wall time                        = 154.093465
+  0: The maximum resident set size (KB)                   = 372604
+
+Test 092 hafs_global_1nest_atm_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/hafs_global_multiple_4nests_atm_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/hafs_global_multiple_4nests_atm_intel
+Checking test 093 hafs_global_multiple_4nests_atm_intel results ....
+Moving baseline 093 hafs_global_multiple_4nests_atm_intel files ....
+ Moving atmf006.nc .........OK
+ Moving sfcf006.nc .........OK
+ Moving atm.nest02.f006.nc .........OK
+ Moving sfc.nest02.f006.nc .........OK
+ Moving atm.nest03.f006.nc .........OK
+ Moving sfc.nest03.f006.nc .........OK
+ Moving atm.nest04.f006.nc .........OK
+ Moving sfc.nest04.f006.nc .........OK
+ Moving atm.nest05.f006.nc .........OK
+ Moving sfc.nest05.f006.nc .........OK
+ Moving HURPRS.GrbF06 .........OK
+ Moving HURPRS.GrbF06.nest02 .........OK
+ Moving HURPRS.GrbF06.nest03 .........OK
+ Moving HURPRS.GrbF06.nest04 .........OK
+ Moving HURPRS.GrbF06.nest05 .........OK
+ Moving RESTART/20200825.180000.coupler.res .........OK
+ Moving RESTART/20200825.180000.fv_core.res.nc .........OK
+ Moving RESTART/20200825.180000.fv_core.res.nest02.nc .........OK
+ Moving RESTART/20200825.180000.fv_core.res.nest02.tile7.nc .........OK
+ Moving RESTART/20200825.180000.fv_core.res.nest03.nc .........OK
+ Moving RESTART/20200825.180000.fv_core.res.nest03.tile8.nc .........OK
+ Moving RESTART/20200825.180000.fv_core.res.nest04.nc .........OK
+ Moving RESTART/20200825.180000.fv_core.res.nest04.tile9.nc .........OK
+ Moving RESTART/20200825.180000.fv_core.res.nest05.nc .........OK
+ Moving RESTART/20200825.180000.fv_core.res.nest05.tile10.nc .........OK
+ Moving RESTART/20200825.180000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20200825.180000.fv_core.res.tile2.nc .........OK
+ Moving RESTART/20200825.180000.fv_core.res.tile3.nc .........OK
+ Moving RESTART/20200825.180000.fv_core.res.tile4.nc .........OK
+ Moving RESTART/20200825.180000.fv_core.res.tile5.nc .........OK
+ Moving RESTART/20200825.180000.fv_core.res.tile6.nc .........OK
+ Moving RESTART/20200825.180000.fv_srf_wnd.res.nest02.tile7.nc .........OK
+ Moving RESTART/20200825.180000.fv_srf_wnd.res.nest03.tile8.nc .........OK
+ Moving RESTART/20200825.180000.fv_srf_wnd.res.nest04.tile9.nc .........OK
+ Moving RESTART/20200825.180000.fv_srf_wnd.res.nest05.tile10.nc .........OK
+ Moving RESTART/20200825.180000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20200825.180000.fv_srf_wnd.res.tile2.nc .........OK
+ Moving RESTART/20200825.180000.fv_srf_wnd.res.tile3.nc .........OK
+ Moving RESTART/20200825.180000.fv_srf_wnd.res.tile4.nc .........OK
+ Moving RESTART/20200825.180000.fv_srf_wnd.res.tile5.nc .........OK
+ Moving RESTART/20200825.180000.fv_srf_wnd.res.tile6.nc .........OK
+ Moving RESTART/20200825.180000.fv_tracer.res.nest02.tile7.nc .........OK
+ Moving RESTART/20200825.180000.fv_tracer.res.nest03.tile8.nc .........OK
+ Moving RESTART/20200825.180000.fv_tracer.res.nest04.tile9.nc .........OK
+ Moving RESTART/20200825.180000.fv_tracer.res.nest05.tile10.nc .........OK
+ Moving RESTART/20200825.180000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20200825.180000.fv_tracer.res.tile2.nc .........OK
+ Moving RESTART/20200825.180000.fv_tracer.res.tile3.nc .........OK
+ Moving RESTART/20200825.180000.fv_tracer.res.tile4.nc .........OK
+ Moving RESTART/20200825.180000.fv_tracer.res.tile5.nc .........OK
+ Moving RESTART/20200825.180000.fv_tracer.res.tile6.nc .........OK
+ Moving RESTART/20200825.180000.phy_data.nest02.tile7.nc .........OK
+ Moving RESTART/20200825.180000.phy_data.nest03.tile8.nc .........OK
+ Moving RESTART/20200825.180000.phy_data.nest04.tile9.nc .........OK
+ Moving RESTART/20200825.180000.phy_data.nest05.tile10.nc .........OK
+ Moving RESTART/20200825.180000.phy_data.tile1.nc .........OK
+ Moving RESTART/20200825.180000.phy_data.tile2.nc .........OK
+ Moving RESTART/20200825.180000.phy_data.tile3.nc .........OK
+ Moving RESTART/20200825.180000.phy_data.tile4.nc .........OK
+ Moving RESTART/20200825.180000.phy_data.tile5.nc .........OK
+ Moving RESTART/20200825.180000.phy_data.tile6.nc .........OK
+ Moving RESTART/20200825.180000.sfc_data.nest02.tile7.nc .........OK
+ Moving RESTART/20200825.180000.sfc_data.nest03.tile8.nc .........OK
+ Moving RESTART/20200825.180000.sfc_data.nest04.tile9.nc .........OK
+ Moving RESTART/20200825.180000.sfc_data.nest05.tile10.nc .........OK
+ Moving RESTART/20200825.180000.sfc_data.tile1.nc .........OK
+ Moving RESTART/20200825.180000.sfc_data.tile2.nc .........OK
+ Moving RESTART/20200825.180000.sfc_data.tile3.nc .........OK
+ Moving RESTART/20200825.180000.sfc_data.tile4.nc .........OK
+ Moving RESTART/20200825.180000.sfc_data.tile5.nc .........OK
+ Moving RESTART/20200825.180000.sfc_data.tile6.nc .........OK
+ Moving RESTART/fv_BC_ne.res.nest02.nc .........OK
+ Moving RESTART/fv_BC_ne.res.nest03.nc .........OK
+ Moving RESTART/fv_BC_ne.res.nest04.nc .........OK
+ Moving RESTART/fv_BC_ne.res.nest05.nc .........OK
+ Moving RESTART/fv_BC_sw.res.nest02.nc .........OK
+ Moving RESTART/fv_BC_sw.res.nest03.nc .........OK
+ Moving RESTART/fv_BC_sw.res.nest04.nc .........OK
+ Moving RESTART/fv_BC_sw.res.nest05.nc .........OK
+
+  0: The total amount of wall time                        = 442.431833
+  0: The maximum resident set size (KB)                   = 429416
+
+Test 093 hafs_global_multiple_4nests_atm_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/hafs_regional_specified_moving_1nest_atm_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/hafs_regional_specified_moving_1nest_atm_intel
+Checking test 094 hafs_regional_specified_moving_1nest_atm_intel results ....
+Moving baseline 094 hafs_regional_specified_moving_1nest_atm_intel files ....
+ Moving atmf006.nc .........OK
+ Moving sfcf006.nc .........OK
+ Moving atm.nest02.f006.nc .........OK
+ Moving sfc.nest02.f006.nc .........OK
+ Moving HURPRS.GrbF06 .........OK
+ Moving HURPRS.GrbF06.nest02 .........OK
+
+  0: The total amount of wall time                        = 198.685537
+  0: The maximum resident set size (KB)                   = 625824
+
+Test 094 hafs_regional_specified_moving_1nest_atm_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/hafs_regional_storm_following_1nest_atm_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/hafs_regional_storm_following_1nest_atm_intel
+Checking test 095 hafs_regional_storm_following_1nest_atm_intel results ....
+Moving baseline 095 hafs_regional_storm_following_1nest_atm_intel files ....
+ Moving atmf006.nc .........OK
+ Moving sfcf006.nc .........OK
+ Moving atm.nest02.f006.nc .........OK
+ Moving sfc.nest02.f006.nc .........OK
+ Moving RESTART/20200825.180000.coupler.res .........OK
+ Moving RESTART/20200825.180000.fv_core.res.nc .........OK
+ Moving RESTART/20200825.180000.fv_core.res.nest02.nc .........OK
+ Moving RESTART/20200825.180000.fv_core.res.nest02.tile2.nc .........OK
+ Moving RESTART/20200825.180000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20200825.180000.fv_srf_wnd.res.nest02.tile2.nc .........OK
+ Moving RESTART/20200825.180000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20200825.180000.fv_tracer.res.nest02.tile2.nc .........OK
+ Moving RESTART/20200825.180000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20200825.180000.phy_data.nc .........OK
+ Moving RESTART/20200825.180000.phy_data.nest02.tile2.nc .........OK
+ Moving RESTART/20200825.180000.sfc_data.nc .........OK
+ Moving RESTART/20200825.180000.sfc_data.nest02.tile2.nc .........OK
+ Moving RESTART/fv_BC_ne.res.nest02.nc .........OK
+ Moving RESTART/fv_BC_sw.res.nest02.nc .........OK
+
+  0: The total amount of wall time                        = 182.977163
+  0: The maximum resident set size (KB)                   = 625888
+
+Test 095 hafs_regional_storm_following_1nest_atm_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/hafs_regional_storm_following_1nest_atm_ocn_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/hafs_regional_storm_following_1nest_atm_ocn_intel
+Checking test 096 hafs_regional_storm_following_1nest_atm_ocn_intel results ....
+Moving baseline 096 hafs_regional_storm_following_1nest_atm_ocn_intel files ....
+ Moving atmf006.nc .........OK
+ Moving sfcf006.nc .........OK
+ Moving atm.nest02.f006.nc .........OK
+ Moving sfc.nest02.f006.nc .........OK
+ Moving archv.2020_238_18.a .........OK
+ Moving archs.2020_238_18.a .........OK
+
+  0: The total amount of wall time                        = 255.297187
+  0: The maximum resident set size (KB)                   = 672172
+
+Test 096 hafs_regional_storm_following_1nest_atm_ocn_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/hafs_global_storm_following_1nest_atm_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/hafs_global_storm_following_1nest_atm_intel
+Checking test 097 hafs_global_storm_following_1nest_atm_intel results ....
+Moving baseline 097 hafs_global_storm_following_1nest_atm_intel files ....
+ Moving atmf006.nc .........OK
+ Moving sfcf006.nc .........OK
+ Moving atm.nest02.f006.nc .........OK
+ Moving sfc.nest02.f006.nc .........OK
+
+  0: The total amount of wall time                        = 80.217297
+  0: The maximum resident set size (KB)                   = 405456
+
+Test 097 hafs_global_storm_following_1nest_atm_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/hafs_regional_storm_following_1nest_atm_ocn_debug_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/hafs_regional_storm_following_1nest_atm_ocn_debug_intel
+Checking test 098 hafs_regional_storm_following_1nest_atm_ocn_debug_intel results ....
+Moving baseline 098 hafs_regional_storm_following_1nest_atm_ocn_debug_intel files ....
+ Moving atmf001.nc .........OK
+ Moving sfcf001.nc .........OK
+ Moving atm.nest02.f001.nc .........OK
+ Moving sfc.nest02.f001.nc .........OK
+
+  0: The total amount of wall time                        = 742.266006
+  0: The maximum resident set size (KB)                   = 691468
+
+Test 098 hafs_regional_storm_following_1nest_atm_ocn_debug_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/hafs_regional_storm_following_1nest_atm_ocn_wav_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/hafs_regional_storm_following_1nest_atm_ocn_wav_intel
+Checking test 099 hafs_regional_storm_following_1nest_atm_ocn_wav_intel results ....
+Moving baseline 099 hafs_regional_storm_following_1nest_atm_ocn_wav_intel files ....
+ Moving atmf006.nc .........OK
+ Moving sfcf006.nc .........OK
+ Moving atm.nest02.f006.nc .........OK
+ Moving sfc.nest02.f006.nc .........OK
+ Moving archv.2020_238_18.a .........OK
+ Moving archs.2020_238_18.a .........OK
+ Moving 20200825.180000.out_grd.ww3 .........OK
+ Moving 20200825.180000.out_pnt.ww3 .........OK
+
+  0: The total amount of wall time                        = 430.849834
+  0: The maximum resident set size (KB)                   = 726708
+
+Test 099 hafs_regional_storm_following_1nest_atm_ocn_wav_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/hafs_regional_docn_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/hafs_regional_docn_intel
+Checking test 100 hafs_regional_docn_intel results ....
+Moving baseline 100 hafs_regional_docn_intel files ....
+ Moving atmf006.nc .........OK
+ Moving sfcf006.nc .........OK
+ Moving ufs.hafs.cpl.hi.2019-08-29-21600.nc .........OK
+ Moving ufs.hafs.cpl.r.2019-08-29-21600.nc .........OK
+ Moving ufs.hafs.docn.r.2019-08-29-21600.nc .........OK
+
+  0: The total amount of wall time                        = 322.881311
+  0: The maximum resident set size (KB)                   = 1092896
+
+Test 100 hafs_regional_docn_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/hafs_regional_docn_oisst_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/hafs_regional_docn_oisst_intel
+Checking test 101 hafs_regional_docn_oisst_intel results ....
+Moving baseline 101 hafs_regional_docn_oisst_intel files ....
+ Moving atmf006.nc .........OK
+ Moving sfcf006.nc .........OK
+ Moving ufs.hafs.cpl.hi.2019-08-29-21600.nc .........OK
+ Moving ufs.hafs.cpl.r.2019-08-29-21600.nc .........OK
+ Moving ufs.hafs.docn.r.2019-08-29-21600.nc .........OK
+
+  0: The total amount of wall time                        = 325.710661
+  0: The maximum resident set size (KB)                   = 1073412
+
+Test 101 hafs_regional_docn_oisst_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/hafs_regional_datm_cdeps_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/hafs_regional_datm_cdeps_intel
+Checking test 102 hafs_regional_datm_cdeps_intel results ....
+Moving baseline 102 hafs_regional_datm_cdeps_intel files ....
+ Moving ufs.hafs.cpl.hi.2019-08-30-00000.nc .........OK
+ Moving ufs.hafs.cpl.r.2019-08-30-00000.nc .........OK
+ Moving ufs.hafs.datm.r.2019-08-30-00000.nc .........OK
+
+  0: The total amount of wall time                        = 1185.997766
+  0: The maximum resident set size (KB)                   = 820576
+
+Test 102 hafs_regional_datm_cdeps_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/datm_cdeps_control_cfsr_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/datm_cdeps_control_cfsr_intel
+Checking test 103 datm_cdeps_control_cfsr_intel results ....
+Moving baseline 103 datm_cdeps_control_cfsr_intel files ....
+ Moving RESTART/20111002.000000.MOM.res.nc .........OK
+ Moving RESTART/iced.2011-10-02-00000.nc .........OK
+ Moving RESTART/DATM_CFSR.cpl.r.2011-10-02-00000.nc .........OK
+
+ 0: The total amount of wall time                        = 147.537902
+ 0: The maximum resident set size (KB)                   = 745948
+
+Test 103 datm_cdeps_control_cfsr_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/datm_cdeps_control_gefs_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/datm_cdeps_control_gefs_intel
+Checking test 104 datm_cdeps_control_gefs_intel results ....
+Moving baseline 104 datm_cdeps_control_gefs_intel files ....
+ Moving RESTART/20111002.000000.MOM.res.nc .........OK
+ Moving RESTART/iced.2011-10-02-00000.nc .........OK
+ Moving RESTART/DATM_GEFS_NEW.cpl.r.2011-10-02-00000.nc .........OK
+
+ 0: The total amount of wall time                        = 141.487957
+ 0: The maximum resident set size (KB)                   = 626324
+
+Test 104 datm_cdeps_control_gefs_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/datm_cdeps_iau_gefs_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/datm_cdeps_iau_gefs_intel
+Checking test 105 datm_cdeps_iau_gefs_intel results ....
+Moving baseline 105 datm_cdeps_iau_gefs_intel files ....
+ Moving RESTART/20111002.000000.MOM.res.nc .........OK
+ Moving RESTART/iced.2011-10-02-00000.nc .........OK
+ Moving RESTART/DATM_GEFS_NEW.cpl.r.2011-10-02-00000.nc .........OK
+
+ 0: The total amount of wall time                        = 141.048339
+ 0: The maximum resident set size (KB)                   = 622156
+
+Test 105 datm_cdeps_iau_gefs_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/datm_cdeps_stochy_gefs_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/datm_cdeps_stochy_gefs_intel
+Checking test 106 datm_cdeps_stochy_gefs_intel results ....
+Moving baseline 106 datm_cdeps_stochy_gefs_intel files ....
+ Moving RESTART/20111002.000000.MOM.res.nc .........OK
+ Moving RESTART/iced.2011-10-02-00000.nc .........OK
+ Moving RESTART/DATM_GEFS_NEW.cpl.r.2011-10-02-00000.nc .........OK
+
+ 0: The total amount of wall time                        = 142.455987
+ 0: The maximum resident set size (KB)                   = 625760
+
+Test 106 datm_cdeps_stochy_gefs_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/datm_cdeps_ciceC_cfsr_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/datm_cdeps_ciceC_cfsr_intel
+Checking test 107 datm_cdeps_ciceC_cfsr_intel results ....
+Moving baseline 107 datm_cdeps_ciceC_cfsr_intel files ....
+ Moving RESTART/20111002.000000.MOM.res.nc .........OK
+ Moving RESTART/iced.2011-10-02-00000.nc .........OK
+ Moving RESTART/DATM_CFSR.cpl.r.2011-10-02-00000.nc .........OK
+
+ 0: The total amount of wall time                        = 148.216801
+ 0: The maximum resident set size (KB)                   = 747588
+
+Test 107 datm_cdeps_ciceC_cfsr_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/datm_cdeps_bulk_cfsr_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/datm_cdeps_bulk_cfsr_intel
+Checking test 108 datm_cdeps_bulk_cfsr_intel results ....
+Moving baseline 108 datm_cdeps_bulk_cfsr_intel files ....
+ Moving RESTART/20111002.000000.MOM.res.nc .........OK
+ Moving RESTART/iced.2011-10-02-00000.nc .........OK
+ Moving RESTART/DATM_CFSR.cpl.r.2011-10-02-00000.nc .........OK
+
+ 0: The total amount of wall time                        = 148.479320
+ 0: The maximum resident set size (KB)                   = 733648
+
+Test 108 datm_cdeps_bulk_cfsr_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/datm_cdeps_bulk_gefs_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/datm_cdeps_bulk_gefs_intel
+Checking test 109 datm_cdeps_bulk_gefs_intel results ....
+Moving baseline 109 datm_cdeps_bulk_gefs_intel files ....
+ Moving RESTART/20111002.000000.MOM.res.nc .........OK
+ Moving RESTART/iced.2011-10-02-00000.nc .........OK
+ Moving RESTART/DATM_GEFS_NEW.cpl.r.2011-10-02-00000.nc .........OK
+
+ 0: The total amount of wall time                        = 140.482375
+ 0: The maximum resident set size (KB)                   = 627388
+
+Test 109 datm_cdeps_bulk_gefs_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/datm_cdeps_mx025_cfsr_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/datm_cdeps_mx025_cfsr_intel
+Checking test 110 datm_cdeps_mx025_cfsr_intel results ....
+Moving baseline 110 datm_cdeps_mx025_cfsr_intel files ....
+ Moving RESTART/20111001.120000.MOM.res.nc .........OK
+ Moving RESTART/20111001.120000.MOM.res_1.nc .........OK
+ Moving RESTART/20111001.120000.MOM.res_2.nc .........OK
+ Moving RESTART/20111001.120000.MOM.res_3.nc .........OK
+ Moving RESTART/iced.2011-10-01-43200.nc .........OK
+ Moving RESTART/DATM_CFSR.cpl.r.2011-10-01-43200.nc .........OK
+
+  0: The total amount of wall time                        = 373.470375
+  0: The maximum resident set size (KB)                   = 674684
+
+Test 110 datm_cdeps_mx025_cfsr_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/datm_cdeps_mx025_gefs_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/datm_cdeps_mx025_gefs_intel
+Checking test 111 datm_cdeps_mx025_gefs_intel results ....
+Moving baseline 111 datm_cdeps_mx025_gefs_intel files ....
+ Moving RESTART/20111001.120000.MOM.res.nc .........OK
+ Moving RESTART/20111001.120000.MOM.res_1.nc .........OK
+ Moving RESTART/20111001.120000.MOM.res_2.nc .........OK
+ Moving RESTART/20111001.120000.MOM.res_3.nc .........OK
+ Moving RESTART/iced.2011-10-01-43200.nc .........OK
+ Moving RESTART/DATM_GEFS_NEW.cpl.r.2011-10-01-43200.nc .........OK
+
+  0: The total amount of wall time                        = 366.024060
+  0: The maximum resident set size (KB)                   = 656188
+
+Test 111 datm_cdeps_mx025_gefs_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/datm_cdeps_3072x1536_cfsr_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/datm_cdeps_3072x1536_cfsr_intel
+Checking test 112 datm_cdeps_3072x1536_cfsr_intel results ....
+Moving baseline 112 datm_cdeps_3072x1536_cfsr_intel files ....
+ Moving RESTART/20111002.000000.MOM.res.nc .........OK
+ Moving RESTART/iced.2011-10-02-00000.nc .........OK
+ Moving RESTART/DATM_CFSR3072x1536.cpl.r.2011-10-02-00000.nc .........OK
+
+ 0: The total amount of wall time                        = 278.481397
+ 0: The maximum resident set size (KB)                   = 1988516
+
+Test 112 datm_cdeps_3072x1536_cfsr_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/datm_cdeps_gfs_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/datm_cdeps_gfs_intel
+Checking test 113 datm_cdeps_gfs_intel results ....
+Moving baseline 113 datm_cdeps_gfs_intel files ....
+ Moving RESTART/20210323.060000.MOM.res.nc .........OK
+ Moving RESTART/iced.2021-03-23-21600.nc .........OK
+ Moving RESTART/DATM_GFS.cpl.r.2021-03-23-21600.nc .........OK
+
+ 0: The total amount of wall time                        = 279.504448
+ 0: The maximum resident set size (KB)                   = 1987960
+
+Test 113 datm_cdeps_gfs_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/datm_cdeps_debug_cfsr_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/datm_cdeps_debug_cfsr_intel
+Checking test 114 datm_cdeps_debug_cfsr_intel results ....
+Moving baseline 114 datm_cdeps_debug_cfsr_intel files ....
+ Moving RESTART/20111001.060000.MOM.res.nc .........OK
+ Moving RESTART/iced.2011-10-01-21600.nc .........OK
+ Moving RESTART/DATM_CFSR.cpl.r.2011-10-01-21600.nc .........OK
+
+ 0: The total amount of wall time                        = 312.640245
+ 0: The maximum resident set size (KB)                   = 736464
+
+Test 114 datm_cdeps_debug_cfsr_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/datm_cdeps_control_cfsr_faster_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/datm_cdeps_control_cfsr_faster_intel
+Checking test 115 datm_cdeps_control_cfsr_faster_intel results ....
+Moving baseline 115 datm_cdeps_control_cfsr_faster_intel files ....
+ Moving RESTART/20111002.000000.MOM.res.nc .........OK
+ Moving RESTART/iced.2011-10-02-00000.nc .........OK
+ Moving RESTART/DATM_CFSR.cpl.r.2011-10-02-00000.nc .........OK
+
+ 0: The total amount of wall time                        = 149.871131
+ 0: The maximum resident set size (KB)                   = 745848
+
+Test 115 datm_cdeps_control_cfsr_faster_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/datm_cdeps_lnd_gswp3_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/datm_cdeps_lnd_gswp3_intel
+Checking test 116 datm_cdeps_lnd_gswp3_intel results ....
+Moving baseline 116 datm_cdeps_lnd_gswp3_intel files ....
+ Moving ufs.cpld.lnd.out.2000-01-02-00000.tile1.nc .........OK
+ Moving ufs.cpld.lnd.out.2000-01-02-00000.tile2.nc .........OK
+ Moving ufs.cpld.lnd.out.2000-01-02-00000.tile3.nc .........OK
+ Moving ufs.cpld.lnd.out.2000-01-02-00000.tile4.nc .........OK
+ Moving ufs.cpld.lnd.out.2000-01-02-00000.tile5.nc .........OK
+ Moving ufs.cpld.lnd.out.2000-01-02-00000.tile6.nc .........OK
+
+  0: The total amount of wall time                        = 22.480832
+  0: The maximum resident set size (KB)                   = 316076
+
+Test 116 datm_cdeps_lnd_gswp3_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/control_p8_atmlnd_sbs_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/control_p8_atmlnd_sbs_intel
+Checking test 117 control_p8_atmlnd_sbs_intel results ....
+Moving baseline 117 control_p8_atmlnd_sbs_intel files ....
+ Moving sfcf000.tile1.nc .........OK
+ Moving sfcf000.tile2.nc .........OK
+ Moving sfcf000.tile3.nc .........OK
+ Moving sfcf000.tile4.nc .........OK
+ Moving sfcf000.tile5.nc .........OK
+ Moving sfcf000.tile6.nc .........OK
+ Moving sfcf021.tile1.nc .........OK
+ Moving sfcf021.tile2.nc .........OK
+ Moving sfcf021.tile3.nc .........OK
+ Moving sfcf021.tile4.nc .........OK
+ Moving sfcf021.tile5.nc .........OK
+ Moving sfcf021.tile6.nc .........OK
+ Moving sfcf024.tile1.nc .........OK
+ Moving sfcf024.tile2.nc .........OK
+ Moving sfcf024.tile3.nc .........OK
+ Moving sfcf024.tile4.nc .........OK
+ Moving sfcf024.tile5.nc .........OK
+ Moving sfcf024.tile6.nc .........OK
+ Moving atmf000.tile1.nc .........OK
+ Moving atmf000.tile2.nc .........OK
+ Moving atmf000.tile3.nc .........OK
+ Moving atmf000.tile4.nc .........OK
+ Moving atmf000.tile5.nc .........OK
+ Moving atmf000.tile6.nc .........OK
+ Moving atmf021.tile1.nc .........OK
+ Moving atmf021.tile2.nc .........OK
+ Moving atmf021.tile3.nc .........OK
+ Moving atmf021.tile4.nc .........OK
+ Moving atmf021.tile5.nc .........OK
+ Moving atmf021.tile6.nc .........OK
+ Moving atmf024.tile1.nc .........OK
+ Moving atmf024.tile2.nc .........OK
+ Moving atmf024.tile3.nc .........OK
+ Moving atmf024.tile4.nc .........OK
+ Moving atmf024.tile5.nc .........OK
+ Moving atmf024.tile6.nc .........OK
+ Moving RESTART/20210323.060000.coupler.res .........OK
+ Moving RESTART/20210323.060000.fv_core.res.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile6.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile6.nc .........OK
+ Moving ufs.cpld.cpl.hi.lnd.2021-03-22-43200.nc .........OK
+ Moving ufs.cpld.cpl.hi.lnd.2021-03-23-21600.nc .........OK
+ Moving ufs.cpld.lnd.out.2021-03-22-43200.tile1.nc .........OK
+ Moving ufs.cpld.lnd.out.2021-03-22-43200.tile2.nc .........OK
+ Moving ufs.cpld.lnd.out.2021-03-22-43200.tile3.nc .........OK
+ Moving ufs.cpld.lnd.out.2021-03-22-43200.tile4.nc .........OK
+ Moving ufs.cpld.lnd.out.2021-03-22-43200.tile5.nc .........OK
+ Moving ufs.cpld.lnd.out.2021-03-22-43200.tile6.nc .........OK
+ Moving ufs.cpld.lnd.out.2021-03-23-21600.tile1.nc .........OK
+ Moving ufs.cpld.lnd.out.2021-03-23-21600.tile2.nc .........OK
+ Moving ufs.cpld.lnd.out.2021-03-23-21600.tile3.nc .........OK
+ Moving ufs.cpld.lnd.out.2021-03-23-21600.tile4.nc .........OK
+ Moving ufs.cpld.lnd.out.2021-03-23-21600.tile5.nc .........OK
+ Moving ufs.cpld.lnd.out.2021-03-23-21600.tile6.nc .........OK
+
+  0: The total amount of wall time                        = 208.526991
+  0: The maximum resident set size (KB)                   = 1624312
+
+Test 117 control_p8_atmlnd_sbs_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/atmwav_control_noaero_p8_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/atmwav_control_noaero_p8_intel
+Checking test 118 atmwav_control_noaero_p8_intel results ....
+Moving baseline 118 atmwav_control_noaero_p8_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf012.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf012.nc .........OK
+ Moving RESTART/20210322.180000.coupler.res .........OK
+ Moving RESTART/20210322.180000.fv_core.res.nc .........OK
+ Moving RESTART/20210322.180000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20210322.180000.fv_core.res.tile2.nc .........OK
+ Moving RESTART/20210322.180000.fv_core.res.tile3.nc .........OK
+ Moving RESTART/20210322.180000.fv_core.res.tile4.nc .........OK
+ Moving RESTART/20210322.180000.fv_core.res.tile5.nc .........OK
+ Moving RESTART/20210322.180000.fv_core.res.tile6.nc .........OK
+ Moving RESTART/20210322.180000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20210322.180000.fv_srf_wnd.res.tile2.nc .........OK
+ Moving RESTART/20210322.180000.fv_srf_wnd.res.tile3.nc .........OK
+ Moving RESTART/20210322.180000.fv_srf_wnd.res.tile4.nc .........OK
+ Moving RESTART/20210322.180000.fv_srf_wnd.res.tile5.nc .........OK
+ Moving RESTART/20210322.180000.fv_srf_wnd.res.tile6.nc .........OK
+ Moving RESTART/20210322.180000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20210322.180000.fv_tracer.res.tile2.nc .........OK
+ Moving RESTART/20210322.180000.fv_tracer.res.tile3.nc .........OK
+ Moving RESTART/20210322.180000.fv_tracer.res.tile4.nc .........OK
+ Moving RESTART/20210322.180000.fv_tracer.res.tile5.nc .........OK
+ Moving RESTART/20210322.180000.fv_tracer.res.tile6.nc .........OK
+ Moving RESTART/20210322.180000.phy_data.tile1.nc .........OK
+ Moving RESTART/20210322.180000.phy_data.tile2.nc .........OK
+ Moving RESTART/20210322.180000.phy_data.tile3.nc .........OK
+ Moving RESTART/20210322.180000.phy_data.tile4.nc .........OK
+ Moving RESTART/20210322.180000.phy_data.tile5.nc .........OK
+ Moving RESTART/20210322.180000.phy_data.tile6.nc .........OK
+ Moving RESTART/20210322.180000.sfc_data.tile1.nc .........OK
+ Moving RESTART/20210322.180000.sfc_data.tile2.nc .........OK
+ Moving RESTART/20210322.180000.sfc_data.tile3.nc .........OK
+ Moving RESTART/20210322.180000.sfc_data.tile4.nc .........OK
+ Moving RESTART/20210322.180000.sfc_data.tile5.nc .........OK
+ Moving RESTART/20210322.180000.sfc_data.tile6.nc .........OK
+ Moving RESTART/ufs.atmw.cpl.r.2021-03-22-64800.nc .........OK
+ Moving 20210322.180000.out_pnt.ww3 .........OK
+ Moving 20210322.180000.out_grd.ww3 .........OK
+ Moving ufs.atmw.ww3.r.2021-03-22-64800 .........OK
+
+  0: The total amount of wall time                        = 90.680721
+  0: The maximum resident set size (KB)                   = 1614944
+
+Test 118 atmwav_control_noaero_p8_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/control_atmwav_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/control_atmwav_intel
+Checking test 119 control_atmwav_intel results ....
+Moving baseline 119 control_atmwav_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf012.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf012.nc .........OK
+ Moving GFSFLX.GrbF00 .........OK
+ Moving GFSFLX.GrbF12 .........OK
+ Moving GFSPRS.GrbF00 .........OK
+ Moving GFSPRS.GrbF12 .........OK
+ Moving RESTART/20210322.180000.coupler.res .........OK
+ Moving RESTART/20210322.180000.fv_core.res.nc .........OK
+ Moving RESTART/20210322.180000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20210322.180000.fv_core.res.tile2.nc .........OK
+ Moving RESTART/20210322.180000.fv_core.res.tile3.nc .........OK
+ Moving RESTART/20210322.180000.fv_core.res.tile4.nc .........OK
+ Moving RESTART/20210322.180000.fv_core.res.tile5.nc .........OK
+ Moving RESTART/20210322.180000.fv_core.res.tile6.nc .........OK
+ Moving RESTART/20210322.180000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20210322.180000.fv_srf_wnd.res.tile2.nc .........OK
+ Moving RESTART/20210322.180000.fv_srf_wnd.res.tile3.nc .........OK
+ Moving RESTART/20210322.180000.fv_srf_wnd.res.tile4.nc .........OK
+ Moving RESTART/20210322.180000.fv_srf_wnd.res.tile5.nc .........OK
+ Moving RESTART/20210322.180000.fv_srf_wnd.res.tile6.nc .........OK
+ Moving RESTART/20210322.180000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20210322.180000.fv_tracer.res.tile2.nc .........OK
+ Moving RESTART/20210322.180000.fv_tracer.res.tile3.nc .........OK
+ Moving RESTART/20210322.180000.fv_tracer.res.tile4.nc .........OK
+ Moving RESTART/20210322.180000.fv_tracer.res.tile5.nc .........OK
+ Moving RESTART/20210322.180000.fv_tracer.res.tile6.nc .........OK
+ Moving RESTART/20210322.180000.phy_data.tile1.nc .........OK
+ Moving RESTART/20210322.180000.phy_data.tile2.nc .........OK
+ Moving RESTART/20210322.180000.phy_data.tile3.nc .........OK
+ Moving RESTART/20210322.180000.phy_data.tile4.nc .........OK
+ Moving RESTART/20210322.180000.phy_data.tile5.nc .........OK
+ Moving RESTART/20210322.180000.phy_data.tile6.nc .........OK
+ Moving RESTART/20210322.180000.sfc_data.tile1.nc .........OK
+ Moving RESTART/20210322.180000.sfc_data.tile2.nc .........OK
+ Moving RESTART/20210322.180000.sfc_data.tile3.nc .........OK
+ Moving RESTART/20210322.180000.sfc_data.tile4.nc .........OK
+ Moving RESTART/20210322.180000.sfc_data.tile5.nc .........OK
+ Moving RESTART/20210322.180000.sfc_data.tile6.nc .........OK
+ Moving 20210322.180000.restart.glo_1deg .........OK
+
+  0: The total amount of wall time                        = 85.493004
+  0: The maximum resident set size (KB)                   = 622432
+
+Test 119 control_atmwav_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/atmaero_control_p8_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/atmaero_control_p8_intel
+Checking test 120 atmaero_control_p8_intel results ....
+Moving baseline 120 atmaero_control_p8_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf024.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf024.nc .........OK
+ Moving GFSFLX.GrbF00 .........OK
+ Moving GFSFLX.GrbF24 .........OK
+ Moving GFSPRS.GrbF00 .........OK
+ Moving GFSPRS.GrbF24 .........OK
+ Moving gocart.inst_aod.20210323_0600z.nc4 .........OK
+ Moving RESTART/20210323.060000.coupler.res .........OK
+ Moving RESTART/20210323.060000.fv_core.res.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile6.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile6.nc .........OK
+
+  0: The total amount of wall time                        = 231.011647
+  0: The maximum resident set size (KB)                   = 2908988
+
+Test 120 atmaero_control_p8_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/atmaero_control_p8_rad_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/atmaero_control_p8_rad_intel
+Checking test 121 atmaero_control_p8_rad_intel results ....
+Moving baseline 121 atmaero_control_p8_rad_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf024.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf024.nc .........OK
+ Moving GFSFLX.GrbF00 .........OK
+ Moving GFSFLX.GrbF24 .........OK
+ Moving GFSPRS.GrbF00 .........OK
+ Moving GFSPRS.GrbF24 .........OK
+ Moving gocart.inst_aod.20210323_0600z.nc4 .........OK
+ Moving RESTART/20210323.060000.coupler.res .........OK
+ Moving RESTART/20210323.060000.fv_core.res.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile6.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile6.nc .........OK
+
+  0: The total amount of wall time                        = 263.448151
+  0: The maximum resident set size (KB)                   = 2969220
+
+Test 121 atmaero_control_p8_rad_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/atmaero_control_p8_rad_micro_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/atmaero_control_p8_rad_micro_intel
+Checking test 122 atmaero_control_p8_rad_micro_intel results ....
+Moving baseline 122 atmaero_control_p8_rad_micro_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf024.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf024.nc .........OK
+ Moving GFSFLX.GrbF00 .........OK
+ Moving GFSFLX.GrbF24 .........OK
+ Moving GFSPRS.GrbF00 .........OK
+ Moving GFSPRS.GrbF24 .........OK
+ Moving gocart.inst_aod.20210323_0600z.nc4 .........OK
+ Moving RESTART/20210323.060000.coupler.res .........OK
+ Moving RESTART/20210323.060000.fv_core.res.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_core.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_srf_wnd.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile2.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile3.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile4.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile5.nc .........OK
+ Moving RESTART/20210323.060000.fv_tracer.res.tile6.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.phy_data.tile6.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile1.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile2.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile3.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile4.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile5.nc .........OK
+ Moving RESTART/20210323.060000.sfc_data.tile6.nc .........OK
+
+  0: The total amount of wall time                        = 275.254453
+  0: The maximum resident set size (KB)                   = 2980284
+
+Test 122 atmaero_control_p8_rad_micro_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/regional_atmaq_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/regional_atmaq_intel
+Checking test 123 regional_atmaq_intel results ....
+Moving baseline 123 regional_atmaq_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf003.nc .........OK
+ Moving sfcf006.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf003.nc .........OK
+ Moving atmf006.nc .........OK
+ Moving RESTART/20190801.180000.coupler.res .........OK
+ Moving RESTART/20190801.180000.fv_core.res.nc .........OK
+ Moving RESTART/20190801.180000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20190801.180000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20190801.180000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20190801.180000.phy_data.nc .........OK
+ Moving RESTART/20190801.180000.sfc_data.nc .........OK
+
+  0: The total amount of wall time                        = 1187.945263
+  0: The maximum resident set size (KB)                   = 5355848
+
+Test 123 regional_atmaq_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/regional_atmaq_debug_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/regional_atmaq_debug_intel
+Checking test 124 regional_atmaq_debug_intel results ....
+Moving baseline 124 regional_atmaq_debug_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf001.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf001.nc .........OK
+ Moving RESTART/20190801.130000.coupler.res .........OK
+ Moving RESTART/20190801.130000.fv_core.res.nc .........OK
+ Moving RESTART/20190801.130000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20190801.130000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20190801.130000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20190801.130000.phy_data.nc .........OK
+ Moving RESTART/20190801.130000.sfc_data.nc .........OK
+
+  0: The total amount of wall time                        = 1615.538500
+  0: The maximum resident set size (KB)                   = 4790820
+
+Test 124 regional_atmaq_debug_intel PASS
+
+
+baseline dir = /lustre/f2/pdata/ncep/role.epic/C5/RT/NEMSfv3gfs/develop-20231108/regional_atmaq_faster_intel
+working dir  = /lustre/f2/scratch/Natalie.Perlin/FV3_RT/rt_221558/regional_atmaq_faster_intel
+Checking test 125 regional_atmaq_faster_intel results ....
+Moving baseline 125 regional_atmaq_faster_intel files ....
+ Moving sfcf000.nc .........OK
+ Moving sfcf003.nc .........OK
+ Moving sfcf006.nc .........OK
+ Moving atmf000.nc .........OK
+ Moving atmf003.nc .........OK
+ Moving atmf006.nc .........OK
+ Moving RESTART/20190801.180000.coupler.res .........OK
+ Moving RESTART/20190801.180000.fv_core.res.nc .........OK
+ Moving RESTART/20190801.180000.fv_core.res.tile1.nc .........OK
+ Moving RESTART/20190801.180000.fv_srf_wnd.res.tile1.nc .........OK
+ Moving RESTART/20190801.180000.fv_tracer.res.tile1.nc .........OK
+ Moving RESTART/20190801.180000.phy_data.nc .........OK
+ Moving RESTART/20190801.180000.sfc_data.nc .........OK
+
+  0: The total amount of wall time                        = 1348.453835
+  0: The maximum resident set size (KB)                   = 5352344
+
+Test 125 regional_atmaq_faster_intel PASS
+
+
+REGRESSION TEST WAS SUCCESSFUL
+Tue 14 Nov 2023 08:51:30 AM EST
+Elapsed time: 01h:31m:10s. Have a nice day!

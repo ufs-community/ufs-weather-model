@@ -61,7 +61,7 @@ else
   if [[ $MACHINE_ID == gaea ]]; then
     source /lustre/f2/dev/role.epic/contrib/Lmod_init.sh
   # Activate lua environment for gaea c5
-  elif [[ $MACHINE_ID == gaea_c5 ]]; then
+  elif [[ $MACHINE_ID == gaea-c5 ]]; then
     source /lustre/f2/dev/role.epic/contrib/Lmod_init_C5.sh
   fi
   # Load fv3 module
