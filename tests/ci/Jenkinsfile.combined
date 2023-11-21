@@ -103,6 +103,7 @@ def generateStage(nodeLabel) {
                       echo "Testing concluded...removing labels for $machine from $GIT_URL"
   
                       GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
+                      GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
 
                       curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-RT
                         
