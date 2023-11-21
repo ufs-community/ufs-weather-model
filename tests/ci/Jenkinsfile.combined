@@ -58,9 +58,15 @@ def generateStage(nodeLabel) {
                             echo "Creating baselines on $machine"
                             ./rt.sh -a ${ACCNR} -c -r -l rt.conf
                           fi
+                      '''
                     }
                     else {
                       //println(nodeLabel+" will NOT need baselines generated.")
+                       sh '''
+                       pwd
+                       cd tests
+                       export machine=${NODE_NAME}
+
                           if [[ $machine =~ "Jet" ]] 
                           then
                            echo "Running regression tests on $machine"
