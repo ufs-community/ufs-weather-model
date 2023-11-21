@@ -27,7 +27,6 @@ def generateStage(nodeLabel) {
                script {
                     echo "Running on ${nodeLabel}"
                     if (baselineLabels.contains(nodeLabel)) {
-                      //println(nodeLabel+" will need baselines generated.")
                        sh '''
                        pwd
                        cd tests
@@ -58,10 +57,17 @@ def generateStage(nodeLabel) {
                             echo "Creating baselines on $machine"
                             ./rt.sh -a ${ACCNR} -c -r -l rt.conf
                           fi
+                      git config user.email "ecc.platform@noaa.gov"
+                      git config user.name "epic-cicd-jenkins"
+                      echo "Testing concluded...removing labels for $machine from $GIT_URL"
+  
+                      GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
+                      GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
+
+                      curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-BL
                       '''
                     }
                     else {
-                      //println(nodeLabel+" will NOT need baselines generated.")
                        sh '''
                        pwd
                        cd tests
@@ -92,6 +98,14 @@ def generateStage(nodeLabel) {
                            echo "Running regression tests on $machine"
                            ./rt.sh -a ${ACCNR} -r -l rt.conf
                           fi
+
+                      git config user.email "ecc.platform@noaa.gov"
+                      git config user.name "epic-cicd-jenkins"
+                      echo "Testing concluded...removing labels for $machine from $GIT_URL"
+  
+                      GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
+
+                      curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-RT
                         
                        '''
                     }
