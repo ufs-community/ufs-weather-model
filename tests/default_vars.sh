@@ -970,75 +970,6 @@ export NA_INIT=1
 export EXTERNAL_IC=.true.
 export NGGPS_IC=.true.
 export MOUNTAIN=.false.
-
-# # MOM6 defaults; 1 degree
-# export MOM_INPUT=MOM_input_100.IN
-# export MOM6_RESTART_SETTING=n
-# export MOM6_RIVER_RUNOFF=False
-# export FRUNOFF=''
-# export CHLCLIM=seawifs_1998-2006_smoothed_2X.nc
-# export MOM6_USE_LI2016=True
-# # since CPL_SLOW is set to DT_THERM, this should be always be false
-# export MOM6_THERMO_SPAN=False
-# export MOM6_USE_WAVES=True
-# export MOM6_ALLOW_LANDMASK_CHANGES=False
-# # MOM6 IAU
-# export ODA_INCUPD=False
-# export ODA_INCUPD_NHOURS=6
-# export ODA_TEMPINC_VAR="'pt_inc'"
-# export ODA_SALTINC_VAR="'s_inc'"
-# export ODA_THK_VAR="'h_fg'"
-# export ODA_INCUPD_UV=False
-# export ODA_UINC_VAR="'u_inc'"
-# export ODA_VINC_VAR="'v_inc'"
-# # MOM6 stochastics
-# export DO_OCN_SPPT=False
-# export PERT_EPBL=False
-# export OCN_SPPT=-999.
-# export EPBL=-999.
-
-# # CICE6 defaults; 1 degree
-# export CICE_DECOMP=slenderX2
-# export NPROC_ICE=$ICE_tasks
-# # SlenderX2
-# export CICE_DECOMP=slenderX2
-# export np2=`expr $NPROC_ICE / 2`
-# export BLCKX=`expr $NX_GLB / $np2`
-# export BLCKY=`expr $NY_GLB / 2`
-# export MESHOCN_ICE=mesh.mx${OCNRES}.nc
-# export WAVDOMAIN=mx${OCNRES}
-# export MODDEF_WAV=mod_def.mx${OCNRES}
-# export MESH_WAV=mesh.${WAVDOMAIN}.nc
-# export CICEGRID=grid_cice_NEMS_mx${OCNRES}.nc
-# export CICEMASK=kmtu_cice_NEMS_mx${OCNRES}.nc
-
-# # set large; restart frequency now controlled by restart_n in ufs.configure
-# export DUMPFREQ=d
-# export DUMPFREQ_N=1000
-# export DIAGFREQ=`expr $FHMAX \* 3600 / $DT_CICE`
-# export USE_RESTART_TIME=.false.
-# export RESTART_EXT=.false.
-# # setting to true will allow Frazil FW and Salt to be
-# # included in fluxes sent to ocean
-# export FRAZIL_FWSALT=.true.
-# # default to write CICE average history files
-# export CICE_HIST_AVG=.true.
-# # default CICE B-grid, ATM and OCN are provided by cap on A grid
-# export GRIDATM=A
-# export GRIDOCN=A
-# export GRIDICE=B
-
-# wave component default
-# export WW3RSTDTHR=3
-# export DT_2_RST="$(printf "%02d" $(( ${WW3RSTDTHR}*3600 )))"
-# export WW3OUTDTHR=3
-# export DTFLD="$(printf "%02d" $(( ${WW3OUTDTHR}*3600 )))"
-# export DTPNT="$(printf "%02d" $(( ${WW3OUTDTHR}*3600 )))"
-# # waves when using shel.nml.IN
-# export WAV_CUR='C'
-# export WAV_ICE='C'
-# export WAV_IC1='F'
-# export WAV_IC5='F'
 # gocart inst_aod output; uses AERO_HIST.rc.IN from parm/gocart directory
 export AOD_FRQ=060000
 
@@ -1094,13 +1025,6 @@ export ATM_compute_tasks=$ATM_compute_tasks_cdeps_100
 export OCN_tasks=$OCN_tasks_cdeps_100
 export ICE_tasks=$ICE_tasks_cdeps_100
 
-# # SlenderX2
-# export CICE_DECOMP=slenderX2
-# export NPROC_ICE=12
-# export np2=`expr $NPROC_ICE / 2`
-# export BLCKX=`expr $NX_GLB / $np2`
-# export BLCKY=`expr $NY_GLB / 2`
-
 # Set CICE6 component defaults
 export_cice6
 # default non-mushy thermo for CICE
@@ -1126,57 +1050,10 @@ export INPUT_NML=input.mom6.nml.IN
 export DIAG_TABLE=diag_table_template
 export DATM_SRC=CFSR
 export FILENAME_BASE=cfsr.
-#export mesh_file=${FILENAME_BASE//.}_mesh.nc
 export MESH_ATM=${FILENAME_BASE//.}_mesh.nc
 export atm_datamode=${DATM_SRC}
 export stream_files=DATM_INPUT/${FILENAME_BASE}201110.nc
 export STREAM_OFFSET=0
-
-# # MOM6 defaults; 1 degree
-# export MOM_INPUT=MOM_input_100.IN
-# export MOM6_RESTART_SETTING=n
-# export MOM6_RIVER_RUNOFF=False
-# export FRUNOFF=''
-# export CHLCLIM=seawifs_1998-2006_smoothed_2X.nc
-# # MOM6 IAU
-# export ODA_INCUPD=False
-# export ODA_INCUPD_NHOURS=6
-# export ODA_TEMPINC_VAR="'pt_inc'"
-# export ODA_SALTINC_VAR="'s_inc'"
-# export ODA_THK_VAR="'h_fg'"
-# export ODA_INCUPD_UV=False
-# export ODA_UINC_VAR="'u_inc'"
-# export ODA_VINC_VAR="'v_inc'"
-# export MOM6_USE_LI2016=False
-# # MOM6 stochastics
-# export DO_OCN_SPPT=False
-# export PERT_EPBL=False
-# export OCN_SPPT=-999.
-# export EPBL=-999.
-# # since coupling_interval_slow is set to DT_THERM, this should be always be false
-# export MOM6_THERMO_SPAN=False
-# export MOM6_USE_WAVES=False
-# export MOM6_ALLOW_LANDMASK_CHANGES=False
-
-# # CICE6 defaults; 1 degree
-# export MESHOCN_ICE=mesh.mx${OCNRES}.nc
-# export CICEGRID=grid_cice_NEMS_mx${OCNRES}.nc
-# export CICEMASK=kmtu_cice_NEMS_mx${OCNRES}.nc
-# export RUNID=unknown
-# # set large; restart frequency now controlled by restart_n in ufs.configure
-# export DUMPFREQ=d
-# export DUMPFREQ_N=1000
-# export DIAGFREQ=`expr $FHMAX \* 3600 / $DT_CICE`
-# export USE_RESTART_TIME=.false.
-# export RESTART_EXT=.false.
-# # setting to true will allow Frazil FW and Salt to be
-# # included in fluxes sent to ocean
-# export FRAZIL_FWSALT=.true.
-# # default to write CICE average history files
-# export CICE_HIST_AVG=.true.
-# export GRIDATM=A
-# export GRIDOCN=A
-# export GRIDICE=B
 
 export BL_SUFFIX=""
 export RT_SUFFIX=""
