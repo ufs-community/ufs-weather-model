@@ -1,4 +1,9 @@
-mkdir INPUT RESTART history MOM6_OUTPUT
+mkdir INPUT RESTART
+
+mkdir -p $CICE_RESTART_DIR
+mkdir -p $CICE_HISTORY_DIR
+mkdir -p $MOM6_RESTART_DIR
+mkdir -p $MOM6_OUTPUT_DIR
 
 if [[ $ATMRES == C96 ]]; then
   FV3_DIR=FV3_input_data
@@ -102,12 +107,12 @@ else
 
      #if not mx025, then mom6 restart is a single file
      if [[ $OCNRES == 025 ]]; then
-      cp ../${DEP_RUN}${SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.MOM.res.nc ./INPUT/MOM.res.nc
-      cp ../${DEP_RUN}${SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.MOM.res_1.nc ./INPUT/MOM.res_1.nc
-      cp ../${DEP_RUN}${SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.MOM.res_2.nc ./INPUT/MOM.res_2.nc
-      cp ../${DEP_RUN}${SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.MOM.res_3.nc ./INPUT/MOM.res_3.nc
+      cp ../${DEP_RUN}${SUFFIX}/${MOM6_RESTART_DIR}/${RESTART_FILE_PREFIX}.MOM.res.nc ./INPUT/MOM.res.nc
+      cp ../${DEP_RUN}${SUFFIX}/${MOM6_RESTART_DIR}/${RESTART_FILE_PREFIX}.MOM.res_1.nc ./INPUT/MOM.res_1.nc
+      cp ../${DEP_RUN}${SUFFIX}/${MOM6_RESTART_DIR}/${RESTART_FILE_PREFIX}.MOM.res_2.nc ./INPUT/MOM.res_2.nc
+      cp ../${DEP_RUN}${SUFFIX}/${MOM6_RESTART_DIR}/${RESTART_FILE_PREFIX}.MOM.res_3.nc ./INPUT/MOM.res_3.nc
      else
-      cp ../${DEP_RUN}${SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.MOM.res.nc ./INPUT/MOM.res.nc
+      cp ../${DEP_RUN}${SUFFIX}/${MOM6_RESTART_DIR}/${RESTART_FILE_PREFIX}.MOM.res.nc ./INPUT/MOM.res.nc
       if [[ $ODA_INCUPD == 'True' ]] && [[ $FHROT -le 6 ]]; then
         cp @[INPUTDATA_ROOT]/MOM6_IC/mom6_increment.nc ./INPUT/mom6_increment.nc
       fi
@@ -126,7 +131,7 @@ else
 
      # CICE restart and pointer files
      RFILE=iced.${RESTART_FILE_SUFFIX_SECS}.nc
-     cp  ../${DEP_RUN}${SUFFIX}/RESTART/${RFILE} ./INPUT
+     cp  ../${DEP_RUN}${SUFFIX}/${CICE_RESTART_DIR}/${RFILE} ./INPUT
      ls -1 ./INPUT/${RFILE}>ice.restart_file
 
      # WAVE restart file

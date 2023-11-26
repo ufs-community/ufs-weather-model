@@ -255,10 +255,10 @@ fi
 
 if [[ $DATM_CDEPS = 'true' ]] || [[ $S2S = 'true' ]]; then
   if [[ $HAFS = 'false' ]]; then
-    atparse < ${PATHRT}/parm/ice_in_template > ice_in
-    atparse < ${PATHRT}/parm/${MOM_INPUT:-MOM_input_template_$OCNRES} > INPUT/MOM_input
+    atparse < ${PATHRT}/parm/ice_in.IN > ice_in
+    atparse < ${PATHRT}/parm/${MOM_INPUT:-MOM_input_$OCNRES.IN} > INPUT/MOM_input
     atparse < ${PATHRT}/parm/diag_table/${DIAG_TABLE:-diag_table_template} > diag_table
-    atparse < ${PATHRT}/parm/data_table_template > data_table
+    atparse < ${PATHRT}/parm/MOM6_data_table.IN > data_table
   fi
 fi
 
@@ -278,12 +278,12 @@ if [[ $CPLCHM == .true. ]] && [[ $S2S = 'false' ]]; then
 fi
 
 if [[ $DATM_CDEPS = 'true' ]]; then
-  atparse < ${PATHRT}/parm/${DATM_IN_CONFIGURE:-datm_in} > datm_in
+  atparse < ${PATHRT}/parm/${DATM_IN_CONFIGURE:-datm_in.IN} > datm_in
   atparse < ${PATHRT}/parm/${DATM_STREAM_CONFIGURE:-datm.streams.IN} > datm.streams
 fi
 
 if [[ $DOCN_CDEPS = 'true' ]]; then
-  atparse < ${PATHRT}/parm/${DOCN_IN_CONFIGURE:-docn_in} > docn_in
+  atparse < ${PATHRT}/parm/${DOCN_IN_CONFIGURE:-docn_in.IN} > docn_in
   atparse < ${PATHRT}/parm/${DOCN_STREAM_CONFIGURE:-docn.streams.IN} > docn.streams
 fi
 
