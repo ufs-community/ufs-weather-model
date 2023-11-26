@@ -776,6 +776,7 @@ export ocean_albedo_limit=0.06
 export use_mean_albedos=.false.
 export RUNTYPE=startup
 export RESTART_N=${FHMAX}
+export CMEPS_RESTART_DIR=./RESTART/
 export cap_dbug_flag=0
 export use_coldstart=false
 export use_mommesh=true

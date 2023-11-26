@@ -1,8 +1,10 @@
 mkdir INPUT RESTART
 
 mkdir -p $CICE_RESTART_DIR
-mkdir -p $CICE_HISTORY_DIR
 mkdir -p $MOM6_RESTART_DIR
+mkdir -p $CMEPS_RESTART_DIR
+
+mkdir -p $CICE_HISTORY_DIR
 mkdir -p $MOM6_OUTPUT_DIR
 
 if [[ $ATMRES == C96 ]]; then
@@ -120,7 +122,7 @@ else
 
      # CMEPS restart and pointer files
      RFILE=ufs.cpld.cpl.r.${RESTART_FILE_SUFFIX_SECS}.nc
-     cp  ../${DEP_RUN}${SUFFIX}/RESTART/${RFILE} .
+     cp  ../${DEP_RUN}${SUFFIX}/${CMEPS_RESTART_DIR}/${RFILE} .
      ls -1 ${RFILE}>rpointer.cpl
 
      # CMEPS/CCPP restart file
