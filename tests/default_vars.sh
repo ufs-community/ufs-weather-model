@@ -1163,7 +1163,6 @@ export_cmeps
 export ocn_model=hycom
 export CPLMODE=hafs
 export MESH_WAV=mesh.hafs.nc
-export use_coldstart=''
 }
 
 export_hafs ()
