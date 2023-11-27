@@ -464,6 +464,7 @@ export DO_UGWP=.false.
 export DO_TOFD=.false.
 export GWD_OPT=1
 export DO_UGWP_V0=.false.
+export DO_UGWP_V1_W_GSLDRAG=.false.
 export DO_UGWP_V0_OROG_ONLY=.false.
 export DO_GSL_DRAG_LS_BL=.false.
 export DO_GSL_DRAG_SS=.false.
@@ -472,7 +473,9 @@ export DO_UGWP_V1=.false.
 export DO_UGWP_V1_OROG_ONLY=.false.
 export KNOB_UGWP_DOKDIS=1
 export KNOB_UGWP_NDX4LH=1
-
+export KNOB_UGWP_VERSION=0
+export KNOB_UGWP_PALAUNCH=500.e2
+export KNOB_UGWP_NSLOPE=1
 
 # resolution dependent settings
 export CDMBWD_c48='0.071,2.1,1.0,1.0'
@@ -514,6 +517,9 @@ export RAS=.false.
 export RANDOM_CLDS=.false.
 export CNVCLD=.true.
 export PROGSIGMA=.false.
+export BETASCU=8.0
+export BETAMCU=1.0
+export BETADCU=2.0
 
 # Aerosol convective scavenging
 export FSCAV_AERO='"*:0.3","so2:0.0","msa:0.0","dms:0.0","nh3:0.4","nh4:0.6","bc1:0.6","bc2:0.6","oc1:0.4","oc2:0.4","dust1:0.6","dust2:0.6","dust3:0.6","dust4:0.6","dust5:0.6","seas1:0.5","seas2:0.5","seas3:0.5","seas4:0.5","seas5:0.5"'
@@ -521,6 +527,7 @@ export FSCAV_AERO='"*:0.3","so2:0.0","msa:0.0","dms:0.0","nh3:0.4","nh4:0.6","bc
 # SFC
 export DO_MYJSFC=.false.
 export DO_MYNNSFCLAY=.false.
+export BL_MYNN_TKEADVECT=.false.
 
 # LSM
 export LSM=1
@@ -569,6 +576,11 @@ export FNSMCC="'global_soilmgldas.t126.384.190.grb'"
 export FNSMCC_control="'global_soilmgldas.statsgo.t1534.3072.1536.grb'"
 export FNMSKH_control="'global_slmask.t1534.3072.1536.grb'"
 export FNABSC="'global_mxsnoalb.uariz.t126.384.190.rg.grb'"
+
+# Dynamical core
+export FV_CORE_TAU=0.
+export RF_CUTOFF=30.0
+export FAST_TAU_W_SEC=0.0
 
 # Tiled Fix files
 export ATMRES=C96
@@ -1224,6 +1236,34 @@ export DOCN_CDEPS=false
 export INPES=$INPES_dflt
 export JNPES=$JNPES_dflt
 export NTILES=1
+export IMFSHALCNV=2
+export IMFDEEPCNV=2
+export HYBEDMF=.false.
+export SATMEDMF=.true.
+export MONINQ_FAC=-1.0
+export HURR_PBL=.true.
+export ISATMEDMF=1
+export IOPT_SFC=1
+export IOPT_DVEG=2
+export IOPT_CRS=1
+export IOPT_RAD=1
+export IOPT_ALB=2
+export IOPT_STC=1
+export LSM=1
+export DO_GSL_DRAG_LS_BL=.true.
+export DO_GSL_DRAG_SS=.true.
+export DO_GSL_DRAG_TOFD=.true.
+export IMP_PHYSICS=11
+export IAER=111
+export CNVGWD=.false.
+export LTAEROSOL=.false.
+export CDMBWD=1.0,1.0,1.0,1.0
+export LHEATSTRG=.false.
+export LRADAR=.true.
+
+export FV_CORE_TAU=5.
+export RF_CUTOFF=30.e2
+export RF_CUTOFF_NEST=50.e2
 
 export IS_MOVING_NEST=".false."
 export VORTEX_TRACKER=0
@@ -1364,6 +1404,9 @@ export FHMAX=12
 export FRAC_GRID=.false.
 export FRAC_ICE=.true.
 
+export FV_CORE_TAU=10.
+export RF_CUTOFF=7.5e2
+
 export FV3_RUN=lake_control_run.IN
 export CCPP_SUITE=FV3_HRRR
 export INPUT_NML=rap.nml.IN
@@ -1495,4 +1538,75 @@ export DIAG_TABLE=diag_table_hrrr
 export MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
 export DIAG_TABLE_ADDITIONAL=diag_additional_rrfs_smoke
 export FRAC_ICE=.true.
+}
+export_rap_common()
+{
+export_fv3
+export NPZ=127
+export NPZP=128
+export DT_ATMOS=300
+export SYEAR=2021
+export SMONTH=03
+export SDAY=22
+export SHOUR=06
+export OUTPUT_GRID='gaussian_grid'
+export NSTF_NAME='2,0,0,0,0'
+export WRITE_DOPOST=.true.
+export IAER=5111
+
+export FV_CORE_TAU=10.
+export RF_CUTOFF=7.5e2
+
+export FV3_RUN=control_run.IN
+export INPUT_NML=rap.nml.IN
+export FIELD_TABLE=field_table_thompson_aero_tke
+
+export LHEATSTRG=.false.
+export IMP_PHYSICS=8
+export DNATS=0
+export DO_SAT_ADJ=.false.
+export LRADAR=.true.
+export LTAEROSOL=.true.
+export IALB=2
+export IEMS=2
+export HYBEDMF=.false.
+export DO_MYNNEDMF=.true.
+export DO_MYNNSFCLAY=.true.
+}
+export_rap()
+{
+export_rap_common
+
+export DIAG_TABLE=diag_table_rap
+export CCPP_SUITE=FV3_RAP
+
+export IMFSHALCNV=3
+export IMFDEEPCNV=3
+export LSM=3
+export LSOIL_LSM=9
+export KICE=9
+
+export GWD_OPT=3
+export DO_UGWP_V0=.false.
+export DO_UGWP_V0_OROG_ONLY=.false.
+export DO_GSL_DRAG_LS_BL=.true.
+export DO_GSL_DRAG_SS=.true.
+export DO_GSL_DRAG_TOFD=.true.
+export DO_UGWP_V1=.false.
+export DO_UGWP_V1_OROG_ONLY=.false.
+}
+export_rrfs_v1()
+{
+export_rap_common
+
+export CCPP_SUITE=FV3_RRFS_v1beta
+export DIAG_TABLE=diag_table_rap_noah
+
+export DO_DEEP=.false.
+export SHAL_CNV=.false.
+export IMFSHALCNV=-1
+export IMFDEEPCNV=-1
+export LHEATSTRG=.false.
+export LSM=2
+export LSOIL_LSM=4
 }
