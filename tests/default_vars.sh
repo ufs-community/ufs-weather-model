@@ -1052,7 +1052,7 @@ export DATM_SRC=CFSR
 export FILENAME_BASE=cfsr.
 export MESH_ATM=${FILENAME_BASE//.}_mesh.nc
 export atm_datamode=${DATM_SRC}
-export stream_files=DATM_INPUT/${FILENAME_BASE}201110.nc
+export stream_files=INPUT/${FILENAME_BASE}201110.nc
 export STREAM_OFFSET=0
 
 export BL_SUFFIX=""
