@@ -195,7 +195,7 @@ it will be expanded to cover the full range of ATM-only supported configurations
 
 **Additional Information**
 
-Input files required for ATM configurations can be viewed in :numref:`Section %s <atm-io>`
+Input files required for ATM configurations can be viewed in :numref:`Section %s <atm-in>`
 or in the `UFS WM RT Data Bucket <https://registry.opendata.aws/noaa-ufs-regtests/>`__. 
 Information on ``nems.configure`` files is available in :numref:`Section %s <nems-conf>`,
 and a sample ATM ``nems.configure`` file (``nems.configure.atm.IN``) is available 
@@ -269,8 +269,8 @@ These tests use default values set in the ``export_fv3`` function of ``default_v
 
 **Additional Information**
 
-Input files required for ATML configurations can be viewed in :numref:`Section %s (ATM) <atm-io>` 
-and :numref:`Section %s (LND) <lnd-io>` or in the `UFS WM RT Data Bucket <https://registry.opendata.aws/noaa-ufs-regtests/>`__. 
+Input files required for ATML configurations can be viewed in :numref:`Section %s (ATM) <atm-in>` 
+and :numref:`Section %s (LND) <lnd-in>` or in the `UFS WM RT Data Bucket <https://registry.opendata.aws/noaa-ufs-regtests/>`__. 
 Information on ``nems.configure`` files is available in :numref:`Section %s <nems-conf>`,
 and a sample ATML ``nems.configure`` file (``nems.configure.atm_lnd.IN``) is available 
 `here <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/nems.configure.atm_lnd.IN>`__.
@@ -749,7 +749,7 @@ The LND configuration couples :term:`DATM`, :term:`CDEPS`, and :term:`CMEPS` wit
 
 **Additional Information**
 
-Input files required for LND configurations can be viewed in :numref:`Section %s (LND) <lnd-io>` 
+Input files required for LND configurations can be viewed in :numref:`Section %s (LND) <lnd-in>` 
 or in the `UFS WM RT Data Bucket <https://registry.opendata.aws/noaa-ufs-regtests/>`__. 
 Information on ``nems.configure`` files is available in :numref:`Section %s <nems-conf>`,
 and a sample ATML ``nems.configure`` file (``nems.configure.atm_lnd.IN``) is available 
