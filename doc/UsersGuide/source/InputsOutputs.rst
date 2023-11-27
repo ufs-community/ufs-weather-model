@@ -1101,7 +1101,7 @@ The configuration files used by the UFS Weather Model are listed here and descri
    * ``diag_table``
    * ``field_table``
    * ``model_configure``
-   * ``nems.configure``
+   * ``ufs.configure``
    * ``suite_[suite_name].xml`` (used only at build time)
    * ``datm.streams`` (used by CDEPS)
    * ``datm_in`` (used by CDEPS)
@@ -1573,15 +1573,15 @@ are not usually changed.
      - integer
      - 0
 
-.. _nems-conf:
+.. _ufs-conf:
 
 ------------------------
-``nems.configure`` file
+``ufs.configure`` file
 ------------------------
 
 This file contains information about the various NEMS components and their run sequence. The active components for a particular model configuration are given in the *EARTH_component_list*. For each active component, the model name and compute tasks assigned to the component are given. A specific component might also require additional configuration information to be present. The ``runSeq`` describes the order and time intervals over which one or more component models integrate in time. Additional *attributes*, if present, provide additional configuration of the model components when coupled with the CMEPS mediator.
 
-For the ATM application, since it consists of a single component, the ``nems.configure`` is simple and does not need to be changed.
+For the ATM application, since it consists of a single component, the ``ufs.configure`` is simple and does not need to be changed.
 A sample of the file contents is shown below:
 
 .. code-block:: console
@@ -1592,22 +1592,22 @@ A sample of the file contents is shown below:
     ATM
   ::
 
-However, ``nems.configure`` files for other configurations of the Weather Model are more complex. A full set of ``nems.configure`` templates is available in the ``ufs-weather-model/tests/parm/`` directory `here <https://github.com/ufs-community/ufs-weather-model/tree/develop/tests/parm>`__. Template names follow the pattern ``nems.configure.*.IN``. A number of samples are available below: 
+However, ``ufs.configure`` files for other configurations of the Weather Model are more complex. A full set of ``ufs.configure`` templates is available in the ``ufs-weather-model/tests/parm/`` directory `here <https://github.com/ufs-community/ufs-weather-model/tree/develop/tests/parm>`__. Template names follow the pattern ``ufs.configure.*.IN``. A number of samples are available below: 
 
-   * :doc:`ATMAQ <samples/nems.configure.ATMAQ>` configuration
-   * :doc:`S2S <samples/nems.configure.S2S>` (fully coupled ``S2S`` configuration that receives atmosphere-ocean fluxes from a mediator)
-   * :doc:`S2SW <samples/nems.configure.S2SW>` (fully coupled ``S2SW`` configuration)
-   * :doc:`S2SWA <samples/nems.configure.S2SWA>` (coupled GOCART in the S2SAW configuration)
-   * :doc:`NG-GODAS <samples/nems.configure.NG-GODAS>` (coupled NG-GODAS configuration)
-   * :doc:`HAFS <samples/nems.configure.HAFS>` (coupled HAFS configuration)
-   * :doc:`LND <samples/nems.configure.ATM_LND>` (ATML configuration)
+   * :doc:`ATMAQ <samples/ufs.configure.ATMAQ>` configuration
+   * :doc:`S2S <samples/ufs.configure.S2S>` (fully coupled ``S2S`` configuration that receives atmosphere-ocean fluxes from a mediator)
+   * :doc:`S2SW <samples/ufs.configure.S2SW>` (fully coupled ``S2SW`` configuration)
+   * :doc:`S2SWA <samples/ufs.configure.S2SWA>` (coupled GOCART in the S2SAW configuration)
+   * :doc:`NG-GODAS <samples/ufs.configure.NG-GODAS>` (coupled NG-GODAS configuration)
+   * :doc:`HAFS <samples/ufs.configure.HAFS>` (coupled HAFS configuration)
+   * :doc:`LND <samples/ufs.configure.ATM_LND>` (ATML configuration)
 
-   * For more HAFS, HAFSW, and HAFS-ALL configurations please see the following ``nems.configure`` templates:
+   * For more HAFS, HAFSW, and HAFS-ALL configurations please see the following ``ufs.configure`` templates:
 
-      * `HAFS ATM-OCN <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/nems.configure.hafs_atm_ocn.IN>`_
-      * `HAFS ATM-WAV <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/nems.configure.hafs_atm_wav.IN>`_
-      * `HAFS ATM-OCN-WAV <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/nems.configure.hafs_atm_ocn_wav.IN>`_
-      * `HAFS ATM-DOCN <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/nems.configure.hafs_atm_docn.IN>`_
+      * `HAFS ATM-OCN <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.hafs_atm_ocn.IN>`_
+      * `HAFS ATM-WAV <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.hafs_atm_wav.IN>`_
+      * `HAFS ATM-OCN-WAV <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.hafs_atm_ocn_wav.IN>`_
+      * `HAFS ATM-DOCN <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.hafs_atm_docn.IN>`_
 
 .. note:: The ``aoflux_grid`` option is used to select the grid/mesh to perform atmosphere-ocean flux calculation. The possible options are ``xgrid`` (exchange grid), ``agrid`` (atmosphere model grid) and ``ogrid`` (ocean model grid).
 
@@ -2246,7 +2246,7 @@ on the monthly, daily, hourly, yearly or timestep intervals set by the *histfreq
 *0* for both monthly and daily frequencies and neither yearly nor per-timestep output is requested, only 6-hour
 mean history files will be produced.
 
-Further details of the configuration of CICE model output can be found in the CICE documentation  `3.1.4 <https://cice-consortium-cice.readthedocs.io/en/master/user_guide/ug_implementation.html#model-output>`_
+Further details of the configuration of CICE model output can be found in the CICE documentation `Section 3.1.4 <https://cice-consortium-cice.readthedocs.io/en/main/user_guide/ug_implementation.html#model-output>`__.
 
 .. _ww3-out:
 
@@ -2271,8 +2271,7 @@ Additional Information about the FMS Diagnostic Manager
 ==============================================================
 
 The FMS (Flexible Modeling System) diagnostic manager (``FMS/diag_manager``) manages the output for the ATM and, if present, the MOM6 component in the UFS Weather Model. It is configured using the ``diag_table`` file. Data can be written at any number of sampling and/or averaging intervals
-specified at run-time.  More information about the FMS diagnostic manager can be found at:
-https://data1.gfdl.noaa.gov/summer-school/Lectures/July16/03_Seth1_DiagManager.pdf
+specified at run-time. 
 
 .. _DiagManagerNML:
 
