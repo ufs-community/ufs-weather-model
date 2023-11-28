@@ -15,8 +15,8 @@ unload("ncarcompilers")
 stack_gnu_ver=os.getenv("stack_gnu_ver") or "12.2.0"
 load(pathJoin("stack-gcc", stack_gnu_ver))
 
-stack_impi_ver=os.getenv("stack_impi_ver") or "8.1.25"
-load(pathJoin("stack-cray-mpich", stack_impi_ver))
+stack_cray_mpich_ver=os.getenv("stack_cray_mpich_ver") or "8.1.25"
+load(pathJoin("stack-cray-mpich", stack_cray_mpich_ver))
 
 cmake_ver=os.getenv("cmake_ver") or "3.26.3"
 load(pathJoin("cmake", cmake_ver))
