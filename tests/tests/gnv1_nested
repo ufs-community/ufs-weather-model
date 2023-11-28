@@ -1,0 +1,226 @@
+###############################################################################
+#
+#  HAFS global with 1 nest and atmosphere only using global_nest_v1 physics
+#
+###############################################################################
+
+export TEST_DESCR="Compare HAFS global with 1 nest and atmosphere only global_nest_v1 physics results with previous trunk version"
+
+export CNTL_DIR=gnv1_nested
+
+export LIST_FILES="atmf006.nc \
+                   sfcf006.nc \
+                   atm.nest02.f006.nc \
+                   sfc.nest02.f006.nc \
+                   RESTART/20200825.180000.coupler.res \
+                   RESTART/20200825.180000.fv_core.res.nc \
+                   RESTART/20200825.180000.fv_core.res.nest02.nc \
+                   RESTART/20200825.180000.fv_core.res.nest02.tile7.nc \
+                   RESTART/20200825.180000.fv_core.res.tile1.nc \
+                   RESTART/20200825.180000.fv_core.res.tile2.nc \
+                   RESTART/20200825.180000.fv_core.res.tile3.nc \
+                   RESTART/20200825.180000.fv_core.res.tile4.nc \
+                   RESTART/20200825.180000.fv_core.res.tile5.nc \
+                   RESTART/20200825.180000.fv_core.res.tile6.nc \
+                   RESTART/20200825.180000.fv_srf_wnd.res.nest02.tile7.nc \
+                   RESTART/20200825.180000.fv_srf_wnd.res.tile1.nc \
+                   RESTART/20200825.180000.fv_srf_wnd.res.tile2.nc \
+                   RESTART/20200825.180000.fv_srf_wnd.res.tile3.nc \
+                   RESTART/20200825.180000.fv_srf_wnd.res.tile4.nc \
+                   RESTART/20200825.180000.fv_srf_wnd.res.tile5.nc \
+                   RESTART/20200825.180000.fv_srf_wnd.res.tile6.nc \
+                   RESTART/20200825.180000.fv_tracer.res.nest02.tile7.nc \
+                   RESTART/20200825.180000.fv_tracer.res.tile1.nc \
+                   RESTART/20200825.180000.fv_tracer.res.tile2.nc \
+                   RESTART/20200825.180000.fv_tracer.res.tile3.nc \
+                   RESTART/20200825.180000.fv_tracer.res.tile4.nc \
+                   RESTART/20200825.180000.fv_tracer.res.tile5.nc \
+                   RESTART/20200825.180000.fv_tracer.res.tile6.nc \
+                   RESTART/20200825.180000.phy_data.nest02.tile7.nc \
+                   RESTART/20200825.180000.phy_data.tile1.nc \
+                   RESTART/20200825.180000.phy_data.tile2.nc \
+                   RESTART/20200825.180000.phy_data.tile3.nc \
+                   RESTART/20200825.180000.phy_data.tile4.nc \
+                   RESTART/20200825.180000.phy_data.tile5.nc \
+                   RESTART/20200825.180000.phy_data.tile6.nc \
+                   RESTART/20200825.180000.sfc_data.nest02.tile7.nc \
+                   RESTART/20200825.180000.sfc_data.tile1.nc \
+                   RESTART/20200825.180000.sfc_data.tile2.nc \
+                   RESTART/20200825.180000.sfc_data.tile3.nc \
+                   RESTART/20200825.180000.sfc_data.tile4.nc \
+                   RESTART/20200825.180000.sfc_data.tile5.nc \
+                   RESTART/20200825.180000.sfc_data.tile6.nc \
+                   RESTART/fv_BC_ne.res.nest02.nc \
+                   RESTART/fv_BC_sw.res.nest02.nc"
+
+
+export_fv3
+export_hafs
+
+export HAFS=true
+export FHMAX=6
+export RESTART_N=${FHMAX}
+export atm_omp_num_threads=2
+export DT_ATMOS=90
+export IDEFLATE=1
+export NFHMAX_HF=-1
+export NFHOUT_HF=3
+export NFHOUT=3
+export OUTPUT_FILE="'netcdf' 'netcdf'"
+export SDAY=25
+export SHOUR=12
+export SMONTH=08
+export SYEAR=2020
+export WRTTASK_PER_GROUP=60
+export NTILES=6
+
+export GWD_OPT=2
+export DO_UGWP=.true.
+export DO_TOFD=.false.
+export DO_UGWP_V0=.false.
+export DO_UGWP_V0_OROG_ONLY=.false.
+export DO_GSL_DRAG_LS_BL=.false.
+export DO_GSL_DRAG_SS=.false.
+export DO_GSL_DRAG_TOFD=.false.
+export DO_UGWP_V1=.false.
+export DO_UGWP_V1_OROG_ONLY=.false.
+
+export FV_CORE_TAU=0.
+export RF_CUTOFF=10.
+export RF_CUTOFF_NEST=10.
+export FAST_TAU_W_SEC=0.2
+
+export OUTPUT_GRID='global_latlon'
+export IMO=360
+export JMO=181
+
+export OUTPUT_GRID_2='rotated_latlon'
+export CEN_LON_2=-86.0
+export CEN_LAT_2=23.0
+export LON1_2=-45.00
+export LAT1_2=-40.00
+export LON2_2=45.00
+export LAT2_2=40.00
+export DLON_2=0.25
+export DLAT_2=0.25
+
+export BLOCKSIZE=${BLOCKSIZE:-24}
+export CCPP_SUITE="FV3_global_nest_v1"
+export DEFLATE_LEVEL=-1
+export INPES=4
+export JNPES=5
+export NPX=97
+export NPY=97
+export NPZ=64
+export NPZP=$(($NPZ + 1))
+export K_SPLIT=4
+export N_SPLIT=5
+export NWAT=6
+export NA_INIT=1
+export EXTERNAL_IC=.true.
+export NGGPS_IC=.true.
+export MOUNTAIN=.false.
+export WARM_START=.false.
+export TARGET_LAT="23.0"
+export TARGET_LON="-86.0"
+export STRETCH_FAC=1.0001
+export FULL_ZS_FILTER=.false.
+export N_ZS_FILTER=0
+
+export GRID_PES="120,60"
+export TILE_COARSE="0,6"
+export NUM_TILE_TOP=6
+export NEST_REFINE="0,3"
+export NEST_IOFFSETS="1,9"
+export NEST_JOFFSETS="1,9"
+
+export FHCYC=0
+export FHSWR=1800
+export FHLWR=1800
+export NSTF_NAME=2,0,0,0,0
+export CPLFLX=.false.
+export CPLOCN2ATM=.true.
+export CPLWAV=.false.
+export CPLWAV2ATM=.false.
+export CPL_IMP_MRG=.false.
+
+export INPES_NEST02=6
+export JNPES_NEST02=10
+export NPX_NEST02=241
+export NPY_NEST02=241
+export K_SPLIT_NEST02=4
+export N_SPLIT_NEST02=5
+
+ATM_compute_tasks=$(( INPES*JNPES*NTILES + INPES_NEST02*JNPES_NEST02 ))
+
+export NESTED=.true.
+export FULL_ZS_FILTER=.false.
+export N_ZS_FILTER=0
+
+export CMEPS=false
+export RUNTYPE="startup"
+export USE_COLDSTART="false"
+
+export DIAG_TABLE=diag_table_hafs_template
+export INPUT_NML=input_global_hafs.nml.IN
+export INPUT_NEST02_NML=input_nest_hafs.nml.IN
+export MODEL_CONFIGURE="model_configure_hafs.IN"
+export NEMS_CONFIGURE="nems.configure.hafs_atm.IN"
+export FV3_RUN="hafs_fv3_run.IN"
+export FIELD_TABLE=field_table_thompson_aero_tke_progsigma
+
+export IAER=5111
+export PROGSIGMA=.true.
+export BETASCU=8.0
+export BETAMCU=1.5
+export BETADCU=0.5
+
+export SFCLAY_COMPUTE_FLUX=.false.
+export BL_MYNN_TKEADVECT=.true.
+export LKM=0
+export IMP_PHYSICS=8
+export DNATS=0
+export DO_SAT_ADJ=.false.
+export HYBEDMF=.false.
+export DO_MYNNEDMF=.true.
+export DO_MYNNSFCLAY=.true.
+export DO_DEEP=.true.
+export SHAL_CNV=.true.
+export IMFSHALCNV=5
+export IMFDEEPCNV=5
+export LSM=2
+export IOPT_SFC=4
+export IOPT_DVEG=4
+export IOPT_CRS=2
+export IOPT_RAD=3
+export IOPT_ALB=1
+export IOPT_STC=3
+export CNVGWD=.true.
+export IOVR=3
+export LTAEROSOL=.true.
+export LRADAR=.true.
+export DT_INNER=45
+export SEDI_SEMI=.true.
+export DECFL=10
+export SATMEDMF=.false.
+export ISATMEDMF=1
+export LSEASPRAY=.false.
+
+export FV_CORE_TAU=0.
+export RF_CUTOFF=10.
+export FAST_TAU_W_SEC=0.2
+
+export CDMBWD=20.0,2.5,1.0,1.0
+export KNOB_UGWP_DOKDIS=2
+export KNOB_UGWP_NDX4LH=4
+export KNOB_UGWP_VERSION=1
+export KNOB_UGWP_PALAUNCH=275.0e2
+
+export GWD_OPT=2
+export DO_UGWP_V0=.false.
+export DO_UGWP_V0_OROG_ONLY=.false.
+export DO_GSL_DRAG_LS_BL=.true.
+export DO_GSL_DRAG_SS=.true.
+export DO_GSL_DRAG_TOFD=.true.
+export DO_UGWP_V1=.true.
+export DO_UGWP_V1_OROG_ONLY=.false.
