@@ -616,16 +616,16 @@ export CA_SGS=.false.
 export CA_GLOBAL=.false.
 
 #waves
-export WW3RSTDTHR=12
-export DT_2_RST="$(printf "%02d" $(( ${WW3RSTDTHR}*3600 )))"
-export WW3OUTDTHR=1
-export DTFLD="$(printf "%02d" $(( ${WW3OUTDTHR}*3600 )))"
-export DTPNT="$(printf "%02d" $(( ${WW3OUTDTHR}*3600 )))"
+export WW3_RSTDTHR=12
+export WW3_DT_2_RST="$(printf "%02d" $(( ${WW3_RSTDTHR}*3600 )))"
+export WW3_OUTDTHR=1
+export WW3_DTFLD="$(printf "%02d" $(( ${WW3_OUTDTHR}*3600 )))"
+export WW3_DTPNT="$(printf "%02d" $(( ${WW3_OUTDTHR}*3600 )))"
 export DTRST=0
 export RSTTYPE=T
 export GOFILETYPE=1
 export POFILETYPE=1
-export OUTPARS_WAV="WND HS FP DP PHS PTP PDIR"
+export WW3_OUTPARS="WND HS FP DP PHS PTP PDIR"
 export CPLILINE='$'
 export ICELINE='$'
 export WINDLINE='$'
@@ -648,13 +648,13 @@ export RST_BEG=$RUN_BEG
 export RST_2_BEG=$RUN_BEG
 export RST_END=$RUN_END
 export RST_2_END=$RUN_END
-export WAV_CUR='F'
-export WAV_ICE='F'
-export WAV_IC1='F'
-export WAV_IC5='F'
+export WW3_CUR='F'
+export WW3_ICE='F'
+export WW3_IC1='F'
+export WW3_IC5='F'
 # ATMW
-export MULTIGRID=true
-export MODDEF_WAV=mod_def.glo_1deg
+export WW3_MULTIGRID=true
+export WW3_MODDEF=mod_def.glo_1deg
 export MESH_WAV=mesh.glo_1deg.nc
 
 # ATMA
@@ -675,34 +675,34 @@ export_cice6() {
 export SECS=`expr $SHOUR \* 3600`
 export DT_CICE=${DT_ATMOS}
 export CICE_NPT=999
-export CICERUNTYPE=initial
-export RUNID=unknown
-export USE_RESTART_TIME=.false.
+export CICE_RUNTYPE=initial
+export CICE_RUNID=unknown
+export CICE_USE_RESTART_TIME=.false.
 export CICE_RESTART_DIR=./RESTART/
 export CICE_RESTART_FILE=iced
-export DUMPFREQ=d
-export DUMPFREQ_N=1000
+export CICE_DUMPFREQ=d
+export CICE_DUMPFREQ_N=1000
 export CICE_DIAGFREQ=`expr $FHMAX \* 3600 / $DT_CICE`
 export CICE_HISTFREQ_N="0, 0, 6, 1, 1"
 export CICE_HIST_AVG=.true.
 export CICE_HISTORY_DIR=./history/
 export CICE_INCOND_DIR=./history/
-export CICEGRID=grid_cice_NEMS_mx${OCNRES}.nc
-export CICEMASK=kmtu_cice_NEMS_mx${OCNRES}.nc
-export GRIDATM=A
-export GRIDOCN=A
-export GRIDICE=B
+export CICE_GRID=grid_cice_NEMS_mx${OCNRES}.nc
+export CICE_MASK=kmtu_cice_NEMS_mx${OCNRES}.nc
+export CICE_GRIDATM=A
+export CICE_GRIDOCN=A
+export CICE_GRIDICE=B
 export CICE_TR_POND_LVL=.true.
 export CICE_RESTART_POND_LVL=.false.
 # setting to true will allow Frazil FW and Salt to be included in fluxes sent to ocean
-export FRAZIL_FWSALT=.true.
-export KTHERM=2
-export TFREEZE_OPTION=mushy
+export CICE_FRAZIL_FWSALT=.true.
+export CICE_KTHERM=2
+export CICE_TFREEZE_OPTION=mushy
 # SlenderX2
-export NPROC_ICE=$ICE_tasks
-export np2=`expr $NPROC_ICE / 2`
-export BLCKX=`expr $NX_GLB / $np2`
-export BLCKY=`expr $NY_GLB / 2`
+export CICE_NPROC=$ICE_tasks
+export np2=`expr $CICE_NPROC / 2`
+export CICE_BLCKX=`expr $NX_GLB / $np2`
+export CICE_BLCKY=`expr $NY_GLB / 2`
 export CICE_DECOMP=slenderX2
 }
 
@@ -710,15 +710,15 @@ export CICE_DECOMP=slenderX2
 export_mom6() {
 export DT_DYNAM_MOM6=1800
 export DT_THERM_MOM6=3600
-export MOM_INPUT=MOM_input_100.IN
+export MOM6_INPUT=MOM_input_100.IN
 export MOM6_OUTPUT_DIR=./MOM6_OUTPUT
 export MOM6_RESTART_DIR=./RESTART/
 export MOM6_RESTART_SETTING=n
 export MOM6_RIVER_RUNOFF=False
-export FRUNOFF=''
-export CHLCLIM=seawifs_1998-2006_smoothed_2X.nc
+export MOM6_FRUNOFF=''
+export MOM6_CHLCLIM=seawifs_1998-2006_smoothed_2X.nc
 export MOM6_USE_LI2016=True
-export TOPOEDITS=''
+export MOM6_TOPOEDITS=''
 # since CPL_SLOW is set to DT_THERM, this should be always be false
 export MOM6_THERMO_SPAN=False
 export MOM6_USE_WAVES=True
@@ -741,17 +741,17 @@ export EPBL=-999.
 
 # Defaults for the WW3 global model
 export_ww3() {
-export WAVDOMAIN=mx${OCNRES}
-export MODDEF_WAV=mod_def.mx${OCNRES}
-export WW3RSTDTHR=3
-export DT_2_RST="$(printf "%02d" $(( ${WW3RSTDTHR}*3600 )))"
-export WW3OUTDTHR=3
-export DTFLD="$(printf "%02d" $(( ${WW3OUTDTHR}*3600 )))"
-export DTPNT="$(printf "%02d" $(( ${WW3OUTDTHR}*3600 )))"
-export WAV_CUR='C'
-export WAV_ICE='C'
-export WAV_IC1='F'
-export WAV_IC5='F'
+export WW3_DOMAIN=mx${OCNRES}
+export WW3_MODDEF=mod_def.mx${OCNRES}
+export WW3_RSTDTHR=3
+export WW3_DT_2_RST="$(printf "%02d" $(( ${WW3_RSTDTHR}*3600 )))"
+export WW3_OUTDTHR=3
+export WW3_DTFLD="$(printf "%02d" $(( ${WW3_OUTDTHR}*3600 )))"
+export WW3_DTPNT="$(printf "%02d" $(( ${WW3_OUTDTHR}*3600 )))"
+export WW3_CUR='C'
+export WW3_ICE='C'
+export WW3_IC1='F'
+export WW3_IC5='F'
 }
 
 # Defaults for the coupled 5-component
@@ -768,7 +768,8 @@ export coupling_interval_slow_sec=${DT_THERM_MOM6}
 export coupling_interval_fast_sec=${DT_ATMOS}
 export MESH_OCN=mesh.mx${OCNRES}.nc
 export MESH_ICE=mesh.mx${OCNRES}.nc
-export MESH_WAV=mesh.${WAVDOMAIN}.nc
+export MESH_WAV=mesh.${WW3_DOMAIN}.nc
+export WW3_MULTIGRID=false
 export CPLMODE=ufs.frac
 export pio_rearranger=box
 export RUNTYPE=startup
@@ -1033,15 +1034,15 @@ export ICE_tasks=$ICE_tasks_cdeps_100
 # Set CICE6 component defaults
 export_cice6
 # default non-mushy thermo for CICE
-export KTHERM=1
-export TFREEZE_OPTION=linear_salt
+export CICE_KTHERM=1
+export CICE_TFREEZE_OPTION=linear_salt
 
 # Set MOM6 component defaults
 export_mom6
 # default no waves
 export MOM6_USE_LI2016=False
 export MOM6_USE_WAVES=False
-export WAVDOMAIN=''
+export WW3_DOMAIN=''
 
 # Set CMEPS component defauls
 export_cmeps
@@ -1157,10 +1158,10 @@ export DT_THERM_MOM6=''
 # Set WW3 component defaults
 export_ww3
 # default hafs with no ice
-export WAVDOMAIN=natl_6m
-export MODDEF_WAV=mod_def.${WAVDOMAIN}
-export WAV_ICE='F'
-export OUTPARS_WAV="WND HS T01 T02 DIR FP DP PHS PTP PDIR UST CHA USP"
+export WW3_DOMAIN=natl_6m
+export WW3_MODDEF=mod_def.${WW3_DOMAIN}
+export WW3_ICE='F'
+export WW3_OUTPARS="WND HS T01 T02 DIR FP DP PHS PTP PDIR UST CHA USP"
 
 # Set CMEPS component defaults
 export_cmeps

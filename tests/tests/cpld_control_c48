@@ -82,10 +82,10 @@ export OCNRES=500
 export ICERES=5.00
 export NX_GLB=72
 export NY_GLB=35
-export NPROC_ICE=$ICE_tasks
+export CICE_NPROC=$ICE_tasks
 export CICE_DECOMP=slenderX1
-export BLCKX=`expr $NX_GLB / $NPROC_ICE`
-export BLCKY=$NY_GLB
+export CICE_BLCKX=`expr $NX_GLB / $CICE_NPROC`
+export CICE_BLCKY=$NY_GLB
 
 # set component and coupling timesteps
 export DT_ATMOS=1200
@@ -98,13 +98,13 @@ export coupling_interval_slow_sec=${DT_THERM_MOM6}
 export coupling_interval_fast_sec=${DT_ATMOS}
 
 # resolution dependent files
-export MOM_INPUT=MOM_input_${OCNRES}.IN
+export MOM6_INPUT=MOM_input_${OCNRES}.IN
 export MESH_ICE=mesh.mx${OCNRES}.nc
 export MESH_OCN=mesh.mx${OCNRES}.nc
-export CICEGRID=grid_cice_NEMS_mx${OCNRES}.nc
-export CICEMASK=kmtu_cice_NEMS_mx${OCNRES}.nc
-export CHLCLIM=''
-export FRUNOFF=''
+export CICE_GRID=grid_cice_NEMS_mx${OCNRES}.nc
+export CICE_MASK=kmtu_cice_NEMS_mx${OCNRES}.nc
+export MOM6_CHLCLIM=''
+export MOM6_FRUNOFF=''
 export MOM6_RIVER_RUNOFF=False
 export MOM6_RESTART_SETTING=r
 

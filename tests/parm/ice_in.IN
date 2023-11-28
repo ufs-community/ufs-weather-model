@@ -8,12 +8,12 @@
     dt             = @[DT_CICE]
     npt            = @[CICE_NPT]
     ndtd           = 1
-    runtype        = '@[CICERUNTYPE]'
-    runid          = '@[RUNID]'
+    runtype        = '@[CICE_RUNTYPE]'
+    runid          = '@[CICE_RUNID]'
     ice_ic         = 'cice_model.res.nc'
     restart        = .true.
     restart_ext    = .false.
-    use_restart_time = @[USE_RESTART_TIME]
+    use_restart_time = @[CICE_USE_RESTART_TIME]
     restart_format = 'nc'
     lcdf64         = .false.
     numin          = 21
@@ -21,8 +21,8 @@
     restart_dir    = '@[CICE_RESTART_DIR]'
     restart_file   = '@[CICE_RESTART_FILE]'
     pointer_file   = './ice.restart_file'
-    dumpfreq       = '@[DUMPFREQ]'
-    dumpfreq_n     = @[DUMPFREQ_N]
+    dumpfreq       = '@[CICE_DUMPFREQ]'
+    dumpfreq_n     = @[CICE_DUMPFREQ_N]
     dump_last      = .false.
     bfbflag        = 'off'
     diagfreq       = @[CICE_DIAGFREQ]
@@ -48,8 +48,8 @@
 &grid_nml
     grid_format  = 'nc'
     grid_type    = 'tripole'
-    grid_file    = '@[CICEGRID]'
-    kmt_file     = '@[CICEMASK]'
+    grid_file    = '@[CICE_GRID]'
+    kmt_file     = '@[CICE_MASK]'
     kcatbound    = 0
     ncat         = 5
     nfsd         = 1
@@ -57,9 +57,9 @@
     nslyr        = 1
     nblyr        = 1
     nfsd         = 1
-    grid_atm     = '@[GRIDATM]'
-    grid_ocn     = '@[GRIDOCN]'
-    grid_ice     = '@[GRIDICE]'
+    grid_atm     = '@[CICE_GRIDATM]'
+    grid_ocn     = '@[CICE_GRIDOCN]'
+    grid_ice     = '@[CICE_GRIDICE]'
 /
 
 &tracer_nml
@@ -81,7 +81,7 @@
 
 &thermo_nml
     kitd              = 1
-    ktherm            = @[KTHERM]
+    ktherm            = @[CICE_KTHERM]
     conduct           = 'MU71'
     a_rapid_mode      =  0.5e-3
     Rac_rapid_mode    =    10.0
@@ -155,18 +155,18 @@
     ustar_min       = 0.0005
     emissivity      = 0.95
     fbot_xfer_type  = 'constant'
-    update_ocn_f    = @[FRAZIL_FWSALT]
+    update_ocn_f    = @[CICE_FRAZIL_FWSALT]
     l_mpond_fresh   = .false.
-    tfrz_option     = '@[TFREEZE_OPTION]'
+    tfrz_option     = '@[CICE_TFREEZE_OPTION]'
     restart_coszen  = .true.
 /
 
 &domain_nml
-    nprocs            = @[NPROC_ICE]
+    nprocs            = @[CICE_NPROC]
     nx_global         = @[NX_GLB]
     ny_global         = @[NY_GLB]
-    block_size_x      = @[BLCKX]
-    block_size_y      = @[BLCKY]
+    block_size_x      = @[CICE_BLCKX]
+    block_size_y      = @[CICE_BLCKY]
     max_blocks        = -1
     processor_shape   = '@[CICE_DECOMP]'
     distribution_type = 'cartesian'

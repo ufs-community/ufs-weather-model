@@ -95,13 +95,13 @@ export OCNRES=050
 export ICERES=0.50
 export NX_GLB=720
 export NY_GLB=576
-export NPROC_ICE=$ICE_tasks
-export np2=`expr $NPROC_ICE / 2`
-export BLCKX=`expr $NX_GLB / $np2`
-export BLCKY=`expr $NY_GLB / 2`
-export WAVDOMAIN=mx${OCNRES}
-export MESH_WAV=mesh.${WAVDOMAIN}.nc
-export MODDEF_WAV=mod_def.mx${OCNRES}
+export CICE_NPROC=$ICE_tasks
+export np2=`expr $CICE_NPROC / 2`
+export CICE_BLCKX=`expr $NX_GLB / $np2`
+export CICE_BLCKY=`expr $NY_GLB / 2`
+export WW3_DOMAIN=mx${OCNRES}
+export MESH_WAV=mesh.${WW3_DOMAIN}.nc
+export WW3_MODDEF=mod_def.mx${OCNRES}
 
 # set component and coupling timesteps
 export DT_ATMOS=600
@@ -116,13 +116,13 @@ export coupling_interval_slow_sec=${DT_THERM_MOM6}
 export coupling_interval_fast_sec=${DT_ATMOS}
 
 # resolution dependent files
-export MOM_INPUT=MOM_input_${OCNRES}.IN
+export MOM6_INPUT=MOM_input_${OCNRES}.IN
 export MESH_ICE=mesh.mx${OCNRES}.nc
 export MESH_OCN=mesh.mx${OCNRES}.nc
-export CICEGRID=grid_cice_NEMS_mx${OCNRES}.nc
-export CICEMASK=kmtu_cice_NEMS_mx${OCNRES}.nc
-export CHLCLIM=seawifs-clim-1997-2010.${NX_GLB}x${NY_GLB}.v20180328.nc
-export FRUNOFF=runoff.daitren.clim.${NX_GLB}x${NY_GLB}.v20180328.nc
+export CICE_GRID=grid_cice_NEMS_mx${OCNRES}.nc
+export CICE_MASK=kmtu_cice_NEMS_mx${OCNRES}.nc
+export MOM6_CHLCLIM=seawifs-clim-1997-2010.${NX_GLB}x${NY_GLB}.v20180328.nc
+export MOM6_FRUNOFF=runoff.daitren.clim.${NX_GLB}x${NY_GLB}.v20180328.nc
 export MOM6_RIVER_RUNOFF=True
 
 export FNALBC="'C192.snowfree_albedo.tileX.nc'"
@@ -148,9 +148,9 @@ export NGGPS_IC=.false.
 export MOUNTAIN=.true.
 
 # ICE warm start
-export CICERUNTYPE=continue
+export CICE_RUNTYPE=continue
 export RUNTYPE=continue
-export USE_RESTART_TIME=.true.
+export CICE_USE_RESTART_TIME=.true.
 
 # MOM6 warm start
 export MOM6_RESTART_SETTING=r

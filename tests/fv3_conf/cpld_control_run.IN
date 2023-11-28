@@ -57,8 +57,8 @@ cp    @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/mesh.mx@[OCNRES].nc .
 
 # WW3 fix/input
 if [[ $CPLWAV == .true. ]]; then
-  cp @[INPUTDATA_ROOT_WW3]/@[MODDEF_WAV] mod_def.ww3
-  if [[ ${WAVDOMAIN:0:2} != mx ]]; then
+  cp @[INPUTDATA_ROOT_WW3]/@[WW3_MODDEF] mod_def.ww3
+  if [[ ${WW3_DOMAIN:0:2} != mx ]]; then
      cp  @[INPUTDATA_ROOT_WW3]/@[MESH_WAV] .
   fi
 fi
