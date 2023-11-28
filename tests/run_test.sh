@@ -253,6 +253,8 @@ if [[ $CPLCHM == .true. ]]; then
   atparse < ${PATHRT}/parm/gocart/AERO_HISTORY.rc.IN > AERO_HISTORY.rc
 fi
 
+#TODO: this logic needs to be cleaned up for datm applications w/o
+#ocean or ice
 if [[ $DATM_CDEPS = 'true' ]] || [[ $S2S = 'true' ]]; then
   if [[ $HAFS = 'false' ]]; then
     atparse < ${PATHRT}/parm/ice_in.IN > ice_in

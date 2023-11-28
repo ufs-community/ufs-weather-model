@@ -769,21 +769,26 @@ export coupling_interval_fast_sec=${DT_ATMOS}
 export MESH_OCN=mesh.mx${OCNRES}.nc
 export MESH_ICE=mesh.mx${OCNRES}.nc
 export MESH_WAV=mesh.${WAVDOMAIN}.nc
-export MULTIGRID=false
 export CPLMODE=ufs.frac
 export pio_rearranger=box
-export ocean_albedo_limit=0.06
-export use_mean_albedos=.false.
 export RUNTYPE=startup
 export RESTART_N=${FHMAX}
 export CMEPS_RESTART_DIR=./RESTART/
 export cap_dbug_flag=0
+# MOM6 attributes
 export use_coldstart=false
 export use_mommesh=true
+# CICE attributes
 export eps_imesh=1.0e-1
+# WW3 attributes
+export MULTIGRID=false
+# mediator AO flux
 export flux_convergence=0.0
 export flux_iteration=2
 export flux_scheme=0
+# mediator ocean albedo
+export ocean_albedo_limit=0.06
+export use_mean_albedos=.false.
 }
 
 export_cpl ()
