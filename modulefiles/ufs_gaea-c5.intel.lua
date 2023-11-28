@@ -25,6 +25,7 @@ load(pathJoin("stack-python", stack_python_ver))
 load("ufs_common")
 
 unload("darshan-runtime")
+unload("cray-libsci")
 
 setenv("CC","cc")
 setenv("CXX","CC")
