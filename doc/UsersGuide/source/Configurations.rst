@@ -145,7 +145,7 @@ it will be expanded to cover the full range of ATM-only supported configurations
 
    * - Test Name
      - Description
-     - Physics Suite (see namelist options `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_c_c_p_psuite_nml_desp.html>`__)
+     - Physics Suite (see `namelist options <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_c_c_p_psuite_nml_desp.html>`__)
      - DT_ATMOS
      - Start Date
      - Forecast Length (hours)
@@ -237,7 +237,7 @@ These tests use default values set in the ``export_fv3`` function of ``default_v
 
    * - Test Name
      - Description
-     - Physics Suite (see namelist options `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_c_c_p_psuite_nml_desp.html>`__)
+     - Physics Suite (see `namelist options <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_c_c_p_psuite_nml_desp.html>`__)
      - DT_ATMOS
      - Start Date
      - Forecast Length (hours)
@@ -283,121 +283,449 @@ Rapid Refresh Forecast System (RRFS)
 
 The RRFS configurations use an :term:`ATM`-only configuration on a high-resolution 
 regional grid with data assimilation capabilities. 
-These tests use the default values set in the ``export_fv3`` function of ``default_vars.sh`` unless other values are explicitly set. 
+These tests use the default values set in the ``export_fv3``, ``export_rap_common``, ``export_rrfs_v1``, and/or ``export_hrrr_conus13km`` functions of ``default_vars.sh`` unless other values are explicitly set in a given test file. In all tests, the values in ``export_fv3`` are set first. Depending on the test, some of these values may be overriden by ``export_rrfs_v1`` (which includes values from ``export_rap_common``) or ``export_hrrr_conus13km``. :numref:`Table %s <rrfs-default-vars-comparison>` compares the values set in ``export_fv3`` to the values set in the other files where there is a difference. 
+
+.. note:: 
+
+   Values in italics indicate that the value is set in a function called by the indicated function. 
+
+.. _rrfs-default-vars-comparison:
+
+.. list-table:: *RRFS Default Variables*
+   :widths: 50 10 10 10 10
+   :header-rows: 1
+   :stub-columns: 1
+
+   * - Variable
+     - export_fv3 
+     - export_rap_common
+     - export_rrfs_v1
+     - export_hrrr_conus13km
+   * - DATE (SYEAR-SMONTH-SDAY SHOUR:00:00)
+     - 2016-10-03 00:00:00
+     - 2021-03-22 06:00:00
+     - *2021-03-22 06:00:00*
+     - 2021-05-12 16:00:00
+   * - Forecast Length in hours (FHMAX)
+     - 24
+     - *24*
+     - *24*
+     - 2
+   * - CCPP_SUITE
+     - None set (set in subsequent functions or test file)
+     - None set
+     - FV3_RRFS_v1beta
+     - FV3_HRRR
+   * - IMP_PHYSICS
+     - 11
+     - 8
+     - *8*
+     - 8
+   * - DT_ATMOS
+     - 1800
+     - 300
+     - *300*
+     - 120
+   * - OUTPUT_GRID
+     - "'cubed_sphere_grid'"
+     - 'gaussian_grid'
+     - *'gaussian_grid'*
+     - lambert_conformal
+   * - NTILES
+     - 6
+     - *6*
+     - *6*
+     - 1
+   * - WRITE_DOPOST
+     - .false.
+     - .true.
+     - *.true.*
+     - .false.
+   * - NSTF_NAME
+     - 2,1,1,0,5
+     - '2,0,0,0,0'
+     - *'2,0,0,0,0'*
+     - *'2,0,0,0,0'*
+   * - IAER
+     - 111
+     - 5111
+     - *5111*
+     - 1011
+   * - NPX
+     - 97
+     - *97*
+     - *97*
+     - 397
+   * - NPY
+     - 97
+     - *97*
+     - *97*
+     - 233
+   * - NPZ
+     - 64
+     - 127
+     - *127*
+     - 65
+   * - NPZP
+     - 65
+     - 128
+     - *128*
+     - 66
+   * - INPES
+     - 3 (``$INPES_dflt`` --- set in machine section)
+     - *3*
+     - *3*
+     - 12
+   * - JNPES
+     - 8 (``$JNPES_dflt`` --- set in machine section)
+     - *8*
+     - *8*
+     - 12
+   * - UFS_CONFIGURE
+     - ufs.configure.atm.IN
+     - *ufs.configure.atm.IN*
+     - *ufs.configure.atm.IN*
+     - *ufs.configure.atm.IN*
+   * - MODEL_CONFIGURE
+     - model_configure.IN
+     - *model_configure.IN*
+     - *model_configure.IN*
+     - model_configure_rrfs_conus13km.IN
+   * - DIAG_TABLE
+     - diag_table_gfsv16
+     - *diag_table_gfsv16*
+     - diag_table_rap_noah
+     - diag_table_hrrr; 
+   * - DIAG_TABLE_ADDITIONAL
+     - Not set
+     - Not set
+     - Not set
+     - diag_additional_rrfs_smoke
+   * - FIELD_TABLE
+     - field_table_gfsv16
+     - field_table_thompson_aero_tke
+     - *field_table_thompson_aero_tke*
+     - field_table_thompson_aero_tke_smoke
+   * - FV3_RUN
+     - None set
+     - control_run.IN
+     - *control_run.IN*
+     - rrfs_warm_run.IN
+   * - INPUT_NML
+     - None set
+     - rap.nml.IN
+     - *rap.nml.IN*
+     - rrfs_conus13km_hrrr.nml.IN
+   * - MAKE_NH
+     - .true.
+     - *.true.*
+     - *.true.*
+     - .false.
+   * - NA_INIT
+     - 1
+     - *1*
+     - *1*
+     - 0
+   * - LHEATSTRG
+     - .true.
+     - .false.
+     - .false.
+     - .false.
+   * - SEDI_SEMI
+     - .true.
+     - *.true.*
+     - *.true.*
+     - .false.
+   * - DECFL
+     - 10
+     - *10*
+     - *10*
+     - 8
+   * - RRFS_SMOKE
+     - .false.
+     - *.false.*
+     - *.false.*
+     - .true.
+   * - SEAS_OPT
+     - 2
+     - *2*
+     - *2*
+     - 0
+   * - LKM
+     - 0
+     - *0*
+     - *0*
+     - 1
+   * - SFCLAY_COMPUTE_FLUX
+     - .false.
+     - *.false.*
+     - *.false.*
+     - .true.
+   * - ICLIQ_SW
+     - 1
+     - *1*
+     - *1*
+     - 2
+   * - IOVR
+     - 1
+     - *1*
+     - *1*
+     - 3
+   * - KICE
+     - 2
+     - 9
+     - *9*
+     - 9
+   * - EXTERNAL_IC
+     - .true.
+     - *.true.*
+     - *.true.*
+     - .false.
+   * - NGGPS_IC
+     - .true.
+     - *.true.*
+     - *.true.*
+     - .false.
+   * - MOUNTAIN
+     - .false.
+     - *.false.*
+     - *.false.*
+     - .true.
+   * - WARM_START
+     - .false.
+     - *.false.*
+     - *.false.*
+     - .true.
+   * - RES_LATLON_DYNAMICS
+     - "''"
+     - *"''"*
+     - *"''"*
+     - "'fv3_increment.nc'"
+   * - FHZERO
+     - 6
+     - *6*
+     - *6*
+     - 1.0
+   * - PRINT_DIFF_PGR
+     - .false.
+     - *.false.*
+     - *.false.*
+     - .true.
+   * - FHCYC
+     - 24
+     - *24*
+     - *24*
+     - 0.0
+   * - CNVCLD
+     - .true.
+     - *.true.*
+     - *.true.*
+     - .false.
+   * - CDMBWD
+     - '0.14,1.8,1.0,1.0' (``${CDMBWD_c96}``)
+     - *'0.14,1.8,1.0,1.0'*
+     - *'0.14,1.8,1.0,1.0'*
+     - '3.5,1.0'
+   * - GWD_OPT
+     - 1
+     - *1*
+     - *1*
+     - 3
+   * - DO_GSL_DRAG_LS_BL
+     - .false.
+     - *.false.*
+     - *.false.*
+     - .true.
+   * - DO_GSL_DRAG_SS
+     - .false.
+     - *.false.*
+     - *.false.*
+     - .true.
+   * - DO_GSL_DRAG_TOFD
+     - .false.
+     - *.false.*
+     - *.false.*
+     - .true.
+   * - DNATS
+     - 1
+     - 0
+     - *0*
+     - 0
+   * - DO_SAT_ADJ
+     - .true.
+     - .false.
+     - *.false.*
+     - .false.
+   * - IALB 
+     - 1
+     - 2
+     - *2*
+     - 2
+   * - IEMS
+     - 1
+     - 2
+     - *2*
+     - 2
+   * - HYBEDMF
+     - .true.
+     - .false.
+     - *.false.*
+     - .false.
+   * - DO_MYNNEDMF
+     - .false.
+     - .true.
+     - *.true.*
+     - .true.
+   * - DO_MYNNSFCLAY
+     - .false.
+     - .true.
+     - *.true.*
+     - .true.
+   * - DO_MYJPBL
+     - .false.
+     - *.false.*
+     - *.false.*
+     - .true.
+   * - DO_DEEP
+     - .true.
+     - *.true.*
+     - .false.
+     - .false.
+   * - SHAL_CNV
+     - .true.
+     - *.true.*
+     - .false.
+     - .false.
+   * - IMFSHALCNV
+     - 2
+     - *2*
+     - -1
+     - -1
+   * - IMFDEEPCNV
+     - 2
+     - *2*
+     - -1
+     - -1
+   * - LSM
+     - 1
+     - *1*
+     - 2
+     - 3
+   * - LSOIL_LSM
+     - 4
+     - *4*
+     - 4
+     - 9
+   * - RESTART_INTERVAL
+     - 0
+     - *0*
+     - *0*
+     - 1
+   * - OUTPUT_FH
+     - "12 -1"
+     - "12 -1" (IH)
+     - "12 -1" (IH)
+     - "12 -1" (IH)
+
 
 Current RRFS regression tests cover a wide variety of functionality and involve several 
 physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality. 
 
-.. attention:: 
-   
-   Certain physics-related settings are common to all of the supported RRFS configurations. These values are set in each test's configuration file because they differ from the ``default_vars.sh`` values:
+.. note::
 
-      * **Set to FALSE:** DO_SAT_ADJ, HYBEDMF, DO_DEEP, SHAL_CNV, LHEATSTRG
-      * **Set to TRUE:** DO_MYNNEDMF, DO_MYNNSFCLAY
-      * **Set to VALUE:** DNATS=0, IALB=2, IEMS=2, IMFSHALCNV=-1, IMFDEEPCNV=-1
-   
    The "Detailed Physics Parameters" column in :numref:`Table %s <rrfs-rts>` details physics settings that differ from both the ``default_vars.sh`` values and these RRFS-specific defaults. 
-   
 
 .. _rrfs-rts:
 
 .. list-table:: *RRFS regression test descriptions*
-   :widths: 50 10 30 50 10 10 10 10 10
+   :widths: 20 20 30 50 10 10 10
    :header-rows: 1
 
    * - Test |nbsp| Name |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp|
      - Description
-     - General Physics Parameters
-     - Detailed |nbsp| Physics |nbsp| Parameters |nbsp| (see |nbsp| namelist |nbsp| options |nbsp| `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_c_c_p_psuite_nml_desp.html>`__ |nbsp| for variable definitions)
-     - Start |nbsp| Date |nbsp| |nbsp| |nbsp| |nbsp|
+     - Default Settings
+     - Physics |nbsp| Parameters |nbsp| (see |nbsp| `namelist options <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_c_c_p_psuite_nml_desp.html>`__ for variable definitions)
      - Fcst Length (hours)
-     - Output Grid
-     - Configuration Files
+     - FIELD_TABLE
      - Other
    * - `rrfs_v1beta <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_v1beta>`__
      - Compare RRFS_v1beta results with previous trunk version
-     - **Suite:** CCPP_SUITE=FV3_RRFS_v1beta
-
-       **Microphysics:** IMP_PHYSICS=8
-
-       **Time Step:** DT_ATMOS=300
-     - **Set to FALSE:** Default RRFS values only :raw-html:`<br/> <br/>`
-       **Set to TRUE:** LRADAR, LTAEROSOL :raw-html:`<br/> <br/>`
-       **Set to VALUE:** NSTF_NAME='2,0,0,0,0', IAER=5111, LSM=2, LSOIL_LSM=4
-     - 2021-03-22 06:00:00
-     - 24
-     - OUTPUT_GRID=gaussian_grid :raw-html:`<br/> <br/>`
-       **Grid Parameters:** NPZ=127, NPZP=128
-     - NEMS_CONFIGURE=ufs.configure.atm.IN
-       MODEL_CONFIGURE=model_configure.IN
-       FV3_RUN=control_run.IN
-       INPUT_NML=rap.nml.IN
-       FIELD_TABLE=field_table_thompson_aero_tke
-       DIAG_TABLE=diag_table_rap_noah
+     - ``export_rrfs_v1``
+     - Default physics
+     - default 
+     - default 
      - RESTART_INTERVAL="6 -1", OUTPUT_FH='0 09 12'
    * - `rrfs_v1beta_debug <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_v1beta_debug>`__
-     - Compare rrfs_v1beta_debug results with previous trunk version
-     - **Suite:** CCPP_SUITE=FV3_RRFS_v1beta
-
-       **Microphysics:** IMP_PHYSICS=8
-
-       **Time Step:** DT_ATMOS=300
-     - **Set to FALSE:** Default RRFS values only :raw-html:`<br/> <br/>`
-       **Set to TRUE:** LRADAR, LTAEROSOL :raw-html:`<br/> <br/>`
-       **Set to VALUE:** NSTF_NAME='2,0,0,0,0', IAER=5111, LSM=2, LSOIL_LSM=4
-     - 2021-03-22 06:00:00
+     - Compare RRFS_v1beta debug results with previous trunk version
+     - ``export_rrfs_v1``
+     - Default physics
      - 1
-     - OUTPUT_GRID=gaussian_grid :raw-html:`<br/> <br/>`
-       **Grid Parameters:** NPZ=127, NPZP=128
-     - NEMS_CONFIGURE=ufs.configure.atm.IN
-       MODEL_CONFIGURE=model_configure.IN
-       FV3_RUN=control_run.IN
-       INPUT_NML=rap.nml.IN
-       FIELD_TABLE=field_table_thompson_aero_tke
-       DIAG_TABLE=diag_table_rap_noah
+     - default 
      - OUTPUT_FH="0 1"
    * - `rrfs_v1nssl <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_v1nssl>`__
      - Compare RRFS_v1nssl results with previous trunk version
-     - **Suite:** CCPP_SUITE=FV3_RRFS_v1nssl
-
-       **Microphysics:** IMP_PHYSICS=17
-
-       **Time Step:** DT_ATMOS=300
-     - **Set to FALSE:** LTAEROSOL :raw-html:`<br/> <br/>`
+     - ``export_rrfs_v1``
+     - CCPP_SUITE=FV3_RRFS_v1nssl :raw-html:`<br/> <br/>`
+       IMP_PHYSICS=17 :raw-html:`<br/> <br/>`
+       **Set to FALSE:** LTAEROSOL :raw-html:`<br/> <br/>`
        **Set to TRUE:** NSSL_CCN_ON, NSSL_HAIL_ON, NSSL_INVERTCCN :raw-html:`<br/> <br/>`
-       **Set to VALUE:** NSTF_NAME='2,0,0,0,0', IAER=5111, CS=17, NWAT=7, LSM=2, LSOIL_LSM=4
-     - 2021-03-22 06:00:00
-     - 24
-     - OUTPUT_GRID=gaussian_grid :raw-html:`<br/> <br/>`
-       **Grid Parameters:** NPZ=127, NPZP=128
-     - NEMS_CONFIGURE=ufs.configure.atm.IN
-       MODEL_CONFIGURE=model_configure.IN
-       FV3_RUN=control_run.IN
-       INPUT_NML=rap.nml.IN 
-       FIELD_TABLE=field_table_nssl_tke
-       DIAG_TABLE=diag_table_rap_noah
+       **Set to VALUE:** NWAT=7
+     - default 
+     - field_table_nssl_tke
      - RESTART_INTERVAL="6 -1", OUTPUT_FH='0 09 12'
    * - `rrfs_v1nssl_nohailnoccn <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_v1nssl_nohailnoccn>`__
      - Compare RRFS_v1nssl_nohailnoccn results with previous trunk version
-     - **Suite:** CCPP_SUITE=FV3_RRFS_v1nssl
-
-       **Microphysics:** IMP_PHYSICS=17
-
-       **Time Step:** DT_ATMOS=300
-     - **Set to FALSE:** NSSL_CCN_ON, NSSL_HAIL_ON, LTAEROSOL :raw-html:`<br/> <br/>`
+     - ``export_rrfs_v1``
+     - CCPP_SUITE=FV3_RRFS_v1nssl :raw-html:`<br/> <br/>`
+       IMP_PHYSICS=17 :raw-html:`<br/> <br/>`
+       **Set to FALSE:** NSSL_CCN_ON, NSSL_HAIL_ON, LTAEROSOL :raw-html:`<br/> <br/>`
        **Set to TRUE:** NSSL_INVERTCCN :raw-html:`<br/> <br/>`
-       **Set to VALUE:** NSTF_NAME='2,0,0,0,0', IAER=5111, NWAT=6, LSM=2, LSOIL_LSM=4
-     - 2021-03-22 06:00:00
-     - 24
-     - OUTPUT_GRID=gaussian_grid :raw-html:`<br/> <br/>`
-       **Grid Parameters:** NPZ=127, NPZP=128
-     - NEMS_CONFIGURE=ufs.configure.atm.IN
-       MODEL_CONFIGURE=model_configure.IN
-       FV3_RUN=control_run.IN
-       INPUT_NML=rap.nml.IN
-       FIELD_TABLE=field_table_nssl_nohailnoccn_tke
-       DIAG_TABLE=diag_table_rap_noah
+       **Set to VALUE:** NWAT=6
+     - default
+     - field_table_nssl_nohailnoccn_tke
      - RESTART_INTERVAL="6 -1", OUTPUT_FH='0 09 12'
+   * - `conus13km_control <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/conus13km_control>`__
+     - HRRR physics on 13km domain, control
+     - ``export_hrrr_conus13km``
+     - Default physics 
+     - default
+     - default
+     - RESTART_INTERVAL=1; QUILTING_RESTART=.false.
+   * - `conus13km_debug <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/conus13km_debug>`__
+     - HRRR physics on 13km domain, debug run
+     - ``export_hrrr_conus13km``
+     - Default physics
+     - 1
+     - default
+     - RESTART_INTERVAL=1; QUILTING_RESTART=.false.
+   * - `conus13km_restart_mismatch <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/conus13km_restart_mismatch>`__
+     - HRRR physics on 13km domain, restart run
+     - ``export_hrrr_conus13km``
+     - Default physics
+     - default
+     - default
+     - FHROT=1, RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${SHOUR} + ${FHROT}  )))0000", RRFS_RESTART=YES; QUILTING_RESTART=.false.
+   * - `conus13km_2threads <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/conus13km_2threads>`__
+     - HRRR physics on 13km domain, two threads
+     - ``export_hrrr_conus13km``
+     - Default physics
+     - 1
+     - default
+     - RESTART_INTERVAL=1, atm_omp_num_threads=2, QUILTING_RESTART=.false., WRTTASK_PER_GROUP=6
+   * - `conus13km_debug_2threads <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/conus13km_debug_2threads>`__
+     - HRRR physics on 13km domain, debug run with threads
+     - ``export_hrrr_conus13km``
+     - Default physics
+     - 1
+     - default
+     - RESTART_INTERVAL=1, atm_omp_num_threads=2, WRTTASK_PER_GROUP=6, QUILTING_RESTART=.false.
+   * - `conus13km_radar_tten_debug <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/conus13km_radar_tten_debug>`__
+     - HRRR physics on 13km domain, debug, with radar-derived temperature tendencies
+     - ``export_hrrr_conus13km``
+     - Default physics
+     - 1
+     - default
+     - RESTART_INTERVAL=1,FH_DFI_RADAR='0.0, 0.25, 0.50, 0.75, 1.0', QUILTING_RESTART=.false.
 
 **Sample** ``CMAKE_FLAGS`` **Setting**
 
@@ -413,6 +741,8 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
 
    * - Physics Suite
      - Description
+   * - FV3_HRRR
+     - The FV3_HRRR physics suite is described in the :term:`CCPP` documentation `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_h_r_r_r_suite_page.html>`__.
    * - FV3_RRFS_v1beta 
      - The FV3_RRFS_v1beta physics suite is described in the CCPP documentation `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_r_r_f_s_v1beta_page.html>`__.
    * - FV3_RRFS_v1nssl
@@ -422,11 +752,11 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
 **Additional Information**
 
 Input files required for RRFS ATM configurations can be viewed in :numref:`Table %s <rrfs-files>`
-or in the `UFS WM RT Data Bucket <https://registry.opendata.aws/noaa-ufs-regtests/>`__. Users who wish to run additional (unsupported) cases may also find useful data `here <https://registry.opendata.aws/noaa-rrfs/>`__. 
+or in the `UFS WM RT Data Bucket <https://registry.opendata.aws/noaa-ufs-regtests/>`__. Users who wish to run additional (unsupported) cases may also find useful data in the `NOAA RRFS data bucket <https://registry.opendata.aws/noaa-rrfs/>`__. 
 
-Information on ``ufs.configure`` files is available in :numref:`Section %s <ufs-conf>`. The supported RRFS WM RTs use the same ``ufs.configure`` file that ATM-only tests do (``ufs.configure.atm.IN``). This file can be viewed in the ``ufs-weather-model/tests/parm`` directory `here <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.atm.IN>`__. 
+Information on ``ufs.configure`` files is available in :numref:`Section %s <ufs-conf>`. The supported RRFS WM RTs use the same ``ufs.configure`` file that ATM-only tests do (``ufs.configure.atm.IN``). This file can be viewed in the ``ufs-weather-model/tests/parm`` `directory <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.atm.IN>`__. 
 
-Additionally, users can find examples of various RRFS configuration files in ``ufs-weather-model/tests/parm`` `here <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/>`__. These files include ``model_configure_*``, ``*_run.IN`` (input run), ``*.nml.IN`` (input namelist), ``field_table_*``, and ``diag_table_*`` files.  
+Additionally, users can find examples of various RRFS configuration files in the ``ufs-weather-model/tests/parm`` `directory <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/>`__. These files include ``model_configure_*``, ``*_run.IN`` (input run), ``*.nml.IN`` (input namelist), ``field_table_*``, and ``diag_table_*`` files.  
 
 .. _rrfs-files:
 
@@ -453,7 +783,7 @@ Additionally, users can find examples of various RRFS configuration files in ``u
      - GFSPRS.GrbF00
        GFSPRS.GrbF09
        GFSPRS.GrbF12
-     - 20210323.060000.coupler.research
+     - 20210323.060000.coupler.res
        
        20210323.060000.fv_core.res.nc
        
@@ -482,7 +812,41 @@ Additionally, users can find examples of various RRFS configuration files in ``u
        GFSPRS.GrbF09
        GFSPRS.GrbF12
      - 
+   * - conus13km_control
+     - sfcf000.nc
+       sfcf001.nc
+       sfcf002.nc
+     - atmf000.nc
+       atmf001.nc
+       atmf002.nc
+     - 
+     - 
+     - 20210512.170000.coupler.res
+       20210512.170000.fv_core.res.nc
+       20210512.170000.fv_core.res.tile1.nc
+       20210512.170000.fv_srf_wnd.res.tile1.nc
+       20210512.170000.fv_tracer.res.tile1.nc
+       20210512.170000.phy_data.nc
+       20210512.170000.sfc_data.nc
+   * - conus13km_debug
+     - sfcf000.nc
+       sfcf001.nc
+     - atmf000.nc
+       atmf001.nc
+     - 
+     - 
+     - 20210512.170000.coupler.res
+       20210512.170000.fv_core.res.nc
+       20210512.170000.fv_core.res.tile1.nc
+       20210512.170000.fv_srf_wnd.res.tile1.nc
+       20210512.170000.fv_tracer.res.tile1.nc
+       20210512.170000.phy_data.nc
+       20210512.170000.sfc_data.nc
    * - rrfs_v1beta_debug
+       conus13km_debug
+       conus13km_2threads
+       conus13km_debug_2threads
+       conus13km_radar_tten_debug
      - sfcf000.nc
        sfcf001.nc
      - atmf000.nc
@@ -490,7 +854,13 @@ Additionally, users can find examples of various RRFS configuration files in ``u
      - 
      - 
      - 
-   
+   * - conus13km_restart_mismatch
+     - sfcf002.nc
+     - atmf002.nc
+     - 
+     - 
+     - 
+
 .. _lnd-documented:
 
 =======
