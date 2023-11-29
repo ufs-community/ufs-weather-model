@@ -1,0 +1,138 @@
+matchedNode = []
+generateBaselineNode = []
+for (label in pullRequest.labels) {
+   listOfLabelNodeNames = jenkins.model.Jenkins.instance.nodes.collect {
+   node -> node.getLabelString().contains(label) ? node.name : null
+
+   if ((label.matches(node.getLabelString()+"-(.*)"))) {
+     matchedNode += node.getLabelString()
+   }
+
+   if ((label.matches(node.getLabelString()+"(.*)-BL"))) {
+     generateBaselineNode += node.getLabelString() 
+   }
+
+ }
+}
+
+modifiedLabels = matchedNode.collect{"'" + it + "'"} 
+baselineLabels = generateBaselineNode.collect{"'" + it + "'"} 
+def generateStage(nodeLabel) {
+    return {
+        stage("Running on ${nodeLabel}") {
+            node(nodeLabel) {
+               cleanWs()
+               checkout scm
+               script {
+                    echo "Running on ${nodeLabel}"
+                    if (baselineLabels.contains(nodeLabel)) {
+                       sh '''
+                       pwd
+                       cd tests
+                       export machine=${NODE_NAME}
+                         
+                          if [[ $machine =~ "Jet" ]] 
+                          then
+                            echo "Creating baselines on $machine"
+                            export dprefix=/lfs1/NAGAPE/$ACCNR/$USER
+                            ./rt.sh -a ${ACCNR} -c -r -l rt.conf
+                          elif [[ $machine =~ "Hercules" ]]
+                          then
+                            echo "Creating baselines on $machine"
+                            export dprefix=/work2/noaa/$ACCNR/$USER
+                            sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
+                            ./rt.sh -a ${ACCNR} -c -e -l rt.conf
+                          elif [[ $machine =~ "Orion" ]]
+                          then
+                            echo "Creating baselines on $machine"
+                            export dprefix=/work2/noaa/$ACCNR/$USER
+                            sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
+                            ./rt.sh -a ${ACCNR} -c -e -l rt.conf
+                          elif [[ $machine =~ "Gaea" ]]
+                          then 
+                            echo "Creating baselines on $machine"
+                            ./rt.sh -a ${ACCNR} -c -e -l rt.conf
+                          else
+                            echo "Creating baselines on $machine"
+                            ./rt.sh -a ${ACCNR} -c -r -l rt.conf
+                          fi
+                      git config user.email "ecc.platform@noaa.gov"
+                      git config user.name "epic-cicd-jenkins"
+                      echo "Testing concluded...removing labels for $machine from $GIT_URL"
+  
+                      GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
+                      GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
+
+                      curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-BL
+                      '''
+                    }
+                    else {
+                       sh '''
+                       pwd
+                       cd tests
+                       export machine=${NODE_NAME}
+
+                          if [[ $machine =~ "Jet" ]] 
+                          then
+                           echo "Running regression tests on $machine"
+                            export dprefix=/lfs1/NAGAPE/$ACCNR/$USER
+                            ./rt.sh -a ${ACCNR} -r -l rt.conf
+                          elif [[ $machine =~ "Hercules" ]]
+                          then
+                           echo "Running regression tests on $machine"
+                            export dprefix=/work2/noaa/$ACCNR/$USER
+                            sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
+                            ./rt.sh -a ${ACCNR} -e -l rt.conf
+                          elif [[ $machine =~ "Orion" ]]
+                          then
+                           echo "Running regression tests on $machine"
+                            export dprefix=/work2/noaa/$ACCNR/$USER
+                            sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
+                            ./rt.sh -a ${ACCNR} -e -l rt.conf
+                          elif [[ $machine =~ "Gaea" ]]
+                          then 
+                           echo "Running regression tests on $machine"
+                            ./rt.sh -a ${ACCNR} -e -l rt.conf
+                          else
+                           echo "Running regression tests on $machine"
+                           ./rt.sh -a ${ACCNR} -r -l rt.conf
+                          fi
+
+                      git config user.email "ecc.platform@noaa.gov"
+                      git config user.name "epic-cicd-jenkins"
+                      echo "Testing concluded...removing labels for $machine from $GIT_URL"
+  
+                      GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
+                      GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
+
+                      curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-RT
+                        
+                       '''
+                    }
+                }
+              }
+           }
+       }
+}
+
+def parallelStagesMap = modifiedLabels.collectEntries {
+    ["${it}" : generateStage(it)]
+}
+
+pipeline {
+    agent none
+    environment {
+        ACCNR = 'epic'
+        GITHUB_TOKEN = credentials('GithubJenkinsNew')
+        GIT_URL = 'https://github.com/ufs-community/ufs-weather-model.git'
+    }
+    stages {
+        stage('Run Tests in Parallel') {
+            steps {
+                script {
+                    parallel parallelStagesMap
+                }
+            }
+        }       
+    }
+}
