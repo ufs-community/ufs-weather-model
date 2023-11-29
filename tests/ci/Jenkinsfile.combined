@@ -27,6 +27,7 @@ def generateStage(nodeLabel) {
                     echo "Running on ${nodeLabel}"
                     if (baselineLabels.contains(nodeLabel)) {
                        sh '''
+                       git submodule update --init --recursive
                        pwd
                        cd tests
                        export machine=${NODE_NAME}
@@ -68,6 +69,7 @@ def generateStage(nodeLabel) {
                     }
                     else {
                        sh '''
+                       git submodule update --init --recursive
                        pwd
                        cd tests
                        export machine=${NODE_NAME}
