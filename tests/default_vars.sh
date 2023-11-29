@@ -780,8 +780,6 @@ export use_coldstart=false
 export use_mommesh=true
 # CICE attributes
 export eps_imesh=1.0e-1
-# WW3 attributes
-export MULTIGRID=false
 # mediator AO flux
 export flux_convergence=0.0
 export flux_iteration=2
@@ -789,6 +787,8 @@ export flux_scheme=0
 # mediator ocean albedo
 export ocean_albedo_limit=0.06
 export use_mean_albedos=.false.
+# WW3 (used in run_test only)
+export WW3_MULTIGRID=false
 }
 
 export_cpl ()
