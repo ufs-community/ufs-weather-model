@@ -769,7 +769,6 @@ export coupling_interval_fast_sec=${DT_ATMOS}
 export MESH_OCN=mesh.mx${OCNRES}.nc
 export MESH_ICE=mesh.mx${OCNRES}.nc
 export MESH_WAV=mesh.${WW3_DOMAIN}.nc
-export WW3_MULTIGRID=false
 export CPLMODE=ufs.frac
 export pio_rearranger=box
 export RUNTYPE=startup
