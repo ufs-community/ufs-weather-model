@@ -18,7 +18,7 @@ load(pathJoin("stack-intel", stack_intel_ver))
 stack_cray_mpich_ver=os.getenv("stack_cray_mpich_ver") or "7.7.20"
 load(pathJoin("stack-cray-mpich", stack_cray_mpich_ver))
 
-cmake_ver=os.getenv("cmake_ver") or "3.23.1"
+cmake_ver=os.getenv("cmake_ver") or "3.24.2"
 load(pathJoin("cmake", cmake_ver))
 
 -- Needed at runtime:
