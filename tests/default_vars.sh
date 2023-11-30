@@ -756,7 +756,7 @@ export WW3_IC5='F'
 
 # Defaults for the coupled 5-component
 export_cmeps() {
-export UFS_CONFIGURE=ufs.configure.cpld.IN
+export UFS_CONFIGURE=ufs.configure.s2swa.IN
 export med_model=cmeps
 export atm_model=fv3
 export chm_model=gocart
