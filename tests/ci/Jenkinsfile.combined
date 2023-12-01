@@ -21,7 +21,6 @@ def generateStage(nodeLabel) {
     return {
         stage("Running on ${nodeLabel}") {
             node(nodeLabel) {
-              steps {
                cleanWs()
                checkout scm
                script {
@@ -37,26 +36,26 @@ def generateStage(nodeLabel) {
                           then
                             echo "Creating baselines on $machine"
                             export dprefix=/lfs1/NAGAPE/$ACCNR/$USER
-                            #./rt.sh -a ${ACCNR} -c -r -l rt.conf
+                            ./rt.sh -a ${ACCNR} -c -r -l rt.conf
                           elif [[ $machine =~ "Hercules" ]]
                           then
                             echo "Creating baselines on $machine"
                             export dprefix=/work2/noaa/$ACCNR/$USER
                             sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
-                            #./rt.sh -a ${ACCNR} -c -e -l rt.conf
+                            ./rt.sh -a ${ACCNR} -c -e -l rt.conf
                           elif [[ $machine =~ "Orion" ]]
                           then
                             echo "Creating baselines on $machine"
                             export dprefix=/work2/noaa/$ACCNR/$USER
                             sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
-                            #./rt.sh -a ${ACCNR} -c -e -l rt.conf
+                            ./rt.sh -a ${ACCNR} -c -e -l rt.conf
                           elif [[ $machine =~ "Gaea" ]]
                           then 
                             echo "Creating baselines on $machine"
-                            #./rt.sh -a ${ACCNR} -c -e -l rt.conf
+                            ./rt.sh -a ${ACCNR} -c -e -l rt.conf
                           else
                             echo "Creating baselines on $machine"
-                            #./rt.sh -a ${ACCNR} -c -r -l rt.conf
+                            ./rt.sh -a ${ACCNR} -c -r -l rt.conf
                           fi
                       git config user.email "ecc.platform@noaa.gov"
                       git config user.name "epic-cicd-jenkins"
@@ -79,26 +78,26 @@ def generateStage(nodeLabel) {
                           then
                            echo "Running regression tests on $machine"
                             export dprefix=/lfs1/NAGAPE/$ACCNR/$USER
-                            #./rt.sh -a ${ACCNR} -r -l rt.conf
+                            ./rt.sh -a ${ACCNR} -r -l rt.conf
                           elif [[ $machine =~ "Hercules" ]]
                           then
                            echo "Running regression tests on $machine"
                             export dprefix=/work2/noaa/$ACCNR/$USER
                             sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
-                            #./rt.sh -a ${ACCNR} -e -l rt.conf
+                            ./rt.sh -a ${ACCNR} -e -l rt.conf
                           elif [[ $machine =~ "Orion" ]]
                           then
                            echo "Running regression tests on $machine"
                             export dprefix=/work2/noaa/$ACCNR/$USER
                             sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
-                            #./rt.sh -a ${ACCNR} -e -l rt.conf
+                            ./rt.sh -a ${ACCNR} -e -l rt.conf
                           elif [[ $machine =~ "Gaea" ]]
                           then 
                            echo "Running regression tests on $machine"
                             #./rt.sh -a ${ACCNR} -e -l rt.conf
                           else
                            echo "Running regression tests on $machine"
-                           #./rt.sh -a ${ACCNR} -r -l rt.conf
+                           ./rt.sh -a ${ACCNR} -r -l rt.conf
                           fi
 
                       git config user.email "ecc.platform@noaa.gov"
@@ -112,25 +111,23 @@ def generateStage(nodeLabel) {
                         
                        '''
                     }
+                }
+              }
+           }
+        stage("Running Post on ${nodeLabel}") {
+            node(nodeLabel) {
+            script {
+               post {
+                 always {
+                    echo 'This will run only if successful.'      
                  }
                }
-              }
             }
-             post {
-                success {
-                  node('built-in') {
-                    echo 'This will run only if successful.'
-                  }
-                }
-                failure {
-                  node('built-in') {
-                    echo 'This will run only if the run was marked as unstable.'
-                  }
-                }
-             }
-       }
+          }
+        }
+       
+    }
 }
-
 
 def parallelStagesMap = modifiedLabels.collectEntries {
     ["${it}" : generateStage(it)]
