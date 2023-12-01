@@ -21,6 +21,7 @@ def generateStage(nodeLabel) {
     return {
         stage("Running on ${nodeLabel}") {
             node(nodeLabel) {
+              steps {
                cleanWs()
                checkout scm
                script {
@@ -113,7 +114,8 @@ def generateStage(nodeLabel) {
                     }
                  }
                }
-             }
+              }
+            }
              post {
                 success {
                   node('built-in') {
