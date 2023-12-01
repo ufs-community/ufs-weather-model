@@ -19,6 +19,7 @@ modifiedLabels = matchedNode.collect{"'" + it + "'"}
 baselineLabels = generateBaselineNode.collect{"'" + it + "'"} 
 def generateStage(nodeLabel) {
     return {
+       stages {
         stage("Running on ${nodeLabel}") {
             node(nodeLabel) {
                cleanWs()
@@ -26,15 +27,17 @@ def generateStage(nodeLabel) {
                script {
                     echo "Running on ${nodeLabel}"
                     }
+                }
+              }
+         
             post {
                 always {
                     script {
                         sh "echo post stage"
                     }
                 }
-                }
-              }
             }
+         }
        }
 }
 
