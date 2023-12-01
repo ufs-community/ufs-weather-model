@@ -129,7 +129,17 @@ pipeline {
         GIT_URL = 'https://github.com/ufs-community/ufs-weather-model.git'
     }
     stages {
-        stage('Run Tests in Parallel') {
+        stage('Run SonarQube Testing') {
+            steps {
+                script {
+                    build job: '/ufs-weather-model/ufs-wm-sonarqube', parameters: [
+                        string(name: 'BRANCH_NAME', value: env.CHANGE_BRANCH ?: 'develop'),
+                        string(name: 'FORK_NAME', value: env.CHANGE_FORK ?: '')
+                    ], wait: false
+                }
+            }
+        }
+        stage('Run Regression Tests in Parallel') {
             steps {
                 script {
                     parallel parallelStagesMap
