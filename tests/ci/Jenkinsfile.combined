@@ -119,11 +119,6 @@ def generateStage(nodeLabel) {
 
 def parallelStagesMap = modifiedLabels.collectEntries {
     ["${it}" : generateStage(it)]
-    post { 
-        always { 
-            echo 'I ran post!'
-        }
-    }
 }
 
 pipeline {
@@ -141,5 +136,23 @@ pipeline {
                 }
             }
         }       
-    }
+        post {
+         success {
+             node('built-in') {
+                echo 'This will run only if successful.'
+                sh '''
+                  aws sns publish --topic-arn "arn:aws:sns:us-east-1:211527314271:Jenkins-CICD-Notifications" --region us-east-1 --message '{"version":"1.0","source":"custom","content":{"description":":sunny: Jenkins build *'"$JOB_NAME"' '"$BUILD_NUMBER"'* with *PR-'"$CHANGE_ID"'*  *succeeded*"}}'
+               '''
+             }
+         }
+         failure {
+             node('built-in') {
+                echo 'This will run only if the run was marked as unstable.'
+                sh '''
+                  aws sns publish --topic-arn "arn:aws:sns:us-east-1:211527314271:Jenkins-CICD-Notifications" --region us-east-1 --message '{"version":"1.0","source":"custom","content":{"description":":warning: Jenkins build *'"$JOB_NAME"' '"$BUILD_NUMBER"'* with *PR-'"$CHANGE_ID"'*  *failed!*"}}'
+               '''
+             }
+         }
+     } 
+  }
 }
