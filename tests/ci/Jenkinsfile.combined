@@ -94,7 +94,7 @@ def generateStage(nodeLabel) {
                           elif [[ $machine =~ "Gaea" ]]
                           then 
                            echo "Running regression tests on $machine"
-                            #./rt.sh -a ${ACCNR} -e -l rt.conf
+                            ./rt.sh -a ${ACCNR} -e -l rt.conf
                           else
                            echo "Running regression tests on $machine"
                            ./rt.sh -a ${ACCNR} -r -l rt.conf
@@ -114,15 +114,7 @@ def generateStage(nodeLabel) {
                 }
               }
            }
-        stage("Running Post on ${nodeLabel}") {
-               post {
-                 always {
-                    echo 'This will run only if successful.'      
-                 }
-               }
-        }
-       
-    }
+       }
 }
 
 def parallelStagesMap = modifiedLabels.collectEntries {
@@ -142,6 +134,11 @@ pipeline {
                 script {
                     parallel parallelStagesMap
                 }
+            }
+            post {
+              always {
+                 echo 'This completed.'
+              } 
             }
         }       
     }
