@@ -115,15 +115,11 @@ def generateStage(nodeLabel) {
               }
            }
         stage("Running Post on ${nodeLabel}") {
-            node(nodeLabel) {
-            script {
                post {
                  always {
                     echo 'This will run only if successful.'      
                  }
                }
-            }
-          }
         }
        
     }
