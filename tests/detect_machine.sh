@@ -43,6 +43,15 @@ case $(hostname -f) in
   gaea15.ncrc.gov)         MACHINE_ID=gaea ;; ### gaea15
   gaea16.ncrc.gov)         MACHINE_ID=gaea ;; ### gaea16
 
+  gaea51.ncrc.gov)         MACHINE_ID=gaea-c5 ;; ### gaea51
+  gaea52.ncrc.gov)         MACHINE_ID=gaea-c5 ;; ### gaea52
+  gaea53.ncrc.gov)         MACHINE_ID=gaea-c5 ;; ### gaea53
+  gaea54.ncrc.gov)         MACHINE_ID=gaea-c5 ;; ### gaea54
+  gaea55.ncrc.gov)         MACHINE_ID=gaea-c5 ;; ### gaea55
+  gaea56.ncrc.gov)         MACHINE_ID=gaea-c5 ;; ### gaea56
+  gaea57.ncrc.gov)         MACHINE_ID=gaea-c5 ;; ### gaea57
+  gaea58.ncrc.gov)         MACHINE_ID=gaea-c5 ;; ### gaea58
+
   hfe01)                   MACHINE_ID=hera ;; ### hera01
   hfe02)                   MACHINE_ID=hera ;; ### hera02
   hfe03)                   MACHINE_ID=hera ;; ### hera03
