@@ -23,6 +23,7 @@ stack_python_ver=os.getenv("stack_python_ver") or "3.10.8"
 load(pathJoin("stack-python", stack_python_ver))
 
 load("ufs_common")
+load("nccmp/1.9.0.1")
 
 unload("darshan-runtime")
 unload("cray-libsci")
