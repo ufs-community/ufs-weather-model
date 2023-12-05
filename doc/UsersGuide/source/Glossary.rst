@@ -120,11 +120,11 @@ Glossary
 
    NCEPLIBS
       The software libraries created and maintained by :term:`NCEP` that are required for running 
-      :term:`chgres_cube`, the UFS Weather Model, and the :term:`UPP`. They are included in the `HPC-Stack <https://github.com/NOAA-EMC/hpc-stack>`__ and in `spack-stack <https://github.com/NOAA-EMC/spack-stack>`__. 
+      :term:`chgres_cube`, the UFS Weather Model, and the :term:`UPP`. They are included in `spack-stack <https://github.com/NOAA-EMC/spack-stack>`__ and `HPC-Stack <https://github.com/NOAA-EMC/hpc-stack>`__. 
 
    NCEPLIBS-external
       A collection of third-party libraries required to build :term:`NCEPLIBS`, :term:`chgres_cube`, 
-      the UFS Weather Model, and the :term:`UPP`. They are included in the :term:`HPC-Stack` and in :term:`spack-stack`.  
+      the UFS Weather Model, and the :term:`UPP`. They are included in :term:`spack-stack` and :term:`HPC-Stack`.  
 
    NEMS
       The NOAA Environmental Modeling System is a common modeling framework whose purpose is 

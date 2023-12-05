@@ -1,0 +1,128 @@
+##############################################
+#####  UFS Run-Time Configuration File  ######
+##############################################
+
+# ESMF #
+logKindFlag:            ESMF_LOGKIND_MULTI_ON
+globalResourceControl:  true
+
+# EARTH #
+EARTH_component_list: MED ATM WAV
+EARTH_attributes::
+  Verbosity = 0
+::
+
+# MED #
+MED_model:                      @[med_model]
+MED_petlist_bounds:             @[med_petlist_bounds]
+MED_omp_num_threads:            @[med_omp_num_threads]
+MED_attributes::
+  Verbosity = 0
+  Diagnostic = 0
+  ATM_model = @[atm_model]
+  WAV_model = @[wav_model]
+  MED_model = cmeps
+  history_n = 6
+  history_option = nhours
+  history_ymd = -999
+  coupling_mode = @[CPLMODE]
+  normalization = none
+  merge_type = copy
+  pio_rearranger = @[pio_rearranger]
+::
+
+# ATM #
+ATM_model:                      @[atm_model]
+ATM_petlist_bounds:             @[atm_petlist_bounds]
+ATM_omp_num_threads:            @[atm_omp_num_threads]
+ATM_attributes::
+  Verbosity = 0
+  Diagnostic = 0
+  mesh_atm = @[MESH_ATM]
+  stop_n = @[FHMAX]
+  stop_option = nhours
+  stop_ymd = -999
+  write_restart_at_endofrun = .true.
+::
+
+# WAV #
+WAV_model:                      @[wav_model]
+WAV_petlist_bounds:             @[wav_petlist_bounds]
+WAV_omp_num_threads:            @[wav_omp_num_threads]
+WAV_attributes::
+  Verbosity = 0
+  Diagnostic = 0
+  OverwriteSlice = false
+  merge_import = .true.
+  mesh_wav = @[MESH_WAV]
+  multigrid = @[MULTIGRID]
+  user_sets_restname = true
+::
+
+# Run Sequence #
+runSeq::
+@@[coupling_interval_sec]
+  MED med_phases_prep_atm
+  MED med_phases_prep_wav_accum
+  MED med_phases_prep_wav_avg
+  MED -> ATM :remapMethod=redist
+  MED -> WAV :remapMethod=redist
+  ATM
+  WAV
+  ATM -> MED :remapMethod=redist
+  WAV -> MED :remapMethod=redist
+  MED med_phases_post_atm
+  MED med_phases_post_wav
+  MED med_phases_restart_write
+@
+::
+
+# Other Attributes #
+DRIVER_attributes::
+::
+
+ALLCOMP_attributes::
+  ATM_model = @[atm_model]
+  WAV_model = @[wav_model]
+  MED_model = cmeps
+  ScalarFieldCount = 3
+  ScalarFieldIdxGridNX = 1
+  ScalarFieldIdxGridNY = 2
+  ScalarFieldIdxNextSwCday = 3
+  ScalarFieldName = cpl_scalars
+  start_type = startup
+  case_name = ufs.hafs
+  restart_n = 6
+  restart_option = nhours
+  restart_ymd = -999
+  dbug_flag = 6
+  use_coldstart = true
+  orb_eccen = 1.e36
+  orb_iyear = 2000
+  orb_iyear_align = 2000
+  orb_mode = fixed_year
+  orb_mvelp = 1.e36
+  orb_obliq = 1.e36
+  mediator_read_restart = @[USE_COLDSTART]
+  mediator_present = true
+  stop_n = @[FHMAX]
+  stop_option = nhours
+  stop_ymd = -999
+::
+
+ocn_export_fields::
+  'sst'         'sea_surface_temperature'   'K'
+  'mask'        'ocean_mask'                '1'
+  'cpl_scalars' 'cpl_scalars'               '1'
+::
+
+ocn_import_fields::
+  'taux10'      'inst_zonal_moment_flx_atm' 'N_m-2'
+  'tauy10'      'inst_merid_moment_flx_atm' 'N_m-2'
+  'prcp'        'inst_prec_rate'            'kg_m-2_s-1'
+  'swflxd'      'inst_net_sw_flx'           'W_m-2'
+  'lwflxd'      'inst_net_lw_flx'           'W_m-2'
+  'mslprs'      'inst_pres_height_surface'  'Pa'
+  'sensflx'     'inst_sensi_heat_flx'       'W_m-2'
+  'latflx'      'inst_laten_heat_flx'       'W_m-2'
+::

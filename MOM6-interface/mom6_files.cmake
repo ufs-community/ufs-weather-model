@@ -209,7 +209,7 @@ list(APPEND mom6_src_files
 
   MOM6/src/tracer/MOM_OCMIP2_CFC.F90
   MOM6/src/tracer/MOM_generic_tracer.F90
-  MOM6/src/tracer/MOM_lateral_boundary_diffusion.F90
+  MOM6/src/tracer/MOM_hor_bnd_diffusion.F90
   MOM6/src/tracer/MOM_neutral_diffusion.F90
   MOM6/src/tracer/nw2_tracers.F90
   MOM6/src/tracer/MOM_offline_aux.F90
