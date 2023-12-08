@@ -53,6 +53,10 @@ def generateStage(nodeLabel) {
                           then 
                             echo "Creating baselines on $machine"
                             ./rt.sh -a ${ACCNR} -c -e -l rt.conf
+                          elif [[ $machine =~ "Hera" ]]
+                            echo "Creating baselines on $machine"
+                            export ACCNR=nems
+                            ./rt.sh -a ${ACCNR} -c -r -l rt.conf
                           else
                             echo "Creating baselines on $machine"
                             ./rt.sh -a ${ACCNR} -c -r -l rt.conf
@@ -95,6 +99,10 @@ def generateStage(nodeLabel) {
                           then 
                            echo "Running regression tests on $machine"
                             ./rt.sh -a ${ACCNR} -e -l rt.conf
+                          elif [[ $machine =~ "Hera" ]]
+                           echo "Running regression tests on $machine"
+                           export ACCNR=nems
+                           ./rt.sh -a ${ACCNR} -r -l rt.conf
                           else
                            echo "Running regression tests on $machine"
                            ./rt.sh -a ${ACCNR} -r -l rt.conf
