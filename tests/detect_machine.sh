@@ -28,21 +28,6 @@ case $(hostname -f) in
   alogin02.acorn.wcoss2.ncep.noaa.gov)  MACHINE_ID=acorn ;; ### acorn
   alogin03.acorn.wcoss2.ncep.noaa.gov)  MACHINE_ID=acorn ;; ### acorn
 
-  gaea10)                  MACHINE_ID=gaea ;; ### gaea10
-  gaea11)                  MACHINE_ID=gaea ;; ### gaea11
-  gaea12)                  MACHINE_ID=gaea ;; ### gaea12
-  gaea13)                  MACHINE_ID=gaea ;; ### gaea13
-  gaea14)                  MACHINE_ID=gaea ;; ### gaea14
-  gaea15)                  MACHINE_ID=gaea ;; ### gaea15
-  gaea16)                  MACHINE_ID=gaea ;; ### gaea16
-  gaea10.ncrc.gov)         MACHINE_ID=gaea ;; ### gaea10
-  gaea11.ncrc.gov)         MACHINE_ID=gaea ;; ### gaea11
-  gaea12.ncrc.gov)         MACHINE_ID=gaea ;; ### gaea12
-  gaea13.ncrc.gov)         MACHINE_ID=gaea ;; ### gaea13
-  gaea14.ncrc.gov)         MACHINE_ID=gaea ;; ### gaea14
-  gaea15.ncrc.gov)         MACHINE_ID=gaea ;; ### gaea15
-  gaea16.ncrc.gov)         MACHINE_ID=gaea ;; ### gaea16
-
   gaea51.ncrc.gov)         MACHINE_ID=gaea-c5 ;; ### gaea51
   gaea52.ncrc.gov)         MACHINE_ID=gaea-c5 ;; ### gaea52
   gaea53.ncrc.gov)         MACHINE_ID=gaea-c5 ;; ### gaea53
