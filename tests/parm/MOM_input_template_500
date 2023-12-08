@@ -258,6 +258,15 @@ Z_INIT_ALE_REMAPPING = True     !   [Boolean] default = False
                                 ! If True, then remap straight to model coordinate from file.
 
 ! === module MOM_diag_mediator ===
+NUM_DIAG_COORDS = 1
+                                ! The number of diagnostic vertical coordinates to use.
+                                ! For each coordinate, an entry in DIAG_COORDS must be provided.
+DIAG_COORDS = "z Z ZSTAR"
+                                ! A list of string tuples associating diag_table modules to
+                                ! a coordinate definition used for diagnostics. Each string
+                                ! is of the form "MODULE_SUFFIX,PARAMETER_SUFFIX,COORDINATE_NAME".
+DIAG_COORD_DEF_Z="FILE:@[MOM6_DIAG_COORD_DEF_Z_FILE],interfaces=zw"
+DIAG_MISVAL = @[MOM6_DIAG_MISVAL]
 
 ! === module MOM_MEKE ===
 USE_MEKE = True                 !   [Boolean] default = False
@@ -458,6 +467,48 @@ USE_LA_LI2016 = @[MOM6_USE_LI2016] !   [nondim] default = False
                                 ! Langmuir number.
 USE_WAVES = @[MOM6_USE_WAVES]   !   [Boolean] default = False
                                 ! If true, enables surface wave modules.
+WAVE_METHOD = "SURFACE_BANDS"   ! default = "EMPTY"
+                                ! Choice of wave method, valid options include:
+                                !  TEST_PROFILE  - Prescribed from surface Stokes drift
+                                !                  and a decay wavelength.
+                                !  SURFACE_BANDS - Computed from multiple surface values
+                                !                  and decay wavelengths.
+                                !  DHH85         - Uses Donelan et al. 1985 empirical
+                                !                  wave spectrum with prescribed values.
+                                !  LF17          - Infers Stokes drift profile from wind
+                                !                  speed following Li and Fox-Kemper 2017.
+SURFBAND_SOURCE = "COUPLER"     ! default = "EMPTY"
+                                ! Choice of SURFACE_BANDS data mode, valid options include:
+                                !  DATAOVERRIDE  - Read from NetCDF using FMS DataOverride.
+                                !  COUPLER       - Look for variables from coupler pass
+                                !  INPUT         - Testing with fixed values.
+STK_BAND_COUPLER = 3            ! default = 1
+                                ! STK_BAND_COUPLER is the number of Stokes drift bands in the coupler. This has
+                                ! to be consistent with the number of Stokes drift bands in WW3, or the model
+                                ! will fail.
+SURFBAND_WAVENUMBERS = 0.04, 0.11, 0.3305 !   [rad/m] default = 0.12566
+                                ! Central wavenumbers for surface Stokes drift bands.
+EPBL_LANGMUIR_SCHEME = "ADDITIVE" ! default = "NONE"
+                                ! EPBL_LANGMUIR_SCHEME selects the method for including Langmuir turbulence.
+                                ! Valid values are:
+                                !    NONE     - Do not do any extra mixing due to Langmuir turbulence
+                                !    RESCALE  - Use a multiplicative rescaling of mstar to account for Langmuir
+                                !      turbulence
+                                !    ADDITIVE - Add a Langmuir turblence contribution to mstar to other
+                                !      contributions
+LT_ENHANCE_COEF = 0.044         !   [nondim] default = 0.447
+                                ! Coefficient for Langmuir enhancement of mstar
+LT_ENHANCE_EXP = -1.5           !   [nondim] default = -1.33
+                                ! Exponent for Langmuir enhancementt of mstar
+LT_MOD_LAC1 = 0.0               !   [nondim] default = -0.87
+                                ! Coefficient for modification of Langmuir number due to MLD approaching Ekman
+                                ! depth.
+LT_MOD_LAC4 = 0.0               !   [nondim] default = 0.95
+                                ! Coefficient for modification of Langmuir number due to ratio of Ekman to
+                                ! stable Obukhov depth.
+LT_MOD_LAC5 = 0.22              !   [nondim] default = 0.95
+                                ! Coefficient for modification of Langmuir number due to ratio of Ekman to
+                                ! unstable Obukhov depth.
 
 ! === module MOM_regularize_layers ===
 
