@@ -922,6 +922,9 @@ export DO_OCN_SPPT=False
 export PERT_EPBL=False
 export OCN_SPPT=-999.
 export EPBL=-999.
+# MOM6 diag
+export MOM6_DIAG_COORD_DEF_Z_FILE=interpolate_zgrid_40L.nc
+export MOM6_DIAG_MISVAL='-1e34'
 
 # CICE6 defaults; 1 degree
 export CICE_DECOMP=slenderX2
@@ -1091,6 +1094,9 @@ export EPBL=-999.
 export MOM6_THERMO_SPAN=False
 export MOM6_USE_WAVES=False
 export MOM6_ALLOW_LANDMASK_CHANGES=False
+# MOM6 diag
+export MOM6_DIAG_COORD_DEF_Z_FILE=interpolate_zgrid_40L.nc
+export MOM6_DIAG_MISVAL='-1e34'
 
 # CICE6 defaults; 1 degree
 export MESHOCN_ICE=mesh.mx${OCNRES}.nc
