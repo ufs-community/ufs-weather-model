@@ -299,6 +299,7 @@ if (( NODES * TPN < TASKS )); then
 fi
 export NODES
 
+UFS_TASKS=${TASKS}
 TASKS=$(( NODES * TPN ))
 export TASKS
 
@@ -307,6 +308,7 @@ if (( TASKS - ( PPN * NODES ) > 0 )); then
   PPN=$((PPN + 1))
 fi
 export PPN
+export UFS_TASKS
 
 if [[ $SCHEDULER = 'pbs' ]]; then
   if [[ -e $PATHRT/fv3_conf/fv3_qsub.IN_${MACHINE_ID} ]]; then
