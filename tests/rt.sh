@@ -909,7 +909,6 @@ EOF
       if (( TASKS - ( PPN * NODES ) > 0 )); then
           PPN=$((PPN + 1))
       fi
-      export PPN
       
       cat << EOF > ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
       export JOB_NR=${JOB_NR}
