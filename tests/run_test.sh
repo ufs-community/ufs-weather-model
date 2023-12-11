@@ -303,8 +303,8 @@ UFS_TASKS=${TASKS}
 TASKS=$(( NODES * TPN ))
 export TASKS
 
-PPN=$(( TASKS / NODES ))
-if (( TASKS - ( PPN * NODES ) > 0 )); then
+PPN=$(( UFS_TASKS / NODES ))
+if (( UFS_TASKS - ( PPN * NODES ) > 0 )); then
   PPN=$((PPN + 1))
 fi
 export PPN
