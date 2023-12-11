@@ -1,8 +1,15 @@
-mkdir INPUT DATM_INPUT RESTART history MOM6_OUTPUT
+mkdir INPUT RESTART
+
+mkdir -p $CICE_RESTART_DIR
+mkdir -p $MOM6_RESTART_DIR
+mkdir -p $CMEPS_RESTART_DIR
+
+mkdir -p $CICE_HISTORY_DIR
+mkdir -p $MOM6_OUTPUT_DIR
 
 # DATM fixed input
-ln -s  @[INPUTDATA_ROOT]/DATM_CDEPS/@[DATM_SRC]/@[mesh_file] DATM_INPUT
-ln -s  @[INPUTDATA_ROOT]/DATM_CDEPS/@[DATM_SRC]/202103/gfs.202103.nc DATM_INPUT/gfs.202103.nc
+ln -s  @[INPUTDATA_ROOT]/DATM_CDEPS/@[DATM_SRC]/@[MESH_ATM] INPUT
+ln -s  @[INPUTDATA_ROOT]/DATM_CDEPS/@[DATM_SRC]/202103/gfs.202103.nc INPUT/gfs.202103.nc
 
 # MOM6 fixed input
 ICERES="${OCNRES:0:1}.${OCNRES:1}"
@@ -25,15 +32,15 @@ if [ $WARM_START = .false. ]; then
  fi
 else
 # warm start
- cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/MOM.res.2021-03-22-18*.nc ./INPUT/MOM.res.nc
+ cp ../${DEP_RUN}${RT_SUFFIX}/${MOM6_RESTART_DIR}/MOM.res.2021-03-22-18*.nc ./INPUT/MOM.res.nc
 
 # CMEPS restart and pointer files
  RFILE="DATM_${DATM_SRC}.cpl.r.2021-03-22-64800.nc.nc"
- cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/${RFILE} .
+ cp ../${DEP_RUN}${RT_SUFFIX}/${CMEPS_RESTART_DIR}/${RFILE} .
  ls -1 ${RFILE}>rpointer.cpl
 
 # CICE restart and pointer files
- cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/iced.2021-03-22-64800.nc ./INPUT
+ cp ../${DEP_RUN}${RT_SUFFIX}/${CICE_RESTART_DIR}/iced.2021-03-22-64800.nc ./INPUT
  RFILE="iced.2021-03-22-64800.nc"
  ls -1 "./INPUT/"${RFILE}>ice.restart_file
 fi
