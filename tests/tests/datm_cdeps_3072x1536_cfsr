@@ -4,28 +4,27 @@
 
 export TEST_DESCR="DATM_CDEPS-MOM6-CICE-CMEPS_CFSR_3072x1536 - control "
 
-export CNTL_DIR="datm_cdeps_3072x1536_cfsr"
+export CNTL_DIR=datm_cdeps_3072x1536_cfsr
 
 export LIST_FILES="RESTART/20111002.000000.MOM.res.nc \
                    RESTART/iced.2011-10-02-00000.nc \
                    RESTART/DATM_CFSR3072x1536.cpl.r.2011-10-02-00000.nc"
 
 export_datm_cdeps
-export DATM_SRC="CFSR3072x1536"
-export FILENAME_BASE='cfsr.'
+export DATM_SRC=CFSR3072x1536
+export FILENAME_BASE=cfsr.
 export WLCLK=15
 export IATM=3072
 export JATM=1536
 export ATM_NX_GLB=$IATM
 export ATM_NY_GLB=$JATM
-export ATMRES=3072x1536
-export mesh_file=gfs_mesh.nc
-export MESH_ATM=DATM_INPUT/${mesh_file}
+export ATMRES=${IATM}x${JATM}
+export MESH_ATM=gfs_mesh.nc
 export atm_datamode=GFS
 export RESTART_N=12
-export stream_files="DATM_INPUT/cfsr.2011100100_3072x1536.nc DATM_INPUT/cfsr.2011100106_3072x1536.nc DATM_INPUT/cfsr.2011100112_3072x1536.nc DATM_INPUT/cfsr.2011100118_3072x1536.nc DATM_INPUT/cfsr.2011100200_3072x1536.nc DATM_INPUT/cfsr.2011100206_3072x1536.nc"
-export eps_imesh='2.5e-1'
-export TOPOEDITS=ufs.topo_edits_011818.nc
+export stream_files="INPUT/cfsr.2011100100_3072x1536.nc INPUT/cfsr.2011100106_3072x1536.nc INPUT/cfsr.2011100112_3072x1536.nc INPUT/cfsr.2011100118_3072x1536.nc INPUT/cfsr.2011100200_3072x1536.nc INPUT/cfsr.2011100206_3072x1536.nc"
+export eps_imesh=2.5e-1
+export MOM6_TOPOEDITS=ufs.topo_edits_011818.nc
 export MOM6_ALLOW_LANDMASK_CHANGES=True
 
 export FV3_RUN=cpld_datm_cdeps.IN
