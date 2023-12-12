@@ -711,6 +711,11 @@ export CICE_RESTART_POND_LVL=.false.
 export CICE_FRAZIL_FWSALT=.true.
 export CICE_KTHERM=2
 export CICE_TFREEZE_OPTION=mushy
+#Wave-ice coupling variables
+export CICE_nfsd=1
+export CICE_tr_fsd=.false.
+export CICE_restart_fsd=.false.
+export CICE_wave_spec_type=none
 # SlenderX2
 export CICE_NPROC=$ICE_tasks
 export np2=`expr $CICE_NPROC / 2`
