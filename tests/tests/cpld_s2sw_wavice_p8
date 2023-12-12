@@ -1,5 +1,5 @@
 #
-#  cpld_control unstr PDLIB P8 test
+#  S2SW_WAVICE test
 #
 
 export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system with wave-ice coupling - C96MX100 unstr WW3 PDLIB IC4"
@@ -72,6 +72,11 @@ export eps_imesh=2.5e-1
 export WW3_DOMAIN=global_270k
 export MESH_WAV=mesh.${WW3_DOMAIN}.nc
 export WW3_MODDEF=mod_def.exp.${WW3_DOMAIN}
+
+export CICE_nfsd=12
+export CICE_tr_fsd=.true.
+export CICE_restart_fsd=.false.
+export CICE_wave_spec_type=constant
 
 export DIAG_TABLE=diag_table_template
 export FIELD_TABLE=field_table_thompson_noaero_tke
