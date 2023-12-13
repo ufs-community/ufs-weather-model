@@ -793,7 +793,7 @@ The input files containing grid information and the time-varying forcing files f
 
 .. note:: 
 
-   Users can find atmospheric forcing files for use with the land (:ref:`(LND) <lnd>`) component in the `Land Data Assimilation (DA) data bucket <https://registry.opendata.aws/noaa-ufs-land-da/>`__. These files provide atmospheric forcing data related to precipitation, solar radiation, longwave radiation, temperature, pressure, winds, humidity, topography, and mesh data. Forcing files for the land component configuration come from the Global Soil Wetness Project Phase 3 (`GSWP3 <https://hydro.iis.u-tokyo.ac.jp/GSWP3/>`__) dataset. 
+   Users can find atmospheric forcing files for use with the land (:ref:`LND <lnd>`) component in the `Land Data Assimilation (DA) data bucket <https://registry.opendata.aws/noaa-ufs-land-da/>`__. These files provide atmospheric forcing data related to precipitation, solar radiation, longwave radiation, temperature, pressure, winds, humidity, topography, and mesh data. Forcing files for the land component configuration come from the Global Soil Wetness Project Phase 3 (`GSWP3 <https://hydro.iis.u-tokyo.ac.jp/GSWP3/>`__) dataset. 
 
    .. code-block:: console
 
@@ -808,7 +808,7 @@ The input files containing grid information and the time-varying forcing files f
       topodata_0.9x1.25_USGS_070110_stream_c151201.nc
       topodata_0.9x1.SCRIP.210520_ESMFmesh.nc
 
-   See the :ref:`Land DA User's Guide <landda:InputFiles>` or the `WM LND Input <lnd-in>` section of this page for more information on files used in land configurations of the UFS WM. 
+   See the :ref:`Land DA User's Guide <landda:InputFiles>` or the :ref:`WM LND Input <lnd-in>` section of this page for more information on files used in land configurations of the UFS WM. 
 
 **Data Ocean**
 
@@ -1025,7 +1025,7 @@ AQM inputs defined in ``aqm.rc`` are listed and described in :numref:`Table %s <
 LND
 -------
 
-LND component datasets are available from the Land Data Assimilation (DA) System Data Bucket and can be retrieved using a ``wget`` command: 
+LND component datasets are available from the `Land Data Assimilation (DA) System data bucket <https://registry.opendata.aws/noaa-ufs-land-da/>`__ and can be retrieved using a ``wget`` command: 
 
 .. code-block:: console
 
@@ -1043,8 +1043,8 @@ These files will be untarred into an ``inputs`` directory if the user does not s
    * - Filename(s)
      - Description
      - File Type
-   * - ufs-land_C96_init_fields.tileN.nc
-     - Initial conditions files for each tile; the files include the initial state variables that are required for the UFS land snow DA to begin a cycling run. N stands for the grid tile number [1-6]. 
+   * - ufs-land_C96_init_fields.tile*.nc
+     - Initial conditions files for each tile; the files include the initial state variables that are required for the UFS land snow DA to begin a cycling run. ``*`` stands for the grid tile number [1-6]. 
      - Initial conditions
    * - C96.maximum_snow_albedo.tile*.nc
 
@@ -1061,16 +1061,16 @@ These files will be untarred into an ``inputs`` directory if the user does not s
        C96.vegetation_type.tile*.nc
 
        oro_C96.mx100.tile*.nc
-     - Tiled static files that contain information on maximum snow albedo, slope type, soil color and type, substrate temperature, vegetation greenness and type, and orography (grid and land mask information). N stands for the grid tile number [1-6]. 
+     - Tiled static files that contain information on maximum snow albedo, slope type, soil color and type, substrate temperature, vegetation greenness and type, and orography (grid and land mask information). ``*`` stands for the grid tile number [1-6]. 
      - Static/fixed files
    * - grid_spec.nc
      - Contains information on the mosaic grid
      - Grid
-   * - C96_grid.tileN.nc
-     - C96 grid information for tiles 1-6, where N is the grid tile number [1-6]. 
+   * - C96_grid.tile*.nc
+     - C96 grid information for tiles 1-6, where ``*`` is the grid tile number [1-6]. 
      - Grid
-   * - C96_oro_data.tileN.nc / oro_C96.mx100.tileN.nc
-     - Orography files that contain grid and land mask information, where N is the grid tile number [1-6]. ``mx100`` refers to the ocean resolution (100=1º).
+   * - C96_oro_data.tile*.nc / oro_C96.mx100.tileN.nc
+     - Orography files that contain grid and land mask information, where ``*`` is the grid tile number [1-6]. ``mx100`` refers to the ocean resolution (100=1º).
      - Grid
    * - See :ref:`CDEPS <cdeps-in>` for information on atmospheric forcing files. 
      - Atmospheric forcing
@@ -1088,15 +1088,23 @@ These files will be untarred into an ``inputs`` directory if the user does not s
 Static Datasets (i.e., *fix files*)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The static file (listed in :numref:`Table %s <LndInputFiles>`) includes specific information on location, time, soil layers, and fixed (invariant) experiment parameters that are required for the land component to run. The data must be provided in :term:`netCDF` format.
+The static files (listed in :numref:`Table %s <LndInputFiles>`) include specific information on location, time, soil layers, and fixed (invariant) experiment parameters that are required for the land component to run. The data must be provided in :term:`netCDF` format.
 
-The static file is available in the ``inputs`` data directory at the following path:
+The following static files are available in the ``inputs/UFS_WM/FV3_fix_tiled/C96/`` data directory (downloaded :ref:`above <lnd-in>`):
 
 .. code-block:: 
 
-   inputs/forcing/gdas/static/ufs-land_C96_static_fields.nc
+   C96.maximum_snow_albedo.tile*.nc
+   C96.slope_type.tile*.nc
+   C96.soil_type.tile*.nc
+   C96.soil_color.tile*.nc
+   C96.substrate_temperature.tile*.nc
+   C96.vegetation_greenness.tile*.nc
+   C96.vegetation_type.tile*.nc
+   oro_C96.mx100.tile*.nc
 
-Details on the configuration variables included in this file are available from the :ref:`Land DA documentation <landda:InputFiles>`. 
+where ``*`` refers to the tile number (1-6). 
+Details on the configuration variables included in this file are available in the :ref:`Land DA documentation <landda:InputFiles>`. 
 
 .. _lnd-grid-ic-files:
 
@@ -1107,12 +1115,20 @@ Grid Description and Initial Condition Files
 The input files containing grid information and the initial conditions for global configurations are listed and described in :numref:`Table %s <LndInputFiles>`. 
 
 The initial conditions file includes the initial state variables that are required for the UFS land snow DA to begin a cycling run. The data must be provided in :term:`netCDF` format.
-
 The initial conditions file is available in the ``inputs`` data directory (downloaded :ref:`above <lnd-in>`) at the following path:
 
 .. code-block:: 
 
-   inputs/forcing/GDAS/init/ufs-land_C96_init_fields_1hr.nc
+   inputs/UFS_WM/NOAHMP_IC/ufs-land_C96_init_fields.tile*.nc
+
+Grid files are available in the ``inputs/UFS_WM/FV3_input_data/INPUT`` directory:
+
+.. code-block::
+
+   C96_grid.tile*.nc
+   grid_spec.nc     # aka C96.mosaic.nc
+
+The ``C96_grid.tile*.nc`` files contain grid information for tiles 1-6 at C96 grid resolution. The ``grid_spec.nc`` file contains information on the mosaic grid.
 
 ^^^^^^^^^^^^^^^^^^^^
 Additional Files
