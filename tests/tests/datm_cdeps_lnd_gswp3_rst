@@ -4,7 +4,7 @@
 
 export TEST_DESCR="DATM_CDEPS_NOAHMP_GSWP3_RST - control restart"
 
-export CNTL_DIR="datm_cdeps_lnd_gswp3"
+export CNTL_DIR=datm_cdeps_lnd_gswp3
 
 export LIST_FILES="ufs.cpld.lnd.out.2000-01-02-00000.tile1.nc \
                    ufs.cpld.lnd.out.2000-01-02-00000.tile2.nc \
@@ -22,40 +22,39 @@ export SHOUR=12
 export FHMAX=12
 export FHROT=0
 
-export DATM_IN_CONFIGURE=datm_in
-export MESH_ATM="INPUT_DATM/fv1.9x2.5_141008_ESMFmesh.nc"
-export atm_datamode="CLMNCEP"
+export DATM_IN_CONFIGURE=datm_in.IN
+export MESH_ATM=fv1.9x2.5_141008_ESMFmesh.nc
+export atm_datamode=CLMNCEP
 export ATM_NX_GLB=144
 export ATM_NY_GLB=96
 
 export DATM_STREAM_CONFIGURE=datm.streams.multi.IN
-export MESH_ATM_DATA="INPUT_DATM/clmforc.GSWP3.c2011.0.5x0.5.TPQWL.SCRIP.210520_ESMFmesh.nc"
-export MESH_ATM_TOPO="INPUT_DATM/topodata_0.9x1.SCRIP.210520_ESMFmesh.nc"
+export MESH_ATM_DATA="INPUT/clmforc.GSWP3.c2011.0.5x0.5.TPQWL.SCRIP.210520_ESMFmesh.nc"
+export MESH_ATM_TOPO="INPUT/topodata_0.9x1.SCRIP.210520_ESMFmesh.nc"
 export SDATE=1999
 export EDATE=2000
-export DATA_ATM01="\"INPUT_DATM/clmforc.GSWP3.c2011.0.5x0.5.Solr.1999-12.nc\" \"INPUT_DATM/clmforc.GSWP3.c2011.0.5x0.5.Solr.2000-01.nc\""
-export DATA_ATM02="\"INPUT_DATM/clmforc.GSWP3.c2011.0.5x0.5.Prec.1999-12.nc\" \"INPUT_DATM/clmforc.GSWP3.c2011.0.5x0.5.Prec.2000-01.nc\""
-export DATA_ATM03="\"INPUT_DATM/clmforc.GSWP3.c2011.0.5x0.5.TPQWL.1999-12.nc\" \"INPUT_DATM/clmforc.GSWP3.c2011.0.5x0.5.TPQWL.2000-01.nc\""
-export DATA_ATM04="\"INPUT_DATM/topodata_0.9x1.25_USGS_070110_stream_c151201.nc\""
+export DATA_ATM01="\"INPUT/clmforc.GSWP3.c2011.0.5x0.5.Solr.1999-12.nc\" \"INPUT/clmforc.GSWP3.c2011.0.5x0.5.Solr.2000-01.nc\""
+export DATA_ATM02="\"INPUT/clmforc.GSWP3.c2011.0.5x0.5.Prec.1999-12.nc\" \"INPUT/clmforc.GSWP3.c2011.0.5x0.5.Prec.2000-01.nc\""
+export DATA_ATM03="\"INPUT/clmforc.GSWP3.c2011.0.5x0.5.TPQWL.1999-12.nc\" \"INPUT/clmforc.GSWP3.c2011.0.5x0.5.TPQWL.2000-01.nc\""
+export DATA_ATM04="\"INPUT/topodata_0.9x1.25_USGS_070110_stream_c151201.nc\""
 
-export UFS_CONFIGURE="ufs.configure.atm_lnd.IN"
-export med_model="cmeps"
-export atm_model="datm"
-export lnd_model="noahmp"
-export CPLMODE="ufs.nfrac.aoflux"
-export RUNTYPE="continue"
+export UFS_CONFIGURE=ufs.configure.atm_lnd.IN
+export med_model=cmeps
+export atm_model=datm
+export lnd_model=noahmp
+export CPLMODE=ufs.nfrac.aoflux
+export RUNTYPE=continue
 export READRESTART=.false.
 export ATM_compute_tasks=144
 export OCN_tasks=0
 export ICE_tasks=0
 export LND_tasks=144
-export lnd_ic_type='custom'
+export lnd_ic_type=custom
 export CALC_SNET=.true.
 export layout_x=3
 export layout_y=8
-export mosaic_file="INPUT/C96_mosaic.nc"
+export mosaic_file=INPUT/C96_mosaic.nc
 export coupling_interval_sec=3600
-export TOPOEDITS=""
 export WARM_START=.true.
 
 export RESTART_FILE_SUFFIX_SECS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%02d" $(( (${FHROT}+ ${SHOUR})*3600 )))"
