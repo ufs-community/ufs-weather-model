@@ -905,6 +905,11 @@ EOF
         NODES=$(( NODES + 1 ))
       fi
 
+      PPN=$(( TASKS / NODES ))
+      if (( TASKS - ( PPN * NODES ) > 0 )); then
+          PPN=$((PPN + 1))
+      fi
+      
       cat << EOF > ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
       export JOB_NR=${JOB_NR}
       export MACHINE_ID=${MACHINE_ID}
