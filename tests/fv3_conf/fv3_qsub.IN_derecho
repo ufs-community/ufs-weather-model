@@ -35,7 +35,7 @@ export MPICH_COLL_OPT_OFF=1
 # Avoid job errors because of filesystem synchronization delays
 sync && sleep 1
 
-mpiexec -n @[TASKS] -ppn @[PPN] --hostfile $PBS_NODEFILE ./fv3.exe
+mpiexec -n @[UFS_TASKS] -ppn @[PPN] --hostfile $PBS_NODEFILE ./fv3.exe
 
 echo "Model ended:    " `date`
 echo -n " $( date +%s )," >> job_timestamp.txt

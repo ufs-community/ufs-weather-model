@@ -301,16 +301,16 @@ if (( NODES * TPN < TASKS )); then
 fi
 export NODES
 
-PPN=$(( (TASKS - 1)/NODES + 1 ))
+UFS_TASKS=${TASKS}
+TASKS=$(( NODES * TPN ))
+export TASKS
 
-if (( $(( PPN % 2 )) > 0 )); then
-  PPN=$(( PPN + 1 ))
-fi
-
-if (( PPN > TPN )); then
-  PPN=${TPN}
+PPN=$(( UFS_TASKS / NODES ))
+if (( UFS_TASKS - ( PPN * NODES ) > 0 )); then
+  PPN=$((PPN + 1))
 fi
 export PPN
+export UFS_TASKS
 
 if [[ $SCHEDULER = 'pbs' ]]; then
   if [[ -e $PATHRT/fv3_conf/fv3_qsub.IN_${MACHINE_ID} ]]; then
