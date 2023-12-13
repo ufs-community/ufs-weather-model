@@ -793,7 +793,7 @@ The input files containing grid information and the time-varying forcing files f
 
 .. note:: 
 
-   Users can find atmospheric forcing files for use with the land (:ref:`lnd`) component in the `Land Data Assimilation (DA) data bucket <https://registry.opendata.aws/noaa-ufs-land-da/>`__. These files provide atmospheric forcing data related to precipitation, solar radiation, longwave radiation, temperature, pressure, winds, humidity, topography, and mesh data. Forcing files for the land component configuration come from the Global Soil Wetness Project Phase 3 (`GSWP3 <https://hydro.iis.u-tokyo.ac.jp/GSWP3/>`__) dataset. 
+   Users can find atmospheric forcing files for use with the land (:ref:`(LND) <lnd>`) component in the `Land Data Assimilation (DA) data bucket <https://registry.opendata.aws/noaa-ufs-land-da/>`__. These files provide atmospheric forcing data related to precipitation, solar radiation, longwave radiation, temperature, pressure, winds, humidity, topography, and mesh data. Forcing files for the land component configuration come from the Global Soil Wetness Project Phase 3 (`GSWP3 <https://hydro.iis.u-tokyo.ac.jp/GSWP3/>`__) dataset. 
 
    .. code-block:: console
 
@@ -808,7 +808,7 @@ The input files containing grid information and the time-varying forcing files f
       topodata_0.9x1.25_USGS_070110_stream_c151201.nc
       topodata_0.9x1.SCRIP.210520_ESMFmesh.nc
 
-   See the :ref:`Land DA User's Guide <landda:input-files>` or the `WM LND Input <lnd-in>` section of this page for more information on files used in land configurations of the UFS WM. 
+   See the :ref:`Land DA User's Guide <landda:InputFiles>` or the `WM LND Input <lnd-in>` section of this page for more information on files used in land configurations of the UFS WM. 
 
 **Data Ocean**
 
@@ -1616,28 +1616,44 @@ A sample of the file contents is shown below:
 
 .. code-block:: console
 
-  EARTH_component_list: ATM
-  ATM_model:            fv3
-  runSeq::
-    ATM
-  ::
+   # ESMF #
+   logKindFlag:            ESMF_LOGKIND_MULTI
+   globalResourceControl:  true
+
+   # EARTH #
+   EARTH_component_list: ATM
+   EARTH_attributes::
+   Verbosity = 0
+   ::
+
+   # ATM #
+   ATM_model:                      @[atm_model]
+   ATM_petlist_bounds:             @[atm_petlist_bounds]
+   ATM_omp_num_threads:            @[atm_omp_num_threads]
+   ATM_attributes::
+   Verbosity = 0
+   Diagnostic = 0
+   ::
+
+   # Run Sequence #
+   runSeq::
+   ATM
+   ::
 
 However, ``ufs.configure`` files for other configurations of the Weather Model are more complex. A full set of ``ufs.configure`` templates is available in the ``ufs-weather-model/tests/parm/`` directory `here <https://github.com/ufs-community/ufs-weather-model/tree/develop/tests/parm>`__. Template names follow the pattern ``ufs.configure.*.IN``. A number of samples are available below: 
 
-   * :doc:`ATMAQ <samples/ufs.configure.ATMAQ>` configuration
-   * :doc:`S2S <samples/ufs.configure.S2S>` (fully coupled ``S2S`` configuration that receives atmosphere-ocean fluxes from a mediator)
-   * :doc:`S2SW <samples/ufs.configure.S2SW>` (fully coupled ``S2SW`` configuration)
-   * :doc:`S2SWA <samples/ufs.configure.S2SWA>` (coupled GOCART in the S2SAW configuration)
-   * :doc:`NG-GODAS <samples/ufs.configure.NG-GODAS>` (coupled NG-GODAS configuration)
-   * :doc:`HAFS <samples/ufs.configure.HAFS>` (coupled HAFS configuration)
-   * :doc:`LND <samples/ufs.configure.ATM_LND>` (ATML configuration)
+   * `ATMAQ <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.atmaq.IN>`__ configuration
+   * `S2S <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.s2s_aoflux.IN>`__ (fully coupled ``S2S`` configuration that receives atmosphere-ocean fluxes from a mediator)
+   * `S2SW <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.s2sw.IN>`__ (fully coupled ``S2SW`` configuration)
+   * `S2SWA <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.s2swa.IN>`__ (coupled GOCART in the S2SAW configuration)
+   * `ATM-LND <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.atm_lnd.IN>`__ (ATML configuration)
 
    * For more HAFS, HAFSW, and HAFS-ALL configurations please see the following ``ufs.configure`` templates:
 
-      * `HAFS ATM-OCN <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.hafs_atm_ocn.IN>`_
-      * `HAFS ATM-WAV <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.hafs_atm_wav.IN>`_
-      * `HAFS ATM-OCN-WAV <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.hafs_atm_ocn_wav.IN>`_
-      * `HAFS ATM-DOCN <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.hafs_atm_docn.IN>`_
+      * `HAFS ATM-OCN <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.hafs_atm_ocn.IN>`__
+      * `HAFS ATM-WAV <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.hafs_atm_wav.IN>`__
+      * `HAFS ATM-OCN-WAV <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.hafs_atm_ocn_wav.IN>`__
+      * `HAFS ATM-DOCN <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.hafs_atm_docn.IN>`__
 
 .. note:: The ``aoflux_grid`` option is used to select the grid/mesh to perform atmosphere-ocean flux calculation. The possible options are ``xgrid`` (exchange grid), ``agrid`` (atmosphere model grid) and ``ogrid`` (ocean model grid).
 
