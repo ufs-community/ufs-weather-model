@@ -31,10 +31,6 @@ def generateStage(nodeLabel) {
                        pwd
                        cd tests
                        export machine=${NODE_NAME}
-                       which curl
-                       echo $CHANGE_ID
-                       curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq '.head.repo.ssh_url'
-                       curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq '.head.ref'
                          
                           if [[ $machine =~ "Jet" ]] 
                           then
@@ -82,6 +78,9 @@ def generateStage(nodeLabel) {
                        pwd
                        cd tests
                        export machine=${NODE_NAME}
+                       echo $CHANGE_ID
+                       export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq '.head.repo.ssh_url')
+                       export FORK_BRANCH=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq '.head.ref')
 
                           if [[ $machine =~ "Jet" ]] 
                           then
