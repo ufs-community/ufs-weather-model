@@ -27,6 +27,7 @@ def generateStage(nodeLabel) {
                     echo "Running on ${nodeLabel}"
                     if (baselineLabels.contains(nodeLabel)) {
                        sh '''
+                       source ~/.bashrc
                        #git submodule update --init --recursive
                        pwd
                        cd tests
@@ -77,6 +78,7 @@ def generateStage(nodeLabel) {
                     }
                     else {
                        sh '''
+                       source ~/.bashrc
                        #git submodule update --init --recursive
                        pwd
                        cd tests
