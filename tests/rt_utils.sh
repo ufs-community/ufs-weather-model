@@ -300,18 +300,10 @@ check_results() {
         test_status='FAIL'
 
       else
-
-        cmp ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/$i ${RUNDIR}/$i >/dev/null 2>&1 && d=$? || d=$?
-        if [[ $d -eq 2 ]]; then
-          echo "....CMP ERROR" >> ${RT_LOG}
-          echo "....CMP ERROR"
-          exit 1
-        fi
-
         if [[ $d -eq 1 && ${i##*.} == 'nc' ]] ; then
           if [[ " orion hercules hera wcoss2 acorn cheyenne gaea gaea-c5 jet s4 noaacloud " =~ " ${MACHINE_ID} " ]]; then
-            printf ".......ALT CHECK.." >> ${RT_LOG}
-            printf ".......ALT CHECK.."
+            printf "USING NCCMP.." >> ${RT_LOG}
+            printf "USING NCCMP.."
               if [[ $CMP_DATAONLY == false ]]; then
                 nccmp -d -S -q -f -g -B --Attribute=checksum --warn=format ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i} ${RUNDIR}/${i} > ${i}_nccmp.log 2>&1 && d=$? || d=$?
               else
@@ -323,11 +315,21 @@ check_results() {
                 exit 1
               fi
           fi
+        else
+          printf "USING CMP.." >> ${RT_LOG}
+          printf "USING CMP.."
+          cmp ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/$i ${RUNDIR}/$i >/dev/null 2>&1 && d=$? || d=$?
+          if [[ $d -eq 2 ]]; then
+            echo "....ERROR" >> ${RT_LOG}
+            echo "....ERROR"
+            exit 1
+          fi
+
         fi
 
         if [[ $d -ne 0 ]]; then
-          echo "....NOT OK" >> ${RT_LOG}
-          echo "....NOT OK"
+          echo "....NOT IDENTICAL" >> ${RT_LOG}
+          echo "....NOT IDENTICAL"
           test_status='FAIL'
         else
           echo "....OK" >> ${RT_LOG}
