@@ -1404,10 +1404,6 @@ shows the following parameters that can be set in ``model_configure`` at run-tim
      - atmosphere time step in second
      - integer
      - 1800 (for C96)
-   * - output_1st_tstep_rst
-     - output first time step history file after restart
-     - logical
-     - .false.
    * - restart_interval
      - frequency to output restart file or forecast hours to write out restart file
      - integer
