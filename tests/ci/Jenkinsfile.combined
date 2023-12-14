@@ -151,6 +151,7 @@ pipeline {
     //        }
     //    }
         stage('Set Forked Repo Variables') {
+          node('built-in') {
             steps {
                 script {
                  sh '''
@@ -160,6 +161,7 @@ pipeline {
                  '''
                 }
             }
+          }
         }
         stage('Run Regression Tests in Parallel') {
             steps {
