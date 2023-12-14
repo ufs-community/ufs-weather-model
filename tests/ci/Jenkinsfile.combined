@@ -31,6 +31,8 @@ def generateStage(nodeLabel) {
                        pwd
                        cd tests
                        export machine=${NODE_NAME}
+                       export SSH_ORIGIN=$(curl -s https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq '.head.repo.ssh_url')
+                       export FORK_BRANCH=$(curl -s https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq '.head.ref')
                        echo "The value of SSH_ORIGIN is $SSH_ORIGIN and the value of FORK_BRANCH is $FORK_BRANCH"
                          
                           if [[ $machine =~ "Jet" ]] 
@@ -150,19 +152,6 @@ pipeline {
     //            }
     //        }
     //    }
-        stage('Set Forked Repo Variables') {
-          node('built-in') {
-            steps {
-                script {
-                 sh '''
-                    export SSH_ORIGIN=`curl -s https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq '.head.repo.ssh_url'`
-                    export FORK_BRANCH=`curl -s https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq '.head.ref'` 
-                    echo "The value of SSH_ORIGIN is $SSH_ORIGIN and the value of FORK_BRANCH is $FORK_BRANCH"
-                 '''
-                }
-            }
-          }
-        }
         stage('Run Regression Tests in Parallel') {
             steps {
                 script {
