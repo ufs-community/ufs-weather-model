@@ -304,7 +304,7 @@ def setup_env():
     elif bool(re.match(re.compile('derecho.+'), hostname)):
         machine = 'derecho'
         os.environ['ACCNR'] = 'NRAL0032'
-    elif bool(re.match(re.compile('desched.+'), hostname)):
+    elif bool(re.match(re.compile('derecho.+'), hostname)):
         machine = 'derecho'
         os.environ['ACCNR'] = 'NRAL0032'
     else:
