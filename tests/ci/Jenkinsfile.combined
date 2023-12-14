@@ -82,6 +82,7 @@ def generateStage(nodeLabel) {
                        #git submodule update --init --recursive
                        pwd
                        cd tests
+                       env
                        export machine=${NODE_NAME}
                        echo $CHANGE_ID
                        export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
