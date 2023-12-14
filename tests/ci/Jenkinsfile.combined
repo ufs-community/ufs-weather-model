@@ -31,6 +31,9 @@ def generateStage(nodeLabel) {
                        pwd
                        cd tests
                        export machine=${NODE_NAME}
+                       echo $CHANGE_ID
+                       export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
+                       export FORK_BRANCH=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
                          
                           if [[ $machine =~ "Jet" ]] 
                           then
@@ -79,8 +82,8 @@ def generateStage(nodeLabel) {
                        cd tests
                        export machine=${NODE_NAME}
                        echo $CHANGE_ID
-                       export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq '.head.repo.ssh_url')
-                       export FORK_BRANCH=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq '.head.ref')
+                       export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
+                       export FORK_BRANCH=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
 
                           if [[ $machine =~ "Jet" ]] 
                           then
@@ -116,7 +119,13 @@ def generateStage(nodeLabel) {
                       git config user.email "ecc.platform@noaa.gov"
                       git config user.name "epic-cicd-jenkins"
                       echo "Testing concluded...removing labels for $machine from $GIT_URL"
-  
+                      echo "Updated Tests" >> logs/RegressionTests_$machine.log
+                      git remote -v | grep -w sshorigin > /dev/null 2>&1 && git remote remove sshorigin > /dev/null 2>&1
+                      git remote add sshorigin $SSH_ORIGIN > /dev/null 2>&1
+                      git add tests/logs/RegressionTests_$machine.log
+                      git commit -m "[AutoRT] $machine Job Completed.\n\n\n on-behalf-of @ufs-community <ecc.platform@noaa.gov>"
+                      git push sshorigin HEAD:$CHANGE_BRANCH > /dev/null 2>&1
+
                       GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
                       GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
 
