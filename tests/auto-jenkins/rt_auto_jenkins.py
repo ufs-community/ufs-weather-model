@@ -303,10 +303,10 @@ def setup_env():
         os.environ['ACCNR'] = 'epic'
     elif bool(re.match(re.compile('derecho.+'), hostname)):
         machine = 'derecho'
-        os.environ['ACCNR'] = 'SCSG0002'
-    elif bool(re.match(re.compile('chadmin.+'), hostname)):
+        os.environ['ACCNR'] = 'NRAL0032'
+    elif bool(re.match(re.compile('desched.+'), hostname)):
         machine = 'derecho'
-        os.environ['ACCNR'] = 'SCSG0002'
+        os.environ['ACCNR'] = 'NRAL0032'
     else:
         raise KeyError(f'Hostname: {hostname} does not match '\
                         'for a supported system. Exiting.')
