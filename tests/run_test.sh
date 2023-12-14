@@ -97,7 +97,7 @@ cp ${PATHTR}/modulefiles/ufs_common*                 ./modulefiles/.
 cp ${PATHRT}/module-setup.sh                       module-setup.sh
 
 # load nccmp module
-if [[ " s4 hera orion hercules gaea gaea-c5 jet cheyenne acorn wcoss2 " =~ " $MACHINE_ID " ]]; then
+if [[ " s4 hera orion hercules gaea gaea-c5 jet derecho acorn wcoss2 " =~ " $MACHINE_ID " ]]; then
   if [[ " wcoss2 acorn " =~ " ${MACHINE_ID} " ]] ; then
     module load intel/19.1.3.304 netcdf/4.7.4
     module load nccmp
@@ -301,8 +301,16 @@ if (( NODES * TPN < TASKS )); then
 fi
 export NODES
 
+UFS_TASKS=${TASKS}
 TASKS=$(( NODES * TPN ))
 export TASKS
+
+PPN=$(( UFS_TASKS / NODES ))
+if (( UFS_TASKS - ( PPN * NODES ) > 0 )); then
+  PPN=$((PPN + 1))
+fi
+export PPN
+export UFS_TASKS
 
 if [[ $SCHEDULER = 'pbs' ]]; then
   if [[ -e $PATHRT/fv3_conf/fv3_qsub.IN_${MACHINE_ID} ]]; then
