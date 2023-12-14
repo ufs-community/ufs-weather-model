@@ -32,6 +32,7 @@ def generateStage(nodeLabel) {
                        pwd
                        cd tests
                        export machine=${NODE_NAME}
+                       export PATH=$PATH:~/bin
                        echo $CHANGE_ID
                        export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
                        export FORK_BRANCH=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
@@ -84,6 +85,7 @@ def generateStage(nodeLabel) {
                        cd tests
                        env
                        export machine=${NODE_NAME}
+                       export PATH=$PATH:~/bin
                        echo $CHANGE_ID
                        export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
                        export FORK_BRANCH=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
