@@ -122,7 +122,7 @@ def generateStage(nodeLabel) {
                       echo "Updated Tests" >> logs/RegressionTests_$machine.log
                       git remote -v | grep -w sshorigin > /dev/null 2>&1 && git remote remove sshorigin > /dev/null 2>&1
                       git remote add sshorigin $SSH_ORIGIN > /dev/null 2>&1
-                      git add tests/logs/RegressionTests_$machine.log
+                      git add logs/RegressionTests_$machine.log
                       git commit -m "[AutoRT] $machine Job Completed.\n\n\n on-behalf-of @ufs-community <ecc.platform@noaa.gov>"
                       git push sshorigin HEAD:$CHANGE_BRANCH > /dev/null 2>&1
 
