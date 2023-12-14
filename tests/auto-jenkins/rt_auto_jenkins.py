@@ -304,9 +304,6 @@ def setup_env():
     elif bool(re.match(re.compile('derecho.+'), hostname)):
         machine = 'derecho'
         os.environ['ACCNR'] = 'NRAL0032'
-    elif bool(re.match(re.compile('derecho.+'), hostname)):
-        machine = 'derecho'
-        os.environ['ACCNR'] = 'NRAL0032'
     else:
         raise KeyError(f'Hostname: {hostname} does not match '\
                         'for a supported system. Exiting.')
