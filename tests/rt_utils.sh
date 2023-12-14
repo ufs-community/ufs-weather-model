@@ -101,9 +101,6 @@ interrupt_job() {
   elif [[ $SCHEDULER = 'slurm' ]]; then
     echo "run_util.sh: interrupt_job slurm_id = ${slurm_id}"
     scancel ${slurm_id}
-  elif [[ $SCHEDULER = 'lsf' ]]; then
-    echo "run_util.sh: interrupt_job bsub_id = ${bsub_id}"
-    bkill ${bsub_id}
   else
     echo "run_util.sh: interrupt_job unknown SCHEDULER $SCHEDULER"
   fi
@@ -133,11 +130,6 @@ submit_and_wait() {
     re='Submitted batch job ([0-9]+)'
     [[ "${slurmout}" =~ $re ]] && slurm_id=${BASH_REMATCH[1]}
     echo "Job id ${slurm_id}"
-  elif [[ $SCHEDULER = 'lsf' ]]; then
-    bsubout=$( bsub < $job_card )
-    re='Job <([0-9]+)> is submitted to queue <(.+)>.'
-    [[ "${bsubout}" =~ $re ]] && bsub_id=${BASH_REMATCH[1]}
-    echo "Job id ${bsub_id}"
   else
     echo "Unknown SCHEDULER $SCHEDULER"
     exit 1
@@ -154,8 +146,6 @@ submit_and_wait() {
       job_running=$( qstat ${qsub_id} | grep ${qsub_id} | wc -l )
     elif [[ $SCHEDULER = 'slurm' ]]; then
       job_running=$( squeue -u ${USER} -j ${slurm_id} | grep ${slurm_id} | wc -l)
-    elif [[ $SCHEDULER = 'lsf' ]]; then
-      job_running=$( bjobs ${bsub_id} | grep ${bsub_id} | wc -l)
     else
       echo "Unknown SCHEDULER $SCHEDULER"
       exit 1
@@ -170,8 +160,6 @@ submit_and_wait() {
     jobid=${qsub_id}
   elif [[ $SCHEDULER = 'slurm' ]]; then
     jobid=${slurm_id}
-  elif [[ $SCHEDULER = 'lsf' ]]; then
-    jobid=${bsub_id}
   else
     echo "Unknown SCHEDULER $SCHEDULER"
     exit 1
@@ -192,8 +180,6 @@ submit_and_wait() {
       job_running=$( qstat ${qsub_id} | grep ${qsub_id} | wc -l )
     elif [[ $SCHEDULER = 'slurm' ]]; then
       job_running=$( squeue -u ${USER} -j ${slurm_id} | grep ${slurm_id} | wc -l)
-    elif [[ $SCHEDULER = 'lsf' ]]; then
-      job_running=$( bjobs ${bsub_id} | grep ${bsub_id} | wc -l)
     else
       echo "Unknown SCHEDULER $SCHEDULER"
       exit 1
@@ -238,30 +224,6 @@ submit_and_wait() {
         status_label=$( sacct -n -j ${slurm_id} --format=JobID,state%20,Jobname%20 | grep "^${slurm_id}" | grep ${JBNME} | awk '{print $2}' )
         if [[ $status_label = 'FAILED' ]] || [[ $status_label = 'TIMEOUT' ]] || [[ $status_label = 'CANCELLED' ]] ; then
             test_status='FAIL'
-        fi
-      fi
-
-    elif [[ $SCHEDULER = 'lsf' ]]; then
-
-      status=$( bjobs ${bsub_id} 2>/dev/null | grep ${bsub_id} | awk '{print $3}' ); status=${status:--}
-      if   [[ $status = 'PEND' ]];  then
-        status_label='pending'
-      elif [[ $status = 'RUN'  ]];  then
-        status_label='running'
-      elif [[ $status = 'DONE'  ]];  then
-        status_label='finished'
-        test_status='DONE'
-      elif [[ $status = 'EXIT' ]];  then
-        status_label='failed'
-        test_status='FAIL'
-      else
-        echo "bsub unknown status ${status}"
-        status_label='finished'
-        test_status='DONE'
-        exit_status=$( bjobs ${bsub_id} 2>/dev/null | grep ${bsub_id} | awk '{print $3}' ); status=${status:--}
-        if [[ $exit_status = 'EXIT' ]];  then
-          status_label='failed'
-          test_status='FAIL'
         fi
       fi
 
@@ -438,8 +400,6 @@ kill_job() {
     qdel ${jobid}
   elif [[ $SCHEDULER = 'slurm' ]]; then
     scancel ${jobid}
-  elif [[ $SCHEDULER = 'lsf' ]]; then
-    bkill ${jobid}
   fi
 }
 
