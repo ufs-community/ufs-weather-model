@@ -1333,7 +1333,7 @@ export NY_6=''
 export DX_6=''
 export DY_6=''
 
-export OUTPUT_FH=-1
+export OUTPUT_FH='3 -1'
 }
 export_hrrr() {
 export_fv3
