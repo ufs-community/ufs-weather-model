@@ -4,7 +4,7 @@
 
 export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system - C96MX100 with IAU"
 
-export CNTL_DIR="cpld_control_gfsv17_iau"
+export CNTL_DIR=cpld_control_gfsv17_iau
 
 export LIST_FILES="sfcf012.nc \
                    atmf012.nc \
@@ -36,17 +36,17 @@ export NGGPS_IC=.false.
 export MOUNTAIN=.true.
 
 # ICE warm start
-export CICERUNTYPE=continue
+export CICE_RUNTYPE=continue
 export RUNTYPE=continue
-export USE_RESTART_TIME=.true.
+export CICE_USE_RESTART_TIME=.true.
 
 # MOM6 warm start
 export MOM6_RESTART_SETTING=r
 
-export TOPOEDITS=ufs.topo_edits_011818.nc
+export MOM6_TOPOEDITS=ufs.topo_edits_011818.nc
 export MOM6_ALLOW_LANDMASK_CHANGES=True
 export eps_imesh=2.5e-1
-export DIAG_FREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
+export CICE_DIAGFREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
 
 export INPES=$INPES_cpl_unstr
 export JNPES=$JNPES_cpl_unstr
@@ -75,16 +75,16 @@ export LDIAG_UGWP=.false.
 export KNOB_UGWP_DOKDIS=2
 export KNOB_UGWP_NDX4LH=4
 
-export WAVDOMAIN=global_270k
-export MESH_WAV=mesh.${WAVDOMAIN}.nc
-export MODDEF_WAV=mod_def.exp.${WAVDOMAIN}
+export WW3_DOMAIN=global_270k
+export MESH_WAV=mesh.${WW3_DOMAIN}.nc
+export WW3_MODDEF=mod_def.exp.${WW3_DOMAIN}
 
 export FV3_RUN=cpld_control_run.IN
 export CCPP_SUITE=FV3_GFS_v17_coupled_p8_ugwpv1
 export FIELD_TABLE=field_table_thompson_noaero_tke_progsigma
 export DIAG_TABLE=diag_table_cpld_template
 export INPUT_NML=cpld_control.nml.IN
-export UFS_CONFIGURE=ufs.configure.cpld_noaero_outwav.IN
+export UFS_CONFIGURE=ufs.configure.s2sw_slow.IN
 
 #GFSv17	settings
 export PROGSIGMA=.true.
@@ -98,10 +98,6 @@ export IAUFHRS='3 6 9'
 export IAU_INC_FILES="'fv_increment3.nc','fv_increment6.nc','fv_increment9.nc'"
 export ODA_INCUPD="True"
 export ODA_INCUPD_UV="True"
-
-if [[ $MACHINE_ID = cheyenne ]]; then
-  TPN=18
-fi
 
 if [[ $MACHINE_ID = hera ]] && [[ $RT_COMPILER = gnu ]]; then
   WLCLK=40
