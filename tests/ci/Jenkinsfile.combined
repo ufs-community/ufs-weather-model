@@ -27,7 +27,7 @@ def generateStage(nodeLabel) {
                     echo "Running on ${nodeLabel}"
                     if (baselineLabels.contains(nodeLabel)) {
                        sh '''
-                       #git submodule update --init --recursive
+                       git submodule update --init --recursive
                        pwd
                        cd tests
                        export machine=${NODE_NAME}
@@ -40,32 +40,32 @@ def generateStage(nodeLabel) {
                           then
                             echo "Creating baselines on $machine"
                             export dprefix=/lfs1/NAGAPE/$ACCNR/$USER
-                            #./rt.sh -a ${ACCNR} -c -r -l rt.conf
+                            ./rt.sh -a ${ACCNR} -c -r -l rt.conf
                           elif [[ $machine =~ "Hercules" ]]
                           then
                             echo "Creating baselines on $machine"
                             export dprefix=/work2/noaa/$ACCNR/$USER
                             sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
-                            #./rt.sh -a ${ACCNR} -c -e -l rt.conf
+                            ./rt.sh -a ${ACCNR} -c -e -l rt.conf
                           elif [[ $machine =~ "Orion" ]]
                           then
                             echo "Creating baselines on $machine"
                             export dprefix=/work2/noaa/$ACCNR/$USER
                             sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
-                            #./rt.sh -a ${ACCNR} -c -e -l rt.conf
+                            ./rt.sh -a ${ACCNR} -c -e -l rt.conf
                           elif [[ $machine =~ "Gaea" ]]
                           then 
                             echo "Creating baselines on $machine"
-                            #./rt.sh -a ${ACCNR} -c -e -l rt.conf
+                            ./rt.sh -a ${ACCNR} -c -e -l rt.conf
                             unset LD_LIBRARY_PATH
                           elif [[ $machine =~ "Hera" ]]
                           then
                             echo "Creating baselines on $machine"
                             export ACCNR=nems
-                            #./rt.sh -a ${ACCNR} -c -r -l rt.conf
+                            ./rt.sh -a ${ACCNR} -c -r -l rt.conf
                           else
                             echo "Creating baselines on $machine"
-                            #./rt.sh -a ${ACCNR} -c -r -l rt.conf
+                            ./rt.sh -a ${ACCNR} -c -r -l rt.conf
                           fi
                       git config user.email "ecc.platform@noaa.gov"
                       git config user.name "epic-cicd-jenkins"
@@ -92,32 +92,32 @@ def generateStage(nodeLabel) {
                           then
                            echo "Running regression tests on $machine"
                             export dprefix=/lfs1/NAGAPE/$ACCNR/$USER
-                            #./rt.sh -a ${ACCNR} -r -l rt.conf
+                            ./rt.sh -a ${ACCNR} -r -l rt.conf
                           elif [[ $machine =~ "Hercules" ]]
                           then
                            echo "Running regression tests on $machine"
                             export dprefix=/work2/noaa/$ACCNR/$USER
                             sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
-                            #./rt.sh -a ${ACCNR} -e -l rt.conf
+                            ./rt.sh -a ${ACCNR} -e -l rt.conf
                           elif [[ $machine =~ "Orion" ]]
                           then
                            echo "Running regression tests on $machine"
                             export dprefix=/work2/noaa/$ACCNR/$USER
                             sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
-                            #./rt.sh -a ${ACCNR} -e -l rt.conf
+                            ./rt.sh -a ${ACCNR} -e -l rt.conf
                           elif [[ $machine =~ "Gaea" ]]
                           then 
                            echo "Running regression tests on $machine"
-                            #./rt.sh -a ${ACCNR} -e -l rt.conf
+                            ./rt.sh -a ${ACCNR} -e -l rt.conf
                             unset LD_LIBRARY_PATH
                           elif [[ $machine =~ "Hera" ]]
                           then
                            echo "Running regression tests on $machine"
                            export ACCNR=nems
-                           #./rt.sh -a ${ACCNR} -r -l rt.conf
+                           ./rt.sh -a ${ACCNR} -r -l rt.conf
                           else
                            echo "Running regression tests on $machine"
-                           #./rt.sh -a ${ACCNR} -r -l rt.conf
+                           ./rt.sh -a ${ACCNR} -r -l rt.conf
                           fi
 
                       git config user.email "ecc.platform@noaa.gov"
@@ -156,16 +156,16 @@ pipeline {
         GIT_URL = 'https://github.com/ufs-community/ufs-weather-model.git'
     }
     stages {
-    //    stage('Run SonarQube Testing') {
-    //        steps {
-    //            script {
-    //                build job: '/ufs-weather-model/ufs-wm-sonarqube', parameters: [
-    //                    string(name: 'BRANCH_NAME', value: env.CHANGE_BRANCH ?: 'develop'),
-    //                    string(name: 'FORK_NAME', value: env.CHANGE_FORK ?: '')
-    //                ], wait: false
-    //            }
-    //        }
-    //    }
+        stage('Run SonarQube Testing') {
+            steps {
+                script {
+                    build job: '/ufs-weather-model/ufs-wm-sonarqube', parameters: [
+                        string(name: 'BRANCH_NAME', value: env.CHANGE_BRANCH ?: 'develop'),
+                        string(name: 'FORK_NAME', value: env.CHANGE_FORK ?: '')
+                    ], wait: false
+                }
+            }
+        }
         stage('Run Regression Tests in Parallel') {
             steps {
                 script {
@@ -174,22 +174,22 @@ pipeline {
             }
         }       
     }   
-//        post {
-//         success {
-//             node('built-in') {
-//                echo 'This will run only if successful.'
-//                sh '''
-//                  aws sns publish --topic-arn "arn:aws:sns:us-east-1:211527314271:Jenkins-CICD-Notifications" --region us-east-1 --message '{"version":"1.0","source":"custom","content":{"description":":sunny: Jenkins build *'"$JOB_NAME"' '"$BUILD_NUMBER"'* with *PR-'"$CHANGE_ID"'*  *succeeded*"}}'
-//               '''
-//             }
-//         }
-//         failure {
-//             node('built-in') {
-//                echo 'This will run only if the run was marked as unstable.'
-//                sh '''
-//                  aws sns publish --topic-arn "arn:aws:sns:us-east-1:211527314271:Jenkins-CICD-Notifications" --region us-east-1 --message '{"version":"1.0","source":"custom","content":{"description":":warning: Jenkins build *'"$JOB_NAME"' '"$BUILD_NUMBER"'* with *PR-'"$CHANGE_ID"'*  *failed!*"}}'
-//               '''
-//             }
-//         }
-//     } 
+        post {
+         success {
+             node('built-in') {
+                echo 'This will run only if successful.'
+                sh '''
+                  aws sns publish --topic-arn "arn:aws:sns:us-east-1:211527314271:Jenkins-CICD-Notifications" --region us-east-1 --message '{"version":"1.0","source":"custom","content":{"description":":sunny: Jenkins build *'"$JOB_NAME"' '"$BUILD_NUMBER"'* with *PR-'"$CHANGE_ID"'*  *succeeded*"}}'
+               '''
+             }
+         }
+         failure {
+             node('built-in') {
+                echo 'This will run only if the run was marked as unstable.'
+                sh '''
+                  aws sns publish --topic-arn "arn:aws:sns:us-east-1:211527314271:Jenkins-CICD-Notifications" --region us-east-1 --message '{"version":"1.0","source":"custom","content":{"description":":warning: Jenkins build *'"$JOB_NAME"' '"$BUILD_NUMBER"'* with *PR-'"$CHANGE_ID"'*  *failed!*"}}'
+               '''
+             }
+         }
+     } 
 }
