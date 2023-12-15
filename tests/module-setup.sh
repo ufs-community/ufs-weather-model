@@ -43,11 +43,11 @@ elif [[ $MACHINE_ID = wcoss2 || $MACHINE_ID = acorn ]] ; then
     fi
     module purge
     module reset
-
-elif [[ $MACHINE_ID = cheyenne ]] ; then
-    # We are on NCAR Cheyenne
+    
+elif [[ $MACHINE_ID = derecho ]] ; then
+    # We are on NCAR Derecho
     if ( ! eval module help > /dev/null 2>&1 ) ; then
-        source /glade/u/apps/ch/modulefiles/default/localinit/localinit.sh
+        source /usr/share/lmod/lmod/init/bash
     fi
     module purge
     

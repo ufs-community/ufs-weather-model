@@ -229,48 +229,17 @@ elif [[ $MACHINE_ID = gaea-c5 ]]; then
   INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
   WAV_tasks_atmw_gdas=264
 
-elif [[ $MACHINE_ID = cheyenne ]]; then
+elif [[ $MACHINE_ID = derecho ]]; then
 
-  TPN=36
-
+  TPN=128
   INPES_dflt=3 ; JNPES_dflt=8
   INPES_thrd=3 ; JNPES_thrd=4
   INPES_c384=8 ; JNPES_c384=6  ; THRD_c384=2
   INPES_c768=8 ; JNPES_c768=16 ; THRD_c768=2
-
-  THRD_cpl_atmw_gdas=3
+  
+  THRD_cpl_atmw_gdas=2
   INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
-  WAV_tasks_atmw_gdas=264
-
-  THRD_cpl_dflt=1
-  INPES_cpl_dflt=6; JNPES_cpl_dflt=8; WPG_cpl_dflt=6
-  OCN_tasks_cpl_dflt=20
-  ICE_tasks_cpl_dflt=10
-  WAV_tasks_cpl_dflt=20
-
-  THRD_cpl_thrd=2
-  INPES_cpl_thrd=6; JNPES_cpl_thrd=4; WPG_cpl_thrd=6
-  OCN_tasks_cpl_thrd=20
-  ICE_tasks_cpl_thrd=10
-  WAV_tasks_cpl_thrd=20
-
-  THRD_cpl_dcmp=1
-  INPES_cpl_dcmp=4; JNPES_cpl_dcmp=12; WPG_cpl_dcmp=6
-  OCN_tasks_cpl_dcmp=20
-  ICE_tasks_cpl_dcmp=10
-  WAV_tasks_cpl_dcmp=20
-
-  THRD_cpl_mpi=1
-  INPES_cpl_mpi=6; JNPES_cpl_mpi=12; WPG_cpl_mpi=6
-  OCN_tasks_cpl_mpi=24
-  ICE_tasks_cpl_mpi=12
-  WAV_tasks_cpl_mpi=24
-
-  THRD_cpl_bmrk=2
-  INPES_cpl_bmrk=12; JNPES_cpl_bmrk=8; WPG_cpl_bmrk=48
-  OCN_tasks_cpl_bmrk=120
-  ICE_tasks_cpl_bmrk=48
-  WAV_tasks_cpl_bmrk=100
+  WAV_tasks_atmw_gdas=248
 
 elif [[ $MACHINE_ID = stampede ]]; then
 

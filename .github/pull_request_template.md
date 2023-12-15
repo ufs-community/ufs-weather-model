@@ -4,7 +4,7 @@ PLEASE DO NOT MODIFY THE TEMPLATE BEYOND FILLING OUT THE PROPER SECTIONS -->
 <!--  Please complete all items in list. -->
 - [ ] I have linked PR's from all sub-components involved in section below. <!-- PLEASE DO NOT LINK SUBCOMPONENT ISSUES -->
 - [ ] I am confirming reviews are completed in ALL sub-component PR's.
-- [ ] I have run the full RT suite on either Hera/Cheyenne AND have attached the log to this PR below this line:
+- [ ] I have run the full RT suite on either Hera/Hercules AND have attached the log to this PR below this line:
   - LOG: 
 - [ ] I have added the list of all failed regression tests to "Anticipated changes" section.
 - [ ] I have filled out all sections of the template.
@@ -79,7 +79,7 @@ PLEASE DO NOT MODIFY THE TEMPLATE BEYOND FILLING OUT THE PROPER SECTIONS -->
   - [ ] Hercules
   - [ ] Jet
   - [ ] Gaea
-  - [ ] Cheyenne
+  - [ ] Derecho
 - WCOSS2
   - [ ] Dogwood/Cactus
   - [ ] Acorn
