@@ -43,10 +43,10 @@ def set_directories(job_obj):
         blstore = '/work/noaa/epic/hercules/UFS-WM_RT'
         rtbldir = '/work/noaa/stmp/role-epic/stmp/role-epic/FV3_RT/'\
                  f'REGRESSION_TEST'  
-    elif job_obj.machine == 'cheyenne':
-        workdir = '/glade/scratch/epicufsrt/autort/jenkins/autort/pr'
-        blstore = '/glade/scratch/epicufsrt/GMTB/ufs-weather-model/RT/NEMSfv3gfs'
-        rtbldir = '/glade/scratch/epicufsrt/FV3_RT/'\
+    elif job_obj.machine == 'derecho':
+        workdir = '/glade/derecho/scratch/epicufsrt/autort/jenkins/autort/pr'
+        blstore = '/glade/derecho/scratch/epicufsrt/ufs-weather-model/RT/NEMSfv3gfs'
+        rtbldir = '/glade/derecho/scratch/epicufsrt/FV3_RT/'\
                  f'REGRESSION_TEST'
     else:
         logger.critical(f'Machine {job_obj.machine} is not supported for this job')
