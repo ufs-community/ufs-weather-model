@@ -124,7 +124,6 @@ def generateStage(nodeLabel) {
                       git config user.name "epic-cicd-jenkins"
                       export machine_name_logs=$(echo $machine | awk '{ print tolower($1) }')
                       echo "Testing concluded...removing labels for $machine from $GIT_URL"
-                      echo "Updated Tests" >> logs/RegressionTests_$machine_name_logs.log
                       git remote -v | grep -w sshorigin > /dev/null 2>&1 && git remote remove sshorigin > /dev/null 2>&1
                       git remote add sshorigin $SSH_ORIGIN > /dev/null 2>&1
                       git add logs/RegressionTests_$machine_name_logs.log
