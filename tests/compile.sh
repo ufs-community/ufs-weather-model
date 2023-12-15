@@ -45,7 +45,7 @@ BUILD_DIR=${BUILD_DIR:-$(pwd)/build_${BUILD_NAME}}
 # ----------------------------------------------------------------------
 # Make sure we have reasonable number of threads.
 
-if [[ $MACHINE_ID == cheyenne ]]; then
+if [[ $MACHINE_ID == derecho ]]; then
     BUILD_JOBS=${BUILD_JOBS:-3}
 fi
 
