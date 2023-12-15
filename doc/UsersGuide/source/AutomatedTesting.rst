@@ -91,7 +91,7 @@ On supported HPC systems, a :term:`cron job` runs the ``start_rt_auto.sh`` bash 
 This script checks the HPC name and sets certain python paths. Then, it runs ``rt_auto.py``, 
 which uses the Github API (through pyGitHub) to check the labels on pull requests to 
 ``ufs-weather-model``. If a PR label matches the HPC name 
-(e.g., hera-intel-RT or cheyenne-gnu-BL), the label provides the HPC  
+(e.g., hera-intel-RT or derecho-gnu-BL), the label provides the HPC  
 with the compiler and job information to run a test or task on the machine. 
 If no PR label matches HPC name, the script exits.
 

@@ -11,6 +11,7 @@ set -eux
 
 echo -n " $( date +%s )," >  job_timestamp.txt
 echo "Compile started:  " `date`
+module purge
 
 @[PATHRT]/compile.sh @[MACHINE_ID] "@[MAKE_OPT]" @[COMPILE_NR] @[RT_COMPILER]
 
