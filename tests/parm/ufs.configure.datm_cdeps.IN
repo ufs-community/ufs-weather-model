@@ -42,7 +42,9 @@ OCN_attributes::
   DumpFields = false
   ProfileMemory = false
   OverwriteSlice = true
-  mesh_ocn = @[MESHOCN_ICE]
+  mesh_ocn = @[MESH_OCN]
+  use_coldstart = @[use_coldstart]
+  use_mommesh = @[use_mommesh]
 ::
 
 # ICE #
@@ -54,7 +56,8 @@ ICE_attributes::
   DumpFields = false
   ProfileMemory = false
   OverwriteSlice = true
-  mesh_ice = @[MESHOCN_ICE]
+  mesh_ice = @[MESH_ICE]
+  eps_imesh = @[eps_imesh]
   stop_n = @[RESTART_N]
   stop_option = nhours
   stop_ymd = -999
@@ -111,15 +114,12 @@ ALLCOMP_attributes::
       ScalarFieldIdxNextSwCday = 3
       ScalarFieldName = cpl_scalars
       start_type = @[RUNTYPE]
-      restart_dir = RESTART/
+      restart_dir = @[CMEPS_RESTART_DIR]
       case_name = DATM_@[DATM_SRC]
       restart_n = @[RESTART_N]
       restart_option = nhours
       restart_ymd = -999
       dbug_flag = @[cap_dbug_flag]
-      use_coldstart = @[use_coldstart]
-      use_mommesh = @[use_mommesh]
-      eps_imesh = @[eps_imesh]
       coldair_outbreak_mod = .false.
       flds_wiso = .false.
       flux_convergence = @[flux_convergence]

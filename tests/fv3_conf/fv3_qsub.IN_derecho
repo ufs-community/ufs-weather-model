@@ -11,7 +11,7 @@ set -eux
 echo -n " $( date +%s )," >  job_timestamp.txt
 
 set +x
-MACHINE_ID=cheyenne
+MACHINE_ID=derecho
 source ./module-setup.sh
 if [[ ! -d modulefiles ]]; then
   mkdir modulefiles
@@ -30,11 +30,12 @@ export OMP_NUM_THREADS=@[THRD]
 export ESMF_RUNTIME_COMPLIANCECHECK=OFF:depth=4
 export ESMF_RUNTIME_PROFILE=ON
 export ESMF_RUNTIME_PROFILE_OUTPUT="SUMMARY"
+export MPICH_COLL_OPT_OFF=1
 
 # Avoid job errors because of filesystem synchronization delays
 sync && sleep 1
 
-mpiexec_mpt -p %g: -np @[TASKS] omplace ./fv3.exe
+mpiexec -n @[UFS_TASKS] -ppn @[PPN] --hostfile $PBS_NODEFILE ./fv3.exe
 
 echo "Model ended:    " `date`
 echo -n " $( date +%s )," >> job_timestamp.txt

@@ -3,7 +3,7 @@
 #
 export TEST_DESCR="Fully coupled FV3-CCPP-GOCART-MOM6-CICE-CMEPS-WW3 system - C384L127 OCN/ICE/0.25-degree WAVE/30m - Benchmark P8 test"
 
-export CNTL_DIR="cpld_bmark_p8"
+export CNTL_DIR=cpld_bmark_p8
 
 export LIST_FILES=""
 
@@ -55,13 +55,13 @@ export OCNRES=025
 export ICERES=0.25
 export NX_GLB=1440
 export NY_GLB=1080
-export NPROC_ICE=$ICE_tasks
-export np2=`expr $NPROC_ICE / 2`
-export BLCKX=`expr $NX_GLB / $np2`
-export BLCKY=`expr $NY_GLB / 2`
-export WAVDOMAIN=gwes_30m
-export MESH_WAV=mesh.${WAVDOMAIN}.nc
-export MODDEF_WAV=mod_def.${WAVDOMAIN}
+export CICE_NPROC=$ICE_tasks
+export np2=`expr $CICE_NPROC / 2`
+export CICE_BLCKX=`expr $NX_GLB / $np2`
+export CICE_BLCKY=`expr $NY_GLB / 2`
+export WW3_DOMAIN=gwes_30m
+export MESH_WAV=mesh.${WW3_DOMAIN}.nc
+export WW3_MODDEF=mod_def.${WW3_DOMAIN}
 
 # set component and coupling timesteps
 export DT_ATMOS=300
@@ -75,12 +75,13 @@ export coupling_interval_slow_sec=${DT_THERM_MOM6}
 export coupling_interval_fast_sec=${DT_ATMOS}
 
 # resolution dependent files
-export MOM_INPUT=MOM_input_template_${OCNRES}
-export MESHOCN_ICE=mesh.mx${OCNRES}.nc
-export CICEGRID=grid_cice_NEMS_mx${OCNRES}.nc
-export CICEMASK=kmtu_cice_NEMS_mx${OCNRES}.nc
-export CHLCLIM=seawifs-clim-1997-2010.${NX_GLB}x${NY_GLB}.v20180328.nc
-export FRUNOFF=runoff.daitren.clim.${NX_GLB}x${NY_GLB}.v20180328.nc
+export MOM6_INPUT=MOM_input_${OCNRES}.IN
+export MESH_ICE=mesh.mx${OCNRES}.nc
+export MESH_OCN=mesh.mx${OCNRES}.nc
+export CICE_GRID=grid_cice_NEMS_mx${OCNRES}.nc
+export CICE_MASK=kmtu_cice_NEMS_mx${OCNRES}.nc
+export MOM6_CHLCLIM=seawifs-clim-1997-2010.${NX_GLB}x${NY_GLB}.v20180328.nc
+export MOM6_FRUNOFF=runoff.daitren.clim.${NX_GLB}x${NY_GLB}.v20180328.nc
 export MOM6_RIVER_RUNOFF=True
 export MOM6_RESTART_SETTING=r
 

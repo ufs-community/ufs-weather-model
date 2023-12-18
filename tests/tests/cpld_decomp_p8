@@ -4,7 +4,7 @@
 
 export TEST_DESCR="Fully coupled FV3-CCPP-GOCART-MOM6-CICE-CMEPS-WW3 system - C96MX100 - decomp test"
 
-export CNTL_DIR="cpld_control_p8"
+export CNTL_DIR=cpld_control_p8
 
 export LIST_FILES="sfcf024.tile1.nc \
                    sfcf024.tile2.nc \
@@ -72,17 +72,17 @@ OCN_tasks=$OCN_tasks_cpl_dcmp
 ICE_tasks=$ICE_tasks_cpl_dcmp
 WAV_tasks=$WAV_tasks_cpl_dcmp
 
-export NPROC_ICE=$ICE_tasks
-export np2=`expr $NPROC_ICE / 2`
-export BLCKX=`expr $NX_GLB / $np2`
-export BLCKY=`expr $NY_GLB / 2`
+export CICE_NPROC=$ICE_tasks
+export np2=`expr $CICE_NPROC / 2`
+export CICE_BLCKX=`expr $NX_GLB / $np2`
+export CICE_BLCKY=`expr $NY_GLB / 2`
 
-export TOPOEDITS=ufs.topo_edits_011818.nc
+export MOM6_TOPOEDITS=ufs.topo_edits_011818.nc
 export MOM6_ALLOW_LANDMASK_CHANGES=True
 export eps_imesh=2.5e-1
 
 export FV3_RUN=cpld_control_run.IN
 
-if [[ $MACHINE_ID = cheyenne ]]; then
-  TPN=18
+if [[ $MACHINE_ID = derecho ]]; then
+  TPN=96
 fi
