@@ -49,7 +49,7 @@ for i = 1, #ufs_modules do
 end
 
 prepend_path("MODULEPATH", "/apps/prod/lmodules/INTEL_cray_mpich/19.1.3.304/cray-mpich/8.1.9")
-scotch_ver=os.getenv("scotch_ver") or "7.0.3"
+scotch_ver=os.getenv("scotch_ver") or "7.0.4"
 load(pathJoin("scotch",scotch_ver))
 
 setenv("CC", "cc")

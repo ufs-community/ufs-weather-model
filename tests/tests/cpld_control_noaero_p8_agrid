@@ -4,7 +4,7 @@
 
 export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C96MX100"
 
-export CNTL_DIR="cpld_control_noaero_p8_agrid"
+export CNTL_DIR=cpld_control_noaero_p8_agrid
 
 export LIST_FILES="sfcf021.tile1.nc \
                    sfcf021.tile2.nc \
@@ -88,15 +88,11 @@ export CPLMODE=ufs.frac.aoflux
 export CCPP_SUITE="FV3_GFS_v17_coupled_p8_sfcocn"
 export USE_MED_FLUX=.true.
 export MOM6_USE_WAVES=False
-export TOPOEDITS=ufs.topo_edits_011818.nc
+export MOM6_TOPOEDITS=ufs.topo_edits_011818.nc
 export MOM6_ALLOW_LANDMASK_CHANGES=True
 export eps_imesh=2.5e-1
 
 export DIAG_TABLE=diag_table_template
-export UFS_CONFIGURE=ufs.configure.cpld_agrid.IN
+export UFS_CONFIGURE=ufs.configure.s2s_aoflux.IN
 
 export FV3_RUN=cpld_control_run.IN
-
-if [[ $MACHINE_ID = cheyenne ]]; then
-  TPN=18
-fi

@@ -55,7 +55,6 @@ WAV_attributes::
   OverwriteSlice = false
   merge_import = .true.
   mesh_wav = @[MESH_WAV]
-  multigrid = @[MULTIGRID]
   user_sets_restname = true
 ::
 
@@ -95,15 +94,13 @@ ALLCOMP_attributes::
   restart_n = 6
   restart_option = nhours
   restart_ymd = -999
-  dbug_flag = 6
-  use_coldstart = true
+  dbug_flag = @[cap_dbug_flag]
   orb_eccen = 1.e36
   orb_iyear = 2000
   orb_iyear_align = 2000
   orb_mode = fixed_year
   orb_mvelp = 1.e36
   orb_obliq = 1.e36
-  mediator_read_restart = @[USE_COLDSTART]
   mediator_present = true
   stop_n = @[FHMAX]
   stop_option = nhours
@@ -117,12 +114,12 @@ ocn_export_fields::
 ::
 
 ocn_import_fields::
-  'taux10'      'mean_zonal_moment_flx_atm' 'N_m-2'
-  'tauy10'      'mean_merid_moment_flx_atm' 'N_m-2'
+  'taux10'      'inst_zonal_moment_flx_atm' 'N_m-2'
+  'tauy10'      'inst_merid_moment_flx_atm' 'N_m-2'
   'prcp'        'inst_prec_rate'            'kg_m-2_s-1'
-  'swflxd'      'mean_net_sw_flx'           'W_m-2'
-  'lwflxd'      'mean_net_lw_flx'           'W_m-2'
+  'swflxd'      'inst_net_sw_flx'           'W_m-2'
+  'lwflxd'      'inst_net_lw_flx'           'W_m-2'
   'mslprs'      'inst_pres_height_surface'  'Pa'
-  'sensflx'     'mean_sensi_heat_flx'       'W_m-2'
-  'latflx'      'mean_laten_heat_flx'       'W_m-2'
+  'sensflx'     'inst_sensi_heat_flx'       'W_m-2'
+  'latflx'      'inst_laten_heat_flx'       'W_m-2'
 ::
