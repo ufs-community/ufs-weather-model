@@ -348,18 +348,18 @@ check_results() {
 
         if [[ $d -eq 1 && ${i##*.} == 'nc' ]] ; then
           if [[ " orion hercules hera wcoss2 acorn cheyenne gaea gaea-c5 jet s4 noaacloud " =~ " ${MACHINE_ID} " ]]; then
-            printf ".......ALT CHECK.." >> ${RT_LOG}
-            printf ".......ALT CHECK.."
-              if [[ $CMP_DATAONLY == false ]]; then
-                nccmp -d -S -q -f -g -B --Attribute=checksum --warn=format ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i} ${RUNDIR}/${i} > ${i}_nccmp.log 2>&1 && d=$? || d=$?
-              else
-                nccmp -d -S -q -f -B --Attribute=checksum --warn=format ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i} ${RUNDIR}/${i} > ${i}_nccmp.log 2>&1 && d=$? || d=$?
-              fi
-              if [[ $d -ne 0 && $d -ne 1 ]]; then
-                echo "....ERROR" >> ${RT_LOG}
-                echo "....ERROR"
-                exit 1
-              fi
+            printf "....ALT CHECK" >> ${RT_LOG}
+            printf "....ALT CHECK"
+            if [[ $CMP_DATAONLY == false ]]; then
+              nccmp -d -S -q -f -g -B --Attribute=checksum --warn=format ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i} ${RUNDIR}/${i} > ${i}_nccmp.log 2>&1 && d=$? || d=$?
+            else
+              nccmp -d -S -q -f    -B --Attribute=checksum --warn=format ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i} ${RUNDIR}/${i} > ${i}_nccmp.log 2>&1 && d=$? || d=$?
+            fi
+            if [[ $d -ne 0 && $d -ne 1 ]]; then
+              printf "....ERROR" >> ${RT_LOG}
+              printf "....ERROR"
+              test_status='FAIL'
+            fi
           fi
         fi
 
