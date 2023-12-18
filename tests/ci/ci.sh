@@ -61,39 +61,30 @@ if [ $BUILD = "false" ] && [ $RUN = "false" ]; then
 fi
 
 if [ $BUILD = "true" ]; then
-
   docker build --build-arg test_name=$TEST_NAME \
                --build-arg build_case=$BUILD_CASE \
                --no-cache \
                --squash --compress \
                -f Dockerfile -t ${IMG_NAME} ../..
-
   docker create --name tmp-container ${IMG_NAME}
   docker cp -a tmp-container:/home/builder/ufs-weather-model/tests/fv3.tar.gz ~
   docker rm tmp-container
-
 elif [ $RUN == "true" ]; then
-
   docker volume rm -f DataVolume >/dev/null &&
     docker run -d --rm -v DataVolume:/tmp noaaemc/input-data:20220414
-
   docker create -u builder -e "CI_TEST=true" -e "USER=builder" \
                 -e "RT_MACHINE=linux.gnu" -e "RT_COMPILER=gnu" \
                 -w "/home/builder/ufs-weather-model/tests" \
                 -v DataVolume:/home/builder/data/NEMSfv3gfs \
                 --shm-size=512m --name my-container noaaemc/ubuntu-hpc:v1.11b \
                 /bin/bash -c "./opnReqTest -n ${TEST_NAME} -c ${TEST_CASE} -x"
-
   cd $GITHUB_WORKSPACE
   docker cp . my-container:/home/builder/ufs-weather-model
   docker start my-container
-
   echo 'cache,rss,shmem' >memory_stat
   sleep 3
   containerID=$(docker ps -q --no-trunc)
   check_memory_usage $containerID >>memory_stat &
-
   docker logs -f $containerID
   exit $(docker inspect $containerID --format='{{.State.ExitCode}}')
-
 fi
