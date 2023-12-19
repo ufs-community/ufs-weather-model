@@ -8,7 +8,9 @@ i.e.:
 * Linking to a subcomponent PR and issues add - <Group>/<Fork>/pull/<number> or - <Group>/<Fork>/issues/<number>
 -->
 ## Commit Queue Requirements:
-<!-- Please note: PRs will be scheduled in the Commit Queue in the order received and only after all pre-requisite testing is complete and all PR requirements (e.g. Issues created and noted, Subcomponent PRs reviewed and accepted) are met. -->
+<!-- Please note: PRs will be scheduled in the Commit Queue in the order received and only after all
+pre-requisite testing is complete and all PR requirements (e.g. Issues created and noted, Subcomponent
+PRs reviewed and accepted) are met. -->
 - [ ] Fill out all sections of this template.
 - [ ] All sub component pull requests have been reviewed by their code managers.
 - [ ] Run the full RT suite (compared to current baselines) on either Hera/Derecho/Hercules AND have committed the log to my PR branch.
@@ -23,16 +25,14 @@ i.e.:
 <!--
 Please provide the following concise information:
 Description of all changes - 1 line
-Please list all individual issue titles addressed with github links at the end in perenthesis (using #<number> or <group>/<fork>/issues/<number>).
+Please list all individual issue titles addressed with github links at the end in parenthesis (using #<number> or <group>/<fork>/issues/<number>).
 -->
 
 
 ### Priority
-- [ ] Bugfix (This PR contains a bug fix and should be prioritized.)
+- [ ] Critical Bugfix (This PR contains a critical bug fix and should be prioritized.)
 - [ ] High (This PR contains a feature or fix needed for a time-sensitive project (eg, retrospectives, implementations))
 - [ ] Normal
-#### Prioriry Reasoning
-<!-- Provide reasoning for your priority above. This is required for Bugfix and High priority items. -->
 
 ### Blocking Dependencies
 <!-- If there are any PR's that are needed to be completed before this one, please add links
