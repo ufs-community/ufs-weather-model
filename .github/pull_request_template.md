@@ -1,32 +1,40 @@
-<!-- THE FOLLOWING IS FOR THE PR AUTHOR TO FILL OUT
-PLEASE DO NOT MODIFY THE TEMPLATE BEYOND FILLING OUT THE PROPER SECTIONS -->
-## PR Author Checklist:
-<!--  Please complete all items in list. -->
-- [ ] I have linked PR's from all sub-components involved in section below. <!-- PLEASE DO NOT LINK SUBCOMPONENT ISSUES -->
-- [ ] I am confirming reviews are completed in ALL sub-component PR's.
-- [ ] I have run the full RT suite on either Hera/Hercules AND have attached the log to this PR below this line:
-  - LOG: 
-- [ ] I have added the list of all failed regression tests to "Anticipated changes" section.
-- [ ] I have filled out all sections of the template.
+<!-- Please fill out all sections of this PR and complete the checklist below-->
+## Commit Queue Requirements:
+- [ ] Fill out all sections of this template.
+- [ ] All sub component pull requests have been reviewed by their code managers.
+- [ ] Run the full RT suite (compared to current baselines) on either Hera/Cheyenne AND have committed the log to my PR branch.
+- [ ] Add list of all failed regression tests in "Regression Tests" section.
 
-## Description
+## PR Information
+
+### Description
 <!-- Provide a detailed description of what this PR does in the space provided below-->
 
+### Commit Message
+<!-- Please provide concise information about the changes in this PR to be used as a commit message for the commit history -->
 
-## Linked Issues and Pull Requests
-### Associated UFSWM Issue to close
-<!-- Example: "- Closes #1698" -->
-
-
-### Subcomponent Pull Requests
-<!-- format: - <community>/<repo>/pull/<PR number> i.e.: - NOAA-EMC/fv3atm/pull/33 or "None" -->
-
+### Priority
+[ ] HIGH
+[ ] Medium
+[ ] low
 
 ### Blocking Dependencies
-<!-- Example: "- Depends on #1733" or "None" -->
+<!-- If there are any PR's that are needed to be completed before this one, please add links
+     to them here -->
+
+### Git Issues Fixed By This PR
+<!-- Example: "- Closes #1698"  or "- Closes NOAA-EMC/fv3atm/issues/729" -->
 
 
-### Subcomponents involved:
+## Changes
+
+### Subcomponent (with links)
+<!-- (add links to subcomponent PR's here) -->
+<!-- Example:
+[X] FV3
+- NOAA-EMC/fv3atm/pull/734
+- NOAA-EMC/fv3atm/pull/735
+-->
 - [ ] AQM
 - [ ] CDEPS
 - [ ] CICE
@@ -41,7 +49,6 @@ PLEASE DO NOT MODIFY THE TEMPLATE BEYOND FILLING OUT THE PROPER SECTIONS -->
 - [ ] stochastic_physics
 - [ ] none
 
-## Anticipated Changes
 ### Input data
 - [ ] No changes are expected to input data.
 - [ ] Changes are expected to input data:
@@ -51,9 +58,8 @@ PLEASE DO NOT MODIFY THE TEMPLATE BEYOND FILLING OUT THE PROPER SECTIONS -->
 ### Regression Tests:
 - [ ] No changes are expected to any regression test.
 - [ ] Changes are expected to the following tests:
-<!-- Please insert what RT's change and why you expect them to change in the space provided below -->
-<details><summary>Tests effected by changes in this PR:</summary>
-<!-- ADD ITEMS HERE or add "None" -->
+<details><summary>FAILED REGRESSION TESTS</summary>
+<!-- List failed regression tests here or add "None" -->
 
 </details>
 
@@ -64,14 +70,7 @@ PLEASE DO NOT MODIFY THE TEMPLATE BEYOND FILLING OUT THE PROPER SECTIONS -->
   - [ ] Create separate issue in [JCSDA/spack-stack](https://github.com/JCSDA/spack-stack) asking for update to library. Include library name, library version.
   - [ ] Add issue link from JCSDA/spack-stack following this item <!-- for example: "- JCSDA/spack-stack/issue/1757" -->
 
-
-<!-- THE FOLLOWING IS FOR CODE MANAGERS ONLY DO NOT FILL OUT -->
-<details><summary>Code Managers Log</summary>
-
-- [ ] This PR is up-to-date with the top of all sub-component repositories except for those sub-components which are the subject of this PR.
-- [ ] Move new/updated input data on RDHPCS Hera and propagate input data changes to all supported systems.
-  - [ ] N/A
-
+<!-- STOP!!! THE FOLLOWING IS FOR CODE MANAGERS ONLY. PLEASE DO NOT FILL OUT -->
 ### Testing Log:
 - RDHPCS
   - [ ] Hera
@@ -79,7 +78,7 @@ PLEASE DO NOT MODIFY THE TEMPLATE BEYOND FILLING OUT THE PROPER SECTIONS -->
   - [ ] Hercules
   - [ ] Jet
   - [ ] Gaea
-  - [ ] Derecho
+  - [ ] Cheyenne
 - WCOSS2
   - [ ] Dogwood/Cactus
   - [ ] Acorn
@@ -88,4 +87,3 @@ PLEASE DO NOT MODIFY THE TEMPLATE BEYOND FILLING OUT THE PROPER SECTIONS -->
 - opnReqTest
   - [ ] N/A
   - [ ] Log attached to comment
-</details>
