@@ -10,7 +10,7 @@ i.e.:
 ## Commit Queue Requirements:
 - [ ] Fill out all sections of this template.
 - [ ] All sub component pull requests have been reviewed by their code managers.
-- [ ] Run the full RT suite (compared to current baselines) on either Hera/Cheyenne AND have committed the log to my PR branch.
+- [ ] Run the full RT suite (compared to current baselines) on either Hera/Derecho/Hercules AND have committed the log to my PR branch.
 - [ ] Add list of all failed regression tests in "Regression Tests" section.
 
 ## PR Information
@@ -86,7 +86,7 @@ i.e.:
   - [ ] Hercules
   - [ ] Jet
   - [ ] Gaea
-  - [ ] Cheyenne
+  - [ ] Derecho
 - WCOSS2
   - [ ] Dogwood/Cactus
   - [ ] Acorn
