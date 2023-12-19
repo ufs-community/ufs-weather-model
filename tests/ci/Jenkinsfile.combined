@@ -85,6 +85,12 @@ def generateStage(nodeLabel) {
                             echo "Creating baselines on $machine"
                             export ACCNR=nems
                             ./rt.sh -a ${ACCNR} -c -r -l rt.conf
+                            source bl_date.conf
+                            export DISKNM=/scratch2/NAGAPE/epic/UFS-WM_RT
+			    cd ${DISKNM}/NEMSfv3gfs/
+			    mkdir develop-${BL_DATE}
+			    cd  /scratch1/NCEPDEV/stmp4/role.epic/FV3_RT/REGRESSION_TEST
+			    rsync -a REGRESSION_TEST/ ${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}
                           else
                             echo "Creating baselines on $machine"
                             ./rt.sh -a ${ACCNR} -c -r -l rt.conf
