@@ -1,4 +1,12 @@
-<!-- Please fill out all sections of this PR and complete the checklist below-->
+<!-- INSTRUCTIONS: 
+- Please fill out all sections of this PR and complete the checklist below
+- Please be as descriptive as possible, this is really important.
+- Please "fill in" checkboxes. Use [X] for a filled in checkbox or leave it [ ] for an empty checkbox
+- Please use github markup as much as possible in linking
+i.e.:
+* Linking to UFSWM PR's and issues add "- #<pr/issue number>"
+* Linking to a subcomponent PR and issues add "- <Group>/<Fork>/pull/#" or "-<Group>/<Fork>/issues/#"
+-->
 ## Commit Queue Requirements:
 - [ ] Fill out all sections of this template.
 - [ ] All sub component pull requests have been reviewed by their code managers.
@@ -14,9 +22,9 @@
 <!-- Please provide concise information about the changes in this PR to be used as a commit message for the commit history -->
 
 ### Priority
-[ ] HIGH
-[ ] Medium
-[ ] low
+- [ ] HIGH
+- [ ] Medium
+- [ ] low
 
 ### Blocking Dependencies
 <!-- If there are any PR's that are needed to be completed before this one, please add links
