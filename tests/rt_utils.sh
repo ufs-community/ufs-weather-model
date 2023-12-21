@@ -300,7 +300,7 @@ check_results() {
         test_status='FAIL'
 
       else
-        if [[ $d -eq 1 && ${i##*.} == 'nc' ]] ; then
+        if [[ ${i##*.} == 'nc' ]] ; then
           if [[ " orion hercules hera wcoss2 acorn cheyenne gaea gaea-c5 jet s4 noaacloud " =~ " ${MACHINE_ID} " ]]; then
             printf "USING NCCMP.." >> ${RT_LOG}
             printf "USING NCCMP.."
@@ -320,9 +320,9 @@ check_results() {
           printf "USING CMP.."
           cmp ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/$i ${RUNDIR}/$i >/dev/null 2>&1 && d=$? || d=$?
           if [[ $d -eq 2 ]]; then
-            echo "....ERROR" >> ${RT_LOG}
-            echo "....ERROR"
-            exit 1
+            printf "....ERROR" >> ${RT_LOG}
+            printf "....ERROR"
+            test_status='FAIL'
           fi
 
         fi
