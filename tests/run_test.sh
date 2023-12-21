@@ -15,31 +15,31 @@ cleanup() {
 }
 
 write_fail_test() {
-  echo "${TEST_NAME}_${RT_COMPILER} ${TEST_NR} failed in run_test" >> $PATHRT/fail_test_${TEST_NR}
+  echo "${TEST_ID} failed in run_test" >> $PATHRT/fail_test_${TEST_ID}
   exit 1
 }
 
 remove_fail_test() {
-    echo "Removing test failure flag file for ${TEST_NAME}_${RT_COMPILER} ${TEST_NR}"
-    rm -f $PATHRT/fail_test_${TEST_NR}
+    echo "Removing test failure flag file for ${TEST_ID}"
+    rm -f $PATHRT/fail_test_${TEST_ID}
 }
 
 if [[ $# != 5 ]]; then
-  echo "Usage: $0 PATHRT RUNDIR_ROOT TEST_NAME TEST_NR COMPILE_NR"
+  echo "Usage: $0 PATHRT RUNDIR_ROOT TEST_NAME TEST_ID COMPILE_ID"
   exit 1
 fi
 
 export PATHRT=$1
 export RUNDIR_ROOT=$2
 export TEST_NAME=$3
-export TEST_NR=$4
-export COMPILE_NR=$5
+export TEST_ID=$4
+export COMPILE_ID=$5
 
 echo "PATHRT: ${PATHRT}"
 echo "RUNDIR_ROOT: ${RUNDIR_ROOT}"
 echo "TEST_NAME: ${TEST_NAME}"
-echo "TEST_NR: ${TEST_NR}"
-echo "COMPILE_NR: ${COMPILE_NR}"
+echo "TEST_ID: ${TEST_ID}"
+echo "COMPILE_ID: ${COMPILE_ID}"
 
 cd ${PATHRT}
 
@@ -47,9 +47,9 @@ cd ${PATHRT}
 unset MODEL_CONFIGURE
 unset UFS_CONFIGURE
 
-[[ -e ${RUNDIR_ROOT}/run_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
+[[ -e ${RUNDIR_ROOT}/run_test_${TEST_ID}.env ]] && source ${RUNDIR_ROOT}/run_test_${TEST_ID}.env
 source default_vars.sh
-[[ -e ${RUNDIR_ROOT}/run_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
+[[ -e ${RUNDIR_ROOT}/run_test_${TEST_ID}.env ]] && source ${RUNDIR_ROOT}/run_test_${TEST_ID}.env
 source tests/$TEST_NAME
 
 remove_fail_test
@@ -60,15 +60,15 @@ remove_fail_test
 export INPUT_DIR=${CNTL_DIR}
 
 # Append RT_SUFFIX to RUNDIR, and BL_SUFFIX to CNTL_DIR
-export RUNDIR=${RUNDIR_ROOT}/${TEST_NAME}_${RT_COMPILER}${RT_SUFFIX}
+export RUNDIR=${RUNDIR_ROOT}/${TEST_ID}${RT_SUFFIX}
 export CNTL_DIR=${CNTL_DIR}${BL_SUFFIX}
 
-export JBNME=$(basename $RUNDIR_ROOT)_${TEST_NR}
+export JBNME=$(basename $RUNDIR_ROOT)_${TEST_ID}
 
-echo -n "${TEST_NAME}_${RT_COMPILER}, $( date +%s )," > ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+echo -n "${TEST_ID}, $( date +%s )," > ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
 
-export RT_LOG=${LOG_DIR}/rt_${TEST_NR}_${TEST_NAME}_${RT_COMPILER}${RT_SUFFIX}.log
-echo "Test ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} ${TEST_DESCR}"
+export RT_LOG=${LOG_DIR}/rt_${TEST_ID}${RT_SUFFIX}.log
+echo "Test ${TEST_ID} ${TEST_DESCR}"
 
 source rt_utils.sh
 source atparse.bash
@@ -82,14 +82,14 @@ cd $RUNDIR
 ###############################################################################
 
 # FV3 executable:
-cp ${PATHRT}/fv3_${COMPILE_NR}.exe                 fv3.exe
+cp ${PATHRT}/fv3_${COMPILE_ID}.exe                 fv3.exe
 
 # modulefile for FV3 prerequisites:
 mkdir -p modulefiles
 if [[ $MACHINE_ID == linux ]]; then
-  cp ${PATHRT}/modules.fv3_${COMPILE_NR}             ./modulefiles/modules.fv3
+  cp ${PATHRT}/modules.fv3_${COMPILE_ID}             ./modulefiles/modules.fv3
 else
-  cp ${PATHRT}/modules.fv3_${COMPILE_NR}.lua         ./modulefiles/modules.fv3.lua
+  cp ${PATHRT}/modules.fv3_${COMPILE_ID}.lua         ./modulefiles/modules.fv3.lua
 fi
 cp ${PATHTR}/modulefiles/ufs_common*                 ./modulefiles/.
 
@@ -369,7 +369,7 @@ else
   grep "The total amount of wall time" ${RUNDIR}/out >> ${RT_LOG}
   grep "The maximum resident set size" ${RUNDIR}/out >> ${RT_LOG}
   echo                                               >> ${RT_LOG}
-  echo "Test ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} RUN_SUCCESS"    >> ${RT_LOG}
+  echo "Test ${TEST_ID} RUN_SUCCESS"                 >> ${RT_LOG}
   echo;echo;echo                                     >> ${RT_LOG}
 fi
 
@@ -405,4 +405,4 @@ if [[ ${delete_rundir} = true ]]; then
 fi
 
 elapsed=$SECONDS
-echo "Elapsed time $elapsed seconds. Test ${TEST_NAME}_${RT_COMPILER}"
+echo "Elapsed time $elapsed seconds. Test ${TEST_ID}"

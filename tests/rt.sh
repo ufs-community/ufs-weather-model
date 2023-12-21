@@ -77,48 +77,134 @@ rt_single() {
   fi
 }
 
-get_compile_test_counts() {
-  local compile_count=0
-  local test_count=0
+verify_testing() {
+  VERIFICATION_ERROR=false
   while read -r line || [ "$line" ]; do
     line="${line#"${line%%[![:space:]]*}"}"
     [[ ${#line} == 0 ]] && continue
     [[ $line == \#* ]] && continue
+    valid_compile=false
+    valid_test=false
 
     if [[ $line == COMPILE* ]] ; then
       CMACHINES=$(echo $line | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
+      COMPILER=$(echo $line | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
+      COMPILE_NAME=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
       if [[ ${CMACHINES} == '' ]]; then
-        compile_count+=1
+        valid_compile=true
       elif [[ ${CMACHINES} == -* ]]; then
-        [[ ${CMACHINES} =~ ${MACHINE_ID} ]] || compile_count+=1
+        [[ ${CMACHINES} =~ ${MACHINE_ID} ]] || valid_compile=true
       elif [[ ${CMACHINES} == +* ]]; then
-        [[ ${CMACHINES} =~ ${MACHINE_ID} ]] && compile_count+=1
+        [[ ${CMACHINES} =~ ${MACHINE_ID} ]] && valid_compile=true
       fi
-    fi
 
-    if [[ $line =~ RUN ]]; then
+      if [[ $valid_compile == true ]]; then
+        echo "Verifying: Compile ${COMPILE_ID}" >> ${REGRESSIONTEST_LOG}
+        COMPILE_COUNT=$(ls $LOG_DIR | grep compile_${COMPILE_NAME}_${COMPILER}.log | wc -l)
+        if [[ "$COMPILE_COUNT" -ne "1" ]]; then
+          echo "ERROR: MISSING COMPILE ${COMPILE_NAME}" >> ${REGRESSIONTEST_LOG}
+          VERIFICATION_ERROR=true
+        else
+          if [[ -e fail_compile_${COMPILE_ID} ]]; then
+            echo "Compile ${COMPILE_ID} FAILED" >> ${REGRESSIONTEST_LOG}
+            VERIFICATION_ERROR=true
+          else
+            if [[ $PRETEST == false ]]; then
+              cat ${LOG_DIR}/compile_${COMPILE_ID}_time.log >> ${REGRESSIONTEST_LOG}
+            fi
+          fi
+        fi
+      fi
+    elif [[ $line =~ RUN ]]; then
       RMACHINES=$(echo $line | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
+      TEST_NAME=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
+      
       if [[ ${RMACHINES} == '' ]]; then
-        test_count+=1
+        valid_test=true
       elif [[ ${RMACHINES} == -* ]]; then
-        [[ ${RMACHINES} =~ ${MACHINE_ID} ]] || test_count+=1
+        [[ ${RMACHINES} =~ ${MACHINE_ID} ]] || valid_test=true
       elif [[ ${RMACHINES} == +* ]]; then
-        [[ ${RMACHINES} =~ ${MACHINE_ID} ]] && test_count+=1
+        [[ ${RMACHINES} =~ ${MACHINE_ID} ]] && valid_test=true
+      fi
+
+      if [[ $valid_test == true ]]; then
+        echo "Verifying: Test ${TEST_ID}" >> ${REGRESSIONTEST_LOG}
+        TEST_COUNT=$(ls $LOG_DIR | grep run_${TEST_NAME}_${COMPILER}.log | wc -l)
+        if [[ "$TEST_COUNT" -ne "1" ]]; then
+          echo "ERROR: MISSING TEST ${TEST_NAME}" >> ${REGRESSIONTEST_LOG}
+          VERIFICATION_ERROR=true
+        else
+          if [[ -e fail_test_${TEST_ID} ]]; then
+            echo "Test ${TEST_ID} FAILED" >> ${REGRESSIONTEST_LOG}
+            cat ${LOG_DIR}/rt_${TEST_ID}.log >> ${REGRESSIONTEST_LOG}
+            VERIFICATION_ERROR=true
+          else
+            if [[ $PRETEST == false ]]; then
+              cat ${LOG_DIR}/rt_${TEST_ID}.log >> ${REGRESSIONTEST_LOG}
+              echo "Test ${TEST_ID} PASSED" >> ${REGRESSIONTEST_LOG}
+            fi
+          fi
+        fi
       fi
     fi
   done < $TESTS_FILE
 
-  NUM_COMPILES=$compile_count
-  NUM_COMPILES=$( printf '%03d' $(( 10#$NUM_COMPILES)) )
-  NUM_TESTS=$test_count
-  NUM_TESTS=$( printf '%03d' $(( 10#$NUM_TESTS)) )
+  if [[ $VERIFICATION_ERROR == true ]]; then
+    echo "VERIFICATION FAILED" >> ${REGRESSIONTEST_LOG}
+    exit 1
+  else
+    echo ; echo REGRESSION TEST WAS SUCCESSFUL
+    (echo ; echo REGRESSION TEST WAS SUCCESSFUL) >> ${REGRESSIONTEST_LOG}
+
+    rm -f fv3_*.x fv3_*.exe modules.fv3_* modulefiles/modules.fv3_* keep_tests.tmp
+    [[ ${KEEP_RUNDIR} == false ]] && rm -rf ${RUNDIR_ROOT} && rm ${PATHRT}/run_dir
+    [[ ${ROCOTO} == true ]] && rm -f ${ROCOTO_XML} ${ROCOTO_DB} ${ROCOTO_STATE} *_lock.db
+    [[ ${TEST_35D} == true ]] && rm -f tests/cpld_bmark*_20*
+    [[ ${SINGLE_NAME} != '' ]] && rm -f $RT_SINGLE_CONF
+  fi
+
+  ##
+  ## regression test is either failed or successful
+  ##
+  # set +e
+  # cat ${LOG_DIR}/compile_*_time.log              >> ${REGRESSIONTEST_LOG}
+  # cat ${LOG_DIR}/rt_*.log                        >> ${REGRESSIONTEST_LOG}
+
+  # FILES="fail_test_* fail_compile_*"
+  # for f in $FILES; do
+  #   if [[ -f "$f" ]]; then
+  #     cat "$f" >> fail_test
+  #   fi
+  # done
+
+  # if [[ -e fail_test ]]; then
+  #   echo "FAILED TESTS: "
+  #   echo "FAILED TESTS: "                        >> ${REGRESSIONTEST_LOG}
+  #   while read -r failed_test_name
+  #   do
+  #     echo "${failed_test_name}"
+  #     echo "${failed_test_name}"    >> ${REGRESSIONTEST_LOG}
+  #   done < fail_test
+  #   echo ; echo REGRESSION TEST FAILED
+  #   (echo ; echo REGRESSION TEST FAILED)         >> ${REGRESSIONTEST_LOG}
+  # else
+  #   echo ; echo REGRESSION TEST WAS SUCCESSFUL
+  #   (echo ; echo REGRESSION TEST WAS SUCCESSFUL) >> ${REGRESSIONTEST_LOG}
+
+  #   rm -f fv3_*.x fv3_*.exe modules.fv3_* modulefiles/modules.fv3_* keep_tests.tmp
+  #   [[ ${KEEP_RUNDIR} == false ]] && rm -rf ${RUNDIR_ROOT} && rm ${PATHRT}/run_dir
+  #   [[ ${ROCOTO} == true ]] && rm -f ${ROCOTO_XML} ${ROCOTO_DB} ${ROCOTO_STATE} *_lock.db
+  #   [[ ${TEST_35D} == true ]] && rm -f tests/cpld_bmark*_20*
+  #   [[ ${SINGLE_NAME} != '' ]] && rm -f $RT_SINGLE_CONF
+  # fi
+
 }
 
 create_or_run_compile_task() {
 
-  cat << EOF > ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env
+  cat << EOF > ${RUNDIR_ROOT}/compile_${COMPILE_ID}.env
   export JOB_NR=${JOB_NR}
-  export COMPILE_NR=${COMPILE_NR}
+  export COMPILE_ID=${COMPILE_ID}
   export MACHINE_ID=${MACHINE_ID}
   export RT_COMPILER=${RT_COMPILER}
   export PATHRT=${PATHRT}
@@ -138,7 +224,7 @@ EOF
   elif [[ $ECFLOW == true ]]; then
     ecflow_create_compile_task
   else
-    ./run_compile.sh ${PATHRT} ${RUNDIR_ROOT} "${MAKE_OPT}" ${COMPILE_NR} > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1
+    ./run_compile.sh ${PATHRT} ${RUNDIR_ROOT} "${MAKE_OPT}" ${COMPILE_ID} > ${LOG_DIR}/compile_${COMPILE_ID}.log 2>&1
   fi
 
   RT_SUFFIX=""
@@ -681,7 +767,6 @@ cd tests
 source default_vars.sh
 
 JOB_NR=0
-TEST_NR=0
 COMPILE_COUNTER=0
 rm -f fail_test* fail_compile*
 
@@ -791,17 +876,17 @@ while read -r line || [ "$line" ]; do
     MAKE_OPT=$(   echo $line | cut -d'|' -f4 | sed -e 's/^ *//' -e 's/ *$//')
     MACHINES=$(   echo $line | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
     CB=$(         echo $line | cut -d'|' -f6)
-    COMPILE_NR=${COMPILE_NAME}_${RT_COMPILER}
-    COMPILE_PREV=${COMPILE_NR}
+    COMPILE_ID=${COMPILE_NAME}_${RT_COMPILER}
+    COMPILE_PREV=${COMPILE_ID}
 
     set +u
-    if [[ ! -z ${compiles[$COMPILE_NR]} ]] ; then
+    if [[ ! -z ${compiles[$COMPILE_ID]} ]] ; then
         echo "Error! Duplicated compilation $COMPILE_NAME for compiler $RT_COMPILER!"
         exit 1
     fi
     set -u
-    compiles[$COMPILE_NR]=$COMPILE_NR
-    echo "COMPILING ${compiles[${COMPILE_NR}]}"
+    compiles[$COMPILE_ID]=$COMPILE_ID
+    echo "COMPILING ${compiles[${COMPILE_ID}]}"
 
     [[ $CREATE_BASELINE == true && $CB != *fv3* ]] && continue
 
@@ -836,6 +921,8 @@ while read -r line || [ "$line" ]; do
       DEP_RUN=${DEP_RUN}_${RT_COMPILER}
     fi
 
+    export TEST_ID=${TEST_NAME}_${RT_COMPILER}
+
     [[ -e "tests/$TEST_NAME" ]] || die "run test file tests/$TEST_NAME does not exist"
     [[ $CREATE_BASELINE == true && $CB != *baseline* ]] && continue
 
@@ -850,10 +937,10 @@ while read -r line || [ "$line" ]; do
       fi
     fi
 
-    COMPILE_METATASK_NAME=${COMPILE_NR}
+    COMPILE_METATASK_NAME=${COMPILE_ID}
     if [[ $CREATE_BASELINE == true && $NEW_BASELINES_FILE != '' ]]; then
       if [[ ! " ${NEW_BASELINES_TESTS[*]} " =~ " ${TEST_NAME} " ]]; then
-        echo "Link current baselines for test ${TEST_NAME}_${RT_COMPILER}"
+        echo "Link current baselines for test ${TEST_ID}"
         (
           source ${PATHRT}/tests/$TEST_NAME
           ln -s ${RTPWD}/${CNTL_DIR}_${RT_COMPILER} ${NEW_BASELINE}
@@ -885,8 +972,6 @@ while read -r line || [ "$line" ]; do
 EOF
     fi
 
-    TEST_NR=$( printf '%03d' $(( 10#$TEST_NR + 1 )) )
-
     (
       source ${PATHRT}/tests/$TEST_NAME
 
@@ -902,9 +987,10 @@ EOF
       if (( TASKS - ( PPN * NODES ) > 0 )); then
           PPN=$((PPN + 1))
       fi
-      
-      cat << EOF > ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
+
+      cat << EOF > ${RUNDIR_ROOT}/run_test_${TEST_ID}.env
       export JOB_NR=${JOB_NR}
+      export TEST_ID=${TEST_ID}
       export MACHINE_ID=${MACHINE_ID}
       export RT_COMPILER=${RT_COMPILER}
       export RTPWD=${RTPWD}
@@ -931,7 +1017,7 @@ EOF
       export WLCLK=${WLCLK}
 EOF
       if [[ $MACHINE_ID = jet ]]; then
-        cat << EOF >> ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
+        cat << EOF >> ${RUNDIR_ROOT}/run_test_${TEST_ID}.env
       export PATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/bin:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/bin:$PATH
       export PYTHONPATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/lib/python3.8/site-packages
 EOF
@@ -942,7 +1028,7 @@ EOF
       elif [[ $ECFLOW == true ]]; then
         ecflow_create_run_task
       else
-        ./run_test.sh ${PATHRT} ${RUNDIR_ROOT} ${TEST_NAME} ${TEST_NR} ${COMPILE_NR} > ${LOG_DIR}/run_${TEST_NAME}_${RT_COMPILER}${RT_SUFFIX}.log 2>&1
+        ./run_test.sh ${PATHRT} ${RUNDIR_ROOT} ${TEST_NAME} ${TEST_ID} ${COMPILE_ID} > ${LOG_DIR}/run_${TEST_ID}${RT_SUFFIX}.log 2>&1
       fi
     )
 
@@ -975,55 +1061,45 @@ fi
 ## WE NEED TO VERIFY NUMBER OF TESTS IN LOG_DIR MATCH COUNTS
 ## FROM $TESTS_FILE
 ##
-get_compile_test_counts
-
-COMPLETED_COMPILES=$(ls $LOG_DIR | grep compile.*time\.log | wc -l)
-COMPLETED_COMPILES=$( printf '%03d' $(( 10#$COMPLETED_COMPILES )) )
-COMPLETED_TESTS=$(ls $LOG_DIR | cut -c-4 | grep run_ | wc -l)
-COMPLETED_TESTS=$( printf '%03d' $(( 10#$COMPLETED_TESTS )) )
-if [[ "$NUM_COMPILES" -ne "$COMPLETED_COMPILES" || "$NUM_TESTS" -ne "$COMPLETED_TESTS" ]]; then
-  echo "ERROR: NOT ALL COMPILES OR TESTS WERE RUN"
-  echo "COMPILES REQUESTED: ${NUM_COMPILES} | COMPILES COMPLETED: ${COMPLETED_COMPILES}"
-  echo "TESTS REQUESTED ${NUM_TESTS} | TESTS COMPLETED: ${COMPLETED_TESTS}"
-  exit 1
-fi
+verify_testing
 
 
 
-##
-## regression test is either failed or successful
-##
-set +e
-cat ${LOG_DIR}/compile_*_time.log              >> ${REGRESSIONTEST_LOG}
-cat ${LOG_DIR}/rt_*.log                        >> ${REGRESSIONTEST_LOG}
 
-FILES="fail_test_* fail_compile_*"
-for f in $FILES; do
-  if [[ -f "$f" ]]; then
-    cat "$f" >> fail_test
-  fi
-done
+# ##
+# ## regression test is either failed or successful
+# ##
+# set +e
+# cat ${LOG_DIR}/compile_*_time.log              >> ${REGRESSIONTEST_LOG}
+# cat ${LOG_DIR}/rt_*.log                        >> ${REGRESSIONTEST_LOG}
 
-if [[ -e fail_test ]]; then
-  echo "FAILED TESTS: "
-  echo "FAILED TESTS: "                        >> ${REGRESSIONTEST_LOG}
-  while read -r failed_test_name
-  do
-    echo "${failed_test_name}"
-    echo "${failed_test_name}"    >> ${REGRESSIONTEST_LOG}
-  done < fail_test
-   echo ; echo REGRESSION TEST FAILED
-  (echo ; echo REGRESSION TEST FAILED)         >> ${REGRESSIONTEST_LOG}
-else
-   echo ; echo REGRESSION TEST WAS SUCCESSFUL
-  (echo ; echo REGRESSION TEST WAS SUCCESSFUL) >> ${REGRESSIONTEST_LOG}
+# FILES="fail_test_* fail_compile_*"
+# for f in $FILES; do
+#   if [[ -f "$f" ]]; then
+#     cat "$f" >> fail_test
+#   fi
+# done
 
-  rm -f fv3_*.x fv3_*.exe modules.fv3_* modulefiles/modules.fv3_* keep_tests.tmp
-  [[ ${KEEP_RUNDIR} == false ]] && rm -rf ${RUNDIR_ROOT}
-  [[ ${ROCOTO} == true ]] && rm -f ${ROCOTO_XML} ${ROCOTO_DB} ${ROCOTO_STATE} *_lock.db
-  [[ ${TEST_35D} == true ]] && rm -f tests/cpld_bmark*_20*
-  [[ ${SINGLE_NAME} != '' ]] && rm -f $RT_SINGLE_CONF
-fi
+# if [[ -e fail_test ]]; then
+#   echo "FAILED TESTS: "
+#   echo "FAILED TESTS: "                        >> ${REGRESSIONTEST_LOG}
+#   while read -r failed_test_name
+#   do
+#     echo "${failed_test_name}"
+#     echo "${failed_test_name}"    >> ${REGRESSIONTEST_LOG}
+#   done < fail_test
+#    echo ; echo REGRESSION TEST FAILED
+#   (echo ; echo REGRESSION TEST FAILED)         >> ${REGRESSIONTEST_LOG}
+# else
+#    echo ; echo REGRESSION TEST WAS SUCCESSFUL
+#   (echo ; echo REGRESSION TEST WAS SUCCESSFUL) >> ${REGRESSIONTEST_LOG}
+
+#   rm -f fv3_*.x fv3_*.exe modules.fv3_* modulefiles/modules.fv3_* keep_tests.tmp
+#   [[ ${KEEP_RUNDIR} == false ]] && rm -rf ${RUNDIR_ROOT} && rm ${PATHRT}/run_dir
+#   [[ ${ROCOTO} == true ]] && rm -f ${ROCOTO_XML} ${ROCOTO_DB} ${ROCOTO_STATE} *_lock.db
+#   [[ ${TEST_35D} == true ]] && rm -f tests/cpld_bmark*_20*
+#   [[ ${SINGLE_NAME} != '' ]] && rm -f $RT_SINGLE_CONF
+# fi
 
 date >> ${REGRESSIONTEST_LOG}
 
