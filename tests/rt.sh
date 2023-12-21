@@ -9,7 +9,7 @@ die() { echo "$@" >&2; exit 1; }
 usage() {
   set +x
   echo
-  echo "Usage: $0 -a <account> | -b <file> | -c | -d | -e | -h | -k | -l <file> | -m | -n <name> | -r | -w"
+  echo "Usage: $0 -a <account> | -b <file> | -c | -d | -e | -h | -k | -l <file> | -m | -n <name> | -p | -r | -w"
   echo
   echo "  -a  <account> to use on for HPC queue"
   echo "  -b  create new baselines only for tests listed in <file>"
@@ -21,6 +21,7 @@ usage() {
   echo "  -l  runs test specified in <file>"
   echo "  -m  compare against new baseline results"
   echo "  -n  run single test <name>"
+  echo "  -p  run pre-test for pull requests"
   echo "  -r  use Rocoto workflow manager"
   echo "  -w  for weekly_test, skip comparing baseline results"
   echo
@@ -74,6 +75,43 @@ rt_single() {
     echo "$SINGLE_NAME does not exist or cannot be run on $MACHINE_ID"
     exit 1
   fi
+}
+
+get_compile_test_counts() {
+  local compile_count=0
+  local test_count=0
+  while read -r line || [ "$line" ]; do
+    line="${line#"${line%%[![:space:]]*}"}"
+    [[ ${#line} == 0 ]] && continue
+    [[ $line == \#* ]] && continue
+
+    if [[ $line == COMPILE* ]] ; then
+      CMACHINES=$(echo $line | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
+      if [[ ${CMACHINES} == '' ]]; then
+        compile_count+=1
+      elif [[ ${CMACHINES} == -* ]]; then
+        [[ ${CMACHINES} =~ ${MACHINE_ID} ]] || compile_count+=1
+      elif [[ ${CMACHINES} == +* ]]; then
+        [[ ${CMACHINES} =~ ${MACHINE_ID} ]] && compile_count+=1
+      fi
+    fi
+
+    if [[ $line =~ RUN ]]; then
+      RMACHINES=$(echo $line | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
+      if [[ ${RMACHINES} == '' ]]; then
+        test_count+=1
+      elif [[ ${RMACHINES} == -* ]]; then
+        [[ ${RMACHINES} =~ ${MACHINE_ID} ]] || test_count+=1
+      elif [[ ${RMACHINES} == +* ]]; then
+        [[ ${RMACHINES} =~ ${MACHINE_ID} ]] && test_count+=1
+      fi
+    fi
+  done < $TESTS_FILE
+
+  NUM_COMPILES=$compile_count
+  NUM_COMPILES=$( printf '%03d' $(( 10#$NUM_COMPILES)) )
+  NUM_TESTS=$test_count
+  NUM_TESTS=$( printf '%03d' $(( 10#$NUM_TESTS)) )
 }
 
 create_or_run_compile_task() {
@@ -176,8 +214,9 @@ RTPWD_NEW_BASELINE=false
 TESTS_FILE='rt.conf'
 NEW_BASELINES_FILE=''
 ACCNR=${ACCNR:-""}
+PRETEST=false
 
-while getopts ":a:b:cl:mn:dwkreh" opt; do
+while getopts ":a:b:cl:mn:dwkrpeh" opt; do
   case $opt in
     a)
       ACCNR=$OPTARG
@@ -215,6 +254,14 @@ while getopts ":a:b:cl:mn:dwkreh" opt; do
       else
         echo "Compiler must be either 'intel' or 'gnu'."
         exit 1
+      fi
+      ;;
+    p)
+      
+      if [[ $MACHINE_ID = hera || $MACHINE_ID = derecho || $MACHINE_ID = hercules ]]; then
+        PRETEST=true
+      else
+        die "The pre-test is only supported on machines where GNU tests are supported"
       fi
       ;;
     d)
@@ -259,13 +306,6 @@ echo "Machine: " $MACHINE_ID "    Account: " $ACCNR
 
 if [[ $MACHINE_ID = wcoss2 ]]; then
 
-  #module use /usrx/local/dev/emc_rocoto/modulefiles
-  #module load ruby/2.5.1 rocoto/1.3.0rc2
-  #ROCOTORUN=$(which rocotorun)
-  #ROCOTOSTAT=$(which rocotostat)
-  #ROCOTOCOMPLETE=$(which rocotocomplete)
-  #ROCOTO_SCHEDULER=lsf
-
   module load ecflow/5.6.0.13
   module load intel/19.1.3.304 python/3.8.6
   ECFLOW_START=${ECF_ROOT}/scripts/server_check.sh
@@ -279,6 +319,7 @@ if [[ $MACHINE_ID = wcoss2 ]]; then
   DISKNM=/lfs/h2/emc/nems/noscrub/emc.nems/RT
   QUEUE=dev
   COMPILE_QUEUE=dev
+  ROCOTO_SCHEDULER=pbs
   PARTITION=
   STMP=/lfs/h2/emc/ptmp
   PTMP=/lfs/h2/emc/ptmp
@@ -299,6 +340,7 @@ elif [[ $MACHINE_ID = acorn ]]; then
   DISKNM=/lfs/h1/emc/nems/noscrub/emc.nems/RT
   QUEUE=dev
   COMPILE_QUEUE=dev
+  ROCOTO_SCHEDULER=pbs
   PARTITION=
   STMP=/lfs/h2/emc/ptmp
   PTMP=/lfs/h2/emc/ptmp
@@ -386,6 +428,7 @@ elif [[ $MACHINE_ID = orion ]]; then
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
+  ROCOTO_SCHEDULER=slurm
 
   module use /work/noaa/epic/role-epic/spack-stack/orion/modulefiles
   module load ecflow/5.8.4
@@ -408,6 +451,7 @@ elif [[ $MACHINE_ID = hercules ]]; then
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
+  ROCOTO_SCHEDULER=slurm
 
   module use /work/noaa/epic/role-epic/spack-stack/hercules/modulefiles
   module load ecflow/5.8.4
@@ -557,6 +601,9 @@ NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST
 # Overwrite default RUNDIR_ROOT if environment variable RUNDIR_ROOT is set
 RUNDIR_ROOT=${RUNDIR_ROOT:-${PTMP}/${USER}/FV3_RT}/rt_$$
 mkdir -p ${RUNDIR_ROOT}
+rm ${PATHRT}/run_dir
+echo "Linking ${RUNDIR_ROOT} to ${PATHRT}/run_dir"
+ln -s ${RUNDIR_ROOT} ${PATHRT}/run_dir
 echo "Run regression test in: ${RUNDIR_ROOT}"
 
 if [[ $SINGLE_NAME != '' ]]; then
@@ -615,6 +662,8 @@ fi
 
 if [[ $skip_check_results == true ]]; then
   REGRESSIONTEST_LOG=${PATHRT}/logs/RegressionTests_weekly_$MACHINE_ID.log
+elif [[ $PRETEST == true ]]; then
+  REGRESSIONTEST_LOG=${PATHRT}/logs/RegressionTests_pretest.log
 else
   REGRESSIONTEST_LOG=${PATHRT}/logs/RegressionTests_$MACHINE_ID.log
 fi
@@ -648,48 +697,8 @@ if [[ $ROCOTO == true ]]; then
 
   rm -f $ROCOTO_XML $ROCOTO_DB $ROCOTO_STATE *_lock.db
 
-  if [[ $MACHINE_ID = wcoss2 || $MACHINE_ID = acorn ]]; then
-    QUEUE=dev
-    COMPILE_QUEUE=dev
-    ROCOTO_SCHEDULER=pbs
-  elif [[ $MACHINE_ID = hera ]]; then
-    QUEUE=batch
-    COMPILE_QUEUE=batch
-    ROCOTO_SCHEDULER=slurm
-  elif [[ $MACHINE_ID = orion ]]; then
-    QUEUE=batch
-    COMPILE_QUEUE=batch
-    ROCOTO_SCHEDULER=slurm
-  elif [[ $MACHINE_ID = hercules ]]; then
-    QUEUE=windfall
-    COMPILE_QUEUE=windfall
-    ROCOTO_SCHEDULER=slurm
-  elif [[ $MACHINE_ID = s4 ]]; then
-    QUEUE=s4
-    COMPILE_QUEUE=s4
-    ROCOTO_SCHEDULER=slurm
-  elif [[ $MACHINE_ID = noaacloud ]]; then
-    QUEUE=batch
-    COMPILE_QUEUE=batch
-    ROCOTO_SCHEDULER=slurm
-  elif [[ $MACHINE_ID = jet ]]; then
-    QUEUE=batch
-    COMPILE_QUEUE=batch
-    ROCOTO_SCHEDULER=slurm
-  elif [[ $MACHINE_ID = derecho ]]; then
-    QUEUE=main
-    COMPILE_QUEUE=main
-    ROCOTO_SCHEDULER=pbspro
-  elif [[ $MACHINE_ID = gaea ]]; then
-    QUEUE=normal
-    COMPILE_QUEUE=normal
-    ROCOTO_SCHEDULER=slurm
-  elif [[ $MACHINE_ID = gaea-c5 ]]; then
-    QUEUE=normal
-    COMPILE_QUEUE=normal
-    ROCOTO_SCHEDULER=slurm
-  else
-    die "Rocoto is not supported on this machine $MACHINE_ID"
+  if [[ $MACHINE_ID = stampede || $MACHINE_ID = expanse ]]; then
+    die "Rocoto is not supported on this machine: $MACHINE_ID"
   fi
 
   cat << EOF > $ROCOTO_XML
@@ -746,24 +755,8 @@ suite ${ECFLOW_SUITE}
     limit max_jobs ${MAX_JOBS}
 EOF
 
-  if [[ $MACHINE_ID = wcoss2 || $MACHINE_ID = acorn ]]; then
-    QUEUE=dev
-  elif [[ $MACHINE_ID = hera ]]; then
-    QUEUE=batch
-  elif [[ $MACHINE_ID = orion ]]; then
-    QUEUE=batch
-  elif [[ $MACHINE_ID = hercules ]]; then
-    QUEUE=windfall
-  elif [[ $MACHINE_ID = jet ]]; then
-    QUEUE=batch
-  elif [[ $MACHINE_ID = s4 ]]; then
-    QUEUE=s4
-  elif [[ $MACHINE_ID = gaea* ]]; then
-    QUEUE=normal
-  elif [[ $MACHINE_ID = derecho ]]; then
-    QUEUE=main
-  else
-    die "ecFlow is not supported on this machine $MACHINE_ID"
+  if [[ $MACHINE_ID = stampede || $MACHINE_ID = expanse ]]; then
+    die "ecFlow is not supported on this machine: $MACHINE_ID"
   fi
 
 fi
@@ -977,6 +970,25 @@ if [[ $ECFLOW == true ]]; then
   # run ecflow workflow until done
   ecflow_run
 fi
+
+##
+## WE NEED TO VERIFY NUMBER OF TESTS IN LOG_DIR MATCH COUNTS
+## FROM $TESTS_FILE
+##
+get_compile_test_counts
+
+COMPLETED_COMPILES=$(ls $LOG_DIR | grep compile.*time\.log | wc -l)
+COMPLETED_COMPILES=$( printf '%03d' $(( 10#$COMPLETED_COMPILES )) )
+COMPLETED_TESTS=$(ls $LOG_DIR | cut -c-4 | grep run_ | wc -l)
+COMPLETED_TESTS=$( printf '%03d' $(( 10#$COMPLETED_TESTS )) )
+if [[ "$NUM_COMPILES" -ne "$COMPLETED_COMPILES" || "$NUM_TESTS" -ne "$COMPLETED_TESTS" ]]; then
+  echo "ERROR: NOT ALL COMPILES OR TESTS WERE RUN"
+  echo "COMPILES REQUESTED: ${NUM_COMPILES} | COMPILES COMPLETED: ${COMPLETED_COMPILES}"
+  echo "TESTS REQUESTED ${NUM_TESTS} | TESTS COMPLETED: ${COMPLETED_TESTS}"
+  exit 1
+fi
+
+
 
 ##
 ## regression test is either failed or successful
