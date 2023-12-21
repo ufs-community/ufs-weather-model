@@ -363,7 +363,9 @@ else
 fi
 
 if [[ $skip_check_results = false ]]; then
-  check_results
+  check_results || true
+  # The above call will exit with an error on its own and does
+  # not need to cause run_trest to TRAP the failure and error out itself.
 else
   echo                                               >> ${RT_LOG}
   grep "The total amount of wall time" ${RUNDIR}/out >> ${RT_LOG}

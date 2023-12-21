@@ -101,9 +101,6 @@ interrupt_job() {
   elif [[ $SCHEDULER = 'slurm' ]]; then
     echo "run_util.sh: interrupt_job slurm_id = ${slurm_id}"
     scancel ${slurm_id}
-  elif [[ $SCHEDULER = 'lsf' ]]; then
-    echo "run_util.sh: interrupt_job bsub_id = ${bsub_id}"
-    bkill ${bsub_id}
   else
     echo "run_util.sh: interrupt_job unknown SCHEDULER $SCHEDULER"
   fi
@@ -133,11 +130,6 @@ submit_and_wait() {
     re='Submitted batch job ([0-9]+)'
     [[ "${slurmout}" =~ $re ]] && slurm_id=${BASH_REMATCH[1]}
     echo "Job id ${slurm_id}"
-  elif [[ $SCHEDULER = 'lsf' ]]; then
-    bsubout=$( bsub < $job_card )
-    re='Job <([0-9]+)> is submitted to queue <(.+)>.'
-    [[ "${bsubout}" =~ $re ]] && bsub_id=${BASH_REMATCH[1]}
-    echo "Job id ${bsub_id}"
   else
     echo "Unknown SCHEDULER $SCHEDULER"
     exit 1
@@ -154,8 +146,6 @@ submit_and_wait() {
       job_running=$( qstat ${qsub_id} | grep ${qsub_id} | wc -l )
     elif [[ $SCHEDULER = 'slurm' ]]; then
       job_running=$( squeue -u ${USER} -j ${slurm_id} | grep ${slurm_id} | wc -l)
-    elif [[ $SCHEDULER = 'lsf' ]]; then
-      job_running=$( bjobs ${bsub_id} | grep ${bsub_id} | wc -l)
     else
       echo "Unknown SCHEDULER $SCHEDULER"
       exit 1
@@ -170,8 +160,6 @@ submit_and_wait() {
     jobid=${qsub_id}
   elif [[ $SCHEDULER = 'slurm' ]]; then
     jobid=${slurm_id}
-  elif [[ $SCHEDULER = 'lsf' ]]; then
-    jobid=${bsub_id}
   else
     echo "Unknown SCHEDULER $SCHEDULER"
     exit 1
@@ -192,8 +180,6 @@ submit_and_wait() {
       job_running=$( qstat ${qsub_id} | grep ${qsub_id} | wc -l )
     elif [[ $SCHEDULER = 'slurm' ]]; then
       job_running=$( squeue -u ${USER} -j ${slurm_id} | grep ${slurm_id} | wc -l)
-    elif [[ $SCHEDULER = 'lsf' ]]; then
-      job_running=$( bjobs ${bsub_id} | grep ${bsub_id} | wc -l)
     else
       echo "Unknown SCHEDULER $SCHEDULER"
       exit 1
@@ -238,30 +224,6 @@ submit_and_wait() {
         status_label=$( sacct -n -j ${slurm_id} --format=JobID,state%20,Jobname%20 | grep "^${slurm_id}" | grep ${JBNME} | awk '{print $2}' )
         if [[ $status_label = 'FAILED' ]] || [[ $status_label = 'TIMEOUT' ]] || [[ $status_label = 'CANCELLED' ]] ; then
             test_status='FAIL'
-        fi
-      fi
-
-    elif [[ $SCHEDULER = 'lsf' ]]; then
-
-      status=$( bjobs ${bsub_id} 2>/dev/null | grep ${bsub_id} | awk '{print $3}' ); status=${status:--}
-      if   [[ $status = 'PEND' ]];  then
-        status_label='pending'
-      elif [[ $status = 'RUN'  ]];  then
-        status_label='running'
-      elif [[ $status = 'DONE'  ]];  then
-        status_label='finished'
-        test_status='DONE'
-      elif [[ $status = 'EXIT' ]];  then
-        status_label='failed'
-        test_status='FAIL'
-      else
-        echo "bsub unknown status ${status}"
-        status_label='finished'
-        test_status='DONE'
-        exit_status=$( bjobs ${bsub_id} 2>/dev/null | grep ${bsub_id} | awk '{print $3}' ); status=${status:--}
-        if [[ $exit_status = 'EXIT' ]];  then
-          status_label='failed'
-          test_status='FAIL'
         fi
       fi
 
@@ -338,18 +300,10 @@ check_results() {
         test_status='FAIL'
 
       else
-
-        cmp ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/$i ${RUNDIR}/$i >/dev/null 2>&1 && d=$? || d=$?
-        if [[ $d -eq 2 ]]; then
-          echo "....CMP ERROR" >> ${RT_LOG}
-          echo "....CMP ERROR"
-          exit 1
-        fi
-
         if [[ $d -eq 1 && ${i##*.} == 'nc' ]] ; then
-          if [[ " orion hercules hera wcoss2 acorn derecho gaea gaea-c5 jet s4 noaacloud " =~ " ${MACHINE_ID} " ]]; then
-            printf ".......ALT CHECK.." >> ${RT_LOG}
-            printf ".......ALT CHECK.."
+          if [[ " orion hercules hera wcoss2 acorn cheyenne gaea gaea-c5 jet s4 noaacloud " =~ " ${MACHINE_ID} " ]]; then
+            printf "USING NCCMP.." >> ${RT_LOG}
+            printf "USING NCCMP.."
               if [[ $CMP_DATAONLY == false ]]; then
                 nccmp -d -S -q -f -g -B --Attribute=checksum --warn=format ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i} ${RUNDIR}/${i} > ${i}_nccmp.log 2>&1 && d=$? || d=$?
               else
@@ -361,11 +315,21 @@ check_results() {
                 test_status='FAIL'
               fi
           fi
+        else
+          printf "USING CMP.." >> ${RT_LOG}
+          printf "USING CMP.."
+          cmp ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/$i ${RUNDIR}/$i >/dev/null 2>&1 && d=$? || d=$?
+          if [[ $d -eq 2 ]]; then
+            echo "....ERROR" >> ${RT_LOG}
+            echo "....ERROR"
+            exit 1
+          fi
+
         fi
 
         if [[ $d -ne 0 ]]; then
-          echo "....NOT OK" >> ${RT_LOG}
-          echo "....NOT OK"
+          echo "....NOT IDENTICAL" >> ${RT_LOG}
+          echo "....NOT IDENTICAL"
           test_status='FAIL'
         else
           echo "....OK" >> ${RT_LOG}
@@ -438,8 +402,6 @@ kill_job() {
     qdel ${jobid}
   elif [[ $SCHEDULER = 'slurm' ]]; then
     scancel ${jobid}
-  elif [[ $SCHEDULER = 'lsf' ]]; then
-    bkill ${jobid}
   fi
 }
 
