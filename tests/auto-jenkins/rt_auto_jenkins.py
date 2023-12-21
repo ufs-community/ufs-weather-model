@@ -83,8 +83,8 @@ def delete_pr_dirs(each_pr, machine):
         workdir = '/work/noaa/epic-ps/role-epic-ps/autort/pr'
     elif machine == 'hercules':
         workdir = '/work/noaa/epic/role-epic/autort/pr'
-    elif machine == 'cheyenne':
-        workdir = '/glade/scratch/epicufsrt/autort/jenkins/autort/pr'
+    elif machine == 'derecho':
+        workdir = '/glade/derecho/scratch/epicufsrt/autort/jenkins/autort/pr'
     else:
         logging.error(f'Machine {machine} is not supported for this job')
         raise KeyError
@@ -120,8 +120,8 @@ def delete_rt_dirs(in_dir, machine, workdir):
         rt_dir = '/work/noaa/stmp/bcurtis/stmp/bcurtis/FV3_RT'
     elif machine == 'hercules':
         rt_dir = '/work/noaa/stmp/bcurtis/stmp/bcurtis/FV3_RT'
-    elif machine == 'cheyenne':
-        rt_dir = '/glade/scratch/epicufsrt/FV3_RT'
+    elif machine == 'derecho':
+        rt_dir = '/glade/derecho/scratch/epicufsrt/FV3_RT'
     else:
         logging.error(f'Machine {machine} is not supported for this job')
         raise KeyError
@@ -301,12 +301,9 @@ def setup_env():
     elif bool(re.match(re.compile('Hercules-login.+'), hostname)):
         machine = 'hercules'
         os.environ['ACCNR'] = 'epic'
-    elif bool(re.match(re.compile('cheyenne.+'), hostname)):
-        machine = 'cheyenne'
-        os.environ['ACCNR'] = 'SCSG0002'
-    elif bool(re.match(re.compile('chadmin.+'), hostname)):
-        machine = 'cheyenne'
-        os.environ['ACCNR'] = 'SCSG0002'
+    elif bool(re.match(re.compile('derecho.+'), hostname)):
+        machine = 'derecho'
+        os.environ['ACCNR'] = 'NRAL0032'
     else:
         raise KeyError(f'Hostname: {hostname} does not match '\
                         'for a supported system. Exiting.')

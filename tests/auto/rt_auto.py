@@ -223,7 +223,7 @@ def setup_env():
     elif bool(re.match(re.compile('Orion-login.+'), hostname)):
         machine = 'orion'
     elif bool(re.match(re.compile('chadmin.+'), hostname)):
-        machine = 'cheyenne'
+        machine = 'derecho'
         os.environ['ACCNR'] = 'P48503002'
     else:
         raise KeyError(f'Hostname: {hostname} does not match '\

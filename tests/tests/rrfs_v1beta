@@ -53,42 +53,10 @@ export LIST_FILES="sfcf000.nc \
                    RESTART/20210323.060000.sfc_data.tile5.nc \
                    RESTART/20210323.060000.sfc_data.tile6.nc"
 
-export_fv3
-export NPZ=127
-export NPZP=128
-export DT_ATMOS=300
-export SYEAR=2021
-export SMONTH=03
-export SDAY=22
-export SHOUR=06
+export_rrfs_v1
 export RESTART_INTERVAL="6 -1"
-export OUTPUT_GRID='gaussian_grid'
-export NSTF_NAME='2,0,0,0,0'
-export WRITE_DOPOST=.true.
-export IAER=5111
 export OUTPUT_FH='0 09 12'
 
-export FV3_RUN=control_run.IN
-export CCPP_SUITE=FV3_RRFS_v1beta
-export INPUT_NML=rap.nml.IN
-export FIELD_TABLE=field_table_thompson_aero_tke
-export DIAG_TABLE=diag_table_rap_noah
-
-export IMP_PHYSICS=8
-export DNATS=0
-export DO_SAT_ADJ=.false.
-export LRADAR=.true.
-export LTAEROSOL=.true.
-export IALB=2
-export IEMS=2
-export HYBEDMF=.false.
-export DO_MYNNEDMF=.true.
-export DO_MYNNSFCLAY=.true.
-export DO_DEEP=.false.
-export SHAL_CNV=.false.
-export IMFSHALCNV=-1
-export IMFDEEPCNV=-1
-export LHEATSTRG=.false.
-export LSM=2
-export LSOIL_LSM=4
-
+if [[ " hera orion hercules gaea jet " =~ " ${MACHINE_ID} " ]] ; then
+  ZSTANDARD_LEVEL=5
+fi

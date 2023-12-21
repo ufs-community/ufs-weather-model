@@ -37,9 +37,7 @@ export RESTART_N=${FHMAX}
 export atm_omp_num_threads=2
 export DT_ATMOS=180
 export IDEFLATE=1
-export NFHMAX_HF=-1
-export NFHOUT_HF=3
-export NFHOUT=3
+export OUTPUT_FH='3 -1'
 export OUTPUT_FILE="'netcdf' 'netcdf'"
 export SDAY=25
 export SHOUR=12
@@ -64,7 +62,7 @@ export DLON_2=0.1
 export DLAT_2=0.1
 
 export BLOCKSIZE=${BLOCKSIZE:-24}
-export CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf"
+export CCPP_SUITE=FV3_HAFS_v1_gfdlmp_tedmf
 export DEFLATE_LEVEL=-1
 export INPES=6
 export JNPES=10
@@ -121,14 +119,13 @@ export N_SPLIT_NEST02=5
 ATM_compute_tasks=$(( INPES*JNPES + INPES_NEST02*JNPES_NEST02 ))
 
 export CMEPS=false
-export RUNTYPE="startup"
-export USE_COLDSTART="false"
+export RUNTYPE=startup
+export USE_COLDSTART=false
 
 export FIELD_TABLE=field_table_hafs
 export DIAG_TABLE=diag_table_hafs_template
 export INPUT_NML=input_regional_hafs.nml.IN
 export INPUT_NEST02_NML=input_nest_hafs.nml.IN
-export MODEL_CONFIGURE="model_configure_hafs.IN"
-export NEMS_CONFIGURE="nems.configure.hafs_atm.IN"
-export FV3_RUN="hafs_fv3_run.IN"
-
+export MODEL_CONFIGURE=model_configure_hafs.IN
+export UFS_CONFIGURE=ufs.configure.hafs_atm.IN
+export FV3_RUN=hafs_fv3_run.IN
