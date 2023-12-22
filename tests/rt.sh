@@ -150,7 +150,8 @@ verify_testing() {
   done < $TESTS_FILE
 
   if [[ $VERIFICATION_ERROR == true ]]; then
-    echo "VERIFICATION FAILED" >> ${REGRESSIONTEST_LOG}
+    echo; echo "VERIFICATION FAILED" >> ${REGRESSIONTEST_LOG}
+    echo "REGRESSION TEST FAILED" >> ${REGRESSIONTEST_LOG}
     exit 1
   else
     echo ; echo REGRESSION TEST WAS SUCCESSFUL
