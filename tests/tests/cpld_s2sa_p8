@@ -1,10 +1,10 @@
 #
-#  cpld_2threads P8 test
+#  S2SA companion to cpld_control_p8 test
 #
 
-export TEST_DESCR="Fully coupled FV3-CCPP-GOCART-MOM6-CICE-CMEPS-WW3 system - C96MX100 - 2 threads"
+export TEST_DESCR="Coupled FV3-CCPP-GOCART-MOM6-CICE-CMEPS system - C96MX100"
 
-export CNTL_DIR=cpld_control_p8
+export CNTL_DIR="cpld_s2sa_p8"
 
 export LIST_FILES="sfcf024.tile1.nc \
                    sfcf024.tile2.nc \
@@ -53,42 +53,26 @@ export LIST_FILES="sfcf024.tile1.nc \
                    RESTART/20210323.060000.sfc_data.tile6.nc \
                    RESTART/20210323.060000.MOM.res.nc \
                    RESTART/iced.2021-03-23-21600.nc \
-                   RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc \
-                   20210323.060000.out_pnt.ww3 \
-                   20210323.060000.out_grd.ww3 "
+                   RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc"
 
 export_fv3
 export_cpl
 
 export RESTART_N=12
 export RESTART_INTERVAL="${RESTART_N} -1"
+export OUTPUT_FH='0 24'
 
-export INPES=$INPES_cpl_thrd
-export JNPES=$JNPES_cpl_thrd
-export WRTTASK_PER_GROUP=$(( WPG_cpl_thrd * THRD_cpl_thrd ))
-
-export OCN_tasks=${OCN_tasks_cpl_thrd}
-export ICE_tasks=${ICE_tasks_cpl_thrd}
-export WAV_tasks=${WAV_tasks_cpl_thrd}
-
-export atm_omp_num_threads=$THRD_cpl_thrd
-export chm_omp_num_threads=$atm_omp_num_threads
-export med_omp_num_threads=$atm_omp_num_threads
-export ocn_omp_num_threads=$OCN_thrds_cpl_thrd
-export ice_omp_num_threads=$ICE_thrds_cpl_thrd
-export wav_omp_num_threads=$WAV_thrds_cpl_thrd
-
-export CICE_NPROC=${ICE_tasks}
-export np2=`expr $CICE_NPROC / 2`
-export CICE_BLCKX=`expr $NX_GLB / $np2`
-export CICE_BLCKY=`expr $NY_GLB / 2`
-
+export WAV_tasks=0
+export CPLWAV=.false.
+export CPLWAV2ATM=.false.
+export MOM6_USE_WAVES=False
+export CPLCHM=.true.
+export DNATS=0
 export MOM6_TOPOEDITS=ufs.topo_edits_011818.nc
 export MOM6_ALLOW_LANDMASK_CHANGES=True
 export eps_imesh=2.5e-1
 
-export FV3_RUN=cpld_control_run.IN
+export DIAG_TABLE=diag_table_template
+export UFS_CONFIGURE=ufs.configure.s2sa.IN
 
-if [[ $MACHINE_ID = derecho ]]; then
-  TPN=96
-fi
+export FV3_RUN=cpld_control_run.IN

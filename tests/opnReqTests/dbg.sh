@@ -21,7 +21,6 @@ elif [[ $application == 'regional' ]]; then
 elif [[ $application == 'cpld' ]]; then
   FHMAX=3
   DAYS=0.125
-  NFHOUT_HF=1
   RESTART_INTERVAL=${FHMAX}
   RESTART_N=${FHMAX}
   OUTPUT_FH="0 ${FHMAX}"
@@ -41,7 +40,6 @@ elif [[ $application == 'atmw' ]]; then
   WW3_RSTDTHR=3
   WW3_DT_2_RST="$(printf "%02d" $(( ${WW3_RSTDTHR}*3600 )))"
   DAYS=0.125
-  NFHOUT_HF=1
   RESTART_INTERVAL=${FHMAX}
   RESTART_N=${FHMAX}
   OUTPUT_FH="0 ${FHMAX}"
