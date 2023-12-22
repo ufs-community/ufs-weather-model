@@ -4,7 +4,7 @@
 
 export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system -C96MX100 unstr WW3 PDLIB - GFSv17 debug"
 
-export CNTL_DIR="cpld_debug_gfsv17"
+export CNTL_DIR=cpld_debug_gfsv17
 
 export LIST_FILES="sfcf003.tile1.nc \
                    sfcf003.tile2.nc \
@@ -80,10 +80,10 @@ export med_omp_num_threads=$atm_omp_num_threads
 
 export CPLCHM=.false.
 export DNATS=0
-export TOPOEDITS=ufs.topo_edits_011818.nc
+export MOM6_TOPOEDITS=ufs.topo_edits_011818.nc
 export MOM6_ALLOW_LANDMASK_CHANGES=True
 export eps_imesh=2.5e-1
-export DIAG_FREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
+export CICE_DIAGFREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
 
 export GWD_OPT=2
 export CDMBWD=20.0,2.5,1.0,1.0
@@ -104,22 +104,18 @@ export KNOB_UGWP_NDX4LH=4
 export PROGSIGMA=.true.
 export IOPT_DIAG=1
 
-export WAVDOMAIN=global_270k
-export MESH_WAV=mesh.${WAVDOMAIN}.nc
-export MODDEF_WAV=mod_def.exp.${WAVDOMAIN}
+export WW3_DOMAIN=global_270k
+export MESH_WAV=mesh.${WW3_DOMAIN}.nc
+export WW3_MODDEF=mod_def.exp.${WW3_DOMAIN}
 
 export FV3_RUN=cpld_control_run.IN
 export CCPP_SUITE=FV3_GFS_v17_coupled_p8_ugwpv1
 export FIELD_TABLE=field_table_thompson_noaero_tke_progsigma
 export DIAG_TABLE=diag_table_cpld_template
 export INPUT_NML=cpld_control.nml.IN
-export UFS_CONFIGURE=ufs.configure.cpld_noaero_outwav.IN
+export UFS_CONFIGURE=ufs.configure.s2sw_slow.IN
 
 export FV3_RUN=cpld_control_run.IN
-
-if [[ $MACHINE_ID = cheyenne ]]; then
-  TPN=18
-fi
 
 if [[ $MACHINE_ID = hera ]] && [[ $RT_COMPILER = gnu ]]; then
   WLCLK=40

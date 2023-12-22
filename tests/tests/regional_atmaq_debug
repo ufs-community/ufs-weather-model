@@ -29,7 +29,6 @@ export SHOUR=12
 export FHMAX=1
 export DT_ATMOS=180
 export WRTTASK_PER_GROUP=8
-export NSOUT=-1
 export OUTPUT_GRID='lambert_conformal'
 export NSTF_NAME='2,0,0,0,0'
 export IAER=5111
@@ -66,8 +65,8 @@ export FNABSC="'C775.maximum_snow_albedo.tileX.nc'"
 export INPES=${INPES_aqm}
 export JNPES=${JNPES_aqm}
 export NTILES=1
-export atm_model='fv3'
-export aqm_model='aqm'
+export atm_model=fv3
+export aqm_model=aqm
 
 export FIELD_TABLE=field_table_aqm
 export DIAG_TABLE=diag_table_aqm
@@ -90,14 +89,14 @@ export FSCAV_AERO="'aacd:0.0', 'acet:0.0', 'acrolein:0.0', 'acro_primary:0.0',
                    'vivpo1:0.0', 'vlvoo1:0.0', 'vlvoo2:0.0', 'vlvpo1:0.0',
                    'vsvoo1:0.0', 'vsvoo2:0.0', 'vsvoo3:0.0', 'vsvpo1:0.0',
                    'vsvpo2:0.0', 'vsvpo3:0.0', 'xopn:0.0', 'xylmn:0.0', '*:0.2'"
-export INPUT_NML="regional_atmaq.nml.IN"
-export MODEL_CONFIGURE="model_configure_atmaq.IN"
-export UFS_CONFIGURE="ufs.configure.atmaq.IN"
-export FV3_RUN="fv3_aqm.IN"
+export INPUT_NML=regional_atmaq.nml.IN
+export MODEL_CONFIGURE=model_configure_atmaq.IN
+export UFS_CONFIGURE=ufs.configure.atmaq.IN
+export FV3_RUN=fv3_aqm.IN
 export CCPP_SUITE=FV3_GFS_v15p2
 
 if [[ $MACHINE_ID = hera ]]; then
   TPN=30
-elif [[ $MACHINE_ID = cheyenne ]]; then
+elif [[ $MACHINE_ID = gaea* ]]; then
   TPN=16
 fi

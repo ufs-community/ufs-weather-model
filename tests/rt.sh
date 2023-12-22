@@ -306,7 +306,7 @@ elif [[ $MACHINE_ID = acorn ]]; then
 
 elif [[ $MACHINE_ID = gaea ]]; then
 
-  module use /lustre/f2/dev/Samuel.Trahan/hafs/modulefiles/
+  module use /lustre/f2/dev/role.epic/contrib/rocoto/modulefiles
   module load rocoto
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
@@ -322,6 +322,33 @@ elif [[ $MACHINE_ID = gaea ]]; then
   QUEUE=normal
   COMPILE_QUEUE=normal
   PARTITION=c4
+  STMP=/lustre/f2/scratch
+  PTMP=/lustre/f2/scratch
+
+  SCHEDULER=slurm
+
+elif [[ $MACHINE_ID = gaea-c5 ]]; then
+
+  module use /lustre/f2/dev/role.epic/contrib/C5/rocoto/modulefiles
+  module load rocoto
+  ROCOTORUN=$(which rocotorun)
+  ROCOTOSTAT=$(which rocotostat)
+  ROCOTOCOMPLETE=$(which rocotocomplete)
+  ROCOTO_SCHEDULER=slurm
+
+  module load PrgEnv-intel/8.3.3
+  module load intel-classic/2023.1.0
+  module load cray-mpich/8.1.25
+  module load python/3.9.12
+  module use /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/modulefiles
+  module load ecflow/5.8.4
+  ECFLOW_START=/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/ecflow-5.8.4/bin/ecflow_start.sh
+  ECF_PORT=$(( $(id -u) + 1500 ))
+
+  DISKNM=/lustre/f2/pdata/ncep/role.epic/C5/RT
+  QUEUE=normal
+  COMPILE_QUEUE=normal
+  PARTITION=c5
   STMP=/lustre/f2/scratch
   PTMP=/lustre/f2/scratch
 
@@ -423,12 +450,13 @@ elif [[ $MACHINE_ID = jet ]]; then
 elif [[ $MACHINE_ID = s4 ]]; then
 
   module load rocoto/1.3.2
+  module load ecflow/5.6.0
+  module load miniconda/3.8-s4
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=slurm
 
-  module load git/2.30.0
   module use /data/prod/jedi/spack-stack/modulefiles
   module load ecflow/5.8.4
   ECFLOW_START=/data/prod/jedi/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
@@ -445,29 +473,29 @@ elif [[ $MACHINE_ID = s4 ]]; then
 
   SCHEDULER=slurm
 
-elif [[ $MACHINE_ID = cheyenne ]]; then
+elif [[ $MACHINE_ID = derecho ]]; then
 
-  module use /gpfs/fs1/work/strahan/rocoto/modulefiles
-  module load rocoto/1.3.3
+  export PATH=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/bin:/glade/p/ral/jntp/tools/miniconda3/4.8.3/bin:$PATH
+  export PATH=/glade/work/epicufsrt/contrib/derecho/rocoto/bin:$PATH
+  export PYTHONPATH=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/glade/p/ral/jntp/tools/miniconda3/4.8.3/lib/python3.8/site-packages
+  ECFLOW_START=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/bin/ecflow_start.sh
+  ECF_PORT=$(( $(id -u) + 1500 ))
+
+  QUEUE=main
+  COMPILE_QUEUE=main
+  PARTITION=
+  dprefix=/glade/derecho/scratch
+  DISKNM=/glade/derecho/scratch/epicufsrt/ufs-weather-model/RT/
+  STMP=$dprefix
+  PTMP=$dprefix
+  SCHEDULER=pbs
+  cp fv3_conf/fv3_qsub.IN_derecho fv3_conf/fv3_qsub.IN
+  cp fv3_conf/compile_qsub.IN_derecho fv3_conf/compile_qsub.IN
+
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=pbspro
-  ROCOTO_NODESIZE=36
-
-  module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc
-  module load ecflow/5.8.4
-  ECFLOW_START=/glade/work/jedipara/cheyenne/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
-  ECF_PORT=$(( $(id -u) + 1500 ))
-
-  QUEUE=regular
-  COMPILE_QUEUE=regular
-  PARTITION=
-  dprefix=/glade/scratch
-  DISKNM=/glade/scratch/epicufsrt/GMTB/ufs-weather-model/RT
-  STMP=$dprefix
-  PTMP=$dprefix
-  SCHEDULER=pbs
 
 elif [[ $MACHINE_ID = stampede ]]; then
 
@@ -648,11 +676,15 @@ if [[ $ROCOTO == true ]]; then
     QUEUE=batch
     COMPILE_QUEUE=batch
     ROCOTO_SCHEDULER=slurm
-  elif [[ $MACHINE_ID = cheyenne ]]; then
-    QUEUE=regular
-    COMPILE_QUEUE=regular
+  elif [[ $MACHINE_ID = derecho ]]; then
+    QUEUE=main
+    COMPILE_QUEUE=main
     ROCOTO_SCHEDULER=pbspro
   elif [[ $MACHINE_ID = gaea ]]; then
+    QUEUE=normal
+    COMPILE_QUEUE=normal
+    ROCOTO_SCHEDULER=slurm
+  elif [[ $MACHINE_ID = gaea-c5 ]]; then
     QUEUE=normal
     COMPILE_QUEUE=normal
     ROCOTO_SCHEDULER=slurm
@@ -726,10 +758,10 @@ EOF
     QUEUE=batch
   elif [[ $MACHINE_ID = s4 ]]; then
     QUEUE=s4
-  elif [[ $MACHINE_ID = gaea ]]; then
+  elif [[ $MACHINE_ID = gaea* ]]; then
     QUEUE=normal
-  elif [[ $MACHINE_ID = cheyenne ]]; then
-    QUEUE=regular
+  elif [[ $MACHINE_ID = derecho ]]; then
+    QUEUE=main
   else
     die "ecFlow is not supported on this machine $MACHINE_ID"
   fi
@@ -873,6 +905,11 @@ EOF
         NODES=$(( NODES + 1 ))
       fi
 
+      PPN=$(( TASKS / NODES ))
+      if (( TASKS - ( PPN * NODES ) > 0 )); then
+          PPN=$((PPN + 1))
+      fi
+      
       cat << EOF > ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
       export JOB_NR=${JOB_NR}
       export MACHINE_ID=${MACHINE_ID}

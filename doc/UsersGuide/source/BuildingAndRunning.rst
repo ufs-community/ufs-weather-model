@@ -10,7 +10,7 @@ Supported Platforms & Compilers
 Before running the Weather Model (:term:`WM`), users should determine which of the 
 :ref:`levels of support <SupportedPlatforms>` 
 is applicable to their system. Generally, Level 1 & 2 systems are restricted to those with access 
-through NOAA and its affiliates. These systems are named (e.g., Hera, Orion, Cheyenne). 
+through NOAA and its affiliates. These systems are named (e.g., Hera, Orion, Derecho). 
 Level 3 & 4 systems include certain personal computers or non-NOAA-affiliated HPC systems. 
 The prerequisite software libraries for building the WM already exist in a centralized location on Level 1/preconfigured 
 systems, so users may skip directly to :ref:`getting the data <GetData>` and downloading the code. 
@@ -89,23 +89,23 @@ the data required to run the WM RTs are already available in the following locat
 .. _DataLocations:
 .. table:: Data Locations for Level 1 & 2 Systems
 
-   +--------------+-----------------------------------------------------+
-   | Machine      | File location                                       |
-   +==============+=====================================================+
-   | Cheyenne     | /glade/scratch/epicufsrt/GMTB/ufs-weather-model/RT  |
-   +--------------+-----------------------------------------------------+
-   | Gaea         | /lustre/f2/pdata/ncep_shared/emc.nemspara/RT        |
-   +--------------+-----------------------------------------------------+
-   | Hera         | /scratch1/NCEPDEV/nems/emc.nemspara/RT              |
-   +--------------+-----------------------------------------------------+
-   | Jet          | /mnt/lfs4/HFIP/hfv3gfs/role.epic/RT                 |
-   +--------------+-----------------------------------------------------+
-   | Orion        | /work/noaa/nems/emc.nemspara/RT                     |
-   +--------------+-----------------------------------------------------+
-   | S4           | /data/prod/emc.nemspara/RT                          |
-   +--------------+-----------------------------------------------------+ 
-   | WCOSS2       | /lfs/h2/emc/nems/noscrub/emc.nems/RT                |
-   +--------------+-----------------------------------------------------+ 
+   +--------------+--------------------------------------------------------+
+   | Machine      | File location                                          |
+   +==============+========================================================+
+   | Derecho      | /glade/derecho/scratch/epicufsrt/ufs-weather-model/RT  |
+   +--------------+--------------------------------------------------------+
+   | Gaea         | /lustre/f2/pdata/ncep_shared/emc.nemspara/RT           |
+   +--------------+--------------------------------------------------------+
+   | Hera         | /scratch1/NCEPDEV/nems/emc.nemspara/RT                 |
+   +--------------+--------------------------------------------------------+
+   | Jet          | /mnt/lfs4/HFIP/hfv3gfs/role.epic/RT                    |
+   +--------------+--------------------------------------------------------+
+   | Orion        | /work/noaa/nems/emc.nemspara/RT                        |
+   +--------------+--------------------------------------------------------+
+   | S4           | /data/prod/emc.nemspara/RT                             |
+   +--------------+--------------------------------------------------------+ 
+   | WCOSS2       | /lfs/h2/emc/nems/noscrub/emc.nems/RT                   |
+   +--------------+--------------------------------------------------------+ 
 
 For Level 3-4 systems, the data must be added to the user's system. 
 Publicly available RT data is available in the `UFS WM Data Bucket <https://registry.opendata.aws/noaa-ufs-regtests/>`__. 

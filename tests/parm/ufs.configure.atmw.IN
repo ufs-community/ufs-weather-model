@@ -34,10 +34,7 @@ WAV_omp_num_threads:            @[wav_omp_num_threads]
 WAV_attributes::
   Verbosity = 0
   OverwriteSlice = false
-  diro = "."
-  logfile = wav.log
   mesh_wav = @[MESH_WAV]
-  multigrid = @[MULTIGRID]
   user_sets_restname = true
 ::
 
@@ -79,13 +76,12 @@ ALLCOMP_attributes::
       ScalarFieldIdxGridNY = 2
       ScalarFieldName = cpl_scalars
       start_type = @[RUNTYPE]
-      restart_dir = RESTART/
+      restart_dir = @[CMEPS_RESTART_DIR]
       case_name = ufs.atmw
       restart_n = @[RESTART_N]
       restart_option = nhours
       restart_ymd = -999
       dbug_flag = @[cap_dbug_flag]
-      use_coldstart = false
       stop_n = @[FHMAX]
       stop_option = nhours
       stop_ymd = -999

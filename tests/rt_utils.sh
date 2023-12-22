@@ -347,7 +347,7 @@ check_results() {
         fi
 
         if [[ $d -eq 1 && ${i##*.} == 'nc' ]] ; then
-          if [[ " orion hercules hera wcoss2 acorn cheyenne gaea jet s4 noaacloud " =~ " ${MACHINE_ID} " ]]; then
+          if [[ " orion hercules hera wcoss2 acorn derecho gaea gaea-c5 jet s4 noaacloud " =~ " ${MACHINE_ID} " ]]; then
             printf ".......ALT CHECK.." >> ${RT_LOG}
             printf ".......ALT CHECK.."
               if [[ $CMP_DATAONLY == false ]]; then
@@ -472,6 +472,10 @@ rocoto_create_compile_task() {
   if [[ $MACHINE_ID == gaea ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
+  if [[ $MACHINE_ID == gaea-c5 ]]; then
+    BUILD_WALLTIME="01:00:00"
+  fi
+
 
   cat << EOF >> $ROCOTO_XML
   <task name="compile_${COMPILE_NR}" maxtries="${ROCOTO_COMPILE_MAXTRIES:-3}">
@@ -486,6 +490,12 @@ EOF
     <native>--clusters=es</native>
     <partition>eslogin</partition>
     <native>--exclude=gaea9</native>
+EOF
+
+  elif [[ "$MACHINE_ID" == gaea-c5 ]] ; then
+  cat << EOF >> $ROCOTO_XML
+    <native>--clusters=es</native>
+    <partition>eslogin_c5</partition>
 EOF
   else
   cat << EOF >> $ROCOTO_XML
@@ -529,6 +539,12 @@ EOF
   if [[ "$MACHINE_ID" == gaea ]] ; then
   cat << EOF >> $ROCOTO_XML
       <native>--clusters=${PARTITION}</native>
+EOF
+
+  elif [[ "$MACHINE_ID" == gaea-c5 ]] ; then
+  cat << EOF >> $ROCOTO_XML
+      <native>--clusters=${PARTITION}</native>
+      <native>--partition=batch</native>
 EOF
   else
   cat << EOF >> $ROCOTO_XML
