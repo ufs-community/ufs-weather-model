@@ -611,7 +611,7 @@ ecflow_create_run_task() {
 
   cat << EOF > ${ECFLOW_RUN}/${ECFLOW_SUITE}/${TEST_ID}${RT_SUFFIX}.ecf
 %include <head.h>
-$PATHRT/run_test.sh ${PATHRT} ${RUNDIR_ROOT} ${TEST_NAME} ${TEST_ID} ${COMPILE_ID} > ${LOG_DIR}/run_${TEST_ID}_${RT_SUFFIX}.log 2>&1 &
+$PATHRT/run_test.sh ${PATHRT} ${RUNDIR_ROOT} ${TEST_NAME} ${TEST_ID} ${COMPILE_ID} > ${LOG_DIR}/run_${TEST_ID}${RT_SUFFIX}.log 2>&1 &
 %include <tail.h>
 EOF
 
