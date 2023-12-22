@@ -90,6 +90,7 @@ verify_testing() {
       CMACHINES=$(echo $line | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
       COMPILER=$(echo $line | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
       COMPILE_NAME=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
+      COMPILE_ID=${COMPILE_NAME}_${COMPILER}
       if [[ ${CMACHINES} == '' ]]; then
         valid_compile=true
       elif [[ ${CMACHINES} == -* ]]; then
@@ -100,9 +101,9 @@ verify_testing() {
 
       if [[ $valid_compile == true ]]; then
         echo "Verifying: Compile ${COMPILE_ID}" >> ${REGRESSIONTEST_LOG}
-        COMPILE_COUNT=$(ls $LOG_DIR | grep compile_${COMPILE_NAME}_${COMPILER}.log | wc -l)
+        COMPILE_COUNT=$(ls $LOG_DIR | grep compile_${COMPILE_ID}.log | wc -l)
         if [[ "$COMPILE_COUNT" -ne "1" ]]; then
-          echo "ERROR: MISSING COMPILE ${COMPILE_NAME}" >> ${REGRESSIONTEST_LOG}
+          echo "ERROR: MISSING COMPILE ${COMPILE_ID}" >> ${REGRESSIONTEST_LOG}
           VERIFICATION_ERROR=true
         else
           if [[ -e fail_compile_${COMPILE_ID} ]]; then
@@ -118,7 +119,7 @@ verify_testing() {
     elif [[ $line =~ RUN ]]; then
       RMACHINES=$(echo $line | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
       TEST_NAME=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
-      
+      TEST_ID=${TEST_NAME}_${COMPILER}
       if [[ ${RMACHINES} == '' ]]; then
         valid_test=true
       elif [[ ${RMACHINES} == -* ]]; then
@@ -129,7 +130,7 @@ verify_testing() {
 
       if [[ $valid_test == true ]]; then
         echo "Verifying: Test ${TEST_ID}" >> ${REGRESSIONTEST_LOG}
-        TEST_COUNT=$(ls $LOG_DIR | grep run_${TEST_NAME}_${COMPILER}.log | wc -l)
+        TEST_COUNT=$(ls $LOG_DIR | grep run_${TEST_ID}.log | wc -l)
         if [[ "$TEST_COUNT" -ne "1" ]]; then
           echo "ERROR: MISSING TEST ${TEST_NAME}" >> ${REGRESSIONTEST_LOG}
           VERIFICATION_ERROR=true
