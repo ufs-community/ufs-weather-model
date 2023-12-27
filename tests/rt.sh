@@ -179,7 +179,7 @@ TESTS_FILE='rt.conf'
 NEW_BASELINES_FILE=''
 ACCNR=${ACCNR:-""}
 
-while getopts ":a:b:clo:mn:dwkreh" opt; do
+while getopts ":a:b:cl:mn:dwkreoh" opt; do
   case $opt in
     a)
       ACCNR=$OPTARG
@@ -836,7 +836,9 @@ while read -r line || [ "$line" ]; do
 
     continue
 
-  elif [[ $line == RUN* || $COMPILE_ONLY == false ]] ; then
+  elif [[ $line == RUN* ]] ; then
+
+    if [[ $COMPILE_ONLY == true ]] continue
 
     TEST_NAME=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
     MACHINES=$( echo $line | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
