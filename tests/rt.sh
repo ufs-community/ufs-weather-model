@@ -838,7 +838,9 @@ while read -r line || [ "$line" ]; do
 
   elif [[ $line == RUN* ]] ; then
 
-    if [[ $COMPILE_ONLY == true ]] continue
+    if [[ $COMPILE_ONLY == true ]]; then
+      continue
+    fi
 
     TEST_NAME=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
     MACHINES=$( echo $line | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
@@ -990,7 +992,9 @@ fi
 ##
 set +e
 cat ${LOG_DIR}/compile_*_time.log              >> ${REGRESSIONTEST_LOG}
-cat ${LOG_DIR}/rt_*.log                        >> ${REGRESSIONTEST_LOG}
+if [[ $COMPILE_ONLY == false ]]; then
+  cat ${LOG_DIR}/rt_*.log                        >> ${REGRESSIONTEST_LOG}
+fi
 
 FILES="fail_test_* fail_compile_*"
 for f in $FILES; do
