@@ -347,7 +347,7 @@ check_results() {
         fi
 
         if [[ $d -eq 1 && ${i##*.} == 'nc' ]] ; then
-          if [[ " orion hercules hera wcoss2 acorn cheyenne gaea gaea-c5 jet s4 noaacloud " =~ " ${MACHINE_ID} " ]]; then
+          if [[ " orion hercules hera wcoss2 acorn derecho gaea gaea-c5 jet s4 noaacloud " =~ " ${MACHINE_ID} " ]]; then
             printf ".......ALT CHECK.." >> ${RT_LOG}
             printf ".......ALT CHECK.."
               if [[ $CMP_DATAONLY == false ]]; then
