@@ -9,7 +9,7 @@ die() { echo "$@" >&2; exit 1; }
 usage() {
   set +x
   echo
-  echo "Usage: $0 -a <account> | -b <file> | -c | -d | -e | -h | -k | -l <file> | -m | -n <name> | -r | -w"
+  echo "Usage: $0 -a <account> | -b <file> | -c | -d | -e | -h | -k | -l <file> | -m | -n <name> | -o | -r | -w"
   echo
   echo "  -a  <account> to use on for HPC queue"
   echo "  -b  create new baselines only for tests listed in <file>"
@@ -21,6 +21,7 @@ usage() {
   echo "  -l  runs test specified in <file>"
   echo "  -m  compare against new baseline results"
   echo "  -n  run single test <name>"
+  echo "  -o  compile only, skip tests"
   echo "  -r  use Rocoto workflow manager"
   echo "  -w  for weekly_test, skip comparing baseline results"
   echo
@@ -172,12 +173,13 @@ TEST_35D=false
 export skip_check_results=false
 export delete_rundir=false
 SKIP_ORDER=false
+COMPILE_ONLY=false
 RTPWD_NEW_BASELINE=false
 TESTS_FILE='rt.conf'
 NEW_BASELINES_FILE=''
 ACCNR=${ACCNR:-""}
 
-while getopts ":a:b:cl:mn:dwkreh" opt; do
+while getopts ":a:b:clo:mn:dwkreh" opt; do
   case $opt in
     a)
       ACCNR=$OPTARG
@@ -191,6 +193,9 @@ while getopts ":a:b:cl:mn:dwkreh" opt; do
     l)
       TESTS_FILE=$OPTARG
       SKIP_ORDER=true
+      ;;
+    o)
+      COMPILE_ONLY=true
       ;;
     m)
       # redefine RTPWD to point to newly created baseline outputs
@@ -831,7 +836,7 @@ while read -r line || [ "$line" ]; do
 
     continue
 
-  elif [[ $line == RUN* ]] ; then
+  elif [[ $line == RUN* || $COMPILE_ONLY == false ]] ; then
 
     TEST_NAME=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
     MACHINES=$( echo $line | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
@@ -1000,12 +1005,21 @@ if [[ -e fail_test ]]; then
     echo "${failed_test_name}"
     echo "${failed_test_name}"    >> ${REGRESSIONTEST_LOG}
   done < fail_test
-   echo ; echo REGRESSION TEST FAILED
-  (echo ; echo REGRESSION TEST FAILED)         >> ${REGRESSIONTEST_LOG}
+  if [[ $COMPILE_ONLY == true ]]; then
+     echo ; echo COMPILE-ONLY REGRESSION TEST FAILED
+    (echo ; echo COMPILE-ONLY REGRESSION TEST FAILED)         >> ${REGRESSIONTEST_LOG}
+  else
+     echo ; echo REGRESSION TEST FAILED
+    (echo ; echo REGRESSION TEST FAILED)         >> ${REGRESSIONTEST_LOG}
+  fi
 else
-   echo ; echo REGRESSION TEST WAS SUCCESSFUL
-  (echo ; echo REGRESSION TEST WAS SUCCESSFUL) >> ${REGRESSIONTEST_LOG}
-
+  if [[ $COMPILE_ONLY == true ]]; then
+     echo ; echo COMPILE-ONLY REGRESSION TEST WAS SUCCESSFUL
+    (echo ; echo COMPILE-ONLY REGRESSION TEST WAS SUCCESSFUL)         >> ${REGRESSIONTEST_LOG}
+  else
+     echo ; echo REGRESSION TEST WAS SUCCESSFUL
+    (echo ; echo REGRESSION TEST WAS SUCCESSFUL) >> ${REGRESSIONTEST_LOG}
+  fi
   rm -f fv3_*.x fv3_*.exe modules.fv3_* modulefiles/modules.fv3_* keep_tests.tmp
   [[ ${KEEP_RUNDIR} == false ]] && rm -rf ${RUNDIR_ROOT}
   [[ ${ROCOTO} == true ]] && rm -f ${ROCOTO_XML} ${ROCOTO_DB} ${ROCOTO_STATE} *_lock.db
