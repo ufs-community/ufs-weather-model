@@ -1,4 +1,11 @@
-mkdir INPUT RESTART history MOM6_OUTPUT
+mkdir INPUT RESTART
+
+mkdir -p $CICE_RESTART_DIR
+mkdir -p $MOM6_RESTART_DIR
+mkdir -p $CMEPS_RESTART_DIR
+
+mkdir -p $CICE_HISTORY_DIR
+mkdir -p $MOM6_OUTPUT_DIR
 
 if [[ $ATMRES == C96 ]]; then
   FV3_DIR=FV3_input_data
@@ -50,8 +57,8 @@ cp    @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/mesh.mx@[OCNRES].nc .
 
 # WW3 fix/input
 if [[ $CPLWAV == .true. ]]; then
-  cp @[INPUTDATA_ROOT_WW3]/@[MODDEF_WAV] mod_def.ww3
-  if [[ ${WAVDOMAIN:0:2} != mx ]]; then
+  cp @[INPUTDATA_ROOT_WW3]/@[WW3_MODDEF] mod_def.ww3
+  if [[ ${WW3_DOMAIN:0:2} != mx ]]; then
      cp  @[INPUTDATA_ROOT_WW3]/@[MESH_WAV] .
   fi
 fi
@@ -102,12 +109,12 @@ else
 
      #if not mx025, then mom6 restart is a single file
      if [[ $OCNRES == 025 ]]; then
-      cp ../${DEP_RUN}${SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.MOM.res.nc ./INPUT/MOM.res.nc
-      cp ../${DEP_RUN}${SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.MOM.res_1.nc ./INPUT/MOM.res_1.nc
-      cp ../${DEP_RUN}${SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.MOM.res_2.nc ./INPUT/MOM.res_2.nc
-      cp ../${DEP_RUN}${SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.MOM.res_3.nc ./INPUT/MOM.res_3.nc
+      cp ../${DEP_RUN}${SUFFIX}/${MOM6_RESTART_DIR}/${RESTART_FILE_PREFIX}.MOM.res.nc ./INPUT/MOM.res.nc
+      cp ../${DEP_RUN}${SUFFIX}/${MOM6_RESTART_DIR}/${RESTART_FILE_PREFIX}.MOM.res_1.nc ./INPUT/MOM.res_1.nc
+      cp ../${DEP_RUN}${SUFFIX}/${MOM6_RESTART_DIR}/${RESTART_FILE_PREFIX}.MOM.res_2.nc ./INPUT/MOM.res_2.nc
+      cp ../${DEP_RUN}${SUFFIX}/${MOM6_RESTART_DIR}/${RESTART_FILE_PREFIX}.MOM.res_3.nc ./INPUT/MOM.res_3.nc
      else
-      cp ../${DEP_RUN}${SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.MOM.res.nc ./INPUT/MOM.res.nc
+      cp ../${DEP_RUN}${SUFFIX}/${MOM6_RESTART_DIR}/${RESTART_FILE_PREFIX}.MOM.res.nc ./INPUT/MOM.res.nc
       if [[ $ODA_INCUPD == 'True' ]] && [[ $FHROT -le 6 ]]; then
         cp @[INPUTDATA_ROOT]/MOM6_IC/mom6_increment.nc ./INPUT/mom6_increment.nc
       fi
@@ -115,18 +122,18 @@ else
 
      # CMEPS restart and pointer files
      RFILE=ufs.cpld.cpl.r.${RESTART_FILE_SUFFIX_SECS}.nc
-     cp  ../${DEP_RUN}${SUFFIX}/RESTART/${RFILE} .
+     cp  ../${DEP_RUN}${SUFFIX}/${CMEPS_RESTART_DIR}/${RFILE} .
      ls -1 ${RFILE}>rpointer.cpl
 
      # CMEPS/CCPP restart file
-     if [[ $CPLMODE =~ 'nems_frac_aoflux' ]]; then
+     if [[ $CPLMODE =~ 'ufs.frac.aoflux' ]]; then
        RFILE_CCPP=ufs.cpld.cpl.ccpp.${RESTART_FILE_SUFFIX_SECS}.nc
        cp ../${DEP_RUN}${SUFFIX}/${RFILE_CCPP} .
      fi
 
      # CICE restart and pointer files
      RFILE=iced.${RESTART_FILE_SUFFIX_SECS}.nc
-     cp  ../${DEP_RUN}${SUFFIX}/RESTART/${RFILE} ./INPUT
+     cp  ../${DEP_RUN}${SUFFIX}/${CICE_RESTART_DIR}/${RFILE} ./INPUT
      ls -1 ./INPUT/${RFILE}>ice.restart_file
 
      # WAVE restart file

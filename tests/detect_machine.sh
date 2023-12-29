@@ -43,6 +43,15 @@ case $(hostname -f) in
   gaea15.ncrc.gov)         MACHINE_ID=gaea ;; ### gaea15
   gaea16.ncrc.gov)         MACHINE_ID=gaea ;; ### gaea16
 
+  gaea51.ncrc.gov)         MACHINE_ID=gaea-c5 ;; ### gaea51
+  gaea52.ncrc.gov)         MACHINE_ID=gaea-c5 ;; ### gaea52
+  gaea53.ncrc.gov)         MACHINE_ID=gaea-c5 ;; ### gaea53
+  gaea54.ncrc.gov)         MACHINE_ID=gaea-c5 ;; ### gaea54
+  gaea55.ncrc.gov)         MACHINE_ID=gaea-c5 ;; ### gaea55
+  gaea56.ncrc.gov)         MACHINE_ID=gaea-c5 ;; ### gaea56
+  gaea57.ncrc.gov)         MACHINE_ID=gaea-c5 ;; ### gaea57
+  gaea58.ncrc.gov)         MACHINE_ID=gaea-c5 ;; ### gaea58
+
   hfe01)                   MACHINE_ID=hera ;; ### hera01
   hfe02)                   MACHINE_ID=hera ;; ### hera02
   hfe03)                   MACHINE_ID=hera ;; ### hera03
@@ -75,29 +84,19 @@ case $(hostname -f) in
   Orion-login-3.HPC.MsState.Edu) MACHINE_ID=orion ;; ### orion3
   Orion-login-4.HPC.MsState.Edu) MACHINE_ID=orion ;; ### orion4
 
+  derecho1.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho1
+  derecho2.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho2
+  derecho3.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho3
+  derecho4.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho4
+  derecho5.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho5
+  derecho6.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho6
+  derecho7.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho7
+  derecho8.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho8
+
   Hercules-login-1.HPC.MsState.Edu) MACHINE_ID=hercules;; ### hercules1 
   Hercules-login-2.HPC.MsState.Edu) MACHINE_ID=hercules;; ### hercules2 
   Hercules-login-3.HPC.MsState.Edu) MACHINE_ID=hercules;; ### hercules3
   Hercules-login-4.HPC.MsState.Edu) MACHINE_ID=hercules;; ### hercules4
-
-  cheyenne1.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne1
-  cheyenne2.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne2
-  cheyenne3.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne3
-  cheyenne4.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne4
-  cheyenne5.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne5
-  cheyenne6.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne6
-  cheyenne1.ib0.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne1
-  cheyenne2.ib0.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne2
-  cheyenne3.ib0.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne3
-  cheyenne4.ib0.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne4
-  cheyenne5.ib0.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne5
-  cheyenne6.ib0.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne6
-  chadmin1.ib0.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne1
-  chadmin2.ib0.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne1
-  chadmin3.ib0.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne1
-  chadmin4.ib0.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne1
-  chadmin5.ib0.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne1
-  chadmin6.ib0.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne1
 
   login1.stampede2.tacc.utexas.edu) MACHINE_ID=stampede ;; ### stampede1
   login2.stampede2.tacc.utexas.edu) MACHINE_ID=stampede ;; ### stampede2
