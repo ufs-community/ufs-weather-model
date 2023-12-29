@@ -30,6 +30,8 @@ MED_attributes::
   normalization = none
   merge_type = copy
   pio_rearranger = @[pio_rearranger]
+  ocn_use_data_first_import = .true.
+  wav_use_data_first_import = .true.
 ::
 
 # ATM #
@@ -58,8 +60,8 @@ OCN_attributes::
   cpl_min = 0
   cpl_sec = @[coupling_interval_sec]
   base_dtg = @[SYEAR]@[SMONTH]@[SDAY]@[SHOUR]
-  merge_import = .true.
-  skip_first_import = .true.
+  merge_import = .false.
+  skip_first_import = .false.
   hycom_arche_output = .false.
   hyc_esmf_exp_output = .true.
   hyc_esmf_imp_output = .true.
@@ -84,7 +86,7 @@ WAV_attributes::
   Verbosity = 0
   Diagnostic = 0
   OverwriteSlice = false
-  merge_import = .true.
+  merge_import = .false.
   mesh_wav = @[MESH_WAV]
   multigrid = @[MULTIGRID]
   user_sets_restname = true
