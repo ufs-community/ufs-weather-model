@@ -47,22 +47,66 @@ def generateStage(nodeLabel) {
                             export dprefix=/work2/noaa/$ACCNR/$USER
                             sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
                             ./rt.sh -a ${ACCNR} -c -e -l rt.conf
+                            source bl_date.conf
+                            export DISKNM=/work/noaa/epic/hercules/UFS-WM_RT
+			    cd ${DISKNM}/NEMSfv3gfs/
+			    mkdir develop-${BL_DATE}
+			    cd /work2/noaa/epic/stmp/role-epic/stmp/role-epic/FV3_RT
+			    rsync -a REGRESSION_TEST/ ${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}
+                            cd ${DISKNM}/NEMSfv3gfs/
+                            ./adjust_permissions.sh hercules develop-${BL_DATE}
+                            chgrp noaa-hpc develop-${BL_DATE}
                           elif [[ $machine =~ "Orion" ]]
                           then
                             echo "Creating baselines on $machine"
                             export dprefix=/work2/noaa/$ACCNR/$USER
-                            sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
+                            sed -i 's|/work/noaa/stmp/${USER}|/work/noaa/epic/stmp/role-epic/|g' rt.sh
+		            export ACCNR=epic
                             ./rt.sh -a ${ACCNR} -c -e -l rt.conf
+                             source bl_date.conf
+                            export DISKNM=/work/noaa/epic/UFS-WM_RT
+                            cd ${DISKNM}/NEMSfv3gfs/
+                            mkdir develop-${BL_DATE}
+                            cd  /work/noaa/epic/stmp/role-epic/stmp/role-epic/FV3_RT/
+                            rsync -a REGRESSION_TEST/ ${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}
+                            cd ${DISKNM}/NEMSfv3gfs/
+                            ./adjust_permissions.sh orion develop-${BL_DATE}
+                            chgrp noaa-hpc develop-${BL_DATE}
                           elif [[ $machine =~ "Gaea" ]]
                           then 
                             echo "Creating baselines on $machine"
                             ./rt.sh -a ${ACCNR} -c -e -l rt.conf
                             unset LD_LIBRARY_PATH
+                            source bl_date.conf
+                            export DISKNM=/lustre/f2/pdata/ncep/role.epic/C5/RT
+                            cd ${DISKNM}/NEMSfv3gfs/
+                            mkdir develop-${BL_DATE}
+                            cd  /lustre/f2/scratch/role.epic/FV3_RT
+                            rsync -a REGRESSION_TEST/ ${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}
+                            cd ${DISKNM}/NEMSfv3gfs/
+                            chgrp ncep develop-${BL_DATE}
                           elif [[ $machine =~ "Hera" ]]
                           then
                             echo "Creating baselines on $machine"
                             export ACCNR=nems
                             ./rt.sh -a ${ACCNR} -c -r -l rt.conf
+                             source bl_date.conf
+                            export DISKNM=/scratch2/NAGAPE/epic/UFS-WM_RT
+			    cd ${DISKNM}/NEMSfv3gfs/
+			    mkdir develop-${BL_DATE}
+			    cd  /scratch1/NCEPDEV/stmp4/role.epic/FV3_RT
+			    rsync -a REGRESSION_TEST/ ${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}
+                           elif [[ $machine =~ "Derecho" ]]
+                           then
+                             echo "Creating baselines on $machine"
+                             export ACCNR=nral0032
+                             ./rt.sh -a ${ACCNR} -c -e -l rt.conf
+                             source bl_date.conf
+                             export DISKNM=/glade/derecho/scratch/epicufsrt/ufs-weather-model/RT/
+			     cd ${DISKNM}/NEMSfv3gfs/
+			     mkdir develop-${BL_DATE}
+			     cd /glade/derecho/scratch/epicufsrt/FV3_RT
+			     rsync -a REGRESSION_TEST/ ${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}
                           else
                             echo "Creating baselines on $machine"
                             ./rt.sh -a ${ACCNR} -c -r -l rt.conf
