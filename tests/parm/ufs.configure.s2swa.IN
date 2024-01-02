@@ -7,7 +7,7 @@ logKindFlag:            ESMF_LOGKIND_MULTI
 globalResourceControl:  true
 
 # EARTH #
-EARTH_component_list: MED ATM OCN ICE
+EARTH_component_list: MED ATM CHM OCN ICE WAV
 EARTH_attributes::
   Verbosity = 0
 ::
@@ -16,7 +16,6 @@ EARTH_attributes::
 MED_model:                      @[med_model]
 MED_petlist_bounds:             @[med_petlist_bounds]
 MED_omp_num_threads:            @[med_omp_num_threads]
-::
 
 # ATM #
 ATM_model:                      @[atm_model]
@@ -29,6 +28,14 @@ ATM_attributes::
   OverwriteSlice = true
 ::
 
+# CHM #
+CHM_model:                      @[chm_model]
+CHM_petlist_bounds:             @[chm_petlist_bounds]
+CHM_omp_num_threads:            @[chm_omp_num_threads]
+CHM_attributes::
+  Verbosity = 0
+::
+
 # OCN #
 OCN_model:                      @[ocn_model]
 OCN_petlist_bounds:             @[ocn_petlist_bounds]
@@ -38,7 +45,9 @@ OCN_attributes::
   DumpFields = false
   ProfileMemory = false
   OverwriteSlice = true
-  mesh_ocn = @[MESHOCN_ICE]
+  mesh_ocn = @[MESH_OCN]
+  use_coldstart = @[use_coldstart]
+  use_mommesh = @[use_mommesh]
 ::
 
 # ICE #
@@ -50,10 +59,22 @@ ICE_attributes::
   DumpFields = false
   ProfileMemory = false
   OverwriteSlice = true
-  mesh_ice = @[MESHOCN_ICE]
+  mesh_ice = @[MESH_ICE]
+  eps_imesh = @[eps_imesh]
   stop_n = @[RESTART_N]
   stop_option = nhours
   stop_ymd = -999
+::
+
+# WAV #
+WAV_model:                      @[wav_model]
+WAV_petlist_bounds:             @[wav_petlist_bounds]
+WAV_omp_num_threads:            @[wav_omp_num_threads]
+WAV_attributes::
+  Verbosity = 0
+  OverwriteSlice = false
+  mesh_wav = @[MESH_WAV]
+  user_sets_restname = true
 ::
 
 # CMEPS warm run sequence
@@ -63,17 +84,26 @@ runSeq::
    MED -> OCN :remapMethod=redist
    OCN
    @@[coupling_interval_fast_sec]
-     MED med_phases_aofluxes_run
      MED med_phases_prep_atm
      MED med_phases_prep_ice
+     MED med_phases_prep_wav_accum
+     MED med_phases_prep_wav_avg
      MED -> ATM :remapMethod=redist
      MED -> ICE :remapMethod=redist
-     ATM
+     MED -> WAV :remapMethod=redist
+     ATM phase1
+     ATM -> CHM
+     CHM
+     CHM -> ATM
+     ATM phase2
      ICE
+     WAV
      ATM -> MED :remapMethod=redist
      MED med_phases_post_atm
      ICE -> MED :remapMethod=redist
      MED med_phases_post_ice
+     WAV -> MED :remapMethod=redist
+     MED med_phases_post_wav
      MED med_phases_ocnalb_run
      MED med_phases_prep_ocn_accum
    @
@@ -92,18 +122,9 @@ MED_attributes::
       ATM_model = @[atm_model]
       ICE_model = @[ice_model]
       OCN_model = @[ocn_model]
+      WAV_model = @[wav_model]
       coupling_mode = @[CPLMODE]
       history_tile_atm = @[ATMTILESIZE]
-      aoflux_grid = 'agrid'
-      aoflux_code = 'ccpp'
-      aoflux_ccpp_suite = 'FV3_sfc_ocean'
-      ccpp_restart_interval = @[RESTART_N_SEC]
-      ccpp_input_dir = 'INPUT/'
-      ccpp_nstf_name = @[NSTF_NAME]
-      ccpp_ini_mosaic_file = 'INPUT/C96_mosaic.nc'
-      ccpp_ini_file_prefix = 'INPUT/sfc_data.tile'
-      ccpp_ini_layout = @[INPES],@[JNPES]
-      ccpp_ini_read = false
       pio_rearranger = @[pio_rearranger]
       ocean_albedo_limit = @[ocean_albedo_limit]
 ::
@@ -114,15 +135,12 @@ ALLCOMP_attributes::
       ScalarFieldIdxGridNY = 2
       ScalarFieldName = cpl_scalars
       start_type = @[RUNTYPE]
-      restart_dir = RESTART/
+      restart_dir = @[CMEPS_RESTART_DIR]
       case_name = ufs.cpld
       restart_n = @[RESTART_N]
       restart_option = nhours
       restart_ymd = -999
       dbug_flag = @[cap_dbug_flag]
-      use_coldstart = @[use_coldstart]
-      use_mommesh = @[use_mommesh]
-      eps_imesh = @[eps_imesh]
       stop_n = @[FHMAX]
       stop_option = nhours
       stop_ymd = -999

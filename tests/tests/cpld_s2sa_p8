@@ -1,10 +1,10 @@
 #
-#  cpld_multigrid P8 test
+#  S2SA companion to cpld_control_p8 test
 #
 
-export TEST_DESCR="Fully coupled FV3-CCPP-GOCART-MOM6-CICE-CMEPS-WW3 system - C96MX100 multigrid test"
+export TEST_DESCR="Coupled FV3-CCPP-GOCART-MOM6-CICE-CMEPS system - C96MX100"
 
-export CNTL_DIR="cpld_control_p8"
+export CNTL_DIR="cpld_s2sa_p8"
 
 export LIST_FILES="sfcf024.tile1.nc \
                    sfcf024.tile2.nc \
@@ -53,16 +53,26 @@ export LIST_FILES="sfcf024.tile1.nc \
                    RESTART/20210323.060000.sfc_data.tile6.nc \
                    RESTART/20210323.060000.MOM.res.nc \
                    RESTART/iced.2021-03-23-21600.nc \
-                   RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc \
-                   20210323.060000.out_grd.ww3 "
+                   RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc"
 
 export_fv3
 export_cpl
 
-export MULTIGRID=true
+export RESTART_N=12
+export RESTART_INTERVAL="${RESTART_N} -1"
+export OUTPUT_FH='0 24'
 
-export TOPOEDITS=ufs.topo_edits_011818.nc
+export WAV_tasks=0
+export CPLWAV=.false.
+export CPLWAV2ATM=.false.
+export MOM6_USE_WAVES=False
+export CPLCHM=.true.
+export DNATS=0
+export MOM6_TOPOEDITS=ufs.topo_edits_011818.nc
 export MOM6_ALLOW_LANDMASK_CHANGES=True
 export eps_imesh=2.5e-1
+
+export DIAG_TABLE=diag_table_template
+export UFS_CONFIGURE=ufs.configure.s2sa.IN
 
 export FV3_RUN=cpld_control_run.IN

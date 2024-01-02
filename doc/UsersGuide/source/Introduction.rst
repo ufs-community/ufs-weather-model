@@ -36,7 +36,7 @@ for those elements, are listed below:
 
 The UFS Weather Model is currently included in two UFS Application releases: The UFS Short-Range Weather (:term:`SRW`) Application v2.0.0 release (June 2022) and the UFS Medium Range Weather Application (:term:`MRW`) v1.1.0 release (October 2020). These UFS Apps also contain pre- and post-processing components, a comprehensive build system, and workflows for configuration and execution of the application. The SRW App v2.0.0 documentation and details can be found `here <https://ufs-srweather-app.readthedocs.io/en/release-public-v2/>`__. The MRW App v1.1.0 documentation and details can be found `here <https://ufs-mrweather-app.readthedocs.io/en/ufs-v1.1.0>`__.
 
-The UFS WM code is portable and can be used with Linux or Mac operating systems and with Intel or GNU compilers. It has been tested on a variety of platforms widely used by atmospheric scientists, such as the NOAA Research Hera system, the National Center for Atmospheric Research (:term:`NCAR`) Cheyenne system, the National Science Foundation Stampede system, and Mac laptops.
+The UFS WM code is portable and can be used with Linux or Mac operating systems and with Intel or GNU compilers. It has been tested on a variety of platforms widely used by atmospheric scientists, such as the NOAA Research Hera system, the National Center for Atmospheric Research (:term:`NCAR`) Derecho system, the National Science Foundation Stampede system, and Mac laptops.
 
 .. note::
 
