@@ -31,10 +31,6 @@ def generateStage(nodeLabel) {
                        pwd
                        cd tests
                        export machine=${NODE_NAME}
-                       export PATH=$PATH:~/bin
-                       echo $CHANGE_ID
-                       export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
-                       export FORK_BRANCH=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
                          
                           if [[ $machine =~ "Jet" ]] 
                           then
@@ -51,35 +47,37 @@ def generateStage(nodeLabel) {
                             export DISKNM=/work/noaa/epic/hercules/UFS-WM_RT
 			    cd ${DISKNM}/NEMSfv3gfs/
 			    mkdir develop-${BL_DATE}
-			    ./adjust_permissions.sh orion develop-${BL_DATE}
-			    chgrp noaa-hpc develop-${BL_DATE}
-			    cd /work2/noaa/epic/role-epic/stmp/role-epic/FV3_RT
+			    cd /work2/noaa/epic/stmp/role-epic/stmp/role-epic/FV3_RT
 			    rsync -a REGRESSION_TEST/ ${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}
+                            cd ${DISKNM}/NEMSfv3gfs/
+                            ./adjust_permissions.sh hercules develop-${BL_DATE}
+                            chgrp noaa-hpc develop-${BL_DATE}
                           elif [[ $machine =~ "Orion" ]]
                           then
-                            echo "Creating baselines on $machine"
-                            export dprefix=/work2/noaa/$ACCNR/$USER
-                            sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
+			    sed -i 's|/work/noaa/stmp/${USER}|/work/noaa/epic/stmp/role-epic/|g' rt.sh
+		            export ACCNR=epic
                             ./rt.sh -a ${ACCNR} -c -e -l rt.conf
-                             source bl_date.conf
+                            source bl_date.conf
                             export DISKNM=/work/noaa/epic/UFS-WM_RT
-			    cd ${DISKNM}/NEMSfv3gfs/
-			    mkdir develop-${BL_DATE}
-			    ./adjust_permissions.sh orion develop-${BL_DATE}
-			    chgrp noaa-hpc develop-${BL_DATE}
-			    cd  /work/noaa/epic/stmp/role-epic/stmp/role-epic/FV3_RT/
-			    rsync -a REGRESSION_TEST/ ${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}
+                            cd ${DISKNM}/NEMSfv3gfs/
+                            mkdir develop-${BL_DATE}
+                            cd  /work/noaa/epic/stmp/role-epic/stmp/role-epic/FV3_RT/
+                            rsync -a REGRESSION_TEST/ ${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}
+                            cd ${DISKNM}/NEMSfv3gfs/
+                            ./adjust_permissions.sh orion develop-${BL_DATE}
+                            chgrp noaa-hpc develop-${BL_DATE}
                           elif [[ $machine =~ "Gaea" ]]
                           then 
                             echo "Creating baselines on $machine"
-                            ./rt.sh -a ${ACCNR} -c -e -l rt.conf
-                            unset LD_LIBRARY_PATH
-                            source bl_date.conf
-                            export DISKNM=/lustre/f2/pdata/ncep/role.epic/C5/RT
-			    cd ${DISKNM}/NEMSfv3gfs/
-			    mkdir develop-${BL_DATE}
-			    cd  /lustre/f2/scratch/role.epic/FV3_RT/REGRESSION_TEST
-			    rsync -a REGRESSION_TEST/ ${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}
+                           ./rt.sh -a ${ACCNR} -c -e -l rt.conf
+                           source bl_date.conf
+                           export DISKNM=/lustre/f2/pdata/ncep/role.epic/C5/RT
+                           cd ${DISKNM}/NEMSfv3gfs/
+                           mkdir develop-${BL_DATE}
+                           cd  /lustre/f2/scratch/role.epic/FV3_RT
+                           rsync -a REGRESSION_TEST/ ${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}
+                           cd ${DISKNM}/NEMSfv3gfs/
+                           chgrp ncep develop-${BL_DATE}
                           elif [[ $machine =~ "Hera" ]]
                           then
                             echo "Creating baselines on $machine"
@@ -89,7 +87,18 @@ def generateStage(nodeLabel) {
                             export DISKNM=/scratch2/NAGAPE/epic/UFS-WM_RT
 			    cd ${DISKNM}/NEMSfv3gfs/
 			    mkdir develop-${BL_DATE}
-			    cd  /scratch1/NCEPDEV/stmp4/role.epic/FV3_RT/REGRESSION_TEST
+			    cd  /scratch1/NCEPDEV/stmp4/role.epic/FV3_RT
+			    rsync -a REGRESSION_TEST/ ${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}
+                          elif [[ $machine =~ "Derecho" ]]
+                          then
+                            echo "Creating baselines on $machine"
+                            export ACCNR=nral0032
+                            ./rt.sh -a ${ACCNR} -c -e -l rt.conf
+                            source bl_date.conf
+                            export DISKNM=/glade/derecho/scratch/epicufsrt/ufs-weather-model/RT/
+			    cd ${DISKNM}/NEMSfv3gfs/
+			    mkdir develop-${BL_DATE}
+			    cd /glade/derecho/scratch/epicufsrt/FV3_RT
 			    rsync -a REGRESSION_TEST/ ${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}
                           else
                             echo "Creating baselines on $machine"
@@ -111,10 +120,6 @@ def generateStage(nodeLabel) {
                        pwd
                        cd tests
                        export machine=${NODE_NAME}
-                       export PATH=$PATH:~/bin
-                       echo $CHANGE_ID
-                       export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
-                       export FORK_BRANCH=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
 
                           if [[ $machine =~ "Jet" ]] 
                           then
@@ -137,7 +142,6 @@ def generateStage(nodeLabel) {
                           then 
                            echo "Running regression tests on $machine"
                             ./rt.sh -a ${ACCNR} -e -l rt.conf
-                            unset LD_LIBRARY_PATH
                           elif [[ $machine =~ "Hera" ]]
                           then
                            echo "Running regression tests on $machine"
@@ -150,14 +154,8 @@ def generateStage(nodeLabel) {
 
                       git config user.email "ecc.platform@noaa.gov"
                       git config user.name "epic-cicd-jenkins"
-                      export machine_name_logs=$(echo $machine | awk '{ print tolower($1) }')
                       echo "Testing concluded...removing labels for $machine from $GIT_URL"
-                      git remote -v | grep -w sshorigin > /dev/null 2>&1 && git remote remove sshorigin > /dev/null 2>&1
-                      git remote add sshorigin $SSH_ORIGIN > /dev/null 2>&1
-                      git add logs/RegressionTests_$machine_name_logs.log
-                      git commit -m "[AutoRT] $machine Job Completed.\n\n\n on-behalf-of @ufs-community <ecc.platform@noaa.gov>"
-                      git push sshorigin HEAD:$FORK_BRANCH
-
+  
                       GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
                       GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
 
