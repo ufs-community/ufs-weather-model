@@ -634,6 +634,8 @@ export WW3_CUR='F'
 export WW3_ICE='F'
 export WW3_IC1='F'
 export WW3_IC5='F'
+export wav_coupling_to_cice=false
+export check_for_nans=false
 # ATMW
 export WW3_MULTIGRID=true
 export WW3_MODDEF=mod_def.glo_1deg

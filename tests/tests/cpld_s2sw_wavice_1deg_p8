@@ -1,10 +1,10 @@
 #
-#  S2SW unstr PDLIB wave-ice P8 test
+#  S2SW wave-ice with 1deg waves P8 test
 #
 
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system with wave-ice coupling - C96MX100 unstr WW3 PDLIB IC4"
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system with wave-ice coupling - WW3 1deg IC4"
 
-export CNTL_DIR=cpld_s2sw_wavice_p8
+export CNTL_DIR=cpld_s2sw_wavice_1deg_p8
 
 export LIST_FILES="sfcf024.tile1.nc \
                    sfcf024.tile2.nc \
@@ -69,9 +69,9 @@ export MOM6_TOPOEDITS=ufs.topo_edits_011818.nc
 export MOM6_ALLOW_LANDMASK_CHANGES=True
 export eps_imesh=2.5e-1
 
-export WW3_DOMAIN=global_270k
+export WW3_DOMAIN=glo_1deg
 export MESH_WAV=mesh.${WW3_DOMAIN}.nc
-export WW3_MODDEF=mod_def.ic4.exp.${WW3_DOMAIN}
+export WW3_MODDEF=mod_def.ic4.${WW3_DOMAIN}
 export WW3_ICE='C'
 export WW3_IC1='C'
 export WW3_IC5='C'
@@ -90,6 +90,5 @@ export FIELD_TABLE=field_table_thompson_noaero_tke
 export UFS_CONFIGURE=ufs.configure.s2sw.IN
 
 export FV3_RUN=cpld_control_run.IN
-#WLCLK=60
-WAV_tasks=$WAV_tasks_cpl_unstr
-
+WLCLK=60
+#WAV_tasks=$WAV_tasks_cpl_unstr

@@ -70,6 +70,7 @@ WAV_attributes::
   logfile = wav.log
   mesh_wav = @[MESH_WAV]
   user_sets_restname = true
+  #gridded_netcdfout = true
 ::
 
 # CMEPS warm run sequence
@@ -118,6 +119,11 @@ MED_attributes::
       history_tile_atm = @[ATMTILESIZE]
       pio_rearranger = @[pio_rearranger]
       ocean_albedo_limit = @[ocean_albedo_limit]
+      check_for_nans = @[check_for_nans]
+      history_n_wav_inst = 1
+      history_option_wav_inst = nsteps
+      history_n_ice_inst = 1
+      history_option_ice_inst = nsteps
 ::
 
 ALLCOMP_attributes::
@@ -141,4 +147,5 @@ ALLCOMP_attributes::
       orb_mode = fixed_year
       orb_mvelp = 1.e36
       orb_obliq = 1.e36
+      wav_coupling_to_cice = @[wav_coupling_to_cice]
 ::
