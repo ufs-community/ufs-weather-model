@@ -249,7 +249,7 @@ elif [[ $MACHINE_ID = derecho ]]; then
   INPES_thrd=3 ; JNPES_thrd=4
   INPES_c384=8 ; JNPES_c384=6  ; THRD_c384=2
   INPES_c768=8 ; JNPES_c768=16 ; THRD_c768=2
-  
+
   THRD_cpl_atmw_gdas=2
   INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
   WAV_tasks_atmw_gdas=248
@@ -319,6 +319,10 @@ WLCLK_dflt=30
 
 export WLCLK=$WLCLK_dflt
 export CMP_DATAONLY=false
+
+# Defaults for ufs.configure
+export esmf_logkind="ESMF_LOGKIND_MULTI"
+export DumpFields="false"
 
 export_fv3 ()
 {

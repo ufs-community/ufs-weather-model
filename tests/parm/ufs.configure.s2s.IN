@@ -3,7 +3,7 @@
 #############################################
 
 # ESMF #
-logKindFlag:            ESMF_LOGKIND_MULTI
+logKindFlag:            @[esmf_logkind]
 globalResourceControl:  true
 
 # EARTH #
@@ -24,7 +24,7 @@ ATM_petlist_bounds:             @[atm_petlist_bounds]
 ATM_omp_num_threads:            @[atm_omp_num_threads]
 ATM_attributes::
   Verbosity = 0
-  DumpFields = false
+  DumpFields = @[DumpFields]
   ProfileMemory = false
   OverwriteSlice = true
 ::
@@ -35,7 +35,7 @@ OCN_petlist_bounds:             @[ocn_petlist_bounds]
 OCN_omp_num_threads:            @[ocn_omp_num_threads]
 OCN_attributes::
   Verbosity = 0
-  DumpFields = false
+  DumpFields = @[DumpFields]
   ProfileMemory = false
   OverwriteSlice = true
   mesh_ocn = @[MESH_OCN]
@@ -49,7 +49,7 @@ ICE_petlist_bounds:             @[ice_petlist_bounds]
 ICE_omp_num_threads:            @[ice_omp_num_threads]
 ICE_attributes::
   Verbosity = 0
-  DumpFields = false
+  DumpFields = @[DumpFields]
   ProfileMemory = false
   OverwriteSlice = true
   mesh_ice = @[MESH_ICE]
