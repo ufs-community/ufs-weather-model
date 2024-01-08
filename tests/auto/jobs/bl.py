@@ -28,11 +28,6 @@ def set_directories(job_obj):
         blstore = '/lfs4/HFIP/h-nems/emc.nemspara/RT/NEMSfv3gfs/'
         rtbldir = '/lfs4/HFIP/h-nems/emc.nemspara/RT_BASELINE/'\
                  f'emc.nemspara/FV3_RT/REGRESSION_TEST_{job_obj.compiler.upper()}'
-    elif job_obj.machine == 'gaea':
-        workdir = '/lustre/f2/pdata/ncep/emc.nemspara/autort/pr'
-        blstore = '/lustre/f2/pdata/ncep_shared/emc.nemspara/RT/NEMSfv3gfs'
-        rtbldir = '/lustre/f2/scratch/emc.nemspara/FV3_RT/'\
-                 f'REGRESSION_TEST_{job_obj.compiler.upper()}'
     elif job_obj.machine == 'orion':
         workdir = '/work/noaa/nems/emc.nemspara/autort/pr'
         blstore = '/work/noaa/nems/emc.nemspara/RT/NEMSfv3gfs'
