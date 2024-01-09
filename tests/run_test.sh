@@ -97,7 +97,7 @@ cp ${PATHTR}/modulefiles/ufs_common*                 ./modulefiles/.
 cp ${PATHRT}/module-setup.sh                       module-setup.sh
 
 # load nccmp module
-if [[ " s4 hera orion hercules gaea gaea-c5 jet derecho acorn wcoss2 " =~ " $MACHINE_ID " ]]; then
+if [[ " s4 hera orion hercules gaea-c5 jet derecho acorn wcoss2 " =~ " $MACHINE_ID " ]]; then
   if [[ " wcoss2 acorn " =~ " ${MACHINE_ID} " ]] ; then
     module load intel/19.1.3.304 netcdf/4.7.4
     module load nccmp
@@ -106,7 +106,7 @@ if [[ " s4 hera orion hercules gaea gaea-c5 jet derecho acorn wcoss2 " =~ " $MAC
     module load stack-intel/2021.5.0 stack-intel-oneapi-mpi/2021.5.0
     module load miniconda/3.9.12
     module load nccmp/1.9.0.1
-  elif [[ " hera orion hercules gaea gaea-c5 jet " =~ " ${MACHINE_ID} " ]] ; then
+  elif [[ " hera orion hercules gaea-c5 jet " =~ " ${MACHINE_ID} " ]] ; then
     module use modulefiles
     module load modules.fv3
   else
