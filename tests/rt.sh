@@ -304,29 +304,6 @@ elif [[ $MACHINE_ID = acorn ]]; then
   PTMP=/lfs/h2/emc/ptmp
   SCHEDULER=pbs
 
-elif [[ $MACHINE_ID = gaea ]]; then
-
-  module use /lustre/f2/dev/role.epic/contrib/rocoto/modulefiles
-  module load rocoto
-  ROCOTORUN=$(which rocotorun)
-  ROCOTOSTAT=$(which rocotostat)
-  ROCOTOCOMPLETE=$(which rocotocomplete)
-  ROCOTO_SCHEDULER=slurm
-
-  module use /lustre/f2/dev/role.epic/contrib/spack-stack/c4/modulefiles
-  module load ecflow/5.8.4
-  ECFLOW_START=/lustre/f2/dev/role.epic/contrib/spack-stack/c4/ecflow-5.8.4/bin/ecflow_start.sh
-  ECF_PORT=$(( $(id -u) + 1500 ))
-
-  DISKNM=/lustre/f2/pdata/ncep/role.epic/RT
-  QUEUE=normal
-  COMPILE_QUEUE=normal
-  PARTITION=c4
-  STMP=/lustre/f2/scratch
-  PTMP=/lustre/f2/scratch
-
-  SCHEDULER=slurm
-
 elif [[ $MACHINE_ID = gaea-c5 ]]; then
 
   module use /lustre/f2/dev/role.epic/contrib/C5/rocoto/modulefiles
@@ -680,10 +657,6 @@ if [[ $ROCOTO == true ]]; then
     QUEUE=main
     COMPILE_QUEUE=main
     ROCOTO_SCHEDULER=pbspro
-  elif [[ $MACHINE_ID = gaea ]]; then
-    QUEUE=normal
-    COMPILE_QUEUE=normal
-    ROCOTO_SCHEDULER=slurm
   elif [[ $MACHINE_ID = gaea-c5 ]]; then
     QUEUE=normal
     COMPILE_QUEUE=normal
