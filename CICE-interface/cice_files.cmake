@@ -27,7 +27,8 @@ list(APPEND cice_shared_files
   #Dynamics List:
   CICE/cicecore/cicedyn/dynamics/ice_dyn_eap.F90
   CICE/cicecore/cicedyn/dynamics/ice_dyn_evp.F90
-  CICE/cicecore/cicedyn/dynamics/ice_dyn_evp_1d.F90
+  CICE/cicecore/cicedyn/dynamics/ice_dyn_evp1d.F90
+  CICE/cicecore/cicedyn/dynamics/ice_dyn_core1d.F90
   CICE/cicecore/cicedyn/dynamics/ice_dyn_shared.F90
   CICE/cicecore/cicedyn/dynamics/ice_dyn_vp.F90
   CICE/cicecore/cicedyn/dynamics/ice_transport_driver.F90
@@ -75,6 +76,7 @@ list(APPEND icepack_files
   CICE/icepack/columnphysics/icepack_orbital.F90
   CICE/icepack/columnphysics/icepack_parameters.F90
   CICE/icepack/columnphysics/icepack_shortwave.F90
+  CICE/icepack/columnphysics/icepack_shortwave_data.F90
   CICE/icepack/columnphysics/icepack_snow.F90
   CICE/icepack/columnphysics/icepack_therm_bl99.F90
   CICE/icepack/columnphysics/icepack_therm_itd.F90

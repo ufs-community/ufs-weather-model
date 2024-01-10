@@ -65,18 +65,6 @@ elif [[ $MACHINE_ID = stampede ]] ; then
     fi
     module purge
 
-elif [[ $MACHINE_ID = gaea ]] ; then
-    # We are on GAEA.
-    if ( ! eval module help > /dev/null 2>&1 ) ; then
-        # We cannot simply load the module command.  The GAEA
-        # /etc/profile modifies a number of module-related variables
-        # before loading the module command.  Without those variables,
-        # the module command fails.  Hence we actually have to source
-        # /etc/profile here.
-        source /etc/profile
-    fi
-    source /lustre/f2/dev/role.epic/contrib/Lmod_init.sh
-
 elif [[ $MACHINE_ID = gaea-c5 ]] ; then
     # We are on GAEA C5
     if ( ! eval module help > /dev/null 2>&1 ) ; then
