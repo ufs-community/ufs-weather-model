@@ -159,7 +159,7 @@ verify_testing() {
     echo; echo "VERIFICATION FAILED" >> ${REGRESSIONTEST_LOG}
     echo "REGRESSION TEST FAILED" >> ${REGRESSIONTEST_LOG}
     echo; echo "FAILED ITEMS:" >> ${REGRESSIONTEST_LOG}
-    for item in ${FAILED_ITEMS[@]} do
+    for item in ${FAILED_ITEMS[@]}; do
       echo $item >> ${REGRESSIONTEST_LOG}
     done
 
