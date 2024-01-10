@@ -30,6 +30,7 @@ def generateStage(nodeLabel) {
                        git submodule update --init --recursive
                        pwd
                        cd tests
+		       source bl_date.conf
                        export machine=${NODE_NAME}
                        export PATH=$PATH:~/bin
                        echo $CHANGE_ID
@@ -46,7 +47,6 @@ def generateStage(nodeLabel) {
                             echo "Creating baselines on $machine"
                             export dprefix=/work2/noaa/$ACCNR/$USER
                             sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
-			    source bl_date.conf
                             ./rt.sh -a ${ACCNR} -c -e -l rt.conf
                             export DISKNM=/work/noaa/epic/hercules/UFS-WM_RT
 			    cd ${DISKNM}/NEMSfv3gfs/
@@ -62,7 +62,6 @@ def generateStage(nodeLabel) {
                             export dprefix=/work2/noaa/$ACCNR/$USER
                             sed -i 's|/work/noaa/stmp/${USER}|/work/noaa/epic/stmp/role-epic/|g' rt.sh
 		            export ACCNR=epic
-		 	    source bl_date.conf
                             ./rt.sh -a ${ACCNR} -c -e -l rt.conf
                             export DISKNM=/work/noaa/epic/UFS-WM_RT
                             cd ${DISKNM}/NEMSfv3gfs/
@@ -75,7 +74,6 @@ def generateStage(nodeLabel) {
                           elif [[ $machine =~ "Gaea" ]]
                           then 
                             echo "Creating baselines on $machine"
-			    source bl_date.conf
                             ./rt.sh -a ${ACCNR} -c -e -l rt.conf
                             unset LD_LIBRARY_PATH
                             export DISKNM=/lustre/f2/pdata/ncep/role.epic/C5/RT
@@ -89,7 +87,6 @@ def generateStage(nodeLabel) {
                           then
                             echo "Creating baselines on $machine"
                             export ACCNR=nems
-			    source bl_date.conf
                             ./rt.sh -a ${ACCNR} -c -r -l rt.conf
                             export DISKNM=/scratch2/NAGAPE/epic/UFS-WM_RT
 			    cd ${DISKNM}/NEMSfv3gfs/
@@ -100,7 +97,6 @@ def generateStage(nodeLabel) {
                            then
                              echo "Creating baselines on $machine"
                              export ACCNR=nral0032
-			     source bl_date.conf
                              ./rt.sh -a ${ACCNR} -c -e -l rt.conf
                              export DISKNM=/glade/derecho/scratch/epicufsrt/ufs-weather-model/RT/
 			     cd ${DISKNM}/NEMSfv3gfs/
