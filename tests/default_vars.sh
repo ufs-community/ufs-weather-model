@@ -725,6 +725,7 @@ export WW3_CUR='C'
 export WW3_ICE='C'
 export WW3_IC1='F'
 export WW3_IC5='F'
+export WW3_user_sets_restname="true"
 }
 
 # Defaults for the coupled 5-component
