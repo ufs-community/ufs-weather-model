@@ -79,7 +79,9 @@ rt_single() {
 
 verify_testing() {
   VERIFICATION_ERROR=false
-  declare -A FAILED_ITEMS=()
+  FAILED_ITEMS=()
+  FAILED_TESTS=()
+  TEST_CHANGES_LOG="test_changes.out"
   while read -r line || [ "$line" ]; do
 
     line="${line#"${line%%[![:space:]]*}"}"
@@ -140,10 +142,12 @@ verify_testing() {
         if [[ "$TEST_COUNT" -ne "1" ]]; then
           VERIFICATION_ERROR=true
           FAILED_ITEMS+=("run_${TEST_ID} is MISSING")
+          FAILED_TESTS+=("${TEST_ID}")
           echo "ERROR: MISSING TEST ${TEST_NAME}" >> ${REGRESSIONTEST_LOG}
         elif [[ -e fail_test_${TEST_ID} ]]; then
             VERIFICATION_ERROR=true
             FAILED_ITEMS+=("run_${TEST_ID} has FAILED")
+            FAILED_TESTS+=("${TEST_ID}")
             echo "Test ${TEST_ID} FAILED" >> ${REGRESSIONTEST_LOG}
             echo "Test log at: ${LOG_DIR}/run_${TEST_ID}.log" >> ${REGRESSIONTEST_LOG}
             cat ${LOG_DIR}/rt_${TEST_ID}.log >> ${REGRESSIONTEST_LOG}
@@ -159,10 +163,16 @@ verify_testing() {
     echo; echo "VERIFICATION FAILED" >> ${REGRESSIONTEST_LOG}
     echo "REGRESSION TEST FAILED" >> ${REGRESSIONTEST_LOG}
     echo; echo "FAILED ITEMS:" >> ${REGRESSIONTEST_LOG}
-    for item in ${FAILED_ITEMS[@]}; do
+    rm ${TEST_CHANGES_LOG} && touch ${TEST_CHANGES_LOG}
+    for item in "${FAILED_ITEMS[@]}"; do
       echo $item >> ${REGRESSIONTEST_LOG}
     done
-
+    for item in "${FAILED_TESTS[@]}"; do
+      echo $item >> ${TEST_CHANGES_LOG}
+    done
+    [[ $PRETEST == false ]] && echo; echo "PLEASE REVIEW THAT FAILED TESTS MAKE SENSE BASED ON CODE CHANGES" >> ${REGRESSIONTEST_LOG}
+    [[ $PRETEST == false ]] && echo "PLEASE SUBMIT test_changes.out and ${REGRESSIONTEST_LOG} TO REPOSITORY" >> ${REGRESSIONTEST_LOG}
+    [[ $PRETEST == false ]] && echo "PLEASE USE `-b test_changes.out` IN rt.sh TO GENERATE NEW BASELINES FOR TESTING" >> ${REGRESSIONTEST_LOG}
   else
     echo ; echo REGRESSION TEST WAS SUCCESSFUL >> ${REGRESSIONTEST_LOG}
 
