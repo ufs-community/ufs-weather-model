@@ -82,6 +82,8 @@ verify_testing() {
   FAILED_ITEMS=()
   FAILED_TESTS=()
   TEST_CHANGES_LOG="test_changes.out"
+  [[ -f "${TEST_CHANGES_LOG}" ]] && rm ${TEST_CHANGES_LOG}
+  touch ${TEST_CHANGES_LOG}
   while read -r line || [ "$line" ]; do
 
     line="${line#"${line%%[![:space:]]*}"}"
@@ -163,16 +165,17 @@ verify_testing() {
     echo; echo "VERIFICATION FAILED" >> ${REGRESSIONTEST_LOG}
     echo "REGRESSION TEST FAILED" >> ${REGRESSIONTEST_LOG}
     echo; echo "FAILED ITEMS:" >> ${REGRESSIONTEST_LOG}
-    rm ${TEST_CHANGES_LOG} && touch ${TEST_CHANGES_LOG}
     for item in "${FAILED_ITEMS[@]}"; do
       echo $item >> ${REGRESSIONTEST_LOG}
     done
     for item in "${FAILED_TESTS[@]}"; do
       echo $item >> ${TEST_CHANGES_LOG}
     done
-    [[ $PRETEST == false ]] && echo; echo "PLEASE REVIEW THAT FAILED TESTS MAKE SENSE BASED ON CODE CHANGES" >> ${REGRESSIONTEST_LOG}
-    [[ $PRETEST == false ]] && echo "PLEASE SUBMIT test_changes.out and ${REGRESSIONTEST_LOG} TO REPOSITORY" >> ${REGRESSIONTEST_LOG}
-    [[ $PRETEST == false ]] && echo "PLEASE USE `-b test_changes.out` IN rt.sh TO GENERATE NEW BASELINES FOR TESTING" >> ${REGRESSIONTEST_LOG}
+    if [[ $PRETEST == false ]]; then
+      echo; echo "PLEASE REVIEW THAT FAILED TESTS MAKE SENSE BASED ON CODE CHANGES" >> ${REGRESSIONTEST_LOG}
+      echo "PLEASE SUBMIT test_changes.out and ${REGRESSIONTEST_LOG} TO REPOSITORY" >> ${REGRESSIONTEST_LOG}
+      echo "PLEASE USE `-b test_changes.out` IN rt.sh TO GENERATE NEW BASELINES FOR TESTING" >> ${REGRESSIONTEST_LOG}
+    fi
   else
     echo ; echo REGRESSION TEST WAS SUCCESSFUL >> ${REGRESSIONTEST_LOG}
 
