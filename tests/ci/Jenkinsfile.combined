@@ -28,8 +28,8 @@ def generateStage(nodeLabel) {
                     if (baselineLabels.contains(nodeLabel)) {
                        sh '''
                        git submodule update --init --recursive
-                       pwd
                        cd tests
+		       pwd
 		       source bl_date.conf
                        export machine=${NODE_NAME}
                        export PATH=$PATH:~/bin
