@@ -157,7 +157,11 @@ verify_testing() {
             FAILED_TESTS+=("${TEST_ID}")
             echo "Test ${TEST_ID} FAILED" >> ${REGRESSIONTEST_LOG}
             echo "Test log at: ${LOG_DIR}/run_${TEST_ID}.log" >> ${REGRESSIONTEST_LOG}
-            cat ${LOG_DIR}/rt_${TEST_ID}.log >> ${REGRESSIONTEST_LOG}
+            if [[ -f "${LOG_DIR}/rt_${TEST_ID}.log" ]]; then
+              cat ${LOG_DIR}/rt_${TEST_ID}.log >> ${REGRESSIONTEST_LOG}
+            else
+              echo "ERROR: Test Comparison ${LOG_DIR}/rt_${TEST_ID}.log was not generated" >> ${REGRESSIONTEST_LOG}
+            fi
         else
           if [[ `grep -q "quota" ${LOG_DIR}/run_${TEST_ID}.log` ]]; then
             VERIFICATION_ERROR=true
@@ -165,9 +169,17 @@ verify_testing() {
             FAILED_TESTS+=("${TEST_ID}")
             echo "Test ${TEST_ID} encountered QUOTA ISSUES" >> ${REGRESSIONTEST_LOG}
             echo "Test log at: ${LOG_DIR}/run_${TEST_ID}.log" >> ${REGRESSIONTEST_LOG}
-            cat ${LOG_DIR}/rt_${TEST_ID}.log >> ${REGRESSIONTEST_LOG}
+            if [[ -f "${LOG_DIR}/rt_${TEST_ID}.log" ]]; then
+              cat ${LOG_DIR}/rt_${TEST_ID}.log >> ${REGRESSIONTEST_LOG}
+            else
+              echo "ERROR: Test Comparison ${LOG_DIR}/rt_${TEST_ID}.log was not generated" >> ${REGRESSIONTEST_LOG}
+            fi
           else
-            [[ $PRETEST == false ]] && cat ${LOG_DIR}/rt_${TEST_ID}.log >> ${REGRESSIONTEST_LOG}
+            if [[ -f "${LOG_DIR}/rt_${TEST_ID}.log" ]]; then
+              [[ $PRETEST == false ]] && cat ${LOG_DIR}/rt_${TEST_ID}.log >> ${REGRESSIONTEST_LOG}
+            else
+              echo "ERROR: Test Comparison ${LOG_DIR}/rt_${TEST_ID}.log was not generated" >> ${REGRESSIONTEST_LOG}
+            fi
           fi
         fi
       fi
