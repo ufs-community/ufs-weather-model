@@ -3,11 +3,11 @@
 #############################################
 
 # ESMF #
-logKindFlag:            @[esmf_logkind]
-globalResourceControl:  false
+logKindFlag:            ESMF_LOGKIND_MULTI
+globalResourceControl:  true
 
 # EARTH #
-EARTH_component_list: MED ATM CHM OCN ICE
+EARTH_component_list: MED ATM CHM OCN ICE WAV
 EARTH_attributes::
   Verbosity = 0
 ::
@@ -15,14 +15,15 @@ EARTH_attributes::
 # MED #
 MED_model:                      @[med_model]
 MED_petlist_bounds:             @[med_petlist_bounds]
-::
+MED_omp_num_threads:            @[med_omp_num_threads]
 
 # ATM #
 ATM_model:                      @[atm_model]
 ATM_petlist_bounds:             @[atm_petlist_bounds]
+ATM_omp_num_threads:            @[atm_omp_num_threads]
 ATM_attributes::
   Verbosity = 0
-  DumpFields = @[DumpFields]
+  DumpFields = false
   ProfileMemory = false
   OverwriteSlice = true
 ::
@@ -30,6 +31,7 @@ ATM_attributes::
 # CHM #
 CHM_model:                      @[chm_model]
 CHM_petlist_bounds:             @[chm_petlist_bounds]
+CHM_omp_num_threads:            @[chm_omp_num_threads]
 CHM_attributes::
   Verbosity = 0
 ::
@@ -37,9 +39,10 @@ CHM_attributes::
 # OCN #
 OCN_model:                      @[ocn_model]
 OCN_petlist_bounds:             @[ocn_petlist_bounds]
+OCN_omp_num_threads:            @[ocn_omp_num_threads]
 OCN_attributes::
   Verbosity = 0
-  DumpFields = @[DumpFields]
+  DumpFields = false
   ProfileMemory = false
   OverwriteSlice = true
   mesh_ocn = @[MESH_OCN]
@@ -50,9 +53,10 @@ OCN_attributes::
 # ICE #
 ICE_model:                      @[ice_model]
 ICE_petlist_bounds:             @[ice_petlist_bounds]
+ICE_omp_num_threads:            @[ice_omp_num_threads]
 ICE_attributes::
   Verbosity = 0
-  DumpFields = @[DumpFields]
+  DumpFields = false
   ProfileMemory = false
   OverwriteSlice = true
   mesh_ice = @[MESH_ICE]
@@ -60,6 +64,17 @@ ICE_attributes::
   stop_n = @[RESTART_N]
   stop_option = nhours
   stop_ymd = -999
+::
+
+# WAV #
+WAV_model:                      @[wav_model]
+WAV_petlist_bounds:             @[wav_petlist_bounds]
+WAV_omp_num_threads:            @[wav_omp_num_threads]
+WAV_attributes::
+  Verbosity = 0
+  OverwriteSlice = false
+  mesh_wav = @[MESH_WAV]
+  user_sets_restname = @[WW3_user_sets_restname]
 ::
 
 # CMEPS warm run sequence
@@ -71,18 +86,24 @@ runSeq::
    @@[coupling_interval_fast_sec]
      MED med_phases_prep_atm
      MED med_phases_prep_ice
+     MED med_phases_prep_wav_accum
+     MED med_phases_prep_wav_avg
      MED -> ATM :remapMethod=redist
      MED -> ICE :remapMethod=redist
+     MED -> WAV :remapMethod=redist
      ATM phase1
      ATM -> CHM
      CHM
      CHM -> ATM
      ATM phase2
      ICE
+     WAV
      ATM -> MED :remapMethod=redist
      MED med_phases_post_atm
      ICE -> MED :remapMethod=redist
      MED med_phases_post_ice
+     WAV -> MED :remapMethod=redist
+     MED med_phases_post_wav
      MED med_phases_ocnalb_run
      MED med_phases_prep_ocn_accum
    @
@@ -101,6 +122,7 @@ MED_attributes::
       ATM_model = @[atm_model]
       ICE_model = @[ice_model]
       OCN_model = @[ocn_model]
+      WAV_model = @[wav_model]
       coupling_mode = @[CPLMODE]
       history_tile_atm = @[ATMTILESIZE]
       pio_rearranger = @[pio_rearranger]
