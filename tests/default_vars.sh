@@ -216,19 +216,6 @@ elif [[ $MACHINE_ID = s4 ]]; then
   ICE_tasks_cpl_bmrk=48
   WAV_tasks_cpl_bmrk=80
 
-elif [[ $MACHINE_ID = gaea ]]; then
-
-  TPN=24
-
-  INPES_dflt=3 ; JNPES_dflt=8
-  INPES_thrd=3 ; JNPES_thrd=4
-  INPES_c384=6 ; JNPES_c384=8  ; THRD_c384=1
-  INPES_c768=8 ; JNPES_c768=16 ; THRD_c768=2
-
-  THRD_cpl_atmw_gdas=3
-  INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
-  WAV_tasks_atmw_gdas=264
-
 elif [[ $MACHINE_ID = gaea-c5 ]]; then
 
   TPN=128
@@ -249,7 +236,7 @@ elif [[ $MACHINE_ID = derecho ]]; then
   INPES_thrd=3 ; JNPES_thrd=4
   INPES_c384=8 ; JNPES_c384=6  ; THRD_c384=2
   INPES_c768=8 ; JNPES_c768=16 ; THRD_c768=2
-  
+
   THRD_cpl_atmw_gdas=2
   INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
   WAV_tasks_atmw_gdas=248
@@ -319,6 +306,10 @@ WLCLK_dflt=30
 
 export WLCLK=$WLCLK_dflt
 export CMP_DATAONLY=false
+
+# Defaults for ufs.configure
+export esmf_logkind="ESMF_LOGKIND_MULTI"
+export DumpFields="false"
 
 export_fv3 ()
 {
@@ -533,9 +524,6 @@ export NPZ=64
 export NPZP=65
 export NSTF_NAME=2,1,1,0,5
 export OUTPUT_FH="12 -1"
-export NFHOUT=12
-export NFHMAX_HF=12
-export NFHOUT_HF=6
 export FHZERO=6
 export FNALBC="'global_snowfree_albedo.bosu.t126.384.190.rg.grb'"
 export FNVETC="'global_vegtype.igbp.t126.384.190.rg.grb'"
@@ -737,11 +725,12 @@ export WW3_CUR='C'
 export WW3_ICE='C'
 export WW3_IC1='F'
 export WW3_IC5='F'
+export WW3_user_sets_restname="true"
 }
 
 # Defaults for the coupled 5-component
 export_cmeps() {
-export UFS_CONFIGURE=ufs.configure.s2swa.IN
+export UFS_CONFIGURE=ufs.configure.s2swa_fast_esmf.IN
 export med_model=cmeps
 export atm_model=fv3
 export chm_model=gocart
@@ -841,7 +830,6 @@ export FIELD_TABLE=field_table_thompson_noaero_tke_GOCART
 export DIAG_TABLE=diag_table_p8_template
 export DIAG_TABLE_ADDITIONAL=''
 
-export NSOUT=-1
 export FHZERO=6
 export DT_INNER=${DT_ATMOS}
 
@@ -992,7 +980,6 @@ export SHOUR=00
 export FHMAX=24
 export DT_ATMOS=900
 export FHROT=0
-export NFHOUT=6
 
 # required but unused
 export WARM_START=.false.
@@ -1117,9 +1104,6 @@ export OUTPUT_GRID="'regional_latlon'"
 export OUTPUT_FILE="'netcdf'"
 export IDEFLATE=0
 export QUANTIZE_NSD=0
-export NFHOUT=3
-export NFHMAX_HF=-1
-export NFHOUT_HF=3
 export CEN_LON=-62.0
 export CEN_LAT=25.0
 export LON1=-114.5
@@ -1310,11 +1294,7 @@ export NY_6=''
 export DX_6=''
 export DY_6=''
 
-export NFHOUT=3
-export NFHMAX_HF=-1
-export NFHOUT_HF=3
-export NSOUT=-1
-export OUTPUT_FH=-1
+export OUTPUT_FH='3 -1'
 }
 export_hrrr() {
 export_fv3
