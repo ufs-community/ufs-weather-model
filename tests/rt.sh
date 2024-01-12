@@ -77,11 +77,26 @@ rt_single() {
   fi
 }
 
-verify_testing() {
-  VERIFICATION_ERROR=false
-  FAILED_ITEMS=()
+generate_log() {
+  COMPILE_COUNTER=0
+  FAILED_COMPILES=()
+  TEST_COUNTER=0
   FAILED_TESTS=()
+  FAILED_TEST_ID=()
   TEST_CHANGES_LOG="test_changes.out"
+  TEST_END_TIME="`date '+%Y%m%d %T'`"
+  cat << EOF > ${REGRESSIONTEST_LOG}
+  ${MACHINE_ID^^} REGRESSION TESTING LOG
+
+  Start Date/Time: ${TEST_START_TIME}
+  UFSWM Hash: `git rev-parse HEAD`
+  Submodule Hashes:
+EOF
+  cd ..
+  git submodule status >> ${REGRESSIONTEST_LOG}
+  echo; echo >> ${REGRESSIONTEST_LOG}
+  cd tests
+
   [[ -f "${TEST_CHANGES_LOG}" ]] && rm ${TEST_CHANGES_LOG}
   touch ${TEST_CHANGES_LOG}
   while read -r line || [ "$line" ]; do
@@ -108,27 +123,27 @@ verify_testing() {
       fi
 
       if [[ $valid_compile == true ]]; then
-        echo "Verifying: Compile ${COMPILE_ID}" >> ${REGRESSIONTEST_LOG}
+        COMPILE_COUNTER+=1
+        FAIL_LOG=""
+        COMPILE_RESULT=""
         if [[ ! -f "${LOG_DIR}/compile_${COMPILE_ID}.log" ]]; then
-          VERIFICATION_ERROR=true
-          FAILED_ITEMS+=("compile_${COMPILE_ID} is MISSING")
-          echo "ERROR: MISSING COMPILE ${COMPILE_ID}" >> ${REGRESSIONTEST_LOG}
+          COMPILE_RESULT="MISSING"
         elif [[ -f fail_compile_${COMPILE_ID} ]]; then
-            VERIFICATION_ERROR=true
-            FAILED_ITEMS+=("compile_${COMPILE_ID} has FAILED")
-            echo "Compile ${COMPILE_ID} FAILED" >> ${REGRESSIONTEST_LOG}
-            echo "Compile log at: ${LOG_DIR}/compile_${COMPILE_ID}.log" >> ${REGRESSIONTEST_LOG}
+          COMPILE_RESULT="FAIL TO RUN"
+          FAIL_LOG="${LOG_DIR}/compile_${COMPILE_ID}.log"
         else 
           if [[ `grep -q "quota" ${LOG_DIR}/compile_${COMPILE_ID}.log` ]]; then
-            VERIFICATION_ERROR=true
-            FAILED_ITEMS+=("compile_${COMPILE_ID} encountered QUOTA ISSUES")
-            echo "Compile ${COMPILE_ID} encountered QUOTA ISSUES" >> ${REGRESSIONTEST_LOG}
-            echo "Compile log at: ${LOG_DIR}/compile_${COMPILE_ID}.log" >> ${REGRESSIONTEST_LOG}
+            COMPILE_RESULT="FAIL FROM DISK QUOTA"
+            FAIL_LOG="${LOG_DIR}/compile_${COMPILE_ID}.log"
           else
-            [[ $PRETEST == false ]] && cat ${LOG_DIR}/compile_${COMPILE_ID}_time.log >> ${REGRESSIONTEST_LOG}
+            COMPILE_RESULT="PASS"
           fi
         fi
       fi
+      echo; echo "COMPILE '${COMPILE_ID}': ${COMPILE_RESULT}" >> ${REGRESSIONTEST_LOG}
+      [[ -z $FAIL_LOG ]] && FAILED_COMPILES+=("COMPILE '${COMPILE_ID}': ${COMPILE_RESULT}")
+      [[ -z $FAIL_LOG ]] && echo "-- LOG: ${FAIL_LOG}" >> ${REGRESSIONTEST_LOG}
+
 
     elif [[ $line =~ RUN ]]; then
       
@@ -145,75 +160,94 @@ verify_testing() {
       fi
 
       if [[ $valid_test == true ]]; then
-        echo "Verifying: Test ${TEST_ID}" >> ${REGRESSIONTEST_LOG}
+        TEST_COUNTER+=1
+        FAIL_LOG=""
+        TEST_RESULT=""
         if [[ ! -f "${LOG_DIR}/run_${TEST_ID}.log" ]]; then
-          VERIFICATION_ERROR=true
-          FAILED_ITEMS+=("run_${TEST_ID} is MISSING")
-          FAILED_TESTS+=("${TEST_ID}")
-          echo "ERROR: MISSING TEST ${TEST_NAME}" >> ${REGRESSIONTEST_LOG}
+          TEST_RESULT="MISSING"
         elif [[ -f fail_test_${TEST_ID} ]]; then
-            VERIFICATION_ERROR=true
-            FAILED_ITEMS+=("run_${TEST_ID} has FAILED")
-            FAILED_TESTS+=("${TEST_ID}")
-            echo "Test ${TEST_ID} FAILED" >> ${REGRESSIONTEST_LOG}
-            echo "Test log at: ${LOG_DIR}/run_${TEST_ID}.log" >> ${REGRESSIONTEST_LOG}
-            if [[ -f "${LOG_DIR}/rt_${TEST_ID}.log" ]]; then
-              cat ${LOG_DIR}/rt_${TEST_ID}.log >> ${REGRESSIONTEST_LOG}
-            else
-              echo "ERROR: Test Comparison ${LOG_DIR}/rt_${TEST_ID}.log was not generated" >> ${REGRESSIONTEST_LOG}
-            fi
+          if [[ -f "${LOG_DIR}/rt_${TEST_ID}.log" ]]; then
+            TEST_RESULT="FAIL TO COMPARE"
+            FAIL_LOG="${LOG_DIR}/rt_${TEST_ID}.log"
+          else
+            TEST_RESULT="FAIL TO RUN"
+            FAIL_LOG="${LOG_DIR}/run_${TEST_ID}.log"
+          fi
         else
           if [[ `grep -q "quota" ${LOG_DIR}/run_${TEST_ID}.log` ]]; then
-            VERIFICATION_ERROR=true
-            FAILED_ITEMS+=("run_${TEST_ID} encountered QUOTA ISSUES")
-            FAILED_TESTS+=("${TEST_ID}")
-            echo "Test ${TEST_ID} encountered QUOTA ISSUES" >> ${REGRESSIONTEST_LOG}
-            echo "Test log at: ${LOG_DIR}/run_${TEST_ID}.log" >> ${REGRESSIONTEST_LOG}
-            if [[ -f "${LOG_DIR}/rt_${TEST_ID}.log" ]]; then
-              cat ${LOG_DIR}/rt_${TEST_ID}.log >> ${REGRESSIONTEST_LOG}
-            else
-              echo "ERROR: Test Comparison ${LOG_DIR}/rt_${TEST_ID}.log was not generated" >> ${REGRESSIONTEST_LOG}
-            fi
+            TEST_RESULT="FAIL FROM DISK QUOTA"
+            FAIL_LOG="${LOG_DIR}/run_${TEST_ID}.log"
           else
-            if [[ -f "${LOG_DIR}/rt_${TEST_ID}.log" ]]; then
-              [[ $PRETEST == false ]] && cat ${LOG_DIR}/rt_${TEST_ID}.log >> ${REGRESSIONTEST_LOG}
-            else
-              echo "ERROR: Test Comparison ${LOG_DIR}/rt_${TEST_ID}.log was not generated" >> ${REGRESSIONTEST_LOG}
-            fi
+            TEST_RESULT="PASS"
           fi
         fi
       fi
+
+      echo; echo "TEST '${TEST_ID}': ${TEST_RESULT}" >> ${REGRESSIONTEST_LOG}
+      [[ -z $FAIL_LOG ]] && FAILED_TESTS+=("TEST '${TEST_ID}': ${TEST_RESULT}")
+      [[ -z $FAIL_LOG ]] && FAILED_TEST_ID+=("{TEST_ID}")
+      [[ -z $FAIL_LOG ]] && echo "-- LOG: ${FAIL_LOG}" >> ${REGRESSIONTEST_LOG}
+
     fi
   done < $TESTS_FILE
-  echo; echo >> ${REGRESSIONTEST_LOG}
-  if [[ $VERIFICATION_ERROR == true ]]; then
-    
-    echo "VERIFICATION FAILED" >> ${REGRESSIONTEST_LOG}
-    echo "REGRESSION TEST FAILED" >> ${REGRESSIONTEST_LOG}
-    echo; echo "FAILED ITEMS:" >> ${REGRESSIONTEST_LOG}
-    for item in "${FAILED_ITEMS[@]}"; do
-      echo $item >> ${REGRESSIONTEST_LOG}
-    done
-    if [[ $PRETEST ]]; then
-      for item in "${FAILED_TESTS[@]}"; do
-        echo $item >> ${TEST_CHANGES_LOG}
-      done
-    fi
-    if [[ $PRETEST == false ]]; then
-      cat << EOF >> ${REGRESSIONTEST_LOG}
-      PLEASE REVIEW THAT FAILED TESTS MAKE SENSE BASED ON CODE CHANGES
-      PLEASE SUBMIT test_changes.out and ${REGRESSIONTEST_LOG} TO REPOSITORY
-      PLEASE USE '-b test_changes.out' IN rt.sh TO GENERATE NEW BASELINES FOR TESTING
+  
+  elapsed_time=$( printf '%02dh:%02dm:%02ds\n' $((SECONDS%86400/3600)) $((SECONDS%3600/60)) $((SECONDS%60)) )
+  
+  cat << EOF >> ${REGRESSIONTEST_LOG}
+  SYNOPSIS:
+  Ending Date/Time: ${TEST_END_TIME} (Total: ${elapsed_time})
+  Compiles Completed: $((${COMPILE_COUNTER}-${#FAILED_COMPILES[@]}))/${COMPILE_COUNTER}
+  Tests Completed: $((${TEST_COUNTER}-${#FAILED_TESTS[@]}))/${TEST_COUNTER}
 EOF
-    fi
-  else
-    echo ; echo REGRESSION TEST WAS SUCCESSFUL >> ${REGRESSIONTEST_LOG}
+  # PRINT FAILED COMPILES
+  if [[ "${#FAILED_COMPILES[@]}" -ne "0" ]]; then
+  echo "Failed Compiles:" >> ${REGRESSIONTEST_LOG}
+    for item in "${FAILED_COMPILES[@]}"; do
+      echo "-- ${item}" >> ${REGRESSIONTEST_LOG}
+    done
+  fi
+  
+  # PRINT FAILED TESTS
+  if [[ "${#FAILED_TESTS[@]}" -ne "0" ]]; then
+  echo "Failed Tests:" >> ${REGRESSIONTEST_LOG}
+    for item in "${FAILED_TESTS[@]}"; do
+      echo "-- ${item}" >> ${REGRESSIONTEST_LOG}
+    done
+  fi
+  
+  # WRITE FAILED_TEST_ID LIST TO TEST_CHANGES_LOG
+  if [[ "${#FAILED_TESTS[@]}" -ne "0" ]]; then
+    for item in "${FAILED_TEST_ID[@]}"; do
+      echo $item >> ${TEST_CHANGES_LOG}
+    done
+  fi
+
+  if [[ "${#FAILED_COMPILES[@]}" -eq "0" && "${#FAILED_TESTS[@]}" -eq "0" ]]; then
+    cat << EOF >> ${REGRESSIONTEST_LOG}
+    
+    NOTES:
+    A file '${TEST_CHANGES_LOG}' was generated but is empty.
+    If you are using this log as a pull request verification, please commit that file.
+
+    Result: SUCCESS
+EOF
 
     rm -f fv3_*.x fv3_*.exe modules.fv3_* modulefiles/modules.fv3_* keep_tests.tmp
     [[ ${KEEP_RUNDIR} == false ]] && rm -rf ${RUNDIR_ROOT} && rm ${PATHRT}/run_dir
     [[ ${ROCOTO} == true ]] && rm -f ${ROCOTO_XML} ${ROCOTO_DB} ${ROCOTO_STATE} *_lock.db
     [[ ${TEST_35D} == true ]] && rm -f tests/cpld_bmark*_20*
     [[ ${SINGLE_NAME} != '' ]] && rm -f $RT_SINGLE_CONF
+  else
+    cat << EOF >> ${REGRESSIONTEST_LOG}
+
+    NOTES:
+    A file '${TEST_CHANGES_LOG}' was generated with list of all failed tests.
+    You can use './rt.sh -b test_changes.out' to generate baselines for the failed tests.
+    If you are using this log as a pull request verification, please commit that file.
+
+    Result: FAILURE
+EOF
+
   fi
 }
 
@@ -317,9 +351,8 @@ RTPWD_NEW_BASELINE=false
 TESTS_FILE='rt.conf'
 NEW_BASELINES_FILE=''
 ACCNR=${ACCNR:-""}
-PRETEST=false
 
-while getopts ":a:b:cl:mn:dwkrpeh" opt; do
+while getopts ":a:b:cl:mn:dwkreh" opt; do
   case $opt in
     a)
       ACCNR=$OPTARG
@@ -357,14 +390,6 @@ while getopts ":a:b:cl:mn:dwkrpeh" opt; do
       else
         echo "Compiler must be either 'intel' or 'gnu'."
         exit 1
-      fi
-      ;;
-    p)
-      
-      if [[ $MACHINE_ID = hera || $MACHINE_ID = derecho || $MACHINE_ID = hercules ]]; then
-        PRETEST=true
-      else
-        die "The pre-test is only supported on machines where GNU tests are supported"
       fi
       ;;
     d)
@@ -744,21 +769,11 @@ fi
 
 if [[ $skip_check_results == true ]]; then
   REGRESSIONTEST_LOG=${PATHRT}/logs/RegressionTests_weekly_$MACHINE_ID.log
-elif [[ $PRETEST == true ]]; then
-  REGRESSIONTEST_LOG=${PATHRT}/logs/RegressionTests_pretest.log
 else
   REGRESSIONTEST_LOG=${PATHRT}/logs/RegressionTests_$MACHINE_ID.log
 fi
 
-date > ${REGRESSIONTEST_LOG}
-echo "Start Regression test" >> ${REGRESSIONTEST_LOG}
-echo                         >> ${REGRESSIONTEST_LOG}
-echo "Testing UFSWM Hash:" `git rev-parse HEAD` >> ${REGRESSIONTEST_LOG}
-echo "Testing With Submodule Hashes:" >> ${REGRESSIONTEST_LOG}
-cd ..
-git submodule status >> ${REGRESSIONTEST_LOG}
-echo; echo
-cd tests
+export TEST_START_TIME="`date '+%Y%m%d %T'`"
 
 source default_vars.sh
 
@@ -1056,10 +1071,5 @@ fi
 ##
 ## Lets verify all tests were run and that they passed
 ##
-verify_testing
 
-date >> ${REGRESSIONTEST_LOG}
-
-elapsed_time=$( printf '%02dh:%02dm:%02ds\n' $((SECONDS%86400/3600)) $((SECONDS%3600/60)) $((SECONDS%60)) )
-echo "Elapsed time: ${elapsed_time}. Have a nice day!" >> ${REGRESSIONTEST_LOG}
-echo "Elapsed time: ${elapsed_time}. Have a nice day!"
+generate_log
