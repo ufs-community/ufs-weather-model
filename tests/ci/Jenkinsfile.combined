@@ -71,7 +71,7 @@ def generateStage(nodeLabel) {
                             cd ${DISKNM}/NEMSfv3gfs/
                             ./adjust_permissions.sh orion develop-${BL_DATE}
                             chgrp noaa-hpc develop-${BL_DATE}
-                          elif [[ $machine =~ "Gaea-c5" ]]
+                          elif [[ $machine =~ "GaeaC5" ]]
                           then 
                             echo "Creating baselines on $machine"
                             ./rt.sh -a ${ACCNR} -c -e -l rt.conf
@@ -145,7 +145,7 @@ def generateStage(nodeLabel) {
                             export dprefix=/work2/noaa/$ACCNR/$USER
                             sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
                             ./rt.sh -a ${ACCNR} -e -l rt.conf
-                          elif [[ $machine =~ "Gaea-c5" ]]
+                          elif [[ $machine =~ "GaeaC5" ]]
                           then 
                            echo "Running regression tests on $machine"
                             ./rt.sh -a ${ACCNR} -e -l rt.conf
