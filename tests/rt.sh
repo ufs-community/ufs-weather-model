@@ -188,7 +188,7 @@ verify_testing() {
   echo; echo >> ${REGRESSIONTEST_LOG}
   if [[ $VERIFICATION_ERROR == true ]]; then
     
-    "VERIFICATION FAILED" >> ${REGRESSIONTEST_LOG}
+    echo "VERIFICATION FAILED" >> ${REGRESSIONTEST_LOG}
     echo "REGRESSION TEST FAILED" >> ${REGRESSIONTEST_LOG}
     echo; echo "FAILED ITEMS:" >> ${REGRESSIONTEST_LOG}
     for item in "${FAILED_ITEMS[@]}"; do
