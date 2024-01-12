@@ -86,11 +86,11 @@ generate_log() {
   TEST_CHANGES_LOG="test_changes.out"
   TEST_END_TIME="`date '+%Y%m%d %T'`"
   cat << EOF > ${REGRESSIONTEST_LOG}
-  ${MACHINE_ID^^} REGRESSION TESTING LOG
+====${MACHINE_ID^^} REGRESSION TESTING LOG====
 
-  Start Date/Time: ${TEST_START_TIME}
-  UFSWM Hash: `git rev-parse HEAD`
-  Submodule Hashes:
+Start Date/Time: ${TEST_START_TIME}
+UFSWM Hash: `git rev-parse HEAD`
+Submodule Hashes:
 EOF
   cd ..
   git submodule status >> ${REGRESSIONTEST_LOG}
@@ -141,8 +141,8 @@ EOF
         fi
       fi
       echo; echo "COMPILE '${COMPILE_ID}': ${COMPILE_RESULT}" >> ${REGRESSIONTEST_LOG}
-      [[ -z $FAIL_LOG ]] && FAILED_COMPILES+=("COMPILE '${COMPILE_ID}': ${COMPILE_RESULT}")
-      [[ -z $FAIL_LOG ]] && echo "-- LOG: ${FAIL_LOG}" >> ${REGRESSIONTEST_LOG}
+      [[ ! -z $FAIL_LOG ]] && FAILED_COMPILES+=("COMPILE '${COMPILE_ID}': ${COMPILE_RESULT}")
+      [[ ! -z $FAIL_LOG ]] && echo "-- LOG: ${FAIL_LOG}" >> ${REGRESSIONTEST_LOG}
 
 
     elif [[ $line =~ RUN ]]; then
@@ -184,9 +184,9 @@ EOF
       fi
 
       echo; echo "TEST '${TEST_ID}': ${TEST_RESULT}" >> ${REGRESSIONTEST_LOG}
-      [[ -z $FAIL_LOG ]] && FAILED_TESTS+=("TEST '${TEST_ID}': ${TEST_RESULT}")
-      [[ -z $FAIL_LOG ]] && FAILED_TEST_ID+=("{TEST_ID}")
-      [[ -z $FAIL_LOG ]] && echo "-- LOG: ${FAIL_LOG}" >> ${REGRESSIONTEST_LOG}
+      [[ ! -z $FAIL_LOG ]] && FAILED_TESTS+=("TEST '${TEST_ID}': ${TEST_RESULT}")
+      [[ ! -z $FAIL_LOG ]] && FAILED_TEST_ID+=("{TEST_ID}")
+      [[ ! -z $FAIL_LOG ]] && echo "-- LOG: ${FAIL_LOG}" >> ${REGRESSIONTEST_LOG}
 
     fi
   done < $TESTS_FILE
@@ -194,10 +194,13 @@ EOF
   elapsed_time=$( printf '%02dh:%02dm:%02ds\n' $((SECONDS%86400/3600)) $((SECONDS%3600/60)) $((SECONDS%60)) )
   
   cat << EOF >> ${REGRESSIONTEST_LOG}
-  SYNOPSIS:
-  Ending Date/Time: ${TEST_END_TIME} (Total: ${elapsed_time})
-  Compiles Completed: $((${COMPILE_COUNTER}-${#FAILED_COMPILES[@]}))/${COMPILE_COUNTER}
-  Tests Completed: $((${TEST_COUNTER}-${#FAILED_TESTS[@]}))/${TEST_COUNTER}
+
+SYNOPSIS:
+Starting Date/Time: ${TEST_START_TIME}
+Ending Date/Time: ${TEST_END_TIME}
+Total Time: ${elapsed_time})
+Compiles Completed: $((${COMPILE_COUNTER}-${#FAILED_COMPILES[@]}))/${COMPILE_COUNTER}
+Tests Completed: $((${TEST_COUNTER}-${#FAILED_TESTS[@]}))/${TEST_COUNTER}
 EOF
   # PRINT FAILED COMPILES
   if [[ "${#FAILED_COMPILES[@]}" -ne "0" ]]; then
@@ -224,12 +227,12 @@ EOF
 
   if [[ "${#FAILED_COMPILES[@]}" -eq "0" && "${#FAILED_TESTS[@]}" -eq "0" ]]; then
     cat << EOF >> ${REGRESSIONTEST_LOG}
-    
-    NOTES:
-    A file '${TEST_CHANGES_LOG}' was generated but is empty.
-    If you are using this log as a pull request verification, please commit that file.
 
-    Result: SUCCESS
+NOTES:
+A file '${TEST_CHANGES_LOG}' was generated but is empty.
+If you are using this log as a pull request verification, please commit that file.
+
+Result: SUCCESS
 EOF
 
     rm -f fv3_*.x fv3_*.exe modules.fv3_* modulefiles/modules.fv3_* keep_tests.tmp
@@ -240,12 +243,14 @@ EOF
   else
     cat << EOF >> ${REGRESSIONTEST_LOG}
 
-    NOTES:
-    A file '${TEST_CHANGES_LOG}' was generated with list of all failed tests.
-    You can use './rt.sh -b test_changes.out' to generate baselines for the failed tests.
-    If you are using this log as a pull request verification, please commit that file.
+NOTES:
+A file '${TEST_CHANGES_LOG}' was generated with list of all failed tests.
+You can use './rt.sh -b test_changes.out' to generate baselines for the failed tests.
+If you are using this log as a pull request verification, please commit that file.
 
-    Result: FAILURE
+Result: FAILURE
+
+====END OF ${MACHINE_ID} REGRESSION TESTING LOG====
 EOF
 
   fi
