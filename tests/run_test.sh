@@ -65,7 +65,7 @@ export CNTL_DIR=${CNTL_DIR}${BL_SUFFIX}
 
 export JBNME=$(basename $RUNDIR_ROOT)_${TEST_ID}
 
-echo -n "${TEST_ID}, $( date +%s )," > ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+echo -n "${TEST_ID}, $( date +%s )," > ${LOG_DIR}/run_${TEST_ID}_timestamp.txt
 
 export RT_LOG=${LOG_DIR}/rt_${TEST_ID}${RT_SUFFIX}.log
 echo "Test ${TEST_ID} ${TEST_DESCR}"
@@ -365,7 +365,7 @@ fi
 if [[ $skip_check_results = false ]]; then
   check_results || true
   # The above call will exit with an error on its own and does
-  # not need to cause run_trest to TRAP the failure and error out itself.
+  # not need to cause run_test to TRAP the failure and error out itself.
 else
   echo                                               >> ${RT_LOG}
   grep "The total amount of wall time" ${RUNDIR}/out >> ${RT_LOG}
@@ -376,7 +376,7 @@ else
 fi
 
 if [[ $SCHEDULER != 'none' ]]; then
-  cat ${RUNDIR}/job_timestamp.txt >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+  cat ${RUNDIR}/job_timestamp.txt >> ${LOG_DIR}/run_${TEST_ID}_timestamp.txt
 fi
 
 if [[ $ROCOTO = true ]]; then
@@ -387,7 +387,7 @@ fi
 # End test
 ################################################################################
 
-echo " $( date +%s ), ${NODES}" >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+echo " $( date +%s ), ${NODES}" >> ${LOG_DIR}/run_${TEST_ID}_timestamp.txt
 
 ################################################################################
 # Remove RUN_DIRs if they are no longer needed by other tests

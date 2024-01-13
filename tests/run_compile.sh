@@ -44,7 +44,7 @@ source default_vars.sh
 export JBNME="compile_${COMPILE_ID}"
 export RUNDIR=${RUNDIR_ROOT}/compile_${COMPILE_ID}
 
-echo -n "${JBNME}, $( date +%s )," > ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+echo -n "${JBNME}, $( date +%s )," > ${LOG_DIR}/compile_${COMPILE_ID}_timestamp.txt
 
 export RT_LOG=${LOG_DIR}/compile_${COMPILE_ID}.log
 
@@ -95,7 +95,7 @@ fi
 ls -l ${PATHTR}/tests/fv3_${COMPILE_ID}.exe
 
 cp ${RUNDIR}/compile_*_time.log ${LOG_DIR}
-cat ${RUNDIR}/job_timestamp.txt >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+cat ${RUNDIR}/job_timestamp.txt >> ${LOG_DIR}/compile_${COMPILE_ID}_timestamp.txt
 
 remove_fail_test
 
@@ -103,7 +103,7 @@ remove_fail_test
 # End compile job
 ################################################################################
 
-echo " $( date +%s ), 1" >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+echo " $( date +%s ), 1" >> ${LOG_DIR}/compile_${COMPILE_ID}_timestamp.txt
 
 elapsed=$SECONDS
 echo "Elapsed time $elapsed seconds. Compile ${COMPILE_ID}"

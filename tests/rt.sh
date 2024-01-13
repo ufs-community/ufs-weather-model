@@ -127,6 +127,7 @@ EOF
         COMPILE_COUNTER+=1
         FAIL_LOG=""
         COMPILE_RESULT=""
+        TIME_FILE=""
         if [[ ! -f "${LOG_DIR}/compile_${COMPILE_ID}.log" ]]; then
           COMPILE_RESULT="MISSING"
         elif [[ -f fail_compile_${COMPILE_ID} ]]; then
@@ -138,10 +139,25 @@ EOF
             FAIL_LOG="${LOG_DIR}/compile_${COMPILE_ID}.log"
           else
             COMPILE_RESULT="PASS"
+            TIME_FILE="${LOG_DIR}/compile_${COMPILE_ID}_timestamp.txt"
+            if [[ -f "${TIME_FILE}" ]]; then
+              while read -r times || [ "$times" ]; do
+                  times="${times#"${times%%[![:space:]]*}"}"
+
+                  DATE1=$(echo $times | cut -d ',' -f2 )
+                  DATE2=$(echo $times | cut -d ',' -f3 )
+                  DATE3=$(echo $times | cut -d ',' -f4 )
+                  DATE4=$(echo $times | cut -d ',' -f5 )
+
+                  COMPILE_TIME=$(date --date=@$(($DATE3 - $DATE2)) +'%H:%M:%S')
+                  RT_COMPILE_TIME=$(date --date=@$(($DATE4 - $DATE1)) +'%H:%M:%S')
+
+              done < $TIME_FILE
+            fi
           fi
         fi
       fi
-      echo; echo "COMPILE '${COMPILE_ID}': ${COMPILE_RESULT}" >> ${REGRESSIONTEST_LOG}
+      echo; echo "COMPILE '${COMPILE_ID}': ${COMPILE_RESULT} | Times (RT/Compile): (${RT_COMPILE_TIME}/${COMPILE_TIME})" >> ${REGRESSIONTEST_LOG}
       [[ ! -z $FAIL_LOG ]] && FAILED_COMPILES+=("COMPILE '${COMPILE_ID}': ${COMPILE_RESULT}")
       [[ ! -z $FAIL_LOG ]] && echo "-- LOG: ${FAIL_LOG}" >> ${REGRESSIONTEST_LOG}
 
@@ -164,6 +180,7 @@ EOF
         TEST_COUNTER+=1
         FAIL_LOG=""
         TEST_RESULT=""
+        TIME_FILE=""
         if [[ ! -f "${LOG_DIR}/run_${TEST_ID}.log" ]]; then
           TEST_RESULT="MISSING"
         elif [[ -f fail_test_${TEST_ID} ]]; then
@@ -180,11 +197,26 @@ EOF
             FAIL_LOG="${LOG_DIR}/run_${TEST_ID}.log"
           else
             TEST_RESULT="PASS"
+            TIME_FILE="${LOG_DIR}/run_${TEST_ID}_timestamp.txt"
+            if [[ -f "${TIME_FILE}" ]]; then
+              while read -r times || [ "$times" ]; do
+                  times="${times#"${times%%[![:space:]]*}"}"
+
+                  DATE1=$(echo $times | cut -d ',' -f2 )
+                  DATE2=$(echo $times | cut -d ',' -f3 )
+                  DATE3=$(echo $times | cut -d ',' -f4 )
+                  DATE4=$(echo $times | cut -d ',' -f5 )
+
+                  TEST_TIME=$(date --date=@$(($DATE3 - $DATE2)) +'%H:%M:%S')
+                  RT_TEST_TIME=$(date --date=@$(($DATE4 - $DATE1)) +'%H:%M:%S')
+
+              done < $TIME_FILE
+            fi
           fi
         fi
       fi
 
-      echo; echo "TEST '${TEST_ID}': ${TEST_RESULT}" >> ${REGRESSIONTEST_LOG}
+      echo; echo "TEST '${TEST_ID}': ${TEST_RESULT} | Times (RT/Test): (${RT_TEST_TIME}/${TEST_TIME})" >> ${REGRESSIONTEST_LOG}
       [[ ! -z $FAIL_LOG ]] && FAILED_TESTS+=("TEST '${TEST_ID}': ${TEST_RESULT}")
       [[ ! -z $FAIL_LOG ]] && FAILED_TEST_ID+=("${TEST_ID}")
       [[ ! -z $FAIL_LOG ]] && echo "-- LOG: ${FAIL_LOG}" >> ${REGRESSIONTEST_LOG}
@@ -235,11 +267,13 @@ If you are using this log as a pull request verification, please commit '${TEST_
 
 Result: SUCCESS
 EOF
+    echo "Performing Cleanup..."
     rm -f fv3_*.x fv3_*.exe modules.fv3_* modulefiles/modules.fv3_* keep_tests.tmp
     [[ ${KEEP_RUNDIR} == false ]] && rm -rf ${RUNDIR_ROOT} && rm ${PATHRT}/run_dir
     [[ ${ROCOTO} == true ]] && rm -f ${ROCOTO_XML} ${ROCOTO_DB} ${ROCOTO_STATE} *_lock.db
     [[ ${TEST_35D} == true ]] && rm -f tests/cpld_bmark*_20*
     [[ ${SINGLE_NAME} != '' ]] && rm -f $RT_SINGLE_CONF
+    echo "REGRESSION TEST RESULT: SUCCESS"
   else
     cat << EOF >> ${REGRESSIONTEST_LOG}
 
@@ -252,6 +286,7 @@ Result: FAILURE
 
 ====END OF ${MACHINE_ID^^} REGRESSION TESTING LOG====
 EOF
+    echo "REGRESSION TEST RESULT: FAILURE"
   fi
 
 }
