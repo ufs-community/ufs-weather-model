@@ -230,7 +230,7 @@ EOF
 
 NOTES:
 A file '${TEST_CHANGES_LOG}' was generated but is empty.
-If you are using this log as a pull request verification, please commit that file.
+If you are using this log as a pull request verification, please commit '${TEST_CHANGES_LOG}'.
 
 Result: SUCCESS
 EOF
@@ -246,7 +246,7 @@ EOF
 NOTES:
 A file '${TEST_CHANGES_LOG}' was generated with list of all failed tests.
 You can use './rt.sh -b test_changes.out' to generate baselines for the failed tests.
-If you are using this log as a pull request verification, please commit that file.
+If you are using this log as a pull request verification, please commit '${TEST_CHANGES_LOG}'.
 
 Result: FAILURE
 
