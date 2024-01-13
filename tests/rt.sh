@@ -84,13 +84,14 @@ generate_log() {
   FAILED_TESTS=()
   FAILED_TEST_ID=()
   TEST_CHANGES_LOG="test_changes.out"
-  TEST_END_TIME="`date '+%Y%m%d %T'`"
+  TEST_END_TIME="$(date '+%Y%m%d %T')"
   cat << EOF > ${REGRESSIONTEST_LOG}
-====${MACHINE_ID^^} REGRESSION TESTING LOG====
+====START OF ${MACHINE_ID^^} REGRESSION TESTING LOG====
 
-Start Date/Time: ${TEST_START_TIME}
-UFSWM Hash: `git rev-parse HEAD`
-Submodule Hashes:
+UFSWM hash used in testing:
+`git rev-parse HEAD`
+
+Submodule hashes used in testing:
 EOF
   cd ..
   git submodule status >> ${REGRESSIONTEST_LOG}
@@ -185,7 +186,7 @@ EOF
 
       echo; echo "TEST '${TEST_ID}': ${TEST_RESULT}" >> ${REGRESSIONTEST_LOG}
       [[ ! -z $FAIL_LOG ]] && FAILED_TESTS+=("TEST '${TEST_ID}': ${TEST_RESULT}")
-      [[ ! -z $FAIL_LOG ]] && FAILED_TEST_ID+=("{TEST_ID}")
+      [[ ! -z $FAIL_LOG ]] && FAILED_TEST_ID+=("${TEST_ID}")
       [[ ! -z $FAIL_LOG ]] && echo "-- LOG: ${FAIL_LOG}" >> ${REGRESSIONTEST_LOG}
 
     fi
@@ -234,7 +235,6 @@ If you are using this log as a pull request verification, please commit '${TEST_
 
 Result: SUCCESS
 EOF
-
     rm -f fv3_*.x fv3_*.exe modules.fv3_* modulefiles/modules.fv3_* keep_tests.tmp
     [[ ${KEEP_RUNDIR} == false ]] && rm -rf ${RUNDIR_ROOT} && rm ${PATHRT}/run_dir
     [[ ${ROCOTO} == true ]] && rm -f ${ROCOTO_XML} ${ROCOTO_DB} ${ROCOTO_STATE} *_lock.db
@@ -250,29 +250,29 @@ If you are using this log as a pull request verification, please commit '${TEST_
 
 Result: FAILURE
 
-====END OF ${MACHINE_ID} REGRESSION TESTING LOG====
+====END OF ${MACHINE_ID^^} REGRESSION TESTING LOG====
 EOF
-
   fi
+
 }
 
 create_or_run_compile_task() {
 
   cat << EOF > ${RUNDIR_ROOT}/compile_${COMPILE_ID}.env
-  export JOB_NR=${JOB_NR}
-  export COMPILE_ID=${COMPILE_ID}
-  export MACHINE_ID=${MACHINE_ID}
-  export RT_COMPILER=${RT_COMPILER}
-  export PATHRT=${PATHRT}
-  export PATHTR=${PATHTR}
-  export SCHEDULER=${SCHEDULER}
-  export ACCNR=${ACCNR}
-  export QUEUE=${COMPILE_QUEUE}
-  export PARTITION=${PARTITION}
-  export ROCOTO=${ROCOTO}
-  export ECFLOW=${ECFLOW}
-  export REGRESSIONTEST_LOG=${REGRESSIONTEST_LOG}
-  export LOG_DIR=${LOG_DIR}
+export JOB_NR=${JOB_NR}
+export COMPILE_ID=${COMPILE_ID}
+export MACHINE_ID=${MACHINE_ID}
+export RT_COMPILER=${RT_COMPILER}
+export PATHRT=${PATHRT}
+export PATHTR=${PATHTR}
+export SCHEDULER=${SCHEDULER}
+export ACCNR=${ACCNR}
+export QUEUE=${COMPILE_QUEUE}
+export PARTITION=${PARTITION}
+export ROCOTO=${ROCOTO}
+export ECFLOW=${ECFLOW}
+export REGRESSIONTEST_LOG=${REGRESSIONTEST_LOG}
+export LOG_DIR=${LOG_DIR}
 EOF
 
   if [[ $ROCOTO == true ]]; then
@@ -778,7 +778,7 @@ else
   REGRESSIONTEST_LOG=${PATHRT}/logs/RegressionTests_$MACHINE_ID.log
 fi
 
-export TEST_START_TIME="`date '+%Y%m%d %T'`"
+export TEST_START_TIME="$(date '+%Y%m%d %T')"
 
 source default_vars.sh
 
@@ -1005,37 +1005,37 @@ EOF
       fi
 
       cat << EOF > ${RUNDIR_ROOT}/run_test_${TEST_ID}.env
-      export JOB_NR=${JOB_NR}
-      export TEST_ID=${TEST_ID}
-      export MACHINE_ID=${MACHINE_ID}
-      export RT_COMPILER=${RT_COMPILER}
-      export RTPWD=${RTPWD}
-      export INPUTDATA_ROOT=${INPUTDATA_ROOT}
-      export INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT_WW3}
-      export INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC}
-      export PATHRT=${PATHRT}
-      export PATHTR=${PATHTR}
-      export NEW_BASELINE=${NEW_BASELINE}
-      export CREATE_BASELINE=${CREATE_BASELINE}
-      export RT_SUFFIX=${RT_SUFFIX}
-      export BL_SUFFIX=${BL_SUFFIX}
-      export SCHEDULER=${SCHEDULER}
-      export ACCNR=${ACCNR}
-      export QUEUE=${QUEUE}
-      export PARTITION=${PARTITION}
-      export ROCOTO=${ROCOTO}
-      export ECFLOW=${ECFLOW}
-      export REGRESSIONTEST_LOG=${REGRESSIONTEST_LOG}
-      export LOG_DIR=${LOG_DIR}
-      export DEP_RUN=${DEP_RUN}
-      export skip_check_results=${skip_check_results}
-      export delete_rundir=${delete_rundir}
-      export WLCLK=${WLCLK}
+export JOB_NR=${JOB_NR}
+export TEST_ID=${TEST_ID}
+export MACHINE_ID=${MACHINE_ID}
+export RT_COMPILER=${RT_COMPILER}
+export RTPWD=${RTPWD}
+export INPUTDATA_ROOT=${INPUTDATA_ROOT}
+export INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT_WW3}
+export INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC}
+export PATHRT=${PATHRT}
+export PATHTR=${PATHTR}
+export NEW_BASELINE=${NEW_BASELINE}
+export CREATE_BASELINE=${CREATE_BASELINE}
+export RT_SUFFIX=${RT_SUFFIX}
+export BL_SUFFIX=${BL_SUFFIX}
+export SCHEDULER=${SCHEDULER}
+export ACCNR=${ACCNR}
+export QUEUE=${QUEUE}
+export PARTITION=${PARTITION}
+export ROCOTO=${ROCOTO}
+export ECFLOW=${ECFLOW}
+export REGRESSIONTEST_LOG=${REGRESSIONTEST_LOG}
+export LOG_DIR=${LOG_DIR}
+export DEP_RUN=${DEP_RUN}
+export skip_check_results=${skip_check_results}
+export delete_rundir=${delete_rundir}
+export WLCLK=${WLCLK}
 EOF
       if [[ $MACHINE_ID = jet ]]; then
         cat << EOF >> ${RUNDIR_ROOT}/run_test_${TEST_ID}.env
-      export PATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/bin:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/bin:$PATH
-      export PYTHONPATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/lib/python3.8/site-packages
+export PATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/bin:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/bin:$PATH
+export PYTHONPATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/lib/python3.8/site-packages
 EOF
       fi
 
