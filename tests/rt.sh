@@ -97,6 +97,15 @@ EOF
   git submodule status >> ${REGRESSIONTEST_LOG}
   echo; echo >> ${REGRESSIONTEST_LOG}
   cd tests
+  
+  cat << EOF > ${REGRESSIONTEST_LOG}
+
+NOTES:
+Times are at the end of each compile/test in format (MM:SS).
+The first time is how long the scipt (prep+run+finalize) ran.
+The second time is specifically how long the run phase ran.
+Times will be empty for failed tests.
+EOF
 
   [[ -f "${TEST_CHANGES_LOG}" ]] && rm ${TEST_CHANGES_LOG}
   touch ${TEST_CHANGES_LOG}
@@ -128,6 +137,8 @@ EOF
         FAIL_LOG=""
         COMPILE_RESULT=""
         TIME_FILE=""
+        COMPILE_TIME=""
+        RT_COMPILE_TIME=""
         if [[ ! -f "${LOG_DIR}/compile_${COMPILE_ID}.log" ]]; then
           COMPILE_RESULT="MISSING"
         elif [[ -f fail_compile_${COMPILE_ID} ]]; then
@@ -149,8 +160,8 @@ EOF
                   DATE3=$(echo $times | cut -d ',' -f4 )
                   DATE4=$(echo $times | cut -d ',' -f5 )
 
-                  COMPILE_TIME=$(date --date=@$(($DATE3 - $DATE2)) +'%H:%M:%S')
-                  RT_COMPILE_TIME=$(date --date=@$(($DATE4 - $DATE1)) +'%H:%M:%S')
+                  COMPILE_TIME=$(date --date=@$(($DATE3 - $DATE2)) +'%M:%S')
+                  RT_COMPILE_TIME=$(date --date=@$(($DATE4 - $DATE1)) +'%M:%S')
 
               done < $TIME_FILE
             fi
@@ -158,8 +169,8 @@ EOF
         fi
       fi
       echo >> ${REGRESSIONTEST_LOG}
-      echo "COMPILE '${COMPILE_ID}': ${COMPILE_RESULT} | Times (RT/Compile): (${RT_COMPILE_TIME}/${COMPILE_TIME})" >> ${REGRESSIONTEST_LOG}
-      [[ ! -z $FAIL_LOG ]] && FAILED_COMPILES+=("COMPILE '${COMPILE_ID}': ${COMPILE_RESULT}")
+      echo "${COMPILE_RESULT} -- COMPILE '${COMPILE_ID}' (${RT_COMPILE_TIME}--${COMPILE_TIME})" >> ${REGRESSIONTEST_LOG}
+      [[ ! -z $FAIL_LOG || ${COMPILE_RESULT} == "MISSING" ]] && FAILED_COMPILES+=("COMPILE '${COMPILE_ID}': ${COMPILE_RESULT}")
       [[ ! -z $FAIL_LOG ]] && echo "-- LOG: ${FAIL_LOG}" >> ${REGRESSIONTEST_LOG}
 
 
@@ -182,6 +193,8 @@ EOF
         FAIL_LOG=""
         TEST_RESULT=""
         TIME_FILE=""
+        TEST_TIME=""
+        RT_TEST_TIME=""
         if [[ ! -f "${LOG_DIR}/run_${TEST_ID}.log" ]]; then
           TEST_RESULT="MISSING"
         elif [[ -f fail_test_${TEST_ID} ]]; then
@@ -217,9 +230,9 @@ EOF
         fi
       fi
 
-      echo; echo "TEST '${TEST_ID}': ${TEST_RESULT} | Times (RT/Test): (${RT_TEST_TIME}/${TEST_TIME})" >> ${REGRESSIONTEST_LOG}
-      [[ ! -z $FAIL_LOG ]] && FAILED_TESTS+=("TEST '${TEST_ID}': ${TEST_RESULT}")
-      [[ ! -z $FAIL_LOG ]] && FAILED_TEST_ID+=("${TEST_ID}")
+      echo "${TEST_RESULT} -- TEST '${TEST_ID}' (${RT_TEST_TIME}--${TEST_TIME})" >> ${REGRESSIONTEST_LOG}
+      [[ ! -z $FAIL_LOG || ${TEST_RESULT} == "MISSING" ]] && FAILED_TESTS+=("TEST '${TEST_ID}': ${TEST_RESULT}")
+      [[ ! -z $FAIL_LOG || ${TEST_RESULT} == "MISSING" ]] && FAILED_TEST_ID+=("${TEST_ID}")
       [[ ! -z $FAIL_LOG ]] && echo "-- LOG: ${FAIL_LOG}" >> ${REGRESSIONTEST_LOG}
 
     fi
