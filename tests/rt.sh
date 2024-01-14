@@ -267,6 +267,8 @@ A file '${TEST_CHANGES_LOG}' was generated but is empty.
 If you are using this log as a pull request verification, please commit '${TEST_CHANGES_LOG}'.
 
 Result: SUCCESS
+
+====END OF ${MACHINE_ID^^} REGRESSION TESTING LOG====
 EOF
     echo "Performing Cleanup..."
     rm -f fv3_*.x fv3_*.exe modules.fv3_* modulefiles/modules.fv3_* keep_tests.tmp
