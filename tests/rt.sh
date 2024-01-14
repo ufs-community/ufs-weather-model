@@ -124,7 +124,7 @@ EOF
       fi
 
       if [[ $valid_compile == true ]]; then
-        COMPILE_COUNTER+=1
+        COMPILE_COUNTER=$((${COMPILE_COUNTER}+1))
         FAIL_LOG=""
         COMPILE_RESULT=""
         TIME_FILE=""
@@ -157,7 +157,8 @@ EOF
           fi
         fi
       fi
-      echo; echo "COMPILE '${COMPILE_ID}': ${COMPILE_RESULT} | Times (RT/Compile): (${RT_COMPILE_TIME}/${COMPILE_TIME})" >> ${REGRESSIONTEST_LOG}
+      echo >> ${REGRESSIONTEST_LOG}
+      echo "COMPILE '${COMPILE_ID}': ${COMPILE_RESULT} | Times (RT/Compile): (${RT_COMPILE_TIME}/${COMPILE_TIME})" >> ${REGRESSIONTEST_LOG}
       [[ ! -z $FAIL_LOG ]] && FAILED_COMPILES+=("COMPILE '${COMPILE_ID}': ${COMPILE_RESULT}")
       [[ ! -z $FAIL_LOG ]] && echo "-- LOG: ${FAIL_LOG}" >> ${REGRESSIONTEST_LOG}
 
@@ -177,7 +178,7 @@ EOF
       fi
 
       if [[ $valid_test == true ]]; then
-        TEST_COUNTER+=1
+        TEST_COUNTER=$((${TEST_COUNTER}+1))
         FAIL_LOG=""
         TEST_RESULT=""
         TIME_FILE=""
