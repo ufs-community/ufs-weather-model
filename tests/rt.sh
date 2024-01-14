@@ -78,6 +78,7 @@ rt_single() {
 }
 
 generate_log() {
+  
   COMPILE_COUNTER=0
   FAILED_COMPILES=()
   TEST_COUNTER=0
@@ -98,7 +99,7 @@ EOF
   echo; echo >> ${REGRESSIONTEST_LOG}
   cd tests
   
-  cat << EOF > ${REGRESSIONTEST_LOG}
+  cat << EOF >> ${REGRESSIONTEST_LOG}
 
 NOTES:
 Times are at the end of each compile/test in format (MM:SS).
@@ -141,6 +142,7 @@ EOF
         RT_COMPILE_TIME=""
         if [[ ! -f "${LOG_DIR}/compile_${COMPILE_ID}.log" ]]; then
           COMPILE_RESULT="MISSING"
+          FAIL_LOG="N/A"
         elif [[ -f fail_compile_${COMPILE_ID} ]]; then
           COMPILE_RESULT="FAIL TO RUN"
           FAIL_LOG="${LOG_DIR}/compile_${COMPILE_ID}.log"
@@ -170,8 +172,8 @@ EOF
       fi
       echo >> ${REGRESSIONTEST_LOG}
       echo "${COMPILE_RESULT} -- COMPILE '${COMPILE_ID}' (${RT_COMPILE_TIME}--${COMPILE_TIME})" >> ${REGRESSIONTEST_LOG}
-      [[ ! -z $FAIL_LOG || ${COMPILE_RESULT} == "MISSING" ]] && FAILED_COMPILES+=("COMPILE '${COMPILE_ID}': ${COMPILE_RESULT}")
-      [[ ! -z $FAIL_LOG ]] && echo "-- LOG: ${FAIL_LOG}" >> ${REGRESSIONTEST_LOG}
+      [[ ! -z $FAIL_LOG ]] && FAILED_COMPILES+=("COMPILE '${COMPILE_ID}': ${COMPILE_RESULT}\n-- LOG: ${FAIL LOG}")
+      #[[ ! -z $FAIL_LOG ]] && echo "-- LOG: ${FAIL_LOG}" >> ${REGRESSIONTEST_LOG}
 
 
     elif [[ $line =~ RUN ]]; then
@@ -197,6 +199,7 @@ EOF
         RT_TEST_TIME=""
         if [[ ! -f "${LOG_DIR}/run_${TEST_ID}.log" ]]; then
           TEST_RESULT="MISSING"
+          FAIL_LOG="N/A"
         elif [[ -f fail_test_${TEST_ID} ]]; then
           if [[ -f "${LOG_DIR}/rt_${TEST_ID}.log" ]]; then
             TEST_RESULT="FAIL TO COMPARE"
@@ -231,9 +234,8 @@ EOF
       fi
 
       echo "${TEST_RESULT} -- TEST '${TEST_ID}' (${RT_TEST_TIME}--${TEST_TIME})" >> ${REGRESSIONTEST_LOG}
-      [[ ! -z $FAIL_LOG || ${TEST_RESULT} == "MISSING" ]] && FAILED_TESTS+=("TEST '${TEST_ID}': ${TEST_RESULT}")
+      [[ ! -z $FAIL_LOG || ${TEST_RESULT} == "MISSING" ]] && FAILED_TESTS+=("TEST '${TEST_ID}': ${TEST_RESULT}\n-- LOG: ${FAIL LOG}")
       [[ ! -z $FAIL_LOG || ${TEST_RESULT} == "MISSING" ]] && FAILED_TEST_ID+=("${TEST_ID}")
-      [[ ! -z $FAIL_LOG ]] && echo "-- LOG: ${FAIL_LOG}" >> ${REGRESSIONTEST_LOG}
 
     fi
   done < $TESTS_FILE
