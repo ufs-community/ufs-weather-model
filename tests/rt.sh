@@ -84,6 +84,8 @@ generate_log() {
   TEST_COUNTER=0
   FAILED_TESTS=()
   FAILED_TEST_ID=()
+  FAILED_COMPILE_LOGS=()
+  FAILED_TEST_LOGS=()
   TEST_CHANGES_LOG="test_changes.out"
   TEST_END_TIME="$(date '+%Y%m%d %T')"
   cat << EOF > ${REGRESSIONTEST_LOG}
@@ -172,8 +174,8 @@ EOF
       fi
       echo >> ${REGRESSIONTEST_LOG}
       echo "${COMPILE_RESULT} -- COMPILE '${COMPILE_ID}' (${RT_COMPILE_TIME}--${COMPILE_TIME})" >> ${REGRESSIONTEST_LOG}
-      [[ ! -z $FAIL_LOG ]] && FAILED_COMPILES+="COMPILE ${COMPILE_ID}: ${COMPILE_RESULT}\n  -- LOG: ${FAIL LOG}"
-      #[[ ! -z $FAIL_LOG ]] && echo "-- LOG: ${FAIL_LOG}" >> ${REGRESSIONTEST_LOG}
+      [[ ! -z $FAIL_LOG ]] && FAILED_COMPILES+="COMPILE ${COMPILE_ID}: ${COMPILE_RESULT}"
+      [[ ! -z $FAIL_LOG ]] && FAILED_COMPILE_LOGS+="${FAIL_LOG}"
 
 
     elif [[ $line =~ RUN ]]; then
@@ -234,8 +236,9 @@ EOF
       fi
 
       echo "${TEST_RESULT} -- TEST '${TEST_ID}' (${RT_TEST_TIME}--${TEST_TIME})" >> ${REGRESSIONTEST_LOG}
-      [[ ! -z $FAIL_LOG || ${TEST_RESULT} == "MISSING" ]] && FAILED_TESTS+="TEST ${TEST_ID}: ${TEST_RESULT}\n  -- LOG: ${FAIL LOG}"
-      [[ ! -z $FAIL_LOG || ${TEST_RESULT} == "MISSING" ]] && FAILED_TEST_ID+=("${TEST_ID}")
+      [[ ! -z $FAIL_LOG ]] && FAILED_TESTS+="TEST ${TEST_ID}: ${TEST_RESULT}"
+      [[ ! -z $FAIL_LOG ]] && FAILED_TEST_LOGS+="${FAIL_LOG}"
+      [[ ! -z $FAIL_LOG ]] && FAILED_TEST_ID+="${TEST_ID}"
 
     fi
   done < $TESTS_FILE
@@ -254,16 +257,18 @@ EOF
   # PRINT FAILED COMPILES
   if [[ "${#FAILED_COMPILES[@]}" -ne "0" ]]; then
   echo "Failed Compiles:" >> ${REGRESSIONTEST_LOG}
-    for item in "${FAILED_COMPILES[@]}"; do
-      echo -e "-- ${item}" >> ${REGRESSIONTEST_LOG}
+    for i in "${!FAILED_COMPILES[@]}"; do
+      echo "-- ${FAILED_COMPILES[i]}" >> ${REGRESSIONTEST_LOG}
+      echo "  -- LOG: ${FAILED_COMPILE_LOGS[i]}" >> ${REGRESSIONTEST_LOG}
     done
   fi
   
   # PRINT FAILED TESTS
   if [[ "${#FAILED_TESTS[@]}" -ne "0" ]]; then
   echo "Failed Tests:" >> ${REGRESSIONTEST_LOG}
-    for item in "${FAILED_TESTS[@]}"; do
-      echo -e "-- ${item}" >> ${REGRESSIONTEST_LOG}
+    for i in "${!FAILED_TESTS[@]}"; do
+      echo "-- ${FAILED_TESTS[i]}" >> ${REGRESSIONTEST_LOG}
+      echo "  -- LOG: ${FAILED_TEST_LOGS[i]}" >> ${REGRESSIONTEST_LOG}
     done
   fi
   
