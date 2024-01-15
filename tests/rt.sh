@@ -152,6 +152,9 @@ EOF
           if [[ `grep -q "quota" ${LOG_DIR}/compile_${COMPILE_ID}.log` ]]; then
             COMPILE_RESULT="FAIL FROM DISK QUOTA"
             FAIL_LOG="${LOG_DIR}/compile_${COMPILE_ID}.log"
+          elif [[ `grep -q "timeout" ${LOG_DIR}/compile_${COMPILE_ID}.log` ]]; then
+            COMPILE_RESULT="FAIL FROM TIMEOUT"
+            FAIL_LOG="${LOG_DIR}/compile_${COMPILE_ID}.log"
           else
             COMPILE_RESULT="PASS"
             TIME_FILE="${LOG_DIR}/compile_${COMPILE_ID}_timestamp.txt"
@@ -213,6 +216,9 @@ EOF
         else
           if [[ `grep -q "quota" ${LOG_DIR}/run_${TEST_ID}.log` ]]; then
             TEST_RESULT="FAIL FROM DISK QUOTA"
+            FAIL_LOG="${LOG_DIR}/run_${TEST_ID}.log"
+          elif [[ `grep -q "timeout" ${LOG_DIR}/run_${TEST_ID}.log` ]]; then
+            TEST_RESULT="FAIL FROM TIMEOUT"
             FAIL_LOG="${LOG_DIR}/run_${TEST_ID}.log"
           else
             TEST_RESULT="PASS"
