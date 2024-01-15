@@ -174,8 +174,8 @@ EOF
       fi
       echo >> ${REGRESSIONTEST_LOG}
       echo "${COMPILE_RESULT} -- COMPILE '${COMPILE_ID}' (${RT_COMPILE_TIME}--${COMPILE_TIME})" >> ${REGRESSIONTEST_LOG}
-      [[ ! -z $FAIL_LOG ]] && FAILED_COMPILES+="COMPILE ${COMPILE_ID}: ${COMPILE_RESULT}"
-      [[ ! -z $FAIL_LOG ]] && FAILED_COMPILE_LOGS+="${FAIL_LOG}"
+      [[ ! -z $FAIL_LOG ]] && FAILED_COMPILES+=("COMPILE ${COMPILE_ID}: ${COMPILE_RESULT}")
+      [[ ! -z $FAIL_LOG ]] && FAILED_COMPILE_LOGS+=("${FAIL_LOG}")
 
 
     elif [[ $line =~ RUN ]]; then
@@ -236,9 +236,9 @@ EOF
       fi
 
       echo "${TEST_RESULT} -- TEST '${TEST_ID}' (${RT_TEST_TIME}--${TEST_TIME})" >> ${REGRESSIONTEST_LOG}
-      [[ ! -z $FAIL_LOG ]] && FAILED_TESTS+="TEST ${TEST_ID}: ${TEST_RESULT}"
-      [[ ! -z $FAIL_LOG ]] && FAILED_TEST_LOGS+="${FAIL_LOG}"
-      [[ ! -z $FAIL_LOG ]] && FAILED_TEST_ID+="${TEST_ID}"
+      [[ ! -z $FAIL_LOG ]] && FAILED_TESTS+=("TEST ${TEST_ID}: ${TEST_RESULT}")
+      [[ ! -z $FAIL_LOG ]] && FAILED_TEST_LOGS+=("${FAIL_LOG}")
+      [[ ! -z $FAIL_LOG ]] && FAILED_TEST_ID+=("${TEST_ID}")
 
     fi
   done < $TESTS_FILE
@@ -265,11 +265,13 @@ EOF
   
   # PRINT FAILED TESTS
   if [[ "${#FAILED_TESTS[@]}" -ne "0" ]]; then
+    
     echo "Failed Tests:" >> ${REGRESSIONTEST_LOG}
     for j in ${!FAILED_TESTS[@]}; do
       echo "* ${FAILED_TESTS[$j]}" >> ${REGRESSIONTEST_LOG}
       echo "-- LOG: ${FAILED_TEST_LOGS[$j]}" >> ${REGRESSIONTEST_LOG}
     done
+    
   fi
   
   # WRITE FAILED_TEST_ID LIST TO TEST_CHANGES_LOG
