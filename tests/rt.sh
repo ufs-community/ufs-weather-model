@@ -172,7 +172,7 @@ EOF
       fi
       echo >> ${REGRESSIONTEST_LOG}
       echo "${COMPILE_RESULT} -- COMPILE '${COMPILE_ID}' (${RT_COMPILE_TIME}--${COMPILE_TIME})" >> ${REGRESSIONTEST_LOG}
-      [[ ! -z $FAIL_LOG ]] && FAILED_COMPILES+=("COMPILE ${COMPILE_ID}: ${COMPILE_RESULT}"$'\n'"  -- LOG: ${FAIL LOG}")
+      [[ ! -z $FAIL_LOG ]] && FAILED_COMPILES+="COMPILE ${COMPILE_ID}: ${COMPILE_RESULT}\n  -- LOG: ${FAIL LOG}"
       #[[ ! -z $FAIL_LOG ]] && echo "-- LOG: ${FAIL_LOG}" >> ${REGRESSIONTEST_LOG}
 
 
@@ -234,7 +234,7 @@ EOF
       fi
 
       echo "${TEST_RESULT} -- TEST '${TEST_ID}' (${RT_TEST_TIME}--${TEST_TIME})" >> ${REGRESSIONTEST_LOG}
-      [[ ! -z $FAIL_LOG || ${TEST_RESULT} == "MISSING" ]] && FAILED_TESTS+=("TEST ${TEST_ID}: ${TEST_RESULT}"$'\n'"  -- LOG: ${FAIL LOG}")
+      [[ ! -z $FAIL_LOG || ${TEST_RESULT} == "MISSING" ]] && FAILED_TESTS+="TEST ${TEST_ID}: ${TEST_RESULT}\n  -- LOG: ${FAIL LOG}"
       [[ ! -z $FAIL_LOG || ${TEST_RESULT} == "MISSING" ]] && FAILED_TEST_ID+=("${TEST_ID}")
 
     fi
@@ -255,7 +255,7 @@ EOF
   if [[ "${#FAILED_COMPILES[@]}" -ne "0" ]]; then
   echo "Failed Compiles:" >> ${REGRESSIONTEST_LOG}
     for item in "${FAILED_COMPILES[@]}"; do
-      echo "-- ${item}" >> ${REGRESSIONTEST_LOG}
+      echo -e "-- ${item}" >> ${REGRESSIONTEST_LOG}
     done
   fi
   
@@ -263,7 +263,7 @@ EOF
   if [[ "${#FAILED_TESTS[@]}" -ne "0" ]]; then
   echo "Failed Tests:" >> ${REGRESSIONTEST_LOG}
     for item in "${FAILED_TESTS[@]}"; do
-      echo "-- ${item}" >> ${REGRESSIONTEST_LOG}
+      echo -e "-- ${item}" >> ${REGRESSIONTEST_LOG}
     done
   fi
   
