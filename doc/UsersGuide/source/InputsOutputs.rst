@@ -61,11 +61,14 @@ There are three types of files needed to execute a run:
 
 Information on the first two types of file appears in detail below for each component model. Information on Model Configuration files can be viewed in :numref:`Section %s <model-config-files>`. 
 
-.. _atm-io:
+.. _atm-in:
 
 -------
 ATM
 -------
+
+.. _atm-fix-files:
+
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Static Datasets (i.e., *fix files*)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -128,6 +131,8 @@ The static input files for global configurations are listed and described in :nu
      - External surface emissivity data table
    * - solarconstant_noaa_an.txt
      - External solar constant data table
+
+.. _atm-grid-ic-files:
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Grid Description and Initial Condition Files
@@ -194,9 +199,14 @@ The input files containing grid information and the initial conditions for globa
      - Surface properties for grid tile 7
      - ✔
 
+.. _mom-in:
+
 -------
 MOM6
 -------
+
+.. _mom-fix-files:
+
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Static Datasets (i.e., *fix files*)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -240,8 +250,10 @@ The static input files for global configurations are listed and described in :nu
      - climatological 2-d background harmonic viscosities
      - 1.00
 
+.. _mom-grid-ic-files:
+
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Grid description and initial condition files
+Grid Description and Initial Condition Files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The input files containing grid information and the initial conditions for global configurations are listed and described in :numref:`Table %s <MOM6_GridICFiles>`.
@@ -309,9 +321,14 @@ The input files containing grid information and the initial conditions for globa
      - 1.00, 0.50, 0.25
      - ✔
 
+.. _hycom-in:
+
 -------
 HYCOM
 -------
+
+.. _hycom-fix-files:
+
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Static Datasets (i.e., *fix files*)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -391,6 +408,8 @@ Static input files are listed and described in :numref:`Table %s <HYCOM_FixFiles
      - Diffusion velocity (m/s) for Laplacian momentum dissipation
      - hat10, hep20, hwp30, hcp70
 
+.. _hycom-grid-ic-files:
+
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Grid Description and Initial Condition Files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -462,15 +481,22 @@ The input files containing time dependent configuration and forcing data are lis
      - hat10, hep20, hwp30, hcp70
      - ✔
 
+.. _cice-in:
+
 -------
 CICE6
 -------
+
+.. _cice-fix-files:
+
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Static Datasets (i.e., *fix files*)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 No fix files are required for CICE6.
-   
+
+.. _cice-grid-ic-files:
+
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Grid Description and Initial Condition Files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -499,15 +525,22 @@ The input files containing grid information and the initial conditions for globa
      - cice model land mask at resolution RES
      - 100, 050, 025
      -
-	 
+
+.. _ww3-in:
+
 -------
 WW3
 -------
+
+.. _ww3-fix-files:
+
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Static Datasets (i.e., *fix files*)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 No fix files are required for WW3.
+
+.. _ww3-grid-ic-files:
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Grid Description and Initial Condition Files
@@ -707,14 +740,21 @@ For the sub-global 1/2-deg domain extending from latitude 80.0S:
 For the tripole grid, the mesh file is generated as part of the ``cpld_gridgen`` utility in
 `UFS_UTILS <https://ufs-community.github.io/UFS_UTILS/cpld_gridgen/index.html>`__.
 
+.. _cdeps-in:
+
 -------
 CDEPS
 -------
+
+.. _cdeps-fix-files:
+
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Static Datasets (i.e., *fix files*)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 No fix files are required for CDEPS.
+
+.. _cdeps-grid-ic-files:
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Grid Description and Initial Condition Files
@@ -750,6 +790,25 @@ The input files containing grid information and the time-varying forcing files f
    * - ERA5.TL639.YYYY.MM.nc
      - ERA5 forcing file for year YYYY and month MM
      - ✔
+
+.. note:: 
+
+   Users can find atmospheric forcing files for use with the land (:ref:`LND <lnd>`) component in the `Land Data Assimilation (DA) data bucket <https://registry.opendata.aws/noaa-ufs-land-da/>`__. These files provide atmospheric forcing data related to precipitation, solar radiation, longwave radiation, temperature, pressure, winds, humidity, topography, and mesh data. Forcing files for the land component configuration come from the Global Soil Wetness Project Phase 3 (`GSWP3 <https://hydro.iis.u-tokyo.ac.jp/GSWP3/>`__) dataset. 
+
+   .. code-block:: console
+
+      clmforc.GSWP3.c2011.0.5x0.5.Prec.1999-12.nc
+      clmforc.GSWP3.c2011.0.5x0.5.Prec.2000-01.nc
+      clmforc.GSWP3.c2011.0.5x0.5.Solr.1999-12.nc
+      clmforc.GSWP3.c2011.0.5x0.5.Solr.2000-01.nc
+      clmforc.GSWP3.c2011.0.5x0.5.TPQWL.1999-12.nc
+      clmforc.GSWP3.c2011.0.5x0.5.TPQWL.2000-01.nc
+      clmforc.GSWP3.c2011.0.5x0.5.TPQWL.SCRIP.210520_ESMFmesh.nc
+      fv1.9x2.5_141008_ESMFmesh.nc
+      topodata_0.9x1.25_USGS_070110_stream_c151201.nc
+      topodata_0.9x1.SCRIP.210520_ESMFmesh.nc
+
+   See the :ref:`Land DA User's Guide <landda:InputFiles>` or the :ref:`WM LND Input <lnd-in>` section of this page for more information on files used in land configurations of the UFS WM. 
 
 **Data Ocean**
 
@@ -789,9 +848,14 @@ The input files containing grid information and the time-varying forcing files f
      - GHRSST forcing file for year YYYY, month MM and day DD
      - ✔
 
+.. _gocart-in:
+
 -------
 GOCART
 -------
+
+.. _gocart-fix-files:
+
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Static Datasets (i.e., *fix files*)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -886,7 +950,9 @@ The static input files when using climatology (MERRA2) are listed and described 
      - Sea Salt optical look-up table for MERRA2
    * - Optics_SU.dat
      - Sulfate optical look-up table for MERRA2
-                    
+
+.. _gocart-grid-ic-files:
+
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Grid Description and Initial Condition Files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -895,9 +961,14 @@ Running GOCART in UFS does not require aerosol initial conditions, as aerosol mo
 
 The aerosol initial input currently read by GOCART is the same format as the UFSAtm initial input data format of ``gfs_data_tile[1-6].nc`` in :numref:`Table %s <GridICFiles>`, so the aerosol initial conditions should be combined with the meteorological initial conditions as one initial input file. There are many tools available for this purpose. The `UFS_UTILS <https://github.com/ufs-community/UFS_UTILS>`__ preprocessing utilities provide a solution for this within the `Global Workflow <https://github.com/NOAA-EMC/global-workflow>`__.
 
+.. _aqm-in:
+
 --------------
 AQM (CMAQ)
 --------------
+
+.. _aqm-fix-files:
+
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Static Datasets (i.e., *fix files*)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -948,20 +1019,20 @@ AQM inputs defined in ``aqm.rc`` are listed and described in :numref:`Table %s <
    * - Hourly_Emissions_regrid_rrfs_13km_20190801_t12z_h72.nc
      - File Emissions File 
 
-.. _lnd-io:
+.. _lnd-in:
 
 -------
 LND
 -------
 
-LND component datasets are available from the Land Data Assimilation (DA) System Data Bucket and can be retrieved using a ``wget`` command: 
+LND component datasets are available from the `Land Data Assimilation (DA) System data bucket <https://registry.opendata.aws/noaa-ufs-land-da/>`__ and can be retrieved using a ``wget`` command: 
 
 .. code-block:: console
 
-   wget https://noaa-ufs-land-da-pds.s3.amazonaws.com/current_land_da_release_data/landda-test-inps.tar.gz
-   tar xvfz landda-test-inps.tar.gz
+   wget https://noaa-ufs-land-da-pds.s3.amazonaws.com/current_land_da_release_data/v1.2.0/Landdav1.2.0_input_data.tar.gz
+   tar xvfz Landdav1.2.0_input_data.tar.gz
 
-These files will be untarred into an ``inputs`` directory if the user does not specify a different name. They include data for Jan 1-2, 2016 with restarts available for Jan. 3-4, 2016. :numref:`Table %s <LndInputFiles>` describes the file types. In each file name, ``YYYY`` refers to a valid 4-digit year, ``MM`` refers to a valid 2-digit month, and ``DD`` refers to a valid 2-digit day of the month. 
+These files will be untarred into an ``inputs`` directory if the user does not specify a different name. They include data for Dec. 21, 2019. :numref:`Table %s <LndInputFiles>` describes the file types. In each file name, ``YYYY`` refers to a valid 4-digit year, ``MM`` refers to a valid 2-digit month, and ``DD`` refers to a valid 2-digit day of the month. 
 
 .. _LndInputFiles:
 
@@ -969,50 +1040,73 @@ These files will be untarred into an ``inputs`` directory if the user does not s
    :widths: 30 60 10
    :header-rows: 1
 
-   * - Filename
+   * - Filename(s)
      - Description
      - File Type
-   * - ufs-land_C96_static_fields.nc
-     - Static file that includes information on location, time, soil layers, and fixed (invariant) experiment parameters.
-     - Fix/static file
-   * - ufs-land_C96_init_fields_1hr.nc
-     - Initial conditions file that includes the initial state variables that are required for the UFS land snow DA to begin a cycling run.
+   * - ufs-land_C96_init_fields.tile*.nc
+     - Initial conditions files for each tile; the files include the initial state variables that are required for the UFS land snow DA to begin a cycling run. ``*`` stands for the grid tile number [1-6]. 
      - Initial conditions
-   * - C96_grid.tileN.nc
-     - C96 grid information for tiles 1-6, where N is the grid tile number [1-6]. 
+   * - C96.maximum_snow_albedo.tile*.nc
+
+       C96.slope_type.tile*.nc
+
+       C96.soil_type.tile*.nc
+
+       C96.soil_color.tile*.nc
+
+       C96.substrate_temperature.tile*.nc
+
+       C96.vegetation_greenness.tile*.nc
+
+       C96.vegetation_type.tile*.nc
+
+       oro_C96.mx100.tile*.nc
+     - Tiled static files that contain information on maximum snow albedo, slope type, soil color and type, substrate temperature, vegetation greenness and type, and orography (grid and land mask information). ``*`` stands for the grid tile number [1-6]. 
+     - Static/fixed files
+   * - grid_spec.nc
+     - Contains information on the mosaic grid
      - Grid
-   * - C96_oro_data.tileN.nc / oro_C96.mx100.tileN.nc
-     - Orography files that contain grid and land mask information, where N is the grid tile number [1-6]. ``mx100`` refers to the ocean resolution (100=1º).
+   * - C96_grid.tile*.nc
+     - C96 grid information for tiles 1-6, where ``*`` is the grid tile number [1-6]. 
      - Grid
-   * - ufs-land.namelist.gdas
-     - Land component model configuration (namelist) file
-     - Model configuration
+   * - C96_oro_data.tile*.nc / oro_C96.mx100.tileN.nc
+     - Orography files that contain grid and land mask information, where ``*`` is the grid tile number [1-6]. ``mx100`` refers to the ocean resolution (100=1º).
+     - Grid
+   * - See :ref:`CDEPS <cdeps-in>` for information on atmospheric forcing files. 
+     - Atmospheric forcing
+     - CDEPS
    * - ghcn_snwd_ioda_YYYYMMDD.nc
-     - Snow depth data assimilation files
+     - GHCN snow depth data assimilation files
      - DA
-   * - C96_GDAS_forcing_YYYY-MM-DD.nc
-     - GDAS forcing files
-     - Forcing
-   * - ufs_land_restart.2015-09-01_18-00-00.nc
+   * - ufs_land_restart.YYYY-MM-DD_HH-mm-SS.nc
      - Restart file
      - Restart
-   * - ufs_land_restart.2016-01-01_18-00-00.nc
-     - Restart file
-     - Restart
+
+.. _lnd-fix-files:
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Static Datasets (i.e., *fix files*)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The static file (listed in :numref:`Table %s <LndInputFiles>`) includes specific information on location, time, soil layers, and fixed (invariant) experiment parameters that are required for the land component to run. The data must be provided in :term:`netCDF` format.
+The static files (listed in :numref:`Table %s <LndInputFiles>`) include specific information on location, time, soil layers, and fixed (invariant) experiment parameters that are required for the land component to run. The data must be provided in :term:`netCDF` format.
 
-The static file is available in the ``inputs`` data directory at the following path:
+The following static files are available in the ``inputs/UFS_WM/FV3_fix_tiled/C96/`` data directory (downloaded :ref:`above <lnd-in>`):
 
 .. code-block:: 
 
-   inputs/forcing/gdas/static/ufs-land_C96_static_fields.nc
+   C96.maximum_snow_albedo.tile*.nc
+   C96.slope_type.tile*.nc
+   C96.soil_type.tile*.nc
+   C96.soil_color.tile*.nc
+   C96.substrate_temperature.tile*.nc
+   C96.vegetation_greenness.tile*.nc
+   C96.vegetation_type.tile*.nc
+   oro_C96.mx100.tile*.nc
 
-Details on the configuration variables included in this file are available from the :ref:`Land DA documentation <landda:InputFiles>`. 
+where ``*`` refers to the tile number (1-6). 
+Details on the configuration variables included in this file are available in the :ref:`Land DA documentation <landda:InputFiles>`. 
+
+.. _lnd-grid-ic-files:
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Grid Description and Initial Condition Files
@@ -1021,18 +1115,26 @@ Grid Description and Initial Condition Files
 The input files containing grid information and the initial conditions for global configurations are listed and described in :numref:`Table %s <LndInputFiles>`. 
 
 The initial conditions file includes the initial state variables that are required for the UFS land snow DA to begin a cycling run. The data must be provided in :term:`netCDF` format.
-
-The initial conditions file is available in the ``inputs`` data directory (downloaded :ref:`above <lnd-io>`) at the following path:
+The initial conditions file is available in the ``inputs`` data directory (downloaded :ref:`above <lnd-in>`) at the following path:
 
 .. code-block:: 
 
-   inputs/forcing/GDAS/init/ufs-land_C96_init_fields_1hr.nc
+   inputs/UFS_WM/NOAHMP_IC/ufs-land_C96_init_fields.tile*.nc
+
+Grid files are available in the ``inputs/UFS_WM/FV3_input_data/INPUT`` directory:
+
+.. code-block::
+
+   C96_grid.tile*.nc
+   grid_spec.nc     # aka C96.mosaic.nc
+
+The ``C96_grid.tile*.nc`` files contain grid information for tiles 1-6 at C96 grid resolution. The ``grid_spec.nc`` file contains information on the mosaic grid.
 
 ^^^^^^^^^^^^^^^^^^^^
 Additional Files
 ^^^^^^^^^^^^^^^^^^^^
 
-The LND component uses a model configuration namelist file as well as atmospheric forcing files, data assimilation files, and restart files, which are also listed in :numref:`Table %s <LndInputFiles>`. 
+The LND component uses atmospheric forcing files, data assimilation files, and restart files, which are also listed in :numref:`Table %s <LndInputFiles>`. 
 
 .. _model-config-files:
 
@@ -1045,7 +1147,7 @@ The configuration files used by the UFS Weather Model are listed here and descri
    * ``diag_table``
    * ``field_table``
    * ``model_configure``
-   * ``nems.configure``
+   * ``ufs.configure``
    * ``suite_[suite_name].xml`` (used only at build time)
    * ``datm.streams`` (used by CDEPS)
    * ``datm_in`` (used by CDEPS)
@@ -1278,6 +1380,8 @@ More information on the content of this file can be found in ``FMS/diag_manager/
 
 .. note:: None of the lines in the ``diag_table`` can span multiple lines.
 
+.. _field_tableFile:
+
 -----------------------
 ``field_table`` file
 -----------------------
@@ -1495,45 +1599,63 @@ are not usually changed.
      - integer
      - 0
 
-.. _nems-conf:
+.. _ufs-conf:
 
 ------------------------
-``nems.configure`` file
+``ufs.configure`` file
 ------------------------
 
 This file contains information about the various NEMS components and their run sequence. The active components for a particular model configuration are given in the *EARTH_component_list*. For each active component, the model name and compute tasks assigned to the component are given. A specific component might also require additional configuration information to be present. The ``runSeq`` describes the order and time intervals over which one or more component models integrate in time. Additional *attributes*, if present, provide additional configuration of the model components when coupled with the CMEPS mediator.
 
-For the ATM application, since it consists of a single component, the ``nems.configure`` is simple and does not need to be changed.
+For the ATM application, since it consists of a single component, the ``ufs.configure`` is simple and does not need to be changed.
 A sample of the file contents is shown below:
 
 .. code-block:: console
 
-  EARTH_component_list: ATM
-  ATM_model:            fv3
-  runSeq::
-    ATM
-  ::
+   # ESMF #
+   logKindFlag:            ESMF_LOGKIND_MULTI
+   globalResourceControl:  true
 
-However, ``nems.configure`` files for other configurations of the Weather Model are more complex. A full set of ``nems.configure`` templates is available in the ``ufs-weather-model/tests/parm/`` directory `here <https://github.com/ufs-community/ufs-weather-model/tree/develop/tests/parm>`__. Template names follow the pattern ``nems.configure.*.IN``. A number of samples are available below: 
+   # EARTH #
+   EARTH_component_list: ATM
+   EARTH_attributes::
+   Verbosity = 0
+   ::
 
-   * :doc:`ATMAQ <samples/nems.configure.ATMAQ>` configuration
-   * :doc:`S2S <samples/nems.configure.S2S>` (fully coupled ``S2S`` configuration that receives atmosphere-ocean fluxes from a mediator)
-   * :doc:`S2SW <samples/nems.configure.S2SW>` (fully coupled ``S2SW`` configuration)
-   * :doc:`S2SWA <samples/nems.configure.S2SWA>` (coupled GOCART in the S2SAW configuration)
-   * :doc:`NG-GODAS <samples/nems.configure.NG-GODAS>` (coupled NG-GODAS configuration)
-   * :doc:`HAFS <samples/nems.configure.HAFS>` (coupled HAFS configuration)
-   * :doc:`LND <samples/nems.configure.ATM_LND>` (ATML configuration)
+   # ATM #
+   ATM_model:                      @[atm_model]
+   ATM_petlist_bounds:             @[atm_petlist_bounds]
+   ATM_omp_num_threads:            @[atm_omp_num_threads]
+   ATM_attributes::
+   Verbosity = 0
+   Diagnostic = 0
+   ::
 
-   * For more HAFS, HAFSW, and HAFS-ALL configurations please see the following ``nems.configure`` templates:
+   # Run Sequence #
+   runSeq::
+   ATM
+   ::
 
-      * `HAFS ATM-OCN <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/nems.configure.hafs_atm_ocn.IN>`_
-      * `HAFS ATM-WAV <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/nems.configure.hafs_atm_wav.IN>`_
-      * `HAFS ATM-OCN-WAV <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/nems.configure.hafs_atm_ocn_wav.IN>`_
-      * `HAFS ATM-DOCN <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/nems.configure.hafs_atm_docn.IN>`_
+However, ``ufs.configure`` files for other configurations of the Weather Model are more complex. A full set of ``ufs.configure`` templates is available in the ``ufs-weather-model/tests/parm/`` directory `here <https://github.com/ufs-community/ufs-weather-model/tree/develop/tests/parm>`__. Template names follow the pattern ``ufs.configure.*.IN``. A number of samples are available below: 
+
+   * `ATMAQ <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.atmaq.IN>`__ configuration
+   * `S2S <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.s2s_aoflux.IN>`__ (fully coupled ``S2S`` configuration that receives atmosphere-ocean fluxes from a mediator)
+   * `S2SW <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.s2sw.IN>`__ (fully coupled ``S2SW`` configuration)
+   * `S2SWA <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.s2swa.IN>`__ (coupled GOCART in the S2SAW configuration)
+   * `ATM-LND <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.atm_lnd.IN>`__ (ATML configuration)
+
+   * For more HAFS, HAFSW, and HAFS-ALL configurations please see the following ``ufs.configure`` templates:
+
+      * `HAFS ATM-OCN <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.hafs_atm_ocn.IN>`__
+      * `HAFS ATM-WAV <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.hafs_atm_wav.IN>`__
+      * `HAFS ATM-OCN-WAV <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.hafs_atm_ocn_wav.IN>`__
+      * `HAFS ATM-DOCN <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.hafs_atm_docn.IN>`__
 
 .. note:: The ``aoflux_grid`` option is used to select the grid/mesh to perform atmosphere-ocean flux calculation. The possible options are ``xgrid`` (exchange grid), ``agrid`` (atmosphere model grid) and ``ogrid`` (ocean model grid).
 
 .. note:: The ``aoflux_code`` option is used to define the algorithm that will be used to calculate atmosphere-ocean fluxes. The possible options are ``cesm`` and ``ccpp``. If ``ccpp`` is selected then the suite file provided in the ``aoflux_ccpp_suite`` option is used to calculate atmosphere-ocean fluxes through the use of CCPP host model.
+
+.. _SDF-file:
 
 ---------------------------------------
 The Suite Definition File (SDF) File
@@ -1552,6 +1674,8 @@ There are four SDFs currently supported for the UFS Short Range Weather App conf
    * ``suite_FV3_WoFS_v0.xml``
 
 Detailed descriptions of the supported suites can be found with the `CCPP v6.0.0 Scientific Documentation <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/index.html>`__.
+
+.. _datm.streams-file:
 
 ---------------------------------------
 ``datm.streams``
@@ -1613,6 +1737,7 @@ A sample of the data stream file is shown below:
   stream_data_files01:       DATM_INPUT/cfsr.201110.nc
   stream_data_variables01:  "slmsksfc Sa_mask" "DSWRF Faxa_swdn" "DLWRF Faxa_lwdn" "vbdsf_ave Faxa_swvdr" "vddsf_ave Faxa_swvdf" "nbdsf_ave Faxa_swndr" "nddsf_ave Faxa_swndf" "u10m Sa_u10m" "v10m Sa_v10m" "hgt_hyblev1 Sa_z" "psurf Sa_pslv" "tmp_hyblev1 Sa_tbot" "spfh_hyblev1 Sa_shum" "ugrd_hyblev1 Sa_u" "vgrd_hyblev1 Sa_v" "q2m Sa_q2m" "t2m Sa_t2m" "pres_hyblev1 Sa_pbot" "precp Faxa_rain" "fprecp Faxa_snow"
 
+.. _datm_inFile:
 
 ---------------------------------------
 ``datm_in``
@@ -1689,8 +1814,7 @@ The atmosphere model reads many parameters from a Fortran namelist file, named `
    * The `FV3 Dynamical Core Technical Documentation <https://noaa-emc.github.io/FV3_Dycore_ufs-v2.0.0/html/index.html>`__ describes some of the other namelist records (dynamics, grid, etc). 
    * The namelist section ``&interpolator_nml`` is not used in this release, and any modifications to it will have no effect on the model results.
 
-.. Last I saw, the Stochastic Physics release/public-v3 was more up-to-date than latest...
-
+.. _fms_io_nml_section:
 
 ^^^^^^^^^^^^^^^^^^
 fms_io_nml
@@ -1777,6 +1901,7 @@ This release of the UFS Weather Model sets the following variables in the ``&fms
      max_files_w = 100
    /
 
+.. _namsfc_section:
 
 ^^^^^^^^^^^^^^^^^^
 ``namsfc``
@@ -1788,8 +1913,7 @@ The variables used in ``&namsfc`` to set the filenames are described in :numref:
 
 .. _namsfc_nml:
 
-.. list-table:: *List of common variables in the *namsfc* namelist section used to set the filenames of
-                static datasets.*
+.. list-table:: *List of common variables in the *namsfc* namelist section used to set the filenames of static datasets.*
    :widths: 15 40 15 20
    :header-rows: 1
 
@@ -1898,6 +2022,8 @@ A sample subset of this namelist is shown below:
 Additional variables for the ``&namsfc`` namelist can be found in the ``FV3/ccpp/physics/physics/sfcsub.F``
 file.
 
+.. _atmos_model_nml_section:
+
 ^^^^^^^^^^^^^^^^^^^^
 ``atmos_model_nml``
 ^^^^^^^^^^^^^^^^^^^^
@@ -1962,6 +2088,8 @@ A sample of this namelist is shown below:
 
 The namelist section relating to the FMS diagnostic manager ``&diag_manager_nml`` is described in :numref:`Section %s <DiagManagerNML>`.
 
+.. _gfs_physics_nml_section:
+
 ^^^^^^^^^^^^^^^^^^
 gfs_physics_nml
 ^^^^^^^^^^^^^^^^^^
@@ -2007,6 +2135,8 @@ file.
 Output files
 =============
 
+.. _fv3atm-out:
+
 -------
 FV3Atm
 -------
@@ -2033,6 +2163,8 @@ Standard output files are ``logfHHH`` (one per forecast hour), and out and err a
 files (controlled by variable print_esmf in the ``model_configure`` file), called ``PETnnn.ESMF_LogFile`` (one per MPI task).
 
 Additional output files include: ``nemsusage.xml``, a timing log file; `time_stamp.out`, contains the model init time; ``RESTART/*nc``, files needed for restart runs.
+
+.. _mom-out:
 
 -------
 MOM6
@@ -2073,6 +2205,8 @@ A brief example of the diag_table is shown below.  ``"..."`` denotes where lines
    "ocean_model", "taux",      "taux",          "ocn%4yr%2mo%2dy%2hr","all",.true.,"none",2
    "ocean_model", "tauy",      "tauy",          "ocn%4yr%2mo%2dy%2hr","all",.true.,"none",2
    ...
+
+.. _hycom-out:
 
 -------
 HYCOM
@@ -2118,6 +2252,8 @@ HYCOM outpus multiple datasets. These datasets contain both dot-a (.a), dot-b (.
    * - restart_out.(a,b)
      - HYCOM restart files
 
+.. _cice-out:
+
 -------
 CICE6
 -------
@@ -2152,7 +2288,9 @@ on the monthly, daily, hourly, yearly or timestep intervals set by the *histfreq
 *0* for both monthly and daily frequencies and neither yearly nor per-timestep output is requested, only 6-hour
 mean history files will be produced.
 
-Further details of the configuration of CICE model output can be found in the CICE documentation  `3.1.4 <https://cice-consortium-cice.readthedocs.io/en/master/user_guide/ug_implementation.html#model-output>`_
+Further details of the configuration of CICE model output can be found in the CICE documentation `Section 3.1.4 <https://cice-consortium-cice.readthedocs.io/en/main/user_guide/ug_implementation.html#model-output>`__.
+
+.. _ww3-out:
 
 -------
 WW3
@@ -2160,19 +2298,22 @@ WW3
 
 The run directory includes WW3 binary outputs for the gridded outputs (``YYYYMMDD.HHMMSS.out_grd.<grd>``), point outputs (``YYYYMMDD.HHMMSS.out_pnt.points``) and restart files (``YYYYMMDD.HHMMSS.restart.<grd>``).
 
+.. _cmeps-out:
+
 -------
 CMEPS
 -------
 
 The CMEPS mediator writes general information about the run-time configuration to the file ``mediator.log`` in the model run directory. Optionally, the CMEPS mediator can be configured to write history files for the purposes of examining the field exchanges at various points in the model run sequence.
 
+.. _FMS-info:
+
 ==============================================================
 Additional Information about the FMS Diagnostic Manager
 ==============================================================
 
 The FMS (Flexible Modeling System) diagnostic manager (``FMS/diag_manager``) manages the output for the ATM and, if present, the MOM6 component in the UFS Weather Model. It is configured using the ``diag_table`` file. Data can be written at any number of sampling and/or averaging intervals
-specified at run-time.  More information about the FMS diagnostic manager can be found at:
-https://data1.gfdl.noaa.gov/summer-school/Lectures/July16/03_Seth1_DiagManager.pdf
+specified at run-time. 
 
 .. _DiagManagerNML:
 
@@ -2181,8 +2322,7 @@ Diagnostic Manager Namelist
 ------------------------------
 The ``diag_manager_nml`` namelist contains values to control the behavior of the diagnostic manager. Some
 of the more common namelist options are described in :numref:`Table %s <DiagManager>`. See
-``FMS/diag_manager/diag_manager.F90`` for the complete list or view the FMS documentation 
-`here <http://noaa-gfdl.github.io/FMS/group__diag__manager__mod.html>`__ for additional information.
+``FMS/diag_manager/diag_manager.F90`` for the complete list or view the `FMS documentation <http://noaa-gfdl.github.io/FMS/group__diag__manager__mod.html>`__ for additional information.
 
 .. COMMENT: Is it worth linking to the FMS docs? WM just deals with the namelist file...
 
@@ -2240,6 +2380,8 @@ This release of the UFS Weather Model uses the following namelist:
    &diag_manager_nml
      prepend_date = .false.
    /
+
+.. _write-component-info:
 
 ==============================================================
 Additional Information about the Write Component
