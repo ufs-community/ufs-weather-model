@@ -56,6 +56,7 @@ def generateStage(nodeLabel) {
                             cd ${DISKNM}/NEMSfv3gfs/
                             ./adjust_permissions.sh hercules develop-${BL_DATE}
                             chgrp noaa-hpc develop-${BL_DATE}
+		            cd $WORKSPACE/test
                           elif [[ $machine =~ "Orion" ]]
                           then
                             echo "Creating baselines on $machine"
@@ -71,6 +72,7 @@ def generateStage(nodeLabel) {
                             cd ${DISKNM}/NEMSfv3gfs/
                             ./adjust_permissions.sh orion develop-${BL_DATE}
                             chgrp noaa-hpc develop-${BL_DATE}
+			    cd $WORKSPACE/test
                           elif [[ $machine =~ "GaeaC5" ]]
                           then 
                             echo "Creating baselines on $machine"
@@ -83,6 +85,7 @@ def generateStage(nodeLabel) {
                             rsync -a REGRESSION_TEST/ ${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}
                             cd ${DISKNM}/NEMSfv3gfs/
                             chgrp ncep develop-${BL_DATE}
+		            cd $WORKSPACE/test
                           elif [[ $machine =~ "Hera" ]]
                           then
                             echo "Creating baselines on $machine"
@@ -93,6 +96,7 @@ def generateStage(nodeLabel) {
 			    mkdir develop-${BL_DATE}
 			    cd  /scratch1/NCEPDEV/stmp4/role.epic/FV3_RT
 			    rsync -a REGRESSION_TEST/ ${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}
+			    cd $WORKSPACE/test
                            elif [[ $machine =~ "Derecho" ]]
                            then
                              echo "Creating baselines on $machine"
@@ -103,6 +107,7 @@ def generateStage(nodeLabel) {
 			     mkdir develop-${BL_DATE}
 			     cd /glade/derecho/scratch/epicufsrt/FV3_RT
 			     rsync -a REGRESSION_TEST/ ${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}
+			     cd $WORKSPACE/test
                           else
                             echo "Creating baselines on $machine"
                             ./rt.sh -a ${ACCNR} -c -r -l rt.conf
