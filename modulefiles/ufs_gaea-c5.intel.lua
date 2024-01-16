@@ -10,7 +10,7 @@ load("intel-classic/2023.1.0")
 load("cray-mpich/8.1.25")
 load("python/3.9.12")
 
-prepend_path("MODULEPATH", "/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/spack-stack-1.5.1/envs/unified-env/install/modulefiles/Core")
+prepend_path("MODULEPATH", "/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core")
 prepend_path("MODULEPATH", "/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/modulefiles")
 
 stack_intel_ver=os.getenv("stack_intel_ver") or "2023.1.0"
@@ -19,7 +19,7 @@ load(pathJoin("stack-intel", stack_intel_ver))
 stack_cray_mpich_ver=os.getenv("stack_cray_mpich_ver") or "8.1.25"
 load(pathJoin("stack-cray-mpich", stack_cray_mpich_ver))
 
-stack_python_ver=os.getenv("stack_python_ver") or "3.10.8"
+stack_python_ver=os.getenv("stack_python_ver") or "3.10.13"
 load(pathJoin("stack-python", stack_python_ver))
 
 load("ufs_common")
