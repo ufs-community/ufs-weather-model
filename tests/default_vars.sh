@@ -778,6 +778,7 @@ export SYEAR=2021
 export SMONTH=03
 export SDAY=22
 export SHOUR=06
+export CHOUR=06
 export FHMAX=24
 export FHROT=0
 export DT_ATMOS=720
