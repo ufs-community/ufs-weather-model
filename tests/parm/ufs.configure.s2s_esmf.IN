@@ -4,10 +4,10 @@
 
 # ESMF #
 logKindFlag:            @[esmf_logkind]
-globalResourceControl:  false
+globalResourceControl:  true
 
 # EARTH #
-EARTH_component_list: MED ATM CHM OCN ICE
+EARTH_component_list: MED ATM OCN ICE
 EARTH_attributes::
   Verbosity = 0
 ::
@@ -15,11 +15,13 @@ EARTH_attributes::
 # MED #
 MED_model:                      @[med_model]
 MED_petlist_bounds:             @[med_petlist_bounds]
+MED_omp_num_threads:            @[med_omp_num_threads]
 ::
 
 # ATM #
 ATM_model:                      @[atm_model]
 ATM_petlist_bounds:             @[atm_petlist_bounds]
+ATM_omp_num_threads:            @[atm_omp_num_threads]
 ATM_attributes::
   Verbosity = 0
   DumpFields = @[DumpFields]
@@ -27,16 +29,10 @@ ATM_attributes::
   OverwriteSlice = true
 ::
 
-# CHM #
-CHM_model:                      @[chm_model]
-CHM_petlist_bounds:             @[chm_petlist_bounds]
-CHM_attributes::
-  Verbosity = 0
-::
-
 # OCN #
 OCN_model:                      @[ocn_model]
 OCN_petlist_bounds:             @[ocn_petlist_bounds]
+OCN_omp_num_threads:            @[ocn_omp_num_threads]
 OCN_attributes::
   Verbosity = 0
   DumpFields = @[DumpFields]
@@ -50,6 +46,7 @@ OCN_attributes::
 # ICE #
 ICE_model:                      @[ice_model]
 ICE_petlist_bounds:             @[ice_petlist_bounds]
+ICE_omp_num_threads:            @[ice_omp_num_threads]
 ICE_attributes::
   Verbosity = 0
   DumpFields = @[DumpFields]
@@ -73,11 +70,7 @@ runSeq::
      MED med_phases_prep_ice
      MED -> ATM :remapMethod=redist
      MED -> ICE :remapMethod=redist
-     ATM phase1
-     ATM -> CHM
-     CHM
-     CHM -> ATM
-     ATM phase2
+     ATM
      ICE
      ATM -> MED :remapMethod=redist
      MED med_phases_post_atm
