@@ -54,7 +54,7 @@ export atm_omp_num_threads=${THRD_c384}
 export INPES=${INPES_c384}
 export JNPES=${JNPES_c384}
 export WRITE_GROUP=1
-export WRTTASK_PER_GROUP=48
+export WRTTASK_PER_GROUP=${WRTTASK_PER_GROUP_c384gdas:-48}
 export FHMAX=12
 export NPZ=127
 export NPZP=128
@@ -68,7 +68,6 @@ export SDAY=21
 export SHOUR=18
 export FHROT=3
 export OUTPUT_FH="3 -1"
-export NFHMAX_HF=0
 export IAU_OFFSET=6
 export CDMBWD=${CDMBWD_c384}
 export OUTPUT_GRID='gaussian_grid'
@@ -95,6 +94,6 @@ export FV3_RUN=control_run.IN
 export CCPP_SUITE=FV3_GFS_v16
 export INPUT_NML=control_gdas.nml.IN
 
-if [[ $MACHINE_ID = gaea || $MACHINE_ID = cheyenne ]]; then
-  TPN=18
+if [[ $MACHINE_ID = jet ]] ; then
+  TPN=20
 fi

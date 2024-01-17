@@ -10,21 +10,14 @@
   max_output_fields = @[MAX_OUTPUT_FIELDS]
 /
 
-&fms_io_nml
-  checksum_required = .false.
-  max_files_r = 100
-  max_files_w = 100
-/
-
-&mpp_io_nml
-shuffle=1
-deflate_level=1
-/
-
 &fms_nml
   clock_grain = 'ROUTINE'
   domains_stack_size = 3000000
   print_memory_usage = .false.
+/
+
+&fms2_io_nml
+  netcdf_default_format = "netcdf4"
 /
 
 &fv_core_nml
@@ -42,8 +35,9 @@ deflate_level=1
   n_sponge = 42
   nudge_qv = .true.
   nudge_dz = .false.
-  tau = 10.
-  rf_cutoff = 7.5e2
+  tau = @[FV_CORE_TAU]
+  rf_cutoff = @[RF_CUTOFF]
+  fast_tau_w_sec = @[FAST_TAU_W_SEC]
   d2_bg_k1 = 0.20
   d2_bg_k2 = 0.0
   kord_tm = -9
@@ -116,6 +110,10 @@ deflate_level=1
   fhcyc        = @[FHCYC]
   use_ufo      = .true.
   pre_rad      = .false.
+  progsigma    = @[PROGSIGMA]
+  betascu      = @[BETASCU]
+  betamcu      = @[BETAMCU]
+  betadcu      = @[BETADCU]
   imp_physics  = @[IMP_PHYSICS]
   ltaerosol    = @[LTAEROSOL]
   lradar       = @[LRADAR]
@@ -185,6 +183,7 @@ deflate_level=1
   iopt_tbot    = 2
   iopt_stc     = 3
   iopt_trs     = 2
+  iopt_diag    = 2
   debug        = .false.
   oz_phys      = .false.
   oz_phys_2015 = .true.
@@ -379,8 +378,19 @@ deflate_level=1
   knob_ugwp_effac   = 1,1,1,1
   knob_ugwp_doaxyz  = 1
   knob_ugwp_doheat  = 1
-  knob_ugwp_dokdis  = 1
-  knob_ugwp_ndx4lh  = 1
-  knob_ugwp_version = 0
-  launch_level      = 54
+  knob_ugwp_dokdis  = @[KNOB_UGWP_DOKDIS]
+  knob_ugwp_ndx4lh  = @[KNOB_UGWP_NDX4LH]
+  knob_ugwp_version = @[KNOB_UGWP_VERSION]
+  ! This is only for cires_ugwpv_module.F90
+@[HIDE_UGWPV0] launch_level      = 54
+  ! These are only for cires_ugwpv1_module.F90
+@[HIDE_UGWPV1] knob_ugwp_lzmax    = 15.750e3
+@[HIDE_UGWPV1] knob_ugwp_lzmin    = 0.75e3
+@[HIDE_UGWPV1] knob_ugwp_lzstar   = 2.0e3
+@[HIDE_UGWPV1] knob_ugwp_taumin   = 0.25e-3
+@[HIDE_UGWPV1] knob_ugwp_tauamp   = 3.0e-3
+@[HIDE_UGWPV1] knob_ugwp_lhmet    = 200.0e3
+@[HIDE_UGWPV1] knob_ugwp_orosolv  = 'pss-1986'
+@[HIDE_UGWPV1] knob_ugwp_palaunch = @[KNOB_UGWP_PALAUNCH]
+@[HIDE_UGWPV1] knob_ugwp_nslope   = @[KNOB_UGWP_NSLOPE]
 /

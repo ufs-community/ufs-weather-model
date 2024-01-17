@@ -20,7 +20,7 @@ def set_directories(job_obj):
     logger = logging.getLogger('BL/SET_DIRECTORIES')
     if job_obj.machine == 'hera':
         workdir = '/scratch1/NCEPDEV/nems/emc.nemspara/autort/pr'
-        blstore = '/scratch1/NCEPDEV/nems/emc.nemspara/RT/NEMSfv3gfs'
+        blstore = '/scratch2/NAGAPE/epic/UFS-WM_RT/NEMSfv3gfs'
         rtbldir = '/scratch1/NCEPDEV/stmp4/emc.nemspara/FV3_RT/'\
                  f'REGRESSION_TEST'
     elif job_obj.machine == 'jet':
@@ -28,20 +28,20 @@ def set_directories(job_obj):
         blstore = '/lfs4/HFIP/h-nems/emc.nemspara/RT/NEMSfv3gfs/'
         rtbldir = '/lfs4/HFIP/h-nems/emc.nemspara/RT_BASELINE/'\
                  f'emc.nemspara/FV3_RT/REGRESSION_TEST'
-    elif job_obj.machine == 'gaea':
-        workdir = '/lustre/f2/pdata/ncep/emc.nemspara/autort/pr'
-        blstore = '/lustre/f2/pdata/ncep_shared/emc.nemspara/RT/NEMSfv3gfs'
-        rtbldir = '/lustre/f2/scratch/emc.nemspara/FV3_RT/'\
-                 f'REGRESSION_TEST'
     elif job_obj.machine == 'orion':
         workdir = '/work/noaa/epic-ps/role-epic-ps/autort/tests/auto/pr'
-        blstore = '/work2/noaa/epic-ps/RT/NEMSfv3gfs'
+        blstore = '/work/noaa/epic/UFS-WM_RT/NEMSfv3gfs'
         rtbldir = '/work/noaa/stmp/role-epic-ps/stmp/role-epic-ps/FV3_RT/'\
                  f'REGRESSION_TEST'
-    elif job_obj.machine == 'cheyenne':
-        workdir = '/glade/scratch/epicufsrt/autort/jenkins/autort/pr'
-        blstore = '/glade/scratch/epicufsrt/GMTB/ufs-weather-model/RT/NEMSfv3gfs'
-        rtbldir = '/glade/scratch/epicufsrt/FV3_RT/'\
+    elif job_obj.machine == 'hercules':
+        workdir = '/work/noaa/epic/role-epic/autort/tests/auto/pr'
+        blstore = '/work/noaa/epic/hercules/UFS-WM_RT'
+        rtbldir = '/work/noaa/stmp/role-epic/stmp/role-epic/FV3_RT/'\
+                 f'REGRESSION_TEST'  
+    elif job_obj.machine == 'derecho':
+        workdir = '/glade/derecho/scratch/epicufsrt/autort/jenkins/autort/pr'
+        blstore = '/glade/derecho/scratch/epicufsrt/ufs-weather-model/RT/NEMSfv3gfs'
+        rtbldir = '/glade/derecho/scratch/epicufsrt/FV3_RT/'\
                  f'REGRESSION_TEST'
     else:
         logger.critical(f'Machine {job_obj.machine} is not supported for this job')

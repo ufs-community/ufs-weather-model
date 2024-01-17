@@ -1,0 +1,135 @@
+#
+#  cpld_control GFSv17 with UGWPv1 test, i.e., GSL orographic drag +
+#  version 1 non-stationary GWD
+#
+
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS-WW3 system - C96MX100 - unst WW3"
+
+export CNTL_DIR=cpld_control_gfsv17
+
+export LIST_FILES="sfcf021.tile1.nc \
+                   sfcf021.tile2.nc \
+                   sfcf021.tile3.nc \
+                   sfcf021.tile4.nc \
+                   sfcf021.tile5.nc \
+                   sfcf021.tile6.nc \
+                   atmf021.tile1.nc \
+                   atmf021.tile2.nc \
+                   atmf021.tile3.nc \
+                   atmf021.tile4.nc \
+                   atmf021.tile5.nc \
+                   atmf021.tile6.nc \
+                   sfcf024.tile1.nc \
+                   sfcf024.tile2.nc \
+                   sfcf024.tile3.nc \
+                   sfcf024.tile4.nc \
+                   sfcf024.tile5.nc \
+                   sfcf024.tile6.nc \
+                   atmf024.tile1.nc \
+                   atmf024.tile2.nc \
+                   atmf024.tile3.nc \
+                   atmf024.tile4.nc \
+                   atmf024.tile5.nc \
+                   atmf024.tile6.nc \
+                   RESTART/20210323.060000.coupler.res \
+                   RESTART/20210323.060000.fv_core.res.nc \
+                   RESTART/20210323.060000.fv_core.res.tile1.nc \
+                   RESTART/20210323.060000.fv_core.res.tile2.nc \
+                   RESTART/20210323.060000.fv_core.res.tile3.nc \
+                   RESTART/20210323.060000.fv_core.res.tile4.nc \
+                   RESTART/20210323.060000.fv_core.res.tile5.nc \
+                   RESTART/20210323.060000.fv_core.res.tile6.nc \
+                   RESTART/20210323.060000.fv_srf_wnd.res.tile1.nc \
+                   RESTART/20210323.060000.fv_srf_wnd.res.tile2.nc \
+                   RESTART/20210323.060000.fv_srf_wnd.res.tile3.nc \
+                   RESTART/20210323.060000.fv_srf_wnd.res.tile4.nc \
+                   RESTART/20210323.060000.fv_srf_wnd.res.tile5.nc \
+                   RESTART/20210323.060000.fv_srf_wnd.res.tile6.nc \
+                   RESTART/20210323.060000.fv_tracer.res.tile1.nc \
+                   RESTART/20210323.060000.fv_tracer.res.tile2.nc \
+                   RESTART/20210323.060000.fv_tracer.res.tile3.nc \
+                   RESTART/20210323.060000.fv_tracer.res.tile4.nc \
+                   RESTART/20210323.060000.fv_tracer.res.tile5.nc \
+                   RESTART/20210323.060000.fv_tracer.res.tile6.nc \
+                   RESTART/20210323.060000.phy_data.tile1.nc \
+                   RESTART/20210323.060000.phy_data.tile2.nc \
+                   RESTART/20210323.060000.phy_data.tile3.nc \
+                   RESTART/20210323.060000.phy_data.tile4.nc \
+                   RESTART/20210323.060000.phy_data.tile5.nc \
+                   RESTART/20210323.060000.phy_data.tile6.nc \
+                   RESTART/20210323.060000.sfc_data.tile1.nc \
+                   RESTART/20210323.060000.sfc_data.tile2.nc \
+                   RESTART/20210323.060000.sfc_data.tile3.nc \
+                   RESTART/20210323.060000.sfc_data.tile4.nc \
+                   RESTART/20210323.060000.sfc_data.tile5.nc \
+                   RESTART/20210323.060000.sfc_data.tile6.nc \
+                   RESTART/20210323.060000.MOM.res.nc \
+                   RESTART/iced.2021-03-23-21600.nc \
+                   RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc \
+                   20210323.060000.out_pnt.ww3 \
+                   20210323.060000.out_grd.ww3 "
+
+export_fv3
+export_cpl
+
+export CPLCHM=.false.
+export DNATS=0
+
+export RESTART_N=3
+export RESTART_INTERVAL="${RESTART_N} -1"
+export OUTPUT_FH='0 21 24'
+
+
+export INPES=$INPES_cpl_unstr_mpi
+export JNPES=$JNPES_cpl_unstr_mpi
+export atm_omp_num_threads=$THRD_cpl_unstr_mpi
+export WRTTASK_PER_GROUP=$(( WPG_cpl_unstr_mpi * THRD_cpl_unstr_mpi ))
+
+OCN_tasks=$OCN_tasks_cpl_unstr_mpi
+ICE_tasks=$ICE_tasks_cpl_unstr_mpi
+WAV_tasks=$WAV_tasks_cpl_unstr_mpi
+
+export CICE_NPROC=$ICE_tasks
+export np2=`expr $CICE_NPROC / 2`
+export CICE_BLCKX=`expr $NX_GLB / $np2`
+export CICE_BLCKY=`expr $NY_GLB / 2`
+
+
+
+export atm_omp_num_threads=$THRD_cpl_unstr
+export med_omp_num_threads=$atm_omp_num_threads
+
+# P8 UGWP1
+export GWD_OPT=2
+export CDMBWD=20.0,2.5,1.0,1.0
+export DO_UGWP_V1=.true.
+export KNOB_UGWP_VERSION=1
+export KNOB_UGWP_NSLOPE=1
+export DO_UGWP_V0=.false.
+export DO_GSL_DRAG_LS_BL=.true.
+export DO_GSL_DRAG_SS=.true.
+export DO_GSL_DRAG_TOFD=.true.
+export DO_UGWP_V1_OROG_ONLY=.false.
+export DO_UGWP_V0_NST_ONLY=.false.
+export LDIAG_UGWP=.false.
+export KNOB_UGWP_DOKDIS=2
+export KNOB_UGWP_NDX4LH=4
+
+export MOM6_TOPOEDITS=ufs.topo_edits_011818.nc
+export MOM6_ALLOW_LANDMASK_CHANGES=True
+export eps_imesh=2.5e-1
+
+export WW3_DOMAIN=global_270k
+export MESH_WAV=mesh.${WW3_DOMAIN}.nc
+export WW3_MODDEF=mod_def.exp.${WW3_DOMAIN}
+
+export FV3_RUN=cpld_control_run.IN
+export CCPP_SUITE=FV3_GFS_v17_coupled_p8_ugwpv1
+export FIELD_TABLE=field_table_thompson_noaero_tke_progsigma
+export DIAG_TABLE=diag_table_cpld_template
+export INPUT_NML=cpld_control.nml.IN
+export UFS_CONFIGURE=ufs.configure.s2sw.IN
+
+#GFSv17	settings
+export PROGSIGMA=.true.
+export IOPT_DIAG=1

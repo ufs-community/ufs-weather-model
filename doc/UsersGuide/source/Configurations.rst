@@ -1,3 +1,9 @@
+.. |nbsp| unicode:: 0xA0 
+   :trim:
+
+.. role:: raw-html(raw)
+    :format: html
+
 .. _Configurations:
 
 *************************
@@ -7,8 +13,7 @@ Configurations
 The UFS Weather Model (WM) can be run in any of several configurations, from a single-component atmospheric 
 model to a fully coupled model with multiple earth system components (e.g., atmosphere, ocean, sea-ice, land, and 
 mediator). This chapter documents a few of the currently supported configurations. For a full list of 
-supported configurations, view the `rt.conf <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/rt.conf>`__ 
-and `rt.gnu.conf <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/rt_gnu.conf>`__ files. 
+supported configurations, view the `rt.conf <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/rt.conf>`__ file. 
 
 .. attention::
 
@@ -30,11 +35,13 @@ and `rt.gnu.conf <https://github.com/ufs-community/ufs-weather-model/blob/develo
      - Coupled :term:`ATM` and :term:`LND`
    * - :ref:`LND <lnd-documented>`
      - Coupled :term:`CDEPS` - :term:`DATM` - :term:`LND` -:term:`CMEPS`
+   * - :ref:`RRFS <rrfs-documented>`
+     - :term:`ATM` with :term:`data assimilation`
 
 This chapter details the supported build/run options for each supported configuration. 
 Click on the configuration category in :numref:`Table %s <UFS-configurations-documented>` 
 to go to that section. Each configuration category includes sample code for setting ``CMAKE_FLAGS`` and ``CCPP_SUITES``. 
-Additionally, there is a list of preferred physics suites, examples of ``nems.configure`` files, 
+Additionally, there is a list of preferred physics suites, examples of ``ufs.configure`` files, 
 and links to information on other input files required to run the model. 
 
 ============
@@ -45,7 +52,7 @@ Each RT configuration file (located in the ``ufs-weather-model/tests/tests``
 `directory <https://github.com/ufs-community/ufs-weather-model/tree/develop/tests/tests>`__) 
 sets default variables by calling setup functions from ``ufs-weather-model/tests/default_vars.sh`` 
 (see defaults `here <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/default_vars.sh>`__). 
-Then, the RT configuration file sets test-specific variables; these values will override 
+Then, the RT configuration file sets test-specific variablesthese values will override 
 the defaults. For example, the ``control_c48`` test file sets a list of files that 
 it will use, calls the ``export_fv3`` function from ``default_vars.sh``, and then exports 
 test-specific variables. An excerpt is included below (``...`` indicates omitted lines): 
@@ -138,7 +145,7 @@ it will be expanded to cover the full range of ATM-only supported configurations
 
    * - Test Name
      - Description
-     - Physics Suite
+     - Physics Suite (see `namelist options <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_c_c_p_psuite_nml_desp.html>`__)
      - DT_ATMOS
      - Start Date
      - Forecast Length (hours)
@@ -187,11 +194,11 @@ it will be expanded to cover the full range of ATM-only supported configurations
 
 **Additional Information**
 
-Input files required for ATM configurations can be viewed in :numref:`Section %s <atm-io>`
+Input files required for ATM configurations can be viewed in :numref:`Section %s <atm-in>`
 or in the `UFS WM RT Data Bucket <https://registry.opendata.aws/noaa-ufs-regtests/>`__. 
-Information on ``nems.configure`` files is available in :numref:`Section %s <nems-conf>`,
-and a sample ATM ``nems.configure`` file (``nems.configure.atm.IN``) is available 
-`here <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/nems.configure.atm.IN>`__.
+Information on ``ufs.configure`` files is available in :numref:`Section %s <ufs-conf>`,
+and a sample ATM ``ufs.configure`` file (``ufs.configure.atm.IN``) is available 
+`here <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.atm.IN>`__.
 
 
 ATMW
@@ -230,7 +237,7 @@ These tests use default values set in the ``export_fv3`` function of ``default_v
 
    * - Test Name
      - Description
-     - Physics Suite
+     - Physics Suite (see `namelist options <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_c_c_p_psuite_nml_desp.html>`__)
      - DT_ATMOS
      - Start Date
      - Forecast Length (hours)
@@ -261,12 +268,74 @@ These tests use default values set in the ``export_fv3`` function of ``default_v
 
 **Additional Information**
 
-Input files required for ATML configurations can be viewed in :numref:`Section %s (ATM) <atm-io>` 
-and :numref:`Section %s (LND) <lnd-io>` or in the `UFS WM RT Data Bucket <https://registry.opendata.aws/noaa-ufs-regtests/>`__. 
-Information on ``nems.configure`` files is available in :numref:`Section %s <nems-conf>`,
-and a sample ATML ``nems.configure`` file (``nems.configure.atm_lnd.IN``) is available 
-`here <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/nems.configure.atm_lnd.IN>`__.
+Input files required for ATML configurations can be viewed in :numref:`Section %s (ATM) <atm-in>` 
+and :numref:`Section %s (LND) <lnd-in>` or in the `UFS WM RT Data Bucket <https://registry.opendata.aws/noaa-ufs-regtests/>`__. 
+Information on ``ufs.configure`` files is available in :numref:`Section %s <ufs-conf>`,
+and a sample ATML ``ufs.configure`` file (``ufs.configure.atm_lnd.IN``) is available 
+`here <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.atm_lnd.IN>`__.
 
+
+.. _rrfs-documented:
+
+=======================================
+Rapid Refresh Forecast System (RRFS)
+=======================================
+
+The RRFS configurations use an :term:`ATM`-only configuration on a high-resolution 
+regional grid with data assimilation capabilities. 
+These tests use the default values set in the ``export_fv3``, ``export_rap_common``, ``export_rrfs_v1``, and/or ``export_hrrr_conus13km`` functions of ``default_vars.sh`` unless other values are explicitly set in a given test file. In all tests, the values in ``export_fv3`` are set first. Depending on the test, some of these values may be overriden by ``export_rrfs_v1`` (which includes values from ``export_rap_common``) or ``export_hrrr_conus13km``. :numref:`Table %s <rrfs-default-vars-comparison>` compares the values set in ``export_fv3`` to the values set in the other functions. 
+
+.. note:: 
+
+   ``export_rrfs_v1`` calls ``export_rap_common``, which calls ``export_fv3``. Values from ``export_fv3`` are set first, followed by values in ``export_rap_common`` and then values in ``export_rrfs_v1``. Values in italics indicate that the value is inherited from a previously-called function. 
+
+.. _rrfs-default-vars-comparison:
+
+.. csv-table:: *RRFS Default Variables*
+   :file: tables/RRFSDefaultVariables.csv
+   :widths: 50 10 10 10 10
+   :header-rows: 1
+   :stub-columns: 1
+
+Current RRFS regression tests cover a wide variety of functionality and involve several 
+physics tests. :numref:`Table %s <rrfs-rts>` (below) contains a selection of RTs for RRFS functionality. Blanks indicate that the value comes from the default setting file. These default values are listed in :numref:`Table %s <rrfs-default-vars-comparison>` above. 
+
+.. _rrfs-rts:
+
+.. csv-table:: *RRFS regression test descriptions*
+   :file: tables/rrfs-rts.csv
+   :widths: 20 20 30 50 10 10 10
+   :header-rows: 1
+
+**Sample** ``CMAKE_FLAGS`` **Setting**
+
+.. code-block:: console
+
+    export CMAKE_FLAGS="-DAPP=ATM -DCCPP_SUITES=FV3_RAP,FV3_HRRR,FV3_RRFS_v1beta,FV3_RRFS_v1nssl -D32BIT=ON"
+
+**Supported Physics Suites**
+
+.. list-table:: *Physics suites used in the RRFS configurations above*
+   :widths: 10 50
+   :header-rows: 1
+
+   * - Physics Suite
+     - Description
+   * - FV3_HRRR
+     - The FV3_HRRR physics suite is described in the :term:`CCPP` documentation `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_h_r_r_r_suite_page.html>`__.
+   * - FV3_RRFS_v1beta 
+     - The FV3_RRFS_v1beta physics suite is described in the CCPP documentation `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_r_r_f_s_v1beta_page.html>`__.
+   * - FV3_RRFS_v1nssl
+     - The FV3_RRFS_v1nssl physics suite is similar to the *FV3_RRFS_v1beta* suite; however, it uses the NSSL 2-moment microphysics scheme instead of the Thompson microphysics scheme.
+
+
+**Additional Information**
+
+Each test file lists the input files required for a given test. Input files required for RRFS ATM configurations can be downloaded from the `UFS WM RT Data Bucket <https://registry.opendata.aws/noaa-ufs-regtests/>`__. Users who wish to run additional (unsupported) cases may also find useful data in the `NOAA RRFS data bucket <https://registry.opendata.aws/noaa-rrfs/>`__. 
+
+Information on ``ufs.configure`` files is available in :numref:`Section %s <ufs-conf>`. The supported RRFS WM RTs use the same ``ufs.configure`` file that ATM-only tests do (``ufs.configure.atm.IN``). This file can be viewed in the ``ufs-weather-model/tests/parm`` `directory <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.atm.IN>`__. 
+
+Additionally, users can find examples of various RRFS configuration files in the ``ufs-weather-model/tests/parm`` `directory <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/>`__. These files include ``model_configure_*``, ``*_run.IN`` (input run), ``*.nml.IN`` (input namelist), ``field_table_*``, and ``diag_table_*`` files.  
 
 .. _lnd-documented:
 
@@ -309,11 +378,11 @@ The LND configuration couples :term:`DATM`, :term:`CDEPS`, and :term:`CMEPS` wit
 
 **Additional Information**
 
-Input files required for LND configurations can be viewed in :numref:`Section %s (LND) <lnd-io>` 
+Input files required for LND configurations can be viewed in :numref:`Section %s (LND) <lnd-in>` 
 or in the `UFS WM RT Data Bucket <https://registry.opendata.aws/noaa-ufs-regtests/>`__. 
-Information on ``nems.configure`` files is available in :numref:`Section %s <nems-conf>`,
-and a sample ATML ``nems.configure`` file (``nems.configure.atm_lnd.IN``) is available 
-`here <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/nems.configure.atm_lnd.IN>`__.
+Information on ``ufs.configure`` files is available in :numref:`Section %s <ufs-conf>`,
+and a sample ATML ``ufs.configure`` file (``ufs.configure.atm_lnd.IN``) is available 
+`here <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.atm_lnd.IN>`__.
 
 
 =============================================

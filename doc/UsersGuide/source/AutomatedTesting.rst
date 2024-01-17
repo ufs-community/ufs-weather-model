@@ -31,14 +31,14 @@ The CI/CD workflow then executes the following steps:
       subcomponents are up to date with the top of the ``develop`` branch.
 
    #. If the check is successful, build jobs are started on GHA-provided virtual machines
-      by downloading the hpc-stack Docker container stored in Docker Hub.
+      by downloading the HPC-Stack Docker container stored in Docker Hub.
 
    #. Once all build jobs are successful, the created executable files are stored as
       artifacts in GHA.
 
    #. A number of AWS EC2 instances are started.
 
-   #. Test jobs are started on AWS after downloading the hpc-stack Docker container,
+   #. Test jobs are started on AWS after downloading the HPC-Stack Docker container,
       the executable file from the build job, and the input-data Docker container.
 
    #. When all tests are complete, EC2 instances are stopped. Test results are reported
@@ -91,7 +91,7 @@ On supported HPC systems, a :term:`cron job` runs the ``start_rt_auto.sh`` bash 
 This script checks the HPC name and sets certain python paths. Then, it runs ``rt_auto.py``, 
 which uses the Github API (through pyGitHub) to check the labels on pull requests to 
 ``ufs-weather-model``. If a PR label matches the HPC name 
-(e.g., hera-intel-RT or cheyenne-gnu-BL), the label provides the HPC  
+(e.g., hera-intel-RT or derecho-gnu-BL), the label provides the HPC  
 with the compiler and job information to run a test or task on the machine. 
 If no PR label matches HPC name, the script exits.
 
