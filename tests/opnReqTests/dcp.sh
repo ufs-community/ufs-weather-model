@@ -30,8 +30,18 @@ elif [[ $application == 'cpld' ]]; then
     JNPES=1
     OCN_tasks=10
     ICE_tasks=6
-    NPROC_ICE=$ICE_tasks
+    CICE_NPROC=$ICE_tasks
     TASKS=$((INPES*JNPES*NTILES + WRITE_GROUP*WRTTASK_PER_GROUP + OCN_tasks + ICE_tasks))
+  else
+    temp=$INPES
+    INPES=$JNPES
+    JNPES=$temp
+  fi
+elif [[ $application == 'atmw' ]]; then
+  if [[ $CI_TEST == 'true' ]]; then
+    INPES=3
+    JNPES=1
+    TASKS=$((INPES*JNPES + WRITE_GROUP*WRTTASK_PER_GROUP))
   else
     temp=$INPES
     INPES=$JNPES

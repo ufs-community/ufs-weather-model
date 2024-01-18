@@ -7,7 +7,6 @@ start_second:            0
 nhours_fcst:             @[FHMAX]
 dt_atmos:                @[DT_ATMOS]
 restart_interval:        @[RESTART_INTERVAL]
-output_1st_tstep_rst:    .false.
 
 quilting:                @[QUILTING]
 quilting_restart:        @[QUILTING_RESTART]
@@ -23,7 +22,8 @@ ichunk3d:                -1
 jchunk3d:                -1
 kchunk3d:                -1
 ideflate:                @[IDEFLATE]
-nbits:                   @[NBITS]
+quantize_mode:           'quantize_bitround'
+quantize_nsd:            @[QUANTIZE_NSD]
 
 output_grid:             @[OUTPUT_GRID]     # gaussian_grid, global_latlon, regional_latlon[_moving], rotated_latlon[_moving], lambert_conformal, cubed_sphere_grid
 imo:                     @[IMO]             # number of grid points along longitude/latitude direction
@@ -139,10 +139,6 @@ dx:                      @[DX_6]
 dy:                      @[DY_6]
 </output_grid_06>
 
-nfhout:                  @[NFHOUT]          # Output frequency in hours after forecast hour nfhmax_hf
-nfhmax_hf:               @[NFHMAX_HF]       # Number of forecast hours until output frequency nfhout takes affect
-nfhout_hf:               @[NFHOUT_HF]       # Output frequency in hours until forecast hour nfhmax_hf
-nsout:                   @[NSOUT]           # Output frequency in time steps (positive values override nfhout and nfhout_hf)
 output_fh:               @[OUTPUT_FH]       # Output forecast hours controlled by output_fh (see notes below)
 # a) An array of output_fh means to output history files at those forecast time (e.g., "output_fh: 0 1 2 3 12 24 48")
 #    If the first elelment is zero, it means the first time step output

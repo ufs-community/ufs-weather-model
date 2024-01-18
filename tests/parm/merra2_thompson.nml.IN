@@ -10,21 +10,14 @@
   max_output_fields = @[MAX_OUTPUT_FIELDS]
 /
 
-&fms_io_nml
-  checksum_required = .false.
-  max_files_r = 100
-  max_files_w = 100
-/
-
-&mpp_io_nml
-shuffle=1
-deflate_level=1
-/
-
 &fms_nml
   clock_grain = 'ROUTINE'
   domains_stack_size = @[DOMAINS_STACK_SIZE]
   print_memory_usage = .false.
+/
+
+&fms2_io_nml
+  netcdf_default_format = "netcdf4"
 /
 
 &fv_core_nml
@@ -118,7 +111,7 @@ deflate_level=1
   fhcyc        = @[FHCYC]
   use_ufo      = .true.
   pre_rad      = .false.
-  imp_physics  = @[IMP_PHYSICS] 
+  imp_physics  = @[IMP_PHYSICS]
   iovr         = 3
   ltaerosol    = @[LTAEROSOL]
   mraerosol    = @[MRAEROSOL]
@@ -191,6 +184,7 @@ deflate_level=1
   iopt_run     = 1
   iopt_sfc     = @[IOPT_SFC]
   iopt_trs     = @[IOPT_TRS]
+  iopt_diag    = @[IOPT_DIAG]
   iopt_frz     = 1
   iopt_inf     = 1
   iopt_rad     = @[IOPT_RAD]
@@ -256,7 +250,7 @@ deflate_level=1
   knob_ugwp_doaxyz  = 1
   knob_ugwp_doheat  = 1
   knob_ugwp_dokdis  = 1
-  knob_ugwp_ndx4lh  = 1 
+  knob_ugwp_ndx4lh  = 1
   knob_ugwp_version = @[KNOB_UGWP_VERSION]
   launch_level = 54
 /
@@ -328,6 +322,7 @@ deflate_level=1
   FNVEGC   = @[FNVEGC]
   FNVETC   = @[FNVETC]
   FNSOTC   = @[FNSOTC]
+  FNSOCC   = @[FNSOCC]
   FNSMCC   = @[FNSMCC]
   FNMSKH   = @[FNMSKH]
   FNTSFA   = ''
@@ -374,11 +369,3 @@ deflate_level=1
   lndp_var_list = @[LNDP_VAR_LIST]
   lndp_prt_list = @[LNDP_PRT_LIST]
 /
-
-&MOM_input_nml
-  output_directory = 'MOM6_OUTPUT/',
-  input_filename = '@[MOM6_RESTART_SETTING]'
-  restart_input_dir = 'INPUT/',
-  restart_output_dir = 'RESTART/',
-  parameter_filename = 'INPUT/MOM_input',
-  'INPUT/MOM_override'/

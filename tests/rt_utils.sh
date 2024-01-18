@@ -347,24 +347,19 @@ check_results() {
         fi
 
         if [[ $d -eq 1 && ${i##*.} == 'nc' ]] ; then
-          if [[ ${MACHINE_ID} =~ orion || ${MACHINE_ID} =~ hera || ${MACHINE_ID} =~ wcoss2 || ${MACHINE_ID} =~ acorn || ${MACHINE_ID} =~ cheyenne || ${MACHINE_ID} =~ gaea || ${MACHINE_ID} =~ jet || ${MACHINE_ID} =~ s4 || ${MACHINE_ID} =~ noaacloud ]] ; then
+          if [[ " orion hercules hera wcoss2 acorn derecho gaea-c5 jet s4 noaacloud " =~ " ${MACHINE_ID} " ]]; then
             printf ".......ALT CHECK.." >> ${RT_LOG}
             printf ".......ALT CHECK.."
-            if [[ ${MACHINE_ID} =~ orion || ${MACHINE_ID} =~ hera || ${MACHINE_ID} =~ gaea || ${MACHINE_ID} =~ jet || ${MACHINE_ID} =~ cheyenne ]] ; then
-              nccmp -d -f -g -B --Attribute=checksum --warn=format ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i} ${RUNDIR}/${i} > ${i}_nccmp.log 2>&1 && d=$? || d=$?
+              if [[ $CMP_DATAONLY == false ]]; then
+                nccmp -d -S -q -f -g -B --Attribute=checksum --warn=format ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i} ${RUNDIR}/${i} > ${i}_nccmp.log 2>&1 && d=$? || d=$?
+              else
+                nccmp -d -S -q -f -B --Attribute=checksum --warn=format ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i} ${RUNDIR}/${i} > ${i}_nccmp.log 2>&1 && d=$? || d=$?
+              fi
               if [[ $d -ne 0 && $d -ne 1 ]]; then
-		  echo "....ERROR" >> ${RT_LOG}
-		  echo "....ERROR"
-		  exit 1
+                echo "....ERROR" >> ${RT_LOG}
+                echo "....ERROR"
+                exit 1
               fi
-            else
-              ${PATHRT}/compare_ncfile.py ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/$i ${RUNDIR}/$i > compare_ncfile.log 2>&1 && d=$? || d=$?
-	      if [[ $d -eq 1 ]]; then
-		  echo "....ERROR" >> ${RT_LOG}
-		  echo "....ERROR"
-		  exit 1
-              fi
-            fi
           fi
         fi
 
@@ -460,7 +455,7 @@ rocoto_create_compile_task() {
   BUILD_CORES=8
   BUILD_WALLTIME="00:30:00"
   if [[ ${MACHINE_ID} == jet ]]; then
-    BUILD_WALLTIME="01:00:00"
+    BUILD_WALLTIME="02:00:00"
   fi
   if [[ ${MACHINE_ID} == hera ]]; then
     BUILD_WALLTIME="01:00:00"
@@ -468,9 +463,16 @@ rocoto_create_compile_task() {
   if [[ ${MACHINE_ID} == orion ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
+  if [[ ${MACHINE_ID} == hercules ]]; then
+    BUILD_WALLTIME="01:00:00"
+  fi
   if [[ ${MACHINE_ID} == s4 ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
+  if [[ $MACHINE_ID == gaea-c5 ]]; then
+    BUILD_WALLTIME="01:00:00"
+  fi
+
 
   cat << EOF >> $ROCOTO_XML
   <task name="compile_${COMPILE_NR}" maxtries="${ROCOTO_COMPILE_MAXTRIES:-3}">
@@ -478,7 +480,20 @@ rocoto_create_compile_task() {
     <jobname>compile_${COMPILE_NR}</jobname>
     <account>${ACCNR}</account>
     <queue>${COMPILE_QUEUE}</queue>
+EOF
+
+  if [[ "$MACHINE_ID" == gaea-c5 ]] ; then
+  cat << EOF >> $ROCOTO_XML
+    <native>--clusters=es</native>
+    <partition>eslogin_c5</partition>
+EOF
+  else
+  cat << EOF >> $ROCOTO_XML
     <partition>${PARTITION}</partition>
+EOF
+  fi
+
+  cat << EOF >> $ROCOTO_XML
     <cores>${BUILD_CORES}</cores>
     <walltime>${BUILD_WALLTIME}</walltime>
     <join>&RUNDIR_ROOT;/compile_${COMPILE_NR}.log</join>
@@ -508,8 +523,22 @@ rocoto_create_run_task() {
       <command>&PATHRT;/run_test.sh &PATHRT; &RUNDIR_ROOT; ${TEST_NAME} ${TEST_NR} ${COMPILE_NR} </command>
       <jobname>${TEST_NAME}_${RT_COMPILER}${RT_SUFFIX}</jobname>
       <account>${ACCNR}</account>
+      ${ROCOTO_NODESIZE:+<nodesize>$ROCOTO_NODESIZE</nodesize>}
+EOF
+
+  if [[ "$MACHINE_ID" == gaea-c5 ]] ; then
+  cat << EOF >> $ROCOTO_XML
+      <native>--clusters=${PARTITION}</native>
+      <native>--partition=batch</native>
+EOF
+  else
+  cat << EOF >> $ROCOTO_XML
       <queue>${QUEUE}</queue>
       <partition>${PARTITION}</partition>
+EOF
+  fi
+
+  cat << EOF >> $ROCOTO_XML
       <nodes>${NODES}:ppn=${TPN}</nodes>
       <walltime>00:${WLCLK}:00</walltime>
       <stdout>&RUNDIR_ROOT;/${TEST_NAME}_${RT_COMPILER}${RT_SUFFIX}.out</stdout>
@@ -622,9 +651,6 @@ EOF
 
 ecflow_run() {
 
-  # in rare instances when UID is greater then 58500 (like Ratko's UID on theia)
-  [[ $ECF_PORT -gt 49151 ]] && ECF_PORT=12179
-
   ECF_HOST="${ECF_HOST:-$HOSTNAME}"
 
   set +e
@@ -634,17 +660,17 @@ ecflow_run() {
     echo "ecflow_server is NOT running on ${ECF_HOST}:${ECF_PORT}"
     if [[ ${MACHINE_ID} == wcoss2 || ${MACHINE_ID} == acorn ]]; then
       if [[ "${HOST::1}" == "a" ]]; then
-	export ECF_HOST=aecflow01
+    export ECF_HOST=aecflow01
       elif [[ "${HOST::1}" == "c" ]]; then
-	export ECF_HOST=cdecflow01
+    export ECF_HOST=cdecflow01
       elif [[ "${HOST::1}" == "d" ]]; then
-	export ECF_HOST=ddecflow01
+    export ECF_HOST=ddecflow01
       fi
       MYCOMM="bash -l -c \"module load ecflow && ecflow_start.sh -p ${ECF_PORT} \""
       ssh $ECF_HOST "${MYCOMM}"
-    elif [[ ${MACHINE_ID} == jet ]]; then
+    elif [[ ${MACHINE_ID} == hera || ${MACHINE_ID} == jet ]]; then
       module load ecflow
-      echo "Using special Jet ECFLOW start procedure"
+      echo "On ${MACHINE_ID}, start ecFlow server on dedicated node ${ECF_HOST}"
       MYCOMM="bash -l -c \"module load ecflow && ${ECFLOW_START} -d ${RUNDIR_ROOT}/ecflow_server\""
       ssh $ECF_HOST "${MYCOMM}"
     else

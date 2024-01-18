@@ -1,0 +1,21 @@
+###############################################################################
+#
+#  HRRR physics on 13km domain, restart run
+#
+###############################################################################
+
+# This configuration is supposed to match the rrfs_dev1 parallel, so
+# do not change the namelist without checking the current parallel.
+
+export TEST_DESCR="HRRR physics on 13km domain, restart run"
+
+export CNTL_DIR=conus13km_control
+
+export LIST_FILES="sfcf002.nc \
+                   atmf002.nc"
+
+export_hrrr_conus13km
+export FHROT=1
+export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${SHOUR} + ${FHROT}  )))0000"
+export RRFS_RESTART=YES
+export QUILTING_RESTART=.false.

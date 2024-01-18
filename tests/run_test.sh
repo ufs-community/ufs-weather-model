@@ -45,10 +45,11 @@ cd ${PATHRT}
 
 
 unset MODEL_CONFIGURE
-unset NEMS_CONFIGURE
+unset UFS_CONFIGURE
 
 [[ -e ${RUNDIR_ROOT}/run_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
 source default_vars.sh
+[[ -e ${RUNDIR_ROOT}/run_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
 source tests/$TEST_NAME
 
 remove_fail_test
@@ -67,7 +68,6 @@ export JBNME=$(basename $RUNDIR_ROOT)_${TEST_NR}
 echo -n "${TEST_NAME}_${RT_COMPILER}, $( date +%s )," > ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
 
 export RT_LOG=${LOG_DIR}/rt_${TEST_NR}_${TEST_NAME}_${RT_COMPILER}${RT_SUFFIX}.log
-
 echo "Test ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} ${TEST_DESCR}"
 
 source rt_utils.sh
@@ -89,21 +89,29 @@ mkdir -p modulefiles
 if [[ $MACHINE_ID == linux ]]; then
   cp ${PATHRT}/modules.fv3_${COMPILE_NR}             ./modulefiles/modules.fv3
 else
-  cp ${PATHRT}/modules.fv3_${COMPILE_NR}.lua             ./modulefiles/modules.fv3.lua
+  cp ${PATHRT}/modules.fv3_${COMPILE_NR}.lua         ./modulefiles/modules.fv3.lua
 fi
-cp ${PATHTR}/modulefiles/ufs_common*               ./modulefiles/.
+cp ${PATHTR}/modulefiles/ufs_common*                 ./modulefiles/.
 
 # Get the shell file that loads the "module" command and purges modules:
 cp ${PATHRT}/module-setup.sh                       module-setup.sh
 
-if [[ $MACHINE_ID == wcoss2 ]] || [[ $MACHINE_ID == acorn ]] ; then
-  # for compare_ncfile.py
-  module load gcc/10.3.0 python/3.8.6
-fi
-
 # load nccmp module
-if [[ $MACHINE_ID == hera ]] || [[ $MACHINE_ID == orion ]] || [[ $MACHINE_ID == gaea ]] || [[ $MACHINE_ID == jet ]] || [[ $MACHINE_ID == cheyenne ]]; then
-  module load nccmp
+if [[ " s4 hera orion hercules gaea-c5 jet derecho acorn wcoss2 " =~ " $MACHINE_ID " ]]; then
+  if [[ " wcoss2 acorn " =~ " ${MACHINE_ID} " ]] ; then
+    module load intel/19.1.3.304 netcdf/4.7.4
+    module load nccmp
+  elif [[ " s4 " =~ " ${MACHINE_ID} " ]] ; then
+    module use /data/prod/jedi/spack-stack/spack-stack-1.4.1/envs/ufs-pio-2.5.10/install/modulefiles/Core
+    module load stack-intel/2021.5.0 stack-intel-oneapi-mpi/2021.5.0
+    module load miniconda/3.9.12
+    module load nccmp/1.9.0.1
+  elif [[ " hera orion hercules gaea-c5 jet " =~ " ${MACHINE_ID} " ]] ; then
+    module use modulefiles
+    module load modules.fv3
+  else
+    module load nccmp
+  fi
 fi
 
 SRCD="${PATHTR}"
@@ -118,6 +126,15 @@ if [ ! -z "$FV3_RUN" ]; then
 else
   echo "No FV3_RUN set in test file"
   exit 1
+fi
+
+# Magic to handle namelist versions of &cires_ugwp_nml
+if [[ ${DO_UGWP_V1:-.false.} == .true. ]] ; then
+  export HIDE_UGWPV0='!'
+  export HIDE_UGWPV1=' '
+else
+  export HIDE_UGWPV0=' '
+  export HIDE_UGWPV1='!'
 fi
 
 if [[ $DATM_CDEPS = 'true' ]] || [[ $FV3 = 'true' ]] || [[ $S2S = 'true' ]]; then
@@ -135,10 +152,10 @@ fi
 
 compute_petbounds_and_tasks
 
-if [[ -f ${PATHRT}/parm/${NEMS_CONFIGURE} ]]; then
-  atparse < ${PATHRT}/parm/${NEMS_CONFIGURE} > nems.configure
+if [[ -f ${PATHRT}/parm/${UFS_CONFIGURE} ]]; then
+  atparse < ${PATHRT}/parm/${UFS_CONFIGURE} > ufs.configure
 else
-  echo "Cannot find file ${NEMS_CONFIGURE} set by variable NEMS_CONFIGURE"
+  echo "Cannot find file ${UFS_CONFIGURE} set by variable UFS_CONFIGURE"
   exit 1
 fi
 
@@ -207,19 +224,23 @@ if [[ $FV3 == true ]]; then
   fi
 fi
 
+# NoahMP table file
+  cp ${PATHRT}/parm/noahmptable.tbl .
+
+
 # AQM
 if [[ $AQM == .true. ]]; then
   cp ${PATHRT}/parm/aqm/aqm.rc .
 fi
 
 # Field Dictionary
-cp ${PATHRT}/parm/fd_nems.yaml fd_nems.yaml
+cp ${PATHRT}/parm/fd_ufs.yaml fd_ufs.yaml
 
 # Set up the run directory
 source ./fv3_run
 
 if [[ $CPLWAV == .true. ]]; then
-  if [[ $MULTIGRID = 'true' ]]; then
+  if [[ $WW3_MULTIGRID = 'true' ]]; then
     atparse < ${PATHRT}/parm/ww3_multi.inp.IN > ww3_multi.inp
   else
     atparse < ${PATHRT}/parm/ww3_shel.nml.IN > ww3_shel.nml
@@ -232,12 +253,14 @@ if [[ $CPLCHM == .true. ]]; then
   atparse < ${PATHRT}/parm/gocart/AERO_HISTORY.rc.IN > AERO_HISTORY.rc
 fi
 
+#TODO: this logic needs to be cleaned up for datm applications w/o
+#ocean or ice
 if [[ $DATM_CDEPS = 'true' ]] || [[ $S2S = 'true' ]]; then
   if [[ $HAFS = 'false' ]]; then
-    atparse < ${PATHRT}/parm/ice_in_template > ice_in
-    atparse < ${PATHRT}/parm/${MOM_INPUT:-MOM_input_template_$OCNRES} > INPUT/MOM_input
+    atparse < ${PATHRT}/parm/ice_in.IN > ice_in
+    atparse < ${PATHRT}/parm/${MOM6_INPUT:-MOM_input_$OCNRES.IN} > INPUT/MOM_input
     atparse < ${PATHRT}/parm/diag_table/${DIAG_TABLE:-diag_table_template} > diag_table
-    atparse < ${PATHRT}/parm/data_table_template > data_table
+    atparse < ${PATHRT}/parm/MOM6_data_table.IN > data_table
   fi
 fi
 
@@ -257,12 +280,12 @@ if [[ $CPLCHM == .true. ]] && [[ $S2S = 'false' ]]; then
 fi
 
 if [[ $DATM_CDEPS = 'true' ]]; then
-  atparse < ${PATHRT}/parm/${DATM_IN_CONFIGURE:-datm_in} > datm_in
+  atparse < ${PATHRT}/parm/${DATM_IN_CONFIGURE:-datm_in.IN} > datm_in
   atparse < ${PATHRT}/parm/${DATM_STREAM_CONFIGURE:-datm.streams.IN} > datm.streams
 fi
 
 if [[ $DOCN_CDEPS = 'true' ]]; then
-  atparse < ${PATHRT}/parm/${DOCN_IN_CONFIGURE:-docn_in} > docn_in
+  atparse < ${PATHRT}/parm/${DOCN_IN_CONFIGURE:-docn_in.IN} > docn_in
   atparse < ${PATHRT}/parm/${DOCN_STREAM_CONFIGURE:-docn.streams.IN} > docn.streams
 fi
 
@@ -278,15 +301,38 @@ if (( NODES * TPN < TASKS )); then
 fi
 export NODES
 
+UFS_TASKS=${TASKS}
 TASKS=$(( NODES * TPN ))
 export TASKS
 
+PPN=$(( UFS_TASKS / NODES ))
+if (( UFS_TASKS - ( PPN * NODES ) > 0 )); then
+  PPN=$((PPN + 1))
+fi
+export PPN
+export UFS_TASKS
+
 if [[ $SCHEDULER = 'pbs' ]]; then
-  atparse < $PATHRT/fv3_conf/fv3_qsub.IN > job_card
+  if [[ -e $PATHRT/fv3_conf/fv3_qsub.IN_${MACHINE_ID} ]]; then
+    atparse < $PATHRT/fv3_conf/fv3_qsub.IN_${MACHINE_ID} > job_card
+  else
+    echo "Looking for fv3_conf/fv3_qsub.IN_${MACHINE_ID} but it is not found. Exiting"
+    exit 1
+  fi
 elif [[ $SCHEDULER = 'slurm' ]]; then
-  atparse < $PATHRT/fv3_conf/fv3_slurm.IN > job_card
+  if [[ -e $PATHRT/fv3_conf/fv3_slurm.IN_${MACHINE_ID} ]]; then
+    atparse < $PATHRT/fv3_conf/fv3_slurm.IN_${MACHINE_ID} > job_card
+  else
+    echo "Looking for fv3_conf/fv3_slurm.IN_${MACHINE_ID} but it is not found. Exiting"
+    exit 1
+  fi
 elif [[ $SCHEDULER = 'lsf' ]]; then
-  atparse < $PATHRT/fv3_conf/fv3_bsub.IN > job_card
+  if [[ -e $PATHRT/fv3_conf/fv3_bsub.IN_${MACHINE_ID} ]]; then
+    atparse < $PATHRT/fv3_conf/fv3_bsub.IN_${MACHINE_ID} > job_card
+  else
+    echo "Looking for fv3_conf/fv3_bsub.IN_${MACHINE_ID} but it is not found. Exiting"
+    exit 1
+  fi
 fi
 
 ################################################################################

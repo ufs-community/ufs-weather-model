@@ -9,21 +9,14 @@
   prepend_date = .false.
 /
 
-&fms_io_nml
-  checksum_required = .false.
-  max_files_r = 100
-  max_files_w = 100
-/
-
-&mpp_io_nml
-shuffle=1
-deflate_level=1
-/
-
 &fms_nml
   clock_grain = 'ROUTINE'
   domains_stack_size = 3000000
   print_memory_usage = .false.
+/
+
+&fms2_io_nml
+  netcdf_default_format = "netcdf4"
 /
 
 &fv_core_nml
@@ -111,7 +104,7 @@ deflate_level=1
   lakefrac_threshold = @[LAKEFRAC_THRESHOLD] ! 0.15
   lakedepth_threshold = @[LAKEDEPTH_THRESHOLD] ! 0.5
   clm_lake_debug = .false.
-
+  frac_ice = @[FRAC_ICE] ! false for flake, true for clm lake
   fhzero       = 6
   h2o_phys     = .true.
   ldiag3d      = .false.
@@ -167,6 +160,7 @@ deflate_level=1
   iopt_tbot    = 2
   iopt_stc     = 1
   iopt_trs     = 2
+  iopt_diag    = 2
   debug        = .false.
   oz_phys      = .false.
   oz_phys_2015 = .true.
@@ -253,6 +247,7 @@ deflate_level=1
   FNVEGC   = 'global_vegfrac.0.144.decpercent.grb'
   FNVETC   = @[FNVETC]
   FNSOTC   = @[FNSOTC]
+  FNSOCC   = @[FNSOCC]
   FNSMCC   = 'global_soilmgldas.statsgo.t1534.3072.1536.grb'
   FNMSKH   = 'global_slmask.t1534.3072.1536.grb'
   FNTSFA   = ''

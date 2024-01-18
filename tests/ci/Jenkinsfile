@@ -1,3 +1,35 @@
+def commentMessage
+
+void setBuildStatus(String message, String state) {
+    step([
+        $class: "GitHubCommitStatusSetter",
+        reposSource: [$class: "ManuallyEnteredRepositorySource", url: "https://github.com/ufs-community/ufs-weather-model"],
+        contextSource: [$class: "ManuallyEnteredCommitContextSource", context: "Jenkins-ci ORTs"],
+        errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "UNSTABLE"]],
+        statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]] ]
+    ]);
+}
+
+def postGitHubCommentWithLogFile(commentMessage) {
+    script {
+        withCredentials([string(credentialsId: 'GithubJenkinsNew', variable: 'ACCESS_TOKEN')]) {
+            def apiUrl = "https://api.github.com/repos/ufs-community/ufs-weather-model/issues/${env.CHANGE_ID}/comments"
+
+            def curlCommand = "curl -s -H \"Authorization: token " + ACCESS_TOKEN + "\" \\\n" +
+                 "-X POST -d '{\"body\": \"" + commentMessage + "\"}' \\\n" +
+                 "\"" + apiUrl + "\""
+                    
+            def response = sh(script: curlCommand, returnStatus: true)
+            
+            if (response == 0) {
+                echo "Comment added successfully to PR #${env.CHANGE_ID}"
+            } else {
+                error "Failed to add comment to PR #${env.CHANGE_ID}"
+            }
+        }
+    }
+}
+
 pipeline {
     agent none
 
@@ -6,8 +38,19 @@ pipeline {
         overrideIndexTriggers(false)
         skipDefaultCheckout(true)
     }
-
     stages {
+        
+        stage('Launch SonarQube') {
+            steps {
+                script {
+                    build job: '/ufs-weather-model/ufs-wm-sonarqube', parameters: [
+                        string(name: 'BRANCH_NAME', value: env.CHANGE_BRANCH ?: 'develop'),
+                        string(name: 'FORK_NAME', value: env.CHANGE_FORK ?: '')
+                    ], wait: false
+                }
+            }
+        }
+        
         stage('ORT') {
             matrix {
                 axes {
@@ -77,21 +120,42 @@ pipeline {
 
                     stage('Test') {
                         steps {
-                            sh 'docker run --rm --env test_name="${TEST_NAME}" --env run_case="${TEST_CASE}" --workdir /home/builder/ufs-weather-model/tests --volume DataVolume:/home/builder/data/NEMSfv3gfs --interactive --shm-size=16gb "${IMG_NAME}"'
+                            sh 'docker run --rm --env test_name="${TEST_NAME}" --env run_case="${TEST_CASE}" --workdir /home/builder/ufs-weather-model/tests --volume DataVolume:/home/builder/data/NEMSfv3gfs --interactive --shm-size=32gb "${IMG_NAME}"'
                         }
                     }
                 }
-
-                post {
+            
+                post {     
                     always {
                         sh '''
                             docker rmi -f "$(docker image ls | grep -E -m1 "${IMG_NAME}" | awk '{ print $3 }')"
                             docker rmi -f "$(docker image ls | grep -E -m1 'noaaepic' | awk '{ print $3 }')"
                         '''
                     }
+                    
+                }   
+            }
+        }
+    }
+    post {
+        success {
+            node('built-in') { 
+                setBuildStatus("Build succeeded", "SUCCESS");
+            }
+        }
+        failure {
+            node('built-in') {
+                setBuildStatus("Build failed", "FAILURE");
+            }
+        }
+        always {
+            node('built-in') {
+                script {
+                    def buildResult = currentBuild.resultIsBetterOrEqualTo("SUCCESS") ? "passed" : "failed"
+                    commentMessage = "Jenkins-ci ORTs ${buildResult}"
+                    postGitHubCommentWithLogFile(commentMessage)
                 }
             }
         }
     }
 }
-         

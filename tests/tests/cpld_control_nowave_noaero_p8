@@ -4,7 +4,7 @@
 
 export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C96MX100"
 
-export CNTL_DIR="cpld_control_c96_noaero_p8"
+export CNTL_DIR=cpld_control_c96_noaero_p8
 
 export LIST_FILES="sfcf021.tile1.nc \
                    sfcf021.tile2.nc \
@@ -84,10 +84,10 @@ OCN_tasks=$OCN_tasks_cpl_dflt
 ICE_tasks=$ICE_tasks_cpl_dflt
 export WAV_tasks=0
 
-export NPROC_ICE=$ICE_tasks
-export np2=`expr $NPROC_ICE / 2`
-export BLCKX=`expr $NX_GLB / $np2`
-export BLCKY=`expr $NY_GLB / 2`
+export CICE_NPROC=$ICE_tasks
+export np2=`expr $CICE_NPROC / 2`
+export CICE_BLCKX=`expr $NX_GLB / $np2`
+export CICE_BLCKY=`expr $NY_GLB / 2`
 
 export CPLWAV=.false.
 export CPLWAV2ATM=.false.
@@ -96,14 +96,10 @@ export eps_imesh=2.5e-1
 
 export CPLCHM=.false.
 export DNATS=0
-export TOPOEDITS=ufs.topo_edits_011818.nc
+export MOM6_TOPOEDITS=ufs.topo_edits_011818.nc
 export MOM6_ALLOW_LANDMASK_CHANGES=True
 
 export DIAG_TABLE=diag_table_template
-export NEMS_CONFIGURE=nems.configure.cpld_noaero_nowave.IN
+export UFS_CONFIGURE=ufs.configure.s2s_esmf.IN
 
 export FV3_RUN=cpld_control_run.IN
-
-if [[ $MACHINE_ID = cheyenne ]]; then
-  TPN=18
-fi

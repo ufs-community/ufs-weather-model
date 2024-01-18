@@ -36,3 +36,7 @@ export OUTPUT_FH="0 1"
 WRITE_GROUP=1
 WRTTASK_PER_GROUP=10
 NTILES=1
+
+if [[ " hera orion hercules jet " =~ " ${MACHINE_ID} " ]] ; then
+  ZSTANDARD_LEVEL=5
+fi

@@ -21,7 +21,6 @@ elif [[ $application == 'regional' ]]; then
 elif [[ $application == 'cpld' ]]; then
   FHMAX=3
   DAYS=0.125
-  NFHOUT_HF=1
   RESTART_INTERVAL=${FHMAX}
   RESTART_N=${FHMAX}
   OUTPUT_FH="0 ${FHMAX}"
@@ -36,10 +35,27 @@ elif [[ $application == 'cpld' ]]; then
                                    | sed -E "s/20210323\.060000\.out_pnt\.ww3/20210322\.090000\.out_pnt\.ww3/g" \
                                    | sed -E "s/20210323\.060000\.out_grd\.ww3/20210322\.090000\.out_grd\.ww3/g" \
                                    | sed -e "s/^ *//" -e "s/ *$//")
+elif [[ $application == 'atmw' ]]; then
+  FHMAX=3
+  WW3_RSTDTHR=3
+  WW3_DT_2_RST="$(printf "%02d" $(( ${WW3_RSTDTHR}*3600 )))"
+  DAYS=0.125
+  RESTART_INTERVAL=${FHMAX}
+  RESTART_N=${FHMAX}
+  OUTPUT_FH="0 ${FHMAX}"
+  LIST_FILES=$(echo -n $LIST_FILES | sed -E "s/sfcf012/sfcf003/g" \
+                                   | sed -E "s/atmf012/atmf003/g" \
+                                   | sed -E "s/2021-03-22-64800/2021-03-22-32400/g" \
+                                   | sed -E "s/20210322\.180000/20210322\.090000/g" \
+                                   | sed -E "s/20210322\.180000\.out_pnt\.ww3/20210322\.090000\.out_pnt\.ww3/g" \
+                                   | sed -E "s/20210322\.180000\.out_grd\.ww3/20210322\.090000\.out_grd\.ww3/g" \
+                                   | sed -e "s/^ *//" -e "s/ *$//")
+                                   
 fi
 
 source $PATHRT/opnReqTests/wrt_env.sh
 
 cat <<EOF >>${RUNDIR_ROOT}/opnreq_test${RT_SUFFIX}.env
 export WLCLK=${WLCLK}
+export WW3_DT_2_RST=${WW3_DT_2_RST:-}
 EOF
