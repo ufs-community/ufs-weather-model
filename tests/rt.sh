@@ -306,7 +306,7 @@ elif [[ $MACHINE_ID = acorn ]]; then
 
 elif [[ $MACHINE_ID = gaea-c5 ]]; then
 
-  module use /lustre/f2/dev/role.epic/contrib/C5/rocoto/modulefiles
+  module use /ncrc/proj/epic/rocoto/modulefiles
   module load rocoto
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
@@ -317,17 +317,17 @@ elif [[ $MACHINE_ID = gaea-c5 ]]; then
   module load intel-classic/2023.1.0
   module load cray-mpich/8.1.25
   module load python/3.9.12
-  module use /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/modulefiles
+  module use /ncrc/proj/epic/spack-stack/c5/modulefiles
   module load ecflow/5.8.4
-  ECFLOW_START=/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/ecflow-5.8.4/bin/ecflow_start.sh
+  ECFLOW_START=/ncrc/proj/epic/spack-stack/c5/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
-  DISKNM=/lustre/f2/pdata/ncep/role.epic/C5/RT
+  DISKNM=/gpfs/f5/epic/world-shared/lustre/f2/dev/role.epic/contrib/RT
   QUEUE=normal
   COMPILE_QUEUE=normal
   PARTITION=c5
-  STMP=/lustre/f2/scratch
-  PTMP=/lustre/f2/scratch
+  STMP=/gpfs/f5/epic/scratch
+  PTMP=/gpfs/f5/epic/scratch
 
   SCHEDULER=slurm
 
