@@ -637,6 +637,7 @@ export PRINT_DIFF_PGR=.false.
 
 # Coupling
 export coupling_interval_fast_sec=0
+export CHOUR=06
 }
 
 # Defaults for the CICE6 model namelist, mx100
