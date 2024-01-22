@@ -405,7 +405,7 @@ elif [[ $MACHINE_ID = hercules ]]; then
 
 elif [[ $MACHINE_ID = jet ]]; then
 
-  module load rocoto/1.3.2
+  module load rocoto/1.3.6
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
