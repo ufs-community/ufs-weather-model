@@ -56,7 +56,7 @@ def generateStage(nodeLabel) {
                             cd ${DISKNM}/NEMSfv3gfs/
                             ./adjust_permissions.sh hercules develop-${BL_DATE}
                             chgrp noaa-hpc develop-${BL_DATE}
-		            cd $WORKSPACE/test
+		            cd $WORKSPACE/tests
                             ./rt.sh -a ${ACCNR} -r -l rt.conf
                           elif [[ $machine =~ "Orion" ]]
                           then
@@ -73,7 +73,7 @@ def generateStage(nodeLabel) {
                             cd ${DISKNM}/NEMSfv3gfs/
                             ./adjust_permissions.sh orion develop-${BL_DATE}
                             chgrp noaa-hpc develop-${BL_DATE}
-			    cd $WORKSPACE/test
+			    cd $WORKSPACE/tests
                             ./rt.sh -a ${ACCNR} -e -l rt.conf
                           elif [[ $machine =~ "GaeaC5" ]]
                           then 
@@ -111,7 +111,7 @@ def generateStage(nodeLabel) {
 			     mkdir develop-${BL_DATE}
 			     cd /glade/derecho/scratch/epicufsrt/FV3_RT
 			     rsync -a REGRESSION_TEST/ ${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}
-			     cd $WORKSPACE/test
+			     cd $WORKSPACE/tests
                              ./rt.sh -a ${ACCNR} -e -l rt.conf
                           else
                             echo "Creating baselines on $machine"
