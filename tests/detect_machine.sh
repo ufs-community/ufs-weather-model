@@ -14,8 +14,8 @@
 # First detect w/ hostname
 case $(hostname -f) in
 
-  adecflow0[12].acorn.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### acorn
-  alogin0[12].acorn.wcoss2.ncep.noaa.gov)    MACHINE_ID=wcoss2 ;; ### acorn
+  adecflow0[12].acorn.wcoss2.ncep.noaa.gov)  MACHINE_ID=acorn ;; ### acorn
+  alogin0[12].acorn.wcoss2.ncep.noaa.gov)    MACHINE_ID=acorn ;; ### acorn
   clogin0[1-9].cactus.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### cactus01-9
   clogin10.cactus.wcoss2.ncep.noaa.gov)      MACHINE_ID=wcoss2 ;; ### cactus10
   dlogin0[1-9].dogwood.wcoss2.ncep.noaa.gov) MACHINE_ID=wcoss2 ;; ### dogwood01-9
@@ -26,7 +26,7 @@ case $(hostname -f) in
   gaea9.ncrc.gov)      MACHINE_ID=gaea ;; ### gaea9
   gaea1[0-6].ncrc.gov) MACHINE_ID=gaea ;; ### gaea10-16
 
-  hfe0[1-9]) MACHINE_ID=hera ;; ### hera01-9
+  hfe0[1-9]) MACHINE_ID=hera ;; ### hera01-09
   hfe1[0-2]) MACHINE_ID=hera ;; ### hera10-12
   hecflow01) MACHINE_ID=hera ;; ### heraecflow01
 
@@ -38,10 +38,6 @@ case $(hostname -f) in
   Orion-login-[1-4].HPC.MsState.Edu) MACHINE_ID=orion ;; ### orion1-4
 
   [Hh]ercules-login-[1-4].[Hh][Pp][Cc].[Mm]s[Ss]tate.[Ee]du) MACHINE_ID=hercules ;; ### hercules1-4
-
-  cheyenne[1-6].cheyenne.ucar.edu)     MACHINE_ID=cheyenne ;; ### cheyenne1-6
-  cheyenne[1-6].ib0.cheyenne.ucar.edu) MACHINE_ID=cheyenne ;; ### cheyenne1-6
-  chadmin[1-6].ib0.cheyenne.ucar.edu)  MACHINE_ID=cheyenne ;; ### cheyenne1-6
 
   login[1-4].stampede2.tacc.utexas.edu) MACHINE_ID=stampede ;; ### stampede1-4
 
@@ -67,30 +63,30 @@ if [[ "${MACHINE_ID}" != "UNKNOWN" ]]; then
 fi
 
 # Try searching based on paths since hostname may not match on compute nodes
-if [[ -d /lfs/f1 ]] ; then
+if [[ -d /lfs/h3 ]]; then
   # We are on NOAA Cactus or Dogwood
   MACHINE_ID=wcoss2
-elif [[ -d /mnt/lfs1 ]] ; then
+elif [[ -d /lfs/h1 && ! -d /lfs/h3 ]]; then
+  # We are on NOAA TDS Acorn
+  MACHINE_ID=acorn
+elif [[ -d /mnt/lfs1 ]]; then
   # We are on NOAA Jet
   MACHINE_ID=jet
-elif [[ -d /scratch1 ]] ; then
+elif [[ -d /scratch1 ]]; then
   # We are on NOAA Hera
   MACHINE_ID=hera
-elif [[ -d /work ]] ; then
+elif [[ -d /work ]]; then
   # We are on MSU Orion or Hercules
-  if [[ -d /apps/other ]] ; then
+  if [[ -d /apps/other ]]; then
     # We are on Hercules
     MACHINE_ID=hercules
   else
     MACHINE_ID=orion
   fi
-elif [[ -d /glade ]] ; then
-  # We are on NCAR Yellowstone
-  MACHINE_ID=cheyenne
-elif [[ -d /lustre && -d /ncrc ]] ; then
+elif [[ -d /gpfs && -d /ncrc ]]; then
   # We are on GAEA.
   MACHINE_ID=gaea
-elif [[ -d /data/prod ]] ; then
+elif [[ -d /data/prod ]]; then
   # We are on SSEC's S4
   MACHINE_ID=s4
 else
