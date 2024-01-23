@@ -1,5 +1,5 @@
 #############################################
-####  NEMS Run-Time Configuration File  #####
+####  UFS Run-Time Configuration File  ######
 #############################################
 
 # ESMF #
@@ -29,6 +29,7 @@ MED_attributes::
   history_tile_lnd = 96
   history_n_lnd_inst = 6
   history_option_lnd_inst = nhours
+  pio_rearranger = @[pio_rearranger]
 ::
 
 # ATM #
@@ -82,15 +83,12 @@ ALLCOMP_attributes::
       ScalarFieldIdxNextSwCday = 3 # required for data atmosphere configurations
       ScalarFieldName = cpl_scalars
       start_type = @[RUNTYPE]
-      restart_dir = RESTART/
+      restart_dir = @[CMEPS_RESTART_DIR]
       case_name = ufs.cpld
       restart_n = 12
       restart_option = nhours
       restart_ymd = -999
-      dbug_flag = 0
-      use_coldstart = false
-      use_mommesh = true
-      eps_imesh = 2.5e-1
+      dbug_flag = @[cap_dbug_flag]
       orb_eccen = 1.e36
       orb_iyear = 2000
       orb_iyear_align = 2000

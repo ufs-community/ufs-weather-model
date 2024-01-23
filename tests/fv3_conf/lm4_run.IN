@@ -1,4 +1,4 @@
-mkdir -p INPUT RESTART history INPUT_DATM
+mkdir -p INPUT RESTART 
 
 
 if [[ $atm_model == 'datm' ]]; then
@@ -64,7 +64,7 @@ ln -s @[INPUTDATA_LM4]/common_LM4/soil_type_hwsd_5minute.nc  ./INPUT/soil_type.n
 ###### TMP TEST RESTART:
 mkdir -p RESTART INPUT_DATM
 
-cd INPUT_DATM
+cd INPUT
 rsync -arv @[INPUTDATA_ROOT]/DATM_GSWP3_input_data/. .
 cd -
 
