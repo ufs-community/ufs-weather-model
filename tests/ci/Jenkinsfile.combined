@@ -57,6 +57,7 @@ def generateStage(nodeLabel) {
                             ./adjust_permissions.sh hercules develop-${BL_DATE}
                             chgrp noaa-hpc develop-${BL_DATE}
 		            cd $WORKSPACE/test
+                            ./rt.sh -a ${ACCNR} -r -l rt.conf
                           elif [[ $machine =~ "Orion" ]]
                           then
                             echo "Creating baselines on $machine"
@@ -73,6 +74,7 @@ def generateStage(nodeLabel) {
                             ./adjust_permissions.sh orion develop-${BL_DATE}
                             chgrp noaa-hpc develop-${BL_DATE}
 			    cd $WORKSPACE/test
+                            ./rt.sh -a ${ACCNR} -e -l rt.conf
                           elif [[ $machine =~ "GaeaC5" ]]
                           then 
                             echo "Creating baselines on $machine"
@@ -86,6 +88,7 @@ def generateStage(nodeLabel) {
                             cd ${DISKNM}/NEMSfv3gfs/
                             chgrp ncep develop-${BL_DATE}
 		            cd $WORKSPACE/test
+                            ./rt.sh -a ${ACCNR} -e -l rt.conf
                           elif [[ $machine =~ "Hera" ]]
                           then
                             echo "Creating baselines on $machine"
@@ -97,6 +100,7 @@ def generateStage(nodeLabel) {
 			    cd  /scratch1/NCEPDEV/stmp4/role.epic/FV3_RT
 			    rsync -a REGRESSION_TEST/ ${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}
 			    cd $WORKSPACE/test
+                            ./rt.sh -a ${ACCNR} -r -l rt.conf
                            elif [[ $machine =~ "Derecho" ]]
                            then
                              echo "Creating baselines on $machine"
@@ -108,6 +112,7 @@ def generateStage(nodeLabel) {
 			     cd /glade/derecho/scratch/epicufsrt/FV3_RT
 			     rsync -a REGRESSION_TEST/ ${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}
 			     cd $WORKSPACE/test
+                             ./rt.sh -a ${ACCNR} -e -l rt.conf
                           else
                             echo "Creating baselines on $machine"
                             ./rt.sh -a ${ACCNR} -c -r -l rt.conf
@@ -115,6 +120,14 @@ def generateStage(nodeLabel) {
                       git config user.email "ecc.platform@noaa.gov"
                       git config user.name "epic-cicd-jenkins"
                       echo "Testing concluded...removing labels for $machine from $GIT_URL"
+
+                      export machine_name_logs=$(echo $machine | awk '{ print tolower($1) }')
+                      git remote -v | grep -w sshorigin > /dev/null 2>&1 && git remote remove sshorigin > /dev/null 2>&1
+                      git remote add sshorigin $SSH_ORIGIN > /dev/null 2>&1
+                      git add logs/RegressionTests_$machine_name_logs.log
+                      git commit -m "[AutoRT] $machine Job Completed.\n\n\n on-behalf-of @ufs-community <ecc.platform@noaa.gov>"
+                      git pull sshorigin $FORK_BRANCH
+                      git push sshorigin HEAD:$FORK_BRANCH
   
                       GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
                       GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
