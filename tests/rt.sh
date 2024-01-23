@@ -88,26 +88,26 @@ generate_log() {
   FAILED_TEST_LOGS=()
   TEST_CHANGES_LOG="test_changes.out"
   TEST_END_TIME="$(date '+%Y%m%d %T')"
-  cat << EOF > ${REGRESSIONTEST_LOG}
+  cat << EOF > "${REGRESSIONTEST_LOG}"
 ====START OF ${MACHINE_ID^^} REGRESSION TESTING LOG====
 
 UFSWM hash used in testing:
-`git rev-parse HEAD`
+$(git rev-parse HEAD)
 
 Submodule hashes used in testing:
 EOF
   cd ..
-  git submodule status >> ${REGRESSIONTEST_LOG}
-  echo; echo >> ${REGRESSIONTEST_LOG}
+  git submodule status >> "${REGRESSIONTEST_LOG}"
+  echo; echo >> "${REGRESSIONTEST_LOG}"
   cd tests
   
-  cat << EOF >> ${REGRESSIONTEST_LOG}
+  cat << EOF >> "${REGRESSIONTEST_LOG}"
 
 NOTES:
-Times are at the end of each compile/test in format (MM:SS).
+(Times)[Memory] are at the end of each compile/test in format (MM:SS)[Size(KB)].
 The first time is how long the scipt (prep+run+finalize) ran.
 The second time is specifically how long the run phase ran.
-Times will be empty for failed tests.
+Times/Memory will be empty for failed tests.
 EOF
 
   [[ -f "${TEST_CHANGES_LOG}" ]] && rm ${TEST_CHANGES_LOG}
@@ -122,9 +122,9 @@ EOF
 
     if [[ $line == COMPILE* ]] ; then
       
-      CMACHINES=$(echo $line | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
-      COMPILER=$(echo $line | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
-      COMPILE_NAME=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
+      CMACHINES=$(echo "$line" | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
+      COMPILER=$(echo "$line" | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
+      COMPILE_NAME=$(echo "$line" | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
       COMPILE_ID=${COMPILE_NAME}_${COMPILER}
       
       if [[ ${CMACHINES} == '' ]]; then
@@ -136,7 +136,7 @@ EOF
       fi
 
       if [[ $valid_compile == true ]]; then
-        COMPILE_COUNTER=$((${COMPILE_COUNTER}+1))
+        COMPILE_COUNTER=$((COMPILE_COUNTER+1))
         FAIL_LOG=""
         COMPILE_RESULT=""
         TIME_FILE=""
@@ -149,10 +149,10 @@ EOF
           COMPILE_RESULT="FAIL TO RUN"
           FAIL_LOG="${LOG_DIR}/compile_${COMPILE_ID}.log"
         else 
-          if [[ `grep -q "quota" ${LOG_DIR}/compile_${COMPILE_ID}.log` ]]; then
+          if grep -q "quota" "${LOG_DIR}/compile_${COMPILE_ID}.log"; then
             COMPILE_RESULT="FAIL FROM DISK QUOTA"
             FAIL_LOG="${LOG_DIR}/compile_${COMPILE_ID}.log"
-          elif [[ `grep -q "timeout" ${LOG_DIR}/compile_${COMPILE_ID}.log` ]]; then
+          elif grep -q "timeout" "${LOG_DIR}/compile_${COMPILE_ID}.log"; then
             COMPILE_RESULT="FAIL FROM TIMEOUT"
             FAIL_LOG="${LOG_DIR}/compile_${COMPILE_ID}.log"
           else
@@ -162,29 +162,29 @@ EOF
               while read -r times || [ "$times" ]; do
                   times="${times#"${times%%[![:space:]]*}"}"
 
-                  DATE1=$(echo $times | cut -d ',' -f2 )
-                  DATE2=$(echo $times | cut -d ',' -f3 )
-                  DATE3=$(echo $times | cut -d ',' -f4 )
-                  DATE4=$(echo $times | cut -d ',' -f5 )
+                  DATE1=$(echo "$times" | cut -d ',' -f2 )
+                  DATE2=$(echo "$times" | cut -d ',' -f3 )
+                  DATE3=$(echo "$times" | cut -d ',' -f4 )
+                  DATE4=$(echo "$times" | cut -d ',' -f5 )
 
-                  COMPILE_TIME=$(date --date=@$(($DATE3 - $DATE2)) +'%M:%S')
-                  RT_COMPILE_TIME=$(date --date=@$(($DATE4 - $DATE1)) +'%M:%S')
+                  COMPILE_TIME=$(date --date=@$((DATE3 - DATE2)) +'%M:%S')
+                  RT_COMPILE_TIME=$(date --date=@$((DATE4 - DATE1)) +'%M:%S')
 
-              done < $TIME_FILE
+              done < "$TIME_FILE"
             fi
           fi
         fi
       fi
-      echo >> ${REGRESSIONTEST_LOG}
-      echo "${COMPILE_RESULT} -- COMPILE '${COMPILE_ID}' (${RT_COMPILE_TIME}--${COMPILE_TIME})" >> ${REGRESSIONTEST_LOG}
-      [[ ! -z $FAIL_LOG ]] && FAILED_COMPILES+=("COMPILE ${COMPILE_ID}: ${COMPILE_RESULT}")
-      [[ ! -z $FAIL_LOG ]] && FAILED_COMPILE_LOGS+=("${FAIL_LOG}")
+      echo >> "${REGRESSIONTEST_LOG}"
+      echo "${COMPILE_RESULT} -- COMPILE '${COMPILE_ID}' (${RT_COMPILE_TIME}--${COMPILE_TIME})" >> "${REGRESSIONTEST_LOG}"
+      [[ -n $FAIL_LOG ]] && FAILED_COMPILES+=("COMPILE ${COMPILE_ID}: ${COMPILE_RESULT}")
+      [[ -n $FAIL_LOG ]] && FAILED_COMPILE_LOGS+=("${FAIL_LOG}")
 
 
     elif [[ $line =~ RUN ]]; then
       
-      RMACHINES=$(echo $line | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
-      TEST_NAME=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
+      RMACHINES=$(echo "$line" | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
+      TEST_NAME=$(echo "$line" | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
       TEST_ID=${TEST_NAME}_${COMPILER}
       
       if [[ ${RMACHINES} == '' ]]; then
@@ -196,12 +196,14 @@ EOF
       fi
 
       if [[ $valid_test == true ]]; then
-        TEST_COUNTER=$((${TEST_COUNTER}+1))
+        TEST_COUNTER=$((TEST_COUNTER+1))
+        GETMEMFROMLOG=""
         FAIL_LOG=""
         TEST_RESULT=""
         TIME_FILE=""
         TEST_TIME=""
         RT_TEST_TIME=""
+        RT_TEST_MEM=""
         if [[ ! -f "${LOG_DIR}/run_${TEST_ID}.log" ]]; then
           TEST_RESULT="MISSING"
           FAIL_LOG="N/A"
@@ -214,58 +216,61 @@ EOF
             FAIL_LOG="${LOG_DIR}/run_${TEST_ID}.log"
           fi
         else
-          if [[ `grep -q "quota" ${LOG_DIR}/run_${TEST_ID}.log` ]]; then
+          if grep -q "quota" "${LOG_DIR}/run_${TEST_ID}.log"; then
             TEST_RESULT="FAIL FROM DISK QUOTA"
             FAIL_LOG="${LOG_DIR}/run_${TEST_ID}.log"
-          elif [[ `grep -q "timeout" ${LOG_DIR}/run_${TEST_ID}.log` ]]; then
+          elif grep -q "timeout" "${LOG_DIR}/run_${TEST_ID}.log"; then
             TEST_RESULT="FAIL FROM TIMEOUT"
             FAIL_LOG="${LOG_DIR}/run_${TEST_ID}.log"
           else
+            
             TEST_RESULT="PASS"
             TIME_FILE="${LOG_DIR}/run_${TEST_ID}_timestamp.txt"
+            GETMEMFROMLOG=$(grep "The maximum resident set size" "${LOG_DIR}/rt_${TEST_ID}.log")
+            RT_TEST_MEM=$(echo "${GETMEMFROMLOG:3:${#GETMEMFROMLOG}-1}" | tr -dc '0-9')
             if [[ -f "${TIME_FILE}" ]]; then
               while read -r times || [ "$times" ]; do
                   times="${times#"${times%%[![:space:]]*}"}"
 
-                  DATE1=$(echo $times | cut -d ',' -f2 )
-                  DATE2=$(echo $times | cut -d ',' -f3 )
-                  DATE3=$(echo $times | cut -d ',' -f4 )
-                  DATE4=$(echo $times | cut -d ',' -f5 )
+                  DATE1=$(echo "$times" | cut -d ',' -f2 )
+                  DATE2=$(echo "$times" | cut -d ',' -f3 )
+                  DATE3=$(echo "$times" | cut -d ',' -f4 )
+                  DATE4=$(echo "$times" | cut -d ',' -f5 )
 
-                  TEST_TIME=$(date --date=@$(($DATE3 - $DATE2)) +'%H:%M:%S')
-                  RT_TEST_TIME=$(date --date=@$(($DATE4 - $DATE1)) +'%H:%M:%S')
+                  TEST_TIME=$(date --date=@$((DATE3 - DATE2)) +'%M:%S')
+                  RT_TEST_TIME=$(date --date=@$((DATE4 - DATE1)) +'%M:%S')
 
-              done < $TIME_FILE
+              done < "$TIME_FILE"
             fi
           fi
         fi
       fi
 
-      echo "${TEST_RESULT} -- TEST '${TEST_ID}' (${RT_TEST_TIME}--${TEST_TIME})" >> ${REGRESSIONTEST_LOG}
-      [[ ! -z $FAIL_LOG ]] && FAILED_TESTS+=("TEST ${TEST_ID}: ${TEST_RESULT}")
-      [[ ! -z $FAIL_LOG ]] && FAILED_TEST_LOGS+=("${FAIL_LOG}")
-      [[ ! -z $FAIL_LOG ]] && FAILED_TEST_ID+=("${TEST_ID}")
+      echo "${TEST_RESULT} -- TEST '${TEST_ID}' (${RT_TEST_TIME}--${TEST_TIME})[${RT_TEST_MEM}]" >> "${REGRESSIONTEST_LOG}"
+      [[ -n $FAIL_LOG ]] && FAILED_TESTS+=("TEST ${TEST_ID}: ${TEST_RESULT}")
+      [[ -n $FAIL_LOG ]] && FAILED_TEST_LOGS+=("${FAIL_LOG}")
+      [[ -n $FAIL_LOG ]] && FAILED_TEST_ID+=("${TEST_ID}")
 
     fi
-  done < $TESTS_FILE
+  done < "$TESTS_FILE"
   
   elapsed_time=$( printf '%02dh:%02dm:%02ds\n' $((SECONDS%86400/3600)) $((SECONDS%3600/60)) $((SECONDS%60)) )
   
-  cat << EOF >> ${REGRESSIONTEST_LOG}
+  cat << EOF >> "${REGRESSIONTEST_LOG}"
 
 SYNOPSIS:
 Starting Date/Time: ${TEST_START_TIME}
 Ending Date/Time: ${TEST_END_TIME}
-Total Time: ${elapsed_time})
-Compiles Completed: $((${COMPILE_COUNTER}-${#FAILED_COMPILES[@]}))/${COMPILE_COUNTER}
-Tests Completed: $((${TEST_COUNTER}-${#FAILED_TESTS[@]}))/${TEST_COUNTER}
+Total Time: ${elapsed_time}
+Compiles Completed: $((COMPILE_COUNTER-${#FAILED_COMPILES[@]}))/${COMPILE_COUNTER}
+Tests Completed: $((TEST_COUNTER-${#FAILED_TESTS[@]}))/${TEST_COUNTER}
 EOF
   # PRINT FAILED COMPILES
   if [[ "${#FAILED_COMPILES[@]}" -ne "0" ]]; then
-    echo "Failed Compiles:" >> ${REGRESSIONTEST_LOG}
-    for i in ${!FAILED_COMPILES[@]}; do
-      echo "* ${FAILED_COMPILES[$i]}" >> ${REGRESSIONTEST_LOG}
-      echo "-- LOG: ${FAILED_COMPILE_LOGS[$i]}" >> ${REGRESSIONTEST_LOG}
+    echo "Failed Compiles:" >> "${REGRESSIONTEST_LOG}"
+    for i in "${!FAILED_COMPILES[@]}"; do
+      echo "* ${FAILED_COMPILES[$i]}" >> "${REGRESSIONTEST_LOG}"
+      echo "-- LOG: ${FAILED_COMPILE_LOGS[$i]}" >> "${REGRESSIONTEST_LOG}"
     done
   fi
   
@@ -273,22 +278,22 @@ EOF
   if [[ "${#FAILED_TESTS[@]}" -ne "0" ]]; then
     
     echo "Failed Tests:" >> ${REGRESSIONTEST_LOG}
-    for j in ${!FAILED_TESTS[@]}; do
-      echo "* ${FAILED_TESTS[$j]}" >> ${REGRESSIONTEST_LOG}
-      echo "-- LOG: ${FAILED_TEST_LOGS[$j]}" >> ${REGRESSIONTEST_LOG}
+    for j in "${!FAILED_TESTS[@]}"; do
+      echo "* ${FAILED_TESTS[$j]}" >> "${REGRESSIONTEST_LOG}"
+      echo "-- LOG: ${FAILED_TEST_LOGS[$j]}" >> "${REGRESSIONTEST_LOG}"
     done
     
   fi
   
   # WRITE FAILED_TEST_ID LIST TO TEST_CHANGES_LOG
   if [[ "${#FAILED_TESTS[@]}" -ne "0" ]]; then
-    for item in ${FAILED_TEST_ID[@]}; do
-      echo $item >> ${TEST_CHANGES_LOG}
+    for item in "${FAILED_TEST_ID[@]}"; do
+      echo "$item" >> "${TEST_CHANGES_LOG}"
     done
   fi
 
   if [[ "${#FAILED_COMPILES[@]}" -eq "0" && "${#FAILED_TESTS[@]}" -eq "0" ]]; then
-    cat << EOF >> ${REGRESSIONTEST_LOG}
+    cat << EOF >> "${REGRESSIONTEST_LOG}"
 
 NOTES:
 A file '${TEST_CHANGES_LOG}' was generated but is empty.
@@ -300,13 +305,13 @@ Result: SUCCESS
 EOF
     echo "Performing Cleanup..."
     rm -f fv3_*.x fv3_*.exe modules.fv3_* modulefiles/modules.fv3_* keep_tests.tmp
-    [[ ${KEEP_RUNDIR} == false ]] && rm -rf ${RUNDIR_ROOT} && rm ${PATHRT}/run_dir
-    [[ ${ROCOTO} == true ]] && rm -f ${ROCOTO_XML} ${ROCOTO_DB} ${ROCOTO_STATE} *_lock.db
+    [[ ${KEEP_RUNDIR} == false ]] && rm -rf "${RUNDIR_ROOT}" && rm "${PATHRT}/run_dir"
+    [[ ${ROCOTO} == true ]] && rm -f "${ROCOTO_XML}" "${ROCOTO_DB}" "${ROCOTO_STATE}" *_lock.db
     [[ ${TEST_35D} == true ]] && rm -f tests/cpld_bmark*_20*
-    [[ ${SINGLE_NAME} != '' ]] && rm -f $RT_SINGLE_CONF
+    [[ ${SINGLE_NAME} != '' ]] && rm -f "$RT_SINGLE_CONF"
     echo "REGRESSION TEST RESULT: SUCCESS"
   else
-    cat << EOF >> ${REGRESSIONTEST_LOG}
+    cat << EOF >> "${REGRESSIONTEST_LOG}"
 
 NOTES:
 A file '${TEST_CHANGES_LOG}' was generated with list of all failed tests.
