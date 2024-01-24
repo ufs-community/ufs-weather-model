@@ -637,6 +637,8 @@ export PRINT_DIFF_PGR=.false.
 
 # Coupling
 export coupling_interval_fast_sec=0
+export CHOUR=06
+export MOM6_OUTPUT_DIR=./MOM6_OUTPUT
 }
 
 # Defaults for the CICE6 model namelist, mx100
@@ -782,6 +784,7 @@ export SYEAR=2021
 export SMONTH=03
 export SDAY=22
 export SHOUR=06
+export CHOUR=06
 export FHMAX=24
 export FHROT=0
 export DT_ATMOS=720
@@ -826,7 +829,7 @@ export FRAC_GRID=.true.
 export CCPP_SUITE=FV3_GFS_v17_coupled_p8
 export INPUT_NML=cpld_control.nml.IN
 export FIELD_TABLE=field_table_thompson_noaero_tke_GOCART
-export DIAG_TABLE=diag_table_p8_template
+export DIAG_TABLE=diag_table_cpld.IN
 export DIAG_TABLE_ADDITIONAL=''
 
 export FHZERO=6
