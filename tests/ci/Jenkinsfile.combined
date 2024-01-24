@@ -205,7 +205,21 @@ def generateStage(nodeLabel) {
                   }
                   catch(err) {
                     sh '''
-                      echo "I hit an error!"
+                      cd $WORKSPACE/tests
+                      git config user.email "ecc.platform@noaa.gov"
+                      git config user.name "epic-cicd-jenkins"
+                      export machine_name_logs=$(echo $machine | awk '{ print tolower($1) }')
+                      echo "Testing concluded...removing labels for $machine from $GIT_URL"
+                      git remote -v | grep -w sshorigin > /dev/null 2>&1 && git remote remove sshorigin > /dev/null 2>&1
+                      git remote add sshorigin $SSH_ORIGIN > /dev/null 2>&1
+                      git commit -m "[AutoRT] $machine Job Failed!\n\n\n on-behalf-of @ufs-community <ecc.platform@noaa.gov>"
+                      git pull sshorigin $FORK_BRANCH
+                      git push sshorigin HEAD:$FORK_BRANCH
+
+                      GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
+                      GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
+
+                      curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-RT
                     '''
                     currentBuild.result = 'FAILURE'
                   }
