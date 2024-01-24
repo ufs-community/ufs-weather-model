@@ -203,10 +203,11 @@ def generateStage(nodeLabel) {
                        '''
                     }
                   }
-                  catch(all) {
+                  catch(err) {
                     sh '''
                       echo "I hit an error!"
                     '''
+                    currentBuild.result = 'FAILURE'
                   }
                 }
               }
