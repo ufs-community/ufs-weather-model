@@ -13,7 +13,7 @@ ENV test_name=$test_name
 ENV run_case=$run_case
 ENV CI_TEST=true
 ENV RT_COMPILER=gnu
-ENV RT_MACHINE=linux
+ENV MACHINE=linux
 ENV MACHINE_ID=linux
 # ACCNR CAN BE ANYTHING; DOCKER DOES NOT NEED THIS
 ENV ACCNR=nems 
