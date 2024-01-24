@@ -176,7 +176,7 @@ EOF
         fi
       fi
       echo >> "${REGRESSIONTEST_LOG}"
-      echo "${COMPILE_RESULT} -- COMPILE '${COMPILE_ID}' (${RT_COMPILE_TIME}--${COMPILE_TIME})" >> "${REGRESSIONTEST_LOG}"
+      echo "${COMPILE_RESULT} -- COMPILE '${COMPILE_ID}' [${RT_COMPILE_TIME}, ${COMPILE_TIME}]" >> "${REGRESSIONTEST_LOG}"
       [[ -n $FAIL_LOG ]] && FAILED_COMPILES+=("COMPILE ${COMPILE_ID}: ${COMPILE_RESULT}")
       [[ -n $FAIL_LOG ]] && FAILED_COMPILE_LOGS+=("${FAIL_LOG}")
 
@@ -185,7 +185,6 @@ EOF
       
       RMACHINES=$(echo "$line" | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
       TEST_NAME=$(echo "$line" | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
-      TEST_ID=${TEST_NAME}_${COMPILER}
       
       if [[ ${RMACHINES} == '' ]]; then
         valid_test=true
@@ -204,30 +203,30 @@ EOF
         TEST_TIME=""
         RT_TEST_TIME=""
         RT_TEST_MEM=""
-        if [[ ! -f "${LOG_DIR}/run_${TEST_ID}.log" ]]; then
+        if [[ ! -f "${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log" ]]; then
           TEST_RESULT="MISSING"
           FAIL_LOG="N/A"
-        elif [[ -f fail_test_${TEST_ID} ]]; then
-          if [[ -f "${LOG_DIR}/rt_${TEST_ID}.log" ]]; then
+        elif [[ -f fail_test_${TEST_NAME}_${COMPILER} ]]; then
+          if [[ -f "${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log" ]]; then
             TEST_RESULT="FAIL TO COMPARE"
-            FAIL_LOG="${LOG_DIR}/rt_${TEST_ID}.log"
+            FAIL_LOG="${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log"
           else
             TEST_RESULT="FAIL TO RUN"
-            FAIL_LOG="${LOG_DIR}/run_${TEST_ID}.log"
+            FAIL_LOG="${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"
           fi
         else
-          if grep -q "quota" "${LOG_DIR}/run_${TEST_ID}.log"; then
+          if grep -q "quota" "${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"; then
             TEST_RESULT="FAIL FROM DISK QUOTA"
-            FAIL_LOG="${LOG_DIR}/run_${TEST_ID}.log"
-          elif grep -q "timeout" "${LOG_DIR}/run_${TEST_ID}.log"; then
+            FAIL_LOG="${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"
+          elif grep -q "timeout" "${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"; then
             TEST_RESULT="FAIL FROM TIMEOUT"
-            FAIL_LOG="${LOG_DIR}/run_${TEST_ID}.log"
+            FAIL_LOG="${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"
           else
             
             TEST_RESULT="PASS"
-            TIME_FILE="${LOG_DIR}/run_${TEST_ID}_timestamp.txt"
-            GETMEMFROMLOG=$(grep "The maximum resident set size" "${LOG_DIR}/rt_${TEST_ID}.log")
-            RT_TEST_MEM=$(echo "${GETMEMFROMLOG:3:${#GETMEMFROMLOG}-1}" | tr -dc '0-9')
+            TIME_FILE="${LOG_DIR}/run_${TEST_NAME}_${COMPILER}_timestamp.txt"
+            GETMEMFROMLOG=$(grep "The maximum resident set size" "${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log")
+            RT_TEST_MEM=$(echo "${GETMEMFROMLOG:9:${#GETMEMFROMLOG}-1}" | tr -dc '0-9')
             if [[ -f "${TIME_FILE}" ]]; then
               while read -r times || [ "$times" ]; do
                   times="${times#"${times%%[![:space:]]*}"}"
@@ -246,10 +245,10 @@ EOF
         fi
       fi
 
-      echo "${TEST_RESULT} -- TEST '${TEST_ID}' (${RT_TEST_TIME}--${TEST_TIME})[${RT_TEST_MEM}]" >> "${REGRESSIONTEST_LOG}"
-      [[ -n $FAIL_LOG ]] && FAILED_TESTS+=("TEST ${TEST_ID}: ${TEST_RESULT}")
+      echo "${TEST_RESULT} -- TEST '${TEST_NAME}_${COMPILER}' [${RT_TEST_TIME}, ${TEST_TIME}](${RT_TEST_MEM})" >> "${REGRESSIONTEST_LOG}"
+      [[ -n $FAIL_LOG ]] && FAILED_TESTS+=("TEST ${TEST_NAME}_${COMPILER}: ${TEST_RESULT}")
       [[ -n $FAIL_LOG ]] && FAILED_TEST_LOGS+=("${FAIL_LOG}")
-      [[ -n $FAIL_LOG ]] && FAILED_TEST_ID+=("${TEST_ID}")
+      [[ -n $FAIL_LOG ]] && FAILED_TEST_ID+=("${TEST_NAME} ${COMPILER}")
 
     fi
   done < "$TESTS_FILE"
@@ -944,7 +943,7 @@ in_metatask=false
 [[ -f $TESTS_FILE ]] || die "$TESTS_FILE does not exist"
 
 LAST_COMPILER_NR=-9999
-COMPILE_PREV==''
+COMPILE_PREV=''
 
 declare -A compiles
 
