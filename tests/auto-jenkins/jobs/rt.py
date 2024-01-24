@@ -27,14 +27,12 @@ def set_directories(job_obj):
         workdir = '/scratch1/NCEPDEV/nems/role.epic/autort/pr'
     elif job_obj.machine == 'jet':
         workdir = '/lfs4/HFIP/hfv3gfs/role.epic/autort/pr'
-    elif job_obj.machine == 'gaea':
-        workdir = '/lustre/f2/pdata/ncep/role.epic/autort/pr'
     elif job_obj.machine == 'orion':
         workdir = '/work/noaa/epic-ps/role-epic-ps/autort/tests/auto/pr'
     elif job_obj.machine == 'hercules':
         workdir = '/work/noaa/epic/role-epic/autort/tests/auto/pr'
-    elif job_obj.machine == 'cheyenne':
-        workdir = '/glade/scratch/epicufsrt/autort/jenkins/autort/pr'
+    elif job_obj.machine == 'derecho':
+        workdir = '/glade/derecho/scratch/epicufsrt/autort/jenkins/autort/pr'
     else:
         print(f'Machine {job_obj.machine} is not supported for this job')
         raise KeyError

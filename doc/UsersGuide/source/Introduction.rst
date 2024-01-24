@@ -7,9 +7,8 @@ Introduction
 The Unified Forecast System (:term:`UFS`) Weather Model (:term:`WM`) is a prognostic model that can be
 used for short- and medium-range research and operational forecasts, as exemplified by
 its use in the operational Global Forecast System (GFS) of the National Oceanic and
-Atmospheric Administration (NOAA). The UFS WM v2.0.0 is the latest public release of this
-software and represents a snapshot of a continuously evolving system undergoing open
-development. More information about the UFS can be found on the UFS Community Portal at https://ufscommunity.org/.
+Atmospheric Administration (NOAA). In addition to its use in NOAA's operational forecast systems, the UFS WM is the atmospheric model used in public UFS application releases, such as the Short-Range Weather (SRW) Application v2.2.0 release. These releases represent a snapshot of a continuously evolving system undergoing open
+development. More information about the UFS can be found on the UFS Community Portal at https://ufscommunity.org/ and on the Earth Prediction Innovation Center (EPIC) website at https://epic.noaa.gov/get-code/ufs-weather-model/.
 
 Key architectural elements of the UFS WM, along with links to external detailed documentation
 for those elements, are listed below:
@@ -22,10 +21,10 @@ for those elements, are listed below:
 
    * `Stochastic physics <https://stochastic-physics.readthedocs.io/en/latest/>`__ schemes apply randomized perturbations to the physical tendencies, or physical parameters, of a model in order to compensate for model uncertainty. They include the Stochastic Kinetic Backscatter Scheme (SKEBS), the Stochastically Perturbed Parameterization Tendencies (SPPT) scheme, the perturbed boundary layer humidity (SHUM) scheme, the Stochastically Perturbed Parameterizations (SPP) scheme, Land Surface Model SPP (LSM-SPP), and the cellular automata method (:cite:t:`BengtssonEtAl2020`).
 
-   * The libraries needed to build the system, such as:
+   * The libraries needed to build the system, which are bundled together via `spack-stack <https://spack-stack.readthedocs.io/en/latest/>`__ and include:
    
       * `National Centers for Environmental Prediction (NCEP) Libraries <https://github.com/NOAA-EMC/NCEPLIBS/wiki>`__
-      * `Earth System Modeling Framework (ESMF) <https://www.earthsystemcog.org/projects/esmf/>`__
+      * `Earth System Modeling Framework (ESMF) <https://earthsystemmodeling.org/>`__
       * `External libraries <https://github.com/NOAA-EMC/NCEPLIBS-external/wiki>`__
 
    * The build system used to compile the code and generate the executable.
@@ -34,9 +33,9 @@ for those elements, are listed below:
 
 .. COMMENT: Should NCEP, ESMF, and external libraries be grouped as part of HPC-Stack? Or is this a different set of libraries?
 
-The UFS Weather Model is currently included in two UFS Application releases: The UFS Short-Range Weather (:term:`SRW`) Application v2.0.0 release (June 2022) and the UFS Medium Range Weather Application (:term:`MRW`) v1.1.0 release (October 2020). These UFS Apps also contain pre- and post-processing components, a comprehensive build system, and workflows for configuration and execution of the application. The SRW App v2.0.0 documentation and details can be found `here <https://ufs-srweather-app.readthedocs.io/en/release-public-v2/>`__. The MRW App v1.1.0 documentation and details can be found `here <https://ufs-mrweather-app.readthedocs.io/en/ufs-v1.1.0>`__.
+The UFS Weather Model is currently included in two UFS Application releases: The UFS Short-Range Weather (:term:`SRW`) Application v2.2.0 release (October 2023) and the UFS Medium Range Weather Application (:term:`MRW`) v1.1.0 release (October 2020). These UFS Apps also contain pre- and post-processing components, a comprehensive build system, and workflows for configuration and execution of the application. The SRW App v2.2.0 documentation and details can be found `here <https://ufs-srweather-app.readthedocs.io/en/release-public-v2.2.0/>`__. The MRW App v1.1.0 documentation and details can be found `here <https://ufs-mrweather-app.readthedocs.io/en/ufs-v1.1.0>`__.
 
-The UFS WM code is portable and can be used with Linux or Mac operating systems and with Intel or GNU compilers. It has been tested on a variety of platforms widely used by atmospheric scientists, such as the NOAA Research Hera system, the National Center for Atmospheric Research (:term:`NCAR`) Cheyenne system, the National Science Foundation Stampede system, and Mac laptops.
+The UFS WM code is portable and can be used with Linux or Mac operating systems and with Intel or GNU compilers. It has been tested on a variety of platforms widely used by atmospheric scientists, such as the NOAA Research Hera system, the National Center for Atmospheric Research (:term:`NCAR`) Derecho system, the National Science Foundation Stampede system, and Mac laptops.
 
 .. note::
 

@@ -43,11 +43,11 @@ elif [[ $MACHINE_ID = wcoss2 || $MACHINE_ID = acorn ]] ; then
     fi
     module purge
     module reset
-
-elif [[ $MACHINE_ID = cheyenne ]] ; then
-    # We are on NCAR Cheyenne
+    
+elif [[ $MACHINE_ID = derecho ]] ; then
+    # We are on NCAR Derecho
     if ( ! eval module help > /dev/null 2>&1 ) ; then
-        source /glade/u/apps/ch/modulefiles/default/localinit/localinit.sh
+        source /usr/share/lmod/lmod/init/bash
     fi
     module purge
     
@@ -65,8 +65,8 @@ elif [[ $MACHINE_ID = stampede ]] ; then
     fi
     module purge
 
-elif [[ $MACHINE_ID = gaea ]] ; then
-    # We are on GAEA.
+elif [[ $MACHINE_ID = gaea-c5 ]] ; then
+    # We are on GAEA C5
     if ( ! eval module help > /dev/null 2>&1 ) ; then
         # We cannot simply load the module command.  The GAEA
         # /etc/profile modifies a number of module-related variables
@@ -75,7 +75,7 @@ elif [[ $MACHINE_ID = gaea ]] ; then
         # /etc/profile here.
         source /etc/profile
     fi
-    source /lustre/f2/dev/role.epic/contrib/Lmod_init.sh
+    source /lustre/f2/dev/role.epic/contrib/Lmod_init_C5.sh
 
 elif [[ $MACHINE_ID = expanse ]]; then
     # We are on SDSC Expanse
