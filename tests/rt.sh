@@ -317,12 +317,12 @@ elif [[ $MACHINE_ID = gaea-c5 ]]; then
   module load intel-classic/2023.1.0
   module load cray-mpich/8.1.25
   module load python/3.9.12
-  module use /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/modulefiles
+  module use /ncrc/proj/epic/spack-stack/modulefiles
   module load ecflow/5.8.4
-  ECFLOW_START=/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/ecflow-5.8.4/bin/ecflow_start.sh
+  ECFLOW_START=/ncrc/proj/epic/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
-  DISKNM=/lustre/f2/pdata/ncep/role.epic/C5/RT
+  DISKNM=/gpfs/f5/epic/world-shared/lustre/epic/UFS-WM_RT
   QUEUE=normal
   COMPILE_QUEUE=normal
   PARTITION=c5
