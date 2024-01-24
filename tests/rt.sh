@@ -659,7 +659,7 @@ if [[ $ROCOTO == true ]]; then
     QUEUE=main
     COMPILE_QUEUE=main
     ROCOTO_SCHEDULER=pbspro
-  elif [[ $MACHINE_ID = gaea-c5 ]]; then
+  elif [[ $MACHINE_ID = gaea ]]; then
     QUEUE=normal
     COMPILE_QUEUE=normal
     ROCOTO_SCHEDULER=slurm
