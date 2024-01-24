@@ -206,15 +206,18 @@ def generateStage(nodeLabel) {
                   catch(err) {
                     sh '''
                       export machine=${NODE_NAME}
+                      export CHANGE_ID=${CHANGE_ID}
                       export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
                       export FORK_BRANCH=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
                       cd $WORKSPACE/tests
                       git config user.email "ecc.platform@noaa.gov"
                       git config user.name "epic-cicd-jenkins"
+                      export machine_name_logs=$(echo $machine | awk '{ print tolower($1) }')
                       echo "Testing concluded...removing labels for $machine from $GIT_URL"
                       git remote -v | grep -w sshorigin > /dev/null 2>&1 && git remote remove sshorigin > /dev/null 2>&1
                       git remote add sshorigin $SSH_ORIGIN > /dev/null 2>&1
-                      git commit -am "[AutoRT] $machine Job Failed!\n\n\n on-behalf-of @ufs-community <ecc.platform@noaa.gov>"
+                      git add logs/RegressionTests_$machine_name_logs.log
+                      git commit -m "[AutoRT] $machine Job Failed!\n\n\n on-behalf-of @ufs-community <ecc.platform@noaa.gov>"
                       git pull sshorigin $FORK_BRANCH
                       git push sshorigin HEAD:$FORK_BRANCH
 
