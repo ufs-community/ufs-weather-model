@@ -306,7 +306,7 @@ elif [[ $MACHINE_ID = acorn ]]; then
 
 elif [[ $MACHINE_ID = gaea-c5 ]]; then
 
-  module use /lustre/f2/dev/role.epic/contrib/C5/rocoto/modulefiles
+  module use /ncrc/proj/epic/rocoto/modulefiles
   module load rocoto
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
@@ -326,8 +326,8 @@ elif [[ $MACHINE_ID = gaea-c5 ]]; then
   QUEUE=normal
   COMPILE_QUEUE=normal
   PARTITION=c5
-  STMP=/lustre/f2/scratch
-  PTMP=/lustre/f2/scratch
+  STMP=/gpfs/f5/epic/scratch
+  PTMP=/gpfs/f5/epic/scratch
 
   SCHEDULER=slurm
 
