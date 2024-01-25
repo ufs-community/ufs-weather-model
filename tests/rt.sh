@@ -304,7 +304,7 @@ elif [[ $MACHINE_ID = acorn ]]; then
   PTMP=/lfs/h2/emc/ptmp
   SCHEDULER=pbs
 
-elif [[ $MACHINE_ID = gaea ]]; then
+elif [[ $MACHINE_ID = gaea-c5 ]]; then
 
   module use /ncrc/proj/epic/rocoto/modulefiles
   module load rocoto
