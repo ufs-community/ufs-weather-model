@@ -75,7 +75,7 @@ elif [[ $MACHINE_ID = gaea ]] ; then
         # /etc/profile here.
         source /etc/profile
     fi
-    source /gpfs/f5/epic/scratch/role.epic/contrib/Lmod_init_C5.sh
+    module reset
 
 elif [[ $MACHINE_ID = expanse ]]; then
     # We are on SDSC Expanse
