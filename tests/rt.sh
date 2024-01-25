@@ -326,8 +326,8 @@ elif [[ $MACHINE_ID = gaea-c5 ]]; then
   QUEUE=normal
   COMPILE_QUEUE=normal
   PARTITION=c5
-  STMP=/gpfs/f5/epic/scratch
-  PTMP=/gpfs/f5/epic/scratch
+  STMP=/gpfs/f5/nggps_emc/scratch
+  PTMP=/gpfs/f5/nggps_emc/scratch
 
   SCHEDULER=slurm
 
