@@ -313,9 +313,11 @@ elif [[ $MACHINE_ID = gaea-c5 ]]; then
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=slurm
 
+  
   module load PrgEnv-intel/8.3.3
-  module load intel-classic/2023.1.0
   module load cray-mpich/8.1.25
+  module load intel-classic/2023.1.0
+  module use /ncrc/proj/epic/spack-stack/modulefiles
   module load python/3.9.12
   module use /ncrc/proj/epic/spack-stack/modulefiles
   module load ecflow/5.8.4
@@ -657,7 +659,7 @@ if [[ $ROCOTO == true ]]; then
     QUEUE=main
     COMPILE_QUEUE=main
     ROCOTO_SCHEDULER=pbspro
-  elif [[ $MACHINE_ID = gaea-c5 ]]; then
+  elif [[ $MACHINE_ID = gaea ]]; then
     QUEUE=normal
     COMPILE_QUEUE=normal
     ROCOTO_SCHEDULER=slurm
