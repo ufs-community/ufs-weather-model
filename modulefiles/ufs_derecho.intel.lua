@@ -9,7 +9,7 @@ load("mysql/8.0.33")
 
 setenv("LMOD_TMOD_FIND_FIRST","yes")
 prepend_path("MODULEPATH", "/lustre/desc1/scratch/epicufsrt/contrib/modulefiles_extra")
-prepend_path("MODULEPATH", "/glade/work/epicufsrt/contrib/spack-stack/derecho/spack-stack-1.5.0/envs/unified-env/install/modulefiles/Core")
+prepend_path("MODULEPATH", "/glade/work/epicufsrt/contrib/spack-stack/derecho/spack-stack-1.5.1/envs/unified-env/install/modulefiles/Core")
 
 unload("ncarcompilers")
 stack_intel_ver=os.getenv("stack_intel_ver") or "2021.10.0"
