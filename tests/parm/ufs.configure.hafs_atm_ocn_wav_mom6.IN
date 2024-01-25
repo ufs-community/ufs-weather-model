@@ -55,27 +55,13 @@ OCN_omp_num_threads:            @[ocn_omp_num_threads]
 OCN_attributes::
   Verbosity = 0
   Diagnostic = 0
-  cdf_impexp_freq = 3
-  cpl_hour = 0
-  cpl_min = 0
-  cpl_sec = @[coupling_interval_sec]
-  base_dtg = @[SYEAR]@[SMONTH]@[SDAY]@[SHOUR]
+  history_n = 3
+  history_option = nhours
   merge_import = .false.
-  skip_first_import = .false.
-  hycom_arche_output = .false.
-  hyc_esmf_exp_output = .true.
-  hyc_esmf_imp_output = .true.
-  import_diagnostics = .false.
-  import_setting = flexible
-  hyc_impexp_file = ufs.configure
-  espc_show_impexp_minmax = .true.
-  ocean_start_dtg = @[OCEAN_START_DTG]
-  start_hour = 0
-  start_min = 0
-  start_sec = 0
-  end_hour = @[FHMAX]
-  end_min = 0
-  end_sec = 0
+  skip_first_import = .false. #.true.
+  use_mommesh = true
+  eps_imesh = 2.5e-1
+  mesh_ocn = @[MESH_OCN]
 ::
 
 # WAV #
@@ -96,6 +82,7 @@ runSeq::
 @@[coupling_interval_sec]
   MED med_phases_cdeps_run
   MED med_phases_prep_atm
+  MED med_phases_ocnalb_run
   MED med_phases_prep_ocn_accum
   MED med_phases_prep_ocn_avg
   MED med_phases_prep_wav_accum
@@ -147,21 +134,4 @@ ALLCOMP_attributes::
   stop_n = @[FHMAX]
   stop_option = nhours
   stop_ymd = -999
-::
-
-ocn_export_fields::
-  'sst'         'sea_surface_temperature'   'K'
-  'mask'        'ocean_mask'                '1'
-  'cpl_scalars' 'cpl_scalars'               '1'
-::
-
-ocn_import_fields::
-  'taux10'      'inst_zonal_moment_flx_atm' 'N_m-2'
-  'tauy10'      'inst_merid_moment_flx_atm' 'N_m-2'
-  'prcp'        'inst_prec_rate'            'kg_m-2_s-1'
-  'swflxd'      'inst_net_sw_flx'           'W_m-2'
-  'lwflxd'      'inst_net_lw_flx'           'W_m-2'
-  'mslprs'      'inst_pres_height_surface'  'Pa'
-  'sensflx'     'inst_sensi_heat_flx'       'W_m-2'
-  'latflx'      'inst_laten_heat_flx'       'W_m-2'
 ::
