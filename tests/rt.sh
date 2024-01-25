@@ -317,13 +317,11 @@ elif [[ $MACHINE_ID = gaea ]]; then
   module load miniconda3/4.12.0
   module load PrgEnv-intel/8.3.3
   module load intel-classic/2023.1.0
-  module load cray-mpich/8.1.25
-  module load python/3.9.12
   module use /ncrc/proj/epic/spack-stack/modulefiles
+  module load python/3.9.12
   module load ecflow/5.8.4
   ECFLOW_START=/ncrc/proj/epic/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
-
   DISKNM=/gpfs/f5/epic/world-shared/lustre/epic/UFS-WM_RT
   QUEUE=normal
   COMPILE_QUEUE=normal
