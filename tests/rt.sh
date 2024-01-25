@@ -315,9 +315,8 @@ elif [[ $MACHINE_ID = gaea ]]; then
 
   
   module load PrgEnv-intel/8.3.3
-  module load cray-mpich/8.1.25
   module load intel-classic/2023.1.0
-  module use /ncrc/proj/epic/spack-stack/modulefiles
+  module load cray-mpich/8.1.25
   module load python/3.9.12
   module use /ncrc/proj/epic/spack-stack/modulefiles
   module load ecflow/5.8.4
