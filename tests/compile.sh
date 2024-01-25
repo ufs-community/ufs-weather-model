@@ -59,7 +59,7 @@ if [[ $MACHINE_ID == macosx ]] || [[ $MACHINE_ID == linux ]]; then
 else
   # Activate lua environment for gaea c5
   if [[ $MACHINE_ID == gaea ]]; then
-    source /gpfs/f5/epic/scratch/role.epic/contrib/Lmod_init_C5.sh
+    module reset
   fi
   # Load fv3 module
   module use $PATHTR/modulefiles
