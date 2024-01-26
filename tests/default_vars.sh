@@ -515,6 +515,7 @@ export CPLICE=.false.
 export CPLWAV=.false.
 export CPLWAV2ATM=.false.
 export CPLLND=.false.
+export CPLLND2ATM=.false.
 export USE_MED_FLUX=.false.
 export DAYS=1
 export NPX=97
@@ -1032,6 +1033,7 @@ export FILENAME_BASE=cfsr.
 export MESH_ATM=${FILENAME_BASE//.}_mesh.nc
 export atm_datamode=${DATM_SRC}
 export stream_files=INPUT/${FILENAME_BASE}201110.nc
+export EXPORT_ALL=.false.
 export STREAM_OFFSET=0
 
 export BL_SUFFIX=""
@@ -1052,6 +1054,7 @@ export NTILES=1
 export atm_model=datm
 export DATM_IN_CONFIGURE=datm_in.IN
 export DATM_STREAM_CONFIGURE=hafs_datm.streams.era5.IN
+export EXPORT_ALL=.false.
 }
 export_hafs_docn_cdeps ()
 {
