@@ -143,9 +143,35 @@ export FNSLPC="'C384.slope_type.tileX.nc'"
 export FNABSC="'C384.maximum_snow_albedo.tileX.nc'"
 
 #BMICs do not contain NSST spinup
-export NSTF_NAME=2,1,0,0,0
+export NSTF_NAME=2,0,0,0,0
 
-export CDMBWD=${CDMBWD_c384}
+export GWD_OPT=2
+export CDMBWD=5.0,5.0,1.0,1.0
+export DO_UGWP_V1=.true.
+export KNOB_UGWP_VERSION=1
+export KNOB_UGWP_NSLOPE=1
+export DO_UGWP_V0=.false.
+export DO_GSL_DRAG_LS_BL=.true.
+export DO_GSL_DRAG_SS=.true.
+export DO_GSL_DRAG_TOFD=.true.
+export DO_UGWP_V1_OROG_ONLY=.false.
+export DO_UGWP_V0_NST_ONLY=.false.
+export LDIAG_UGWP=.false.
+export KNOB_UGWP_DOKDIS=2
+export KNOB_UGWP_NDX4LH=4
+
+export ISEED_CA=1837587294
+
+export PROGSIGMA=.true.
+export IOPT_DIAG=1
+export IOPT_TRS=2
+export IOPT_DIAG=1
+
+export IAER=2011
+#export CDMBWD=${CDMBWD_c384}
+
+export DOGP_CLDOPTICS_LUT=.false.
+export DOGP_LWSCAT=.false.
 
 export FV3_RUN=cpld_control_run.IN
 export CCPP_SUITE=FV3_GFS_v17_coupled_p8_ugwpv1
