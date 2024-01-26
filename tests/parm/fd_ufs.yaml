@@ -92,6 +92,7 @@
        description: atmosphere export
      #
      - standard_name: Faxa_rainl
+       alias: inst_prec_rate_large
        canonical_units: kg m-2 s-1
        description: atmosphere export
      #
@@ -101,10 +102,12 @@
        description: atmosphere export
      #
      - standard_name: Faxa_snowc
+       alias: inst_fprec_rate_conv
        canonical_units: kg m-2 s-1
        description: atmosphere export
      #
      - standard_name: Faxa_snowl
+       alias: inst_fprec_rate_large
        canonical_units: kg m-2 s-1
        description: atmosphere export
      #
@@ -191,16 +194,6 @@
      #
      - standard_name: Sa_v
        alias: inst_merid_wind_height_lowest
-       canonical_units: m s-1
-       description: atmosphere export - bottom layer meridional wind
-     #
-     - standard_name: Sa_ua
-       alias: inst_zonal_wind_height_lowest_from_phys
-       canonical_units: m s-1
-       description: atmosphere export - bottom layer zonal wind
-     #
-     - standard_name: Sa_va
-       alias: inst_merid_wind_height_lowest_from_phys
        canonical_units: m s-1
        description: atmosphere export - bottom layer meridional wind
      #
@@ -1120,9 +1113,11 @@
        canonical_units: index
        description: soil type
      #
-     - standard_name: vfrac
+     - standard_name: Sa_vfrac
        canonical_units: frac
        description: areal fractional cover of green vegetation
+     - standard_name: Sa_vfrac
+       alias: vfrac
      #
      - standard_name: stc
        canonical_units: K
@@ -1140,9 +1135,11 @@
        canonical_units: ratio
        description: fm at 10m - Ratio of sigma level 1 wind and 10m wind
      #
-     - standard_name: zorl
+     - standard_name: Sa_zorl
        canonical_units: cm
        description: composite surface roughness in cm
+     - standard_name: Sa_zorl
+       alias: zorl
      #
      - standard_name: t2m
        canonical_units: K
@@ -1153,6 +1150,7 @@
      #-----------------------------------
      #
      - standard_name: Sl_lfrac
+       alias: land_fraction
        canonical_units: 1
        description: land export
      #
@@ -1168,12 +1166,67 @@
        canonical_units: 1
        description: AOD
      #
+     - standard_name: Sl_sfrac
+       alias: inst_snow_area_fraction_lnd
+       canonical_units: 1
+       description: land export 
+     #
+     - standard_name: Sl_tref
+       alias: inst_temp_height2m_lnd
+       canonical_units: K
+       description: mediator export to glc - no levation classes
+     #
+     - standard_name: Sl_qref
+       alias: inst_spec_humid_height2m_lnd
+       canonical_units: kg kg-1
+       description: land export
+     #
+     - standard_name: Sl_q
+       alias: inst_spec_humid_lnd
+       canonical_units: kg kg-1
+       description: land export
+     #
      - standard_name: Fall_lat
-       alias: mean_laten_heat_flx_lnd_to_atm
-       canonical_units: W m-2
+       alias: inst_laten_heat_flx_lnd
+       canonical_units: kg kg-1 m s-1
        description: land export to atm - atm/lnd latent heat flux
      #
      - standard_name: Fall_sen
-       alias: mean_sensi_heat_flx_lnd_to_atm
-       canonical_units: W m-2
+       alias: inst_sensi_heat_flx_lnd
+       canonical_units: K m s-1
        description: land export to atm - atm/lnd sensible heat flux
+     #
+     - standard_name: Fall_evap
+       alias: inst_potential_laten_heat_flx_lnd
+       canonical_units: W m-2
+       description: land export
+     #
+     - standard_name: Fall_gflx 
+       alias: inst_upward_heat_flux_lnd
+       canonical_units: W m-2
+       description: land export
+     #
+     - standard_name: Fall_roff
+       alias: inst_runoff_rate_lnd
+       canonical_units: kg m-2 s-1
+       description: land export
+     #
+     - standard_name: Fall_soff
+       alias: inst_subsurface_runoff_rate_lnd
+       canonical_units: kg m-2 s-1
+       description: land export
+     #
+     - standard_name: Sl_cmm
+       alias: inst_drag_wind_speed_for_momentum
+       canonical_units: m s-1
+       description: land export
+     #
+     - standard_name: Sl_chh
+       alias: inst_drag_mass_flux_for_heat_and_moisture 
+       canonical_units: kg m-2 s-1
+       description: land export
+     #
+     - standard_name: Sl_zvfun
+       alias: inst_func_of_roughness_length_and_vfrac
+       canonical_units: 1
+       description: land export
