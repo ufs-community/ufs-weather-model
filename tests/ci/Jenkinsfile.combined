@@ -100,7 +100,7 @@ def generateStage(nodeLabel) {
 			    mkdir develop-${BL_DATE}
 			    cd  /scratch1/NCEPDEV/stmp4/role.epic/FV3_RT
 			    rsync -a REGRESSION_TEST/ ${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}
-			    cd $WORKSPACE/test
+			    cd $WORKSPACE/tests
                             ./rt.sh -a ${ACCNR} -r -l rt.conf
                            elif [[ $machine =~ "Derecho" ]]
                            then
@@ -133,7 +133,7 @@ def generateStage(nodeLabel) {
                       GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
                       GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
 
-                      curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-BL
+                      curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-*
                       '''
                     }
                     else {
