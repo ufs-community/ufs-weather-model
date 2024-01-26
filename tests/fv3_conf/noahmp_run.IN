@@ -1,26 +1,64 @@
 mkdir -p INPUT RESTART
 
-cd INPUT
-rsync -arv @[INPUTDATA_ROOT]/NOAHMP_IC/ufs-land_C96_init_fields.tile1.nc C96.initial.tile1.nc
-rsync -arv @[INPUTDATA_ROOT]/NOAHMP_IC/ufs-land_C96_init_fields.tile2.nc C96.initial.tile2.nc
-rsync -arv @[INPUTDATA_ROOT]/NOAHMP_IC/ufs-land_C96_init_fields.tile3.nc C96.initial.tile3.nc
-rsync -arv @[INPUTDATA_ROOT]/NOAHMP_IC/ufs-land_C96_init_fields.tile4.nc C96.initial.tile4.nc
-rsync -arv @[INPUTDATA_ROOT]/NOAHMP_IC/ufs-land_C96_init_fields.tile5.nc C96.initial.tile5.nc
-rsync -arv @[INPUTDATA_ROOT]/NOAHMP_IC/ufs-land_C96_init_fields.tile6.nc C96.initial.tile6.nc
+if [ "$LNDRES" = "C96" ]; then
+  inputdir=FV3_input_data
+elif [ "$LNDRES" = "C48" ]; then
+  inputdir=FV3_input_data48
+elif [ "$LNDRES" = "C192" ]; then
+  inputdir=FV3_input_data192
+elif [ "$LNDRES" = "C384" ]; then
+  inputdir=FV3_input_data384
+elif [ "$LNDRES" = "C768" ]; then
+  inputdir=FV3_input_data768
+fi
+echo "inputdir=$inputdir,LNDRES=$LNDRES"
 
-rsync -arv @[INPUTDATA_ROOT]/FV3_fix_tiled/C96/C96.maximum_snow_albedo.tile*.nc .
-rsync -arv @[INPUTDATA_ROOT]/FV3_fix_tiled/C96/C96.slope_type.tile*.nc .
-rsync -arv @[INPUTDATA_ROOT]/FV3_fix_tiled/C96/C96.soil_type.tile*.nc .
-rsync -arv @[INPUTDATA_ROOT]/FV3_fix_tiled/C96/C96.soil_color.tile*.nc .
-rsync -arv @[INPUTDATA_ROOT]/FV3_fix_tiled/C96/C96.substrate_temperature.tile*.nc .
-rsync -arv @[INPUTDATA_ROOT]/FV3_fix_tiled/C96/C96.vegetation_greenness.tile*.nc .
-rsync -arv @[INPUTDATA_ROOT]/FV3_fix_tiled/C96/C96.vegetation_type.tile*.nc .
-rsync -arv @[INPUTDATA_ROOT]/FV3_fix_tiled/C96/oro_C96.mx100.tile1.nc oro_data.tile1.nc
-rsync -arv @[INPUTDATA_ROOT]/FV3_fix_tiled/C96/oro_C96.mx100.tile2.nc oro_data.tile2.nc
-rsync -arv @[INPUTDATA_ROOT]/FV3_fix_tiled/C96/oro_C96.mx100.tile3.nc oro_data.tile3.nc
-rsync -arv @[INPUTDATA_ROOT]/FV3_fix_tiled/C96/oro_C96.mx100.tile4.nc oro_data.tile4.nc
-rsync -arv @[INPUTDATA_ROOT]/FV3_fix_tiled/C96/oro_C96.mx100.tile5.nc oro_data.tile5.nc
-rsync -arv @[INPUTDATA_ROOT]/FV3_fix_tiled/C96/oro_C96.mx100.tile6.nc oro_data.tile6.nc
-rsync -arv @[INPUTDATA_ROOT]/FV3_input_data/INPUT/C96_grid.tile*.nc .
-rsync -arv @[INPUTDATA_ROOT]/FV3_input_data/INPUT/grid_spec.nc C96_mosaic.nc
-cd -
+if [ $DATM_CDEPS == true ]; then
+  targetdir="./INPUT"
+  rsync -arv @[INPUTDATA_ROOT]/NOAHMP_IC/$atm_datamode/ufs-land_@[LNDRES]_init_fields.tile1.nc ./${targetdir}/@[LNDRES].initial.tile1.nc
+  rsync -arv @[INPUTDATA_ROOT]/NOAHMP_IC/$atm_datamode/ufs-land_@[LNDRES]_init_fields.tile2.nc ./${targetdir}/@[LNDRES].initial.tile2.nc
+  rsync -arv @[INPUTDATA_ROOT]/NOAHMP_IC/$atm_datamode/ufs-land_@[LNDRES]_init_fields.tile3.nc ./${targetdir}/@[LNDRES].initial.tile3.nc
+  rsync -arv @[INPUTDATA_ROOT]/NOAHMP_IC/$atm_datamode/ufs-land_@[LNDRES]_init_fields.tile4.nc ./${targetdir}/@[LNDRES].initial.tile4.nc
+  rsync -arv @[INPUTDATA_ROOT]/NOAHMP_IC/$atm_datamode/ufs-land_@[LNDRES]_init_fields.tile5.nc ./${targetdir}/@[LNDRES].initial.tile5.nc
+  rsync -arv @[INPUTDATA_ROOT]/NOAHMP_IC/$atm_datamode/ufs-land_@[LNDRES]_init_fields.tile6.nc ./${targetdir}/@[LNDRES].initial.tile6.nc
+else
+  if [ "$ATMRES" = "$LNDRES" ]; then
+    targetdir="./INPUT"
+    cd ${targetdir}
+    ln -sf grid_spec.nc @[LNDRES]_mosaic.nc
+    cd -
+  else
+    mkdir -p INPUT/$LNDRES
+    targetdir="./INPUT/$LNDRES"
+  fi
+
+  if [ $WARM_START = .false. ]; then
+    cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127/sfc_data.tile*.nc ${targetdir}/.
+  else
+    # land restart file
+    cp ../${DEP_RUN}${SUFFIX}/ufs.cpld.lnd.out.${RESTART_FILE_SUFFIX_SECS}.tile*.nc RESTART/.
+    # CMEPS restart and pointer files
+    RFILE=ufs.cpld.cpl.r.${RESTART_FILE_SUFFIX_SECS}.nc
+    cp  ../${DEP_RUN}${SUFFIX}/RESTART/${RFILE} .
+    ls -1 ${RFILE}>rpointer.cpl
+    # link grid spec file
+  fi
+fi
+
+if [ "$ATMRES" != "$LNDRES" ]; then
+  rsync -arv @[INPUTDATA_ROOT]/FV3_fix_tiled/@[LNDRES]/@[LNDRES].maximum_snow_albedo.tile*.nc ${targetdir}/.
+  rsync -arv @[INPUTDATA_ROOT]/FV3_fix_tiled/@[LNDRES]/@[LNDRES].slope_type.tile*.nc ${targetdir}/.
+  rsync -arv @[INPUTDATA_ROOT]/FV3_fix_tiled/@[LNDRES]/@[LNDRES].soil_type.tile*.nc ${targetdir}/.
+  rsync -arv @[INPUTDATA_ROOT]/FV3_fix_tiled/@[LNDRES]/@[LNDRES].soil_color.tile*.nc ${targetdir}/.
+  rsync -arv @[INPUTDATA_ROOT]/FV3_fix_tiled/@[LNDRES]/@[LNDRES].substrate_temperature.tile*.nc ${targetdir}/.
+  rsync -arv @[INPUTDATA_ROOT]/FV3_fix_tiled/@[LNDRES]/@[LNDRES].vegetation_greenness.tile*.nc ${targetdir}/.
+  rsync -arv @[INPUTDATA_ROOT]/FV3_fix_tiled/@[LNDRES]/@[LNDRES].vegetation_type.tile*.nc ${targetdir}/.
+  rsync -arv @[INPUTDATA_ROOT]/FV3_fix_tiled/@[LNDRES]/oro_@[LNDRES].mx*.tile1.nc ${targetdir}/oro_data.tile1.nc
+  rsync -arv @[INPUTDATA_ROOT]/FV3_fix_tiled/@[LNDRES]/oro_@[LNDRES].mx*.tile2.nc ${targetdir}/oro_data.tile2.nc
+  rsync -arv @[INPUTDATA_ROOT]/FV3_fix_tiled/@[LNDRES]/oro_@[LNDRES].mx*.tile3.nc ${targetdir}/oro_data.tile3.nc
+  rsync -arv @[INPUTDATA_ROOT]/FV3_fix_tiled/@[LNDRES]/oro_@[LNDRES].mx*.tile4.nc ${targetdir}/oro_data.tile4.nc
+  rsync -arv @[INPUTDATA_ROOT]/FV3_fix_tiled/@[LNDRES]/oro_@[LNDRES].mx*.tile5.nc ${targetdir}/oro_data.tile5.nc
+  rsync -arv @[INPUTDATA_ROOT]/FV3_fix_tiled/@[LNDRES]/oro_@[LNDRES].mx*.tile6.nc ${targetdir}/oro_data.tile6.nc
+  rsync -arv @[INPUTDATA_ROOT]/${inputdir}/INPUT/@[LNDRES]_grid.tile*.nc ${targetdir}/.
+  rsync -arv @[INPUTDATA_ROOT]/${inputdir}/INPUT/grid_spec.nc ${targetdir}/@[LNDRES]_mosaic.nc
+fi
