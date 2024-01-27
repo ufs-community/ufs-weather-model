@@ -103,7 +103,7 @@ export CICE_NPROC=$ICE_tasks
 export np2=`expr $CICE_NPROC / 2`
 export CICE_BLCKX=`expr $NX_GLB / $np2`
 export CICE_BLCKY=`expr $NY_GLB / 2`
-export WW3_DOMAIN=gwes_30m
+export WW3_DOMAIN=glo_025
 export MESH_WAV=mesh.${WW3_DOMAIN}.nc
 export WW3_MODDEF=mod_def.${WW3_DOMAIN}
 
@@ -143,10 +143,11 @@ export FNSLPC="'C384.slope_type.tileX.nc'"
 export FNABSC="'C384.maximum_snow_albedo.tileX.nc'"
 
 #BMICs do not contain NSST spinup
-export NSTF_NAME=2,0,0,0,0
+export NSTF_NAME="2,1,0,0,0"
+#export NSTF_NAME=2,0,0,0,0
 
 export GWD_OPT=2
-export CDMBWD=5.0,5.0,1.0,1.0
+export CDMBWD="5.0,5.0,1.0,1.0"
 export DO_UGWP_V1=.true.
 export KNOB_UGWP_VERSION=1
 export KNOB_UGWP_NSLOPE=1
