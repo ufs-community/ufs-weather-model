@@ -216,19 +216,6 @@ elif [[ $MACHINE_ID = s4 ]]; then
   ICE_tasks_cpl_bmrk=48
   WAV_tasks_cpl_bmrk=80
 
-elif [[ $MACHINE_ID = gaea ]]; then
-
-  TPN=24
-
-  INPES_dflt=3 ; JNPES_dflt=8
-  INPES_thrd=3 ; JNPES_thrd=4
-  INPES_c384=6 ; JNPES_c384=8  ; THRD_c384=1
-  INPES_c768=8 ; JNPES_c768=16 ; THRD_c768=2
-
-  THRD_cpl_atmw_gdas=3
-  INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
-  WAV_tasks_atmw_gdas=264
-
 elif [[ $MACHINE_ID = gaea-c5 ]]; then
 
   TPN=128
@@ -249,7 +236,7 @@ elif [[ $MACHINE_ID = derecho ]]; then
   INPES_thrd=3 ; JNPES_thrd=4
   INPES_c384=8 ; JNPES_c384=6  ; THRD_c384=2
   INPES_c768=8 ; JNPES_c768=16 ; THRD_c768=2
-  
+
   THRD_cpl_atmw_gdas=2
   INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
   WAV_tasks_atmw_gdas=248
@@ -319,6 +306,10 @@ WLCLK_dflt=30
 
 export WLCLK=$WLCLK_dflt
 export CMP_DATAONLY=false
+
+# Defaults for ufs.configure
+export esmf_logkind="ESMF_LOGKIND_MULTI"
+export DumpFields="false"
 
 export_fv3 ()
 {
@@ -470,7 +461,6 @@ export HYBEDMF=.true.
 export SHINHONG=.false.
 export DO_YSU=.false.
 export DO_MYNNEDMF=.false.
-export DO_MYJPBL=.false.
 export HURR_PBL=.false.
 export MONINQ_FAC=1.0
 export SFCLAY_COMPUTE_FLUX=.false.
@@ -525,6 +515,7 @@ export CPLICE=.false.
 export CPLWAV=.false.
 export CPLWAV2ATM=.false.
 export CPLLND=.false.
+export CPLLND2ATM=.false.
 export USE_MED_FLUX=.false.
 export DAYS=1
 export NPX=97
@@ -649,6 +640,8 @@ export PRINT_DIFF_PGR=.false.
 
 # Coupling
 export coupling_interval_fast_sec=0
+export CHOUR=06
+export MOM6_OUTPUT_DIR=./MOM6_OUTPUT
 }
 
 # Defaults for the CICE6 model namelist, mx100
@@ -741,11 +734,12 @@ export WW3_CUR='C'
 export WW3_ICE='C'
 export WW3_IC1='F'
 export WW3_IC5='F'
+export WW3_user_sets_restname="true"
 }
 
 # Defaults for the coupled 5-component
 export_cmeps() {
-export UFS_CONFIGURE=ufs.configure.s2swa.IN
+export UFS_CONFIGURE=ufs.configure.s2swa_fast_esmf.IN
 export med_model=cmeps
 export atm_model=fv3
 export chm_model=gocart
@@ -798,6 +792,7 @@ export SYEAR=2021
 export SMONTH=03
 export SDAY=22
 export SHOUR=06
+export CHOUR=06
 export FHMAX=24
 export FHROT=0
 export DT_ATMOS=720
@@ -842,7 +837,7 @@ export FRAC_GRID=.true.
 export CCPP_SUITE=FV3_GFS_v17_coupled_p8
 export INPUT_NML=cpld_control.nml.IN
 export FIELD_TABLE=field_table_thompson_noaero_tke_GOCART
-export DIAG_TABLE=diag_table_p8_template
+export DIAG_TABLE=diag_table_cpld.IN
 export DIAG_TABLE_ADDITIONAL=''
 
 export FHZERO=6
@@ -1045,6 +1040,7 @@ export FILENAME_BASE=cfsr.
 export MESH_ATM=${FILENAME_BASE//.}_mesh.nc
 export atm_datamode=${DATM_SRC}
 export stream_files=INPUT/${FILENAME_BASE}201110.nc
+export EXPORT_ALL=.false.
 export STREAM_OFFSET=0
 
 export BL_SUFFIX=""
@@ -1065,6 +1061,7 @@ export NTILES=1
 export atm_model=datm
 export DATM_IN_CONFIGURE=datm_in.IN
 export DATM_STREAM_CONFIGURE=hafs_datm.streams.era5.IN
+export EXPORT_ALL=.false.
 }
 export_hafs_docn_cdeps ()
 {
@@ -1407,7 +1404,6 @@ export LSM=3
 export LSOIL_LSM=9
 export DO_MYNNSFCLAY=.true.
 export DO_MYNNEDMF=.true.
-export DO_MYJPBL=.true
 export HYBEDMF=.false.
 export SHAL_CNV=.false.
 export DO_SAT_ADJ=.false.

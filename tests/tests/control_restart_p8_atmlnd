@@ -1,0 +1,191 @@
+###############################################################################
+#
+#  Global control test GFSv16 atmosphere-land only at C96L127, P8 configuration
+#
+###############################################################################
+
+export TEST_DESCR="Compare global control results with previous trunk version"
+
+export CNTL_DIR=control_p8_atmlnd
+
+export LIST_FILES="sfcf024.tile1.nc \
+                   sfcf024.tile2.nc \
+                   sfcf024.tile3.nc \
+                   sfcf024.tile4.nc \
+                   sfcf024.tile5.nc \
+                   sfcf024.tile6.nc \
+                   atmf024.tile1.nc \
+                   atmf024.tile2.nc \
+                   atmf024.tile3.nc \
+                   atmf024.tile4.nc \
+                   atmf024.tile5.nc \
+                   atmf024.tile6.nc \
+                   ufs.cpld.lnd.out.2021-03-23-21600.tile1.nc \
+                   ufs.cpld.lnd.out.2021-03-23-21600.tile2.nc \
+                   ufs.cpld.lnd.out.2021-03-23-21600.tile3.nc \
+                   ufs.cpld.lnd.out.2021-03-23-21600.tile4.nc \
+                   ufs.cpld.lnd.out.2021-03-23-21600.tile5.nc \
+                   ufs.cpld.lnd.out.2021-03-23-21600.tile6.nc"
+
+export_fv3
+export NPZ=127
+export NPZP=128
+export DT_ATMOS=720
+export DT_INNER=${DT_ATMOS}
+export SYEAR=2021
+export SMONTH=03
+export SDAY=22
+export SHOUR=06
+export OUTPUT_GRID='cubed_sphere_grid'
+export WRITE_DOPOST=.false.
+export FHROT=12
+export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${SHOUR} + ${FHROT}  )))0000"
+export RESTART_FILE_SUFFIX_SECS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%02d" $(( (${FHROT}+${SHOUR})*3600 )))"
+
+export WARM_START=.true.
+export NGGPS_IC=.false.
+export EXTERNAL_IC=.false.
+export MAKE_NH=.false.
+export MOUNTAIN=.true.
+export NA_INIT=0
+
+# P7 default
+export IALB=2
+export IEMS=2
+export LSM=2
+export IOPT_DVEG=4
+export IOPT_CRS=2
+export IOPT_RAD=3
+export IOPT_ALB=1
+export IOPT_STC=3
+# P8
+export IOPT_SFC=3
+export IOPT_TRS=2
+export IOPT_DIAG=2
+
+# FV3 P7 settings
+export D2_BG_K1=0.20
+export D2_BG_K2=0.04
+export PSM_BC=1
+# P8
+export DDDMP=0.1
+
+# P7 Merra2 Aerosols & NSST
+export USE_MERRA2=.true.
+export IAER=1011
+export NSTF_NAME=2,0,0,0,0
+
+export LHEATSTRG=.false.
+export LSEASPRAY=.true.
+
+# P7 UGWP1
+export GWD_OPT=2
+export DO_UGWP_V1=.false.
+export KNOB_UGWP_VERSION=0
+export KNOB_UGWP_NSLOPE=1
+export DO_UGWP_V0=.true.
+export DO_GSL_DRAG_LS_BL=.false.
+export DO_GSL_DRAG_SS=.true.
+export DO_GSL_DRAG_TOFD=.false.
+export DO_UGWP_V1_OROG_ONLY=.false.
+export DO_UGWP_V0_NST_ONLY=.false.
+export LDIAG_UGWP=.false.
+
+# P7 CA
+export DO_CA=.true.
+export CA_SGS=.true.
+export CA_GLOBAL=.false.
+export NCA=1
+export NCELLS=5
+export NLIVES=12
+export NTHRESH=18
+export NSEED=1
+export NFRACSEED=0.5
+export CA_TRIGGER=.true.
+export NSPINUP=1
+export ISEED_CA=12345
+
+# P7 settings
+export TILEDFIX=.true.
+export FNALBC="'INPUT/C96.snowfree_albedo.tileX.nc'"
+export FNALBC2="'INPUT/C96.facsf.tileX.nc'"
+export FNTG3C="'INPUT/C96.substrate_temperature.tileX.nc'"
+export FNVEGC="'INPUT/C96.vegetation_greenness.tileX.nc'"
+export FNVETC="'INPUT/C96.vegetation_type.tileX.nc'"
+export FNSOTC="'INPUT/C96.soil_type.tileX.nc'"
+export FNSOCC="'INPUT/C96.soil_color.tileX.nc'"
+export FNSMCC=${FNSMCC_control}
+export FNMSKH=${FNMSKH_control}
+export FNVMNC="'INPUT/C96.vegetation_greenness.tileX.nc'"
+export FNVMXC="'INPUT/C96.vegetation_greenness.tileX.nc'"
+export FNSLPC="'INPUT/C96.slope_type.tileX.nc'"
+export FNABSC="'INPUT/C96.maximum_snow_albedo.tileX.nc'"
+export LANDICE=".false."
+export FSICL=0
+export FSICS=0
+
+export IMP_PHYSICS=8
+export LGFDLMPRAD=.false.
+export DO_SAT_ADJ=.false.
+export DNATS=0
+export DZ_MIN=6
+
+#required for NML.IN sharing
+export MIN_SEAICE=0.15
+export FRAC_GRID=.true.
+export MOM6_OUTPUT_DIR=./MOM6_OUTPUT
+export MOM6_RESTART_DIR=./RESTART/
+export MOM6_RESTART_SETTING=n
+# P8 (not used for standalone)
+export USE_CICE_ALB=.false.
+
+export WRITE_NSFLIP=.true.
+
+export FV3_RUN="control_run.IN noahmp_run.IN"
+export CCPP_SUITE=FV3_GFS_v17_p8
+export FIELD_TABLE=field_table_thompson_noaero_tke
+export DIAG_TABLE=diag_table_cpld.IN
+# use same namelist for standalone,coupled P7
+export INPUT_NML=cpld_control.nml.IN
+
+# RRTMGP
+export DO_RRTMGP=.false.
+export DOGP_CLDOPTICS_LUT=.true.
+export DOGP_LWSCAT=.true.
+export DOGP_SGS_CNV=.true.
+
+export SATMEDMF=.true.
+
+export CPLLND=.true.
+export CPLLND2ATM=.true.
+
+export UFS_CONFIGURE=ufs.configure.atm_lnd.IN
+export med_model=cmeps
+export atm_model=fv3
+export lnd_model=noahmp
+export pio_rearranger=box
+export CPLMODE=ufs.frac
+export RUNTYPE=continue
+export READRESTART=.true.
+export CMEPS_RESTART_DIR=./RESTART/
+export cap_dbug_flag=0
+export ATM_tasks=144
+export LND_tasks=144
+export lnd_ic_type=sfc
+export CALC_SNET=.false.
+export layout_x=3
+export layout_y=8
+export LNDRES=C96
+export coupling_interval_sec=720
+export snow_albedo_option=1
+export precip_partition_option=4
+export initial_albedo=0.2
+export OUTPUT_FH="1 -1"
+if [[ "$ATMRES" = "$LNDRES" ]]; then
+  export lnd_input_dir="INPUT/"
+  export mosaic_file="INPUT/${LNDRES}_mosaic.nc"
+else
+  export lnd_input_dir="INPUT/${LNDRES}/"
+  export mosaic_file="INPUT/${LNDRES}/${LNDRES}_mosaic.nc"
+fi
+export MOM6_TOPOEDITS=""
