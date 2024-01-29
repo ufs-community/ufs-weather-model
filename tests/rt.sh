@@ -9,7 +9,7 @@ die() { echo "$@" >&2; exit 1; }
 usage() {
   set +x
   echo
-  echo "Usage: $0 -a <account> | -b <file> | -c | -d | -e | -h | -k | -l <file> | -m | -n <name> | -p | -r | -w"
+  echo "Usage: $0 -a <account> | -b <file> | -c | -d | -e | -h | -k | -l <file> | -m | -n <name> | -r | -w"
   echo
   echo "  -a  <account> to use on for HPC queue"
   echo "  -b  create new baselines only for tests listed in <file>"
@@ -21,7 +21,6 @@ usage() {
   echo "  -l  runs test specified in <file>"
   echo "  -m  compare against new baseline results"
   echo "  -n  run single test <name>"
-  echo "  -p  run pre-test for pull requests"
   echo "  -r  use Rocoto workflow manager"
   echo "  -w  for weekly_test, skip comparing baseline results"
   echo
@@ -31,21 +30,61 @@ usage() {
 
 [[ $# -eq 0 ]] && usage
 
-rt_single() {
-  rm -f $RT_SINGLE_CONF
+update_rtconf() {
+
+  find_match() {
+    # This function finds if a test in $TESTS_FILE matches one 
+    # in our list of tests to be run.
+    THIS_TEST_WITH_COMPILER=$1
+    shift
+    TWC=("$@")
+    FOUND=false
+    for i in "${!TWC[@]}"; do
+      if [[ "${TWC[$i]}" == "${THIS_TEST_WITH_COMPILER}" ]]; then
+        FOUND=true
+        echo "${i}"
+        return
+      fi
+    done
+    if [[ $FOUND == false ]]; then
+      echo "-1"
+    fi
+  }
+
+  # This script will update the rt.conf ($TESTS_FILE) if needed by the
+  # -b or -n options being called/used.
+
+  # THE USER CHOSE THE -b OPTION
+  if [[ $NEW_BASELINES_FILE != '' ]]; then
+    TEST_WITH_COMPILE=()
+    readarray -t TEST_WITH_COMPILE < "$NEW_BASELINES_FILE"
+  # else USER CHOSE THE -l OPTION
+  elif [[ $TESTS_FILE != "rt.conf" ]]; then
+    echo "No update needed to TESTS_FILE"
+    return
+  # else USER CHOSE THE -n OPTION
+  elif [[ -z $RT_NAME ]]; then
+    TEST_WITH_COMPILE=("${SRT_NAME} ${SRT_COMPILER}")
+  else
+    echo "No update needed to rt.conf"
+    return
+  fi
+
+  RT_TEMP_CONF="rt_temp.conf"
+  rm -f $RT_TEMP_CONF && touch $RT_TEMP_CONF
   local compile_line=''
-  local run_line=''
+  
   while read -r line || [ "$line" ]; do
     line="${line#"${line%%[![:space:]]*}"}"
+    [[ -n $line ]] || continue
     [[ ${#line} == 0 ]] && continue
     [[ $line == \#* ]] && continue
-
+    
     if [[ $line == COMPILE* ]] ; then
+      COMPILE_LINE_USED=false
       MACHINES=$(echo $line | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
       RT_COMPILER_IN=$(echo $line | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
-      if [[ ! $RT_COMPILER_IN == $RT_COMPILER ]]; then
-        continue
-      fi
+
       if [[ ${MACHINES} == '' ]]; then
         compile_line=$line
       elif [[ ${MACHINES} == -* ]]; then
@@ -53,27 +92,46 @@ rt_single() {
       elif [[ ${MACHINES} == +* ]]; then
         [[ ${MACHINES} =~ ${MACHINE_ID} ]] && compile_line=$line
       fi
+
     fi
 
     if [[ $line =~ RUN ]]; then
-      tmp_test=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
-      if [[ $SINGLE_NAME == $tmp_test && $compile_line != '' ]]; then
-        echo $compile_line > $RT_SINGLE_CONF
-        dep_test=$(echo $line | grep -w $tmp_test | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
-        if [[ $dep_test != '' ]]; then
-          dep_line=$(cat rt.conf | grep -w "$dep_test" | grep -v "$tmp_test")
-          dep_line="${dep_line#"${dep_line%%[![:space:]]*}"}"
-          echo $dep_line >> $RT_SINGLE_CONF
+      tmp_test=$(echo "$line" | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
+      TEST_IDX=$(find_match "$tmp_test $RT_COMPILER_IN" "${TEST_WITH_COMPILE[@]}")
+      
+      if [[ $TEST_IDX != -1 ]]; then
+        if [[ $COMPILE_LINE_USED == false ]]; then
+          echo "$compile_line" >> $RT_TEMP_CONF
+          COMPILE_LINE_USED=true
         fi
-        echo $line >> $RT_SINGLE_CONF
-        break
+        dep_test=$(echo "$line" | grep -w "$tmp_test" | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
+        
+        if [[ $dep_test != '' ]]; then
+          if [[ $(find_match "$dep_test $RT_COMPILER_IN" "${TEST_WITH_COMPILE[@]}") == -1 ]]; then
+
+            dep_line=$(grep -w "$dep_test" rt.conf | grep -v "$tmp_test")
+            dep_line="${dep_line#"${dep_line%%[![:space:]]*}"}"
+            dep_line=$(echo "${dep_line}" | tr -d '\n')
+            CORRECT_LINE[1]=$(awk -F'RUN|RUN' '{print $2}' <<< "$dep_line")
+            CORRECT_LINE[2]=$(awk -F'RUN|RUN' '{print $3}' <<< "$dep_line")
+            
+            if [[ $RT_COMPILER_IN == "intel" ]]; then
+              echo "RUN ${CORRECT_LINE[1]}" >> $RT_TEMP_CONF
+            elif [[ $RT_COMPILER_IN == "gnu" ]]; then
+              echo "RUN ${CORRECT_LINE[2]}" >> $RT_TEMP_CONF
+            fi
+          fi
+        fi
+        echo "$line" >> $RT_TEMP_CONF
       fi
     fi
-  done < $TESTS_FILE
+  done < "$TESTS_FILE"
 
-  if [[ ! -f $RT_SINGLE_CONF ]]; then
-    echo "$SINGLE_NAME does not exist or cannot be run on $MACHINE_ID"
+  if [[ ! -s $RT_TEMP_CONF ]]; then
+    echo "The tests listed/chosen do not exist or cannot be run on $MACHINE_ID"
     exit 1
+  else
+    TESTS_FILE=$RT_TEMP_CONF
   fi
 }
 
@@ -113,8 +171,8 @@ EOF
   [[ -f "${TEST_CHANGES_LOG}" ]] && rm ${TEST_CHANGES_LOG}
   touch ${TEST_CHANGES_LOG}
   while read -r line || [ "$line" ]; do
-
     line="${line#"${line%%[![:space:]]*}"}"
+    [[ -n "$line" ]] || continue
     [[ ${#line} == 0 ]] && continue
     [[ $line == \#* ]] && continue
     local valid_compile=false
@@ -307,7 +365,6 @@ EOF
     [[ ${KEEP_RUNDIR} == false ]] && rm -rf "${RUNDIR_ROOT}" && rm "${PATHRT}/run_dir"
     [[ ${ROCOTO} == true ]] && rm -f "${ROCOTO_XML}" "${ROCOTO_DB}" "${ROCOTO_STATE}" *_lock.db
     [[ ${TEST_35D} == true ]] && rm -f tests/cpld_bmark*_20*
-    [[ ${SINGLE_NAME} != '' ]] && rm -f "$RT_SINGLE_CONF"
     echo "REGRESSION TEST RESULT: SUCCESS"
   else
     cat << EOF >> "${REGRESSIONTEST_LOG}"
@@ -407,8 +464,6 @@ else
   exit 1
 fi
 
-readonly RT_SINGLE_CONF='rt_single.conf'
-
 source detect_machine.sh # Note: this does not set ACCNR. The "if" block below does.
 source rt_utils.sh
 source module-setup.sh
@@ -417,7 +472,7 @@ CREATE_BASELINE=false
 ROCOTO=false
 ECFLOW=false
 KEEP_RUNDIR=false
-SINGLE_NAME=''
+RT_NAME=''
 TEST_35D=false
 export skip_check_results=false
 export delete_rundir=false
@@ -440,28 +495,28 @@ while getopts ":a:b:cl:mn:dwkreh" opt; do
       ;;
     l)
       TESTS_FILE=$OPTARG
-      SKIP_ORDER=true
+      grep -q '[^[:space:]]' < "$TESTS_FILE" ||  die "${TESTS_FILE} empty, exiting..."
       ;;
     m)
       # redefine RTPWD to point to newly created baseline outputs
       RTPWD_NEW_BASELINE=true
       ;;
     n)
-      SINGLE_OPTS=("$OPTARG")
-      until [[ $(eval "echo \${$OPTIND}") =~ ^-.* ]] || [ -z $(eval "echo \${$OPTIND}") ]; do
-        SINGLE_OPTS+=($(eval "echo \${$OPTIND}"))
-        OPTIND=$((OPTIND + 1))
+      SINGLE_OPTS+=("$OPTARG")
+      while [[ ${!OPTIND} && ${!OPTIND} != -* ]]; do
+			  SINGLE_OPTS+=( "${!OPTIND}" )
+			  ((OPTIND++))
       done
 
       if [[ ${#SINGLE_OPTS[@]} != 2 ]]; then
         echo "The -n option needs <testname> AND <compiler>, i.e. -n control_p8 intel"
         exit 1
       fi
-      SINGLE_NAME=${SINGLE_OPTS[0]}
-      export RT_COMPILER=${SINGLE_OPTS[1]}
+      SRT_NAME="${SINGLE_OPTS[0]}"
+      SRT_COMPILER="${SINGLE_OPTS[1]}"
 
-      if [[ "$RT_COMPILER" == "intel" ]] || [[ "$RT_COMPILER" == "gnu" ]]; then
-        echo "COMPILER set to ${RT_COMPILER}"
+      if [[ "${SRT_COMPILER}" == "intel" ]] || [[ "${SRT_COMPILER}" == "gnu" ]]; then
+        echo "COMPILER set to ${SRT_COMPILER}"
       else
         echo "Compiler must be either 'intel' or 'gnu'."
         exit 1
@@ -788,10 +843,7 @@ echo "Linking ${RUNDIR_ROOT} to ${PATHRT}/run_dir"
 ln -s ${RUNDIR_ROOT} ${PATHRT}/run_dir
 echo "Run regression test in: ${RUNDIR_ROOT}"
 
-if [[ $SINGLE_NAME != '' ]]; then
-  rt_single
-  TESTS_FILE=$RT_SINGLE_CONF
-fi
+update_rtconf
 
 if [[ $TESTS_FILE =~ '35d' ]] || [[ $TESTS_FILE =~ 'weekly' ]]; then
   TEST_35D=true
