@@ -25,6 +25,7 @@ export MESH_ATM=fv1.9x2.5_141008_ESMFmesh.nc
 export atm_datamode=CLMNCEP
 export ATM_NX_GLB=144
 export ATM_NY_GLB=96
+export EXPORT_ALL=.true.
 
 export DATM_STREAM_CONFIGURE=datm.streams.multi.IN
 export MESH_ATM_DATA="INPUT/clmforc.GSWP3.c2011.0.5x0.5.TPQWL.SCRIP.210520_ESMFmesh.nc"
@@ -47,11 +48,17 @@ export ATM_compute_tasks=144
 export OCN_tasks=0
 export ICE_tasks=0
 export LND_tasks=144
-export lnd_ic_type=custom
+export lnd_ic_type='custom'
+export lnd_input_dir='INPUT/'
 export CALC_SNET=.true.
 export layout_x=3
 export layout_y=8
-export mosaic_file=INPUT/C96_mosaic.nc
+export LNDRES=C96
+export mosaic_file="INPUT/${LNDRES}_mosaic.nc"
 export coupling_interval_sec=3600
+export snow_albedo_option=1
+export precip_partition_option=4
+export initial_albedo=0.25
+export TOPOEDITS=""
 export FV3_RUN="lnd_datm_cdeps_gswp.IN noahmp_run.IN"
 
