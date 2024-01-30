@@ -16,8 +16,7 @@ load(pathJoin("cmake", cmake_ver))
 load("ufs_common")
 
 -- Needed for LM4
--- Needed for LM4?
-hdf5_ver=os.getenv("hdf5_ver") or "1.10.6"
+hdf5_ver=os.getenv("hdf5_ver") or "1.14.0"
 load(pathJoin("hdf5", hdf5_ver))
 nccmp_ver=os.getenv("nccmp_ver") or "1.9.0.1"
 load(pathJoin("nccmp", nccmp_ver))
