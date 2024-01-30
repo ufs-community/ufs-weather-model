@@ -1,0 +1,22 @@
+mkdir -p RESTART INPUT
+
+cd INPUT
+rsync -arv @[INPUTDATA_ROOT]/DATM_ERA5_input_data_v2/. .
+cd -
+
+SUFFIX=${RT_SUFFIX}
+# restart
+if [ $WARM_START = .true. ]; then
+  # NoahMP restart files
+  cp ../${DEP_RUN}${SUFFIX}/ufs.cpld.lnd.out.${RESTART_FILE_SUFFIX_SECS}.tile*.nc RESTART/.
+
+  # CMEPS restart and pointer files
+  RFILE1=ufs.cpld.cpl.r.${RESTART_FILE_SUFFIX_SECS}.nc
+  cp ../${DEP_RUN}${SUFFIX}/RESTART/${RFILE1} RESTART/.
+  ls -1 "RESTART/${RFILE1}">rpointer.cpl
+
+  # CDEPS restart and pointer files
+  RFILE2=ufs.cpld.datm.r.${RESTART_FILE_SUFFIX_SECS}.nc
+  cp ../${DEP_RUN}${SUFFIX}/${RFILE2} RESTART/.
+  ls -1 "RESTART/${RFILE2}">rpointer.atm
+fi
