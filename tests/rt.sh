@@ -56,6 +56,7 @@ update_rtconf() {
 
   # THE USER CHOSE THE -b OPTION
   if [[ $NEW_BASELINES_FILE != '' ]]; then
+    [[ -s "$NEW_BASELINES_FILE" ]] || die "${NEW_BASELINES_FILE} is empty, exiting..."
     TEST_WITH_COMPILE=()
     readarray -t TEST_WITH_COMPILE < "$NEW_BASELINES_FILE"
   # else USER CHOSE THE -l OPTION
@@ -166,7 +167,22 @@ NOTES:
 The first time is how long the scipt (prep+run+finalize) ran.
 The second time is specifically how long the run phase ran.
 Times/Memory will be empty for failed tests.
+
+RT.SH OPTIONS USED:
 EOF
+
+  [[ -n $ACCNR ]] && echo "* (-a) - HPC PROJECT ACCOUNT: ${ACCNR}" >> "${REGRESSIONTEST_LOG}"
+  [[ -n $NEW_BASELINES_FILE ]] && echo "* (-b) - NEW BASELINES FROM FILE: ${NEW_BASELINES_FILE}" >> "${REGRESSIONTEST_LOG}"
+  [[ $CREATE_BASELINE == true ]] && echo "* (-c) - CREATE NEW BASELINES" >> "${REGRESSIONTEST_LOG}"
+  [[ $DEFINE_CONF_FILE == true ]] && echo "* (-l) - USE CONFIG FILE: ${TESTS_FILE}" >> "${REGRESSIONTEST_LOG}"
+  [[ $RTPWD_NEW_BASELINE == true ]] && echo "* (-m) - COMPARE AGAINST CREATED BASELINES" >> "${REGRESSIONTEST_LOG}"
+  [[ $RUN_SINGLE_TEST == true ]] && echo "* (-n) - RUN SINGLE TEST: ${SINGLE_OPTS}" >> "${REGRESSIONTEST_LOG}"
+  [[ $delete_rundir == true ]] && echo "* (-d) - DELETE RUN DIRECTORY" >> "${REGRESSIONTEST_LOG}"
+  [[ $skip_check_results == true ]] && echo "* (-w) - SKIP RESULTS CHECK" >> "${REGRESSIONTEST_LOG}"
+  [[ $KEEP_RUNDIR == true ]] && echo "* (-k) - KEEP RUN DIRECTORY" >> "${REGRESSIONTEST_LOG}"
+  [[ $ROCOTO == true ]] && echo "* (-r) - USE ROCOTO" >> "${REGRESSIONTEST_LOG}"
+  [[ $ECFLOW == true ]] && echo "* (-e) - USE ECFLOW" >> "${REGRESSIONTEST_LOG}"
+
 
   [[ -f "${TEST_CHANGES_LOG}" ]] && rm ${TEST_CHANGES_LOG}
   touch ${TEST_CHANGES_LOG}
@@ -243,6 +259,7 @@ EOF
       
       RMACHINES=$(echo "$line" | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
       TEST_NAME=$(echo "$line" | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
+      GEN_BASELINE=$(echo "$line" | cut -d'|' -f4 | sed -e 's/^ *//' -e 's/ *$//')
       
       if [[ ${RMACHINES} == '' ]]; then
         valid_test=true
@@ -261,7 +278,9 @@ EOF
         TEST_TIME=""
         RT_TEST_TIME=""
         RT_TEST_MEM=""
-        if [[ ! -f "${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log" ]]; then
+        if [[ $CREATE_BASELINE == true && $GEN_BASELINE != "baseline" ]]; then
+          TEST_RESULT="SKIPPED (TEST DOES NOT GENERATE BASELINE)"
+        elif [[ ! -f "${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log" ]]; then
           TEST_RESULT="MISSING"
           FAIL_LOG="N/A"
         elif [[ -f fail_test_${TEST_NAME}_${COMPILER} ]]; then
@@ -480,6 +499,8 @@ SKIP_ORDER=false
 RTPWD_NEW_BASELINE=false
 TESTS_FILE='rt.conf'
 NEW_BASELINES_FILE=''
+DEFINE_CONF_FILE=false
+RUN_SINGLE_TEST=false
 ACCNR=${ACCNR:-""}
 
 while getopts ":a:b:cl:mn:dwkreh" opt; do
@@ -494,6 +515,7 @@ while getopts ":a:b:cl:mn:dwkreh" opt; do
       CREATE_BASELINE=true
       ;;
     l)
+      DEFINE_CONF_FILE=true
       TESTS_FILE=$OPTARG
       grep -q '[^[:space:]]' < "$TESTS_FILE" ||  die "${TESTS_FILE} empty, exiting..."
       ;;
@@ -502,6 +524,7 @@ while getopts ":a:b:cl:mn:dwkreh" opt; do
       RTPWD_NEW_BASELINE=true
       ;;
     n)
+      RUN_SINGLE_TEST=true
       SINGLE_OPTS+=("$OPTARG")
       while [[ ${!OPTIND} && ${!OPTIND} != -* ]]; do
 			  SINGLE_OPTS+=( "${!OPTIND}" )
@@ -877,21 +900,10 @@ shift $((OPTIND-1))
 [[ $# -gt 1 ]] && usage
 
 if [[ $CREATE_BASELINE == true ]]; then
-  #
-  # prepare new regression test directory
-  #
+  # PREPARE NEW REGRESSION TEST DIRECTORY
   rm -rf "${NEW_BASELINE}"
   mkdir -p "${NEW_BASELINE}"
 
-  NEW_BASELINES_TESTS=()
-  if [[ $NEW_BASELINES_FILE != '' ]]; then
-    readarray -t NEW_BASELINES_TESTS < $NEW_BASELINES_FILE
-    echo "New baselines will be created for:"
-    for test_name in "${NEW_BASELINES_TESTS[@]}"
-    do
-      echo "  $test_name"
-    done
-  fi
 fi
 
 if [[ $skip_check_results == true ]]; then
@@ -1039,10 +1051,6 @@ while read -r line || [ "$line" ]; do
       fi
     fi
 
-    if [[ $CREATE_BASELINE == true && $NEW_BASELINES_FILE != '' ]]; then
-      continue
-    fi
-
     create_or_run_compile_task
 
     continue
@@ -1076,24 +1084,6 @@ while read -r line || [ "$line" ]; do
     fi
 
     COMPILE_METATASK_NAME=${COMPILE_ID}
-    if [[ $CREATE_BASELINE == true && $NEW_BASELINES_FILE != '' ]]; then
-      if [[ ! " ${NEW_BASELINES_TESTS[*]} " =~ " ${TEST_NAME} " ]]; then
-        echo "Link current baselines for test ${TEST_ID}"
-        (
-          source ${PATHRT}/tests/$TEST_NAME
-          ln -s ${RTPWD}/${CNTL_DIR}_${RT_COMPILER} ${NEW_BASELINE}
-        )
-        continue
-      else
-        echo "Create new baselines for test ${TEST_NAME}_${RT_COMPILER}"
-        # look at COMPILE_PREV, and if it's not an empty string run compile step
-        # and reset it to empty so that we do not run compile more than once
-        if [[ ${COMPILE_PREV} != '' ]]; then
-          create_or_run_compile_task
-          [[ $ROCOTO == true || $ECFLOW == true ]] && COMPILE_PREV=''
-        fi
-      fi
-    fi
 
     # 35 day tests
     [[ $TEST_35D == true ]] && rt_35d
@@ -1195,8 +1185,14 @@ if [[ $ECFLOW == true ]]; then
   ecflow_run
 fi
 
-##
-## Lets verify all tests were run and that they passed
-##
+# IF -c AND -b; LINK VERIFIED BASELINES TO NEW_BASELINE
+if [[ $CREATE_BASELINE == true && $NEW_BASELINES_FILE != '' ]]; then
+  for dir in "${RTPWD}"/*/; do
+    dir=${dir%*/}
+    [[ -d "${NEW_BASELINE}/${dir##*/}" ]] && continue
+    ln -s "${dir%*/}" "${NEW_BASELINE}/"
+  done
+fi
 
+## Lets verify all tests were run and that they passed
 generate_log
