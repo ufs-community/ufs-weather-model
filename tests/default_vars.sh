@@ -216,7 +216,7 @@ elif [[ $MACHINE_ID = s4 ]]; then
   ICE_tasks_cpl_bmrk=48
   WAV_tasks_cpl_bmrk=80
 
-elif [[ $MACHINE_ID = gaea-c5 ]]; then
+elif [[ $MACHINE_ID = gaea ]]; then
 
   TPN=128
 

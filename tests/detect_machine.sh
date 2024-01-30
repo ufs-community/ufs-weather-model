@@ -32,7 +32,7 @@ case $(hostname -f) in
   gaea52.ncrc.gov)         MACHINE_ID=gaea-c5 ;; ### gaea52
   gaea53.ncrc.gov)         MACHINE_ID=gaea-c5 ;; ### gaea53
   gaea54.ncrc.gov)         MACHINE_ID=gaea-c5 ;; ### gaea54
-  gaea55.ncrc.gov)         MACHINE_ID=gaea-c5 ;; ### gaea55
+  gaea55.ncrc.gov)         MACHINE_ID=gaea ;; ### gaea55
   gaea56.ncrc.gov)         MACHINE_ID=gaea-c5 ;; ### gaea56
   gaea57.ncrc.gov)         MACHINE_ID=gaea-c5 ;; ### gaea57
   gaea58.ncrc.gov)         MACHINE_ID=gaea-c5 ;; ### gaea58

@@ -58,7 +58,7 @@ if [[ $MACHINE_ID == macosx ]] || [[ $MACHINE_ID == linux ]]; then
   source $PATHTR/modulefiles/ufs_${MACHINE_ID}.${RT_COMPILER}
 else
   # Activate lua environment for gaea c5
-  if [[ $MACHINE_ID == gaea-c5 ]]; then
+  if [[ $MACHINE_ID == gaea ]]; then
     module reset
   fi
   # Load fv3 module
