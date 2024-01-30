@@ -65,7 +65,7 @@ elif [[ $MACHINE_ID = stampede ]] ; then
     fi
     module purge
 
-elif [[ $MACHINE_ID = gaea ]] ; then
+elif [[ $MACHINE_ID = gaea-c5 ]] ; then
     # We are on GAEA
     if ( ! eval module help > /dev/null 2>&1 ) ; then
         # We cannot simply load the module command.  The GAEA

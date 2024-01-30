@@ -304,7 +304,7 @@ elif [[ $MACHINE_ID = acorn ]]; then
   PTMP=/lfs/h2/emc/ptmp
   SCHEDULER=pbs
 
-elif [[ $MACHINE_ID = gaea ]]; then
+elif [[ $MACHINE_ID = gaea-c5 ]]; then
 
   module use /ncrc/proj/epic/rocoto/modulefiles
   module load rocoto
@@ -658,7 +658,7 @@ if [[ $ROCOTO == true ]]; then
     QUEUE=main
     COMPILE_QUEUE=main
     ROCOTO_SCHEDULER=pbspro
-  elif [[ $MACHINE_ID = gaea ]]; then
+  elif [[ $MACHINE_ID = gaea-c5 ]]; then
     QUEUE=normal
     COMPILE_QUEUE=normal
     ROCOTO_SCHEDULER=slurm
@@ -732,7 +732,7 @@ EOF
     QUEUE=batch
   elif [[ $MACHINE_ID = s4 ]]; then
     QUEUE=s4
-  elif [[ $MACHINE_ID = gaea* ]]; then
+  elif [[ $MACHINE_ID = gaea-c5 ]]; then
     QUEUE=normal
   elif [[ $MACHINE_ID = derecho ]]; then
     QUEUE=main
