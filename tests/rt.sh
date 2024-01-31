@@ -145,7 +145,7 @@ generate_log() {
   FAILED_TEST_ID=()
   FAILED_COMPILE_LOGS=()
   FAILED_TEST_LOGS=()
-  TEST_CHANGES_LOG="test_changes.out"
+  TEST_CHANGES_LOG="test_changes.list"
   TEST_END_TIME="$(date '+%Y%m%d %T')"
   cat << EOF > "${REGRESSIONTEST_LOG}"
 ====START OF ${MACHINE_ID^^} REGRESSION TESTING LOG====
@@ -394,7 +394,7 @@ EOF
 
 NOTES:
 A file '${TEST_CHANGES_LOG}' was generated with list of all failed tests.
-You can use './rt.sh -b test_changes.out' to generate baselines for the failed tests.
+You can use './rt.sh -c -b test_changes.list' to create baselines for the failed tests.
 If you are using this log as a pull request verification, please commit '${TEST_CHANGES_LOG}'.
 
 Result: FAILURE
