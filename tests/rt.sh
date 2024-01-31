@@ -60,11 +60,11 @@ update_rtconf() {
     TEST_WITH_COMPILE=()
     readarray -t TEST_WITH_COMPILE < "$NEW_BASELINES_FILE"
   # else USER CHOSE THE -l OPTION
-  elif [[ $TESTS_FILE != "rt.conf" ]]; then
+  elif [[ $DEFINE_CONF_FILE == true ]]; then
     echo "No update needed to TESTS_FILE"
     return
   # else USER CHOSE THE -n OPTION
-  elif [[ -z $RT_NAME ]]; then
+  elif [[ $RUN_SINGLE_TEST == true ]]; then
     TEST_WITH_COMPILE=("${SRT_NAME} ${SRT_COMPILER}")
   else
     echo "No update needed to rt.conf"
@@ -167,6 +167,9 @@ NOTES:
 The first time is for the full script (prep+run+finalize).
 The second time is specifically for the run phase.
 Times/Memory will be empty for failed tests.
+
+BASELINE DIRECTORY: ${RTPWD}
+COMPARISON DIRECTORY: ${RUNDIR_ROOT}
 
 RT.SH OPTIONS USED:
 EOF
@@ -492,7 +495,6 @@ CREATE_BASELINE=false
 ROCOTO=false
 ECFLOW=false
 KEEP_RUNDIR=false
-RT_NAME=''
 TEST_35D=false
 export skip_check_results=false
 export delete_rundir=false
