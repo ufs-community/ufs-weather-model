@@ -163,9 +163,9 @@ EOF
   cat << EOF >> "${REGRESSIONTEST_LOG}"
 
 NOTES:
-[Times](Memory) are at the end of each compile/test in format (MM:SS)[Size(KB)].
-The first time is how long the scipt (prep+run+finalize) ran.
-The second time is specifically how long the run phase ran.
+[Times](Memory) are at the end of each compile/test in format [MM:SS](Size).
+The first time is for the full script (prep+run+finalize).
+The second time is specifically for the run phase.
 Times/Memory will be empty for failed tests.
 
 RT.SH OPTIONS USED:
@@ -304,6 +304,7 @@ EOF
             TIME_FILE="${LOG_DIR}/run_${TEST_NAME}_${COMPILER}_timestamp.txt"
             GETMEMFROMLOG=$(grep "The maximum resident set size" "${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log")
             RT_TEST_MEM=$(echo "${GETMEMFROMLOG:9:${#GETMEMFROMLOG}-1}" | tr -dc '0-9')
+            RT_TEST_MEM=$((RT_TEST_MEM/1000))
             if [[ -f "${TIME_FILE}" ]]; then
               while read -r times || [ "$times" ]; do
                   times="${times#"${times%%[![:space:]]*}"}"
@@ -322,7 +323,7 @@ EOF
         fi
       fi
 
-      echo "${TEST_RESULT} -- TEST '${TEST_NAME}_${COMPILER}' [${RT_TEST_TIME}, ${TEST_TIME}](${RT_TEST_MEM})" >> "${REGRESSIONTEST_LOG}"
+      echo "${TEST_RESULT} -- TEST '${TEST_NAME}_${COMPILER}' [${RT_TEST_TIME}, ${TEST_TIME}](${RT_TEST_MEM}MB)" >> "${REGRESSIONTEST_LOG}"
       [[ -n $FAIL_LOG ]] && FAILED_TESTS+=("TEST ${TEST_NAME}_${COMPILER}: ${TEST_RESULT}")
       [[ -n $FAIL_LOG ]] && FAILED_TEST_LOGS+=("${FAIL_LOG}")
       [[ -n $FAIL_LOG ]] && FAILED_TEST_ID+=("${TEST_NAME} ${COMPILER}")
