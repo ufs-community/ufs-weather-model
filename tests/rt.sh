@@ -163,7 +163,7 @@ EOF
   cat << EOF >> "${REGRESSIONTEST_LOG}"
 
 NOTES:
-(Times)[Memory] are at the end of each compile/test in format (MM:SS)[Size(KB)].
+[Times](Memory) are at the end of each compile/test in format (MM:SS)[Size(KB)].
 The first time is how long the scipt (prep+run+finalize) ran.
 The second time is specifically how long the run phase ran.
 Times/Memory will be empty for failed tests.
