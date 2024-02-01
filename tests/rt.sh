@@ -251,12 +251,11 @@ EOF
             fi
           fi
         fi
+        echo >> "${REGRESSIONTEST_LOG}"
+        echo "${COMPILE_RESULT} -- COMPILE '${COMPILE_ID}' [${RT_COMPILE_TIME}, ${COMPILE_TIME}]" >> "${REGRESSIONTEST_LOG}"
+        [[ -n $FAIL_LOG ]] && FAILED_COMPILES+=("COMPILE ${COMPILE_ID}: ${COMPILE_RESULT}")
+        [[ -n $FAIL_LOG ]] && FAILED_COMPILE_LOGS+=("${FAIL_LOG}")
       fi
-      echo >> "${REGRESSIONTEST_LOG}"
-      echo "${COMPILE_RESULT} -- COMPILE '${COMPILE_ID}' [${RT_COMPILE_TIME}, ${COMPILE_TIME}]" >> "${REGRESSIONTEST_LOG}"
-      [[ -n $FAIL_LOG ]] && FAILED_COMPILES+=("COMPILE ${COMPILE_ID}: ${COMPILE_RESULT}")
-      [[ -n $FAIL_LOG ]] && FAILED_COMPILE_LOGS+=("${FAIL_LOG}")
-
 
     elif [[ $line =~ RUN ]]; then
       
@@ -324,13 +323,12 @@ EOF
             fi
           fi
         fi
+
+        echo "${TEST_RESULT} -- TEST '${TEST_NAME}_${COMPILER}' [${RT_TEST_TIME}, ${TEST_TIME}](${RT_TEST_MEM}MB)" >> "${REGRESSIONTEST_LOG}"
+        [[ -n $FAIL_LOG ]] && FAILED_TESTS+=("TEST ${TEST_NAME}_${COMPILER}: ${TEST_RESULT}")
+        [[ -n $FAIL_LOG ]] && FAILED_TEST_LOGS+=("${FAIL_LOG}")
+        [[ -n $FAIL_LOG ]] && FAILED_TEST_ID+=("${TEST_NAME} ${COMPILER}")
       fi
-
-      echo "${TEST_RESULT} -- TEST '${TEST_NAME}_${COMPILER}' [${RT_TEST_TIME}, ${TEST_TIME}](${RT_TEST_MEM}MB)" >> "${REGRESSIONTEST_LOG}"
-      [[ -n $FAIL_LOG ]] && FAILED_TESTS+=("TEST ${TEST_NAME}_${COMPILER}: ${TEST_RESULT}")
-      [[ -n $FAIL_LOG ]] && FAILED_TEST_LOGS+=("${FAIL_LOG}")
-      [[ -n $FAIL_LOG ]] && FAILED_TEST_ID+=("${TEST_NAME} ${COMPILER}")
-
     fi
   done < "$TESTS_FILE"
   
