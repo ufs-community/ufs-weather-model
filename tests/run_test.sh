@@ -109,6 +109,7 @@ if [[ " s4 hera orion hercules gaea jet derecho acorn wcoss2 " =~ " $MACHINE_ID 
   elif [[ " hera orion hercules gaea jet " =~ " ${MACHINE_ID} " ]] ; then
     module use modulefiles
     module load modules.fv3
+    module load gcc/12.2.0
   else
     module load nccmp
   fi
