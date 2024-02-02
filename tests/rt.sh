@@ -529,15 +529,14 @@ while getopts ":a:b:cl:mn:dwkreh" opt; do
       IFS=' ' read -r -a SINGLE_OPTS <<< $OPTARG
 
       if [[ ${#SINGLE_OPTS[@]} != 2 ]]; then
-        echo 'The -n option needs <testname> AND <compiler> in quotes, i.e. -n "control_p8 intel"'
-        exit 1
+        die 'The -n option needs <testname> AND <compiler> in quotes, i.e. -n "control_p8 intel"'
       fi
 
       SRT_NAME="${SINGLE_OPTS[0]}"
       SRT_COMPILER="${SINGLE_OPTS[1]}"
 
       if [[ "${SRT_COMPILER}" != "intel" ]] && [[ "${SRT_COMPILER}" != "gnu" ]]; then
-        die "COMPILER MUST BE 'intel' or 'gnu'"
+        die "COMPILER MUST BE 'intel' OR 'gnu'"
       fi
       ;;
     d)
