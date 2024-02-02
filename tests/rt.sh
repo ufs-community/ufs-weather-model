@@ -526,24 +526,18 @@ while getopts ":a:b:cl:mn:dwkreh" opt; do
       ;;
     n)
       RUN_SINGLE_TEST=true
-      SINGLE_OPTS+=("$OPTARG")
-      while [[ ${!OPTIND} && ${!OPTIND} != -* ]]; do
-			  SINGLE_OPTS+=( "${!OPTIND}" )
-			  ((OPTIND++))
-      done
+      IFS=' ' read -r -a SINGLE_OPTS <<< $OPTARG
 
       if [[ ${#SINGLE_OPTS[@]} != 2 ]]; then
-        echo "The -n option needs <testname> AND <compiler>, i.e. -n control_p8 intel"
+        echo 'The -n option needs <testname> AND <compiler> in quotes, i.e. -n "control_p8 intel"'
         exit 1
       fi
+
       SRT_NAME="${SINGLE_OPTS[0]}"
       SRT_COMPILER="${SINGLE_OPTS[1]}"
 
-      if [[ "${SRT_COMPILER}" == "intel" ]] || [[ "${SRT_COMPILER}" == "gnu" ]]; then
-        echo "COMPILER set to ${SRT_COMPILER}"
-      else
-        echo "Compiler must be either 'intel' or 'gnu'."
-        exit 1
+      if [[ "${SRT_COMPILER}" != "intel" ]] && [[ "${SRT_COMPILER}" != "gnu" ]]; then
+        die "COMPILER MUST BE 'intel' or 'gnu'"
       fi
       ;;
     d)
