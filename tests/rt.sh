@@ -319,6 +319,7 @@ elif [[ $MACHINE_ID = gaea ]]; then
   module load cray-mpich/8.1.25
   module load python/3.9.12
   module use /ncrc/proj/epic/spack-stack/modulefiles
+  module load gcc/12.2.0
   module load ecflow/5.8.4
   ECFLOW_START=/ncrc/proj/epic/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
