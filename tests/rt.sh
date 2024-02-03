@@ -571,6 +571,11 @@ while getopts ":a:b:cl:mn:dwkreh" opt; do
   esac
 done
 
+#Check to error out if incompatible options are chosen together
+[[ $KEEP_RUNDIR == true && $delete_rundir == true ]] && die "-k and -d options cannot be used at the same time"
+[[ $ECFLOW == true && $ROCOTO == true ]] && die "-r and -e options cannot be used at the same time"
+[[ $CREATE_BASELINE == true && $RTPWD_NEW_BASELINE == true ]] && die "-c and -m options cannot be used at the same time"
+
 if [[ -z "$ACCNR" ]]; then
   echo "Please use -a <account> to set group account to use on HPC"
   exit 1
