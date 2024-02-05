@@ -438,7 +438,7 @@ rocoto_create_compile_task() {
 
   cat << EOF >> $ROCOTO_XML
   <task name="compile_${COMPILE_ID}" maxtries="${ROCOTO_COMPILE_MAXTRIES:-3}">
-    <command>&PATHRT;/run_compile.sh &PATHRT; &RUNDIR_ROOT; "${MAKE_OPT}" ${COMPILE_ID}</command>
+    <command>&PATHRT;/run_compile.sh &PATHRT; &RUNDIR_ROOT; "${MAKE_OPT}" ${COMPILE_ID} > &LOG;/compile_${COMPILE_ID}.log</command>
     <jobname>compile_${COMPILE_ID}</jobname>
     <account>${ACCNR}</account>
     <queue>${COMPILE_QUEUE}</queue>
@@ -482,7 +482,7 @@ rocoto_create_run_task() {
   cat << EOF >> $ROCOTO_XML
     <task name="${TEST_ID}${RT_SUFFIX}" maxtries="${ROCOTO_TEST_MAXTRIES:-3}">
       <dependency> $DEP_STRING </dependency>
-      <command>&PATHRT;/run_test.sh &PATHRT; &RUNDIR_ROOT; ${TEST_NAME} ${TEST_ID} ${COMPILE_ID} </command>
+      <command>&PATHRT;/run_test.sh &PATHRT; &RUNDIR_ROOT; ${TEST_NAME} ${TEST_ID} ${COMPILE_ID} > &LOG;/run_${TEST_ID}${RT_SUFFIX}.log </command>
       <jobname>${TEST_ID}${RT_SUFFIX}</jobname>
       <account>${ACCNR}</account>
       ${ROCOTO_NODESIZE:+<nodesize>$ROCOTO_NODESIZE</nodesize>}
