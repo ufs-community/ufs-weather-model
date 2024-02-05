@@ -81,6 +81,11 @@ list(APPEND _mediator_files
   CMEPS/mediator/med_phases_post_rof_mod.F90
   CMEPS/mediator/med_phases_post_wav_mod.F90)
 
+if(CDEPS_INLINE)
+  list(APPEND _mediator_files CMEPS/mediator/med_phases_cdeps_mod.F90)
+  add_definitions(-DCDEPS_INLINE)
+endif()
+
 ###############################################################################
 ### Host model for CCPP
 ###############################################################################
@@ -182,6 +187,12 @@ target_link_libraries(cmeps PUBLIC esmf
                                    PIO::PIO_Fortran)
 if(OpenMP_Fortran_FOUND)
   target_link_libraries(cmeps PRIVATE OpenMP::OpenMP_Fortran)
+endif()
+
+### Set dependency for CDEPS if inline capability is requested
+if(CDEPS_INLINE)
+  add_dependencies(cmeps cdeps::cdeps)
+  target_link_libraries(cmeps PUBLIC cdeps::cdeps)
 endif()
 
 ###############################################################################
