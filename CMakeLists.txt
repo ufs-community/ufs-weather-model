@@ -254,7 +254,7 @@ endif()
 ###############################################################################
 
 if (LM4)
-  add_subdirectory(LM4-interface)
+  add_subdirectory(LM4-driver)
 endif()
 
 if(NOAHMP)
