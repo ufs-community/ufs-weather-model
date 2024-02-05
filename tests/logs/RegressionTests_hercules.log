@@ -7718,3 +7718,61 @@ Test 002 hafs_regional_storm_following_1nest_atm_ocn_wav_inline_intel PASS
 REGRESSION TEST WAS SUCCESSFUL
 Fri Feb  2 09:50:52 AM CST 2024
 Elapsed time: 00h:40m:07s. Have a nice day!
+Mon Feb  5 10:55:10 AM CST 2024
+Start Regression test
+
+Testing UFSWM Hash: 005cd33ccd96ba39fcac4587eda738aa7553809c
+Testing With Submodule Hashes:
+ 37cbb7d6840ae7515a9a8f0dfd4d89461b3396d1 AQM (v0.2.0-37-g37cbb7d)
+ 66cc55363eafc1141d99101a81f34ce05fb50b3e CDEPS-interface/CDEPS (cdeps0.6.3-61-g66cc553)
+ 620e48fe75d92aa607af7e21f2d8691baddd2851 CICE-interface/CICE (CICE6.0.0-445-g620e48f)
+ c9c4c23b3c3b079dfeb62197a8b9f49c2e105ec7 CMEPS-interface/CMEPS (cmeps0.9.13-80-gc9c4c23b)
+ cabd7753ae17f7bfcc6dad56daf10868aa51c3f4 CMakeModules (v1.0.0-28-gcabd775)
+ 8db821cb944f5a6f2586a42926434cca91fcac94 FV3 (heads/develop)
+ 041422934cae1570f2f0e67239d5d89f11c6e1b7 GOCART (sdr_v2.1.2.6-119-g0414229)
+ 35789c757766e07f688b4c0c7c5229816f224b09 HYCOM-interface/HYCOM (2.3.00-121-g35789c7)
+ c8a7325c040b4cb1327c55c8248e8e66972239a5 MOM6-interface/MOM6 (dev/master/repository_split_2014.10.10-9878-gc8a7325c0)
+ 0cd3e23ae5d35ef93e205e4d0c3b13ccc0d851f5 NOAHMP-interface/noahmp (v3.7.1-423-g0cd3e23)
+ 4ffc47e10e3d3f3bbee50251aacb28b7e0165b92 WW3 (6.07.1-344-g4ffc47e1)
+ a5561802021d89a9a1e2b52cb69393efcdc6f71c stochastic_physics (ufs-v2.0.0-199-ga556180)
+Compile hafs_mom6w_intel elapsed time 588 seconds. -DAPP=HAFS-MOM6W -DREGIONAL_MOM6=ON -DCDEPS_INLINE=ON -DMOVING_NEST=ON -DCCPP_SUITES=FV3_HAFS_v1_gfdlmp_tedmf,FV3_HAFS_v1_gfdlmp_tedmf_nonsst,FV3_HAFS_v1_thompson,FV3_HAFS_v1_thompson_nonsst -D32BIT=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile hafsw_faster_intel elapsed time 602 seconds. -DAPP=HAFSW -DCDEPS_INLINE=ON -DMOVING_NEST=ON -DCCPP_SUITES=FV3_HAFS_v1_gfdlmp_tedmf,FV3_HAFS_v1_gfdlmp_tedmf_nonsst,FV3_HAFS_v1_thompson,FV3_HAFS_v1_thompson_nonsst -D32BIT=ON -DFASTER=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+
+baseline dir = /work/noaa/epic/hercules/UFS-WM_RT/NEMSfv3gfs/develop-20240126/hafs_regional_storm_following_1nest_atm_ocn_wav_inline_intel
+working dir  = /work2/noaa/stmp/zshrader/stmp/zshrader/FV3_RT/rt_3123442/hafs_regional_storm_following_1nest_atm_ocn_wav_inline_intel
+Checking test 001 hafs_regional_storm_following_1nest_atm_ocn_wav_inline_intel results ....
+ Comparing atmf006.nc .........OK
+ Comparing sfcf006.nc .........OK
+ Comparing atm.nest02.f006.nc .........OK
+ Comparing sfc.nest02.f006.nc .........OK
+ Comparing archv.2020_238_18.a .........OK
+ Comparing archs.2020_238_18.a .........OK
+ Comparing 20200825.180000.out_grd.ww3 .........OK
+ Comparing 20200825.180000.out_pnt.ww3 .........OK
+
+  0: The total amount of wall time                        = 969.046192
+  0: The maximum resident set size (KB)                   = 847676
+
+Test 001 hafs_regional_storm_following_1nest_atm_ocn_wav_inline_intel PASS
+
+
+baseline dir = /work/noaa/epic/hercules/UFS-WM_RT/NEMSfv3gfs/develop-20240126/hafs_regional_storm_following_1nest_atm_ocn_wav_mom6_intel
+working dir  = /work2/noaa/stmp/zshrader/stmp/zshrader/FV3_RT/rt_3123442/hafs_regional_storm_following_1nest_atm_ocn_wav_mom6_intel
+Checking test 002 hafs_regional_storm_following_1nest_atm_ocn_wav_mom6_intel results ....
+ Comparing atmf003.nc .........OK
+ Comparing sfcf003.nc .........OK
+ Comparing atm.nest02.f003.nc .........OK
+ Comparing sfc.nest02.f003.nc .........OK
+ Comparing ocn_2020_08_25_15.nc .........OK
+ Comparing 20200825.150000.out_grd.ww3 .........OK
+ Comparing 20200825.150000.out_pnt.ww3 .........OK
+
+  0: The total amount of wall time                        = 632.299890
+  0: The maximum resident set size (KB)                   = 829264
+
+Test 002 hafs_regional_storm_following_1nest_atm_ocn_wav_mom6_intel PASS
+
+
+REGRESSION TEST WAS SUCCESSFUL
+Mon Feb  5 11:26:44 AM CST 2024
+Elapsed time: 00h:31m:35s. Have a nice day!
