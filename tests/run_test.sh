@@ -289,6 +289,10 @@ if [[ $DOCN_CDEPS = 'true' ]]; then
   atparse < ${PATHRT}/parm/${DOCN_STREAM_CONFIGURE:-docn.streams.IN} > docn.streams
 fi
 
+if [[ $CDEPS_INLINE = 'true' ]]; then
+  atparse < ${PATHRT}/parm/${CDEPS_INLINE_CONFIGURE:-stream.config.IN} > stream.config
+fi
+
 TPN=$(( TPN / THRD ))
 if (( TASKS < TPN )); then
   TPN=${TASKS}
