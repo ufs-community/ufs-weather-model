@@ -324,7 +324,7 @@ elif [[ $MACHINE_ID = gaea ]]; then
   ECFLOW_START=/ncrc/proj/epic/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
-  DISKNM=/gpfs/f5/epic/world-shared/lustre/epic/UFS-WM_RT
+  DISKNM=/gpfs/f5/epic/world-shared/UFS-WM_RT
   QUEUE=normal
   COMPILE_QUEUE=normal
   PARTITION=c5
