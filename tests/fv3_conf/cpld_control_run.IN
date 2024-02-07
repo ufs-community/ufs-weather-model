@@ -142,6 +142,11 @@ else
        cp ../${DEP_RUN}${SUFFIX}/${RFILE} .
      fi
 
+     # LAND restart file
+     if [ $CPLLND = .true. ]; then
+       cp ../${DEP_RUN}${SUFFIX}/ufs.cpld.lnd.out.${RESTART_FILE_SUFFIX_SECS}.tile*.nc RESTART/.
+     fi
+
   else
      # C48mx500 warm start from ICs
      cp    ${FV3_IC}/*.nc ./INPUT
