@@ -364,7 +364,7 @@ elif [[ $MACHINE_ID = orion ]]; then
   module load gcc/10.2.0
   module load python/3.9.2
 
-  module load contrib rocoto/1.3.1
+  module load contrib rocoto
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
@@ -386,7 +386,7 @@ elif [[ $MACHINE_ID = orion ]]; then
 
 elif [[ $MACHINE_ID = hercules ]]; then
 
-  module load contrib rocoto/1.3.5
+  module load contrib rocoto
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
@@ -410,7 +410,7 @@ elif [[ $MACHINE_ID = hercules ]]; then
 
 elif [[ $MACHINE_ID = jet ]]; then
 
-  module load rocoto/1.3.2
+  module load rocoto
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
