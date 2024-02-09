@@ -37,6 +37,15 @@ case $(hostname -f) in
 
   [Hh]ercules-login-[1-4].[Hh][Pp][Cc].[Mm]s[Ss]tate.[Ee]du) MACHINE_ID=hercules ;; ### hercules1-4
 
+  derecho1.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho1
+  derecho2.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho2
+  derecho3.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho3
+  derecho4.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho4
+  derecho5.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho5
+  derecho6.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho6
+  derecho7.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho7
+  derecho8.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho8
+  
   login[1-4].stampede2.tacc.utexas.edu) MACHINE_ID=stampede ;; ### stampede1-4
 
   login0[1-2].expanse.sdsc.edu) MACHINE_ID=expanse ;; ### expanse1-2
