@@ -15,7 +15,7 @@
 case $(hostname -f) in
 
   adecflow0[12].acorn.wcoss2.ncep.noaa.gov)  MACHINE_ID=acorn ;; ### acorn
-  alogin0[12].acorn.wcoss2.ncep.noaa.gov)    MACHINE_ID=acorn ;; ### acorn
+  alogin0[123].acorn.wcoss2.ncep.noaa.gov)    MACHINE_ID=acorn ;; ### acorn
   clogin0[1-9].cactus.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### cactus01-9
   clogin10.cactus.wcoss2.ncep.noaa.gov)      MACHINE_ID=wcoss2 ;; ### cactus10
   dlogin0[1-9].dogwood.wcoss2.ncep.noaa.gov) MACHINE_ID=wcoss2 ;; ### dogwood01-9
