@@ -1,0 +1,38 @@
+###############################################################################
+#
+#  FV3 regional RRFS-a large domain weekly test
+#
+###############################################################################
+
+export TEST_DESCR="Weekly FV3 regional RRFS-a large domain run"
+
+export CNTL_DIR=regional_rrfs_a
+
+export LIST_FILES="dynf000.nc \
+                   dynf001.nc \
+                   phyf000.nc \
+                   phyf001.nc"
+
+export_fv3
+
+export FV3_RUN=regional_rrfs_a_run.IN
+
+export OZ_PHYS_OLD=.false.
+export OZ_PHYS_NEW=.true.
+export H2O_PHYS=.true.
+export HYBEDMF=.false.
+export RESTART_INTERVAL="0"
+
+export CCPP_SUITE=FV3_HRRR
+export INPUT_NML=regional_rrfs_a.nml.IN
+export MODEL_CONFIGURE=model_configure_regional_rrfs_a.IN
+export DIAG_TABLE=diag_table_rrfs_a
+export FIELD_TABLE=field_table_regional_rrfs_a
+
+export WLCLK=15
+export FHMAX=1
+export INPES=30
+export JNPES=16
+WRITE_GROUP=1
+WRTTASK_PER_GROUP=16
+NTILES=1

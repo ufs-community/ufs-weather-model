@@ -1,0 +1,39 @@
+mkdir INPUT DATM_INPUT RESTART history MOM6_OUTPUT
+
+# DATM fixed input
+ln -s  @[INPUTDATA_ROOT]/DATM_CDEPS/@[DATM_SRC]/@[mesh_file] DATM_INPUT
+ln -s  @[INPUTDATA_ROOT]/DATM_CDEPS/@[DATM_SRC]/202103/gfs.202103.nc DATM_INPUT/gfs.202103.nc
+
+# MOM6 fixed input
+ICERES="${OCNRES:0:1}.${OCNRES:1}"
+cp    @[INPUTDATA_ROOT]/MOM6_FIX/@[OCNRES]/* ./INPUT
+cp    @[INPUTDATA_ROOT]/MOM6_FIX_DATM/@[OCNRES]/* ./INPUT
+
+# CICE fixed input
+cp    @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/grid_cice_NEMS_mx@[OCNRES].nc .
+cp    @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/kmtu_cice_NEMS_mx@[OCNRES].nc .
+cp    @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/mesh.mx@[OCNRES].nc .
+
+if [ $WARM_START = .false. ]; then
+# cold start
+ if [[ $OCNRES == '025' ]]; then
+  cp    @[INPUTDATA_ROOT]/MOM6_IC/MOM6_IC_TS_2021032206.nc ./INPUT/MOM6_IC_TS.nc
+  cp    @[INPUTDATA_ROOT]/CICE_IC/@[OCNRES]/cice_model_@[ICERES].cpc.res_20210322.nc cice_model.res.nc
+ else
+  cp    @[INPUTDATA_ROOT]/MOM6_IC/MOM6_IC_TS_2021032206.nc ./INPUT/MOM6_IC_TS.nc
+  cp    @[INPUTDATA_ROOT]/CICE_IC/@[OCNRES]/cice_model_@[ICERES].cpc.res_20210322.nc cice_model.res.nc
+ fi
+else
+# warm start
+ cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/MOM.res.2021-03-22-18*.nc ./INPUT/MOM.res.nc
+
+# CMEPS restart and pointer files
+ RFILE="DATM_${DATM_SRC}.cpl.r.2021-03-22-64800.nc.nc"
+ cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/${RFILE} .
+ ls -1 ${RFILE}>rpointer.cpl
+
+# CICE restart and pointer files
+ cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/iced.2021-03-22-64800.nc ./INPUT
+ RFILE="iced.2021-03-22-64800.nc"
+ ls -1 "./INPUT/"${RFILE}>ice.restart_file
+fi

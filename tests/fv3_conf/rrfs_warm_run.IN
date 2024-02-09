@@ -1,0 +1,53 @@
+rm -fr INPUT RESTART
+mkdir INPUT RESTART
+
+OPNREQ_TEST=${OPNREQ_TEST:-false}
+SUFFIX=${RT_SUFFIX}
+
+if [[ "${RRFS_RESTART:-NO}" == YES ]] ; then
+    # cp -r ../${DEP_RUN}${SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.* ./INPUT
+    # rm -f INPUT/fv_core.res.*
+    # rm -f INPUT/fv_srf_wnd.res.*
+    # rm -f INPUT/fv_tracer.res.*
+    # rm -f INPUT/phy_data.*
+    # rm -f INPUT/sfc_data.*
+    cp @[INPUTDATA_ROOT]/FV3_input_data_conus13km/INPUT/grid_spec.nc INPUT/.
+    cp @[INPUTDATA_ROOT]/FV3_input_data_conus13km/INPUT/*_grid.tile*.nc INPUT/.
+    cp @[INPUTDATA_ROOT]/FV3_input_data_conus13km/INPUT/oro_data*.nc INPUT/.
+    for RFILE in ../${DEP_RUN}${SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.*; do
+      [ -e $RFILE ] || exit 1
+      RFILE_OLD=$(basename $RFILE)
+      RFILE_NEW="${RFILE_OLD//${RESTART_FILE_PREFIX}./}"
+      cp $RFILE "INPUT/$RFILE_NEW"
+    done
+    for x in emi_data.nc SMOKE_GBBEPx_data.nc dust12m_data.nc gfs_ctrl.nc gfs_data.nc \
+        grid.tile7.halo4.nc ; do
+      cp @[INPUTDATA_ROOT]/FV3_input_data_conus13km/INPUT/$x INPUT/.
+    done
+    cp @[INPUTDATA_ROOT]/FV3_input_data_conus13km/INPUT/gfs_bndy.* INPUT/.
+else
+  cp -r @[INPUTDATA_ROOT]/FV3_input_data_conus13km/INPUT/* INPUT/
+fi
+
+for x in global_glacier.2x2.grb global_h2oprdlos.f77 global_maxice.2x2.grb \
+         global_o3prdlos.f77 global_snoclim.1.875.grb global_zorclim.1x1.grb \
+         CFSR.SEAICE.1982.2012.monthly.clim.grb RTGSST.1982.2012.monthly.clim.grb ; do
+  cp -f @[INPUTDATA_ROOT]/FV3_fix/"$x" .
+done
+
+cp    @[INPUTDATA_ROOT]/FV3_input_data/global_soilmgldas.t126.384.190.grb .
+cp    @[INPUTDATA_ROOT]/FV3_fix/seaice_newland.grb .
+
+touch data_table
+
+# Thompson MP lookup tables - copy standard and SIONlib tables of precomputed tables
+if [ $IMP_PHYSICS = 8 ]; then
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_gsd/qr_acr_qsV2.dat .
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_gsd/qr_acr_qgV2.dat .
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_gsd/freezeH2O.dat .
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_gsd/CCN_ACTIVATE.BIN .
+fi
+
+if [ $DO_RRTMGP = .true. ]; then
+  cp @[INPUTDATA_ROOT]/FV3_input_data_RRTMGP/* .
+fi

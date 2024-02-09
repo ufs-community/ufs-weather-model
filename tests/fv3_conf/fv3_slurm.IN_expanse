@@ -1,0 +1,32 @@
+#!/bin/bash
+#SBATCH --job-name="@[JBNME]"
+#SBATCH -o out
+#SBATCH -e err
+#SBATCH -A @[ACCNR]
+#SBATCH -p @[QUEUE]
+#SBATCH --nodes=@[NODES]
+#SBATCH --ntasks-per-node=@[TPN]
+#SBATCH -t @[WLCLK]
+
+set -eux
+echo -n " $( date +%s )," >  job_timestamp.txt
+
+set +x
+MACHINE_ID=expanse
+source ./module-setup.sh
+module use $( pwd -P )
+module load modules.fv3
+module list
+set -x
+
+ulimit -s unlimited
+
+echo "Model started: "`date`
+
+export OMP_STACK_SIZE=512M
+export OMP_NUM_THREADS=@[THRD]
+export I_MPI_PMI_LIBRARY=/cm/shared/apps/slurm/current/lib64/libpmi.so
+srun -n @[TASKS] ./fv3.exe
+
+echo "Model ended:    " `date`
+echo -n " $( date +%s )," >> job_timestamp.txt

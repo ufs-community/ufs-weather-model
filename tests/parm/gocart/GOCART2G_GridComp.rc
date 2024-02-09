@@ -1,0 +1,41 @@
+#
+# !RESOURCE: GOCART2G_GridComp.rc --- GOCART2G resource file
+#
+#  DESCRIPTION:
+#  The GOCART2G resource file is used to control basic
+#  properties of the GOCART2G Grid Components. Instances are
+#  defined here. Default is the data component.
+#
+#  Only the FIRST entry in the ACTIVE_INSTANCE_XX is given as
+#  the AERO_PROVIDER.
+#
+# !REVISION HISTORY:
+#
+#  11Oct2019  E.Sherman   GOCART2G resource file has been created
+#--------------------------------------------------------------------
+
+
+                        # &Label Active Constituents
+
+# Include the constituent in the simulation?
+# ----------------------------------------------------
+ACTIVE_INSTANCES_DU:  DU  # DU.data
+PASSIVE_INSTANCES_DU:
+
+ACTIVE_INSTANCES_SS:  SS  # SS.data
+PASSIVE_INSTANCES_SS:
+
+ACTIVE_INSTANCES_SU:  SU  # SU.data 
+PASSIVE_INSTANCES_SU:
+
+ACTIVE_INSTANCES_CA:  CA.oc CA.bc  # CA.oc.data CA.bc.data 
+PASSIVE_INSTANCES_CA:
+
+ACTIVE_INSTANCES_NI:  NI  # NI.data 
+PASSIVE_INSTANCES_NI:
+
+# Set optics parameters
+# ---------------------
+aerosol_monochromatic_optics_wavelength_in_nm_from_LUT: 470 550 670 870
+wavelengths_for_profile_aop_in_nm: 470 550 670 870               # must be included in LUT
+wavelengths_for_vertically_integrated_aop_in_nm: 470 550 670 870 # must be included in LUT

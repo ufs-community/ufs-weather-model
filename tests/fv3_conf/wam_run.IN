@@ -1,0 +1,10 @@
+
+inputdir=FV3_input_data_L149
+mkdir INPUT RESTART
+cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT/* ./INPUT
+cp    @[INPUTDATA_ROOT]/${inputdir}/*grb .
+
+if [ $CPLWAV = .true. ]; then
+  cp  @[INPUTDATA_ROOT_WW3]/mod_def.* .
+  cp  @[INPUTDATA_ROOT_WW3]/rmp_src* .
+fi
