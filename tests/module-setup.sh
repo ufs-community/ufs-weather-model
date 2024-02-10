@@ -65,8 +65,8 @@ elif [[ $MACHINE_ID = stampede ]] ; then
     fi
     module purge
 
-elif [[ $MACHINE_ID = gaea-c5 ]] ; then
-    # We are on GAEA C5
+elif [[ $MACHINE_ID = gaea ]] ; then
+    # We are on GAEA
     if ( ! eval module help > /dev/null 2>&1 ) ; then
         # We cannot simply load the module command.  The GAEA
         # /etc/profile modifies a number of module-related variables
@@ -75,7 +75,7 @@ elif [[ $MACHINE_ID = gaea-c5 ]] ; then
         # /etc/profile here.
         source /etc/profile
     fi
-    source /lustre/f2/dev/role.epic/contrib/Lmod_init_C5.sh
+    module reset
 
 elif [[ $MACHINE_ID = expanse ]]; then
     # We are on SDSC Expanse
