@@ -13,10 +13,15 @@ fi
 echo "inputdir=$inputdir,NPX=$NPX"
 
 OPNREQ_TEST=${OPNREQ_TEST:-false}
+V2_SFC_FILE=${V2_SFC_FILE:-false}
 SUFFIX=${RT_SUFFIX}
 if [ $WARM_START = .false. ]; then
   mkdir INPUT RESTART
-  cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127/* ./INPUT/.
+  if [ "$V2_SFC_FILE" = "true" ]; then
+    cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127_v2_sfc/* ./INPUT/.
+  else
+    cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127/* ./INPUT/.
+  fi
 else
   mkdir INPUT RESTART
 
@@ -82,7 +87,6 @@ else
       cp $RFILE INPUT/${RFILE_NEW}
     done
   fi
-
 fi
 
 if [ $TILEDFIX = .true. ]; then

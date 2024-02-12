@@ -306,51 +306,30 @@ elif [[ $MACHINE_ID = acorn ]]; then
 
 elif [[ $MACHINE_ID = gaea ]]; then
 
-  module use /lustre/f2/dev/role.epic/contrib/rocoto/modulefiles
+  module use /ncrc/proj/epic/rocoto/modulefiles
   module load rocoto
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=slurm
 
-  module use /lustre/f2/dev/role.epic/contrib/spack-stack/c4/modulefiles
-  module load ecflow/5.8.4
-  ECFLOW_START=/lustre/f2/dev/role.epic/contrib/spack-stack/c4/ecflow-5.8.4/bin/ecflow_start.sh
-  ECF_PORT=$(( $(id -u) + 1500 ))
-
-  DISKNM=/lustre/f2/pdata/ncep/role.epic/RT
-  QUEUE=normal
-  COMPILE_QUEUE=normal
-  PARTITION=c4
-  STMP=/lustre/f2/scratch
-  PTMP=/lustre/f2/scratch
-
-  SCHEDULER=slurm
-
-elif [[ $MACHINE_ID = gaea-c5 ]]; then
-
-  module use /lustre/f2/dev/role.epic/contrib/C5/rocoto/modulefiles
-  module load rocoto
-  ROCOTORUN=$(which rocotorun)
-  ROCOTOSTAT=$(which rocotostat)
-  ROCOTOCOMPLETE=$(which rocotocomplete)
-  ROCOTO_SCHEDULER=slurm
-
+  
   module load PrgEnv-intel/8.3.3
   module load intel-classic/2023.1.0
   module load cray-mpich/8.1.25
   module load python/3.9.12
-  module use /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/modulefiles
+  module use /ncrc/proj/epic/spack-stack/modulefiles
+  module load gcc/12.2.0
   module load ecflow/5.8.4
-  ECFLOW_START=/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/ecflow-5.8.4/bin/ecflow_start.sh
+  ECFLOW_START=/ncrc/proj/epic/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
-  DISKNM=/lustre/f2/pdata/ncep/role.epic/C5/RT
+  DISKNM=/gpfs/f5/epic/world-shared/UFS-WM_RT
   QUEUE=normal
   COMPILE_QUEUE=normal
   PARTITION=c5
-  STMP=/lustre/f2/scratch
-  PTMP=/lustre/f2/scratch
+  STMP=/gpfs/f5/epic/scratch
+  PTMP=/gpfs/f5/epic/scratch
 
   SCHEDULER=slurm
 
@@ -382,7 +361,7 @@ elif [[ $MACHINE_ID = orion ]]; then
   module load gcc/10.2.0
   module load python/3.9.2
 
-  module load contrib rocoto/1.3.1
+  module load contrib rocoto
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
@@ -404,7 +383,7 @@ elif [[ $MACHINE_ID = orion ]]; then
 
 elif [[ $MACHINE_ID = hercules ]]; then
 
-  module load contrib rocoto/1.3.5
+  module load contrib rocoto
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
@@ -428,7 +407,7 @@ elif [[ $MACHINE_ID = hercules ]]; then
 
 elif [[ $MACHINE_ID = jet ]]; then
 
-  module load rocoto/1.3.2
+  module load rocoto
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
@@ -684,10 +663,6 @@ if [[ $ROCOTO == true ]]; then
     QUEUE=normal
     COMPILE_QUEUE=normal
     ROCOTO_SCHEDULER=slurm
-  elif [[ $MACHINE_ID = gaea-c5 ]]; then
-    QUEUE=normal
-    COMPILE_QUEUE=normal
-    ROCOTO_SCHEDULER=slurm
   else
     die "Rocoto is not supported on this machine $MACHINE_ID"
   fi
@@ -758,7 +733,7 @@ EOF
     QUEUE=batch
   elif [[ $MACHINE_ID = s4 ]]; then
     QUEUE=s4
-  elif [[ $MACHINE_ID = gaea* ]]; then
+  elif [[ $MACHINE_ID = gaea ]]; then
     QUEUE=normal
   elif [[ $MACHINE_ID = derecho ]]; then
     QUEUE=main
