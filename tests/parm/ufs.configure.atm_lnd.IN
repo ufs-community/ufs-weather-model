@@ -26,10 +26,6 @@ MED_attributes::
   history_option = nhours
   history_ymd = -999
   coupling_mode = @[CPLMODE]
-  history_tile_lnd = 96
-  history_n_lnd_inst = 6
-  history_option_lnd_inst = nhours
-  pio_rearranger = @[pio_rearranger]
 ::
 
 # ATM #
@@ -49,7 +45,7 @@ LND_attributes::
   Verbosity = 1
   Diagnostic = 0
   mosaic_file = @[mosaic_file]
-  input_dir = INPUT/
+  input_dir = @[lnd_input_dir] 
   ic_type = @[lnd_ic_type]
   layout = @[layout_x]:@[layout_y] # need to be consistent with number of PEs
   num_soil_levels = 4
@@ -64,15 +60,17 @@ LND_attributes::
   supercooled_soilwater_option = 1
   frozen_soil_adjust_option = 1
   radiative_transfer_option = 3
-  snow_albedo_option = 1
-  precip_partition_option = 4
+  snow_albedo_option = @[snow_albedo_option]
+  precip_partition_option = @[precip_partition_option]
   soil_temp_lower_bdy_option = 2
   soil_temp_time_scheme_option = 3
   surface_evap_resistance_option = 1 # not used, it is fixed to 4 in sfc_noahmp_drv.F90
   glacier_option = 1
   surface_thermal_roughness_option = 2
-  output_freq = 10800
+  output_freq = 3600 
+  restart_freq = -1
   calc_snet = @[CALC_SNET]
+  initial_albedo = @[initial_albedo]
 ::
 
 # cold
@@ -106,7 +104,7 @@ ALLCOMP_attributes::
   start_type = @[RUNTYPE]
   restart_dir = @[CMEPS_RESTART_DIR]
   case_name = ufs.cpld
-  restart_n = 12
+  restart_n = 1
   restart_option = nhours
   restart_ymd = -999
   dbug_flag = @[cap_dbug_flag]

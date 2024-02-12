@@ -14,12 +14,12 @@ export LIST_FILES="sfcf000.tile1.nc \
                    sfcf000.tile4.nc
                    sfcf000.tile5.nc
                    sfcf000.tile6.nc
-                   sfcf021.tile1.nc \
-                   sfcf021.tile2.nc \
-                   sfcf021.tile3.nc \
-                   sfcf021.tile4.nc \
-                   sfcf021.tile5.nc \
-                   sfcf021.tile6.nc \
+                   sfcf012.tile1.nc \
+                   sfcf012.tile2.nc \
+                   sfcf012.tile3.nc \
+                   sfcf012.tile4.nc \
+                   sfcf012.tile5.nc \
+                   sfcf012.tile6.nc \
                    sfcf024.tile1.nc \
                    sfcf024.tile2.nc \
                    sfcf024.tile3.nc \
@@ -32,18 +32,24 @@ export LIST_FILES="sfcf000.tile1.nc \
                    atmf000.tile4.nc \
                    atmf000.tile5.nc \
                    atmf000.tile6.nc \
-                   atmf021.tile1.nc \
-                   atmf021.tile2.nc \
-                   atmf021.tile3.nc \
-                   atmf021.tile4.nc \
-                   atmf021.tile5.nc \
-                   atmf021.tile6.nc \
+                   atmf012.tile1.nc \
+                   atmf012.tile2.nc \
+                   atmf012.tile3.nc \
+                   atmf012.tile4.nc \
+                   atmf012.tile5.nc \
+                   atmf012.tile6.nc \
                    atmf024.tile1.nc \
                    atmf024.tile2.nc \
                    atmf024.tile3.nc \
                    atmf024.tile4.nc \
                    atmf024.tile5.nc \
                    atmf024.tile6.nc \
+                   RESTART/20210323.060000.ca_data.tile1.nc \
+                   RESTART/20210323.060000.ca_data.tile2.nc \
+                   RESTART/20210323.060000.ca_data.tile3.nc \
+                   RESTART/20210323.060000.ca_data.tile4.nc \
+                   RESTART/20210323.060000.ca_data.tile5.nc \
+                   RESTART/20210323.060000.ca_data.tile6.nc \
                    RESTART/20210323.060000.coupler.res \
                    RESTART/20210323.060000.fv_core.res.nc \
                    RESTART/20210323.060000.fv_core.res.tile1.nc \
@@ -76,14 +82,12 @@ export LIST_FILES="sfcf000.tile1.nc \
                    RESTART/20210323.060000.sfc_data.tile4.nc \
                    RESTART/20210323.060000.sfc_data.tile5.nc \
                    RESTART/20210323.060000.sfc_data.tile6.nc \
-                   ufs.cpld.cpl.hi.lnd.2021-03-22-43200.nc \
-                   ufs.cpld.cpl.hi.lnd.2021-03-23-21600.nc \
-                   ufs.cpld.lnd.out.2021-03-22-43200.tile1.nc \
-                   ufs.cpld.lnd.out.2021-03-22-43200.tile2.nc \
-                   ufs.cpld.lnd.out.2021-03-22-43200.tile3.nc \
-                   ufs.cpld.lnd.out.2021-03-22-43200.tile4.nc \
-                   ufs.cpld.lnd.out.2021-03-22-43200.tile5.nc \
-                   ufs.cpld.lnd.out.2021-03-22-43200.tile6.nc \
+                   ufs.cpld.lnd.out.2021-03-22-64800.tile1.nc \
+                   ufs.cpld.lnd.out.2021-03-22-64800.tile2.nc \
+                   ufs.cpld.lnd.out.2021-03-22-64800.tile3.nc \
+                   ufs.cpld.lnd.out.2021-03-22-64800.tile4.nc \
+                   ufs.cpld.lnd.out.2021-03-22-64800.tile5.nc \
+                   ufs.cpld.lnd.out.2021-03-22-64800.tile6.nc \
                    ufs.cpld.lnd.out.2021-03-23-21600.tile1.nc \
                    ufs.cpld.lnd.out.2021-03-23-21600.tile2.nc \
                    ufs.cpld.lnd.out.2021-03-23-21600.tile3.nc \
@@ -197,10 +201,10 @@ export USE_CICE_ALB=.false.
 
 export WRITE_NSFLIP=.true.
 
-export FV3_RUN=control_run.IN
+export FV3_RUN="control_run.IN noahmp_run.IN"
 export CCPP_SUITE=FV3_GFS_v17_p8
 export FIELD_TABLE=field_table_thompson_noaero_tke
-export DIAG_TABLE=diag_table_p8_template
+export DIAG_TABLE=diag_table_cpld.IN
 # use same namelist for standalone,coupled P7
 export INPUT_NML=cpld_control.nml.IN
 
@@ -213,6 +217,7 @@ export DOGP_SGS_CNV=.true.
 export SATMEDMF=.true.
 
 export CPLLND=.true.
+export CPLLND2ATM=.false.
 
 export UFS_CONFIGURE=ufs.configure.atm_lnd.IN
 export med_model=cmeps
@@ -225,16 +230,22 @@ export READRESTART=.false.
 export CMEPS_RESTART_DIR=./RESTART/
 export cap_dbug_flag=0
 export ATM_tasks=144
-export OCN_tasks=0
-export ICE_tasks=0
 export LND_tasks=144
 export lnd_ic_type=sfc
 export CALC_SNET=.false.
 export layout_x=3
 export layout_y=8
-export mosaic_file="INPUT/grid_spec.nc"
+export LNDRES=C96
 export coupling_interval_sec=720
+export snow_albedo_option=1
+export precip_partition_option=4
+export initial_albedo=0.2
+export OUTPUT_FH="1 -1"
+if [[ "$ATMRES" = "$LNDRES" ]]; then
+  export lnd_input_dir="INPUT/"
+  export mosaic_file="INPUT/${LNDRES}_mosaic.nc"
+else
+  export lnd_input_dir="INPUT/${LNDRES}/"
+  export mosaic_file="INPUT/${LNDRES}/${LNDRES}_mosaic.nc"
+fi
 export MOM6_TOPOEDITS=""
-# need for getting some files from coupled RT to fix land-sea mask inconsistency
-# can be removed after fixing files for control_p8
-export OCNRES=100
