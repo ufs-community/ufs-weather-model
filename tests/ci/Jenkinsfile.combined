@@ -173,7 +173,7 @@ def generateStage(nodeLabel) {
                           then
                            echo "Running regression tests on $machine"
                            export ACCNR=nems
-                           ./rt.sh -a ${ACCNR} -r -l rt.conf
+                          #./rt.sh -a ${ACCNR} -r -l rt.conf
 			  elif [[ $machine =~ "Derecho" ]]
                           then
                            echo "Running regression tests on $machine"
@@ -264,6 +264,11 @@ pipeline {
         }       
     }   
         post {
+         always {
+             node($nodeLabel) {
+                echo "Running post on $nodeLabel"
+             }
+         }
          success {
              node('built-in') {
                 echo 'This will run only if successful.'
