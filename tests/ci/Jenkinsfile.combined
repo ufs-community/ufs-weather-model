@@ -265,7 +265,8 @@ pipeline {
     }   
         post {
          always {
-                echo "Running post on $NODE_NAME"
+                echo "Running on ${env.NODE_NAME}" 
+                
          }
          success {
              node('built-in') {
