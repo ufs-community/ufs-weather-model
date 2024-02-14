@@ -28,8 +28,14 @@ include("mom6_files.cmake")
 add_library(mom6_obj OBJECT ${mom6_src_files})
 set_target_properties(mom6_obj PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(mom6_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
-target_include_directories(mom6_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/config_src/memory/dynamic_nonsymmetric>
-                                            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/src/framework>)
+
+if(REGIONAL_MOM6)
+  target_include_directories(mom6_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/config_src/memory/dynamic_symmetric>
+                                              $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/src/framework>)
+else()
+  target_include_directories(mom6_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/config_src/memory/dynamic_nonsymmetric>
+                                              $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/src/framework>)
+endif()
 target_link_libraries(mom6_obj PRIVATE fms
                                        esmf
                                        stochastic_physics
@@ -42,8 +48,13 @@ target_link_libraries(mom6_obj PRIVATE fms
 add_library(mom6_nuopc_obj OBJECT ${mom6_nuopc_src_files})
 set_target_properties(mom6_nuopc_obj PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(mom6_nuopc_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
-target_include_directories(mom6_nuopc_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/config_src/memory/dynamic_nonsymmetric>
-                                                  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/src/framework>)
+if(REGIONAL_MOM6)
+  target_include_directories(mom6_nuopc_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/config_src/memory/dynamic_symmetric>
+                                                    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/src/framework>)
+else()
+  target_include_directories(mom6_nuopc_obj PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/config_src/memory/dynamic_nonsymmetric>
+                                                    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MOM6/src/framework>)
+endif()
 target_link_libraries(mom6_nuopc_obj PRIVATE mom6_obj
                                              fms
                                              stochastic_physics
