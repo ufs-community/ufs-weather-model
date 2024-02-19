@@ -43,10 +43,13 @@ if [[ $ATMRES == 'C96' || $LNDRES == 'C96' ]]; then
 elif [[ $ATMRES == 'C48' || $LNDRES == 'C48' ]]; then
   # Currently only on Gaea.
   # these are not available at /lustre/f2/pdata/gfdl/cmip6/datasets/CM4/common, so generated here:
-  cp /lustre/f2/dev/gfdl/Justin.Perket/cpl_mosaic_gen/ufs_c48/C48_mosaic_tile?XC48_mosaic_tile?.nc ./INPUT
+  #cp /lustre/f2/dev/gfdl/Justin.Perket/cpl_mosaic_gen/ufs_c48/C48_mosaic_tile?XC48_mosaic_tile?.nc ./INPUT
+  cp /gpfs/f5/gfdl_b/scratch/Justin.Perket/old_f2dev/cpl_mosaic_gen/ufs_c48/C48_mosaic_tile?XC48_mosaic_tile?.nc ./INPUT
+  # TODO: put somewhere better after F5 transition
 
   # needed to compute topo_rough
-  cp /lustre/f2/pdata/gfdl/fms/module_data/riga/navy_topography.data.nc INPUT/
+  #cp /lustre/f2/pdata/gfdl/fms/module_data/riga/navy_topography.data.nc INPUT/
+  cp /gpfs/f5/gfdl_b/world-shared/module_data/riga/navy_topography.data.nc INPUT/
 else
    echo 'Only setup for C48 or C96 for now during development'
 fi

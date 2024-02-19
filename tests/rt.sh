@@ -325,13 +325,13 @@ elif [[ $MACHINE_ID = gaea ]]; then
   ECF_PORT=$(( $(id -u) + 1500 ))
 
   # TMP use this path for LM4 cap
-  INPUTDATA_LM4=${INPUTDATA_LM4:-/lustre/f2/pdata/gfdl/cmip6/datasets/CM4/common}
+  INPUTDATA_LM4=${INPUTDATA_LM4:-/gpfs/f5/gfdl/world-shared/cmip6/datasets/CM4/common}
   DISKNM=/gpfs/f5/epic/world-shared/UFS-WM_RT
   QUEUE=normal
   COMPILE_QUEUE=normal
   PARTITION=c5
-  STMP=/gpfs/f5/epic/scratch
-  PTMP=/gpfs/f5/epic/scratch
+  STMP=${STMP:-/gpfs/f5/gfdl_b/scratch}
+  PTMP=${PTMP:-/gpfs/f5/gfdl_b/scratch}
 
   SCHEDULER=slurm
 
