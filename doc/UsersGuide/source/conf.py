@@ -100,6 +100,7 @@ html_theme_path = ["_themes", ]
 #
 # html_theme_options = {}
 html_theme_options = {"body_max_width": "none"}
+html_logo="https://github.com/ufs-community/ufs/wiki/images/ufs-epic-logo.png"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
