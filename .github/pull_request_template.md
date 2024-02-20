@@ -1,6 +1,6 @@
 <!-- INSTRUCTIONS: 
+- PLEASE READ/FOLLOW THE DIRECTIONS IN EACH SECTION
 - Complete the 'Commit Queue Requirements' below
-- Please be as descriptive as possible, this is really important.
 - Please use github markup as much as possible (https://docs.github.com/en/get-started/writing-on-github)
 - Please leave your PR in a draft state until all underlying work is completed.
 -->
@@ -16,94 +16,124 @@
 - [ ] Run the full Intel+GNU RT suite (compared to current baselines) on either Hera/Derecho/Hercules
 - [ ] Commit 'test_changes.list' from previous step
 ---
-## PR Information
-### Description
-<!-- Provide a detailed description of what this PR does in the space provided below-->
-
-
-### Commit Message
+## Description:
 <!--
-Please provide the following concise information:
-- Description of all UFSWM changes: ~1 line
-- Please list all issue titles addressed with github links at the end in parenthesis (using #<number>).
-For example:
-```
-* Bring in FV3 and WW3 changes which solve the following subcomponent issues:
-  * Update cpld_control_p8 physics scheme (NOAA-EMC/fv3atm#111)
-  * Improve WW3 coupling with atmosphere (NOAA-EMC/WW3#11)
-* Add new cpld_control_p8_wave regression test (#1111)
-```
+Please provide a detailed verbose description of what this PR does
+-->
+
+
+### Commit Message:
+<!--
+Please provide concise information for The UFS-WM and/or each sub-component:
+Please delete what is not needed.
 -->
 ```
-INSERT COMMIT MESSAGE HERE
+* UFSWM - 
+  * AQM - 
+  * CDEPS - 
+  * CICE - 
+  * CMEPS - 
+  * CMakeModules - 
+  * FV3 - 
+    * ccpp-physics - 
+    * atmos_cubed_sphere - 
+  * GOCART - 
+  * HYCOM - 
+  * MOM6 - 
+  * NOAHMP - 
+  * WW3 - 
+  * stochastic_physics - 
 ```
 
-### Priority with reasoning
+### Priority:
 <!--
-DEFAULT: * Normal
-Options:
-* Critical Bugfix (Please include reasoning)
-* High (PR needed for a time-sensitive project (Please include reasoning))
-* Normal (No reason needed, can leave blank)
+Please provide the priority you would prefer this pull request to have.
+* Critical Bugfix: Model is wrong.
+* High: Time-sensitive project.
+* Normal.
+Please delete the ones that are not applicable
 -->
+* Critical Bugfix: Reason
+* High: Reason
 * Normal
-  * Reason: 
 
-### UFSWM Blocking Dependencies
-<!-- If there are any UFSWM PR's that are needed to be completed before this one, please add links
-to them here
-For example:
-* Blocked by #1234
+## Git Tracking
+### UFSWM:
+<!--
+Please add the UFS-WM github issue here if there is one
+Please delete the one that is not applicable.
 -->
+* Closes #
 * None
 
-### UFSWM Git Issues Addressed By This PR
-<!-- Example: * Closes #2061 -->
-* Closes #
+### Sub component Pull Requests:
+<!--
+Please provide a list of sub-components involved with this pull request.
+Please provide links to the sub-component pull requests as shown below.
+Please delete what is not needed.
+Example:
+* FV3: NOAA-EMC/fv3atm#734
+  * ccpp-physics: ufs-community/ccpp-physics#33
+* WW3: NOAA-EMC/WW3#321
+-->
+* AQM:
+* CDEPS:
+* CICE:
+* CMEPS:
+* CMakeModules:
+* FV3:
+  * ccpp-physics:
+  * atmos_cubed_sphere:
+* GOCART:
+* HYCOM:
+* MOM6:
+* NOAHMP:
+* WW3:
+* stochastic_physics:
+* None
+
+### UFSWM Blocking Dependencies:
+<!--
+If there are any UFSWM PR's that are needed to be completed before this one, please add links
+to them here
+Please delete what is not needed.
+-->
+* Blocked by #
+* None
 
 ---
 ## Changes
-### Sub component (with Pull Request links)
-<!-- Please add links to sub component PR's (only) here
-Options:
-AQM, CDEPS, CICE, CMEPS, CMakeModules, FV3, GOCART, HYCOM, MOM6, NOAHMP, WW3, stochastic_physics, None
-DEFAULT: * None
-Example:
-* FV3: NOAA-EMC/fv3atm#734
-* WW3: NOAA-EMC/WW3#321
--->
-* None
-
-### Input data Changes
+### Regression Test Changes (Please commit test_changes.list):
 <!--
-DEFAULT: * None
-Options:
+If there are any changes to regression tests, please document what changes here:
+Please delete what is not needed.
+Please make sure you have properly submitted test_changes.list
+-->
+* None Expected
+* Changes Expected
+
+### Input data Changes:
+<!--
+If there are any changes to input-data for a test, please provide information here.
+Please delete what is not needed.
+-->
 * None.
 * New input data.
 * Updated input data.
--->
-* None
 
-### Regression Test Changes (Please commit test_changes.list):
-<!-- 
-DEFAULT: * None
-Options:
-* None Expected
-* Changes Expected
--->
-* None Expected
-
-### Library updates
-<!-- Library updates take time.
+### Library Changes/Upgrades:
+<!-- Library updates take time. Please provide library and version information here.
+** SPECIAL INSTRUCTIONS **
 If this PR needs updates to libraries please make sure to accomplish the following tasks:
 - Create separate issue in (https://github.com/JCSDA/spack-stack) asking for update to library. Include library name, library version.
 - Add issue link from JCSDA/spack-stack following this item <!-- for example: "* JCSDA/spack-stack#1757"
-DEFAULT: * Not Needed
-Options:
-* Needed
-* Not Needed
+
+Please delete what is not needed.
 -->
-* Not Needed
+* Required
+  * Library names w/versions:
+  * Git Stack Issue (JCSDA/spack-stack#)
+* No Updates
   
 ---
 <!-- STOP!!! THE FOLLOWING IS FOR CODE MANAGERS ONLY. PLEASE DO NOT FILL OUT -->
