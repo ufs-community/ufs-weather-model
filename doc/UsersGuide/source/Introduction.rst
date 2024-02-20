@@ -57,6 +57,8 @@ This WM User's Guide is organized as follows:
 
    * :numref:`Chapter %s <InputsOutputs>` (Data: Input, Model Configuration, and Output Files) lists the model inputs and outputs and has a description of the key files.
 
+   * :numref:`Chapter %s <Configurations>` (Configurations) lists the currently supported configurations for the UFS WM.
+     
    * :numref:`Chapter %s <ConfigParams>` (Configuration Parameters) lists the purpose and valid values for various configuration parameters.
 
    * :numref:`Chapter %s <AutomatedTesting>` (Automated Testing) describes UFS WM automated testing options.
