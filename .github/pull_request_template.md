@@ -84,7 +84,7 @@ Options:
 -->
 * None
 
-### Regression Tests (Please commit test_changes.list):
+### Regression Test Changes (Please commit test_changes.list):
 <!-- 
 DEFAULT: * None
 Options:
