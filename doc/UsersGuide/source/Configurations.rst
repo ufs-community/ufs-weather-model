@@ -13,7 +13,8 @@ Configurations
 The UFS Weather Model (WM) can be run in any of several configurations, from a single-component atmospheric 
 model to a fully coupled model with multiple earth system components (e.g., atmosphere, ocean, sea-ice, land, and 
 mediator). This chapter documents a few of the currently supported configurations. For a full list of 
-supported configurations, view the `rt.conf <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/rt.conf>`__ file. 
+supported configurations, view the `rt.conf <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/rt.conf>`__ 
+and `rt.gnu.conf <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/rt_gnu.conf>`__ files. 
 
 .. attention::
 
@@ -41,7 +42,7 @@ supported configurations, view the `rt.conf <https://github.com/ufs-community/uf
 This chapter details the supported build/run options for each supported configuration. 
 Click on the configuration category in :numref:`Table %s <UFS-configurations-documented>` 
 to go to that section. Each configuration category includes sample code for setting ``CMAKE_FLAGS`` and ``CCPP_SUITES``. 
-Additionally, there is a list of preferred physics suites, examples of ``ufs.configure`` files, 
+Additionally, there is a list of preferred physics suites, examples of ``nems.configure`` files, 
 and links to information on other input files required to run the model. 
 
 ============
@@ -145,7 +146,7 @@ it will be expanded to cover the full range of ATM-only supported configurations
 
    * - Test Name
      - Description
-     - Physics Suite (see `namelist options <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_c_c_p_psuite_nml_desp.html>`__)
+     - Physics Suite (see namelist options `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_c_c_p_psuite_nml_desp.html>`__)
      - DT_ATMOS
      - Start Date
      - Forecast Length (hours)
@@ -196,20 +197,137 @@ it will be expanded to cover the full range of ATM-only supported configurations
 
 Input files required for ATM configurations can be viewed in :numref:`Section %s <atm-in>`
 or in the `UFS WM RT Data Bucket <https://registry.opendata.aws/noaa-ufs-regtests/>`__. 
-Information on ``ufs.configure`` files is available in :numref:`Section %s <ufs-conf>`,
-and a sample ATM ``ufs.configure`` file (``ufs.configure.atm.IN``) is available 
+Information on ``ufs.configure`` files is available in :numref:`Section %s <UFS-configurations>`,
+and a sample ATM `ufs.configure`` file (``ufs.configure.atm.IN``) is available 
 `here <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.atm.IN>`__.
 
 
 ATMW
 =======
 
-**COMING SOON!**
+The ATMW configuration couples :term:`ATM` with :term:`WaveWatch III`. 
+These tests use default values set in the ``export_fv3`` function of ``default_vars.sh``.
+
+.. _atmw-rts:
+
+.. list-table:: *ATMW regression test descriptions*
+   :widths: 50 10 30 50 10 10 10 10 10
+   :header-rows: 1
+
+   * - Test |nbsp| Name |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp|
+     - Description
+     - General Physics Parameters
+     - Detailed |nbsp| Physics |nbsp| Parameters |nbsp| (see |nbsp| namelist |nbsp| options `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_c_c_p_psuite_nml_desp.html>`__ |nbsp| for variable definitions)
+     - Start |nbsp| Date |nbsp| |nbsp| |nbsp| |nbsp|
+     - Fcst Length (hours)
+     - Output Grid
+     - Configuration Files
+     - Other
+   * - `atmwav_control_noaero_p8 <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/atmwav_control_noaero_p8>`__
+     - Compare global control results with previous trunk version
+     - **Suite:** CCPP_SUITE="FV3_GFS_v17_p8" :raw-html:`<br/> <br/>`
+
+       **Microphysics:** IMP_PHYSICS=8 :raw-html:`<br/> <br/>`
+
+       **Time Step:** DT_ATMOS=720 :raw-html:`<br/> <br/>`
+     
+       **Set to FALSE:** LHEATSTRG, DO_UGWP_V1, DO_GSL_DRAG_LS_BL, DO_GSL_DRAG_TOFD, DO_UGWP_V1_OROG_ONLY, DO_UGWP_V0_NST_ONLY, LDIAG_UGWP, CA_GLOBAL, LANDICE, LGFDLMPRAD, DO_SAT_ADJ, MULTIGRID, USE_CICE_ALB, DO_RRTMGP :raw-html:`<br/> <br/>`
+       **Set to TRUE:** USE_MERRA2, LSEASPRAY, DO_UGWP_V0, DO_GSL_DRAG_SS, DO_CA, CA_SGS, CA_TRIGGER, TILEDFIX, CPL, CPLWAV, CPLWAV2ATM, FRAC_GRID, WRITE_NSFLIP, DOGP_CLDOPTICS_LUT, DOGP_LWSCAT, DOGP_SGS_CNV, SATMEDMF :raw-html:`<br/> <br/>`
+       **Set to VALUE:** IALB=2, IEMS=2, LSM=2, IOPT_DVEG=4, IOPT_CRS=2, IOPT_RAD=3, IOPT_ALB=1, IOPT_STC=3, IOPT_SFC=3, IOPT_TRS=2, IOPT_DIAG=2, D2_BG_K1=0.20, D2_BG_K2=0.04, PSM_BC=1, DDDMP=0.1, IAER=1011, KNOB_UGWP_VERSION=0, KNOB_UGWP_NSLOPE=1, NCA=1, NCELLS=5, NLIVES=12, NTHRESH=18, NSEED=1, NFRACSEED=0.5, NSPINUP=1, ISEED_CA=12345, FSICL=0, FSICS=0, DNATS=0,  DZ_MIN=6, cap_dbug_flag=0, MIN_SEAICE=0.15, 
+     - Detailed Physics Parameters
+     - 2021-03-22 06:00:00
+     - 12
+     - OUTPUT_GRID=gaussian_grid :raw-html:`<br/> <br/>`
+       **Grid Parameters**: INPES=$INPES_cpl_atmw, JNPES=$JNPES_cpl_atmw, NPZ=127, NPZP=128
+     - FIELD_TABLE=field_table_thompson_noaero_tke
+       DIAG_TABLE=diag_table_p8_template
+       INPUT_NML=cpld_control.nml.IN
+       UFS_CONFIGURE=ufs.configure.atmw.IN
+       FV3_RUN=control_run.IN
+     - RUNTYPE=startup, med_model=cmeps, atm_model=fv3, wav_model=ww3
+
 
 ATMAERO
 =========
 
-**COMING SOON!**
+The ATMAERO configuration couples :term:`ATM` with AEROSOL. 
+These tests use default values set in the ``export_fv3`` function of ``default_vars.sh``.
+
+.. attention:: 
+   
+   Certain physics-related settings are common to all of the supported RRFS configurations. These values are set in each test's configuration file because they differ from the ``default_vars.sh`` values:
+
+      General Physics Parameters
+      * **Suite:** CCPP_SUITE= `FV3_GFS_v17_p8 <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_g_f_s_v17_p8_page.html>`__
+      * **Microphysics:** IMP_PHYSICS=8
+      * **Time Step:** DT_ATMOS=720
+
+      Detailed Physics Parameters
+      * **Set to FALSE:** DO_UGWP_V1, DO_GSL_DRAG_LS_BL, DO_GSL_DRAG_TOFD, DO_UGWP_V1_OROG_ONLY, DO_UGWP_V0_NST_ONLY, LDIAG_UGWP, CA_GLOBAL, LANDICE, LGFDLMPRAD, DO_SAT_ADJ, USE_CICE_ALB, DO_RRTMGP
+      * **Set to TRUE:** WRITE_DOPOST, CPL, CPLCHM, USE_MERRA2, LSEASPRAY, DO_UGWP_V0, DO_GSL_DRAG_SS, DO_CA, CA_SGS, CA_TRIGGER, TILEDFIX, FRAC_GRID, WRITE_NSFLIP, DOGP_CLDOPTICS_LUT, DOGP_LWSCAT, DOGP_SGS_CNV, SATMEDMF
+      * **Set to VALUE:** NSTF_NAME='2,0,0,0,0', atm_model='fv3', chm_model='gocart', DOMAINS_STACK_SIZE=8000000, IALB=2, IEMS=2, LSM=2, IOPT_DVEG=4, IOPT_CRS=2, IOPT_RAD=3, IOPT_ALB=1, IOPT_STC=3, IOPT_SFC=3, IOPT_TRS=2, IOPT_DIAG=2, D2_BG_K1=0.20, D2_BG_K2=0.04, PSM_BC=1, DDDMP=0.1, GWD_OPT=2, KNOB_UGWP_VERSION=0, KNOB_UGWP_NSLOPE=1, NCA=1, NCELLS=5, NLIVES=12, NTHRESH=18, NSEED=1, NFRACSEED=0.5, NSPINUP=1, ISEED_CA=12345, FSICL=0, FSICS=0, DZ_MIN=6, MIN_SEAICE=0.15
+   
+   The "Detailed Physics Parameters" column in :numref:`Table %s <atmaero-rts>` details physics settings that differ from both the ``default_vars.sh`` values and these ATMAERO-specific defaults. 
+
+.. _atmaero-rts:
+
+.. list-table:: *ATMAERO regression test descriptions*
+   :widths: 50 10 50 10 10 10 10 10
+   :header-rows: 1
+
+   * - Test |nbsp| Name |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp|
+     - Description
+     - Detailed |nbsp| Physics |nbsp| Parameters |nbsp| (see |nbsp| namelist |nbsp| options `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_c_c_p_psuite_nml_desp.html>`__ |nbsp| for variable definitions)
+     - Start |nbsp| Date |nbsp| |nbsp| |nbsp| |nbsp|
+     - Fcst Length (hours)
+     - Output Grid
+     - Configuration Files
+     - Other
+   * - `atmaero_control_p8 <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/atmaero_control_p8>`__
+     - Compare global results for prognostic aerosols with previous trunk version
+     - **Set to FALSE:** LHEATSTRG :raw-html:`<br/> <br/>`
+       **Set to TRUE:** ATMAERO default values only :raw-html:`<br/> <br/>`
+       **Set to VALUE:** IAER=1011, DNATS=2
+     - 2021-03-22 06:00:00
+     - 
+     - OUTPUT_GRID=gaussian_grid:raw-html:`<br/> <br/>`
+       **Grid Parameters**: INPES=${INPES_atmaero}, JNPES=${JNPES_atmaero}, NPZ=127, NPZP=128
+     - FIELD_TABLE=field_table_thompson_noaero_tke_GOCART
+       DIAG_TABLE=diag_table_p8_template
+       INPUT_NML=cpld_control.nml.IN
+       UFS_CONFIGURE=ufs.configure.atmaero.IN
+       FV3_RUN=control_run.IN
+     - RESTART_INTERVAL=12 -1
+   * - `atmaero_control_p8_rad <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/atmaero_control_p8_rad>`__
+     - Compare global results for prognostic aerosols with previous trunk version
+     - **Set to FALSE:** ATMAERO values only :raw-html:`<br/> <br/>`
+       **Set to TRUE:** LHEATSTRG :raw-html:`<br/> <br/>`
+       **Set to VALUE:** IAER=2011, DNATS=2
+     - 2021-03-22 06:00:00
+     - 
+     - OUTPUT_GRID=gaussian_grid:raw-html:`<br/> <br/>`
+       **Grid Parameters**: INPES=${INPES_atmaero}, JNPES=${JNPES_atmaero}, NPZ=127, NPZP=128
+     - FIELD_TABLE=field_table_thompson_noaero_tke_GOCART
+       DIAG_TABLE=diag_table_p8_template
+       INPUT_NML=cpld_control.nml.IN
+       UFS_CONFIGURE=ufs.configure.atmaero.IN
+       FV3_RUN=control_run.IN
+     - RESTART_INTERVAL=12 -1
+   * - `atmaero_control_p8_rad_micro <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/atmaero_control_p8_rad_micro>`__
+     - Compare global results for prognostic aerosols with previous trunk version
+     - **Set to FALSE:**  :raw-html:`<br/> <br/>`
+       **Set to TRUE:** LHEATSTRG :raw-html:`<br/> <br/>`
+       **Set to VALUE:** IAER=2011, DNATS=4
+     - 2021-03-22 06:00:00
+     - 
+     - OUTPUT_GRID=gaussian_grid:raw-html:`<br/> <br/>`
+       **Grid Parameters**: INPES=${INPES_atmaero}, JNPES=${JNPES_atmaero}, NPZ=127, NPZP=128
+     - FIELD_TABLE=field_table_thompson_noaero_tke_GOCART
+       DIAG_TABLE=diag_table_p8_template
+       INPUT_NML=cpld_control.nml.IN
+       UFS_CONFIGURE=ufs.configure.atmaero.IN
+       FV3_RUN=control_run.IN
+     - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
 
 ATMAQ
 =======
@@ -237,7 +355,7 @@ These tests use default values set in the ``export_fv3`` function of ``default_v
 
    * - Test Name
      - Description
-     - Physics Suite (see `namelist options <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_c_c_p_psuite_nml_desp.html>`__)
+     - Physics Suite (see namelist options `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_c_c_p_psuite_nml_desp.html>`__)
      - DT_ATMOS
      - Start Date
      - Forecast Length (hours)
@@ -270,7 +388,7 @@ These tests use default values set in the ``export_fv3`` function of ``default_v
 
 Input files required for ATML configurations can be viewed in :numref:`Section %s (ATM) <atm-in>` 
 and :numref:`Section %s (LND) <lnd-in>` or in the `UFS WM RT Data Bucket <https://registry.opendata.aws/noaa-ufs-regtests/>`__. 
-Information on ``ufs.configure`` files is available in :numref:`Section %s <ufs-conf>`,
+Information on ``ufs.configure`` files is available in :numref:`Section %s <UFS-configurations>`,
 and a sample ATML ``ufs.configure`` file (``ufs.configure.atm_lnd.IN``) is available 
 `here <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.atm_lnd.IN>`__.
 
@@ -283,29 +401,295 @@ Rapid Refresh Forecast System (RRFS)
 
 The RRFS configurations use an :term:`ATM`-only configuration on a high-resolution 
 regional grid with data assimilation capabilities. 
-These tests use the default values set in the ``export_fv3``, ``export_rap_common``, ``export_rrfs_v1``, and/or ``export_hrrr_conus13km`` functions of ``default_vars.sh`` unless other values are explicitly set in a given test file. In all tests, the values in ``export_fv3`` are set first. Depending on the test, some of these values may be overriden by ``export_rrfs_v1`` (which includes values from ``export_rap_common``) or ``export_hrrr_conus13km``. :numref:`Table %s <rrfs-default-vars-comparison>` compares the values set in ``export_fv3`` to the values set in the other functions. 
-
-.. note:: 
-
-   ``export_rrfs_v1`` calls ``export_rap_common``, which calls ``export_fv3``. Values from ``export_fv3`` are set first, followed by values in ``export_rap_common`` and then values in ``export_rrfs_v1``. Values in italics indicate that the value is inherited from a previously-called function. 
-
-.. _rrfs-default-vars-comparison:
-
-.. csv-table:: *RRFS Default Variables*
-   :file: tables/RRFSDefaultVariables.csv
-   :widths: 50 10 10 10 10
-   :header-rows: 1
-   :stub-columns: 1
+These tests use the default values set in the ``export_fv3`` function of ``default_vars.sh`` unless other values are explicitly set. 
 
 Current RRFS regression tests cover a wide variety of functionality and involve several 
-physics tests. :numref:`Table %s <rrfs-rts>` (below) contains a selection of RTs for RRFS functionality. Blanks indicate that the value comes from the default setting file. These default values are listed in :numref:`Table %s <rrfs-default-vars-comparison>` above. 
+physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality. 
+
+.. attention:: 
+   
+   Certain physics-related settings are common to all of the supported RRFS configurations. These values are set in each test's configuration file because they differ from the ``default_vars.sh`` values:
+
+      * **Set to FALSE:** DO_SAT_ADJ, HYBEDMF, DO_DEEP, SHAL_CNV, LHEATSTRG
+      * **Set to TRUE:** DO_MYNNEDMF, DO_MYNNSFCLAY
+      * **Set to VALUE:** DNATS=0, IALB=2, IEMS=2, IMFSHALCNV=-1, IMFDEEPCNV=-1
+   
+   The "Detailed Physics Parameters" column in :numref:`Table %s <rrfs-rts>` details physics settings that differ from both the ``default_vars.sh`` values and these RRFS-specific defaults. 
+   
 
 .. _rrfs-rts:
 
-.. csv-table:: *RRFS regression test descriptions*
-   :file: tables/rrfs-rts.csv
-   :widths: 20 20 30 50 10 10 10
+.. list-table:: *RRFS regression test descriptions*
+   :widths: 50 10 30 50 10 10 10 10 10
    :header-rows: 1
+
+   * - Test |nbsp| Name |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp|
+     - Description
+     - General Physics Parameters
+     - Detailed |nbsp| Physics |nbsp| Parameters |nbsp| (see |nbsp| namelist |nbsp| options `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_c_c_p_psuite_nml_desp.html>`__ |nbsp| for variable definitions)
+     - Start |nbsp| Date |nbsp| |nbsp| |nbsp| |nbsp|
+     - Fcst Length (hours)
+     - Output Grid
+     - Configuration Files
+     - Other
+   * - `rrfs_v1beta <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_v1beta>`__
+     - Compare RRFS_v1beta results with previous trunk version
+     - **Suite:** CCPP_SUITE=FV3_RRFS_v1beta
+
+       **Microphysics:** IMP_PHYSICS=8
+
+       **Time Step:** DT_ATMOS=300
+     - **Set to FALSE:** Default RRFS values only :raw-html:`<br/> <br/>`
+       **Set to TRUE:** LRADAR, LTAEROSOL :raw-html:`<br/> <br/>`
+       **Set to VALUE:** NSTF_NAME='2,0,0,0,0', IAER=5111, LSM=2, LSOIL_LSM=4
+     - 2021-03-22 06:00:00
+     - 24
+     - OUTPUT_GRID=gaussian_grid :raw-html:`<br/> <br/>`
+       **Grid Parameters:** NPZ=127, NPZP=128
+     - NEMS_CONFIGURE=nems.configure.atm.IN
+       MODEL_CONFIGURE=model_configure.IN
+       FV3_RUN=control_run.IN
+       INPUT_NML=rap.nml.IN
+       FIELD_TABLE=field_table_thompson_aero_tke
+       DIAG_TABLE=diag_table_rap_noah
+     - RESTART_INTERVAL="6 -1", OUTPUT_FH='0 09 12'
+   * - `rrfs_v1beta_debug <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_v1beta_debug>`__
+     - Compare rrfs_v1beta_debug results with previous trunk version
+     - **Suite:** CCPP_SUITE=FV3_RRFS_v1beta
+
+       **Microphysics:** IMP_PHYSICS=8
+
+       **Time Step:** DT_ATMOS=300
+     - **Set to FALSE:** Default RRFS values only :raw-html:`<br/> <br/>`
+       **Set to TRUE:** LRADAR, LTAEROSOL :raw-html:`<br/> <br/>`
+       **Set to VALUE:** NSTF_NAME='2,0,0,0,0', IAER=5111, LSM=2, LSOIL_LSM=4
+     - 2021-03-22 06:00:00
+     - 1
+     - OUTPUT_GRID=gaussian_grid :raw-html:`<br/> <br/>`
+       **Grid Parameters:** NPZ=127, NPZP=128
+     - NEMS_CONFIGURE=nems.configure.atm.IN
+       MODEL_CONFIGURE=model_configure.IN
+       FV3_RUN=control_run.IN
+       INPUT_NML=rap.nml.IN
+       FIELD_TABLE=field_table_thompson_aero_tke
+       DIAG_TABLE=diag_table_rap_noah
+     - OUTPUT_FH="0 1"
+   * - `rrfs_v1nssl <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_v1nssl>`__
+     - Compare RRFS_v1nssl results with previous trunk version
+     - **Suite:** CCPP_SUITE=FV3_RRFS_v1nssl
+
+       **Microphysics:** IMP_PHYSICS=17
+
+       **Time Step:** DT_ATMOS=300
+     - **Set to FALSE:** LTAEROSOL :raw-html:`<br/> <br/>`
+       **Set to TRUE:** NSSL_CCN_ON, NSSL_HAIL_ON, NSSL_INVERTCCN :raw-html:`<br/> <br/>`
+       **Set to VALUE:** NSTF_NAME='2,0,0,0,0', IAER=5111, CS=17, NWAT=7, LSM=2, LSOIL_LSM=4
+     - 2021-03-22 06:00:00
+     - 24
+     - OUTPUT_GRID=gaussian_grid :raw-html:`<br/> <br/>`
+       **Grid Parameters:** NPZ=127, NPZP=128
+     - NEMS_CONFIGURE=nems.configure.atm.IN
+       MODEL_CONFIGURE=model_configure.IN
+       FV3_RUN=control_run.IN
+       INPUT_NML=rap.nml.IN 
+       FIELD_TABLE=field_table_nssl_tke
+       DIAG_TABLE=diag_table_rap_noah
+     - RESTART_INTERVAL="6 -1", OUTPUT_FH='0 09 12'
+   * - `rrfs_v1nssl_nohailnoccn <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_v1nssl_nohailnoccn>`__
+     - Compare RRFS_v1nssl_nohailnoccn results with previous trunk version
+     - **Suite:** CCPP_SUITE=FV3_RRFS_v1nssl
+
+       **Microphysics:** IMP_PHYSICS=17
+
+       **Time Step:** DT_ATMOS=300
+     - **Set to FALSE:** NSSL_CCN_ON, NSSL_HAIL_ON, LTAEROSOL :raw-html:`<br/> <br/>`
+       **Set to TRUE:** NSSL_INVERTCCN :raw-html:`<br/> <br/>`
+       **Set to VALUE:** NSTF_NAME='2,0,0,0,0', IAER=5111, NWAT=6, LSM=2, LSOIL_LSM=4
+     - 2021-03-22 06:00:00
+     - 24
+     - OUTPUT_GRID=gaussian_grid :raw-html:`<br/> <br/>`
+       **Grid Parameters:** NPZ=127, NPZP=128
+     - NEMS_CONFIGURE=nems.configure.atm.IN
+       MODEL_CONFIGURE=model_configure.IN
+       FV3_RUN=control_run.IN
+       INPUT_NML=rap.nml.IN
+       FIELD_TABLE=field_table_nssl_nohailnoccn_tke
+       DIAG_TABLE=diag_table_rap_noah
+     - RESTART_INTERVAL="6 -1", OUTPUT_FH='0 09 12'
+   * - `rrfs_conus13km_hrrr_warm <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_conus13km_hrrr_warm>`__
+     - HRRR physics on 13km domain, control run
+     - **Suite:** CCPP_SUITE=FV3_HRRR
+
+       **Microphysics:** IMP_PHYSICS=8
+
+       **Time Step:** DT_ATMOS=120
+     - **Set to FALSE:** SEDI_SEMI, MAKE_NH, EXTERNAL_IC, NGGPS_IC, LDIAG3D, QDIAG3D, RANDOM_CLDS, CNVCLD, DO_SPPT, DO_SHUM, DO_SKEB, DO_UGWP_* :raw-html:`<br/> <br/>`
+       
+       **Set to TRUE:** SFCLAY_COMPUTE_FLUX, DO_MYJPBL, MOUNTAIN, PRINT_DIFF_PGR, DO_GSL_DRAG_*, FRAC_ICE :raw-html:`<br/> <br/>`
+       
+       **Set to VALUE:** DECFL=8, LKM=1, IOPT_LAKE=2, ICLIQ_SW=2, IOVR=3, KICE=9, LSM=3, LSOIL_LSM=9, NA_INIT=0, FHZERO=1.0, FHCYC=0.0, IAER=1011, CDMBWD='3.5,1.0', LNDP_TYPE=0, N_VAR_LNDP=0, GWD_OPT=3
+     - 2021-05-12 16:00:00
+     - 2
+     - OUTPUT_GRID=lambert_conformal :raw-html:`<br/> <br/>`
+       **Grid Parameters:** INPES=12, JNPES=12, NPX=397, NPY=233, NPZ=65, NPZP=66
+     - NEMS_CONFIGURE=nems.configure.atm.IN
+       MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
+       FV3_RUN=rrfs_warm_run.IN
+       INPUT_NML=rrfs_conus13km_hrrr.nml.IN
+       FIELD_TABLE=field_table_thompson_aero_tke
+       DIAG_TABLE=diag_table_hrrr
+     - RESTART_INTERVAL=1, WARM_START=.true., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
+   * - `rrfs_conus13km_hrrr_warm_debug <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_conus13km_hrrr_warm_debug>`__
+     - HRRR physics on 13km domain, debug run
+     - **Suite:** CCPP_SUITE=FV3_HRRR
+
+       **Microphysics:** IMP_PHYSICS=8
+
+       **Time Step:** DT_ATMOS=120
+     - **Set to FALSE:** SEDI_SEMI, MAKE_NH, EXTERNAL_IC, NGGPS_IC, READ_INCREMENT, LDIAG3D, QDIAG3D, RANDOM_CLDS, CNVCLD, DO_SPPT, DO_SHUM, DO_SKEB, DO_UGWP_* :raw-html:`<br/> <br/>`
+       **Set to TRUE:** SFCLAY_COMPUTE_FLUX, DO_MYJPBL, MOUNTAIN, PRINT_DIFF_PGR, DO_GSL_DRAG_*, FRAC_ICE :raw-html:`<br/> <br/>`
+       **Set to VALUE:** DECFL=8, LKM=1, IOPT_LAKE=2, ICLIQ_SW=2, IOVR=3, KICE=9, LSM=3, LSOIL_LSM=9, NA_INIT=0, FHZERO=1.0, FHCYC=0.0, IAER=1011, CDMBWD='3.5,1.0', LNDP_TYPE=0, N_VAR_LNDP=0, GWD_OPT=3
+     - 2021-05-12 16:00:00
+     - 1
+     - OUTPUT_GRID=lambert_conformal :raw-html:`<br/> <br/>`
+       **Grid Parameters:** INPES=12, JNPES=12, NPX=397, NPY=233, NPZ=65, NPZP=66
+     - NEMS_CONFIGURE=nems.configure.atm.IN
+       MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
+       FV3_RUN=rrfs_warm_run.IN
+       INPUT_NML=rrfs_conus13km_hrrr.nml.IN
+       FIELD_TABLE=field_table_thompson_aero_tke
+       DIAG_TABLE=diag_table_hrrr
+     - RESTART_INTERVAL=1, WARM_START=.true., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
+   * - `rrfs_conus13km_hrrr_warm_restart_mismatch <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_conus13km_hrrr_warm_restart_mismatch>`__
+     - HRRR physics on 13km domain, control run
+     - **Suite:** CCPP_SUITE=FV3_HRRR
+
+       **Microphysics:** IMP_PHYSICS=8
+
+       **Time Step:** DT_ATMOS=120
+     - **Set to FALSE:** SEDI_SEMI, MAKE_NH, EXTERNAL_IC, NGGPS_IC, LDIAG3D, QDIAG3D, RANDOM_CLDS, CNVCLD, DO_SPPT, DO_SHUM, DO_SKEB, DO_UGWP_* :raw-html:`<br/> <br/>`
+       **Set to TRUE:** SFCLAY_COMPUTE_FLUX, DO_MYJPBL, MOUNTAIN, PRINT_DIFF_PGR, DO_GSL_DRAG_*, FRAC_ICE :raw-html:`<br/> <br/>`
+       **Set to VALUE:** DECFL=8, LKM=1, ICLIQ_SW=2, IOVR=3, KICE=9, LSM=3, LSOIL_LSM=9, NA_INIT=0, FHZERO=1.0, FHCYC=0.0, IAER=5111, CDMBWD='3.5,1.0', LNDP_TYPE=0, N_VAR_LNDP=0, GWD_OPT=3
+     - 2021-05-12 16:00:00
+     - 2
+     - OUTPUT_GRID=lambert_conformal :raw-html:`<br/> <br/>`
+       **Grid Parameters:** INPES=12, JNPES=12, NPX=397, NPY=233, NPZ=65, NPZP=66
+     - NEMS_CONFIGURE=nems.configure.atm.IN
+       MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
+       FV3_RUN=rrfs_warm_run.IN
+       INPUT_NML=rrfs_conus13km_hrrr.nml.IN
+       FIELD_TABLE=field_table_thompson_aero_tke
+       DIAG_TABLE=diag_table_hrrr
+     - FHROT=1, RESTART_FILE_PREFIX=$( printf %04d%02d%02d.%02d0000 $SYEAR $SMONTH $SDAY $(( SHOUR+FHROT )) ), RRFS_RESTART=YES, WARM_START=.true., READ_INCREMENT=.false.,  RES_LATLON_DYNAMICS="'fv3_increment.nc'", 
+   * - `rrfs_smoke_conus13km_hrrr_warm <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_smoke_conus13km_hrrr_warm>`__
+     - HRRR smoke physics on 13km domain, control run
+     - **Suite:** CCPP_SUITE=FV3_HRRR
+
+       **Microphysics:** IMP_PHYSICS=8
+
+       **Time Step:** DT_ATMOS=120
+     - **Set to FALSE:** SEDI_SEMI, MAKE_NH, EXTERNAL_IC, NGGPS_IC, LDIAG3D, QDIAG3D, RANDOM_CLDS, CNVCLD, DO_SPPT, DO_SHUM, DO_SKEB, DO_UGWP_* :raw-html:`<br/> <br/>`
+       **Set to TRUE:** RRFS_SMOKE, SFCLAY_COMPUTE_FLUX, DO_MYJPBL, MOUNTAIN, PRINT_DIFF_PGR, DO_GSL_DRAG_*, FRAC_ICE :raw-html:`<br/> <br/>`
+       **Set to VALUE:** DECFL=8, SEAS_OPT=0, LKM=1, IOPT_LAKE=2, ICLIQ_SW=2, IOVR=3, KICE=9, LSM=3, LSOIL_LSM=9, NA_INIT=0, FHZERO=1.0, FHCYC=0.0, IAER=1011, CDMBWD='3.5,1.0', LNDP_TYPE=0, N_VAR_LNDP=0, GWD_OPT=3
+     - 2021-05-12 16:00:00
+     - 2
+     - OUTPUT_GRID=lambert_conformal :raw-html:`<br/> <br/>`
+       **Grid Parameters:** INPES=12, JNPES=12, NPX=397, NPY=233, NPZ=65, NPZP=66, 
+     - NEMS_CONFIGURE=nems.configure.atm.IN
+       MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
+       FV3_RUN=rrfs_warm_run.IN
+       INPUT_NML=rrfs_conus13km_hrrr.nml.IN
+       FIELD_TABLE=field_table_thompson_aero_tke_smoke
+       DIAG_TABLE=diag_table_hrrr
+       DIAG_TABLE_ADDITIONAL=diag_additional_rrfs_smoke
+     - RESTART_INTERVAL=1, WARM_START=.true., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
+   * - `rrfs_smoke_conus13km_hrrr_warm_2threads <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_smoke_conus13km_hrrr_warm_2threads>`__
+     - HRRR smoke physics on 13km domain, different threads
+     - **Suite:** CCPP_SUITE=FV3_HRRR
+
+       **Microphysics:** IMP_PHYSICS=8
+
+       **Time Step:** DT_ATMOS=120
+     - **Set to FALSE:** SEDI_SEMI, MAKE_NH, EXTERNAL_IC, NGGPS_IC, LDIAG3D, QDIAG3D, RANDOM_CLDS, CNVCLD, DO_SPPT, DO_SHUM, DO_SKEB, DO_UGWP_* :raw-html:`<br/> <br/>`
+       **Set to TRUE:** RRFS_SMOKE, SFCLAY_COMPUTE_FLUX, DO_MYJPBL, MOUNTAIN, PRINT_DIFF_PGR, DO_GSL_DRAG_*, FRAC_ICE :raw-html:`<br/> <br/>`
+       **Set to VALUE:** DECFL=8, SEAS_OPT=0, LKM=1, ICLIQ_SW=2, IOVR=3, KICE=9, LSM=3, LSOIL_LSM=9, NA_INIT=0, FHZERO=1.0, FHCYC=0.0, IAER=1011, CDMBWD='3.5,1.0', LNDP_TYPE=0, N_VAR_LNDP=0, GWD_OPT=3
+     - 2021-05-12 16:00:00
+     - 2
+     - OUTPUT_GRID=lambert_conformal :raw-html:`<br/> <br/>`
+       **Grid Parameters:** INPES=$INPES_thrd, JNPES=$JNPES_thrd, INPES=12, JNPES=12, NPX=397, NPY=233, NPZ=65, NPZP=66
+     - NEMS_CONFIGURE=nems.configure.atm.IN
+       MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
+       FV3_RUN=rrfs_warm_run.IN
+       INPUT_NML=rrfs_conus13km_hrrr.nml.IN
+       FIELD_TABLE=field_table_thompson_aero_tke_smoke
+       DIAG_TABLE=diag_table_hrrr
+       DIAG_TABLE_ADDITIONAL=diag_additional_rrfs_smoke
+     - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.true, READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
+   * - `rrfs_smoke_conus13km_hrrr_warm_debug <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_smoke_conus13km_hrrr_warm_debug>`__
+     - HRRR smoke physics on 13km domain, control run
+     - **Suite:** CCPP_SUITE=FV3_HRRR
+
+       **Microphysics:** IMP_PHYSICS=8
+
+       **Time Step:** DT_ATMOS=120
+     - **Set to FALSE:** SEDI_SEMI, MAKE_NH, EXTERNAL_IC, NGGPS_IC, LDIAG3D, QDIAG3D, RANDOM_CLDS, CNVCLD, DO_SPPT, DO_SHUM, DO_SKEB, DO_UGWP_* :raw-html:`<br/> <br/>`
+       **Set to TRUE:** RRFS_SMOKE, SFCLAY_COMPUTE_FLUX, DO_MYJPBL, MOUNTAIN, PRINT_DIFF_PGR, DO_GSL_DRAG_*, FRAC_ICE :raw-html:`<br/> <br/>`
+       **Set to VALUE:** DECFL=8, SEAS_OPT=0, LKM=1, ICLIQ_SW=2, IOVR=3, KICE=9, LSM=3, LSOIL_LSM=9, NA_INIT=0, FHZERO=1.0, FHCYC=0.0, IAER=1011, CDMBWD='3.5,1.0', LNDP_TYPE=0, N_VAR_LNDP=0, GWD_OPT=3 
+     - 2021-05-12 16:00:00
+     - 1
+     - OUTPUT_GRID=lambert_conformal :raw-html:`<br/> <br/>`
+       **Grid Parameters**: INPES=12, JNPES=12, NPX=397, NPY=233, NPZ=65, NPZP=66
+     - NEMS_CONFIGURE=nems.configure.atm.IN
+       MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
+       FV3_RUN=rrfs_warm_run.IN
+       INPUT_NML=rrfs_conus13km_hrrr.nml.IN
+       FIELD_TABLE=field_table_thompson_aero_tke_smoke
+       DIAG_TABLE=diag_table_hrrr
+       DIAG_TABLE_ADDITIONAL=diag_additional_rrfs_smoke
+     - RESTART_INTERVAL=1, WARM_START=.true., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
+   * - `rrfs_smoke_conus13km_hrrr_warm_debug_2threads <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_smoke_conus13km_hrrr_warm_debug_2threads>`__
+     - HRRR smoke physics on 13km domain, control run
+     - **Suite:** CCPP_SUITE=FV3_HRRR
+
+       **Microphysics:** IMP_PHYSICS=8
+
+       **Time Step:** DT_ATMOS=120
+     - **Set to FALSE:** SEDI_SEMI, MAKE_NH, EXTERNAL_IC, NGGPS_IC, LDIAG3D, QDIAG3D, RANDOM_CLDS, CNVCLD, DO_SPPT, DO_SHUM, DO_SKEB, DO_UGWP_* :raw-html:`<br/> <br/>`
+       **Set to TRUE:** RRFS_SMOKE, SFCLAY_COMPUTE_FLUX, DO_MYJPBL, MOUNTAIN, PRINT_DIFF_PGR, DO_GSL_DRAG_*, FRAC_ICE :raw-html:`<br/> <br/>`
+       **Set to VALUE:** DECFL=8, SEAS_OPT=0, LKM=1, ICLIQ_SW=2, IOVR=3, KICE=9, LSM=3, LSOIL_LSM=9, NA_INIT=0, FHZERO=1.0, FHCYC=0.0, IAER=1011, CDMBWD='3.5,1.0', LNDP_TYPE=0, N_VAR_LNDP=0, GWD_OPT=3
+     - 2021-05-12 16:00:00
+     - 1
+     - OUTPUT_GRID=lambert_conformal :raw-html:`<br/> <br/>`
+       **Grid Parameters**: INPES=$INPES_thrd, JNPES=$JNPES_thrd, INPES=12, JNPES=12, NPX=397, NPY=233, NPZ=65, NPZP=66
+     - NEMS_CONFIGURE=nems.configure.atm.IN
+       MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
+       FV3_RUN=rrfs_warm_run.IN
+       INPUT_NML=rrfs_conus13km_hrrr.nml.IN
+       FIELD_TABLE=field_table_thompson_aero_tke_smoke
+       DIAG_TABLE=diag_table_hrrr
+       DIAG_TABLE_ADDITIONAL=diag_additional_rrfs_smoke
+     - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.true, READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
+   * - `rrfs_smoke_conus13km_radar_tten_warm <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/rrfs_smoke_conus13km_radar_tten_warm>`__
+     - HRRR smoke physics on 13km domain with radar-derived temperature tendencies
+     - **Suite:** CCPP_SUITE=FV3_HRRR
+
+       **Microphysics:** IMP_PHYSICS=8
+
+       **Time Step:** DT_ATMOS=120
+     - **Set to FALSE:** SEDI_SEMI, MAKE_NH, EXTERNAL_IC, NGGPS_IC, LDIAG3D, QDIAG3D, RANDOM_CLDS, CNVCLD, DO_SPPT, DO_SHUM, DO_SKEB, DO_UGWP_* :raw-html:`<br/> <br/>`
+       **Set to TRUE:** RRFS_SMOKE, SFCLAY_COMPUTE_FLUX, DO_MYJPBL, MOUNTAIN, PRINT_DIFF_PGR, DO_GSL_DRAG_*, FRAC_ICE :raw-html:`<br/> <br/>`
+       **Set to VALUE:** FH_DFI_RADAR='0.0, 0.25, 0.50, 0.75, 1.0', DECFL=8, SEAS_OPT=0, LKM=1, ICLIQ_SW=2, IOVR=3, KICE=9, LSM=3, LSOIL_LSM=9, NA_INIT=0, FHZERO=1.0, FHCYC=0.0, IAER=1011, CDMBWD='3.5,1.0', LNDP_TYPE=0, N_VAR_LNDP=0, GWD_OPT=3
+     - 2021-05-12 16:00:00
+     - 2
+     - OUTPUT_GRID=lambert_conformal :raw-html:`<br/> <br/>`
+       **Grid Parameters:** INPES=12, JNPES=12, NPX=397, NPY=233, NPZ=65, NPZP=66
+     - NEMS_CONFIGURE=nems.configure.atm.IN
+       MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
+       FV3_RUN=rrfs_warm_run.IN
+       INPUT_NML=rrfs_conus13km_hrrr.nml.IN
+       FIELD_TABLE=field_table_thompson_aero_tke
+       DIAG_TABLE=diag_table_hrrr
+     - RESTART_INTERVAL=1, WARM_START=.true, READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
 
 **Sample** ``CMAKE_FLAGS`` **Setting**
 
@@ -321,8 +705,10 @@ physics tests. :numref:`Table %s <rrfs-rts>` (below) contains a selection of RTs
 
    * - Physics Suite
      - Description
+   * - FV3_RAP
+     - The FV3_RAP physics suite is described in the :term:`CCPP` documentation `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/rap_suite_page.html>`__.
    * - FV3_HRRR
-     - The FV3_HRRR physics suite is described in the :term:`CCPP` documentation `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_h_r_r_r_suite_page.html>`__.
+     - The FV3_HRRR physics suite is described in the CCPP documentation `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_h_r_r_r_suite_page.html>`__.
    * - FV3_RRFS_v1beta 
      - The FV3_RRFS_v1beta physics suite is described in the CCPP documentation `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_r_r_f_s_v1beta_page.html>`__.
    * - FV3_RRFS_v1nssl
@@ -331,11 +717,112 @@ physics tests. :numref:`Table %s <rrfs-rts>` (below) contains a selection of RTs
 
 **Additional Information**
 
-Each test file lists the input files required for a given test. Input files required for RRFS ATM configurations can be downloaded from the `UFS WM RT Data Bucket <https://registry.opendata.aws/noaa-ufs-regtests/>`__. Users who wish to run additional (unsupported) cases may also find useful data in the `NOAA RRFS data bucket <https://registry.opendata.aws/noaa-rrfs/>`__. 
+Input files required for RRFS ATM configurations can be viewed in :numref:`Table %s <rrfs-files>`
+or in the `UFS WM RT Data Bucket <https://registry.opendata.aws/noaa-ufs-regtests/>`__. Users who wish to run additional (unsupported) cases may also find useful data `here <https://registry.opendata.aws/noaa-rrfs/>`__. 
 
-Information on ``ufs.configure`` files is available in :numref:`Section %s <ufs-conf>`. The supported RRFS WM RTs use the same ``ufs.configure`` file that ATM-only tests do (``ufs.configure.atm.IN``). This file can be viewed in the ``ufs-weather-model/tests/parm`` `directory <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.atm.IN>`__. 
+Information on ``ufs.configure`` files is available in :numref:`Section %s <UFS-configurations>`. The supported RRFS WM RTs use the same ``ufs.configure`` file that ATM-only tests do (``ufs.configure.atm.IN``). This file can be viewed in the ``ufs-weather-model/tests/parm`` directory `here <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.atm.IN>`__. 
 
-Additionally, users can find examples of various RRFS configuration files in the ``ufs-weather-model/tests/parm`` `directory <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/>`__. These files include ``model_configure_*``, ``*_run.IN`` (input run), ``*.nml.IN`` (input namelist), ``field_table_*``, and ``diag_table_*`` files.  
+Additionally, users can find examples of various RRFS configuration files in ``ufs-weather-model/tests/parm`` `here <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/>`__. These files include ``model_configure_*``, ``*_run.IN`` (input run), ``*.nml.IN`` (input namelist), ``field_table_*``, and ``diag_table_*`` files.  
+
+.. _rrfs-files:
+
+.. list-table:: Files Required for RRFS RTs
+   :widths: 50 10 10 10 10 110
+   :header-rows: 1
+
+   * - Tests
+     - sfcf*.nc
+     - atmf*.nc
+     - GFSFLX.GrbF*
+     - GFSPRS.GrbF*
+     - Other |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp|
+   * - rrfs_v1beta
+     - sfcf000.nc
+       sfcf009.nc
+       sfcf012.nc
+     - atmf000.nc
+       atmf009.nc
+       atmf012.nc
+     - GFSFLX.GrbF00
+       GFSFLX.GrbF09
+       GFSFLX.GrbF12
+     - GFSPRS.GrbF00
+       GFSPRS.GrbF09
+       GFSPRS.GrbF12
+     - 20210323.060000.coupler.research
+       
+       20210323.060000.fv_core.res.nc
+       
+       20210323.060000.fv_core.res.tile[1-6].nc
+       
+       20210323.060000.fv_srf_wnd.res.tile[1-6].nc
+       
+       20210323.060000.fv_tracer.res.tile[1-6].nc
+       
+       20210323.060000.phy_data.tile[1-6].nc        
+       
+       20210323.060000.sfc_data.tile[1-6].nc
+   * - rrfs_v1nssl
+
+       rrfs_v1nssl_nohailnoccn
+     - sfcf000.nc
+       sfcf009.nc
+       sfcf012.nc
+     - atmf000.nc
+       atmf009.nc
+       atmf012.nc
+     - GFSFLX.GrbF00
+       GFSFLX.GrbF09
+       GFSFLX.GrbF12
+     - GFSPRS.GrbF00
+       GFSPRS.GrbF09
+       GFSPRS.GrbF12
+     - 
+   * - rrfs_conus13km_hrrr_warm
+       rrfs_smoke_conus13km_hrrr_warm
+     - sfcf000.nc
+       sfcf001.nc
+       sfcf002.nc
+     - atmf000.nc
+       atmf001.nc
+       atmf002.nc
+     - 
+     - 
+     - 20210512.170000.coupler.res
+       20210512.170000.fv_core.res.nc
+       20210512.170000.fv_core.res.tile1.nc
+       20210512.170000.fv_srf_wnd.res.tile1.nc
+       20210512.170000.fv_tracer.res.tile1.nc
+       20210512.170000.phy_data.nc
+       20210512.170000.sfc_data.nc
+   * - rrfs_smoke_conus13km_hrrr_warm_2threads
+       rrfs_smoke_conus13km_radar_tten_warm
+     - sfcf000.nc
+       sfcf001.nc
+       sfcf002.nc
+     - atmf000.nc
+       atmf001.nc
+       atmf002.nc
+     - 
+     - 
+     - 
+   * - rrfs_v1beta_debug
+       rrfs_conus13km_hrrr_warm_debug
+       rrfs_smoke_conus13km_hrrr_warm_debug
+       rrfs_smoke_conus13km_hrrr_warm_debug_2threads
+     - sfcf000.nc
+       sfcf001.nc
+     - atmf000.nc
+       atmf001.nc
+     - 
+     - 
+     - 
+   * - rrfs_conus13km_hrrr_warm_restart_mismatch
+     - sfcf002.nc
+     - atmf002.nc
+     - 
+     - 
+     - 
 
 .. _lnd-documented:
 
@@ -380,7 +867,7 @@ The LND configuration couples :term:`DATM`, :term:`CDEPS`, and :term:`CMEPS` wit
 
 Input files required for LND configurations can be viewed in :numref:`Section %s (LND) <lnd-in>` 
 or in the `UFS WM RT Data Bucket <https://registry.opendata.aws/noaa-ufs-regtests/>`__. 
-Information on ``ufs.configure`` files is available in :numref:`Section %s <ufs-conf>`,
+Information on ``ufs.configure`` files is available in :numref:`Section %s <UFS-configurations>`,
 and a sample ATML ``ufs.configure`` file (``ufs.configure.atm_lnd.IN``) is available 
 `here <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.atm_lnd.IN>`__.
 
@@ -401,9 +888,509 @@ NG-GODAS
 Hurricane Analysis and Reforecast System Configurations
 ========================================================
 
-**COMING SOON!**
+The HAFS configuration uses an :term:`DATM`-only configuration.
 
+These tests use the default values set in the ``export_fv3``, ``export_hafs``, ``export_hafs_regional``, ``export_hafs_datm_cdeps``, and ``export_hafs_docn_cdeps`` functions of ``default_vars.sh`` unless other values are explicitly set in a given test file. In all tests, the values in ``export_fv3`` are set first. 
+.. note:: 
 
+   ``export_hafs`` calls ``export_hafs_regional``, which calls ``export_hafs_datm_cdeps`` or ``export_hafs_docn_cdeps``, which calls ``export_fv3``. Values from ``export_fv3`` are set first, followed by values in ``export_hafs``, ``export_hafs_regional``, and then values in ``export_hafs_datm_cdeps`` or ``export_hafs_docn_cdeps``. 
 
+**Physics-Related Variables**
+
+.. list-table:: *Default physics-related variables used in the HAFS configurations below*
+   :widths: 10 50
+   :header-rows: 1
+
+   * - Export Function
+     - Variables
+   * - export_hafs
+     - **Set to FALSE:** S2S, AQM, DATM_CDEPS, DOCN_CDEPS, HYBEDMF, CNVGWD, LTAEROSOL, LHEATSTRG, IS_MOVING_NEST :raw-html:`<br/> <br/>`
+       **Set to TRUE:** FV3, HAFS, SATMEDMF, HURR_PBL, DO_GSL_DRAG_LS_BL, DO_GSL_DRAG_SS, DO_GSL_DRAG_TOFD, LRADAR, CPL_IMP_MRG :raw-html:`<br/> <br/>`
+       **Set to VALUE:** NTILES=1, IMFSHALCNV=2, IMFDEEPCNV=2, MONINQ_FAC=-1.0, ISATMEDMF=1, IOPT_SFC=1, IOPT_DVEG=2, IOPT_CRS=1, IOPT_RAD=1, IOPT_ALB=2, IOPT_STC=1, LSM=1, IMP_PHYSICS=11, IAER=111, CDMBWD=1.0,1.0,1.0,1.0, FV_CORE_TAU=5., RF_CUTOFF=30.e2, RF_CUTOFF_NEST=50.e2, VORTEX_TRACKER=0, NTRACK=0, MOVE_CD_X=0, MOVE_CD_Y=0, NFHOUT=3, NFHMAX_HF=-1, NFHOUT_HF=3, NSOUT=-1, OUTPUT_FH=-1
+   * - export_hafs_regional
+     - **Set to FALSE:** S2S, AQM, DOCN_CDEPS, WRITE_DOPOST, USE_COLDSTART, MULTIGRID :raw-html:`<br/> <br/>`
+       **Set to TRUE:** FV3, HAFS, CPL, QUILTING, OUTPUT_HISTORY, CPL_IMP_MRG :raw-html:`<br/> <br/>`
+       **Set to VALUE:** NTILES=1, FHMAX=6, ENS_NUM=1, DT_ATMOS=900, RESTART_INTERVAL=0, FHROT=0, coupling_interval_fast_sec=0, WRITE_GROUP=1, WRTTASK_PER_GROUP=6, NUM_FILES=2, FILENAME_BASE="'atm' 'sfc'", OUTPUT_GRID="'regional_latlon'", OUTPUT_FILE="'netcdf'", IDEFLATE=0, QUANTIZE_NSD=0, NFHOUT=3, NFHMAX_HF=-1, NFHOUT_HF=3, CEN_LON=-62.0, CEN_LAT=25.0, LON1=-114.5, LAT1=-5.0, LON2=-9.5, LAT2=55.0, DLON=0.03, DLAT=0.03, DIAG_TABLE=diag_table_hafs, FIELD_TABLE=field_table_hafs, WW3OUTDTHR=3, OUTPARS_WAV="WND HS T01 T02 DIR FP DP PHS PTP PDIR UST CHA USP", WAV_CUR='C', med_model=cmeps, pio_rearranger=box, CAP_DBUG_FLAG=0, CPLMODE=hafs, RUNTYPE=startup, MESH_WAV=mesh.hafs.nc, MODDEF_WAV=mod_def.natl_6m 
+   * - export_hafs_datm_cdeps
+     - **Set to FALSE:** FV3, S2S, AQM, DOCN_CDEPS :raw-html:`<br/> <br/>`
+       **Set to TRUE:** HAFS, DATM_CDEPS :raw-html:`<br/> <br/>`
+       **Set to VALUE:** NTILES=1, atm_model=datm, DATM_IN_CONFIGURE=datm_in, DATM_STREAM_CONFIGURE=hafs_datm.streams.era5.IN
+   * - export_hafs_docn_cdeps
+     - **Set to FALSE:** S2S, AQM :raw-html:`<br/> <br/>`
+       **Set to TRUE:** FV3, HAFS, DOCN_CDEPS  :raw-html:`<br/> <br/>`
+       **Set to VALUE:** NTILES=1, ocn_model=docn, ocn_datamode=sstdata, pio_rearranger=box, DOCN_IN_CONFIGURE=docn_in, DOCN_STREAM_CONFIGURE=hafs_docn.streams.IN
+
+.. _hafs-rts:
+
+.. list-table:: *HAFS regression test descriptions*
+   :widths: 50 10 30 50 10 10 10 10 10
+   :header-rows: 1
+
+   * - Test |nbsp| Name |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp|
+     - Description
+     - General Physics Parameters
+     - Detailed |nbsp| Physics |nbsp| Parameters |nbsp| (see |nbsp| namelist |nbsp| options `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_c_c_p_psuite_nml_desp.html>`__ |nbsp| for variable definitions)
+     - Start |nbsp| Date |nbsp| |nbsp| |nbsp| |nbsp|
+     - Fcst Length (hours)
+     - Output Grid
+     - Configuration Files
+     - Other
+   * - `rhafs_global_1nest_atm <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_global_1nest_atm>`__
+     - Compare HAFS global with 1 nest and atmosphere only results with previous trunk version
+     - **Suite:** CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf"
+
+       **Microphysics:** IMP_PHYSICS=11
+
+       **Time Step:** DT_ATMOS=90
+     - **Set to FALSE:** MOUNTAIN, WARM_START, FULL_ZS_FILTER, CPLFLX, CPLWAV, CPLWAV2ATM, CPL_IMP_MRG, CMEPS, USE_COLDSTART :raw-html:`<br/> <br/>`
+       **Set to TRUE:** EXTERNAL_IC, NGGPS_IC, CPLOCN2ATM, NESTED :raw-html:`<br/> <br/>`
+       **Set to VALUE:** 
+       Also, see export_hafs default values.
+     - 2020-08-25 12:00:00
+     - 6
+     - OUTPUT_GRID=global_latlon, OUTPUT_GRID_2=rotated_latlon :raw-html:`<br/> <br/>`
+       **Grid Parameters**: INPES=4, JNPES=5, NPX=97, NPY=97, NPZ=64, NPZP=$(($NPZ + 1)), INPES_NEST02=6, JNPES_NEST02=10, NPX_NEST02=241, NPY_NEST02=241
+     - FIELD_TABLE=field_table_hafs
+       DIAG_TABLE=diag_table_hafs_template
+       INPUT_NML=input_global_hafs.nml.IN
+       INPUT_NEST02_NML=input_nest_hafs.nml.IN
+       MODEL_CONFIGURE="model_configure_hafs.IN"
+       UFS_CONFIGURE="ufs.configure.hafs_atm.IN"
+       FV3_RUN="hafs_fv3_run.IN"
+     - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
+   * - `hafs_global_multiple_4nests_atm <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_global_multiple_4nests_atm>`__
+     - Compare HAFS global with 4 multiple nests and atmosphere only results with previous trunk version
+     - **Suite:** CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf"
+
+       **Microphysics:** IMP_PHYSICS=11
+
+       **Time Step:** DT_ATMOS=90
+     - **Set to FALSE:** MOUNTAIN, WARM_START, FULL_ZS_FILTER, CPLFLX, CPLWAV, CPLWAV2ATM, CPL_IMP_MRG, CMEPS, USE_COLDSTART :raw-html:`<br/> <br/>`
+       **Set to TRUE:** WRITE_DOPOST, EXTERNAL_IC, NGGPS_IC, CPLOCN2ATM, NESTED :raw-html:`<br/> <br/>`
+       **Set to VALUE:**
+       Also, see export_hafs default values.
+     - 2020-08-25 12:00:00
+     - 6
+     - OUTPUT_GRID=global_latlon, OUTPUT_GRID_2=regional_latlon, OUTPUT_GRID_3=rotated_latlon, OUTPUT_GRID_4=rotated_latlon, OUTPUT_GRID_5=rotated_latlon :raw-html:`<br/> <br/>`
+       **Grid Parameters**: INPES=4, JNPES=5, NPX=97, NPY=97, NPZ=64, NPZP=$(($NPZ + 1)), INPES_NEST02=6, JNPES_NEST02=10, NPX_NEST02=241, NPY_NEST02=241, INPES_NEST03=6, JNPES_NEST03=10, NPX_NEST03=241, NPY_NEST03=241, INPES_NEST04=6, JNPES_NEST04=10, NPX_NEST04=361, NPY_NEST04=361, INPES_NEST05=6, JNPES_NEST05=10, NPX_NEST05=361, NPY_NEST05=361 
+     - FIELD_TABLE=field_table_hafs
+       DIAG_TABLE=diag_table_hafs_template
+       INPUT_NML=input_global_hafs.nml.IN
+       INPUT_NEST02_NML=input_nest_hafs.nml.IN
+       INPUT_NEST03_NML=input_nest_hafs.nml.IN
+       INPUT_NEST04_NML=input_nest_hafs.nml.IN
+       INPUT_NEST05_NML=input_nest_hafs.nml.IN
+       MODEL_CONFIGURE="model_configure_hafs.IN"
+       UFS_CONFIGURE="ufs.configure.hafs_atm.IN"
+       FV3_RUN="hafs_fv3_run.IN"
+     - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
+   * - `hafs_global_storm_following_1nest_atm <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_global_storm_following_1nest_atm>`__
+     - Compare HAFS global with 1 storm-following moving nest and atmosphere only results with previous trunk version
+     - **Suite:** CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf"
+
+       **Microphysics:** IMP_PHYSICS=11
+
+       **Time Step:** DT_ATMOS=180
+     - **Set to FALSE:** MOUNTAIN, WARM_START, FULL_ZS_FILTER, IS_MOVING_NEST=".false.,.true.", CPLFLX, CPLWAV, CPLWAV2ATM, CPL_IMP_MRG, CMEPS, USE_COLDSTART :raw-html:`<br/> <br/>`
+       **Set to TRUE:** EXTERNAL_IC, NGGPS_IC, CPLOCN2ATM, NESTED :raw-html:`<br/> <br/>`
+       **Set to VALUE:** 
+       Also, see export_hafs default values.
+     - 2020-08-25 12:00:00
+     - 6
+     - OUTPUT_GRID=global_latlon, OUTPUT_GRID_2=rotated_latlon :raw-html:`<br/> <br/>`
+       **Grid Parameters**: INPES=4, JNPES=5, NPX=97, NPY=97, NPZ=64, NPZP=$(($NPZ + 1)), INPES_NEST02=6, JNPES_NEST02=10, NPX_NEST02=73, NPY_NEST02=73
+     - FIELD_TABLE=field_table_hafs
+       DIAG_TABLE=diag_table_hafs_template
+       INPUT_NML=input_global_hafs.nml.IN
+       INPUT_NEST02_NML=input_nest_hafs.nml.IN
+       MODEL_CONFIGURE="model_configure_hafs.IN"
+       UFS_CONFIGURE="ufs.configure.hafs_atm.IN"
+       FV3_RUN="hafs_fv3_run.IN"
+     - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
+   * - `hafs_regional_1nest_atm <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_regional_1nest_atm>`__
+     - Compare HAFS regional with 1 nest and atmosphere only results with previous trunk version
+     - **Suite:** CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf"
+
+       **Microphysics:** IMP_PHYSICS=11
+
+       **Time Step:** DT_ATMOS=90
+     - **Set to FALSE:** MOUNTAIN, WARM_START, FULL_ZS_FILTER, CPLFLX, CPLWAV, CPLWAV2ATM, CPL_IMP_MRG, CMEPS, USE_COLDSTART :raw-html:`<br/> <br/>`
+       **Set to TRUE:** EXTERNAL_IC, NGGPS_IC, REGIONAL, CPLOCN2ATM, NESTED :raw-html:`<br/> <br/>`
+       **Set to VALUE:**
+       Also, see export_hafs default values.
+     - 2020-08-25 12:00:00
+     - 6
+     - OUTPUT_GRID=rotated_latlon, OUTPUT_GRID_2=rotated_latlon :raw-html:`<br/> <br/>`
+       **Grid Parameters**: INPES=6, JNPES=10, NPX=241, NPY=241, NPZ=64, NPZP=$(($NPZ + 1)), INPES_NEST02=6, JNPES_NEST02=10, NPX_NEST02=361, NPY_NEST02=361
+     - FIELD_TABLE=field_table_hafs
+       DIAG_TABLE=diag_table_hafs_template
+       INPUT_NML=input_regional_hafs.nml.IN
+       INPUT_NEST02_NML=input_nest_hafs.nml.IN
+       MODEL_CONFIGURE="model_configure_hafs.IN"
+       UFS_CONFIGURE="ufs.configure.hafs_atm.IN"
+       FV3_RUN="hafs_fv3_run.IN"
+     - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
+   * - `hafs_regional_atm <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_regional_atm>`__
+     - Compare HAFS regional atmosphere only results with previous trunk version
+     - **Suite:** CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf"
+
+       **Microphysics:** IMP_PHYSICS=11
+
+       **Time Step:** DT_ATMOS=180
+     - **Set to FALSE:** MOUNTAIN, WARM_START, FULL_ZS_FILTER, CPLFLX, CPLWAV, CPLWAV2ATM, CPL_IMP_MRG, CMEPS, USE_COLDSTART :raw-html:`<br/> <br/>`
+       **Set to TRUE:** EXTERNAL_IC, NGGPS_IC, REGIONAL, CPLOCN2ATM :raw-html:`<br/> <br/>`
+       **Set to VALUE:** 
+       Also, see export_hafs default values.
+     - 2019-08-29 00:00:00
+     - 6
+     - OUTPUT_GRID=regional_latlon :raw-html:`<br/> <br/>`
+       **Grid Parameters**: INPES=20, JNPES=12, NPX=721, NPY=601, NPZ=91, NPZP=$(($NPZ + 1))
+     - FIELD_TABLE=field_table_hafs
+       DIAG_TABLE=diag_table_hafs_template
+       INPUT_NML=input_regional_hafs.nml.IN
+       MODEL_CONFIGURE="model_configure_hafs.IN"
+       UFS_CONFIGURE="ufs.configure.hafs_atm.IN"
+       FV3_RUN="hafs_fv3_run.IN"
+     - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
+   * - `hafs_regional_atm_ocn <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_regional_atm_ocn>`__
+     - Compare HAFS regional atmosphere-ocean coupled HYCOM results with previous trunk version
+     - **Suite:** CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf_nonsst"
+
+       **Microphysics:** IMP_PHYSICS=11
+
+       **Time Step:** DT_ATMOS=180
+     - **Set to FALSE:** MOUNTAIN, WARM_START, FULL_ZS_FILTER, CPLWAV, CPLWAV2ATM, CDEPS_DOCN :raw-html:`<br/> <br/>`
+       **Set to TRUE:** EXTERNAL_IC, NGGPS_IC, REGIONAL, CPLFLX, CPLOCN2ATM, CPL_IMP_MRG :raw-html:`<br/> <br/>`
+       **Set to VALUE:** 
+       Also, see export_hafs_regional then export_hafs default values.
+     - 2019-08-29 00:00:00
+     - 6
+     - OUTPUT_GRID=regional_latlon :raw-html:`<br/> <br/>`
+       **Grid Parameters**: INPES=20, JNPES=12, NPX=721, NPY=601, NPZ=91, NPZP=$(($NPZ + 1))
+     - FIELD_TABLE=field_table_hafs
+       DIAG_TABLE=diag_table_hafs_template
+       INPUT_NML=input_regional_hafs.nml.IN
+       MODEL_CONFIGURE="model_configure_hafs.IN"
+       UFS_CONFIGURE="ufs.configure.hafs_atm_ocn.IN"
+       FV3_RUN="hafs_fv3_run.IN hycom_hat10_run.IN"
+     - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
+   * - `hafs_regional_atm_ocn_wav <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_regional_atm_ocn_wav>`__
+     - Compare HAFS regional atmosphere-ocean-wave coupled results with previous trunk version
+     - **Suite:** CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf_nonsst"
+
+       **Microphysics:** IMP_PHYSICS=11
+
+       **Time Step:** DT_ATMOS=180
+     - **Set to FALSE:** MOUNTAIN, WARM_START, FULL_ZS_FILTER, CPLWAV2ATM, CDEPS_DOCN :raw-html:`<br/> <br/>`
+       **Set to TRUE:** EXTERNAL_IC, NGGPS_IC, REGIONAL, CPLFLX, CPLOCN2ATM, CPLWAV, CPL_IMP_MRG :raw-html:`<br/> <br/>`
+       **Set to VALUE:** 
+       Also, see export_hafs_regional then export_hafs default values.
+     - 2019-08-29 00:00:00
+     - 6
+     - OUTPUT_GRID=regional_latlon :raw-html:`<br/> <br/>`
+       **Grid Parameters**: INPES=20, JNPES=12, NPX=721, NPY=601, NPZ=91, NPZP=$(($NPZ + 1))
+     - FIELD_TABLE=field_table_hafs
+       DIAG_TABLE=diag_table_hafs_template
+       INPUT_NML=input_regional_hafs.nml.IN
+       MODEL_CONFIGURE="model_configure_hafs.IN"
+       UFS_CONFIGURE="ufs.configure.hafs_atm_ocn_wav.IN"
+       FV3_RUN="hafs_fv3_run.IN hycom_hat10_run.IN hafs_ww3_run.IN"
+     - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
+   * - `hafs_regional_atm_thompson_gfdlsf <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_regional_atm_thompson_gfdlsf>`__
+     - Compare the results from HAFS regional atmosphere only using the Thompson microphysics scheme and GFDL surface layer scheme with previous trunk version
+     - **Suite:** CCPP_SUITE="FV3_HAFS_v1_thompson_tedmf_gfdlsf"
+
+       **Microphysics:** IMP_PHYSICS=8
+
+       **Time Step:** DT_ATMOS=180
+     - **Set to FALSE:** MOUNTAIN, WARM_START, FULL_ZS_FILTER, DO_SAT_ADJ, CPLFLX, CPLWAV, CPLWAV2ATM, CPL_IMP_MRG, CMEPS, USE_COLDSTART :raw-html:`<br/> <br/>`
+       **Set to TRUE:** EXTERNAL_IC, NGGPS_IC, REGIONAL, CPLOCN2ATM :raw-html:`<br/> <br/>`
+       **Set to VALUE:** 
+       Also, see export_hafs default values.
+     - 2019-08-29 00:00:00
+     - 6
+     - OUTPUT_GRID=cubed_sphere_grid :raw-html:`<br/> <br/>`
+       **Grid Parameters**: INPES=20, JNPES=12, NPX=721, NPY=601, NPZ=91, NPZP=$(($NPZ + 1))
+     - FIELD_TABLE=field_table_hafs_thompson
+       DIAG_TABLE=diag_table_hafs_template
+       INPUT_NML=input_regional_hafs.nml.IN
+       MODEL_CONFIGURE="model_configure_hafs.IN"
+       UFS_CONFIGURE="ufs.configure.hafs_atm.IN"
+       FV3_RUN="hafs_fv3_run.IN"
+     - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
+   * - `hafs_regional_atm_wav <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_regional_atm_wav>`__
+     - Compare HAFS regional atmosphere-wave coupled results with previous trunk version
+     - **Suite:** CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf"
+
+       **Microphysics:** IMP_PHYSICS=11
+
+       **Time Step:** DT_ATMOS=180
+     - **Set to FALSE:** MOUNTAIN, WARM_START, FULL_ZS_FILTER, CPLOCN2ATM, CDEPS_DOCN :raw-html:`<br/> <br/>`
+       **Set to TRUE:** EXTERNAL_IC, NGGPS_IC, REGIONAL, CPLFLX, CPLWAV, CPLWAV2ATM, CPL_IMP_MRG :raw-html:`<br/> <br/>`
+       **Set to VALUE:** 
+       Also, see export_hafs_regional then export_hafs default values.
+     - 2019-08-29 00:00:00
+     - 6
+     - OUTPUT_GRID=regional_latlon :raw-html:`<br/> <br/>`
+       **Grid Parameters**: INPES=20, JNPES=12, NPX=721, NPY=601, NPZ=91, NPZP=$(($NPZ + 1))
+     - FIELD_TABLE=field_table_hafs
+       DIAG_TABLE=diag_table_hafs_template
+       INPUT_NML=input_regional_hafs.nml.IN
+       MODEL_CONFIGURE="model_configure_hafs.IN"
+       UFS_CONFIGURE="ufs.configure.hafs_atm_wav.IN"
+       FV3_RUN="hafs_fv3_run.IN hafs_ww3_run.IN"
+     - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
+   * - `hafs_regional_datm_cdeps <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_regional_datm_cdeps>`__
+     - Compare HAFS regional coupled CDEPS data atmosphere from ERA5 with regional HYCOM results with previous trunk version
+     - **Suite:** CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf"
+
+       **Microphysics:** IMP_PHYSICS=11
+
+       **Time Step:** DT_ATMOS=180
+     - **Set to FALSE:** CPLWAV, CDEPS_DOCN :raw-html:`<br/> <br/>`
+       **Set to TRUE:** :raw-html:`<br/> <br/>`
+       **Set to VALUE:** 
+       Also, see export_hafs_datm_cdeps then export_hafs_regional then export_hafs default values.
+     - 2019-08-29 00:00:00
+     - 24
+     - OUTPUT_GRID=regional_latlon :raw-html:`<br/> <br/>`
+       **Grid Parameters**: INPES=$INPES_dflt, JNPES=$JNPES_dflt
+     - FIELD_TABLE=field_table_hafs
+       DIAG_TABLE=diag_table_hafs
+       INPUT_NML=input_regional_hafs.nml.IN
+       MODEL_CONFIGURE="model_configure_hafs.IN"
+       UFS_CONFIGURE="ufs.configure.hafs_atm_ocn.IN"
+       FV3_RUN="hafs_datm_cdeps_era5.IN hycom_hat10_run.IN"
+       DATM_STREAM_CONFIGURE=hafs_datm.streams.era5.IN
+     - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
+   * - `hafs_regional_docn <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_regional_docn>`__
+     - Compare HAFS regional coupled with regional data ocean from MOM6 results with previous trunk version
+     - **Suite:** CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf_nonsst"
+
+       **Microphysics:** IMP_PHYSICS=11
+
+       **Time Step:** DT_ATMOS=180
+     - **Set to FALSE:** MOUNTAIN, WARM_START, FULL_ZS_FILTER, CPLWAV, CPLWAV2ATM :raw-html:`<br/> <br/>`
+       **Set to TRUE:** EXTERNAL_IC, NGGPS_IC, REGIONAL, CPLFLX, CPLOCN2ATM, CPL_IMP_MRG :raw-html:`<br/> <br/>`
+       **Set to VALUE:** 
+       Also, see export_hafs_docn_cdeps then export_hafs_regional then export_hafs default values.
+     - 2019-08-29 00:00:00
+     - 24
+     - OUTPUT_GRID=regional_latlon :raw-html:`<br/> <br/>`
+       **Grid Parameters**: INPES=20, JNPES=12, NPX=721, NPY=601, NPZ=91, NPZP=$(($NPZ + 1))
+     - FIELD_TABLE=field_table_hafs
+       DIAG_TABLE=diag_table_hafs_template
+       INPUT_NML=input_regional_hafs.nml.IN
+       MODEL_CONFIGURE="model_configure_hafs.IN"
+       UFS_CONFIGURE="ufs.configure.hafs_atm_docn.IN"
+       FV3_RUN="hafs_fv3_run.IN hafs_docn_cdeps_mom6.IN"
+       DOCN_STREAM_CONFIGURE=hafs_docn.streams.IN
+     - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
+   * - `hafs_regional_docn_oisst <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_regional_docn_oisst>`__
+     - Compare HAFS regional coupled with global data ocean from OISST results with previous trunk version
+     - **Suite:** FV3_HAFS_v1_gfdlmp_tedmf_nonsst"
+
+       **Microphysics:** IMP_PHYSICS=11
+
+       **Time Step:** DT_ATMOS=180
+     - **Set to FALSE:** MOUNTAIN, WARM_START, FULL_ZS_FILTER, CPLWAV, CPLWAV2ATM :raw-html:`<br/> <br/>`
+       **Set to TRUE:** EXTERNAL_IC, NGGPS_IC, REGIONAL, CPLFLX, CPLOCN2ATM, CPL_IMP_MRG :raw-html:`<br/> <br/>`
+       **Set to VALUE:** 
+       Also, see export_hafs_docn_cdeps then export_hafs_regional then export_hafs default values.
+     - 2019-08-29 00:00:00
+     - 6
+     - OUTPUT_GRID=regional_latlon :raw-html:`<br/> <br/>`
+       **Grid Parameters**: INPES=20, JNPES=12, NPX=721, NPY=601, NPZ=91, NPZP=$(($NPZ + 1))
+     - FIELD_TABLE=field_table_hafs
+       DIAG_TABLE=diag_table_hafs_template
+       INPUT_NML=input_regional_hafs.nml.IN
+       MODEL_CONFIGURE="model_configure_hafs.IN"
+       UFS_CONFIGURE="ufs.configure.hafs_atm_docn.IN"
+       FV3_RUN="hafs_fv3_run.IN hafs_docn_cdeps_oisst.IN"
+       DOCN_STREAM_CONFIGURE=hafs_docn.streams.IN
+     - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.true., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
+   * - `hafs_regional_specified_moving_1nest_atm <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_regional_specified_moving_1nest_atm>`__
+     - Compare HAFS regional with 1 specified moving nest and atmosphere only results with previous trunk version
+     - **Suite:** CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf"
+
+       **Microphysics:** IMP_PHYSICS=11
+
+       **Time Step:** DT_ATMOS=180
+     - **Set to FALSE:** MOUNTAIN, WARM_START, FULL_ZS_FILTER, IS_MOVING_NEST=".false.,.true.", CPLFLX, CPLWAV, CPLWAV2ATM, CPL_IMP_MRG, CMEPS, USE_COLDSTART :raw-html:`<br/> <br/>`
+       **Set to TRUE:** WRITE_DOPOST, EXTERNAL_IC, NGGPS_IC, REGIONAL, CPLOCN2ATM :raw-html:`<br/> <br/>`
+       **Set to VALUE:** 
+       Also, see export_hafs default values.
+     - 2020-08-25 12:00:00
+     - 6
+     - OUTPUT_GRID=rotated_latlon, OUTPUT_GRID_2=rotated_latlon_moving :raw-html:`<br/> <br/>`
+       **Grid Parameters**: INPES=6, JNPES=10, NPX=241, NPY=241, NPZ=64, NPZP=$(($NPZ + 1)), INPES_NEST02=6, JNPES_NEST02=10, NPX_NEST02=361, NPY_NEST02=361
+     - FIELD_TABLE=field_table_hafs
+       DIAG_TABLE=diag_table_hafs_template
+       INPUT_NML=input_regional_hafs.nml.IN
+       INPUT_NEST02_NML=input_nest_hafs.nml.IN
+       MODEL_CONFIGURE="model_configure_hafs.IN"
+       UFS_CONFIGURE="ufs.configure.hafs_atm.IN"
+       FV3_RUN="hafs_fv3_run.IN"
+     - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
+   * - `hafs_regional_storm_following_1nest_atm <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_regional_storm_following_1nest_atm>`__
+     - Compare HAFS regional with 1 storm-following moving nest and atmosphere only results with previous trunk version
+     - **Suite:** CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf"
+
+       **Microphysics:** IMP_PHYSICS=11
+
+       **Time Step:** DT_ATMOS=180
+     - **Set to FALSE:** MOUNTAIN, WARM_START, FULL_ZS_FILTER, IS_MOVING_NEST=".false.,.true.", CPLFLX, CPLWAV, CPLWAV2ATM, CPL_IMP_MRG, CMEPS, USE_COLDSTART :raw-html:`<br/> <br/>`
+       **Set to TRUE:** EXTERNAL_IC, NGGPS_IC, REGIONAL, CPLOCN2ATM :raw-html:`<br/> <br/>`
+       **Set to VALUE:** 
+       Also, see export_hafs default values.
+     - 2020-08-25 12:00:00
+     - 6
+     - OUTPUT_GRID=rotated_latlon, OUTPUT_GRID_2=rotated_latlon_moving :raw-html:`<br/> <br/>`
+       **Grid Parameters**: INPES=6, JNPES=10, NPX=241, NPY=241, NPZ=64, NPZP=$(($NPZ + 1)), INPES_NEST02=6, JNPES_NEST02=10, NPX_NEST02=361, NPY_NEST02=361
+     - FIELD_TABLE=field_table_hafs
+       DIAG_TABLE=diag_table_hafs_template
+       INPUT_NML=input_regional_hafs.nml.IN
+       INPUT_NEST02_NML=input_nest_hafs.nml.IN
+       MODEL_CONFIGURE="model_configure_hafs.IN"
+       UFS_CONFIGURE="ufs.configure.hafs_atm.IN"
+       FV3_RUN="hafs_fv3_run.IN"
+     - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
+   * - `hafs_regional_storm_following_1nest_atm_ocn <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_regional_storm_following_1nest_atm_ocn>`__
+     - Compare HAFS regional with 1 storm-following moving nest and atmosphere-ocean coupled results with previous trunk version
+     - **Suite:** CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf_nonsst"
+
+       **Microphysics:** IMP_PHYSICS=11
+
+       **Time Step:** DT_ATMOS=180
+     - **Set to FALSE:** MOUNTAIN, WARM_START, FULL_ZS_FILTER, IS_MOVING_NEST=".false.,.true.", CPLWAV, CPLWAV2ATM, USE_COLDSTART, CDEPS_DOCN :raw-html:`<br/> <br/>`
+       **Set to TRUE:** EXTERNAL_IC, NGGPS_IC, REGIONAL, CPLFLX, CPLOCN2ATM, CPL_IMP_MRG :raw-html:`<br/> <br/>`
+       **Set to VALUE:** 
+       Also, see export_hafs_regional default values then export_hafs.
+     - 2020-08-25 12:00:00
+     - 6
+     - OUTPUT_GRID=regional_latlon, OUTPUT_GRID_2=regional_latlon_moving :raw-html:`<br/> <br/>`
+       **Grid Parameters**: INPES=6, JNPES=10, NPX=241, NPY=241, NPZ=64, NPZP=$(($NPZ + 1)), INPES_NEST02=6, JNPES_NEST02=10, NPX_NEST02=361, NPY_NEST02=361
+     - FIELD_TABLE=field_table_hafs
+       DIAG_TABLE=diag_table_hafs_template
+       INPUT_NML=input_regional_hafs.nml.IN
+       INPUT_NEST02_NML=input_nest_hafs.nml.IN
+       MODEL_CONFIGURE="model_configure_hafs.IN"
+       UFS_CONFIGURE="ufs.configure.hafs_atm_ocn.IN"
+       FV3_RUN="hafs_fv3_run.IN hycom_hat10_run.IN"
+     - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
+   * - `hafs_regional_storm_following_1nest_atm_ocn_debug <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_regional_storm_following_1nest_atm_ocn_debug>`__
+     - Compare HAFS regional with 1 storm-following moving nest and atmosphere-ocean coupled results with previous trunk version
+     - **Suite:** CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf_nonsst"
+
+       **Microphysics:** IMP_PHYSICS=11
+
+       **Time Step:** DT_ATMOS=180
+     - **Set to FALSE:** MOUNTAIN, WARM_START, FULL_ZS_FILTER, IS_MOVING_NEST=".false.,.true.", CPLWAV, CPLWAV2ATM, USE_COLDSTART, CDEPS_DOCN :raw-html:`<br/> <br/>`
+       **Set to TRUE:** EXTERNAL_IC, NGGPS_IC, REGIONAL, CPLFLX, CPLOCN2ATM, CPL_IMP_MRG :raw-html:`<br/> <br/>`
+       **Set to VALUE:** 
+       Also, see export_hafs_regional default values then export_hafs.
+     - 2020-08-25 12:00:00
+     - 6
+     - OUTPUT_GRID=regional_latlon, OUTPUT_GRID_2=regional_latlon_moving :raw-html:`<br/> <br/>`
+       **Grid Parameters**: INPES=6, JNPES=10, NPX=241, NPY=241, NPZ=64, NPZP=$(($NPZ + 1)), INPES_NEST02=6, JNPES_NEST02=10, NPX_NEST02=361, NPY_NEST02=361
+     - FIELD_TABLE=field_table_hafs
+       DIAG_TABLE=diag_table_hafs_template
+       INPUT_NML=input_regional_hafs.nml.IN
+       INPUT_NEST02_NML=input_nest_hafs.nml.IN
+       MODEL_CONFIGURE="model_configure_hafs.IN"
+       UFS_CONFIGURE="ufs.configure.hafs_atm_ocn.IN"
+       FV3_RUN="hafs_fv3_run.IN hycom_hat10_run.IN"
+     - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
+   * - `hafs_regional_storm_following_1nest_atm_ocn_debug <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_regional_storm_following_1nest_atm_ocn_debug>`__
+     - Compare HAFS regional with 1 storm-following moving nest and atmosphere-ocean coupled results with previous trunk version
+     - **Suite:** CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf_nonsst"
+
+       **Microphysics:** IMP_PHYSICS=11
+
+       **Time Step:** DT_ATMOS=180
+     - **Set to FALSE:** MOUNTAIN, WARM_START, FULL_ZS_FILTER, IS_MOVING_NEST=".false.,.true.", CPLWAV2ATM, USE_COLDSTART, CDEPS_DOCN :raw-html:`<br/> <br/>`
+       **Set to TRUE:** EXTERNAL_IC, NGGPS_IC, REGIONAL, CPLFLX, CPLOCN2ATM, CPL_IMP_MRG :raw-html:`<br/> <br/>`
+       **Set to VALUE:** 
+       Also, see export_hafs_regional default values then export_hafs.
+     - 2020-08-25 12:00:00
+     - 6
+     - OUTPUT_GRID=regional_latlon, OUTPUT_GRID_2=regional_latlon_moving :raw-html:`<br/> <br/>`
+       **Grid Parameters**: INPES=$INPES_thrd, JNPES=$JNPES_thrd, INPES=6, JNPES=10, NPX=241, NPY=241, NPZ=64, NPZP=$(($NPZ + 1))
+     - FIELD_TABLE=field_table_hafs
+       DIAG_TABLE=diag_table_hafs_template
+       INPUT_NML=input_regional_hafs.nml.IN
+       INPUT_NEST02_NML=input_nest_hafs.nml.IN
+       MODEL_CONFIGURE="model_configure_hafs.IN"
+       UFS_CONFIGURE="ufs.configure.hafs_atm_ocn.IN"
+       FV3_RUN="hafs_fv3_run.IN hycom_hat10_run.IN"
+     - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
+   * - `hafs_regional_storm_following_1nest_atm_ocn_wav <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_regional_storm_following_1nest_atm_ocn_wav>`__
+     - Compare HAFS regional with 1 storm-following moving nest and atmosphere-ocean-wave coupled results with previous trunk version
+     - **Suite:** CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf_nonsst"
+
+       **Microphysics:** IMP_PHYSICS=11
+
+       **Time Step:** DT_ATMOS=180
+     - **Set to FALSE:** MOUNTAIN, WARM_START, FULL_ZS_FILTER, IS_MOVING_NEST=".false.,.true.", CPLWAV2ATM, USE_COLDSTART, CDEPS_DOCN :raw-html:`<br/> <br/>`
+       **Set to TRUE:** EXTERNAL_IC, NGGPS_IC, REGIONAL, CPLFLX, CPLOCN2ATM, CPLWAV, CPL_IMP_MRG :raw-html:`<br/> <br/>`
+       **Set to VALUE:** 
+       Also, see export_hafs_regional default values then export_hafs.
+     - 2020-08-25 12:00:00
+     - 6
+     - OUTPUT_GRID=rotated_latlon, OUTPUT_GRID_2=rotated_latlon :raw-html:`<br/> <br/>`
+       **Grid Parameters**: INPES=6, JNPES=10, NPX=241, NPY=241, NPZ=64, NPZP=$(($NPZ + 1)), INPES_NEST02=6, JNPES_NEST02=10, NPX_NEST02=361, NPY_NEST02=361
+     - FIELD_TABLE=field_table_hafs
+       DIAG_TABLE=diag_table_hafs_template
+       INPUT_NML=input_regional_hafs.nml.IN
+       INPUT_NEST02_NML=input_nest_hafs.nml.IN
+       MODEL_CONFIGURE="model_configure_hafs.IN"
+       UFS_CONFIGURE="ufs.configure.hafs_atm_ocn_wav.IN"
+       FV3_RUN="hafs_fv3_run.IN hycom_hat10_run.IN hafs_ww3_run.IN"
+     - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
+   * - `hafs_regional_telescopic_2nests_atm <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_regional_telescopic_2nests_atm>`__
+     - Compare HAFS regional with two telescopic nests and atmosphere only results with previous trunk version
+     - **Suite:** CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf"
+
+       **Microphysics:** IMP_PHYSICS=11
+
+       **Time Step:** DT_ATMOS=90
+     - **Set to FALSE:** MOUNTAIN, WARM_START, FULL_ZS_FILTER, CPLFLX, CPLWAV, CPLWAV2ATM, CMEPS, USE_COLDSTART :raw-html:`<br/> <br/>`
+       **Set to TRUE:** EXTERNAL_IC, NGGPS_IC, REGIONAL, CPLOCN2ATM :raw-html:`<br/> <br/>`
+       **Set to VALUE:** 
+       Also, see export_hafs default values.
+     - 2020-08-25 12:00:00
+     - 6
+     - OUTPUT_GRID=rotated_latlon, OUTPUT_GRID_2=lambert_conformal, OUTPUT_GRID_3=regional_latlon :raw-html:`<br/> <br/>`
+       **Grid Parameters**: INPES=6, JNPES=10, NPX=241, NPY=241, NPZ=64, NPZP=$(($NPZ + 1)), INPES_NEST02=6, JNPES_NEST02=10, NPX_NEST02=361, NPY_NEST02=361, INPES_NEST03=6, JNPES_NEST03=10, NPX_NEST03=361, NPY_NEST03=361
+     - FIELD_TABLE=field_table_hafs
+       DIAG_TABLE=diag_table_hafs_template
+       INPUT_NML=input_regional_hafs.nml.IN
+       INPUT_NEST02_NML=input_nest_hafs.nml.IN
+       INPUT_NEST03_NML=input_nest_hafs.nml.IN
+       MODEL_CONFIGURE="model_configure_hafs.IN"
+       UFS_CONFIGURE="ufs.configure.hafs_atm.IN"
+       FV3_RUN="hafs_fv3_run.IN"
+     - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
+
+**Sample** ``CMAKE_FLAGS`` **Setting**
+
+.. code-block:: console
+
+    export CMAKE_FLAGS="-DAPP=HAFS"
+
+**Supported Physics Suites**
+
+.. list-table:: *Physics suites used in the HAFS configurations above*
+   :widths: 10 50
+   :header-rows: 1
+
+   * - Physics Suite
+     - Description
+   * - FV3_HAFS_v1_gfdlmp_tedmf
+     - The FV3_HAFS_v1_gfdlmp_tedmf physics suite is described in the :term:`CCPP` documentation `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/rap_suite_page.html>`__.
+   * - FV3_HAFS_v1_gfdlmp_tedmf_nonsst
+     - The FV3_HAFS_v1_gfdlmp_tedmf_nonsst physics suite is described in the CCPP documentation `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_h_r_r_r_suite_page.html>`__.
+   * - FV3_HAFS_v1_thompson_tedmf_gfdlsf
+     - The FV3_HAFS_v1_thompson_tedmf_gfdlsf physics suite is described in the CCPP documentation `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_r_r_f_s_v1beta_page.html>`__.
 
 
