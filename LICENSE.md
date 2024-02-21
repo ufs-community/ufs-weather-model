@@ -22,7 +22,7 @@ This project utilizes the following unmodified works under various licenses, as 
 
 - [AQM](https://github.com/NOAA-EMC/AQM): GNU General Public License 3.0 ([GPL](https://www.gnu.org/licenses/gpl-3.0.en.html))
 
-- [CICE](https://github.com/NOAA-EMC/CICE): [LICENSE.pdf](https://github.com/NOAA-EMC/CICE/blob/emc/develop/LICENSE.pdf)
+- [CICE](https://github.com/NOAA-EMC/CICE): CICE Consortium license ([LICENSE.pdf](https://github.com/NOAA-EMC/CICE/blob/emc/develop/LICENSE.pdf))
 
 - [CMakeModules](https://github.com/NOAA-EMC/CMakeModules): GNU Lesser General Public License 3.0 ([LGPL](https://www.gnu.org/licenses/lgpl-3.0.en.html))
 
