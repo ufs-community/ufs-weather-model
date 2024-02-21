@@ -16,9 +16,9 @@ This project utilizes the following unmodified works under various licenses, as 
 
 - [Stochastic Physics](https://github.com/NOAA-PSL/stochastic_physics): GNU Lesser General Public License 3.0 ([LGPL](https://www.gnu.org/licenses/lgpl-3.0.en.html))
 
-- [CCPP Physics](https://github.com/ufs-community/ccpp-physics): [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0)
+- [CCPP Physics](https://github.com/ufs-community/ccpp-physics): [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)
 
-- [CCPP Framework](https://github.com/NCAR/ccpp-framework): [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0)
+- [CCPP Framework](https://github.com/NCAR/ccpp-framework): [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)
 
 - [AQM](https://github.com/NOAA-EMC/AQM): GNU General Public License 3.0 ([GPL](https://www.gnu.org/licenses/gpl-3.0.en.html))
 
@@ -26,7 +26,7 @@ This project utilizes the following unmodified works under various licenses, as 
 
 - [CMakeModules](https://github.com/NOAA-EMC/CMakeModules): GNU Lesser General Public License 3.0 ([LGPL](https://www.gnu.org/licenses/lgpl-3.0.en.html))
 
-- [GOCART](https://github.com/GEOS-ESM/GOCART): [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0)
+- [GOCART](https://github.com/GEOS-ESM/GOCART): [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)
 
 - [HYCOM](https://github.com/NOAA-EMC/HYCOM-src): [MIT License](https://opensource.org/license/mit/)
 
