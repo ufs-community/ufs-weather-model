@@ -42,7 +42,7 @@ and `rt.gnu.conf <https://github.com/ufs-community/ufs-weather-model/blob/develo
 This chapter details the supported build/run options for each supported configuration. 
 Click on the configuration category in :numref:`Table %s <UFS-configurations-documented>` 
 to go to that section. Each configuration category includes sample code for setting ``CMAKE_FLAGS`` and ``CCPP_SUITES``. 
-Additionally, there is a list of preferred physics suites, examples of ``nems.configure`` files, 
+Additionally, there is a list of preferred physics suites, examples of ``ufs.configure`` files, 
 and links to information on other input files required to run the model. 
 
 ============
@@ -446,7 +446,7 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
      - 24
      - OUTPUT_GRID=gaussian_grid :raw-html:`<br/> <br/>`
        **Grid Parameters:** NPZ=127, NPZP=128
-     - NEMS_CONFIGURE=nems.configure.atm.IN
+     - UFS_CONFIGURE=ufs.configure.atm.IN
        MODEL_CONFIGURE=model_configure.IN
        FV3_RUN=control_run.IN
        INPUT_NML=rap.nml.IN
@@ -467,7 +467,7 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
      - 1
      - OUTPUT_GRID=gaussian_grid :raw-html:`<br/> <br/>`
        **Grid Parameters:** NPZ=127, NPZP=128
-     - NEMS_CONFIGURE=nems.configure.atm.IN
+     - UFS_CONFIGURE=ufs.configure.atm.IN
        MODEL_CONFIGURE=model_configure.IN
        FV3_RUN=control_run.IN
        INPUT_NML=rap.nml.IN
@@ -488,7 +488,7 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
      - 24
      - OUTPUT_GRID=gaussian_grid :raw-html:`<br/> <br/>`
        **Grid Parameters:** NPZ=127, NPZP=128
-     - NEMS_CONFIGURE=nems.configure.atm.IN
+     - UFS_CONFIGURE=ufs.configure.atm.IN
        MODEL_CONFIGURE=model_configure.IN
        FV3_RUN=control_run.IN
        INPUT_NML=rap.nml.IN 
@@ -509,7 +509,7 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
      - 24
      - OUTPUT_GRID=gaussian_grid :raw-html:`<br/> <br/>`
        **Grid Parameters:** NPZ=127, NPZP=128
-     - NEMS_CONFIGURE=nems.configure.atm.IN
+     - UFS_CONFIGURE=ufs.configure.atm.IN
        MODEL_CONFIGURE=model_configure.IN
        FV3_RUN=control_run.IN
        INPUT_NML=rap.nml.IN
@@ -532,7 +532,7 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
      - 2
      - OUTPUT_GRID=lambert_conformal :raw-html:`<br/> <br/>`
        **Grid Parameters:** INPES=12, JNPES=12, NPX=397, NPY=233, NPZ=65, NPZP=66
-     - NEMS_CONFIGURE=nems.configure.atm.IN
+     - UFS_CONFIGURE=ufs.configure.atm.IN
        MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
        FV3_RUN=rrfs_warm_run.IN
        INPUT_NML=rrfs_conus13km_hrrr.nml.IN
@@ -553,7 +553,7 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
      - 1
      - OUTPUT_GRID=lambert_conformal :raw-html:`<br/> <br/>`
        **Grid Parameters:** INPES=12, JNPES=12, NPX=397, NPY=233, NPZ=65, NPZP=66
-     - NEMS_CONFIGURE=nems.configure.atm.IN
+     - UFS_CONFIGURE=ufs.configure.atm.IN
        MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
        FV3_RUN=rrfs_warm_run.IN
        INPUT_NML=rrfs_conus13km_hrrr.nml.IN
@@ -574,7 +574,7 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
      - 2
      - OUTPUT_GRID=lambert_conformal :raw-html:`<br/> <br/>`
        **Grid Parameters:** INPES=12, JNPES=12, NPX=397, NPY=233, NPZ=65, NPZP=66
-     - NEMS_CONFIGURE=nems.configure.atm.IN
+     - UFS_CONFIGURE=ufs.configure.atm.IN
        MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
        FV3_RUN=rrfs_warm_run.IN
        INPUT_NML=rrfs_conus13km_hrrr.nml.IN
@@ -595,7 +595,7 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
      - 2
      - OUTPUT_GRID=lambert_conformal :raw-html:`<br/> <br/>`
        **Grid Parameters:** INPES=12, JNPES=12, NPX=397, NPY=233, NPZ=65, NPZP=66, 
-     - NEMS_CONFIGURE=nems.configure.atm.IN
+     - UFS_CONFIGURE=ufs.configure.atm.IN
        MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
        FV3_RUN=rrfs_warm_run.IN
        INPUT_NML=rrfs_conus13km_hrrr.nml.IN
@@ -617,7 +617,7 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
      - 2
      - OUTPUT_GRID=lambert_conformal :raw-html:`<br/> <br/>`
        **Grid Parameters:** INPES=$INPES_thrd, JNPES=$JNPES_thrd, INPES=12, JNPES=12, NPX=397, NPY=233, NPZ=65, NPZP=66
-     - NEMS_CONFIGURE=nems.configure.atm.IN
+     - UFS_CONFIGURE=ufs.configure.atm.IN
        MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
        FV3_RUN=rrfs_warm_run.IN
        INPUT_NML=rrfs_conus13km_hrrr.nml.IN
@@ -639,7 +639,7 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
      - 1
      - OUTPUT_GRID=lambert_conformal :raw-html:`<br/> <br/>`
        **Grid Parameters**: INPES=12, JNPES=12, NPX=397, NPY=233, NPZ=65, NPZP=66
-     - NEMS_CONFIGURE=nems.configure.atm.IN
+     - UFS_CONFIGURE=ufs.configure.atm.IN
        MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
        FV3_RUN=rrfs_warm_run.IN
        INPUT_NML=rrfs_conus13km_hrrr.nml.IN
@@ -661,7 +661,7 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
      - 1
      - OUTPUT_GRID=lambert_conformal :raw-html:`<br/> <br/>`
        **Grid Parameters**: INPES=$INPES_thrd, JNPES=$JNPES_thrd, INPES=12, JNPES=12, NPX=397, NPY=233, NPZ=65, NPZP=66
-     - NEMS_CONFIGURE=nems.configure.atm.IN
+     - UFS_CONFIGURE=ufs.configure.atm.IN
        MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
        FV3_RUN=rrfs_warm_run.IN
        INPUT_NML=rrfs_conus13km_hrrr.nml.IN
@@ -683,7 +683,7 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
      - 2
      - OUTPUT_GRID=lambert_conformal :raw-html:`<br/> <br/>`
        **Grid Parameters:** INPES=12, JNPES=12, NPX=397, NPY=233, NPZ=65, NPZP=66
-     - NEMS_CONFIGURE=nems.configure.atm.IN
+     - UFS_CONFIGURE=ufs.configure.atm.IN
        MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
        FV3_RUN=rrfs_warm_run.IN
        INPUT_NML=rrfs_conus13km_hrrr.nml.IN
