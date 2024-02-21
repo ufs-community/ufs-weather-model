@@ -105,12 +105,13 @@ Please delete what is not needed.
 ## Changes
 ### Regression Test Changes (Please commit test_changes.list):
 <!--
-If there are any changes to regression tests, please document what changes here:
+Please let us know if this PR creates new baselines, changes baselines or not.
 Please delete what is not needed.
 Please make sure you have properly submitted test_changes.list
 -->
-* None Expected
-* Changes Expected
+* PR Adds New Tests/Baselines.
+* PR Updates/Changes Baselines.
+* No Baseline Changes.
 
 ### Input data Changes:
 <!--
