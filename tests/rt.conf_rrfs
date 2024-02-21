@@ -1,0 +1,26 @@
+### RT.CONF FORMATTING ###
+# COMPILE Line ( Items separated by a | )
+# Item 1: COMPILE - This tells rt.conf the following information is to be used in setting up a compile job
+# Item 2: Compile name - The rt.sh will add _gnu or _intel to it. There must be no duplicate names for each compiler.
+#                        If two compilations are identical except compiler, please use the same name for each.
+# Item 3: Compiler to use in build (intel or gnu)
+# Item 4: CMAKE Options - Provide all CMAKE options for the build
+# Item 5: Machines to run on (- is used to ignore specified machines, + is used to only run on specified machines)
+## -> EX: + hera orion gaea = compile will only run on hera orion and gaea machines
+## -> EX: - wcoss2 acorn = compile will NOT be run on wcoss2 or acorn
+# Item 6: [set as fv3]. Used to control the compile job only if FV3 was present, previously used to run a test w/o compiling code
+#
+# RUN Line ( Items separated by a | )
+## NOTE: The build resulting from the COMPILE line above the RUN line will be used to run the test
+# Item 1: RUN - This tells rt.conf the following information is to be used in setting up a model run
+# Item 2: Test name. (Which test in the tests/tests directory should be sourced)
+# Item 3: Machines to run on (- is used to ignore specified machines, + is used to only run on specified machines).
+## reference example above
+# Item 4: Controls whether the run creates its own baseline or it uses the baseline from a different (control) test.
+# Item 5: Test name to compare baselines with if not itself.
+
+COMPILE | rrfs | intel | -DAPP=ATM -DCCPP_SUITES=FV3_RAP,FV3_RAP_sfcdiff,FV3_HRRR,FV3_RRFS_v1beta,FV3_RRFS_v1nssl -D32BIT=ON | | fv3 |
+RUN | rrfs_v1beta                                       |                            | baseline |
+RUN | rrfs_v1nssl                                       |                            | baseline |
+RUN | rrfs_v1nssl_nohailnoccn                           |                            | baseline |
+
