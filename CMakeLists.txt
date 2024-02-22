@@ -327,6 +327,7 @@ if(CDEPS)
   add_dependencies(ufs cdeps::cdeps)
   list(APPEND _ufs_defs_private FRONT_CDEPS_DATM=cdeps_datm_comp)
   list(APPEND _ufs_defs_private FRONT_CDEPS_DOCN=cdeps_docn_comp)
+  list(APPEND _ufs_defs_private FRONT_CDEPS_DICE=cdeps_dice_comp)
   target_link_libraries(ufs PUBLIC cdeps::cdeps)
 endif()
 
