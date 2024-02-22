@@ -53,13 +53,13 @@ ISEED_EPBL=201601010023,
 /
 
 &lm4_nml
-        lm4_debug = 1
-        grid = 'CS'
-        layout = @[INPES],@[JNPES]
-        npx = @[NPX]
-        npy = @[NPY]
-        ntiles = 6
-        blocksize = -1
+       lm4_debug = 1
+       grid = 'CS'
+       layout = @[INPES],@[JNPES]
+       npx = @[NPX]
+       npy = @[NPY]
+       ntiles = 6
+       blocksize = -1
 	dt_lnd_slow = 3600
 	restart_interval = 0,0,0,6,0,0
 /
@@ -394,4 +394,7 @@ ISEED_EPBL=201601010023,
        rav_lit_bwood = 300.
 /
 
-
+&surface_flux_nml
+       alt_gustiness = .FALSE.
+       gust_min = 1.0
+/
