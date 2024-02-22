@@ -3,7 +3,7 @@ loads UFS Model prerequisites for NOAA Parallelworks/Intel
 ]])
 
 setenv("LMOD_TMOD_FIND_FIRST","yes")
-prepend_path("MODULEPATH", "/lustre/desc1/scratch/epicufsrt/contrib/modulefiles")
+prepend_path("MODULEPATH", "/glade/work/epicufsrt/contrib/spack-stack/derecho/modulefiles")
 load("ecflow/5.8.4")
 load("mysql/8.0.33")
 
