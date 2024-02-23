@@ -155,37 +155,37 @@ def generateStage(nodeLabel) {
                           then
                            echo "Running regression tests on $machine"
                             export dprefix=/lfs1/NAGAPE/$ACCNR/$USER
-                            ./rt.sh -a ${ACCNR} -r -l rt.conf
+                            ./rt.sh -a ${ACCNR} -r -l rt.conf | tee $WORKSPACE/tests/RT-run-$machine.log
                           elif [[ $machine =~ "Hercules" ]]
                           then
                            echo "Running regression tests on $machine"
                             export dprefix=/work2/noaa/$ACCNR/$USER
                             sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
-                            ./rt.sh -a ${ACCNR} -e -l rt.conf
+                            ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/RT-run-$machine.log
                           elif [[ $machine =~ "Orion" ]]
                           then
                            echo "Running regression tests on $machine"
                             export dprefix=/work2/noaa/$ACCNR/$USER
                             sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
-                            ./rt.sh -a ${ACCNR} -e -l rt.conf
+                            ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/RT-run-$machine.log
                           elif [[ $machine =~ "GaeaC5" ]]
                           then 
                            echo "Running regression tests on $machine"
-                            ./rt.sh -a ${ACCNR} -e -l rt.conf
+                            ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/RT-run-$machine.log
                             unset LD_LIBRARY_PATH
                           elif [[ $machine =~ "Hera" ]]
                           then
                            echo "Running regression tests on $machine"
                            export ACCNR=nems
-                          ./rt.sh -a ${ACCNR} -r -l rt.conf
+                          ./rt.sh -a ${ACCNR} -r -l rt.conf | tee $WORKSPACE/tests/RT-run-$machine.log
 			  elif [[ $machine =~ "Derecho" ]]
                           then
                            echo "Running regression tests on $machine"
                            export ACCNR=nral0032
-                           ./rt.sh -a ${ACCNR} -e -l rt.conf
+                           ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/RT-run-$machine.log
                           else
                            echo "Running regression tests on $machine"
-                           ./rt.sh -a ${ACCNR} -r -l rt.conf
+                           ./rt.sh -a ${ACCNR} -r -l rt.conf | tee $WORKSPACE/tests/RT-run-$machine.log
                           fi
 
                       git config user.email "ecc.platform@noaa.gov"
@@ -223,7 +223,12 @@ def generateStage(nodeLabel) {
                       echo "Testing concluded...removing labels for $machine from $GIT_URL"
                       git remote -v | grep -w sshorigin > /dev/null 2>&1 && git remote remove sshorigin > /dev/null 2>&1
                       git remote add sshorigin $SSH_ORIGIN > /dev/null 2>&1
+  
+                      if [[ -f $WORKSPACE/tests/RT-run-$machine.log ]] ; then
+                         git add $WORKSPACE/tests/RT-run-$machine.log
+                      fi
                       git commit  --allow-empty -m "[AutoRT] $machine Job Failed!\n\n\n on-behalf-of @ufs-community <ecc.platform@noaa.gov>"
+                    
                       git pull sshorigin $FORK_BRANCH
                       git push sshorigin HEAD:$FORK_BRANCH
 
