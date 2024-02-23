@@ -1,0 +1,53 @@
+Sun Nov 12 00:19:56 UTC 2023
+Start Regression test
+
+Compile 001 elapsed time 467 seconds. -DAPP=ATMAQ -DCCPP_SUITES=FV3_GFS_v15p2 -D32BIT=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Release
+Compile 002 elapsed time 155 seconds. -DAPP=ATMAQ -DCCPP_SUITES=FV3_GFS_v15p2 -DDEBUG=ON -D32BIT=ON -DMPI=ON -DCMAKE_BUILD_TYPE=Debug
+
+baseline dir = /lfs/h2/emc/nems/noscrub/emc.nems/RT/NEMSfv3gfs/prod/AQM.v7/baseline-20230314/INTEL/regional_atmaq
+working dir  = /lfs/h2/emc/ptmp/brian.curtis/FV3_RT/rt_98276/regional_atmaq
+Checking test 001 regional_atmaq results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf003.nc .........OK
+ Comparing sfcf006.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf003.nc .........OK
+ Comparing atmf006.nc .........OK
+ Comparing RESTART/coupler.res .........OK
+ Comparing RESTART/fv_core.res.nc .........OK
+ Comparing RESTART/fv_core.res.tile1.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile1.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile1.nc .........OK
+ Comparing RESTART/phy_data.nc .........OK
+ Comparing RESTART/sfc_data.nc .........OK
+
+The total amount of wall time                        = 698.392418
+The maximum resident set size (KB)                   = 1232584
+
+Test 001 regional_atmaq PASS
+
+
+baseline dir = /lfs/h2/emc/nems/noscrub/emc.nems/RT/NEMSfv3gfs/prod/AQM.v7/baseline-20230314/INTEL/regional_atmaq_debug
+working dir  = /lfs/h2/emc/ptmp/brian.curtis/FV3_RT/rt_98276/regional_atmaq_debug
+Checking test 002 regional_atmaq_debug results ....
+ Comparing sfcf000.nc .........OK
+ Comparing sfcf001.nc .........OK
+ Comparing atmf000.nc .........OK
+ Comparing atmf001.nc .........OK
+ Comparing RESTART/coupler.res .........OK
+ Comparing RESTART/fv_core.res.nc .........OK
+ Comparing RESTART/fv_core.res.tile1.nc .........OK
+ Comparing RESTART/fv_srf_wnd.res.tile1.nc .........OK
+ Comparing RESTART/fv_tracer.res.tile1.nc .........OK
+ Comparing RESTART/phy_data.nc .........OK
+ Comparing RESTART/sfc_data.nc .........OK
+
+The total amount of wall time                        = 1319.283838
+The maximum resident set size (KB)                   = 1257824
+
+Test 002 regional_atmaq_debug PASS
+
+
+REGRESSION TEST WAS SUCCESSFUL
+Sun Nov 12 00:48:53 UTC 2023
+Elapsed time: 00h:28m:58s. Have a nice day!

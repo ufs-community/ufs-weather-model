@@ -1,0 +1,25 @@
+rsync -arv @[INPUTDATA_ROOT]/FV3_regional_input_data/. .
+
+rm -rf INPUT RESTART
+mkdir  INPUT RESTART
+
+rsync -arv @[INPUTDATA_ROOT]/FV3_regional_rrfs_a/INPUT/. INPUT/.
+
+cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/MERRA2/merra2.aerclim.2003-2014.m01.nc aeroclim.m01.nc
+cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/MERRA2/merra2.aerclim.2003-2014.m02.nc aeroclim.m02.nc
+cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/MERRA2/merra2.aerclim.2003-2014.m03.nc aeroclim.m03.nc
+cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/MERRA2/merra2.aerclim.2003-2014.m04.nc aeroclim.m04.nc
+cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/MERRA2/merra2.aerclim.2003-2014.m05.nc aeroclim.m05.nc
+cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/MERRA2/merra2.aerclim.2003-2014.m06.nc aeroclim.m06.nc
+cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/MERRA2/merra2.aerclim.2003-2014.m07.nc aeroclim.m07.nc
+cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/MERRA2/merra2.aerclim.2003-2014.m08.nc aeroclim.m08.nc
+cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/MERRA2/merra2.aerclim.2003-2014.m09.nc aeroclim.m09.nc
+cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/MERRA2/merra2.aerclim.2003-2014.m10.nc aeroclim.m10.nc
+cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/MERRA2/merra2.aerclim.2003-2014.m11.nc aeroclim.m11.nc
+cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/MERRA2/merra2.aerclim.2003-2014.m12.nc aeroclim.m12.nc
+
+cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_BC.v1_3.dat  optics_BC.dat
+cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_DU.v15_3.dat optics_DU.dat
+cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_OC.v1_3.dat  optics_OC.dat
+cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_SS.v3_3.dat  optics_SS.dat
+cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_SU.v1_3.dat  optics_SU.dat

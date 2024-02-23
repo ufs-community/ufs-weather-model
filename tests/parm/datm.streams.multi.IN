@@ -1,0 +1,61 @@
+stream_info:               CLMGSWP3v1.Solar01 CLMGSWP3v1.Precip02 CLMGSWP3v1.TPQW03 topo.observed04
+
+taxmode01:                 limit
+mapalgo01:                 bilinear
+tInterpAlgo01:             coszen
+readMode01:                single
+dtlimit01:                 1.5
+stream_offset01:           0
+yearFirst01:               @[SDATE] 
+yearLast01:                @[EDATE]
+yearAlign01:               @[SDATE]
+stream_vectors01:          null
+stream_mesh_file01:        @[MESH_ATM_DATA]
+stream_lev_dimname01:      null
+stream_data_files01:       @[DATA_ATM01]
+stream_data_variables01:   "FSDS Faxa_swdn"
+
+taxmode02:                 limit
+mapalgo02:                 bilinear
+tInterpAlgo02:             nearest
+readMode02:                single
+dtlimit02:                 1.5
+stream_offset02:           0
+yearFirst02:               @[SDATE]
+yearLast02:                @[EDATE]
+yearAlign02:               @[SDATE]
+stream_vectors02:          null
+stream_mesh_file02:        @[MESH_ATM_DATA]
+stream_lev_dimname02:      null
+stream_data_files02:       @[DATA_ATM02]
+stream_data_variables02:   "PRECTmms Faxa_precn"
+
+taxmode03:                 limit
+mapalgo03:                 bilinear
+tInterpAlgo03:             linear 
+readMode03:                single
+dtlimit03:                 1.5
+stream_offset03:           0
+yearFirst03:               @[SDATE]
+yearLast03:                @[EDATE]
+yearAlign03:               @[SDATE]
+stream_vectors03:          null
+stream_mesh_file03:        @[MESH_ATM_DATA]
+stream_lev_dimname03:      null
+stream_data_files03:       @[DATA_ATM03]
+stream_data_variables03:   "TBOT Sa_tbot" "WIND Sa_wind" "QBOT Sa_shum" "PSRF Sa_pbot" "PSRF Sa_pslv" "FLDS Faxa_lwdn"
+
+taxmode04:                 cycle
+mapalgo04:                 bilinear
+tInterpAlgo04:             lower
+readMode04:                single
+dtlimit04:                 1.5
+stream_offset04:           0
+yearFirst04:               1
+yearLast04:                1
+yearAlign04:               1
+stream_vectors04:          null
+stream_mesh_file04:        @[MESH_ATM_TOPO]
+stream_lev_dimname04:      null
+stream_data_files04:       @[DATA_ATM04]
+stream_data_variables04:   "TOPO Sa_topo"
