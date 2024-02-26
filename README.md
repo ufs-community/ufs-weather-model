@@ -18,18 +18,21 @@ The top level directory structure groups source code and input files as follow:
 | --------------            | ------- |
 | ```LICENSE.md```          | A copy of the GNU Lesser General Public License, Version 3. |
 | ```README.md```           | This file with basic pointers to more information. |
-| ```NEMS/```               | Contains NOAA Environmental Modeling System source code and nems compset run scripts. |
+| ```AQM/```                | Contains air quality modeling component |
 | ```CMEPS-interface/```    | Contains CMEPS mediator |
-| ```FV3/```                | Contains FV3 atmosphere model component including FV3 dynamical core, dynamics to physics driver, physics and IO. |
-| ```DATM/```               | Contains Data Atmosphere model component |
-| ```WW3/```                | Contains community wave modeling framework WW3. |
-| ```MOM6-interface/```     | Contains MOM6 ocean model component |
 | ```CICE-interface/```     | Contains CICE sea-ice model component including CICE6 and Icepack |
-| ```stochastic_physics/``` | Contains the stochastic physics source code. |
+| ```CDEPS-interface/```    | Contains CDEPS data components, including data-atmosphere (DATM) and data-ocean (DOCN) model components|
+| ```FV3/```                | Contains FV3 atmosphere model component including FV3 dynamical core, dynamics to physics driver, physics and IO. |
+| ```GOCART/```             | Contains GOCART aerosol model component |
+| ```HYCOM-interface/```    | Contains HYCOM ocean model component |
+| ```MOM6-interface/```     | Contains MOM6 ocean model component |
+| ```NOAHMP-interface/```   | Contains Noah-MP land model component |
+| ```WW3/```                | Contains community wave modeling framework WW3 |
+| ```stochastic_physics/``` | Contains the stochastic physics source code |
 | ```cmake/```              | Contains compile option files on various platforms. |
 | ```modulefiles/```        | Contains module files on various platforms. |
 | ```tests/```              | Regression and unit testing framework scripts. |
-| ```build.sh```            | Script to build the model executable. (also used by `tests/`) |
+| ```build.sh```            | Script to build the model executable (also used by `tests/`) |
 
 E.g. use of `build.sh` to build the coupled model with `FV3_GFS_v15p2` as the CCPP suite.
 ```

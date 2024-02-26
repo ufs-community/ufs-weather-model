@@ -1,73 +1,41 @@
 #!/bin/bash
 
-# Do not set ACCNR here or it will break the per-system defaults in rt.sh.
+# The authoritative copy of this script lives in the ufs-weather-model at:
+# https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/detect_machine.sh
+# If any local modifications are made or new platform support added,
+# please consider opening an issue and a PR to the ufs-weather-model
+# so that this copy remains in sync with its authoritative source
+#
+# Thank you for your contribution
 
+# If the MACHINE_ID variable is set, skip this script.
+[[ -n ${MACHINE_ID:-} ]] && return
+
+# First detect w/ hostname
 case $(hostname -f) in
 
-  clogin01.cactus.wcoss2.ncep.noaa.gov)	  MACHINE_ID=wcoss2 ;; ### cactus
-  clogin02.cactus.wcoss2.ncep.noaa.gov)	  MACHINE_ID=wcoss2 ;; ### cactus
-  clogin03.cactus.wcoss2.ncep.noaa.gov)	  MACHINE_ID=wcoss2 ;; ### cactus
-  clogin04.cactus.wcoss2.ncep.noaa.gov)	  MACHINE_ID=wcoss2 ;; ### cactus
-  clogin05.cactus.wcoss2.ncep.noaa.gov)	  MACHINE_ID=wcoss2 ;; ### cactus
-  clogin06.cactus.wcoss2.ncep.noaa.gov)	  MACHINE_ID=wcoss2 ;; ### cactus
-  clogin07.cactus.wcoss2.ncep.noaa.gov)	  MACHINE_ID=wcoss2 ;; ### cactus
-  clogin08.cactus.wcoss2.ncep.noaa.gov)	  MACHINE_ID=wcoss2 ;; ### cactus
-  clogin09.cactus.wcoss2.ncep.noaa.gov)	  MACHINE_ID=wcoss2 ;; ### cactus
+  adecflow0[12].acorn.wcoss2.ncep.noaa.gov)  MACHINE_ID=acorn ;; ### acorn
+  alogin0[123].acorn.wcoss2.ncep.noaa.gov)    MACHINE_ID=acorn ;; ### acorn
+  clogin0[1-9].cactus.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### cactus01-9
+  clogin10.cactus.wcoss2.ncep.noaa.gov)      MACHINE_ID=wcoss2 ;; ### cactus10
+  dlogin0[1-9].dogwood.wcoss2.ncep.noaa.gov) MACHINE_ID=wcoss2 ;; ### dogwood01-9
+  dlogin10.dogwood.wcoss2.ncep.noaa.gov)     MACHINE_ID=wcoss2 ;; ### dogwood10
 
-  dlogin01.dogwood.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### dogwood
-  dlogin02.dogwood.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### dogwood
-  dlogin03.dogwood.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### dogwood
-  dlogin04.dogwood.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### dogwood
-  dlogin05.dogwood.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### dogwood
-  dlogin06.dogwood.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### dogwood
-  dlogin07.dogwood.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### dogwood
-  dlogin08.dogwood.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### dogwood
-  dlogin09.dogwood.wcoss2.ncep.noaa.gov)  MACHINE_ID=wcoss2 ;; ### dogwood
+  gaea5[1-8])          MACHINE_ID=gaea ;; ### gaea51-58
+  gaea5[1-8].ncrc.gov) MACHINE_ID=gaea ;; ### gaea51-58
 
-  alogin01.acorn.wcoss2.ncep.noaa.gov)  MACHINE_ID=acorn ;; ### acorn
-  alogin02.acorn.wcoss2.ncep.noaa.gov)  MACHINE_ID=acorn ;; ### acorn
-  alogin03.acorn.wcoss2.ncep.noaa.gov)  MACHINE_ID=acorn ;; ### acorn
-
-  gaea51.ncrc.gov)         MACHINE_ID=gaea-c5 ;; ### gaea51
-  gaea52.ncrc.gov)         MACHINE_ID=gaea-c5 ;; ### gaea52
-  gaea53.ncrc.gov)         MACHINE_ID=gaea-c5 ;; ### gaea53
-  gaea54.ncrc.gov)         MACHINE_ID=gaea-c5 ;; ### gaea54
-  gaea55.ncrc.gov)         MACHINE_ID=gaea-c5 ;; ### gaea55
-  gaea56.ncrc.gov)         MACHINE_ID=gaea-c5 ;; ### gaea56
-  gaea57.ncrc.gov)         MACHINE_ID=gaea-c5 ;; ### gaea57
-  gaea58.ncrc.gov)         MACHINE_ID=gaea-c5 ;; ### gaea58
-
-  hfe01)                   MACHINE_ID=hera ;; ### hera01
-  hfe02)                   MACHINE_ID=hera ;; ### hera02
-  hfe03)                   MACHINE_ID=hera ;; ### hera03
-  hfe04)                   MACHINE_ID=hera ;; ### hera04
-  hfe05)                   MACHINE_ID=hera ;; ### hera05
-  hfe06)                   MACHINE_ID=hera ;; ### hera06
-  hfe07)                   MACHINE_ID=hera ;; ### hera07
-  hfe08)                   MACHINE_ID=hera ;; ### hera08
-  hfe09)                   MACHINE_ID=hera ;; ### hera09
-  hfe10)                   MACHINE_ID=hera ;; ### hera10
-  hfe11)                   MACHINE_ID=hera ;; ### hera11
-  hfe12)                   MACHINE_ID=hera ;; ### hera12
-  hecflow01)               MACHINE_ID=hera ;; ### heraecflow01
+  hfe0[1-9]) MACHINE_ID=hera ;; ### hera01-09
+  hfe1[0-2]) MACHINE_ID=hera ;; ### hera10-12
+  hecflow01) MACHINE_ID=hera ;; ### heraecflow01
 
   s4-submit.ssec.wisc.edu) MACHINE_ID=s4 ;; ### s4
 
-  fe1)                     MACHINE_ID=jet ;; ### jet01
-  fe2)                     MACHINE_ID=jet ;; ### jet02
-  fe3)                     MACHINE_ID=jet ;; ### jet03
-  fe4)                     MACHINE_ID=jet ;; ### jet04
-  fe5)                     MACHINE_ID=jet ;; ### jet05
-  fe6)                     MACHINE_ID=jet ;; ### jet06
-  fe7)                     MACHINE_ID=jet ;; ### jet07
-  fe8)                     MACHINE_ID=jet ;; ### jet08
-  tfe1)                    MACHINE_ID=jet ;; ### jet09
-  tfe2)                    MACHINE_ID=jet ;; ### jet10
+  fe[1-8]) MACHINE_ID=jet ;; ### jet01-8
+  tfe[12]) MACHINE_ID=jet ;; ### tjet1-2
 
-  Orion-login-1.HPC.MsState.Edu) MACHINE_ID=orion ;; ### orion1
-  Orion-login-2.HPC.MsState.Edu) MACHINE_ID=orion ;; ### orion2
-  Orion-login-3.HPC.MsState.Edu) MACHINE_ID=orion ;; ### orion3
-  Orion-login-4.HPC.MsState.Edu) MACHINE_ID=orion ;; ### orion4
+  Orion-login-[1-4].HPC.MsState.Edu) MACHINE_ID=orion ;; ### orion1-4
+
+  [Hh]ercules-login-[1-4].[Hh][Pp][Cc].[Mm]s[Ss]tate.[Ee]du) MACHINE_ID=hercules ;; ### hercules1-4
 
   derecho1.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho1
   derecho2.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho2
@@ -77,31 +45,57 @@ case $(hostname -f) in
   derecho6.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho6
   derecho7.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho7
   derecho8.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho8
+  
+  login[1-4].stampede2.tacc.utexas.edu) MACHINE_ID=stampede ;; ### stampede1-4
 
-  Hercules-login-1.HPC.MsState.Edu) MACHINE_ID=hercules;; ### hercules1 
-  Hercules-login-2.HPC.MsState.Edu) MACHINE_ID=hercules;; ### hercules2 
-  Hercules-login-3.HPC.MsState.Edu) MACHINE_ID=hercules;; ### hercules3
-  Hercules-login-4.HPC.MsState.Edu) MACHINE_ID=hercules;; ### hercules4
+  login0[1-2].expanse.sdsc.edu) MACHINE_ID=expanse ;; ### expanse1-2
 
-  login1.stampede2.tacc.utexas.edu) MACHINE_ID=stampede ;; ### stampede1
-  login2.stampede2.tacc.utexas.edu) MACHINE_ID=stampede ;; ### stampede2
-  login3.stampede2.tacc.utexas.edu) MACHINE_ID=stampede ;; ### stampede3
-  login4.stampede2.tacc.utexas.edu) MACHINE_ID=stampede ;; ### stampede4
-  
-  
-  login01.expanse.sdsc.edu) MACHINE_ID=expanse ;; ### expanse1
-  login02.expanse.sdsc.edu) MACHINE_ID=expanse ;; ### expanse2
-  
+  discover3[1-5].prv.cube) MACHINE_ID=discover ;; ### discover31-35
+  *) MACHINE_ID=UNKNOWN ;;  # Unknown platform
 esac
 
-case $(echo ${PW_CSP:-nono}) in
+if [[ ${MACHINE_ID} == "UNKNOWN" ]]; then 
+   case ${PW_CSP:-} in
+      "aws" | "google" | "azure") MACHINE_ID=noaacloud ;;
+      *) PW_CSP="UNKNOWN"
+   esac
+fi
 
-  aws) MACHINE_ID=aws ;; ### parallelworks aws
-  google)  MACHINE_ID=gcp ;; ### parallelworks gcp
-  azure)  MACHINE_ID=azure ;; ### parallelworks azure
-  
-esac
-[[ ${MACHINE_ID} =~ "aws" || ${MACHINE_ID} =~ "gcp" || ${MACHINE_ID} =~ "azure" ]] && MACHINE_ID=noaacloud
+# Overwrite auto-detect with MACHINE if set
+MACHINE_ID=${MACHINE:-${MACHINE_ID}}
 
-# Overwrite auto-detect with RT_MACHINE if set
-MACHINE_ID=${RT_MACHINE:-${MACHINE_ID}}
+# If MACHINE_ID is no longer UNKNNOWN, return it
+if [[ "${MACHINE_ID}" != "UNKNOWN" ]]; then
+  return
+fi
+
+# Try searching based on paths since hostname may not match on compute nodes
+if [[ -d /lfs/h3 ]]; then
+  # We are on NOAA Cactus or Dogwood
+  MACHINE_ID=wcoss2
+elif [[ -d /lfs/h1 && ! -d /lfs/h3 ]]; then
+  # We are on NOAA TDS Acorn
+  MACHINE_ID=acorn
+elif [[ -d /mnt/lfs1 ]]; then
+  # We are on NOAA Jet
+  MACHINE_ID=jet
+elif [[ -d /scratch1 ]]; then
+  # We are on NOAA Hera
+  MACHINE_ID=hera
+elif [[ -d /work ]]; then
+  # We are on MSU Orion or Hercules
+  if [[ -d /apps/other ]]; then
+    # We are on Hercules
+    MACHINE_ID=hercules
+  else
+    MACHINE_ID=orion
+  fi
+elif [[ -d /gpfs && -d /ncrc ]]; then
+  # We are on GAEA.
+  MACHINE_ID=gaea
+elif [[ -d /data/prod ]]; then
+  # We are on SSEC's S4
+  MACHINE_ID=s4
+else
+  echo WARNING: UNKNOWN PLATFORM 1>&2
+fi
