@@ -101,9 +101,6 @@ interrupt_job() {
   elif [[ $SCHEDULER = 'slurm' ]]; then
     echo "run_util.sh: interrupt_job slurm_id = ${slurm_id}"
     scancel ${slurm_id}
-  elif [[ $SCHEDULER = 'lsf' ]]; then
-    echo "run_util.sh: interrupt_job bsub_id = ${bsub_id}"
-    bkill ${bsub_id}
   else
     echo "run_util.sh: interrupt_job unknown SCHEDULER $SCHEDULER"
   fi
@@ -133,11 +130,6 @@ submit_and_wait() {
     re='Submitted batch job ([0-9]+)'
     [[ "${slurmout}" =~ $re ]] && slurm_id=${BASH_REMATCH[1]}
     echo "Job id ${slurm_id}"
-  elif [[ $SCHEDULER = 'lsf' ]]; then
-    bsubout=$( bsub < $job_card )
-    re='Job <([0-9]+)> is submitted to queue <(.+)>.'
-    [[ "${bsubout}" =~ $re ]] && bsub_id=${BASH_REMATCH[1]}
-    echo "Job id ${bsub_id}"
   else
     echo "Unknown SCHEDULER $SCHEDULER"
     exit 1
@@ -148,14 +140,12 @@ submit_and_wait() {
   local job_running=0
   until [[ $job_running -eq 1 ]]
   do
-    echo "TEST ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} is waiting to enter the queue"
+    echo "Job is waiting to enter the queue"
     [[ ${ECFLOW:-false} == true ]] && ecflow_client --label=job_status "waiting to enter the queue"
     if [[ $SCHEDULER = 'pbs' ]]; then
       job_running=$( qstat ${qsub_id} | grep ${qsub_id} | wc -l )
     elif [[ $SCHEDULER = 'slurm' ]]; then
       job_running=$( squeue -u ${USER} -j ${slurm_id} | grep ${slurm_id} | wc -l)
-    elif [[ $SCHEDULER = 'lsf' ]]; then
-      job_running=$( bjobs ${bsub_id} | grep ${bsub_id} | wc -l)
     else
       echo "Unknown SCHEDULER $SCHEDULER"
       exit 1
@@ -170,13 +160,11 @@ submit_and_wait() {
     jobid=${qsub_id}
   elif [[ $SCHEDULER = 'slurm' ]]; then
     jobid=${slurm_id}
-  elif [[ $SCHEDULER = 'lsf' ]]; then
-    jobid=${bsub_id}
   else
     echo "Unknown SCHEDULER $SCHEDULER"
     exit 1
   fi
-  echo "TEST ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} is submitted "
+  echo "Job is submitted "
   if [[ ${ECFLOW:-false} == true ]]; then
     ecflow_client --label=job_id "${jobid}"
     ecflow_client --label=job_status "submitted"
@@ -192,8 +180,6 @@ submit_and_wait() {
       job_running=$( qstat ${qsub_id} | grep ${qsub_id} | wc -l )
     elif [[ $SCHEDULER = 'slurm' ]]; then
       job_running=$( squeue -u ${USER} -j ${slurm_id} | grep ${slurm_id} | wc -l)
-    elif [[ $SCHEDULER = 'lsf' ]]; then
-      job_running=$( bjobs ${bsub_id} | grep ${bsub_id} | wc -l)
     else
       echo "Unknown SCHEDULER $SCHEDULER"
       exit 1
@@ -241,37 +227,13 @@ submit_and_wait() {
         fi
       fi
 
-    elif [[ $SCHEDULER = 'lsf' ]]; then
-
-      status=$( bjobs ${bsub_id} 2>/dev/null | grep ${bsub_id} | awk '{print $3}' ); status=${status:--}
-      if   [[ $status = 'PEND' ]];  then
-        status_label='pending'
-      elif [[ $status = 'RUN'  ]];  then
-        status_label='running'
-      elif [[ $status = 'DONE'  ]];  then
-        status_label='finished'
-        test_status='DONE'
-      elif [[ $status = 'EXIT' ]];  then
-        status_label='failed'
-        test_status='FAIL'
-      else
-        echo "bsub unknown status ${status}"
-        status_label='finished'
-        test_status='DONE'
-        exit_status=$( bjobs ${bsub_id} 2>/dev/null | grep ${bsub_id} | awk '{print $3}' ); status=${status:--}
-        if [[ $exit_status = 'EXIT' ]];  then
-          status_label='failed'
-          test_status='FAIL'
-        fi
-      fi
-
     else
       echo "Unknown SCHEDULER $SCHEDULER"
       exit 1
 
     fi
 
-    echo "$n min. TEST ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} is ${status_label},  status: $status jobid ${jobid}"
+    echo "$n min. Job is ${status_label},  status: $status jobid ${jobid}"
     [[ ${ECFLOW:-false} == true ]] && ecflow_client --label=job_status "$status_label"
 
     if [[ $test_status = 'FAIL' || $test_status = 'DONE' ]]; then
@@ -283,9 +245,9 @@ submit_and_wait() {
   done
 
   if [[ $test_status = 'FAIL' ]]; then
-    echo "Test ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} FAIL" >> ${RT_LOG}
+    echo "Job FAIL" >> ${RT_LOG}
     echo;echo;echo                           >> ${RT_LOG}
-    echo "Test ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} FAIL"
+    echo "Job FAIL"
 
     if [[ $ROCOTO == true || $ECFLOW == true ]]; then
       exit 1
@@ -311,11 +273,11 @@ check_results() {
   echo                                                                      >  ${RT_LOG}
   echo "baseline dir = ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}"                 >> ${RT_LOG}
   echo "working dir  = ${RUNDIR}"                                           >> ${RT_LOG}
-  echo "Checking test ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} results ...."  >> ${RT_LOG}
+  echo "Checking test ${TEST_ID} results ...."  >> ${RT_LOG}
   echo
   echo "baseline dir = ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}"
   echo "working dir  = ${RUNDIR}"
-  echo "Checking test ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} results ...."
+  echo "Checking test ${TEST_ID} results ...."
 
   if [[ ${CREATE_BASELINE} = false ]]; then
     #
@@ -338,34 +300,36 @@ check_results() {
         test_status='FAIL'
 
       else
-
-        cmp ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/$i ${RUNDIR}/$i >/dev/null 2>&1 && d=$? || d=$?
-        if [[ $d -eq 2 ]]; then
-          echo "....CMP ERROR" >> ${RT_LOG}
-          echo "....CMP ERROR"
-          exit 1
-        fi
-
-        if [[ $d -eq 1 && ${i##*.} == 'nc' ]] ; then
-          if [[ " orion hercules hera wcoss2 acorn derecho gaea-c5 jet s4 noaacloud " =~ " ${MACHINE_ID} " ]]; then
-            printf ".......ALT CHECK.." >> ${RT_LOG}
-            printf ".......ALT CHECK.."
+        if [[ ${i##*.} == 'nc' ]] ; then
+          if [[ " orion hercules hera wcoss2 acorn derecho gaea jet s4 noaacloud " =~ " ${MACHINE_ID} " ]]; then
+            printf "USING NCCMP.." >> ${RT_LOG}
+            printf "USING NCCMP.."
               if [[ $CMP_DATAONLY == false ]]; then
                 nccmp -d -S -q -f -g -B --Attribute=checksum --warn=format ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i} ${RUNDIR}/${i} > ${i}_nccmp.log 2>&1 && d=$? || d=$?
               else
                 nccmp -d -S -q -f -B --Attribute=checksum --warn=format ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i} ${RUNDIR}/${i} > ${i}_nccmp.log 2>&1 && d=$? || d=$?
               fi
               if [[ $d -ne 0 && $d -ne 1 ]]; then
-                echo "....ERROR" >> ${RT_LOG}
-                echo "....ERROR"
-                exit 1
+                printf "....ERROR" >> ${RT_LOG}
+                printf "....ERROR"
+                test_status='FAIL'
               fi
           fi
+        else
+          printf "USING CMP.." >> ${RT_LOG}
+          printf "USING CMP.."
+          cmp ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/$i ${RUNDIR}/$i >/dev/null 2>&1 && d=$? || d=$?
+          if [[ $d -eq 2 ]]; then
+            printf "....ERROR" >> ${RT_LOG}
+            printf "....ERROR"
+            test_status='FAIL'
+          fi
+
         fi
 
         if [[ $d -ne 0 ]]; then
-          echo "....NOT OK" >> ${RT_LOG}
-          echo "....NOT OK"
+          echo "....NOT IDENTICAL" >> ${RT_LOG}
+          echo "....NOT IDENTICAL"
           test_status='FAIL'
         else
           echo "....OK" >> ${RT_LOG}
@@ -380,8 +344,8 @@ check_results() {
     #
     # --- create baselines
     #
-    echo;echo "Moving baseline ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} files ...."
-    echo;echo "Moving baseline ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} files ...." >> ${RT_LOG}
+    echo;echo "Moving baseline ${TEST_ID} files ...."
+    echo;echo "Moving baseline ${TEST_ID} files ...." >> ${RT_LOG}
 
     for i in ${LIST_FILES} ; do
       printf %s " Moving " $i " ....."
@@ -411,13 +375,13 @@ check_results() {
       TRIES=" Tries: $ECF_TRYNO"
     fi
   fi
-  echo "Test ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} ${test_status}${TRIES}" >> ${RT_LOG}
+  echo "Test ${TEST_ID} ${test_status}${TRIES}" >> ${RT_LOG}
   echo                                                                      >> ${RT_LOG}
-  echo "Test ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} ${test_status}${TRIES}"
+  echo "Test ${TEST_ID} ${test_status}${TRIES}"
   echo
 
   if [[ $test_status = 'FAIL' ]]; then
-    echo "${TEST_NR} ${TEST_NAME}_${RT_COMPILER} failed in check_result" >> $PATHRT/fail_test_${TEST_NR}
+    echo "${TEST_ID} failed in check_result" >> $PATHRT/fail_test_${TEST_ID}
 
     if [[ $ROCOTO = true || $ECFLOW == true ]]; then
       exit 1
@@ -438,8 +402,6 @@ kill_job() {
     qdel ${jobid}
   elif [[ $SCHEDULER = 'slurm' ]]; then
     scancel ${jobid}
-  elif [[ $SCHEDULER = 'lsf' ]]; then
-    bkill ${jobid}
   fi
 }
 
@@ -469,20 +431,20 @@ rocoto_create_compile_task() {
   if [[ ${MACHINE_ID} == s4 ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
-  if [[ $MACHINE_ID == gaea-c5 ]]; then
+  if [[ $MACHINE_ID == gaea ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
 
 
   cat << EOF >> $ROCOTO_XML
-  <task name="compile_${COMPILE_NR}" maxtries="${ROCOTO_COMPILE_MAXTRIES:-3}">
-    <command>&PATHRT;/run_compile.sh &PATHRT; &RUNDIR_ROOT; "${MAKE_OPT}" ${COMPILE_NR}</command>
-    <jobname>compile_${COMPILE_NR}</jobname>
+  <task name="compile_${COMPILE_ID}" maxtries="${ROCOTO_COMPILE_MAXTRIES:-3}">
+    <command>&PATHRT;/run_compile.sh &PATHRT; &RUNDIR_ROOT; "${MAKE_OPT}" ${COMPILE_ID} > &LOG;/compile_${COMPILE_ID}.log</command>
+    <jobname>compile_${COMPILE_ID}</jobname>
     <account>${ACCNR}</account>
     <queue>${COMPILE_QUEUE}</queue>
 EOF
 
-  if [[ "$MACHINE_ID" == gaea-c5 ]] ; then
+  if [[ "$MACHINE_ID" == gaea ]] ; then
   cat << EOF >> $ROCOTO_XML
     <native>--clusters=es</native>
     <partition>eslogin_c5</partition>
@@ -496,7 +458,7 @@ EOF
   cat << EOF >> $ROCOTO_XML
     <cores>${BUILD_CORES}</cores>
     <walltime>${BUILD_WALLTIME}</walltime>
-    <join>&RUNDIR_ROOT;/compile_${COMPILE_NR}.log</join>
+    <join>&RUNDIR_ROOT;/compile_${COMPILE_ID}.log</join>
     ${NATIVE}
   </task>
 EOF
@@ -505,9 +467,9 @@ EOF
 rocoto_create_run_task() {
 
   if [[ $DEP_RUN != '' ]]; then
-    DEP_STRING="<and> <taskdep task=\"compile_${COMPILE_NR}\"/> <taskdep task=\"${DEP_RUN}\"/> </and>"
+    DEP_STRING="<and> <taskdep task=\"compile_${COMPILE_ID}\"/> <taskdep task=\"${DEP_RUN}\"/> </and>"
   else
-    DEP_STRING="<taskdep task=\"compile_${COMPILE_NR}\"/>"
+    DEP_STRING="<taskdep task=\"compile_${COMPILE_ID}\"/>"
   fi
 
   CORES=$(( ${TASKS} * ${THRD} ))
@@ -518,15 +480,15 @@ rocoto_create_run_task() {
   NATIVE=""
 
   cat << EOF >> $ROCOTO_XML
-    <task name="${TEST_NAME}_${RT_COMPILER}${RT_SUFFIX}" maxtries="${ROCOTO_TEST_MAXTRIES:-3}">
+    <task name="${TEST_ID}${RT_SUFFIX}" maxtries="${ROCOTO_TEST_MAXTRIES:-3}">
       <dependency> $DEP_STRING </dependency>
-      <command>&PATHRT;/run_test.sh &PATHRT; &RUNDIR_ROOT; ${TEST_NAME} ${TEST_NR} ${COMPILE_NR} </command>
-      <jobname>${TEST_NAME}_${RT_COMPILER}${RT_SUFFIX}</jobname>
+      <command>&PATHRT;/run_test.sh &PATHRT; &RUNDIR_ROOT; ${TEST_NAME} ${TEST_ID} ${COMPILE_ID} > &LOG;/run_${TEST_ID}${RT_SUFFIX}.log </command>
+      <jobname>${TEST_ID}${RT_SUFFIX}</jobname>
       <account>${ACCNR}</account>
       ${ROCOTO_NODESIZE:+<nodesize>$ROCOTO_NODESIZE</nodesize>}
 EOF
 
-  if [[ "$MACHINE_ID" == gaea-c5 ]] ; then
+  if [[ "$MACHINE_ID" == gaea ]] ; then
   cat << EOF >> $ROCOTO_XML
       <native>--clusters=${PARTITION}</native>
       <native>--partition=batch</native>
@@ -541,8 +503,8 @@ EOF
   cat << EOF >> $ROCOTO_XML
       <nodes>${NODES}:ppn=${TPN}</nodes>
       <walltime>00:${WLCLK}:00</walltime>
-      <stdout>&RUNDIR_ROOT;/${TEST_NAME}_${RT_COMPILER}${RT_SUFFIX}.out</stdout>
-      <stderr>&RUNDIR_ROOT;/${TEST_NAME}_${RT_COMPILER}${RT_SUFFIX}.err</stderr>
+      <stdout>&RUNDIR_ROOT;/${TEST_ID}${RT_SUFFIX}.out</stdout>
+      <stderr>&RUNDIR_ROOT;/${TEST_ID}${RT_SUFFIX}.err</stderr>
       ${NATIVE}
     </task>
 EOF
@@ -617,13 +579,13 @@ ecflow_create_compile_task() {
   new_compile=true
 
 
-  cat << EOF > ${ECFLOW_RUN}/${ECFLOW_SUITE}/compile_${COMPILE_NR}.ecf
+  cat << EOF > ${ECFLOW_RUN}/${ECFLOW_SUITE}/compile_${COMPILE_ID}.ecf
 %include <head.h>
-$PATHRT/run_compile.sh ${PATHRT} ${RUNDIR_ROOT} "${MAKE_OPT}" $COMPILE_NR > ${LOG_DIR}/compile_${COMPILE_NR}.log 2>&1 &
+$PATHRT/run_compile.sh ${PATHRT} ${RUNDIR_ROOT} "${MAKE_OPT}" $COMPILE_ID > ${LOG_DIR}/compile_${COMPILE_ID}.log 2>&1 &
 %include <tail.h>
 EOF
 
-  echo "  task compile_${COMPILE_NR}" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+  echo "  task compile_${COMPILE_ID}" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   echo "      label build_options '${MAKE_OPT}'" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   echo "      label job_id ''" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   echo "      label job_status ''" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
@@ -632,20 +594,20 @@ EOF
 
 ecflow_create_run_task() {
 
-  cat << EOF > ${ECFLOW_RUN}/${ECFLOW_SUITE}/${TEST_NAME}_${RT_COMPILER}${RT_SUFFIX}.ecf
+  cat << EOF > ${ECFLOW_RUN}/${ECFLOW_SUITE}/${TEST_ID}${RT_SUFFIX}.ecf
 %include <head.h>
-$PATHRT/run_test.sh ${PATHRT} ${RUNDIR_ROOT} ${TEST_NAME} ${TEST_NR} ${COMPILE_NR} > ${LOG_DIR}/run_${TEST_NR}_${TEST_NAME}_${RT_COMPILER}${RT_SUFFIX}.log 2>&1 &
+$PATHRT/run_test.sh ${PATHRT} ${RUNDIR_ROOT} ${TEST_NAME} ${TEST_ID} ${COMPILE_ID} > ${LOG_DIR}/run_${TEST_ID}${RT_SUFFIX}.log 2>&1 &
 %include <tail.h>
 EOF
 
-  echo "    task ${TEST_NAME}_${RT_COMPILER}${RT_SUFFIX}" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+  echo "    task ${TEST_ID}${RT_SUFFIX}" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   echo "      label job_id ''"                            >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   echo "      label job_status ''"                        >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   echo "      inlimit max_jobs"                           >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   if [[ $DEP_RUN != '' ]]; then
-    echo "      trigger compile_${COMPILE_NR} == complete and ${DEP_RUN} == complete" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+    echo "      trigger compile_${COMPILE_ID} == complete and ${DEP_RUN} == complete" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   else
-    echo "      trigger compile_${COMPILE_NR} == complete" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
+    echo "      trigger compile_${COMPILE_ID} == complete" >> ${ECFLOW_RUN}/${ECFLOW_SUITE}.def
   fi
 }
 

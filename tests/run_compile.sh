@@ -15,42 +15,38 @@ cleanup() {
 }
 
 write_fail_test() {
-  echo "compile_${COMPILE_NR} failed in run_compile" >> $PATHRT/fail_compile_${COMPILE_NR}
+  echo "compile_${COMPILE_ID} failed in run_compile" >> $PATHRT/fail_compile_${COMPILE_ID}
   exit 1
 }
 
 remove_fail_test() {
-    echo "Removing test failure flag file for compile_${COMPILE_NR}"
-    rm -f $PATHRT/fail_compile_${COMPILE_NR}
+    echo "Removing test failure flag file for compile_${COMPILE_ID}"
+    rm -f $PATHRT/fail_compile_${COMPILE_ID}
 }
 
 if [[ $# != 4 ]]; then
-  echo "Usage: $0 PATHRT RUNDIR_ROOT MAKE_OPT COMPILE_NR"
+  echo "Usage: $0 PATHRT RUNDIR_ROOT MAKE_OPT COMPILE_ID"
   exit 1
 fi
 
 export PATHRT=$1
 export RUNDIR_ROOT=$2
 export MAKE_OPT=$3
-export COMPILE_NR=$4
+export COMPILE_ID=$4
 
 cd ${PATHRT}
 remove_fail_test
 
-[[ -e ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env ]] && source ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env
+[[ -e ${RUNDIR_ROOT}/compile_${COMPILE_ID}.env ]] && source ${RUNDIR_ROOT}/compile_${COMPILE_ID}.env
 source default_vars.sh
-[[ -e ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env ]] && source ${RUNDIR_ROOT}/compile_${COMPILE_NR}.env
+[[ -e ${RUNDIR_ROOT}/compile_${COMPILE_ID}.env ]] && source ${RUNDIR_ROOT}/compile_${COMPILE_ID}.env
 
+export JBNME="compile_${COMPILE_ID}"
+export RUNDIR=${RUNDIR_ROOT}/compile_${COMPILE_ID}
 
+echo -n "${JBNME}, $( date +%s )," > ${LOG_DIR}/compile_${COMPILE_ID}_timestamp.txt
 
-export TEST_NAME=compile
-export TEST_NR=${COMPILE_NR}
-export JBNME="compile_${COMPILE_NR}"
-export RUNDIR=${RUNDIR_ROOT}/${TEST_NAME}_${TEST_NR}
-
-echo -n "${JBNME}, $( date +%s )," > ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
-
-export RT_LOG=${LOG_DIR}/compile_${TEST_NR}.log
+export RT_LOG=${LOG_DIR}/compile_${COMPILE_ID}.log
 
 source rt_utils.sh
 source atparse.bash
@@ -96,10 +92,10 @@ else
   # relying on bash-specific extensions or non-standard OS features.
 fi
 
-ls -l ${PATHTR}/tests/fv3_${COMPILE_NR}.exe
+ls -l ${PATHTR}/tests/fv3_${COMPILE_ID}.exe
 
 cp ${RUNDIR}/compile_*_time.log ${LOG_DIR}
-cat ${RUNDIR}/job_timestamp.txt >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+cat ${RUNDIR}/job_timestamp.txt >> ${LOG_DIR}/compile_${COMPILE_ID}_timestamp.txt
 
 remove_fail_test
 
@@ -107,7 +103,7 @@ remove_fail_test
 # End compile job
 ################################################################################
 
-echo " $( date +%s ), 1" >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+echo " $( date +%s ), 1" >> ${LOG_DIR}/compile_${COMPILE_ID}_timestamp.txt
 
 elapsed=$SECONDS
-echo "Elapsed time $elapsed seconds. Compile ${COMPILE_NR}"
+echo "Elapsed time $elapsed seconds. Compile ${COMPILE_ID}"
