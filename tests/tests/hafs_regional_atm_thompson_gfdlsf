@@ -1,0 +1,91 @@
+###############################################################################
+#
+#  HAFS regional atmosphere only using the Thompson microphysics scheme and GFDL surface layer scheme
+#
+###############################################################################
+
+export TEST_DESCR="Compare the results from HAFS regional atmosphere only using the Thompson microphysics scheme and GFDL surface layer scheme with previous trunk version"
+
+export CNTL_DIR=hafs_regional_atm_thompson_gfdlsf
+
+export LIST_FILES="atmf006.nc \
+                   sfcf006.nc"
+
+export_fv3
+export_hafs
+
+export HAFS=true
+export FHMAX=6
+export RESTART_N=${FHMAX}
+export atm_omp_num_threads=2
+export DT_ATMOS=180
+export DT_INNER=${DT_ATMOS}
+export IDEFLATE=1
+export NFHMAX_HF=-1
+export NFHOUT_HF=3
+export NFHOUT=3
+export OUTPUT_FILE="'netcdf' 'netcdf'"
+export SDAY=29
+export SHOUR=00
+export SMONTH=08
+export SYEAR=2019
+export WRTTASK_PER_GROUP=60
+
+export OUTPUT_GRID='cubed_sphere_grid'
+
+export BLOCKSIZE=40
+export CCPP_SUITE="FV3_HAFS_v1_thompson_tedmf_gfdlsf"
+export DEFLATE_LEVEL=-1
+export INPES=20
+export JNPES=12
+export NPX=721
+export NPY=601
+export NPZ=91
+export NPZP=$(($NPZ + 1))
+export K_SPLIT=2
+export N_SPLIT=5
+export NWAT=6
+export NA_INIT=1
+export EXTERNAL_IC=.true.
+export NGGPS_IC=.true.
+export MOUNTAIN=.false.
+export WARM_START=.false.
+export TARGET_LAT="22.0"
+export TARGET_LON="-62.0"
+export STRETCH_FAC=1.0001
+export REGIONAL=.true.
+export BC_UPDATE_INTERVAL=3
+export NROWS_BLEND=10
+export FULL_ZS_FILTER=.false.
+export N_ZS_FILTER=0
+export DNATS=0
+export DO_SAT_ADJ=.false.
+
+export GRID_PES="240"
+export TILE_COARSE="0"
+export NUM_TILE_TOP=1
+export NEST_REFINE="0"
+export NEST_IOFFSETS="999"
+export NEST_JOFFSETS="999"
+
+export FHCYC=0
+export FHSWR=1800
+export FHLWR=1800
+export IMP_PHYSICS=8
+export NSTF_NAME=2,0,0,0,0
+export CPLFLX=.false.
+export CPLOCN2ATM=.true.
+export CPLWAV=.false.
+export CPLWAV2ATM=.false.
+export CPL_IMP_MRG=.false.
+
+export CMEPS=false
+export RUNTYPE="startup"
+export USE_COLDSTART="false"
+
+export FIELD_TABLE=field_table_hafs_thompson
+export DIAG_TABLE=diag_table_hafs_template
+export INPUT_NML=input_regional_hafs.nml.IN
+export MODEL_CONFIGURE="model_configure_hafs.IN"
+export NEMS_CONFIGURE="nems.configure.hafs_atm.IN"
+export FV3_RUN="hafs_fv3_run.IN"
