@@ -77,7 +77,7 @@ def generateStage(nodeLabel) {
                             chgrp noaa-hpc develop-${BL_DATE}
 			    cd $WORKSPACE/tests
                             ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
-                          elif [[ $machine =~ "GaeaC5" ]]
+                          elif [[ $machine =~ "Gaea" ]]
                           then 
                             echo "Creating baselines on $machine"
                             ./rt.sh -a ${ACCNR} -c -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
@@ -170,7 +170,7 @@ def generateStage(nodeLabel) {
                             export dprefix=/work2/noaa/$ACCNR/$USER
                             sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
                             ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
-                          elif [[ $machine =~ "GaeaC5" ]]
+                          elif [[ $machine =~ "Gaea" ]]
                           then 
                            echo "Running regression tests on $machine"
                             ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
