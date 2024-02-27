@@ -38,7 +38,7 @@ def set_directories(job_obj):
         blstore = '/work/noaa/nems/emc.nemspara/RT/NEMSfv3gfs'
         rtbldir = '/work/noaa/stmp/bcurtis/stmp/bcurtis/FV3_RT/'\
                  f'REGRESSION_TEST_{job_obj.compiler.upper()}'
-    elif job_obj.machine == 'cheyenne':
+    elif job_obj.machine == 'derecho':
         workdir = '/glade/scratch/dtcufsrt/autort/tests/auto/pr'
         blstore = '/glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs'
         rtbldir = '/glade/scratch/dtcufsrt/FV3_RT/'\

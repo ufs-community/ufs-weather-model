@@ -19,16 +19,16 @@ Four levels of support have been defined for :term:`UFS` applications, and the U
 
 Level 1 Systems
 ==================
-Preconfigured (Level 1) systems for the UFS WM already have the required external libraries available in a central location via :term:`HPC-Stack` or :term:`spack-stack`. The WM is expected to build and run out-of-the-box on these systems, and users can download the WM code without first installing prerequisite software. Additionally, regression test data is already available on these systems. In general, users must have access to these Level 1 systems in order to use them.
+Preconfigured (Level 1) systems for the UFS WM already have the required external libraries available in a central location via :term:`spack-stack`. The WM is expected to build and run out-of-the-box on these systems, and users can download the WM code without first installing prerequisite software. Additionally, regression test data is already available on these systems. In general, users must have access to these Level 1 systems in order to use them.
 
 Currently, Level 1 (or Tier-1) platforms for regression testing are: 
 
    * WCOSS2 (Intel)
-   * Cheyenne (Intel/GNU compilers)
    * Gaea (Intel)
    * Hera (Intel/GNU compilers)
    * Jet (Intel)
    * Orion (Intel)
+   * Hercules (Intel/GNU compilers)
    * AWS Docker container (Intel)
 
 More information is available in the `UFS WM wiki <https://github.com/ufs-community/ufs-weather-model/wiki/Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>`__. 

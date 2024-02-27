@@ -24,9 +24,7 @@ export FHMAX=6
 export RESTART_N=${FHMAX}
 export DT_ATMOS=180
 export IDEFLATE=1
-export NFHMAX_HF=-1
-export NFHOUT_HF=3
-export NFHOUT=3
+export OUTPUT_FH='3 -1'
 export OUTPUT_FILE="'netcdf' 'netcdf'"
 export SDAY=29
 export SHOUR=00
@@ -45,7 +43,7 @@ export DLON=0.1
 export DLAT=0.1
 
 export BLOCKSIZE=40
-export CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf"
+export CCPP_SUITE=FV3_HAFS_v1_gfdlmp_tedmf
 export DEFLATE_LEVEL=-1
 export INPES=20
 export JNPES=12
@@ -90,18 +88,17 @@ export CPL_IMP_MRG=.true.
 export CDEPS_DOCN=false
 export OCEAN_START_DTG=43340.00000
 
-export atm_model="fv3"
-export ocn_model=""
-export wav_model="ww3"
+export atm_model=fv3
+export wav_model=ww3
 WAV_tasks=60
 export coupling_interval_sec=360
-export MESH_ATM="unset"
+export MESH_ATM=unset
 # ATM-WAV coupling only
-export WAV_CUR='F'
+export WW3_CUR='F'
 
 export FIELD_TABLE=field_table_hafs
 export DIAG_TABLE=diag_table_hafs_template
 export INPUT_NML=input_regional_hafs.nml.IN
-export MODEL_CONFIGURE="model_configure_hafs.IN"
-export NEMS_CONFIGURE="nems.configure.hafs_atm_wav.IN"
+export MODEL_CONFIGURE=model_configure_hafs.IN
+export UFS_CONFIGURE=ufs.configure.hafs_atm_wav.IN
 export FV3_RUN="hafs_fv3_run.IN hafs_ww3_run.IN"

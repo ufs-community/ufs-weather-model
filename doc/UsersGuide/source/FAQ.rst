@@ -29,14 +29,14 @@ The steps are:
          cd tests
 
    #. Find a configure (``*.conf``) file that contains the machine and compiler you are using. For this
-      example, the Intel compiler on Cheyenne is used.  To create a custom configure file, two lines are
+      example, the Intel compiler on Derecho is used.  To create a custom configure file, two lines are
       needed:  a ``COMPILE`` line and a ``RUN`` line.   The ``COMPILE`` line should contain the name
-      of the machine and compiler ``cheyenne.intel`` and the desired ``SUITES`` for the build.  Choose a
+      of the machine and compiler ``derecho.intel`` and the desired ``SUITES`` for the build.  Choose a
       ``RUN`` line under this ``COMPILE`` command that uses the desired ``SUITE``.  For example:
 
       .. code-block:: console
 
-         COMPILE | 32BIT=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_v15p2,FV3_GFS_v16beta,FV3_GFS_v15p2_no_nsst,FV3_GFS_v16beta_no_nsst                     | standard    | cheyenne.intel | fv3
+         COMPILE | 32BIT=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_v15p2,FV3_GFS_v16beta,FV3_GFS_v15p2_no_nsst,FV3_GFS_v16beta_no_nsst                     | standard    | derecho.intel | fv3
          RUN     | fv3_ccpp_gfs_v16beta                                                                                                           | standard    |                | fv3         |
 
       Put these two lines into a file called ``my_test.conf``.  The parameters used in this run can be
@@ -49,16 +49,16 @@ The steps are:
 
       .. code-block:: console
 
-         if [[ $MACHINE_ID = cheyenne.* ]]; then stanza:
+         if [[ $MACHINE_ID = derecho.* ]]; then stanza:
          ...
          dprefix=/glade/scratch
 
-      This works for Cheyenne, since ``$USER/FV3_RT`` will be appended.  Also check that ``RTPWD``
+      This works for Derecho, since ``$USER/FV3_RT`` will be appended.  Also check that ``RTPWD``
       points to a diretory that exists:
 
       .. code-block:: console
 
-         if [[ $MACHINE_ID = cheyenne.* ]]; then
+         if [[ $MACHINE_ID = derecho.* ]]; then
             RTPWD=${RTPWD:-$DISKNM/ufs-public-release-20200224/${COMPILER^^}}
 
    #. Run the ``rt.sh`` script from the ``tests`` directory:

@@ -23,7 +23,7 @@ elif [[ $application == 'cpld' ]]; then
       JNPES=4
       OCN_tasks=30
       ICE_tasks=12
-      NPROC_ICE=$ICE_tasks
+      CICE_NPROC=$ICE_tasks
       TASKS=$((INPES*JNPES*NTILES + WRITE_GROUP*WRTTASK_PER_GROUP + OCN_tasks + ICE_tasks))
       NODES=$(((TASKS+TPN-1)/TPN))
     elif [[ $TEST_NAME =~ 'cpld_control_c96_noaero_p8' ]]; then
@@ -31,7 +31,7 @@ elif [[ $application == 'cpld' ]]; then
       JNPES=4
       OCN_tasks=30
       ICE_tasks=12
-      NPROC_ICE=$ICE_tasks
+      CICE_NPROC=$ICE_tasks
       TASKS=$((INPES*JNPES*NTILES + WRITE_GROUP*WRTTASK_PER_GROUP + OCN_tasks + ICE_tasks))
       NODES=$(((TASKS+TPN-1)/TPN))
     elif [[ $TEST_NAME =~ 'cpld_control_p8' ]] || [[ $TEST_NAME =~ 'cpld_control_ciceC_p8' ]] || [[ $TEST_NAME =~ 'cpld_control_gfsv17' ]]; then
@@ -40,7 +40,7 @@ elif [[ $application == 'cpld' ]]; then
       OCN_tasks=20
       ICE_tasks=10
       WAV_tasks=12
-      NPROC_ICE=$ICE_tasks
+      CICE_NPROC=$ICE_tasks
       TASKS=$((INPES*JNPES*NTILES + WRITE_GROUP*WRTTASK_PER_GROUP + OCN_tasks + ICE_tasks + WAV_tasks))
       NODES=$(((TASKS+TPN-1)/TPN))
     elif [[ $TEST_NAME == 'cpld_bmark_p8' ]]; then

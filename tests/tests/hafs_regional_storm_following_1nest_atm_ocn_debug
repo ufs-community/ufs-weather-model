@@ -22,9 +22,7 @@ export FHMAX=1
 export RESTART_N=${FHMAX}
 export DT_ATMOS=180
 export IDEFLATE=1
-export NFHMAX_HF=-1
-export NFHOUT_HF=1
-export NFHOUT=1
+export OUTPUT_FH='1 -1'
 export OUTPUT_FILE="'netcdf' 'netcdf'"
 export SDAY=25
 export SHOUR=12
@@ -49,7 +47,7 @@ export DLON_2=0.1
 export DLAT_2=0.1
 
 export BLOCKSIZE=${BLOCKSIZE:-24}
-export CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf_nonsst"
+export CCPP_SUITE=FV3_HAFS_v1_gfdlmp_tedmf_nonsst
 export DEFLATE_LEVEL=-1
 export INPES=6
 export JNPES=10
@@ -103,7 +101,7 @@ export CPLWAV=.false.
 export CPLWAV2ATM=.false.
 export CPL_IMP_MRG=.true.
 
-# nems.configure
+# ufs.configure
 export med_model=cmeps
 export CAP_DBUG_FLAG=0
 export RESTART_N=${FHMAX}
@@ -114,8 +112,8 @@ export USE_COLDSTART=false
 export CDEPS_DOCN=false
 export OCEAN_START_DTG=43702.50000
 
-export atm_model="fv3"
-export ocn_model="hycom"
+export atm_model=fv3
+export ocn_model=hycom
 
 ATM_compute_tasks=$(( INPES*JNPES + INPES_NEST02*JNPES_NEST02 ))
 OCN_tasks=60
@@ -125,12 +123,12 @@ export med_omp_num_threads=2
 export ocn_omp_num_threads=2
 
 export coupling_interval_sec=360
-export MESH_ATM="unset"
+export MESH_ATM=unset
 
 export FIELD_TABLE=field_table_hafs
 export DIAG_TABLE=diag_table_hafs_template
 export INPUT_NML=input_regional_hafs.nml.IN
 export INPUT_NEST02_NML=input_nest_hafs.nml.IN
-export MODEL_CONFIGURE="model_configure_hafs.IN"
-export NEMS_CONFIGURE="nems.configure.hafs_atm_ocn.IN"
+export MODEL_CONFIGURE=model_configure_hafs.IN
+export UFS_CONFIGURE=ufs.configure.hafs_atm_ocn.IN
 export FV3_RUN="hafs_fv3_run.IN hycom_hat10_run.IN"

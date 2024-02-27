@@ -25,15 +25,22 @@ elif [ ${CNTL_DIR} = "hafs_regional_1nest_atm" ] || \
      [ ${CNTL_DIR} = "hafs_global_multiple_4nests_atm" ] || \
      [ ${CNTL_DIR} = "hafs_global_storm_following_1nest_atm" ]; then
   cp -r @[INPUTDATA_ROOT]/FV3_hafs_input_data/INPUT_${CNTL_DIR}/* ./INPUT/
+elif [ ${CNTL_DIR} = "gnv1_nested" ]; then
+  cp -r @[INPUTDATA_ROOT]/FV3_hafs_input_data/INPUT_hafs_global_1nest_atm/* ./INPUT/
 else
-  echo "Error: unsupported experiments ${CNTL_DIR}"
+  echo "Error: unsupported experiment ${CNTL_DIR}" 1>&2
+  exit 1
 fi
 
-if [ ${CNTL_DIR} = "hafs_regional_atm_thompson_gfdlsf" ]; then
+if [ ${CNTL_DIR} = "hafs_regional_atm_thompson_gfdlsf" ] || [ $IMP_PHYSICS = 8 ]; then
   cp @[INPUTDATA_ROOT]/FV3_fix/qr_acr_qsV2.dat .
   cp @[INPUTDATA_ROOT]/FV3_fix/qr_acr_qgV2.dat .
   cp @[INPUTDATA_ROOT]/FV3_fix/freezeH2O.dat .
   cp @[INPUTDATA_ROOT]/FV3_fix/CCN_ACTIVATE.BIN .
+fi
+#ugwpv1
+if [[ $DO_UGWP_V1 == .true. && ${CNTL_DIR} == "gnv1_nested" ]]; then
+  cp    @[INPUTDATA_ROOT]/FV3_input_data/ugwp_c384_tau.nc ./ugwp_limb_tau.nc
 fi
 
 if [[ $POSTAPP = 'hafs' ]]; then

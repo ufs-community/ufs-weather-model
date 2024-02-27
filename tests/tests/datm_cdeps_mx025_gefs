@@ -4,7 +4,7 @@
 
 export TEST_DESCR="DATM_CDEPS-MOM6-CICE-CMEPS_GEFS - 1/4deg ocean+ice"
 
-export CNTL_DIR="datm_cdeps_mx025_gefs"
+export CNTL_DIR=datm_cdeps_mx025_gefs
 
 export LIST_FILES="RESTART/20111001.120000.MOM.res.nc \
                    RESTART/20111001.120000.MOM.res_1.nc \
@@ -14,23 +14,22 @@ export LIST_FILES="RESTART/20111001.120000.MOM.res.nc \
                    RESTART/DATM_GEFS_NEW.cpl.r.2011-10-01-43200.nc"
 
 export_datm_cdeps
-export atm_datamode="GEFS"
-export DAYS="0.5"
+export atm_datamode=GEFS
+export DAYS=0.5
 export FHMAX=12
 export RESTART_N=${FHMAX}
-export DT_DYNAM_MOM6='900'
-export DT_THERM_MOM6='1800'
+export DT_DYNAM_MOM6=900
+export DT_THERM_MOM6=1800
 
 export IATM=1536
 export JATM=768
 export ATM_NX_GLB=$IATM
 export ATM_NY_GLB=$JATM
-export ATMRES='1536x768'
-export DATM_SRC="GEFS_NEW"
-export FILENAME_BASE='gefs.'
-export mesh_file="gefs_mesh.nc"
-export MESH_ATM="DATM_INPUT/${mesh_file}"
-export stream_files="DATM_INPUT/${FILENAME_BASE}201110.nc"
+export ATMRES=${IATM}x${JATM}
+export DATM_SRC=GEFS_NEW
+export FILENAME_BASE=gefs.
+export MESH_ATM=${FILENAME_BASE//.}_mesh.nc
+export stream_files="INPUT/${FILENAME_BASE}201110.nc"
 export STREAM_OFFSET=-21600
 
 ATM_compute_tasks=${ATM_compute_tasks_cdeps_025}
@@ -38,24 +37,25 @@ OCN_tasks=${OCN_tasks_cdeps_025}
 ICE_tasks=${ICE_tasks_cdeps_025}
 
 # ocn/ice resolution
-export OCNRES='025'
-export ICERES='0.25'
+export OCNRES=025
+export ICERES=0.25
 export NX_GLB=1440
 export NY_GLB=1080
-export NPROC_ICE='48'
-export np2=`expr $NPROC_ICE / 2`
-export BLCKX=`expr $NX_GLB / $np2`
-export BLCKY=`expr $NY_GLB / 2`
-export DIAG_FREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
+export CICE_NPROC=48
+export np2=`expr $CICE_NPROC / 2`
+export CICE_BLCKX=`expr $NX_GLB / $np2`
+export CICE_BLCKY=`expr $NY_GLB / 2`
+export CICE_DIAGFREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
 
 # resolution dependent files
-export MOM_INPUT="MOM_input_template_${OCNRES}"
-export MESHOCN_ICE="mesh.mx${OCNRES}.nc"
-export CICEGRID="grid_cice_NEMS_mx${OCNRES}.nc"
-export CICEMASK="kmtu_cice_NEMS_mx${OCNRES}.nc"
-export CHLCLIM='"seawifs-clim-1997-2010.1440x1080.v20180328.nc"'
-export MOM6_RIVER_RUNOFF='True'
-export FRUNOFF="runoff.daitren.clim.1440x1080.v20180328.nc"
-export MOM6_RESTART_SETTING='r'
+export MOM6_INPUT=MOM_input_${OCNRES}.IN
+export MESH_ICE=mesh.mx${OCNRES}.nc
+export MESH_OCN=mesh.mx${OCNRES}.nc
+export CICE_GRID=grid_cice_NEMS_mx${OCNRES}.nc
+export CICE_MASK=kmtu_cice_NEMS_mx${OCNRES}.nc
+export MOM6_CHLCLIM='"seawifs-clim-1997-2010.1440x1080.v20180328.nc"'
+export MOM6_RIVER_RUNOFF=True
+export MOM6_FRUNOFF=runoff.daitren.clim.1440x1080.v20180328.nc
+export MOM6_RESTART_SETTING=r
 
 export FV3_RUN=cpld_datm_cdeps.IN

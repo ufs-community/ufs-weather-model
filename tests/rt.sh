@@ -306,19 +306,49 @@ elif [[ $MACHINE_ID = acorn ]]; then
 
 elif [[ $MACHINE_ID = gaea ]]; then
 
-  export PATH=/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/envs/ufs-weather-model/bin:/lustre/f2/pdata/esrl/gsd/contrib/miniconda3/4.8.3/bin:$PATH
-  export PATH=/lustre/f2/pdata/esrl/gsd/spack-stack/miniconda-3.9.12/bin:$PATH
-  export PYTHONPATH=/lustre/f2/pdata/esrl/gsd/spack-stack/miniconda-3.9.12/lib/python3.9/site-packages
+  module use /lustre/f2/dev/role.epic/contrib/rocoto/modulefiles
+  module load rocoto
+  ROCOTORUN=$(which rocotorun)
+  ROCOTOSTAT=$(which rocotostat)
+  ROCOTOCOMPLETE=$(which rocotocomplete)
+  ROCOTO_SCHEDULER=slurm
 
-  module use /lustre/f2/pdata/esrl/gsd/spack-stack/modulefiles
+  module use /lustre/f2/dev/role.epic/contrib/spack-stack/c4/modulefiles
   module load ecflow/5.8.4
-  ECFLOW_START=/lustre/f2/pdata/esrl/gsd/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
+  ECFLOW_START=/lustre/f2/dev/role.epic/contrib/spack-stack/c4/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
-  DISKNM=/lustre/f2/pdata/ncep_shared/emc.nemspara/RT
+  DISKNM=/lustre/f2/pdata/ncep/role.epic/RT
   QUEUE=normal
   COMPILE_QUEUE=normal
   PARTITION=c4
+  STMP=/lustre/f2/scratch
+  PTMP=/lustre/f2/scratch
+
+  SCHEDULER=slurm
+
+elif [[ $MACHINE_ID = gaea-c5 ]]; then
+
+  module use /lustre/f2/dev/role.epic/contrib/C5/rocoto/modulefiles
+  module load rocoto
+  ROCOTORUN=$(which rocotorun)
+  ROCOTOSTAT=$(which rocotostat)
+  ROCOTOCOMPLETE=$(which rocotocomplete)
+  ROCOTO_SCHEDULER=slurm
+
+  module load PrgEnv-intel/8.3.3
+  module load intel-classic/2023.1.0
+  module load cray-mpich/8.1.25
+  module load python/3.9.12
+  module use /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/modulefiles
+  module load ecflow/5.8.4
+  ECFLOW_START=/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/ecflow-5.8.4/bin/ecflow_start.sh
+  ECF_PORT=$(( $(id -u) + 1500 ))
+
+  DISKNM=/lustre/f2/pdata/ncep/role.epic/C5/RT
+  QUEUE=normal
+  COMPILE_QUEUE=normal
+  PARTITION=c5
   STMP=/lustre/f2/scratch
   PTMP=/lustre/f2/scratch
 
@@ -331,10 +361,6 @@ elif [[ $MACHINE_ID = hera ]]; then
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=slurm
-
-  PYTHONHOME=/scratch1/NCEPDEV/jcsda/jedipara/spack-stack/miniconda-3.9.12
-  export PATH=$PYTHONHOME/bin:$PATH
-  export PYTHONPATH=$PYTHONHOME/lib/python3.9/site-packages
 
   module load ecflow/5.5.3
   ECFLOW_START=ecflow_start.sh
@@ -353,31 +379,52 @@ elif [[ $MACHINE_ID = hera ]]; then
 elif [[ $MACHINE_ID = orion ]]; then
 
   module load git/2.28.0
-
-  module load gcc/8.3.0
+  module load gcc/10.2.0
+  module load python/3.9.2
 
   module load contrib rocoto/1.3.1
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
-  export PATH=/work/noaa/da/role-da/spack-stack/miniconda-3.9.7/bin:$PATH
-  export PYTHONPATH=/work/noaa/da/role-da/spack-stack/miniconda-3.9.7/lib/python3.9/site-packages
 
-  module use /work/noaa/da/role-da/spack-stack/modulefiles
-  module load miniconda/3.9.7
+  module use /work/noaa/epic/role-epic/spack-stack/orion/modulefiles
   module load ecflow/5.8.4
-  ECFLOW_START=/work/noaa/da/role-da/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
+  ECFLOW_START=/work/noaa/epic/role-epic/spack-stack/orion/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
   QUEUE=batch
   COMPILE_QUEUE=batch
   PARTITION=orion
   dprefix=/work/noaa/stmp/${USER}
-  DISKNM=/work/noaa/nems/emc.nemspara/RT
+  DISKNM=/work/noaa/epic/UFS-WM_RT
   STMP=$dprefix/stmp
   PTMP=$dprefix/stmp
 
   SCHEDULER=slurm
+
+elif [[ $MACHINE_ID = hercules ]]; then
+
+  module load contrib rocoto/1.3.5
+  ROCOTORUN=$(which rocotorun)
+  ROCOTOSTAT=$(which rocotostat)
+  ROCOTOCOMPLETE=$(which rocotocomplete)
+
+  module use /work/noaa/epic/role-epic/spack-stack/hercules/modulefiles
+  module load ecflow/5.8.4
+  ECFLOW_START=/work/noaa/epic/role-epic/spack-stack/hercules/ecflow-5.8.4/bin/ecflow_start.sh
+  ECF_PORT=$(( $(id -u) + 1500 ))
+
+  QUEUE=windfall
+  COMPILE_QUEUE=windfall
+  PARTITION=hercules
+  dprefix=/work2/noaa/stmp/${USER}
+  DISKNM=/work/noaa/epic/hercules/UFS-WM_RT
+  STMP=$dprefix/stmp
+  PTMP=$dprefix/stmp
+
+  SCHEDULER=slurm
+  cp fv3_conf/fv3_slurm.IN_hercules fv3_conf/fv3_slurm.IN
+  cp fv3_conf/compile_slurm.IN_hercules fv3_conf/compile_slurm.IN
 
 elif [[ $MACHINE_ID = jet ]]; then
 
@@ -387,9 +434,7 @@ elif [[ $MACHINE_ID = jet ]]; then
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=slurm
 
-  export PATH=/lfs4/HFIP/hfv3gfs/spack-stack/apps/miniconda/py39_4.12.0/bin:$PATH
-  export PYTHONPATH=/lfs4/HFIP/hfv3gfs/spack-stack/apps/miniconda/py39_4.12.0/lib/python3.9/site-packages
-  module load ecflow
+  module load ecflow/5.5.3
   ECFLOW_START=/apps/ecflow/5.5.3/bin/ecflow_start.sh
 
   QUEUE=batch
@@ -405,14 +450,14 @@ elif [[ $MACHINE_ID = jet ]]; then
 elif [[ $MACHINE_ID = s4 ]]; then
 
   module load rocoto/1.3.2
+  module load ecflow/5.6.0
+  module load miniconda/3.8-s4
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=slurm
 
-  module load git/2.30.0
   module use /data/prod/jedi/spack-stack/modulefiles
-  module load miniconda/3.9.12
   module load ecflow/5.8.4
   ECFLOW_START=/data/prod/jedi/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
@@ -428,24 +473,29 @@ elif [[ $MACHINE_ID = s4 ]]; then
 
   SCHEDULER=slurm
 
-elif [[ $MACHINE_ID = cheyenne ]]; then
+elif [[ $MACHINE_ID = derecho ]]; then
 
-  export PATH=/glade/work/jedipara/cheyenne/spack-stack/miniconda-3.9.12/bin:$PATH
-  export PYTHONPATH=/glade/work/jedipara/cheyenne/spack-stack/miniconda-3.9.12/lib/python3.9/site-packages
-
-  module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc
-  module load ecflow/5.8.4
-  ECFLOW_START=/glade/work/jedipara/cheyenne/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
+  export PATH=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/bin:/glade/p/ral/jntp/tools/miniconda3/4.8.3/bin:$PATH
+  export PATH=/glade/work/epicufsrt/contrib/derecho/rocoto/bin:$PATH
+  export PYTHONPATH=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/glade/p/ral/jntp/tools/miniconda3/4.8.3/lib/python3.8/site-packages
+  ECFLOW_START=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
-  QUEUE=regular
-  COMPILE_QUEUE=regular
+  QUEUE=main
+  COMPILE_QUEUE=main
   PARTITION=
-  dprefix=/glade/scratch
-  DISKNM=/glade/scratch/epicufsrt/GMTB/ufs-weather-model/RT
+  dprefix=/glade/derecho/scratch
+  DISKNM=/glade/derecho/scratch/epicufsrt/ufs-weather-model/RT/
   STMP=$dprefix
   PTMP=$dprefix
   SCHEDULER=pbs
+  cp fv3_conf/fv3_qsub.IN_derecho fv3_conf/fv3_qsub.IN
+  cp fv3_conf/compile_qsub.IN_derecho fv3_conf/compile_qsub.IN
+
+  ROCOTORUN=$(which rocotorun)
+  ROCOTOSTAT=$(which rocotostat)
+  ROCOTOCOMPLETE=$(which rocotocomplete)
+  ROCOTO_SCHEDULER=pbspro
 
 elif [[ $MACHINE_ID = stampede ]]; then
 
@@ -526,6 +576,17 @@ else
   RTPWD=${RTPWD:-$DISKNM/NEMSfv3gfs/develop-${BL_DATE}}
 fi
 
+if [[ "$CREATE_BASELINE" == false ]] ; then
+  if [[ ! -d "$RTPWD" ]] ; then
+    echo "Baseline directory does not exist:"
+    echo "   $RTPWD"
+    exit 1
+  elif [[ $( ls -1 "$RTPWD/" | wc -l ) -lt 1 ]] ; then
+    echo "Baseline directory is empty:"
+    echo "   $RTPWD"
+    exit 1
+  fi
+fi
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20221101}
 INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20220624
@@ -563,7 +624,10 @@ echo "Start Regression test" >> ${REGRESSIONTEST_LOG}
 echo                         >> ${REGRESSIONTEST_LOG}
 echo "Testing UFSWM Hash:" `git rev-parse HEAD` >> ${REGRESSIONTEST_LOG}
 echo "Testing With Submodule Hashes:" >> ${REGRESSIONTEST_LOG}
+cd ..
 git submodule status >> ${REGRESSIONTEST_LOG}
+
+cd tests
 
 source default_vars.sh
 
@@ -596,6 +660,10 @@ if [[ $ROCOTO == true ]]; then
     QUEUE=batch
     COMPILE_QUEUE=batch
     ROCOTO_SCHEDULER=slurm
+  elif [[ $MACHINE_ID = hercules ]]; then
+    QUEUE=windfall
+    COMPILE_QUEUE=windfall
+    ROCOTO_SCHEDULER=slurm
   elif [[ $MACHINE_ID = s4 ]]; then
     QUEUE=s4
     COMPILE_QUEUE=s4
@@ -607,6 +675,18 @@ if [[ $ROCOTO == true ]]; then
   elif [[ $MACHINE_ID = jet ]]; then
     QUEUE=batch
     COMPILE_QUEUE=batch
+    ROCOTO_SCHEDULER=slurm
+  elif [[ $MACHINE_ID = derecho ]]; then
+    QUEUE=main
+    COMPILE_QUEUE=main
+    ROCOTO_SCHEDULER=pbspro
+  elif [[ $MACHINE_ID = gaea ]]; then
+    QUEUE=normal
+    COMPILE_QUEUE=normal
+    ROCOTO_SCHEDULER=slurm
+  elif [[ $MACHINE_ID = gaea-c5 ]]; then
+    QUEUE=normal
+    COMPILE_QUEUE=normal
     ROCOTO_SCHEDULER=slurm
   else
     die "Rocoto is not supported on this machine $MACHINE_ID"
@@ -672,14 +752,16 @@ EOF
     QUEUE=batch
   elif [[ $MACHINE_ID = orion ]]; then
     QUEUE=batch
+  elif [[ $MACHINE_ID = hercules ]]; then
+    QUEUE=windfall
   elif [[ $MACHINE_ID = jet ]]; then
     QUEUE=batch
   elif [[ $MACHINE_ID = s4 ]]; then
     QUEUE=s4
-  elif [[ $MACHINE_ID = gaea ]]; then
+  elif [[ $MACHINE_ID = gaea* ]]; then
     QUEUE=normal
-  elif [[ $MACHINE_ID = cheyenne ]]; then
-    QUEUE=regular
+  elif [[ $MACHINE_ID = derecho ]]; then
+    QUEUE=main
   else
     die "ecFlow is not supported on this machine $MACHINE_ID"
   fi
@@ -823,6 +905,11 @@ EOF
         NODES=$(( NODES + 1 ))
       fi
 
+      PPN=$(( TASKS / NODES ))
+      if (( TASKS - ( PPN * NODES ) > 0 )); then
+          PPN=$((PPN + 1))
+      fi
+      
       cat << EOF > ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
       export JOB_NR=${JOB_NR}
       export MACHINE_ID=${MACHINE_ID}

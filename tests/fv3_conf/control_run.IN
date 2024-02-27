@@ -103,12 +103,12 @@ else
 fi
 
 if [ $CPLWAV = .true. ]; then
-  if [ $MULTIGRID = 'true' ]; then
+  if [ $WW3_MULTIGRID = 'true' ]; then
     cp    @[INPUTDATA_ROOT_WW3]/mod_def.pointsatmw mod_def.points
-    cp    @[INPUTDATA_ROOT_WW3]/@[MODDEF_WAV] .
+    cp    @[INPUTDATA_ROOT_WW3]/@[WW3_MODDEF] .
     cp    @[INPUTDATA_ROOT_WW3]/rmp_src* .
   else
-    cp    @[INPUTDATA_ROOT_WW3]/@[MODDEF_WAV] mod_def.ww3
+    cp    @[INPUTDATA_ROOT_WW3]/@[WW3_MODDEF] mod_def.ww3
     cp    @[INPUTDATA_ROOT_WW3]/@[MESH_WAV] .
   fi
 fi

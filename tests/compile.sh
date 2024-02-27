@@ -45,7 +45,7 @@ BUILD_DIR=${BUILD_DIR:-$(pwd)/build_${BUILD_NAME}}
 # ----------------------------------------------------------------------
 # Make sure we have reasonable number of threads.
 
-if [[ $MACHINE_ID == cheyenne ]]; then
+if [[ $MACHINE_ID == derecho ]]; then
     BUILD_JOBS=${BUILD_JOBS:-3}
 fi
 
@@ -57,9 +57,12 @@ set +x
 if [[ $MACHINE_ID == macosx ]] || [[ $MACHINE_ID == linux ]]; then
   source $PATHTR/modulefiles/ufs_${MACHINE_ID}.${RT_COMPILER}
 else
-  # Activate lua environment for gaea
+  # Activate lua environment for gaea c4
   if [[ $MACHINE_ID == gaea ]]; then
     source /lustre/f2/dev/role.epic/contrib/Lmod_init.sh
+  # Activate lua environment for gaea c5
+  elif [[ $MACHINE_ID == gaea-c5 ]]; then
+    source /lustre/f2/dev/role.epic/contrib/Lmod_init_C5.sh
   fi
   # Load fv3 module
   module use $PATHTR/modulefiles

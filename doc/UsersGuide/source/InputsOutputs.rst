@@ -1404,10 +1404,6 @@ shows the following parameters that can be set in ``model_configure`` at run-tim
      - atmosphere time step in second
      - integer
      - 1800 (for C96)
-   * - output_1st_tstep_rst
-     - output first time step history file after restart
-     - logical
-     - .false.
    * - restart_interval
      - frequency to output restart file or forecast hours to write out restart file
      - integer
@@ -1452,22 +1448,6 @@ shows the following parameters that can be set in ``model_configure`` at run-tim
      - j-dimension for output grid
      - integer
      - 190
-   * - nfhout
-     - history file output frequency
-     - integer
-     - 3
-   * - nfhmax_hf
-     - forecast length of high history file
-     - integer
-     - 0 (0:no high frequency output)
-   * - nfhout_hf
-     - high history file output frequency
-     - integer
-     - 1
-   * - nsout
-     - output frequency of number of time step
-     - integer
-     - -1 (negative: turn off the option, 1: output history file at every time step)
    * - output_fh
      - history file output forecast hours or history file output frequency if the second elelment is -1
      - real

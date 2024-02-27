@@ -1,0 +1,20 @@
+#!/bin/sh
+#SBATCH -e err
+#SBATCH -o out
+#SBATCH --account=@[ACCNR]
+#SBATCH --qos=@[QUEUE]
+#SBATCH --partition=@[PARTITION]
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=8
+#SBATCH --time=60
+#SBATCH --job-name="@[JBNME]"
+
+set -eux
+
+echo -n " $( date +%s )," >  job_timestamp.txt
+echo "Compile started:  " `date`
+
+@[PATHRT]/compile.sh @[MACHINE_ID] "@[MAKE_OPT]" @[COMPILE_NR] @[RT_COMPILER]
+
+echo "Compile ended:    " `date`
+echo -n " $( date +%s )," >> job_timestamp.txt

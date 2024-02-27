@@ -4,7 +4,7 @@
 
 export TEST_DESCR="Fully coupled FV3-CCPP-GOCART-MOM6-CICE-CMEPS-WW3 system - C96MX100 P8 debug"
 
-export CNTL_DIR="cpld_debug_p8"
+export CNTL_DIR=cpld_debug_p8
 
 export LIST_FILES="sfcf003.tile1.nc \
                    sfcf003.tile2.nc \
@@ -66,16 +66,12 @@ export RESTART_N=${FHMAX}
 export OUTPUT_FH="3 -1"
 export AOD_FRQ=030000
 
-export TOPOEDITS=ufs.topo_edits_011818.nc
+export MOM6_TOPOEDITS=ufs.topo_edits_011818.nc
 export MOM6_ALLOW_LANDMASK_CHANGES=True
 export eps_imesh=2.5e-1
-export DIAG_FREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
+export CICE_DIAGFREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
 
 export FV3_RUN=cpld_control_run.IN
-
-if [[ $MACHINE_ID = cheyenne ]]; then
-  TPN=18
-fi
 
 if [[ $MACHINE_ID = hera ]] && [[ $RT_COMPILER = gnu ]]; then
   WLCLK=40

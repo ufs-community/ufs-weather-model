@@ -4,29 +4,28 @@
 
 export TEST_DESCR="DATM_CDEPS-MOM6-CICE-CMEPS_GEFS - control"
 
-export CNTL_DIR="datm_cdeps_control_gefs"
+export CNTL_DIR=datm_cdeps_control_gefs
 
 export LIST_FILES="RESTART/20111002.000000.MOM.res.nc \
                    RESTART/iced.2011-10-02-00000.nc \
                    RESTART/DATM_GEFS_NEW.cpl.r.2011-10-02-00000.nc"
 
 export_datm_cdeps
-export atm_datamode="GEFS"
+export atm_datamode=GEFS
 
 # atm configure
 export IATM=1536
 export JATM=768
 export ATM_NX_GLB=$IATM
 export ATM_NY_GLB=$JATM
-export ATMRES='1536x768'
-export DATM_SRC="GEFS_NEW"
-export FILENAME_BASE='gefs.'
-export mesh_file="gefs_mesh.nc"
-export MESH_ATM="DATM_INPUT/${mesh_file}"
-export stream_files="DATM_INPUT/${FILENAME_BASE}201110.nc"
+export ATMRES=${IATM}x${JATM}
+export DATM_SRC=GEFS_NEW
+export FILENAME_BASE=gefs.
+export MESH_ATM=${FILENAME_BASE//.}_mesh.nc
+export stream_files="INPUT/${FILENAME_BASE}201110.nc"
 export STREAM_OFFSET=-21600
 export RESTART_N=12
-export eps_imesh='2.5e-1'
-export TOPOEDITS=ufs.topo_edits_011818.nc
+export eps_imesh=2.5e-1
+export MOM6_TOPOEDITS=ufs.topo_edits_011818.nc
 export MOM6_ALLOW_LANDMASK_CHANGES=True
 export FV3_RUN=cpld_datm_cdeps.IN

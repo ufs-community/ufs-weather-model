@@ -1,0 +1,38 @@
+#!/bin/bash -l
+#SBATCH -e err
+#SBATCH -o out
+#SBATCH --job-name="@[JBNME]"
+#SBATCH --account=@[ACCNR]
+#SBATCH --qos=@[QUEUE]
+#SBATCH --clusters=c5
+#SBATCH --partition=batch
+#SBATCH --nodes=@[NODES]
+#SBATCH --ntasks-per-node=@[TPN]
+#SBATCH --time=@[WLCLK]
+
+set -eux
+echo -n " $( date +%s )," >  job_timestamp.txt
+
+set +x
+MACHINE_ID=gaea-c5
+source ./module-setup.sh
+module use --prepend $PWD/modulefiles
+module load modules.fv3
+module list
+set -x
+
+echo "Model started:  " `date`
+
+export OMP_NUM_THREADS=@[THRD]
+export OMP_STACKSIZE=1024M
+export NC_BLKSZ=1M
+export ESMF_RUNTIME_PROFILE=ON
+export ESMF_RUNTIME_PROFILE_OUTPUT="SUMMARY"
+
+# Avoid job errors because of filesystem synchronization delays
+sync && sleep 1
+
+srun --label -n @[TASKS] ./fv3.exe
+
+echo "Model ended:    " `date`
+echo -n " $( date +%s )," >> job_timestamp.txt

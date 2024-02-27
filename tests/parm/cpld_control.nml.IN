@@ -37,8 +37,9 @@
   n_sponge = 42
   nudge_qv = .true.
   nudge_dz = .false.
-  tau = 10.0
-  rf_cutoff = 7.5e2
+  tau = 0.0
+  fast_tau_w_sec = 0.2
+  rf_cutoff = 10.
   d2_bg_k1 = @[D2_BG_K1]
   d2_bg_k2 = @[D2_BG_K2]
   kord_tm = -9
@@ -52,7 +53,7 @@
   a_imp = 1.
   p_fac = 0.1
   k_split = 2
-  n_split = 6
+  n_split = 5
   nwat = 6
   na_init = @[NA_INIT]
   d_ext = 0.
@@ -171,6 +172,9 @@
   imfshalcnv   = @[IMFSHALCNV]
   imfdeepcnv   = @[IMFDEEPCNV]
   progsigma    = @[PROGSIGMA]
+  betascu      = @[BETASCU]
+  betamcu      = @[BETAMCU]
+  betadcu      = @[BETADCU]
   ras          = @[RAS]
   cdmbgwd      = @[CDMBWD]
   prslrd0      = 0.
@@ -218,6 +222,10 @@
   do_sppt      = @[DO_SPPT]
   do_shum      = @[DO_SHUM]
   do_skeb      = @[DO_SKEB]
+  iaufhrs      = @[IAUFHRS]
+  iau_delthrs  = @[IAU_DELTHRS]
+  iau_inc_files= @[IAU_INC_FILES]
+  iau_drymassfixer = .false.
   use_med_flux = @[USE_MED_FLUX]
   frac_grid    = @[FRAC_GRID]
   cplchm       = @[CPLCHM]
@@ -243,18 +251,29 @@
 /
 
 &cires_ugwp_nml
-  knob_ugwp_solver  = 2
-  knob_ugwp_source  = 1,1,0,0
-  knob_ugwp_wvspec  = 1,25,25,25
-  knob_ugwp_azdir   = 2,4,4,4
-  knob_ugwp_stoch   = 0,0,0,0
-  knob_ugwp_effac   = 1,1,1,1
-  knob_ugwp_doaxyz  = 1
-  knob_ugwp_doheat  = 1
-  knob_ugwp_dokdis  = 1
-  knob_ugwp_ndx4lh  = 1
-  knob_ugwp_version = @[KNOB_UGWP_VERSION]
-  launch_level      = 54
+  knob_ugwp_solver   = 2
+  knob_ugwp_source   = 1,1,0,0
+  knob_ugwp_wvspec   = 1,25,25,25
+  knob_ugwp_azdir    = 2,4,4,4
+  knob_ugwp_stoch    = 0,0,0,0
+  knob_ugwp_effac    = 1,1,1,1
+  knob_ugwp_doaxyz   = 1
+  knob_ugwp_doheat   = 1
+  knob_ugwp_dokdis   = @[KNOB_UGWP_DOKDIS]
+  knob_ugwp_ndx4lh   = @[KNOB_UGWP_NDX4LH]
+  knob_ugwp_version  = @[KNOB_UGWP_VERSION]
+  ! This is only for UGWP v0
+@[HIDE_UGWPV0] launch_level      = 54
+  ! These are only for UGWP v1
+@[HIDE_UGWPV1] knob_ugwp_palaunch = 275.0e2
+@[HIDE_UGWPV1] knob_ugwp_nslope   = @[KNOB_UGWP_NSLOPE]
+@[HIDE_UGWPV1] knob_ugwp_lzmax    = 15.750e3
+@[HIDE_UGWPV1] knob_ugwp_lzmin    = 0.75e3
+@[HIDE_UGWPV1] knob_ugwp_lzstar   = 2.0e3
+@[HIDE_UGWPV1] knob_ugwp_taumin   = 0.25e-3
+@[HIDE_UGWPV1] knob_ugwp_tauamp   = 3.0e-3
+@[HIDE_UGWPV1] knob_ugwp_lhmet    = 200.0e3
+@[HIDE_UGWPV1] knob_ugwp_orosolv  = 'pss-1986'
 /
 
 &gfdl_cloud_microphysics_nml
@@ -373,9 +392,9 @@
 /
 
 &MOM_input_nml
-  output_directory = 'MOM6_OUTPUT/',
+  output_directory = '@[MOM6_OUTPUT_DIR]',
   input_filename = '@[MOM6_RESTART_SETTING]'
   restart_input_dir = 'INPUT/',
-  restart_output_dir = 'RESTART/',
+  restart_output_dir = '@[MOM6_RESTART_DIR]',
   parameter_filename = 'INPUT/MOM_input',
                        'INPUT/MOM_override'/

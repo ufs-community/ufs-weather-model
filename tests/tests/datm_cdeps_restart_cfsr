@@ -4,28 +4,28 @@
 
 export TEST_DESCR="DATM_CDEPS-MOM6-CICE-CMEPS_CFSR - restart test "
 
-export CNTL_DIR="datm_cdeps_control_cfsr"
+export CNTL_DIR=datm_cdeps_control_cfsr
 
 export LIST_FILES="RESTART/20111002.000000.MOM.res.nc \
                    RESTART/iced.2011-10-02-00000.nc \
                    RESTART/DATM_CFSR.cpl.r.2011-10-02-00000.nc"
 
 export_datm_cdeps
-export DATM_SRC="CFSR"
-export FILENAME_BASE='cfsr.'
+export DATM_SRC=CFSR
+export FILENAME_BASE=cfsr.
 export IATM=1760
 export JATM=880
 export FHMAX=24
 export FHOUT=12
-export WARM_START='.true.'
+export WARM_START=.true.
 export FHROT=12
 export RESTART_N=$((FHMAX-$FHROT))
-export CICERUNTYPE='continue'
-export RUNTYPE='continue'
-export USE_RESTART_TIME='.true.'
-export MOM6_RESTART_SETTING="r"
-export eps_imesh='2.5e-1'
-export TOPOEDITS=ufs.topo_edits_011818.nc
+export CICE_RUNTYPE=continue
+export RUNTYPE=continue
+export CICE_USE_RESTART_TIME=.true.
+export MOM6_RESTART_SETTING=r
+export eps_imesh=2.5e-1
+export MOM6_TOPOEDITS=ufs.topo_edits_011818.nc
 export MOM6_ALLOW_LANDMASK_CHANGES=True
-export DIAG_FREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
+export CICE_DIAGFREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
 export FV3_RUN=cpld_datm_cdeps.IN

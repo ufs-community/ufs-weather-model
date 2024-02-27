@@ -1,20 +1,20 @@
 &input_nml
   input%forcing%winds      = 'C'
-  input%forcing%currents   = '@[WAV_CUR]'
-  input%forcing%ice_conc   = '@[WAV_ICE]'
-  input%forcing%ice_param1 = '@[WAV_IC1]'
-  input%forcing%ice_param5 = '@[WAV_IC5]'
+  input%forcing%currents   = '@[WW3_CUR]'
+  input%forcing%ice_conc   = '@[WW3_ICE]'
+  input%forcing%ice_param1 = '@[WW3_IC1]'
+  input%forcing%ice_param5 = '@[WW3_IC5]'
 /
 
 &output_type_nml
-  type%field%list = '@[OUTPARS_WAV]'
+  type%field%list = '@[WW3_OUTPARS]'
   type%point%file = 'ww3_points.list'
 /
 
 &output_date_nml
   date%field%outffile  = '1'
-  date%field%stride    = '@[DTFLD]'
+  date%field%stride    = '@[WW3_DTFLD]'
   date%point%outffile  = '1'
-  date%point%stride    = '@[DTPNT]'
-  date%restart2%stride = '@[DT_2_RST]'
+  date%point%stride    = '@[WW3_DTPNT]'
+  date%restart2%stride = '@[WW3_DT_2_RST]'
 /

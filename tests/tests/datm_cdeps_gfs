@@ -4,15 +4,15 @@
 
 export TEST_DESCR="DATM_CDEPS-MOM6-CICE-CMEPS_GFS - control "
 
-export CNTL_DIR="datm_cdeps_gfs"
+export CNTL_DIR=datm_cdeps_gfs
 
 export LIST_FILES="RESTART/20210323.060000.MOM.res.nc \
                    RESTART/iced.2021-03-23-21600.nc \
                    RESTART/DATM_GFS.cpl.r.2021-03-23-21600.nc"
 
 export_datm_cdeps
-export DATM_SRC="GFS"
-export FILENAME_BASE='gfs.'
+export DATM_SRC=GFS
+export FILENAME_BASE=gfs.
 export SYEAR=2021
 export SMONTH=03
 export SDAY=22
@@ -22,16 +22,15 @@ export IATM=3072
 export JATM=1536
 export ATM_NX_GLB=$IATM
 export ATM_NY_GLB=$JATM
-export ATMRES=3072x1536
-export mesh_file=gfs_mesh.nc
-export MESH_ATM=DATM_INPUT/${mesh_file}
+export ATMRES=${IATM}x${JATM}
+export MESH_ATM=${FILENAME_BASE//.}_mesh.nc
 export atm_datamode=GFS
-export KTHERM=2
-export TFREEZE_OPTION=mushy
+export CICE_KTHERM=2
+export CICE_TFREEZE_OPTION=mushy
 export RESTART_N=12
-export stream_files="DATM_INPUT/gfs.202103.nc"
-export eps_imesh='2.5e-1'
-export TOPOEDITS=ufs.topo_edits_011818.nc
+export stream_files="INPUT/gfs.202103.nc"
+export eps_imesh=2.5e-1
+export MOM6_TOPOEDITS=ufs.topo_edits_011818.nc
 export MOM6_ALLOW_LANDMASK_CHANGES=True
 
 export FV3_RUN=cpld_datm_cdeps_gfs.IN

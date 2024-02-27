@@ -4,7 +4,7 @@
 
 export TEST_DESCR="Fully coupled FV3-CCPP-GOCART-MOM6-CICE-CMEPS-WW3 system - C96MX100"
 
-export CNTL_DIR="cpld_control_p8"
+export CNTL_DIR=cpld_control_p8
 
 export LIST_FILES="sfcf024.tile1.nc \
                    sfcf024.tile2.nc \
@@ -75,20 +75,20 @@ export NGGPS_IC=.false.
 export MOUNTAIN=.true.
 
 # ICE warm start
-export CICERUNTYPE=continue
+export CICE_RUNTYPE=continue
 export RUNTYPE=continue
-export USE_RESTART_TIME=.true.
+export CICE_USE_RESTART_TIME=.true.
 
 # MOM6 warm start
 export MOM6_RESTART_SETTING=r
 
-export TOPOEDITS=ufs.topo_edits_011818.nc
+export MOM6_TOPOEDITS=ufs.topo_edits_011818.nc
 export MOM6_ALLOW_LANDMASK_CHANGES=True
 export eps_imesh=2.5e-1
-export DIAG_FREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
+export CICE_DIAGFREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
 
 export FV3_RUN=cpld_control_run.IN
 
-if [[ $MACHINE_ID = cheyenne ]]; then
-  TPN=18
+if [[ $MACHINE_ID = derecho ]]; then
+  TPN=96
 fi
