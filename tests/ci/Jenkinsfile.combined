@@ -42,13 +42,13 @@ def generateStage(nodeLabel) {
                           then
                             echo "Creating baselines on $machine"
                             export dprefix=/lfs1/NAGAPE/$ACCNR/$USER
-                            ./rt.sh -a ${ACCNR} -c -r -l rt.conf | tee $WORKSPACE/tests/RT-run-$machine.log
+                            ./rt.sh -a ${ACCNR} -c -r -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
                           elif [[ $machine =~ "Hercules" ]]
                           then
                             echo "Creating baselines on $machine"
                             export dprefix=/work2/noaa/$ACCNR/$USER
                             sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
-                            ./rt.sh -a ${ACCNR} -c -e -l rt.conf | tee $WORKSPACE/tests/RT-run-$machine.log
+                            ./rt.sh -a ${ACCNR} -c -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
                             export DISKNM=/work/noaa/epic/hercules/UFS-WM_RT
 			    cd ${DISKNM}/NEMSfv3gfs/
 			    mkdir develop-${BL_DATE}
@@ -58,14 +58,14 @@ def generateStage(nodeLabel) {
                             ./adjust_permissions.sh hercules develop-${BL_DATE}
                             chgrp noaa-hpc develop-${BL_DATE}
 		            cd $WORKSPACE/tests
-                            ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/RT-run-$machine.log
+                            ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
                           elif [[ $machine =~ "Orion" ]]
                           then
                             echo "Creating baselines on $machine"
                             export dprefix=/work2/noaa/$ACCNR/$USER
                             sed -i 's|/work/noaa/stmp/${USER}|/work/noaa/epic/stmp/role-epic/|g' rt.sh
 		            export ACCNR=epic
-                            ./rt.sh -a ${ACCNR} -c -e -l rt.conf | tee $WORKSPACE/tests/RT-run-$machine.log
+                            ./rt.sh -a ${ACCNR} -c -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
                             export DISKNM=/work/noaa/epic/UFS-WM_RT
                             cd ${DISKNM}/NEMSfv3gfs/
                             mkdir develop-${BL_DATE}
@@ -75,11 +75,11 @@ def generateStage(nodeLabel) {
                             ./adjust_permissions.sh orion develop-${BL_DATE}
                             chgrp noaa-hpc develop-${BL_DATE}
 			    cd $WORKSPACE/tests
-                            ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/RT-run-$machine.log
+                            ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
                           elif [[ $machine =~ "GaeaC5" ]]
                           then 
                             echo "Creating baselines on $machine"
-                            ./rt.sh -a ${ACCNR} -c -e -l rt.conf | tee $WORKSPACE/tests/RT-run-$machine.log
+                            ./rt.sh -a ${ACCNR} -c -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
                             unset LD_LIBRARY_PATH
                             export DISKNM=/lustre/f2/pdata/ncep/role.epic/C5/RT
                             cd ${DISKNM}/NEMSfv3gfs/
@@ -89,7 +89,7 @@ def generateStage(nodeLabel) {
                             cd ${DISKNM}/NEMSfv3gfs/
                             chgrp ncep develop-${BL_DATE}
 		            cd $WORKSPACE/tests
-                            ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/RT-run-$machine.log
+                            ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
                           elif [[ $machine =~ "Hera" ]]
                           then
                             echo "Creating baselines on $machine"
@@ -101,22 +101,22 @@ def generateStage(nodeLabel) {
 			    cd  /scratch1/NCEPDEV/stmp4/role.epic/FV3_RT
 			    rsync -a REGRESSION_TEST/ ${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}
 			    cd $WORKSPACE/tests
-                            ./rt.sh -a ${ACCNR} -r -l rt.conf | tee $WORKSPACE/tests/RT-run-$machine.log
+                            ./rt.sh -a ${ACCNR} -r -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
                            elif [[ $machine =~ "Derecho" ]]
                            then
                              echo "Creating baselines on $machine"
                              export ACCNR=nral0032
-                             ./rt.sh -a ${ACCNR} -c -e -l rt.conf | tee $WORKSPACE/tests/RT-run-$machine.log
+                             ./rt.sh -a ${ACCNR} -c -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
                              export DISKNM=/glade/derecho/scratch/epicufsrt/ufs-weather-model/RT/
 			     cd ${DISKNM}/NEMSfv3gfs/
 			     mkdir develop-${BL_DATE}
 			     cd /glade/derecho/scratch/epicufsrt/FV3_RT
 			     rsync -a REGRESSION_TEST/ ${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}
 			     cd $WORKSPACE/tests
-                             ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/RT-run-$machine.log
+                             ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
                           else
                             echo "Creating baselines on $machine"
-                            ./rt.sh -a ${ACCNR} -c -r -l rt.conf | tee $WORKSPACE/tests/RT-run-$machine.log
+                            ./rt.sh -a ${ACCNR} -c -r -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
                           fi
                       git config user.email "ecc.platform@noaa.gov"
                       git config user.name "epic-cicd-jenkins"
@@ -155,37 +155,37 @@ def generateStage(nodeLabel) {
                           then
                            echo "Running regression tests on $machine"
                             export dprefix=/lfs1/NAGAPE/$ACCNR/$USER
-                            ./rt.sh -a ${ACCNR} -r -l rt.conf | tee $WORKSPACE/tests/RT-run-$machine.log
+                            ./rt.sh -a ${ACCNR} -r -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
                           elif [[ $machine =~ "Hercules" ]]
                           then
                            echo "Running regression tests on $machine"
                             export dprefix=/work2/noaa/$ACCNR/$USER
                             sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
-                            ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/RT-run-$machine.log
+                            ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
                           elif [[ $machine =~ "Orion" ]]
                           then
                            echo "Running regression tests on $machine"
                             export dprefix=/work2/noaa/$ACCNR/$USER
                             sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
-                            ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/RT-run-$machine.log
+                            ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
                           elif [[ $machine =~ "GaeaC5" ]]
                           then 
                            echo "Running regression tests on $machine"
-                            ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/RT-run-$machine.log
+                            ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
                             unset LD_LIBRARY_PATH
                           elif [[ $machine =~ "Hera" ]]
                           then
                            echo "Running regression tests on $machine"
                            export ACCNR=nems
-                          ./rt.sh -a ${ACCNR} -r -l rt.conf | tee $WORKSPACE/tests/RT-run-$machine.log
+                          ./rt.sh -a ${ACCNR} -r -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
 			  elif [[ $machine =~ "Derecho" ]]
                           then
                            echo "Running regression tests on $machine"
                            export ACCNR=nral0032
-                           ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/RT-run-$machine.log
+                           ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
                           else
                            echo "Running regression tests on $machine"
-                           ./rt.sh -a ${ACCNR} -r -l rt.conf | tee $WORKSPACE/tests/RT-run-$machine.log
+                           ./rt.sh -a ${ACCNR} -r -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
                           fi
 
                       git config user.email "ecc.platform@noaa.gov"
@@ -224,8 +224,8 @@ def generateStage(nodeLabel) {
                       git remote -v | grep -w sshorigin > /dev/null 2>&1 && git remote remove sshorigin > /dev/null 2>&1
                       git remote add sshorigin $SSH_ORIGIN > /dev/null 2>&1
   
-                      if [[ -f $WORKSPACE/tests/RT-run-$machine.log ]] ; then
-                         git add $WORKSPACE/tests/RT-run-$machine.log
+                      if [[ -f $WORKSPACE/tests/logs/RT-run-$machine.log ]] ; then
+                         git add $WORKSPACE/tests/logs/RT-run-$machine.log
                       fi
                       git commit  --allow-empty -m "[AutoRT] $machine Job Failed!\n\n\n on-behalf-of @ufs-community <ecc.platform@noaa.gov>"
                     
