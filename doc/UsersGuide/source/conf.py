@@ -84,6 +84,15 @@ exclude_patterns = []
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
 
+# Avoid a 403 Forbidden error when accessing certain links (e.g., noaa.gov)
+user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36"
+
+# Ignore anchor tags for links that show Not Found even when they exist.
+linkcheck_anchors_ignore = [r"L\d*",
+                            ]
+# Ignore working links that cause a linkcheck 403 error.
+linkcheck_ignore = [r'https://agupubs\.onlinelibrary\.wiley\.com/doi/10\.1029/2020MS002260',
+                   ]
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -100,6 +109,7 @@ html_theme_path = ["_themes", ]
 #
 # html_theme_options = {}
 html_theme_options = {"body_max_width": "none"}
+html_logo="https://github.com/ufs-community/ufs/wiki/images/ufs-epic-logo.png"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
