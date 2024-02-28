@@ -395,7 +395,7 @@ elif [[ $MACHINE_ID = hercules ]]; then
   COMPILE_QUEUE=windfall
   PARTITION=hercules
   dprefix=/work2/noaa/stmp/${USER}
-  DISKNM=/work/noaa/epic/hercules/UFS-WM_RT
+  DISKNM=/work/noaa/epic/hercules/UFS-WM_RT/RRFS.v1
   STMP=$dprefix/stmp
   PTMP=$dprefix/stmp
 
