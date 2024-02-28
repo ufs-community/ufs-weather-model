@@ -1,0 +1,114 @@
+#
+#  cpld_s2s_docn_dice P8 test
+#
+
+export TEST_DESCR="AMIP+ FV3-CCPP-CDEPS_DOCN-CDEPS_DICE system"
+
+export CNTL_DIR=cpld_s2s_docn_dice_p8
+
+export LIST_FILES="sfcf021.tile1.nc \
+                   sfcf021.tile2.nc \
+                   sfcf021.tile3.nc \
+                   sfcf021.tile4.nc \
+                   sfcf021.tile5.nc \
+                   sfcf021.tile6.nc \
+                   atmf021.tile1.nc \
+                   atmf021.tile2.nc \
+                   atmf021.tile3.nc \
+                   atmf021.tile4.nc \
+                   atmf021.tile5.nc \
+                   atmf021.tile6.nc \
+                   sfcf024.tile1.nc \
+                   sfcf024.tile2.nc \
+                   sfcf024.tile3.nc \
+                   sfcf024.tile4.nc \
+                   sfcf024.tile5.nc \
+                   sfcf024.tile6.nc \
+                   atmf024.tile1.nc \
+                   atmf024.tile2.nc \
+                   atmf024.tile3.nc \
+                   atmf024.tile4.nc \
+                   atmf024.tile5.nc \
+                   atmf024.tile6.nc \
+                   RESTART/20210323.060000.coupler.res \
+                   RESTART/20210323.060000.fv_core.res.nc \
+                   RESTART/20210323.060000.fv_core.res.tile1.nc \
+                   RESTART/20210323.060000.fv_core.res.tile2.nc \
+                   RESTART/20210323.060000.fv_core.res.tile3.nc \
+                   RESTART/20210323.060000.fv_core.res.tile4.nc \
+                   RESTART/20210323.060000.fv_core.res.tile5.nc \
+                   RESTART/20210323.060000.fv_core.res.tile6.nc \
+                   RESTART/20210323.060000.fv_srf_wnd.res.tile1.nc \
+                   RESTART/20210323.060000.fv_srf_wnd.res.tile2.nc \
+                   RESTART/20210323.060000.fv_srf_wnd.res.tile3.nc \
+                   RESTART/20210323.060000.fv_srf_wnd.res.tile4.nc \
+                   RESTART/20210323.060000.fv_srf_wnd.res.tile5.nc \
+                   RESTART/20210323.060000.fv_srf_wnd.res.tile6.nc \
+                   RESTART/20210323.060000.fv_tracer.res.tile1.nc \
+                   RESTART/20210323.060000.fv_tracer.res.tile2.nc \
+                   RESTART/20210323.060000.fv_tracer.res.tile3.nc \
+                   RESTART/20210323.060000.fv_tracer.res.tile4.nc \
+                   RESTART/20210323.060000.fv_tracer.res.tile5.nc \
+                   RESTART/20210323.060000.fv_tracer.res.tile6.nc \
+                   RESTART/20210323.060000.phy_data.tile1.nc \
+                   RESTART/20210323.060000.phy_data.tile2.nc \
+                   RESTART/20210323.060000.phy_data.tile3.nc \
+                   RESTART/20210323.060000.phy_data.tile4.nc \
+                   RESTART/20210323.060000.phy_data.tile5.nc \
+                   RESTART/20210323.060000.phy_data.tile6.nc \
+                   RESTART/20210323.060000.sfc_data.tile1.nc \
+                   RESTART/20210323.060000.sfc_data.tile2.nc \
+                   RESTART/20210323.060000.sfc_data.tile3.nc \
+                   RESTART/20210323.060000.sfc_data.tile4.nc \
+                   RESTART/20210323.060000.sfc_data.tile5.nc \
+                   RESTART/20210323.060000.sfc_data.tile6.nc \
+                   RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc"
+
+export_fv3
+export_cpl
+
+#Component settings
+export CPLCHM=.false.
+export DNATS=0
+export CPLWAV=.false.
+export CPLWAV2ATM=.false.
+
+export FV3=true
+export S2S=false
+export AQM=false
+export DOCN_CDEPS=true
+export DICE_CDEPS=true
+export CDEPS_INLINE=false
+export ocn_model=docn
+export ice_model=dice
+
+#TODO-task layout
+
+#CDEPS settings
+export ocn_datamode=cplhist
+export DOCN_IN_CONFIGURE=docn_in.IN
+export DOCN_STREAM_CONFIGURE=hafs_docn.streams.IN
+export ice_datamode=cplhist
+export DICE_IN_CONFIGURE=dice_in.IN
+export DICE_STREAM_CONFIGURE=dice.streams.IN
+export OCNRES=100
+export MESH_ICE=mesh.mx${OCNRES}.nc
+export MESH_OCN=mesh.mx${OCNRES}.nc
+export ocn_nx_global=360
+export ocn_ny_global=320
+export ice_nx_global=360
+export ice_ny_global=320
+export stream_files_ocn="INPUT/ufs.cpld.cpl.hi.ocn.2021-03-22-25200.nc INPUT/ufs.cpld.cpl.hi.ocn.2021-03-23-21600.nc"
+export stream_files_ice="INPUT/ufs.cpld.cpl.hi.ice.2021-03-22-25200.nc INPUT/ufs.cpld.cpl.hi.ice.2021-03-23-21600.nc"
+
+export RESTART_N=12
+export RESTART_INTERVAL="${RESTART_N} -1"
+export OUTPUT_FH='0 21 24'
+
+export CCPP_SUITE=FV3_GFS_v17_coupled_p8
+export DIAG_TABLE=diag_table_gfsv16
+export FIELD_TABLE=field_table_thompson_noaero_tke
+export INPUT_NML=control_gfsv17.nml.IN
+export MODEL_CONFIGURE=model_configure.IN
+export UFS_CONFIGURE=ufs.configure.s2s.IN
+export FV3_RUN="control_run.IN cplhist_cdeps_docn_dice.IN"
