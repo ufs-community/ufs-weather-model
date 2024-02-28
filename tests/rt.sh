@@ -347,7 +347,7 @@ elif [[ $MACHINE_ID = hera ]]; then
 
   PARTITION=
   dprefix=/scratch1/NCEPDEV
-  DISKNM=/scratch2/NAGAPE/epic/UFS-WM_RT
+  DISKNM=/scratch2/NAGAPE/epic/UFS-WM_RT/RRFS.v1
   STMP=$dprefix/stmp4
   PTMP=$dprefix/stmp2
 
