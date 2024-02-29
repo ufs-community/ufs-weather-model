@@ -83,14 +83,16 @@ export ocn_model=docn
 export ice_model=dice
 
 #TODO-task layout
+export WAV_tasks=0
+
 
 #CDEPS settings
 export ocn_datamode=cplhist
-export DOCN_IN_CONFIGURE=docn_in.IN
-export DOCN_STREAM_CONFIGURE=hafs_docn.streams.IN
+export DOCN_IN_CONFIGURE=global_docn_in.IN
+export DOCN_STREAM_CONFIGURE=global_docn.streams.IN
 export ice_datamode=cplhist
-export DICE_IN_CONFIGURE=dice_in.IN
-export DICE_STREAM_CONFIGURE=dice.streams.IN
+export DICE_IN_CONFIGURE=global_dice_in.IN
+export DICE_STREAM_CONFIGURE=global_dice.streams.IN
 export OCNRES=100
 export MESH_ICE=mesh.mx${OCNRES}.nc
 export MESH_OCN=mesh.mx${OCNRES}.nc
@@ -98,8 +100,9 @@ export ocn_nx_global=360
 export ocn_ny_global=320
 export ice_nx_global=360
 export ice_ny_global=320
-export stream_files_ocn="INPUT/ufs.cpld.cpl.hi.ocn.2021-03-22-25200.nc INPUT/ufs.cpld.cpl.hi.ocn.2021-03-23-21600.nc"
-export stream_files_ice="INPUT/ufs.cpld.cpl.hi.ice.2021-03-22-25200.nc INPUT/ufs.cpld.cpl.hi.ice.2021-03-23-21600.nc"
+export stream_files_docn="INPUT/ufs.cpld.cpl.hi.ocn.2021-03-22-25200.nc INPUT/ufs.cpld.cpl.hi.ocn.2021-03-23-21600.nc"
+export stream_files_dice="INPUT/ufs.cpld.cpl.hi.ice.2021-03-22-25200.nc INPUT/ufs.cpld.cpl.hi.ice.2021-03-23-21600.nc"
+export STREAM_OFFSET=0
 
 export RESTART_N=12
 export RESTART_INTERVAL="${RESTART_N} -1"
