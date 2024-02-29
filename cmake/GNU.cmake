@@ -1,3 +1,8 @@
+# https://github.com/ufs-community/ufs-weather-model/issues/2159
+if(MOVING_NEST)
+  message(FATAL_ERROR "Option MOVING_NEST not compatible with ${CMAKE_Fortran_COMPILER_ID}}")
+endif()
+
 set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -ggdb -fbacktrace -cpp -fcray-pointer -ffree-line-length-none -fno-range-check")
 
 if(${CMAKE_Fortran_COMPILER_VERSION} VERSION_GREATER_EQUAL 10)
