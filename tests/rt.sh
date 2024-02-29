@@ -727,8 +727,8 @@ elif [[ $MACHINE_ID = hercules ]]; then
   ECFLOW_START=/work/noaa/epic/role-epic/spack-stack/hercules/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
-  QUEUE=windfall
-  COMPILE_QUEUE=windfall
+  QUEUE=batch
+  COMPILE_QUEUE=batch
   PARTITION=hercules
   dprefix=/work2/noaa/stmp/${USER}
   DISKNM=/work/noaa/epic/hercules/UFS-WM_RT
