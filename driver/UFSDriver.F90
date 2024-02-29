@@ -418,8 +418,7 @@
             !TODO: Remove bail code and pass info and SetVM to DriverAddComp
             !TODO: once component supports threading.
             if (ompNumThreads > 1) then
-              write (msg, *) "ESMF-aware threading NOT implemented for
-model: "//&
+              write (msg, *) "ESMF-aware threading NOT implemented for model: "//&
                 trim(model)
               call ESMF_LogSetError(ESMF_RC_NOT_VALID, msg=msg,line=__LINE__, &
                 file=__FILE__, rcToReturn=rc)
