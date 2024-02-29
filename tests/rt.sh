@@ -276,7 +276,7 @@ if [[ $MACHINE_ID = wcoss2 ]]; then
   mkdir -p ${ECF_COMDIR}
   export colonifnco=":output"  # hack
 
-  DISKNM=/lfs/h2/emc/nems/noscrub/emc.nems/RT
+  DISKNM=/lfs/h2/emc/lam/noscrub/emc.lam/RRFS.v1_RT
   QUEUE=dev
   COMPILE_QUEUE=dev
   PARTITION=
