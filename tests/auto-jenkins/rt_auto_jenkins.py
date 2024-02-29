@@ -77,8 +77,6 @@ def delete_pr_dirs(each_pr, machine):
         workdir = '/scratch1/NCEPDEV/nems/role.epic/autort/pr'
     elif machine == 'jet':
         workdir = '/lfs4/HFIP/hfv3gfs/role.epic/autort/pr'
-    elif machine == 'gaea':
-        workdir = '/lustre/f2/pdata/ncep/role.epic/autort/pr'
     elif machine == 'orion':
         workdir = '/work/noaa/epic-ps/role-epic-ps/autort/pr'
     elif machine == 'hercules':
@@ -114,8 +112,6 @@ def delete_rt_dirs(in_dir, machine, workdir):
     elif machine == 'jet':
         rt_dir ='/lfs4/HFIP/hfv3gfs/role.epic/RT_BASELINE/'\
                f'emc.nemspara/FV3_RT'
-    elif machine == 'gaea':
-        rt_dir = '/lustre/f2/scratch/role.epic/FV3_RT'
     elif machine == 'orion':
         rt_dir = '/work/noaa/stmp/bcurtis/stmp/bcurtis/FV3_RT'
     elif machine == 'hercules':
@@ -292,9 +288,6 @@ def setup_env():
     elif bool(re.match(re.compile('tfe.+'), hostname)):
         machine = 'jet'
         os.environ['ACCNR'] = 'hfv3gfs'
-    elif bool(re.match(re.compile('gaea.+'), hostname)):
-        machine = 'gaea'
-        os.environ['ACCNR'] = 'nggps_emc'
     elif bool(re.match(re.compile('Orion-login.+'), hostname)):
         machine = 'orion'
         os.environ['ACCNR'] = 'epic-ps'

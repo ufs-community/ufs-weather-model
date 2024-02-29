@@ -1,6 +1,6 @@
 # CDEPS compiler flags
 if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
-  set(CMAKE_Fortran_FLAGS "-g -fbacktrace -ffree-line-length-none")
+  set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -g -fbacktrace -ffree-line-length-none")
   #Set CPP defintions for the ufs/cdeps_share target library
   list(APPEND CDEPS_SHARE_DEFS "CPRGNU")
   if(${CMAKE_Fortran_COMPILER_VERSION} VERSION_GREATER_EQUAL 10)
@@ -9,7 +9,7 @@ if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
   set(CMAKE_Fortran_FLAGS_RELEASE "-O2")
   set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -fcheck=bounds -ffpe-trap=invalid,zero,overflow,underflow" )
 elseif(CMAKE_Fortran_COMPILER_ID MATCHES "Intel")
-  set(CMAKE_Fortran_FLAGS "-g -traceback")
+  set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -g -traceback")
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -O -assume realloc_lhs")
   set(CMAKE_Fortran_FLAGS_RELEASE "-O2 -fp-model precise")
   set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -check -check noarg_temp_created -check nopointer -fpe0 -ftrapuv -init=snan,arrays")

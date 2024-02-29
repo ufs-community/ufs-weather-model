@@ -217,9 +217,6 @@ def setup_env():
     elif bool(re.match(re.compile('fe.+'), hostname)):
         machine = 'jet'
         os.environ['ACCNR'] = 'h-nems'
-    elif bool(re.match(re.compile('gaea.+'), hostname)):
-        machine = 'gaea'
-        os.environ['ACCNR'] = 'nggps_emc'
     elif bool(re.match(re.compile('Orion-login.+'), hostname)):
         machine = 'orion'
     elif bool(re.match(re.compile('chadmin.+'), hostname)):

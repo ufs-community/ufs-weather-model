@@ -4,8 +4,7 @@
 #SBATCH --account=@[ACCNR]
 ##SBATCH --qos=@[QUEUE]
 #SBATCH --clusters=es
-#SBATCH --partition=eslogin
-#SBATCH --exclude=gaea9
+#SBATCH --partition=eslogin_c5
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=8
 #SBATCH --time=180
@@ -16,7 +15,7 @@ set -eux
 echo -n " $( date +%s )," >  job_timestamp.txt
 echo "Compile started:  " `date`
 
-@[PATHRT]/compile.sh @[MACHINE_ID] "@[MAKE_OPT]" @[COMPILE_NR] @[RT_COMPILER]
+@[PATHRT]/compile.sh @[MACHINE_ID] "@[MAKE_OPT]" @[COMPILE_ID] @[RT_COMPILER]
 
 echo "Compile ended:    " `date`
 echo -n " $( date +%s )," >> job_timestamp.txt

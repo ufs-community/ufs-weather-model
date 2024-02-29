@@ -15,31 +15,31 @@ cleanup() {
 }
 
 write_fail_test() {
-  echo "${TEST_NAME}_${RT_COMPILER} ${TEST_NR} failed in run_test" >> $PATHRT/fail_test_${TEST_NR}
+  echo "${TEST_ID} failed in run_test" >> $PATHRT/fail_test_${TEST_ID}
   exit 1
 }
 
 remove_fail_test() {
-    echo "Removing test failure flag file for ${TEST_NAME}_${RT_COMPILER} ${TEST_NR}"
-    rm -f $PATHRT/fail_test_${TEST_NR}
+    echo "Removing test failure flag file for ${TEST_ID}"
+    rm -f $PATHRT/fail_test_${TEST_ID}
 }
 
 if [[ $# != 5 ]]; then
-  echo "Usage: $0 PATHRT RUNDIR_ROOT TEST_NAME TEST_NR COMPILE_NR"
+  echo "Usage: $0 PATHRT RUNDIR_ROOT TEST_NAME TEST_ID COMPILE_ID"
   exit 1
 fi
 
 export PATHRT=$1
 export RUNDIR_ROOT=$2
 export TEST_NAME=$3
-export TEST_NR=$4
-export COMPILE_NR=$5
+export TEST_ID=$4
+export COMPILE_ID=$5
 
 echo "PATHRT: ${PATHRT}"
 echo "RUNDIR_ROOT: ${RUNDIR_ROOT}"
 echo "TEST_NAME: ${TEST_NAME}"
-echo "TEST_NR: ${TEST_NR}"
-echo "COMPILE_NR: ${COMPILE_NR}"
+echo "TEST_ID: ${TEST_ID}"
+echo "COMPILE_ID: ${COMPILE_ID}"
 
 cd ${PATHRT}
 
@@ -47,9 +47,9 @@ cd ${PATHRT}
 unset MODEL_CONFIGURE
 unset UFS_CONFIGURE
 
-[[ -e ${RUNDIR_ROOT}/run_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
+[[ -e ${RUNDIR_ROOT}/run_test_${TEST_ID}.env ]] && source ${RUNDIR_ROOT}/run_test_${TEST_ID}.env
 source default_vars.sh
-[[ -e ${RUNDIR_ROOT}/run_test_${TEST_NR}.env ]] && source ${RUNDIR_ROOT}/run_test_${TEST_NR}.env
+[[ -e ${RUNDIR_ROOT}/run_test_${TEST_ID}.env ]] && source ${RUNDIR_ROOT}/run_test_${TEST_ID}.env
 source tests/$TEST_NAME
 
 remove_fail_test
@@ -60,15 +60,15 @@ remove_fail_test
 export INPUT_DIR=${CNTL_DIR}
 
 # Append RT_SUFFIX to RUNDIR, and BL_SUFFIX to CNTL_DIR
-export RUNDIR=${RUNDIR_ROOT}/${TEST_NAME}_${RT_COMPILER}${RT_SUFFIX}
+export RUNDIR=${RUNDIR_ROOT}/${TEST_ID}${RT_SUFFIX}
 export CNTL_DIR=${CNTL_DIR}${BL_SUFFIX}
 
-export JBNME=$(basename $RUNDIR_ROOT)_${TEST_NR}
+export JBNME=$(basename $RUNDIR_ROOT)_${TEST_ID}
 
-echo -n "${TEST_NAME}_${RT_COMPILER}, $( date +%s )," > ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+echo -n "${TEST_ID}, $( date +%s )," > ${LOG_DIR}/run_${TEST_ID}_timestamp.txt
 
-export RT_LOG=${LOG_DIR}/rt_${TEST_NR}_${TEST_NAME}_${RT_COMPILER}${RT_SUFFIX}.log
-echo "Test ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} ${TEST_DESCR}"
+export RT_LOG=${LOG_DIR}/rt_${TEST_ID}${RT_SUFFIX}.log
+echo "Test ${TEST_ID} ${TEST_DESCR}"
 
 source rt_utils.sh
 source atparse.bash
@@ -82,14 +82,14 @@ cd $RUNDIR
 ###############################################################################
 
 # FV3 executable:
-cp ${PATHRT}/fv3_${COMPILE_NR}.exe                 fv3.exe
+cp ${PATHRT}/fv3_${COMPILE_ID}.exe                 fv3.exe
 
 # modulefile for FV3 prerequisites:
 mkdir -p modulefiles
 if [[ $MACHINE_ID == linux ]]; then
-  cp ${PATHRT}/modules.fv3_${COMPILE_NR}             ./modulefiles/modules.fv3
+  cp ${PATHRT}/modules.fv3_${COMPILE_ID}             ./modulefiles/modules.fv3
 else
-  cp ${PATHRT}/modules.fv3_${COMPILE_NR}.lua         ./modulefiles/modules.fv3.lua
+  cp ${PATHRT}/modules.fv3_${COMPILE_ID}.lua         ./modulefiles/modules.fv3.lua
 fi
 cp ${PATHTR}/modulefiles/ufs_common*                 ./modulefiles/.
 
@@ -97,7 +97,7 @@ cp ${PATHTR}/modulefiles/ufs_common*                 ./modulefiles/.
 cp ${PATHRT}/module-setup.sh                       module-setup.sh
 
 # load nccmp module
-if [[ " s4 hera orion hercules gaea gaea-c5 jet derecho acorn wcoss2 " =~ " $MACHINE_ID " ]]; then
+if [[ " s4 hera orion hercules gaea jet derecho acorn wcoss2 " =~ " $MACHINE_ID " ]]; then
   if [[ " wcoss2 acorn " =~ " ${MACHINE_ID} " ]] ; then
     module load intel/19.1.3.304 netcdf/4.7.4
     module load nccmp
@@ -106,9 +106,12 @@ if [[ " s4 hera orion hercules gaea gaea-c5 jet derecho acorn wcoss2 " =~ " $MAC
     module load stack-intel/2021.5.0 stack-intel-oneapi-mpi/2021.5.0
     module load miniconda/3.9.12
     module load nccmp/1.9.0.1
-  elif [[ " hera orion hercules gaea gaea-c5 jet " =~ " ${MACHINE_ID} " ]] ; then
+  elif [[ " hera orion hercules gaea jet " =~ " ${MACHINE_ID} " ]] ; then
     module use modulefiles
     module load modules.fv3
+    if [[ " gaea " =~ " ${MACHINE_ID} " ]]; then
+      module load gcc/12.2.0
+    fi
   else
     module load nccmp
   fi
@@ -289,6 +292,10 @@ if [[ $DOCN_CDEPS = 'true' ]]; then
   atparse < ${PATHRT}/parm/${DOCN_STREAM_CONFIGURE:-docn.streams.IN} > docn.streams
 fi
 
+if [[ $CDEPS_INLINE = 'true' ]]; then
+  atparse < ${PATHRT}/parm/${CDEPS_INLINE_CONFIGURE:-stream.config.IN} > stream.config
+fi
+
 TPN=$(( TPN / THRD ))
 if (( TASKS < TPN )); then
   TPN=${TASKS}
@@ -363,18 +370,20 @@ else
 fi
 
 if [[ $skip_check_results = false ]]; then
-  check_results
+  check_results || true
+  # The above call will exit with an error on its own and does
+  # not need to cause run_test to TRAP the failure and error out itself.
 else
   echo                                               >> ${RT_LOG}
   grep "The total amount of wall time" ${RUNDIR}/out >> ${RT_LOG}
   grep "The maximum resident set size" ${RUNDIR}/out >> ${RT_LOG}
   echo                                               >> ${RT_LOG}
-  echo "Test ${TEST_NR} ${TEST_NAME}_${RT_COMPILER} RUN_SUCCESS"    >> ${RT_LOG}
+  echo "Test ${TEST_ID} RUN_SUCCESS"                 >> ${RT_LOG}
   echo;echo;echo                                     >> ${RT_LOG}
 fi
 
 if [[ $SCHEDULER != 'none' ]]; then
-  cat ${RUNDIR}/job_timestamp.txt >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+  cat ${RUNDIR}/job_timestamp.txt >> ${LOG_DIR}/run_${TEST_ID}_timestamp.txt
 fi
 
 if [[ $ROCOTO = true ]]; then
@@ -385,7 +394,7 @@ fi
 # End test
 ################################################################################
 
-echo " $( date +%s ), ${NODES}" >> ${LOG_DIR}/job_${JOB_NR}_timestamp.txt
+echo " $( date +%s ), ${NODES}" >> ${LOG_DIR}/run_${TEST_ID}_timestamp.txt
 
 ################################################################################
 # Remove RUN_DIRs if they are no longer needed by other tests
@@ -405,4 +414,4 @@ if [[ ${delete_rundir} = true ]]; then
 fi
 
 elapsed=$SECONDS
-echo "Elapsed time $elapsed seconds. Test ${TEST_NAME}_${RT_COMPILER}"
+echo "Elapsed time $elapsed seconds. Test ${TEST_ID}"

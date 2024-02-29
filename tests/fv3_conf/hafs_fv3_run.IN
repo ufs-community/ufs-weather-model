@@ -17,6 +17,8 @@ elif [ ${CNTL_DIR} = "hafs_regional_storm_following_1nest_atm" ] || \
      [ ${CNTL_DIR} = "hafs_regional_specified_moving_1nest_atm" ] || \
      [ ${CNTL_DIR} = "hafs_regional_storm_following_1nest_atm_ocn" ] || \
      [ ${CNTL_DIR} = "hafs_regional_storm_following_1nest_atm_ocn_debug" ] || \
+     [ ${CNTL_DIR} = "hafs_regional_storm_following_1nest_atm_ocn_wav_inline" ] || \
+     [ ${CNTL_DIR} = "hafs_regional_storm_following_1nest_atm_ocn_wav_mom6" ] || \
      [ ${CNTL_DIR} = "hafs_regional_storm_following_1nest_atm_ocn_wav" ]; then
   cp -r @[INPUTDATA_ROOT]/FV3_hafs_input_data/INPUT_hafs_regional_storm_following_1nest_atm/* ./INPUT/
 elif [ ${CNTL_DIR} = "hafs_regional_1nest_atm" ] || \
@@ -48,4 +50,17 @@ if [[ $POSTAPP = 'hafs' ]]; then
     cp ${PATHRT}/parm/postxconfig-NT-hafs.txt postxconfig-NT.txt
     cp ${PATHRT}/parm/postxconfig-NT-hafs.txt postxconfig-NT_FH00.txt
     cp ${PATHRT}/parm/params_grib2_tbl_new params_grib2_tbl_new
+fi
+
+if [ ${CNTL_DIR} = "hafs_regional_storm_following_1nest_atm_ocn_wav_mom6" ]; then
+  rm -rf OUTPUT
+  mkdir OUTPUT
+  cp -r @[INPUTDATA_ROOT]/FV3_hafs_input_data/MOM6_regional_input_data/* ./INPUT/
+  cp ${PATHRT}/parm/MOM_input_hafs ./MOM_input
+  cp ${PATHRT}/parm/MOM6_data_table_hafs ./data_table
+fi
+if [ ${CNTL_DIR} = "hafs_regional_storm_following_1nest_atm_ocn_wav_inline" ] || \
+   [ ${CNTL_DIR} = "hafs_regional_storm_following_1nest_atm_ocn_wav_mom6" ]; then
+  cp @[INPUTDATA_ROOT]/FV3_hafs_input_data/CDEPS_input_data/gfs_mesh.nc ./INPUT/
+  cp @[INPUTDATA_ROOT]/FV3_hafs_input_data/CDEPS_input_data/gfs_forcings.nc ./INPUT/
 fi

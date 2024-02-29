@@ -18,8 +18,6 @@ def set_directories(job_obj):
         workdir = '/scratch1/NCEPDEV/nems/emc.nemspara/autort/pr'
     elif job_obj.machine == 'jet':
         workdir = '/lfs4/HFIP/h-nems/emc.nemspara/autort/pr'
-    elif job_obj.machine == 'gaea':
-        workdir = '/lustre/f2/pdata/ncep/emc.nemspara/autort/pr'
     elif job_obj.machine == 'orion':
         workdir = '/work/noaa/nems/emc.nemspara/autort/pr'
     elif job_obj.machine == 'derecho':
