@@ -276,7 +276,7 @@ if [[ $MACHINE_ID = wcoss2 ]]; then
   mkdir -p ${ECF_COMDIR}
   export colonifnco=":output"  # hack
 
-  DISKNM=/lfs/h2/emc/nems/noscrub/emc.nems/RT
+  DISKNM=/lfs/h2/emc/lam/noscrub/emc.lam/RRFS.v1_RT
   QUEUE=dev
   COMPILE_QUEUE=dev
   PARTITION=
@@ -322,7 +322,7 @@ elif [[ $MACHINE_ID = gaea-c5 ]]; then
   ECFLOW_START=/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
-  DISKNM=/lustre/f2/pdata/ncep/role.epic/C5/RT
+  DISKNM=/lustre/f2/pdata/ncep/role.epic/C5/RT/RRFS.v1
   QUEUE=normal
   COMPILE_QUEUE=normal
   PARTITION=c5
@@ -347,7 +347,7 @@ elif [[ $MACHINE_ID = hera ]]; then
 
   PARTITION=
   dprefix=/scratch1/NCEPDEV
-  DISKNM=/scratch2/NAGAPE/epic/UFS-WM_RT
+  DISKNM=/scratch2/NAGAPE/epic/UFS-WM_RT/RRFS.v1
   STMP=$dprefix/stmp4
   PTMP=$dprefix/stmp2
 
@@ -373,7 +373,7 @@ elif [[ $MACHINE_ID = orion ]]; then
   COMPILE_QUEUE=batch
   PARTITION=orion
   dprefix=/work/noaa/stmp/${USER}
-  DISKNM=/work/noaa/epic/UFS-WM_RT
+  DISKNM=/work/noaa/epic/UFS-WM_RT/RRFS.v1
   STMP=$dprefix/stmp
   PTMP=$dprefix/stmp
 
@@ -395,7 +395,7 @@ elif [[ $MACHINE_ID = hercules ]]; then
   COMPILE_QUEUE=windfall
   PARTITION=hercules
   dprefix=/work2/noaa/stmp/${USER}
-  DISKNM=/work/noaa/epic/hercules/UFS-WM_RT
+  DISKNM=/work/noaa/epic/hercules/UFS-WM_RT/RRFS.v1
   STMP=$dprefix/stmp
   PTMP=$dprefix/stmp
 
@@ -417,7 +417,7 @@ elif [[ $MACHINE_ID = jet ]]; then
   QUEUE=batch
   COMPILE_QUEUE=batch
   PARTITION=xjet
-  DISKNM=/mnt/lfs4/HFIP/hfv3gfs/role.epic/RT
+  DISKNM=/mnt/lfs4/HFIP/hfv3gfs/role.epic/RT/RRFS.v1
   dprefix=${dprefix:-/lfs4/HFIP/$ACCNR/$USER}
   STMP=${STMP:-$dprefix/RT_BASELINE}
   PTMP=${PTMP:-$dprefix/RT_RUNDIRS}
@@ -462,7 +462,7 @@ elif [[ $MACHINE_ID = derecho ]]; then
   COMPILE_QUEUE=main
   PARTITION=
   dprefix=/glade/derecho/scratch
-  DISKNM=/glade/derecho/scratch/epicufsrt/ufs-weather-model/RT/
+  DISKNM=/glade/derecho/scratch/epicufsrt/ufs-weather-model/RT/RRFS.v1
   STMP=$dprefix
   PTMP=$dprefix
   SCHEDULER=pbs
