@@ -761,7 +761,7 @@ elif [[ $MACHINE_ID = jet ]]; then
 #-- When Jet switches from CentOS to Rocky (June 2024), replace lines with correct ecflow
 #-- If you want to use Rocky OS now on Jet:
 #-- 1. login to one of Rocky Jet nodes: fe5 - fe8
-#-- 2. uncomment 5 lines to load correct ecflow (comment 2 lines to old ecflow)
+#-- 2. uncomment 5 lines to load correct ecflow (comment/delete 2 lines to old ecflow)
 #-- 3. in file  ../modulefiles/ufs_jet.intel.lua correct path to Rocky spack-stack
 #   module load ecflow/5.11.4
 #   ECFLOW_START=/apps/ecflow/5.11.4/bin/ecflow_start.sh
