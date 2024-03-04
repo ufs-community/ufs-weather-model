@@ -163,7 +163,7 @@ def generateStage(nodeLabel) {
                             export dprefix=/work2/noaa/$ACCNR/$USER
                             sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
                             export ACCNR=epic
-                            ./rt.sh -a ${ACCNR} -r -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
+                            ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
                           elif [[ $machine =~ "Orion" ]]
                           then
                            echo "Running regression tests on $machine"
