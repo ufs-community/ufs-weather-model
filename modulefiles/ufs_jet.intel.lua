@@ -2,6 +2,12 @@ help([[
 loads UFS Model prerequisites for Jet/Intel
 ]])
 
+-- When Jet switches from CentOS to Rocky (June 2024), replace lines with correct spack-stack
+-- If you want to use Rocky OS now on Jet:
+-- 1. login to one of Rocky Jet nodes: fe5 - fe8
+-- 2. uncomment line to load correct spack-stack (comment line to old spack-stack)
+-- 3. in file  ../tests/rt.sh correct ecflow
+-- prepend_path("MODULEPATH", "/mnt/lfs4/HFIP/hfv3gfs/role.epic/spack-stack/spack-stack-1.5.1/envs/unified-env-rocky8/install/modulefiles/Core")
 prepend_path("MODULEPATH", "/mnt/lfs4/HFIP/hfv3gfs/role.epic/spack-stack/spack-stack-1.5.1/envs/unified-env/install/modulefiles/Core")
 
 stack_intel_ver=os.getenv("stack_intel_ver") or "2021.5.0"

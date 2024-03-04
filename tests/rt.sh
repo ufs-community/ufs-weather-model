@@ -758,6 +758,16 @@ elif [[ $MACHINE_ID = jet ]]; then
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=slurm
 
+#-- When Jet switches from CentOS to Rocky (June 2024), replace lines with correct ecflow
+#-- If you want to use Rocky OS now on Jet:
+#-- 1. login to one of Rocky Jet nodes: fe5 - fe8
+#-- 2. uncomment 5 lines to load correct ecflow (comment 2 lines to old ecflow)
+#-- 3. in file  ../modulefiles/ufs_jet.intel.lua correct path to Rocky spack-stack
+#   module load ecflow/5.11.4
+#   ECFLOW_START=/apps/ecflow/5.11.4/bin/ecflow_start.sh
+#   module use /mnt/lfs4/HFIP/hfv3gfs/role.epic/spack-stack/spack-stack-1.5.0/envs/unified-env-rocky8/install/modulefiles/Core
+#   module load stack-intel/2021.5.0
+#   module load stack-python/3.10.8
   module load ecflow/5.5.3
   ECFLOW_START=/apps/ecflow/5.5.3/bin/ecflow_start.sh
 
