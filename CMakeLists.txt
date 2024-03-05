@@ -16,7 +16,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules/Modules)
 ###############################################################################
 
 # Valid applications and choices
-list(APPEND VALID_APPS ATM ATMAERO ATMAQ ATMW ATMWM ATML LND LND-LM4 S2S S2SA S2SW S2SWA S2SWAL S2S-LM4 HAFS HAFSW HAFS-MOM6 HAFS-MOM6W HAFS-ALL NG-GODAS)
+list(APPEND VALID_APPS ATM ATMAERO ATMAQ ATMW ATMWM ATML LND LND-LM4 S2S S2SA S2SW S2SWA S2SWAL HAFS HAFSW HAFS-MOM6 HAFS-MOM6W HAFS-ALL NG-GODAS)
 set(APP NONE CACHE BOOL "Application Name")
 if(NOT (APP IN_LIST VALID_APPS))
   message(FATAL_ERROR "${APP} is not a valid application.\nValid Applications are: ${VALID_APPS}")
@@ -152,7 +152,7 @@ if(FMS)
   find_package(FMS 2022.04 REQUIRED COMPONENTS R4 R8)
   if(APP MATCHES "^(HAFSW)$")
     add_library(fms ALIAS FMS::fms_r4)
-  elseif (APP MATCHES "^(S2S|S2SA|S2SW|S2SWA|S2SWAL|S2S-LM4|NG-GODAS|HAFS-MOM6|HAFS-MOM6W)$")
+  elseif (APP MATCHES "^(S2S|S2SA|S2SW|S2SWA|S2SWAL|NG-GODAS|HAFS-MOM6|HAFS-MOM6W)$")
     add_library(fms ALIAS FMS::fms_r8)
   endif()
   if(APP MATCHES "^(ATM|ATMAERO|ATMAQ|ATMWM|ATMW|ATML|ATML-LM4|LND-LM4|HAFS|HAFS-ALL)$")
@@ -225,7 +225,7 @@ if(WW3)
 endif()
 
 ###############################################################################
-### Marine Components [MOM6, HYCOM, CICE6] 
+### Marine Components [MOM6, HYCOM, CICE6]
 ###############################################################################
 if(MOM6)
   add_subdirectory(MOM6-interface)
@@ -330,26 +330,6 @@ if (LM4)
    list(APPEND _ufs_libs_public lm4)
 endif()
 
-
-# if(S2S)
-#   list(APPEND _ufs_defs_private FRONT_MOM6=mom_cap_mod
-#                                 FRONT_CICE6=ice_comp_nuopc
-#                                 CMEPS
-#                                 FRONT_CMEPS=MED
-#   				FRONT_NOAH=lnd_comp_nuopc)
-#   add_dependencies(ufs mom6 cice cmeps lnd_comp)
-#   target_link_libraries(ufs PUBLIC mom6
-#                                    cice
-#                                    cmeps
-#   				   lnd_comp
-#   				   )
-#   # list(APPEND _ufs_defs_private CMEPS
-#   #                               FRONT_CMEPS=MED
-#   # 				FRONT_NOAH=lnd_comp_nuopc)
-#   # add_dependencies(ufs cmeps lnd_comp)
-#   # target_link_libraries(ufs PUBLIC cmeps
-#   # 				   lnd_comp
-#   # 				   )
 if(CMEPS)
   add_dependencies(ufs cmeps)
   list(APPEND _ufs_defs_private CMEPS FRONT_CMEPS=MED)
