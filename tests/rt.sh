@@ -9,7 +9,7 @@ die() { echo "$@" >&2; exit 1; }
 usage() {
   set +x
   echo
-  echo "Usage: $0 -a <account> | -b <file> | -c | -d | -e | -h | -k | -l <file> | -m | -n <name> | -r | -w"
+  echo "Usage: $0 -a <account> | -b <file> | -c | -d | -e | -h | -k | -l <file> | -m | -n <name> | -o | -r | -w"
   echo
   echo "  -a  <account> to use on for HPC queue"
   echo "  -b  create new baselines only for tests listed in <file>"
@@ -21,6 +21,7 @@ usage() {
   echo "  -l  runs test specified in <file>"
   echo "  -m  compare against new baseline results"
   echo "  -n  run single test <name>"
+  echo "  -o  compile only, skip tests"
   echo "  -r  use Rocoto workflow manager"
   echo "  -w  for weekly_test, skip comparing baseline results"
   echo
@@ -81,49 +82,60 @@ update_rtconf() {
     [[ ${#line} == 0 ]] && continue
     [[ $line == \#* ]] && continue
     
-    if [[ $line == COMPILE* ]] ; then
-      COMPILE_LINE_USED=false
+    if [[ $line =~ COMPILE ]] ; then
       MACHINES=$(echo $line | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
       RT_COMPILER_IN=$(echo $line | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
-
       if [[ ${MACHINES} == '' ]]; then
         compile_line=$line
+	COMPILE_LINE_USED=false
       elif [[ ${MACHINES} == -* ]]; then
-        [[ ${MACHINES} =~ ${MACHINE_ID} ]] || compile_line=$line
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] || compile_line=$line; COMPILE_LINE_USED=false
       elif [[ ${MACHINES} == +* ]]; then
-        [[ ${MACHINES} =~ ${MACHINE_ID} ]] && compile_line=$line
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] && compile_line=$line; COMPILE_LINE_USED=false
       fi
 
     fi
 
     if [[ $line =~ RUN ]]; then
+      to_run_test=false
       tmp_test=$(echo "$line" | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
-      TEST_IDX=$(find_match "$tmp_test $RT_COMPILER_IN" "${TEST_WITH_COMPILE[@]}")
-      
-      if [[ $TEST_IDX != -1 ]]; then
-        if [[ $COMPILE_LINE_USED == false ]]; then
-          echo "$compile_line" >> $RT_TEMP_CONF
-          COMPILE_LINE_USED=true
-        fi
-        dep_test=$(echo "$line" | grep -w "$tmp_test" | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
+      MACHINES=$(echo $line | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
+      if [[ ${MACHINES} == '' ]]; then
+        to_run_test=true
+      elif [[ ${MACHINES} == -* ]]; then
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] || to_run_test=true
+      elif [[ ${MACHINES} == +* ]]; then
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] && to_run_test=true
+      fi
+      if [[ $to_run_test == true ]]; then
+        TEST_IDX=$(find_match "$tmp_test $RT_COMPILER_IN" "${TEST_WITH_COMPILE[@]}")
         
-        if [[ $dep_test != '' ]]; then
-          if [[ $(find_match "$dep_test $RT_COMPILER_IN" "${TEST_WITH_COMPILE[@]}") == -1 ]]; then
-
-            dep_line=$(grep -w "$dep_test" rt.conf | grep -v "$tmp_test")
-            dep_line="${dep_line#"${dep_line%%[![:space:]]*}"}"
-            dep_line=$(echo "${dep_line}" | tr -d '\n')
-            CORRECT_LINE[1]=$(awk -F'RUN|RUN' '{print $2}' <<< "$dep_line")
-            CORRECT_LINE[2]=$(awk -F'RUN|RUN' '{print $3}' <<< "$dep_line")
+        if [[ $TEST_IDX != -1 ]]; then
+          if [[ $COMPILE_LINE_USED == false ]]; then
+  	    echo -en '\n' >> $RT_TEMP_CONF
+            echo "$compile_line" >> $RT_TEMP_CONF
+            COMPILE_LINE_USED=true
+          fi
+          dep_test=$(echo "$line" | grep -w "$tmp_test" | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
+        
+          if [[ $dep_test != '' ]]; then
+            if [[ $(find_match "$dep_test $RT_COMPILER_IN" "${TEST_WITH_COMPILE[@]}") == -1 ]]; then
+  
+              dep_line=$(grep -w "$dep_test" rt.conf | grep -v "$tmp_test")
+              dep_line="${dep_line#"${dep_line%%[![:space:]]*}"}"
+              dep_line=$(echo "${dep_line}" | tr -d '\n')
+              CORRECT_LINE[1]=$(awk -F'RUN|RUN' '{print $2}' <<< "$dep_line")
+              CORRECT_LINE[2]=$(awk -F'RUN|RUN' '{print $3}' <<< "$dep_line")
             
-            if [[ $RT_COMPILER_IN == "intel" ]]; then
-              echo "RUN ${CORRECT_LINE[1]}" >> $RT_TEMP_CONF
-            elif [[ $RT_COMPILER_IN == "gnu" ]]; then
-              echo "RUN ${CORRECT_LINE[2]}" >> $RT_TEMP_CONF
+              if [[ $RT_COMPILER_IN == "intel" ]]; then
+                echo "RUN ${CORRECT_LINE[1]}" >> $RT_TEMP_CONF
+              elif [[ $RT_COMPILER_IN == "gnu" ]]; then
+                echo "RUN ${CORRECT_LINE[2]}" >> $RT_TEMP_CONF
+              fi
             fi
           fi
-        fi
-        echo "$line" >> $RT_TEMP_CONF
+          echo "$line" >> $RT_TEMP_CONF
+	fi  
       fi
     fi
   done < "$TESTS_FILE"
@@ -180,6 +192,7 @@ EOF
   [[ $DEFINE_CONF_FILE == true ]] && echo "* (-l) - USE CONFIG FILE: ${TESTS_FILE}" >> "${REGRESSIONTEST_LOG}"
   [[ $RTPWD_NEW_BASELINE == true ]] && echo "* (-m) - COMPARE AGAINST CREATED BASELINES" >> "${REGRESSIONTEST_LOG}"
   [[ $RUN_SINGLE_TEST == true ]] && echo "* (-n) - RUN SINGLE TEST: ${SINGLE_OPTS}" >> "${REGRESSIONTEST_LOG}"
+  [[ $COMPILE_ONLY == true ]]&& echo "* 9 (-o) COMPILE ONLY, SKIP TESTS" >> "${REGRESSIONTEST_LOG}"
   [[ $delete_rundir == true ]] && echo "* (-d) - DELETE RUN DIRECTORY" >> "${REGRESSIONTEST_LOG}"
   [[ $skip_check_results == true ]] && echo "* (-w) - SKIP RESULTS CHECK" >> "${REGRESSIONTEST_LOG}"
   [[ $KEEP_RUNDIR == true ]] && echo "* (-k) - KEEP RUN DIRECTORY" >> "${REGRESSIONTEST_LOG}"
@@ -258,7 +271,11 @@ EOF
       fi
 
     elif [[ $line =~ RUN ]]; then
-      
+
+      if [[ $COMPILE_ONLY == true ]]; then
+        continue
+      fi
+
       RMACHINES=$(echo "$line" | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
       TEST_NAME=$(echo "$line" | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
       GEN_BASELINE=$(echo "$line" | cut -d'|' -f4 | sed -e 's/^ *//' -e 's/ *$//')
@@ -497,6 +514,7 @@ TEST_35D=false
 export skip_check_results=false
 export delete_rundir=false
 SKIP_ORDER=false
+COMPILE_ONLY=false
 RTPWD_NEW_BASELINE=false
 TESTS_FILE='rt.conf'
 NEW_BASELINES_FILE=''
@@ -504,7 +522,7 @@ DEFINE_CONF_FILE=false
 RUN_SINGLE_TEST=false
 ACCNR=${ACCNR:-""}
 
-while getopts ":a:b:cl:mn:dwkreh" opt; do
+while getopts ":a:b:cl:mn:dwkreoh" opt; do
   case $opt in
     a)
       ACCNR=$OPTARG
@@ -519,6 +537,9 @@ while getopts ":a:b:cl:mn:dwkreh" opt; do
       DEFINE_CONF_FILE=true
       TESTS_FILE=$OPTARG
       grep -q '[^[:space:]]' < "$TESTS_FILE" ||  die "${TESTS_FILE} empty, exiting..."
+      ;;
+    o)
+      COMPILE_ONLY=true
       ;;
     m)
       # redefine RTPWD to point to newly created baseline outputs
@@ -1071,6 +1092,10 @@ while read -r line || [ "$line" ]; do
     continue
 
   elif [[ $line == RUN* ]] ; then
+
+    if [[ $COMPILE_ONLY == true ]]; then
+      continue
+    fi
 
     TEST_NAME=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
     MACHINES=$( echo $line | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
