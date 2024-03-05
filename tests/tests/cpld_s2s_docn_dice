@@ -85,7 +85,6 @@ export ice_model=dice
 #TODO-task layout
 export WAV_tasks=0
 
-
 #CDEPS settings
 export ocn_datamode=cplhist
 export DOCN_IN_CONFIGURE=global_docn_in.IN
@@ -100,8 +99,8 @@ export ocn_nx_global=360
 export ocn_ny_global=320
 export ice_nx_global=360
 export ice_ny_global=320
-export stream_files_docn="INPUT/ufs.cpld.cpl.hi.ocn.2021-03-22-25200.nc INPUT/ufs.cpld.cpl.hi.ocn.2021-03-23-21600.nc"
-export stream_files_dice="INPUT/ufs.cpld.cpl.hi.ice.2021-03-22-25200.nc INPUT/ufs.cpld.cpl.hi.ice.2021-03-23-21600.nc"
+export stream_files_docn="\"INPUT/ufs.cpld.cpl.hi.ocn.2021-03-22-25200.nc\" \"INPUT/ufs.cpld.cpl.hi.ocn.2021-03-23-21600.nc\""
+export stream_files_dice="\"INPUT/ufs.cpld.cpl.hi.ice.2021-03-22-25200.nc\" \"INPUT/ufs.cpld.cpl.hi.ice.2021-03-23-21600.nc\""
 export STREAM_OFFSET=0
 
 export RESTART_N=12
@@ -111,7 +110,8 @@ export OUTPUT_FH='0 21 24'
 export CCPP_SUITE=FV3_GFS_v17_coupled_p8
 export DIAG_TABLE=diag_table_gfsv16
 export FIELD_TABLE=field_table_thompson_noaero_tke
-export INPUT_NML=control_gfsv17.nml.IN
+export INPUT_NML=cpld_control.nml.IN
 export MODEL_CONFIGURE=model_configure.IN
 export UFS_CONFIGURE=ufs.configure.s2s.IN
-export FV3_RUN="control_run.IN cplhist_cdeps_docn_dice.IN"
+export FV3_RUN="cpld_control_run.IN cplhist_cdeps_docn_dice.IN"
+#export FV3_RUN="control_run.IN cplhist_cdeps_docn_dice.IN"
