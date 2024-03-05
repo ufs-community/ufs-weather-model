@@ -738,8 +738,8 @@ elif [[ $MACHINE_ID = hercules ]]; then
   ECFLOW_START=/work/noaa/epic/role-epic/spack-stack/hercules/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
-  QUEUE=windfall
-  COMPILE_QUEUE=windfall
+  QUEUE=batch
+  COMPILE_QUEUE=batch
   PARTITION=hercules
   dprefix=/work2/noaa/stmp/${USER}
   DISKNM=/work/noaa/epic/hercules/UFS-WM_RT
@@ -758,8 +758,12 @@ elif [[ $MACHINE_ID = jet ]]; then
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=slurm
 
-  module load ecflow/5.5.3
-  ECFLOW_START=/apps/ecflow/5.5.3/bin/ecflow_start.sh
+  module load ecflow/5.11.4
+  ECFLOW_START=/apps/ecflow/5.11.4/bin/ecflow_start.sh
+
+  module use /mnt/lfs4/HFIP/hfv3gfs/role.epic/spack-stack/spack-stack-1.5.0/envs/unified-env-rocky8/install/modulefiles/Core
+  module load stack-intel/2021.5.0
+  module load stack-python/3.10.8
 
   QUEUE=batch
   COMPILE_QUEUE=batch
