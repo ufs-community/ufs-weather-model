@@ -1,0 +1,66 @@
+Variable, ``export_fv3`` , ``export_rap_common``, ``export_rrfs_v1``, ``export_hrrr_conus13km``
+DATE (SYEAR-SMONTH-SDAY SHOUR:00:00), 2016-10-03 00:00:00, 2021-03-22 06:00:00, *2021-03-22 06:00:00*, 2021-05-12 16:00:00
+Forecast Length in hours (FHMAX), 24, *24*, *24*, 2
+CCPP_SUITE, None set (set in subsequent functions or test file), None set, FV3_RRFS_v1beta, FV3_HRRR
+IMP_PHYSICS, 11, 8, *8*, 8
+DT_ATMOS, 1800, 300, *300*, 120
+OUTPUT_GRID, \"'cubed_sphere_grid'\", 'gaussian_grid', *'gaussian_grid'*, lambert_conformal
+NTILES, 6, *6*, *6*, 1
+WRITE_DOPOST, .false., .true., *.true.*, .false.
+NSTF_NAME, "2\,1\,1\,0\,5", "'2\,0\,0\,0\,0'", "*'2\,0\,0\,0\,0'*", "*'2\,0\,0\,0\,0'*"
+IAER, 111, 5111, *5111*, 1011
+NPX, 97, *97*, *97*, 397
+NPY, 97, *97*, *97*, 233
+NPZ, 64, 127, *127*, 65
+NPZP, 65, 128, *128*, 66
+INPES, 3 (``$INPES_dflt`` --- set in machine section), *3*, *3*, 12
+JNPES, 8 (``$JNPES_dflt`` --- set in machine section), *8*, *8*, 12
+UFS_CONFIGURE, ufs.configure.atm.IN, *ufs.configure.atm.IN*, *ufs.configure.atm.IN*, *ufs.configure.atm.IN*
+MODEL_CONFIGURE, model_configure.IN, *model_configure.IN*, *model_configure.IN*, model_configure_rrfs_conus13km.IN
+DIAG_TABLE, diag_table_gfsv16, *diag_table_gfsv16*, diag_table_rap_noah, diag_table_hrrr 
+DIAG_TABLE_ADDITIONAL, Not set, Not set, Not set, diag_additional_rrfs_smoke
+FIELD_TABLE, field_table_gfsv16, field_table_thompson_aero_tke, *field_table_thompson_aero_tke*, field_table_thompson_aero_tke_smoke
+FV3_RUN, None set, control_run.IN, *control_run.IN*, rrfs_warm_run.IN
+INPUT_NML, None set, rap.nml.IN, *rap.nml.IN*, rrfs_conus13km_hrrr.nml.IN
+MAKE_NH, .true., *.true.*, *.true.*, .false.
+NA_INIT, 1, *1*, *1*, 0
+LHEATSTRG, .true., .false., .false., .false.
+SEDI_SEMI, .true., *.true.*, *.true.*, .false.
+DECFL, 10, *10*, *10*, 8
+RRFS_SMOKE, .false., *.false.*, *.false.*, .true.
+SEAS_OPT, 2, *2*, *2*, 0
+LKM, 0, *0*, *0*, 1
+SFCLAY_COMPUTE_FLUX, .false., *.false.*, *.false.*, .true.
+ICLIQ_SW, 1, *1*, *1*, 2
+IOVR, 1, *1*, *1*, 3
+KICE, 2, 9, *9*, 9
+EXTERNAL_IC, .true., *.true.*, *.true.*, .false.
+NGGPS_IC, .true., *.true.*, *.true.*, .false.
+MOUNTAIN, .false., *.false.*, *.false.*, .true.
+WARM_START, .false., *.false.*, *.false.*, .true.
+RES_LATLON_DYNAMICS, \"''\", *\"''\"*, *\"''\"*, \"'fv3_increment.nc'\"
+FHZERO, 6, *6*, *6*, 1.0
+PRINT_DIFF_PGR, .false., *.false.*, *.false.*, .true.
+FHCYC, 24, *24*, *24*, 0.0
+CNVCLD, .true., *.true.*, *.true.*, .false.
+CDMBWD, "'0.14\,1.8\,1.0\,1.0' (``${CDMBWD_c96}``)", "*'0.14\,1.8\,1.0\,1.0\'*", "*'0.14\,1.8\,1.0\,1.0\'*", "'3.5\,1.0'"
+GWD_OPT, 1, *1*, *1*, 3
+DO_GSL_DRAG_LS_BL, .false., *.false.*, *.false.*, .true.
+DO_GSL_DRAG_SS, .false., *.false.*, *.false.*, .true.
+DO_GSL_DRAG_TOFD, .false., *.false.*, *.false.*, .true.
+DNATS, 1, 0, *0*, 0
+DO_SAT_ADJ, .true., .false., *.false.*, .false.
+IALB , 1, 2, *2*, 2
+IEMS, 1, 2, *2*, 2
+HYBEDMF, .true., .false., *.false.*, .false.
+DO_MYNNEDMF, .false., .true., *.true.*, .true.
+DO_MYNNSFCLAY, .false., .true., *.true.*, .true.
+DO_MYJPBL, .false., *.false.*, *.false.*, .true.
+DO_DEEP, .true., *.true.*, .false., .false.
+SHAL_CNV, .true., *.true.*, .false., .false.
+IMFSHALCNV, 2, *2*, -1, -1
+IMFDEEPCNV, 2, *2*, -1, -1
+LSM, 1, *1*, 2, 3
+LSOIL_LSM, 4, *4*, 4, 9
+RESTART_INTERVAL, 0, *0*, *0*, 1
+OUTPUT_FH, \"12 -1\", *\"12 -1\"*, *\"12 -1\"*, *\"12 -1\"*

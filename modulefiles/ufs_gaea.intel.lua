@@ -10,8 +10,8 @@ load("intel-classic/2023.1.0")
 load("cray-mpich/8.1.25")
 load("python/3.9.12")
 
-prepend_path("MODULEPATH", "/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/spack-stack-1.5.1/envs/unified-env/install/modulefiles/Core")
-prepend_path("MODULEPATH", "/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/modulefiles")
+prepend_path("MODULEPATH", "/ncrc/proj/epic/spack-stack/spack-stack-1.5.1/envs/unified-env/install/modulefiles/Core")
+prepend_path("MODULEPATH", "/ncrc/proj/epic/spack-stack/modulefiles")
 
 stack_intel_ver=os.getenv("stack_intel_ver") or "2023.1.0"
 load(pathJoin("stack-intel", stack_intel_ver))
@@ -31,4 +31,4 @@ unload("cray-libsci")
 setenv("CC","cc")
 setenv("CXX","CC")
 setenv("FC","ftn")
-setenv("CMAKE_Platform","gaea-c5.intel")
+setenv("CMAKE_Platform","gaea.intel")

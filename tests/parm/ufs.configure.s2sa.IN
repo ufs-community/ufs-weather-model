@@ -3,8 +3,8 @@
 #############################################
 
 # ESMF #
-logKindFlag:            ESMF_LOGKIND_MULTI
-globalResourceControl:  true
+logKindFlag:            @[esmf_logkind]
+globalResourceControl:  false
 
 # EARTH #
 EARTH_component_list: MED ATM CHM OCN ICE
@@ -15,15 +15,14 @@ EARTH_attributes::
 # MED #
 MED_model:                      @[med_model]
 MED_petlist_bounds:             @[med_petlist_bounds]
-MED_omp_num_threads:            @[med_omp_num_threads]
+::
 
 # ATM #
 ATM_model:                      @[atm_model]
 ATM_petlist_bounds:             @[atm_petlist_bounds]
-ATM_omp_num_threads:            @[atm_omp_num_threads]
 ATM_attributes::
   Verbosity = 0
-  DumpFields = false
+  DumpFields = @[DumpFields]
   ProfileMemory = false
   OverwriteSlice = true
 ::
@@ -31,7 +30,6 @@ ATM_attributes::
 # CHM #
 CHM_model:                      @[chm_model]
 CHM_petlist_bounds:             @[chm_petlist_bounds]
-CHM_omp_num_threads:            @[chm_omp_num_threads]
 CHM_attributes::
   Verbosity = 0
 ::
@@ -39,10 +37,9 @@ CHM_attributes::
 # OCN #
 OCN_model:                      @[ocn_model]
 OCN_petlist_bounds:             @[ocn_petlist_bounds]
-OCN_omp_num_threads:            @[ocn_omp_num_threads]
 OCN_attributes::
   Verbosity = 0
-  DumpFields = false
+  DumpFields = @[DumpFields]
   ProfileMemory = false
   OverwriteSlice = true
   mesh_ocn = @[MESH_OCN]
@@ -53,10 +50,9 @@ OCN_attributes::
 # ICE #
 ICE_model:                      @[ice_model]
 ICE_petlist_bounds:             @[ice_petlist_bounds]
-ICE_omp_num_threads:            @[ice_omp_num_threads]
 ICE_attributes::
   Verbosity = 0
-  DumpFields = false
+  DumpFields = @[DumpFields]
   ProfileMemory = false
   OverwriteSlice = true
   mesh_ice = @[MESH_ICE]
