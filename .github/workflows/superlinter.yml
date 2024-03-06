@@ -1,0 +1,28 @@
+---
+name: Super-Linter
+
+on:
+  push: null
+  pull_request: null
+
+jobs:
+  build:
+    name: Lint
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      packages: read
+      statuses: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Super-Linter
+        uses: super-linter/super-linter@v6.3.0
+        env:
+          DEFAULT_BRANCH: cleanup_scripts
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
