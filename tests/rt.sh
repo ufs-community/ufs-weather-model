@@ -753,8 +753,8 @@ elif [[ $MACHINE_ID = hercules ]]; then
 elif [[ $MACHINE_ID = jet ]]; then
 
   echo "=======Running on $(lsb_release -is)======="
-  CurJetOS="$(lsb_release -is)"
-  if [ CurJetOS == 'CentOS' ]; then
+  CurJetOS=$(lsb_release -is)
+  if [[ ${CurJetOS} == "CentOS" ]]; then
   echo "=======Please, move to Rocky8 node fe[5-8]======="
   exit 1
   fi
