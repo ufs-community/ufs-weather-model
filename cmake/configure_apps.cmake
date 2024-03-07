@@ -68,7 +68,7 @@ if(APP MATCHES "^(S2S|S2SA|S2SW|S2SWA|S2SWAL)$")
   message("${APP_MSG} mode")
 endif()
 
-if(APP MATCHES "^(S2SDATA)$")
+if(APP MATCHES "^(ATM_DS2S)$")
   set(CMEPS      ON  CACHE BOOL "Enable CMEPS"               FORCE)
   set(FMS        ON  CACHE BOOL "Enable FMS"                 FORCE)
   set(FV3        ON  CACHE BOOL "Enable FV3"                 FORCE)
