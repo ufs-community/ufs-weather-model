@@ -168,6 +168,7 @@ $(git rev-parse HEAD)
 Submodule hashes used in testing:
 EOF
   cd ..
+  git submodule status --recursive >> "${REGRESSIONTEST_LOG}"
   git submodule status >> "${REGRESSIONTEST_LOG}"
   echo; echo >> "${REGRESSIONTEST_LOG}"
   cd tests
