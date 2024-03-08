@@ -196,7 +196,7 @@ it will be expanded to cover the full range of ATM-only supported configurations
 
 Input files required for ATM configurations can be viewed in :numref:`Section %s <atm-in>`
 or in the `UFS WM RT Data Bucket <https://registry.opendata.aws/noaa-ufs-regtests/>`__. 
-Information on ``ufs.configure`` files is available in :numref:`Section %s <UFS-configurations>`,
+Information on ``ufs.configure`` files is available in :numref:`Section %s <ufs-conf>`,
 and a sample ATM ``ufs.configure`` file (``ufs.configure.atm.IN``) is available 
 `here <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.atm.IN>`__.
 
