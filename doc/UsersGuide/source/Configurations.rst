@@ -353,7 +353,7 @@ These tests use default values set in the ``export_fv3`` function of ``default_v
 
    * - Test Name
      - Description
-     - Physics Suite (see namelist options `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_c_c_p_psuite_nml_desp.html>`__)
+     - Physics Suite (see `namelist options <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_c_c_p_psuite_nml_desp.html>`__)
      - DT_ATMOS
      - Start Date
      - Forecast Length (hours)
