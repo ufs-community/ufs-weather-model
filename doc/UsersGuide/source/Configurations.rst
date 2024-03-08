@@ -145,7 +145,7 @@ it will be expanded to cover the full range of ATM-only supported configurations
 
    * - Test Name
      - Description
-     - Physics Suite (see namelist options `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_c_c_p_psuite_nml_desp.html>`__)
+     - Physics Suite (see `namelist options <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_c_c_p_psuite_nml_desp.html>`__)
      - DT_ATMOS
      - Start Date
      - Forecast Length (hours)
