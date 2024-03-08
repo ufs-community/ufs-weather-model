@@ -623,6 +623,7 @@ Hurricane Analysis and Reforecast System Configurations
 The HAFS configuration uses an :term:`DATM`-only configuration.
 
 These tests use the default values set in the ``export_fv3``, ``export_hafs``, ``export_hafs_regional``, ``export_hafs_datm_cdeps``, and ``export_hafs_docn_cdeps`` functions of ``default_vars.sh`` unless other values are explicitly set in a given test file. In all tests, the values in ``export_fv3`` are set first. 
+
 .. note:: 
 
    ``export_hafs`` calls ``export_hafs_regional``, which calls ``export_hafs_datm_cdeps`` or ``export_hafs_docn_cdeps``, which calls ``export_fv3``. Values from ``export_fv3`` are set first, followed by values in ``export_hafs``, ``export_hafs_regional``, and then values in ``export_hafs_datm_cdeps`` or ``export_hafs_docn_cdeps``. 
