@@ -399,21 +399,22 @@ Rapid Refresh Forecast System (RRFS)
 
 The RRFS configurations use an :term:`ATM`-only configuration on a high-resolution 
 regional grid with data assimilation capabilities. 
-These tests use the default values set in the ``export_fv3`` function of ``default_vars.sh`` unless other values are explicitly set. 
+These tests use the default values set in the ``export_fv3``, ``export_rap_common``, ``export_rrfs_v1``, and/or ``export_hrrr_conus13km`` functions of ``default_vars.sh`` unless other values are explicitly set in a given test file. In all tests, the values in ``export_fv3`` are set first. Depending on the test, some of these values may be overriden by ``export_rrfs_v1`` (which includes values from ``export_rap_common``) or ``export_hrrr_conus13km``. :numref:`Table %s <rrfs-default-vars-comparison>` compares the values set in ``export_fv3`` to the values set in the other functions. 
+
+.. note:: 
+
+   ``export_rrfs_v1`` calls ``export_rap_common``, which calls ``export_fv3``. Values from ``export_fv3`` are set first, followed by values in ``export_rap_common`` and then values in ``export_rrfs_v1``. Values in italics indicate that the value is inherited from a previously-called function. 
+
+.. _rrfs-default-vars-comparison:
+
+.. csv-table:: *RRFS Default Variables*
+   :file: tables/RRFSDefaultVariables.csv
+   :widths: 50 10 10 10 10
+   :header-rows: 1
+   :stub-columns: 1
 
 Current RRFS regression tests cover a wide variety of functionality and involve several 
-physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality. 
-
-.. attention:: 
-   
-   Certain physics-related settings are common to all of the supported RRFS configurations. These values are set in each test's configuration file because they differ from the ``default_vars.sh`` values:
-
-      * **Set to FALSE:** DO_SAT_ADJ, HYBEDMF, DO_DEEP, SHAL_CNV, LHEATSTRG
-      * **Set to TRUE:** DO_MYNNEDMF, DO_MYNNSFCLAY
-      * **Set to VALUE:** DNATS=0, IALB=2, IEMS=2, IMFSHALCNV=-1, IMFDEEPCNV=-1
-   
-   The "Detailed Physics Parameters" column in :numref:`Table %s <rrfs-rts>` details physics settings that differ from both the ``default_vars.sh`` values and these RRFS-specific defaults. 
-   
+physics tests. :numref:`Table %s <rrfs-rts>` (below) contains a selection of RTs for RRFS functionality. Blanks indicate that the value comes from the default setting file. These default values are listed in :numref:`Table %s <rrfs-default-vars-comparison>` above. 
 
 .. _rrfs-rts:
 
@@ -421,7 +422,6 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
    :file: tables/rrfs-rts.csv
    :widths: 20 20 30 50 10 10 10
    :header-rows: 1
-
 
 **Sample** ``CMAKE_FLAGS`` **Setting**
 
@@ -437,10 +437,8 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
 
    * - Physics Suite
      - Description
-   * - FV3_RAP
-     - The FV3_RAP physics suite is described in the :term:`CCPP` documentation `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/rap_suite_page.html>`__.
    * - FV3_HRRR
-     - The FV3_HRRR physics suite is described in the CCPP documentation `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_h_r_r_r_suite_page.html>`__.
+     - The FV3_HRRR physics suite is described in the :term:`CCPP` documentation `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_h_r_r_r_suite_page.html>`__.
    * - FV3_RRFS_v1beta 
      - The FV3_RRFS_v1beta physics suite is described in the CCPP documentation `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_r_r_f_s_v1beta_page.html>`__.
    * - FV3_RRFS_v1nssl
@@ -449,112 +447,11 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
 
 **Additional Information**
 
-Input files required for RRFS ATM configurations can be viewed in :numref:`Table %s <rrfs-files>`
-or in the `UFS WM RT Data Bucket <https://registry.opendata.aws/noaa-ufs-regtests/>`__. Users who wish to run additional (unsupported) cases may also find useful data `here <https://registry.opendata.aws/noaa-rrfs/>`__. 
+Each test file lists the input files required for a given test. Input files required for RRFS ATM configurations can be downloaded from the `UFS WM RT Data Bucket <https://registry.opendata.aws/noaa-ufs-regtests/>`__. Users who wish to run additional (unsupported) cases may also find useful data in the `NOAA RRFS data bucket <https://registry.opendata.aws/noaa-rrfs/>`__. 
 
-Information on ``ufs.configure`` files is available in :numref:`Section %s <UFS-configurations>`. The supported RRFS WM RTs use the same ``ufs.configure`` file that ATM-only tests do (``ufs.configure.atm.IN``). This file can be viewed in the ``ufs-weather-model/tests/parm`` directory `here <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.atm.IN>`__. 
+Information on ``ufs.configure`` files is available in :numref:`Section %s <ufs-conf>`. The supported RRFS WM RTs use the same ``ufs.configure`` file that ATM-only tests do (``ufs.configure.atm.IN``). This file can be viewed in the ``ufs-weather-model/tests/parm`` `directory <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.atm.IN>`__. 
 
-Additionally, users can find examples of various RRFS configuration files in ``ufs-weather-model/tests/parm`` `here <https://github.com/ufs-community/ufs-weather-model/tree/develop/tests/parm>`__. These files include ``model_configure_*``, ``*_run.IN`` (input run), ``*.nml.IN`` (input namelist), ``field_table_*``, and ``diag_table_*`` files.  
-
-.. _rrfs-files:
-
-.. list-table:: Files Required for RRFS RTs
-   :widths: 50 10 10 10 10 110
-   :header-rows: 1
-
-   * - Tests
-     - sfcf*.nc
-     - atmf*.nc
-     - GFSFLX.GrbF*
-     - GFSPRS.GrbF*
-     - Other |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp|
-   * - rrfs_v1beta
-     - sfcf000.nc
-       sfcf009.nc
-       sfcf012.nc
-     - atmf000.nc
-       atmf009.nc
-       atmf012.nc
-     - GFSFLX.GrbF00
-       GFSFLX.GrbF09
-       GFSFLX.GrbF12
-     - GFSPRS.GrbF00
-       GFSPRS.GrbF09
-       GFSPRS.GrbF12
-     - 20210323.060000.coupler.research
-       
-       20210323.060000.fv_core.res.nc
-       
-       20210323.060000.fv_core.res.tile[1-6].nc
-       
-       20210323.060000.fv_srf_wnd.res.tile[1-6].nc
-       
-       20210323.060000.fv_tracer.res.tile[1-6].nc
-       
-       20210323.060000.phy_data.tile[1-6].nc        
-       
-       20210323.060000.sfc_data.tile[1-6].nc
-   * - rrfs_v1nssl
-
-       rrfs_v1nssl_nohailnoccn
-     - sfcf000.nc
-       sfcf009.nc
-       sfcf012.nc
-     - atmf000.nc
-       atmf009.nc
-       atmf012.nc
-     - GFSFLX.GrbF00
-       GFSFLX.GrbF09
-       GFSFLX.GrbF12
-     - GFSPRS.GrbF00
-       GFSPRS.GrbF09
-       GFSPRS.GrbF12
-     - 
-   * - rrfs_conus13km_hrrr_warm
-       rrfs_smoke_conus13km_hrrr_warm
-     - sfcf000.nc
-       sfcf001.nc
-       sfcf002.nc
-     - atmf000.nc
-       atmf001.nc
-       atmf002.nc
-     - 
-     - 
-     - 20210512.170000.coupler.res
-       20210512.170000.fv_core.res.nc
-       20210512.170000.fv_core.res.tile1.nc
-       20210512.170000.fv_srf_wnd.res.tile1.nc
-       20210512.170000.fv_tracer.res.tile1.nc
-       20210512.170000.phy_data.nc
-       20210512.170000.sfc_data.nc
-   * - rrfs_smoke_conus13km_hrrr_warm_2threads
-       rrfs_smoke_conus13km_radar_tten_warm
-     - sfcf000.nc
-       sfcf001.nc
-       sfcf002.nc
-     - atmf000.nc
-       atmf001.nc
-       atmf002.nc
-     - 
-     - 
-     - 
-   * - rrfs_v1beta_debug
-       rrfs_conus13km_hrrr_warm_debug
-       rrfs_smoke_conus13km_hrrr_warm_debug
-       rrfs_smoke_conus13km_hrrr_warm_debug_2threads
-     - sfcf000.nc
-       sfcf001.nc
-     - atmf000.nc
-       atmf001.nc
-     - 
-     - 
-     - 
-   * - rrfs_conus13km_hrrr_warm_restart_mismatch
-     - sfcf002.nc
-     - atmf002.nc
-     - 
-     - 
-     - 
+Additionally, users can find examples of various RRFS configuration files in the ``ufs-weather-model/tests/parm`` `directory <https://github.com/ufs-community/ufs-weather-model/tree/develop/tests/parm>`__. These files include ``model_configure_*``, ``*_run.IN`` (input run), ``*.nml.IN`` (input namelist), ``field_table_*``, and ``diag_table_*`` files.
 
 .. _lnd-documented:
 
