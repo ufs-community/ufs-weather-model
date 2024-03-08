@@ -417,8 +417,9 @@ physics tests. :numref:`Table %s <rrfs-rts>` contains RTs for RRFS functionality
 
 .. _rrfs-rts:
 
-.. list-table:: *RRFS regression test descriptions*
-   :widths: 50 10 30 50 10 10 10 10 10
+.. csv-table:: *RRFS regression test descriptions*
+   :file: tables/rrfs-rts.csv
+   :widths: 20 20 30 50 10 10 10
    :header-rows: 1
 
    * - Test |nbsp| Name |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp|
