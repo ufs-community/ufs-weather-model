@@ -168,7 +168,9 @@ $(git rev-parse HEAD)
 Submodule hashes used in testing:
 EOF
   cd ..
+  if  [[ $MACHINE_ID != hera  ]]; then
   git submodule status --recursive >> "${REGRESSIONTEST_LOG}"
+  fi
   git submodule status >> "${REGRESSIONTEST_LOG}"
   echo; echo >> "${REGRESSIONTEST_LOG}"
   cd tests
