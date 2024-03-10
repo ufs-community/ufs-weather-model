@@ -1,0 +1,544 @@
+s2swa_32bit:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=S2SWA -D32BIT=ON -DCCPP_SUITES=FV3_GFS_v17_coupled_p8,FV3_GFS_v17_coupled_p8_ugwpv1'
+  tests: 
+    - cpld_control_p8_mixedmode: {'recurring':['daily'],'turnoff':['noaacloud']}
+s2swa_32bit_pdlib:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=S2SWA -D32BIT=ON -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_ugwpv1 -DPDLIB=ON'
+    turnoff: ['noaacloud']
+  tests: 
+    - cpld_control_gfsv17: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - cpld_control_gfsv17_iau: {'recurring':['daily'],'dependency':'cpld_control_gfsv17','turnoff':['noaacloud']}
+    - cpld_restart_gfsv17: {'recurring':['daily'],'dependency':'cpld_control_gfsv17','turnoff':['noaacloud']}
+    - cpld_mpi_gfsv17: {'recurring':['daily'],'turnoff':['noaacloud']}
+s2swa_32bit_pdlib_debug:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=S2SWA -D32BIT=ON -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_ugwpv1 -DPDLIB=ON -DDEBUG=ON'
+    turnoff: ['noaacloud','jet']
+  tests: 
+    - cpld_debug_gfsv17: {'recurring':['daily'],'turnoff':['noaacloud','jet']}
+s2swa:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=S2SWA -DCCPP_SUITES=FV3_GFS_v17_coupled_p8'
+  tests: 
+    - cpld_control_p8: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - cpld_control_p8.v2.sfc: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - cpld_restart_p8: {'recurring':['daily'],'dependency':'cpld_control_p8','turnoff':['noaacloud']}
+    - cpld_control_qr_p8: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - cpld_restart_qr_p8: {'recurring':['daily'],'dependency':'cpld_control_qr_p8','turnoff':['noaacloud']}
+    - cpld_2threads_p8: {'recurring':['daily'],'turnoff':['derecho','noaacloud']}
+    - cpld_decomp_p8: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - cpld_mpi_p8: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - cpld_control_ciceC_p8: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - cpld_control_c192_p8: {'recurring':['daily'],'turnoff':['wcoss2','jet','acorn','s4','noaacloud']}
+    - cpld_restart_c192_p8: {'recurring':['daily'],'dependency':'cpld_control_c192_p8','turnoff':['wcoss2','jet','acorn','s4','noaacloud']}
+    - cpld_bmark_p8: {'recurring':['daily'],'turnoff':['s4','jet','acorn','noaacloud']}
+    - cpld_restart_bmark_p8: {'recurring':['daily'],'dependency':'cpld_bmark_p8','turnoff':['s4','jet','acorn','noaacloud']}
+    - cpld_s2sa_p8: {'recurring':['daily'],'turnoff':['noaacloud']}
+s2sw:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=S2SW -DCCPP_SUITES=FV3_GFS_v17_coupled_p8'
+  tests: 
+    - cpld_control_noaero_p8: {'recurring':['daily']}
+    - cpld_control_nowave_noaero_p8: {'recurring':['daily'],'turnoff':['noaacloud']}
+s2swa_debug:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=S2SWA -DDEBUG=ON -DCCPP_SUITES=FV3_GFS_v17_coupled_p8'
+    turnoff: ['wcoss2','noaacloud','acorn']
+  tests: 
+    - cpld_debug_p8: {'recurring':['daily'],'turnoff':['wcoss2','acorn','noaacloud']}
+s2sw_debug:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=S2SW -DDEBUG=ON -DCCPP_SUITES=FV3_GFS_v17_coupled_p8'
+    turnoff: ['wcoss2','noaacloud','acorn']
+  tests: 
+    - cpld_debug_noaero_p8: {'recurring':['daily'],'turnoff':['wcoss2','acorn','noaacloud']}
+s2s_aoflux:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=S2S -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_sfcocn -DCMEPS_AOFLUX=ON'
+  tests: 
+    - cpld_control_noaero_p8_agrid: {'recurring':['daily']}
+s2s:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=S2S -DCCPP_SUITES=FV3_GFS_v17_coupled_p8'
+  tests: 
+    - cpld_control_c48: {'recurring':['daily']}
+s2swa_faster:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=S2SWA -DCCPP_SUITES=FV3_GFS_v17_coupled_p8 -DFASTER=ON'
+    turnoff: ['noaacloud']
+  tests: 
+    - cpld_control_p8_faster: {'recurring':['daily'],'turnoff':['noaacloud']}
+s2sw_pdlib:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=S2SW -DCCPP_SUITES=FV3_GFS_v17_coupled_p8 -DPDLIB=ON'
+    turnoff: ['noaacloud']
+  tests: 
+    - cpld_control_pdlib_p8: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - cpld_restart_pdlib_p8: {'recurring':['daily'],'dependency':'cpld_control_pdlib_p8','turnoff':['noaacloud']}
+    - cpld_mpi_pdlib_p8: {'recurring':['daily'],'dependency':'cpld_control_pdlib_p8','turnoff':['noaacloud']}
+s2sw_pdlib_debug:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=S2SW -DCCPP_SUITES=FV3_GFS_v17_coupled_p8 -DPDLIB=ON -DDEBUG=ON'
+    turnoff: ['noaacloud']
+  tests: 
+    - cpld_debug_pdlib_p8: {'recurring':['daily'],'turnoff':['noaacloud']}
+atm_dyn32:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16,FV3_GFS_v16_flake,FV3_GFS_v17_p8,FV3_GFS_v17_p8_rrtmgp,FV3_GFS_v15_thompson_mynn_lam3km,FV3_WoFS_v0,FV3_GFS_v17_p8_mynn,FV3_GFS_v17_p8_ugwpv1 -D32BIT=ON'
+  tests: 
+    - control_flake: {'recurring':['daily']}
+    - control_CubedSphereGrid: {'recurring':['daily']}
+    - control_CubedSphereGrid_parallel: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - control_latlon: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - control_wrtGauss_netcdf_parallel: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - control_c48: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - control_c48.v2.sfc: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - control_c192: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - control_c384: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - control_c384gdas: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - control_stochy: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - control_stochy_restart: {'recurring':['daily'],'dependency':'control_stochy','turnoff':['noaacloud']}
+    - control_lndp: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - control_iovr4: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - control_iovr5: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - control_p8: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - control_p8.v2.sfc: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - control_p8_ugwpv1: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - control_restart_p8: {'recurring':['daily'],'dependency':'control_p8','turnoff':['noaacloud']}
+    - control_noqr_p8: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - control_restart_noqr_p8: {'recurring':['daily'],'dependency':'control_noqr_p8','turnoff':['noaacloud']}
+    - control_decomp_p8: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - control_2threads_p8: {'recurring':['daily'],'turnoff':['derecho','noaacloud']}
+    - control_p8_lndp: {'recurring':['daily'],'turnoff':['derecho','noaacloud']}
+    - control_p8_rrtmgp: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - control_p8_mynn: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - merra2_thompson: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - regional_control: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - regional_restart: {'recurring':['daily'],'dependency':'regional_control','turnoff':['noaacloud']}
+    - regional_decomp: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - regional_2threads: {'recurring':['daily'],'turnoff':['derecho','noaacloud']}
+    - regional_noquilt: {'recurring':['daily'],'turnoff':['jet','s4']}
+    - regional_netcdf_parallel: {'recurring':['daily'],'turnoff':['acorn']}
+    - regional_2dwrtdecomp: {'recurring':['daily'],'turnoff':['acorn']}
+    - regional_wofs: {'recurring':['daily'],'turnoff':['jet','s4']}
+ifi:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=ATM -DCCPP_SUITES=FV3_GFS_v15_thompson_mynn_lam3km -D32BIT=ON -DREQUIRE_IFI=ON'
+  tests: 
+    - regional_ifi_control: {'recurring':['daily']}
+    - regional_ifi_decomp: {'recurring':['daily']}
+    - regional_ifi_2threads: {'recurring':['daily']}
+rrfs:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=ATM -DCCPP_SUITES=FV3_RAP,FV3_RAP_sfcdiff,FV3_HRRR,FV3_RRFS_v1beta,FV3_RRFS_v1nssl -D32BIT=ON'
+  tests: 
+    - rap_control: {'recurring':['daily']}
+    - regional_spp_sppt_shum_skeb: {'recurring':['daily']}
+    - rap_decomp: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - rap_2threads: {'recurring':['daily'],'turnoff':['derecho','noaacloud']}
+    - rap_restart: {'recurring':['daily'],'dependency':'rap_control','turnoff':['noaacloud']}
+    - rap_sfcdiff: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - rap_sfcdiff_decomp: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - rap_sfcdiff_restart: {'recurring':['daily'],'dependency':'rap_sfcdiff','turnoff':['noaacloud']}
+    - hrrr_control: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - hrrr_control_decomp: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - hrrr_control_2threads: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - hrrr_control_restart: {'recurring':['daily'],'dependency':'hrrr_control','turnoff':['noaacloud']}
+    - rrfs_v1beta: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - rrfs_v1nssl: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - rrfs_v1nssl_nohailnoccn: {'recurring':['daily'],'turnoff':['noaacloud']}
+csawmg:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16_csawmg,FV3_GFS_v16_ras'
+    turnoff: ['noaacloud']
+  tests: 
+    - control_csawmg: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - control_csawmgt: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - control_ras: {'recurring':['daily'],'turnoff':['noaacloud','acorn']}
+wam:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16_fv3wam -D32BIT=ON -DMULTI_GASES=ON'
+    turnoff: ['noaacloud']
+  tests: 
+    - control_wam: {'recurring':['daily'],'turnoff':['noaacloud']}
+atm_faster_dyn32:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=ATM -DCCPP_SUITES=FV3_GFS_v17_p8,FV3_GFS_v15_thompson_mynn_lam3km -D32BIT=ON -DFASTER=ON'
+  tests: 
+    - control_p8_faster: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - regional_control_faster: {'recurring':['daily'],'turnoff':['noaacloud']}
+atm_debug_dyn32:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=ATM -DDEBUG=ON -D32BIT=ON -DCCPP_SUITES=FV3_HRRR,FV3_GFS_v16,FV3_GFS_v16_csawmg,FV3_GFS_v16_ras,FV3_GFS_v17_p8,FV3_GFS_v15_thompson_mynn_lam3km,FV3_RAP,FV3_RAP_unified_ugwp,FV3_RAP_cires_ugwp,FV3_RAP_flake,FV3_RAP_clm_lake,FV3_RAP_noah,FV3_RAP_sfcdiff,FV3_RAP_noah_sfcdiff_cires_ugwp,FV3_RRFS_v1beta,FV3_HRRR_c3,FV3_HRRR_gf,FV3_global_nest_v1'
+    turnoff: ['noaacloud']
+  tests: 
+    - control_CubedSphereGrid_debug: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - control_wrtGauss_netcdf_parallel_debug: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - control_stochy_debug: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - control_lndp_debug: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - control_csawmg_debug: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - control_csawmgt_debug: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - control_ras_debug: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - control_diag_debug: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - control_debug_p8: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - regional_debug: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - rap_control_debug: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - hrrr_control_debug: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - hrrr_gf_debug: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - hrrr_c3_debug: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - rap_unified_drag_suite_debug: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - rap_diag_debug: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - rap_cires_ugwp_debug: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - rap_unified_ugwp_debug: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - rap_lndp_debug: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - rap_progcld_thompson_debug: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - rap_noah_debug: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - rap_sfcdiff_debug: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - rap_noah_sfcdiff_cires_ugwp_debug: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - rrfs_v1beta_debug: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - rap_clm_lake_debug: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - rap_flake_debug: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - gnv1_c96_no_nest_debug: {'recurring':['daily'],'turnoff':['noaacloud']}
+wam_debug:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16_fv3wam -D32BIT=ON -DMULTI_GASES=ON -DDEBUG=ON'
+    turnoff: ['noaacloud']
+  tests: 
+    - control_wam_debug: {'recurring':['daily'],'turnoff':['noaacloud','hercules']}
+rrfs_dyn32_phy32:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=ATM -DCCPP_SUITES=FV3_RAP,FV3_HRRR -D32BIT=ON -DCCPP_32BIT=ON'
+    turnoff: ['noaacloud']
+  tests: 
+    - regional_spp_sppt_shum_skeb_dyn32_phy32: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - rap_control_dyn32_phy32: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - hrrr_control_dyn32_phy32: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - rap_2threads_dyn32_phy32: {'recurring':['daily'],'turnoff':['derecho','noaacloud']}
+    - hrrr_control_2threads_dyn32_phy32: {'recurring':['daily'],'turnoff':['derecho','noaacloud']}
+    - hrrr_control_decomp_dyn32_phy32: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - rap_restart_dyn32_phy32: {'recurring':['daily'],'dependency':'rap_control_dyn32_phy32','turnoff':['noaacloud']}
+    - hrrr_control_restart_dyn32_phy32: {'recurring':['daily'],'dependency':'hrrr_control_dyn32_phy32','turnoff':['noaacloud']}
+rrfs_dyn32_phy32_faster:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=ATM -DFASTER=ON -DCCPP_SUITES=FV3_HRRR -D32BIT=ON -DCCPP_32BIT=ON'
+    turnoff: ['noaacloud']
+  tests: 
+    - conus13km_control: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - conus13km_2threads: {'recurring':['daily'],'dependency':'conus13km_control','turnoff':['noaacloud']}
+    - conus13km_restart_mismatch: {'recurring':['daily'],'dependency':'conus13km_control','turnoff':['noaacloud']}
+rrfs_dyn64_phy32:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=ATM -DCCPP_SUITES=FV3_RAP,FV3_HRRR -DCCPP_32BIT=ON'
+    turnoff: ['noaacloud']
+  tests: 
+    - rap_control_dyn64_phy32: {'recurring':['daily'],'turnoff':['noaacloud']}
+rrfs_dyn32_phy32_debug:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=ATM -DCCPP_SUITES=FV3_RAP,FV3_HRRR,FV3_HRRR_gf -D32BIT=ON -DCCPP_32BIT=ON -DDEBUG=ON'
+    turnoff: ['noaacloud']
+  tests: 
+    - rap_control_debug_dyn32_phy32: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - hrrr_control_debug_dyn32_phy32: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - conus13km_debug: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - conus13km_debug_qr: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - conus13km_debug_2threads: {'recurring':['daily'],'turnoff':['derecho','noaacloud']}
+    - conus13km_radar_tten_debug: {'recurring':['daily'],'turnoff':['noaacloud']}
+rrfs_dyn64_phy32_debug:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=ATM -DCCPP_SUITES=FV3_RAP,FV3_HRRR -DCCPP_32BIT=ON -DDEBUG=ON'
+    turnoff: ['noaacloud']
+  tests: 
+    - rap_control_dyn64_phy32_debug: {'recurring':['daily'],'turnoff':['noaacloud']}
+hafsw:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=HAFSW -DMOVING_NEST=ON -DCCPP_SUITES=FV3_HAFS_v1_gfdlmp_tedmf,FV3_HAFS_v1_gfdlmp_tedmf_nonsst,FV3_HAFS_v1_thompson_tedmf_gfdlsf,FV3_global_nest_v1 -D32BIT=ON'
+  tests: 
+    - hafs_regional_atm: {'recurring':['daily']}
+    - hafs_regional_atm_thompson_gfdlsf: {'recurring':['daily']}
+    - hafs_regional_atm_ocn: {'recurring':['daily']}
+    - hafs_regional_atm_wav: {'recurring':['daily']}
+    - hafs_regional_atm_ocn_wav: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - hafs_regional_1nest_atm: {'recurring':['daily'],'turnoff':['jet','s4','noaacloud']}
+    - hafs_regional_telescopic_2nests_atm: {'recurring':['daily'],'turnoff':['jet','s4','noaacloud']}
+    - hafs_global_1nest_atm: {'recurring':['daily'],'turnoff':['jet','s4','noaacloud']}
+    - hafs_global_multiple_4nests_atm: {'recurring':['daily'],'turnoff':['jet','s4','noaacloud']}
+    - hafs_regional_specified_moving_1nest_atm: {'recurring':['daily'],'turnoff':['jet','s4','noaacloud']}
+    - hafs_regional_storm_following_1nest_atm: {'recurring':['daily'],'turnoff':['jet','s4','noaacloud']}
+    - hafs_regional_storm_following_1nest_atm_ocn: {'recurring':['daily'],'turnoff':['jet','s4','noaacloud']}
+    - hafs_global_storm_following_1nest_atm: {'recurring':['daily'],'turnoff':['jet','s4','noaacloud']}
+    - gnv1_nested: {'recurring':['daily'],'turnoff':['hercules','wcoss2','s4','noaacloud']}
+hafsw_debug:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=HAFSW -DMOVING_NEST=ON -DCCPP_SUITES=FV3_HAFS_v1_gfdlmp_tedmf_nonsst -D32BIT=ON -DDEBUG=ON'
+    turnoff: ['jet','noaacloud','s4']
+  tests: 
+    - hafs_regional_storm_following_1nest_atm_ocn_debug: {'recurring':['daily'],'turnoff':['jet','s4','noaacloud']}
+hafsw_faster:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=HAFSW -DCDEPS_INLINE=ON -DMOVING_NEST=ON -DCCPP_SUITES=FV3_HAFS_v1_gfdlmp_tedmf,FV3_HAFS_v1_gfdlmp_tedmf_nonsst,FV3_HAFS_v1_thompson,FV3_HAFS_v1_thompson_nonsst -D32BIT=ON -DFASTER=ON'
+    turnoff: ['jet','noaacloud','s4']
+  tests: 
+    - hafs_regional_storm_following_1nest_atm_ocn_wav: {'recurring':['daily'],'turnoff':['jet','s4','noaacloud']}
+    - hafs_regional_storm_following_1nest_atm_ocn_wav_inline: {'recurring':['daily'],'turnoff':['jet','s4','noaacloud']}
+hafs_mom6w:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=HAFS-MOM6W -DREGIONAL_MOM6=ON -DCDEPS_INLINE=ON -DMOVING_NEST=ON -DCCPP_SUITES=FV3_HAFS_v1_gfdlmp_tedmf,FV3_HAFS_v1_gfdlmp_tedmf_nonsst,FV3_HAFS_v1_thompson,FV3_HAFS_v1_thompson_nonsst -D32BIT=ON'
+    turnoff: ['jet','noaacloud','s4']
+  tests: 
+    - hafs_regional_storm_following_1nest_atm_ocn_wav_mom6: {'recurring':['daily'],'turnoff':['jet','s4','noaacloud']}
+hafs_all:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=HAFS-ALL -DCCPP_SUITES=FV3_HAFS_v1_gfdlmp_tedmf,FV3_HAFS_v1_gfdlmp_tedmf_nonsst -D32BIT=ON'
+    turnoff: ['noaacloud']
+  tests: 
+    - hafs_regional_docn: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - hafs_regional_docn_oisst: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - hafs_regional_datm_cdeps: {'recurring':['daily'],'turnoff':['jet','s4','noaacloud']}
+datm_cdeps:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=NG-GODAS'
+    turnoff: ['wcoss2']
+  tests: 
+    - datm_cdeps_control_cfsr: {'recurring':['daily'],'turnoff':['wcoss2']}
+    - datm_cdeps_restart_cfsr: {'recurring':['daily'],'dependency':'datm_cdeps_control_cfsr','turnoff':['wcoss2','noaacloud']}
+    - datm_cdeps_control_gefs: {'recurring':['daily'],'turnoff':['wcoss2']}
+    - datm_cdeps_iau_gefs: {'recurring':['daily'],'turnoff':['wcoss2']}
+    - datm_cdeps_stochy_gefs: {'recurring':['daily'],'turnoff':['wcoss2']}
+    - datm_cdeps_ciceC_cfsr: {'recurring':['daily'],'turnoff':['wcoss2','noaacloud']}
+    - datm_cdeps_bulk_cfsr: {'recurring':['daily'],'turnoff':['wcoss2','noaacloud']}
+    - datm_cdeps_bulk_gefs: {'recurring':['daily'],'turnoff':['wcoss2','noaacloud']}
+    - datm_cdeps_mx025_cfsr: {'recurring':['daily'],'turnoff':['wcoss2','noaacloud']}
+    - datm_cdeps_mx025_gefs: {'recurring':['daily'],'turnoff':['wcoss2','noaacloud']}
+    - datm_cdeps_multiple_files_cfsr: {'recurring':['daily'],'turnoff':['wcoss2','noaacloud']}
+    - datm_cdeps_3072x1536_cfsr: {'recurring':['daily'],'turnoff':['wcoss2','noaacloud']}
+    - datm_cdeps_gfs: {'recurring':['daily'],'turnoff':['wcoss2','noaacloud']}
+datm_cdeps_debug:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=NG-GODAS -DDEBUG=ON'
+    turnoff: ['wcoss2','acorn','noaacloud']
+  tests: 
+    - datm_cdeps_debug_cfsr: {'recurring':['daily'],'turnoff':['wcoss2','acorn','noaacloud']}
+datm_cdeps_faster:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=NG-GODAS -DFASTER=ON'
+    turnoff: ['wcoss2']
+  tests: 
+    - datm_cdeps_control_cfsr_faster: {'recurring':['daily'],'turnoff':['wcoss2']}
+datm_cdeps_land:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=LND'
+    turnoff: ['wcoss2']
+  tests: 
+    - datm_cdeps_lnd_gswp3: {'recurring':['daily'],'turnoff':['wcoss2']}
+    - datm_cdeps_lnd_era5: {'recurring':['daily'],'turnoff':['wcoss2']}
+    - datm_cdeps_lnd_era5_rst: {'recurring':['daily'],'dependency':'datm_cdeps_lnd_era5','turnoff':['wcoss2','noaacloud']}
+atml:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=ATML -DCCPP_SUITES=FV3_GFS_v16,FV3_GFS_v16_flake,FV3_GFS_v17_p8,FV3_GFS_v17_p8_rrtmgp,FV3_GFS_v15_thompson_mynn_lam3km,FV3_WoFS_v0,FV3_GFS_v17_p8_mynn -D32BIT=ON'
+  tests: 
+    - control_p8_atmlnd_sbs: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - control_p8_atmlnd: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - control_restart_p8_atmlnd: {'recurring':['daily'],'dependency':'control_p8_atmlnd','turnoff':['noaacloud']}
+atmw:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=ATMW -DCCPP_SUITES=FV3_GFS_v17_p8 -D32BIT=ON'
+    turnoff: ['wcoss2']
+  tests: 
+    - atmwav_control_noaero_p8: {'recurring':['daily'],'turnoff':['wcoss2']}
+atmwm:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=ATMWM -DCCPP_SUITES=FV3_GFS_v16 -D32BIT=ON'
+    turnoff: ['wcoss2']
+  tests: 
+    - control_atmwav: {'recurring':['daily'],'turnoff':['wcoss2']}
+atmaero:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=ATMAERO -DCCPP_SUITES=FV3_GFS_v17_p8 -D32BIT=ON'
+    turnoff: ['noaacloud']
+  tests: 
+    - atmaero_control_p8: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - atmaero_control_p8_rad: {'recurring':['daily'],'turnoff':['noaacloud']}
+    - atmaero_control_p8_rad_micro: {'recurring':['daily'],'turnoff':['noaacloud']}
+atmaq:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=ATMAQ -DCCPP_SUITES=FV3_GFS_v15p2 -D32BIT=ON'
+    turnoff: ['jet','s4']
+atmaq_debug:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=ATMAQ -DCCPP_SUITES=FV3_GFS_v15p2 -DDEBUG=ON -D32BIT=ON'
+    turnoff: ['jet','noaacloud','s4']
+  tests: 
+    - regional_atmaq_debug: {'recurring':['daily'],'turnoff':['jet','s4','noaacloud']}
+atm:
+  build: 
+    compiler: 'gnu'
+    option: '-DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16,FV3_GFS_v16_flake,FV3_GFS_v16_ras,FV3_GFS_v17_p8,FV3_GFS_v17_p8_ugwpv1'
+  tests: 
+    - control_c48: {'recurring':['daily']}
+    - control_stochy: {'recurring':['daily']}
+    - control_ras: {'recurring':['daily']}
+    - control_p8: {'recurring':['daily']}
+    - control_p8_ugwpv1: {'recurring':['daily']}
+    - control_flake: {'recurring':['daily']}
+rrfs:
+  build: 
+    compiler: 'gnu'
+    option: '-DAPP=ATM -DCCPP_SUITES=FV3_RAP,FV3_RAP_sfcdiff,FV3_HRRR,FV3_RRFS_v1beta -D32BIT=ON'
+  tests: 
+    - rap_control: {'recurring':['daily']}
+    - rap_decomp: {'recurring':['daily']}
+    - rap_2threads: {'recurring':['daily']}
+    - rap_restart: {'recurring':['daily'],'dependency':'rap_control'}
+    - rap_sfcdiff: {'recurring':['daily']}
+    - rap_sfcdiff_decomp: {'recurring':['daily']}
+    - rap_sfcdiff_restart: {'recurring':['daily'],'dependency':'rap_sfcdiff'}
+    - hrrr_control: {'recurring':['daily']}
+    - hrrr_control_noqr: {'recurring':['daily']}
+    - hrrr_control_2threads: {'recurring':['daily']}
+    - hrrr_control_decomp: {'recurring':['daily']}
+    - hrrr_control_restart: {'recurring':['daily'],'dependency':'hrrr_control'}
+    - hrrr_control_restart_noqr: {'recurring':['daily'],'dependency':'hrrr_control_noqr'}
+    - rrfs_v1beta: {'recurring':['daily']}
+atm_dyn32_debug:
+  build: 
+    compiler: 'gnu'
+    option: '-DAPP=ATM -D32BIT=ON -DDEBUG=ON'
+  tests: 
+    - control_diag_debug: {'recurring':['daily']}
+    - regional_debug: {'recurring':['daily']}
+    - rap_control_debug: {'recurring':['daily']}
+    - hrrr_control_debug: {'recurring':['daily']}
+    - hrrr_gf_debug: {'recurring':['daily']}
+    - hrrr_c3_debug: {'recurring':['daily']}
+    - rap_diag_debug: {'recurring':['daily']}
+    - rap_noah_sfcdiff_cires_ugwp_debug: {'recurring':['daily']}
+    - rap_progcld_thompson_debug: {'recurring':['daily']}
+    - rrfs_v1beta_debug: {'recurring':['daily']}
+    - control_ras_debug: {'recurring':['daily']}
+    - control_stochy_debug: {'recurring':['daily']}
+    - control_debug_p8: {'recurring':['daily']}
+    - rap_flake_debug: {'recurring':['daily']}
+    - rap_clm_lake_debug: {'recurring':['daily']}
+    - gnv1_c96_no_nest_debug: {'recurring':['daily']}
+wam_debug:
+  build: 
+    compiler: 'gnu'
+    option: '-DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16_fv3wam -D32BIT=ON -DMULTI_GASES=ON -DDEBUG=ON'
+  tests: 
+    - control_wam_debug: {'recurring':['daily']}
+rrfs_dyn32_phy32:
+  build: 
+    compiler: 'gnu'
+    option: '-DAPP=ATM -DCCPP_SUITES=FV3_RAP,FV3_HRRR -D32BIT=ON -DCCPP_32BIT=ON'
+  tests: 
+    - rap_control_dyn32_phy32: {'recurring':['daily']}
+    - hrrr_control_dyn32_phy32: {'recurring':['daily']}
+    - rap_2threads_dyn32_phy32: {'recurring':['daily']}
+    - hrrr_control_2threads_dyn32_phy32: {'recurring':['daily']}
+    - hrrr_control_decomp_dyn32_phy32: {'recurring':['daily']}
+    - rap_restart_dyn32_phy32: {'recurring':['daily'],'dependency':'rap_control_dyn32_phy32'}
+    - hrrr_control_restart_dyn32_phy32: {'recurring':['daily'],'dependency':'hrrr_control_dyn32_phy32'}
+    - conus13km_control: {'recurring':['daily']}
+    - conus13km_2threads: {'recurring':['daily'],'dependency':'conus13km_control'}
+    - conus13km_restart_mismatch: {'recurring':['daily'],'dependency':'conus13km_control'}
+atm_dyn64_phy32:
+  build: 
+    compiler: 'gnu'
+    option: '-DAPP=ATM -DCCPP_32BIT=ON'
+  tests: 
+    - rap_control_dyn64_phy32: {'recurring':['daily']}
+atm_dyn32_phy32_debug:
+  build: 
+    compiler: 'gnu'
+    option: '-DAPP=ATM -D32BIT=ON -DCCPP_32BIT=ON -DDEBUG=ON'
+  tests: 
+    - rap_control_debug_dyn32_phy32: {'recurring':['daily']}
+    - hrrr_control_debug_dyn32_phy32: {'recurring':['daily']}
+    - conus13km_debug: {'recurring':['daily']}
+    - conus13km_debug_qr: {'recurring':['daily']}
+    - conus13km_debug_2threads: {'recurring':['daily']}
+    - conus13km_radar_tten_debug: {'recurring':['daily']}
+atm_dyn64_phy32_debug:
+  build: 
+    compiler: 'gnu'
+    option: '-DAPP=ATM -DCCPP_32BIT=ON -DDEBUG=ON'
+  tests: 
+    - rap_control_dyn64_phy32_debug: {'recurring':['daily']}
+s2swa:
+  build: 
+    compiler: 'gnu'
+    option: '-DAPP=S2SWA -DCCPP_SUITES=FV3_GFS_v17_coupled_p8'
+  tests: 
+    - cpld_control_p8: {'recurring':['daily']}
+s2s:
+  build: 
+    compiler: 'gnu'
+    option: '-DAPP=S2S -DCCPP_SUITES=FV3_GFS_v17_coupled_p8'
+  tests: 
+    - cpld_control_nowave_noaero_p8: {'recurring':['daily']}
+s2swa_debug:
+  build: 
+    compiler: 'gnu'
+    option: '-DAPP=S2SWA -DDEBUG=ON -DCCPP_SUITES=FV3_GFS_v17_coupled_p8'
+  tests: 
+    - cpld_debug_p8: {'recurring':['daily']}
+s2sw_pdlib:
+  build: 
+    compiler: 'gnu'
+    option: '-DAPP=S2SW -DCCPP_SUITES=FV3_GFS_v17_coupled_p8 -DPDLIB=ON'
+  tests: 
+    - cpld_control_pdlib_p8: {'recurring':['daily']}
+s2sw_pdlib_debug:
+  build: 
+    compiler: 'gnu'
+    option: '-DAPP=S2SW -DCCPP_SUITES=FV3_GFS_v17_coupled_p8 -DPDLIB=ON -DDEBUG=ON'
+  tests: 
+    - cpld_debug_pdlib_p8: {'recurring':['daily']}
+datm_cdeps:
+  build: 
+    compiler: 'gnu'
+    option: '-DAPP=NG-GODAS'
+  tests: 
+    - datm_cdeps_control_cfsr: {'recurring':['daily']}
