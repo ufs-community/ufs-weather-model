@@ -168,6 +168,9 @@ $(git rev-parse HEAD)
 Submodule hashes used in testing:
 EOF
   cd ..
+  if  [[ $MACHINE_ID != hera  ]]; then
+  git submodule status --recursive >> "${REGRESSIONTEST_LOG}"
+  fi
   git submodule status >> "${REGRESSIONTEST_LOG}"
   echo; echo >> "${REGRESSIONTEST_LOG}"
   cd tests
@@ -752,6 +755,13 @@ elif [[ $MACHINE_ID = hercules ]]; then
 
 elif [[ $MACHINE_ID = jet ]]; then
 
+  echo "=======Running on $(lsb_release -is)======="
+  CurJetOS=$(lsb_release -is)
+  if [[ ${CurJetOS} == "CentOS" ]]; then
+  echo "=======Please, move to Rocky8 node fe[5-8]======="
+  exit 1
+  fi
+  
   module load rocoto
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
