@@ -10,19 +10,32 @@ This project includes a mix of the following:
 
 This project utilizes the following unmodified works under various licenses, as shown below.
 
-- Atmos cube sphere dycore: [GNU Lesser General Public License 3.0](https://www.gnu.org/licenses/lgpl-3.0.en.html) (LGPL)
+- [atmos_cubed_sphere dycore](https://github.com/NOAA-GFDL/GFDL_atmos_cubed_sphere): GNU Lesser General Public License 3.0 ([LGPL](https://www.gnu.org/licenses/lgpl-3.0.en.html))
 
-- FV3 Atm: [GNU Lesser General Public License 3.0](https://www.gnu.org/licenses/lgpl-3.0.en.html) (LGPL)
+- [fv3atm](https://github.com/NOAA-EMC/fv3atm): GNU Lesser General Public License 3.0 ([LGPL](https://www.gnu.org/licenses/lgpl-3.0.en.html))
 
-- NEMS: [GNU Lesser General Public License 3.0](https://www.gnu.org/licenses/lgpl-3.0.en.html) (LGPL)
+- [Stochastic Physics](https://github.com/NOAA-PSL/stochastic_physics): GNU Lesser General Public License 3.0 ([LGPL](https://www.gnu.org/licenses/lgpl-3.0.en.html))
 
-- FMS: [GNU Lesser General Public License 3.0](https://www.gnu.org/licenses/lgpl-3.0.en.html) (LGPL)
+- [CCPP Physics](https://github.com/ufs-community/ccpp-physics): [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)
 
-- Stochastic Physics: [GNU Lesser General Public License 3.0](https://www.gnu.org/licenses/lgpl-3.0.en.html) (LGPL)
+- [CCPP Framework](https://github.com/NCAR/ccpp-framework): [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)
 
-- CCPP Physics: [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0)
+- [AQM](https://github.com/NOAA-EMC/AQM): GNU General Public License 3.0 ([GPL](https://www.gnu.org/licenses/gpl-3.0.en.html))
 
-- CCPP Framework: [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0)
+- [CICE](https://github.com/NOAA-EMC/CICE): CICE Consortium license ([LICENSE.pdf](https://github.com/NOAA-EMC/CICE/blob/emc/develop/LICENSE.pdf))
+
+- [CMakeModules](https://github.com/NOAA-EMC/CMakeModules): GNU Lesser General Public License 3.0 ([LGPL](https://www.gnu.org/licenses/lgpl-3.0.en.html))
+
+- [GOCART](https://github.com/GEOS-ESM/GOCART): [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)
+
+- [HYCOM](https://github.com/NOAA-EMC/HYCOM-src): [MIT License](https://opensource.org/license/mit/)
+
+- [MOM6](https://github.com/NOAA-EMC/MOM6): GNU Lesser General Public License 3.0 ([LGPL](https://www.gnu.org/licenses/lgpl-3.0.en.html))
+
+- [WW3](https://github.com/NOAA-EMC/WW3): GNU Lesser General Public License 3.0 ([LGPL](https://www.gnu.org/licenses/lgpl-3.0.en.html))
+
+- [Unified Post Processor](https://github.com/NOAA-EMC/UPP): GNU Lesser General Public License 3.0 ([LGPL](https://www.gnu.org/licenses/lgpl-3.0.en.html))
+
 
 ## The rest of this project is in the worldwide public domain
 
