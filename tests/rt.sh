@@ -670,6 +670,8 @@ elif [[ $MACHINE_ID = gaea ]]; then
   ECFLOW_START=/ncrc/proj/epic/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
+  # TMP use this path for LM4 cap
+  INPUTDATA_LM4=${INPUTDATA_LM4:-/gpfs/f5/gfdl/world-shared/cmip6/datasets/CM4/common}
   DISKNM=/gpfs/f5/epic/world-shared/UFS-WM_RT
   QUEUE=normal
   COMPILE_QUEUE=normal
@@ -701,6 +703,9 @@ elif [[ $MACHINE_ID = hera ]]; then
 
   SCHEDULER=slurm
 
+  # TMP use this path for LM4 cap
+  INPUTDATA_LM4=${INPUTDATA_LM4:-/scratch2/GFDL/gfdlscr/Justin.Perket/cmip6/datasets/CM4/common}
+
 elif [[ $MACHINE_ID = orion ]]; then
 
   module load git/2.28.0
@@ -717,6 +722,9 @@ elif [[ $MACHINE_ID = orion ]]; then
   module load ecflow/5.8.4
   ECFLOW_START=/work/noaa/epic/role-epic/spack-stack/orion/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
+
+  # TMP use this path for LM4 cap 
+  INPUTDATA_LM4=${INPUTDATA_LM4:-/work/noaa/gfdlscr/pdata/gfdl/cmip6/datasets/CM4/common}
 
   QUEUE=batch
   COMPILE_QUEUE=batch
@@ -1171,6 +1179,7 @@ export RTPWD=${RTPWD}
 export INPUTDATA_ROOT=${INPUTDATA_ROOT}
 export INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT_WW3}
 export INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC}
+export INPUTDATA_LM4=${INPUTDATA_LM4}
 export PATHRT=${PATHRT}
 export PATHTR=${PATHTR}
 export NEW_BASELINE=${NEW_BASELINE}
