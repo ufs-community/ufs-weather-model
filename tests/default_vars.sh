@@ -216,7 +216,7 @@ elif [[ $MACHINE_ID = s4 ]]; then
   ICE_tasks_cpl_bmrk=48
   WAV_tasks_cpl_bmrk=80
 
-elif [[ $MACHINE_ID = gaea-c5 ]]; then
+elif [[ $MACHINE_ID = gaea ]]; then
 
   TPN=128
 
@@ -324,6 +324,7 @@ export HAFS=false
 export AQM=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
+export CDEPS_INLINE=false
 export POSTAPP='global'
 export USE_MERRA2=.false.
 
@@ -775,6 +776,7 @@ export HAFS=false
 export AQM=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
+export CDEPS_INLINE=false
 export FV3BMIC='p8c'
 export BMIC=.false.
 export DAYS=1
@@ -972,6 +974,7 @@ export HAFS=false
 export AQM=false
 export DATM_CDEPS=true
 export DOCN_CDEPS=false
+export CDEPS_INLINE=false
 export DAYS=1
 
 # model configure
@@ -1047,6 +1050,7 @@ export HAFS=true
 export AQM=false
 export DATM_CDEPS=true
 export DOCN_CDEPS=false
+export CDEPS_INLINE=false
 export INPES=$INPES_dflt
 export JNPES=$JNPES_dflt
 export NTILES=1
@@ -1063,6 +1067,7 @@ export S2S=false
 export HAFS=true
 export AQM=false
 export DOCN_CDEPS=true
+export CDEPS_INLINE=false
 export INPES=$INPES_dflt
 export JNPES=$JNPES_dflt
 export NTILES=1
@@ -1081,6 +1086,7 @@ export HAFS=true
 export AQM=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
+export CDEPS_INLINE=false
 export INPES=$INPES_dflt
 export JNPES=$JNPES_dflt
 export NTILES=1
@@ -1152,6 +1158,7 @@ export HAFS=true
 export AQM=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
+export CDEPS_INLINE=false
 export INPES=$INPES_dflt
 export JNPES=$JNPES_dflt
 export NTILES=1

@@ -335,7 +335,7 @@ Each test file lists the input files required for a given test. Input files requ
 
 Information on ``ufs.configure`` files is available in :numref:`Section %s <ufs-conf>`. The supported RRFS WM RTs use the same ``ufs.configure`` file that ATM-only tests do (``ufs.configure.atm.IN``). This file can be viewed in the ``ufs-weather-model/tests/parm`` `directory <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.atm.IN>`__. 
 
-Additionally, users can find examples of various RRFS configuration files in the ``ufs-weather-model/tests/parm`` `directory <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/>`__. These files include ``model_configure_*``, ``*_run.IN`` (input run), ``*.nml.IN`` (input namelist), ``field_table_*``, and ``diag_table_*`` files.  
+Additionally, users can find examples of various RRFS configuration files in the ``ufs-weather-model/tests/parm`` `directory <https://github.com/ufs-community/ufs-weather-model/tree/develop/tests/parm>`__. These files include ``model_configure_*``, ``*_run.IN`` (input run), ``*.nml.IN`` (input namelist), ``field_table_*``, and ``diag_table_*`` files.  
 
 .. _lnd-documented:
 
