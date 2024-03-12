@@ -31,12 +31,18 @@ supported configurations, view the `rt.conf <https://github.com/ufs-community/uf
      - Description
    * - :ref:`ATM <atm-documented>`
      - Standalone Atmospheric Model (:term:`ATM`)
+   * - :ref:`ATMW <atmw-documented>`
+     - Coupled :term:`ATM` and :term:`WW3`
+   * - :ref:`ATMAERO <atmaero-documented>`
+     - Coupled :term:`ATM` and :term:`GOCART`
    * - :ref:`ATML <atml-documented>`
      - Coupled :term:`ATM` and :term:`LND`
    * - :ref:`LND <lnd-documented>`
      - Coupled :term:`CDEPS` - :term:`DATM` - :term:`LND` -:term:`CMEPS`
    * - :ref:`RRFS <rrfs-documented>`
      - :term:`ATM` with :term:`data assimilation`
+   * - :ref:`HAFS <hafs-documented>`
+     - Coupled components may include :term:`CDEPS` - :term:`ATM` - :term:`HYCOM` - :term:`WW3` - :term:`MOM6` - :term:`CMEPS
 
 This chapter details the supported build/run options for each supported configuration. 
 Click on the configuration category in :numref:`Table %s <UFS-configurations-documented>` 
@@ -200,14 +206,13 @@ Information on ``ufs.configure`` files is available in :numref:`Section %s <ufs-
 and a sample ATM ``ufs.configure`` file (``ufs.configure.atm.IN``) is available 
 `here <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.atm.IN>`__.
 
+.. _atmw-documented:
 
 ATMW
 =======
 
 The ATMW configuration couples :term:`ATM` with :term:`WaveWatch III`. 
 These tests use default values set in the ``export_fv3`` function of ``default_vars.sh``.
-
-.. _atmw-rts:
 
 .. list-table:: *ATMW regression test descriptions*
    :widths: 50 10 30 50 10 10 10 10 10
@@ -244,6 +249,7 @@ These tests use default values set in the ``export_fv3`` function of ``default_v
        FV3_RUN=control_run.IN
      - RUNTYPE=startup, med_model=cmeps, atm_model=fv3, wav_model=ww3
 
+.. _atmaero-documented:
 
 ATMAERO
 =========
@@ -512,6 +518,8 @@ NG-GODAS
 ==============
 
 **COMING SOON!**
+
+.. _hafs-documented:
 
 ========================================================
 Hurricane Analysis and Reforecast System Configurations
