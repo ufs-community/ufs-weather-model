@@ -1,0 +1,301 @@
+matchedNode = []
+generateBaselineNode = []
+for (label in pullRequest.labels) {
+   listOfLabelNodeNames = jenkins.model.Jenkins.instance.nodes.collect {
+   node -> node.getLabelString().contains(label) ? node.name : null
+
+   if ((label.matches(node.getLabelString()+"-(.*)"))) {
+     matchedNode += node.getLabelString()
+   }
+
+   if ((label.matches(node.getLabelString()+"(.*)-BL"))) {
+     generateBaselineNode += node.getLabelString() 
+   }
+
+ }
+}
+
+modifiedLabels = matchedNode.collect{"'" + it + "'"} 
+baselineLabels = generateBaselineNode.collect{"'" + it + "'"} 
+def generateStage(nodeLabel) {
+    return {
+        stage("Running on ${nodeLabel}") {
+            node(nodeLabel) {
+               cleanWs()
+               checkout scm
+               script {
+                 try {
+                    echo "Running on ${nodeLabel}"
+                    if (baselineLabels.contains(nodeLabel)) {
+                       sh '''
+                       git submodule update --init --recursive
+                       cd tests
+		       pwd
+		       export BL_DATE=$(cat bl_date.conf | cut -d '=' -f2)
+                       export machine=${NODE_NAME}
+                       export PATH=$PATH:~/bin
+                       echo $CHANGE_ID
+                       export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
+                       export FORK_BRANCH=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
+                         
+                          if [[ $machine =~ "Jet" ]] 
+                          then
+                            echo "Creating baselines on $machine"
+                            export dprefix=/lfs1/NAGAPE/$ACCNR/$USER
+                            ./rt.sh -a ${ACCNR} -c -r -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
+                          elif [[ $machine =~ "Hercules" ]]
+                          then
+                            echo "Creating baselines on $machine"
+                            export dprefix=/work2/noaa/$ACCNR/$USER
+                            sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
+                            export ACCNR=epic
+                            ./rt.sh -a ${ACCNR} -c -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
+                            export DISKNM=/work/noaa/epic/hercules/UFS-WM_RT
+			    cd ${DISKNM}/NEMSfv3gfs/
+			    mkdir develop-${BL_DATE}
+			    cd /work2/noaa/epic/stmp/role-epic/stmp/role-epic/FV3_RT
+			    rsync -a REGRESSION_TEST/ ${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}
+                            cd ${DISKNM}/NEMSfv3gfs/
+                            ./adjust_permissions.sh hercules develop-${BL_DATE}
+                            chgrp noaa-hpc develop-${BL_DATE}
+		            cd $WORKSPACE/tests
+                            ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
+                          elif [[ $machine =~ "Orion" ]]
+                          then
+                            echo "Creating baselines on $machine"
+                            export dprefix=/work2/noaa/$ACCNR/$USER
+                            sed -i 's|/work/noaa/stmp/${USER}|/work/noaa/epic/stmp/role-epic/|g' rt.sh
+		            export ACCNR=epic
+                            ./rt.sh -a ${ACCNR} -c -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
+                            export DISKNM=/work/noaa/epic/UFS-WM_RT
+                            cd ${DISKNM}/NEMSfv3gfs/
+                            mkdir develop-${BL_DATE}
+                            cd  /work/noaa/epic/stmp/role-epic/stmp/role-epic/FV3_RT/
+                            rsync -a REGRESSION_TEST/ ${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}
+                            cd ${DISKNM}/NEMSfv3gfs/
+                            ./adjust_permissions.sh orion develop-${BL_DATE}
+                            chgrp noaa-hpc develop-${BL_DATE}
+			    cd $WORKSPACE/tests
+                            ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
+                          elif [[ $machine =~ "Gaea" ]]
+                          then 
+                            echo "Creating baselines on $machine"
+                            ./rt.sh -a ${ACCNR} -c -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
+                            unset LD_LIBRARY_PATH
+                            export DISKNM=/lustre/f2/pdata/ncep/role.epic/C5/RT
+                            cd ${DISKNM}/NEMSfv3gfs/
+                            mkdir develop-${BL_DATE}
+                            cd  /lustre/f2/scratch/role.epic/FV3_RT
+                            rsync -a REGRESSION_TEST/ ${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}
+                            cd ${DISKNM}/NEMSfv3gfs/
+                            chgrp ncep develop-${BL_DATE}
+		            cd $WORKSPACE/tests
+                            ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
+                          elif [[ $machine =~ "Hera" ]]
+                          then
+                            echo "Creating baselines on $machine"
+                            export ACCNR=nems
+                            ./rt.sh -a ${ACCNR} -c -r -l rt.conf
+                            export DISKNM=/scratch2/NAGAPE/epic/UFS-WM_RT
+			    cd ${DISKNM}/NEMSfv3gfs/
+			    mkdir develop-${BL_DATE}
+			    cd  /scratch1/NCEPDEV/stmp4/role.epic/FV3_RT
+			    rsync -a REGRESSION_TEST/ ${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}
+			    cd $WORKSPACE/tests
+                            ./rt.sh -a ${ACCNR} -r -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
+                           elif [[ $machine =~ "Derecho" ]]
+                           then
+                             echo "Creating baselines on $machine"
+                             export ACCNR=nral0032
+                             ./rt.sh -a ${ACCNR} -c -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
+                             export DISKNM=/glade/derecho/scratch/epicufsrt/ufs-weather-model/RT/
+			     cd ${DISKNM}/NEMSfv3gfs/
+			     mkdir develop-${BL_DATE}
+			     cd /glade/derecho/scratch/epicufsrt/FV3_RT
+			     rsync -a REGRESSION_TEST/ ${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}
+			     cd $WORKSPACE/tests
+                             ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
+                          else
+                            echo "Creating baselines on $machine"
+                            ./rt.sh -a ${ACCNR} -c -r -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
+                          fi
+                      git config user.email "ecc.platform@noaa.gov"
+                      git config user.name "epic-cicd-jenkins"
+                      echo "Testing concluded...removing labels for $machine from $GIT_URL"
+
+                      export machine_name_logs=$(echo $machine | awk '{ print tolower($1) }')
+                      git remote -v | grep -w sshorigin > /dev/null 2>&1 && git remote remove sshorigin > /dev/null 2>&1
+                      git remote add sshorigin $SSH_ORIGIN > /dev/null 2>&1
+                      git add logs/RegressionTests_$machine_name_logs.log
+                      git commit -m "[AutoRT] $machine Job Completed.\n\n\n on-behalf-of @ufs-community <ecc.platform@noaa.gov>"
+                      git pull sshorigin $FORK_BRANCH
+                      git push sshorigin HEAD:$FORK_BRANCH
+                       
+                      tar --create --gzip --verbose --dereference --file "${machine_name_logs}.tgz" ${WORKSPACE}/tests/logs/*.log
+  
+                      GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
+                      GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
+
+                      curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-BL
+                      '''
+                      s3Upload consoleLogLevel: 'INFO', dontSetBuildResultOnFailure: false, dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'noaa-epic-prod-jenkins-artifacts', excludedFile: '', flatten: true, gzipFiles: false, keepForever: false, managedArtifacts: true, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: "**/*tgz*", storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'main', userMetadata: []
+
+                    }
+                    else {
+                       sh '''
+                       git submodule update --init --recursive
+                       pwd
+                       cd tests
+                       export machine=${NODE_NAME}
+                       export PATH=$PATH:~/bin
+                       echo $CHANGE_ID
+                       export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
+                       export FORK_BRANCH=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
+
+                          if [[ $machine =~ "Jet" ]] 
+                          then
+                           echo "Running regression tests on $machine"
+                            export dprefix=/lfs1/NAGAPE/$ACCNR/$USER
+                            ./rt.sh -a ${ACCNR} -r -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
+                          elif [[ $machine =~ "Hercules" ]]
+                          then
+                           echo "Running regression tests on $machine"
+                            export dprefix=/work2/noaa/$ACCNR/$USER
+                            sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
+                            export ACCNR=epic
+                            ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
+                          elif [[ $machine =~ "Orion" ]]
+                          then
+                           echo "Running regression tests on $machine"
+                            export dprefix=/work2/noaa/$ACCNR/$USER
+                            sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
+                            ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
+                          elif [[ $machine =~ "Gaea" ]]
+                          then 
+                           echo "Running regression tests on $machine"
+                            ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
+                            unset LD_LIBRARY_PATH
+                          elif [[ $machine =~ "Hera" ]]
+                          then
+                           echo "Running regression tests on $machine"
+                           export ACCNR=nems
+                          ./rt.sh -a ${ACCNR} -r -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
+			  elif [[ $machine =~ "Derecho" ]]
+                          then
+                           echo "Running regression tests on $machine"
+                           export ACCNR=nral0032
+                           ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
+                          else
+                           echo "Running regression tests on $machine"
+                           ./rt.sh -a ${ACCNR} -r -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
+                          fi
+
+                      git config user.email "ecc.platform@noaa.gov"
+                      git config user.name "epic-cicd-jenkins"
+                      export machine_name_logs=$(echo $machine | awk '{ print tolower($1) }')
+                      echo "Testing concluded...removing labels for $machine from $GIT_URL"
+                      git remote -v | grep -w sshorigin > /dev/null 2>&1 && git remote remove sshorigin > /dev/null 2>&1
+                      git remote add sshorigin $SSH_ORIGIN > /dev/null 2>&1
+                      git add logs/RegressionTests_$machine_name_logs.log
+                      git commit -m "[AutoRT] $machine Job Completed.\n\n\n on-behalf-of @ufs-community <ecc.platform@noaa.gov>"
+                      git pull sshorigin $FORK_BRANCH
+                      git push sshorigin HEAD:$FORK_BRANCH
+
+                      tar --create --gzip --verbose --dereference --file "${machine_name_logs}.tgz" ${WORKSPACE}/tests/logs/*.log
+
+                      GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
+                      GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
+
+                      curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-RT
+                        
+                       '''
+                       s3Upload consoleLogLevel: 'INFO', dontSetBuildResultOnFailure: false, dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'noaa-epic-prod-jenkins-artifacts', excludedFile: '', flatten: true, gzipFiles: false, keepForever: false, managedArtifacts: true, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: "**/*tgz*", storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'main', userMetadata: []
+                    }
+                  }
+                  catch(err) {
+                    sh '''
+                      export machine=${NODE_NAME}
+                      export CHANGE_ID=${CHANGE_ID}
+                      export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
+                      export FORK_BRANCH=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
+                      cd $WORKSPACE/tests
+                      git config user.email "ecc.platform@noaa.gov"
+                      git config user.name "epic-cicd-jenkins"
+                      export machine_name_logs=$(echo $machine | awk '{ print tolower($1) }')
+                      echo "Testing concluded...removing labels for $machine from $GIT_URL"
+                      git remote -v | grep -w sshorigin > /dev/null 2>&1 && git remote remove sshorigin > /dev/null 2>&1
+                      git remote add sshorigin $SSH_ORIGIN > /dev/null 2>&1
+  
+                      if [[ -f $WORKSPACE/tests/logs/RT-run-$machine.log ]] ; then
+                         git add $WORKSPACE/tests/logs/RT-run-$machine.log
+                      fi
+                      git commit  --allow-empty -m "[AutoRT] $machine Job Failed!\n\n\n on-behalf-of @ufs-community <ecc.platform@noaa.gov>"
+                    
+                      git pull sshorigin $FORK_BRANCH
+                      git push sshorigin HEAD:$FORK_BRANCH
+
+                      tar --create --gzip --verbose --dereference --file "${machine_name_logs}.tgz" ${WORKSPACE}/tests/logs/*.log
+
+                      GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
+                      GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
+
+                      curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels -d '{"labels":["$machine-.*RT|$machine-.*BL"]}'
+                    '''
+                      s3Upload consoleLogLevel: 'INFO', dontSetBuildResultOnFailure: false, dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'noaa-epic-prod-jenkins-artifacts', excludedFile: '', flatten: true, gzipFiles: false, keepForever: false, managedArtifacts: true, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: "**/*tgz*", storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'main', userMetadata: []
+                    currentBuild.result = 'FAILURE'
+                  }
+                }
+              }
+           }
+       }
+}
+
+def parallelStagesMap = modifiedLabels.collectEntries {
+    ["${it}" : generateStage(it)]
+}
+
+pipeline {
+    agent none
+    environment {
+        ACCNR = 'epic'
+        GITHUB_TOKEN = credentials('GithubJenkinsNew')
+        GIT_URL = 'https://github.com/ufs-community/ufs-weather-model.git'
+    }
+    stages {
+        stage('Run SonarQube Testing') {
+            steps {
+                script {
+                    build job: '/ufs-weather-model/ufs-wm-sonarqube', parameters: [
+                        string(name: 'BRANCH_NAME', value: env.CHANGE_BRANCH ?: 'develop'),
+                        string(name: 'FORK_NAME', value: env.CHANGE_FORK ?: '')
+                    ], wait: false
+                }
+            }
+        }
+        stage('Run Regression Tests in Parallel') {
+            steps {
+                script {
+                    parallel parallelStagesMap
+                }
+            }
+        }       
+    }   
+        post {
+         success {
+             node('built-in') {
+                echo 'This will run only if successful.'
+                sh '''
+                  aws sns publish --topic-arn "arn:aws:sns:us-east-1:211527314271:Jenkins-CICD-Notifications" --region us-east-1 --message '{"version":"1.0","source":"custom","content":{"description":":sunny: Jenkins build *'"$JOB_NAME"' '"$BUILD_NUMBER"'* with *PR-'"$CHANGE_ID"'*  *succeeded*"}}'
+               '''
+             }
+         }
+         failure {
+             node('built-in') {
+                echo 'This will run only if the run was marked as unstable.'
+                sh '''
+                  aws sns publish --topic-arn "arn:aws:sns:us-east-1:211527314271:Jenkins-CICD-Notifications" --region us-east-1 --message '{"version":"1.0","source":"custom","content":{"description":":warning: Jenkins build *'"$JOB_NAME"' '"$BUILD_NUMBER"'* with *PR-'"$CHANGE_ID"'*  *failed!*"}}'
+               '''
+             }
+         }
+     } 
+}
