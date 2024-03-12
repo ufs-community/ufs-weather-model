@@ -109,7 +109,7 @@ The umbrella repository for the UFS WM is named ``ufs-weather-model``. Under thi
     │     └── CDEPS
     │         ├── (datm)                         -------- CDEPS DATM
     │         └── (docn)                         -------- CDEPS DOCN
-    �~T~B         �~T~T�~T~@�~T~@ (dice)                         -------- CDEPS DICE
+    │         └── (dice)                         -------- CDEPS DICE
     ├── CICE-interface
     │    └── CICE                                -------- CICE6 sea ice model
     │        ├── (icepack)                       -------- Sea ice column physics
