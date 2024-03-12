@@ -42,7 +42,7 @@ supported configurations, view the `rt.conf <https://github.com/ufs-community/uf
    * - :ref:`RRFS <rrfs-documented>`
      - :term:`ATM` with :term:`data assimilation`
    * - :ref:`HAFS <hafs-documented>`
-     - Coupled components may include :term:`CDEPS` - :term:`ATM` - :term:`HYCOM` - :term:`WW3` - :term:`MOM6` - :term:`CMEPS
+     - Coupled components may include :term:`CDEPS` - :term:`ATM` - :term:`HYCOM` - :term:`WW3` - :term:`MOM6` - :term:`CMEPS`
 
 This chapter details the supported build/run options for each supported configuration. 
 Click on the configuration category in :numref:`Table %s <UFS-configurations-documented>` 
