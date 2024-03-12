@@ -533,7 +533,6 @@ These tests use the default values set in the ``export_fv3``, ``export_hafs``, `
 
    ``export_hafs`` calls ``export_hafs_regional``, which calls ``export_hafs_datm_cdeps`` or ``export_hafs_docn_cdeps``, which calls ``export_fv3``. Values from ``export_fv3`` are set first, followed by values in ``export_hafs``, ``export_hafs_regional``, and then values in ``export_hafs_datm_cdeps`` or ``export_hafs_docn_cdeps``. 
 
-**Physics-Related Variables**
 
 .. list-table:: *Default physics-related variables used in the HAFS configurations below*
    :widths: 10 50
