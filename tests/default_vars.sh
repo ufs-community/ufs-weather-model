@@ -318,7 +318,7 @@ if [[ ! -n ${ATMRES+x} || -z ${ATMRES} ]]; then
 fi
 
 # ufs.configure defaults
-export UFS_CONFIGURE=ufs.configure.atm.IN
+export UFS_CONFIGURE=ufs.configure.atm_esmf.IN
 export MODEL_CONFIGURE=model_configure.IN
 export atm_model=fv3
 
