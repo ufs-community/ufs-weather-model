@@ -74,7 +74,7 @@ if(APP MATCHES "^(ATM_DS2S)$")
   set(FV3        ON  CACHE BOOL "Enable FV3"                 FORCE)
   set(STOCH_PHYS ON  CACHE BOOL "Enable Stochastic Physics"  FORCE)
   set(CDEPS      ON  CACHE BOOL "Enable CDEPS"               FORCE)
-  message("Configuring UFS app in S2S with CDEPS data mode")
+  message("Configuring UFS app in ATM_DS2S with CDEPS data mode")
 endif()
 
 if(APP MATCHES "^(HAFS|HAFSW|HAFS-MOM6|HAFS-MOM6W|HAFS-ALL)$")
