@@ -313,6 +313,10 @@ export DumpFields="false"
 
 export_fv3 ()
 {
+if [[ ! -n ${ATMRES+x} || -z ${ATMRES} ]]; then
+    export ATMRES=C96
+fi
+
 # ufs.configure defaults
 export UFS_CONFIGURE=ufs.configure.atm.IN
 export MODEL_CONFIGURE=model_configure.IN
@@ -535,7 +539,6 @@ export LAKEDEPTH_THRESHOLD=1.0 # lake must be deeper (in meters) for a lake mode
 export FRAC_ICE=.true. # should be false for flake, true for clm_lake
 
 # Tiled Fix files
-export ATMRES=C96
 export TILEDFIX=.true.
 
 export CPL=.false.
@@ -555,21 +558,6 @@ export NPZP=65
 export NSTF_NAME=2,1,0,0,0
 export OUTPUT_FH="12 -1"
 export FHZERO=6
-export FNALBC="'C96.snowfree_albedo.tileX.nc'"
-export FNALBC2="'C96.facsf.tileX.nc'"
-export FNTG3C="'C96.substrate_temperature.tileX.nc'"
-export FNVEGC="'C96.vegetation_greenness.tileX.nc'"
-export FNVETC="C96.vegetation_type.tileX.nc'"
-export FNSOTC="'C96.soil_type.tileX.nc'"
-export FNSMCC_control="'global_soilmgldas.statsgo.t1534.3072.1536.grb'"
-export FNMSKH_control="'global_slmask.t1534.3072.1536.grb'"
-export FNSMCC=${FNSMCC_control}
-export FNMSKH=${FNMSKH_control}
-export FNVMNC="'C96.vegetation_greenness.tileX.nc'"
-export FNVMXC="'C96.vegetation_greenness.tileX.nc'"
-export FNSLPC="'C96.slope_type.tileX.nc'"
-export FNSOCC="'C96.soil_color.tileX.nc'"
-export FNABSC="'C96.maximum_snow_albedo.tileX.nc'"
 export FSICL=0
 export FSICS=0
 
@@ -690,7 +678,26 @@ export MOM6_RESTART_SETTING=n
 
 # P8 (not used for standalone)
 export USE_CICE_ALB=.false.
+}
 
+# Add section for tiled grid namelist
+export_tiled() {
+export FNSMCC_control="'global_soilmgldas.statsgo.t1534.3072.1536.grb'"
+export FNMSKH_control="'global_slmask.t1534.3072.1536.grb'"
+export FNALBC="'${ATMRES}.snowfree_albedo.tileX.nc'"
+export FNALBC2="'${ATMRES}.facsf.tileX.nc'"
+export FNTG3C="'${ATMRES}.substrate_temperature.tileX.nc'"
+export FNVEGC="'${ATMRES}.vegetation_greenness.tileX.nc'"
+export FNVETC="'${ATMRES}.vegetation_type.tileX.nc'"
+export FNSOTC="'${ATMRES}.soil_type.tileX.nc'"
+export FNSOCC="'${ATMRES}.soil_color.tileX.nc'"
+export FNSMCC=${FNSMCC_control}
+export FNMSKH=${FNMSKH_control}
+export FNVMNC="'${ATMRES}.vegetation_greenness.tileX.nc'"
+export FNVMXC="'${ATMRES}.vegetation_greenness.tileX.nc'"
+export FNSLPC="'${ATMRES}.slope_type.tileX.nc'"
+export FNABSC="'${ATMRES}.maximum_snow_albedo.tileX.nc'"
+export LANDICE=".false."
 }
 
 # Defaults for the CICE6 model namelist, mx100
@@ -864,6 +871,9 @@ OCN_tasks=$OCN_tasks_cpl_dflt
 ICE_tasks=$ICE_tasks_cpl_dflt
 WAV_tasks=$WAV_tasks_cpl_dflt
 
+# Set tiled file defaults
+export_tiled
+
 # Set CICE6 component defaults
 export_cice6
 
@@ -961,20 +971,20 @@ export NSPINUP=1
 export ISEED_CA=12345
 
 # P7 settings
-export FNALBC="'C96.snowfree_albedo.tileX.nc'"
-export FNALBC2="'C96.facsf.tileX.nc'"
-export FNTG3C="'C96.substrate_temperature.tileX.nc'"
-export FNVEGC="'C96.vegetation_greenness.tileX.nc'"
-export FNVETC="'C96.vegetation_type.tileX.nc'"
-export FNSOTC="'C96.soil_type.tileX.nc'"
-export FNSOCC="'C96.soil_color.tileX.nc'"
-export FNSMCC=${FNSMCC_control}
-export FNMSKH=${FNMSKH_control}
-export FNVMNC="'C96.vegetation_greenness.tileX.nc'"
-export FNVMXC="'C96.vegetation_greenness.tileX.nc'"
-export FNSLPC="'C96.slope_type.tileX.nc'"
-export FNABSC="'C96.maximum_snow_albedo.tileX.nc'"
-export LANDICE=".false."
+#export FNALBC="'C96.snowfree_albedo.tileX.nc'"
+#export FNALBC2="'C96.facsf.tileX.nc'"
+#export FNTG3C="'C96.substrate_temperature.tileX.nc'"
+#export FNVEGC="'C96.vegetation_greenness.tileX.nc'"
+#export FNVETC="'C96.vegetation_type.tileX.nc'"
+#export FNSOTC="'C96.soil_type.tileX.nc'"
+#export FNSOCC="'C96.soil_color.tileX.nc'"
+#export FNSMCC=${FNSMCC_control}
+#export FNMSKH=${FNMSKH_control}
+#export FNVMNC="'C96.vegetation_greenness.tileX.nc'"
+#export FNVMXC="'C96.vegetation_greenness.tileX.nc'"
+#export FNSLPC="'C96.slope_type.tileX.nc'"
+#export FNABSC="'C96.maximum_snow_albedo.tileX.nc'"
+#export LANDICE=".false."
 #P8
 export FSICL=0
 export FSICS=0

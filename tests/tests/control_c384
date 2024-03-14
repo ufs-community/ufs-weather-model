@@ -17,8 +17,10 @@ export LIST_FILES="sfcf000.nc \
                    GFSPRS.GrbF00 \
                    GFSPRS.GrbF12"
 
-export_fv3
 export ATMRES=C384
+
+export_fv3
+export_tiled
 export atm_omp_num_threads=${THRD_c384}
 export INPES=${INPES_c384}
 export JNPES=${JNPES_c384}
@@ -44,20 +46,6 @@ export IOVR=3
 export IMO=1536
 export JMO=768
 export OUTPUT_FH="6 -1"
-
-export FNALBC="'C384.snowfree_albedo.tileX.nc'"
-export FNALBC2="'C384.facsf.tileX.nc'"
-export FNTG3C="'C384.substrate_temperature.tileX.nc'"
-export FNVEGC="'C384.vegetation_greenness.tileX.nc'"
-export FNVETC="'C384.vegetation_type.tileX.nc'"
-export FNSOTC="'C384.soil_type.tileX.nc'"
-export FNSOCC="'C384.soil_color.tileX.nc'"
-export FNSMCC=${FNSMCC_control}
-export FNMSKH=${FNMSKH_control}
-export FNVMNC="'C384.vegetation_greenness.tileX.nc'"
-export FNVMXC="'C384.vegetation_greenness.tileX.nc'"
-export FNSLPC="'C384.slope_type.tileX.nc'"
-export FNABSC="'C384.maximum_snow_albedo.tileX.nc'"
 
 export FV3_RUN=control_run.IN
 export CCPP_SUITE=FV3_GFS_v17_p8
