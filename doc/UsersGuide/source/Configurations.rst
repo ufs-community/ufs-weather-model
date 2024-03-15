@@ -254,22 +254,22 @@ These tests use default values set in the ``export_fv3`` function of ``default_v
 ATMAERO
 =========
 
-The ATMAERO configuration couples :term:`ATM` with AEROSOL. 
+The ATMAERO configuration couples :term:`ATM` with :term:`GOCART`. 
 These tests use default values set in the ``export_fv3`` function of ``default_vars.sh``.
 
 .. attention:: 
    
    Certain physics-related settings are common to all of the supported RRFS configurations. These values are set in each test's configuration file because they differ from the ``default_vars.sh`` values:
 
-      General Physics Parameters
-      * **Suite:** CCPP_SUITE= `FV3_GFS_v17_p8 <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_g_f_s_v17_p8_page.html>`__
-      * **Microphysics:** IMP_PHYSICS=8
-      * **Time Step:** DT_ATMOS=720
+      General Physics Parameters:
+          * **Suite:** CCPP_SUITE= `FV3_GFS_v17_p8 <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_g_f_s_v17_p8_page.html>`__
+          * **Microphysics:** IMP_PHYSICS=8
+          * **Time Step:** DT_ATMOS=720
 
-      Detailed Physics Parameters
-      * **Set to FALSE:** DO_UGWP_V1, DO_GSL_DRAG_LS_BL, DO_GSL_DRAG_TOFD, DO_UGWP_V1_OROG_ONLY, DO_UGWP_V0_NST_ONLY, LDIAG_UGWP, CA_GLOBAL, LANDICE, LGFDLMPRAD, DO_SAT_ADJ, USE_CICE_ALB, DO_RRTMGP
-      * **Set to TRUE:** WRITE_DOPOST, CPL, CPLCHM, USE_MERRA2, LSEASPRAY, DO_UGWP_V0, DO_GSL_DRAG_SS, DO_CA, CA_SGS, CA_TRIGGER, TILEDFIX, FRAC_GRID, WRITE_NSFLIP, DOGP_CLDOPTICS_LUT, DOGP_LWSCAT, DOGP_SGS_CNV, SATMEDMF
-      * **Set to VALUE:** NSTF_NAME='2,0,0,0,0', atm_model='fv3', chm_model='gocart', DOMAINS_STACK_SIZE=8000000, IALB=2, IEMS=2, LSM=2, IOPT_DVEG=4, IOPT_CRS=2, IOPT_RAD=3, IOPT_ALB=1, IOPT_STC=3, IOPT_SFC=3, IOPT_TRS=2, IOPT_DIAG=2, D2_BG_K1=0.20, D2_BG_K2=0.04, PSM_BC=1, DDDMP=0.1, GWD_OPT=2, KNOB_UGWP_VERSION=0, KNOB_UGWP_NSLOPE=1, NCA=1, NCELLS=5, NLIVES=12, NTHRESH=18, NSEED=1, NFRACSEED=0.5, NSPINUP=1, ISEED_CA=12345, FSICL=0, FSICS=0, DZ_MIN=6, MIN_SEAICE=0.15
+      Detailed Physics Parameters:
+          * **Set to FALSE:** DO_UGWP_V1, DO_GSL_DRAG_LS_BL, DO_GSL_DRAG_TOFD, DO_UGWP_V1_OROG_ONLY, DO_UGWP_V0_NST_ONLY, LDIAG_UGWP, CA_GLOBAL, LANDICE, LGFDLMPRAD, DO_SAT_ADJ, USE_CICE_ALB, DO_RRTMGP
+          * **Set to TRUE:** WRITE_DOPOST, CPL, CPLCHM, USE_MERRA2, LSEASPRAY, DO_UGWP_V0, DO_GSL_DRAG_SS, DO_CA, CA_SGS, CA_TRIGGER, TILEDFIX, FRAC_GRID, WRITE_NSFLIP, DOGP_CLDOPTICS_LUT, DOGP_LWSCAT, DOGP_SGS_CNV, SATMEDMF
+          * **Set to VALUE:** NSTF_NAME='2,0,0,0,0', atm_model='fv3', chm_model='gocart', DOMAINS_STACK_SIZE=8000000, IALB=2, IEMS=2, LSM=2, IOPT_DVEG=4, IOPT_CRS=2, IOPT_RAD=3, IOPT_ALB=1, IOPT_STC=3, IOPT_SFC=3, IOPT_TRS=2, IOPT_DIAG=2, D2_BG_K1=0.20, D2_BG_K2=0.04, PSM_BC=1, DDDMP=0.1, GWD_OPT=2, KNOB_UGWP_VERSION=0, KNOB_UGWP_NSLOPE=1, NCA=1, NCELLS=5, NLIVES=12, NTHRESH=18, NSEED=1, NFRACSEED=0.5, NSPINUP=1, ISEED_CA=12345, FSICL=0, FSICS=0, DZ_MIN=6, MIN_SEAICE=0.15
    
    The "Detailed Physics Parameters" column in :numref:`Table %s <atmaero-rts>` details physics settings that differ from both the ``default_vars.sh`` values and these ATMAERO-specific defaults. 
 
@@ -293,12 +293,12 @@ These tests use default values set in the ``export_fv3`` function of ``default_v
        **Set to TRUE:** ATMAERO default values only :raw-html:`<br/> <br/>`
        **Set to VALUE:** IAER=1011, DNATS=2
      - 2021-03-22 06:00:00
-     - 
+     - 24
      - OUTPUT_GRID=gaussian_grid :raw-html:`<br/> <br/>`
        **Grid Parameters**: INPES=${INPES_atmaero}, JNPES=${JNPES_atmaero}, NPZ=127, NPZP=128
      - FIELD_TABLE=field_table_thompson_noaero_tke_GOCART
-       DIAG_TABLE=diag_table_p8_template
-       INPUT_NML=cpld_control.nml.IN
+       DIAG_TABLE=diag_table_cpld.IN
+       INPUT_NML=ufs.configure.atmaero_esmf.IN
        UFS_CONFIGURE=ufs.configure.atmaero.IN
        FV3_RUN=control_run.IN
      - RESTART_INTERVAL=12 -1
@@ -308,13 +308,13 @@ These tests use default values set in the ``export_fv3`` function of ``default_v
        **Set to TRUE:** LHEATSTRG :raw-html:`<br/> <br/>`
        **Set to VALUE:** IAER=2011, DNATS=2
      - 2021-03-22 06:00:00
-     - 
+     - 24
      - OUTPUT_GRID=gaussian_grid :raw-html:`<br/> <br/>`
-       **Grid Parameters**: INPES=${INPES_atmaero}, JNPES=${JNPES_atmaero}, NPZ=127, NPZP=128
+       **Grid Parameters**: NPZ=127, NPZP=128
      - FIELD_TABLE=field_table_thompson_noaero_tke_GOCART
-       DIAG_TABLE=diag_table_p8_template
+       DIAG_TABLE=diag_table_cpld.IN
        INPUT_NML=cpld_control.nml.IN
-       UFS_CONFIGURE=ufs.configure.atmaero.IN
+       UFS_CONFIGURE=ufs.configure.atmaero_esmf.IN
        FV3_RUN=control_run.IN
      - RESTART_INTERVAL=12 -1
    * - `atmaero_control_p8_rad_micro <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/atmaero_control_p8_rad_micro>`__
@@ -323,15 +323,15 @@ These tests use default values set in the ``export_fv3`` function of ``default_v
        **Set to TRUE:** LHEATSTRG :raw-html:`<br/> <br/>`
        **Set to VALUE:** IAER=2011, DNATS=4
      - 2021-03-22 06:00:00
-     - 
+     - 24
      - OUTPUT_GRID=gaussian_grid :raw-html:`<br/> <br/>`
-       **Grid Parameters**: INPES=${INPES_atmaero}, JNPES=${JNPES_atmaero}, NPZ=127, NPZP=128
+       **Grid Parameters**: NPZ=127, NPZP=128
      - FIELD_TABLE=field_table_thompson_noaero_tke_GOCART
-       DIAG_TABLE=diag_table_p8_template
-       INPUT_NML=cpld_control.nml.IN
-       UFS_CONFIGURE=ufs.configure.atmaero.IN
+       DIAG_TABLE=diag_table_p8_gocart_micro
+       INPUT_NML=merra2_thompson.nml.IN
+       UFS_CONFIGURE=ufs.configure.atmaero_esmf.IN
        FV3_RUN=control_run.IN
-     - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
+     - RESTART_INTERVAL='12 -1'
 
 ATMAQ
 =======
@@ -582,7 +582,7 @@ These tests use the default values set in the ``export_fv3``, ``export_hafs``, `
      - **Set to FALSE:** MOUNTAIN, WARM_START, FULL_ZS_FILTER, CPLFLX, CPLWAV, CPLWAV2ATM, CPL_IMP_MRG, CMEPS, USE_COLDSTART :raw-html:`<br/> <br/>`
        **Set to TRUE:** EXTERNAL_IC, NGGPS_IC, CPLOCN2ATM, NESTED :raw-html:`<br/> <br/>`
        **Set to VALUE:** 
-       Also, see export_hafs default values.
+       See ``export_hafs`` default values.
      - 2020-08-25 12:00:00
      - 6
      - OUTPUT_GRID=global_latlon, OUTPUT_GRID_2=rotated_latlon :raw-html:`<br/> <br/>`
@@ -779,11 +779,7 @@ These tests use the default values set in the ``export_fv3``, ``export_hafs``, `
      - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
    * - `hafs_regional_datm_cdeps <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_regional_datm_cdeps>`__
      - Compare HAFS regional coupled CDEPS data atmosphere from ERA5 with regional HYCOM results with previous trunk version
-     - **Suite:** CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf"
-
-       **Microphysics:** IMP_PHYSICS=11
-
-       **Time Step:** DT_ATMOS=180
+     - N/A: No active atmospheric component
      - **Set to FALSE:** CPLWAV, CDEPS_DOCN :raw-html:`<br/> <br/>`
        **Set to TRUE:** :raw-html:`<br/> <br/>`
        **Set to VALUE:** 
@@ -825,7 +821,7 @@ These tests use the default values set in the ``export_fv3``, ``export_hafs``, `
      - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
    * - `hafs_regional_docn_oisst <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_regional_docn_oisst>`__
      - Compare HAFS regional coupled with global data ocean from OISST results with previous trunk version
-     - **Suite:** FV3_HAFS_v1_gfdlmp_tedmf_nonsst"
+     - **Suite:** CCPP_SUITE=FV3_HAFS_v1_gfdlmp_tedmf_nonsst
 
        **Microphysics:** IMP_PHYSICS=11
 
