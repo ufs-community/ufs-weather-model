@@ -229,7 +229,7 @@ These tests use default values set in the ``export_fv3`` function of ``default_v
      - Other
    * - `atmwav_control_noaero_p8 <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/atmwav_control_noaero_p8>`__
      - Compare global control results with previous trunk version
-     - **Suite:** CCPP_SUITE="FV3_GFS_v17_p8" :raw-html:`<br/> <br/>`
+     - **Suite:** CCPP_SUITE="FV3_GFS_v16" :raw-html:`<br/> <br/>`
 
        **Microphysics:** IMP_PHYSICS=8 :raw-html:`<br/> <br/>`
 
