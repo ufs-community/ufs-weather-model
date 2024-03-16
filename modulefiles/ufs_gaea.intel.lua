@@ -3,7 +3,7 @@ help([[
   on the NOAA RDHPC machine Gaea C5 using Intel-2023.1.0.
 ]])
 
-whatis([===[Loads libraries needed for building the UFS Weather Model on Gaea C5 ]===])
+whatis([===[Loads libraries needed for building the UFS Weather Model on Gaea ]===])
 
 load("PrgEnv-intel/8.3.3")
 load("intel-classic/2023.1.0")
