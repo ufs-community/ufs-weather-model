@@ -258,6 +258,8 @@ pipeline {
     agent none
     environment {
         ACCNR = 'epic'
+        AWS_PROD_ACCOUNT_ID = credentials('AWS_PROD_ACCOUNT_ID')
+        AWS_PROD_SNS_TOPIC = credentials('AWS_PROD_SNS_TOPIC')
         GITHUB_TOKEN = credentials('GithubJenkinsNew')
         GIT_URL = 'https://github.com/ufs-community/ufs-weather-model.git'
     }
@@ -285,7 +287,7 @@ pipeline {
              node('built-in') {
                 echo 'This will run only if successful.'
                 sh '''
-                  aws sns publish --topic-arn "arn:aws:sns:us-east-1:211527314271:Jenkins-CICD-Notifications" --region us-east-1 --message '{"version":"1.0","source":"custom","content":{"description":":sunny: Jenkins build *'"$JOB_NAME"' '"$BUILD_NUMBER"'* with *PR-'"$CHANGE_ID"'*  *succeeded*"}}'
+                  aws sns publish --topic-arn "arn:aws:sns:us-east-1:${AWS_PROD_ACCOUNT_ID}:${AWS_PROD_SNS_TOPIC}" --region us-east-1 --message '{"version":"1.0","source":"custom","content":{"description":":sunny: Jenkins build *'"$JOB_NAME"' '"$BUILD_NUMBER"'* with *PR-'"$CHANGE_ID"'*  *succeeded*"}}'
                '''
              }
          }
@@ -293,7 +295,7 @@ pipeline {
              node('built-in') {
                 echo 'This will run only if the run was marked as unstable.'
                 sh '''
-                  aws sns publish --topic-arn "arn:aws:sns:us-east-1:211527314271:Jenkins-CICD-Notifications" --region us-east-1 --message '{"version":"1.0","source":"custom","content":{"description":":warning: Jenkins build *'"$JOB_NAME"' '"$BUILD_NUMBER"'* with *PR-'"$CHANGE_ID"'*  *failed!*"}}'
+                  aws sns publish --topic-arn "arn:aws:sns:us-east-1:${AWS_PROD_ACCOUNT_ID}:${AWS_PROD_SNS_TOPIC}" --region us-east-1 --message '{"version":"1.0","source":"custom","content":{"description":":warning: Jenkins build *'"$JOB_NAME"' '"$BUILD_NUMBER"'* with *PR-'"$CHANGE_ID"'*  *failed!*"}}'
                '''
              }
          }
