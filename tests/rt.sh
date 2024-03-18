@@ -82,49 +82,60 @@ update_rtconf() {
     [[ ${#line} == 0 ]] && continue
     [[ $line == \#* ]] && continue
     
-    if [[ $line == COMPILE* ]] ; then
-      COMPILE_LINE_USED=false
+    if [[ $line =~ COMPILE ]] ; then
       MACHINES=$(echo $line | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
       RT_COMPILER_IN=$(echo $line | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
-
       if [[ ${MACHINES} == '' ]]; then
         compile_line=$line
+	COMPILE_LINE_USED=false
       elif [[ ${MACHINES} == -* ]]; then
-        [[ ${MACHINES} =~ ${MACHINE_ID} ]] || compile_line=$line
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] || compile_line=$line; COMPILE_LINE_USED=false
       elif [[ ${MACHINES} == +* ]]; then
-        [[ ${MACHINES} =~ ${MACHINE_ID} ]] && compile_line=$line
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] && compile_line=$line; COMPILE_LINE_USED=false
       fi
 
     fi
 
     if [[ $line =~ RUN ]]; then
+      to_run_test=false
       tmp_test=$(echo "$line" | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
-      TEST_IDX=$(find_match "$tmp_test $RT_COMPILER_IN" "${TEST_WITH_COMPILE[@]}")
-      
-      if [[ $TEST_IDX != -1 ]]; then
-        if [[ $COMPILE_LINE_USED == false ]]; then
-          echo "$compile_line" >> $RT_TEMP_CONF
-          COMPILE_LINE_USED=true
-        fi
-        dep_test=$(echo "$line" | grep -w "$tmp_test" | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
+      MACHINES=$(echo $line | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
+      if [[ ${MACHINES} == '' ]]; then
+        to_run_test=true
+      elif [[ ${MACHINES} == -* ]]; then
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] || to_run_test=true
+      elif [[ ${MACHINES} == +* ]]; then
+        [[ ${MACHINES} =~ ${MACHINE_ID} ]] && to_run_test=true
+      fi
+      if [[ $to_run_test == true ]]; then
+        TEST_IDX=$(find_match "$tmp_test $RT_COMPILER_IN" "${TEST_WITH_COMPILE[@]}")
         
-        if [[ $dep_test != '' ]]; then
-          if [[ $(find_match "$dep_test $RT_COMPILER_IN" "${TEST_WITH_COMPILE[@]}") == -1 ]]; then
-
-            dep_line=$(grep -w "$dep_test" rt.conf | grep -v "$tmp_test")
-            dep_line="${dep_line#"${dep_line%%[![:space:]]*}"}"
-            dep_line=$(echo "${dep_line}" | tr -d '\n')
-            CORRECT_LINE[1]=$(awk -F'RUN|RUN' '{print $2}' <<< "$dep_line")
-            CORRECT_LINE[2]=$(awk -F'RUN|RUN' '{print $3}' <<< "$dep_line")
+        if [[ $TEST_IDX != -1 ]]; then
+          if [[ $COMPILE_LINE_USED == false ]]; then
+  	    echo -en '\n' >> $RT_TEMP_CONF
+            echo "$compile_line" >> $RT_TEMP_CONF
+            COMPILE_LINE_USED=true
+          fi
+          dep_test=$(echo "$line" | grep -w "$tmp_test" | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
+        
+          if [[ $dep_test != '' ]]; then
+            if [[ $(find_match "$dep_test $RT_COMPILER_IN" "${TEST_WITH_COMPILE[@]}") == -1 ]]; then
+  
+              dep_line=$(grep -w "$dep_test" rt.conf | grep -v "$tmp_test")
+              dep_line="${dep_line#"${dep_line%%[![:space:]]*}"}"
+              dep_line=$(echo "${dep_line}" | tr -d '\n')
+              CORRECT_LINE[1]=$(awk -F'RUN|RUN' '{print $2}' <<< "$dep_line")
+              CORRECT_LINE[2]=$(awk -F'RUN|RUN' '{print $3}' <<< "$dep_line")
             
-            if [[ $RT_COMPILER_IN == "intel" ]]; then
-              echo "RUN ${CORRECT_LINE[1]}" >> $RT_TEMP_CONF
-            elif [[ $RT_COMPILER_IN == "gnu" ]]; then
-              echo "RUN ${CORRECT_LINE[2]}" >> $RT_TEMP_CONF
+              if [[ $RT_COMPILER_IN == "intel" ]]; then
+                echo "RUN ${CORRECT_LINE[1]}" >> $RT_TEMP_CONF
+              elif [[ $RT_COMPILER_IN == "gnu" ]]; then
+                echo "RUN ${CORRECT_LINE[2]}" >> $RT_TEMP_CONF
+              fi
             fi
           fi
-        fi
-        echo "$line" >> $RT_TEMP_CONF
+          echo "$line" >> $RT_TEMP_CONF
+	fi  
       fi
     fi
   done < "$TESTS_FILE"
@@ -157,6 +168,9 @@ $(git rev-parse HEAD)
 Submodule hashes used in testing:
 EOF
   cd ..
+  if  [[ $MACHINE_ID != hera  ]]; then
+  git submodule status --recursive >> "${REGRESSIONTEST_LOG}"
+  fi
   git submodule status >> "${REGRESSIONTEST_LOG}"
   echo; echo >> "${REGRESSIONTEST_LOG}"
   cd tests
@@ -727,8 +741,8 @@ elif [[ $MACHINE_ID = hercules ]]; then
   ECFLOW_START=/work/noaa/epic/role-epic/spack-stack/hercules/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
-  QUEUE=windfall
-  COMPILE_QUEUE=windfall
+  QUEUE=batch
+  COMPILE_QUEUE=batch
   PARTITION=hercules
   dprefix=/work2/noaa/stmp/${USER}
   DISKNM=/work/noaa/epic/hercules/UFS-WM_RT
@@ -741,14 +755,25 @@ elif [[ $MACHINE_ID = hercules ]]; then
 
 elif [[ $MACHINE_ID = jet ]]; then
 
+  echo "=======Running on $(lsb_release -is)======="
+  CurJetOS=$(lsb_release -is)
+  if [[ ${CurJetOS} == "CentOS" ]]; then
+  echo "=======Please, move to Rocky8 node fe[5-8]======="
+  exit 1
+  fi
+  
   module load rocoto
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=slurm
 
-  module load ecflow/5.5.3
-  ECFLOW_START=/apps/ecflow/5.5.3/bin/ecflow_start.sh
+  module load ecflow/5.11.4
+  ECFLOW_START=/apps/ecflow/5.11.4/bin/ecflow_start.sh
+
+  module use /mnt/lfs4/HFIP/hfv3gfs/role.epic/spack-stack/spack-stack-1.5.0/envs/unified-env-rocky8/install/modulefiles/Core
+  module load stack-intel/2021.5.0
+  module load stack-python/3.10.8
 
   QUEUE=batch
   COMPILE_QUEUE=batch
