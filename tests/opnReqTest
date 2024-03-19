@@ -104,12 +104,12 @@ build_opnReqTests() {
         ;;
     esac
     MAKE_OPT=$(echo $MAKE_OPT | sed -e 's/^ *//' -e 's/ *$//')
-    export COMPILE_NR=${name}
+    export COMPILE_ID=${name}
 
       cat <<-EOF > ${RUNDIR_ROOT}/compile_${name}.env
 				export MACHINE_ID=${MACHINE_ID}
-				export JOB_NR=${COMPILE_NR}
-				export COMPILE_NR=${COMPILE_NR}
+				export JOB_NR=${COMPILE_ID}
+				export COMPILE_ID=${COMPILE_ID}
 				export PATHRT=${PATHRT}
 				export PATHTR=${PATHTR}
 				export SCHEDULER=${SCHEDULER}
@@ -124,7 +124,7 @@ build_opnReqTests() {
 				EOF
 
     if [[ $ECFLOW == true ]]; then
-      COMPILE_NR=$name
+      COMPILE_ID=$name
       ecflow_create_compile_task
     else
       echo "compiling $name with compile option $MAKE_OPT"
@@ -252,8 +252,8 @@ run_opnReqTests() {
 			EOF
 
     if [[ $ECFLOW == true ]]; then
-      TEST_NR=${RT_SUFFIX:1}
-      COMPILE_NR=$comp_nm
+      TEST_ID=${RT_SUFFIX:1}
+      COMPILE_ID=$comp_nm
       RT_COMPILER=${RT_COMPILER:-intel}
       DEP_RUN=
       if [[ ${RT_SUFFIX} == _std || ${RT_SUFFIX} == _thr || ${RT_SUFFIX} == _mpi || ${RT_SUFFIX} == _dcp || ${RT_SUFFIX} == _rst || ${RT_SUFFIX} == _fhz ]]; then
@@ -269,8 +269,8 @@ run_opnReqTests() {
     else
       echo "Running test for $rc"
       echo "    THRD: $THRD; INPES: $INPES; JNPES: $JNPES; TPN: $TPN"
-      TEST_NR=${RT_SUFFIX:1}
-      ./run_test.sh $PATHRT $RUNDIR_ROOT $TEST_NAME $TEST_NR $comp_nm > $LOG_DIR/run_${TEST_NR}_${TEST_NAME}_${RT_COMPILER}${RT_SUFFIX}.log #2>&1
+      TEST_ID=${RT_SUFFIX:1}
+      ./run_test.sh $PATHRT $RUNDIR_ROOT $TEST_NAME $TEST_ID $comp_nm > $LOG_DIR/run_${TEST_ID}_${TEST_NAME}_${RT_COMPILER}${RT_SUFFIX}.log #2>&1
     fi
 
   done
@@ -307,7 +307,7 @@ export CI_TEST=${CI_TEST:-false}
 # specify compiler
 export RT_COMPILER=${RT_COMPILER:-intel}
 # detect_machine sets MACHINE_ID
-RT_MACHINE=${RT_MACHINE:-}
+MACHINE=${MACHINE:-}
 source detect_machine.sh
 cd $PATHRT
 
