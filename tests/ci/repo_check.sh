@@ -13,8 +13,8 @@ result() {
 }
 
 # Declare variables
-declare -A base fv3 mom6 cice ww3 stoch gocart cmeps cdeps hycom cmake ccpp-framework ccpp-physics upp atmos_cubed_sphere
-submodules="fv3 mom6 cice ww3 stoch gocart cmeps cdeps hycom cmake ccpp-framework ccpp-physics upp atmos_cubed_sphere"
+declare -A base fv3 mom6 cice ww3 stoch gocart cmeps cdeps hycom cmake ccpp-framework ccpp-physics atmos_cubed_sphere
+submodules="fv3 mom6 cice ww3 stoch gocart cmeps cdeps hycom cmake ccpp-framework ccpp-physics atmos_cubed_sphere"
 comment=''
 ownerID=$1
 
@@ -71,9 +71,9 @@ ccpp-physics[repo]='https://github.com/ufs-community/ccpp-physics'
 ccpp-physics[branch]='ufs/dev'
 ccpp-physics[dir]='ccpp/physics'
 
-upp[repo]='https://github.com/NOAA-EMC/UPP'
-upp[branch]='develop'
-upp[dir]='upp'
+#upp[repo]='https://github.com/NOAA-EMC/UPP'
+#upp[branch]='develop'
+#upp[dir]='upp'
 
 atmos_cubed_sphere[repo]='https://github.com/NOAA-GFDL/GFDL_atmos_cubed_sphere'
 atmos_cubed_sphere[branch]='main'
