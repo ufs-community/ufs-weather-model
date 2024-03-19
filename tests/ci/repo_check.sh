@@ -44,7 +44,7 @@ stoch[branch]='master'
 stoch[dir]='stochastic_physics'
 
 gocart[repo]='https://github.com/GEOS-ESM/GOCART'
-gocart[branch]='main'
+gocart[branch]='develop'
 gocart[dir]='GOCART'
 
 cmeps[repo]='https://github.com/NOAA-EMC/CMEPS'
@@ -65,19 +65,19 @@ cmake[dir]='CMakeModules'
 
 ccpp-framework[repo]='https://github.com/NCAR/ccpp-framework'
 ccpp-framework[branch]='main'
-ccpp-framework[dir]='ccpp/framework'
+ccpp-framework[dir]='FV3/ccpp/framework'
 
 ccpp-physics[repo]='https://github.com/ufs-community/ccpp-physics'
 ccpp-physics[branch]='ufs/dev'
-ccpp-physics[dir]='ccpp/physics'
+ccpp-physics[dir]='FV3/ccpp/physics'
 
 #upp[repo]='https://github.com/NOAA-EMC/UPP'
 #upp[branch]='develop'
 #upp[dir]='upp'
 
 atmos_cubed_sphere[repo]='https://github.com/NOAA-GFDL/GFDL_atmos_cubed_sphere'
-atmos_cubed_sphere[branch]='main'
-atmos_cubed_sphere[dir]='atmos_cubed_sphere'
+atmos_cubed_sphere[branch]='dev/emc'
+atmos_cubed_sphere[dir]='FV3/atmos_cubed_sphere'
 
 # Get sha-1's of the top of develop of ufs-weather-model
 app="Accept: application/vnd.github.v3+json"
