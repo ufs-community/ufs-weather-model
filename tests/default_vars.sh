@@ -322,6 +322,14 @@ export UFS_CONFIGURE=ufs.configure.atm_esmf.IN
 export MODEL_CONFIGURE=model_configure.IN
 export atm_model=fv3
 
+export BLOCKSIZE=32
+export CHKSUM_DEBUG=.false.
+export DYCORE_ONLY=.false.
+export PREPEND_DATE=.false.
+export CLOCK_GRAIN="'ROUTINE'"
+export PRINT_MEMORY_USAGE=.false.
+export NETCDF_DEFAULT_FORMAT="'netcdf4'"
+
 export FV3=true
 export S2S=false
 export HAFS=false
@@ -331,10 +339,14 @@ export DOCN_CDEPS=false
 export CDEPS_INLINE=false
 export POSTAPP='global'
 export USE_MERRA2=.true.
+export FALSE_VAL=.false.
+export TRUE_VAL=.true.
 
 export NTILES=6
+export IO_LAYOUT=1,1
 export INPES=$INPES_dflt
 export JNPES=$JNPES_dflt
+export GRID_TYPE=-1
 export RESTART_INTERVAL=0
 export QUILTING=.true.
 export QUILTING_RESTART=.true.
@@ -359,10 +371,78 @@ export KCHUNK3D=0
 export IMO=384
 export JMO=190
 export WRITE_NSFLIP=.true.
+export N_SPONGE=42
+export TAU=0.0
+export FAST_TAU_W_SEC=0.2
+export RF_CUTOFF=10.
+export KORD_TM=-9
+export KORD_MT=9
+export KORD_WZ=9
+export KORD_TR=9
+export BETA=0.
+export A_IMP=1.
+export P_FAC=0.1
+export K_SPLIT=2
+export N_SPLIT=5
+export NWAT=6
+export D_EXT=0.
+export FV_SG_ADJ=450
+export D2_BG=0.
+export NORD=2
+export D4_BG=0.12
+export VTDM4=0.02
+export DELT_MAX=0.002
+export KE_BG=0.
+export D_CON=1.
+export HORD_MT=5
+export HORD_VT=5
+export HORD_TM=5
+export HORD_DP=-5
+export HORD_TR=8
+export DRY_MASS=98320.0
+export CONSV_TE=1.
+export PRINT_FREQ=6
+export NT_CHECKER=0
 
 export DZ_MIN=6
 export MIN_SEAICE=0.15
 export FRAC_GRID=.true.
+
+export TTENDLIM=-999
+export LSOIL_LSM=4
+export ICLOUD_BL=1
+export BL_MYNN_EDMF=1
+export BL_MYNN_EDMF_MOM=1
+export MIN_LAKEICE=0.15
+export FHSWR=3600.
+export FHLWR=3600.
+export ICO2=2
+export ISUBC_SW=2
+export ISUBC_LW=2
+export ISOL=2
+export ISATMEDMF=1
+export PRSLRD0=0.
+export IVEGSRC=1
+export ISOT=1
+export LSOIL=4
+export IOPT_BTR=1
+export IOPT_RUN=1
+export IOPT_FRZ=1
+export IOPT_INF=1
+export IOPT_SNF=4
+export IOPT_TBOT=2
+export PSAUTCO=0.0008,0.0005
+export PRAUTCO=0.00015,0.00015
+export ACTIVE_GASES="'h2o_co2_o3_n2o_ch4_o2'"
+export NGASES=6
+export LW_FILE_GAS="'rrtmgp-data-lw-g128-210809.nc'"
+export LW_FILE_CLOUDS="'rrtmgp-cloud-optics-coeffs-lw.nc'"
+export SW_FILE_GAS="'rrtmgp-data-sw-g112-210809.nc'"
+export SW_FILE_CLOUDS="'rrtmgp-cloud-optics-coeffs-sw.nc'"
+export RRTMGP_NGPTSSW=112
+export RRTMGP_NGPTSLW=128
+export RRTMGP_NBANDSLW=16
+export RRTMGP_NBANDSSW=14
 
 #input file
 export FV3_RUN=control_run.IN
@@ -397,8 +477,8 @@ export DAMP_LW_FLUXADJ=.false.
 export RRTMGP_LW_PHYS_BLKSZ=2
 export ICLOUD=0
 export IAER=1011
-export ICLIQ_SW=1
-export IOVR=1
+export ICLIQ_SW=2
+export IOVR=3
 export LFNC_K=-999
 export LFNC_P0=-999
 
@@ -451,6 +531,14 @@ export KNOB_UGWP_VERSION=0
 export KNOB_UGWP_PALAUNCH=500.e2
 export KNOB_UGWP_NSLOPE=1
 export DO_UGWP_V0_NST_ONLY=.false.
+export KNOB_UGWP_SOLVER=2
+export KNOB_UGWP_SOURCE=1,1,0,0
+export KNOB_UGWP_WVSPEC=1,25,25,25
+export KNOB_UGWP_AZDIR=2,4,4,4
+export KNOB_UGWP_STOCH=0,0,0,0
+export KNOB_UGWP_EFFAC=1,1,1,1
+export KNOB_UGWP_DOAXYZ=1
+export KNOB_UGWP_DOHEAT=1
 
 # resolution dependent settings
 export CDMBWD_c48='0.071,2.1,1.0,1.0'
@@ -471,7 +559,6 @@ export DT_INNER=${DT_INNER_c96}
 
 # PBL
 export SATMEDMF=.true.
-export ISATMEDMF=0
 export HYBEDMF=.true.
 export SHINHONG=.false.
 export DO_YSU=.false.
@@ -595,6 +682,9 @@ export SHUM=-999.
 export LNDP_VAR_LIST="'XXX'"
 export LNDP_PRT_LIST=-999
 export LNDP_MODEL_TYPE=0
+export LNDP_TAU=21600,
+export LNDP_LSCALE=500000,
+export ISEED_LNDP=2010,
 
 #IAU
 export IAU_INC_FILES="''"
@@ -678,6 +768,57 @@ export MOM6_RESTART_SETTING=n
 
 # P8 (not used for standalone)
 export USE_CICE_ALB=.false.
+
+# GFDL Cloud Microphysics
+export VI_MAX=1.
+export VS_MAX=2.
+export VG_MAX=12.
+export VR_MAX=12.
+export QI_LIM=1.
+export TAU_L2V=225.
+export TAU_V2L=150.
+export TAU_G2V=900.
+export RTHRESH=10.e-6
+export DW_LAND=0.16
+export DW_OCEAN=0.10
+export QL_GEN=1.0e-3
+export QL_MLT=1.0e-3
+export QI0_CRT=8.0E-5
+export QS0_CRT=1.0e-3
+export TAU_I2S=1000.
+export C_PSACI=0.05
+export C_PGACS=0.01
+export RH_INC=0.30
+export RH_INR=0.30
+export RH_INS=0.30
+export CCN_L=300.
+export CCN_O=100.
+export C_PAUT=0.5
+export C_CRACW=0.8
+export ICLOUD_F=1
+export MP_TIME=150.
+export REIFLAG=2
+export FTSFS=90
+
+# Interpolation
+export INTERP_METHOD="'conserve_great_circle'"
+
+# NAM sfc
+export FNGLAC="'global_glacier.2x2.grb'"
+export FNMXIC="'global_maxice.2x2.grb'"
+export FNTSFC="'RTGSST.1982.2012.monthly.clim.grb'"
+export FNSNOC="'global_snoclim.1.875.grb'"
+export FNZORC="'igbp'"
+export FNAISC="'IMS-NIC.blended.ice.monthly.clim.grb'"
+export NULL_VAL=99999
+
+# FV3 Grid file spec
+export GRID_FILE="'INPUT/grid_spec.nc'"
+
+# Extra MOM options
+export RESTART_INPUT_DIR="'INPUT/',"
+export PARAMETER_FILENAME="'INPUT/MOM_input',
+                           'INPUT/MOM_override'/"
 }
 
 # Add section for tiled grid namelist
@@ -970,21 +1111,6 @@ export CA_TRIGGER=.true.
 export NSPINUP=1
 export ISEED_CA=12345
 
-# P7 settings
-#export FNALBC="'C96.snowfree_albedo.tileX.nc'"
-#export FNALBC2="'C96.facsf.tileX.nc'"
-#export FNTG3C="'C96.substrate_temperature.tileX.nc'"
-#export FNVEGC="'C96.vegetation_greenness.tileX.nc'"
-#export FNVETC="'C96.vegetation_type.tileX.nc'"
-#export FNSOTC="'C96.soil_type.tileX.nc'"
-#export FNSOCC="'C96.soil_color.tileX.nc'"
-#export FNSMCC=${FNSMCC_control}
-#export FNMSKH=${FNMSKH_control}
-#export FNVMNC="'C96.vegetation_greenness.tileX.nc'"
-#export FNVMXC="'C96.vegetation_greenness.tileX.nc'"
-#export FNSLPC="'C96.slope_type.tileX.nc'"
-#export FNABSC="'C96.maximum_snow_albedo.tileX.nc'"
-#export LANDICE=".false."
 #P8
 export FSICL=0
 export FSICS=0
