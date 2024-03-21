@@ -6,6 +6,7 @@ SECONDS=0
 hostname
 
 die() { echo "$@" >&2; exit 1; }
+
 usage() {
   set +x
   echo
@@ -26,7 +27,6 @@ usage() {
   echo "  -w  for weekly_test, skip comparing baseline results"
   echo
   set -x
-  exit 1
 }
 
 [[ $# -eq 0 ]] && usage
@@ -77,9 +77,9 @@ update_rtconf() {
   local compile_line=''
   while read -r line || [[ -n "${line}" ]]; do
     line="${line#"${line%%[![:space:]]*}"}"
-    [[ -n ${line} ]] || continue
+    [[ -n "${line}" ]] || continue
     [[ ${#line} == 0 ]] && continue
-    [[ ${line } == \#* ]] && continue
+    [[ ${line} == \#* ]] && continue
     
     if [[ ${line} =~ COMPILE ]] ; then
       #MACHINES=$(echo "${line}" | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
@@ -256,17 +256,17 @@ EOF
         COMPILE_TIME=""
         RT_COMPILE_TIME=""
         if [[ ! -f "${LOG_DIR}/compile_${COMPILE_ID}.log" ]]; then
-          COMPILE_RESULT="MISSING"
+          COMPILE_RESULT="FAILED TO START COMPILE"
           FAIL_LOG="N/A"
         elif [[ -f fail_compile_${COMPILE_ID} ]]; then
-          COMPILE_RESULT="FAIL TO RUN"
+          COMPILE_RESULT="FAILED TO COMPILE"
           FAIL_LOG="${LOG_DIR}/compile_${COMPILE_ID}.log"
         else 
           if grep -q "quota" "${LOG_DIR}/compile_${COMPILE_ID}.log"; then
-            COMPILE_RESULT="FAIL FROM DISK QUOTA"
+            COMPILE_RESULT="FAILED DUE TO DISK QUOTA"
             FAIL_LOG="${LOG_DIR}/compile_${COMPILE_ID}.log"
           elif grep -q "timeout" "${LOG_DIR}/compile_${COMPILE_ID}.log"; then
-            COMPILE_RESULT="FAIL FROM TIMEOUT"
+            COMPILE_RESULT="FAILED FROM TIMEOUT"
             FAIL_LOG="${LOG_DIR}/compile_${COMPILE_ID}.log"
           else
             COMPILE_RESULT="PASS"
@@ -326,44 +326,54 @@ EOF
         if [[ ${CREATE_BASELINE} == true && ${GEN_BASELINE} != "baseline" ]]; then
           TEST_RESULT="SKIPPED (TEST DOES NOT GENERATE BASELINE)"
         elif [[ ! -f "${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log" ]]; then
-          TEST_RESULT="MISSING"
+          TEST_RESULT="FAILED TO START RUN"
           FAIL_LOG="N/A"
         elif [[ -f fail_test_${TEST_NAME}_${COMPILER} ]]; then
           if [[ -f "${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log" ]]; then
-            TEST_RESULT="FAIL TO COMPARE"
-            FAIL_LOG="${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log"
+            if grep -q "FAIL" "${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log"; then
+              TEST_RESULT="FAILED TO RUN COMPARISON"
+              FAIL_LOG="${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"
+            # We need to catch a "PASS" in rt_*.log even if a fail_test_* files exists
+            # I'm not sure why this can happen.
+            elif grep -q "PASS" "${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log"; then
+              TEST_RESULT="PASS"
+            else
+              TEST_RESULT="FAILED IN BASELINE COMPARISON"
+              FAIL_LOG="${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log"
+            fi
           else
-            TEST_RESULT="FAIL TO RUN"
+            TEST_RESULT="FAILED TO FINISH RUN"
             FAIL_LOG="${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"
           fi
         else
           if grep -q "quota" "${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"; then
-            TEST_RESULT="FAIL FROM DISK QUOTA"
+            TEST_RESULT="FAILED DUE TO DISK QUOTA"
             FAIL_LOG="${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"
           elif grep -q "timeout" "${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"; then
-            TEST_RESULT="FAIL FROM TIMEOUT"
+            TEST_RESULT="FAILED FROM TIMEOUT"
             FAIL_LOG="${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"
           else
-            
             TEST_RESULT="PASS"
-            TIME_FILE="${LOG_DIR}/run_${TEST_NAME}_${COMPILER}_timestamp.txt"
-            GETMEMFROMLOG=$(grep "The maximum resident set size" "${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log")
-            RT_TEST_MEM=$(echo "${GETMEMFROMLOG:9:${#GETMEMFROMLOG}-1}" | tr -dc '0-9')
-            RT_TEST_MEM=$((RT_TEST_MEM/1000))
-            if [[ -f "${TIME_FILE}" ]]; then
-              while read -r times || [[ -n "${times}" ]]; do
-                  times="${times#"${times%%[![:space:]]*}"}"
+          fi
+        fi
+        if [[ ${TEST_RESULT} == "PASS" ]]; then
+          TIME_FILE="${LOG_DIR}/run_${TEST_NAME}_${COMPILER}_timestamp.txt"
+          GETMEMFROMLOG=$(grep "The maximum resident set size" "${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log")
+          RT_TEST_MEM=$(echo "${GETMEMFROMLOG:9:${#GETMEMFROMLOG}-1}" | tr -dc '0-9')
+          RT_TEST_MEM=$((RT_TEST_MEM/1000))
+          if [[ -f "${TIME_FILE}" ]]; then
+            while read -r times || [[ -n "${times}" ]]; do
+                times="${times#"${times%%[![:space:]]*}"}"
 
-                  DATE1=$(cut -d ',' -f2 <<< "${times}")
-                  DATE2=$(cut -d ',' -f3 <<< "${times}")
-                  DATE3=$(cut -d ',' -f4 <<< "${times}")
-                  DATE4=$(cut -d ',' -f5 <<< "${times}")
+                DATE1=$(cut -d ',' -f2 <<< "${times}")
+                DATE2=$(cut -d ',' -f3 <<< "${times}")
+                DATE3=$(cut -d ',' -f4 <<< "${times}")
+                DATE4=$(cut -d ',' -f5 <<< "${times}")
 
-                  TEST_TIME=$(date --date=@$((DATE3 - DATE2)) +'%M:%S')
-                  RT_TEST_TIME=$(date --date=@$((DATE4 - DATE1)) +'%M:%S')
+                TEST_TIME=$(date --date=@$((DATE3 - DATE2)) +'%M:%S')
+                RT_TEST_TIME=$(date --date=@$((DATE4 - DATE1)) +'%M:%S')
 
-              done < "${TIME_FILE}"
-            fi
+            done < "${TIME_FILE}"
           fi
         fi
 
@@ -516,13 +526,13 @@ trap '{ echo "rt.sh error on line $LINENO"; cleanup ; }' ERR
 trap '{ echo "rt.sh finished"; cleanup ; }' EXIT
 
 # PATHRT - Path to regression tests directory
-readonly PATHRT
 PATHRT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P )"
+readonly PATHRT
 cd "${PATHRT}"
 
 # PATHTR - Path to nmmb trunk directory
-readonly PATHTR
 PATHTR=$( cd "${PATHRT}/.." && pwd )
+readonly PATHTR
 
 # make sure only one instance of rt.sh is running
 readonly LOCKDIR="${PATHRT}"/lock
@@ -583,7 +593,7 @@ while getopts ":a:b:cl:mn:dwkreoh" opt; do
       IFS=' ' read -r -a SINGLE_OPTS <<< "${OPTARG}"
 
       if [[ ${#SINGLE_OPTS[@]} != 2 ]]; then
-        die 'The -n option needs <testname> AND <compiler> in quotes, i.e. -n "control_p8 intel"'
+        die 'The -n option needs [testname] AND [compiler] in quotes, i.e. -n "control_p8 intel"'
       fi
 
       SRT_NAME="${SINGLE_OPTS[0]}"
@@ -614,19 +624,19 @@ while getopts ":a:b:cl:mn:dwkreoh" opt; do
       ;;
     h)
       usage
+      die ""
       ;;
     \?)
       usage
-      # shellcheck disable=SC2317
       die "Invalid option: -${OPTARG}"
       ;;
     :)
       usage
-      # shellcheck disable=SC2317
       die "Option -${OPTARG} requires an argument."
       ;;
     *)
       usage
+      die "Arguments are required."
       ;;
   esac
 done
@@ -635,6 +645,8 @@ done
 [[ ${KEEP_RUNDIR} == true && ${delete_rundir} == true ]] && die "-k and -d options cannot be used at the same time"
 [[ ${ECFLOW} == true && ${ROCOTO} == true ]] && die "-r and -e options cannot be used at the same time"
 [[ ${CREATE_BASELINE} == true && ${RTPWD_NEW_BASELINE} == true ]] && die "-c and -m options cannot be used at the same time"
+
+#Set rt.conf
 
 if [[ -z "${ACCNR}" ]]; then
   echo "Please use -a <account> to set group account to use on HPC"
@@ -945,7 +957,7 @@ NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST
 # Overwrite default RUNDIR_ROOT if environment variable RUNDIR_ROOT is set
 RUNDIR_ROOT=${RUNDIR_ROOT:-${PTMP}/${USER}/FV3_RT}/rt_$$
 mkdir -p "${RUNDIR_ROOT}"
-if [[ -e ${PATHRT}/run_dir ]]; then
+if [[ -L "${PATHRT}/run_dir" && -d "${PATHRT}/run_dir" ]]; then
   rm "${PATHRT}/run_dir"
 fi
 echo "Linking ${RUNDIR_ROOT} to ${PATHRT}/run_dir"
@@ -986,7 +998,10 @@ INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20220624
 INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC:-${DISKNM}/NEMSfv3gfs/BM_IC-20220207}
 
 shift $((OPTIND-1))
-[[ $# -gt 1 ]] && usage
+if [[ $# -gt 1 ]]; then
+  usage
+  die ""
+fi
 
 if [[ ${CREATE_BASELINE} == true ]]; then
   # PREPARE NEW REGRESSION TEST DIRECTORY
@@ -1098,8 +1113,8 @@ in_metatask=false
 
 [[ -f ${TESTS_FILE} ]] || die "${TESTS_FILE} does not exist"
 
-#LAST_COMPILER_NR=-9999
-#COMPILE_PREV=''
+#export LAST_COMPILER_NR=-9999
+#export COMPILE_PREV=''
 
 declare -A compiles
 
@@ -1152,7 +1167,7 @@ while read -r line || [[ -n "${line}" ]]; do
     fi
 
     create_or_run_compile_task
-
+    echo "================= FINISHED COMPILE TASK ========================"
     continue
 
   elif [[ ${line} == RUN* ]] ; then
@@ -1271,7 +1286,6 @@ EOF
         ./run_test.sh "${PATHRT}" "${RUNDIR_ROOT}" "${TEST_NAME}" "${TEST_ID}" "${COMPILE_ID}" > "${LOG_DIR}/run_${TEST_ID}${RT_SUFFIX}.log" 2>&1
       fi
     )
-
     continue
   else
     die "Unknown command ${line}"
