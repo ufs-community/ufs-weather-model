@@ -1,10 +1,17 @@
 #! /usr/bin/env bash
 function atparse {
+    # Use __ in names to avoid clashing with variables in {var} blocks.
+    local __text # current line of text being parsed
+    local __before # all text before the next @[...] option
+    local __after # all text after the next @[...] option
+    local __during # the contents of the @[...] option, including the @[ and ]
+    local __had_eoln # YES = the current line ended with a \n NO = it did not
+    local __set_x=":" # will be "set -x" if the calling script had that option enabled
+    local __set_u=":" # will be "set -u" if the calling script had that option enabled
+    local __set_e=":" # will be "set -e" if the calling script had that option enabled
+
     # Ensure "set -x -e -u" are all inactive, but remember if they
     # were active so we can reset them later.
-    local __set_x=":"
-    local __set_u=":"
-    local __set_e=":"
     if [[ -o xtrace ]] ; then
 	__set_x="set -x"
     fi
@@ -15,8 +22,7 @@ function atparse {
 	__set_u="set -u"
     fi
     set +eux
-    # Use __ in names to avoid clashing with variables in {var} blocks.
-    local __text __before __after __during __had_eoln
+
     # Allow setting variables on the atparse command line rather than the environment.
     # They will be local variables in this function.
     for __text in "$@" ; do
@@ -27,6 +33,8 @@ function atparse {
             echo "ERROR: Ignoring invalid argument $__text\n" 1>&2
         fi
     done
+
+    # Loop over all lines of text.
     while [[ 1 == 1 ]] ; do
         # Read the next line of text. This will "fail" if no more text
         # is left OR if the last line lacks an end-of-line character.
@@ -79,6 +87,8 @@ function atparse {
             printf '%s' "$__text"
         fi
     done
+
+    # Restore the calling script's shell options.
     eval "$__set_x"
     eval "$__set_u"
     eval "$__set_e"
