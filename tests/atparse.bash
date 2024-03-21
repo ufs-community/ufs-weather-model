@@ -39,7 +39,7 @@ function atparse {
             eval "local ${BASH_REMATCH[1]}"
             eval "${BASH_REMATCH[1]}="'"${BASH_REMATCH[2]}"'
         else
-            echo "ERROR: Ignoring invalid argument $__text\n" 1>&2
+            echo "ERROR: Ignoring invalid argument $__text" 1>&2
         fi
     done
 
