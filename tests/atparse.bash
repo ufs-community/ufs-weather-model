@@ -12,7 +12,6 @@ function atparse {
     local __before # all text before the next @[...] option
     local __after # all text after the next @[...] option
     local __during # the contents of the @[...] option, including the @[ and ]
-    local __had_eoln # YES = the current line ended with a \n NO = it did not
     local __set_x=":" # will be "set -x" if the calling script had that option enabled
     local __set_u=":" # will be "set -u" if the calling script had that option enabled
     local __set_e=":" # will be "set -e" if the calling script had that option enabled
@@ -47,7 +46,6 @@ function atparse {
     while [[ 1 == 1 ]] ; do
         # Read the next line of text. This will "fail" if no more text
         # is left OR if the last line lacks an end-of-line character.
-        __had_eoln=YES
         read -d '' -r __text
 
         # Stop when "read" reports it is done ($? -ne 0) AND the text is
@@ -56,7 +54,7 @@ function atparse {
         if [[ $? -ne 0 ]] ; then
             if [[ -n "$__text" ]] ; then
                 # Text remained, but it had no end-of-line.
-                __had_eoln=NO
+		:
             else
                 break
             fi
@@ -94,11 +92,7 @@ function atparse {
             __text="$__after"
         done
         # Print the corrected text
-        if [[ "$__had_eoln" == YES ]] ; then
-            printf '%s\n' "$__text"
-        else
-            printf '%s' "$__text"
-        fi
+        printf '%s\n' "$__text"
     done
 
     # Restore the calling script's shell options.
