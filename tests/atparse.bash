@@ -1,5 +1,12 @@
 #! /usr/bin/env bash
 function atparse {
+    # atparse [ var1=value1 [ var2=value2 [...] ] ] < input_file > output_file
+    # This script filters text from stdin to stdout. It scans for text sequences like:
+    #    @[varname]
+    # And replaces them with the value of the corresponding ${varname} variable.
+    # You can set provide variables that are not set in bash by providing them on the command line.
+    # If set -u is enabled, it will exit the process when a variable is empty or undefined via set -u.
+
     # Use __ in names to avoid clashing with variables in {var} blocks.
     local __text # current line of text being parsed
     local __before # all text before the next @[...] option
@@ -9,6 +16,7 @@ function atparse {
     local __set_x=":" # will be "set -x" if the calling script had that option enabled
     local __set_u=":" # will be "set -u" if the calling script had that option enabled
     local __set_e=":" # will be "set -e" if the calling script had that option enabled
+    local __abort_on_undefined=NO # YES = script should abort if a variable is undefined, NO otherwise
 
     # Ensure "set -x -e -u" are all inactive, but remember if they
     # were active so we can reset them later.
@@ -20,6 +28,7 @@ function atparse {
     fi
     if [[ -o nounset ]] ; then
 	__set_u="set -u"
+	__abort_on_undefined=YES
     fi
     set +eux
 
@@ -67,9 +76,13 @@ function atparse {
             # @[varname] inserts $varname
             elif [[ "$__during" =~ ^@\[([a-zA-Z_][a-zA-Z_0-9]*)\] ]] ; then
 		# Flag unknown variables at this step only.
-		set -u
+		if [[ ${__abort_on_undefined} == YES ]] ; then
+		    set -u
+		fi
                 eval 'printf %s "$'"${BASH_REMATCH[1]}"'"'
-		set +u
+		if [[ ${__abort_on_undefined} == YES ]] ; then
+		    set +u
+		fi
             # Unrecognized sequences are inserted verbatim.
             else
                 printf '%s' "$__during"
@@ -108,6 +121,7 @@ Nothing special here. = @['Nothing special here.']
 ** = @[var3]
 [var4] == @[var4]
 @ = @[@] = @['@']
+@[undefined_variable_that_should_exit_script_if_set_minus_e_is_used]
 -n
  eval "export PE$c=\${PE$c:-0}" = @[' eval "export PE$c=\${PE$c:-0}"']
 EOF
