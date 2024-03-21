@@ -121,7 +121,7 @@ Nothing special here. = @['Nothing special here.']
 ** = @[var3]
 [var4] == @[var4]
 @ = @[@] = @['@']
-@[undefined_variable_that_should_exit_script_if_set_minus_e_is_used]
+@[undefined_variable_that_should_exit_script_if_set_minus_u_is_used]
 -n
  eval "export PE$c=\${PE$c:-0}" = @[' eval "export PE$c=\${PE$c:-0}"']
 EOF
