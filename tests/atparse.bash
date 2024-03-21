@@ -1,9 +1,20 @@
 #! /usr/bin/env bash
 function atparse {
-    # Ensure "set -x" is inactive, but remember if it was active so we can reset it later.
-    local __set_x
-    [ -o xtrace ] && __set_x='set -x' || __set_x='set +x'
-    set +x
+    # Ensure "set -x -e -u" are all inactive, but remember if they
+    # were active so we can reset them later.
+    local __set_x=":"
+    local __set_u=":"
+    local __set_e=":"
+    if [[ -o xtrace ]] ; then
+	__set_x="set -x"
+    fi
+    if [[ -o errexit ]] ; then
+	__set_e="set -e"
+    fi
+    if [[ -o nounset ]] ; then
+	__set_u="set -u"
+    fi
+    set +eux
     # Use __ in names to avoid clashing with variables in {var} blocks.
     local __text __before __after __during __had_eoln
     # Allow setting variables on the atparse command line rather than the environment.
@@ -47,7 +58,10 @@ function atparse {
                 printf @
             # @[varname] inserts $varname
             elif [[ "$__during" =~ ^@\[([a-zA-Z_][a-zA-Z_0-9]*)\] ]] ; then
+		# Flag unknown variables at this step only.
+		set -u
                 eval 'printf %s "$'"${BASH_REMATCH[1]}"'"'
+		set +u
             # Unrecognized sequences are inserted verbatim.
             else
                 printf '%s' "$__during"
@@ -66,6 +80,8 @@ function atparse {
         fi
     done
     eval "$__set_x"
+    eval "$__set_u"
+    eval "$__set_e"
 }
 
 function test_atparse {
