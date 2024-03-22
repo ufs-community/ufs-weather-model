@@ -610,7 +610,9 @@ echo "Machine: " $MACHINE_ID "    Account: " $ACCNR
 
 if [[ $MACHINE_ID = wcoss2 ]]; then
 
-  module load ecflow/5.6.0.13
+  if [[ "${ECFLOW:-false}" == true ]] ; then
+    module load ecflow/5.6.0.13
+  fi
   module load intel/19.1.3.304 python/3.8.6
   ECFLOW_START=${ECF_ROOT}/scripts/server_check.sh
   export ECF_OUTPUTDIR=${PATHRT}/ecf_outputdir
@@ -631,7 +633,9 @@ if [[ $MACHINE_ID = wcoss2 ]]; then
 
 elif [[ $MACHINE_ID = acorn ]]; then
 
-  module load ecflow/5.6.0.13
+  if [[ "${ECFLOW:-false}" == true ]] ; then
+    module load ecflow/5.6.0.13
+  fi
   module load intel/19.1.3.304 python/3.8.6
   ECFLOW_START=${ECF_ROOT}/scripts/server_check.sh
   export ECF_OUTPUTDIR=${PATHRT}/ecf_outputdir
@@ -653,7 +657,9 @@ elif [[ $MACHINE_ID = acorn ]]; then
 elif [[ $MACHINE_ID = gaea ]]; then
 
   module use /ncrc/proj/epic/rocoto/modulefiles
-  module load rocoto
+  if [[ "${ROCOTO:-false}" == true ]] ; then
+    module load rocoto
+  fi
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
@@ -666,7 +672,9 @@ elif [[ $MACHINE_ID = gaea ]]; then
   module load python/3.9.12
   module use /ncrc/proj/epic/spack-stack/modulefiles
   module load gcc/12.2.0
-  module load ecflow/5.8.4
+  if [[ "${ECFLOW:-false}" == true ]] ; then
+    module load ecflow/5.8.4
+  fi
   ECFLOW_START=/ncrc/proj/epic/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
@@ -681,13 +689,17 @@ elif [[ $MACHINE_ID = gaea ]]; then
 
 elif [[ $MACHINE_ID = hera ]]; then
 
-  module load rocoto
+  if [[ "${ROCOTO:-false}" == true ]] ; then
+    module load rocoto
+  fi
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=slurm
 
-  module load ecflow/5.5.3
+  if [[ "${ECFLOW:-false}" == true ]] ; then
+    module load ecflow/5.5.3
+  fi
   ECFLOW_START=ecflow_start.sh
 
   QUEUE=batch
@@ -714,7 +726,9 @@ elif [[ $MACHINE_ID = orion ]]; then
   ROCOTO_SCHEDULER=slurm
 
   module use /work/noaa/epic/role-epic/spack-stack/orion/modulefiles
-  module load ecflow/5.8.4
+  if [[ "${ECFLOW:-false}" == true ]] ; then
+    module load ecflow/5.8.4
+  fi
   ECFLOW_START=/work/noaa/epic/role-epic/spack-stack/orion/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
@@ -737,7 +751,9 @@ elif [[ $MACHINE_ID = hercules ]]; then
   ROCOTO_SCHEDULER=slurm
 
   module use /work/noaa/epic/role-epic/spack-stack/hercules/modulefiles
-  module load ecflow/5.8.4
+  if [[ "${ECFLOW:-false}" == true ]] ; then
+    module load ecflow/5.8.4
+  fi
   ECFLOW_START=/work/noaa/epic/role-epic/spack-stack/hercules/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
@@ -762,13 +778,17 @@ elif [[ $MACHINE_ID = jet ]]; then
   exit 1
   fi
   
-  module load rocoto
+  if [[ "${ROCOTO:-false}" == true ]] ; then
+    module load rocoto
+  fi
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=slurm
 
-  module load ecflow/5.11.4
+  if [[ "${ECFLOW:-false}" == true ]] ; then
+    module load ecflow/5.11.4
+  fi
   ECFLOW_START=/apps/ecflow/5.11.4/bin/ecflow_start.sh
 
   module use /mnt/lfs4/HFIP/hfv3gfs/role.epic/spack-stack/spack-stack-1.5.0/envs/unified-env-rocky8/install/modulefiles/Core
@@ -787,8 +807,12 @@ elif [[ $MACHINE_ID = jet ]]; then
 
 elif [[ $MACHINE_ID = s4 ]]; then
 
-  module load rocoto/1.3.2
-  module load ecflow/5.6.0
+  if [[ "${ROCOTO:-false}" == true ]] ; then
+    module load rocoto/1.3.2
+  fi
+  if [[ "${ECFLOW:-false}" == true ]] ; then
+    module load ecflow/5.6.0
+  fi
   module load miniconda/3.8-s4
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
@@ -796,7 +820,9 @@ elif [[ $MACHINE_ID = s4 ]]; then
   ROCOTO_SCHEDULER=slurm
 
   module use /data/prod/jedi/spack-stack/modulefiles
-  module load ecflow/5.8.4
+  if [[ "${ECFLOW:-false}" == true ]] ; then
+    module load ecflow/5.8.4
+  fi
   ECFLOW_START=/data/prod/jedi/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
   ECF_PORT=$(( $(id -u) + 1500 ))
 
@@ -814,9 +840,13 @@ elif [[ $MACHINE_ID = s4 ]]; then
 elif [[ $MACHINE_ID = derecho ]]; then
 
   module use /glade/work/epicufsrt/contrib/derecho/rocoto/modulefiles
-  module load rocoto
+  if [[ "${ROCOTO:-false}" == true ]] ; then
+    module load rocoto
+  fi
   module use /glade/work/epicufsrt/contrib/spack-stack/derecho/modulefiles
-  module load ecflow/5.8.4
+  if [[ "${ECFLOW:-false}" == true ]] ; then
+    module load ecflow/5.8.4
+  fi
   module unload ncarcompilers
   module use /glade/work/epicufsrt/contrib/spack-stack/derecho/spack-stack-1.5.1/envs/unified-env/install/modulefiles/Core
   module load stack-intel/2021.10.0
@@ -873,7 +903,9 @@ elif [[ $MACHINE_ID = expanse ]]; then
 
   export PATH=/contrib/EPIC/bin:$PATH
   module use /apps/modules/modulefiles
-  module load rocoto/1.3.3
+  if [[ "${ROCOTO:-false}" == true ]] ; then
+    module load rocoto/1.3.3
+  fi
 
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
