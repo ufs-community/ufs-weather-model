@@ -182,6 +182,9 @@ ${GIT_HASHES}
 Submodule hashes used in testing:
 EOF
   cd ..
+  if  [[ $MACHINE_ID != hera  ]]; then
+  git submodule status --recursive >> "${REGRESSIONTEST_LOG}"
+  fi
   git submodule status >> "${REGRESSIONTEST_LOG}"
   echo; echo >> "${REGRESSIONTEST_LOG}"
   cd tests
@@ -788,8 +791,8 @@ elif [[ ${MACHINE_ID} = hercules ]]; then
   ECFLOW_START="/work/noaa/epic/role-epic/spack-stack/hercules/ecflow-5.8.4/bin/ecflow_start.sh"
   export ECF_PORT="$(( $(id -u) + 1500 ))"
 
-  QUEUE="windfall"
-  COMPILE_QUEUE="windfall"
+  QUEUE="batch"
+  COMPILE_QUEUE="batch"
   PARTITION="hercules"
   dprefix="/work2/noaa/stmp/${USER}"
   DISKNM="/work/noaa/epic/hercules/UFS-WM_RT"
@@ -802,14 +805,25 @@ elif [[ ${MACHINE_ID} = hercules ]]; then
 
 elif [[ ${MACHINE_ID} = jet ]]; then
 
+  echo "=======Running on $(lsb_release -is)======="
+  CurJetOS=$(lsb_release -is)
+  if [[ ${CurJetOS} == "CentOS" ]]; then
+  echo "=======Please, move to Rocky8 node fe[5-8]======="
+  exit 1
+  fi
+  
   module load rocoto
   ROCOTORUN=$(command -v rocotorun)
   ROCOTOSTAT=$(command -v rocotostat)
   ROCOTOCOMPLETE=$(command -v rocotocomplete)
   ROCOTO_SCHEDULER=slurm
 
-  module load ecflow/5.5.3
-  ECFLOW_START="/apps/ecflow/5.5.3/bin/ecflow_start.sh"
+  module load ecflow/5.11.4
+  ECFLOW_START=/apps/ecflow/5.11.4/bin/ecflow_start.sh
+
+  module use /mnt/lfs4/HFIP/hfv3gfs/role.epic/spack-stack/spack-stack-1.5.0/envs/unified-env-rocky8/install/modulefiles/Core
+  module load stack-intel/2021.5.0
+  module load stack-python/3.10.8
 
   QUEUE="batch"
   COMPILE_QUEUE="batch"

@@ -446,8 +446,8 @@ export DumpFields="false"
 
 export_fv3 ()
 {
-  # ufs.configure defaults
-  export UFS_CONFIGURE=ufs.configure.atm.IN
+# ufs.configure defaults
+  export UFS_CONFIGURE=ufs.configure.atm_esmf.IN
   export MODEL_CONFIGURE=model_configure.IN
   export atm_model=fv3
 
@@ -682,8 +682,8 @@ export_fv3 ()
   export SMONTH=10
   export SDAY=03
   export SHOUR=00
-  export SECS=$((SHOUR*3600))
-  export FHMAX=$((DAYS*24))
+  export SECS=$(( SHOUR*600 ))
+  export FHMAX=$(( DAYS*24 ))
   export DT_ATMOS=1800
   export FHCYC=24
   export FHROT=0
@@ -721,12 +721,12 @@ export_fv3 ()
 
   #waves
   export WW3_RSTDTHR=12
-  WW3_DT_2_RST="$(printf "%02d" $(( WW3_RSTDTHR*3600 )) )"
+  WW3_DT_2_RST="$(printf "%02d" $(( WW3_RSTDTHR*3600 )))"
   export WW3_DT_2_RST
   export WW3_OUTDTHR=1
-  WW3_DTFLD="$(printf "%02d" $(( WW3_OUTDTHR*3600 )) )"
-  export WW3_DTFIELD
-  WW3_DTPNT="$(printf "%02d" $(( WW3_OUTDTHR*3600 )) )"
+  WW3_DTFLD="$(printf "%02d" $(( WW3_OUTDTHR*3600 )))"
+  export WW3_DTFLD
+  WW3_DTPNT="$(printf "%02d" $(( WW3_OUTDTHR*3600 )))"
   export WW3_DTPNT
   export DTRST=0
   export RSTTYPE=T
@@ -747,9 +747,9 @@ export_fv3 ()
   export UNIPOINTS='points'
   export FLAGMASKCOMP=' F'
   export FLAGMASKOUT=' F'
-  RUN_BEG="${SYEAR}${SMONTH}${SDAY} $(printf "%02d" $(( SHOUR  )) )0000"
+  RUN_BEG="${SYEAR}${SMONTH}${SDAY} $(printf "%02d" $(( SHOUR  )))0000"
   export RUN_BEG
-  RUN_END="2100${SMONTH}${SDAY} $(printf "%02d" $(( SHOUR  )) )0000"
+  RUN_END="2100${SMONTH}${SDAY} $(printf "%02d" $(( SHOUR  )))0000"
   export RUN_END
   export OUT_BEG=${RUN_BEG}
   export OUT_END=${RUN_END}
