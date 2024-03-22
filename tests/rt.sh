@@ -522,8 +522,8 @@ cleanup() {
 trap '{ echo "rt.sh interrupted"; rt_trap ; }' INT
 trap '{ echo "rt.sh quit"; rt_trap ; }' QUIT
 trap '{ echo "rt.sh terminated"; rt_trap ; }' TERM
-trap '{ echo "rt.sh error on line $LINENO"; cleanup ; }' ERR
-trap '{ echo "rt.sh finished"; cleanup ; }' EXIT
+trap '{ echo "rt.sh error on line $LINENO"; rt_trap ; }' ERR
+trap '{ echo "rt.sh finished"; rt_trap ; }' EXIT
 
 # PATHRT - Path to regression tests directory
 PATHRT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P )"
@@ -544,7 +544,7 @@ else
   exit 1
 fi
 
-source detect_machine.sh # Note: this does not set ACCNR. The "if" block below does.
+source detect_machine.sh
 source rt_utils.sh
 # shellcheck disable=SC1091
 source module-setup.sh
@@ -656,18 +656,18 @@ fi
 # Display the machine and account using the format detect_machine.sh used:
 echo "Machine: ${MACHINE_ID} | Account: ${ACCNR}"
 
-if [[ ${MACHINE_ID} = wcoss2 ]]; then
+if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
 
   module load ecflow/5.6.0.13
   module load intel/19.1.3.304
   module load python/3.8.6
 
-  # ECFLOW_START="${ECF_ROOT}/scripts/server_check.sh"
-  # export ECF_OUTPUTDIR="${PATHRT}/ecf_outputdir"
-  # export ECF_COMDIR="${PATHRT}/ecf_comdir"
-  # rm -rf "${ECF_OUTPUTDIR}" "${ECF_COMDIR}"
-  # mkdir -p "${ECF_OUTPUTDIR}"
-  # mkdir -p "${ECF_COMDIR}"
+  ECFLOW_START="${ECF_ROOT}/scripts/server_check.sh"
+  export ECF_OUTPUTDIR="${PATHRT}/ecf_outputdir"
+  export ECF_COMDIR="${PATHRT}/ecf_comdir"
+  rm -rf "${ECF_OUTPUTDIR}" "${ECF_COMDIR}"
+  mkdir -p "${ECF_OUTPUTDIR}"
+  mkdir -p "${ECF_COMDIR}"
   export colonifnco=":output"  # hack
 
   DISKNM=/lfs/h2/emc/nems/noscrub/emc.nems/RT
@@ -679,29 +679,29 @@ if [[ ${MACHINE_ID} = wcoss2 ]]; then
   PTMP="/lfs/h2/emc/ptmp"
   SCHEDULER="pbs"
 
-elif [[ ${MACHINE_ID} = acorn ]]; then
+# elif [[ ${MACHINE_ID} = acorn ]]; then
 
-  module load ecflow/5.6.0.13
-  module load intel/19.1.3.304
-  module load python/3.8.6
-  INPUTDATA_ROOT=${INPUTDATA_ROOT:-${DISKNM}/NEMSfv3gfs/input-data-20221101}
-  ECF_ROOT=${ECF_ROOT:-}
-  ECFLOW_START="${ECF_ROOT}/scripts/server_check.sh"
-  export ECF_OUTPUTDIR="${PATHRT}/ecf_outputdir"
-  export ECF_COMDIR="${PATHRT}/ecf_comdir"
-  rm -rf "${ECF_OUTPUTDIR}" "${ECF_COMDIR}"
-  mkdir -p "${ECF_OUTPUTDIR}"
-  mkdir -p "${ECF_COMDIR}"
-  export colonifnco=":output"  # hack
+#   module load ecflow/5.6.0.13
+#   module load intel/19.1.3.304
+#   module load python/3.8.6
+#   INPUTDATA_ROOT=${INPUTDATA_ROOT:-${DISKNM}/NEMSfv3gfs/input-data-20221101}
+#   ECF_ROOT=${ECF_ROOT:-}
+#   ECFLOW_START="${ECF_ROOT}/scripts/server_check.sh"
+#   export ECF_OUTPUTDIR="${PATHRT}/ecf_outputdir"
+#   export ECF_COMDIR="${PATHRT}/ecf_comdir"
+#   rm -rf "${ECF_OUTPUTDIR}" "${ECF_COMDIR}"
+#   mkdir -p "${ECF_OUTPUTDIR}"
+#   mkdir -p "${ECF_COMDIR}"
+#   export colonifnco=":output"  # hack
 
-  DISKNM=/lfs/h1/emc/nems/noscrub/emc.nems/RT
-  QUEUE=dev
-  COMPILE_QUEUE=dev
-  ROCOTO_SCHEDULER=pbs
-  PARTITION=
-  STMP="/lfs/h2/emc/ptmp"
-  PTMP="/lfs/h2/emc/ptmp"
-  SCHEDULER="pbs"
+#   DISKNM=/lfs/h2/emc/nems/noscrub/emc.nems/RT
+#   QUEUE=dev
+#   COMPILE_QUEUE=dev
+#   ROCOTO_SCHEDULER=pbs
+#   PARTITION=
+#   STMP="/lfs/h2/emc/ptmp"
+#   PTMP="/lfs/h2/emc/ptmp"
+  # SCHEDULER="pbs"
 
 elif [[ ${MACHINE_ID} = gaea ]]; then
 
@@ -919,7 +919,7 @@ else
 fi
 
 # Does this machine support Rocoto?
-if [[ -n ${ROCOTO} ]]; then
+if [[ ${ROCOTO} == true ]]; then
   if [[ ${MACHINE_ID} != wcoss2 && ${MACHINE_ID} != acorn && ${MACHINE_ID} != expanse && ${MACHINE_ID} != stampede ]]; then
     ROCOTORUN="$(command -v rocotorun)"
     export ROCOTORUN
@@ -933,7 +933,7 @@ if [[ -n ${ROCOTO} ]]; then
 fi
 
 # Does this machine support ecflow?
-if [[ -n ${ECFLOW} ]]; then
+if [[ ${ECFLOW} == true ]]; then
   if [[ ${MACHINE_ID} == wcoss2 && ${MACHINE_ID} == acorn ]]; then
     ECFLOW_START="$(command -v server_check.sh)"
     

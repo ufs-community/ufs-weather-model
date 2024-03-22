@@ -763,39 +763,57 @@ ecflow_run() {
 
   ECF_HOST="${ECF_HOST:-${HOSTNAME}}"
 
-  set +e
+  #set +e
+  # Make sure ECF_HOST and ECF_PORT are set/ready on systems that have an
+  # explicit ecflow node
+  if [[ ${MACHINE_ID} == wcoss2 || ${MACHINE_ID} == acorn ]]; then
+    readarray -t ECFHOSTLIST < "${ECF_HOSTFILE}"
+    for ECF_HOST in "${ECFHOSTLIST[@]}"
+    do
+      if ssh -t -t "${ECF_HOST}"; then
+        export ECF_HOST
+        break
+      else
+        ECF_HOST=''
+      fi
+    done
+  elif [[ ${MACHINE_ID} == hera || ${MACHINE_ID} == jet ]]; then
+    module load ecflow
+  fi
+  if [[ -z ${ECF_HOST} || -z ${ECF_PORT} ]]; then
+    echo "ERROR: ECF_HOST or ECF_PORT are not set, and rt.sh cannot continue with ECFLOW"
+    exit 1
+  else
+    echo "ECF_HOST: ${ECF_HOST}, ECF_PORT: ${ECF_PORT}"
+  fi
+
+  # Start the ecflow_server
   ecflow_client --ping --host="${ECF_HOST}" --port="${ECF_PORT}"
   not_running=$?
   if [[ ${not_running} -eq 1 ]]; then
     echo "ecflow_server is NOT running on ${ECF_HOST}:${ECF_PORT}"
     if [[ ${MACHINE_ID} == wcoss2 || ${MACHINE_ID} == acorn ]]; then
-      if [[ "${HOST::1}" == "a" ]]; then
-    export ECF_HOST=aecflow01
-      elif [[ "${HOST::1}" == "c" ]]; then
-    export ECF_HOST=cdecflow01
-      elif [[ "${HOST::1}" == "d" ]]; then
-    export ECF_HOST=ddecflow01
-      fi
       #shellcheck disable=SC2029
-      ssh "${ECF_HOST}" "bash -l -c \"module load ecflow && ecflow_start.sh -p ${ECF_PORT}\""
+      ssh "${ECF_HOST}" "bash -l -c \"module load ecflow && ${ECFLOW_START} -p ${ECF_PORT}\""
     elif [[ ${MACHINE_ID} == hera || ${MACHINE_ID} == jet ]]; then
-      module load ecflow
-      echo "On ${MACHINE_ID}, start ecFlow server on dedicated node ${ECF_HOST}"
       #shellcheck disable=SC2029
       ssh "${ECF_HOST}" "bash -l -c \"module load ecflow && ${ECFLOW_START} -d ${RUNDIR_ROOT}/ecflow_server\""
     else
       ${ECFLOW_START} -p "${ECF_PORT}" -d "${RUNDIR_ROOT}/ecflow_server"
     fi
+
+    # Try pinging ecflow server now, and erroring out if not there.
+    ecflow_client --ping --host="${ECF_HOST}" --port="${ECF_PORT}"
+    not_running=$?
+    if [[ ${not_running} -eq 1 ]]; then
+      echo "ERROR: Failure to start ecflow, exiting..."
+      exit 1
+    fi
   else
     echo "ecflow_server is already running on ${ECF_HOST}:${ECF_PORT}"
   fi
-  set -e
-
+  #set -e
   ECFLOW_RUNNING=true
-
-  export ECF_PORT
-  export ECF_HOST
-
   ecflow_client --load="${ECFLOW_RUN}/${ECFLOW_SUITE}.def"
   ecflow_client --begin="${ECFLOW_SUITE}"
   ecflow_client --restart
@@ -819,16 +837,16 @@ ecflow_run() {
 
 ecflow_kill() {
    [[ ${ECFLOW_RUNNING:-false} == true ]] || return
-   set +e
+   #set +e
    ecflow_client --suspend "/${ECFLOW_SUITE}"
    ecflow_client --kill "/${ECFLOW_SUITE}"
    sleep 20
-   ecflow_client --delete=force yes"/${ECFLOW_SUITE}"
+   ecflow_client --delete=force yes "/${ECFLOW_SUITE}"
 }
 
 ecflow_stop() {
    [[ ${ECFLOW_RUNNING:-false} == true ]] || return
-   set +e
+   #set +e
    SUITES=$( ecflow_client --get )
    SUITES=$( grep "^suite" <<< "${SUITES}" )
    #SUITES=$( ecflow_client --get | grep "^suite" )
