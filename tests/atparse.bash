@@ -8,7 +8,7 @@ function atparse {
     # If set -u is enabled, it will exit the process when a variable is empty or undefined via set -u.
 
     # Use __ in names to avoid clashing with variables in {var} blocks.
-    local __text # current line of text being parsed
+    local __text # current line of text being parsed, or the current command-line argument being parsed
     local __before # all text before the next @[...] option
     local __after # all text after the next @[...] option
     local __during # the contents of the @[...] option, including the @[ and ]
