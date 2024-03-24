@@ -449,7 +449,7 @@ EOF
     <native>--clusters=es</native>
     <partition>eslogin_c5</partition>
 EOF
-  else
+  elif [[ -n "${PARTITION}" || ${MACHINE_ID} != hera ]] ; then
   cat << EOF >> $ROCOTO_XML
     <partition>${PARTITION}</partition>
 EOF
@@ -493,7 +493,7 @@ EOF
       <native>--clusters=${PARTITION}</native>
       <native>--partition=batch</native>
 EOF
-  else
+  elif [[ -n "${PARTITION}" || ${MACHINE_ID} != hera ]] ; then
   cat << EOF >> $ROCOTO_XML
       <queue>${QUEUE}</queue>
       <partition>${PARTITION}</partition>
