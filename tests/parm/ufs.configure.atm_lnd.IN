@@ -45,7 +45,7 @@ LND_attributes::
   Verbosity = 1
   Diagnostic = 0
   mosaic_file = @[mosaic_file]
-  input_dir = @[lnd_input_dir] 
+  input_dir = @[lnd_input_dir]
   ic_type = @[lnd_ic_type]
   layout = @[layout_x]:@[layout_y] # need to be consistent with number of PEs
   num_soil_levels = 4
@@ -67,7 +67,7 @@ LND_attributes::
   surface_evap_resistance_option = 1 # not used, it is fixed to 4 in sfc_noahmp_drv.F90
   glacier_option = 1
   surface_thermal_roughness_option = 2
-  output_freq = 3600 
+  output_freq = 3600
   restart_freq = -1
   calc_snet = @[CALC_SNET]
   initial_albedo = @[initial_albedo]
@@ -96,10 +96,11 @@ DRIVER_attributes::
 ::
 
 ALLCOMP_attributes::
-  ScalarFieldCount = 3
+  ScalarFieldCount = 4
   ScalarFieldIdxGridNX = 1
   ScalarFieldIdxGridNY = 2
-  ScalarFieldIdxNextSwCday = 3 # required for data atmosphere configurations
+  ScalarFieldIdxGridNTile = 3
+  ScalarFieldIdxNextSwCday = 4 # required for data atmosphere configurations
   ScalarFieldName = cpl_scalars
   start_type = @[RUNTYPE]
   restart_dir = @[CMEPS_RESTART_DIR]
