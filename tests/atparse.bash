@@ -1,10 +1,12 @@
 #! /usr/bin/env bash
 function atparse {
-    # atparse [ var1=value1 [ var2=value2 [...] ] ] < input_file > output_file
-    # This script filters text from stdin to stdout. It scans for text sequences like:
+    # Usage:
+    #     source atparse.bash # defines the "atparse" function; only do this once
+    #     atparse [ var1=value1 [ var2=value2 [...] ] ] < input_file > output_file
+    # This function filters text from stdin to stdout. It scans for text sequences like:
     #    @[varname]
     # And replaces them with the value of the corresponding ${varname} variable.
-    # You can set provide variables that are not set in bash by providing them on the command line.
+    # You can provide variables that are not set in bash by providing them on the command line.
     # If set -u is enabled, it will exit the process when a variable is empty or undefined via set -u.
 
     # Use __ in names to avoid clashing with variables in {var} blocks.
