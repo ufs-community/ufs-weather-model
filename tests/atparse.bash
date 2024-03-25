@@ -22,14 +22,14 @@ function atparse {
     # Ensure "set -x -e -u" are all inactive, but remember if they
     # were active so we can reset them later.
     if [[ -o xtrace ]] ; then
-	__set_x="set -x"
+        __set_x="set -x"
     fi
     if [[ -o errexit ]] ; then
-	__set_e="set -e"
+        __set_e="set -e"
     fi
     if [[ -o nounset ]] ; then
-	__set_u="set -u"
-	__abort_on_undefined=YES
+        __set_u="set -u"
+        __abort_on_undefined=YES
     fi
     set +eux
 
@@ -56,7 +56,7 @@ function atparse {
         if [[ $? -ne 0 ]] ; then
             if [[ -n "$__text" ]] ; then
                 # Text remained, but it had no end-of-line.
-		:
+                :
             else
                 break
             fi
@@ -75,14 +75,14 @@ function atparse {
                 printf @
             # @[varname] inserts $varname
             elif [[ "$__during" =~ ^@\[([a-zA-Z_][a-zA-Z_0-9]*)\] ]] ; then
-		# Flag unknown variables at this step only.
-		if [[ ${__abort_on_undefined} == YES ]] ; then
-		    set -u
-		fi
+                # Flag unknown variables at this step only.
+                if [[ ${__abort_on_undefined} == YES ]] ; then
+                    set -u
+                fi
                 eval 'printf %s "$'"${BASH_REMATCH[1]}"'"'
-		if [[ ${__abort_on_undefined} == YES ]] ; then
-		    set +u
-		fi
+                if [[ ${__abort_on_undefined} == YES ]] ; then
+                    set +u
+                fi
             # Unrecognized sequences are inserted verbatim.
             else
                 printf '%s' "$__during"

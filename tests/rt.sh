@@ -87,7 +87,7 @@ update_rtconf() {
       RT_COMPILER_IN=$(echo $line | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
       if [[ ${MACHINES} == '' ]]; then
         compile_line=$line
-	COMPILE_LINE_USED=false
+        COMPILE_LINE_USED=false
       elif [[ ${MACHINES} == -* ]]; then
         [[ ${MACHINES} =~ ${MACHINE_ID} ]] || compile_line=$line; COMPILE_LINE_USED=false
       elif [[ ${MACHINES} == +* ]]; then
@@ -112,7 +112,7 @@ update_rtconf() {
         
         if [[ $TEST_IDX != -1 ]]; then
           if [[ $COMPILE_LINE_USED == false ]]; then
-  	    echo -en '\n' >> $RT_TEMP_CONF
+              echo -en '\n' >> $RT_TEMP_CONF
             echo "$compile_line" >> $RT_TEMP_CONF
             COMPILE_LINE_USED=true
           fi
@@ -135,7 +135,7 @@ update_rtconf() {
             fi
           fi
           echo "$line" >> $RT_TEMP_CONF
-	fi  
+        fi
       fi
     fi
   done < "$TESTS_FILE"
