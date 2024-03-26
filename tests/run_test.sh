@@ -377,7 +377,7 @@ else
   fi
 
 fi
-
+skip_check_results=${skip_check_results:-false}
 if [[ ${skip_check_results} = false ]]; then
   check_results || true
   # The above call will exit with an error on its own and does
@@ -411,6 +411,7 @@ echo " ${date_s}, ${NODES}" >> "${LOG_DIR}/run_${TEST_ID}_timestamp.txt"
 ################################################################################
 # Remove RUN_DIRs if they are no longer needed by other tests
 ################################################################################
+delete_rundir=${delete_rundir:-false}
 if [[ ${delete_rundir} = true ]]; then
   keep_run_dir=false
   while  read -r line; do
