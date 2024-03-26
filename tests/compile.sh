@@ -11,6 +11,7 @@ function trim {
 }
 
 SECONDS=0
+
 uname_s=$(uname -s)
 if [[ ${uname_s} == Darwin ]]; then
   greadlnk=$(greadlink -f -n "${BASH_SOURCE[0]}" )

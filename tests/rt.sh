@@ -1,6 +1,7 @@
 #!/bin/bash
-set -eux
-
+set -eu
+set -o errexit #Lets trap exit info as error for logging
+echo "******Regression Testing Script Started******"
 SECONDS=0
 
 hostname
@@ -8,9 +9,9 @@ hostname
 die() { echo "$@" >&2; exit 1; }
 
 usage() {
-  set +x
+  set +x #No reason to print out a bunch of echo statements here
   echo
-  echo "Usage: $0 -a <account> | -b <file> | -c | -d | -e | -h | -k | -l <file> | -m | -n <name> | -o | -r | -w"
+  echo "Usage: $0 -a <account> | -b <file> | -c | -d | -e | -h | -k | -l <file> | -m | -n <name> | -o | -r | -v | -w"
   echo
   echo "  -a  <account> to use on for HPC queue"
   echo "  -b  create new baselines only for tests listed in <file>"
@@ -24,6 +25,7 @@ usage() {
   echo "  -n  run single test <name>"
   echo "  -o  compile only, skip tests"
   echo "  -r  use Rocoto workflow manager"
+  echo "  -v  verbose output"
   echo "  -w  for weekly_test, skip comparing baseline results"
   echo
   set -x
@@ -32,7 +34,7 @@ usage() {
 [[ $# -eq 0 ]] && usage
 
 update_rtconf() {
-
+  echo "Called function: update_rtconf()"
   find_match() {
     # This function finds if a test in $TESTS_FILE matches one 
     # in our list of tests to be run.
@@ -162,7 +164,7 @@ update_rtconf() {
 }
 
 generate_log() {
-
+  echo "Called function: generate_log()"
   COMPILE_COUNTER=0
   FAILED_COMPILES=()
   TEST_COUNTER=0
@@ -215,6 +217,7 @@ EOF
   [[ ${KEEP_RUNDIR} == true ]] && echo "* (-k) - KEEP RUN DIRECTORY" >> "${REGRESSIONTEST_LOG}"
   [[ ${ROCOTO} == true ]] && echo "* (-r) - USE ROCOTO" >> "${REGRESSIONTEST_LOG}"
   [[ ${ECFLOW} == true ]] && echo "* (-e) - USE ECFLOW" >> "${REGRESSIONTEST_LOG}"
+  [[ ${RTVERBOSE} == true ]] && echo "* (-v) - VERBOSE OUTPUT" >> "${REGRESSIONTEST_LOG}"
 
 
   [[ -f "${TEST_CHANGES_LOG}" ]] && rm "${TEST_CHANGES_LOG}"
@@ -461,7 +464,7 @@ EOF
 }
 
 create_or_run_compile_task() {
-
+  echo "Called function: create_or_run_compile_task()"
   cat << EOF > "${RUNDIR_ROOT}/compile_${COMPILE_ID}.env"
 export JOB_NR=${JOB_NR}
 export COMPILE_ID=${COMPILE_ID}
@@ -492,6 +495,7 @@ EOF
 }
 
 rt_35d() {
+  echo "Called function: rt_35d()"
   local sy
   local sm
 if [[ ${TEST_NAME} =~ '35d' ]] ; then
@@ -509,6 +513,7 @@ fi
 }
 
 handle_error() {
+  echo "Called function: handle_error()"
   local exit_code=$?
   local exit_line=$1
   echo "Exited at line ${exit_line} having code ${exit_code}"
@@ -516,12 +521,14 @@ handle_error() {
 }
 
 rt_trap() {
+  echo "Called function: rt_trap()"
   [[ ${ROCOTO:-false} == true ]] && rocoto_kill
   [[ ${ECFLOW:-false} == true ]] && ecflow_kill
   cleanup
 }
 
 cleanup() {
+  echo "Called function: cleanup()"
   awk_info=$(awk '{print $2}' < "${LOCKDIR}/PID")
   [[ ${awk_info} == "$$" ]] && rm -rf "${LOCKDIR}"
   [[ ${ECFLOW:-false} == true ]] && ecflow_stop
@@ -575,9 +582,10 @@ TESTS_FILE='rt.conf'
 NEW_BASELINES_FILE=''
 DEFINE_CONF_FILE=false
 RUN_SINGLE_TEST=false
+RTVERBOSE=false
 ACCNR=${ACCNR:-""}
 
-while getopts ":a:b:cl:mn:dwkreoh" opt; do
+while getopts ":a:b:cl:mn:dwkreovh" opt; do
   case ${opt} in
     a)
       ACCNR=${OPTARG}
@@ -634,6 +642,9 @@ while getopts ":a:b:cl:mn:dwkreoh" opt; do
       ECFLOW=true
       ROCOTO=false
       ;;
+    v)
+      RTVERBOSE=true
+      ;;
     h)
       usage
       die ""
@@ -658,7 +669,10 @@ done
 [[ ${ECFLOW} == true && ${ROCOTO} == true ]] && die "-r and -e options cannot be used at the same time"
 [[ ${CREATE_BASELINE} == true && ${RTPWD_NEW_BASELINE} == true ]] && die "-c and -m options cannot be used at the same time"
 
-#Set rt.conf
+[[ -o xtrace ]] && set_x='set -x' || set_x='set +x'
+if [[ ${RTVERBOSE} == true ]]; then
+  set -x
+fi
 
 if [[ -z "${ACCNR}" ]]; then
   echo "Please use -a <account> to set group account to use on HPC"
@@ -666,10 +680,12 @@ if [[ -z "${ACCNR}" ]]; then
 fi
 
 # Display the machine and account using the format detect_machine.sh used:
-echo "Machine: ${MACHINE_ID} | Account: ${ACCNR}"
+echo "Machine: ${MACHINE_ID}"
+echo "Account: ${ACCNR}"
 
 if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
-
+  echo "Setting up: WCOSS2/Acorn"
+  set -x
   module load ecflow/5.6.0.13
   module load intel/19.1.3.304
   module load python/3.8.6
@@ -690,7 +706,7 @@ if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
   STMP="/lfs/h2/emc/ptmp"
   PTMP="/lfs/h2/emc/ptmp"
   SCHEDULER="pbs"
-
+  
 # elif [[ ${MACHINE_ID} = acorn ]]; then
 
 #   module load ecflow/5.6.0.13
@@ -716,7 +732,8 @@ if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
   # SCHEDULER="pbs"
 
 elif [[ ${MACHINE_ID} = gaea ]]; then
-
+  echo "Setting up: gaea"
+  set -x
   module use /ncrc/proj/epic/rocoto/modulefiles
   module load rocoto
   ROCOTO_SCHEDULER="slurm"
@@ -742,7 +759,8 @@ elif [[ ${MACHINE_ID} = gaea ]]; then
   SCHEDULER="slurm"
 
 elif [[ ${MACHINE_ID} = hera ]]; then
-
+  echo "Setting up: hera"
+  set -x
   module load rocoto
   ROCOTO_SCHEDULER="slurm"
 
@@ -762,7 +780,8 @@ elif [[ ${MACHINE_ID} = hera ]]; then
   SCHEDULER=slurm
 
 elif [[ ${MACHINE_ID} = orion ]]; then
-
+  echo "Setting up: orion"
+  set -x
   module load git/2.28.0
   module load gcc/10.2.0
   module load python/3.9.2
@@ -789,7 +808,8 @@ elif [[ ${MACHINE_ID} = orion ]]; then
   SCHEDULER="slurm"
 
 elif [[ ${MACHINE_ID} = hercules ]]; then
-
+  echo "Setting up: hercules"
+  set -x
   module load contrib rocoto
   ROCOTORUN=$(command -v rocotorun)
   ROCOTOSTAT=$(command -v rocotostat)
@@ -814,9 +834,10 @@ elif [[ ${MACHINE_ID} = hercules ]]; then
   cp fv3_conf/compile_slurm.IN_hercules fv3_conf/compile_slurm.IN
 
 elif [[ ${MACHINE_ID} = jet ]]; then
-
-  echo "=======Running on $(lsb_release -is)======="
+  echo "Setting up: jet"
+  set -x
   CurJetOS=$(lsb_release -is)
+  echo "=======Running on ${CurJetOS}======="
   if [[ ${CurJetOS} == "CentOS" ]]; then
   echo "=======Please, move to Rocky8 node fe[5-8]======="
   exit 1
@@ -846,7 +867,8 @@ elif [[ ${MACHINE_ID} = jet ]]; then
   SCHEDULER="slurm"
 
 elif [[ ${MACHINE_ID} = s4 ]]; then
-
+  echo "Setting up: s4"
+  set -x
   module load rocoto/1.3.2
   module load ecflow/5.6.0
   module load miniconda/3.8-s4
@@ -869,7 +891,8 @@ elif [[ ${MACHINE_ID} = s4 ]]; then
   SCHEDULER="slurm"
 
 elif [[ ${MACHINE_ID} = derecho ]]; then
-
+  echo "Setting up: derecho"
+  set -x
   module use /glade/work/epicufsrt/contrib/derecho/rocoto/modulefiles
   module load rocoto
   module use /glade/work/epicufsrt/contrib/spack-stack/derecho/modulefiles
@@ -895,7 +918,8 @@ elif [[ ${MACHINE_ID} = derecho ]]; then
   ROCOTO_SCHEDULER="pbspro"
 
 elif [[ ${MACHINE_ID} = stampede ]]; then
-
+  echo "Setting up: stampede"
+  set -x
   export PYTHONPATH=
   ECFLOW_START=
   QUEUE="skx-normal"
@@ -910,7 +934,8 @@ elif [[ ${MACHINE_ID} = stampede ]]; then
   export MPIEXECOPTS=
 
 elif [[ ${MACHINE_ID} = expanse ]]; then
-
+  echo "Setting up: expanse"
+  set -x
   export PYTHONPATH=
   export ECFLOW_START=
   QUEUE="compute"
@@ -923,7 +948,8 @@ elif [[ ${MACHINE_ID} = expanse ]]; then
   SCHEDULER="slurm"
 
 elif [[ ${MACHINE_ID} = noaacloud ]]; then
-
+  echo "Setting up: noaacloud"
+  set -x
   export PATH="/contrib/EPIC/bin:${PATH}"
   module use /apps/modules/modulefiles
   module load rocoto/1.3.3
@@ -941,6 +967,7 @@ elif [[ ${MACHINE_ID} = noaacloud ]]; then
 else
   die "Unknown machine ID, please edit detect_machine.sh file"
 fi
+eval "${set_x}"
 
 # Does this machine support Rocoto?
 if [[ ${ROCOTO} == true ]]; then
@@ -1191,7 +1218,6 @@ while read -r line || [[ -n "${line}" ]]; do
     fi
 
     create_or_run_compile_task
-    echo "================= FINISHED COMPILE TASK ========================"
     continue
 
   elif [[ ${line} == RUN* ]] ; then
@@ -1346,3 +1372,5 @@ fi
 
 ## Lets verify all tests were run and that they passed
 generate_log
+eval "${set_x}"
+echo "******Regression Testing Script Completed******"

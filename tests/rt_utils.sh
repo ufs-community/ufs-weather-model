@@ -15,7 +15,9 @@ fi
 jobid=0
 
 function compute_petbounds_and_tasks() {
-
+  echo "Called function: compute_petbounds_and_tasks()"
+  [[ -o xtrace ]] && set_x='set -x' || set_x='set +x'
+  set +x
   # each test MUST define ${COMPONENT}_tasks variable for all components it is using
   # and MUST NOT define those that it's not using or set the value to 0.
 
@@ -92,9 +94,11 @@ function compute_petbounds_and_tasks() {
 
   # TASKS is now set to UFS_TASKS
   export TASKS=${UFS_tasks}
+  eval "${set_x}"
 }
 
 interrupt_job() {
+  echo "Called function: interrupt_job()"
   set -x
   echo "run_util.sh: interrupt_job called | Job#: ${jobid}"
   case ${SCHEDULER} in
@@ -117,10 +121,11 @@ interrupt_job() {
   # else
   #   echo "run_util.sh: interrupt_job unknown SCHEDULER ${SCHEDULER}"
   # fi
+  
 }
 
 submit_and_wait() {
-
+  echo "Called function: submit_and_wait"
   [[ -z $1 ]] && exit 1
 
   [[ -o xtrace ]] && set_x='set -x' || set_x='set +x'
@@ -394,7 +399,7 @@ submit_and_wait() {
 }
 
 check_results() {
-
+  echo "Called function: check_results()"
   [[ -o xtrace ]] && set_x='set -x' || set_x='set +x'
   set +x
 
@@ -533,7 +538,7 @@ check_results() {
 
 
 kill_job() {
-
+  echo "Called function: kill_job()"
   [[ -z $1 ]] && exit 1
 
   local -r jobid=$1
@@ -546,7 +551,7 @@ kill_job() {
 }
 
 rocoto_create_compile_task() {
-
+  echo "Called function: rocoto_create_compile_task()"
   #new_compile=true
   if [[ ${in_metatask} == true ]]; then
     in_metatask=false
@@ -605,7 +610,7 @@ EOF
 }
 
 rocoto_create_run_task() {
-
+  echo "Called function: rocoto_create_run_task()"
   if [[ ${DEP_RUN} != '' ]]; then
     DEP_STRING="<and> <taskdep task=\"compile_${COMPILE_ID}\"/> <taskdep task=\"${DEP_RUN}\"/> </and>"
   else
@@ -652,6 +657,7 @@ EOF
 }
 
 rocoto_kill() {
+  echo "Called function: rocoto_kill()"
   job_id_in=$( "${ROCOTOSTAT}" -w "${ROCOTO_XML}" -d "${ROCOTO_DB}" )
   job_id_in=$(grep 197001010000 <<< "${job_id_in}" )
   job_id_in=$(grep -E 'QUEUED|RUNNING' <<< "${job_id_in}" )
@@ -662,6 +668,7 @@ rocoto_kill() {
 }
 
 rocoto_step() {
+    echo "Called function: rocoto_step()"
     set -e
     echo "Unknown" > rocoto_workflow.state
     # Run one iteration of rocotorun and rocotostat.
@@ -675,6 +682,7 @@ rocoto_step() {
 }
 
 rocoto_run() {
+  echo "Called function: rocoto_run()"
   # Run the rocoto workflow until it is complete
   local naptime=60
   local step_attempts=0
@@ -722,7 +730,7 @@ rocoto_run() {
 
 
 ecflow_create_compile_task() {
-
+  echo "Called function: ecflow_compile_task()"
   export new_compile=true
 
 
@@ -741,7 +749,7 @@ EOF
 }
 
 ecflow_create_run_task() {
-
+  echo "Called function: ecflow_create_run_task()"
   cat << EOF > "${ECFLOW_RUN}/${ECFLOW_SUITE}/${TEST_ID}${RT_SUFFIX}.ecf"
 %include <head.h>
 ${PATHRT}/run_test.sh "${PATHRT}" "${RUNDIR_ROOT}" "${TEST_NAME}" "${TEST_ID}" "${COMPILE_ID}" > "${LOG_DIR}/run_${TEST_ID}${RT_SUFFIX}.log" 2>&1 &
@@ -762,10 +770,11 @@ EOF
 }
 
 ecflow_run() {
-
+  echo "Called function: ecflow_run()"
+  # NOTE: ECFLOW IS NOT SAFE TO RUN WITH set -e, PLEASE AVOID
   ECF_HOST="${ECF_HOST:-${HOSTNAME}}"
 
-  #set +e
+  
   # Make sure ECF_HOST and ECF_PORT are set/ready on systems that have an
   # explicit ecflow node
   if [[ ${MACHINE_ID} == wcoss2 || ${MACHINE_ID} == acorn ]]; then
@@ -790,7 +799,9 @@ ecflow_run() {
   fi
 
   # Start the ecflow_server
+  set +e
   ecflow_client --ping --host="${ECF_HOST}" --port="${ECF_PORT}"
+  set -e
   not_running=$?
   if [[ ${not_running} -eq 1 ]]; then
     echo "ecflow_server is NOT running on ${ECF_HOST}:${ECF_PORT}"
@@ -805,7 +816,9 @@ ecflow_run() {
     fi
 
     # Try pinging ecflow server now, and erroring out if not there.
+    set +e
     ecflow_client --ping --host="${ECF_HOST}" --port="${ECF_PORT}"
+    set -e
     not_running=$?
     if [[ ${not_running} -eq 1 ]]; then
       echo "ERROR: Failure to start ecflow, exiting..."
@@ -814,56 +827,61 @@ ecflow_run() {
   else
     echo "ecflow_server is already running on ${ECF_HOST}:${ECF_PORT}"
   fi
-  #set -e
+  
   ECFLOW_RUNNING=true
+  set +e
   ecflow_client --load="${ECFLOW_RUN}/${ECFLOW_SUITE}.def"
   ecflow_client --begin="${ECFLOW_SUITE}"
   ecflow_client --restart
+  set -e
 
   active_tasks=1
+  sleep 10
+  max_active_tasks=$( ecflow_client --get_state "/${ECFLOW_SUITE}" )
+  max_active_tasks=$( grep "task " <<< "${max_active_tasks}" )
+  max_active_tasks=$( grep -cP 'state:active|state:submitted|state:queued' <<< "${max_active_tasks}" )
   while [[ "${active_tasks}" -ne 0 ]]
   do
     sleep 10 & wait $!
-
+    set +e
     active_tasks=$( ecflow_client --get_state "/${ECFLOW_SUITE}" )
     active_tasks=$( grep "task " <<< "${active_tasks}" )
-    #active_tasks=$( grep -E 'state:active|state:submitted|state:queued' <<< "${active_tasks}" )
-    if ! grep -c -E 'state:active|state:submitted|state:queued' <<< "${active_tasks}" ; then
-      break
-    else
-      active_tasks=$( grep -c -E 'state:active|state:submitted|state:queued' <<< "${active_tasks}" )
-    fi
-    
-    #active_tasks=$( wc -l <<< "${active_tasks}" )
-    #active_tasks=$( ecflow_client --get_state /${ECFLOW_SUITE} | grep "task " | grep -E 'state:active|state:submitted|state:queued' | wc -l )
-    echo "ecflow tasks remaining: ${active_tasks}"
+    active_tasks=$( grep -cP 'state:active|state:submitted|state:queued' <<< "${active_tasks}" )
+    set -e
+    echo "ECFLOW Tasks Remaining: ${active_tasks}/${max_active_tasks}"
     #"${PATHRT}/abort_dep_tasks.py"
   done
 
   sleep 65 # wait one ECF_INTERVAL plus 5 seconds
+  set +e
   ecflow_client --delete=force yes "/${ECFLOW_SUITE}"
+  set -e
   sleep 5
 }
 
 ecflow_kill() {
+  echo "Called function: ecflow_kill()"
    [[ ${ECFLOW_RUNNING:-false} == true ]] || return
    set +e
    ecflow_client --suspend "/${ECFLOW_SUITE}"
    ecflow_client --kill "/${ECFLOW_SUITE}"
    sleep 20
    ecflow_client --delete=force yes "/${ECFLOW_SUITE}"
+   set -e
 }
 
 ecflow_stop() {
-   [[ ${ECFLOW_RUNNING:-false} == true ]] || return
-   set +e
-   SUITES=$( ecflow_client --get )
-   SUITES=$( grep "^suite" <<< "${SUITES}" )
-   #SUITES=$( ecflow_client --get | grep "^suite" )
-   echo "SUITES=${SUITES}"
-   if [[ -z "${SUITES}" ]]; then
-     ecflow_client --halt=yes
-     ecflow_client --check_pt
-     ecflow_client --terminate=yes
-   fi
+  echo "Called function: ecflow_stop()"
+  [[ ${ECFLOW_RUNNING:-false} == true ]] || return
+  set +e
+  SUITES=$( ecflow_client --get )
+  SUITES=$( grep "^suite" <<< "${SUITES}" )
+  #SUITES=$( ecflow_client --get | grep "^suite" )
+  echo "SUITES=${SUITES}"
+  if [[ -z "${SUITES}" ]]; then
+    ecflow_client --halt=yes
+    ecflow_client --check_pt
+    ecflow_client --terminate=yes
+  fi
+  set -e
 }

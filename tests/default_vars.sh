@@ -7,30 +7,6 @@
 #
 ###############################################################################
 
-
-#COMPONENTS
-#-ATM
-#-WAV
-#-ICE
-#-OCN
-#-AIR
-#-AERO
-
-#CONFIGURATIONS
-#-UNCP
-#-CPLD
-
-#RESOLUTIONS
-#-C48
-#-C96 (DFLT)
-#-C192
-#-C384
-
-#OTHER
-#-THRD
-#-DCMP
-#-MPI
-
   THRD=1
 
   export INPES_atmaero=4
