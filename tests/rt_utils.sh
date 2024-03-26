@@ -285,19 +285,21 @@ submit_and_wait() {
         status_label='Job waiting to start'
         ;;
       #running cases
-      R)
+      R|RUNNING)
         status_label='Job running'
         ;;
-      #fail/completed cases
+      #held cases
       H)
         status_label='Job being held'
         echo '*** WARNING ***: Job in a HELD state. Might want to stop manually.'
         ;;
-      E|C|-|F)
+      #fail/completed cases
+      E|C|-|F|FAILED|TIMEOUT|CANCELLED)
         job_running=false #Trip the loop to end with these status flags
         continue
         ;;
       *)
+        status_label="Unknown"
         echo "*** WARNING ***: Job status unsupported: ${status}"
         echo "*** WARNING ***: Status might be non-terminating, please manually stop if needed"
         ;;
@@ -367,7 +369,7 @@ submit_and_wait() {
 
       # fi
 
-    echo "${n} min. Status: ${status_label} -- ${status} [jobid: ${jobid}]"
+    echo "${n} min. ${SCHEDULER^} Job ${jobid} Status: ${status_label} (${status})"
     # [[ ${ECFLOW:-false} == true ]] && ecflow_client --label=job_status "${status_label}"
     # if [[ ${test_status} = 'FAIL' || ${test_status} = 'DONE' ]]; then
     #   echo "SYSTEM INDICATED JOB COMPLETION..."
@@ -819,17 +821,25 @@ ecflow_run() {
   ecflow_client --restart
 
   active_tasks=1
-  while [[ ${active_tasks} -ne 0 ]]
+  while [[ "${active_tasks}" -ne 0 ]]
   do
     sleep 10 & wait $!
+
     active_tasks=$( ecflow_client --get_state "/${ECFLOW_SUITE}" )
-    active_tasks=$( grep "task " <<< "${active_tasks=}" )
-    active_tasks=$( grep -E 'state:active|state:submitted|state:queued' <<< "${active_tasks=}" )
-    active_tasks=$( wc -l <<< "${active_tasks=}" )
+    active_tasks=$( grep "task " <<< "${active_tasks}" )
+    #active_tasks=$( grep -E 'state:active|state:submitted|state:queued' <<< "${active_tasks}" )
+    if ! grep -c -E 'state:active|state:submitted|state:queued' <<< "${active_tasks}" ; then
+      break
+    else
+      active_tasks=$( grep -c -E 'state:active|state:submitted|state:queued' <<< "${active_tasks}" )
+    fi
+    
+    #active_tasks=$( wc -l <<< "${active_tasks}" )
     #active_tasks=$( ecflow_client --get_state /${ECFLOW_SUITE} | grep "task " | grep -E 'state:active|state:submitted|state:queued' | wc -l )
     echo "ecflow tasks remaining: ${active_tasks}"
-    "${PATHRT}/abort_dep_tasks.py"
+    #"${PATHRT}/abort_dep_tasks.py"
   done
+
   sleep 65 # wait one ECF_INTERVAL plus 5 seconds
   ecflow_client --delete=force yes "/${ECFLOW_SUITE}"
   sleep 5
@@ -837,7 +847,7 @@ ecflow_run() {
 
 ecflow_kill() {
    [[ ${ECFLOW_RUNNING:-false} == true ]] || return
-   #set +e
+   set +e
    ecflow_client --suspend "/${ECFLOW_SUITE}"
    ecflow_client --kill "/${ECFLOW_SUITE}"
    sleep 20
@@ -846,7 +856,7 @@ ecflow_kill() {
 
 ecflow_stop() {
    [[ ${ECFLOW_RUNNING:-false} == true ]] || return
-   #set +e
+   set +e
    SUITES=$( ecflow_client --get )
    SUITES=$( grep "^suite" <<< "${SUITES}" )
    #SUITES=$( ecflow_client --get | grep "^suite" )

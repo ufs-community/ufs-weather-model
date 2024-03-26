@@ -508,6 +508,13 @@ if [[ ${TEST_NAME} =~ '35d' ]] ; then
 fi
 }
 
+handle_error() {
+  local exit_code=$?
+  local exit_line=$1
+  echo "Exited at line ${exit_line} having code ${exit_code}"
+  rt_trap
+}
+
 rt_trap() {
   [[ ${ROCOTO:-false} == true ]] && rocoto_kill
   [[ ${ECFLOW:-false} == true ]] && ecflow_kill
@@ -525,8 +532,10 @@ cleanup() {
 trap '{ echo "rt.sh interrupted"; rt_trap ; }' INT
 trap '{ echo "rt.sh quit"; rt_trap ; }' QUIT
 trap '{ echo "rt.sh terminated"; rt_trap ; }' TERM
-trap '{ echo "rt.sh error on line $LINENO"; rt_trap ; }' ERR
-trap '{ echo "rt.sh finished"; rt_trap ; }' EXIT
+#trap '{ echo "rt.sh error on line $LINENO"; rt_trap ; }' ERR
+trap '{ handle_error $LINENO ; }' ERR
+trap '{ echo "rt.sh finished"; cleanup ; }' EXIT
+
 
 # PATHRT - Path to regression tests directory
 PATHRT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P )"
@@ -737,7 +746,8 @@ elif [[ ${MACHINE_ID} = hera ]]; then
   module load rocoto
   ROCOTO_SCHEDULER="slurm"
 
-  module load ecflow/5.5.3
+  #module load ecflow/5.5.3
+  module load ecflow/5.11.4
   ECFLOW_START="$(command -v ecflow_start.sh)"
 
   QUEUE="batch"
