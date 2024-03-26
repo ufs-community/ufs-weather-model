@@ -705,7 +705,7 @@ elif [[ $MACHINE_ID = hera ]]; then
   fi
 
   if [[ "${ECFLOW:-false}" == true ]] ; then
-    module load ecflow/5.5.3
+    module load ecflow/5.11.4
     ECFLOW_START=ecflow_start.sh
   fi
 
