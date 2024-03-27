@@ -24,11 +24,11 @@ jobs:
       - name: Super-Linter
         uses: super-linter/super-linter@v6.3.0
         env:
-          LINTER_RULES_PATH: /
           DEFAULT_BRANCH: cleanup_scripts
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           FILTER_REGEX_EXCLUDE: .*(tests/fv3_conf/.*|tests/ci/.*|tests/auto/.*|tests/auto-jenkins/.*|tests/opnReqTests/.*|tests/opnReqTest|tests/atparse.bash).*
           VALIDATE_BASH: true
+          BASH_CONFIG_FILE: .github/linters/.shellcheckrc
           #VALIDATE_GITHUB_ACTIONS: true
           #VALIDATE_LUA: true
           #VALIDATE_MARKDOWN: true
