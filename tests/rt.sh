@@ -184,7 +184,7 @@ ${GIT_HASHES}
 Submodule hashes used in testing:
 EOF
   cd ..
-  if  [[ $MACHINE_ID != hera  ]]; then
+  if  [[ ${MACHINE_ID} != hera  ]]; then
   git submodule status --recursive >> "${REGRESSIONTEST_LOG}"
   fi
   git submodule status >> "${REGRESSIONTEST_LOG}"
@@ -514,8 +514,8 @@ fi
 
 handle_error() {
   echo "Called function: handle_error()"
-  local exit_code=$?
-  local exit_line=$1
+  local exit_code=$1
+  local exit_line=$2
   echo "Exited at line ${exit_line} having code ${exit_code}"
   rt_trap
 }
@@ -540,7 +540,7 @@ trap '{ echo "rt.sh interrupted"; rt_trap ; }' INT
 trap '{ echo "rt.sh quit"; rt_trap ; }' QUIT
 trap '{ echo "rt.sh terminated"; rt_trap ; }' TERM
 #trap '{ echo "rt.sh error on line $LINENO"; rt_trap ; }' ERR
-trap '{ handle_error $LINENO ; }' ERR
+trap '{ handle_error $? $LINENO ; }' ERR
 trap '{ echo "rt.sh finished"; cleanup ; }' EXIT
 
 
@@ -690,6 +690,7 @@ if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
   module load intel/19.1.3.304
   module load python/3.8.6
 
+  ECF_ROOT=${ECF_ROOT:-}
   ECFLOW_START="${ECF_ROOT}/scripts/server_check.sh"
   export ECF_OUTPUTDIR="${PATHRT}/ecf_outputdir"
   export ECF_COMDIR="${PATHRT}/ecf_comdir"
