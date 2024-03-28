@@ -1,0 +1,41 @@
+##############################################
+#####  UFS Run-Time Configuration File  ######
+##############################################
+
+# ESMF #
+logKindFlag:            ESMF_LOGKIND_MULTI
+globalResourceControl:  true
+
+# EARTH #
+EARTH_component_list: ATM FBH
+EARTH_attributes::
+  Verbosity = 0
+::
+
+# ATM #
+ATM_model:                      @[atm_model]
+ATM_petlist_bounds:             @[atm_petlist_bounds]
+ATM_omp_num_threads:            @[atm_omp_num_threads]
+ATM_attributes::
+  Verbosity = 1
+  Diagnostic = 0
+::
+
+# FBH #
+FBH_model:                     @[fbh_model]
+FBH_petlist_bounds:            @[fbh_petlist_bounds]
+FBH_omp_num_threads:           @[fbh_omp_num_threads]
+FBH_attributes::
+  Verbosity = 1
+  Diagnostic = 0
+::
+
+# Run Sequence #
+runSeq::
+@@[coupling_interval_sec]
+    ATM -> FBH
+    FBH -> ATM :remapmethod=conserve
+    ATM
+    FBH
+@
+::

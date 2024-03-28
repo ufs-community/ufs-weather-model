@@ -31,7 +31,7 @@ function compute_petbounds_and_tasks() {
   fi
 
   local n=0
-  unset atm_petlist_bounds ocn_petlist_bounds ice_petlist_bounds wav_petlist_bounds chm_petlist_bounds med_petlist_bounds aqm_petlist_bounds
+  unset atm_petlist_bounds ocn_petlist_bounds ice_petlist_bounds wav_petlist_bounds chm_petlist_bounds med_petlist_bounds aqm_petlist_bounds fbh_petlist_bounds
 
   # ATM
   ATM_io_tasks=${ATM_io_tasks:-0}
@@ -77,6 +77,13 @@ function compute_petbounds_and_tasks() {
      n=$((n + LND_tasks))
   fi
 
+  # FBH
+  if [[ ${FBH_tasks:-0} -gt 0 ]]; then
+     FBH_tasks=$((FBH_tasks * fbh_omp_num_threads))
+     fbh_petlist_bounds="${n} $((n + FBH_tasks - 1))"
+     n=$((n + FBH_tasks))
+  fi
+
   UFS_tasks=${n}
 
   echo "ATM_petlist_bounds: ${atm_petlist_bounds:-}"
@@ -87,6 +94,7 @@ function compute_petbounds_and_tasks() {
   echo "MED_petlist_bounds: ${med_petlist_bounds:-}"
   echo "AQM_petlist_bounds: ${aqm_petlist_bounds:-}"
   echo "LND_petlist_bounds: ${lnd_petlist_bounds:-}"
+  echo "FBH_petlist_bounds: ${fbh_petlist_bounds:-}"
   echo "UFS_tasks         : ${UFS_tasks:-}"
 
   # TASKS is now set to UFS_TASKS

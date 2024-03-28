@@ -26,6 +26,7 @@
   OCN_tasks_cpl_dflt=20
   ICE_tasks_cpl_dflt=10
   WAV_tasks_cpl_dflt=20
+  FBH_tasks_cpl_dflt=1
 
   THRD_cpl_thrd=2
   INPES_cpl_thrd=3; JNPES_cpl_thrd=4; WPG_cpl_thrd=6
@@ -93,6 +94,7 @@
   med_omp_num_threads=1
   ocn_omp_num_threads=1
   wav_omp_num_threads=1
+  fbh_omp_num_threads=1
 
 if [[ $MACHINE_ID = wcoss2 || $MACHINE_ID = acorn ]]; then
 
@@ -731,6 +733,24 @@ export WW3_IC5='F'
 export WW3_user_sets_restname="true"
 }
 
+export_fire_behavior() {
+export fbh_model=fire_behavior
+export FIRE_BEHAVIOR=true
+export FIRE_NML=namelist.fire.IN
+export CPLFIRE=false
+export DT_FIRE=${DT_ATMOS}
+export OUTPUT_FS="$(printf "%02d" $(( ${OUTPUT_FH}*3600 )))"
+export fire_atm_feedback=1.0
+export fire_lsm_zcoupling=false
+export fire_lsm_zcoupling_ref=60.0
+export fire_num_ignitions=1
+export fire_print_msg=0
+export fire_upwinding=9
+export fire_viscosity=0.4
+export fire_wind_height=5.0
+}
+
+
 # Defaults for the coupled 5-component
 export_cmeps() {
 export UFS_CONFIGURE=ufs.configure.s2swa_fast_esmf.IN
@@ -813,6 +833,7 @@ export THRD=$THRD_cpl_dflt
 OCN_tasks=$OCN_tasks_cpl_dflt
 ICE_tasks=$ICE_tasks_cpl_dflt
 WAV_tasks=$WAV_tasks_cpl_dflt
+FBH_tasks=$FBH_tasks_cpl_dflt
 
 # Set CICE6 component defaults
 export_cice6
