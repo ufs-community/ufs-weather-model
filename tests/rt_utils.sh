@@ -125,7 +125,7 @@ interrupt_job() {
 }
 
 submit_and_wait() {
-  echo "Called function: submit_and_wait"
+  echo "Called function: submit_and_wait()"
   [[ -z $1 ]] && exit 1
 
   [[ -o xtrace ]] && set_x='set -x' || set_x='set +x'
@@ -286,7 +286,7 @@ submit_and_wait() {
 
     case ${status} in
       #waiting cases
-      Q|PD)
+      Q|PD|PENDING)
         status_label='Job waiting to start'
         ;;
       #running cases
@@ -296,10 +296,11 @@ submit_and_wait() {
       #held cases
       H)
         status_label='Job being held'
-        echo '*** WARNING ***: Job in a HELD state. Might want to stop manually.'
+        echo "*** WARNING ***: Job in a HELD state. Might want to stop manually."
         ;;
       #fail/completed cases
       E|C|-|F|FAILED|TIMEOUT|CANCELLED)
+        echo "!!!!!!!!!!JOB TERMINATED!!!!!!!!!!"
         job_running=false #Trip the loop to end with these status flags
         continue
         ;;
@@ -801,8 +802,9 @@ ecflow_run() {
   # Start the ecflow_server
   set +e
   ecflow_client --ping --host="${ECF_HOST}" --port="${ECF_PORT}"
-  set -e
   not_running=$?
+  set -e
+  
   if [[ ${not_running} -eq 1 ]]; then
     echo "ecflow_server is NOT running on ${ECF_HOST}:${ECF_PORT}"
     if [[ ${MACHINE_ID} == wcoss2 || ${MACHINE_ID} == acorn ]]; then
@@ -818,8 +820,9 @@ ecflow_run() {
     # Try pinging ecflow server now, and erroring out if not there.
     set +e
     ecflow_client --ping --host="${ECF_HOST}" --port="${ECF_PORT}"
-    set -e
     not_running=$?
+    set -e
+    
     if [[ ${not_running} -eq 1 ]]; then
       echo "ERROR: Failure to start ecflow, exiting..."
       exit 1
@@ -849,7 +852,7 @@ ecflow_run() {
     active_tasks=$( grep -cP 'state:active|state:submitted|state:queued' <<< "${active_tasks}" )
     set -e
     echo "ECFLOW Tasks Remaining: ${active_tasks}/${max_active_tasks}"
-    #"${PATHRT}/abort_dep_tasks.py"
+    "${PATHRT}/abort_dep_tasks.py"
   done
 
   sleep 65 # wait one ECF_INTERVAL plus 5 seconds
