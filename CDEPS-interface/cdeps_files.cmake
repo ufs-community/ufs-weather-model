@@ -56,6 +56,7 @@ list(APPEND cdeps_datm_files
 list(APPEND cdeps_dice_files
   CDEPS/dice/dice_datamode_ssmi_mod.F90
   CDEPS/dice/dice_flux_atmice_mod.F90
+  CDEPS/dice/dice_datamode_cplhist_mod.F90
   CDEPS/dice/ice_comp_nuopc.F90
 )
 
