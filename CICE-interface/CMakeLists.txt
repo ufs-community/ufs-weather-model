@@ -39,7 +39,7 @@ else()
 endif()
 
 # Configuration Options
-set(CICE_IO "NetCDF" CACHE STRING "CICE OPTIONS: Choose IO options.")
+set(CICE_IO "PIO" CACHE STRING "CICE OPTIONS: Choose IO options.")
 set_property(CACHE CICE_IO PROPERTY STRINGS "NetCDF" "PIO" "Binary")
 
 # Too many files to list, so include them via this file
