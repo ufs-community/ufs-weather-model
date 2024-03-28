@@ -584,19 +584,19 @@ rocoto_create_compile_task() {
 
   cat << EOF >> "${ROCOTO_XML}"
   <task name="compile_${COMPILE_ID}" maxtries="${ROCOTO_COMPILE_MAXTRIES:-3}">
-    <command>&PATHRT;/run_compile.sh &PATHRT; &RUNDIR_ROOT; "${MAKE_OPT}" ${COMPILE_ID} > &LOG;/compile_${COMPILE_ID}.log</command>
+    <command>&PATHRT;/run_compile.sh &PATHRT; &RUNDIR_ROOT; "${MAKE_OPT}" ${COMPILE_ID} 2>&amp;1 | tee &LOG;/compile_${COMPILE_ID}.log</command>
     <jobname>compile_${COMPILE_ID}</jobname>
     <account>${ACCNR}</account>
     <queue>${COMPILE_QUEUE}</queue>
 EOF
 
   if [[ "${MACHINE_ID}" == gaea ]] ; then
-  cat << EOF >> "${ROCOTO_XML}"
+    cat << EOF >> "${ROCOTO_XML}"
     <native>--clusters=es</native>
     <partition>eslogin_c5</partition>
 EOF
-  else
-  cat << EOF >> "${ROCOTO_XML}"
+  elif [[ -n "${PARTITION}" || ${MACHINE_ID} != hera ]] ; then
+    cat << EOF >> "${ROCOTO_XML}"
     <partition>${PARTITION}</partition>
 EOF
   fi
@@ -628,19 +628,20 @@ rocoto_create_run_task() {
   cat << EOF >> "${ROCOTO_XML}"
     <task name="${TEST_ID}${RT_SUFFIX}" maxtries="${ROCOTO_TEST_MAXTRIES:-3}">
       <dependency> ${DEP_STRING} </dependency>
-      <command>&PATHRT;/run_test.sh &PATHRT; &RUNDIR_ROOT; ${TEST_NAME} ${TEST_ID} ${COMPILE_ID} > &LOG;/run_${TEST_ID}${RT_SUFFIX}.log </command>
+      <command>&PATHRT;/run_test.sh &PATHRT; &RUNDIR_ROOT; ${TEST_NAME} ${TEST_ID} ${COMPILE_ID} 2>&amp;1 | tee &LOG;/run_${TEST_ID}${RT_SUFFIX}.log </command>
       <jobname>${TEST_ID}${RT_SUFFIX}</jobname>
       <account>${ACCNR}</account>
       ${ROCOTO_NODESIZE:+<nodesize>${ROCOTO_NODESIZE}</nodesize>}
 EOF
 
   if [[ "${MACHINE_ID}" == gaea ]] ; then
-  cat << EOF >> "${ROCOTO_XML}"
+    cat << EOF >> "${ROCOTO_XML}"
       <native>--clusters=${PARTITION}</native>
       <native>--partition=batch</native>
 EOF
-  else
-  cat << EOF >> "${ROCOTO_XML}"
+
+  elif [[ -n "${PARTITION}" || ${MACHINE_ID} != hera ]] ; then
+    cat << EOF >> "${ROCOTO_XML}"
       <queue>${QUEUE}</queue>
       <partition>${PARTITION}</partition>
 EOF
@@ -649,8 +650,7 @@ EOF
   cat << EOF >> "${ROCOTO_XML}"
       <nodes>${NODES}:ppn=${TPN}</nodes>
       <walltime>00:${WLCLK}:00</walltime>
-      <stdout>&RUNDIR_ROOT;/${TEST_ID}${RT_SUFFIX}.out</stdout>
-      <stderr>&RUNDIR_ROOT;/${TEST_ID}${RT_SUFFIX}.err</stderr>
+      <join>&RUNDIR_ROOT;/${TEST_ID}${RT_SUFFIX}.log</join>
       ${NATIVE}
     </task>
 EOF
@@ -782,7 +782,7 @@ ecflow_run() {
     readarray -t ECFHOSTLIST < "${ECF_HOSTFILE}"
     for ECF_HOST in "${ECFHOSTLIST[@]}"
     do
-      if ssh -t -t "${ECF_HOST}"; then
+      if ssh -t -t "${ECF_HOST}" "ls"; then
         export ECF_HOST
         break
       else
