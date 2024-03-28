@@ -313,10 +313,22 @@ export DumpFields="false"
 
 export_fv3 ()
 {
+if [[ ! -n ${ATMRES+x} || -z ${ATMRES} ]]; then
+    export ATMRES=C96
+fi
+
 # ufs.configure defaults
 export UFS_CONFIGURE=ufs.configure.atm_esmf.IN
 export MODEL_CONFIGURE=model_configure.IN
 export atm_model=fv3
+
+export BLOCKSIZE=32
+export CHKSUM_DEBUG=.false.
+export DYCORE_ONLY=.false.
+export PREPEND_DATE=.false.
+export CLOCK_GRAIN="'ROUTINE'"
+export PRINT_MEMORY_USAGE=.false.
+export NETCDF_DEFAULT_FORMAT="'netcdf4'"
 
 export FV3=true
 export S2S=false
@@ -326,11 +338,15 @@ export DATM_CDEPS=false
 export DOCN_CDEPS=false
 export CDEPS_INLINE=false
 export POSTAPP='global'
-export USE_MERRA2=.false.
+export USE_MERRA2=.true.
+export FALSE_VAL=.false.
+export TRUE_VAL=.true.
 
 export NTILES=6
+export IO_LAYOUT=1,1
 export INPES=$INPES_dflt
 export JNPES=$JNPES_dflt
+export GRID_TYPE=-1
 export RESTART_INTERVAL=0
 export QUILTING=.true.
 export QUILTING_RESTART=.true.
@@ -354,11 +370,87 @@ export JCHUNK3D=0
 export KCHUNK3D=0
 export IMO=384
 export JMO=190
-export WRITE_NSFLIP=.false.
+export WRITE_NSFLIP=.true.
+export N_SPONGE=42
+export TAU=0.0
+export FAST_TAU_W_SEC=0.2
+export RF_CUTOFF=10.
+export KORD_TM=-9
+export KORD_MT=9
+export KORD_WZ=9
+export KORD_TR=9
+export BETA=0.
+export A_IMP=1.
+export P_FAC=0.1
+export K_SPLIT=2
+export N_SPLIT=5
+export NWAT=6
+export D_EXT=0.
+export FV_SG_ADJ=450
+export D2_BG=0.
+export NORD=2
+export D4_BG=0.12
+export VTDM4=0.02
+export DELT_MAX=0.002
+export KE_BG=0.
+export D_CON=1.
+export HORD_MT=5
+export HORD_VT=5
+export HORD_TM=5
+export HORD_DP=-5
+export HORD_TR=8
+export DRY_MASS=98320.0
+export CONSV_TE=1.
+export PRINT_FREQ=6
+export NT_CHECKER=0
+
+export DZ_MIN=6
+export MIN_SEAICE=0.15
+export FRAC_GRID=.true.
+
+export TTENDLIM=-999
+export LSOIL_LSM=4
+export ICLOUD_BL=1
+export BL_MYNN_EDMF=1
+export BL_MYNN_EDMF_MOM=1
+export MIN_LAKEICE=0.15
+export FHSWR=3600.
+export FHLWR=3600.
+export ICO2=2
+export ISUBC_SW=2
+export ISUBC_LW=2
+export ISOL=2
+export ISATMEDMF=1
+export PRSLRD0=0.
+export IVEGSRC=1
+export ISOT=1
+export LSOIL=4
+export IOPT_BTR=1
+export IOPT_RUN=1
+export IOPT_FRZ=1
+export IOPT_INF=1
+export IOPT_SNF=4
+export IOPT_TBOT=2
+export PSAUTCO=0.0008,0.0005
+export PRAUTCO=0.00015,0.00015
+export ACTIVE_GASES="'h2o_co2_o3_n2o_ch4_o2'"
+export NGASES=6
+export LW_FILE_GAS="'rrtmgp-data-lw-g128-210809.nc'"
+export LW_FILE_CLOUDS="'rrtmgp-cloud-optics-coeffs-lw.nc'"
+export SW_FILE_GAS="'rrtmgp-data-sw-g112-210809.nc'"
+export SW_FILE_CLOUDS="'rrtmgp-cloud-optics-coeffs-sw.nc'"
+export RRTMGP_NGPTSSW=112
+export RRTMGP_NGPTSLW=128
+export RRTMGP_NBANDSLW=16
+export RRTMGP_NBANDSSW=14
 
 #input file
-export DIAG_TABLE=diag_table_gfsv16
-export FIELD_TABLE=field_table_gfsv16
+export FV3_RUN=control_run.IN
+export CCPP_SUITE=FV3_GFS_v17_p8
+export FIELD_TABLE=field_table_thompson_noaero_tke
+export DIAG_TABLE=diag_table_cpld.IN
+# use same namelist for standalone,coupled P7
+export INPUT_NML=cpld_control.nml.IN
 
 export DOMAINS_STACK_SIZE=3000000
 
@@ -377,26 +469,27 @@ export NA_INIT=1
 
 # Radiation
 export DO_RRTMGP=.false.
-export DOGP_CLDOPTICS_LUT=.false.
-export DOGP_LWSCAT=.false.
+export DOGP_CLDOPTICS_LUT=.true.
+export DOGP_LWSCAT=.true.
+export DOGP_SGS_CNV=.true.
 export USE_LW_JACOBIAN=.false.
 export DAMP_LW_FLUXADJ=.false.
 export RRTMGP_LW_PHYS_BLKSZ=2
 export ICLOUD=0
-export IAER=111
-export ICLIQ_SW=1
-export IOVR=1
+export IAER=1011
+export ICLIQ_SW=2
+export IOVR=3
 export LFNC_K=-999
 export LFNC_P0=-999
 
 # Microphysics
-export IMP_PHYSICS=11
+export IMP_PHYSICS=8
 export NWAT=6
 # GFDL MP
-export DNATS=1
-export DO_SAT_ADJ=.true.
-export LHEATSTRG=.true.
-export LSEASPRAY=.false.
+export DNATS=0
+export DO_SAT_ADJ=.false.
+export LHEATSTRG=.false.
+export LSEASPRAY=.true.
 export LGFDLMPRAD=.false.
 export EFFR_IN=.false.
 # Thompson MP
@@ -423,12 +516,12 @@ export SEAS_OPT=2
 export LDIAG_UGWP=.false.
 export DO_UGWP=.false.
 export DO_TOFD=.false.
-export GWD_OPT=1
-export DO_UGWP_V0=.false.
+export GWD_OPT=2
+export DO_UGWP_V0=.true.
 export DO_UGWP_V1_W_GSLDRAG=.false.
 export DO_UGWP_V0_OROG_ONLY=.false.
 export DO_GSL_DRAG_LS_BL=.false.
-export DO_GSL_DRAG_SS=.false.
+export DO_GSL_DRAG_SS=.true.
 export DO_GSL_DRAG_TOFD=.false.
 export DO_UGWP_V1=.false.
 export DO_UGWP_V1_OROG_ONLY=.false.
@@ -437,6 +530,15 @@ export KNOB_UGWP_NDX4LH=1
 export KNOB_UGWP_VERSION=0
 export KNOB_UGWP_PALAUNCH=500.e2
 export KNOB_UGWP_NSLOPE=1
+export DO_UGWP_V0_NST_ONLY=.false.
+export KNOB_UGWP_SOLVER=2
+export KNOB_UGWP_SOURCE=1,1,0,0
+export KNOB_UGWP_WVSPEC=1,25,25,25
+export KNOB_UGWP_AZDIR=2,4,4,4
+export KNOB_UGWP_STOCH=0,0,0,0
+export KNOB_UGWP_EFFAC=1,1,1,1
+export KNOB_UGWP_DOAXYZ=1
+export KNOB_UGWP_DOHEAT=1
 
 # resolution dependent settings
 export CDMBWD_c48='0.071,2.1,1.0,1.0'
@@ -456,8 +558,7 @@ export CDMBWD=${CDMBWD_c96}
 export DT_INNER=${DT_INNER_c96}
 
 # PBL
-export SATMEDMF=.false.
-export ISATMEDMF=0
+export SATMEDMF=.true.
 export HYBEDMF=.true.
 export SHINHONG=.false.
 export DO_YSU=.false.
@@ -490,12 +591,27 @@ export DO_MYNNSFCLAY=.false.
 export BL_MYNN_TKEADVECT=.false.
 
 # LSM
-export LSM=1
+export LSM=2
 export LSOIL_LSM=4
-export LANDICE=.true.
+export LANDICE=.false.
 export KICE=2
-export IALB=1
-export IEMS=1
+export IALB=2
+export IEMS=2
+export IOPT_DVEG=4
+export IOPT_CRS=2
+export IOPT_RAD=3
+export IOPT_ALB=1
+export IOPT_STC=3
+# P8
+export IOPT_SFC=3
+export IOPT_TRS=2
+export IOPT_DIAG=2
+# FV3 P7 settings
+export D2_BG_K1=0.20
+export D2_BG_K2=0.04
+export PSM_BC=1
+# P8
+export DDDMP=0.1
 
 # Ozone / stratospheric H2O
 export OZ_PHYS_OLD=.true.
@@ -508,6 +624,9 @@ export IOPT_LAKE=2 # 1=flake, 2=clm lake
 export LAKEFRAC_THRESHOLD=0.0 # lake fraction must be higher for lake model to run it
 export LAKEDEPTH_THRESHOLD=1.0 # lake must be deeper (in meters) for a lake model to run it
 export FRAC_ICE=.true. # should be false for flake, true for clm_lake
+
+# Tiled Fix files
+export TILEDFIX=.true.
 
 export CPL=.false.
 export CPLCHM=.false.
@@ -523,26 +642,17 @@ export NPX=97
 export NPY=97
 export NPZ=64
 export NPZP=65
-export NSTF_NAME=2,1,1,0,5
+export NSTF_NAME=2,1,0,0,0
 export OUTPUT_FH="12 -1"
 export FHZERO=6
-export FNALBC="'global_snowfree_albedo.bosu.t126.384.190.rg.grb'"
-export FNVETC="'global_vegtype.igbp.t126.384.190.rg.grb'"
-export FNSOTC="'global_soiltype.statsgo.t126.384.190.rg.grb'"
-export FNSOCC="''"
-export FNSMCC="'global_soilmgldas.t126.384.190.grb'"
-export FNSMCC_control="'global_soilmgldas.statsgo.t1534.3072.1536.grb'"
-export FNMSKH_control="'global_slmask.t1534.3072.1536.grb'"
-export FNABSC="'global_mxsnoalb.uariz.t126.384.190.rg.grb'"
+export FSICL=0
+export FSICS=0
 
 # Dynamical core
 export FV_CORE_TAU=0.
-export RF_CUTOFF=30.0
-export FAST_TAU_W_SEC=0.0
-
-# Tiled Fix files
-export ATMRES=C96
-export TILEDFIX=.false.
+export RF_CUTOFF=10.0
+export FAST_TAU_W_SEC=0.2
+export DRY_MASS=98320.0
 
 export ENS_NUM=1
 export SYEAR=2016
@@ -572,6 +682,9 @@ export SHUM=-999.
 export LNDP_VAR_LIST="'XXX'"
 export LNDP_PRT_LIST=-999
 export LNDP_MODEL_TYPE=0
+export LNDP_TAU=21600,
+export LNDP_LSCALE=500000,
+export ISEED_LNDP=2010,
 
 #IAU
 export IAU_INC_FILES="''"
@@ -582,9 +695,18 @@ export IAU_OFFSET=0
 export FH_DFI_RADAR='-2e10'
 
 #Cellular automata
-export DO_CA=.false.
-export CA_SGS=.false.
+export DO_CA=.true.
+export CA_SGS=.true.
 export CA_GLOBAL=.false.
+export NCA=1
+export NCELLS=5
+export NLIVES=12
+export NTHRESH=18
+export NSEED=1
+export NFRACSEED=0.5
+export CA_TRIGGER=.true.
+export NSPINUP=1
+export ISEED_CA=12345
 
 #waves
 export WW3_RSTDTHR=12
@@ -641,6 +763,82 @@ export PRINT_DIFF_PGR=.false.
 export coupling_interval_fast_sec=0
 export CHOUR=06
 export MOM6_OUTPUT_DIR=./MOM6_OUTPUT
+export MOM6_RESTART_DIR=./RESTART/
+export MOM6_RESTART_SETTING=n
+
+# P8 (not used for standalone)
+export USE_CICE_ALB=.false.
+
+# GFDL Cloud Microphysics
+export VI_MAX=1.
+export VS_MAX=2.
+export VG_MAX=12.
+export VR_MAX=12.
+export QI_LIM=1.
+export TAU_L2V=225.
+export TAU_V2L=150.
+export TAU_G2V=900.
+export RTHRESH=10.e-6
+export DW_LAND=0.16
+export DW_OCEAN=0.10
+export QL_GEN=1.0e-3
+export QL_MLT=1.0e-3
+export QI0_CRT=8.0E-5
+export QS0_CRT=1.0e-3
+export TAU_I2S=1000.
+export C_PSACI=0.05
+export C_PGACS=0.01
+export RH_INC=0.30
+export RH_INR=0.30
+export RH_INS=0.30
+export CCN_L=300.
+export CCN_O=100.
+export C_PAUT=0.5
+export C_CRACW=0.8
+export ICLOUD_F=1
+export MP_TIME=150.
+export REIFLAG=2
+export FTSFS=90
+
+# Interpolation
+export INTERP_METHOD="'conserve_great_circle'"
+
+# NAM sfc
+export FNGLAC="'global_glacier.2x2.grb'"
+export FNMXIC="'global_maxice.2x2.grb'"
+export FNTSFC="'RTGSST.1982.2012.monthly.clim.grb'"
+export FNSNOC="'global_snoclim.1.875.grb'"
+export FNZORC="'igbp'"
+export FNAISC="'IMS-NIC.blended.ice.monthly.clim.grb'"
+export NULL_VAL=99999
+
+# FV3 Grid file spec
+export GRID_FILE="'INPUT/grid_spec.nc'"
+
+# Extra MOM options
+export RESTART_INPUT_DIR="'INPUT/',"
+export PARAMETER_FILENAME="'INPUT/MOM_input',
+                           'INPUT/MOM_override'/"
+}
+
+# Add section for tiled grid namelist
+export_tiled() {
+export FNSMCC_control="'global_soilmgldas.statsgo.t1534.3072.1536.grb'"
+export FNMSKH_control="'global_slmask.t1534.3072.1536.grb'"
+export FNALBC="'${ATMRES}.snowfree_albedo.tileX.nc'"
+export FNALBC2="'${ATMRES}.facsf.tileX.nc'"
+export FNTG3C="'${ATMRES}.substrate_temperature.tileX.nc'"
+export FNVEGC="'${ATMRES}.vegetation_greenness.tileX.nc'"
+export FNVETC="'${ATMRES}.vegetation_type.tileX.nc'"
+export FNSOTC="'${ATMRES}.soil_type.tileX.nc'"
+export FNSOCC="'${ATMRES}.soil_color.tileX.nc'"
+export FNSMCC=${FNSMCC_control}
+export FNMSKH=${FNMSKH_control}
+export FNVMNC="'${ATMRES}.vegetation_greenness.tileX.nc'"
+export FNVMXC="'${ATMRES}.vegetation_greenness.tileX.nc'"
+export FNSLPC="'${ATMRES}.slope_type.tileX.nc'"
+export FNABSC="'${ATMRES}.maximum_snow_albedo.tileX.nc'"
+export LANDICE=".false."
 }
 
 # Defaults for the CICE6 model namelist, mx100
@@ -814,6 +1012,9 @@ OCN_tasks=$OCN_tasks_cpl_dflt
 ICE_tasks=$ICE_tasks_cpl_dflt
 WAV_tasks=$WAV_tasks_cpl_dflt
 
+# Set tiled file defaults
+export_tiled
+
 # Set CICE6 component defaults
 export_cice6
 
@@ -834,6 +1035,8 @@ export INPUT_NML=cpld_control.nml.IN
 export FIELD_TABLE=field_table_thompson_noaero_tke_GOCART
 export DIAG_TABLE=diag_table_cpld.IN
 export DIAG_TABLE_ADDITIONAL=''
+export FV3_RUN=cpld_control_run.IN
+export TILEDFIX=.false.
 
 export FHZERO=6
 export DT_INNER=${DT_ATMOS}
@@ -908,21 +1111,6 @@ export CA_TRIGGER=.true.
 export NSPINUP=1
 export ISEED_CA=12345
 
-# P7 settings
-export FNALBC="'C96.snowfree_albedo.tileX.nc'"
-export FNALBC2="'C96.facsf.tileX.nc'"
-export FNTG3C="'C96.substrate_temperature.tileX.nc'"
-export FNVEGC="'C96.vegetation_greenness.tileX.nc'"
-export FNVETC="'C96.vegetation_type.tileX.nc'"
-export FNSOTC="'C96.soil_type.tileX.nc'"
-export FNSOCC="'C96.soil_color.tileX.nc'"
-export FNSMCC=${FNSMCC_control}
-export FNMSKH=${FNMSKH_control}
-export FNVMNC="'C96.vegetation_greenness.tileX.nc'"
-export FNVMXC="'C96.vegetation_greenness.tileX.nc'"
-export FNSLPC="'C96.slope_type.tileX.nc'"
-export FNABSC="'C96.maximum_snow_albedo.tileX.nc'"
-export LANDICE=".false."
 #P8
 export FSICL=0
 export FSICS=0
@@ -1029,7 +1217,8 @@ export atm_model=datm
 export CPLMODE=ufs.nfrac.aoflux
 
 # datm defaults
-export INPUT_NML=input.mom6.nml.IN
+#export INPUT_NML=input.mom6.nml.IN
+export INPUT_NML=cpld_control.nml.IN
 export DIAG_TABLE=diag_table_template
 export DATM_SRC=CFSR
 export FILENAME_BASE=cfsr.
