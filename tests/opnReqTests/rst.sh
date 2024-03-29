@@ -28,6 +28,9 @@ elif [[ $application == 'cpld' ]]; then
   CICE_RUNTYPE='continue'
   RUNTYPE='continue'
   CICE_USE_RESTART_TIME='.true.'
+  if [[ $TEST_NAME =~ wavice ]]; then
+    CICE_restart_fsd='.true.'
+  fi
   MOM6_RESTART_SETTING="r"
   RESTART_N=$(( FHMAX - FHROT ))
   RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( SHOUR + FHROT  )))0000"
@@ -75,6 +78,7 @@ export NSTF_NAME=${NSTF_NAME}
 export CICE_RUNTYPE=${CICE_RUNTYPE:-}
 export RUNTYPE=${RUNTYPE:-}
 export CICE_USE_RESTART_TIME=${CICE_USE_RESTART_TIME:-}
+export CICE_restart_fsd=${CICE_restart_fsd:-}
 export MOM6_RESTART_SETTING=${MOM6_RESTART_SETTING:-}
 export RESTART_N=${RESTART_N:-}
 export RESTART_FILE_SUFFIX_SECS=${RESTART_FILE_SUFFIX_SECS:-}
