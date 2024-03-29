@@ -737,7 +737,7 @@ if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
 #   PTMP="/lfs/h2/emc/ptmp"
   # SCHEDULER="pbs"
 
-elif [[ $MACHINE_ID = gaea ]]; then
+elif [[ ${MACHINE_ID} = gaea ]]; then
   echo "Setting up: gaea"
   set -x
   if [[ "${ROCOTO:-false}" == true ]] ; then
@@ -948,6 +948,7 @@ elif [[ ${MACHINE_ID} = derecho ]]; then
   if [[ "${ECFLOW:-false}" == true ]] ; then
     ECFLOW_START=/glade/work/epicufsrt/contrib/spack-stack/derecho/ecflow-5.8.4/bin/ecflow_start.sh
     ECF_PORT=$(( $(id -u) + 1500 ))
+    export ECF_PORT
   fi
 
   QUEUE="main"
@@ -969,7 +970,7 @@ elif [[ ${MACHINE_ID} = derecho ]]; then
     ROCOTO_SCHEDULER="pbspro"
   fi
 
-elif [[ $MACHINE_ID = stampede ]]; then
+elif [[ ${MACHINE_ID} = stampede ]]; then
   echo "Setting up: stampede"
   set -x
   export PYTHONPATH=

@@ -10,6 +10,7 @@ else
   UFS_MODEL_DIR=$(dirname "${UFS_MODEL_DIR}")
   UFS_MODEL_DIR=$(cd "${UFS_MODEL_DIR}" && pwd -P)
 fi
+echo "UFS MODEL DIR: ${UFS_MODEL_DIR}"
 readonly UFS_MODEL_DIR
 
 export CC=${CC:-mpicc}
@@ -20,7 +21,9 @@ BUILD_DIR=${BUILD_DIR:-${UFS_MODEL_DIR}/build}
 mkdir -p "${BUILD_DIR}"
 
 cd "${BUILD_DIR}"
-cmake "${UFS_MODEL_DIR}" "${CMAKE_FLAGS}"
+ARR_CMAKE_FLAGS=()
+for i in ${CMAKE_FLAGS}; do ARR_CMAKE_FLAGS+=("${i}") ; done
+cmake "${UFS_MODEL_DIR}" "${ARR_CMAKE_FLAGS[@]}"
 # Turn off OpenMP threading for parallel builds
 # to avoid exhausting the number of user processes
 OMP_NUM_THREADS=1 make -j "${BUILD_JOBS:-4} VERBOSE=${BUILD_VERBOSE:-1}"

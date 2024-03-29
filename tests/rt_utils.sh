@@ -286,23 +286,36 @@ submit_and_wait() {
 
     case ${status} in
       #waiting cases
+      #pbs: Q
+      #Slurm: (old: PD, new: PENDING)
       Q|PD|PENDING)
         status_label='Job waiting to start'
         ;;
       #running cases
+      #pbs: R
+      #slurm: (old: R, new: RUNNING)
       R|RUNNING)
         status_label='Job running'
         ;;
       #held cases
+      #pbs only: H
       H)
         status_label='Job being held'
         echo "*** WARNING ***: Job in a HELD state. Might want to stop manually."
         ;;
       #fail/completed cases
-      E|C|-|F|FAILED|TIMEOUT|CANCELLED)
+      #pbs: E
+      #slurm: F/FAILED TO/TIMEOUT CA/CANCELLED
+      E|F|TO|CA|FAILED|TIMEOUT|CANCELLED)
         echo "!!!!!!!!!!JOB TERMINATED!!!!!!!!!!"
         job_running=false #Trip the loop to end with these status flags
-        continue
+        interrupt_job
+        exit 1
+        ;;
+      #completed
+      #pbs only: C
+      C)
+
         ;;
       *)
         status_label="Unknown"
@@ -782,7 +795,7 @@ ecflow_run() {
     readarray -t ECFHOSTLIST < "${ECF_HOSTFILE}"
     for ECF_HOST in "${ECFHOSTLIST[@]}"
     do
-      if ssh -t -t "${ECF_HOST}" "ls"; then
+      if ssh -q "${ECF_HOST}" "exit"; then
         export ECF_HOST
         break
       else
