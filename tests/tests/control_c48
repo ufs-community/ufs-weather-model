@@ -44,8 +44,10 @@ export LIST_FILES="sfcf000.nc \
                    RESTART/20210323.060000.sfc_data.tile4.nc \
                    RESTART/20210323.060000.sfc_data.tile5.nc \
                    RESTART/20210323.060000.sfc_data.tile6.nc"
+#export ATMRES=C48
 
 export_fv3
+export_tiled
 
 export INPES=1
 export JNPES=1
@@ -70,6 +72,10 @@ export IOVR=3
 export IMO=192
 export JMO=94
 
+#export FNALBC="'global_snowfree_albedo.bosu.t62.192.94.rg.grb',"
+#export FNVETC="'global_vegtype.igbp.t62.192.94.rg.grb',"
+#export FNSOTC="'global_soiltype.statsgo.t62.192.94.rg.grb',"
+#export FNABSC="'global_mxsnoalb.uariz.t62.192.94.rg.grb',"
 export FNSMCC_control="'global_soilmgldas.statsgo.t92.192.94.grb'"
 export FNMSKH_control="'global_slmask.t62.192.94.grb'"
 export FNSMCC=${FNSMCC_control}
@@ -77,4 +83,4 @@ export FNMSKH=${FNMSKH_control}
 
 export FV3_RUN=control_run.IN
 export CCPP_SUITE=FV3_GFS_v17_p8
-export INPUT_NML=cpld_control.nml.IN
+export INPUT_NML=global_control.nml.IN

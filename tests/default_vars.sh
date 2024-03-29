@@ -450,7 +450,7 @@ export CCPP_SUITE=FV3_GFS_v17_p8
 export FIELD_TABLE=field_table_thompson_noaero_tke
 export DIAG_TABLE=diag_table_cpld.IN
 # use same namelist for standalone,coupled P7
-export INPUT_NML=cpld_control.nml.IN
+export INPUT_NML=global_control.nml.IN
 
 export DOMAINS_STACK_SIZE=3000000
 
@@ -1031,7 +1031,7 @@ export ATMTILESIZE=`expr $NPX - 1`
 # FV3 defaults
 export FRAC_GRID=.true.
 export CCPP_SUITE=FV3_GFS_v17_coupled_p8
-export INPUT_NML=cpld_control.nml.IN
+export INPUT_NML=global_control.nml.IN
 export FIELD_TABLE=field_table_thompson_noaero_tke_GOCART
 export DIAG_TABLE=diag_table_cpld.IN
 export DIAG_TABLE_ADDITIONAL=''
