@@ -689,8 +689,9 @@ elif [[ $MACHINE_ID = gaea ]]; then
   QUEUE=normal
   COMPILE_QUEUE=normal
   PARTITION=c5
-  STMP=/gpfs/f5/epic/scratch
-  PTMP=/gpfs/f5/epic/scratch
+  dprefix=${dprefix:-/gpfs/f5/$ACCNR/scratch/$USER}
+  STMP=${STMP:-$dprefix/RT_BASELINE}
+  PTMP=${PTMP:-$dprefix/RT_RUNDIRS}
 
   SCHEDULER=slurm
 
@@ -986,7 +987,7 @@ if [[ "$CREATE_BASELINE" == false ]] ; then
 fi
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20221101}
-INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20220624
+INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20240214
 INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC:-$DISKNM/NEMSfv3gfs/BM_IC-20220207}
 
 shift $((OPTIND-1))
