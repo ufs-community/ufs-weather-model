@@ -34,7 +34,7 @@ usage() {
 [[ $# -eq 0 ]] && usage
 
 update_rtconf() {
-  echo "Called function: update_rtconf()"
+  echo "rt.sh: Checking & Updating test configuration..."
   find_match() {
     # This function finds if a test in $TESTS_FILE matches one 
     # in our list of tests to be run.
@@ -165,7 +165,7 @@ update_rtconf() {
 }
 
 generate_log() {
-  echo "Called function: generate_log()"
+  echo "rt.sh: Generating Regression Testing Log..."
   COMPILE_COUNTER=0
   FAILED_COMPILES=()
   TEST_COUNTER=0
@@ -465,7 +465,6 @@ EOF
 }
 
 create_or_run_compile_task() {
-  echo "Called function: create_or_run_compile_task()"
   cat << EOF > "${RUNDIR_ROOT}/compile_${COMPILE_ID}.env"
 export JOB_NR=${JOB_NR}
 export COMPILE_ID=${COMPILE_ID}
@@ -488,6 +487,7 @@ EOF
   elif [[ ${ECFLOW} == true ]]; then
     ecflow_create_compile_task
   else
+    echo "rt.sh: Running compile w/o workflow"
     ./run_compile.sh "${PATHRT}" "${RUNDIR_ROOT}" "${MAKE_OPT}" "${COMPILE_ID}" > "${LOG_DIR}/compile_${COMPILE_ID}.log" 2>&1
   fi
 
@@ -496,7 +496,7 @@ EOF
 }
 
 rt_35d() {
-  echo "Called function: rt_35d()"
+  echo "rt.sh: Running 35day Regression Test..."
   local sy
   local sm
 if [[ ${TEST_NAME} =~ '35d' ]] ; then
@@ -514,7 +514,7 @@ fi
 }
 
 handle_error() {
-  echo "Called function: handle_error()"
+  echo "rt.sh: Getting error information..."
   local exit_code=$1
   local exit_line=$2
   echo "Exited at line ${exit_line} having code ${exit_code}"
@@ -522,18 +522,19 @@ handle_error() {
 }
 
 rt_trap() {
-  echo "Called function: rt_trap()"
+  echo "rt.sh: Exited abnormally, killing workflow and cleaning up"
   [[ ${ROCOTO:-false} == true ]] && rocoto_kill
   [[ ${ECFLOW:-false} == true ]] && ecflow_kill
   cleanup
 }
 
 cleanup() {
-  echo "Called function: cleanup()"
+  echo "rt.sh: Cleaning up..."
   awk_info=$(awk '{print $2}' < "${LOCKDIR}/PID")
   [[ ${awk_info} == "$$" ]] && rm -rf "${LOCKDIR}"
   [[ ${ECFLOW:-false} == true ]] && ecflow_stop
   trap 0
+  echo "rt.sh: Exiting."
   exit
 }
 
@@ -584,6 +585,7 @@ NEW_BASELINES_FILE=''
 DEFINE_CONF_FILE=false
 RUN_SINGLE_TEST=false
 RTVERBOSE=false
+export STOP_ECFLOW_AT_END=false
 ACCNR=${ACCNR:-""}
 
 while getopts ":a:b:cl:mn:dwkreovh" opt; do
@@ -684,358 +686,350 @@ fi
 echo "Machine: ${MACHINE_ID}"
 echo "Account: ${ACCNR}"
 
-if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
-  echo "Setting up: WCOSS2/Acorn"
-  set -x
-  if [[ "${ECFLOW:-false}" == true ]] ; then
-    module load ecflow/5.6.0.13
-  fi
-  module load intel/19.1.3.304 python/3.8.6
-  if [[ "${ECFLOW:-false}" == true ]] ; then
-    ECF_ROOT=${ECF_ROOT:-}
-    ECFLOW_START="${ECF_ROOT}/scripts/server_check.sh"
-    export ECF_OUTPUTDIR="${PATHRT}/ecf_outputdir"
-    export ECF_COMDIR="${PATHRT}/ecf_comdir"
-    rm -rf "${ECF_OUTPUTDIR}" "${ECF_COMDIR}"
-    mkdir -p "${ECF_OUTPUTDIR}"
-    mkdir -p "${ECF_COMDIR}"
-  fi
-  export colonifnco=":output"  # hack
+case ${MACHINE_ID} in
+  wcoss2|acorn)
+    echo "rt.sh: Setting up WCOSS2/Acorn"
+    set -x
+    if [[ "${ECFLOW:-false}" == true ]] ; then
+      module load ecflow/5.6.0.13
+    fi
+    module load intel/19.1.3.304 python/3.8.6
+    if [[ "${ECFLOW:-false}" == true ]] ; then
+      ECF_ROOT=${ECF_ROOT:-}
+      ECFLOW_START="${ECF_ROOT}/scripts/server_check.sh"
+      ECFLOW_STOP="${ECF_KILL_CMD}"
+      export ECF_OUTPUTDIR="${PATHRT}/ecf_outputdir"
+      export ECF_COMDIR="${PATHRT}/ecf_comdir"
+      rm -rf "${ECF_OUTPUTDIR}" "${ECF_COMDIR}"
+      mkdir -p "${ECF_OUTPUTDIR}"
+      mkdir -p "${ECF_COMDIR}"
+    fi
+    export colonifnco=":output"  # hack
 
-  DISKNM="/lfs/h2/emc/nems/noscrub/emc.nems/RT"
-  QUEUE="dev"
-  COMPILE_QUEUE="dev"
-  if [[ "${ROCOTO:-false}" == true ]] ; then
-    ROCOTO_SCHEDULER="pbs"
-  fi
-  PARTITION=
-  STMP="/lfs/h2/emc/ptmp"
-  PTMP="/lfs/h2/emc/ptmp"
-  SCHEDULER="pbs"
-  
-# elif [[ ${MACHINE_ID} = acorn ]]; then
+    DISKNM="/lfs/h2/emc/nems/noscrub/emc.nems/RT"
+    QUEUE="dev"
+    COMPILE_QUEUE="dev"
+    if [[ "${ROCOTO:-false}" == true ]] ; then
+      ROCOTO_SCHEDULER="pbs"
+    fi
+    PARTITION=
+    STMP="/lfs/h2/emc/ptmp"
+    PTMP="/lfs/h2/emc/ptmp"
+    SCHEDULER="pbs"
+    ;;
+  gaea)
+    echo "rt.sh: Setting up gaea..."
+    set -x
+    if [[ "${ROCOTO:-false}" == true ]] ; then
+      module use /ncrc/proj/epic/rocoto/modulefiles
+      module load rocoto
+      ROCOTORUN=$(command -v rocotorun)
+      ROCOTOSTAT=$(command -v rocotostat)
+      ROCOTOCOMPLETE=$(command -v rocotocomplete)
+      ROCOTO_SCHEDULER="slurm"
+    fi
+    
+    module load PrgEnv-intel/8.3.3
+    module load intel-classic/2023.1.0
+    module load cray-mpich/8.1.25
+    module load python/3.9.12
+    module use /ncrc/proj/epic/spack-stack/modulefiles
+    module load gcc/12.2.0
+    if [[ "${ECFLOW:-false}" == true ]] ; then
+      module load ecflow/5.8.4
+      ECFLOW_START=/ncrc/proj/epic/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
+      ECFLOW_STOP=/ncrc/proj/epic/spack-stack/ecflow-5.8.4/bin/ecflow_stop.sh
+      ECF_HOST=$(hostname)
+      ECF_PORT=$(( $(id -u) + 1500 ))
+    fi
 
-#   module load ecflow/5.6.0.13
-#   module load intel/19.1.3.304
-#   module load python/3.8.6
-#   INPUTDATA_ROOT=${INPUTDATA_ROOT:-${DISKNM}/NEMSfv3gfs/input-data-20221101}
-#   ECF_ROOT=${ECF_ROOT:-}
-#   ECFLOW_START="${ECF_ROOT}/scripts/server_check.sh"
-#   export ECF_OUTPUTDIR="${PATHRT}/ecf_outputdir"
-#   export ECF_COMDIR="${PATHRT}/ecf_comdir"
-#   rm -rf "${ECF_OUTPUTDIR}" "${ECF_COMDIR}"
-#   mkdir -p "${ECF_OUTPUTDIR}"
-#   mkdir -p "${ECF_COMDIR}"
-#   export colonifnco=":output"  # hack
+    DISKNM=/gpfs/f5/epic/world-shared/UFS-WM_RT
+    QUEUE=normal
+    COMPILE_QUEUE=normal
+    PARTITION=c5
+    dprefix=${dprefix:-/gpfs/f5/${ACCNR}/scratch/${USER}}
+    STMP=${STMP:-${dprefix}/RT_BASELINE}
+    PTMP=${PTMP:-${dprefix}/RT_RUNDIRS}
 
-#   DISKNM=/lfs/h2/emc/nems/noscrub/emc.nems/RT
-#   QUEUE=dev
-#   COMPILE_QUEUE=dev
-#   ROCOTO_SCHEDULER=pbs
-#   PARTITION=
-#   STMP="/lfs/h2/emc/ptmp"
-#   PTMP="/lfs/h2/emc/ptmp"
-  # SCHEDULER="pbs"
+    SCHEDULER="slurm"
+    ;;
+  hera)
+    echo "rt.sh: Setting up hera..."
+    set -x
+    if [[ "${ROCOTO:-false}" == true ]] ; then
+      module load rocoto
+      ROCOTORUN=$(command -v rocotorun)
+      ROCOTOSTAT=$(command -v rocotostat)
+      ROCOTOCOMPLETE=$(command -v rocotocomplete)
+      ROCOTO_SCHEDULER=slurm
+    fi
 
-elif [[ ${MACHINE_ID} = gaea ]]; then
-  echo "Setting up: gaea"
-  set -x
-  if [[ "${ROCOTO:-false}" == true ]] ; then
-    module use /ncrc/proj/epic/rocoto/modulefiles
-    module load rocoto
-    ROCOTORUN=$(command -v rocotorun)
-    ROCOTOSTAT=$(command -v rocotostat)
-    ROCOTOCOMPLETE=$(command -v rocotocomplete)
-    ROCOTO_SCHEDULER="slurm"
-  fi
-  
-  module load PrgEnv-intel/8.3.3
-  module load intel-classic/2023.1.0
-  module load cray-mpich/8.1.25
-  module load python/3.9.12
-  module use /ncrc/proj/epic/spack-stack/modulefiles
-  module load gcc/12.2.0
-  if [[ "${ECFLOW:-false}" == true ]] ; then
-    module load ecflow/5.8.4
-    ECFLOW_START=/ncrc/proj/epic/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
-    ECF_PORT=$(( $(id -u) + 1500 ))
-  fi
+    if [[ "${ECFLOW:-false}" == true ]] ; then
+      module load ecflow/5.11.4
+      ECFLOW_START="$(command -v ecflow_start.sh)"
+      ECFLOW_STOP="$(command -v ecflow_stop.sh)"
+    fi
 
-  DISKNM=/gpfs/f5/epic/world-shared/UFS-WM_RT
-  QUEUE=normal
-  COMPILE_QUEUE=normal
-  PARTITION=c5
-  dprefix=${dprefix:-/gpfs/f5/${ACCNR}/scratch/${USER}}
-  STMP=${STMP:-${dprefix}/RT_BASELINE}
-  PTMP=${PTMP:-${dprefix}/RT_RUNDIRS}
+    QUEUE="batch"
+    COMPILE_QUEUE="batch"
 
-  SCHEDULER="slurm"
+    PARTITION=
+    dprefix="/scratch1/NCEPDEV"
+    DISKNM="/scratch2/NAGAPE/epic/UFS-WM_RT"
+    STMP="${dprefix}/stmp4"
+    PTMP="${dprefix}/stmp2"
 
-elif [[ ${MACHINE_ID} = hera ]]; then
-  echo "Setting up: hera"
-  set -x
-  if [[ "${ROCOTO:-false}" == true ]] ; then
-    module load rocoto
-    ROCOTORUN=$(command -v rocotorun)
-    ROCOTOSTAT=$(command -v rocotostat)
-    ROCOTOCOMPLETE=$(command -v rocotocomplete)
-    ROCOTO_SCHEDULER=slurm
-  fi
+    SCHEDULER=slurm
+    ;;
+  orion)
+    echo "rt.sh: Setting up orion..."
+    set -x
+    module load git/2.28.0
+    module load gcc/10.2.0
+    module load python/3.9.2
 
-  if [[ "${ECFLOW:-false}" == true ]] ; then
-    module load ecflow/5.11.4
-    ECFLOW_START="$(command -v ecflow_start.sh)"
-  fi
+    if [[ "${ROCOTO:-false}" == true ]] ; then
+      module load contrib rocoto
+      ROCOTORUN=$(command -v rocotorun)
+      ROCOTOSTAT=$(command -v rocotostat)
+      ROCOTOCOMPLETE=$(command -v rocotocomplete)
+      ROCOTO_SCHEDULER="slurm"
+    fi
 
-  QUEUE="batch"
-  COMPILE_QUEUE="batch"
+    module use /work/noaa/epic/role-epic/spack-stack/orion/modulefiles
+    if [[ "${ECFLOW:-false}" == true ]] ; then
+      module load ecflow/5.8.4
+      ECFLOW_START="/work/noaa/epic/role-epic/spack-stack/orion/ecflow-5.8.4/bin/ecflow_start.sh"
+      ECFLOW_STOP="/work/noaa/epic/role-epic/spack-stack/orion/ecflow-5.8.4/bin/ecflow_stop.sh"
+      ECF_HOST=$(hostname)
+      ECF_PORT="$(( $(id -u) + 1500 ))"
+    fi
 
-  PARTITION=
-  dprefix="/scratch1/NCEPDEV"
-  DISKNM="/scratch2/NAGAPE/epic/UFS-WM_RT"
-  STMP="${dprefix}/stmp4"
-  PTMP="${dprefix}/stmp2"
+    QUEUE="batch"
+    COMPILE_QUEUE="batch"
+    PARTITION="orion"
+    dprefix="/work/noaa/stmp/${USER}"
+    DISKNM=/"work/noaa/epic/UFS-WM_RT"
+    STMP="${dprefix}/stmp"
+    PTMP="${dprefix}/stmp"
 
-  SCHEDULER=slurm
+    SCHEDULER="slurm"
+    ;;
+  hercules)
+    echo "rt.sh: Setting up hercules..."
+    set -x
+    if [[ "${ROCOTO:-false}" == true ]] ; then
+      module load contrib rocoto
+      ROCOTORUN=$(command -v rocotorun)
+      ROCOTOSTAT=$(command -v rocotostat)
+      ROCOTOCOMPLETE=$(command -v rocotocomplete)
+      ROCOTO_SCHEDULER="slurm"
+    fi
 
-elif [[ ${MACHINE_ID} = orion ]]; then
-  echo "Setting up: orion"
-  set -x
-  module load git/2.28.0
-  module load gcc/10.2.0
-  module load python/3.9.2
+    module use /work/noaa/epic/role-epic/spack-stack/hercules/modulefiles
+    if [[ "${ECFLOW:-false}" == true ]] ; then
+      module load ecflow/5.8.4
+      ECFLOW_START="/work/noaa/epic/role-epic/spack-stack/hercules/ecflow-5.8.4/bin/ecflow_start.sh"
+      ECFLOW_STOP="/work/noaa/epic/role-epic/spack-stack/hercules/ecflow-5.8.4/bin/ecflow_stop.sh"
+      ECF_HOST=$(hostname)
+      ECF_PORT="$(( $(id -u) + 1500 ))"
+    fi
 
-  if [[ "${ROCOTO:-false}" == true ]] ; then
-    module load contrib rocoto
-    ROCOTORUN=$(command -v rocotorun)
-    ROCOTOSTAT=$(command -v rocotostat)
-    ROCOTOCOMPLETE=$(command -v rocotocomplete)
-    ROCOTO_SCHEDULER="slurm"
-  fi
+    QUEUE="batch"
+    COMPILE_QUEUE="batch"
+    PARTITION="hercules"
+    dprefix="/work2/noaa/stmp/${USER}"
+    DISKNM="/work/noaa/epic/hercules/UFS-WM_RT"
+    STMP="${dprefix}/stmp"
+    PTMP="${dprefix}/stmp"
 
-  module use /work/noaa/epic/role-epic/spack-stack/orion/modulefiles
-  if [[ "${ECFLOW:-false}" == true ]] ; then
-    module load ecflow/5.8.4
-    ECFLOW_START="/work/noaa/epic/role-epic/spack-stack/orion/ecflow-5.8.4/bin/ecflow_start.sh"
-    ECF_PORT="$(( $(id -u) + 1500 ))"
-  fi
+    SCHEDULER="slurm"
+    cp fv3_conf/fv3_slurm.IN_hercules fv3_conf/fv3_slurm.IN
+    cp fv3_conf/compile_slurm.IN_hercules fv3_conf/compile_slurm.IN
+    ;;
+  jet)
+    echo "rt.sh: Setting up jet..."
+    set -x
+    CurJetOS=$(lsb_release -is)
+    echo "=======Running on ${CurJetOS}======="
+    if [[ ${CurJetOS} == "CentOS" ]]; then
+    echo "=======Please, move to Rocky8 node fe[5-8]======="
+    exit 1
+    fi
+    
+    if [[ "${ROCOTO:-false}" == true ]] ; then
+      module load rocoto
+      ROCOTORUN=$(command -v rocotorun)
+      ROCOTOSTAT=$(command -v rocotostat)
+      ROCOTOCOMPLETE=$(command -v rocotocomplete)
+      ROCOTO_SCHEDULER="slurm"
+    fi
 
-  QUEUE="batch"
-  COMPILE_QUEUE="batch"
-  PARTITION="orion"
-  dprefix="/work/noaa/stmp/${USER}"
-  DISKNM=/"work/noaa/epic/UFS-WM_RT"
-  STMP="${dprefix}/stmp"
-  PTMP="${dprefix}/stmp"
+    if [[ "${ECFLOW:-false}" == true ]] ; then
+      module load ecflow/5.11.4
+      ECFLOW_START=/apps/ecflow/5.11.4/bin/ecflow_start.sh
+      ECFLOW_STOP=/apps/ecflow/5.11.4/bin/ecflow_stop.sh
+    fi
 
-  SCHEDULER="slurm"
+    module use /mnt/lfs4/HFIP/hfv3gfs/role.epic/spack-stack/spack-stack-1.5.0/envs/unified-env-rocky8/install/modulefiles/Core
+    module load stack-intel/2021.5.0
+    module load stack-python/3.10.8
 
-elif [[ ${MACHINE_ID} = hercules ]]; then
-  echo "Setting up: hercules"
-  set -x
-  if [[ "${ROCOTO:-false}" == true ]] ; then
-    module load contrib rocoto
-    ROCOTORUN=$(command -v rocotorun)
-    ROCOTOSTAT=$(command -v rocotostat)
-    ROCOTOCOMPLETE=$(command -v rocotocomplete)
-    ROCOTO_SCHEDULER="slurm"
-  fi
+    QUEUE="batch"
+    COMPILE_QUEUE="batch"
+    PARTITION="xjet"
+    DISKNM="/mnt/lfs4/HFIP/hfv3gfs/role.epic/RT"
+    dprefix="${dprefix:-/lfs4/HFIP/${ACCNR}/${USER}}"
+    STMP="${STMP:-${dprefix}/RT_BASELINE}"
+    PTMP="${PTMP:-${dprefix}/RT_RUNDIRS}"
 
-  module use /work/noaa/epic/role-epic/spack-stack/hercules/modulefiles
-  if [[ "${ECFLOW:-false}" == true ]] ; then
-    module load ecflow/5.8.4
-    ECFLOW_START="/work/noaa/epic/role-epic/spack-stack/hercules/ecflow-5.8.4/bin/ecflow_start.sh"
-    ECF_PORT="$(( $(id -u) + 1500 ))"
-  fi
+    SCHEDULER="slurm"
+    ;;
+  s4)
+    echo "rt.sh: Setting up s4..."
+    set -x
+    if [[ "${ROCOTO:-false}" == true ]] ; then
+      module load rocoto/1.3.2
+      ROCOTORUN=$(command -v rocotorun)
+      ROCOTOSTAT=$(command -v rocotostat)
+      ROCOTOCOMPLETE=$(command -v rocotocomplete)
+      ROCOTO_SCHEDULER=slurm
+    fi
+    if [[ "${ECFLOW:-false}" == true ]] ; then
+      module load ecflow/5.6.0
+    fi
+    module load miniconda/3.8-s4
 
-  QUEUE="batch"
-  COMPILE_QUEUE="batch"
-  PARTITION="hercules"
-  dprefix="/work2/noaa/stmp/${USER}"
-  DISKNM="/work/noaa/epic/hercules/UFS-WM_RT"
-  STMP="${dprefix}/stmp"
-  PTMP="${dprefix}/stmp"
+    module use /data/prod/jedi/spack-stack/modulefiles
+    if [[ "${ECFLOW:-false}" == true ]] ; then
+      module load ecflow/5.8.4
+      ECFLOW_START="/data/prod/jedi/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh"
+      ECFLOW_STOP="/data/prod/jedi/spack-stack/ecflow-5.8.4/bin/ecflow_stop.sh"
+      ECF_HOST=$(hostname)
+      ECF_PORT="$(( $(id -u) + 1500 ))"
+    fi
 
-  SCHEDULER="slurm"
-  cp fv3_conf/fv3_slurm.IN_hercules fv3_conf/fv3_slurm.IN
-  cp fv3_conf/compile_slurm.IN_hercules fv3_conf/compile_slurm.IN
+    QUEUE="s4"
+    COMPILE_QUEUE="s4"
 
-elif [[ ${MACHINE_ID} = jet ]]; then
-  echo "Setting up: jet"
-  set -x
-  CurJetOS=$(lsb_release -is)
-  echo "=======Running on ${CurJetOS}======="
-  if [[ ${CurJetOS} == "CentOS" ]]; then
-  echo "=======Please, move to Rocky8 node fe[5-8]======="
-  exit 1
-  fi
-  
-  if [[ "${ROCOTO:-false}" == true ]] ; then
-    module load rocoto
-    ROCOTORUN=$(command -v rocotorun)
-    ROCOTOSTAT=$(command -v rocotostat)
-    ROCOTOCOMPLETE=$(command -v rocotocomplete)
-    ROCOTO_SCHEDULER="slurm"
-  fi
+    PARTITION="s4"
+    dprefix="/data/prod"
+    DISKNM="${dprefix}/emc.nemspara/RT"
+    STMP="/scratch/short/users"
+    PTMP="/scratch/users"
 
-  if [[ "${ECFLOW:-false}" == true ]] ; then
-    module load ecflow/5.11.4
-    ECFLOW_START=/apps/ecflow/5.11.4/bin/ecflow_start.sh
-  fi
+    SCHEDULER="slurm"
+    ;;
+  derecho)
+    echo "rt.sh: Setting up derecho..."
+    set -x
+    if [[ "${ROCOTO:-false}" == true ]] ; then
+      module use /glade/work/epicufsrt/contrib/derecho/rocoto/modulefiles
+      module load rocoto
+    fi
+    module use /glade/work/epicufsrt/contrib/spack-stack/derecho/modulefiles
+    if [[ "${ECFLOW:-false}" == true ]] ; then
+      module load ecflow/5.8.4
+    fi
+    module unload ncarcompilers
+    module use /glade/work/epicufsrt/contrib/spack-stack/derecho/spack-stack-1.5.1/envs/unified-env/install/modulefiles/Core
+    module load stack-intel/2021.10.0
+    module load stack-python/3.10.8
+  #  export PYTHONPATH=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/glade/p/ral/jntp/tools/miniconda3/4.8.3/lib/python3.8/site-packages
+    if [[ "${ECFLOW:-false}" == true ]] ; then
+      ECFLOW_START=/glade/work/epicufsrt/contrib/spack-stack/derecho/ecflow-5.8.4/bin/ecflow_start.sh
+      ECFLOW_STOP=/glade/work/epicufsrt/contrib/spack-stack/derecho/ecflow-5.8.4/bin/ecflow_stop.sh
+      ECF_HOST=$(hostname)
+      ECF_PORT=$(( $(id -u) + 1500 ))
+      export ECF_PORT
+    fi
 
-  module use /mnt/lfs4/HFIP/hfv3gfs/role.epic/spack-stack/spack-stack-1.5.0/envs/unified-env-rocky8/install/modulefiles/Core
-  module load stack-intel/2021.5.0
-  module load stack-python/3.10.8
+    QUEUE="main"
+    COMPILE_QUEUE="main"
+    PARTITION=
+    dprefix="/glade/derecho/scratch"
+    DISKNM="/glade/derecho/scratch/epicufsrt/ufs-weather-model/RT/"
+    STMP="${dprefix}"
+    PTMP="${dprefix}"
+    SCHEDULER="pbs"
+    cp fv3_conf/fv3_qsub.IN_derecho fv3_conf/fv3_qsub.IN
+    cp fv3_conf/compile_qsub.IN_derecho fv3_conf/compile_qsub.IN
 
-  QUEUE="batch"
-  COMPILE_QUEUE="batch"
-  PARTITION="xjet"
-  DISKNM="/mnt/lfs4/HFIP/hfv3gfs/role.epic/RT"
-  dprefix="${dprefix:-/lfs4/HFIP/${ACCNR}/${USER}}"
-  STMP="${STMP:-${dprefix}/RT_BASELINE}"
-  PTMP="${PTMP:-${dprefix}/RT_RUNDIRS}"
+    
+    if [[ "${ROCOTO:-false}" == true ]] ; then
+      ROCOTORUN=$(command -v rocotorun)
+      ROCOTOSTAT=$(command -v rocotostat)
+      ROCOTOCOMPLETE=$(command -v rocotocomplete)
+      ROCOTO_SCHEDULER="pbspro"
+    fi
+    ;;
+  stampede)
+    echo "rt.sh: Setting up stampede..."
+    set -x
+    export PYTHONPATH=
+    if [[ "${ECFLOW:-false}" == true ]] ; then
+      ECFLOW_START=
+    fi
+    QUEUE=skx-normal
+    COMPILE_QUEUE=skx-dev
+    PARTITION=
+    dprefix="${SCRATCH}/ufs-weather-model/run"
+    DISKNM="/work2/07736/minsukji/stampede2/ufs-weather-model/RT"
+    STMP="${dprefix}"
+    PTMP="${dprefix}"
+    SCHEDULER="slurm"
+    export MPIEXEC="ibrun"
+    export MPIEXECOPTS=
+    ;;
+  expanse)
+    echo "rt.sh: Setting up expanse..."
+    set -x
+    export PYTHONPATH=
 
-  SCHEDULER="slurm"
+    if [[ "${ECFLOW:-false}" == true ]] ; then
+      export ECFLOW_START=
+    fi
+    QUEUE="compute"
+    COMPILE_QUEUE="shared"
+    PARTITION=
+    dprefix="/expanse/lustre/scratch/${USER}/temp_project/run"
+    DISKNM="/expanse/lustre/scratch/domh/temp_project/RT"
+    STMP="${dprefix}"
+    PTMP="${dprefix}"
+    SCHEDULER="slurm"
+    ;;
+  noaacloud)
+    echo "rt.sh: Setting up noaacloud..."
+    set -x
+    export PATH="/contrib/EPIC/bin:${PATH}"
+    module use /apps/modules/modulefiles
 
-elif [[ ${MACHINE_ID} = s4 ]]; then
-  echo "Setting up: s4"
-  set -x
-  if [[ "${ROCOTO:-false}" == true ]] ; then
-    module load rocoto/1.3.2
-    ROCOTORUN=$(command -v rocotorun)
-    ROCOTOSTAT=$(command -v rocotostat)
-    ROCOTOCOMPLETE=$(command -v rocotocomplete)
-    ROCOTO_SCHEDULER=slurm
-  fi
-  if [[ "${ECFLOW:-false}" == true ]] ; then
-    module load ecflow/5.6.0
-  fi
-  module load miniconda/3.8-s4
+    if [[ "${ROCOTO:-false}" == true ]] ; then
+      module load rocoto/1.3.3
+      ROCOTORUN=$(command -v rocotorun)
+      ROCOTOSTAT=$(command -v rocotostat)
+      ROCOTOCOMPLETE=$(command -v rocotocomplete)
+      ROCOTO_SCHEDULER=slurm
+    fi
 
-  module use /data/prod/jedi/spack-stack/modulefiles
-  if [[ "${ECFLOW:-false}" == true ]] ; then
-    module load ecflow/5.8.4
-    ECFLOW_START="/data/prod/jedi/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh"
-    ECF_PORT="$(( $(id -u) + 1500 ))"
-  fi
-
-  QUEUE="s4"
-  COMPILE_QUEUE="s4"
-
-  PARTITION="s4"
-  dprefix="/data/prod"
-  DISKNM="${dprefix}/emc.nemspara/RT"
-  STMP="/scratch/short/users"
-  PTMP="/scratch/users"
-
-  SCHEDULER="slurm"
-
-elif [[ ${MACHINE_ID} = derecho ]]; then
-  echo "Setting up: derecho"
-  set -x
-  if [[ "${ROCOTO:-false}" == true ]] ; then
-    module use /glade/work/epicufsrt/contrib/derecho/rocoto/modulefiles
-    module load rocoto
-  fi
-  module use /glade/work/epicufsrt/contrib/spack-stack/derecho/modulefiles
-  if [[ "${ECFLOW:-false}" == true ]] ; then
-    module load ecflow/5.8.4
-  fi
-  module unload ncarcompilers
-  module use /glade/work/epicufsrt/contrib/spack-stack/derecho/spack-stack-1.5.1/envs/unified-env/install/modulefiles/Core
-  module load stack-intel/2021.10.0
-  module load stack-python/3.10.8
-#  export PYTHONPATH=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/glade/p/ral/jntp/tools/miniconda3/4.8.3/lib/python3.8/site-packages
-  if [[ "${ECFLOW:-false}" == true ]] ; then
-    ECFLOW_START=/glade/work/epicufsrt/contrib/spack-stack/derecho/ecflow-5.8.4/bin/ecflow_start.sh
-    ECF_PORT=$(( $(id -u) + 1500 ))
-    export ECF_PORT
-  fi
-
-  QUEUE="main"
-  COMPILE_QUEUE="main"
-  PARTITION=
-  dprefix="/glade/derecho/scratch"
-  DISKNM="/glade/derecho/scratch/epicufsrt/ufs-weather-model/RT/"
-  STMP="${dprefix}"
-  PTMP="${dprefix}"
-  SCHEDULER="pbs"
-  cp fv3_conf/fv3_qsub.IN_derecho fv3_conf/fv3_qsub.IN
-  cp fv3_conf/compile_qsub.IN_derecho fv3_conf/compile_qsub.IN
-
-  
-  if [[ "${ROCOTO:-false}" == true ]] ; then
-    ROCOTORUN=$(command -v rocotorun)
-    ROCOTOSTAT=$(command -v rocotostat)
-    ROCOTOCOMPLETE=$(command -v rocotocomplete)
-    ROCOTO_SCHEDULER="pbspro"
-  fi
-
-elif [[ ${MACHINE_ID} = stampede ]]; then
-  echo "Setting up: stampede"
-  set -x
-  export PYTHONPATH=
-  if [[ "${ECFLOW:-false}" == true ]] ; then
-    ECFLOW_START=
-  fi
-  QUEUE=skx-normal
-  COMPILE_QUEUE=skx-dev
-  PARTITION=
-  dprefix="${SCRATCH}/ufs-weather-model/run"
-  DISKNM="/work2/07736/minsukji/stampede2/ufs-weather-model/RT"
-  STMP="${dprefix}"
-  PTMP="${dprefix}"
-  SCHEDULER="slurm"
-  export MPIEXEC="ibrun"
-  export MPIEXECOPTS=
-
-elif [[ ${MACHINE_ID} = expanse ]]; then
-  echo "Setting up: expanse"
-  set -x
-  export PYTHONPATH=
-
-  if [[ "${ECFLOW:-false}" == true ]] ; then
-    export ECFLOW_START=
-  fi
-  QUEUE="compute"
-  COMPILE_QUEUE="shared"
-  PARTITION=
-  dprefix="/expanse/lustre/scratch/${USER}/temp_project/run"
-  DISKNM="/expanse/lustre/scratch/domh/temp_project/RT"
-  STMP="${dprefix}"
-  PTMP="${dprefix}"
-  SCHEDULER="slurm"
-
-elif [[ ${MACHINE_ID} = noaacloud ]]; then
-  echo "Setting up: noaacloud"
-  set -x
-  export PATH="/contrib/EPIC/bin:${PATH}"
-  module use /apps/modules/modulefiles
-
-  if [[ "${ROCOTO:-false}" == true ]] ; then
-    module load rocoto/1.3.3
-    ROCOTORUN=$(command -v rocotorun)
-    ROCOTOSTAT=$(command -v rocotostat)
-    ROCOTOCOMPLETE=$(command -v rocotocomplete)
-    ROCOTO_SCHEDULER=slurm
-  fi
-
-  QUEUE="batch"
-  COMPILE_QUEUE="batch"
-  PARTITION=
-  dprefix="/lustre/"
-  DISKNM="/contrib/ufs-weather-model/RT"
-  STMP="${dprefix}/stmp4"
-  PTMP="${dprefix}/stmp2"
-  SCHEDULER="slurm"
-
-else
-  die "Unknown machine ID, please edit detect_machine.sh file"
-fi
+    QUEUE="batch"
+    COMPILE_QUEUE="batch"
+    PARTITION=
+    dprefix="/lustre/"
+    DISKNM="/contrib/ufs-weather-model/RT"
+    STMP="${dprefix}/stmp4"
+    PTMP="${dprefix}/stmp2"
+    SCHEDULER="slurm"
+    ;;
+  *)
+    die "Unknown machine ID, please edit detect_machine.sh file"
+    ;;
+esac
 eval "${set_x}"
 
 # Does this machine support Rocoto?
 if [[ ${ROCOTO} == true ]]; then
+  echo "rt.sh: Verifying ROCOTO support..."
   if [[ ${MACHINE_ID} != wcoss2 && ${MACHINE_ID} != acorn && ${MACHINE_ID} != expanse && ${MACHINE_ID} != stampede ]]; then
     ROCOTORUN="$(command -v rocotorun)"
     export ROCOTORUN
@@ -1050,6 +1044,7 @@ fi
 
 # Does this machine support ecflow?
 if [[ ${ECFLOW} == true ]]; then
+  echo "Verifying ECFLOW support..."
   if [[ ${MACHINE_ID} == wcoss2 && ${MACHINE_ID} == acorn ]]; then
     ECFLOW_START="$(command -v server_check.sh)"
     
@@ -1121,6 +1116,7 @@ fi
 
 if [[ ${CREATE_BASELINE} == true ]]; then
   # PREPARE NEW REGRESSION TEST DIRECTORY
+  echo "rt.sh: Preparing RT Directory..."
   rm -rf "${NEW_BASELINE}"
   mkdir -p "${NEW_BASELINE}"
 
@@ -1267,7 +1263,6 @@ while read -r line || [[ -n "${line}" ]]; do
     fi
     set -u
     compiles[${COMPILE_ID}]=${COMPILE_ID}
-    echo "COMPILING ${compiles[${COMPILE_ID}]}"
 
     [[ ${CREATE_BASELINE} == true && ${CB} != *fv3* ]] && continue
 

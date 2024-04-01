@@ -15,7 +15,7 @@ fi
 jobid=0
 
 function compute_petbounds_and_tasks() {
-  echo "Called function: compute_petbounds_and_tasks()"
+  echo "rt_utils.sh: Computing PET bounds and tasks for test: ${TEST_ID}."
   [[ -o xtrace ]] && set_x='set -x' || set_x='set +x'
   set +x
   # each test MUST define ${COMPONENT}_tasks variable for all components it is using
@@ -82,15 +82,17 @@ function compute_petbounds_and_tasks() {
 
   UFS_tasks=${n}
 
-  echo "ATM_petlist_bounds: ${atm_petlist_bounds:-}"
-  echo "OCN_petlist_bounds: ${ocn_petlist_bounds:-}"
-  echo "ICE_petlist_bounds: ${ice_petlist_bounds:-}"
-  echo "WAV_petlist_bounds: ${wav_petlist_bounds:-}"
-  echo "CHM_petlist_bounds: ${chm_petlist_bounds:-}"
-  echo "MED_petlist_bounds: ${med_petlist_bounds:-}"
-  echo "AQM_petlist_bounds: ${aqm_petlist_bounds:-}"
-  echo "LND_petlist_bounds: ${lnd_petlist_bounds:-}"
-  echo "UFS_tasks         : ${UFS_tasks:-}"
+  if [[ ${RTVERBOSE} == true ]]; then
+    echo "ATM_petlist_bounds: ${atm_petlist_bounds:-}"
+    echo "OCN_petlist_bounds: ${ocn_petlist_bounds:-}"
+    echo "ICE_petlist_bounds: ${ice_petlist_bounds:-}"
+    echo "WAV_petlist_bounds: ${wav_petlist_bounds:-}"
+    echo "CHM_petlist_bounds: ${chm_petlist_bounds:-}"
+    echo "MED_petlist_bounds: ${med_petlist_bounds:-}"
+    echo "AQM_petlist_bounds: ${aqm_petlist_bounds:-}"
+    echo "LND_petlist_bounds: ${lnd_petlist_bounds:-}"
+    echo "UFS_tasks         : ${UFS_tasks:-}"
+  fi
 
   # TASKS is now set to UFS_TASKS
   export TASKS=${UFS_tasks}
@@ -98,9 +100,9 @@ function compute_petbounds_and_tasks() {
 }
 
 interrupt_job() {
-  echo "Called function: interrupt_job()"
+  echo "rt_utils.sh: Job ${jobid} interupted"
   set -x
-  echo "run_util.sh: interrupt_job called | Job#: ${jobid}"
+  #echo "run_util.sh: interrupt_job called | Job#: ${jobid}"
   case ${SCHEDULER} in
     pbs)
       qdel "${jobid}"
@@ -125,7 +127,7 @@ interrupt_job() {
 }
 
 submit_and_wait() {
-  echo "Called function: submit_and_wait()"
+  echo "rt_utils.sh: Submitting job: ${jobid} on ${SCHEDULER}"
   [[ -z $1 ]] && exit 1
 
   [[ -o xtrace ]] && set_x='set -x' || set_x='set +x'
@@ -413,7 +415,7 @@ submit_and_wait() {
 }
 
 check_results() {
-  echo "Called function: check_results()"
+  echo "rt_utils.sh: Checking results of the regression test: ${TEST_ID}"
   [[ -o xtrace ]] && set_x='set -x' || set_x='set +x'
   set +x
 
@@ -552,7 +554,7 @@ check_results() {
 
 
 kill_job() {
-  echo "Called function: kill_job()"
+  echo "rt_utils.sh: Killing job: ${jobid} on ${SCHEDULER}..."
   [[ -z $1 ]] && exit 1
 
   local -r jobid=$1
@@ -565,7 +567,7 @@ kill_job() {
 }
 
 rocoto_create_compile_task() {
-  echo "Called function: rocoto_create_compile_task()"
+  echo "rt_utils.sh: Creating ROCOTO compile task for compile: ${COMPILE_ID}"
   #new_compile=true
   if [[ ${in_metatask} == true ]]; then
     in_metatask=false
@@ -624,7 +626,7 @@ EOF
 }
 
 rocoto_create_run_task() {
-  echo "Called function: rocoto_create_run_task()"
+  echo "rt_utils.sh: Creating ROCOTO run task for test: ${TEST_ID}"
   if [[ ${DEP_RUN} != '' ]]; then
     DEP_STRING="<and> <taskdep task=\"compile_${COMPILE_ID}\"/> <taskdep task=\"${DEP_RUN}\"/> </and>"
   else
@@ -671,7 +673,7 @@ EOF
 }
 
 rocoto_kill() {
-  echo "Called function: rocoto_kill()"
+  echo "rt_utils.sh: Killing ROCOTO Workflow..."
   job_id_in=$( "${ROCOTOSTAT}" -w "${ROCOTO_XML}" -d "${ROCOTO_DB}" )
   job_id_in=$(grep 197001010000 <<< "${job_id_in}" )
   job_id_in=$(grep -E 'QUEUED|RUNNING' <<< "${job_id_in}" )
@@ -682,7 +684,7 @@ rocoto_kill() {
 }
 
 rocoto_step() {
-    echo "Called function: rocoto_step()"
+    echo "rt_utils.sh: Runnung one iteration of rocotorun and rocotostat..."
     set -e
     echo "Unknown" > rocoto_workflow.state
     # Run one iteration of rocotorun and rocotostat.
@@ -696,7 +698,7 @@ rocoto_step() {
 }
 
 rocoto_run() {
-  echo "Called function: rocoto_run()"
+  echo "rt_utils.sh: Running ROCOTO workflow"
   # Run the rocoto workflow until it is complete
   local naptime=60
   local step_attempts=0
@@ -744,7 +746,7 @@ rocoto_run() {
 
 
 ecflow_create_compile_task() {
-  echo "Called function: ecflow_compile_task()"
+  echo "rt_utils.sh: Creating ECFLOW compile task for: ${COMPILE_ID}"
   export new_compile=true
 
 
@@ -763,7 +765,7 @@ EOF
 }
 
 ecflow_create_run_task() {
-  echo "Called function: ecflow_create_run_task()"
+  echo "rt_utils.sh: Creating ECFLOW run task for: ${TEST_ID}"
   cat << EOF > "${ECFLOW_RUN}/${ECFLOW_SUITE}/${TEST_ID}${RT_SUFFIX}.ecf"
 %include <head.h>
 ${PATHRT}/run_test.sh "${PATHRT}" "${RUNDIR_ROOT}" "${TEST_NAME}" "${TEST_ID}" "${COMPILE_ID}" > "${LOG_DIR}/run_${TEST_ID}${RT_SUFFIX}.log" 2>&1 &
@@ -784,9 +786,9 @@ EOF
 }
 
 ecflow_run() {
-  echo "Called function: ecflow_run()"
+  echo "rt_utils.sh: Starting ECFLOW run"
   # NOTE: ECFLOW IS NOT SAFE TO RUN WITH set -e, PLEASE AVOID
-  ECF_HOST="${ECF_HOST:-${HOSTNAME}}"
+  #ECF_HOST="${ECF_HOST:-${HOSTNAME}}"
 
   
   # Make sure ECF_HOST and ECF_PORT are set/ready on systems that have an
@@ -810,6 +812,8 @@ ecflow_run() {
     exit 1
   else
     echo "ECF_HOST: ${ECF_HOST}, ECF_PORT: ${ECF_PORT}"
+    export ECF_HOST
+    export ECF_PORT
   fi
 
   # Start the ecflow_server
@@ -820,6 +824,7 @@ ecflow_run() {
   
   if [[ ${not_running} -eq 1 ]]; then
     echo "ecflow_server is NOT running on ${ECF_HOST}:${ECF_PORT}"
+    
     if [[ ${MACHINE_ID} == wcoss2 || ${MACHINE_ID} == acorn ]]; then
       #shellcheck disable=SC2029
       ssh "${ECF_HOST}" "bash -l -c \"module load ecflow && ${ECFLOW_START} -p ${ECF_PORT}\""
@@ -829,7 +834,8 @@ ecflow_run() {
     else
       ${ECFLOW_START} -p "${ECF_PORT}" -d "${RUNDIR_ROOT}/ecflow_server"
     fi
-
+    echo "Since this script is starting the ecflow_server, we will stop it at the end"
+    export STOP_ECFLOW_AT_END=true
     # Try pinging ecflow server now, and erroring out if not there.
     set +e
     ecflow_client --ping --host="${ECF_HOST}" --port="${ECF_PORT}"
@@ -846,9 +852,9 @@ ecflow_run() {
   
   ECFLOW_RUNNING=true
   set +e
-  ecflow_client --load="${ECFLOW_RUN}/${ECFLOW_SUITE}.def"
-  ecflow_client --begin="${ECFLOW_SUITE}"
-  ecflow_client --restart
+  ecflow_client --load="${ECFLOW_RUN}/${ECFLOW_SUITE}.def" --host="${ECF_HOST}" --port="${ECF_PORT}"
+  ecflow_client --begin="${ECFLOW_SUITE}" --host="${ECF_HOST}" --port="${ECF_PORT}"
+  ecflow_client --restart --host="${ECF_HOST}" --port="${ECF_PORT}"
   set -e
 
   active_tasks=1
@@ -876,7 +882,7 @@ ecflow_run() {
 }
 
 ecflow_kill() {
-  echo "Called function: ecflow_kill()"
+  echo "rt_utils.sh: Killing ECFLOW Workflow..."
    [[ ${ECFLOW_RUNNING:-false} == true ]] || return
    set +e
    ecflow_client --suspend "/${ECFLOW_SUITE}"
@@ -887,17 +893,28 @@ ecflow_kill() {
 }
 
 ecflow_stop() {
-  echo "Called function: ecflow_stop()"
+  echo "rt_utils.sh: Stopping ECFLOW Workflow..."
   [[ ${ECFLOW_RUNNING:-false} == true ]] || return
   set +e
   SUITES=$( ecflow_client --get )
   SUITES=$( grep "^suite" <<< "${SUITES}" )
-  #SUITES=$( ecflow_client --get | grep "^suite" )
   echo "SUITES=${SUITES}"
   if [[ -z "${SUITES}" ]]; then
     ecflow_client --halt=yes
     ecflow_client --check_pt
     ecflow_client --terminate=yes
+  fi
+  if [[ ${STOP_ECFLOW_AT_END} == true ]]; then
+    echo "rt_utils.sh: Stopping ECFLOW Server..."
+    case ${MACHINE_ID} in
+      wcoss2|acorn|hera|jet)
+        #shellcheck disable=SC2029
+        ssh "${ECF_HOST}" "bash -l -c \"${ECFLOW_STOP} -p ${ECF_PORT}\""
+        ;;
+      *)
+        ${ECFLOW_STOP} -p "${ECF_PORT}"
+        ;;
+    esac
   fi
   set -e
 }
