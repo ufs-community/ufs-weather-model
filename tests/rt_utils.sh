@@ -15,7 +15,7 @@ fi
 jobid=0
 
 function compute_petbounds_and_tasks() {
-  echo "rt_utils.sh: Computing PET bounds and tasks for test: ${TEST_ID}."
+  echo "rt_utils.sh: ${TEST_ID}: Computing PET bounds and tasks."
   [[ -o xtrace ]] && set_x='set -x' || set_x='set +x'
   set +x
   # each test MUST define ${COMPONENT}_tasks variable for all components it is using
@@ -567,7 +567,7 @@ kill_job() {
 }
 
 rocoto_create_compile_task() {
-  echo "rt_utils.sh: Creating ROCOTO compile task for compile: ${COMPILE_ID}"
+  echo "rt_utils.sh: ${COMPILE_ID}: Creating ROCOTO compile task."
   #new_compile=true
   if [[ ${in_metatask} == true ]]; then
     in_metatask=false
@@ -626,7 +626,7 @@ EOF
 }
 
 rocoto_create_run_task() {
-  echo "rt_utils.sh: Creating ROCOTO run task for test: ${TEST_ID}"
+  echo "rt_utils.sh: ${TEST_ID}: Creating ROCOTO run task."
   if [[ ${DEP_RUN} != '' ]]; then
     DEP_STRING="<and> <taskdep task=\"compile_${COMPILE_ID}\"/> <taskdep task=\"${DEP_RUN}\"/> </and>"
   else
@@ -746,7 +746,7 @@ rocoto_run() {
 
 
 ecflow_create_compile_task() {
-  echo "rt_utils.sh: Creating ECFLOW compile task for: ${COMPILE_ID}"
+  echo "rt_utils.sh: ${COMPILE_ID}: Creating ECFLOW compile task"
   export new_compile=true
 
 
@@ -765,7 +765,7 @@ EOF
 }
 
 ecflow_create_run_task() {
-  echo "rt_utils.sh: Creating ECFLOW run task for: ${TEST_ID}"
+  echo "rt_utils.sh: ${TEST_ID}: Creating ECFLOW run task"
   cat << EOF > "${ECFLOW_RUN}/${ECFLOW_SUITE}/${TEST_ID}${RT_SUFFIX}.ecf"
 %include <head.h>
 ${PATHRT}/run_test.sh "${PATHRT}" "${RUNDIR_ROOT}" "${TEST_NAME}" "${TEST_ID}" "${COMPILE_ID}" > "${LOG_DIR}/run_${TEST_ID}${RT_SUFFIX}.log" 2>&1 &

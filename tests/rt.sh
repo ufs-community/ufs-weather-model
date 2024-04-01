@@ -695,15 +695,15 @@ case ${MACHINE_ID} in
     fi
     module load intel/19.1.3.304 python/3.8.6
     if [[ "${ECFLOW:-false}" == true ]] ; then
-      ECF_ROOT=${ECF_ROOT:-}
-      ECFLOW_START="${ECF_ROOT}/scripts/server_check.sh"
-      ECFLOW_STOP="${ECF_ROOT}/bin/ecflow_stop.sh"
+      # ECF_ROOT=${ECF_ROOT:-}
+      # ECFLOW_START="${ECF_ROOT}/scripts/server_check.sh"
+      # ECFLOW_STOP="${ECF_ROOT}/bin/ecflow_stop.sh"
       export ECF_OUTPUTDIR="${PATHRT}/ecf_outputdir"
       export ECF_COMDIR="${PATHRT}/ecf_comdir"
       rm -rf "${ECF_OUTPUTDIR}" "${ECF_COMDIR}"
       mkdir -p "${ECF_OUTPUTDIR}"
       mkdir -p "${ECF_COMDIR}"
-      export ECFLOW_START ECFLOW_STOP
+      # export ECFLOW_START ECFLOW_STOP
     fi
     export colonifnco=":output"  # hack
 
@@ -738,11 +738,11 @@ case ${MACHINE_ID} in
     module load gcc/12.2.0
     if [[ "${ECFLOW:-false}" == true ]] ; then
       module load ecflow/5.8.4
-      ECFLOW_START=/ncrc/proj/epic/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
-      ECFLOW_STOP=/ncrc/proj/epic/spack-stack/ecflow-5.8.4/bin/ecflow_stop.sh
+      # ECFLOW_START=/ncrc/proj/epic/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
+      # ECFLOW_STOP=/ncrc/proj/epic/spack-stack/ecflow-5.8.4/bin/ecflow_stop.sh
       ECF_HOST=$(hostname)
       ECF_PORT=$(( $(id -u) + 1500 ))
-      export ECF_PORT ECF_HOST ECFLOW_START ECFLOW_STOP
+      export ECF_PORT ECF_HOST
     fi
 
     DISKNM=/gpfs/f5/epic/world-shared/UFS-WM_RT
@@ -768,9 +768,9 @@ case ${MACHINE_ID} in
 
     if [[ "${ECFLOW:-false}" == true ]] ; then
       module load ecflow/5.11.4
-      ECFLOW_START="$(command -v ecflow_start.sh)"
-      ECFLOW_STOP="$(command -v ecflow_stop.sh)"
-      export ECFLOW_START ECFLOW_STOP
+      # ECFLOW_START="$(command -v ecflow_start.sh)"
+      # ECFLOW_STOP="$(command -v ecflow_stop.sh)"
+      # export ECFLOW_START ECFLOW_STOP
     fi
 
     QUEUE="batch"
@@ -802,11 +802,11 @@ case ${MACHINE_ID} in
     module use /work/noaa/epic/role-epic/spack-stack/orion/modulefiles
     if [[ "${ECFLOW:-false}" == true ]] ; then
       module load ecflow/5.8.4
-      ECFLOW_START="/work/noaa/epic/role-epic/spack-stack/orion/ecflow-5.8.4/bin/ecflow_start.sh"
-      ECFLOW_STOP="/work/noaa/epic/role-epic/spack-stack/orion/ecflow-5.8.4/bin/ecflow_stop.sh"
+      # ECFLOW_START="/work/noaa/epic/role-epic/spack-stack/orion/ecflow-5.8.4/bin/ecflow_start.sh"
+      # ECFLOW_STOP="/work/noaa/epic/role-epic/spack-stack/orion/ecflow-5.8.4/bin/ecflow_stop.sh"
       ECF_HOST=$(hostname)
       ECF_PORT="$(( $(id -u) + 1500 ))"
-      export ECF_PORT ECF_HOST ECFLOW_START ECFLOW_STOP
+      export ECF_PORT ECF_HOST
     fi
 
     QUEUE="batch"
@@ -833,11 +833,11 @@ case ${MACHINE_ID} in
     module use /work/noaa/epic/role-epic/spack-stack/hercules/modulefiles
     if [[ "${ECFLOW:-false}" == true ]] ; then
       module load ecflow/5.8.4
-      ECFLOW_START="/work/noaa/epic/role-epic/spack-stack/hercules/ecflow-5.8.4/bin/ecflow_start.sh"
-      ECFLOW_STOP="/work/noaa/epic/role-epic/spack-stack/hercules/ecflow-5.8.4/bin/ecflow_stop.sh"
+      # ECFLOW_START="/work/noaa/epic/role-epic/spack-stack/hercules/ecflow-5.8.4/bin/ecflow_start.sh"
+      # ECFLOW_STOP="/work/noaa/epic/role-epic/spack-stack/hercules/ecflow-5.8.4/bin/ecflow_stop.sh"
       ECF_HOST=$(hostname)
       ECF_PORT="$(( $(id -u) + 1500 ))"
-      export ECF_PORT ECF_HOST ECFLOW_START ECFLOW_STOP
+      export ECF_PORT ECF_HOST
     fi
 
     QUEUE="batch"
@@ -872,9 +872,9 @@ case ${MACHINE_ID} in
 
     if [[ "${ECFLOW:-false}" == true ]] ; then
       module load ecflow/5.11.4
-      ECFLOW_START=/apps/ecflow/5.11.4/bin/ecflow_start.sh
-      ECFLOW_STOP=/apps/ecflow/5.11.4/bin/ecflow_stop.sh
-      export ECFLOW_START ECFLOW_STOP
+      # ECFLOW_START=/apps/ecflow/5.11.4/bin/ecflow_start.sh
+      # ECFLOW_STOP=/apps/ecflow/5.11.4/bin/ecflow_stop.sh
+      # export ECFLOW_START ECFLOW_STOP
     fi
 
     module use /mnt/lfs4/HFIP/hfv3gfs/role.epic/spack-stack/spack-stack-1.5.0/envs/unified-env-rocky8/install/modulefiles/Core
@@ -909,11 +909,11 @@ case ${MACHINE_ID} in
     module use /data/prod/jedi/spack-stack/modulefiles
     if [[ "${ECFLOW:-false}" == true ]] ; then
       module load ecflow/5.8.4
-      ECFLOW_START="/data/prod/jedi/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh"
-      ECFLOW_STOP="/data/prod/jedi/spack-stack/ecflow-5.8.4/bin/ecflow_stop.sh"
+      # ECFLOW_START="/data/prod/jedi/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh"
+      # ECFLOW_STOP="/data/prod/jedi/spack-stack/ecflow-5.8.4/bin/ecflow_stop.sh"
       ECF_HOST=$(hostname)
       ECF_PORT="$(( $(id -u) + 1500 ))"
-      export ECF_PORT ECF_HOST ECFLOW_START ECFLOW_STOP
+      export ECF_PORT ECF_HOST
     fi
 
     QUEUE="s4"
@@ -944,11 +944,11 @@ case ${MACHINE_ID} in
     module load stack-python/3.10.8
   #  export PYTHONPATH=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/glade/p/ral/jntp/tools/miniconda3/4.8.3/lib/python3.8/site-packages
     if [[ "${ECFLOW:-false}" == true ]] ; then
-      ECFLOW_START=/glade/work/epicufsrt/contrib/spack-stack/derecho/ecflow-5.8.4/bin/ecflow_start.sh
-      ECFLOW_STOP=/glade/work/epicufsrt/contrib/spack-stack/derecho/ecflow-5.8.4/bin/ecflow_stop.sh
+      # ECFLOW_START=/glade/work/epicufsrt/contrib/spack-stack/derecho/ecflow-5.8.4/bin/ecflow_start.sh
+      # ECFLOW_STOP=/glade/work/epicufsrt/contrib/spack-stack/derecho/ecflow-5.8.4/bin/ecflow_stop.sh
       ECF_HOST=$(hostname)
       ECF_PORT=$(( $(id -u) + 1500 ))
-      export ECF_PORT ECF_HOST ECFLOW_START ECFLOW_STOP
+      export ECF_PORT ECF_HOST
     fi
 
     QUEUE="main"
@@ -1043,30 +1043,38 @@ eval "${set_x}"
 # Does this machine support Rocoto?
 if [[ ${ROCOTO} == true ]]; then
   echo "rt.sh: Verifying ROCOTO support..."
-  if [[ ${MACHINE_ID} != wcoss2 && ${MACHINE_ID} != acorn && ${MACHINE_ID} != expanse && ${MACHINE_ID} != stampede ]]; then
-    ROCOTORUN="$(command -v rocotorun)"
-    export ROCOTORUN
-    ROCOTOSTAT="$(command -v rocotostat)"
-    export ROCOTOSTAT
-    ROCOTOCOMPLETE="$(command -v rocotocomplete)"
-    export ROCOTOCOMPLETE
-  else
-    die "Rocoto not supported on this machine, please do not use '-r'."
-  fi
+  case ${MACHINE_ID} in
+    wcoss2|acorn|expanse|stampede)
+      die "Rocoto not supported on this machine, please do not use '-r'."
+      ;;
+    *)
+      ROCOTORUN="$(command -v rocotorun)"
+      export ROCOTORUN
+      ROCOTOSTAT="$(command -v rocotostat)"
+      export ROCOTOSTAT
+      ROCOTOCOMPLETE="$(command -v rocotocomplete)"
+      export ROCOTOCOMPLETE
+      ;;
+  esac
 fi
 
 # Does this machine support ecflow?
 if [[ ${ECFLOW} == true ]]; then
   echo "Verifying ECFLOW support..."
-  if [[ ${MACHINE_ID} == wcoss2 && ${MACHINE_ID} == acorn ]]; then
-    ECFLOW_START="$(command -v server_check.sh)"
-    
-  elif [[ ${MACHINE_ID} == expanse || ${MACHINE_ID} == stampede || ${MACHINE_ID} == noaacloud ]]; then
-    die "ECFLOW not supported on this machine, please do not use '-e'."
-  else
-    ECFLOW_START="$(command -v ecflow_start.sh)"
-  fi
-
+  case ${MACHINE_ID} in
+    wcoss2|acorn)
+      ECFLOW_START="$(command -v server_check.sh)"
+      ECFLOW_STOP="$(command -v ecflow_stop.sh)"
+      ;;
+    expanse|stampede|noaacloud)
+      die "ECFLOW not supported on this machine, please do not use '-e'."
+      ;;
+    *)
+      ECFLOW_START="$(command -v ecflow_start.sh)"
+      ECFLOW_STOP="$(command -v ecflow_stop.sh)"
+      ;;
+  esac
+  export ECFLOW_START ECFLOW_STOP
   export ECF_OUTPUTDIR="${PATHRT}/ecf_outputdir"
   export ECF_COMDIR="${PATHRT}/ecf_comdir"
   rm -rf "${ECF_OUTPUTDIR}" "${ECF_COMDIR}"
