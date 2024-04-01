@@ -765,9 +765,9 @@ elif [[ ${MACHINE_ID} = gaea ]]; then
   QUEUE=normal
   COMPILE_QUEUE=normal
   PARTITION=c5
-  dprefix=${dprefix:-/gpfs/f5/$ACCNR/scratch/$USER}
-  STMP=${STMP:-$dprefix/RT_BASELINE}
-  PTMP=${PTMP:-$dprefix/RT_RUNDIRS}
+  dprefix=${dprefix:-/gpfs/f5/${ACCNR}/scratch/${USER}}
+  STMP=${STMP:-${dprefix}/RT_BASELINE}
+  PTMP=${PTMP:-${dprefix}/RT_RUNDIRS}
 
   SCHEDULER="slurm"
 
