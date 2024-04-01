@@ -697,12 +697,13 @@ case ${MACHINE_ID} in
     if [[ "${ECFLOW:-false}" == true ]] ; then
       ECF_ROOT=${ECF_ROOT:-}
       ECFLOW_START="${ECF_ROOT}/scripts/server_check.sh"
-      ECFLOW_STOP="${ECF_KILL_CMD}"
+      ECFLOW_STOP="${ECF_ROOT}/bin/ecflow_stop.sh"
       export ECF_OUTPUTDIR="${PATHRT}/ecf_outputdir"
       export ECF_COMDIR="${PATHRT}/ecf_comdir"
       rm -rf "${ECF_OUTPUTDIR}" "${ECF_COMDIR}"
       mkdir -p "${ECF_OUTPUTDIR}"
       mkdir -p "${ECF_COMDIR}"
+      export ECFLOW_START ECFLOW_STOP
     fi
     export colonifnco=":output"  # hack
 
@@ -723,9 +724,9 @@ case ${MACHINE_ID} in
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module use /ncrc/proj/epic/rocoto/modulefiles
       module load rocoto
-      ROCOTORUN=$(command -v rocotorun)
-      ROCOTOSTAT=$(command -v rocotostat)
-      ROCOTOCOMPLETE=$(command -v rocotocomplete)
+      # ROCOTORUN=$(command -v rocotorun)
+      # ROCOTOSTAT=$(command -v rocotostat)
+      # ROCOTOCOMPLETE=$(command -v rocotocomplete)
       ROCOTO_SCHEDULER="slurm"
     fi
     
@@ -741,6 +742,7 @@ case ${MACHINE_ID} in
       ECFLOW_STOP=/ncrc/proj/epic/spack-stack/ecflow-5.8.4/bin/ecflow_stop.sh
       ECF_HOST=$(hostname)
       ECF_PORT=$(( $(id -u) + 1500 ))
+      export ECF_PORT ECF_HOST ECFLOW_START ECFLOW_STOP
     fi
 
     DISKNM=/gpfs/f5/epic/world-shared/UFS-WM_RT
@@ -758,9 +760,9 @@ case ${MACHINE_ID} in
     set -x
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module load rocoto
-      ROCOTORUN=$(command -v rocotorun)
-      ROCOTOSTAT=$(command -v rocotostat)
-      ROCOTOCOMPLETE=$(command -v rocotocomplete)
+      # ROCOTORUN=$(command -v rocotorun)
+      # ROCOTOSTAT=$(command -v rocotostat)
+      # ROCOTOCOMPLETE=$(command -v rocotocomplete)
       ROCOTO_SCHEDULER=slurm
     fi
 
@@ -768,6 +770,7 @@ case ${MACHINE_ID} in
       module load ecflow/5.11.4
       ECFLOW_START="$(command -v ecflow_start.sh)"
       ECFLOW_STOP="$(command -v ecflow_stop.sh)"
+      export ECFLOW_START ECFLOW_STOP
     fi
 
     QUEUE="batch"
@@ -790,9 +793,9 @@ case ${MACHINE_ID} in
 
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module load contrib rocoto
-      ROCOTORUN=$(command -v rocotorun)
-      ROCOTOSTAT=$(command -v rocotostat)
-      ROCOTOCOMPLETE=$(command -v rocotocomplete)
+      # ROCOTORUN=$(command -v rocotorun)
+      # ROCOTOSTAT=$(command -v rocotostat)
+      # ROCOTOCOMPLETE=$(command -v rocotocomplete)
       ROCOTO_SCHEDULER="slurm"
     fi
 
@@ -803,6 +806,7 @@ case ${MACHINE_ID} in
       ECFLOW_STOP="/work/noaa/epic/role-epic/spack-stack/orion/ecflow-5.8.4/bin/ecflow_stop.sh"
       ECF_HOST=$(hostname)
       ECF_PORT="$(( $(id -u) + 1500 ))"
+      export ECF_PORT ECF_HOST ECFLOW_START ECFLOW_STOP
     fi
 
     QUEUE="batch"
@@ -820,9 +824,9 @@ case ${MACHINE_ID} in
     set -x
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module load contrib rocoto
-      ROCOTORUN=$(command -v rocotorun)
-      ROCOTOSTAT=$(command -v rocotostat)
-      ROCOTOCOMPLETE=$(command -v rocotocomplete)
+      # ROCOTORUN=$(command -v rocotorun)
+      # ROCOTOSTAT=$(command -v rocotostat)
+      # ROCOTOCOMPLETE=$(command -v rocotocomplete)
       ROCOTO_SCHEDULER="slurm"
     fi
 
@@ -833,6 +837,7 @@ case ${MACHINE_ID} in
       ECFLOW_STOP="/work/noaa/epic/role-epic/spack-stack/hercules/ecflow-5.8.4/bin/ecflow_stop.sh"
       ECF_HOST=$(hostname)
       ECF_PORT="$(( $(id -u) + 1500 ))"
+      export ECF_PORT ECF_HOST ECFLOW_START ECFLOW_STOP
     fi
 
     QUEUE="batch"
@@ -859,9 +864,9 @@ case ${MACHINE_ID} in
     
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module load rocoto
-      ROCOTORUN=$(command -v rocotorun)
-      ROCOTOSTAT=$(command -v rocotostat)
-      ROCOTOCOMPLETE=$(command -v rocotocomplete)
+      # ROCOTORUN=$(command -v rocotorun)
+      # ROCOTOSTAT=$(command -v rocotostat)
+      # ROCOTOCOMPLETE=$(command -v rocotocomplete)
       ROCOTO_SCHEDULER="slurm"
     fi
 
@@ -869,6 +874,7 @@ case ${MACHINE_ID} in
       module load ecflow/5.11.4
       ECFLOW_START=/apps/ecflow/5.11.4/bin/ecflow_start.sh
       ECFLOW_STOP=/apps/ecflow/5.11.4/bin/ecflow_stop.sh
+      export ECFLOW_START ECFLOW_STOP
     fi
 
     module use /mnt/lfs4/HFIP/hfv3gfs/role.epic/spack-stack/spack-stack-1.5.0/envs/unified-env-rocky8/install/modulefiles/Core
@@ -890,9 +896,9 @@ case ${MACHINE_ID} in
     set -x
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module load rocoto/1.3.2
-      ROCOTORUN=$(command -v rocotorun)
-      ROCOTOSTAT=$(command -v rocotostat)
-      ROCOTOCOMPLETE=$(command -v rocotocomplete)
+      # ROCOTORUN=$(command -v rocotorun)
+      # ROCOTOSTAT=$(command -v rocotostat)
+      # ROCOTOCOMPLETE=$(command -v rocotocomplete)
       ROCOTO_SCHEDULER=slurm
     fi
     if [[ "${ECFLOW:-false}" == true ]] ; then
@@ -907,6 +913,7 @@ case ${MACHINE_ID} in
       ECFLOW_STOP="/data/prod/jedi/spack-stack/ecflow-5.8.4/bin/ecflow_stop.sh"
       ECF_HOST=$(hostname)
       ECF_PORT="$(( $(id -u) + 1500 ))"
+      export ECF_PORT ECF_HOST ECFLOW_START ECFLOW_STOP
     fi
 
     QUEUE="s4"
@@ -941,7 +948,7 @@ case ${MACHINE_ID} in
       ECFLOW_STOP=/glade/work/epicufsrt/contrib/spack-stack/derecho/ecflow-5.8.4/bin/ecflow_stop.sh
       ECF_HOST=$(hostname)
       ECF_PORT=$(( $(id -u) + 1500 ))
-      export ECF_PORT
+      export ECF_PORT ECF_HOST ECFLOW_START ECFLOW_STOP
     fi
 
     QUEUE="main"
@@ -957,9 +964,9 @@ case ${MACHINE_ID} in
 
     
     if [[ "${ROCOTO:-false}" == true ]] ; then
-      ROCOTORUN=$(command -v rocotorun)
-      ROCOTOSTAT=$(command -v rocotostat)
-      ROCOTOCOMPLETE=$(command -v rocotocomplete)
+      # ROCOTORUN=$(command -v rocotorun)
+      # ROCOTOSTAT=$(command -v rocotostat)
+      # ROCOTOCOMPLETE=$(command -v rocotocomplete)
       ROCOTO_SCHEDULER="pbspro"
     fi
     ;;
@@ -1006,9 +1013,9 @@ case ${MACHINE_ID} in
 
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module load rocoto/1.3.3
-      ROCOTORUN=$(command -v rocotorun)
-      ROCOTOSTAT=$(command -v rocotostat)
-      ROCOTOCOMPLETE=$(command -v rocotocomplete)
+      # ROCOTORUN=$(command -v rocotorun)
+      # ROCOTOSTAT=$(command -v rocotostat)
+      # ROCOTOCOMPLETE=$(command -v rocotocomplete)
       ROCOTO_SCHEDULER=slurm
     fi
 
@@ -1026,6 +1033,12 @@ case ${MACHINE_ID} in
     ;;
 esac
 eval "${set_x}"
+
+# BEFORE MOVING ANY FURTHER LETS CHECK THAT DISKNM/STMP/PTMP ALL EXIST
+[[ -d ${DISKNM} ]] || die "ERROR: DISKNM: ${DISKNM} -- DOES NOT EXIST"
+[[ -d ${STMP} ]] || die "ERROR: STMP: ${STMP} -- DOES NOT EXIST"
+[[ -d ${PTMP} ]] || die "ERROR: PTMP: ${PTMP} -- DOES NOT EXIST"
+
 
 # Does this machine support Rocoto?
 if [[ ${ROCOTO} == true ]]; then
