@@ -114,16 +114,6 @@ interrupt_job() {
       echo "Unsupported scheduler, job may have not terminated properly."
       ;;
   esac
-  # if [[ ${SCHEDULER} = 'pbs' ]]; then
-  #   echo "run_util.sh: interrupt_job qsub_id = ${qsub_id}"
-  #   qdel "${qsub_id}"
-  # elif [[ ${SCHEDULER} = 'slurm' ]]; then
-  #   echo "run_util.sh: interrupt_job slurm_id = ${slurm_id}"
-  #   scancel "${slurm_id}"
-  # else
-  #   echo "run_util.sh: interrupt_job unknown SCHEDULER ${SCHEDULER}"
-  # fi
-  
 }
 
 submit_and_wait() {
@@ -155,31 +145,8 @@ submit_and_wait() {
       exit 1
       ;;
   esac
-  # if [[ ${SCHEDULER} = 'pbs' ]]; then
-  #   qsubout=$( qsub "${job_card}" )
-  #   re='^([0-9]+)(\.[a-zA-Z0-9\.-]+)$'
-  #   [[ "${qsubout}" =~ ${re} ]] && qsub_id=${BASH_REMATCH[1]}
-  #   jobid=${qsub_id}
-  # elif [[ ${SCHEDULER} = 'slurm' ]]; then
-  #   slurmout=$( sbatch "${job_card}" )
-  #   re='Submitted batch job ([0-9]+)'
-  #   [[ "${slurmout}" =~ ${re} ]] && slurm_id=${BASH_REMATCH[1]}
-  #   jobid=${slurm_id}
-  # else
-  #   echo "Unknown SCHEDULER ${SCHEDULER}"
-  #   exit 1
-  # fi
-  echo "Job ID: ${jobid}"
 
-  # #unify qsub_id or slurm_id to jobid
-  # if [[ ${SCHEDULER} = 'pbs' ]]; then
-  #   jobid=${qsub_id}
-  # elif [[ ${SCHEDULER} = 'slurm' ]]; then
-  #   jobid=${slurm_id}
-  # else
-  #   echo "Unknown SCHEDULER ${SCHEDULER}"
-  #   exit 1
-  # fi
+  echo "Job ID: ${jobid}"
 
   # wait for the job to enter the queue
   local count=0
@@ -187,7 +154,6 @@ submit_and_wait() {
   echo "Job is waiting to enter the queue"
   until [[ ${job_running} == 'true' ]]
   do
-    # [[ ${ECFLOW:-false} == true ]] && ecflow_client --label=job_status "waiting to enter the queue"
     case ${SCHEDULER} in
       pbs)
         job_info=$( qstat "${jobid}" )
@@ -198,21 +164,6 @@ submit_and_wait() {
       *)
         ;;
     esac
-    # if [[ ${SCHEDULER} = 'pbs' ]]; then
-    #   job_running=$( qstat "${jobid}" )
-    #   # job_running=$( grep "${qsub_id}" <<< "${job_running}" )
-    #   # job_running=$( wc -l <<< "${job_running}" )
-    # elif [[ ${SCHEDULER} = 'slurm' ]]; then
-    #   job_running=$( squeue -u "${USER}" -j "${jobid}" )
-    #   # if grep -q "${slurm_id}" <<< "${job_running}"; then
-    #   #   job_running=true
-    #   # else
-    #   #   job_running=false
-    #   # fi
-    # else
-    #   echo "Unknown SCHEDULER ${SCHEDULER}"
-    #   exit 1
-    # fi
     
     if grep -q "${jobid}" <<< "${job_info}"; then
       job_running=true
@@ -225,12 +176,6 @@ submit_and_wait() {
     if [[ ${count} -eq 13 ]]; then echo "No job in queue after one minute, exiting..."; exit 2; fi
   done
   echo "Job is submitted: ID: ${jobid}"
-  
-  
-  # if [[ ${ECFLOW:-false} == true ]]; then
-  #   ecflow_client --label=job_id "${jobid}"
-  #   ecflow_client --label=job_status "submitted"
-  # fi
 
   # wait for the job to finish and compare results
   local n=1
@@ -246,21 +191,7 @@ submit_and_wait() {
       *)
         ;;
     esac
-    # if [[ ${SCHEDULER} = 'pbs' ]]; then
-    #   job_running=$( qstat "${jobid}" )
-    #   # job_running=$( grep "${qsub_id}" <<< "${job_running}" )
-    #   # job_running=$( wc -l <<< "${job_running}" )
-    # elif [[ ${SCHEDULER} = 'slurm' ]]; then
-    #   job_running=$( squeue -u "${USER}" -j "${jobid}" )
-    #   # if grep -q "${slurm_id}" <<< "${job_running}"; then
-    #   #     job_running=true
-    #   # else
-    #   #     job_running=false
-    #   # fi
-    # else
-    #   echo "Unknown SCHEDULER ${SCHEDULER}"
-    #   exit 1
-    # fi
+
 
     if grep -q "${jobid}" <<< "${job_info}"; then
       job_running=true
@@ -268,19 +199,6 @@ submit_and_wait() {
       job_running=false
       continue
     fi
-
-    # case ${SCHEDULER} in
-    #   pbs)
-    #     status=$( qstat "${jobid}" )
-    #     ;;
-    #   slurm)
-    #     status=$( squeue -u "${USER}" -j "${jobid}" 2>/dev/null )
-    #     ;;
-    #   *)
-    #     echo "Unsupported scheduler: ${SCHEDULER}"
-    #     exit 1
-    #     ;;
-    # esac
 
     # Getting the status letter from scheduler info
     status=$( grep "${jobid}" <<< "${job_info}" )
@@ -326,90 +244,11 @@ submit_and_wait() {
         ;;
     esac
 
-      # if [[ ${SCHEDULER} = 'pbs' ]]; then
-      #   status=$( qstat "${qsub_id}" )
-      #   status=$( grep "${qsub_id}" <<< "${status}" )
-      #   status=$( awk '{print $5}' <<< "${status}" )
-      #   status=${status:--}
-      #   if grep -q "${slurm_id}" <<< "${status}"; then
-      #     if   [[ ${status} = 'Q' ]];  then
-      #       status_label='waiting in a queue'
-      #     elif [[ ${status} = 'H' ]];  then
-      #       status_label='held in a queue'
-      #     elif [[ ${status} = 'R' ]];  then
-      #       status_label='running'
-      #     elif [[ ${status} = 'E' ]] || [[ ${status} = 'C' ]] || [[ ${status} = '-' ]];  then
-      #       status_label='finished'
-      #       test_status='DONE'
-      #       exit_status=$( qstat "${jobid}" -x -f )
-      #       exit_status=$( grep Exit_status <<< "${exit_status}" )
-      #       exit_status=$( awk '{print $3}' <<< "${exit_status}" )
-      #       if [[ ${exit_status} != 0 ]]; then
-      #         test_status='FAIL'
-      #       fi
-      #     else
-      #       status_label='finished'
-      #     fi
-      #   fi
-
-      # elif [[ ${SCHEDULER} = 'slurm' ]]; then
-      #   status=$( squeue -u "${USER}" -j "${slurm_id}" 2>/dev/null )
-      #   #status=$( grep "${slurm_id}" <<< "${status}" )
-      #   #status=$( awk '{print $5}' <<< "${status}" )
-      #   if grep -q "${jobid}" <<< "${status}"; then
-      #     status=$( grep "${jobid}" <<< "${status}" )
-      #     status=$( awk '{print $5}' <<< "${status}" )
-      #     if   [[ ${status} = 'R'  ]];  then
-      #       status_label='running'
-      #     elif [[ ${status} = 'PD' ]];  then
-      #       status_label='pending'
-      #     elif [[ ${status} = 'F'  ]];  then
-      #       status_label='failed'
-      #       test_status='FAIL'
-      #     elif [[ ${status} = 'C'  ]];  then
-      #       status_label='finished'
-      #       test_status='DONE'
-      #     else
-      #       echo "Slurm unknown status ${status}. Check sacct ..."
-      #       #sacct -n -j "${slurm_id}" --format=JobID,state%20,Jobname%20
-      #       status_label=$( sacct -n -j "${slurm_id}" --format=JobID,state%20,Jobname%20 )
-      #       status_label=$( grep "^${slurm_id}" <<< "${status_label}" )
-      #       status_label=$( grep "${JBNME}" <<< "${status_label}" )
-      #       status_label=$( awk '{print $2}' <<< "${status_label}" )
-      #       if [[ ${status_label} = 'FAILED' ]] || [[ ${status_label} = 'TIMEOUT' ]] || [[ ${status_label} = 'CANCELLED' ]] ; then
-      #           test_status='FAIL'
-      #       fi
-      #     fi
-      #   else
-      #     test_status='DONE'
-      #   fi
-
-      # else
-      #   echo "Unknown SCHEDULER ${SCHEDULER}"
-      #   exit 1
-
-      # fi
-
     echo "${n} min. ${SCHEDULER^} Job ${jobid} Status: ${status_label} (${status})"
-    # [[ ${ECFLOW:-false} == true ]] && ecflow_client --label=job_status "${status_label}"
-    # if [[ ${test_status} = 'FAIL' || ${test_status} = 'DONE' ]]; then
-    #   echo "SYSTEM INDICATED JOB COMPLETION..."
-    #   break
-    # fi
 
     (( n=n+1 ))
     sleep 60 & wait $!
   done
-
-  # if [[ ${test_status} = 'FAIL' ]]; then
-  #   echo "Job FAIL" >> "${RT_LOG}"
-  #   echo;echo;echo                           >> "${RT_LOG}"
-  #   echo "Job FAIL"
-
-  #   if [[ ${ROCOTO} == true || ${ECFLOW} == true ]]; then
-  #     exit 1
-  #   fi
-  # fi
 
   eval "${set_x}"
 }

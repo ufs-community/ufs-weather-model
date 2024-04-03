@@ -343,16 +343,15 @@ EOF
             TEST_RESULT="FAILED TO FINISH RUN"
             FAIL_LOG="${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"
           fi
-        else
           if grep -q "quota" "${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"; then
             TEST_RESULT="FAILED DUE TO DISK QUOTA"
             FAIL_LOG="${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"
           elif grep -q "timeout" "${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"; then
             TEST_RESULT="FAILED FROM TIMEOUT"
             FAIL_LOG="${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"
-          else
-            TEST_RESULT="PASS"
           fi
+        else
+          TEST_RESULT="PASS"
         fi
         if [[ ${TEST_RESULT} == "PASS" ]]; then
           TIME_FILE="${LOG_DIR}/run_${TEST_NAME}_${COMPILER}_timestamp.txt"
