@@ -63,10 +63,11 @@ export INPUT_DIR=${CNTL_DIR}
 export RUNDIR=${RUNDIR_ROOT}/${TEST_ID}${RT_SUFFIX}
 export CNTL_DIR=${CNTL_DIR}${BL_SUFFIX}
 
-JBNME=$(basename "${RUNDIR_ROOT}")_${TEST_ID}
+#JBNME=$(basename "${RUNDIR_ROOT}")_${TEST_ID}
+JBNME="run_${TEST_ID}"
 export JBNME
 date_s=$( date +%s )
-echo -n "${TEST_ID}, ${date_s}," > "${LOG_DIR}/run_${TEST_ID}_timestamp.txt"
+echo -n "${TEST_ID}, ${date_s}," > "${LOG_DIR}/${JBNME}_timestamp.txt"
 
 export RT_LOG=${LOG_DIR}/rt_${TEST_ID}${RT_SUFFIX}.log
 echo "Test ${TEST_ID} ${TEST_DESCR}"
@@ -97,29 +98,54 @@ cp "${PATHTR}/modulefiles/ufs_common.lua" "./modulefiles/."
 # Get the shell file that loads the "module" command and purges modules:
 cp "${PATHRT}/module-setup.sh" "module-setup.sh"
 
-# load nccmp module
-if [[ " s4 hera orion hercules gaea jet derecho acorn wcoss2 " =~ ${MACHINE_ID} ]]; then
-  if [[ " wcoss2 acorn " =~ ${MACHINE_ID} ]] ; then
+# # load nccmp module
+# if [[ " s4 hera orion hercules gaea jet derecho acorn wcoss2 " =~ ${MACHINE_ID} ]]; then
+#   if [[ " wcoss2 acorn " =~ ${MACHINE_ID} ]] ; then
+#     module load intel/19.1.3.304 netcdf/4.7.4
+#     module load nccmp
+#   elif [[ " s4 " =~ ${MACHINE_ID} ]] ; then
+#     module use /data/prod/jedi/spack-stack/spack-stack-1.4.1/envs/ufs-pio-2.5.10/install/modulefiles/Core
+#     module load stack-intel/2021.5.0 stack-intel-oneapi-mpi/2021.5.0
+#     module load miniconda/3.9.12
+#     module load nccmp/1.9.0.1
+#   elif [[ " hera orion hercules gaea jet " =~ ${MACHINE_ID} ]] ; then
+#     module use modulefiles
+#     module load modules.fv3
+#     if [[ " gaea " =~ ${MACHINE_ID} ]]; then
+#       module load gcc/12.2.0
+#     fi
+#   else
+#     module load nccmp
+#   fi
+# fi
+#no stampede expanse noaacloud
+case ${MACHINE_ID} in
+  wcoss2|acorn)
     module load intel/19.1.3.304 netcdf/4.7.4
     module load nccmp
-  elif [[ " s4 " =~ ${MACHINE_ID} ]] ; then
+    ;;
+  s4)
     module use /data/prod/jedi/spack-stack/spack-stack-1.4.1/envs/ufs-pio-2.5.10/install/modulefiles/Core
     module load stack-intel/2021.5.0 stack-intel-oneapi-mpi/2021.5.0
     module load miniconda/3.9.12
     module load nccmp/1.9.0.1
-  elif [[ " hera orion hercules gaea jet " =~ ${MACHINE_ID} ]] ; then
+    ;;
+  stampede|expanse|noaacloud)
+    echo "No special nccmp load necessary"
+    ;;
+  gaea)
     module use modulefiles
     module load modules.fv3
-    if [[ " gaea " =~ ${MACHINE_ID} ]]; then
-      module load gcc/12.2.0
-    fi
-  else
+    module load gcc/12.2.0
+    ;;
+  derecho)
     module load nccmp
-  fi
-fi
-
-#SRCD="${PATHTR}"
-#RUND="${RUNDIR}"
+    ;;
+  *)
+    module use modulefiles
+    module load modules.fv3
+    ;;
+esac
 
 # FV3_RUN could have multiple entry seperated by space
 if [[ -n "${FV3_RUN}" ]]; then
@@ -163,7 +189,7 @@ else
   exit 1
 fi
 
-if [[ "Q${INPUT_NEST02_NML:-}" != Q ]] ; then
+if [[ "Q${INPUT_NEST02_NML:-}" != Q ]]; then
     export INPES_NEST=${INPES_NEST02:-}
     export JNPES_NEST=${JNPES_NEST02:-}
     export NPX_NEST=${NPX_NEST02:-}
@@ -175,7 +201,7 @@ else
     sed -i -e "/<output_grid_02>/,/<\/output_grid_02>/d" model_configure
 fi
 
-if [[ "Q${INPUT_NEST03_NML:-}" != Q ]] ; then
+if [[ "Q${INPUT_NEST03_NML:-}" != Q ]]; then
     export INPES_NEST=${INPES_NEST03:-}
     export JNPES_NEST=${JNPES_NEST03:-}
     export NPX_NEST=${NPX_NEST03:-}
@@ -187,7 +213,7 @@ else
     sed -i -e "/<output_grid_03>/,/<\/output_grid_03>/d" model_configure
 fi
 
-if [[ "Q${INPUT_NEST04_NML:-}" != Q ]] ; then
+if [[ "Q${INPUT_NEST04_NML:-}" != Q ]]; then
     export INPES_NEST=${INPES_NEST04:-}
     export JNPES_NEST=${JNPES_NEST04:-}
     export NPX_NEST=${NPX_NEST04:-}
@@ -199,7 +225,7 @@ else
     sed -i -e "/<output_grid_04>/,/<\/output_grid_04>/d" model_configure
 fi
 
-if [[ "Q${INPUT_NEST05_NML:-}" != Q ]] ; then
+if [[ "Q${INPUT_NEST05_NML:-}" != Q ]]; then
     export INPES_NEST=${INPES_NEST05:-}
     export JNPES_NEST=${JNPES_NEST05:-}
     export NPX_NEST=${NPX_NEST05:-}
@@ -211,7 +237,7 @@ else
     sed -i -e "/<output_grid_05>/,/<\/output_grid_05>/d" model_configure
 fi
 
-if [[ "Q${INPUT_NEST06_NML:-}" != Q ]] ; then
+if [[ "Q${INPUT_NEST06_NML:-}" != Q ]]; then
     export INPES_NEST=${INPES_NEST06:-}
     export JNPES_NEST=${JNPES_NEST06:-}
     export NPX_NEST=${NPX_NEST06:-}
@@ -224,11 +250,11 @@ else
 fi
 
 # diag table
-if [[ "Q${DIAG_TABLE:-}" != Q ]] ; then
+if [[ "Q${DIAG_TABLE:-}" != Q ]]; then
   atparse < "${PATHRT}/parm/diag_table/${DIAG_TABLE}" > diag_table
 fi
 # Field table
-if [[ "Q${FIELD_TABLE:-}" != Q ]] ; then
+if [[ "Q${FIELD_TABLE:-}" != Q ]]; then
   cp "${PATHRT}/parm/field_table/${FIELD_TABLE}" field_table
 fi
 
@@ -287,7 +313,7 @@ if [[ ${HAFS} = 'true' ]] && [[ ${DATM_CDEPS} = 'false' ]]; then
   atparse < "${PATHRT}/parm/diag_table/${DIAG_TABLE:-diag_table_template}" > diag_table
 fi
 
-if [[ "${DIAG_TABLE_ADDITIONAL:-}Q" != Q ]] ; then
+if [[ "${DIAG_TABLE_ADDITIONAL:-}Q" != Q ]]; then
   # Append diagnostic outputs, to support tests that vary from others
   # only by adding diagnostics.
   atparse < "${PATHRT}/parm/diag_table/${DIAG_TABLE_ADDITIONAL:-}" >> diag_table
@@ -394,7 +420,7 @@ else
 fi
 
 if [[ ${SCHEDULER} != 'none' ]]; then
-  cat "${RUNDIR}/job_timestamp.txt" >> "${LOG_DIR}/run_${TEST_ID}_timestamp.txt"
+  cat "${RUNDIR}/job_timestamp.txt" >> "${LOG_DIR}/${JBNME}_timestamp.txt"
 fi
 
 if [[ ${ROCOTO} = true ]]; then
@@ -406,7 +432,7 @@ fi
 ################################################################################
 
 date_s=$( date +%s )
-echo " ${date_s}, ${NODES}" >> "${LOG_DIR}/run_${TEST_ID}_timestamp.txt"
+echo " ${date_s}, ${NODES}" >> "${LOG_DIR}/${JBNME}_timestamp.txt"
 
 ################################################################################
 # Remove RUN_DIRs if they are no longer needed by other tests
@@ -427,4 +453,5 @@ if [[ ${delete_rundir} = true ]]; then
 fi
 
 elapsed=${SECONDS}
-echo "Elapsed time ${elapsed} seconds. Test ${TEST_ID}"
+echo "run_test.sh: Test ${TEST_ID} Completed."
+echo "run_test.sh: Test ${TEST_ID} Elapsed time ${elapsed} seconds."

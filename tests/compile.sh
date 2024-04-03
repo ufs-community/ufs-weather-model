@@ -34,8 +34,6 @@ if [[ ${ARGC} -lt 2 ]]; then
   echostuff=${echostuff/:.*configure_::g}
   echostuff=${echostuff/:\.cmake::}
   echostuff=$( fold -sw72 <<< "${echostuff}" )
-
-  #echo $( ls -1 ../cmake/configure_* | sed s:.*configure_::g | sed s:\.cmake:: ) | fold -sw72
   exit 1
 else
   MACHINE_ID=$1
@@ -60,22 +58,24 @@ fi
 
 BUILD_JOBS=${BUILD_JOBS:-8}
 
-hostname
+#hostname
 
 set +x
-if [[ ${MACHINE_ID} == macosx ]] || [[ ${MACHINE_ID} == linux ]]; then
-  source "${PATHTR}/modulefiles/ufs_${MACHINE_ID}.${RT_COMPILER}"
-else
-  # Activate lua environment for gaea c5
-  if [[ ${MACHINE_ID} == gaea ]]; then
-    module reset
-  fi
-  # Load fv3 module
-  module use "${PATHTR}/modulefiles"
-  modulefile="ufs_${MACHINE_ID}.${RT_COMPILER}"
-  module load "${modulefile}"
-  module list
-fi
+case ${MACHINE_ID} in
+  macosx|linux)
+    source "${PATHTR}/modulefiles/ufs_${MACHINE_ID}.${RT_COMPILER}"
+    ;;
+  *)
+    # Activate lua environment for gaea c5
+    if [[ ${MACHINE_ID} == gaea ]]; then
+      module reset
+    fi
+    # Load fv3 module
+    module use "${PATHTR}/modulefiles"
+    modulefile="ufs_${MACHINE_ID}.${RT_COMPILER}"
+    module load "${modulefile}"
+    module list
+esac
 set -x
 
 echo "Compiling ${MAKE_OPT} into ${BUILD_NAME}.exe on ${MACHINE_ID}"
@@ -101,7 +101,6 @@ export SUITES
 set -ex
 
 # Valid applications
-
 if [[ "${MAKE_OPT}" == *"-DAPP=S2S"* ]]; then
     CMAKE_FLAGS+=" -DMOM6SOLO=ON"
 fi
@@ -113,9 +112,7 @@ fi
 CMAKE_FLAGS=$(set -e; trim "${CMAKE_FLAGS}")
 echo "CMAKE_FLAGS = ${CMAKE_FLAGS}"
 
-if [[ ${clean_before} = YES ]] ; then
-  rm -rf "${BUILD_DIR}"
-fi
+[[ ${clean_before} = YES ]] && rm -rf "${BUILD_DIR}"
 
 export BUILD_VERBOSE=1
 export BUILD_DIR
@@ -131,9 +128,7 @@ else
   cp "${PATHTR}/modulefiles/ufs_${MACHINE_ID}.${RT_COMPILER}.lua" "${PATHTR}/tests/modules.${BUILD_NAME}.lua"
 fi
 
-if [[ ${clean_after} = YES ]] ; then
-  rm -rf "${BUILD_DIR}"
-fi
+[[ ${clean_after} == YES ]] && rm -rf "${BUILD_DIR}"
 
 elapsed=${SECONDS}
 echo "Elapsed time ${elapsed} seconds. Compiling ${CMAKE_FLAGS} finished"

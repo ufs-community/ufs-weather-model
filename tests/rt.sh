@@ -84,10 +84,8 @@ update_rtconf() {
     [[ ${line} == \#* ]] && continue
     
     if [[ ${line} =~ COMPILE ]] ; then
-      #MACHINES=$(echo "${line}" | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
       MACHINES=$(cut -d'|' -f5 <<< "${line}")
       MACHINES=$(sed -e 's/^ *//' -e 's/ *$//' <<< "${MACHINES}")
-      #RT_COMPILER_IN=$(echo "${line}" | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
       RT_COMPILER_IN=$(cut -d'|' -f3 <<< "${line}")
       RT_COMPILER_IN=$(sed -e 's/^ *//' -e 's/ *$//' <<< "${RT_COMPILER_IN}")
       if [[ ${MACHINES} == '' ]]; then
@@ -103,10 +101,8 @@ update_rtconf() {
 
     if [[ ${line} =~ RUN ]]; then
       to_run_test=false
-      #tmp_test=$(echo "$line" | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
       tmp_test=$(cut -d'|' -f2 <<< "${line}")
       tmp_test=$(sed -e 's/^ *//' -e 's/ *$//' <<< "${tmp_test}")
-      #MACHINES=$(echo $line | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
       MACHINES=$(cut -d'|' -f3 <<< "${line}")
       MACHINES=$(sed -e 's/^ *//' -e 's/ *$//' <<< "${MACHINES}")
       if [[ ${MACHINES} == '' ]]; then
@@ -126,7 +122,6 @@ update_rtconf() {
 
             COMPILE_LINE_USED=true
           fi
-          #dep_test=$(echo "${line}" | grep -w "$tmp_test" | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
           dep_test=$(grep -w "${tmp_test}" <<< "${line}")
           dep_test=$(cut -d'|' -f5 <<< "${dep_test}")
           dep_test=$(sed -e 's/^ *//' -e 's/ *$//' <<< "${dep_test}")
@@ -134,8 +129,6 @@ update_rtconf() {
           if [[ ${dep_test} != '' ]]; then
             find_match_result=$(set -e; find_match "${dep_test} ${RT_COMPILER_IN}" "${TEST_WITH_COMPILE[@]}")
             if [[ ${find_match_result} == -1 ]]; then
-  
-              #dep_line=$(grep -w "$dep_test" rt.conf | grep -v "$tmp_test")
               dep_line=$(grep -w "${dep_test}" rt.conf)
               dep_line=$(grep -v "${tmp_test}" <<< "${dep_line}")
               dep_line="${dep_line#"${dep_line%%[![:space:]]*}"}"
@@ -186,9 +179,10 @@ Submodule hashes used in testing:
 EOF
   cd ..
   if  [[ ${MACHINE_ID} != hera  ]]; then
-  git submodule status --recursive >> "${REGRESSIONTEST_LOG}"
+    git submodule status --recursive >> "${REGRESSIONTEST_LOG}"
+  else
+    git submodule status >> "${REGRESSIONTEST_LOG}"
   fi
-  git submodule status >> "${REGRESSIONTEST_LOG}"
   echo; echo >> "${REGRESSIONTEST_LOG}"
   cd tests
   
@@ -212,7 +206,7 @@ EOF
   [[ ${DEFINE_CONF_FILE} == true ]] && echo "* (-l) - USE CONFIG FILE: ${TESTS_FILE}" >> "${REGRESSIONTEST_LOG}"
   [[ ${RTPWD_NEW_BASELINE} == true ]] && echo "* (-m) - COMPARE AGAINST CREATED BASELINES" >> "${REGRESSIONTEST_LOG}"
   [[ ${RUN_SINGLE_TEST} == true ]] && echo "* (-n) - RUN SINGLE TEST: ${SINGLE_OPTS}" >> "${REGRESSIONTEST_LOG}"
-  [[ ${COMPILE_ONLY} == true ]]&& echo "* (-o) COMPILE ONLY, SKIP TESTS" >> "${REGRESSIONTEST_LOG}"
+  [[ ${COMPILE_ONLY} == true ]]&& echo "* (-o) - COMPILE ONLY, SKIP TESTS" >> "${REGRESSIONTEST_LOG}"
   [[ ${delete_rundir} == true ]] && echo "* (-d) - DELETE RUN DIRECTORY" >> "${REGRESSIONTEST_LOG}"
   [[ ${skip_check_results} == true ]] && echo "* (-w) - SKIP RESULTS CHECK" >> "${REGRESSIONTEST_LOG}"
   [[ ${KEEP_RUNDIR} == true ]] && echo "* (-k) - KEEP RUN DIRECTORY" >> "${REGRESSIONTEST_LOG}"
@@ -233,15 +227,12 @@ EOF
 
     if [[ ${line} == COMPILE* ]] ; then
       
-      #CMACHINES=$(echo "${line}" | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
       CMACHINES=$(cut -d'|' -f5 <<< "${line}")
       CMACHINES=$(sed -e 's/^ *//' -e 's/ *$//' <<< "${CMACHINES}")
       
-      #COMPILER=$(echo "${line}" | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
       COMPILER=$(cut -d'|' -f3 <<< "${line}")
       COMPILER=$(sed -e 's/^ *//' -e 's/ *$//' <<< "${COMPILER}")
 
-      #COMPILE_NAME=$(echo "${line}" | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
       COMPILE_NAME=$(cut -d'|' -f2 <<< "${line}")
       COMPILE_NAME=$(sed -e 's/^ *//' -e 's/ *$//' <<< "${COMPILE_NAME}")
 
@@ -466,7 +457,6 @@ EOF
 
 create_or_run_compile_task() {
   cat << EOF > "${RUNDIR_ROOT}/compile_${COMPILE_ID}.env"
-export JOB_NR=${JOB_NR}
 export COMPILE_ID=${COMPILE_ID}
 export MACHINE_ID=${MACHINE_ID}
 export RT_COMPILER=${RT_COMPILER}
@@ -487,8 +477,9 @@ EOF
   elif [[ ${ECFLOW} == true ]]; then
     ecflow_create_compile_task
   else
-    echo "rt.sh: Running compile w/o workflow"
+    echo "rt.sh: Running compile ${COMPILE_ID}"
     ./run_compile.sh "${PATHRT}" "${RUNDIR_ROOT}" "${MAKE_OPT}" "${COMPILE_ID}" > "${LOG_DIR}/compile_${COMPILE_ID}.log" 2>&1
+    echo "rt.sh: Compile ${COMPILE_ID} completed."
   fi
 
   RT_SUFFIX=""
@@ -541,7 +532,6 @@ cleanup() {
 trap '{ echo "rt.sh interrupted"; rt_trap ; }' INT
 trap '{ echo "rt.sh quit"; rt_trap ; }' QUIT
 trap '{ echo "rt.sh terminated"; rt_trap ; }' TERM
-#trap '{ echo "rt.sh error on line $LINENO"; rt_trap ; }' ERR
 trap '{ handle_error $? $LINENO ; }' ERR
 trap '{ echo "rt.sh finished"; cleanup ; }' EXIT
 
@@ -584,7 +574,7 @@ TESTS_FILE='rt.conf'
 NEW_BASELINES_FILE=''
 DEFINE_CONF_FILE=false
 RUN_SINGLE_TEST=false
-RTVERBOSE=false
+export RTVERBOSE=false
 export STOP_ECFLOW_AT_END=false
 ACCNR=${ACCNR:-""}
 
@@ -1041,46 +1031,46 @@ eval "${set_x}"
 
 
 # Does this machine support Rocoto?
-if [[ ${ROCOTO} == true ]]; then
-  echo "rt.sh: Verifying ROCOTO support..."
-  case ${MACHINE_ID} in
-    wcoss2|acorn|expanse|stampede)
-      die "Rocoto not supported on this machine, please do not use '-r'."
-      ;;
-    *)
-      ROCOTORUN="$(command -v rocotorun)"
-      export ROCOTORUN
-      ROCOTOSTAT="$(command -v rocotostat)"
-      export ROCOTOSTAT
-      ROCOTOCOMPLETE="$(command -v rocotocomplete)"
-      export ROCOTOCOMPLETE
-      ;;
-  esac
-fi
+# if [[ ${ROCOTO} == true ]]; then
+#   echo "rt.sh: Verifying ROCOTO support..."
+#   case ${MACHINE_ID} in
+#     wcoss2|acorn|expanse|stampede)
+#       die "Rocoto not supported on this machine, please do not use '-r'."
+#       ;;
+#     *)
+#       ROCOTORUN="$(command -v rocotorun)"
+#       export ROCOTORUN
+#       ROCOTOSTAT="$(command -v rocotostat)"
+#       export ROCOTOSTAT
+#       ROCOTOCOMPLETE="$(command -v rocotocomplete)"
+#       export ROCOTOCOMPLETE
+#       ;;
+#   esac
+# fi
 
 # Does this machine support ecflow?
-if [[ ${ECFLOW} == true ]]; then
-  echo "Verifying ECFLOW support..."
-  case ${MACHINE_ID} in
-    wcoss2|acorn)
-      ECFLOW_START="$(command -v server_check.sh)"
-      ECFLOW_STOP="$(command -v ecflow_stop.sh)"
-      ;;
-    expanse|stampede|noaacloud)
-      die "ECFLOW not supported on this machine, please do not use '-e'."
-      ;;
-    *)
-      ECFLOW_START="$(command -v ecflow_start.sh)"
-      ECFLOW_STOP="$(command -v ecflow_stop.sh)"
-      ;;
-  esac
-  export ECFLOW_START ECFLOW_STOP
-  export ECF_OUTPUTDIR="${PATHRT}/ecf_outputdir"
-  export ECF_COMDIR="${PATHRT}/ecf_comdir"
-  rm -rf "${ECF_OUTPUTDIR}" "${ECF_COMDIR}"
-  mkdir -p "${ECF_OUTPUTDIR}"
-  mkdir -p "${ECF_COMDIR}"
-fi
+# if [[ ${ECFLOW} == true ]]; then
+#   echo "Verifying ECFLOW support..."
+#   case ${MACHINE_ID} in
+#     wcoss2|acorn)
+#       ECFLOW_START="$(command -v server_check.sh)"
+#       ECFLOW_STOP="$(command -v ecflow_stop.sh)"
+#       ;;
+#     expanse|stampede|noaacloud)
+#       die "ECFLOW not supported on this machine, please do not use '-e'."
+#       ;;
+#     *)
+#       ECFLOW_START="$(command -v ecflow_start.sh)"
+#       ECFLOW_STOP="$(command -v ecflow_stop.sh)"
+#       ;;
+#   esac
+#   export ECFLOW_START ECFLOW_STOP
+#   export ECF_OUTPUTDIR="${PATHRT}/ecf_outputdir"
+#   export ECF_COMDIR="${PATHRT}/ecf_comdir"
+#   rm -rf "${ECF_OUTPUTDIR}" "${ECF_COMDIR}"
+#   mkdir -p "${ECF_OUTPUTDIR}"
+#   mkdir -p "${ECF_COMDIR}"
+# fi
 
 mkdir -p "${STMP}/${USER}"
 
@@ -1102,7 +1092,6 @@ if [[ ${TESTS_FILE} =~ '35d' ]] || [[ ${TESTS_FILE} =~ 'weekly' ]]; then
   TEST_35D=true
 fi
 
-# shellcheck disable=SC1091
 source bl_date.conf
 
 if [[ "${RTPWD_NEW_BASELINE}" == true ]] ; then
@@ -1118,7 +1107,6 @@ if [[ "${CREATE_BASELINE}" == false ]] ; then
     echo "   ${RTPWD}"
     exit 1
   elif [[ -n ${EMPTY_CHECK} ]] ; then
-  #elif [[ $( ls -1 "${RTPWD}/" | wc -l ) -lt 1 ]] ; then
     echo "Baseline directory is empty:"
     echo "   ${RTPWD}"
     exit 1
@@ -1154,7 +1142,6 @@ export TEST_START_TIME
 
 source default_vars.sh
 
-JOB_NR=0
 COMPILE_COUNTER=0
 rm -f fail_test* fail_compile*
 
@@ -1165,16 +1152,27 @@ rm -rf "${LOG_DIR}"
 mkdir -p "${LOG_DIR}"
 
 if [[ ${ROCOTO} == true ]]; then
+  
+  echo "rt.sh: Verifying ROCOTO support..."
+  
+  case ${MACHINE_ID} in
+    wcoss2|acorn|expanse|stampede)
+      die "Rocoto not supported on this machine, please do not use '-r'."
+      ;;
+    *)
+      ;;
+  esac
 
+  ROCOTORUN="$(command -v rocotorun)"
+  ROCOTOSTAT="$(command -v rocotostat)"
+  ROCOTOCOMPLETE="$(command -v rocotocomplete)"
+  export ROCOTOCOMPLETE ROCOTOSTAT ROCOTORUN
+  
   ROCOTO_XML=${PATHRT}/rocoto_workflow.xml
   ROCOTO_STATE=${PATHRT}/rocoto_workflow.state
   ROCOTO_DB=${PATHRT}/rocoto_workflow.db
 
   rm -f "${ROCOTO_XML}" "${ROCOTO_DB}" "${ROCOTO_STATE}" ./*_lock.db
-
-  if [[ ${MACHINE_ID} = stampede || ${MACHINE_ID} = expanse ]]; then
-    die "Rocoto is not supported on this machine: ${MACHINE_ID}"
-  fi
 
   cat << EOF > "${ROCOTO_XML}"
 <?xml version="1.0"?>
@@ -1198,13 +1196,31 @@ EOF
 fi
 
 if [[ ${ECFLOW} == true ]]; then
+  echo "Verifying ECFLOW support..."
+  case ${MACHINE_ID} in
+    wcoss2|acorn)
+      ECFLOW_START="$(command -v server_check.sh)"
+      ECFLOW_STOP="$(command -v ecflow_stop.sh)"
+      ;;
+    expanse|stampede|noaacloud)
+      die "ECFLOW not supported on this machine, please do not use '-e'."
+      ;;
+    *)
+      ECFLOW_START="$(command -v ecflow_start.sh)"
+      ECFLOW_STOP="$(command -v ecflow_stop.sh)"
+      ;;
+  esac
+  export ECFLOW_START ECFLOW_STOP
 
+  export ECF_OUTPUTDIR="${PATHRT}/ecf_outputdir"
+  export ECF_COMDIR="${PATHRT}/ecf_comdir"
+  rm -rf "${ECF_OUTPUTDIR}" "${ECF_COMDIR}"
+  mkdir -p "${ECF_OUTPUTDIR}"
+  mkdir -p "${ECF_COMDIR}"
   # Default maximum number of compile and run jobs
-  MAX_BUILDS=10
-  MAX_JOBS=30
-
-  # Default number of tries to run jobs
-  ECF_TRIES=2
+  MAX_BUILDS=10 #Max build jobs
+  MAX_JOBS=30   #Max test/run jobs
+  ECF_TRIES=2   #Tries before failure
 
   # Reduce maximum number of compile jobs on jet and s4 because of licensing issues
   if [[ ${MACHINE_ID} = jet ]]; then
@@ -1230,10 +1246,6 @@ suite ${ECFLOW_SUITE}
     limit max_jobs ${MAX_JOBS}
 EOF
 
-  if [[ ${MACHINE_ID} = stampede || ${MACHINE_ID} = expanse ]]; then
-    die "ecFlow is not supported on this machine: ${MACHINE_ID}"
-  fi
-
 fi
 
 ##
@@ -1246,9 +1258,6 @@ in_metatask=false
 
 [[ -f ${TESTS_FILE} ]] || die "${TESTS_FILE} does not exist"
 
-#export LAST_COMPILER_NR=-9999
-#export COMPILE_PREV=''
-
 declare -A compiles
 
 while read -r line || [[ -n "${line}" ]]; do
@@ -1256,8 +1265,6 @@ while read -r line || [[ -n "${line}" ]]; do
   line="${line#"${line%%[![:space:]]*}"}"
   [[ ${#line} == 0 ]] && continue
   [[ ${line} == \#* ]] && continue
-
-  JOB_NR=$( printf '%03d' $(( 10#${JOB_NR} + 1 )) )
 
   if [[ ${line} == COMPILE* ]]; then
 
@@ -1275,7 +1282,6 @@ while read -r line || [[ -n "${line}" ]]; do
 
     CB=$(cut -d '|' -f6  <<< "${line}")
     COMPILE_ID=${COMPILE_NAME}_${RT_COMPILER}
-    #COMPILE_PREV=${COMPILE_ID}
 
     set +u
     if [[ -n ${compiles[${COMPILE_ID}]} ]] ; then
@@ -1301,11 +1307,9 @@ while read -r line || [[ -n "${line}" ]]; do
     create_or_run_compile_task
     continue
 
-  elif [[ ${line} == RUN* ]] ; then
+  elif [[ ${line} == RUN* ]]; then
 
-    if [[ ${COMPILE_ONLY} == true ]]; then
-      continue
-    fi
+    [[ ${COMPILE_ONLY} == true ]] && continue
 
     TEST_NAME=$(cut -d'|' -f2 <<< "${line}")
     TEST_NAME=$(sed -e 's/^ *//' -e 's/ *$//' <<< "${TEST_NAME}")
@@ -1375,7 +1379,6 @@ EOF
       fi
 
       cat << EOF > "${RUNDIR_ROOT}/run_test_${TEST_ID}.env"
-export JOB_NR=${JOB_NR}
 export TEST_ID=${TEST_ID}
 export MACHINE_ID=${MACHINE_ID}
 export RT_COMPILER=${RT_COMPILER}
@@ -1414,7 +1417,9 @@ EOF
       elif [[ ${ECFLOW} == true ]]; then
         ecflow_create_run_task
       else
+        echo "rt.sh: Running test ${TEST_ID} using compile ${COMPILE_ID}"
         ./run_test.sh "${PATHRT}" "${RUNDIR_ROOT}" "${TEST_NAME}" "${TEST_ID}" "${COMPILE_ID}" > "${LOG_DIR}/run_${TEST_ID}${RT_SUFFIX}.log" 2>&1
+        echo "rt.sh: Run with test ${TEST_ID} completed."
       fi
     )
     continue

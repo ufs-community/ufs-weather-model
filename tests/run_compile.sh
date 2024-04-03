@@ -15,13 +15,13 @@ cleanup() {
 }
 
 write_fail_test() {
-  echo "compile_${COMPILE_ID} failed in run_compile" >> "${PATHRT}/fail_compile_${COMPILE_ID}"
+  echo "${JBNME} failed in run_compile" >> "${PATHRT}/fail_${JBNME}"
   exit 1
 }
 
 remove_fail_test() {
-    echo "Removing test failure flag file for compile_${COMPILE_ID}"
-    rm -f "${PATHRT}/fail_compile_${COMPILE_ID}"
+    echo "Removing test failure flag file for ${JBNME}"
+    rm -f "${PATHRT}/fail_${JBNME}"
 }
 
 if [[ $# != 4 ]]; then
@@ -34,19 +34,21 @@ export RUNDIR_ROOT=$2
 export MAKE_OPT=$3
 export COMPILE_ID=$4
 
+export JBNME="compile_${COMPILE_ID}"
+
 cd "${PATHRT}"
 remove_fail_test
 
-[[ -e ${RUNDIR_ROOT}/compile_${COMPILE_ID}.env ]] && source "${RUNDIR_ROOT}/compile_${COMPILE_ID}.env"
+[[ -e ${RUNDIR_ROOT}/${JBNME}.env ]] && source "${RUNDIR_ROOT}/${JBNME}.env"
 source default_vars.sh
-[[ -e ${RUNDIR_ROOT}/compile_${COMPILE_ID}.env ]] && source "${RUNDIR_ROOT}/compile_${COMPILE_ID}.env"
+[[ -e ${RUNDIR_ROOT}/${JBNME}.env ]] && source "${RUNDIR_ROOT}/${JBNME}.env"
 
-export JBNME="compile_${COMPILE_ID}"
-export RUNDIR=${RUNDIR_ROOT}/compile_${COMPILE_ID}
+
+export RUNDIR=${RUNDIR_ROOT}/${JBNME}
 date_s=$( date +%s )
-echo -n "${JBNME}, ${date_s}," > "${LOG_DIR}/compile_${COMPILE_ID}_timestamp.txt"
+echo -n "${JBNME}, ${date_s}," > "${LOG_DIR}/${JBNME}_timestamp.txt"
 
-export RT_LOG=${LOG_DIR}/compile_${COMPILE_ID}.log
+export RT_LOG=${LOG_DIR}/${JBNME}.log
 
 source rt_utils.sh
 source atparse.bash
@@ -84,10 +86,10 @@ else
   # while still sending them to stdout and stderr. It does this without
   # relying on bash-specific extensions or non-standard OS features.
 fi
-ls -l "${PATHTR}/tests/fv3_${COMPILE_ID}.exe"
+#ls -l "${PATHTR}/tests/fv3_${COMPILE_ID}.exe"
 
-cp "${RUNDIR}/compile_${COMPILE_ID}_time.log" "${LOG_DIR}"
-cat "${RUNDIR}/job_timestamp.txt" >> "${LOG_DIR}/compile_${COMPILE_ID}_timestamp.txt"
+cp "${RUNDIR}/${JBNME}_time.log" "${LOG_DIR}"
+cat "${RUNDIR}/job_timestamp.txt" >> "${LOG_DIR}/${JBNME}_timestamp.txt"
 
 remove_fail_test
 
@@ -95,7 +97,8 @@ remove_fail_test
 # End compile job
 ################################################################################
 date_s=$( date +%s )
-echo " ${date_s}, 1" >> "${LOG_DIR}/compile_${COMPILE_ID}_timestamp.txt"
+echo " ${date_s}, 1" >> "${LOG_DIR}/${JBNME}_timestamp.txt"
 
 elapsed=${SECONDS}
-echo "Elapsed time ${elapsed} seconds. Compile ${COMPILE_ID}"
+echo "run_compile.sh: Compile ${COMPILE_ID} Completed."
+echo "run_compile.sh: Compile ${COMPILE_ID} Elapsed time ${elapsed} seconds."
