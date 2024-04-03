@@ -469,6 +469,7 @@ export ROCOTO=${ROCOTO}
 export ECFLOW=${ECFLOW}
 export REGRESSIONTEST_LOG=${REGRESSIONTEST_LOG}
 export LOG_DIR=${LOG_DIR}
+export RTVERBOSE=${RTVERBOSE}
 EOF
 
   if [[ ${ROCOTO} == true ]]; then
@@ -573,7 +574,8 @@ TESTS_FILE='rt.conf'
 NEW_BASELINES_FILE=''
 DEFINE_CONF_FILE=false
 RUN_SINGLE_TEST=false
-export RTVERBOSE=false
+RTVERBOSE=false
+export RTVERBOSE
 export STOP_ECFLOW_AT_END=false
 ACCNR=${ACCNR:-""}
 
@@ -1401,6 +1403,7 @@ export REGRESSIONTEST_LOG=${REGRESSIONTEST_LOG}
 export LOG_DIR=${LOG_DIR}
 export DEP_RUN=${DEP_RUN}
 export skip_check_results=${skip_check_results}
+export RTVERBOSE=${RTVERBOSE}
 export delete_rundir=${delete_rundir}
 export WLCLK=${WLCLK}
 EOF
