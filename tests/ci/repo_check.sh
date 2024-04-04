@@ -103,7 +103,7 @@ for submodule in $submodules; do
     get_shas $url $gitapi $branch $workspace
 done
 
-if [[ $flag_sync=='false' ]]; then
+if [[ ! $flag_sync ]]; then
     echo "** ${GITHUB_WORKSPACE} **NOT** up to date"
     exit 1
 fi
