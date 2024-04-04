@@ -254,35 +254,35 @@ EOF
         COMPILE_TIME=""
         RT_COMPILE_TIME=""
         if [[ ! -f "${LOG_DIR}/compile_${COMPILE_ID}.log" ]]; then
-          COMPILE_RESULT="FAILED TO START COMPILE"
+          COMPILE_RESULT="FAILED: UNABLE TO START COMPILE"
           FAIL_LOG="N/A"
         elif [[ -f fail_compile_${COMPILE_ID} ]]; then
-          COMPILE_RESULT="FAILED TO COMPILE"
+          COMPILE_RESULT="FAILED: UNABLE TO COMPILE"
           FAIL_LOG="${LOG_DIR}/compile_${COMPILE_ID}.log"
-        else 
           if grep -q "quota" "${LOG_DIR}/compile_${COMPILE_ID}.log"; then
-            COMPILE_RESULT="FAILED DUE TO DISK QUOTA"
+            COMPILE_RESULT="FAILED: DISK QUOTA ISSUE"
             FAIL_LOG="${LOG_DIR}/compile_${COMPILE_ID}.log"
           elif grep -q "timeout" "${LOG_DIR}/compile_${COMPILE_ID}.log"; then
-            COMPILE_RESULT="FAILED FROM TIMEOUT"
+            COMPILE_RESULT="FAILED: TEST TIMED OUT"
             FAIL_LOG="${LOG_DIR}/compile_${COMPILE_ID}.log"
-          else
-            COMPILE_RESULT="PASS"
-            TIME_FILE="${LOG_DIR}/compile_${COMPILE_ID}_timestamp.txt"
-            if [[ -f "${TIME_FILE}" ]]; then
-              while read -r times || [[ -n "${times}" ]]; do
-                  times="${times#"${times%%[![:space:]]*}"}"
+          fi
+        else 
+          COMPILE_RESULT="PASS"
+          TIME_FILE="${LOG_DIR}/compile_${COMPILE_ID}_timestamp.txt"
+          if [[ -f "${TIME_FILE}" ]]; then
+            while read -r times || [[ -n "${times}" ]]; do
+                times="${times#"${times%%[![:space:]]*}"}"
 
-                  DATE1=$(cut -d ',' -f2 <<< "${times}")
-                  DATE2=$(cut -d ',' -f3 <<< "${times}")
-                  DATE3=$(cut -d ',' -f4 <<< "${times}")
-                  DATE4=$(cut -d ',' -f5 <<< "${times}")
+                DATE1=$(cut -d ',' -f2 <<< "${times}")
+                DATE2=$(cut -d ',' -f3 <<< "${times}")
+                DATE3=$(cut -d ',' -f4 <<< "${times}")
+                DATE4=$(cut -d ',' -f5 <<< "${times}")
 
-                  COMPILE_TIME=$(date --date=@$((DATE3 - DATE2)) +'%M:%S')
-                  RT_COMPILE_TIME=$(date --date=@$((DATE4 - DATE1)) +'%M:%S')
+                COMPILE_TIME=$(date --date=@$((DATE3 - DATE2)) +'%M:%S')
+                RT_COMPILE_TIME=$(date --date=@$((DATE4 - DATE1)) +'%M:%S')
 
-              done < "${TIME_FILE}"
-            fi
+            done < "${TIME_FILE}"
+            
           fi
         fi
         echo >> "${REGRESSIONTEST_LOG}"
@@ -324,30 +324,30 @@ EOF
         if [[ ${CREATE_BASELINE} == true && ${GEN_BASELINE} != "baseline" ]]; then
           TEST_RESULT="SKIPPED (TEST DOES NOT GENERATE BASELINE)"
         elif [[ ! -f "${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log" ]]; then
-          TEST_RESULT="FAILED TO START RUN"
+          TEST_RESULT="FAILED: UNABLE TO START RUN"
           FAIL_LOG="N/A"
         elif [[ -f fail_test_${TEST_NAME}_${COMPILER} ]]; then
           if [[ -f "${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log" ]]; then
             if grep -q "FAIL" "${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log"; then
-              TEST_RESULT="FAILED TO RUN COMPARISON"
+              TEST_RESULT="FAILED: UNABLE TO RUN COMPARISON"
               FAIL_LOG="${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"
             # We need to catch a "PASS" in rt_*.log even if a fail_test_* files exists
             # I'm not sure why this can happen.
             elif grep -q "PASS" "${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log"; then
               TEST_RESULT="PASS"
             else
-              TEST_RESULT="FAILED IN BASELINE COMPARISON"
+              TEST_RESULT="FAILED: BASELINE COMPARISON"
               FAIL_LOG="${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log"
             fi
           else
-            TEST_RESULT="FAILED TO FINISH RUN"
+            TEST_RESULT="FAILED: RUN DID NOT COMPLETE"
             FAIL_LOG="${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"
           fi
           if grep -q "quota" "${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"; then
-            TEST_RESULT="FAILED DUE TO DISK QUOTA"
+            TEST_RESULT="FAILED: DISK QUOTA ISSUE"
             FAIL_LOG="${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"
           elif grep -q "timeout" "${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"; then
-            TEST_RESULT="FAILED FROM TIMEOUT"
+            TEST_RESULT="FAILED: TEST TIMED OUT"
             FAIL_LOG="${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"
           fi
         else
@@ -664,9 +664,12 @@ done
 [[ ${CREATE_BASELINE} == true && ${RTPWD_NEW_BASELINE} == true ]] && die "-c and -m options cannot be used at the same time"
 
 [[ -o xtrace ]] && set_x='set -x' || set_x='set +x'
+
 if [[ ${RTVERBOSE} == true ]]; then
   set -x
 fi
+
+[[ -o xtrace ]] && set_x='set -x' || set_x='set +x'
 
 if [[ -z "${ACCNR}" ]]; then
   echo "Please use -a <account> to set group account to use on HPC"
@@ -1029,49 +1032,6 @@ eval "${set_x}"
 [[ -d ${DISKNM} ]] || die "ERROR: DISKNM: ${DISKNM} -- DOES NOT EXIST"
 [[ -d ${STMP} ]] || die "ERROR: STMP: ${STMP} -- DOES NOT EXIST"
 [[ -d ${PTMP} ]] || die "ERROR: PTMP: ${PTMP} -- DOES NOT EXIST"
-
-
-# Does this machine support Rocoto?
-# if [[ ${ROCOTO} == true ]]; then
-#   echo "rt.sh: Verifying ROCOTO support..."
-#   case ${MACHINE_ID} in
-#     wcoss2|acorn|expanse|stampede)
-#       die "Rocoto not supported on this machine, please do not use '-r'."
-#       ;;
-#     *)
-#       ROCOTORUN="$(command -v rocotorun)"
-#       export ROCOTORUN
-#       ROCOTOSTAT="$(command -v rocotostat)"
-#       export ROCOTOSTAT
-#       ROCOTOCOMPLETE="$(command -v rocotocomplete)"
-#       export ROCOTOCOMPLETE
-#       ;;
-#   esac
-# fi
-
-# Does this machine support ecflow?
-# if [[ ${ECFLOW} == true ]]; then
-#   echo "Verifying ECFLOW support..."
-#   case ${MACHINE_ID} in
-#     wcoss2|acorn)
-#       ECFLOW_START="$(command -v server_check.sh)"
-#       ECFLOW_STOP="$(command -v ecflow_stop.sh)"
-#       ;;
-#     expanse|stampede|noaacloud)
-#       die "ECFLOW not supported on this machine, please do not use '-e'."
-#       ;;
-#     *)
-#       ECFLOW_START="$(command -v ecflow_start.sh)"
-#       ECFLOW_STOP="$(command -v ecflow_stop.sh)"
-#       ;;
-#   esac
-#   export ECFLOW_START ECFLOW_STOP
-#   export ECF_OUTPUTDIR="${PATHRT}/ecf_outputdir"
-#   export ECF_COMDIR="${PATHRT}/ecf_comdir"
-#   rm -rf "${ECF_OUTPUTDIR}" "${ECF_COMDIR}"
-#   mkdir -p "${ECF_OUTPUTDIR}"
-#   mkdir -p "${ECF_COMDIR}"
-# fi
 
 mkdir -p "${STMP}/${USER}"
 

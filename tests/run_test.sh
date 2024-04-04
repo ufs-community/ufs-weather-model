@@ -63,7 +63,6 @@ export INPUT_DIR=${CNTL_DIR}
 export RUNDIR=${RUNDIR_ROOT}/${TEST_ID}${RT_SUFFIX}
 export CNTL_DIR=${CNTL_DIR}${BL_SUFFIX}
 
-#JBNME=$(basename "${RUNDIR_ROOT}")_${TEST_ID}
 JBNME="run_${TEST_ID}"
 export JBNME
 date_s=$( date +%s )
@@ -98,27 +97,6 @@ cp "${PATHTR}/modulefiles/ufs_common.lua" "./modulefiles/."
 # Get the shell file that loads the "module" command and purges modules:
 cp "${PATHRT}/module-setup.sh" "module-setup.sh"
 
-# # load nccmp module
-# if [[ " s4 hera orion hercules gaea jet derecho acorn wcoss2 " =~ ${MACHINE_ID} ]]; then
-#   if [[ " wcoss2 acorn " =~ ${MACHINE_ID} ]] ; then
-#     module load intel/19.1.3.304 netcdf/4.7.4
-#     module load nccmp
-#   elif [[ " s4 " =~ ${MACHINE_ID} ]] ; then
-#     module use /data/prod/jedi/spack-stack/spack-stack-1.4.1/envs/ufs-pio-2.5.10/install/modulefiles/Core
-#     module load stack-intel/2021.5.0 stack-intel-oneapi-mpi/2021.5.0
-#     module load miniconda/3.9.12
-#     module load nccmp/1.9.0.1
-#   elif [[ " hera orion hercules gaea jet " =~ ${MACHINE_ID} ]] ; then
-#     module use modulefiles
-#     module load modules.fv3
-#     if [[ " gaea " =~ ${MACHINE_ID} ]]; then
-#       module load gcc/12.2.0
-#     fi
-#   else
-#     module load nccmp
-#   fi
-# fi
-#no stampede expanse noaacloud
 case ${MACHINE_ID} in
   wcoss2|acorn)
     module load intel/19.1.3.304 netcdf/4.7.4

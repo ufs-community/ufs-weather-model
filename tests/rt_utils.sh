@@ -10,8 +10,6 @@ fi
 # are not dependent on the caller. Most regression test variables
 # (such as ACCNR) are not set until after rt.sh sources this file.
 
-# qsub_id=0
-# slurm_id=0
 jobid=0
 
 function compute_petbounds_and_tasks() {
@@ -235,7 +233,7 @@ submit_and_wait() {
       #completed
       #pbs only: C
       C)
-
+        status_label='Completed'
         ;;
       *)
         status_label="Unknown"
