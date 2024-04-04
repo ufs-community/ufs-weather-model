@@ -370,7 +370,6 @@ export FV3_RUN=control_run.IN
 export CCPP_SUITE=FV3_GFS_v17_p8
 export FIELD_TABLE=field_table_thompson_noaero_tke
 export DIAG_TABLE=diag_table_cpld.IN
-# use same namelist for standalone,coupled P7
 export INPUT_NML=global_control.nml.IN
 
 export DOMAINS_STACK_SIZE=3000000
@@ -515,15 +514,15 @@ export IOPT_CRS=2
 export IOPT_RAD=3
 export IOPT_ALB=1
 export IOPT_STC=3
-# P8
+
 export IOPT_SFC=3
 export IOPT_TRS=2
 export IOPT_DIAG=2
-# FV3 P7 settings
+
 export D2_BG_K1=0.20
 export D2_BG_K2=0.04
 export PSM_BC=1
-# P8
+
 export DDDMP=0.1
 
 # Ozone / stratospheric H2O
@@ -679,7 +678,7 @@ export MOM6_OUTPUT_DIR=./MOM6_OUTPUT
 export MOM6_RESTART_DIR=./RESTART/
 export MOM6_RESTART_SETTING=n
 
-# P8 (not used for standalone)
+# Following not used for standalone
 export USE_CICE_ALB=.false.
 
 # GFDL Cloud Microphysics
@@ -914,7 +913,6 @@ export TILEDFIX=.false.
 export FHZERO=6
 export DT_INNER=${DT_ATMOS}
 
-# P7 default
 export IALB=2
 export IEMS=2
 export LSM=2
@@ -923,22 +921,19 @@ export IOPT_CRS=2
 export IOPT_RAD=3
 export IOPT_ALB=1
 export IOPT_STC=3
-# P8
+
 export IOPT_SFC=3
 export IOPT_TRS=2
 export IOPT_DIAG=2
 
-# FV3 P7 settings
 export D2_BG_K1=0.20
 export D2_BG_K2=0.04
-#export DZ_MIN=2
 export PSM_BC=1
 export DDDMP=0.1
 
-#P8
 export DZ_MIN=6
 
-# P7 Merra2 Aerosols & NSST
+# Merra2 Aerosols & NSST
 export USE_MERRA2=.true.
 export IAER=1011
 export NSTF_NAME=2,0,0,0,0
@@ -946,7 +941,7 @@ export NSTF_NAME=2,0,0,0,0
 export LHEATSTRG=.false.
 export LSEASPRAY=.true.
 
-# P7 UGWP1
+# UGWP1
 export GWD_OPT=2
 export KNOB_UGWP_NSLOPE=1
 export DO_GSL_DRAG_LS_BL=.true.
@@ -954,23 +949,23 @@ export DO_GSL_DRAG_SS=.true.
 export DO_UGWP_V1_OROG_ONLY=.false.
 export DO_UGWP_V0_NST_ONLY=.false.
 export LDIAG_UGWP=.false.
-#P8
+
 export DO_GSL_DRAG_TOFD=.false.
 export CDMBWD=${CDMBWD_c96}
 
-# P8 RRTMGP
+# RRTMGP
 export DO_RRTMGP=.false.
 export DOGP_CLDOPTICS_LUT=.true.
 export DOGP_LWSCAT=.true.
 export DOGP_SGS_CNV=.true.
 
-#P8 UGWD
+# UGWD
 export DO_UGWP_V0=.true.
 export DO_UGWP_V1=.false.
 export DO_GSL_DRAG_LS_BL=.false.
 export KNOB_UGWP_VERSION=0
 
-# P7 CA
+# CA
 export DO_CA=.true.
 export CA_SGS=.true.
 export CA_GLOBAL=.false.
@@ -984,11 +979,9 @@ export CA_TRIGGER=.true.
 export NSPINUP=1
 export ISEED_CA=12345
 
-#P8
 export FSICL=0
 export FSICS=0
 
-# P8
 export USE_CICE_ALB=.true.
 export MIN_SEAICE=1.0e-6
 export DNATS=2
@@ -997,7 +990,6 @@ export LGFDLMPRAD=.false.
 export DO_SAT_ADJ=.false.
 export SATMEDMF=.true.
 
-# P7 default
 export CPLFLX=.true.
 export CPLICE=.true.
 export CPL=.true.
