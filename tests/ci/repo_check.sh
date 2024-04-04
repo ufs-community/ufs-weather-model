@@ -25,7 +25,7 @@ get_shas () {
 flag_sync=true
 
 declare -A urls branches pathes
-submodules="base fv3 mom6 cice ww3 stoch gocart cmeps cdeps hycom cmake ccpp_physics ccpp_framework aqm noahmp cubed_sphere"
+submodules="base fv3 mom6 cice ww3 stoch cmeps cdeps hycom ccpp_physics aqm noahmp cubed_sphere"
 
 urls[base]='https://github.com/ufs-community/ufs-weather-model'
 branches[base]='develop'
