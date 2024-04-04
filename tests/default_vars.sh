@@ -900,7 +900,6 @@ export_ww3
 
 # Set CMEPS component defauls
 export_cmeps
-export ATMTILESIZE=`expr $NPX - 1`
 
 # FV3 defaults
 export FRAC_GRID=.true.
