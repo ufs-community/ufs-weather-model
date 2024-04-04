@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu
+#set -eu
 
 get_shas () {
     cwd=$(pwd)
@@ -24,10 +24,8 @@ get_shas () {
 
 flag_sync=true
 
-ownerID=$1
-
 declare -A urls branches pathes
-submodules="base fv3 mom6 cice ww3 stoch gocart cmeps cdeps hycom cmake ccpp_physics ccpp_framework aqm noahmp"
+submodules="base fv3 mom6 cice ww3 stoch gocart cmeps cdeps hycom cmake ccpp_physics ccpp_framework aqm noahmp cubed_sphere"
 
 urls[base]='https://github.com/ufs-community/ufs-weather-model'
 branches[base]='develop'
@@ -44,7 +42,6 @@ pathes[mom6]='MOM6-interface/MOM6'
 urls[cice]='https://github.com/NOAA-EMC/CICE'
 branches[cice]='emc/develop'
 pathes[cice]='CICE-interface/CICE'
-
 urls[ww3]='https://github.com/NOAA-EMC/WW3'
 branches[ww3]='dev/ufs-weather-model'
 pathes[ww3]='WW3'
@@ -93,9 +90,9 @@ pathes[noahmp]='NOAHMP-interface/noahmp'
 #branches[upp]='develop'
 #pathes[upp]='upp'
 
-#urls[cubed_sphere]='https://github.com/NOAA-GFDL/GFDL_atmos_cubed_sphere'
-#branches[cubed_sphere]='dev/emc'
-#pathes[cubed_sphere]='FV3/atmos_cubed_sphere'
+urls[cubed_sphere]='https://github.com/NOAA-GFDL/GFDL_atmos_cubed_sphere'
+branches[cubed_sphere]='dev/emc'
+pathes[cubed_sphere]='FV3/atmos_cubed_sphere'
 
 for submodule in $submodules; do
     url=${urls[$submodule]}
@@ -105,8 +102,11 @@ for submodule in $submodules; do
     get_shas $url $gitapi $branch $workspace
 done
 
-if [[ $flag_sync=='true' ]]; then
-    exit 0
-else
-    exit 0
+if [[ $flag_sync=='false' ]]; then
+    echo "** ${GITHUB_WORKSPACE} **NOT** up to date"
+    exit 1
 fi
+
+echo "** ${GITHUB_WORKSPACE} up to date **"
+
+exit 0
