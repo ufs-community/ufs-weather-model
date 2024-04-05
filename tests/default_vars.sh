@@ -311,6 +311,67 @@ export CMP_DATAONLY=false
 export esmf_logkind="ESMF_LOGKIND_MULTI"
 export DumpFields="false"
 
+export_fv3_v16 ()
+{
+# Add support for v16 test cases. This section
+# will be removed once support for GFSv16 is
+# officially depricated.
+
+# Load in FV3 values
+export_fv3
+
+# Replace FV3 variable with old values as needed
+export USE_MERRA2=.false.
+export WRITE_NSFLIP=.false.
+
+export DIAG_TABLE=diag_table_gfsv16
+export FIELD_TABLE=field_table_gfsv16
+export FV3_RUN=control_run.IN
+export INPUT_NML=control.nml.IN
+export CCPP_SUITE=FV3_GFS_v16
+
+export DOGP_CLDOPTICS_LUT=.false.
+export DOGP_LWSCAT=.false.
+export IAER=111
+export ICLIQ_SW=1
+export IOVR=1
+export IMP_PHYSICS=11
+export DNATS=1
+export DO_SAT_ADJ=.true.
+export LHEATSTRG=.true.
+export LSEASPRAY=.false.
+export GWD_OPT=1
+export DO_UGWP_V0=.false.
+export DO_GSL_DRAG_SS=.false.
+export SATMEDMF=.false.
+export ISATMEDMF=0
+
+export LSM=1
+export LANDICE=.true.
+export IALB=1
+export IEMS=1
+
+export NSTF_NAME=2,1,1,0,5
+export FNALBC="'global_snowfree_albedo.bosu.t126.384.190.rg.grb'"
+export FNVETC="'global_vegtype.igbp.t126.384.190.rg.grb'"
+export FNSOTC="'global_soiltype.statsgo.t126.384.190.rg.grb'"
+export FNSOCC="''"
+export FNSMCC="'global_soilmgldas.t126.384.190.grb'"
+export FNSMCC_control="'global_soilmgldas.statsgo.t1534.3072.1536.grb'"
+export FNMSKH_control="'global_slmask.t1534.3072.1536.grb'"
+export FNABSC="'global_mxsnoalb.uariz.t126.384.190.rg.grb'"
+
+export RF_CUTOFF=30.0
+export FAST_TAU_W_SEC=0.0
+
+export ATMRES=C96
+export TILEDFIX=.false.
+export DO_CA=.false.
+export CA_SGS=.false.
+
+}
+
+
 export_fv3 ()
 {
 if [[ ! -n ${ATMRES+x} || -z ${ATMRES} ]]; then
