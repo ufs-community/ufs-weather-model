@@ -1,5 +1,5 @@
 help([[
-loads UFS Model prerequisites for Hercules/Intel
+loads UFS Model prerequisites for Hercules/IntelLLVM
 ]])
 
 prepend_path("MODULEPATH", "/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.5.1/envs/unified-env/install/modulefiles/Core")
@@ -17,6 +17,10 @@ load("ufs_common")
 
 nccmp_ver=os.getenv("nccmp_ver") or "1.9.0.1"
 load(pathJoin("nccmp", nccmp_ver))
+
+setenv("I_MPI_CC", "icx")
+setenv("I_MPI_CXX", "icpx")
+setenv("I_MPI_F90", "ifx")
 
 setenv("CC", "mpiicc")
 setenv("CXX", "mpiicpc")

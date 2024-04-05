@@ -559,7 +559,7 @@ while getopts ":a:b:cl:mn:dwkreoh" opt; do
       SRT_NAME="${SINGLE_OPTS[0]}"
       SRT_COMPILER="${SINGLE_OPTS[1]}"
 
-      if [[ "${SRT_COMPILER}" != "intel" ]] && [[ "${SRT_COMPILER}" != "gnu" ]]; then
+      if [[ "${SRT_COMPILER}" != "intel" ]] && [[ "${SRT_COMPILER}" != "intelllvm" ]] && [[ "${SRT_COMPILER}" != "gnu" ]]; then
         die "COMPILER MUST BE 'intel' OR 'gnu'"
       fi
       ;;
