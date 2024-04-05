@@ -339,7 +339,7 @@ elif [[ $MACHINE_ID = hera ]]; then
   ROCOTOCOMPLETE=$(which rocotocomplete)
   ROCOTO_SCHEDULER=slurm
 
-  module load ecflow/5.5.3
+  module load ecflow/5.11.4
   ECFLOW_START=ecflow_start.sh
 
   QUEUE=batch
