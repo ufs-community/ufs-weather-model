@@ -1143,7 +1143,7 @@ export atm_model=datm
 export CPLMODE=ufs.nfrac.aoflux
 
 # datm defaults
-export INPUT_NML=cpld_control.nml.IN
+export INPUT_NML=input.mom6.nml.IN
 export DIAG_TABLE=diag_table_template
 export DATM_SRC=CFSR
 export FILENAME_BASE=cfsr.
