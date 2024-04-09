@@ -1,9 +1,12 @@
-name: Helpers
+name: Repo Check
 on:
-  workflow_run:
-    workflows: ["Pull Request Tests"]
-    types:
-      - requested
+  #workflow_run:
+  #  workflows: ["Pull Request Tests"]
+  #  types:
+  #    - requested
+  pull_request:
+    branches:
+      - develop
 env:
   app: Accept:application/vnd.github.v3+json
   base_url: $GITHUB_API_URL/repos/$GITHUB_REPOSITORY/actions/runs
@@ -30,8 +33,11 @@ jobs:
     steps:
     - name: Check up-to-dateness and post comment
       run: |
-        head_sha=${{ github.event.workflow_run.head_sha }}
-        git clone -q ${{ github.event.workflow_run.head_repository.html_url }} .
+        trap 'echo "exit-code=$?" >> "$GITHUB_OUTPUT"' EXIT
+        head_sha=${{ github.event.pull_request.head.sha }}
+        head_brc=${{ github.event.pull_request.head.ref }}
+        head_url=${{ github.event.pull_request.head.repo.html_url }}
+        git clone -q -b $head_brc $head_url .
         git checkout -q $head_sha
         git submodule -q update --init --recursive
         cd ${{ github.workspace }}/tests/ci
@@ -39,15 +45,16 @@ jobs:
         pr_number=$(curl -sS -H $app $url/pulls \
           | jq -r '.[] | select(.head.sha == "'"$head_sha"'") | .number')
         echo "pr_number is $pr_number"
-        pr_uid=${{ github.event.workflow_run.head_repository.owner.login }}
+        pr_uid=${{ github.event.pull_request.head.repo.owner.login }}
         echo "pr_uid is $pr_uid"
-        comment="$(./repo_check.sh $pr_uid 2>/dev/null)"
-        echo "comment is $comment"
-        if [[ -n $comment ]]; then
-          curl -sS -X POST -H $app -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            $url/issues/$pr_number/comments -d '{"body": "'"${comment}"'"}'
-          echo -n "failure" >~/repocheck_file
-        else
-          echo -n "success" >~/repocheck_file
-        fi
+        ./repo_check.sh
+        #comment="$(./repo_check.sh 2>/dev/null)"
+        #echo "comment is $comment"
+        #if [[ -n $comment ]]; then
+        #  curl -sS -X POST -H $app -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+        #    $url/issues/$pr_number/comments -d '{"body": "'"${comment}"'"}'
+        #  echo -n "failure" >~/repocheck_file
+        #else
+        #  echo -n "success" >~/repocheck_file
+        #fi
         
