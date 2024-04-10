@@ -314,7 +314,7 @@ export DumpFields="false"
 export_fv3 ()
 {
 # ufs.configure defaults
-export UFS_CONFIGURE=ufs.configure.atm.IN
+export UFS_CONFIGURE=ufs.configure.atm_esmf.IN
 export MODEL_CONFIGURE=model_configure.IN
 export atm_model=fv3
 
@@ -825,7 +825,6 @@ export_ww3
 
 # Set CMEPS component defauls
 export_cmeps
-export ATMTILESIZE=`expr $NPX - 1`
 
 # FV3 defaults
 export FRAC_GRID=.true.
