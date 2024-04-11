@@ -663,6 +663,10 @@ export CICE_RESTART_CHUNK=0,0
 export CICE_RESTART_DEFLATE=0
 
 export CICE_HISTORY_FORMAT='pnetcdf2'
+if [[ ${MACHINE_ID} == wcoss2 ]]; then
+  export CICE_RESTART_FORMAT='hdf5'
+  export CICE_HISTORY_FORMAT='hdf5'
+fi
 export CICE_HISTORY_IOTASKS=-99
 export CICE_HISTORY_REARR='box'
 export CICE_HISTORY_ROOT=-99
