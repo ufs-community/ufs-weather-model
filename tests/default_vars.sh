@@ -768,6 +768,28 @@ export_cice6() {
   export CICE_USE_RESTART_TIME=.false.
   export CICE_RESTART_DIR=./RESTART/
   export CICE_RESTART_FILE=iced
+
+  export CICE_RESTART_FORMAT='pnetcdf2'
+  export CICE_RESTART_IOTASKS=-99
+  export CICE_RESTART_REARR='box'
+  export CICE_RESTART_ROOT=-99
+  export CICE_RESTART_STRIDE=-99
+  export CICE_RESTART_CHUNK=0,0
+  export CICE_RESTART_DEFLATE=0
+
+  export CICE_HISTORY_FORMAT='pnetcdf2'
+  if [[ ${MACHINE_ID} == wcoss2 ]]; then
+    export CICE_RESTART_FORMAT='hdf5'
+    export CICE_HISTORY_FORMAT='hdf5'
+  fi
+  export CICE_HISTORY_IOTASKS=-99
+  export CICE_HISTORY_REARR='box'
+  export CICE_HISTORY_ROOT=-99
+  export CICE_HISTORY_STRIDE=-99
+  export CICE_HISTORY_CHUNK=0,0
+  export CICE_HISTORY_DEFLATE=0
+  export CICE_HISTORY_PREC=4
+
   export CICE_DUMPFREQ=d
   export CICE_DUMPFREQ_N=1000
   CICE_DIAGFREQ=$(( (FHMAX*3600)/DT_CICE ))
@@ -789,9 +811,9 @@ export_cice6() {
   export CICE_TFREEZE_OPTION=mushy
   # SlenderX2
   export CICE_NPROC=${ICE_tasks}
-  export np2=$((CICE_NPROC/2))
-  export CICE_BLCKX=$((NX_GLB/np2))
-  export CICE_BLCKY=$((NY_GLB/2))
+  np2=$((CICE_NPROC/2))
+  CICE_BLCKX=$((NX_GLB/np2))
+  CICE_BLCKY=$((NY_GLB/2))
   export np2
   export CICE_BLCKX
   export CICE_BLCKY
