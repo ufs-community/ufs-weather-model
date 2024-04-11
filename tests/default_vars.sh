@@ -1266,6 +1266,7 @@ export MESH_WAV=mesh.hafs.nc
 
 export_hafs ()
 {
+export_fv3_v16
 export FV3=true
 export S2S=false
 export HAFS=true
@@ -1423,7 +1424,7 @@ export DY_6=''
 export OUTPUT_FH='3 -1'
 }
 export_hrrr() {
-export_fv3
+export_fv3_v16
 export NPZ=127
 export NPZP=128
 export DT_ATMOS=300
@@ -1483,7 +1484,7 @@ export DO_UGWP_V1_OROG_ONLY=.false.
 }
 export_hrrr_conus13km()
 {
-export_fv3
+export_fv3_v16
 export SYEAR=2021
 export SMONTH=05
 export SDAY=12
@@ -1576,7 +1577,7 @@ export FRAC_ICE=.true.
 }
 export_rap_common()
 {
-export_fv3
+export_fv3_v16
 export NPZ=127
 export NPZP=128
 export DT_ATMOS=300
