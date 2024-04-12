@@ -1,111 +1,113 @@
 #!/bin/bash
-set -eu
+#set -eu
 
-# This script checks if head repo of PR is up to date with ufs-weather-model develop
-# Checks for top level (ufs-weather-model) and next level components (submodules)
-result() {
-  if [[ -n $comment ]]; then
-    logID=$1
-    comment="@$logID please bring these up to date with respective authoritative repositories\n"$comment
-    printf %s "$comment"
-    #exit 1
-  fi
+get_shas () {
+    cwd=$(pwd)
+    # Get sha-1's of the top of develop and feature branches
+    app="Accept: application/vnd.github.v3+json"
+    url=$1
+    gitapi=$2
+    branch=$3
+    base_sha=$(curl -sS -H "$app" $gitapi | jq -r '.commit.sha')
+    workspace=$4
+    cd $workspace
+    git remote add upstream $url
+    git fetch -q upstream $branch
+    common=$(git merge-base $base_sha @)
+    echo $common $base_sha $workspace
+    if [[ $common != $base_sha ]]; then
+        printf "%s\n\n" "** $workspace **NOT** up to date"
+        flag_sync=false
+    fi
+    cd $cwd
 }
 
-# Declare variables
-declare -A base fv3 mom6 cice ww3 stoch gocart cmeps cdeps hycom cmake ccpp-framework ccpp-physics upp atmos_cubed_sphere
-submodules="fv3 mom6 cice ww3 stoch gocart cmeps cdeps hycom cmake ccpp-framework ccpp-physics upp atmos_cubed_sphere"
-comment=''
-ownerID=$1
+flag_sync=true
 
-# Base branch: this is the top of develop of ufs-weather-model
-base[repo]='https://github.com/ufs-community/ufs-weather-model'
-base[branch]='develop'
+declare -A urls branches pathes
+submodules="base fv3 mom6 cice ww3 stoch cmeps cdeps hycom ccpp_physics aqm noahmp cubed_sphere"
 
-# Submodules to check
-fv3[repo]='https://github.com/NOAA-EMC/fv3atm'
-fv3[branch]='develop'
-fv3[dir]='FV3'
+urls[base]='https://github.com/ufs-community/ufs-weather-model'
+branches[base]='develop'
+pathes[base]=''
 
-mom6[repo]='https://github.com/NOAA-EMC/MOM6'
-mom6[branch]='dev/emc'
-mom6[dir]='MOM6-interface/MOM6'
+urls[fv3]='https://github.com/NOAA-EMC/fv3atm'
+branches[fv3]='develop'
+pathes[fv3]='FV3'
 
-cice[repo]='https://github.com/NOAA-EMC/CICE'
-cice[branch]='emc/develop'
-cice[dir]='CICE-interface/CICE'
+urls[mom6]='https://github.com/NOAA-EMC/MOM6'
+branches[mom6]='dev/emc'
+pathes[mom6]='MOM6-interface/MOM6'
 
-ww3[repo]='https://github.com/NOAA-EMC/WW3'
-ww3[branch]='dev/ufs-weather-model'
-ww3[dir]='WW3'
+urls[cice]='https://github.com/NOAA-EMC/CICE'
+branches[cice]='emc/develop'
+pathes[cice]='CICE-interface/CICE'
 
-stoch[repo]='https://github.com/noaa-psl/stochastic_physics'
-stoch[branch]='master'
-stoch[dir]='stochastic_physics'
+urls[ww3]='https://github.com/NOAA-EMC/WW3'
+branches[ww3]='dev/ufs-weather-model'
+pathes[ww3]='WW3'
 
-gocart[repo]='https://github.com/GEOS-ESM/GOCART'
-gocart[branch]='main'
-gocart[dir]='GOCART'
+urls[stoch]='https://github.com/noaa-psl/stochastic_physics'
+branches[stoch]='master'
+pathes[stoch]='stochastic_physics'
 
-cmeps[repo]='https://github.com/NOAA-EMC/CMEPS'
-cmeps[branch]='emc/develop'
-cmeps[dir]='CMEPS-interface/CMEPS'
+urls[gocart]='https://github.com/GEOS-ESM/GOCART'
+branches[gocart]='develop'
+pathes[gocart]='GOCART'
 
-cdeps[repo]='https://github.com/NOAA-EMC/CDEPS'
-cdeps[branch]='develop'
-cdeps[dir]='CDEPS-interface/CDEPS'
+urls[cmeps]='https://github.com/NOAA-EMC/CMEPS'
+branches[cmeps]='emc/develop'
+pathes[cmeps]='CMEPS-interface/CMEPS'
 
-hycom[repo]='https://github.com/NOAA-EMC/HYCOM-src'
-hycom[branch]='emc/develop'
-hycom[dir]='HYCOM-interface/HYCOM'
+urls[cdeps]='https://github.com/NOAA-EMC/CDEPS'
+branches[cdeps]='develop'
+pathes[cdeps]='CDEPS-interface/CDEPS'
 
-cmake[repo]='https://github.com/NOAA-EMC/CMakeModules'
-cmake[branch]='develop'
-cmake[dir]='CMakeModules'
+urls[hycom]='https://github.com/NOAA-EMC/HYCOM-src'
+branches[hycom]='emc/develop'
+pathes[hycom]='HYCOM-interface/HYCOM'
 
-ccpp-framework[repo]='https://github.com/NCAR/ccpp-framework'
-ccpp-framework[branch]='main'
-ccpp-framework[dir]='ccpp/framework'
+urls[cmake]='https://github.com/NOAA-EMC/CMakeModules'
+branches[cmake]='develop'
+pathes[cmake]='CMakeModules'
 
-ccpp-physics[repo]='https://github.com/ufs-community/ccpp-physics'
-ccpp-physics[branch]='ufs/dev'
-ccpp-physics[dir]='ccpp/physics'
+urls[ccpp_physics]='https://github.com/ufs-community/ccpp-physics'
+branches[ccpp_physics]='ufs/dev'
+pathes[ccpp_physics]='FV3/ccpp/physics'
 
-upp[repo]='https://github.com/NOAA-EMC/UPP'
-upp[branch]='develop'
-upp[dir]='upp'
+urls[ccpp_framework]='https://github.com/NCAR/ccpp-framework'
+branches[ccpp_framework]='main'
+pathes[ccpp_framework]='FV3/ccpp/framework'
 
-atmos_cubed_sphere[repo]='https://github.com/NOAA-GFDL/GFDL_atmos_cubed_sphere'
-atmos_cubed_sphere[branch]='main'
-atmos_cubed_sphere[dir]='atmos_cubed_sphere'
+urls[aqm]='https://github.com/NOAA-EMC/AQM'
+branches[aqm]='develop'
+pathes[aqm]='AQM'
 
-# Get sha-1's of the top of develop of ufs-weather-model
-app="Accept: application/vnd.github.v3+json"
-url="https://api.github.com/repos/ufs-community/ufs-weather-model/branches/develop"
-base[sha]=$(curl -sS -H "$app" $url | jq -r '.commit.sha')
+urls[noahmp]='https://github.com/NOAA-EMC/noahmp'
+branches[noahmp]='develop'
+pathes[noahmp]='NOAHMP-interface/noahmp'
+
+#urls[upp]='https://github.com/NOAA-EMC/UPP'
+#branches[upp]='develop'
+#pathes[upp]='upp'
+
+urls[cubed_sphere]='https://github.com/NOAA-GFDL/GFDL_atmos_cubed_sphere'
+branches[cubed_sphere]='dev/emc'
+pathes[cubed_sphere]='FV3/atmos_cubed_sphere'
+
 for submodule in $submodules; do
-  eval url=https://api.github.com/repos/ufs-community/ufs-weather-model/contents/'${'$submodule'[dir]}'
-  eval $submodule'[sha]=$(curl -sS -H "$app" $url | jq -r '.sha')'
+    url=${urls[$submodule]}
+    branch=${branches[$submodule]}
+    workspace=${GITHUB_WORKSPACE}'/'${pathes[$submodule]}
+    gitapi=$(echo "$url" | sed 's/github.com/api.github.com\/repos/g')'/branches/'$branch
+    get_shas $url $gitapi $branch $workspace
 done
 
-# Check if the head branch is up to date with the base branch
-cd ${GITHUB_WORKSPACE}
-git remote add upstream ${base[repo]}
-git fetch -q upstream ${base[branch]}
-common=$(git merge-base ${base[sha]} @)
-if [[ $common != ${base[sha]} ]]; then
-  comment="* ufs-weather-model **NOT** up to date\n"
+if [[ ! $flag_sync ]]; then
+    echo "** ${GITHUB_WORKSPACE} **NOT** up to date"
+    exit 1
 fi
 
-for submodule in $submodules; do
-  eval cd ${GITHUB_WORKSPACE}/'${'$submodule'[dir]}'
-  eval git remote add upstream '${'$submodule'[repo]}'
-  eval git fetch -q upstream '${'$submodule'[branch]}'
-  common=$(eval git merge-base '${'$submodule'[sha]}' @)
-  if (eval test $common != '${'$submodule'[sha]}'); then
-    comment+="* $submodule **NOT** up to date\n"
-  fi
-done
+echo "** ${GITHUB_WORKSPACE} up to date **"
 
-result $ownerID
 exit 0
