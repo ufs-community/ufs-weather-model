@@ -86,6 +86,7 @@ export ice_model=cice6
 export WAV_tasks=0
 
 #CDEPS docn settings
+export ocn_datamode=sstdata
 export MESH_OCN=TX025_210327_ESMFmesh_py.nc
 export ocn_data="INPUT/oisst-avhrr-v02r01.202103.nc"
 export ocn_data_var=sst
@@ -95,19 +96,15 @@ export DOCN_IN_CONFIGURE=docn_in.IN
 export DOCN_STREAM_CONFIGURE=hafs_docn.streams.IN
 export STREAM_OFFSET=0
 
-#CICE ice prescribed settings
-export OCNRES=025
-export ICERES=0.25
-export NX_GLB=1440
-export NY_GLB=1080
-export CICE_NPROC=$ICE_tasks
-export np2=`expr $CICE_NPROC / 2`
-export CICE_BLCKX=`expr $NX_GLB / $np2`
-export CICE_BLCKY=`expr $NY_GLB / 2`
-export NX_GLB=$ocn_nx_global
-export NY_GLB=$ocn_ny_global
-export ICE_PRESCRIBED=true
+#CICE ice prescribed settings - default res
+#export OCNRES=100
+#export ICERES=1.00
+#export NX_GLB=360
+#export NY_GLB=320
+export CICE_PRESCRIBED=true
 export stream_files_dice=$ocn_data
+export MESH_DICE=$MESH_OCN
+export eps_imesh=4.0e-1
 
 export RESTART_N=12
 export RESTART_INTERVAL="${RESTART_N} -1"
