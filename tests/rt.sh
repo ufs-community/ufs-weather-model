@@ -14,7 +14,7 @@ usage() {
   echo "  -a  <account> to use on for HPC queue"
   echo "  -b  create new baselines only for tests listed in <file>"
   echo "  -c  create new baseline results"
-  echo "  -d  delete run direcotries that are not used by other tests"
+  echo "  -d  delete run directories that are not used by other tests"
   echo "  -e  use ecFlow workflow manager"
   echo "  -h  display this help"
   echo "  -k  keep run directory after rt.sh is completed"
@@ -34,7 +34,7 @@ usage() {
 update_rtconf() {
 
   find_match() {
-    # This function finds if a test in $TESTS_FILE matches one 
+    # This function finds if a test in $TESTS_FILE matches one
     # in our list of tests to be run.
     THIS_TEST_WITH_COMPILER=$1
     shift
@@ -75,13 +75,13 @@ update_rtconf() {
   RT_TEMP_CONF="rt_temp.conf"
   rm -f $RT_TEMP_CONF && touch $RT_TEMP_CONF
   local compile_line=''
-  
+
   while read -r line || [ "$line" ]; do
     line="${line#"${line%%[![:space:]]*}"}"
     [[ -n $line ]] || continue
     [[ ${#line} == 0 ]] && continue
     [[ $line == \#* ]] && continue
-    
+
     if [[ $line =~ COMPILE ]] ; then
       MACHINES=$(echo $line | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
       RT_COMPILER_IN=$(echo $line | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
@@ -109,7 +109,7 @@ update_rtconf() {
       fi
       if [[ $to_run_test == true ]]; then
         TEST_IDX=$(find_match "$tmp_test $RT_COMPILER_IN" "${TEST_WITH_COMPILE[@]}")
-        
+
         if [[ $TEST_IDX != -1 ]]; then
           if [[ $COMPILE_LINE_USED == false ]]; then
               echo -en '\n' >> $RT_TEMP_CONF
@@ -117,16 +117,16 @@ update_rtconf() {
             COMPILE_LINE_USED=true
           fi
           dep_test=$(echo "$line" | grep -w "$tmp_test" | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
-        
+
           if [[ $dep_test != '' ]]; then
             if [[ $(find_match "$dep_test $RT_COMPILER_IN" "${TEST_WITH_COMPILE[@]}") == -1 ]]; then
-  
+
               dep_line=$(grep -w "$dep_test" rt.conf | grep -v "$tmp_test")
               dep_line="${dep_line#"${dep_line%%[![:space:]]*}"}"
               dep_line=$(echo "${dep_line}" | tr -d '\n')
               CORRECT_LINE[1]=$(awk -F'RUN|RUN' '{print $2}' <<< "$dep_line")
               CORRECT_LINE[2]=$(awk -F'RUN|RUN' '{print $3}' <<< "$dep_line")
-            
+
               if [[ $RT_COMPILER_IN == "intel" ]]; then
                 echo "RUN ${CORRECT_LINE[1]}" >> $RT_TEMP_CONF
               elif [[ $RT_COMPILER_IN == "gnu" ]]; then
@@ -174,7 +174,7 @@ EOF
   git submodule status >> "${REGRESSIONTEST_LOG}"
   echo; echo >> "${REGRESSIONTEST_LOG}"
   cd tests
-  
+
   cat << EOF >> "${REGRESSIONTEST_LOG}"
 
 NOTES:
@@ -214,12 +214,12 @@ EOF
     local valid_test=false
 
     if [[ $line == COMPILE* ]] ; then
-      
+
       CMACHINES=$(echo "$line" | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
       COMPILER=$(echo "$line" | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
       COMPILE_NAME=$(echo "$line" | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
       COMPILE_ID=${COMPILE_NAME}_${COMPILER}
-      
+
       if [[ ${CMACHINES} == '' ]]; then
         valid_compile=true
       elif [[ ${CMACHINES} == -* ]]; then
@@ -241,7 +241,7 @@ EOF
         elif [[ -f fail_compile_${COMPILE_ID} ]]; then
           COMPILE_RESULT="FAIL TO RUN"
           FAIL_LOG="${LOG_DIR}/compile_${COMPILE_ID}.log"
-        else 
+        else
           if grep -q "quota" "${LOG_DIR}/compile_${COMPILE_ID}.log"; then
             COMPILE_RESULT="FAIL FROM DISK QUOTA"
             FAIL_LOG="${LOG_DIR}/compile_${COMPILE_ID}.log"
@@ -282,7 +282,7 @@ EOF
       RMACHINES=$(echo "$line" | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
       TEST_NAME=$(echo "$line" | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
       GEN_BASELINE=$(echo "$line" | cut -d'|' -f4 | sed -e 's/^ *//' -e 's/ *$//')
-      
+
       if [[ ${RMACHINES} == '' ]]; then
         valid_test=true
       elif [[ ${RMACHINES} == -* ]]; then
@@ -321,7 +321,7 @@ EOF
             TEST_RESULT="FAIL FROM TIMEOUT"
             FAIL_LOG="${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"
           else
-            
+
             TEST_RESULT="PASS"
             TIME_FILE="${LOG_DIR}/run_${TEST_NAME}_${COMPILER}_timestamp.txt"
             GETMEMFROMLOG=$(grep "The maximum resident set size" "${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log")
@@ -351,9 +351,9 @@ EOF
       fi
     fi
   done < "$TESTS_FILE"
-  
+
   elapsed_time=$( printf '%02dh:%02dm:%02ds\n' $((SECONDS%86400/3600)) $((SECONDS%3600/60)) $((SECONDS%60)) )
-  
+
   cat << EOF >> "${REGRESSIONTEST_LOG}"
 
 SYNOPSIS:
@@ -371,18 +371,18 @@ EOF
       echo "-- LOG: ${FAILED_COMPILE_LOGS[$i]}" >> "${REGRESSIONTEST_LOG}"
     done
   fi
-  
+
   # PRINT FAILED TESTS
   if [[ "${#FAILED_TESTS[@]}" -ne "0" ]]; then
-    
+
     echo "Failed Tests:" >> ${REGRESSIONTEST_LOG}
     for j in "${!FAILED_TESTS[@]}"; do
       echo "* ${FAILED_TESTS[$j]}" >> "${REGRESSIONTEST_LOG}"
       echo "-- LOG: ${FAILED_TEST_LOGS[$j]}" >> "${REGRESSIONTEST_LOG}"
     done
-    
+
   fi
-  
+
   # WRITE FAILED_TEST_ID LIST TO TEST_CHANGES_LOG
   if [[ "${#FAILED_TESTS[@]}" -ne "0" ]]; then
     for item in "${FAILED_TEST_ID[@]}"; do
@@ -672,7 +672,7 @@ elif [[ $MACHINE_ID = gaea ]]; then
     ROCOTOCOMPLETE=$(which rocotocomplete)
     ROCOTO_SCHEDULER=slurm
   fi
-  
+
   module load PrgEnv-intel/8.3.3
   module load intel-classic/2023.1.0
   module load cray-mpich/8.1.25
@@ -789,7 +789,7 @@ elif [[ $MACHINE_ID = jet ]]; then
   echo "=======Please, move to Rocky8 node fe[5-8]======="
   exit 1
   fi
-  
+
   if [[ "${ROCOTO:-false}" == true ]] ; then
     module load rocoto
     ROCOTORUN=$(which rocotorun)
@@ -986,7 +986,8 @@ if [[ "$CREATE_BASELINE" == false ]] ; then
   fi
 fi
 
-INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20221101}
+#INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20221101}
+INPUTDATA_ROOT=/scratch1/NCEPDEV/stmp4/Denise.Worthen/input-data_20240501
 INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20240214
 INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC:-$DISKNM/NEMSfv3gfs/BM_IC-20220207}
 
