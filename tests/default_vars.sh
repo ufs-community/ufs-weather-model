@@ -314,7 +314,7 @@ export DumpFields="false"
 export_fv3 ()
 {
 # ufs.configure defaults
-export UFS_CONFIGURE=ufs.configure.atm.IN
+export UFS_CONFIGURE=ufs.configure.atm_esmf.IN
 export MODEL_CONFIGURE=model_configure.IN
 export atm_model=fv3
 
@@ -653,6 +653,28 @@ export CICE_RUNID=unknown
 export CICE_USE_RESTART_TIME=.false.
 export CICE_RESTART_DIR=./RESTART/
 export CICE_RESTART_FILE=iced
+
+export CICE_RESTART_FORMAT='pnetcdf2'
+export CICE_RESTART_IOTASKS=-99
+export CICE_RESTART_REARR='box'
+export CICE_RESTART_ROOT=-99
+export CICE_RESTART_STRIDE=-99
+export CICE_RESTART_CHUNK=0,0
+export CICE_RESTART_DEFLATE=0
+
+export CICE_HISTORY_FORMAT='pnetcdf2'
+if [[ ${MACHINE_ID} == wcoss2 ]]; then
+  export CICE_RESTART_FORMAT='hdf5'
+  export CICE_HISTORY_FORMAT='hdf5'
+fi
+export CICE_HISTORY_IOTASKS=-99
+export CICE_HISTORY_REARR='box'
+export CICE_HISTORY_ROOT=-99
+export CICE_HISTORY_STRIDE=-99
+export CICE_HISTORY_CHUNK=0,0
+export CICE_HISTORY_DEFLATE=0
+export CICE_HISTORY_PREC=4
+
 export CICE_DUMPFREQ=d
 export CICE_DUMPFREQ_N=1000
 export CICE_DIAGFREQ=`expr $FHMAX \* 3600 / $DT_CICE`
@@ -825,7 +847,6 @@ export_ww3
 
 # Set CMEPS component defauls
 export_cmeps
-export ATMTILESIZE=`expr $NPX - 1`
 
 # FV3 defaults
 export FRAC_GRID=.true.
