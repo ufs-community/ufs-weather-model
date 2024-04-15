@@ -69,6 +69,7 @@ export MOM6_TOPOEDITS=ufs.topo_edits_011818.nc
 export MOM6_ALLOW_LANDMASK_CHANGES=True
 export eps_imesh=2.5e-1
 
+WAV_tasks=$WAV_tasks_cpl_unstr
 export WW3_DOMAIN=global_270k
 export MESH_WAV=mesh.${WW3_DOMAIN}.nc
 export WW3_MODDEF=mod_def.ic4.exp.${WW3_DOMAIN}
@@ -82,14 +83,9 @@ export CICE_restart_fsd=.false.
 export CICE_wave_spec_type=constant
 
 export wav_coupling_to_cice=true
-export check_for_nans=true
-#export WW3_DTFLD=3600
 
 export DIAG_TABLE=diag_table_template
 export FIELD_TABLE=field_table_thompson_noaero_tke
-export UFS_CONFIGURE=ufs.configure.s2sw.IN
+export UFS_CONFIGURE=ufs.configure.s2sw_fast_esmf.IN
 
 export FV3_RUN=cpld_control_run.IN
-#WLCLK=60
-WAV_tasks=$WAV_tasks_cpl_unstr
-
