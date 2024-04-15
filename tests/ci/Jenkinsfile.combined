@@ -208,6 +208,9 @@ def generateStage(nodeLabel) {
                             cd .. && cd .. && cd ..
                             rm -rf $WORKSPACE/
 			    checkout scm
+			    cd $WORKSPACE/
+                            git submodule update --init --recursive
+			    cd ..
 			    cp RegressionTests_hercules.log $WORKSPACE/tests/logs/
                             cd $WORKSPACE/tests/
                           elif [[ $machine =~ "Orion" ]]
