@@ -205,10 +205,9 @@ def generateStage(nodeLabel) {
                             ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
 			    cd logs/
                             cp RegressionTests_hercules.log /work/noaa/epic/role-epic/jenkins/workspace
-                            cd ..
-                            git config pull.rebase false
-                            git pull
-                            cd .. && cd ..
+                            cd .. && cd .. && cd ..
+                            rm -rf $WORKSPACE/
+			    checkout scm
 			    cp RegressionTests_hercules.log $WORKSPACE/tests/logs/
                             cd $WORKSPACE/tests/
                           elif [[ $machine =~ "Orion" ]]
