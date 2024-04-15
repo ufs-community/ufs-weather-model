@@ -206,13 +206,14 @@ def generateStage(nodeLabel) {
 			    cd logs/
                             cp RegressionTests_hercules.log /work/noaa/epic/role-epic/jenkins/workspace
                             cd .. && cd .. && cd ..
-                            rm -rf $WORKSPACE/
+                            mkdir new_repo
+                            cd new_repo
 			    checkout scm
-			    cd $WORKSPACE/
                             git submodule update --init --recursive
-			    cd ..
-			    cp RegressionTests_hercules.log $WORKSPACE/tests/logs/
-                            cd $WORKSPACE/tests/
+                            export PWD=$WORKSPACE
+			    cd .. && cd ..
+			    cp RegressionTests_hercules.log /new_repo/$WORKSPACE/tests/logs/
+                            cd /new_repo/$WORKSPACE/tests/
                           elif [[ $machine =~ "Orion" ]]
                           then
                            echo "Running regression tests on $machine"
