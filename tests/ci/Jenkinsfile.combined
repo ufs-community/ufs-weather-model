@@ -11,7 +11,6 @@ for (label in pullRequest.labels) {
    if ((label.matches(node.getLabelString()+"(.*)-BL"))) {
      generateBaselineNode += node.getLabelString() 
    }
-
  }
 }
 
@@ -60,6 +59,14 @@ def generateStage(nodeLabel) {
                             chgrp noaa-hpc develop-${BL_DATE}
 		            cd $WORKSPACE/tests
                             ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
+			    cd logs/
+                            cp RegressionTests_hercules.log /work/noaa/epic/role-epic/jenkins/workspace
+                            cd ..
+                            git config pull.rebase false
+                            git pull
+                            cd .. && cd ..
+			    cp RegressionTests_hercules.log $WORKSPACE/tests/logs/
+                            cd $WORKSPACE/tests/
                           elif [[ $machine =~ "Orion" ]]
                           then
                             echo "Creating baselines on $machine"
@@ -77,6 +84,14 @@ def generateStage(nodeLabel) {
                             chgrp noaa-hpc develop-${BL_DATE}
 			    cd $WORKSPACE/tests
                             ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
+                             cd logs/
+                             cp RegressionTests_orion.log /work/noaa/epic/role-epic/jenkins/workspace
+                             cd ..
+                             git config pull.rebase false
+                             git pull
+                             cd .. && cd ..
+			     cp RegressionTests_orion.log $WORKSPACE/tests/logs/
+			     cd $WORKSPACE/tests/
                           elif [[ $machine =~ "Gaea" ]]
                           then 
                             echo "Creating baselines on $machine"
@@ -91,6 +106,14 @@ def generateStage(nodeLabel) {
                             chgrp ncep develop-${BL_DATE}
 		            cd $WORKSPACE/tests
                             ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
+			    cd logs/
+			    cp RegressionTests_gaea.log /gpfs/f5/epic/scratch/role.epic/jenkins/workspace
+			    cd ..
+			    git config pull.rebase false
+			    git pull
+			    cd .. && cd ..
+			    cp RegressionTests_gaea.log $WORKSPACE/tests/logs/
+			    cd $WORKSPACE/tests/
                           elif [[ $machine =~ "Hera" ]]
                           then
                             echo "Creating baselines on $machine"
@@ -103,6 +126,14 @@ def generateStage(nodeLabel) {
 			    rsync -a REGRESSION_TEST/ ${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}
 			    cd $WORKSPACE/tests
                             ./rt.sh -a ${ACCNR} -r -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
+			     cd logs/
+			     cp RegressionTests_hera.log /scratch2/NAGAPE/epic/role.epic/jenkins/workspace
+			     cd ..
+			     git config pull.rebase false
+			     git pull
+			     cd .. && cd ..
+			     cp RegressionTests_hera.log $WORKSPACE/tests/logs/
+			     cd $WORKSPACE/tests/
                            elif [[ $machine =~ "Derecho" ]]
                            then
                              echo "Creating baselines on $machine"
@@ -115,6 +146,14 @@ def generateStage(nodeLabel) {
 			     rsync -a REGRESSION_TEST/ ${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}
 			     cd $WORKSPACE/tests
                              ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
+			     cd logs/
+			     cp RegressionTests_derecho.log /glade/derecho/scratch/epicufsrt/jenkins/workspace
+			     cd ..
+			     git config pull.rebase false
+			     git pull
+			     cd .. && cd ..
+                             cp RegressionTests_derecho.log $WORKSPACE/tests/logs/
+                             cd $WORKSPACE/tests/
                           else
                             echo "Creating baselines on $machine"
                             ./rt.sh -a ${ACCNR} -c -r -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
@@ -164,27 +203,67 @@ def generateStage(nodeLabel) {
                             sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
                             export ACCNR=epic
                             ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
+			    cd logs/
+                            cp RegressionTests_hercules.log /work/noaa/epic/role-epic/jenkins/workspace
+                            cd ..
+                            git config pull.rebase false
+                            git pull
+                            cd .. && cd ..
+			    cp RegressionTests_hercules.log $WORKSPACE/tests/logs/
+                            cd $WORKSPACE/tests/
                           elif [[ $machine =~ "Orion" ]]
                           then
                            echo "Running regression tests on $machine"
                             export dprefix=/work2/noaa/$ACCNR/$USER
                             sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
                             ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
+                             cd logs/
+                             cp RegressionTests_orion.log /work/noaa/epic/role-epic/jenkins/workspace
+                             cd ..
+                             git config pull.rebase false
+                             git pull
+                             cd .. && cd ..
+			     cp RegressionTests_orion.log $WORKSPACE/tests/logs/
+			     cd $WORKSPACE/tests/
                           elif [[ $machine =~ "Gaea" ]]
                           then 
                            echo "Running regression tests on $machine"
                             ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
                             unset LD_LIBRARY_PATH
+			    cd logs/
+			    cp RegressionTests_gaea.log /gpfs/f5/epic/scratch/role.epic/jenkins/workspace
+			    cd ..
+			    git config pull.rebase false
+			    git pull
+			    cd .. && cd ..
+			    cp RegressionTests_gaea.log $WORKSPACE/tests/logs/
+			    cd $WORKSPACE/tests/
                           elif [[ $machine =~ "Hera" ]]
                           then
                            echo "Running regression tests on $machine"
-                           export ACCNR=nems
-                          ./rt.sh -a ${ACCNR} -r -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
+                             export ACCNR=nems
+                             ./rt.sh -a ${ACCNR} -r -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
+			     cd logs/
+			     cp RegressionTests_hera.log /scratch2/NAGAPE/epic/role.epic/jenkins/workspace
+			     cd ..
+			     git config pull.rebase false
+			     git pull
+			     cd .. && cd ..
+			     cp RegressionTests_hera.log $WORKSPACE/tests/logs/
+			     cd $WORKSPACE/tests/
 			  elif [[ $machine =~ "Derecho" ]]
                           then
                            echo "Running regression tests on $machine"
                            export ACCNR=nral0032
                            ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
+			    cd logs/
+			    cp RegressionTests_derecho.log /glade/derecho/scratch/epicufsrt/jenkins/workspace
+			    cd ..
+			    git config pull.rebase false
+			    git pull
+			    cd .. && cd ..
+                            cp RegressionTests_derecho.log $WORKSPACE/tests/logs/
+                            cd $WORKSPACE/tests/
                           else
                            echo "Running regression tests on $machine"
                            ./rt.sh -a ${ACCNR} -r -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
