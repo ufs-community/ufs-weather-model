@@ -203,17 +203,12 @@ def generateStage(nodeLabel) {
                             sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
                             export ACCNR=epic
                             ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
-			    cd logs/
-                            cp RegressionTests_hercules.log /work/noaa/epic/role-epic/jenkins/workspace
-                            cd .. && cd .. && cd ..
-                            mkdir new_repo
-                            cd new_repo
-			    checkout scm
-                            git submodule update --init --recursive
-                            export PWD=$WORKSPACE
-			    cd .. && cd ..
-			    cp RegressionTests_hercules.log /new_repo/$WORKSPACE/tests/logs/
-                            cd /new_repo/$WORKSPACE/tests/
+                            cd ..
+                            git reset --hard HEAD
+                            git clean -f -x -d -n
+                            git reset --hard HEAD
+                            git clean -f -x -d
+                            cd tests/
                           elif [[ $machine =~ "Orion" ]]
                           then
                            echo "Running regression tests on $machine"
