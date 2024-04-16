@@ -208,8 +208,9 @@ def generateStage(nodeLabel) {
                             cd .. && cd ..
                             git reset --hard HEAD
                             git clean -f -x -d -n
-                            git reset --hard HEAD
-                            git clean -f -x -d
+                            git status
+                            git reset --hard HEAD~N
+                            git pull
                             cd ..
                             cp RegressionTests_hercules.log $WORKSPACE/tests/logs/
                             cd $WORKSPACE/tests/
