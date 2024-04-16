@@ -144,17 +144,19 @@ submit_and_wait() {
       ;;
   esac
 
-  echo "Job ID: ${jobid}"
-
+  echo "rt_utils.sh: Submitted Job. ID is ${jobid}."
+  sleep 10
   # wait for the job to enter the queue
   local count=0
   local job_running=''
-  echo "Job is waiting to enter the queue"
+  echo "rt_utils.sh: Job is waiting to enter the queue..."
   until [[ ${job_running} == 'true' ]]
   do
     case ${SCHEDULER} in
       pbs)
-        job_info=$( qstat -u "${USER}" )
+	set +e
+        job_info=$( qstat "${jobid}" )
+	set -e
         ;;
       slurm)
         job_info=$( squeue -u "${USER}" -j "${jobid}" )
@@ -164,6 +166,7 @@ submit_and_wait() {
     esac
     if grep -q "${jobid}" <<< "${job_info}"; then
       job_running=true
+      continue
     else
       job_running=false
     fi
@@ -172,7 +175,7 @@ submit_and_wait() {
     (( count=count+1 ))
     if [[ ${count} -eq 13 ]]; then echo "No job in queue after one minute, exiting..."; exit 2; fi
   done
-  echo "Job is submitted: ID: ${jobid}"
+  echo "rt_utils.sh Job (${jobid}) is now in the queue."
 
   # wait for the job to finish and compare results
   local n=1
@@ -180,7 +183,9 @@ submit_and_wait() {
   do
     case ${SCHEDULER} in
       pbs)
+	set +e
         job_info=$( qstat "${jobid}" )
+	set -e
         ;;
       slurm)
         job_info=$( squeue -u "${USER}" -j "${jobid}" )
@@ -218,13 +223,13 @@ submit_and_wait() {
       #pbs only: H
       H)
         status_label='Job being held'
-        echo "*** WARNING ***: Job in a HELD state. Might want to stop manually."
+        echo "rt_utils.sh: *** WARNING ***: Job in a HELD state. Might want to stop manually."
         ;;
       #fail/completed cases
       #pbs: E
       #slurm: F/FAILED TO/TIMEOUT CA/CANCELLED
       E|F|TO|CA|FAILED|TIMEOUT|CANCELLED)
-        echo "!!!!!!!!!!JOB TERMINATED!!!!!!!!!!"
+        echo "rt_utils.sh: !!!!!!!!!!JOB TERMINATED!!!!!!!!!!"
         job_running=false #Trip the loop to end with these status flags
         interrupt_job
         exit 1
@@ -236,8 +241,8 @@ submit_and_wait() {
         ;;
       *)
         status_label="Unknown"
-        echo "*** WARNING ***: Job status unsupported: ${status}"
-        echo "*** WARNING ***: Status might be non-terminating, please manually stop if needed"
+        echo "rt_utils.sh: *** WARNING ***: Job status unsupported: ${status}"
+        echo "rt_utils.sh: *** WARNING ***: Status might be non-terminating, please manually stop if needed"
         ;;
     esac
 
