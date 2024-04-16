@@ -205,8 +205,8 @@ def generateStage(nodeLabel) {
                             ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
                             cd logs/
                             cp RegressionTests_hercules.log /work/noaa/epic/role-epic/jenkins/workspace
+                            git remote -v
                             git fetch origin
-                            git reset --hard origin
                             git reset FETCH_HEAD --hard
                             cd .. && cd .. && cd ..
                             cp RegressionTests_hercules.log $WORKSPACE/tests/logs/
