@@ -115,7 +115,7 @@ interrupt_job() {
 }
 
 submit_and_wait() {
-  echo "rt_utils.sh: Submitting job: ${jobid} on ${SCHEDULER}"
+  echo "rt_utils.sh: Submitting job on scheduler: ${SCHEDULER}"
   [[ -z $1 ]] && exit 1
 
   [[ -o xtrace ]] && set_x='set -x' || set_x='set +x'
@@ -154,7 +154,7 @@ submit_and_wait() {
   do
     case ${SCHEDULER} in
       pbs)
-        job_info=$( qstat "${jobid}" )
+        job_info=$( qstat -u "${USER}" )
         ;;
       slurm)
         job_info=$( squeue -u "${USER}" -j "${jobid}" )
@@ -162,7 +162,6 @@ submit_and_wait() {
       *)
         ;;
     esac
-    
     if grep -q "${jobid}" <<< "${job_info}"; then
       job_running=true
     else
