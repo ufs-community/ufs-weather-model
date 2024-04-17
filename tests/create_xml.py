@@ -240,6 +240,7 @@ def main_loop():
                     ACCNR=os.getenv('ACCNR')
                     COMPILE_QUEUE=os.getenv('COMPILE_QUEUE')
                     PARTITION=os.getenv('PARTITION')
+                    write_compile_env()
                     rocoto_create_compile_task \
                         (MACHINE_ID,COMPILE_ID,ROCOTO_COMPILE_MAXTRIES,MAKE_OPT,ACCNR,COMPILE_QUEUE,PARTITION,ROCOTO_XML)
                 if (str(key) == 'tests'):
