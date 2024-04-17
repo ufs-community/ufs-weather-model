@@ -1054,26 +1054,6 @@ if [[ $ROCOTO == true ]]; then
   if [[ $MACHINE_ID = stampede || $MACHINE_ID = expanse ]]; then
     die "Rocoto is not supported on this machine: $MACHINE_ID"
   fi
-
-  cat << EOF > $ROCOTO_XML
-<?xml version="1.0"?>
-<!DOCTYPE workflow
-[
-  <!ENTITY PATHRT         "${PATHRT}">
-  <!ENTITY LOG            "${LOG_DIR}">
-  <!ENTITY PATHTR         "${PATHTR}">
-  <!ENTITY RTPWD          "${RTPWD}">
-  <!ENTITY INPUTDATA_ROOT "${INPUTDATA_ROOT}">
-  <!ENTITY INPUTDATA_ROOT_WW3 "${INPUTDATA_ROOT_WW3}">
-  <!ENTITY INPUTDATA_ROOT_BMIC "${INPUTDATA_ROOT_BMIC}">
-  <!ENTITY RUNDIR_ROOT    "${RUNDIR_ROOT}">
-  <!ENTITY NEW_BASELINE   "${NEW_BASELINE}">
-]>
-<workflow realtime="F" scheduler="${ROCOTO_SCHEDULER}" taskthrottle="20">
-  <cycledef>197001010000 197001010000 01:00:00</cycledef>
-  <log>&LOG;/workflow.log</log>
-EOF
-
 fi
 
 if [[ $ECFLOW == true ]]; then
