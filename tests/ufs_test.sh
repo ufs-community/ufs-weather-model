@@ -1171,16 +1171,12 @@ while read -r line || [ "$line" ]; do
     fi
 
     #create_or_run_compile_task
-    export in_metatask
-    export MACHINE_ID
-    export COMPILE_ID
-    export MAKE_OPT
+    export LOG_DIR
+    export ROCOTO_SCHEDULER
     export ACCNR
     export COMPILE_QUEUE
     export ROCOTO_XML
     export PARTITION
-    export JOB_NR
-    export RT_COMPILER
     export PATHRT
     export PATHTR
     export SCHEDULER
@@ -1188,83 +1184,21 @@ while read -r line || [ "$line" ]; do
     export ECFLOW
     export REGRESSIONTEST_LOG
     export RUNDIR_ROOT
-    python -c "import create_xml; create_xml.compile_task()"
 
-    continue
-
-  elif [[ $line == RUN* ]] ; then
-
-    if [[ $COMPILE_ONLY == true ]]; then
-      continue
-    fi
-
-    TEST_NAME=$(echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
-    MACHINES=$( echo $line | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
-    CB=$(       echo $line | cut -d'|' -f4)
-    DEP_RUN=$(  echo $line | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
-    DATE_35D=$( echo $line | cut -d'|' -f6 | sed -e 's/^ *//' -e 's/ *$//')
-
-    if [[ $DEP_RUN != '' ]]; then
-      DEP_RUN=${DEP_RUN}_${RT_COMPILER}
-    fi
-
-    export TEST_ID=${TEST_NAME}_${RT_COMPILER}
-
-    [[ -e "tests/$TEST_NAME" ]] || die "run test file tests/$TEST_NAME does not exist"
-    [[ $CREATE_BASELINE == true && $CB != *baseline* ]] && continue
-
-    if [[ ${MACHINES} != '' ]]; then
-      if [[ ${MACHINES} == -* ]]; then
-        [[ ${MACHINES} =~ ${MACHINE_ID} ]] && continue
-      elif [[ ${MACHINES} == +* ]]; then
-        [[ ${MACHINES} =~ ${MACHINE_ID} ]] || continue
-      else
-        echo "MACHINES=|${MACHINES}|"
-        die "MACHINES spec must be either an empty string or start with either '+' or '-'"
-      fi
-    fi
-
-    COMPILE_METATASK_NAME=${COMPILE_ID}
-
-    # 35 day tests
-    #jkim [[ $TEST_35D == true ]] && rt_35d
-
-    # Avoid uninitialized RT_SUFFIX/BL_SUFFIX (see definition above)
-    RT_SUFFIX=${RT_SUFFIX:-""}
-    BL_SUFFIX=${BL_SUFFIX:-""}
-    
-    if [[ $ROCOTO == true && $new_compile == true ]]; then
-      new_compile=false
-      in_metatask=true
-      cat << EOF >> $ROCOTO_XML
-  <metatask name="compile_${COMPILE_METATASK_NAME}_tasks"><var name="zero">0</var>
-EOF
-    fi
-
-    export TEST_NAME
     export RTPWD
     export INPUTDATA_ROOT
     export INPUTDATA_ROOT_WW3
     export INPUTDATA_ROOT_BMIC
-    export NEW_BASELINE
-    export CREATE_BASELINE
-    export RT_SUFFIX
-    export BL_SUFFIX
+#    export NEW_BASELINE
+#    export CREATE_BASELINE
+#    export RT_SUFFIX
+#    export BL_SUFFIX
     export QUEUE
     export DEP_RUN
     export MACHINE_ID
-    export TEST_ID
-    export skip_check_results
-    export delete_rundir
-    
-    python -c "import create_xml; create_xml.run_task()"    
+    export ROCOTO
 
-    continue
-    
-  else
-    die "Unknown command $line"
-  fi
-done < $TESTS_FILE
+    python -c "import create_xml; create_xml.main_loop()"
 
 ##
 ## run regression test workflow (currently Rocoto or ecFlow are supported)
