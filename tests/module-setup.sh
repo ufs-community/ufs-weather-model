@@ -51,13 +51,6 @@ elif [[ $MACHINE_ID = derecho ]] ; then
     fi
     module purge
     
-elif [[ $MACHINE_ID = noaacloud ]] ; then
-    # We are on NOAA Cloud
-    if ( ! eval module help > /dev/null 2>&1 ) ; then
-        source /apps/lmod/8.5.2/init/bash
-    fi
-    module purge
-    
 elif [[ $MACHINE_ID = stampede ]] ; then
     # We are on TACC Stampede
     if ( ! eval module help > /dev/null 2>&1 ) ; then
@@ -84,6 +77,18 @@ elif [[ $MACHINE_ID = expanse ]]; then
     fi
     module purge
     module load slurm/expanse/20.02.3
+    
+elif [[ $MACHINE_ID = noaacloud ]] ; then
+    module purge
+
+    module use /contrib/spack-stack/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core
+    module load stack-intel/2021.3.0  stack-intel-oneapi-mpi/2021.3.0
+
+    export SPACK_ROOT=/contrib/spack-stack/spack-stack-1.6.0/spack
+    export PATH=$PATH:$SPACK_ROOT/bin
+    . $SPACK_ROOT/share/spack/setup-env.sh
+
+    module load cmake/3.23.1
 
 else
     echo WARNING: UNKNOWN PLATFORM 1>&2
