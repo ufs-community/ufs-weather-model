@@ -97,10 +97,10 @@ def generateStage(nodeLabel) {
                             echo "Creating baselines on $machine"
                             ./rt.sh -a ${ACCNR} -c -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
                             unset LD_LIBRARY_PATH
-                            export DISKNM=/lustre/f2/pdata/ncep/role.epic/C5/RT
+                            export DISKNM=/gpfs/f5/epic/world-shared/UFS-WM_RT
                             cd ${DISKNM}/NEMSfv3gfs/
                             mkdir develop-${BL_DATE}
-                            cd  /lustre/f2/scratch/role.epic/FV3_RT
+                            cd /gpfs/f5/epic/scratch/role.epic/FV3_RT
                             rsync -a REGRESSION_TEST/ ${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}
                             cd ${DISKNM}/NEMSfv3gfs/
                             chgrp ncep develop-${BL_DATE}
