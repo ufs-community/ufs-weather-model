@@ -1145,12 +1145,12 @@ declare -A compiles
 ##
 
 if [[ $ROCOTO == true ]]; then
-  if [[ $in_metatask == true ]]; then
-    echo "  </metatask>" >> $ROCOTO_XML
-  fi
-  echo "</workflow>" >> $ROCOTO_XML
+  #if [[ $in_metatask == true ]]; then
+  #  echo "  </metatask>" >> $ROCOTO_XML
+  #fi
+  #echo "</workflow>" >> $ROCOTO_XML
   # run rocoto workflow until done
-  #rocoto_run
+  rocoto_run
 fi
 
 if [[ $ECFLOW == true ]]; then
