@@ -1,0 +1,37 @@
+---
+name: Super-Linter
+
+on:
+  push: null
+  pull_request: null
+
+jobs:
+  build:
+    name: Lint
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      packages: read
+      statuses: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Super-Linter
+        uses: super-linter/super-linter@v6.3.0
+        env:
+          LINTER_RULES_PATH: /
+          DEFAULT_BRANCH: origin/develop
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FILTER_REGEX_EXCLUDE: .*(tests/fv3_conf/.*|tests/ci/.*|tests/auto/.*|tests/auto-jenkins/.*|tests/opnReqTests/.*|tests/opnReqTest|tests/atparse.bash).*
+          VALIDATE_BASH: true
+          BASH_SEVERITY: style
+          #VALIDATE_GITHUB_ACTIONS: true
+          #VALIDATE_LUA: true
+          #VALIDATE_MARKDOWN: true
+          #VALIDATE_PYTHON_PYLINT: true
+          #VALIDATE_YAML: true
