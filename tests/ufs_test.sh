@@ -1110,46 +1110,6 @@ COMPILE_PREV=''
 
 declare -A compiles
 
-while read -r line || [ "$line" ]; do
-
-  line="${line#"${line%%[![:space:]]*}"}"
-  [[ ${#line} == 0 ]] && continue
-  [[ $line == \#* ]] && continue
-
-  JOB_NR=$( printf '%03d' $(( 10#$JOB_NR + 1 )) )
-
-  if [[ $line == COMPILE* ]]; then
-
-    COMPILE_NAME=$( echo $line | cut -d'|' -f2 | sed -e 's/^ *//' -e 's/ *$//')
-    RT_COMPILER=$(echo $line | cut -d'|' -f3 | sed -e 's/^ *//' -e 's/ *$//')
-    MAKE_OPT=$(   echo $line | cut -d'|' -f4 | sed -e 's/^ *//' -e 's/ *$//')
-    MACHINES=$(   echo $line | cut -d'|' -f5 | sed -e 's/^ *//' -e 's/ *$//')
-    CB=$(         echo $line | cut -d'|' -f6)
-    COMPILE_ID=${COMPILE_NAME}_${RT_COMPILER}
-    COMPILE_PREV=${COMPILE_ID}
-
-    set +u
-    if [[ ! -z ${compiles[$COMPILE_ID]} ]] ; then
-        echo "Error! Duplicated compilation $COMPILE_NAME for compiler $RT_COMPILER!"
-        exit 1
-    fi
-    set -u
-    compiles[$COMPILE_ID]=$COMPILE_ID
-    echo "COMPILING ${compiles[${COMPILE_ID}]}"
-
-    [[ $CREATE_BASELINE == true && $CB != *fv3* ]] && continue
-
-    if [[ ${MACHINES} != '' ]]; then
-      if [[ ${MACHINES} == -* ]]; then
-        [[ ${MACHINES} =~ ${MACHINE_ID} ]] && continue
-      elif [[ ${MACHINES} == +* ]]; then
-        [[ ${MACHINES} =~ ${MACHINE_ID} ]] || continue
-      else
-        echo "MACHINES=|${MACHINES}|"
-        die "MACHINES spec must be either an empty string or start with either '+' or '-'"
-      fi
-    fi
-
     #create_or_run_compile_task
     export LOG_DIR
     export ROCOTO_SCHEDULER
