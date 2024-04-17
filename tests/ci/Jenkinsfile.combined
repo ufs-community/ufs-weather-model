@@ -61,10 +61,10 @@ def generateStage(nodeLabel) {
                             ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
 			    cd logs/
                             cp RegressionTests_hercules.log /work/noaa/epic/role-epic/jenkins/workspace
-                            cd ..
-                            git config pull.rebase false
-                            git pull
-                            cd .. && cd ..
+                            git remote -v
+                            git fetch --no-recurse-submodules origin
+                            git reset FETCH_HEAD --hard
+                            cd .. && cd .. && cd ..
 			    cp RegressionTests_hercules.log $WORKSPACE/tests/logs/
                             cd $WORKSPACE/tests/
                           elif [[ $machine =~ "Orion" ]]
@@ -86,10 +86,10 @@ def generateStage(nodeLabel) {
                             ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
                              cd logs/
                              cp RegressionTests_orion.log /work/noaa/epic/role-epic/jenkins/workspace
-                             cd ..
-                             git config pull.rebase false
-                             git pull
-                             cd .. && cd ..
+                             git remote -v
+                             git fetch --no-recurse-submodules origin
+                             git reset FETCH_HEAD --hard
+                             cd .. && cd .. && cd ..
 			     cp RegressionTests_orion.log $WORKSPACE/tests/logs/
 			     cd $WORKSPACE/tests/
                           elif [[ $machine =~ "Gaea" ]]
@@ -108,10 +108,10 @@ def generateStage(nodeLabel) {
                             ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
 			    cd logs/
 			    cp RegressionTests_gaea.log /gpfs/f5/epic/scratch/role.epic/jenkins/workspace
-			    cd ..
-			    git config pull.rebase false
-			    git pull
-			    cd .. && cd ..
+			    git remote -v
+                            git fetch --no-recurse-submodules origin
+                            git reset FETCH_HEAD --hard
+                            cd .. && cd .. && cd ..
 			    cp RegressionTests_gaea.log $WORKSPACE/tests/logs/
 			    cd $WORKSPACE/tests/
                           elif [[ $machine =~ "Hera" ]]
@@ -128,10 +128,10 @@ def generateStage(nodeLabel) {
                             ./rt.sh -a ${ACCNR} -r -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
 			     cd logs/
 			     cp RegressionTests_hera.log /scratch2/NAGAPE/epic/role.epic/jenkins/workspace
-			     cd ..
-			     git config pull.rebase false
-			     git pull
-			     cd .. && cd ..
+			     git remote -v
+                             git fetch --no-recurse-submodules origin
+                             git reset FETCH_HEAD --hard
+                             cd .. && cd .. && cd ..
 			     cp RegressionTests_hera.log $WORKSPACE/tests/logs/
 			     cd $WORKSPACE/tests/
                            elif [[ $machine =~ "Derecho" ]]
@@ -148,10 +148,10 @@ def generateStage(nodeLabel) {
                              ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
 			     cd logs/
 			     cp RegressionTests_derecho.log /glade/derecho/scratch/epicufsrt/jenkins/workspace
-			     cd ..
-			     git config pull.rebase false
-			     git pull
-			     cd .. && cd ..
+			     git remote -v
+                             git fetch --no-recurse-submodules origin
+                             git reset FETCH_HEAD --hard
+                             cd .. && cd .. && cd ..
                              cp RegressionTests_derecho.log $WORKSPACE/tests/logs/
                              cd $WORKSPACE/tests/
                           else
@@ -219,10 +219,10 @@ def generateStage(nodeLabel) {
                             ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
                              cd logs/
                              cp RegressionTests_orion.log /work/noaa/epic/role-epic/jenkins/workspace
-                             cd ..
-                             git config pull.rebase false
-                             git pull
-                             cd .. && cd ..
+                             git remote -v
+                             git fetch --no-recurse-submodules origin
+                             git reset FETCH_HEAD --hard
+                             cd .. && cd .. && cd ..
 			     cp RegressionTests_orion.log $WORKSPACE/tests/logs/
 			     cd $WORKSPACE/tests/
                           elif [[ $machine =~ "Gaea" ]]
@@ -232,10 +232,10 @@ def generateStage(nodeLabel) {
                             unset LD_LIBRARY_PATH
 			    cd logs/
 			    cp RegressionTests_gaea.log /gpfs/f5/epic/scratch/role.epic/jenkins/workspace
-			    cd ..
-			    git config pull.rebase false
-			    git pull
-			    cd .. && cd ..
+			    git remote -v
+                            git fetch --no-recurse-submodules origin
+                            git reset FETCH_HEAD --hard
+                            cd .. && cd .. && cd ..
 			    cp RegressionTests_gaea.log $WORKSPACE/tests/logs/
 			    cd $WORKSPACE/tests/
                           elif [[ $machine =~ "Hera" ]]
@@ -245,10 +245,10 @@ def generateStage(nodeLabel) {
                              ./rt.sh -a ${ACCNR} -r -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
 			     cd logs/
 			     cp RegressionTests_hera.log /scratch2/NAGAPE/epic/role.epic/jenkins/workspace
-			     cd ..
-			     git config pull.rebase false
-			     git pull
-			     cd .. && cd ..
+			     git remote -v
+                             git fetch --no-recurse-submodules origin
+                             git reset FETCH_HEAD --hard
+                             cd .. && cd .. && cd ..
 			     cp RegressionTests_hera.log $WORKSPACE/tests/logs/
 			     cd $WORKSPACE/tests/
 			  elif [[ $machine =~ "Derecho" ]]
@@ -258,10 +258,10 @@ def generateStage(nodeLabel) {
                            ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
 			    cd logs/
 			    cp RegressionTests_derecho.log /glade/derecho/scratch/epicufsrt/jenkins/workspace
-			    cd ..
-			    git config pull.rebase false
-			    git pull
-			    cd .. && cd ..
+			    git remote -v
+                            git fetch --no-recurse-submodules origin
+                            git reset FETCH_HEAD --hard
+                            cd .. && cd .. && cd ..
                             cp RegressionTests_derecho.log $WORKSPACE/tests/logs/
                             cd $WORKSPACE/tests/
                           else
