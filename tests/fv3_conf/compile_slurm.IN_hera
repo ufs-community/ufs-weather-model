@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #SBATCH -e err
 #SBATCH -o out
 #SBATCH --account=@[ACCNR]
@@ -9,11 +9,14 @@
 #SBATCH --job-name="@[JBNME]"
 
 set -eux
+date_s_start=$(date +%s)
+date_start=$(date)
+echo -n "${date_s_start}," > job_timestamp.txt
+echo "Compile started: ${date_start}"
 
-echo -n " $( date +%s )," >  job_timestamp.txt
-echo "Compile started:  " `date`
+"@[PATHRT]/compile.sh" "@[MACHINE_ID]" "@[MAKE_OPT]" "@[COMPILE_ID]" "@[RT_COMPILER]"
 
-@[PATHRT]/compile.sh @[MACHINE_ID] "@[MAKE_OPT]" @[COMPILE_ID] @[RT_COMPILER]
-
-echo "Compile ended:    " `date`
-echo -n " $( date +%s )," >> job_timestamp.txt
+date_end=$(date)
+echo "Compile ended: ${date_end}"
+date_s_end=$(date +%s)
+echo -n "${date_s_end}," >> job_timestamp.txt
