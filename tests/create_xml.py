@@ -189,6 +189,7 @@ export DEP_RUN={DEP_RUN}
 export skip_check_results={skip_check_results}
 export delete_rundir={delete_rundir}
 export WLCLK={WLCLK}
+export RTVERBOSE=false
 """
     if ( MACHINE_ID == 'jet' ):
          runtest_env+="export PATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/bin:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/bin:$PATH"
@@ -240,6 +241,7 @@ def main_loop():
                     ACCNR=os.getenv('ACCNR')
                     COMPILE_QUEUE=os.getenv('COMPILE_QUEUE')
                     PARTITION=os.getenv('PARTITION')
+                    os.environ["RT_COMPILER"] = str(RT_COMPILER)
                     write_compile_env()
                     rocoto_create_compile_task \
                         (MACHINE_ID,COMPILE_ID,ROCOTO_COMPILE_MAXTRIES,MAKE_OPT,ACCNR,COMPILE_QUEUE,PARTITION,ROCOTO_XML)
@@ -258,6 +260,7 @@ def main_loop():
                             RT_SUFFIX = ""
                             BL_SUFFIX = ""
                             ROCOTO_TEST_MAXTRIES="3"
+                            RTVERBOSE=False
                             os.environ["TEST_NAME"] = TEST_NAME
                             os.environ["DEP_RUN"] = DEP_RUN
                             os.environ["TEST_ID"] = TEST_ID
@@ -266,6 +269,7 @@ def main_loop():
                             os.environ["RT_COMPILER"] = RT_COMPILER
                             os.environ["MACHINE_ID"] = MACHINE_ID
                             os.environ["ROCOTO_TEST_MAXTRIES"] = ROCOTO_TEST_MAXTRIES
+                            os.environ["RTVERBOSE"] = str(RTVERBOSE)
                             print('     ',case, config)                            
                             rc_set_run_task =subprocess.Popen(['bash', '-c', '. ufs_test_utils.sh; set_run_task'])
                             rc_set_run_task.wait()   

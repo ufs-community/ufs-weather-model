@@ -13,7 +13,6 @@ set -eux
    source default_vars.sh
    source rt_utils.sh
    source ${PATHRT}/tests/$TEST_NAME
-
    compute_petbounds_and_tasks
 
    TPN=$(( TPN / THRD ))
@@ -31,4 +30,5 @@ set -eux
      
    python -c "import create_xml; create_xml.write_runtest_env()"
    rocoto_create_run_task
+   
  }

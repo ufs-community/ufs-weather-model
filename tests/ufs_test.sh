@@ -1137,7 +1137,9 @@ declare -A compiles
     export DEP_RUN
     export MACHINE_ID
     export ROCOTO
-
+    #RTVERBOSE = false
+    export RTVERBOSE
+    
     python -c "import create_xml; create_xml.main_loop()"
 
 ##
