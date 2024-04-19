@@ -1,4 +1,4 @@
-
+#!/bin/bash
 ###############################################################################
 #
 # Export variables to the default values
@@ -9,291 +9,400 @@
 
   THRD=1
 
-  INPES_atmaero=4; JNPES_atmaero=8; WPG_atmaero=6
+  export INPES_atmaero=4
+  export JNPES_atmaero=8 
+  export WPG_atmaero=6
 
-  THRD_cpl_atmw=1
-  INPES_cpl_atmw=3; JNPES_cpl_atmw=8; WPG_cpl_atmw=6
-  WAV_tasks_cpl_atmw=30
-  WAV_thrds_cpl_atmw=1
+  export THRD_cpl_atmw=1
+  export INPES_cpl_atmw=3
+  export JNPES_cpl_atmw=8
+  export WPG_cpl_atmw=6
+  export WAV_tasks_cpl_atmw=30
+  export WAV_thrds_cpl_atmw=1
 
-  THRD_cpl_c48=1
-  INPES_cpl_c48=1; JNPES_cpl_c48=1; WPG_cpl_c48=6
-  OCN_tasks_cpl_c48=4
-  ICE_tasks_cpl_c48=4
+  export THRD_cpl_c48=1
+  export INPES_cpl_c48=1
+  export JNPES_cpl_c48=1
+  export WPG_cpl_c48=6
+  export OCN_tasks_cpl_c48=4
+  export ICE_tasks_cpl_c48=4
 
-  THRD_cpl_dflt=1
-  INPES_cpl_dflt=3; JNPES_cpl_dflt=8; WPG_cpl_dflt=6
-  OCN_tasks_cpl_dflt=20
-  ICE_tasks_cpl_dflt=10
-  WAV_tasks_cpl_dflt=20
+  export THRD_cpl_dflt=1
+  export INPES_cpl_dflt=3
+  export JNPES_cpl_dflt=8;
+  export WPG_cpl_dflt=6
+  export OCN_tasks_cpl_dflt=20
+  export ICE_tasks_cpl_dflt=10
+  export WAV_tasks_cpl_dflt=20
 
-  THRD_cpl_thrd=2
-  INPES_cpl_thrd=3; JNPES_cpl_thrd=4; WPG_cpl_thrd=6
-  OCN_tasks_cpl_thrd=20
-  OCN_thrds_cpl_thrd=1
-  ICE_tasks_cpl_thrd=10
-  ICE_thrds_cpl_thrd=1
-  WAV_tasks_cpl_thrd=12
-  WAV_thrds_cpl_thrd=2
+  export THRD_cpl_thrd=2
+  export INPES_cpl_thrd=3
+  export JNPES_cpl_thrd=4
+  export WPG_cpl_thrd=6
+  export OCN_tasks_cpl_thrd=20
+  export OCN_thrds_cpl_thrd=1
+  export ICE_tasks_cpl_thrd=10
+  export ICE_thrds_cpl_thrd=1
+  export WAV_tasks_cpl_thrd=12
+  export WAV_thrds_cpl_thrd=2
 
-  THRD_cpl_dcmp=1
-  INPES_cpl_dcmp=4; JNPES_cpl_dcmp=6; WPG_cpl_dcmp=6
-  OCN_tasks_cpl_dcmp=20
-  ICE_tasks_cpl_dcmp=10
-  WAV_tasks_cpl_dcmp=20
+  export THRD_cpl_dcmp=1
+  export INPES_cpl_dcmp=4
+  export JNPES_cpl_dcmp=6
+  export WPG_cpl_dcmp=6
+  export OCN_tasks_cpl_dcmp=20
+  export ICE_tasks_cpl_dcmp=10
+  export WAV_tasks_cpl_dcmp=20
 
-  THRD_cpl_mpi=1
-  INPES_cpl_mpi=4; JNPES_cpl_mpi=8; WPG_cpl_mpi=6
-  OCN_tasks_cpl_mpi=34
-  ICE_tasks_cpl_mpi=20
-  WAV_tasks_cpl_mpi=28
+  export THRD_cpl_mpi=1
+  export INPES_cpl_mpi=4
+  export JNPES_cpl_mpi=8
+  export WPG_cpl_mpi=6
+  export OCN_tasks_cpl_mpi=34
+  export ICE_tasks_cpl_mpi=20
+  export WAV_tasks_cpl_mpi=28
 
-  THRD_cpl_bmrk=2
-  INPES_cpl_bmrk=8; JNPES_cpl_bmrk=8; WPG_cpl_bmrk=48
-  OCN_tasks_cpl_bmrk=120
-  OCN_thrds_cpl_bmrk=1
-  ICE_tasks_cpl_bmrk=48
-  ICE_thrds_cpl_bmrk=1
-  WAV_tasks_cpl_bmrk=80
-  WAV_thrds_cpl_bmrk=2
+  export THRD_cpl_bmrk=2
+  export INPES_cpl_bmrk=8
+  export JNPES_cpl_bmrk=8
+  export WPG_cpl_bmrk=48
+  export OCN_tasks_cpl_bmrk=120
+  export OCN_thrds_cpl_bmrk=1
+  export ICE_tasks_cpl_bmrk=48
+  export ICE_thrds_cpl_bmrk=1
+  export WAV_tasks_cpl_bmrk=80
+  export WAV_thrds_cpl_bmrk=2
 
-  THRD_cpl_c192=2
-  INPES_cpl_c192=6; JNPES_cpl_c192=8; WPG_cpl_c192=12
-  OCN_tasks_cpl_c192=60
-  ICE_tasks_cpl_c192=24
-  WAV_tasks_cpl_c192=80
+  export THRD_cpl_c192=2
+  export INPES_cpl_c192=6
+  export JNPES_cpl_c192=8
+  export WPG_cpl_c192=12
+  export OCN_tasks_cpl_c192=60
+  export ICE_tasks_cpl_c192=24
+  export WAV_tasks_cpl_c192=80
 
-  ATM_compute_tasks_cdeps_100=12
-  OCN_tasks_cdeps_100=16
-  ICE_tasks_cdeps_100=12
+  export ATM_compute_tasks_cdeps_100=12
+  export OCN_tasks_cdeps_100=16
+  export ICE_tasks_cdeps_100=12
 
-  ATM_compute_tasks_cdeps_025=40
-  OCN_tasks_cdeps_025=120
-  ICE_tasks_cdeps_025=48
+  export ATM_compute_tasks_cdeps_025=40
+  export OCN_tasks_cdeps_025=120
+  export ICE_tasks_cdeps_025=48
 
-  INPES_aqm=33; JNPES_aqm=8
+  export INPES_aqm=33
+  export JNPES_aqm=8
 
-  THRD_cpl_unstr=1
-  INPES_cpl_unstr=3; JNPES_cpl_unstr=8; WPG_cpl_unstr=6
-  OCN_tasks_cpl_unstr=20
-  ICE_tasks_cpl_unstr=10
-  WAV_tasks_cpl_unstr=60
+  export THRD_cpl_unstr=1
+  export INPES_cpl_unstr=3
+  export JNPES_cpl_unstr=8
+  export WPG_cpl_unstr=6
+  export OCN_tasks_cpl_unstr=20
+  export ICE_tasks_cpl_unstr=10
+  export WAV_tasks_cpl_unstr=60
 
-  THRD_cpl_unstr_mpi=1
-  INPES_cpl_unstr_mpi=4; JNPES_cpl_unstr_mpi=8; WPG_cpl_unstr_mpi=6
-  OCN_tasks_cpl_unstr_mpi=34
-  ICE_tasks_cpl_unstr_mpi=20
-  WAV_tasks_cpl_unstr_mpi=50
+  export THRD_cpl_unstr_mpi=1
+  export INPES_cpl_unstr_mpi=4
+  export JNPES_cpl_unstr_mpi=8
+  export WPG_cpl_unstr_mpi=6
+  export OCN_tasks_cpl_unstr_mpi=34
+  export ICE_tasks_cpl_unstr_mpi=20
+  export WAV_tasks_cpl_unstr_mpi=50
 
-  aqm_omp_num_threads=1
-  atm_omp_num_threads=1
-  chm_omp_num_threads=1
-  ice_omp_num_threads=1
-  lnd_omp_num_threads=1
-  med_omp_num_threads=1
-  ocn_omp_num_threads=1
-  wav_omp_num_threads=1
+  export aqm_omp_num_threads=1
+  export atm_omp_num_threads=1
+  export chm_omp_num_threads=1
+  export ice_omp_num_threads=1
+  export lnd_omp_num_threads=1
+  export med_omp_num_threads=1
+  export ocn_omp_num_threads=1
+  export wav_omp_num_threads=1
 
-if [[ $MACHINE_ID = wcoss2 || $MACHINE_ID = acorn ]]; then
+if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
 
-  TPN=128
+  export TPN=128
 
-  INPES_dflt=3 ; JNPES_dflt=8
-  INPES_thrd=3 ; JNPES_thrd=4
-  INPES_c384=8 ; JNPES_c384=6  ; THRD_c384=2
-  INPES_c768=8 ; JNPES_c768=16 ; THRD_c768=2
+  export INPES_dflt=3 
+  export JNPES_dflt=8
+  export INPES_thrd=3
+  export JNPES_thrd=4
+  export INPES_c384=8
+  export JNPES_c384=6 
+  export THRD_c384=2
+  export INPES_c768=8
+  export JNPES_c768=16
+  export THRD_c768=2
 
-  THRD_cpl_atmw_gdas=2
-  INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
-  WAV_tasks_atmw_gdas=248
+  export THRD_cpl_atmw_gdas=2
+  export INPES_cpl_atmw_gdas=6
+  export JNPES_cpl_atmw_gdas=8
+  export WPG_cpl_atmw_gdas=24
+  export WAV_tasks_atmw_gdas=248
 
-elif [[ $MACHINE_ID = orion ]]; then
+elif [[ ${MACHINE_ID} = orion ]]; then
 
-  TPN=40
+  export TPN=40
 
-  INPES_dflt=3 ; JNPES_dflt=8
-  INPES_thrd=3 ; JNPES_thrd=4
-  INPES_c384=8 ; JNPES_c384=6  ; THRD_c384=2
-  INPES_c768=8 ; JNPES_c768=16 ; THRD_c768=2
+  export INPES_dflt=3
+  export JNPES_dflt=8
+  export INPES_thrd=3 
+  export JNPES_thrd=4
+  export INPES_c384=8
+  export JNPES_c384=6
+  export THRD_c384=2
+  export INPES_c768=8
+  export JNPES_c768=16
+  export THRD_c768=2
 
-  THRD_cpl_atmw_gdas=2
-  INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
-  WAV_tasks_atmw_gdas=248
+  export THRD_cpl_atmw_gdas=2
+  export INPES_cpl_atmw_gdas=6
+  export JNPES_cpl_atmw_gdas=8
+  export WPG_cpl_atmw_gdas=24
+  export WAV_tasks_atmw_gdas=248
 
-elif [[ $MACHINE_ID = hercules ]]; then
+elif [[ ${MACHINE_ID} = hercules ]]; then
 
-  TPN=80
+  export TPN=80
 
-  INPES_dflt=3 ; JNPES_dflt=8
-  INPES_thrd=3 ; JNPES_thrd=4
-  INPES_c384=8 ; JNPES_c384=6  ; THRD_c384=2
-  INPES_c768=8 ; JNPES_c768=16 ; THRD_c768=2
+  export INPES_dflt=3
+  export JNPES_dflt=8
+  export INPES_thrd=3
+  export JNPES_thrd=4
+  export INPES_c384=8
+  export JNPES_c384=6 
+  export THRD_c384=2
+  export INPES_c768=8
+  export JNPES_c768=16
+  export THRD_c768=2
 
-  THRD_cpl_atmw_gdas=2
-  INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
-  WAV_tasks_atmw_gdas=248
+  export THRD_cpl_atmw_gdas=2
+  export INPES_cpl_atmw_gdas=6
+  export JNPES_cpl_atmw_gdas=8
+  export WPG_cpl_atmw_gdas=24
+  export WAV_tasks_atmw_gdas=248
 
 
-elif [[ $MACHINE_ID = hera ]]; then
+elif [[ ${MACHINE_ID} = hera ]]; then
 
-  TPN=40
+  export TPN=40
 
-  INPES_dflt=3 ; JNPES_dflt=8
-  INPES_thrd=3 ; JNPES_thrd=4
-  INPES_c384=6 ; JNPES_c384=8  ; THRD_c384=2
-  INPES_c768=8 ; JNPES_c768=16 ; THRD_c768=4
+  export INPES_dflt=3
+  export JNPES_dflt=8
+  export INPES_thrd=3 
+  export JNPES_thrd=4
+  export INPES_c384=6
+  export JNPES_c384=8 
+  export THRD_c384=2
+  export INPES_c768=8
+  export JNPES_c768=16
+  export THRD_c768=4
 
-  THRD_cpl_atmw_gdas=2
-  INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
-  WAV_tasks_atmw_gdas=248
+  export THRD_cpl_atmw_gdas=2
+  export INPES_cpl_atmw_gdas=6
+  export JNPES_cpl_atmw_gdas=8
+  export WPG_cpl_atmw_gdas=24
+  export WAV_tasks_atmw_gdas=248
 
-elif [[ $MACHINE_ID = linux ]]; then
+elif [[ ${MACHINE_ID} = linux ]]; then
 
-  TPN=40
+  export TPN=40
 
-  INPES_dflt=3 ; JNPES_dflt=8
-  INPES_thrd=3 ; JNPES_thrd=4
+  export INPES_dflt=3
+  export JNPES_dflt=8
+  export INPES_thrd=3
+  export JNPES_thrd=4
 
-  THRD_cpl_dflt=1
-  INPES_cpl_dflt=3; JNPES_cpl_dflt=8; WPG_cpl_dflt=6
-  OCN_tasks_cpl_dflt=20
-  ICE_tasks_cpl_dflt=10
-  WAV_tasks_cpl_dflt=20
+  export THRD_cpl_dflt=1
+  export INPES_cpl_dflt=3
+  export JNPES_cpl_dflt=8
+  export WPG_cpl_dflt=6
+  export OCN_tasks_cpl_dflt=20
+  export ICE_tasks_cpl_dflt=10
+  export WAV_tasks_cpl_dflt=20
 
-  THRD_cpl_thrd=2
-  INPES_cpl_thrd=3; JNPES_cpl_thrd=4; WPG_cpl_thrd=6
-  OCN_tasks_cpl_thrd=20
-  ICE_tasks_cpl_thrd=10
-  WAV_tasks_cpl_thrd=12
+  export THRD_cpl_thrd=2
+  export INPES_cpl_thrd=3
+  export JNPES_cpl_thrd=4
+  export WPG_cpl_thrd=6
+  export OCN_tasks_cpl_thrd=20
+  export ICE_tasks_cpl_thrd=10
+  export WAV_tasks_cpl_thrd=12
 
-elif [[ $MACHINE_ID = jet ]]; then
+elif [[ ${MACHINE_ID} = jet ]]; then
 
-  TPN=24
+  export TPN=24
 
-  INPES_dflt=3 ; JNPES_dflt=8
-  INPES_thrd=3 ; JNPES_thrd=4
-  INPES_c384=6 ; JNPES_c384=12 ; THRD_c384=1
-  INPES_c768=8 ; JNPES_c768=16 ; THRD_c768=2
-  WRTTASK_PER_GROUP_c384=84
-  WRTTASK_PER_GROUP_c384gdas=88
+  export INPES_dflt=3
+  export JNPES_dflt=8
+  export INPES_thrd=3
+  export JNPES_thrd=4
+  export INPES_c384=6
+  export JNPES_c384=12
+  export THRD_c384=1
+  export INPES_c768=8
+  export JNPES_c768=16
+  export THRD_c768=2
+  export WRTTASK_PER_GROUP_c384=84
+  export WRTTASK_PER_GROUP_c384gdas=88
 
-  THRD_cpl_atmw_gdas=2
-  INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
-  WAV_tasks_atmw_gdas=240
+  export THRD_cpl_atmw_gdas=2
+  export INPES_cpl_atmw_gdas=6
+  export JNPES_cpl_atmw_gdas=8
+  export WPG_cpl_atmw_gdas=24
+  export WAV_tasks_atmw_gdas=240
 
   # run only in weekly test
-  THRD_cpl_bmrk=2
-  INPES_cpl_bmrk=16; JNPES_cpl_bmrk=16; WPG_cpl_bmrk=48
-  OCN_tasks_cpl_bmrk=100
-  ICE_tasks_cpl_bmrk=48
-  WAV_tasks_cpl_bmrk=100
-  WLCLK_cpl_bmrk=120
+  export THRD_cpl_bmrk=2
+  export INPES_cpl_bmrk=16
+  export JNPES_cpl_bmrk=16
+  export WPG_cpl_bmrk=48
+  export OCN_tasks_cpl_bmrk=100
+  export ICE_tasks_cpl_bmrk=48
+  export WAV_tasks_cpl_bmrk=100
+  export WLCLK_cpl_bmrk=120
 
   # run only in weekly test
-  THRD_cpl_c192=2
-  INPES_cpl_c192=12; JNPES_cpl_c192=16; WPG_cpl_c192=24
-  OCN_tasks_cpl_c192=100
-  ICE_tasks_cpl_c192=48
-  WAV_tasks_cpl_c192=80
-  WLCLK_cpl_c192=120
+  export THRD_cpl_c192=2
+  export INPES_cpl_c192=12
+  export JNPES_cpl_c192=16
+  export WPG_cpl_c192=24
+  export OCN_tasks_cpl_c192=100
+  export ICE_tasks_cpl_c192=48
+  export WAV_tasks_cpl_c192=80
+  export WLCLK_cpl_c192=120
 
-elif [[ $MACHINE_ID = s4 ]]; then
+elif [[ ${MACHINE_ID} = s4 ]]; then
 
-  TPN=32
+  export TPN=32
 
-  INPES_dflt=3 ; JNPES_dflt=8
-  INPES_thrd=3 ; JNPES_thrd=4
-  INPES_c384=6 ; JNPES_c384=8 ; THRD_c384=2
-  INPES_c768=8 ; JNPES_c768=16 ; THRD_c768=1
+  export INPES_dflt=3 
+  export JNPES_dflt=8
+  export INPES_thrd=3
+  export JNPES_thrd=4
+  export INPES_c384=6
+  export JNPES_c384=8
+  export THRD_c384=2
+  export INPES_c768=8
+  export JNPES_c768=16
+  export THRD_c768=1
 
-  THRD_cpl_atmw_gdas=2
-  INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
-  WAV_tasks_atmw_gdas=248
+  export THRD_cpl_atmw_gdas=2
+  export INPES_cpl_atmw_gdas=6
+  export JNPES_cpl_atmw_gdas=8
+  export WPG_cpl_atmw_gdas=24
+  export WAV_tasks_atmw_gdas=248
 
-  THRD_cpl_bmrk=2
-  INPES_cpl_bmrk=6; JNPES_cpl_bmrk=8; WPG_cpl_bmrk=24
-  OCN_tasks_cpl_bmrk=120
-  ICE_tasks_cpl_bmrk=48
-  WAV_tasks_cpl_bmrk=80
+  export THRD_cpl_bmrk=2
+  export INPES_cpl_bmrk=6;
+  export JNPES_cpl_bmrk=8
+  export WPG_cpl_bmrk=24
+  export OCN_tasks_cpl_bmrk=120
+  export ICE_tasks_cpl_bmrk=48
+  export WAV_tasks_cpl_bmrk=80
 
-elif [[ $MACHINE_ID = gaea ]]; then
+elif [[ ${MACHINE_ID} = gaea ]]; then
 
-  TPN=128
+  export TPN=128
 
-  INPES_dflt=3 ; JNPES_dflt=8
-  INPES_thrd=3 ; JNPES_thrd=4
-  INPES_c384=6 ; JNPES_c384=8  ; THRD_c384=1
-  INPES_c768=8 ; JNPES_c768=16 ; THRD_c768=2
+  export INPES_dflt=3
+  export JNPES_dflt=8
+  export INPES_thrd=3
+  export JNPES_thrd=4
+  export INPES_c384=6
+  export JNPES_c384=8
+  export THRD_c384=1
+  export INPES_c768=8
+  export JNPES_c768=16
+  export THRD_c768=2
 
-  THRD_cpl_atmw_gdas=3
-  INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
-  WAV_tasks_atmw_gdas=264
+  export THRD_cpl_atmw_gdas=3
+  export INPES_cpl_atmw_gdas=6
+  export JNPES_cpl_atmw_gdas=8
+  export WPG_cpl_atmw_gdas=24
+  export WAV_tasks_atmw_gdas=264
 
-elif [[ $MACHINE_ID = derecho ]]; then
+elif [[ ${MACHINE_ID} = derecho ]]; then
 
-  TPN=128
-  INPES_dflt=3 ; JNPES_dflt=8
-  INPES_thrd=3 ; JNPES_thrd=4
-  INPES_c384=8 ; JNPES_c384=6  ; THRD_c384=2
-  INPES_c768=8 ; JNPES_c768=16 ; THRD_c768=2
+  export TPN=128
+  export INPES_dflt=3
+  export JNPES_dflt=8
+  export INPES_thrd=3 
+  export JNPES_thrd=4
+  export INPES_c384=8
+  export JNPES_c384=6 
+  export THRD_c384=2
+  export INPES_c768=8
+  export JNPES_c768=16
+  export THRD_c768=2
 
-  THRD_cpl_atmw_gdas=2
-  INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8; WPG_cpl_atmw_gdas=24
-  WAV_tasks_atmw_gdas=248
+  export THRD_cpl_atmw_gdas=2
+  export INPES_cpl_atmw_gdas=6
+  export JNPES_cpl_atmw_gdas=8
+  export WPG_cpl_atmw_gdas=24
+  export WAV_tasks_atmw_gdas=248
 
-elif [[ $MACHINE_ID = stampede ]]; then
+elif [[ ${MACHINE_ID} = stampede ]]; then
 
   echo "Unknown MACHINE_ID ${MACHINE_ID}. Please update tasks configurations in default_vars.sh"
   exit 1
 
-  TPN_dflt=48 ; INPES_dflt=3 ; JNPES_dflt=8
-  TPN_thrd=24 ; INPES_thrd=3 ; JNPES_thrd=4
-  TPN_c384=20 ; INPES_c384=8 ; JNPES_c384=6
-  TPN_c768=20 ; INPES_c768=8 ; JNPES_c768=16
-  TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
+  # TPN_dflt=48 ; INPES_dflt=3 ; JNPES_dflt=8
+  # TPN_thrd=24 ; INPES_thrd=3 ; JNPES_thrd=4
+  # TPN_c384=20 ; INPES_c384=8 ; JNPES_c384=6
+  # TPN_c768=20 ; INPES_c768=8 ; JNPES_c768=16
+  # TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
 
-  TPN_cpl_atmw_gdas=12; INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8
-  THRD_cpl_atmw_gdas=4; WPG_cpl_atmw_gdas=24; APB_cpl_atmw_gdas="0 311"; WPB_cpl_atmw_gdas="312 559"
+  # TPN_cpl_atmw_gdas=12; INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8
+  # THRD_cpl_atmw_gdas=4; WPG_cpl_atmw_gdas=24; APB_cpl_atmw_gdas="0 311"; WPB_cpl_atmw_gdas="312 559"
 
 elif [[ ${MACHINE_ID} = noaacloud ]] ; then
 
-    if [[ $PW_CSP == aws ]]; then
-    TPN=36
-    elif [[ $PW_CSP == azure ]]; then
-    TPN=44
-    elif [[ $PW_CSP == google ]]; then
-    TPN=30
+    if [[ ${PW_CSP} == aws ]]; then
+      export TPN=36
+    elif [[ ${PW_CSP} == azure ]]; then
+      export TPN=44
+    elif [[ ${PW_CSP} == google ]]; then
+      export TPN=30
     fi
 
-    INPES_dflt=3 ; JNPES_dflt=8
-    INPES_thrd=3 ; JNPES_thrd=4
+    export INPES_dflt=3
+    export JNPES_dflt=8
+    export INPES_thrd=3
+    export JNPES_thrd=4
 
-    INPES_c384=8 ; JNPES_c384=6  ; THRD_c384=2
-    INPES_c768=8 ; JNPES_c768=16 ; THRD_c768=2
+    export INPES_c384=8
+    export JNPES_c384=6
+    export THRD_c384=2
+    export INPES_c768=8
+    export JNPES_c768=16
+    export THRD_c768=2
 
-    THRD_cpl_dflt=1
-    INPES_cpl_dflt=3; JNPES_cpl_dflt=8; WPG_cpl_dflt=6
-    OCN_tasks_cpl_dflt=20
-    ICE_tasks_cpl_dflt=10
-    WAV_tasks_cpl_dflt=20
+    export THRD_cpl_dflt=1
+    export INPES_cpl_dflt=3
+    export JNPES_cpl_dflt=8
+    export WPG_cpl_dflt=6
+    export OCN_tasks_cpl_dflt=20
+    export ICE_tasks_cpl_dflt=10
+    export WAV_tasks_cpl_dflt=20
 
-    THRD_cpl_thrd=2
-    INPES_cpl_thrd=3; JNPES_cpl_thrd=4; WPG_cpl_thrd=6
-    OCN_tasks_cpl_thrd=20
-    ICE_tasks_cpl_thrd=10
-    WAV_tasks_cpl_thrd=12
+    export THRD_cpl_thrd=2
+    export INPES_cpl_thrd=3
+    export JNPES_cpl_thrd=4;
+    export WPG_cpl_thrd=6
+    export OCN_tasks_cpl_thrd=20
+    export ICE_tasks_cpl_thrd=10
+    export WAV_tasks_cpl_thrd=12
 
-elif [[ $MACHINE_ID = expanse ]]; then
+elif [[ ${MACHINE_ID} = expanse ]]; then
 
   echo "Unknown MACHINE_ID ${MACHINE_ID}. Please update tasks configurations in default_vars.sh"
   exit 1
 
-  TPN_dflt=64 ; INPES_dflt=3 ; JNPES_dflt=8
-  TPN_thrd=64 ; INPES_thrd=3 ; JNPES_thrd=4
-  TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
+  # TPN_dflt=64 ; INPES_dflt=3 ; JNPES_dflt=8
+  # TPN_thrd=64 ; INPES_thrd=3 ; JNPES_thrd=4
+  # TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
 
-  TPN_cpl_atmw_gdas=12; INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8
-  THRD_cpl_atmw_gdas=2; WPG_cpl_atmw_gdas=24; APB_cpl_atmw_gdas="0 311"; WPB_cpl_atmw_gdas="312 559"
+  # TPN_cpl_atmw_gdas=12; INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8
+  # THRD_cpl_atmw_gdas=2; WPG_cpl_atmw_gdas=24; APB_cpl_atmw_gdas="0 311"; WPB_cpl_atmw_gdas="312 559"
 
 else
 
@@ -302,9 +411,9 @@ else
 
 fi
 
-WLCLK_dflt=30
+export WLCLK_dflt=30
 
-export WLCLK=$WLCLK_dflt
+export WLCLK=${WLCLK_dflt}
 export CMP_DATAONLY=false
 
 # Defaults for ufs.configure
@@ -777,149 +886,157 @@ export LANDICE=".false."
 
 # Defaults for the CICE6 model namelist, mx100
 export_cice6() {
-export SECS=`expr $SHOUR \* 3600`
-export DT_CICE=${DT_ATMOS}
-export CICE_NPT=999
-export CICE_RUNTYPE=initial
-export CICE_RUNID=unknown
-export CICE_USE_RESTART_TIME=.false.
-export CICE_RESTART_DIR=./RESTART/
-export CICE_RESTART_FILE=iced
+  SECS=$((SHOUR*3600))
+  export SECS
+  export DT_CICE=${DT_ATMOS}
+  export CICE_NPT=999
+  export CICE_RUNTYPE=initial
+  export CICE_RUNID=unknown
+  export CICE_USE_RESTART_TIME=.false.
+  export CICE_RESTART_DIR=./RESTART/
+  export CICE_RESTART_FILE=iced
 
-export CICE_RESTART_FORMAT='pnetcdf2'
-export CICE_RESTART_IOTASKS=-99
-export CICE_RESTART_REARR='box'
-export CICE_RESTART_ROOT=-99
-export CICE_RESTART_STRIDE=-99
-export CICE_RESTART_CHUNK=0,0
-export CICE_RESTART_DEFLATE=0
+  export CICE_RESTART_FORMAT='pnetcdf2'
+  export CICE_RESTART_IOTASKS=-99
+  export CICE_RESTART_REARR='box'
+  export CICE_RESTART_ROOT=-99
+  export CICE_RESTART_STRIDE=-99
+  export CICE_RESTART_CHUNK=0,0
+  export CICE_RESTART_DEFLATE=0
 
-export CICE_HISTORY_FORMAT='pnetcdf2'
-if [[ ${MACHINE_ID} == wcoss2 ]]; then
-  export CICE_RESTART_FORMAT='hdf5'
-  export CICE_HISTORY_FORMAT='hdf5'
-fi
-export CICE_HISTORY_IOTASKS=-99
-export CICE_HISTORY_REARR='box'
-export CICE_HISTORY_ROOT=-99
-export CICE_HISTORY_STRIDE=-99
-export CICE_HISTORY_CHUNK=0,0
-export CICE_HISTORY_DEFLATE=0
-export CICE_HISTORY_PREC=4
+  export CICE_HISTORY_FORMAT='pnetcdf2'
+  if [[ ${MACHINE_ID} == wcoss2 ]]; then
+    export CICE_RESTART_FORMAT='hdf5'
+    export CICE_HISTORY_FORMAT='hdf5'
+  fi
+  export CICE_HISTORY_IOTASKS=-99
+  export CICE_HISTORY_REARR='box'
+  export CICE_HISTORY_ROOT=-99
+  export CICE_HISTORY_STRIDE=-99
+  export CICE_HISTORY_CHUNK=0,0
+  export CICE_HISTORY_DEFLATE=0
+  export CICE_HISTORY_PREC=4
 
-export CICE_DUMPFREQ=d
-export CICE_DUMPFREQ_N=1000
-export CICE_DIAGFREQ=`expr $FHMAX \* 3600 / $DT_CICE`
-export CICE_HISTFREQ_N="0, 0, 6, 1, 1"
-export CICE_HIST_AVG=.true.
-export CICE_HISTORY_DIR=./history/
-export CICE_INCOND_DIR=./history/
-export CICE_GRID=grid_cice_NEMS_mx${OCNRES}.nc
-export CICE_MASK=kmtu_cice_NEMS_mx${OCNRES}.nc
-export CICE_GRIDATM=A
-export CICE_GRIDOCN=A
-export CICE_GRIDICE=B
-export CICE_TR_POND_LVL=.true.
-export CICE_RESTART_POND_LVL=.false.
-# setting to true will allow Frazil FW and Salt to be included in fluxes sent to ocean
-export CICE_FRAZIL_FWSALT=.true.
-export CICE_KTHERM=2
-export CICE_TFREEZE_OPTION=mushy
-# SlenderX2
-export CICE_NPROC=$ICE_tasks
-export np2=`expr $CICE_NPROC / 2`
-export CICE_BLCKX=`expr $NX_GLB / $np2`
-export CICE_BLCKY=`expr $NY_GLB / 2`
-export CICE_DECOMP=slenderX2
+  export CICE_DUMPFREQ=d
+  export CICE_DUMPFREQ_N=1000
+  CICE_DIAGFREQ=$(( (FHMAX*3600)/DT_CICE ))
+  export CICE_DIAGFREQ
+  export CICE_HISTFREQ_N="0, 0, 6, 1, 1"
+  export CICE_HIST_AVG=.true.
+  export CICE_HISTORY_DIR=./history/
+  export CICE_INCOND_DIR=./history/
+  export CICE_GRID=grid_cice_NEMS_mx${OCNRES}.nc
+  export CICE_MASK=kmtu_cice_NEMS_mx${OCNRES}.nc
+  export CICE_GRIDATM=A
+  export CICE_GRIDOCN=A
+  export CICE_GRIDICE=B
+  export CICE_TR_POND_LVL=.true.
+  export CICE_RESTART_POND_LVL=.false.
+  # setting to true will allow Frazil FW and Salt to be included in fluxes sent to ocean
+  export CICE_FRAZIL_FWSALT=.true.
+  export CICE_KTHERM=2
+  export CICE_TFREEZE_OPTION=mushy
+  # SlenderX2
+  export CICE_NPROC=${ICE_tasks}
+  np2=$((CICE_NPROC/2))
+  CICE_BLCKX=$((NX_GLB/np2))
+  CICE_BLCKY=$((NY_GLB/2))
+  export np2
+  export CICE_BLCKX
+  export CICE_BLCKY
+  export CICE_DECOMP=slenderX2
 }
 
 # Defaults for the MOM6 model namelist, mx100
 export_mom6() {
-export DT_DYNAM_MOM6=1800
-export DT_THERM_MOM6=3600
-export MOM6_INPUT=MOM_input_100.IN
-export MOM6_OUTPUT_DIR=./MOM6_OUTPUT
-export MOM6_RESTART_DIR=./RESTART/
-export MOM6_RESTART_SETTING=n
-export MOM6_RIVER_RUNOFF=False
-export MOM6_FRUNOFF=''
-export MOM6_CHLCLIM=seawifs_1998-2006_smoothed_2X.nc
-export MOM6_USE_LI2016=True
-export MOM6_TOPOEDITS=''
-# since CPL_SLOW is set to DT_THERM, this should be always be false
-export MOM6_THERMO_SPAN=False
-export MOM6_USE_WAVES=True
-export MOM6_ALLOW_LANDMASK_CHANGES=False
-# MOM6 diag
-export MOM6_DIAG_COORD_DEF_Z_FILE=interpolate_zgrid_40L.nc
-export MOM6_DIAG_MISVAL='-1e34'
-# MOM6 IAU
-export ODA_INCUPD=False
-export ODA_INCUPD_NHOURS=6
-export ODA_TEMPINC_VAR="'pt_inc'"
-export ODA_SALTINC_VAR="'s_inc'"
-export ODA_THK_VAR="'h_fg'"
-export ODA_INCUPD_UV=False
-export ODA_UINC_VAR="'u_inc'"
-export ODA_VINC_VAR="'v_inc'"
-# MOM6 stochastics
-export DO_OCN_SPPT=False
-export PERT_EPBL=False
-export OCN_SPPT=-999.
-export EPBL=-999.
+  export DT_DYNAM_MOM6=1800
+  export DT_THERM_MOM6=3600
+  export MOM6_INPUT=MOM_input_100.IN
+  export MOM6_OUTPUT_DIR=./MOM6_OUTPUT
+  export MOM6_RESTART_DIR=./RESTART/
+  export MOM6_RESTART_SETTING=n
+  export MOM6_RIVER_RUNOFF=False
+  export MOM6_FRUNOFF=''
+  export MOM6_CHLCLIM=seawifs_1998-2006_smoothed_2X.nc
+  export MOM6_USE_LI2016=True
+  export MOM6_TOPOEDITS=''
+  # since CPL_SLOW is set to DT_THERM, this should be always be false
+  export MOM6_THERMO_SPAN=False
+  export MOM6_USE_WAVES=True
+  export MOM6_ALLOW_LANDMASK_CHANGES=False
+  # MOM6 diag
+  export MOM6_DIAG_COORD_DEF_Z_FILE=interpolate_zgrid_40L.nc
+  export MOM6_DIAG_MISVAL='-1e34'
+  # MOM6 IAU
+  export ODA_INCUPD=False
+  export ODA_INCUPD_NHOURS=6
+  export ODA_TEMPINC_VAR="'pt_inc'"
+  export ODA_SALTINC_VAR="'s_inc'"
+  export ODA_THK_VAR="'h_fg'"
+  export ODA_INCUPD_UV=False
+  export ODA_UINC_VAR="'u_inc'"
+  export ODA_VINC_VAR="'v_inc'"
+  # MOM6 stochastics
+  export DO_OCN_SPPT=False
+  export PERT_EPBL=False
+  export OCN_SPPT=-999.
+  export EPBL=-999.
 }
 
 # Defaults for the WW3 global model
 export_ww3() {
-export WW3_DOMAIN=mx${OCNRES}
-export WW3_MODDEF=mod_def.mx${OCNRES}
-export WW3_RSTDTHR=3
-export WW3_DT_2_RST="$(printf "%02d" $(( ${WW3_RSTDTHR}*3600 )))"
-export WW3_OUTDTHR=3
-export WW3_DTFLD="$(printf "%02d" $(( ${WW3_OUTDTHR}*3600 )))"
-export WW3_DTPNT="$(printf "%02d" $(( ${WW3_OUTDTHR}*3600 )))"
-export WW3_CUR='C'
-export WW3_ICE='C'
-export WW3_IC1='F'
-export WW3_IC5='F'
-export WW3_user_sets_restname="true"
+  export WW3_DOMAIN=mx${OCNRES}
+  export WW3_MODDEF=mod_def.mx${OCNRES}
+  export WW3_RSTDTHR=3
+  WW3_DT_2_RST="$(printf "%02d" $(( WW3_RSTDTHR*3600 )) )"
+  export WW3_DT_2_RST
+  export WW3_OUTDTHR=3
+  WW3_DTFLD="$(printf "%02d" $(( WW3_OUTDTHR*3600 )) )"
+  WW3_DTPNT="$(printf "%02d" $(( WW3_OUTDTHR*3600 )) )"
+  export WW3_DTFLD
+  export WW3_DTPNT
+  export WW3_CUR='C'
+  export WW3_ICE='C'
+  export WW3_IC1='F'
+  export WW3_IC5='F'
+  export WW3_user_sets_restname="true"
 }
 
 # Defaults for the coupled 5-component
 export_cmeps() {
-export UFS_CONFIGURE=ufs.configure.s2swa_fast_esmf.IN
-export med_model=cmeps
-export atm_model=fv3
-export chm_model=gocart
-export ocn_model=mom6
-export ice_model=cice6
-export wav_model=ww3
-export lnd_model=noahmp
-export coupling_interval_slow_sec=${DT_THERM_MOM6}
-export coupling_interval_fast_sec=${DT_ATMOS}
-export MESH_OCN=mesh.mx${OCNRES}.nc
-export MESH_ICE=mesh.mx${OCNRES}.nc
-export MESH_WAV=mesh.${WW3_DOMAIN}.nc
-export CPLMODE=ufs.frac
-export pio_rearranger=box
-export RUNTYPE=startup
-export RESTART_N=${FHMAX}
-export CMEPS_RESTART_DIR=./RESTART/
-export cap_dbug_flag=0
-# MOM6 attributes
-export use_coldstart=false
-export use_mommesh=true
-# CICE attributes
-export eps_imesh=1.0e-1
-# mediator AO flux
-export flux_convergence=0.0
-export flux_iteration=2
-export flux_scheme=0
-# mediator ocean albedo
-export ocean_albedo_limit=0.06
-export use_mean_albedos=.false.
-# WW3 (used in run_test only)
-export WW3_MULTIGRID=false
+  export UFS_CONFIGURE=ufs.configure.s2swa_fast_esmf.IN
+  export med_model=cmeps
+  export atm_model=fv3
+  export chm_model=gocart
+  export ocn_model=mom6
+  export ice_model=cice6
+  export wav_model=ww3
+  export lnd_model=noahmp
+  export coupling_interval_slow_sec=${DT_THERM_MOM6}
+  export coupling_interval_fast_sec=${DT_ATMOS}
+  export MESH_OCN=mesh.mx${OCNRES}.nc
+  export MESH_ICE=mesh.mx${OCNRES}.nc
+  export MESH_WAV=mesh.${WW3_DOMAIN}.nc
+  export CPLMODE=ufs.frac
+  export pio_rearranger=box
+  export RUNTYPE=startup
+  export RESTART_N=${FHMAX}
+  export CMEPS_RESTART_DIR=./RESTART/
+  export cap_dbug_flag=0
+  # MOM6 attributes
+  export use_coldstart=false
+  export use_mommesh=true
+  # CICE attributes
+  export eps_imesh=1.0e-1
+  # mediator AO flux
+  export flux_convergence=0.0
+  export flux_iteration=2
+  export flux_scheme=0
+  # mediator ocean albedo
+  export ocean_albedo_limit=0.06
+  export use_mean_albedos=.false.
+  # WW3 (used in run_test only)
+  export WW3_MULTIGRID=false
 }
 
 export_cpl ()
@@ -1099,191 +1216,194 @@ export RT35D=''
 }
 export_35d_run ()
 {
-export CNTL_DIR=""
-export LIST_FILES=""
+  export CNTL_DIR=""
+  export LIST_FILES=""
 }
 export_datm_cdeps ()
 {
-export FV3=false
-export S2S=false
-export HAFS=false
-export AQM=false
-export DATM_CDEPS=true
-export DOCN_CDEPS=false
-export CDEPS_INLINE=false
-export DAYS=1
+  export FV3=false
+  export S2S=false
+  export HAFS=false
+  export AQM=false
+  export DATM_CDEPS=true
+  export DOCN_CDEPS=false
+  export CDEPS_INLINE=false
+  export DAYS=1
 
-# model configure
-export MODEL_CONFIGURE=datm_cdeps_configure.IN
-export SYEAR=2011
-export SMONTH=10
-export SDAY=01
-export SHOUR=00
-export FHMAX=24
-export DT_ATMOS=900
-export FHROT=0
+  # model configure
+  export MODEL_CONFIGURE=datm_cdeps_configure.IN
+  export SYEAR=2011
+  export SMONTH=10
+  export SDAY=01
+  export SHOUR=00
+  export FHMAX=24
+  export DT_ATMOS=900
+  export FHROT=0
 
-# required but unused
-export WARM_START=.false.
-export CPLWAV=.false.
-export CPLCHM=.false.
+  # required but unused
+  export WARM_START=.false.
+  export CPLWAV=.false.
+  export CPLCHM=.false.
 
-# atm/ocn/ice resolution
-export IATM=1760
-export JATM=880
-export ATM_NX_GLB=$IATM
-export ATM_NY_GLB=$JATM
-export ATMRES=${IATM}x${JATM}
-export OCNRES=100
-export ICERES=1.00
-export NX_GLB=360
-export NY_GLB=320
+  # atm/ocn/ice resolution
+  export IATM=1760
+  export JATM=880
+  export ATM_NX_GLB=${IATM}
+  export ATM_NY_GLB=${JATM}
+  export ATMRES="${IATM}x${JATM}"
+  export OCNRES=100
+  export ICERES=1.00
+  export NX_GLB=360
+  export NY_GLB=320
 
-# default resources
-export ATM_compute_tasks=$ATM_compute_tasks_cdeps_100
-export OCN_tasks=$OCN_tasks_cdeps_100
-export ICE_tasks=$ICE_tasks_cdeps_100
+  # default resources
+  export ATM_compute_tasks=${ATM_compute_tasks_cdeps_100}
+  export OCN_tasks=${OCN_tasks_cdeps_100}
+  export ICE_tasks=${ICE_tasks_cdeps_100}
 
-# Set CICE6 component defaults
-export_cice6
-# default non-mushy thermo for CICE
-export CICE_KTHERM=1
-export CICE_TFREEZE_OPTION=linear_salt
+  # Set CICE6 component defaults
+  export_cice6
+  # default non-mushy thermo for CICE
+  export CICE_KTHERM=1
+  export CICE_TFREEZE_OPTION=linear_salt
 
-# Set MOM6 component defaults
-export_mom6
-# default no waves
-export MOM6_USE_LI2016=False
-export MOM6_USE_WAVES=False
-export WW3_DOMAIN=''
+  # Set MOM6 component defaults
+  export_mom6
+  # default no waves
+  export MOM6_USE_LI2016=False
+  export MOM6_USE_WAVES=False
+  export WW3_DOMAIN=''
 
-# Set CMEPS component defauls
-export_cmeps
-# default configure
-export UFS_CONFIGURE=ufs.configure.datm_cdeps.IN
-export atm_model=datm
-export CPLMODE=ufs.nfrac.aoflux
+  # Set CMEPS component defauls
+  export_cmeps
+  # default configure
+  export UFS_CONFIGURE=ufs.configure.datm_cdeps.IN
+  export atm_model=datm
+  export CPLMODE=ufs.nfrac.aoflux
 
-# datm defaults
-export INPUT_NML=input.mom6.nml.IN
-export DIAG_TABLE=diag_table_template
-export DATM_SRC=CFSR
-export FILENAME_BASE=cfsr.
-export MESH_ATM=${FILENAME_BASE//.}_mesh.nc
-export atm_datamode=${DATM_SRC}
-export stream_files=INPUT/${FILENAME_BASE}201110.nc
-export EXPORT_ALL=.false.
-export STREAM_OFFSET=0
+  # datm defaults
+  export INPUT_NML=input.mom6.nml.IN
+  export DIAG_TABLE=diag_table_template
+  export DATM_SRC=CFSR
+  export FILENAME_BASE=cfsr.
+  export MESH_ATM=${FILENAME_BASE//.}_mesh.nc
+  export atm_datamode=${DATM_SRC}
+  export stream_files=INPUT/${FILENAME_BASE}201110.nc
+  export EXPORT_ALL=.false.
+  export STREAM_OFFSET=0
 
-export BL_SUFFIX=""
-export RT_SUFFIX=""
+  export BL_SUFFIX=""
+  export RT_SUFFIX=""
 }
+
 export_hafs_datm_cdeps ()
 {
-export FV3=false
-export S2S=false
-export HAFS=true
-export AQM=false
-export DATM_CDEPS=true
-export DOCN_CDEPS=false
-export CDEPS_INLINE=false
-export INPES=$INPES_dflt
-export JNPES=$JNPES_dflt
-export NTILES=1
+  export FV3=false
+  export S2S=false
+  export HAFS=true
+  export AQM=false
+  export DATM_CDEPS=true
+  export DOCN_CDEPS=false
+  export CDEPS_INLINE=false
+  export INPES=${INPES_dflt}
+  export JNPES=${JNPES_dflt}
+  export NTILES=1
 
-export atm_model=datm
-export DATM_IN_CONFIGURE=datm_in.IN
-export DATM_STREAM_CONFIGURE=hafs_datm.streams.era5.IN
-export EXPORT_ALL=.false.
+  export atm_model=datm
+  export DATM_IN_CONFIGURE=datm_in.IN
+  export DATM_STREAM_CONFIGURE=hafs_datm.streams.era5.IN
+  export EXPORT_ALL=.false.
 }
+
 export_hafs_docn_cdeps ()
 {
-export FV3=true
-export S2S=false
-export HAFS=true
-export AQM=false
-export DOCN_CDEPS=true
-export CDEPS_INLINE=false
-export INPES=$INPES_dflt
-export JNPES=$JNPES_dflt
-export NTILES=1
+  export FV3=true
+  export S2S=false
+  export HAFS=true
+  export AQM=false
+  export DOCN_CDEPS=true
+  export CDEPS_INLINE=false
+  export INPES=${INPES_dflt}
+  export JNPES=${JNPES_dflt}
+  export NTILES=1
 
-export ocn_model=docn
-export ocn_datamode=sstdata
-export pio_rearranger=box
-export DOCN_IN_CONFIGURE=docn_in.IN
-export DOCN_STREAM_CONFIGURE=hafs_docn.streams.IN
+  export ocn_model=docn
+  export ocn_datamode=sstdata
+  export pio_rearranger=box
+  export DOCN_IN_CONFIGURE=docn_in.IN
+  export DOCN_STREAM_CONFIGURE=hafs_docn.streams.IN
 }
+
 export_hafs_regional ()
 {
-export FV3=true
-export S2S=false
-export HAFS=true
-export AQM=false
-export DATM_CDEPS=false
-export DOCN_CDEPS=false
-export CDEPS_INLINE=false
-export INPES=$INPES_dflt
-export JNPES=$JNPES_dflt
-export NTILES=1
+  export FV3=true
+  export S2S=false
+  export HAFS=true
+  export AQM=false
+  export DATM_CDEPS=false
+  export DOCN_CDEPS=false
+  export CDEPS_INLINE=false
+  export INPES=${INPES_dflt}
+  export JNPES=${JNPES_dflt}
+  export NTILES=1
 
-# model_configure
-export SYEAR=2019
-export SMONTH=08
-export SDAY=29
-export SHOUR=00
-export SECS=`expr $SHOUR \* 3600`
-export FHMAX=6
-export ENS_NUM=1
-export DT_ATMOS=900
-export CPL=.true.
-export RESTART_INTERVAL=0
-export FHROT=0
-export coupling_interval_fast_sec=0
-export QUILTING=.true.
-export WRITE_GROUP=1
-export WRTTASK_PER_GROUP=6
-export OUTPUT_HISTORY=.true.
-export WRITE_DOPOST=.false.
-export NUM_FILES=2
-export FILENAME_BASE="'atm' 'sfc'"
-export OUTPUT_GRID="'regional_latlon'"
-export OUTPUT_FILE="'netcdf'"
-export IDEFLATE=0
-export QUANTIZE_NSD=0
-export CEN_LON=-62.0
-export CEN_LAT=25.0
-export LON1=-114.5
-export LAT1=-5.0
-export LON2=-9.5
-export LAT2=55.0
-export DLON=0.03
-export DLAT=0.03
+  # model_configure
+  export SYEAR=2019
+  export SMONTH=08
+  export SDAY=29
+  export SHOUR=00
+  export SECS=$((SHOUR*3600))
+  export FHMAX=6
+  export ENS_NUM=1
+  export DT_ATMOS=900
+  export CPL=.true.
+  export RESTART_INTERVAL=0
+  export FHROT=0
+  export coupling_interval_fast_sec=0
+  export QUILTING=.true.
+  export WRITE_GROUP=1
+  export WRTTASK_PER_GROUP=6
+  export OUTPUT_HISTORY=.true.
+  export WRITE_DOPOST=.false.
+  export NUM_FILES=2
+  export FILENAME_BASE="'atm' 'sfc'"
+  export OUTPUT_GRID="'regional_latlon'"
+  export OUTPUT_FILE="'netcdf'"
+  export IDEFLATE=0
+  export QUANTIZE_NSD=0
+  export CEN_LON=-62.0
+  export CEN_LAT=25.0
+  export LON1=-114.5
+  export LAT1=-5.0
+  export LON2=-9.5
+  export LAT2=55.0
+  export DLON=0.03
+  export DLAT=0.03
 
-# shel.inp
-# input.nml
-export CPL_IMP_MRG=.true.
-export DIAG_TABLE=diag_table_hafs
-export FIELD_TABLE=field_table_hafs
+  # shel.inp
+  # input.nml
+  export CPL_IMP_MRG=.true.
+  export DIAG_TABLE=diag_table_hafs
+  export FIELD_TABLE=field_table_hafs
 
-export OCNRES=''
-export ICERES=''
-export DT_THERM_MOM6=''
+  export OCNRES=''
+  export ICERES=''
+  export DT_THERM_MOM6=''
 
-# Set WW3 component defaults
-export_ww3
-# default hafs with no ice
-export WW3_DOMAIN=natl_6m
-export WW3_MODDEF=mod_def.${WW3_DOMAIN}
-export WW3_ICE='F'
-export WW3_OUTPARS="WND HS T01 T02 DIR FP DP PHS PTP PDIR UST CHA USP"
+  # Set WW3 component defaults
+  export_ww3
+  # default hafs with no ice
+  export WW3_DOMAIN=natl_6m
+  export WW3_MODDEF=mod_def.${WW3_DOMAIN}
+  export WW3_ICE='F'
+  export WW3_OUTPARS="WND HS T01 T02 DIR FP DP PHS PTP PDIR UST CHA USP"
 
-# Set CMEPS component defaults
-export_cmeps
-# default hafs
-export ocn_model=hycom
-export CPLMODE=hafs
-export MESH_WAV=mesh.hafs.nc
+  # Set CMEPS component defaults
+  export_cmeps
+  # default hafs
+  export ocn_model=hycom
+  export CPLMODE=hafs
+  export MESH_WAV=mesh.hafs.nc
 }
 
 export_hafs ()
@@ -1445,6 +1565,7 @@ export DY_6=''
 
 export OUTPUT_FH='3 -1'
 }
+
 export_hrrr() {
 export_fv3_v16
 export NPZ=127
@@ -1504,6 +1625,7 @@ export DO_GSL_DRAG_TOFD=.true.
 export DO_UGWP_V1=.false.
 export DO_UGWP_V1_OROG_ONLY=.false.
 }
+
 export_hrrr_conus13km()
 {
 export_fv3_v16
@@ -1597,6 +1719,7 @@ export MODEL_CONFIGURE=model_configure_rrfs_conus13km.IN
 export DIAG_TABLE_ADDITIONAL=diag_additional_rrfs_smoke
 export FRAC_ICE=.true.
 }
+
 export_rap_common()
 {
 export_fv3_v16
@@ -1631,40 +1754,42 @@ export HYBEDMF=.false.
 export DO_MYNNEDMF=.true.
 export DO_MYNNSFCLAY=.true.
 }
+
 export_rap()
 {
-export_rap_common
+  export_rap_common
 
-export DIAG_TABLE=diag_table_rap
-export CCPP_SUITE=FV3_RAP
+  export DIAG_TABLE=diag_table_rap
+  export CCPP_SUITE=FV3_RAP
 
-export IMFSHALCNV=3
-export IMFDEEPCNV=3
-export LSM=3
-export LSOIL_LSM=9
-export KICE=9
+  export IMFSHALCNV=3
+  export IMFDEEPCNV=3
+  export LSM=3
+  export LSOIL_LSM=9
+  export KICE=9
 
-export GWD_OPT=3
-export DO_UGWP_V0=.false.
-export DO_UGWP_V0_OROG_ONLY=.false.
-export DO_GSL_DRAG_LS_BL=.true.
-export DO_GSL_DRAG_SS=.true.
-export DO_GSL_DRAG_TOFD=.true.
-export DO_UGWP_V1=.false.
-export DO_UGWP_V1_OROG_ONLY=.false.
+  export GWD_OPT=3
+  export DO_UGWP_V0=.false.
+  export DO_UGWP_V0_OROG_ONLY=.false.
+  export DO_GSL_DRAG_LS_BL=.true.
+  export DO_GSL_DRAG_SS=.true.
+  export DO_GSL_DRAG_TOFD=.true.
+  export DO_UGWP_V1=.false.
+  export DO_UGWP_V1_OROG_ONLY=.false.
 }
+
 export_rrfs_v1()
 {
-export_rap_common
+  export_rap_common
 
-export CCPP_SUITE=FV3_RRFS_v1beta
-export DIAG_TABLE=diag_table_rap_noah
+  export CCPP_SUITE=FV3_RRFS_v1beta
+  export DIAG_TABLE=diag_table_rap_noah
 
-export DO_DEEP=.false.
-export SHAL_CNV=.false.
-export IMFSHALCNV=-1
-export IMFDEEPCNV=-1
-export LHEATSTRG=.false.
-export LSM=2
-export LSOIL_LSM=4
+  export DO_DEEP=.false.
+  export SHAL_CNV=.false.
+  export IMFSHALCNV=-1
+  export IMFDEEPCNV=-1
+  export LHEATSTRG=.false.
+  export LSM=2
+  export LSOIL_LSM=4
 }

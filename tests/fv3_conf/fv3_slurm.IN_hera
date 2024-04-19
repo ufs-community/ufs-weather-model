@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #SBATCH -e err
 #SBATCH -o out
 #SBATCH --account=@[ACCNR]
@@ -11,21 +11,23 @@
 ### #SBATCH --exclusive
 
 set -eux
-echo -n " $( date +%s )," >  job_timestamp.txt
+date_s_start=$(date +%s)
+echo -n "${date_s_start}," > job_timestamp.txt
 
 set +x
-MACHINE_ID=hera
+#MACHINE_ID=hera
 source ./module-setup.sh
-module use $PWD/modulefiles
+module use "@[PWD]/modulefiles"
 module load modules.fv3
 module list
 set -x
 
-echo "Model started:  " `date`
+date_start=$(date)
+echo "Model started: ${date_start}"
 
 export MPI_TYPE_DEPTH=20
 export OMP_STACKSIZE=512M
-export OMP_NUM_THREADS=@[THRD]
+export OMP_NUM_THREADS="@[THRD]"
 export ESMF_RUNTIME_COMPLIANCECHECK=OFF:depth=4
 export ESMF_RUNTIME_PROFILE=ON
 export ESMF_RUNTIME_PROFILE_OUTPUT="SUMMARY"
@@ -35,7 +37,9 @@ export PSM_SHAREDCONTEXTS=1
 # Avoid job errors because of filesystem synchronization delays
 sync && sleep 1
 
-srun --label -n @[TASKS] ./fv3.exe
+srun --label -n "@[TASKS]" ./fv3.exe
 
-echo "Model ended:    " `date`
-echo -n " $( date +%s )," >> job_timestamp.txt
+date_end=$(date)
+echo "Model ended: ${date_end}"
+date_s_end=$(date +%s)
+echo -n "${date_s_end}," >> job_timestamp.txt
