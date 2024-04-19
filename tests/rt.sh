@@ -1150,7 +1150,7 @@ if [[ ${ROCOTO} == true ]]; then
   <!ENTITY RUNDIR_ROOT    "${RUNDIR_ROOT}">
   <!ENTITY NEW_BASELINE   "${NEW_BASELINE}">
 ]>
-<workflow realtime="F" scheduler="${ROCOTO_SCHEDULER}" taskthrottle="20">
+<workflow realtime="F" scheduler="${ROCOTO_SCHEDULER}" taskthrottle="10">
   <cycledef>197001010000 197001010000 01:00:00</cycledef>
   <log>&LOG;/workflow.log</log>
 EOF
