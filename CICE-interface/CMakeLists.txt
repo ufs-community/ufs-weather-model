@@ -3,7 +3,7 @@ if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -g -fbacktrace")
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fconvert=big-endian -ffree-line-length-none ")
   #Set CPP defintions for the ufs/cdeps_share source component of the cmeps target library
-  list(APPEND CDEPS_SHARE_DEFS "CPRGNU")
+  #list(APPEND CDEPS_SHARE_DEFS "CPRGNU")
   if(${CMAKE_Fortran_COMPILER_VERSION} VERSION_GREATER_EQUAL 10)
     set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fallow-argument-mismatch -fallow-invalid-boz")
   endif()
@@ -17,7 +17,7 @@ elseif(CMAKE_Fortran_COMPILER_ID MATCHES "Intel")
   set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -check uninit -check bounds -check pointers -fpe0 -check noarg_temp_created -init=snan,arrays")
   set(CMAKE_Fortran_LINK_FLAGS "")
   #Set CPP defintions for the ufs/cdeps_share source component of the cmeps target library
-  list(APPEND CDEPS_SHARE_DEFS "CPRINTEL")
+  #list(APPEND CDEPS_SHARE_DEFS "CPRINTEL")
 else()
   message(WARNING "Fortran compiler with ID ${CMAKE_Fortran_COMPILER_ID} will be used with CMake default options")
 endif()
@@ -43,7 +43,8 @@ else()
 endif()
 
 # Configuration Options
-set(CICE_IO "PIO" CACHE STRING "CICE OPTIONS: Choose IO options.")
+#set(CICE_IO "PIO" CACHE STRING "CICE OPTIONS: Choose IO options.")
+set(CICE_IO "NetCDF" CACHE STRING "CICE OPTIONS: Choose IO options.")
 set_property(CACHE CICE_IO PROPERTY STRINGS "NetCDF" "PIO" "Binary")
 
 # Too many files to list, so include them via this file
@@ -57,7 +58,7 @@ list(APPEND lib_src_files
   ${cice_mpi_comm_files}
   ${cice_nuopc_cmeps_driver_files})
 
-if (WAVICE)
+# ice prescribed
   list(APPEND lib_src_files
     ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_orb_mod.F90
     ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_const_mod.F90
@@ -66,12 +67,13 @@ if (WAVICE)
     ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_log_mod.F90
     ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_sys_mod.F90
     ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_kind_mod.F90
-    ${PROJECT_SOURCE_DIR}/CDEPS-interface/ufs/cdeps_share/shr_assert_mod.F90
-    ${PROJECT_SOURCE_DIR}/CDEPS-interface/ufs/cdeps_share/shr_infnan_mod.F90
     ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_nl_mod.F90
-    ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/dshr/dshr_mod.F90
-    ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/streams/dshr_methods_mod.F90))
-endif()
+    ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_cal_mod.F90
+    ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_string_mod.F90
+    ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_timer_mod.F90
+    ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/streams/dshr_strdata_mod.F90
+    ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/streams/dshr_stream_mod.F90
+    ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/streams/dshr_methods_mod.F90)
 
 list(APPEND _cice_defs FORTRANUNDERSCORE
                        coupled)
@@ -104,10 +106,10 @@ if(OpenMP_Fortran_FOUND)
   target_link_libraries(cice PRIVATE OpenMP::OpenMP_Fortran)
 endif()
 
-if(WAVICE)
+# ice prescribed
   add_dependencies(cice cdeps::cdeps)
+  target_compile_definitions(cice PUBLIC "DISABLE_FoX")
   target_link_libraries(cice PUBLIC cdeps::cdeps)
-endif()
 
 ###############################################################################
 ### Install
