@@ -2,17 +2,12 @@ import os
 import subprocess
 import yaml
 
-def rocoto_create_entries(ROCOTO_XML):
-    PATHRT=os.getenv('PATHRT')
-    LOG_DIR=os.getenv('LOG_DIR')
-    PATHTR=os.getenv('PATHTR')
-    RTPWD=os.getenv('RTPWD')
-    INPUTDATA_ROOT=os.getenv('INPUTDATA_ROOT')
-    INPUTDATA_ROOT_WW3=os.getenv('INPUTDATA_ROOT_WW3')
-    INPUTDATA_ROOT_BMIC=os.getenv('INPUTDATA_ROOT_BMIC')
-    RUNDIR_ROOT=os.getenv('RUNDIR_ROOT')
-    NEW_BASELINE=os.getenv('NEW_BASELINE')
-    ROCOTO_SCHEDULER=os.getenv('ROCOTO_SCHEDULER')
+def rocoto_create_entries(INPUTDATA_ROOT,INPUTDATA_ROOT_WW3,INPUTDATA_ROOT_BMIC,RUNDIR_ROOT,NEW_BASELINE,ROCOTO_XML):
+    PATHRT = os.getenv('PATHRT')
+    LOG_DIR= os.getenv('LOG_DIR')
+    PATHTR = os.getenv('PATHTR')
+    RTPWD  = os.getenv('RTPWD')
+    ROCOTO_SCHEDULER = os.getenv('ROCOTO_SCHEDULER')
     
     rocoto_entries = f"""<?xml version="1.0"?>
 <!DOCTYPE workflow
@@ -39,18 +34,12 @@ def rocoto_create_compile_task(MACHINE_ID,COMPILE_ID,ROCOTO_COMPILE_MAXTRIES,MAK
     NATIVE=""
     BUILD_CORES="8"
     BUILD_WALLTIME="00:30:00"
-    if ( MACHINE_ID == 'jet' ):
-        BUILD_WALLTIME="02:00:00"
-    if ( MACHINE_ID == 'hera'):
-        BUILD_WALLTIME="01:00:00"
-    if ( MACHINE_ID == 'orion'):
-        BUILD_WALLTIME="01:00:00"
-    if ( MACHINE_ID == 'hercules'):
-        BUILD_WALLTIME="01:00:00"
-    if ( MACHINE_ID == 's4' ):
-        BUILD_WALLTIME="01:00:00"
-    if ( MACHINE_ID == 'gaea' ):
-        BUILD_WALLTIME="01:00:00"
+    if ( MACHINE_ID == 'jet' ):  BUILD_WALLTIME="02:00:00"
+    if ( MACHINE_ID == 'hera'):  BUILD_WALLTIME="01:00:00"
+    if ( MACHINE_ID == 'orion'): BUILD_WALLTIME="01:00:00"
+    if ( MACHINE_ID == 'hercules'): BUILD_WALLTIME="01:00:00"
+    if ( MACHINE_ID == 's4' ):   BUILD_WALLTIME="01:00:00"
+    if ( MACHINE_ID == 'gaea' ): BUILD_WALLTIME="01:00:00"
 
     compile_task = f"""  <task name="compile_{COMPILE_ID}" maxtries="{ROCOTO_COMPILE_MAXTRIES}">
     <command>&PATHRT;/run_compile.sh &PATHRT; &RUNDIR_ROOT; "{MAKE_OPT}" {COMPILE_ID} 2>&amp;1 | tee &LOG;/compile_{COMPILE_ID}.log</\
@@ -78,8 +67,6 @@ command>
     f.close()
 
 def write_metatask_begin(COMPILE_METATASK_NAME, filename):
-    #filename='rocoto_workflow.xml'
-    #COMPILE_METATASK_NAME=os.getenv('COMPILE_METATASK_NAME')
     metatask_name = f"""  <metatask name="compile_{COMPILE_METATASK_NAME}_tasks"><var name="zero">0</var>
 """
     with open(filename,"a") as f:
@@ -87,29 +74,25 @@ def write_metatask_begin(COMPILE_METATASK_NAME, filename):
     f.close()
 
 def write_metatask_end(filename):
-    #filename='rocoto_workflow.xml'
     metatask_name = f"""  </metatask>
 """
     with open(filename,"a") as f:
         f.writelines(metatask_name)
     f.close()    
     
-def write_compile_env():
-    filename=str(os.getenv('RUNDIR_ROOT'))+"/compile_"+str(os.getenv('COMPILE_ID'))+".env"
-    JOB_NR=os.getenv('JOB_NR')
-    COMPILE_ID=os.getenv('COMPILE_ID')
-    MACHINE_ID=os.getenv('MACHINE_ID')
-    RT_COMPILER=os.getenv('RT_COMPILER')
-    PATHRT=os.getenv('PATHRT')
-    PATHTR=os.getenv('PATHTR')
-    SCHEDULER=os.getenv('SCHEDULER')
-    ACCNR=os.getenv('ACCNR')
-    COMPILE_QUEUE=os.getenv('COMPILE_QUEUE')
-    PARTITION=os.getenv('PARTITION')
-    ROCOTO=os.getenv('ROCOTO')
-    ECFLOW=os.getenv('ECFLOW')
-    REGRESSIONTEST_LOG=os.getenv('REGRESSIONTEST_LOG')
-    LOG_DIR=os.getenv('LOG_DIR')
+def write_compile_env(PARTITION,JOB_NR,COMPILE_QUEUE,RUNDIR_ROOT):
+    filename   = RUNDIR_ROOT+"/compile_"+str(os.getenv('COMPILE_ID'))+".env"
+    COMPILE_ID = os.getenv('COMPILE_ID')
+    MACHINE_ID = os.getenv('MACHINE_ID')
+    RT_COMPILER= os.getenv('RT_COMPILER')
+    PATHRT     = os.getenv('PATHRT')
+    PATHTR     = os.getenv('PATHTR')
+    SCHEDULER  = os.getenv('SCHEDULER')
+    ACCNR      = os.getenv('ACCNR')
+    ROCOTO     = os.getenv('ROCOTO')
+    ECFLOW     = os.getenv('ECFLOW')
+    REGRESSIONTEST_LOG = os.getenv('REGRESSIONTEST_LOG')
+    LOG_DIR    = os.getenv('LOG_DIR')
 
     compile_envs = f"""export JOB_NR={JOB_NR}
 export COMPILE_ID={COMPILE_ID}
@@ -132,14 +115,13 @@ export LOG_DIR={LOG_DIR}
     f.close()
 
 def write_runtest_env():
-    filename=str(os.getenv('RUNDIR_ROOT'))+"/run_test_"+str(os.getenv('TEST_ID'))+".env"
-    
-    JOB_NR=str(os.getenv('JOB_NR'))
-    TEST_ID=str(os.getenv('TEST_ID'))
-    MACHINE_ID=str(os.getenv('MACHINE_ID'))
-    RT_COMPILER=str(os.getenv('RT_COMPILER'))
-    RTPWD=str(os.getenv('RTPWD'))
-    INPUTDATA_ROOT=str(os.getenv('INPUTDATA_ROOT'))
+    filename   = str(os.getenv('RUNDIR_ROOT'))+"/run_test_"+str(os.getenv('TEST_ID'))+".env"
+    JOB_NR     = str(os.getenv('JOB_NR'))
+    TEST_ID    = str(os.getenv('TEST_ID'))
+    MACHINE_ID = str(os.getenv('MACHINE_ID'))
+    RT_COMPILER= str(os.getenv('RT_COMPILER'))
+    RTPWD      =str(os.getenv('RTPWD'))
+    INPUTDATA_ROOT = str(os.getenv('INPUTDATA_ROOT'))
     INPUTDATA_ROOT_WW3=str(os.getenv('INPUTDATA_ROOT_WW3'))
     INPUTDATA_ROOT_BMIC=str(os.getenv('INPUTDATA_ROOT_BMIC'))
     PATHRT=str(os.getenv('PATHRT'))
@@ -213,36 +195,65 @@ def get_testcase(test):
         return case_name, case_config
 
 def main_loop():
+    PATHRT=str(os.getenv('PATHRT'))
+    with open("ufs_test_base.yaml", 'r') as f:
+        exp_config= yaml.load(f)#, Loader=yaml.FullLoader)
+
+        base= exp_config['hera']
+        USER= str(os.environ.get('USER')) #os.environ.get('USERNAME')) #os.getlogin()
+        pid = str(os.getpid())
+
+        QUEUE        = str(base['QUEUE'])
+        COMPILE_QUEUE= str(base['COMPILE_QUEUE'])
+        PARTITION    = str(base['PARTITION'])
+        if (PARTITION == "None"): PARTITION = ""
+        dprefix      = str(base['dprefix']).replace("{USER}", str(USER))
+        DISKNM       = str(base['DISKNM'])
+        STMP         = str(base['STMP'])
+        PTMP         = str(base['PTMP'])
+        RUNDIR_ROOT  = str(base['RUNDIR_ROOT'])
+        SCHEDULER    = str(base['SCHEDULER'])
+        INPUTDATA_ROOT= str(base['INPUTDATA_ROOT'])
+        INPUTDATA_ROOT_WW3 = str(base['INPUTDATA_ROOT_WW3'])
+        INPUTDATA_ROOT_BMIC= str(base['INPUTDATA_ROOT_BMIC'])
+        
+    path = STMP+'/'+USER
+    os.makedirs(path, exist_ok=True)
+    NEW_BASELINE=path + '/FV3_RT/REGRESSION_TEST'
+    if (RUNDIR_ROOT == "None"): RUNDIR_ROOT=PTMP+'/'+USER+'/FV3_RT/rt_'+pid  
+    os.makedirs(RUNDIR_ROOT, exist_ok=True)
+    if(os.path.isdir(PATHRT+'/run_dir')): os.unlink(PATHRT+'/run_dir')
+    print('Linking ',RUNDIR_ROOT,' to ',PATHRT,'/run_dir')
+    os.symlink(RUNDIR_ROOT,PATHRT+'/run_dir')
+    print('Run regression test in: ',RUNDIR_ROOT)
+
+    ACCNR = os.getenv('ACCNR')
+    
     JOB_NR = 0
     in_metatask = False
     new_compile = False
     ROCOTO = True
     ROCOTO_XML=os.getenv('ROCOTO_XML')
-    rocoto_create_entries(ROCOTO_XML)
+    rocoto_create_entries(INPUTDATA_ROOT,INPUTDATA_ROOT_WW3,INPUTDATA_ROOT_BMIC,RUNDIR_ROOT,NEW_BASELINE,ROCOTO_XML)
     with open("rt.yaml", 'r') as f:
         rt_yaml = yaml.load(f)#, Loader=yaml.FullLoader)
         for apps, jobs in rt_yaml.items():
-            print(apps)
             for key, val in jobs.items():
                 if (str(key) == 'build'):
                     new_compile = True
                     if not ('turnoff' in val.keys()): print('   ',val['compiler'],val['option'])
                     if 'turnoff' in val.keys(): print('   ',val['compiler'],val['option'],'turnoff: ',val['turnoff'])
-                    RT_COMPILER=val['compiler']
-                    COMPILE_ID=apps+'_'+RT_COMPILER
-                    MAKE_OPT=val['option']
+                    RT_COMPILER = val['compiler']
+                    COMPILE_ID  = apps+'_'+RT_COMPILER
+                    MAKE_OPT    = val['option']
                     os.environ["in_metatask"] = str(in_metatask)
-                    os.environ["COMPILE_ID"] = str(COMPILE_ID)
-                    os.environ["MAKE_OPT"] = str(MAKE_OPT)
-                    MACHINE_ID=os.getenv('MACHINE_ID')
-                    #ROCOTO_COMPILE_MAXTRIES=os.getenv('ROCOTO_COMPILE_MAXTRIES')
-                    #if (ROCOTO_COMPILE_MAXTRIES == 'None'):
-                    ROCOTO_COMPILE_MAXTRIES="3"
-                    ACCNR=os.getenv('ACCNR')
-                    COMPILE_QUEUE=os.getenv('COMPILE_QUEUE')
-                    PARTITION=os.getenv('PARTITION')
+                    os.environ["COMPILE_ID"]  = str(COMPILE_ID)
+                    os.environ["MAKE_OPT"]    = str(MAKE_OPT)
+                    MACHINE_ID = os.getenv('MACHINE_ID')
+                    ROCOTO_COMPILE_MAXTRIES = "3"
+                    ACCNR = os.getenv('ACCNR')
                     os.environ["RT_COMPILER"] = str(RT_COMPILER)
-                    write_compile_env()
+                    write_compile_env(PARTITION,str(JOB_NR),COMPILE_QUEUE,RUNDIR_ROOT)
                     rocoto_create_compile_task \
                         (MACHINE_ID,COMPILE_ID,ROCOTO_COMPILE_MAXTRIES,MAKE_OPT,ACCNR,COMPILE_QUEUE,PARTITION,ROCOTO_XML)
                 if (str(key) == 'tests'):
@@ -262,13 +273,21 @@ def main_loop():
                             ROCOTO_TEST_MAXTRIES="3"
                             RTVERBOSE=False
                             os.environ["TEST_NAME"] = TEST_NAME
-                            os.environ["DEP_RUN"] = DEP_RUN
-                            os.environ["TEST_ID"] = TEST_ID
+                            os.environ["DEP_RUN"]   = DEP_RUN
+                            os.environ["TEST_ID"]   = TEST_ID
                             os.environ["RT_SUFFIX"] = RT_SUFFIX
                             os.environ["BL_SUFFIX"] = BL_SUFFIX
                             os.environ["RT_COMPILER"] = RT_COMPILER
-                            os.environ["MACHINE_ID"] = MACHINE_ID
+                            os.environ["MACHINE_ID"]  = MACHINE_ID
                             os.environ["ROCOTO_TEST_MAXTRIES"] = ROCOTO_TEST_MAXTRIES
+                            os.environ["NEW_BASELINE"] = NEW_BASELINE
+                            os.environ["RUNDIR_ROOT"]  = RUNDIR_ROOT
+                            os.environ["QUEUE"]  = QUEUE
+                            os.environ["JOB_NR"] = str(JOB_NR)
+                            os.environ["INPUTDATA_ROOT"]     = INPUTDATA_ROOT
+                            os.environ["INPUTDATA_ROOT_WW3"] = INPUTDATA_ROOT_WW3
+                            os.environ["INPUTDATA_ROOT_BMIC"]= INPUTDATA_ROOT_BMIC
+                            os.environ["PARTITION"] = PARTITION
                             os.environ["RTVERBOSE"] = str(RTVERBOSE)
                             print('     ',case, config)                            
                             rc_set_run_task =subprocess.Popen(['bash', '-c', '. ufs_test_utils.sh; set_run_task'])
