@@ -173,12 +173,6 @@ export RTVERBOSE=false
     with open(filename,"w+") as f:
         f.writelines(runtest_envs)
     f.close()     
-    
-def compile_task():
-    subprocess.Popen(['bash', '-c', '. ufs_test_utils.sh; set_compile_task'])
-
-def run_task():
-    subprocess.Popen(['bash', '-c', '. ufs_test_utils.sh; set_run_task'])
 
 def get_testcase(test):
     test_cases=[]
