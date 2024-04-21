@@ -1,14 +1,6 @@
 #!/bin/bash
 set -eux
 
- function set_compile_task() {
-   source rt_utils.sh
-   python -c "import create_xml; create_xml.write_compile_env()"
-   rocoto_create_compile_task
-   RT_SUFFIX=""
-   BL_SUFFIX=""
- }
-
  function set_run_task() {
    source default_vars.sh
    source rt_utils.sh
