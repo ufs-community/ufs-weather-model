@@ -483,7 +483,7 @@ export CA_SGS=.false.
 
 export_fv3 ()
 {
-if [[ ! -n ${ATMRES+x} || -z ${ATMRES} ]]; then
+if [[ -z ${ATMRES+x} || -z ${ATMRES} ]]; then
     export ATMRES=C96
 fi
 
@@ -503,8 +503,8 @@ export POSTAPP='global'
 export USE_MERRA2=.true.
 
 export NTILES=6
-export INPES=$INPES_dflt
-export JNPES=$JNPES_dflt
+export INPES=${INPES_dflt}
+export JNPES=${JNPES_dflt}
 export RESTART_INTERVAL=0
 export QUILTING=.true.
 export QUILTING_RESTART=.true.
@@ -741,7 +741,7 @@ export SYEAR=2016
 export SMONTH=10
 export SDAY=03
 export SHOUR=00
-export SECS=`expr $SHOUR \* 3600`
+export SECS=$(( SHOUR*3600 ))
 export FHMAX=$(( DAYS*24 ))
 export DT_ATMOS=1800
 export FHCYC=24
@@ -792,10 +792,13 @@ export ISEED_CA=12345
 
 #waves
 export WW3_RSTDTHR=12
-export WW3_DT_2_RST="$(printf "%02d" $(( ${WW3_RSTDTHR}*3600 )))"
+WW3_DT_2_RST="$(printf "%02d" $(( WW3_RSTDTHR*3600 )))"
+export WW3_DT_2_RST
 export WW3_OUTDTHR=1
-export WW3_DTFLD="$(printf "%02d" $(( ${WW3_OUTDTHR}*3600 )))"
-export WW3_DTPNT="$(printf "%02d" $(( ${WW3_OUTDTHR}*3600 )))"
+WW3_DTFLD="$(printf "%02d" $(( WW3_OUTDTHR*3600 )))"
+export WW3_DTFLD
+WW3_DTPNT="$(printf "%02d" $(( WW3_OUTDTHR*3600 )))"
+export WW3_DTPNT
 export DTRST=0
 export RSTTYPE=T
 export GOFILETYPE=1
@@ -815,14 +818,16 @@ export FGRDPROC=T
 export UNIPOINTS='points'
 export FLAGMASKCOMP=' F'
 export FLAGMASKOUT=' F'
-export RUN_BEG="${SYEAR}${SMONTH}${SDAY} $(printf "%02d" $(( ${SHOUR}  )))0000"
-export RUN_END="2100${SMONTH}${SDAY} $(printf "%02d" $(( ${SHOUR}  )))0000"
-export OUT_BEG=$RUN_BEG
-export OUT_END=$RUN_END
-export RST_BEG=$RUN_BEG
-export RST_2_BEG=$RUN_BEG
-export RST_END=$RUN_END
-export RST_2_END=$RUN_END
+RUN_BEG="${SYEAR}${SMONTH}${SDAY} $(printf "%02d" $(( SHOUR  )))0000"
+export RUN_BEG
+RUN_END="2100${SMONTH}${SDAY} $(printf "%02d" $(( SHOUR  )))0000"
+export RUN_END
+export OUT_BEG=${RUN_BEG}
+export OUT_END=${RUN_END}
+export RST_BEG=${RUN_BEG}
+export RST_2_BEG=${RUN_BEG}
+export RST_END=${RUN_END}
+export RST_2_END=${RUN_END}
 export WW3_CUR='F'
 export WW3_ICE='F'
 export WW3_IC1='F'
@@ -1063,7 +1068,7 @@ export FHMAX=24
 export FHROT=0
 export DT_ATMOS=720
 export QUILTING_RESTART=.false.
-export WRTTASK_PER_GROUP=$WPG_cpl_dflt
+export WRTTASK_PER_GROUP=${WPG_cpl_dflt}
 export WRITE_NSFLIP=.true.
 export OUTPUT_FH='6 -1'
 
@@ -1078,12 +1083,12 @@ export NPZP=128
 
 # default resources
 export DOMAINS_STACK_SIZE=8000000
-export INPES=$INPES_cpl_dflt
-export JNPES=$JNPES_cpl_dflt
-export THRD=$THRD_cpl_dflt
-OCN_tasks=$OCN_tasks_cpl_dflt
-ICE_tasks=$ICE_tasks_cpl_dflt
-WAV_tasks=$WAV_tasks_cpl_dflt
+export INPES=${INPES_cpl_dflt}
+export JNPES=${JNPES_cpl_dflt}
+export THRD=${THRD_cpl_dflt}
+OCN_tasks=${OCN_tasks_cpl_dflt}
+ICE_tasks=${ICE_tasks_cpl_dflt}
+WAV_tasks=${WAV_tasks_cpl_dflt}
 
 # Set tiled file defaults
 export_tiled
@@ -1416,8 +1421,8 @@ export AQM=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
 export CDEPS_INLINE=false
-export INPES=$INPES_dflt
-export JNPES=$JNPES_dflt
+export INPES=${INPES_dflt}
+export JNPES=${JNPES_dflt}
 export NTILES=1
 export IMFSHALCNV=2
 export IMFDEEPCNV=2
