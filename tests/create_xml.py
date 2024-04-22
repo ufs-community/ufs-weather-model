@@ -174,6 +174,89 @@ export RTVERBOSE=false
         f.writelines(runtest_envs)
     f.close()     
 
+def write_logfile(logfile, openmod, output="", subproc=""):
+    with open(logfile, openmod) as rtlog:
+        if (not subproc == "") :
+            subprocess.call(subproc, shell=True, stdout=rtlog)
+        if (not output == "") :
+            rtlog.writelines(output)
+    rtlog.close()
+
+def make_loghead(ACCNR,MACHINE_ID,RUNDIR_ROOT,RTPWD,REGRESSIONTEST_LOG):
+    filename   = REGRESSIONTEST_LOG
+    TESTS_FILE = os.getenv('TESTS_FILE')
+    NEW_BASELINES_FILE = os.getenv('NEW_BASELINES_FILE')
+    CREATE_BASELINE    = os.getenv('CREATE_BASELINE')
+    DEFINE_CONF_FILE   = os.getenv('DEFINE_CONF_FILE')
+    RTPWD_NEW_BASELINE = os.getenv('RTPWD_NEW_BASELINE')
+    RUN_SINGLE_TEST = os.getenv('RUN_SINGLE_TEST')
+    COMPILE_ONLY    = os.getenv('COMPILE_ONLY')
+    delete_rundir   = os.getenv('delete_rundir')
+    skip_check_results = os.getenv('skip_check_results')
+    KEEP_RUNDIR = os.getenv('KEEP_RUNDIR')
+    ROCOTO      = os.getenv('ROCOTO')
+    ECFLOW      = os.getenv('ECFLOW')
+    RTVERBOSE   = os.getenv('RTVERBOSE')
+
+    rtlog_head=f"""
+====START OF {MACHINE_ID} REGRESSION TESTING LOG====
+
+UFSWM hash used in testing:
+"""
+    rtlog_submod=f"""
+Submodule hashes used in testing:
+"""
+    write_logfile(filename, "w", output= rtlog_head)
+    write_logfile(filename, "a", subproc="git rev-parse HEAD")
+    write_logfile(filename, "a", output= rtlog_submod)
+    write_logfile(filename, "a", subproc="git submodule status --recursive")
+
+    with open(filename, 'r') as rtlog:
+        filedata = rtlog.read(); rtlog.close()
+
+    filedata = filedata.replace('../', '')
+    write_logfile(filename, "w", output= filedata)
+
+    info_note=f"""
+NOTES:
+[Times](Memory) are at the end of each compile/test in format [MM:SS](Size).
+The first time is for the full script (prep+run+finalize).
+The second time is specifically for the run phase.
+Times/Memory will be empty for failed tests.
+
+BASELINE DIRECTORY: {RTPWD}
+COMPARISON DIRECTORY: {RUNDIR_ROOT}
+
+RT.SH OPTIONS USED:
+"""
+    write_logfile(filename, "a", output= info_note)
+
+    write_logfile(filename, "a", output="* (-a) - HPC PROJECT ACCOUNT: "+ACCNR+"\n")
+    if NEW_BASELINES_FILE :
+        write_logfile(filename, "a", output="* (-b) - NEW BASELINES FROM FILE: "+NEW_BASELINES_FILE+"\n")
+    if CREATE_BASELINE :
+        write_logfile(filename, "a", output="* (-c) - CREATE NEW BASELINES"+"\n")
+    if DEFINE_CONF_FILE :
+        write_logfile(filename, "a", output="* (-l) - USE CONFIG FILE: "+TESTS_FILE+"\n")
+    if RTPWD_NEW_BASELINE :
+        write_logfile(filename, "a", output="* (-m) - COMPARE AGAINST CREATED BASELINES"+"\n")
+    if RUN_SINGLE_TEST :
+        write_logfile(filename, "a", output="* (-n) - RUN SINGLE TEST: "+SINGLE_OPTS+"\n")
+    if COMPILE_ONLY :
+        write_logfile(filename, "a", output="* (-o) - COMPILE ONLY, SKIP TESTS"+"\n")
+    if delete_rundir :
+        write_logfile(filename, "a", output="* (-d) - DELETE RUN DIRECTORY"+"\n")
+    if skip_check_results :
+        write_logfile(filename, "a", output="* (-w) - SKIP RESULTS CHECK"+"\n")
+    if KEEP_RUNDIR :
+        write_logfile(filename, "a", output="* (-k) - KEEP RUN DIRECTORY"+"\n")
+    if ROCOTO :
+        write_logfile(filename, "a", output="* (-r) - USE ROCOTO"+"\n")
+    if ECFLOW :
+        write_logfile(filename, "a", output="* (-e) - USE ECFLOW"+"\n")
+    if RTVERBOSE :
+        write_logfile(filename, "a", output="* (-v) - VERBOSE OUTPUT"+"\n")
+
 def get_testcase(test):
     test_cases=[]
     for case, configs in test.items():
