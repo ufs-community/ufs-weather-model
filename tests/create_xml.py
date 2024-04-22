@@ -184,20 +184,21 @@ def write_logfile(logfile, openmod, output="", subproc=""):
 
 def make_loghead(ACCNR,MACHINE_ID,RUNDIR_ROOT,RTPWD,REGRESSIONTEST_LOG):
     filename   = REGRESSIONTEST_LOG
-    TESTS_FILE = os.getenv('TESTS_FILE')
-    NEW_BASELINES_FILE = os.getenv('NEW_BASELINES_FILE')
-    CREATE_BASELINE    = os.getenv('CREATE_BASELINE')
-    DEFINE_CONF_FILE   = os.getenv('DEFINE_CONF_FILE')
-    RTPWD_NEW_BASELINE = os.getenv('RTPWD_NEW_BASELINE')
-    RUN_SINGLE_TEST = os.getenv('RUN_SINGLE_TEST')
-    COMPILE_ONLY    = os.getenv('COMPILE_ONLY')
-    delete_rundir   = os.getenv('delete_rundir')
-    skip_check_results = os.getenv('skip_check_results')
-    KEEP_RUNDIR = os.getenv('KEEP_RUNDIR')
-    ROCOTO      = os.getenv('ROCOTO')
-    ECFLOW      = os.getenv('ECFLOW')
-    RTVERBOSE   = os.getenv('RTVERBOSE')
-
+    TESTS_FILE = str(os.getenv('TESTS_FILE'))
+    NEW_BASELINES_FILE = str(os.getenv('NEW_BASELINES_FILE'))
+    CREATE_BASELINE    = str(os.getenv('CREATE_BASELINE'))
+    DEFINE_CONF_FILE   = str(os.getenv('DEFINE_CONF_FILE'))
+    RTPWD_NEW_BASELINE = str(os.getenv('RTPWD_NEW_BASELINE'))
+    RUN_SINGLE_TEST = str(os.getenv('RUN_SINGLE_TEST'))
+    COMPILE_ONLY    = str(os.getenv('COMPILE_ONLY'))
+    delete_rundir   = str(os.getenv('delete_rundir'))
+    skip_check_results = str(os.getenv('skip_check_results'))
+    KEEP_RUNDIR = str(os.getenv('KEEP_RUNDIR'))
+    ROCOTO      = str(os.getenv('ROCOTO'))
+    ECFLOW      = str(os.getenv('ECFLOW'))
+    RTVERBOSE   = str(os.getenv('RTVERBOSE'))
+    SINGLE_OPTS = str(os.getenv('SINGLE_OPTS'))
+    
     rtlog_head=f"""
 ====START OF {MACHINE_ID} REGRESSION TESTING LOG====
 
