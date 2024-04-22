@@ -392,6 +392,7 @@ def main_loop():
         f.writelines(rocoto_close)
     f.close()
 
+    REGRESSIONTEST_LOG = PATHRT+'/logs/RegressionTests_'+MACHINE_ID+'.log'
     make_loghead(ACCNR,MACHINE_ID,RUNDIR_ROOT,RTPWD,REGRESSIONTEST_LOG)
 
 #if __name__ == "__main__":
