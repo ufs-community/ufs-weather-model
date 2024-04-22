@@ -1086,9 +1086,9 @@ export DOMAINS_STACK_SIZE=8000000
 export INPES=${INPES_cpl_dflt}
 export JNPES=${JNPES_cpl_dflt}
 export THRD=${THRD_cpl_dflt}
-OCN_tasks=${OCN_tasks_cpl_dflt}
-ICE_tasks=${ICE_tasks_cpl_dflt}
-WAV_tasks=${WAV_tasks_cpl_dflt}
+export OCN_tasks=${OCN_tasks_cpl_dflt}
+export ICE_tasks=${ICE_tasks_cpl_dflt}
+export WAV_tasks=${WAV_tasks_cpl_dflt}
 
 # Set tiled file defaults
 export_tiled
