@@ -117,7 +117,7 @@ def generateStage(nodeLabel) {
                           elif [[ $machine =~ "Hera" ]]
                           then
                             echo "Creating baselines on $machine"
-                            export ACCNR=nems
+                            export ACCNR=epic
                             ./rt.sh -a ${ACCNR} -c -r -l rt.conf
                             export DISKNM=/scratch2/NAGAPE/epic/UFS-WM_RT
 			    cd ${DISKNM}/NEMSfv3gfs/
@@ -241,7 +241,7 @@ def generateStage(nodeLabel) {
                           elif [[ $machine =~ "Hera" ]]
                           then
                            echo "Running regression tests on $machine"
-                             export ACCNR=nems
+                             export ACCNR=epic
                              ./rt.sh -a ${ACCNR} -r -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
 			     cd logs/
 			     cp RegressionTests_hera.log /scratch2/NAGAPE/epic/role.epic/jenkins/workspace
