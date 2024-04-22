@@ -724,6 +724,7 @@ case ${MACHINE_ID} in
       ROCOTO_SCHEDULER="slurm"
     fi
     
+    export LD_PRELOAD=/opt/cray/pe/gcc/12.2.0/snos/lib64/libstdc++.so.6
     module load PrgEnv-intel/8.3.3
     module load intel-classic/2023.1.0
     module load cray-mpich/8.1.25
@@ -1040,9 +1041,7 @@ NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST
 # Overwrite default RUNDIR_ROOT if environment variable RUNDIR_ROOT is set
 RUNDIR_ROOT=${RUNDIR_ROOT:-${PTMP}/${USER}/FV3_RT}/rt_$$
 mkdir -p "${RUNDIR_ROOT}"
-if [[ -L "${PATHRT}/run_dir" && -d "${PATHRT}/run_dir" ]]; then
-  rm "${PATHRT}/run_dir"
-fi
+rm -rf "${PATHRT}/run_dir"
 echo "Linking ${RUNDIR_ROOT} to ${PATHRT}/run_dir"
 ln -s "${RUNDIR_ROOT}" "${PATHRT}/run_dir"
 echo "Run regression test in: ${RUNDIR_ROOT}"
@@ -1149,7 +1148,7 @@ if [[ ${ROCOTO} == true ]]; then
   <!ENTITY RUNDIR_ROOT    "${RUNDIR_ROOT}">
   <!ENTITY NEW_BASELINE   "${NEW_BASELINE}">
 ]>
-<workflow realtime="F" scheduler="${ROCOTO_SCHEDULER}" taskthrottle="20">
+<workflow realtime="F" scheduler="${ROCOTO_SCHEDULER}" taskthrottle="10">
   <cycledef>197001010000 197001010000 01:00:00</cycledef>
   <log>&LOG;/workflow.log</log>
 EOF
