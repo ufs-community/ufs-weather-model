@@ -193,7 +193,7 @@ else
   die "Unknown machine ID, please edit detect_machine.sh file"
 fi
 
-update_rtconf
+#jkim update_rtconf
 
 source bl_date.conf
 
