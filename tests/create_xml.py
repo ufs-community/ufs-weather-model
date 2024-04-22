@@ -392,5 +392,7 @@ def main_loop():
         f.writelines(rocoto_close)
     f.close()
 
+    make_loghead(ACCNR,MACHINE_ID,RUNDIR_ROOT,RTPWD,REGRESSIONTEST_LOG)
+
 #if __name__ == "__main__":
 
