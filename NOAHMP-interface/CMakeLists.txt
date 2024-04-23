@@ -8,9 +8,10 @@ list(APPEND _noahmp_cap_files noahmp/drivers/nuopc/lnd_comp_kind.F90
                               noahmp/drivers/nuopc/lnd_comp_domain.F90
                               noahmp/drivers/nuopc/lnd_comp_import_export.F90
                               noahmp/drivers/nuopc/lnd_comp_nuopc.F90
-                              noahmp/drivers/nuopc/lnd_comp_driver.F90)
+                              noahmp/drivers/nuopc/lnd_comp_driver.F90
+			      noahmp/drivers/nuopc/lnd_comp_cplscalars.F90)
 
-# CCPP interface 
+# CCPP interface
 list(APPEND _noahmp_ccpp_files noahmp/drivers/ccpp/noahmpdrv.F90
                                noahmp/drivers/ccpp/sfc_diff.f
                                noahmp/drivers/ccpp/machine.F
@@ -25,7 +26,7 @@ list(APPEND _noahmp_files noahmp/src/module_sf_noahmplsm.F90
                           noahmp/src/module_sf_noahmp_glacier.F90)
 
 #------------------------------------------------------------------------------
-# Set CCPP flags for C/C++/Fortran preprocessor 
+# Set CCPP flags for C/C++/Fortran preprocessor
 add_definitions(-DCCPP)
 
 #------------------------------------------------------------------------------
