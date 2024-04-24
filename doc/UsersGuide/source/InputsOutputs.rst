@@ -1304,6 +1304,15 @@ These field section entries are described in :numref:`Table %s <FieldDescription
 
 Comments can be added to the diag_table using the hash symbol (``#``).
 
+.. list-table:: *Each WM component has its own diag_table with associated varialbes. Below is the full set of options.*
+   :widths: 16 24 
+   :header-rows: 1
+
+   * - WM Component
+     - diag_table link
+   * - FV3
+     - `FV3 diag_table <https://github.com/selbigmtnwx23/ufs-weather-model/blob/develop/doc/UsersGuide/source/diag_table%20FV3.rst>`__
+
 A brief example of the diag_table is shown below.  ``"..."`` denotes where lines have been removed.
 
 .. _code-block-fv3-diag-table:
