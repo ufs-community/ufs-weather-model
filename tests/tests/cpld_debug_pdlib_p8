@@ -87,7 +87,15 @@ export CICE_DIAGFREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
 
 export WW3_DOMAIN=global_270k
 export MESH_WAV=mesh.${WW3_DOMAIN}.nc
-export WW3_MODDEF=mod_def.exp.${WW3_DOMAIN}
+export WW3_MODDEF=mod_def.ic4.exp.${WW3_DOMAIN}
+export WW3_ICE='C'
+export WW3_IC1='C'
+export WW3_IC5='C'
+export CICE_nfsd=12
+export CICE_tr_fsd=.true.
+export CICE_restart_fsd=.false.
+export CICE_wave_spec_type=constant
+export wav_coupling_to_cice=true
 
 export DIAG_TABLE=diag_table_template
 export FIELD_TABLE=field_table_thompson_noaero_tke

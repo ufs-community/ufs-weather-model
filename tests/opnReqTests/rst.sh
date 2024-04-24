@@ -28,7 +28,7 @@ elif [[ $application == 'cpld' ]]; then
   CICE_RUNTYPE='continue'
   RUNTYPE='continue'
   CICE_USE_RESTART_TIME='.true.'
-  if [[ $TEST_NAME =~ wavice ]]; then
+  if [[ ${CICE_tr_fsd} ]]; then
     CICE_restart_fsd='.true.'
   fi
   MOM6_RESTART_SETTING="r"
