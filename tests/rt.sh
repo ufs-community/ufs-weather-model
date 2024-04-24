@@ -270,8 +270,8 @@ EOF
         else
           COMPILE_RESULT="PASS"
           if [[ ${COMPILER} == "intel" ]]; then
-            COMPILE_NUM_WARNINGS=$(grep ": warning #" "${RUNDIR_ROOT}/compile_${COMPILE_ID}/err" | wc -l)
-            COMPILE_NUM_REMARKS=$(grep ": remark #" "${RUNDIR_ROOT}/compile_${COMPILE_ID}/err" | wc -l)
+            COMPILE_NUM_WARNINGS=$(grep -c ": warning #" "${RUNDIR_ROOT}/compile_${COMPILE_ID}/err")
+            COMPILE_NUM_REMARKS=$(grep -c ": remark #" "${RUNDIR_ROOT}/compile_${COMPILE_ID}/err")
             if [[ ${COMPILE_NUM_WARNINGS} -gt 0 || ${COMPILE_NUM_REMARKS} -gt 0 ]]; then
                COMPILE_WARNINGS+="("
                [[ ${COMPILE_NUM_WARNINGS} -gt 0 ]] && COMPILE_WARNINGS+=" ${COMPILE_NUM_WARNINGS} warnings"
