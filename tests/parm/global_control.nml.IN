@@ -17,7 +17,7 @@
 /
 
 &fms2_io_nml
-  netcdf_default_format = "netcdf4"
+  netcdf_default_format = 'netcdf4'
 /
 
 &fv_core_nml
@@ -37,8 +37,9 @@
   n_sponge = 42
   nudge_qv = .true.
   nudge_dz = .false.
-  tau = 10.0
-  rf_cutoff = 7.5e2
+  tau = 0.0
+  fast_tau_w_sec = 0.2
+  rf_cutoff = 10.
   d2_bg_k1 = @[D2_BG_K1]
   d2_bg_k2 = @[D2_BG_K2]
   kord_tm = -9
@@ -52,7 +53,7 @@
   a_imp = 1.
   p_fac = 0.1
   k_split = 2
-  n_split = 6
+  n_split = 5
   nwat = 6
   na_init = @[NA_INIT]
   d_ext = 0.
@@ -79,7 +80,7 @@
   hord_dp = -5
   hord_tr = 8
   adjust_dry_mass = .false.
-  dry_mass=98320.0
+  dry_mass = 98320.0
   consv_te = 1.
   do_sat_adj = @[DO_SAT_ADJ]
   consv_am = .false.
@@ -112,9 +113,8 @@
   use_ufo      = .true.
   pre_rad      = .false.
   imp_physics  = @[IMP_PHYSICS]
-  iovr         = 3
-  ltaerosol    = @[LTAEROSOL]
-  mraerosol    = @[MRAEROSOL]
+  iovr         = @[IOVR]
+  ltaerosol    = .false.
   lradar       = .false.
   ttendlim     = -999
   dt_inner     = @[DT_INNER]
@@ -123,7 +123,7 @@
   oz_phys      = .false.
   oz_phys_2015 = .true.
   lsoil_lsm    = 4
-  do_mynnedmf  = .false.
+  do_mynnedmf  = @[DO_MYNNEDMF]
   do_mynnsfclay = .false.
   icloud_bl    = 1
   bl_mynn_edmf = 1
@@ -140,7 +140,7 @@
   do_gsl_drag_ss       = @[DO_GSL_DRAG_SS]
   do_gsl_drag_tofd     = @[DO_GSL_DRAG_TOFD]
   do_ugwp_v1_orog_only = @[DO_UGWP_V1_OROG_ONLY]
-  min_lakeice  = 0.15
+  min_lakeice  = @[MIN_LAKEICE]
   min_seaice   = @[MIN_SEAICE]
   use_cice_alb = @[USE_CICE_ALB]
   pdfcld       = .false.
@@ -149,7 +149,7 @@
   ialb         = @[IALB]
   iems         = @[IEMS]
   iaer         = @[IAER]
-  icliq_sw     = 2
+  icliq_sw     = @[ICLIQ_SW]
   ico2         = 2
   isubc_sw     = 2
   isubc_lw     = 2
@@ -157,12 +157,12 @@
   lwhtr        = .true.
   swhtr        = .true.
   cnvgwd       = .true.
-  shal_cnv     = .true.
+  shal_cnv     = @[SHAL_CNV]
   cal_pre      = .false.
   redrag       = .true.
   dspheat      = .true.
   hybedmf      = .false.
-  satmedmf     = .true.
+  satmedmf     = @[SATMEDMF]
   isatmedmf    = 1
   lheatstrg    = @[LHEATSTRG]
   lseaspray    = @[LSEASPRAY]
@@ -171,6 +171,10 @@
   cnvcld       = @[CNVCLD]
   imfshalcnv   = @[IMFSHALCNV]
   imfdeepcnv   = @[IMFDEEPCNV]
+  progsigma    = @[PROGSIGMA]
+  betascu      = @[BETASCU]
+  betamcu      = @[BETAMCU]
+  betadcu      = @[BETADCU]
   ras          = @[RAS]
   cdmbgwd      = @[CDMBWD]
   prslrd0      = 0.
@@ -201,9 +205,6 @@
   effr_in      = .true.
   ldiag_ugwp   = @[LDIAG_UGWP]
   fscav_aero   = @[FSCAV_AERO]
-  do_sppt      = @[DO_SPPT]
-  do_shum      = @[DO_SHUM]
-  do_skeb      = @[DO_SKEB]
   do_RRTMGP          = @[DO_RRTMGP]
   active_gases       = 'h2o_co2_o3_n2o_ch4_o2'
   ngases             = 6
@@ -217,6 +218,14 @@
   rrtmgp_nBandsSW    = 14
   doGP_cldoptics_LUT = @[DOGP_CLDOPTICS_LUT]
   doGP_lwscat        = @[DOGP_LWSCAT]
+  doGP_sgs_cnv       = @[DOGP_SGS_CNV]
+  do_sppt      = @[DO_SPPT]
+  do_shum      = @[DO_SHUM]
+  do_skeb      = @[DO_SKEB]
+  iaufhrs      = @[IAUFHRS]
+  iau_delthrs  = @[IAU_DELTHRS]
+  iau_inc_files= @[IAU_INC_FILES]
+  iau_drymassfixer = .false.
   use_med_flux = @[USE_MED_FLUX]
   frac_grid    = @[FRAC_GRID]
   cplchm       = @[CPLCHM]
@@ -224,6 +233,8 @@
   cplice       = @[CPLICE]
   cplwav       = @[CPLWAV]
   cplwav2atm   = @[CPLWAV2ATM]
+  cpllnd       = @[CPLLND]
+  cpllnd2atm   = @[CPLLND2ATM]
   do_ca        = @[DO_CA]
   ca_global    = @[CA_GLOBAL]
   ca_sgs       = @[CA_SGS]
@@ -241,18 +252,29 @@
 /
 
 &cires_ugwp_nml
-  knob_ugwp_solver  = 2
-  knob_ugwp_source  = 1,1,0,0
-  knob_ugwp_wvspec  = 1,25,25,25
-  knob_ugwp_azdir   = 2,4,4,4
-  knob_ugwp_stoch   = 0,0,0,0
-  knob_ugwp_effac   = 1,1,1,1
-  knob_ugwp_doaxyz  = 1
-  knob_ugwp_doheat  = 1
-  knob_ugwp_dokdis  = 1
-  knob_ugwp_ndx4lh  = 1
-  knob_ugwp_version = @[KNOB_UGWP_VERSION]
-  launch_level = 54
+  knob_ugwp_solver   = 2
+  knob_ugwp_source   = 1,1,0,0
+  knob_ugwp_wvspec   = 1,25,25,25
+  knob_ugwp_azdir    = 2,4,4,4
+  knob_ugwp_stoch    = 0,0,0,0
+  knob_ugwp_effac    = 1,1,1,1
+  knob_ugwp_doaxyz   = 1
+  knob_ugwp_doheat   = 1
+  knob_ugwp_dokdis   = @[KNOB_UGWP_DOKDIS]
+  knob_ugwp_ndx4lh   = @[KNOB_UGWP_NDX4LH]
+  knob_ugwp_version  = @[KNOB_UGWP_VERSION]
+  ! This is only for UGWP v0
+@[HIDE_UGWPV0] launch_level      = 54
+  ! These are only for UGWP v1
+@[HIDE_UGWPV1] knob_ugwp_palaunch = 275.0e2
+@[HIDE_UGWPV1] knob_ugwp_nslope   = @[KNOB_UGWP_NSLOPE]
+@[HIDE_UGWPV1] knob_ugwp_lzmax    = 15.750e3
+@[HIDE_UGWPV1] knob_ugwp_lzmin    = 0.75e3
+@[HIDE_UGWPV1] knob_ugwp_lzstar   = 2.0e3
+@[HIDE_UGWPV1] knob_ugwp_taumin   = 0.25e-3
+@[HIDE_UGWPV1] knob_ugwp_tauamp   = 3.0e-3
+@[HIDE_UGWPV1] knob_ugwp_lhmet    = 200.0e3
+@[HIDE_UGWPV1] knob_ugwp_orosolv  = 'pss-1986'
 /
 
 &gfdl_cloud_microphysics_nml
@@ -276,12 +298,12 @@
   tau_l2v = 225.
   tau_v2l = 150.
   tau_g2v = 900.
-  rthresh = 10.e-6  ! This is a key parameter for cloud water
+  rthresh = 10.e-6   ! This is a key parameter for cloud water
   dw_land  = 0.16
   dw_ocean = 0.10
   ql_gen = 1.0e-3
   ql_mlt = 1.0e-3
-  qi0_crt = 8.0E-5
+  qi0_crt = 8.0e-5
   qs0_crt = 1.0e-3
   tau_i2s = 1000.
   c_psaci = 0.05
@@ -310,14 +332,14 @@
 /
 
 &namsfc
-  FNGLAC   = 'global_glacier.2x2.grb'
-  FNMXIC   = 'global_maxice.2x2.grb'
-  FNTSFC   = 'RTGSST.1982.2012.monthly.clim.grb'
-  FNSNOC   = 'global_snoclim.1.875.grb'
-  FNZORC   = 'igbp'
+  FNGLAC   = @[FNGLAC]
+  FNMXIC   = @[FNMXIC]
+  FNTSFC   = @[FNTSFC]
+  FNSNOC   = @[FNSNOC]
+  FNZORC   = @[FNZORC]
   FNALBC   = @[FNALBC]
   FNALBC2  = @[FNALBC2]
-  FNAISC   = 'IMS-NIC.blended.ice.monthly.clim.grb'
+  FNAISC   = @[FNAISC]
   FNTG3C   = @[FNTG3C]
   FNVEGC   = @[FNVEGC]
   FNVETC   = @[FNVETC]
@@ -332,12 +354,12 @@
   FNVMXC   = @[FNVMXC]
   FNSLPC   = @[FNSLPC]
   FNABSC   = @[FNABSC]
-  LDEBUG   =.false.
+  LDEBUG   = .false.
   FSMCL(2) = 99999
   FSMCL(3) = 99999
   FSMCL(4) = 99999
   LANDICE  = @[LANDICE]
-  FTSFS    = 90
+  FTSFS    = @[FTSFS]
   FAISL    = 99999
   FAISS    = 99999
   FSNOL    = 99999
@@ -363,9 +385,17 @@
 &nam_sfcperts
   lndp_type      = @[LNDP_TYPE]
   lndp_model_type = @[LNDP_MODEL_TYPE]
-  LNDP_TAU=21600,
-  LNDP_LSCALE=500000,
-  ISEED_LNDP=2010,
+  LNDP_TAU=@[LNDP_TAU]
+  LNDP_LSCALE=@[LNDP_LSCALE]
+  ISEED_LNDP=@[ISEED_LNDP]
   lndp_var_list = @[LNDP_VAR_LIST]
   lndp_prt_list = @[LNDP_PRT_LIST]
 /
+
+&MOM_input_nml
+  output_directory = '@[MOM6_OUTPUT_DIR]',
+  input_filename = '@[MOM6_RESTART_SETTING]'
+  restart_input_dir = 'INPUT/',
+  restart_output_dir = '@[MOM6_RESTART_DIR]'
+  parameter_filename = 'INPUT/MOM_input',
+                       'INPUT/MOM_override'/
