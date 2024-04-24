@@ -1312,6 +1312,9 @@ Comments can be added to the diag_table using the hash symbol (``#``).
      - diag_table link
    * - FV3
      - `FV3 diag_table <https://github.com/selbigmtnwx23/ufs-weather-model/blob/develop/doc/UsersGuide/source/diag_table%20FV3.rst>`__
+   * - MOM6
+     - In Progress
+
 
 A brief example of the diag_table is shown below.  ``"..."`` denotes where lines have been removed.
 
