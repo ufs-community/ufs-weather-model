@@ -62,10 +62,6 @@ update_rtconf() {
     [[ -s "${NEW_BASELINES_FILE}" ]] || die "${NEW_BASELINES_FILE} is empty, exiting..."
     TEST_WITH_COMPILE=()
     readarray -t TEST_WITH_COMPILE < "${NEW_BASELINES_FILE}"
-  # else USER CHOSE THE -l OPTION
-  elif [[ ${DEFINE_CONF_FILE} == true ]]; then
-    echo "No update needed to TESTS_FILE"
-    return
   # else USER CHOSE THE -n OPTION
   elif [[ ${RUN_SINGLE_TEST} == true ]]; then
     TEST_WITH_COMPILE=("${SRT_NAME} ${SRT_COMPILER}")
@@ -674,6 +670,8 @@ done
 [[ ${KEEP_RUNDIR} == true && ${delete_rundir} == true ]] && die "-k and -d options cannot be used at the same time"
 [[ ${ECFLOW} == true && ${ROCOTO} == true ]] && die "-r and -e options cannot be used at the same time"
 [[ ${CREATE_BASELINE} == true && ${RTPWD_NEW_BASELINE} == true ]] && die "-c and -m options cannot be used at the same time"
+#B&N not run together
+[[ ${NEW_BASELINES_FILE} != '' && ${RUN_SINGLE_TEST} == true ]] && die "-b and -n options cannot be used at the same time"
 
 [[ -o xtrace ]] && set_x='set -x' || set_x='set +x'
 
@@ -1041,11 +1039,6 @@ case ${MACHINE_ID} in
 esac
 eval "${set_x}"
 
-# BEFORE MOVING ANY FURTHER LETS CHECK THAT DISKNM/STMP/PTMP ALL EXIST
-[[ -d ${DISKNM} ]] || die "ERROR: DISKNM: ${DISKNM} -- DOES NOT EXIST"
-[[ -d ${STMP} ]] || die "ERROR: STMP: ${STMP} -- DOES NOT EXIST"
-[[ -d ${PTMP} ]] || die "ERROR: PTMP: ${PTMP} -- DOES NOT EXIST"
-
 mkdir -p "${STMP}/${USER}"
 
 NEW_BASELINE=${STMP}/${USER}/FV3_RT/REGRESSION_TEST
@@ -1057,6 +1050,11 @@ rm -rf "${PATHRT}/run_dir"
 echo "Linking ${RUNDIR_ROOT} to ${PATHRT}/run_dir"
 ln -s "${RUNDIR_ROOT}" "${PATHRT}/run_dir"
 echo "Run regression test in: ${RUNDIR_ROOT}"
+
+# BEFORE MOVING ANY FURTHER LETS CHECK THAT DISKNM/STMP/PTMP ALL EXIST
+[[ -d ${DISKNM} ]] || die "ERROR: DISKNM: ${DISKNM} -- DOES NOT EXIST"
+[[ -d ${STMP} ]] || die "ERROR: STMP: ${STMP} -- DOES NOT EXIST"
+[[ -d ${PTMP} ]] || die "ERROR: PTMP: ${PTMP} -- DOES NOT EXIST"
 
 update_rtconf
 
