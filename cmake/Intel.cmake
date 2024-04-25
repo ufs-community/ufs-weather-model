@@ -1,5 +1,11 @@
-set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -g -traceback -fpp -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte -qno-opt-dynamic-align")
+set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -g -traceback -fpp -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -sox -align array64byte -qno-opt-dynamic-align")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -qno-opt-dynamic-align -sox -fp-model source")
+
+# warning #5462: Global name too long.
+set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -diag-disable 5462")
+
+# remark #7712: This variable has not been used.
+set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -diag-disable 7712")
 
 if(CMAKE_Platform STREQUAL "derecho.intel")
   set(CMAKE_Fortran_LINK_FLAGS "-Wl,--copy-dt-needed-entries")
