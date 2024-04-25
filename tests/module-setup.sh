@@ -1,42 +1,42 @@
 #!/bin/bash
 set -eu
 
-if [[ $MACHINE_ID = jet ]] ; then
+if [[ ${MACHINE_ID} = jet ]] ; then
     # We are on NOAA Jet
     if ( ! eval module help > /dev/null 2>&1 ) ; then
         source /apps/lmod/lmod/init/bash
     fi
     module purge
 
-elif [[ $MACHINE_ID = hera ]] ; then
+elif [[ ${MACHINE_ID} = hera ]] ; then
     # We are on NOAA Hera
     if ( ! eval module help > /dev/null 2>&1 ) ; then
         source /apps/lmod/lmod/init/bash
     fi
     module purge
 
-elif [[ $MACHINE_ID = orion ]] ; then
+elif [[ ${MACHINE_ID} = orion ]] ; then
     # We are on Orion
     if ( ! eval module help > /dev/null 2>&1 ) ; then
         source /apps/lmod/init/bash
     fi
     module purge
 
-elif [[ $MACHINE_ID = hercules ]] ; then
+elif [[ ${MACHINE_ID} = hercules ]] ; then
     # We are on Hercules
     if ( ! eval module help > /dev/null 2>&1 ) ; then
         source  /apps/other/lmod/lmod/init/bash
     fi
     module purge
 
-elif [[ $MACHINE_ID = s4 ]] ; then
+elif [[ ${MACHINE_ID} = s4 ]] ; then
     # We are on SSEC Wisconsin S4
     if ( ! eval module help > /dev/null 2>&1 ) ; then
         source /usr/share/lmod/lmod/init/bash
     fi
     module purge
 
-elif [[ $MACHINE_ID = wcoss2 || $MACHINE_ID = acorn ]] ; then
+elif [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]] ; then
     # We are on NOAA Cactus or Dogwood
     if ( ! eval module help > /dev/null 2>&1 ) ; then
         source /usr/share/lmod/lmod/init/bash
@@ -44,21 +44,21 @@ elif [[ $MACHINE_ID = wcoss2 || $MACHINE_ID = acorn ]] ; then
     module purge
     module reset
     
-elif [[ $MACHINE_ID = derecho ]] ; then
+elif [[ ${MACHINE_ID} = derecho ]] ; then
     # We are on NCAR Derecho
     if ( ! eval module help > /dev/null 2>&1 ) ; then
         source /usr/share/lmod/lmod/init/bash
     fi
     module purge
     
-elif [[ $MACHINE_ID = stampede ]] ; then
+elif [[ ${MACHINE_ID} = stampede ]] ; then
     # We are on TACC Stampede
     if ( ! eval module help > /dev/null 2>&1 ) ; then
         source /opt/apps/lmod/lmod/init/bash
     fi
     module purge
 
-elif [[ $MACHINE_ID = gaea ]] ; then
+elif [[ ${MACHINE_ID} = gaea ]] ; then
     # We are on GAEA
     if ( ! eval module help > /dev/null 2>&1 ) ; then
         # We cannot simply load the module command.  The GAEA
@@ -70,26 +70,21 @@ elif [[ $MACHINE_ID = gaea ]] ; then
     fi
     module reset
 
-elif [[ $MACHINE_ID = expanse ]]; then
+elif [[ ${MACHINE_ID} = expanse ]]; then
     # We are on SDSC Expanse
     if ( ! eval module help > /dev/null 2>&1 ) ; then
         source /etc/profile.d/modules.sh
     fi
     module purge
     module load slurm/expanse/20.02.3
-    
-elif [[ $MACHINE_ID = noaacloud ]] ; then
+
+elif [[ ${MACHINE_ID} = noaacloud ]] ; then
+    # We are on NOAA Cloud
+    if ( ! eval module help > /dev/null 2>&1 ) ; then
+        source /apps/lmod/8.5.2/init/bash
+    fi
     module purge
-
-    module use /contrib/spack-stack/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core
-    module load stack-intel/2021.3.0  stack-intel-oneapi-mpi/2021.3.0
-
-    export SPACK_ROOT=/contrib/spack-stack/spack-stack-1.6.0/spack
-    export PATH=$PATH:$SPACK_ROOT/bin
-    . $SPACK_ROOT/share/spack/setup-env.sh
-
-    module load cmake/3.23.1
-
+    
 else
     echo WARNING: UNKNOWN PLATFORM 1>&2
 fi
