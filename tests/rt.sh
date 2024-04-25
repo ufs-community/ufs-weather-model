@@ -159,6 +159,7 @@ update_rtconf() {
 
 generate_log() {
   echo "rt.sh: Generating Regression Testing Log..."
+  set -x
   COMPILE_COUNTER=0
   FAILED_COMPILES=()
   TEST_COUNTER=0
@@ -270,10 +271,10 @@ EOF
         else
           COMPILE_RESULT="PASS"
           if [[ ${COMPILER} == "intel" ]]; then
-            COMPILE_NUM_WARNINGS=$(grep -c ": warning #" "${RUNDIR_ROOT}/compile_${COMPILE_ID}/err")
-            COMPILE_NUM_REMARKS=$(grep -c ": remark #" "${RUNDIR_ROOT}/compile_${COMPILE_ID}/err")
+            COMPILE_NUM_WARNINGS=$(grep -c ": warning #" "${RUNDIR_ROOT}/compile_${COMPILE_ID}/err" || true)
+            COMPILE_NUM_REMARKS=$(grep -c ": remark #" "${RUNDIR_ROOT}/compile_${COMPILE_ID}/err" || true)
             if [[ ${COMPILE_NUM_WARNINGS} -gt 0 || ${COMPILE_NUM_REMARKS} -gt 0 ]]; then
-               COMPILE_WARNINGS+="("
+               COMPILE_WARNINGS+=" ("
                [[ ${COMPILE_NUM_WARNINGS} -gt 0 ]] && COMPILE_WARNINGS+=" ${COMPILE_NUM_WARNINGS} warnings"
                [[ ${COMPILE_NUM_REMARKS}  -gt 0 ]] && COMPILE_WARNINGS+=" ${COMPILE_NUM_REMARKS} remarks"
                COMPILE_WARNINGS+=" )"
