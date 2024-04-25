@@ -72,7 +72,8 @@ list(APPEND lib_src_files
     ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_timer_mod.F90
     ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/streams/dshr_strdata_mod.F90
     ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/streams/dshr_stream_mod.F90
-    ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/streams/dshr_methods_mod.F90)
+    ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/streams/dshr_methods_mod.F90
+    ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/dshr/dshr_mod.F90)
 
 list(APPEND _cice_defs FORTRANUNDERSCORE
                        coupled)
