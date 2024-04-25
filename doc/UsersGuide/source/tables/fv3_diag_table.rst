@@ -1,5 +1,7 @@
 :orphan:
 
+.._fv3-diag-vars:
+
 ****************************
 FV3 Weather Model Variables
 ****************************
