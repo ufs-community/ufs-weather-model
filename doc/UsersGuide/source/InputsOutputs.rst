@@ -1311,7 +1311,7 @@ Comments can be added to the diag_table using the hash symbol (``#``).
    * - WM Component
      - diag_table link
    * - FV3
-     - `FV3 diag_table <https://github.com/selbigmtnwx23/ufs-weather-model/blob/develop/doc/UsersGuide/source/diag_table%20FV3.rst>`__
+     - :ref:`FV3 diag_table variables <fv3-diag-vars>`
    * - MOM6
      - In Progress
 
