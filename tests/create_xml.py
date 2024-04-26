@@ -275,7 +275,7 @@ def main_loop():
     with open('bl_date.conf', 'r') as bldate:
         bl_date = str(bldate.readline())
     BL_DATE = bl_date.split("=")[1].strip()
-    with open("ufs_test_base.yaml", 'r') as f:
+    with open("baseline_setup.yaml", 'r') as f:
         exp_config = yaml.load(f) #, Loader=yaml.FullLoader)
         base = exp_config['hera']
         USER = str(os.environ.get('USER')) #os.environ.get('USERNAME')) #os.getlogin()
@@ -345,7 +345,7 @@ def main_loop():
     ROCOTO = True
     ROCOTO_XML = os.getenv('ROCOTO_XML')
     rocoto_create_entries(RTPWD,MACHINE_ID,INPUTDATA_ROOT,INPUTDATA_ROOT_WW3,INPUTDATA_ROOT_BMIC,RUNDIR_ROOT,NEW_BASELINE,ROCOTO_XML)
-    with open("rt.yaml", 'r') as f:
+    with open("ufs_test.yaml", 'r') as f:
         rt_yaml = yaml.load(f)#, Loader=yaml.FullLoader)
         for apps, jobs in rt_yaml.items():
             for key, val in jobs.items():

@@ -29,7 +29,7 @@ def finish_log():
     JOB_NR  = 0
     PASS_NR = 0
     FAIL_NR = 0
-    with open("rt.yaml", 'r') as f:
+    with open("ufs_test.yaml", 'r') as f:
         rt_yaml = yaml.load(f)#, Loader=yaml.FullLoader)
         for apps, jobs in rt_yaml.items():
             for key, val in jobs.items():

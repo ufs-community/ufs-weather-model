@@ -43,7 +43,7 @@ if __name__ == "__main__":
                 if (machine.find('-') != -1):
                     off_machine=machine.replace("-","").strip()
                     off_machine=string_clean(off_machine)
-                tests = "    "+"- "+test+": {'recurring':['daily']"
+                tests = "    "+"- "+test+": {'project':['daily']"
                 if baseline.isalnum(): tests = tests + ",'baseline': "+baseline
                 if depend and depend.strip(): tests = tests + ",'dependency':'"+depend+"'"                
                 if not (off_machine is None): tests = tests +",'turnoff':["+off_machine+"]"
