@@ -26,4 +26,4 @@ for i in ${CMAKE_FLAGS}; do ARR_CMAKE_FLAGS+=("${i}") ; done
 cmake "${UFS_MODEL_DIR}" "${ARR_CMAKE_FLAGS[@]}"
 # Turn off OpenMP threading for parallel builds
 # to avoid exhausting the number of user processes
-OMP_NUM_THREADS=1 make -j "${BUILD_JOBS:-4}" "VERBOSE=${BUILD_VERBOSE:-1}"
+OMP_NUM_THREADS=1 make -j "${BUILD_JOBS:-4}" "VERBOSE=${BUILD_VERBOSE:-}"
