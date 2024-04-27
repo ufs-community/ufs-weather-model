@@ -47,13 +47,16 @@ def finish_log():
                     f = open('./logs/log_hera/'+COMPILE_LOG_TIME)
                     timing_data = f.read()
                     first_line = timing_data.split('\n', 1)[0]
-                    etime = str(int(first_line.split(",")[4].strip()) - int(first_line.split(",")[1].strip()))
-                    btime = str(int(first_line.split(",")[3].strip()) - int(first_line.split(",")[2].strip()))
+                    etime = int(first_line.split(",")[4].strip()) - int(first_line.split(",")[1].strip())
+                    btime = int(first_line.split(",")[3].strip()) - int(first_line.split(",")[2].strip())
+                    etime_min, etime_sec = divmod(etime, 60); etime_min = f"{etime_min:02}"; etime_sec = f"{etime_sec:02}"
+                    btime_min, btime_sec = divmod(btime, 60); btime_min = f"{btime_min:02}"; btime_sec = f"{btime_sec:02}"
+                    time_log = " ["+etime_min+':'+etime_sec+', '+btime_min+':'+btime_sec+"]"
                     f.close()
                     with open('./logs/log_hera/'+COMPILE_LOG) as f:
                         if "[100%] Linking Fortran executable" in f.read():
                             COMPILE_PASS += 1
-                            compile_log="PASS -- COMPILE "+COMPILE_ID+" ["+str(etime)+', '+str(btime)+"]\n"
+                            compile_log="PASS -- COMPILE "+COMPILE_ID+time_log+"\n"
                         else:
                             compile_log="FAIL -- COMPILE "+COMPILE_ID+"\n"
                     f.close()
