@@ -43,26 +43,19 @@ def finish_log():
                     RT_COMPILER = val['compiler']
                     COMPILE_ID  = apps+'_'+RT_COMPILER
                     COMPILE_LOG = 'compile_'+COMPILE_ID+'.log'
-                    COMPILE_START_CHECK = "+ date_strt='"
-                    COMPILE_END_CHECK   = "+ date_end='"
-                    COMPILE_ELAPSE_CHECK= "+ echo 'Elapsed time"
-                    print('./logs/log_hera/'+COMPILE_LOG)
-                    with open('./logs/log_hera/'+COMPILE_LOG) as f:
-                        compilelog_file = f.readlines()
-                        for line in compilelog_file:
-                            if COMPILE_START_CHECK in line:
-                                sdate = line.split(' ')[4].strip()
-                                hh=sdate.split(":")[0]; mm=sdate.split(":")[1]; ss=sdate.split(":")[2]
-                                sdate_sec=int(hh) * 3600 + int(mm) * 60 + float(ss)
-                            if COMPILE_END_CHECK in line:
-                                edate = line.split(' ')[4].strip()
-                                hh=edate.split(":")[0]; mm=edate.split(":")[1]; ss=edate.split(":")[2]
-                                edate_sec=int(hh) * 3600 + int(mm) * 60 + float(ss)
-                            if COMPILE_ELAPSE_CHECK in line:
-                                ctime = line.split(' ')[4].strip()
-                                COMPILE_PASS += 1
+                    COMPILE_LOG_TIME ='compile_'+COMPILE_ID+'_timestamp.txt'
+                    f = open(COMPILE_LOG_TIME)
+                    timing_data = f.read()
+                    first_line = timing_data.split('\n', 1)[0]
+                    etime = int(first_line.split(",")[4].strip()) - int(first_line.split(",")[1].strip())
+                    btime = int(first_line.split(",")[3].strip()) - int(first_line.split(",")[2].strip())
+                    with open('./logs/log_hera/'+COMPILE_LOG_TIME) as f:
+                        if "[100%] Linking Fortran executable" in f.read():
+                            COMPILE_PASS += 1
+                            compile_log="PASS -- COMPILE "+COMPILE_ID+" ["+str(etime)+', '+str(btime)+"]\n"
+                        else:
+                            compile_log="FAIL -- COMPILE "+COMPILE_ID+"\n"
                     f.close()
-                    compile_log="PASS -- COMPILE "+COMPILE_ID+" ["+str(ctime)+"]\n"
                     run_logs += compile_log
                 if (str(key) == 'tests'):
                     for test in val:
