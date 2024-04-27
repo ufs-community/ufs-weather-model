@@ -2,6 +2,7 @@ import os
 import sys
 import subprocess
 import yaml
+from datetime import datetime
 
 def get_testcase(test):
     test_cases=[]
@@ -26,6 +27,8 @@ def finish_log():
 
     run_logs= f"""
 """
+    COMPILE_PASS = 0
+    COMPILE_NR   = 0
     JOB_NR  = 0
     PASS_NR = 0
     FAIL_NR = 0
@@ -34,6 +37,7 @@ def finish_log():
         for apps, jobs in rt_yaml.items():
             for key, val in jobs.items():
                 if (str(key) == 'build'):
+                    COMPILE_NR += 1
                     if not ('turnoff' in val.keys()): print('   ',val['compiler'],val['option'])
                     if 'turnoff' in val.keys(): print('   ',val['compiler'],val['option'],'turnoff: ',val['turnoff'])
                     RT_COMPILER = val['compiler']
@@ -56,12 +60,13 @@ def finish_log():
                                 edate_sec=int(hh) * 3600 + int(mm) * 60 + float(ss)
                             if COMPILE_ELAPSE_CHECK in line:
                                 ctime = line.split(' ')[4].strip()
+                                COMPILE_PASS += 1
                     f.close()
                     compile_log="PASS -- COMPILE "+COMPILE_ID+" ["+str(ctime)+"]\n"
                     run_logs += compile_log
                 if (str(key) == 'tests'):
-                    JOB_NR+=1
                     for test in val:
+                        JOB_NR+=1
                         case, config = get_testcase(test)
                         TEST_NAME = case
                         TEST_ID   = TEST_NAME+'_'+RT_COMPILER
@@ -98,15 +103,22 @@ def finish_log():
                         f.close()
     write_logfile(filename, "a", output=run_logs)
 
-    TEST_START_TIME= str(1111)
-    TEST_END_TIME  = str(2222)
-    elapsed_time   = str(1111)
-    COMPILE_PASS   = str(11)
-    COMPILE_NR     = str(222)
-    JOB_NR         = str(222)
-    PASS_NR        = str(111)
-    FAIL_NR        = str(111)
-    synop_log = f"""
+    TEST_START_TIME = os.getenv('TEST_START_TIME')
+    TEST_END_TIME   = os.getenv('TEST_END_TIME')
+    start_time      = datetime.strptime(TEST_START_TIME, "%Y%m%d %H:%M:%S")
+    end_time        = datetime.strptime(TEST_END_TIME, "%Y%m%d %H:%M:%S")
+    hours, remainder= divmod((end_time - start_time).total_seconds(), 3600)
+    minutes, seconds= divmod(remainder, 60)
+    hours = int(hours);    minutes=int(minutes);     seconds =int(seconds)
+    hours = f"{hours:02}"; minutes= f"{minutes:02}"; seconds= f"{seconds:02}"
+    elapsed_time = hours+'h:'+minutes+'m:'+seconds+'s'
+
+    COMPILE_PASS = str(int(COMPILE_PASS))
+    COMPILE_NR   = str(int(COMPILE_NR))
+    JOB_NR       = str(int(JOB_NR))
+    PASS_NR      = str(int(PASS_NR))
+    FAIL_NR      = str(int(FAIL_NR))
+    synop_log    = f"""
 SYNOPSIS:
 Starting Date/Time: {TEST_START_TIME}
 Ending Date/Time: {TEST_END_TIME}

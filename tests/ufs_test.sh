@@ -200,9 +200,8 @@ source bl_date.conf
 shift $((OPTIND-1))
 [[ $# -gt 1 ]] && usage
 
-export TEST_START_TIME="$(date '+%Y%m%d %T')"
-
-source default_vars.sh
+TEST_START_TIME="$(date '+%Y%m%d %T')"
+export TEST_START_TIME
 
 JOB_NR=0
 COMPILE_COUNTER=0
@@ -220,33 +219,31 @@ fi
 LAST_COMPILER_NR=-9999
 COMPILE_PREV=''
 
-declare -A compiles
+#declare -A compiles
 
-    #create_or_run_compile_task
-    export ROCOTO_SCHEDULER
-    export ACCNR
-    export ROCOTO_XML
-    export PATHRT
-    export ROCOTO
-    export ECFLOW
-    export MACHINE_ID
-    export RTPWD_NEW_BASELINE
-    export NEW_BASELINE
-    export CREATE_BASELINE
-    #RTVERBOSE = false
-    export RTVERBOSE
+export ROCOTO_SCHEDULER
+export ACCNR
+export ROCOTO_XML
+export PATHRT
+export ROCOTO
+export ECFLOW
+export MACHINE_ID
+export RTPWD_NEW_BASELINE
+export NEW_BASELINE
+export CREATE_BASELINE
+export RTVERBOSE
 
-    export TESTS_FILE
-    export SINGLE_OPTS
-    export NEW_BASELINES_FILE
-    export DEFINE_CONF_FILE
-    export RUN_SINGLE_TEST
-    export COMPILE_ONLY
-    export delete_rundir
-    export skip_check_results
-    export KEEP_RUNDIR    
-    
-    python -c "import create_xml; create_xml.main_loop()"
+export TESTS_FILE
+export SINGLE_OPTS
+export NEW_BASELINES_FILE
+export DEFINE_CONF_FILE
+export RUN_SINGLE_TEST
+export COMPILE_ONLY
+export delete_rundir
+export skip_check_results
+export KEEP_RUNDIR    
+
+python -c "import create_xml; create_xml.main_loop()"
 
 ##
 ## run regression test workflow (currently Rocoto or ecFlow are supported)
@@ -265,6 +262,8 @@ if [[ $CREATE_BASELINE == true && $NEW_BASELINES_FILE != '' ]]; then
   done
 fi
 
+TEST_END_TIME="$(date '+%Y%m%d %T')"
+export TEST_END_TIME
+
 ## Lets verify all tests were run and that they passed
-#generate_log
 python -c "import create_log; create_log.finish_log()"
