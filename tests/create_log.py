@@ -73,13 +73,16 @@ def finish_log():
                         timing_data = f.read()
                         first_line = timing_data.split('\n', 1)[0]
                         etime = str(int(first_line.split(",")[4].strip()) - int(first_line.split(",")[1].strip()))
+                        rtime = str(int(first_line.split(",")[3].strip()) - int(first_line.split(",")[2].strip()))
+                        etime_min, etime_sec = divmod(etime, 60); etime_min = f"{etime_min:02}"; etime_sec = f"{etime_sec:02}"
+                        rtime_min, rtime_sec = divmod(rtime, 60); rtime_min = f"{rtime_min:02}"; rtime_sec = f"{rtime_sec:02}"
+                        time_log = " ["+etime_min+':'+etime_sec+', '+rtime_min+':'+rtime_sec+"]"
                         f.close()                        
                         if 'dependency' in config.keys():
                             DEP_RUN = str(config['dependency'])+'_'+RT_COMPILER
                         else:
                             DEP_RUN = ""
                         PASS_CHECK = 'Test '+TEST_ID+' PASS'
-                        TIME_CHECK = 'The total amount of wall time'
                         MAXS_CHECK = 'The maximum resident set size (KB)'
                         pass_flag = False
                         with open('./logs/log_hera/'+TEST_LOG) as f:
@@ -90,11 +93,9 @@ def finish_log():
                             if pass_flag :
                                 rtlog_file = f.readlines()
                                 for line in rtlog_file:
-                                    if TIME_CHECK in line:
-                                        rtime = str(int(float(line.split('=')[1].strip())))
                                     if MAXS_CHECK in line:
                                         memsize= line.split('=')[1].strip()
-                                test_log = 'PASS -- TEST '+TEST_ID+' ['+etime+', '+rtime+']('+memsize+' MB)\n'
+                                test_log = 'PASS -- TEST '+TEST_ID+time_log+' ('+memsize+' MB)\n'
                                 PASS_NR += 1
                             else:
                                 test_log = 'FAIL -- TEST '+TEST_ID+'\n'
