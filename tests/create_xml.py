@@ -2,6 +2,7 @@ import os
 import sys
 import subprocess
 import yaml
+from ufs_test_utils import get_testcase, write_logfile
 
 def rocoto_create_entries(RTPWD,MACHINE_ID,INPUTDATA_ROOT,INPUTDATA_ROOT_WW3,INPUTDATA_ROOT_BMIC,RUNDIR_ROOT,NEW_BASELINE,ROCOTO_XML):
     PATHRT = os.getenv('PATHRT')
@@ -174,14 +175,6 @@ export RTVERBOSE=false
         f.writelines(runtest_envs)
     f.close()     
 
-def write_logfile(logfile, openmod, output="", subproc=""):
-    with open(logfile, openmod) as rtlog:
-        if (not subproc == "") :
-            subprocess.call(subproc, shell=True, stdout=rtlog)
-        if (not output == "") :
-            rtlog.writelines(output)
-    rtlog.close()
-
 def make_loghead(ACCNR,MACHINE_ID,RUNDIR_ROOT,RTPWD,REGRESSIONTEST_LOG):
     filename   = REGRESSIONTEST_LOG
     TESTS_FILE = str(os.getenv('TESTS_FILE'))
@@ -257,13 +250,6 @@ RT.SH OPTIONS USED:
         write_logfile(filename, "a", output="* (-e) - USE ECFLOW"+"\n")
     if (RTVERBOSE == "true"):
         write_logfile(filename, "a", output="* (-v) - VERBOSE OUTPUT"+"\n")
-
-def get_testcase(test):
-    test_cases=[]
-    for case, configs in test.items():
-        case_name=case
-        case_config=configs
-        return case_name, case_config
 
 def main_loop():
     ACCNR      = str(os.getenv('ACCNR'))
