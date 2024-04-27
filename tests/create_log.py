@@ -49,8 +49,10 @@ def finish_log():
                     first_line = timing_data.split('\n', 1)[0]
                     etime = int(first_line.split(",")[4].strip()) - int(first_line.split(",")[1].strip())
                     btime = int(first_line.split(",")[3].strip()) - int(first_line.split(",")[2].strip())
-                    etime_min, etime_sec = divmod(etime, 60); etime_min = f"{etime_min:02}"; etime_sec = f"{etime_sec:02}"
-                    btime_min, btime_sec = divmod(btime, 60); btime_min = f"{btime_min:02}"; btime_sec = f"{btime_sec:02}"
+                    etime_min, etime_sec = divmod(int(etime), 60)
+                    etime_min = f"{etime_min:02}"; etime_sec = f"{etime_sec:02}"
+                    btime_min, btime_sec = divmod(int(btime), 60)
+                    btime_min = f"{btime_min:02}"; btime_sec = f"{btime_sec:02}"
                     time_log = " ["+etime_min+':'+etime_sec+', '+btime_min+':'+btime_sec+"]"
                     f.close()
                     with open('./logs/log_hera/'+COMPILE_LOG) as f:
@@ -74,8 +76,10 @@ def finish_log():
                         first_line = timing_data.split('\n', 1)[0]
                         etime = str(int(first_line.split(",")[4].strip()) - int(first_line.split(",")[1].strip()))
                         rtime = str(int(first_line.split(",")[3].strip()) - int(first_line.split(",")[2].strip()))
-                        etime_min, etime_sec = divmod(etime, 60); etime_min = f"{etime_min:02}"; etime_sec = f"{etime_sec:02}"
-                        rtime_min, rtime_sec = divmod(rtime, 60); rtime_min = f"{rtime_min:02}"; rtime_sec = f"{rtime_sec:02}"
+                        etime_min, etime_sec = divmod(int(etime), 60)
+                        etime_min = f"{etime_min:02}"; etime_sec = f"{etime_sec:02}"
+                        rtime_min, rtime_sec = divmod(int(rtime), 60)
+                        rtime_min = f"{rtime_min:02}"; rtime_sec = f"{rtime_sec:02}"
                         time_log = " ["+etime_min+':'+etime_sec+', '+rtime_min+':'+rtime_sec+"]"
                         f.close()                        
                         if 'dependency' in config.keys():
@@ -102,6 +106,7 @@ def finish_log():
                                 FAIL_NR += 1
                             run_logs += test_log
                         f.close()
+                    run_logs += '\n'
     write_logfile(filename, "a", output=run_logs)
 
     TEST_START_TIME = os.getenv('TEST_START_TIME')
