@@ -49,6 +49,7 @@ def finish_log():
                     first_line = timing_data.split('\n', 1)[0]
                     etime = int(first_line.split(",")[4].strip()) - int(first_line.split(",")[1].strip())
                     btime = int(first_line.split(",")[3].strip()) - int(first_line.split(",")[2].strip())
+                    f.close()
                     with open('./logs/log_hera/'+COMPILE_LOG_TIME) as f:
                         if "[100%] Linking Fortran executable" in f.read():
                             COMPILE_PASS += 1
@@ -64,11 +65,16 @@ def finish_log():
                         TEST_NAME = case
                         TEST_ID   = TEST_NAME+'_'+RT_COMPILER
                         TEST_LOG  = 'rt_'+TEST_ID+'.log'
+                        TEST_LOG_TIME= 'run_'+TEST_ID+'_timestamp.txt'
+                        f = open(TEST_LOG_TIME)
+                        timing_data = f.read()
+                        first_line = timing_data.split('\n', 1)[0]
+                        etime = int(first_line.split(",")[4].strip()) - int(first_line.split(",")[1].strip())
+                        f.close()                        
                         if 'dependency' in config.keys():
                             DEP_RUN = str(config['dependency'])+'_'+RT_COMPILER
                         else:
                             DEP_RUN = ""
-                        print(TEST_LOG)
                         PASS_CHECK = 'Test '+TEST_ID+' PASS'
                         TIME_CHECK = 'The total amount of wall time'
                         MAXS_CHECK = 'The maximum resident set size (KB)'
@@ -82,12 +88,10 @@ def finish_log():
                                 rtlog_file = f.readlines()
                                 for line in rtlog_file:
                                     if TIME_CHECK in line:
-                                        timing = line.split('=')[1].strip()
-                                        print(timing)
+                                        rtime = line.split('=')[1].strip()
                                     if MAXS_CHECK in line:
                                         memsize= line.split('=')[1].strip()
-                                        print(memsize)
-                                test_log = 'PASS -- TEST '+TEST_ID+' ['+timing+']('+memsize+' MB)\n'
+                                test_log = 'PASS -- TEST '+TEST_ID+' ['+etime+', '+rtime+']('+memsize+' MB)\n'
                                 PASS_NR += 1
                             else:
                                 test_log = 'FAIL -- TEST '+TEST_ID+'\n'
