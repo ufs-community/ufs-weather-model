@@ -233,29 +233,29 @@ RT.SH OPTIONS USED:
     write_logfile(filename, "a", output= info_note)
 
     write_logfile(filename, "a", output="* (-a) - HPC PROJECT ACCOUNT: "+ACCNR+"\n")
-    if NEW_BASELINES_FILE :
+    if (not NEW_BASELINES_FILE == ""):
         write_logfile(filename, "a", output="* (-b) - NEW BASELINES FROM FILE: "+NEW_BASELINES_FILE+"\n")
-    if CREATE_BASELINE :
+    if (CREATE_BASELINE == "true"):
         write_logfile(filename, "a", output="* (-c) - CREATE NEW BASELINES"+"\n")
-    if DEFINE_CONF_FILE :
+    if (DEFINE_CONF_FILE == "true"):
         write_logfile(filename, "a", output="* (-l) - USE CONFIG FILE: "+TESTS_FILE+"\n")
-    if RTPWD_NEW_BASELINE :
+    if (RTPWD_NEW_BASELINE == "true"):
         write_logfile(filename, "a", output="* (-m) - COMPARE AGAINST CREATED BASELINES"+"\n")
-    if RUN_SINGLE_TEST :
+    if (RUN_SINGLE_TEST == "true"):
         write_logfile(filename, "a", output="* (-n) - RUN SINGLE TEST: "+SINGLE_OPTS+"\n")
-    if COMPILE_ONLY :
+    if (COMPILE_ONLY == "true"):
         write_logfile(filename, "a", output="* (-o) - COMPILE ONLY, SKIP TESTS"+"\n")
-    if delete_rundir :
+    if (delete_rundir == "true"):
         write_logfile(filename, "a", output="* (-d) - DELETE RUN DIRECTORY"+"\n")
-    if skip_check_results :
+    if (skip_check_results == "true"):
         write_logfile(filename, "a", output="* (-w) - SKIP RESULTS CHECK"+"\n")
-    if KEEP_RUNDIR :
+    if (KEEP_RUNDIR == "true"):
         write_logfile(filename, "a", output="* (-k) - KEEP RUN DIRECTORY"+"\n")
-    if ROCOTO :
+    if (ROCOTO == "true"):
         write_logfile(filename, "a", output="* (-r) - USE ROCOTO"+"\n")
-    if ECFLOW :
+    if (ECFLOW == "true"):
         write_logfile(filename, "a", output="* (-e) - USE ECFLOW"+"\n")
-    if RTVERBOSE :
+    if (RTVERBOSE == "true"):
         write_logfile(filename, "a", output="* (-v) - VERBOSE OUTPUT"+"\n")
 
 def get_testcase(test):

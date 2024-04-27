@@ -44,13 +44,13 @@ def finish_log():
                     COMPILE_ID  = apps+'_'+RT_COMPILER
                     COMPILE_LOG = 'compile_'+COMPILE_ID+'.log'
                     COMPILE_LOG_TIME ='compile_'+COMPILE_ID+'_timestamp.txt'
-                    f = open(COMPILE_LOG_TIME)
+                    f = open('./logs/log_hera/'+COMPILE_LOG_TIME)
                     timing_data = f.read()
                     first_line = timing_data.split('\n', 1)[0]
-                    etime = int(first_line.split(",")[4].strip()) - int(first_line.split(",")[1].strip())
-                    btime = int(first_line.split(",")[3].strip()) - int(first_line.split(",")[2].strip())
+                    etime = str(int(first_line.split(",")[4].strip()) - int(first_line.split(",")[1].strip()))
+                    btime = str(int(first_line.split(",")[3].strip()) - int(first_line.split(",")[2].strip()))
                     f.close()
-                    with open('./logs/log_hera/'+COMPILE_LOG_TIME) as f:
+                    with open('./logs/log_hera/'+COMPILE_LOG) as f:
                         if "[100%] Linking Fortran executable" in f.read():
                             COMPILE_PASS += 1
                             compile_log="PASS -- COMPILE "+COMPILE_ID+" ["+str(etime)+', '+str(btime)+"]\n"
@@ -66,10 +66,10 @@ def finish_log():
                         TEST_ID   = TEST_NAME+'_'+RT_COMPILER
                         TEST_LOG  = 'rt_'+TEST_ID+'.log'
                         TEST_LOG_TIME= 'run_'+TEST_ID+'_timestamp.txt'
-                        f = open(TEST_LOG_TIME)
+                        f = open('./logs/log_hera/'+TEST_LOG_TIME)
                         timing_data = f.read()
                         first_line = timing_data.split('\n', 1)[0]
-                        etime = int(first_line.split(",")[4].strip()) - int(first_line.split(",")[1].strip())
+                        etime = str(int(first_line.split(",")[4].strip()) - int(first_line.split(",")[1].strip()))
                         f.close()                        
                         if 'dependency' in config.keys():
                             DEP_RUN = str(config['dependency'])+'_'+RT_COMPILER
@@ -88,7 +88,7 @@ def finish_log():
                                 rtlog_file = f.readlines()
                                 for line in rtlog_file:
                                     if TIME_CHECK in line:
-                                        rtime = line.split('=')[1].strip()
+                                        rtime = str(int(float(line.split('=')[1].strip())))
                                     if MAXS_CHECK in line:
                                         memsize= line.split('=')[1].strip()
                                 test_log = 'PASS -- TEST '+TEST_ID+' ['+etime+', '+rtime+']('+memsize+' MB)\n'
