@@ -80,9 +80,6 @@ elif [[ ${MACHINE_ID} = expanse ]]; then
 
 elif [[ ${MACHINE_ID} = noaacloud ]] ; then
     # We are on NOAA Cloud
-    if ( ! eval module help > /dev/null 2>&1 ) ; then
-        source /apps/lmod/8.5.2/init/bash
-    fi
     module purge
     
 else

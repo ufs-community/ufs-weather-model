@@ -14,7 +14,7 @@ load(pathJoin("stack-intel-oneapi-mpi", stack_impi_ver))
 cmake_ver=os.getenv("cmake_ver") or "3.23.1"
 load(pathJoin("cmake", cmake_ver))
 
-load("ufs_common")
+load("ufs_common4noaacloud")
 
 setenv("CC", "mpiicc")
 setenv("CXX", "mpiicpc")
