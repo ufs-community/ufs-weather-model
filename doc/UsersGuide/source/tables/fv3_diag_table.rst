@@ -1,5 +1,5 @@
 
-.. _fv3-diag-vars:
+.. _fv3diagtable:
 
 ****************************
 FV3 Weather Model Variables
