@@ -9,3 +9,7 @@ source tests/control_p8_atmlnd
 export TEST_DESCR="Compare global control results with previous trunk version"
 
 export CNTL_DIR=control_p8_atmlnd_debug
+
+if [[ $MACHINE_ID = hera ]] && [[ $RT_COMPILER = intel ]]; then
+  WLCLK=40
+fi
