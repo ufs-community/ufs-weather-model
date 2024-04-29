@@ -1311,7 +1311,7 @@ Comments can be added to the diag_table using the hash symbol (``#``).
    * - WM Component
      - diag_table link
    * - FV3
-     - :doc:`FV3 diag_table variables <fv3-diag-vars>`
+     - :ref:`FV3 diag_table Variables <fv3diagtable>`
    * - MOM6
      - In Progress
 
