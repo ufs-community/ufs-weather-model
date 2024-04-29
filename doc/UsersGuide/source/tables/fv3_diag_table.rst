@@ -1,4 +1,3 @@
-:orphan:
 
 .. _fv3-diag-vars:
 
