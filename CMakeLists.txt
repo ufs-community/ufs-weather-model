@@ -144,8 +144,6 @@ if(OPENMP)
   find_package(OpenMP REQUIRED)
 endif()
 
-#find_package(NetCDF 4.7.4 REQUIRED C Fortran)
-#find_package(ESMF 8.3.0 MODULE REQUIRED)
 find_package(NetCDF REQUIRED C Fortran)
 find_package(ESMF MODULE REQUIRED)
 if(FMS)
