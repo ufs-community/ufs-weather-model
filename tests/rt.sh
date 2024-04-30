@@ -686,17 +686,13 @@ case ${MACHINE_ID} in
       module load ecflow/5.6.0.13
     fi
     module load intel/19.1.3.304 python/3.8.6
-    if [[ "${ECFLOW:-false}" == true ]] ; then
-      # ECF_ROOT=${ECF_ROOT:-}
-      # ECFLOW_START="${ECF_ROOT}/scripts/server_check.sh"
-      # ECFLOW_STOP="${ECF_ROOT}/bin/ecflow_stop.sh"
-      export ECF_OUTPUTDIR="${PATHRT}/ecf_outputdir"
-      export ECF_COMDIR="${PATHRT}/ecf_comdir"
-      rm -rf "${ECF_OUTPUTDIR}" "${ECF_COMDIR}"
-      mkdir -p "${ECF_OUTPUTDIR}"
-      mkdir -p "${ECF_COMDIR}"
-      # export ECFLOW_START ECFLOW_STOP
-    fi
+    #if [[ "${ECFLOW:-false}" == true ]] ; then
+      #export ECF_OUTPUTDIR="${PATHRT}/ecf_outputdir"
+      #export ECF_COMDIR="${PATHRT}/ecf_comdir"
+      #rm -rf "${ECF_OUTPUTDIR}" "${ECF_COMDIR}"
+      #mkdir -p "${ECF_OUTPUTDIR}"
+      #mkdir -p "${ECF_COMDIR}"
+    #fi
     export colonifnco=":output"  # hack
 
     DISKNM="/lfs/h2/emc/nems/noscrub/emc.nems/RT"
@@ -716,9 +712,6 @@ case ${MACHINE_ID} in
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module use /ncrc/proj/epic/rocoto/modulefiles
       module load rocoto
-      # ROCOTORUN=$(command -v rocotorun)
-      # ROCOTOSTAT=$(command -v rocotostat)
-      # ROCOTOCOMPLETE=$(command -v rocotocomplete)
       ROCOTO_SCHEDULER="slurm"
     fi
     
@@ -731,8 +724,6 @@ case ${MACHINE_ID} in
     module load gcc/12.2.0
     if [[ "${ECFLOW:-false}" == true ]] ; then
       module load ecflow/5.8.4
-      # ECFLOW_START=/ncrc/proj/epic/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
-      # ECFLOW_STOP=/ncrc/proj/epic/spack-stack/ecflow-5.8.4/bin/ecflow_stop.sh
       ECF_HOST=$(hostname)
       ECF_PORT=$(( $(id -u) + 1500 ))
       export ECF_PORT ECF_HOST
@@ -753,17 +744,11 @@ case ${MACHINE_ID} in
     set -x
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module load rocoto
-      # ROCOTORUN=$(command -v rocotorun)
-      # ROCOTOSTAT=$(command -v rocotostat)
-      # ROCOTOCOMPLETE=$(command -v rocotocomplete)
       ROCOTO_SCHEDULER=slurm
     fi
 
     if [[ "${ECFLOW:-false}" == true ]] ; then
       module load ecflow/5.11.4
-      # ECFLOW_START="$(command -v ecflow_start.sh)"
-      # ECFLOW_STOP="$(command -v ecflow_stop.sh)"
-      # export ECFLOW_START ECFLOW_STOP
     fi
 
     QUEUE="batch"
@@ -786,17 +771,12 @@ case ${MACHINE_ID} in
 
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module load contrib rocoto
-      # ROCOTORUN=$(command -v rocotorun)
-      # ROCOTOSTAT=$(command -v rocotostat)
-      # ROCOTOCOMPLETE=$(command -v rocotocomplete)
       ROCOTO_SCHEDULER="slurm"
     fi
 
     module use /work/noaa/epic/role-epic/spack-stack/orion/modulefiles
     if [[ "${ECFLOW:-false}" == true ]] ; then
       module load ecflow/5.8.4
-      # ECFLOW_START="/work/noaa/epic/role-epic/spack-stack/orion/ecflow-5.8.4/bin/ecflow_start.sh"
-      # ECFLOW_STOP="/work/noaa/epic/role-epic/spack-stack/orion/ecflow-5.8.4/bin/ecflow_stop.sh"
       ECF_HOST=$(hostname)
       ECF_PORT="$(( $(id -u) + 1500 ))"
       export ECF_PORT ECF_HOST
@@ -817,17 +797,12 @@ case ${MACHINE_ID} in
     set -x
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module load contrib rocoto
-      # ROCOTORUN=$(command -v rocotorun)
-      # ROCOTOSTAT=$(command -v rocotostat)
-      # ROCOTOCOMPLETE=$(command -v rocotocomplete)
       ROCOTO_SCHEDULER="slurm"
     fi
 
     module use /work/noaa/epic/role-epic/spack-stack/hercules/modulefiles
     if [[ "${ECFLOW:-false}" == true ]] ; then
       module load ecflow/5.8.4
-      # ECFLOW_START="/work/noaa/epic/role-epic/spack-stack/hercules/ecflow-5.8.4/bin/ecflow_start.sh"
-      # ECFLOW_STOP="/work/noaa/epic/role-epic/spack-stack/hercules/ecflow-5.8.4/bin/ecflow_stop.sh"
       ECF_HOST=$(hostname)
       ECF_PORT="$(( $(id -u) + 1500 ))"
       export ECF_PORT ECF_HOST
@@ -857,17 +832,11 @@ case ${MACHINE_ID} in
     
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module load rocoto
-      # ROCOTORUN=$(command -v rocotorun)
-      # ROCOTOSTAT=$(command -v rocotostat)
-      # ROCOTOCOMPLETE=$(command -v rocotocomplete)
       ROCOTO_SCHEDULER="slurm"
     fi
 
     if [[ "${ECFLOW:-false}" == true ]] ; then
       module load ecflow/5.11.4
-      # ECFLOW_START=/apps/ecflow/5.11.4/bin/ecflow_start.sh
-      # ECFLOW_STOP=/apps/ecflow/5.11.4/bin/ecflow_stop.sh
-      # export ECFLOW_START ECFLOW_STOP
     fi
 
     module use /mnt/lfs4/HFIP/hfv3gfs/role.epic/spack-stack/spack-stack-1.5.0/envs/unified-env-rocky8/install/modulefiles/Core
@@ -889,9 +858,6 @@ case ${MACHINE_ID} in
     set -x
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module load rocoto/1.3.2
-      # ROCOTORUN=$(command -v rocotorun)
-      # ROCOTOSTAT=$(command -v rocotostat)
-      # ROCOTOCOMPLETE=$(command -v rocotocomplete)
       ROCOTO_SCHEDULER=slurm
     fi
     if [[ "${ECFLOW:-false}" == true ]] ; then
@@ -902,8 +868,6 @@ case ${MACHINE_ID} in
     module use /data/prod/jedi/spack-stack/modulefiles
     if [[ "${ECFLOW:-false}" == true ]] ; then
       module load ecflow/5.8.4
-      # ECFLOW_START="/data/prod/jedi/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh"
-      # ECFLOW_STOP="/data/prod/jedi/spack-stack/ecflow-5.8.4/bin/ecflow_stop.sh"
       ECF_HOST=$(hostname)
       ECF_PORT="$(( $(id -u) + 1500 ))"
       export ECF_PORT ECF_HOST
@@ -937,8 +901,6 @@ case ${MACHINE_ID} in
     module load stack-python/3.10.8
   #  export PYTHONPATH=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/glade/p/ral/jntp/tools/miniconda3/4.8.3/lib/python3.8/site-packages
     if [[ "${ECFLOW:-false}" == true ]] ; then
-      # ECFLOW_START=/glade/work/epicufsrt/contrib/spack-stack/derecho/ecflow-5.8.4/bin/ecflow_start.sh
-      # ECFLOW_STOP=/glade/work/epicufsrt/contrib/spack-stack/derecho/ecflow-5.8.4/bin/ecflow_stop.sh
       ECF_HOST=$(hostname)
       ECF_PORT=$(( $(id -u) + 1500 ))
       export ECF_PORT ECF_HOST
@@ -957,9 +919,6 @@ case ${MACHINE_ID} in
 
     
     if [[ "${ROCOTO:-false}" == true ]] ; then
-      # ROCOTORUN=$(command -v rocotorun)
-      # ROCOTOSTAT=$(command -v rocotostat)
-      # ROCOTOCOMPLETE=$(command -v rocotocomplete)
       ROCOTO_SCHEDULER="pbspro"
     fi
     ;;
@@ -1006,9 +965,6 @@ case ${MACHINE_ID} in
 
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module load rocoto/1.3.3
-      # ROCOTORUN=$(command -v rocotorun)
-      # ROCOTOSTAT=$(command -v rocotostat)
-      # ROCOTOCOMPLETE=$(command -v rocotocomplete)
       ROCOTO_SCHEDULER=slurm
     fi
 
@@ -1156,25 +1112,20 @@ fi
 if [[ ${ECFLOW} == true ]]; then
   echo "Verifying ECFLOW support..."
   case ${MACHINE_ID} in
-    wcoss2|acorn)
-      ECFLOW_START="$(command -v server_check.sh)"
-      ECFLOW_STOP="$(command -v ecflow_stop.sh)"
-      ;;
     expanse|stampede|noaacloud)
       die "ECFLOW not supported on this machine, please do not use '-e'."
       ;;
     *)
       ECFLOW_START="$(command -v ecflow_start.sh)"
-      ECFLOW_STOP="$(command -v ecflow_stop.sh)"
       ;;
   esac
-  export ECFLOW_START ECFLOW_STOP
+  export ECFLOW_START
 
-  export ECF_OUTPUTDIR="${PATHRT}/ecf_outputdir"
-  export ECF_COMDIR="${PATHRT}/ecf_comdir"
-  rm -rf "${ECF_OUTPUTDIR}" "${ECF_COMDIR}"
-  mkdir -p "${ECF_OUTPUTDIR}"
-  mkdir -p "${ECF_COMDIR}"
+  #export ECF_OUTPUTDIR="${PATHRT}/ecf_outputdir"
+  #export ECF_COMDIR="${PATHRT}/ecf_comdir"
+  #rm -rf "${ECF_OUTPUTDIR}" "${ECF_COMDIR}"
+  #mkdir -p "${ECF_OUTPUTDIR}"
+  #mkdir -p "${ECF_COMDIR}"
   # Default maximum number of compile and run jobs
   MAX_BUILDS=10 #Max build jobs
   MAX_JOBS=30   #Max test/run jobs
