@@ -510,6 +510,7 @@ handle_error() {
 
 rt_trap() {
   echo "rt.sh: Exited abnormally, killing workflow and cleaning up"
+  trap "" SIGINT
   [[ ${ROCOTO:-false} == true ]] && rocoto_kill
   [[ ${ECFLOW:-false} == true ]] && ecflow_kill
   cleanup
@@ -686,13 +687,6 @@ case ${MACHINE_ID} in
       module load ecflow/5.6.0.13
     fi
     module load intel/19.1.3.304 python/3.8.6
-    #if [[ "${ECFLOW:-false}" == true ]] ; then
-      #export ECF_OUTPUTDIR="${PATHRT}/ecf_outputdir"
-      #export ECF_COMDIR="${PATHRT}/ecf_comdir"
-      #rm -rf "${ECF_OUTPUTDIR}" "${ECF_COMDIR}"
-      #mkdir -p "${ECF_OUTPUTDIR}"
-      #mkdir -p "${ECF_COMDIR}"
-    #fi
     export colonifnco=":output"  # hack
 
     DISKNM="/lfs/h2/emc/nems/noscrub/emc.nems/RT"

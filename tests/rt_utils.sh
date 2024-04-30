@@ -6,6 +6,8 @@ if [[ "$0" = "${BASH_SOURCE[0]}" ]]; then
   exit 1
 fi
 
+ECFLOW_RUNNING=false
+
 # Note: this file must only contain subroutines, and variables that
 # are not dependent on the caller. Most regression test variables
 # (such as ACCNR) are not set until after rt.sh sources this file.
@@ -668,6 +670,8 @@ ecflow_run() {
     echo "rt_utils.sh: ecflow_server is not running on ${ECF_HOST}:${ECF_PORT}"
     echo "rt_utils.sh: attempting to start ecflow_server..."
     
+    save_traps=$(trap)
+    trap "" SIGINT  # Ignore INT signal during ecflow startup
     if [[ ${MACHINE_ID} == wcoss2 || ${MACHINE_ID} == acorn ]]; then
       #shellcheck disable=SC2029
       ssh "${ECF_HOST}" "bash -l -c \"module load ecflow && ${ECFLOW_START} -p ${ECF_PORT}\""
@@ -677,6 +681,8 @@ ecflow_run() {
     else
       ${ECFLOW_START} -p "${ECF_PORT}" -d "${RUNDIR_ROOT}/ecflow_server"
     fi
+    ECFLOW_RUNNING=true
+    eval "${save_traps}"
     # Try pinging ecflow server now, and erroring out if not there.
     set +e
     ecflow_client --ping --host="${ECF_HOST}" --port="${ECF_PORT}"
@@ -689,9 +695,9 @@ ecflow_run() {
     fi
   else
     echo "rt_utils.sh: Confirmed: ecflow_server is running on ${ECF_HOST}:${ECF_PORT}"
+    ECFLOW_RUNNING=true
   fi
   
-  ECFLOW_RUNNING=true
   echo "rt_utils.sh: Starting ECFLOW tasks..."
   set +e
   ecflow_client --load="${ECFLOW_RUN}/${ECFLOW_SUITE}.def" --host="${ECF_HOST}" --port="${ECF_PORT}"
@@ -742,14 +748,14 @@ ecflow_stop() {
   set +e
   SUITES=$( ecflow_client --get )
   SUITES=$( grep "^suite" <<< "${SUITES}" )
-  echo "SUITES=${SUITES}"
   if [[ -z "${SUITES}" ]]; then
     echo "rt_utils.sh: No other suites running, stopping ecflow_server"
     ecflow_client --halt=yes
     ecflow_client --check_pt
     ecflow_client --terminate=yes
   else
-    echo "rt_utils.sh: Potential suites running, NOT stopping ecflow_server..."
+    echo "rt_utils.sh: Active suites running, NOT stopping ecflow_server..."
+    echo "SUITES are: ${SUITES}"
   fi
   set -e
 }
