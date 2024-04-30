@@ -818,7 +818,7 @@ case ${MACHINE_ID} in
     COMPILE_QUEUE="batch"
     PARTITION="orion"
     dprefix="/work/noaa/stmp/${USER}"
-    DISKNM=/"work/noaa/epic/UFS-WM_RT"
+    DISKNM="/work/noaa/epic/UFS-WM_RT"
     STMP="${dprefix}/stmp"
     PTMP="${dprefix}/stmp"
 
