@@ -86,7 +86,7 @@ update_rtconf() {
       RT_COMPILER_IN=$(sed -e 's/^ *//' -e 's/ *$//' <<< "${RT_COMPILER_IN}")
       if [[ ${MACHINES} == '' ]]; then
         compile_line=${line}
-	      COMPILE_LINE_USED=false
+        COMPILE_LINE_USED=false
       elif [[ ${MACHINES} == -* ]]; then
         [[ ${MACHINES} =~ ${MACHINE_ID} ]] || compile_line=${line}; COMPILE_LINE_USED=false
       elif [[ ${MACHINES} == +* ]]; then
@@ -113,7 +113,7 @@ update_rtconf() {
 
         if [[ ${TEST_IDX} != -1 ]]; then
           if [[ ${COMPILE_LINE_USED} == false ]]; then
-  	        echo -en '\n' >> "${RT_TEMP_CONF}"
+            echo -en '\n' >> "${RT_TEMP_CONF}"
             echo "${compile_line}" >> "${RT_TEMP_CONF}"
 
             COMPILE_LINE_USED=true
@@ -140,7 +140,7 @@ update_rtconf() {
             fi
           fi
           echo "${line}" >> "${RT_TEMP_CONF}"
-	      fi
+        fi
       fi
     fi
   done < "${TESTS_FILE}"
@@ -155,6 +155,7 @@ update_rtconf() {
 
 generate_log() {
   echo "rt.sh: Generating Regression Testing Log..."
+  set -x
   COMPILE_COUNTER=0
   FAILED_COMPILES=()
   TEST_COUNTER=0
@@ -249,6 +250,7 @@ EOF
         TIME_FILE=""
         COMPILE_TIME=""
         RT_COMPILE_TIME=""
+        COMPILE_WARNINGS=""
         if [[ ! -f "${LOG_DIR}/compile_${COMPILE_ID}.log" ]]; then
           COMPILE_RESULT="FAILED: UNABLE TO START COMPILE"
           FAIL_LOG="N/A"
@@ -264,6 +266,16 @@ EOF
           fi
         else
           COMPILE_RESULT="PASS"
+          if [[ ${COMPILER} == "intel" ]]; then
+            COMPILE_NUM_WARNINGS=$(grep -c ": warning #" "${RUNDIR_ROOT}/compile_${COMPILE_ID}/err" || true)
+            COMPILE_NUM_REMARKS=$(grep -c ": remark #" "${RUNDIR_ROOT}/compile_${COMPILE_ID}/err" || true)
+            if [[ ${COMPILE_NUM_WARNINGS} -gt 0 || ${COMPILE_NUM_REMARKS} -gt 0 ]]; then
+               COMPILE_WARNINGS+=" ("
+               [[ ${COMPILE_NUM_WARNINGS} -gt 0 ]] && COMPILE_WARNINGS+=" ${COMPILE_NUM_WARNINGS} warnings"
+               [[ ${COMPILE_NUM_REMARKS}  -gt 0 ]] && COMPILE_WARNINGS+=" ${COMPILE_NUM_REMARKS} remarks"
+               COMPILE_WARNINGS+=" )"
+            fi
+          fi
           TIME_FILE="${LOG_DIR}/compile_${COMPILE_ID}_timestamp.txt"
           if [[ -f "${TIME_FILE}" ]]; then
             while read -r times || [[ -n "${times}" ]]; do
@@ -282,7 +294,7 @@ EOF
           fi
         fi
         echo >> "${REGRESSIONTEST_LOG}"
-        echo "${COMPILE_RESULT} -- COMPILE '${COMPILE_ID}' [${RT_COMPILE_TIME}, ${COMPILE_TIME}]" >> "${REGRESSIONTEST_LOG}"
+        echo "${COMPILE_RESULT} -- COMPILE '${COMPILE_ID}' [${RT_COMPILE_TIME}, ${COMPILE_TIME}]${COMPILE_WARNINGS}" >> "${REGRESSIONTEST_LOG}"
         [[ -n ${FAIL_LOG} ]] && FAILED_COMPILES+=("COMPILE ${COMPILE_ID}: ${COMPILE_RESULT}")
         [[ -n ${FAIL_LOG} ]] && FAILED_COMPILE_LOGS+=("${FAIL_LOG}")
       fi
@@ -328,7 +340,7 @@ EOF
               TEST_RESULT="FAILED: UNABLE TO RUN COMPARISON"
               FAIL_LOG="${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"
             # We need to catch a "PASS" in rt_*.log even if a fail_test_* files exists
-            # I'm not sure why this can happen.
+            # I am not sure why this can happen.
             elif grep -q "PASS" "${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log"; then
               TEST_RESULT="PASS"
             else
@@ -721,6 +733,7 @@ case ${MACHINE_ID} in
       # ROCOTOCOMPLETE=$(command -v rocotocomplete)
       ROCOTO_SCHEDULER="slurm"
     fi
+
     export LD_PRELOAD=/opt/cray/pe/gcc/12.2.0/snos/lib64/libstdc++.so.6
     module load PrgEnv-intel/8.3.3
     module load intel-classic/2023.1.0
@@ -805,7 +818,7 @@ case ${MACHINE_ID} in
     COMPILE_QUEUE="batch"
     PARTITION="orion"
     dprefix="/work/noaa/stmp/${USER}"
-    DISKNM=/"work/noaa/epic/UFS-WM_RT"
+    DISKNM="/work/noaa/epic/UFS-WM_RT"
     STMP="${dprefix}/stmp"
     PTMP="${dprefix}/stmp"
 
