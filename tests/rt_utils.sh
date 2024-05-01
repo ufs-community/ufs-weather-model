@@ -672,15 +672,16 @@ ecflow_run() {
     
     save_traps=$(trap)
     trap "" SIGINT  # Ignore INT signal during ecflow startup
-    if [[ ${MACHINE_ID} == wcoss2 || ${MACHINE_ID} == acorn ]]; then
-      #shellcheck disable=SC2029
-      ssh "${ECF_HOST}" "bash -l -c \"module load ecflow && ${ECFLOW_START} -p ${ECF_PORT}\""
-    elif [[ ${MACHINE_ID} == hera || ${MACHINE_ID} == jet ]]; then
-      #shellcheck disable=SC2029
-      ssh "${ECF_HOST}" "bash -l -c \"module load ecflow && ${ECFLOW_START} -d ${RUNDIR_ROOT}/ecflow_server\""
-    else
-      ${ECFLOW_START} -p "${ECF_PORT}" -d "${RUNDIR_ROOT}/ecflow_server"
-    fi
+    case ${MACHINE_ID} in
+      wcoss2|acorn|hera|jet)
+        #shellcheck disable=SC2029
+        ssh "${ECF_HOST}" "bash -l -c \"module load ecflow && ${ECFLOW_START} -p ${ECF_PORT}\""
+        ;;
+      *)
+        ${ECFLOW_START} -p "${ECF_PORT}" -d "${RUNDIR_ROOT}/ecflow_server"
+	;;
+    esac
+
     ECFLOW_RUNNING=true
     eval "${save_traps}"
     # Try pinging ecflow server now, and erroring out if not there.
