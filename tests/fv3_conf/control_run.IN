@@ -10,14 +10,17 @@ elif [ $NPX = 385 ]; then
 elif [ $NPX = 769 ]; then
   inputdir=FV3_input_data768
 fi
-echo "inputdir=$inputdir,NPX=$NPX"
+
+echo "inputdir=$inputdir,NPX=$NPX,NESTED=$NESTED"
 
 OPNREQ_TEST=${OPNREQ_TEST:-false}
 V2_SFC_FILE=${V2_SFC_FILE:-false}
 SUFFIX=${RT_SUFFIX}
 if [ $WARM_START = .false. ]; then
   mkdir INPUT RESTART
-  if [ "$V2_SFC_FILE" = "true" ]; then
+  if [ "$NESTED" = .true. ]; then
+    cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127_nested/* ./INPUT/.
+  elif [ "$V2_SFC_FILE" = "true" ]; then
     cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127_v2_sfc/* ./INPUT/.
   else
     cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127/* ./INPUT/.
