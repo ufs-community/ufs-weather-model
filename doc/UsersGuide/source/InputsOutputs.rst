@@ -2288,7 +2288,7 @@ on the monthly, daily, hourly, yearly or timestep intervals set by the *histfreq
 *0* for both monthly and daily frequencies and neither yearly nor per-timestep output is requested, only 6-hour
 mean history files will be produced.
 
-Further details of the configuration of CICE model output can be found in the CICE documentation `Section 3.1.4 <https://cice-consortium-cice.readthedocs.io/en/main/user_guide/ug_implementation.html#model-output>`__.
+Further details of the configuration of CICE model output can be found in the CICE documentation `Section 3.1.4 <https://cice-consortium-cice.readthedocs.io/en/main/user_guide/ug_implementation.html#model-input-and-output>`__.
 
 .. _ww3-out:
 
