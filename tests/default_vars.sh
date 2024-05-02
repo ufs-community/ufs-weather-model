@@ -501,6 +501,7 @@ export DOCN_CDEPS=false
 export CDEPS_INLINE=false
 export POSTAPP='global'
 export USE_MERRA2=.true.
+export NESTED=.false.
 
 export NTILES=6
 export INPES=${INPES_dflt}
