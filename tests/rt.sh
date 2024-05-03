@@ -36,7 +36,7 @@ usage() {
 update_rtconf() {
   echo "rt.sh: Checking & Updating test configuration..."
   find_match() {
-    # This function finds if a test in $TESTS_FILE matches one 
+    # This function finds if a test in $TESTS_FILE matches one
     # in our list of tests to be run.
     THIS_TEST_WITH_COMPILER=$1
     shift
@@ -78,7 +78,7 @@ update_rtconf() {
     [[ -n "${line}" ]] || continue
     [[ ${#line} == 0 ]] && continue
     [[ ${line} == \#* ]] && continue
-    
+
     if [[ ${line} =~ COMPILE ]] ; then
       MACHINES=$(cut -d'|' -f5 <<< "${line}")
       MACHINES=$(sed -e 's/^ *//' -e 's/ *$//' <<< "${MACHINES}")
@@ -86,7 +86,7 @@ update_rtconf() {
       RT_COMPILER_IN=$(sed -e 's/^ *//' -e 's/ *$//' <<< "${RT_COMPILER_IN}")
       if [[ ${MACHINES} == '' ]]; then
         compile_line=${line}
-	      COMPILE_LINE_USED=false
+        COMPILE_LINE_USED=false
       elif [[ ${MACHINES} == -* ]]; then
         [[ ${MACHINES} =~ ${MACHINE_ID} ]] || compile_line=${line}; COMPILE_LINE_USED=false
       elif [[ ${MACHINES} == +* ]]; then
@@ -110,10 +110,10 @@ update_rtconf() {
       fi
       if [[ ${to_run_test} == true ]]; then
         TEST_IDX=$(set -e; find_match "${tmp_test} ${RT_COMPILER_IN}" "${TEST_WITH_COMPILE[@]}")
-        
+
         if [[ ${TEST_IDX} != -1 ]]; then
           if [[ ${COMPILE_LINE_USED} == false ]]; then
-  	        echo -en '\n' >> "${RT_TEMP_CONF}"
+            echo -en '\n' >> "${RT_TEMP_CONF}"
             echo "${compile_line}" >> "${RT_TEMP_CONF}"
 
             COMPILE_LINE_USED=true
@@ -121,7 +121,7 @@ update_rtconf() {
           dep_test=$(grep -w "${tmp_test}" <<< "${line}")
           dep_test=$(cut -d'|' -f5 <<< "${dep_test}")
           dep_test=$(sed -e 's/^ *//' -e 's/ *$//' <<< "${dep_test}")
-        
+
           if [[ ${dep_test} != '' ]]; then
             find_match_result=$(set -e; find_match "${dep_test} ${RT_COMPILER_IN}" "${TEST_WITH_COMPILE[@]}")
             if [[ ${find_match_result} == -1 ]]; then
@@ -131,7 +131,7 @@ update_rtconf() {
               dep_line=$(tr -d '\n' <<< "${dep_line}")
               CORRECT_LINE[1]=$(awk -F'RUN|RUN' '{print $2}' <<< "${dep_line}")
               CORRECT_LINE[2]=$(awk -F'RUN|RUN' '{print $3}' <<< "${dep_line}")
-            
+
               if [[ ${RT_COMPILER_IN} == "intel" ]]; then
                 echo "RUN ${CORRECT_LINE[1]}" >> "${RT_TEMP_CONF}"
               elif [[ ${RT_COMPILER_IN} == "gnu" ]]; then
@@ -140,7 +140,7 @@ update_rtconf() {
             fi
           fi
           echo "${line}" >> "${RT_TEMP_CONF}"
-	      fi  
+        fi
       fi
     fi
   done < "${TESTS_FILE}"
@@ -155,6 +155,7 @@ update_rtconf() {
 
 generate_log() {
   echo "rt.sh: Generating Regression Testing Log..."
+  set -x
   COMPILE_COUNTER=0
   FAILED_COMPILES=()
   TEST_COUNTER=0
@@ -181,7 +182,7 @@ EOF
   fi
   echo; echo >> "${REGRESSIONTEST_LOG}"
   cd tests
-  
+
   cat << EOF >> "${REGRESSIONTEST_LOG}"
 
 NOTES:
@@ -222,10 +223,10 @@ EOF
     local valid_test=false
 
     if [[ ${line} == COMPILE* ]] ; then
-      
+
       CMACHINES=$(cut -d'|' -f5 <<< "${line}")
       CMACHINES=$(sed -e 's/^ *//' -e 's/ *$//' <<< "${CMACHINES}")
-      
+
       COMPILER=$(cut -d'|' -f3 <<< "${line}")
       COMPILER=$(sed -e 's/^ *//' -e 's/ *$//' <<< "${COMPILER}")
 
@@ -233,7 +234,7 @@ EOF
       COMPILE_NAME=$(sed -e 's/^ *//' -e 's/ *$//' <<< "${COMPILE_NAME}")
 
       COMPILE_ID=${COMPILE_NAME}_${COMPILER}
-      
+
       if [[ ${CMACHINES} == '' ]]; then
         valid_compile=true
       elif [[ ${CMACHINES} == -* ]]; then
@@ -249,6 +250,7 @@ EOF
         TIME_FILE=""
         COMPILE_TIME=""
         RT_COMPILE_TIME=""
+        COMPILE_WARNINGS=""
         if [[ ! -f "${LOG_DIR}/compile_${COMPILE_ID}.log" ]]; then
           COMPILE_RESULT="FAILED: UNABLE TO START COMPILE"
           FAIL_LOG="N/A"
@@ -262,8 +264,18 @@ EOF
             COMPILE_RESULT="FAILED: TEST TIMED OUT"
             FAIL_LOG="${LOG_DIR}/compile_${COMPILE_ID}.log"
           fi
-        else 
+        else
           COMPILE_RESULT="PASS"
+          if [[ ${COMPILER} == "intel" ]]; then
+            COMPILE_NUM_WARNINGS=$(grep -c ": warning #" "${RUNDIR_ROOT}/compile_${COMPILE_ID}/err" || true)
+            COMPILE_NUM_REMARKS=$(grep -c ": remark #" "${RUNDIR_ROOT}/compile_${COMPILE_ID}/err" || true)
+            if [[ ${COMPILE_NUM_WARNINGS} -gt 0 || ${COMPILE_NUM_REMARKS} -gt 0 ]]; then
+               COMPILE_WARNINGS+=" ("
+               [[ ${COMPILE_NUM_WARNINGS} -gt 0 ]] && COMPILE_WARNINGS+=" ${COMPILE_NUM_WARNINGS} warnings"
+               [[ ${COMPILE_NUM_REMARKS}  -gt 0 ]] && COMPILE_WARNINGS+=" ${COMPILE_NUM_REMARKS} remarks"
+               COMPILE_WARNINGS+=" )"
+            fi
+          fi
           TIME_FILE="${LOG_DIR}/compile_${COMPILE_ID}_timestamp.txt"
           if [[ -f "${TIME_FILE}" ]]; then
             while read -r times || [[ -n "${times}" ]]; do
@@ -278,11 +290,11 @@ EOF
                 RT_COMPILE_TIME=$(date --date=@$((DATE4 - DATE1)) +'%M:%S')
 
             done < "${TIME_FILE}"
-            
+
           fi
         fi
         echo >> "${REGRESSIONTEST_LOG}"
-        echo "${COMPILE_RESULT} -- COMPILE '${COMPILE_ID}' [${RT_COMPILE_TIME}, ${COMPILE_TIME}]" >> "${REGRESSIONTEST_LOG}"
+        echo "${COMPILE_RESULT} -- COMPILE '${COMPILE_ID}' [${RT_COMPILE_TIME}, ${COMPILE_TIME}]${COMPILE_WARNINGS}" >> "${REGRESSIONTEST_LOG}"
         [[ -n ${FAIL_LOG} ]] && FAILED_COMPILES+=("COMPILE ${COMPILE_ID}: ${COMPILE_RESULT}")
         [[ -n ${FAIL_LOG} ]] && FAILED_COMPILE_LOGS+=("${FAIL_LOG}")
       fi
@@ -299,7 +311,7 @@ EOF
       TEST_NAME=$(sed -e 's/^ *//' -e 's/ *$//' <<< "${TEST_NAME}")
       GEN_BASELINE=$(cut -d '|' -f4 <<< "${line}")
       GEN_BASELINE=$(sed -e 's/^ *//' -e 's/ *$//' <<< "${GEN_BASELINE}")
-      
+
       if [[ ${RMACHINES} == '' ]]; then
         valid_test=true
       elif [[ ${RMACHINES} == -* ]]; then
@@ -328,7 +340,7 @@ EOF
               TEST_RESULT="FAILED: UNABLE TO RUN COMPARISON"
               FAIL_LOG="${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"
             # We need to catch a "PASS" in rt_*.log even if a fail_test_* files exists
-            # I'm not sure why this can happen.
+            # I am not sure why this can happen.
             elif grep -q "PASS" "${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log"; then
               TEST_RESULT="PASS"
             else
@@ -377,9 +389,9 @@ EOF
       fi
     fi
   done < "${TESTS_FILE}"
-  
+
   elapsed_time=$( printf '%02dh:%02dm:%02ds\n' $((SECONDS%86400/3600)) $((SECONDS%3600/60)) $((SECONDS%60)) )
-  
+
   cat << EOF >> "${REGRESSIONTEST_LOG}"
 
 SYNOPSIS:
@@ -397,18 +409,18 @@ EOF
       echo "-- LOG: ${FAILED_COMPILE_LOGS[${i}]}" >> "${REGRESSIONTEST_LOG}"
     done
   fi
-  
+
   # PRINT FAILED TESTS
   if [[ "${#FAILED_TESTS[@]}" -ne "0" ]]; then
-    
+
     echo "Failed Tests:" >> "${REGRESSIONTEST_LOG}"
     for j in "${!FAILED_TESTS[@]}"; do
       echo "* ${FAILED_TESTS[${j}]}" >> "${REGRESSIONTEST_LOG}"
       echo "-- LOG: ${FAILED_TEST_LOGS[${j}]}" >> "${REGRESSIONTEST_LOG}"
     done
-    
+
   fi
-  
+
   # WRITE FAILED_TEST_ID LIST TO TEST_CHANGES_LOG
   if [[ "${#FAILED_TESTS[@]}" -ne "0" ]]; then
     for item in "${FAILED_TEST_ID[@]}"; do
@@ -510,6 +522,7 @@ handle_error() {
 
 rt_trap() {
   echo "rt.sh: Exited abnormally, killing workflow and cleaning up"
+  trap "" SIGINT
   [[ ${ROCOTO:-false} == true ]] && rocoto_kill
   [[ ${ECFLOW:-false} == true ]] && ecflow_kill
   cleanup
@@ -686,17 +699,6 @@ case ${MACHINE_ID} in
       module load ecflow/5.6.0.13
     fi
     module load intel/19.1.3.304 python/3.8.6
-    if [[ "${ECFLOW:-false}" == true ]] ; then
-      # ECF_ROOT=${ECF_ROOT:-}
-      # ECFLOW_START="${ECF_ROOT}/scripts/server_check.sh"
-      # ECFLOW_STOP="${ECF_ROOT}/bin/ecflow_stop.sh"
-      export ECF_OUTPUTDIR="${PATHRT}/ecf_outputdir"
-      export ECF_COMDIR="${PATHRT}/ecf_comdir"
-      rm -rf "${ECF_OUTPUTDIR}" "${ECF_COMDIR}"
-      mkdir -p "${ECF_OUTPUTDIR}"
-      mkdir -p "${ECF_COMDIR}"
-      # export ECFLOW_START ECFLOW_STOP
-    fi
     export colonifnco=":output"  # hack
 
     DISKNM="/lfs/h2/emc/nems/noscrub/emc.nems/RT"
@@ -716,12 +718,9 @@ case ${MACHINE_ID} in
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module use /ncrc/proj/epic/rocoto/modulefiles
       module load rocoto
-      # ROCOTORUN=$(command -v rocotorun)
-      # ROCOTOSTAT=$(command -v rocotostat)
-      # ROCOTOCOMPLETE=$(command -v rocotocomplete)
       ROCOTO_SCHEDULER="slurm"
     fi
-    
+
     export LD_PRELOAD=/opt/cray/pe/gcc/12.2.0/snos/lib64/libstdc++.so.6
     module load PrgEnv-intel/8.3.3
     module load intel-classic/2023.1.0
@@ -731,8 +730,6 @@ case ${MACHINE_ID} in
     module load gcc/12.2.0
     if [[ "${ECFLOW:-false}" == true ]] ; then
       module load ecflow/5.8.4
-      # ECFLOW_START=/ncrc/proj/epic/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh
-      # ECFLOW_STOP=/ncrc/proj/epic/spack-stack/ecflow-5.8.4/bin/ecflow_stop.sh
       ECF_HOST=$(hostname)
       ECF_PORT=$(( $(id -u) + 1500 ))
       export ECF_PORT ECF_HOST
@@ -753,17 +750,11 @@ case ${MACHINE_ID} in
     set -x
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module load rocoto
-      # ROCOTORUN=$(command -v rocotorun)
-      # ROCOTOSTAT=$(command -v rocotostat)
-      # ROCOTOCOMPLETE=$(command -v rocotocomplete)
       ROCOTO_SCHEDULER=slurm
     fi
 
     if [[ "${ECFLOW:-false}" == true ]] ; then
       module load ecflow/5.11.4
-      # ECFLOW_START="$(command -v ecflow_start.sh)"
-      # ECFLOW_STOP="$(command -v ecflow_stop.sh)"
-      # export ECFLOW_START ECFLOW_STOP
     fi
 
     QUEUE="batch"
@@ -786,17 +777,12 @@ case ${MACHINE_ID} in
 
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module load contrib rocoto
-      # ROCOTORUN=$(command -v rocotorun)
-      # ROCOTOSTAT=$(command -v rocotostat)
-      # ROCOTOCOMPLETE=$(command -v rocotocomplete)
       ROCOTO_SCHEDULER="slurm"
     fi
 
     module use /work/noaa/epic/role-epic/spack-stack/orion/modulefiles
     if [[ "${ECFLOW:-false}" == true ]] ; then
       module load ecflow/5.8.4
-      # ECFLOW_START="/work/noaa/epic/role-epic/spack-stack/orion/ecflow-5.8.4/bin/ecflow_start.sh"
-      # ECFLOW_STOP="/work/noaa/epic/role-epic/spack-stack/orion/ecflow-5.8.4/bin/ecflow_stop.sh"
       ECF_HOST=$(hostname)
       ECF_PORT="$(( $(id -u) + 1500 ))"
       export ECF_PORT ECF_HOST
@@ -806,7 +792,7 @@ case ${MACHINE_ID} in
     COMPILE_QUEUE="batch"
     PARTITION="orion"
     dprefix="/work/noaa/stmp/${USER}"
-    DISKNM=/"work/noaa/epic/UFS-WM_RT"
+    DISKNM="/work/noaa/epic/UFS-WM_RT"
     STMP="${dprefix}/stmp"
     PTMP="${dprefix}/stmp"
 
@@ -817,17 +803,12 @@ case ${MACHINE_ID} in
     set -x
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module load contrib rocoto
-      # ROCOTORUN=$(command -v rocotorun)
-      # ROCOTOSTAT=$(command -v rocotostat)
-      # ROCOTOCOMPLETE=$(command -v rocotocomplete)
       ROCOTO_SCHEDULER="slurm"
     fi
 
     module use /work/noaa/epic/role-epic/spack-stack/hercules/modulefiles
     if [[ "${ECFLOW:-false}" == true ]] ; then
       module load ecflow/5.8.4
-      # ECFLOW_START="/work/noaa/epic/role-epic/spack-stack/hercules/ecflow-5.8.4/bin/ecflow_start.sh"
-      # ECFLOW_STOP="/work/noaa/epic/role-epic/spack-stack/hercules/ecflow-5.8.4/bin/ecflow_stop.sh"
       ECF_HOST=$(hostname)
       ECF_PORT="$(( $(id -u) + 1500 ))"
       export ECF_PORT ECF_HOST
@@ -854,20 +835,14 @@ case ${MACHINE_ID} in
     echo "=======Please, move to Rocky8 node fe[5-8]======="
     exit 1
     fi
-    
+
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module load rocoto
-      # ROCOTORUN=$(command -v rocotorun)
-      # ROCOTOSTAT=$(command -v rocotostat)
-      # ROCOTOCOMPLETE=$(command -v rocotocomplete)
       ROCOTO_SCHEDULER="slurm"
     fi
 
     if [[ "${ECFLOW:-false}" == true ]] ; then
       module load ecflow/5.11.4
-      # ECFLOW_START=/apps/ecflow/5.11.4/bin/ecflow_start.sh
-      # ECFLOW_STOP=/apps/ecflow/5.11.4/bin/ecflow_stop.sh
-      # export ECFLOW_START ECFLOW_STOP
     fi
 
     module use /mnt/lfs4/HFIP/hfv3gfs/role.epic/spack-stack/spack-stack-1.5.0/envs/unified-env-rocky8/install/modulefiles/Core
@@ -889,9 +864,6 @@ case ${MACHINE_ID} in
     set -x
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module load rocoto/1.3.2
-      # ROCOTORUN=$(command -v rocotorun)
-      # ROCOTOSTAT=$(command -v rocotostat)
-      # ROCOTOCOMPLETE=$(command -v rocotocomplete)
       ROCOTO_SCHEDULER=slurm
     fi
     if [[ "${ECFLOW:-false}" == true ]] ; then
@@ -902,8 +874,6 @@ case ${MACHINE_ID} in
     module use /data/prod/jedi/spack-stack/modulefiles
     if [[ "${ECFLOW:-false}" == true ]] ; then
       module load ecflow/5.8.4
-      # ECFLOW_START="/data/prod/jedi/spack-stack/ecflow-5.8.4/bin/ecflow_start.sh"
-      # ECFLOW_STOP="/data/prod/jedi/spack-stack/ecflow-5.8.4/bin/ecflow_stop.sh"
       ECF_HOST=$(hostname)
       ECF_PORT="$(( $(id -u) + 1500 ))"
       export ECF_PORT ECF_HOST
@@ -937,8 +907,6 @@ case ${MACHINE_ID} in
     module load stack-python/3.10.8
   #  export PYTHONPATH=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/glade/p/ral/jntp/tools/miniconda3/4.8.3/lib/python3.8/site-packages
     if [[ "${ECFLOW:-false}" == true ]] ; then
-      # ECFLOW_START=/glade/work/epicufsrt/contrib/spack-stack/derecho/ecflow-5.8.4/bin/ecflow_start.sh
-      # ECFLOW_STOP=/glade/work/epicufsrt/contrib/spack-stack/derecho/ecflow-5.8.4/bin/ecflow_stop.sh
       ECF_HOST=$(hostname)
       ECF_PORT=$(( $(id -u) + 1500 ))
       export ECF_PORT ECF_HOST
@@ -955,11 +923,8 @@ case ${MACHINE_ID} in
     cp fv3_conf/fv3_qsub.IN_derecho fv3_conf/fv3_qsub.IN
     cp fv3_conf/compile_qsub.IN_derecho fv3_conf/compile_qsub.IN
 
-    
+
     if [[ "${ROCOTO:-false}" == true ]] ; then
-      # ROCOTORUN=$(command -v rocotorun)
-      # ROCOTOSTAT=$(command -v rocotostat)
-      # ROCOTOCOMPLETE=$(command -v rocotocomplete)
       ROCOTO_SCHEDULER="pbspro"
     fi
     ;;
@@ -1006,9 +971,6 @@ case ${MACHINE_ID} in
 
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module load rocoto/1.3.3
-      # ROCOTORUN=$(command -v rocotorun)
-      # ROCOTOSTAT=$(command -v rocotostat)
-      # ROCOTOCOMPLETE=$(command -v rocotocomplete)
       ROCOTO_SCHEDULER=slurm
     fi
 
@@ -1110,9 +1072,9 @@ rm -rf "${LOG_DIR}"
 mkdir -p "${LOG_DIR}"
 
 if [[ ${ROCOTO} == true ]]; then
-  
+
   echo "rt.sh: Verifying ROCOTO support..."
-  
+
   case ${MACHINE_ID} in
     wcoss2|acorn|expanse|stampede)
       die "Rocoto not supported on this machine, please do not use '-r'."
@@ -1125,7 +1087,7 @@ if [[ ${ROCOTO} == true ]]; then
   ROCOTOSTAT="$(command -v rocotostat)"
   ROCOTOCOMPLETE="$(command -v rocotocomplete)"
   export ROCOTOCOMPLETE ROCOTOSTAT ROCOTORUN
-  
+
   ROCOTO_XML=${PATHRT}/rocoto_workflow.xml
   ROCOTO_STATE=${PATHRT}/rocoto_workflow.state
   ROCOTO_DB=${PATHRT}/rocoto_workflow.db
@@ -1156,25 +1118,20 @@ fi
 if [[ ${ECFLOW} == true ]]; then
   echo "Verifying ECFLOW support..."
   case ${MACHINE_ID} in
-    wcoss2|acorn)
-      ECFLOW_START="$(command -v server_check.sh)"
-      ECFLOW_STOP="$(command -v ecflow_stop.sh)"
-      ;;
     expanse|stampede|noaacloud)
       die "ECFLOW not supported on this machine, please do not use '-e'."
       ;;
     *)
       ECFLOW_START="$(command -v ecflow_start.sh)"
-      ECFLOW_STOP="$(command -v ecflow_stop.sh)"
       ;;
   esac
-  export ECFLOW_START ECFLOW_STOP
+  export ECFLOW_START
 
-  export ECF_OUTPUTDIR="${PATHRT}/ecf_outputdir"
-  export ECF_COMDIR="${PATHRT}/ecf_comdir"
-  rm -rf "${ECF_OUTPUTDIR}" "${ECF_COMDIR}"
-  mkdir -p "${ECF_OUTPUTDIR}"
-  mkdir -p "${ECF_COMDIR}"
+  #export ECF_OUTPUTDIR="${PATHRT}/ecf_outputdir"
+  #export ECF_COMDIR="${PATHRT}/ecf_comdir"
+  #rm -rf "${ECF_OUTPUTDIR}" "${ECF_COMDIR}"
+  #mkdir -p "${ECF_OUTPUTDIR}"
+  #mkdir -p "${ECF_COMDIR}"
   # Default maximum number of compile and run jobs
   MAX_BUILDS=10 #Max build jobs
   MAX_JOBS=30   #Max test/run jobs
