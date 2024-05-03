@@ -898,6 +898,7 @@ export_cice6() {
   export DT_CICE=${DT_ATMOS}
   export CICE_NPT=999
   export CICE_RUNTYPE=initial
+  export CICE_ICE_IC='cice_model.res.nc'
   export CICE_RUNID=unknown
   export CICE_USE_RESTART_TIME=.false.
   export CICE_RESTART_DIR=./RESTART/
