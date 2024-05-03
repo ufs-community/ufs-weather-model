@@ -22,7 +22,7 @@
 ### Intel Tests ###
 
 
-COMPILE | rrfs | intel | -DAPP=ATM -DCCPP_SUITES=FV3_RAP,FV3_RAP_sfcdiff,FV3_HRRR,FV3_RRFS_v1beta,FV3_RRFS_v1nssl -D32BIT=ON | | fv3 |
+COMPILE | rrfs | intel | -DAPP=ATM -DCCPP_SUITES=FV3_RAP,FV3_RAP_sfcdiff,FV3_HRRR,FV3_RRFS_v1beta,FV3_RRFS_v1nssl -D32BIT=ON -DENABLE_PARALLELRESTART=NO -DENABLE_RRFS_WAR=NO | | fv3 |
 RUN | rap_control                                       |                            | baseline |
 RUN | regional_spp_sppt_shum_skeb                       |                            | baseline |
 RUN | rap_decomp                                        | - noaacloud                |          |
@@ -39,12 +39,12 @@ RUN | rrfs_v1beta                                       |                       
 RUN | rrfs_v1nssl                                       |                            | baseline |
 RUN | rrfs_v1nssl_nohailnoccn                           |                            | baseline |
 
-COMPILE | atm_faster_dyn32 | intel | -DAPP=ATM -DCCPP_SUITES=FV3_GFS_v17_p8,FV3_GFS_v15_thompson_mynn_lam3km -D32BIT=ON -DFASTER=ON |   | fv3 |
+COMPILE | atm_faster_dyn32 | intel | -DAPP=ATM -DCCPP_SUITES=FV3_GFS_v17_p8,FV3_GFS_v15_thompson_mynn_lam3km -D32BIT=ON -DFASTER=ON -DENABLE_PARALLELRESTART=NO -DENABLE_RRFS_WAR=NO |   | fv3 |
 RUN | control_p8_faster                                 | - noaacloud                  | baseline |
 RUN | regional_control_faster                           |                              | baseline |
 
 ### DEBUG ATM tests ###
-COMPILE | atm_debug_dyn32 | intel | -DAPP=ATM -DDEBUG=ON -D32BIT=ON -DCCPP_SUITES=FV3_HRRR,FV3_GFS_v16,FV3_GFS_v16_csawmg,FV3_GFS_v16_ras,FV3_GFS_v17_p8,FV3_GFS_v15_thompson_mynn_lam3km,FV3_RAP,FV3_RAP_unified_ugwp,FV3_RAP_cires_ugwp,FV3_RAP_flake,FV3_RAP_clm_lake,FV3_RAP_noah,FV3_RAP_sfcdiff,FV3_RAP_noah_sfcdiff_cires_ugwp,FV3_RRFS_v1beta,FV3_HRRR_c3,FV3_HRRR_gf,FV3_global_nest_v1 | - noaacloud  | fv3 |
+COMPILE | atm_debug_dyn32 | intel | -DAPP=ATM -DDEBUG=ON -D32BIT=ON -DCCPP_SUITES=FV3_HRRR,FV3_GFS_v16,FV3_GFS_v16_csawmg,FV3_GFS_v16_ras,FV3_GFS_v17_p8,FV3_GFS_v15_thompson_mynn_lam3km,FV3_RAP,FV3_RAP_unified_ugwp,FV3_RAP_cires_ugwp,FV3_RAP_flake,FV3_RAP_clm_lake,FV3_RAP_noah,FV3_RAP_sfcdiff,FV3_RAP_noah_sfcdiff_cires_ugwp,FV3_RRFS_v1beta,FV3_HRRR_c3,FV3_HRRR_gf,FV3_global_nest_v1 -DENABLE_PARALLELRESTART=NO -DENABLE_RRFS_WAR=NO | - noaacloud  | fv3 |
 RUN | control_CubedSphereGrid_debug                     | - noaacloud                  | baseline |
 RUN | control_wrtGauss_netcdf_parallel_debug            | - noaacloud                  | baseline |
 RUN | control_stochy_debug                              | - noaacloud                  | baseline |
@@ -74,7 +74,7 @@ RUN | rap_flake_debug                                   | - noaacloud           
 RUN | gnv1_c96_no_nest_debug                            | - noaacloud                  | baseline |
 
 ### 32-bit physics tests ###
-COMPILE | rrfs_dyn32_phy32 | intel | -DAPP=ATM -DCCPP_SUITES=FV3_RAP,FV3_HRRR -D32BIT=ON -DCCPP_32BIT=ON |  - noaacloud  | fv3 |
+COMPILE | rrfs_dyn32_phy32 | intel | -DAPP=ATM -DCCPP_SUITES=FV3_RAP,FV3_HRRR -D32BIT=ON -DCCPP_32BIT=ON -DENABLE_PARALLELRESTART=NO -DENABLE_RRFS_WAR=NO |  - noaacloud  | fv3 |
 RUN | regional_spp_sppt_shum_skeb_dyn32_phy32           | - noaacloud                  | baseline |
 RUN | rap_control_dyn32_phy32                           | - noaacloud                  | baseline |
 RUN | hrrr_control_dyn32_phy32                          | - noaacloud                  | baseline |
@@ -84,7 +84,7 @@ RUN | hrrr_control_decomp_dyn32_phy32                   | - noaacloud           
 RUN | rap_restart_dyn32_phy32                           | - noaacloud                  |          | rap_control_dyn32_phy32
 RUN | hrrr_control_restart_dyn32_phy32                  | - noaacloud                  |          | hrrr_control_dyn32_phy32
 
-COMPILE | rrfs_dyn32_phy32_faster | intel | -DAPP=ATM -DFASTER=ON -DCCPP_SUITES=FV3_HRRR -D32BIT=ON -DCCPP_32BIT=ON | - noaacloud  | fv3 |
+COMPILE | rrfs_dyn32_phy32_faster | intel | -DAPP=ATM -DFASTER=ON -DCCPP_SUITES=FV3_HRRR -D32BIT=ON -DCCPP_32BIT=ON -DENABLE_PARALLELRESTART=NO -DENABLE_RRFS_WAR=NO | - noaacloud  | fv3 |
 RUN | conus13km_control             | - noaacloud                                      | baseline |
 RUN | conus13km_2threads            | - noaacloud                                      |          | conus13km_control
 RUN | conus13km_restart_mismatch    | - noaacloud                                      | baseline | conus13km_control
@@ -93,10 +93,10 @@ RUN | conus13km_restart_mismatch    | - noaacloud                               
 # RUN | conus13km_restart           | - noaacloud                                      |          | conus13km_control
 # RUN | conus13km_decomp            | - noaacloud                                      |          | conus13km_control
 
-COMPILE | rrfs_dyn64_phy32 | intel | -DAPP=ATM -DCCPP_SUITES=FV3_RAP,FV3_HRRR -DCCPP_32BIT=ON | - noaacloud  | fv3 |
+COMPILE | rrfs_dyn64_phy32 | intel | -DAPP=ATM -DCCPP_SUITES=FV3_RAP,FV3_HRRR -DCCPP_32BIT=ON -DENABLE_PARALLELRESTART=NO -DENABLE_RRFS_WAR=NO | - noaacloud  | fv3 |
 RUN | rap_control_dyn64_phy32                           |  - noaacloud                 | baseline |
 
-COMPILE | rrfs_dyn32_phy32_debug | intel | -DAPP=ATM -DCCPP_SUITES=FV3_RAP,FV3_HRRR,FV3_HRRR_gf -D32BIT=ON -DCCPP_32BIT=ON -DDEBUG=ON | - noaacloud  | fv3 |
+COMPILE | rrfs_dyn32_phy32_debug | intel | -DAPP=ATM -DCCPP_SUITES=FV3_RAP,FV3_HRRR,FV3_HRRR_gf -D32BIT=ON -DCCPP_32BIT=ON -DDEBUG=ON -DENABLE_PARALLELRESTART=NO -DENABLE_RRFS_WAR=NO | - noaacloud  | fv3 |
 RUN | rap_control_debug_dyn32_phy32                     |  - noaacloud                 | baseline |
 RUN | hrrr_control_debug_dyn32_phy32                    |  - noaacloud                 | baseline |
 RUN | conus13km_debug                                   |  - noaacloud                 | baseline |
@@ -107,7 +107,7 @@ RUN | conus13km_radar_tten_debug                        |  - noaacloud          
 # Expected to fail:
 # RUN | conus13km_debug_decomp                          |  - noaacloud                 |          |
 
-COMPILE | rrfs_dyn64_phy32_debug | intel | -DAPP=ATM -DCCPP_SUITES=FV3_RAP,FV3_HRRR -DCCPP_32BIT=ON -DDEBUG=ON | - noaacloud  | fv3 |
+COMPILE | rrfs_dyn64_phy32_debug | intel | -DAPP=ATM -DCCPP_SUITES=FV3_RAP,FV3_HRRR -DCCPP_32BIT=ON -DDEBUG=ON -DENABLE_PARALLELRESTART=NO -DENABLE_RRFS_WAR=NO | - noaacloud  | fv3 |
 RUN | rap_control_dyn64_phy32_debug                     |  - noaacloud                 | baseline |
 
 
