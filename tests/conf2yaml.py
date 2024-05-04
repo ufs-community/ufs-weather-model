@@ -1,5 +1,50 @@
 import os
 import re
+import yaml
+from ufs_test_utils import get_testcase
+
+def update_testyaml():
+    input_case = 'cpld_restart_gfsv17'
+    test_dep   = None
+    with open("ufs_test.yaml", 'r') as file_yaml:
+        rt_yaml = yaml.load(file_yaml)
+        for apps, jobs in rt_yaml.items():
+            for key, val in jobs.items():
+                if (str(key) == 'build'):
+                    #--- build information ---
+                    build_val = val
+                if (str(key) == 'tests'):
+                    #--- serach for test case given -n option ---
+                    for test in val:
+                        case, config = get_testcase(test)
+                        if case == input_case:
+                            print(case,input_case)
+                            app_temp  = apps
+                            build_temp= build_val
+                            test_temp = {case:config}
+                            if 'dependency' in config.keys():
+                                test_dep = str(config['dependency'])
+                    #--- check if dependency exists with serached test case ---
+                    if test_dep is not None:
+                        for test in val:
+                            case, config = get_testcase(test)
+                            if case == test_dep:
+                                test_temp_dep = {case:config}
+        file_yaml.close()
+    #--- dump into temporary test yaml file ---
+    try:
+        app_temp
+    except NameError:
+        print("*** Test case given runtime option -n is not found in ufs_test.yaml! ***")
+    else:
+        test_list = []
+        if test_temp_dep is not None:
+            test_list.append(test_temp_dep)
+        test_list.append(test_temp)
+        test_yaml = {app_temp:{'build':build_temp,'tests':test_list}}
+        with open(r'ufs_test_temp.yaml', 'w') as yaml_file:
+            outputs = yaml.dump(test_yaml, yaml_file)
+            yaml_file.close()
 
 def string_clean(str_in):
     str_in=str_in.replace("  "," ").strip()
