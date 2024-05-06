@@ -9,12 +9,12 @@ TROPP            'Pa'    Y       N                  -            0.0      1.0   
 
 #====== Dust Imports =================================================
 # FENGSHA input files. Note: regridding should be N or E
-DU_CLAY           '1'  Y E           -           none none clayfrac    ExtData/dust/FENGSHA_p81_10km_inputs.nc
-DU_SAND           '1'  Y E           -           none none sandfrac    ExtData/dust/FENGSHA_p81_10km_inputs.nc
+DU_CLAY           '1'  Y E           -           none none clayfrac    ExtData/dust/FENGSHA_2022_NESDIS_inputs_10km_v3.2.nc
+DU_SAND           '1'  Y E           -           none none sandfrac    ExtData/dust/FENGSHA_2022_NESDIS_inputs_10km_v3.2.nc
 DU_SILT           '1'  Y E           -           none none siltfrac    /dev/null
-DU_SSM            '1'  Y E %y4-%m2-%d2T12:00:00  none none ssm         /dev/null:1.0
-DU_RDRAG          NA   Y N %y4-%m2-%d2t12:00:00  none none albedo_drag ExtData/dust/FENGSHA_p81_10km_inputs.nc
-DU_UTHRES         '1'  Y E           -           none none uthres      ExtData/dust/FENGSHA_p81_10km_inputs.nc
+DU_SSM            '1'  Y E %y4-%m2-%d2t12:00:00  none none sep         ExtData/dust/FENGSHA_2022_NESDIS_inputs_10km_v3.2.nc
+DU_RDRAG          '1'  Y E           -           none none albedo_drag ExtData/dust/FENGSHA_2022_NESDIS_inputs_10km_v3.2.nc
+DU_UTHRES         '1'  Y E           -           none none uthres      ExtData/dust/FENGSHA_2022_NESDIS_inputs_10km_v3.2.nc
 
 #====== BIOMASS BURNING EMISSIONS =======================================
 
@@ -141,16 +141,16 @@ BRC_AVIATION_CRS NA  Y Y %y4-%m2-%d2t12:00:00 none none oc_aviation /dev/null
 pSOA_BIOB_VOC NA Y Y %y4-%m2-%d2t12:00:00 none none biofuel /dev/null
 
 # ======= Nitrate Sources ========
-EMI_NH3_AG   'kg m-2 s-1'  N Y      %y4-%m2-%d2T12:00:00    none     none     NH3_ag      ExtData/CEDS/v2019/%y4/CEDS.2019.emis.%y4%m2%d2.nc
-EMI_NH3_EN   'kg m-2 s-1'  N Y      %y4-%m2-%d2T12:00:00    none     none     NH3_en      /dev/null
-EMI_NH3_IN   'kg m-2 s-1'  N Y      %y4-%m2-%d2T12:00:00    none     none     NH3_in      ExtData/CEDS/v2019/%y4/CEDS.2019.emis.%y4%m2%d2.nc
-EMI_NH3_RE   'kg m-2 s-1'  N Y      %y4-%m2-%d2T12:00:00    none     none     NH3_re      ExtData/CEDS/v2019/%y4/CEDS.2019.emis.%y4%m2%d2.nc
-EMI_NH3_TR   'kg m-2 s-1'  N Y      %y4-%m2-%d2T12:00:00    none     none     NH3_tr      ExtData/CEDS/v2019/%y4/CEDS.2019.emis.%y4%m2%d2.nc
-EMI_NH3_OC   'kg m-2 s-1'  Y Y      %y4-%m2-%d2T12:00:00    none     none     emiss_ocn   ExtData/PIESA/sfc/GEIA.emis_NH3.ocean.x576_y361.t12.20080715_12z.nc4
+#EMI_NH3_AG   'kg m-2 s-1'  N Y      %y4-%m2-%d2T12:00:00    none     none     NH3_ag      ExtData/CEDS/v2019/%y4/CEDS.2019.emis.%y4%m2%d2.nc
+#EMI_NH3_EN   'kg m-2 s-1'  N Y      %y4-%m2-%d2T12:00:00    none     none     NH3_en      /dev/null
+#EMI_NH3_IN   'kg m-2 s-1'  N Y      %y4-%m2-%d2T12:00:00    none     none     NH3_in      ExtData/CEDS/v2019/%y4/CEDS.2019.emis.%y4%m2%d2.nc
+#EMI_NH3_RE   'kg m-2 s-1'  N Y      %y4-%m2-%d2T12:00:00    none     none     NH3_re      ExtData/CEDS/v2019/%y4/CEDS.2019.emis.%y4%m2%d2.nc
+#EMI_NH3_TR   'kg m-2 s-1'  N Y      %y4-%m2-%d2T12:00:00    none     none     NH3_tr      ExtData/CEDS/v2019/%y4/CEDS.2019.emis.%y4%m2%d2.nc
+#EMI_NH3_OC   'kg m-2 s-1'  Y Y      %y4-%m2-%d2T12:00:00    none     none     emiss_ocn   ExtData/PIESA/sfc/GEIA.emis_NH3.ocean.x576_y361.t12.20080715_12z.nc4
 
 # --------------------------------------------------------------
-NITRATE_HNO3 'mol mol-1'   Y N      %y4-%m2-%d2T12:00:00    none     0.20     hno3        ExtData/PIESA/L127/GMI.vmr_HNO3.x144_y91.t12.2006.nc4
+#NITRATE_HNO3 'mol mol-1'   Y N      %y4-%m2-%d2T12:00:00    none     0.20     hno3        ExtData/PIESA/L127/GMI.vmr_HNO3.x144_y91.t12.2006.nc4
 # --------------------------------------------------------------
-NI_regionMask NA           Y V      -                       none     none     REGION_MASK ExtData/PIESA/sfc/ARCTAS.region_mask.x540_y361.2008.nc
+#NI_regionMask NA           Y V      -                       none     none     REGION_MASK ExtData/PIESA/sfc/ARCTAS.region_mask.x540_y361.2008.nc
 
 %%
