@@ -1,6 +1,9 @@
 help([[
-loads UFS Model prerequisites for Gaea/Intel
+  This module loads libraries required for building and running UFS Weather Model 
+  on the NOAA RDHPC machine Gaea C5 using Intel-2023.1.0.
 ]])
+
+whatis([===[Loads libraries needed for building the UFS Weather Model on Gaea ]===])
 
 prepend_path("MODULEPATH", "/ncrc/proj/epic/spack-stack/spack-stack-1.5.1/envs/unified-env/install/modulefiles/Core")
 
@@ -22,5 +25,3 @@ setenv("CC","cc")
 setenv("CXX","CC")
 setenv("FC","ftn")
 setenv("CMAKE_Platform","gaea.intel")
-
-whatis("Description: UFS build environment")
