@@ -4,21 +4,28 @@ import yaml
 from ufs_test_utils import get_testcase
 
 def update_testyaml():
-    input_case = 'cpld_restart_gfsv17'
-    test_dep   = None
-    with open("ufs_test.yaml", 'r') as file_yaml:
+    try:
+        SRT_NAME     = str(os.getenv('SRT_NAME'))
+        SRT_COMPILER = str(os.getenv('SRT_COMPILER'))
+    except NameError:
+        print("*** SRT_NAME or SRT_COMPILER are not given with runtime option -n! ***")
+    UFS_TEST_YAML = "ufs_test.yaml"
+    test_dep = None
+    test_temp_dep = None
+    with open(UFS_TEST_YAML, 'r') as file_yaml:
         rt_yaml = yaml.load(file_yaml)
         for apps, jobs in rt_yaml.items():
             for key, val in jobs.items():
                 if (str(key) == 'build'):
                     #--- build information ---
-                    build_val = val
+                    build_val   = val
+                    rt_compiler = val['compiler']
                 if (str(key) == 'tests'):
                     #--- serach for test case given -n option ---
                     for test in val:
                         case, config = get_testcase(test)
-                        if case == input_case:
-                            print(case,input_case)
+                        print(case,SRT_NAME, rt_compiler, SRT_COMPILER)
+                        if case == SRT_NAME and rt_compiler == SRT_COMPILER:
                             app_temp  = apps
                             build_temp= build_val
                             test_temp = {case:config}
@@ -35,7 +42,7 @@ def update_testyaml():
     try:
         app_temp
     except NameError:
-        print("*** Test case given runtime option -n is not found in ufs_test.yaml! ***")
+        print("*** Test case given with runtime option -n is not found in ufs_test.yaml! ***")
     else:
         test_list = []
         if test_temp_dep is not None:
@@ -45,6 +52,7 @@ def update_testyaml():
         with open(r'ufs_test_temp.yaml', 'w') as yaml_file:
             outputs = yaml.dump(test_yaml, yaml_file)
             yaml_file.close()
+            print(test_yaml)
 
 def string_clean(str_in):
     str_in=str_in.replace("  "," ").strip()
@@ -55,7 +63,7 @@ def string_clean(str_in):
     return str_out
 
 if __name__ == "__main__":
-    with open('rt.yaml', 'w') as yaml_file, open("rt.conf") as conf_file:
+    with open('ufs_test.yaml', 'w') as yaml_file, open("rt.conf") as conf_file:
         for line in conf_file:
             line = line.strip()
             if not line:  # skip: line is blank
@@ -72,7 +80,7 @@ if __name__ == "__main__":
                 if (machine.find('-') != -1):
                     off_machine=machine.replace("-","").strip()
                     off_machine=string_clean(off_machine)
-                yaml_file.write(apps+":"+ '\n')
+                yaml_file.write(apps+'_'+build[2].strip()+":"+ '\n')
                 yaml_file.write("  build: "+ '\n')
                 yaml_file.write("    compiler: "+compiler+ '\n')
                 yaml_file.write("    option: "+options+ '\n')

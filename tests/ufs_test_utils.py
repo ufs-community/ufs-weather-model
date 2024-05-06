@@ -16,4 +16,21 @@ def write_logfile(logfile, openmod, output="", subproc=""):
         if (not output == "") :
             rtlog.writelines(output)
     rtlog.close()
-            
+
+def rrmdir(path):
+    for entry in os.scandir(path):
+        if entry.is_dir():
+            rrmdir(entry)
+        else:
+            os.remove(entry)
+    os.rmdir(path)
+#def link_newbaseline():
+    #CREATE_BASELINE
+    #NEW_BASELINES_FILE
+    ## IF -c AND -b; LINK VERIFIED BASELINES TO NEW_BASELINE
+    #if CREATE_BASELINE == 'true' and not NEW_BASELINES_FILE == '':
+    #    for dir in "${RTPWD}"/*/; do
+    #    dir=${dir%*/}
+    #[[ -d "${NEW_BASELINE}/${dir##*/}" ]] && continue
+    #ln -s "${dir%*/}" "${NEW_BASELINE}/"
+  #done

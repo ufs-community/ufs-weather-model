@@ -2,7 +2,7 @@ import os
 import sys
 import subprocess
 import yaml
-from ufs_test_utils import get_testcase, write_logfile
+from ufs_test_utils import get_testcase, write_logfile, rrmdir
 
 def rocoto_create_entries(RTPWD,MACHINE_ID,INPUTDATA_ROOT,INPUTDATA_ROOT_WW3,INPUTDATA_ROOT_BMIC,RUNDIR_ROOT,NEW_BASELINE,ROCOTO_XML):
     PATHRT = os.getenv('PATHRT')
@@ -190,7 +190,8 @@ def make_loghead(ACCNR,MACHINE_ID,RUNDIR_ROOT,RTPWD,REGRESSIONTEST_LOG):
     ROCOTO      = str(os.getenv('ROCOTO'))
     ECFLOW      = str(os.getenv('ECFLOW'))
     RTVERBOSE   = str(os.getenv('RTVERBOSE'))
-    SINGLE_OPTS = str(os.getenv('SINGLE_OPTS'))
+    SRT_NAME    = str(os.getenv('SRT_NAME'))
+    SRT_COMPILER= str(os.getenv('SRT_COMPILER'))
     
     rtlog_head=f"""
 ====START OF {MACHINE_ID} REGRESSION TESTING LOG====
@@ -235,7 +236,7 @@ RT.SH OPTIONS USED:
     if (RTPWD_NEW_BASELINE == "true"):
         write_logfile(filename, "a", output="* (-m) - COMPARE AGAINST CREATED BASELINES"+"\n")
     if (RUN_SINGLE_TEST == "true"):
-        write_logfile(filename, "a", output="* (-n) - RUN SINGLE TEST: "+SINGLE_OPTS+"\n")
+        write_logfile(filename, "a", output="* (-n) - RUN SINGLE TEST: "+SRT_NAME+" "+SRT_COMPILER+"\n")
     if (COMPILE_ONLY == "true"):
         write_logfile(filename, "a", output="* (-o) - COMPILE ONLY, SKIP TESTS"+"\n")
     if (delete_rundir == "true"):
@@ -309,7 +310,7 @@ def main_loop():
         if ( not os.path.isdir(NEW_BASELINE) ) :
             os.makedirs(NEW_BASELINE, exist_ok=True)
         else:
-            os.rmdir(NEW_BASELINE)
+            rrmdir(NEW_BASELINE)
             os.makedirs(NEW_BASELINE, exist_ok=True)
         
     ROCOTO_TEST_MAXTRIES = "3"
@@ -331,7 +332,8 @@ def main_loop():
     ROCOTO = True
     ROCOTO_XML = os.getenv('ROCOTO_XML')
     rocoto_create_entries(RTPWD,MACHINE_ID,INPUTDATA_ROOT,INPUTDATA_ROOT_WW3,INPUTDATA_ROOT_BMIC,RUNDIR_ROOT,NEW_BASELINE,ROCOTO_XML)
-    with open("ufs_test.yaml", 'r') as f:
+    UFS_TEST_YAML = str(os.getenv('UFS_TEST_YAML'))
+    with open(UFS_TEST_YAML, 'r') as f:
         rt_yaml = yaml.load(f)#, Loader=yaml.FullLoader)
         for apps, jobs in rt_yaml.items():
             for key, val in jobs.items():

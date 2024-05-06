@@ -71,17 +71,17 @@ CREATE_BASELINE=false
 ROCOTO=false
 ECFLOW=false
 KEEP_RUNDIR=false
-TEST_35D=false
 export skip_check_results=false
 export delete_rundir=false
-SKIP_ORDER=false
 COMPILE_ONLY=false
 RTPWD_NEW_BASELINE=false
-TESTS_FILE='rt.conf'
+TESTS_FILE='ufs_test.yaml'
 NEW_BASELINES_FILE=''
 DEFINE_CONF_FILE=false
 RUN_SINGLE_TEST=false
 ACCNR=${ACCNR:-""}
+UFS_TEST_YAML="ufs_test.yaml"
+export UFS_TEST_YAML
 
 while getopts ":a:b:cl:mn:dwkreoh" opt; do
   case $opt in
@@ -98,6 +98,8 @@ while getopts ":a:b:cl:mn:dwkreoh" opt; do
       DEFINE_CONF_FILE=true
       TESTS_FILE=$OPTARG
       grep -q '[^[:space:]]' < "$TESTS_FILE" ||  die "${TESTS_FILE} empty, exiting..."
+      UFS_TEST_YAML=$TESTS_FILE
+      export UFS_TEST_YAML
       ;;
     o)
       COMPILE_ONLY=true
@@ -120,6 +122,12 @@ while getopts ":a:b:cl:mn:dwkreoh" opt; do
       if [[ "${SRT_COMPILER}" != "intel" ]] && [[ "${SRT_COMPILER}" != "gnu" ]]; then
         die "COMPILER MUST BE 'intel' OR 'gnu'"
       fi
+
+      export SRT_NAME
+      export SRT_COMPILER
+      python -c "import create_yml; create_yml.update_testyaml()"
+      UFS_TEST_YAML="ufs_test_temp.yaml"
+      export UFS_TEST_YAML
       ;;
     d)
       export delete_rundir=true
@@ -175,25 +183,10 @@ elif [[ $MACHINE_ID = acorn ]]; then
     echo 'ACORN'
 
 elif [[ $MACHINE_ID = hera ]]; then
-
-  if [[ "${ROCOTO:-false}" == true ]] ; then
-    module load rocoto
-    ROCOTORUN=$(which rocotorun)
-    ROCOTOSTAT=$(which rocotostat)
-    ROCOTOCOMPLETE=$(which rocotocomplete)
-    ROCOTO_SCHEDULER=slurm
-  fi
-
-  if [[ "${ECFLOW:-false}" == true ]] ; then
-    module load ecflow/5.11.4
-    ECFLOW_START=ecflow_start.sh
-  fi
-  
+    source ${PATHRT}/machine_config/machine_$MACHINE_ID.config
 else
   die "Unknown machine ID, please edit detect_machine.sh file"
 fi
-
-#jkim update_rtconf
 
 source bl_date.conf
 
@@ -203,8 +196,6 @@ shift $((OPTIND-1))
 TEST_START_TIME="$(date '+%Y%m%d %T')"
 export TEST_START_TIME
 
-JOB_NR=0
-COMPILE_COUNTER=0
 rm -f fail_test* fail_compile*
 
 if [[ $ROCOTO == true ]]; then
@@ -215,11 +206,6 @@ if [[ $ROCOTO == true ]]; then
 fi
 
 [[ -f $TESTS_FILE ]] || die "$TESTS_FILE does not exist"
-
-LAST_COMPILER_NR=-9999
-COMPILE_PREV=''
-
-#declare -A compiles
 
 export ROCOTO_SCHEDULER
 export ACCNR
@@ -234,23 +220,21 @@ export CREATE_BASELINE
 export RTVERBOSE
 
 export TESTS_FILE
-export SINGLE_OPTS
 export NEW_BASELINES_FILE
 export DEFINE_CONF_FILE
 export RUN_SINGLE_TEST
 export COMPILE_ONLY
 export delete_rundir
 export skip_check_results
-export KEEP_RUNDIR    
+export KEEP_RUNDIR  
 
 python -c "import create_xml; create_xml.main_loop()"
 
 ##
 ## run regression test workflow (currently Rocoto or ecFlow are supported)
 ##
-
 if [[ $ROCOTO == true ]]; then
-  rocoto_run
+    rocoto_run
 fi
 
 # IF -c AND -b; LINK VERIFIED BASELINES TO NEW_BASELINE

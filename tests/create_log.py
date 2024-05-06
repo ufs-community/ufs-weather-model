@@ -6,6 +6,7 @@ from datetime import datetime
 from ufs_test_utils import get_testcase, write_logfile
 
 def finish_log():
+    UFS_TEST_YAML = str(os.getenv('UFS_TEST_YAML'))
     PATHRT     = os.getenv('PATHRT')
     MACHINE_ID = os.getenv('MACHINE_ID')
     REGRESSIONTEST_LOG = PATHRT+'/logs/RegressionTests_'+MACHINE_ID+'.log'
@@ -18,7 +19,7 @@ def finish_log():
     JOB_NR  = 0
     PASS_NR = 0
     FAIL_NR = 0
-    with open("ufs_test.yaml", 'r') as f:
+    with open(UFS_TEST_YAML, 'r') as f:
         rt_yaml = yaml.load(f)#, Loader=yaml.FullLoader)
         for apps, jobs in rt_yaml.items():
             for key, val in jobs.items():
@@ -30,7 +31,7 @@ def finish_log():
                     COMPILE_ID  = apps+'_'+RT_COMPILER
                     COMPILE_LOG = 'compile_'+COMPILE_ID+'.log'
                     COMPILE_LOG_TIME ='compile_'+COMPILE_ID+'_timestamp.txt'
-                    f = open('./logs/log_hera/'+COMPILE_LOG_TIME)
+                    f = open('./logs/log_'+MACHINE_ID+'/'+COMPILE_LOG_TIME)
                     timing_data = f.read()
                     first_line = timing_data.split('\n', 1)[0]
                     etime = int(first_line.split(",")[4].strip()) - int(first_line.split(",")[1].strip())
@@ -41,7 +42,7 @@ def finish_log():
                     btime_min = f"{btime_min:02}"; btime_sec = f"{btime_sec:02}"
                     time_log = " ["+etime_min+':'+etime_sec+', '+btime_min+':'+btime_sec+"]"
                     f.close()
-                    with open('./logs/log_hera/'+COMPILE_LOG) as f:
+                    with open('./logs/log_'+MACHINE_ID+'/'+COMPILE_LOG) as f:
                         if "[100%] Linking Fortran executable" in f.read():
                             COMPILE_PASS += 1
                             compile_log="PASS -- COMPILE "+COMPILE_ID+time_log+"\n"
@@ -57,7 +58,7 @@ def finish_log():
                         TEST_ID   = TEST_NAME+'_'+RT_COMPILER
                         TEST_LOG  = 'rt_'+TEST_ID+'.log'
                         TEST_LOG_TIME= 'run_'+TEST_ID+'_timestamp.txt'
-                        f = open('./logs/log_hera/'+TEST_LOG_TIME)
+                        f = open('./logs/log_'+MACHINE_ID+'/'+TEST_LOG_TIME)
                         timing_data = f.read()
                         first_line = timing_data.split('\n', 1)[0]
                         etime = str(int(first_line.split(",")[4].strip()) - int(first_line.split(",")[1].strip()))
@@ -75,11 +76,11 @@ def finish_log():
                         PASS_CHECK = 'Test '+TEST_ID+' PASS'
                         MAXS_CHECK = 'The maximum resident set size (KB)'
                         pass_flag = False
-                        with open('./logs/log_hera/'+TEST_LOG) as f:
+                        with open('./logs/log_'+MACHINE_ID+'/'+TEST_LOG) as f:
                             if PASS_CHECK in f.read():
                                 pass_flag = True
                         f.close()
-                        with open('./logs/log_hera/'+TEST_LOG) as f:
+                        with open('./logs/log_'+MACHINE_ID+'/'+TEST_LOG) as f:
                             if pass_flag :
                                 rtlog_file = f.readlines()
                                 for line in rtlog_file:
@@ -136,5 +137,5 @@ Result: {SUCCESS}
 """
     write_logfile(filename, "a", output=comment_log)
     
-if __name__ == '__main__':
-    finish_log()
+#if __name__ == '__main__':
+
