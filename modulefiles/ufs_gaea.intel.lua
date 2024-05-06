@@ -22,10 +22,5 @@ setenv("CC","cc")
 setenv("CXX","CC")
 setenv("FC","ftn")
 setenv("CMAKE_Platform","gaea.intel")
--- failed with:Could not find compiler set in environment variable CC:
---setenv("CC", "mpiicc")
---setenv("CXX", "mpiicpc")
---setenv("FC", "mpiifort")
---setenv("CMAKE_Platform", "gaea.intel")
 
 whatis("Description: UFS build environment")
