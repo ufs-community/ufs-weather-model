@@ -45,10 +45,26 @@ def finish_log():
                     with open('./logs/log_'+MACHINE_ID+'/'+COMPILE_LOG) as f:
                         if "[100%] Linking Fortran executable" in f.read():
                             COMPILE_PASS += 1
-                            compile_log="PASS -- COMPILE "+COMPILE_ID+time_log+"\n"
+                            f.seek(0)
+                            for line in f:
+                                if 'export RUNDIR_ROOT=' in line:
+                                    RUNDIR_ROOT=line.split("=")[1]
+                                    break
+                            compile_err = RUNDIR_ROOT.strip('\n')+'/compile_'+COMPILE_ID+'/err'
+                            with open(compile_err) as ferr:
+                                contents = ferr.read()
+                                count_warning = contents.count(": warning #")
+                                count_remarks = contents.count(": remark #")
+                                ferr.close()
+                            warning_log = ""
+                            if count_warning > 0:
+                                warning_log = "("+str(count_warning)+" warnings"
+                            if count_remarks > 0:
+                                warning_log+= ","+str(count_remarks)+" remarks)"
+                            compile_log = "PASS -- COMPILE "+COMPILE_ID+time_log+warning_log+"\n"
                         else:
-                            compile_log="FAIL -- COMPILE "+COMPILE_ID+"\n"
-                    f.close()
+                            compile_log = "FAIL -- COMPILE "+COMPILE_ID+"\n"                        
+                        f.close()
                     run_logs += compile_log
                 if (str(key) == 'tests'):
                     for test in val:
