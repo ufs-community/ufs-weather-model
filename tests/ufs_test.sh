@@ -146,6 +146,7 @@ while getopts ":a:b:cl:mn:dwkreoh" opt; do
     e)
       ECFLOW=true
       ROCOTO=false
+      die "Work-in-progress to support for ECFLOW. Please, use the ROCOTO workflow manamegment option (-r)"
       ;;
     h)
       usage
