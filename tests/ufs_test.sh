@@ -15,7 +15,7 @@ usage() {
   echo "  -b  create new baselines only for tests listed in <file>"
   echo "  -c  create new baseline results"
   echo "  -d  delete run direcotries that are not used by other tests"
-  echo "  -e  use ecFlow workflow manager"
+  echo "  -e  use ecFlow workflow manager (this option is not fully functional yet)"
   echo "  -h  display this help"
   echo "  -k  keep run directory after rt.sh is completed"
   echo "  -l  runs test specified in <file>"
