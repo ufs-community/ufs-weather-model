@@ -1313,7 +1313,7 @@ Comments can be added to the diag_table using the hash symbol (``#``).
    * - FV3
      - :ref:`FV3 diag_table Variables <fv3diagtable>`
    * - MOM6
-     - In Progress
+     - :ref:`MOM6 diag_table Variables <mom6diagtable>`
 
 
 A brief example of the diag_table is shown below.  ``"..."`` denotes where lines have been removed.
