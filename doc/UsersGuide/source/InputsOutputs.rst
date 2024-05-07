@@ -1309,11 +1309,11 @@ Comments can be added to the diag_table using the hash symbol (``#``).
    :header-rows: 1
 
    * - WM Component
-     - diag_table link
+     - Diag Table
    * - FV3
-     - :ref:`FV3 diag_table Variables <fv3diagtable>`
+     - :ref:`FV3 Variables <fv3diagtable>`
    * - MOM6
-     - :ref:`MOM6 diag_table Variables <mom6diagtable>`
+     - :ref:`MOM6 Variables <mom6diagtable>`
 
 
 A brief example of the diag_table is shown below.  ``"..."`` denotes where lines have been removed.
