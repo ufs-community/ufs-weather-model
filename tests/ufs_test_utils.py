@@ -2,12 +2,21 @@ import os
 import sys
 import subprocess
 
+def get_testdep(casename,val):
+    test_dep = None
+    for test in val:
+        case, config = get_testcase(test)
+        if case == casename:
+            test_dep = {case:config}
+    return test_dep
+
 def get_testcase(test):
-    test_cases=[]
+    case_name = None
+    case_config = None
     for case, configs in test.items():
         case_name=case
         case_config=configs
-        return case_name, case_config
+    return case_name, case_config
     
 def write_logfile(logfile, openmod, output="", subproc=""):
     with open(logfile, openmod) as rtlog:
