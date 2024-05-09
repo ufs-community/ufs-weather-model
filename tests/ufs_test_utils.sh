@@ -26,12 +26,9 @@ function set_run_task() {
 }
 
 function link_new_baselines() {
-    # IF -c AND -b; LINK VERIFIED BASELINES TO NEW_BASELINE
-    #if [[ ${CREATE_BASELINE} == true && ${NEW_BASELINES_FILE} != '' ]]; then
     for dir in "${RTPWD}"/*/; do
 	dir=${dir%*/}
 	[[ -d "${NEW_BASELINE}/${dir##*/}" ]] && continue
 	ln -s "${dir%*/}" "${NEW_BASELINE}/"
     done
-    #fi
 }
