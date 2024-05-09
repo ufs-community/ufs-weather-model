@@ -1,7 +1,16 @@
 import os
 import sys
+import glob
 import subprocess
 
+def delete_files(deletefiles):
+    fileList = glob.glob(deletefiles, recursive=True)    
+    for filePath in fileList:
+        try:
+            os.remove(filePath)
+        except OSError:
+            print("Error while deleting ",deletefiles)
+        
 def link_new_baselines():
     USER = str(os.environ.get('USER'))
     MACHINE_ID = os.getenv('MACHINE_ID')        

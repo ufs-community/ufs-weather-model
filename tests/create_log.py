@@ -3,7 +3,7 @@ import sys
 import subprocess
 import yaml
 from datetime import datetime
-from ufs_test_utils import get_testcase, write_logfile
+from ufs_test_utils import get_testcase, write_logfile, delete_files
 
 def finish_log():
     UFS_TEST_YAML = str(os.getenv('UFS_TEST_YAML'))
@@ -154,6 +154,21 @@ Result: {SUCCESS}
 ====END OF {MACHINE_ID} REGRESSION TESTING LOG====
 """
     write_logfile(filename, "a", output=comment_log)
-    
+
+    print("Performing Cleanup...")
+    exefiles= PATHRT+'/fv3_*.*x*'; delete_files(exefiles)
+    modfiles= PATHRT+'/modules.fv3_*'; delete_files(modfiles)
+    modfiles= PATHRT+'modulefiles/modules.fv3_*'; delete_files(modfiles)
+    tmpfiles= PATHRT+'/keep_tests.tmp'; delete_files(tmpfiles)
+    if KEEP_RUNDIR == 'false':
+        rundir = PATHRT+'/run_dir'
+        rrmdir(rundir)
+    if ROCOTO == 'true':
+        rocotofiles=PATHRT+'/rocoto*'
+        delete_files(rocotofiles)
+        lockfiles=PATHRT+'/*_lock.db'
+        delete_files(lockfiles)
+    print("REGRESSION TEST RESULT: SUCCESS")    
+
 #if __name__ == '__main__':
 
