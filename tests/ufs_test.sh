@@ -99,7 +99,7 @@ while getopts ":a:b:cl:mn:dwkreoh" opt; do
       CREATE_BASELINE=true
       ;;
     l)
-      DEFINE_CONF_FILE=true
+      #DEFINE_CONF_FILE=true
       TESTS_FILE=$OPTARG
       grep -q '[^[:space:]]' < "$TESTS_FILE" ||  die "${TESTS_FILE} empty, exiting..."
       UFS_TEST_YAML=$TESTS_FILE
@@ -193,7 +193,7 @@ else
   die "Unknown machine ID, please edit detect_machine.sh file"
 fi
 
-source bl_date.conf
+#source bl_date.conf
 
 shift $((OPTIND-1))
 [[ $# -gt 1 ]] && usage
@@ -220,13 +220,13 @@ export ROCOTO
 export ECFLOW
 export MACHINE_ID
 export RTPWD_NEW_BASELINE
-export NEW_BASELINE
+#export NEW_BASELINE
 export CREATE_BASELINE
 export RTVERBOSE
 
 export TESTS_FILE
 export NEW_BASELINES_FILE
-export DEFINE_CONF_FILE
+#export DEFINE_CONF_FILE
 export RUN_SINGLE_TEST
 export COMPILE_ONLY
 export delete_rundir
