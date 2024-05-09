@@ -31,19 +31,23 @@
   ntiles = 1
   npz = @[NPZ]
   dz_min =  @[DZ_MIN]
-  psm_bc = @[PSM_BC]
+  psm_bc = @[PSM_BC_NEST02]
   grid_type = 0
   make_nh = @[MAKE_NH]
   fv_debug = .false.
   range_warn = .true.
   reset_eta = .false.
-  n_sponge = 42
+  n_sponge = @[N_SPONGE]
+  n_zs_filter = @[N_ZS_FILTER_NEST02]
   nudge_qv = .false.
   nudge_dz = .false.
   tau = @[FV_CORE_TAU]
   rf_cutoff = @[RF_CUTOFF]
-  d2_bg_k1 = @[D2_BG_K1]
-  d2_bg_k2 = @[D2_BG_K2]
+  rf_fast = @[RF_FAST]
+  sg_cutoff = @[SG_CUTOFF]
+  upoff = @[UPOFF]
+  d2_bg_k1 = @[D2_BG_K1_NEST02]
+  d2_bg_k2 = @[D2_BG_K2_NEST02]
   kord_tm = -9
   kord_mt = 9
   kord_wz = 9
@@ -58,15 +62,16 @@
   n_split = 5
   nwat = @[NWAT]
   na_init = @[NA_INIT]
-  d_ext = 0.
+  d_ext = @[D_EXT]
   dnats = @[DNATS]
-  fv_sg_adj = 450
-  d2_bg = 0.
+  fv_sg_adj = @[FV_SG_ADJ]
+  d2_bg = @[D2_BG_NEST02]
   nord = 2
+  nord_zs_filter = @[NORD_ZS_FILTER]
   dddmp = @[DDDMP]
-  d4_bg = 0.12
-  vtdm4 = 0.02
-  delt_max = 0.002
+  d4_bg = @[D4_BG_NEST02]
+  vtdm4 = @[VTDM4]
+  delt_max = @[DELT_MAX_NEST02]
   ke_bg = 0.
   do_vort_damp = .true.
   external_ic = @[EXTERNAL_IC]
@@ -75,19 +80,20 @@
   nggps_ic = @[NGGPS_IC]
   mountain = @[MOUNTAIN]
   ncep_ic = .false.
-  d_con = 1.
-  hord_mt = 5
-  hord_vt = 5
-  hord_tm = 5
-  hord_dp = -5
-  hord_tr = 8
+  d_con = @[D_CON]
+  hord_mt = @[HORD_MT_NEST02]
+  hord_vt = @[HORD_VT_NEST02]
+  hord_tm = @[HORD_TM_NEST02]
+  hord_dp = @[HORD_DP_NEST02]
+  hord_tr = @[HORD_TR_NEST02]
   adjust_dry_mass = .false.
-  dry_mass=@[DRY_MASS]
-  consv_te = 0
+  dry_mass =  @[DRY_MASS]
+  consv_te = @[CONSV_TE_NEST02]
   do_sat_adj = @[DO_SAT_ADJ]
   fast_tau_w_sec = @[FAST_TAU_W_SEC]
   consv_am = .false.
   fill = .true.
+  full_zs_filter = @[FULL_ZS_FILTER]
   dwind_2d = .false.
   print_freq = 6
   warm_start = @[WARM_START]
@@ -96,7 +102,6 @@
   agrid_vel_rst = .true.
   read_increment = @[READ_INCREMENT]
   res_latlon_dynamics = @[RES_LATLON_DYNAMICS]
-  
   nested = @[NESTED]
   twowaynest = @[TWOWAYNEST02]
   nestupdate = 7
@@ -111,18 +116,30 @@
   
 /
 
+&surf_map_nml
+  cd2 = -1
+  cd4 = 0.15
+  max_slope = 0.15
+  n_del2_strong = 0
+  n_del2_weak = 24
+  n_del4 = 2
+  peak_fac = 1.
+  zero_ocean = .false.
+/
+
 &gfs_physics_nml
   fhzero       = @[FHZERO]
   h2o_phys     = @[H2O_PHYS]
   ldiag3d      = @[LDIAG3D]
   qdiag3d      = @[QDIAG3D]
+  lightning_threat = @[LIGHTNING_THREAT]
   print_diff_pgr = @[PRINT_DIFF_PGR]
   fhcyc        = @[FHCYC]
   use_ufo      = .true.
   pre_rad      = .false.
   imp_physics  = @[IMP_PHYSICS]
   iovr         = @[IOVR]
-  lcnorm       = .true.
+  lcnorm       = @[LCNORM]
   ltaerosol    = .true.
   lradar       = .true.
   ttendlim     = -999
@@ -132,6 +149,7 @@
   oz_phys      = @[OZ_PHYS_NEW]
   oz_phys_2015 = @[OZ_PHYS_OLD]
   lsoil_lsm    = @[LSOIL_LSM]
+  do_ca = @[DO_CA]
   do_mynnedmf  = @[DO_MYNNEDMF]
   do_mynnsfclay = @[DO_MYNNSFCLAY]
   icloud_bl    = 1
@@ -143,18 +161,19 @@
   gwd_opt      = @[GWD_OPT]
   do_ugwp_v0   = @[DO_UGWP_V0]
   do_ugwp_v1   = @[DO_UGWP_V1]
-  do_ugwp_v0_orog_only = @[DO_UGWP_V1_OROG_ONLY]
+  do_ugwp_v0_orog_only = @[DO_UGWP_V0_OROG_ONLY]
   do_ugwp_v0_nst_only  = @[DO_UGWP_V0_NST_ONLY]
   do_gsl_drag_ls_bl    = @[DO_GSL_DRAG_LS_BL]
   do_gsl_drag_ss       = @[DO_GSL_DRAG_SS]
   do_gsl_drag_tofd     = @[DO_GSL_DRAG_TOFD]
   do_ugwp_v1_orog_only = @[DO_UGWP_V1_OROG_ONLY]
+  do_ugwp_v1_w_gsldrag = @[DO_UGWP_V1_W_GSLDRAG]
   min_lakeice  = @[MIN_LAKEICE]
   min_seaice   = @[MIN_SEAICE]
   use_cice_alb = @[USE_CICE_ALB]
   pdfcld       = .false.
-  fhswr        = 3600.
-  fhlwr        = 3600.
+  fhswr        = @[FHSWR]
+  fhlwr        = @[FHLWR]
   ialb         = @[IALB]
   iems         = @[IEMS]
   iaer         = @[IAER]
@@ -165,7 +184,7 @@
   isol         = 2
   lwhtr        = .true.
   swhtr        = .true.
-  cnvgwd       = @[CNVGWD]
+  cnvgwd       = @[CNVGWD_NEST02]
   shal_cnv     = @[SHAL_CNV]
   cal_pre      = .false.
   redrag       = .true.
@@ -178,17 +197,21 @@
   random_clds  = @[RANDOM_CLDS]
   trans_trac   = .true.
   cnvcld       = @[CNVCLD]
-  imfshalcnv   = @[IMFSHALCNV]
-  imfdeepcnv   = @[IMFDEEPCNV]
-  progsigma    = @[PROGSIGMA]
-  betascu      = 0.5
-  betamcu      = 1.5
-  betadcu      = 8.0
+  imfshalcnv   = @[IMFSHALCNV_NEST02]
+  imfdeepcnv   = @[IMFDEEPCNV_NEST02]
+  do_deep      = @[DO_DEEP_NEST02]
+  progsigma    = @[PROGSIGMA_NEST02]
+  betascu      = @[BETASCU_NEST02]
+  betamcu      = @[BETAMCU_NEST02]
+  betadcu      = @[BETADCU_NEST02]
+  betal_deep   = @[BETAL_DEEP_NEST02]
+  betas_deep   = @[BETAS_DEEP_NEST02]
   ras          = @[RAS]
   cdmbgwd      = @[CDMBWD]
   prslrd0      = 0.
   ivegsrc      = 1
   isot         = 1
+  elmx         = @[ELMX]
   lsoil        = 4
   lsm          = @[LSM]
   iopt_dveg    = @[IOPT_DVEG]
@@ -205,6 +228,8 @@
   iopt_stc     = @[IOPT_STC]
   iopt_trs     = @[IOPT_TRS]
   iopt_diag    = @[IOPT_DIAG]
+  sfc_rlm      = @[SFC_RLM]
+  sfc_z0_type  = @[SFC_Z0_TYPE]
   debug        = .false.
   nstf_name    = @[NSTF_NAME]
   nst_anl      = .true.
@@ -215,7 +240,7 @@
   ldiag_ugwp   = @[LDIAG_UGWP]
   do_RRTMGP          = @[DO_RRTMGP]
   active_gases       = 'h2o_co2_o3_n2o_ch4_o2'
-  ngases             = 6
+  ngases             = @[NGASES]
   lw_file_gas        = 'rrtmgp-data-lw-g128-210809.nc'
   lw_file_clouds     = 'rrtmgp-cloud-optics-coeffs-lw.nc'
   sw_file_gas        = 'rrtmgp-data-sw-g112-210809.nc'
@@ -235,7 +260,9 @@
   cplice       = @[CPLICE]
   cplwav       = @[CPLWAV]
   cplwav2atm   = @[CPLWAV2ATM]
+  lndp_type    = @[LNDP_TYPE]
 /
+
 &cires_ugwp_nml
   knob_ugwp_solver  = 2
   knob_ugwp_source  = 1,1,0,0
@@ -254,7 +281,7 @@
   knob_ugwp_lzmin    = 0.75e3
   knob_ugwp_lzstar   = 2.0e3
   knob_ugwp_taumin   = 0.25e-3
-  knob_ugwp_tauamp   = 3.0e-3
+  knob_ugwp_tauamp   = @[KNOB_UGWP_TAUAMP]
   knob_ugwp_lhmet    = 200.0e3
   knob_ugwp_orosolv  = 'pss-1986'
 /
