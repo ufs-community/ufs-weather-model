@@ -16,11 +16,13 @@ def finish_log():
 
     run_logs= f"""
 """
-    COMPILE_PASS = 0
-    COMPILE_NR   = 0
-    JOB_NR  = 0
-    PASS_NR = 0
-    FAIL_NR = 0
+    COMPILE_PASS= 0
+    COMPILE_NR  = 0
+    JOB_NR = 0
+    PASS_NR= 0
+    FAIL_NR= 0
+    failed_list= []
+    test_changes_list= PATHRT+'/test_changes.list'
     with open(UFS_TEST_YAML, 'r') as f:
         rt_yaml = yaml.load(f)#, Loader=yaml.FullLoader)
         for apps, jobs in rt_yaml.items():
@@ -108,6 +110,7 @@ def finish_log():
                                 PASS_NR += 1
                             else:
                                 test_log = 'FAIL -- TEST '+TEST_ID+'\n'
+                                failed_list.append(TEST_NAME+' '+RT_COMPILER)
                                 FAIL_NR += 1
                             run_logs += test_log
                         f.close()
@@ -141,8 +144,10 @@ Tests Completed: {PASS_NR}/{JOB_NR}
     write_logfile(filename, "a", output=synop_log)
 
     if (JOB_NR > 0 and JOB_NR == PASS_NR):
+        open(test_changes_list, 'a').close()
         SUCCESS = "SUCCESS"
-        comment_log = f"""NOTES:
+        comment_log = f"""
+NOTES:
 A file test_changes.list was generated but is empty.
 If you are using this log as a pull request verification, please commit test_changes.list.
 
@@ -152,6 +157,10 @@ Result: {SUCCESS}
 """
         write_logfile(filename, "a", output=comment_log)
     else:
+        with open(test_changes_list, 'w') as listfile:
+            for line in failed_list:
+                listfile.write(f"{line}\n")
+            listfile.close()
         SUCCESS = "FAILED"
         comment_log = f"""
 NOTES:
