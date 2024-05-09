@@ -11,6 +11,8 @@ def finish_log():
     MACHINE_ID = os.getenv('MACHINE_ID')
     REGRESSIONTEST_LOG = PATHRT+'/logs/RegressionTests_'+MACHINE_ID+'.log'
     filename   = REGRESSIONTEST_LOG
+    KEEP_RUNDIR= str(os.getenv('KEEP_RUNDIR'))
+    ROCOTO     = str(os.getenv('ROCOTO'))
 
     run_logs= f"""
 """
