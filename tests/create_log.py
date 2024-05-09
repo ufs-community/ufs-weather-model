@@ -140,21 +140,31 @@ Tests Completed: {PASS_NR}/{JOB_NR}
 """    
     write_logfile(filename, "a", output=synop_log)
 
-    if (JOB_NR == PASS_NR):
+    if (JOB_NR > 0 and JOB_NR == PASS_NR):
         SUCCESS = "SUCCESS"
-    else:
-        SUCCESS = "FAILED"
-        
-    comment_log = f"""NOTES:
-A file 'test_changes.list' was generated but is empty.
-If you are using this log as a pull request verification, please commit 'test_changes.list'.
+        comment_log = f"""NOTES:
+A file test_changes.list was generated but is empty.
+If you are using this log as a pull request verification, please commit test_changes.list.
 
 Result: {SUCCESS}
 
 ====END OF {MACHINE_ID} REGRESSION TESTING LOG====
 """
-    write_logfile(filename, "a", output=comment_log)
+        write_logfile(filename, "a", output=comment_log)
+    else:
+        SUCCESS = "FAILED"
+        comment_log = f"""
+NOTES:
+A file test_changes.list was generated with list of all failed tests.
+You can use './rt.sh -c -b test_changes.list' to create baselines for the failed tests.
+If you are using this log as a pull request verification, please commit test_changes.list.
 
+Result: FAILURE
+
+====END OF {MACHINE_ID} REGRESSION TESTING LOG====
+"""
+        write_logfile(filename, "a", output=comment_log)
+   
     print("Performing Cleanup...")
     exefiles= PATHRT+'/fv3_*.*x*'; delete_files(exefiles)
     modfiles= PATHRT+'/modules.fv3_*'; delete_files(modfiles)
