@@ -2,6 +2,33 @@ import os
 import sys
 import subprocess
 
+def link_new_baselines():
+    USER = str(os.environ.get('USER'))
+    MACHINE_ID = os.getenv('MACHINE_ID')        
+    PATHRT     = os.getenv('PATHRT')
+    with open("baseline_setup.yaml", 'r') as f:
+        exp_config = yaml.load(f) #, Loader=yaml.FullLoader)
+        base  = exp_config[MACHINE_ID]
+        DISKNM= str(base['DISKNM'])
+        STMP  = str(base['STMP'])
+        PTMP  = str(base['PTMP'])
+        path  = STMP+'/'+USER
+        RTPWD = path + '/FV3_RT/REGRESSION_TEST'
+        f.close()
+    #--- capture user's NEW_BASELINE location ----
+    logfile    = PATHRT+'/logs/RegressionTests_'+MACHINE_ID+'.log'
+    logheads   = file(logfile)
+    for line in logheads:
+        if "BASELINE DIRECTORY:" in line:
+            NEW_BASELINE=line.split(" ")[1]
+            break
+    logheads.close()
+    #--- symlink verified baseline cases to users new baseline ---
+    os.environ["NEW_BASELINE"] = RTPWD
+    os.environ["NEW_BASELINE"] = NEW_BASELINE
+    symlink_baselines = subprocess.Popen(['bash', '-c', '. ufs_test_utils.sh; link_new_baselines'])
+    symlink_baselines.wait()
+    
 def get_testdep(casename,val):
     test_dep = None
     for test in val:
@@ -32,14 +59,5 @@ def rrmdir(path):
             rrmdir(entry)
         else:
             os.remove(entry)
-    os.rmdir(path)
-#def link_newbaseline():
-    #CREATE_BASELINE
-    #NEW_BASELINES_FILE
-    ## IF -c AND -b; LINK VERIFIED BASELINES TO NEW_BASELINE
-    #if CREATE_BASELINE == 'true' and not NEW_BASELINES_FILE == '':
-    #    for dir in "${RTPWD}"/*/; do
-    #    dir=${dir%*/}
-    #[[ -d "${NEW_BASELINE}/${dir##*/}" ]] && continue
-    #ln -s "${dir%*/}" "${NEW_BASELINE}/"
-  #done
+   os.rmdir(path)
+

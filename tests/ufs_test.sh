@@ -244,11 +244,7 @@ fi
 
 # IF -c AND -b; LINK VERIFIED BASELINES TO NEW_BASELINE
 if [[ $CREATE_BASELINE == true && $NEW_BASELINES_FILE != '' ]]; then
-  for dir in "${RTPWD}"/*/; do
-    dir=${dir%*/}
-    [[ -d "${NEW_BASELINE}/${dir##*/}" ]] && continue
-    ln -s "${dir%*/}" "${NEW_BASELINE}/"
-  done
+    python -c "import ufs_test_utils; ufs_test_utils.link_new_baselines()"
 fi
 
 TEST_END_TIME="$(date '+%Y%m%d %T')"
