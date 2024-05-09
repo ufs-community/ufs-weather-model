@@ -259,6 +259,7 @@ def main_loop():
     RTPWD_NEW_BASELINE = str(os.getenv('RTPWD_NEW_BASELINE'))
     NEW_BASELINE       = str(os.getenv('NEW_BASELINE'))
     CREATE_BASELINE    = str(os.getenv('CREATE_BASELINE'))
+    COMPILE_ONLY       = str(os.getenv('COMPILE_ONLY'))
     with open('bl_date.conf', 'r') as bldate:
         bl_date = str(bldate.readline())
     BL_DATE = bl_date.split("=")[1].strip()
@@ -350,7 +351,7 @@ def main_loop():
                     write_compile_env(SCHEDULER,PARTITION,str(JOB_NR),COMPILE_QUEUE,RUNDIR_ROOT)
                     rocoto_create_compile_task \
                         (MACHINE_ID,COMPILE_ID,ROCOTO_COMPILE_MAXTRIES,MAKE_OPT,ACCNR,COMPILE_QUEUE,PARTITION,ROCOTO_XML)
-                if (str(key) == 'tests'):
+                if (str(key) == 'tests' and not COMPILE_ONLY):
                     JOB_NR+=1
                     if ( ROCOTO ):
                         write_metatask_begin(COMPILE_ID, ROCOTO_XML)
