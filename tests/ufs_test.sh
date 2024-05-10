@@ -178,18 +178,20 @@ fi
 # Display the machine and account using the format detect_machine.sh used:
 echo "Machine: " $MACHINE_ID "    Account: " $ACCNR
 
-if [[ $MACHINE_ID = wcoss2 ]]; then
+check_machine=false
+platforms=( hera orion hercules gaea jet derecho noaacloud )
+for name in "${platforms[@]}"
+do
+  if [[ $MACHINE_ID = "$name" ]]; then
+    check_machine=true
+    break
+  fi
+done
 
-    echo 'WCOSS2'
-
-elif [[ $MACHINE_ID = acorn ]]; then
-
-    echo 'ACORN'
-
-elif [[ $MACHINE_ID = hera ]]; then
+if [[ $check_machine == true ]]; then
     source ${PATHRT}/machine_config/machine_$MACHINE_ID.config
 else
-  die "Unknown machine ID, please edit detect_machine.sh file"
+    die "*** Current support of ufs_test.sh only for hera orion hercules gaea jet derecho noaacloud! ***"
 fi
 
 shift $((OPTIND-1))
