@@ -6,6 +6,8 @@ if [[ "$0" = "${BASH_SOURCE[0]}" ]]; then
   exit 1
 fi
 
+ECFLOW_RUNNING=false
+
 # Note: this file must only contain subroutines, and variables that
 # are not dependent on the caller. Most regression test variables
 # (such as ACCNR) are not set until after rt.sh sources this file.
@@ -658,25 +660,30 @@ ecflow_run() {
   fi
 
   # Start the ecflow_server
+  echo "rt_utils.sh: Checking status of the ecflow_server..."
   set +e
   ecflow_client --ping --host="${ECF_HOST}" --port="${ECF_PORT}"
   not_running=$?
   set -e
   
   if [[ ${not_running} -eq 1 ]]; then
-    echo "ecflow_server is NOT running on ${ECF_HOST}:${ECF_PORT}"
+    echo "rt_utils.sh: ecflow_server is not running on ${ECF_HOST}:${ECF_PORT}"
+    echo "rt_utils.sh: attempting to start ecflow_server..."
     
-    if [[ ${MACHINE_ID} == wcoss2 || ${MACHINE_ID} == acorn ]]; then
-      #shellcheck disable=SC2029
-      ssh "${ECF_HOST}" "bash -l -c \"module load ecflow && ${ECFLOW_START} -p ${ECF_PORT}\""
-    elif [[ ${MACHINE_ID} == hera || ${MACHINE_ID} == jet ]]; then
-      #shellcheck disable=SC2029
-      ssh "${ECF_HOST}" "bash -l -c \"module load ecflow && ${ECFLOW_START} -d ${RUNDIR_ROOT}/ecflow_server\""
-    else
-      ${ECFLOW_START} -p "${ECF_PORT}" -d "${RUNDIR_ROOT}/ecflow_server"
-    fi
-    echo "Since this script is starting the ecflow_server, we will stop it at the end"
-    export STOP_ECFLOW_AT_END=true
+    save_traps=$(trap)
+    trap "" SIGINT  # Ignore INT signal during ecflow startup
+    case ${MACHINE_ID} in
+      wcoss2|acorn|hera|jet)
+        #shellcheck disable=SC2029
+        ssh "${ECF_HOST}" "bash -l -c \"module load ecflow && ${ECFLOW_START} -p ${ECF_PORT}\""
+        ;;
+      *)
+        ${ECFLOW_START} -p "${ECF_PORT}" -d "${RUNDIR_ROOT}/ecflow_server"
+	;;
+    esac
+
+    ECFLOW_RUNNING=true
+    eval "${save_traps}"
     # Try pinging ecflow server now, and erroring out if not there.
     set +e
     ecflow_client --ping --host="${ECF_HOST}" --port="${ECF_PORT}"
@@ -684,25 +691,27 @@ ecflow_run() {
     set -e
     
     if [[ ${not_running} -eq 1 ]]; then
-      echo "ERROR: Failure to start ecflow, exiting..."
+      echo "rt_utils.sh: ERROR -- Failure to start ecflow. Exiting..."
       exit 1
     fi
   else
-    echo "ecflow_server is already running on ${ECF_HOST}:${ECF_PORT}"
+    echo "rt_utils.sh: Confirmed: ecflow_server is running on ${ECF_HOST}:${ECF_PORT}"
+    ECFLOW_RUNNING=true
   fi
   
-  ECFLOW_RUNNING=true
+  echo "rt_utils.sh: Starting ECFLOW tasks..."
   set +e
   ecflow_client --load="${ECFLOW_RUN}/${ECFLOW_SUITE}.def" --host="${ECF_HOST}" --port="${ECF_PORT}"
   ecflow_client --begin="${ECFLOW_SUITE}" --host="${ECF_HOST}" --port="${ECF_PORT}"
   ecflow_client --restart --host="${ECF_HOST}" --port="${ECF_PORT}"
   set -e
+  sleep 10
 
   active_tasks=1
-  sleep 10
   max_active_tasks=$( ecflow_client --get_state "/${ECFLOW_SUITE}" )
   max_active_tasks=$( grep "task " <<< "${max_active_tasks}" )
   max_active_tasks=$( grep -cP 'state:active|state:submitted|state:queued' <<< "${max_active_tasks}" )
+  echo "rt_utils.sh: Total number of tasks processed -- ${max_active_tasks}"
   while [[ "${active_tasks}" -ne 0 ]]
   do
     sleep 10 & wait $!
@@ -716,6 +725,7 @@ ecflow_run() {
   done
 
   sleep 65 # wait one ECF_INTERVAL plus 5 seconds
+  echo "rt_utils.sh: ECFLOW tasks completed, cleaning up suite"
   set +e
   ecflow_client --delete=force yes "/${ECFLOW_SUITE}"
   set -e
@@ -723,39 +733,30 @@ ecflow_run() {
 }
 
 ecflow_kill() {
-  echo "rt_utils.sh: Killing ECFLOW Workflow..."
-   [[ ${ECFLOW_RUNNING:-false} == true ]] || return
-   set +e
-   ecflow_client --suspend "/${ECFLOW_SUITE}"
-   ecflow_client --kill "/${ECFLOW_SUITE}"
-   sleep 20
-   ecflow_client --delete=force yes "/${ECFLOW_SUITE}"
-   set -e
+  [[ ${ECFLOW_RUNNING:-false} == true ]] || return
+  echo "rt_utils.sh: Deleting ECFLOW suite: ${ECFLOW_SUITE}"
+  set +e
+  ecflow_client --suspend "/${ECFLOW_SUITE}"
+  ecflow_client --kill "/${ECFLOW_SUITE}"
+  sleep 20
+  ecflow_client --delete=force yes "/${ECFLOW_SUITE}"
+  set -e
 }
 
 ecflow_stop() {
-  echo "rt_utils.sh: Stopping ECFLOW Workflow..."
   [[ ${ECFLOW_RUNNING:-false} == true ]] || return
+  echo "rt_utils.sh: Checking whether to stop ecflow_server..."
   set +e
   SUITES=$( ecflow_client --get )
   SUITES=$( grep "^suite" <<< "${SUITES}" )
-  echo "SUITES=${SUITES}"
   if [[ -z "${SUITES}" ]]; then
+    echo "rt_utils.sh: No other suites running, stopping ecflow_server"
     ecflow_client --halt=yes
     ecflow_client --check_pt
     ecflow_client --terminate=yes
-  fi
-  if [[ ${STOP_ECFLOW_AT_END} == true ]]; then
-    echo "rt_utils.sh: Stopping ECFLOW Server..."
-    case ${MACHINE_ID} in
-      wcoss2|acorn|hera|jet)
-        #shellcheck disable=SC2029
-        ssh "${ECF_HOST}" "bash -l -c \"${ECFLOW_STOP} -p ${ECF_PORT}\""
-        ;;
-      *)
-        ${ECFLOW_STOP} -p "${ECF_PORT}"
-        ;;
-    esac
+  else
+    echo "rt_utils.sh: Active suites running, NOT stopping ecflow_server..."
+    echo "SUITES are: ${SUITES}"
   fi
   set -e
 }
