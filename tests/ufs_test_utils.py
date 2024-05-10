@@ -1,6 +1,7 @@
 import os
 import sys
 import glob
+import yaml
 import subprocess
 
 def delete_files(deletefiles):
@@ -26,14 +27,15 @@ def link_new_baselines():
         f.close()
     #--- capture user's NEW_BASELINE location ----
     logfile    = PATHRT+'/logs/RegressionTests_'+MACHINE_ID+'.log'
-    logheads   = file(logfile)
-    for line in logheads:
-        if "BASELINE DIRECTORY:" in line:
-            NEW_BASELINE=line.split(" ")[1]
-            break
-    logheads.close()
+    with open(logfile,'r') as flog:
+        logheads= flog.readlines()
+        for line in logheads:   
+            if "BASELINE DIRECTORY:" in line:
+                NEW_BASELINE=line.split(" ")[1]
+                break
+        flog.close()
     #--- symlink verified baseline cases to users new baseline ---
-    os.environ["NEW_BASELINE"] = RTPWD
+    os.environ["RTPWD"] = RTPWD
     os.environ["NEW_BASELINE"] = NEW_BASELINE
     symlink_baselines = subprocess.Popen(['bash', '-c', '. ufs_test_utils.sh; link_new_baselines'])
     symlink_baselines.wait()
@@ -68,5 +70,5 @@ def rrmdir(path):
             rrmdir(entry)
         else:
             os.remove(entry)
-   os.rmdir(path)
+            os.rmdir(path)
 

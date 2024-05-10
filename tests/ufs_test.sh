@@ -77,7 +77,6 @@ COMPILE_ONLY=false
 RTPWD_NEW_BASELINE=false
 TESTS_FILE='ufs_test.yaml'
 NEW_BASELINES_FILE=''
-#DEFINE_CONF_FILE=false
 RUN_SINGLE_TEST=false
 ACCNR=${ACCNR:-""}
 UFS_TEST_YAML="ufs_test.yaml"
@@ -193,8 +192,6 @@ else
   die "Unknown machine ID, please edit detect_machine.sh file"
 fi
 
-#source bl_date.conf
-
 shift $((OPTIND-1))
 [[ $# -gt 1 ]] && usage
 
@@ -220,13 +217,11 @@ export ROCOTO
 export ECFLOW
 export MACHINE_ID
 export RTPWD_NEW_BASELINE
-#export NEW_BASELINE
 export CREATE_BASELINE
 export RTVERBOSE
 
 export TESTS_FILE
 export NEW_BASELINES_FILE
-#export DEFINE_CONF_FILE
 export RUN_SINGLE_TEST
 export COMPILE_ONLY
 export delete_rundir

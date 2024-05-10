@@ -143,7 +143,9 @@ Tests Completed: {PASS_NR}/{JOB_NR}
 """    
     write_logfile(filename, "a", output=synop_log)
 
-    if (JOB_NR > 0 and JOB_NR == PASS_NR):
+    if (int(JOB_NR) > 0 and int(JOB_NR) == int(PASS_NR)):
+        if os.path.isfile(test_changes_list):
+            delete_files(test_changes_list)
         open(test_changes_list, 'a').close()
         SUCCESS = "SUCCESS"
         comment_log = f"""
@@ -181,7 +183,7 @@ Result: FAILURE
     tmpfiles= PATHRT+'/keep_tests.tmp'; delete_files(tmpfiles)
     if KEEP_RUNDIR == 'false':
         rundir = PATHRT+'/run_dir'
-        rrmdir(rundir)
+        os.unlink(rundir)
     if ROCOTO == 'true':
         rocotofiles=PATHRT+'/rocoto*'
         delete_files(rocotofiles)
