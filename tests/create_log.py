@@ -36,17 +36,6 @@ def finish_log():
                     COMPILE_ID  = apps+'_'+RT_COMPILER
                     COMPILE_LOG = 'compile_'+COMPILE_ID+'.log'
                     COMPILE_LOG_TIME ='compile_'+COMPILE_ID+'_timestamp.txt'
-                    f = open('./logs/log_'+MACHINE_ID+'/'+COMPILE_LOG_TIME)
-                    timing_data = f.read()
-                    first_line = timing_data.split('\n', 1)[0]
-                    etime = int(first_line.split(",")[4].strip()) - int(first_line.split(",")[1].strip())
-                    btime = int(first_line.split(",")[3].strip()) - int(first_line.split(",")[2].strip())
-                    etime_min, etime_sec = divmod(int(etime), 60)
-                    etime_min = f"{etime_min:02}"; etime_sec = f"{etime_sec:02}"
-                    btime_min, btime_sec = divmod(int(btime), 60)
-                    btime_min = f"{btime_min:02}"; btime_sec = f"{btime_sec:02}"
-                    time_log = " ["+etime_min+':'+etime_sec+', '+btime_min+':'+btime_sec+"]"
-                    f.close()
                     with open('./logs/log_'+MACHINE_ID+'/'+COMPILE_LOG) as f:
                         if "[100%] Linking Fortran executable" in f.read():
                             COMPILE_PASS += 1
@@ -66,6 +55,17 @@ def finish_log():
                                 warning_log = "("+str(count_warning)+" warnings"
                             if count_remarks > 0:
                                 warning_log+= ","+str(count_remarks)+" remarks)"
+                            flog = open('./logs/log_'+MACHINE_ID+'/'+COMPILE_LOG_TIME)
+                            timing_data = flog.read()
+                            first_line = timing_data.split('\n', 1)[0]
+                            etime = int(first_line.split(",")[4].strip()) - int(first_line.split(",")[1].strip())
+                            btime = int(first_line.split(",")[3].strip()) - int(first_line.split(",")[2].strip())
+                            etime_min, etime_sec = divmod(int(etime), 60)
+                            etime_min = f"{etime_min:02}"; etime_sec = f"{etime_sec:02}"
+                            btime_min, btime_sec = divmod(int(btime), 60)
+                            btime_min = f"{btime_min:02}"; btime_sec = f"{btime_sec:02}"
+                            time_log = " ["+etime_min+':'+etime_sec+', '+btime_min+':'+btime_sec+"]"
+                            flog.close()
                             compile_log = "PASS -- COMPILE "+COMPILE_ID+time_log+warning_log+"\n"
                         else:
                             compile_log = "FAIL -- COMPILE "+COMPILE_ID+"\n"                        
@@ -79,17 +79,6 @@ def finish_log():
                         TEST_ID   = TEST_NAME+'_'+RT_COMPILER
                         TEST_LOG  = 'rt_'+TEST_ID+'.log'
                         TEST_LOG_TIME= 'run_'+TEST_ID+'_timestamp.txt'
-                        f = open('./logs/log_'+MACHINE_ID+'/'+TEST_LOG_TIME)
-                        timing_data = f.read()
-                        first_line = timing_data.split('\n', 1)[0]
-                        etime = str(int(first_line.split(",")[4].strip()) - int(first_line.split(",")[1].strip()))
-                        rtime = str(int(first_line.split(",")[3].strip()) - int(first_line.split(",")[2].strip()))
-                        etime_min, etime_sec = divmod(int(etime), 60)
-                        etime_min = f"{etime_min:02}"; etime_sec = f"{etime_sec:02}"
-                        rtime_min, rtime_sec = divmod(int(rtime), 60)
-                        rtime_min = f"{rtime_min:02}"; rtime_sec = f"{rtime_sec:02}"
-                        time_log = " ["+etime_min+':'+etime_sec+', '+rtime_min+':'+rtime_sec+"]"
-                        f.close()                        
                         if 'dependency' in config.keys():
                             DEP_RUN = str(config['dependency'])+'_'+RT_COMPILER
                         else:
@@ -101,6 +90,18 @@ def finish_log():
                             if PASS_CHECK in f.read():
                                 pass_flag = True
                         f.close()
+                        if pass_flag:
+                            f = open('./logs/log_'+MACHINE_ID+'/'+TEST_LOG_TIME)
+                            timing_data = f.read()
+                            first_line = timing_data.split('\n', 1)[0]
+                            etime = str(int(first_line.split(",")[4].strip()) - int(first_line.split(",")[1].strip()))
+                            rtime = str(int(first_line.split(",")[3].strip()) - int(first_line.split(",")[2].strip()))
+                            etime_min, etime_sec = divmod(int(etime), 60)
+                            etime_min = f"{etime_min:02}"; etime_sec = f"{etime_sec:02}"
+                            rtime_min, rtime_sec = divmod(int(rtime), 60)
+                            rtime_min = f"{rtime_min:02}"; rtime_sec = f"{rtime_sec:02}"
+                            time_log = " ["+etime_min+':'+etime_sec+', '+rtime_min+':'+rtime_sec+"]"
+                            f.close()
                         with open('./logs/log_'+MACHINE_ID+'/'+TEST_LOG) as f:
                             if pass_flag :
                                 rtlog_file = f.readlines()
