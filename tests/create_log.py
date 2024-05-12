@@ -13,6 +13,7 @@ def finish_log():
     filename   = REGRESSIONTEST_LOG
     KEEP_RUNDIR= str(os.getenv('KEEP_RUNDIR'))
     ROCOTO     = str(os.getenv('ROCOTO'))
+    COMPILE_ONLY = str(os.getenv('COMPILE_ONLY'))
 
     run_logs= f"""
 """
@@ -70,7 +71,7 @@ def finish_log():
                             compile_log = "FAIL -- COMPILE "+COMPILE_ID+"\n"                        
                         f.close()
                     run_logs += compile_log
-                if (str(key) == 'tests'):
+                if (str(key) == 'tests' and COMPILE_ONLY == 'false'):
                     for test in val:
                         JOB_NR+=1
                         case, config = get_testcase(test)

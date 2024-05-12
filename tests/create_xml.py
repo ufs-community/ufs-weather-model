@@ -288,7 +288,9 @@ def main_loop():
     NEW_BASELINE = path + '/FV3_RT/REGRESSION_TEST'
     if (RUNDIR_ROOT == "None"): RUNDIR_ROOT=PTMP+'/'+USER+'/FV3_RT/rt_'+pid  
     os.makedirs(RUNDIR_ROOT, exist_ok=True)
-    if(os.path.isdir(PATHRT+'/run_dir')): os.unlink(PATHRT+'/run_dir')
+    if (os.path.islink(PATHRT+'/run_dir')): os.unlink(PATHRT+'/run_dir')
+    if (os.path.isfile(PATHRT+'/run_dir')): os.remove(PATHRT+'/run_dir')
+    if (os.path.isdir(PATHRT+'/run_dir')):  rrmdir(PATHRT+'/run_dir')
     print('Linking ',RUNDIR_ROOT,' to ',PATHRT,'/run_dir')
     os.symlink(RUNDIR_ROOT,PATHRT+'/run_dir')
     print('Run regression test in: ',RUNDIR_ROOT)
@@ -351,7 +353,7 @@ def main_loop():
                     write_compile_env(SCHEDULER,PARTITION,str(JOB_NR),COMPILE_QUEUE,RUNDIR_ROOT)
                     rocoto_create_compile_task \
                         (MACHINE_ID,COMPILE_ID,ROCOTO_COMPILE_MAXTRIES,MAKE_OPT,ACCNR,COMPILE_QUEUE,PARTITION,ROCOTO_XML)
-                if (str(key) == 'tests' and not COMPILE_ONLY):
+                if (str(key) == 'tests' and COMPILE_ONLY == 'false'):
                     JOB_NR+=1
                     if ( ROCOTO ):
                         write_metatask_begin(COMPILE_ID, ROCOTO_XML)
