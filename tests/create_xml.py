@@ -265,7 +265,7 @@ def main_loop():
     BL_DATE = bl_date.split("=")[1].strip()
     with open("baseline_setup.yaml", 'r') as f:
         exp_config = yaml.load(f) #, Loader=yaml.FullLoader)
-        base = exp_config['hera']
+        base = exp_config[MACHINE_ID]
         USER = str(os.environ.get('USER')) #os.environ.get('USERNAME')) #os.getlogin()
         pid  = str(os.getpid())
 

@@ -231,7 +231,7 @@ export skip_check_results
 export KEEP_RUNDIR  
 
 python -c "import create_xml; create_xml.main_loop()"
-if [[ $? != 0]]; then
+if [[ $? != 0 ]]; then
     echo "*** experiment setup didn't run successfully! ***"
 fi
 
