@@ -69,6 +69,10 @@ def generateStage(nodeLabel) {
                             cd $WORKSPACE/tests/
                           elif [[ $machine =~ "Orion" ]]
                           then
+                            cd ..
+                            module load git/2.28.0
+                            git submodule update --init --recursive
+                            cd tests
                             echo "Creating baselines on $machine"
                             export dprefix=/work2/noaa/$ACCNR/$USER
                             sed -i 's|/work/noaa/stmp/${USER}|/work/noaa/epic/stmp/role-epic/|g' rt.sh
@@ -214,6 +218,10 @@ def generateStage(nodeLabel) {
                           elif [[ $machine =~ "Orion" ]]
                           then
                            echo "Running regression tests on $machine"
+                            cd ..
+                            module load git/2.28.0
+                            git submodule update --init --recursive
+                            cd tests
                             export dprefix=/work2/noaa/$ACCNR/$USER
                             sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
                             ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
