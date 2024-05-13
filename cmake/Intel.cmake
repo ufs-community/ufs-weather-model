@@ -7,6 +7,9 @@ set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -diag-disable 5462")
 # remark #7712: This variable has not been used.
 set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -diag-disable 7712")
 
+# remark #8291: Recommended relationship between field width 'W' and the number of fractional digits 'D' in this edit descriptor is 'W>=D+7'.
+set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -diag-disable 8291")
+
 if(CMAKE_Platform STREQUAL "derecho.intel")
   set(CMAKE_Fortran_LINK_FLAGS "-Wl,--copy-dt-needed-entries")
 endif()
