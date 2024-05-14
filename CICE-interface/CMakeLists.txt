@@ -2,8 +2,6 @@
 if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -g -fbacktrace")
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fconvert=big-endian -ffree-line-length-none ")
-  #Set CPP defintions for the ufs/cdeps_share source component of the cmeps target library
-  #list(APPEND CDEPS_SHARE_DEFS "CPRGNU")
   if(${CMAKE_Fortran_COMPILER_VERSION} VERSION_GREATER_EQUAL 10)
     set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fallow-argument-mismatch -fallow-invalid-boz")
   endif()
@@ -16,8 +14,6 @@ elseif(CMAKE_Fortran_COMPILER_ID MATCHES "Intel")
   set(CMAKE_Fortran_FLAGS_RELEASE "-O2 -fp-model precise")
   set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -check uninit -check bounds -check pointers -fpe0 -check noarg_temp_created -init=snan,arrays")
   set(CMAKE_Fortran_LINK_FLAGS "")
-  #Set CPP defintions for the ufs/cdeps_share source component of the cmeps target library
-  #list(APPEND CDEPS_SHARE_DEFS "CPRINTEL")
 else()
   message(WARNING "Fortran compiler with ID ${CMAKE_Fortran_COMPILER_ID} will be used with CMake default options")
 endif()
