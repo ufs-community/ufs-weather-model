@@ -97,8 +97,7 @@ function compute_petbounds_and_tasks() {
 }
 
 interrupt_job() {
-  echo "rt_utils.sh: Job ${jobid} interupted"
-  #echo "run_util.sh: interrupt_job called | Job#: ${jobid}"
+  echo "rt_utils.sh: Job ${jobid} interrupted"
   case ${SCHEDULER} in
     pbs)
       qdel "${jobid}"
@@ -398,7 +397,7 @@ kill_job() {
 
 rocoto_create_compile_task() {
   echo "rt_utils.sh: ${COMPILE_ID}: Creating ROCOTO compile task."
-  #new_compile=true
+  new_compile=true
   if [[ ${in_metatask} == true ]]; then
     in_metatask=false
     echo "  </metatask>" >> "${ROCOTO_XML}"
@@ -574,7 +573,6 @@ rocoto_run() {
 ecflow_create_compile_task() {
   echo "rt_utils.sh: ${COMPILE_ID}: Creating ECFLOW compile task"
   export new_compile=true
-
 
   cat << EOF > "${ECFLOW_RUN}/${ECFLOW_SUITE}/compile_${COMPILE_ID}.ecf"
 %include <head.h>
