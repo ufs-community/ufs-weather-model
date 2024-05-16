@@ -28,7 +28,6 @@ usage() {
   echo "  -v  verbose output"
   echo "  -w  for weekly_test, skip comparing baseline results"
   echo
-  set -x
 }
 
 [[ $# -eq 0 ]] && usage
@@ -155,7 +154,6 @@ update_rtconf() {
 
 generate_log() {
   echo "rt.sh: Generating Regression Testing Log..."
-  set -x
   COMPILE_COUNTER=0
   FAILED_COMPILES=()
   TEST_COUNTER=0
@@ -674,13 +672,9 @@ done
 #B&N not run together
 [[ ${NEW_BASELINES_FILE} != '' && ${RUN_SINGLE_TEST} == true ]] && die "-b and -n options cannot be used at the same time"
 
-[[ -o xtrace ]] && set_x='set -x' || set_x='set +x'
-
 if [[ ${RTVERBOSE} == true ]]; then
   set -x
 fi
-
-[[ -o xtrace ]] && set_x='set -x' || set_x='set +x'
 
 if [[ -z "${ACCNR}" ]]; then
   echo "Please use -a <account> to set group account to use on HPC"
@@ -694,7 +688,6 @@ echo "Account: ${ACCNR}"
 case ${MACHINE_ID} in
   wcoss2|acorn)
     echo "rt.sh: Setting up WCOSS2/Acorn"
-    set -x
     if [[ "${ECFLOW:-false}" == true ]] ; then
       module load ecflow/5.6.0.13
     fi
@@ -714,7 +707,6 @@ case ${MACHINE_ID} in
     ;;
   gaea)
     echo "rt.sh: Setting up gaea..."
-    set -x
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module use /ncrc/proj/epic/rocoto/modulefiles
       module load rocoto
@@ -747,7 +739,6 @@ case ${MACHINE_ID} in
     ;;
   hera)
     echo "rt.sh: Setting up hera..."
-    set -x
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module load rocoto
       ROCOTO_SCHEDULER=slurm
@@ -770,7 +761,6 @@ case ${MACHINE_ID} in
     ;;
   orion)
     echo "rt.sh: Setting up orion..."
-    set -x
     module load git/2.28.0
     module load gcc/10.2.0
     module load python/3.9.2
@@ -800,7 +790,6 @@ case ${MACHINE_ID} in
     ;;
   hercules)
     echo "rt.sh: Setting up hercules..."
-    set -x
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module load contrib rocoto
       ROCOTO_SCHEDULER="slurm"
@@ -828,7 +817,6 @@ case ${MACHINE_ID} in
     ;;
   jet)
     echo "rt.sh: Setting up jet..."
-    set -x
     CurJetOS=$(lsb_release -is)
     echo "=======Running on ${CurJetOS}======="
     if [[ ${CurJetOS} == "CentOS" ]]; then
@@ -861,7 +849,6 @@ case ${MACHINE_ID} in
     ;;
   s4)
     echo "rt.sh: Setting up s4..."
-    set -x
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module load rocoto/1.3.2
       ROCOTO_SCHEDULER=slurm
@@ -892,7 +879,6 @@ case ${MACHINE_ID} in
     ;;
   derecho)
     echo "rt.sh: Setting up derecho..."
-    set -x
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module use /glade/work/epicufsrt/contrib/derecho/rocoto/modulefiles
       module load rocoto
@@ -930,7 +916,6 @@ case ${MACHINE_ID} in
     ;;
   stampede)
     echo "rt.sh: Setting up stampede..."
-    set -x
     export PYTHONPATH=
     if [[ "${ECFLOW:-false}" == true ]] ; then
       ECFLOW_START=
@@ -948,7 +933,6 @@ case ${MACHINE_ID} in
     ;;
   expanse)
     echo "rt.sh: Setting up expanse..."
-    set -x
     export PYTHONPATH=
 
     if [[ "${ECFLOW:-false}" == true ]] ; then
@@ -965,7 +949,6 @@ case ${MACHINE_ID} in
     ;;
   noaacloud)
     echo "rt.sh: Setting up noaacloud..."
-    set -x
     export PATH="/contrib/EPIC/bin:${PATH}"
     module use /apps/modules/modulefiles
 
@@ -987,7 +970,6 @@ case ${MACHINE_ID} in
     die "Unknown machine ID, please edit detect_machine.sh file"
     ;;
 esac
-eval "${set_x}"
 
 mkdir -p "${STMP}/${USER}"
 
@@ -1374,5 +1356,4 @@ fi
 
 ## Lets verify all tests were run and that they passed
 generate_log
-eval "${set_x}"
 echo "******Regression Testing Script Completed******"

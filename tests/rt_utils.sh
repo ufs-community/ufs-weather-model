@@ -16,8 +16,7 @@ jobid=0
 
 function compute_petbounds_and_tasks() {
   echo "rt_utils.sh: ${TEST_ID}: Computing PET bounds and tasks."
-  [[ -o xtrace ]] && set_x='set -x' || set_x='set +x'
-  set +x
+
   # each test MUST define ${COMPONENT}_tasks variable for all components it is using
   # and MUST NOT define those that it's not using or set the value to 0.
 
@@ -96,12 +95,10 @@ function compute_petbounds_and_tasks() {
 
   # TASKS is now set to UFS_TASKS
   export TASKS=${UFS_tasks}
-  eval "${set_x}"
 }
 
 interrupt_job() {
   echo "rt_utils.sh: Job ${jobid} interupted"
-  set -x
   #echo "run_util.sh: interrupt_job called | Job#: ${jobid}"
   case ${SCHEDULER} in
     pbs)
@@ -119,9 +116,6 @@ interrupt_job() {
 submit_and_wait() {
   echo "rt_utils.sh: Submitting job on scheduler: ${SCHEDULER}"
   [[ -z $1 ]] && exit 1
-
-  [[ -o xtrace ]] && set_x='set -x' || set_x='set +x'
-  set +x
 
   local -r job_card=$1
 
@@ -156,9 +150,9 @@ submit_and_wait() {
   do
     case ${SCHEDULER} in
       pbs)
-	set +e
+        set +e
         job_info=$( qstat "${jobid}" )
-	set -e
+        set -e
         ;;
       slurm)
         job_info=$( squeue -u "${USER}" -j "${jobid}" )
@@ -185,9 +179,9 @@ submit_and_wait() {
   do
     case ${SCHEDULER} in
       pbs)
-	set +e
+        set +e
         job_info=$( qstat "${jobid}" )
-	set -e
+        set -e
         ;;
       slurm)
         job_info=$( squeue -u "${USER}" -j "${jobid}" )
@@ -253,14 +247,10 @@ submit_and_wait() {
     (( n=n+1 ))
     sleep 60 & wait $!
   done
-
-  eval "${set_x}"
 }
 
 check_results() {
   echo "rt_utils.sh: Checking results of the regression test: ${TEST_ID}"
-  [[ -o xtrace ]] && set_x='set -x' || set_x='set +x'
-  set +x
 
   ROCOTO=${ROCOTO:-false}
   ECFLOW=${ECFLOW:-false}
@@ -271,7 +261,7 @@ check_results() {
   #sleep 60
 
   {
-  echo                                                                      
+  echo
   echo "baseline dir = ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}"
   echo "working dir  = ${RUNDIR}"
   echo "Checking test ${TEST_ID} results ...."
@@ -391,8 +381,6 @@ check_results() {
       exit 1
     fi
   fi
-
-  eval "${set_x}"
 }
 
 
@@ -528,7 +516,7 @@ rocoto_kill() {
 
 rocoto_step() {
     echo "rt_utils.sh: Runnung one iteration of rocotorun and rocotostat..."
-    set -e
+
     echo "Unknown" > rocoto_workflow.state
     # Run one iteration of rocotorun and rocotostat.
     ${ROCOTORUN} -v 10 -w "${ROCOTO_XML}" -d "${ROCOTO_DB}"
@@ -566,19 +554,15 @@ rocoto_run() {
           set -e
 
           if [[ "${state:-Unknown}" == Done ]] ; then
-              set +x
               echo "Rocoto workflow has completed."
-              set -x
               return 0
           elif [[ ${result} == 0 ]] ; then
               break # rocoto_step succeeded
           elif (( now_time-start_time > max_time || step_attempts >= max_step_attempts )) ; then
-              set +x
               hostnamein=$(hostname)
               echo "Rocoto commands have failed ${step_attempts} times, for $(( (now_time-start_time+30)/60 )) minutes."
               echo "There may be something wrong with the ${hostnamein} node or the batch system."
               echo "I'm giving up. Sorry."
-              set -x
               return 2
           fi
           sleep $(( naptime * 2**((step_attempts-1)%4) * RANDOM/32767 ))
@@ -625,7 +609,7 @@ EOF
   else
     echo "      trigger compile_${COMPILE_ID} == complete" >> "${ECFLOW_RUN}/${ECFLOW_SUITE}.def"
   fi
-  
+
 }
 
 ecflow_run() {
@@ -633,7 +617,7 @@ ecflow_run() {
   # NOTE: ECFLOW IS NOT SAFE TO RUN WITH set -e, PLEASE AVOID
   #ECF_HOST="${ECF_HOST:-${HOSTNAME}}"
 
-  
+
   # Make sure ECF_HOST and ECF_PORT are set/ready on systems that have an
   # explicit ecflow node
   if [[ ${MACHINE_ID} == wcoss2 || ${MACHINE_ID} == acorn ]]; then
@@ -665,11 +649,11 @@ ecflow_run() {
   ecflow_client --ping --host="${ECF_HOST}" --port="${ECF_PORT}"
   not_running=$?
   set -e
-  
+
   if [[ ${not_running} -eq 1 ]]; then
     echo "rt_utils.sh: ecflow_server is not running on ${ECF_HOST}:${ECF_PORT}"
     echo "rt_utils.sh: attempting to start ecflow_server..."
-    
+
     save_traps=$(trap)
     trap "" SIGINT  # Ignore INT signal during ecflow startup
     case ${MACHINE_ID} in
@@ -679,7 +663,7 @@ ecflow_run() {
         ;;
       *)
         ${ECFLOW_START} -p "${ECF_PORT}" -d "${RUNDIR_ROOT}/ecflow_server"
-	;;
+        ;;
     esac
 
     ECFLOW_RUNNING=true
@@ -689,7 +673,7 @@ ecflow_run() {
     ecflow_client --ping --host="${ECF_HOST}" --port="${ECF_PORT}"
     not_running=$?
     set -e
-    
+
     if [[ ${not_running} -eq 1 ]]; then
       echo "rt_utils.sh: ERROR -- Failure to start ecflow. Exiting..."
       exit 1
@@ -698,7 +682,7 @@ ecflow_run() {
     echo "rt_utils.sh: Confirmed: ecflow_server is running on ${ECF_HOST}:${ECF_PORT}"
     ECFLOW_RUNNING=true
   fi
-  
+
   echo "rt_utils.sh: Starting ECFLOW tasks..."
   set +e
   ecflow_client --load="${ECFLOW_RUN}/${ECFLOW_SUITE}.def" --host="${ECF_HOST}" --port="${ECF_PORT}"
