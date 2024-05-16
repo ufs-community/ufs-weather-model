@@ -712,6 +712,7 @@ ecflow_run() {
   max_active_tasks=$( grep "task " <<< "${max_active_tasks}" )
   max_active_tasks=$( grep -cP 'state:active|state:submitted|state:queued' <<< "${max_active_tasks}" )
   echo "rt_utils.sh: Total number of tasks processed -- ${max_active_tasks}"
+  prev_active_tasks=${active_tasks}
   while [[ "${active_tasks}" -ne 0 ]]
   do
     sleep 10 & wait $!
@@ -720,7 +721,13 @@ ecflow_run() {
     active_tasks=$( grep "task " <<< "${active_tasks}" )
     active_tasks=$( grep -cP 'state:active|state:submitted|state:queued' <<< "${active_tasks}" )
     set -e
-    echo "ECFLOW Tasks Remaining: ${active_tasks}/${max_active_tasks}"
+    if [[ ${active_tasks} -ne ${prev_active_tasks} ]]; then
+      echo
+      echo -n "ECFLOW Tasks Remaining: ${active_tasks}/${max_active_tasks} "
+      prev_active_tasks=${active_tasks}
+    else
+      echo -n "."
+    fi
     "${PATHRT}/abort_dep_tasks.py"
   done
 
