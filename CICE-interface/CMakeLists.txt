@@ -51,25 +51,8 @@ list(APPEND lib_src_files
   ${cice_shared_files_c}
   ${icepack_files}
   ${cice_mpi_comm_files}
-  ${cice_nuopc_cmeps_driver_files})
-
-# ice prescribed
-  list(APPEND lib_src_files
-    ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_orb_mod.F90
-    ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_const_mod.F90
-    ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_abort_mod.F90
-    ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_strconvert_mod.F90
-    ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_log_mod.F90
-    ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_sys_mod.F90
-    ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_kind_mod.F90
-    ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_nl_mod.F90
-    ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_cal_mod.F90
-    ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_string_mod.F90
-    ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_timer_mod.F90
-    ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/streams/dshr_strdata_mod.F90
-    ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/streams/dshr_stream_mod.F90
-    ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/streams/dshr_methods_mod.F90
-    ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/dshr/dshr_mod.F90)
+  ${cice_nuopc_cmeps_driver_files}
+  ${cice_cdeps_inline_files})
 
 list(APPEND _cice_defs FORTRANUNDERSCORE
                        coupled)
@@ -103,9 +86,9 @@ if(OpenMP_Fortran_FOUND)
 endif()
 
 # ice prescribed
-  add_dependencies(cice cdeps::cdeps)
-  target_compile_definitions(cice PUBLIC "DISABLE_FoX")
-  target_link_libraries(cice PUBLIC cdeps::cdeps)
+add_dependencies(cice cdeps::cdeps)
+target_compile_definitions(cice PUBLIC "DISABLE_FoX")
+target_link_libraries(cice PUBLIC cdeps::cdeps)
 
 ###############################################################################
 ### Install
