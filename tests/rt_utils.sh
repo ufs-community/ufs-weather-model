@@ -15,7 +15,6 @@ ECFLOW_RUNNING=false
 jobid=0
 
 function compute_petbounds_and_tasks() {
-  echo "rt_utils.sh: ${TEST_ID}: Computing PET bounds and tasks."
 
   # each test MUST define ${COMPONENT}_tasks variable for all components it is using
   # and MUST NOT define those that it's not using or set the value to 0.
