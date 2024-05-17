@@ -1231,6 +1231,10 @@ export AOD_FRQ=060000
 export RESTART_FILE_PREFIX=''
 export RESTART_FILE_SUFFIX_SECS=''
 export RT35D=''
+
+#CDEPS ds2s
+export MESH_DICE=none
+export stream_files_dice=none
 }
 export_35d_run ()
 {

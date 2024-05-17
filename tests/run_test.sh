@@ -319,7 +319,6 @@ fi
 
 if [[ ${CICE_PRESCRIBED} = 'true' ]]; then
   atparse < "${PATHRT}"/parm/ice_in.IN > ice_in
-  atparse < "${PATHRT}"/parm/ice_in_pcice.IN >> ice_in
 fi
 
 if [[ ${CDEPS_INLINE} = 'true' ]]; then
