@@ -230,15 +230,15 @@ submit_and_wait() {
       #fail/completed cases
       #pbs: E
       #slurm: F/FAILED TO/TIMEOUT CA/CANCELLED
-      E|F|TO|CA|FAILED|TIMEOUT|CANCELLED)
+      F|TO|CA|FAILED|TIMEOUT|CANCELLED)
         echo "rt_utils.sh: !!!!!!!!!!JOB TERMINATED!!!!!!!!!!"
         job_running=false #Trip the loop to end with these status flags
         interrupt_job
         exit 1
         ;;
       #completed
-      #pbs only: C
-      C)
+      #pbs only: C-Complete E-Exiting
+      C|E)
         status_label='Completed'
         ;;
       *)
