@@ -556,6 +556,14 @@ export EXTERNAL_IC=.true.
 export MAKE_NH=.true.
 export MOUNTAIN=.false.
 export NA_INIT=1
+export DO_VORT_DAMP=.true.
+export HYDROSTATIC=.false.
+export KORD_XX=9
+export KORD_TM=-9
+export D_CON=1.
+export HORD_XX=5
+export HORD_DP=-5
+export HORD_TR=8
 
 # Radiation
 export DO_RRTMGP=.false.
