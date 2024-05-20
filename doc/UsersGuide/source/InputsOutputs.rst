@@ -1304,7 +1304,12 @@ These field section entries are described in :numref:`Table %s <FieldDescription
 
 Comments can be added to the diag_table using the hash symbol (``#``).
 
-.. list-table:: *Each WM component has its own diag_table with associated varialbes. Below is the full set of options.*
+
+Each WM component has its own ``diag_table`` with associated variables. :numref:`Table %s <diag-table-options>` contains links to the full set of options for each WM component.
+
+.. _diag-table-options:
+
+.. list-table:: * *diag_table* Options for WM Components*
    :widths: 16 24 
    :header-rows: 1
 
