@@ -1639,7 +1639,7 @@ A sample of the file contents is shown below:
 However, ``ufs.configure`` files for other configurations of the Weather Model are more complex. A full set of ``ufs.configure`` templates is available in the ``ufs-weather-model/tests/parm/`` directory `here <https://github.com/ufs-community/ufs-weather-model/tree/develop/tests/parm>`__. Template names follow the pattern ``ufs.configure.*.IN``. A number of samples are available below: 
 
    * `ATMAQ <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.atmaq.IN>`__ configuration
-   * `S2S <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.s2s_aoflux.IN>`__ (fully coupled ``S2S`` configuration that receives atmosphere-ocean fluxes from a mediator)
+   * `S2S <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.s2s_aoflux_esmf.IN>`__ (fully coupled ``S2S`` configuration that receives atmosphere-ocean fluxes from a mediator)
    * `S2SW <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.s2sw.IN>`__ (fully coupled ``S2SW`` configuration)
    * `S2SWA <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.s2swa.IN>`__ (coupled GOCART in the S2SAW configuration)
    * `ATM-LND <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.atm_lnd.IN>`__ (ATML configuration)
@@ -2288,7 +2288,7 @@ on the monthly, daily, hourly, yearly or timestep intervals set by the *histfreq
 *0* for both monthly and daily frequencies and neither yearly nor per-timestep output is requested, only 6-hour
 mean history files will be produced.
 
-Further details of the configuration of CICE model output can be found in the CICE documentation `Section 3.1.4 <https://cice-consortium-cice.readthedocs.io/en/main/user_guide/ug_implementation.html#model-output>`__.
+Further details of the configuration of CICE model output can be found in the CICE documentation `Section 3.1.4 <https://cice-consortium-cice.readthedocs.io/en/main/user_guide/ug_implementation.html#model-input-and-output>`__.
 
 .. _ww3-out:
 
