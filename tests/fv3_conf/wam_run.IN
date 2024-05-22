@@ -1,6 +1,5 @@
 inputdir=FV3_input_data_L149
 FV3_FIX=@[INPUTDATA_ROOT]/FV3_fix/
-#WAM_FIX=@[INPUTDATA_ROOT]/${inputdir}/FV3_input_data_wam
 if [ $WARM_START = .true. ]; then
   mkdir INPUT RESTART
   cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT/* ./INPUT
@@ -8,17 +7,6 @@ if [ $WARM_START = .true. ]; then
 else
   mkdir INPUT RESTART
   cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_C/* ./INPUT/.
-#  cp ${WAM_FIX}/global*dat ./
-#  cp ${WAM_FIX}/global_idea_coeff_lte* ./
-#  cp ${WAM_FIX}/global_idea_ggww* ./
-#  cp ${WAM_FIX}/global_idea_h2o*  ./
-#  cp ${WAM_FIX}/swio_waminput.nc  ./
-#  cp ${WAM_FIX}/snoe_eof.nc  ./
-#  cp ${WAM_FIX}/tiros_tjr.nc ./
-#  cp ${WAM_FIX}/iondata_tjr.nc ./
-#  cp ${WAM_FIX}/wam_rm3_globcomp.nc ./
-#  cp ${WAM_FIX}/ionprof ./
-#  cp ${WAM_FIX}/tiros_spectra ./
 fi  
 if [ $TILEDFIX = .true. ]; then
     if [ $CPLLND == .true. ]; then
