@@ -1315,10 +1315,13 @@ Each WM component has its own ``diag_table`` with associated variables. :numref:
 
    * - WM Component
      - Diag Table
+     - Source File
    * - FV3
      - :ref:`FV3 Variables <fv3diagtable>`
+     - `GFS_diagnostics.F90 <https://github.com/NOAA-EMC/fv3atm/blob/develop/ccpp/driver/GFS_diagnostics.F90>`_
    * - MOM6
      - :ref:`MOM6 Variables <mom6diagtable>`
+     - `MOM_diagnostics.F90 <https://github.com/NOAA-EMC/MOM6/blob/main/src/diagnostics/MOM_diagnostics.F90>`_
 
 
 A brief example of the diag_table is shown below.  ``"..."`` denotes where lines have been removed.
