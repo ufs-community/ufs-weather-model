@@ -584,7 +584,7 @@ To run a single test, users can try the following command instead of creating a 
 
    ./rt.sh -r -k -n "control_p8 <compiler>"
 
-where ``compiler`` is ``gnu`` or ``intel``. 
+where ``<compiler>`` is ``gnu`` or ``intel``. 
 
 Troubleshooting
 ^^^^^^^^^^^^^^^^^^
