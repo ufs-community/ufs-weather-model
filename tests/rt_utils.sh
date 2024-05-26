@@ -527,7 +527,7 @@ rocoto_kill() {
 }
 
 rocoto_step() {
-    echo "rt_utils.sh: Runnung one iteration of rocotorun and rocotostat..."
+    echo "rt_utils.sh: Running one iteration of rocotorun and rocotostat..."
     set -e
     echo "Unknown" > rocoto_workflow.state
     # Run one iteration of rocotorun and rocotostat.
