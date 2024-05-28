@@ -966,6 +966,7 @@ export_cice6() {
   export MESH_DICE=none
   export stream_files_dice=none
   export CICE_PRESCRIBED=false
+  export DICE_CDEPS=false
 }
 
 # Defaults for the MOM6 model namelist, mx100
