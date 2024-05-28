@@ -230,15 +230,15 @@ submit_and_wait() {
       #fail/completed cases
       #pbs: E
       #slurm: F/FAILED TO/TIMEOUT CA/CANCELLED
-      E|F|TO|CA|FAILED|TIMEOUT|CANCELLED)
+      F|TO|CA|FAILED|TIMEOUT|CANCELLED)
         echo "rt_utils.sh: !!!!!!!!!!JOB TERMINATED!!!!!!!!!!"
         job_running=false #Trip the loop to end with these status flags
         interrupt_job
         exit 1
         ;;
       #completed
-      #pbs only: C
-      C)
+      #pbs only: C-Complete E-Exiting
+      C|E)
         status_label='Completed'
         ;;
       *)
@@ -527,7 +527,7 @@ rocoto_kill() {
 }
 
 rocoto_step() {
-    echo "rt_utils.sh: Runnung one iteration of rocotorun and rocotostat..."
+    echo "rt_utils.sh: Running one iteration of rocotorun and rocotostat..."
     set -e
     echo "Unknown" > rocoto_workflow.state
     # Run one iteration of rocotorun and rocotostat.
