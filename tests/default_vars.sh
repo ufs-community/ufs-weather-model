@@ -911,7 +911,6 @@ export_cice6() {
   export CICE_USE_RESTART_TIME=.false.
   export CICE_RESTART_DIR=./RESTART/
   export CICE_RESTART_FILE=iced
-  export CICE_PRESCRIBED=false
 
   export CICE_RESTART_FORMAT='pnetcdf2'
   export CICE_RESTART_IOTASKS=-99
@@ -962,6 +961,11 @@ export_cice6() {
   export CICE_BLCKX
   export CICE_BLCKY
   export CICE_DECOMP=slenderX2
+
+  #ds2s
+  export MESH_DICE=none
+  export stream_files_dice=none
+  export CICE_PRESCRIBED=false
 }
 
 # Defaults for the MOM6 model namelist, mx100
