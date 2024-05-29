@@ -697,7 +697,6 @@ case ${MACHINE_ID} in
       module load ecflow/5.6.0.13
     fi
     module load intel/19.1.3.304 python/3.8.6
-    export colonifnco=":output"  # hack
 
     DISKNM="/lfs/h2/emc/nems/noscrub/emc.nems/RT"
     QUEUE="dev"
