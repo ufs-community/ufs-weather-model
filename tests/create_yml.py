@@ -4,6 +4,11 @@ import yaml
 from ufs_test_utils import get_testcase, get_testdep
 
 def update_testyaml(input_list):
+    """Generate temporary test yaml based on list of tests received
+
+    Args:
+        input_list (list): list of tests to run
+    """
     UFS_TEST_YAML = "ufs_test.yaml" # default ufs_test.yaml
     new_yaml = {}
     yaml_item_count = None
@@ -70,6 +75,8 @@ def update_testyaml(input_list):
         file_yaml.close()
 
 def update_testyaml_n():
+    """Update test yaml file for a single test specified in -n <test_name> <compiler>
+    """
     try:
         SRT_NAME     = str(os.getenv('SRT_NAME'))
         SRT_COMPILER = str(os.getenv('SRT_COMPILER'))
@@ -79,6 +86,8 @@ def update_testyaml_n():
     update_testyaml(input_list)
 
 def update_testyaml_b():
+    """Update test yaml file for tests specified in -b <file>
+    """
     NEW_BASELINES_FILE = str(os.getenv('NEW_BASELINES_FILE'))
     input_list=[]
     with open(NEW_BASELINES_FILE) as input_file:
@@ -90,12 +99,28 @@ def update_testyaml_b():
     update_testyaml(input_list)
 
 def string_clean(str_in):
-    str_in=str_in.replace("  "," ").strip()
-    str_in=str_in.replace("  "," ").strip()
-    str_in=str_in.replace("  "," ").strip()
-    str_in=str_in.replace("  "," ").strip()
-    str_out="'"+str_in.replace(" ","','")+"'"
-    return str_out
+    """Strip out RUN or COMPILE whitespace and separate with commas.
+
+    Args:
+        str_in (str): RUN or COMPILE line read in from rt.conf
+
+    Returns:
+        str: whitespace stripped and comma separated values
+    """
+    return "'"+("','".join(str_in.split()))+"'"
+
+def parse_line(str_in):
+    """Parse rt.conf line into list
+
+    Args:
+        str_in (str): RUN or COMPILE line from rt.conf
+
+    Returns:
+        list: list of RUN or COMPILE test attributes
+    """
+    build_attr = " ".join(str_in.split()).split('|')
+    build_attr = [attr.strip() for attr in build_attr]
+    return build_attr
 
 if __name__ == "__main__":
     with open('ufs_test.yaml', 'w') as yaml_file, open("rt.conf") as conf_file:
@@ -106,38 +131,42 @@ if __name__ == "__main__":
             if line.startswith("#"):  # skip: comment line
                 continue
             if line.startswith("COMPILE"):  # COMPILE line
-                build    = line.split('|')
-                apps     =     build[1].strip()
-                compiler = "'"+build[2].strip()+"'"
-                options  = "'"+build[3].strip()+"'"
-                machine  =     build[4].strip()
+                build = parse_line(line)
+                apps = build[1]
+                compiler = f"'{build[2]}'"
+                options = f"'{build[3]}'"
+                machine = build[4]
                 off_machine = None
                 if (machine.find('-') != -1):
-                    off_machine=machine.replace("-","").strip()
-                    off_machine=string_clean(off_machine)
-                yaml_file.write(apps+'_'+build[2].strip()+":"+ '\n')
-                yaml_file.write("  build: "+ '\n')
-                yaml_file.write("    compiler: "+compiler+ '\n')
-                yaml_file.write("    option: "+options+ '\n')
+                    off_machine = machine.replace("-", "").strip()
+                    off_machine = string_clean(off_machine)
+                yaml_file.write(f"{apps}_{build[2].strip()}:\n")
+                yaml_file.write(f"  build: \n")
+                yaml_file.write(f"    compiler: {compiler}\n")
+                yaml_file.write(f"    option: {options}\n")
                 if not (off_machine is None):
-                    yaml_file.write("    turnoff: ["+off_machine+"]"+ '\n')
-                prev_line='COMPILE'
+                    yaml_file.write(f"    turnoff: [{off_machine}]\n")
+                prev_line = 'COMPILE'
             if line.startswith("RUN"):  # RUN line
-                build    = line.split('|')
-                test     =     build[1].strip()
-                machine  =     build[2].strip()
-                baseline = "'"+build[3].strip()+"'"
-                depend   =     build[4].strip()
+                build = parse_line(line)
+                test = build[1]
+                machine = build[2]
+                baseline = f"'{build[3]}'"
+                depend = build[4]
                 if (machine.find('-') != -1):
-                    off_machine=machine.replace("-","").strip()
-                    off_machine=string_clean(off_machine)
-                tests = "    "+"- "+test+": {'project':['daily']"
-                if baseline.isalnum(): tests = tests + ",'baseline': "+baseline
-                if depend and depend.strip(): tests = tests + ",'dependency':'"+depend+"'"                
-                if not (off_machine is None): tests = tests +",'turnoff':["+off_machine+"]"
-                if prev_line == "COMPILE": yaml_file.write("  tests: "+ '\n')
-                yaml_file.write(tests+"}"+ '\n')                
-                prev_line='RUN'
-        
+                    off_machine = machine.replace("-", "").strip()
+                    off_machine = string_clean(off_machine)
+                tests = f"    - {test}: {{'project':['daily']"
+                if baseline.isalnum():
+                    tests += f",'baseline': {baseline}"
+                if depend and depend.strip():
+                    tests += f",'dependency':'{depend}'"
+                if not (off_machine is None):
+                    tests += f",'turnoff':[{off_machine}]"
+                if prev_line == "COMPILE":
+                    yaml_file.write("  tests: \n")
+                yaml_file.write(tests+"}\n")
+                prev_line = 'RUN'
+
     yaml_file.close(); conf_file.close()
 

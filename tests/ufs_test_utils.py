@@ -5,6 +5,11 @@ import yaml
 import subprocess
 
 def delete_files(deletefiles):
+    """Remove specified filepath
+
+    Args:
+        deletefiles (str): filepath to remove e.g. tests/rocoto.*
+    """
     fileList = glob.glob(deletefiles, recursive=True)    
     for filePath in fileList:
         try:
@@ -13,6 +18,8 @@ def delete_files(deletefiles):
             print("Error while deleting ",deletefiles)
         
 def link_new_baselines():
+    """Create symlinks for newly generated baselines.
+    """ 
     USER = str(os.environ.get('USER'))
     MACHINE_ID = os.getenv('MACHINE_ID')        
     PATHRT     = os.getenv('PATHRT')
@@ -41,6 +48,15 @@ def link_new_baselines():
     symlink_baselines.wait()
     
 def get_testdep(casename,val):
+    """Retrieve test case dependencies
+
+    Args:
+        casename (str): Test case name
+        val (dict): Test case attributes e.g. val['compiler']
+
+    Returns:
+        dict: Test case and config for the specified dependency
+    """    
     test_dep = None
     for test in val:
         case, config = get_testcase(test)
@@ -49,6 +65,14 @@ def get_testdep(casename,val):
     return test_dep
 
 def get_testcase(test):
+    """Retrieve test case names and configs from given dict from pyaml
+
+    Args:
+        test (dict): dict retrieved from reading in yaml test file
+
+    Returns:
+        str, dict: test name and python dict of test configuration
+    """
     case_name = None
     case_config = None
     for case, configs in test.items():
@@ -57,6 +81,14 @@ def get_testcase(test):
     return case_name, case_config
     
 def write_logfile(logfile, openmod, output="", subproc=""):
+    """Append given output into log file
+
+    Args:
+        logfile (str): Log filename
+        openmod (str): mode to open file in
+        output (str): Content to append to log file. Defaults to "".
+        subproc (str): Command to run within the shell. Defaults to "".
+    """
     with open(logfile, openmod) as rtlog:
         if (not subproc == "") :
             subprocess.call(subproc, shell=True, stdout=rtlog)
@@ -65,6 +97,11 @@ def write_logfile(logfile, openmod, output="", subproc=""):
     rtlog.close()
 
 def rrmdir(path):
+    """Remove all files and directories in specified path.
+
+    Args:
+        path (str): File path to remove
+    """ 
     for entry in os.scandir(path):
         if entry.is_dir():
             rrmdir(entry)

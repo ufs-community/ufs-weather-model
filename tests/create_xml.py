@@ -5,6 +5,18 @@ import yaml
 from ufs_test_utils import get_testcase, write_logfile, rrmdir
 
 def rocoto_create_entries(RTPWD,MACHINE_ID,INPUTDATA_ROOT,INPUTDATA_ROOT_WW3,INPUTDATA_ROOT_BMIC,RUNDIR_ROOT,NEW_BASELINE,ROCOTO_XML):
+    """Generate header information for Rocoto xml file
+
+    Args:
+        RTPWD (str): Baseline directory
+        MACHINE_ID (str): Machine ID i.e. Hera, Gaea, Jet, etc.
+        INPUTDATA_ROOT (str): Input data directory
+        INPUTDATA_ROOT_WW3 (str): WW3 input data directory
+        INPUTDATA_ROOT_BMIC (str): BMIC input data directory
+        RUNDIR_ROOT (str): Test run directory
+        NEW_BASELINE (str): Directory for newly generated baselines
+        ROCOTO_XML (str): Rocoto .xml filename to write to
+    """
     PATHRT = os.getenv('PATHRT')
     LOG_DIR= PATHRT+'/logs/log_'+MACHINE_ID
     PATHTR, tail = os.path.split(PATHRT)
@@ -31,6 +43,18 @@ def rocoto_create_entries(RTPWD,MACHINE_ID,INPUTDATA_ROOT,INPUTDATA_ROOT_WW3,INP
     f.close()
     
 def rocoto_create_compile_task(MACHINE_ID,COMPILE_ID,ROCOTO_COMPILE_MAXTRIES,MAKE_OPT,ACCNR,COMPILE_QUEUE,PARTITION,ROCOTO_XML):
+    """Generate and append compile task into Rocoto xml file
+
+    Args:
+        MACHINE_ID (str): Machine ID i.e. Hera, Gaea, Jet, etc.
+        COMPILE_ID (str): Compile identifier e.g. s2swa_intel
+        ROCOTO_COMPILE_MAXTRIES (str): Max attempts for compile
+        MAKE_OPT (str): Make build options
+        ACCNR (str): Account to run the job with
+        COMPILE_QUEUE (str): QOS i.e. batch, windfall, normal, etc.
+        PARTITION (str): System partition i.e. xjet, c5
+        ROCOTO_XML (str): Rocoto .xml filename to write to
+    """
     NATIVE=""
     BUILD_CORES="8"
     BUILD_WALLTIME="00:30:00"
@@ -65,6 +89,12 @@ command>
     f.close()
 
 def write_metatask_begin(COMPILE_METATASK_NAME, filename):
+    """Write compile task metadata to Rocoto xml file
+
+    Args:
+        COMPILE_METATASK_NAME (str): Compile job name e.g. s2swa_intel
+        filename (str): Rocoto xml filename to append to
+    """
     metatask_name = f"""  <metatask name="compile_{COMPILE_METATASK_NAME}_tasks"><var name="zero">0</var>
 """
     with open(filename,"a") as f:
@@ -72,6 +102,11 @@ def write_metatask_begin(COMPILE_METATASK_NAME, filename):
     f.close()
 
 def write_metatask_end(filename):
+    """Append closing metatask element to Rocoto xml
+
+    Args:
+        filename (str): Rocoto xml filename
+    """
     metatask_name = f"""  </metatask>
 """
     with open(filename,"a") as f:
@@ -79,6 +114,15 @@ def write_metatask_end(filename):
     f.close()    
     
 def write_compile_env(SCHEDULER,PARTITION,JOB_NR,COMPILE_QUEUE,RUNDIR_ROOT):
+    """Generate compile task .env file
+
+    Args:
+        SCHEDULER (str): Job scheduler e.g. pbs, slurm
+        PARTITION (str): System partition i.e. xjet, c5
+        JOB_NR (str): Job number
+        COMPILE_QUEUE (str): QOS i.e. batch, windfall, normal, etc.
+        RUNDIR_ROOT (str): Test run directory
+    """
     filename   = RUNDIR_ROOT+"/compile_"+str(os.getenv('COMPILE_ID'))+".env"
     COMPILE_ID = os.getenv('COMPILE_ID')
     MACHINE_ID = os.getenv('MACHINE_ID')
@@ -110,6 +154,8 @@ export LOG_DIR={LOG_DIR}
     f.close()
 
 def write_runtest_env():
+    """Generate run task .env file
+    """
     filename   = str(os.getenv('RUNDIR_ROOT'))+"/run_test_"+str(os.getenv('TEST_ID'))+".env"
     JOB_NR     = str(os.getenv('JOB_NR'))
     TEST_ID    = str(os.getenv('TEST_ID'))
@@ -176,6 +222,15 @@ export RTVERBOSE=false
     f.close()     
 
 def make_loghead(ACCNR,MACHINE_ID,RUNDIR_ROOT,RTPWD,REGRESSIONTEST_LOG):
+    """Generate log header information
+
+    Args:
+        ACCNR (str): Account to run the job with
+        MACHINE_ID (str): Machine ID i.e. Hera, Gaea, Jet, etc.
+        RUNDIR_ROOT (str): Test run directory
+        RTPWD (str): Baseline directory
+        REGRESSIONTEST_LOG (str): Regression Test log filename
+    """
     filename   = REGRESSIONTEST_LOG
     TESTS_FILE = str(os.getenv('TESTS_FILE'))
     NEW_BASELINES_FILE = str(os.getenv('NEW_BASELINES_FILE'))
@@ -193,8 +248,7 @@ def make_loghead(ACCNR,MACHINE_ID,RUNDIR_ROOT,RTPWD,REGRESSIONTEST_LOG):
     SRT_NAME    = str(os.getenv('SRT_NAME'))
     SRT_COMPILER= str(os.getenv('SRT_COMPILER'))
     
-    rtlog_head=f"""
-====START OF {MACHINE_ID} REGRESSION TESTING LOG====
+    rtlog_head=f"""====START OF {MACHINE_ID} REGRESSION TESTING LOG====
 
 UFSWM hash used in testing:
 """
