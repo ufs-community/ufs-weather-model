@@ -158,6 +158,7 @@ generate_log() {
   FAILED_COMPILES=()
   TEST_COUNTER=0
   FAILED_TESTS=()
+  SKIPPED_TESTS=()
   FAILED_TEST_ID=()
   FAILED_COMPILE_LOGS=()
   FAILED_TEST_LOGS=()
@@ -253,14 +254,14 @@ EOF
           COMPILE_RESULT="FAILED: UNABLE TO START COMPILE"
           FAIL_LOG="N/A"
         elif [[ -f fail_compile_${COMPILE_ID} ]]; then
-          COMPILE_RESULT="FAILED: UNABLE TO COMPILE"
+          COMPILE_RESULT="FAILED: UNABLE TO FINISH COMPILE"
           FAIL_LOG="${LOG_DIR}/compile_${COMPILE_ID}.log"
           if grep -q "quota" "${LOG_DIR}/compile_${COMPILE_ID}.log"; then
             COMPILE_RESULT="FAILED: DISK QUOTA ISSUE"
             FAIL_LOG="${LOG_DIR}/compile_${COMPILE_ID}.log"
-          elif grep -q "timeout" "${LOG_DIR}/compile_${COMPILE_ID}.log"; then
-            COMPILE_RESULT="FAILED: TEST TIMED OUT"
-            FAIL_LOG="${LOG_DIR}/compile_${COMPILE_ID}.log"
+          elif grep -q "TIME LIMIT" "${RUNDIR_ROOT}/compile_${COMPILE_ID}/err"; then
+            COMPILE_RESULT="FAILED: COMPILE TIMED OUT"
+            FAIL_LOG="${RUNDIR_ROOT}/compile_${COMPILE_ID}/err"
           fi
         else
           COMPILE_RESULT="PASS"
@@ -328,21 +329,25 @@ EOF
         RT_TEST_TIME=""
         RT_TEST_MEM=""
         if [[ ${CREATE_BASELINE} == true && ${GEN_BASELINE} != "baseline" ]]; then
-          TEST_RESULT="SKIPPED (TEST DOES NOT GENERATE BASELINE)"
+          TEST_RESULT="SKIPPED: TEST DOES NOT GENERATE BASELINE"
+          SKIPPED_TESTS+=("TEST ${TEST_NAME}_${COMPILER}: ${TEST_RESULT}")
+        elif [[ ${COMPILE_RESULT} =~ FAILED ]]; then
+          TEST_RESULT="SKIPPED: ASSOCIATED COMPILE FAILED"
+          SKIPPED_TESTS+=("TEST ${TEST_NAME}_${COMPILER}: ${TEST_RESULT}")
         elif [[ ! -f "${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log" ]]; then
-          TEST_RESULT="FAILED: UNABLE TO START RUN"
+          TEST_RESULT="FAILED: UNABLE TO START TEST"
           FAIL_LOG="N/A"
         elif [[ -f fail_test_${TEST_NAME}_${COMPILER} ]]; then
           if [[ -f "${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log" ]]; then
             if grep -q "FAIL" "${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log"; then
-              TEST_RESULT="FAILED: UNABLE TO RUN COMPARISON"
+              TEST_RESULT="FAILED: UNABLE TO COMPLETE COMPARISON"
               FAIL_LOG="${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"
             # We need to catch a "PASS" in rt_*.log even if a fail_test_* files exists
             # I am not sure why this can happen.
             elif grep -q "PASS" "${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log"; then
               TEST_RESULT="PASS"
             else
-              TEST_RESULT="FAILED: BASELINE COMPARISON"
+              TEST_RESULT="FAILED: UNSUCCESSFUL BASELINE COMPARISON"
               FAIL_LOG="${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log"
             fi
           else
@@ -352,9 +357,9 @@ EOF
           if grep -q "quota" "${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"; then
             TEST_RESULT="FAILED: DISK QUOTA ISSUE"
             FAIL_LOG="${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"
-          elif grep -q "timeout" "${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"; then
+          elif grep -q "TIME LIMIT" "${RUNDIR_ROOT}/${TEST_NAME}_${COMPILER}/err"; then
             TEST_RESULT="FAILED: TEST TIMED OUT"
-            FAIL_LOG="${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"
+            FAIL_LOG="${RUNDIR_ROOT}/${TEST_NAME}_${COMPILER}/err"
           fi
         else
           TEST_RESULT="PASS"
@@ -397,7 +402,7 @@ Starting Date/Time: ${TEST_START_TIME}
 Ending Date/Time: ${TEST_END_TIME}
 Total Time: ${elapsed_time}
 Compiles Completed: $((COMPILE_COUNTER-${#FAILED_COMPILES[@]}))/${COMPILE_COUNTER}
-Tests Completed: $((TEST_COUNTER-${#FAILED_TESTS[@]}))/${TEST_COUNTER}
+Tests Completed: $((TEST_COUNTER-${#FAILED_TESTS[@]}-${#SKIPPED_TESTS[@]}))/${TEST_COUNTER}
 EOF
   # PRINT FAILED COMPILES
   if [[ "${#FAILED_COMPILES[@]}" -ne "0" ]]; then

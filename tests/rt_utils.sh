@@ -220,7 +220,6 @@ submit_and_wait() {
         echo "rt_utils.sh: *** WARNING ***: Job in a HELD state. Might want to stop manually."
         ;;
       #fail/completed cases
-      #pbs: E
       #slurm: F/FAILED TO/TIMEOUT CA/CANCELLED
       F|TO|CA|FAILED|TIMEOUT|CANCELLED)
         echo "rt_utils.sh: !!!!!!!!!!JOB TERMINATED!!!!!!!!!!"
