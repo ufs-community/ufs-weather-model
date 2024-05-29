@@ -33,7 +33,7 @@ def finish_log():
                     if not ('turnoff' in val.keys()): print('   ',val['compiler'],val['option'])
                     if 'turnoff' in val.keys(): print('   ',val['compiler'],val['option'],'turnoff: ',val['turnoff'])
                     RT_COMPILER = val['compiler']
-                    COMPILE_ID  = apps+'_'+RT_COMPILER
+                    COMPILE_ID  = apps #+'_'+RT_COMPILER
                     COMPILE_LOG = 'compile_'+COMPILE_ID+'.log'
                     COMPILE_LOG_TIME ='compile_'+COMPILE_ID+'_timestamp.txt'
                     with open('./logs/log_'+MACHINE_ID+'/'+COMPILE_LOG) as f:
