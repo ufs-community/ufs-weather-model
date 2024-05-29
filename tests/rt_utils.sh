@@ -512,8 +512,7 @@ rocoto_kill() {
 }
 
 rocoto_step() {
-    echo "rt_utils.sh: Runnung one iteration of rocotorun and rocotostat..."
-
+    echo "rt_utils.sh: Running one iteration of rocotorun and rocotostat..."
     echo "Unknown" > rocoto_workflow.state
     # Run one iteration of rocotorun and rocotostat.
     ${ROCOTORUN} -v 10 -w "${ROCOTO_XML}" -d "${ROCOTO_DB}"
