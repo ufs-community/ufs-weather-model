@@ -582,7 +582,9 @@ To run a single test, users can try the following command instead of creating a 
 
 .. code-block:: console
 
-   ./rt.sh -r -k -n control_p8
+   ./rt.sh -r -k -n "control_p8 <compiler>"
+
+where ``<compiler>`` is ``gnu`` or ``intel``. 
 
 Troubleshooting
 ^^^^^^^^^^^^^^^^^^
