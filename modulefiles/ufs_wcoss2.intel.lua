@@ -12,7 +12,7 @@ load(pathJoin("intel", intel_ver))
 craype_ver=os.getenv("craype_ver") or "2.7.13"
 load(pathJoin("craype", craype_ver))
 
-cray_mpich_ver=os.getenv("cray_mpich_ver") or "8.1.9"
+cray_mpich_ver=os.getenv("cray_mpich_ver") or "8.1.12"
 load(pathJoin("cray-mpich", cray_mpich_ver))
 
 cmake_ver=os.getenv("cmake_ver") or "3.20.2"
