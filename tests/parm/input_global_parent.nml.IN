@@ -92,7 +92,6 @@
   fast_tau_w_sec = @[FAST_TAU_W_SEC]
   consv_am = .false.
   fill = .true.
-  full_zs_filter = @[FULL_ZS_FILTER]
   dwind_2d = .false.
   print_freq = 6
   warm_start = @[WARM_START]
@@ -120,11 +119,11 @@
   cd2 = -1
   cd4 = 0.15
   max_slope = 0.15
-  n_del2_strong = 0
-  n_del2_weak = 15
-  n_del4 = 2
-  peak_fac = 1.
-  zero_ocean = .false.
+  n_del2_strong = @[N_DEL2_STRONG]
+  n_del2_weak = @[N_DEL2_WEAK]
+  n_del4 = @[N_DEL4]
+  peak_fac = @[PEAK_FAC]
+  zero_ocean = @[ZERO_OCEAN]
 /
 
 &gfs_physics_nml
@@ -202,6 +201,10 @@
   imfshalcnv   = @[IMFSHALCNV]
   imfdeepcnv   = @[IMFDEEPCNV]
   do_deep      = @[DO_DEEP]
+  ! NOTE: progsigma should be .true. for the global_nest_v1 suite.
+  ! The code turns it off automatically at low resolutions (nominally, less than C768 resolution).
+  ! That means it would turn off for the regression tests (C96 globe, C384 resolution nest).
+  ! Hence, we turn it off manually, to avoid advecting a field of 0.
   progsigma    = @[PROGSIGMA]
   betascu      = @[BETASCU]
   betamcu      = @[BETAMCU]
