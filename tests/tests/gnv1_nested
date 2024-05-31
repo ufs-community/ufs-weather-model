@@ -206,7 +206,6 @@ export D_EXT=0.0
 export DELT_MAX=0.002
 export DELT_MAX_NEST02=0.008
 export NORD_ZS_FILTER=4
-export LNDP_TYPE=0
 export NGASES=0
 
 export IAER=5111
@@ -247,8 +246,6 @@ export VTDM4=0.04
 export BETADCU=2.0
 export BETAMCU=1.0
 export BETASCU=8.0
-export BETAL_DEEP=0.05
-export BETAS_DEEP=0.05
 export BETADCU_NEST02=8.0
 export BETAMCU_NEST02=1.5
 export BETASCU_NEST02=8.0
@@ -256,8 +253,6 @@ export BETAL_DEEP_NEST02=0.05
 export BETAS_DEEP_NEST02=0.05
 export CDMBWD=20.0,2.5,1.0,1.0
 export CDMBWD_NEST02=5.0,5.0,1.0,1.0
-export CLAM_DEEP=0.15
-export CLAM_DEEP_NEST02=0.1
 export CPL_IMP_MRG=.true.
 export DO_CA=.false.
 export FHLWR=720.
@@ -270,7 +265,6 @@ export SG_CUTOFF=-1.
 export DO_DEEP=.true.
 export DO_DEEP_NEST02=.true.
 export FRAC_GRID=.false.
-export ELMX=300.
 export KNOB_UGWP_TAUAMP=1.5e-3
 export KNOB_UGWP_TAUAMP_NEST02=0.8e-3
 export KNOB_UGWP_DOKDIS=2
@@ -279,10 +273,11 @@ export KNOB_UGWP_VERSION=1
 export KNOB_UGWP_PALAUNCH=275.0e2
 export LIGHTNING_THREAT=.true.
 
-# NOTE: The global_nest_v1 uses prognostic sigma, so this should be
-# .true.  HOWEVER, the code turns it off automatically for this
-# resolution. Hence, we turn it off here so we're not advecting a grid
-# of 0. The field_table must match this setting (see below).
+# NOTE: progsigma should be .true. for the global_nest_v1 suite.
+# The code turns it off automatically at low resolutions.
+# This leads to an erronious situation where it is off for the globe, but on for the nest.
+# Hence, we turn it off manually, to avoid advecting a field of 0 from the nest boundary.
+# For practical resolutions (C384 or higher), it would be on.
 export PROGSIGMA=.false.
 export PROGSIGMA_NEST02=.false.
 

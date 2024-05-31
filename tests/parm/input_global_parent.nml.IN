@@ -181,7 +181,6 @@
   isubc_sw     = 2
   isubc_lw     = 2
   isol         = 2
-  elmx         = @[ELMX]
   lwhtr        = .true.
   swhtr        = .true.
   cnvgwd       = @[CNVGWD]
@@ -202,18 +201,16 @@
   imfdeepcnv   = @[IMFDEEPCNV]
   do_deep      = @[DO_DEEP]
   ! NOTE: progsigma should be .true. for the global_nest_v1 suite.
-  ! The code turns it off automatically at low resolutions (nominally, less than C768 resolution).
-  ! That means it would turn off for the regression tests (C96 globe, C384 resolution nest).
-  ! Hence, we turn it off manually, to avoid advecting a field of 0.
+  ! The code turns it off automatically at low resolutions.
+  ! This leads to an erronious situation where it is off for the globe, but on for the nest.
+  ! Hence, we turn it off manually, to avoid advecting a field of 0 from the nest boundary.
+  ! For practical resolutions (C384 globe or larger), it would be on.
   progsigma    = @[PROGSIGMA]
   betascu      = @[BETASCU]
   betamcu      = @[BETAMCU]
   betadcu      = @[BETADCU]
-  betal_deep   = @[BETAL_DEEP]
-  betas_deep   = @[BETAS_DEEP]
   ras          = @[RAS]
   cdmbgwd      = @[CDMBWD_NEST02]
-  clam_deep    = @[CLAM_DEEP]
   prslrd0      = 0.
   ivegsrc      = 1
   isot         = 1
@@ -265,7 +262,6 @@
   cplice       = @[CPLICE]
   cplwav       = @[CPLWAV]
   cplwav2atm   = @[CPLWAV2ATM]
-  lndp_type    = @[LNDP_TYPE]
 /
 
 &fv_nest_nml
