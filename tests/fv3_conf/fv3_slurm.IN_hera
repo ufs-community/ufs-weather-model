@@ -39,6 +39,7 @@ export PSM_SHAREDCONTEXTS=1
 sync && sleep 1
 
 # shellcheck disable=SC2102
+#mpirun -n @[TASKS] ./fv3.exe
 srun --label -n @[TASKS] ./fv3.exe
 
 date_end=$(date)
