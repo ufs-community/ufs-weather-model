@@ -82,7 +82,12 @@ export CDEPS_INLINE=false
 export ocn_model=docn
 export ice_model=dice
 
-#TODO-task layout
+#task layout
+export INPES=$INPES_cpl_dflt
+export JNPES=$JNPES_cpl_dflt
+export atm_omp_num_threads=$THRD_cpl_dflt
+export WRTTASK_PER_GROUP=$WPG_cpl_dflt
+
 export WAV_tasks=0
 
 #CDEPS settings
@@ -112,5 +117,5 @@ export DIAG_TABLE=diag_table_gfsv16
 export FIELD_TABLE=field_table_thompson_noaero_tke
 export INPUT_NML=global_control.nml.IN
 export MODEL_CONFIGURE=model_configure.IN
-export UFS_CONFIGURE=ufs.configure.s2s.IN
+export UFS_CONFIGURE=ufs.configure.s2s_esmf.IN
 export FV3_RUN="cpld_control_run.IN cpld_docn_dice.IN"

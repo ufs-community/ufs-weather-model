@@ -419,6 +419,7 @@ export CMP_DATAONLY=false
 # Defaults for ufs.configure
 export esmf_logkind="ESMF_LOGKIND_MULTI"
 export DumpFields="false"
+export MED_history_n=1000000
 
 export_fv3_v16 ()
 {
