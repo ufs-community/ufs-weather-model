@@ -51,13 +51,15 @@ case $(hostname -f) in
   login0[1-2].expanse.sdsc.edu) MACHINE_ID=expanse ;; ### expanse1-2
 
   discover3[1-5].prv.cube) MACHINE_ID=discover ;; ### discover31-35
-  *)
-      case ${PW_CSP:-} in 
-         "aws" | "google" | "azure") MACHINE_ID=noaacloud ;;
-         *) PW_CSP="UNKNOWN"
-            MACHINE_ID=UNKNOWN ;;  # Unknown platform
-      esac 
+  *) MACHINE_ID=UNKNOWN ;;  # Unknown platform
 esac
+
+if [[ ${MACHINE_ID} == "UNKNOWN" ]]; then 
+   case ${PW_CSP:-} in
+      "aws" | "google" | "azure") MACHINE_ID=noaacloud ;;
+      *) PW_CSP="UNKNOWN"
+   esac
+fi
 
 # Overwrite auto-detect with MACHINE if set
 MACHINE_ID=${MACHINE:-${MACHINE_ID}}
