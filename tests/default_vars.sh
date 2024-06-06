@@ -556,6 +556,14 @@ export EXTERNAL_IC=.true.
 export MAKE_NH=.true.
 export MOUNTAIN=.false.
 export NA_INIT=1
+export DO_VORT_DAMP=.true.
+export HYDROSTATIC=.false.
+export KORD_XX=9
+export KORD_TM=-9
+export D_CON=1.
+export HORD_XX=5
+export HORD_DP=-5
+export HORD_TR=8
 
 # Radiation
 export DO_RRTMGP=.false.
@@ -910,10 +918,6 @@ export_cice6() {
   export CICE_RESTART_DEFLATE=0
 
   export CICE_HISTORY_FORMAT='pnetcdf2'
-  if [[ ${MACHINE_ID} == wcoss2 ]]; then
-    export CICE_RESTART_FORMAT='hdf5'
-    export CICE_HISTORY_FORMAT='hdf5'
-  fi
   export CICE_HISTORY_IOTASKS=-99
   export CICE_HISTORY_REARR='box'
   export CICE_HISTORY_ROOT=-99
