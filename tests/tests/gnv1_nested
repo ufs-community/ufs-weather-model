@@ -4,221 +4,336 @@
 #
 ###############################################################################
 
-export TEST_DESCR="Compare HAFS global with 1 nest and atmosphere only global_nest_v1 physics results with previous trunk version"
+export TEST_DESCR="Compare rotated C96 global with 1 nest and atmosphere only global_nest_v1 physics results with previous version"
 
 export CNTL_DIR=gnv1_nested
 
-export LIST_FILES="atmf006.nc \
-                   sfcf006.nc \
-                   atm.nest02.f006.nc \
-                   sfc.nest02.f006.nc \
-                   RESTART/20200825.180000.coupler.res \
-                   RESTART/20200825.180000.fv_core.res.nc \
-                   RESTART/20200825.180000.fv_core.res.nest02.nc \
-                   RESTART/20200825.180000.fv_core.res.nest02.tile7.nc \
-                   RESTART/20200825.180000.fv_core.res.tile1.nc \
-                   RESTART/20200825.180000.fv_core.res.tile2.nc \
-                   RESTART/20200825.180000.fv_core.res.tile3.nc \
-                   RESTART/20200825.180000.fv_core.res.tile4.nc \
-                   RESTART/20200825.180000.fv_core.res.tile5.nc \
-                   RESTART/20200825.180000.fv_core.res.tile6.nc \
-                   RESTART/20200825.180000.fv_srf_wnd.res.nest02.tile7.nc \
-                   RESTART/20200825.180000.fv_srf_wnd.res.tile1.nc \
-                   RESTART/20200825.180000.fv_srf_wnd.res.tile2.nc \
-                   RESTART/20200825.180000.fv_srf_wnd.res.tile3.nc \
-                   RESTART/20200825.180000.fv_srf_wnd.res.tile4.nc \
-                   RESTART/20200825.180000.fv_srf_wnd.res.tile5.nc \
-                   RESTART/20200825.180000.fv_srf_wnd.res.tile6.nc \
-                   RESTART/20200825.180000.fv_tracer.res.nest02.tile7.nc \
-                   RESTART/20200825.180000.fv_tracer.res.tile1.nc \
-                   RESTART/20200825.180000.fv_tracer.res.tile2.nc \
-                   RESTART/20200825.180000.fv_tracer.res.tile3.nc \
-                   RESTART/20200825.180000.fv_tracer.res.tile4.nc \
-                   RESTART/20200825.180000.fv_tracer.res.tile5.nc \
-                   RESTART/20200825.180000.fv_tracer.res.tile6.nc \
-                   RESTART/20200825.180000.phy_data.nest02.tile7.nc \
-                   RESTART/20200825.180000.phy_data.tile1.nc \
-                   RESTART/20200825.180000.phy_data.tile2.nc \
-                   RESTART/20200825.180000.phy_data.tile3.nc \
-                   RESTART/20200825.180000.phy_data.tile4.nc \
-                   RESTART/20200825.180000.phy_data.tile5.nc \
-                   RESTART/20200825.180000.phy_data.tile6.nc \
-                   RESTART/20200825.180000.sfc_data.nest02.tile7.nc \
-                   RESTART/20200825.180000.sfc_data.tile1.nc \
-                   RESTART/20200825.180000.sfc_data.tile2.nc \
-                   RESTART/20200825.180000.sfc_data.tile3.nc \
-                   RESTART/20200825.180000.sfc_data.tile4.nc \
-                   RESTART/20200825.180000.sfc_data.tile5.nc \
-                   RESTART/20200825.180000.sfc_data.tile6.nc \
+export LIST_FILES="atmf002.nc \
+                   sfcf002.nc \
+                   atm.nest02.f002.nc \
+                   sfc.nest02.f002.nc \
+                   RESTART/20230224.010000.coupler.res \
+                   RESTART/20230224.010000.fv_core.res.nc \
+                   RESTART/20230224.010000.fv_core.res.nest02.nc \
+                   RESTART/20230224.010000.fv_core.res.nest02.tile7.nc \
+                   RESTART/20230224.010000.fv_core.res.tile1.nc \
+                   RESTART/20230224.010000.fv_core.res.tile2.nc \
+                   RESTART/20230224.010000.fv_core.res.tile3.nc \
+                   RESTART/20230224.010000.fv_core.res.tile4.nc \
+                   RESTART/20230224.010000.fv_core.res.tile5.nc \
+                   RESTART/20230224.010000.fv_core.res.tile6.nc \
+                   RESTART/20230224.010000.fv_srf_wnd.res.nest02.tile7.nc \
+                   RESTART/20230224.010000.fv_srf_wnd.res.tile1.nc \
+                   RESTART/20230224.010000.fv_srf_wnd.res.tile2.nc \
+                   RESTART/20230224.010000.fv_srf_wnd.res.tile3.nc \
+                   RESTART/20230224.010000.fv_srf_wnd.res.tile4.nc \
+                   RESTART/20230224.010000.fv_srf_wnd.res.tile5.nc \
+                   RESTART/20230224.010000.fv_srf_wnd.res.tile6.nc \
+                   RESTART/20230224.010000.fv_tracer.res.nest02.tile7.nc \
+                   RESTART/20230224.010000.fv_tracer.res.tile1.nc \
+                   RESTART/20230224.010000.fv_tracer.res.tile2.nc \
+                   RESTART/20230224.010000.fv_tracer.res.tile3.nc \
+                   RESTART/20230224.010000.fv_tracer.res.tile4.nc \
+                   RESTART/20230224.010000.fv_tracer.res.tile5.nc \
+                   RESTART/20230224.010000.fv_tracer.res.tile6.nc \
+                   RESTART/20230224.010000.phy_data.nest02.tile7.nc \
+                   RESTART/20230224.010000.phy_data.tile1.nc \
+                   RESTART/20230224.010000.phy_data.tile2.nc \
+                   RESTART/20230224.010000.phy_data.tile3.nc \
+                   RESTART/20230224.010000.phy_data.tile4.nc \
+                   RESTART/20230224.010000.phy_data.tile5.nc \
+                   RESTART/20230224.010000.phy_data.tile6.nc \
+                   RESTART/20230224.010000.sfc_data.nest02.tile7.nc \
+                   RESTART/20230224.010000.sfc_data.tile1.nc \
+                   RESTART/20230224.010000.sfc_data.tile2.nc \
+                   RESTART/20230224.010000.sfc_data.tile3.nc \
+                   RESTART/20230224.010000.sfc_data.tile4.nc \
+                   RESTART/20230224.010000.sfc_data.tile5.nc \
+                   RESTART/20230224.010000.sfc_data.tile6.nc \
                    RESTART/fv_BC_ne.res.nest02.nc \
                    RESTART/fv_BC_sw.res.nest02.nc"
 
+# Get all default variables for FV3
+export_fv3 # Must come before all other exports
 
-export_fv3
-export_hafs
+# Request tiled inputs in &namsfc
+export_tiled # Must come second, after export_fv3, before all export statements
+export TILEDFIX=.true.
 
-export HAFS=true
-export FHMAX=6
-export RESTART_N=${FHMAX}
-export atm_omp_num_threads=2
-export DT_ATMOS=90
-export IDEFLATE=1
-export OUTPUT_FH='3 -1'
+# Select input directories in control_run.IN
+export ATMRES=C96-nested
+
+# Master flag to enable nesting in control_run.IN. Also sent to &fv_core_nml
+export NESTED=.true.
+
+# ----------------------------------------
+# model_configure
+export SYEAR=2023
+export SMONTH=02
+export SDAY=24
+export SHOUR=00
+export FHMAX=3
+export FHROT=0
+export DT_ATMOS=300
+export RESTART_INTERVAL='1 -1'
+export WRITE_GROUP=2
+export WRTTASK_PER_GROUP=12
+export WRITE_DOPOST=.true.
+export WRITE_NSFLIP=.true.
+export FILENAME_BASE="'atm' 'sfc'"
+export OUTPUT_GRID=gaussian_grid
 export OUTPUT_FILE="'netcdf' 'netcdf'"
-export SDAY=25
-export SHOUR=12
-export SMONTH=08
-export SYEAR=2020
-export WRTTASK_PER_GROUP=60
+export IDEFLATE=1
+export ICHUNK2D=-1
+export JCHUNK2D=-1
+export ICHUNK3D=-1
+export JCHUNK3D=-1
+export KCHUNK3D=1
+export IMO=384
+export JMO=192
+export OUTPUT_FH='1 -1'
+
+# NOTE: This script uses NTILES=6 despite having 7 tiles in total.
+# This is to match the logic inside FV3, which is based on mosaics.
+# The globe has one mosiac with 6 tiles, and each nest has one mosaic with 1 tile each.
+# Our workflow scripts are not aware of that detail; they only know about the global mosaic.
 export NTILES=6
 
-export GWD_OPT=2
-export DO_UGWP=.true.
-export DO_TOFD=.false.
-export DO_UGWP_V0=.false.
-export DO_UGWP_V0_OROG_ONLY=.false.
-export DO_GSL_DRAG_LS_BL=.false.
-export DO_GSL_DRAG_SS=.false.
-export DO_GSL_DRAG_TOFD=.false.
-export DO_UGWP_V1=.false.
-export DO_UGWP_V1_OROG_ONLY=.false.
-
-export FV_CORE_TAU=0.
-export RF_CUTOFF=10.
-export RF_CUTOFF_NEST=10.
-export FAST_TAU_W_SEC=0.2
-
-export OUTPUT_GRID='global_latlon'
-export IMO=360
-export JMO=181
-
-export OUTPUT_GRID_2='rotated_latlon'
-export CEN_LON_2=-86.0
-export CEN_LAT_2=23.0
-export LON1_2=-45.00
-export LAT1_2=-40.00
-export LON2_2=45.00
-export LAT2_2=40.00
+export OUTPUT_GRID_2=regional_latlon
+export IMO_2=361
+export JMO_2=241
+export CEN_LON_2=-135.0
+export CEN_LAT_2=32.5
+export LON1_2=-195.000000
+export LAT1_2=-7.500000
+export LON2_2=-75.000000
+export LAT2_2=72.500000
 export DLON_2=0.25
 export DLAT_2=0.25
 
-export BLOCKSIZE=${BLOCKSIZE:-24}
-export CCPP_SUITE="FV3_global_nest_v1"
-export DEFLATE_LEVEL=-1
-export INPES=4
-export JNPES=5
-export NPX=97
-export NPY=97
-export NPZ=64
-export NPZP=$(($NPZ + 1))
-export K_SPLIT=4
-export N_SPLIT=5
-export NWAT=6
-export NA_INIT=1
-export EXTERNAL_IC=.true.
-export NGGPS_IC=.true.
-export MOUNTAIN=.false.
-export WARM_START=.false.
-export TARGET_LAT="23.0"
-export TARGET_LON="-86.0"
-export STRETCH_FAC=1.0001
-export FULL_ZS_FILTER=.false.
-export N_ZS_FILTER=0
+# ----------------------------------------
+# &atmos_model_nml
+export BLOCKSIZE=32
+export CCPP_SUITE=FV3_global_nest_v1
 
-export GRID_PES="120,60"
+# ----------------------------------------
+# &diag_manager_nml
+export MAX_OUTPUT_FIELDS=300
+
+# ----------------------------------------
+# &fms_nml
+export DOMAINS_STACK_SIZE=16000000
+
+# ----------------------------------------
+# &fv_nest_nml
 export TILE_COARSE="0,6"
 export NUM_TILE_TOP=6
-export NEST_REFINE="0,3"
-export NEST_IOFFSETS="1,9"
-export NEST_JOFFSETS="1,9"
+export NEST_REFINE="0,4"
+export NEST_IOFFSETS="0,4"
+export NEST_JOFFSETS="0,9"
 
-export FHCYC=0
-export FHSWR=1800
-export FHLWR=1800
-export NSTF_NAME=2,0,0,0,0
-export CPLFLX=.false.
-export CPLOCN2ATM=.true.
-export CPLWAV=.false.
-export CPLWAV2ATM=.false.
-export CPL_IMP_MRG=.false.
-
-export INPES_NEST02=6
+# ----------------------------------------
+# &fv_core_nml
+export INPES=4
+export JNPES=4
+export INPES_NEST02=12
 export JNPES_NEST02=10
-export NPX_NEST02=241
+
+export NPX=97
+export NPY=97
+export NPX_NEST02=361
 export NPY_NEST02=241
-export K_SPLIT_NEST02=4
-export N_SPLIT_NEST02=5
-
-ATM_compute_tasks=$(( INPES*JNPES*NTILES + INPES_NEST02*JNPES_NEST02 ))
-
-export NESTED=.true.
-export FULL_ZS_FILTER=.false.
-export N_ZS_FILTER=0
-
-export CMEPS=false
-export RUNTYPE="startup"
-export USE_COLDSTART="false"
-
-export DIAG_TABLE=diag_table_hafs_template
-export INPUT_NML=input_global_hafs.nml.IN
-export INPUT_NEST02_NML=input_nest_hafs.nml.IN
-export MODEL_CONFIGURE="model_configure_hafs.IN"
-export NEMS_CONFIGURE="nems.configure.hafs_atm.IN"
-export FV3_RUN="hafs_fv3_run.IN"
-export FIELD_TABLE=field_table_thompson_aero_tke_progsigma
-
-export IAER=5111
-export PROGSIGMA=.true.
-export BETASCU=8.0
-export BETAMCU=1.5
-export BETADCU=0.5
-
-export SFCLAY_COMPUTE_FLUX=.false.
-export BL_MYNN_TKEADVECT=.true.
-export LKM=0
-export IMP_PHYSICS=8
+export NPZ=127
 export DNATS=0
 export DO_SAT_ADJ=.false.
-export HYBEDMF=.false.
-export DO_MYNNEDMF=.true.
-export DO_MYNNSFCLAY=.true.
-export DO_DEEP=.true.
-export SHAL_CNV=.true.
-export IMFSHALCNV=5
-export IMFDEEPCNV=5
-export LSM=2
-export IOPT_SFC=4
-export IOPT_DVEG=4
-export IOPT_CRS=2
-export IOPT_RAD=3
-export IOPT_ALB=1
-export IOPT_STC=3
-export CNVGWD=.true.
-export IOVR=3
-export LTAEROSOL=.true.
-export LRADAR=.true.
-export DT_INNER=45
-export SEDI_SEMI=.true.
-export DECFL=10
-export SATMEDMF=.false.
-export ISATMEDMF=1
-export LSEASPRAY=.false.
 
 export FV_CORE_TAU=0.
 export RF_CUTOFF=10.
 export FAST_TAU_W_SEC=0.2
 
+export FV_CORE_TAU_NEST02=$FV_CORE_TAU
+export RF_CUTOFF_NEST02=$RF_CUTOFF
+export FAST_TAU_W_SEC_NEST02=$FAST_TAU_W_SEC
+
+export TARGET_LON=-135.0
+export TARGET_LAT=32.5
+export TWOWAYNEST02=.true.
+
+export TWOWAYNEST=.true.
+
+# ----------------------------------------
+# &gfs_physics_nml
+export LDIAG3D=.true.
+export LDIAG_UGWP=.true.
+
+export H2O_PHYS=.true.
+export IMP_PHYSICS=8
+export IOVR=3
+export DT_INNER=$DT_ATMOS
+export DO_MYNNEDMF=.true.
+export DO_MYNNSFCLAY=.true.
+export BL_MYNN_TKEADVECT=.true.
+export GWD_OPT=2
+export DO_UGWP_V1=.true.
+export DO_UGWP_V0=.false.
+export DO_GSL_DRAG_LS_BL=.true.
+export DO_GSL_DRAG_TOFD=.true.
+export DO_UGWP_V1_W_GSLDRAG=.false.
+export IALB=2
+export IEMS=2
+export IAER=1011
+export ICLIQ_SW=1
+export CNVGWD=.true.
+export CNVGWD_NEST02=.false.
+export HYBEDMF=.false.
+export SATMEDMF=.false.
+export ISATMEDMF=1
+export LHEATSTRG=.false.
+export LSEASPRAY=.false.
+export IMFDEEPCNV=5
+export IMFDEEPCNV_NEST02=5
+export IOPT_DIAG=1
+export NSTF_NAME=2,0,0,0,0
+export EFFR_IN=.true.
+export RES_LATLON_DYNAMICS='""'
+export DOGP_CLDOPTICS_LUT=.false.
+export DOGP_LWSCAT=.false.
+export DRY_MASS=98320.0
+export CONSV_TE=1.
+export CONSV_TE_NEST02=0.
+export D_CON=1.0
+export D_EXT=0.0
+export DELT_MAX=0.002
+export DELT_MAX_NEST02=0.008
+export NORD_ZS_FILTER=4
+export NGASES=0
+
+export IAER=5111
+export IALB=1
+export IEMS=1
+export IMFSHALCNV=-1
+export IMFSHALCNV_NEST02=-1
+export IOPT_SFC=4
+export IOPT_TRS=3
+export SHAL_CNV=.false.
+export D2_BG=0.
+export D2_BG_K1=0.16
+export D2_BG_K2=0.05
+export D4_BG=0.15
+export D2_BG_NEST02=0.
+export D2_BG_K1_NEST02=0.20
+export D2_BG_K2_NEST02=0.15
+export D4_BG_NEST02=0.15
+export DZ_MIN=2.0
+export FV_SG_ADJ=300
+export HORD_DP=6
+export HORD_MT=6
+export HORD_TM=6
+export HORD_TR=8
+export HORD_VT=6
+export HORD_DP_NEST02=6
+export HORD_MT_NEST02=6
+export HORD_TM_NEST02=6
+export HORD_TR_NEST02=8
+export HORD_VT_NEST02=6
+export MAKE_NH=.false.
+export N_ZS_FILTER=0
+export N_ZS_FILTER_NEST02=1
+export N_SPONGE=24
+export PSM_BC_NEST02=1
+export UPOFF=2
+export VTDM4=0.04
+export BETADCU=2.0
+export BETAMCU=1.0
+export BETASCU=8.0
+export BETADCU_NEST02=8.0
+export BETAMCU_NEST02=1.5
+export BETASCU_NEST02=8.0
+export BETAL_DEEP_NEST02=0.05
+export BETAS_DEEP_NEST02=0.05
 export CDMBWD=20.0,2.5,1.0,1.0
+export CDMBWD_NEST02=5.0,5.0,1.0,1.0
+export DO_CA=.false.
+export FHLWR=720.
+export FHSWR=720.
+export LCNORM=.false.
+export RF_FAST=.false.
+export SG_CUTOFF=-1.
+export DO_DEEP=.true.
+export DO_DEEP_NEST02=.true.
+export FRAC_GRID=.false.
+export KNOB_UGWP_TAUAMP=1.5e-3
+export KNOB_UGWP_TAUAMP_NEST02=0.8e-3
 export KNOB_UGWP_DOKDIS=2
 export KNOB_UGWP_NDX4LH=4
 export KNOB_UGWP_VERSION=1
 export KNOB_UGWP_PALAUNCH=275.0e2
+export LIGHTNING_THREAT=.true.
 
-export GWD_OPT=2
-export DO_UGWP_V0=.false.
-export DO_UGWP_V0_OROG_ONLY=.false.
-export DO_GSL_DRAG_LS_BL=.true.
-export DO_GSL_DRAG_SS=.true.
-export DO_GSL_DRAG_TOFD=.true.
-export DO_UGWP_V1=.true.
-export DO_UGWP_V1_OROG_ONLY=.false.
+# NOTE: progsigma should be .true. for the global_nest_v1 suite.
+# The code turns it off automatically at low resolutions.
+# This leads to an erronious situation where it is off for the globe, but on for the nest.
+# Hence, we turn it off manually, to avoid advecting a field of 0 from the nest boundary.
+# For practical resolutions (C384 or higher), it would be on.
+export PROGSIGMA=.false.
+export PROGSIGMA_NEST02=.false.
+
+# ----------------------------------------
+# &surf_map_nml
+export N_DEL2_STRONG=0        # namelist default is -1
+export N_DEL2_WEAK=15         # namelist default is 12
+export N_DEL2_WEAK_NEST02=24  # namelist default is 12
+export N_DEL4=2               # namelist default is -1
+export PEAK_FAC=1.            # namelist default is 1.05
+export ZERO_OCEAN=.false.     # namelist default is .true.
+
+# ----------------------------------------
+# &namsfc
+export FNALBC="'${ATMRES}.snowfree_albedo.tileX.nc'"
+export FNALBC2="'${ATMRES}.facsf.tileX.nc'"
+export FNTG3C="'${ATMRES}.substrate_temperature.tileX.nc'"
+export FNVEGC="'${ATMRES}.vegetation_greenness.tileX.nc'"
+export FNVETC="'${ATMRES}.vegetation_type.tileX.nc'"
+export FNSOTC="'${ATMRES}.soil_type.tileX.nc'"
+export FNSOCC="'${ATMRES}.soil_color.tileX.nc'"
+export FNSMCC=${FNSMCC_control}
+export FNMSKH=${FNMSKH_control}
+export FNVMNC="'${ATMRES}.vegetation_greenness.tileX.nc'"
+export FNVMXC="'${ATMRES}.vegetation_greenness.tileX.nc'"
+export FNSLPC="'${ATMRES}.slope_type.tileX.nc'"
+export FNABSC="'${ATMRES}.maximum_snow_albedo.tileX.nc'"
+
+export FNTSFA="'        '"
+export FNACNA="''"
+export FNSNOA="''"
+
+export LANDICE=.false.
+
+# ----------------------------------------
+# Select input files and resources for the regression test system.
+
+# Select model_configure template:
+export MODEL_CONFIGURE=model_configure_gnv1.IN
+
+# Select input.nml template:
+export INPUT_NML=input_global_parent.nml.IN
+
+# Select input_nest02.nml template:
+export INPUT_NEST02_NML=input_global_nest.nml.IN
+
+# Select the field_table.
+
+# NOTE: The global_nest_v1 uses prognostic sigma, so this should be
+# the progsigma field table. HOWEVER, the code turns it off
+# automatically for this resolution. Hence, we turn it off here so
+# we're not advecting a grid of 0
+
+export FIELD_TABLE=field_table_thompson_aero_tke
+
+# Request additional contents in diag_table for gravity wave diagnostics:
+export DIAG_TABLE_ADDITIONAL=diag_additional_ldiag3d_ugwp
+
+# Override atmosphere compute task count to include the nest (tile 7).
+# Note that NTILES=6, which is the size of the global mosaic.
+export GRID_PES="$(( INPES * JNPES * 6 )),$(( INPES_NEST02 * JNPES_NEST02 ))"
+ATM_compute_tasks=$(( INPES*JNPES*NTILES + INPES_NEST02*JNPES_NEST02 ))
