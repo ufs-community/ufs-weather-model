@@ -49,6 +49,8 @@ for i = 1, #ufs_modules do
   end
 end
 
+load("nco")
+
 setenv("CC", "cc")
 setenv("CXX", "CC")
 setenv("FC", "ftn")
