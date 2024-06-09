@@ -27,7 +27,7 @@ def finish_log():
     failed_list= []
     test_changes_list= PATHRT+'/test_changes.list'
     with open(UFS_TEST_YAML, 'r') as f:
-        rt_yaml = yaml.load(f)#, Loader=yaml.FullLoader)
+        rt_yaml = yaml.load(f, Loader=yaml.FullLoader)
         for apps, jobs in rt_yaml.items():
             for key, val in jobs.items():
                 if (str(key) == 'build'):
