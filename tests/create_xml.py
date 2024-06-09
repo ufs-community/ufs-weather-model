@@ -327,10 +327,10 @@ def main_loop():
         COMPILE_QUEUE = str(base['COMPILE_QUEUE'])
         PARTITION     = str(base['PARTITION'])
         if (PARTITION == "None"): PARTITION = ""
-        dprefix       = str(base['dprefix']).replace("{USER}", str(USER))
+        dprefix       = str(base['dprefix']).replace("${USER}", str(USER))
         DISKNM        = str(base['DISKNM'])
-        STMP          = str(base['STMP'])
-        PTMP          = str(base['PTMP'])
+        STMP          = str(base['STMP']).replace("${USER}", str(USER))
+        PTMP          = str(base['PTMP']).replace("${USER}", str(USER))
         RUNDIR_ROOT   = str(base['RUNDIR_ROOT'])
         SCHEDULER     = str(base['SCHEDULER'])
         INPUTDATA_ROOT= str(base['INPUTDATA_ROOT'])
