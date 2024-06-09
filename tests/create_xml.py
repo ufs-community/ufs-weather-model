@@ -318,7 +318,7 @@ def main_loop():
         bl_date = str(bldate.readline())
     BL_DATE = bl_date.split("=")[1].strip()
     with open("baseline_setup.yaml", 'r') as f:
-        exp_config = yaml.load(f) #, Loader=yaml.FullLoader)
+        exp_config = yaml.load(f, Loader=yaml.FullLoader)
         base = exp_config[MACHINE_ID]
         USER = str(os.environ.get('USER')) #os.environ.get('USERNAME')) #os.getlogin()
         pid  = str(os.getpid())
@@ -391,7 +391,7 @@ def main_loop():
     rocoto_create_entries(RTPWD,MACHINE_ID,INPUTDATA_ROOT,INPUTDATA_ROOT_WW3,INPUTDATA_ROOT_BMIC,RUNDIR_ROOT,NEW_BASELINE,ROCOTO_XML)
     UFS_TEST_YAML = str(os.getenv('UFS_TEST_YAML'))
     with open(UFS_TEST_YAML, 'r') as f:
-        rt_yaml = yaml.load(f)#, Loader=yaml.FullLoader)
+        rt_yaml = yaml.load(f, Loader=yaml.FullLoader)
         for apps, jobs in rt_yaml.items():
             for key, val in jobs.items():
                 if (str(key) == 'build'):
