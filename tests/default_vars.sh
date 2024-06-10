@@ -437,7 +437,7 @@ export DIAG_TABLE=diag_table_gfsv16
 export FIELD_TABLE=field_table_gfsv16
 export FV3_RUN=control_run.IN
 export INPUT_NML=control.nml.IN
-export CCPP_SUITE=FV3_GFS_v16
+export CCPP_SUITE=raven
 
 export DOGP_CLDOPTICS_LUT=.false.
 export DOGP_LWSCAT=.false.
@@ -537,7 +537,7 @@ export MIN_LAKEICE=0.15
 
 #input file
 export FV3_RUN=control_run.IN
-export CCPP_SUITE=FV3_GFS_v17_p8
+export CCPP_SUITE=bluebird
 export FIELD_TABLE=field_table_thompson_noaero_tke
 export DIAG_TABLE=diag_table_cpld.IN
 export INPUT_NML=global_control.nml.IN
@@ -1111,7 +1111,7 @@ export_cmeps
 
 # FV3 defaults
 export FRAC_GRID=.true.
-export CCPP_SUITE=FV3_GFS_v17_coupled_p8
+export CCPP_SUITE=pelican
 export INPUT_NML=global_control.nml.IN
 export FIELD_TABLE=field_table_thompson_noaero_tke_GOCART
 export DIAG_TABLE=diag_table_cpld.IN
@@ -1597,7 +1597,7 @@ export FV_CORE_TAU=10.
 export RF_CUTOFF=7.5e2
 
 export FV3_RUN=lake_control_run.IN
-export CCPP_SUITE=FV3_HRRR
+export CCPP_SUITE=bald_eagle
 export INPUT_NML=rap.nml.IN
 export FIELD_TABLE=field_table_thompson_aero_tke
 export NEW_DIAGTABLE=diag_table_rap
@@ -1676,7 +1676,7 @@ export HYBEDMF=.false.
 export SHAL_CNV=.false.
 export DO_SAT_ADJ=.false.
 export DO_DEEP=.false.
-export CCPP_SUITE='FV3_HRRR'
+export CCPP_SUITE='bald_eagle'
 export INPES=12
 export JNPES=12
 export NPX=397
@@ -1769,7 +1769,7 @@ export_rap()
   export_rap_common
 
   export DIAG_TABLE=diag_table_rap
-  export CCPP_SUITE=FV3_RAP
+  export CCPP_SUITE=albatross
 
   export IMFSHALCNV=3
   export IMFDEEPCNV=3
@@ -1791,7 +1791,7 @@ export_rrfs_v1()
 {
   export_rap_common
 
-  export CCPP_SUITE=FV3_RRFS_v1beta
+  export CCPP_SUITE=pigeon
   export DIAG_TABLE=diag_table_rap_noah
 
   export DO_DEEP=.false.

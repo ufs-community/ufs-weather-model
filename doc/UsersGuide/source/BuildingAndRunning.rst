@@ -276,7 +276,7 @@ For the ``ufs-weather-model ATMAERO`` configuration (standalone ATM coupled to :
 
 .. code-block:: console
 
-    export CMAKE_FLAGS="-DAPP=ATMAERO -DCCPP_SUITES=FV3_GFS_v17_p8"
+    export CMAKE_FLAGS="-DAPP=ATMAERO -DCCPP_SUITES=bluebird"
 
 .. _atmaq:
 
@@ -286,7 +286,7 @@ For the ``ufs-weather-model ATMAQ`` configuration (standalone ATM coupled to :te
 
 .. code-block:: console
 
-    export CMAKE_FLAGS="-DAPP=ATMAQ -DCCPP_SUITES=FV3_GFS_v15p2"
+    export CMAKE_FLAGS="-DAPP=ATMAQ -DCCPP_SUITES=kingfisher"
 
 .. _atml:
 
@@ -296,7 +296,7 @@ For the ``ufs-weather-model ATML`` configuration (standalone ATM coupled to :ter
 
 .. code-block:: console
 
-    export CMAKE_FLAGS="-DAPP=ATML -DCCPP_SUITES=FV3_GFS_v17_p8"
+    export CMAKE_FLAGS="-DAPP=ATML -DCCPP_SUITES=bluebird"
 
 S2S Configurations 
 ----------------------
