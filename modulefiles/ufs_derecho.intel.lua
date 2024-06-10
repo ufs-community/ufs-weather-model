@@ -24,8 +24,6 @@ load(pathJoin("cmake", cmake_ver))
 stack_python_ver=os.getenv("stack_python_ver") or "3.10.8"
 load(pathJoin("stack-python", stack_python_ver))
 
-load("nco")
-
 setenv("CMAKE_Platform", "derecho.intel")
 load("ufs-weather-model-env")
 

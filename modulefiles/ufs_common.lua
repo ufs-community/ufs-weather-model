@@ -30,5 +30,3 @@ for i = 1, #ufs_modules do
     load(pathJoin(name, os.getenv(env_version_name) or default_version))
   end
 end
-
-load("nco")
