@@ -179,7 +179,7 @@ fi
 echo "Machine: " $MACHINE_ID "    Account: " $ACCNR
 
 check_machine=false
-platforms=( hera orion hercules gaea jet derecho noaacloud )
+platforms=( hera orion hercules gaea jet derecho noaacloud s4 )
 for name in "${platforms[@]}"
 do
   if [[ $MACHINE_ID = "$name" ]]; then
@@ -191,7 +191,7 @@ done
 if [[ $check_machine == true ]]; then
     source ${PATHRT}/machine_config/machine_$MACHINE_ID.config
 else
-    die "*** Current support of ufs_test.sh only for hera orion hercules gaea jet derecho noaacloud! ***"
+    die "*** Current support of ufs_test.sh only for hera orion hercules gaea jet derecho noaacloud s4 ! ***"
 fi
 
 shift $((OPTIND-1))
