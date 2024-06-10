@@ -76,7 +76,7 @@ command>
     <partition>eslogin_c5</partition>
 """
         PARTITION= ""
-    if ( not PARTITION == "" or MACHINE_ID != "hera" ):
+    if ( PARTITION != "" and MACHINE_ID != "hera" ):
             compile_task+=f"""    <partition>{PARTITION}</partition>
 """
     compile_task+=f"""    <cores>{BUILD_CORES}</cores>
