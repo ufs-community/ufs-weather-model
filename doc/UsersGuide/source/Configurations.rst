@@ -157,19 +157,19 @@ it will be expanded to cover the full range of ATM-only supported configurations
      - Forecast Length (hours)
    * - `control_c48 <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/control_c48>`__
      - Compare global control C48L127 results with previous trunk version
-     - FV3_GFS_v16
+     - raven
      - 1200
      - 2021-03-22 06:00:00
      - 24
    * - `control_p8 <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/control_p8>`__
      - Compare global control results with previous trunk version
-     - FV3_GFS_v17_p8
+     - bluebird
      - 720
      - 2021-03-22 06:00:00
      - 24
    * - `regional_control <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/regional_control>`__
      - FV3 regional control (hi-res 3km, small domain) test
-     - FV3_GFS_v15_thompson_mynn_lam3km
+     - crow
      - 1800
      - 2016-10-03 00:00:00
      - 6
@@ -178,7 +178,7 @@ it will be expanded to cover the full range of ATM-only supported configurations
 
 .. code-block:: console
 
-    export CMAKE_FLAGS="-DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16,FV3_GFS_v17_p8,FV3_GFS_v15_thompson_mynn_lam3km -D32BIT=ON"
+    export CMAKE_FLAGS="-DAPP=ATM -DCCPP_SUITES=raven,bluebird,crow -D32BIT=ON"
 
 **Supported Physics Suites**
 
@@ -188,14 +188,14 @@ it will be expanded to cover the full range of ATM-only supported configurations
 
    * - Physics Suite
      - Description
-   * - FV3_GFS_v16
-     - The :term:`CCPP` GFS_v16 physics suite is described in the CCPP documentation `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_g_f_s_v16_page.html>`__.
-   * - FV3_GFS_v17_p8
-     - The CCPP GFS_v17_p8 physics suite is described in the CCPP documentation `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_g_f_s_v17_p8_page.html>`__. 
-   * - FV3_GFS_v15_thompson_mynn_lam3km
-     - The CCPP GFS_v15 physics suite with the Thompson Aerosol-Aware Cloud Microphysics Scheme 
+   * - "raven"
+     - The :term:`CCPP` physics suite developed to emulate the physics of GFS version 16; described in the CCPP documentation `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_g_f_s_v16_page.html>`__.
+   * - "bluebird"
+     - The CCPP physics suite for an early experimental prototype of GFS version 17; described in the CCPP documentation `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_g_f_s_v17_p8_page.html>`__. 
+   * - "crow"
+     - The CCPP physics suite developed to emulate the physics of GFS version 15, modified with the Thompson Aerosol-Aware Cloud Microphysics Scheme 
        (see `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_t_h_o_m_p_s_o_n.html>`__) and 
-       Mynn Surface Layer Module (see `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/group__mynn__sfc.html>`__) 
+       MYNN Surface Layer Module (see `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/group__mynn__sfc.html>`__) 
        tailored for a limited area model (LAM) 3-km resolution grid.
 
 **Additional Information**
@@ -229,7 +229,7 @@ These tests use default values set in the ``export_fv3`` function of ``default_v
      - Other
    * - `atmwav_control_noaero_p8 <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/atmwav_control_noaero_p8>`__
      - Compare global control results with previous trunk version
-     - **Suite:** CCPP_SUITE="FV3_GFS_v16" :raw-html:`<br/> <br/>`
+     - **Suite:** CCPP_SUITE="raven" :raw-html:`<br/> <br/>`
 
        **Microphysics:** IMP_PHYSICS=8 :raw-html:`<br/> <br/>`
 
@@ -262,7 +262,7 @@ These tests use default values set in the ``export_fv3`` function of ``default_v
    Certain physics-related settings are common to all of the supported RRFS configurations. These values are set in each test's configuration file because they differ from the ``default_vars.sh`` values:
 
       General Physics Parameters:
-          * **Suite:** CCPP_SUITE= `FV3_GFS_v17_p8 <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_g_f_s_v17_p8_page.html>`__
+          * **Suite:** CCPP_SUITE= `bluebird <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_g_f_s_v17_p8_page.html>`__
           * **Microphysics:** IMP_PHYSICS=8
           * **Time Step:** DT_ATMOS=720
 
@@ -365,7 +365,7 @@ These tests use default values set in the ``export_fv3`` function of ``default_v
      - Forecast Length (hours)
    * - control_p8_atmlnd_sbs
      - Compare global control results with previous trunk version
-     - FV3_GFS_v17_p8
+     - "bluebird"
      - 720
      - 2021-03-22 06:00:00
      - 24
@@ -374,7 +374,7 @@ These tests use default values set in the ``export_fv3`` function of ``default_v
 
 .. code-block:: console
 
-    export CMAKE_FLAGS="-DAPP=ATML -DCCPP_SUITES=FV3_GFS_v17_p8"
+    export CMAKE_FLAGS="-DAPP=ATML -DCCPP_SUITES=bluebird"
 
 
 **Supported Physics Suites**
@@ -385,8 +385,8 @@ These tests use default values set in the ``export_fv3`` function of ``default_v
 
    * - Physics Suite
      - Description
-   * - FV3_GFS_v17_p8
-     - The :term:`CCPP` GFS_v17_p8 physics suite is described in the CCPP documentation `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_g_f_s_v17_p8_page.html>`__. 
+   * - "bluebird"
+     - The :term:`CCPP` "bluebird" physics suite is described in the CCPP documentation `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_g_f_s_v17_p8_page.html>`__. 
 
 **Additional Information**
 
@@ -433,7 +433,7 @@ physics tests. :numref:`Table %s <rrfs-rts>` (below) contains a selection of RTs
 
 .. code-block:: console
 
-    export CMAKE_FLAGS="-DAPP=ATM -DCCPP_SUITES=FV3_RAP,FV3_HRRR,FV3_RRFS_v1beta,FV3_RRFS_v1nssl -D32BIT=ON"
+    export CMAKE_FLAGS="-DAPP=ATM -DCCPP_SUITES=albatross,bald_eagle,pigeon,crossbill -D32BIT=ON"
 
 **Supported Physics Suites**
 
@@ -443,12 +443,12 @@ physics tests. :numref:`Table %s <rrfs-rts>` (below) contains a selection of RTs
 
    * - Physics Suite
      - Description
-   * - FV3_HRRR
-     - The FV3_HRRR physics suite is described in the :term:`CCPP` documentation `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_h_r_r_r_suite_page.html>`__.
-   * - FV3_RRFS_v1beta 
-     - The FV3_RRFS_v1beta physics suite is described in the CCPP documentation `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_r_r_f_s_v1beta_page.html>`__.
-   * - FV3_RRFS_v1nssl
-     - The FV3_RRFS_v1nssl physics suite is similar to the *FV3_RRFS_v1beta* suite; however, it uses the NSSL 2-moment microphysics scheme instead of the Thompson microphysics scheme.
+   * - bald_eagle
+     - The "bald_eagle" physics suite is described in the :term:`CCPP` documentation `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_h_r_r_r_suite_page.html>`__.
+   * - pigeon 
+     - The "pigeon" physics suite is described in the CCPP documentation `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_r_r_f_s_v1beta_page.html>`__.
+   * - crossbill
+     - The "crossbill" physics suite is similar to the *pigeon* suite; however, it uses the NSSL 2-moment microphysics scheme instead of the Thompson microphysics scheme.
 
 
 **Additional Information**
@@ -574,7 +574,7 @@ These tests use the default values set in the ``export_fv3``, ``export_hafs``, `
      - Other
    * - `rhafs_global_1nest_atm <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_global_1nest_atm>`__
      - Compare HAFS global with 1 nest and atmosphere only results with previous trunk version
-     - **Suite:** CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf"
+     - **Suite:** CCPP_SUITE="flamingo"
 
        **Microphysics:** IMP_PHYSICS=11
 
@@ -597,7 +597,7 @@ These tests use the default values set in the ``export_fv3``, ``export_hafs``, `
      - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
    * - `hafs_global_multiple_4nests_atm <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_global_multiple_4nests_atm>`__
      - Compare HAFS global with 4 multiple nests and atmosphere only results with previous trunk version
-     - **Suite:** CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf"
+     - **Suite:** CCPP_SUITE="flamingo"
 
        **Microphysics:** IMP_PHYSICS=11
 
@@ -623,7 +623,7 @@ These tests use the default values set in the ``export_fv3``, ``export_hafs``, `
      - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
    * - `hafs_global_storm_following_1nest_atm <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_global_storm_following_1nest_atm>`__
      - Compare HAFS global with 1 storm-following moving nest and atmosphere only results with previous trunk version
-     - **Suite:** CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf"
+     - **Suite:** CCPP_SUITE="flamingo"
 
        **Microphysics:** IMP_PHYSICS=11
 
@@ -646,7 +646,7 @@ These tests use the default values set in the ``export_fv3``, ``export_hafs``, `
      - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
    * - `hafs_regional_1nest_atm <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_regional_1nest_atm>`__
      - Compare HAFS regional with 1 nest and atmosphere only results with previous trunk version
-     - **Suite:** CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf"
+     - **Suite:** CCPP_SUITE="flamingo"
 
        **Microphysics:** IMP_PHYSICS=11
 
@@ -669,7 +669,7 @@ These tests use the default values set in the ``export_fv3``, ``export_hafs``, `
      - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
    * - `hafs_regional_atm <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_regional_atm>`__
      - Compare HAFS regional atmosphere only results with previous trunk version
-     - **Suite:** CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf"
+     - **Suite:** CCPP_SUITE="flamingo"
 
        **Microphysics:** IMP_PHYSICS=11
 
@@ -691,7 +691,7 @@ These tests use the default values set in the ``export_fv3``, ``export_hafs``, `
      - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
    * - `hafs_regional_atm_ocn <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_regional_atm_ocn>`__
      - Compare HAFS regional atmosphere-ocean coupled HYCOM results with previous trunk version
-     - **Suite:** CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf_nonsst"
+     - **Suite:** CCPP_SUITE="tanager"
 
        **Microphysics:** IMP_PHYSICS=11
 
@@ -713,7 +713,7 @@ These tests use the default values set in the ``export_fv3``, ``export_hafs``, `
      - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
    * - `hafs_regional_atm_ocn_wav <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_regional_atm_ocn_wav>`__
      - Compare HAFS regional atmosphere-ocean-wave coupled results with previous trunk version
-     - **Suite:** CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf_nonsst"
+     - **Suite:** CCPP_SUITE="tanager"
 
        **Microphysics:** IMP_PHYSICS=11
 
@@ -735,7 +735,7 @@ These tests use the default values set in the ``export_fv3``, ``export_hafs``, `
      - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
    * - `hafs_regional_atm_thompson_gfdlsf <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_regional_atm_thompson_gfdlsf>`__
      - Compare the results from HAFS regional atmosphere only using the Thompson microphysics scheme and GFDL surface layer scheme with previous trunk version
-     - **Suite:** CCPP_SUITE="FV3_HAFS_v1_thompson_tedmf_gfdlsf"
+     - **Suite:** CCPP_SUITE="toucan"
 
        **Microphysics:** IMP_PHYSICS=8
 
@@ -757,7 +757,7 @@ These tests use the default values set in the ``export_fv3``, ``export_hafs``, `
      - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
    * - `hafs_regional_atm_wav <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_regional_atm_wav>`__
      - Compare HAFS regional atmosphere-wave coupled results with previous trunk version
-     - **Suite:** CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf"
+     - **Suite:** CCPP_SUITE="flamingo"
 
        **Microphysics:** IMP_PHYSICS=11
 
@@ -798,7 +798,7 @@ These tests use the default values set in the ``export_fv3``, ``export_hafs``, `
      - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
    * - `hafs_regional_docn <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_regional_docn>`__
      - Compare HAFS regional coupled with regional data ocean from MOM6 results with previous trunk version
-     - **Suite:** CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf_nonsst"
+     - **Suite:** CCPP_SUITE="tanager"
 
        **Microphysics:** IMP_PHYSICS=11
 
@@ -821,7 +821,7 @@ These tests use the default values set in the ``export_fv3``, ``export_hafs``, `
      - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
    * - `hafs_regional_docn_oisst <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_regional_docn_oisst>`__
      - Compare HAFS regional coupled with global data ocean from OISST results with previous trunk version
-     - **Suite:** CCPP_SUITE=FV3_HAFS_v1_gfdlmp_tedmf_nonsst
+     - **Suite:** CCPP_SUITE=tanager
 
        **Microphysics:** IMP_PHYSICS=11
 
@@ -844,7 +844,7 @@ These tests use the default values set in the ``export_fv3``, ``export_hafs``, `
      - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.true., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
    * - `hafs_regional_specified_moving_1nest_atm <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_regional_specified_moving_1nest_atm>`__
      - Compare HAFS regional with 1 specified moving nest and atmosphere only results with previous trunk version
-     - **Suite:** CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf"
+     - **Suite:** CCPP_SUITE="flamingo"
 
        **Microphysics:** IMP_PHYSICS=11
 
@@ -867,7 +867,7 @@ These tests use the default values set in the ``export_fv3``, ``export_hafs``, `
      - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
    * - `hafs_regional_storm_following_1nest_atm <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_regional_storm_following_1nest_atm>`__
      - Compare HAFS regional with 1 storm-following moving nest and atmosphere only results with previous trunk version
-     - **Suite:** CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf"
+     - **Suite:** CCPP_SUITE="flamingo"
 
        **Microphysics:** IMP_PHYSICS=11
 
@@ -890,7 +890,7 @@ These tests use the default values set in the ``export_fv3``, ``export_hafs``, `
      - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
    * - `hafs_regional_storm_following_1nest_atm_ocn <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_regional_storm_following_1nest_atm_ocn>`__
      - Compare HAFS regional with 1 storm-following moving nest and atmosphere-ocean coupled results with previous trunk version
-     - **Suite:** CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf_nonsst"
+     - **Suite:** CCPP_SUITE="tanager"
 
        **Microphysics:** IMP_PHYSICS=11
 
@@ -913,7 +913,7 @@ These tests use the default values set in the ``export_fv3``, ``export_hafs``, `
      - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
    * - `hafs_regional_storm_following_1nest_atm_ocn_debug <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_regional_storm_following_1nest_atm_ocn_debug>`__
      - Compare HAFS regional with 1 storm-following moving nest and atmosphere-ocean coupled results with previous trunk version
-     - **Suite:** CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf_nonsst"
+     - **Suite:** CCPP_SUITE="tanager"
 
        **Microphysics:** IMP_PHYSICS=11
 
@@ -936,7 +936,7 @@ These tests use the default values set in the ``export_fv3``, ``export_hafs``, `
      - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
    * - `hafs_regional_storm_following_1nest_atm_ocn_debug <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_regional_storm_following_1nest_atm_ocn_debug>`__
      - Compare HAFS regional with 1 storm-following moving nest and atmosphere-ocean coupled results with previous trunk version
-     - **Suite:** CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf_nonsst"
+     - **Suite:** CCPP_SUITE="tanager"
 
        **Microphysics:** IMP_PHYSICS=11
 
@@ -959,7 +959,7 @@ These tests use the default values set in the ``export_fv3``, ``export_hafs``, `
      - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
    * - `hafs_regional_storm_following_1nest_atm_ocn_wav <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_regional_storm_following_1nest_atm_ocn_wav>`__
      - Compare HAFS regional with 1 storm-following moving nest and atmosphere-ocean-wave coupled results with previous trunk version
-     - **Suite:** CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf_nonsst"
+     - **Suite:** CCPP_SUITE="tanager"
 
        **Microphysics:** IMP_PHYSICS=11
 
@@ -982,7 +982,7 @@ These tests use the default values set in the ``export_fv3``, ``export_hafs``, `
      - RESTART_INTERVAL=1, atm_omp_num_threads=2, WARM_START=.false., READ_INCREMENT=.false., RES_LATLON_DYNAMICS="'fv3_increment.nc'"
    * - `hafs_regional_telescopic_2nests_atm <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/hafs_regional_telescopic_2nests_atm>`__
      - Compare HAFS regional with two telescopic nests and atmosphere only results with previous trunk version
-     - **Suite:** CCPP_SUITE="FV3_HAFS_v1_gfdlmp_tedmf"
+     - **Suite:** CCPP_SUITE="flamingo"
 
        **Microphysics:** IMP_PHYSICS=11
 
@@ -1019,10 +1019,12 @@ These tests use the default values set in the ``export_fv3``, ``export_hafs``, `
 
    * - Physics Suite
      - Description
-   * - FV3_HAFS_v1_gfdlmp_tedmf
-     - The FV3_HAFS_v1_gfdlmp_tedmf physics suite is described in the :term:`CCPP` documentation `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/rap_suite_page.html>`__.
-   * - FV3_HAFS_v1_gfdlmp_tedmf_nonsst
-     - The FV3_HAFS_v1_gfdlmp_tedmf_nonsst physics suite is described in the CCPP documentation `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_h_r_r_r_suite_page.html>`__.
-   * - FV3_HAFS_v1_thompson_tedmf_gfdlsf
-     - The FV3_HAFS_v1_thompson_tedmf_gfdlsf physics suite is described in the CCPP documentation `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_r_r_f_s_v1beta_page.html>`__.
+   * - flamingo
+     - The "flamingo" physics suite is described in the :term:`CCPP` documentation `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/rap_suite_page.html>`__.
+   * - tanager
+     - The "tanager" physics suite is described in the CCPP documentation `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_h_r_r_r_suite_page.html>`__.
+   * - toucan
+     - The "toucan" physics suite is described in the CCPP documentation `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_r_r_f_s_v1beta_page.html>`__.
 
+..
+   NOTE: The above links do not link to the correct places! These would be documented for HAFS if they are documented at all.

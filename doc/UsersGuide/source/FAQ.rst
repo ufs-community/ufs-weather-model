@@ -29,18 +29,19 @@ The steps are:
          cd tests
 
    #. Find a configure (``*.conf``) file that contains the machine and compiler you are using. For this
-      example, the Intel compiler on Derecho is used.  To create a custom configure file, two lines are
+      example, the test is being run on the Derecho machine.  To create a custom configure file, two lines are
       needed:  a ``COMPILE`` line and a ``RUN`` line.   The ``COMPILE`` line should contain the name
-      of the machine and compiler ``derecho.intel`` and the desired ``SUITES`` for the build.  Choose a
+      of the machine``derecho`` and the desired ``SUITES`` for the build.  Choose a
       ``RUN`` line under this ``COMPILE`` command that uses the desired ``SUITE``.  For example:
 
       .. code-block:: console
 
-         COMPILE | 32BIT=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_v15p2,FV3_GFS_v16beta,FV3_GFS_v15p2_no_nsst,FV3_GFS_v16beta_no_nsst                     | standard    | derecho.intel | fv3
-         RUN     | fv3_ccpp_gfs_v16beta                                                                                                           | standard    |                | fv3         |
+         COMPILE | atm_dyn32 | intel | -DAPP=ATM -DCCPP_SUITES=raven,bluebird,hummingbird -D32BIT=ON | | fv3 |
+         RUN | control_c192                                      | - derecho                | baseline |
+
 
       Put these two lines into a file called ``my_test.conf``.  The parameters used in this run can be
-      found in the ``fv3_ccpp_gfs_v16beta`` file in the ``ufs-weather-model/tests/tests`` directory.
+      found in the ``control_c192`` file in the ``ufs-weather-model/tests/tests`` directory.
 
       .. note::  These two lines are long and may not appear in entirety in your browser. Scroll to the right to see
                the entire line.

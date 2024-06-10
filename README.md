@@ -34,9 +34,9 @@ The top level directory structure groups source code and input files as follow:
 | ```tests/```              | Regression and unit testing framework scripts. |
 | ```build.sh```            | Script to build the model executable (also used by `tests/`) |
 
-E.g. use of `build.sh` to build the coupled model with `FV3_GFS_v15p2` as the CCPP suite.
+E.g. use of `build.sh` to build the coupled model with `kingfisher` as the CCPP suite.
 ```
-$> CMAKE_FLAGS="-DAPP=S2S" CCPP_SUITES="FV3_GFS_v15p2" ./build.sh
+$> CMAKE_FLAGS="-DAPP=S2S" CCPP_SUITES="kingfisher" ./build.sh
 ```
 The build system is regularly tested with [Tier-1 and Tier-2 platforms](
 https://github.com/ufs-community/ufs-weather-model/wiki/Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers).
