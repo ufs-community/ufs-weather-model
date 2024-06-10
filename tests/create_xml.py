@@ -75,6 +75,7 @@ command>
         compile_task+=f"""    <native>--clusters=es</native>
     <partition>eslogin_c5</partition>
 """
+        PARTITION= ""
     if ( not PARTITION == "" or MACHINE_ID != "hera" ):
             compile_task+=f"""    <partition>{PARTITION}</partition>
 """
