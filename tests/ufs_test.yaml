@@ -390,6 +390,19 @@ datm_cdeps_land_intel:
     - datm_cdeps_lnd_gswp3: {'project':['daily'],'turnoff':['wcoss2']}
     - datm_cdeps_lnd_era5: {'project':['daily'],'turnoff':['wcoss2']}
     - datm_cdeps_lnd_era5_rst: {'project':['daily'],'dependency':'datm_cdeps_lnd_era5','turnoff':['wcoss2','noaacloud']}
+atm_ds2s_docn_pcice_intel:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=ATM_DS2S-PCICE -DCCPP_SUITES=FV3_GFS_v17_coupled_p8'
+  tests: 
+    - atm_ds2s_docn_pcice: {'project':['daily'],'turnoff':['noaacloud']}
+atm_ds2s_docn_dice_intel:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=ATM_DS2S -DCCPP_SUITES=FV3_GFS_v17_coupled_p8'
+    turnoff: ['wcoss2']
+  tests: 
+    - atm_ds2s_docn_dice: {'project':['daily'],'dependency':'cpld_control_nowave_noaero_p8','turnoff':['noaacloud','wcoss2']}
 atml_intel:
   build: 
     compiler: 'intel'
