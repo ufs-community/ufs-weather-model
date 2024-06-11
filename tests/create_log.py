@@ -31,93 +31,98 @@ def finish_log():
         for apps, jobs in rt_yaml.items():
             for key, val in jobs.items():
                 if (str(key) == 'build'):
-                    COMPILE_NR += 1
                     if not ('turnoff' in val.keys()): print('   ',val['compiler'],val['option'])
                     if 'turnoff' in val.keys(): print('   ',val['compiler'],val['option'],'turnoff: ',val['turnoff'])
-                    RT_COMPILER = val['compiler']
-                    COMPILE_ID  = apps #+'_'+RT_COMPILER
-                    COMPILE_LOG = 'compile_'+COMPILE_ID+'.log'
-                    COMPILE_LOG_TIME ='compile_'+COMPILE_ID+'_timestamp.txt'
-                    with open('./logs/log_'+MACHINE_ID+'/'+COMPILE_LOG) as f:
-                        if "[100%] Linking Fortran executable" in f.read():
-                            COMPILE_PASS += 1
-                            f.seek(0)
-                            for line in f:
-                                if 'export RUNDIR_ROOT=' in line:
-                                    RUNDIR_ROOT=line.split("=")[1]
-                                    break
-                            compile_err = RUNDIR_ROOT.strip('\n')+'/compile_'+COMPILE_ID+'/err'
-                            with open(compile_err) as ferr:
-                                contents = ferr.read()
-                                count_warning = contents.count(": warning #")
-                                count_remarks = contents.count(": remark #")
-                                ferr.close()
-                            warning_log = ""
-                            if count_warning > 0:
-                                warning_log = "("+str(count_warning)+" warnings"
-                            if count_remarks > 0:
-                                warning_log+= ","+str(count_remarks)+" remarks)"
-                            flog = open('./logs/log_'+MACHINE_ID+'/'+COMPILE_LOG_TIME)
-                            timing_data = flog.read()
-                            first_line = timing_data.split('\n', 1)[0]
-                            etime = int(first_line.split(",")[4].strip()) - int(first_line.split(",")[1].strip())
-                            btime = int(first_line.split(",")[3].strip()) - int(first_line.split(",")[2].strip())
-                            etime_min, etime_sec = divmod(int(etime), 60)
-                            etime_min = f"{etime_min:02}"; etime_sec = f"{etime_sec:02}"
-                            btime_min, btime_sec = divmod(int(btime), 60)
-                            btime_min = f"{btime_min:02}"; btime_sec = f"{btime_sec:02}"
-                            time_log = " ["+etime_min+':'+etime_sec+', '+btime_min+':'+btime_sec+"]"
-                            flog.close()
-                            compile_log = "PASS -- COMPILE "+COMPILE_ID+time_log+warning_log+"\n"
-                        else:
-                            compile_log = "FAIL -- COMPILE "+COMPILE_ID+"\n"                        
-                        f.close()
-                    run_logs += compile_log
-                if (str(key) == 'tests' and COMPILE_ONLY == 'false'):
-                    for test in val:
-                        JOB_NR+=1
-                        case, config = get_testcase(test)
-                        TEST_NAME = case
-                        TEST_ID   = TEST_NAME+'_'+RT_COMPILER
-                        TEST_LOG  = 'rt_'+TEST_ID+'.log'
-                        TEST_LOG_TIME= 'run_'+TEST_ID+'_timestamp.txt'
-                        if 'dependency' in config.keys():
-                            DEP_RUN = str(config['dependency'])+'_'+RT_COMPILER
-                        else:
-                            DEP_RUN = ""
-                        PASS_CHECK = 'Test '+TEST_ID+' PASS'
-                        MAXS_CHECK = 'The maximum resident set size (KB)'
-                        pass_flag = False
-                        with open('./logs/log_'+MACHINE_ID+'/'+TEST_LOG) as f:
-                            if PASS_CHECK in f.read():
-                                pass_flag = True
-                        f.close()
-                        if pass_flag:
-                            f = open('./logs/log_'+MACHINE_ID+'/'+TEST_LOG_TIME)
-                            timing_data = f.read()
-                            first_line = timing_data.split('\n', 1)[0]
-                            etime = str(int(first_line.split(",")[4].strip()) - int(first_line.split(",")[1].strip()))
-                            rtime = str(int(first_line.split(",")[3].strip()) - int(first_line.split(",")[2].strip()))
-                            etime_min, etime_sec = divmod(int(etime), 60)
-                            etime_min = f"{etime_min:02}"; etime_sec = f"{etime_sec:02}"
-                            rtime_min, rtime_sec = divmod(int(rtime), 60)
-                            rtime_min = f"{rtime_min:02}"; rtime_sec = f"{rtime_sec:02}"
-                            time_log = " ["+etime_min+':'+etime_sec+', '+rtime_min+':'+rtime_sec+"]"
-                            f.close()
-                        with open('./logs/log_'+MACHINE_ID+'/'+TEST_LOG) as f:
-                            if pass_flag :
-                                rtlog_file = f.readlines()
-                                for line in rtlog_file:
-                                    if MAXS_CHECK in line:
-                                        memsize= line.split('=')[1].strip()
-                                test_log = 'PASS -- TEST '+TEST_ID+time_log+' ('+memsize+' MB)\n'
-                                PASS_NR += 1
+                    PASS_TESTS = False
+                    if not MACHINE_ID in val['turnoff']:
+                        COMPILE_NR += 1
+                        RT_COMPILER = val['compiler']
+                        COMPILE_ID  = apps #+'_'+RT_COMPILER
+                        COMPILE_LOG = 'compile_'+COMPILE_ID+'.log'
+                        COMPILE_LOG_TIME ='compile_'+COMPILE_ID+'_timestamp.txt'
+                        with open('./logs/log_'+MACHINE_ID+'/'+COMPILE_LOG) as f:
+                            if "[100%] Linking Fortran executable" in f.read():
+                                COMPILE_PASS += 1
+                                f.seek(0)
+                                for line in f:
+                                    if 'export RUNDIR_ROOT=' in line:
+                                        RUNDIR_ROOT=line.split("=")[1]
+                                        break
+                                compile_err = RUNDIR_ROOT.strip('\n')+'/compile_'+COMPILE_ID+'/err'
+                                with open(compile_err) as ferr:
+                                    contents = ferr.read()
+                                    count_warning = contents.count(": warning #")
+                                    count_remarks = contents.count(": remark #")
+                                    ferr.close()
+                                warning_log = ""
+                                if count_warning > 0:
+                                    warning_log = "("+str(count_warning)+" warnings"
+                                if count_remarks > 0:
+                                    warning_log+= ","+str(count_remarks)+" remarks)"
+                                flog = open('./logs/log_'+MACHINE_ID+'/'+COMPILE_LOG_TIME)
+                                timing_data = flog.read()
+                                first_line = timing_data.split('\n', 1)[0]
+                                etime = int(first_line.split(",")[4].strip()) - int(first_line.split(",")[1].strip())
+                                btime = int(first_line.split(",")[3].strip()) - int(first_line.split(",")[2].strip())
+                                etime_min, etime_sec = divmod(int(etime), 60)
+                                etime_min = f"{etime_min:02}"; etime_sec = f"{etime_sec:02}"
+                                btime_min, btime_sec = divmod(int(btime), 60)
+                                btime_min = f"{btime_min:02}"; btime_sec = f"{btime_sec:02}"
+                                time_log = " ["+etime_min+':'+etime_sec+', '+btime_min+':'+btime_sec+"]"
+                                flog.close()
+                                compile_log = "PASS -- COMPILE "+COMPILE_ID+time_log+warning_log+"\n"
                             else:
-                                test_log = 'FAIL -- TEST '+TEST_ID+'\n'
-                                failed_list.append(TEST_NAME+' '+RT_COMPILER)
-                                FAIL_NR += 1
-                            run_logs += test_log
-                        f.close()
+                                compile_log = "FAIL -- COMPILE "+COMPILE_ID+"\n"                        
+                            f.close()
+                        run_logs += compile_log
+                    else:
+                        PASS_TESTS = True
+                if (str(key) == 'tests' and COMPILE_ONLY == 'false' and not PASS_TESTS):
+                    for test in val:
+                        case, config = get_testcase(test)
+                        if not MACHINE_ID in config['turnoff']:
+                            JOB_NR+=1
+                            TEST_NAME = case
+                            TEST_ID   = TEST_NAME+'_'+RT_COMPILER
+                            TEST_LOG  = 'rt_'+TEST_ID+'.log'
+                            TEST_LOG_TIME= 'run_'+TEST_ID+'_timestamp.txt'
+                            if 'dependency' in config.keys():
+                                DEP_RUN = str(config['dependency'])+'_'+RT_COMPILER
+                            else:
+                                DEP_RUN = ""
+                            PASS_CHECK = 'Test '+TEST_ID+' PASS'
+                            MAXS_CHECK = 'The maximum resident set size (KB)'
+                            pass_flag = False
+                            with open('./logs/log_'+MACHINE_ID+'/'+TEST_LOG) as f:
+                                if PASS_CHECK in f.read():
+                                    pass_flag = True
+                            f.close()
+                            if pass_flag:
+                                f = open('./logs/log_'+MACHINE_ID+'/'+TEST_LOG_TIME)
+                                timing_data = f.read()
+                                first_line = timing_data.split('\n', 1)[0]
+                                etime = str(int(first_line.split(",")[4].strip()) - int(first_line.split(",")[1].strip()))
+                                rtime = str(int(first_line.split(",")[3].strip()) - int(first_line.split(",")[2].strip()))
+                                etime_min, etime_sec = divmod(int(etime), 60)
+                                etime_min = f"{etime_min:02}"; etime_sec = f"{etime_sec:02}"
+                                rtime_min, rtime_sec = divmod(int(rtime), 60)
+                                rtime_min = f"{rtime_min:02}"; rtime_sec = f"{rtime_sec:02}"
+                                time_log = " ["+etime_min+':'+etime_sec+', '+rtime_min+':'+rtime_sec+"]"
+                                f.close()
+                            with open('./logs/log_'+MACHINE_ID+'/'+TEST_LOG) as f:
+                                if pass_flag :
+                                    rtlog_file = f.readlines()
+                                    for line in rtlog_file:
+                                        if MAXS_CHECK in line:
+                                            memsize= line.split('=')[1].strip()
+                                    test_log = 'PASS -- TEST '+TEST_ID+time_log+' ('+memsize+' MB)\n'
+                                    PASS_NR += 1
+                                else:
+                                    test_log = 'FAIL -- TEST '+TEST_ID+'\n'
+                                    failed_list.append(TEST_NAME+' '+RT_COMPILER)
+                                    FAIL_NR += 1
+                                run_logs += test_log
+                            f.close()
                     run_logs += '\n'
     write_logfile(filename, "a", output=run_logs)
 
@@ -147,7 +152,7 @@ Tests Completed: {PASS_NR}/{JOB_NR}
 """    
     write_logfile(filename, "a", output=synop_log)
 
-    if (int(JOB_NR) > 0 and int(JOB_NR) == int(PASS_NR)):
+    if (int(FAIL_NR) == 0):
         if os.path.isfile(test_changes_list):
             delete_files(test_changes_list)
         open(test_changes_list, 'a').close()

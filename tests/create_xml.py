@@ -401,41 +401,53 @@ def main_loop():
                 if (str(key) == 'build'):
                     if not ('turnoff' in val.keys()): print('   ',val['compiler'],val['option'])
                     if 'turnoff' in val.keys(): print('   ',val['compiler'],val['option'],'turnoff: ',val['turnoff'])
-                    RT_COMPILER = val['compiler']
-                    COMPILE_ID  = apps #+'_'+RT_COMPILER
-                    MAKE_OPT    = val['option']
-                    os.environ["COMPILE_ID"]  = str(COMPILE_ID)
-                    os.environ["MAKE_OPT"]    = str(MAKE_OPT)
-                    ROCOTO_COMPILE_MAXTRIES = "3"
-                    os.environ["RT_COMPILER"] = str(RT_COMPILER)
-                    write_compile_env(SCHEDULER,PARTITION,str(JOB_NR),COMPILE_QUEUE,RUNDIR_ROOT)
-                    rocoto_create_compile_task \
-                        (MACHINE_ID,COMPILE_ID,ROCOTO_COMPILE_MAXTRIES,MAKE_OPT,ACCNR,COMPILE_QUEUE,PARTITION,ROCOTO_XML)
-                if (str(key) == 'tests' and COMPILE_ONLY == 'false'):
+                    PASS_TESTS = False
+                    if not MACHINE_ID in val['turnoff']:
+                        RT_COMPILER = val['compiler']
+                        COMPILE_ID  = apps
+                        MAKE_OPT    = val['option']
+                        os.environ["COMPILE_ID"]  = str(COMPILE_ID)
+                        os.environ["MAKE_OPT"]    = str(MAKE_OPT)
+                        ROCOTO_COMPILE_MAXTRIES = "3"
+                        os.environ["RT_COMPILER"] = str(RT_COMPILER)
+                        write_compile_env(SCHEDULER,PARTITION,str(JOB_NR),COMPILE_QUEUE,RUNDIR_ROOT)
+                        rocoto_create_compile_task \
+                            (MACHINE_ID,COMPILE_ID,ROCOTO_COMPILE_MAXTRIES,MAKE_OPT,ACCNR,COMPILE_QUEUE,PARTITION,ROCOTO_XML)
+                    else:
+                        PASS_TESTS = True
+                if (str(key) == 'tests' and COMPILE_ONLY == 'false' and not PASS_TESTS):
                     JOB_NR+=1
                     if ( ROCOTO ):
                         write_metatask_begin(COMPILE_ID, ROCOTO_XML)
+                        case_count=0
                         for test in val:
                             case, config = get_testcase(test)
-                            TEST_NAME = case
-                            TEST_ID   = TEST_NAME+'_'+RT_COMPILER
-                            if 'dependency' in config.keys():
-                                DEP_RUN = str(config['dependency'])+'_'+RT_COMPILER
-                            else:
-                                DEP_RUN = ""
-                            RT_SUFFIX = ""
-                            BL_SUFFIX = ""
-                            os.environ["TEST_NAME"] = TEST_NAME
-                            os.environ["DEP_RUN"]   = DEP_RUN
-                            os.environ["TEST_ID"]   = TEST_ID
-                            os.environ["RT_SUFFIX"] = RT_SUFFIX
-                            os.environ["BL_SUFFIX"] = BL_SUFFIX
-                            os.environ["JOB_NR"]    = str(JOB_NR)
-
-                            rc_set_run_task = subprocess.Popen(['bash', '-c', '. ufs_test_utils.sh; set_run_task'])
-                            rc_set_run_task.wait()   
-                        write_metatask_end(ROCOTO_XML)
-        print(rt_yaml)
+                            if not MACHINE_ID in config['turnoff']:
+                                TEST_NAME = case
+                                TEST_ID   = TEST_NAME+'_'+RT_COMPILER
+                                if 'dependency' in config.keys():
+                                    DEP_RUN = str(config['dependency'])+'_'+RT_COMPILER
+                                else:
+                                    DEP_RUN = ""
+                                RT_SUFFIX = ""
+                                BL_SUFFIX = ""
+                                os.environ["TEST_NAME"] = TEST_NAME
+                                os.environ["DEP_RUN"]   = DEP_RUN
+                                os.environ["TEST_ID"]   = TEST_ID
+                                os.environ["RT_SUFFIX"] = RT_SUFFIX
+                                os.environ["BL_SUFFIX"] = BL_SUFFIX
+                                os.environ["JOB_NR"]    = str(JOB_NR)
+                                rc_set_run_task = subprocess.Popen(['bash', '-c', '. ufs_test_utils.sh; set_run_task'])
+                                rc_set_run_task.wait()
+                                case_count+=1
+                        if int(case_count) > 0:
+                            write_metatask_end(ROCOTO_XML)
+                        else:
+                            lines = subprocess.check_output(['head', '-n', '-1', ROCOTO_XML])
+                            lines = lines.decode('utf-8')
+                            with open(ROCOTO_XML, 'w') as filetowrite:
+                                filetowrite.write(lines)
+                            filetowrite.close
     rocoto_close=f"""</workflow>
 """
     with open(ROCOTO_XML,"a") as f:
