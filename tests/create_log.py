@@ -3,7 +3,7 @@ import sys
 import subprocess
 import yaml
 from datetime import datetime
-from ufs_test_utils import get_testcase, write_logfile, delete_files
+from ufs_test_utils import get_testcase, write_logfile, delete_files, machine_check_off
 
 def finish_log():
     """Collect regression test results and generate log file.
@@ -31,13 +31,12 @@ def finish_log():
         for apps, jobs in rt_yaml.items():
             for key, val in jobs.items():
                 if (str(key) == 'build'):
-                    if not ('turnoff' in val.keys()): print('   ',val['compiler'],val['option'])
-                    if 'turnoff' in val.keys(): print('   ',val['compiler'],val['option'],'turnoff: ',val['turnoff'])
+                    turnon_check = machine_check_off(MACHINE_ID, val)
                     PASS_TESTS = False
-                    if not MACHINE_ID in val['turnoff']:
+                    if turnon_check:
                         COMPILE_NR += 1
                         RT_COMPILER = val['compiler']
-                        COMPILE_ID  = apps #+'_'+RT_COMPILER
+                        COMPILE_ID  = apps
                         COMPILE_LOG = 'compile_'+COMPILE_ID+'.log'
                         COMPILE_LOG_TIME ='compile_'+COMPILE_ID+'_timestamp.txt'
                         with open('./logs/log_'+MACHINE_ID+'/'+COMPILE_LOG) as f:
@@ -80,7 +79,8 @@ def finish_log():
                 if (str(key) == 'tests' and COMPILE_ONLY == 'false' and not PASS_TESTS):
                     for test in val:
                         case, config = get_testcase(test)
-                        if not MACHINE_ID in config['turnoff']:
+                        turnon_check = machine_check_off(MACHINE_ID, config)
+                        if turnon_check:
                             JOB_NR+=1
                             TEST_NAME = case
                             TEST_ID   = TEST_NAME+'_'+RT_COMPILER

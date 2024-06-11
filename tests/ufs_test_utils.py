@@ -4,6 +4,22 @@ import glob
 import yaml
 import subprocess
 
+def machine_check_off(machine_id, val):
+    """Check turned-off machine from yaml configuration
+
+    Args:
+        machine_id (str): local machine name
+        val (dic): build and test config dictionary list
+    Returns:
+        pass_machine: logical flag to pass local machine
+    """
+    pass_machine = False
+    if 'turnoff' in val.keys():
+        pass_machine = not machine_id in val['turnoff']
+    if 'turnon' in val.keys():
+        pass_machine = machine_id in val['turnon']        
+    return pass_machine
+
 def delete_files(deletefiles):
     """Remove specified filepath
 

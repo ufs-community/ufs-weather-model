@@ -137,15 +137,21 @@ if __name__ == "__main__":
                 options = f"'{build[3]}'"
                 machine = build[4]
                 off_machine = None
+                on_machine = None
                 if (machine.find('-') != -1):
                     off_machine = machine.replace("-", "").strip()
                     off_machine = string_clean(off_machine)
+                if (machine.find('+') != -1):
+                    on_machine = machine.replace("+", "").strip()
+                    on_machine = string_clean(on_machine)                
                 yaml_file.write(f"{apps}_{build[2].strip()}:\n")
                 yaml_file.write(f"  build: \n")
                 yaml_file.write(f"    compiler: {compiler}\n")
                 yaml_file.write(f"    option: {options}\n")
                 if not (off_machine is None):
                     yaml_file.write(f"    turnoff: [{off_machine}]\n")
+                if not (on_machine is None):
+                    yaml_file.write(f"    turnon: [{on_machine}]\n")
                 prev_line = 'COMPILE'
             if line.startswith("RUN"):  # RUN line
                 build = parse_line(line)
@@ -156,6 +162,9 @@ if __name__ == "__main__":
                 if (machine.find('-') != -1):
                     off_machine = machine.replace("-", "").strip()
                     off_machine = string_clean(off_machine)
+                if (machine.find('+') != -1):
+                    on_machine = machine.replace("+", "").strip()
+                    on_machine = string_clean(on_machine)
                 tests = f"    - {test}: {{'project':['daily']"
                 if baseline.isalnum():
                     tests += f",'baseline': {baseline}"
@@ -163,6 +172,8 @@ if __name__ == "__main__":
                     tests += f",'dependency':'{depend}'"
                 if not (off_machine is None):
                     tests += f",'turnoff':[{off_machine}]"
+                if not (on_machine is None):
+                    tests += f",'turnon':[{on_machine}]"                    
                 if prev_line == "COMPILE":
                     yaml_file.write("  tests: \n")
                 yaml_file.write(tests+"}\n")

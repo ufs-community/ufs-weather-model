@@ -2,7 +2,7 @@ import os
 import sys
 import subprocess
 import yaml
-from ufs_test_utils import get_testcase, write_logfile, rrmdir
+from ufs_test_utils import get_testcase, write_logfile, rrmdir, machine_check_off
 
 def rocoto_create_entries(RTPWD,MACHINE_ID,INPUTDATA_ROOT,INPUTDATA_ROOT_WW3,INPUTDATA_ROOT_BMIC,RUNDIR_ROOT,NEW_BASELINE,ROCOTO_XML):
     """Generate header information for Rocoto xml file
@@ -399,10 +399,9 @@ def main_loop():
         for apps, jobs in rt_yaml.items():
             for key, val in jobs.items():
                 if (str(key) == 'build'):
-                    if not ('turnoff' in val.keys()): print('   ',val['compiler'],val['option'])
-                    if 'turnoff' in val.keys(): print('   ',val['compiler'],val['option'],'turnoff: ',val['turnoff'])
+                    turnon_check = machine_check_off(MACHINE_ID, val)
                     PASS_TESTS = False
-                    if not MACHINE_ID in val['turnoff']:
+                    if turnon_check:
                         RT_COMPILER = val['compiler']
                         COMPILE_ID  = apps
                         MAKE_OPT    = val['option']
@@ -422,7 +421,8 @@ def main_loop():
                         case_count=0
                         for test in val:
                             case, config = get_testcase(test)
-                            if not MACHINE_ID in config['turnoff']:
+                            turnon_check = machine_check_off(MACHINE_ID, config)
+                            if turnon_check:
                                 TEST_NAME = case
                                 TEST_ID   = TEST_NAME+'_'+RT_COMPILER
                                 if 'dependency' in config.keys():
