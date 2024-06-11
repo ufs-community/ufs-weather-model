@@ -10,7 +10,7 @@
     ndtd                = 1
     runtype             = '@[CICE_RUNTYPE]'
     runid               = '@[CICE_RUNID]'
-    ice_ic              = 'cice_model.res.nc'
+    ice_ic              = '@[CICE_ICE_IC]'
     restart             = .true.
     restart_ext         = .false.
     use_restart_time    = @[CICE_USE_RESTART_TIME]
@@ -384,4 +384,16 @@
 /
 
 &icefields_bgc_nml
+/
+
+&ice_prescribed_nml
+  prescribed_ice_mode = .@[CICE_PRESCRIBED].
+  stream_yearfirst = @[SYEAR]
+  stream_yearlast = @[SYEAR]
+  stream_yearalign = @[SYEAR]
+  stream_varname = "ice_cov"
+  stream_meshfile = "INPUT/@[MESH_DICE]"
+  stream_datafiles = "@[stream_files_dice]"
+  stream_mapalgo = "bilinear"
+  stream_taxmode = "extend"
 /
