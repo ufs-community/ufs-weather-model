@@ -13,11 +13,13 @@ def machine_check_off(machine_id, val):
     Returns:
         pass_machine: logical flag to pass local machine
     """
-    pass_machine = False
+    pass_machine = True
     if 'turnoff' in val.keys():
-        pass_machine = not machine_id in val['turnoff']
+        if machine_id in val['turnoff']:
+            pass_machine = False
     if 'turnon' in val.keys():
-        pass_machine = machine_id in val['turnon']        
+        if not machine_id in val['turnon']:
+            pass_machine = False
     return pass_machine
 
 def delete_files(deletefiles):

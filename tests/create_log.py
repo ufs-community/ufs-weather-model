@@ -31,9 +31,9 @@ def finish_log():
         for apps, jobs in rt_yaml.items():
             for key, val in jobs.items():
                 if (str(key) == 'build'):
-                    turnon_check = machine_check_off(MACHINE_ID, val)
+                    machine_check = machine_check_off(MACHINE_ID, val)
                     PASS_TESTS = False
-                    if turnon_check:
+                    if machine_check:
                         COMPILE_NR += 1
                         RT_COMPILER = val['compiler']
                         COMPILE_ID  = apps
@@ -79,8 +79,8 @@ def finish_log():
                 if (str(key) == 'tests' and COMPILE_ONLY == 'false' and not PASS_TESTS):
                     for test in val:
                         case, config = get_testcase(test)
-                        turnon_check = machine_check_off(MACHINE_ID, config)
-                        if turnon_check:
+                        machine_check = machine_check_off(MACHINE_ID, config)
+                        if machine_check:
                             JOB_NR+=1
                             TEST_NAME = case
                             TEST_ID   = TEST_NAME+'_'+RT_COMPILER

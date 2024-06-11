@@ -399,9 +399,9 @@ def main_loop():
         for apps, jobs in rt_yaml.items():
             for key, val in jobs.items():
                 if (str(key) == 'build'):
-                    turnon_check = machine_check_off(MACHINE_ID, val)
+                    machine_check = machine_check_off(MACHINE_ID, val)
                     PASS_TESTS = False
-                    if turnon_check:
+                    if machine_check:
                         RT_COMPILER = val['compiler']
                         COMPILE_ID  = apps
                         MAKE_OPT    = val['option']
@@ -421,8 +421,8 @@ def main_loop():
                         case_count=0
                         for test in val:
                             case, config = get_testcase(test)
-                            turnon_check = machine_check_off(MACHINE_ID, config)
-                            if turnon_check:
+                            machine_check = machine_check_off(MACHINE_ID, config)
+                            if machine_check:
                                 TEST_NAME = case
                                 TEST_ID   = TEST_NAME+'_'+RT_COMPILER
                                 if 'dependency' in config.keys():
