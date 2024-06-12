@@ -17,7 +17,7 @@ usage() {
   echo "  -d  delete run direcotries that are not used by other tests"
   echo "  -e  use ecFlow workflow manager (this option is not fully functional yet)"
   echo "  -h  display this help"
-  echo "  -k  keep run directory after rt.sh is completed"
+  echo "  -k  keep run directory after ufs_test.sh is completed"
   echo "  -l  runs test specified in <file>"
   echo "  -m  compare against new baseline results"
   echo "  -n  run single test <name>"
@@ -44,22 +44,22 @@ cleanup() {
   exit
 }
 
-trap '{ echo "rt.sh interrupted"; rt_trap ; }' INT
-trap '{ echo "rt.sh quit"; rt_trap ; }' QUIT
-trap '{ echo "rt.sh terminated"; rt_trap ; }' TERM
-trap '{ echo "rt.sh error on line $LINENO"; cleanup ; }' ERR
-trap '{ echo "rt.sh finished"; cleanup ; }' EXIT
+trap '{ echo "ufs_test.sh interrupted"; rt_trap ; }' INT
+trap '{ echo "ufs_test.sh quit"; rt_trap ; }' QUIT
+trap '{ echo "ufs_test.sh terminated"; rt_trap ; }' TERM
+trap '{ echo "ufs_test.sh error on line $LINENO"; cleanup ; }' ERR
+trap '{ echo "ufs_test.sh finished"; cleanup ; }' EXIT
 
 # PATHRT - Path to regression tests directory
 readonly PATHRT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P )"
 cd ${PATHRT}
 
-# make sure only one instance of rt.sh is running
+# make sure only one instance of ufs_test.sh is running
 readonly LOCKDIR="${PATHRT}"/lock
 if mkdir "${LOCKDIR}" ; then
   echo $(hostname) $$ > "${LOCKDIR}/PID"
 else
-  echo "Only one instance of rt.sh can be running at a time"
+  echo "Only one instance of ufs_test.sh can be running at a time"
   exit 1
 fi
 
