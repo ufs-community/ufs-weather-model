@@ -312,6 +312,15 @@ if [[ ${DOCN_CDEPS} = 'true' ]]; then
   atparse < "${PATHRT}/parm/${DOCN_STREAM_CONFIGURE:-docn.streams.IN}" > docn.streams
 fi
 
+if [[ ${DICE_CDEPS} = 'true' ]]; then
+  atparse < "${PATHRT}/parm/${DICE_IN_CONFIGURE:-dice_in.IN}" > dice_in
+  atparse < "${PATHRT}/parm/${DICE_STREAM_CONFIGURE:-dice.streams.IN}" > dice.streams
+fi
+
+if [[ ${CICE_PRESCRIBED} = 'true' ]]; then
+  atparse < "${PATHRT}"/parm/ice_in.IN > ice_in
+fi
+
 if [[ ${CDEPS_INLINE} = 'true' ]]; then
   atparse < "${PATHRT}/parm/${CDEPS_INLINE_CONFIGURE:-stream.config.IN}" > stream.config
 fi
