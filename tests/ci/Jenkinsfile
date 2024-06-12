@@ -1,46 +1,111 @@
-def commentMessage
+matchedNode = []
+generateBaselineNode = []
+for (label in pullRequest.labels) {
+   listOfLabelNodeNames = jenkins.model.Jenkins.instance.nodes.collect {
+   node -> node.getLabelString().contains(label) ? node.name : null
 
-void setBuildStatus(String message, String state) {
-    step([
-        $class: "GitHubCommitStatusSetter",
-        reposSource: [$class: "ManuallyEnteredRepositorySource", url: "https://github.com/ufs-community/ufs-weather-model"],
-        contextSource: [$class: "ManuallyEnteredCommitContextSource", context: "Jenkins-ci ORTs"],
-        errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "UNSTABLE"]],
-        statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]] ]
-    ]);
+   if ((label.matches(node.getLabelString()+"-(.*)"))) {
+     matchedNode += node.getLabelString()
+   }
+
+   if ((label.matches(node.getLabelString()+"(.*)-ci"))) {
+     generateBaselineNode += node.getLabelString() 
+   }
+ }
 }
 
-def postGitHubCommentWithLogFile(commentMessage) {
-    script {
-        withCredentials([string(credentialsId: 'GithubJenkinsNew', variable: 'ACCESS_TOKEN')]) {
-            def apiUrl = "https://api.github.com/repos/ufs-community/ufs-weather-model/issues/${env.CHANGE_ID}/comments"
+modifiedLabels = matchedNode.collect{"'" + it + "'"} 
+baselineLabels = generateBaselineNode.collect{"'" + it + "'"} 
+def generateStage(nodeLabel) {
+    return {
+        stage("Running on ${nodeLabel}") {
+            node(nodeLabel) {
+               cleanWs()
+               checkout scm
+               script {
+                 try {
+                    echo "Running on ${nodeLabel}"
+                    if (baselineLabels.contains(nodeLabel)) {
+                       sh '''
+                       git submodule update --init --recursive
+                       cd tests
+		       pwd
+		       export BL_DATE=$(cat bl_date.conf | cut -d '=' -f2)
+                       export machine=Hera
+                       export PATH=$PATH:~/bin
+                       echo $CHANGE_ID
+                       export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
+                       export FORK_BRANCH=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
+                         
+                          if [[ $machine =~ "Hera" ]]
+                          then
+                            echo "Running ORT"
+                            sed "s|intel|gnu|g" -i opnReqTest
+                            export ACCNR=epic
+                            ./opnReqTest -n control_p8 -a ${ACCNR} -c std,bit,dbg,dcp,rst,mpi,thr
+                            cd logs/
+                            cp OpnReqTests_control_p8_hera.log /scratch2/NAGAPE/epic/role.epic/jenkins/workspace
+                            cd ..
+                            ./opnReqTest -n regional_control -a ${ACCNR} -c bit,dcp,thr
+                            cd logs/
+                            cp OpnReqTests_regional_control_hera.log /scratch2/NAGAPE/epic/role.epic/jenkins/workspace
+                            cd ..
+                            ./opnReqTest -n cpld_control_nowave_noaero_p8 -a ${ACCNR} -c dbg,rst
+			                cd logs/
+                            cp OpnReqTests_cpld_control_nowave_noaero_p8_hera.log /scratch2/NAGAPE/epic/role.epic/jenkins/workspace
+                            git remote -v
+                            git fetch --no-recurse-submodules origin
+                            git reset FETCH_HEAD --hard
+                            cd .. && cd .. && cd ..
+			                cp OpnReqTests_control_p8_hera.log $WORKSPACE/tests/logs/
+                            cp OpnReqTests_regional_control_hera.log $WORKSPACE/tests/logs/
+                            cp OpnReqTests_cpld_control_nowave_noaero_p8_hera.log $WORKSPACE/tests/logs/
+                            cd $WORKSPACE/tests/
+                            else
+                            echo "exit"
+                          fi
+                      git config user.email "ecc.platform@noaa.gov"
+                      git config user.name "epic-cicd-jenkins"
+                      echo "Testing concluded...removing labels for $machine from $GIT_URL"
 
-            def curlCommand = "curl -s -H \"Authorization: token " + ACCESS_TOKEN + "\" \\\n" +
-                 "-X POST -d '{\"body\": \"" + commentMessage + "\"}' \\\n" +
-                 "\"" + apiUrl + "\""
-                    
-            def response = sh(script: curlCommand, returnStatus: true)
-            
-            if (response == 0) {
-                echo "Comment added successfully to PR #${env.CHANGE_ID}"
-            } else {
-                error "Failed to add comment to PR #${env.CHANGE_ID}"
+                      export machine_name_logs=$(echo $machine | awk '{ print tolower($1) }')
+                      git remote -v | grep -w sshorigin > /dev/null 2>&1 && git remote remove sshorigin > /dev/null 2>&1
+                      git remote add sshorigin $SSH_ORIGIN > /dev/null 2>&1
+                      git add logs/OpnReqTests_control_p8_hera.log logs/OpnReqTests_regional_control_hera.log logs/OpnReqTests_cpld_control_nowave_noaero_p8_hera.log
+                      git commit -m "ORT Jobs Completed.\n\n\n on-behalf-of @ufs-community <ecc.platform@noaa.gov>"
+                      git pull sshorigin $FORK_BRANCH
+                      git push sshorigin HEAD:$FORK_BRANCH
+                       
+                      tar --create --gzip --verbose --dereference --file "${machine_name_logs}.tgz" ${WORKSPACE}/tests/logs/*.log
+  
+                      GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
+                      GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
+
+                      curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-BL
+                      '''
+                      s3Upload consoleLogLevel: 'INFO', dontSetBuildResultOnFailure: false, dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'noaa-epic-prod-jenkins-artifacts', excludedFile: '', flatten: true, gzipFiles: false, keepForever: false, managedArtifacts: true, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: "**/*tgz*", storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'main', userMetadata: []
+                    }
+                 }
+               }
+            }
             }
         }
-    }
+                    }
+def parallelStagesMap = modifiedLabels.collectEntries {
+    ["${it}" : generateStage(it)]
 }
 
 pipeline {
     agent none
-
-    options {
-        disableConcurrentBuilds()
-        overrideIndexTriggers(false)
-        skipDefaultCheckout(true)
+    environment {
+        ACCNR = 'epic'
+        AWS_PROD_ACCOUNT_ID = credentials('AWS_PROD_ACCOUNT_ID')
+        AWS_PROD_SNS_TOPIC = credentials('AWS_PROD_SNS_TOPIC')
+        GITHUB_TOKEN = credentials('GithubJenkinsNew')
+        GIT_URL = 'https://github.com/ufs-community/ufs-weather-model.git'
     }
     stages {
-        
-        stage('Launch SonarQube') {
+        stage('Run SonarQube Testing') {
             steps {
                 script {
                     build job: '/ufs-weather-model/ufs-wm-sonarqube', parameters: [
@@ -50,112 +115,30 @@ pipeline {
                 }
             }
         }
-        
-        stage('ORT') {
-            matrix {
-                axes {
-                    axis {
-                        name 'TEST_NAME'
-                        values 'control_p8', 'regional_control', 'cpld_control_nowave_noaero_p8'
-                    }
-
-                    axis {
-                        name 'TEST_CASE'
-                        values 'thr', 'mpi', 'dcp', 'rst', 'bit', 'dbg'
-                    }
-                }
-
-                excludes {
-                    exclude {
-                        axis {
-                            name 'TEST_NAME'
-                            values 'cpld_control_nowave_noaero_p8'
-                        }
-
-                        axis {
-                            name 'TEST_CASE'
-                            values 'mpi', 'dcp', 'bit', 'thr' // TODO: Remove thr case from cpld_control_nowave_noaero_p8 exclusions when it is passing again
-                            }
-                    }
-                    exclude {
-                        axis {
-                            name 'TEST_NAME'
-                            values 'regional_control'
-                        }
-
-                        axis {
-                            name 'TEST_CASE'
-                            values 'mpi', 'rst', 'bit', 'dbg'
-                        }
-                    }   
-                }
-
-                agent {
-                    label 'docker-ufs-wm-ci'
-                }
-
-                environment {
-                    IMG_NAME = 'ci-test-weather'
-                }
-
-                stages {
-                    stage('Initialize') {
-                        steps {
-                            cleanWs()
-                            checkout scm
-                        }
-                    }
-
-                    stage('Build') {
-                        steps {
-                            sh 'docker build --build-arg test_name="" --build-arg build_case="" --no-cache --compress --file "${WORKSPACE}/tests/ci/Dockerfile" --tag "${IMG_NAME}" "${WORKSPACE}"'
-                        }
-                    }
-
-                    stage('Stage Test Data') {
-                        steps {
-                            sh 'docker volume rm --force DataVolume && docker run --detach --rm --volume DataVolume:/tmp noaaepic/input-data:20221101'
-                        }
-                    }
-
-                    stage('Test') {
-                        steps {
-                            sh 'docker run --rm --env test_name="${TEST_NAME}" --env run_case="${TEST_CASE}" --workdir /home/builder/ufs-weather-model/tests --volume DataVolume:/home/builder/data/NEMSfv3gfs --interactive --shm-size=32gb "${IMG_NAME}"'
-                        }
-                    }
-                }
-            
-                post {     
-                    always {
-                        sh '''
-                            docker rmi -f "$(docker image ls | grep -E -m1 "${IMG_NAME}" | awk '{ print $3 }')"
-                            docker rmi -f "$(docker image ls | grep -E -m1 'noaaepic' | awk '{ print $3 }')"
-                        '''
-                    }
-                    
-                }   
-            }
-        }
-    }
-    post {
-        success {
-            node('built-in') { 
-                setBuildStatus("Build succeeded", "SUCCESS");
-            }
-        }
-        failure {
-            node('built-in') {
-                setBuildStatus("Build failed", "FAILURE");
-            }
-        }
-        always {
-            node('built-in') {
+        stage('Run Regression Tests in Parallel') {
+            steps {
                 script {
-                    def buildResult = currentBuild.resultIsBetterOrEqualTo("SUCCESS") ? "passed" : "failed"
-                    commentMessage = "Jenkins-ci ORTs ${buildResult}"
-                    postGitHubCommentWithLogFile(commentMessage)
+                    parallel parallelStagesMap
                 }
             }
-        }
-    }
+        }       
+    }   
+        post {
+         success {
+             node('built-in') {
+                echo 'This will run only if successful.'
+                sh '''
+                  aws sns publish --topic-arn "arn:aws:sns:us-east-1:${AWS_PROD_ACCOUNT_ID}:${AWS_PROD_SNS_TOPIC}" --region us-east-1 --message '{"version":"1.0","source":"custom","content":{"description":":sunny: Jenkins build *'"$JOB_NAME"' '"$BUILD_NUMBER"'* with *PR-'"$CHANGE_ID"'*  *succeeded*"}}'
+               '''
+             }
+         }
+         failure {
+             node('built-in') {
+                echo 'This will run only if the run was marked as unstable.'
+                sh '''
+                  aws sns publish --topic-arn "arn:aws:sns:us-east-1:${AWS_PROD_ACCOUNT_ID}:${AWS_PROD_SNS_TOPIC}" --region us-east-1 --message '{"version":"1.0","source":"custom","content":{"description":":warning: Jenkins build *'"$JOB_NAME"' '"$BUILD_NUMBER"'* with *PR-'"$CHANGE_ID"'*  *failed!*"}}'
+               '''
+             }
+         }
+     } 
 }
