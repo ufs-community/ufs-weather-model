@@ -277,7 +277,7 @@ Times/Memory will be empty for failed tests.
 BASELINE DIRECTORY: {RTPWD}
 COMPARISON DIRECTORY: {RUNDIR_ROOT}
 
-RT.SH OPTIONS USED:
+UFS_TEST.SH OPTIONS USED:
 """
     write_logfile(filename, "a", output= info_note)
 
@@ -307,7 +307,7 @@ RT.SH OPTIONS USED:
     if (RTVERBOSE == "true"):
         write_logfile(filename, "a", output="* (-v) - VERBOSE OUTPUT"+"\n")
 
-def main_loop():
+def xml_loop():
     ACCNR      = str(os.getenv('ACCNR'))
     PATHRT     = str(os.getenv('PATHRT'))
     MACHINE_ID = str(os.getenv('MACHINE_ID'))
