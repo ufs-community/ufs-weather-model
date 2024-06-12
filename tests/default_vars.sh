@@ -419,6 +419,7 @@ export CMP_DATAONLY=false
 # Defaults for ufs.configure
 export esmf_logkind="ESMF_LOGKIND_MULTI"
 export DumpFields="false"
+export MED_history_n=1000000
 
 export_fv3_v16 ()
 {
@@ -498,9 +499,12 @@ export HAFS=false
 export AQM=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
+export DICE_CDEPS=false
+export CICE_PRESCRIBED=false
 export CDEPS_INLINE=false
 export POSTAPP='global'
 export USE_MERRA2=.true.
+export NESTED=.false.
 
 export NTILES=6
 export INPES=${INPES_dflt}
@@ -904,6 +908,7 @@ export_cice6() {
   export DT_CICE=${DT_ATMOS}
   export CICE_NPT=999
   export CICE_RUNTYPE=initial
+  export CICE_ICE_IC='cice_model.res.nc'
   export CICE_RUNID=unknown
   export CICE_USE_RESTART_TIME=.false.
   export CICE_RESTART_DIR=./RESTART/
@@ -954,6 +959,12 @@ export_cice6() {
   export CICE_BLCKX
   export CICE_BLCKY
   export CICE_DECOMP=slenderX2
+
+  #ds2s
+  export MESH_DICE=none
+  export stream_files_dice=none
+  export CICE_PRESCRIBED=false
+  export DICE_CDEPS=false
 }
 
 # Defaults for the MOM6 model namelist, mx100
@@ -1056,6 +1067,8 @@ export HAFS=false
 export AQM=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
+export DICE_CDEPS=false
+export CICE_PRESCRIBED=false
 export CDEPS_INLINE=false
 export FV3BMIC='p8c'
 export BMIC=.false.
@@ -1222,6 +1235,10 @@ export AOD_FRQ=060000
 export RESTART_FILE_PREFIX=''
 export RESTART_FILE_SUFFIX_SECS=''
 export RT35D=''
+
+#CDEPS ds2s
+export MESH_DICE=none
+export stream_files_dice=none
 }
 export_35d_run ()
 {
