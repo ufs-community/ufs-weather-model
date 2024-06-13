@@ -440,6 +440,9 @@ export FV3_RUN=control_run.IN
 export INPUT_NML=control.nml.IN
 export CCPP_SUITE=FV3_GFS_v16
 
+export POSTXCONFIG=postxconfig-NT-gfs.txt
+export POSTXCONFIG_FH00=postxconfig-NT-gfs_FH00.txt
+
 export DOGP_CLDOPTICS_LUT=.false.
 export DOGP_LWSCAT=.false.
 export IAER=111
