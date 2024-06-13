@@ -18,9 +18,13 @@ ICERES=${OCNRES:0:1}.${OCNRES:1}
 V2_SFC_FILE=${V2_SFC_FILE:-false}
 
 if [[ $BMIC == .true. ]]; then
-  FV3_IC=@[INPUTDATA_ROOT_BMIC]/${SYEAR}${SMONTH}${SDAY}${SHOUR}/@[FV3BMIC]/@[ATMRES]_L@[NPZ]/INPUT
-  MOM_IC=@[INPUTDATA_ROOT_BMIC]/${SYEAR}${SMONTH}${SDAY}${SHOUR}/mom6_da
-  ICE_IC=@[INPUTDATA_ROOT_BMIC]/${SYEAR}${SMONTH}${SDAY}${SHOUR}/cpc
+  #FV3_IC=@[INPUTDATA_ROOT_BMIC]/${SYEAR}${SMONTH}${SDAY}${SHOUR}/@[FV3BMIC]/@[ATMRES]_L@[NPZ]/INPUT
+  #MOM_IC=@[INPUTDATA_ROOT_BMIC]/${SYEAR}${SMONTH}${SDAY}${SHOUR}/mom6_da
+  #ICE_IC=@[INPUTDATA_ROOT_BMIC]/${SYEAR}${SMONTH}${SDAY}${SHOUR}/cpc
+  FV3_IC=@[INPUTDATA_ROOT_BMIC]
+  MOM_IC=@[INPUTDATA_ROOT_BMIC]
+  ICE_IC=@[INPUTDATA_ROOT_BMIC]
+  WAV_IC=@[INPUTDATA_ROOT_BMIC]
 else
   if [[ $ATMRES == C48 ]]; then
      FV3_IC=@[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127_mx${OCNRES}/${SYEAR}${SMONTH}${SDAY}${SHOUR}
@@ -154,11 +158,21 @@ else
      fi
 
   else
-     # C48mx500 warm start from ICs
-     cp    ${FV3_IC}/*.nc ./INPUT
-     cp    ${MOM_IC}/MOM.res.nc ./INPUT
-     cp    ${ICE_IC}/* .
-     cp    @[INPUTDATA_ROOT]/CMEPS_IC/${ATMRES}mx${OCNRES}/${SYEAR}${SMONTH}${SDAY}${SHOUR}/* .
+     if [[ $BMIC == .true. ]]; then
+       cp ${FV3_IC}/gfs_ctrl.nc ./INPUT
+       cp ${FV3_IC}/gfs_data*.nc ./INPUT
+       cp ${FV3_IC}/sfc_data*.nc ./INPUT
+       cp ${MOM_IC}/MOM*.nc ./INPUT
+       cp ${ICE_IC}/cice*nc .
+       cp ${FV3_IC}/ufs.cpld.cpl*nc .
+       cp ${WAV_IC}/restart.ww3 .
+     else
+       # C48mx500 warm start from ICs
+       cp    ${FV3_IC}/*.nc ./INPUT
+       cp    ${MOM_IC}/MOM.res.nc ./INPUT
+       cp    ${ICE_IC}/* .
+       cp    @[INPUTDATA_ROOT]/CMEPS_IC/${ATMRES}mx${OCNRES}/${SYEAR}${SMONTH}${SDAY}${SHOUR}/* .
+     fi
   fi
 fi
 
@@ -180,6 +194,21 @@ if [ $IAER = 1011 ]; then
   cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_DU.v15_3.dat optics_DU.dat
   cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_SS.v3_3.dat  optics_SS.dat
   cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_SU.v1_3.dat  optics_SU.dat
+fi  
+
+#rad_c_gocart
+if [ $IAER = 2011 ]; then
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_BC.v1_3.dat  optics_BC.dat
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_OC.v1_3.dat  optics_OC.dat
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_DU.v15_3.dat optics_DU.dat
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_SS.v3_3.dat  optics_SS.dat
+  cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_SU.v1_3.dat  optics_SU.dat
+  DIR_OPT=/scratch1/NCEPDEV/nems/Nick.Szapiro/tasks/input_data/gefs.v13/CHM/ExtData/monochromatic/
+  cp ${DIR_OPT}/optics_BC.v1_3.nc  optics_BC.nc
+  cp ${DIR_OPT}/optics_OC.v1_3.nc  optics_OC.nc 
+  cp ${DIR_OPT}/optics_DU.v15_3.nc optics_DU.nc
+  cp ${DIR_OPT}/optics_SS.v3_3.nc  optics_SS.nc
+  cp ${DIR_OPT}/optics_SU.v1_3.nc  optics_SU.nc
 fi
 
 cp    @[INPUTDATA_ROOT]/FV3_input_data/ugwp_c384_tau.nc ./ugwp_limb_tau.nc
@@ -195,5 +224,9 @@ fi
 
 #prognostic aerosols
 if [ $CPLCHM = .true. ]; then
-  ln -sf  @[INPUTDATA_ROOT]/GOCART/p8c_5d/ExtData .
+  if [[ $BMIC == .true. ]]; then
+    ln -sf /scratch1/NCEPDEV/nems/Nick.Szapiro/tasks/input_data/gefs.v13/CHM/ExtData .
+  else
+    ln -sf  @[INPUTDATA_ROOT]/GOCART/p8c_5d/ExtData .
+  fi
 fi
