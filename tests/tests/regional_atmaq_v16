@@ -1,0 +1,53 @@
+###############################################################################
+#
+#  regional aqm test: GFSv16 atmosphere with aqm (CMAQ) C96L64
+#
+###############################################################################
+
+export TEST_DESCR="AQM (CMAQ) regional test for comparison of results with previous trunk version"
+
+export CNTL_DIR=regional_atmaq_v16
+
+export LIST_FILES="dynf000.nc \
+                   dynf003.nc \
+                   dynf006.nc \
+                   phyf000.nc \
+                   phyf003.nc \
+                   phyf006.nc \
+                   RESTART/20231110.060000.coupler.res \
+                   RESTART/20231110.060000.fv_core.res.nc \
+                   RESTART/20231110.060000.fv_core.res.tile1.nc \
+                   RESTART/20231110.060000.fv_srf_wnd.res.tile1.nc \
+                   RESTART/20231110.060000.fv_tracer.res.tile1.nc \
+                   RESTART/20231110.060000.phy_data.nc \
+                   RESTART/20231110.060000.sfc_data.nc"
+
+export_fv3_v16
+export SYEAR=2023
+export SMONTH=11
+export SDAY=10
+export SHOUR=00
+export FHMAX=6
+export DT_ATMOS=180
+export WRITE_GROUP=2
+export WRTTASK_PER_GROUP=23
+export OUTPUT_FH='0 3 6'
+
+export AQM=.true.
+export QUILTING=.true.
+export WLCLK=40
+
+export INPES=${INPES_aqm}
+export JNPES=${JNPES_aqm}
+export NTILES=1
+export atm_model=fv3
+export aqm_model=aqm
+
+export FIELD_TABLE=field_table_aqm
+export DIAG_TABLE=diag_table_aqm
+export INPUT_NML=regional_atmaq.nml.IN
+export MODEL_CONFIGURE=model_configure_atmaq.IN
+export UFS_CONFIGURE=ufs.configure.atmaq.IN
+export FV3_RUN=fv3_aqm.IN
+export CCPP_SUITE=FV3_GFS_v16
+

@@ -5,30 +5,74 @@ start_hour:              @[SHOUR]
 start_minute:            0
 start_second:            0
 nhours_fcst:             @[FHMAX]
+fhrot:                   0
+RUN_CONTINUE:            .false.
+ENS_SPS:                 .false.
 dt_atmos:                @[DT_ATMOS]
-restart_interval:        @[RESTART_INTERVAL]
-write_dopost:            @[WRITE_DOPOST]
+calendar:                'julian'
+memuse_verbose:          .false.
+restart_interval:        6
+output_1st_tstep_rst:    .false.
+write_dopost:            .false.
+zstandard_level:         @[ZSTANDARD_LEVEL]
 ideflate:                @[IDEFLATE]
-quantize_mode:           'quantize_bitround'
-quantize_nsd:            @[QUANTIZE_NSD]
+nbits:                   0
+ichunk2d:                -1
+jchunk2d:                -1
+ichunk3d:                -1
+jchunk3d:                -1
+kchunk3d:                -1
 quilting:                @[QUILTING]
 
+#
+# Write-component (quilting) computational parameters.
+#
 write_groups:            @[WRITE_GROUP]
 write_tasks_per_group:   @[WRTTASK_PER_GROUP]
-num_files:               @[NUM_FILES]
-filename_base:           @[FILENAME_BASE]
-output_file:             @[OUTPUT_FILE]
-output_fh:  		 @[OUTPUT_FH]
-output_grid:  		 @[OUTPUT_GRID]
-
-cen_lon:  @[CEN_LON]
-cen_lat:  @[CEN_LAT]
-stdlat1:  @[STDLAT1]
-stdlat2:  @[STDLAT2]
-nx:       @[NX]
-ny:       @[NY]
-lon1:     @[LON1]
-lat1:     @[LAT1]
-dx:       @[DX]
-dy:       @[DY]
-
+num_files:               2
+filename_base:           'dyn' 'phy'
+output_file:             'netcdf' 'netcdf'
+#
+# Write-component output frequency parameter definitions:
+#
+# output_fh: Output frequency in hours.
+# nsout: Output frequency in time steps (positive values override "output_fh").
+#
+output_fh:  @[OUTPUT_FH]
+nsout:      -1
+#
+# Coordinate system used by the output grid.
+#
+output_grid:  'rotated_latlon'
+#
+# Parameter definitions for an output grid of type "rotated_latlon":
+#
+# cen_lon: Longitude of center of grid, expressed in the NON-ROTATED latlon coordinate 
+#          system (degrees).  This is also the longitude of the point at which the 
+#          equator and prime meridian of the ROTATED coordinate system intersect (i.e. 
+#          the point at which the longitude and latitude in the ROTATED latlon 
+#          coordinate system are both 0).
+# cen_lat: Latitude of center of grid, expressed in the NON-ROTATED latlon coordinate 
+#          system (degrees).  This is also the latitude of the point at which the 
+#          equator and prime meridian of the ROTATED coordinate system intersect (i.e. 
+#          the point at which the longitude and latitude in the ROTATED latlon 
+#          coordinate system are both 0).
+# lon1: Longitude of center of lower-left grid cell, expressed in the ROTATED latlon 
+#       coordinate system (degrees).
+# lat1: Latitude of center of lower-left grid cell, expressed in the ROTATED latlon 
+#       coordinate system (degrees).
+# lon2: Longitude of center of upper-right grid cell, expressed in the ROTATED latlon 
+#       coordinate system (degrees).
+# lat2: Latitude of center of upper-right grid cell, expressed in the ROTATED latlon 
+#       coordinate system (degrees).
+# dlon: Longitudinal grid size in the ROTATED latlon coordinate system (degrees).
+# dlat: Latitudinal grid size in the ROTATED latlon coordinate system (degrees).
+#
+cen_lon:  -118.0
+cen_lat:  50.0
+lon1:     -45.25            
+lat1:     -28.5            
+lon2:     45.25            
+lat2:     28.5            
+dlon:     0.116908139
+dlat:     0.116908139

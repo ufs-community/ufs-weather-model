@@ -89,8 +89,8 @@
   export OCN_tasks_cdeps_025=120
   export ICE_tasks_cdeps_025=48
 
-  export INPES_aqm=33
-  export JNPES_aqm=8
+  export INPES_aqm=25
+  export JNPES_aqm=34
 
   export THRD_cpl_unstr=1
   export INPES_cpl_unstr=3

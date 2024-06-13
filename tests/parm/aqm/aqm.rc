@@ -7,34 +7,28 @@
 #
 #  General settings
 #
-ae_matrix_nml: AE_cb6r3_ae6_aq.nml
-gc_matrix_nml: GC_cb6r3_ae6_aq.nml
-nr_matrix_nml: NR_cb6r3_ae6_aq.nml
-tr_matrix_nml: Species_Table_TR_0.nml
+ae_matrix_nml: aqm/epa/data/AE_cb6r3_ae6_aq.nml
+gc_matrix_nml: aqm/epa/data/GC_cb6r3_ae6_aq.nml
+nr_matrix_nml: aqm/epa/data/NR_cb6r3_ae6_aq.nml
+tr_matrix_nml: aqm/epa/data/Species_Table_TR_0.nml
 
-csqy_data:   CSQY_DATA_cb6r3_ae6_aq
-optics_data: PHOT_OPTICS.dat
-omi_data:    omi_cmaq_2015_361X179.dat
-
+optics_data: aqm/epa/data/PHOT_OPTICS.dat
+omi_data:    aqm/epa/data/omi_cmaq_2015_361X179.dat
+csqy_data:   aqm/epa/data/CSQY_DATA_cb6r3_ae6_aq
 init_concentrations: false
 
 run_aerosol: true
-
 mp_tracer_map: gfdl
 dy_tracer_map_start: 9
 
 ctm_aod: true
 ctm_pmdiag: true
-ctm_wb_dust: true
-
 ctm_stdout: maintask
 
 #
 #  Input emissions
 #
-# emission_sources: anthro fire pt dust prod 
-# emission_sources: anthro dust prod 
-emission_sources: anthro pt fire dust prod 
+emission_sources: anthro fire pt dust prod
 
 #
 #  Anthropogenic
@@ -53,7 +47,7 @@ anthro_format: netcdf
 #anthro_path:
 
 # emissions file name
-anthro_file: NEXUS/NEXUS_Expt.nc
+anthro_file: INPUT/NEXUS_Expt.nc
 
 # emissions time dependency
 # supported settings are:
@@ -78,63 +72,63 @@ anthro_frequency: hourly
 #   NO2          -0.05000 no2_sink_1     kg/s
 #
 anthro_species::
-    ACET          0.00000  ACET          KG/M2/S
-    ACROLEIN      0.00000  ACROLEIN      KG/M2/S
-    ALD2          0.00000  ALD2          KG/M2/S
-    ALD2_PRIMARY  0.00000  ALD2_PRIMARY  KG/M2/S
-    ALDX          0.00000  ALDX          KG/M2/S
-    BENZ          0.00000  BENZ          KG/M2/S
-    BUTADIENE13   0.00000  BUTADIENE13   KG/M2/S
-    CH4           0.00000  CH4           KG/M2/S
-    CH4_INV       0.00000  CH4_INV       KG/M2/S
-    CL2           0.00000  CL2           KG/M2/S
-    CO            0.00000  CO            KG/M2/S
-    CO2_INV       0.00000  CO2_INV       KG/M2/S
-    ETH           0.00000  ETH           KG/M2/S
-    ETHA          0.00000  ETHA          KG/M2/S
-    ETHY          0.00000  ETHY          KG/M2/S
-    ETOH          0.00000  ETOH          KG/M2/S
-    FORM          0.00000  FORM          KG/M2/S
-    FORM_PRIMARY  0.00000  FORM_PRIMARY  KG/M2/S
-    HCL           0.00000  HCL           KG/M2/S
-    HONO          0.00000  HONO          KG/M2/S
-    IOLE          0.00000  IOLE          KG/M2/S
-    ISOP          0.00000  ISOP          KG/M2/S
-    KET           0.00000  KET           KG/M2/S
-    MEOH          0.00000  MEOH          KG/M2/S
-    NAPH          0.00000  NAPH          KG/M2/S
-    NH3           0.00000  NH3           KG/M2/S
-    NH3_FERT      0.00000  NH3_FERT      KG/M2/S
-    NO            0.00000  NO            KG/M2/S
-    NO2           0.00000  NO2           KG/M2/S
-    OLE           0.00000  OLE           KG/M2/S
-    PAL           0.00000  PAL           KG/M2/S
-    PAR           0.00000  PAR           KG/M2/S
-    PCA           0.00000  PCA           KG/M2/S
-    PCL           0.00000  PCL           KG/M2/S
-    PEC           0.00000  PEC           KG/M2/S
-    PFE           0.00000  PFE           KG/M2/S
-    PH2O          0.00000  PH2O          KG/M2/S
-    PK            0.00000  PK            KG/M2/S
-    PMC           0.00000  PMC           KG/M2/S
-    PMG           0.00000  PMG           KG/M2/S
-    PMN           0.00000  PMN           KG/M2/S
-    PMOTHR        0.00000  PMOTHR        KG/M2/S
-    PNA           0.00000  PNA           KG/M2/S
-    PNCOM         0.00000  PNCOM         KG/M2/S
-    PNH4          0.00000  PNH4          KG/M2/S
-    PNO3          0.00000  PNO3          KG/M2/S
-    POC           0.00000  POC           KG/M2/S
-    PRPA          0.00000  PRPA          KG/M2/S
-    PSI           0.00000  PSI           KG/M2/S
-    PSO4          0.00000  PSO4          KG/M2/S
-    PTI           0.00000  PTI           KG/M2/S
-    SO2           0.00000  SO2           KG/M2/S
-    SOAALK        0.00000  SOAALK        KG/M2/S
-    SULF          0.00000  SULF          KG/M2/S
-    TERP          0.00000  TERP          KG/M2/S
-    TOL           0.00000  TOL           KG/M2/S
-    XYLMN         0.00000  XYLMN         KG/M2/S
+    ACET          1.00000  ACET          KG/M2/S
+    ACROLEIN      1.00000  ACROLEIN      KG/M2/S
+    ALD2          1.00000  ALD2          KG/M2/S
+    ALD2_PRIMARY  1.00000  ALD2_PRIMARY  KG/M2/S
+    ALDX          1.00000  ALDX          KG/M2/S
+    BENZ          1.00000  BENZ          KG/M2/S
+    BUTADIENE13   1.00000  BUTADIENE13   KG/M2/S
+    CH4           1.00000  CH4           KG/M2/S
+    CH4_INV       1.00000  CH4_INV       KG/M2/S
+    CL2           1.00000  CL2           KG/M2/S
+    CO            1.00000  CO            KG/M2/S
+    CO2_INV       1.00000  CO2_INV       KG/M2/S
+    ETH           1.00000  ETH           KG/M2/S
+    ETHA          1.00000  ETHA          KG/M2/S
+    ETHY          1.00000  ETHY          KG/M2/S
+    ETOH          1.00000  ETOH          KG/M2/S
+    FORM          1.00000  FORM          KG/M2/S
+    FORM_PRIMARY  1.00000  FORM_PRIMARY  KG/M2/S
+    HCL           1.00000  HCL           KG/M2/S
+    HONO          1.00000  HONO          KG/M2/S
+    IOLE          1.00000  IOLE          KG/M2/S
+    ISOP          1.00000  ISOP          KG/M2/S
+    KET           1.00000  KET           KG/M2/S
+    MEOH          1.00000  MEOH          KG/M2/S
+    NAPH          1.00000  NAPH          KG/M2/S
+    NH3           1.00000  NH3           KG/M2/S
+    NH3_FERT      1.00000  NH3_FERT      KG/M2/S
+    NO            1.00000  NO            KG/M2/S
+    NO2           1.00000  NO2           KG/M2/S
+    OLE           1.00000  OLE           KG/M2/S
+    PAL           1.00000  PAL           KG/M2/S
+    PAR           1.00000  PAR           KG/M2/S
+    PCA           1.00000  PCA           KG/M2/S
+    PCL           1.00000  PCL           KG/M2/S
+    PEC           1.00000  PEC           KG/M2/S
+    PFE           1.00000  PFE           KG/M2/S
+    PH2O          1.00000  PH2O          KG/M2/S
+    PK            1.00000  PK            KG/M2/S
+    PMC           1.00000  PMC           KG/M2/S
+    PMG           1.00000  PMG           KG/M2/S
+    PMN           1.00000  PMN           KG/M2/S
+    PMOTHR        1.00000  PMOTHR        KG/M2/S
+    PNA           1.00000  PNA           KG/M2/S
+    PNCOM         1.00000  PNCOM         KG/M2/S
+    PNH4          1.00000  PNH4          KG/M2/S
+    PNO3          1.00000  PNO3          KG/M2/S
+    POC           1.00000  POC           KG/M2/S
+    PRPA          1.00000  PRPA          KG/M2/S
+    PSI           1.00000  PSI           KG/M2/S
+    PSO4          1.00000  PSO4          KG/M2/S
+    PTI           1.00000  PTI           KG/M2/S
+    SO2           1.00000  SO2           KG/M2/S
+    SOAALK        1.00000  SOAALK        KG/M2/S
+    SULF          1.00000  SULF          KG/M2/S
+    TERP          1.00000  TERP          KG/M2/S
+    TOL           1.00000  TOL           KG/M2/S
+    XYLMN         1.00000  XYLMN         KG/M2/S
     AACD
     FACD
     GLYXL
@@ -144,44 +138,32 @@ anthro_species::
     SESQ
     TOLU
 ::
+
 #
-# Fengsha Dust Emission Option
+# dust
 #
 dust_type: fengsha
-
 dust_format: netcdf
-
+dust_file: FENGSHA/FENGSHA_p8_10km_inputs_AQM_NA_13km.nc
 dust_frequency: monthly
-
-#dust_file: FENGSHA_p8_10km_inputs_RRFS_CONUScompact_13km.nc
-dust_file: FENGSHA_p8_10km_inputs_CONUS_775.nc 
-
-dust_alpha: 0.05
-
+dust_alpha: 3.0
 dust_species::
-    clayf      1.00000   clayfrac    1
-    sandf      1.00000   sandfrac    1
-    drag       1.00000   albedo_drag 1
-    uthr       1.00000   uthres      1
+    CLAYF       1.00000   clayfrac     1
+    SANDF       1.00000   sandfrac     1
+    DRAG        1.00000   albedo_drag  1
+    UTHR        1.00000   uthres       1
 ::
 
 #
 #  Biogenic
 #
 bio_type: biogenic
-
 bio_format: netcdf
-
-bio_file: BEIS_RRFScmaq_C775.ncf
-
+bio_file: bio/BEIS_RRFScmaq_C775.ncf
 bio_frequency: static
-
 bio_period: summer
-
-bio_speciation_file: gspro_biogenics_1mar2017.txt
-
+bio_speciation_file: bio/gspro_biogenics_1mar2017.txt
 bio_speciation_profile: B10C6
-
 bio_species::
     AVG_NOAG_GROW        1.00000  AVG_NOAG_GROW     gmN/hr
     AVG_NOAG_NONGROWNB3  1.00000  AVG_NOAG_NONGROW  gmN/hr
@@ -263,20 +245,32 @@ bio_species::
 ::
 
 #
+# Inline Canopy Effects
+#
+canopy_yn: false
+canopy_type: canopy
+canopy_format: netcdf
+canopy_file: canopy/AQM_NA_13km/gfs.t12z.geo.11.canopy_regrid.nc
+canopy_frequency: static
+canopy_species::
+    FCH        1.00000   FCH      m
+    FRT        1.00000   FRT      1
+    CLU        1.00000   CLU      1
+    POPU       1.00000   POPU     10000_people/10km2
+    LAIE       1.00000   LAIE     1
+    C1R        1.00000   C1R      1
+    C2R        1.00000   C2R      1
+    C3R        1.00000   C3R      1
+    C4R        1.00000   C4R      1
+::
+
+#
 #  Fire emissions from GBBEPx
 #
 fire_type: gbbepx
-
-#
-#  Note: regional_workflow sets aqm_rc_fire_file_fp from input
-#        parameters 'aqm_fire_dir','aqm_fire_file', and 'cdate'.
-#
-fire_file: Hourly_Emissions_regrid_rrfs_13km_20190801_t12z_h72.nc
-
+fire_file: fire/Hourly_Emissions_regrid_NA_13km_20231110_t00z_h72.nc
 fire_frequency: hourly
-
 fire_plume_rise: sofiev
-
 fire_species::
     PAL     0.0006     PM2.5       KG/M2/S
     PCA     0.0039     PM2.5       KG/M2/S
@@ -295,51 +289,48 @@ fire_species::
     PSI     0.0018     PM2.5       KG/M2/S
     PSO4    0.0126     PM2.5       KG/M2/S
     PTI     0.0001     PM2.5       KG/M2/S
-    NO      0.013      CO          KG/M2/S
-    NO2     0.037      CO          KG/M2/S
-    SO2     0.008      CO          KG/M2/S
-    NH3     0.015      CO          KG/M2/S
-    CO      1.000      CO          KG/M2/S
-    ACET    0.001092   CO          KG/M2/S
-    ALD2    0.0009828  CO          KG/M2/S
-    ALDX    0.0030368  CO          KG/M2/S
-    BENZ    0.0009612  CO          KG/M2/S
-    CH4     0.0092508  CO          KG/M2/S
-    ETH     0.0022048  CO          KG/M2/S
-    ETHA    0.0011804  CO          KG/M2/S
-    ETHY    0.0005304  CO          KG/M2/S
-    ETOH    3.64e-05   CO          KG/M2/S
-    FORM    0.0043316  CO          KG/M2/S
-    IOLE    0.0004836  CO          KG/M2/S
-    ISOP    0.0001976  CO          KG/M2/S
-    KET     0.0002652  CO          KG/M2/S
-    MEOH    0.0039364  CO          KG/M2/S
-    OLE     0.0034424  CO          KG/M2/S
-    PAR     0.0074776  CO          KG/M2/S
-    PRPA    0.0004888  CO          KG/M2/S
-    TERP    0.0004316  CO          KG/M2/S
-    TOL     0.0013208  CO          KG/M2/S
-    UNR     0.0100516  CO          KG/M2/S
-    XYL     0.0002964  CO          KG/M2/S
+    NO      0.0450     CO          KG/M2/S
+    NO2     0.0050     CO          KG/M2/S
+    SO2     0.0080     CO          KG/M2/S
+    NH3     0.0150     CO          KG/M2/S
+    CO      1.0000     CO          KG/M2/S
+    ACET    0.0000     CO          KG/M2/S
+    ALD2    0.0000     CO          KG/M2/S
+    ALDX    0.0000     CO          KG/M2/S
+    BENZ    0.0000     CO          KG/M2/S
+    CH4     0.0000     CO          KG/M2/S
+    ETH     0.0000     CO          KG/M2/S
+    ETHA    0.0000     CO          KG/M2/S
+    ETHY    0.0000     CO          KG/M2/S
+    ETOH    0.0000     CO          KG/M2/S
+    FORM    0.0000     CO          KG/M2/S
+    IOLE    0.0000     CO          KG/M2/S
+    ISOP    0.0000     CO          KG/M2/S
+    KET     0.0000     CO          KG/M2/S
+    MEOH    0.0000     CO          KG/M2/S
+    OLE     0.0000     CO          KG/M2/S
+    PAR     0.0000     CO          KG/M2/S
+    PRPA    0.0000     CO          KG/M2/S
+    TERP    0.0000     CO          KG/M2/S
+    TOL     0.0000     CO          KG/M2/S
+    UNR     0.0000     CO          KG/M2/S
+    XYL     0.0000     CO          KG/M2/S
     FRP     1000000    MeanFRP     1
 ::
 
-
+#
+# PT Source
+#
 pt_type: point-source
-
-pt_file: pt-2019080112.nc
-
+pt_file: INPUT/PT.nc
 pt_frequency: hourly
-
 pt_plume_rise: default
-pt_layers: 8
-
+pt_layers: 24
 pt_latlon_names: LATITUDE LONGITUDE
 pt_stack_diameter:    STKDM
 pt_stack_height:      STKHT
 pt_stack_temperature: STKTK
 pt_stack_velocity:    STKVE
-
 pt_species::
     ACET          1.0000  ACET          MOL/S
     ACROLEIN      1.0000  ACROLEIN      MOL/S
@@ -405,13 +396,9 @@ pt_species::
 #  Output products
 #
 prod_type: product
-
 prod_file: aqm.prod.nc
-
 prod_frequency: hourly
-
 prod_sync: true
-
 prod_species::
     O3      ozone       instantaneous
     O3      o3min       min
