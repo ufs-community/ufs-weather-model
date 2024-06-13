@@ -134,7 +134,6 @@ while getopts ":a:b:cl:mn:dwkreoh" opt; do
       ;;
     d)
       export delete_rundir=true
-      awk -F "|" '{print $5}' rt.conf | grep "\S" > keep_tests.tmp
       ;;
     w)
       export skip_check_results=true

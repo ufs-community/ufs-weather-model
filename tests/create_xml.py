@@ -315,6 +315,9 @@ def xml_loop():
     NEW_BASELINE       = str(os.getenv('NEW_BASELINE'))
     CREATE_BASELINE    = str(os.getenv('CREATE_BASELINE'))
     COMPILE_ONLY       = str(os.getenv('COMPILE_ONLY'))
+    delete_rundir = str(os.getenv('delete_rundir'))
+    if (delete_rundir == "true"): dependency_list= []
+        
     with open('bl_date.conf', 'r') as bldate:
         bl_date = str(bldate.readline())
     BL_DATE = bl_date.split("=")[1].strip()
@@ -427,6 +430,7 @@ def xml_loop():
                                 TEST_ID   = TEST_NAME+'_'+RT_COMPILER
                                 if 'dependency' in config.keys():
                                     DEP_RUN = str(config['dependency'])+'_'+RT_COMPILER
+                                    if (delete_rundir == "true"): dependency_list.append(config['dependency'])
                                 else:
                                     DEP_RUN = ""
                                 RT_SUFFIX = ""
@@ -457,5 +461,11 @@ def xml_loop():
     REGRESSIONTEST_LOG = PATHRT+'/logs/RegressionTests_'+MACHINE_ID+'.log'
     make_loghead(ACCNR,MACHINE_ID,RUNDIR_ROOT,RTPWD,REGRESSIONTEST_LOG)
 
-#if __name__ == "__main__":
+    if (delete_rundir == "true" and len(dependency_list) > 0):
+        with open('keep_tests.tmp', 'w+') as fdep:
+            for i in dependency_list:
+                fdep.write(str(i) + '\n')
+            fdep.close()
+            
+#if __name__ == "__main__":6
 
