@@ -80,6 +80,9 @@
 !
       CHARACTER(ESMF_MAXSTR) :: MESSAGE_CHECK
 !
+      CHARACTER(len=MPI_MAX_LIBRARY_VERSION_STRING) :: library_version
+      INTEGER :: resultlen
+!
       INTEGER :: RC, RC_USER                                               !<-- The running error signal
 !
 !
@@ -122,7 +125,12 @@
 !***  Print subversion version and other status information.
 !-----------------------------------------------------------------------
 !
-      if (mype==0) call w3tagb('ufs      ',0000,0000,0000,'np23   ')
+      if (mype == 0) then
+        call w3tagb('ufs-weather-model',0,0,0,'np23')
+        call MPI_Get_library_version(library_version, resultlen, rc)
+        write(*,'(A,A)')      'MPI Library = ', library_version(1:resultlen)
+        write(*,'(A,I0,A,I0)')'MPI Version = ', mpi_version,'.',mpi_subversion
+      endif
 !
 !-----------------------------------------------------------------------
 !***  Set up the default log.

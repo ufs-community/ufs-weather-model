@@ -2,14 +2,14 @@ help([[
 loads UFS Model prerequisites for Hera/GNU
 ]])
 
-prepend_path("MODULEPATH", "/scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.5.1/envs/unified-env/install/modulefiles/Core")
--- for openmpi, need
-prepend_path("MODULEPATH", "/scratch1/NCEPDEV/jcsda/jedipara/spack-stack/modulefiles")
+prepend_path("MODULEPATH", "/scratch2/NCEPDEV/stmp1/role.epic/installs/gnu/modulefiles")
+prepend_path("MODULEPATH", "/scratch2/NCEPDEV/stmp1/role.epic/installs/openmpi/modulefiles")
+prepend_path("MODULEPATH", "/scratch2/NCEPDEV/stmp1/role.epic/spack-stack/spack-stack-1.6.0_gnu13/envs/ufs-wm-srw-rocky8/install/modulefiles/Core")
 
-stack_gnu_ver=os.getenv("stack_gnu_ver") or "9.2.0"
+stack_gnu_ver=os.getenv("stack_gnu_ver") or "13.3.0"
 load(pathJoin("stack-gcc", stack_gnu_ver))
 
-stack_openmpi_ver=os.getenv("stack_openmpi_ver") or "4.1.5"
+stack_openmpi_ver=os.getenv("stack_openmpi_ver") or "4.1.6"
 load(pathJoin("stack-openmpi", stack_openmpi_ver))
 
 cmake_ver=os.getenv("cmake_ver") or "3.23.1"
@@ -19,6 +19,9 @@ load("ufs_common")
 
 nccmp_ver=os.getenv("nccmp_ver") or "1.9.0.1"
 load(pathJoin("nccmp", nccmp_ver))
+
+prepend_path("CPPFLAGS", " -I/apps/slurm_hera/23.11.3/include/slurm"," ")
+prepend_path("LD_LIBRARY_PATH", "/apps/slurm_hera/23.11.3/lib")
 
 setenv("CC", "mpicc")
 setenv("CXX", "mpic++")
