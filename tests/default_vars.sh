@@ -440,6 +440,7 @@ export FV3_RUN=control_run.IN
 export INPUT_NML=control.nml.IN
 export CCPP_SUITE=FV3_GFS_v16
 
+export POST_ITAG=post_itag_gfs
 export POSTXCONFIG=postxconfig-NT-gfs.txt
 export POSTXCONFIG_FH00=postxconfig-NT-gfs_FH00.txt
 
