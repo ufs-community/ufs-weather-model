@@ -1,25 +1,25 @@
-matchedNode = []
-generateBaselineNode = []
-for (label in pullRequest.labels) {
-   listOfLabelNodeNames = jenkins.model.Jenkins.instance.nodes.collect {
-   node -> node.getLabelString().contains(label) ? node.name : null
-
-   if ((label.matches(node.getLabelString()+"-(.*)"))) {
-     matchedNode += node.getLabelString()
-   }
-
-   if ((label.matches(node.getLabelString()+"(.*)-ci"))) {
-     generateBaselineNode += node.getLabelString() 
-   }
- }
-}
-
-modifiedLabels = matchedNode.collect{"'" + it + "'"} 
-baselineLabels = generateBaselineNode.collect{"'" + it + "'"} 
-def generateStage(nodeLabel) {
-    return {
-        stage("Running on ${nodeLabel}") {
-            node(nodeLabel) {
+pipeline {
+  agent none
+  stages {
+    stage('Clone on Hera') {
+       agent {
+        label 'built-in'   
+       }
+      steps {
+        script {
+          for (label in pullRequest.labels) {
+            if ((label.matches("jenkins-ort"))) {
+                 env.CHOICE_NODE='Hera'
+            }  
+            else { 
+                env.CHOICE_NODE='none'
+            }
+       }    
+    }
+  } 
+  stage('Run ORT script') {
+        agent {
+          label "${CHOICE_NODE}"
                cleanWs()
                checkout scm
                script {
