@@ -88,7 +88,12 @@ if [ $WARM_START = .false. ]; then
   cp    ${FV3_IC}/gfs_ctrl.nc ./INPUT
   if [[ $BMIC == .true. ]]; then
    cp    ${MOM_IC}/MOM*.nc ./INPUT
-   cp    ${ICE_IC}/cice5_model_@[ICERES].res_${SYEAR}${SMONTH}${SDAY}00.nc ./cice_model.res.nc
+   #cp    ${ICE_IC}/cice5_model_@[ICERES].res_${SYEAR}${SMONTH}${SDAY}00.nc ./cice_model.res.nc
+   cp ${ICE_IC}/cice*nc ./INPUT
+   ls -1 ./INPUT/cice*nc>ice.restart_file
+   cp ${FV3_IC}/ufs.cpld.cpl*nc .
+   ls -1 ufs.cpld.cpl*nc>rpointer.cpl
+   cp ${WAV_IC}/restart.ww3 .
   else
     if [[ $ATMRES == C48 ]]; then
       cp    ${MOM_IC}/MOM.res.nc ./INPUT
@@ -162,9 +167,12 @@ else
        cp ${FV3_IC}/gfs_ctrl.nc ./INPUT
        cp ${FV3_IC}/gfs_data*.nc ./INPUT
        cp ${FV3_IC}/sfc_data*.nc ./INPUT
+       #coupler.res fv_core.res.nc fv_core.res.tile[1-6].nc fv_srf_wnd.res.tile[1-6].nc fv_tracer.res.tile[1-6].nc
        cp ${MOM_IC}/MOM*.nc ./INPUT
-       cp ${ICE_IC}/cice*nc .
+       cp ${ICE_IC}/cice*nc ./INPUT
+       ls -1 ./INPUT/cice*nc>ice.restart_file
        cp ${FV3_IC}/ufs.cpld.cpl*nc .
+       ls -1 ufs.cpld.cpl*nc>rpointer.cpl
        cp ${WAV_IC}/restart.ww3 .
      else
        # C48mx500 warm start from ICs
