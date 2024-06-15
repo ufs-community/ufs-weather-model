@@ -38,7 +38,7 @@ rt_trap() {
 }
 
 cleanup() {
-  [[ $(awk '{print $2}' < "${LOCKDIR}/PID") == $$ ]] && rm -rf ${LOCKDIR}
+  [[ $(awk '{print $2}' < "${LOCKDIR}/PID") == $$ ]] && rm -rf "${LOCKDIR}"
   [[ ${ECFLOW:-false} == true ]] && ecflow_stop
   trap 0
   exit
@@ -52,12 +52,12 @@ trap '{ echo "ufs_test.sh finished"; cleanup ; }' EXIT
 
 # PATHRT - Path to regression tests directory
 readonly PATHRT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P )"
-cd ${PATHRT}
+cd "${PATHRT}"
 
 # make sure only one instance of ufs_test.sh is running
 readonly LOCKDIR="${PATHRT}"/lock
 if mkdir "${LOCKDIR}" ; then
-  echo $(hostname) $$ > "${LOCKDIR}/PID"
+  echo "$(hostname) $$" > "${LOCKDIR}/PID"
 else
   echo "Only one instance of ufs_test.sh can be running at a time"
   exit 1
@@ -83,12 +83,12 @@ UFS_TEST_YAML="ufs_test.yaml"
 export UFS_TEST_YAML
 
 while getopts ":a:b:cl:mn:dwkreoh" opt; do
-  case $opt in
+  case ${opt} in
     a)
-      ACCNR=$OPTARG
+      ACCNR=${OPTARG}
       ;;
     b)
-      NEW_BASELINES_FILE=$OPTARG
+      NEW_BASELINES_FILE=${OPTARG}
       export NEW_BASELINES_FILE
       python -c "import create_yml; create_yml.update_testyaml_b()"
       UFS_TEST_YAML="ufs_test_temp.yaml"
@@ -99,9 +99,9 @@ while getopts ":a:b:cl:mn:dwkreoh" opt; do
       ;;
     l)
       #DEFINE_CONF_FILE=true
-      TESTS_FILE=$OPTARG
+      TESTS_FILE=${OPTARG}
       grep -q '[^[:space:]]' < "$TESTS_FILE" ||  die "${TESTS_FILE} empty, exiting..."
-      UFS_TEST_YAML=$TESTS_FILE
+      UFS_TEST_YAML=${TESTS_FILE}
       export UFS_TEST_YAML
       ;;
     o)
@@ -113,7 +113,7 @@ while getopts ":a:b:cl:mn:dwkreoh" opt; do
       ;;
     n)
       RUN_SINGLE_TEST=true
-      IFS=' ' read -r -a SINGLE_OPTS <<< $OPTARG
+      IFS=' ' read -r -a SINGLE_OPTS <<< ${OPTARG}
 
       if [[ ${#SINGLE_OPTS[@]} != 2 ]]; then
         die 'The -n option needs <testname> AND <compiler> in quotes, i.e. -n "control_p8 intel"'
@@ -155,40 +155,40 @@ while getopts ":a:b:cl:mn:dwkreoh" opt; do
       ;;
     \?)
       usage
-      die "Invalid option: -$OPTARG"
+      die "Invalid option: -${OPTARG}"
       ;;
     :)
       usage
-      die "Option -$OPTARG requires an argument."
+      die "Option -${OPTARG} requires an argument."
       ;;
   esac
 done
 
 #Check to error out if incompatible options are chosen together
-[[ $KEEP_RUNDIR == true && $delete_rundir == true ]] && die "-k and -d options cannot be used at the same time"
-[[ $ECFLOW == true && $ROCOTO == true ]] && die "-r and -e options cannot be used at the same time"
-[[ $CREATE_BASELINE == true && $RTPWD_NEW_BASELINE == true ]] && die "-c and -m options cannot be used at the same time"
+[[ ${KEEP_RUNDIR} == true && ${delete_rundir} == true ]] && die "-k and -d options cannot be used at the same time"
+[[ ${ECFLOW} == true && ${ROCOTO} == true ]] && die "-r and -e options cannot be used at the same time"
+[[ ${CREATE_BASELINE} == true && ${RTPWD_NEW_BASELINE} == true ]] && die "-c and -m options cannot be used at the same time"
 
-if [[ -z "$ACCNR" ]]; then
+if [[ -z "${ACCNR}" ]]; then
   echo "Please use -a <account> to set group account to use on HPC"
   exit 1
 fi
 
 # Display the machine and account using the format detect_machine.sh used:
-echo "Machine: " $MACHINE_ID "    Account: " $ACCNR
+echo "Machine: " ${MACHINE_ID} "    Account: " ${ACCNR}
 
 check_machine=false
 platforms=( hera orion hercules gaea jet derecho noaacloud s4 )
 for name in "${platforms[@]}"
 do
-  if [[ $MACHINE_ID = "$name" ]]; then
+  if [[ ${MACHINE_ID} == "${name}" ]]; then
     check_machine=true
     break
   fi
 done
 
-if [[ $check_machine == true ]]; then
-    source ${PATHRT}/machine_config/machine_$MACHINE_ID.config
+if [[ ${check_machine} == true ]]; then
+    source ${PATHRT}/machine_config/machine_${MACHINE_ID}.config
 else
     die "*** Current support of ufs_test.sh only for hera orion hercules gaea jet derecho noaacloud s4 ! ***"
 fi
@@ -201,14 +201,14 @@ export TEST_START_TIME
 
 rm -f fail_test* fail_compile*
 
-if [[ $ROCOTO == true ]]; then
-  ROCOTO_XML=${PATHRT}/rocoto_workflow.xml
-  ROCOTO_STATE=${PATHRT}/rocoto_workflow.state
-  ROCOTO_DB=${PATHRT}/rocoto_workflow.db
-  rm -f $ROCOTO_XML $ROCOTO_DB $ROCOTO_STATE *_lock.db
+if [[ ${ROCOTO} == true ]]; then
+  ROCOTO_XML="${PATHRT}"/rocoto_workflow.xml
+  ROCOTO_STATE="${PATHRT}"/rocoto_workflow.state
+  ROCOTO_DB="${PATHRT}"/rocoto_workflow.db
+  rm -f ${ROCOTO_XML} ${ROCOTO_DB} ${ROCOTO_STATE} *_lock.db
 fi
 
-[[ -f $TESTS_FILE ]] || die "$TESTS_FILE does not exist"
+[[ -f ${TESTS_FILE} ]] || die "${TESTS_FILE} does not exist"
 
 export ROCOTO_SCHEDULER
 export ACCNR
@@ -237,12 +237,12 @@ fi
 ##
 ## run regression test workflow (currently Rocoto or ecFlow are supported)
 ##
-if [[ $ROCOTO == true ]]; then
+if [[ ${ROCOTO} == true ]]; then
     rocoto_run
 fi
 
 # IF -c AND -b; LINK VERIFIED BASELINES TO NEW_BASELINE
-if [[ $CREATE_BASELINE == true && $NEW_BASELINES_FILE != '' ]]; then
+if [[ ${CREATE_BASELINE} == true && ${NEW_BASELINES_FILE} != '' ]]; then
     python -c "import ufs_test_utils; ufs_test_utils.link_new_baselines()"
 fi
 

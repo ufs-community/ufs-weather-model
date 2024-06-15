@@ -4,7 +4,7 @@ set -eux
 function set_run_task() {
     source default_vars.sh
     source rt_utils.sh
-    source ${PATHRT}/tests/$TEST_NAME
+    source "${PATHRT}"/tests/"${TEST_NAME}"
     compute_petbounds_and_tasks
 
     TPN=$(( TPN / THRD ))
