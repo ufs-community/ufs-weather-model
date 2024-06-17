@@ -87,19 +87,6 @@ pipeline {
             }
             }
         }
-def parallelStagesMap = modifiedLabels.collectEntries {
-    ["${it}" : generateStage(it)]
-}
-
-pipeline {
-    agent none
-    environment {
-        ACCNR = 'epic'
-        AWS_PROD_ACCOUNT_ID = credentials('AWS_PROD_ACCOUNT_ID')
-        AWS_PROD_SNS_TOPIC = credentials('AWS_PROD_SNS_TOPIC')
-        GITHUB_TOKEN = credentials('GithubJenkinsNew')
-        GIT_URL = 'https://github.com/ufs-community/ufs-weather-model.git'
-    }
     stages {
         stage('Run SonarQube Testing') {
             steps {
@@ -138,5 +125,4 @@ pipeline {
          }
      } 
   }
-}
 }
