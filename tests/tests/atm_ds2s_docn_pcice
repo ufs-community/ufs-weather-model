@@ -1,10 +1,10 @@
 #
-#  cpld_control C96 noaero P8 test
+#  atm_ds2s_docn_pcice P8 test
 #
 
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C96MX100"
+export TEST_DESCR="AMIP+ FV3-CCPP-CDEPS_DOCN-CICE_icePrescribed system"
 
-export CNTL_DIR=cpld_control_c96_noaero_p8
+export CNTL_DIR=atm_ds2s_docn_pcice
 
 export LIST_FILES="sfcf021.tile1.nc \
                    sfcf021.tile2.nc \
@@ -62,45 +62,67 @@ export LIST_FILES="sfcf021.tile1.nc \
                    RESTART/20210323.060000.sfc_data.tile4.nc \
                    RESTART/20210323.060000.sfc_data.tile5.nc \
                    RESTART/20210323.060000.sfc_data.tile6.nc \
-                   RESTART/20210323.060000.MOM.res.nc \
-                   RESTART/iced.2021-03-23-21600.nc \
                    RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc"
-
-#TODO: add comparison of CA restart files?
 
 export_fv3
 export_cpl
 
-export RESTART_N=12
-export RESTART_INTERVAL="${RESTART_N} -1"
-export OUTPUT_FH='0 21 24'
-export MED_history_n=1
+#Component settings
+export CPLCHM=.false.
+export DNATS=0
+export CPLWAV=.false.
+export CPLWAV2ATM=.false.
 
+export FV3=true
+export S2S=false
+export AQM=false
+export DOCN_CDEPS=true
+export DICE_CDEPS=false
+export CDEPS_INLINE=false
+export ocn_model=docn
+export ice_model=cice6
+
+#task layout
 export INPES=$INPES_cpl_dflt
 export JNPES=$JNPES_cpl_dflt
 export atm_omp_num_threads=$THRD_cpl_dflt
 export WRTTASK_PER_GROUP=$WPG_cpl_dflt
 
-OCN_tasks=$OCN_tasks_cpl_dflt
-ICE_tasks=$ICE_tasks_cpl_dflt
 export WAV_tasks=0
 
-export CICE_NPROC=$ICE_tasks
-export np2=`expr $CICE_NPROC / 2`
-export CICE_BLCKX=`expr $NX_GLB / $np2`
-export CICE_BLCKY=`expr $NY_GLB / 2`
+#CDEPS docn settings
+export ocn_datamode=sstdata
+#export MESH_OCN=TX025_210327_ESMFmesh_py.nc
+#export ocn_data="INPUT/oisst-avhrr-v02r01.202103.nc"
+export MESH_OCN=e5.oper.an.mesh.nc
+export ocn_data="INPUT/sst_siconc_skt.era5.20210321_20210331.nc"
+export ocn_data_var=sst
+export ocn_nx_global=1440
+export ocn_ny_global=721
+export DOCN_IN_CONFIGURE=docn_in.IN
+export DOCN_STREAM_CONFIGURE=hafs_docn.streams.IN
+export STREAM_OFFSET=0
 
-export CPLWAV=.false.
-export CPLWAV2ATM=.false.
-export MOM6_USE_WAVES=False
-export eps_imesh=2.5e-1
+#CICE ice prescribed settings - default res
+#export OCNRES=100
+#export ICERES=1.00
+#export NX_GLB=360
+#export NY_GLB=320
+export CICE_RUNTYPE=initial
+export CICE_ICE_IC=none
+export CICE_PRESCRIBED=true
+export stream_files_dice=$ocn_data
+export MESH_DICE=$MESH_OCN
+export eps_imesh=4.0e-1
 
-export CPLCHM=.false.
-export DNATS=0
-export MOM6_TOPOEDITS=ufs.topo_edits_011818.nc
-export MOM6_ALLOW_LANDMASK_CHANGES=True
+export RESTART_N=12
+export RESTART_INTERVAL="${RESTART_N} -1"
+export OUTPUT_FH='0 21 24'
 
-export DIAG_TABLE=diag_table_template
+export CCPP_SUITE=FV3_GFS_v17_coupled_p8
+export DIAG_TABLE=diag_table_gfsv16
+export FIELD_TABLE=field_table_thompson_noaero_tke
+export INPUT_NML=global_control.nml.IN
+export MODEL_CONFIGURE=model_configure.IN
 export UFS_CONFIGURE=ufs.configure.s2s_esmf.IN
-
-export FV3_RUN=cpld_control_run.IN
+export FV3_RUN="cpld_control_run.IN cpld_docn_pcice.IN"
