@@ -6,6 +6,7 @@ SECONDS=0
 hostname
 
 die() { echo "$@" >&2; exit 1; }
+
 usage() {
   set +x
   echo
@@ -38,7 +39,8 @@ rt_trap() {
 }
 
 cleanup() {
-  [[ $(awk '{print $2}' < "${LOCKDIR}/PID") == $$ ]] && rm -rf "${LOCKDIR}"
+  PID_LOCK=$(awk '{print $2}' < "${LOCKDIR}/PID")
+  [[ ${PID_LOCK} == "$$" ]] && rm -rf "${LOCKDIR}"
   [[ ${ECFLOW:-false} == true ]] && ecflow_stop
   trap 0
   exit
@@ -57,7 +59,8 @@ cd "${PATHRT}"
 # make sure only one instance of ufs_test.sh is running
 readonly LOCKDIR="${PATHRT}"/lock
 if mkdir "${LOCKDIR}" ; then
-  echo "$(hostname) $$" > "${LOCKDIR}/PID"
+  HOSTNAME=$(hostname)
+  echo "${HOSTNAME} $$" > "${LOCKDIR}/PID"
 else
   echo "Only one instance of ufs_test.sh can be running at a time"
   exit 1
@@ -85,82 +88,82 @@ export UFS_TEST_YAML
 while getopts ":a:b:cl:mn:dwkreoh" opt; do
   case ${opt} in
     a)
-      ACCNR=${OPTARG}
-      ;;
+	ACCNR=${OPTARG}
+	;;
     b)
-      NEW_BASELINES_FILE=${OPTARG}
-      export NEW_BASELINES_FILE
-      python -c "import create_yml; create_yml.update_testyaml_b()"
-      UFS_TEST_YAML="ufs_test_temp.yaml"
-      export UFS_TEST_YAML
-      ;;
+	NEW_BASELINES_FILE=${OPTARG}
+	export NEW_BASELINES_FILE
+	python -c "import create_yml; create_yml.update_testyaml_b()"
+	UFS_TEST_YAML="ufs_test_temp.yaml"
+	export UFS_TEST_YAML
+	;;
     c)
-      CREATE_BASELINE=true
-      ;;
+	CREATE_BASELINE=true
+	;;
     l)
-      #DEFINE_CONF_FILE=true
-      TESTS_FILE=${OPTARG}
-      grep -q '[^[:space:]]' < "$TESTS_FILE" ||  die "${TESTS_FILE} empty, exiting..."
-      UFS_TEST_YAML=${TESTS_FILE}
-      export UFS_TEST_YAML
-      ;;
+	TESTS_FILE=${OPTARG}
+	grep -q '[^[:space:]]' < "${TESTS_FILE}" ||  die "${TESTS_FILE} empty, exiting..."
+	UFS_TEST_YAML=${TESTS_FILE}
+	export UFS_TEST_YAML
+	;;
     o)
-      COMPILE_ONLY=true
-      ;;
+	COMPILE_ONLY=true
+	;;
     m)
-      # redefine RTPWD to point to newly created baseline outputs
-      RTPWD_NEW_BASELINE=true
-      ;;
+	# redefine RTPWD to point to newly created baseline outputs
+	RTPWD_NEW_BASELINE=true
+	;;
     n)
-      RUN_SINGLE_TEST=true
-      IFS=' ' read -r -a SINGLE_OPTS <<< ${OPTARG}
+	RUN_SINGLE_TEST=true
+	IFS=' ' read -r -a SINGLE_OPTS <<< "${OPTARG}"
 
-      if [[ ${#SINGLE_OPTS[@]} != 2 ]]; then
-        die 'The -n option needs <testname> AND <compiler> in quotes, i.e. -n "control_p8 intel"'
-      fi
+	if [[ ${#SINGLE_OPTS[@]} != 2 ]]; then
+            die 'The -n option needs <testname> AND <compiler> in quotes, i.e. -n "control_p8 intel"'
+	fi
 
-      SRT_NAME="${SINGLE_OPTS[0]}"
-      SRT_COMPILER="${SINGLE_OPTS[1]}"
+	SRT_NAME="${SINGLE_OPTS[0]}"
+	SRT_COMPILER="${SINGLE_OPTS[1]}"
 
-      if [[ "${SRT_COMPILER}" != "intel" ]] && [[ "${SRT_COMPILER}" != "gnu" ]]; then
-        die "COMPILER MUST BE 'intel' OR 'gnu'"
-      fi
+	if [[ "${SRT_COMPILER}" != "intel" ]] && [[ "${SRT_COMPILER}" != "gnu" ]]; then
+            die "COMPILER MUST BE 'intel' OR 'gnu'"
+	fi
 
-      export SRT_NAME
-      export SRT_COMPILER
-      python -c "import create_yml; create_yml.update_testyaml_n()"
-      UFS_TEST_YAML="ufs_test_temp.yaml"
-      export UFS_TEST_YAML
-      ;;
+	export SRT_NAME
+	export SRT_COMPILER
+	python -c "import create_yml; create_yml.update_testyaml_n()"
+	UFS_TEST_YAML="ufs_test_temp.yaml"
+	export UFS_TEST_YAML
+	;;
     d)
-      export delete_rundir=true
-      ;;
+	export delete_rundir=true
+	;;
     w)
-      export skip_check_results=true
-      ;;
+	export skip_check_results=true
+	;;
     k)
-      KEEP_RUNDIR=true
-      ;;
+	KEEP_RUNDIR=true
+	;;
     r)
-      ROCOTO=true
-      ECFLOW=false
-      ;;
+	ROCOTO=true
+	ECFLOW=false
+	;;
     e)
-      ECFLOW=true
-      ROCOTO=false
-      die "Work-in-progress to support for ECFLOW. Please, use the ROCOTO workflow manamegment option (-r)"
-      ;;
+	ECFLOW=true
+	ROCOTO=false
+	die "Work-in-progress to support for ECFLOW. Please, use the ROCOTO workflow manamegment option (-r)"
+	;;
     h)
-      usage
-      ;;
-    \?)
-      usage
-      die "Invalid option: -${OPTARG}"
-      ;;
+	usage
+	;;
     :)
-      usage
-      die "Option -${OPTARG} requires an argument."
-      ;;
+	die "Option -${OPTARG} requires an argument."
+	;;
+    ?)
+	die "Invalid option: -${OPTARG}"
+	;;
+    *)
+        die "Invalid runtime options: no parameter included with argument-${OPTARG}"
+	;;
   esac
 done
 
@@ -175,7 +178,7 @@ if [[ -z "${ACCNR}" ]]; then
 fi
 
 # Display the machine and account using the format detect_machine.sh used:
-echo "Machine: " ${MACHINE_ID} "    Account: " ${ACCNR}
+echo "Machine:  "${MACHINE_ID}"    Account: "${ACCNR}" "
 
 check_machine=false
 platforms=( hera orion hercules gaea jet derecho noaacloud s4 )
@@ -188,7 +191,7 @@ do
 done
 
 if [[ ${check_machine} == true ]]; then
-    source ${PATHRT}/machine_config/machine_${MACHINE_ID}.config
+    source "${PATHRT}"/machine_config/machine_"${MACHINE_ID}".config
 else
     die "*** Current support of ufs_test.sh only for hera orion hercules gaea jet derecho noaacloud s4 ! ***"
 fi
@@ -205,7 +208,7 @@ if [[ ${ROCOTO} == true ]]; then
   ROCOTO_XML="${PATHRT}"/rocoto_workflow.xml
   ROCOTO_STATE="${PATHRT}"/rocoto_workflow.state
   ROCOTO_DB="${PATHRT}"/rocoto_workflow.db
-  rm -f ${ROCOTO_XML} ${ROCOTO_DB} ${ROCOTO_STATE} *_lock.db
+  rm -f "${ROCOTO_XML}" "${ROCOTO_DB}" "${ROCOTO_STATE}" *_lock.db
 fi
 
 [[ -f ${TESTS_FILE} ]] || die "${TESTS_FILE} does not exist"
@@ -229,9 +232,9 @@ export delete_rundir
 export skip_check_results
 export KEEP_RUNDIR  
 
-python -c "import create_xml; create_xml.xml_loop()"
-if [[ $? != 0 ]]; then
-    echo "*** experiment setup didn't run successfully! ***"
+if ! python -c "import create_xml; create_xml.xml_loop()"
+then
+  echo "*** experiment setup didn't run successfully! ***"
 fi
 
 ##
