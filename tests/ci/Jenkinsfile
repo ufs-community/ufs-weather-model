@@ -17,6 +17,7 @@ pipeline {
   stage('Run ORT script') {
         agent {
           label 'built-in'
+	   steps {
                cleanWs()
                checkout scm
                script {
