@@ -3,7 +3,6 @@ pipeline {
   stages {
     stage('Specify Node') {
       steps {
-        script {
           for (label in pullRequest.labels) {
             if ((label.matches("jenkins-ort"))) {
                  env.CHOICE_NODE='Hera'
@@ -88,4 +87,3 @@ pipeline {
       }
     }
   }
-}
