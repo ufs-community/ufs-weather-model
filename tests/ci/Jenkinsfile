@@ -81,48 +81,11 @@ pipeline {
                       curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-BL
                       '''
                       s3Upload consoleLogLevel: 'INFO', dontSetBuildResultOnFailure: false, dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'noaa-epic-prod-jenkins-artifacts', excludedFile: '', flatten: true, gzipFiles: false, keepForever: false, managedArtifacts: true, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: "**/*tgz*", storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'main', userMetadata: []
-                    }
-                 }
-               }
-            }
-            }
-        }
-    stages {
-        stage('Run SonarQube Testing') {
-            steps {
-                script {
-                    build job: '/ufs-weather-model/ufs-wm-sonarqube', parameters: [
-                        string(name: 'BRANCH_NAME', value: env.CHANGE_BRANCH ?: 'develop'),
-                        string(name: 'FORK_NAME', value: env.CHANGE_FORK ?: '')
-                    ], wait: false
-                }
-            }
-        }
-        stage('Run Regression Tests in Parallel') {
-            steps {
-                script {
-                    parallel parallelStagesMap
-                }
-            }
-        }       
-    }   
-        post {
-         success {
-             node('built-in') {
-                echo 'This will run only if successful.'
-                sh '''
-                  aws sns publish --topic-arn "arn:aws:sns:us-east-1:${AWS_PROD_ACCOUNT_ID}:${AWS_PROD_SNS_TOPIC}" --region us-east-1 --message '{"version":"1.0","source":"custom","content":{"description":":sunny: Jenkins build *'"$JOB_NAME"' '"$BUILD_NUMBER"'* with *PR-'"$CHANGE_ID"'*  *succeeded*"}}'
-               '''
-             }
+           }
+          }
          }
-         failure {
-             node('built-in') {
-                echo 'This will run only if the run was marked as unstable.'
-                sh '''
-                  aws sns publish --topic-arn "arn:aws:sns:us-east-1:${AWS_PROD_ACCOUNT_ID}:${AWS_PROD_SNS_TOPIC}" --region us-east-1 --message '{"version":"1.0","source":"custom","content":{"description":":warning: Jenkins build *'"$JOB_NAME"' '"$BUILD_NUMBER"'* with *PR-'"$CHANGE_ID"'*  *failed!*"}}'
-               '''
-             }
-         }
-     } 
+	}
+      }
+    }
   }
 }
