@@ -3,7 +3,8 @@ pipeline {
   stages {
     stage('Clone on Hera') {
        agent {
-        label 'built-in'   
+        label 'built-in' 
+        }    
        }
       steps {
         script {
@@ -89,7 +90,6 @@ pipeline {
             }
             }
         }
-                    }
 def parallelStagesMap = modifiedLabels.collectEntries {
     ["${it}" : generateStage(it)]
 }
