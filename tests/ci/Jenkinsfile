@@ -1,65 +1,90 @@
 pipeline {
   agent none
   stages {
-    stage('Specify Node') {
+    stage('Run ORTs') {
+       agent {
+        label 'built-in'   
+       }
       steps {
+        script {
           for (label in pullRequest.labels) {
-            if ((label.matches("jenkins-ort"))) {
-                 env.CHOICE_NODE='Hera'
+            if ((label.matches("orion"))) {
+                 env.CHOICE_NODE='orion'
             }  
+            else if ((label.matches("hera"))) { 
+                env.CHOICE_NODE='hera'
+            }  
+            else if ((label.matches("hercules"))) { 
+                env.CHOICE_NODE='hercules'
+            }  
+            else if ((label.matches("jet"))) {
+                env.CHOICE_NODE='jet'
+            } 
             else { 
                 env.CHOICE_NODE='none'
+            }
+         }
+// Why do I need another if..block, because it just works this way.
+
+            if (CHOICE_NODE == 'orion') {
+                echo "Starting up orion ${CHOICE_NODE}...this might take 5-10 minutes...please be patient."
+               
+            } 
+             else if (CHOICE_NODE == 'jet') {
+                echo "Starting up jet ${CHOICE_NODE}...this might take 5-10 minutes...please be patient."
+            }
+             else if (CHOICE_NODE == 'hercules') {
+                 echo "Starting up hera ${CHOICE_NODE}...this might take 5-10 minutes...please be patient."
+            }
+             else if (CHOICE_NODE == 'hera') {
+                 echo "Starting up hera ${CHOICE_NODE}...this might take 5-10 minutes...please be patient."
+            }
+             else {
+                echo "${CHOICE_NODE} is NOT a platform, moving on..."
             }
        }    
     }
   } 
-  stage('Run ORT script') {
+  stage('Run ORT on Hera') {
         agent {
-          label 'built-in'
-	   steps {
-               cleanWs()
-               checkout scm
-               script {
-                    echo "Running on ${nodeLabel}"
-                    if ((label.matches("jenkins-ort"))) {
-                       sh '''
-                       git submodule update --init --recursive
-                       cd tests
-		       pwd
-		       export BL_DATE=$(cat bl_date.conf | cut -d '=' -f2)
-                       export machine=Hera
-                       export PATH=$PATH:~/bin
-                       echo $CHANGE_ID
-                       export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
-                       export FORK_BRANCH=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
-                         
-                          if [[ $machine =~ "Hera" ]]
-                          then
-                            echo "Running ORT"
-                            sed "s|intel|gnu|g" -i opnReqTest
-                            export ACCNR=epic
-                            ./opnReqTest -n control_p8 -a ${ACCNR} -c std,bit,dbg,dcp,rst,mpi,thr
-                            cd logs/
-                            cp OpnReqTests_control_p8_hera.log /scratch2/NAGAPE/epic/role.epic/jenkins/workspace
-                            cd ..
-                            ./opnReqTest -n regional_control -a ${ACCNR} -c bit,dcp,thr
-                            cd logs/
-                            cp OpnReqTests_regional_control_hera.log /scratch2/NAGAPE/epic/role.epic/jenkins/workspace
-                            cd ..
-                            ./opnReqTest -n cpld_control_nowave_noaero_p8 -a ${ACCNR} -c dbg,rst
-			    cd logs/
-                            cp OpnReqTests_cpld_control_nowave_noaero_p8_hera.log /scratch2/NAGAPE/epic/role.epic/jenkins/workspace
-                            git remote -v
-                            git fetch --no-recurse-submodules origin
-                            git reset FETCH_HEAD --hard
-                            cd .. && cd .. && cd ..
-			    cp OpnReqTests_control_p8_hera.log $WORKSPACE/tests/logs/
-                            cp OpnReqTests_regional_control_hera.log $WORKSPACE/tests/logs/
-                            cp OpnReqTests_cpld_control_nowave_noaero_p8_hera.log $WORKSPACE/tests/logs/
-                            cd $WORKSPACE/tests/
-                            else
-                            echo "exit"
-                          fi
+          label "hera"
+        }
+        environment {
+        ACCNR = 'epic'
+        NODE_PATH = '/scratch2/NAGAPE/epic/role.epic/'
+      }
+      steps {
+          
+        cleanWs()
+        checkout scm
+        sh '''
+	git submodule update --init --recursive
+        cd tests
+	pwd
+        sed "s|intel|gnu|g" -i opnReqTest
+        export ACCNR=epic
+        ./opnReqTest -n control_p8 -a ${ACCNR} -c std,bit,dbg,dcp,rst,mpi,thr
+        cd logs/
+        cp OpnReqTests_control_p8_hera.log /scratch2/NAGAPE/epic/role.epic/jenkins/workspace
+        cd ..
+        ./opnReqTest -n regional_control -a ${ACCNR} -c bit,dcp,thr
+        cd logs/
+        cp OpnReqTests_regional_control_hera.log /scratch2/NAGAPE/epic/role.epic/jenkins/workspace
+        cd ..
+        ./opnReqTest -n cpld_control_nowave_noaero_p8 -a ${ACCNR} -c dbg,rst
+	cd logs/
+        cp OpnReqTests_cpld_control_nowave_noaero_p8_hera.log /scratch2/NAGAPE/epic/role.epic/jenkins/workspace
+        git remote -v
+        git fetch --no-recurse-submodules origin
+        git reset FETCH_HEAD --hard
+        cd .. && cd .. && cd ..
+	cp OpnReqTests_control_p8_hera.log $WORKSPACE/tests/logs/
+        cp OpnReqTests_regional_control_hera.log $WORKSPACE/tests/logs/
+        cp OpnReqTests_cpld_control_nowave_noaero_p8_hera.log $WORKSPACE/tests/logs/
+        cd $WORKSPACE/tests/
+        else
+        echo "exit"
+fi
                       git config user.email "ecc.platform@noaa.gov"
                       git config user.name "epic-cicd-jenkins"
                       echo "Testing concluded...removing labels for $machine from $GIT_URL"
@@ -71,19 +96,8 @@ pipeline {
                       git commit -m "ORT Jobs Completed.\n\n\n on-behalf-of @ufs-community <ecc.platform@noaa.gov>"
                       git pull sshorigin $FORK_BRANCH
                       git push sshorigin HEAD:$FORK_BRANCH
-                       
-                      tar --create --gzip --verbose --dereference --file "${machine_name_logs}.tgz" ${WORKSPACE}/tests/logs/*.log
-  
-                      GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
-                      GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
-
-                      curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-BL
-                      '''
-                      s3Upload consoleLogLevel: 'INFO', dontSetBuildResultOnFailure: false, dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'noaa-epic-prod-jenkins-artifacts', excludedFile: '', flatten: true, gzipFiles: false, keepForever: false, managedArtifacts: true, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: "**/*tgz*", storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'main', userMetadata: []
-           }
-          }
-         }
-	}
-      }
-    }
+        '''
+        }
+      }	      
   }
+}
