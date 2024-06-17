@@ -23,7 +23,6 @@ pipeline {
                cleanWs()
                checkout scm
                script {
-                 try {
                     echo "Running on ${nodeLabel}"
                     if ((label.matches("jenkins-ort"))) {
                        sh '''
@@ -142,4 +141,3 @@ pipeline {
          }
      } 
   }
-}
