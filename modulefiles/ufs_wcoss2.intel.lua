@@ -18,17 +18,15 @@ load(pathJoin("cray-mpich", cray_mpich_ver))
 cmake_ver=os.getenv("cmake_ver") or "3.20.2"
 load(pathJoin("cmake", cmake_ver))
 
-append_path("MODULEPATH", "/apps/test/hpc-stack/i-19.1.3.304__m-8.1.12__h-1.14.0__n-4.9.2__p-2.5.10__e-8.6.0_pnetcdf/modulefiles/mpi/intel/19.1.3.304/cray-mpich/8.1.12")
-
 local ufs_modules = {
   {["jasper"]      = "2.0.25"},
   {["zlib"]        = "1.2.11"},
   {["libpng"]      = "1.6.37"},
-  {["hdf5"]        = "1.14.0"},
-  {["netcdf"]      = "4.9.2"},
-  {["pio"]         = "2.5.10"},
-  {["esmf"]        = "8.6.0"},
-  {["fms"]         = "2023.04"},
+  {["hdf5-C"]      = "1.14.0"},
+  {["netcdf-C"]    = "4.9.2"},
+  {["pio-C"]       = "2.5.10"},
+  {["esmf-C"]      = "8.6.0"},
+  {["fms-C"]       = "2023.04"},
   {["bacio"]       = "2.4.1"},
   {["crtm"]        = "2.4.0"},
   {["g2"]          = "3.4.5"},
@@ -37,8 +35,8 @@ local ufs_modules = {
   {["sp"]          = "2.3.3"},
   {["w3emc"]       = "2.9.2"},
   {["gftl-shared"] = "1.6.1"},
-  {["mapl"]        = "2.40.3-esmf-8.6.0"},
-  {["pnetcdf"]     = "1.12.2"},
+  {["mapl-C"]      = "2.40.3"},
+  {["pnetcdf-C"]   = "1.12.2"},
   {["scotch"]      = "7.0.4"},
 }
 
