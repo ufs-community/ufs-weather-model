@@ -1,12 +1,7 @@
 pipeline {
   agent none
   stages {
-    stage('Clone on Hera') {
-       agent {
-        label 'built-in' 
-        }    
-       }
-      stage('Specify Node') {
+    stage('Specify Node') {
       steps {
         script {
           for (label in pullRequest.labels) {
