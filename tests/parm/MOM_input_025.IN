@@ -198,7 +198,7 @@ DTFREEZE_DP = -7.75E-08         !   [deg C Pa-1] default = 0.0
                                 ! temperature with pressure.
 
 ! === module MOM_restart ===
-PARALLEL_RESTARTFILES = True    !   [Boolean] default = False
+PARALLEL_RESTARTFILES = False   !   [Boolean] default = False
                                 ! If true, each processor writes its own restart file, otherwise a single
                                 ! restart file is generated
 
@@ -308,9 +308,16 @@ REMAPPING_SCHEME = "PPM_H4"     ! default = "PLM"
 ! Parameters providing information about the lateral grid.
 
 ! === module MOM_state_initialization ===
-INIT_LAYERS_FROM_Z_FILE = True  !   [Boolean] default = False
+INIT_LAYERS_FROM_Z_FILE = False !   [Boolean] default = False
                                 ! If true, initialize the layer thicknesses, temperatures, and salinities from a
                                 ! Z-space file on a latitude-longitude grid.
+THICKNESS_CONFIG        = "thickness_file"
+THICKNESS_FILE          = "ORAS5.mx025.ic.nc"
+TS_CONFIG               = "file"
+TS_FILE                 = "ORAS5.mx025.ic.nc"
+TEMP_IC_VAR             = "Temp"
+VELOCITY_CONFIG         = "file"
+VELOCITY_FILE           = "ORAS5.mx025.ic.nc"
 
 ! === module MOM_initialize_layers_from_Z ===
 TEMP_SALT_Z_INIT_FILE = "MOM6_IC_TS.nc"  ! default = "temp_salt_z.nc"
