@@ -59,7 +59,9 @@ pipeline {
         checkout scm
         sh '''
 	git submodule update --init --recursive
-        cd tests
+        cd tests/fv3_conf
+	sed 's/#SBATCH --time=.*/#SBATCH --time=02:00:00/g' -i fv3_slurm.IN_hera
+        cd ..
 	pwd
         sed "s|intel|gnu|g" -i opnReqTest
         export ACCNR=epic
