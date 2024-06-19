@@ -7,7 +7,7 @@ from ufs_test_utils import get_testcase, write_logfile, delete_files, machine_ch
 
 def finish_log():
     """Collect regression test results and generate log file.
-    """ 
+    """
     UFS_TEST_YAML = str(os.getenv('UFS_TEST_YAML'))
     PATHRT     = os.getenv('PATHRT')
     MACHINE_ID = os.getenv('MACHINE_ID')

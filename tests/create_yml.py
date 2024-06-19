@@ -15,6 +15,8 @@ def update_testyaml(input_list):
     with open(UFS_TEST_YAML, 'r') as file_yaml:
         rt_yaml = yaml.load(file_yaml)#, Loader=yaml.FullLoader)
         for apps, jobs in rt_yaml.items():
+            app_temp    = None
+            build_temp  = None            
             for key, val in jobs.items():
                 if (str(key) == 'build'):
                     #--- build information ---
