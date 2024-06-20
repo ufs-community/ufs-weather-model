@@ -440,10 +440,6 @@ export FV3_RUN=control_run.IN
 export INPUT_NML=control.nml.IN
 export CCPP_SUITE=FV3_GFS_v16
 
-export POST_ITAG=post_itag_gfs
-export POSTXCONFIG=postxconfig-NT-gfs.txt
-export POSTXCONFIG_FH00=postxconfig-NT-gfs_FH00.txt
-
 export DOGP_CLDOPTICS_LUT=.false.
 export DOGP_LWSCAT=.false.
 export IAER=111
@@ -496,6 +492,10 @@ fi
 export UFS_CONFIGURE=ufs.configure.atm_esmf.IN
 export MODEL_CONFIGURE=model_configure.IN
 export atm_model=fv3
+
+export POST_ITAG=post_itag_gfs
+export POSTXCONFIG=postxconfig-NT-gfs.txt
+export POSTXCONFIG_FH00=postxconfig-NT-gfs_FH00.txt
 
 export FV3=true
 export S2S=false
