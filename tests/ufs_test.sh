@@ -178,7 +178,7 @@ if [[ -z "${ACCNR}" ]]; then
 fi
 
 # Display the machine and account using the format detect_machine.sh used:
-echo "Machine:  "${MACHINE_ID}"    Account: "${ACCNR}" "
+echo "Machine:  ""${MACHINE_ID}""    Account: ""${ACCNR}"" "
 
 check_machine=false
 platforms=( hera orion hercules gaea jet derecho noaacloud s4 )
@@ -208,7 +208,7 @@ if [[ ${ROCOTO} == true ]]; then
   ROCOTO_XML="${PATHRT}"/rocoto_workflow.xml
   ROCOTO_STATE="${PATHRT}"/rocoto_workflow.state
   ROCOTO_DB="${PATHRT}"/rocoto_workflow.db
-  rm -f "${ROCOTO_XML}" "${ROCOTO_DB}" "${ROCOTO_STATE}" *_lock.db
+  rm -f "${ROCOTO_XML}" "${ROCOTO_DB}" "${ROCOTO_STATE}" ./*_lock.db*
 fi
 
 [[ -f ${TESTS_FILE} ]] || die "${TESTS_FILE} does not exist"
