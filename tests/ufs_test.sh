@@ -53,7 +53,8 @@ trap '{ echo "ufs_test.sh error on line $LINENO"; cleanup ; }' ERR
 trap '{ echo "ufs_test.sh finished"; cleanup ; }' EXIT
 
 # PATHRT - Path to regression tests directory
-readonly PATHRT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P )"
+PATHRT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P )"
+readonly PATHRT
 cd "${PATHRT}"
 
 # make sure only one instance of ufs_test.sh is running
