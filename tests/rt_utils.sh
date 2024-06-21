@@ -18,13 +18,13 @@ function link_upp_crtm() {
     # From FV3/upp/sorc/ncep_post.fd/CALRAD_WCLOUD_newcrtm.f CALRAD_WCLOUD sensorlist
     sensorlist="imgr_g15 imgr_g13 imgr_g12 imgr_g11 amsre_aqua tmi_trmm ssmi_f13 ssmi_f14 ssmi_f15 ssmis_f16 ssmis_f17 ssmis_f18 ssmis_f19 ssmis_f20 seviri_m10 imgr_mt2 imgr_mt1r imgr_insat3d abi_gr abi_g16 abi_g17 abi_g18 ahi_himawari8"
 
-    for sensor in $sensorlist ; do
-        ln -sf ${CRTM_FIX}/*${sensor}* .
+    for sensor in ${sensorlist} ; do
+        ln -sf "${CRTM_FIX}"/*"${sensor}"* .
     done
 
-    ln -sf ${CRTM_FIX}/CloudCoeff.bin .
-    ln -sf ${CRTM_FIX}/AerosolCoeff.bin .
-    ln -sf ${CRTM_FIX}/*EmisCoeff.bin .
+    ln -sf "${CRTM_FIX}"/CloudCoeff.bin .
+    ln -sf "${CRTM_FIX}"/AerosolCoeff.bin .
+    ln -sf "${CRTM_FIX}"/*EmisCoeff.bin .
 }
 
 function compute_petbounds_and_tasks() {
