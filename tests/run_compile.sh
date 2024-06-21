@@ -73,13 +73,6 @@ elif [[ ${SCHEDULER} = 'slurm' ]]; then
   fi
 fi
 
-# FIXME: THIS NEW "IF" BLOCK SHOULD NOT BE MERGED TO DEVELOP
-if [[ "${JOB_SHOULD_FAIL:-NO}" == YES ]] ; then
-    echo "The job should abort now, with exit status 1." 1>&2
-    echo "If error checking is working, the metascheduler should mark the job as failed." 1>&2
-    false
-fi
-
 ################################################################################
 # Submit compile job
 ################################################################################
