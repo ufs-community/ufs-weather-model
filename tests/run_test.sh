@@ -372,9 +372,9 @@ if [[ ${SCHEDULER} = 'none' ]]; then
 
   ulimit -s unlimited
   if [[ ${CI_TEST} = 'true' ]]; then
-    eval "${OMP_ENV}" mpiexec -n "${TASKS}" ./fv3.exe >out 2> >(tee err >&3 || true)
+    eval "${OMP_ENV}" mpiexec -n "${TASKS}" ./fv3.exe >out 2> >(tee err >&3)
   else
-    mpiexec -n "${TASKS}" ./fv3.exe >out 2> >(tee err >&3 || true)
+    mpiexec -n "${TASKS}" ./fv3.exe >out 2> >(tee err >&3)
   fi
 
 else
@@ -383,7 +383,7 @@ else
     submit_and_wait job_card
   else
     chmod u+x job_card
-    ( ./job_card 2>&1 1>&3 3>&- | tee err || true ) 3>&1 1>&2 | tee out
+    ( ./job_card 2>&1 1>&3 3>&- | tee err ) 3>&1 1>&2 | tee out
     # The above shell redirection copies stdout to "out" and stderr to "err"
     # while still sending them to stdout and stderr. It does this without
     # relying on bash-specific extensions or non-standard OS features.
@@ -392,9 +392,7 @@ else
 fi
 skip_check_results=${skip_check_results:-false}
 if [[ ${skip_check_results} = false ]]; then
-  check_results || true
-  # The above call will exit with an error on its own and does
-  # not need to cause run_test to TRAP the failure and error out itself.
+  check_results
 else
   {
   echo
