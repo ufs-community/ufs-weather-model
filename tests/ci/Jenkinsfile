@@ -62,6 +62,11 @@ pipeline {
         cd tests/fv3_conf
 	sed 's/#SBATCH --time=.*/#SBATCH --time=02:00:00/g' -i fv3_slurm.IN_hera
         cd ..
+	export machine=${NODE_NAME}
+        export PATH=$PATH:~/bin
+        echo $CHANGE_ID
+        export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
+        export FORK_BRANCH=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
 	pwd
         sed "s|intel|gnu|g" -i opnReqTest
         export ACCNR=epic
