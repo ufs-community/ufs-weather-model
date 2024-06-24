@@ -1,48 +1,112 @@
 ###############################################################################
 #
-#  Global control multigases debug test
+#  Global control debug test FV3WAM atmosphere only at C96L149, P8 configuration
 #
 ###############################################################################
 
-export TEST_DESCR="Compare global control multigases debug results with previous trunk version"
+export TEST_DESCR="fv3 wam debug test"
 
 export CNTL_DIR=control_wam_debug
 
-export LIST_FILES="sfcf019.nc \
-                   atmf019.nc"
+export LIST_FILES="sfcf002.nc \
+                   atmf002.nc"
 
-export_fv3_v16
+export_fv3
+export_tiled
 export NPZ=149
 export NPZP=150
-export DT_ATMOS="225"
-export SYEAR="2021"
-export SMONTH="03"
-export SDAY="22"
-export SHOUR="06"
+export DT_ATMOS=180
+export DT_INNER=${DT_ATMOS}
+export SYEAR=2021
+export SMONTH=3
+export SDAY=22
+export SHOUR=6
+export FHMAX=2
+export OUTPUT_GRID='gaussian_grid'
+export FHROT=0
+export OUTPUT_FH='1 -1'
+ 
+#WAM settings
+export TAU=1.0
+export D2_BG_K1=0.0
+export D2_BG_K2=0.0
+export D4_BG=0.16
+export PSM_BC=1
+export DDDMP=0.0
 
-export FHMAX=19
-export OUTPUT_FH="0 19"
-
-export WARM_START=.true.
 export NA_INIT=0
-export EXTERNAL_IC=.false.
-export NGGPS_IC=.false.
+export NUDGE_QV=.false.
+export Z_TRACER=.false.
+export INLINE_Q=.false.
+export FV_SG_ADJ=-1
+export VTDM4=0.0
+export DELT_MAX=1.0
+export DO_VORT_DAMP=.false.
+export D_CON=0.0
 export MAKE_NH=.false.
-export MOUNTAIN=.true.
-export FDIAG=3
-export NSTF_NAME=0,0,1,0,5
-export IAER=5111
+export TRANS_TRAC=.false.
+export FHZERO=1.0
+export DNATS=0
+
+export USE_MERRA2=.true.
+export IAER=1011
+export NSTF_NAME=2,1,0,0,0
+
+#UGWP1
+export GWD_OPT=2
+export DO_UGWP_V1=.false.
+export KNOB_UGWP_VERSION=0
+export KNOB_UGWP_NSLOPE=1
+export DO_UGWP_V0=.true.
+export DO_GSL_DRAG_LS_BL=.false.
+export DO_GSL_DRAG_SS=.true.
+export DO_GSL_DRAG_TOFD=.false.
+export DO_UGWP_V1_OROG_ONLY=.false.
+export DO_UGWP_V0_NST_ONLY=.false.
+export LDIAG_UGWP=.false.
+
+#CA
+export DO_CA=.true.
+export CA_SGS=.true.
+export CA_GLOBAL=.false.
+export NCA=1
+export NCELLS=5
+export NLIVES=12
+export NTHRESH=18
+export NSEED=1
+export NFRACSEED=0.5
+export CA_TRIGGER=.true.
+export NSPINUP=1
+export ISEED_CA=12345
+
+#settings
+export TILEDFIX=.true.
+export FSICL=0
+export FSICS=0
+
+export IMP_PHYSICS=8
+export LGFDLMPRAD=.false.
+export LHEATSTRG=.false.
+export LSEASPRAY=.true.
+export SATMEDMF=.true.
 export DO_SAT_ADJ=.false.
+export DZ_MIN=6
+
+#required for NML.IN sharing
+export MIN_SEAICE=0.15
+export FRAC_GRID=.true.
+export MOM6_OUTPUT_DIR=./MOM6_OUTPUT
+export MOM6_RESTART_DIR=./RESTART/
+export MOM6_RESTART_SETTING=n
+export USE_CICE_ALB=.false.
 
 export FV3_RUN=wam_run.IN
-export CCPP_SUITE=FV3_GFS_v16_fv3wam
-export INPUT_NML=wam.nml.IN
+export CCPP_SUITE=FV3_GFS_v17_p8
+export FIELD_TABLE=field_table_wam_noaer
 export DIAG_TABLE=diag_table_wam
-export FIELD_TABLE=field_table_wam
 
-export QUILTING=.true.
-export OUTPUT_GRID="gaussian_grid"
-export OZ_PHYS_OLD=.false.
-export OZ_PHYS_NEW=.true.
-export H2O_PHYS=.true.
-export FHROT=18
+export INPUT_NML=wam_v17.nml.IN
+
+if [[ " hera orion hercules gaea jet " =~ " ${MACHINE_ID} " ]] ; then
+  ZSTANDARD_LEVEL=5
+fi
