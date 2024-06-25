@@ -765,12 +765,9 @@ case ${MACHINE_ID} in
     ;;
   orion)
     echo "rt.sh: Setting up orion..."
-    module load git/2.28.0
-    module load gcc/10.2.0
-    module load python/3.9.2
 
     if [[ "${ROCOTO:-false}" == true ]] ; then
-      module load contrib rocoto
+      module load contrib ruby/3.2.3 rocoto/1.3.7
       ROCOTO_SCHEDULER="slurm"
     fi
 
@@ -791,6 +788,8 @@ case ${MACHINE_ID} in
     PTMP="${dprefix}/stmp"
 
     SCHEDULER="slurm"
+    cp fv3_conf/fv3_slurm.IN_orion fv3_conf/fv3_slurm.IN
+    cp fv3_conf/compile_slurm.IN_orion fv3_conf/compile_slurm.IN
     ;;
   hercules)
     echo "rt.sh: Setting up hercules..."
