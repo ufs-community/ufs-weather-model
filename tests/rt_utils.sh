@@ -14,6 +14,13 @@ ECFLOW_RUNNING=false
 
 jobid=0
 
+redirect_out_err() {
+    ( "$@" 2>&1 1>&3 3>&- | tee err ) 3>&1 1>&2 | tee out
+    # The above shell redirection copies stdout to "out" and stderr to "err"
+    # while still sending them to stdout and stderr. It does this without
+    # relying on bash-specific extensions or non-standard OS features.
+}
+
 function compute_petbounds_and_tasks() {
 
   # each test MUST define ${COMPONENT}_tasks variable for all components it is using
