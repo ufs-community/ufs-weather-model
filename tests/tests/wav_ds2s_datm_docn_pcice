@@ -1,0 +1,144 @@
+#
+#  wav_ds2s_datm_docn_pcice
+#
+
+export TEST_DESCR="Active WW3-CMEPS-DATM-DOCN-PrescribedIceCICE system - C96MX100 unstr WW3 PDLIB"
+
+export CNTL_DIR=wav_ds2s_datm_docn_pcice
+
+export LIST_FILES="RESTART/20210323.060000.coupler.res \
+                   RESTART/iced.2021-03-23-21600.nc \
+                   RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc \
+                   20210323.060000.out_pnt.ww3 \
+                   20210323.060000.out_grd.ww3 "
+
+export_datm_cdeps
+
+#model configure
+export SYEAR=2021
+export SMONTH=03
+export SDAY=22
+export SHOUR=06
+export CHOUR=06
+export FHMAX=24
+export FHROT=0
+
+export ATMRES=C96
+export OCNRES=100
+export ICERES=1.00
+export NX_GLB=360
+export NY_GLB=320
+export ATM_compute_tasks=${ATM_compute_tasks_cdeps_025}
+export OCN_tasks=${ICE_tasks_cdeps_025}
+export ICE_tasks=${ICE_tasks_cdeps_025}
+export WAV_tasks=100
+
+export_cice6
+export_ww3
+export_cmeps
+
+export FV3=false
+export S2S=false
+export HAFS=false
+export AQM=false
+export DATM_CDEPS=true
+export DOCN_CDEPS=true
+export DICE_CDEPS=false
+export CICE_PRESCRIBED=true
+export med_model=cmeps
+export wav_model=ww3
+export atm_model=datm
+export ocn_model=docn
+export ice_model=cice6
+
+export RESTART_N=12
+export RESTART_INTERVAL="${RESTART_N} -1"
+export OUTPUT_FH='0 21 24'
+
+export DATM_SRC=GFS
+export FILENAME_BASE=gfs.
+export IATM=3072
+export JATM=1536
+export ATM_NX_GLB=$IATM
+export ATM_NY_GLB=$JATM
+export ATMRES=${IATM}x${JATM}
+export MESH_ATM=${FILENAME_BASE//.}_mesh.nc
+export atm_datamode=GFS
+export stream_files="INPUT/gfs.202103.nc"
+
+export WW3_DOMAIN=global_270k
+export MESH_WAV=mesh.${WW3_DOMAIN}.nc
+export WW3_MODDEF=mod_def.exp.${WW3_DOMAIN}
+export CPLWAV=.true.
+export CPLWAV2ATM=.true.
+#waves
+export WW3_RSTDTHR=12
+WW3_DT_2_RST="$(printf "%02d" $(( WW3_RSTDTHR*3600 )))"
+export WW3_DT_2_RST
+export WW3_OUTDTHR=1
+WW3_DTFLD="$(printf "%02d" $(( WW3_OUTDTHR*3600 )))"
+export WW3_DTFLD
+WW3_DTPNT="$(printf "%02d" $(( WW3_OUTDTHR*3600 )))"
+export WW3_DTPNT
+export DTRST=0
+export RSTTYPE=T
+export GOFILETYPE=1
+export POFILETYPE=1
+export WW3_OUTPARS="WND HS FP DP PHS PTP PDIR"
+export CPLILINE='$'
+export ICELINE='$'
+export WINDLINE='$'
+export CURRLINE='$'
+export NFGRIDS=0
+export NMGRIDS=1
+export WW3GRIDLINE="'global_270k'  'no' 'no' 'CPL:native' 'no' 'no' 'no' 'no' 'no' 'no'   1  1  0.00 1.00  F"
+export FUNIPNT=T
+export IOSRV=1
+export FPNTPROC=T
+export FGRDPROC=T
+export UNIPOINTS='points'
+export FLAGMASKCOMP=' F'
+export FLAGMASKOUT=' F'
+RUN_BEG="${SYEAR}${SMONTH}${SDAY} $(printf "%02d" $(( SHOUR  )))0000"
+export RUN_BEG
+RUN_END="2100${SMONTH}${SDAY} $(printf "%02d" $(( SHOUR  )))0000"
+export RUN_END
+export OUT_BEG=${RUN_BEG}
+export OUT_END=${RUN_END}
+export RST_BEG=${RUN_BEG}
+export RST_2_BEG=${RUN_BEG}
+export RST_END=${RUN_END}
+export RST_2_END=${RUN_END}
+export WW3_CUR='C'
+export WW3_ICE='C'
+export WW3_IC1='F'
+export WW3_IC5='F'
+
+#CDEPS docn settings
+export ocn_datamode=sstdata
+#export MESH_OCN=TX025_210327_ESMFmesh_py.nc
+#export ocn_data="INPUT/oisst-avhrr-v02r01.202103.nc"
+export MESH_OCN=e5.oper.an.mesh.nc
+export ocn_data="INPUT/sst_siconc_skt.era5.20210321_20210331.nc"
+export ocn_data_var=sst
+export ocn_nx_global=1440
+export ocn_ny_global=721
+export DOCN_IN_CONFIGURE=docn_in.IN
+export DOCN_STREAM_CONFIGURE=hafs_docn.streams.IN
+export STREAM_OFFSET=0
+
+#rest of CICE ice prescribed settings
+export CICE_RUNTYPE=initial
+export CICE_ICE_IC=none
+export CICE_PRESCRIBED=true
+export stream_files_dice=$ocn_data
+export MESH_DICE=$MESH_OCN
+export eps_imesh=4.0e-1
+export CICE_KTHERM=2
+export CICE_TFREEZE_OPTION=mushy
+
+#export INPUT_NML=global_control.nml.IN
+export MODEL_CONFIGURE=datm_cdeps_configure.IN
+export UFS_CONFIGURE=ufs.configure.s2sw_fast_esmf.IN
+#export FV3_RUN="cpld_control_run.IN cpld_docn_pcice.IN"
+export FV3_RUN="cpld_datm_cdeps_gfs.IN cpld_docn_pcice.IN"
