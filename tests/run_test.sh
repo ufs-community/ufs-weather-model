@@ -25,6 +25,13 @@ remove_fail_test() {
     rm -f "${PATHRT}/fail_test_${TEST_ID}"
 }
 
+redirect_out_err() {
+    ( "$@" 2>&1 1>&3 3>&- | tee err ) 3>&1 1>&2 | tee out
+    # The above shell redirection copies stdout to "out" and stderr to "err"
+    # while still sending them to stdout and stderr. It does this without
+    # relying on bash-specific extensions or non-standard OS features.
+}
+
 if [[ $# != 5 ]]; then
   echo "Usage: $0 PATHRT RUNDIR_ROOT TEST_NAME TEST_ID COMPILE_ID"
   exit 1
@@ -380,9 +387,9 @@ if [[ ${SCHEDULER} = 'none' ]]; then
 
   ulimit -s unlimited
   if [[ ${CI_TEST} = 'true' ]]; then
-    eval "${OMP_ENV}" mpiexec -n "${TASKS}" ./fv3.exe >out 2> >(tee err >&3)
+    redirect_out_err $( eval "${OMP_ENV}" mpiexec -n "${TASKS}" ./fv3.exe )
   else
-    mpiexec -n "${TASKS}" ./fv3.exe >out 2> >(tee err >&3)
+    redirect_out_err mpiexec -n "${TASKS}" ./fv3.exe
   fi
 
 else
@@ -399,10 +406,7 @@ else
     fi
 
     chmod u+x job_card
-    ( ./job_card 2>&1 1>&3 3>&- | tee err ) 3>&1 1>&2 | tee out
-    # The above shell redirection copies stdout to "out" and stderr to "err"
-    # while still sending them to stdout and stderr. It does this without
-    # relying on bash-specific extensions or non-standard OS features.
+    redirect_out_err ./job_card
   fi
 
 fi
