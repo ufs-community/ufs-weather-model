@@ -1663,8 +1663,6 @@ The Suite Definition File (SDF)
 
 The `Suite Definition File (SDF) <https://ccpp-techdoc.readthedocs.io/en/latest/ConstructingSuite.html#suite-definition-file>`__ is an XML-format file that specifies the list of physics schemes that can be run by the model.
 
-
-
 Supported suites
 ^^^^^^^^^^^^^^^^
 
@@ -1711,8 +1709,75 @@ Suites detailed below are provided for informational purposes only, and may not 
    :header: "Suite", "Description"
    :widths: 15, 30
 
+   .. _suite_auklet:
+   "auklet.xml", "Suite 'auklet' (formerly known as FV3_HRRR_gf) was used for research and testing for early prototypes of the `Rapid Refresh Forecast System (RRFS) <https://gsl.noaa.gov/focus-areas/unified_forecast_system/rrfs>`__. Similar to suite :ref:`bald_eagle <suite_bald_eagle>`, except with the addition of the Grell-Freitas deep convection scheme and GFS convective cloud diagnostics."
+   .. _suite_bluebird:
+   "bluebird.xml", "Suite 'bluebird' (formerly known as FV3_GFS_v17_p8) was used for testing an early prototype of the Global Forecast System (GFS) version 17 release. While it is similar to the physics used for this prototype (P8), it is not identical, and the eventual operational implementation of GFS version 17 will likely be quite different."
+   .. _suite_canary:
+   "canary.xml", "Suite 'canary' (formerly known as FV3_GFS_v17_p8_rrtmgp) is a suite used for testing an early prototype of the Global Forecast System (GFS) version 17 release ('Prototype 8'). Similar to :ref:`bluebird <suite_bluebird>`, but uses RRTMGP: a re-written an parallelized version of the older RRTMG radiation schemes (see https://earth-system-radiation.github.io/rte-rrtmgp/)."
+   .. _suite_chickadee:
+   "chickadee.xml", "Suite 'chickadee' (formerly known as RRFSens_phy3) is one of the suites used in early prototypes of the Rapid Refresh Forecast System (RRFS) multi-physics ensemble."
+   .. _suite_condor:
+   "condor.xml", "Suite 'condor' (formerly known as FV3_GFS_v17_p8_ugwpv1) was used for testing early prototypes of the Global Forecast System (GFS) version 17 release. Identical to suite :ref:`bluebird <suite_bluebird>` but with an upgraded version of the unified gravity wave drag physics (v0 -> v1)."
    .. _suite_crossbill:
    "crossbill.xml", "Suite 'crossbill' (originally named FV3_RRFS_v1nssl) was developed for research and development of early prototypes of the Rapid Refresh Forecast System (RRFS), specifically including the NSSL 2-moment cloud microphysics scheme when it was added to CCPP (see https://github.com/NOAA-EMC/fv3atm/pull/472 and https://github.com/NCAR/ccpp-physics/pull/761)."
+   .. _suite_crow:
+   "crow.xml", Suite 'crow' (formerly known as FV3_GFS_v15_thompson_mynn_lam3km) is an early physics suite used for research and experiments with early high-resolution (3-km) regional UFS grids."
+   .. _suite_dotterel:
+   "dotterel.xml", "Suite 'dotterel' (formerly known as FV3_GFS_v17_coupled_p8_sfcocn) was used for testing an early prototype of the Global Forecast System (GFS) version 17 release. Similar to suite :ref:`pelican <suite_pelican>`, except with a modified near-sea-surface temperature scheme (sfc_ocean) for use with GRIB2 input data."
+   .. _suite_dove:
+   "dove.xml", "Suite 'dove' (formerly known as FV3_RAP_noah) was originally developed for research and prototyping of early UFS systems. Similar to :ref:`albatross <suite_albatross>`, except using the Noah Land Surface Model (instead of RUC LSM) and the GFS surface sea-ice model. "
+   .. _suite_egret:
+   "egret.xml", "Suite 'egret' (formerly known as FV3_GFS_v16_csawmg) was a suite added for experiments with the Morrison-Gettelman version 3 microphysics."
+   .. _suite_falcon:
+   "falcon.xml", "Suite 'falcon' (formerly known as FV3_global_nest_v1) is a suite that was developed for forecasting atmospheric rivers for the Water in the West project."
+   .. _suite_flamingo:
+   "flamingo.xml", "Suite 'flamingo' (formerly known as FV3_HAFS_v1_gfdlmp_tedmf) is the physics suite used by the operational HAFS-A configuration. When using GRIB2 input data, use suite :ref:`tanager <suite_tanager>` instead."
+   .. _suite_flycatcher:
+   "flycatcher.xml", "Suite 'flycatcher' (formerly known as FV3_HRRR_gf_nogwd) is a suite developed for a prototype of the Rapid Refresh Forecast System (RRFS) for fire weather prediction. Similar to suite :ref:`auklet <suite_auklet>`, except without gravity wave drag parameterization."
+   .. _suite_heron:
+   "heron.xml", "Suite 'heron' (formerly known as FV3_GFS_v16_flake) was added to test the capabilities of the Freshwater Lake (FLake) model (http://www.flake.igb-berlin.de/site/doc) for simulating freshwater lake temperatures."
+   .. _suite_hornbill:
+   "hornbill.xml", "Suite 'hornbill' (formerly known as FV3_HAFS_v1_thompson_nonsst) is similar (though not identical) to the physics suite used by the operational HAFS-B configuration. Identical to suite :ref:`lorikeet <suite_lorikeet>`, except with a modified near-sea-surface temperature scheme (sfc_ocean) for use with GRIB2 input data."
+   "ibis.xml", "Suite 'ibis' (formerly known as FV3_RAP_unified_ugwp) is similar to :ref:`'albatross' <suite_albatross>` but using the unified gravity wave drag scheme (version 0) rather than the GSL orographic gravity wave drag scheme."
+   .. _suite_kestrel:
+   "kestrel.xml", "Suite 'kestrel' (originally named RRFSens_phy4) is one of the suites used in early prototypes of the Rapid Refresh Forecast System (RRFS) multi-physics ensemble."
+   .. _suite_loon:
+   "loon.xml", "Suite 'loon' (formerly known as FV3_GFS_v16_fv3wam) was originally developed for early prototypes of the FV3-based Whole Atmosphere Model (WAM)."
+   .. _suite_lorikeet:
+   "lorikeet.xml", "Suite 'lorikeet' (formerly known as FV3_HAFS_v1_thompson) is similar (though not identical) to the physics suite used by the operational HAFS-B configuration. When using GRIB2 input data, or coupled with an ocean model, use suite :ref:`hornbill <suite_hornbill>` instead."
+   .. _suite_magpie:
+   "magpie.xml", "Suite 'magpie' (formerly known as FV3_GFS_v17_coupled_p8_ugwpv1) was originally developed for use by the GFS v17 High-resolution prototype 3 (HR3). While it acccurately represents the physics suite used for this prototype, the eventual implementation of the operational GFS version 17 will likely be different."
+   .. _suite_meadowlark:
+   "meadowlark.xml", "Suite 'meadowlark' (formerly known as FV3_RAP_noah_sfcdiff_cires_ugwp) was originally developed for research and prototyping of early UFS systems. Designed to emulate the RAP physics, but with several differences, including the surface scheme, land surface model, and gravity wave parameterizations."
+   .. _suite_parakeet:
+   "parakeet.xml", "Suite 'parakeet' (formerly known as FV3_GFS_v17_p8_c3) was used for testing an early prototype of the Global Forecast System (GFS) version 17 release. While it is similar to the physics used for this prototype (P8), it is not identical, and the eventual operational implementation of GFS version 17 will likely be quite different."
+   .. _suite_pelican:
+   "pelican.xml", "Suite 'pelican' (formerly known as FV3_GFS_v17_coupled_p8) was used for testing an early prototype of the Global Forecast System (GFS) version 17 release. While it is similar to the physics used for this prototype (P8), it is not identical, and the eventual operational implementation of GFS version 17 will likely be quite different. Identical to suite :ref:`bluebird <suite_bluebird>`, except with the 'sfc_cice' physics routine used for coupling with the Community Ice Code (CICE) sea-ice model (https://www.cesm.ucar.edu/models/cice)."
+   .. _suite_penguin:
+   "penguin.xml", "Suite 'penguin' (formerly known as RRFSens_phy5) is one of the suites used in early prototypes of the Rapid Refresh Forecast System (RRFS) multi-physics ensemble."
+   .. _suite_ptarmigan:
+   "ptarmigan.xml", "Suite 'ptarmigan' (formerly known as RRFSens_phy2) is one of the suites used in early prototypes of the Rapid Refresh Forecast System (RRFS) multi-physics ensemble."
+   .. _suite_puffin:
+   "puffin.xml", "Suite 'puffin' (formerly known as RRFSens_phy1) is one of the suites used in early prototypes of the Rapid Refresh Forecast System (RRFS) multi-physics ensemble."
+   .. _suite_sandpiper:
+   "sandpiper.xml", "Suite 'sandpiper' (formerly known as FV3_RAP_flake) is identical to suite :ref:`albatross <suite_albatross>`, but with the addition of the Freshwater Lake (FLake) model (http://www.flake.igb-berlin.de/site/doc) for simulating freshwater lake temperatures."
+   .. _suite_shrike:
+   "shrike.xml", "Suite 'shrike' (formerly known as FV3_RAP_sfcdiff) is identical to suite :ref:`albatross <suite_albatross>`, but with the GFS surface layer scheme rather than the MYNN surface layer scheme."
+   .. _suite_snowy_owl:
+   "snowy_owl.xml", "Suite 'snowy_owl' (formerly known as FV3_RAP_clm_lake) was originally developed for research and prototyping of early UFS systems. It was meant to emulate the physics of the Rapid Refresh (RAP) model, though it had some differences from the operational implementation (which was not CCPP-based). This suite is identical to suite :ref:`albatross <suite_albatross>`, but with the addition of the Community Land Model (CLM) lake model (as is found in the operational RAP)."
+   .. _suite_starling:
+   "starling.xml", "Suite 'starling' (formerly known as FV3_GFS_v16_ras) is identical to suite :ref:`raven <suite_raven>`, but with the Relaxed Arakawa-Schubert Convection Scheme rather than the scale-aware mass-flux deep convection scheme."
+   .. _suite_tanager:
+   "tanager.xml", "Suite 'tanager' (formerly known as FV3_HAFS_v1_gfdlmp_tedmf_nonsst) is similar (though not identical) to the physics suite used by the operational HAFS-A configuration. Identical to suite :ref:`flamingo <suite_flamingo>`, except with a modified near-sea-surface temperature scheme (sfc_ocean) for use with GRIB2 input data."
+   .. _suite_tern:
+   "tern.xml", "Suite 'tern' (formerly known as FV3_GFS_v17_p8_mynn) was used for testing an early prototype of the Global Forecast System (GFS) version 17 release."
+   .. _suite_toucan:
+   "toucan.xml", "Suite 'toucan' (formerly known as FV3_HAFS_v1_thompson_tedmf_gfdlsf) is similar (though not identical) to the physics suite used by the operational HAFS-B configuration. One specific difference is that this suite uses the GFDL surface layer scheme (similar to that used in the operational HWRF) rather than the GFS surface layer scheme used in HAFS-B."
+   .. _suite_turnstone:
+   "turnstone.xml", "Suite 'turnstone' (formerly known as FV3_RAP_cires_ugwp) is similar to :ref:`albatross <suite_albatross>` but using the CIRES Unified Gravity Wave Physics (version 0) rather than the GSL orographic gravity wave drag scheme."
+   .. _suite_wren:
+   "wren.xml", "Suite 'wren' (formerly known as FV3_HRRR_c3) is similar to suite :ref:`bald_eagle <suite_bald_eagle>` but with the addition of the C3 Deep Convection scheme."
 
 .. _datm.streams-file:
 
