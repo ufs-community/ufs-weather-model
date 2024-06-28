@@ -1675,9 +1675,7 @@ There is one SDF currently supported for the UFS Medium Range Weather App config
    :widths: 15, 30
 
    .. _suite_kingfisher:
-   "kingfisher.xml", "Suite 'kingfisher' (originally named FV3_GFS_v15p2) was developed for research and prototyping of early UFS systems. It was meant to emulate the operational `GFS v15.2 <https://www.weather.gov/media/notification/pdf2/scn19-84gfs_15.2.pdf>`__ physics, though it had some differences from the operational implementation (which was not CCPP-based)."
-
-Link to :ref:`Kingfisher <suite_kingfisher>`, :ref:`Albatross <suite_albatross>`, :ref:`Raven <suite_raven>`
+   "kingfisher.xml", "Suite 'kingfisher' (originally named FV3_GFS_v15p2) was developed for research and prototyping of early UFS systems. It was meant to emulate the operational `GFS v15.2 <https://www.weather.gov/media/notification/pdf2/scn19-84gfs_15.2.pdf>`__ physics, though it has some differences from the operational implementation (which was not CCPP-based)."
 
 
 .. _SRWSupportedSuites:
@@ -1691,7 +1689,7 @@ There are five SDFs currently supported for the UFS Short Range Weather App conf
    .. _suite_albatross:
    "albatross.xml", "Suite 'albatross' (originally named FV3_RAP) was developed for research and prototyping of early UFS systems. It was meant to emulate the physics of the `Rapid Refresh (RAP) model <https://rapidrefresh.noaa.gov/>`__, though it has some differences from the operational implementation (which was not CCPP-based)."
    .. _suite_bald_eagle:
-   "bald_eagle.xml", "Suite 'bald_eagle' (originally named FV3_HRRR) was developed for research and testing for early prototypes of the Rapid Refresh Forecast System (RRFS). It was meant to emulate the physics of the `High-Resolution Rapid Refresh (HRRR) <https://rapidrefresh.noaa.gov/hrrr/>`__ model, though it had some differences from the operational implementation (which was not CCPP-based)."
+   "bald_eagle.xml", "Suite 'bald_eagle' (originally named FV3_HRRR) was developed for research and testing for early prototypes of the Rapid Refresh Forecast System (RRFS). It was meant to emulate the physics of the `High-Resolution Rapid Refresh (HRRR) <https://rapidrefresh.noaa.gov/hrrr/>`__ model, though it has some differences from the operational implementation (which was not CCPP-based)."
    .. _suite_hummingbird:
    "hummingbird.xml", "Suite 'hummingbird' (originally named FV3_WoFS_v0) was developed was used for testing an early prototype of the experimental FV3-based Warn-on-Forecast System (WoFS). Same as suite :ref:`crossbill <suite_crossbill>` except with Noah Land Surface Model instead of the NoahMP LSM."
    .. _suite_pigeon:
@@ -1702,6 +1700,7 @@ There are five SDFs currently supported for the UFS Short Range Weather App conf
 
 Detailed descriptions of the supported suites can be found in the latest `CCPP Scientific Documentation <https://dtcenter.org/community-code/common-community-physics-package-ccpp/documentation>`__
 
+.. _UnsupportedSuites:
 
 Suites detailed below are provided for informational purposes only, and may not be supported. Detailed descriptions of the supported suites can be found in the latest `CCPP Scientific Documentation <https://dtcenter.org/community-code/common-community-physics-package-ccpp/documentation>`__
 
@@ -1765,7 +1764,7 @@ Suites detailed below are provided for informational purposes only, and may not 
    .. _suite_shrike:
    "shrike.xml", "Suite 'shrike' (formerly known as FV3_RAP_sfcdiff) is identical to suite :ref:`albatross <suite_albatross>`, but with the GFS surface layer scheme rather than the MYNN surface layer scheme."
    .. _suite_snowy_owl:
-   "snowy_owl.xml", "Suite 'snowy_owl' (formerly known as FV3_RAP_clm_lake) was originally developed for research and prototyping of early UFS systems. It was meant to emulate the physics of the Rapid Refresh (RAP) model, though it had some differences from the operational implementation (which was not CCPP-based). This suite is identical to suite :ref:`albatross <suite_albatross>`, but with the addition of the Community Land Model (CLM) lake model (as is found in the operational RAP)."
+   "snowy_owl.xml", "Suite 'snowy_owl' (formerly known as FV3_RAP_clm_lake) was originally developed for research and prototyping of early UFS systems. It was meant to emulate the physics of the Rapid Refresh (RAP) model, though it has some differences from the operational implementation (which was not CCPP-based). This suite is identical to suite :ref:`albatross <suite_albatross>`, but with the addition of the Community Land Model (CLM) lake model (as is found in the operational RAP)."
    .. _suite_starling:
    "starling.xml", "Suite 'starling' (formerly known as FV3_GFS_v16_ras) is identical to suite :ref:`raven <suite_raven>`, but with the Relaxed Arakawa-Schubert Convection Scheme rather than the scale-aware mass-flux deep convection scheme."
    .. _suite_tanager:
