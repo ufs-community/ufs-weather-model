@@ -1655,25 +1655,64 @@ However, ``ufs.configure`` files for other configurations of the Weather Model a
 
 .. note:: The ``aoflux_code`` option is used to define the algorithm that will be used to calculate atmosphere-ocean fluxes. The possible options are ``cesm`` and ``ccpp``. If ``ccpp`` is selected then the suite file provided in the ``aoflux_ccpp_suite`` option is used to calculate atmosphere-ocean fluxes through the use of CCPP host model.
 
-.. _SDF-file:
+.. _SDF:
 
 ---------------------------------------
-The Suite Definition File (SDF) File
+The Suite Definition File (SDF)
 ---------------------------------------
 
-There are two SDFs currently supported for the UFS Medium Range Weather App configuration: 
+The `Suite Definition File (SDF) <https://ccpp-techdoc.readthedocs.io/en/latest/ConstructingSuite.html#suite-definition-file>`__ is an XML-format file that specifies the list of physics schemes that can be run by the model.
 
-   * ``suite_FV3_GFS_v15p2.xml`` 
-   * ``suite_FV3_GFS_v16beta.xml``
 
-There are four SDFs currently supported for the UFS Short Range Weather App configuration: 
 
-   * ``suite_FV3_GFS_v16.xml`` 
-   * ``suite_FV3_RRFS_v1beta.xml``
-   * ``suite_FV3_HRRR.xml``
-   * ``suite_FV3_WoFS_v0.xml``
+Supported suites
+^^^^^^^^^^^^^^^^
 
-Detailed descriptions of the supported suites can be found with the `CCPP v6.0.0 Scientific Documentation <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/index.html>`__.
+.. _MRWSupportedSuites:
+
+There is one SDF currently supported for the UFS Medium Range Weather App configuration: 
+
+.. csv-table:: Supported Suites for MRW
+   :header: "Suite", "Description"
+   :widths: 15, 30
+
+   .. _suite_kingfisher:
+   "kingfisher.xml", "Suite 'kingfisher' (originally named FV3_GFS_v15p2) was developed for research and prototyping of early UFS systems. It was meant to emulate the operational `GFS v15.2 <https://www.weather.gov/media/notification/pdf2/scn19-84gfs_15.2.pdf>`__ physics, though it had some differences from the operational implementation (which was not CCPP-based)."
+
+Link to :ref:`Kingfisher <suite_kingfisher>`, :ref:`Albatross <suite_albatross>`, :ref:`Raven <suite_raven>`
+
+
+.. _SRWSupportedSuites:
+
+There are five SDFs currently supported for the UFS Short Range Weather App configuration: 
+
+.. csv-table:: Supported Suites for SRW
+   :header: "Suite", "Description"
+   :widths: 15, 30
+
+   .. _suite_albatross:
+   "albatross.xml", "Suite 'albatross' (originally named FV3_RAP) was developed for research and prototyping of early UFS systems. It was meant to emulate the physics of the `Rapid Refresh (RAP) model <https://rapidrefresh.noaa.gov/>`__, though it has some differences from the operational implementation (which was not CCPP-based)."
+   .. _suite_bald_eagle:
+   "bald_eagle.xml", "Suite 'bald_eagle' (originally named FV3_HRRR) was developed for research and testing for early prototypes of the Rapid Refresh Forecast System (RRFS). It was meant to emulate the physics of the `High-Resolution Rapid Refresh (HRRR) <https://rapidrefresh.noaa.gov/hrrr/>`__ model, though it had some differences from the operational implementation (which was not CCPP-based)."
+   .. _suite_hummingbird:
+   "hummingbird.xml", "Suite 'hummingbird' (originally named FV3_WoFS_v0) was developed was used for testing an early prototype of the experimental FV3-based Warn-on-Forecast System (WoFS). Same as suite :ref:`crossbill <suite_crossbill>` except with Noah Land Surface Model instead of the NoahMP LSM."
+   .. _suite_pigeon:
+   "pigeon.xml", "Suite 'pigeon' (originally named FV3_RRFS_v1beta) was developed for an early prototype of the `Rapid Refresh Forecast System (RRFS) <https://gsl.noaa.gov/focus-areas/unified_forecast_system/rrfs>`__."
+   .. _suite_raven:
+   "raven.xml", "Suite 'raven' (originally named FV3_GFS_v16) was developed for research and prototyping of early UFS systems. It was meant to emulate the operational `GFS v16 <https://www.weather.gov/media/notification/pdf2/scn21-20gfs_v16.0_aac.pdf>`__ suite, though it has some differences from the operational implementation (which was not CCPP-based)."
+
+
+Detailed descriptions of the supported suites can be found in the latest `CCPP Scientific Documentation <https://dtcenter.org/community-code/common-community-physics-package-ccpp/documentation>`__
+
+
+Suites detailed below are provided for informational purposes only, and may not be supported. Detailed descriptions of the supported suites can be found in the latest `CCPP Scientific Documentation <https://dtcenter.org/community-code/common-community-physics-package-ccpp/documentation>`__
+
+.. csv-table:: Unsupported Suites
+   :header: "Suite", "Description"
+   :widths: 15, 30
+
+   .. _suite_crossbill:
+   "crossbill.xml", "Suite 'crossbill' (originally named FV3_RRFS_v1nssl) was developed for research and development of early prototypes of the Rapid Refresh Forecast System (RRFS), specifically including the NSSL 2-moment cloud microphysics scheme when it was added to CCPP (see https://github.com/NOAA-EMC/fv3atm/pull/472 and https://github.com/NCAR/ccpp-physics/pull/761)."
 
 .. _datm.streams-file:
 
@@ -1809,10 +1848,12 @@ Namelist file ``input.nml``
 
 The atmosphere model reads many parameters from a Fortran namelist file, named ``input.nml``. This file contains several Fortran namelist records, some of which are always required, others of which are only used when selected physics options are chosen:
 
-   * The `CCPP Scientific Documentation <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/>`__ provides an in-depth description of the namelist settings. Information describing the various physics-related namelist records can be viewed `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_c_c_p_psuite_nml_desp.html>`__. 
+   * The `CCPP Scientific Documentation <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/>`__ provides an in-depth description of most of the physics-related namelist settings. Information describing the various physics-related namelist records can be viewed `here <https://dtcenter.ucar.edu/GMTB/v6.0.0/sci_doc/_c_c_p_psuite_nml_desp.html>`__. 
    * The `Stochastic Physics Documentation <https://stochastic-physics.readthedocs.io/en/latest/namelist_options.html>`__ describes the stochastic physics namelist records. 
    * The `FV3 Dynamical Core Technical Documentation <https://noaa-emc.github.io/FV3_Dycore_ufs-v2.0.0/html/index.html>`__ describes some of the other namelist records (dynamics, grid, etc). 
    * The namelist section ``&interpolator_nml`` is not used in this release, and any modifications to it will have no effect on the model results.
+
+The rest of the namelist records are detailed in the following sections:
 
 .. _fms_io_nml_section:
 
@@ -2068,7 +2109,7 @@ The variables used in ``&atmos_model_nml`` are described in :numref:`Table %s <a
    * - ccpp_suite
      - Name of the CCPP physics suite
      - character(len=256)
-     - FV3_GFS_v15p2, set in ``build.sh``
+     - *none, must be specified*
    * - avg_max_length
      - Forecast interval (in seconds) determining when the maximum values of diagnostic fields in FV3
        dynamics are computed.
