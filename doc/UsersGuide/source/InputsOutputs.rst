@@ -1310,7 +1310,7 @@ Each WM component has its own ``diag_table`` with associated variables. :numref:
 .. _diag-table-options:
 
 .. list-table:: * *diag_table* Options for WM Components*
-   :widths: 16 24 
+   :widths: 16 24 24
    :header-rows: 1
 
    * - WM Component
@@ -1320,7 +1320,7 @@ Each WM component has its own ``diag_table`` with associated variables. :numref:
      - :ref:`FV3 Variables <fv3diagtable>`
      - `GFS_diagnostics.F90 <https://github.com/NOAA-EMC/fv3atm/blob/develop/ccpp/driver/GFS_diagnostics.F90>`_
    * - MOM6
-     - :ref:`MOM6 Variables <mom6diagtable>`
+     - `MOM6 Variables <https://ncar.github.io/MOM6/APIs/namespacemom__diagnostics.html>`_
      - `MOM_diagnostics.F90 <https://github.com/NOAA-EMC/MOM6/blob/main/src/diagnostics/MOM_diagnostics.F90>`_
 
 
