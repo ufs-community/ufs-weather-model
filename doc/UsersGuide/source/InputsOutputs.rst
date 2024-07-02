@@ -1310,7 +1310,7 @@ Each WM component has its own ``diag_table`` with associated variables. :numref:
 .. _diag-table-options:
 
 .. list-table:: * *diag_table* Options for WM Components*
-   :widths: 16 24 
+   :widths: 16 24 24
    :header-rows: 1
 
    * - WM Component
