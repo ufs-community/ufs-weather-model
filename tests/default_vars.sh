@@ -1047,6 +1047,7 @@ export_cmeps() {
   export RESTART_N=${FHMAX}
   export CMEPS_RESTART_DIR=./RESTART/
   export cap_dbug_flag=0
+  export WRITE_ENDOFRUN_RESTART=.false.
   # MOM6 attributes
   export use_coldstart=false
   export use_mommesh=true
@@ -1123,7 +1124,7 @@ export_mom6
 # Set WW3 component defaults
 export_ww3
 
-# Set CMEPS component defauls
+# Set CMEPS component defaults
 export_cmeps
 
 # FV3 defaults
@@ -1304,7 +1305,7 @@ export_datm_cdeps ()
   export MOM6_USE_WAVES=False
   export WW3_DOMAIN=''
 
-  # Set CMEPS component defauls
+  # Set CMEPS component defaults
   export_cmeps
   # default configure
   export UFS_CONFIGURE=ufs.configure.datm_cdeps.IN
