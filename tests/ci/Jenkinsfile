@@ -1,0 +1,161 @@
+def commentMessage
+
+void setBuildStatus(String message, String state) {
+    step([
+        $class: "GitHubCommitStatusSetter",
+        reposSource: [$class: "ManuallyEnteredRepositorySource", url: "https://github.com/ufs-community/ufs-weather-model"],
+        contextSource: [$class: "ManuallyEnteredCommitContextSource", context: "Jenkins-ci ORTs"],
+        errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "UNSTABLE"]],
+        statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]] ]
+    ]);
+}
+
+def postGitHubCommentWithLogFile(commentMessage) {
+    script {
+        withCredentials([string(credentialsId: 'GithubJenkinsNew', variable: 'ACCESS_TOKEN')]) {
+            def apiUrl = "https://api.github.com/repos/ufs-community/ufs-weather-model/issues/${env.CHANGE_ID}/comments"
+
+            def curlCommand = "curl -s -H \"Authorization: token " + ACCESS_TOKEN + "\" \\\n" +
+                 "-X POST -d '{\"body\": \"" + commentMessage + "\"}' \\\n" +
+                 "\"" + apiUrl + "\""
+                    
+            def response = sh(script: curlCommand, returnStatus: true)
+            
+            if (response == 0) {
+                echo "Comment added successfully to PR #${env.CHANGE_ID}"
+            } else {
+                error "Failed to add comment to PR #${env.CHANGE_ID}"
+            }
+        }
+    }
+}
+
+pipeline {
+    agent none
+
+    options {
+        disableConcurrentBuilds()
+        overrideIndexTriggers(false)
+        skipDefaultCheckout(true)
+    }
+    stages {
+        
+        stage('Launch SonarQube') {
+            steps {
+                script {
+                    build job: '/ufs-weather-model/ufs-wm-sonarqube', parameters: [
+                        string(name: 'BRANCH_NAME', value: env.CHANGE_BRANCH ?: 'develop'),
+                        string(name: 'FORK_NAME', value: env.CHANGE_FORK ?: '')
+                    ], wait: false
+                }
+            }
+        }
+        
+        stage('ORT') {
+            matrix {
+                axes {
+                    axis {
+                        name 'TEST_NAME'
+                        values 'control_p8', 'regional_control', 'cpld_control_nowave_noaero_p8'
+                    }
+
+                    axis {
+                        name 'TEST_CASE'
+                        values 'thr', 'mpi', 'dcp', 'rst', 'bit', 'dbg'
+                    }
+                }
+
+                excludes {
+                    exclude {
+                        axis {
+                            name 'TEST_NAME'
+                            values 'cpld_control_nowave_noaero_p8'
+                        }
+
+                        axis {
+                            name 'TEST_CASE'
+                            values 'mpi', 'dcp', 'bit', 'thr' // TODO: Remove thr case from cpld_control_nowave_noaero_p8 exclusions when it is passing again
+                            }
+                    }
+                    exclude {
+                        axis {
+                            name 'TEST_NAME'
+                            values 'regional_control'
+                        }
+
+                        axis {
+                            name 'TEST_CASE'
+                            values 'mpi', 'rst', 'bit', 'dbg'
+                        }
+                    }   
+                }
+
+                agent {
+                    label 'docker-ufs-wm-ci'
+                }
+
+                environment {
+                    IMG_NAME = 'ci-test-weather'
+                }
+
+                stages {
+                    stage('Initialize') {
+                        steps {
+                            cleanWs()
+                            checkout scm
+                        }
+                    }
+
+                    stage('Build') {
+                        steps {
+                            sh 'docker build --build-arg test_name="" --build-arg build_case="" --no-cache --compress --file "${WORKSPACE}/tests/ci/Dockerfile" --tag "${IMG_NAME}" "${WORKSPACE}"'
+                        }
+                    }
+
+                    stage('Stage Test Data') {
+                        steps {
+                            sh 'docker volume rm --force DataVolume && docker run --detach --rm --volume DataVolume:/tmp noaaepic/input-data:20221101'
+                        }
+                    }
+
+                    stage('Test') {
+                        steps {
+                            sh 'docker run --rm --env test_name="${TEST_NAME}" --env run_case="${TEST_CASE}" --workdir /home/builder/ufs-weather-model/tests --volume DataVolume:/home/builder/data/NEMSfv3gfs --interactive --shm-size=32gb "${IMG_NAME}"'
+                        }
+                    }
+                }
+            
+                post {     
+                    always {
+                        sh '''
+                            docker rmi -f "$(docker image ls | grep -E -m1 "${IMG_NAME}" | awk '{ print $3 }')"
+                            docker rmi -f "$(docker image ls | grep -E -m1 'noaaepic' | awk '{ print $3 }')"
+                        '''
+                    }
+                    
+                }   
+            }
+        }
+    }
+    post {
+        success {
+            node('built-in') { 
+                setBuildStatus("Build succeeded", "SUCCESS");
+            }
+        }
+        failure {
+            node('built-in') {
+                setBuildStatus("Build failed", "FAILURE");
+            }
+        }
+        always {
+            node('built-in') {
+                script {
+                    def buildResult = currentBuild.resultIsBetterOrEqualTo("SUCCESS") ? "passed" : "failed"
+                    commentMessage = "Jenkins-ci ORTs ${buildResult}"
+                    postGitHubCommentWithLogFile(commentMessage)
+                }
+            }
+        }
+    }
+}
