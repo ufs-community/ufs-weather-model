@@ -405,8 +405,11 @@ else
 
 fi
 skip_check_results=${skip_check_results:-false}
+results_okay=YES
 if [[ ${skip_check_results} = false ]]; then
-  check_results
+  if ( ! check_results ) ; then
+    results_okay=NO
+  fi
 else
   {
   echo
@@ -422,7 +425,7 @@ if [[ ${SCHEDULER} != 'none' ]]; then
   cat "${RUNDIR}/job_timestamp.txt" >> "${LOG_DIR}/${JBNME}_timestamp.txt"
 fi
 
-if [[ ${ROCOTO} = true ]]; then
+if [[ ${results_okay} == YES ]]; then
   remove_fail_test
 fi
 

@@ -380,6 +380,9 @@ check_results() {
 
   if [[ ${test_status} = 'FAIL' ]]; then
     echo "${TEST_ID} failed in check_result" >> "${PATHRT}/fail_test_${TEST_ID}"
+    return 1
+  else
+    return 0
   fi
 }
 
