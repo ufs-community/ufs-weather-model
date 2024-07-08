@@ -338,10 +338,10 @@ if [[ $MACHINE_ID = hera ]]; then
   PARTITION=
   QUEUE=batch
   COMPILE_QUEUE=batch
-  dprefix=/scratch1/NCEPDEV
-  DISKNM=$dprefix/nems/emc.nemspara/RT
-  STMP=${dprefix}/stmp4
-  PTMP=${dprefix}/stmp2
+  dprefix="/scratch1/NCEPDEV"
+  DISKNM="/scratch2/NAGAPE/epic/UFS-WM_RT"
+  STMP="${dprefix}/stmp4"
+  PTMP="${dprefix}/stmp2"
   SCHEDULER=slurm
 
 elif [[ $MACHINE_ID = orion ]]; then
@@ -632,8 +632,8 @@ fi
 mkdir -p ${STMP}/${USER}
 NEW_BASELINE=${STMP}/${USER}/FV3_OPNREQ_TEST/OPNREQ_TEST
 RTPWD=${NEW_BASELINE}
-INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20221101}
-INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20220624/
+INPUTDATA_ROOT=${INPUTDATA_ROOT:-$DISKNM/NEMSfv3gfs/input-data-20240501}
+INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20240214/
 INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC:-$DISKNM/NEMSfv3gfs/BM_IC-20220207}
 
 rm -rf $NEW_BASELINE

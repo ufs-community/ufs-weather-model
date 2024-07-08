@@ -419,6 +419,7 @@ export CMP_DATAONLY=false
 # Defaults for ufs.configure
 export esmf_logkind="ESMF_LOGKIND_MULTI"
 export DumpFields="false"
+export MED_history_n=1000000
 
 export_fv3_v16 ()
 {
@@ -498,9 +499,12 @@ export HAFS=false
 export AQM=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
+export DICE_CDEPS=false
+export CICE_PRESCRIBED=false
 export CDEPS_INLINE=false
 export POSTAPP='global'
 export USE_MERRA2=.true.
+export NESTED=.false.
 
 export NTILES=6
 export INPES=${INPES_dflt}
@@ -556,6 +560,14 @@ export EXTERNAL_IC=.true.
 export MAKE_NH=.true.
 export MOUNTAIN=.false.
 export NA_INIT=1
+export DO_VORT_DAMP=.true.
+export HYDROSTATIC=.false.
+export KORD_XX=9
+export KORD_TM=-9
+export D_CON=1.
+export HORD_XX=5
+export HORD_DP=-5
+export HORD_TR=8
 
 # Radiation
 export DO_RRTMGP=.false.
@@ -896,6 +908,7 @@ export_cice6() {
   export DT_CICE=${DT_ATMOS}
   export CICE_NPT=999
   export CICE_RUNTYPE=initial
+  export CICE_ICE_IC='cice_model.res.nc'
   export CICE_RUNID=unknown
   export CICE_USE_RESTART_TIME=.false.
   export CICE_RESTART_DIR=./RESTART/
@@ -910,10 +923,6 @@ export_cice6() {
   export CICE_RESTART_DEFLATE=0
 
   export CICE_HISTORY_FORMAT='pnetcdf2'
-  if [[ ${MACHINE_ID} == wcoss2 ]]; then
-    export CICE_RESTART_FORMAT='hdf5'
-    export CICE_HISTORY_FORMAT='hdf5'
-  fi
   export CICE_HISTORY_IOTASKS=-99
   export CICE_HISTORY_REARR='box'
   export CICE_HISTORY_ROOT=-99
@@ -950,6 +959,12 @@ export_cice6() {
   export CICE_BLCKX
   export CICE_BLCKY
   export CICE_DECOMP=slenderX2
+
+  #ds2s
+  export MESH_DICE=none
+  export stream_files_dice=none
+  export CICE_PRESCRIBED=false
+  export DICE_CDEPS=false
 }
 
 # Defaults for the MOM6 model namelist, mx100
@@ -1028,6 +1043,7 @@ export_cmeps() {
   export RESTART_N=${FHMAX}
   export CMEPS_RESTART_DIR=./RESTART/
   export cap_dbug_flag=0
+  export WRITE_ENDOFRUN_RESTART=.false.
   # MOM6 attributes
   export use_coldstart=false
   export use_mommesh=true
@@ -1052,6 +1068,8 @@ export HAFS=false
 export AQM=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
+export DICE_CDEPS=false
+export CICE_PRESCRIBED=false
 export CDEPS_INLINE=false
 export FV3BMIC='p8c'
 export BMIC=.false.
@@ -1102,7 +1120,7 @@ export_mom6
 # Set WW3 component defaults
 export_ww3
 
-# Set CMEPS component defauls
+# Set CMEPS component defaults
 export_cmeps
 
 # FV3 defaults
@@ -1218,6 +1236,10 @@ export AOD_FRQ=060000
 export RESTART_FILE_PREFIX=''
 export RESTART_FILE_SUFFIX_SECS=''
 export RT35D=''
+
+#CDEPS ds2s
+export MESH_DICE=none
+export stream_files_dice=none
 }
 export_35d_run ()
 {
@@ -1279,7 +1301,7 @@ export_datm_cdeps ()
   export MOM6_USE_WAVES=False
   export WW3_DOMAIN=''
 
-  # Set CMEPS component defauls
+  # Set CMEPS component defaults
   export_cmeps
   # default configure
   export UFS_CONFIGURE=ufs.configure.datm_cdeps.IN
