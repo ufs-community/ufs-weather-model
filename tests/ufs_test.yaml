@@ -27,7 +27,7 @@ s2swa_32bit_pdlib_debug_intel:
     option: '-DAPP=S2SWA -D32BIT=ON -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_ugwpv1 -DPDLIB=ON -DDEBUG=ON'
     turnoff: ['noaacloud','jet']
   tests: 
-    - cpld_debug_gfsv17: {'project':['daily'],'turnoff':['noaacloud','jet']}
+    - cpld_debug_gfsv17: {'project':['daily'],'turnoff':['noaacloud','jet','derecho']}
 s2swa_intel:
   build: 
     compiler: 'intel'
@@ -181,7 +181,7 @@ csawmg_intel:
     turnoff: ['noaacloud']
   tests: 
     - control_csawmg: {'project':['daily'],'turnoff':['noaacloud']}
-    - control_ras: {'project':['daily'],'turnoff':['noaacloud','acorn']}
+    - control_ras: {'project':['daily'],'turnoff':['noaacloud']}
 csawmg_gnu:
   build: 
     compiler: 'gnu'
@@ -192,7 +192,7 @@ csawmg_gnu:
 wam_intel:
   build: 
     compiler: 'intel'
-    option: '-DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16_fv3wam -D32BIT=ON -DMULTI_GASES=ON'
+    option: '-DAPP=ATM -DCCPP_SUITES=FV3_GFS_v17_p8 -D32BIT=ON -DMULTI_GASES=ON'
     turnoff: ['noaacloud']
   tests: 
     - control_wam: {'project':['daily'],'turnoff':['noaacloud']}
@@ -245,7 +245,7 @@ atm_debug_dyn32_gnu:
 wam_debug_intel:
   build: 
     compiler: 'intel'
-    option: '-DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16_fv3wam -D32BIT=ON -DMULTI_GASES=ON -DDEBUG=ON'
+    option: '-DAPP=ATM -DCCPP_SUITES=FV3_GFS_v17_p8 -D32BIT=ON -DMULTI_GASES=ON -DDEBUG=ON'
     turnoff: ['noaacloud']
   tests: 
     - control_wam_debug: {'project':['daily'],'turnoff':['noaacloud','hercules']}
@@ -400,9 +400,9 @@ atm_ds2s_docn_dice_intel:
   build: 
     compiler: 'intel'
     option: '-DAPP=ATM_DS2S -DCCPP_SUITES=FV3_GFS_v17_coupled_p8'
-    turnoff: ['wcoss2']
+    turnoff: ['wcoss2','acorn']
   tests: 
-    - atm_ds2s_docn_dice: {'project':['daily'],'dependency':'cpld_control_nowave_noaero_p8','turnoff':['noaacloud','wcoss2']}
+    - atm_ds2s_docn_dice: {'project':['daily'],'dependency':'cpld_control_nowave_noaero_p8','turnoff':['noaacloud','wcoss2','acorn']}
 atml_intel:
   build: 
     compiler: 'intel'
@@ -497,10 +497,10 @@ atm_dyn32_debug_gnu:
 wam_debug_gnu:
   build: 
     compiler: 'gnu'
-    option: '-DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16_fv3wam -D32BIT=ON -DMULTI_GASES=ON -DDEBUG=ON'
+    option: '-DAPP=ATM -DCCPP_SUITES=FV3_GFS_v17_p8 -D32BIT=ON -DMULTI_GASES=ON -DDEBUG=ON'
     turnon: ['hera','hercules']
   tests: 
-    - control_wam_debug: {'project':['daily'],'turnon':['hera','hercules']}
+    - control_wam_debug: {'project':['daily'],'turnon':['hercules']}
 rrfs_dyn32_phy32_gnu:
   build: 
     compiler: 'gnu'
@@ -548,8 +548,6 @@ s2swa_gnu:
     compiler: 'gnu'
     option: '-DAPP=S2SWA -DCCPP_SUITES=FV3_GFS_v17_coupled_p8'
     turnon: ['hera','hercules']
-  tests: 
-    - cpld_control_p8: {'project':['daily'],'turnon':['hercules']}
 s2s_gnu:
   build: 
     compiler: 'gnu'
@@ -562,8 +560,6 @@ s2swa_debug_gnu:
     compiler: 'gnu'
     option: '-DAPP=S2SWA -DDEBUG=ON -DCCPP_SUITES=FV3_GFS_v17_coupled_p8'
     turnon: ['hera','hercules']
-  tests: 
-    - cpld_debug_p8: {'project':['daily'],'turnon':['hercules']}
 s2sw_pdlib_gnu:
   build: 
     compiler: 'gnu'
