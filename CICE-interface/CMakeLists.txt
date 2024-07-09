@@ -51,7 +51,8 @@ list(APPEND lib_src_files
   ${cice_shared_files_c}
   ${icepack_files}
   ${cice_mpi_comm_files}
-  ${cice_nuopc_cmeps_driver_files})
+  ${cice_nuopc_cmeps_driver_files}
+  ${cice_cdeps_inline_files})
 
 list(APPEND _cice_defs FORTRANUNDERSCORE
                        coupled)
@@ -83,6 +84,11 @@ endif()
 if(OpenMP_Fortran_FOUND)
   target_link_libraries(cice PRIVATE OpenMP::OpenMP_Fortran)
 endif()
+
+# ice prescribed
+add_dependencies(cice cdeps::cdeps)
+target_compile_definitions(cice PUBLIC "DISABLE_FoX")
+target_link_libraries(cice PUBLIC cdeps::cdeps)
 
 ###############################################################################
 ### Install
