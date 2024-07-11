@@ -11,7 +11,7 @@
 
 export TEST_DESCR="Variant of RRFS_v1beta that always fails at runtime"
 
-export CNTL_DIR=rrfs_v1beta_failing
+export CNTL_DIR=rrfs_v1beta_fail_to_copy
 
 export LIST_FILES="sfcf000.nc \
                    sfcf009.nc \
@@ -63,7 +63,7 @@ export RESTART_INTERVAL="6 -1"
 export OUTPUT_FH='0 09 12'
 
 # A special flag that tells the job to fail at runtime.
-export JOB_SHOULD_FAIL=YES
+export JOB_SHOULD_FAIL=WHEN_COPYING
 
 if [[ " hera orion hercules jet " =~ " ${MACHINE_ID} " ]] ; then
   ZSTANDARD_LEVEL=5

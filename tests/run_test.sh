@@ -365,19 +365,18 @@ elif [[ ${SCHEDULER} = 'slurm' ]]; then
   fi
 fi
 
+# FIXME: THIS NEW "IF" BLOCK SHOULD NOT BE MERGED TO DEVELOP
+if [[ "${JOB_SHOULD_FAIL:-NO}" == WHEN_COPYING ]] ; then
+    echo "The job should abort now, with exit status 1." 1>&2
+    echo "If error checking is working, the metascheduler should mark the job as failed." 1>&2
+    false
+fi
+
 ################################################################################
 # Submit test job
 ################################################################################
 export OMP_ENV=${OMP_ENV:-""}
 if [[ ${SCHEDULER} = 'none' ]]; then
-
-    # FIXME: THIS NEW "IF" BLOCK SHOULD NOT BE MERGED TO DEVELOP
-    if [[ "${JOB_SHOULD_FAIL:-NO}" == YES ]] ; then
-        echo "The job should abort now, with exit status 1." 1>&2
-        echo "If error checking is working, the metascheduler should mark the job as failed." 1>&2
-        false
-    fi
-
   ulimit -s unlimited
   if [[ ${CI_TEST} = 'true' ]]; then
     ( eval "${OMP_ENV}" ;
