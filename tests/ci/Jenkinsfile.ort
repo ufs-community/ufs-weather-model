@@ -1,0 +1,107 @@
+pipeline {
+  agent none
+  stages {
+    stage('Run ORTs') {
+       agent {
+        label 'built-in'   
+       }
+      steps {
+        script {
+          for (label in pullRequest.labels) {
+            if ((label.matches("orion"))) {
+                 env.CHOICE_NODE='orion'
+            }  
+            else if ((label.matches("hera"))) { 
+                env.CHOICE_NODE='hera'
+            }  
+            else if ((label.matches("hercules"))) { 
+                env.CHOICE_NODE='hercules'
+            }  
+            else if ((label.matches("jet"))) {
+                env.CHOICE_NODE='jet'
+            } 
+            else { 
+                env.CHOICE_NODE='none'
+            }
+         }
+// Why do I need another if..block, because it just works this way.
+
+            if (CHOICE_NODE == 'orion') {
+                echo "Starting up orion ${CHOICE_NODE}...this might take 5-10 minutes...please be patient."
+               
+            } 
+             else if (CHOICE_NODE == 'jet') {
+                echo "Starting up jet ${CHOICE_NODE}...this might take 5-10 minutes...please be patient."
+            }
+             else if (CHOICE_NODE == 'hercules') {
+                 echo "Starting up hera ${CHOICE_NODE}...this might take 5-10 minutes...please be patient."
+            }
+             else if (CHOICE_NODE == 'hera') {
+                 echo "Starting up hera ${CHOICE_NODE}...this might take 5-10 minutes...please be patient."
+            }
+             else {
+                echo "${CHOICE_NODE} is NOT a platform, moving on..."
+            }
+       }    
+    }
+  } 
+  stage('Run ORT on Hera') {
+        agent {
+          label "hera"
+        }
+        environment {
+        ACCNR = 'epic'
+        NODE_PATH = '/scratch2/NAGAPE/epic/role.epic/'
+      }
+      steps {
+          
+        cleanWs()
+        checkout scm
+        sh '''
+	git submodule update --init --recursive
+        cd tests/fv3_conf
+	sed 's/#SBATCH --time=.*/#SBATCH --time=02:00:00/g' -i fv3_slurm.IN_hera
+        cd ..
+	export machine=${NODE_NAME}
+        export PATH=$PATH:~/bin
+        echo $CHANGE_ID
+        export SSH_ORIGIN=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.repo.ssh_url')
+        export FORK_BRANCH=$(curl --silent https://api.github.com/repos/ufs-community/ufs-weather-model/pulls/$CHANGE_ID | jq -r '.head.ref')
+	pwd
+        sed "s|intel|gnu|g" -i opnReqTest
+        export ACCNR=epic
+        ./opnReqTest -n regional_control -a ${ACCNR} -c bit,dcp,thr
+        cd logs/
+        cp OpnReqTests_regional_control_hera.log /scratch2/NAGAPE/epic/role.epic/jenkins/workspace
+        cd ..
+        ./opnReqTest -n cpld_control_nowave_noaero_p8 -a ${ACCNR} -c dbg,rst
+        cd logs/
+        cp OpnReqTests_cpld_control_nowave_noaero_p8_hera.log /scratch2/NAGAPE/epic/role.epic/jenkins/workspace
+        cd ..
+        ./opnReqTest -n control_p8 -a ${ACCNR} -c std,dbg,bit,mpi,rst,thr,dcp
+	cd logs/
+        cp OpnReqTests_control_p8_hera.log /scratch2/NAGAPE/epic/role.epic/jenkins/workspace
+        git remote -v
+        git fetch --no-recurse-submodules origin
+        git reset FETCH_HEAD --hard
+        cd .. && cd .. && cd ..
+	cp OpnReqTests_control_p8_hera.log $WORKSPACE/tests/logs/
+        cp OpnReqTests_regional_control_hera.log $WORKSPACE/tests/logs/
+        cp OpnReqTests_cpld_control_nowave_noaero_p8_hera.log $WORKSPACE/tests/logs/
+        cd $WORKSPACE/tests/
+        git config user.email "ecc.platform@noaa.gov"
+        git config user.name "epic-cicd-jenkins"
+        echo "Testing concluded...removing labels for $machine from $GIT_URL"
+
+        export machine_name_logs=$(echo $machine | awk '{ print tolower($1) }')
+        git remote -v | grep -w sshorigin > /dev/null 2>&1 && git remote remove sshorigin > /dev/null 2>&1
+        git remote add sshorigin $SSH_ORIGIN > /dev/null 2>&1
+        git add logs/OpnReqTests_control_p8_hera.log logs/OpnReqTests_regional_control_hera.log logs/OpnReqTests_cpld_control_nowave_noaero_p8_hera.log
+        git commit -m "ORT Jobs Completed.\n\n\n on-behalf-of @ufs-community <ecc.platform@noaa.gov>"
+        git pull sshorigin $FORK_BRANCH
+        git push sshorigin HEAD:$FORK_BRANCH
+        '''
+        }
+      }	      
+  }
+}
