@@ -997,7 +997,7 @@ case "${ATMRES}" in
     export FV_SG_ADJ=300
     ;;
   *)
-    echo Invalid model resolution: ${ATMRES}. Please update specified variable ATMRES.
+    echo Invalid model resolution: "${ATMRES}". Please update specified variable ATMRES.
     exit 1
     ;;
   esac
