@@ -572,3 +572,12 @@ For the fully coupled S2SWA application, a sample ``ufs.configure`` is shown bel
 		  stop_option = nhours
 		  stop_ymd = -999
 		::
+
+=====================================================================
+How can I run with the same physics as the operational GFS/HAFS/etc.?
+=====================================================================
+
+The UFS utilizes the Common Community Physics Package (CCPP) for its physics. This is a shared `software framework <https://github.com/NCAR/ccpp-framework>`_
+and `repository of physics code <https://github.com/ufs-community/ccpp-physics>`_ used for sharing physics code among multiple different models and dynamical cores. The physics schemes that will be run depend on the :ref:`Suite Definition File (SDF) <SDF>`. However, using the same SDF is required to run the same physics, it is not sufficient. While we are working towards more unification in the future, for now physics settings are spread between both the SDF *and* the namelist :ref:`FV3 namelist "input.nml" <InputNML>`. So in order to run a simulation with the same physics as an operational product, or some other specific configuration, you will need to use both the same Suite Definition File **and** the same namelist settings. For the namelist settings available for each specific physics configuration, see the latest `CCPP Scientific Documentation <https://dtcenter.org/community-code/common-community-physics-package-ccpp/documentation>`_.
+
+
