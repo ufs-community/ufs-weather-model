@@ -365,7 +365,8 @@ elif [[ ${SCHEDULER} = 'slurm' ]]; then
   fi
 fi
 
-# FIXME: THIS NEW "IF" BLOCK SHOULD NOT BE MERGED TO DEVELOP
+# This "if" block is part of the rt.sh self-tests in error-test.conf.
+# It emulates run_test.sh not being able to populate the work directory.
 if [[ "${JOB_SHOULD_FAIL:-NO}" == WHEN_COPYING ]] ; then
     echo "The job should abort now, with exit status 1." 1>&2
     echo "If error checking is working, the metascheduler should mark the job as failed." 1>&2
@@ -390,14 +391,6 @@ else
   if [[ ${ROCOTO} = 'false' ]]; then
     submit_and_wait job_card
   else
-
-    # FIXME: THIS NEW "IF" BLOCK SHOULD NOT BE MERGED TO DEVELOP
-    if [[ "${JOB_SHOULD_FAIL:-NO}" == YES ]] ; then
-        echo "The job should abort now, with exit status 1." 1>&2
-        echo "If error checking is working, the metascheduler should mark the job as failed." 1>&2
-        false
-    fi
-
     chmod u+x job_card
     redirect_out_err ./job_card
   fi
