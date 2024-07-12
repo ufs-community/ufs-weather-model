@@ -380,8 +380,7 @@ export OMP_ENV=${OMP_ENV:-""}
 if [[ ${SCHEDULER} = 'none' ]]; then
   ulimit -s unlimited
   if [[ ${CI_TEST} = 'true' ]]; then
-    ( eval "${OMP_ENV:+export $OMP_ENV}" ;
-      redirect_out_err mpiexec -n "${TASKS}" ./fv3.exe )
+    eval "${OMP_ENV}" redirect_out_err mpiexec -n "${TASKS}" ./fv3.exe
   else
     redirect_out_err mpiexec -n "${TASKS}" ./fv3.exe
   fi
