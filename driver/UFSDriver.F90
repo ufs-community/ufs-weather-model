@@ -62,6 +62,9 @@
 #ifdef FRONT_CDEPS_DOCN
       use FRONT_CDEPS_DOCN, only: DOCN_SS  => SetServices
 #endif
+#ifdef FRONT_CDEPS_DICE
+      use FRONT_CDEPS_DICE, only: DICE_SS  => SetServices
+#endif
   ! - Handle build time ICE options:
 #ifdef FRONT_CICE6
       use FRONT_CICE6,      only: CICE6_SS => SetServices, &
@@ -405,6 +408,23 @@
               return  ! bail out
             endif
             call NUOPC_DriverAddComp(driver, trim(prefix), DOCN_SS, &
+              petList=petList, comp=comp, rc=rc)
+            if (ChkErr(rc,__LINE__,u_FILE_u)) return
+            found_comp = .true.
+          end if
+#endif
+#ifdef FRONT_CDEPS_DICE
+          if (trim(model) == "dice") then
+            !TODO: Remove bail code and pass info and SetVM to DriverAddComp
+            !TODO: once component supports threading.
+            if (ompNumThreads > 1) then
+              write (msg, *) "ESMF-aware threading NOT implemented for model: "//&
+                trim(model)
+              call ESMF_LogSetError(ESMF_RC_NOT_VALID, msg=msg,line=__LINE__, &
+                file=__FILE__, rcToReturn=rc)
+              return  ! bail out
+            endif
+            call NUOPC_DriverAddComp(driver, trim(prefix), DICE_SS, &
               petList=petList, comp=comp, rc=rc)
             if (ChkErr(rc,__LINE__,u_FILE_u)) return
             found_comp = .true.

@@ -17,7 +17,7 @@
 /
 
 &fms2_io_nml
-  netcdf_default_format = "netcdf4"
+  netcdf_default_format = 'netcdf4'
 /
 
 &fv_core_nml
@@ -42,11 +42,11 @@
   rf_cutoff = 10.
   d2_bg_k1 = @[D2_BG_K1]
   d2_bg_k2 = @[D2_BG_K2]
-  kord_tm = -9
-  kord_mt = 9
-  kord_wz = 9
-  kord_tr = 9
-  hydrostatic = .false.
+  kord_tm = @[KORD_TM]
+  kord_mt = @[KORD_XX]
+  kord_wz = @[KORD_XX]
+  kord_tr = @[KORD_XX]
+  hydrostatic = @[HYDROSTATIC]
   phys_hydrostatic = .false.
   use_hydro_pressure = .false.
   beta = 0.
@@ -66,21 +66,21 @@
   vtdm4 = 0.02
   delt_max = 0.002
   ke_bg = 0.
-  do_vort_damp = .true.
+  do_vort_damp = @[DO_VORT_DAMP]
   external_ic = @[EXTERNAL_IC]
   external_eta = .true.
   gfs_phil = .false.
   nggps_ic = @[NGGPS_IC]
   mountain = @[MOUNTAIN]
   ncep_ic = .false.
-  d_con = 1.
-  hord_mt = 5
-  hord_vt = 5
-  hord_tm = 5
-  hord_dp = -5
-  hord_tr = 8
+  d_con = @[D_CON]
+  hord_mt = @[HORD_XX]
+  hord_vt = @[HORD_XX]
+  hord_tm = @[HORD_XX]
+  hord_dp = @[HORD_DP]
+  hord_tr = @[HORD_TR]
   adjust_dry_mass = .false.
-  dry_mass=98320.0
+  dry_mass = 98320.0
   consv_te = 1.
   do_sat_adj = @[DO_SAT_ADJ]
   consv_am = .false.
@@ -113,7 +113,7 @@
   use_ufo      = .true.
   pre_rad      = .false.
   imp_physics  = @[IMP_PHYSICS]
-  iovr         = 3
+  iovr         = @[IOVR]
   ltaerosol    = .false.
   lradar       = .false.
   ttendlim     = -999
@@ -138,9 +138,11 @@
   do_ugwp_v0_nst_only  = @[DO_UGWP_V0_NST_ONLY]
   do_gsl_drag_ls_bl    = @[DO_GSL_DRAG_LS_BL]
   do_gsl_drag_ss       = @[DO_GSL_DRAG_SS]
+  do_gwd_opt_psl       = @[DO_GWD_OPT_PSL]
+  psl_gwd_dx_factor    = @[PSL_GWD_DX_FACTOR]
   do_gsl_drag_tofd     = @[DO_GSL_DRAG_TOFD]
   do_ugwp_v1_orog_only = @[DO_UGWP_V1_OROG_ONLY]
-  min_lakeice  = 0.15
+  min_lakeice  = @[MIN_LAKEICE]
   min_seaice   = @[MIN_SEAICE]
   use_cice_alb = @[USE_CICE_ALB]
   pdfcld       = .false.
@@ -149,7 +151,7 @@
   ialb         = @[IALB]
   iems         = @[IEMS]
   iaer         = @[IAER]
-  icliq_sw     = 2
+  icliq_sw     = @[ICLIQ_SW]
   ico2         = 2
   isubc_sw     = 2
   isubc_lw     = 2
@@ -298,12 +300,12 @@
   tau_l2v = 225.
   tau_v2l = 150.
   tau_g2v = 900.
-  rthresh = 10.e-6  ! This is a key parameter for cloud water
+  rthresh = 10.e-6   ! This is a key parameter for cloud water
   dw_land  = 0.16
   dw_ocean = 0.10
   ql_gen = 1.0e-3
   ql_mlt = 1.0e-3
-  qi0_crt = 8.0E-5
+  qi0_crt = 8.0e-5
   qs0_crt = 1.0e-3
   tau_i2s = 1000.
   c_psaci = 0.05
@@ -332,14 +334,14 @@
 /
 
 &namsfc
-  FNGLAC   = 'global_glacier.2x2.grb'
-  FNMXIC   = 'global_maxice.2x2.grb'
-  FNTSFC   = 'RTGSST.1982.2012.monthly.clim.grb'
-  FNSNOC   = 'global_snoclim.1.875.grb'
-  FNZORC   = 'igbp'
+  FNGLAC   = @[FNGLAC]
+  FNMXIC   = @[FNMXIC]
+  FNTSFC   = @[FNTSFC]
+  FNSNOC   = @[FNSNOC]
+  FNZORC   = @[FNZORC]
   FNALBC   = @[FNALBC]
   FNALBC2  = @[FNALBC2]
-  FNAISC   = 'IMS-NIC.blended.ice.monthly.clim.grb'
+  FNAISC   = @[FNAISC]
   FNTG3C   = @[FNTG3C]
   FNVEGC   = @[FNVEGC]
   FNVETC   = @[FNVETC]
@@ -354,12 +356,12 @@
   FNVMXC   = @[FNVMXC]
   FNSLPC   = @[FNSLPC]
   FNABSC   = @[FNABSC]
-  LDEBUG   =.false.
+  LDEBUG   = .false.
   FSMCL(2) = 99999
   FSMCL(3) = 99999
   FSMCL(4) = 99999
   LANDICE  = @[LANDICE]
-  FTSFS    = 90
+  FTSFS    = @[FTSFS]
   FAISL    = 99999
   FAISS    = 99999
   FSNOL    = 99999
@@ -385,9 +387,9 @@
 &nam_sfcperts
   lndp_type      = @[LNDP_TYPE]
   lndp_model_type = @[LNDP_MODEL_TYPE]
-  LNDP_TAU=21600,
-  LNDP_LSCALE=500000,
-  ISEED_LNDP=2010,
+  LNDP_TAU=@[LNDP_TAU]
+  LNDP_LSCALE=@[LNDP_LSCALE]
+  ISEED_LNDP=@[ISEED_LNDP]
   lndp_var_list = @[LNDP_VAR_LIST]
   lndp_prt_list = @[LNDP_PRT_LIST]
 /
@@ -396,6 +398,6 @@
   output_directory = '@[MOM6_OUTPUT_DIR]',
   input_filename = '@[MOM6_RESTART_SETTING]'
   restart_input_dir = 'INPUT/',
-  restart_output_dir = '@[MOM6_RESTART_DIR]',
+  restart_output_dir = '@[MOM6_RESTART_DIR]'
   parameter_filename = 'INPUT/MOM_input',
                        'INPUT/MOM_override'/
