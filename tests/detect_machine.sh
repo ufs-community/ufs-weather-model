@@ -48,6 +48,9 @@ case $(hostname -f) in
   
   login[1-4].stampede2.tacc.utexas.edu) MACHINE_ID=stampede ;; ### stampede1-4
 
+  login[1-4].frontera.tacc.utexas.edu) MACHINE_ID=frontera ;; ### frontera1-4
+  c*.frontera.tacc.utexas.edu) MACHINE_ID=frontera ;; ### frontera compute 
+
   login0[1-2].expanse.sdsc.edu) MACHINE_ID=expanse ;; ### expanse1-2
 
   discover3[1-5].prv.cube) MACHINE_ID=discover ;; ### discover31-35
