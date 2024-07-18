@@ -58,6 +58,13 @@ elif [[ ${MACHINE_ID} = stampede ]] ; then
     fi
     module purge
 
+elif [[ ${MACHINE_ID} = frontera ]] ; then
+    # We are on TACC Frontera
+    if ( ! eval module help > /dev/null 2>&1 ) ; then
+        source /opt/apps/lmod/lmod/init/bash
+    fi
+    module purge
+
 elif [[ ${MACHINE_ID} = gaea ]] ; then
     # We are on GAEA
     if ( ! eval module help > /dev/null 2>&1 ) ; then
