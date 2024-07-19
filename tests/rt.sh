@@ -1121,7 +1121,7 @@ if [[ ${ECFLOW} == true ]]; then
   # Default maximum number of compile and run jobs
   MAX_BUILDS=10 #Max build jobs
   MAX_JOBS=30   #Max test/run jobs
-  ECF_TRIES=1   #Tries before failure
+  ECF_TRIES=2   #Tries before failure
 
   # Reduce maximum number of compile jobs on jet and s4 because of licensing issues
   if [[ ${MACHINE_ID} = jet ]]; then
