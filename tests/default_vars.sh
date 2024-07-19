@@ -1008,7 +1008,7 @@ export_mom6() {
   # MOM6 warmstarts
   export OCNICE_WARMSTART=.false.
   export MOM6_INIT_FROM_Z=True
-  export MOM6_INIT_UV=zero
+  export MOM6_INIT_UV="zero"
   export MOM6_WARMSTART_FILE="none"
 }
 
