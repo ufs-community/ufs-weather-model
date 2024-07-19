@@ -23,7 +23,8 @@ if(NOT (APP IN_LIST VALID_APPS))
 endif()
 
 set(FMS             OFF CACHE BOOL "Enable FMS")
-set(FV3             OFF CACHE BOOL "Enable FV3")
+set(FV3             OFF CACHE BOOL "Enable FV3 dycore")
+set(MPAS            OFF CACHE BOOL "Enable MPAS dycore")
 set(AQM             OFF CACHE BOOL "Enable AQM")
 set(UFS_GOCART      OFF CACHE BOOL "Enable GOCART")
 set(MOM6            OFF CACHE BOOL "Enable MOM6")
@@ -41,7 +42,8 @@ include(cmake/configure_apps.cmake)
 
 message("")
 message("FMS .............. ${FMS}")
-message("FV3 .............. ${FV3}")
+message("FV3_dy ........... ${FV3}")
+message("MPAS_dy .......... ${MPAS}")
 message("AQM .............. ${AQM}")
 message("GOCART ........... ${UFS_GOCART}")
 message("MOM6 ............. ${MOM6}")
@@ -185,8 +187,16 @@ endif()
 
 ###############################################################################
 ### Atmosphere Components [FV3, MPAS?]
+### DJS2024: There will be a generalized atmospheric component with multiple
+###          dycores, not multiple atmospheric components (one for each dycore).
+###          So, - rename the atmospheric component FV3 to UFSATM, then
+###              - if FV3 or MPAS, add_sudirectory(UFSATM)
+###   
 ###############################################################################
 if(FV3)
+  add_subdirectory(FV3)
+endif()
+if (MPAS)
   add_subdirectory(FV3)
 endif()
 
@@ -296,9 +306,15 @@ if(STOCH_PHYS)
 endif()
 
 if(FV3)
-  add_dependencies(ufs fv3atm)
+  add_dependencies(ufs ufsatm)
   list(APPEND _ufs_defs_private FRONT_FV3=fv3atm_cap_mod)
-  list(APPEND _ufs_libs_public fv3atm)
+  list(APPEND _ufs_libs_public ufsatm)
+endif()
+
+if(MPAS)
+  add_dependencies(ufs ufsatm)
+  list(APPEND _ufs_defs_private FRONT_MPAS=mpasatm_cap_mod)
+  list(APPEND _ufs_libs_public ufsatm)
 endif()
 
 if(MOM6)
