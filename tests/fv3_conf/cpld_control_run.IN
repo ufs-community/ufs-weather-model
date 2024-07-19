@@ -90,8 +90,13 @@ if [ $WARM_START = .false. ]; then
       cp    ${MOM_IC}/MOM.res.nc ./INPUT
       cp    ${ICE_IC}/cice_model_@[ICERES].cpc.res_* ./cice_model.res.nc
     else
-      cp    ${MOM_IC}/MOM6_IC_TS_${SYEAR}${SMONTH}${SDAY}${SHOUR}.nc ./INPUT/MOM6_IC_TS.nc
-      cp    ${ICE_IC}/cice_model_@[ICERES].cpc.res_${SYEAR}${SMONTH}${SDAY}.nc ./cice_model.res.nc
+      if [[ $OCNICE_WARMSTART == .true. ]]; then
+        cp   ${MOM_IC}/${OCNRES}/${SYEAR}${SMONTH}${SDAY}${SHOUR}/mom6.warmstart.nc ./INPUT/mom6.warmstart.nc
+	cp   ${ICE_IC}/${SYEAR}${SMONTH}${SDAY}${SHOUR}/cice6.warmstart.nc ./cice_model.res.nc
+      else
+        cp    ${MOM_IC}/MOM6_IC_TS_${SYEAR}${SMONTH}${SDAY}${SHOUR}.nc ./INPUT/MOM6_IC_TS.nc
+        cp    ${ICE_IC}/cice_model_@[ICERES].cpc.res_${SYEAR}${SMONTH}${SDAY}.nc ./cice_model.res.nc
+      fi
     fi
   fi
 else
