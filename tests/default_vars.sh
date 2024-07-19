@@ -916,7 +916,7 @@ export_cice6() {
   export CICE_RESTART_DIR=./RESTART/
   export CICE_RESTART_FILE=iced
   # CICE6 warmstarts
-  export OCNICE_WARMSTART=false
+  export OCNICE_WARMSTART=.false.
 
   export CICE_RESTART_FORMAT='pnetcdf2'
   export CICE_RESTART_IOTASKS=-99
@@ -1006,7 +1006,7 @@ export_mom6() {
   export OCN_SPPT=-999.
   export EPBL=-999.
   # MOM6 warmstarts
-  export OCNICE_WARMSTART=false
+  export OCNICE_WARMSTART=.false.
   export MOM6_INIT_FROM_Z=True
   export MOM6_INIT_UV=zero
   export MOM6_WARMSTART_FILE="none"
