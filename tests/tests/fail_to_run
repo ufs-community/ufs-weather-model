@@ -1,36 +1,21 @@
+###############################################################################
 #
-#  cpld_control P8 v2 surface file test
+#  Regression test self-test: a job that fails to run the model.
+#  This file was modified from control_c48.
 #
+###############################################################################
 
-export TEST_DESCR="Fully coupled FV3-CCPP-GOCART-MOM6-CICE-CMEPS-WW3 system - C96MX100 with v2 sfc file"
+# A special flag that tells the job to fail at runtime inside the job_card
+export JOB_SHOULD_FAIL=WHEN_RUNNING
 
-export CNTL_DIR=cpld_control_p8.v2.sfc
+export TEST_DESCR="The rt.sh workflow shouldn't complete when this test is enabled because the job_card will abort."
 
-export LIST_FILES="sfcf021.tile1.nc \
-                   sfcf021.tile2.nc \
-                   sfcf021.tile3.nc \
-                   sfcf021.tile4.nc \
-                   sfcf021.tile5.nc \
-                   sfcf021.tile6.nc \
-                   atmf021.tile1.nc \
-                   atmf021.tile2.nc \
-                   atmf021.tile3.nc \
-                   atmf021.tile4.nc \
-                   atmf021.tile5.nc \
-                   atmf021.tile6.nc \
-                   sfcf024.tile1.nc \
-                   sfcf024.tile2.nc \
-                   sfcf024.tile3.nc \
-                   sfcf024.tile4.nc \
-                   sfcf024.tile5.nc \
-                   sfcf024.tile6.nc \
-                   atmf024.tile1.nc \
-                   atmf024.tile2.nc \
-                   atmf024.tile3.nc \
-                   atmf024.tile4.nc \
-                   atmf024.tile5.nc \
-                   atmf024.tile6.nc \
-                   gocart.inst_aod.20210323_0600z.nc4 \
+export CNTL_DIR=control_c48
+
+export LIST_FILES="sfcf000.nc \
+                   sfcf024.nc \
+                   atmf000.nc \
+                   atmf024.nc \
                    RESTART/20210323.060000.coupler.res \
                    RESTART/20210323.060000.fv_core.res.nc \
                    RESTART/20210323.060000.fv_core.res.tile1.nc \
@@ -62,35 +47,43 @@ export LIST_FILES="sfcf021.tile1.nc \
                    RESTART/20210323.060000.sfc_data.tile3.nc \
                    RESTART/20210323.060000.sfc_data.tile4.nc \
                    RESTART/20210323.060000.sfc_data.tile5.nc \
-                   RESTART/20210323.060000.sfc_data.tile6.nc \
-                   RESTART/20210323.060000.MOM.res.nc \
-                   RESTART/iced.2021-03-23-21600.nc \
-                   RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc \
-                   20210323.060000.out_pnt.ww3 \
-                   20210323.060000.out_grd.ww3 "
+                   RESTART/20210323.060000.sfc_data.tile6.nc"
 
 export_fv3
-export_cpl
+export_tiled
 
-export RESTART_N=12
-export RESTART_INTERVAL="${RESTART_N} -1"
-export OUTPUT_FH='0 21 24'
+export INPES=1
+export JNPES=1
+export WRTTASK_PER_GROUP=2
+export NPZ=127
+export NPZP=128
+export NPX=49
+export NPY=49
+export DT_ATMOS=1200
+export SYEAR=2021
+export SMONTH=03
+export SDAY=22
+export SHOUR=06
+export RESTART_INTERVAL=0
+export CDMBWD=${CDMBWD_c48}
+export OUTPUT_GRID='gaussian_grid'
+export NSTF_NAME='2,0,0,0,0'
+export WRITE_DOPOST=.false.
+export OUTPUT_FH="6 -1"
+export IAER=5111
+export IOVR=3
+export IMO=192
+export JMO=94
 
-export MOM6_TOPOEDITS=ufs.topo_edits_011818.nc
-export MOM6_ALLOW_LANDMASK_CHANGES=True
-export eps_imesh=2.5e-1
+export FNSMCC_control="'global_soilmgldas.statsgo.t92.192.94.grb'"
+export FNMSKH_control="'global_slmask.t62.192.94.grb'"
+export FNSMCC=${FNSMCC_control}
+export FNMSKH=${FNMSKH_control}
 
-export FV3_RUN=cpld_control_run.IN
-export V2_SFC_FILE=true
+export FV3_RUN=control_run.IN
+export CCPP_SUITE=FV3_GFS_v17_p8
+export INPUT_NML=global_control.nml.IN
 
-if [[ $MACHINE_ID = derecho ]]; then
-  TPN=96
+if [[ " hera orion hercules jet " =~ " ${MACHINE_ID} " ]] ; then
+  ZSTANDARD_LEVEL=5
 fi
-
-# HR4 GFSv17 GWD update
-export DO_UGWP_V0=.false.
-export DO_UGWP_V1=.true.
-export DO_GSL_DRAG_LS_BL=.true.
-export DO_GWD_OPT_PSL=.true.
-export DO_GSL_DRAG_SS=.false.
-export DO_GSL_DRAG_TOFD=.true.
