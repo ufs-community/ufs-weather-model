@@ -715,6 +715,7 @@ ecflow_run() {
     fi
     "${PATHRT}/abort_dep_tasks.py"
   done
+  echo
 
   sleep 65 # wait one ECF_INTERVAL plus 5 seconds
   echo "rt_utils.sh: ECFLOW tasks completed, cleaning up suite"
