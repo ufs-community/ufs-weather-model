@@ -30,6 +30,13 @@ export ESMF_RUNTIME_COMPLIANCECHECK=OFF:depth=4
 export ESMF_RUNTIME_PROFILE=ON
 export ESMF_RUNTIME_PROFILE_OUTPUT="SUMMARY"
 
+# This "if" block is part of the rt.sh self-tests in error-test.conf. It emulates the model failing to run.
+if [ "${JOB_SHOULD_FAIL:-NO}" = WHEN_RUNNING ] ; then
+    echo "The job should abort now, with exit status 1." 1>&2
+    echo "If error checking is working, the metascheduler should mark the job as failed." 1>&2
+    false
+fi
+
 mpiexec -n @[TASKS] -ppn @[TPN] -depth @[THRD] ./fv3.exe
 
 echo "Model ended:    " `date`
