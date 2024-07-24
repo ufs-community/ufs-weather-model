@@ -34,7 +34,6 @@
   export OCN_tasks_cpl_dflt=20
   export ICE_tasks_cpl_dflt=10
   export WAV_tasks_cpl_dflt=20
-  export FBH_tasks_cpl_dflt=1
 
   export THRD_cpl_thrd=2
   export INPES_cpl_thrd=3
@@ -1131,7 +1130,6 @@ export THRD=${THRD_cpl_dflt}
 export OCN_tasks=${OCN_tasks_cpl_dflt}
 export ICE_tasks=${ICE_tasks_cpl_dflt}
 export WAV_tasks=${WAV_tasks_cpl_dflt}
-export FBH_tasks=${FBH_tasks_cpl_dflt}
 
 # Set tiled file defaults
 export_tiled
