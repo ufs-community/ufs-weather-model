@@ -189,7 +189,7 @@ submit_and_wait() {
         set -e
         ;;
       slurm)
-        job_info=$( squeue -u "${USER}" -j "${jobid}" )
+        job_info=$( squeue -u "${USER}" -j "${jobid}" -o '%i %T' )
         ;;
       *)
         ;;
@@ -205,7 +205,7 @@ submit_and_wait() {
 
     # Getting the status letter from scheduler info
     status=$( grep "${jobid}" <<< "${job_info}" )
-    status=$( awk '{print $5}' <<< "${status}" )
+    status=$( awk '{print $2}' <<< "${status}" )
 
     case ${status} in
       #waiting cases
