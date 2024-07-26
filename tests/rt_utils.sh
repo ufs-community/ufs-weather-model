@@ -14,6 +14,13 @@ ECFLOW_RUNNING=false
 
 jobid=0
 
+redirect_out_err() {
+    ( set -e -o pipefail ; ( "$@" 2>&1 1>&3 3>&- | tee err ) 3>&1 1>&2 | tee out )
+    # The above shell redirection copies stdout to "out" and stderr to "err"
+    # while still sending them to stdout and stderr. It ensures the entire
+    # redirect_out_err command will return non-zero if "$@" or tee return non-zero.
+}
+
 function compute_petbounds_and_tasks() {
 
   # each test MUST define ${COMPONENT}_tasks variable for all components it is using
@@ -373,10 +380,9 @@ check_results() {
 
   if [[ ${test_status} = 'FAIL' ]]; then
     echo "${TEST_ID} failed in check_result" >> "${PATHRT}/fail_test_${TEST_ID}"
-
-    if [[ ${ROCOTO} = true || ${ECFLOW} == true ]]; then
-      exit 1
-    fi
+    return 1
+  else
+    return 0
   fi
 }
 
@@ -427,7 +433,7 @@ rocoto_create_compile_task() {
 
   cat << EOF >> "${ROCOTO_XML}"
   <task name="compile_${COMPILE_ID}" maxtries="${ROCOTO_COMPILE_MAXTRIES:-3}">
-    <command>&PATHRT;/run_compile.sh &PATHRT; &RUNDIR_ROOT; "${MAKE_OPT}" ${COMPILE_ID} 2>&amp;1 | tee &LOG;/compile_${COMPILE_ID}.log</command>
+    <command>bash -c 'set -xe -o pipefail ; &PATHRT;/run_compile.sh &PATHRT; &RUNDIR_ROOT; "${MAKE_OPT}" ${COMPILE_ID} 2>&amp;1 | tee &LOG;/compile_${COMPILE_ID}.log'</command>
     <jobname>compile_${COMPILE_ID}</jobname>
     <account>${ACCNR}</account>
     <queue>${COMPILE_QUEUE}</queue>
@@ -471,7 +477,7 @@ rocoto_create_run_task() {
   cat << EOF >> "${ROCOTO_XML}"
     <task name="${TEST_ID}${RT_SUFFIX}" maxtries="${ROCOTO_TEST_MAXTRIES:-3}">
       <dependency> ${DEP_STRING} </dependency>
-      <command>&PATHRT;/run_test.sh &PATHRT; &RUNDIR_ROOT; ${TEST_NAME} ${TEST_ID} ${COMPILE_ID} 2>&amp;1 | tee &LOG;/run_${TEST_ID}${RT_SUFFIX}.log </command>
+      <command>bash -c 'set -xe -o pipefail ; &PATHRT;/run_test.sh &PATHRT; &RUNDIR_ROOT; ${TEST_NAME} ${TEST_ID} ${COMPILE_ID} 2>&amp;1 | tee &LOG;/run_${TEST_ID}${RT_SUFFIX}.log' </command>
       <jobname>${TEST_ID}${RT_SUFFIX}</jobname>
       <account>${ACCNR}</account>
       ${ROCOTO_NODESIZE:+<nodesize>${ROCOTO_NODESIZE}</nodesize>}
