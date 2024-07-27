@@ -2,8 +2,30 @@ import os
 import sys
 import glob
 import yaml
+import shutil
 import subprocess
 
+def sync_testscripts():
+    """symlink sharable rt.sh test scripts
+    """
+    dst= os.getcwd()
+    src= os.path.split(os.getcwd())[0]+'/tests'    
+    for name in os.listdir(src):
+        src_name= src +'/'+ name
+        dst_name= dst +'/'+ name
+        if not os.path.exists(dst_name):
+            if "/compile.sh" in dst_name:
+                shutil.copyfile(src_name, dst_name)
+                subprocess.call(['chmod', '755', dst_name])
+                with open(dst_name) as rfile:
+                    buildsh = rfile.read().replace("${PATHTR}/tests/", "${PATHTR}/tests-dev/")
+                    rfile.close()
+                with open(dst_name, "w") as wfile:
+                    wfile.write(buildsh)
+                    wfile.close()
+            else:
+                os.symlink(src_name, dst_name)
+                
 def machine_check_off(machine_id, val):
     """Check turned-off machine from yaml configuration
 
