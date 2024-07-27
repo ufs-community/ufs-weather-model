@@ -82,6 +82,7 @@ RUN_SINGLE_TEST=false
 ACCNR=${ACCNR:-""}
 UFS_TEST_YAML="ufs_test.yaml"
 export UFS_TEST_YAML
+LINK_TESTS=false
 
 while getopts ":a:b:cl:mn:dwkreohs" opt; do
   case ${opt} in
