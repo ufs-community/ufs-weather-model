@@ -68,7 +68,7 @@ else
   exit 1
 fi
 
-while getopts ":a:b:cl:mn:dwkreoh" opt; do
+while getopts ":a:b:cl:mn:dwkreohs" opt; do
   case ${opt} in
     a)
 	ACCNR=${OPTARG}
