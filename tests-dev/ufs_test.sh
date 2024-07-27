@@ -68,6 +68,21 @@ else
   exit 1
 fi
 
+CREATE_BASELINE=false
+ROCOTO=false
+ECFLOW=false
+KEEP_RUNDIR=false
+export skip_check_results=false
+export delete_rundir=false
+COMPILE_ONLY=false
+RTPWD_NEW_BASELINE=false
+TESTS_FILE='ufs_test.yaml'
+NEW_BASELINES_FILE=''
+RUN_SINGLE_TEST=false
+ACCNR=${ACCNR:-""}
+UFS_TEST_YAML="ufs_test.yaml"
+export UFS_TEST_YAML
+
 while getopts ":a:b:cl:mn:dwkreohs" opt; do
   case ${opt} in
     a)
@@ -161,21 +176,6 @@ fi
 source detect_machine.sh # Note: this does not set ACCNR. The "if" block below does.
 source rt_utils.sh
 source module-setup.sh
-
-CREATE_BASELINE=false
-ROCOTO=false
-ECFLOW=false
-KEEP_RUNDIR=false
-export skip_check_results=false
-export delete_rundir=false
-COMPILE_ONLY=false
-RTPWD_NEW_BASELINE=false
-TESTS_FILE='ufs_test.yaml'
-NEW_BASELINES_FILE=''
-RUN_SINGLE_TEST=false
-ACCNR=${ACCNR:-""}
-UFS_TEST_YAML="ufs_test.yaml"
-export UFS_TEST_YAML
 
 #Check to error out if incompatible options are chosen together
 [[ ${KEEP_RUNDIR} == true && ${delete_rundir} == true ]] && die "-k and -d options cannot be used at the same time"
