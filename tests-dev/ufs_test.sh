@@ -68,6 +68,11 @@ else
   exit 1
 fi
 
+# If -s; link sharable test scripts from tests directory
+if [[ ${LINK_TESTS} == true ]]; then
+    python -c "import ufs_test_utils; ufs_test_utils.sync_testscripts()"
+fi
+
 source detect_machine.sh # Note: this does not set ACCNR. The "if" block below does.
 source rt_utils.sh
 source module-setup.sh
@@ -208,11 +213,6 @@ TEST_START_TIME="$(date '+%Y%m%d %T')"
 export TEST_START_TIME
 
 rm -f fail_test* fail_compile*
-
-# If -s; link sharable test scripts from tests directory
-if [[ ${LINK_TESTS} == true ]]; then
-    python -c "import ufs_test_utils; ufs_test_utils.sync_testscripts()"
-fi
 
 if [[ ${ROCOTO} == true ]]; then
   ROCOTO_XML="${PATHRT}"/rocoto_workflow.xml
