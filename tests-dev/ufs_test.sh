@@ -10,7 +10,7 @@ die() { echo "$@" >&2; exit 1; }
 usage() {
   set +x
   echo
-  echo "Usage: $0 -a <account> | -b <file> | -c | -d | -e | -h | -k | -l <file> | -m | -n <name> | -o | -r | -w"
+  echo "Usage: $0 -a <account> | -b <file> | -c | -d | -e | -h | -k | -l <file> | -m | -n <name> | -o | -r | -w | -s"
   echo
   echo "  -a  <account> to use on for HPC queue"
   echo "  -b  create new baselines only for tests listed in <file>"
@@ -25,6 +25,7 @@ usage() {
   echo "  -o  compile only, skip tests"
   echo "  -r  use Rocoto workflow manager"
   echo "  -w  for weekly_test, skip comparing baseline results"
+  echo "  -s  for use tests-dev, symlink sharable tests scripts"
   echo
   set -x
   exit 1
@@ -153,6 +154,9 @@ while getopts ":a:b:cl:mn:dwkreoh" opt; do
 	ROCOTO=false
 	die "Work-in-progress to support for ECFLOW. Please, use the ROCOTO workflow manamegment option (-r)"
 	;;
+    s)
+	LINK_TESTS=true
+	;;
     h)
 	usage
 	;;
@@ -204,6 +208,11 @@ TEST_START_TIME="$(date '+%Y%m%d %T')"
 export TEST_START_TIME
 
 rm -f fail_test* fail_compile*
+
+# If -s; link sharable test scripts from tests directory
+if [[ ${LINK_TESTS} == true ]]; then
+    python -c "import ufs_test_utils; ufs_test_utils.sync_testscripts()"
+fi
 
 if [[ ${ROCOTO} == true ]]; then
   ROCOTO_XML="${PATHRT}"/rocoto_workflow.xml
