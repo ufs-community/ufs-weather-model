@@ -195,8 +195,10 @@ submit_and_wait() {
         else
           job_running=false
           status='COMPLETED'
-          exit_status=$( qstat ${jobid} -x -f | grep Exit_status | awk '{print $3}')
-          if [[ $exit_status != 0 ]]; then
+          set +e
+          exit_status=$( qstat "${jobid}" -x -f | grep Exit_status | awk '{print $3}')
+          set -e
+          if [[ ${exit_status} != 0 ]]; then
             status='FAILED'
           fi
         fi
@@ -207,7 +209,7 @@ submit_and_wait() {
           job_running=true
         else
           job_running=false
-          job_info=$( sacct -n -j ${jobid} --format=JobID,state%20,Jobname%64 | grep "^${jobid}" | grep ${JBNME} )
+          job_info=$( sacct -n -j "${jobid}" --format=JobID,state%20,Jobname%64 | grep "^${jobid}" | grep ${JBNME} )
         fi
         # Getting the status letter from scheduler info
         status=$( grep "${jobid}" <<< "${job_info}" )
