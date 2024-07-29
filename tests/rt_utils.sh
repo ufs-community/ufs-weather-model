@@ -234,7 +234,7 @@ submit_and_wait() {
       #running cases
       #pbs: R
       #slurm: (old: R, new: RUNNING)
-      R|RUNNING)
+      R|RUNNING|COMPLETING)
         status_label='Job running'
         ;;
       #held cases
