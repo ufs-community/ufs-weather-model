@@ -204,7 +204,7 @@ done
 if [[ ${check_machine} == true ]]; then
     source "${PATHRT}"/machine_config/machine_"${MACHINE_ID}".config
 else
-    die "*** Current support of ufs_test.sh only for hera orion hercules gaea jet derecho noaacloud s4 ! ***"
+    die "*** Current support of ufs_test.sh only for ${platforms} ! ***"
 fi
 
 shift $((OPTIND-1))
