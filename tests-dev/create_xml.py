@@ -79,7 +79,7 @@ command>
     if ( PARTITION != "" and MACHINE_ID != "hera" ):
             compile_task+=f"""    <partition>{PARTITION}</partition>
 """
-    compile_task+=f"""    <cores>{BUILD_CORES}</cores>
+    compile_task+=f"""    <nodes>1:ppn={BUILD_CORES}</nodes>
     <walltime>{BUILD_WALLTIME}</walltime>
     <join>&RUNDIR_ROOT;/compile_{COMPILE_ID}.log</join>
     {NATIVE}
