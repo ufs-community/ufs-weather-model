@@ -187,25 +187,35 @@ submit_and_wait() {
         set +e
         job_info=$( qstat "${jobid}" )
         set -e
+        if grep -q "${jobid}" <<< "${job_info}"; then
+          job_running=true
+          # Getting the status letter from scheduler info
+          status=$( grep "${jobid}" <<< "${job_info}" )
+          status=$( awk '{print $5}' <<< "${status}" )
+        else
+          job_running=false
+          status='COMPLETED'
+          exit_status=$( qstat ${jobid} -x -f | grep Exit_status | awk '{print $3}')
+          if [[ $exit_status != 0 ]]; then
+            status='FAILED'
+          fi
+        fi
         ;;
       slurm)
         job_info=$( squeue -u "${USER}" -j "${jobid}" -o '%i %T' )
+        if grep -q "${jobid}" <<< "${job_info}"; then
+          job_running=true
+        else
+          job_running=false
+          job_info=$( sacct -n -j ${jobid} --format=JobID,state%20,Jobname%64 | grep "^${jobid}" | grep ${JBNME} )
+        fi
+        # Getting the status letter from scheduler info
+        status=$( grep "${jobid}" <<< "${job_info}" )
+        status=$( awk '{print $2}' <<< "${status}" )
         ;;
       *)
         ;;
     esac
-
-
-    if grep -q "${jobid}" <<< "${job_info}"; then
-      job_running=true
-    else
-      job_running=false
-      continue
-    fi
-
-    # Getting the status letter from scheduler info
-    status=$( grep "${jobid}" <<< "${job_info}" )
-    status=$( awk '{print $2}' <<< "${status}" )
 
     case ${status} in
       #waiting cases
@@ -229,14 +239,15 @@ submit_and_wait() {
       #fail/completed cases
       #slurm: F/FAILED TO/TIMEOUT CA/CANCELLED
       F|TO|CA|FAILED|TIMEOUT|CANCELLED)
-        echo "rt_utils.sh: !!!!!!!!!!JOB TERMINATED!!!!!!!!!!"
+        echo "rt_utils.sh: !!!!!!!!!!JOB TERMINATED!!!!!!!!!! status=${status}"
         job_running=false #Trip the loop to end with these status flags
         interrupt_job
         exit 1
         ;;
       #completed
-      #pbs only: C-Complete E-Exiting
-      C|E)
+      #pbs: C-Complete E-Exiting
+      #slurm: CD/COMPLETED
+      C|E|CD|COMPLETED)
         status_label='Completed'
         ;;
       *)
@@ -580,6 +591,10 @@ ecflow_create_compile_task() {
 
   cat << EOF > "${ECFLOW_RUN}/${ECFLOW_SUITE}/compile_${COMPILE_ID}.ecf"
 %include <head.h>
+(
+cd "${LOG_DIR}"
+ln -sf "compile_${COMPILE_ID}.log.\${ECF_TRYNO}" "compile_${COMPILE_ID}.log"
+)
 ${PATHRT}/run_compile.sh "${PATHRT}" "${RUNDIR_ROOT}" "${MAKE_OPT}" "${COMPILE_ID}" > "${LOG_DIR}/compile_${COMPILE_ID}.log.\${ECF_TRYNO}" 2>&1 &
 %include <tail.h>
 EOF
@@ -596,6 +611,10 @@ ecflow_create_run_task() {
   echo "rt_utils.sh: ${TEST_ID}: Creating ECFLOW run task"
   cat << EOF > "${ECFLOW_RUN}/${ECFLOW_SUITE}/${TEST_ID}${RT_SUFFIX}.ecf"
 %include <head.h>
+(
+cd "${LOG_DIR}"
+ln -sf "run_${TEST_ID}${RT_SUFFIX}.log.\${ECF_TRYNO}" "${LOG_DIR}/run_${TEST_ID}${RT_SUFFIX}.log"
+)
 ${PATHRT}/run_test.sh "${PATHRT}" "${RUNDIR_ROOT}" "${TEST_NAME}" "${TEST_ID}" "${COMPILE_ID}" > "${LOG_DIR}/run_${TEST_ID}${RT_SUFFIX}.log.\${ECF_TRYNO}" 2>&1 &
 %include <tail.h>
 EOF
