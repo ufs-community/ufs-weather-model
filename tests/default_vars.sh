@@ -894,112 +894,118 @@ export FNAISC="'IMS-NIC.blended.ice.monthly.clim.grb'"
 
 # Add section for tiled grid namelist
 export_tiled() {
-export FNSMCC_control="'global_soilmgldas.statsgo.t1534.3072.1536.grb'"
-export FNMSKH_control="'global_slmask.t1534.3072.1536.grb'"
-export FNALBC="'${ATMRES}.snowfree_albedo.tileX.nc'"
-export FNALBC2="'${ATMRES}.facsf.tileX.nc'"
-export FNTG3C="'${ATMRES}.substrate_temperature.tileX.nc'"
-export FNVEGC="'${ATMRES}.vegetation_greenness.tileX.nc'"
-export FNVETC="'${ATMRES}.vegetation_type.tileX.nc'"
-export FNSOTC="'${ATMRES}.soil_type.tileX.nc'"
-export FNSOCC="'${ATMRES}.soil_color.tileX.nc'"
-export FNSMCC=${FNSMCC_control}
-export FNMSKH=${FNMSKH_control}
-export FNVMNC="'${ATMRES}.vegetation_greenness.tileX.nc'"
-export FNVMXC="'${ATMRES}.vegetation_greenness.tileX.nc'"
-export FNSLPC="'${ATMRES}.slope_type.tileX.nc'"
-export FNABSC="'${ATMRES}.maximum_snow_albedo.tileX.nc'"
-export LANDICE=".false."
-# Add updated damping and timestep variables
-case "${ATMRES}" in
-  "C48")
-    export DELTIM=1200
-    export XR_CNVCLD=.false.
-    export CDMBGWD="0.071,2.1,1.0,1.0"
-    export CDMBGWD_GSL="40.0,1.77,1.0,1.0"
-    export KNOB_UGWP_TAUAMP=6.0e-3
-    #export K_SPLIT=1
-    export N_SPLIT=4
-    export TAU=10.0
-    export RF_CUTOFF=100.0
-    export FV_SG_ADJ=3600
-    ;;
-  "C96")
-    export DELTIM=600
-    export XR_CNVCLD=.false.
-    export CDMBGWD="0.14,1.8,1.0,1.0"
-    export CDMBGWD_GSL="20.0,2.5,1.0,1.0"
-    export KNOB_UGWP_TAUAMP=3.0e-3
-    #export K_SPLIT=1
-    export N_SPLIT=4
-    export TAU=8.0
-    export RF_CUTOFF=100.0
-    export FV_SG_ADJ=1800
-    ;;
-  "C192")
-    export DELTIM=600
-    export XR_CNVCLD=.true.
-    export CDMBGWD="0.23,1.5,1.0,1.0"
-    export CDMBGWD_GSL="5.0,5.0,1.0,1.0"
-    export KNOB_UGWP_TAUAMP=1.5e-3
-    #export K_SPLIT=2
-    export N_SPLIT=4
-    export TAU=6.0
-    export RF_CUTOFF=100.0
-    export FV_SG_ADJ=1800
-    ;;
-  "C384")
-    export DELTIM=300
-    export XR_CNVCLD=.true.
-    export CDMBGWD="1.1,0.72,1.0,1.0"
-    export CDMBGWD_GSL="5.0,5.0,1.0,1.0"
-    export KNOB_UGWP_TAUAMP=0.8e-3
-    #export K_SPLIT=2
-    export N_SPLIT=4
-    export TAU=4.0
-    export RF_CUTOFF=100.0
-    export FV_SG_ADJ=900
-    ;;
-  "C768")
-    export DELTIM=150
-    export XR_CNVCLD=.true.
-    export CDMBGWD="4.0,0.15,1.0,1.0"
-    export CDMBGWD_GSL="2.5,7.5,1.0,1.0"
-    export KNOB_UGWP_TAUAMP=0.5e-3
-    #export K_SPLIT=2
-    export N_SPLIT=4
-    export TAU=3.0
-    export RF_CUTOFF=100.0
-    export FV_SG_ADJ=450
-    ;;
-  "C1152")
-    export DELTIM=150
-    export XR_CNVCLD=.true.
-    export CDMBGWD="4.0,0.10,1.0,1.0"
-    export CDMBGWD_GSL="1.67,8.8,1.0,1.0"
-    export KNOB_UGWP_TAUAMP=0.35e-3
-    #export K_SPLIT=2
-    export N_SPLIT=6
-    export TAU=2.5
-    export RF_CUTOFF=100.0
-    export FV_SG_ADJ=450
-    ;;
-  "C3072")
-    export DELTIM=90
-    export XR_CNVCLD=.true.
-    export CDMBGWD="4.0,0.05,1.0,1.0"
-    export CDMBGWD_GSL="0.625,14.1,1.0,1.0"
-    export KNOB_UGWP_TAUAMP=0.13e-3
-    #export K_SPLIT=4
-    export N_SPLIT=5
-    export TAU=0.5
-    export RF_CUTOFF=100.0
-    export FV_SG_ADJ=300
-    ;;
-  *)
-    echo Invalid model resolution: "${ATMRES}". Please update specified variable ATMRES.
-    exit 1
-    ;;
+  export FNSMCC_control="'global_soilmgldas.statsgo.t1534.3072.1536.grb'"
+  export FNMSKH_control="'global_slmask.t1534.3072.1536.grb'"
+  export FNALBC="'${ATMRES}.snowfree_albedo.tileX.nc'"
+  export FNALBC2="'${ATMRES}.facsf.tileX.nc'"
+  export FNTG3C="'${ATMRES}.substrate_temperature.tileX.nc'"
+  export FNVEGC="'${ATMRES}.vegetation_greenness.tileX.nc'"
+  export FNVETC="'${ATMRES}.vegetation_type.tileX.nc'"
+  export FNSOTC="'${ATMRES}.soil_type.tileX.nc'"
+  export FNSOCC="'${ATMRES}.soil_color.tileX.nc'"
+  export FNSMCC=${FNSMCC_control}
+  export FNMSKH=${FNMSKH_control}
+  export FNVMNC="'${ATMRES}.vegetation_greenness.tileX.nc'"
+  export FNVMXC="'${ATMRES}.vegetation_greenness.tileX.nc'"
+  export FNSLPC="'${ATMRES}.slope_type.tileX.nc'"
+  export FNABSC="'${ATMRES}.maximum_snow_albedo.tileX.nc'"
+  export LANDICE=".false."
+}
+
+export_ugwpv1() {
+  export DO_UGWP_V1=.true.
+  export DO_UGWP_V0=.false.
+
+  # Add updated damping and timestep variables
+  case "${ATMRES}" in
+    "C48")
+      export DELTIM=1200
+      export XR_CNVCLD=.false.
+      export CDMBGWD="0.071,2.1,1.0,1.0"
+      export CDMBGWD_GSL="40.0,1.77,1.0,1.0"
+      export KNOB_UGWP_TAUAMP=6.0e-3
+      export K_SPLIT=1
+      export N_SPLIT=4
+      export TAU=10.0
+      export RF_CUTOFF=100.0
+      export FV_SG_ADJ=3600
+      ;;
+    "C96")
+      export DELTIM=600
+      export XR_CNVCLD=.false.
+      export CDMBGWD="0.14,1.8,1.0,1.0"
+      export CDMBGWD_GSL="20.0,2.5,1.0,1.0"
+      export KNOB_UGWP_TAUAMP=3.0e-3
+      export K_SPLIT=1
+      export N_SPLIT=4
+      export TAU=8.0
+      export RF_CUTOFF=100.0
+      export FV_SG_ADJ=1800
+      ;;
+    "C192")
+      export DELTIM=600
+      export XR_CNVCLD=.true.
+      export CDMBGWD="0.23,1.5,1.0,1.0"
+      export CDMBGWD_GSL="5.0,5.0,1.0,1.0"
+      export KNOB_UGWP_TAUAMP=1.5e-3
+      export K_SPLIT=2
+      export N_SPLIT=4
+      export TAU=6.0
+      export RF_CUTOFF=100.0
+      export FV_SG_ADJ=1800
+      ;;
+    "C384")
+      export DELTIM=300
+      export XR_CNVCLD=.true.
+      export CDMBGWD="1.1,0.72,1.0,1.0"
+      export CDMBGWD_GSL="5.0,5.0,1.0,1.0"
+      export KNOB_UGWP_TAUAMP=0.8e-3
+      export K_SPLIT=2
+      export N_SPLIT=4
+      export TAU=4.0
+      export RF_CUTOFF=100.0
+      export FV_SG_ADJ=900
+      ;;
+    "C768")
+      export DELTIM=150
+      export XR_CNVCLD=.true.
+      export CDMBGWD="4.0,0.15,1.0,1.0"
+      export CDMBGWD_GSL="2.5,7.5,1.0,1.0"
+      export KNOB_UGWP_TAUAMP=0.5e-3
+      export K_SPLIT=2
+      export N_SPLIT=4
+      export TAU=3.0
+      export RF_CUTOFF=100.0
+      export FV_SG_ADJ=450
+      ;;
+    "C1152")
+      export DELTIM=150
+      export XR_CNVCLD=.true.
+      export CDMBGWD="4.0,0.10,1.0,1.0"
+      export CDMBGWD_GSL="1.67,8.8,1.0,1.0"
+      export KNOB_UGWP_TAUAMP=0.35e-3
+      export K_SPLIT=2
+      export N_SPLIT=6
+      export TAU=2.5
+      export RF_CUTOFF=100.0
+      export FV_SG_ADJ=450
+      ;;
+    "C3072")
+      export DELTIM=90
+      export XR_CNVCLD=.true.
+      export CDMBGWD="4.0,0.05,1.0,1.0"
+      export CDMBGWD_GSL="0.625,14.1,1.0,1.0"
+      export KNOB_UGWP_TAUAMP=0.13e-3
+      export K_SPLIT=4
+      export N_SPLIT=5
+      export TAU=0.5
+      export RF_CUTOFF=100.0
+      export FV_SG_ADJ=300
+      ;;
+    *)
+      echo Invalid model resolution: "${ATMRES}". Please update specified variable ATMRES.
+      exit 1
+      ;;
   esac
 }
 
