@@ -209,7 +209,7 @@ submit_and_wait() {
           job_running=true
         else
           job_running=false
-          job_info=$( sacct -n -j "${jobid}" --format=JobID,state%20,Jobname%64 | grep "^${jobid}" | grep ${JBNME} )
+          job_info=$( sacct -n -j "${jobid}" --format=JobID,state%20,Jobname%64 | grep "^${jobid}" | grep "${JBNME}" )
         fi
         # Getting the status letter from scheduler info
         status=$( grep "${jobid}" <<< "${job_info}" )
