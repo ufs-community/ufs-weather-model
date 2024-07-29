@@ -151,6 +151,7 @@ submit_and_wait() {
   local count=0
   local job_running=''
   echo "rt_utils.sh: Job is waiting to enter the queue..."
+  [[ ${ECFLOW:-false} == true ]] && ecflow_client --label=job_status "Waiting to enter the queue"
   until [[ ${job_running} == 'true' ]]
   do
     case ${SCHEDULER} in
@@ -177,6 +178,10 @@ submit_and_wait() {
     if [[ ${count} -eq 13 ]]; then echo "No job in queue after one minute, exiting..."; exit 2; fi
   done
   echo "rt_utils.sh Job (${jobid}) is now in the queue."
+  if [[ ${ECFLOW:-false} == true ]]; then
+    ecflow_client --label=job_id "${jobid}"
+    ecflow_client --label=job_status "Submitted"
+  fi
 
   # wait for the job to finish and compare results
   local n=1
@@ -243,6 +248,7 @@ submit_and_wait() {
       F|TO|CA|FAILED|TIMEOUT|CANCELLED)
         echo "rt_utils.sh: !!!!!!!!!!JOB TERMINATED!!!!!!!!!! status=${status}"
         job_running=false #Trip the loop to end with these status flags
+        [[ ${ECFLOW:-false} == true ]] && ecflow_client --label=job_status "Failed"
         interrupt_job
         exit 1
         ;;
@@ -260,6 +266,7 @@ submit_and_wait() {
     esac
 
     echo "${n} min. ${SCHEDULER^} Job ${jobid} Status: ${status_label} (${status})"
+    [[ ${ECFLOW:-false} == true ]] && ecflow_client --label=job_status "${status_label}"
 
     (( n=n+1 ))
     sleep 60 & wait $!
