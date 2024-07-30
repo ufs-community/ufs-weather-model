@@ -176,6 +176,11 @@ source detect_machine.sh # Note: this does not set ACCNR. The "if" block below d
 source rt_utils.sh
 source module-setup.sh
 
+# If -s; link sharable test scripts from tests directory
+if [[ ${LINK_TESTS} == true ]]; then
+    python -c "import ufs_test_utils; ufs_test_utils.sync_testscripts()"
+fi
+
 check_machine=false
 platforms=( hera orion hercules gaea jet derecho noaacloud s4 )
 for name in "${platforms[@]}"
@@ -189,12 +194,7 @@ done
 if [[ ${check_machine} == true ]]; then
     source "${PATHRT}"/machine_config/machine_"${MACHINE_ID}".config
 else
-    die "*** Current support of ufs_test.sh only for hera orion hercules gaea jet derecho noaacloud s4 ! ***"
-fi
-
-# If -s; link sharable test scripts from tests directory
-if [[ ${LINK_TESTS} == true ]]; then
-    python -c "import ufs_test_utils; ufs_test_utils.sync_testscripts()"
+    die "*** Current support of ufs_test.sh only for ${platforms[*] ! ***"
 fi
 
 #source rt_utils.sh
