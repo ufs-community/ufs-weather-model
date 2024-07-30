@@ -172,6 +172,8 @@ while getopts ":a:b:cl:mn:dwkreohs" opt; do
   esac
 done
 
+source detect_machine.sh # Note: this does not set ACCNR. The "if" block below does.
+
 check_machine=false
 platforms=( hera orion hercules gaea jet derecho noaacloud s4 )
 for name in "${platforms[@]}"
@@ -193,7 +195,6 @@ if [[ ${LINK_TESTS} == true ]]; then
     python -c "import ufs_test_utils; ufs_test_utils.sync_testscripts()"
 fi
 
-source detect_machine.sh # Note: this does not set ACCNR. The "if" block below does.
 source rt_utils.sh
 source module-setup.sh
 
