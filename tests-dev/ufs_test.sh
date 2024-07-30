@@ -57,7 +57,7 @@ trap '{ echo "ufs_test.sh finished"; cleanup ; }' EXIT
 PATHRT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P )"
 readonly PATHRT
 cd "${PATHRT}"
-cp "${PATHRT}"/tests/detect_machine.sh "${PATHRT}"/tests-dev
+cp "${PATHRT}"/../tests/detect_machine.sh "${PATHRT}"
 
 source detect_machine.sh # Note: this does not set ACCNR. The "if" block below does.
 
