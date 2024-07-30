@@ -57,25 +57,9 @@ trap '{ echo "ufs_test.sh finished"; cleanup ; }' EXIT
 PATHRT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P )"
 readonly PATHRT
 cd "${PATHRT}"
-cp "${PATHRT}"/../tests/detect_machine.sh "${PATHRT}"
-
-source detect_machine.sh # Note: this does not set ACCNR. The "if" block below does.
-
-check_machine=false
-platforms=( hera orion hercules gaea jet derecho noaacloud s4 )
-for name in "${platforms[@]}"
-do
-  if [[ ${MACHINE_ID} == "${name}" ]]; then
-    check_machine=true
-    break
-  fi
-done
-
-if [[ ${check_machine} == true ]]; then
-    source "${PATHRT}"/machine_config/machine_"${MACHINE_ID}".config
-else
-    die "*** Current support of ufs_test.sh only for ${platforms[*]} ! ***"
-fi
+[[ -f "${PATHRT}"/detect_machine.sh ]] || cp "${PATHRT}"/../tests/detect_machine.sh "${PATHRT}"
+[[ -f "${PATHRT}"/rt_utils.sh ]] || cp "${PATHRT}"/../tests/rt_utils.sh "${PATHRT}"
+[[ -f "${PATHRT}"/module-setup.sh ]] || cp "${PATHRT}"/../tests/module-setup.sh "${PATHRT}"
 
 # make sure only one instance of ufs_test.sh is running
 readonly LOCKDIR="${PATHRT}"/lock
@@ -193,6 +177,7 @@ if [[ ${LINK_TESTS} == true ]]; then
     python -c "import ufs_test_utils; ufs_test_utils.sync_testscripts()"
 fi
 
+source detect_machine.sh # Note: this does not set ACCNR. The "if" block below does.
 source rt_utils.sh
 source module-setup.sh
 
@@ -208,6 +193,22 @@ fi
 
 # Display the machine and account using the format detect_machine.sh used:
 echo "Machine:  ""${MACHINE_ID}""    Account: ""${ACCNR}"" "
+
+check_machine=false
+platforms=( hera orion hercules gaea jet derecho noaacloud s4 )
+for name in "${platforms[@]}"
+do
+  if [[ ${MACHINE_ID} == "${name}" ]]; then
+    check_machine=true
+    break
+  fi
+done
+
+if [[ ${check_machine} == true ]]; then
+    source "${PATHRT}"/machine_config/machine_"${MACHINE_ID}".config
+else
+    die "*** Current support of ufs_test.sh only for hera orion hercules gaea jet derecho noaacloud s4 ! ***"
+fi
 
 shift $((OPTIND-1))
 [[ $# -gt 1 ]] && usage
