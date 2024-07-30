@@ -173,6 +173,8 @@ while getopts ":a:b:cl:mn:dwkreohs" opt; do
 done
 
 source detect_machine.sh # Note: this does not set ACCNR. The "if" block below does.
+source rt_utils.sh
+source module-setup.sh
 
 check_machine=false
 platforms=( hera orion hercules gaea jet derecho noaacloud s4 )
@@ -195,8 +197,8 @@ if [[ ${LINK_TESTS} == true ]]; then
     python -c "import ufs_test_utils; ufs_test_utils.sync_testscripts()"
 fi
 
-source rt_utils.sh
-source module-setup.sh
+#source rt_utils.sh
+#source module-setup.sh
 
 #Check to error out if incompatible options are chosen together
 [[ ${KEEP_RUNDIR} == true && ${delete_rundir} == true ]] && die "-k and -d options cannot be used at the same time"
