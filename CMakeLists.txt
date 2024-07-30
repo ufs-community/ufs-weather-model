@@ -196,9 +196,6 @@ endif()
 if(FV3)
   add_subdirectory(FV3)
 endif()
-if (MPAS)
-  add_subdirectory(FV3)
-endif()
 
 ###############################################################################
 ### AQM
@@ -306,15 +303,15 @@ if(STOCH_PHYS)
 endif()
 
 if(FV3)
-  add_dependencies(ufs ufsatm)
+  add_dependencies(ufs ufsatm_fv3)
   list(APPEND _ufs_defs_private FRONT_FV3=fv3atm_cap_mod)
-  list(APPEND _ufs_libs_public ufsatm)
+  list(APPEND _ufs_libs_public ufsatm_fv3)
 endif()
 
 if(MPAS)
-  add_dependencies(ufs ufsatm)
+  add_dependencies(ufs ufsatm_mpas)
   list(APPEND _ufs_defs_private FRONT_MPAS=mpasatm_cap_mod)
-  list(APPEND _ufs_libs_public ufsatm)
+  list(APPEND _ufs_libs_public ufsatm_mpas)
 endif()
 
 if(MOM6)
