@@ -172,6 +172,22 @@ while getopts ":a:b:cl:mn:dwkreohs" opt; do
   esac
 done
 
+check_machine=false
+platforms=( hera orion hercules gaea jet derecho noaacloud s4 )
+for name in "${platforms[@]}"
+do
+  if [[ ${MACHINE_ID} == "${name}" ]]; then
+    check_machine=true
+    break
+  fi
+done
+
+if [[ ${check_machine} == true ]]; then
+    source "${PATHRT}"/machine_config/machine_"${MACHINE_ID}".config
+else
+    die "*** Current support of ufs_test.sh only for hera orion hercules gaea jet derecho noaacloud s4 ! ***"
+fi
+
 # If -s; link sharable test scripts from tests directory
 if [[ ${LINK_TESTS} == true ]]; then
     python -c "import ufs_test_utils; ufs_test_utils.sync_testscripts()"
@@ -193,22 +209,6 @@ fi
 
 # Display the machine and account using the format detect_machine.sh used:
 echo "Machine:  ""${MACHINE_ID}""    Account: ""${ACCNR}"" "
-
-check_machine=false
-platforms=( hera orion hercules gaea jet derecho noaacloud s4 )
-for name in "${platforms[@]}"
-do
-  if [[ ${MACHINE_ID} == "${name}" ]]; then
-    check_machine=true
-    break
-  fi
-done
-
-if [[ ${check_machine} == true ]]; then
-    source "${PATHRT}"/machine_config/machine_"${MACHINE_ID}".config
-else
-    die "*** Current support of ufs_test.sh only for hera orion hercules gaea jet derecho noaacloud s4 ! ***"
-fi
 
 shift $((OPTIND-1))
 [[ $# -gt 1 ]] && usage
