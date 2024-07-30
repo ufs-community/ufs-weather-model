@@ -624,6 +624,8 @@ export DO_UGWP_V1_W_GSLDRAG=.false.
 export DO_UGWP_V0_OROG_ONLY=.false.
 export DO_GSL_DRAG_LS_BL=.false.
 export DO_GSL_DRAG_SS=.true.
+export DO_GWD_OPT_PSL=.false.
+export PSL_GWD_DX_FACTOR=6.0
 export DO_GSL_DRAG_TOFD=.false.
 export DO_UGWP_V1=.false.
 export DO_UGWP_V1_OROG_ONLY=.false.
@@ -1043,6 +1045,7 @@ export_cmeps() {
   export RESTART_N=${FHMAX}
   export CMEPS_RESTART_DIR=./RESTART/
   export cap_dbug_flag=0
+  export WRITE_ENDOFRUN_RESTART=.false.
   # MOM6 attributes
   export use_coldstart=false
   export use_mommesh=true
@@ -1119,7 +1122,7 @@ export_mom6
 # Set WW3 component defaults
 export_ww3
 
-# Set CMEPS component defauls
+# Set CMEPS component defaults
 export_cmeps
 
 # FV3 defaults
@@ -1300,7 +1303,7 @@ export_datm_cdeps ()
   export MOM6_USE_WAVES=False
   export WW3_DOMAIN=''
 
-  # Set CMEPS component defauls
+  # Set CMEPS component defaults
   export_cmeps
   # default configure
   export UFS_CONFIGURE=ufs.configure.datm_cdeps.IN
