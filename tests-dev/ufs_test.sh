@@ -176,11 +176,6 @@ source detect_machine.sh # Note: this does not set ACCNR. The "if" block below d
 source rt_utils.sh
 source module-setup.sh
 
-# If -s; link sharable test scripts from tests directory
-if [[ ${LINK_TESTS} == true ]]; then
-    python -c "import ufs_test_utils; ufs_test_utils.sync_testscripts()"
-fi
-
 check_machine=false
 platforms=( hera orion hercules gaea jet derecho noaacloud s4 )
 for name in "${platforms[@]}"
@@ -197,8 +192,10 @@ else
     die "*** Current support of ufs_test.sh only for ${platforms[*]} ! ***"
 fi
 
-#source rt_utils.sh
-#source module-setup.sh
+# If -s; link sharable test scripts from tests directory
+if [[ ${LINK_TESTS} == true ]]; then
+    python -c "import ufs_test_utils; ufs_test_utils.sync_testscripts()"
+fi
 
 #Check to error out if incompatible options are chosen together
 [[ ${KEEP_RUNDIR} == true && ${delete_rundir} == true ]] && die "-k and -d options cannot be used at the same time"
