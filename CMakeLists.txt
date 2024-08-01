@@ -174,6 +174,12 @@ find_package(bacio 2.4.0 REQUIRED)
 find_package(sp 2.3.3 REQUIRED)
 find_package(w3emc 2.9.2 REQUIRED)
 
+if(MPAS)
+  find_package(PnetCDF REQUIRED COMPONENTS Fortran)
+  find_package(PIO REQUIRED COMPONENTS Fortran C)
+  set(FV3 OFF)
+endif()
+
 # Configure Python
 find_package(Python 3.6 REQUIRED COMPONENTS Interpreter)
 message("Found Python: ${Python_EXECUTABLE}")
@@ -189,11 +195,14 @@ endif()
 ### Atmosphere Components [FV3, MPAS?]
 ### DJS2024: There will be a generalized atmospheric component with multiple
 ###          dycores, not multiple atmospheric components (one for each dycore).
-###          So, - rename the atmospheric component FV3 to UFSATM, then
-###              - if FV3 or MPAS, add_sudirectory(UFSATM)
+###          So, - rename the atmospheric component FV3 to UFSATM or ATM, then
+###              - if FV3 or MPAS, add_sudirectory(UFSATM or ATM)
 ###   
 ###############################################################################
 if(FV3)
+  add_subdirectory(FV3)
+endif()
+if (MPAS)
   add_subdirectory(FV3)
 endif()
 

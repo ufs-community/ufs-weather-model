@@ -367,12 +367,12 @@
           end if
 #endif
 #ifdef FRONT_MPAS
-          if (trim(model) == "mpas") then
-            call NUOPC_DriverAddComp(driver, trim(prefix), MPAS_SS, &
-              info=info, petList=petList, comp=comp, rc=rc)
-            if (ChkErr(rc,__LINE__,u_FILE_u)) return
-            found_comp = .true.
-          end if
+!          if (trim(model) == "mpas") then
+!            call NUOPC_DriverAddComp(driver, trim(prefix), MPAS_SS, &
+!              info=info, petList=petList, comp=comp, rc=rc)
+!            if (ChkErr(rc,__LINE__,u_FILE_u)) return
+!            found_comp = .true.
+!          end if
 #endif
 #if defined FRONT_CDEPS_DATM
           if (trim(model) == "datm" ) then
