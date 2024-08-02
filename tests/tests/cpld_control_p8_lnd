@@ -1,0 +1,96 @@
+#
+#  cpld_control P8 test with land component model
+#
+
+source tests/cpld_control_p8
+
+export TEST_DESCR="Fully coupled FV3-CCPP-GOCART-MOM6-CICE-CMEPS-WW3-NOAHMP system - C96MX100"
+
+export CNTL_DIR=cpld_control_p8_lnd
+
+export LIST_FILES="sfcf021.tile1.nc \
+                   sfcf021.tile2.nc \
+                   sfcf021.tile3.nc \
+                   sfcf021.tile4.nc \
+                   sfcf021.tile5.nc \
+                   sfcf021.tile6.nc \
+                   atmf021.tile1.nc \
+                   atmf021.tile2.nc \
+                   atmf021.tile3.nc \
+                   atmf021.tile4.nc \
+                   atmf021.tile5.nc \
+                   atmf021.tile6.nc \
+                   sfcf024.tile1.nc \
+                   sfcf024.tile2.nc \
+                   sfcf024.tile3.nc \
+                   sfcf024.tile4.nc \
+                   sfcf024.tile5.nc \
+                   sfcf024.tile6.nc \
+                   atmf024.tile1.nc \
+                   atmf024.tile2.nc \
+                   atmf024.tile3.nc \
+                   atmf024.tile4.nc \
+                   atmf024.tile5.nc \
+                   atmf024.tile6.nc \
+                   gocart.inst_aod.20210323_0600z.nc4 \
+                   RESTART/20210323.060000.coupler.res \
+                   RESTART/20210323.060000.fv_core.res.nc \
+                   RESTART/20210323.060000.fv_core.res.tile1.nc \
+                   RESTART/20210323.060000.fv_core.res.tile2.nc \
+                   RESTART/20210323.060000.fv_core.res.tile3.nc \
+                   RESTART/20210323.060000.fv_core.res.tile4.nc \
+                   RESTART/20210323.060000.fv_core.res.tile5.nc \
+                   RESTART/20210323.060000.fv_core.res.tile6.nc \
+                   RESTART/20210323.060000.fv_srf_wnd.res.tile1.nc \
+                   RESTART/20210323.060000.fv_srf_wnd.res.tile2.nc \
+                   RESTART/20210323.060000.fv_srf_wnd.res.tile3.nc \
+                   RESTART/20210323.060000.fv_srf_wnd.res.tile4.nc \
+                   RESTART/20210323.060000.fv_srf_wnd.res.tile5.nc \
+                   RESTART/20210323.060000.fv_srf_wnd.res.tile6.nc \
+                   RESTART/20210323.060000.fv_tracer.res.tile1.nc \
+                   RESTART/20210323.060000.fv_tracer.res.tile2.nc \
+                   RESTART/20210323.060000.fv_tracer.res.tile3.nc \
+                   RESTART/20210323.060000.fv_tracer.res.tile4.nc \
+                   RESTART/20210323.060000.fv_tracer.res.tile5.nc \
+                   RESTART/20210323.060000.fv_tracer.res.tile6.nc \
+                   RESTART/20210323.060000.phy_data.tile1.nc \
+                   RESTART/20210323.060000.phy_data.tile2.nc \
+                   RESTART/20210323.060000.phy_data.tile3.nc \
+                   RESTART/20210323.060000.phy_data.tile4.nc \
+                   RESTART/20210323.060000.phy_data.tile5.nc \
+                   RESTART/20210323.060000.phy_data.tile6.nc \
+                   RESTART/20210323.060000.sfc_data.tile1.nc \
+                   RESTART/20210323.060000.sfc_data.tile2.nc \
+                   RESTART/20210323.060000.sfc_data.tile3.nc \
+                   RESTART/20210323.060000.sfc_data.tile4.nc \
+                   RESTART/20210323.060000.sfc_data.tile5.nc \
+                   RESTART/20210323.060000.sfc_data.tile6.nc \
+                   RESTART/20210323.060000.MOM.res.nc \
+                   RESTART/iced.2021-03-23-21600.nc \
+                   RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc \
+                   20210323.060000.out_pnt.ww3 \
+                   20210323.060000.out_grd.ww3 \
+                   ufs.cpld.lnd.out.2021-03-23-21600.tile1.nc \
+                   ufs.cpld.lnd.out.2021-03-23-21600.tile2.nc \
+                   ufs.cpld.lnd.out.2021-03-23-21600.tile3.nc \
+                   ufs.cpld.lnd.out.2021-03-23-21600.tile4.nc \
+                   ufs.cpld.lnd.out.2021-03-23-21600.tile5.nc \
+                   ufs.cpld.lnd.out.2021-03-23-21600.tile6.nc"
+
+export CPLLND=.true.
+export CPLLND2ATM=.true.
+export UFS_CONFIGURE=ufs.configure.s2swal_fast_esmf.IN
+export lnd_model=noahmp
+export LND_tasks=144
+export lnd_ic_type=sfc
+export CALC_SNET=.false.
+export layout_x=3
+export layout_y=8
+export LNDRES=C96
+export coupling_interval_sec=720
+export snow_albedo_option=1
+export precip_partition_option=4
+export initial_albedo=0.2
+export lnd_input_dir="INPUT/"
+export lnd_fixed_dir="./"
+export mosaic_file="INPUT/${LNDRES}_mosaic.nc"
