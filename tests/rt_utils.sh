@@ -127,7 +127,6 @@ submit_and_wait() {
   ROCOTO=${ROCOTO:-false}
   ECFLOW=${ECFLOW:-false}
 
-  local test_status='PASS'
   case ${SCHEDULER} in
     pbs)
       qsubout=$( qsub "${job_card}" )
