@@ -441,9 +441,10 @@ def xml_loop():
                                 os.environ["RT_SUFFIX"] = RT_SUFFIX
                                 os.environ["BL_SUFFIX"] = BL_SUFFIX
                                 os.environ["JOB_NR"]    = str(JOB_NR)
-                                rc_set_run_task = subprocess.Popen(['bash', '-c', '. ufs_test_utils.sh; set_run_task'])
-                                rc_set_run_task.wait()
-                                case_count+=1
+                                if (DEP_RUN == "" ):
+                                    rc_set_run_task = subprocess.Popen(['bash', '-c', '. ufs_test_utils.sh; set_run_task'])
+                                    rc_set_run_task.wait()
+                                    case_count+=1
                         if int(case_count) > 0:
                             write_metatask_end(ROCOTO_XML)
                         else:
