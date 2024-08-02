@@ -381,7 +381,7 @@ elif [[ $MACHINE_ID = orion ]]; then
 
 elif [[ $MACHINE_ID = hercules ]]; then
 
-  module load contrib rocoto/1.3.5
+  module load contrib rocoto
   ROCOTORUN=$(which rocotorun)
   ROCOTOSTAT=$(which rocotostat)
   ROCOTOCOMPLETE=$(which rocotocomplete)
