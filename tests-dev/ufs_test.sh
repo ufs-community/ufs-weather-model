@@ -189,12 +189,17 @@ done
 if [[ ${check_machine} == true ]]; then
     source "${PATHRT}"/machine_config/machine_"${MACHINE_ID}".config
 else
-    die "*** Current support of ufs_test.sh only for ${platforms[*]} ! ***"
+    echo "*** Current support of ufs_test.sh only for ${platforms[*]} ! ***"
+    exit 1
 fi
 
 # If -s; link sharable test scripts from tests directory
 if [[ ${LINK_TESTS} == true ]]; then
-    python -c "import ufs_test_utils; ufs_test_utils.sync_testscripts()"
+    if ! python -c "import ufs_test_utils; ufs_test_utils.sync_testscripts_()"
+    then
+        echo "*** error: python sync_testscripts! ***"
+        exit 1
+    fi
 fi
 
 #Check to error out if incompatible options are chosen together
@@ -249,6 +254,7 @@ export KEEP_RUNDIR
 if ! python -c "import create_xml; create_xml.xml_loop()"
 then
   echo "*** experiment setup didn't run successfully! ***"
+  exit 1
 fi
 
 ##
