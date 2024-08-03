@@ -195,7 +195,7 @@ fi
 
 # If -s; link sharable test scripts from tests directory
 if [[ ${LINK_TESTS} == true ]]; then
-    if ! python -c "import ufs_test_utils; ufs_test_utils.sync_testscripts_()"
+    if ! python -c "import ufs_test_utils; ufs_test_utils.sync_testscripts()"
     then
         echo "*** error: python sync_testscripts! ***"
         exit 1
