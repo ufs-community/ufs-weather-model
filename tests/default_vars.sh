@@ -1321,11 +1321,11 @@ export_datm_cdeps ()
   export INPUT_NML=input.mom6.nml.IN
   export DIAG_TABLE=diag_table_template
   export DATM_SRC=CFSR
-  export FILENAME_BASE=cfsr.
-  export MESH_ATM=${FILENAME_BASE//.}_mesh.nc
+  export FILEBASE_DATM=cfsr
+  export MESH_ATM=${FILEBASE_DATM}_mesh.nc
   #export atm_datamode=${DATM_SRC}
   export atm_datamode=GEFS
-  export stream_files=INPUT/${FILENAME_BASE}201110.nc
+  export stream_files=INPUT/${FILEBASE_DATM}.201110.nc
   export EXPORT_ALL=.false.
   export STREAM_OFFSET=0
 
