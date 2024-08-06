@@ -1323,7 +1323,8 @@ export_datm_cdeps ()
   export DATM_SRC=CFSR
   export FILENAME_BASE=cfsr.
   export MESH_ATM=${FILENAME_BASE//.}_mesh.nc
-  export atm_datamode=${DATM_SRC}
+  #export atm_datamode=${DATM_SRC}
+  export atm_datamode=GEFS
   export stream_files=INPUT/${FILENAME_BASE}201110.nc
   export EXPORT_ALL=.false.
   export STREAM_OFFSET=0
