@@ -508,15 +508,9 @@ if [[ ${skip_check_results} == false ]]; then
   echo
   } >> "${RT_LOG}"
 
-  TRIES=''
-  if [[ ${ECFLOW} == true ]]; then
-    if [[ ${ECF_TRYNO} -gt 1 ]]; then
-      TRIES=" Tries: ${ECF_TRYNO}"
-    fi
-  fi
-  echo "Test ${TEST_ID} ${test_status}${TRIES}" >> "${RT_LOG}"
-  echo                                          >> "${RT_LOG}"
-  echo "Test ${TEST_ID} ${test_status}${TRIES}"
+  echo "Test ${TEST_ID} ${test_status}" >> "${RT_LOG}"
+  echo                                  >> "${RT_LOG}"
+  echo "Test ${TEST_ID} ${test_status}"
   echo
 
   if [[ ${test_status} = 'FAIL' ]]; then
