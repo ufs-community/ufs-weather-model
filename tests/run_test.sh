@@ -489,7 +489,6 @@ if [[ ${skip_check_results} == false ]]; then
       if [[ -f ${RUNDIR}/${i} ]] ; then
         mkdir -p "${NEW_BASELINE}/${CNTL_DIR}_${RT_COMPILER}/$(dirname "${i}")"
         cp "${RUNDIR}/${i}" "${NEW_BASELINE}/${CNTL_DIR}_${RT_COMPILER}/${i}"
-        # cp "${RUNDIR}/${i}" "${NEW_BASELINE}/${CNTL_DIR}_${RT_COMPILER}_doesntexist/${i}"
         echo "....OK" >> "${RT_LOG}"
         echo "....OK"
       else
@@ -506,10 +505,10 @@ if [[ ${skip_check_results} == false ]]; then
   grep "The total amount of wall time" "${RUNDIR}/out"
   grep "The maximum resident set size" "${RUNDIR}/out"
   echo
+  echo "Test ${TEST_ID} ${test_status}"
+  echo
   } >> "${RT_LOG}"
 
-  echo "Test ${TEST_ID} ${test_status}" >> "${RT_LOG}"
-  echo                                  >> "${RT_LOG}"
   echo "Test ${TEST_ID} ${test_status}"
   echo
 
