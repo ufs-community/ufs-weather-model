@@ -768,6 +768,7 @@ export LDIAG3D=.false.
 export QDIAG3D=.false.
 export PRINT_DIFF_PGR=.false.
 export MAX_OUTPUT_FIELDS=310
+export UPDATE_FULL_OMEGA=.false.
 
 # Stochastic physics
 export STOCHINI=.false.
@@ -1104,6 +1105,12 @@ export NX_GLB=360
 export NY_GLB=320
 export NPZ=127
 export NPZP=128
+
+# Use updated omega calculations if 
+#   hydrostatic is set to false
+if [[ "${HYDROSTATIC}" == .false. ]]; then
+  export UPDATE_FULL_OMEGA=.true.
+fi
 
 # default resources
 export DOMAINS_STACK_SIZE=8000000
