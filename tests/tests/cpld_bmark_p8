@@ -139,22 +139,48 @@ export CICE_MASK=kmtu_cice_NEMS_mx${OCNRES}.nc
 export MOM6_CHLCLIM=seawifs-clim-1997-2010.${NX_GLB}x${NY_GLB}.v20180328.nc
 export MOM6_FRUNOFF=runoff.daitren.clim.${NX_GLB}x${NY_GLB}.v20180328.nc
 export MOM6_RIVER_RUNOFF=True
+export MOM6_RESTART_SETTING=r
 export MOM6_DIAG_COORD_DEF_Z_FILE=interpolate_zgrid_26L.nc
+#
+
+#perturbations/stochastic physics
+export DO_SPPT=.true.
+export DO_SHUM=.false.
+export DO_SKEB=.true.
+export READ_INCREMENT=.true.
+export RES_LATLON_DYNAMICS="'fv3_increment.nc'"
+export PERT_CLDS=.true.
+# MOM6 IAU
+export ODA_INCUPD=True
+export ODA_INCUPD_NHOURS=0
+export ODA_TEMPINC_VAR="'t_pert'"
+export ODA_SALTINC_VAR="'s_pert'"
+export ODA_THK_VAR="'h_anl'"
+export ODA_INCUPD_UV=True
+export ODA_UINC_VAR="'u_pert'"
+export ODA_VINC_VAR="'v_pert'"
+# MOM6 stochastics
+export DO_OCN_SPPT=True
+export PERT_EPBL=True
+export OCN_SPPT=1.0
+export EPBL=1.0
 
 #Warm start
 export RUNTYPE=continue
 # ATM warm start
-#export WARM_START=.true.
-#export MAKE_NH=.false.
-#export NA_INIT=0
-#export EXTERNAL_IC=.false.
-#export NGGPS_IC=.false.
-#export MOUNTAIN=.true.
+export WARM_START=.true.
+export MAKE_NH=.false.
+export NA_INIT=0
+export EXTERNAL_IC=.false.
+export NGGPS_IC=.false.
+export MOUNTAIN=.true.
+#
+export NUDGE_QV=.false.
 # ICE warm start
 export CICE_RUNTYPE=continue
 export CICE_USE_RESTART_TIME=.false.
 # OCN warm start but https://github.com/ufs-community/ufs-weather-model/discussions/1708
-export MOM6_RESTART_SETTING=n
+#export MOM6_RESTART_SETTING=n
 
 export FNALBC="'C384.snowfree_albedo.tileX.nc'"
 export FNALBC2="'C384.facsf.tileX.nc'"

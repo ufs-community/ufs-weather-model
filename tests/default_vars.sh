@@ -568,7 +568,8 @@ export D_CON=1.
 export HORD_XX=5
 export HORD_DP=-5
 export HORD_TR=8
-
+export NUDGE_QV=.true.
+export PERT_CLDS=.false.
 # Radiation
 export DO_RRTMGP=.false.
 export DOGP_CLDOPTICS_LUT=.true.

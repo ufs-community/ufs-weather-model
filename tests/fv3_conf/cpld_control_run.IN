@@ -20,7 +20,7 @@ V2_SFC_FILE=${V2_SFC_FILE:-false}
 if [[ $BMIC == .true. ]]; then
   #FV3_IC=@[INPUTDATA_ROOT_BMIC]/gefs/${SYEAR}${SMONTH}${SDAY}${SHOUR}/
   FV3_IC=@[INPUTDATA_ROOT_BMIC] #TODO: testing
-  MOM_IC=FV3_IC; ICE_IC=FV3_IC; WAV_IC=FV3_IC
+  MOM_IC=${FV3_IC}; ICE_IC=${FV3_IC}; WAV_IC=${FV3_IC}
 else
   if [[ $ATMRES == C48 ]]; then
      FV3_IC=@[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127_mx${OCNRES}/${SYEAR}${SMONTH}${SDAY}${SHOUR}
@@ -162,13 +162,14 @@ else
 
   else
      if [[ $BMIC == .true. ]]; then
-       cp ${FV3_IC}/gfs*.nc ./INPUT
+       #cp ${FV3_IC}/gfs*.nc ./INPUT
        cp ${FV3_IC}/fv*.nc ./INPUT
        cp ${FV3_IC}/sfc_data*.nc ./INPUT
-       cp ${FV3_IC}/coupler.res ./INPUT
-       #coupler.res fv_core.res.nc fv_core.res.tile[1-6].nc fv_srf_wnd.res.tile[1-6].nc fv_tracer.res.tile[1-6].nc
+       cp ${FV3_IC}/phy_data*.nc ./INPUT
+       #cp ${FV3_IC}/coupler.res ./INPUT
+       #coupler.res fv_core.res.nc fv_core.res.tile[1-6].nc fv_srf_wnd.res.tile[1-6].nc fv_tracer.res.tile[1-6].nc phy_data.tile[1-6].nc fv3_increment.nc
        cp ${MOM_IC}/MOM*.nc ./INPUT
-       cp ${MOM_IC}/ORAS5.mx025.ic.nc ./INPUT
+       #cp ${MOM_IC}/ORAS5.mx025.ic.nc ./INPUT
        cp ${MOM_IC}/interpolate_zgrid_26L.nc ./INPUT
        cp ${ICE_IC}/cice*nc ./INPUT
        ls -1 ./INPUT/cice*nc>ice.restart_file
@@ -222,12 +223,14 @@ if [ $IAER = 2011 ]; then
   cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_DU.v15_3.dat optics_DU.dat
   cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_SS.v3_3.dat  optics_SS.dat
   cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_SU.v1_3.dat  optics_SU.dat
-  DIR_OPT=/scratch1/NCEPDEV/nems/Nick.Szapiro/tasks/input_data/gefs.v13/CHM/ExtData/monochromatic/
+  DIR_OPT=/scratch1/NCEPDEV/nems/Nick.Szapiro/tasks/input_data/gefs.v13/CHM/ExtData/ExtData/monochromatic/
   cp ${DIR_OPT}/optics_BC.v1_3.nc  optics_BC.nc
   cp ${DIR_OPT}/optics_OC.v1_3.nc  optics_OC.nc 
   cp ${DIR_OPT}/optics_DU.v15_3.nc optics_DU.nc
   cp ${DIR_OPT}/optics_SS.v3_3.nc  optics_SS.nc
   cp ${DIR_OPT}/optics_SU.v1_3.nc  optics_SU.nc
+  cp ${DIR_OPT}/optics_BRC.v1_5.nc  optics_BRC.nc
+  cp ${DIR_OPT}/optics_NI.v2_5.nc  optics_NI.nc
 fi
 
 cp    @[INPUTDATA_ROOT]/FV3_input_data/ugwp_c384_tau.nc ./ugwp_limb_tau.nc
@@ -244,7 +247,7 @@ fi
 #prognostic aerosols
 if [ $CPLCHM = .true. ]; then
   if [[ $BMIC == .true. ]]; then
-    ln -sf /scratch1/NCEPDEV/nems/Nick.Szapiro/tasks/input_data/gefs.v13/CHM/ExtData .
+    ln -sf /scratch1/NCEPDEV/nems/Nick.Szapiro/tasks/input_data/gefs.v13/CHM/* .
   else
     ln -sf  @[INPUTDATA_ROOT]/GOCART/p8c_5d/ExtData .
   fi

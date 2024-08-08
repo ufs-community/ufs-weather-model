@@ -35,7 +35,7 @@
   range_warn = .true.
   reset_eta = .false.
   n_sponge = 42
-  nudge_qv = .true.
+  nudge_qv = @[NUDGE_QV]
   nudge_dz = .false.
   tau = 0.0
   fast_tau_w_sec = 0.2
@@ -231,6 +231,7 @@
   iau_drymassfixer = .false.
   use_med_flux = @[USE_MED_FLUX]
   frac_grid    = @[FRAC_GRID]
+  pert_clds    = @[PERT_CLDS]
   cplchm       = @[CPLCHM]
   cplflx       = @[CPLFLX]
   cplice       = @[CPLICE]
@@ -383,6 +384,37 @@
 /
 
 &nam_stochy
+  STOCHINI=@[STOCHINI],
+  SKEBNORM=1,
+  SKEB_NPASS=30,
+  SKEB_VDOF=5,
+  SKEB=@[SKEB],
+  ISEED_SKEB=0
+  SKEB_TAU=2.16E4,1.728E5,2.592E6,7.776E6,3.1536E7
+  SKEB_LSCALE=500.E3,1000.E3,2000.E3,2000.E3,2000.E3
+  SKEBINT=1800,
+  SHUM=@[SHUM],
+  SHUM_TAU=21600,
+  SHUM_LSCALE=500000,
+  SHUMINT=3600,
+  ISEED_SHUM=1,
+  SPPT=0.56,0.28,0.14,0.056,0.028
+  SPPT_TAU=2.16E4,2.592E5,2.592E6,7.776E6,3.1536E7
+  SPPT_LSCALE=500.E3,1000.E3,2000.E3,2000.E3,2000.E3
+  SPPT_LOGIT=.TRUE.,
+  SPPT_SFCLIMIT=.TRUE.,
+  USE_ZMTNBLCK=.TRUE.
+  SPPTINT=1800,
+  ISEED_SPPT=20210325000103,20210325000104,20210325000105,20210325000106,20210325000107
+  pbl_taper = 0,0,0,0.125,0.25,0.5,0.75
+  OCNSPPT=0.8,0.4,0.2,0.08,0.04
+  OCNSPPT_LSCALE=500.E3,1000.E3,2000.E3,2000.E3,2000.E3
+  OCNSPPT_TAU=2.16E4,2.592E5,2.592E6,7.776E6,3.1536E7
+  ISEED_OCNSPPT=20210325000108,20210325000109,20210325000110,20210325000111,20210325000112
+  EPBL=0.8,0.4,0.2,0.08,0.04
+  EPBL_LSCALE=500.E3,1000.E3,2000.E3,2000.E3,2000.E3
+  EPBL_TAU=2.16E4,2.592E5,2.592E6,7.776E6,3.1536E7
+  ISEED_EPBL=20210325000113,20210325000114,20210325000115,20210325000116,20210325000117
 /
 
 &nam_sfcperts
@@ -399,6 +431,7 @@
   output_directory = '@[MOM6_OUTPUT_DIR]',
   input_filename = '@[MOM6_RESTART_SETTING]'
   restart_input_dir = 'INPUT/',
-  restart_output_dir = '@[MOM6_RESTART_DIR]'
+  restart_output_dir = '@[MOM6_RESTART_DIR]',
   parameter_filename = 'INPUT/MOM_input',
-                       'INPUT/MOM_override'/
+                       'INPUT/MOM_override'
+/
