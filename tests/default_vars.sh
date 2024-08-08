@@ -843,6 +843,7 @@ export RST_BEG=${RUN_BEG}
 export RST_2_BEG=${RUN_BEG}
 export RST_END=${RUN_END}
 export RST_2_END=${RUN_END}
+export WW3_WLEV='F'
 export WW3_CUR='F'
 export WW3_ICE='F'
 export WW3_IC1='F'
@@ -1018,6 +1019,7 @@ export_ww3() {
   WW3_DTPNT="$(printf "%02d" $(( WW3_OUTDTHR*3600 )) )"
   export WW3_DTFLD
   export WW3_DTPNT
+  export WW3_WLEV='F'
   export WW3_CUR='C'
   export WW3_ICE='C'
   export WW3_IC1='F'
@@ -1431,6 +1433,7 @@ export_hafs_regional ()
   # default hafs with no ice
   export WW3_DOMAIN=natl_6m
   export WW3_MODDEF=mod_def.${WW3_DOMAIN}
+  export WW3_WLEV='F'
   export WW3_ICE='F'
   export WW3_OUTPARS="WND HS T01 T02 DIR FP DP PHS PTP PDIR UST CHA USP"
 
