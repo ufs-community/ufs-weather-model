@@ -5,8 +5,7 @@ help([[
 
 whatis([===[Loads libraries needed for building the UFS Weather Model on Gaea ]===])
 
---- prepend_path("MODULEPATH", "/ncrc/proj/epic/spack-stack/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core")
-prepend_path("MODULEPATH", "/autofs/ncrc-svm1_proj/epic/spack-stack/spack-stack-1.6.0/envs/g2tmpl-addon-env/install/modulefiles/Core")
+prepend_path("MODULEPATH", "/ncrc/proj/epic/spack-stack/spack-stack-1.6.0/envs/upp-addon-env/install/modulefiles/Core")
 
 stack_intel_ver=os.getenv("stack_intel_ver") or "2023.1.0"
 load(pathJoin("stack-intel", stack_intel_ver))
