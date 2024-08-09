@@ -769,12 +769,9 @@ case ${MACHINE_ID} in
     ;;
   orion)
     echo "rt.sh: Setting up orion..."
-    module load git/2.28.0
-    module load gcc/10.2.0
-    module load python/3.9.2
 
     if [[ "${ROCOTO:-false}" == true ]] ; then
-      module load contrib rocoto
+      module load contrib ruby/3.2.3 rocoto/1.3.7
       ROCOTO_SCHEDULER="slurm"
     fi
 
@@ -798,6 +795,8 @@ case ${MACHINE_ID} in
     # TMP use this path for LM4 cap 
     INPUTDATA_LM4=${INPUTDATA_LM4:-/work/noaa/gfdlscr/pdata/gfdl/cmip6/datasets/CM4/common}
 
+    cp fv3_conf/fv3_slurm.IN_orion fv3_conf/fv3_slurm.IN
+    cp fv3_conf/compile_slurm.IN_orion fv3_conf/compile_slurm.IN
     ;;
   hercules)
     echo "rt.sh: Setting up hercules..."
