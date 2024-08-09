@@ -755,7 +755,6 @@ export FSICS=0
 
 # Dynamical core
 export FV_CORE_TAU=0.
-export RF_CUTOFF=10.0
 export FAST_TAU_W_SEC=0.2
 export DRY_MASS=98320.0
 
@@ -925,7 +924,7 @@ export_ugwpv1() {
       export CDMBGWD="0.071,2.1,1.0,1.0"
       export CDMBGWD_GSL="40.0,1.77,1.0,1.0"
       export KNOB_UGWP_TAUAMP=6.0e-3
-      export K_SPLIT=1
+      #export K_SPLIT=1
       export N_SPLIT=4
       export TAU=10.0
       export RF_CUTOFF=100.0
@@ -937,7 +936,7 @@ export_ugwpv1() {
       export CDMBGWD="0.14,1.8,1.0,1.0"
       export CDMBGWD_GSL="20.0,2.5,1.0,1.0"
       export KNOB_UGWP_TAUAMP=3.0e-3
-      export K_SPLIT=1
+      #export K_SPLIT=1
       export N_SPLIT=4
       export TAU=8.0
       export RF_CUTOFF=100.0
@@ -947,9 +946,10 @@ export_ugwpv1() {
       export DELTIM=600
       export XR_CNVCLD=.true.
       export CDMBGWD="0.23,1.5,1.0,1.0"
+      export CDMBGWD="5.0,5.0,1.0,1.0"
       export CDMBGWD_GSL="5.0,5.0,1.0,1.0"
       export KNOB_UGWP_TAUAMP=1.5e-3
-      export K_SPLIT=2
+      #export K_SPLIT=2
       export N_SPLIT=4
       export TAU=6.0
       export RF_CUTOFF=100.0
@@ -961,7 +961,7 @@ export_ugwpv1() {
       export CDMBGWD="1.1,0.72,1.0,1.0"
       export CDMBGWD_GSL="5.0,5.0,1.0,1.0"
       export KNOB_UGWP_TAUAMP=0.8e-3
-      export K_SPLIT=2
+      #export K_SPLIT=2
       export N_SPLIT=4
       export TAU=4.0
       export RF_CUTOFF=100.0
@@ -973,7 +973,7 @@ export_ugwpv1() {
       export CDMBGWD="4.0,0.15,1.0,1.0"
       export CDMBGWD_GSL="2.5,7.5,1.0,1.0"
       export KNOB_UGWP_TAUAMP=0.5e-3
-      export K_SPLIT=2
+      #export K_SPLIT=2
       export N_SPLIT=4
       export TAU=3.0
       export RF_CUTOFF=100.0
@@ -985,7 +985,7 @@ export_ugwpv1() {
       export CDMBGWD="4.0,0.10,1.0,1.0"
       export CDMBGWD_GSL="1.67,8.8,1.0,1.0"
       export KNOB_UGWP_TAUAMP=0.35e-3
-      export K_SPLIT=2
+      #export K_SPLIT=2
       export N_SPLIT=6
       export TAU=2.5
       export RF_CUTOFF=100.0
@@ -997,7 +997,7 @@ export_ugwpv1() {
       export CDMBGWD="4.0,0.05,1.0,1.0"
       export CDMBGWD_GSL="0.625,14.1,1.0,1.0"
       export KNOB_UGWP_TAUAMP=0.13e-3
-      export K_SPLIT=4
+      #export K_SPLIT=4
       export N_SPLIT=5
       export TAU=0.5
       export RF_CUTOFF=100.0
@@ -1008,6 +1008,10 @@ export_ugwpv1() {
       exit 1
       ;;
   esac
+  
+  if [[ ${DO_GSL_DRAG_SS} = .true. ]]; then
+    export CDMBGWD=${CDMBGWD_GSL}
+  fi
 }
 
 # Defaults for the CICE6 model namelist, mx100
