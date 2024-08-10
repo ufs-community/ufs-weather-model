@@ -915,6 +915,17 @@ export_tiled() {
 export_ugwpv1() {
   export DO_UGWP_V1=.true.
   export DO_UGWP_V0=.false.
+  export GWD_OPT=2
+  export KNOB_UGWP_VERSION=1
+  export KNOB_UGWP_NSLOPE=1
+  export DO_GSL_DRAG_LS_BL=.true.
+  export DO_GSL_DRAG_SS=.true.
+  export DO_GSL_DRAG_TOFD=.true.
+  export DO_UGWP_V1_OROG_ONLY=.false.
+  export DO_UGWP_V0_NST_ONLY=.false.
+  export LDIAG_UGWP=.false.
+  export KNOB_UGWP_DOKDIS=2
+  export KNOB_UGWP_NDX4LH=4
 
   # Add updated damping and timestep variables
   case "${ATMRES}" in
