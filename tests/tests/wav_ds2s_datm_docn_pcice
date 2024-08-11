@@ -23,16 +23,16 @@ export CHOUR=06
 export FHMAX=24
 export FHROT=0
 
+#initial component exports
 export ATMRES=C96
 export OCNRES=100
 export ICERES=1.00
 export NX_GLB=360
 export NY_GLB=320
-export ATM_compute_tasks=${ATM_compute_tasks_cdeps_025}
-export OCN_tasks=${ICE_tasks_cdeps_025}
-export ICE_tasks=${ICE_tasks_cdeps_025}
-export WAV_tasks=100
-
+export ATM_compute_tasks=18
+export OCN_tasks=12
+export ICE_tasks=18
+export WAV_tasks=128
 export_cice6
 export_ww3
 export_cmeps
@@ -51,9 +51,9 @@ export atm_model=datm
 export ocn_model=docn
 export ice_model=cice6
 
-export RESTART_N=12
+export RESTART_N=${FHMAX}
 export RESTART_INTERVAL="${RESTART_N} -1"
-export OUTPUT_FH='0 21 24'
+export OUTPUT_FH='24 -1'
 
 export DATM_SRC=GFS
 export FILENAME_BASE=gfs.
@@ -85,6 +85,8 @@ export WW3_CUR='C'
 export WW3_ICE='C'
 export WW3_IC1='F'
 export WW3_IC5='F'
+export WW3_user_sets_histname="true" 
+export WW3_gridded_netcdfout="true" #https://github.com/NOAA-EMC/WW3/pull/780
 
 #CDEPS docn settings
 export ocn_datamode=sstdata
