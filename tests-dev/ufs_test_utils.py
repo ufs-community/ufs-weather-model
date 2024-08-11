@@ -325,13 +325,14 @@ def rrmdir(path):
 
     Args:
         path (str): File path to remove
-    """ 
-    for entry in os.scandir(path):
-        if entry.is_dir():
-            rrmdir(entry)
-        else:
-            os.remove(entry)
-            os.rmdir(path)
+    """
+    shutil.rmtree(path)
+    #for entry in os.scandir(path):
+    #    if entry.is_dir():
+    #        rrmdir(entry)
+    #    else:
+    #        os.remove(entry)
+    #        os.rmdir(path)
 
 #if __name__ == "__main__":
 #    create_yaml()
