@@ -95,7 +95,7 @@ while getopts ":a:b:cl:mn:dwkreohs" opt; do
     b)
 	NEW_BASELINES_FILE=${OPTARG}
 	export NEW_BASELINES_FILE
-	python -c "import create_yml; create_yml.update_testyaml_b()"
+	python -c "import ufs_test_utils; ufs_test_utils.update_testyaml_b()"
 	UFS_TEST_YAML="ufs_test_temp.yaml"
 	export UFS_TEST_YAML
 	;;
@@ -132,7 +132,7 @@ while getopts ":a:b:cl:mn:dwkreohs" opt; do
 
 	export SRT_NAME
 	export SRT_COMPILER
-	python -c "import create_yml; create_yml.update_testyaml_n()"
+	python -c "import ufs_test_utils; ufs_test_utils.update_testyaml_n()"
 	UFS_TEST_YAML="ufs_test_temp.yaml"
 	export UFS_TEST_YAML
 	;;
