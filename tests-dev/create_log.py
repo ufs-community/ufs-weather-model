@@ -15,6 +15,7 @@ def finish_log():
     filename   = REGRESSIONTEST_LOG
     KEEP_RUNDIR= str(os.getenv('KEEP_RUNDIR'))
     ROCOTO     = str(os.getenv('ROCOTO'))
+    CREATE_BASELINE = str(os.getenv('CREATE_BASELINE'))
     COMPILE_ONLY = str(os.getenv('COMPILE_ONLY'))
 
     run_logs= f"""
@@ -93,36 +94,40 @@ def finish_log():
                             PASS_CHECK = 'Test '+TEST_ID+' PASS'
                             MAXS_CHECK = 'The maximum resident set size (KB)'
                             pass_flag = False
-                            with open('./logs/log_'+MACHINE_ID+'/'+TEST_LOG) as f:
-                                if PASS_CHECK in f.read():
-                                    pass_flag = True
-                            f.close()
-                            if pass_flag:
-                                f = open('./logs/log_'+MACHINE_ID+'/'+TEST_LOG_TIME)
-                                timing_data = f.read()
-                                first_line = timing_data.split('\n', 1)[0]
-                                etime = str(int(first_line.split(",")[4].strip()) - int(first_line.split(",")[1].strip()))
-                                rtime = str(int(first_line.split(",")[3].strip()) - int(first_line.split(",")[2].strip()))
-                                etime_min, etime_sec = divmod(int(etime), 60)
-                                etime_min = f"{etime_min:02}"; etime_sec = f"{etime_sec:02}"
-                                rtime_min, rtime_sec = divmod(int(rtime), 60)
-                                rtime_min = f"{rtime_min:02}"; rtime_sec = f"{rtime_sec:02}"
-                                time_log = " ["+etime_min+':'+etime_sec+', '+rtime_min+':'+rtime_sec+"]"
+                            create_dep_flag = False
+                            if (CREATE_BASELINE == 'true' and not DEP_RUN == ""):
+                                create_dep_flag = True
+                            if not create_dep_flag:
+                                with open('./logs/log_'+MACHINE_ID+'/'+TEST_LOG) as f:
+                                    if PASS_CHECK in f.read():
+                                        pass_flag = True
+                                        f.close()
+                                if pass_flag:
+                                    f = open('./logs/log_'+MACHINE_ID+'/'+TEST_LOG_TIME)
+                                    timing_data = f.read()
+                                    first_line = timing_data.split('\n', 1)[0]
+                                    etime = str(int(first_line.split(",")[4].strip()) - int(first_line.split(",")[1].strip()))
+                                    rtime = str(int(first_line.split(",")[3].strip()) - int(first_line.split(",")[2].strip()))
+                                    etime_min, etime_sec = divmod(int(etime), 60)
+                                    etime_min = f"{etime_min:02}"; etime_sec = f"{etime_sec:02}"
+                                    rtime_min, rtime_sec = divmod(int(rtime), 60)
+                                    rtime_min = f"{rtime_min:02}"; rtime_sec = f"{rtime_sec:02}"
+                                    time_log = " ["+etime_min+':'+etime_sec+', '+rtime_min+':'+rtime_sec+"]"
+                                    f.close()
+                                with open('./logs/log_'+MACHINE_ID+'/'+TEST_LOG) as f:
+                                    if pass_flag :
+                                        rtlog_file = f.readlines()
+                                        for line in rtlog_file:
+                                            if MAXS_CHECK in line:
+                                                memsize= line.split('=')[1].strip()
+                                        test_log = 'PASS -- TEST '+TEST_ID+time_log+' ('+memsize+' MB)\n'
+                                        PASS_NR += 1
+                                    else:
+                                        test_log = 'FAIL -- TEST '+TEST_ID+'\n'
+                                        failed_list.append(TEST_NAME+' '+RT_COMPILER)
+                                        FAIL_NR += 1
+                                    run_logs += test_log
                                 f.close()
-                            with open('./logs/log_'+MACHINE_ID+'/'+TEST_LOG) as f:
-                                if pass_flag :
-                                    rtlog_file = f.readlines()
-                                    for line in rtlog_file:
-                                        if MAXS_CHECK in line:
-                                            memsize= line.split('=')[1].strip()
-                                    test_log = 'PASS -- TEST '+TEST_ID+time_log+' ('+memsize+' MB)\n'
-                                    PASS_NR += 1
-                                else:
-                                    test_log = 'FAIL -- TEST '+TEST_ID+'\n'
-                                    failed_list.append(TEST_NAME+' '+RT_COMPILER)
-                                    FAIL_NR += 1
-                                run_logs += test_log
-                            f.close()
                     run_logs += '\n'
     write_logfile(filename, "a", output=run_logs)
 
