@@ -46,7 +46,6 @@ list(APPEND cdeps_datm_files
   CDEPS/datm/datm_datamode_cplhist_mod.F90
   CDEPS/datm/datm_datamode_era5_mod.F90
   CDEPS/datm/datm_datamode_gefs_mod.F90
-  CDEPS/datm/datm_datamode_gfs_hafs_mod.F90
   CDEPS/datm/datm_datamode_jra_mod.F90
   CDEPS/datm/datm_datamode_simple_mod.F90
 )
