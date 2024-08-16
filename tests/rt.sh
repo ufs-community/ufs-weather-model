@@ -1020,9 +1020,7 @@ fi
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-${DISKNM}/NEMSfv3gfs/input-data-20240501}
 #INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20240214
-INPUTDATA_ROOT_WW3=/scratch1/NCEPDEV/nems/Nick.Szapiro/tasks/updateToEP5/WW3_inputdata
-#INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC:-${DISKNM}/NEMSfv3gfs/BM_IC-20220207}
-INPUTDATA_ROOT_BMIC=/scratch1/NCEPDEV/nems/Nick.Szapiro/tasks/input_data/gefs.v13/IC
+INPUTDATA_ROOT_WW3=/scratch1/NCEPDEV/nems/Nick.Szapiro/tasks/input_data/gefs.v13/stage/WW3_input_data
 
 shift $((OPTIND-1))
 if [[ $# -gt 1 ]]; then
