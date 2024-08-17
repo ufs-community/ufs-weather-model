@@ -1016,9 +1016,7 @@ CD_TIDES = 0.0018               !   [nondim] default = 1.0E-04
                                 ! The drag coefficient that applies to the tides.
 GUST_CONST = 0.0                !   [Pa] default = 0.02
                                 ! The background gustiness in the winds.
-FIX_USTAR_GUSTLESS_BUG = False  !   [Boolean] default = False
-                                ! If true correct a bug in the time-averaging of the gustless wind friction
-                                ! velocity
+USTAR_GUSTLESS_BUG = True       !   [Boolean] default = False
 USE_RIGID_SEA_ICE = True        !   [Boolean] default = False
                                 ! If true, sea-ice is rigid enough to exert a nonhydrostatic pressure that
                                 ! resist vertical motion.
@@ -1036,3 +1034,5 @@ PERT_EPBL = @[PERT_EPBL]        ! [Boolean] default = False
 ! === module MOM_restart ===
 
 ! === module MOM_file_parser ===
+
+USE_HUYNH_STENCIL_BUG = True
