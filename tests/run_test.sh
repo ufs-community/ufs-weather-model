@@ -273,8 +273,13 @@ if [[ ${CPLWAV} == .true. ]]; then
 fi
 
 if [[ ${CPLCHM} == .true. ]]; then
-  cp "${PATHRT}"/parm/gocart/*.rc .
-  atparse < "${PATHRT}/parm/gocart/AERO_HISTORY.rc.IN" > AERO_HISTORY.rc
+  if [[ $BMIC == .true. ]]; then
+    cp "${PATHRT}"/parm/gocart/gefs/*.rc .
+    atparse < "${PATHRT}/parm/gocart/gefs/AERO_HISTORY.rc.IN" > AERO_HISTORY.rc
+  else
+    cp "${PATHRT}"/parm/gocart/*.rc .
+    atparse < "${PATHRT}/parm/gocart/AERO_HISTORY.rc.IN" > AERO_HISTORY.rc
+  fi
 fi
 
 #TODO: this logic needs to be cleaned up for datm applications w/o
