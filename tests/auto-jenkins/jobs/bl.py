@@ -24,9 +24,9 @@ def set_directories(job_obj):
         rtbldir = '/scratch1/NCEPDEV/stmp4/emc.nemspara/FV3_RT/'\
                  f'REGRESSION_TEST'
     elif job_obj.machine == 'jet':
-        workdir = '/lfs4/HFIP/h-nems/emc.nemspara/autort/pr'
-        blstore = '/lfs4/HFIP/h-nems/emc.nemspara/RT/NEMSfv3gfs/'
-        rtbldir = '/lfs4/HFIP/h-nems/emc.nemspara/RT_BASELINE/'\
+        workdir = '/lfs5/HFIP/hfv3gfs/role.epic/autort/pr'
+        blstore = '/lfs5/HFIP/hfv3gfs/role.epic/RT/NEMSfv3gfs/'
+        rtbldir = '/lfs5/HFIP/hfv3gfs/role.epic/RT_BASELINE/'\
                  f'emc.nemspara/FV3_RT/REGRESSION_TEST'
     elif job_obj.machine == 'orion':
         workdir = '/work/noaa/epic-ps/role-epic-ps/autort/tests/auto/pr'
