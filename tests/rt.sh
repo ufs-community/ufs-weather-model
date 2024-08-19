@@ -835,16 +835,15 @@ case ${MACHINE_ID} in
     if [[ "${ECFLOW:-false}" == true ]] ; then
       module load ecflow/5.11.4
     fi
-
-    module use /mnt/lfs4/HFIP/hfv3gfs/role.epic/spack-stack/spack-stack-1.5.0/envs/unified-env-rocky8/install/modulefiles/Core
+    module use /contrib/spack-stack/spack-stack-1.6.0/envs/unified-env-rocky8/install/modulefiles/Core
     module load stack-intel/2021.5.0
-    module load stack-python/3.10.8
+    module load stack-python/3.10.13
 
     QUEUE="batch"
     COMPILE_QUEUE="batch"
     PARTITION="xjet"
     DISKNM="/lfs5/HFIP/hfv3gfs/role.epic/RT"
-    dprefix="${dprefix:-/lfs4/HFIP/${ACCNR}/${USER}}"
+    dprefix="${dprefix:-/lfs5/HFIP/${ACCNR}/${USER}}"
     STMP="${STMP:-${dprefix}/RT_BASELINE}"
     PTMP="${PTMP:-${dprefix}/RT_RUNDIRS}"
 
