@@ -514,6 +514,7 @@ if [[ ${skip_check_results} == false ]]; then
 
   if [[ ${test_status} = 'FAIL' ]]; then
     echo "${TEST_ID} failed in check_result" >> "${PATHRT}/fail_test_${TEST_ID}"
+    write_fail_test
   fi
 
 else
