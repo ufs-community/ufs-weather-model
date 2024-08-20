@@ -842,7 +842,7 @@ case ${MACHINE_ID} in
     QUEUE="batch"
     COMPILE_QUEUE="batch"
     PARTITION="xjet"
-    DISKNM="/lfs5/HFIP/hfv3gfs/role.epic/RT"
+    DISKNM="/lfs5/HFIP/hfv3gfs/role.epic/h-nems/RT"
     dprefix="${dprefix:-/lfs5/HFIP/${ACCNR}/${USER}}"
     STMP="${STMP:-${dprefix}/RT_BASELINE}"
     PTMP="${PTMP:-${dprefix}/RT_RUNDIRS}"

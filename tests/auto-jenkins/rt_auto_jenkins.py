@@ -76,7 +76,7 @@ def delete_pr_dirs(each_pr, machine):
     if machine == 'hera':                                                                                     
         workdir = '/scratch1/NCEPDEV/nems/role.epic/autort/pr'
     elif machine == 'jet':
-        workdir = '/lfs5/HFIP/hfv3gfs/role.epic/autort/pr'
+        workdir = '/lfs5/HFIP/hfv3gfs/role.epic/h-nems/autort/pr'
     elif machine == 'orion':
         workdir = '/work/noaa/epic-ps/role-epic-ps/autort/pr'
     elif machine == 'hercules':
@@ -110,7 +110,7 @@ def delete_rt_dirs(in_dir, machine, workdir):
     if machine == 'hera':                                                                                     
         rt_dir ='/scratch1/NCEPDEV/stmp4/role.epic/FV3_RT' 
     elif machine == 'jet':
-        rt_dir ='/lfs5/HFIP/hfv3gfs/role.epic/RT_BASELINE/'\
+        rt_dir ='/lfs5/HFIP/hfv3gfs/role.epic/h-nems/RT_BASELINE/'\
                f'emc.nemspara/FV3_RT'
     elif machine == 'orion':
         rt_dir = '/work/noaa/stmp/bcurtis/stmp/bcurtis/FV3_RT'
