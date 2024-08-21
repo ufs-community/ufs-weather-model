@@ -555,6 +555,7 @@ export MODEL_INITIALIZATION=false
 export WARM_START=.false.
 export READ_INCREMENT=.false.
 export RES_LATLON_DYNAMICS="''"
+export INCREMENT_FILE_ON_NATIVE_GRID=.false.
 export NGGPS_IC=.true.
 export EXTERNAL_IC=.true.
 export MAKE_NH=.true.
