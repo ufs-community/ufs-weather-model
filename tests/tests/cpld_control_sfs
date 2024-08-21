@@ -46,6 +46,13 @@ OCN_tasks=$OCN_tasks_cpl_unstr
 ICE_tasks=$ICE_tasks_cpl_unstr
 WAV_tasks=$WAV_tasks_cpl_unstr
 
+# use downscaled warmstarts for ocean and ice
+export OCNICE_WARMSTART=.true.
+export MOM6_INIT_FROM_Z=False
+export MOM6_INIT_UV=file
+export MOM6_WARMSTART_FILE=mom6.warmstart.nc
+export CICE_ICE_IC=cice.warmstart.nc
+
 export atm_omp_num_threads=$THRD_cpl_unstr
 export med_omp_num_threads=$atm_omp_num_threads
 
