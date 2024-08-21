@@ -16,12 +16,12 @@ jobs:
       current: ${{ steps.check.outputs.current }}
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Wait for caching source
       run: sleep 30
 
-    - uses: actions/cache@v2
+    - uses: actions/cache@v4
       with:
         path: ~/id_file
         key: helperid-${{ github.run_id }}
