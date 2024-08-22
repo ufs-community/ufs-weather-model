@@ -451,7 +451,7 @@ EOF
   fi
 
   cat << EOF >> "${ROCOTO_XML}"
-    <cores>${BUILD_CORES}</cores>
+    <nodes>1:ppn=${BUILD_CORES}</nodes>
     <walltime>${BUILD_WALLTIME}</walltime>
     <join>&RUNDIR_ROOT;/compile_${COMPILE_ID}.log</join>
     ${NATIVE}
