@@ -33,7 +33,7 @@ else
        FV3_IC=@[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127_mx${OCNRES}
      fi
      MOM_IC=@[INPUTDATA_ROOT]/MOM6_IC
-     ICE_IC=@[INPUTDATA_ROOT]/CICE_IC/${OCNRES}
+     ICE_IC=@[INPUTDATA_ROOT]/CICE_IC
   fi
 fi
 
@@ -90,8 +90,13 @@ if [ $WARM_START = .false. ]; then
       cp    ${MOM_IC}/MOM.res.nc ./INPUT
       cp    ${ICE_IC}/cice_model_@[ICERES].cpc.res_* ./cice_model.res.nc
     else
-      cp    ${MOM_IC}/MOM6_IC_TS_${SYEAR}${SMONTH}${SDAY}${SHOUR}.nc ./INPUT/MOM6_IC_TS.nc
-      cp    ${ICE_IC}/cice_model_@[ICERES].cpc.res_${SYEAR}${SMONTH}${SDAY}.nc ./cice_model.res.nc
+      if [[ $OCNICE_WARMSTART == .true. ]]; then
+        cp   ${MOM_IC}/mom6.mx@[OCNRES].${SYEAR}${SMONTH}${SDAY}${SHOUR}.warmstart.nc ./INPUT/mom6.warmstart.nc
+        cp   ${ICE_IC}/cice.mx@[OCNRES].${SYEAR}${SMONTH}${SDAY}${SHOUR}.warmstart.nc ./cice.warmstart.nc
+      else
+        cp    ${MOM_IC}/MOM6_IC_TS_${SYEAR}${SMONTH}${SDAY}${SHOUR}.nc ./INPUT/MOM6_IC_TS.nc
+        cp    ${ICE_IC}/${OCNRES}/cice_model_@[ICERES].cpc.res_${SYEAR}${SMONTH}${SDAY}.nc ./cice_model.res.nc
+      fi
     fi
   fi
 else
