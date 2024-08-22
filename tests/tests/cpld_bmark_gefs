@@ -66,7 +66,7 @@ export BMIC=.true.
 
 export DAYS=0.5
 export FHMAX=12
-export RESTART_N=12
+export RESTART_N=$((FHMAX-FHROT))
 export RESTART_INTERVAL="${RESTART_N} -1"
 export OUTPUT_FH="3 -1"
 export FHZERO=3
@@ -181,8 +181,7 @@ export NUDGE_QV=.false.
 # ICE warm start
 export CICE_RUNTYPE=continue
 export CICE_USE_RESTART_TIME=.false.
-# OCN warm start but https://github.com/ufs-community/ufs-weather-model/discussions/1708
-#export MOM6_RESTART_SETTING=n
+export MOM6_RESTART_SETTING=r
 
 export FNALBC="'C384.snowfree_albedo.tileX.nc'"
 export FNALBC2="'C384.facsf.tileX.nc'"

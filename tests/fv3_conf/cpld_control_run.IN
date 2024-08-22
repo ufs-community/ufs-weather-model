@@ -121,7 +121,8 @@ else
      fi
 
      #if not mx025, then mom6 restart is a single file
-     if [[ $OCNRES == 025 ]]; then
+     #if [[ $OCNRES == 025 ]]; then
+     if [[ ${MOM6_PARALLEL_RESTARTFILES} ]]; then
       cp ../${DEP_RUN}${SUFFIX}/${MOM6_RESTART_DIR}/${RESTART_FILE_PREFIX}.MOM.res.nc ./INPUT/MOM.res.nc
       cp ../${DEP_RUN}${SUFFIX}/${MOM6_RESTART_DIR}/${RESTART_FILE_PREFIX}.MOM.res_1.nc ./INPUT/MOM.res_1.nc
       cp ../${DEP_RUN}${SUFFIX}/${MOM6_RESTART_DIR}/${RESTART_FILE_PREFIX}.MOM.res_2.nc ./INPUT/MOM.res_2.nc
@@ -129,7 +130,11 @@ else
      else
       cp ../${DEP_RUN}${SUFFIX}/${MOM6_RESTART_DIR}/${RESTART_FILE_PREFIX}.MOM.res.nc ./INPUT/MOM.res.nc
       if [[ $ODA_INCUPD == 'True' ]] && [[ $FHROT -le 6 ]]; then
-        cp @[INPUTDATA_ROOT]/MOM6_IC/mom6_increment.nc ./INPUT/mom6_increment.nc
+        if [[ ${BMIC} ]]; then
+          cp ${MOM_IC}/mom6_increment.nc ./INPUT
+        else
+          cp @[INPUTDATA_ROOT]/MOM6_IC/mom6_increment.nc ./INPUT/mom6_increment.nc
+        fi
       fi
      fi
 
