@@ -268,7 +268,7 @@ elif [[ ${MACHINE_ID} = jet ]]; then
   export OCN_tasks_cpl_c192=100
   export ICE_tasks_cpl_c192=48
   export WAV_tasks_cpl_c192=80
-  export WLCLK_cpl_c192=500
+  export WLCLK_cpl_c192=120
 
 elif [[ ${MACHINE_ID} = s4 ]]; then
 
@@ -411,7 +411,7 @@ else
 
 fi
 
-export WLCLK_dflt=150
+export WLCLK_dflt=30
 
 export WLCLK=${WLCLK_dflt}
 export CMP_DATAONLY=false
