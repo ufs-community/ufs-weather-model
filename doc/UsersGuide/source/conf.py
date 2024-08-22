@@ -92,6 +92,7 @@ linkcheck_anchors_ignore = [r"L\d*",
                             ]
 # Ignore working links that cause a linkcheck 403 error.
 linkcheck_ignore = [r'https://agupubs\.onlinelibrary\.wiley\.com/doi/10\.1029/2020MS002260',
+                    r'https://glossary.ametsoc.org/wiki/*',
                    ]
 
 # -- Options for HTML output -------------------------------------------------
