@@ -268,7 +268,7 @@ elif [[ ${MACHINE_ID} = jet ]]; then
   export OCN_tasks_cpl_c192=100
   export ICE_tasks_cpl_c192=48
   export WAV_tasks_cpl_c192=80
-  export WLCLK_cpl_c192=120
+  export WLCLK_cpl_c192=500
 
 elif [[ ${MACHINE_ID} = s4 ]]; then
 
@@ -411,7 +411,7 @@ else
 
 fi
 
-export WLCLK_dflt=30
+export WLCLK_dflt=150
 
 export WLCLK=${WLCLK_dflt}
 export CMP_DATAONLY=false
@@ -930,85 +930,85 @@ export_ugwpv1() {
   # Add updated damping and timestep variables
   case "${ATMRES}" in
     "C48")
-      export DELTIM=1200
+      export DT_ATMOS=720
       export XR_CNVCLD=.false.
       export CDMBGWD="0.071,2.1,1.0,1.0"
       export CDMBGWD_GSL="40.0,1.77,1.0,1.0"
       export KNOB_UGWP_TAUAMP=6.0e-3
-      #export K_SPLIT=1
+      export K_SPLIT=1
       export N_SPLIT=4
       export TAU=10.0
       export RF_CUTOFF=100.0
       export FV_SG_ADJ=3600
       ;;
     "C96")
-      export DELTIM=600
+      export DT_ATMOS=720
       export XR_CNVCLD=.false.
       export CDMBGWD="0.14,1.8,1.0,1.0"
       export CDMBGWD_GSL="20.0,2.5,1.0,1.0"
       export KNOB_UGWP_TAUAMP=3.0e-3
-      #export K_SPLIT=1
+      export K_SPLIT=1
       export N_SPLIT=4
       export TAU=8.0
       export RF_CUTOFF=100.0
       export FV_SG_ADJ=1800
       ;;
     "C192")
-      export DELTIM=600
+      export DT_ATMOS=600
       export XR_CNVCLD=.true.
       export CDMBGWD="0.23,1.5,1.0,1.0"
       export CDMBGWD="5.0,5.0,1.0,1.0"
       export CDMBGWD_GSL="5.0,5.0,1.0,1.0"
       export KNOB_UGWP_TAUAMP=1.5e-3
-      #export K_SPLIT=2
-      export N_SPLIT=4
+      export K_SPLIT=2
+      export N_SPLIT=5
       export TAU=6.0
       export RF_CUTOFF=100.0
       export FV_SG_ADJ=1800
       ;;
     "C384")
-      export DELTIM=300
+      export DT_ATMOS=300
       export XR_CNVCLD=.true.
       export CDMBGWD="1.1,0.72,1.0,1.0"
       export CDMBGWD_GSL="5.0,5.0,1.0,1.0"
       export KNOB_UGWP_TAUAMP=0.8e-3
-      #export K_SPLIT=2
+      export K_SPLIT=2
       export N_SPLIT=4
       export TAU=4.0
       export RF_CUTOFF=100.0
       export FV_SG_ADJ=900
       ;;
     "C768")
-      export DELTIM=150
+      export DT_ATMOS=150
       export XR_CNVCLD=.true.
       export CDMBGWD="4.0,0.15,1.0,1.0"
       export CDMBGWD_GSL="2.5,7.5,1.0,1.0"
       export KNOB_UGWP_TAUAMP=0.5e-3
-      #export K_SPLIT=2
+      export K_SPLIT=2
       export N_SPLIT=4
       export TAU=3.0
       export RF_CUTOFF=100.0
       export FV_SG_ADJ=450
       ;;
     "C1152")
-      export DELTIM=150
+      export DT_ATMOS=150
       export XR_CNVCLD=.true.
       export CDMBGWD="4.0,0.10,1.0,1.0"
       export CDMBGWD_GSL="1.67,8.8,1.0,1.0"
       export KNOB_UGWP_TAUAMP=0.35e-3
-      #export K_SPLIT=2
+      export K_SPLIT=2
       export N_SPLIT=6
       export TAU=2.5
       export RF_CUTOFF=100.0
       export FV_SG_ADJ=450
       ;;
     "C3072")
-      export DELTIM=90
+      export DT_ATMOS=90
       export XR_CNVCLD=.true.
       export CDMBGWD="4.0,0.05,1.0,1.0"
       export CDMBGWD_GSL="0.625,14.1,1.0,1.0"
       export KNOB_UGWP_TAUAMP=0.13e-3
-      #export K_SPLIT=4
+      export K_SPLIT=4
       export N_SPLIT=5
       export TAU=0.5
       export RF_CUTOFF=100.0
@@ -1020,10 +1020,12 @@ export_ugwpv1() {
       ;;
   esac
   
-  if [[ ${DO_GSL_DRAG_SS} = .true. ]]; then
-    export CDMBGWD=${CDMBGWD_GSL}
-  fi
+  if [[ ${DO_GSL_DRAG_SS} = .true. ]]; then export CDMBGWD=${CDMBGWD_GSL}; fi
+  if [[ ${SEDI_SEMI} = .true. ]]; then export DT_ATMOS=$((DT_ATMOS/2)); fi
+  export DT_INNER=${DT_ATMOS}
+
 }
+  
 
 # Defaults for the CICE6 model namelist, mx100
 export_cice6() {
