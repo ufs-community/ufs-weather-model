@@ -16,7 +16,7 @@ usage() {
   echo "  -a  <account> to use on for HPC queue"
   echo "  -b  create new baselines only for tests listed in <file>"
   echo "  -c  create new baseline results"
-  echo "  -d  delete run direcotries that are not used by other tests"
+  echo "  -d  delete run directories that are not used by other tests"
   echo "  -e  use ecFlow workflow manager"
   echo "  -h  display this help"
   echo "  -k  keep run directory after rt.sh is completed"
