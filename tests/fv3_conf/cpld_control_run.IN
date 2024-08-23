@@ -143,6 +143,14 @@ else
       fi
      fi
 
+     #Stochastic physics restart files
+     if [[ $BMIC == .true. ]]; then
+       if [[ $STOCHINI == .true. ]]; then
+         cp ../${DEP_RUN}${SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.atm_stoch.res.nc ./INPUT/atm_stoch.res.nc
+         cp ../${DEP_RUN}${SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.ocn_stoch.res.nc ./INPUT/ocn_stoch.res.nc
+       fi
+     fi
+
      # CMEPS restart and pointer files
      RFILE=ufs.cpld.cpl.r.${RESTART_FILE_SUFFIX_SECS}.nc
      cp  ../${DEP_RUN}${SUFFIX}/${CMEPS_RESTART_DIR}/${RFILE} .
