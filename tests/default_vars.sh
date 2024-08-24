@@ -493,6 +493,10 @@ export UFS_CONFIGURE=ufs.configure.atm_esmf.IN
 export MODEL_CONFIGURE=model_configure.IN
 export atm_model=fv3
 
+export POST_ITAG=post_itag_gfs
+export POSTXCONFIG=postxconfig-NT-gfs.txt
+export POSTXCONFIG_FH00=postxconfig-NT-gfs_FH00.txt
+
 export FV3=true
 export S2S=false
 export HAFS=false

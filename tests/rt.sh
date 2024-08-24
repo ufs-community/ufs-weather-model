@@ -835,16 +835,15 @@ case ${MACHINE_ID} in
     if [[ "${ECFLOW:-false}" == true ]] ; then
       module load ecflow/5.11.4
     fi
-
-    module use /mnt/lfs4/HFIP/hfv3gfs/role.epic/spack-stack/spack-stack-1.5.0/envs/unified-env-rocky8/install/modulefiles/Core
+    module use /contrib/spack-stack/spack-stack-1.6.0/envs/unified-env-rocky8/install/modulefiles/Core
     module load stack-intel/2021.5.0
-    module load stack-python/3.10.8
+    module load stack-python/3.10.13
 
     QUEUE="batch"
     COMPILE_QUEUE="batch"
     PARTITION="xjet"
-    DISKNM="/mnt/lfs4/HFIP/hfv3gfs/role.epic/RT"
-    dprefix="${dprefix:-/lfs4/HFIP/${ACCNR}/${USER}}"
+    DISKNM="/lfs5/HFIP/hfv3gfs/role.epic/RT"
+    dprefix="${dprefix:-/lfs5/HFIP/${ACCNR}/${USER}}"
     STMP="${STMP:-${dprefix}/RT_BASELINE}"
     PTMP="${PTMP:-${dprefix}/RT_RUNDIRS}"
 
@@ -1306,8 +1305,8 @@ export WLCLK=${WLCLK}
 EOF
       if [[ ${MACHINE_ID} = jet ]]; then
         cat << EOF >> "${RUNDIR_ROOT}/run_test_${TEST_ID}.env"
-export PATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/bin:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/bin:${PATH}
-export PYTHONPATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/lib/python3.8/site-packages
+export PATH=/contrib/spack-stack/miniconda3/23.11.0/envs/ufs-weather-model/bin:/contrib/spack-stack/miniconda3/23.11.0/bin:${PATH}
+export PYTHONPATH=/contrib/spack-stack/miniconda3/23.11.0/envs/ufs-weather-model/lib/python3.8/site-packages:/contrib/spack-stack/miniconda3/23.11.0/lib/python3.8/site-packages
 EOF
       fi
 
