@@ -45,10 +45,14 @@ export LIST_FILES="sfcf000.nc \
                    RESTART/20210323.060000.sfc_data.tile5.nc \
                    RESTART/20210323.060000.sfc_data.tile6.nc"
 
+export ATMRES=C48
+
 export_fv3
 export_tiled
-export_ugwpv1
-export CCPP_SUITE=FV3_GFS_v17_p8_ugwpv1
+if [[ $MACHINE_ID != hera ]] || [[ $RT_COMPILER != gnu ]]; then
+  export_ugwpv1
+  export CCPP_SUITE=FV3_GFS_v17_p8_ugwpv1
+fi
 
 export INPES=1
 export JNPES=1
