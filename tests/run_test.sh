@@ -249,7 +249,7 @@ if [[ ${FV3} == true ]]; then
 fi
 
 # NoahMP table file
-if [[ $BMIC == .true. ]]; then
+if [[ ${BMIC} == .true. ]]; then
   cp "${PATHRT}/parm/noahmptable-gefs.tbl" noahmptable.tbl
 else
   cp "${PATHRT}/parm/noahmptable.tbl" .
@@ -276,7 +276,7 @@ if [[ ${CPLWAV} == .true. ]]; then
 fi
 
 if [[ ${CPLCHM} == .true. ]]; then
-  if [[ $BMIC == .true. ]]; then
+  if [[ ${BMIC} == .true. ]]; then
     cp "${PATHRT}"/parm/gocart/gefs/*.rc .
     atparse < "${PATHRT}/parm/gocart/gefs/AERO_HISTORY.rc.IN" > AERO_HISTORY.rc
   else
