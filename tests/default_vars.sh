@@ -559,6 +559,7 @@ export MODEL_INITIALIZATION=false
 export WARM_START=.false.
 export READ_INCREMENT=.false.
 export RES_LATLON_DYNAMICS="''"
+export ATM_IGNORE_RST_CKSUM=.false.
 export NGGPS_IC=.true.
 export EXTERNAL_IC=.true.
 export MAKE_NH=.true.
