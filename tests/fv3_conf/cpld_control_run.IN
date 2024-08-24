@@ -17,7 +17,7 @@ ICERES=${OCNRES:0:1}.${OCNRES:1}
 
 V2_SFC_FILE=${V2_SFC_FILE:-false}
 
-if [[ $BMIC == .true. ]]; then
+if [[ ${BMIC} == .true. ]]; then
   #FV3_IC=@[INPUTDATA_ROOT]/GEFS/${SYEAR}${SMONTH}${SDAY}${SHOUR}/ #TODO: testing
   FV3_IC=/scratch1/NCEPDEV/nems/Nick.Szapiro/tasks/input_data/gefs.v13/stage/GEFS/${SYEAR}${SMONTH}${SDAY}${SHOUR}/
   MOM_IC=${FV3_IC}; ICE_IC=${FV3_IC}; WAV_IC=${FV3_IC}
@@ -82,7 +82,7 @@ if [ $WARM_START = .false. ]; then
   cp    ${FV3_IC}/sfc_data*.nc ./INPUT
   cp    ${FV3_IC}/gfs_data*.nc ./INPUT
   cp    ${FV3_IC}/gfs_ctrl.nc ./INPUT
-  if [[ $BMIC == .true. ]]; then
+  if [[ ${BMIC} == .true. ]]; then
    cp ${MOM_IC}/MOM*.nc ./INPUT
    cp ${MOM_IC}/ORAS5.mx025.ic.nc ./INPUT
    cp ${MOM_IC}/interpolate_zgrid_26L.nc ./INPUT
@@ -144,8 +144,8 @@ else
      fi
 
      #Stochastic physics restart files
-     if [[ $BMIC == .true. ]]; then
-       if [[ $STOCHINI == .true. ]]; then
+     if [[ ${BMIC} == .true. ]]; then
+       if [[ ${STOCHINI} == .true. ]]; then
          cp ../${DEP_RUN}${SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.atm_stoch.res.nc ./INPUT/atm_stoch.res.nc
          cp ../${DEP_RUN}${SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.ocn_stoch.res.nc ./INPUT/ocn_stoch.res.nc
        fi
@@ -179,7 +179,7 @@ else
      fi
 
   else
-     if [[ $BMIC == .true. ]]; then
+     if [[ ${BMIC} == .true. ]]; then
        #cp ${FV3_IC}/gfs*.nc ./INPUT
        cp ${FV3_IC}/fv*.nc ./INPUT
        cp ${FV3_IC}/sfc_data*.nc ./INPUT
@@ -207,7 +207,7 @@ fi
 
 #inline post
 if [ $WRITE_DOPOST = .true. ]; then
-  if [[ $BMIC == .true. ]]; then
+  if [[ ${BMIC} == .true. ]]; then
     cp    ${PATHRT}/parm/post_itag_gefs itag
     cp    ${PATHRT}/parm/postxconfig-NT-gefs.txt postxconfig-NT.txt
     cp    ${PATHRT}/parm/postxconfig-NT-gefs_FH00.txt postxconfig-NT_FH00.txt
@@ -266,7 +266,7 @@ fi
 
 #prognostic aerosols
 if [ $CPLCHM = .true. ]; then
-  if [[ $BMIC == .true. ]]; then
+  if [[ ${BMIC} == .true. ]]; then
     ln -sf /scratch1/NCEPDEV/nems/Nick.Szapiro/tasks/input_data/gefs.v13/stage/GEFS/ExtData . 
   else
     ln -sf  @[INPUTDATA_ROOT]/GOCART/p8c_5d/ExtData .
