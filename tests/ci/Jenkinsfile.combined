@@ -312,14 +312,6 @@ def generateStage(nodeLabel) {
                       echo "Testing concluded...removing labels for $machine from $GIT_URL"
                       git remote -v | grep -w sshorigin > /dev/null 2>&1 && git remote remove sshorigin > /dev/null 2>&1
                       git remote add sshorigin $SSH_ORIGIN > /dev/null 2>&1
-  
-                      if [[ -f $WORKSPACE/tests/logs/RT-run-$machine.log ]] ; then
-                         git add $WORKSPACE/tests/logs/RT-run-$machine.log
-                      fi
-                      git commit  --allow-empty -m "[AutoRT] $machine Job Failed!\n\n\n on-behalf-of @ufs-community <ecc.platform@noaa.gov>"
-                    
-                      git pull sshorigin $FORK_BRANCH
-                      git push sshorigin HEAD:$FORK_BRANCH
 
                       tar --create --gzip --verbose --dereference --file "${machine_name_logs}.tgz" ${WORKSPACE}/tests/logs/*.log
 
