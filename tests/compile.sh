@@ -12,14 +12,8 @@ function trim {
 
 SECONDS=0
 
-uname_s=$(uname -s)
-if [[ ${uname_s} == Darwin ]]; then
-  greadlnk=$(greadlink -f -n "${BASH_SOURCE[0]}" )
-  MYDIR=$(cd "$(dirname "${greadlnk}" )" && pwd -P)
-else
-  readlnk=$(readlink -f -n "${BASH_SOURCE[0]}" )
-  MYDIR=$(cd "$(dirname "${readlnk}" )" && pwd -P)
-fi
+SCRIPT_REALPATH=$(realpath "${BASH_SOURCE[0]}")
+MYDIR=$(dirname "${SCRIPT_REALPATH}")
 readonly MYDIR
 
 # ----------------------------------------------------------------------

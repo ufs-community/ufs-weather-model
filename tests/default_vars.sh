@@ -493,6 +493,10 @@ export UFS_CONFIGURE=ufs.configure.atm_esmf.IN
 export MODEL_CONFIGURE=model_configure.IN
 export atm_model=fv3
 
+export POST_ITAG=post_itag_gfs
+export POSTXCONFIG=postxconfig-NT-gfs.txt
+export POSTXCONFIG_FH00=postxconfig-NT-gfs_FH00.txt
+
 export FV3=true
 export S2S=false
 export HAFS=false
@@ -555,6 +559,7 @@ export MODEL_INITIALIZATION=false
 export WARM_START=.false.
 export READ_INCREMENT=.false.
 export RES_LATLON_DYNAMICS="''"
+export INCREMENT_FILE_ON_NATIVE_GRID=.false.
 export NGGPS_IC=.true.
 export EXTERNAL_IC=.true.
 export MAKE_NH=.true.
@@ -1328,10 +1333,10 @@ export_datm_cdeps ()
   export INPUT_NML=input.mom6.nml.IN
   export DIAG_TABLE=diag_table_template
   export DATM_SRC=CFSR
-  export FILENAME_BASE=cfsr.
-  export MESH_ATM=${FILENAME_BASE//.}_mesh.nc
-  export atm_datamode=${DATM_SRC}
-  export stream_files=INPUT/${FILENAME_BASE}201110.nc
+  export FILEBASE_DATM=cfsr
+  export MESH_ATM=${FILEBASE_DATM}_mesh.nc
+  export atm_datamode=GEFS
+  export stream_files=INPUT/${FILEBASE_DATM}.201110.nc
   export EXPORT_ALL=.false.
   export STREAM_OFFSET=0
 
