@@ -1033,7 +1033,17 @@ export_ww3() {
   export WW3_ICE='C'
   export WW3_IC1='F'
   export WW3_IC5='F'
-  export WW3_user_sets_restname="true"
+  export WW3_user_sets_histname='false'
+  export WW3_historync='false'
+  export WW3_user_sets_restname='true'
+  export WW3_restartnc='false'
+  export WW3_restart_from_binary='false'
+  # For either history_nc or restart_nc true
+  export WW3_PIO_FORMAT='pnetcdf'
+  export WW3_PIO_STRIDE=-99
+  export WW3_PIO_IOTASKS=-99
+  export WW3_PIO_REARR='box'
+  export WW3_PIO_ROOT=-99
 }
 
 # Defaults for the coupled 5-component
@@ -1113,7 +1123,7 @@ export NY_GLB=320
 export NPZ=127
 export NPZP=128
 
-# Use updated omega calculations if 
+# Use updated omega calculations if
 #   hydrostatic is set to false
 if [[ "${HYDROSTATIC}" == .false. ]]; then
   export UPDATE_FULL_OMEGA=.true.
@@ -1444,6 +1454,17 @@ export_hafs_regional ()
   export WW3_MODDEF=mod_def.${WW3_DOMAIN}
   export WW3_ICE='F'
   export WW3_OUTPARS="WND HS T01 T02 DIR FP DP PHS PTP PDIR UST CHA USP"
+  export WW3_user_sets_histname='false'
+  export WW3_historync='false'
+  export WW3_user_sets_restname='true'
+  export WW3_restartnc='false'
+  export WW3_restart_from_binary='false'
+  # For either history_nc or restart_nc true
+  export WW3_PIO_FORMAT='pnetcdf'
+  export WW3_PIO_STRIDE=-99
+  export WW3_PIO_IOTASKS=-99
+  export WW3_PIO_REARR='box'
+  export WW3_PIO_ROOT=-99
 
   # Set CMEPS component defaults
   export_cmeps
