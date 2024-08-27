@@ -84,7 +84,8 @@ if [ $WARM_START = .false. ]; then
   cp    ${FV3_IC}/gfs_ctrl.nc ./INPUT
   if [[ ${BMIC} == .true. ]]; then
    cp ${MOM_IC}/MOM*.nc ./INPUT
-   cp ${MOM_IC}/ORAS5.mx025.ic.nc ./INPUT
+   #cp ${MOM_IC}/ORAS5.mx025.ic.nc ./INPUT
+   cp @[INPUTDATA_ROOT]/MOM6_IC/MOM6_IC_TS_2021032206.nc ./INPUT/MOM6_IC_TS.nc
    cp ${MOM_IC}/interpolate_zgrid_26L.nc ./INPUT
    #cp    ${ICE_IC}/cice5_model_@[ICERES].res_${SYEAR}${SMONTH}${SDAY}00.nc ./cice_model.res.nc
    cp ${ICE_IC}/cice*nc ./INPUT
@@ -189,6 +190,7 @@ else
        cp ${MOM_IC}/MOM*.nc ./INPUT
        cp ${MOM_IC}/mom6_increment.nc ./INPUT
        #cp ${MOM_IC}/ORAS5.mx025.ic.nc ./INPUT
+       cp @[INPUTDATA_ROOT]/MOM6_IC/MOM6_IC_TS_2021032206.nc ./INPUT/MOM6_IC_TS.nc
        cp ${MOM_IC}/interpolate_zgrid_26L.nc ./INPUT
        cp ${ICE_IC}/cice*nc ./INPUT
        ls -1 ./INPUT/cice*nc>ice.restart_file
