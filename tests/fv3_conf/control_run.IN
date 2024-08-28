@@ -23,7 +23,7 @@ if [ $WARM_START = .false. ]; then
   elif [ "$V2_SFC_FILE" = "true" ]; then
     cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127_v2_sfc/* ./INPUT/.
   else
-    cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127/* ./INPUT/.
+    cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127_gfsv17/* ./INPUT/.
   fi
 else
   mkdir INPUT RESTART
@@ -122,9 +122,9 @@ fi
 
 #inline post
 if [[ $POSTAPP = 'global' ]]; then
-  cp    ${PATHRT}/parm/post_itag_gfs itag
-  cp    ${PATHRT}/parm/postxconfig-NT-gfs.txt postxconfig-NT.txt
-  cp    ${PATHRT}/parm/postxconfig-NT-gfs_FH00.txt postxconfig-NT_FH00.txt
+  cp    ${PATHRT}/parm/@[POST_ITAG] itag
+  cp    ${PATHRT}/parm/@[POSTXCONFIG] postxconfig-NT.txt
+  cp    ${PATHRT}/parm/@[POSTXCONFIG_FH00] postxconfig-NT_FH00.txt
   cp    ${PATHRT}/parm/params_grib2_tbl_new params_grib2_tbl_new
 fi
 
