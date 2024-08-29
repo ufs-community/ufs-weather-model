@@ -14,7 +14,8 @@ export LIST_FILES="sfcf021.nc \
                    GFSFLX.GrbF21 \
                    GFSFLX.GrbF24 \
                    GFSPRS.GrbF21 \
-                   GFSPRS.GrbF24"
+                   GFSPRS.GrbF24 \
+                   RESTART/20210323.060000.MOM.res.nc" 
 
 export_fv3
 export_cpl
@@ -82,7 +83,7 @@ export UFS_CONFIGURE=ufs.configure.s2sw.IN
 
 #GFSv17	settings
 export PROGSIGMA=.true.
-export IOPT_DIAG=1
+export IOPT_DIAG=2
 
 if [[ $MACHINE_ID = hera ]] && [[ $RT_COMPILER = gnu ]]; then
   WLCLK=40

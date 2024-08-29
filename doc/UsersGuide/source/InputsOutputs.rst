@@ -1304,6 +1304,26 @@ These field section entries are described in :numref:`Table %s <FieldDescription
 
 Comments can be added to the diag_table using the hash symbol (``#``).
 
+
+Each WM component has its own ``diag_table`` with associated variables. :numref:`Table %s <diag-table-options>` contains links to the full set of options for each WM component.
+
+.. _diag-table-options:
+
+.. list-table:: * *diag_table* Options for WM Components*
+   :widths: 16 24 24
+   :header-rows: 1
+
+   * - WM Component
+     - Diag Table
+     - Source File
+   * - FV3
+     - :ref:`FV3 Variables <fv3diagtable>`
+     - `GFS_diagnostics.F90 <https://github.com/NOAA-EMC/fv3atm/blob/develop/ccpp/driver/GFS_diagnostics.F90>`_
+   * - MOM6
+     - `MOM6 Variables <https://ncar.github.io/MOM6/APIs/namespacemom__diagnostics.html>`_
+     - `MOM_diagnostics.F90 <https://github.com/NOAA-EMC/MOM6/blob/main/src/diagnostics/MOM_diagnostics.F90>`_
+
+
 A brief example of the diag_table is shown below.  ``"..."`` denotes where lines have been removed.
 
 .. _code-block-fv3-diag-table:

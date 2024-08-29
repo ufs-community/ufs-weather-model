@@ -451,7 +451,7 @@ EOF
   fi
 
   cat << EOF >> "${ROCOTO_XML}"
-    <cores>${BUILD_CORES}</cores>
+    <nodes>1:ppn=${BUILD_CORES}</nodes>
     <walltime>${BUILD_WALLTIME}</walltime>
     <join>&RUNDIR_ROOT;/compile_${COMPILE_ID}.log</join>
     ${NATIVE}
@@ -622,16 +622,13 @@ ecflow_run() {
   # Make sure ECF_HOST and ECF_PORT are set/ready on systems that have an
   # explicit ecflow node
   if [[ ${MACHINE_ID} == wcoss2 || ${MACHINE_ID} == acorn ]]; then
-    readarray -t ECFHOSTLIST < "${ECF_HOSTFILE}"
-    for ECF_HOST in "${ECFHOSTLIST[@]}"
-    do
-      if ssh -q "${ECF_HOST}" "exit"; then
-        export ECF_HOST
-        break
-      else
-        ECF_HOST=''
-      fi
-    done
+    if [[ "${HOST::1}" == "a" ]]; then
+      ECF_HOST=aecflow01
+    elif [[ "${HOST::1}" == "c" ]]; then
+      ECF_HOST=cdecflow01
+    elif [[ "${HOST::1}" == "d" ]]; then
+      ECF_HOST=ddecflow01
+    fi
   elif [[ ${MACHINE_ID} == hera || ${MACHINE_ID} == jet ]]; then
     module load ecflow
   fi
