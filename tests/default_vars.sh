@@ -10,7 +10,7 @@
   THRD=1
 
   export INPES_atmaero=4
-  export JNPES_atmaero=8 
+  export JNPES_atmaero=8
   export WPG_atmaero=6
 
   export THRD_cpl_atmw=1
@@ -121,12 +121,12 @@ if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
 
   export TPN=128
 
-  export INPES_dflt=3 
+  export INPES_dflt=3
   export JNPES_dflt=8
   export INPES_thrd=3
   export JNPES_thrd=4
   export INPES_c384=8
-  export JNPES_c384=6 
+  export JNPES_c384=6
   export THRD_c384=2
   export INPES_c768=8
   export JNPES_c768=16
@@ -144,7 +144,7 @@ elif [[ ${MACHINE_ID} = orion ]]; then
 
   export INPES_dflt=3
   export JNPES_dflt=8
-  export INPES_thrd=3 
+  export INPES_thrd=3
   export JNPES_thrd=4
   export INPES_c384=8
   export JNPES_c384=6
@@ -168,7 +168,7 @@ elif [[ ${MACHINE_ID} = hercules ]]; then
   export INPES_thrd=3
   export JNPES_thrd=4
   export INPES_c384=8
-  export JNPES_c384=6 
+  export JNPES_c384=6
   export THRD_c384=2
   export INPES_c768=8
   export JNPES_c768=16
@@ -187,10 +187,10 @@ elif [[ ${MACHINE_ID} = hera ]]; then
 
   export INPES_dflt=3
   export JNPES_dflt=8
-  export INPES_thrd=3 
+  export INPES_thrd=3
   export JNPES_thrd=4
   export INPES_c384=6
-  export JNPES_c384=8 
+  export JNPES_c384=8
   export THRD_c384=2
   export INPES_c768=8
   export JNPES_c768=16
@@ -274,7 +274,7 @@ elif [[ ${MACHINE_ID} = s4 ]]; then
 
   export TPN=32
 
-  export INPES_dflt=3 
+  export INPES_dflt=3
   export JNPES_dflt=8
   export INPES_thrd=3
   export JNPES_thrd=4
@@ -325,10 +325,10 @@ elif [[ ${MACHINE_ID} = derecho ]]; then
   export TPN=128
   export INPES_dflt=3
   export JNPES_dflt=8
-  export INPES_thrd=3 
+  export INPES_thrd=3
   export JNPES_thrd=4
   export INPES_c384=8
-  export JNPES_c384=6 
+  export JNPES_c384=6
   export THRD_c384=2
   export INPES_c768=8
   export JNPES_c768=16
@@ -493,6 +493,10 @@ export UFS_CONFIGURE=ufs.configure.atm_esmf.IN
 export MODEL_CONFIGURE=model_configure.IN
 export atm_model=fv3
 
+export POST_ITAG=post_itag_gfs
+export POSTXCONFIG=postxconfig-NT-gfs.txt
+export POSTXCONFIG_FH00=postxconfig-NT-gfs_FH00.txt
+
 export FV3=true
 export S2S=false
 export HAFS=false
@@ -555,6 +559,7 @@ export MODEL_INITIALIZATION=false
 export WARM_START=.false.
 export READ_INCREMENT=.false.
 export RES_LATLON_DYNAMICS="''"
+export INCREMENT_FILE_ON_NATIVE_GRID=.false.
 export NGGPS_IC=.true.
 export EXTERNAL_IC=.true.
 export MAKE_NH=.true.
@@ -916,6 +921,8 @@ export_cice6() {
   export CICE_USE_RESTART_TIME=.false.
   export CICE_RESTART_DIR=./RESTART/
   export CICE_RESTART_FILE=iced
+  # CICE6 warmstarts
+  export OCNICE_WARMSTART=.false.
 
   export CICE_RESTART_FORMAT='pnetcdf2'
   export CICE_RESTART_IOTASKS=-99
@@ -1004,6 +1011,11 @@ export_mom6() {
   export PERT_EPBL=False
   export OCN_SPPT=-999.
   export EPBL=-999.
+  # MOM6 warmstarts
+  export OCNICE_WARMSTART=.false.
+  export MOM6_INIT_FROM_Z=True
+  export MOM6_INIT_UV="zero"
+  export MOM6_WARMSTART_FILE="none"
 }
 
 # Defaults for the WW3 global model
@@ -1321,10 +1333,10 @@ export_datm_cdeps ()
   export INPUT_NML=input.mom6.nml.IN
   export DIAG_TABLE=diag_table_template
   export DATM_SRC=CFSR
-  export FILENAME_BASE=cfsr.
-  export MESH_ATM=${FILENAME_BASE//.}_mesh.nc
-  export atm_datamode=${DATM_SRC}
-  export stream_files=INPUT/${FILENAME_BASE}201110.nc
+  export FILEBASE_DATM=cfsr
+  export MESH_ATM=${FILEBASE_DATM}_mesh.nc
+  export atm_datamode=GEFS
+  export stream_files=INPUT/${FILEBASE_DATM}.201110.nc
   export EXPORT_ALL=.false.
   export STREAM_OFFSET=0
 
