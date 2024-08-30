@@ -455,6 +455,8 @@ export DO_UGWP_V0=.false.
 export DO_GSL_DRAG_SS=.false.
 export SATMEDMF=.false.
 export ISATMEDMF=0
+export LRADAR=.true.
+export LTAEROSOL=.true.
 
 export LSM=1
 export LANDICE=.true.
@@ -509,7 +511,11 @@ export CDEPS_INLINE=false
 export POSTAPP='global'
 export USE_MERRA2=.true.
 export NESTED=.false.
+export BLOCKSIZE=32
+export CHKSUM_DEBUG=.false.
+export DYCORE_ONLY=.false.
 
+export IO_LAYOUT=1,1
 export NTILES=6
 export INPES=${INPES_dflt}
 export JNPES=${JNPES_dflt}
@@ -537,6 +543,14 @@ export KCHUNK3D=0
 export IMO=384
 export JMO=190
 export WRITE_NSFLIP=.true.
+
+# New damping coefficients made the following
+#   dynamic based on resolution
+export N_SPLIT=5
+export K_SPLIT=2
+export TAU=0.0
+export RF_CUTOFF=10.
+export FV_SG_ADJ=450
 
 export DZ_MIN=6
 export MIN_SEAICE=0.15
@@ -566,13 +580,43 @@ export MAKE_NH=.true.
 export MOUNTAIN=.false.
 export NA_INIT=1
 export DO_VORT_DAMP=.true.
+export N_SPONGE=42
+export NUDGE_QV=.true.
+export NUDGE_DZ=.false.
 export HYDROSTATIC=.false.
-export KORD_XX=9
+export KORD_MT=9
+export KORD_WZ=9
+export KORD_TR=9
 export KORD_TM=-9
+export PHYS_HYDROSTATIC=.false.
+export USE_HYDRO_PRESSURE=.false.
+export NWAT=6
+export NORD=2
+export D4_BG=0.12
+export VTDM4=0.02
+export DELT_MAX=0.002
+export EXTERNAL_ETA=.true.
+export GFS_PHIL=.false.
+export NCEP_IC=.false.
 export D_CON=1.
-export HORD_XX=5
+export HORD_MT=5
+export HORD_VT=5
+export HORD_TM=5
 export HORD_DP=-5
 export HORD_TR=8
+export ADJUST_DRY_MASS=.false.
+export DRY_MASS=98320.0
+export CONSV_TE=1.
+export PRINT_FREQ=6
+export NO_DYCORE=.false.
+
+export FILTERED_TERRAIN=.true.
+export GFS_DWINDS=.true.
+
+export USE_UFO=.true.
+export PRE_RAD=.false.
+export TTENDLIM=-999
+
 
 # Radiation
 export DO_RRTMGP=.false.
@@ -583,11 +627,27 @@ export USE_LW_JACOBIAN=.false.
 export DAMP_LW_FLUXADJ=.false.
 export RRTMGP_LW_PHYS_BLKSZ=2
 export ICLOUD=0
+export ICLOUD_BL=1
 export IAER=1011
 export ICLIQ_SW=2
 export IOVR=3
 export LFNC_K=-999
 export LFNC_P0=-999
+export PDFCLD=.false.
+export FHSWR=3600.
+export FHLWR=3600.
+
+export ICO2=2
+export ISUBC_SW=2
+export ISUBC_LW=2
+export ISOL=2
+export LWHTR=.true.
+export SWHTR=.true.
+export CNVGWD=.true.
+export CAL_PRE=.false.
+export REDRAG=.true.
+export DSPHEAT=.true.
+export HYBEDMF=.false.
 
 # Microphysics
 export IMP_PHYSICS=8
@@ -600,8 +660,8 @@ export LSEASPRAY=.true.
 export LGFDLMPRAD=.false.
 export EFFR_IN=.false.
 # Thompson MP
-export LRADAR=.true.
-export LTAEROSOL=.true.
+export LRADAR=.false.
+export LTAEROSOL=.false.
 export EXT_DIAG_THOMPSON=.false.
 export SEDI_SEMI=.true.
 export DECFL=10
@@ -634,11 +694,28 @@ export PSL_GWD_DX_FACTOR=6.0
 export DO_GSL_DRAG_TOFD=.false.
 export DO_UGWP_V1=.false.
 export DO_UGWP_V1_OROG_ONLY=.false.
+export KNOB_UGWP_SOLVER=2
+export KNOB_UGWP_SOURCE=1,1,0,0
+export KNOB_UGWP_WVSPEC=1,25,25,25
+export KNOB_UGWP_AZDIR=2,4,4,4
+export KNOB_UGWP_STOCH=0,0,0,0
+export KNOB_UGWP_EFFAC=1,1,1,1
+export KNOB_UGWP_DOAXYZ=1
+export KNOB_UGWP_DOHEAT=1
+export LAUNCH_LEVEL=54
 export KNOB_UGWP_DOKDIS=1
 export KNOB_UGWP_NDX4LH=1
 export KNOB_UGWP_VERSION=0
-export KNOB_UGWP_PALAUNCH=500.e2
+export KNOB_UGWP_PALAUNCH=275.e2
 export KNOB_UGWP_NSLOPE=1
+export KNOB_UGWP_LZMAX=15.750e3
+export KNOB_UGWP_LZMIN=0.75e3
+export KNOB_UGWP_LZSTAR=2.0e3
+export KNOB_UGWP_TAUMIN=0.25e-3
+export KNOB_UGWP_TAUAMP=3.0e-3
+export KNOB_UGWP_LHMET=200.0e3
+export KNOB_UGWP_OROSOLV="'pss-1986'"
+
 export DO_UGWP_V0_NST_ONLY=.false.
 
 # resolution dependent settings
@@ -658,9 +735,12 @@ export DT_INNER_c768=75
 export CDMBWD=${CDMBWD_c96}
 export DT_INNER=${DT_INNER_c96}
 
+export ISATMEDMF=1
+export TRANS_TRAC=.true.
+
 # PBL
 export SATMEDMF=.true.
-export HYBEDMF=.true.
+export HYBEDMF=.false.
 export SHINHONG=.false.
 export DO_YSU=.false.
 export DO_MYNNEDMF=.false.
@@ -689,9 +769,15 @@ export FSCAV_AERO='"*:0.3","so2:0.0","msa:0.0","dms:0.0","nh3:0.4","nh4:0.6","bc
 # SFC
 export DO_MYJSFC=.false.
 export DO_MYNNSFCLAY=.false.
-export BL_MYNN_TKEADVECT=.false.
+export BL_MYNN_EDMF=1
+export BL_MYNN_TKEADVECT=.true.
+export BL_MYNN_EDMF_MOM=1
 
 # LSM
+export PRSLRD0=0.
+export IVEGSRC=1
+export ISOT=1
+export LSOIL=4
 export LSM=2
 export LSOIL_LSM=4
 export LANDICE=.false.
@@ -700,13 +786,33 @@ export IALB=2
 export IEMS=2
 export IOPT_DVEG=4
 export IOPT_CRS=2
+export IOPT_BTR=1
+export IOPT_RUN=1
 export IOPT_RAD=3
 export IOPT_ALB=1
 export IOPT_STC=3
-
+export IOPT_FRZ=1
+export IOPT_INF=1
 export IOPT_SFC=3
 export IOPT_TRS=2
 export IOPT_DIAG=2
+export IOPT_SNF=4
+export IOPT_TBOT=2
+export DEBUG=.false.
+export NST_ANL=.true.
+export PSAUTCO=0.0008,0.0005
+export PRAUTCO=0.00015,0.00015
+export EFFR_IN=.true.
+export ACTIVE_GASES="'h2o_co2_o3_n2o_ch4_o2'"
+export NGASES=6
+export LW_FILE_GAS="'rrtmgp-data-lw-g128-210809.nc'"
+export LW_FILE_CLOUDS="'rrtmgp-cloud-optics-coeffs-lw.nc'"
+export SW_FILE_GAS="'rrtmgp-data-sw-g112-210809.nc'"
+export SW_FILE_CLOUDS="'rrtmgp-cloud-optics-coeffs-sw.nc'"
+export RRTMGP_NGPTSSW=112
+export RRTMGP_NGPTSLW=128
+export RRTMGP_NBANDSLW=16
+export RRTMGP_NBANDSSW=14
 
 export D2_BG_K1=0.20
 export D2_BG_K2=0.04
@@ -717,6 +823,7 @@ export DDDMP=0.1
 # Ozone / stratospheric H2O
 export OZ_PHYS_OLD=.true.
 export OZ_PHYS_NEW=.false.
+
 export H2O_PHYS=.false.
 
 # Lake models
@@ -772,6 +879,20 @@ export MAX_OUTPUT_FIELDS=310
 export UPDATE_FULL_OMEGA=.false.
 
 # Stochastic physics
+export HIDE_LAND_PERT=' '
+export HIDE_NEST='!'
+export HIDE_SPPT='!'
+export HIDE_SKEB='!'
+export HIDE_SHUM='!'
+export HIDE_OCNSPPT='!'
+export HIDE_EPBL='!'
+export HIDE_IAU='!'
+
+export LCNORM=.false.
+export PERT_MP=.false.
+export PERT_RADTEND=.false.
+export PERT_CLDS=.true.
+
 export STOCHINI=.false.
 export DO_SPPT=.false.
 export DO_SHUM=.false.
@@ -787,12 +908,37 @@ export LNDP_MODEL_TYPE=0
 export LNDP_TAU=21600,
 export LNDP_LSCALE=500000,
 export ISEED_LNDP=2010,
+export ISEED_SKEB=0
+export SKEB_TAU=21600,
+export SKEB_LSCALE=500000,
+export SKEBNORM=1,
+export SKEB_NPASS=30,
+export SKEB_VDOF=5,
+export ISEED_SHUM=1,
+export SHUM_TAU=21600,
+export SHUM_LSCALE=500000,
+export ISEED_SPPT=20210325000103,20210325000104,20210325000105,20210325000106,20210325000107
+export SPPT_TAU=2.16E4,2.592E5,2.592E6,7.776E6,3.1536E7
+export SPPT_LSCALE=500.E3,1000.E3,2000.E3,2000.E3,2000.E3
+export SPPT_LOGIT=.true.,
+export SPPT_SFCLIMIT=.true.,
+export USE_ZMTNBLCK=.true.
+export PBL_TAPER=0,0,0,0.125,0.25,0.5,0.75
+export OCNSPPT=0.8,0.4,0.2,0.08,0.04
+export OCNSPPT_LSCALE=500.E3,1000.E3,2000.E3,2000.E3,2000.E3
+export OCNSPPT_TAU=2.16E4,2.592E5,2.592E6,7.776E6,3.1536E7
+export ISEED_OCNSPPT=20210325000108,20210325000109,20210325000110,20210325000111,20210325000112
+export EPBL=0.8,0.4,0.2,0.08,0.04
+export EPBL_LSCALE=500.E3,1000.E3,2000.E3,2000.E3,2000.E3
+export EPBL_TAU=2.16E4,2.592E5,2.592E6,7.776E6,3.1536E7
+export ISEED_EPBL=20210325000113,20210325000114,20210325000115,20210325000116,20210325000117
 
 #IAU
 export IAU_INC_FILES="''"
 export IAU_DELTHRS=0
 export IAUFHRS=-1
 export IAU_OFFSET=0
+export IAU_FILTER_INCREMENTS=.false.
 
 export FH_DFI_RADAR='-2e10'
 
@@ -878,7 +1024,7 @@ export USE_CICE_ALB=.false.
 
 # GFDL Cloud Microphysics
 export FTSFS=90
-
+export REIFLAG=2
 
 # NAM sfc
 export FNGLAC="'global_glacier.2x2.grb'"
@@ -887,6 +1033,7 @@ export FNTSFC="'RTGSST.1982.2012.monthly.clim.grb'"
 export FNSNOC="'global_snoclim.1.875.grb'"
 export FNZORC="'igbp'"
 export FNAISC="'IMS-NIC.blended.ice.monthly.clim.grb'"
+export LDEBUG=.false.
 }
 
 # Add section for tiled grid namelist
@@ -1394,6 +1541,7 @@ export_hafs_regional ()
   export INPES=${INPES_dflt}
   export JNPES=${JNPES_dflt}
   export NTILES=1
+  export BLOCKSIZE=24
 
   # model_configure
   export SYEAR=2019
