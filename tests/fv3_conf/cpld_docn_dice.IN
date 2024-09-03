@@ -6,10 +6,8 @@ if [[ ${OPNREQ_TEST} == true ]]; then
 fi
 
 #CDEPS data files
-#cp @[INPUTDATA_ROOT]/DOCN_DICE_cplhist/ufs.cpld.cpl*.nc INPUT
-module load nco
-ncrcat ../${DEP_RUN}${SUFFIX}/ufs.cpld.cpl.hi.ice*nc ./INPUT/ufs.cpld.cpl.hi.ice.nc
-ncrcat ../${DEP_RUN}${SUFFIX}/ufs.cpld.cpl.hi.ocn*nc ./INPUT/ufs.cpld.cpl.hi.ocn.nc
+cp ../${DEP_RUN}${SUFFIX}/*ice.1h.aux*nc ./INPUT/ufs.cpld.cpl.hi.ice.nc
+cp ../${DEP_RUN}${SUFFIX}/*ocn.1h.aux*nc ./INPUT/ufs.cpld.cpl.hi.ocn.nc
 
 #CDEPS fix files - same for ocn/ice
 cp @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/mesh.mx@[OCNRES].nc INPUT
