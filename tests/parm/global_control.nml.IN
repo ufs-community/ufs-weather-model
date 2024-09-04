@@ -42,13 +42,14 @@
   rf_cutoff = 10.
   d2_bg_k1 = @[D2_BG_K1]
   d2_bg_k2 = @[D2_BG_K2]
-  kord_tm = -9
-  kord_mt = 9
-  kord_wz = 9
-  kord_tr = 9
-  hydrostatic = .false.
+  kord_tm = @[KORD_TM]
+  kord_mt = @[KORD_XX]
+  kord_wz = @[KORD_XX]
+  kord_tr = @[KORD_XX]
+  hydrostatic = @[HYDROSTATIC]
   phys_hydrostatic = .false.
   use_hydro_pressure = .false.
+  pass_full_omega_to_physics_in_non_hydrostatic_mode = @[UPDATE_FULL_OMEGA]
   beta = 0.
   a_imp = 1.
   p_fac = 0.1
@@ -66,19 +67,19 @@
   vtdm4 = 0.02
   delt_max = 0.002
   ke_bg = 0.
-  do_vort_damp = .true.
+  do_vort_damp = @[DO_VORT_DAMP]
   external_ic = @[EXTERNAL_IC]
   external_eta = .true.
   gfs_phil = .false.
   nggps_ic = @[NGGPS_IC]
   mountain = @[MOUNTAIN]
   ncep_ic = .false.
-  d_con = 1.
-  hord_mt = 5
-  hord_vt = 5
-  hord_tm = 5
-  hord_dp = -5
-  hord_tr = 8
+  d_con = @[D_CON]
+  hord_mt = @[HORD_XX]
+  hord_vt = @[HORD_XX]
+  hord_tm = @[HORD_XX]
+  hord_dp = @[HORD_DP]
+  hord_tr = @[HORD_TR]
   adjust_dry_mass = .false.
   dry_mass = 98320.0
   consv_te = 1.
@@ -93,6 +94,7 @@
   agrid_vel_rst = .true.
   read_increment = @[READ_INCREMENT]
   res_latlon_dynamics = @[RES_LATLON_DYNAMICS]
+  increment_file_on_native_grid = @[INCREMENT_FILE_ON_NATIVE_GRID]
 /
 
 &external_ic_nml
@@ -138,6 +140,8 @@
   do_ugwp_v0_nst_only  = @[DO_UGWP_V0_NST_ONLY]
   do_gsl_drag_ls_bl    = @[DO_GSL_DRAG_LS_BL]
   do_gsl_drag_ss       = @[DO_GSL_DRAG_SS]
+  do_gwd_opt_psl       = @[DO_GWD_OPT_PSL]
+  psl_gwd_dx_factor    = @[PSL_GWD_DX_FACTOR]
   do_gsl_drag_tofd     = @[DO_GSL_DRAG_TOFD]
   do_ugwp_v1_orog_only = @[DO_UGWP_V1_OROG_ONLY]
   min_lakeice  = @[MIN_LAKEICE]

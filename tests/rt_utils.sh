@@ -14,10 +14,15 @@ ECFLOW_RUNNING=false
 
 jobid=0
 
+redirect_out_err() {
+    ( set -e -o pipefail ; ( "$@" 2>&1 1>&3 3>&- | tee err ) 3>&1 1>&2 | tee out )
+    # The above shell redirection copies stdout to "out" and stderr to "err"
+    # while still sending them to stdout and stderr. It ensures the entire
+    # redirect_out_err command will return non-zero if "$@" or tee return non-zero.
+}
+
 function compute_petbounds_and_tasks() {
-  echo "rt_utils.sh: ${TEST_ID}: Computing PET bounds and tasks."
-  [[ -o xtrace ]] && set_x='set -x' || set_x='set +x'
-  set +x
+
   # each test MUST define ${COMPONENT}_tasks variable for all components it is using
   # and MUST NOT define those that it's not using or set the value to 0.
 
@@ -96,13 +101,10 @@ function compute_petbounds_and_tasks() {
 
   # TASKS is now set to UFS_TASKS
   export TASKS=${UFS_tasks}
-  eval "${set_x}"
 }
 
 interrupt_job() {
-  echo "rt_utils.sh: Job ${jobid} interupted"
-  set -x
-  #echo "run_util.sh: interrupt_job called | Job#: ${jobid}"
+  echo "rt_utils.sh: Job ${jobid} interrupted"
   case ${SCHEDULER} in
     pbs)
       qdel "${jobid}"
@@ -120,15 +122,8 @@ submit_and_wait() {
   echo "rt_utils.sh: Submitting job on scheduler: ${SCHEDULER}"
   [[ -z $1 ]] && exit 1
 
-  [[ -o xtrace ]] && set_x='set -x' || set_x='set +x'
-  set +x
-
   local -r job_card=$1
 
-  ROCOTO=${ROCOTO:-false}
-  ECFLOW=${ECFLOW:-false}
-
-  local test_status='PASS'
   case ${SCHEDULER} in
     pbs)
       qsubout=$( qsub "${job_card}" )
@@ -156,9 +151,9 @@ submit_and_wait() {
   do
     case ${SCHEDULER} in
       pbs)
-	set +e
+        set +e
         job_info=$( qstat "${jobid}" )
-	set -e
+        set -e
         ;;
       slurm)
         job_info=$( squeue -u "${USER}" -j "${jobid}" )
@@ -185,28 +180,40 @@ submit_and_wait() {
   do
     case ${SCHEDULER} in
       pbs)
-	set +e
+        set +e
         job_info=$( qstat "${jobid}" )
-	set -e
+        set -e
+        if grep -q "${jobid}" <<< "${job_info}"; then
+          job_running=true
+          # Getting the status letter from scheduler info
+          status=$( grep "${jobid}" <<< "${job_info}" )
+          status=$( awk '{print $5}' <<< "${status}" )
+        else
+          job_running=false
+          status='COMPLETED'
+          set +e
+          exit_status=$( qstat "${jobid}" -x -f | grep Exit_status | awk '{print $3}')
+          set -e
+          if [[ ${exit_status} != 0 ]]; then
+            status='FAILED'
+          fi
+        fi
         ;;
       slurm)
-        job_info=$( squeue -u "${USER}" -j "${jobid}" )
+        job_info=$( squeue -u "${USER}" -j "${jobid}" -o '%i %T' )
+        if grep -q "${jobid}" <<< "${job_info}"; then
+          job_running=true
+        else
+          job_running=false
+          job_info=$( sacct -n -j "${jobid}" --format=JobID,state%20,Jobname%64 | grep "^${jobid}" | grep "${JBNME}" )
+        fi
+        # Getting the status letter from scheduler info
+        status=$( grep "${jobid}" <<< "${job_info}" )
+        status=$( awk '{print $2}' <<< "${status}" )
         ;;
       *)
         ;;
     esac
-
-
-    if grep -q "${jobid}" <<< "${job_info}"; then
-      job_running=true
-    else
-      job_running=false
-      continue
-    fi
-
-    # Getting the status letter from scheduler info
-    status=$( grep "${jobid}" <<< "${job_info}" )
-    status=$( awk '{print $5}' <<< "${status}" )
 
     case ${status} in
       #waiting cases
@@ -218,7 +225,7 @@ submit_and_wait() {
       #running cases
       #pbs: R
       #slurm: (old: R, new: RUNNING)
-      R|RUNNING)
+      R|RUNNING|COMPLETING)
         status_label='Job running'
         ;;
       #held cases
@@ -228,17 +235,17 @@ submit_and_wait() {
         echo "rt_utils.sh: *** WARNING ***: Job in a HELD state. Might want to stop manually."
         ;;
       #fail/completed cases
-      #pbs: E
       #slurm: F/FAILED TO/TIMEOUT CA/CANCELLED
-      E|F|TO|CA|FAILED|TIMEOUT|CANCELLED)
-        echo "rt_utils.sh: !!!!!!!!!!JOB TERMINATED!!!!!!!!!!"
+      F|TO|CA|FAILED|TIMEOUT|CANCELLED)
+        echo "rt_utils.sh: !!!!!!!!!!JOB TERMINATED!!!!!!!!!! status=${status}"
         job_running=false #Trip the loop to end with these status flags
         interrupt_job
         exit 1
         ;;
       #completed
-      #pbs only: C
-      C)
+      #pbs: C-Complete E-Exiting
+      #slurm: CD/COMPLETED
+      C|E|CD|COMPLETED)
         status_label='Completed'
         ;;
       *)
@@ -253,148 +260,7 @@ submit_and_wait() {
     (( n=n+1 ))
     sleep 60 & wait $!
   done
-
-  eval "${set_x}"
 }
-
-check_results() {
-  echo "rt_utils.sh: Checking results of the regression test: ${TEST_ID}"
-  [[ -o xtrace ]] && set_x='set -x' || set_x='set +x'
-  set +x
-
-  ROCOTO=${ROCOTO:-false}
-  ECFLOW=${ECFLOW:-false}
-
-  local test_status='PASS'
-
-  # Give one minute for data to show up on file system
-  #sleep 60
-
-  {
-  echo                                                                      
-  echo "baseline dir = ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}"
-  echo "working dir  = ${RUNDIR}"
-  echo "Checking test ${TEST_ID} results ...."
-  } > "${RT_LOG}"
-  echo
-  echo "baseline dir = ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}"
-  echo "working dir  = ${RUNDIR}"
-  echo "Checking test ${TEST_ID} results ...."
-
-  if [[ ${CREATE_BASELINE} = false ]]; then
-    #
-    # --- regression test comparison
-    #
-    for i in ${LIST_FILES} ; do
-      printf %s " Comparing ${i} ....." >> "${RT_LOG}"
-      printf %s " Comparing ${i} ....."
-
-      if [[ ! -f ${RUNDIR}/${i} ]] ; then
-
-        echo ".......MISSING file" >> "${RT_LOG}"
-        echo ".......MISSING file"
-        test_status='FAIL'
-
-      elif [[ ! -f ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i} ]] ; then
-
-        echo ".......MISSING baseline" >> "${RT_LOG}"
-        echo ".......MISSING baseline"
-        test_status='FAIL'
-
-      else
-        if [[ ${i##*.} == nc* ]] ; then
-          if [[ " orion hercules hera wcoss2 acorn derecho gaea jet s4 noaacloud " =~ ${MACHINE_ID} ]]; then
-            printf "USING NCCMP.." >> "${RT_LOG}"
-            printf "USING NCCMP.."
-              if [[ ${CMP_DATAONLY} == false ]]; then
-                nccmp -d -S -q -f -g -B --Attribute=checksum --warn=format "${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i}" "${RUNDIR}/${i}" > "${i}_nccmp.log" 2>&1 && d=$? || d=$?
-              else
-                nccmp -d -S -q -f -B --Attribute=checksum --warn=format "${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i}" "${RUNDIR}/${i}" > "${i}_nccmp.log" 2>&1 && d=$? || d=$?
-              fi
-              if [[ ${d} -ne 0 && ${d} -ne 1 ]]; then
-                printf "....ERROR" >> "${RT_LOG}"
-                printf "....ERROR"
-                test_status='FAIL'
-              fi
-          fi
-        else
-          printf "USING CMP.." >> "${RT_LOG}"
-          printf "USING CMP.."
-          cmp "${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i}" "${RUNDIR}/${i}" >/dev/null 2>&1 && d=$? || d=$?
-          if [[ ${d} -eq 2 ]]; then
-            printf "....ERROR" >> "${RT_LOG}"
-            printf "....ERROR"
-            test_status='FAIL'
-          fi
-
-        fi
-
-        if [[ ${d} -ne 0 ]]; then
-          echo "....NOT IDENTICAL" >> "${RT_LOG}"
-          echo "....NOT IDENTICAL"
-          test_status='FAIL'
-        else
-          echo "....OK" >> "${RT_LOG}"
-          echo "....OK"
-        fi
-
-      fi
-
-    done
-
-  else
-    #
-    # --- create baselines
-    #
-    echo;echo "Moving baseline ${TEST_ID} files ...."
-    echo;echo "Moving baseline ${TEST_ID} files ...." >> "${RT_LOG}"
-
-    for i in ${LIST_FILES} ; do
-      printf %s " Moving ${i} ....."
-      printf %s " Moving ${i} ....."   >> "${RT_LOG}"
-      if [[ -f ${RUNDIR}/${i} ]] ; then
-        mkdir -p "${NEW_BASELINE}/${CNTL_DIR}_${RT_COMPILER}/$(dirname "${i}")"
-        cp "${RUNDIR}/${i}" "${NEW_BASELINE}/${CNTL_DIR}_${RT_COMPILER}/${i}"
-        echo "....OK" >> "${RT_LOG}"
-        echo "....OK"
-      else
-        echo "....NOT OK. Missing ${RUNDIR}/${i}" >> "${RT_LOG}"
-        echo "....NOT OK. Missing ${RUNDIR}/${i}"
-        test_status='FAIL'
-      fi
-    done
-
-  fi
-
-  {
-  echo
-  grep "The total amount of wall time" "${RUNDIR}/out"
-  grep "The maximum resident set size" "${RUNDIR}/out"
-  echo
-  } >> "${RT_LOG}"
-
-  TRIES=''
-  if [[ ${ECFLOW} == true ]]; then
-    if [[ ${ECF_TRYNO} -gt 1 ]]; then
-      TRIES=" Tries: ${ECF_TRYNO}"
-    fi
-  fi
-  echo "Test ${TEST_ID} ${test_status}${TRIES}" >> "${RT_LOG}"
-  echo                                          >> "${RT_LOG}"
-  echo "Test ${TEST_ID} ${test_status}${TRIES}"
-  echo
-
-  if [[ ${test_status} = 'FAIL' ]]; then
-    echo "${TEST_ID} failed in check_result" >> "${PATHRT}/fail_test_${TEST_ID}"
-
-    if [[ ${ROCOTO} = true || ${ECFLOW} == true ]]; then
-      exit 1
-    fi
-  fi
-
-  eval "${set_x}"
-}
-
 
 kill_job() {
   echo "rt_utils.sh: Killing job: ${jobid} on ${SCHEDULER}..."
@@ -411,7 +277,7 @@ kill_job() {
 
 rocoto_create_compile_task() {
   echo "rt_utils.sh: ${COMPILE_ID}: Creating ROCOTO compile task."
-  #new_compile=true
+  new_compile=true
   if [[ ${in_metatask} == true ]]; then
     in_metatask=false
     echo "  </metatask>" >> "${ROCOTO_XML}"
@@ -442,7 +308,7 @@ rocoto_create_compile_task() {
 
   cat << EOF >> "${ROCOTO_XML}"
   <task name="compile_${COMPILE_ID}" maxtries="${ROCOTO_COMPILE_MAXTRIES:-3}">
-    <command>&PATHRT;/run_compile.sh &PATHRT; &RUNDIR_ROOT; "${MAKE_OPT}" ${COMPILE_ID} 2>&amp;1 | tee &LOG;/compile_${COMPILE_ID}.log</command>
+    <command>bash -c 'set -xe -o pipefail ; &PATHRT;/run_compile.sh &PATHRT; &RUNDIR_ROOT; "${MAKE_OPT}" ${COMPILE_ID} 2>&amp;1 | tee &LOG;/compile_${COMPILE_ID}.log'</command>
     <jobname>compile_${COMPILE_ID}</jobname>
     <account>${ACCNR}</account>
     <queue>${COMPILE_QUEUE}</queue>
@@ -460,7 +326,7 @@ EOF
   fi
 
   cat << EOF >> "${ROCOTO_XML}"
-    <cores>${BUILD_CORES}</cores>
+    <nodes>1:ppn=${BUILD_CORES}</nodes>
     <walltime>${BUILD_WALLTIME}</walltime>
     <join>&RUNDIR_ROOT;/compile_${COMPILE_ID}.log</join>
     ${NATIVE}
@@ -486,7 +352,7 @@ rocoto_create_run_task() {
   cat << EOF >> "${ROCOTO_XML}"
     <task name="${TEST_ID}${RT_SUFFIX}" maxtries="${ROCOTO_TEST_MAXTRIES:-3}">
       <dependency> ${DEP_STRING} </dependency>
-      <command>&PATHRT;/run_test.sh &PATHRT; &RUNDIR_ROOT; ${TEST_NAME} ${TEST_ID} ${COMPILE_ID} 2>&amp;1 | tee &LOG;/run_${TEST_ID}${RT_SUFFIX}.log </command>
+      <command>bash -c 'set -xe -o pipefail ; &PATHRT;/run_test.sh &PATHRT; &RUNDIR_ROOT; ${TEST_NAME} ${TEST_ID} ${COMPILE_ID} 2>&amp;1 | tee &LOG;/run_${TEST_ID}${RT_SUFFIX}.log' </command>
       <jobname>${TEST_ID}${RT_SUFFIX}</jobname>
       <account>${ACCNR}</account>
       ${ROCOTO_NODESIZE:+<nodesize>${ROCOTO_NODESIZE}</nodesize>}
@@ -527,8 +393,7 @@ rocoto_kill() {
 }
 
 rocoto_step() {
-    echo "rt_utils.sh: Runnung one iteration of rocotorun and rocotostat..."
-    set -e
+    echo "rt_utils.sh: Running one iteration of rocotorun and rocotostat..."
     echo "Unknown" > rocoto_workflow.state
     # Run one iteration of rocotorun and rocotostat.
     ${ROCOTORUN} -v 10 -w "${ROCOTO_XML}" -d "${ROCOTO_DB}"
@@ -566,19 +431,15 @@ rocoto_run() {
           set -e
 
           if [[ "${state:-Unknown}" == Done ]] ; then
-              set +x
               echo "Rocoto workflow has completed."
-              set -x
               return 0
           elif [[ ${result} == 0 ]] ; then
               break # rocoto_step succeeded
           elif (( now_time-start_time > max_time || step_attempts >= max_step_attempts )) ; then
-              set +x
               hostnamein=$(hostname)
               echo "Rocoto commands have failed ${step_attempts} times, for $(( (now_time-start_time+30)/60 )) minutes."
               echo "There may be something wrong with the ${hostnamein} node or the batch system."
               echo "I'm giving up. Sorry."
-              set -x
               return 2
           fi
           sleep $(( naptime * 2**((step_attempts-1)%4) * RANDOM/32767 ))
@@ -592,17 +453,18 @@ ecflow_create_compile_task() {
   echo "rt_utils.sh: ${COMPILE_ID}: Creating ECFLOW compile task"
   export new_compile=true
 
-
   cat << EOF > "${ECFLOW_RUN}/${ECFLOW_SUITE}/compile_${COMPILE_ID}.ecf"
 %include <head.h>
-${PATHRT}/run_compile.sh "${PATHRT}" "${RUNDIR_ROOT}" "${MAKE_OPT}" "${COMPILE_ID}" > "${LOG_DIR}/compile_${COMPILE_ID}.log" 2>&1 &
+(
+cd "${LOG_DIR}"
+ln -sf "compile_${COMPILE_ID}.log.\${ECF_TRYNO}" "compile_${COMPILE_ID}.log"
+)
+${PATHRT}/run_compile.sh "${PATHRT}" "${RUNDIR_ROOT}" "${MAKE_OPT}" "${COMPILE_ID}" > "${LOG_DIR}/compile_${COMPILE_ID}.log.\${ECF_TRYNO}" 2>&1 &
 %include <tail.h>
 EOF
   {
   echo "  task compile_${COMPILE_ID}"
   echo "      label build_options '${MAKE_OPT}'"
-  echo "      label job_id ''"
-  echo "      label job_status ''"
   echo "      inlimit max_builds"
   } >> "${ECFLOW_RUN}/${ECFLOW_SUITE}.def"
 }
@@ -611,13 +473,15 @@ ecflow_create_run_task() {
   echo "rt_utils.sh: ${TEST_ID}: Creating ECFLOW run task"
   cat << EOF > "${ECFLOW_RUN}/${ECFLOW_SUITE}/${TEST_ID}${RT_SUFFIX}.ecf"
 %include <head.h>
-${PATHRT}/run_test.sh "${PATHRT}" "${RUNDIR_ROOT}" "${TEST_NAME}" "${TEST_ID}" "${COMPILE_ID}" > "${LOG_DIR}/run_${TEST_ID}${RT_SUFFIX}.log" 2>&1 &
+(
+cd "${LOG_DIR}"
+ln -sf "run_${TEST_ID}${RT_SUFFIX}.log.\${ECF_TRYNO}" "${LOG_DIR}/run_${TEST_ID}${RT_SUFFIX}.log"
+)
+${PATHRT}/run_test.sh "${PATHRT}" "${RUNDIR_ROOT}" "${TEST_NAME}" "${TEST_ID}" "${COMPILE_ID}" > "${LOG_DIR}/run_${TEST_ID}${RT_SUFFIX}.log.\${ECF_TRYNO}" 2>&1 &
 %include <tail.h>
 EOF
   {
   echo "    task ${TEST_ID}${RT_SUFFIX}"
-  echo "      label job_id ''"
-  echo "      label job_status ''"
   echo "      inlimit max_jobs"
   } >> "${ECFLOW_RUN}/${ECFLOW_SUITE}.def"
   if [[ ${DEP_RUN} != '' ]]; then
@@ -625,7 +489,7 @@ EOF
   else
     echo "      trigger compile_${COMPILE_ID} == complete" >> "${ECFLOW_RUN}/${ECFLOW_SUITE}.def"
   fi
-  
+
 }
 
 ecflow_run() {
@@ -633,20 +497,17 @@ ecflow_run() {
   # NOTE: ECFLOW IS NOT SAFE TO RUN WITH set -e, PLEASE AVOID
   #ECF_HOST="${ECF_HOST:-${HOSTNAME}}"
 
-  
+
   # Make sure ECF_HOST and ECF_PORT are set/ready on systems that have an
   # explicit ecflow node
   if [[ ${MACHINE_ID} == wcoss2 || ${MACHINE_ID} == acorn ]]; then
-    readarray -t ECFHOSTLIST < "${ECF_HOSTFILE}"
-    for ECF_HOST in "${ECFHOSTLIST[@]}"
-    do
-      if ssh -q "${ECF_HOST}" "exit"; then
-        export ECF_HOST
-        break
-      else
-        ECF_HOST=''
-      fi
-    done
+    if [[ "${HOST::1}" == "a" ]]; then
+      ECF_HOST=aecflow01
+    elif [[ "${HOST::1}" == "c" ]]; then
+      ECF_HOST=cdecflow01
+    elif [[ "${HOST::1}" == "d" ]]; then
+      ECF_HOST=ddecflow01
+    fi
   elif [[ ${MACHINE_ID} == hera || ${MACHINE_ID} == jet ]]; then
     module load ecflow
   fi
@@ -665,11 +526,11 @@ ecflow_run() {
   ecflow_client --ping --host="${ECF_HOST}" --port="${ECF_PORT}"
   not_running=$?
   set -e
-  
+
   if [[ ${not_running} -eq 1 ]]; then
     echo "rt_utils.sh: ecflow_server is not running on ${ECF_HOST}:${ECF_PORT}"
     echo "rt_utils.sh: attempting to start ecflow_server..."
-    
+
     save_traps=$(trap)
     trap "" SIGINT  # Ignore INT signal during ecflow startup
     case ${MACHINE_ID} in
@@ -679,7 +540,7 @@ ecflow_run() {
         ;;
       *)
         ${ECFLOW_START} -p "${ECF_PORT}" -d "${RUNDIR_ROOT}/ecflow_server"
-	;;
+        ;;
     esac
 
     ECFLOW_RUNNING=true
@@ -689,7 +550,7 @@ ecflow_run() {
     ecflow_client --ping --host="${ECF_HOST}" --port="${ECF_PORT}"
     not_running=$?
     set -e
-    
+
     if [[ ${not_running} -eq 1 ]]; then
       echo "rt_utils.sh: ERROR -- Failure to start ecflow. Exiting..."
       exit 1
@@ -698,7 +559,7 @@ ecflow_run() {
     echo "rt_utils.sh: Confirmed: ecflow_server is running on ${ECF_HOST}:${ECF_PORT}"
     ECFLOW_RUNNING=true
   fi
-  
+
   echo "rt_utils.sh: Starting ECFLOW tasks..."
   set +e
   ecflow_client --load="${ECFLOW_RUN}/${ECFLOW_SUITE}.def" --host="${ECF_HOST}" --port="${ECF_PORT}"
@@ -712,6 +573,7 @@ ecflow_run() {
   max_active_tasks=$( grep "task " <<< "${max_active_tasks}" )
   max_active_tasks=$( grep -cP 'state:active|state:submitted|state:queued' <<< "${max_active_tasks}" )
   echo "rt_utils.sh: Total number of tasks processed -- ${max_active_tasks}"
+  prev_active_tasks=${active_tasks}
   while [[ "${active_tasks}" -ne 0 ]]
   do
     sleep 10 & wait $!
@@ -720,7 +582,13 @@ ecflow_run() {
     active_tasks=$( grep "task " <<< "${active_tasks}" )
     active_tasks=$( grep -cP 'state:active|state:submitted|state:queued' <<< "${active_tasks}" )
     set -e
-    echo "ECFLOW Tasks Remaining: ${active_tasks}/${max_active_tasks}"
+    if [[ ${active_tasks} -ne ${prev_active_tasks} ]]; then
+      echo
+      echo -n "ECFLOW Tasks Remaining: ${active_tasks}/${max_active_tasks} "
+      prev_active_tasks=${active_tasks}
+    else
+      echo -n "."
+    fi
     "${PATHRT}/abort_dep_tasks.py"
   done
 

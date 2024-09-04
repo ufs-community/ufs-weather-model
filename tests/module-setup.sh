@@ -51,15 +51,15 @@ elif [[ ${MACHINE_ID} = derecho ]] ; then
     fi
     module purge
     
-elif [[ ${MACHINE_ID} = noaacloud ]] ; then
-    # We are on NOAA Cloud
-    if ( ! eval module help > /dev/null 2>&1 ) ; then
-        source /apps/lmod/8.5.2/init/bash
-    fi
-    module purge
-    
 elif [[ ${MACHINE_ID} = stampede ]] ; then
     # We are on TACC Stampede
+    if ( ! eval module help > /dev/null 2>&1 ) ; then
+        source /opt/apps/lmod/lmod/init/bash
+    fi
+    module purge
+
+elif [[ ${MACHINE_ID} = frontera ]] ; then
+    # We are on TACC Frontera
     if ( ! eval module help > /dev/null 2>&1 ) ; then
         source /opt/apps/lmod/lmod/init/bash
     fi
@@ -84,6 +84,10 @@ elif [[ ${MACHINE_ID} = expanse ]]; then
     fi
     module purge
     module load slurm/expanse/20.02.3
+
+elif [[ ${MACHINE_ID} = noaacloud ]] ; then
+    # We are on NOAA Cloud
+    module purge
 
 else
     echo WARNING: UNKNOWN PLATFORM 1>&2

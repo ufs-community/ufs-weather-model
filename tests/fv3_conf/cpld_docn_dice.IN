@@ -1,0 +1,13 @@
+mkdir -p INPUT
+
+SUFFIX=${RT_SUFFIX}
+if [[ ${OPNREQ_TEST} == true ]]; then
+  SUFFIX=${BL_SUFFIX}
+fi
+
+#CDEPS data files
+cp ../${DEP_RUN}${SUFFIX}/*ice.1h.aux*nc ./INPUT/ufs.cpld.cpl.hi.ice.nc
+cp ../${DEP_RUN}${SUFFIX}/*ocn.1h.aux*nc ./INPUT/ufs.cpld.cpl.hi.ocn.nc
+
+#CDEPS fix files - same for ocn/ice
+cp @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/mesh.mx@[OCNRES].nc INPUT

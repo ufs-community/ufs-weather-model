@@ -10,17 +10,20 @@ elif [ $NPX = 385 ]; then
 elif [ $NPX = 769 ]; then
   inputdir=FV3_input_data768
 fi
-echo "inputdir=$inputdir,NPX=$NPX"
+
+echo "inputdir=$inputdir,NPX=$NPX,NESTED=$NESTED"
 
 OPNREQ_TEST=${OPNREQ_TEST:-false}
 V2_SFC_FILE=${V2_SFC_FILE:-false}
 SUFFIX=${RT_SUFFIX}
 if [ $WARM_START = .false. ]; then
   mkdir INPUT RESTART
-  if [ "$V2_SFC_FILE" = "true" ]; then
+  if [ "$NESTED" = .true. ]; then
+    cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127_nested/* ./INPUT/.
+  elif [ "$V2_SFC_FILE" = "true" ]; then
     cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127_v2_sfc/* ./INPUT/.
   else
-    cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127/* ./INPUT/.
+    cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127_gfsv17/* ./INPUT/.
   fi
 else
   mkdir INPUT RESTART
@@ -115,9 +118,9 @@ fi
 
 #inline post
 if [[ $POSTAPP = 'global' ]]; then
-  cp    ${PATHRT}/parm/post_itag_gfs itag
-  cp    ${PATHRT}/parm/postxconfig-NT-gfs.txt postxconfig-NT.txt
-  cp    ${PATHRT}/parm/postxconfig-NT-gfs_FH00.txt postxconfig-NT_FH00.txt
+  cp    ${PATHRT}/parm/@[POST_ITAG] itag
+  cp    ${PATHRT}/parm/@[POSTXCONFIG] postxconfig-NT.txt
+  cp    ${PATHRT}/parm/@[POSTXCONFIG_FH00] postxconfig-NT_FH00.txt
   cp    ${PATHRT}/parm/params_grib2_tbl_new params_grib2_tbl_new
 fi
 
@@ -129,7 +132,7 @@ fi
 #merra2
 if [ $USE_MERRA2 = .true. ]; then
   for n in 01 02 03 04 05 06 07 08 09 10 11 12; do
-    cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/MERRA2/merra2.aerclim.2003-2014.m${n}.nc aeroclim.m${n}.nc
+    cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/MERRA2_y14_24/merra2_1423_${n}.nc aeroclim.m${n}.nc
   done
   cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_BC.v1_3.dat  optics_BC.dat
   cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_OC.v1_3.dat  optics_OC.dat

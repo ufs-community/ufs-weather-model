@@ -16,7 +16,7 @@ usage() {
   echo "  -a  <account> to use on for HPC queue"
   echo "  -b  create new baselines only for tests listed in <file>"
   echo "  -c  create new baseline results"
-  echo "  -d  delete run direcotries that are not used by other tests"
+  echo "  -d  delete run directories that are not used by other tests"
   echo "  -e  use ecFlow workflow manager"
   echo "  -h  display this help"
   echo "  -k  keep run directory after rt.sh is completed"
@@ -28,7 +28,6 @@ usage() {
   echo "  -v  verbose output"
   echo "  -w  for weekly_test, skip comparing baseline results"
   echo
-  set -x
 }
 
 [[ $# -eq 0 ]] && usage
@@ -155,11 +154,11 @@ update_rtconf() {
 
 generate_log() {
   echo "rt.sh: Generating Regression Testing Log..."
-  set -x
   COMPILE_COUNTER=0
   FAILED_COMPILES=()
   TEST_COUNTER=0
   FAILED_TESTS=()
+  SKIPPED_TESTS=()
   FAILED_TEST_ID=()
   FAILED_COMPILE_LOGS=()
   FAILED_TEST_LOGS=()
@@ -255,14 +254,14 @@ EOF
           COMPILE_RESULT="FAILED: UNABLE TO START COMPILE"
           FAIL_LOG="N/A"
         elif [[ -f fail_compile_${COMPILE_ID} ]]; then
-          COMPILE_RESULT="FAILED: UNABLE TO COMPILE"
+          COMPILE_RESULT="FAILED: UNABLE TO FINISH COMPILE"
           FAIL_LOG="${LOG_DIR}/compile_${COMPILE_ID}.log"
           if grep -q "quota" "${LOG_DIR}/compile_${COMPILE_ID}.log"; then
             COMPILE_RESULT="FAILED: DISK QUOTA ISSUE"
             FAIL_LOG="${LOG_DIR}/compile_${COMPILE_ID}.log"
-          elif grep -q "timeout" "${LOG_DIR}/compile_${COMPILE_ID}.log"; then
-            COMPILE_RESULT="FAILED: TEST TIMED OUT"
-            FAIL_LOG="${LOG_DIR}/compile_${COMPILE_ID}.log"
+          elif grep -q "TIME LIMIT" "${RUNDIR_ROOT}/compile_${COMPILE_ID}/err"; then
+            COMPILE_RESULT="FAILED: COMPILE TIMED OUT"
+            FAIL_LOG="${RUNDIR_ROOT}/compile_${COMPILE_ID}/err"
           fi
         else
           COMPILE_RESULT="PASS"
@@ -330,21 +329,25 @@ EOF
         RT_TEST_TIME=""
         RT_TEST_MEM=""
         if [[ ${CREATE_BASELINE} == true && ${GEN_BASELINE} != "baseline" ]]; then
-          TEST_RESULT="SKIPPED (TEST DOES NOT GENERATE BASELINE)"
+          TEST_RESULT="SKIPPED: TEST DOES NOT GENERATE BASELINE"
+          SKIPPED_TESTS+=("TEST ${TEST_NAME}_${COMPILER}: ${TEST_RESULT}")
+        elif [[ ${COMPILE_RESULT} =~ FAILED ]]; then
+          TEST_RESULT="SKIPPED: ASSOCIATED COMPILE FAILED"
+          SKIPPED_TESTS+=("TEST ${TEST_NAME}_${COMPILER}: ${TEST_RESULT}")
         elif [[ ! -f "${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log" ]]; then
-          TEST_RESULT="FAILED: UNABLE TO START RUN"
+          TEST_RESULT="FAILED: UNABLE TO START TEST"
           FAIL_LOG="N/A"
         elif [[ -f fail_test_${TEST_NAME}_${COMPILER} ]]; then
           if [[ -f "${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log" ]]; then
             if grep -q "FAIL" "${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log"; then
-              TEST_RESULT="FAILED: UNABLE TO RUN COMPARISON"
+              TEST_RESULT="FAILED: UNABLE TO COMPLETE COMPARISON"
               FAIL_LOG="${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"
             # We need to catch a "PASS" in rt_*.log even if a fail_test_* files exists
             # I am not sure why this can happen.
             elif grep -q "PASS" "${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log"; then
               TEST_RESULT="PASS"
             else
-              TEST_RESULT="FAILED: BASELINE COMPARISON"
+              TEST_RESULT="FAILED: UNSUCCESSFUL BASELINE COMPARISON"
               FAIL_LOG="${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log"
             fi
           else
@@ -354,9 +357,9 @@ EOF
           if grep -q "quota" "${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"; then
             TEST_RESULT="FAILED: DISK QUOTA ISSUE"
             FAIL_LOG="${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"
-          elif grep -q "timeout" "${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"; then
+          elif grep -q "TIME LIMIT" "${RUNDIR_ROOT}/${TEST_NAME}_${COMPILER}/err"; then
             TEST_RESULT="FAILED: TEST TIMED OUT"
-            FAIL_LOG="${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"
+            FAIL_LOG="${RUNDIR_ROOT}/${TEST_NAME}_${COMPILER}/err"
           fi
         else
           TEST_RESULT="PASS"
@@ -399,7 +402,7 @@ Starting Date/Time: ${TEST_START_TIME}
 Ending Date/Time: ${TEST_END_TIME}
 Total Time: ${elapsed_time}
 Compiles Completed: $((COMPILE_COUNTER-${#FAILED_COMPILES[@]}))/${COMPILE_COUNTER}
-Tests Completed: $((TEST_COUNTER-${#FAILED_TESTS[@]}))/${TEST_COUNTER}
+Tests Completed: $((TEST_COUNTER-${#FAILED_TESTS[@]}-${#SKIPPED_TESTS[@]}))/${TEST_COUNTER}
 EOF
   # PRINT FAILED COMPILES
   if [[ "${#FAILED_COMPILES[@]}" -ne "0" ]]; then
@@ -674,13 +677,9 @@ done
 #B&N not run together
 [[ ${NEW_BASELINES_FILE} != '' && ${RUN_SINGLE_TEST} == true ]] && die "-b and -n options cannot be used at the same time"
 
-[[ -o xtrace ]] && set_x='set -x' || set_x='set +x'
-
 if [[ ${RTVERBOSE} == true ]]; then
   set -x
 fi
-
-[[ -o xtrace ]] && set_x='set -x' || set_x='set +x'
 
 if [[ -z "${ACCNR}" ]]; then
   echo "Please use -a <account> to set group account to use on HPC"
@@ -694,12 +693,10 @@ echo "Account: ${ACCNR}"
 case ${MACHINE_ID} in
   wcoss2|acorn)
     echo "rt.sh: Setting up WCOSS2/Acorn"
-    set -x
     if [[ "${ECFLOW:-false}" == true ]] ; then
       module load ecflow/5.6.0.13
     fi
     module load intel/19.1.3.304 python/3.8.6
-    export colonifnco=":output"  # hack
 
     DISKNM="/lfs/h2/emc/nems/noscrub/emc.nems/RT"
     QUEUE="dev"
@@ -714,7 +711,6 @@ case ${MACHINE_ID} in
     ;;
   gaea)
     echo "rt.sh: Setting up gaea..."
-    set -x
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module use /ncrc/proj/epic/rocoto/modulefiles
       module load rocoto
@@ -747,7 +743,6 @@ case ${MACHINE_ID} in
     ;;
   hera)
     echo "rt.sh: Setting up hera..."
-    set -x
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module load rocoto
       ROCOTO_SCHEDULER=slurm
@@ -770,13 +765,9 @@ case ${MACHINE_ID} in
     ;;
   orion)
     echo "rt.sh: Setting up orion..."
-    set -x
-    module load git/2.28.0
-    module load gcc/10.2.0
-    module load python/3.9.2
 
     if [[ "${ROCOTO:-false}" == true ]] ; then
-      module load contrib rocoto
+      module load contrib ruby/3.2.3 rocoto/1.3.7
       ROCOTO_SCHEDULER="slurm"
     fi
 
@@ -797,10 +788,11 @@ case ${MACHINE_ID} in
     PTMP="${dprefix}/stmp"
 
     SCHEDULER="slurm"
+    cp fv3_conf/fv3_slurm.IN_orion fv3_conf/fv3_slurm.IN
+    cp fv3_conf/compile_slurm.IN_orion fv3_conf/compile_slurm.IN
     ;;
   hercules)
     echo "rt.sh: Setting up hercules..."
-    set -x
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module load contrib rocoto
       ROCOTO_SCHEDULER="slurm"
@@ -828,7 +820,6 @@ case ${MACHINE_ID} in
     ;;
   jet)
     echo "rt.sh: Setting up jet..."
-    set -x
     CurJetOS=$(lsb_release -is)
     echo "=======Running on ${CurJetOS}======="
     if [[ ${CurJetOS} == "CentOS" ]]; then
@@ -844,16 +835,15 @@ case ${MACHINE_ID} in
     if [[ "${ECFLOW:-false}" == true ]] ; then
       module load ecflow/5.11.4
     fi
-
-    module use /mnt/lfs4/HFIP/hfv3gfs/role.epic/spack-stack/spack-stack-1.5.0/envs/unified-env-rocky8/install/modulefiles/Core
+    module use /contrib/spack-stack/spack-stack-1.6.0/envs/unified-env-rocky8/install/modulefiles/Core
     module load stack-intel/2021.5.0
-    module load stack-python/3.10.8
+    module load stack-python/3.10.13
 
     QUEUE="batch"
     COMPILE_QUEUE="batch"
     PARTITION="xjet"
-    DISKNM="/mnt/lfs4/HFIP/hfv3gfs/role.epic/RT"
-    dprefix="${dprefix:-/lfs4/HFIP/${ACCNR}/${USER}}"
+    DISKNM="/lfs5/HFIP/hfv3gfs/role.epic/RT"
+    dprefix="${dprefix:-/lfs5/HFIP/${ACCNR}/${USER}}"
     STMP="${STMP:-${dprefix}/RT_BASELINE}"
     PTMP="${PTMP:-${dprefix}/RT_RUNDIRS}"
 
@@ -861,7 +851,6 @@ case ${MACHINE_ID} in
     ;;
   s4)
     echo "rt.sh: Setting up s4..."
-    set -x
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module load rocoto/1.3.2
       ROCOTO_SCHEDULER=slurm
@@ -892,7 +881,6 @@ case ${MACHINE_ID} in
     ;;
   derecho)
     echo "rt.sh: Setting up derecho..."
-    set -x
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module use /glade/work/epicufsrt/contrib/derecho/rocoto/modulefiles
       module load rocoto
@@ -930,7 +918,6 @@ case ${MACHINE_ID} in
     ;;
   stampede)
     echo "rt.sh: Setting up stampede..."
-    set -x
     export PYTHONPATH=
     if [[ "${ECFLOW:-false}" == true ]] ; then
       ECFLOW_START=
@@ -948,7 +935,6 @@ case ${MACHINE_ID} in
     ;;
   expanse)
     echo "rt.sh: Setting up expanse..."
-    set -x
     export PYTHONPATH=
 
     if [[ "${ECFLOW:-false}" == true ]] ; then
@@ -965,7 +951,6 @@ case ${MACHINE_ID} in
     ;;
   noaacloud)
     echo "rt.sh: Setting up noaacloud..."
-    set -x
     export PATH="/contrib/EPIC/bin:${PATH}"
     module use /apps/modules/modulefiles
 
@@ -987,7 +972,6 @@ case ${MACHINE_ID} in
     die "Unknown machine ID, please edit detect_machine.sh file"
     ;;
 esac
-eval "${set_x}"
 
 mkdir -p "${STMP}/${USER}"
 
@@ -1056,6 +1040,7 @@ if [[ ${skip_check_results} == true ]]; then
 else
   REGRESSIONTEST_LOG=${PATHRT}/logs/RegressionTests_${MACHINE_ID}.log
 fi
+rm -f "${REGRESSIONTEST_LOG}"
 
 TEST_START_TIME="$(date '+%Y%m%d %T')"
 export TEST_START_TIME
@@ -1323,8 +1308,8 @@ export WLCLK=${WLCLK}
 EOF
       if [[ ${MACHINE_ID} = jet ]]; then
         cat << EOF >> "${RUNDIR_ROOT}/run_test_${TEST_ID}.env"
-export PATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/bin:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/bin:${PATH}
-export PYTHONPATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/lib/python3.8/site-packages
+export PATH=/contrib/spack-stack/miniconda3/23.11.0/envs/ufs-weather-model/bin:/contrib/spack-stack/miniconda3/23.11.0/bin:${PATH}
+export PYTHONPATH=/contrib/spack-stack/miniconda3/23.11.0/envs/ufs-weather-model/lib/python3.8/site-packages:/contrib/spack-stack/miniconda3/23.11.0/lib/python3.8/site-packages
 EOF
       fi
 
@@ -1374,5 +1359,4 @@ fi
 
 ## Lets verify all tests were run and that they passed
 generate_log
-eval "${set_x}"
 echo "******Regression Testing Script Completed******"

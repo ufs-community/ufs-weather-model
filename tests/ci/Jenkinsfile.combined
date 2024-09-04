@@ -69,6 +69,10 @@ def generateStage(nodeLabel) {
                             cd $WORKSPACE/tests/
                           elif [[ $machine =~ "Orion" ]]
                           then
+                            cd ..
+                            module load git/2.28.0
+                            git submodule update --init --recursive
+                            cd tests
                             echo "Creating baselines on $machine"
                             export dprefix=/work2/noaa/$ACCNR/$USER
                             sed -i 's|/work/noaa/stmp/${USER}|/work/noaa/epic/stmp/role-epic/|g' rt.sh
@@ -214,6 +218,10 @@ def generateStage(nodeLabel) {
                           elif [[ $machine =~ "Orion" ]]
                           then
                            echo "Running regression tests on $machine"
+                            cd ..
+                            module load git/2.28.0
+                            git submodule update --init --recursive
+                            cd tests
                             export dprefix=/work2/noaa/$ACCNR/$USER
                             sed "s|/noaa/stmp/|/noaa/$ACCNR/stmp/|g" -i rt.sh
                             ./rt.sh -a ${ACCNR} -e -l rt.conf | tee $WORKSPACE/tests/logs/RT-run-$machine.log
@@ -304,21 +312,13 @@ def generateStage(nodeLabel) {
                       echo "Testing concluded...removing labels for $machine from $GIT_URL"
                       git remote -v | grep -w sshorigin > /dev/null 2>&1 && git remote remove sshorigin > /dev/null 2>&1
                       git remote add sshorigin $SSH_ORIGIN > /dev/null 2>&1
-  
-                      if [[ -f $WORKSPACE/tests/logs/RT-run-$machine.log ]] ; then
-                         git add $WORKSPACE/tests/logs/RT-run-$machine.log
-                      fi
-                      git commit  --allow-empty -m "[AutoRT] $machine Job Failed!\n\n\n on-behalf-of @ufs-community <ecc.platform@noaa.gov>"
-                    
-                      git pull sshorigin $FORK_BRANCH
-                      git push sshorigin HEAD:$FORK_BRANCH
 
                       tar --create --gzip --verbose --dereference --file "${machine_name_logs}.tgz" ${WORKSPACE}/tests/logs/*.log
 
                       GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
                       GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
 
-                      curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels -d '{"labels":["$machine-.*RT|$machine-.*BL"]}'
+                      curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/{$machine-RT,$machine-BL}
                     '''
                       s3Upload consoleLogLevel: 'INFO', dontSetBuildResultOnFailure: false, dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'noaa-epic-prod-jenkins-artifacts', excludedFile: '', flatten: true, gzipFiles: false, keepForever: false, managedArtifacts: true, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: "**/*tgz*", storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'main', userMetadata: []
                     currentBuild.result = 'FAILURE'
