@@ -7,7 +7,7 @@ else
 fi
 echo "inputdir=$inputdir,LNDRES=$LNDRES"
 
-export OCNRES=100
+export OCNRES=025
 V2_SFC_FILE=${V2_SFC_FILE:-false}
 
 if [ $DATM_CDEPS == true ]; then
@@ -50,7 +50,6 @@ else
     RFILE=ufs.cpld.cpl.r.${RESTART_FILE_SUFFIX_SECS}.nc
     cp  ../${DEP_RUN}${SUFFIX}/RESTART/${RFILE} .
     ls -1 ${RFILE}>rpointer.cpl
-    # link grid spec file
   fi
 fi
 
