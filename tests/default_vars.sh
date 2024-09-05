@@ -962,7 +962,6 @@ export_ugwpv1() {
       export DT_ATMOS=600
       export XR_CNVCLD=.true.
       export CDMBGWD="0.23,1.5,1.0,1.0"
-      export CDMBGWD="5.0,5.0,1.0,1.0"
       export CDMBGWD_GSL="5.0,5.0,1.0,1.0"
       export KNOB_UGWP_TAUAMP=1.5e-3
       export K_SPLIT=2
