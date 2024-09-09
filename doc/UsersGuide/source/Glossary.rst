@@ -68,7 +68,8 @@ Glossary
       Global atmospheric model based on fluid dynamics principles, including Euler's equations of motion.
 
    EMC
-      The `Environmental Modeling Center <https://www.emc.ncep.noaa.gov/emc.php>`_ is one of :term:`NCEP`'s nine centers and leads the :term:`National Weather Service <NWS>`'s modeling efforts.
+      The `Environmental Modeling Center <https://www.emc.ncep.noaa.gov/emc.php>`__ is one of :term:`NCEP`'s nine centers and leads the :term:`National Weather Service <NWS>`'s modeling efforts.
+
 
    ESMF
       `Earth System Modeling Framework <https://earthsystemmodeling.org/docs/release/latest/ESMF_usrdoc/>`__. The ESMF defines itself as "a suite of software tools for developing high-performance, multi-component Earth science modeling applications." It is a community-developed software infrastructure for building and coupling models. 

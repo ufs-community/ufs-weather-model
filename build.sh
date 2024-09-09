@@ -1,17 +1,10 @@
 #!/bin/bash
 set -eu
-uname_s=$(uname -s)
-if [[ ${uname_s} == Darwin ]]; then
-  UFS_MODEL_DIR=$(greadlink -f -n "${BASH_SOURCE[0]}")
-  UFS_MODEL_DIR=$(dirname "${UFS_MODEL_DIR}")
-  UFS_MODEL_DIR=$(cd "${UFS_MODEL_DIR}" && pwd -P)
-else
-  UFS_MODEL_DIR=$(readlink -f -n "${BASH_SOURCE[0]}")
-  UFS_MODEL_DIR=$(dirname "${UFS_MODEL_DIR}")
-  UFS_MODEL_DIR=$(cd "${UFS_MODEL_DIR}" && pwd -P)
-fi
-echo "UFS MODEL DIR: ${UFS_MODEL_DIR}"
+
+SCRIPT_REALPATH=$(realpath "${BASH_SOURCE[0]}")
+UFS_MODEL_DIR=$(dirname "${SCRIPT_REALPATH}")
 readonly UFS_MODEL_DIR
+echo "UFS MODEL DIR: ${UFS_MODEL_DIR}"
 
 export CC=${CC:-mpicc}
 export CXX=${CXX:-mpicxx}
