@@ -395,6 +395,12 @@ ISEED_EPBL=201601010023,
 /
 
 &surface_flux_nml
-       alt_gustiness = .FALSE.
-       gust_min = 1.0
+       alt_gustiness = .TRUE.
+       gust_min      = 0.0    ! m/s, min. gustiness used when alt_gustiness is .FALSE.
+/
+
+&atmos_prescr_nml
+	gust_to_use  = 'prescribed'
+       !gustiness    = 5.0     ! m/s, wind gustiness if gust_to_use = 'prescribed'
+       !gust_min     = 0.01    ! m/s, min. gustiness when gust_to_use = 'computed'
 /
