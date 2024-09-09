@@ -26,14 +26,13 @@ local ufs_modules = {
   {["netcdf-C"]    = "4.9.2"},
   {["pio-C"]       = "2.5.10"},
   {["esmf-C"]      = "8.6.0"},
-  {["fms-C"]       = "2023.04"},
   {["bacio"]       = "2.4.1"},
   {["crtm"]        = "2.4.0"},
   {["g2"]          = "3.5.1"},
   {["g2tmpl"]      = "1.13.0"},
-  {["ip"]          = "3.3.3"},
+  {["ip"]          = "4.0.0"},
   {["sp"]          = "2.3.3"},
-  {["w3emc"]       = "2.9.2"},
+  {["w3emc"]       = "2.12.0"},
   {["gftl-shared"] = "1.6.1"},
   {["mapl-C"]      = "2.40.3"},
   {["pnetcdf-C"]   = "1.12.2"},
@@ -46,6 +45,11 @@ for i = 1, #ufs_modules do
     load(pathJoin(name, os.getenv(env_version_name) or default_version))
   end
 end
+
+append_path("MODULEPATH","/apps/ops/prod/libs/modulefiles/mpi/intel/19.1.3.304/cray-mpich/8.1.9")
+fms_ver=os.getenv("fms_ver") or "2024.01"
+load(pathJoin("fms", fms_ver))
+
 
 setenv("CC", "cc")
 setenv("CXX", "CC")
