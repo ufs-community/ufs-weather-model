@@ -951,11 +951,10 @@ case ${MACHINE_ID} in
     ;;
   noaacloud)
     echo "rt.sh: Setting up noaacloud..."
-    export PATH="/contrib/EPIC/bin:${PATH}"
     module use /apps/modules/modulefiles
 
     if [[ "${ROCOTO:-false}" == true ]] ; then
-      module load rocoto/1.3.3
+      module load rocoto/1.3.7
       ROCOTO_SCHEDULER=slurm
     fi
 
