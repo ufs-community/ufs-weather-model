@@ -82,29 +82,16 @@ if [ $WARM_START = .false. ]; then
   cp    ${FV3_IC}/sfc_data*.nc ./INPUT
   cp    ${FV3_IC}/gfs_data*.nc ./INPUT
   cp    ${FV3_IC}/gfs_ctrl.nc ./INPUT
-  if [[ ${BMIC} == .true. ]]; then
-   cp ${MOM_IC}/MOM*.nc ./INPUT
-   #cp ${MOM_IC}/ORAS5.mx025.ic.nc ./INPUT
-   cp @[INPUTDATA_ROOT]/MOM6_IC/MOM6_IC_TS_2021032206.nc ./INPUT/MOM6_IC_TS.nc
-   cp ${MOM_IC}/interpolate_zgrid_26L.nc ./INPUT
-   #cp    ${ICE_IC}/cice5_model_@[ICERES].res_${SYEAR}${SMONTH}${SDAY}00.nc ./cice_model.res.nc
-   cp ${ICE_IC}/cice*nc ./INPUT
-   ls -1 ./INPUT/cice*nc>ice.restart_file
-   cp ${FV3_IC}/ufs.cpld.cpl*nc .
-   ls -1 ufs.cpld.cpl*nc>rpointer.cpl
-   cp ${WAV_IC}/restart.ww3 ufs.cpld.ww3.r.${RESTART_FILE_SUFFIX_SECS}
+  if [[ $ATMRES == C48 ]]; then
+    cp    ${MOM_IC}/MOM.res.nc ./INPUT
+    cp    ${ICE_IC}/cice_model_@[ICERES].cpc.res_* ./cice_model.res.nc
   else
-    if [[ $ATMRES == C48 ]]; then
-      cp    ${MOM_IC}/MOM.res.nc ./INPUT
-      cp    ${ICE_IC}/cice_model_@[ICERES].cpc.res_* ./cice_model.res.nc
+    if [[ $OCNICE_WARMSTART == .true. ]]; then
+      cp   ${MOM_IC}/mom6.mx@[OCNRES].${SYEAR}${SMONTH}${SDAY}${SHOUR}.warmstart.nc ./INPUT/mom6.warmstart.nc
+      cp   ${ICE_IC}/cice.mx@[OCNRES].${SYEAR}${SMONTH}${SDAY}${SHOUR}.warmstart.nc ./cice.warmstart.nc
     else
-      if [[ $OCNICE_WARMSTART == .true. ]]; then
-        cp   ${MOM_IC}/mom6.mx@[OCNRES].${SYEAR}${SMONTH}${SDAY}${SHOUR}.warmstart.nc ./INPUT/mom6.warmstart.nc
-        cp   ${ICE_IC}/cice.mx@[OCNRES].${SYEAR}${SMONTH}${SDAY}${SHOUR}.warmstart.nc ./cice.warmstart.nc
-      else
-        cp    ${MOM_IC}/MOM6_IC_TS_${SYEAR}${SMONTH}${SDAY}${SHOUR}.nc ./INPUT/MOM6_IC_TS.nc
-        cp    ${ICE_IC}/${OCNRES}/cice_model_@[ICERES].cpc.res_${SYEAR}${SMONTH}${SDAY}.nc ./cice_model.res.nc
-      fi
+      cp    ${MOM_IC}/MOM6_IC_TS_${SYEAR}${SMONTH}${SDAY}${SHOUR}.nc ./INPUT/MOM6_IC_TS.nc
+      cp    ${ICE_IC}/${OCNRES}/cice_model_@[ICERES].cpc.res_${SYEAR}${SMONTH}${SDAY}.nc ./cice_model.res.nc
     fi
   fi
 else
@@ -189,14 +176,14 @@ else
        #coupler.res fv_core.res.nc fv_core.res.tile[1-6].nc fv_srf_wnd.res.tile[1-6].nc fv_tracer.res.tile[1-6].nc phy_data.tile[1-6].nc fv3_increment.nc
        cp ${MOM_IC}/MOM*.nc ./INPUT
        cp ${MOM_IC}/mom6_increment.nc ./INPUT
-       #cp ${MOM_IC}/ORAS5.mx025.ic.nc ./INPUT
-       cp @[INPUTDATA_ROOT]/MOM6_IC/MOM6_IC_TS_2021032206.nc ./INPUT/MOM6_IC_TS.nc
        cp ${MOM_IC}/interpolate_zgrid_26L.nc ./INPUT
        cp ${ICE_IC}/cice*nc ./INPUT
        ls -1 ./INPUT/cice*nc>ice.restart_file
+       cp ${FV3_IC}/*stoch*nc ./INPUT
+       cp ${FV3_IC}/ca_data*nc ./INPUT
        cp ${FV3_IC}/ufs.cpld.cpl*nc .
        ls -1 ufs.cpld.cpl*nc>rpointer.cpl
-       cp ${WAV_IC}/restart.ww3 ufs.cpld.ww3.r.${RESTART_FILE_SUFFIX_SECS}
+       cp ${WAV_IC}/ufs.cpld.ww3.r.${RESTART_FILE_SUFFIX_SECS} .
      else
        # C48mx500 warm start from ICs
        cp    ${FV3_IC}/*.nc ./INPUT
