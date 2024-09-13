@@ -2,16 +2,13 @@ mkdir -p INPUT RESTART
 
 if [ "$LNDRES" = "C96" ]; then
   inputdir=FV3_input_data
-elif [ "$LNDRES" = "C48" ]; then
-  inputdir=FV3_input_data48
-elif [ "$LNDRES" = "C192" ]; then
-  inputdir=FV3_input_data192
-elif [ "$LNDRES" = "C384" ]; then
-  inputdir=FV3_input_data384
-elif [ "$LNDRES" = "C768" ]; then
-  inputdir=FV3_input_data768
+else
+  inputdir=FV3_input_data${LNDRES#C}
 fi
 echo "inputdir=$inputdir,LNDRES=$LNDRES"
+
+export OCNRES=025
+V2_SFC_FILE=${V2_SFC_FILE:-false}
 
 if [ $DATM_CDEPS == true ]; then
   targetdir="./INPUT"
@@ -33,7 +30,19 @@ else
   fi
 
   if [ $WARM_START = .false. ]; then
-    cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127/sfc_data.tile*.nc ${targetdir}/.
+    if [ $S2S = true ]; then
+      if [ "$V2_SFC_FILE" = "true" ]; then
+        cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127_v2_sfc/sfc_data.tile*.nc ${targetdir}/.
+      else
+        cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127/sfc_data.tile*.nc ${targetdir}/.
+      fi
+    else
+      if [ "$V2_SFC_FILE" = "true" ]; then
+        cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127_mx${OCNRES}_v2_sfc/sfc_data.tile*.nc ${targetdir}/.
+      else
+        cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127_mx${OCNRES}/sfc_data.tile*.nc ${targetdir}/.
+      fi
+    fi
   else
     # land restart file
     cp ../${DEP_RUN}${SUFFIX}/ufs.cpld.lnd.out.${RESTART_FILE_SUFFIX_SECS}.tile*.nc RESTART/.
@@ -41,7 +50,6 @@ else
     RFILE=ufs.cpld.cpl.r.${RESTART_FILE_SUFFIX_SECS}.nc
     cp  ../${DEP_RUN}${SUFFIX}/RESTART/${RFILE} .
     ls -1 ${RFILE}>rpointer.cpl
-    # link grid spec file
   fi
 fi
 

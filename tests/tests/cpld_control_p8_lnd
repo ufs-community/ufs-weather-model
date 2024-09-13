@@ -1,57 +1,38 @@
-###############################################################################
 #
-#  Global control test GFSv16 atmosphere-land only at C96L127, P8 configuration
+#  cpld_control P8 test with land component model
 #
-###############################################################################
 
-source tests/control_p8
+source tests/cpld_control_p8
 
-export TEST_DESCR="Compare global control results with previous trunk version"
+export TEST_DESCR="Fully coupled FV3-CCPP-GOCART-MOM6-CICE-CMEPS-WW3-NOAHMP system - C96MX100"
 
-export CNTL_DIR=control_p8_atmlnd
+export CNTL_DIR=cpld_control_p8_lnd
 
-export LIST_FILES="sfcf000.tile1.nc \
-                   sfcf000.tile2.nc
-                   sfcf000.tile3.nc
-                   sfcf000.tile4.nc
-                   sfcf000.tile5.nc
-                   sfcf000.tile6.nc
-                   sfcf012.tile1.nc \
-                   sfcf012.tile2.nc \
-                   sfcf012.tile3.nc \
-                   sfcf012.tile4.nc \
-                   sfcf012.tile5.nc \
-                   sfcf012.tile6.nc \
+export LIST_FILES="sfcf021.tile1.nc \
+                   sfcf021.tile2.nc \
+                   sfcf021.tile3.nc \
+                   sfcf021.tile4.nc \
+                   sfcf021.tile5.nc \
+                   sfcf021.tile6.nc \
+                   atmf021.tile1.nc \
+                   atmf021.tile2.nc \
+                   atmf021.tile3.nc \
+                   atmf021.tile4.nc \
+                   atmf021.tile5.nc \
+                   atmf021.tile6.nc \
                    sfcf024.tile1.nc \
                    sfcf024.tile2.nc \
                    sfcf024.tile3.nc \
                    sfcf024.tile4.nc \
                    sfcf024.tile5.nc \
                    sfcf024.tile6.nc \
-                   atmf000.tile1.nc \
-                   atmf000.tile2.nc \
-                   atmf000.tile3.nc \
-                   atmf000.tile4.nc \
-                   atmf000.tile5.nc \
-                   atmf000.tile6.nc \
-                   atmf012.tile1.nc \
-                   atmf012.tile2.nc \
-                   atmf012.tile3.nc \
-                   atmf012.tile4.nc \
-                   atmf012.tile5.nc \
-                   atmf012.tile6.nc \
                    atmf024.tile1.nc \
                    atmf024.tile2.nc \
                    atmf024.tile3.nc \
                    atmf024.tile4.nc \
                    atmf024.tile5.nc \
                    atmf024.tile6.nc \
-                   RESTART/20210323.060000.ca_data.tile1.nc \
-                   RESTART/20210323.060000.ca_data.tile2.nc \
-                   RESTART/20210323.060000.ca_data.tile3.nc \
-                   RESTART/20210323.060000.ca_data.tile4.nc \
-                   RESTART/20210323.060000.ca_data.tile5.nc \
-                   RESTART/20210323.060000.ca_data.tile6.nc \
+                   gocart.inst_aod.20210323_0600z.nc4 \
                    RESTART/20210323.060000.coupler.res \
                    RESTART/20210323.060000.fv_core.res.nc \
                    RESTART/20210323.060000.fv_core.res.tile1.nc \
@@ -84,12 +65,11 @@ export LIST_FILES="sfcf000.tile1.nc \
                    RESTART/20210323.060000.sfc_data.tile4.nc \
                    RESTART/20210323.060000.sfc_data.tile5.nc \
                    RESTART/20210323.060000.sfc_data.tile6.nc \
-                   ufs.cpld.lnd.out.2021-03-22-64800.tile1.nc \
-                   ufs.cpld.lnd.out.2021-03-22-64800.tile2.nc \
-                   ufs.cpld.lnd.out.2021-03-22-64800.tile3.nc \
-                   ufs.cpld.lnd.out.2021-03-22-64800.tile4.nc \
-                   ufs.cpld.lnd.out.2021-03-22-64800.tile5.nc \
-                   ufs.cpld.lnd.out.2021-03-22-64800.tile6.nc \
+                   RESTART/20210323.060000.MOM.res.nc \
+                   RESTART/iced.2021-03-23-21600.nc \
+                   RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc \
+                   20210323.060000.out_pnt.ww3 \
+                   20210323.060000.out_grd.ww3 \
                    ufs.cpld.lnd.out.2021-03-23-21600.tile1.nc \
                    ufs.cpld.lnd.out.2021-03-23-21600.tile2.nc \
                    ufs.cpld.lnd.out.2021-03-23-21600.tile3.nc \
@@ -97,22 +77,10 @@ export LIST_FILES="sfcf000.tile1.nc \
                    ufs.cpld.lnd.out.2021-03-23-21600.tile5.nc \
                    ufs.cpld.lnd.out.2021-03-23-21600.tile6.nc"
 
-export FV3_RUN="control_run.IN noahmp_run.IN"
-
 export CPLLND=.true.
 export CPLLND2ATM=.true.
-
-export UFS_CONFIGURE=ufs.configure.atm_lnd.IN
-export med_model=cmeps
-export atm_model=fv3
+export UFS_CONFIGURE=ufs.configure.s2swal_fast_esmf.IN
 export lnd_model=noahmp
-export pio_rearranger=box
-export CPLMODE=ufs.frac
-export RUNTYPE=startup
-export READRESTART=.false.
-export CMEPS_RESTART_DIR=./RESTART/
-export cap_dbug_flag=0
-export ATM_tasks=144
 export LND_tasks=144
 export lnd_ic_type=sfc
 export CALC_SNET=.false.
@@ -123,7 +91,6 @@ export coupling_interval_sec=720
 export snow_albedo_option=1
 export precip_partition_option=4
 export initial_albedo=0.2
-export OUTPUT_FH="1 -1"
 if [[ "$ATMRES" = "$LNDRES" ]]; then
   export lnd_input_dir="INPUT/"
   export mosaic_file="INPUT/${LNDRES}_mosaic.nc"
@@ -133,4 +100,3 @@ else
   export mosaic_file="INPUT/${LNDRES}/${LNDRES}_mosaic.nc"
   export lnd_fixed_dir="INPUT/${LNDRES}/"
 fi
-export MOM6_TOPOEDITS=""
