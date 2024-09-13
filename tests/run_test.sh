@@ -330,8 +330,8 @@ if [[ ${CDEPS_INLINE} = 'true' ]]; then
   atparse < "${PATHRT}/parm/${CDEPS_INLINE_CONFIGURE:-stream.config.IN}" > stream.config
 fi
 
-if [[ $FIRE_BEHAVIOR = 'true' ]]; then
-  atparse < ${PATHRT}/parm/${FIRE_NML:-namelist.fire.IN} > namelist.fire
+if [[ ${FIRE_BEHAVIOR} = 'true' ]]; then
+  atparse < "${PATHRT}/parm/${FIRE_NML:-namelist.fire.IN}" > namelist.fire
 fi
 
 TPN=$(( TPN / THRD ))

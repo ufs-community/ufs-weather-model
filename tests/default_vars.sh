@@ -1162,20 +1162,21 @@ export_ww3() {
 }
 
 export_fire_behavior() {
-export fbh_model=fire_behavior
-export FIRE_BEHAVIOR=true
-export FIRE_NML=namelist.fire.IN
-export CPLFIRE=false
-export DT_FIRE=${DT_ATMOS}
-export OUTPUT_FS="$(printf "%02d" $(( ${OUTPUT_FH}*3600 )))"
-export fire_atm_feedback=1.0
-export fire_lsm_zcoupling=false
-export fire_lsm_zcoupling_ref=60.0
-export fire_num_ignitions=1
-export fire_print_msg=0
-export fire_upwinding=9
-export fire_viscosity=0.4
-export fire_wind_height=5.0
+  export fbh_model=fire_behavior
+  export FIRE_BEHAVIOR=true
+  export FIRE_NML=namelist.fire.IN
+  export CPLFIRE=false
+  export DT_FIRE=${DT_ATMOS}
+  OUTPUT_FS="$(printf "%02d" $(( OUTPUT_FH*3600 )))"
+  export OUTPUT_FS
+  export fire_atm_feedback=1.0
+  export fire_lsm_zcoupling=false
+  export fire_lsm_zcoupling_ref=60.0
+  export fire_num_ignitions=1
+  export fire_print_msg=0
+  export fire_upwinding=9
+  export fire_viscosity=0.4
+  export fire_wind_height=5.0
 }
 
 
