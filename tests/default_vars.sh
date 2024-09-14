@@ -576,6 +576,7 @@ export HORD_DP=-5
 export HORD_TR=8
 export NUDGE_QV=.true.
 export PERT_CLDS=.false.
+export PERT_RADTEND=.true.
 # Radiation
 export DO_RRTMGP=.false.
 export DOGP_CLDOPTICS_LUT=.true.
