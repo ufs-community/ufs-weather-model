@@ -993,7 +993,6 @@ export_mom6() {
   export MOM6_CHLCLIM=seawifs_1998-2006_smoothed_2X.nc
   export MOM6_USE_LI2016=True
   export MOM6_TOPOEDITS=''
-  export MOM6_PARALLEL_RESTARTFILES=True
   # since CPL_SLOW is set to DT_THERM, this should be always be false
   export MOM6_THERMO_SPAN=False
   export MOM6_USE_WAVES=True
