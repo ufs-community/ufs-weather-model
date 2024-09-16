@@ -58,6 +58,8 @@ export LIST_FILES="sfcf003.tile1.nc \
 
 export_fv3
 export_cpl
+export_ugwpv1
+export CCPP_SUITE=FV3_GFS_v17_coupled_p8_ugwpv1
 
 export FHMAX=3
 export DAYS=0.125
@@ -74,6 +76,7 @@ ICE_tasks=$ICE_tasks_cpl_unstr
 WAV_tasks=$WAV_tasks_cpl_unstr
 # bump resources for debug test
 WAV_tasks="$(($WAV_tasks_cpl_unstr + 18))"
+OCN_tasks="$((OCN_tasks_cpl_unstr + 16))"
 
 export atm_omp_num_threads=$THRD_cpl_unstr
 export med_omp_num_threads=$atm_omp_num_threads
@@ -98,6 +101,9 @@ export FV3_RUN=cpld_control_run.IN
 if [[ $MACHINE_ID = hera && $RT_COMPILER = gnu ]] || [[ $MACHINE_ID = jet ]]; then
   WLCLK=50
 fi
+
+export K_SPLIT=2
+export N_SPLIT=5
 
 # HR4 GFSv17 GWD update
 export DO_UGWP_V0=.false.
