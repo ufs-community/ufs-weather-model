@@ -14,10 +14,15 @@ echo -n " $( date +%s )," >  job_timestamp.txt
 set +x
 MACHINE_ID=noaacloud
 module use $( pwd -P )
-module use /contrib/EPIC/spack-stack/spack-stack-1.3.0/envs/unified-dev/install/modulefiles/Core
-module load stack-intel/2021.3.0  stack-intel-oneapi-mpi/2021.3.0
-module load ufs-weather-model-env/unified-dev
-module list
+module load gnu
+module use /contrib/spack-stack-rocky8/spack-stack-1.6.0/envs/upp-addon-env/install/modulefiles/Core
+module use /apps/modules/modulefiles
+module load stack-intel
+module load stack-intel-oneapi-mpi
+module load stack-intel/2021.10.0
+module load stack-intel-oneapi-mpi/2021.10.0
+module load cmake/3.23.1
+module load ufs-weather-model-env/1.0.0
 
 set -x
 
