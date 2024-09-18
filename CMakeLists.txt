@@ -16,7 +16,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules/Modules)
 ###############################################################################
 
 # Valid applications and choices
-list(APPEND VALID_APPS ATM ATMAERO ATMAQ ATMW ATMWM ATML LND LND-LM4 S2S S2SA S2SW S2SWA S2SWAL ATM_DS2S ATM_DS2S-PCICE HAFS HAFSW HAFS-MOM6 HAFS-MOM6W HAFS-ALL NG-GODAS)
+list(APPEND VALID_APPS ATM ATMAERO ATMAQ ATMW ATMWM ATML ATMF LND LND-LM4 S2S S2SA S2SW S2SWA S2SWAL ATM_DS2S ATM_DS2S-PCICE HAFS HAFSW HAFS-MOM6 HAFS-MOM6W HAFS-ALL NG-GODAS)
 set(APP NONE CACHE BOOL "Application Name")
 if(NOT (APP IN_LIST VALID_APPS))
   message(FATAL_ERROR "${APP} is not a valid application.\nValid Applications are: ${VALID_APPS}")
@@ -35,6 +35,7 @@ set(STOCH_PHYS      OFF CACHE BOOL "Enable Stochastic Physics")
 set(CMEPS           OFF CACHE BOOL "Enable CMEPS")
 set(CDEPS           OFF CACHE BOOL "Enable CDEPS")
 set(NOAHMP          OFF CACHE BOOL "Enable NOAHMP")
+set(FIRE_BEHAVIOR   OFF CACHE BOOL "Enable Fire Behavior")
 
 # Configure selected application specific components
 message("")
@@ -54,6 +55,7 @@ message("STOCH_PHYS ....... ${STOCH_PHYS}")
 message("CDEPS ............ ${CDEPS}")
 message("CMEPS ............ ${CMEPS}")
 message("NOAHMP ........... ${NOAHMP}")
+message("FIRE_BEHAVIOR .... ${FIRE_BEHAVIOR}")
 
 ###############################################################################
 ### Build Options
@@ -157,7 +159,7 @@ if(FMS)
   elseif (APP MATCHES "^(S2S|S2SA|S2SW|S2SWA|S2SWAL|ATM_DS2S|ATM_DS2S-PCICE|NG-GODAS|HAFS-MOM6|HAFS-MOM6W)$")
     add_library(fms ALIAS FMS::fms_r8)
   endif()
-  if(APP MATCHES "^(ATM|ATMAERO|ATMAQ|ATMWM|ATMW|ATML|ATML-LM4|LND-LM4|HAFS|HAFS-ALL)$")
+  if(APP MATCHES "^(ATM|ATMAERO|ATMAQ|ATMWM|ATMW|ATML|ATMF|ATML-LM4|LND-LM4|HAFS|HAFS-ALL)$")
     if(32BIT)
       add_library(fms ALIAS FMS::fms_r4)
     else()
@@ -268,6 +270,14 @@ if(NOAHMP)
 endif()
 
 ###############################################################################
+### Fire Components [FIRE_BEHAVIOR]
+###############################################################################
+if(FIRE_BEHAVIOR)
+  set(NUOPC "ON" CACHE STRING "Build fire_behavior with NUOPC cap" FORCE)
+  add_subdirectory(fire_behavior)
+endif()
+
+###############################################################################
 ### UFS Library
 ###############################################################################
 add_library(ufs driver/UFSDriver.F90)
@@ -350,6 +360,12 @@ if(NOAHMP)
   add_dependencies(ufs noahmp)
   list(APPEND _ufs_defs_private FRONT_NOAHMP=lnd_comp_nuopc)
   list(APPEND _ufs_libs_public noahmp)
+endif()
+
+if(FIRE_BEHAVIOR)
+  add_dependencies(ufs fire_behavior_nuopc)
+  list(APPEND _ufs_defs_private FRONT_FIRE_BEHAVIOR=fire_behavior_nuopc)
+  list(APPEND _ufs_libs_public fire_behavior_nuopc)
 endif()
 
 target_compile_definitions(ufs PRIVATE "${_ufs_defs_private}")
