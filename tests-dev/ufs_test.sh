@@ -200,6 +200,10 @@ if [[ ${LINK_TESTS} == true ]]; then
         echo "*** error: python sync_testscripts! ***"
         exit 1
     fi
+
+    cp "${PATHRT}"/test_cases/tests/* "${PATHRT}"/tests
+    cp "${PATHRT}"/test_cases/fv3_conf/* "${PATHRT}"/fv3_conf
+    cp "${PATHRT}"/test_cases/parm/* "${PATHRT}"/parm
 fi
 
 #Check to error out if incompatible options are chosen together
