@@ -53,6 +53,8 @@ export LIST_FILES="sfcf006.nc \
 
 export_fv3
 export_cpl
+export_ugwpv1
+export CCPP_SUITE=FV3_GFS_v17_coupled_p8_ugwpv1
 
 export SYEAR=2013
 export SMONTH=04
@@ -111,8 +113,6 @@ export MESH_WAV=mesh.${WW3_DOMAIN}.nc
 export WW3_MODDEF=mod_def.${WW3_DOMAIN}
 
 # set component and coupling timesteps
-export DT_ATMOS=300
-export DT_INNER=${DT_ATMOS}
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6=900
 export DT_THERM_MOM6=1800
@@ -145,8 +145,6 @@ export FNVMXC="'C384.vegetation_greenness.tileX.nc'"
 export FNSLPC="'C384.slope_type.tileX.nc'"
 export FNABSC="'C384.maximum_snow_albedo.tileX.nc'"
 
-export CDMBWD=${CDMBWD_c384}
-
 # ATM warm start
 export WARM_START=.true.
 export MAKE_NH=.false.
@@ -165,10 +163,9 @@ export MOM6_RESTART_SETTING=r
 
 export FV3_RUN=cpld_control_run.IN
 
+export K_SPLIT=2
+export N_SPLIT=5
+
 # HR4 GFSv17 GWD update
-export DO_UGWP_V0=.false.
-export DO_UGWP_V1=.true.
-export DO_GSL_DRAG_LS_BL=.true.
 export DO_GWD_OPT_PSL=.true.
 export DO_GSL_DRAG_SS=.false.
-export DO_GSL_DRAG_TOFD=.true.
