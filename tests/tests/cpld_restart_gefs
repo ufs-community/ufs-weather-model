@@ -1,9 +1,9 @@
 #
-#  cpld_restart_bmark_gefs test
+#  restart gefs test
 #
 export TEST_DESCR="Fully coupled FV3-CCPP-GOCART-MOM6-CICE-CMEPS-WW3 system - C384L127 MX025 - restart test"
 
-export CNTL_DIR=cpld_bmark_gefs
+export CNTL_DIR=cpld_control_gefs
 
 source ${PATHRT}/tests/${CNTL_DIR}
 
@@ -26,3 +26,5 @@ export IAUFHRS=-1
 export IAU_OFFSET=0
 export ODA_INCUPD="False"
 export ODA_INCUPD_UV="False"
+
+export WLCLK=$((WLCLK/2))

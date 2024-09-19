@@ -1,9 +1,9 @@
 #
-#  cpld_bmark_gefs test
+#  control gefs test
 #
 export TEST_DESCR="Fully coupled FV3-CCPP-GOCART-MOM6-CICE-CMEPS-WW3 system - C384L127 MX025 - Benchmark GEFS test"
 
-export CNTL_DIR=cpld_bmark_gefs
+export CNTL_DIR=cpld_control_gefs
 
 export LIST_FILES="sfcf012.nc \
                    atmf012.nc \
@@ -49,8 +49,11 @@ export LIST_FILES="sfcf012.nc \
                    20210325.180000.out_grd.ww3 \
                    RESTART/ufs.cpld.cpl.r.2021-03-25-64800.nc"
 
+export ATMRES=C384 #needed for default_vars
+
 export_fv3
 export_cpl
+export_ugwpv1
 
 export SYEAR=2021
 export SMONTH=03
@@ -87,7 +90,7 @@ export ice_omp_num_threads=$ICE_thrds_cpl_bmrk
 export wav_omp_num_threads=$WAV_thrds_cpl_bmrk
 
 # atm/ocn/ice resolution
-export ATMRES=C384
+export ATMRES=C384 #over-written in export_cpl
 export NPX=385
 export NPY=385
 export IMO=1536
@@ -128,6 +131,19 @@ export coupling_interval_slow_sec=${DT_THERM_MOM6}
 export coupling_interval_fast_sec=${DT_ATMOS}
 
 # resolution dependent files
+#atm
+export FNALBC="'C384.snowfree_albedo.tileX.nc'"
+export FNALBC2="'C384.facsf.tileX.nc'"
+export FNTG3C="'C384.substrate_temperature.tileX.nc'"
+export FNVEGC="'C384.vegetation_greenness.tileX.nc'"
+export FNVETC="'C384.vegetation_type.tileX.nc'"
+export FNSOTC="'C384.soil_type.tileX.nc'"
+export FNSOCC="'C384.soil_color.tileX.nc'"
+export FNVMNC="'C384.vegetation_greenness.tileX.nc'"
+export FNVMXC="'C384.vegetation_greenness.tileX.nc'"
+export FNSLPC="'C384.slope_type.tileX.nc'"
+export FNABSC="'C384.maximum_snow_albedo.tileX.nc'"
+#marine
 export MOM6_INPUT=MOM_input_${OCNRES}.IN
 export MESH_ICE=mesh.mx${OCNRES}.nc
 export MESH_OCN=mesh.mx${OCNRES}.nc
@@ -202,42 +218,16 @@ export CICE_RUNTYPE=continue
 export CICE_USE_RESTART_TIME=.true.
 export MOM6_RESTART_SETTING=r
 
-export FNALBC="'C384.snowfree_albedo.tileX.nc'"
-export FNALBC2="'C384.facsf.tileX.nc'"
-export FNTG3C="'C384.substrate_temperature.tileX.nc'"
-export FNVEGC="'C384.vegetation_greenness.tileX.nc'"
-export FNVETC="'C384.vegetation_type.tileX.nc'"
-export FNSOTC="'C384.soil_type.tileX.nc'"
-export FNSOCC="'C384.soil_color.tileX.nc'"
-export FNVMNC="'C384.vegetation_greenness.tileX.nc'"
-export FNVMXC="'C384.vegetation_greenness.tileX.nc'"
-export FNSLPC="'C384.slope_type.tileX.nc'"
-export FNABSC="'C384.maximum_snow_albedo.tileX.nc'"
-
-#Do ICs contain NSST spinup
-#export NSTF_NAME="2,1,0,0,0"
+#from ep5rt_ic/input.nml
 export NSTF_NAME=2,0,0,0,0
-
-export GWD_OPT=2
 export CDMBWD="5.0,5.0,1.0,1.0"
-export DO_UGWP_V1=.true.
-export KNOB_UGWP_VERSION=1
-export KNOB_UGWP_NSLOPE=1
-export DO_UGWP_V0=.false.
-export DO_GSL_DRAG_LS_BL=.true.
-export DO_GSL_DRAG_SS=.true.
-#export DO_GSL_DRAG_SS=.false. # HR4 GFSv17 GWD update
-export DO_GSL_DRAG_TOFD=.true.
-export DO_UGWP_V1_OROG_ONLY=.false.
-export DO_UGWP_V0_NST_ONLY=.false.
-export LDIAG_UGWP=.false.
-export KNOB_UGWP_DOKDIS=2
-export KNOB_UGWP_NDX4LH=4
-export DO_GWD_OPT_PSL=.true.
-export DO_GSL_DRAG_TOFD=.true.
+export K_SPLIT=2
+export N_SPLIT=5
+export TAU=0.
+export RF_CUTOFF=10.
+export FV_SG_ADJ=450
 
 export PROGSIGMA=.true.
-export IOPT_DIAG=1
 export IOPT_TRS=2
 export IOPT_DIAG=1
 
