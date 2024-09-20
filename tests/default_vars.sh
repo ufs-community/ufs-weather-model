@@ -1389,9 +1389,12 @@ export WRITE_NSFLIP=.true.
 export OUTPUT_FH='6 -1'
 
 # default atm/ocn/ice resolution
-export ATMRES=C96
-export OCNRES=100
-export ICERES=1.00
+if [[ -z ${OCNRES+x} || -z ${OCNRES} ]]; then
+    export OCNRES=100
+fi
+if [[ -z ${ICERES+x} || -z ${ICERES} ]]; then
+    export ICERES=1.00
+fi
 export NX_GLB=360
 export NY_GLB=320
 export NPZ=127
