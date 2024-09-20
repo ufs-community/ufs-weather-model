@@ -116,6 +116,7 @@
   export med_omp_num_threads=1
   export ocn_omp_num_threads=1
   export wav_omp_num_threads=1
+  export fbh_omp_num_threads=1
 
 if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
 
@@ -503,6 +504,7 @@ export FV3=true
 export S2S=false
 export HAFS=false
 export AQM=false
+export FIRE_BEHAVIOR=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
 export DICE_CDEPS=false
@@ -1298,6 +1300,25 @@ export_ww3() {
   export WW3_user_sets_restname="true"
 }
 
+export_fire_behavior() {
+  export fbh_model=fire_behavior
+  export FIRE_BEHAVIOR=true
+  export FIRE_NML=namelist.fire.IN
+  export CPLFIRE=false
+  export DT_FIRE=${DT_ATMOS}
+  OUTPUT_FS="$(printf "%02d" $(( OUTPUT_FH*3600 )))"
+  export OUTPUT_FS
+  export fire_atm_feedback=1.0
+  export fire_lsm_zcoupling=false
+  export fire_lsm_zcoupling_ref=60.0
+  export fire_num_ignitions=1
+  export fire_print_msg=0
+  export fire_upwinding=9
+  export fire_viscosity=0.4
+  export fire_wind_height=5.0
+}
+
+
 # Defaults for the coupled 5-component
 export_cmeps() {
   export UFS_CONFIGURE=ufs.configure.s2swa_fast_esmf.IN
@@ -1342,6 +1363,7 @@ export FV3=true
 export S2S=true
 export HAFS=false
 export AQM=false
+export FIRE_BEHAVIOR=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
 export DICE_CDEPS=false
@@ -1534,6 +1556,7 @@ export_datm_cdeps ()
   export S2S=false
   export HAFS=false
   export AQM=false
+  export FIRE_BEHAVIOR=false
   export DATM_CDEPS=true
   export DOCN_CDEPS=false
   export CDEPS_INLINE=false
@@ -1611,6 +1634,7 @@ export_hafs_datm_cdeps ()
   export S2S=false
   export HAFS=true
   export AQM=false
+  export FIRE_BEHAVIOR=false
   export DATM_CDEPS=true
   export DOCN_CDEPS=false
   export CDEPS_INLINE=false
@@ -1630,6 +1654,7 @@ export_hafs_docn_cdeps ()
   export S2S=false
   export HAFS=true
   export AQM=false
+  export FIRE_BEHAVIOR=false
   export DOCN_CDEPS=true
   export CDEPS_INLINE=false
   export INPES=${INPES_dflt}
@@ -1649,6 +1674,7 @@ export_hafs_regional ()
   export S2S=false
   export HAFS=true
   export AQM=false
+  export FIRE_BEHAVIOR=false
   export DATM_CDEPS=false
   export DOCN_CDEPS=false
   export CDEPS_INLINE=false
@@ -1723,6 +1749,7 @@ export FV3=true
 export S2S=false
 export HAFS=true
 export AQM=false
+export FIRE_BEHAVIOR=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
 export CDEPS_INLINE=false
