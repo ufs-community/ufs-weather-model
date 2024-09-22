@@ -856,7 +856,7 @@ export WW3_IC5='F'
 export WW3_MULTIGRID=true
 export WW3_MODDEF=mod_def.glo_1deg
 export MESH_WAV=mesh.glo_1deg.nc
-
+export WW3_RSTFLDS=" "
 # ATMA
 export AOD_FRQ=060000
 
