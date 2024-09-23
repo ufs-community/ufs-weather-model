@@ -1,0 +1,52 @@
+###############################################################################
+#
+#  Global control test: GFSv16 atmosphere only at C192L127
+#
+###############################################################################
+
+export TEST_DESCR="Compare global control C192L127 results with previous trunk version"
+
+export CNTL_DIR=control_c192
+
+export LIST_FILES="sfcf000.nc \
+                   sfcf024.nc \
+                   atmf000.nc \
+                   atmf024.nc \
+                   GFSFLX.GrbF00 \
+                   GFSFLX.GrbF24 \
+                   GFSPRS.GrbF00 \
+                   GFSPRS.GrbF24"
+
+export ATMRES=C192
+
+export_fv3
+export_tiled
+export_ugwpv1
+export CCPP_SUITE=FV3_GFS_v17_p8_ugwpv1
+
+export INPES=4
+export WRTTASK_PER_GROUP=12
+export NPZ=127
+export NPZP=128
+export NPX=193
+export NPY=193
+export SYEAR=2019
+export SMONTH=12
+export SDAY=03
+export SHOUR=00
+export nhours_fcst=240
+export RESTART_INTERVAL=48
+export OUTPUT_GRID='gaussian_grid'
+export NSTF_NAME='2,0,0,0,0'
+export WRITE_DOPOST=.true.
+export IAER=5111
+export IOVR=3
+export IMO=768
+export JMO=384
+
+#export FV3_RUN=control_run.IN
+#export INPUT_NML=global_control.nml.IN
+export FV3_RUN=BCW192.IN
+export INPUT_NML=BCW192.nml.IN
+#export V2_SFC_FILE=true
+export HSD_CASE=true
