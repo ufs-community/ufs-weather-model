@@ -13,7 +13,7 @@
 ###############################################################################
 ### Configure Application Components
 ###############################################################################
-if(APP MATCHES "^(ATM|ATMW|ATMWM|ATMAQ|ATML|ATML-LM4)$")
+if(APP MATCHES "^(ATM|ATMW|ATMWM|ATMAQ|ATML|ATMF|ATML-LM4)$")
   set(FMS        ON  CACHE BOOL "Enable FMS"                 FORCE)
   set(FV3        ON  CACHE BOOL "Enable FV3"                 FORCE)
   set(STOCH_PHYS ON  CACHE BOOL "Enable Stochastic Physics"  FORCE)
