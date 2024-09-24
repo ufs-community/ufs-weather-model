@@ -189,12 +189,10 @@ fi
 if [ $WRITE_DOPOST = .true. ]; then
   if [[ ${BMIC} == .true. ]]; then
     cp    ${PATHRT}/parm/post_itag_gefs itag
-    #copied "gefs" postxconfig files not working afer UFS #2326 
-    #cp    ${PATHRT}/parm/postxconfig-NT-gefs.txt postxconfig-NT.txt
-    #cp    ${PATHRT}/parm/postxconfig-NT-gefs_FH00.txt postxconfig-NT_FH00.txt
-    cp    ${PATHRT}/parm/postxconfig-NT-gfs.txt postxconfig-NT.txt
-    cp    ${PATHRT}/parm/postxconfig-NT-gfs_FH00.txt postxconfig-NT_FH00.txt
+    cp    ${PATHRT}/parm/postxconfig-NT-gefs.txt postxconfig-NT.txt
+    cp    ${PATHRT}/parm/postxconfig-NT-gefs_FH00.txt postxconfig-NT_FH00.txt
     cp    ${PATHRT}/parm/params_grib2_tbl_new params_grib2_tbl_new
+    cp    ${PATHRT}/../FV3/upp/fix/chem/optics_luts*nasa.dat .
   else
     cp    ${PATHRT}/parm/post_itag_gfs itag
     cp    ${PATHRT}/parm/postxconfig-NT-gfs.txt postxconfig-NT.txt
