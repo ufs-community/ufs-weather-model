@@ -72,6 +72,8 @@ export LIST_FILES="sfcf021.tile1.nc \
 
 export_fv3
 export_cpl
+export_ugwpv1
+export CCPP_SUITE=FV3_GFS_v17_coupled_p8_ugwpv1
 
 export RESTART_N=12
 export RESTART_INTERVAL="${RESTART_N} -1"
@@ -88,10 +90,11 @@ if [[ $MACHINE_ID = derecho ]]; then
   TPN=96
 fi
 
+export DT_INNER=720
+export DT_ATMOS=720
+export K_SPLIT=4
+export N_SPLIT=5
+
 # HR4 GFSv17 GWD update
-export DO_UGWP_V0=.false.
-export DO_UGWP_V1=.true.
-export DO_GSL_DRAG_LS_BL=.true.
 export DO_GWD_OPT_PSL=.true.
 export DO_GSL_DRAG_SS=.false.
-export DO_GSL_DRAG_TOFD=.true.

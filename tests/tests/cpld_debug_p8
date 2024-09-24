@@ -60,6 +60,8 @@ export LIST_FILES="sfcf003.tile1.nc \
 
 export_fv3
 export_cpl
+export_ugwpv1
+export CCPP_SUITE=FV3_GFS_v17_coupled_p8_ugwpv1
 
 export FHMAX=3
 export DAYS=0.125
@@ -77,6 +79,11 @@ export FV3_RUN=cpld_control_run.IN
 if [[ $MACHINE_ID = hera ]] && [[ $RT_COMPILER = gnu ]]; then
   WLCLK=40
 fi
+
+export DT_INNER=720
+export DT_ATMOS=720
+export K_SPLIT=4
+export N_SPLIT=5
 
 # HR4 GFSv17 GWD update
 export DO_UGWP_V0=.false.

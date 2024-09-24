@@ -116,6 +116,7 @@
   export med_omp_num_threads=1
   export ocn_omp_num_threads=1
   export wav_omp_num_threads=1
+  export fbh_omp_num_threads=1
 
 if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
 
@@ -501,6 +502,7 @@ export FV3=true
 export S2S=false
 export HAFS=false
 export AQM=false
+export FIRE_BEHAVIOR=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
 export DICE_CDEPS=false
@@ -537,6 +539,14 @@ export KCHUNK3D=0
 export IMO=384
 export JMO=190
 export WRITE_NSFLIP=.true.
+
+# New damping coefficients made the following
+#   dynamic based on resolution
+export N_SPLIT=5
+export K_SPLIT=2
+export TAU=0.0
+export RF_CUTOFF=10.
+export FV_SG_ADJ=450
 
 export DZ_MIN=6
 export MIN_SEAICE=0.15
@@ -639,6 +649,7 @@ export KNOB_UGWP_NDX4LH=1
 export KNOB_UGWP_VERSION=0
 export KNOB_UGWP_PALAUNCH=500.e2
 export KNOB_UGWP_NSLOPE=1
+export KNOB_UGWP_TAUAMP=3.0e-3
 export DO_UGWP_V0_NST_ONLY=.false.
 
 # resolution dependent settings
@@ -751,7 +762,6 @@ export FSICS=0
 
 # Dynamical core
 export FV_CORE_TAU=0.
-export RF_CUTOFF=10.0
 export FAST_TAU_W_SEC=0.2
 export DRY_MASS=98320.0
 
@@ -891,23 +901,137 @@ export FNAISC="'IMS-NIC.blended.ice.monthly.clim.grb'"
 
 # Add section for tiled grid namelist
 export_tiled() {
-export FNSMCC_control="'global_soilmgldas.statsgo.t1534.3072.1536.grb'"
-export FNMSKH_control="'global_slmask.t1534.3072.1536.grb'"
-export FNALBC="'${ATMRES}.snowfree_albedo.tileX.nc'"
-export FNALBC2="'${ATMRES}.facsf.tileX.nc'"
-export FNTG3C="'${ATMRES}.substrate_temperature.tileX.nc'"
-export FNVEGC="'${ATMRES}.vegetation_greenness.tileX.nc'"
-export FNVETC="'${ATMRES}.vegetation_type.tileX.nc'"
-export FNSOTC="'${ATMRES}.soil_type.tileX.nc'"
-export FNSOCC="'${ATMRES}.soil_color.tileX.nc'"
-export FNSMCC=${FNSMCC_control}
-export FNMSKH=${FNMSKH_control}
-export FNVMNC="'${ATMRES}.vegetation_greenness.tileX.nc'"
-export FNVMXC="'${ATMRES}.vegetation_greenness.tileX.nc'"
-export FNSLPC="'${ATMRES}.slope_type.tileX.nc'"
-export FNABSC="'${ATMRES}.maximum_snow_albedo.tileX.nc'"
-export LANDICE=".false."
+  export FNSMCC_control="'global_soilmgldas.statsgo.t1534.3072.1536.grb'"
+  export FNMSKH_control="'global_slmask.t1534.3072.1536.grb'"
+  export FNALBC="'${ATMRES}.snowfree_albedo.tileX.nc'"
+  export FNALBC2="'${ATMRES}.facsf.tileX.nc'"
+  export FNTG3C="'${ATMRES}.substrate_temperature.tileX.nc'"
+  export FNVEGC="'${ATMRES}.vegetation_greenness.tileX.nc'"
+  export FNVETC="'${ATMRES}.vegetation_type.tileX.nc'"
+  export FNSOTC="'${ATMRES}.soil_type.tileX.nc'"
+  export FNSOCC="'${ATMRES}.soil_color.tileX.nc'"
+  export FNSMCC=${FNSMCC_control}
+  export FNMSKH=${FNMSKH_control}
+  export FNVMNC="'${ATMRES}.vegetation_greenness.tileX.nc'"
+  export FNVMXC="'${ATMRES}.vegetation_greenness.tileX.nc'"
+  export FNSLPC="'${ATMRES}.slope_type.tileX.nc'"
+  export FNABSC="'${ATMRES}.maximum_snow_albedo.tileX.nc'"
+  export LANDICE=".false."
 }
+
+export_ugwpv1() {
+  export DO_UGWP_V1=.true.
+  export DO_UGWP_V0=.false.
+  export GWD_OPT=2
+  export KNOB_UGWP_VERSION=1
+  export KNOB_UGWP_NSLOPE=1
+  export DO_GSL_DRAG_LS_BL=.true.
+  export DO_GSL_DRAG_SS=.true.
+  export DO_GSL_DRAG_TOFD=.true.
+  export DO_UGWP_V1_OROG_ONLY=.false.
+  export DO_UGWP_V0_NST_ONLY=.false.
+  export LDIAG_UGWP=.false.
+  export KNOB_UGWP_DOKDIS=2
+  export KNOB_UGWP_NDX4LH=4
+
+  # Add updated damping and timestep variables
+  case "${ATMRES}" in
+    "C48")
+      export DT_ATMOS=720
+      export XR_CNVCLD=.false.
+      export CDMBGWD="0.071,2.1,1.0,1.0"
+      export CDMBGWD_GSL="40.0,1.77,1.0,1.0"
+      export KNOB_UGWP_TAUAMP=6.0e-3
+      export K_SPLIT=1
+      export N_SPLIT=4
+      export TAU=10.0
+      export RF_CUTOFF=100.0
+      export FV_SG_ADJ=3600
+      ;;
+    "C96")
+      export DT_ATMOS=720
+      export XR_CNVCLD=.false.
+      export CDMBGWD="0.14,1.8,1.0,1.0"
+      export CDMBGWD_GSL="20.0,2.5,1.0,1.0"
+      export KNOB_UGWP_TAUAMP=3.0e-3
+      export K_SPLIT=1
+      export N_SPLIT=4
+      export TAU=8.0
+      export RF_CUTOFF=100.0
+      export FV_SG_ADJ=1800
+      ;;
+    "C192")
+      export DT_ATMOS=600
+      export XR_CNVCLD=.true.
+      export CDMBGWD="0.23,1.5,1.0,1.0"
+      export CDMBGWD_GSL="5.0,5.0,1.0,1.0"
+      export KNOB_UGWP_TAUAMP=1.5e-3
+      export K_SPLIT=2
+      export N_SPLIT=5
+      export TAU=6.0
+      export RF_CUTOFF=100.0
+      export FV_SG_ADJ=1800
+      ;;
+    "C384")
+      export DT_ATMOS=300
+      export XR_CNVCLD=.true.
+      export CDMBGWD="1.1,0.72,1.0,1.0"
+      export CDMBGWD_GSL="5.0,5.0,1.0,1.0"
+      export KNOB_UGWP_TAUAMP=0.8e-3
+      export K_SPLIT=2
+      export N_SPLIT=4
+      export TAU=4.0
+      export RF_CUTOFF=100.0
+      export FV_SG_ADJ=900
+      ;;
+    "C768")
+      export DT_ATMOS=150
+      export XR_CNVCLD=.true.
+      export CDMBGWD="4.0,0.15,1.0,1.0"
+      export CDMBGWD_GSL="2.5,7.5,1.0,1.0"
+      export KNOB_UGWP_TAUAMP=0.5e-3
+      export K_SPLIT=2
+      export N_SPLIT=4
+      export TAU=3.0
+      export RF_CUTOFF=100.0
+      export FV_SG_ADJ=450
+      ;;
+    "C1152")
+      export DT_ATMOS=150
+      export XR_CNVCLD=.true.
+      export CDMBGWD="4.0,0.10,1.0,1.0"
+      export CDMBGWD_GSL="1.67,8.8,1.0,1.0"
+      export KNOB_UGWP_TAUAMP=0.35e-3
+      export K_SPLIT=2
+      export N_SPLIT=6
+      export TAU=2.5
+      export RF_CUTOFF=100.0
+      export FV_SG_ADJ=450
+      ;;
+    "C3072")
+      export DT_ATMOS=90
+      export XR_CNVCLD=.true.
+      export CDMBGWD="4.0,0.05,1.0,1.0"
+      export CDMBGWD_GSL="0.625,14.1,1.0,1.0"
+      export KNOB_UGWP_TAUAMP=0.13e-3
+      export K_SPLIT=4
+      export N_SPLIT=5
+      export TAU=0.5
+      export RF_CUTOFF=100.0
+      export FV_SG_ADJ=300
+      ;;
+    *)
+      echo Invalid model resolution: "${ATMRES}". Please update specified variable ATMRES.
+      exit 1
+      ;;
+  esac
+  
+  if [[ ${DO_GSL_DRAG_SS} = .true. ]]; then export CDMBGWD=${CDMBGWD_GSL}; fi
+  if [[ ${SEDI_SEMI} = .true. ]]; then export DT_ATMOS=$((DT_ATMOS/2)); fi
+  export DT_INNER=${DT_ATMOS}
+
+}
+  
 
 # Defaults for the CICE6 model namelist, mx100
 export_cice6() {
@@ -1048,6 +1172,25 @@ export_ww3() {
   export WW3_PIO_ROOT=-99
 }
 
+export_fire_behavior() {
+  export fbh_model=fire_behavior
+  export FIRE_BEHAVIOR=true
+  export FIRE_NML=namelist.fire.IN
+  export CPLFIRE=false
+  export DT_FIRE=${DT_ATMOS}
+  OUTPUT_FS="$(printf "%02d" $(( OUTPUT_FH*3600 )))"
+  export OUTPUT_FS
+  export fire_atm_feedback=1.0
+  export fire_lsm_zcoupling=false
+  export fire_lsm_zcoupling_ref=60.0
+  export fire_num_ignitions=1
+  export fire_print_msg=0
+  export fire_upwinding=9
+  export fire_viscosity=0.4
+  export fire_wind_height=5.0
+}
+
+
 # Defaults for the coupled 5-component
 export_cmeps() {
   export UFS_CONFIGURE=ufs.configure.s2swa_fast_esmf.IN
@@ -1092,6 +1235,7 @@ export FV3=true
 export S2S=true
 export HAFS=false
 export AQM=false
+export FIRE_BEHAVIOR=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
 export DICE_CDEPS=false
@@ -1284,6 +1428,7 @@ export_datm_cdeps ()
   export S2S=false
   export HAFS=false
   export AQM=false
+  export FIRE_BEHAVIOR=false
   export DATM_CDEPS=true
   export DOCN_CDEPS=false
   export CDEPS_INLINE=false
@@ -1361,6 +1506,7 @@ export_hafs_datm_cdeps ()
   export S2S=false
   export HAFS=true
   export AQM=false
+  export FIRE_BEHAVIOR=false
   export DATM_CDEPS=true
   export DOCN_CDEPS=false
   export CDEPS_INLINE=false
@@ -1380,6 +1526,7 @@ export_hafs_docn_cdeps ()
   export S2S=false
   export HAFS=true
   export AQM=false
+  export FIRE_BEHAVIOR=false
   export DOCN_CDEPS=true
   export CDEPS_INLINE=false
   export INPES=${INPES_dflt}
@@ -1399,6 +1546,7 @@ export_hafs_regional ()
   export S2S=false
   export HAFS=true
   export AQM=false
+  export FIRE_BEHAVIOR=false
   export DATM_CDEPS=false
   export DOCN_CDEPS=false
   export CDEPS_INLINE=false
@@ -1483,6 +1631,7 @@ export FV3=true
 export S2S=false
 export HAFS=true
 export AQM=false
+export FIRE_BEHAVIOR=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
 export CDEPS_INLINE=false
