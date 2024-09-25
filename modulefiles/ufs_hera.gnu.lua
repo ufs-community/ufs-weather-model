@@ -4,7 +4,7 @@ loads UFS Model prerequisites for Hera/GNU
 
 prepend_path("MODULEPATH", "/scratch2/NCEPDEV/stmp1/role.epic/installs/gnu/modulefiles")
 prepend_path("MODULEPATH", "/scratch2/NCEPDEV/stmp1/role.epic/installs/openmpi/modulefiles")
-prepend_path("MODULEPATH", "/scratch2/NCEPDEV/stmp1/role.epic/spack-stack/spack-stack-1.6.0_gnu13/envs/upp-addon-env/install/modulefiles/Core")
+prepend_path("MODULEPATH", "/scratch2/NCEPDEV/stmp1/role.epic/spack-stack/spack-stack-1.6.0_gnu13/envs/fms-2024.01/install/modulefiles/Core")
 
 stack_gnu_ver=os.getenv("stack_gnu_ver") or "13.3.0"
 load(pathJoin("stack-gcc", stack_gnu_ver))
