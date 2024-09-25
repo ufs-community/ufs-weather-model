@@ -202,7 +202,7 @@ if [[ ${LINK_TESTS} == true ]]; then
     fi
 
     cp "${PATHRT}"/test_cases/tests/* "${PATHRT}"/tests
-    cp "${PATHRT}"/test_cases/fv3_conf/* "${PATHRT}"/fv3_conf
+    cp "${PATHRT}"/test_cases/exp_conf/* "${PATHRT}"/fv3_conf
     cp "${PATHRT}"/test_cases/parm/* "${PATHRT}"/parm
 fi
 
