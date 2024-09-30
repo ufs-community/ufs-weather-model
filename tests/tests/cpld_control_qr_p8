@@ -70,8 +70,8 @@ export LIST_FILES="sfcf021.tile1.nc \
                    20210323.060000.out_grd.ww3 "
 
 export_fv3
-export_cpl
 export_ugwpv1
+export_cpl
 export CCPP_SUITE=FV3_GFS_v17_coupled_p8_ugwpv1
 
 export QUILTING_RESTART=.true.
@@ -89,6 +89,8 @@ export DT_INNER=720
 export DT_ATMOS=720
 export K_SPLIT=4
 export N_SPLIT=5
+export DT_CICE=${DT_ATMOS}
+export coupling_interval_fast_sec=${DT_ATMOS}
 
 # HR4 GFSv17 GWD update
 export DO_GWD_OPT_PSL=.true.

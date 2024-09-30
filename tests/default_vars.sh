@@ -490,6 +490,12 @@ export_fv3 ()
 if [[ -z ${ATMRES+x} || -z ${ATMRES} ]]; then
     export ATMRES=C96
 fi
+if [[ -z ${DT_ATMOS+x} || -z ${DT_ATMOS} ]]; then
+    export DT_ATMOS=1800
+    export default_dt_atmos=1
+else
+    export default_dt_atmos=0
+fi
 
 # ufs.configure defaults
 export UFS_CONFIGURE=ufs.configure.atm_esmf.IN
@@ -708,7 +714,7 @@ export LAUNCH_LEVEL=54
 export KNOB_UGWP_DOKDIS=1
 export KNOB_UGWP_NDX4LH=1
 export KNOB_UGWP_VERSION=0
-export KNOB_UGWP_PALAUNCH=275.e2
+export KNOB_UGWP_PALAUNCH=275.0e2
 export KNOB_UGWP_NSLOPE=1
 export KNOB_UGWP_LZMAX=15.750e3
 export KNOB_UGWP_LZMIN=0.75e3
@@ -736,7 +742,12 @@ export DT_INNER_c768=75
 
 # set default
 export CDMBWD=${CDMBWD_c96}
-export DT_INNER=${DT_INNER_c96}
+
+if [[ ${default_dt_atmos} = 1 ]]; then 
+  export DT_INNER=${DT_INNER_c96}
+else
+  export DT_INNER=${DT_ATMOS}
+fi
 
 export ISATMEDMF=1
 export TRANS_TRAC=.true.
@@ -1072,8 +1083,13 @@ export_ugwpv1() {
   export LDIAG_UGWP=.false.
   export KNOB_UGWP_DOKDIS=2
   export KNOB_UGWP_NDX4LH=4
-
+  
   # Add updated damping and timestep variables
+  if [[ ${default_dt_atmos} = 1 ]]; then
+  echo "DPS_A"
+  echo ${default_dt_atmos}
+  echo ${DT_ATMOS}
+
   case "${ATMRES}" in
     "C48")
       export DT_ATMOS=720
@@ -1168,7 +1184,8 @@ export_ugwpv1() {
   if [[ ${DO_GSL_DRAG_SS} = .true. ]]; then export CDMBGWD=${CDMBGWD_GSL}; fi
   if [[ ${SEDI_SEMI} = .true. ]]; then export DT_ATMOS=$((DT_ATMOS/2)); fi
   export DT_INNER=${DT_ATMOS}
-
+  export default_dt_atmos=0
+  fi
 }
   
 
@@ -1382,13 +1399,17 @@ export SHOUR=06
 export CHOUR=06
 export FHMAX=24
 export FHROT=0
-export DT_ATMOS=720
 export QUILTING_RESTART=.false.
 export WRTTASK_PER_GROUP=${WPG_cpl_dflt}
 export WRITE_NSFLIP=.true.
 export OUTPUT_FH='6 -1'
 
 # default atm/ocn/ice resolution
+if [[ ${default_dt_atmos} = 1 ]]; then
+    #If default DT_ATMOS is being used, set to 720 for RTs
+    export DT_ATMOS=720
+    export DT_INNER=${DT_ATMOS}
+fi
 if [[ -z ${OCNRES+x} || -z ${OCNRES} ]]; then
     export OCNRES=100
 fi
@@ -1441,7 +1462,6 @@ export FV3_RUN=cpld_control_run.IN
 export TILEDFIX=.false.
 
 export FHZERO=6
-export DT_INNER=${DT_ATMOS}
 
 export IALB=2
 export IEMS=2
@@ -1472,16 +1492,16 @@ export LHEATSTRG=.false.
 export LSEASPRAY=.true.
 
 # UGWP1
-export GWD_OPT=2
-export KNOB_UGWP_NSLOPE=1
-export DO_GSL_DRAG_LS_BL=.true.
-export DO_GSL_DRAG_SS=.true.
-export DO_UGWP_V1_OROG_ONLY=.false.
-export DO_UGWP_V0_NST_ONLY=.false.
-export LDIAG_UGWP=.false.
+#export GWD_OPT=2
+#export KNOB_UGWP_NSLOPE=1
+#export DO_GSL_DRAG_LS_BL=.true.
+#export DO_GSL_DRAG_SS=.true.
+#export DO_UGWP_V1_OROG_ONLY=.false.
+#export DO_UGWP_V0_NST_ONLY=.false.
+#export LDIAG_UGWP=.false.
 
-export DO_GSL_DRAG_TOFD=.false.
-export CDMBWD=${CDMBWD_c96}
+#export DO_GSL_DRAG_TOFD=.false.
+#export CDMBWD=${CDMBWD_c96}
 
 # RRTMGP
 export DO_RRTMGP=.false.
@@ -1490,10 +1510,10 @@ export DOGP_LWSCAT=.true.
 export DOGP_SGS_CNV=.true.
 
 # UGWD
-export DO_UGWP_V0=.true.
-export DO_UGWP_V1=.false.
-export DO_GSL_DRAG_LS_BL=.false.
-export KNOB_UGWP_VERSION=0
+#export DO_UGWP_V0=.true.
+#export DO_UGWP_V1=.false.
+#export DO_GSL_DRAG_LS_BL=.false.
+#export KNOB_UGWP_VERSION=0
 
 # CA
 export DO_CA=.true.
