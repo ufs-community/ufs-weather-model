@@ -253,12 +253,3 @@ if [ $IMP_PHYSICS = 8 ]; then
   cp    @[INPUTDATA_ROOT]/FV3_fix/qr_acr_qgV2.dat qr_acr_qgV2.dat
   cp    @[INPUTDATA_ROOT]/FV3_fix/qr_acr_qsV2.dat qr_acr_qsV2.dat
 fi
-
-#prognostic aerosols
-if [ $CPLCHM = .true. ]; then
-  if [[ ${BMIC} == .true. ]]; then
-    ln -sf /scratch1/NCEPDEV/nems/Nick.Szapiro/tasks/input_data/gefs.v13/stage/GEFS/ExtData . 
-  else
-    ln -sf  @[INPUTDATA_ROOT]/GOCART/p8c_5d/ExtData .
-  fi
-fi
