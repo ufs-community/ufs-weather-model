@@ -300,7 +300,7 @@ elif [[ ${MACHINE_ID} = s4 ]]; then
   export ICE_tasks_cpl_bmrk=48
   export WAV_tasks_cpl_bmrk=80
 
-elif [[ ${MACHINE_ID} = gaea ]]; then
+elif [[ ${MACHINE_ID} = gaea || ${MACHINE_ID} = gaeac6 ]]; then
 
   export TPN=128
 

@@ -741,6 +741,41 @@ case ${MACHINE_ID} in
 
     SCHEDULER="slurm"
     ;;
+  gaeac6)
+    echo "rt.sh: Setting up gaeac6..."
+    if [[ "${ROCOTO:-false}" == true ]] ; then
+     # module use /ncrc/proj/epic/rocoto/modulefiles
+      module load rocoto
+      ROCOTO_SCHEDULER="slurm"
+    fi
+
+    export LD_PRELOAD=/usr/lib64/libstdc++.so.6
+    module use /ncrc/proj/epic/spack-stack/c6/spack-stack-1.6.0/envs/fms-2024.01/install/modulefiles/Core
+    #module load PrgEnv-intel/8.5.0
+    module load stack-intel/2023.2.0
+    #module load cray-mpich/8.1.29
+    module load python/3.10.13
+    module use /ncrc/proj/epic/spack-stack/modulefiles
+    #module load gcc-native/12.3
+    if [[ "${ECFLOW:-false}" == true ]] ; then
+      #module load ecflow/5.8.4
+      module load ecflow
+      ECF_HOST=$(hostname)
+      ECF_PORT=$(( $(id -u) + 1500 ))
+      export ECF_PORT ECF_HOST
+    fi
+
+    #DISKNM=/gpfs/f5/epic/world-shared/UFS-WM_RT
+    DISKNM=/gpfs/f6/drsa-fire2/world-shared/Brian.Curtis
+    QUEUE=normal
+    COMPILE_QUEUE=normal
+    PARTITION=c6
+    dprefix=${dprefix:-/gpfs/f6/${ACCNR}/scratch/${USER}}
+    STMP=${STMP:-${dprefix}/RT_BASELINE}
+    PTMP=${PTMP:-${dprefix}/RT_RUNDIRS}
+
+    SCHEDULER="slurm"
+    ;;
   hera)
     echo "rt.sh: Setting up hera..."
     if [[ "${ROCOTO:-false}" == true ]] ; then

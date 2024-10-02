@@ -121,6 +121,11 @@ case ${MACHINE_ID} in
     module load modules.fv3
     module load gcc/12.2.0
     ;;
+  gaeac6)
+    module use modulefiles
+    module load modules.fv3
+    module load gcc-native/12.3
+    ;;
   derecho)
     module load nccmp
     ;;
@@ -441,7 +446,7 @@ if [[ ${skip_check_results} == false ]]; then
 
       else
         if [[ ${i##*.} == nc* ]] ; then
-          if [[ " orion hercules hera wcoss2 acorn derecho gaea jet s4 noaacloud " =~ ${MACHINE_ID} ]]; then
+          if [[ " orion hercules hera wcoss2 acorn derecho gaea gaeac6 jet s4 noaacloud " =~ ${MACHINE_ID} ]]; then
             printf "USING NCCMP.." >> "${RT_LOG}"
             printf "USING NCCMP.."
               if [[ ${CMP_DATAONLY} == false ]]; then

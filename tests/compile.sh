@@ -64,6 +64,9 @@ case ${MACHINE_ID} in
     if [[ ${MACHINE_ID} == gaea ]]; then
       module reset
     fi
+    if [[ ${MACHINE_ID} == gaeac6 ]]; then
+      module reset
+    fi
     # Load fv3 module
     module use "${PATHTR}/modulefiles"
     modulefile="ufs_${MACHINE_ID}.${RT_COMPILER}"
