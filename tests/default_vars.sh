@@ -1086,10 +1086,6 @@ export_ugwpv1() {
   
   # Add updated damping and timestep variables
   if [[ ${default_dt_atmos} = 1 ]]; then
-  echo "DPS_A"
-  echo ${default_dt_atmos}
-  echo ${DT_ATMOS}
-
   case "${ATMRES}" in
     "C48")
       export DT_ATMOS=720
