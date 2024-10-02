@@ -58,6 +58,7 @@ export LIST_FILES="sfcf003.tile1.nc \
 
 export_fv3
 export_cpl
+export_ugwpv1
 
 export FHMAX=3
 export DAYS=0.125
@@ -85,24 +86,9 @@ export MOM6_ALLOW_LANDMASK_CHANGES=True
 export eps_imesh=2.5e-1
 export CICE_DIAGFREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
 
-export GWD_OPT=2
-export CDMBWD=20.0,2.5,1.0,1.0
-export DO_UGWP_V1=.true.
-export KNOB_UGWP_VERSION=1
-export KNOB_UGWP_NSLOPE=1
-export DO_UGWP_V0=.false.
-export DO_GSL_DRAG_LS_BL=.true.
-export DO_GSL_DRAG_SS=.true.
-export DO_GSL_DRAG_TOFD=.true.
-export DO_UGWP_V1_OROG_ONLY=.false.
-export DO_UGWP_V0_NST_ONLY=.false.
-export LDIAG_UGWP=.false.
-export KNOB_UGWP_DOKDIS=2
-export KNOB_UGWP_NDX4LH=4
-
 #GFSv17 settings
 export PROGSIGMA=.true.
-export IOPT_DIAG=1
+export IOPT_DIAG=2
 
 export WW3_DOMAIN=global_270k
 export MESH_WAV=mesh.${WW3_DOMAIN}.nc
@@ -117,14 +103,18 @@ export UFS_CONFIGURE=ufs.configure.s2sw.IN
 
 export FV3_RUN=cpld_control_run.IN
 
+export DT_INNER=360
+export DT_ATMOS=360
+export K_SPLIT=2
+export N_SPLIT=5
+
 if [[ $MACHINE_ID = hera ]] && [[ $RT_COMPILER = gnu ]]; then
+  WLCLK=40
+fi
+if [[ $MACHINE_ID = gaea ]] && [[ $RT_COMPILER = intelllvm ]]; then
   WLCLK=40
 fi
 
 # HR4 GFSv17 GWD update
-export DO_UGWP_V0=.false.
-export DO_UGWP_V1=.true.
-export DO_GSL_DRAG_LS_BL=.true.
 export DO_GWD_OPT_PSL=.true.
 export DO_GSL_DRAG_SS=.false.
-export DO_GSL_DRAG_TOFD=.true.

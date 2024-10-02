@@ -14,10 +14,12 @@ export LIST_FILES="sfcf021.nc \
                    GFSFLX.GrbF21 \
                    GFSFLX.GrbF24 \
                    GFSPRS.GrbF21 \
-                   GFSPRS.GrbF24"
+                   GFSPRS.GrbF24 \
+                   RESTART/20210323.060000.MOM.res.nc" 
 
 export_fv3
 export_cpl
+export_ugwpv1
 
 export CPLCHM=.false.
 export DNATS=0
@@ -45,24 +47,15 @@ OCN_tasks=$OCN_tasks_cpl_unstr
 ICE_tasks=$ICE_tasks_cpl_unstr
 WAV_tasks=$WAV_tasks_cpl_unstr
 
+# use downscaled warmstarts for ocean and ice
+export OCNICE_WARMSTART=.true.
+export MOM6_INIT_FROM_Z=False
+export MOM6_INIT_UV=file
+export MOM6_WARMSTART_FILE=mom6.warmstart.nc
+export CICE_ICE_IC=cice.warmstart.nc
+
 export atm_omp_num_threads=$THRD_cpl_unstr
 export med_omp_num_threads=$atm_omp_num_threads
-
-# UGWP1
-export GWD_OPT=2
-export CDMBWD=20.0,2.5,1.0,1.0
-export DO_UGWP_V1=.true.
-export KNOB_UGWP_VERSION=1
-export KNOB_UGWP_NSLOPE=1
-export DO_UGWP_V0=.false.
-export DO_GSL_DRAG_LS_BL=.true.
-export DO_GSL_DRAG_SS=.true.
-export DO_GSL_DRAG_TOFD=.true.
-export DO_UGWP_V1_OROG_ONLY=.false.
-export DO_UGWP_V0_NST_ONLY=.false.
-export LDIAG_UGWP=.false.
-export KNOB_UGWP_DOKDIS=2
-export KNOB_UGWP_NDX4LH=4
 
 export MOM6_TOPOEDITS=ufs.topo_edits_011818.nc
 export MOM6_ALLOW_LANDMASK_CHANGES=True
@@ -82,16 +75,15 @@ export UFS_CONFIGURE=ufs.configure.s2sw.IN
 
 #GFSv17	settings
 export PROGSIGMA=.true.
-export IOPT_DIAG=1
+export IOPT_DIAG=2
 
 if [[ $MACHINE_ID = hera ]] && [[ $RT_COMPILER = gnu ]]; then
   WLCLK=40
 fi
 
+export K_SPLIT=2
+export N_SPLIT=5
+
 # HR4 GFSv17 GWD update
-export DO_UGWP_V0=.false.
-export DO_UGWP_V1=.true.
-export DO_GSL_DRAG_LS_BL=.true.
 export DO_GWD_OPT_PSL=.true.
 export DO_GSL_DRAG_SS=.false.
-export DO_GSL_DRAG_TOFD=.true.
