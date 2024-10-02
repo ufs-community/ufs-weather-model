@@ -40,7 +40,7 @@ branches[mom6]='dev/emc'
 pathes[mom6]='MOM6-interface/MOM6'
 
 urls[cice]='https://github.com/NOAA-EMC/CICE'
-branches[cice]='emc/develop'
+branches[cice]='develop'
 pathes[cice]='CICE-interface/CICE'
 
 urls[ww3]='https://github.com/NOAA-EMC/WW3'
