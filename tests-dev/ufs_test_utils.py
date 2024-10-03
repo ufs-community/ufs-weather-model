@@ -16,7 +16,7 @@ def update_testyaml(input_list):
     new_yaml = {}
     yaml_item_count = None
     with open(UFS_TEST_YAML, 'r') as file_yaml:
-        rt_yaml = yaml.load(file_yaml)#, Loader=yaml.FullLoader)
+        rt_yaml = yaml.full_load(file_yaml)#yaml.load(file_yaml)#, Loader=yaml.FullLoader)
         for apps, jobs in rt_yaml.items():
             app_temp    = None
             build_temp  = None            

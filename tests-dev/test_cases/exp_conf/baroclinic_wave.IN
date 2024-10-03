@@ -13,8 +13,10 @@ fi
 
 echo "inputdir=$inputdir,NPX=$NPX,NESTED=$NESTED"
 
-if [ $MACHINE_ID = hera ]; then
- cp scratch1/NCEPDEV/stmp4/Cameron.Book/BCW192_files/global_hyblev.l128.txt .
+if [ ${MACHINE_ID} = hera ]; then
+ cp /scratch1/NCEPDEV/stmp4/Cameron.Book/BCW192_files/global_hyblev.l128.txt .
+elif [ ${MACHINE_ID} = orion ]; then 
+ cp /work/noaa/epic/cbook/hsd_input_files/global_hyblev.l128.txt .
 fi
 
 OPNREQ_TEST=${OPNREQ_TEST:-false}
