@@ -24,7 +24,11 @@ if [ $WARM_START = .false. ]; then
   elif [ "$V2_SFC_FILE" = "true" ]; then
     cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127_v2_sfc/* ./INPUT/.
   elif [ "$HSD_CASE" = "true" ]; then
-    cp -r /scratch1/NCEPDEV/stmp4/Cameron.Book/FV3_input_data48/INPUT_L127_v2_sfc/* ./INPUT/.
+    if [ ${MACHINE_ID} = hera ]; then
+      cp -r /scratch1/NCEPDEV/stmp4/Cameron.Book/FV3_input_data48/INPUT_L127_v2_sfc/* ./INPUT/.
+    elif [ ${MACHINE_ID} = orion ]; then
+     cp -r /work/noaa/epic/cbook/hsd_input_files/FV3_input_data48/INPUT_L127_v2_sfc/* ./INPUT/. 
+    fi 
   else
     cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127_gfsv17/* ./INPUT/.
   fi
