@@ -117,9 +117,9 @@ case ${MACHINE_ID} in
     echo "No special nccmp load necessary"
     ;;
   gaea)
-    module use modulefiles
-    module load modules.fv3
-    module load gcc/12.2.0
+    module use /ncrc/proj/epic/spack-stack/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core
+    module load stack-intel/2023.1.0 stack-cray-mpich/8.1.25
+    module load nccmp/1.9.0.1
     ;;
   derecho)
     module load nccmp
