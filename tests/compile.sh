@@ -98,7 +98,7 @@ export SUITES
 set -ex
 
 # Valid applications
-if [[ ${MACHINE_ID} != gaea-c5 || ${MACHINE_ID} != gaea-c6 ]] || [[ ${RT_COMPILER} != intelllvm ]]; then # skip MOM6SOLO on gaea with intelllvm
+if [[ ${MACHINE_ID} != gaea-c5 && ${MACHINE_ID} != gaea-c6 ]] || [[ ${RT_COMPILER} != intelllvm ]]; then # skip MOM6SOLO on gaea with intelllvm
   if [[ "${MAKE_OPT}" == *"-DAPP=S2S"* ]]; then
       CMAKE_FLAGS+=" -DMOM6SOLO=ON"
   fi
