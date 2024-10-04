@@ -323,7 +323,7 @@ elif [[ ${MACHINE_ID} = gaea-c5 ]]; then
 
 elif [[ ${MACHINE_ID} = gaea-c6 ]]; then
 
-  export TPN=128
+  export TPN=192
 
   export INPES_dflt=3
   export JNPES_dflt=8
