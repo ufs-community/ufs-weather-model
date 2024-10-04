@@ -709,8 +709,8 @@ case ${MACHINE_ID} in
     PTMP="/lfs/h2/emc/ptmp"
     SCHEDULER="pbs"
     ;;
-  gaea)
-    echo "rt.sh: Setting up gaea..."
+  gaea-c5)
+    echo "rt.sh: Setting up gaea-c5..."
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module use /ncrc/proj/epic/rocoto/modulefiles
       module load rocoto
@@ -741,8 +741,8 @@ case ${MACHINE_ID} in
 
     SCHEDULER="slurm"
     ;;
-  gaeac6)
-    echo "rt.sh: Setting up gaeac6..."
+  gaea-c6)
+    echo "rt.sh: Setting up gaea-c6..."
     if [[ "${ROCOTO:-false}" == true ]] ; then
      # module use /ncrc/proj/epic/rocoto/modulefiles
       module load rocoto

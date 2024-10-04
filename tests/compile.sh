@@ -61,10 +61,10 @@ case ${MACHINE_ID} in
     ;;
   *)
     # Activate lua environment for gaea c5
-    if [[ ${MACHINE_ID} == gaea ]]; then
+    if [[ ${MACHINE_ID} == gaea-c5 ]]; then
       module reset
     fi
-    if [[ ${MACHINE_ID} == gaeac6 ]]; then
+    if [[ ${MACHINE_ID} == gaea-c6 ]]; then
       module reset
     fi
     # Load fv3 module
@@ -98,7 +98,7 @@ export SUITES
 set -ex
 
 # Valid applications
-if [[ ${MACHINE_ID} != gaea ]] || [[ ${RT_COMPILER} != intelllvm ]]; then # skip MOM6SOLO on gaea with intelllvm
+if [[ ${MACHINE_ID} != gaea-c5 || ${MACHINE_ID} != gaea-c6 ]] || [[ ${RT_COMPILER} != intelllvm ]]; then # skip MOM6SOLO on gaea with intelllvm
   if [[ "${MAKE_OPT}" == *"-DAPP=S2S"* ]]; then
       CMAKE_FLAGS+=" -DMOM6SOLO=ON"
   fi

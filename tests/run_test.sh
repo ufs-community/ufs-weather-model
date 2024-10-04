@@ -116,12 +116,12 @@ case ${MACHINE_ID} in
   stampede|expanse|noaacloud)
     echo "No special nccmp load necessary"
     ;;
-  gaea)
+  gaea-c5)
     module use /ncrc/proj/epic/spack-stack/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core
     module load stack-intel/2023.1.0 stack-cray-mpich/8.1.25
     module load nccmp/1.9.0.1
     ;;
-  gaeac6)
+  gaea-c6)
     module use modulefiles
     module load modules.fv3
     module load gcc-native/12.3
@@ -446,7 +446,7 @@ if [[ ${skip_check_results} == false ]]; then
 
       else
         if [[ ${i##*.} == nc* ]] ; then
-          if [[ " orion hercules hera wcoss2 acorn derecho gaea gaeac6 jet s4 noaacloud " =~ ${MACHINE_ID} ]]; then
+          if [[ " orion hercules hera wcoss2 acorn derecho gaea-c5 gaea-c6 jet s4 noaacloud " =~ ${MACHINE_ID} ]]; then
             printf "USING NCCMP.." >> "${RT_LOG}"
             printf "USING NCCMP.."
               if [[ ${CMP_DATAONLY} == false ]]; then

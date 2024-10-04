@@ -300,7 +300,7 @@ elif [[ ${MACHINE_ID} = s4 ]]; then
   export ICE_tasks_cpl_bmrk=48
   export WAV_tasks_cpl_bmrk=80
 
-elif [[ ${MACHINE_ID} = gaea || ${MACHINE_ID} = gaeac6 ]]; then
+elif [[ ${MACHINE_ID} = gaea-c5 ]]; then
 
   export TPN=128
 
@@ -321,6 +321,26 @@ elif [[ ${MACHINE_ID} = gaea || ${MACHINE_ID} = gaeac6 ]]; then
   export WPG_cpl_atmw_gdas=24
   export WAV_tasks_atmw_gdas=264
 
+elif [[ ${MACHINE_ID} = gaea-c6 ]]; then
+
+  export TPN=128
+
+  export INPES_dflt=3
+  export JNPES_dflt=8
+  export INPES_thrd=3
+  export JNPES_thrd=4
+  export INPES_c384=6
+  export JNPES_c384=8
+  export THRD_c384=1
+  export INPES_c768=8
+  export JNPES_c768=16
+  export THRD_c768=2
+
+  export THRD_cpl_atmw_gdas=3
+  export INPES_cpl_atmw_gdas=6
+  export JNPES_cpl_atmw_gdas=8
+  export WPG_cpl_atmw_gdas=24
+  export WAV_tasks_atmw_gdas=264
 elif [[ ${MACHINE_ID} = derecho ]]; then
 
   export TPN=128
