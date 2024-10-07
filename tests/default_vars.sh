@@ -882,7 +882,6 @@ export SDAY=03
 export SHOUR=00
 export SECS=$(( SHOUR*3600 ))
 export FHMAX=$(( DAYS*24 ))
-export DT_ATMOS=1800
 export FHCYC=24
 export FHROT=0
 export LDIAG3D=.false.
