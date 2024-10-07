@@ -13,7 +13,7 @@
 ###############################################################################
 ### Configure Application Components
 ###############################################################################
-if(APP MATCHES "^(ATM|ATMW|ATMWM|ATMAQ|ATML|ATMF)$")
+if(APP MATCHES "^(ATM|ATMW|ATMWM|ATMAQ|ATML|ATMF|ATMMPAS)$")
   set(FMS        ON  CACHE BOOL "Enable FMS"                 FORCE)
   set(FV3        ON  CACHE BOOL "Enable FV3"                 FORCE)
   set(STOCH_PHYS ON  CACHE BOOL "Enable Stochastic Physics"  FORCE)
@@ -31,6 +31,9 @@ if(APP MATCHES "^(ATM|ATMW|ATMWM|ATMAQ|ATML|ATMF)$")
     set(CMEPS    ON  CACHE BOOL "Enable CMEPS"               FORCE)
     set(NOAHMP   ON  CACHE BOOL "Enable NOAHMP"              FORCE)
     message("Configuring UFS app in Atmosphere with Air Quality mode")
+  elseif(APP MATCHES "ATMMPAS")
+    set(MPAS     ON  CACHE BOOL "Enable MPAS dycore"         FORCE)
+    message("Configuring UFS app in Atmosphere with MPAS dycore")
   elseif(APP MATCHES "ATMF")
     set(FIRE_BEHAVIOR ON CACHE BOOL "Enable Fire Behavior"   FORCE)
   else()
