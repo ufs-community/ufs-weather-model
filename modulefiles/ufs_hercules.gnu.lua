@@ -2,8 +2,7 @@ help([[
 loads UFS Model prerequisites for Hercules/GNU
 ]])
 
--- prepend_path("MODULEPATH", "/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core")
-prepend_path("MODULEPATH", "/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.6.0/envs/ue-esmf-8.6.1-mapl-2.46.2/install/modulefiles/Core")
+prepend_path("MODULEPATH", "/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.6.0/envs/ue-esmf-8.6.1-mapl-2.46.3/install/modulefiles/Core")
 -- for mvapich2, need:
 prepend_path("MODULEPATH", "/work/noaa/epic/role-epic/spack-stack/hercules/modulefiles")
 
