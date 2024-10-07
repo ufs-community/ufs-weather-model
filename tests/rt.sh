@@ -737,9 +737,7 @@ case ${MACHINE_ID} in
     PARTITION=c5
     dprefix=${dprefix:-/gpfs/f5/${ACCNR}/scratch/${USER}}
     STMP=${STMP:-${dprefix}/RT_BASELINE}
-    PTMP=${PTMP:-${dprefix}/RT_RUNDIRS}
-    # TMP use this path for LM4 cap
-    INPUTDATA_LM4=${INPUTDATA_LM4:-/gpfs/f5/gfdl_a/world-shared/cmip6/datasets/CM4/common}    
+    PTMP=${PTMP:-${dprefix}/RT_RUNDIRS} 
 
     SCHEDULER="slurm"
     ;;
@@ -762,8 +760,6 @@ case ${MACHINE_ID} in
     DISKNM="/scratch2/NAGAPE/epic/UFS-WM_RT"
     STMP="${dprefix}/stmp4"
     PTMP="${dprefix}/stmp2"
-    # TMP use this path for LM4 cap
-    INPUTDATA_LM4=${INPUTDATA_LM4:-/scratch2/GFDL/gfdlscr/Justin.Perket/cmip6/datasets/CM4/common}
 
     SCHEDULER=slurm
     ;;
@@ -792,8 +788,6 @@ case ${MACHINE_ID} in
     PTMP="${dprefix}/stmp"
 
     SCHEDULER="slurm"
-    # TMP use this path for LM4 cap 
-    INPUTDATA_LM4=${INPUTDATA_LM4:-/work/noaa/gfdlscr/pdata/gfdl/cmip6/datasets/CM4/common}
 
     cp fv3_conf/fv3_slurm.IN_orion fv3_conf/fv3_slurm.IN
     cp fv3_conf/compile_slurm.IN_orion fv3_conf/compile_slurm.IN
@@ -1027,6 +1021,7 @@ fi
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-${DISKNM}/NEMSfv3gfs/input-data-20240501}
 INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20240214
 INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC:-${DISKNM}/NEMSfv3gfs/BM_IC-20220207}
+INPUTDATA_LM4=${INPUTDATA_LM4:-${INPUTDATA_ROOT}/LM4_input_data}
 
 shift $((OPTIND-1))
 if [[ $# -gt 1 ]]; then
