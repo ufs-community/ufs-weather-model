@@ -85,7 +85,7 @@ set_target_properties(cice PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_B
 target_compile_definitions(cice PUBLIC "${_cice_defs}")
 target_include_directories(cice PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                        $<INSTALL_INTERFACE:mod>)
-target_link_libraries(cice PUBLIC esmf)
+target_link_libraries(cice PUBLIC ESMF::ESMF)
 if(CICE_IO MATCHES "^(NetCDF|PIO)$")
   target_link_libraries(cice PUBLIC NetCDF::NetCDF_Fortran)
   if(CICE_IO MATCHES "PIO")
