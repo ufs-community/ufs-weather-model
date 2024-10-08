@@ -21,6 +21,14 @@ cp    @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/grid_cice_NEMS_mx@[OCNRES].nc .
 cp    @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/kmtu_cice_NEMS_mx@[OCNRES].nc .
 cp    @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/mesh.mx@[OCNRES].nc .
 
+# WW3 fix/input
+if [[ $CPLWAV == .true. ]]; then
+  cp @[INPUTDATA_ROOT_WW3]/@[WW3_MODDEF] mod_def.ww3
+  if [[ ${WW3_DOMAIN:0:2} != mx ]]; then
+     cp  @[INPUTDATA_ROOT_WW3]/@[MESH_WAV] .
+  fi
+fi
+
 if [ $WARM_START = .false. ]; then
 # cold start
  if [[ $OCNRES == '025' ]]; then
@@ -43,4 +51,10 @@ else
  cp ../${DEP_RUN}${RT_SUFFIX}/${CICE_RESTART_DIR}/iced.2021-03-22-64800.nc ./INPUT
  RFILE="iced.2021-03-22-64800.nc"
  ls -1 "./INPUT/"${RFILE}>ice.restart_file
+
+ # WAVE restart file
+ if [[ $CPLWAV == .true. ]]; then
+   RFILE=ufs.cpld.ww3.r.${RESTART_FILE_SUFFIX_SECS}
+   cp ../${DEP_RUN}${SUFFIX}/${RFILE} .
+ fi
 fi

@@ -1159,6 +1159,8 @@ export_ww3() {
   export WW3_IC1='F'
   export WW3_IC5='F'
   export WW3_user_sets_restname="true"
+  export WW3_user_sets_histname="false"
+  export WW3_gridded_netcdfout="false"
 }
 
 export_fire_behavior() {
