@@ -12,14 +12,8 @@ function trim {
 
 SECONDS=0
 
-uname_s=$(uname -s)
-if [[ ${uname_s} == Darwin ]]; then
-  greadlnk=$(greadlink -f -n "${BASH_SOURCE[0]}" )
-  MYDIR=$(cd "$(dirname "${greadlnk}" )" && pwd -P)
-else
-  readlnk=$(readlink -f -n "${BASH_SOURCE[0]}" )
-  MYDIR=$(cd "$(dirname "${readlnk}" )" && pwd -P)
-fi
+SCRIPT_REALPATH=$(realpath "${BASH_SOURCE[0]}")
+MYDIR=$(dirname "${SCRIPT_REALPATH}")
 readonly MYDIR
 
 # ----------------------------------------------------------------------
@@ -101,12 +95,14 @@ export SUITES
 set -ex
 
 # Valid applications
-if [[ "${MAKE_OPT}" == *"-DAPP=S2S"* ]]; then
-    CMAKE_FLAGS+=" -DMOM6SOLO=ON"
-fi
+if [[ ${MACHINE_ID} != gaea ]] || [[ ${RT_COMPILER} != intelllvm ]]; then # skip MOM6SOLO on gaea with intelllvm
+  if [[ "${MAKE_OPT}" == *"-DAPP=S2S"* ]]; then
+      CMAKE_FLAGS+=" -DMOM6SOLO=ON"
+  fi
 
-if [[ "${MAKE_OPT}" == *"-DAPP=NG-GODAS"* ]]; then
-    CMAKE_FLAGS+=" -DMOM6SOLO=ON"
+  if [[ "${MAKE_OPT}" == *"-DAPP=NG-GODAS"* ]]; then
+      CMAKE_FLAGS+=" -DMOM6SOLO=ON"
+  fi
 fi
 
 CMAKE_FLAGS=$(set -e; trim "${CMAKE_FLAGS}")

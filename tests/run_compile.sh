@@ -17,7 +17,16 @@ cleanup() {
 
 write_fail_test() {
   echo "${JBNME} failed in run_compile" >> "${PATHRT}/fail_${JBNME}"
-  exit 1
+  if [[ ${ROCOTO:-false} == true ]] || [[ ${ECFLOW:-false} == true ]]; then
+    # if this script has been submitted by a workflow return non-zero exit status
+    # so that workflow can resubmit it
+    exit 1
+  else
+    # if this script has been executed interactively, return zero exit status
+    # so that rt.sh can continue running, and hope that rt.sh's generate_log
+    # will catch failed tests
+    exit 0
+  fi
 }
 
 remove_fail_test() {

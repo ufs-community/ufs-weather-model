@@ -40,3 +40,7 @@ NTILES=1
 if [[ " hera orion hercules jet " =~ " ${MACHINE_ID} " ]] ; then
   ZSTANDARD_LEVEL=5
 fi
+
+if [[ $MACHINE_ID = gaea && $RT_COMPILER = intelllvm ]]; then
+  WLCLK=50
+fi

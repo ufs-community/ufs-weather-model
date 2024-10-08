@@ -1,0 +1,136 @@
+###############################################################################
+#
+#  FV3 regional control (hi-res 3km, small domain) test
+#
+###############################################################################
+
+export TEST_DESCR="Compare FV3 regional with FIRE BEHAVIOR control results with previous trunk version"
+
+export CNTL_DIR=cpld_regional_atm_fbh
+
+export LIST_FILES="dynf000.nc \
+                   dynf003.nc \
+                   phyf000.nc \
+                   phyf003.nc \
+                   fire_output_2020-08-13_18:00:00.nc \
+                   fire_output_2020-08-13_21:00:00.nc"
+
+# default configuration
+export_fv3
+export_fire_behavior
+
+# models
+export atm_model=fv3
+export fbh_model=fire_behavior
+
+# simulation window
+export SYEAR=2020
+export SMONTH=8
+export SDAY=13
+export SHOUR=18
+export EYEAR=2020
+export EMONTH=8
+export EDAY=13
+export EHOUR=21
+
+# time steps
+export coupling_interval_sec=36
+export DT_ATMOS=36
+export DT_FIRE=0.5
+
+# model configuration
+export FHMAX=3
+export RESTART_INTERVAL=0
+export QUILTING=.true.
+export WRITE_GROUP=1
+export WRTTASK_PER_GROUP=5
+export NUM_FILES=2
+export FILENAME_BASE="'dyn' 'phy'"
+export OUTPUT_FILE="'netcdf' 'netcdf'"
+export WRITE_DOPOST=.false.
+export IDEFLATE=0
+export OUTPUT_GRID="'lambert_conformal'"
+export CEN_LON=-105.6041
+export CEN_LAT=39.01736
+export LON1=-109.0989
+export LAT1=36.2794
+export STDLAT1=39.01736
+export STDLAT2=39.01736
+export NX=207
+export NY=197
+export DX=3000.0
+export DY=3000.0
+
+# atmosphere configuration (fv3atm)
+export BLOCKSIZE=40
+export CCPP_SUITE='FV3_HRRR'
+export INPES='5'
+export JNPES='5'
+export NPX=211
+export NPY=201
+export NPZ=64
+export NTILES=1
+export K_SPLIT=2
+export N_SPLIT=5
+export NWAT=6
+export NA_INIT=1
+export DNATS=0
+export EXTERNAL_IC=.true.
+export NGGPS_IC=.true.
+export MOUNTAIN=.false.
+export DO_SAT_ADJ=.false.
+export WARM_START=.false.
+export TARGET_LAT=39.01737
+export TARGET_LON=-105.6041
+export STRETCH_FAC=0.999
+export REGIONAL=.true.
+export BC_UPDATE_INTERVAL=3
+export NROWS_BLEND=10
+export FULL_ZS_FILTER=.false.
+export N_ZS_FILTER=0
+export NPZP=65
+export FHCYC=0.0
+export IMP_PHYSICS=8
+export FHSWR=1200.0
+export FHLWR=1200.0
+export CPLFLX=.false.
+export CPL_IMP_MRG=.false.
+export CPL_IMP_DBG=.false.
+export CPLFIRE=.true.
+
+# fire configuration (fire_behavior)
+export FIRE_NAME=cameron_peak_fire
+export fire_atm_feedback=1.0
+export fire_ignition_end_lat1=40.609
+export fire_ignition_end_lon1=-105.879
+export fire_ignition_end_time1=7000
+export fire_ignition_radius1=250
+export fire_ignition_ros1=0.05
+export fire_ignition_start_lat1=40.609
+export fire_ignition_start_lon1=-105.879
+export fire_ignition_start_time1=6480
+export fire_lsm_zcoupling=.false.
+export fire_lsm_zcoupling_ref=60.0
+export fire_num_ignitions=1
+export fire_print_msg=0
+export fire_upwinding=9
+export fire_viscosity=0.4
+export fire_wind_height=5.0
+
+# output configuration
+export OUTPUT_FH='1  -1'
+export OUTPUT_FS=3600
+
+# tasks
+export ATM_compute_tasks=$(( INPES*JNPES*NTILES ))
+export FBH_tasks=1
+
+# configuration files
+export INPUT_NML=input_regional_fire.nml.IN
+export MODEL_CONFIGURE=model_configure_fire.IN
+export UFS_CONFIGURE=ufs.configure.cpld_atm_fbh.IN
+export FV3_RUN="regional_fire_run.IN"
+export DIAG_TABLE=diag_table_fire
+export FIELD_TABLE=field_table_fire
+export FIRE_NML=namelist.fire.IN
+
