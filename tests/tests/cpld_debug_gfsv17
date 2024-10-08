@@ -55,7 +55,7 @@ export LIST_FILES="sfcf003.tile1.nc \
                    RESTART/ufs.cpld.cpl.r.2021-03-22-32400.nc \
                    20210322.090000.out_pnt.ww3 \
                    20210322.090000.out_grd.ww3 "
-
+export DT_ATMOS=360
 export_fv3
 export_ugwpv1
 export_cpl
@@ -103,12 +103,8 @@ export UFS_CONFIGURE=ufs.configure.s2sw.IN
 
 export FV3_RUN=cpld_control_run.IN
 
-export DT_INNER=360
-export DT_ATMOS=360
 export K_SPLIT=2
 export N_SPLIT=5
-export DT_CICE=${DT_ATMOS}
-export coupling_interval_fast_sec=${DT_ATMOS}
 
 if [[ $MACHINE_ID = hera ]] && [[ $RT_COMPILER = gnu ]]; then
   WLCLK=40

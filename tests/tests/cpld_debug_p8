@@ -57,6 +57,7 @@ export LIST_FILES="sfcf003.tile1.nc \
                    20210322.090000.out_pnt.ww3 \
                    20210322.090000.out_grd.ww3 "
 
+export DT_ATMOS=720
 export_fv3
 export_ugwpv1
 export_cpl
@@ -79,12 +80,8 @@ if [[ $MACHINE_ID = hera ]] && [[ $RT_COMPILER = gnu ]]; then
   WLCLK=40
 fi
 
-export DT_INNER=720
-export DT_ATMOS=720
 export K_SPLIT=4
 export N_SPLIT=5
-export DT_CICE=${DT_ATMOS}
-export coupling_interval_fast_sec=${DT_ATMOS}
 
 # HR4 GFSv17 GWD update
 export DO_UGWP_V0=.false.

@@ -1486,29 +1486,11 @@ export NSTF_NAME=2,0,0,0,0
 export LHEATSTRG=.false.
 export LSEASPRAY=.true.
 
-# UGWP1
-#export GWD_OPT=2
-#export KNOB_UGWP_NSLOPE=1
-#export DO_GSL_DRAG_LS_BL=.true.
-#export DO_GSL_DRAG_SS=.true.
-#export DO_UGWP_V1_OROG_ONLY=.false.
-#export DO_UGWP_V0_NST_ONLY=.false.
-#export LDIAG_UGWP=.false.
-
-#export DO_GSL_DRAG_TOFD=.false.
-#export CDMBWD=${CDMBWD_c96}
-
 # RRTMGP
 export DO_RRTMGP=.false.
 export DOGP_CLDOPTICS_LUT=.true.
 export DOGP_LWSCAT=.true.
 export DOGP_SGS_CNV=.true.
-
-# UGWD
-#export DO_UGWP_V0=.true.
-#export DO_UGWP_V1=.false.
-#export DO_GSL_DRAG_LS_BL=.false.
-#export KNOB_UGWP_VERSION=0
 
 # CA
 export DO_CA=.true.
