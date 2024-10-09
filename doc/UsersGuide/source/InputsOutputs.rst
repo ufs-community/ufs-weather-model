@@ -1148,6 +1148,7 @@ The configuration files used by the UFS Weather Model are listed here and descri
    * ``field_table``
    * ``model_configure``
    * ``ufs.configure``
+   * ``fd_ufs.yaml``
    * ``suite_[suite_name].xml`` (used only at build time)
    * ``datm.streams`` (used by CDEPS)
    * ``datm_in`` (used by CDEPS)
@@ -1674,6 +1675,34 @@ However, ``ufs.configure`` files for other configurations of the Weather Model a
 .. note:: The ``aoflux_grid`` option is used to select the grid/mesh to perform atmosphere-ocean flux calculation. The possible options are ``xgrid`` (exchange grid), ``agrid`` (atmosphere model grid) and ``ogrid`` (ocean model grid).
 
 .. note:: The ``aoflux_code`` option is used to define the algorithm that will be used to calculate atmosphere-ocean fluxes. The possible options are ``cesm`` and ``ccpp``. If ``ccpp`` is selected then the suite file provided in the ``aoflux_ccpp_suite`` option is used to calculate atmosphere-ocean fluxes through the use of CCPP host model.
+
+
+.. _fd-ufs:
+
+-----------------
+``fd_ufs.yaml``
+-----------------
+
+The ``fd_ufs.yaml`` file contains a field dictionary to configure several fields that are used in import/export operations by different Earth modeling components in ESMF's NUOPC coupling system. It allows the sharing of coupling fields between components. Entries in the field dictionary are organized as YAML lists of maps. The NUOPC Field Dictionary data structure in the model code is set up by the NUOPC function called ``NUOPC_FieldDictionarySetup()``, which loads the ``fd_ufs.yaml`` file (see `UFSDriver.F90 <https://github.com/ufs-community/ufs-weather-model/blob/develop/driver/UFSDriver.F90>`_). The field
+metadata described in each entry are used by the NUOPC layer to match fields provided and requested by the various component models. The field dictionary can be shared with other Earth modeling systems that use the same ESPS coupling strategy, such as the Community Earth System Model (CESM).
+
+The standard field metadata for each coupling field has the following keys and corresponding values:
+
+.. code-block:: console
+
+   - standard_name: <field_name>
+     canonical_units: <unit>
+     description: <brief description about this field>
+     alias: <other_field_name>
+
+* ``standard_name`` (required): Name of the field. 
+* ``canonical_units`` (required): The units used to fully define the field
+* ``description`` (optional): Brief explanation of the field
+* ``alias`` (optional): Alternative names for the field. An alias can be one character string or a list of strings (e.g., ``<name>`` or ``[<name>, <name2>]``). This allows a field to have different names used in the coupling field exchange.
+
+Either the ``standard_name`` or ``alias`` name can be used in a component model, and the NUOPC layer will recognize these fields as the same field using the definitions provided in the YAML file. For more on the NUOPC field dictionary, visit the `documentation <https://earthsystemmodeling.org/docs/release/latest/NUOPC_refdoc/node3.html#SECTION00032000000000000000>`_.
+
+
 
 .. _SDF-file:
 
