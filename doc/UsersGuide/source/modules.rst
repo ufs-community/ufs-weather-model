@@ -1,5 +1,5 @@
-tests-dev
-=========
+Technical Documentation for ``tests-dev``
+==========================================
 
 .. toctree::
    :maxdepth: 4
