@@ -1,0 +1,158 @@
+@[SYEAR]@[SMONTH]@[SDAY].@[SHOUR]Z.@[ATMRES].64bit.non-mono
+@[SYEAR] @[SMONTH] @[SDAY] @[SHOUR] 0 0
+
+#output files
+"land_static",     -1,  "months", 1, "days", "time"
+"land_static_sg",  -1,  "months", 1, "days", "time"
+"land_hourly",      1,  "hours",  1, "days", "time"
+#"land_daily",      24,  "hours",  1, "days", "time"
+"land_month",       1,  "months", 1, "days", "time"
+#
+#=======================
+# LAND MODEL DIAGNOSTICS
+#=======================
+#
+"land",    "geolon_t",   "geolon_t",   "land_static", "all", .false., "none", 1
+"land",    "geolat_t",   "geolat_t",   "land_static", "all", .false., "none", 1
+"land",    "geolon_t",   "geolon_t",   "land_month", "all", .false., "none", 1
+"land",    "geolat_t",   "geolat_t",   "land_month", "all", .false., "none", 1
+# "land",    "geolon_t",   "geolon_t",   "land_daily", "all", .false., "none", 1
+# "land",    "geolat_t",   "geolat_t",   "land_daily", "all", .false., "none", 1
+"land",    "geolon_t",   "geolon_t",   "land_hourly", "all", .false., "none", 1
+"land",    "geolat_t",   "geolat_t",   "land_hourly", "all", .false., "none", 1
+
+# land static output
+"lake",    "lake_depth", "lake_depth", "land_static", "all", .false., "none", 2
+"lake",    "lake_width", "lake_width", "land_static", "all", .false., "none", 2
+"land_sg", "cell_area",  "cell_area",  "land_static_sg", "all", .false., "none", 2
+"land",    "area_land",  "land_area",  "land_static", "all", .false., "none", 2
+"land",    "land_frac",  "land_frac",  "land_static", "all", .false., "none", 2
+#"land",    "no_riv",     "no_riv",     "land_static", "all", .false., "none", 2
+# "river",   "rv_basin",   "rv_basin",   "land_static", "all", .false., "none", 2
+# "river",   "rv_dir",     "rv_dir",     "land_static", "all", .false., "none", 2
+# "river",   "rv_length",  "rv_length",  "land_static", "all", .false., "none", 2
+# "river",   "rv_trav",    "rv_trav",    "land_static", "all", .false., "none", 2
+"soil",    "soil_Ksat",  "soil_Ksat",  "land_static", "all", .false., "none", 2
+"soil",    "soil_rlief", "soil_rlief", "land_static", "all", .false., "none", 2
+"soil",    "soil_sat",   "soil_sat",   "land_static", "all", .false., "none", 2
+"soil",    "soil_type",  "soil_type",  "land_static", "all", .false., "none", 2
+"soil",    "soil_wilt",  "soil_wilt",  "land_static", "all", .false., "none", 2
+# area fractions for different tile types
+"land",    "frac_glac",  "frac_glac",  "land_static", "all", .false., "none", 2
+"land",    "frac_lake",  "frac_lake",  "land_static", "all", .false., "none", 2
+
+# land multi-level month-average output
+
+## land 2-band variables
+
+# # land one-level month-average output
+# #"flux",    "t_ref_land", "t_ref",      "land_month",  "all", .true., "none", 2
+"land",    "area_land",  "land_area",  "land_month",  "all", .false., "none", 2
+# "land",    "area_glac",  "glac_area",  "land_month",  "all", .false., "none", 2
+"land",    "area_lake",  "lake_area",  "land_month",  "all", .false., "none", 2
+"land",    "area_soil",  "soil_area",  "land_month",  "all", .false., "none", 2
+
+# # land daily output
+# "land",  "area_ntrl",  "area_ntrl",    "land_daily",  "all", .true.,  "none", 2
+
+# # "flux",  "evap_land",  "evap_land",    "land_daily",  "all", .true., "none", 2
+# # "flux",  "t_ref_land", "t_ref_max",    "land_daily",  "all",  max,   "none", 2
+# # "flux",  "t_ref_land", "t_ref_min",    "land_daily",  "all",  min,   "none", 2
+# "land",  "FWSg_lake",  "FWSg_lake",    "land_daily",  "all", .true., "none", 2
+# "land",  "FWSg_soil",  "FWSg_soil",    "land_daily",  "all", .true., "none", 2
+# "land",  "LWSg_lake",  "LWSg_lake",    "land_daily",  "all", .true., "none", 2
+# "land",  "LWSg_soil",  "LWSg_soil",    "land_daily",  "all", .true., "none", 2
+# "land",  "precip",     "precip",       "land_daily",  "all", .true., "none", 2
+# "land",  "snow_lake",  "snow_lake",    "land_daily",  "all", .true., "none", 2
+# "land",  "snow_soil",  "snow_soil",    "land_daily",  "all", .true., "none", 2
+# "land",  "runf",       "runf",         "land_daily",  "all", .true., "none", 2
+# # "river", "rv_o_h2o",   "rv_o_h2o",     "land_daily",  "all", .true., "none", 2
+# # "river", "rv_T",       "rv_T",         "land_daily",  "all", .true., "none", 2
+# "vegn",  "temp",       "vegn_T",       "land_daily",  "all",  .true., "none", 2
+# "vegn",  "temp",       "vegn_T_max",   "land_daily",  "all",    max, "none", 2
+# "vegn",  "temp",       "vegn_T_min",   "land_daily",  "all",    min, "none", 2
+# "vegn",  "npp",        "npp",          "land_daily",  "all", .true., "none", 2
+# "vegn",  "gpp",        "gpp",          "land_daily",  "all", .true., "none", 2
+# "vegn",  "an_cl",      "an_cl",        "land_daily",  "all", .true., "none", 2
+# "vegn",  "an_op",      "an_op",        "land_daily",  "all", .true., "none", 2
+# "vegn",  "LAI",        "LAI",          "land_daily",  "all", .true., "none", 2
+# "vegn",  "stomatal_cond_ntrl","gs_ntrl_max","land_daily","all", max, "none", 2
+# "vegn",  "temp_ntrl",  "vegn_temp_ntrl_max","land_daily","all", max, "none", 2
+# "vegn",  "temp_ntrl",  "vegn_temp_ntrl_min","land_daily","all", min, "none", 2
+# # land daily variables used in post-processing "refinement"
+# "soil",  "soil_liq",   "soil_liq",     "land_daily",  "all", .true., "-1 -1 -1 -1 0 0.1", 2
+# "soil",  "soil_ice",   "soil_ice",     "land_daily",  "all", .true., "-1 -1 -1 -1 0 0.1", 2
+# "land",  "runf_soil",  "runf_soil",    "land_daily",  "all", .true.,  "none", 2
+# "land",  "FWSs",       "FWSs",         "land_daily",  "all", .true.,  "none", 2
+# "land",  "soil_water_supply",   "water_supply", "land_daily", "all", .true., "none", 2
+# "vegn",  "evap_demand",         "water_demand", "land_daily", "all", .true., "none", 2
+
+# land hourly output
+"land",  "area_ntrl",  "area_ntrl",    "land_hourly",  "all", .true.,  "none", 2
+
+# "flux",  "evap_land",  "evap_land",    "land_hourly",  "all", .true., "none", 2
+# "flux",  "t_ref_land", "t_ref_max",    "land_hourly",  "all",  max,   "none", 2
+# "flux",  "t_ref_land", "t_ref_min",    "land_hourly",  "all",  min,   "none", 2
+"land",  "FWSg_lake",  "FWSg_lake",    "land_hourly",  "all", .true., "none", 2
+"land",  "FWSg_soil",  "FWSg_soil",    "land_hourly",  "all", .true., "none", 2
+"land",  "LWSg_lake",  "LWSg_lake",    "land_hourly",  "all", .true., "none", 2
+"land",  "LWSg_soil",  "LWSg_soil",    "land_hourly",  "all", .true., "none", 2
+"land",  "precip",     "precip",       "land_hourly",  "all", .true., "none", 2
+"land",  "snow_lake",  "snow_lake",    "land_hourly",  "all", .true., "none", 2
+"land",  "snow_soil",  "snow_soil",    "land_hourly",  "all", .true., "none", 2
+"land",  "runf",       "runf",         "land_hourly",  "all", .true., "none", 2
+# "river", "rv_o_h2o",   "rv_o_h2o",     "land_hourly",  "all", .true., "none", 2
+# "river", "rv_T",       "rv_T",         "land_hourly",  "all", .true., "none", 2
+"vegn",  "temp",       "vegn_T",       "land_hourly",  "all",  .true., "none", 2
+"vegn",  "temp",       "vegn_T_max",   "land_hourly",  "all",    max, "none", 2
+"vegn",  "temp",       "vegn_T_min",   "land_hourly",  "all",    min, "none", 2
+"vegn",  "npp",        "npp",          "land_hourly",  "all", .true., "none", 2
+"vegn",  "gpp",        "gpp",          "land_hourly",  "all", .true., "none", 2
+"vegn",  "an_cl",      "an_cl",        "land_hourly",  "all", .true., "none", 2
+"vegn",  "an_op",      "an_op",        "land_hourly",  "all", .true., "none", 2
+"vegn",  "LAI",        "LAI",          "land_hourly",  "all", .true., "none", 2
+"vegn",  "stomatal_cond_ntrl","gs_ntrl_max","land_hourly","all", max, "none", 2
+"vegn",  "temp_ntrl",  "vegn_temp_ntrl_max","land_hourly","all", max, "none", 2
+"vegn",  "temp_ntrl",  "vegn_temp_ntrl_min","land_hourly","all", min, "none", 2
+# land hourly variables used in post-processing "refinement"
+"soil",  "soil_liq",   "soil_liq",     "land_hourly",  "all", .true., "-1 -1 -1 -1 0 0.1", 2
+"soil",  "soil_ice",   "soil_ice",     "land_hourly",  "all", .true., "-1 -1 -1 -1 0 0.1", 2
+"land",  "runf_soil",  "runf_soil",    "land_hourly",  "all", .true.,  "none", 2
+"land",  "FWSs",       "FWSs",         "land_hourly",  "all", .true.,  "none", 2
+"land",  "soil_water_supply",   "water_supply", "land_hourly", "all", .true., "none", 2
+"vegn",  "evap_demand",         "water_demand", "land_hourly", "all", .true., "none", 2
+
+
+#=============================================================================================
+#
+#====> This file can be used with diag_manager/v2.0a (or higher) <====
+#
+#
+#  FORMATS FOR FILE ENTRIES (not all input values are used)
+#  ------------------------
+#
+#"file_name", output_freq, "output_units", format, "time_units", "long_name",
+#
+#
+#output_freq:  > 0  output frequency in "output_units"
+#              = 0  output frequency every time step
+#              =-1  output frequency at end of run
+#
+#output_units = units used for output frequency
+#               (years, months, days, minutes, hours, seconds)
+#
+#time_units   = units used to label the time axis
+#               (days, minutes, hours, seconds)
+#
+#
+#  FORMAT FOR FIELD ENTRIES (not all input values are used)
+#  ------------------------
+#
+#"module_name", "field_name", "output_name", "file_name" "time_sampling", time_avg, "other_opts", packing
+#
+#time_avg = .true. or .false.
+#
+#packing  = 1  double precision
+#         = 2  float
+#         = 4  packed 16-bit integers
+#         = 8  packed 1-byte (not tested?)
