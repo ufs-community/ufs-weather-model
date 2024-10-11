@@ -15,6 +15,11 @@ help:
 
 .PHONY: help Makefile linkcheck
 
+doc:
+	make clean
+	$(MAKE) linkcheck
+	$(MAKE) html
+
 linkcheck:
 	$(SPHINXBUILD) -b linkcheck $(SPHINXOPTS) $(SOURCEDIR) $(LINKCHECKDIR)
 
