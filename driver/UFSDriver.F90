@@ -79,6 +79,9 @@
 #ifdef FRONT_NOAH
       use FRONT_NOAH,       only: NOAH_SS  => SetServices
 #endif
+#ifdef FRONT_LM4
+      use FRONT_LM4,        only: LM4_SS  => SetServices
+#endif      
 #ifdef FRONT_NOAHMP
       use FRONT_NOAHMP,     only: NOAHMP_SS  => SetServices
 #endif
@@ -467,6 +470,14 @@
             found_comp = .true.
           end if
 #endif
+#ifdef FRONT_LM4
+          if (trim(model) == "lm4") then
+            call NUOPC_DriverAddComp(driver, trim(prefix), LM4_SS, &
+              petList=petList, comp=comp, rc=rc)
+            if (ChkErr(rc,__LINE__,u_FILE_u)) return
+            found_comp = .true.
+          end if
+#endif 
 #ifdef FRONT_NOAHMP
           if (trim(model) == "noahmp") then
             call NUOPC_DriverAddComp(driver, trim(prefix), NOAHMP_SS, &
