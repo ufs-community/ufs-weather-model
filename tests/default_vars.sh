@@ -481,20 +481,26 @@ export ATMRES=C96
 export TILEDFIX=.false.
 export DO_CA=.false.
 export CA_SGS=.false.
-
 }
-
 
 export_fv3 ()
 {
-if [[ -z ${ATMRES+x} || -z ${ATMRES} ]]; then
-    export ATMRES=C96
-fi
-if [[ -z ${DT_ATMOS+x} || -z ${DT_ATMOS} ]]; then
-    export DT_ATMOS=1800
-    export default_dt_atmos=1
+#Set defaults if ATMRES and DT_ATMOS are not set
+export ATMRES=${ATMRES:-"C96"}
+export DT_ATMOS=${DT_ATMOS:-"1800"}
+
+#DT_INNER=(Time step)/2
+export DT_INNER_c96=360
+export DT_INNER_c192=300
+export DT_INNER_c384=150
+export DT_INNER_c768=75
+
+if [[ ${DT_ATMOS} = 1800 ]]; then
+  export default_dt_atmos=1
+  export DT_INNER=${DT_INNER_c96}
 else
-    export default_dt_atmos=0
+  export default_dt_atmos=0
+  export DT_INNER=${DT_ATMOS}
 fi
 
 # ufs.configure defaults
@@ -625,7 +631,6 @@ export USE_UFO=.true.
 export PRE_RAD=.false.
 export TTENDLIM=-999
 
-
 # Radiation
 export DO_RRTMGP=.false.
 export DOGP_CLDOPTICS_LUT=.true.
@@ -733,12 +738,6 @@ export CDMBWD_c96='0.14,1.8,1.0,1.0'
 export CDMBWD_c192='0.23,1.5,1.0,1.0'
 export CDMBWD_c384='1.1,0.72,1.0,1.0'
 export CDMBWD_c768='4.0,0.15,1.0,1.0'
-
-#DT_INNER=(Time step)/2
-export DT_INNER_c96=360
-export DT_INNER_c192=300
-export DT_INNER_c384=150
-export DT_INNER_c768=75
 
 # set default
 export CDMBWD=${CDMBWD_c96}
@@ -1084,10 +1083,9 @@ export_ugwpv1() {
   export KNOB_UGWP_NDX4LH=4
   
   # Add updated damping and timestep variables
-  if [[ ${default_dt_atmos} = 1 ]]; then
   case "${ATMRES}" in
     "C48")
-      export DT_ATMOS=720
+      if [[ ${default_dt_atmos} = 1 ]]; then export DT_ATMOS=720; fi
       export XR_CNVCLD=.false.
       export CDMBGWD="0.071,2.1,1.0,1.0"
       export CDMBGWD_GSL="40.0,1.77,1.0,1.0"
@@ -1099,7 +1097,7 @@ export_ugwpv1() {
       export FV_SG_ADJ=3600
       ;;
     "C96")
-      export DT_ATMOS=720
+      if [[ ${default_dt_atmos} = 1 ]]; then export DT_ATMOS=720; fi
       export XR_CNVCLD=.false.
       export CDMBGWD="0.14,1.8,1.0,1.0"
       export CDMBGWD_GSL="20.0,2.5,1.0,1.0"
@@ -1111,7 +1109,7 @@ export_ugwpv1() {
       export FV_SG_ADJ=1800
       ;;
     "C192")
-      export DT_ATMOS=600
+      if [[ ${default_dt_atmos} = 1 ]]; then export DT_ATMOS=600; fi
       export XR_CNVCLD=.true.
       export CDMBGWD="0.23,1.5,1.0,1.0"
       export CDMBGWD_GSL="5.0,5.0,1.0,1.0"
@@ -1123,7 +1121,7 @@ export_ugwpv1() {
       export FV_SG_ADJ=1800
       ;;
     "C384")
-      export DT_ATMOS=300
+      if [[ ${default_dt_atmos} = 1 ]]; then export DT_ATMOS=300; fi
       export XR_CNVCLD=.true.
       export CDMBGWD="1.1,0.72,1.0,1.0"
       export CDMBGWD_GSL="5.0,5.0,1.0,1.0"
@@ -1135,7 +1133,7 @@ export_ugwpv1() {
       export FV_SG_ADJ=900
       ;;
     "C768")
-      export DT_ATMOS=150
+      if [[ ${default_dt_atmos} = 1 ]]; then export DT_ATMOS=150; fi
       export XR_CNVCLD=.true.
       export CDMBGWD="4.0,0.15,1.0,1.0"
       export CDMBGWD_GSL="2.5,7.5,1.0,1.0"
@@ -1147,7 +1145,7 @@ export_ugwpv1() {
       export FV_SG_ADJ=450
       ;;
     "C1152")
-      export DT_ATMOS=150
+      if [[ ${default_dt_atmos} = 1 ]]; then export DT_ATMOS=150; fi
       export XR_CNVCLD=.true.
       export CDMBGWD="4.0,0.10,1.0,1.0"
       export CDMBGWD_GSL="1.67,8.8,1.0,1.0"
@@ -1159,7 +1157,7 @@ export_ugwpv1() {
       export FV_SG_ADJ=450
       ;;
     "C3072")
-      export DT_ATMOS=90
+      if [[ ${default_dt_atmos} = 1 ]]; then export DT_ATMOS=90; fi
       export XR_CNVCLD=.true.
       export CDMBGWD="4.0,0.05,1.0,1.0"
       export CDMBGWD_GSL="0.625,14.1,1.0,1.0"
@@ -1180,10 +1178,8 @@ export_ugwpv1() {
   if [[ ${SEDI_SEMI} = .true. ]]; then export DT_ATMOS=$((DT_ATMOS/2)); fi
   export DT_INNER=${DT_ATMOS}
   export default_dt_atmos=0
-  fi
 }
   
-
 # Defaults for the CICE6 model namelist, mx100
 export_cice6() {
   SECS=$((SHOUR*3600))
