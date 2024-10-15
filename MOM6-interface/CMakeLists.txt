@@ -101,6 +101,10 @@ if(MOM6SOLO)
   #endif()
 endif()
 
+add_dependencies(mom6 cdeps::cdeps)
+target_compile_definitions(mom6 PUBLIC "DISABLE_FoX")
+target_link_libraries(mom6 PUBLIC cdeps::cdeps)
+
 ###############################################################################
 ### Install
 ###############################################################################

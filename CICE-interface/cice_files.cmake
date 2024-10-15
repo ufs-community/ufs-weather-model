@@ -164,6 +164,7 @@ list(APPEND cice_cdeps_inline_files
   ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_cal_mod.F90
   ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_string_mod.F90
   ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_timer_mod.F90
+  ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/dshr/dshr_is_restart_fh_mod.F90
   ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/streams/dshr_strdata_mod.F90
   ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/streams/dshr_stream_mod.F90
   ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/streams/dshr_methods_mod.F90

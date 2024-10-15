@@ -315,6 +315,10 @@ list(APPEND mom6_nuopc_src_files
   MOM6/config_src/drivers/timing_tests/time_MOM_EOS.F90
 )
 
+list(APPEND mom6_nuopc_src_files
+  ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/dshr/dshr_is_restart_fh_mod.F90
+)
+
 list(APPEND mom6_solo_src_files
   MOM6/config_src/drivers/solo_driver/MESO_surface_forcing.F90
   MOM6/config_src/drivers/solo_driver/MOM_driver.F90
