@@ -316,7 +316,7 @@ list(APPEND mom6_nuopc_src_files
 )
 
 list(APPEND mom6_nuopc_src_files
-  ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/dshr/dshr_is_restart_fh_mod.F90
+  ${PROJECT_SOURCE_DIR}/CDEPS-interface/ufs/cdeps_share/shr_is_restart_fh_mod.F90
 )
 
 list(APPEND mom6_solo_src_files
