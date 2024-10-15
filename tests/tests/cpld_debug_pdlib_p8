@@ -102,6 +102,15 @@ export FV3_RUN=cpld_control_run.IN
 if [[ $MACHINE_ID = hera && $RT_COMPILER = gnu ]] || [[ $MACHINE_ID = jet ]]; then
   WLCLK=50
 fi
+if [[ $MACHINE_ID = hercules && $RT_COMPILER = intelllvm ]]; then
+  WLCLK=50
+fi
+if [[ $MACHINE_ID = orion && $RT_COMPILER = intelllvm ]]; then
+  WLCLK=50
+fi
+if [[ $MACHINE_ID = gaea ]] && [[ $RT_COMPILER = intelllvm ]]; then
+  WLCLK=50
+fi
 
 export K_SPLIT=2
 export N_SPLIT=5

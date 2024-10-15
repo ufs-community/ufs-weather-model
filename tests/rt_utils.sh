@@ -79,10 +79,13 @@ function compute_petbounds_and_tasks() {
   aqm_petlist_bounds="0 $((ATM_compute_tasks * atm_omp_num_threads - 1))"
 
   # LND
-  if [[ ${LND_tasks:-0} -gt 0 ]]; then
-     LND_tasks=$((LND_tasks * lnd_omp_num_threads))
-     lnd_petlist_bounds="${n} $((n + LND_tasks - 1))"
-     n=$((n + LND_tasks))
+  if [[ ${lnd_model:-} = "lm4" ]]; then
+      # set lnd_petlist_bounds to be same as ATM_compute_tasks
+      lnd_petlist_bounds="0 $((ATM_compute_tasks - 1))"
+  elif [[ ${LND_tasks:-0} -gt 0 ]]; then # noahmp component or other   
+      LND_tasks=$((LND_tasks * lnd_omp_num_threads))  
+      lnd_petlist_bounds="${n} $((n + LND_tasks - 1))"
+      n=$((n + LND_tasks))
   fi
 
   # FBH
@@ -213,7 +216,7 @@ submit_and_wait() {
           job_running=true
         else
           job_running=false
-          job_info=$( sacct -n -j "${jobid}" --format=JobID,state%20,Jobname%64 | grep "^${jobid}" | grep "${JBNME}" )
+          job_info=$( sacct -n -j "${jobid}" --format=JobID,state%20,Jobname%128 | grep "^${jobid}" | grep "${JBNME}" )
         fi
         # Getting the status letter from scheduler info
         status=$( grep "${jobid}" <<< "${job_info}" )
@@ -599,6 +602,7 @@ ecflow_run() {
     fi
     "${PATHRT}/abort_dep_tasks.py"
   done
+  echo
 
   sleep 65 # wait one ECF_INTERVAL plus 5 seconds
   echo "rt_utils.sh: ECFLOW tasks completed, cleaning up suite"

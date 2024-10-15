@@ -67,6 +67,7 @@ export LIST_FILES="sfcf021.tile1.nc \
                    RESTART/iced.2021-03-23-21600.nc \
                    RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc \
 		   ufs.cpld.ww3.r.2021-03-23-21600.nc \
+                   history/iceh.2021-03-23-21600.nc \
                    20210323.060000.out_pnt.ww3 \
                    20210323.060000.out_grd.ww3 "
 
@@ -80,7 +81,9 @@ export DNATS=0
 export RESTART_N=3
 export RESTART_INTERVAL="${RESTART_N} -1"
 export OUTPUT_FH='0 21 24'
-
+#CICE forecast day output stream
+hist_n_24h=$(( 24*3600/${DT_CICE} ))
+export CICE_HISTFREQ_N="0, 0, 6, ${hist_n_24h}, 1"
 
 export INPES=$INPES_cpl_unstr_mpi
 export JNPES=$JNPES_cpl_unstr_mpi
