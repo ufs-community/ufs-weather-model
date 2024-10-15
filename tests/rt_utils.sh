@@ -303,6 +303,9 @@ rocoto_create_compile_task() {
   if [[ ${MACHINE_ID} == hera ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
+  if [[ ${MACHINE_ID} == ursa ]]; then
+    BUILD_WALLTIME="01:00:00"
+  fi
   if [[ ${MACHINE_ID} == orion ]]; then
     BUILD_WALLTIME="01:00:00"
   fi

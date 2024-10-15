@@ -763,6 +763,30 @@ case ${MACHINE_ID} in
 
     SCHEDULER=slurm
     ;;
+  ursa)
+    echo "rt.sh: Setting up ursa..."
+    if [[ "${ROCOTO:-false}" == true ]] ; then
+      module load rocoto
+      ROCOTO_SCHEDULER=slurm
+    fi
+    
+    # ecflow not yet available on ursa
+    #if [[ "${ECFLOW:-false}" == true ]] ; then
+    #  module load ecflow/5.11.4
+    #fi
+
+    QUEUE="batch"
+    COMPILE_QUEUE="batch"
+
+    PARTITION=
+    dprefix="/collab1/data/$USER"
+    DISKNM="/collab1/data/Cameron.Book/UFS-WM_RT"
+    STMP="${STMP:-${dprefix}/RT_BASELINE}"
+    PTMP="${PTMP:-${dprefix}/RT_RUNDIRS}"
+
+    SCHEDULER=slurm
+
+    ;;
   orion)
     echo "rt.sh: Setting up orion..."
 
