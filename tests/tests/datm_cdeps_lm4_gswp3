@@ -1,0 +1,120 @@
+#
+#  DATM_CDEPS_LM4_GSWP test
+#
+
+export TEST_DESCR="DATM_CDEPS_LM4_GSWP3 - control "
+
+export CNTL_DIR="datm_cdeps_lm4_gswp3"
+
+export LIST_FILES="\
+       RESTART/cana.res.tile1.nc \
+       RESTART/cana.res.tile2.nc \
+       RESTART/cana.res.tile3.nc \
+       RESTART/cana.res.tile4.nc \
+       RESTART/cana.res.tile5.nc \
+       RESTART/cana.res.tile6.nc \
+       RESTART/glac.res.tile1.nc \
+       RESTART/glac.res.tile2.nc \
+       RESTART/glac.res.tile3.nc \
+       RESTART/glac.res.tile4.nc \
+       RESTART/glac.res.tile5.nc \
+       RESTART/glac.res.tile6.nc \
+       RESTART/lake.res.tile1.nc \
+       RESTART/lake.res.tile2.nc \
+       RESTART/lake.res.tile3.nc \
+       RESTART/lake.res.tile4.nc \
+       RESTART/lake.res.tile5.nc \
+       RESTART/lake.res.tile6.nc \
+       RESTART/land.res.tile1.nc \
+       RESTART/land.res.tile2.nc \
+       RESTART/land.res.tile3.nc \
+       RESTART/land.res.tile4.nc \
+       RESTART/land.res.tile5.nc \
+       RESTART/land.res.tile6.nc \
+       RESTART/landuse.res	  \
+       RESTART/snow.res.tile1.nc \
+       RESTART/snow.res.tile2.nc \
+       RESTART/snow.res.tile3.nc \
+       RESTART/snow.res.tile4.nc \
+       RESTART/snow.res.tile5.nc \
+       RESTART/snow.res.tile6.nc \
+       RESTART/soil.res.tile1.nc \
+       RESTART/soil.res.tile2.nc \
+       RESTART/soil.res.tile3.nc \
+       RESTART/soil.res.tile4.nc \
+       RESTART/soil.res.tile5.nc \
+       RESTART/soil.res.tile6.nc \
+       RESTART/vegn1.res.tile1.nc\
+       RESTART/vegn1.res.tile2.nc\
+       RESTART/vegn1.res.tile3.nc\
+       RESTART/vegn1.res.tile4.nc\
+       RESTART/vegn1.res.tile5.nc\
+       RESTART/vegn1.res.tile6.nc\
+       RESTART/vegn2.res.tile1.nc\
+       RESTART/vegn2.res.tile2.nc\
+       RESTART/vegn2.res.tile3.nc\
+       RESTART/vegn2.res.tile4.nc\
+       RESTART/vegn2.res.tile5.nc\
+       RESTART/vegn2.res.tile6.nc" 
+
+
+export_datm_cdeps
+
+# these are not in export_datm_cdeps, but needed with LM4
+export LNDRES=C96
+#export INPES=$INPES_cpl_dflt
+#export JNPES=$JNPES_cpl_dflt
+export INPES=2
+export JNPES=2
+export THRD=$THRD_cpl_dflt
+export WRTTASK_PER_GROUP=$WPG_cpl_dflt
+export NPX=97
+export NPY=97
+
+
+export SYEAR=2000
+export SMONTH=01
+export SDAY=01
+export SHOUR=00
+export FHMAX=48
+
+export DATM_IN_CONFIGURE=datm_in.IN
+export MESH_ATM=fv1.9x2.5_141008_ESMFmesh.nc
+export atm_datamode=CLMNCEP
+export ATM_NX_GLB=144
+export ATM_NY_GLB=96
+export EXPORT_ALL=.true.
+
+export DATM_STREAM_CONFIGURE=datm.streams.multi.IN
+export MESH_ATM_DATA="INPUT/clmforc.GSWP3.c2011.0.5x0.5.TPQWL.SCRIP.210520_ESMFmesh.nc"
+export MESH_ATM_TOPO="INPUT/topodata_0.9x1.SCRIP.210520_ESMFmesh.nc"
+export SDATE=1999
+export EDATE=2000
+export DATA_ATM01="\"INPUT/clmforc.GSWP3.c2011.0.5x0.5.Solr.1999-12.nc\" \"INPUT/clmforc.GSWP3.c2011.0.5x0.5.Solr.2000-01.nc\""
+export DATA_ATM02="\"INPUT/clmforc.GSWP3.c2011.0.5x0.5.Prec.1999-12.nc\" \"INPUT/clmforc.GSWP3.c2011.0.5x0.5.Prec.2000-01.nc\""
+export DATA_ATM03="\"INPUT/clmforc.GSWP3.c2011.0.5x0.5.TPQWL.1999-12.nc\" \"INPUT/clmforc.GSWP3.c2011.0.5x0.5.TPQWL.2000-01.nc\""
+export DATA_ATM04="\"INPUT/topodata_0.9x1.25_USGS_070110_stream_c151201.nc\""
+
+export UFS_CONFIGURE="ufs.configure.atm_lm4.IN"
+export med_model="cmeps"
+export atm_model="datm"
+export lnd_model="lm4"
+export CPLMODE=ufs.nfrac.aoflux
+export RUNTYPE="startup"
+export READRESTART=.false.
+export ATM_compute_tasks=24
+export OCN_tasks=0
+export ICE_tasks=0
+export LND_tasks=24
+export lnd_ic_type='custom'
+export CALC_SNET=.true.
+export layout_x=2
+export layout_y=2
+export mosaic_file="INPUT/C96_mosaic.nc"
+export coupling_interval_sec=3600
+export TOPOEDITS=""
+#export FV3_RUN="lnd_datm_cdeps_gswp.IN lm4_run.IN"
+export FV3_RUN="lm4_run.IN"
+export DIAG_TABLE="diag_table_datm_lm4"
+export FIELD_TABLE_ADDITIONAL=field_table_lm4
+export INPUT_NML="input_datm_lm4.nml.IN"
