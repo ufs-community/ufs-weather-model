@@ -3,7 +3,7 @@ help([[
   on the NOAA RDHPC machine Gaea C5 using Intel-2023.1.0.
 ]])
 
-whatis([===[Loads libraries needed for building the UFS Weather Model on Gaea ]===])
+whatis([===[Loads libraries needed for building the UFS Weather Model on Gaea C5]===])
 
 prepend_path("MODULEPATH", "/ncrc/proj/epic/spack-stack/spack-stack-1.6.0/envs/fms-2024.01/install/modulefiles/Core")
 
