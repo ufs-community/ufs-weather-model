@@ -22,11 +22,11 @@ local ufs_modules = {
   {["jasper"]      = "2.0.25"},
   {["zlib"]        = "1.2.11"},
   {["libpng"]      = "1.6.37"},
-  {["hdf5-C"]      = "1.14.0"},
-  {["netcdf-C"]    = "4.9.2"},
-  {["pio-C"]       = "2.5.10"},
-  {["esmf-C"]      = "8.6.0"},
-  {["fms"]         = "2024.01"},
+--  {["hdf5-C"]      = "1.14.0"},
+--  {["netcdf-C"]    = "4.9.2"},
+--  {["pio-C"]       = "2.5.10"},
+--  {["esmf-C"]      = "8.6.0"},
+  {["fms"]       = "2024.01"},
   {["bacio"]       = "2.4.1"},
   {["crtm"]        = "2.4.0"},
   {["g2"]          = "3.5.1"},
@@ -35,8 +35,8 @@ local ufs_modules = {
   {["sp"]          = "2.3.3"},
   {["w3emc"]       = "2.12.0"},
   {["gftl-shared"] = "1.6.1"},
-  {["mapl-C"]      = "2.40.3"},
-  {["pnetcdf-C"]   = "1.12.2"},
+--  {["mapl-C"]      = "2.40.3"},
+--  {["pnetcdf-C"]   = "1.12.2"},
   {["scotch"]      = "7.0.4"},
 }
 
@@ -46,6 +46,20 @@ for i = 1, #ufs_modules do
     load(pathJoin(name, os.getenv(env_version_name) or default_version))
   end
 end
+--append_path("MODULEPATH", "/lfs/h2/emc/eib/save/hang.lei/forgdit/nco_wcoss2/install/modulefiles/mpi/intel/19.1.3.304/cray-mpich/8.1.9")
+--append_path("MODULEPATH", "/lfs/h2/emc/eib/noscrub/hang.lei/c-libs/modulefiles")
+append_path("MODULEPATH", "/lfs/h2/emc/eib/save/hang.lei/forgdit/nco_wcoss2/install2/modulefiles/compiler/intel/19.1.3.304")
+append_path("MODULEPATH", "/lfs/h2/emc/eib/save/hang.lei/forgdit/nco_wcoss2/install2/modulefiles/mpi/intel/19.1.3.304/cray-mpich/8.1.12")
+load("zstd/1.5.0")
+load("hdf5/1.14.0")
+load("pnetcdf/1.12.2")
+load("netcdf/4.9.2")
+load("pio/2.5.10")
+load("esmf/8.6.0")
+load("mapl/2.40.3-esmf-8.6.0")
+
+--append_path("MODULEPATH","/apps/ops/para/libs/modulefiles/mpi/intel/19.1.3.304/cray-mpich/8.1.9/")
+--load("fms/2024.01")
 
 setenv("CC", "cc")
 setenv("CXX", "CC")
