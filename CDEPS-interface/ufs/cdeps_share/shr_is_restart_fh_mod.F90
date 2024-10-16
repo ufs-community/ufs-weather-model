@@ -14,11 +14,11 @@ module shr_is_restart_fh_mod
   private
   save
 
-  public :: init_is_restart_fh, is_restart_fh, finalize_restart_fh
-  
   logical :: write_restartfh = .false.
   type(ESMF_Time), allocatable :: restartFhTimes(:)
 !$OMP THREADPRIVATE (write_restartfh, restartFhTimes)
+
+  public :: init_is_restart_fh, is_restart_fh, finalize_restart_fh, write_restartfh
 
 contains
 
