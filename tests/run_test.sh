@@ -240,7 +240,7 @@ fi
 if [[ "Q${FIELD_TABLE:-}" != Q ]]; then
   cp "${PATHRT}/parm/field_table/${FIELD_TABLE}" field_table
 fi
-
+    
 # fix files
 if [[ ${FV3} == true ]]; then
   cp "${INPUTDATA_ROOT}"/FV3_fix/*.txt .
@@ -300,6 +300,11 @@ if [[ "${DIAG_TABLE_ADDITIONAL:-}Q" != Q ]]; then
   # Append diagnostic outputs, to support tests that vary from others
   # only by adding diagnostics.
   atparse < "${PATHRT}/parm/diag_table/${DIAG_TABLE_ADDITIONAL:-}" >> diag_table
+fi
+
+if [[ "${FIELD_TABLE_ADDITIONAL:-}Q" != Q ]] ; then
+    # Append field table
+    atparse < "${PATHRT}/parm/field_table/${FIELD_TABLE_ADDITIONAL:-}" >> field_table
 fi
 
 # ATMAERO
