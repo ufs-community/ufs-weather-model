@@ -66,11 +66,13 @@ export LIST_FILES="sfcf021.tile1.nc \
                    RESTART/20210323.060000.MOM.res.nc \
                    RESTART/iced.2021-03-23-21600.nc \
                    RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc \
+                   history/iceh.2021-03-23-21600.nc \
                    20210323.060000.out_pnt.ww3 \
                    20210323.060000.out_grd.ww3 "
 
 export_fv3
 export_cpl
+export_ugwpv1
 
 export CPLCHM=.false.
 export DNATS=0
@@ -78,6 +80,9 @@ export DNATS=0
 export RESTART_N=3
 export RESTART_INTERVAL="${RESTART_N} -1"
 export OUTPUT_FH='0 21 24'
+#CICE forecast day output stream
+hist_n_24h=$(( 24*3600/${DT_CICE} ))
+export CICE_HISTFREQ_N="0, 0, 6, ${hist_n_24h}, 1"
 
 export INPES=$INPES_cpl_unstr
 export JNPES=$JNPES_cpl_unstr
@@ -89,22 +94,6 @@ WAV_tasks=$WAV_tasks_cpl_unstr
 
 export atm_omp_num_threads=$THRD_cpl_unstr
 export med_omp_num_threads=$atm_omp_num_threads
-
-# UGWP1
-export GWD_OPT=2
-export CDMBWD=20.0,2.5,1.0,1.0
-export DO_UGWP_V1=.true.
-export KNOB_UGWP_VERSION=1
-export KNOB_UGWP_NSLOPE=1
-export DO_UGWP_V0=.false.
-export DO_GSL_DRAG_LS_BL=.true.
-export DO_GSL_DRAG_SS=.true.
-export DO_GSL_DRAG_TOFD=.true.
-export DO_UGWP_V1_OROG_ONLY=.false.
-export DO_UGWP_V0_NST_ONLY=.false.
-export LDIAG_UGWP=.false.
-export KNOB_UGWP_DOKDIS=2
-export KNOB_UGWP_NDX4LH=4
 
 export MOM6_TOPOEDITS=ufs.topo_edits_011818.nc
 export MOM6_ALLOW_LANDMASK_CHANGES=True
@@ -129,10 +118,9 @@ if [[ $MACHINE_ID = hera ]] && [[ $RT_COMPILER = gnu ]]; then
   WLCLK=40
 fi
 
+export K_SPLIT=2
+export N_SPLIT=5
+
 # HR4 GFSv17 GWD update
-export DO_UGWP_V0=.false.
-export DO_UGWP_V1=.true.
-export DO_GSL_DRAG_LS_BL=.true.
 export DO_GWD_OPT_PSL=.true.
 export DO_GSL_DRAG_SS=.false.
-export DO_GSL_DRAG_TOFD=.true.

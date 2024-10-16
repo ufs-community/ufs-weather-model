@@ -86,6 +86,8 @@ The UFS :term:`WM` repository supports the :term:`UFS` short- and medium-range w
     - https://github.com/NOAA-EMC/AQM
   * - Noah-MP Land Surface Model (Noah-MP)
     - https://github.com/NOAA-EMC/noahmp
+  * - NOAA-GFDL Land Model (:term:`LM4`)
+    -  
 
 In the table, the left-hand column contains a description of each repository, and the 
 right-hand column shows the GitHub location of the authoritative component repositories. 
@@ -143,6 +145,9 @@ The umbrella repository for the UFS WM is named ``ufs-weather-model``. Under thi
     │    └── HYCOM                               -------- HYCOM ocean model
     │        └── (NUOPC)                         -------- NUOPC HYCOM cap
     ├── LICENSE.md
+    ├── LM4-driver 
+    │   ├── (LM4)                                -------- NUOPC NOAA-GFDL Land Model version 4
+    │   └── (nuopc_cap)                          -------- NUOPC LM4 cap
     ├── modulefiles                              -------- system module files for supported HPC systems
     ├── MOM6-interface
     │    └── MOM6
