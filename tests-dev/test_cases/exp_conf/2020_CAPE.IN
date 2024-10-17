@@ -111,7 +111,10 @@ if [ $TILEDFIX = .true. ]; then
     if [ $CPLLND == .true. ]; then
         cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/@[ATMRES]*.nc INPUT/.
     else
-        cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/@[ATMRES]*.nc .
+        #cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/@[ATMRES]*.nc .
+        if [ ${MACHINE_ID} = hera ]; then
+          cp -r /scratch1/NCEPDEV/global/glopara/fix/orog/20230615/C768/sfc/*.nc .
+        fi
     fi
     cp    @[INPUTDATA_ROOT]/FV3_fix/global_glacier.2x2.grb .
     cp    @[INPUTDATA_ROOT]/FV3_fix/global_maxice.2x2.grb .
