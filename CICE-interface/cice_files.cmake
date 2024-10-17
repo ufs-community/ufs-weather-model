@@ -151,7 +151,7 @@ list(APPEND cice_nuopc_cmeps_driver_files
   CICE/cicecore/drivers/nuopc/cmeps/ice_mesh_mod.F90
 )
 
-list(APPEND cice_cdeps_inline_files
+list(APPEND cice_cdeps_share_files
   #-- Using ice prescribed ifndef cesmcoupled
   ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_orb_mod.F90
   ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_const_mod.F90
