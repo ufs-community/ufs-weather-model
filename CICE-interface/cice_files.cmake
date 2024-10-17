@@ -151,8 +151,8 @@ list(APPEND cice_nuopc_cmeps_driver_files
   CICE/cicecore/drivers/nuopc/cmeps/ice_mesh_mod.F90
 )
 
-#-- Using ice prescribed ifndef cesmcoupled
-list(APPEND cice_cdeps_inline_files
+list(APPEND cice_cdeps_share_files
+  #-- Using ice prescribed ifndef cesmcoupled
   ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_orb_mod.F90
   ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_const_mod.F90
   ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_abort_mod.F90
@@ -168,4 +168,7 @@ list(APPEND cice_cdeps_inline_files
   ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/streams/dshr_stream_mod.F90
   ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/streams/dshr_methods_mod.F90
   ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/dshr/dshr_mod.F90
+
+  #restart_fh
+  ${PROJECT_SOURCE_DIR}/CDEPS-interface/ufs/cdeps_share/shr_is_restart_fh_mod.F90
 )
