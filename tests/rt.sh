@@ -752,7 +752,7 @@ case ${MACHINE_ID} in
     export LD_PRELOAD=/usr/lib64/libstdc++.so.6
     module use /ncrc/proj/epic/spack-stack/c6/spack-stack-1.6.0/envs/fms-2024.01/install/modulefiles/Core
     module load PrgEnv-intel/8.5.0
-    module load stack-intel/2023.2.0
+    module load intel-classic/2023.2.0
     module load cray-mpich/8.1.29
     module load python/3.10.13
     module use /ncrc/proj/epic/spack-stack/modulefiles
