@@ -709,8 +709,8 @@ case ${MACHINE_ID} in
     PTMP="/lfs/h2/emc/ptmp"
     SCHEDULER="pbs"
     ;;
-  gaea-c5)
-    echo "rt.sh: Setting up gaea-c5..."
+  gaeac5)
+    echo "rt.sh: Setting up gaea c5..."
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module use /ncrc/proj/epic/rocoto/modulefiles
       module load rocoto
@@ -741,8 +741,8 @@ case ${MACHINE_ID} in
 
     SCHEDULER="slurm"
     ;;
-  gaea-c6)
-    echo "rt.sh: Setting up gaea-c6..."
+  gaeac6)
+    echo "rt.sh: Setting up gaea c6..."
     if [[ "${ROCOTO:-false}" == true ]] ; then
      # module use /ncrc/proj/epic/rocoto/modulefiles
       module load rocoto
@@ -751,12 +751,12 @@ case ${MACHINE_ID} in
 
     export LD_PRELOAD=/usr/lib64/libstdc++.so.6
     module use /ncrc/proj/epic/spack-stack/c6/spack-stack-1.6.0/envs/fms-2024.01/install/modulefiles/Core
-    #module load PrgEnv-intel/8.5.0
+    module load PrgEnv-intel/8.5.0
     module load stack-intel/2023.2.0
-    #module load cray-mpich/8.1.29
+    module load cray-mpich/8.1.29
     module load python/3.10.13
     module use /ncrc/proj/epic/spack-stack/modulefiles
-    #module load gcc-native/12.3
+    module load gcc-native/12.3
     if [[ "${ECFLOW:-false}" == true ]] ; then
       #module load ecflow/5.8.4
       module load ecflow

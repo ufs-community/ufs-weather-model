@@ -61,10 +61,10 @@ case ${MACHINE_ID} in
     ;;
   *)
     # Activate lua environment for gaea c5
-    if [[ ${MACHINE_ID} == gaea-c5 ]]; then
+    if [[ ${MACHINE_ID} == gaeac5 ]]; then
       module reset
     fi
-    if [[ ${MACHINE_ID} == gaea-c6 ]]; then
+    if [[ ${MACHINE_ID} == gaeac6 ]]; then
       module reset
     fi
     # Load fv3 module

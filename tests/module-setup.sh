@@ -65,7 +65,7 @@ elif [[ ${MACHINE_ID} = frontera ]] ; then
     fi
     module purge
 
-elif [[ ${MACHINE_ID} = gaea-c5 ]] ; then
+elif [[ ${MACHINE_ID} = gaeac5 ]] ; then
     # We are on GAEA
     if ( ! eval module help > /dev/null 2>&1 ) ; then
         # We cannot simply load the module command.  The GAEA
@@ -76,7 +76,7 @@ elif [[ ${MACHINE_ID} = gaea-c5 ]] ; then
         source /etc/profile
     fi
     module reset
-elif [[ ${MACHINE_ID} = gaea-c6 ]]; then
+elif [[ ${MACHINE_ID} = gaeac6 ]]; then
     if ( ! eval module help > /dev/null 2>&1 ) ; then
         source /opt/cray/pe/lmod/lmod/init/bash
     fi
