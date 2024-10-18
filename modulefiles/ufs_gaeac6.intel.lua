@@ -10,7 +10,7 @@ prepend_path("MODULEPATH", "/ncrc/proj/epic/spack-stack/c6/spack-stack-1.6.0/env
 stack_intel_ver=os.getenv("stack_intel_ver") or "2023.2.0"
 load(pathJoin("stack-intel", stack_intel_ver))
 
-stack_cray_mpich_ver=os.getenv("stack_cray_mpich_ver") or "8.1.28"
+stack_cray_mpich_ver=os.getenv("stack_cray_mpich_ver") or "8.1.29"
 load(pathJoin("stack-cray-mpich", stack_cray_mpich_ver))
 
 stack_python_ver=os.getenv("stack_python_ver") or "3.10.13"
