@@ -6,7 +6,7 @@ from datetime import datetime
 from ufs_test_utils import get_testcase, write_logfile, delete_files, machine_check_off
 
 def finish_log():
-    """Collect regression test results and generate log file.
+    """Collects regression test results and generates log file.
     """
     UFS_TEST_YAML = str(os.getenv('UFS_TEST_YAML'))
     PATHRT     = os.getenv('PATHRT')
