@@ -737,7 +737,7 @@ case ${MACHINE_ID} in
     PARTITION=c5
     dprefix=${dprefix:-/gpfs/f5/${ACCNR}/scratch/${USER}}
     STMP=${STMP:-${dprefix}/RT_BASELINE}
-    PTMP=${PTMP:-${dprefix}/RT_RUNDIRS}
+    PTMP=${PTMP:-${dprefix}/RT_RUNDIRS} 
 
     SCHEDULER="slurm"
     ;;
@@ -788,6 +788,7 @@ case ${MACHINE_ID} in
     PTMP="${dprefix}/stmp"
 
     SCHEDULER="slurm"
+
     cp fv3_conf/fv3_slurm.IN_orion fv3_conf/fv3_slurm.IN
     cp fv3_conf/compile_slurm.IN_orion fv3_conf/compile_slurm.IN
     ;;
@@ -1020,6 +1021,7 @@ fi
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-${DISKNM}/NEMSfv3gfs/input-data-20240501}
 #INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20240214
 INPUTDATA_ROOT_WW3=/scratch1/NCEPDEV/nems/Nick.Szapiro/tasks/input_data/gefs.v13/stage/WW3_input_data
+INPUTDATA_LM4=${INPUTDATA_LM4:-${INPUTDATA_ROOT}/LM4_input_data}
 
 shift $((OPTIND-1))
 if [[ $# -gt 1 ]]; then
@@ -1284,6 +1286,7 @@ export RT_COMPILER=${RT_COMPILER}
 export RTPWD=${RTPWD}
 export INPUTDATA_ROOT=${INPUTDATA_ROOT}
 export INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT_WW3}
+export INPUTDATA_LM4=${INPUTDATA_LM4}
 export PATHRT=${PATHRT}
 export PATHTR=${PATHTR}
 export NEW_BASELINE=${NEW_BASELINE}

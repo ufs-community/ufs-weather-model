@@ -1073,7 +1073,7 @@ export_cice6() {
   export CICE_DUMPFREQ_N=1000
   CICE_DIAGFREQ=$(( (FHMAX*3600)/DT_CICE ))
   export CICE_DIAGFREQ
-  export CICE_HISTFREQ_N="0, 0, 6, 1, 1"
+  export CICE_HISTFREQ_N="0, 0, 6, 0, 0"
   export CICE_HIST_AVG=.true.
   export CICE_HISTORY_DIR=./history/
   export CICE_INCOND_DIR=./history/
@@ -1300,6 +1300,7 @@ export INPUT_NML=global_control.nml.IN
 export FIELD_TABLE=field_table_thompson_noaero_tke_GOCART
 export DIAG_TABLE=diag_table_cpld.IN
 export DIAG_TABLE_ADDITIONAL=''
+export FIELD_TABLE_ADDITIONAL=''
 export FV3_RUN=cpld_control_run.IN
 export TILEDFIX=.false.
 
