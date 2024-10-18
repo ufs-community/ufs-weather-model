@@ -118,13 +118,16 @@ case ${MACHINE_ID} in
     ;;
   gaeac5)
     module use /ncrc/proj/epic/spack-stack/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core
-    module load stack-intel/2023.1.0 stack-cray-mpich/8.1.25
+    module load stack-intel/2023.2.0 stack-cray-mpich/8.1.28
     module load nccmp/1.9.0.1
     ;;
   gaeac6)
-    module use modulefiles
-    module load modules.fv3
-    module load gcc-native/12.3
+    module use /ncrc/proj/epic/spack-stack/c6/spack-stack-1.6.0/envs/fms-2024.01/install/modulefiles/Core
+    module load stack-intel/2023.2.0 stack-cray-mpich/8.1.29
+    module load nccmp/1.9.0.1
+    #module use modulefiles
+    #module load modules.fv3
+    #module load gcc-native/12.3
     ;;
   derecho)
     module load nccmp

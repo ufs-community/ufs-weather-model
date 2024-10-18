@@ -717,10 +717,10 @@ case ${MACHINE_ID} in
       ROCOTO_SCHEDULER="slurm"
     fi
 
-    export LD_PRELOAD=/opt/cray/pe/gcc/12.2.0/snos/lib64/libstdc++.so.6
-    module load PrgEnv-intel/8.3.3
-    module load intel-classic/2023.1.0
-    module load cray-mpich/8.1.25
+    export LD_PRELOAD=/usr/lib64/libstdc++.so.6
+    module load PrgEnv-intel/8.5.0
+    module load intel-classic/2023.2.0
+    module load cray-mpich/8.1.28
     module load python/3.9.12
     module use /ncrc/proj/epic/spack-stack/modulefiles
     module load gcc/12.2.0
@@ -758,8 +758,7 @@ case ${MACHINE_ID} in
     module use /ncrc/proj/epic/spack-stack/modulefiles
     module load gcc-native/12.3
     if [[ "${ECFLOW:-false}" == true ]] ; then
-      #module load ecflow/5.8.4
-      module load ecflow
+      module load ecflow/5.8.4
       ECF_HOST=$(hostname)
       ECF_PORT=$(( $(id -u) + 1500 ))
       export ECF_PORT ECF_HOST
