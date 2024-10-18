@@ -339,6 +339,22 @@ if [[ ${FIRE_BEHAVIOR} = 'true' ]]; then
   atparse < "${PATHRT}/parm/${FIRE_NML:-namelist.fire.IN}" > namelist.fire
 fi
 
+#Namelists generated and variable definitions are finalized
+#Sanity check for timesteps on ATM/OCN/ICE
+if [[ -n "${DT_CICE+x}" ]]; then
+  if [[ ${DT_ATMOS} -ne ${DT_CICE} ]]; then
+    echo "Atmosphere timestep (DT_ATMOS) should be equal to CICE timestep (DT_CICE). Exiting"
+    exit 1
+  fi
+fi
+if [[ -n "${coupling_interval_slow_sec+x}" && -n "${coupling_interval_fast_sec+x}" ]]; then
+  if [[ $(( coupling_interval_slow_sec % coupling_interval_fast_sec)) -ne 0 ]]; then
+    echo "The slow coupling timestep (coupling_interval_slow_sec) should be divisible by"
+    echo "the fast coupling timestep (coupling_interval_fast_sec). Exiting"
+    exit 1
+  fi
+fi
+
 TPN=$(( TPN / THRD ))
 if (( TASKS < TPN )); then
   TPN=${TASKS}

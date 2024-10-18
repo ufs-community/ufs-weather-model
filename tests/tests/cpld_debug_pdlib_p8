@@ -56,9 +56,10 @@ export LIST_FILES="sfcf003.tile1.nc \
                    20210322.090000.out_pnt.ww3 \
                    20210322.090000.out_grd.ww3 "
 
+export DT_ATMOS=720
 export_fv3
-export_cpl
 export_ugwpv1
+export_cpl
 export CCPP_SUITE=FV3_GFS_v17_coupled_p8_ugwpv1
 
 export FHMAX=3
@@ -111,6 +112,8 @@ if [[ $MACHINE_ID = gaea ]] && [[ $RT_COMPILER = intelllvm ]]; then
   WLCLK=50
 fi
 
+# set component and coupling timesteps due to long
+# runtime
 export K_SPLIT=2
 export N_SPLIT=5
 
