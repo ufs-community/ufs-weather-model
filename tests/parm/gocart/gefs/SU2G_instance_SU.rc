@@ -1,0 +1,53 @@
+#
+# Resource file for Sulfer parameters.
+#
+
+aerosol_radBands_optics_file: ExtData/optics/opticsBands_SU.v1_3.RRTMG.nc
+aerosol_monochromatic_optics_file: ExtData/monochromatic/optics_SU.v1_3.nc
+
+nbins: 4
+
+# Volcanic pointwise sources
+volcano_srcfilen: ExtData/nexus/VOLCANO/v2021-09/%y4/%m2/so2_volcanic_emissions_Carns.%y4%m2%d2.rc
+
+# Heights [m] of LTO, CDS and CRS aviation emissions layers
+aviation_vertical_layers: 0.0 100.0 9.0e3 10.0e3
+
+# Fraction of anthropogenic emissions that are SO4
+so4_anthropogenic_fraction: 0.03
+
+# Aircraft emission factor: go from kg fuel to kg SO2
+aircraft_fuel_emission_factor: 0.0008
+
+# Scavenging efficiency per bin [km-1] (NOT USED UNLESS RAS IS CALLED)
+fscav: 0.0  0.0  0.4  0.4
+
+# Dry particle radius [um], used for settling
+particle_radius_microns: 0.0 0.0 0.35 0.0
+
+# Type of settling to use (see Chem_SettlingMod)
+rhFlag: 4
+
+# Dry particle density [kg m-3]
+particle_density: -1  -1  1700  -1
+
+pressure_lid_in_hPa: 0.01
+
+# Molecular weight of species [kg mole-1]
+molecular_weight: -1  -1  0.132  -1
+
+# Number of particles per kg mass
+fnum: -1  -1  9.01e16  -1
+
+# Number median radius [um]
+particle_radius_number: -1  -1  0.0695  -1
+
+# Sigma of lognormal number distribution
+sigma: -1  -1  2.03  -1
+
+# OH H2O2 NO3 from GMI Combined Stratosphere Troposphere (Lower case yes to enable)
+# -------------------------------------------------------------------------------------
+export_H2O2: no
+using_GMI_OH: .false.
+using_GMI_NO3: .false.
+using_GMI_H2O2: .false.

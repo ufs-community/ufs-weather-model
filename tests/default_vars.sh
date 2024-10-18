@@ -569,6 +569,7 @@ export MODEL_INITIALIZATION=false
 export WARM_START=.false.
 export READ_INCREMENT=.false.
 export RES_LATLON_DYNAMICS="''"
+export ATM_IGNORE_RST_CKSUM=.false.
 export INCREMENT_FILE_ON_NATIVE_GRID=.false.
 export NGGPS_IC=.true.
 export EXTERNAL_IC=.true.
@@ -583,7 +584,10 @@ export D_CON=1.
 export HORD_XX=5
 export HORD_DP=-5
 export HORD_TR=8
-
+export NUDGE_QV=.true.
+export PERT_CLDS=.false.
+export PERT_MP=.true.
+export PERT_RADTEND=.true.
 # Radiation
 export DO_RRTMGP=.false.
 export DOGP_CLDOPTICS_LUT=.true.
@@ -1107,6 +1111,7 @@ export_mom6() {
   export DT_THERM_MOM6=3600
   export MOM6_INPUT=MOM_input_100.IN
   export MOM6_OUTPUT_DIR=./MOM6_OUTPUT
+  export MOM6_OUTPUT_FH=6
   export MOM6_RESTART_DIR=./RESTART/
   export MOM6_RESTART_SETTING=n
   export MOM6_RIVER_RUNOFF=False

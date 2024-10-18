@@ -1,0 +1,48 @@
+#
+# Resource file Dust parameters. 
+#
+
+aerosol_radBands_optics_file: ExtData/optics/opticsBands_DU.v15_3.RRTMG.nc
+aerosol_monochromatic_optics_file: ExtData/monochromatic/optics_DU.v15_3.nc
+
+particle_radius_microns: 0.73 1.4 2.4 4.5 8.0
+
+radius_lower: 0.1 1.0 1.8 3.0 6.0
+
+radius_upper: 1.0 1.8 3.0 6.0 10.0
+
+source_fraction: 1.0 1.0 1.0 1.0 1.0
+
+# units [kg/m-3]
+particle_density: 2500. 2650. 2650. 2650. 2650.
+
+# Resolution dependent tuning constant for emissions (a,b,c,d,e,f) (Ginoux, K14)
+Ch_DU: 0.2 0.2 0.07 0.07 0.07 0.056
+
+# Scavenging efficiency per bin [km-1]
+fscav: 0.2  0.2  0.2  0.2  0.2   #
+
+# Molecular weight of species [kg mole-1]
+molecular_weight: 0.1  0.1  0.1  0.1  0.1
+
+# Number of particles per kg mass
+fnum: 2.45e14  3.28e13  6.52e12  9.89e11 1.76e11
+
+rhFlag: 0
+
+# Maring settling velocity correction
+maringFlag: .true. 
+
+nbins: 5
+
+pressure_lid_in_hPa: 0.01
+
+# Emissions methods
+emission_scheme: fengsha       # choose among: fengsha, ginoux, k14
+
+# FENGSHA settings
+alpha: 0.1
+gamma: 1.0
+soil_moisture_factor: 1
+soil_drylimit_factor: 1
+vertical_to_horizontal_flux_ratio_limit: 2.e-04
