@@ -63,7 +63,7 @@ list(APPEND lib_src_files
   ${icepack_files}
   ${cice_mpi_comm_files}
   ${cice_nuopc_cmeps_driver_files}
-  ${cice_cdeps_inline_files})
+  ${cice_cdeps_share_files})
 
 list(APPEND _cice_defs FORTRANUNDERSCORE
                        coupled)
