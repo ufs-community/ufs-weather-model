@@ -312,7 +312,10 @@ rocoto_create_compile_task() {
   if [[ ${MACHINE_ID} == s4 ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
-  if [[ ${MACHINE_ID} == gaea ]]; then
+  if [[ ${MACHINE_ID} == gaeac5 ]]; then
+    BUILD_WALLTIME="01:00:00"
+  fi
+  if [[ ${MACHINE_ID} == gaeac6 ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
 
@@ -325,7 +328,7 @@ rocoto_create_compile_task() {
     <queue>${COMPILE_QUEUE}</queue>
 EOF
 
-  if [[ "${MACHINE_ID}" == gaea ]] ; then
+  if [[ "${MACHINE_ID}" == gaeac5 || "${MACHINE_ID}" == gaeac6 ]] ; then
     cat << EOF >> "${ROCOTO_XML}"
     <native>--clusters=es</native>
     <partition>eslogin_c5</partition>
@@ -369,7 +372,7 @@ rocoto_create_run_task() {
       ${ROCOTO_NODESIZE:+<nodesize>${ROCOTO_NODESIZE}</nodesize>}
 EOF
 
-  if [[ "${MACHINE_ID}" == gaea ]] ; then
+  if [[ "${MACHINE_ID}" == gaeac5 || "${MACHINE_ID}" ==  gaeac6 ]] ; then
     cat << EOF >> "${ROCOTO_XML}"
       <native>--clusters=${PARTITION}</native>
       <native>--partition=batch</native>
