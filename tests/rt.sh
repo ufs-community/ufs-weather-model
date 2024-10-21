@@ -717,13 +717,12 @@ case ${MACHINE_ID} in
       ROCOTO_SCHEDULER="slurm"
     fi
 
-    export LD_PRELOAD=/opt/cray/pe/gcc/12.2.0/snos/lib64/libstdc++.so.6
-    module load PrgEnv-intel/8.3.3
-    module load intel-classic/2023.1.0
-    module load cray-mpich/8.1.25
+    export LD_PRELOAD=/usr/lib64/libstdc++.so.6
+    module load PrgEnv-intel/8.5.0
+    module load intel-classic/2023.2.0
+    module load cray-mpich/8.1.28
     module load python/3.9.12
     module use /ncrc/proj/epic/spack-stack/modulefiles
-    module load gcc/12.2.0
     if [[ "${ECFLOW:-false}" == true ]] ; then
       module load ecflow/5.8.4
       ECF_HOST=$(hostname)
@@ -737,7 +736,7 @@ case ${MACHINE_ID} in
     PARTITION=c5
     dprefix=${dprefix:-/gpfs/f5/${ACCNR}/scratch/${USER}}
     STMP=${STMP:-${dprefix}/RT_BASELINE}
-    PTMP=${PTMP:-${dprefix}/RT_RUNDIRS}
+    PTMP=${PTMP:-${dprefix}/RT_RUNDIRS} 
 
     SCHEDULER="slurm"
     ;;
@@ -788,6 +787,7 @@ case ${MACHINE_ID} in
     PTMP="${dprefix}/stmp"
 
     SCHEDULER="slurm"
+
     cp fv3_conf/fv3_slurm.IN_orion fv3_conf/fv3_slurm.IN
     cp fv3_conf/compile_slurm.IN_orion fv3_conf/compile_slurm.IN
     ;;
@@ -1020,6 +1020,7 @@ fi
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-${DISKNM}/NEMSfv3gfs/input-data-20240501}
 INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20240214
 INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC:-${DISKNM}/NEMSfv3gfs/BM_IC-20220207}
+INPUTDATA_LM4=${INPUTDATA_LM4:-${INPUTDATA_ROOT}/LM4_input_data}
 
 shift $((OPTIND-1))
 if [[ $# -gt 1 ]]; then
@@ -1286,6 +1287,7 @@ export RTPWD=${RTPWD}
 export INPUTDATA_ROOT=${INPUTDATA_ROOT}
 export INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT_WW3}
 export INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC}
+export INPUTDATA_LM4=${INPUTDATA_LM4}
 export PATHRT=${PATHRT}
 export PATHTR=${PATHTR}
 export NEW_BASELINE=${NEW_BASELINE}
