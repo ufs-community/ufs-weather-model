@@ -1025,13 +1025,13 @@ export_ugwpv1() {
       exit 1
       ;;
   esac
-  
+
   if [[ ${DO_GSL_DRAG_SS} = .true. ]]; then export CDMBGWD=${CDMBGWD_GSL}; fi
   if [[ ${SEDI_SEMI} = .true. ]]; then export DT_ATMOS=$((DT_ATMOS/2)); fi
   export DT_INNER=${DT_ATMOS}
 
 }
-  
+
 
 # Defaults for the CICE6 model namelist, mx100
 export_cice6() {
@@ -1168,7 +1168,7 @@ export_ww3() {
   export WW3_PIO_FORMAT='pnetcdf'
   export WW3_PIO_STRIDE=4
   export WW3_PIO_IOTASKS=-99
-  export WW3_PIO_REARR='box'
+  export WW3_PIO_REARR='subset'
   export WW3_PIO_ROOT=-99
 }
 
@@ -1614,7 +1614,7 @@ export_hafs_regional ()
   export WW3_PIO_FORMAT='pnetcdf'
   export WW3_PIO_STRIDE=4
   export WW3_PIO_IOTASKS=-99
-  export WW3_PIO_REARR='box'
+  export WW3_PIO_REARR='subset'
   export WW3_PIO_ROOT=-99
 
   # Set CMEPS component defaults
