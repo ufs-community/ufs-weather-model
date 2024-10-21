@@ -1,16 +1,13 @@
 #
 #  restart gefs test
 #
+
+source ${PATHRT}/tests/cpld_control_gefs
+
 export TEST_DESCR="Fully coupled FV3-CCPP-GOCART-MOM6-CICE-CMEPS-WW3 system - C384L127 MX025 - restart test"
 
-export CNTL_DIR=cpld_control_gefs
-
-source ${PATHRT}/tests/${CNTL_DIR}
-
-#export FHROT_REST=6 #After any IAU
-export FHROT_REST=9
+export FHROT_REST=9 #restart after any IAU
 export FHROT=$((FHROT+FHROT_REST))
-#export FHMAX=$((FHMAX-FHROT_REST))
 export RESTART_N=$((FHMAX-FHROT))
 export RESTART_INTERVAL="${RESTART_N} -1"
 export RESTART_FILE_SUFFIX_SECS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%05d" $(( (${FHROT}+ ${SHOUR})*3600 )))"
