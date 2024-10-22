@@ -108,6 +108,9 @@ export FV3_RUN=cpld_control_run.IN
 if [[ $MACHINE_ID = hera ]] && [[ $RT_COMPILER = gnu ]]; then
   WLCLK=40
 fi
+if [[ $MACHINE_ID = hercules && $RT_COMPILER = gnu ]]; then
+ export WW3_PIO_REARR='box'
+fi
 
 export DT_INNER=720
 export DT_ATMOS=720
