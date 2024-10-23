@@ -14,13 +14,15 @@
 #
 import os
 import sys
+import sphinx
+from sphinx.util import logging
 sys.path.insert(0, os.path.abspath('.'))
-
+sys.path.insert(0, os.path.abspath('../../../tests-dev'))
 
 # -- Project information -----------------------------------------------------
 
 project = 'UFS Weather Model Users Guide'
-copyright = '2020'
+copyright = '2024'
 author = ' '
 
 # The short X.Y version
@@ -121,6 +123,7 @@ html_context = {}
 def setup(app):
     app.add_css_file('custom.css')  # may also be an URL
     app.add_css_file('theme_overrides.css')  # may also be an URL
+    app.connect('autodoc-process-docstring', warn_undocumented_members) # Created warnings for undocumented portions of Python scripts
 
 # Custom sidebar templates, must be a dictionary that maps document names
 # to template names.
@@ -211,6 +214,34 @@ epub_exclude_files = ['search.html']
 
 
 # -- Extension configuration -------------------------------------------------
+
+# -- Options for autodoc extension ---------------------------------------
+
+autodoc_mock_imports = [
+   ]
+
+logger = logging.getLogger(__name__)
+
+# Ensure that warnings pop up when functions, attributes, or methods are undocumented
+members_to_watch = ['function', 'attribute', 'method']
+def warn_undocumented_members(app, what, name, obj, options, lines):
+    if(what in members_to_watch and len(lines)==0):
+        message = what + " is undocumented: " + name + "(%d)"% len(lines)
+        logger.warning(message)
+
+autodoc_default_options = {
+    "members": True,
+    "undoc-members": True,
+    "show-inheritance": True,
+}
+
+add_module_names = False
+
+# -- Options for napoleon extension ---------------------------------------
+
+napoleon_numpy_docstring = False
+napoleon_google_docstring = True
+napoleon_custom_sections = [('Returns', 'params_style')] # Allows return of multiple values
 
 # -- Options for intersphinx extension ---------------------------------------
 
