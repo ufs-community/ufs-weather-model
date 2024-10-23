@@ -1,0 +1,59 @@
+#
+#  debug gefs test
+#
+
+source ${PATHRT}/tests/cpld_control_gefs
+
+export TEST_DESCR="Fully coupled FV3-CCPP-GOCART-MOM6-CICE-CMEPS-WW3 system - C384L127 MX025 - debug test"
+
+export CNTL_DIR=cpld_debug_gefs
+
+export LIST_FILES="sfcf003.nc \
+                   atmf003.nc \
+                   GFSPRS.GrbF03 \
+                   gocart.inst_aod.20210325_0900z.nc4 \
+                   RESTART/20210325.090000.coupler.res \
+                   RESTART/20210325.090000.fv_core.res.nc \
+                   RESTART/20210325.090000.fv_core.res.tile1.nc \
+                   RESTART/20210325.090000.fv_core.res.tile2.nc \
+                   RESTART/20210325.090000.fv_core.res.tile3.nc \
+                   RESTART/20210325.090000.fv_core.res.tile4.nc \
+                   RESTART/20210325.090000.fv_core.res.tile5.nc \
+                   RESTART/20210325.090000.fv_core.res.tile6.nc \
+                   RESTART/20210325.090000.fv_srf_wnd.res.tile1.nc \
+                   RESTART/20210325.090000.fv_srf_wnd.res.tile2.nc \
+                   RESTART/20210325.090000.fv_srf_wnd.res.tile3.nc \
+                   RESTART/20210325.090000.fv_srf_wnd.res.tile4.nc \
+                   RESTART/20210325.090000.fv_srf_wnd.res.tile5.nc \
+                   RESTART/20210325.090000.fv_srf_wnd.res.tile6.nc \
+                   RESTART/20210325.090000.fv_tracer.res.tile1.nc \
+                   RESTART/20210325.090000.fv_tracer.res.tile2.nc \
+                   RESTART/20210325.090000.fv_tracer.res.tile3.nc \
+                   RESTART/20210325.090000.fv_tracer.res.tile4.nc \
+                   RESTART/20210325.090000.fv_tracer.res.tile5.nc \
+                   RESTART/20210325.090000.fv_tracer.res.tile6.nc \
+                   RESTART/20210325.090000.phy_data.tile1.nc \
+                   RESTART/20210325.090000.phy_data.tile2.nc \
+                   RESTART/20210325.090000.phy_data.tile3.nc \
+                   RESTART/20210325.090000.phy_data.tile4.nc \
+                   RESTART/20210325.090000.phy_data.tile5.nc \
+                   RESTART/20210325.090000.phy_data.tile6.nc \
+                   RESTART/20210325.090000.sfc_data.tile1.nc \
+                   RESTART/20210325.090000.sfc_data.tile2.nc \
+                   RESTART/20210325.090000.sfc_data.tile3.nc \
+                   RESTART/20210325.090000.sfc_data.tile4.nc \
+                   RESTART/20210325.090000.sfc_data.tile5.nc \
+                   RESTART/20210325.090000.sfc_data.tile6.nc \
+                   RESTART/20210325.090000.MOM.res.nc \
+                   RESTART/20210325.090000.MOM.res_1.nc \
+                   RESTART/20210325.090000.MOM.res_2.nc \
+                   RESTART/20210325.090000.MOM.res_3.nc \
+                   RESTART/iced.2021-03-25-32400.nc \
+                   20210325.090000.out_pnt.ww3 \
+                   20210325.090000.out_grd.ww3 \
+                   RESTART/ufs.cpld.cpl.r.2021-03-25-32400.nc"
+
+export DAYS=0.125
+export FHMAX=3
+export CICE_DIAGFREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
+export MOM6_OUTPUT_FH=3
