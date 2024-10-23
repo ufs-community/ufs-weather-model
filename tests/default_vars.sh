@@ -1121,6 +1121,8 @@ export_mom6() {
   # MOM6 diag
   export MOM6_DIAG_COORD_DEF_Z_FILE=interpolate_zgrid_40L.nc
   export MOM6_DIAG_MISVAL='-1e34'
+  export MOM6_OUTPUT_FREQ=6
+  export MOM6_OUTPUT_UNITS=days
   # MOM6 IAU
   export ODA_INCUPD=False
   export ODA_INCUPD_NHOURS=6
