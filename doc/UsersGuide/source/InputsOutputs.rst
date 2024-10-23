@@ -793,7 +793,7 @@ The input files containing grid information and the time-varying forcing files f
 
 .. note:: 
 
-   Users can find atmospheric forcing files for use with the land (:ref:`LND <lnd>`) component in the `Land Data Assimilation (DA) data bucket <https://registry.opendata.aws/noaa-ufs-land-da/>`__. These files provide atmospheric forcing data related to precipitation, solar radiation, longwave radiation, temperature, pressure, winds, humidity, topography, and mesh data. Forcing files for the land component configuration come from the Global Soil Wetness Project Phase 3 (`GSWP3 <https://hydro.iis.u-tokyo.ac.jp/GSWP3/>`__) dataset. 
+   Users can find atmospheric forcing files for use with the land (:ref:`LND <lnd>`) component in the `Land Data Assimilation (DA) data bucket <https://registry.opendata.aws/noaa-ufs-land-da/>`_. These files provide atmospheric forcing data related to precipitation, solar radiation, longwave radiation, temperature, pressure, winds, humidity, topography, and mesh data. Forcing files for the land component configuration come from the Global Soil Wetness Project Phase 3 (`GSWP3 <https://hydro.iis.u-tokyo.ac.jp/GSWP3/>`_) dataset. 
 
    .. code-block:: console
 
@@ -1021,18 +1021,18 @@ AQM inputs defined in ``aqm.rc`` are listed and described in :numref:`Table %s <
 
 .. _lnd-in:
 
--------
-LND
--------
+--------------
+NOAH-MP (LND)
+--------------
 
-LND component datasets are available from the `Land Data Assimilation (DA) System data bucket <https://registry.opendata.aws/noaa-ufs-land-da/>`__ and can be retrieved using a ``wget`` command: 
+LND component datasets are available from the `Land Data Assimilation (DA) System data bucket <https://registry.opendata.aws/noaa-ufs-land-da/>`_ and can be retrieved using a ``wget`` command: 
 
 .. code-block:: console
 
-   wget https://noaa-ufs-land-da-pds.s3.amazonaws.com/current_land_da_release_data/v1.2.0/Landdav1.2.0_input_data.tar.gz
-   tar xvfz Landdav1.2.0_input_data.tar.gz
+   wget https://noaa-ufs-land-da-pds.s3.amazonaws.com/develop-20240501/Landda_develop_data.tar.gz
+   tar xvfz Landda_develop_data.tar.gz
 
-These files will be untarred into an ``inputs`` directory if the user does not specify a different name. They include data for Dec. 21, 2019. :numref:`Table %s <LndInputFiles>` describes the file types. In each file name, ``YYYY`` refers to a valid 4-digit year, ``MM`` refers to a valid 2-digit month, and ``DD`` refers to a valid 2-digit day of the month. 
+These files will be untarred into an ``inputs`` directory. They include data for Jan. 1-2, 2000. :numref:`Table %s <LndInputFiles>` describes the file types. In each file name, ``YYYY`` refers to a valid 4-digit year, ``MM`` refers to a valid 2-digit month, and ``DD`` refers to a valid 2-digit day of the month. 
 
 .. _LndInputFiles:
 
@@ -1062,19 +1062,19 @@ These files will be untarred into an ``inputs`` directory if the user does not s
 
        oro_C96.mx100.tile*.nc
      - Tiled static files that contain information on maximum snow albedo, slope type, soil color and type, substrate temperature, vegetation greenness and type, and orography (grid and land mask information). ``*`` stands for the grid tile number [1-6]. 
-     - Static/fixed files
-   * - grid_spec.nc
+     - FV3 fix files/Grid information
+   * - grid_spec.nc (aka C96.mosaic.nc)
      - Contains information on the mosaic grid
-     - Grid
+     - FV3 fix files/Grid information
    * - C96_grid.tile*.nc
-     - C96 grid information for tiles 1-6, where ``*`` is the grid tile number [1-6]. 
-     - Grid
+     - C96 grid information for tiles 1-6 at C96 grid resolution, where ``*`` is the grid tile number [1-6]. 
+     - FV3 fix files/Grid information
    * - C96_oro_data.tile*.nc / oro_C96.mx100.tileN.nc
      - Orography files that contain grid and land mask information, where ``*`` is the grid tile number [1-6]. ``mx100`` refers to the ocean resolution (100=1º).
-     - Grid
-   * - See :ref:`CDEPS <cdeps-in>` for information on atmospheric forcing files. 
+     - FV3 fix files/Grid information
+   * - See :ref:`CDEPS <cdeps-in>` for information on GSWP3 atmospheric forcing files. 
      - Atmospheric forcing
-     - CDEPS
+     - CDEPS/DATM
    * - ghcn_snwd_ioda_YYYYMMDD.nc
      - GHCN snow depth data assimilation files
      - DA
@@ -1088,9 +1088,9 @@ These files will be untarred into an ``inputs`` directory if the user does not s
 Static Datasets (i.e., *fix files*)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The static files (listed in :numref:`Table %s <LndInputFiles>`) include specific information on location, time, soil layers, and fixed (invariant) experiment parameters that are required for the land component to run. The data must be provided in :term:`netCDF` format.
+The fix files (listed in :numref:`Table %s <LndInputFiles>`) include specific information on location, time, soil layers, and fixed (invariant) experiment parameters that are required for the land component to run. The data must be provided in :term:`netCDF` format.
 
-The following static files are available in the ``inputs/UFS_WM/FV3_fix_tiled/C96/`` data directory (downloaded :ref:`above <lnd-in>`):
+The following fix files are available in the ``inputs/UFS_WM/FV3_fix_tiled/C96/`` data directory (downloaded :ref:`above <lnd-in>`):
 
 .. code-block:: 
 
@@ -1104,7 +1104,7 @@ The following static files are available in the ``inputs/UFS_WM/FV3_fix_tiled/C9
    oro_C96.mx100.tile*.nc
 
 where ``*`` refers to the tile number (1-6). 
-Details on the configuration variables included in this file are available in the :ref:`Land DA documentation <landda:InputFiles>`. 
+Details on the configuration variables included in these files are available in the :ref:`Land DA documentation <landda:InputFiles>`. 
 
 .. _lnd-grid-ic-files:
 
@@ -1148,6 +1148,7 @@ The configuration files used by the UFS Weather Model are listed here and descri
    * ``field_table``
    * ``model_configure``
    * ``ufs.configure``
+   * ``fd_ufs.yaml``
    * ``suite_[suite_name].xml`` (used only at build time)
    * ``datm.streams`` (used by CDEPS)
    * ``datm_in`` (used by CDEPS)
@@ -1674,6 +1675,34 @@ However, ``ufs.configure`` files for other configurations of the Weather Model a
 .. note:: The ``aoflux_grid`` option is used to select the grid/mesh to perform atmosphere-ocean flux calculation. The possible options are ``xgrid`` (exchange grid), ``agrid`` (atmosphere model grid) and ``ogrid`` (ocean model grid).
 
 .. note:: The ``aoflux_code`` option is used to define the algorithm that will be used to calculate atmosphere-ocean fluxes. The possible options are ``cesm`` and ``ccpp``. If ``ccpp`` is selected then the suite file provided in the ``aoflux_ccpp_suite`` option is used to calculate atmosphere-ocean fluxes through the use of CCPP host model.
+
+
+.. _fd-ufs:
+
+-----------------
+``fd_ufs.yaml``
+-----------------
+
+The ``fd_ufs.yaml`` file contains a field dictionary to configure several fields that are used in import/export operations by different Earth modeling components in ESMF's NUOPC coupling system. It allows the sharing of coupling fields between components. Entries in the field dictionary are organized as YAML lists of maps. The NUOPC Field Dictionary data structure in the model code is set up by the NUOPC function called ``NUOPC_FieldDictionarySetup()``, which loads the ``fd_ufs.yaml`` file (see `UFSDriver.F90 <https://github.com/ufs-community/ufs-weather-model/blob/develop/driver/UFSDriver.F90>`_). The field
+metadata described in each entry are used by the NUOPC layer to match fields provided and requested by the various component models. The field dictionary can be shared with other Earth modeling systems that use the same ESPS coupling strategy, such as the Community Earth System Model (CESM).
+
+The standard field metadata for each coupling field has the following keys and corresponding values:
+
+.. code-block:: console
+
+   - standard_name: <field_name>
+     canonical_units: <unit>
+     description: <brief description about this field>
+     alias: <other_field_name>
+
+* ``standard_name`` (required): Name of the field. 
+* ``canonical_units`` (required): The units used to fully define the field
+* ``description`` (optional): Brief explanation of the field
+* ``alias`` (optional): Alternative names for the field. An alias can be one character string or a list of strings (e.g., ``<name>`` or ``[<name>, <name2>]``). This allows a field to have different names used in the coupling field exchange.
+
+Either the ``standard_name`` or ``alias`` name can be used in a component model, and the NUOPC layer will recognize these fields as the same field using the definitions provided in the YAML file. For more on the NUOPC field dictionary, visit the `documentation <https://earthsystemmodeling.org/docs/release/latest/NUOPC_refdoc/node3.html#SECTION00032000000000000000>`_.
+
+
 
 .. _SDF-file:
 
