@@ -69,9 +69,10 @@ export LIST_FILES="sfcf021.tile1.nc \
                    20210323.060000.out_pnt.ww3 \
                    20210323.060000.out_grd.ww3 "
 
+export DT_ATMOS=720
 export_fv3
-export_cpl
 export_ugwpv1
+export_cpl
 export CCPP_SUITE=FV3_GFS_v17_coupled_p8_ugwpv1
 
 export RESTART_N=12
@@ -89,8 +90,6 @@ if [[ $MACHINE_ID = derecho ]]; then
   TPN=96
 fi
 
-export DT_INNER=720
-export DT_ATMOS=720
 export K_SPLIT=4
 export N_SPLIT=5
 
