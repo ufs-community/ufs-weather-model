@@ -955,7 +955,7 @@ case ${MACHINE_ID} in
     module use /apps/modules/modulefiles
 
     if [[ "${ROCOTO:-false}" == true ]] ; then
-      module load rocoto/1.3.3
+      module load rocoto/1.3.7
       ROCOTO_SCHEDULER=slurm
     fi
 

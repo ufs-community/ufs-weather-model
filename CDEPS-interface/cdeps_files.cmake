@@ -67,6 +67,8 @@ list(APPEND cdeps_docn_files
   CDEPS/docn/docn_datamode_iaf_mod.F90
   CDEPS/docn/docn_datamode_som_mod.F90
   CDEPS/docn/docn_datamode_cplhist_mod.F90
+  CDEPS/docn/docn_datamode_multilev_mod.F90
+  CDEPS/docn/docn_datamode_multilev_dom_mod.F90
   CDEPS/docn/docn_import_data_mod.F90
   CDEPS/docn/ocn_comp_nuopc.F90
 )
@@ -77,4 +79,9 @@ list(APPEND cdeps_drof_files
 
 list(APPEND cdeps_dwav_files
   CDEPS/dwav/wav_comp_nuopc.F90
+)
+
+list(APPEND cdeps_dglc_files
+  CDEPS/dglc/dglc_datamode_noevolve_mod.F90
+  CDEPS/dglc/glc_comp_nuopc.F90
 )
