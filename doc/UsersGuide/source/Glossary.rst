@@ -10,16 +10,16 @@ Glossary
       To transport substances in the atmostphere by :term:`advection`.
 
    advection
-      According to the American Meteorological Society (AMS) `definition <https://glossary.ametsoc.org/wiki/Advection>`__, advection is "The process of transport of an atmospheric property solely by the mass motion (velocity field) of the atmosphere." In common parlance, advection is movement of atmospheric substances that are carried around by the wind.
+      According to the American Meteorological Society (AMS) definition, `advection <https://glossary.ametsoc.org/wiki/Advection>`_ is "The process of transport of an atmospheric property solely by the mass motion (velocity field) of the atmosphere." In common parlance, advection is movement of atmospheric substances that are carried around by the wind.
 
    ATM
       The Weather Model configuration that runs only the standalone atmospheric model. 
 
    AQM
-      The `Air Quality Model <https://github.com/NOAA-EMC/AQM>`__ (AQM) is a UFS Application that dynamically couples the Community Multiscale Air Quality (:term:`CMAQ`) model with the UFS Weather Model through the :term:`NUOPC` Layer to simulate temporal and spatial variations of atmospheric compositions (e.g., ozone and aerosol compositions). The CMAQ, treated as a column chemistry model, updates concentrations of chemical species (e.g., ozone and aerosol compositions) at each integration time step. The transport terms (e.g., :term:`advection` and diffusion) of all chemical species are handled by the UFS Weather Model as :term:`tracers<tracer>`.
+      The `Air Quality Model <https://github.com/NOAA-EMC/AQM>`_ (AQM) is a UFS Application that dynamically couples the Community Multiscale Air Quality (:term:`CMAQ`) model with the UFS Weather Model through the :term:`NUOPC` Layer to simulate temporal and spatial variations of atmospheric compositions (e.g., ozone and aerosol compositions). The CMAQ, treated as a column chemistry model, updates concentrations of chemical species (e.g., ozone and aerosol compositions) at each integration time step. The transport terms (e.g., :term:`advection` and diffusion) of all chemical species are handled by the UFS Weather Model as :term:`tracers<tracer>`.
 
    CCPP
-      The `Common Community Physics Package <https://dtcenter.org/community-code/common-community-physics-package-ccpp>`__ is a forecast-model agnostic, vetted collection of code containing atmospheric physical parameterizations and suites of parameterizations for use in Numerical Weather Prediction (:term:`NWP`) along with a framework that connects the physics to the host forecast model.
+      The `Common Community Physics Package <https://dtcenter.org/community-code/common-community-physics-package-ccpp>`_ is a forecast-model agnostic, vetted collection of code containing atmospheric physical parameterizations and suites of parameterizations for use in Numerical Weather Prediction (:term:`NWP`) along with a framework that connects the physics to the host forecast model.
 
    CCPP-Framework
      The infrastructure that connects physics schemes with a host model; also refers to a software
@@ -29,10 +29,10 @@ Glossary
       The pool of CCPP-compliant physics schemes; also refers to a software repository of the same name
 
    CDEPS
-      The `Community Data Models for Earth Predictive Systems <https://github.com/NOAA-EMC/CDEPS/>`__ repository (CDEPS) contains a set of :term:`NUOPC`-compliant data components and :term:`ESMF`-based "stream" code that selectively removes feedback in coupled model systems. In essence, CDEPS handles the static Data Atmosphere (:term:`DATM`) integration with dynamic coupled model components (e.g., :term:`MOM6`). The CDEPS data models perform the basic function of reading external data files, modifying those data, and then sending the data back to the :term:`CMEPS` mediator. The fields sent to the :term:`mediator` are the same as those that would be sent by an active component. This takes advantage of the fact that the mediator and other CMEPS-compliant model components have no fundamental knowledge of whether another component is fully active or just a data component. More information about DATM is available in the `CDEPS Documentation <https://escomp.github.io/CDEPS/versions/master/html/index.html>`__.
+      The `Community Data Models for Earth Predictive Systems <https://github.com/NOAA-EMC/CDEPS/>`_ repository (CDEPS) contains a set of :term:`NUOPC`-compliant data components and :term:`ESMF`-based "stream" code that selectively removes feedback in coupled model systems. In essence, CDEPS handles the static Data Atmosphere (:term:`DATM`) integration with dynamic coupled model components (e.g., :term:`MOM6`). The CDEPS data models perform the basic function of reading external data files, modifying those data, and then sending the data back to the :term:`CMEPS` mediator. The fields sent to the :term:`mediator` are the same as those that would be sent by an active component. This takes advantage of the fact that the mediator and other CMEPS-compliant model components have no fundamental knowledge of whether another component is fully active or just a data component. More information about DATM is available in the `CDEPS Documentation <https://escomp.github.io/CDEPS/versions/master/html/index.html>`_.
 
    CESM
-      The `Community Earth System Model <https://www.cesm.ucar.edu/>`__ (CESM) is a fully-coupled global climate model developed at the National Center for Atmospheric Research (:term:`NCAR`) in collaboration with colleagues in the research community. 
+      The `Community Earth System Model <https://www.cesm.ucar.edu/>`_ (CESM) is a fully-coupled global climate model developed at the National Center for Atmospheric Research (:term:`NCAR`) in collaboration with colleagues in the research community. 
 
    chgres_cube
       The preprocessing software used to create initial and boundary condition files to "coldstart" the forecast model. It is part of :term:`UFS_UTILS`. 
@@ -40,13 +40,13 @@ Glossary
    CICE
    CICE6
    Sea Ice Model
-      `CICE <https://github.com/NOAA-EMC/CICE>`__ is a computationally efficient model for simulating the growth, melting, and movement of polar sea ice. It was designed as one component of a coupled atmosphere-ocean-land-ice global climate model. CICE has several interacting components, including a model of ice dynamics, a transport model that describes :term:`advection` of different state variables; and a vertical physics package called "Icepack". 
+      `CICE <https://github.com/NOAA-EMC/CICE>`_ is a computationally efficient model for simulating the growth, melting, and movement of polar sea ice. It was designed as one component of a coupled atmosphere-ocean-land-ice global climate model. CICE has several interacting components, including a model of ice dynamics, a transport model that describes :term:`advection` of different state variables; and a vertical physics package called "Icepack". 
 
    CMAQ
-      The `Community Multiscale Air Quality Model <https://www.epa.gov/cmaq/cmaq-models-0>`__ (CMAQ, pronounced "cee-mak") is a numerical air quality model that predicts the concentration of airborne gases and particles and the deposition of these pollutants back to Earth's surface. The purpose of CMAQ is to provide fast, technically sound estimates of ozone, particulates, toxics, and acid deposition. CMAQ is an active open-source development project of the U.S. Environmental Protection Agency (EPA). Code is publicly availably at https://github.com/USEPA/CMAQ. 
+      The `Community Multiscale Air Quality Model <https://www.epa.gov/cmaq/cmaq-models-0>`_ (CMAQ, pronounced "cee-mak") is a numerical air quality model that predicts the concentration of airborne gases and particles and the deposition of these pollutants back to Earth's surface. The purpose of CMAQ is to provide fast, technically sound estimates of ozone, particulates, toxics, and acid deposition. CMAQ is an active open-source development project of the U.S. Environmental Protection Agency (EPA). Code is publicly availably at https://github.com/USEPA/CMAQ. 
 
    CMEPS
-      The `Community Mediator for Earth Prediction Systems <https://github.com/NOAA-EMC/CMEPS>`__ (CMEPS) is a :term:`NUOPC`-compliant :term:`mediator` used for coupling Earth system model components. It is currently being used in NCAR's Community Earth System Model (:term:`CESM`) and NOAA's subseasonal-to-seasonal (S2S) coupled system. More information is available in the `CMEPS Documentation <https://escomp.github.io/CMEPS/versions/master/html/index.html>`__.
+      The `Community Mediator for Earth Prediction Systems <https://github.com/NOAA-EMC/CMEPS>`_ (CMEPS) is a :term:`NUOPC`-compliant :term:`mediator` used for coupling Earth system model components. It is currently being used in NCAR's Community Earth System Model (:term:`CESM`) and NOAA's subseasonal-to-seasonal (S2S) coupled system. More information is available in the `CMEPS Documentation <https://escomp.github.io/CMEPS/versions/master/html/index.html>`_.
 
    cron
    cron job
@@ -58,21 +58,21 @@ Glossary
       Data assimilation is the process of combining observations, model data, and error statistics to achieve the best estimate of the state of a system. One of the major sources of error in weather and climate forecasts is uncertainty related to the initial conditions that are used to generate future predictions. Even the most precise instruments have a small range of unavoidable measurement error, which means that tiny measurement errors (e.g., related to atmospheric conditions and instrument location) can compound over time. These small differences result in very similar forecasts in the short term (i.e., minutes, hours), but they cause widely divergent forecasts in the long term. Errors in weather and climate forecasts can also arise because models are imperfect representations of reality. Data assimilation systems seek to mitigate these problems by combining the most timely observational data with a "first guess" of the atmospheric state (usually a previous forecast) and other sources of data to provide a "best guess" analysis of the atmospheric state to start a weather or climate simulation. When combined with an "ensemble" of model runs (many forecasts with slightly different conditions), data assimilation helps predict a range of possible atmospheric states, giving an overall measure of uncertainty in a given forecast.
 
    DATM
-      DATM is the *Data Atmosphere* component of :term:`CDEPS`. It uses static atmospheric forcing files (derived from observations or previous atmospheric model runs) instead of output from an active atmospheric model. This reduces the complexity and computational cost associated with coupling to an active atmospheric model. The *Data Atmosphere* component is particularly useful when employing computationally intensive Data Assimilation (DA) techniques to update ocean and/or sea ice fields in a coupled model. In general, use of DATM in place of :term:`ATM` can be appropriate when users are running a coupled model and only want certain components of the model to be active. More information about DATM is available in the `CDEPS Documentation <https://escomp.github.io/CDEPS/versions/master/html/datm.html>`__.
+      DATM is the *Data Atmosphere* component of :term:`CDEPS`. It uses static atmospheric forcing files (derived from observations or previous atmospheric model runs) instead of output from an active atmospheric model. This reduces the complexity and computational cost associated with coupling to an active atmospheric model. The *Data Atmosphere* component is particularly useful when employing computationally intensive Data Assimilation (DA) techniques to update ocean and/or sea ice fields in a coupled model. In general, use of DATM in place of :term:`ATM` can be appropriate when users are running a coupled model and only want certain components of the model to be active. More information about DATM is available in the `CDEPS DATM Documentation <https://escomp.github.io/CDEPS/versions/master/html/datm.html>`_.
 
    DOCN
-      DOCN is the *Data Ocean* component of :term:`CDEPS`. It uses static ocean forcing files (derived from observations or previous ocean model runs) instead of output from an active ocean model. This reduces the complexity and computational cost associated with coupling to an active ocean model. The *Data Ocean* component is particularly useful when employing computationally intensive Data Assimilation (DA) techniques to update atmospheric fields in a coupled model. In general, use of DOCN in place of :term:`MOM6` or :term:`HYCOM` can be appropriate when users are running a coupled model and only want certain components of the model to be active. More information about DOCN is available in the `CDEPS Documentation <https://escomp.github.io/CDEPS/versions/master/html/docn.html>`__.
+      DOCN is the *Data Ocean* component of :term:`CDEPS`. It uses static ocean forcing files (derived from observations or previous ocean model runs) instead of output from an active ocean model. This reduces the complexity and computational cost associated with coupling to an active ocean model. The *Data Ocean* component is particularly useful when employing computationally intensive Data Assimilation (DA) techniques to update atmospheric fields in a coupled model. In general, use of DOCN in place of :term:`MOM6` or :term:`HYCOM` can be appropriate when users are running a coupled model and only want certain components of the model to be active. More information about DOCN is available in the `CDEPS DOCN Documentation <https://escomp.github.io/CDEPS/versions/master/html/docn.html>`_.
    
    dycore
    dynamical core
       Global atmospheric model based on fluid dynamics principles, including Euler's equations of motion.
 
    EMC
-      The `Environmental Modeling Center <https://www.emc.ncep.noaa.gov/emc.php>`__ is one of :term:`NCEP`'s nine centers and leads the :term:`National Weather Service <NWS>`'s modeling efforts.
+      The `Environmental Modeling Center <https://www.emc.ncep.noaa.gov/emc.php>`_ is one of :term:`NCEP`'s nine centers and leads the :term:`National Weather Service <NWS>`'s modeling efforts.
 
 
    ESMF
-      `Earth System Modeling Framework <https://earthsystemmodeling.org/docs/release/latest/ESMF_usrdoc/>`__. The ESMF defines itself as "a suite of software tools for developing high-performance, multi-component Earth science modeling applications." It is a community-developed software infrastructure for building and coupling models. 
+      `Earth System Modeling Framework <https://earthsystemmodeling.org/docs/release/latest/ESMF_usrdoc/>`_. The ESMF defines itself as "a suite of software tools for developing high-performance, multi-component Earth science modeling applications." It is a community-developed software infrastructure for building and coupling models. 
 
    FMS
      The Flexible Modeling System (FMS) is a software framework for supporting the efficient
@@ -82,20 +82,20 @@ Glossary
    FV3
    FV3 dycore
    FV3 dynamical core
-      The Finite-Volume Cubed-Sphere :term:`dynamical core` (dycore). Developed at NOAA's `Geophysical 
-      Fluid Dynamics Laboratory <https://www.gfdl.noaa.gov/>`__ (GFDL), it is a scalable and flexible dycore capable of both hydrostatic and non-hydrostatic atmospheric simulations. It is the dycore used in the UFS Weather Model.
+      The Finite-Volume Cubed-Sphere :term:`dynamical core` (dycore). Developed at NOAA's Geophysical 
+      Fluid Dynamics Laboratory `(GFDL) <https://www.gfdl.noaa.gov/>`_, it is a scalable and flexible dycore capable of both hydrostatic and non-hydrostatic atmospheric simulations. It is the dycore used in the UFS Weather Model.
 
    GOCART
       NASA's Goddard Chemistry Aerosol Radiation and Transport (GOCART) model simulates the distribution of major tropospheric aerosol types, including sulfate, dust, organic carbon (OC), black carbon (BC), and sea salt aerosols. The UFS Weather Model integrates a prognostic aerosol component using GOCART. The code is publicly available on GitHub at https://github.com/GEOS-ESM/GOCART.   
       
    HPC-Stack
-      The `HPC-Stack <https://github.com/NOAA-EMC/hpc-stack>`__ is a repository that provides a unified, shell script-based build system for building the software stack required for numerical weather prediction (NWP) tools such as the `Unified Forecast System (UFS) <https://ufscommunity.org/>`__ and the `Joint Effort for Data assimilation Integration (JEDI) <https://jointcenterforsatellitedataassimilation-jedi-docs.readthedocs-hosted.com/en/latest/>`__ framework.
+      The `HPC-Stack <https://github.com/NOAA-EMC/hpc-stack>`_ is a repository that provides a unified, shell script-based build system for building the software stack required for numerical weather prediction (NWP) tools such as the `Unified Forecast System (UFS) <https://ufs.epic.noaa.gov/>`_ and the `Joint Effort for Data assimilation Integration (JEDI) <https://jointcenterforsatellitedataassimilation-jedi-docs.readthedocs-hosted.com/en/latest/>`_ framework.
 
    HAFS
-      The Hurricane Analysis and Forecast System (`HAFS <https://github.com/NOAA-EMC/HAFS>`__) is a :term:`UFS` application for hurricane forecasting. It is an :term:`FV3`-based multi-scale model and data assimilation (DA) system capable of providing analyses and forecasts of the inner core structure of tropical cyclones (TC) --- including hurricanes and typhoons --- out to 7 days. This is key to improving size and intensity predictions. HAFS also provides analyses and forecasts of the large-scale environment that is known to influence a TC's motion. HAFS development targets an operational analysis and forecast system for hurricane forecasters with reliable, robust and skillful guidance on TC track and intensity (including rapid intensification), storm size, genesis, storm surge, rainfall, and tornadoes associated with TCs. Currently, HAFS is under active development with collaborative efforts among NCEP/EMC, AOML/HRD, GFDL, ESRL/GSD, ESRL/NESII, OFCM/AOC, and NCAR/DTC.
+      The Hurricane Analysis and Forecast System (`HAFS <https://github.com/NOAA-EMC/HAFS>`_) is a :term:`UFS` application for hurricane forecasting. It is an :term:`FV3`-based multi-scale model and data assimilation (DA) system capable of providing analyses and forecasts of the inner core structure of tropical cyclones (TC) --- including hurricanes and typhoons --- out to 7 days. This is key to improving size and intensity predictions. HAFS also provides analyses and forecasts of the large-scale environment that is known to influence a TC's motion. HAFS development targets an operational analysis and forecast system for hurricane forecasters with reliable, robust and skillful guidance on TC track and intensity (including rapid intensification), storm size, genesis, storm surge, rainfall, and tornadoes associated with TCs. Currently, HAFS is under active development with collaborative efforts among NCEP/EMC, AOML/HRD, GFDL, ESRL/GSD, ESRL/NESII, OFCM/AOC, and NCAR/DTC.
 
    HYCOM
-      The HYbrid Coordinate Ocean Model (`HYCOM <https://www.hycom.org/>`__) was developed to address known shortcomings in the vertical coordinate scheme of the Miami Isopycnic-Coordinate Ocean Model (MICOM). HYCOM is a primitive equation, general circulation model with vertical coordinates that remain isopycnic in the open, stratified ocean. However, the isopycnal vertical coordinates smoothly transition to z-coordinates in the weakly stratified upper-ocean mixed layer, to terrain-following sigma coordinates in shallow water regions, and back to z-level coordinates in very shallow water. The latter transition prevents layers from becoming too thin where the water is very shallow. See the `HYCOM User's Guide <https://www.hycom.org/attachments/063_hycom_users_guide.pdf>`__ for more information on using the model. The `HYCOM model code <https://github.com/NOAA-EMC/HYCOM-src>`__ is publicly available on GitHub. 
+      The HYbrid Coordinate Ocean Model (`HYCOM <https://www.hycom.org/>`_) was developed to address known shortcomings in the vertical coordinate scheme of the Miami Isopycnic-Coordinate Ocean Model (MICOM). HYCOM is a primitive equation, general circulation model with vertical coordinates that remain isopycnic in the open, stratified ocean. However, the isopycnal vertical coordinates smoothly transition to z-coordinates in the weakly stratified upper-ocean mixed layer, to terrain-following sigma coordinates in shallow water regions, and back to z-level coordinates in very shallow water. The latter transition prevents layers from becoming too thin where the water is very shallow. See the `HYCOM User's Guide <https://www.hycom.org/attachments/063_hycom_users_guide.pdf>`_ for more information on using the model. The `HYCOM model code <https://github.com/NOAA-EMC/HYCOM-src>`_ is publicly available on GitHub. 
    
    LM4
       NUOPC NOAA-GFDL Land Model version 4
@@ -110,14 +110,14 @@ Glossary
    MOM
    MOM6
    Modular Ocean Model
-      MOM6 is the latest generation of the Modular Ocean Model. It is numerical model code for simulating the ocean general circulation. MOM6 was originally developed by the `Geophysical Fluid Dynamics Laboratory <https://www.gfdl.noaa.gov/mom-ocean-model/>`__. Currently, `MOM6 code <https://github.com/mom-ocean/MOM6>`__ and an `extensive suite of test cases <https://github.com/NOAA-GFDL/MOM6-examples/wiki>`__ are available under an open-development software framework. Although there are many public forks of MOM6, the `NOAA EMC fork <https://github.com/NOAA-EMC/MOM6>`__ is used in the UFS Weather Model. 
+      MOM6 is the latest generation of the Modular Ocean Model. It is numerical model code for simulating the ocean general circulation. MOM6 was originally developed by the `Geophysical Fluid Dynamics Laboratory <https://www.gfdl.noaa.gov/mom-ocean-model/>`_. Currently, `MOM6 code <https://github.com/mom-ocean/MOM6>`_ and an `extensive suite of test cases <https://github.com/NOAA-GFDL/MOM6-examples/wiki>`_ are available under an open-development software framework. Although there are many public forks of MOM6, the `NOAA EMC fork <https://github.com/NOAA-EMC/MOM6>`_ is used in the UFS Weather Model. 
 
    MRW
    MRW App
-      The `Medium-Range Weather Application <https://github.com/ufs-community/ufs-mrweather-app>`__ is a UFS Application that targets predictions of atmospheric behavior out to about two weeks. It packages a prognostic atmospheric model (the UFS Weather Model), pre- and post-processing tools, and a community workflow.
+      The `Medium-Range Weather Application <https://github.com/ufs-community/ufs-mrweather-app>`_ is a UFS Application that targets predictions of atmospheric behavior out to about two weeks. It packages a prognostic atmospheric model (the UFS Weather Model), pre- and post-processing tools, and a community workflow.
 
    NCAR
-      The `National Center for Atmospheric Research <https://ncar.ucar.edu/>`__. 
+      The `National Center for Atmospheric Research <https://ncar.ucar.edu/>`_. 
 
    NCEP
       National Centers for Environmental Prediction (NCEP) is a branch of the :term:`National Weather Service <NWS>` and consists of nine centers, including the :term:`Environmental Modeling Center <EMC>`. More information can be found at https://www.ncep.noaa.gov.
@@ -168,10 +168,10 @@ Glossary
    SRW
    SRW App
    Short-Range Weather Application
-      The `Short-Range Weather Application <https://github.com/ufs-community/ufs-srweather-app>`__ is a UFS Application that targets predictions of atmospheric behavior on a limited spatial domain and on time scales from minutes out to about two days. It packages a prognostic atmospheric model (the UFS Weather Model), pre- and post-processing tools, and a community workflow.
+      The `Short-Range Weather Application <https://github.com/ufs-community/ufs-srweather-app>`_ is a UFS Application that targets predictions of atmospheric behavior on a limited spatial domain and on time scales from minutes out to about two days. It packages a prognostic atmospheric model (the UFS Weather Model), pre- and post-processing tools, and a community workflow.
 
    spack-stack
-      The `spack-stack <https://github.com/JCSDA/spack-stack>`__ is a collaborative effort between the NOAA Environmental Modeling Center (EMC), the UCAR Joint Center for Satellite Data Assimilation (JCSDA), and the Earth Prediction Innovation Center (EPIC). *spack-stack* is a repository that provides a Spack-based method for building the software stack required for numerical weather prediction (NWP) tools such as the `Unified Forecast System (UFS) <https://ufscommunity.org/>`__ and the `Joint Effort for Data assimilation Integration (JEDI) <https://jointcenterforsatellitedataassimilation-jedi-docs.readthedocs-hosted.com/en/latest/>`__ framework. *spack-stack* uses the Spack package manager along with custom Spack configuration files and Python scripts to simplify installation of the libraries required to run various applications. The *spack-stack* can be installed on a range of platforms and comes pre-configured for many systems. Users can install the necessary packages for a particular application and later add the missing packages for another application without having to rebuild the entire stack.
+      The `spack-stack <https://github.com/JCSDA/spack-stack>`_ is a collaborative effort between the NOAA Environmental Modeling Center (EMC), the UCAR Joint Center for Satellite Data Assimilation (JCSDA), and the Earth Prediction Innovation Center (EPIC). *spack-stack* is a repository that provides a Spack-based method for building the software stack required for numerical weather prediction (NWP) tools such as the `Unified Forecast System (UFS) <https://ufs.epic.noaa.gov/>`_ and the `Joint Effort for Data assimilation Integration (JEDI) <https://jointcenterforsatellitedataassimilation-jedi-docs.readthedocs-hosted.com/en/latest/>`_ framework. *spack-stack* uses the Spack package manager along with custom Spack configuration files and Python scripts to simplify installation of the libraries required to run various applications. The *spack-stack* can be installed on a range of platforms and comes pre-configured for many systems. Users can install the necessary packages for a particular application and later add the missing packages for another application without having to rebuild the entire stack.
 
    Suite Definition File (SDF)
      An external file containing information about the 
@@ -184,20 +184,20 @@ Glossary
       well together
 
    tracer
-      According to the American Meteorological Society (AMS) `definition <https://glossary.ametsoc.org/wiki/Tracer>`__, a tracer is "Any substance in the atmosphere that can be used to track the history [i.e., movement] of an air mass." Tracers are carried around by the motion of the atmosphere (i.e., by :term:`advection`). These substances are usually gases (e.g., water vapor, CO2), but they can also be non-gaseous (e.g., rain drops in microphysics parameterizations). In weather models, temperature (or potential temperature), absolute humidity, and radioactivity are also usually treated as tracers. According to AMS, "The main requirement for a tracer is that its lifetime be substantially longer than the transport process under study."
+      According to the American Meteorological Society (AMS) definition, a `tracer <https://glossary.ametsoc.org/wiki/Tracer>`_ is "Any substance in the atmosphere that can be used to track the history [i.e., movement] of an air mass." Tracers are carried around by the motion of the atmosphere (i.e., by :term:`advection`). These substances are usually gases (e.g., water vapor, CO2), but they can also be non-gaseous (e.g., rain drops in microphysics parameterizations). In weather models, temperature (or potential temperature), absolute humidity, and radioactivity are also usually treated as tracers. According to AMS, "The main requirement for a tracer is that its lifetime be substantially longer than the transport process under study."
 
    UFS
    Unified Forecast System
       The Unified Forecast System (UFS) is a community-based, coupled, comprehensive Earth 
       system modeling system. The UFS numerical applications span regional to global domains 
-      and sub-hourly to seasonal time scales. The UFS is designed to support the :term:`Weather Enterprise` and to be the source system for NOAA's operational numerical weather prediction (:term:`NWP`) applications. For more information, visit https://ufscommunity.org/.
+      and sub-hourly to seasonal time scales. The UFS is designed to support the :term:`Weather Enterprise` and to be the source system for NOAA's operational numerical weather prediction (:term:`NWP`) applications. For more information, visit https://ufs.epic.noaa.gov/.
 
    UFS_UTILS
-      The UFS Utilities repository (`UFS_UTILS <https://github.com/ufs-community/UFS_UTILS>`__) contains a collection of pre-processing programs for use with the UFS Weather Model and UFS applications. These programs set up the model grid and create coldstart initial conditions. The code is publicly available on the `UFS_UTILS <https://github.com/ufs-community/UFS_UTILS>`__ Github repository. 
+      The UFS Utilities repository (`UFS_UTILS <https://github.com/ufs-community/UFS_UTILS>`_) contains a collection of pre-processing programs for use with the UFS Weather Model and UFS applications. These programs set up the model grid and create coldstart initial conditions. The code is publicly available in the `UFS_UTILS GitHub repository <https://github.com/ufs-community/UFS_UTILS>`_. 
 
    UPP
    Unified Post Processor
-      The `Unified Post Processor <https://dtcenter.org/community-code/unified-post-processor-upp>`__ is the :term:`post-processor` software developed at :term:`NCEP`. It is used operationally to 
+      The `Unified Post Processor <https://epic.noaa.gov/unified-post-processor/>`_ is the :term:`post-processor` software developed at :term:`NCEP`. It is used operationally to 
       convert the raw output from a variety of :term:`NCEP`'s :term:`NWP` models, including the :term:`FV3 dycore`, to a more useful form.
 
    WW3
@@ -213,6 +213,6 @@ Glossary
       A prognostic model that can be used for short- and medium-range research and 
       operational forecasts. It can be an atmosphere-only model or be an atmospheric
       model coupled with one or more additional components, such as a wave or ocean model.
-      The UFS Weather Model repository is publicly available on `GitHub <https://github.com/ufs-community/ufs-weather-model>`__. 
+      The UFS Weather Model repository is publicly available on `GitHub <https://github.com/ufs-community/ufs-weather-model>`_. 
    
 
