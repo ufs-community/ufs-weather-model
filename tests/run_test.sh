@@ -118,7 +118,7 @@ case ${MACHINE_ID} in
     ;;
   gaea)
     module use /ncrc/proj/epic/spack-stack/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core
-    module load stack-intel/2023.1.0 stack-cray-mpich/8.1.25
+    module load stack-intel/2023.2.0 stack-cray-mpich/8.1.28
     module load nccmp/1.9.0.1
     ;;
   derecho)
@@ -240,7 +240,7 @@ fi
 if [[ "Q${FIELD_TABLE:-}" != Q ]]; then
   cp "${PATHRT}/parm/field_table/${FIELD_TABLE}" field_table
 fi
-
+    
 # fix files
 if [[ ${FV3} == true ]]; then
   cp "${INPUTDATA_ROOT}"/FV3_fix/*.txt .
@@ -300,6 +300,11 @@ if [[ "${DIAG_TABLE_ADDITIONAL:-}Q" != Q ]]; then
   # Append diagnostic outputs, to support tests that vary from others
   # only by adding diagnostics.
   atparse < "${PATHRT}/parm/diag_table/${DIAG_TABLE_ADDITIONAL:-}" >> diag_table
+fi
+
+if [[ "${FIELD_TABLE_ADDITIONAL:-}Q" != Q ]] ; then
+    # Append field table
+    atparse < "${PATHRT}/parm/field_table/${FIELD_TABLE_ADDITIONAL:-}" >> field_table
 fi
 
 # ATMAERO
