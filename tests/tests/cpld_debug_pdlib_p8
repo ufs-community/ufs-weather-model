@@ -53,6 +53,7 @@ export LIST_FILES="sfcf003.tile1.nc \
                    RESTART/20210322.090000.MOM.res.nc \
                    RESTART/iced.2021-03-22-32400.nc \
                    RESTART/ufs.cpld.cpl.r.2021-03-22-32400.nc \
+                   ufs.cpld.ww3.r.2021-03-22-32400.nc \
                    20210322.090000.out_pnt.ww3 \
                    20210322.090000.out_grd.ww3 "
 
@@ -109,6 +110,9 @@ if [[ $MACHINE_ID = orion && $RT_COMPILER = intelllvm ]]; then
 fi
 if [[ $MACHINE_ID = gaea ]] && [[ $RT_COMPILER = intelllvm ]]; then
   WLCLK=50
+fi
+if [[ $MACHINE_ID = hercules && $RT_COMPILER = gnu ]]; then
+ export WW3_PIO_REARR='box'
 fi
 
 export K_SPLIT=2
