@@ -5,18 +5,19 @@ import yaml
 from ufs_test_utils import get_testcase, write_logfile, rrmdir, machine_check_off
 
 def rocoto_create_entries(RTPWD,MACHINE_ID,INPUTDATA_ROOT,INPUTDATA_ROOT_WW3,INPUTDATA_ROOT_BMIC,RUNDIR_ROOT,NEW_BASELINE,ROCOTO_XML):
-    """Generate header information for Rocoto xml file
+    """Generate header information for Rocoto XML file
 
     Args:
         RTPWD (str): Baseline directory
-        MACHINE_ID (str): Machine ID i.e. Hera, Gaea, Jet, etc.
+        MACHINE_ID (str): Machine ID i.e., Hera, Gaea, Jet, etc.
         INPUTDATA_ROOT (str): Input data directory
         INPUTDATA_ROOT_WW3 (str): WW3 input data directory
         INPUTDATA_ROOT_BMIC (str): BMIC input data directory
         RUNDIR_ROOT (str): Test run directory
         NEW_BASELINE (str): Directory for newly generated baselines
-        ROCOTO_XML (str): Rocoto .xml filename to write to
+        ROCOTO_XML (str): Rocoto XML filename to write to
     """
+
     PATHRT = os.getenv('PATHRT')
     LOG_DIR= PATHRT+'/logs/log_'+MACHINE_ID
     PATHTR, tail = os.path.split(PATHRT)
@@ -43,17 +44,17 @@ def rocoto_create_entries(RTPWD,MACHINE_ID,INPUTDATA_ROOT,INPUTDATA_ROOT_WW3,INP
     f.close()
     
 def rocoto_create_compile_task(MACHINE_ID,COMPILE_ID,ROCOTO_COMPILE_MAXTRIES,MAKE_OPT,ACCNR,COMPILE_QUEUE,PARTITION,ROCOTO_XML):
-    """Generate and append compile task into Rocoto xml file
+    """Generate and append compile task into Rocoto XML file
 
     Args:
-        MACHINE_ID (str): Machine ID i.e. Hera, Gaea, Jet, etc.
-        COMPILE_ID (str): Compile identifier e.g. s2swa_intel
+        MACHINE_ID (str): Machine ID i.e., Hera, Gaea, Jet, etc.
+        COMPILE_ID (str): Compile identifier e.g., s2swa_intel
         ROCOTO_COMPILE_MAXTRIES (str): Max attempts for compile
         MAKE_OPT (str): Make build options
         ACCNR (str): Account to run the job with
-        COMPILE_QUEUE (str): QOS i.e. batch, windfall, normal, etc.
-        PARTITION (str): System partition i.e. xjet, c5
-        ROCOTO_XML (str): Rocoto .xml filename to write to
+        COMPILE_QUEUE (str): Quality of Service (QOS), i.e., batch, windfall, normal, etc.
+        PARTITION (str): System partition i.e., xjet, c5
+        ROCOTO_XML (str): Rocoto XML filename to write to
     """
     NATIVE=""
     BUILD_CORES="8"
@@ -90,11 +91,11 @@ command>
     f.close()
 
 def write_metatask_begin(COMPILE_METATASK_NAME, filename):
-    """Write compile task metadata to Rocoto xml file
+    """Write compile task metadata to Rocoto XML file
 
     Args:
-        COMPILE_METATASK_NAME (str): Compile job name e.g. s2swa_intel
-        filename (str): Rocoto xml filename to append to
+        COMPILE_METATASK_NAME (str): Compile job name e.g., s2swa_intel
+        filename (str): Rocoto XML filename to append to
     """
     metatask_name = f"""  <metatask name="compile_{COMPILE_METATASK_NAME}_tasks"><var name="zero">0</var>
 """
@@ -103,10 +104,10 @@ def write_metatask_begin(COMPILE_METATASK_NAME, filename):
     f.close()
 
 def write_metatask_end(filename):
-    """Append closing metatask element to Rocoto xml
+    """Append closing metatask element to Rocoto XML
 
     Args:
-        filename (str): Rocoto xml filename
+        filename (str): Rocoto XML filename
     """
     metatask_name = f"""  </metatask>
 """
@@ -118,10 +119,10 @@ def write_compile_env(SCHEDULER,PARTITION,JOB_NR,COMPILE_QUEUE,RUNDIR_ROOT):
     """Generate compile task .env file
 
     Args:
-        SCHEDULER (str): Job scheduler e.g. pbs, slurm
-        PARTITION (str): System partition i.e. xjet, c5
+        SCHEDULER (str): Job scheduler, e.g., pbs, slurm
+        PARTITION (str): System partition, i.e., xjet, c5
         JOB_NR (str): Job number
-        COMPILE_QUEUE (str): QOS i.e. batch, windfall, normal, etc.
+        COMPILE_QUEUE (str): Quality of Service (QOS), i.e., batch, windfall, normal, etc.
         RUNDIR_ROOT (str): Test run directory
     """
     filename   = RUNDIR_ROOT+"/compile_"+str(os.getenv('COMPILE_ID'))+".env"
@@ -308,6 +309,11 @@ UFS_TEST.SH OPTIONS USED:
         write_logfile(filename, "a", output="* (-v) - VERBOSE OUTPUT"+"\n")
 
 def xml_loop():
+    """
+    Creates workflow XML file for each test.
+    Reads in ``baseline_setup.yaml``, parses ``ufs_test.yaml``, and sets up Rocoto XML 
+    according to the runtime arguments given in ``ufs_test.sh``. 
+    """
     ACCNR      = str(os.getenv('ACCNR'))
     PATHRT     = str(os.getenv('PATHRT'))
     MACHINE_ID = str(os.getenv('MACHINE_ID'))

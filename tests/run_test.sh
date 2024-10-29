@@ -118,7 +118,7 @@ case ${MACHINE_ID} in
     ;;
   gaea)
     module use /ncrc/proj/epic/spack-stack/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core
-    module load stack-intel/2023.1.0 stack-cray-mpich/8.1.25
+    module load stack-intel/2023.2.0 stack-cray-mpich/8.1.28
     module load nccmp/1.9.0.1
     ;;
   derecho)

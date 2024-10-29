@@ -16,7 +16,7 @@ def get_timestamps(path):
     return str(dtsort[0]),str(dtsort[-1])
 
 def finish_log():
-    """Collect regression test results and generate log file.
+    """Collects regression test results and generates log file.
     """
     UFS_TEST_YAML = str(os.getenv('UFS_TEST_YAML'))
     PATHRT     = os.getenv('PATHRT')
