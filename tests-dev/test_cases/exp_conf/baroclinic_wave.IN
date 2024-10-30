@@ -12,19 +12,9 @@ elif [ $NPX = 769 ]; then
 fi
 
 echo "inputdir=$inputdir,NPX=$NPX,NESTED=$NESTED"
-
-if [ ${MACHINE_ID} = hera ]; then
- cp /scratch1/NCEPDEV/nems/role.epic/HSD_INPUT_DATA/global_hyblev.l128.txt .
-elif [ ${MACHINE_ID} = orion ]; then 
- cp /work/noaa/epic/role-epic/contrib/HSD_INPUT_DATA/global_hyblev.l128.txt .
-elif [ ${MACHINE_ID} = hercules ]; then
- cp /work/noaa/epic/role-epic/contrib/HSD_INPUT_DATA/global_hyblev.l128.txt . 
-elif [ ${MACHINE_ID} = jet ]; then
- cp /mnt/lfs5/HFIP/hfv3gfs/role.epic/HSD_INPUT_DATA/global_hyblev.l128.txt .
-elif [ ${MACHINE_ID} = gaea ]; then
- cp /gpfs/f5/epic/world-shared/HSD_INPUT_DATA/global_hyblev.l128.txt .
-elif [ ${MACHINE_ID} = derecho ]; then
- cp /glade/work/epicufsrt/contrib/HSD_INPUT_DATA/global_hyblev.l128.txt.
+HSD_CASE=${HSD_CASE:-false}
+if [ "$HSD_CASE" = "true" ]; then
+  cp @[HSD_INPUT_DATA]/global_hyblev.l128.txt .
 fi
 
 OPNREQ_TEST=${OPNREQ_TEST:-false}

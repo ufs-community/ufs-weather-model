@@ -24,19 +24,7 @@ if [ $WARM_START = .false. ]; then
   elif [ "$V2_SFC_FILE" = "true" ]; then
     cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127_v2_sfc/* ./INPUT/.
   elif [ "$HSD_CASE" = "true" ]; then
-    if [ ${MACHINE_ID} = hera ]; then
-      cp -r /scratch1/NCEPDEV/nems/role.epic/HSD_INPUT_DATA/${inputdir}/INPUT_L127_v2_sfc/* ./INPUT/.
-    elif [ ${MACHINE_ID} = orion ]; then
-     cp -r /work/noaa/epic/role-epic/contrib/HSD_INPUT_DATA/${inputdir}/INPUT_L127_v2_sfc/* ./INPUT/. 
-    elif [ ${MACHINE_ID} = hercules ]; then
-     cp -r /work/noaa/epic/role-epic/contrib/HSD_INPUT_DATA/${inputdir}/INPUT_L127_v2_sfc/* ./INPUT/.
-    elif [ ${MACHINE_ID} = jet ]; then
-     cp -r /mnt/lfs5/HFIP/hfv3gfs/role.epic/HSD_INPUT_DATA/${inputdir}/INPUT_L127_v2_sfc/* ./INPUT/.
-    elif [ ${MACHINE_ID} = gaea ]; then
-     cp -r /gpfs/f5/epic/world-shared/HSD_INPUT_DATA/${inputdir}/INPUT_L127_v2_sfc/* ./INPUT/.
-    elif [ ${MACHINE_ID} = derecho ]; then
-     cp -r /glade/work/epicufsrt/contrib/HSD_INPUT_DATA/${inputdir}/INPUT_L127_v2_sfc/* ./INPUT/.
-    fi 
+    cp -r @[HSD_INPUT_DATA]/${inputdir}/INPUT_L127_v2_sfc/* ./INPUT/.
   else
     cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127_gfsv17/* ./INPUT/.
   fi
