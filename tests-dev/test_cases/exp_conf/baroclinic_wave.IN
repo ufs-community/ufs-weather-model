@@ -13,19 +13,7 @@ fi
 
 echo "inputdir=$inputdir,NPX=$NPX,NESTED=$NESTED"
 
-if [ ${MACHINE_ID} = hera ]; then
- cp /scratch1/NCEPDEV/nems/role.epic/HSD_INPUT_DATA/global_hyblev.l128.txt .
-elif [ ${MACHINE_ID} = orion ]; then 
- cp /work/noaa/epic/role-epic/contrib/HSD_INPUT_DATA/global_hyblev.l128.txt .
-elif [ ${MACHINE_ID} = hercules ]; then
- cp /work/noaa/epic/role-epic/contrib/HSD_INPUT_DATA/global_hyblev.l128.txt . 
-elif [ ${MACHINE_ID} = jet ]; then
- cp /mnt/lfs5/HFIP/hfv3gfs/role.epic/HSD_INPUT_DATA/global_hyblev.l128.txt .
-elif [ ${MACHINE_ID} = gaea ]; then
- cp /gpfs/f5/epic/world-shared/HSD_INPUT_DATA/global_hyblev.l128.txt .
-elif [ ${MACHINE_ID} = derecho ]; then
- cp /glade/work/epicufsrt/contrib/HSD_INPUT_DATA/global_hyblev.l128.txt.
-fi
+cp @[INPUTDATA_ROOT]/${inputdir}/global_hyblev.l128.txt .
 
 OPNREQ_TEST=${OPNREQ_TEST:-false}
 V2_SFC_FILE=${V2_SFC_FILE:-false}
