@@ -16,7 +16,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules/Modules)
 ###############################################################################
 
 # Valid applications and choices
-list(APPEND VALID_APPS ATM ATMAERO ATMAQ ATMW ATMWM ATML ATMF LND S2S S2SA S2SW S2SWA S2SWAL ATM_DS2S ATM_DS2S-PCICE HAFS HAFSW HAFS-MOM6 HAFS-MOM6W HAFS-ALL NG-GODAS)
+list(APPEND VALID_APPS ATM ATMAERO ATMAQ ATMW ATMWM ATML ATMF LND LND-LM4 S2S S2SA S2SW S2SWA S2SWAL ATM_DS2S ATM_DS2S-PCICE HAFS HAFSW HAFS-MOM6 HAFS-MOM6W HAFS-ALL NG-GODAS)
 set(APP NONE CACHE BOOL "Application Name")
 if(NOT (APP IN_LIST VALID_APPS))
   message(FATAL_ERROR "${APP} is not a valid application.\nValid Applications are: ${VALID_APPS}")
@@ -29,6 +29,7 @@ set(UFS_GOCART      OFF CACHE BOOL "Enable GOCART")
 set(MOM6            OFF CACHE BOOL "Enable MOM6")
 set(HYCOM           OFF CACHE BOOL "Enable HYCOM")
 set(CICE6           OFF CACHE BOOL "Enable CICE6")
+set(LM4             OFF CACHE BOOL "Enable LM4")
 set(WW3             OFF CACHE BOOL "Enable WW3")
 set(STOCH_PHYS      OFF CACHE BOOL "Enable Stochastic Physics")
 set(CMEPS           OFF CACHE BOOL "Enable CMEPS")
@@ -48,6 +49,7 @@ message("GOCART ........... ${UFS_GOCART}")
 message("MOM6 ............. ${MOM6}")
 message("HYCOM ............ ${HYCOM}")
 message("CICE6 ............ ${CICE6}")
+message("LM4 .............. ${LM4}")
 message("WW3 .............. ${WW3}")
 message("STOCH_PHYS ....... ${STOCH_PHYS}")
 message("CDEPS ............ ${CDEPS}")
@@ -157,7 +159,7 @@ if(FMS)
   elseif (APP MATCHES "^(S2S|S2SA|S2SW|S2SWA|S2SWAL|ATM_DS2S|ATM_DS2S-PCICE|NG-GODAS|HAFS-MOM6|HAFS-MOM6W)$")
     add_library(fms ALIAS FMS::fms_r8)
   endif()
-  if(APP MATCHES "^(ATM|ATMAERO|ATMAQ|ATMWM|ATMW|ATML|ATMF|HAFS|HAFS-ALL)$")
+  if(APP MATCHES "^(ATM|ATMAERO|ATMAQ|ATMWM|ATMW|ATML|ATMF|ATML-LM4|LND-LM4|HAFS|HAFS-ALL)$")
     if(32BIT)
       add_library(fms ALIAS FMS::fms_r4)
     else()
@@ -256,8 +258,13 @@ if(CDEPS)
 endif()
 
 ###############################################################################
-### Land Components [NOAHMP]
+### Land Components [NOAHMP and LM4]
 ###############################################################################
+
+if (LM4)
+  add_subdirectory(LM4-driver)
+endif()
+
 if(NOAHMP)
   add_subdirectory(NOAHMP-interface)
 endif()
@@ -327,6 +334,12 @@ if(CICE6)
   add_dependencies(ufs cice)
   list(APPEND _ufs_defs_private FRONT_CICE6=ice_comp_nuopc)
   list(APPEND _ufs_libs_public cice)
+endif()
+
+if (LM4)
+   add_dependencies(ufs lm4)
+   list(APPEND _ufs_defs_private FRONT_LM4=lm4_cap_mod)
+   list(APPEND _ufs_libs_public lm4)
 endif()
 
 if(CMEPS)
