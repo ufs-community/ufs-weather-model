@@ -149,10 +149,6 @@ def finish_log():
     start_time      = datetime.strptime(clean_START_TIME, "%Y-%m-%d %H:%M:%S")
     clean_END_TIME= TEST_END_TIME.split('.')[0]
     end_time        = datetime.strptime(clean_END_TIME, "%Y-%m-%d %H:%M:%S")
-    print(TEST_START_TIME)
-    print(clean_START_TIME)
-    print(TEST_END_TIME)
-    print(clean_END_TIME)
 
     hours, remainder= divmod((end_time - start_time).total_seconds(), 3600)
     minutes, seconds= divmod(remainder, 60)
