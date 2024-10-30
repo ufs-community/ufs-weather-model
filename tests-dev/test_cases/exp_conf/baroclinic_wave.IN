@@ -12,8 +12,10 @@ elif [ $NPX = 769 ]; then
 fi
 
 echo "inputdir=$inputdir,NPX=$NPX,NESTED=$NESTED"
-
-cp @[INPUTDATA_ROOT]/${inputdir}/global_hyblev.l128.txt .
+HSD_CASE=${HSD_CASE:-false}
+if [ "$HSD_CASE" = "true" ]; then
+  cp @[HSD_INPUT_DATA]/global_hyblev.l128.txt .
+fi
 
 OPNREQ_TEST=${OPNREQ_TEST:-false}
 V2_SFC_FILE=${V2_SFC_FILE:-false}
