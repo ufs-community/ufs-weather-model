@@ -18,8 +18,8 @@ ICERES=${OCNRES:0:1}.${OCNRES:1}
 V2_SFC_FILE=${V2_SFC_FILE:-false}
 
 if [[ ${BMIC} == .true. ]]; then
-  #FV3_IC=@[INPUTDATA_ROOT]/GEFS/${SYEAR}${SMONTH}${SDAY}${SHOUR}/ #TODO: testing
-  FV3_IC=/scratch1/NCEPDEV/nems/Nick.Szapiro/tasks/input_data/gefs.v13/stage/GEFS/${SYEAR}${SMONTH}${SDAY}${SHOUR}/
+  #FV3_IC=@[INPUTDATA_ROOT]/GEFS/${SYEAR}${SMONTH}${SDAY}${SHOUR}/ #TODO: use once input data is staged
+  FV3_IC=/scratch1/NCEPDEV/nems/Nick.Szapiro/tasks/input_data/gefs.v13/RT_GEFS/${SYEAR}${SMONTH}${SDAY}${SHOUR}/
   MOM_IC=${FV3_IC}; ICE_IC=${FV3_IC}; WAV_IC=${FV3_IC}
 else
   if [[ $ATMRES == C48 ]]; then
@@ -204,7 +204,7 @@ fi
 #prognostic aerosols
 if [ $CPLCHM = .true. ]; then
   if [[ ${BMIC} == .true. ]]; then
-    ln -sf /scratch1/NCEPDEV/nems/Nick.Szapiro/tasks/input_data/gefs.v13/stage/GEFS/ExtData .
+    ln -sf ${FV3_IC}/../ExtData .
   else
     ln -sf  @[INPUTDATA_ROOT]/GOCART/p8c_5d/ExtData .
   fi
