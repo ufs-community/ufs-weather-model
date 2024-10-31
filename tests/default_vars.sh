@@ -564,7 +564,7 @@ export DOMAINS_STACK_SIZE=3000000
 
 # Coldstart/warmstart
 #rt script for ICs
-export MODEL_INITIALIZATION=false
+export MODEL_INITIALIZATION=.false.
 #namelist variable
 export WARM_START=.false.
 export READ_INCREMENT=.false.

@@ -13,17 +13,17 @@ fi
 
 echo "inputdir=$inputdir,NPX=$NPX,NESTED=$NESTED"
 
-OPNREQ_TEST=${OPNREQ_TEST:-false}
-V2_SFC_FILE=${V2_SFC_FILE:-false}
-HSD_CASE=${HSD_CASE:-false}
+OPNREQ_TEST=${OPNREQ_TEST:-".false."}
+V2_SFC_FILE=${V2_SFC_FILE:-".false."}
+HSD_CASE=${HSD_CASE:-".false."}
 SUFFIX=${RT_SUFFIX}
 if [ $WARM_START = .false. ]; then
   mkdir INPUT RESTART
   if [ "$NESTED" = .true. ]; then
     cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127_nested/* ./INPUT/.
-  elif [ "$V2_SFC_FILE" = "true" ]; then
+  elif [ "$V2_SFC_FILE" = .true. ]; then
     cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127_v2_sfc/* ./INPUT/.
-  elif [ "$HSD_CASE" = "true" ]; then
+  elif [ "$HSD_CASE" = .true. ]; then
     cp -r @[HSD_INPUT_DATA]/${inputdir}/INPUT_L127_v2_sfc/* ./INPUT/.
   else
     cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127_gfsv17/* ./INPUT/.
@@ -47,7 +47,7 @@ else
     cp ../${DEP_RUN}${SUFFIX}/${RFILE} .
   fi
 
-  if [ $MODEL_INITIALIZATION = false ]; then
+  if [ $MODEL_INITIALIZATION = .false. ]; then
     #read_inc and iau tests restart from fh=24
     CURRDIR=`pwd`
     FILEDIR=${CURRDIR}/../${DEP_RUN}${SUFFIX}/RESTART
@@ -58,7 +58,7 @@ else
 
   if [[ ${IAU_OFFSET} != 0 ]] || [[ $READ_INCREMENT = .true. ]]; then
 
-    if [ $MODEL_INITIALIZATION = false ]; then
+    if [ $MODEL_INITIALIZATION = .false. ]; then
       cp ${FILEDIR}/../INPUT/fv3_increment.nc INPUT/.
       cp ${FILEDIR}/../INPUT/grid_spec.nc INPUT/.
       cp ${FILEDIR}/../INPUT/*_grid.tile*.nc INPUT/.
