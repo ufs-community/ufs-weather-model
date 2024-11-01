@@ -9,7 +9,7 @@ load("mysql/8.0.33")
 
 setenv("LMOD_TMOD_FIND_FIRST","yes")
 prepend_path("MODULEPATH", "/lustre/desc1/scratch/epicufsrt/contrib/modulefiles_extra")
-prepend_path("MODULEPATH", "/glade/work/epicufsrt/contrib/spack-stack/derecho/spack-stack-1.8.0/envs/ue-gcc-12.2.0/install/modulefiles/Core")
+prepend_path("MODULEPATH", "/glade/work/epicufsrt/contrib/spack-stack/derecho/spack-stack-1.8.0/envs/mapl-2.40.3-gcc-12.2.0/install/modulefiles/Core")
 
 unload("ncarcompilers")
 stack_gnu_ver=os.getenv("stack_gnu_ver") or "12.2.0"
@@ -26,6 +26,6 @@ load(pathJoin("stack-python", stack_python_ver))
 
 setenv("CMAKE_Platform", "derecho.gnu")
 load("ufs-weather-model-env")
-load("module load sp/2.5.0")
+load("sp/2.5.0")
 
 whatis("Description: UFS build environment")
