@@ -10,7 +10,7 @@ local ufs_modules = {
   {["netcdf-c"]        = "4.9.2"},
   {["netcdf-fortran"]  = "4.6.1"},
   {["parallelio"]      = "2.6.2"},
-  {["esmf"]            = "8.6.1"},
+  {["esmf"]            = "8.6.0"},
   {["fms"]             = "2024.02"},
   {["bacio"]           = "2.4.1"},
   {["crtm"]            = "2.4.0.1"},
@@ -20,7 +20,7 @@ local ufs_modules = {
   {["sp"]              = "2.5.0"},
   {["w3emc"]           = "2.10.0"},
   {["gftl-shared"]     = "1.9.0"},
-  {["mapl"]            = "2.46.3-esmf-8.6.1"},
+  {["mapl"]            = "2.40.3-esmf-8.6.0"},
   {["scotch"]          = "7.0.4"},
 }
 
