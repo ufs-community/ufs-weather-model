@@ -2,7 +2,7 @@ help([[
 loads UFS Model prerequisites for Hercules/GNU
 ]])
 
-prepend_path("MODULEPATH", "/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.8.0/envs/ue-gcc-12.2.0/install/modulefiles/Core")
+prepend_path("MODULEPATH", "/apps/contrib/spack-stack/spack-stack-1.8.0/envs/mapl-2.40.3-gcc-12.2.0/install/modulefiles/Core")
 
 stack_gnu_ver=os.getenv("stack_gnu_ver") or "12.2.0"
 load(pathJoin("stack-gcc", stack_gnu_ver))
