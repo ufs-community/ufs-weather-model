@@ -835,9 +835,9 @@ case ${MACHINE_ID} in
     if [[ "${ECFLOW:-false}" == true ]] ; then
       module load ecflow/5.11.4
     fi
-    module use /contrib/spack-stack/spack-stack-1.6.0/envs/unified-env-rocky8/install/modulefiles/Core
+    module use /contrib/spack-stack/spack-stack-1.8.0/envs/mapl-2.40.3-intel-2021.5.0/install/modulefiles/Core
     module load stack-intel/2021.5.0
-    module load stack-python/3.10.13
+    module load stack-python/3.11.7
 
     QUEUE="batch"
     COMPILE_QUEUE="batch"
