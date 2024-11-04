@@ -64,7 +64,10 @@ export LIST_FILES="sfcf021.tile1.nc \
                    RESTART/20210323.060000.sfc_data.tile6.nc \
                    RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc"
 
+export DT_ATMOS=720
+
 export_fv3
+export_ugwpv1
 export_cpl
 
 #Component settings
@@ -112,10 +115,21 @@ export RESTART_N=12
 export RESTART_INTERVAL="${RESTART_N} -1"
 export OUTPUT_FH='0 21 24'
 
-export CCPP_SUITE=FV3_GFS_v17_coupled_p8
+export K_SPLIT=4
+export N_SPLIT=5
+
+# HR4 GFSv17 GWD update
+export DO_GWD_OPT_PSL=.true.
+export DO_GSL_DRAG_SS=.false.
+
+export CCPP_SUITE=FV3_GFS_v17_coupled_p8_ugwpv1
 export DIAG_TABLE=diag_table_gfsv16
 export FIELD_TABLE=field_table_thompson_noaero_tke
 export INPUT_NML=global_control.nml.IN
 export MODEL_CONFIGURE=model_configure.IN
 export UFS_CONFIGURE=ufs.configure.s2s_esmf.IN
 export FV3_RUN="cpld_control_run.IN cpld_docn_dice.IN"
+
+if [[ $MACHINE_ID = hera ]] || [[ $MACHINE_ID = hercules ]] || [[ $MACHINE_ID = orion ]] || [[ $MACHINE_ID = gaea ]]; then
+  WLCLK=50
+fi
