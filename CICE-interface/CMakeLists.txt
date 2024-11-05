@@ -50,8 +50,10 @@ else()
 endif()
 
 # Configuration Options
-set(CICE_IO "PIO" CACHE STRING "CICE OPTIONS: Choose IO options.")
-set_property(CACHE CICE_IO PROPERTY STRINGS "NetCDF" "PIO" "Binary")
+if(NOT CICE_IO)
+    set(CICE_IO "PIO" CACHE STRING "CICE OPTIONS: Choose IO options.")
+    set_property(CACHE CICE_IO PROPERTY STRINGS "NetCDF" "PIO" "Binary")
+endif()
 
 # Too many files to list, so include them via this file
 include("cice_files.cmake")
