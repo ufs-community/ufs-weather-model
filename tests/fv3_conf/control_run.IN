@@ -44,7 +44,7 @@ else
     cp ../${DEP_RUN}${SUFFIX}/${RFILE} .
   fi
 
-  if [ $MODEL_INITIALIZATION = .false. ]; then
+  if [ $MODEL_INITIALIZATION = false ]; then
     #read_inc and iau tests restart from fh=24
     CURRDIR=`pwd`
     FILEDIR=${CURRDIR}/../${DEP_RUN}${SUFFIX}/RESTART
@@ -55,7 +55,7 @@ else
 
   if [[ ${IAU_OFFSET} != 0 ]] || [[ $READ_INCREMENT = .true. ]]; then
 
-    if [ $MODEL_INITIALIZATION = .false. ]; then
+    if [ $MODEL_INITIALIZATION = false ]; then
       cp ${FILEDIR}/../INPUT/fv3_increment.nc INPUT/.
       cp ${FILEDIR}/../INPUT/grid_spec.nc INPUT/.
       cp ${FILEDIR}/../INPUT/*_grid.tile*.nc INPUT/.
