@@ -3,11 +3,11 @@
 #SBATCH -o out
 #SBATCH --account=@[ACCNR]
 #SBATCH --partition=@[PARTITION]
-#SBATCH --qos=debug
-##SBATCH --ntasks=@[TASKS]
+#SBATCH --qos=@[QUEUE]
 #SBATCH --nodes=@[NODES]
 #SBATCH --ntasks-per-node=@[TPN]
-#SBATCH --time=30:00
+#SBATCH --mem-per-cpu=2500M
+#SBATCH --time=00:@[WLCLK]:00
 #SBATCH --job-name="@[JBNME]"
 ### #SBATCH --exclusive
 
