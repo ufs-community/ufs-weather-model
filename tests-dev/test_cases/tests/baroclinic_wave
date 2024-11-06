@@ -33,7 +33,11 @@ export SYEAR=2019
 export SMONTH=12
 export SDAY=03
 export SHOUR=00
-export FHMAX=240
+if [[ $MACHINE_ID = jet ]]; then
+  export FHMAX=120
+else
+  export FHMAX=240
+fi
 export DT_ATMOS=450
 export RESTART_INTERVAL='480 -1'
 export OUTPUT_GRID='gaussian_grid'

@@ -9,9 +9,10 @@
 #SBATCH --mem-per-cpu=2500M
 #SBATCH --time=00:@[WLCLK]:00
 #SBATCH --job-name="@[JBNME]"
-### #SBATCH --exclusive
+#SBATCH --exclusive
 
 set -eux
+ulimit -u unlimited
 echo -n " $( date +%s )," >  job_timestamp.txt
 
 set +x
