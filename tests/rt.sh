@@ -765,7 +765,8 @@ case ${MACHINE_ID} in
     fi
 
     #DISKNM=/gpfs/f5/epic/world-shared/UFS-WM_RT
-    DISKNM=/gpfs/f6/drsa-fire2/world-shared/Brian.Curtis
+    #DISKNM=/gpfs/f6/drsa-fire2/world-shared/Brian.Curtis
+    DISKNM=/gpfs/f6/bil-fire8/world-shared/role.epic/UFS-WM_RT
     QUEUE=normal
     COMPILE_QUEUE=normal
     PARTITION=c6
