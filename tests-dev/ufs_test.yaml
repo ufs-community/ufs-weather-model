@@ -110,6 +110,8 @@ atm_dyn32_intel:
     compiler: 'intel'
     option: '-DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16,FV3_GFS_v16_flake,FV3_GFS_v17_p8,FV3_GFS_v17_p8_rrtmgp,FV3_GFS_v15_thompson_mynn_lam3km,FV3_WoFS_v0,FV3_GFS_v17_p8_mynn,FV3_GFS_v17_p8_ugwpv1 -D32BIT=ON'
   tests: 
+    - 2020_CAPE: {'project':['test_case'],'baseline': 'True'}
+    - baroclinic_wave: {'project':['test_case'],'baseline': 'True'}
     - control_flake: {'project':['regression'],'baseline': 'True'}
     - control_CubedSphereGrid: {'project':['regression'],'baseline': 'True'}
     - control_CubedSphereGrid_parallel: {'project':['regression'],'baseline': 'True','turnoff':['noaacloud']}
@@ -439,14 +441,6 @@ atm_fbh_intel:
     turnoff: ['wcoss2','noaacloud','acorn']
   tests: 
     - cpld_regional_atm_fbh: {'project':['regression'],'baseline': 'True','turnoff':['wcoss2','noaacloud','acorn']}
-test_cases_intel:
-  build:
-    compiler: 'intel'
-    option: '-DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16,FV3_GFS_v16_flake,FV3_GFS_v17_p8,FV3_GFS_v17_p8_rrtmgp,FV3_GFS_v15_thompson_mynn_lam3km,FV3_WoFS_v0,FV3_GFS_v17_p8_mynn,FV3_GFS_v17_p8_ugwpv1 -D32BIT=ON'
-  tests:
-    - 2020_CAPE: {'project':['test_case']}
-    #- 2020_CAPE_C768: {'project':['test_case']}
-    - baroclinic_wave: {'project':['test_case']}
 s2swa_32bit_pdlib_intelllvm:
   build: 
     compiler: 'intelllvm'
@@ -523,6 +517,8 @@ atm_gnu:
     option: '-DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16,FV3_GFS_v16_flake,FV3_GFS_v16_ras,FV3_GFS_v17_p8,FV3_GFS_v17_p8_ugwpv1'
     turnon: ['hera','hercules']
   tests: 
+    - 2020_CAPE: {'project':['test_case'], 'baseline': 'True','turnon':['hera','hercules']}
+    - baroclinic_wave: {'project':['test_case'], 'baseline': 'True','turnon':['hera','hercules']}
     - control_c48: {'project':['regression'],'baseline': 'True','turnon':['hera','hercules']}
     - control_stochy: {'project':['regression'],'baseline': 'True','turnon':['hera','hercules']}
     - control_ras: {'project':['regression'],'baseline': 'True','turnon':['hera','hercules']}
@@ -665,11 +661,4 @@ datm_cdeps_gnu:
     turnon: ['hera','hercules']
   tests: 
     - datm_cdeps_control_cfsr: {'project':['regression'],'baseline': 'True','turnon':['hera','hercules']}
-test_cases_gnu:
-  build:
-    compiler: 'gnu'
-    option: '-DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16,FV3_GFS_v16_flake,FV3_GFS_v17_p8,FV3_GFS_v17_p8_rrtmgp,FV3_GFS_v15_thompson_mynn_lam3km,FV3_WoFS_v0,FV3_GFS_v17_p8_mynn,FV3_GFS_v17_p8_ugwpv1 -D32BIT=ON'
-  tests:
-    - 2020_CAPE: {'project':['test_case']}
-    #- 2020_CAPE_C768: {'project':['test_case']}
     - baroclinic_wave: {'project':['test_case']}

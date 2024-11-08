@@ -4,7 +4,7 @@ import subprocess
 import yaml
 from ufs_test_utils import get_testcase, write_logfile, rrmdir, machine_check_off
 
-def rocoto_create_entries(RTPWD,MACHINE_ID,INPUTDATA_ROOT,INPUTDATA_ROOT_WW3,INPUTDATA_ROOT_BMIC,HSD_INPUT_DATA,RUNDIR_ROOT,NEW_BASELINE,ROCOTO_XML):
+def rocoto_create_entries(RTPWD,MACHINE_ID,INPUTDATA_ROOT,INPUTDATA_ROOT_WW3,INPUTDATA_ROOT_BMIC,RUNDIR_ROOT,NEW_BASELINE,ROCOTO_XML):
     """Generate header information for Rocoto XML file
 
     Args:
@@ -13,7 +13,6 @@ def rocoto_create_entries(RTPWD,MACHINE_ID,INPUTDATA_ROOT,INPUTDATA_ROOT_WW3,INP
         INPUTDATA_ROOT (str): Input data directory
         INPUTDATA_ROOT_WW3 (str): WW3 input data directory
         INPUTDATA_ROOT_BMIC (str): BMIC input data directory
-        HSD_INPUT_DATA (str): HSD tests input data directory
         RUNDIR_ROOT (str): Test run directory
         NEW_BASELINE (str): Directory for newly generated baselines
         ROCOTO_XML (str): Rocoto XML filename to write to
@@ -33,7 +32,6 @@ def rocoto_create_entries(RTPWD,MACHINE_ID,INPUTDATA_ROOT,INPUTDATA_ROOT_WW3,INP
   <!ENTITY INPUTDATA_ROOT "{INPUTDATA_ROOT}">
   <!ENTITY INPUTDATA_ROOT_WW3 "{INPUTDATA_ROOT_WW3}">
   <!ENTITY INPUTDATA_ROOT_BMIC "{INPUTDATA_ROOT_BMIC}">
-  <!ENTITY HSD_INPUT_DATA "{HSD_INPUT_DATA}">
   <!ENTITY RUNDIR_ROOT    "{RUNDIR_ROOT}">
   <!ENTITY NEW_BASELINE   "{NEW_BASELINE}">
 ]>
@@ -169,7 +167,6 @@ def write_runtest_env():
     INPUTDATA_ROOT     = str(os.getenv('INPUTDATA_ROOT'))
     INPUTDATA_ROOT_WW3 = str(os.getenv('INPUTDATA_ROOT_WW3'))
     INPUTDATA_ROOT_BMIC= str(os.getenv('INPUTDATA_ROOT_BMIC'))
-    HSD_INPUT_DATA= str(os.getenv('HSD_INPUT_DATA'))
     PATHRT = str(os.getenv('PATHRT'))
     PATHTR, tail    = os.path.split(PATHRT)
     NEW_BASELINE    = str(os.getenv('NEW_BASELINE'))
@@ -198,7 +195,6 @@ export RTPWD={RTPWD}
 export INPUTDATA_ROOT={INPUTDATA_ROOT}
 export INPUTDATA_ROOT_WW3={INPUTDATA_ROOT_WW3}
 export INPUTDATA_ROOT_BMIC={INPUTDATA_ROOT_BMIC}
-export HSD_INPUT_DATA={HSD_INPUT_DATA}
 export PATHRT={PATHRT}
 export PATHTR={PATHTR}
 export NEW_BASELINE={NEW_BASELINE}
@@ -353,7 +349,6 @@ def xml_loop():
         INPUTDATA_ROOT= str(base['INPUTDATA_ROOT'])
         INPUTDATA_ROOT_WW3 = str(base['INPUTDATA_ROOT_WW3'])
         INPUTDATA_ROOT_BMIC= str(base['INPUTDATA_ROOT_BMIC'])
-        HSD_INPUT_DATA= str(base['HSD_INPUT_DATA'])
         
     path = STMP+'/'+USER
     os.makedirs(path, exist_ok=True)
@@ -398,7 +393,6 @@ def xml_loop():
     os.environ["INPUTDATA_ROOT"]     = INPUTDATA_ROOT
     os.environ["INPUTDATA_ROOT_WW3"] = INPUTDATA_ROOT_WW3
     os.environ["INPUTDATA_ROOT_BMIC"]= INPUTDATA_ROOT_BMIC
-    os.environ["HSD_INPUT_DATA"]= HSD_INPUT_DATA
     os.environ["PARTITION"] = PARTITION
     os.environ["SCHEDULER"] = SCHEDULER
     os.environ["RTPWD"]     = RTPWD
@@ -407,7 +401,7 @@ def xml_loop():
     JOB_NR = 0
     ROCOTO = True
     ROCOTO_XML = os.getenv('ROCOTO_XML')
-    rocoto_create_entries(RTPWD,MACHINE_ID,INPUTDATA_ROOT,INPUTDATA_ROOT_WW3,INPUTDATA_ROOT_BMIC,HSD_INPUT_DATA,RUNDIR_ROOT,NEW_BASELINE,ROCOTO_XML)
+    rocoto_create_entries(RTPWD,MACHINE_ID,INPUTDATA_ROOT,INPUTDATA_ROOT_WW3,INPUTDATA_ROOT_BMIC,RUNDIR_ROOT,NEW_BASELINE,ROCOTO_XML)
     UFS_TEST_YAML = str(os.getenv('UFS_TEST_YAML'))
     with open(UFS_TEST_YAML, 'r') as f:
         rt_yaml = yaml.load(f, Loader=yaml.FullLoader)
