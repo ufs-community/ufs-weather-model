@@ -540,8 +540,8 @@ rrfs_gnu:
     - rap_sfcdiff_restart: {'project':['regression'],'dependency':'rap_sfcdiff','turnon':['hera','hercules']}
     - hrrr_control: {'project':['regression'],'baseline': 'True','turnon':['hera','hercules']}
     - hrrr_control_noqr: {'project':['regression'],'turnon':['hera','hercules']}
-    - hrrr_control_2threads: {'project':['regression'],'turnon':['hera','hercules']}
-    - hrrr_control_decomp: {'project':['regression'],'turnon':['hera','hercules']}
+    - hrrr_control_2threads: {'project':['regression'],'dependency':'hrrr_control','turnon':['hera','hercules']}
+    - hrrr_control_decomp: {'project':['regression'],'dependency':'hrrr_control','turnon':['hera','hercules']}
     - hrrr_control_restart: {'project':['regression'],'dependency':'hrrr_control','turnon':['hera','hercules']}
     - hrrr_control_restart_noqr: {'project':['regression'],'dependency':'hrrr_control_noqr','turnon':['hera','hercules']}
     - rrfs_v1beta: {'project':['regression'],'baseline': 'True','turnon':['hera','hercules']}
