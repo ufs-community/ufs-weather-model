@@ -7,7 +7,7 @@ from datetime import datetime
 from ufs_test_utils import get_testcase, write_logfile, delete_files, machine_check_off
 
 def get_timestamps(path):
-    """Obtain experiment starting and ending time marks through file timestapns
+    """Obtain experiment starting and ending time marks through file timestamps
 
     Args:
         path (str): experiment log directory
