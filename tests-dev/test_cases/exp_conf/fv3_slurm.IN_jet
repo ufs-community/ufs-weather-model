@@ -13,7 +13,8 @@
 #SBATCH --exclusive
 
 set -eux
-echo -n " $( date +%s )," >  job_timestamp.txt
+#echo -n " $( date +%s )," >  job_timestamp.txt
+printf "%d," $(date +%s) > job_timestamp.txt
 
 set +x
 export MACHINE_ID=jet
