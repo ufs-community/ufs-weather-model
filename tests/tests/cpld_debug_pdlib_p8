@@ -53,11 +53,15 @@ export LIST_FILES="sfcf003.tile1.nc \
                    RESTART/20210322.090000.MOM.res.nc \
                    RESTART/iced.2021-03-22-32400.nc \
                    RESTART/ufs.cpld.cpl.r.2021-03-22-32400.nc \
+                   ufs.cpld.ww3.r.2021-03-22-32400.nc \
                    20210322.090000.out_pnt.ww3 \
                    20210322.090000.out_grd.ww3 "
 
+export DT_ATMOS=720
 export_fv3
+export_ugwpv1
 export_cpl
+export CCPP_SUITE=FV3_GFS_v17_coupled_p8_ugwpv1
 
 export FHMAX=3
 export DAYS=0.125
@@ -73,7 +77,7 @@ OCN_tasks=$OCN_tasks_cpl_unstr
 ICE_tasks=$ICE_tasks_cpl_unstr
 WAV_tasks=$WAV_tasks_cpl_unstr
 # bump resources for debug test
-WAV_tasks="$(($WAV_tasks_cpl_unstr + 18))"
+WAV_tasks="$(($WAV_tasks_cpl_unstr + 30))"
 OCN_tasks="$((OCN_tasks_cpl_unstr + 16))"
 
 export atm_omp_num_threads=$THRD_cpl_unstr
@@ -96,9 +100,26 @@ export UFS_CONFIGURE=ufs.configure.s2sw_fast_esmf.IN
 
 export FV3_RUN=cpld_control_run.IN
 
-if [[ $MACHINE_ID = hera && $RT_COMPILER = gnu ]] || [[ $MACHINE_ID = jet ]]; then
+if [[ $MACHINE_ID = hera ]] || [[ $MACHINE_ID = jet ]]; then
   WLCLK=50
 fi
+if [[ $MACHINE_ID = hercules && $RT_COMPILER = intelllvm ]]; then
+  WLCLK=50
+fi
+if [[ $MACHINE_ID = orion ]]; then
+  WLCLK=50
+fi
+if [[ $MACHINE_ID = gaea ]]; then
+  WLCLK=50
+fi
+if [[ $MACHINE_ID = wcoss2 ]]; then
+  WLCLK=50
+fi
+
+# set component and coupling timesteps due to long
+# runtime
+export K_SPLIT=2
+export N_SPLIT=5
 
 # HR4 GFSv17 GWD update
 export DO_UGWP_V0=.false.

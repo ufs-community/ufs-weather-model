@@ -1,0 +1,71 @@
+start_year:              @[SYEAR]
+start_month:             @[SMONTH]
+start_day:               @[SDAY]
+start_hour:              @[SHOUR]
+start_minute:            0
+start_second:            0
+nhours_fcst:             @[FHMAX]
+fhrot:                   0
+RUN_CONTINUE:            .false.
+ENS_SPS:                 .false.
+dt_atmos:                @[DT_ATMOS]
+calendar:                'julian'
+memuse_verbose:          .false.
+restart_interval:        @[RESTART_INTERVAL]
+output_1st_tstep_rst:    .false.
+write_dopost:            @[WRITE_DOPOST]
+ideflate:                @[IDEFLATE]
+nbits:                   0
+ichunk2d:                -1
+jchunk2d:                -1
+ichunk3d:                -1
+jchunk3d:                -1
+kchunk3d:                -1
+itasks:                  1
+quilting:                @[QUILTING]
+
+#
+# Write-component (quilting) computational parameters.
+#
+write_groups:            @[WRITE_GROUP]
+write_tasks_per_group:   @[WRTTASK_PER_GROUP]
+num_files:               @[NUM_FILES]
+filename_base:           @[FILENAME_BASE]
+output_file:             @[OUTPUT_FILE]
+#
+# Write-component output frequency parameter definitions:
+#
+# output_fh: Output frequency in hours.
+# nsout: Output frequency in time steps (positive values override "output_fh").
+#
+output_fh:  @[OUTPUT_FH]
+nsout:      -1
+#
+# Coordinate system used by the output grid.
+#
+output_grid:  @[OUTPUT_GRID]
+#
+# Parameter definitions for an output grid of type "lambert_conformal":
+#
+# cen_lon: Longitude of center of grid (degrees).
+# cen_lat: Latitude of center of grid (degrees).
+# stdlat1: Latitude of first standard parallel (degrees).
+# stdlat2: Latitude of second standard parallel (degrees).
+# nx: Number of grid cells along x-axis in Lambert conformal (x,y) plane.
+# ny: Number of grid cells along y-axis in Lambert conformal (x,y) plane.
+# lon1: Longitude of center of grid cell at bottom-left corner of grid (degrees).
+# lat1: Latitude of center of grid cell at bottom-left corner of grid (degrees).
+# dx: Grid cell size in x direction (meters).
+# dy: Grid cell size in y direction (meters).
+#
+cen_lon:  @[CEN_LON]
+cen_lat:  @[CEN_LAT]
+stdlat1:  @[STDLAT1]
+stdlat2:  @[STDLAT2]
+nx:       @[NX]
+ny:       @[NY]
+lon1:     @[LON1]
+lat1:     @[LAT1]
+dx:       @[DX]
+dy:       @[DY]
+

@@ -1,0 +1,12 @@
+rm -rf INPUT RESTART
+mkdir  INPUT RESTART
+
+rsync -arv @[INPUTDATA_ROOT]/FIRE_BEHAVIOR_input_data/@[FIRE_NAME]/. .
+rsync -arv @[INPUTDATA_ROOT]/FV3_fire_input_data/@[FIRE_NAME]/. .
+
+rsync -arv @[INPUTDATA_ROOT]/FV3_regional_input_data/. .
+rsync -arv @[INPUTDATA_ROOT]/FV3_fix .
+ln -sf FV3_fix/* .
+ln -sf FV3_fix/fix_co2_proj/* .
+
+touch data_table

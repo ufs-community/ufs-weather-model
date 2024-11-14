@@ -32,6 +32,8 @@
 !
 !-----------------------------------------------------------------------
 !
+      use, intrinsic :: iso_fortran_env, only : compiler_version
+
       USE MPI
       USE ESMF
 !
@@ -127,9 +129,10 @@
 !
       if (mype == 0) then
         call w3tagb('ufs-weather-model',0,0,0,'np23')
+        write(*,'(A,A)') 'Compiler version: ', compiler_version() // new_line("")
         call MPI_Get_library_version(library_version, resultlen, rc)
-        write(*,'(A,A)')      'MPI Library = ', library_version(1:resultlen)
-        write(*,'(A,I0,A,I0)')'MPI Version = ', mpi_version,'.',mpi_subversion
+        write(*,'(A,A)')      'MPI Library: ', library_version(1:resultlen)
+        write(*,'(A,I0,A,I0)')'MPI Version: ', mpi_version,'.',mpi_subversion
       endif
 !
 !-----------------------------------------------------------------------

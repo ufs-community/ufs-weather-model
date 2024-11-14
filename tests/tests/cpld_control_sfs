@@ -15,9 +15,10 @@ export LIST_FILES="sfcf021.nc \
                    GFSFLX.GrbF24 \
                    GFSPRS.GrbF21 \
                    GFSPRS.GrbF24 \
-                   RESTART/20210323.060000.MOM.res.nc" 
+                   RESTART/20210323.060000.MOM.res.nc"
 
 export_fv3
+export_ugwpv1
 export_cpl
 
 export CPLCHM=.false.
@@ -26,10 +27,14 @@ export MAKE_NH=.false.
 export DDDMP=0
 export DO_VORT_DAMP=.false.
 export HYDROSTATIC=.true.
-export HORD_XX=10
 export HORD_DP=10
-export KORD_XX=12
 export KORD_TM=-12
+export KORD_MT=12
+export KORD_WZ=12
+export KORD_TR=12
+export HORD_MT=10
+export HORD_VT=10
+export HORD_TM=10
 export D_CON=0
 
 export RESTART_N=3
@@ -56,22 +61,6 @@ export CICE_ICE_IC=cice.warmstart.nc
 export atm_omp_num_threads=$THRD_cpl_unstr
 export med_omp_num_threads=$atm_omp_num_threads
 
-# UGWP1
-export GWD_OPT=2
-export CDMBWD=20.0,2.5,1.0,1.0
-export DO_UGWP_V1=.true.
-export KNOB_UGWP_VERSION=1
-export KNOB_UGWP_NSLOPE=1
-export DO_UGWP_V0=.false.
-export DO_GSL_DRAG_LS_BL=.true.
-export DO_GSL_DRAG_SS=.true.
-export DO_GSL_DRAG_TOFD=.true.
-export DO_UGWP_V1_OROG_ONLY=.false.
-export DO_UGWP_V0_NST_ONLY=.false.
-export LDIAG_UGWP=.false.
-export KNOB_UGWP_DOKDIS=2
-export KNOB_UGWP_NDX4LH=4
-
 export MOM6_TOPOEDITS=ufs.topo_edits_011818.nc
 export MOM6_ALLOW_LANDMASK_CHANGES=True
 export eps_imesh=2.5e-1
@@ -85,8 +74,9 @@ export CCPP_SUITE=FV3_GFS_v17_coupled_p8_ugwpv1
 export FIELD_TABLE=field_table_thompson_noaero_tke_progsigma
 export DIAG_TABLE=diag_table_cpld_sfs.IN
 export INPUT_NML=global_control.nml.IN
-
 export UFS_CONFIGURE=ufs.configure.s2sw.IN
+# slow loop
+export WW3_RSTFLDS="ice"
 
 #GFSv17	settings
 export PROGSIGMA=.true.
@@ -96,10 +86,12 @@ if [[ $MACHINE_ID = hera ]] && [[ $RT_COMPILER = gnu ]]; then
   WLCLK=40
 fi
 
+export K_SPLIT=2
+export N_SPLIT=5
+
+export NUDGE_QV=.false.
+export VTDM4=0.05
+
 # HR4 GFSv17 GWD update
-export DO_UGWP_V0=.false.
-export DO_UGWP_V1=.true.
-export DO_GSL_DRAG_LS_BL=.true.
 export DO_GWD_OPT_PSL=.true.
 export DO_GSL_DRAG_SS=.false.
-export DO_GSL_DRAG_TOFD=.true.

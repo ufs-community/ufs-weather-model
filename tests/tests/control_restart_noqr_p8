@@ -47,10 +47,11 @@ export LIST_FILES="sfcf024.nc \
 
 export_fv3
 export_tiled
+export_ugwpv1
+export CCPP_SUITE=FV3_GFS_v17_p8_ugwpv1
+
 export NPZ=127
 export NPZP=128
-export DT_ATMOS=720
-export DT_INNER=${DT_ATMOS}
 export SYEAR=2021
 export SMONTH=03
 export SDAY=22
@@ -93,19 +94,6 @@ export NSTF_NAME=2,0,0,0,0
 export LHEATSTRG=.false.
 export LSEASPRAY=.true.
 
-# UGWP1
-export GWD_OPT=2
-export DO_UGWP_V1=.false.
-export KNOB_UGWP_VERSION=0
-export KNOB_UGWP_NSLOPE=1
-export DO_UGWP_V0=.true.
-export DO_GSL_DRAG_LS_BL=.false.
-export DO_GSL_DRAG_SS=.true.
-export DO_GSL_DRAG_TOFD=.false.
-export DO_UGWP_V1_OROG_ONLY=.false.
-export DO_UGWP_V0_NST_ONLY=.false.
-export LDIAG_UGWP=.false.
-
 # CA
 export DO_CA=.true.
 export CA_SGS=.true.
@@ -138,7 +126,6 @@ export USE_CICE_ALB=.false.
 export WRITE_NSFLIP=.true.
 
 export FV3_RUN=control_run.IN
-export CCPP_SUITE=FV3_GFS_v17_p8
 export FIELD_TABLE=field_table_thompson_noaero_tke
 export DIAG_TABLE=diag_table_cpld.IN
 export INPUT_NML=global_control.nml.IN

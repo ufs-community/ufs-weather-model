@@ -117,9 +117,9 @@ case ${MACHINE_ID} in
     echo "No special nccmp load necessary"
     ;;
   gaea)
-    module use modulefiles
-    module load modules.fv3
-    module load gcc/12.2.0
+    module use /ncrc/proj/epic/spack-stack/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core
+    module load stack-intel/2023.2.0 stack-cray-mpich/8.1.28
+    module load nccmp/1.9.0.1
     ;;
   derecho)
     module load nccmp
@@ -240,7 +240,7 @@ fi
 if [[ "Q${FIELD_TABLE:-}" != Q ]]; then
   cp "${PATHRT}/parm/field_table/${FIELD_TABLE}" field_table
 fi
-
+    
 # fix files
 if [[ ${FV3} == true ]]; then
   cp "${INPUTDATA_ROOT}"/FV3_fix/*.txt .
@@ -302,6 +302,11 @@ if [[ "${DIAG_TABLE_ADDITIONAL:-}Q" != Q ]]; then
   atparse < "${PATHRT}/parm/diag_table/${DIAG_TABLE_ADDITIONAL:-}" >> diag_table
 fi
 
+if [[ "${FIELD_TABLE_ADDITIONAL:-}Q" != Q ]] ; then
+    # Append field table
+    atparse < "${PATHRT}/parm/field_table/${FIELD_TABLE_ADDITIONAL:-}" >> field_table
+fi
+
 # ATMAERO
 if [[ ${CPLCHM} == .true. ]] && [[ ${S2S} = 'false' ]]; then
   atparse < "${PATHRT}/parm/diag_table/${DIAG_TABLE:-diag_table_template}" > diag_table
@@ -328,6 +333,26 @@ fi
 
 if [[ ${CDEPS_INLINE} = 'true' ]]; then
   atparse < "${PATHRT}/parm/${CDEPS_INLINE_CONFIGURE:-stream.config.IN}" > stream.config
+fi
+
+if [[ ${FIRE_BEHAVIOR} = 'true' ]]; then
+  atparse < "${PATHRT}/parm/${FIRE_NML:-namelist.fire.IN}" > namelist.fire
+fi
+
+#Namelists generated and variable definitions are finalized
+#Sanity check for timesteps on ATM/OCN/ICE
+if [[ -n "${DT_CICE+x}" ]]; then
+  if [[ ${DT_ATMOS} -ne ${DT_CICE} ]]; then
+    echo "Atmosphere timestep (DT_ATMOS) should be equal to CICE timestep (DT_CICE). Exiting"
+    exit 1
+  fi
+fi
+if [[ -n "${coupling_interval_slow_sec+x}" && -n "${coupling_interval_fast_sec+x}" ]]; then
+  if [[ $(( coupling_interval_slow_sec % coupling_interval_fast_sec)) -ne 0 ]]; then
+    echo "The slow coupling timestep (coupling_interval_slow_sec) should be divisible by"
+    echo "the fast coupling timestep (coupling_interval_fast_sec). Exiting"
+    exit 1
+  fi
 fi
 
 TPN=$(( TPN / THRD ))

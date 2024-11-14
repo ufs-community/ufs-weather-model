@@ -53,10 +53,12 @@ export LIST_FILES="sfcf003.tile1.nc \
                    RESTART/20210322.090000.MOM.res.nc \
                    RESTART/iced.2021-03-22-32400.nc \
                    RESTART/ufs.cpld.cpl.r.2021-03-22-32400.nc \
+                   ufs.cpld.ww3.r.2021-03-22-32400.nc \
                    20210322.090000.out_pnt.ww3 \
                    20210322.090000.out_grd.ww3 "
-
+export DT_ATMOS=360
 export_fv3
+export_ugwpv1
 export_cpl
 
 export FHMAX=3
@@ -85,21 +87,6 @@ export MOM6_ALLOW_LANDMASK_CHANGES=True
 export eps_imesh=2.5e-1
 export CICE_DIAGFREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
 
-export GWD_OPT=2
-export CDMBWD=20.0,2.5,1.0,1.0
-export DO_UGWP_V1=.true.
-export KNOB_UGWP_VERSION=1
-export KNOB_UGWP_NSLOPE=1
-export DO_UGWP_V0=.false.
-export DO_GSL_DRAG_LS_BL=.true.
-export DO_GSL_DRAG_SS=.true.
-export DO_GSL_DRAG_TOFD=.true.
-export DO_UGWP_V1_OROG_ONLY=.false.
-export DO_UGWP_V0_NST_ONLY=.false.
-export LDIAG_UGWP=.false.
-export KNOB_UGWP_DOKDIS=2
-export KNOB_UGWP_NDX4LH=4
-
 #GFSv17 settings
 export PROGSIGMA=.true.
 export IOPT_DIAG=2
@@ -114,17 +101,24 @@ export FIELD_TABLE=field_table_thompson_noaero_tke_progsigma
 export DIAG_TABLE=diag_table_cpld.IN
 export INPUT_NML=global_control.nml.IN
 export UFS_CONFIGURE=ufs.configure.s2sw.IN
+# slow loop
+export WW3_RSTFLDS="ice"
 
 export FV3_RUN=cpld_control_run.IN
+
+export K_SPLIT=2
+export N_SPLIT=5
 
 if [[ $MACHINE_ID = hera ]] && [[ $RT_COMPILER = gnu ]]; then
   WLCLK=40
 fi
+if [[ $MACHINE_ID = gaea ]] && [[ $RT_COMPILER = intelllvm ]]; then
+  WLCLK=40
+fi
+if [[ $MACHINE_ID = orion ]]; then
+  WLCLK=40
+fi
 
 # HR4 GFSv17 GWD update
-export DO_UGWP_V0=.false.
-export DO_UGWP_V1=.true.
-export DO_GSL_DRAG_LS_BL=.true.
 export DO_GWD_OPT_PSL=.true.
 export DO_GSL_DRAG_SS=.false.
-export DO_GSL_DRAG_TOFD=.true.
