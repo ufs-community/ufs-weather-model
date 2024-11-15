@@ -66,7 +66,10 @@ case ${MACHINE_ID} in
     fi
     if [[ ${MACHINE_ID} == gaeac6 ]]; then
       module reset
+    elif [[ ${MACHINE_ID} == hercules ]]; then
+      module purge
     fi
+
     # Load fv3 module
     module use "${PATHTR}/modulefiles"
     modulefile="ufs_${MACHINE_ID}.${RT_COMPILER}"

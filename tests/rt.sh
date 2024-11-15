@@ -723,7 +723,6 @@ case ${MACHINE_ID} in
     module load cray-mpich/8.1.28
     module load python/3.9.12
     module use /ncrc/proj/epic/spack-stack/modulefiles
-    module load gcc/12.2.0
     if [[ "${ECFLOW:-false}" == true ]] ; then
       module load ecflow/5.8.4
       ECF_HOST=$(hostname)
@@ -991,7 +990,7 @@ case ${MACHINE_ID} in
     module use /apps/modules/modulefiles
 
     if [[ "${ROCOTO:-false}" == true ]] ; then
-      module load rocoto/1.3.3
+      module load rocoto/1.3.7
       ROCOTO_SCHEDULER=slurm
     fi
 
