@@ -13,6 +13,11 @@ fi
 
 echo "inputdir=$inputdir,NPX=$NPX,NESTED=$NESTED"
 
+HSD_CASE=${HSD_CASE:-false}
+if [ "$HSD_CASE" = "true" ]; then
+  cp @[INPUTDATA_ROOT]/HSD_input_data/global_hyblev.l128.txt .
+fi
+
 OPNREQ_TEST=${OPNREQ_TEST:-false}
 V2_SFC_FILE=${V2_SFC_FILE:-false}
 SUFFIX=${RT_SUFFIX}
@@ -40,11 +45,11 @@ else
       cp  ../${DEP_RUN}${SUFFIX}/RESTART/${RFILE} .
       ls -1 ${RFILE}>rpointer.cpl
     fi
-    RFILE=ufs.atmw.ww3.r.${RESTART_FILE_SUFFIX_SECS}.nc
+    RFILE=ufs.atmw.ww3.r.${RESTART_FILE_SUFFIX_SECS}
     cp ../${DEP_RUN}${SUFFIX}/${RFILE} .
   fi
 
-  if [ $MODEL_INITIALIZATION = false ]; then
+  if [ $MODEL_INITIALIZATION = "false" ]; then
     #read_inc and iau tests restart from fh=24
     CURRDIR=`pwd`
     FILEDIR=${CURRDIR}/../${DEP_RUN}${SUFFIX}/RESTART
@@ -55,7 +60,7 @@ else
 
   if [[ ${IAU_OFFSET} != 0 ]] || [[ $READ_INCREMENT = .true. ]]; then
 
-    if [ $MODEL_INITIALIZATION = false ]; then
+    if [ $MODEL_INITIALIZATION = "false" ]; then
       cp ${FILEDIR}/../INPUT/fv3_increment.nc INPUT/.
       cp ${FILEDIR}/../INPUT/grid_spec.nc INPUT/.
       cp ${FILEDIR}/../INPUT/*_grid.tile*.nc INPUT/.

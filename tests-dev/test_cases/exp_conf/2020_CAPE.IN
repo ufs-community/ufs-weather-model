@@ -15,6 +15,7 @@ echo "inputdir=$inputdir,NPX=$NPX,NESTED=$NESTED"
 
 OPNREQ_TEST=${OPNREQ_TEST:-false}
 V2_SFC_FILE=${V2_SFC_FILE:-false}
+HSD_CASE=${HSD_CASE:-false}
 SUFFIX=${RT_SUFFIX}
 if [ $WARM_START = .false. ]; then
   mkdir INPUT RESTART
@@ -22,6 +23,8 @@ if [ $WARM_START = .false. ]; then
     cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127_nested/* ./INPUT/.
   elif [ "$V2_SFC_FILE" = "true" ]; then
     cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127_v2_sfc/* ./INPUT/.
+  elif [ "$HSD_CASE" = "true" ]; then
+    cp -r @[INPUTDATA_ROOT]/HSD_input_data/${inputdir}/INPUT_L127_v2_sfc/* ./INPUT/.
   else
     cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_L127_gfsv17/* ./INPUT/.
   fi
@@ -40,22 +43,22 @@ else
       cp  ../${DEP_RUN}${SUFFIX}/RESTART/${RFILE} .
       ls -1 ${RFILE}>rpointer.cpl
     fi
-    RFILE=ufs.atmw.ww3.r.${RESTART_FILE_SUFFIX_SECS}.nc
+    RFILE=ufs.atmw.ww3.r.${RESTART_FILE_SUFFIX_SECS}
     cp ../${DEP_RUN}${SUFFIX}/${RFILE} .
   fi
 
-  if [ $MODEL_INITIALIZATION = false ]; then
+  if [ $MODEL_INITIALIZATION = "false" ]; then
     #read_inc and iau tests restart from fh=24
     CURRDIR=`pwd`
     FILEDIR=${CURRDIR}/../${DEP_RUN}${SUFFIX}/RESTART
   else
-    #for warm start from initialiation time
+    #for warm start from initialization time
     FILEDIR=@[INPUTDATA_ROOT]/${inputdir}/INPUT_L127_GDAS
   fi
 
   if [[ ${IAU_OFFSET} != 0 ]] || [[ $READ_INCREMENT = .true. ]]; then
 
-    if [ $MODEL_INITIALIZATION = false ]; then
+    if [ $MODEL_INITIALIZATION = "false" ]; then
       cp ${FILEDIR}/../INPUT/fv3_increment.nc INPUT/.
       cp ${FILEDIR}/../INPUT/grid_spec.nc INPUT/.
       cp ${FILEDIR}/../INPUT/*_grid.tile*.nc INPUT/.
