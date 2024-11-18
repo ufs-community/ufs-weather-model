@@ -421,6 +421,7 @@ export CMP_DATAONLY=false
 export esmf_logkind="ESMF_LOGKIND_MULTI"
 export DumpFields="false"
 export MED_history_n=1000000
+export RESTART_FH=" "
 
 export_fv3_v16 ()
 {
