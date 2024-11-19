@@ -12,18 +12,18 @@ module shr_is_restart_fh_mod
 
   implicit none
   private
-  save
 
-  logical :: write_restartfh = .false.
-  type(ESMF_Time), allocatable :: restartFhTimes(:)
-!$OMP THREADPRIVATE (write_restartfh, restartFhTimes)
+  type :: is_restart_fh_type
+    logical :: write_restartfh = .false.
+    type(ESMF_Time), allocatable :: restartFhTimes(:)
+  end type is_restart_fh_type
 
-  public :: init_is_restart_fh, is_restart_fh, finalize_restart_fh, write_restartfh
+  public :: init_is_restart_fh, is_restart_fh, finalize_restart_fh, is_restart_fh_type
 
 contains
 
   !-----------------------------------------------------------------------
-  subroutine init_is_restart_fh(currentTime, dtime, lLog)
+  subroutine init_is_restart_fh(currentTime, dtime, lLog, restartfh_info)
     !
     ! !DESCRIPTION:
     ! Process restart_fh attribute from model_configure in UFS
@@ -34,6 +34,7 @@ contains
     type(ESMF_Time), intent(in) :: currentTime
     integer, intent(in)         :: dtime ! time step (s)
     logical, intent(in)         :: lLog ! If true, this task logs restart_fh info
+    type(is_restart_fh_type), intent(out) :: restartfh_info !restart_fh info for each task
     !
     ! !LOCAL VARIABLES:
     character(len=256)           :: timestr
@@ -42,8 +43,6 @@ contains
     real(kind=ESMF_KIND_R8), allocatable :: restart_fh(:)
     type(ESMF_TimeInterval)      :: fhInterval
     type(ESMF_Config)            :: CF_mc
-    
-    character(len=*), parameter :: subname = 'init_restart_fh'
     !-----------------------------------------------------------------------
 
     ! set up Times to write non-interval restarts
@@ -56,7 +55,7 @@ contains
       nfh = ESMF_ConfigGetLen(config=CF_mc, label ='restart_fh:',rc=rc)
       if (nfh .gt. 0) then
         allocate(restart_fh(1:nfh))
-        allocate(restartFhTimes(1:nfh)) !not deallocated here
+        allocate(restartfh_info%restartFhTimes(1:nfh)) !not deallocated here
 
         call ESMF_ConfigGetAttribute(CF_mc,valueList=restart_fh,label='restart_fh:', rc=rc)
         if (ESMF_LogFoundError(rcToCheck=rc, msg=ESMF_LOGERR_PASSTHRU, line=__LINE__, file=__FILE__)) return
@@ -65,8 +64,8 @@ contains
           fh_s = NINT(3600*restart_fh(n))
           call ESMF_TimeIntervalSet(fhInterval, s=fh_s, rc=rc)
           if (ESMF_LogFoundError(rcToCheck=rc, msg=ESMF_LOGERR_PASSTHRU, line=__LINE__, file=__FILE__)) return
-          restartFhTimes(n) = currentTime + fhInterval
-          call ESMF_TimePrint(restartFhTimes(n), options="string", &
+          restartfh_info%restartFhTimes(n) = currentTime + fhInterval
+          call ESMF_TimePrint(restartfh_info%restartFhTimes(n), options="string", &
                               preString="restart_fh at ", unit=timestr, rc=rc)
           if (ESMF_LogFoundError(rcToCheck=rc, msg=ESMF_LOGERR_PASSTHRU, line=__LINE__, file=__FILE__)) return
           if (lLog) then
@@ -85,7 +84,7 @@ contains
   
   end subroutine init_is_restart_fh
 
-  function is_restart_fh(clock) result(lWrite)
+  subroutine is_restart_fh(clock, restartfh_info, lWrite)
     !
     ! !DESCRIPTION:
     ! True/false if time to write restart
@@ -96,30 +95,29 @@ contains
     !
     ! !ARGUMENTS:
     type(ESMF_Clock), intent(in) :: clock
-    logical :: lWrite ! function result
+    type(is_restart_fh_type), intent(inout) :: restartfh_info
+    logical, intent(out)         :: lWrite ! time to write?
     !
     ! !LOCAL VARIABLES:
     integer                    :: nfh, rc
     type(ESMF_Time)            :: nextTime
-    
-    character(len=*), parameter :: subname = 'is_restart_fh'
     !-----------------------------------------------------------------------
 
-    write_restartfh = .false.
-    if (allocated(restartFhTimes)) then
+    restartfh_info%write_restartfh = .false.
+    if (allocated(restartfh_info%restartFhTimes)) then
       ! check if next time is == to any restartfhtime
-      do nfh = 1,size(restartFhTimes)
+      do nfh = 1,size(restartfh_info%restartFhTimes)
         call ESMF_ClockGetNextTime(clock, nextTime=nexttime, rc=rc)
         if (ESMF_LogFoundError(rcToCheck=rc, msg=ESMF_LOGERR_PASSTHRU, line=__LINE__, file=__FILE__)) return
-        if (nextTime == restartFhTimes(nfh)) write_restartfh = .true.
+        if (nextTime == restartfh_info%restartFhTimes(nfh)) restartfh_info%write_restartfh = .true.
       end do
     end if
 
-    lWrite = write_restartfh
+    lWrite = restartfh_info%write_restartfh
     
-  end function is_restart_fh
+  end subroutine is_restart_fh
 
-  subroutine finalize_restart_fh()
+  subroutine finalize_restart_fh(restartfh_info)
     !
     ! !DESCRIPTION:
     ! Clean-up...release allocated memory
@@ -127,13 +125,12 @@ contains
     ! !USES:
     !
     ! !ARGUMENTS:
+    type(is_restart_fh_type), intent(inout) :: restartfh_info
     !
     ! !LOCAL VARIABLES:
-    
-    character(len=*), parameter :: subname = 'finalize_restart_fh'
     !-----------------------------------------------------------------------
 
-    if (allocated(restartFhTimes)) deallocate(restartFhTimes)
+    if (allocated(restartfh_info%restartFhTimes)) deallocate(restartfh_info%restartFhTimes)
 
   end subroutine finalize_restart_fh
 
