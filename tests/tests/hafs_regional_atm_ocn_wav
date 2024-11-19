@@ -14,7 +14,7 @@ export LIST_FILES="atmf006.nc \
                    archs.2019_241_06.a \
                    20190829.060000.out_grd.ww3 \
                    20190829.060000.out_pnt.ww3 \
-                   ufs.hafs.ww3.r.2019-08-29-21600 \
+                   ufs.hafs.ww3.r.2019-08-29-21600.nc \
                    ufs.hafs.cpl.r.2019-08-29-21600.nc"
 
 export_fv3
@@ -104,3 +104,7 @@ export INPUT_NML=input_regional_hafs.nml.IN
 export MODEL_CONFIGURE=model_configure_hafs.IN
 export UFS_CONFIGURE=ufs.configure.hafs_atm_ocn_wav.IN
 export FV3_RUN="hafs_fv3_run.IN hycom_hat10_run.IN hafs_ww3_run.IN"
+
+if [[ $MACHINE_ID = orion ]]; then
+  WLCLK=40
+fi
