@@ -742,7 +742,7 @@ export CDMBWD_c768='4.0,0.15,1.0,1.0'
 # set default
 export CDMBWD=${CDMBWD_c96}
 
-if [[ ${default_dt_atmos} = 1 ]]; then 
+if [[ ${default_dt_atmos} = 1 ]]; then
   export DT_INNER=${DT_INNER_c96}
 else
   export DT_INNER=${DT_ATMOS}
@@ -1013,7 +1013,7 @@ export WW3_IC5='F'
 export WW3_MULTIGRID=true
 export WW3_MODDEF=mod_def.glo_1deg
 export MESH_WAV=mesh.glo_1deg.nc
-
+export WW3_RSTFLDS=" "
 # ATMA
 export AOD_FRQ=060000
 
@@ -1081,7 +1081,7 @@ export_ugwpv1() {
   export LDIAG_UGWP=.false.
   export KNOB_UGWP_DOKDIS=2
   export KNOB_UGWP_NDX4LH=4
-  
+
   # Add updated damping and timestep variables
   case "${ATMRES}" in
     "C48")
@@ -1173,13 +1173,14 @@ export_ugwpv1() {
       exit 1
       ;;
   esac
-  
+
   if [[ ${DO_GSL_DRAG_SS} = .true. ]]; then export CDMBGWD=${CDMBGWD_GSL}; fi
   if [[ ${SEDI_SEMI} = .true. ]]; then export DT_ATMOS=$((DT_ATMOS/2)); fi
   export DT_INNER=${DT_ATMOS}
   export default_dt_atmos=0
 }
-  
+
+
 # Defaults for the CICE6 model namelist, mx100
 export_cice6() {
   SECS=$((SHOUR*3600))
@@ -1305,7 +1306,18 @@ export_ww3() {
   export WW3_ICE='C'
   export WW3_IC1='F'
   export WW3_IC5='F'
-  export WW3_user_sets_restname="true"
+  export WW3_user_histname='false'
+  export WW3_historync='false'
+  export WW3_restartnc='true'
+  export WW3_restart_from_binary='false'
+  # For default ufs_configure (fast loop), no added fields reqd
+  export WW3_RSTFLDS=" "
+  # For either history_nc or restart_nc true
+  export WW3_PIO_FORMAT='pnetcdf'
+  export WW3_PIO_STRIDE=4
+  export WW3_PIO_IOTASKS=-99
+  export WW3_PIO_REARR='box'
+  export WW3_PIO_ROOT=-99
 }
 
 export_fire_behavior() {
@@ -1412,7 +1424,7 @@ export NY_GLB=320
 export NPZ=127
 export NPZP=128
 
-# Use updated omega calculations if 
+# Use updated omega calculations if
 #   hydrostatic is set to false
 if [[ "${HYDROSTATIC}" == .false. ]]; then
   export UPDATE_FULL_OMEGA=.true.
@@ -1730,6 +1742,17 @@ export_hafs_regional ()
   export WW3_MODDEF=mod_def.${WW3_DOMAIN}
   export WW3_ICE='F'
   export WW3_OUTPARS="WND HS T01 T02 DIR FP DP PHS PTP PDIR UST CHA USP"
+  export WW3_RSTFLDS=" "
+  export WW3_user_histname='false'
+  export WW3_historync='false'
+  export WW3_restartnc='true'
+  export WW3_restart_from_binary='false'
+  # For either history_nc or restart_nc true
+  export WW3_PIO_FORMAT='pnetcdf'
+  export WW3_PIO_STRIDE=4
+  export WW3_PIO_IOTASKS=-99
+  export WW3_PIO_REARR='box'
+  export WW3_PIO_ROOT=-99
 
   # Set CMEPS component defaults
   export_cmeps
