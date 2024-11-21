@@ -94,9 +94,15 @@ Glossary
    HAFS
       The Hurricane Analysis and Forecast System (`HAFS <https://github.com/NOAA-EMC/HAFS>`_) is a :term:`UFS` application for hurricane forecasting. It is an :term:`FV3`-based multi-scale model and data assimilation (DA) system capable of providing analyses and forecasts of the inner core structure of tropical cyclones (TC) --- including hurricanes and typhoons --- out to 7 days. This is key to improving size and intensity predictions. HAFS also provides analyses and forecasts of the large-scale environment that is known to influence a TC's motion. HAFS development targets an operational analysis and forecast system for hurricane forecasters with reliable, robust and skillful guidance on TC track and intensity (including rapid intensification), storm size, genesis, storm surge, rainfall, and tornadoes associated with TCs. Currently, HAFS is under active development with collaborative efforts among NCEP/EMC, AOML/HRD, GFDL, ESRL/GSD, ESRL/NESII, OFCM/AOC, and NCAR/DTC.
 
+   HPSS
+      High Performance Storage System (HPSS).
+
    HYCOM
       The HYbrid Coordinate Ocean Model (`HYCOM <https://www.hycom.org/>`_) was developed to address known shortcomings in the vertical coordinate scheme of the Miami Isopycnic-Coordinate Ocean Model (MICOM). HYCOM is a primitive equation, general circulation model with vertical coordinates that remain isopycnic in the open, stratified ocean. However, the isopycnal vertical coordinates smoothly transition to z-coordinates in the weakly stratified upper-ocean mixed layer, to terrain-following sigma coordinates in shallow water regions, and back to z-level coordinates in very shallow water. The latter transition prevents layers from becoming too thin where the water is very shallow. See the `HYCOM User's Guide <https://www.hycom.org/attachments/063_hycom_users_guide.pdf>`_ for more information on using the model. The `HYCOM model code <https://github.com/NOAA-EMC/HYCOM-src>`_ is publicly available on GitHub. 
    
+   ICs
+      Initial conditions
+
    LM4
       NUOPC NOAA-GFDL Land Model version 4
 
@@ -160,6 +166,9 @@ Glossary
 
    Post-processor
       Software that enhances the value of the raw forecasts produced by the modeling application to make them more useful. At :term:`NCEP`, the :term:`UPP` (Unified Post Processor) software is used to convert data from spectral to gridded format, de-stagger grids, interpolate data vertically (e.g., to isobaric levels) and horizontally (to various predefined grids), and to compute derived variables. Some types of post-processors, such as statistical post-processors, use historical information of previous runs and observations to de-bias and calibrate its output.
+
+   RDHPCS
+      NOAA Research & Development High-Performance Computing Systems.
 
    RT
    Regression test
