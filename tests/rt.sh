@@ -757,8 +757,8 @@ case ${MACHINE_ID} in
     PARTITION=
     dprefix="/scratch1/NCEPDEV"
     DISKNM="/scratch2/NAGAPE/epic/UFS-WM_RT"
-    STMP="${dprefix}/stmp4"
-    PTMP="${dprefix}/stmp2"
+    STMP="${dprefix}/stmp2"
+    PTMP="${dprefix}/stmp4"
 
     SCHEDULER=slurm
     ;;
