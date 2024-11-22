@@ -13,6 +13,7 @@ list(APPEND _noahmp_cap_files noahmp/drivers/nuopc/lnd_comp_kind.F90
 
 # CCPP interface
 list(APPEND _noahmp_ccpp_files noahmp/drivers/ccpp/noahmpdrv.F90
+                               noahmp/drivers/ccpp/lnd_iau_mod.F90
                                noahmp/drivers/ccpp/sfc_diff.f
                                noahmp/drivers/ccpp/machine.F
                                noahmp/drivers/ccpp/noahmp_tables.f90
