@@ -765,7 +765,7 @@ case ${MACHINE_ID} in
     QUEUE=normal
     COMPILE_QUEUE=normal
     PARTITION=c6
-    dprefix=${dprefix:-/gpfs/f6/${ACCNR}/scratch/${USER}}
+    dprefix=${dprefix:-/gpfs/f6/${ACCNR}/proj-shared/${USER}}
     STMP=${STMP:-${dprefix}/RT_BASELINE}
     PTMP=${PTMP:-${dprefix}/RT_RUNDIRS}
 
