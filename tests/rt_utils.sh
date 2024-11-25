@@ -328,10 +328,15 @@ rocoto_create_compile_task() {
     <queue>${COMPILE_QUEUE}</queue>
 EOF
 
-  if [[ "${MACHINE_ID}" == gaeac5 || "${MACHINE_ID}" == gaeac6 ]] ; then
+  if [[ "${MACHINE_ID}" == gaeac5 ]] ; then
     cat << EOF >> "${ROCOTO_XML}"
     <native>--clusters=es</native>
     <partition>eslogin_c5</partition>
+EOF
+  elif [[ "${MACHINE_ID}" == gaeac6 ]] ; then
+    cat << EOF >> "${ROCOTO_XML}"
+    <native>--clusters=es</native>
+    <partition>eslogin_c6</partition>
 EOF
   elif [[ -n "${PARTITION}" || ${MACHINE_ID} != hera ]] ; then
     cat << EOF >> "${ROCOTO_XML}"
