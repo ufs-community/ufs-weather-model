@@ -45,8 +45,7 @@ export LIST_FILES="sfcf012.nc \
                    RESTART/20210325.180000.MOM.res_1.nc \
                    RESTART/20210325.180000.MOM.res_2.nc \
                    RESTART/iced.2021-03-25-64800.nc \
-                   20210325.180000.out_pnt.ww3 \
-                   20210325.180000.out_grd.ww3 \
+                   ufs.cpld.ww3.r.2021-03-25-64800.nc \
                    RESTART/ufs.cpld.cpl.r.2021-03-25-64800.nc"
 
 export ATMRES=C384 #needed for default_vars
@@ -66,7 +65,6 @@ export FHROT=0
 export RESTART_FILE_SUFFIX_SECS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%05d" $(( (${FHROT}+ ${SHOUR})*3600 )))"
 
 export BMIC=.true.
-export WW3_restartnc='false'
 
 #Simulation length and output
 export DAYS=0.5
@@ -122,7 +120,7 @@ export MESH_WAV=mesh.${WW3_DOMAIN}.nc
 export WW3_MODDEF=mod_def.${WW3_DOMAIN}
 
 # set component and coupling timesteps
-export DT_ATMOS=300
+export DT_ATMOS=300 #Reset bc of bug in export_ugwpv1
 export DT_INNER=${DT_ATMOS}
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6=900
@@ -224,6 +222,12 @@ export ATM_IGNORE_RST_CKSUM=.true.
 export CICE_RUNTYPE=continue
 export CICE_USE_RESTART_TIME=.true.
 export MOM6_RESTART_SETTING=r
+#WW3
+export WW3_user_histname='true'
+export WW3_historync='true'
+export WW3_restartnc='true'
+export WW3_restart_from_binary='true'
+export WW3_RSTFLDS="ice" #WAV in slow loop with netcdf
 
 #settings from ep5rt_ic/input.nml
 export NSTF_NAME=2,0,0,0,0
