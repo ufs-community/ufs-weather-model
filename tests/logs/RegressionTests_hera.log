@@ -1,7 +1,7 @@
 ====START OF HERA REGRESSION TESTING LOG====
 
 UFSWM hash used in testing:
-6b0f516557811eac82c17b852efb82a35892b022
+094fd353204eb4071e896896b096063c7e9d833d
 
 Submodule hashes used in testing:
  37cbb7d6840ae7515a9a8f0dfd4d89461b3396d1 AQM (v0.2.0-37-g37cbb7d)
@@ -27,26 +27,30 @@ The second time is specifically for the run phase.
 Times/Memory will be empty for failed tests.
 
 BASELINE DIRECTORY: /scratch2/NAGAPE/epic/UFS-WM_RT/NEMSfv3gfs/develop-20241112
-COMPARISON DIRECTORY: /scratch1/NCEPDEV/stmp2/Anning.Cheng/FV3_RT/rt_4167096
+COMPARISON DIRECTORY: /scratch1/NCEPDEV/stmp2/Anning.Cheng/FV3_RT/rt_2458956
 
 RT.SH OPTIONS USED:
 * (-a) - HPC PROJECT ACCOUNT: fv3-cpu
 * (-k) - KEEP RUN DIRECTORY
 
-PASS -- COMPILE 'atm_dyn32_intel' [12:11, 10:55] ( 1 warnings 1 remarks )
-PASS -- TEST 'merra2_thompson_intel' [05:51, 03:25](1882 MB)
+PASS -- COMPILE 'atm_dyn32_intel' [23:13, 11:03] ( 1 warnings 1 remarks )
+FAILED: RUN DID NOT COMPLETE -- TEST 'merra2_hf_thompson_intel' [, ]( MB)
 
 SYNOPSIS:
-Starting Date/Time: 20241117 21:39:09
-Ending Date/Time: 20241117 21:57:11
-Total Time: 00h:18m:07s
+Starting Date/Time: 20241125 19:12:24
+Ending Date/Time: 20241125 19:36:59
+Total Time: 00h:24m:40s
 Compiles Completed: 1/1
-Tests Completed: 1/1
+Tests Completed: 0/1
+Failed Tests:
+* TEST merra2_hf_thompson_intel: FAILED: RUN DID NOT COMPLETE
+-- LOG: /scratch1/NCEPDEV/global/Anning.Cheng/ufs-weather-model/tests/logs/log_hera/run_merra2_hf_thompson_intel.log
 
 NOTES:
-A file 'test_changes.list' was generated but is empty.
+A file 'test_changes.list' was generated with list of all failed tests.
+You can use './rt.sh -c -b test_changes.list' to create baselines for the failed tests.
 If you are using this log as a pull request verification, please commit 'test_changes.list'.
 
-Result: SUCCESS
+Result: FAILURE
 
 ====END OF HERA REGRESSION TESTING LOG====
