@@ -1218,6 +1218,7 @@ export_cice6() {
   CICE_DIAGFREQ=$(( (FHMAX*3600)/DT_CICE ))
   export CICE_DIAGFREQ
   export CICE_HISTFREQ_N="0, 0, 6, 0, 0"
+  export CICE_hist_suffix="'x','x','x','x','x'"
   export CICE_HIST_AVG=.true.
   export CICE_HISTORY_DIR=./history/
   export CICE_INCOND_DIR=./history/
