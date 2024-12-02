@@ -1,0 +1,170 @@
+.. role:: raw-html(raw)
+    :format: html
+
+.. _cape-2020:
+
+*********************
+July 2020 CAPE Case
+*********************
+
+The July 2020 CAPE case is an atmosphere-only forecast run at C48 resolution with 127 vertical levels. It is set to run a 24-hour forecast from 2020-07-23 at 0z using the `FV3_GFS_v16 <https://dtcenter.ucar.edu/GMTB/v7.0.0/sci_doc/_g_f_s_v16_page.html>`_ physics suite and default values from the WM's `default_vars.sh <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/default_vars.sh>`_ ``export_fv3_v16`` function.
+
+The original July 2020 CAPE case illustrated a shortcoming of the Global Forecast System (GFS) v16 --- low Convective Available Potential Energy (CAPE) predictions during summertime (:cite:t:`SunEtAl2024`). :cite:t:`SunEtAl2024` (2024) used this case study to investigate the low CAPE bias in the GFS and determined that "the GFS simulates smaller surface latent heat flux and larger surface sensible heat flux than the observations" due to "slightly drier-than-observed soil moisture" within the offline Global Data Assimilation System (GDAS) initial conditions used in the study. This resulted in less latent heat and moisture being fed back to the lower levels of the atmosphere and ultimately changed the overall vertical profile of the atmosphere, which lowered CAPE values relative to the older GFS v15.2. 
+ 
+The UFS WM and its subcomponents have undergone signficant changes since the original July 2020 CAPE case study was posted and since :cite:t:`SunEtAl2024`'s experiment, so the current GFS v16 CAPE bias may have shifted. However, users may still wish to run this case and then experiment with different (potentially user-generated) initial conditions, a coupled land surface model (LSM), or other factors to explore elements that improve or worsen CAPE bias. Additionally, :cite:t:`SunEtAl2024`'s findings only apply to this case study, so users may wish to expand their research to include other warm-season cases. 
+
+============================================
+Obtaining Data for the July 2020 CAPE Case
+============================================
+
+.. include:: ./doc-snippets/hsd_data.rst
+
+.. _chgres-data:
+
+User-Generated Data
+---------------------
+
+.. attention::
+
+   The following instructions apply only to users with access to :term:`HPSS` on :term:`RDHPCS`. In the future, there are plans to expand options for access to raw initial conditions data for other users. 
+
+Users who have access to :term:`HPSS` can generate initial conditions (:term:`ICs`) for a particular forecast case (date) and resolution by downloading the raw GFS data and converting it to the appropriate resolution using the the UFS_UTILS ``gdas_init`` utility. ``gdas_init`` pulls the input data required by ``chgres_cube`` from HPSS and then runs the ``chgres_cube`` utility to create coldstart initial conditions for the desired resolution and number of vertical levels. Users who already have access to raw GFS ICs can use just the ``chgres_cube`` utility to perform the conversion on their existing data. Users may wish to refer to the `UFS_UTILS User's Guide <https://noaa-emcufs-utils.readthedocs.io/en/latest/ufs_utils.html>`_ for more information. 
+
+.. note:: 
+   
+   In order to generate all necessary configuration, data, input, and fix files to run a configuration similar to the July 2020 CAPE case for another date (still C48 resolution), the user first needs to run the base ``ufs_test.sh`` script for the default July 2020 CAPE case as described in :numref:`Section %s <run-2020-cape>`. 
+
+To generate coldstart ICs via the UFS_UTILS ``gdas_init``/``chgres_cube`` utilities on an :term:`RDHPCS` with :term:`HPSS` access (e.g., Hera or Jet), the user can run the following commands:
+
+.. code-block:: console 
+   
+   git clone https://github.com/ufs-community/UFS_UTILS.git
+   cd UFS_UTILS/fix
+   ./link_fixdirs.sh emc <platform>
+   cd ..
+   ./build_all.sh
+   cd util/gdas_init
+
+where ``<platform>`` is Hera or Jet. 
+
+Then, users will need to edit the ``config`` file to: 
+
+* Set paths for data extraction and converted files (``EXTRACT_DIR`` and ``OUTDIR``, respectively)
+* Set  ``yy/mm/dd/hh`` to desired forecast start time +6 hours 
+* Set ``CDUMP`` to ``gfs``  to generate GFS ICs
+* Set ``LEVS`` to 128
+* Set ``EXTRACT_DATA`` to ``yes`` (unless data is already staged in ``EXTRACT_DIR``)
+* Set ``CRES_HIRES`` to desired resolution for coldstart files (e.g., ``C192``)
+
+These variables are documented in more detail in the `UFS_UTILS gdas_init documentation <https://noaa-emcufs-utils.readthedocs.io/en/latest/ufs_utils.html#configure-for-your-experiment>`_. 
+
+In the machine-specific driver (e.g., ``driver.jet.sh``), users will need to set ``PROJECT_CODE`` to an account that the user can use for submitting batch jobs. 
+
+After configuring the utility, users can run the driver script: 
+
+.. code-block:: console
+   
+   ./driver.<platform>.sh
+
+These steps will (1) pull raw GFS data from HPSS into ``EXTRACT_DIR`` and then (2) convert the raw data to coldstart ICs (placed in ``OUTDIR/gfs.YYYYMMDD/HH/model_data/atmos/input``). The converted coldstart ICs can then be used as input data for certain UFS WM regression tests (RTs) of corresponding model resolution and configuration (e.g., C48 GFS coldstart data in the ``control_c48.v2.sfc`` RT). 
+
+.. note:: 
+
+   Note that since 6/4/24, the ``develop`` branch of UFS_UTILS generates only version 2 (v2) surface (sfc) files via ``gdas_init`` and ``chgres_cube``. Therefore, successful integration of the converted coldstart files has only been achieved using the recently added ``v2.sfc`` WM RTs (see e.g., :wm-repo:`control_c48.v2.sfc <blob/develop/tests/tests/control_c48.v2.sfc>` and PRs :wm-repo:`#2005 <pull/2005>` and :wm-repo:`#1977 <issues/1977>`). Since the v2 surface files are significantly different from the v1 surface file format, the user may need to re-configure the higher resolution test case to ensure that fix files, physics suite, and other input data used are consistent with v2 surface files.
+
+.. _run-cape:
+
+=================================
+Running the July 2020 CAPE Case
+=================================
+
+This section explains how to run the July 2020 CAPE case described above using the ``ufs_test.sh`` script.
+
+Clone the Repository
+--------------------
+
+.. include:: ./doc-snippets/clone_hsd.rst
+
+Machine Configuration
+-----------------------
+
+.. include:: ./doc-snippets/hsd_machine_config.rst
+
+.. _cape-config:
+
+Test Configuration
+----------------------
+
+The July 2020 CAPE case can be run as-is without adjusting the configuration. Users may also choose to run a similar configuration for a different date or the same July 2020 CAPE case at a higher resolution. 
+
+Different Date
+^^^^^^^^^^^^^^^^
+
+Users may choose to run a similar UFS WM configuration for different dates with user-generated :term:`ICs` (see :numref:`Section %s <chgres-data>` for instructions on downloading this data from :term:`HPSS`). In this case, users will need to copy the ``gfs*.nc`` and ``sfc*.nc`` files from ``OUTDIR/gfs.YYYYMMDD/HH/model_data/atmos/input`` into the ``INPUT`` directory of a UFS WM run directory. (The run directory is set in ``create_xml.py`` as ``${PTMP}/${USER}/FV3_RT/rt_${pid}`` for HSD cases.) Note that this will only work when the run directory uses ICs of the same resolution. 
+
+Additionally, users will need to adjust the model start time in the ``model_configure`` file. For example: 
+
+.. code-block::
+
+   start_year:              2019
+   start_month:             06
+   start_day:               15
+   start_hour:              06
+   start_minute:            0
+   start_second:            0
+   nhours_fcst:             24
+   fhrot:                   0
+   ...
+
+Different Resolution
+^^^^^^^^^^^^^^^^^^^^^^
+
+If users choose to run the July 2020 CAPE case at higher resolutions, they can generate GFS ICs at C192, C384, or C768 resolutions following the instructions :ref:`above <chgres-data>`. However, they will also need to ensure that the experiment configuration files (i.e., ``${UFS_WM}/tests-dev/test_cases/tests/2020_CAPE`` and ``${UFS_WM}/tests-dev/test_cases/exp_conf/2020_CAPE``), input namelist, physics suites, and ``fv3_conf/*.IN`` file are consistent and configured properly for their desired resolution. Configurations at these higher resolutions are untested, and users can expect to do significant troubleshooting to make them work. 
+
+When changing resolution, it is recommended that users view the :wm-repo:`control_c192 <blob/develop/tests/tests/control_c192>`, :wm-repo:`control_c384 <blob/develop/tests/tests/control_c384>`, or :wm-repo:`control_c768 <blob/develop/tests/tests/control_c768>` test files as a starting point. Those test files will provide guidance on variable settings and ``model_configure``/input namelist settings. Additionally, users will need to ensure that the ``FV3_RUN`` file (named ``2020_CAPE.IN`` for the 2020_CAPE experiment) points to the correct input data. Users can modify the ``parm/fv3_conf`` files associated with the sample ``control_*`` tests to enable use of v2 surface data (as in the :wm-repo:`control_c48.v2.sfc <blob/develop/tests/tests/control_c48.v2.sfc>` or :wm-repo:`2020_CAPE <blob/develop/tests-dev/test_cases/tests/2020_CAPE>` cases). Any new or modified test file, input namelist, or ``*.IN`` file should be placed in the appropriate directory in ``tests-dev/exp_conf`` so that the files are correctly propagated into the ``tests-dev`` directory when invoking the ``-s`` argument with ``ufs_test.sh``.
+
+.. attention::
+
+   Although it is *possible* to adjust the July 2020 CAPE case to run at non-default resolutions, this is unsupported functionality. Users may experiment with the capability but will need to commit to significant troubleshooting/experimentation to run the case at those resolutions. 
+
+Baseline Configuration
+----------------------
+
+.. include:: ./doc-snippets/hsd_baseline_config.rst
+
+.. _run-2020-cape:
+
+Running Tests
+-------------
+
+.. include:: ./doc-snippets/hsd_run_tests.rst
+
+Examples
+^^^^^^^^^^
+
+A user with access to the ``epic`` account can run the ``2020_CAPE`` test case with the ``intel`` compiler on an :term:`RDHPCS` where they have access using the following command:
+
+.. code-block:: console
+
+   ./ufs_test.sh -a epic -s -c -k -r -n "2020_CAPE intel"
+
+Running Multiple Cases
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. include:: ./doc-snippets/hsd_run_multiple.rst
+
+.. _check-results:
+
+Checking Results
+-----------------
+
+.. include:: ./doc-snippets/hsd_check_results.rst
+
+For example, to monitor progress or check results for the ``2020_CAPE_intel`` case, run:
+
+.. code-block:: console
+
+   tail -f ${UFS_WM}/tests-dev/run_dir/2020_CAPE_intel/err
+   tail -f ${UFS_WM}/tests-dev/run_dir/2020_CAPE_intel/out
+
+.. include:: ./doc-snippets/hsd_notes.rst
