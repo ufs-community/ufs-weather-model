@@ -45,9 +45,9 @@ The UFS WM code is portable and can be used with Linux or Mac operating systems 
 .. COMMENT: Is the cellular automata stochastic scheme now supported?
 .. COMMENT: Which horizontal/vertical levels & placements are supported? Just the default ones? 
 
-Those wishing to contribute development to the UFS WM should become familiar with the procedures for running the model as a standalone component and for executing the regression tests described in the UFS WM GitHub `wiki <https://github.com/ufs-community/ufs-weather-model/wiki/Making-code-changes-in-the-UFS-weather-model-and-its-subcomponents>`__ to make sure no inadvertent changes to the results have been introduced during the development process.
+Those wishing to contribute development to the UFS WM should become familiar with the procedures for running the model as a standalone component and for executing the regression tests described in the UFS WM GitHub :wm-wiki:`wiki <Making-code-changes-in-the-UFS-weather-model-and-its-subcomponents>` to make sure no inadvertent changes to the results have been introduced during the development process.
 
-Support for the UFS WM is provided through the `UFS Forum <https://github.com/ufs-community/ufs-weather-model/discussions>`__ by the Developmental Testbed Center (DTC) and other groups involved in UFS development, such as NOAA's Environmental Modeling Center (:term:`EMC`), NOAA research laboratories (GFDL, NSSL, ESRL, and AOML), and :term:`NCAR`. UFS users and developers are encouraged not only to post questions, but also to help address questions posted by other members of the community.
+Support for the UFS WM is provided through the :wm-repo:`UFS Forum <discussions>` by the Developmental Testbed Center (DTC) and other groups involved in UFS development, such as NOAA's Environmental Modeling Center (:term:`EMC`), NOAA research laboratories (GFDL, NSSL, ESRL, and AOML), and :term:`NCAR`. UFS users and developers are encouraged not only to post questions, but also to help address questions posted by other members of the community.
 
 This WM User's Guide is organized as follows:
 
@@ -58,6 +58,8 @@ This WM User's Guide is organized as follows:
    * :numref:`Chapter %s <InputsOutputs>` (Data: Input, Model Configuration, and Output Files) lists the model inputs and outputs and has a description of the key files.
 
    * :numref:`Chapter %s <Configurations>` (Configurations) lists the currently supported configurations for the UFS WM.
+     
+   * :numref:`Chapter %s <hsd>` (Hierarchical System Development) explains how to run test cases that support Hierarchical System Development.
      
    * :numref:`Chapter %s <ConfigParams>` (Configuration Parameters) lists the purpose and valid values for various configuration parameters.
 
