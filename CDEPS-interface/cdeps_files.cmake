@@ -24,6 +24,7 @@ list(APPEND cdeps_share_files
   CDEPS/share/shr_timer_mod.F90
   CDEPS/share/shr_file_mod.F90
   CDEPS/share/shr_nl_mod.F90
+  CDEPS/share/nuopc_shr_methods.F90
 )
 
 list(APPEND cdeps_streams_files
