@@ -43,6 +43,7 @@ list(APPEND _ufs_util_files
   ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_kind_mod.F90
   ${PROJECT_SOURCE_DIR}/CDEPS-interface/ufs/cdeps_share/shr_assert_mod.F90
   ${PROJECT_SOURCE_DIR}/CDEPS-interface/ufs/cdeps_share/shr_infnan_mod.F90
+  ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/nuopc_shr_methods.F90
   ${PROJECT_SOURCE_DIR}/CDEPS-interface/ufs/cdeps_share/shr_is_restart_fh_mod.F90)
 
 list(APPEND _mediator_files
