@@ -421,6 +421,7 @@ export CMP_DATAONLY=false
 export esmf_logkind="ESMF_LOGKIND_MULTI"
 export DumpFields="false"
 export MED_history_n=1000000
+export RESTART_FH=" "
 
 export_fv3_v16 ()
 {
@@ -1219,6 +1220,7 @@ export_cice6() {
   CICE_DIAGFREQ=$(( (FHMAX*3600)/DT_CICE ))
   export CICE_DIAGFREQ
   export CICE_HISTFREQ_N="0, 0, 6, 0, 0"
+  export CICE_hist_suffix="'x','x','x','x','x'"
   export CICE_HIST_AVG=.true.
   export CICE_HISTORY_DIR=./history/
   export CICE_INCOND_DIR=./history/
@@ -1360,6 +1362,7 @@ export_cmeps() {
   export pio_rearranger=box
   export RUNTYPE=startup
   export RESTART_N=${FHMAX}
+  export RESTART_FH=" "
   export CMEPS_RESTART_DIR=./RESTART/
   export cap_dbug_flag=0
   export WRITE_ENDOFRUN_RESTART=.false.
