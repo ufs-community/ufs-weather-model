@@ -67,7 +67,6 @@ list(APPEND _mediator_files
   CMEPS/mediator/med_phases_prep_ocn_mod.F90
   CMEPS/mediator/esmFlds.F90
   CMEPS/mediator/med.F90
-  CMEPS/mediator/med_time_mod.F90
   CMEPS/mediator/med_phases_ocnalb_mod.F90
   CMEPS/mediator/med_phases_prep_wav_mod.F90
   CMEPS/mediator/med_utils_mod.F90
