@@ -53,11 +53,15 @@ export LIST_FILES="sfcf030.tile1.nc \
                    RESTART/20210323.120000.MOM.res.nc \
                    RESTART/iced.2021-03-23-43200.nc \
                    RESTART/ufs.cpld.cpl.r.2021-03-23-43200.nc \
+                   ufs.cpld.ww3.r.2021-03-23-43200.nc \
                    20210323.120000.out_grd.ww3 \
                    20210323.120000.out_pnt.ww3 "
 
+export ATMRES=C192
 export_fv3
+export_ugwpv1
 export_cpl
+export CCPP_SUITE=FV3_GFS_v17_coupled_p8_ugwpv1
 
 export DAYS=1.25
 export FHMAX=30
@@ -84,7 +88,6 @@ export chm_omp_num_threads=$atm_omp_num_threads
 export med_omp_num_threads=$atm_omp_num_threads
 
 # atm/ocn/ice resolution
-export ATMRES=C192
 export NPX=193
 export NPY=193
 export IMO=768

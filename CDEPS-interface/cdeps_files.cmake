@@ -4,6 +4,7 @@ list(APPEND ufs_cdeps_share_files
   ufs/cdeps_share/shr_assert_mod.F90
   ufs/cdeps_share/shr_frz_mod.F90
   ufs/cdeps_share/shr_infnan_mod.F90
+  ufs/cdeps_share/shr_is_restart_fh_mod.F90
 )
 
 list(APPEND cdeps_share_files
