@@ -40,14 +40,20 @@ function post_test() {
 	WORKSPACE="$(pwd)"
 	GIT_URL=${GIT_URL:-"ufs-weather-model"}
 	CHANGE_ID=${CHANGE_ID:-"develop"}
-	echo "GIT_URL=${GIT_URL}"
-	echo "CHANGE_ID=${CHANGE_ID}"
 
 	GIT_OWNER=$(echo ${GIT_URL} | cut -d '/' -f4)
 	GIT_REPO_NAME=$(echo ${GIT_URL} | cut -d '/' -f5 | cut -d '.' -f1)
+
+set +x
+	echo "GIT_URL=${GIT_URL}"
+	echo "CHANGE_ID=${CHANGE_ID}"
 	echo "GIT_OWNER=${GIT_OWNER} GIT_REPO_NAME=${GIT_REPO_NAME}"
 
+	echo "Testing concluded...removing label ${label} for ${machine} from ${GIT_URL}"
+	echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels /${machine}-${label}"
+	curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/${machine}-${label}
 set -x
+
 	git config user.email "ecc.platform@noaa.gov"
 	git config user.name "epic-cicd-jenkins"
 
@@ -63,13 +69,7 @@ set -x
 	git pull sshorigin ${FORK_BRANCH} || return 0
 	git status
 	git push sshorigin HEAD:${FORK_BRANCH} || return 0
-set +x
-
-	echo "Testing concluded...removing label ${label} for ${machine} from ${GIT_URL}"
-	echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels /${machine}-${label}"
-	#curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/${machine}-${label}
 }
 
 pwd
-set +x
 post_test "${machine}" "${label}"
