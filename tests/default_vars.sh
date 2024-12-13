@@ -421,6 +421,7 @@ export CMP_DATAONLY=false
 export esmf_logkind="ESMF_LOGKIND_MULTI"
 export DumpFields="false"
 export MED_history_n=1000000
+export RESTART_FH=" "
 
 export_fv3_v16 ()
 {
@@ -1359,6 +1360,7 @@ export_cmeps() {
   export pio_rearranger=box
   export RUNTYPE=startup
   export RESTART_N=${FHMAX}
+  export RESTART_FH=" "
   export CMEPS_RESTART_DIR=./RESTART/
   export cap_dbug_flag=0
   export WRITE_ENDOFRUN_RESTART=.false.
