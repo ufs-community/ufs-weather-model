@@ -421,6 +421,7 @@ export CMP_DATAONLY=false
 export esmf_logkind="ESMF_LOGKIND_MULTI"
 export DumpFields="false"
 export MED_history_n=1000000
+export RESTART_FH=" "
 
 export_fv3_v16 ()
 {
@@ -890,19 +891,10 @@ export MAX_OUTPUT_FIELDS=310
 export UPDATE_FULL_OMEGA=.false.
 
 # Stochastic physics
-export HIDE_LAND_PERT=' '
-export HIDE_NEST='!'
-export HIDE_SPPT='!'
-export HIDE_SKEB='!'
-export HIDE_SHUM='!'
-export HIDE_OCNSPPT='!'
-export HIDE_EPBL='!'
-export HIDE_IAU='!'
-
 export LCNORM=.false.
 export PERT_MP=.false.
 export PERT_RADTEND=.false.
-export PERT_CLDS=.true.
+export PERT_CLDS=.false.
 
 export STOCHINI=.false.
 export DO_SPPT=.false.
@@ -1359,6 +1351,7 @@ export_cmeps() {
   export pio_rearranger=box
   export RUNTYPE=startup
   export RESTART_N=${FHMAX}
+  export RESTART_FH=" "
   export CMEPS_RESTART_DIR=./RESTART/
   export cap_dbug_flag=0
   export WRITE_ENDOFRUN_RESTART=.false.
