@@ -891,19 +891,10 @@ export MAX_OUTPUT_FIELDS=310
 export UPDATE_FULL_OMEGA=.false.
 
 # Stochastic physics
-export HIDE_LAND_PERT=' '
-export HIDE_NEST='!'
-export HIDE_SPPT='!'
-export HIDE_SKEB='!'
-export HIDE_SHUM='!'
-export HIDE_OCNSPPT='!'
-export HIDE_EPBL='!'
-export HIDE_IAU='!'
-
 export LCNORM=.false.
 export PERT_MP=.false.
 export PERT_RADTEND=.false.
-export PERT_CLDS=.true.
+export PERT_CLDS=.false.
 
 export STOCHINI=.false.
 export DO_SPPT=.false.
