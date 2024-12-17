@@ -46,4 +46,9 @@ else
  cp ../${DEP_RUN}${RT_SUFFIX}/${CICE_RESTART_DIR}/iced.2011-10-01-43200.nc ./INPUT
  RFILE="iced.2011-10-01-43200.nc"
  ls -1 "./INPUT/"${RFILE}>ice.restart_file
+
+# CDEPS restart and pointer files
+ RFILE="DATM_${DATM_SRC}.datm.r.2011-10-01-43200.nc"
+ cp ../${DEP_RUN}${RT_SUFFIX}/${RFILE} ./INPUT
+ ls -1 "./INPUT/"${RFILE}>rpointer.atm
 fi
