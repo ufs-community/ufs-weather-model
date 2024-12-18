@@ -300,7 +300,7 @@ elif [[ ${MACHINE_ID} = s4 ]]; then
   export ICE_tasks_cpl_bmrk=48
   export WAV_tasks_cpl_bmrk=80
 
-elif [[ ${MACHINE_ID} = gaea ]]; then
+elif [[ ${MACHINE_ID} = gaeac5 ]]; then
 
   export TPN=128
 
@@ -321,6 +321,26 @@ elif [[ ${MACHINE_ID} = gaea ]]; then
   export WPG_cpl_atmw_gdas=24
   export WAV_tasks_atmw_gdas=264
 
+elif [[ ${MACHINE_ID} = gaeac6 ]]; then
+
+  export TPN=192
+
+  export INPES_dflt=3
+  export JNPES_dflt=8
+  export INPES_thrd=3
+  export JNPES_thrd=4
+  export INPES_c384=6
+  export JNPES_c384=8
+  export THRD_c384=1
+  export INPES_c768=8
+  export JNPES_c768=16
+  export THRD_c768=2
+
+  export THRD_cpl_atmw_gdas=3
+  export INPES_cpl_atmw_gdas=6
+  export JNPES_cpl_atmw_gdas=8
+  export WPG_cpl_atmw_gdas=24
+  export WAV_tasks_atmw_gdas=264
 elif [[ ${MACHINE_ID} = derecho ]]; then
 
   export TPN=128
@@ -421,6 +441,7 @@ export CMP_DATAONLY=false
 export esmf_logkind="ESMF_LOGKIND_MULTI"
 export DumpFields="false"
 export MED_history_n=1000000
+export RESTART_FH=" "
 
 export_fv3_v16 ()
 {
@@ -890,19 +911,10 @@ export MAX_OUTPUT_FIELDS=310
 export UPDATE_FULL_OMEGA=.false.
 
 # Stochastic physics
-export HIDE_LAND_PERT=' '
-export HIDE_NEST='!'
-export HIDE_SPPT='!'
-export HIDE_SKEB='!'
-export HIDE_SHUM='!'
-export HIDE_OCNSPPT='!'
-export HIDE_EPBL='!'
-export HIDE_IAU='!'
-
 export LCNORM=.false.
 export PERT_MP=.false.
 export PERT_RADTEND=.false.
-export PERT_CLDS=.true.
+export PERT_CLDS=.false.
 
 export STOCHINI=.false.
 export DO_SPPT=.false.
@@ -1359,6 +1371,7 @@ export_cmeps() {
   export pio_rearranger=box
   export RUNTYPE=startup
   export RESTART_N=${FHMAX}
+  export RESTART_FH=" "
   export CMEPS_RESTART_DIR=./RESTART/
   export cap_dbug_flag=0
   export WRITE_ENDOFRUN_RESTART=.false.

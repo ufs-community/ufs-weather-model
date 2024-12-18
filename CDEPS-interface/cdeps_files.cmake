@@ -4,6 +4,7 @@ list(APPEND ufs_cdeps_share_files
   ufs/cdeps_share/shr_assert_mod.F90
   ufs/cdeps_share/shr_frz_mod.F90
   ufs/cdeps_share/shr_infnan_mod.F90
+  ufs/cdeps_share/shr_is_restart_fh_mod.F90
 )
 
 list(APPEND cdeps_share_files
@@ -24,6 +25,7 @@ list(APPEND cdeps_share_files
   CDEPS/share/shr_timer_mod.F90
   CDEPS/share/shr_file_mod.F90
   CDEPS/share/shr_nl_mod.F90
+  CDEPS/share/nuopc_shr_methods.F90
 )
 
 list(APPEND cdeps_streams_files
@@ -67,6 +69,8 @@ list(APPEND cdeps_docn_files
   CDEPS/docn/docn_datamode_iaf_mod.F90
   CDEPS/docn/docn_datamode_som_mod.F90
   CDEPS/docn/docn_datamode_cplhist_mod.F90
+  CDEPS/docn/docn_datamode_multilev_mod.F90
+  CDEPS/docn/docn_datamode_multilev_dom_mod.F90
   CDEPS/docn/docn_import_data_mod.F90
   CDEPS/docn/ocn_comp_nuopc.F90
 )
@@ -77,4 +81,9 @@ list(APPEND cdeps_drof_files
 
 list(APPEND cdeps_dwav_files
   CDEPS/dwav/wav_comp_nuopc.F90
+)
+
+list(APPEND cdeps_dglc_files
+  CDEPS/dglc/dglc_datamode_noevolve_mod.F90
+  CDEPS/dglc/glc_comp_nuopc.F90
 )

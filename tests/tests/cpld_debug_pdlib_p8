@@ -109,7 +109,10 @@ fi
 if [[ $MACHINE_ID = orion ]]; then
   WLCLK=50
 fi
-if [[ $MACHINE_ID = gaea ]]; then
+if [[ $MACHINE_ID = gaeac5 ]] && [[ $RT_COMPILER = intelllvm ]]; then
+  WLCLK=50
+fi
+if [[ $MACHINE_ID = gaeac6 ]] && [[ $RT_COMPILER = intelllvm ]]; then
   WLCLK=50
 fi
 if [[ $MACHINE_ID = wcoss2 ]]; then
@@ -122,9 +125,5 @@ export K_SPLIT=2
 export N_SPLIT=5
 
 # HR4 GFSv17 GWD update
-export DO_UGWP_V0=.false.
-export DO_UGWP_V1=.true.
-export DO_GSL_DRAG_LS_BL=.true.
 export DO_GWD_OPT_PSL=.true.
 export DO_GSL_DRAG_SS=.false.
-export DO_GSL_DRAG_TOFD=.true.
