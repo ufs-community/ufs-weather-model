@@ -1297,7 +1297,11 @@ EOF
     (
       source "${PATHRT}/tests/${TEST_NAME}"
 
-      compute_petbounds_and_tasks
+      if [[ ${ESMF_THREADING} == true ]]; then
+        compute_petbounds_and_tasks_esmf_threading
+      else
+        compute_petbounds_and_tasks_traditional_threading
+      fi
 
       TPN=$(( TPN / THRD ))
       NODES=$(( TASKS / TPN ))

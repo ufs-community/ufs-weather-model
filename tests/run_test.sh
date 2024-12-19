@@ -171,10 +171,19 @@ else
   exit 1
 fi
 
-compute_petbounds_and_tasks
+if [[ ${ESMF_THREADING} == true ]]; then
+  compute_petbounds_and_tasks_esmf_threading
+else
+  compute_petbounds_and_tasks_traditional_threading
+fi
 
 if [[ -f ${PATHRT}/parm/${UFS_CONFIGURE} ]]; then
-  atparse < "${PATHRT}/parm/${UFS_CONFIGURE}" > ufs.configure
+  (
+    atparse < "${PATHRT}/parm/${UFS_CONFIGURE}" > ufs.configure
+    if [[ ${ESMF_THREADING} != true ]]; then
+       sed -i -e "/_omp_num_threads:/d" ufs.configure
+    fi
+  )
 else
   echo "Cannot find file ${UFS_CONFIGURE} set by variable UFS_CONFIGURE"
   exit 1
@@ -248,7 +257,7 @@ fi
 if [[ "Q${FIELD_TABLE:-}" != Q ]]; then
   cp "${PATHRT}/parm/field_table/${FIELD_TABLE}" field_table
 fi
-    
+
 # fix files
 if [[ ${FV3} == true ]]; then
   cp "${INPUTDATA_ROOT}"/FV3_fix/*.txt .
@@ -375,16 +384,20 @@ if (( NODES * TPN < TASKS )); then
 fi
 export NODES
 
-UFS_TASKS=${TASKS}
-TASKS=$(( NODES * TPN ))
-export TASKS
+if [[ ${ESMF_THREADING} == true ]]; then
+  UFS_TASKS=${TASKS}
+  TASKS=$(( NODES * TPN ))
+  export TASKS
 
-PPN=$(( UFS_TASKS / NODES ))
-if (( UFS_TASKS - ( PPN * NODES ) > 0 )); then
-  PPN=$((PPN + 1))
+  PPN=$(( UFS_TASKS / NODES ))
+  if (( UFS_TASKS - ( PPN * NODES ) > 0 )); then
+    PPN=$((PPN + 1))
+  fi
+  export PPN
+  export UFS_TASKS
+else
+  PPN=${TPN}
 fi
-export PPN
-export UFS_TASKS
 
 if [[ ${SCHEDULER} = 'pbs' ]]; then
   if [[ -e ${PATHRT}/fv3_conf/fv3_qsub.IN_${MACHINE_ID} ]]; then
