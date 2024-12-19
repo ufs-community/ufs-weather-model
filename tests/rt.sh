@@ -709,8 +709,8 @@ case ${MACHINE_ID} in
     PTMP="/lfs/h2/emc/ptmp"
     SCHEDULER="pbs"
     ;;
-  gaea)
-    echo "rt.sh: Setting up gaea..."
+  gaeac5)
+    echo "rt.sh: Setting up gaea c5..."
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module use /ncrc/proj/epic/rocoto/modulefiles
       module load rocoto
@@ -737,6 +737,37 @@ case ${MACHINE_ID} in
     dprefix=${dprefix:-/gpfs/f5/${ACCNR}/scratch/${USER}}
     STMP=${STMP:-${dprefix}/RT_BASELINE}
     PTMP=${PTMP:-${dprefix}/RT_RUNDIRS} 
+
+    SCHEDULER="slurm"
+    ;;
+  gaeac6)
+    echo "rt.sh: Setting up gaea c6..."
+    if [[ "${ROCOTO:-false}" == true ]] ; then
+      module use /ncrc/proj/epic/c6/modulefiles
+      module load rocoto/1.3.7
+      ROCOTO_SCHEDULER="slurm"
+    fi
+
+    export LD_PRELOAD=/usr/lib64/libstdc++.so.6
+    module use /ncrc/proj/epic/spack-stack/c6/spack-stack-1.6.0/envs/fms-2024.01/install/modulefiles/Core
+    module load stack-intel/2023.2.0
+    module load cray-mpich/8.1.29
+    module load python/3.10.13
+    if [[ "${ECFLOW:-false}" == true ]] ; then
+      module use /ncrc/proj/epic/spack-stack/modulefiles
+      module load ecflow/5.8.4
+      ECF_HOST=$(hostname)
+      ECF_PORT=$(( $(id -u) + 1500 ))
+      export ECF_PORT ECF_HOST
+    fi
+
+    DISKNM=/gpfs/f6/bil-fire8/world-shared/role.epic/UFS-WM_RT
+    QUEUE=normal
+    COMPILE_QUEUE=normal
+    PARTITION=c6
+    dprefix=${dprefix:-/gpfs/f6/${ACCNR}/proj-shared/${USER}}
+    STMP=${STMP:-${dprefix}/RT_BASELINE}
+    PTMP=${PTMP:-${dprefix}/RT_RUNDIRS}
 
     SCHEDULER="slurm"
     ;;
