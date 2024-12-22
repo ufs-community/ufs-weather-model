@@ -384,18 +384,18 @@ if (( NODES * TPN < TASKS )); then
 fi
 export NODES
 
-if [[ ${ESMF_THREADING} == true ]]; then
-  UFS_TASKS=${TASKS}
-  TASKS=$(( NODES * TPN ))
-  export TASKS
+UFS_TASKS=${TASKS}
+TASKS=$(( NODES * TPN ))
+export TASKS
 
-  PPN=$(( UFS_TASKS / NODES ))
-  if (( UFS_TASKS - ( PPN * NODES ) > 0 )); then
-    PPN=$((PPN + 1))
-  fi
-  export PPN
-  export UFS_TASKS
-else
+PPN=$(( UFS_TASKS / NODES ))
+if (( UFS_TASKS - ( PPN * NODES ) > 0 )); then
+  PPN=$((PPN + 1))
+fi
+export PPN
+export UFS_TASKS
+
+if [[ ${ESMF_THREADING} != true ]]; then
   PPN=${TPN}
 fi
 
