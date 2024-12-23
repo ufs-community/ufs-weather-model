@@ -93,7 +93,7 @@ export eps_imesh=2.5e-1
 
 export FV3_RUN=cpld_control_run.IN
 
-if [[ $MACHINE_ID = derecho ]]; then
+if [[ ${MACHINE_ID} = derecho ]]; then
   TPN=96
 fi
 
@@ -107,6 +107,6 @@ export DO_GSL_DRAG_SS=.false.
 ESMF_THREADING=false
 THRD=$THRD_cpl_thrd
 
-if [[ $MACHINE_ID = orion ]]; then
+if [[ ${MACHINE_ID} = orion || ${MACHINE_ID} = wcoss2 ]]; then
   WLCLK=40
 fi
