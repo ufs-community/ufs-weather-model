@@ -3,11 +3,11 @@
 #############################################
 
 # ESMF #
-logKindFlag:            @[esmf_logkind]
-globalResourceControl:  true
+logKindFlag:            ESMF_LOGKIND_MULTI
+globalResourceControl:  @[ESMF_THREADING]
 
 # EARTH #
-EARTH_component_list: MED ATM OCN ICE WAV
+EARTH_component_list: MED ATM CHM OCN ICE WAV
 EARTH_attributes::
   Verbosity = 0
 ::
@@ -24,9 +24,17 @@ ATM_petlist_bounds:             @[atm_petlist_bounds]
 ATM_omp_num_threads:            @[atm_omp_num_threads]
 ATM_attributes::
   Verbosity = 0
-  DumpFields = @[DumpFields]
+  DumpFields = false
   ProfileMemory = false
   OverwriteSlice = true
+::
+
+# CHM #
+CHM_model:                      @[chm_model]
+CHM_petlist_bounds:             @[chm_petlist_bounds]
+CHM_omp_num_threads:            @[chm_omp_num_threads]
+CHM_attributes::
+  Verbosity = 0
 ::
 
 # OCN #
@@ -35,7 +43,7 @@ OCN_petlist_bounds:             @[ocn_petlist_bounds]
 OCN_omp_num_threads:            @[ocn_omp_num_threads]
 OCN_attributes::
   Verbosity = 0
-  DumpFields = @[DumpFields]
+  DumpFields = false
   ProfileMemory = false
   OverwriteSlice = true
   mesh_ocn = @[MESH_OCN]
@@ -49,7 +57,7 @@ ICE_petlist_bounds:             @[ice_petlist_bounds]
 ICE_omp_num_threads:            @[ice_omp_num_threads]
 ICE_attributes::
   Verbosity = 0
-  DumpFields = @[DumpFields]
+  DumpFields = false
   ProfileMemory = false
   OverwriteSlice = true
   mesh_ice = @[MESH_ICE]
@@ -67,7 +75,15 @@ WAV_attributes::
   Verbosity = 0
   OverwriteSlice = false
   mesh_wav = @[MESH_WAV]
-  user_sets_restname = @[WW3_user_sets_restname]
+  user_histname = @[WW3_user_histname]
+  use_historync = @[WW3_historync]
+  use_restartnc = @[WW3_restartnc]
+  restart_from_binary = @[WW3_restart_from_binary]
+  pio_typename = @[WW3_PIO_FORMAT]
+  pio_numiotasks = @[WW3_PIO_IOTASKS]
+  pio_stride = @[WW3_PIO_STRIDE]
+  pio_rearranger = @[WW3_PIO_REARR]
+  pio_root = @[WW3_PIO_ROOT]
 ::
 
 # CMEPS warm run sequence
@@ -84,7 +100,11 @@ runSeq::
      MED -> ATM :remapMethod=redist
      MED -> ICE :remapMethod=redist
      MED -> WAV :remapMethod=redist
-     ATM
+     ATM phase1
+     ATM -> CHM
+     CHM
+     CHM -> ATM
+     ATM phase2
      ICE
      WAV
      ATM -> MED :remapMethod=redist
@@ -106,6 +126,7 @@ runSeq::
 
 DRIVER_attributes::
 ::
+
 MED_attributes::
       ATM_model = @[atm_model]
       ICE_model = @[ice_model]
@@ -115,6 +136,7 @@ MED_attributes::
       pio_rearranger = @[pio_rearranger]
       ocean_albedo_limit = @[ocean_albedo_limit]
 ::
+
 ALLCOMP_attributes::
       ScalarFieldCount = 3
       ScalarFieldIdxGridNX = 1

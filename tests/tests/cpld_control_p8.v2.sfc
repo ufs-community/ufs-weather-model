@@ -66,6 +66,7 @@ export LIST_FILES="sfcf021.tile1.nc \
                    RESTART/20210323.060000.MOM.res.nc \
                    RESTART/iced.2021-03-23-21600.nc \
                    RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc \
+                   ufs.cpld.ww3.r.2021-03-23-21600.nc \
                    20210323.060000.out_pnt.ww3 \
                    20210323.060000.out_grd.ww3 "
 
@@ -86,7 +87,7 @@ export eps_imesh=2.5e-1
 export FV3_RUN=cpld_control_run.IN
 export V2_SFC_FILE=true
 
-if [[ $MACHINE_ID = derecho ]]; then
+if [[ $MACHINE_ID = derecho ]] || [[ $MACHINE_ID = gaeac6 ]]; then
   TPN=96
 fi
 

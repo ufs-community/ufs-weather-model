@@ -47,6 +47,7 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.doctest',
     'sphinx.ext.intersphinx',
+    'sphinx.ext.extlinks',
     'sphinx.ext.todo',
     'sphinx.ext.coverage',
     'sphinx.ext.mathjax',
@@ -95,7 +96,14 @@ linkcheck_anchors_ignore = [r"L\d*",
 # Ignore working links that cause a linkcheck 403 error.
 linkcheck_ignore = [r'https://agupubs\.onlinelibrary\.wiley\.com/doi/10\.1029/2020MS002260',
                     r'https://glossary.ametsoc.org/wiki/*',
+                    r'https://www.intel.com/content/www/us/en/developer/tools/oneapi/hpc-toolkit-download.html',
                    ]
+
+linkcheck_allowed_redirects = {r"https://doi.org/.*": 
+                                 r"https://rmets.onlinelibrary.wiley.com/doi/.*",
+                               r"https://doi.org/.*": 
+                                 r"https://journals.ametsoc.org/view/journals/.*",
+                               }
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -248,6 +256,14 @@ napoleon_custom_sections = [('Returns', 'params_style')] # Allows return of mult
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {'landda': ('https://land-da-workflow.readthedocs.io/en/latest/', None),
                        }
+
+# -- Options for extlinks extension ---------------------------------------
+
+extlinks_detect_hardcoded_links = True
+extlinks = {'nco': ('https://www.nco.ncep.noaa.gov/idsb/implementation_standards/%s', '%s'),
+            'wm-repo': ('https://github.com/ufs-community/ufs-weather-model/%s', '%s'),
+            'wm-wiki': ('https://github.com/ufs-community/ufs-weather-model/wiki/%s','%s'),
+            }
 
 # -- Options for todo extension ----------------------------------------------
 

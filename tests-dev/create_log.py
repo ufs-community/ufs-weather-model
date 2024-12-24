@@ -3,10 +3,27 @@ import sys
 import subprocess
 import yaml
 from datetime import datetime
+#import datetime
 from ufs_test_utils import get_testcase, write_logfile, delete_files, machine_check_off
 
+def get_timestamps(path):
+    """Obtain experiment starting and ending time marks through file timestamps
+
+    Args:
+        path (str): experiment log directory
+    Returns:
+        str: experiment starting and ending time strings
+    """
+    dir_list = os.listdir(path)
+    dt = []
+    for f in dir_list:
+        m_time = os.path.getmtime(path+f)
+        dt.append(datetime.fromtimestamp(m_time))
+    dtsort=sorted(dt)
+    return str(dtsort[0]),str(dtsort[-1])
+
 def finish_log():
-    """Collects regression test results and generates log file.
+    """Collect regression test results and generate log file.
     """
     UFS_TEST_YAML = str(os.getenv('UFS_TEST_YAML'))
     PATHRT     = os.getenv('PATHRT')
@@ -40,40 +57,46 @@ def finish_log():
                         COMPILE_ID  = apps
                         COMPILE_LOG = 'compile_'+COMPILE_ID+'.log'
                         COMPILE_LOG_TIME ='compile_'+COMPILE_ID+'_timestamp.txt'
-                        with open('./logs/log_'+MACHINE_ID+'/'+COMPILE_LOG) as f:
-                            if "[100%] Linking Fortran executable" in f.read():
-                                COMPILE_PASS += 1
-                                f.seek(0)
-                                for line in f:
-                                    if 'export RUNDIR_ROOT=' in line:
-                                        RUNDIR_ROOT=line.split("=")[1]
-                                        break
-                                compile_err = RUNDIR_ROOT.strip('\n')+'/compile_'+COMPILE_ID+'/err'
-                                with open(compile_err) as ferr:
-                                    contents = ferr.read()
-                                    count_warning = contents.count(": warning #")
-                                    count_remarks = contents.count(": remark #")
-                                    ferr.close()
-                                warning_log = ""
-                                if count_warning > 0:
-                                    warning_log = "("+str(count_warning)+" warnings"
-                                if count_remarks > 0:
-                                    warning_log+= ","+str(count_remarks)+" remarks)"
-                                flog = open('./logs/log_'+MACHINE_ID+'/'+COMPILE_LOG_TIME)
-                                timing_data = flog.read()
-                                first_line = timing_data.split('\n', 1)[0]
-                                etime = int(first_line.split(",")[4].strip()) - int(first_line.split(",")[1].strip())
-                                btime = int(first_line.split(",")[3].strip()) - int(first_line.split(",")[2].strip())
-                                etime_min, etime_sec = divmod(int(etime), 60)
-                                etime_min = f"{etime_min:02}"; etime_sec = f"{etime_sec:02}"
-                                btime_min, btime_sec = divmod(int(btime), 60)
-                                btime_min = f"{btime_min:02}"; btime_sec = f"{btime_sec:02}"
-                                time_log = " ["+etime_min+':'+etime_sec+', '+btime_min+':'+btime_sec+"]"
-                                flog.close()
-                                compile_log = "PASS -- COMPILE "+COMPILE_ID+time_log+warning_log+"\n"
-                            else:
-                                compile_log = "FAIL -- COMPILE "+COMPILE_ID+"\n"                        
-                            f.close()
+                        COMPILE_CHECK1 ='Compile '+COMPILE_ID+' Completed'
+                        COMPILE_CHECK2 ='[100%] Linking Fortran executable'
+                        try:
+                            with open('./logs/log_'+MACHINE_ID+'/'+COMPILE_LOG) as f:
+                                if COMPILE_CHECK1 in f.read() or COMPILE_CHECK2 in f.read():                        
+                                    COMPILE_PASS += 1
+                                    f.seek(0)
+                                    for line in f:
+                                        if 'export RUNDIR_ROOT=' in line:
+                                            RUNDIR_ROOT=line.split("=")[1]
+                                            break
+                                    compile_err = RUNDIR_ROOT.strip('\n')+'/compile_'+COMPILE_ID+'/err'
+                                    with open(compile_err) as ferr:
+                                        contents = ferr.read()
+                                        count_warning = contents.count(": warning #")
+                                        count_remarks = contents.count(": remark #")
+                                        ferr.close()
+                                    warning_log = ""
+                                    if count_warning > 0:
+                                        warning_log = "("+str(count_warning)+" warnings"
+                                    if count_remarks > 0:
+                                        warning_log+= ","+str(count_remarks)+" remarks)"
+                                    flog = open('./logs/log_'+MACHINE_ID+'/'+COMPILE_LOG_TIME)
+                                    timing_data = flog.read()
+                                    first_line = timing_data.split('\n', 1)[0]
+                                    etime = int(first_line.split(",")[4].strip()) - int(first_line.split(",")[1].strip())
+                                    btime = int(first_line.split(",")[3].strip()) - int(first_line.split(",")[2].strip())
+                                    etime_min, etime_sec = divmod(int(etime), 60)
+                                    etime_min = f"{etime_min:02}"; etime_sec = f"{etime_sec:02}"
+                                    btime_min, btime_sec = divmod(int(btime), 60)
+                                    btime_min = f"{btime_min:02}"; btime_sec = f"{btime_sec:02}"
+                                    time_log = " ["+etime_min+':'+etime_sec+', '+btime_min+':'+btime_sec+"]"
+                                    flog.close()
+                                    compile_log = "PASS -- COMPILE "+COMPILE_ID+time_log+warning_log+"\n"
+                                else:
+                                    compile_log = "FAIL -- COMPILE "+COMPILE_ID+"\n"                                        
+                                f.close()
+                        except FileNotFoundError:
+                            compile_log = "FAIL -- COMPILE "+COMPILE_ID+"\n"
+                            print('./logs/log_'+MACHINE_ID+'/'+COMPILE_LOG+': does not exist')
                         run_logs += compile_log
                     else:
                         PASS_TESTS = True
@@ -94,47 +117,49 @@ def finish_log():
                             PASS_CHECK = 'Test '+TEST_ID+' PASS'
                             MAXS_CHECK = 'The maximum resident set size (KB)'
                             pass_flag = False
-                            create_dep_flag = False
-                            if (CREATE_BASELINE == 'true' and not DEP_RUN == ""):
-                                create_dep_flag = True
-                            if not create_dep_flag:
+                            try:
                                 with open('./logs/log_'+MACHINE_ID+'/'+TEST_LOG) as f:
                                     if PASS_CHECK in f.read():
                                         pass_flag = True
-                                        f.close()
-                                if pass_flag:
-                                    f = open('./logs/log_'+MACHINE_ID+'/'+TEST_LOG_TIME)
-                                    timing_data = f.read()
-                                    first_line = timing_data.split('\n', 1)[0]
-                                    etime = str(int(first_line.split(",")[4].strip()) - int(first_line.split(",")[1].strip()))
-                                    rtime = str(int(first_line.split(",")[3].strip()) - int(first_line.split(",")[2].strip()))
-                                    etime_min, etime_sec = divmod(int(etime), 60)
-                                    etime_min = f"{etime_min:02}"; etime_sec = f"{etime_sec:02}"
-                                    rtime_min, rtime_sec = divmod(int(rtime), 60)
-                                    rtime_min = f"{rtime_min:02}"; rtime_sec = f"{rtime_sec:02}"
-                                    time_log = " ["+etime_min+':'+etime_sec+', '+rtime_min+':'+rtime_sec+"]"
-                                    f.close()
-                                with open('./logs/log_'+MACHINE_ID+'/'+TEST_LOG) as f:
-                                    if pass_flag :
+                                        f.close()                                    
+                            except FileNotFoundError:
+                                print('./logs/log_'+MACHINE_ID+'/'+TEST_LOG+': does not exist')
+                            if pass_flag:
+                                f = open('./logs/log_'+MACHINE_ID+'/'+TEST_LOG_TIME)
+                                timing_data = f.read()
+                                first_line = timing_data.split('\n', 1)[0]
+                                etime = str(int(first_line.split(",")[4].strip()) - int(first_line.split(",")[1].strip()))
+                                rtime = str(int(first_line.split(",")[3].strip()) - int(first_line.split(",")[2].strip()))
+                                etime_min, etime_sec = divmod(int(etime), 60)
+                                etime_min = f"{etime_min:02}"; etime_sec = f"{etime_sec:02}"
+                                rtime_min, rtime_sec = divmod(int(rtime), 60)
+                                rtime_min = f"{rtime_min:02}"; rtime_sec = f"{rtime_sec:02}"
+                                time_log = " ["+etime_min+':'+etime_sec+', '+rtime_min+':'+rtime_sec+"]"
+                                f.close()
+                                if pass_flag :
+                                    with open('./logs/log_'+MACHINE_ID+'/'+TEST_LOG) as f:
                                         rtlog_file = f.readlines()
                                         for line in rtlog_file:
                                             if MAXS_CHECK in line:
                                                 memsize= line.split('=')[1].strip()
                                         test_log = 'PASS -- TEST '+TEST_ID+time_log+' ('+memsize+' MB)\n'
                                         PASS_NR += 1
-                                    else:
-                                        test_log = 'FAIL -- TEST '+TEST_ID+'\n'
-                                        failed_list.append(TEST_NAME+' '+RT_COMPILER)
-                                        FAIL_NR += 1
-                                    run_logs += test_log
-                                f.close()
+                                        f.close()
+                                else:
+                                    test_log = 'FAIL -- TEST '+TEST_ID+'\n'
+                                    failed_list.append(TEST_NAME+' '+RT_COMPILER)
+                                    FAIL_NR += 1
+                                run_logs += test_log
                     run_logs += '\n'
     write_logfile(filename, "a", output=run_logs)
 
-    TEST_START_TIME = os.getenv('TEST_START_TIME')
-    TEST_END_TIME   = os.getenv('TEST_END_TIME')
-    start_time      = datetime.strptime(TEST_START_TIME, "%Y%m%d %H:%M:%S")
-    end_time        = datetime.strptime(TEST_END_TIME, "%Y%m%d %H:%M:%S")
+    TEST_START_TIME, TEST_END_TIME = get_timestamps('./logs/log_'+MACHINE_ID+'/')
+    
+    clean_START_TIME= TEST_START_TIME.split('.')[0]
+    start_time      = datetime.strptime(clean_START_TIME, "%Y-%m-%d %H:%M:%S")
+    clean_END_TIME= TEST_END_TIME.split('.')[0]
+    end_time        = datetime.strptime(clean_END_TIME, "%Y-%m-%d %H:%M:%S")
+
     hours, remainder= divmod((end_time - start_time).total_seconds(), 3600)
     minutes, seconds= divmod(remainder, 60)
     hours = int(hours);    minutes=int(minutes);     seconds =int(seconds)
