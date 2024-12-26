@@ -321,9 +321,9 @@ if(STOCH_PHYS)
 endif()
 
 if(FV3)
-  add_dependencies(ufs fv3atm)
-  list(APPEND _ufs_defs_private FRONT_FV3=fv3atm_cap_mod)
-  list(APPEND _ufs_libs_public fv3atm)
+  add_dependencies(ufs ufsatm_fv3)
+  list(APPEND _ufs_defs_private FRONT_FV3=${DYCORE_TARGET_CAP_MOD})
+  list(APPEND _ufs_libs_public ${DYCORE_TARGET})
 endif()
 
 if(MOM6)
