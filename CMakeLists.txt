@@ -43,7 +43,7 @@ include(cmake/configure_apps.cmake)
 
 message("")
 message("FMS .............. ${FMS}")
-message("FV3 .............. ${FV3}")
+message("FV3_dy ........... ${FV3}")
 message("AQM .............. ${AQM}")
 message("GOCART ........... ${UFS_GOCART}")
 message("MOM6 ............. ${MOM6}")
@@ -193,6 +193,11 @@ endif()
 
 ###############################################################################
 ### Atmosphere Components [FV3, MPAS?]
+### DJS2024: There will be a generalized atmospheric component with multiple
+###          dycores, not multiple atmospheric components (one for each dycore).
+###          So, - rename the atmospheric component FV3 to UFSATM or ATM, then
+###              - if FV3 or MPAS, add_sudirectory(UFSATM or ATM)
+###
 ###############################################################################
 if(FV3)
   add_subdirectory(FV3)
