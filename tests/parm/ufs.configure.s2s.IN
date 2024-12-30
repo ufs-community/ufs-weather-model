@@ -4,7 +4,7 @@
 
 # ESMF #
 logKindFlag:            @[esmf_logkind]
-globalResourceControl:  false
+globalResourceControl:  @[ESMF_THREADING]
 
 # EARTH #
 EARTH_component_list: MED ATM OCN ICE
@@ -15,11 +15,13 @@ EARTH_attributes::
 # MED #
 MED_model:                      @[med_model]
 MED_petlist_bounds:             @[med_petlist_bounds]
+MED_omp_num_threads:            @[med_omp_num_threads]
 ::
 
 # ATM #
 ATM_model:                      @[atm_model]
 ATM_petlist_bounds:             @[atm_petlist_bounds]
+ATM_omp_num_threads:            @[atm_omp_num_threads]
 ATM_attributes::
   Verbosity = 0
   DumpFields = @[DumpFields]
@@ -30,6 +32,7 @@ ATM_attributes::
 # OCN #
 OCN_model:                      @[ocn_model]
 OCN_petlist_bounds:             @[ocn_petlist_bounds]
+OCN_omp_num_threads:            @[ocn_omp_num_threads]
 OCN_attributes::
   Verbosity = 0
   DumpFields = @[DumpFields]
@@ -43,6 +46,7 @@ OCN_attributes::
 # ICE #
 ICE_model:                      @[ice_model]
 ICE_petlist_bounds:             @[ice_petlist_bounds]
+ICE_omp_num_threads:            @[ice_omp_num_threads]
 ICE_attributes::
   Verbosity = 0
   DumpFields = @[DumpFields]
@@ -93,6 +97,20 @@ MED_attributes::
       coupling_mode = @[CPLMODE]
       pio_rearranger = @[pio_rearranger]
       ocean_albedo_limit = @[ocean_albedo_limit]
+      histaux_ice2med_file1_auxname = ice.1h.aux
+      histaux_ice2med_file1_doavg = .false.
+      histaux_ice2med_file1_enabled = @[histaux_enabled]
+      histaux_ice2med_file1_flds = all
+      histaux_ice2med_file1_history_n = @[MED_history_n]
+      histaux_ice2med_file1_history_option = nhours
+      histaux_ice2med_file1_ntperfile = 9999
+      histaux_ocn2med_file1_auxname = ocn.1h.aux
+      histaux_ocn2med_file1_doavg = .false.
+      histaux_ocn2med_file1_enabled = @[histaux_enabled]
+      histaux_ocn2med_file1_flds = all
+      histaux_ocn2med_file1_history_n = @[MED_history_n]
+      histaux_ocn2med_file1_history_option = nhours
+      histaux_ocn2med_file1_ntperfile = 9999
 ::
 
 ALLCOMP_attributes::
