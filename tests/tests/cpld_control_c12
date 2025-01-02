@@ -55,9 +55,11 @@ export LIST_FILES=" "
 #                    RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc"
 export ATMRES=C12
 
-export_fv3
+export_fv3_v16
 export_cpl
 export CCPP_SUITE=FV3_coupled_lowres
+
+export ATMRES=C12
 
 export RESTART_N=12
 export RESTART_INTERVAL="${RESTART_N} -1"
@@ -71,22 +73,27 @@ export N_SPONGE=5
 export D2_BG_K2=0.0
 export N_SPLIT=6
 export DNATS=1
-
+export MAKE_NH=.false.
+export HYDROSTATIC=.true.
+export GWD_OPT=0
+export DO_UGWP_V1=.false.
 export atm_omp_num_threads=1
 export WRTTASK_PER_GROUP=2
-
+export LSM=1
+export ISATMEDMF=1
+export IMP_PHYSICS=11
 # export INPES=$INPES_cpl_c48
 # export JNPES=$JNPES_cpl_c48
 # export atm_omp_num_threads=$THRD_cpl_c48
 # export WRTTASK_PER_GROUP=$WPG_cpl_c48
- export OUTPUT_GRID='cubed_sphere_grid'
+export OUTPUT_GRID='gaussian_grid'
 
 # export WAV_tasks=0
 # export CHM_tasks=0
 # OCN_tasks=$OCN_tasks_cpl_c48
 # ICE_tasks=$ICE_tasks_cpl_c48
-OCN_tasks=2
-ICE_tasks=2
+OCN_tasks=6
+ICE_tasks=6
 
 # atm/ocn/ice resolution
 export NPX=13
@@ -127,7 +134,7 @@ export MOM6_DIAG_COORD_DEF_Z_FILE=oceanda_zgrid_25L.nc
 export MOM6_INPUT=MOM_input_900.IN
 export MOM6_RESTART_SETTING=n
 
-export CICE_ICE_IC=default
+export CICE_ICE_IC=none
 export CICE_RESTART_IOTASKS=1
 export CICE_HISTORY_IOTASKS=1
 
@@ -161,7 +168,7 @@ export FIELD_TABLE=field_table_thompson_noaero_tke
 export UFS_CONFIGURE=ufs.configure.s2s_esmf.IN
 
 export FV3_RUN=cpld_control_run.IN
-
+export INPUT_NML=cpld_lowres.nml.IN
 # HR4 GFSv17 GWD update
 #export DO_GWD_OPT_PSL=.true.
 #export DO_GSL_DRAG_SS=.false.
