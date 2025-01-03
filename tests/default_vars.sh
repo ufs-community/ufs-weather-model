@@ -7,116 +7,118 @@
 #
 ###############################################################################
 
-  THRD=1
+THRD=1
 
-  export INPES_atmaero=4
-  export JNPES_atmaero=8
-  export WPG_atmaero=6
+export INPES_atmaero=4
+export JNPES_atmaero=8
+export WPG_atmaero=6
 
-  export THRD_cpl_atmw=1
-  export INPES_cpl_atmw=3
-  export JNPES_cpl_atmw=8
-  export WPG_cpl_atmw=6
-  export WAV_tasks_cpl_atmw=30
-  export WAV_thrds_cpl_atmw=1
+export THRD_cpl_atmw=1
+export INPES_cpl_atmw=3
+export JNPES_cpl_atmw=8
+export WPG_cpl_atmw=6
+export WAV_tasks_cpl_atmw=30
+export WAV_thrds_cpl_atmw=1
 
-  export THRD_cpl_c48=1
-  export INPES_cpl_c48=1
-  export JNPES_cpl_c48=1
-  export WPG_cpl_c48=6
-  export OCN_tasks_cpl_c48=4
-  export ICE_tasks_cpl_c48=4
+export THRD_cpl_c48=1
+export INPES_cpl_c48=1
+export JNPES_cpl_c48=1
+export WPG_cpl_c48=6
+export OCN_tasks_cpl_c48=4
+export ICE_tasks_cpl_c48=4
 
-  export THRD_cpl_dflt=1
-  export INPES_cpl_dflt=3
-  export JNPES_cpl_dflt=8;
-  export WPG_cpl_dflt=6
-  export OCN_tasks_cpl_dflt=20
-  export ICE_tasks_cpl_dflt=10
-  export WAV_tasks_cpl_dflt=20
+export THRD_cpl_dflt=1
+export INPES_cpl_dflt=3
+export JNPES_cpl_dflt=8;
+export WPG_cpl_dflt=6
+export OCN_tasks_cpl_dflt=20
+export ICE_tasks_cpl_dflt=10
+export WAV_tasks_cpl_dflt=20
 
-  export THRD_cpl_thrd=2
-  export INPES_cpl_thrd=3
-  export JNPES_cpl_thrd=4
-  export WPG_cpl_thrd=6
-  export OCN_tasks_cpl_thrd=20
-  export OCN_thrds_cpl_thrd=1
-  export ICE_tasks_cpl_thrd=10
-  export ICE_thrds_cpl_thrd=1
-  export WAV_tasks_cpl_thrd=12
-  export WAV_thrds_cpl_thrd=2
+export THRD_cpl_thrd=2
+export INPES_cpl_thrd=3
+export JNPES_cpl_thrd=4
+export WPG_cpl_thrd=6
+export OCN_tasks_cpl_thrd=20
+export OCN_thrds_cpl_thrd=1
+export ICE_tasks_cpl_thrd=10
+export ICE_thrds_cpl_thrd=1
+export WAV_tasks_cpl_thrd=12
+export WAV_thrds_cpl_thrd=2
 
-  export THRD_cpl_dcmp=1
-  export INPES_cpl_dcmp=4
-  export JNPES_cpl_dcmp=6
-  export WPG_cpl_dcmp=6
-  export OCN_tasks_cpl_dcmp=20
-  export ICE_tasks_cpl_dcmp=10
-  export WAV_tasks_cpl_dcmp=20
+export THRD_cpl_dcmp=1
+export INPES_cpl_dcmp=4
+export JNPES_cpl_dcmp=6
+export WPG_cpl_dcmp=6
+export OCN_tasks_cpl_dcmp=20
+export ICE_tasks_cpl_dcmp=10
+export WAV_tasks_cpl_dcmp=20
 
-  export THRD_cpl_mpi=1
-  export INPES_cpl_mpi=4
-  export JNPES_cpl_mpi=8
-  export WPG_cpl_mpi=6
-  export OCN_tasks_cpl_mpi=34
-  export ICE_tasks_cpl_mpi=20
-  export WAV_tasks_cpl_mpi=28
+export THRD_cpl_mpi=1
+export INPES_cpl_mpi=4
+export JNPES_cpl_mpi=8
+export WPG_cpl_mpi=6
+export OCN_tasks_cpl_mpi=34
+export ICE_tasks_cpl_mpi=20
+export WAV_tasks_cpl_mpi=28
 
-  export THRD_cpl_bmrk=2
-  export INPES_cpl_bmrk=8
-  export JNPES_cpl_bmrk=8
-  export WPG_cpl_bmrk=48
-  export OCN_tasks_cpl_bmrk=120
-  export OCN_thrds_cpl_bmrk=1
-  export ICE_tasks_cpl_bmrk=48
-  export ICE_thrds_cpl_bmrk=1
-  export WAV_tasks_cpl_bmrk=80
-  export WAV_thrds_cpl_bmrk=2
+export THRD_cpl_bmrk=2
+export INPES_cpl_bmrk=8
+export JNPES_cpl_bmrk=8
+export WPG_cpl_bmrk=48
+export OCN_tasks_cpl_bmrk=120
+export OCN_thrds_cpl_bmrk=1
+export ICE_tasks_cpl_bmrk=48
+export ICE_thrds_cpl_bmrk=1
+export WAV_tasks_cpl_bmrk=80
+export WAV_thrds_cpl_bmrk=2
 
-  export THRD_cpl_c192=2
-  export INPES_cpl_c192=6
-  export JNPES_cpl_c192=8
-  export WPG_cpl_c192=12
-  export OCN_tasks_cpl_c192=60
-  export ICE_tasks_cpl_c192=24
-  export WAV_tasks_cpl_c192=80
+export THRD_cpl_c192=2
+export INPES_cpl_c192=6
+export JNPES_cpl_c192=8
+export WPG_cpl_c192=12
+export OCN_tasks_cpl_c192=60
+export ICE_tasks_cpl_c192=24
+export WAV_tasks_cpl_c192=80
 
-  export ATM_compute_tasks_cdeps_100=12
-  export OCN_tasks_cdeps_100=16
-  export ICE_tasks_cdeps_100=12
+export ATM_compute_tasks_cdeps_100=12
+export OCN_tasks_cdeps_100=16
+export ICE_tasks_cdeps_100=12
 
-  export ATM_compute_tasks_cdeps_025=40
-  export OCN_tasks_cdeps_025=120
-  export ICE_tasks_cdeps_025=48
+export ATM_compute_tasks_cdeps_025=40
+export OCN_tasks_cdeps_025=120
+export ICE_tasks_cdeps_025=48
 
-  export INPES_aqm=33
-  export JNPES_aqm=8
+export INPES_aqm=33
+export JNPES_aqm=8
 
-  export THRD_cpl_unstr=1
-  export INPES_cpl_unstr=3
-  export JNPES_cpl_unstr=8
-  export WPG_cpl_unstr=6
-  export OCN_tasks_cpl_unstr=20
-  export ICE_tasks_cpl_unstr=10
-  export WAV_tasks_cpl_unstr=60
+export THRD_cpl_unstr=1
+export INPES_cpl_unstr=3
+export JNPES_cpl_unstr=8
+export WPG_cpl_unstr=6
+export OCN_tasks_cpl_unstr=20
+export ICE_tasks_cpl_unstr=10
+export WAV_tasks_cpl_unstr=60
 
-  export THRD_cpl_unstr_mpi=1
-  export INPES_cpl_unstr_mpi=4
-  export JNPES_cpl_unstr_mpi=8
-  export WPG_cpl_unstr_mpi=6
-  export OCN_tasks_cpl_unstr_mpi=34
-  export ICE_tasks_cpl_unstr_mpi=20
-  export WAV_tasks_cpl_unstr_mpi=50
+export THRD_cpl_unstr_mpi=1
+export INPES_cpl_unstr_mpi=4
+export JNPES_cpl_unstr_mpi=8
+export WPG_cpl_unstr_mpi=6
+export OCN_tasks_cpl_unstr_mpi=34
+export ICE_tasks_cpl_unstr_mpi=20
+export WAV_tasks_cpl_unstr_mpi=50
 
-  export aqm_omp_num_threads=1
-  export atm_omp_num_threads=1
-  export chm_omp_num_threads=1
-  export ice_omp_num_threads=1
-  export lnd_omp_num_threads=1
-  export med_omp_num_threads=1
-  export ocn_omp_num_threads=1
-  export wav_omp_num_threads=1
-  export fbh_omp_num_threads=1
+export aqm_omp_num_threads=1
+export atm_omp_num_threads=1
+export chm_omp_num_threads=1
+export ice_omp_num_threads=1
+export lnd_omp_num_threads=1
+export med_omp_num_threads=1
+export ocn_omp_num_threads=1
+export wav_omp_num_threads=1
+export fbh_omp_num_threads=1
+
+export histaux_enabled=.false.
 
 if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
 
@@ -439,6 +441,7 @@ export CMP_DATAONLY=false
 
 # Defaults for ufs.configure
 export esmf_logkind="ESMF_LOGKIND_MULTI"
+export ESMF_THREADING=true
 export DumpFields="false"
 export MED_history_n=1000000
 export RESTART_FH=" "
@@ -525,7 +528,7 @@ else
 fi
 
 # ufs.configure defaults
-export UFS_CONFIGURE=ufs.configure.atm_esmf.IN
+export UFS_CONFIGURE=ufs.configure.atm.IN
 export MODEL_CONFIGURE=model_configure.IN
 export atm_model=fv3
 
@@ -1354,7 +1357,7 @@ export_fire_behavior() {
 
 # Defaults for the coupled 5-component
 export_cmeps() {
-  export UFS_CONFIGURE=ufs.configure.s2swa_fast_esmf.IN
+  export UFS_CONFIGURE=ufs.configure.s2swa_fast.IN
   export med_model=cmeps
   export atm_model=fv3
   export chm_model=gocart
