@@ -53,12 +53,13 @@ export LIST_FILES=" "
 #                    RESTART/20210323.060000.MOM.res.nc \
 #                    RESTART/iced.2021-03-23-21600.nc \
 #                    RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc"
-export_fv3_v16
-export_cpl
-export CCPP_SUITE=FV3_coupled_lowres
 
 export ATMRES=C12
 export BLOCKSIZE=12
+
+export_fv3_v16
+export_cpl
+export CCPP_SUITE=FV3_coupled_lowres
 
 export RESTART_N=12
 export RESTART_INTERVAL="${RESTART_N} -1"
@@ -81,6 +82,7 @@ export WRTTASK_PER_GROUP=1
 export LSM=1
 export ISATMEDMF=1
 export IMP_PHYSICS=11
+
 # export INPES=$INPES_cpl_c48
 # export JNPES=$JNPES_cpl_c48
 # export atm_omp_num_threads=$THRD_cpl_c48
@@ -92,8 +94,8 @@ export OUTPUT_GRID='gaussian_grid'
 # OCN_tasks=$OCN_tasks_cpl_c48
 # ICE_tasks=$ICE_tasks_cpl_c48
 
-OCN_tasks=4
-ICE_tasks=4
+OCN_tasks=2
+ICE_tasks=2
 
 # atm/ocn/ice resolution
 export NPX=13
@@ -131,7 +133,7 @@ export MOM6_FRUNOFF=''
 export MOM6_RIVER_RUNOFF=False
 export MOM6_DIAG_COORD_DEF_Z_FILE=oceanda_zgrid_25L.nc
 
-export CICE_ICE_IC=none
+export CICE_ICE_IC=default
 export CICE_RESTART_IOTASKS=1
 export CICE_HISTORY_IOTASKS=1
 
@@ -150,7 +152,8 @@ export FNSMCC="'global_soilmgldas.statsgo.t92.192.94.grb'"
 export FNMSKH="'global_slmask.t62.192.94.grb'"
 
 # resolution dependent setting
-export CDMBWD=${CDMBWD_c48}
+#?
+export CDMBWD=1.0,1.0,1.0,1.0
 export DT_INNER=${DT_ATMOS}
 
 # no aero, no waves
