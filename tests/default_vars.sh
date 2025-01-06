@@ -501,7 +501,6 @@ export FNABSC="'global_mxsnoalb.uariz.t126.384.190.rg.grb'"
 export RF_CUTOFF=30.0
 export FAST_TAU_W_SEC=0.0
 
-export ATMRES=C96
 export TILEDFIX=.false.
 export DO_CA=.false.
 export CA_SGS=.false.
