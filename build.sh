@@ -13,10 +13,6 @@ export FC=${FC:-mpif90}
 BUILD_DIR=${BUILD_DIR:-${UFS_MODEL_DIR}/build}
 mkdir -p "${BUILD_DIR}"
 
-if [[ "$(uname -s)" == "Darwin" ]]; then
-   gsed -i'.backup' "s:LINKER_LANGUAGE Fortran:LINKER_LANGUAGE CXX:" ./CMakeLists.txt
-fi
-
 cd "${BUILD_DIR}"
 ARR_CMAKE_FLAGS=()
 for i in ${CMAKE_FLAGS}; do ARR_CMAKE_FLAGS+=("${i}") ; done
