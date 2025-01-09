@@ -1,7 +1,9 @@
-COMPILE | s2s | intel | -DAPP=S2S -DCCPP_SUITES=FV3_coupled_lowres -DDEBUG=ON |   | fv3 |
+#COMPILE | s2s | intel | -DAPP=S2S -DCCPP_SUITES=FV3_coupled_lowres -DDEBUG=ON |   | fv3 |
+COMPILE | s2s | intel | -DAPP=S2S -DCCPP_SUITES=FV3_coupled_lowres |   | fv3 |
+
+#RUN | cpld_control_c12                                  |                                      | baseline |
+#RUN | cpld_control_c24                                  |                                      | baseline |
 
 RUN | cpld_control_c12                                  |                                      | baseline |
-RUN | cpld_control_c24                                  |                                      | baseline |
-
-#RUN | cpld_warmstart_c12                                | - noaacloud                          | baseline |
-#RUN | cpld_restart_c12                                  | - noaacloud                          |          | cpld_warmstart_c12
+RUN | cpld_warmstart_c12                                | - noaacloud                          | baseline |
+RUN | cpld_restart_c12                                  | - noaacloud                          |          | cpld_warmstart_c12

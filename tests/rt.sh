@@ -1034,6 +1034,7 @@ if [[ "${RTPWD_NEW_BASELINE}" == true ]] ; then
 else
   RTPWD=${RTPWD:-${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}}
 fi
+RTPWD=/work2/noaa/stmp/dworthen/stmp/dworthen/FV3_RT/bl.ultralow
 
 if [[ "${CREATE_BASELINE}" == false ]] ; then
   EMPTY_CHECK=$(find "${RTPWD}/" -type d -prune -empty)
@@ -1049,7 +1050,8 @@ if [[ "${CREATE_BASELINE}" == false ]] ; then
 fi
 
 #INPUTDATA_ROOT=${INPUTDATA_ROOT:-${DISKNM}/NEMSfv3gfs/input-data-20240501}
-INPUTDATA_ROOT=/scratch2/NCEPDEV/stmp3/Denise.Worthen/input-data-20240501
+#INPUTDATA_ROOT=/scratch2/NCEPDEV/stmp3/Denise.Worthen/input-data-20240501
+INPUTDATA_ROOT=/work2/noaa/stmp/dworthen/input-data-20240501
 INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20240214
 INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC:-${DISKNM}/NEMSfv3gfs/BM_IC-20220207}
 INPUTDATA_LM4=${INPUTDATA_LM4:-${INPUTDATA_ROOT}/LM4_input_data}
