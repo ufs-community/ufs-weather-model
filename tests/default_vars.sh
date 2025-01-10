@@ -70,7 +70,7 @@ export OCN_tasks_cpl_bmrk=120
 export OCN_thrds_cpl_bmrk=1
 export ICE_tasks_cpl_bmrk=48
 export ICE_thrds_cpl_bmrk=1
-export WAV_tasks_cpl_bmrk=80
+export WAV_tasks_cpl_bmrk=120
 export WAV_thrds_cpl_bmrk=2
 
 export THRD_cpl_c192=2
