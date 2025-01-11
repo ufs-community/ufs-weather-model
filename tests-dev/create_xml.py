@@ -32,6 +32,7 @@ def rocoto_create_entries(RTPWD,MACHINE_ID,INPUTDATA_ROOT,INPUTDATA_ROOT_WW3,INP
   <!ENTITY INPUTDATA_ROOT "{INPUTDATA_ROOT}">
   <!ENTITY INPUTDATA_ROOT_WW3 "{INPUTDATA_ROOT_WW3}">
   <!ENTITY INPUTDATA_ROOT_BMIC "{INPUTDATA_ROOT_BMIC}">
+  <!ENTITY INPUTDATA_LM4 "{INPUTDATA_ROOT}/LM4_input_data">
   <!ENTITY RUNDIR_ROOT    "{RUNDIR_ROOT}">
   <!ENTITY NEW_BASELINE   "{NEW_BASELINE}">
 ]>
@@ -195,6 +196,7 @@ export RTPWD={RTPWD}
 export INPUTDATA_ROOT={INPUTDATA_ROOT}
 export INPUTDATA_ROOT_WW3={INPUTDATA_ROOT_WW3}
 export INPUTDATA_ROOT_BMIC={INPUTDATA_ROOT_BMIC}
+export INPUTDATA_LM4={INPUTDATA_ROOT}/LM4_input_data
 export PATHRT={PATHRT}
 export PATHTR={PATHTR}
 export NEW_BASELINE={NEW_BASELINE}
@@ -216,8 +218,8 @@ export WLCLK={WLCLK}
 export RTVERBOSE=false
 """
     if ( MACHINE_ID == 'jet' ):
-         runtest_envs+="export PATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/bin:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/bin:$PATH"
-         runtest_envs+="export PYTHONPATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/lib/python3.8/site-packages"
+        runtest_envs += f"export PATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/bin:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/bin:$PATH\n"
+        runtest_envs += f"export PYTHONPATH=/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/lfs4/HFIP/hfv3gfs/software/miniconda3/4.8.3/lib/python3.8/site-packages\n"
      
     with open(filename,"w+") as f:
         f.writelines(runtest_envs)

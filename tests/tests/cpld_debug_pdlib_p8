@@ -53,6 +53,7 @@ export LIST_FILES="sfcf003.tile1.nc \
                    RESTART/20210322.090000.MOM.res.nc \
                    RESTART/iced.2021-03-22-32400.nc \
                    RESTART/ufs.cpld.cpl.r.2021-03-22-32400.nc \
+                   ufs.cpld.ww3.r.2021-03-22-32400.nc \
                    20210322.090000.out_pnt.ww3 \
                    20210322.090000.out_grd.ww3 "
 
@@ -76,7 +77,7 @@ OCN_tasks=$OCN_tasks_cpl_unstr
 ICE_tasks=$ICE_tasks_cpl_unstr
 WAV_tasks=$WAV_tasks_cpl_unstr
 # bump resources for debug test
-WAV_tasks="$(($WAV_tasks_cpl_unstr + 18))"
+WAV_tasks="$(($WAV_tasks_cpl_unstr + 30))"
 OCN_tasks="$((OCN_tasks_cpl_unstr + 16))"
 
 export atm_omp_num_threads=$THRD_cpl_unstr
@@ -95,7 +96,7 @@ export WW3_MODDEF=mod_def.exp.${WW3_DOMAIN}
 
 export DIAG_TABLE=diag_table_template
 export FIELD_TABLE=field_table_thompson_noaero_tke
-export UFS_CONFIGURE=ufs.configure.s2sw_fast_esmf.IN
+export UFS_CONFIGURE=ufs.configure.s2sw_fast.IN
 
 export FV3_RUN=cpld_control_run.IN
 
@@ -108,7 +109,10 @@ fi
 if [[ $MACHINE_ID = orion ]]; then
   WLCLK=50
 fi
-if [[ $MACHINE_ID = gaea ]]; then
+if [[ $MACHINE_ID = gaeac5 ]] && [[ $RT_COMPILER = intelllvm ]]; then
+  WLCLK=50
+fi
+if [[ $MACHINE_ID = gaeac6 ]] && [[ $RT_COMPILER = intelllvm ]]; then
   WLCLK=50
 fi
 if [[ $MACHINE_ID = wcoss2 ]]; then
@@ -121,9 +125,5 @@ export K_SPLIT=2
 export N_SPLIT=5
 
 # HR4 GFSv17 GWD update
-export DO_UGWP_V0=.false.
-export DO_UGWP_V1=.true.
-export DO_GSL_DRAG_LS_BL=.true.
 export DO_GWD_OPT_PSL=.true.
 export DO_GSL_DRAG_SS=.false.
-export DO_GSL_DRAG_TOFD=.true.

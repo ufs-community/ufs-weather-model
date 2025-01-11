@@ -31,7 +31,7 @@ Currently, Level 1 (or Tier-1) platforms for regression testing are:
    * Hercules (Intel/GNU compilers)
    * AWS Docker container (Intel)
 
-More information is available in the `UFS WM wiki <https://github.com/ufs-community/ufs-weather-model/wiki/Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>`__. 
+More information is available in the :wm-wiki:`UFS WM wiki <Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>`. 
 
 Level 2-4 Systems
 ===================
