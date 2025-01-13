@@ -35,7 +35,7 @@ else
  cp ../${DEP_RUN}${RT_SUFFIX}/${MOM6_RESTART_DIR}/MOM.res.2021-03-22-18*.nc ./INPUT/MOM.res.nc
 
 # CMEPS restart and pointer files
- RFILE="DATM_${DATM_SRC}.cpl.r.2021-03-22-64800.nc.nc"
+ RFILE="DATM_${DATM_SRC}.cpl.r.2021-03-22-64800.nc"
  cp ../${DEP_RUN}${RT_SUFFIX}/${CMEPS_RESTART_DIR}/${RFILE} .
  ls -1 ${RFILE}>rpointer.cpl
 
@@ -43,4 +43,9 @@ else
  cp ../${DEP_RUN}${RT_SUFFIX}/${CICE_RESTART_DIR}/iced.2021-03-22-64800.nc ./INPUT
  RFILE="iced.2021-03-22-64800.nc"
  ls -1 "./INPUT/"${RFILE}>ice.restart_file
+
+# CDEPS restart and pointer files
+ RFILE="DATM_${DATM_SRC}.datm.r.2021-03-22-64800.nc"
+ cp ../${DEP_RUN}${RT_SUFFIX}/${RFILE} ./INPUT
+ ls -1 "./INPUT/"${RFILE}>rpointer.atm
 fi
