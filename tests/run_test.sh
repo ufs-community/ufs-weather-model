@@ -428,7 +428,11 @@ fi
 ################################################################################
 export OMP_ENV=${OMP_ENV:-""}
 if [[ ${SCHEDULER} = 'none' ]]; then
-  ulimit -s unlimited
+  if [[ ${MACHINE_ID} == macosx ]]; then
+    ulimit -s -S unlimited
+  else
+    ulimit -s unlimited
+  fi
   if [[ ${CI_TEST} = 'true' ]]; then
     eval "${OMP_ENV}" redirect_out_err mpiexec -n "${TASKS}" ./fv3.exe
   else
