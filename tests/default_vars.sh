@@ -230,6 +230,31 @@ elif [[ ${MACHINE_ID} = linux ]]; then
   export ICE_tasks_cpl_thrd=10
   export WAV_tasks_cpl_thrd=12
 
+elif [[ ${MACHINE_ID} = macosx ]]; then
+
+  export TPN=8
+
+  export INPES_dflt=3
+  export JNPES_dflt=8
+  export INPES_thrd=3
+  export JNPES_thrd=4
+
+  export THRD_cpl_dflt=1
+  export INPES_cpl_dflt=3
+  export JNPES_cpl_dflt=8
+  export WPG_cpl_dflt=6
+  export OCN_tasks_cpl_dflt=20
+  export ICE_tasks_cpl_dflt=10
+  export WAV_tasks_cpl_dflt=20
+
+  export THRD_cpl_thrd=2
+  export INPES_cpl_thrd=3
+  export JNPES_cpl_thrd=4
+  export WPG_cpl_thrd=6
+  export OCN_tasks_cpl_thrd=20
+  export ICE_tasks_cpl_thrd=10
+  export WAV_tasks_cpl_thrd=12
+
 elif [[ ${MACHINE_ID} = jet ]]; then
 
   export TPN=24

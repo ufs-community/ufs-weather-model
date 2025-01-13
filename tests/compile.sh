@@ -56,7 +56,7 @@ BUILD_JOBS=${BUILD_JOBS:-8}
 
 set +x
 case ${MACHINE_ID} in
-  macosx|linux)
+  linux)
     source "${PATHTR}/modulefiles/ufs_${MACHINE_ID}.${RT_COMPILER}"
     ;;
   *)

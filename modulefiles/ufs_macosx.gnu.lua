@@ -1,13 +1,15 @@
 help([[
-loads UFS Model prerequisites for MacOS clang/gcc ("gnu")
+loads UFS Model modules for MacOSX 
 ]])
-
-prepend_path("MODULEPATH", "/Users/username/spack-stack/spack-stack-1.8.0/envs/ufs-srw-env/install/modulefiles/Core")
+-- Replace the stackpath below by the path of the local spack-stack environment build:
+local stackpath = "/Users/username/spack-stack/spack-stack-1.8.0/envs/ufs-srw-env"
+local modulepath = stackpath .. "/install/modulefiles/Core"
+prepend_path("MODULEPATH", modulepath)
 
 stack_gnu_ver=os.getenv("stack_apple_clang_ver") or "15.0.0"
 load(pathJoin("stack-apple-clang", stack_gnu_ver))
 
-stack_openmpi_ver=os.getenv("stack_openmpi_ver") or "5.0.3"
+stack_openmpi_ver=os.getenv("stack_openmpi_ver") or "4.1.6"
 load(pathJoin("stack-openmpi", stack_openmpi_ver))
 
 cmake_ver=os.getenv("cmake_ver") or "3.27.9"
@@ -54,12 +56,17 @@ setenv("CMAKE_Fortran_COMPILER_ID", "GNU")
 osx_sysroot=os.getenv("OSX_SYSROOT")
 setenv("CMAKE_OSX_SYSROOT","OSX_SYSROOT")
 
-setenv("CFLAGS"," -Wno-implicit-function-declaration ")
 
-if mode() == "load" then
-  LmodMsgRaw([===[
-   Please export these env. variables after the module is successfully loaded:
-       > export LDFLAGS+=" -L${libjpeg_turbo_ROOT}/lib -ljpeg -Wl,-rpath,$libjpeg_turbo_ROOT}/lib -L${jasper_ROOT}/lib -ljasper -Wl,-rpath,${jasper_ROOT}/lib -L${libpng_ROOT}/lib -lpng -Wl,-rpath,${libpng_ROOT}/lib "
-  ]===])
+local libjpeg_ROOT = os.getenv("libjpeg_turbo_ROOT")
+local jasper_ROOT = os.getenv("jasper_ROOT")
+local libpng_ROOT = os.getenv("libpng_ROOT")
+local ldflags0 = os.getenv("LDFLAGS") or ""
+local ldflags_add = " -Wl,-no_compact_unwind"  
+
+if jasper_ROOT and libpng_ROOT and libjpeg_ROOT then
+   local ldflags1 = " -L" .. libjpeg_ROOT .. "/lib -ljpeg -Wl,-rpath," .. libjpeg_ROOT .. "/lib"
+   local ldflags2 = " -L" .. jasper_ROOT .. "/lib -ljasper -Wl,-rpath," .. jasper_ROOT .. "/lib"
+   local ldflags3 = " -L" .. libpng_ROOT .. "/lib -lpng -Wl,-rpath," .. libpng_ROOT .. "/lib"
+   local ldflags = ldflags0 .. ldflags_add .. ldflags1 .. ldflags2 .. ldflags3
+   setenv("LDFLAGS", ldflags)
 end
-whatis("Description: UFS build environment")

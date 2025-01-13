@@ -59,6 +59,11 @@ case $(hostname -f) in
   *) MACHINE_ID=UNKNOWN ;;  # Unknown platform
 esac
 
+# Determine if the system is MacOS/Darwin:
+case $(uname -s) in
+  Darwin)  MACHINE_ID=macosx ;; ### MacOS
+esac
+
 if [[ ${MACHINE_ID} == "UNKNOWN" ]]; then 
    case ${PW_CSP:-} in
       "aws" | "google" | "azure") MACHINE_ID=noaacloud ;;

@@ -397,6 +397,17 @@ elif [[ $MACHINE_ID = linux ]]; then
   PTMP=${dprefix}/stmp2
   SCHEDULER=none
 
+elif [[ $MACHINE_ID = macosx ]]; then
+
+  PARTITION=
+  QUEUE=
+  COMPILE_QUEUE=
+  dprefix=/Users/username
+  DISKNM=${dprefix}/data
+  STMP=${dprefix}/stmp4
+  PTMP=${dprefix}/stmp2
+  SCHEDULER=none
+
 else
   error "unknown machine ID. edit detect_machine.sh file"
 fi
