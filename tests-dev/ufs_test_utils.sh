@@ -5,13 +5,8 @@ function set_run_task() {
     source default_vars.sh
     source rt_utils.sh
     source "${PATHRT}"/tests/"${TEST_NAME}"
-    #jkim compute_petbounds_and_tasks
-    if [[ ${ESMF_THREADING} == true ]]; then
-        compute_petbounds_and_tasks_esmf_threading
-    else
-        compute_petbounds_and_tasks_traditional_threading
-    fi
-    
+    compute_petbounds_and_tasks
+
     TPN=$(( TPN / THRD ))
     NODES=$(( TASKS / TPN ))
     if (( NODES * TPN < TASKS )); then

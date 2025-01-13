@@ -61,10 +61,7 @@ case ${MACHINE_ID} in
     ;;
   *)
     # Activate lua environment for gaea c5
-    if [[ ${MACHINE_ID} == gaeac5 ]]; then
-      module reset
-    fi
-    if [[ ${MACHINE_ID} == gaeac6 ]]; then
+    if [[ ${MACHINE_ID} == gaea ]]; then
       module reset
     elif [[ ${MACHINE_ID} == hercules ]]; then
       module purge
@@ -99,6 +96,17 @@ set +ex
 SUITES=$(grep -Po "\-DCCPP_SUITES=\K[^ ]*" <<< "${MAKE_OPT}")
 export SUITES
 set -ex
+
+# Valid applications
+if [[ ${MACHINE_ID} != gaea ]] || [[ ${RT_COMPILER} != intelllvm ]]; then # skip MOM6SOLO on gaea with intelllvm
+  if [[ "${MAKE_OPT}" == *"-DAPP=S2S"* ]]; then
+      CMAKE_FLAGS+=" -DMOM6SOLO=ON"
+  fi
+
+  if [[ "${MAKE_OPT}" == *"-DAPP=NG-GODAS"* ]]; then
+      CMAKE_FLAGS+=" -DMOM6SOLO=ON"
+  fi
+fi
 
 CMAKE_FLAGS=$(set -e; trim "${CMAKE_FLAGS}")
 echo "CMAKE_FLAGS = ${CMAKE_FLAGS}"
