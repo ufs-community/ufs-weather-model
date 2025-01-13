@@ -3,7 +3,7 @@ help([[
   on the NOAA RDHPC machine Gaea C5 using Intel-2023.1.0.
 ]])
 
-whatis([===[Loads libraries needed for building the UFS Weather Model on Gaea ]===])
+whatis([===[Loads libraries needed for building the UFS Weather Model on Gaea C5 ]===])
 
 prepend_path("MODULEPATH", "/ncrc/proj/epic/spack-stack/spack-stack-1.6.0/envs/fms-2024.01/install/modulefiles/Core")
 
@@ -27,13 +27,7 @@ load(pathJoin("nccmp", nccmp_ver))
 unload("darshan-runtime")
 unload("cray-libsci")
 
-load("intel-classic/2023.2.0")
-
-setenv("I_MPI_CC", "icx")
-setenv("I_MPI_CXX", "icpx")
-setenv("I_MPI_F90", "ifx")
-
 setenv("CC","cc")
 setenv("CXX","CC")
 setenv("FC","ftn")
-setenv("CMAKE_Platform","gaea.intelllvm")
+setenv("CMAKE_Platform","gaeac5.intel")
