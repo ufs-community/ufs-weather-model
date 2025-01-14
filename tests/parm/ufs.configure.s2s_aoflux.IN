@@ -3,11 +3,11 @@
 #############################################
 
 # ESMF #
-logKindFlag:            @[esmf_logkind]
-globalResourceControl:  true
+logKindFlag:            ESMF_LOGKIND_MULTI
+globalResourceControl:  @[ESMF_THREADING]
 
 # EARTH #
-EARTH_component_list: MED ATM CHM OCN ICE WAV
+EARTH_component_list: MED ATM OCN ICE
 EARTH_attributes::
   Verbosity = 0
 ::
@@ -24,17 +24,9 @@ ATM_petlist_bounds:             @[atm_petlist_bounds]
 ATM_omp_num_threads:            @[atm_omp_num_threads]
 ATM_attributes::
   Verbosity = 0
-  DumpFields = @[DumpFields]
+  DumpFields = false
   ProfileMemory = false
   OverwriteSlice = true
-::
-
-# CHM #
-CHM_model:                      @[chm_model]
-CHM_petlist_bounds:             @[chm_petlist_bounds]
-CHM_omp_num_threads:            @[chm_omp_num_threads]
-CHM_attributes::
-  Verbosity = 0
 ::
 
 # OCN #
@@ -43,7 +35,7 @@ OCN_petlist_bounds:             @[ocn_petlist_bounds]
 OCN_omp_num_threads:            @[ocn_omp_num_threads]
 OCN_attributes::
   Verbosity = 0
-  DumpFields = @[DumpFields]
+  DumpFields = false
   ProfileMemory = false
   OverwriteSlice = true
   mesh_ocn = @[MESH_OCN]
@@ -57,7 +49,7 @@ ICE_petlist_bounds:             @[ice_petlist_bounds]
 ICE_omp_num_threads:            @[ice_omp_num_threads]
 ICE_attributes::
   Verbosity = 0
-  DumpFields = @[DumpFields]
+  DumpFields = false
   ProfileMemory = false
   OverwriteSlice = true
   mesh_ice = @[MESH_ICE]
@@ -67,36 +59,19 @@ ICE_attributes::
   stop_ymd = -999
 ::
 
-# WAV #
-WAV_model:                      @[wav_model]
-WAV_petlist_bounds:             @[wav_petlist_bounds]
-WAV_omp_num_threads:            @[wav_omp_num_threads]
-WAV_attributes::
-  Verbosity = 0
-  OverwriteSlice = false
-  mesh_wav = @[MESH_WAV]
-  user_sets_restname = @[WW3_user_sets_restname]
-::
-
 # CMEPS warm run sequence
 runSeq::
 @@[coupling_interval_slow_sec]
-   MED med_phases_prep_wav_avg
    MED med_phases_prep_ocn_avg
-   MED -> WAV :remapMethod=redist
    MED -> OCN :remapMethod=redist
-   WAV
    OCN
    @@[coupling_interval_fast_sec]
+     MED med_phases_aofluxes_run
      MED med_phases_prep_atm
      MED med_phases_prep_ice
      MED -> ATM :remapMethod=redist
      MED -> ICE :remapMethod=redist
-     ATM phase1
-     ATM -> CHM
-     CHM
-     CHM -> ATM
-     ATM phase2
+     ATM
      ICE
      ATM -> MED :remapMethod=redist
      MED med_phases_post_atm
@@ -104,12 +79,9 @@ runSeq::
      MED med_phases_post_ice
      MED med_phases_ocnalb_run
      MED med_phases_prep_ocn_accum
-     MED med_phases_prep_wav_accum
    @
    OCN -> MED :remapMethod=redist
-   WAV -> MED :remapMethod=redist
    MED med_phases_post_ocn
-   MED med_phases_post_wav
    MED med_phases_restart_write
 @
 ::
@@ -118,15 +90,26 @@ runSeq::
 
 DRIVER_attributes::
 ::
+
 MED_attributes::
       ATM_model = @[atm_model]
       ICE_model = @[ice_model]
       OCN_model = @[ocn_model]
-      WAV_model = @[wav_model]
       coupling_mode = @[CPLMODE]
+      aoflux_grid = 'agrid'
+      aoflux_code = 'ccpp'
+      aoflux_ccpp_suite = 'FV3_sfc_ocean'
+      ccpp_restart_interval = @[RESTART_N_SEC]
+      ccpp_input_dir = 'INPUT/'
+      ccpp_nstf_name = @[NSTF_NAME]
+      ccpp_ini_mosaic_file = 'INPUT/C96_mosaic.nc'
+      ccpp_ini_file_prefix = 'INPUT/sfc_data.tile'
+      ccpp_ini_layout = @[INPES],@[JNPES]
+      ccpp_ini_read = false
       pio_rearranger = @[pio_rearranger]
       ocean_albedo_limit = @[ocean_albedo_limit]
 ::
+
 ALLCOMP_attributes::
       ScalarFieldCount = 3
       ScalarFieldIdxGridNX = 1
@@ -141,6 +124,7 @@ ALLCOMP_attributes::
       restart_ymd = -999
       write_restart_at_endofrun = @[WRITE_ENDOFRUN_RESTART]
       dbug_flag = @[cap_dbug_flag]
+      eps_imesh = @[eps_imesh]
       stop_n = @[FHMAX]
       stop_option = nhours
       stop_ymd = -999

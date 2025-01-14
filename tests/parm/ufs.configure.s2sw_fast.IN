@@ -4,10 +4,10 @@
 
 # ESMF #
 logKindFlag:            @[esmf_logkind]
-globalResourceControl:  true
+globalResourceControl:  @[ESMF_THREADING]
 
 # EARTH #
-EARTH_component_list: MED ATM CHM OCN ICE
+EARTH_component_list: MED ATM OCN ICE WAV
 EARTH_attributes::
   Verbosity = 0
 ::
@@ -27,14 +27,6 @@ ATM_attributes::
   DumpFields = @[DumpFields]
   ProfileMemory = false
   OverwriteSlice = true
-::
-
-# CHM #
-CHM_model:                      @[chm_model]
-CHM_petlist_bounds:             @[chm_petlist_bounds]
-CHM_omp_num_threads:            @[chm_omp_num_threads]
-CHM_attributes::
-  Verbosity = 0
 ::
 
 # OCN #
@@ -67,6 +59,25 @@ ICE_attributes::
   stop_ymd = -999
 ::
 
+# WAV #
+WAV_model:                      @[wav_model]
+WAV_petlist_bounds:             @[wav_petlist_bounds]
+WAV_omp_num_threads:            @[wav_omp_num_threads]
+WAV_attributes::
+  Verbosity = 0
+  OverwriteSlice = false
+  mesh_wav = @[MESH_WAV]
+  user_histname = @[WW3_user_histname]
+  use_historync = @[WW3_historync]
+  use_restartnc = @[WW3_restartnc]
+  restart_from_binary = @[WW3_restart_from_binary]
+  pio_typename = @[WW3_PIO_FORMAT]
+  pio_numiotasks = @[WW3_PIO_IOTASKS]
+  pio_stride = @[WW3_PIO_STRIDE]
+  pio_rearranger = @[WW3_PIO_REARR]
+  pio_root = @[WW3_PIO_ROOT]
+::
+
 # CMEPS warm run sequence
 runSeq::
 @@[coupling_interval_slow_sec]
@@ -76,18 +87,20 @@ runSeq::
    @@[coupling_interval_fast_sec]
      MED med_phases_prep_atm
      MED med_phases_prep_ice
+     MED med_phases_prep_wav_accum
+     MED med_phases_prep_wav_avg
      MED -> ATM :remapMethod=redist
      MED -> ICE :remapMethod=redist
-     ATM phase1
-     ATM -> CHM
-     CHM
-     CHM -> ATM
-     ATM phase2
+     MED -> WAV :remapMethod=redist
+     ATM
      ICE
+     WAV
      ATM -> MED :remapMethod=redist
      MED med_phases_post_atm
      ICE -> MED :remapMethod=redist
      MED med_phases_post_ice
+     WAV -> MED :remapMethod=redist
+     MED med_phases_post_wav
      MED med_phases_ocnalb_run
      MED med_phases_prep_ocn_accum
    @
@@ -101,16 +114,15 @@ runSeq::
 
 DRIVER_attributes::
 ::
-
 MED_attributes::
       ATM_model = @[atm_model]
       ICE_model = @[ice_model]
       OCN_model = @[ocn_model]
+      WAV_model = @[wav_model]
       coupling_mode = @[CPLMODE]
       pio_rearranger = @[pio_rearranger]
       ocean_albedo_limit = @[ocean_albedo_limit]
 ::
-
 ALLCOMP_attributes::
       ScalarFieldCount = 3
       ScalarFieldIdxGridNX = 1

@@ -53,12 +53,12 @@ export LIST_FILES="sfcf003.tile1.nc \
                    RESTART/20210322.090000.MOM.res.nc \
                    RESTART/iced.2021-03-22-32400.nc \
                    RESTART/ufs.cpld.cpl.r.2021-03-22-32400.nc \
+                   ufs.cpld.ww3.r.2021-03-22-32400.nc \
                    20210322.090000.out_pnt.ww3 \
                    20210322.090000.out_grd.ww3 "
-
 export_fv3
-export_cpl
 export_ugwpv1
+export_cpl
 
 export FHMAX=3
 export DAYS=0.125
@@ -100,18 +100,18 @@ export FIELD_TABLE=field_table_thompson_noaero_tke_progsigma
 export DIAG_TABLE=diag_table_cpld.IN
 export INPUT_NML=global_control.nml.IN
 export UFS_CONFIGURE=ufs.configure.s2sw.IN
+# slow loop
+export WW3_RSTFLDS="ice"
 
 export FV3_RUN=cpld_control_run.IN
 
-export DT_INNER=360
-export DT_ATMOS=360
-export K_SPLIT=2
+export K_SPLIT=4
 export N_SPLIT=5
 
-if [[ $MACHINE_ID = hera ]] && [[ $RT_COMPILER = gnu ]]; then
+if [[ $MACHINE_ID = gaeac5 ]] && [[ $RT_COMPILER = intelllvm ]]; then
   WLCLK=40
 fi
-if [[ $MACHINE_ID = gaea ]] && [[ $RT_COMPILER = intelllvm ]]; then
+if [[ $MACHINE_ID = gaeac6 ]] && [[ $RT_COMPILER = intelllvm ]]; then
   WLCLK=40
 fi
 

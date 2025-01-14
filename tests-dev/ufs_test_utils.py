@@ -7,7 +7,7 @@ import shutil
 import subprocess
 
 def update_testyaml(input_list):
-    """Generate temporary test yaml based on list of tests received
+    """Generates temporary test YAML based on list of tests received
 
     Args:
         input_list (list): list of tests to run
@@ -16,7 +16,7 @@ def update_testyaml(input_list):
     new_yaml = {}
     yaml_item_count = None
     with open(UFS_TEST_YAML, 'r') as file_yaml:
-        rt_yaml = yaml.load(file_yaml)#, Loader=yaml.FullLoader)
+        rt_yaml = yaml.full_load(file_yaml)
         for apps, jobs in rt_yaml.items():
             app_temp    = None
             build_temp  = None            
@@ -80,7 +80,7 @@ def update_testyaml(input_list):
         file_yaml.close()
 
 def update_testyaml_n():
-    """Update test yaml file for a single test specified in -n <test_name> <compiler>
+    """Updates test YAML file for a single test specified in ``-n <test_name> <compiler>``
     """
     try:
         SRT_NAME     = str(os.getenv('SRT_NAME'))
@@ -91,7 +91,7 @@ def update_testyaml_n():
     update_testyaml(input_list)
 
 def update_testyaml_b():
-    """Update test yaml file for tests specified in -b <file>
+    """Updates test YAML file for tests specified in ``-b <file>``
     """
     NEW_BASELINES_FILE = str(os.getenv('NEW_BASELINES_FILE'))
     input_list=[]
@@ -104,31 +104,31 @@ def update_testyaml_b():
     update_testyaml(input_list)
 
 def string_clean(str_in):
-    """Strip out RUN or COMPILE whitespace and separate with commas.
+    """Strips out RUN or COMPILE whitespace and separates with commas.
 
     Args:
-        str_in (str): RUN or COMPILE line read in from rt.conf
+        str_in (str): RUN or COMPILE line read in from ``rt.conf``
 
     Returns:
-        str: whitespace stripped and comma separated values
+        str: Whitespace stripped and comma separated values
     """
     return "'"+("','".join(str_in.split()))+"'"
 
 def parse_line(str_in):
-    """Parse rt.conf line into list
+    """Parses ``rt.conf`` line into list
 
     Args:
         str_in (str): RUN or COMPILE line from rt.conf
 
     Returns:
-        list: list of RUN or COMPILE test attributes
+        build_attr: List of RUN or COMPILE test attributes
     """
     build_attr = " ".join(str_in.split()).split('|')
     build_attr = [attr.strip() for attr in build_attr]
     return build_attr
 
 def create_yaml():
-    """Parse default rt.conf into ufs_test.yaml
+    """Parses default ``rt.conf`` into ``ufs_test.yaml``
 
     """
     with open('ufs_test.yaml', 'w') as yaml_file, open("rt.conf") as conf_file:
@@ -164,18 +164,25 @@ def create_yaml():
             if line.startswith("RUN"):  # RUN line
                 build = parse_line(line)
                 test = build[1]
+                baseline_creation = True
                 machine = build[2]
-                baseline = f"'{build[3]}'"
+                baseline = build[3]
                 depend = build[4]
+                if depend:
+                    baseline_creation = False
+                if baseline and depend:
+                    baseline_creation = False
+                if not baseline and not depend:
+                    baseline_creation = False                    
                 if (machine.find('-') != -1):
                     off_machine = machine.replace("-", "").strip()
                     off_machine = string_clean(off_machine)
                 if (machine.find('+') != -1):
                     on_machine = machine.replace("+", "").strip()
                     on_machine = string_clean(on_machine)
-                tests = f"    - {test}: {{'project':['daily']"
-                if baseline.isalnum():
-                    tests += f",'baseline': {baseline}"
+                tests = f"    - {test}: {{'project':['daily']"                    
+                if baseline_creation:
+                    tests += f",'baseline': 'True'"
                 if depend and depend.strip():
                     tests += f",'dependency':'{depend}'"
                 if not (off_machine is None):
@@ -190,7 +197,7 @@ def create_yaml():
     yaml_file.close(); conf_file.close()    
 
 def sync_testscripts():
-    """symlink sharable rt.sh test scripts
+    """Symlinks sharable ``rt.sh`` test scripts
     """
     dst= os.getcwd()
     src= os.path.split(os.getcwd())[0]+'/tests'    
@@ -209,15 +216,24 @@ def sync_testscripts():
                     wfile.close()
             else:
                 os.symlink(src_name, dst_name)
+
+    dst_conf= dst +'/'+ 'build_conf'
+    src_conf= dst +'/'+ 'fv3_conf'
+    if os.path.exists(dst_conf):
+        for name in os.listdir(dst_conf):
+            src_name= src_conf +'/'+ name
+            dst_name= dst_conf +'/'+ name
+            shutil.copyfile(dst_name, src_name)
+            #subprocess.call(['chmod', '755', src_name])
                 
 def machine_check_off(machine_id, val):
-    """Check turned-off machine from yaml configuration
+    """Checks turned-off machine from YAML configuration
 
     Args:
-        machine_id (str): local machine name
-        val (dic): build and test config dictionary list
+        machine_id (str): Local machine name
+        val (dict): Build and test config dictionary list
     Returns:
-        pass_machine: logical flag to pass local machine
+        pass_machine: Logical flag to pass local machine
     """
     pass_machine = True
     if 'turnoff' in val.keys():
@@ -229,10 +245,10 @@ def machine_check_off(machine_id, val):
     return pass_machine
 
 def delete_files(deletefiles):
-    """Remove specified filepath
+    """Removes specified filepath
 
     Args:
-        deletefiles (str): filepath to remove e.g. tests/rocoto.*
+        deletefiles (str): filepath to remove, e.g., ``tests/rocoto.*``
     """
     fileList = glob.glob(deletefiles, recursive=True)    
     for filePath in fileList:
@@ -242,7 +258,7 @@ def delete_files(deletefiles):
             print("Error while deleting ",deletefiles)
         
 def link_new_baselines():
-    """Create symlinks for newly generated baselines.
+    """Creates symlinks for newly generated baselines
     """ 
     USER = str(os.environ.get('USER'))
     MACHINE_ID = os.getenv('MACHINE_ID')        
@@ -272,14 +288,14 @@ def link_new_baselines():
     symlink_baselines.wait()
     
 def get_testdep(casename,val):
-    """Retrieve test case dependencies
+    """Retrieves test case dependencies
 
     Args:
         casename (str): Test case name
-        val (dict): Test case attributes e.g. val['compiler']
+        val (dict): Test case attributes, e.g., val['compiler']
 
     Returns:
-        dict: Test case and config for the specified dependency
+        test_dep: Dictionary with test case and configuration for the specified dependency
     """    
     test_dep = None
     for test in val:
@@ -289,13 +305,13 @@ def get_testdep(casename,val):
     return test_dep
 
 def get_testcase(test):
-    """Retrieve test case names and configs from given dict from pyaml
+    """Retrieves test case names and configs from given dictionary from PyYAML
 
     Args:
-        test (dict): dict retrieved from reading in yaml test file
+        test (dict): Dictionary retrieved from reading in YAML test file
 
     Returns:
-        str, dict: test name and python dict of test configuration
+        case_name, case_config: Test name (str) and Python dictionary of test configuration
     """
     case_name = None
     case_config = None
@@ -305,11 +321,11 @@ def get_testcase(test):
     return case_name, case_config
     
 def write_logfile(logfile, openmod, output="", subproc=""):
-    """Append given output into log file
+    """Appends given output into log file
 
     Args:
         logfile (str): Log filename
-        openmod (str): mode to open file in
+        openmod (str): Mode to open file in
         output (str): Content to append to log file. Defaults to "".
         subproc (str): Command to run within the shell. Defaults to "".
     """
@@ -321,7 +337,7 @@ def write_logfile(logfile, openmod, output="", subproc=""):
     rtlog.close()
 
 def rrmdir(path):
-    """Remove all files and directories in specified path.
+    """Removes all files and directories in specified path.
 
     Args:
         path (str): File path to remove

@@ -45,6 +45,7 @@ export LIST_FILES="sfcf024.nc \
                    RESTART/20210323.120000.MOM.res.nc \
                    RESTART/iced.2021-03-23-43200.nc \
                    RESTART/ufs.cpld.cpl.r.2021-03-23-43200.nc \
+                   ufs.cpld.ww3.r.2021-03-23-43200.nc \
                    MOM6_OUTPUT/ocn_2021_03_23_09.nc \
                    history/iceh_06h.2021-03-23-43200.nc \
                    history/iceh.2021-03-23-21600.nc \
@@ -52,8 +53,8 @@ export LIST_FILES="sfcf024.nc \
                    20210323.120000.out_grd.ww3 "
 
 export_fv3
-export_cpl
 export_ugwpv1
+export_cpl
 
 export CPLCHM=.false.
 export DNATS=0
@@ -112,6 +113,8 @@ export FIELD_TABLE=field_table_thompson_noaero_tke_progsigma
 export DIAG_TABLE=diag_table_cpld.IN
 export INPUT_NML=global_control.nml.IN
 export UFS_CONFIGURE=ufs.configure.s2sw.IN
+# slow loop
+export WW3_RSTFLDS="ice"
 
 #GFSv17	settings
 export PROGSIGMA=.true.
@@ -126,9 +129,8 @@ export IAU_INC_FILES="'fv_increment3.nc','fv_increment6.nc','fv_increment9.nc'"
 export ODA_INCUPD="True"
 export ODA_INCUPD_UV="True"
 
-if [[ $MACHINE_ID = hera ]] && [[ $RT_COMPILER = gnu ]]; then
-  WLCLK=40
-fi
+export K_SPLIT=4
+export N_SPLIT=5
 
 # HR4 GFSv17 GWD update
 export DO_GWD_OPT_PSL=.true.

@@ -452,7 +452,7 @@ Running the Model
 
 .. attention::
    Although the following discussions are general, users may not be able to execute the script successfully "as is" unless they are on a 
-   `Tier-1 platform <https://github.com/ufs-community/ ufs-weather-model/wiki/Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>`__.
+   :wm-wiki:`Tier-1 platform <Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>`.
 
 .. _UsingRegressionTest:
 
@@ -504,8 +504,7 @@ or (2) create a new file (e.g., ``my_rt.conf``), add the tests, and execute ``./
 On NOAA RDHPCS
 ------------------
 
-On `Tier-1 platforms <https://github.com/ufs-community/ufs-weather-model/wiki
-/Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>`__, users can run 
+On :wm-wiki:`Tier-1 platforms <Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>`, users can run 
 regression tests by editing the ``rt.conf`` file and executing:
 
 .. code-block:: console
@@ -733,8 +732,7 @@ operational requirement test. The only difference is that the ``opnReqTest`` scr
 The ``tests/opnReqTests`` directory contains
 opnReqTest-specific lower-level scripts used to set up run configurations.
 
-On `Tier-1 platforms <https://github.com/ufs-community/ ufs-weather-model/wiki
-/Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>`_, tests can
+On :wm-wiki:`Tier-1 platforms <Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>`, tests can
 be run by invoking
 
 .. code-block:: console

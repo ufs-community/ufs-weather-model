@@ -14,13 +14,15 @@
 #
 import os
 import sys
+import sphinx
+from sphinx.util import logging
 sys.path.insert(0, os.path.abspath('.'))
-
+sys.path.insert(0, os.path.abspath('../../../tests-dev'))
 
 # -- Project information -----------------------------------------------------
 
 project = 'UFS Weather Model Users Guide'
-copyright = '2020'
+copyright = '2024'
 author = ' '
 
 # The short X.Y version
@@ -45,6 +47,7 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.doctest',
     'sphinx.ext.intersphinx',
+    'sphinx.ext.extlinks',
     'sphinx.ext.todo',
     'sphinx.ext.coverage',
     'sphinx.ext.mathjax',
@@ -93,7 +96,14 @@ linkcheck_anchors_ignore = [r"L\d*",
 # Ignore working links that cause a linkcheck 403 error.
 linkcheck_ignore = [r'https://agupubs\.onlinelibrary\.wiley\.com/doi/10\.1029/2020MS002260',
                     r'https://glossary.ametsoc.org/wiki/*',
+                    r'https://www.intel.com/content/www/us/en/developer/tools/oneapi/hpc-toolkit-download.html',
                    ]
+
+linkcheck_allowed_redirects = {r"https://doi.org/.*": 
+                                 r"https://rmets.onlinelibrary.wiley.com/doi/.*",
+                               r"https://doi.org/.*": 
+                                 r"https://journals.ametsoc.org/view/journals/.*",
+                               }
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -121,6 +131,7 @@ html_context = {}
 def setup(app):
     app.add_css_file('custom.css')  # may also be an URL
     app.add_css_file('theme_overrides.css')  # may also be an URL
+    app.connect('autodoc-process-docstring', warn_undocumented_members) # Created warnings for undocumented portions of Python scripts
 
 # Custom sidebar templates, must be a dictionary that maps document names
 # to template names.
@@ -212,11 +223,47 @@ epub_exclude_files = ['search.html']
 
 # -- Extension configuration -------------------------------------------------
 
+# -- Options for autodoc extension ---------------------------------------
+
+autodoc_mock_imports = [
+   ]
+
+logger = logging.getLogger(__name__)
+
+# Ensure that warnings pop up when functions, attributes, or methods are undocumented
+members_to_watch = ['function', 'attribute', 'method']
+def warn_undocumented_members(app, what, name, obj, options, lines):
+    if(what in members_to_watch and len(lines)==0):
+        message = what + " is undocumented: " + name + "(%d)"% len(lines)
+        logger.warning(message)
+
+autodoc_default_options = {
+    "members": True,
+    "undoc-members": True,
+    "show-inheritance": True,
+}
+
+add_module_names = False
+
+# -- Options for napoleon extension ---------------------------------------
+
+napoleon_numpy_docstring = False
+napoleon_google_docstring = True
+napoleon_custom_sections = [('Returns', 'params_style')] # Allows return of multiple values
+
 # -- Options for intersphinx extension ---------------------------------------
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {'landda': ('https://land-da-workflow.readthedocs.io/en/latest/', None),
                        }
+
+# -- Options for extlinks extension ---------------------------------------
+
+extlinks_detect_hardcoded_links = True
+extlinks = {'nco': ('https://www.nco.ncep.noaa.gov/idsb/implementation_standards/%s', '%s'),
+            'wm-repo': ('https://github.com/ufs-community/ufs-weather-model/%s', '%s'),
+            'wm-wiki': ('https://github.com/ufs-community/ufs-weather-model/wiki/%s','%s'),
+            }
 
 # -- Options for todo extension ----------------------------------------------
 
