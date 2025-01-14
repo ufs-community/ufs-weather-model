@@ -501,7 +501,6 @@ export FNABSC="'global_mxsnoalb.uariz.t126.384.190.rg.grb'"
 export RF_CUTOFF=30.0
 export FAST_TAU_W_SEC=0.0
 
-export ATMRES=C96
 export TILEDFIX=.false.
 export DO_CA=.false.
 export CA_SGS=.false.
@@ -795,6 +794,7 @@ export HWRF_SAMFDEEP=.false.
 export RAS=.false.
 export RANDOM_CLDS=.false.
 export CNVCLD=.true.
+export XR_CNVCLD=.false.
 export PROGSIGMA=.false.
 export BETASCU=8.0
 export BETAMCU=1.0
@@ -1190,8 +1190,11 @@ export_ugwpv1() {
   esac
 
   if [[ ${DO_GSL_DRAG_SS} = .true. ]]; then export CDMBGWD=${CDMBGWD_GSL}; fi
-  if [[ ${SEDI_SEMI} = .true. ]]; then export DT_ATMOS=$((DT_ATMOS/2)); fi
-  export DT_INNER=${DT_ATMOS}
+  if [[ ${SEDI_SEMI} = .false. ]]; then 
+    export DT_INNER=$((DT_ATMOS/2))
+  else 
+    export DT_INNER=${DT_ATMOS}
+  fi
   export default_dt_atmos=0
 }
 
