@@ -57,6 +57,7 @@ load("netcdf/4.9.2")
 load("pio/2.5.10")
 load("esmf/8.6.0")
 load("mapl/2.40.3-esmf-8.6.0")
+load("nccmp/1.9.0.1")
 
 --append_path("MODULEPATH","/apps/ops/para/libs/modulefiles/mpi/intel/19.1.3.304/cray-mpich/8.1.9/")
 --load("fms/2024.01")
