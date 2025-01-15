@@ -104,8 +104,8 @@ cp "${PATHRT}/module-setup.sh" "module-setup.sh"
 
 case ${MACHINE_ID} in
   wcoss2|acorn)
-    module load intel/19.1.3.304 netcdf/4.7.4
-    module load nccmp
+    module load intel/19.1.3.304 netcdf/4.9.2
+    module load nccmp/1.9.0.1
     ;;
   s4)
     module use /data/prod/jedi/spack-stack/spack-stack-1.4.1/envs/ufs-pio-2.5.10/install/modulefiles/Core
