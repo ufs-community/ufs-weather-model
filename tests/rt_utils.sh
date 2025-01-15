@@ -21,7 +21,122 @@ redirect_out_err() {
     # redirect_out_err command will return non-zero if "$@" or tee return non-zero.
 }
 
-function compute_petbounds_and_tasks() {
+function compute_petbounds_and_tasks_traditional_threading() {
+
+  # each test MUST define ${COMPONENT}_tasks variable for all components it is using
+  # and MUST NOT define those that it's not using or set the value to 0.
+
+  # ATM is a special case since it is running on the sum of compute and io tasks.
+  # CHM component and mediator are running on ATM compute tasks only.
+
+  if [[ ${DATM_CDEPS} = 'false' ]]; then
+    if [[ ${ATM_compute_tasks:-0} -eq 0 ]]; then
+      ATM_compute_tasks=$((INPES * JNPES * NTILES))
+    fi
+    if [[ ${QUILTING} = '.true.' ]]; then
+      ATM_io_tasks=$((WRITE_GROUP * WRTTASK_PER_GROUP))
+    else
+      ATM_io_tasks=0
+    fi
+    ATM_tasks=$((ATM_compute_tasks + ATM_io_tasks))
+  fi
+
+  local n=0
+  unset atm_petlist_bounds ocn_petlist_bounds ice_petlist_bounds wav_petlist_bounds chm_petlist_bounds med_petlist_bounds aqm_petlist_bounds fbh_petlist_bounds
+
+  local _tasks
+
+  # ATM
+  if [[ ${ATM_tasks:-0} -gt 0 ]]; then
+     atm_petlist_bounds="${n} $((n + ATM_tasks - 1))"
+     n=$((n + ATM_tasks))
+     _tasks=$(( ATM_tasks*atm_omp_num_threads ))
+     atm_nodes=$(( _tasks / TPN ))
+     if (( atm_nodes * TPN < _tasks )); then
+       atm_nodes=$(( atm_nodes + 1 ))
+     fi
+  fi
+
+  # OCN
+  if [[ ${OCN_tasks:-0} -gt 0 ]]; then
+     ocn_petlist_bounds="${n} $((n + OCN_tasks - 1))"
+     n=$((n + OCN_tasks))
+     _tasks=$(( OCN_tasks*ocn_omp_num_threads ))
+     ocn_nodes=$(( _tasks / TPN ))
+     if (( ocn_nodes * TPN < _tasks )); then
+       ocn_nodes=$(( ocn_nodes + 1 ))
+     fi
+  fi
+
+  # ICE
+  if [[ ${ICE_tasks:-0} -gt 0 ]]; then
+     ice_petlist_bounds="${n} $((n + ICE_tasks - 1))"
+     n=$((n + ICE_tasks))
+     _tasks=$(( ICE_tasks*ice_omp_num_threads ))
+     ice_nodes=$(( _tasks / TPN ))
+     if (( ice_nodes * TPN < _tasks )); then
+       ice_nodes=$(( ice_nodes + 1 ))
+     fi
+  fi
+
+  # WAV
+  if [[ ${WAV_tasks:-0} -gt 0 ]]; then
+     wav_petlist_bounds="${n} $((n + WAV_tasks - 1))"
+     n=$((n + WAV_tasks))
+     _tasks=$(( WAV_tasks*wav_omp_num_threads ))
+     wav_nodes=$(( _tasks / TPN ))
+     if (( wav_nodes * TPN < _tasks )); then
+       wav_nodes=$(( wav_nodes + 1 ))
+     fi
+  fi
+
+  # CHM
+  chm_petlist_bounds="0 $((ATM_compute_tasks - 1))"
+
+  # MED - mediator (CMEPS) runs on at most 300 tasks.
+  MED_compute_tasks=$((ATM_compute_tasks<=300 ? ATM_compute_tasks : 300))
+  med_petlist_bounds="0 $((MED_compute_tasks - 1))"
+
+  # AQM
+  aqm_petlist_bounds="0 $((ATM_compute_tasks - 1))"
+
+  # LND
+  if [[ ${lnd_model:-} = "lm4" ]]; then
+      # set lnd_petlist_bounds to be same as ATM_compute_tasks
+      lnd_petlist_bounds="0 $((ATM_compute_tasks - 1))"
+  elif [[ ${LND_tasks:-0} -gt 0 ]]; then # noahmp component or other
+      lnd_petlist_bounds="${n} $((n + LND_tasks - 1))"
+      n=$((n + LND_tasks))
+  fi
+
+  # FBH
+  if [[ ${FBH_tasks:-0} -gt 0 ]]; then
+     fbh_petlist_bounds="${n} $((n + FBH_tasks - 1))"
+     n=$((n + FBH_tasks))
+  fi
+
+  unset _tasks
+
+  UFS_tasks=${n}
+
+  if [[ ${RTVERBOSE} == true ]]; then
+    echo "ATM_petlist_bounds: ${atm_petlist_bounds:-}"
+    echo "OCN_petlist_bounds: ${ocn_petlist_bounds:-}"
+    echo "ICE_petlist_bounds: ${ice_petlist_bounds:-}"
+    echo "WAV_petlist_bounds: ${wav_petlist_bounds:-}"
+    echo "CHM_petlist_bounds: ${chm_petlist_bounds:-}"
+    echo "MED_petlist_bounds: ${med_petlist_bounds:-}"
+    echo "AQM_petlist_bounds: ${aqm_petlist_bounds:-}"
+    echo "LND_petlist_bounds: ${lnd_petlist_bounds:-}"
+    echo "FBH_petlist_bounds: ${fbh_petlist_bounds:-}"
+    echo "UFS_tasks         : ${UFS_tasks:-}"
+  fi
+
+  # TASKS is now set to UFS_TASKS
+  export TASKS=${UFS_tasks}
+}
+
+function compute_petbounds_and_tasks_esmf_threading() {
 
   # each test MUST define ${COMPONENT}_tasks variable for all components it is using
   # and MUST NOT define those that it's not using or set the value to 0.
@@ -72,8 +187,9 @@ function compute_petbounds_and_tasks() {
   # CHM
   chm_petlist_bounds="0 $((ATM_compute_tasks * atm_omp_num_threads - 1))"
 
-  # MED
-  med_petlist_bounds="0 $((ATM_compute_tasks * atm_omp_num_threads - 1))"
+  # MED - mediator (CMEPS) runs on at most 300 tasks.
+  MED_compute_tasks=$((ATM_compute_tasks<=300 ? ATM_compute_tasks : 300))
+  med_petlist_bounds="0 $((MED_compute_tasks * atm_omp_num_threads - 1))"
 
   # AQM
   aqm_petlist_bounds="0 $((ATM_compute_tasks * atm_omp_num_threads - 1))"
@@ -82,8 +198,8 @@ function compute_petbounds_and_tasks() {
   if [[ ${lnd_model:-} = "lm4" ]]; then
       # set lnd_petlist_bounds to be same as ATM_compute_tasks
       lnd_petlist_bounds="0 $((ATM_compute_tasks - 1))"
-  elif [[ ${LND_tasks:-0} -gt 0 ]]; then # noahmp component or other   
-      LND_tasks=$((LND_tasks * lnd_omp_num_threads))  
+  elif [[ ${LND_tasks:-0} -gt 0 ]]; then # noahmp component or other
+      LND_tasks=$((LND_tasks * lnd_omp_num_threads))
       lnd_petlist_bounds="${n} $((n + LND_tasks - 1))"
       n=$((n + LND_tasks))
   fi
