@@ -41,6 +41,8 @@ if [[ @[RT_COMPILER] == intel ]]; then
 elif [[ @[RT_COMPILER] == gnu ]]; then
   # For mvapich2
   export MV2_SHMEM_COLL_NUM_COMM=128
+  export MV2_HOMOGENEOUS_CLUSTER=1
+  export MV2_USE_ALIGNED_ALLOC=1
 fi
 
 # Avoid job errors because of filesystem synchronization delays

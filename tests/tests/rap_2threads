@@ -61,3 +61,11 @@ export atm_omp_num_threads=2
 export INPES=$INPES_thrd
 export JNPES=$JNPES_thrd
 export WRTTASK_PER_GROUP=6
+
+ESMF_THREADING=false
+THRD=$atm_omp_num_threads
+if [[ $MACHINE_ID = hercules ]] && [[ $RT_COMPILER = gnu ]]; then
+   ESMF_THREADING=true
+   WLCLK=50
+   TPN=28
+fi
