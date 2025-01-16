@@ -810,7 +810,7 @@ case ${MACHINE_ID} in
 
     PARTITION=
     dprefix="/collab1/data/${USER}"
-    DISKNM="/collab1/data/Cameron.Book/UFS-WM_RT"
+    DISKNM="/collab1/data/Ratko.Vasic/UFS-WM_RT"
     STMP="${STMP:-${dprefix}/RT_BASELINE}"
     PTMP="${PTMP:-${dprefix}/RT_RUNDIRS}"
 
