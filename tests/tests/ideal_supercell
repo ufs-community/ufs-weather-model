@@ -1,6 +1,6 @@
 ###############################################################################
 #
-#   Doubly periodic idealized bubble (supercell) 1km with minimal physics (only microphysics) 
+#   Doubly periodic idealized bubble (supercell) 3km with minimal physics (only microphysics) 
 #
 ###############################################################################
 
@@ -8,12 +8,13 @@ export TEST_DESCR="Compare idealized, minimal physics run with results with prev
 
 export CNTL_DIR=fv3_ideal_supercell
 
-export LIST_FILES=""
+export LIST_FILES="fv3_history.nc"
 
 export_fv3
 
-export INPES=1
-export JNPES=1
+export INPES=5
+export JNPES=5
+export NTILES=1
 export QUILTING=.false.
 
 export FV3_RUN=ideal_run.IN
