@@ -9,7 +9,7 @@ prepend_path("MODULEPATH", modulepath)
 stack_gnu_ver=os.getenv("stack_apple_clang_ver") or "15.0.0"
 load(pathJoin("stack-apple-clang", stack_gnu_ver))
 
-stack_openmpi_ver=os.getenv("stack_openmpi_ver") or "4.1.6"
+stack_openmpi_ver=os.getenv("stack_openmpi_ver") or "5.0.3"
 load(pathJoin("stack-openmpi", stack_openmpi_ver))
 
 cmake_ver=os.getenv("cmake_ver") or "3.27.9"
@@ -19,7 +19,7 @@ local ufs_modules = {
   {["jasper"]          = "2.0.32"},
   {["zlib"]            = "1.2.13"},
   {["libpng"]          = "1.6.37"},
-  {["hdf5"]            = "1.14.0"},
+  {["hdf5"]            = "1.14.3"},
   {["netcdf-c"]        = "4.9.2"},
   {["netcdf-fortran"]  = "4.6.1"},
   {["parallelio"]      = "2.6.2"},
@@ -61,12 +61,11 @@ local libjpeg_ROOT = os.getenv("libjpeg_turbo_ROOT")
 local jasper_ROOT = os.getenv("jasper_ROOT")
 local libpng_ROOT = os.getenv("libpng_ROOT")
 local ldflags0 = os.getenv("LDFLAGS") or ""
-local ldflags_add = " -Wl,-no_compact_unwind"  
 
 if jasper_ROOT and libpng_ROOT and libjpeg_ROOT then
    local ldflags1 = " -L" .. libjpeg_ROOT .. "/lib -ljpeg -Wl,-rpath," .. libjpeg_ROOT .. "/lib"
    local ldflags2 = " -L" .. jasper_ROOT .. "/lib -ljasper -Wl,-rpath," .. jasper_ROOT .. "/lib"
    local ldflags3 = " -L" .. libpng_ROOT .. "/lib -lpng -Wl,-rpath," .. libpng_ROOT .. "/lib"
-   local ldflags = ldflags0 .. ldflags_add .. ldflags1 .. ldflags2 .. ldflags3
+   local ldflags = ldflags0 .. ldflags1 .. ldflags2 .. ldflags3
    setenv("LDFLAGS", ldflags)
 end
