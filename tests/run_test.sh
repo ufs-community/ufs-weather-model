@@ -104,7 +104,9 @@ cp "${PATHRT}/module-setup.sh" "module-setup.sh"
 
 case ${MACHINE_ID} in
   wcoss2|acorn)
-    module load intel/19.1.3.304 netcdf/4.9.2
+    module use /lfs/h2/emc/eib/save/hang.lei/forgdit/nco_wcoss2/install2/modulefiles/compiler/intel/19.1.3.304
+    module use /lfs/h2/emc/eib/save/hang.lei/forgdit/nco_wcoss2/install2/modulefiles/mpi/intel/19.1.3.304/cray-mpich/8.1.12
+    module load intel/19.1.3.304 netcdf/4.9.2 pnetcdf/1.12.2 hdf5/1.14.0
     module load nccmp/1.9.0.1
     ;;
   s4)
