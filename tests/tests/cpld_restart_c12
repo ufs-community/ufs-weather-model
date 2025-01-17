@@ -5,7 +5,6 @@ export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C12MX900 rest
 
 export CNTL_DIR=cpld_warmstart_c12
 
-#export LIST_FILES=" "
 export LIST_FILES="sfcf006.nc \
                    atmf006.nc \
                    RESTART/20210323.120000.coupler.res \
@@ -119,6 +118,7 @@ export DT_ATMOS=1200
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6=3600
 export DT_THERM_MOM6=3600
+export CICE_DIAGFREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
 
 # ufs.configure
 export coupling_interval_slow_sec=${DT_THERM_MOM6}
