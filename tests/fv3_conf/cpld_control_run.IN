@@ -98,11 +98,11 @@ if [ $WARM_START = .false. ]; then
         cp   ${MOM_IC}/mom6.mx@[OCNRES].${SYEAR}${SMONTH}${SDAY}${SHOUR}.warmstart.nc ./INPUT/mom6.warmstart.nc
         cp   ${ICE_IC}/cice.mx@[OCNRES].${SYEAR}${SMONTH}${SDAY}${SHOUR}.warmstart.nc ./cice.warmstart.nc
       else
-        cp    ${MOM_IC}/MOM6_IC_TS_${SYEAR}${SMONTH}${SDAY}${SHOUR}.nc ./INPUT/MOM6_IC_TS.nc
-        #cp    ${ICE_IC}/${OCNRES}/cice_model_@[ICERES].cpc.res_${SYEAR}${SMONTH}${SDAY}.nc ./cice_model.res.nc
-	####### FIXME #######
-	# non-valid file, just to get scripting to work; ice_in will set CICE_IC to "default" IC for now
-        cp    ${ICE_IC}/invalid.nc ./cice_model.res.nc
+        cp   ${MOM_IC}/MOM6_IC_TS_${SYEAR}${SMONTH}${SDAY}${SHOUR}.nc ./INPUT/MOM6_IC_TS.nc
+        # C12mx900 uses cice_ic = default
+        if [[ $ATMRES != C12 ]]; then
+            cp  ${ICE_IC}/${OCNRES}/cice_model_@[ICERES].cpc.res_${SYEAR}${SMONTH}${SDAY}.nc ./cice_model.res.nc
+        fi
       fi
     fi
   fi
