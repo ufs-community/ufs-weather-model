@@ -1,0 +1,22 @@
+# Shellcheck is used by Super-Linter to flag BASH shell oddities during CI pipeline.
+# global settings are at top-level: ../../.shellcheckrc
+# https://github.com/koalaman/shellcheck
+# https://github.com/super-linter/super-linter
+
+# Allow to assign with local VAR=...
+disable=SC2155
+
+# Ignore source-able files from the varyious platforms in our matrix
+disable=SC1091
+
+# Disable info on pipe-ing commands
+disable=SC2312
+
+# Disable info sed with single quote string litteral
+disable=SC2016
+
+# Disable info on not double-quoting variables
+disable=SC2086
+
+# Disable info on &&, || chaining
+disable=SC2015
