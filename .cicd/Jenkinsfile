@@ -114,15 +114,18 @@ def generateStage(nodeLabel) {
                         echo "Post Results from ${nodeLabel}"
                         if (baselineLabels.contains(nodeLabel)) {
                             //sh 'bash --login "${WORKSPACE}/.cicd/scripts/post_test_results.sh ${NODE_NAME} BL"'
-                            sh "WM_TEST_LABEL=BL GITHUB_TOKEN=${GITHUB_TOKEN} " + 'bash --login "${WORKSPACE}/.cicd/scripts/post_test_results.sh"'
+                            sh "WM_TEST_LABEL=BL " + 'bash --login "${WORKSPACE}/.cicd/scripts/post_test_results.sh"'
                         }
                         else {
-                            sh "WM_TEST_LABEL=RT GITHUB_TOKEN=${GITHUB_TOKEN} " + 'bash --login "${WORKSPACE}/.cicd/scripts/post_test_results.sh"'
+                            sh "WM_TEST_LABEL=RT " + 'bash --login "${WORKSPACE}/.cicd/scripts/post_test_results.sh"'
                         }
                     }
                     catch(err) {
                         echo "Error: Post Results from ${nodeLabel}"
                     }
+		    sh '''
+      			curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/{$machine-RT,$machine-BL}
+      		    '''
                 }
               }
             }
