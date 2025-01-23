@@ -114,10 +114,10 @@ def generateStage(nodeLabel) {
                         echo "Post Results from ${nodeLabel}"
                         if (baselineLabels.contains(nodeLabel)) {
                             //sh 'bash --login "${WORKSPACE}/.cicd/scripts/post_test_results.sh ${NODE_NAME} BL"'
-                            sh "WM_TEST_LABEL=BL " + 'bash --login "${WORKSPACE}/.cicd/scripts/post_test_results.sh"'
+                            sh "WM_TEST_LABEL=BL GITHUB_TOKEN=${GITHUB_TOKEN}" + 'bash --login "${WORKSPACE}/.cicd/scripts/post_test_results.sh"'
                         }
                         else {
-                            sh "WM_TEST_LABEL=RT " + 'bash --login "${WORKSPACE}/.cicd/scripts/post_test_results.sh"'
+                            sh "WM_TEST_LABEL=RT GITHUB_TOKEN=${GITHUB_TOKEN}" + 'bash --login "${WORKSPACE}/.cicd/scripts/post_test_results.sh"'
                         }
                     }
                     catch(err) {
