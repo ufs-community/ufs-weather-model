@@ -41,9 +41,6 @@ function post_test() {
 	GIT_URL=${GIT_URL:-"ufs-weather-model"}
 	CHANGE_ID=${CHANGE_ID:-"develop"}
 
-	GIT_OWNER=$(echo ${GIT_URL} | cut -d '/' -f4)
-	GIT_REPO_NAME=$(echo ${GIT_URL} | cut -d '/' -f5 | cut -d '.' -f1)
-
 	git config user.email "ecc.platform@noaa.gov"
 	git config user.name "epic-cicd-jenkins"
 
