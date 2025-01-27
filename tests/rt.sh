@@ -1049,9 +1049,7 @@ if [[ "${CREATE_BASELINE}" == false ]] ; then
 fi
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-${DISKNM}/NEMSfv3gfs/input-data-20240501}
-#INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20240214
-#TODO: add glo_025 files to WW3 input data
-INPUTDATA_ROOT_WW3=/scratch1/NCEPDEV/nems/Nick.Szapiro/tasks/input_data/gefs.v13/RT_GEFS/WW3
+INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20240214
 INPUTDATA_LM4=${INPUTDATA_LM4:-${INPUTDATA_ROOT}/LM4_input_data}
 
 shift $((OPTIND-1))
