@@ -1,0 +1,210 @@
+matchedNode = []
+generateBaselineNode = []
+for (label in pullRequest.labels) {
+    listOfLabelNodeNames = jenkins.model.Jenkins.instance.nodes.collect {
+        node -> node.getLabelString().contains(label) ? node.name : null
+
+        if ((label.matches(node.getLabelString()+"-(.*)"))) {
+            matchedNode += node.getLabelString()
+        }
+
+        if ((label.matches(node.getLabelString()+"(.*)-BL"))) {
+            generateBaselineNode += node.getLabelString() 
+        }
+    }
+}
+
+modifiedLabels = matchedNode.collect{"'" + it + "'"} 
+baselineLabels = generateBaselineNode.collect{"'" + it + "'"} 
+def generateStage(nodeLabel) {
+    return {
+        stage("Initialize on ${nodeLabel.replaceAll("'","")}") {
+            node(nodeLabel) {
+		script {
+                        currentBuild.displayName = "#${BUILD_NUMBER} ${nodeLabel.replaceAll("'","")} test=${params.WM_OPERATIONAL_TESTS}"
+		}
+                cleanWs()
+                checkout scm
+		script {
+			def UFS_PLATFORM = nodeLabel.replaceAll("'","")
+			echo "nodeLabel=${nodeLabel} NODE_NAME=${NODE_NAME} UFS_PLATFORM=${UFS_PLATFORM} UFS_COMPILER=${env.UFS_COMPILER}"
+                        sh 'bash --login "${WORKSPACE}/.cicd/scripts/wm_init.sh"'
+                        sh "STAGE_NAME='${env.STAGE_NAME}' " + 'bash --login "${WORKSPACE}/.cicd/scripts/disk_usage.sh"'
+			s3Upload consoleLogLevel: 'INFO', dontSetBuildResultOnFailure: false, dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'noaa-epic-prod-jenkins-artifacts', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false, managedArtifacts: true, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: "${UFS_PLATFORM}-*-time-wm_init.json", storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'main', userMetadata: []
+			s3Upload consoleLogLevel: 'INFO', dontSetBuildResultOnFailure: false, dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'noaa-epic-prod-jenkins-artifacts', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false, managedArtifacts: true, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: "${UFS_PLATFORM}-*-disk-usageInit*.csv", storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'main', userMetadata: []
+		}
+            }
+        }
+        stage("Build on ${nodeLabel.replaceAll("'","")}") {
+	    if (params.WM_BUILD == true ) {
+                node(nodeLabel) {
+		    script {
+			def UFS_PLATFORM = nodeLabel.replaceAll("'","")
+                        //currentBuild.displayName = "#${BUILD_NUMBER} ${nodeLabel.replaceAll("'","")} ${UFS_COMPILER}"
+                        currentBuild.description = "build ${UFS_PLATFORM}-${UFS_COMPILER}"
+
+                        echo "Building on ${nodeLabel}"
+                        sh 'bash --login "${WORKSPACE}/.cicd/scripts/wm_build.sh"'
+                        sh "STAGE_NAME='${env.STAGE_NAME}' " + 'bash --login "${WORKSPACE}/.cicd/scripts/disk_usage.sh"'
+			s3Upload consoleLogLevel: 'INFO', dontSetBuildResultOnFailure: false, dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'noaa-epic-prod-jenkins-artifacts', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false, managedArtifacts: true, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: "${UFS_PLATFORM}-*-time-wm_build.json", storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'main', userMetadata: []
+			s3Upload consoleLogLevel: 'INFO', dontSetBuildResultOnFailure: false, dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'noaa-epic-prod-jenkins-artifacts', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false, managedArtifacts: true, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: "${UFS_PLATFORM}-*-disk-usageBuild.csv", storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'main', userMetadata: []
+		    }
+		}
+            } else {
+		echo "Building on ${nodeLabel} skipped"
+	    }
+        }
+        stage("Test on ${nodeLabel.replaceAll("'","")}") {
+	    if (params.WM_OPERATIONAL_TESTS != 'none' ) {
+              node(nodeLabel) {
+                script {
+			def UFS_PLATFORM = nodeLabel.replaceAll("'","")
+                    try {
+                        echo "Running Tests on ${nodeLabel}"
+                        if (baselineLabels.contains(nodeLabel)) {
+                            sh "WM_CREATE_BASELINE=true "  + 'bash --login "${WORKSPACE}/.cicd/scripts/wm_test.sh"'
+                        }
+                        else {
+                            sh "WM_CREATE_BASELINE=false " + 'bash --login "${WORKSPACE}/.cicd/scripts/wm_test.sh"'
+                        }
+			s3Upload consoleLogLevel: 'INFO', dontSetBuildResultOnFailure: false, dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'noaa-epic-prod-jenkins-artifacts', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false, managedArtifacts: true, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: "wm_test_results-*-*.txt", storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'main', userMetadata: []
+                    }
+                    catch(err) {
+                        sh '''
+                            export machine=${NODE_NAME}
+                            export CHANGE_ID=${CHANGE_ID}
+                            GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
+                            GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
+			    set +x
+
+                            echo "Testing concluded...removing labels for $machine from $GIT_URL"
+                            echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels /{$machine-RT,$machine-BL}"
+                            curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/{$machine-RT,$machine-BL}
+                        '''
+                        currentBuild.result = 'FAILURE'
+                    }
+
+                    sh '''
+                            export machine=${NODE_NAME}
+                            export CHANGE_ID=${CHANGE_ID}
+                            cd ${WORKSPACE}/tests
+                            export machine_name_logs=$(echo $machine | awk '{ print tolower($1) }')
+                            tar --create --gzip --verbose --dereference --file "${machine_name_logs}.tgz" ${WORKSPACE}/tests/logs/*.log
+                    '''
+                    s3Upload consoleLogLevel: 'INFO', dontSetBuildResultOnFailure: false, dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'noaa-epic-prod-jenkins-artifacts', excludedFile: '', flatten: true, gzipFiles: false, keepForever: false, managedArtifacts: true, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: "**/*tgz*", storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'main', userMetadata: []
+
+                    sh "STAGE_NAME='${env.STAGE_NAME}' " + 'bash --login "${WORKSPACE}/.cicd/scripts/disk_usage.sh"'
+		    s3Upload consoleLogLevel: 'INFO', dontSetBuildResultOnFailure: false, dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'noaa-epic-prod-jenkins-artifacts', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false, managedArtifacts: true, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: "${UFS_PLATFORM}-*-time-wm_test.json", storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'main', userMetadata: []
+		    s3Upload consoleLogLevel: 'INFO', dontSetBuildResultOnFailure: false, dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'noaa-epic-prod-jenkins-artifacts', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false, managedArtifacts: true, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: "${UFS_PLATFORM}-*-disk-usageTest.csv", storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'main', userMetadata: []
+
+		    sh "[[ -d tests/logs ]] && cd tests/logs && tar --create --gzip --verbose --dereference --file ../../wm_test_logs-${UFS_PLATFORM}-${env.UFS_COMPILER}.tgz log_${UFS_PLATFORM}/* RegressionTests_${UFS_PLATFORM}.log || cat /dev/null > ../../wm_test_logs-${UFS_PLATFORM}-${env.UFS_COMPILER}.tgz"
+		    s3Upload consoleLogLevel: 'INFO', dontSetBuildResultOnFailure: false, dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'noaa-epic-prod-jenkins-artifacts', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false, managedArtifacts: true, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: "wm_test_logs-${UFS_PLATFORM}-${env.UFS_COMPILER}.tgz", storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'main', userMetadata: []
+                }
+              }
+            } else {
+		echo "Running Tests on ${nodeLabel} skipped"
+	    }
+        }
+        stage("Post from ${nodeLabel.replaceAll("'","")}") {
+	    if (params.WM_OPERATIONAL_TESTS != 'none' ) {
+              node(nodeLabel) {
+                script {
+			def UFS_PLATFORM = nodeLabel.replaceAll("'","")
+                    try {
+                        echo "Post Results from ${nodeLabel}"
+                        if (baselineLabels.contains(nodeLabel)) {
+                            //sh 'bash --login "${WORKSPACE}/.cicd/scripts/post_test_results.sh ${NODE_NAME} BL"'
+                            sh "WM_TEST_LABEL=BL " + 'bash --login "${WORKSPACE}/.cicd/scripts/post_test_results.sh"'
+                        }
+                        else {
+                            sh "WM_TEST_LABEL=RT " + 'bash --login "${WORKSPACE}/.cicd/scripts/post_test_results.sh"'
+                        }
+                    }
+                    catch(err) {
+                        echo "Error: Post Results from ${nodeLabel}"
+                    }
+                }
+              }
+            }
+        }
+    }
+}
+
+def parallelStagesMap = modifiedLabels.collectEntries {
+    ["${it}" : generateStage(it)]
+}
+
+pipeline {
+    agent none
+    parameters {
+        booleanParam name: 'WM_BUILD', defaultValue: false, description: 'Whether to attempt to compile the model code tests'
+        // Regression Test Suite ?
+        choice(name: 'WM_OPERATIONAL_TESTS', choices: ['default', 'control_p8', 'cpld_control_p8', 'comprehensive', 'rt.sh', 'none'], description: 'Specify the suite of tests to run')
+    }
+    environment {
+        ACCNR = 'epic'
+        AWS_PROD_ACCOUNT_ID = credentials('AWS_PROD_ACCOUNT_ID')
+        AWS_PROD_SNS_TOPIC = credentials('AWS_PROD_SNS_TOPIC')
+        GITHUB_TOKEN = credentials('GithubJenkinsNew')
+        GIT_URL = 'https://github.com/ufs-community/ufs-weather-model.git'
+	UFS_COMPILER = 'intel'
+    }
+    stages {
+        stage('Launch SonarQube') {
+            steps {
+                script {
+                    echo "BRANCH_NAME=${env.CHANGE_BRANCH}"
+                    echo "FORK_NAME=${env.CHANGE_FORK}"
+                    echo "CHANGE_URL=${env.CHANGE_URL}"
+                    echo "CHANGE_ID=${env.CHANGE_ID}"
+                    build job: '/ufs-weather-model/ufs-wm-sonarqube', parameters: [
+                        string(name: 'BRANCH_NAME', value: env.CHANGE_BRANCH ?: 'develop'),
+                        string(name: 'FORK_NAME', value: env.CHANGE_FORK ?: ''),
+                        string(name: 'CHANGE_URL', value: env.CHANGE_URL ?: ''),
+                        string(name: 'CHANGE_ID', value: env.CHANGE_ID ?: '')
+                    ], wait: false
+                }
+            }
+        }
+        stage('Run Regression Tests in Parallel') {
+            steps {
+                script {
+                    parallel parallelStagesMap
+                }
+            }
+        }
+    }
+    post {
+        success {
+            node('built-in') {
+                echo 'This will run only if successful.'
+                sh '''
+                  aws sns publish --topic-arn "arn:aws:sns:us-east-1:${AWS_PROD_ACCOUNT_ID}:${AWS_PROD_SNS_TOPIC}" --region us-east-1 --message '{"version":"1.0","source":"custom","content":{"description":":sunny: Jenkins build *'"$JOB_NAME"' '"$BUILD_NUMBER"'* with *PR-'"$CHANGE_ID"'*  *succeeded*"}}'
+               '''
+            }
+        }
+        failure {
+            node('built-in') {
+                echo 'This will run only if the run was marked as unstable.'
+                sh '''
+                  aws sns publish --topic-arn "arn:aws:sns:us-east-1:${AWS_PROD_ACCOUNT_ID}:${AWS_PROD_SNS_TOPIC}" --region us-east-1 --message '{"version":"1.0","source":"custom","content":{"description":":warning: Jenkins build *'"$JOB_NAME"' '"$BUILD_NUMBER"'* with *PR-'"$CHANGE_ID"'*  *failed!*"}}'
+               '''
+            }
+        }
+	always {
+            script {
+                // Trigger another job to collect all build statistics
+                CI_JOB_NAME=env.JOB_NAME.replace("/${env.BRANCH_NAME}","")
+                CI_BRANCH_NAME=env.BRANCH_NAME.replace("%2F","%252F")
+                echo "post: Triggering ufs-weather-model/ufs-wm-metrics job for ${CI_JOB_NAME} on branch build ${CI_BRANCH_NAME}/${env.BUILD_NUMBER} ..."
+
+                build job: '/ufs-weather-model/ufs-wm-metrics', parameters: [
+                        string(name: 'CI_JOB_NAME', value: "${CI_JOB_NAME}"),
+                        string(name: 'CI_BUILD_NUMBER', value: "${CI_BRANCH_NAME}/${env.BUILD_NUMBER}")
+                ], wait: false
+
+                echo "#### post: ufs-weather-model/ufs-wm-metrics COMPLETE."
+            }
+	}
+    }
+}
