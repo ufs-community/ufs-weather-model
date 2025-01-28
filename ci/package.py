@@ -110,7 +110,7 @@ class UfsWeatherModel(CMakePackage):
 
     variant("app", default="ATM", description="UFS application", when="@develop")
 
-    depends_on("bacio")
+    depends_on("bacio@:2.4.1")
     depends_on("mpi", when="+mpi")
     depends_on("netcdf-c")
     depends_on("netcdf-fortran")
