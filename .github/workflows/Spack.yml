@@ -1,0 +1,45 @@
+# This is a CI workflow for the UFS Weather model.
+#
+# This workflow builds UWM with Spack.
+#
+# Alex Richert, Sep 2023
+name: Spack
+on:
+  push:
+    branches:
+    - develop
+  pull_request:
+    branches:
+    - develop
+
+jobs:
+  # This job builds with Spack using every combination of variants and runs the CTest suite each time
+  Spack:
+    strategy:
+      matrix:
+        os: ["ubuntu-latest"]
+        variants: [""]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    
+    - name: "Build Spack package"
+      uses: NOAA-EMC/ci-test-spack-package@develop
+      with:
+        package-name: ufs-weather-model
+        package-variants: ${{ matrix.variants }}
+        custom-recipe: spack/package.py
+        spack-compiler: gcc
+        repo-cache-key-suffix: ${{ matrix.os }}-${{ matrix.variants }}-1
+
+  # This job validates the Spack recipe by making sure each cmake build option is represented
+  recipe-check:
+    runs-on: ubuntu-latest
+
+    steps:
+    
+    - name: recipe-check
+      uses: NOAA-EMC/ci-check-spack-recipe@develop
+      with:
+        recipe-file: package/spack/package.py
+        cmakelists-txt: package/CMakeLists.txt
