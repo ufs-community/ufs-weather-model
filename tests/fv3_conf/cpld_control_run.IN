@@ -20,7 +20,7 @@ V2_SFC_FILE=${V2_SFC_FILE:-false}
 if [[ ${BMIC} == .true. ]]; then
   #FV3_IC=@[INPUTDATA_ROOT]/GEFS/${SYEAR}${SMONTH}${SDAY}${SHOUR}/ #TODO: use once input data is staged
   FV3_IC=/scratch1/NCEPDEV/nems/Nick.Szapiro/tasks/input_data/gefs.v13/RT_GEFS/${SYEAR}${SMONTH}${SDAY}${SHOUR}/
-  MOM_IC=${FV3_IC}; ICE_IC=${FV3_IC}; WAV_IC=${FV3_IC}/../WW3/
+  MOM_IC=${FV3_IC}; ICE_IC=${FV3_IC}; WAV_IC=${FV3_IC}; WAV_FIX=${WAV_IC}../WW3
 else
   if [[ $ATMRES == C48 ]]; then
      FV3_IC=@[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127_mx${OCNRES}/${SYEAR}${SMONTH}${SDAY}${SHOUR}
@@ -64,8 +64,8 @@ cp    @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/mesh.mx@[OCNRES].nc .
 # WW3 fix/input
 if [[ $CPLWAV == .true. ]]; then
   if [[ ${BMIC} == .true. ]]; then
-    cp ${WAV_IC}/@[WW3_MODDEF] mod_def.ww3
-    cp ${WAV_IC}/@[MESH_WAV] .
+    cp ${WAV_FIX}/@[WW3_MODDEF] mod_def.ww3
+    cp ${WAV_FIX}/@[MESH_WAV] .
   else
     cp @[INPUTDATA_ROOT_WW3]/@[WW3_MODDEF] mod_def.ww3
     if [[ ${WW3_DOMAIN:0:2} != mx ]]; then
