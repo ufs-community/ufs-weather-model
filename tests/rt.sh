@@ -799,7 +799,7 @@ case ${MACHINE_ID} in
       module load rocoto
       ROCOTO_SCHEDULER=slurm
     fi
-    
+
     # ecflow not yet available on ursa
     #if [[ "${ECFLOW:-false}" == true ]] ; then
     #  module load ecflow/5.11.4
@@ -808,7 +808,7 @@ case ${MACHINE_ID} in
     QUEUE="batch"
     COMPILE_QUEUE="batch"
 
-    PARTITION=
+    PARTITION="to39-compute"
     dprefix="/collab1/data/${USER}"
     DISKNM="/collab1/data/Ratko.Vasic/UFS-WM_RT"
     STMP="${STMP:-${dprefix}/RT_BASELINE}"

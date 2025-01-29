@@ -457,6 +457,10 @@ EOF
     <native>--clusters=es</native>
     <partition>eslogin_c6</partition>
 EOF
+  elif [[ "${MACHINE_ID}" == ursa ]] ; then
+    cat << EOF >> "${ROCOTO_XML}"
+    <partition>to39-compute</partition>
+EOF
   elif [[ -n "${PARTITION}" || ${MACHINE_ID} != hera ]] ; then
     cat << EOF >> "${ROCOTO_XML}"
     <partition>${PARTITION}</partition>
