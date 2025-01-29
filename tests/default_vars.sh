@@ -119,6 +119,7 @@ export wav_omp_num_threads=1
 export fbh_omp_num_threads=1
 
 export histaux_enabled=.false.
+export BMIC=.false.
 
 if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
 
@@ -1413,8 +1414,6 @@ export DOCN_CDEPS=false
 export DICE_CDEPS=false
 export CICE_PRESCRIBED=false
 export CDEPS_INLINE=false
-export FV3BMIC='p8c'
-export BMIC=.false.
 export DAYS=1
 
 #model configure
