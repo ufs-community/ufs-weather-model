@@ -566,6 +566,7 @@ export OUTPUT_HISTORY=.true.
 export HISTORY_FILE_ON_NATIVE_GRID=.false.
 export WRITE_DOPOST=.false.
 export NUM_FILES=2
+export FV3ATM_OUTPUT_DIR="./"
 export FILENAME_BASE="'atm' 'sfc'"
 export OUTPUT_GRID="'cubed_sphere_grid'"
 export OUTPUT_FILE="'netcdf'"
