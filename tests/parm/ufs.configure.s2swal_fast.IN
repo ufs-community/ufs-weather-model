@@ -3,11 +3,11 @@
 #############################################
 
 # ESMF #
-logKindFlag:            @[esmf_logkind]
-globalResourceControl:  true
+logKindFlag:            ESMF_LOGKIND_MULTI
+globalResourceControl:  @[ESMF_THREADING]
 
 # EARTH #
-EARTH_component_list: MED ATM OCN ICE WAV
+EARTH_component_list: MED ATM CHM OCN ICE WAV LND
 EARTH_attributes::
   Verbosity = 0
 ::
@@ -16,7 +16,6 @@ EARTH_attributes::
 MED_model:                      @[med_model]
 MED_petlist_bounds:             @[med_petlist_bounds]
 MED_omp_num_threads:            @[med_omp_num_threads]
-::
 
 # ATM #
 ATM_model:                      @[atm_model]
@@ -24,9 +23,17 @@ ATM_petlist_bounds:             @[atm_petlist_bounds]
 ATM_omp_num_threads:            @[atm_omp_num_threads]
 ATM_attributes::
   Verbosity = 0
-  DumpFields = @[DumpFields]
+  DumpFields = false
   ProfileMemory = false
   OverwriteSlice = true
+::
+
+# CHM #
+CHM_model:                      @[chm_model]
+CHM_petlist_bounds:             @[chm_petlist_bounds]
+CHM_omp_num_threads:            @[chm_omp_num_threads]
+CHM_attributes::
+  Verbosity = 0
 ::
 
 # OCN #
@@ -35,7 +42,7 @@ OCN_petlist_bounds:             @[ocn_petlist_bounds]
 OCN_omp_num_threads:            @[ocn_omp_num_threads]
 OCN_attributes::
   Verbosity = 0
-  DumpFields = @[DumpFields]
+  DumpFields = false
   ProfileMemory = false
   OverwriteSlice = true
   mesh_ocn = @[MESH_OCN]
@@ -49,7 +56,7 @@ ICE_petlist_bounds:             @[ice_petlist_bounds]
 ICE_omp_num_threads:            @[ice_omp_num_threads]
 ICE_attributes::
   Verbosity = 0
-  DumpFields = @[DumpFields]
+  DumpFields = false
   ProfileMemory = false
   OverwriteSlice = true
   mesh_ice = @[MESH_ICE]
@@ -78,34 +85,80 @@ WAV_attributes::
   pio_root = @[WW3_PIO_ROOT]
 ::
 
+# LND #
+LND_model:                      @[lnd_model]
+LND_petlist_bounds:             @[lnd_petlist_bounds]
+LND_omp_num_threads:            @[lnd_omp_num_threads]
+LND_attributes::
+  Verbosity = 1
+  Diagnostic = 0
+  mosaic_file = @[mosaic_file]
+  input_dir = @[lnd_input_dir]
+  fixed_dir = @[lnd_fixed_dir]
+  ic_type = @[lnd_ic_type]
+  layout = @[layout_x]:@[layout_y] # need to be consistent with number of PEs
+  num_soil_levels = 4
+  forcing_height = 10
+  soil_level_thickness = 0.10:0.30:0.60:1.00
+  soil_level_nodes = 0.05:0.25:0.70:1.50
+  dynamic_vegetation_option = 4
+  canopy_stomatal_resistance_option = 2
+  soil_wetness_option = 1
+  runoff_option = 1
+  surface_exchange_option = 3
+  supercooled_soilwater_option = 1
+  frozen_soil_adjust_option = 1
+  radiative_transfer_option = 3
+  snow_albedo_option = @[snow_albedo_option]
+  precip_partition_option = @[precip_partition_option]
+  soil_temp_lower_bdy_option = 2
+  soil_temp_time_scheme_option = 3
+  surface_evap_resistance_option = 1 # not used, it is fixed to 4 in sfc_noahmp_drv.F90
+  glacier_option = 1
+  surface_thermal_roughness_option = 2
+  output_freq = 3600
+  restart_freq = -1
+  calc_snet = @[CALC_SNET]
+  initial_albedo = @[initial_albedo]
+::
+
 # CMEPS warm run sequence
 runSeq::
 @@[coupling_interval_slow_sec]
-   MED med_phases_prep_wav_avg
    MED med_phases_prep_ocn_avg
-   MED -> WAV :remapMethod=redist
    MED -> OCN :remapMethod=redist
-   WAV
    OCN
    @@[coupling_interval_fast_sec]
      MED med_phases_prep_atm
      MED med_phases_prep_ice
+     MED med_phases_prep_wav_accum
+     MED med_phases_prep_wav_avg
+     MED med_phases_prep_lnd
      MED -> ATM :remapMethod=redist
      MED -> ICE :remapMethod=redist
-     ATM
+     MED -> WAV :remapMethod=redist
+     MED -> LND :remapMethod=redist
+     ATM phase1
+     ATM -> CHM
+     CHM
+     CHM -> ATM
+     ATM phase2
      ICE
+     WAV
+     LND
      ATM -> MED :remapMethod=redist
      MED med_phases_post_atm
      ICE -> MED :remapMethod=redist
      MED med_phases_post_ice
+     WAV -> MED :remapMethod=redist
+     MED med_phases_post_wav
+     LND -> MED :remapMethod=redist
+     MED med_phases_post_lnd
      MED med_phases_ocnalb_run
      MED med_phases_prep_ocn_accum
-     MED med_phases_prep_wav_accum
    @
    OCN -> MED :remapMethod=redist
-   WAV -> MED :remapMethod=redist
    MED med_phases_post_ocn
-   MED med_phases_post_wav
    MED med_phases_restart_write
 @
 ::
@@ -114,15 +167,18 @@ runSeq::
 
 DRIVER_attributes::
 ::
+
 MED_attributes::
       ATM_model = @[atm_model]
       ICE_model = @[ice_model]
       OCN_model = @[ocn_model]
       WAV_model = @[wav_model]
+      LND_model = @[lnd_model]
       coupling_mode = @[CPLMODE]
       pio_rearranger = @[pio_rearranger]
       ocean_albedo_limit = @[ocean_albedo_limit]
 ::
+
 ALLCOMP_attributes::
       ScalarFieldCount = 3
       ScalarFieldIdxGridNX = 1
