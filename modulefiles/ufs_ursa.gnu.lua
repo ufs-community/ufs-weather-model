@@ -1,5 +1,5 @@
 help([[
-loads UFS Model prerequisites for Ursa/Intel
+loads UFS Model prerequisites for Ursa/GNU
 ]])
 
 prepend_path("MODULEPATH", "/collab1/data/Ratko.Vasic/spack-stack-1.6.0/envs/fms-2024.01-gnu/install/modulefiles/Core")
