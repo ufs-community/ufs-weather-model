@@ -123,6 +123,17 @@ def generateStage(nodeLabel) {
                     catch(err) {
                         echo "Error: Post Results from ${nodeLabel}"
                     }
+			sh '''
+			    export machine=${NODE_NAME}
+			    export CHANGE_ID=${CHANGE_ID}
+			    GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
+			    GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1)
+			    set +x
+
+			    echo "Testing concluded...removing label ${label} for ${machine} from ${GIT_URL}"
+			    echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels /${machine}-${label}"
+			    curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/{$machine-RT,$machine-BL}
+			'''
                 }
               }
             }
