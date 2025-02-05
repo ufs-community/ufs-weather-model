@@ -18,7 +18,7 @@ elif [[ ${MACHINE_ID} = hera ]] ; then
 elif [[ ${MACHINE_ID} = orion ]] ; then
     # We are on Orion
     if ( ! eval module help > /dev/null 2>&1 ) ; then
-        source /apps/lmod/init/bash
+        source /apps/other/lmod/lmod/init/bash
     fi
     module purge
 
@@ -51,13 +51,6 @@ elif [[ ${MACHINE_ID} = derecho ]] ; then
     fi
     module purge
     
-elif [[ ${MACHINE_ID} = stampede ]] ; then
-    # We are on TACC Stampede
-    if ( ! eval module help > /dev/null 2>&1 ) ; then
-        source /opt/apps/lmod/lmod/init/bash
-    fi
-    module purge
-
 elif [[ ${MACHINE_ID} = frontera ]] ; then
     # We are on TACC Frontera
     if ( ! eval module help > /dev/null 2>&1 ) ; then
@@ -81,14 +74,6 @@ elif [[ ${MACHINE_ID} = gaeac6 ]]; then
         source /opt/cray/pe/lmod/lmod/init/bash
     fi
     module reset
-    
-elif [[ ${MACHINE_ID} = expanse ]]; then
-    # We are on SDSC Expanse
-    if ( ! eval module help > /dev/null 2>&1 ) ; then
-        source /etc/profile.d/modules.sh
-    fi
-    module purge
-    module load slurm/expanse/20.02.3
 
 elif [[ ${MACHINE_ID} = noaacloud ]] ; then
     # We are on NOAA Cloud

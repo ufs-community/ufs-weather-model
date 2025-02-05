@@ -113,7 +113,7 @@ case ${MACHINE_ID} in
     module load miniconda/3.9.12
     module load nccmp/1.9.0.1
     ;;
-  stampede|expanse|noaacloud)
+  noaacloud)
     echo "No special nccmp load necessary"
     ;;
   gaeac5)
@@ -483,7 +483,7 @@ if [[ ${skip_check_results} == false ]]; then
 
       else
         if [[ ${i##*.} == nc* ]] ; then
-          if [[ " orion hercules hera wcoss2 acorn derecho gaeac5 gaeac6 jet s4 noaacloud " =~ ${MACHINE_ID} ]]; then
+          if [[ " orion hercules hera wcoss2 acorn derecho gaeac5 gaeac6 jet s4 noaacloud frontera" =~ ${MACHINE_ID} ]]; then
             printf "USING NCCMP.." >> "${RT_LOG}"
             printf "USING NCCMP.."
               if [[ ${CMP_DATAONLY} == false ]]; then
