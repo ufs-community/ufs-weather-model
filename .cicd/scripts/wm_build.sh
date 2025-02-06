@@ -63,7 +63,7 @@ module list
 echo "Pipeline Building WM on ${UFS_PLATFORM} ${UFS_COMPILER} with Account=${ACCNR}."
 export CMAKE_FLAGS="-DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16"
 /usr/bin/time -p \
-	-o ${workspace}/${UFS_PLATFORM}-${UFS_COMPILER}-time-wm_build.json \
+	-o ${WORKSPACE:-$(pwd)}/${UFS_PLATFORM}-${UFS_COMPILER}-time-wm_build.json \
 	-f '{\n  "cpu": "%P"\n, "memMax": "%M"\n, "mem": {"text": "%X", "data": "%D", "swaps": "%W", "context": "%c", "waits": "%w"}\n, "pagefaults": {"major": "%F", "minor": "%R"}\n, "filesystem": {"inputs": "%I", "outputs": "%O"}\n, "time": {"real": "%e", "user": "%U", "sys": "%S"}\n}' \
 	./build.sh | tee ${workspace}/${UFS_PLATFORM}-${UFS_COMPILER}-wm_build-log.txt
 status=${PIPESTATUS[0]}
