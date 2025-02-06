@@ -54,7 +54,9 @@ list(APPEND mom6_src_files
   MOM6/src/diagnostics/MOM_PointAccel.F90
   MOM6/src/diagnostics/MOM_debugging.F90
   MOM6/src/diagnostics/MOM_spatial_means.F90
+  MOM6/src/diagnostics/MOM_diagnose_MLD.F90
   MOM6/src/diagnostics/MOM_diagnostics.F90
+  MOM6/src/diagnostics/MOM_harmonic_analysis.F90
   MOM6/src/diagnostics/MOM_obsolete_diagnostics.F90
   MOM6/src/diagnostics/MOM_obsolete_params.F90
   MOM6/src/diagnostics/MOM_sum_output.F90
@@ -168,6 +170,7 @@ list(APPEND mom6_src_files
   MOM6/src/parameterizations/lateral/MOM_tidal_forcing.F90
   MOM6/src/parameterizations/lateral/MOM_Zanna_Bolton.F90
   MOM6/src/parameterizations/lateral/MOM_self_attr_load.F90
+  MOM6/src/parameterizations/lateral/MOM_streaming_filter.F90
 
   MOM6/src/parameterizations/vertical/MOM_ALE_sponge.F90
   MOM6/src/parameterizations/vertical/MOM_CVMix_KPP.F90
@@ -312,7 +315,9 @@ list(APPEND mom6_nuopc_src_files
   MOM6/config_src/drivers/unit_tests/test_MOM_mixedlayer_restrat.F90
   MOM6/config_src/drivers/unit_tests/test_MOM_string_functions.F90
   MOM6/config_src/drivers/unit_tests/test_MOM_EOS.F90
+  MOM6/config_src/drivers/unit_tests/test_MOM_remapping.F90
   MOM6/config_src/drivers/timing_tests/time_MOM_EOS.F90
+  MOM6/config_src/drivers/timing_tests/time_MOM_remapping.F90
 )
 
 list(APPEND mom6_nuopc_src_files

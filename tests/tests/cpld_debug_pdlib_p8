@@ -57,7 +57,6 @@ export LIST_FILES="sfcf003.tile1.nc \
                    20210322.090000.out_pnt.ww3 \
                    20210322.090000.out_grd.ww3 "
 
-export DT_ATMOS=720
 export_fv3
 export_ugwpv1
 export_cpl
@@ -100,13 +99,10 @@ export UFS_CONFIGURE=ufs.configure.s2sw_fast.IN
 
 export FV3_RUN=cpld_control_run.IN
 
-if [[ $MACHINE_ID = hera ]] || [[ $MACHINE_ID = jet ]]; then
+if [[ $MACHINE_ID = jet || $MACHINE_ID = orion ]]; then
   WLCLK=50
 fi
 if [[ $MACHINE_ID = hercules && $RT_COMPILER = intelllvm ]]; then
-  WLCLK=50
-fi
-if [[ $MACHINE_ID = orion ]]; then
   WLCLK=50
 fi
 if [[ $MACHINE_ID = gaeac5 ]]; then
@@ -121,7 +117,7 @@ fi
 
 # set component and coupling timesteps due to long
 # runtime
-export K_SPLIT=2
+export K_SPLIT=4
 export N_SPLIT=5
 
 # HR4 GFSv17 GWD update
