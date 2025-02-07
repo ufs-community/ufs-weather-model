@@ -566,6 +566,7 @@ export OUTPUT_HISTORY=.true.
 export HISTORY_FILE_ON_NATIVE_GRID=.false.
 export WRITE_DOPOST=.false.
 export NUM_FILES=2
+export FV3ATM_OUTPUT_DIR="./"
 export FILENAME_BASE="'atm' 'sfc'"
 export OUTPUT_GRID="'cubed_sphere_grid'"
 export OUTPUT_FILE="'netcdf'"
@@ -1061,6 +1062,18 @@ export FNSNOC="'global_snoclim.1.875.grb'"
 export FNZORC="'igbp'"
 export FNAISC="'IMS-NIC.blended.ice.monthly.clim.grb'"
 export LDEBUG=.false.
+
+# Land IAU defaults
+export DO_LAND_IAU=.false.
+export LAND_IAU_FHRS=3,6,9
+export LAND_IAU_DELHRS=6
+export LAND_IAU_INC_FILES="'sfc_inc',''"
+export LSOIL_INCR=3
+export LAND_IAU_FILTER_INC=.false.
+export LAND_IAU_UPD_STC=.true.
+export LAND_IAU_UPD_SLC=.true.
+export LAND_IAU_DP_STCSMC_ADJ=.true.
+export LAND_IAU_MIN_T_INC=0.0001
 }
 
 # Add section for tiled grid namelist
