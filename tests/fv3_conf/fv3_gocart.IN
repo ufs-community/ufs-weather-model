@@ -7,9 +7,8 @@ else
   cp -r @[INPUTDATA_ROOT]/FV3_input_data/RESTART/* ./INPUT
 fi
 cp    @[INPUTDATA_ROOT]/FV3_input_data/*grb .
-cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/MERRA2/merra2C.aerclim.2003-2014.*nc .
 for n in 01 02 03 04 05 06 07 08 09 10 11 12; do
-ln -sf merra2C.aerclim.2003-2014.m${n}.nc  aeroclim.m${n}.nc
+    cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/MERRA2_y14_24/merra2_1423_${n}.nc aeroclim.m${n}.nc
 done
 cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/mg2_IN_CCN/cam5_4_143_NAAI_monclimo2.nc cam5_4_143_NAAI_monclimo2.nc
 cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/mg2_IN_CCN/cam5_4_143_NPCCN_monclimo2.nc cam5_4_143_NPCCN_monclimo2.nc

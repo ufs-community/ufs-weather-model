@@ -4,7 +4,7 @@
 
 export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C96MX100"
 
-export CNTL_DIR="cpld_control_c96_noaero_p8"
+export CNTL_DIR=cpld_control_c96_noaero_p8
 
 export LIST_FILES="sfcf021.tile1.nc \
                    sfcf021.tile2.nc \
@@ -67,13 +67,17 @@ export LIST_FILES="sfcf021.tile1.nc \
                    RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc"
 
 #TODO: add comparison of CA restart files?
+export DT_ATMOS=720
 
 export_fv3
+export_ugwpv1
 export_cpl
+export CCPP_SUITE=FV3_GFS_v17_coupled_p8_ugwpv1
 
 export RESTART_N=12
 export RESTART_INTERVAL="${RESTART_N} -1"
 export OUTPUT_FH='0 21 24'
+export MED_history_n=1
 
 export INPES=$INPES_cpl_dflt
 export JNPES=$JNPES_cpl_dflt
@@ -84,10 +88,10 @@ OCN_tasks=$OCN_tasks_cpl_dflt
 ICE_tasks=$ICE_tasks_cpl_dflt
 export WAV_tasks=0
 
-export NPROC_ICE=$ICE_tasks
-export np2=`expr $NPROC_ICE / 2`
-export BLCKX=`expr $NX_GLB / $np2`
-export BLCKY=`expr $NY_GLB / 2`
+export CICE_NPROC=$ICE_tasks
+export np2=`expr $CICE_NPROC / 2`
+export CICE_BLCKX=`expr $NX_GLB / $np2`
+export CICE_BLCKY=`expr $NY_GLB / 2`
 
 export CPLWAV=.false.
 export CPLWAV2ATM=.false.
@@ -96,14 +100,19 @@ export eps_imesh=2.5e-1
 
 export CPLCHM=.false.
 export DNATS=0
-export TOPOEDITS=ufs.topo_edits_011818.nc
+export MOM6_TOPOEDITS=ufs.topo_edits_011818.nc
 export MOM6_ALLOW_LANDMASK_CHANGES=True
 
 export DIAG_TABLE=diag_table_template
-export UFS_CONFIGURE=ufs.configure.cpld_noaero_nowave.IN
+export UFS_CONFIGURE=ufs.configure.s2s.IN
 
 export FV3_RUN=cpld_control_run.IN
 
-if [[ $MACHINE_ID = cheyenne ]]; then
-  TPN=18
-fi
+export K_SPLIT=4
+export N_SPLIT=5
+
+# HR4 GFSv17 GWD update
+export DO_GWD_OPT_PSL=.true.
+export DO_GSL_DRAG_SS=.false.
+
+export histaux_enabled=.true.

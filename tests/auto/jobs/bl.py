@@ -24,21 +24,16 @@ def set_directories(job_obj):
         rtbldir = '/scratch1/NCEPDEV/stmp4/emc.nemspara/FV3_RT/'\
                  f'REGRESSION_TEST_{job_obj.compiler.upper()}'
     elif job_obj.machine == 'jet':
-        workdir = '/lfs4/HFIP/h-nems/emc.nemspara/autort/pr'
-        blstore = '/lfs4/HFIP/h-nems/emc.nemspara/RT/NEMSfv3gfs/'
-        rtbldir = '/lfs4/HFIP/h-nems/emc.nemspara/RT_BASELINE/'\
+        workdir = '/lfs5/HFIP/hfv3gfs/role.epic/h-nems/autort/pr'
+        blstore = '/lfs5/HFIP/hfv3gfs/role.epic/RT/NEMSfv3gfs'
+        rtbldir = '/lfs5/HFIP/hfv3gfs/role.epic/h-nems/RT_BASELINE/'\
                  f'emc.nemspara/FV3_RT/REGRESSION_TEST_{job_obj.compiler.upper()}'
-    elif job_obj.machine == 'gaea':
-        workdir = '/lustre/f2/pdata/ncep/emc.nemspara/autort/pr'
-        blstore = '/lustre/f2/pdata/ncep_shared/emc.nemspara/RT/NEMSfv3gfs'
-        rtbldir = '/lustre/f2/scratch/emc.nemspara/FV3_RT/'\
-                 f'REGRESSION_TEST_{job_obj.compiler.upper()}'
     elif job_obj.machine == 'orion':
         workdir = '/work/noaa/nems/emc.nemspara/autort/pr'
         blstore = '/work/noaa/nems/emc.nemspara/RT/NEMSfv3gfs'
         rtbldir = '/work/noaa/stmp/bcurtis/stmp/bcurtis/FV3_RT/'\
                  f'REGRESSION_TEST_{job_obj.compiler.upper()}'
-    elif job_obj.machine == 'cheyenne':
+    elif job_obj.machine == 'derecho':
         workdir = '/glade/scratch/dtcufsrt/autort/tests/auto/pr'
         blstore = '/glade/p/ral/jntp/GMTB/ufs-weather-model/RT/NEMSfv3gfs'
         rtbldir = '/glade/scratch/dtcufsrt/FV3_RT/'\

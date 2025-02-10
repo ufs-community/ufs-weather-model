@@ -45,7 +45,14 @@ export LIST_FILES="sfcf000.nc \
                    RESTART/20210323.060000.sfc_data.tile5.nc \
                    RESTART/20210323.060000.sfc_data.tile6.nc"
 
+export ATMRES=C48
+
 export_fv3
+export_tiled
+if [[ $RT_COMPILER != gnu ]]; then
+  export_ugwpv1
+  export CCPP_SUITE=FV3_GFS_v17_p8_ugwpv1
+fi
 
 export INPES=1
 export JNPES=1
@@ -54,13 +61,11 @@ export NPZ=127
 export NPZP=128
 export NPX=49
 export NPY=49
-export DT_ATMOS=1200
 export SYEAR=2021
 export SMONTH=03
 export SDAY=22
 export SHOUR=06
 export RESTART_INTERVAL=0
-export CDMBWD=${CDMBWD_c48}
 export OUTPUT_GRID='gaussian_grid'
 export NSTF_NAME='2,0,0,0,0'
 export WRITE_DOPOST=.false.
@@ -70,14 +75,10 @@ export IOVR=3
 export IMO=192
 export JMO=94
 
-export FNALBC="'global_snowfree_albedo.bosu.t62.192.94.rg.grb',"
-export FNVETC="'global_vegtype.igbp.t62.192.94.rg.grb',"
-export FNSOTC="'global_soiltype.statsgo.t62.192.94.rg.grb',"
-export FNABSC="'global_mxsnoalb.uariz.t62.192.94.rg.grb',"
-export FNSMCC_control="'global_soilmgldas.statsgo.t92.192.94.grb',"
-export FNMSKH_control="'global_slmask.t62.192.94.grb',"
-
+export FNSMCC_control="'global_soilmgldas.statsgo.t92.192.94.grb'"
+export FNMSKH_control="'global_slmask.t62.192.94.grb'"
+export FNSMCC=${FNSMCC_control}
+export FNMSKH=${FNMSKH_control}
 
 export FV3_RUN=control_run.IN
-export CCPP_SUITE=FV3_GFS_v16
-export INPUT_NML=control.nml.IN
+export INPUT_NML=global_control.nml.IN

@@ -2,11 +2,11 @@ help([[
 loads UFS Model prerequisites for Hercules/GNU
 ]])
 
-prepend_path("MODULEPATH", "/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.5.0/envs/unified-env-mvap2/install/modulefiles/Core")
+prepend_path("MODULEPATH", "/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.6.0/envs/fms-2024.01/install/modulefiles/Core")
 -- for mvapich2, need:
 prepend_path("MODULEPATH", "/work/noaa/epic/role-epic/spack-stack/hercules/modulefiles")
 
-stack_gnu_ver=os.getenv("stack_gnu_ver") or "11.3.1"
+stack_gnu_ver=os.getenv("stack_gnu_ver") or "12.2.0"
 load(pathJoin("stack-gcc", stack_gnu_ver))
 
 stack_mvapich2_ver=os.getenv("stack_mvapich2_ver") or "2.3.7"

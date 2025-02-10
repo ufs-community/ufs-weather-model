@@ -17,12 +17,10 @@ def set_directories(job_obj):
     if job_obj.machine == 'hera':
         workdir = '/scratch1/NCEPDEV/nems/emc.nemspara/autort/pr'
     elif job_obj.machine == 'jet':
-        workdir = '/lfs4/HFIP/h-nems/emc.nemspara/autort/pr'
-    elif job_obj.machine == 'gaea':
-        workdir = '/lustre/f2/pdata/ncep/emc.nemspara/autort/pr'
+        workdir = '/lfs5/HFIP/hfv3gfs/role.epic/h-nems/autort/pr'
     elif job_obj.machine == 'orion':
         workdir = '/work/noaa/nems/emc.nemspara/autort/pr'
-    elif job_obj.machine == 'cheyenne':
+    elif job_obj.machine == 'derecho':
         workdir = '/glade/scratch/dtcufsrt/autort/tests/auto/pr'
     else:
         print(f'Machine {job_obj.machine} is not supported for this job')

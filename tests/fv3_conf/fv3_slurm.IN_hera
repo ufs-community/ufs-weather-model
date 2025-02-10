@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #SBATCH -e err
 #SBATCH -o out
 #SBATCH --account=@[ACCNR]
@@ -11,20 +11,23 @@
 ### #SBATCH --exclusive
 
 set -eux
-echo -n " $( date +%s )," >  job_timestamp.txt
+date_s_start=$(date +%s)
+echo -n "${date_s_start}," > job_timestamp.txt
 
 set +x
-MACHINE_ID=hera
+export MACHINE_ID=hera
 source ./module-setup.sh
-module use $PWD/modulefiles
+module use "${PWD}/modulefiles"
 module load modules.fv3
 module list
 set -x
 
-echo "Model started:  " `date`
+date_start=$(date)
+echo "Model started: ${date_start}"
 
 export MPI_TYPE_DEPTH=20
 export OMP_STACKSIZE=512M
+# shellcheck disable=SC2125
 export OMP_NUM_THREADS=@[THRD]
 export ESMF_RUNTIME_COMPLIANCECHECK=OFF:depth=4
 export ESMF_RUNTIME_PROFILE=ON
@@ -35,7 +38,17 @@ export PSM_SHAREDCONTEXTS=1
 # Avoid job errors because of filesystem synchronization delays
 sync && sleep 1
 
+# This "if" block is part of the rt.sh self-tests in error-test.conf. It emulates the model failing to run.
+if [ "${JOB_SHOULD_FAIL:-NO}" = WHEN_RUNNING ] ; then
+    echo "The job should abort now, with exit status 1." 1>&2
+    echo "If error checking is working, the metascheduler should mark the job as failed." 1>&2
+    false
+fi
+
+# shellcheck disable=SC2102
 srun --label -n @[TASKS] ./fv3.exe
 
-echo "Model ended:    " `date`
-echo -n " $( date +%s )," >> job_timestamp.txt
+date_end=$(date)
+echo "Model ended: ${date_end}"
+date_s_end=$(date +%s)
+echo -n "${date_s_end}," >> job_timestamp.txt

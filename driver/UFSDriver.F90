@@ -23,7 +23,7 @@
 !          UFS Driver component
 !              /|\
 !             / | \
-!          ATM/OCN/ICE/WAV/LND/IPM/HYD .. components
+!          ATM/OCN/ICE/WAV/LND/IPM/HYD/FIR .. components
 !          |    |   |
 !          |    |   (CICE, etc.)
 !          |    |
@@ -62,6 +62,9 @@
 #ifdef FRONT_CDEPS_DOCN
       use FRONT_CDEPS_DOCN, only: DOCN_SS  => SetServices
 #endif
+#ifdef FRONT_CDEPS_DICE
+      use FRONT_CDEPS_DICE, only: DICE_SS  => SetServices
+#endif
   ! - Handle build time ICE options:
 #ifdef FRONT_CICE6
       use FRONT_CICE6,      only: CICE6_SS => SetServices, &
@@ -76,8 +79,15 @@
 #ifdef FRONT_NOAH
       use FRONT_NOAH,       only: NOAH_SS  => SetServices
 #endif
+#ifdef FRONT_LM4
+      use FRONT_LM4,        only: LM4_SS  => SetServices
+#endif      
 #ifdef FRONT_NOAHMP
       use FRONT_NOAHMP,     only: NOAHMP_SS  => SetServices
+#endif
+  ! - Handle build time FIR options:
+#ifdef FRONT_FIRE_BEHAVIOR
+      use FRONT_FIRE_BEHAVIOR, only: FIRE_BEHAVIOR_SS => SetServices
 #endif
 #ifdef FRONT_LIS
       use FRONT_LIS,        only: LIS_SS   => SetServices
@@ -410,6 +420,23 @@
             found_comp = .true.
           end if
 #endif
+#ifdef FRONT_CDEPS_DICE
+          if (trim(model) == "dice") then
+            !TODO: Remove bail code and pass info and SetVM to DriverAddComp
+            !TODO: once component supports threading.
+            if (ompNumThreads > 1) then
+              write (msg, *) "ESMF-aware threading NOT implemented for model: "//&
+                trim(model)
+              call ESMF_LogSetError(ESMF_RC_NOT_VALID, msg=msg,line=__LINE__, &
+                file=__FILE__, rcToReturn=rc)
+              return  ! bail out
+            endif
+            call NUOPC_DriverAddComp(driver, trim(prefix), DICE_SS, &
+              petList=petList, comp=comp, rc=rc)
+            if (ChkErr(rc,__LINE__,u_FILE_u)) return
+            found_comp = .true.
+          end if
+#endif
 #ifdef FRONT_CICE6
           if (trim(model) == "cice6") then
             call NUOPC_DriverAddComp(driver, trim(prefix), CICE6_SS, &
@@ -443,9 +470,25 @@
             found_comp = .true.
           end if
 #endif
+#ifdef FRONT_LM4
+          if (trim(model) == "lm4") then
+            call NUOPC_DriverAddComp(driver, trim(prefix), LM4_SS, &
+              petList=petList, comp=comp, rc=rc)
+            if (ChkErr(rc,__LINE__,u_FILE_u)) return
+            found_comp = .true.
+          end if
+#endif 
 #ifdef FRONT_NOAHMP
           if (trim(model) == "noahmp") then
             call NUOPC_DriverAddComp(driver, trim(prefix), NOAHMP_SS, &
+              petList=petList, comp=comp, rc=rc)
+            if (ChkErr(rc,__LINE__,u_FILE_u)) return
+            found_comp = .true.
+          end if
+#endif
+#ifdef FRONT_FIRE_BEHAVIOR
+          if (trim(model) == "fire_behavior") then
+            call NUOPC_DriverAddComp(driver, trim(prefix), FIRE_BEHAVIOR_SS, &
               petList=petList, comp=comp, rc=rc)
             if (ChkErr(rc,__LINE__,u_FILE_u)) return
             found_comp = .true.

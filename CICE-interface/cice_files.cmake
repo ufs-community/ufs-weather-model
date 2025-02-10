@@ -27,7 +27,8 @@ list(APPEND cice_shared_files
   #Dynamics List:
   CICE/cicecore/cicedyn/dynamics/ice_dyn_eap.F90
   CICE/cicecore/cicedyn/dynamics/ice_dyn_evp.F90
-  CICE/cicecore/cicedyn/dynamics/ice_dyn_evp_1d.F90
+  CICE/cicecore/cicedyn/dynamics/ice_dyn_evp1d.F90
+  CICE/cicecore/cicedyn/dynamics/ice_dyn_core1d.F90
   CICE/cicecore/cicedyn/dynamics/ice_dyn_shared.F90
   CICE/cicecore/cicedyn/dynamics/ice_dyn_vp.F90
   CICE/cicecore/cicedyn/dynamics/ice_transport_driver.F90
@@ -75,6 +76,7 @@ list(APPEND icepack_files
   CICE/icepack/columnphysics/icepack_orbital.F90
   CICE/icepack/columnphysics/icepack_parameters.F90
   CICE/icepack/columnphysics/icepack_shortwave.F90
+  CICE/icepack/columnphysics/icepack_shortwave_data.F90
   CICE/icepack/columnphysics/icepack_snow.F90
   CICE/icepack/columnphysics/icepack_therm_bl99.F90
   CICE/icepack/columnphysics/icepack_therm_itd.F90
@@ -147,4 +149,26 @@ list(APPEND cice_nuopc_cmeps_driver_files
   CICE/cicecore/drivers/nuopc/cmeps/ice_scam.F90
   CICE/cicecore/drivers/nuopc/cmeps/ice_shr_methods.F90
   CICE/cicecore/drivers/nuopc/cmeps/ice_mesh_mod.F90
+)
+
+list(APPEND cice_cdeps_share_files
+  #-- Using ice prescribed ifndef cesmcoupled
+  ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_orb_mod.F90
+  ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_const_mod.F90
+  ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_abort_mod.F90
+  ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_strconvert_mod.F90
+  ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_log_mod.F90
+  ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_sys_mod.F90
+  ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_kind_mod.F90
+  ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_nl_mod.F90
+  ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_cal_mod.F90
+  ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_string_mod.F90
+  ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/share/shr_timer_mod.F90
+  ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/streams/dshr_strdata_mod.F90
+  ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/streams/dshr_stream_mod.F90
+  ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/streams/dshr_methods_mod.F90
+  ${PROJECT_SOURCE_DIR}/CDEPS-interface/CDEPS/dshr/dshr_mod.F90
+
+  #restart_fh
+  ${PROJECT_SOURCE_DIR}/CDEPS-interface/ufs/cdeps_share/shr_is_restart_fh_mod.F90
 )

@@ -30,7 +30,7 @@ elif [[ $application == 'cpld' ]]; then
     JNPES=1
     OCN_tasks=10
     ICE_tasks=6
-    NPROC_ICE=$ICE_tasks
+    CICE_NPROC=$ICE_tasks
     TASKS=$((INPES*JNPES*NTILES + WRITE_GROUP*WRTTASK_PER_GROUP + OCN_tasks + ICE_tasks))
   else
     temp=$INPES

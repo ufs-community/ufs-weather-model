@@ -1,6 +1,8 @@
-mkdir -p RESTART INPUT_DATM
+mkdir -p RESTART INPUT
 
-cd INPUT_DATM
+mkdir -p $CMEPS_RESTART_DIR
+
+cd INPUT
 rsync -arv @[INPUTDATA_ROOT]/DATM_GSWP3_input_data/. .
 cd -
 
@@ -12,7 +14,7 @@ if [ $WARM_START = .true. ]; then
 
   # CMEPS restart and pointer files
   RFILE1=ufs.cpld.cpl.r.${RESTART_FILE_SUFFIX_SECS}.nc
-  cp ../${DEP_RUN}${SUFFIX}/RESTART/${RFILE1} RESTART/.
+  cp ../${DEP_RUN}${SUFFIX}/${CMEPS_RESTART_DIR}/${RFILE1} RESTART/.
   ls -1 "RESTART/${RFILE1}">rpointer.cpl
 
   # CDEPS restart and pointer files

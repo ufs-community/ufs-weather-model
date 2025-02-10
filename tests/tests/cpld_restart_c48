@@ -3,7 +3,7 @@
 #
 export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C48MX500 restart test"
 
-export CNTL_DIR="cpld_warmstart_c48"
+export CNTL_DIR=cpld_warmstart_c48
 
 export LIST_FILES="sfcf006.tile1.nc \
                    sfcf006.tile2.nc \
@@ -53,8 +53,11 @@ export LIST_FILES="sfcf006.tile1.nc \
                    RESTART/iced.2021-03-23-43200.nc \
                    RESTART/ufs.cpld.cpl.r.2021-03-23-43200.nc"
 
+export ATMRES=C48
 export_fv3
+export_ugwpv1
 export_cpl
+export CCPP_SUITE=FV3_GFS_v17_coupled_p8_ugwpv1
 
 export SYEAR=2021
 export SMONTH=03
@@ -86,41 +89,41 @@ OCN_tasks=$OCN_tasks_cpl_c48
 ICE_tasks=$ICE_tasks_cpl_c48
 
 # atm/ocn/ice resolution
-export ATMRES=C48
 export NPX=49
 export NPY=49
 export IMO=192
 export JMO=94
-export ATMTILESIZE=`expr $NPX - 1`
 
 export OCNRES=500
 export ICERES=5.00
 export NX_GLB=72
 export NY_GLB=35
-export NPROC_ICE=$ICE_tasks
+export CICE_NPROC=$ICE_tasks
 export CICE_DECOMP=slenderX1
-export BLCKX=`expr $NX_GLB / $NPROC_ICE`
-export BLCKY=$NY_GLB
+export CICE_BLCKX=`expr $NX_GLB / $CICE_NPROC`
+export CICE_BLCKY=$NY_GLB
 
 # set component and coupling timesteps
 export DT_ATMOS=1200
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6=3600
 export DT_THERM_MOM6=3600
-export DIAG_FREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
+export CICE_DIAGFREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
 
 # ufs.configure
 export coupling_interval_slow_sec=${DT_THERM_MOM6}
 export coupling_interval_fast_sec=${DT_ATMOS}
 
 # resolution dependent files
-export MOM_INPUT=MOM_input_template_${OCNRES}
-export MESHOCN_ICE=mesh.mx${OCNRES}.nc
-export CICEGRID=grid_cice_NEMS_mx${OCNRES}.nc
-export CICEMASK=kmtu_cice_NEMS_mx${OCNRES}.nc
-export CHLCLIM=''
-export FRUNOFF=''
+export MOM6_INPUT=MOM_input_${OCNRES}.IN
+export MESH_ICE=mesh.mx${OCNRES}.nc
+export MESH_OCN=mesh.mx${OCNRES}.nc
+export CICE_GRID=grid_cice_NEMS_mx${OCNRES}.nc
+export CICE_MASK=kmtu_cice_NEMS_mx${OCNRES}.nc
+export MOM6_CHLCLIM=''
+export MOM6_FRUNOFF=''
 export MOM6_RIVER_RUNOFF=False
+export MOM6_DIAG_COORD_DEF_Z_FILE=oceanda_zgrid_25L.nc
 
 export FNALBC="'C48.snowfree_albedo.tileX.nc'"
 export FNALBC2="'C48.facsf.tileX.nc'"
@@ -149,9 +152,9 @@ export NGGPS_IC=.false.
 export MOUNTAIN=.true.
 
 # ICE warm start
-export CICERUNTYPE=continue
+export CICE_RUNTYPE=continue
 export RUNTYPE=continue
-export USE_RESTART_TIME=.true.
+export CICE_USE_RESTART_TIME=.true.
 
 # MOM6 warm start
 export MOM6_RESTART_SETTING=r
@@ -165,6 +168,10 @@ export eps_imesh=4.0e-1
 
 export DIAG_TABLE=diag_table_template
 export FIELD_TABLE=field_table_thompson_noaero_tke
-export UFS_CONFIGURE=ufs.configure.cpld_noaero_nowave.IN
+export UFS_CONFIGURE=ufs.configure.s2s.IN
 
 export FV3_RUN=cpld_control_run.IN
+
+# HR4 GFSv17 GWD update
+export DO_GWD_OPT_PSL=.true.
+export DO_GSL_DRAG_SS=.false.

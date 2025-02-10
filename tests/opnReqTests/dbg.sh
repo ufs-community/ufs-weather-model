@@ -21,7 +21,6 @@ elif [[ $application == 'regional' ]]; then
 elif [[ $application == 'cpld' ]]; then
   FHMAX=3
   DAYS=0.125
-  NFHOUT_HF=1
   RESTART_INTERVAL=${FHMAX}
   RESTART_N=${FHMAX}
   OUTPUT_FH="0 ${FHMAX}"
@@ -38,10 +37,9 @@ elif [[ $application == 'cpld' ]]; then
                                    | sed -e "s/^ *//" -e "s/ *$//")
 elif [[ $application == 'atmw' ]]; then
   FHMAX=3
-  WW3RSTDTHR=3
-  DT_2_RST="$(printf "%02d" $(( ${WW3RSTDTHR}*3600 )))"
+  WW3_RSTDTHR=3
+  WW3_DT_2_RST="$(printf "%02d" $(( ${WW3_RSTDTHR}*3600 )))"
   DAYS=0.125
-  NFHOUT_HF=1
   RESTART_INTERVAL=${FHMAX}
   RESTART_N=${FHMAX}
   OUTPUT_FH="0 ${FHMAX}"
@@ -59,5 +57,5 @@ source $PATHRT/opnReqTests/wrt_env.sh
 
 cat <<EOF >>${RUNDIR_ROOT}/opnreq_test${RT_SUFFIX}.env
 export WLCLK=${WLCLK}
-export DT_2_RST=${DT_2_RST:-}
+export WW3_DT_2_RST=${WW3_DT_2_RST:-}
 EOF

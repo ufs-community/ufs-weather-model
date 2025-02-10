@@ -3,8 +3,8 @@
 #############################################
 
 # ESMF #
-logKindFlag:            ESMF_LOGKIND_MULTI
-globalResourceControl:  true
+logKindFlag:            @[esmf_logkind]
+globalResourceControl:  @[ESMF_THREADING]
 
 # EARTH #
 EARTH_component_list: ATM WAV
@@ -18,7 +18,7 @@ ATM_petlist_bounds:             @[atm_petlist_bounds]
 ATM_omp_num_threads:            @[atm_omp_num_threads]
 ATM_attributes::
   Verbosity = 0
-  DumpFields = false
+  DumpFields = @[DumpFields]
 ::
 
 # WAV #

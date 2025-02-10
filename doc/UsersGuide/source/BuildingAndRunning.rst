@@ -10,7 +10,7 @@ Supported Platforms & Compilers
 Before running the Weather Model (:term:`WM`), users should determine which of the 
 :ref:`levels of support <SupportedPlatforms>` 
 is applicable to their system. Generally, Level 1 & 2 systems are restricted to those with access 
-through NOAA and its affiliates. These systems are named (e.g., Hera, Orion, Cheyenne). 
+through NOAA and its affiliates. These systems are named (e.g., Hera, Orion, Derecho). 
 Level 3 & 4 systems include certain personal computers or non-NOAA-affiliated HPC systems. 
 The prerequisite software libraries for building the WM already exist in a centralized location on Level 1/preconfigured 
 systems, so users may skip directly to :ref:`getting the data <GetData>` and downloading the code. 
@@ -89,23 +89,23 @@ the data required to run the WM RTs are already available in the following locat
 .. _DataLocations:
 .. table:: Data Locations for Level 1 & 2 Systems
 
-   +--------------+-----------------------------------------------------+
-   | Machine      | File location                                       |
-   +==============+=====================================================+
-   | Cheyenne     | /glade/scratch/epicufsrt/GMTB/ufs-weather-model/RT  |
-   +--------------+-----------------------------------------------------+
-   | Gaea         | /lustre/f2/pdata/ncep_shared/emc.nemspara/RT        |
-   +--------------+-----------------------------------------------------+
-   | Hera         | /scratch1/NCEPDEV/nems/emc.nemspara/RT              |
-   +--------------+-----------------------------------------------------+
-   | Jet          | /mnt/lfs4/HFIP/hfv3gfs/role.epic/RT                 |
-   +--------------+-----------------------------------------------------+
-   | Orion        | /work/noaa/nems/emc.nemspara/RT                     |
-   +--------------+-----------------------------------------------------+
-   | S4           | /data/prod/emc.nemspara/RT                          |
-   +--------------+-----------------------------------------------------+ 
-   | WCOSS2       | /lfs/h2/emc/nems/noscrub/emc.nems/RT                |
-   +--------------+-----------------------------------------------------+ 
+   +--------------+--------------------------------------------------------+
+   | Machine      | File location                                          |
+   +==============+========================================================+
+   | Derecho      | /glade/derecho/scratch/epicufsrt/ufs-weather-model/RT  |
+   +--------------+--------------------------------------------------------+
+   | Gaea         | /lustre/f2/pdata/ncep_shared/emc.nemspara/RT           |
+   +--------------+--------------------------------------------------------+
+   | Hera         | /scratch1/NCEPDEV/nems/emc.nemspara/RT                 |
+   +--------------+--------------------------------------------------------+
+   | Jet          | /mnt/lfs4/HFIP/hfv3gfs/role.epic/RT                    |
+   +--------------+--------------------------------------------------------+
+   | Orion        | /work/noaa/nems/emc.nemspara/RT                        |
+   +--------------+--------------------------------------------------------+
+   | S4           | /data/prod/emc.nemspara/RT                             |
+   +--------------+--------------------------------------------------------+ 
+   | WCOSS2       | /lfs/h2/emc/nems/noscrub/emc.nems/RT                   |
+   +--------------+--------------------------------------------------------+ 
 
 For Level 3-4 systems, the data must be added to the user's system. 
 Publicly available RT data is available in the `UFS WM Data Bucket <https://registry.opendata.aws/noaa-ufs-regtests/>`__. 
@@ -452,7 +452,7 @@ Running the Model
 
 .. attention::
    Although the following discussions are general, users may not be able to execute the script successfully "as is" unless they are on a 
-   `Tier-1 platform <https://github.com/ufs-community/ ufs-weather-model/wiki/Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>`__.
+   :wm-wiki:`Tier-1 platform <Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>`.
 
 .. _UsingRegressionTest:
 
@@ -504,8 +504,7 @@ or (2) create a new file (e.g., ``my_rt.conf``), add the tests, and execute ``./
 On NOAA RDHPCS
 ------------------
 
-On `Tier-1 platforms <https://github.com/ufs-community/ufs-weather-model/wiki
-/Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>`__, users can run 
+On :wm-wiki:`Tier-1 platforms <Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>`, users can run 
 regression tests by editing the ``rt.conf`` file and executing:
 
 .. code-block:: console
@@ -582,7 +581,9 @@ To run a single test, users can try the following command instead of creating a 
 
 .. code-block:: console
 
-   ./rt.sh -r -k -n control_p8
+   ./rt.sh -r -k -n "control_p8 <compiler>"
+
+where ``<compiler>`` is ``gnu`` or ``intel``. 
 
 Troubleshooting
 ^^^^^^^^^^^^^^^^^^
@@ -731,8 +732,7 @@ operational requirement test. The only difference is that the ``opnReqTest`` scr
 The ``tests/opnReqTests`` directory contains
 opnReqTest-specific lower-level scripts used to set up run configurations.
 
-On `Tier-1 platforms <https://github.com/ufs-community/ ufs-weather-model/wiki
-/Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>`_, tests can
+On :wm-wiki:`Tier-1 platforms <Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>`, tests can
 be run by invoking
 
 .. code-block:: console

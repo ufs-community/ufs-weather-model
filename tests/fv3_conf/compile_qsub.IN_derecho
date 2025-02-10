@@ -1,0 +1,19 @@
+#!/bin/bash -l
+#PBS -o out
+#PBS -e err
+#PBS -N @[JBNME]
+#PBS -A @[ACCNR]
+#PBS -q @[QUEUE]
+#PBS -l select=1:ncpus=8:mpiprocs=1
+#PBS -l walltime=00:30:00
+
+set -eux
+
+echo -n " $( date +%s )," >  job_timestamp.txt
+echo "Compile started:  " `date`
+module purge
+
+@[PATHRT]/compile.sh @[MACHINE_ID] "@[MAKE_OPT]" @[COMPILE_ID] @[RT_COMPILER]
+
+echo "Compile ended:    " `date`
+echo -n " $( date +%s )," >> job_timestamp.txt

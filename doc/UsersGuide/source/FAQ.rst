@@ -10,7 +10,7 @@ How do I build and run a single test of the UFS Weather Model?
 
 An efficient way to build and run the UFS Weather Model is to use the regression test
 (``rt.sh``).  This script is widely used by model developers on Tier 1 and 2 platforms
-and is described in the UFS WM GitHub `wiki <https://github.com/ufs-community/ufs-weather-model/wiki/Making-code-changes-in-the-UFS-weather-model-and-its-subcomponents>`_.  The advantages to this approach are:
+and is described in the UFS WM GitHub :wm-wiki:`wiki <Making-code-changes-in-the-UFS-weather-model-and-its-subcomponents>`.  The advantages to this approach are:
 
    * It does not require a workflow, pre- or post-processing steps.
    * The batch submission script is generated.
@@ -29,14 +29,14 @@ The steps are:
          cd tests
 
    #. Find a configure (``*.conf``) file that contains the machine and compiler you are using. For this
-      example, the Intel compiler on Cheyenne is used.  To create a custom configure file, two lines are
+      example, the Intel compiler on Derecho is used.  To create a custom configure file, two lines are
       needed:  a ``COMPILE`` line and a ``RUN`` line.   The ``COMPILE`` line should contain the name
-      of the machine and compiler ``cheyenne.intel`` and the desired ``SUITES`` for the build.  Choose a
+      of the machine and compiler ``derecho.intel`` and the desired ``SUITES`` for the build.  Choose a
       ``RUN`` line under this ``COMPILE`` command that uses the desired ``SUITE``.  For example:
 
       .. code-block:: console
 
-         COMPILE | 32BIT=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_v15p2,FV3_GFS_v16beta,FV3_GFS_v15p2_no_nsst,FV3_GFS_v16beta_no_nsst                     | standard    | cheyenne.intel | fv3
+         COMPILE | 32BIT=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_v15p2,FV3_GFS_v16beta,FV3_GFS_v15p2_no_nsst,FV3_GFS_v16beta_no_nsst                     | standard    | derecho.intel | fv3
          RUN     | fv3_ccpp_gfs_v16beta                                                                                                           | standard    |                | fv3         |
 
       Put these two lines into a file called ``my_test.conf``.  The parameters used in this run can be
@@ -49,16 +49,16 @@ The steps are:
 
       .. code-block:: console
 
-         if [[ $MACHINE_ID = cheyenne.* ]]; then stanza:
+         if [[ $MACHINE_ID = derecho.* ]]; then stanza:
          ...
          dprefix=/glade/scratch
 
-      This works for Cheyenne, since ``$USER/FV3_RT`` will be appended.  Also check that ``RTPWD``
+      This works for Derecho, since ``$USER/FV3_RT`` will be appended.  Also check that ``RTPWD``
       points to a diretory that exists:
 
       .. code-block:: console
 
-         if [[ $MACHINE_ID = cheyenne.* ]]; then
+         if [[ $MACHINE_ID = derecho.* ]]; then
             RTPWD=${RTPWD:-$DISKNM/ufs-public-release-20200224/${COMPILER^^}}
 
    #. Run the ``rt.sh`` script from the ``tests`` directory:
@@ -166,7 +166,7 @@ options:
 MOM6, CICE6 and CMEPS restart files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In ``nems.configure``, set the ALLCOMP_attribute ``restart_n`` to a
+In ``ufs.configure``, set the ALLCOMP_attribute ``restart_n`` to a
 value greater than the forecast length.
 
 MOM6 history files
@@ -229,11 +229,11 @@ How do I set the total number of tasks for my job?
 In the UFS WM, each component's MPI task information, including the
 starting and ending tasks and the number of threads, are specified
 using the component-specific ``petlist_bounds`` and
-``omp_num_threads`` in ``nems.configure``. In general, the total
+``omp_num_threads`` in ``ufs.configure``. In general, the total
 number of MPI tasks required is the sum of all the sub-component
 tasks, as long as those components do not overlap (i.e., share the
 same PETs). An example of a global 5 component coupled configuration
-nems.configure at the end of this section.
+ufs.configure at the end of this section.
 
 FV3atm
 ^^^^^^
@@ -286,7 +286,7 @@ If ESMF-managed threading is used, the total number of PETs for the
 atmosphere component is given by the product of the number of threads
 requested and the total number of MPI ranks (both forecast and write
 grid component). If ``num_threads_atm`` is the number of threads
-specified for the FV3atm component, in ``nems.configure`` the ATM PET
+specified for the FV3atm component, in ``ufs.configure`` the ATM PET
 bounds are given by
 
 ::
@@ -295,7 +295,7 @@ bounds are given by
    ATM_omp_num_threads    num_threads_atm
 
 Note that in UWM, the ATM component is normally listed first in
-``nems.configure`` so that the starting PET for the ATM is 0.
+``ufs.configure`` so that the starting PET for the ATM is 0.
 
 GOCART
 ^^^^^^
@@ -330,7 +330,7 @@ MPI tasks for CMEPS is given by
 
    total_tasks_med = smaller of (300, FV3atm forecast tasks)
 
-and in ``nems.configure``
+and in ``ufs.configure``
 
 ::
 
@@ -342,7 +342,7 @@ MOM6
 
 For MOM6 the only restriction currently on the number of MPI ranks
 used by MOM6 is that it is divisible by 2. The starting PET in
-``nems.configure`` will be the last PET of the preceding component,
+``ufs.configure`` will be the last PET of the preceding component,
 incremented by one. Threading in MOM6 is not recommended at this time.
 
 ::
@@ -388,14 +388,14 @@ For the 1-deg CICE domain for example, ``ice_in`` would be
 
 
 In UFS, only a single thread is used for CICE so for ``nprocs`` set in
-``ice_in``, the tasks in ``nems.configure`` are set as:
+``ice_in``, the tasks in ``ufs.configure`` are set as:
 
 ::
 
    ICE_petlist_bounds:            starting_ICE_PET  nprocs+starting_ICE_PET-1
    ICE_omp_num_threads:           1
 
-The starting ICE PET in ``nems.configure`` will be the last PET of the
+The starting ICE PET in ``ufs.configure`` will be the last PET of the
 preceding component, incremented by one.
 
 WW3
@@ -409,20 +409,20 @@ for WW3 and the number of threads to be used.
    WAV_petlist_bounds:         starting_WAV_PET  num_tasks_wav*num_threads_wav+starting_WAV_PET-1
    WAV_omp_num_threads:        num_threads_wav
 
-The starting WAV PET in ``nems.configure`` will be the last PET of the
+The starting WAV PET in ``ufs.configure`` will be the last PET of the
 preceding component, incremented by one.
 
 
-Example: 5-component nems.configure
+Example: 5-component ufs.configure
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-For the fully coupled S2SWA application, a sample ``nems.configure`` is shown below :
+For the fully coupled S2SWA application, a sample ``ufs.configure`` is shown below :
 
 
 .. code-block:: console
 
 		#############################################
-		####  NEMS Run-Time Configuration File  #####
+		####  UFS Run-Time Configuration File  #####
 		#############################################
 
 		# ESMF #

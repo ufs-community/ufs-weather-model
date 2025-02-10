@@ -1,0 +1,37 @@
+name: Pull Request Tests
+on:
+  pull_request:
+    branches: ['develop']
+    types: ['labeled']
+env:
+  app: Accept:application/vnd.github.v3+json
+
+
+jobs:
+  repocheck:
+    name: Check if repos are up to date
+    runs-on: ubuntu-20.04
+
+    outputs:
+      current: ${{ steps.check.outputs.current }}
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Wait for caching source
+      run: sleep 30
+
+    - uses: actions/cache@v4
+      with:
+        path: ~/id_file
+        key: helperid-${{ github.run_id }}
+
+    - name: Wait until repocheck in aux is complete
+      run: |
+        helper_id=$(cat ~/id_file)
+        cd ${{ github.workspace }}/tests/ci
+        jobs_url=$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/actions/runs/$helper_id/jobs
+        conclusion=$(echo $jobs_url | ./check_status.py completion "Repo check")
+        if [[ $conclusion == "failure" ]]; then
+          exit 1
+        fi

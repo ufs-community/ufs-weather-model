@@ -16,7 +16,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules/Modules)
 ###############################################################################
 
 # Valid applications and choices
-list(APPEND VALID_APPS ATM ATMAERO ATMAQ ATMW ATMWM ATML LND S2S S2SA S2SW S2SWA S2SWAL HAFS HAFSW HAFS-ALL NG-GODAS)
+list(APPEND VALID_APPS ATM ATMAERO ATMAQ ATMW ATMWM ATML ATMF LND LND-LM4 S2S S2SL S2SA S2SW S2SWA S2SWL S2SWAL ATM_DS2S ATM_DS2S-PCICE HAFS HAFSW HAFS-MOM6 HAFS-MOM6W HAFS-ALL NG-GODAS)
 set(APP NONE CACHE BOOL "Application Name")
 if(NOT (APP IN_LIST VALID_APPS))
   message(FATAL_ERROR "${APP} is not a valid application.\nValid Applications are: ${VALID_APPS}")
@@ -29,11 +29,13 @@ set(UFS_GOCART      OFF CACHE BOOL "Enable GOCART")
 set(MOM6            OFF CACHE BOOL "Enable MOM6")
 set(HYCOM           OFF CACHE BOOL "Enable HYCOM")
 set(CICE6           OFF CACHE BOOL "Enable CICE6")
+set(LM4             OFF CACHE BOOL "Enable LM4")
 set(WW3             OFF CACHE BOOL "Enable WW3")
 set(STOCH_PHYS      OFF CACHE BOOL "Enable Stochastic Physics")
 set(CMEPS           OFF CACHE BOOL "Enable CMEPS")
 set(CDEPS           OFF CACHE BOOL "Enable CDEPS")
 set(NOAHMP          OFF CACHE BOOL "Enable NOAHMP")
+set(FIRE_BEHAVIOR   OFF CACHE BOOL "Enable Fire Behavior")
 
 # Configure selected application specific components
 message("")
@@ -47,11 +49,13 @@ message("GOCART ........... ${UFS_GOCART}")
 message("MOM6 ............. ${MOM6}")
 message("HYCOM ............ ${HYCOM}")
 message("CICE6 ............ ${CICE6}")
+message("LM4 .............. ${LM4}")
 message("WW3 .............. ${WW3}")
 message("STOCH_PHYS ....... ${STOCH_PHYS}")
 message("CDEPS ............ ${CDEPS}")
 message("CMEPS ............ ${CMEPS}")
 message("NOAHMP ........... ${NOAHMP}")
+message("FIRE_BEHAVIOR .... ${FIRE_BEHAVIOR}")
 
 ###############################################################################
 ### Build Options
@@ -66,11 +70,15 @@ set(DISABLE_FMA     OFF CACHE BOOL "Disable Fused Multiply-Add instructions (wor
 set(INLINE_POST     ON  CACHE BOOL "Enable inline post")
 set(MULTI_GASES     OFF CACHE BOOL "Enable MULTI_GASES")
 set(MOVING_NEST     OFF CACHE BOOL "Enable moving nest code")
+set(REGIONAL_MOM6   OFF CACHE BOOL "Enable Regional MOM6")
 set(OPENMP          ON  CACHE BOOL "Enable OpenMP threading")
 set(PARALLEL_NETCDF OFF CACHE BOOL "Enable parallel NetCDF")
 set(JEDI_DRIVER     OFF CACHE BOOL "Enable JEDI as top level driver")
 set(CMEPS_AOFLUX    OFF CACHE BOOL "Enable atmosphere-ocean flux calculation in mediator")
-set(PDLIB           OFF CACHE BOOL "Enable Domain Decomposition in WW3 via PDLIB")
+set(PDLIB           OFF CACHE BOOL "Enable Domain Decomposition in WW3 via PDLIB with BT1")
+set(PDLIB_BT4       OFF CACHE BOOL "Enable Domain Decomposition in WW3 via PDLIB with BT4")
+set(CDEPS_INLINE    OFF CACHE BOOL "Enable CDEPS inline capability")
+set(HYDRO           OFF CACHE BOOL "Enable hydrostatic set")
 
 set(CMAKE_Platform $ENV{CMAKE_Platform})
 if(CMAKE_Platform)
@@ -114,10 +122,13 @@ message("DEBUG ............ ${DEBUG}")
 message("INLINE_POST ...... ${INLINE_POST}")
 message("MULTI_GASES ...... ${MULTI_GASES}")
 message("MOVING_NEST ...... ${MOVING_NEST}")
+message("REGIONAL_MOM6..... ${REGIONAL_MOM6}")
 message("OPENMP ........... ${OPENMP}")
 message("PARALLEL_NETCDF .. ${PARALLEL_NETCDF}")
 message("JEDI_DRIVER ...... ${JEDI_DRIVER}")
 message("CMEPS_AOFLUX ..... ${CMEPS_AOFLUX}")
+message("CDEPS_INLINE ..... ${CDEPS_INLINE}")
+message("HYDRO  ........... ${HYDRO}")
 
 message("")
 
@@ -146,10 +157,10 @@ if(FMS)
   find_package(FMS 2022.04 REQUIRED COMPONENTS R4 R8)
   if(APP MATCHES "^(HAFSW)$")
     add_library(fms ALIAS FMS::fms_r4)
-  elseif (APP MATCHES "^(S2S|S2SA|S2SW|S2SWA|S2SWAL|NG-GODAS)$")
+  elseif (APP MATCHES "^(S2S|S2SA|S2SL|S2SW|S2SWL|S2SWA|S2SWAL|ATM_DS2S|ATM_DS2S-PCICE|NG-GODAS|HAFS-MOM6|HAFS-MOM6W)$")
     add_library(fms ALIAS FMS::fms_r8)
   endif()
-  if(APP MATCHES "^(ATM|ATMAERO|ATMAQ|ATMWM|ATMW|ATML|LND|HAFS|HAFS-ALL)$")
+  if(APP MATCHES "^(ATM|ATMAERO|ATMAQ|ATMWM|ATMW|ATML|ATMF|ATML-LM4|LND-LM4|HAFS|HAFS-ALL)$")
     if(32BIT)
       add_library(fms ALIAS FMS::fms_r4)
     else()
@@ -207,8 +218,12 @@ if(WW3)
     set(UFS_CAP "MULTI_ESMF" CACHE STRING "Build with MULTI_ESMF cap")
     list(APPEND _ufs_defs_private FRONT_WW3=WMESMFMD)
   else()
+    if(PDLIB OR PDLIB_BT4)
     if(PDLIB)
       set(SWITCH "meshcap_pdlib" CACHE STRING "NUOPC mesh cap")
+      else()
+	set(SWITCH "meshcap_pdlib_bt4" CACHE STRING "NUOPC mesh cap")
+      endif()
     else()
       set(SWITCH "meshcap" CACHE STRING "NUOPC mesh cap")
     endif()
@@ -248,10 +263,23 @@ if(CDEPS)
 endif()
 
 ###############################################################################
-### Land Components [NOAHMP]
+### Land Components [NOAHMP and LM4]
 ###############################################################################
+
+if (LM4)
+  add_subdirectory(LM4-driver)
+endif()
+
 if(NOAHMP)
   add_subdirectory(NOAHMP-interface)
+endif()
+
+###############################################################################
+### Fire Components [FIRE_BEHAVIOR]
+###############################################################################
+if(FIRE_BEHAVIOR)
+  set(NUOPC "ON" CACHE STRING "Build fire_behavior with NUOPC cap" FORCE)
+  add_subdirectory(fire_behavior)
 endif()
 
 ###############################################################################
@@ -313,6 +341,12 @@ if(CICE6)
   list(APPEND _ufs_libs_public cice)
 endif()
 
+if (LM4)
+   add_dependencies(ufs lm4)
+   list(APPEND _ufs_defs_private FRONT_LM4=lm4_cap_mod)
+   list(APPEND _ufs_libs_public lm4)
+endif()
+
 if(CMEPS)
   add_dependencies(ufs cmeps)
   list(APPEND _ufs_defs_private CMEPS FRONT_CMEPS=MED)
@@ -323,6 +357,7 @@ if(CDEPS)
   add_dependencies(ufs cdeps::cdeps)
   list(APPEND _ufs_defs_private FRONT_CDEPS_DATM=cdeps_datm_comp)
   list(APPEND _ufs_defs_private FRONT_CDEPS_DOCN=cdeps_docn_comp)
+  list(APPEND _ufs_defs_private FRONT_CDEPS_DICE=cdeps_dice_comp)
   target_link_libraries(ufs PUBLIC cdeps::cdeps)
 endif()
 
@@ -330,6 +365,12 @@ if(NOAHMP)
   add_dependencies(ufs noahmp)
   list(APPEND _ufs_defs_private FRONT_NOAHMP=lnd_comp_nuopc)
   list(APPEND _ufs_libs_public noahmp)
+endif()
+
+if(FIRE_BEHAVIOR)
+  add_dependencies(ufs fire_behavior_nuopc)
+  list(APPEND _ufs_defs_private FRONT_FIRE_BEHAVIOR=fire_behavior_nuopc)
+  list(APPEND _ufs_libs_public fire_behavior_nuopc)
 endif()
 
 target_compile_definitions(ufs PRIVATE "${_ufs_defs_private}")

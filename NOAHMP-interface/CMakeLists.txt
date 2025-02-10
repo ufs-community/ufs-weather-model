@@ -8,10 +8,12 @@ list(APPEND _noahmp_cap_files noahmp/drivers/nuopc/lnd_comp_kind.F90
                               noahmp/drivers/nuopc/lnd_comp_domain.F90
                               noahmp/drivers/nuopc/lnd_comp_import_export.F90
                               noahmp/drivers/nuopc/lnd_comp_nuopc.F90
-                              noahmp/drivers/nuopc/lnd_comp_driver.F90)
+                              noahmp/drivers/nuopc/lnd_comp_driver.F90
+			      noahmp/drivers/nuopc/lnd_comp_cplscalars.F90)
 
-# CCPP interface 
+# CCPP interface
 list(APPEND _noahmp_ccpp_files noahmp/drivers/ccpp/noahmpdrv.F90
+                               noahmp/drivers/ccpp/lnd_iau_mod.F90
                                noahmp/drivers/ccpp/sfc_diff.f
                                noahmp/drivers/ccpp/machine.F
                                noahmp/drivers/ccpp/noahmp_tables.f90
@@ -25,7 +27,7 @@ list(APPEND _noahmp_files noahmp/src/module_sf_noahmplsm.F90
                           noahmp/src/module_sf_noahmp_glacier.F90)
 
 #------------------------------------------------------------------------------
-# Set CCPP flags for C/C++/Fortran preprocessor 
+# Set CCPP flags for C/C++/Fortran preprocessor
 add_definitions(-DCCPP)
 
 #------------------------------------------------------------------------------
@@ -55,8 +57,10 @@ endif()
 
 #------------------------------------------------------------------------------
 # Add model-specific flags for C/C++/Fortran preprocessor
-add_definitions(-DMOIST_CAPPA -DUSE_COND -DNEMS_GSM)
-add_definitions(-DINTERNAL_FILE_NML)
+if (NOT HYDRO)
+add_definitions(-DMOIST_CAPPA -DUSE_COND)
+endif()
+add_definitions(-DINTERNAL_FILE_NML -DNEMS_GSM)
 
 #------------------------------------------------------------------------------
 # NOAHMP
@@ -64,7 +68,7 @@ add_library(noahmp STATIC ${_noahmp_cap_files} ${_noahmp_ccpp_files} ${_noahmp_f
 set_target_properties(noahmp PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(noahmp PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                        $<INSTALL_INTERFACE:mod>)
-target_link_libraries(noahmp PUBLIC esmf fms)
+target_link_libraries(noahmp PUBLIC esmf)
 
 ###############################################################################
 ### Install

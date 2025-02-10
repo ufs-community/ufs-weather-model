@@ -17,7 +17,7 @@ export LIST_FILES="dynf000.nc \
                    NATLEV.GrbF00 \
                    NATLEV.GrbF06"
 
-export_fv3
+export_fv3_v16
 
 export FV3_RUN=regional_run.IN
 
@@ -43,3 +43,6 @@ export OUTPUT_FH="3 -1"
 WRITE_GROUP=1
 WRTTASK_PER_GROUP=10
 NTILES=1
+
+ESMF_THREADING=false
+THRD=$atm_omp_num_threads

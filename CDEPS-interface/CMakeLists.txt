@@ -1,6 +1,6 @@
 # CDEPS compiler flags
 if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
-  set(CMAKE_Fortran_FLAGS "-g -fbacktrace -ffree-line-length-none")
+  set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -g -fbacktrace -ffree-line-length-none")
   #Set CPP defintions for the ufs/cdeps_share target library
   list(APPEND CDEPS_SHARE_DEFS "CPRGNU")
   if(${CMAKE_Fortran_COMPILER_VERSION} VERSION_GREATER_EQUAL 10)
@@ -9,7 +9,7 @@ if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
   set(CMAKE_Fortran_FLAGS_RELEASE "-O2")
   set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -fcheck=bounds -ffpe-trap=invalid,zero,overflow,underflow" )
 elseif(CMAKE_Fortran_COMPILER_ID MATCHES "Intel")
-  set(CMAKE_Fortran_FLAGS "-g -traceback")
+  set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -g -traceback")
   set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -O -assume realloc_lhs")
   set(CMAKE_Fortran_FLAGS_RELEASE "-O2 -fp-model precise")
   set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -check -check noarg_temp_created -check nopointer -fpe0 -ftrapuv -init=snan,arrays")
@@ -95,6 +95,14 @@ target_include_directories(dwav PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY
 target_link_libraries(dwav PRIVATE dshr share streams)
 target_link_libraries(dwav PRIVATE esmf)
 
+# CDEPS/dglc
+add_library(dglc OBJECT ${cdeps_dglc_files})
+add_dependencies(dglc share streams dshr)
+set_target_properties(dglc PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
+target_include_directories(dglc PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
+target_link_libraries(dglc PRIVATE dshr share streams)
+target_link_libraries(dglc PRIVATE esmf PIO::PIO_Fortran)
+
 # CDEPS
 add_library(cdeps STATIC $<TARGET_OBJECTS:share>
                          $<TARGET_OBJECTS:streams>
@@ -104,7 +112,8 @@ add_library(cdeps STATIC $<TARGET_OBJECTS:share>
                          $<TARGET_OBJECTS:dlnd>
                          $<TARGET_OBJECTS:docn>
                          $<TARGET_OBJECTS:drof>
-                         $<TARGET_OBJECTS:dwav>)
+                         $<TARGET_OBJECTS:dwav>
+                         $<TARGET_OBJECTS:dglc>)
 add_library(cdeps::cdeps ALIAS cdeps)
 target_include_directories(cdeps PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>
                                         $<INSTALL_INTERFACE:mod>)
