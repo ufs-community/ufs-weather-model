@@ -102,7 +102,7 @@ if [[ ${WM_REGRESSION_TESTS} = true ]] ; then
 		ls -al .cicd/*
 		echo "Pipeline Creating Baseline Tests ${WM_OPERATIONAL_TESTS:=default} on ${UFS_PLATFORM} ${UFS_COMPILER}"
 		/usr/bin/time -p \
-			-o ${workspace}/${UFS_PLATFORM}-${UFS_COMPILER}-time-wm_test.json \
+			-o ${WORKSPACE:-$(pwd)}/${UFS_PLATFORM}-${UFS_COMPILER}-time-wm_test.json \
 			-f '{\n  "cpu": "%P"\n, "memMax": "%M"\n, "mem": {"text": "%X", "data": "%D", "swaps": "%W", "context": "%c", "waits": "%w"}\n, "pagefaults": {"major": "%F", "minor": "%R"}\n, "filesystem": {"inputs": "%I", "outputs": "%O"}\n, "time": {"real": "%e", "user": "%U", "sys": "%S"}\n}' \
 			./.cicd/scripts/create_baseline.sh | tee -a ${workspace}/${UFS_PLATFORM}-${UFS_COMPILER}-wm_test-log.txt
 		status=${PIPESTATUS[0]}
@@ -113,7 +113,7 @@ if [[ ${WM_REGRESSION_TESTS} = true ]] ; then
 		ls -al .cicd/*
 		echo "Pipeline Running Regression Tests ${WM_OPERATIONAL_TESTS:=default} on ${UFS_PLATFORM} ${UFS_COMPILER}"
 		/usr/bin/time -p \
-			-o ${workspace}/${UFS_PLATFORM}-${UFS_COMPILER}-time-wm_test.json \
+			-o ${WORKSPACE:-$(pwd)}/${UFS_PLATFORM}-${UFS_COMPILER}-time-wm_test.json \
 			-f '{\n  "cpu": "%P"\n, "memMax": "%M"\n, "mem": {"text": "%X", "data": "%D", "swaps": "%W", "context": "%c", "waits": "%w"}\n, "pagefaults": {"major": "%F", "minor": "%R"}\n, "filesystem": {"inputs": "%I", "outputs": "%O"}\n, "time": {"real": "%e", "user": "%U", "sys": "%S"}\n}' \
 			./.cicd/scripts/regression_test.sh | tee -a ${workspace}/${UFS_PLATFORM}-${UFS_COMPILER}-wm_test-log.txt
 		status=${PIPESTATUS[0]}
