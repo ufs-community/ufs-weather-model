@@ -25,10 +25,10 @@ echo "script_dir=${script_dir}"
 declare workspace
 if [[ -d "${WORKSPACE}/${UFS_PLATFORM}" ]]; then
     workspace="${WORKSPACE}/${UFS_PLATFORM}"
-    outfile="${4:-${workspace}-${UFS_PLATFORM}-${UFS_COMPILER}-disk-usage${STAGE_NAME%% *}.csv}"
+    outfile="${4:-${WORKSPACE}/${UFS_PLATFORM}-${UFS_COMPILER}-disk-usage${STAGE_NAME%% *}.csv}"
 else
     workspace="$(cd -- "${script_dir}/../.." && pwd)"
-    outfile="${4:-${workspace}/${UFS_PLATFORM}-${UFS_COMPILER}-disk-usage${STAGE_NAME%% *}.csv}"
+    outfile="${4:-${WORKSPACE}/${UFS_PLATFORM}-${UFS_COMPILER}-disk-usage${STAGE_NAME%% *}.csv}"
 fi
 echo "workspace=${workspace}"
 echo "outfile=${outfile}"
