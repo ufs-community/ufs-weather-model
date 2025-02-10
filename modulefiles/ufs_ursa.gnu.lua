@@ -22,6 +22,8 @@ setenv("MPI_CC", "mpicc")
 setenv("MPI_CXX", "mpic++")
 setenv("MPI_FC", "mpifort")
 
+setenv("FC", "mpifort")
+
 setenv("CMAKE_Platform", "ursa.gnu")
 
 whatis("Description: UFS build environment")
