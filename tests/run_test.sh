@@ -113,13 +113,21 @@ case ${MACHINE_ID} in
     module load miniconda/3.9.12
     module load nccmp/1.9.0.1
     ;;
-  stampede|expanse|noaacloud)
+  noaacloud)
     echo "No special nccmp load necessary"
     ;;
-  gaea)
+  gaeac5)
     module use /ncrc/proj/epic/spack-stack/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core
-    module load stack-intel/2023.1.0 stack-cray-mpich/8.1.25
+    module load stack-intel/2023.2.0 stack-cray-mpich/8.1.28
     module load nccmp/1.9.0.1
+    ;;
+  gaeac6)
+    module use /ncrc/proj/epic/spack-stack/c6/spack-stack-1.6.0/envs/fms-2024.01/install/modulefiles/Core
+    module load stack-intel/2023.2.0 stack-cray-mpich/8.1.29
+    module load nccmp/1.9.0.1
+    #module use modulefiles
+    #module load modules.fv3
+    #module load gcc-native/12.3
     ;;
   derecho)
     module load nccmp
@@ -163,10 +171,19 @@ else
   exit 1
 fi
 
-compute_petbounds_and_tasks
+if [[ ${ESMF_THREADING} == true ]]; then
+  compute_petbounds_and_tasks_esmf_threading
+else
+  compute_petbounds_and_tasks_traditional_threading
+fi
 
 if [[ -f ${PATHRT}/parm/${UFS_CONFIGURE} ]]; then
-  atparse < "${PATHRT}/parm/${UFS_CONFIGURE}" > ufs.configure
+  (
+    atparse < "${PATHRT}/parm/${UFS_CONFIGURE}" > ufs.configure
+    if [[ ${ESMF_THREADING} != true ]]; then
+       sed -i -e "/_omp_num_threads:/d" ufs.configure
+    fi
+  )
 else
   echo "Cannot find file ${UFS_CONFIGURE} set by variable UFS_CONFIGURE"
   exit 1
@@ -302,6 +319,11 @@ if [[ "${DIAG_TABLE_ADDITIONAL:-}Q" != Q ]]; then
   atparse < "${PATHRT}/parm/diag_table/${DIAG_TABLE_ADDITIONAL:-}" >> diag_table
 fi
 
+if [[ "${FIELD_TABLE_ADDITIONAL:-}Q" != Q ]] ; then
+    # Append field table
+    atparse < "${PATHRT}/parm/field_table/${FIELD_TABLE_ADDITIONAL:-}" >> field_table
+fi
+
 # ATMAERO
 if [[ ${CPLCHM} == .true. ]] && [[ ${S2S} = 'false' ]]; then
   atparse < "${PATHRT}/parm/diag_table/${DIAG_TABLE:-diag_table_template}" > diag_table
@@ -334,6 +356,22 @@ if [[ ${FIRE_BEHAVIOR} = 'true' ]]; then
   atparse < "${PATHRT}/parm/${FIRE_NML:-namelist.fire.IN}" > namelist.fire
 fi
 
+#Namelists generated and variable definitions are finalized
+#Sanity check for timesteps on ATM/OCN/ICE
+if [[ -n "${DT_CICE+x}" ]]; then
+  if [[ ${DT_ATMOS} -ne ${DT_CICE} ]]; then
+    echo "Atmosphere timestep (DT_ATMOS) should be equal to CICE timestep (DT_CICE). Exiting"
+    exit 1
+  fi
+fi
+if [[ -n "${coupling_interval_slow_sec+x}" && -n "${coupling_interval_fast_sec+x}" ]]; then
+  if [[ $(( coupling_interval_slow_sec % coupling_interval_fast_sec)) -ne 0 ]]; then
+    echo "The slow coupling timestep (coupling_interval_slow_sec) should be divisible by"
+    echo "the fast coupling timestep (coupling_interval_fast_sec). Exiting"
+    exit 1
+  fi
+fi
+
 TPN=$(( TPN / THRD ))
 if (( TASKS < TPN )); then
   TPN=${TASKS}
@@ -356,6 +394,10 @@ if (( UFS_TASKS - ( PPN * NODES ) > 0 )); then
 fi
 export PPN
 export UFS_TASKS
+
+if [[ ${ESMF_THREADING} != true ]]; then
+  PPN=${TPN}
+fi
 
 if [[ ${SCHEDULER} = 'pbs' ]]; then
   if [[ -e ${PATHRT}/fv3_conf/fv3_qsub.IN_${MACHINE_ID} ]]; then
@@ -441,7 +483,7 @@ if [[ ${skip_check_results} == false ]]; then
 
       else
         if [[ ${i##*.} == nc* ]] ; then
-          if [[ " orion hercules hera wcoss2 acorn derecho gaea jet s4 noaacloud " =~ ${MACHINE_ID} ]]; then
+          if [[ " orion hercules hera wcoss2 acorn derecho gaeac5 gaeac6 jet s4 noaacloud frontera" =~ ${MACHINE_ID} ]]; then
             printf "USING NCCMP.." >> "${RT_LOG}"
             printf "USING NCCMP.."
               if [[ ${CMP_DATAONLY} == false ]]; then

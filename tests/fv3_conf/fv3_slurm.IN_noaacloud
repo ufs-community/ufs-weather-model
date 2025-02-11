@@ -12,11 +12,14 @@ set -eux
 echo -n " $( date +%s )," >  job_timestamp.txt
 
 set +x
-MACHINE_ID=noaacloud
-module use $( pwd -P )
-module use /contrib/EPIC/spack-stack/spack-stack-1.3.0/envs/unified-dev/install/modulefiles/Core
-module load stack-intel/2021.3.0  stack-intel-oneapi-mpi/2021.3.0
-module load ufs-weather-model-env/unified-dev
+export MACHINE_ID=noaacloud
+source ./module-setup.sh
+if [[ ! -d modulefiles ]]; then
+  mkdir modulefiles
+  mv *.lua modulefiles
+fi
+module use modulefiles
+module load modules.fv3
 module list
 
 set -x
@@ -46,7 +49,8 @@ if [ "${JOB_SHOULD_FAIL:-NO}" = WHEN_RUNNING ] ; then
     false
 fi
 
-srun --mpi=pmi2 --label -n @[TASKS] ./fv3.exe
+srun --mpi=pmi2 --label -n @[TASKS] ${PWD}/fv3.exe
+
 
 echo "Model ended:    " `date`
 echo -n " $( date +%s )," >> job_timestamp.txt

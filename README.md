@@ -25,6 +25,7 @@ The top level directory structure groups source code and input files as follow:
 | ```FV3/```                | Contains FV3 atmosphere model component including FV3 dynamical core, dynamics to physics driver, physics and IO. |
 | ```GOCART/```             | Contains GOCART aerosol model component |
 | ```HYCOM-interface/```    | Contains HYCOM ocean model component |
+| ```LM4-driver/```         | Contains LM4 land component |
 | ```MOM6-interface/```     | Contains MOM6 ocean model component |
 | ```NOAHMP-interface/```   | Contains Noah-MP land model component |
 | ```WW3/```                | Contains community wave modeling framework WW3 |

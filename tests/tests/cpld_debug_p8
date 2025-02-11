@@ -54,12 +54,14 @@ export LIST_FILES="sfcf003.tile1.nc \
                    RESTART/20210322.090000.MOM.res.nc \
                    RESTART/iced.2021-03-22-32400.nc \
                    RESTART/ufs.cpld.cpl.r.2021-03-22-32400.nc \
+                   ufs.cpld.ww3.r.2021-03-22-32400.nc \
                    20210322.090000.out_pnt.ww3 \
                    20210322.090000.out_grd.ww3 "
 
+export DT_ATMOS=720
 export_fv3
-export_cpl
 export_ugwpv1
+export_cpl
 export CCPP_SUITE=FV3_GFS_v17_coupled_p8_ugwpv1
 
 export FHMAX=3
@@ -79,8 +81,10 @@ if [[ $MACHINE_ID = hera ]] && [[ $RT_COMPILER = gnu ]]; then
   WLCLK=40
 fi
 
-export DT_INNER=720
-export DT_ATMOS=720
+if [[ $MACHINE_ID = gaeac6 ]] ; then
+  TPN=96
+fi
+
 export K_SPLIT=4
 export N_SPLIT=5
 

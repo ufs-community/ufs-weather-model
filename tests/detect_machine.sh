@@ -21,8 +21,10 @@ case $(hostname -f) in
   dlogin0[1-9].dogwood.wcoss2.ncep.noaa.gov) MACHINE_ID=wcoss2 ;; ### dogwood01-9
   dlogin10.dogwood.wcoss2.ncep.noaa.gov)     MACHINE_ID=wcoss2 ;; ### dogwood10
 
-  gaea5[1-8])          MACHINE_ID=gaea ;; ### gaea51-58
-  gaea5[1-8].ncrc.gov) MACHINE_ID=gaea ;; ### gaea51-58
+  gaea5[1-8])          MACHINE_ID=gaeac5 ;; ### gaea51-58
+  gaea5[1-8].ncrc.gov) MACHINE_ID=gaeac5 ;; ### gaea51-58
+  gaea6[1-8])          MACHINE_ID=gaeac6 ;; ### gaea61-68
+  gaea6[1-8].ncrc.gov) MACHINE_ID=gaeac6 ;; ### gaea61-68
 
   hfe0[1-9]) MACHINE_ID=hera ;; ### hera01-09
   hfe1[0-2]) MACHINE_ID=hera ;; ### hera10-12
@@ -46,12 +48,8 @@ case $(hostname -f) in
   derecho7.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho7
   derecho8.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho8
   
-  login[1-4].stampede2.tacc.utexas.edu) MACHINE_ID=stampede ;; ### stampede1-4
-
   login[1-4].frontera.tacc.utexas.edu) MACHINE_ID=frontera ;; ### frontera1-4
   c*.frontera.tacc.utexas.edu) MACHINE_ID=frontera ;; ### frontera compute 
-
-  login0[1-2].expanse.sdsc.edu) MACHINE_ID=expanse ;; ### expanse1-2
 
   discover3[1-5].prv.cube) MACHINE_ID=discover ;; ### discover31-35
   *) MACHINE_ID=UNKNOWN ;;  # Unknown platform
@@ -94,9 +92,12 @@ elif [[ -d /work ]]; then
   else
     MACHINE_ID=orion
   fi
-elif [[ -d /gpfs && -d /ncrc ]]; then
-  # We are on GAEA.
-  MACHINE_ID=gaea
+elif [[ -d /gpfs/f5 && -d /ncrc ]]; then
+  # We are on GAEA C5.
+  MACHINE_ID=gaeac5
+elif [[ -d /gpfs/f6 && -d /ncrc ]]; then
+  # We are on GAEA C6.
+  MACHINE_ID=gaeac6
 elif [[ -d /data/prod ]]; then
   # We are on SSEC's S4
   MACHINE_ID=s4

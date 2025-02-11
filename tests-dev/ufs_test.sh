@@ -86,6 +86,7 @@ ACCNR=${ACCNR:-""}
 UFS_TEST_YAML="ufs_test.yaml"
 export UFS_TEST_YAML
 LINK_TESTS=false
+TEST_TEMP_YAML=false
 
 while getopts ":a:b:cl:mn:dwkreohs" opt; do
   case ${opt} in
@@ -95,9 +96,6 @@ while getopts ":a:b:cl:mn:dwkreohs" opt; do
     b)
 	NEW_BASELINES_FILE=${OPTARG}
 	export NEW_BASELINES_FILE
-	python -c "import ufs_test_utils; ufs_test_utils.update_testyaml_b()"
-	UFS_TEST_YAML="ufs_test_temp.yaml"
-	export UFS_TEST_YAML
 	;;
     c)
 	CREATE_BASELINE=true
@@ -132,9 +130,7 @@ while getopts ":a:b:cl:mn:dwkreohs" opt; do
 
 	export SRT_NAME
 	export SRT_COMPILER
-	python -c "import ufs_test_utils; ufs_test_utils.update_testyaml_n()"
-	UFS_TEST_YAML="ufs_test_temp.yaml"
-	export UFS_TEST_YAML
+	TEST_TEMP_YAML=true
 	;;
     d)
 	export delete_rundir=true
@@ -193,6 +189,18 @@ else
     exit 1
 fi
 
+if [[ ! ${NEW_BASELINES_FILE} == '' ]]; then
+    python -c "import ufs_test_utils; ufs_test_utils.update_testyaml_b()"
+    UFS_TEST_YAML="ufs_test_temp.yaml"
+    export UFS_TEST_YAML
+fi
+
+if [[ ${TEST_TEMP_YAML} == true ]]; then        
+    python -c "import ufs_test_utils; ufs_test_utils.update_testyaml_n()"
+    UFS_TEST_YAML="ufs_test_temp.yaml"
+    export UFS_TEST_YAML
+fi
+
 # If -s; link sharable test scripts from tests directory
 if [[ ${LINK_TESTS} == true ]]; then
     if ! python -c "import ufs_test_utils; ufs_test_utils.sync_testscripts()"
@@ -200,6 +208,10 @@ if [[ ${LINK_TESTS} == true ]]; then
         echo "*** error: python sync_testscripts! ***"
         exit 1
     fi
+
+    cp "${PATHRT}"/test_cases/tests/* "${PATHRT}"/tests
+    cp "${PATHRT}"/test_cases/exp_conf/* "${PATHRT}"/fv3_conf
+    cp "${PATHRT}"/test_cases/parm/* "${PATHRT}"/parm
 fi
 
 #Check to error out if incompatible options are chosen together

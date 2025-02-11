@@ -40,7 +40,7 @@ else
       cp  ../${DEP_RUN}${SUFFIX}/RESTART/${RFILE} .
       ls -1 ${RFILE}>rpointer.cpl
     fi
-    RFILE=ufs.atmw.ww3.r.${RESTART_FILE_SUFFIX_SECS}
+    RFILE=ufs.atmw.ww3.r.${RESTART_FILE_SUFFIX_SECS}.nc
     cp ../${DEP_RUN}${SUFFIX}/${RFILE} .
   fi
 
@@ -93,11 +93,7 @@ else
 fi
 
 if [ $TILEDFIX = .true. ]; then
-    if [ $CPLLND == .true. ]; then
-        cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/@[ATMRES]*.nc INPUT/.
-    else
-        cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/@[ATMRES]*.nc .
-    fi
+    cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/@[ATMRES]*.nc .
     cp    @[INPUTDATA_ROOT]/FV3_fix/global_glacier.2x2.grb .
     cp    @[INPUTDATA_ROOT]/FV3_fix/global_maxice.2x2.grb .
     cp    @[INPUTDATA_ROOT]/FV3_fix/RTGSST.1982.2012.monthly.clim.grb .
