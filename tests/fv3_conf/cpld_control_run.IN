@@ -99,7 +99,7 @@ if [ $WARM_START = .false. ]; then
         cp   ${ICE_IC}/cice.mx@[OCNRES].${SYEAR}${SMONTH}${SDAY}${SHOUR}.warmstart.nc ./cice.warmstart.nc
       else
         cp   ${MOM_IC}/MOM6_IC_TS_${SYEAR}${SMONTH}${SDAY}${SHOUR}.nc ./INPUT/MOM6_IC_TS.nc
-        # C12mx900 uses cice_ic = default
+        # C12mx900 uses cice_ic = default for control run
         if [[ $ATMRES != C12 ]]; then
             cp  ${ICE_IC}/${OCNRES}/cice_model_@[ICERES].cpc.res_${SYEAR}${SMONTH}${SDAY}.nc ./cice_model.res.nc
         fi
@@ -171,6 +171,7 @@ else
      cp    ${MOM_IC}/MOM.res.nc ./INPUT
      cp    ${ICE_IC}/* .
      cp    @[INPUTDATA_ROOT]/CMEPS_IC/${ATMRES}mx${OCNRES}/${SYEAR}${SMONTH}${SDAY}${SHOUR}/* .
+     cp    @[INPUTDATA_ROOT]/WW3_IC/${ATMRES}${WW3_DOMAIN}/${SYEAR}${SMONTH}${SDAY}${SHOUR}/* .
   fi
 fi
 
