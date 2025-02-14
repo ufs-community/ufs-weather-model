@@ -26,6 +26,7 @@ export JNPES_cpl_c48=1
 export WPG_cpl_c48=6
 export OCN_tasks_cpl_c48=4
 export ICE_tasks_cpl_c48=4
+export WAV_tasks_cpl_c48=4
 
 export THRD_cpl_dflt=1
 export INPES_cpl_dflt=3
@@ -1178,9 +1179,9 @@ export_ugwpv1() {
   esac
 
   if [[ ${DO_GSL_DRAG_SS} = .true. ]]; then export CDMBGWD=${CDMBGWD_GSL}; fi
-  if [[ ${SEDI_SEMI} = .false. ]]; then 
+  if [[ ${SEDI_SEMI} = .false. ]]; then
     export DT_INNER=$((DT_ATMOS/2))
-  else 
+  else
     export DT_INNER=${DT_ATMOS}
   fi
   export default_dt_atmos=0

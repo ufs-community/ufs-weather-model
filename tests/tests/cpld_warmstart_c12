@@ -1,7 +1,7 @@
 #
 #  cpld_warmstart_c12 test
 #
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C12MX900"
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-WW3-CMEPS system - C12MX900 with 9km unstructured WW3 start from model initialization"
 
 export CNTL_DIR=cpld_warmstart_c12
 
@@ -42,7 +42,10 @@ export LIST_FILES=""
 #                    RESTART/20210323.120000.sfc_data.tile6.nc \
 #                    RESTART/20210323.120000.MOM.res.nc \
 #                    RESTART/iced.2021-03-23-43200.nc \
-#                    RESTART/ufs.cpld.cpl.r.2021-03-23-43200.nc"
+#                    RESTART/ufs.cpld.cpl.r.2021-03-23-43200.nc \
+#                    ufs.cpld.ww3.r.2021-03-23-43200.nc \
+#                    20210323.120000.out_grd.ww3 \
+#                    20210323.120000.out_pnt.ww3"
 
 export_fv3_v16
 export_cpl
@@ -160,7 +163,6 @@ export FNSMCC="'global_soilmgldas.statsgo.t92.192.94.grb'"
 export FNMSKH="'global_slmask.t62.192.94.grb'"
 
 # resolution dependent setting
-#?
 export CDMBWD=0.0,0.0,0.0,0.0
 export DT_INNER=${DT_ATMOS}
 
@@ -180,11 +182,9 @@ export CICE_USE_RESTART_TIME=.true.
 # MOM6 warm start
 export MOM6_RESTART_SETTING=r
 
-# no aero, no waves
+
 export CPLCHM=.false.
-export CPLWAV=.true.
-export CPLWAV2ATM=.true.
-export MOM6_USE_WAVES=True
+
 export eps_imesh=1.0e0
 
 export DIAG_TABLE=diag_table_template
