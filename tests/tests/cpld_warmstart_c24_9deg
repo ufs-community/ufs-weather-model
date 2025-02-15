@@ -1,9 +1,9 @@
 #
-#  cpld_restart_c24 test
+#  cpld_warmstart_c24 test
 #
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C24MX500 with 9km unstructured WW3 - restart test"
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-WW3-CMEPS system - C24MX900 with 9km unstructured WW3 start from model initialization"
 
-export CNTL_DIR=cpld_warmstart_c24
+export CNTL_DIR=cpld_warmstart_c24_9deg
 
 export LIST_FILES=""
 # export LIST_FILES="sfcf006.nc \
@@ -61,15 +61,12 @@ export SECS=`expr $SHOUR \* 3600`
 
 export DAYS=0.25
 export FHMAX=6
-export FHROT=3
 
+export FHROT=0
 export RESTART_N=1
 export RESTART_INTERVAL="${RESTART_N} -1"
 export OUTPUT_FH="3 -1"
 export FHZERO=3
-
-export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${FHROT} + ${SHOUR} )))0000"
-export RESTART_FILE_SUFFIX_SECS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%05d" $(( (${FHROT}+ ${SHOUR})*3600 )))"
 
 export INPES=1
 export JNPES=1
@@ -98,15 +95,15 @@ export WAV_tasks=2
 export CHM_tasks=0
 
 # atm/ocn/ice resolution
-export NPX=25
-export NPY=25
+export NPX=13
+export NPY=13
 export IMO=192
 export JMO=94
 
-export OCNRES=500
-export ICERES=5.00
-export NX_GLB=72
-export NY_GLB=35
+export OCNRES=900
+export ICERES=9.00
+export NX_GLB=40
+export NY_GLB=20
 export CICE_NPROC=$ICE_tasks
 export CICE_DECOMP=slenderX1
 export CICE_BLCKX=`expr $NX_GLB / $CICE_NPROC`
@@ -184,7 +181,7 @@ export CICE_USE_RESTART_TIME=.true.
 export MOM6_RESTART_SETTING=r
 
 export CPLCHM=.false.
-export eps_imesh=4.0e-1
+export eps_imesh=1.0e0
 
 export DIAG_TABLE=diag_table_template
 export FIELD_TABLE=field_table_gfsv16

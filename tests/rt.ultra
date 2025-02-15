@@ -1,0 +1,23 @@
+# Unstructured WW3 mesh
+#COMPILE | s2sw_pdlib | intel | -DAPP=S2SW -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_ugwpv1,FV3_coupled_lowres -DPDLIB=ON | - noaacloud | fv3 |
+COMPILE | s2sw_pdlib | intel | -DAPP=S2SW -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_ugwpv1,FV3_coupled_lowres -DPDLIB=ON -DDEBUG=ON| - noaacloud | fv3 |
+
+##RUN | cpld_control_pdlib_p8                             | - noaacloud			       | baseline |
+##RUN | cpld_restart_pdlib_p8                             | - noaacloud                          |          | cpld_control_pdlib_p8
+##RUN | cpld_mpi_pdlib_p8                                 | - noaacloud                          |          | cpld_control_pdlib_p8
+
+RUN | cpld_control_c48_5deg                                  |                                      | baseline |
+#RUN | cpld_warmstart_c48_5deg                                | - noaacloud                          | baseline |
+#RUN | cpld_restart_c48_5deg                                  | - noaacloud                          |          | cpld_warmstart_c48_5deg
+
+RUN | cpld_control_c24_5deg                                  |                                      | baseline |
+#RUN | cpld_warmstart_c24_5deg                                | - noaacloud                          | baseline |
+#RUN | cpld_restart_c24_5deg                                  | - noaacloud                          |          | cpld_warmstart_c24_5deg
+
+RUN | cpld_control_c24_9deg                                  |                                      | baseline |
+#RUN | cpld_warmstart_c24_9deg                                | - noaacloud                          | baseline |
+#RUN | cpld_restart_c24_9deg                                  | - noaacloud                          |          | cpld_warmstart_c24_9deg
+
+RUN | cpld_control_c12_9deg                                  |                                      | baseline |
+#RUN | cpld_warmstart_c12_9deg                                | - noaacloud                          | baseline |
+#RUN | cpld_restart_c12_9deg                                  | - noaacloud                          |          | cpld_warmstart_c12_9deg

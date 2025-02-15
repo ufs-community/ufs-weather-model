@@ -1,9 +1,9 @@
 #
-#  cpld_restart_c12 test
+#  cpld_restart_c24 test
 #
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-WW3-CMEPS system - C12MX900 with 9km unstructured WW3 restart test"
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-WW3-CMEPS system - C24MX900 with 9km unstructured WW3 - restart test"
 
-export CNTL_DIR=cpld_warmstart_c12
+export CNTL_DIR=cpld_warmstart_c24_9deg
 
 export LIST_FILES=""
 # export LIST_FILES="sfcf006.nc \
@@ -51,8 +51,7 @@ export_fv3_v16
 export_cpl
 export CCPP_SUITE=FV3_coupled_lowres
 
-export ATMRES=C12
-export BLOCKSIZE=12
+export ATMRES=C24
 
 export SYEAR=2021
 export SMONTH=03
@@ -62,8 +61,8 @@ export SECS=`expr $SHOUR \* 3600`
 
 export DAYS=0.25
 export FHMAX=6
-
 export FHROT=3
+
 export RESTART_N=1
 export RESTART_INTERVAL="${RESTART_N} -1"
 export OUTPUT_FH="3 -1"
@@ -117,7 +116,7 @@ export MESH_WAV=mesh.${WW3_DOMAIN}.nc
 export WW3_MODDEF=mod_def.${WW3_DOMAIN}
 
 # set component and coupling timesteps
-export DT_ATMOS=1800
+export DT_ATMOS=1200
 export DT_CICE=${DT_ATMOS}
 export DT_DYNAM_MOM6=3600
 export DT_THERM_MOM6=3600
@@ -150,17 +149,17 @@ export WW3_PIO_IOTASKS=2
 export WW3_PIO_REARR='box'
 export WW3_PIO_ROOT=-99
 
-export FNALBC="'C12.snowfree_albedo.tileX.nc'"
-export FNALBC2="'C12.facsf.tileX.nc'"
-export FNTG3C="'C12.substrate_temperature.tileX.nc'"
-export FNVEGC="'C12.vegetation_greenness.tileX.nc'"
-export FNVETC="'C12.vegetation_type.tileX.nc'"
-export FNSOTC="'C12.soil_type.tileX.nc'"
-export FNSOCC="'C12.soil_color.tileX.nc'"
-export FNVMNC="'C12.vegetation_greenness.tileX.nc'"
-export FNVMXC="'C12.vegetation_greenness.tileX.nc'"
-export FNSLPC="'C12.slope_type.tileX.nc'"
-export FNABSC="'C12.maximum_snow_albedo.tileX.nc'"
+export FNALBC="'C24.snowfree_albedo.tileX.nc'"
+export FNALBC2="'C24.facsf.tileX.nc'"
+export FNTG3C="'C24.substrate_temperature.tileX.nc'"
+export FNVEGC="'C24.vegetation_greenness.tileX.nc'"
+export FNVETC="'C24.vegetation_type.tileX.nc'"
+export FNSOTC="'C24.soil_type.tileX.nc'"
+export FNSOCC="'C24.soil_color.tileX.nc'"
+export FNVMNC="'C24.vegetation_greenness.tileX.nc'"
+export FNVMXC="'C24.vegetation_greenness.tileX.nc'"
+export FNSLPC="'C24.slope_type.tileX.nc'"
+export FNABSC="'C24.maximum_snow_albedo.tileX.nc'"
 export FNSMCC="'global_soilmgldas.statsgo.t92.192.94.grb'"
 export FNMSKH="'global_slmask.t62.192.94.grb'"
 
@@ -184,9 +183,7 @@ export CICE_USE_RESTART_TIME=.true.
 # MOM6 warm start
 export MOM6_RESTART_SETTING=r
 
-# no aero, no waves
 export CPLCHM=.false.
-
 export eps_imesh=1.0e0
 
 export DIAG_TABLE=diag_table_template

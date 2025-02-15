@@ -1,9 +1,9 @@
 #
-#  cpld_warmstart_c12 test
+#  cpld_restart_c12 test
 #
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-WW3-CMEPS system - C12MX900 with 9km unstructured WW3 start from model initialization"
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-WW3-CMEPS system - C12MX900 with 9km unstructured WW3 restart test"
 
-export CNTL_DIR=cpld_warmstart_c12
+export CNTL_DIR=cpld_warmstart_c12_9deg
 
 export LIST_FILES=""
 # export LIST_FILES="sfcf006.nc \
@@ -63,11 +63,14 @@ export SECS=`expr $SHOUR \* 3600`
 export DAYS=0.25
 export FHMAX=6
 
-export FHROT=0
+export FHROT=3
 export RESTART_N=1
 export RESTART_INTERVAL="${RESTART_N} -1"
 export OUTPUT_FH="3 -1"
 export FHZERO=3
+
+export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${FHROT} + ${SHOUR} )))0000"
+export RESTART_FILE_SUFFIX_SECS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%05d" $(( (${FHROT}+ ${SHOUR})*3600 )))"
 
 export INPES=1
 export JNPES=1
@@ -139,7 +142,6 @@ export CICE_RESTART_IOTASKS=1
 export CICE_RESTART_STRIDE=1
 export CICE_HISTORY_IOTASKS=1
 export CICE_HISTORY_STRIDE=1
-
 export WW3_RSTFLDS="ice"
 # For either history_nc or restart_nc true
 export WW3_PIO_FORMAT='pnetcdf'
@@ -181,7 +183,6 @@ export CICE_USE_RESTART_TIME=.true.
 
 # MOM6 warm start
 export MOM6_RESTART_SETTING=r
-
 
 export CPLCHM=.false.
 
