@@ -145,7 +145,6 @@ Please delete what is not needed.
   - [ ] Hera
   - [ ] Orion
   - [ ] Hercules
-  - [ ] Jet
   - [ ] GaeaC5
   - [ ] GaeaC6
   - [ ] Derecho
