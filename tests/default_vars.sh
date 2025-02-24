@@ -1474,7 +1474,7 @@ export DIAG_TABLE=diag_table_cpld.IN
 export DIAG_TABLE_ADDITIONAL=''
 export FIELD_TABLE_ADDITIONAL=''
 export FV3_RUN=cpld_control_run.IN
-export TILEDFIX=.false.
+export TILEDFIX=.true.
 
 export FHZERO=6
 
