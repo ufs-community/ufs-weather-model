@@ -471,8 +471,27 @@ Users must edit the ``rt.conf`` file to indicate which tests/configurations to r
 The ``rt.conf`` File
 ------------------------
 
-Each line in the PSV (Pipe-separated values) file, ``rt.conf``, contains four columns of information. 
+The ``rt.conf`` file is a pipe-separated values (PSV) file grouped into sections of tests with a ``COMPILE`` line followed by several ``RUN`` lines. The ``COMPILE`` line contains information needed to compile the tests, while the ``RUN`` lines contain information on specific tests. 
+``COMPILE`` lines have 6 columns:
+#. ``COMPILE`` line
+#. Compile name --- a category of test to compile
+#. Compiler to use in build (``intel`` or ``gnu``)
+#. CMAKE Options --- Provide all CMAKE options for the build
+#. Machines to run on (``-`` is used to ignore specified machines, ``+`` is used to run only on specified machines). For example: 
+    * ``+ hera orion gaea``: Compile will only run on Hera, Orion, and Gaea machines
+    * ``- wcoss2 acorn``: Compile will NOT be run on WCOSS2 or Acorn
+#. ``fv3``: Set as fv3. Previously, this was used to run a test without compiling code (e.g., if FV3 was already present). 
 The first column specifies whether to build a test (``COMPILE``) or run a test (``RUN``). 
+
+``RUN`` lines have five columns. The build resulting from the COMPILE line above the RUN line will be used to run the tests. 
+#. Item 2: Test name. (Which test in the tests/tests directory should be sourced)
+#. Item 3: Machines to run on (- is used to ignore specified machines, + is used to only run on specified machines).
+## reference example above
+#. Item 4: Controls whether the run creates its own baseline or it uses the baseline from a different (control) test.
+#. Item 5: Test name to compare baselines with if not itself.
+
+
+
 The second column specifies either configuration information for building a test or 
 the name of a test to run.
 Thus, the second column in a ``COMPILE`` line will list the application to build (e.g., ``-DAPP=S2S``), 

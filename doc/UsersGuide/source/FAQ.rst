@@ -10,34 +10,34 @@ How do I build and run a single test of the UFS Weather Model?
 
 An efficient way to build and run the UFS Weather Model is to use the regression test
 (``rt.sh``).  This script is widely used by model developers on Tier 1 and 2 platforms
-and is described in the UFS WM GitHub :wm-wiki:`wiki <Making-code-changes-in-the-UFS-weather-model-and-its-subcomponents>`.  The advantages to this approach are:
+and is described in :numref:`Section %s <run-wm>`. The advantages to this approach are:
 
    * It does not require a workflow, pre- or post-processing steps.
    * The batch submission script is generated.
    * Any required input data is already available for machines used by the regression test.
    * Once the ``rt.sh`` test completes, you will have a working copy in your run directory where you can
-     make modifications to the namelist and other files, and then re-run the executable.
+     make modifications to the namelist and other files and then re-run the executable.
 
 The steps are:
 
-   #. Clone the source code and all the submodules as described in :numref:`Section %s <DownloadingWMCode>`, then
+   #. Clone the source code and all the submodules as described in :numref:`Section %s <DownloadingWMCode>`; then
       go into the ``tests`` directory:
 
       .. code-block:: console
 
-         cd ufs-weather-model (or the top level where you checked out the code)
+         cd ufs-weather-model # (or the top level where you checked out the code)
          cd tests
 
    #. Find a configure (``*.conf``) file that contains the machine and compiler you are using. For this
-      example, the Intel compiler on Derecho is used.  To create a custom configure file, two lines are
-      needed:  a ``COMPILE`` line and a ``RUN`` line.   The ``COMPILE`` line should contain the name
-      of the machine and compiler ``derecho.intel`` and the desired ``SUITES`` for the build.  Choose a
-      ``RUN`` line under this ``COMPILE`` command that uses the desired ``SUITE``.  For example:
+      example, the Intel compiler on Derecho is used. To create a custom configure file, two lines are
+      needed: a ``COMPILE`` line and a ``RUN`` line. The ``COMPILE`` line should contain the name
+      of the machine and compiler (e.g., ``derecho.intel``) and the desired physics suites for the build. Choose a
+      ``RUN`` line under this ``COMPILE`` command that uses the desired suite. For example:
 
       .. code-block:: console
 
-         COMPILE | 32BIT=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_v15p2,FV3_GFS_v16beta,FV3_GFS_v15p2_no_nsst,FV3_GFS_v16beta_no_nsst                     | standard    | derecho.intel | fv3
-         RUN     | fv3_ccpp_gfs_v16beta                                                                                                           | standard    |                | fv3         |
+		 COMPILE | atm_dyn32 | intel | -DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16,FV3_GFS_v16_flake,FV3_GFS_v17_p8,FV3_GFS_v17_p8_rrtmgp,FV3_GFS_v15_thompson_mynn_lam3km,FV3_WoFS_v0,FV3_GFS_v17_p8_mynn,FV3_GFS_v17_p8_ugwpv1 -D32BIT=ON | | fv3 |
+		 RUN     | control_c48 |          | baseline |          | standard |          | fv3     |
 
       Put these two lines into a file called ``my_test.conf``.  The parameters used in this run can be
       found in the ``fv3_ccpp_gfs_v16beta`` file in the ``ufs-weather-model/tests/tests`` directory.
