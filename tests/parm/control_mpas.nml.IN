@@ -28,7 +28,7 @@
   nt_checker = 0
 /
 
-&nhyd_model
+&mpas_nhyd_model
   mpas_time_integration         = 'SRK3'
   mpas_time_integration_order   = 2
   mpas_dt                       = 720.
@@ -63,7 +63,7 @@
   mpas_apvm_upwinding           = 0.5
   mpas_h_ScaleWithMesh          = .true.
 /
-&damping
+&mpas_damping
   mpas_zd                             = 22000.
   mpas_xnutr                          = 0.2
   mpas_cam_coef                       = 0.
@@ -71,7 +71,29 @@
   mpas_rayleigh_damp_u                = .true.
   mpas_rayleigh_damp_u_timescale_days = 5.
   mpas_number_rayleigh_damp_u_levels  = 3
-  
+
+&mpas_limited_area
+  mpas_apply_lbcs = .false.
+/
+
+&mpas_assimilation
+  mpas_jedi_da = .false.
+/
+
+&mpas_decomposition
+  mpas_block_decomp_file_prefix = 'x1.40962.graph.info.part.'
+/
+
+&mpas_restart
+  mpas_do_restart = .false.
+/
+
+&mpas_printout
+  mpas_print_global_minmax_vel   = .false.
+  mpas_print_detailed_minmax_vel = .false.
+  mpas_print_global_minmax_sca   = .false.
+/
+
 &gfs_physics_nml
   fhzero       = @[FHZERO]
   h2o_phys     = .true.
