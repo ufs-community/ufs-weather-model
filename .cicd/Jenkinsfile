@@ -150,7 +150,7 @@ pipeline {
     parameters {
         booleanParam name: 'WM_BUILD', defaultValue: false, description: 'Whether to attempt to compile the model code tests'
         // Regression Test Suite ?
-        choice(name: 'WM_OPERATIONAL_TESTS', choices: ['default', 'control_p8', 'cpld_control_p8', 'comprehensive', 'rt.sh', 'none'], description: 'Specify the suite of tests to run')
+        choice(name: 'WM_OPERATIONAL_TESTS', choices: ['rt.conf', 'default', 'control_p8', 'cpld_control_p8', 'comprehensive', 'none'], description: 'Specify the suite of tests to run')
     }
     environment {
         ACCNR = 'epic'
