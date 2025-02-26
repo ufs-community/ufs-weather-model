@@ -45,33 +45,35 @@ The WM uses two categories of libraries, which are available as a bundle via
 Common Modules
 ----------------
 
-As of May 19, 2023, the UFS WM Regression Tests (:term:`RTs <RT>`) on Level 1 systems use the following common modules: 
+As of February 24, 2025, the UFS WM Regression Tests (:term:`RTs <RT>`) on Level 1 systems use the following common modules: 
 
 .. code-block:: console
 
    bacio/2.4.1
    crtm/2.4.0
-   esmf/8.3.0b09
-   fms/2022.04
-   g2/3.4.5
-   g2tmpl/1.10.2
-   gftl-shared/v1.5.0
-   hdf5/1.10.6
-   ip/3.3.3
-   jasper/2.0.25
+   esmf/8.6.0
+   fms/2024.01
+   g2/3.5.1
+   g2tmpl/1.13.0
+   gftl-shared/1.6.1
+   hdf5/1.14.0
+   ip/4.3.0
+   jasper/2.0.32
    libpng/1.6.37
-   mapl/2.22.0-esmf-8.3.0b09
-   netcdf/4.7.4
-   pio/2.5.7
-   sp/2.3.3
-   w3emc/2.9.2
-   zlib/1.2.11
+   mapl/2.40.3-esmf-8.6.0
+   netcdf-c/4.9.2
+   netcdf-fortran/4.6.1
+   parallelio/2.5.10
+   scotch/7.0.4
+   sp/2.5.0
+   w3emc/2.10.0
+   zlib/1.2.13
 
 The most updated list of common modules can be viewed in ``ufs_common.lua`` 
-`here <https://github.com/ufs-community/ufs-weather-model/blob/develop/modulefiles/ufs_common.lua>`__.
+`here <https://github.com/ufs-community/ufs-weather-model/blob/develop/modulefiles/ufs_common.lua>`_.
 
 .. attention::
-   Documentation is available for installing `spack-stack <https://spack-stack.readthedocs.io/en/latest/>`__
+   Documentation is available for installing `spack-stack <https://spack-stack.readthedocs.io/en/latest/>`_
    and `HPC-Stack <https://hpc-stack.readthedocs.io/en/latest/>`__, respectively. 
    One of these software stacks (or the libraries they contain) must be installed before running the UFS Weather Model. 
 
@@ -84,82 +86,58 @@ Get Data
 The WM RTs require input files to run. 
 These include static datasets, files that depend on grid resolution and 
 initial/boundary conditions, and model configuration files. On Level 1 and 2 systems, 
-the data required to run the WM RTs are already available in the following locations: 
+the data required to run the WM RTs are already available at the following ``DISKNM`` locations: 
 
 .. _DataLocations:
-.. table:: Data Locations for Level 1 & 2 Systems
 
-   +--------------+--------------------------------------------------------+
-   | Machine      | File location                                          |
-   +==============+========================================================+
-   | Derecho      | /glade/derecho/scratch/epicufsrt/ufs-weather-model/RT  |
-   +--------------+--------------------------------------------------------+
-   | Gaea         | /lustre/f2/pdata/ncep_shared/emc.nemspara/RT           |
-   +--------------+--------------------------------------------------------+
-   | Hera         | /scratch1/NCEPDEV/nems/emc.nemspara/RT                 |
-   +--------------+--------------------------------------------------------+
-   | Jet          | /mnt/lfs4/HFIP/hfv3gfs/role.epic/RT                    |
-   +--------------+--------------------------------------------------------+
-   | Orion        | /work/noaa/nems/emc.nemspara/RT                        |
-   +--------------+--------------------------------------------------------+
-   | S4           | /data/prod/emc.nemspara/RT                             |
-   +--------------+--------------------------------------------------------+ 
-   | WCOSS2       | /lfs/h2/emc/nems/noscrub/emc.nems/RT                   |
-   +--------------+--------------------------------------------------------+ 
+.. list-table:: Data Locations (``$DISKNM``) for Level 1 & 2 Systems
+   :widths: 20 50
+   :header-rows: 1
+
+   * - Machine
+     - File location
+   * - Derecho
+     - /glade/derecho/scratch/epicufsrt/ufs-weather-model/RT/
+   * - Gaea-C5
+     - /gpfs/f5/epic/world-shared/UFS-WM_RT
+   * - Gaea-C6
+     - /gpfs/f6/bil-fire8/world-shared/role.epic/UFS-WM_RT
+   * - Hera
+     - /scratch2/NAGAPE/epic/UFS-WM_RT
+   * - Hercules
+     - /work/noaa/epic/hercules/UFS-WM_RT
+   * - Jet (Level 2)
+     - /mnt/lfs5/HFIP/hfv3gfs/role.epic/RT
+   * - NOAA Cloud (Level 2)
+     - /contrib/ufs-weather-model/RT
+   * - Orion
+     - /work/noaa/epic/UFS-WM_RT
+   * - S4 (Level 2)
+     - /data/prod/emc.nemspara/RT
+   * - WCOSS2
+     - /lfs/h2/emc/nems/noscrub/emc.nems/RT
+
+From here, the following directory paths are appended: 
+  * ``INPUTDATA_ROOT``: ${DISKNM}/NEMSfv3gfs/input-data-20240501
+  * ``INPUTDATA_ROOT_WW3`` ${INPUTDATA_ROOT}/WW3_input_data_20250212
+  * ``INPUTDATA_ROOT_BMIC``: ${DISKNM}/NEMSfv3gfs/BM_IC-20220207
+  * ``INPUTDATA_LM4``: ${INPUTDATA_ROOT}/LM4_input_data
 
 For Level 3-4 systems, the data must be added to the user's system. 
-Publicly available RT data is available in the `UFS WM Data Bucket <https://registry.opendata.aws/noaa-ufs-regtests/>`__. 
-Data for running RTs off of the develop branch is available for the most recent 60 days. 
-To view the data, users can visit https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html. 
-To download data, users must select the data they want from the bucket and either download it in their browser or via a ``wget`` command. 
-For example, to get the data for ``control_p8`` (specifically the May 17, 2023 ``develop`` branch version of the WM), run: 
+Publicly available data is available in the `UFS WM Data Bucket <https://registry.opendata.aws/noaa-ufs-regtests/>`_. 
+Baseline data for the ``develop`` branch is available for the most recent 60 days. 
+The regression testing script (``rt.sh ``) has certain default data directories (i.e., ``INPUTDATA_*``) that users may need to change when working on Level 3-4 systems. 
+The corresponding data is publicly available in the data bucket. To view the data, users can visit https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html. 
+Users can download the data and update the ``rt.sh`` script to point to the appropriate locations in order to run RTs on their own system: 
+  
+* ``INPUTDATA_ROOT``: https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html#input-data-20240501/
+* ``INPUTDATA_ROOT_WW3`` https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html#input-data-20240501/WW3_input_data_20240214/
+* ``INPUTDATA_ROOT_BMIC``: https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html#BM_IC-20220207/
+* ``INPUTDATA_LM4``: https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html#LM4_input_data
 
-.. code-block:: console
+.. COMMENT: LM4 input data not in bucket...
 
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/atmf000.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/atmf021.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/atmf024.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/GFSFLX.GrbF00
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/GFSFLX.GrbF21
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/GFSFLX.GrbF24
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/GFSPRS.GrbF00
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/GFSPRS.GrbF21
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/GFSPRS.GrbF24
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/sfcf000.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/sfcf021.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/sfcf024.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.coupler.res
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_core.res.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_core.res.tile1.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_core.res.tile2.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_core.res.tile3.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_core.res.tile4.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_core.res.tile5.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_core.res.tile6.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_srf_wnd.res.tile1.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_srf_wnd.res.tile2.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_srf_wnd.res.tile3.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_srf_wnd.res.tile4.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_srf_wnd.res.tile5.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_srf_wnd.res.tile6.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_tracer.res.tile1.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_tracer.res.tile2.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_tracer.res.tile3.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_tracer.res.tile4.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_tracer.res.tile5.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.fv_tracer.res.tile6.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.phy_data.tile1.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.phy_data.tile2.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.phy_data.tile3.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.phy_data.tile4.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.phy_data.tile5.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.phy_data.tile6.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.sfc_data.tile1.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.sfc_data.tile2.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.sfc_data.tile3.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.sfc_data.tile4.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.sfc_data.tile5.nc
-   wget https://noaa-ufs-regtests-pds.s3.amazonaws.com/develop-20230517/INTEL/control_p8/RESTART/20210323.060000.sfc_data.tile6.nc
+To download data, users must select the files they want from the bucket and download them either in their browser, via a ``wget`` command, or through the AWS CLI. 
 
 Detailed information on input files can be found in :numref:`Chapter %s <InputsOutputs>`. 
 
@@ -230,8 +208,6 @@ manually. For example, in a bash shell, a command in the following form will set
 .. code-block:: console
 
    export CMAKE_C_COMPILER=</path/to/C/compiler>
-
-.. COMMENT: Update after Zach's PR is merged. 
 
 ------------------------------------------------------------------------
 Setting the ``CMAKE_FLAGS`` and ``CCPP_SUITES`` Environment Variables
@@ -471,7 +447,7 @@ Users must edit the ``rt.conf`` file to indicate which tests/configurations to r
 The ``rt.conf`` File
 ------------------------
 
-Each line in the PSV (Pipe-separated values) file, ``rt.conf``, contains four columns of information. 
+Each line in the PSV (Pipe-separated values) file, ``rt.conf``, contains several columns of information. 
 The first column specifies whether to build a test (``COMPILE``) or run a test (``RUN``). 
 The second column specifies either configuration information for building a test or 
 the name of a test to run.

@@ -4,6 +4,8 @@
 Configuration Parameters
 ******************************************
 
+The UFS Weather Model build parameters are set in :wm-repo:`CMakeLists.txt <blob/develop/CMakeLists.txt>` or in the ``CMakeLists.txt`` file of one of its subrepositories. 
+
 =================================
 Build Configuration Parameters
 =================================
@@ -15,7 +17,7 @@ Configuration Options
 
 ``-DAPP``:
    Sets the :term:`WM` configuration to build. 
-   Valid values: ``ATM``, ``ATMW``, ``ATMAERO``, ``ATMAQ``, ``S2S``, ``S2SA``, ``S2SW``, ``S2SWA``, ``NG-GODAS``, ``HAFS``, ``HAFSW``, ``HAFS-ALL``
+   Valid values: ``ATM``, ``ATMW``, ``ATMAERO``, ``ATMAQ``, ``ATMWM``, ``ATML``, ``ATMF``, ``ATM_DS2S``, ``ATM_DS2S-PCICE``, ``LND``, ``LND-LM4``, ``S2S``, ``S2SA``, ``S2SW``, ``S2SWA``, ``S2SL``, ``S2SWL``, ``S2SWAL``, ``NG-GODAS``, ``HAFS``, ``HAFSW``, ``HAFS-MOM6``, ``HAFS-MOM6W``, ``HAFS-ALL``
 
 
 .. _suites:
