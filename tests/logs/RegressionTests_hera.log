@@ -1,7 +1,7 @@
 ====START OF HERA REGRESSION TESTING LOG====
 
 UFSWM hash used in testing:
-3b98a967940d4feff7f0b9d1923fd44a8552a78f
+d2c51b55d0e885170be993fe98ae834cb8f5c7b6
 
 Submodule hashes used in testing:
  37cbb7d6840ae7515a9a8f0dfd4d89461b3396d1 AQM (v0.2.0-37-g37cbb7d)
@@ -9,13 +9,13 @@ Submodule hashes used in testing:
  4411a158cc4839157e3087d7fe8e399f9685eb35 CICE-interface/CICE (CICE6.0.0-399-g4411a15)
  cdbed6c48c2626e67ee5c071947d991e6f0fbc2e CMEPS-interface/CMEPS (cmeps_v0.4.1-2314-gcdbed6c)
  cabd7753ae17f7bfcc6dad56daf10868aa51c3f4 CMakeModules (v1.0.0-28-gcabd775)
- 246cb69b38c45878d15df78d25fe1e51bc2dfec3 FV3 (heads/feature/rad-fix)
++0da6fc1e328e83297b55aa7443969065e1c9984c FV3 (heads/feature/rad-fix)
  041422934cae1570f2f0e67239d5d89f11c6e1b7 GOCART (sdr_v2.1.2.6-119-g0414229)
  bcf7777bb037ae2feb2a8a8ac51aacb3511b52d9 HYCOM-interface/HYCOM (2.3.00-122-gbcf7777)
  c4d2337d8607ec994b3cd61179eb974e0a237841 LM4-driver (baseline_change_240904-6-gc4d2337)
  6fff0955a123c1dea8d70f31271e13d320ff8552 MOM6-interface/MOM6 (dev/master/repository_split_2014.10.10-10366-g6fff0955a)
  1a2d2fcb02da38e975f252ef743af24b68b3cc7f NOAHMP-interface/noahmp (v3.7.1-455-g1a2d2fc)
- b8e892abf5fc789fb0af386e380b2ee91b761d88 WW3 (remotes/origin/devufs20241211develop20240116)
+ f1f14d582835ef77626aaf44146a53d60920a0f7 WW3 (6.07.1-386-gf1f14d58)
  05cad173feeb598431e3ef5f17c2df6562c8d101 fire_behavior (v0.2.0-1-g05cad17)
  fad2fe9f42f6b7f744b128b4a2a9433f91e4296f stochastic_physics (ufs-v2.0.0-219-gfad2fe9)
 
@@ -26,30 +26,29 @@ The first time is for the full script (prep+run+finalize).
 The second time is specifically for the run phase.
 Times/Memory will be empty for failed tests.
 
-BASELINE DIRECTORY: /scratch2/NAGAPE/epic/UFS-WM_RT/NEMSfv3gfs/develop-20250129
-COMPARISON DIRECTORY: /scratch1/NCEPDEV/stmp2/Larissa.Reames/FV3_RT/rt_344279
+BASELINE DIRECTORY: /scratch2/NAGAPE/epic/UFS-WM_RT/NEMSfv3gfs/develop-20250219
+COMPARISON DIRECTORY: /scratch1/NCEPDEV/stmp2/Larissa.Reames/FV3_RT/rt_386689
 
 RT.SH OPTIONS USED:
-* (-a) - HPC PROJECT ACCOUNT: gsd-fv3-dev
-* (-k) - KEEP RUN DIRECTORY
+* (-a) - HPC PROJECT ACCOUNT: fv3lam
 * (-e) - USE ECFLOW
 
-PASS -- COMPILE 's2swa_32bit_intel' [15:12, 12:54] ( 1 warnings 9 remarks )
+PASS -- COMPILE 's2swa_32bit_intel' [15:12, 13:28] ( 1 warnings 8 remarks )
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_control_p8_mixedmode_intel' [, ]( MB)
 
-PASS -- COMPILE 's2swa_32bit_pdlib_intel' [18:12, 16:00] ( 1 warnings 9 remarks )
+PASS -- COMPILE 's2swa_32bit_pdlib_intel' [18:12, 16:08] ( 1 warnings 8 remarks )
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_control_gfsv17_intel' [, ]( MB)
 FAILED: UNABLE TO START TEST -- TEST 'cpld_control_gfsv17_iau_intel' [, ]( MB)
 FAILED: UNABLE TO START TEST -- TEST 'cpld_restart_gfsv17_intel' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_mpi_gfsv17_intel' [, ]( MB)
 
-PASS -- COMPILE 's2swa_32bit_pdlib_sfs_intel' [18:12, 16:39] ( 1 warnings 9 remarks )
+PASS -- COMPILE 's2swa_32bit_pdlib_sfs_intel' [18:12, 16:36] ( 1 warnings 8 remarks )
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_control_sfs_intel' [, ]( MB)
 
-PASS -- COMPILE 's2swa_32bit_pdlib_debug_intel' [08:12, 05:58] ( 1532 warnings 1941 remarks )
+PASS -- COMPILE 's2swa_32bit_pdlib_debug_intel' [07:11, 05:59] ( 1532 warnings 1948 remarks )
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_debug_gfsv17_intel' [, ]( MB)
 
-PASS -- COMPILE 's2swa_intel' [15:12, 13:17] ( 1 warnings 9 remarks )
+PASS -- COMPILE 's2swa_intel' [15:12, 13:38] ( 1 warnings 8 remarks )
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_control_p8_intel' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_control_p8.v2.sfc_intel' [, ]( MB)
 FAILED: UNABLE TO START TEST -- TEST 'cpld_restart_p8_intel' [, ]( MB)
@@ -64,41 +63,41 @@ FAILED: UNABLE TO START TEST -- TEST 'cpld_restart_c192_p8_intel' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_bmark_p8_intel' [, ]( MB)
 FAILED: UNABLE TO START TEST -- TEST 'cpld_restart_bmark_p8_intel' [, ]( MB)
 
-PASS -- COMPILE 's2swal_intel' [15:12, 13:15] ( 1 warnings 10 remarks )
+PASS -- COMPILE 's2swal_intel' [15:12, 13:27] ( 1 warnings 9 remarks )
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_control_p8_lnd_intel' [, ]( MB)
 FAILED: UNABLE TO START TEST -- TEST 'cpld_restart_p8_lnd_intel' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_s2sa_p8_intel' [, ]( MB)
 
-PASS -- COMPILE 's2sw_intel' [14:12, 12:31] ( 1 warnings 9 remarks )
+PASS -- COMPILE 's2sw_intel' [14:12, 12:27] ( 1 warnings 8 remarks )
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_control_noaero_p8_intel' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_control_nowave_noaero_p8_intel' [, ]( MB)
 
-PASS -- COMPILE 's2swa_debug_intel' [08:12, 06:00] ( 1422 warnings 1171 remarks )
+PASS -- COMPILE 's2swa_debug_intel' [07:11, 05:42] ( 1422 warnings 1178 remarks )
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_debug_p8_intel' [, ]( MB)
 
-PASS -- COMPILE 's2sw_debug_intel' [07:12, 05:51] ( 1422 warnings 1171 remarks )
+PASS -- COMPILE 's2sw_debug_intel' [07:11, 05:39] ( 1422 warnings 1178 remarks )
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_debug_noaero_p8_intel' [, ]( MB)
 
-PASS -- COMPILE 's2s_aoflux_intel' [13:12, 11:22] ( 1 remarks )
+PASS -- COMPILE 's2s_aoflux_intel' [13:12, 11:30] ( 1 remarks )
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_control_noaero_p8_agrid_intel' [, ]( MB)
 
-PASS -- COMPILE 's2s_intel' [13:11, 11:48] ( 1 warnings 1 remarks )
+PASS -- COMPILE 's2s_intel' [14:11, 11:41] ( 1 warnings 1 remarks )
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_control_c48_intel' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_warmstart_c48_intel' [, ]( MB)
 FAILED: UNABLE TO START TEST -- TEST 'cpld_restart_c48_intel' [, ]( MB)
 
-PASS -- COMPILE 's2swa_faster_intel' [18:13, 16:45] ( 1 warnings 9 remarks )
+PASS -- COMPILE 's2swa_faster_intel' [19:11, 16:38] ( 1 warnings 8 remarks )
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_control_p8_faster_intel' [, ]( MB)
 
-PASS -- COMPILE 's2sw_pdlib_intel' [17:12, 15:27] ( 1 warnings 9 remarks )
+PASS -- COMPILE 's2sw_pdlib_intel' [17:11, 15:15] ( 1 warnings 8 remarks )
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_control_pdlib_p8_intel' [, ]( MB)
 FAILED: UNABLE TO START TEST -- TEST 'cpld_restart_pdlib_p8_intel' [, ]( MB)
 FAILED: UNABLE TO START TEST -- TEST 'cpld_mpi_pdlib_p8_intel' [, ]( MB)
 
-PASS -- COMPILE 's2sw_pdlib_debug_intel' [07:11, 05:58] ( 1532 warnings 1941 remarks )
+PASS -- COMPILE 's2sw_pdlib_debug_intel' [07:10, 05:34] ( 1532 warnings 1948 remarks )
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_debug_pdlib_p8_intel' [, ]( MB)
 
-PASS -- COMPILE 'atm_dyn32_intel' [12:12, 11:02] ( 1 warnings 1 remarks )
+PASS -- COMPILE 'atm_dyn32_intel' [13:12, 11:07] ( 1 warnings 1 remarks )
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_flake_intel' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_CubedSphereGrid_intel' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_CubedSphereGrid_parallel_intel' [, ]( MB)
@@ -136,7 +135,7 @@ FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'regional_netcdf_parallel_intel' [
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'regional_2dwrtdecomp_intel' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'regional_wofs_intel' [, ]( MB)
 
-PASS -- COMPILE 'rrfs_intel' [12:14, 10:49] ( 3 warnings 9 remarks )
+PASS -- COMPILE 'rrfs_intel' [12:12, 10:28] ( 3 warnings 9 remarks )
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_control_intel' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'regional_spp_sppt_shum_skeb_intel' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_decomp_intel' [, ]( MB)
@@ -153,18 +152,18 @@ FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rrfs_v1beta_intel' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rrfs_v1nssl_intel' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rrfs_v1nssl_nohailnoccn_intel' [, ]( MB)
 
-PASS -- COMPILE 'csawmg_intel' [12:13, 10:17]
+PASS -- COMPILE 'csawmg_intel' [11:11, 10:06]
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_csawmg_intel' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_ras_intel' [, ]( MB)
 
-PASS -- COMPILE 'wam_intel' [12:11, 10:16] ( 1 remarks )
+PASS -- COMPILE 'wam_intel' [12:12, 10:30] ( 1 remarks )
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_wam_intel' [, ]( MB)
 
-PASS -- COMPILE 'atm_faster_dyn32_intel' [12:12, 10:17] ( 1 remarks )
+PASS -- COMPILE 'atm_faster_dyn32_intel' [12:11, 10:31] ( 1 remarks )
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_p8_faster_intel' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'regional_control_faster_intel' [, ]( MB)
 
-PASS -- COMPILE 'atm_debug_dyn32_intel' [10:12, 08:08] ( 891 warnings 9 remarks )
+PASS -- COMPILE 'atm_debug_dyn32_intel' [09:12, 07:41] ( 891 warnings 9 remarks )
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_CubedSphereGrid_debug_intel' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_wrtGauss_netcdf_parallel_debug_intel' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_stochy_debug_intel' [, ]( MB)
@@ -192,13 +191,13 @@ FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_clm_lake_debug_intel' [, ]( M
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_flake_debug_intel' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'gnv1_c96_no_nest_debug_intel' [, ]( MB)
 
-PASS -- COMPILE 'atm_debug_dyn32_gnu' [06:12, 04:38]
+PASS -- COMPILE 'atm_debug_dyn32_gnu' [06:11, 04:50]
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_csawmg_debug_gnu' [, ]( MB)
 
-PASS -- COMPILE 'wam_debug_intel' [06:12, 04:42] ( 846 warnings 1 remarks )
+PASS -- COMPILE 'wam_debug_intel' [06:11, 04:39] ( 846 warnings 1 remarks )
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_wam_debug_intel' [, ]( MB)
 
-PASS -- COMPILE 'rrfs_dyn32_phy32_intel' [11:13, 10:00] ( 3 warnings 8 remarks )
+PASS -- COMPILE 'rrfs_dyn32_phy32_intel' [11:11, 10:02] ( 3 warnings 8 remarks )
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'regional_spp_sppt_shum_skeb_dyn32_phy32_intel' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_control_dyn32_phy32_intel' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hrrr_control_dyn32_phy32_intel' [, ]( MB)
@@ -208,15 +207,15 @@ FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hrrr_control_decomp_dyn32_phy32_i
 FAILED: UNABLE TO START TEST -- TEST 'rap_restart_dyn32_phy32_intel' [, ]( MB)
 FAILED: UNABLE TO START TEST -- TEST 'hrrr_control_restart_dyn32_phy32_intel' [, ]( MB)
 
-PASS -- COMPILE 'rrfs_dyn32_phy32_faster_intel' [12:12, 10:19] ( 3 warnings 8 remarks )
+PASS -- COMPILE 'rrfs_dyn32_phy32_faster_intel' [12:11, 10:30] ( 3 warnings 8 remarks )
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'conus13km_control_intel' [, ]( MB)
 FAILED: UNABLE TO START TEST -- TEST 'conus13km_2threads_intel' [, ]( MB)
 FAILED: UNABLE TO START TEST -- TEST 'conus13km_restart_mismatch_intel' [, ]( MB)
 
-PASS -- COMPILE 'rrfs_dyn64_phy32_intel' [12:12, 10:23] ( 3 warnings 8 remarks )
+PASS -- COMPILE 'rrfs_dyn64_phy32_intel' [12:12, 10:28] ( 3 warnings 8 remarks )
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_control_dyn64_phy32_intel' [, ]( MB)
 
-PASS -- COMPILE 'rrfs_dyn32_phy32_debug_intel' [06:12, 04:40] ( 794 warnings 8 remarks )
+PASS -- COMPILE 'rrfs_dyn32_phy32_debug_intel' [06:12, 04:55] ( 794 warnings 8 remarks )
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_control_debug_dyn32_phy32_intel' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hrrr_control_debug_dyn32_phy32_intel' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'conus13km_debug_intel' [, ]( MB)
@@ -224,10 +223,10 @@ FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'conus13km_debug_qr_intel' [, ]( M
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'conus13km_debug_2threads_intel' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'conus13km_radar_tten_debug_intel' [, ]( MB)
 
-PASS -- COMPILE 'rrfs_dyn64_phy32_debug_intel' [06:13, 04:30] ( 794 warnings 8 remarks )
+PASS -- COMPILE 'rrfs_dyn64_phy32_debug_intel' [06:11, 04:34] ( 794 warnings 8 remarks )
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_control_dyn64_phy32_debug_intel' [, ]( MB)
 
-PASS -- COMPILE 'hafsw_intel' [13:12, 11:51] ( 1 warnings 9 remarks )
+PASS -- COMPILE 'hafsw_intel' [13:12, 12:07] ( 1 warnings 8 remarks )
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hafs_regional_atm_intel' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hafs_regional_atm_thompson_gfdlsf_intel' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hafs_regional_atm_ocn_intel' [, ]( MB)
@@ -239,88 +238,88 @@ FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hafs_global_1nest_atm_intel' [, ]
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hafs_global_multiple_4nests_atm_intel' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hafs_regional_specified_moving_1nest_atm_intel' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hafs_regional_storm_following_1nest_atm_intel' [, ]( MB)
-FAILED: TEST TIMED OUT -- TEST 'hafs_regional_storm_following_1nest_atm_ocn_intel' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hafs_regional_storm_following_1nest_atm_ocn_intel' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hafs_global_storm_following_1nest_atm_intel' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'gnv1_nested_intel' [, ]( MB)
 
-PASS -- COMPILE 'hafsw_debug_intel' [06:12, 05:00] ( 1474 warnings 1444 remarks )
+PASS -- COMPILE 'hafsw_debug_intel' [07:11, 05:10] ( 1474 warnings 1451 remarks )
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hafs_regional_storm_following_1nest_atm_ocn_debug_intel' [, ]( MB)
 
-PASS -- COMPILE 'hafsw_faster_intel' [13:13, 11:20] ( 8 remarks )
+PASS -- COMPILE 'hafsw_faster_intel' [13:12, 11:28] ( 7 remarks )
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hafs_regional_storm_following_1nest_atm_ocn_wav_intel' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hafs_regional_storm_following_1nest_atm_ocn_wav_inline_intel' [, ]( MB)
 
-PASS -- COMPILE 'hafs_mom6w_intel' [13:12, 11:21] ( 8 remarks )
+PASS -- COMPILE 'hafs_mom6w_intel' [13:12, 12:08] ( 7 remarks )
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hafs_regional_storm_following_1nest_atm_ocn_wav_mom6_intel' [, ]( MB)
 
-PASS -- COMPILE 'hafs_all_intel' [12:13, 10:54] ( 8 remarks )
+PASS -- COMPILE 'hafs_all_intel' [12:10, 11:08] ( 7 remarks )
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hafs_regional_docn_intel' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hafs_regional_docn_oisst_intel' [, ]( MB)
-PASS -- TEST 'hafs_regional_datm_cdeps_intel' [19:06, 16:31](1215 MB)
+PASS -- TEST 'hafs_regional_datm_cdeps_intel' [21:59, 16:47](1225 MB)
 
-PASS -- COMPILE 'datm_cdeps_intel' [08:12, 06:25]
-PASS -- TEST 'datm_cdeps_control_cfsr_intel' [04:21, 02:56](1143 MB)
-PASS -- TEST 'datm_cdeps_restart_cfsr_intel' [03:24, 01:49](1119 MB)
-PASS -- TEST 'datm_cdeps_control_gefs_intel' [04:20, 02:54](1022 MB)
-PASS -- TEST 'datm_cdeps_iau_gefs_intel' [04:23, 02:47](1030 MB)
-PASS -- TEST 'datm_cdeps_stochy_gefs_intel' [04:20, 02:45](1033 MB)
-PASS -- TEST 'datm_cdeps_ciceC_cfsr_intel' [04:20, 02:50](1148 MB)
-PASS -- TEST 'datm_cdeps_bulk_cfsr_intel' [04:22, 02:59](1147 MB)
-PASS -- TEST 'datm_cdeps_bulk_gefs_intel' [04:24, 02:40](1031 MB)
-PASS -- TEST 'datm_cdeps_mx025_cfsr_intel' [11:22, 07:28](1053 MB)
-PASS -- TEST 'datm_cdeps_mx025_gefs_intel' [09:47, 06:34](1058 MB)
-PASS -- TEST 'datm_cdeps_multiple_files_cfsr_intel' [04:22, 02:47](1165 MB)
-PASS -- TEST 'datm_cdeps_3072x1536_cfsr_intel' [06:24, 04:23](2493 MB)
-PASS -- TEST 'datm_cdeps_gfs_intel' [06:23, 05:02](2481 MB)
+PASS -- COMPILE 'datm_cdeps_intel' [08:10, 06:46]
+PASS -- TEST 'datm_cdeps_control_cfsr_intel' [05:34, 02:56](1157 MB)
+PASS -- TEST 'datm_cdeps_restart_cfsr_intel' [03:22, 01:43](1096 MB)
+PASS -- TEST 'datm_cdeps_control_gefs_intel' [04:20, 02:46](1029 MB)
+PASS -- TEST 'datm_cdeps_iau_gefs_intel' [04:21, 02:43](1022 MB)
+PASS -- TEST 'datm_cdeps_stochy_gefs_intel' [04:22, 02:47](1028 MB)
+PASS -- TEST 'datm_cdeps_ciceC_cfsr_intel' [04:21, 02:48](1151 MB)
+PASS -- TEST 'datm_cdeps_bulk_cfsr_intel' [04:20, 02:50](1148 MB)
+PASS -- TEST 'datm_cdeps_bulk_gefs_intel' [04:19, 02:49](1016 MB)
+PASS -- TEST 'datm_cdeps_mx025_cfsr_intel' [10:14, 06:50](1053 MB)
+PASS -- TEST 'datm_cdeps_mx025_gefs_intel' [10:22, 06:47](1047 MB)
+PASS -- TEST 'datm_cdeps_multiple_files_cfsr_intel' [04:20, 02:57](1143 MB)
+PASS -- TEST 'datm_cdeps_3072x1536_cfsr_intel' [05:28, 04:06](2494 MB)
+PASS -- TEST 'datm_cdeps_gfs_intel' [05:24, 04:07](2486 MB)
 
-PASS -- COMPILE 'datm_cdeps_debug_intel' [05:14, 03:27] ( 2 warnings )
-PASS -- TEST 'datm_cdeps_debug_cfsr_intel' [08:27, 06:15](1086 MB)
+PASS -- COMPILE 'datm_cdeps_debug_intel' [05:13, 03:20] ( 2 warnings )
+PASS -- TEST 'datm_cdeps_debug_cfsr_intel' [08:27, 06:19](1068 MB)
 
-PASS -- COMPILE 'datm_cdeps_faster_intel' [08:12, 06:31]
-PASS -- TEST 'datm_cdeps_control_cfsr_faster_intel' [04:21, 02:44](1157 MB)
+PASS -- COMPILE 'datm_cdeps_faster_intel' [08:13, 06:55]
+PASS -- TEST 'datm_cdeps_control_cfsr_faster_intel' [04:23, 02:51](1147 MB)
 
-PASS -- COMPILE 'datm_cdeps_land_intel' [03:12, 01:15] ( 1 remarks )
-PASS -- TEST 'datm_cdeps_lnd_gswp3_intel' [02:33, 00:47](262 MB)
-PASS -- TEST 'datm_cdeps_lnd_era5_intel' [02:28, 00:53](330 MB)
-PASS -- TEST 'datm_cdeps_lnd_era5_rst_intel' [02:28, 00:31](327 MB)
+PASS -- COMPILE 'datm_cdeps_land_intel' [03:13, 01:36] ( 1 remarks )
+PASS -- TEST 'datm_cdeps_lnd_gswp3_intel' [02:31, 00:48](253 MB)
+PASS -- TEST 'datm_cdeps_lnd_era5_intel' [02:25, 00:52](315 MB)
+PASS -- TEST 'datm_cdeps_lnd_era5_rst_intel' [02:32, 00:38](313 MB)
 
-PASS -- COMPILE 'datm_cdeps_lm4_intel' [03:11, 01:18]
-PASS -- TEST 'datm_cdeps_lm4_gswp3_intel' [02:43, 00:36](572 MB)
-PASS -- TEST 'datm_cdeps_lm4_gswp3_rst_intel' [02:34, 00:19](463 MB)
+PASS -- COMPILE 'datm_cdeps_lm4_intel' [03:12, 01:35]
+PASS -- TEST 'datm_cdeps_lm4_gswp3_intel' [02:36, 00:38](561 MB)
+PASS -- TEST 'datm_cdeps_lm4_gswp3_rst_intel' [02:40, 00:23](441 MB)
 
-PASS -- COMPILE 'atm_ds2s_docn_pcice_intel' [12:12, 10:54] ( 1 remarks )
+PASS -- COMPILE 'atm_ds2s_docn_pcice_intel' [13:12, 11:15] ( 1 remarks )
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'atm_ds2s_docn_pcice_intel' [, ]( MB)
 
-PASS -- COMPILE 'atm_ds2s_docn_dice_intel' [12:12, 10:37] ( 1 warnings 1 remarks )
+PASS -- COMPILE 'atm_ds2s_docn_dice_intel' [12:12, 10:40] ( 1 warnings 1 remarks )
 FAILED: UNABLE TO START TEST -- TEST 'atm_ds2s_docn_dice_intel' [, ]( MB)
 
-PASS -- COMPILE 'atml_intel' [13:12, 11:29] ( 9 warnings 2 remarks )
+PASS -- COMPILE 'atml_intel' [13:11, 11:14] ( 9 warnings 2 remarks )
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_p8_atmlnd_intel' [, ]( MB)
 FAILED: UNABLE TO START TEST -- TEST 'control_restart_p8_atmlnd_intel' [, ]( MB)
 
-PASS -- COMPILE 'atml_debug_intel' [08:11, 06:06] ( 896 warnings 2 remarks )
+PASS -- COMPILE 'atml_debug_intel' [07:11, 05:59] ( 896 warnings 2 remarks )
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_p8_atmlnd_debug_intel' [, ]( MB)
 
-PASS -- COMPILE 'atmw_intel' [13:12, 11:08] ( 9 remarks )
+PASS -- COMPILE 'atmw_intel' [12:11, 10:57] ( 8 remarks )
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'atmwav_control_noaero_p8_intel' [, ]( MB)
 
-PASS -- COMPILE 'atmaero_intel' [12:12, 10:40] ( 1 remarks )
+PASS -- COMPILE 'atmaero_intel' [12:12, 10:53] ( 1 remarks )
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'atmaero_control_p8_intel' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'atmaero_control_p8_rad_intel' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'atmaero_control_p8_rad_micro_intel' [, ]( MB)
 
-PASS -- COMPILE 'atmaq_debug_intel' [07:12, 05:11] ( 891 warnings 6 remarks )
+PASS -- COMPILE 'atmaq_debug_intel' [06:11, 04:57] ( 891 warnings 6 remarks )
 
-PASS -- COMPILE 'atm_fbh_intel' [11:12, 09:59] ( 3 warnings 8 remarks )
+PASS -- COMPILE 'atm_fbh_intel' [12:13, 10:11] ( 3 warnings 8 remarks )
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_regional_atm_fbh_intel' [, ]( MB)
 
-PASS -- COMPILE 'rrfs_dyn32_phy32_intelllvm' [08:13, 07:01]
+PASS -- COMPILE 'rrfs_dyn32_phy32_intelllvm' [08:10, 06:54]
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_control_dyn32_phy32_intelllvm' [, ]( MB)
 
-PASS -- COMPILE 'rrfs_dyn64_phy32_intelllvm' [08:12, 06:41]
+PASS -- COMPILE 'rrfs_dyn64_phy32_intelllvm' [09:11, 07:07]
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_control_dyn64_phy32_intelllvm' [, ]( MB)
 
-PASS -- COMPILE 'atm_gnu' [06:12, 04:51]
+PASS -- COMPILE 'atm_gnu' [06:11, 04:46]
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_c48_gnu' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_stochy_gnu' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_ras_gnu' [, ]( MB)
@@ -328,7 +327,7 @@ FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_p8_gnu' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_p8_ugwpv1_gnu' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_flake_gnu' [, ]( MB)
 
-PASS -- COMPILE 'rrfs_gnu' [06:12, 04:28]
+PASS -- COMPILE 'rrfs_gnu' [06:14, 04:21]
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_control_gnu' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_decomp_gnu' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_2threads_gnu' [, ]( MB)
@@ -344,30 +343,30 @@ FAILED: UNABLE TO START TEST -- TEST 'hrrr_control_restart_gnu' [, ]( MB)
 FAILED: UNABLE TO START TEST -- TEST 'hrrr_control_restart_noqr_gnu' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rrfs_v1beta_gnu' [, ]( MB)
 
-PASS -- COMPILE 'csawmg_gnu' [05:13, 03:58]
+PASS -- COMPILE 'csawmg_gnu' [06:11, 04:25]
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_csawmg_gnu' [, ]( MB)
 
-FAILED: UNABLE TO FINISH COMPILE -- COMPILE 'atm_dyn32_debug_gnu' [, ]
-SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_diag_debug_gnu' [, ]( MB)
-SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'regional_debug_gnu' [, ]( MB)
-SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_control_debug_gnu' [, ]( MB)
-SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hrrr_control_debug_gnu' [, ]( MB)
-SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hrrr_gf_debug_gnu' [, ]( MB)
-SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hrrr_c3_debug_gnu' [, ]( MB)
-SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_diag_debug_gnu' [, ]( MB)
-SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_noah_sfcdiff_cires_ugwp_debug_gnu' [, ]( MB)
-SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_progcld_thompson_debug_gnu' [, ]( MB)
-SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rrfs_v1beta_debug_gnu' [, ]( MB)
-SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_ras_debug_gnu' [, ]( MB)
-SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_stochy_debug_gnu' [, ]( MB)
-SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_debug_p8_gnu' [, ]( MB)
-SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_flake_debug_gnu' [, ]( MB)
-SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_clm_lake_debug_gnu' [, ]( MB)
-SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'gnv1_c96_no_nest_debug_gnu' [, ]( MB)
+PASS -- COMPILE 'atm_dyn32_debug_gnu' [09:11, 07:39]
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_diag_debug_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'regional_debug_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_control_debug_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hrrr_control_debug_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hrrr_gf_debug_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hrrr_c3_debug_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_diag_debug_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_noah_sfcdiff_cires_ugwp_debug_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_progcld_thompson_debug_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rrfs_v1beta_debug_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_ras_debug_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_stochy_debug_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'control_debug_p8_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_flake_debug_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_clm_lake_debug_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'gnv1_c96_no_nest_debug_gnu' [, ]( MB)
 
-PASS -- COMPILE 'wam_debug_gnu' [04:12, 02:31]
+PASS -- COMPILE 'wam_debug_gnu' [04:11, 02:40]
 
-PASS -- COMPILE 'rrfs_dyn32_phy32_gnu' [06:12, 04:16]
+PASS -- COMPILE 'rrfs_dyn32_phy32_gnu' [06:11, 04:10]
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_control_dyn32_phy32_gnu' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hrrr_control_dyn32_phy32_gnu' [, ]( MB)
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_2threads_dyn32_phy32_gnu' [, ]( MB)
@@ -379,50 +378,41 @@ FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'conus13km_control_gnu' [, ]( MB)
 FAILED: UNABLE TO START TEST -- TEST 'conus13km_2threads_gnu' [, ]( MB)
 FAILED: UNABLE TO START TEST -- TEST 'conus13km_restart_mismatch_gnu' [, ]( MB)
 
-FAILED: UNABLE TO FINISH COMPILE -- COMPILE 'atm_dyn64_phy32_gnu' [, ]
-SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_control_dyn64_phy32_gnu' [, ]( MB)
+PASS -- COMPILE 'atm_dyn64_phy32_gnu' [12:12, 10:15]
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_control_dyn64_phy32_gnu' [, ]( MB)
 
-FAILED: UNABLE TO FINISH COMPILE -- COMPILE 'atm_dyn32_phy32_debug_gnu' [, ]
-SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_control_debug_dyn32_phy32_gnu' [, ]( MB)
-SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hrrr_control_debug_dyn32_phy32_gnu' [, ]( MB)
-SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'conus13km_debug_gnu' [, ]( MB)
-SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'conus13km_debug_qr_gnu' [, ]( MB)
-SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'conus13km_debug_2threads_gnu' [, ]( MB)
-SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'conus13km_radar_tten_debug_gnu' [, ]( MB)
+PASS -- COMPILE 'atm_dyn32_phy32_debug_gnu' [09:12, 07:12]
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_control_debug_dyn32_phy32_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'hrrr_control_debug_dyn32_phy32_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'conus13km_debug_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'conus13km_debug_qr_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'conus13km_debug_2threads_gnu' [, ]( MB)
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'conus13km_radar_tten_debug_gnu' [, ]( MB)
 
-FAILED: UNABLE TO FINISH COMPILE -- COMPILE 'atm_dyn64_phy32_debug_gnu' [, ]
-SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_control_dyn64_phy32_debug_gnu' [, ]( MB)
+PASS -- COMPILE 'atm_dyn64_phy32_debug_gnu' [09:12, 07:04]
+FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'rap_control_dyn64_phy32_debug_gnu' [, ]( MB)
 
-PASS -- COMPILE 's2swa_gnu' [18:12, 16:48]
+PASS -- COMPILE 's2swa_gnu' [18:11, 16:25]
 
-PASS -- COMPILE 's2s_gnu' [18:12, 16:23]
+PASS -- COMPILE 's2s_gnu' [17:13, 16:06]
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_control_nowave_noaero_p8_gnu' [, ]( MB)
 
-PASS -- COMPILE 's2swa_debug_gnu' [05:11, 03:13]
+PASS -- COMPILE 's2swa_debug_gnu' [05:11, 03:28]
 
-PASS -- COMPILE 's2sw_pdlib_gnu' [17:14, 16:05]
+PASS -- COMPILE 's2sw_pdlib_gnu' [18:13, 16:56]
 FAILED: UNABLE TO COMPLETE COMPARISON -- TEST 'cpld_control_pdlib_p8_gnu' [, ]( MB)
 
-PASS -- COMPILE 's2sw_pdlib_debug_gnu' [04:11, 03:05]
+PASS -- COMPILE 's2sw_pdlib_debug_gnu' [06:11, 04:11]
 
-PASS -- COMPILE 'datm_cdeps_gnu' [17:12, 15:45]
-PASS -- TEST 'datm_cdeps_control_cfsr_gnu' [05:23, 03:16](694 MB)
+PASS -- COMPILE 'datm_cdeps_gnu' [18:13, 16:26]
+PASS -- TEST 'datm_cdeps_control_cfsr_gnu' [04:19, 02:59](684 MB)
 
 SYNOPSIS:
-Starting Date/Time: 20250207 20:45:39
-Ending Date/Time: 20250207 23:35:29
-Total Time: 02h:50m:07s
-Compiles Completed: 58/62
+Starting Date/Time: 20250227 15:19:04
+Ending Date/Time: 20250227 18:28:20
+Total Time: 03h:10m:44s
+Compiles Completed: 62/62
 Tests Completed: 22/250
-Failed Compiles:
-* COMPILE atm_dyn32_debug_gnu: FAILED: UNABLE TO FINISH COMPILE
--- LOG: /scratch1/BMC/gsd-fv3/Larissa.Reames/ufs-weather-model-radfix/tests/logs/log_hera/compile_atm_dyn32_debug_gnu.log
-* COMPILE atm_dyn64_phy32_gnu: FAILED: UNABLE TO FINISH COMPILE
--- LOG: /scratch1/BMC/gsd-fv3/Larissa.Reames/ufs-weather-model-radfix/tests/logs/log_hera/compile_atm_dyn64_phy32_gnu.log
-* COMPILE atm_dyn32_phy32_debug_gnu: FAILED: UNABLE TO FINISH COMPILE
--- LOG: /scratch1/BMC/gsd-fv3/Larissa.Reames/ufs-weather-model-radfix/tests/logs/log_hera/compile_atm_dyn32_phy32_debug_gnu.log
-* COMPILE atm_dyn64_phy32_debug_gnu: FAILED: UNABLE TO FINISH COMPILE
--- LOG: /scratch1/BMC/gsd-fv3/Larissa.Reames/ufs-weather-model-radfix/tests/logs/log_hera/compile_atm_dyn64_phy32_debug_gnu.log
 Failed Tests:
 * TEST cpld_control_p8_mixedmode_intel: FAILED: UNABLE TO COMPLETE COMPARISON
 -- LOG: /scratch1/BMC/gsd-fv3/Larissa.Reames/ufs-weather-model-radfix/tests/logs/log_hera/run_cpld_control_p8_mixedmode_intel.log
@@ -724,8 +714,8 @@ Failed Tests:
 -- LOG: /scratch1/BMC/gsd-fv3/Larissa.Reames/ufs-weather-model-radfix/tests/logs/log_hera/run_hafs_regional_specified_moving_1nest_atm_intel.log
 * TEST hafs_regional_storm_following_1nest_atm_intel: FAILED: UNABLE TO COMPLETE COMPARISON
 -- LOG: /scratch1/BMC/gsd-fv3/Larissa.Reames/ufs-weather-model-radfix/tests/logs/log_hera/run_hafs_regional_storm_following_1nest_atm_intel.log
-* TEST hafs_regional_storm_following_1nest_atm_ocn_intel: FAILED: TEST TIMED OUT
--- LOG: /scratch1/NCEPDEV/stmp2/Larissa.Reames/FV3_RT/rt_344279/hafs_regional_storm_following_1nest_atm_ocn_intel/err
+* TEST hafs_regional_storm_following_1nest_atm_ocn_intel: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /scratch1/BMC/gsd-fv3/Larissa.Reames/ufs-weather-model-radfix/tests/logs/log_hera/run_hafs_regional_storm_following_1nest_atm_ocn_intel.log
 * TEST hafs_global_storm_following_1nest_atm_intel: FAILED: UNABLE TO COMPLETE COMPARISON
 -- LOG: /scratch1/BMC/gsd-fv3/Larissa.Reames/ufs-weather-model-radfix/tests/logs/log_hera/run_hafs_global_storm_following_1nest_atm_intel.log
 * TEST gnv1_nested_intel: FAILED: UNABLE TO COMPLETE COMPARISON
@@ -808,6 +798,38 @@ Failed Tests:
 -- LOG: /scratch1/BMC/gsd-fv3/Larissa.Reames/ufs-weather-model-radfix/tests/logs/log_hera/run_rrfs_v1beta_gnu.log
 * TEST control_csawmg_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
 -- LOG: /scratch1/BMC/gsd-fv3/Larissa.Reames/ufs-weather-model-radfix/tests/logs/log_hera/run_control_csawmg_gnu.log
+* TEST control_diag_debug_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /scratch1/BMC/gsd-fv3/Larissa.Reames/ufs-weather-model-radfix/tests/logs/log_hera/run_control_diag_debug_gnu.log
+* TEST regional_debug_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /scratch1/BMC/gsd-fv3/Larissa.Reames/ufs-weather-model-radfix/tests/logs/log_hera/run_regional_debug_gnu.log
+* TEST rap_control_debug_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /scratch1/BMC/gsd-fv3/Larissa.Reames/ufs-weather-model-radfix/tests/logs/log_hera/run_rap_control_debug_gnu.log
+* TEST hrrr_control_debug_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /scratch1/BMC/gsd-fv3/Larissa.Reames/ufs-weather-model-radfix/tests/logs/log_hera/run_hrrr_control_debug_gnu.log
+* TEST hrrr_gf_debug_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /scratch1/BMC/gsd-fv3/Larissa.Reames/ufs-weather-model-radfix/tests/logs/log_hera/run_hrrr_gf_debug_gnu.log
+* TEST hrrr_c3_debug_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /scratch1/BMC/gsd-fv3/Larissa.Reames/ufs-weather-model-radfix/tests/logs/log_hera/run_hrrr_c3_debug_gnu.log
+* TEST rap_diag_debug_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /scratch1/BMC/gsd-fv3/Larissa.Reames/ufs-weather-model-radfix/tests/logs/log_hera/run_rap_diag_debug_gnu.log
+* TEST rap_noah_sfcdiff_cires_ugwp_debug_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /scratch1/BMC/gsd-fv3/Larissa.Reames/ufs-weather-model-radfix/tests/logs/log_hera/run_rap_noah_sfcdiff_cires_ugwp_debug_gnu.log
+* TEST rap_progcld_thompson_debug_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /scratch1/BMC/gsd-fv3/Larissa.Reames/ufs-weather-model-radfix/tests/logs/log_hera/run_rap_progcld_thompson_debug_gnu.log
+* TEST rrfs_v1beta_debug_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /scratch1/BMC/gsd-fv3/Larissa.Reames/ufs-weather-model-radfix/tests/logs/log_hera/run_rrfs_v1beta_debug_gnu.log
+* TEST control_ras_debug_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /scratch1/BMC/gsd-fv3/Larissa.Reames/ufs-weather-model-radfix/tests/logs/log_hera/run_control_ras_debug_gnu.log
+* TEST control_stochy_debug_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /scratch1/BMC/gsd-fv3/Larissa.Reames/ufs-weather-model-radfix/tests/logs/log_hera/run_control_stochy_debug_gnu.log
+* TEST control_debug_p8_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /scratch1/BMC/gsd-fv3/Larissa.Reames/ufs-weather-model-radfix/tests/logs/log_hera/run_control_debug_p8_gnu.log
+* TEST rap_flake_debug_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /scratch1/BMC/gsd-fv3/Larissa.Reames/ufs-weather-model-radfix/tests/logs/log_hera/run_rap_flake_debug_gnu.log
+* TEST rap_clm_lake_debug_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /scratch1/BMC/gsd-fv3/Larissa.Reames/ufs-weather-model-radfix/tests/logs/log_hera/run_rap_clm_lake_debug_gnu.log
+* TEST gnv1_c96_no_nest_debug_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /scratch1/BMC/gsd-fv3/Larissa.Reames/ufs-weather-model-radfix/tests/logs/log_hera/run_gnv1_c96_no_nest_debug_gnu.log
 * TEST rap_control_dyn32_phy32_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
 -- LOG: /scratch1/BMC/gsd-fv3/Larissa.Reames/ufs-weather-model-radfix/tests/logs/log_hera/run_rap_control_dyn32_phy32_gnu.log
 * TEST hrrr_control_dyn32_phy32_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
@@ -828,6 +850,22 @@ Failed Tests:
 -- LOG: N/A
 * TEST conus13km_restart_mismatch_gnu: FAILED: UNABLE TO START TEST
 -- LOG: N/A
+* TEST rap_control_dyn64_phy32_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /scratch1/BMC/gsd-fv3/Larissa.Reames/ufs-weather-model-radfix/tests/logs/log_hera/run_rap_control_dyn64_phy32_gnu.log
+* TEST rap_control_debug_dyn32_phy32_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /scratch1/BMC/gsd-fv3/Larissa.Reames/ufs-weather-model-radfix/tests/logs/log_hera/run_rap_control_debug_dyn32_phy32_gnu.log
+* TEST hrrr_control_debug_dyn32_phy32_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /scratch1/BMC/gsd-fv3/Larissa.Reames/ufs-weather-model-radfix/tests/logs/log_hera/run_hrrr_control_debug_dyn32_phy32_gnu.log
+* TEST conus13km_debug_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /scratch1/BMC/gsd-fv3/Larissa.Reames/ufs-weather-model-radfix/tests/logs/log_hera/run_conus13km_debug_gnu.log
+* TEST conus13km_debug_qr_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /scratch1/BMC/gsd-fv3/Larissa.Reames/ufs-weather-model-radfix/tests/logs/log_hera/run_conus13km_debug_qr_gnu.log
+* TEST conus13km_debug_2threads_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /scratch1/BMC/gsd-fv3/Larissa.Reames/ufs-weather-model-radfix/tests/logs/log_hera/run_conus13km_debug_2threads_gnu.log
+* TEST conus13km_radar_tten_debug_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /scratch1/BMC/gsd-fv3/Larissa.Reames/ufs-weather-model-radfix/tests/logs/log_hera/run_conus13km_radar_tten_debug_gnu.log
+* TEST rap_control_dyn64_phy32_debug_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
+-- LOG: /scratch1/BMC/gsd-fv3/Larissa.Reames/ufs-weather-model-radfix/tests/logs/log_hera/run_rap_control_dyn64_phy32_debug_gnu.log
 * TEST cpld_control_nowave_noaero_p8_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
 -- LOG: /scratch1/BMC/gsd-fv3/Larissa.Reames/ufs-weather-model-radfix/tests/logs/log_hera/run_cpld_control_nowave_noaero_p8_gnu.log
 * TEST cpld_control_pdlib_p8_gnu: FAILED: UNABLE TO COMPLETE COMPARISON
