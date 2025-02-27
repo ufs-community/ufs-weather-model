@@ -70,7 +70,7 @@ export OCN_tasks_cpl_bmrk=120
 export OCN_thrds_cpl_bmrk=1
 export ICE_tasks_cpl_bmrk=48
 export ICE_thrds_cpl_bmrk=1
-export WAV_tasks_cpl_bmrk=80
+export WAV_tasks_cpl_bmrk=120
 export WAV_thrds_cpl_bmrk=2
 
 export THRD_cpl_c192=2
@@ -119,6 +119,7 @@ export wav_omp_num_threads=1
 export fbh_omp_num_threads=1
 
 export histaux_enabled=.false.
+export BMIC=.false.
 
 if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
 
@@ -585,6 +586,7 @@ export MODEL_INITIALIZATION=false
 export WARM_START=.false.
 export READ_INCREMENT=.false.
 export RES_LATLON_DYNAMICS="''"
+export ATM_IGNORE_RST_CKSUM=.false.
 export INCREMENT_FILE_ON_NATIVE_GRID=.false.
 export NGGPS_IC=.true.
 export EXTERNAL_IC=.true.
@@ -1262,6 +1264,7 @@ export_mom6() {
   export DT_THERM_MOM6=3600
   export MOM6_INPUT=MOM_input_100.IN
   export MOM6_OUTPUT_DIR=./MOM6_OUTPUT
+  export MOM6_OUTPUT_FH=6
   export MOM6_RESTART_DIR=./RESTART/
   export MOM6_RESTART_SETTING=n
   export MOM6_RIVER_RUNOFF=False
@@ -1398,8 +1401,6 @@ export DOCN_CDEPS=false
 export DICE_CDEPS=false
 export CICE_PRESCRIBED=false
 export CDEPS_INLINE=false
-export FV3BMIC='p8c'
-export BMIC=.false.
 export DAYS=1
 
 #model configure
