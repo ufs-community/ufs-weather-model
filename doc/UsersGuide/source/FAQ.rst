@@ -8,136 +8,127 @@ FAQ
 How do I build and run a single test of the UFS Weather Model?
 ==============================================================
 
-An efficient way to build and run the UFS Weather Model is to use the regression test
-(``rt.sh``).  This script is widely used by model developers on Tier 1 and 2 platforms
+An efficient way to build and run the UFS Weather Model is to use the regression test (RT) script
+(``rt.sh``). This script is widely used by model developers on :wm-wiki:`Tier 1 <Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>` and 2 platforms
 and is described in :numref:`Section %s <run-wm>`. The advantages to this approach are:
 
-   * It does not require a workflow, pre- or post-processing steps.
-   * The batch submission script is generated.
-   * Any required input data is already available for machines used by the regression test.
-   * Once the ``rt.sh`` test completes, you will have a working copy in your run directory where you can
+   * It does not require a workflow or pre- or post-processing steps.
+   * It generates the batch submission script.
+   * Any required input data is already available for machines used by the RT system.
+   * Once the ``rt.sh`` test completes, users will have a working copy in their run directory where they can
      make modifications to the namelist and other files and then re-run the executable.
 
-The steps are:
+Users on Level 2-4 systems may need to perform additional steps. For example, they may need to :ref:`download data <GetData>` and :ref:`update files <other-systems>` with platform-specific information. 
 
-   #. Clone the source code and all the submodules as described in :numref:`Section %s <DownloadingWMCode>`; then
-      go into the ``tests`` directory:
+For all systems, users will need to:
 
-      .. code-block:: console
-
-         cd ufs-weather-model # (or the top level where you checked out the code)
-         cd tests
-
-   #. Find a configure (``*.conf``) file that contains the machine and compiler you are using. For this
-      example, the Intel compiler on Derecho is used. To create a custom configure file, two lines are
-      needed: a ``COMPILE`` line and a ``RUN`` line. The ``COMPILE`` line should contain the name
-      of the machine and compiler (e.g., ``derecho.intel``) and the desired physics suites for the build. Choose a
-      ``RUN`` line under this ``COMPILE`` command that uses the desired suite. For example:
+   #. Clone the source code and submodules as described in :numref:`Section %s <DownloadingWMCode>`; then
+      navigate to the ``tests`` directory:
 
       .. code-block:: console
 
-		 COMPILE | atm_dyn32 | intel | -DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16,FV3_GFS_v16_flake,FV3_GFS_v17_p8,FV3_GFS_v17_p8_rrtmgp,FV3_GFS_v15_thompson_mynn_lam3km,FV3_WoFS_v0,FV3_GFS_v17_p8_mynn,FV3_GFS_v17_p8_ugwpv1 -D32BIT=ON | | fv3 |
-		 RUN     | control_c48 |          | baseline |          | standard |          | fv3     |
+         git clone --recursive https://github.com/ufs-community/ufs-weather-model.git
+         cd ufs-weather-model/tests
 
-      Put these two lines into a file called ``my_test.conf``.  The parameters used in this run can be
-      found in the ``fv3_ccpp_gfs_v16beta`` file in the ``ufs-weather-model/tests/tests`` directory.
-
-      .. note::  These two lines are long and may not appear in entirety in your browser. Scroll to the right to see
-               the entire line.
-
-   #. Modify the ``rt.sh`` script to put the output in a run directory where you have write permission:
+   #. Modify the ``rt.sh`` script to put the output in a run directory where you have write permissions. For example, on Hercules, users would update ``dprefix``:
 
       .. code-block:: console
 
-         if [[ $MACHINE_ID = derecho.* ]]; then stanza:
+         case ${MACHINE_ID} in
          ...
-         dprefix=/glade/scratch
+         hercules)
+         ...
+         dprefix="/work2/noaa/stmp/${USER}"
+         DISKNM="/work/noaa/epic/hercules/UFS-WM_RT"
+         STMP="${dprefix}/stmp"
+         PTMP="${dprefix}/stmp"
 
-      This works for Derecho, since ``$USER/FV3_RT`` will be appended.  Also check that ``RTPWD``
-      points to a diretory that exists:
+   #. Run the ``rt.sh`` script: 
+      
+      * To run one specific test, such as ``control_c48``, use the ``-n`` flag to designate the name of the test and the type of compiler. 
 
-      .. code-block:: console
+         .. code-block:: console
 
-         if [[ $MACHINE_ID = derecho.* ]]; then
-            RTPWD=${RTPWD:-$DISKNM/ufs-public-release-20200224/${COMPILER^^}}
+            ./rt.sh -a <account_name> -k -n "control_c48 intel"
 
-   #. Run the ``rt.sh`` script from the ``tests`` directory:
+         where ``<account_name>`` is replaced with the name of an account where the user can charge computational resources. 
+         The ``-k`` option will preserve the run directory after the forecast finishes. The ``rt.conf`` file contains all of the currently maintained RTs. 
 
-      .. code-block:: console
+      * Users can run the entire RT suite using the ecFlow workflow manager:
 
-         ./rt.sh -k -l my_test.conf >& my_test.out &
+         .. code-block:: console
 
-      Check ``my_test.out`` for build and run status, plus other standard output. Check
-      ``/glade/scratch/$USER/FV3_RT/rt_PID`` for the model run, where ``PID`` is a process ID.
-      The build will take about 10-15 minutes and the run will be fast, depending on how long
-      it waits in the queue.  A message ``"REGRESSION TEST WAS SUCCESSFUL"`` will be written to this
-      file, along with other entertainment: ``'Elapsed time: 00h:14m:12s. Have a nice day!'``.
+            ./rt.sh -a <account_name> -e -k -l rt.conf
+      
+      * To run ``rt.sh`` using a custom configuration file and the Rocoto workflow manager, create the configuration file (e.g., ``my_tests.conf``) based on 
+         the desired tests in ``rt.conf``, and run:
 
+         .. code-block:: console
+
+            ./rt.sh -r -k -l my_tests.conf
+
+         adding additional arguments as desired. 
+
+   #. Check ``${STMP}/FV3_RT/rt_PID/<test_name>`` for the model run, where ``PID`` is a process ID, and ``<test_name>`` refers to a specific test, such as ``control_c48_intel``.
+      A successful test will produce an ``out`` file with an exit code at the bottom. ``exit code 0:0`` indicates a successful run. For example: 
+
+      .. code-block:: console 
+
+         Job 7430255 finished for user Joe.Schmoe in partition hera with exit code 0:0
+
+      There is also a RESOURCE STATISTICS summary at the end of the test's ``out`` file. Errors will appear in the ``err`` file. 
+   
    #. When the build and run are complete, modify the namelist or ``model_configure`` files
       and re-run by submitting the ``job_card`` file:
 
       .. code-block:: console
 
          qsub job_card
+         # OR
+         sbatch job_card
 
 ============================================
 How do I change the length of the model run?
 ============================================
-In your run directory, there is a file named ``model_configure``.  Change the
-variable ``nhours_fcst`` to the desired number of hours.
+For individual tests, users can add the ``FHMAX`` variable to the test configuration file. For example, in the :wm-repo:`control_c48 <blob/develop/tests/tests/control_c48>` case, 
+users can increase the forecast duration from the default (``DAYS*24`` --- or 24 hours, in this case) to 48 hours by adding the statement:
+
+.. code-block:: console
+
+   export FHMAX=48
+
+Alternatively, users can set a different default value in :wm-repo:`default_vars.sh <blob/develop/tests/default_vars.sh>` by changing the ``FHMAX`` variable directly in ``default_vars.sh``. 
+
+To rerun a previously run test with a different forecast length, go to the run directory (usually ``${STMP}/FV3_RT/rt_PID/<test_name>``), and open the file named ``model_configure``.  
+Change the variable ``nhours_fcst`` to the desired number of hours for the forecast and rerun by sumbitting the job card, as described above.
 
 ==============================================================
 How do I set the output history interval?
 ==============================================================
 
-The interval at which output (history) files are written is controlled in two
-places, and depends on whether you are using the write component to generate your output files.
-:numref:`Table %s <OutputControl>` describes the relevant variables.  If the write_component is used, then the variables listed as ``model_configure`` are required.  It is however, also required that the settings in ``input.nml`` match those same settings in ``model_configure``.  If these settings are inconsistent, then unpredictable output files and intervals may occur!
+The interval at which output (history) files are written is controlled via the ``model_configure*`` files. 
+When using the regression testing framework, users can adjust values in the test file for the test they plan to run, and these will be fed into the appropriate ``model_configure`` file.
+To adjust the default values for entire sets of tests, values can be modified in the ``tests/default_vars.sh`` script. 
+:numref:`Table %s <OutputControl>` describes the relevant variables.  
 
 .. _OutputControl:
 
-.. list-table:: *Namelist variables used to control the output file frequency.*
+.. list-table:: *Variables used to control the output file frequency*
    :widths: 15 10 10 30
    :header-rows: 1
 
    * - Namelist variable
      - Location
-     - Default Value
+     - Default Value in ``export_fv3`` function of ``default_vars.sh``
      - Description
-   * - fdiag
-     - input.nml
-     - 0
-     - Array with dimension ``maxhr`` = 4096 listing the diagnostic output times (in hours) for the GFS physics.
-       This can either be a list of times after initialization, or an interval if only the first entry is
-       nonzero. The default setting of 0 will result in no outputs.
-   * - fhmax
-     - input.nml
-     - 384
-     - The maximal forecast time for output.
-   * - fhmaxhf
-     - input.nml
-     - 120
-     - The maximal forecast hour for high frequency output.
-   * - fhout
-     - input.nml
-     - 3
-     - Output frequency during forecast time from 0 to ``fhmax``, or from ``fhmaxhf`` to ``fhmax`` if ``fhmaxf>0``.
-   * - fhouthf
-     - input.nml
-     - 1
-     - The high frequency output frequency during the forecast time from 0 to ``fhmaxhf`` hour.
-   * - nfhmax_hf
+   * - OUTPUT_FH
      - model_configure
-     - 0
-     - forecast length of high history file
-   * - nfhout_hf
-     - model_configure
-     - 1
-     - high history file output frequency
-   * - nfhout
-     - model_configure
-     - 3
-     - history file output frequency
+     - ``"12 -1"``
+     - Array listing the forecast output frequency; this can either be a list of times after initialization or an interval. 
+   * - nhours_fcst
+     - model_configure (uses ``FHMAX`` value set in the test file or ``default_vars.sh``)
+     - 24
+     - The maximal output time for the forecast.
 
 =============================================================
 How do I turn off IO for the components of the coupled model?
