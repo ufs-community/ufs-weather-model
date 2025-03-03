@@ -344,8 +344,6 @@ For the ``ufs-weather-model NG-GODAS`` configuration (atm/ocean/ice/data assimil
 
     export CMAKE_FLAGS="-DAPP=NG-GODAS"
 
-.. COMMENT: Check! --> In rt.conf, no CCPP suite is set. Is there a default one?
-
 HAFS Configurations
 ----------------------
 
@@ -447,31 +445,36 @@ Users must edit the ``rt.conf`` file to indicate which tests/configurations to r
 The ``rt.conf`` File
 ------------------------
 
-Each line in the PSV (Pipe-separated values) file, ``rt.conf``, contains several columns of information. 
-The first column specifies whether to build a test (``COMPILE``) or run a test (``RUN``). 
-The second column specifies either configuration information for building a test or 
-the name of a test to run.
-Thus, the second column in a ``COMPILE`` line will list the application to build (e.g., ``-DAPP=S2S``), 
-the CCPP suite to use (e.g., ``-DCCPP_SUITES=FV3_GFS_2017_coupled``), and additional build options 
-(e.g., ``-DDEBUG=ON``) as needed. On a ``RUN`` line, the second column will contain a test name 
-(e.g., ``control_p8``). The test name should match the name of one of the test files in the 
-``tests/tests`` directory or, if the user is adding a new test, the name of the new test file. 
-The third column of ``rt.conf`` relates to the platform; 
-if blank, the test can run on any WM Tier-1 platform. 
-The fourth column deals with baseline creation 
-(see information on ``-c`` option :ref:`below <cmd-line-opts>` for more), 
-and ``fv3`` means that the test will be included during baseline creation.
+The ``rt.conf`` file is a pipe-separated values (PSV) file grouped into sections of tests with a ``COMPILE`` line followed by several ``RUN`` lines. The ``COMPILE`` line contains information needed to compile the tests, while the ``RUN`` lines contain information on specific tests. 
+``COMPILE`` lines have 6 columns:
+#. ``COMPILE`` indicator
+#. **Compile name** -- a category of test to compile
+#. **Compiler** to use in build (``intel`` or ``gnu``)
+#. **CMAKE Options** -- Provides all CMAKE options for the build. This typically includes the ``-DAPP`` and ``-DCCPP_SUITES`` flags; these flags set which components to build and which physics suites will be available at runtime. Additional options are documented in :numref:`Section %s <other-build-options>`, but users can examine the :wm-repo:`CMakeLists.txt <blob/develop/CMakeLists.txt>` file for the most up-to-date list of options. 
+#. **Machines** to run on (``-`` is used to ignore specified machines, ``+`` is used to run only on specified machines). For example: 
+    * ``+ hera orion gaea``: Compile will only run on Hera, Orion, and Gaea machines
+    * ``- wcoss2 acorn``: Compile will NOT be run on WCOSS2 or Acorn
+#. ``fv3``: Set as fv3. Previously, this was used to run a test without compiling code (e.g., if FV3 was already present). 
 
-The order of lines in ``rt.conf`` matters
-since ``rt.sh`` processes them sequentially; a ``RUN`` line should be preceeded
+After each compile line is one or more ``RUN`` lines. ``RUN`` lines have five columns. The build resulting from the ``COMPILE`` line above the ``RUN`` line will be used to run the tests. 
+#. ``RUN`` indicator
+#. **Test name** -- indicates which test in the :wm-repo:`tests/tests <blob/develop/tests/tests>` directory should be sourced.
+#. **Machines** to run on (``+``) or ignore (``-``).
+#. **Baseline Creation** -- controls whether the run creates its own baseline or uses the baseline from a different (control) test (see information on ``-c`` option :ref:`below <cmd-line-opts>` for more).
+#. **Comparison Test** -- Test name to compare baselines with if not itself.
+
+The order of lines in ``rt.conf`` matters since ``rt.sh`` processes them sequentially; a ``RUN`` line should be preceeded
 by a ``COMPILE`` line that builds the model used in the test. The following
 ``rt.conf`` file excerpt builds the standalone ATM model with GFS_v16 physics 
 in 32-bit mode and then runs the ``control`` test:
 
 .. code-block:: console
 
-    COMPILE | -DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16 -D32BIT=ON | | fv3
-    RUN     | control                                        | | fv3
+   COMPILE | s2swa_32bit_pdlib  | intel | -DAPP=S2SWA -D32BIT=ON -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_ugwpv1 -DPDLIB=ON | - noaacloud | fv3 |
+   RUN | cpld_control_gfsv17                               | - noaacloud                          | baseline |
+   RUN | cpld_control_gfsv17_iau                           | - noaacloud                          | baseline | cpld_control_gfsv17
+   RUN | cpld_restart_gfsv17                               | - noaacloud                          |          | cpld_control_gfsv17
+   RUN | cpld_mpi_gfsv17                                   | - noaacloud                          |          |
 
 The ``rt.conf`` file includes a large number of tests. If the user wants to run
 only specific tests, s/he can either (1) comment out the tests to be skipped (using the ``#`` prefix)
@@ -489,6 +492,8 @@ regression tests by editing the ``rt.conf`` file and executing:
 
 Users may need to add additional command line arguments or change information in the ``rt.sh`` file as well. 
 This information is provided in :numref:`Section %s <rt.sh>` below. 
+
+.. _other-systems:
 
 On Other Systems
 ------------------
@@ -521,25 +526,27 @@ To display detailed information on how to use ``rt.sh``, users can simply run ``
 
 .. code-block:: console
 
-   ./rt.sh -c | -e | -h | -k | -w | -d | -l <file> | -m | -n <name> | -r 
+   ./rt.sh -a <account> | -b <file> | -c | -d | -e | -h | -k | -l <file> | -m | -n <name> | -o | -r | -v | -w
+      -a  <account> to use on for HPC queue
+      -b  create new baselines only for tests listed in <file>
       -c  create new baseline results
+      -d  delete run directories that are not used by other tests
       -e  use ecFlow workflow manager
-      -h  display this help 
+      -h  display this help
       -k  keep run directory after rt.sh is completed
       -l  runs test specified in <file>
       -m  compare against new baseline results
       -n  run single test <name>
+      -o  compile only, skip tests
       -r  use Rocoto workflow manager
+      -v  verbose output
       -w  for weekly_test, skip comparing baseline results
-      -d  delete run direcotries that are not used by other tests
-
-.. COMMENT: An -n option is discussed below. Why is this not printed when running ./rt.sh? 
 
 When running a large number (10's or 100's) of tests, the ``-e`` or ``-r`` options can significantly
 decrease testing time by using a workflow manager (ecFlow or Rocoto, respectively) to queue the jobs 
 according to dependencies and run them concurrently. 
-The ``-n`` option can be used to run a single test; for example, ``./rt.sh -n control`` 
-will build the ATM model and run the ``control`` test. 
+The ``-n`` option can be used to run a single test; for example, ``./rt.sh -n "control_c48 intel"`` 
+will build the ATM model and run the ``control_c48`` test with an Intel compiler. 
 The ``-c`` option is used to create a baseline. New baselines are needed when code changes lead 
 to result changes and therefore deviate from existing baselines on a bit-for-bit basis.
 
@@ -611,7 +618,7 @@ This can be particularly useful for debugging and testing code changes. Note tha
 specifying the ``-k`` option retains the ``$RUNDIR``, e.g. ``./rt.sh -l rt.conf -k``.
 
 Inside the ``$RUNDIR`` directory are a number of model configuration files (``input.nml``, 
-``model_configure``, ``nems.configure``) and other application
+``model_configure``, ``ufs.configure``) and other application
 dependent files (e.g., ``ice_in`` for the Subseasonal-to-Seasonal Application).
 These model configuration files are
 generated by ``rt.sh`` from the template files in the ``tests/parm`` directory.
@@ -662,10 +669,8 @@ for that test. Default variables and their values are defined in the ``export_fv
 function of the ``default_vars.sh`` script for ATM configurations, the ``export_cpl``
 function for S2S configurations, and the ``export_datm`` function for the NG-GODAS configuration.
 Also, the names of template files for model configuration and initial conditions
-can be identified via variables ``INPUT_NML``, ``NEMS_CONFIGURE`` and ``FV3_RUN`` 
+can be identified via variables ``INPUT_NML``, ``UFS_CONFIGURE`` and ``FV3_RUN`` 
 by running ``grep -n INPUT_NML *`` inside the ``tests`` and ``tests/tests`` directories.
-
-.. COMMENT: Is NEMS_CONFIGURE still in there?
 
 .. _UsingOpnReqTest:
 
@@ -702,7 +707,7 @@ test case refers to any one of the operational requirements: ``thr``, ``mpi``, `
   +----------+-------------------------------------------------------------------------------+
 
 The operational requirement testing uses the same testing framework as the regression
-tests, so it is recommened that the user first read :numref:`Section %s <UsingRegressionTest>`. 
+tests, so it is recommended that the user first read :numref:`Section %s <UsingRegressionTest>`. 
 All the files in the subdirectories shown in :numref:`Table %s <RTSubDirs>` are relevant to the
 operational requirement test. The only difference is that the ``opnReqTest`` script replaces ``rt.sh``.
 The ``tests/opnReqTests`` directory contains
@@ -736,14 +741,13 @@ executing ``./opnReqTest -h``, which produces the following results:
 
 .. code-block:: console
  
-   Usage: opnReqTest -n <test-name> [ -c <test-case> ] [-b] [-d] [-e] [-k] [-h] [-x] [-z]
-
+   Usage: opnReqTest -n <test-name> -a <account> [ -c <test-case> ] [-b] [-d] [-e] [-k] [-h] [-x] [-z]
+  
+      -a  specify HPC <account> to use for batch job
       -n  specify <test-name>
-
-      -c  specify <test-case>
-            defaults to all test-cases: thr,mpi,dcp,rst,bit,dbg,fhz
-            comma-separated list of any combination of std,thr,mpi,dcp,rst,bit,dbg,fhz
-            
+      -c  specify <test-case> 
+          defaults to all test-cases: thr,mpi,dcp,rst,bit,dbg,fhz
+          comma-separated list of any combination of std,thr,mpi,dcp,rst,bit,dbg,fhz
       -b  test reproducibility for bit; compare against baseline
       -d  test reproducibility for dbg; compare against baseline
       -s  test reproducibility for std; compare against baseline
@@ -753,8 +757,9 @@ executing ``./opnReqTest -h``, which produces the following results:
       -x  skip compile
       -z  skip run
 
+
 Frequently used options are ``-e`` to use the ecFlow
-workflow manager, and ``-k`` to keep the ``$RUNDIR``. Not that the Rocoto workflow manager 
+workflow manager, and ``-k`` to keep the ``$RUNDIR``. The Rocoto workflow manager 
 is not used operationally and therefore is not an option. 
 
 As discussed in :numref:`Section %s <log-files>`, the variables and

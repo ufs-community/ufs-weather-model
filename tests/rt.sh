@@ -966,6 +966,24 @@ case ${MACHINE_ID} in
     PTMP="${dprefix}/stmp2"
     SCHEDULER="slurm"
     ;;
+  frontera)
+    echo "rt.sh: Setting up frontera..."
+    set -x
+    export PYTHONPATH=
+    if [[ "${ECFLOW:-false}" == true ]] ; then
+      ECFLOW_START=
+    fi
+    QUEUE=development
+    COMPILE_QUEUE=development
+    PARTITION=
+    dprefix="${SCRATCH}/frontera"
+    DISKNM="/work2/01118/tg803972/frontera/RT"
+    STMP=${dprefix}
+    PTMP=${dprefix}
+    SCHEDULER=slurm
+    export MPIEXEC="ibrun"
+    export MPIEXECOPTS=
+    ;;
   *)
     die "Unknown machine ID, please edit detect_machine.sh file"
     ;;
@@ -1016,7 +1034,7 @@ if [[ "${CREATE_BASELINE}" == false ]] ; then
 fi
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-${DISKNM}/NEMSfv3gfs/input-data-20240501}
-INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20250114
+INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20250212 
 INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC:-${DISKNM}/NEMSfv3gfs/BM_IC-20220207}
 INPUTDATA_LM4=${INPUTDATA_LM4:-${INPUTDATA_ROOT}/LM4_input_data}
 
