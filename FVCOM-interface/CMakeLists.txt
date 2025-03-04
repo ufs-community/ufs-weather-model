@@ -52,6 +52,9 @@ if(MPI_Fortran_FOUND)
   add_definitions(-DMULTIPROCESSOR)
 endif()
 
+# flag for bit-to-bit reproducibility
+add_definitions(-DPARTITION_SPECIAL)
+
 # metis
 set(ENABLE_METIS5 ON CACHE BOOL "Build with Metis version 5 support.")
 if(ENABLE_METIS5)
