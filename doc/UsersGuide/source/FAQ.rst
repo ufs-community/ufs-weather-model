@@ -10,15 +10,9 @@ How do I build and run a single test of the UFS Weather Model?
 
 An efficient way to build and run the UFS Weather Model is to use the regression test (RT) script
 (``rt.sh``). This script is widely used by model developers on :wm-wiki:`Tier 1 <Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>` and 2 platforms
-and is described in :numref:`Section %s <run-wm>`. The advantages to this approach are:
+and is described in :numref:`Section %s <run-wm>`. 
 
-   * It does not require a workflow or pre- or post-processing steps.
-   * It generates the batch submission script.
-   * Any required input data is already available for machines used by the RT system.
-   * Once the ``rt.sh`` test completes, users will have a working copy in their run directory where they can
-     make modifications to the namelist and other files and then re-run the executable.
-
-Users on Level 2-4 systems may need to perform additional steps. For example, they may need to :ref:`download data <GetData>` and :ref:`update files <other-systems>` with platform-specific information. 
+Users on Level 2-4 systems may need to perform additional steps prior to following the steps below. For example, they may need to :ref:`download data <GetData>` and :ref:`update files <other-systems>` with platform-specific information. 
 
 For all systems, users will need to:
 
@@ -585,9 +579,9 @@ Although it may seem counterintuitive, the physics tendencies will be output in 
 
 Users may find the following GitHub Discussions on this topic informative: 
 
-* :wm-repo:`Discussion #1867<discussions/1867>` 
-* `Discussion #862 <https://github.com/ufs-community/ufs-srweather-app/discussions/862>`_ 
-* :wm-repo:`Discussion #1862 <discussions/1862>`
+* :wm-repo:`WM Discussion #1867<discussions/1867>` 
+* `SRW App Discussion #862 <https://github.com/ufs-community/ufs-srweather-app/discussions/862>`_ 
+* :wm-repo:`WM Discussion #1862 <discussions/1862>`
 
 ===================================================================================================================
 How can I output a particular variable (e.g., accumulated precipitation) from the UFS WM atmospheric model (FV3)?
