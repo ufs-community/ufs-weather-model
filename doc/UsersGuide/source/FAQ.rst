@@ -30,7 +30,7 @@ For all systems, users will need to:
          git clone --recursive https://github.com/ufs-community/ufs-weather-model.git
          cd ufs-weather-model/tests
 
-   #. Modify the ``rt.sh`` script to put the output in a run directory where you have write permissions. For example, on Hercules, users would update ``dprefix``:
+   #. Modify the ``rt.sh`` script to put the output in a run directory where they have write permissions. For example, on Hercules, users would update ``dprefix``:
 
       .. code-block:: console
 
@@ -45,7 +45,7 @@ For all systems, users will need to:
 
    #. Run the ``rt.sh`` script: 
       
-      * To run one specific test, such as ``control_c48``, use the ``-n`` flag to designate the name of the test and the type of compiler. 
+      * To run one specific test, such as ``control_c48``, use the ``-n`` flag to designate the name of the test and the type of compiler: 
 
          .. code-block:: console
 
@@ -60,8 +60,7 @@ For all systems, users will need to:
 
             ./rt.sh -a <account_name> -e -k -l rt.conf
       
-      * To run ``rt.sh`` using a custom configuration file and the Rocoto workflow manager, create a configuration file (e.g., ``my_tests.conf``) based on 
-         ``rt.conf``. For example, to run only a few S2S tests, create a file called ``s2s.conf``. 
+      * To run ``rt.sh`` using a custom configuration file and the Rocoto workflow manager, create a configuration file (e.g., ``my_tests.conf``) based on ``rt.conf``. For example, to run only a few S2S tests, create a file called ``s2s.conf``. 
          
          .. code-block:: console
 
@@ -85,7 +84,7 @@ For all systems, users will need to:
 
          Job 7430255 finished for user Joe.Schmoe in partition hera with exit code 0:0
 
-      There is also a RESOURCE STATISTICS summary at the end of the test's ``out`` file. Errors will appear in the ``err`` file. 
+      There is also a RESOURCE STATISTICS summary at the end of the test's ``out`` file. Errors will appear in the ``err`` file. Users can find log files with more detailed information in ``ufs-weather-model/tests/logs/<log_platform>`` (where platform is the name of the machine the user is running on, e.g., ``log_hercules``).
    
    #. When the build and run are complete, modify the namelist or ``model_configure`` files
       and re-run by submitting the ``job_card`` file:
