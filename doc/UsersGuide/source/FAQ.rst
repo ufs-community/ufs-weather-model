@@ -60,12 +60,21 @@ For all systems, users will need to:
 
             ./rt.sh -a <account_name> -e -k -l rt.conf
       
-      * To run ``rt.sh`` using a custom configuration file and the Rocoto workflow manager, create the configuration file (e.g., ``my_tests.conf``) based on 
-         the desired tests in ``rt.conf``, and run:
+      * To run ``rt.sh`` using a custom configuration file and the Rocoto workflow manager, create a configuration file (e.g., ``my_tests.conf``) based on 
+         ``rt.conf``. For example, to run only a few S2S tests, create a file called ``s2s.conf``. 
+         
+         .. code-block:: console
+
+            COMPILE | s2s | intel | -DAPP=S2S -DCCPP_SUITES=FV3_GFS_v17_coupled_p8,FV3_GFS_v17_coupled_p8_ugwpv1 |   | fv3 |
+            RUN | cpld_control_c48         |                            | baseline |
+            RUN | cpld_warmstart_c48       | - noaacloud                | baseline |
+            RUN | cpld_restart_c48         | - noaacloud                |          | cpld_warmstart_c48
+
+         Then run:
 
          .. code-block:: console
 
-            ./rt.sh -r -k -l my_tests.conf
+            ./rt.sh -a <account_name> -r -k -l s2s.conf
 
          adding additional arguments as desired. 
 
@@ -90,14 +99,15 @@ For all systems, users will need to:
 ============================================
 How do I change the length of the model run?
 ============================================
-For individual tests, users can add the ``FHMAX`` variable to the test configuration file. For example, in the :wm-repo:`control_c48 <blob/develop/tests/tests/control_c48>` case, 
+For individual RT tests, users can add the ``FHMAX`` variable to the test configuration file. For example, in the :wm-repo:`control_c48 <blob/develop/tests/tests/control_c48>` case, 
 users can increase the forecast duration from the default (``DAYS*24`` --- or 24 hours, in this case) to 48 hours by adding the statement:
 
 .. code-block:: console
 
    export FHMAX=48
 
-Alternatively, users can set a different default value in :wm-repo:`default_vars.sh <blob/develop/tests/default_vars.sh>` by changing the ``FHMAX`` variable directly in ``default_vars.sh``. 
+Alternatively, users can set a different default value in :wm-repo:`default_vars.sh <blob/develop/tests/default_vars.sh>` by changing the ``FHMAX`` variable directly in ``default_vars.sh``
+or they can modify the ``nhours_fcst`` variable in the ``model_configure*`` file that their experiment uses. 
 
 To rerun a previously run test with a different forecast length, go to the run directory (usually ``${STMP}/FV3_RT/rt_PID/<test_name>``), and open the file named ``model_configure``.  
 Change the variable ``nhours_fcst`` to the desired number of hours for the forecast and rerun by sumbitting the job card, as described above.
@@ -191,7 +201,7 @@ The initial condition file can be turned off using
 GOCART history files
 ^^^^^^^^^^^^^^^^^^^^
 
-In AERO_HISTORY.rc, remove all the fields listed in ``COLLECTIONS``
+In ``AERO_HISTORY.rc``, remove all the fields listed in ``COLLECTIONS``
 
 ::
 
@@ -562,3 +572,58 @@ For the fully coupled S2SWA application, a sample ``ufs.configure`` is shown bel
 		  stop_option = nhours
 		  stop_ymd = -999
 		::
+
+========================================================
+How can I get the UFS WM to output physics tendencies?
+========================================================
+
+Users will need to:
+
+#. Update ``input.nml`` by setting ``ldiag3d`` and ``qdiag3d`` to ``.true.``. 
+#. Update the ``diag_table`` according to the instructions in the UFS WM documentation.
+ 
+Although it may seem counterintuitive, the physics tendencies will be output in ``sfc*.nc`` files once the ``diag_table`` changes have been made. Even 3D fields will appear there. 
+
+Users may find the following GitHub Discussions on this topic informative: 
+
+* :wm-repo:`Discussion #1867<discussions/1867>` 
+* `Discussion #862 <https://github.com/ufs-community/ufs-srweather-app/discussions/862>`_ 
+* :wm-repo:`Discussion #1862 <discussions/1862>`
+
+===================================================================================================================
+How can I output a particular variable (e.g., accumulated precipitation) from the UFS WM atmospheric model (FV3)?
+===================================================================================================================
+
+To output a particular variable from FV3, users must update the field section of the ``diag_table`` file, which specifies the fields to be output at run time. 
+Only fields registered with ``register_diag_field()``, which is an API in the FMS ``diag_manager`` routine, can be used in the ``diag_table``. 
+A line in the field section of the ``diag_table`` file contains eight variables with the following format:
+
+.. code-block:: console
+
+   "module_name", "field_name", "output_name", "file_name", "time_sampling", "reduction_method", "regional_section", packing
+
+These variables are defined in :numref:`Table %s <diag-table-options>` of the UFS WM documentation on the ``diag_table`` file. 
+
+For example, to output accumulated precipitation, the following line must appear in the ``diag_table`` file: 
+
+.. code-block:: console
+
+   "gfs_phys", "totprcp_ave", "prate_ave", "fv3_history2d", "all", .false., "none", 2
+
+Users may refer to ``diag_table`` examples in the UFS WM repository. These files are used to configure groups of regression tests. 
+
+View GitHub :wm-repo:`Discussion #2016 <discussions/2016/>` for the question that inspired this FAQ. 
+
+=======================================================================================================
+Where can I find up-to-date documentation for the ``diag_table`` variables used in the UFS Weather Model?
+=======================================================================================================
+
+Information on ``diag_table`` variables has been added to the :ref:`diag_table section <diag-table-options>` of the UFS Weather Model documentation. 
+Currently, only variables coming from fv3atm and MOM6 are included, but ``diag_table`` variables from other components will be added as time permits. 
+
+* :ref:`FV3ATM diag_table variables <fv3diagtable>`
+* `MOM6 diag_table variables <https://ncar.github.io/MOM6/APIs/namespacemom__diagnostics.html>`_
+
+See ufs-community `Discussion #33 <https://github.com/orgs/ufs-community/discussions/33>`_ for the question that inspired this FAQ.
+
+
