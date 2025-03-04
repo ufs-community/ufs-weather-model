@@ -84,10 +84,10 @@ For all systems, users will need to:
 
          Job 7430255 finished for user Joe.Schmoe in partition hera with exit code 0:0
 
-      There is also a RESOURCE STATISTICS summary at the end of the test's ``out`` file. Errors will appear in the ``err`` file. Users can find log files with more detailed information in ``ufs-weather-model/tests/logs/<log_platform>`` (where platform is the name of the machine the user is running on, e.g., ``log_hercules``).
+      There is also a RESOURCE STATISTICS summary at the end of the test's ``out`` file. Errors will appear in the ``err`` file. Users can find log files with more detailed information in ``ufs-weather-model/tests/logs/log_<platform>`` (where platform is the name of the machine the user is running on, e.g., ``log_hercules``).
    
-   #. When the build and run are complete, modify the namelist or ``model_configure`` files
-      and re-run by submitting the ``job_card`` file:
+   #. When the build and run are complete, users can modify the namelist or ``model_configure`` files in the run directory (``${STMP}``) 
+      and re-run their forecast/test with modifications by submitting the ``job_card`` file:
 
       .. code-block:: console
 
