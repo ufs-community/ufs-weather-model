@@ -113,7 +113,7 @@ case ${MACHINE_ID} in
     module load miniconda/3.9.12
     module load nccmp/1.9.0.1
     ;;
-  stampede|expanse|noaacloud)
+  noaacloud)
     echo "No special nccmp load necessary"
     ;;
   gaeac5)
@@ -270,8 +270,11 @@ if [[ ${FV3} == true ]]; then
 fi
 
 # NoahMP table file
+if [[ ${BMIC} == .true. ]]; then
+  cp "${PATHRT}/parm/noahmptable-gefs.tbl" noahmptable.tbl
+else
   cp "${PATHRT}/parm/noahmptable.tbl" .
-
+fi
 
 # AQM
 if [[ ${AQM} == .true. ]]; then
@@ -294,8 +297,13 @@ if [[ ${CPLWAV} == .true. ]]; then
 fi
 
 if [[ ${CPLCHM} == .true. ]]; then
-  cp "${PATHRT}"/parm/gocart/*.rc .
-  atparse < "${PATHRT}/parm/gocart/AERO_HISTORY.rc.IN" > AERO_HISTORY.rc
+  if [[ ${BMIC} == .true. ]]; then
+    cp "${PATHRT}"/parm/gocart/gefs/*.rc .
+    atparse < "${PATHRT}/parm/gocart/gefs/AERO_HISTORY.rc.IN" > AERO_HISTORY.rc
+  else
+    cp "${PATHRT}"/parm/gocart/*.rc .
+    atparse < "${PATHRT}/parm/gocart/AERO_HISTORY.rc.IN" > AERO_HISTORY.rc
+  fi
 fi
 
 #TODO: this logic needs to be cleaned up for datm applications w/o
@@ -483,7 +491,7 @@ if [[ ${skip_check_results} == false ]]; then
 
       else
         if [[ ${i##*.} == nc* ]] ; then
-          if [[ " orion hercules hera wcoss2 acorn derecho gaeac5 gaeac6 jet s4 noaacloud " =~ ${MACHINE_ID} ]]; then
+          if [[ " orion hercules hera wcoss2 acorn derecho gaeac5 gaeac6 jet s4 noaacloud frontera" =~ ${MACHINE_ID} ]]; then
             printf "USING NCCMP.." >> "${RT_LOG}"
             printf "USING NCCMP.."
               if [[ ${CMP_DATAONLY} == false ]]; then

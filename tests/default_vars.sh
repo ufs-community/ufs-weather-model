@@ -70,7 +70,7 @@ export OCN_tasks_cpl_bmrk=120
 export OCN_thrds_cpl_bmrk=1
 export ICE_tasks_cpl_bmrk=48
 export ICE_thrds_cpl_bmrk=1
-export WAV_tasks_cpl_bmrk=80
+export WAV_tasks_cpl_bmrk=120
 export WAV_thrds_cpl_bmrk=2
 
 export THRD_cpl_c192=2
@@ -119,6 +119,7 @@ export wav_omp_num_threads=1
 export fbh_omp_num_threads=1
 
 export histaux_enabled=.false.
+export BMIC=.false.
 
 if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
 
@@ -363,20 +364,6 @@ elif [[ ${MACHINE_ID} = derecho ]]; then
   export WPG_cpl_atmw_gdas=24
   export WAV_tasks_atmw_gdas=248
 
-elif [[ ${MACHINE_ID} = stampede ]]; then
-
-  echo "Unknown MACHINE_ID ${MACHINE_ID}. Please update tasks configurations in default_vars.sh"
-  exit 1
-
-  # TPN_dflt=48 ; INPES_dflt=3 ; JNPES_dflt=8
-  # TPN_thrd=24 ; INPES_thrd=3 ; JNPES_thrd=4
-  # TPN_c384=20 ; INPES_c384=8 ; JNPES_c384=6
-  # TPN_c768=20 ; INPES_c768=8 ; JNPES_c768=16
-  # TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
-
-  # TPN_cpl_atmw_gdas=12; INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8
-  # THRD_cpl_atmw_gdas=4; WPG_cpl_atmw_gdas=24; APB_cpl_atmw_gdas="0 311"; WPB_cpl_atmw_gdas="312 559"
-
 elif [[ ${MACHINE_ID} = noaacloud ]] ; then
 
     if [[ ${PW_CSP} == aws ]]; then
@@ -414,18 +401,6 @@ elif [[ ${MACHINE_ID} = noaacloud ]] ; then
     export OCN_tasks_cpl_thrd=20
     export ICE_tasks_cpl_thrd=10
     export WAV_tasks_cpl_thrd=12
-
-elif [[ ${MACHINE_ID} = expanse ]]; then
-
-  echo "Unknown MACHINE_ID ${MACHINE_ID}. Please update tasks configurations in default_vars.sh"
-  exit 1
-
-  # TPN_dflt=64 ; INPES_dflt=3 ; JNPES_dflt=8
-  # TPN_thrd=64 ; INPES_thrd=3 ; JNPES_thrd=4
-  # TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
-
-  # TPN_cpl_atmw_gdas=12; INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8
-  # THRD_cpl_atmw_gdas=2; WPG_cpl_atmw_gdas=24; APB_cpl_atmw_gdas="0 311"; WPB_cpl_atmw_gdas="312 559"
 
 else
 
@@ -611,6 +586,7 @@ export MODEL_INITIALIZATION=false
 export WARM_START=.false.
 export READ_INCREMENT=.false.
 export RES_LATLON_DYNAMICS="''"
+export ATM_IGNORE_RST_CKSUM=.false.
 export INCREMENT_FILE_ON_NATIVE_GRID=.false.
 export NGGPS_IC=.true.
 export EXTERNAL_IC=.true.
@@ -1288,6 +1264,7 @@ export_mom6() {
   export DT_THERM_MOM6=3600
   export MOM6_INPUT=MOM_input_100.IN
   export MOM6_OUTPUT_DIR=./MOM6_OUTPUT
+  export MOM6_OUTPUT_FH=6
   export MOM6_RESTART_DIR=./RESTART/
   export MOM6_RESTART_SETTING=n
   export MOM6_RIVER_RUNOFF=False
@@ -1424,8 +1401,6 @@ export DOCN_CDEPS=false
 export DICE_CDEPS=false
 export CICE_PRESCRIBED=false
 export CDEPS_INLINE=false
-export FV3BMIC='p8c'
-export BMIC=.false.
 export DAYS=1
 
 #model configure
