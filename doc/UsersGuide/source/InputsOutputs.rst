@@ -2211,7 +2211,7 @@ Two files (``model_configure`` and ``diag_table``) control the output that is ge
 Standard output files are ``logfHHH`` (one per forecast hour), and ``out`` and ``err`` as specified by the job submission. ESMF may also produce log
 files (controlled by variable print_esmf in the ``model_configure`` file), called ``PETnnn.ESMF_LogFile`` (one per MPI task).
 
-Additional output files include: ``nemsusage.xml``, a timing log file; `time_stamp.out`, contains the model init time; ``RESTART/*nc``, files needed for restart runs.
+Additional output files include: ``nemsusage.xml``, a timing log file; ``time_stamp.out``, contains the model init time; ``RESTART/*nc``, files needed for restart runs.
 
 .. _mom-out:
 

@@ -128,7 +128,7 @@ To adjust the default values for entire sets of tests, values can be modified in
 
    * - Namelist variable
      - Location
-     - Default Value in ``export_fv3`` function of ``default_vars.sh``
+     - Default Value in ``export_fv3``
      - Description
    * - OUTPUT_FH
      - model_configure
@@ -136,7 +136,7 @@ To adjust the default values for entire sets of tests, values can be modified in
      - Array listing the forecast output frequency; this can either be a list of times after initialization or an interval. 
    * - nhours_fcst
      - model_configure (uses ``FHMAX`` value set in the test file or ``default_vars.sh``)
-     - 24
+     - ``24``
      - The maximal output time for the forecast.
 
 =============================================================
