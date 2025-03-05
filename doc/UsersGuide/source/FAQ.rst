@@ -12,7 +12,9 @@ An efficient way to build and run the UFS Weather Model is to use the regression
 (``rt.sh``). This script is widely used by model developers on :wm-wiki:`Tier 1 <Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>` and 2 platforms
 and is described in :numref:`Section %s <run-wm>`. 
 
-Users on Level 2-4 systems may need to perform additional steps prior to following the steps below. For example, they may need to :ref:`download data <GetData>` and :ref:`update files <other-systems>` with platform-specific information. 
+.. note::
+   
+   Users on Level 2-4 systems may need to perform additional steps prior to following the steps below. For example, they may need to :ref:`download data <GetData>` and :ref:`update files <other-systems>` with platform-specific information. 
 
 For all systems, users will need to:
 
@@ -30,12 +32,12 @@ For all systems, users will need to:
 
          case ${MACHINE_ID} in
          ...
-         hercules)
+            hercules)
          ...
-         dprefix="/work2/noaa/stmp/${USER}"
-         DISKNM="/work/noaa/epic/hercules/UFS-WM_RT"
-         STMP="${dprefix}/stmp"
-         PTMP="${dprefix}/stmp"
+               dprefix="/work2/noaa/stmp/${USER}"
+               DISKNM="/work/noaa/epic/hercules/UFS-WM_RT"
+               STMP="${dprefix}/stmp"
+               PTMP="${dprefix}/stmp"
 
    #. Run the ``rt.sh`` script: 
       
@@ -46,7 +48,7 @@ For all systems, users will need to:
             ./rt.sh -a <account_name> -k -n "control_c48 intel"
 
          where ``<account_name>`` is replaced with the name of an account where the user can charge computational resources. 
-         The ``-k`` option will preserve the run directory after the forecast finishes. The ``rt.conf`` file contains all of the currently maintained RTs. 
+         The ``-k`` option will preserve the run directory after the forecast finishes. The :wm-repo:`rt.conf <blob/develop/tests/rt.conf>` file contains all of the currently maintained RTs. 
 
       * Users can run the entire RT suite using the ecFlow workflow manager:
 
@@ -110,7 +112,7 @@ How do I set the output history interval?
 ==============================================================
 
 The interval at which output (history) files are written is controlled via the ``model_configure*`` files. 
-When using the regression testing framework, users can adjust values in the test file for the test they plan to run, and these will be fed into the appropriate ``model_configure`` file.
+When using the RT framework, users can adjust values in the test file for the test they plan to run, and these will be fed into the appropriate ``model_configure`` file.
 To adjust the default values for entire sets of tests, values can be modified in the ``tests/default_vars.sh`` script. 
 :numref:`Table %s <OutputControl>` describes the relevant variables.  
 
@@ -141,7 +143,7 @@ FV3atm restart and history files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To turn off FV3atm restart files, set the ``restart_interval`` in
-``model_configure`` to a value greater than the forecast length.
+``model_configure*.IN`` to a value greater than the forecast length.
 
 To turn off history files, in ``model_configure`` there are two
 options:
@@ -160,17 +162,17 @@ options:
 MOM6, CICE6 and CMEPS restart files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In ``ufs.configure``, set the ALLCOMP_attribute ``restart_n`` to a
+In ``ufs.configure*.IN``, set the ALLCOMP_attribute ``restart_n`` to a
 value greater than the forecast length.
 
 MOM6 history files
 ^^^^^^^^^^^^^^^^^^
 
-In the ``diag_table`` file, remove the ``ocn`` and ``SST`` history
+In the ``diag_table*`` file, remove the ``ocn`` and ``SST`` history
 output file definitions and fields.
 
 MOM6 history output speed can also be increased by setting the
-``IO_LAYOUT`` parameter in ``INPUT/MOM_input``.
+``IO_LAYOUT`` parameter in the relevant ``parm/MOM_input*.IN`` file.
 
 ::
 
@@ -179,7 +181,7 @@ MOM6 history output speed can also be increased by setting the
 CICE history files
 ^^^^^^^^^^^^^^^^^^
 
-In the CICE namelist ``ice_in``, set the ``histfreq`` to none with
+In the CICE namelist ``ice_in.IN``, set the ``histfreq`` to none with
 
 ::
 
@@ -194,7 +196,7 @@ The initial condition file can be turned off using
 GOCART history files
 ^^^^^^^^^^^^^^^^^^^^
 
-In ``AERO_HISTORY.rc``, remove all the fields listed in ``COLLECTIONS``
+In ``parm/gocart/AERO_HISTORY.rc.IN``, remove all the fields listed in ``COLLECTIONS``.
 
 ::
 
@@ -607,9 +609,9 @@ Users may refer to ``diag_table`` examples in the UFS WM repository. These files
 
 View GitHub :wm-repo:`Discussion #2016 <discussions/2016/>` for the question that inspired this FAQ. 
 
-=======================================================================================================
+===========================================================================================================
 Where can I find up-to-date documentation for the ``diag_table`` variables used in the UFS Weather Model?
-=======================================================================================================
+===========================================================================================================
 
 Information on ``diag_table`` variables has been added to the :ref:`diag_table section <diag-table-options>` of the UFS Weather Model documentation. 
 Currently, only variables coming from fv3atm and MOM6 are included, but ``diag_table`` variables from other components will be added as time permits. 

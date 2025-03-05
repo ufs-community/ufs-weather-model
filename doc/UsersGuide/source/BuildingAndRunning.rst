@@ -450,13 +450,15 @@ The ``rt.conf`` file is a pipe-separated values (PSV) file grouped into sections
 #. **Compiler** to use in build (``intel`` or ``gnu``)
 #. **CMAKE Options** -- Provides all CMAKE options for the build. This typically includes the ``-DAPP`` and ``-DCCPP_SUITES`` flags; these flags set which components to build and which physics suites will be available at runtime. Additional options are documented in :numref:`Section %s <other-build-options>`, but users can examine the :wm-repo:`CMakeLists.txt <blob/develop/CMakeLists.txt>` file for the most up-to-date list of options. 
 #. **Machines** to run on (``-`` is used to ignore specified machines, ``+`` is used to run only on specified machines). For example: 
-    * ``+ hera orion gaea``: Compile will only run on Hera, Orion, and Gaea machines
-    * ``- wcoss2 acorn``: Compile will NOT be run on WCOSS2 or Acorn
+   
+   * ``+ hera orion gaea``: Compile will only run on Hera, Orion, and Gaea machines
+   * ``- wcoss2 acorn``: Compile will NOT be run on WCOSS2 or Acorn
+
 #. ``fv3``: Set as fv3. Previously, this was used to run a test without compiling code (e.g., if FV3 was already present). 
 
 After each compile line is one or more ``RUN`` lines. ``RUN`` lines have five columns. The build resulting from the ``COMPILE`` line above the ``RUN`` line will be used to run the tests. 
 #. ``RUN`` indicator
-#. **Test name** -- indicates which test in the :wm-repo:`tests/tests <blob/develop/tests/tests>` directory should be sourced.
+#. **Test name** -- indicates which test in the :wm-repo:`tests/tests <tree/develop/tests/tests>` directory should be sourced.
 #. **Machines** to run on (``+``) or ignore (``-``).
 #. **Baseline Creation** -- controls whether the run creates its own baseline or uses the baseline from a different (control) test (see information on ``-c`` option :ref:`below <cmd-line-opts>` for more).
 #. **Comparison Test** -- Test name to compare baselines with if not itself.

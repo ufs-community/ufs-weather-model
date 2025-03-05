@@ -126,7 +126,7 @@ Glossary
       The `National Center for Atmospheric Research <https://ncar.ucar.edu/>`_. 
 
    NCEP
-      National Centers for Environmental Prediction (NCEP) is a branch of the :term:`National Weather Service <NWS>` and consists of nine centers, including the :term:`Environmental Modeling Center <EMC>`. More information can be found at https://www.ncep.noaa.gov.
+      National Centers for Environmental Prediction (NCEP) is a branch of the :term:`National Weather Service <NWS>` and consists of nine centers, including the :term:`Environmental Modeling Center <EMC>`. More information can be found at https://www.weather.gov/ncep/.
 
    NCEPLIBS
       The software libraries created and maintained by :term:`NCEP` that are required for running 
