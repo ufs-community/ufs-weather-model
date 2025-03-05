@@ -118,10 +118,10 @@ the data required to run the WM RTs are already available at the following ``DIS
      - /lfs/h2/emc/nems/noscrub/emc.nems/RT
 
 From here, the following directory paths are appended: 
-  * ``INPUTDATA_ROOT``: ${DISKNM}/NEMSfv3gfs/input-data-20240501
-  * ``INPUTDATA_ROOT_WW3`` ${INPUTDATA_ROOT}/WW3_input_data_20250212
-  * ``INPUTDATA_ROOT_BMIC``: ${DISKNM}/NEMSfv3gfs/BM_IC-20220207
-  * ``INPUTDATA_LM4``: ${INPUTDATA_ROOT}/LM4_input_data
+  * **INPUTDATA_ROOT**: ``${DISKNM}/NEMSfv3gfs/input-data-20240501``
+  * **INPUTDATA_ROOT_WW3** ``${INPUTDATA_ROOT}/WW3_input_data_20250212``
+  * **INPUTDATA_ROOT_BMIC**: ``${DISKNM}/NEMSfv3gfs/BM_IC-20220207``
+  * **INPUTDATA_LM4**: ``${INPUTDATA_ROOT}/LM4_input_data``
 
 For Level 3-4 systems, the data must be added to the user's system. 
 Publicly available data is available in the `UFS WM Data Bucket <https://registry.opendata.aws/noaa-ufs-regtests/>`_. 
@@ -134,8 +134,6 @@ Users can download the data and update the ``rt.sh`` script to point to the appr
 * ``INPUTDATA_ROOT_WW3`` https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html#input-data-20240501/WW3_input_data_20240214/
 * ``INPUTDATA_ROOT_BMIC``: https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html#BM_IC-20220207/
 * ``INPUTDATA_LM4``: https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html#LM4_input_data
-
-.. COMMENT: LM4 input data not in bucket...
 
 To download data, users must select the files they want from the bucket and download them either in their browser, via a ``wget`` command, or through the AWS CLI. 
 
