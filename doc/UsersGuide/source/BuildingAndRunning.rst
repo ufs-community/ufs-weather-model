@@ -14,7 +14,7 @@ through NOAA and its affiliates. These systems are named (e.g., Hera, Orion, Der
 Level 3 & 4 systems include certain personal computers or non-NOAA-affiliated HPC systems. 
 The prerequisite software libraries for building the WM already exist in a centralized location on Level 1/preconfigured 
 systems, so users may skip directly to :ref:`getting the data <GetData>` and downloading the code. 
-On other systems, users will need to build the prerequisite libraries using :term:`spack-stack` or :term:`HPC-Stack`. 
+On other systems, users will need to build the prerequisite libraries using :term:`spack-stack`. 
 
 =======================
 Prerequisite Libraries
@@ -22,7 +22,7 @@ Prerequisite Libraries
 
 The UFS WM requires a number of libraries.
 The WM uses two categories of libraries, which are available as a bundle via 
-:term:`spack-stack` or :term:`HPC-Stack`:
+:term:`spack-stack`:
 
    #. :term:`NCEP` libraries (:term:`NCEPLIBS`): These are libraries developed for use with NOAA weather models.
       Most have an NCEPLIBS prefix in the repository (e.g., NCEPLIBS-bacio). Select tools from the UFS
@@ -32,14 +32,6 @@ The WM uses two categories of libraries, which are available as a bundle via
       the UFS Weather Model. They are general software packages that are also used by other community models. 
       Building these libraries is optional if users can point to existing builds of these libraries on their system
       instead. 
-
-.. note::
-   Currently, spack-stack is the software stack validated by the UFS WM for running 
-   :term:`regression tests <RT>`. Spack-stack is a Spack-based method for installing UFS 
-   prerequisite software libraries. UFS applications and components are also shifting to 
-   spack-stack from HPC-Stack but are at various stages of this transition. 
-   Although users can still build and use HPC-Stack, the UFS WM no longer uses HPC-Stack 
-   for validation, and support for this option is being deprecated. 
 
 ----------------
 Common Modules
@@ -73,9 +65,8 @@ The most updated list of common modules can be viewed in ``ufs_common.lua``
 `here <https://github.com/ufs-community/ufs-weather-model/blob/develop/modulefiles/ufs_common.lua>`_.
 
 .. attention::
-   Documentation is available for installing `spack-stack <https://spack-stack.readthedocs.io/en/latest/>`_
-   and `HPC-Stack <https://hpc-stack.readthedocs.io/en/latest/>`__, respectively. 
-   One of these software stacks (or the libraries they contain) must be installed before running the UFS Weather Model. 
+   Documentation is available for installing `spack-stack <https://spack-stack.readthedocs.io/en/latest/>`_. 
+   Spack-stack (or the libraries it contains) must be installed before running the UFS Weather Model. 
 
 .. _GetData:
 
@@ -117,7 +108,8 @@ the data required to run the WM RTs are already available at the following ``DIS
    * - WCOSS2
      - /lfs/h2/emc/nems/noscrub/emc.nems/RT
 
-From here, the following directory paths are appended: 
+Within ``DISKNM``, input data for the UFS WM is located at the following locations: 
+
   * **INPUTDATA_ROOT**: ``${DISKNM}/NEMSfv3gfs/input-data-20240501``
   * **INPUTDATA_ROOT_WW3** ``${INPUTDATA_ROOT}/WW3_input_data_20250212``
   * **INPUTDATA_ROOT_BMIC**: ``${DISKNM}/NEMSfv3gfs/BM_IC-20220207``
@@ -126,7 +118,7 @@ From here, the following directory paths are appended:
 For Level 3-4 systems, the data must be added to the user's system. 
 Publicly available data is available in the `UFS WM Data Bucket <https://registry.opendata.aws/noaa-ufs-regtests/>`_. 
 Baseline data for the ``develop`` branch is available for the most recent 60 days. 
-The regression testing script (``rt.sh ``) has certain default data directories (i.e., ``INPUTDATA_*``) that users may need to change when working on Level 3-4 systems. 
+The regression testing script (``rt.sh``) has certain default data directories (i.e., ``INPUTDATA_*``) that users may need to change when working on Level 3-4 systems. 
 The corresponding data is publicly available in the data bucket. To view the data, users can visit https://noaa-ufs-regtests-pds.s3.amazonaws.com/index.html. 
 Users can download the data and update the ``rt.sh`` script to point to the appropriate locations in order to run RTs on their own system: 
   
@@ -149,14 +141,20 @@ To clone the develop branch of the ``ufs-weather-model`` repository and update i
 
 .. code-block:: console
 
-  git clone --recursive https://github.com/ufs-community/ufs-weather-model.git ufs-weather-model
+  git clone --recursive https://github.com/ufs-community/ufs-weather-model.git
   cd ufs-weather-model
 
 Compiling the model will take place within the ``ufs-weather-model`` directory created by this command.
 
+.. _build-wm:
+
 ==========================
 Building the Weather Model
 ==========================
+
+.. note:: 
+
+   The most straightforward way to run the UFS WM is to use the regression testing (RT) framework. The RT framework will load modulefiles, build (compile) the desired WM configuration, and run the test(s). Users can create new tests or modify existing tests to correspond to the WM configuration(s) they wish to run. This section is provided for those who do not want to use the RT framework to run the WM. However, most users should skip to :numref:`Section %s <run-wm>` to build/run the WM with the RT framework. 
 
 ----------------------------
 Loading the Required Modules
