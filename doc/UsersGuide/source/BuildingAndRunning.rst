@@ -154,7 +154,7 @@ Building the Weather Model
 
 .. note:: 
 
-   The most straightforward way to run the UFS WM is to use the regression testing (RT) framework. The RT framework will load modulefiles, build (compile) the desired WM configuration, and run the test(s). Users can create new tests or modify existing tests to correspond to the WM configuration(s) they wish to run. This section is provided for those who do not want to use the RT framework to run the WM. However, most users should skip to :numref:`Section %s <run-wm>` to build/run the WM with the RT framework. 
+   The most straightforward way to run the UFS WM is to use the regression testing (RT) framework. The RT framework will load modulefiles, build (compile) the desired WM configuration, and run the test(s). Users can create new tests or modify existing tests to correspond to the WM configuration(s) they wish to run. This section is provided for those who do not want to use the RT framework to run the WM. However, most users should skip to :numref:`Section %s <rt-config>` to learn more about RT configuration or :numref:`Section %s <run-wm>` to build/run the WM with the RT framework. 
 
 ----------------------------
 Loading the Required Modules
@@ -555,41 +555,28 @@ Lastly, the :wm-repo:`test configuration file <blob/develop/tests/tests/hafs_reg
    fi
    ...
 
+.. _new-test:
+
 --------------------
 Creating New Tests
 --------------------
 
 Users are welcome to modify current tests for their own use or create new tests to facilitate their own research. 
 When creating a test, users will need to add a row for the test in ``rt.conf`` or in their own custom file. 
-See :numref:`Section %s <rt.conf>` for more information. 
+See :numref:`Section %s <rt-conf>` for more information. 
 
+Typically, when a developer needs to create a new test for his/her implementation, the
+first step would be to identify a test in the ``tests/tests`` directory that can
+be used as a basis and to examine the variables defined in the test file. 
+Also, the names of template files for model configuration and initial conditions
+can be identified via variables ``INPUT_NML``, ``UFS_CONFIGURE``, ``MODEL_CONFIGURE`` and ``FV3_RUN`` 
+by running ``grep -n INPUT_NML *`` inside the ``tests`` and ``tests/tests`` directories.
 
-.. _run-wm:
+.. _rt-conf:
 
-=================
-Running the Model
-=================
-
-.. attention::
-   Although the following discussions are general, users may not be able to execute the script successfully "as is" unless they are on a 
-   :wm-wiki:`Tier-1 platform <Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>`.
-
-.. _UsingRegressionTest:
-
---------------------------------
-Using the Regression Test Script
---------------------------------
-
-Users can run a number of preconfigured regression test cases from the ``rt.conf`` file 
-using the regression test script ``rt.sh`` in the ``tests`` directory. 
-``rt.sh`` is the top-level script that calls lower-level scripts to build specified 
-WM configurations, set up environments, and run tests. 
-Users must edit the ``rt.conf`` file to indicate which tests/configurations to run. 
-
-.. _rt.conf:
-
+-----------------------
 The ``rt.conf`` File
-------------------------
+-----------------------
 
 The ``rt.conf`` file is a pipe-separated values (PSV) file grouped into sections of tests with a ``COMPILE`` line followed by several ``RUN`` lines. The ``COMPILE`` line contains information needed to compile the tests, while the ``RUN`` lines contain information on specific tests. 
 ``COMPILE`` lines have 6 columns:
@@ -630,6 +617,29 @@ The ``rt.conf`` file includes a large number of tests. If the user wants to run
 only specific tests, s/he can either (1) comment out the tests to be skipped (using the ``#`` prefix)
 or (2) create a new file (e.g., ``my_rt.conf``), add the tests, and execute ``./rt.sh -l my_rt.conf``.
 
+
+.. _run-wm:
+
+=================
+Running the Model
+=================
+
+.. attention::
+   Although the following discussions are general, users may not be able to execute the script successfully "as is" unless they are on a 
+   :wm-wiki:`Tier-1 platform <Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>`.
+
+.. _UsingRegressionTest:
+
+--------------------------------
+Using the Regression Test Script
+--------------------------------
+
+Users can run a number of preconfigured regression test cases from the ``rt.conf`` file 
+using the regression test script ``rt.sh`` in the ``tests`` directory. 
+``rt.sh`` is the top-level script that calls lower-level scripts to build specified 
+WM configurations, set up environments, and run tests. 
+Users should edit the ``rt.conf`` file to indicate which tests/configurations to run or create their own configuration file (e.g., ``my_tests.conf``) with the subset of tests they want to run. 
+
 On NOAA RDHPCS
 ------------------
 
@@ -638,8 +648,9 @@ regression tests by editing the ``rt.conf`` file and executing:
 
 .. code-block:: console
 
-    ./rt.sh -l rt.conf
+    ./rt.sh -a <account> -l rt.conf
 
+where ``<account>`` is to the account/project number where users submit their batch jobs. 
 Users may need to add additional command line arguments or change information in the ``rt.sh`` file as well. 
 This information is provided in :numref:`Section %s <rt.sh>` below. 
 
@@ -804,23 +815,6 @@ input data directory of a given platform to the ``$RUNDIR`` directory.
    | tests/log_*/    | Contains fine-grained log files                                                      |
    +-----------------+--------------------------------------------------------------------------------------+
 
-
-.. _new-test:
-
-Creating a New Test
-----------------------
-
-When a developer needs to create a new test for his/her implementation, the
-first step would be to identify a test in the ``tests/tests`` directory that can
-be used as a basis and to examine the variables defined in the test file. As
-mentioned above, some of the variables may be overrides for those defined in
-``default_vars.sh``. Others may be new variables that are needed specifically
-for that test. Default variables and their values are defined in the ``export_fv3``
-function of the ``default_vars.sh`` script for ATM configurations, the ``export_cpl``
-function for S2S configurations, and the ``export_datm`` function for the NG-GODAS configuration.
-Also, the names of template files for model configuration and initial conditions
-can be identified via variables ``INPUT_NML``, ``UFS_CONFIGURE`` and ``FV3_RUN`` 
-by running ``grep -n INPUT_NML *`` inside the ``tests`` and ``tests/tests`` directories.
 
 .. _UsingOpnReqTest:
 
