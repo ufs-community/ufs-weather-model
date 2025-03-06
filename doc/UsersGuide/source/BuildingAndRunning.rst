@@ -417,26 +417,25 @@ Expert help is available through `GitHub Discussions <https://github.com/ufs-com
 Test Configuration
 ====================
 
-The UFS Weather Model (WM) can be run in any of several configurations, from a single-component atmospheric 
-model to a fully coupled model with multiple earth system components (e.g., atmosphere, ocean, sea-ice, land, and 
-mediator). Each RT test configuration file (located in the ``ufs-weather-model/tests/tests`` 
-:wm-repo:`directory <tree/develop/tests/tests>`) 
-sets default variables by calling functions from ``ufs-weather-model/tests/default_vars.sh`` 
-(view :wm-repo:`default_vars.sh here <blob/develop/tests/default_vars.sh>`). 
-Then, the test configuration file sets test-specific variables. These values will override 
-the defaults. 
-
 .. note:: 
    
    This section explains how forecasts are configured using the regression test (RT) framework. For a full list of 
    supported RT configurations, view the `rt.conf <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/rt.conf>`_ file
    or visit the :wm-repo:`tests/tests <tree/develop/tests/tests>` directory. 
 
+
+The UFS Weather Model (WM) can be run in any of several configurations, from a single-component atmospheric 
+model to a fully coupled model with multiple earth system components (e.g., atmosphere, ocean, sea-ice, land, and 
+mediator). Each RT test configuration file (located in the :wm-repo:`tests/tests directory <tree/develop/tests/tests>`) 
+sets default variables by calling functions from :wm-repo:`tests/default_vars.sh <blob/develop/tests/default_vars.sh>`. 
+Then, the test file sets test-specific variables. These values will override 
+the defaults. 
+
 ---------------------
 ``default_vars.sh`` 
 ---------------------
 
-``default_vars.sh`` sets a series of machine-specific variables. It also contains several functions that set defaults for different types of tests. :numref:`Table %s <def-funcs>` describes what each function does. 
+``default_vars.sh`` first sets a series of machine-specific variables. It also contains several functions that set defaults for different types of tests. :numref:`Table %s <def-funcs>` describes what each function does. 
 
 .. _def-funcs:
 
@@ -452,41 +451,41 @@ the defaults.
      - Set variables to the FV3 default values.
    * - export_tiled
      - Set default values for tiled grid namelist.
-   * - export_ugwpv1() 
+   * - export_ugwpv1 
      - Set default values for the Unified Gravity Wave Drag Physics v1. 
-   * - export_cice6()
+   * - export_cice6
      - Set default values for the CICE6 model namelist and ``mx100``. 
-   * - export_mom6() 
+   * - export_mom6 
      - Set default values for the MOM6 model namelist and ``mx100``. 
-   * - export_ww3()
+   * - export_ww3
      - Set default values for the WW3 global model. 
-   * - export_fire_behavior()
+   * - export_fire_behavior
      - Set default values for the Fire Behavior model. 
-   * - export_cmeps()
+   * - export_cmeps
      - Set default values for the coupled 5-component tests using CMEPS.
    * - export_cpl
-     - Set variables to the default values for *coupled* / S2S configurations. 
+     - Set default values for *coupled* / S2S configurations. 
    * - export_35d_run
-     - Set variables to the default values for EMC's weekly coupled benchmark 35d tests (see `rt_35d.conf <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/rt_35d.conf>`__). 
+     - Set default values for EMC's weekly coupled benchmark 35d tests (see `rt_35d.conf <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/rt_35d.conf>`__). 
    * - export_datm_cdeps
-     - Set variables to the default values for configurations that use the data atmosphere (:term:`DATM`) component. 
+     - Set default values for configurations that use the data atmosphere (:term:`DATM`) component. 
    * - export_hafs_datm_cdeps
-     - Set variables to the default values for HAFS configurations that use the data atmosphere (DATM) component. 
+     - Set default values for HAFS configurations that use the data atmosphere (DATM) component. 
    * - export_hafs_docn_cdeps
-     - Set variables to the default values for HAFS configurations that use the data ocean (:term:`DOCN`) component. 
+     - Set default values for HAFS configurations that use the data ocean (:term:`DOCN`) component. 
    * - export_hafs_regional
-     - Set variables to the default values for regional HAFS configurations. 
+     - Set default values for regional HAFS configurations. 
    * - export_hafs
-     - Set variables to the default values for HAFS configurations. 
-   * - export_hrrr() 
+     - Set default values for HAFS configurations. 
+   * - export_hrrr 
      - Set default values for HRRR test configurations. 
-   * - export_hrrr_conus13km()
+   * - export_hrrr_conus13km
      - Set default values for hrrr_conus13km test configurations. 
-   * - export_rap_common()
+   * - export_rap_common
      - Set default values that are common to RAP and RRFS v1 test configurations. 
-   * - export_rap()
+   * - export_rap
      - Set default values for RAP test configurations. 
-   * - export_rrfs_v1()
+   * - export_rrfs_v1
      - Set default values for RRFS v1 test configurations.
    
 Multiple ``default_vars.sh`` functions may be called in a given test, usually starting with the most general function and ending with the most specific. Values set in one function will be overridden when the same values are set in a subsequent function. 
@@ -497,7 +496,7 @@ Test Files
 
 Individual test files typically start with an ``export TEST_DESCR`` statement describing the test, followed by an ``export CNTL_DIR`` statement indicating the name of the directory that contains the baselines for the experiment. Next, an ``export LIST_FILES`` statement indicates which files the test expects to output from the model run. This list often includes RESTART files. After the LIST_FILES statement, the tests typically call functions from ``default_vars.sh`` to set default values. 
 
-For example, the ``hafs_regional_atm_ocn_wav`` test file lists the files that it will output and then calls three ``export_*`` functions from ``default_vars.sh``, starting in order from the most general to the most specific:
+For example, the ``hafs_regional_atm_ocn_wav`` test file lists the files that it will output and then calls three ``export_*`` functions from ``default_vars.sh``, moving from the most general to the most specific:
 
 .. code-block:: console
 
@@ -568,7 +567,7 @@ See :numref:`Section %s <rt-conf>` for more information.
 Typically, when a developer needs to create a new test for his/her implementation, the
 first step would be to identify a test in the ``tests/tests`` directory that can
 be used as a basis and to examine the variables defined in the test file. 
-Also, the names of template files for model configuration and initial conditions
+The names of appropriate template files for model configuration and initial conditions
 can be identified via variables ``INPUT_NML``, ``UFS_CONFIGURE``, ``MODEL_CONFIGURE`` and ``FV3_RUN`` 
 by running ``grep -n INPUT_NML *`` inside the ``tests`` and ``tests/tests`` directories.
 
