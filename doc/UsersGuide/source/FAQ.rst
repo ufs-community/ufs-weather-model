@@ -198,25 +198,18 @@ GOCART history files
 
 In ``parm/gocart/AERO_HISTORY.rc.IN``, remove all the fields listed in ``COLLECTIONS``.
 
-::
-
-   COLLECTIONS:
-   ::
-
 WW3 history and restart files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In ``ww3_shel.inp``, change the output interval for gridded frequency from
 3600 to 0 on `line 68
-<https://github.com/NOAA-EMC/WW3/blob/5ebed915755da0b21cf4d20e21726411fb2948c4/model/inp/ww3_shel.inp#L68>`_. To
+<https://github.com/NOAA-EMC/WW3/blob/f1f14d582835ef77626aaf44146a53d60920a0f7/model/inp/ww3_shel.inp#L68>`_. To
 turn off point output, change the output frequency from 900 to 0 on
-`line 296
-<https://github.com/NOAA-EMC/WW3/blob/5ebed915755da0b21cf4d20e21726411fb2948c4/model/inp/ww3_shel.inp#L296>`_. To
+`line 298
+<https://github.com/NOAA-EMC/WW3/blob/f1f14d582835ef77626aaf44146a53d60920a0f7/model/inp/ww3_shel.inp#L298>`_. To
 turn off restart files, change the frequency from 3600 to 0 on `line
-321
-<https://github.com/NOAA-EMC/WW3/blob/5ebed915755da0b21cf4d20e21726411fb2948c4/model/inp/ww3_shel.inp#L321>`_.
-
-
+323
+<https://github.com/NOAA-EMC/WW3/blob/f1f14d582835ef77626aaf44146a53d60920a0f7/model/inp/ww3_shel.inp#L323>`_.
 
 ==============================================================
 How do I set the total number of tasks for my job?
@@ -224,12 +217,12 @@ How do I set the total number of tasks for my job?
 
 In the UFS WM, each component's MPI task information, including the
 starting and ending tasks and the number of threads, are specified
-using the component-specific ``petlist_bounds`` and
-``omp_num_threads`` in ``ufs.configure``. In general, the total
+using the component-specific ``*petlist_bounds`` and
+``*omp_num_threads`` in ``ufs.configure``. In general, the total
 number of MPI tasks required is the sum of all the sub-component
 tasks, as long as those components do not overlap (i.e., share the
-same PETs). An example of a global 5 component coupled configuration
-ufs.configure at the end of this section.
+same PETs). An example of a global five-component coupled configuration
+``ufs.configure`` appears at the end of this section.
 
 FV3atm
 ^^^^^^
@@ -239,7 +232,7 @@ and write grid components.
 
 The MPI tasks for the forecast grid components are specified in the
 layout variable in one or more namelist files ``input*.nml``
-(e.g. input.nml and input_nest02.nml). The total number of mpi tasks
+(e.g., ``input.nml`` and ``input_nest02.nml``). The total number of MPI tasks
 required is given by the product of the specified layout, summed over
 all domains. For example, for a global domain with 6 tiles and
 ``layout = 6,8``, the total number required is ``6*6*8 = 288``. For
@@ -258,8 +251,8 @@ a ``blocksize=32``. A layout of ``4,6`` is supported for C96 with a
 blocksize of 32.
 
 The FV3atm will utilize the write grid component if ``quilting`` is
-set to .true. In this case, the required mpi tasks for the
-write grid components is the product of the ``write_groups`` and the
+set to .true. In this case, the required MPI tasks for the
+write grid component are the product of the ``write_groups`` and the
 ``write_tasks_per_group`` in the ``model_configure`` file.
 
 ::
@@ -283,26 +276,26 @@ atmosphere component is given by the product of the number of threads
 requested and the total number of MPI ranks (both forecast and write
 grid component). If ``num_threads_atm`` is the number of threads
 specified for the FV3atm component, in ``ufs.configure`` the ATM PET
-bounds are given by
+bounds are given by:
 
 ::
 
    ATM_petlist_bounds     0 total_tasks_atm*num_threads_atm-1
    ATM_omp_num_threads    num_threads_atm
 
-Note that in UWM, the ATM component is normally listed first in
+Note that in UFS WM, the ATM component is normally listed first in
 ``ufs.configure`` so that the starting PET for the ATM is 0.
 
 GOCART
 ^^^^^^
 
-GOCART shares the same grid and forecast tasks as FV3atm but it does
+GOCART shares the same grid and forecast tasks as FV3atm, but it does
 not have a separate write grid component in its NUOPC CAP. Also, while
 GOCART does not have threading capability, it shares the same data
 structure as FV3atm and so it has to use the same number of threads
 used by FV3atm. Therefore, the total number of MPI ranks and threads
 in GOCART is the same as the those for the FV3atm forecast component
-(i.e., excluding any write grid component). Currently GOCART only runs
+(i.e., excluding any write grid component). Currently, GOCART only runs
 on the global forecast grid component, for which only one namelist is
 needed.
 
@@ -352,17 +345,17 @@ CICE
 CICE requires setting the decomposition shape, the number of requested
 processors and the calculated block sizes in the ``ice_in``
 namelist. In UFS, the decomposition shape is always ``SlenderX2``,
-except for the 5 deg configuration, which is ``SlenderX1``.
+except for the 5-degree configuration, which is ``SlenderX1``.
 
 For ``SlenderX2`` decomposition, a given ``nprocs``, and global domain
-``nx_global``, ``ny_global``, the block sizes are given by
+``nx_global``, ``ny_global``, the block sizes are given by:
 
 ::
 
   block_size_y = ny_global/2
   block_size_x = nx_global/(nprocs/2)
 
-Similarily, for ``SlenderX1``
+Similarily, for ``SlenderX1``:
 
 ::
 
@@ -370,7 +363,7 @@ Similarily, for ``SlenderX1``
    block_size_x = nx_global/nprocs
 
 
-For the 1-deg CICE domain for example, ``ice_in`` would be
+For the 1-degree CICE domain for example, ``ice_in`` would be:
 
 ::
 
@@ -383,7 +376,7 @@ For the 1-deg CICE domain for example, ``ice_in`` would be
     processor_shape   = 'slenderX2'
 
 
-In UFS, only a single thread is used for CICE so for ``nprocs`` set in
+In the UFS, only a single thread is used for CICE so for ``nprocs`` set in
 ``ice_in``, the tasks in ``ufs.configure`` are set as:
 
 ::
@@ -412,7 +405,7 @@ preceding component, incremented by one.
 Example: 5-component ufs.configure
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-For the fully coupled S2SWA application, a sample ``ufs.configure`` is shown below :
+For the fully coupled :wm-repo:`S2SWA <blob/develop/tests/parm/ufs.configure.s2swa.IN>` application, a sample ``ufs.configure`` is shown below :
 
 
 .. code-block:: console
@@ -447,6 +440,9 @@ For the fully coupled S2SWA application, a sample ``ufs.configure`` is shown bel
 		  DumpFields = false
 		  ProfileMemory = false
 		  OverwriteSlice = true
+        mesh_ocn = mesh.mx025.nc
+        use_coldstart = false
+        use_mommesh = true
 		::
 
 		 # CHM #
@@ -479,6 +475,7 @@ For the fully coupled S2SWA application, a sample ``ufs.configure`` is shown bel
 		   ProfileMemory = false
 		   OverwriteSlice = true
 		   mesh_ice = mesh.mx025.nc
+         eps_imesh = 1.0e-1
 		   stop_n = 3
 		   stop_option = nhours
 		   stop_ymd = -999
@@ -491,10 +488,17 @@ For the fully coupled S2SWA application, a sample ``ufs.configure`` is shown bel
 		 WAV_attributes::
 		   Verbosity = 0
 		   OverwriteSlice = false
-		   diro = "."
-		   logfile = wav.log
-		   mesh_wav = mesh.gwes_30m.nc
+         mesh_wav = mesh.gwes_30m.nc
 		   multigrid = false
+         user_histname = 'false'
+         use_historync = 'false'
+         use_restartnc = 'true'
+         restart_from_binary = 'false'
+         pio_typename = 'pnetcdf'
+         pio_numiotasks = -99
+         pio_stride = 4
+         pio_rearranger = 'box'
+         pio_root = -99
 		 ::
 
 		 CMEPS warm run sequence
@@ -575,7 +579,7 @@ How can I get the UFS WM to output physics tendencies?
 Users will need to:
 
 #. Update ``input.nml`` by setting ``ldiag3d`` and ``qdiag3d`` to ``.true.``. 
-#. Update the ``diag_table`` according to the instructions in the UFS WM documentation.
+#. Update the ``diag_table`` according to the instructions in :numref:`Section %s <_diag_tableFile>`.
  
 Although it may seem counterintuitive, the physics tendencies will be output in ``sfc*.nc`` files once the ``diag_table`` changes have been made. Even 3D fields will appear there. 
 
