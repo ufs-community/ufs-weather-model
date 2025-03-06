@@ -405,7 +405,7 @@ preceding component, incremented by one.
 Example: 5-component ufs.configure
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-For the fully coupled :wm-repo:`S2SWA <blob/develop/tests/parm/ufs.configure.s2swa.IN>` application, a sample ``ufs.configure`` is shown below :
+A sample ``ufs.configure`` is shown below for the :wm-repo:`cpld_control_gefs <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/cpld_control_gefs>` test, which is a fully coupled S2SWA run. This test uses the :wm-repo:`ufs.configure.s2swa.IN <blob/develop/tests/parm/ufs.configure.s2swa.IN>` template to generate ``ufs.configure``.
 
 
 .. code-block:: console
@@ -421,55 +421,54 @@ For the fully coupled :wm-repo:`S2SWA <blob/develop/tests/parm/ufs.configure.s2s
 		# EARTH #
 		EARTH_component_list: MED ATM CHM OCN ICE WAV
 		EARTH_attributes::
-		  Verbosity = 0
+		   Verbosity = 0
 		::
 
 		# MED #
 		MED_model:                      cmeps
-		MED_petlist_bounds:             0 767
+		MED_petlist_bounds:             0 599
 		MED_omp_num_threads:            2
 		::
 
 
 		# ATM #
 		ATM_model:                      fv3
-		ATM_petlist_bounds:             0 863
+		ATM_petlist_bounds:             0 959
 		ATM_omp_num_threads:            2
 		ATM_attributes::
-		  Verbosity = 0
-		  DumpFields = false
-		  ProfileMemory = false
-		  OverwriteSlice = true
-        mesh_ocn = mesh.mx025.nc
-        use_coldstart = false
-        use_mommesh = true
+         Verbosity = 0
+         DumpFields = false
+         ProfileMemory = false
+         OverwriteSlice = true
 		::
 
-		 # CHM #
-		 CHM_model:                      gocart
-		 CHM_petlist_bounds:             0 767
-		 CHM_omp_num_threads:            2
-		 CHM_attributes::
-		   Verbosity = 0
-		 ::
+		# CHM #
+		CHM_model:                      gocart
+		CHM_petlist_bounds:             0 767
+		CHM_omp_num_threads:            2
+		CHM_attributes::
+         Verbosity = 0
+		::
 
-		 # OCN #
-		 OCN_model:                      mom6
-		 OCN_petlist_bounds:             864 983
-		 OCN_omp_num_threads:            1
-		 OCN_attributes::
+		# OCN #
+		OCN_model:                      mom6
+		OCN_petlist_bounds:             960 1079
+		OCN_omp_num_threads:            1
+		OCN_attributes::
 		   Verbosity = 0
 		   DumpFields = false
 		   ProfileMemory = false
 		   OverwriteSlice = true
 		   mesh_ocn = mesh.mx025.nc
-		 ::
+         use_coldstart = false
+         use_mommesh = true
+		::
 
-		 # ICE #
-		 ICE_model:                      cice6
-		 ICE_petlist_bounds:             984 1031
-		 ICE_omp_num_threads:            1
-		 ICE_attributes::
+		# ICE #
+		ICE_model:                      cice6
+		ICE_petlist_bounds:             1080 1127
+		ICE_omp_num_threads:            1
+		ICE_attributes::
 		   Verbosity = 0
 		   DumpFields = false
 		   ProfileMemory = false
@@ -479,60 +478,60 @@ For the fully coupled :wm-repo:`S2SWA <blob/develop/tests/parm/ufs.configure.s2s
 		   stop_n = 3
 		   stop_option = nhours
 		   stop_ymd = -999
-		 ::
+		::
 
-		 # WAV #
-		 WAV_model:                      ww3
-		 WAV_petlist_bounds:             1032 1191
-		 WAV_omp_num_threads:            2
-		 WAV_attributes::
+		# WAV #
+		WAV_model:                      ww3
+		WAV_petlist_bounds:             1128 1367
+		WAV_omp_num_threads:            2
+		WAV_attributes::
 		   Verbosity = 0
 		   OverwriteSlice = false
-         mesh_wav = mesh.gwes_30m.nc
-		   multigrid = false
-         user_histname = 'false'
-         use_historync = 'false'
-         use_restartnc = 'true'
-         restart_from_binary = 'false'
-         pio_typename = 'pnetcdf'
+         mesh_wav = mesh.glo_025.nc
+		   user_histname = true
+         use_historync = true
+         use_restartnc = true
+         restart_from_binary = true
+         pio_typename = pnetcdf
          pio_numiotasks = -99
          pio_stride = 4
-         pio_rearranger = 'box'
+         pio_rearranger = box
          pio_root = -99
-		 ::
+		::
 
-		 CMEPS warm run sequence
-		 runSeq::
-		 @1800
-		 MED med_phases_prep_ocn_avg
-		 MED -> OCN :remapMethod=redist
-		 OCN
-		 @300
-		   MED med_phases_prep_atm
-		   MED med_phases_prep_ice
-		   MED med_phases_prep_wav_accum
-		   MED med_phases_prep_wav_avg
-		   MED -> ATM :remapMethod=redist
-		   MED -> ICE :remapMethod=redist
-		   MED -> WAV :remapMethod=redist
-		   ATM phase1
-		   ATM -> CHM
-		   CHM
-		   CHM -> ATM
-		   ATM phase2
-		   ICE
-		   WAV
-		   ATM -> MED :remapMethod=redist
-		   MED med_phases_post_atm
-		   ICE -> MED :remapMethod=redist
-		   MED med_phases_post_ice
-		   WAV -> MED :remapMethod=redist
-		   MED med_phases_post_wav
-		   MED med_phases_prep_ocn_accum
-		 @
-		 OCN -> MED :remapMethod=redist
-		 MED med_phases_post_ocn
-		 MED med_phases_restart_write
+		 # CMEPS warm run sequence
+		runSeq::
+		@1800
+         MED med_phases_prep_wav_avg
+         MED med_phases_prep_ocn_avg
+         MED -> WAV :remapMethod=redist
+         MED -> OCN :remapMethod=redist
+         WAV
+         OCN
+         @300
+            MED med_phases_prep_atm
+            MED med_phases_prep_ice
+            MED -> ATM :remapMethod=redist
+            MED -> ICE :remapMethod=redist
+            ATM phase1
+            ATM -> CHM
+            CHM
+            CHM -> ATM
+            ATM phase2
+            ICE
+            ATM -> MED :remapMethod=redist
+            MED med_phases_post_atm
+            ICE -> MED :remapMethod=redist
+            MED med_phases_post_ice
+            MED med_phases_ocnalb_run
+            MED med_phases_prep_ocn_accum
+            MED med_phases_prep_wav_accum
+         @
+         OCN -> MED :remapMethod=redist
+         WAV -> MED :remapMethod=redist
+         MED med_phases_post_ocn
+         MED med_phases_post_wav
+         MED med_phases_restart_write
 		@
 		::
 
@@ -542,34 +541,37 @@ For the fully coupled :wm-repo:`S2SWA <blob/develop/tests/parm/ufs.configure.s2s
 		::
 
 		MED_attributes::
-		  ATM_model = fv3
-		  ICE_model = cice6
-		  OCN_model = mom6
-		  WAV_model = ww3
-		  history_n = 1
-		  history_option = nhours
-		  history_ymd = -999
-		  coupling_mode = nems_frac
-		  history_tile_atm = 384
+		   ATM_model = fv3
+         ICE_model = cice6
+         OCN_model = mom6
+         WAV_model = ww3
+         coupling_mode = ufs.frac
+         pio_rearranger = box
+         ocean_albedo_limit = 0.06
 		::
 		ALLCOMP_attributes::
-		  ScalarFieldCount = 2
-		  ScalarFieldIdxGridNX = 1
-		  ScalarFieldIdxGridNY = 2
-		  ScalarFieldName = cpl_scalars
-		  start_type = startup
-		  restart_dir = RESTART/
-		  case_name = ufs.cpld
-		  restart_n = 3
-		  restart_option = nhours
-		  restart_ymd = -999
-		  dbug_flag = 0
-		  use_coldstart = false
-		  use_mommesh = true
-		  eps_imesh = 1.0e-1
-		  stop_n = 6
-		  stop_option = nhours
-		  stop_ymd = -999
+		   ScalarFieldCount = 3
+         ScalarFieldIdxGridNX = 1
+         ScalarFieldIdxGridNY = 2
+         ScalarFieldIdxGridNTile = 3
+         ScalarFieldName = cpl_scalars
+         start_type = continue
+         restart_dir = ./RESTART/
+         case_name = ufs.cpld
+         restart_n = 3
+         restart_option = nhours
+         restart_ymd = -999
+         write_restart_at_endofrun = .false.
+         dbug_flag = 0
+         stop_n = 12
+         stop_option = nhours
+         stop_ymd = -999
+         orb_eccen = 1.e36
+         orb_iyear = 2000
+         orb_iyear_align = 2000
+         orb_mode = fixed_year
+         orb_mvelp = 1.e36
+         orb_obliq = 1.e36
 		::
 
 ========================================================
