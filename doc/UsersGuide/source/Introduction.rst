@@ -55,8 +55,6 @@ This WM User's Guide is organized as follows:
 
    * :numref:`Chapter %s <InputsOutputs>` (Data: Input, Model Configuration, and Output Files) lists the model inputs and outputs and has a description of key configuration files.
 
-   * :numref:`Chapter %s <Configurations>` (Configurations) lists several currently supported configurations for the UFS WM.
-     
    * :numref:`Chapter %s <hsd>` (Hierarchical System Development) explains how to run test cases that support Hierarchical System Development (HSD).
      
    * :numref:`Chapter %s <hsd-tech-doc>` (HSD Technical Documentation) provides detailed technical documentation for the HSD code.
