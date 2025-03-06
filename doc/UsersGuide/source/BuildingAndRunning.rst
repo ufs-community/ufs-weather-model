@@ -306,9 +306,6 @@ For the ``ufs-weather-model S2SA`` configuration (atm/ice/ocean/aerosols):
 
     export CMAKE_FLAGS="-DAPP=S2SA -DCCPP_SUITES=FV3_GFS_2017_coupled,FV3_GFS_v15p2_coupled,FV3_GFS_v16_coupled,FV3_GFS_v16_coupled_noahmp"
 
-..
-   CHECK: DAPP flag and physics suites
-
 .. _s2sw:
 
 **S2SW**
@@ -443,23 +440,25 @@ The ``rt.conf`` File
 
 The ``rt.conf`` file is a pipe-separated values (PSV) file grouped into sections of tests with a ``COMPILE`` line followed by several ``RUN`` lines. The ``COMPILE`` line contains information needed to compile the tests, while the ``RUN`` lines contain information on specific tests. 
 ``COMPILE`` lines have 6 columns:
-#. ``COMPILE`` indicator
-#. **Compile name** -- a category of test to compile
-#. **Compiler** to use in build (``intel`` or ``gnu``)
-#. **CMAKE Options** -- Provides all CMAKE options for the build. This typically includes the ``-DAPP`` and ``-DCCPP_SUITES`` flags; these flags set which components to build and which physics suites will be available at runtime. Additional options are documented in :numref:`Section %s <other-build-options>`, but users can examine the :wm-repo:`CMakeLists.txt <blob/develop/CMakeLists.txt>` file for the most up-to-date list of options. 
-#. **Machines** to run on (``-`` is used to ignore specified machines, ``+`` is used to run only on specified machines). For example: 
-   
-   * ``+ hera orion gaea``: Compile will only run on Hera, Orion, and Gaea machines
-   * ``- wcoss2 acorn``: Compile will NOT be run on WCOSS2 or Acorn
 
-#. ``fv3``: Set as fv3. Previously, this was used to run a test without compiling code (e.g., if FV3 was already present). 
+   #. ``COMPILE`` indicator
+   #. **Compile name** -- a category of test to compile
+   #. **Compiler** to use in build (``intel`` or ``gnu``)
+   #. **CMAKE Options** -- Provides all CMAKE options for the build. This typically includes the ``-DAPP`` and ``-DCCPP_SUITES`` flags; these flags set which components to build and which physics suites will be available at runtime. Additional options are documented in :numref:`Section %s <other-build-options>`, but users can examine the :wm-repo:`CMakeLists.txt <blob/develop/CMakeLists.txt>` file for the most up-to-date list of options. 
+   #. **Machines** to run on (``-`` is used to ignore specified machines, ``+`` is used to run only on specified machines). For example: 
+      
+      * ``+ hera orion gaea``: Compile will only run on Hera, Orion, and Gaea machines
+      * ``- wcoss2 acorn``: Compile will NOT be run on WCOSS2 or Acorn
+
+   #. ``fv3``: Set as fv3. Previously, this was used to run a test without compiling code (e.g., if FV3 was already present). 
 
 After each compile line is one or more ``RUN`` lines. ``RUN`` lines have five columns. The build resulting from the ``COMPILE`` line above the ``RUN`` line will be used to run the tests. 
-#. ``RUN`` indicator
-#. **Test name** -- indicates which test in the :wm-repo:`tests/tests <tree/develop/tests/tests>` directory should be sourced.
-#. **Machines** to run on (``+``) or ignore (``-``).
-#. **Baseline Creation** -- controls whether the run creates its own baseline or uses the baseline from a different (control) test (see information on ``-c`` option :ref:`below <cmd-line-opts>` for more).
-#. **Comparison Test** -- Test name to compare baselines with if not itself.
+
+   #. ``RUN`` indicator
+   #. **Test name** -- indicates which test in the :wm-repo:`tests/tests <tree/develop/tests/tests>` directory should be sourced.
+   #. **Machines** to run on (``+``) or ignore (``-``).
+   #. **Baseline Creation** -- controls whether the run creates its own baseline or uses the baseline from a different (control) test (see information on ``-c`` option :ref:`below <cmd-line-opts>` for more).
+   #. **Comparison Test** -- Test name to compare baselines with if not itself.
 
 The order of lines in ``rt.conf`` matters since ``rt.sh`` processes them sequentially; a ``RUN`` line should be preceeded
 by a ``COMPILE`` line that builds the model used in the test. The following

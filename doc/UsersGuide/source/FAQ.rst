@@ -579,7 +579,7 @@ How can I get the UFS WM to output physics tendencies?
 Users will need to:
 
 #. Update ``input.nml`` by setting ``ldiag3d`` and ``qdiag3d`` to ``.true.``. 
-#. Update the ``diag_table`` according to the instructions in :numref:`Section %s <_diag_tableFile>`.
+#. Update the ``diag_table`` according to the instructions in :numref:`Section %s <diag_tableFile>`.
  
 Although it may seem counterintuitive, the physics tendencies will be output in ``sfc*.nc`` files once the ``diag_table`` changes have been made. Even 3D fields will appear there. 
 
