@@ -116,7 +116,7 @@ export CMAKE_FLAGS
 
 bash -x "${PATHTR}/build.sh"
 
-mv "${BUILD_DIR}/ufs_model" "${PATHTR}/tests/${BUILD_NAME}.exe"
+rsync --remove-source-files "${BUILD_DIR}/ufs_model" "${PATHTR}/tests/${BUILD_NAME}.exe"
 if [[ ${MACHINE_ID} == linux ]]; then
   cp "${PATHTR}/modulefiles/ufs_${MACHINE_ID}.${RT_COMPILER}" "${PATHTR}/tests/modules.${BUILD_NAME}"
 else
