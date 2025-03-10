@@ -550,8 +550,8 @@ if [[ ${skip_check_results} == false ]]; then
 
   {
   echo
-  grep "The total amount of wall time" "${RUNDIR}/out"
-  grep "The maximum resident set size" "${RUNDIR}/out"
+  grep --text "The total amount of wall time" "${RUNDIR}/out"
+  grep --text "The maximum resident set size" "${RUNDIR}/out"
   echo
   echo "Test ${TEST_ID} ${test_status}"
   echo
@@ -568,8 +568,8 @@ if [[ ${skip_check_results} == false ]]; then
 else
   {
   echo
-  grep "The total amount of wall time" "${RUNDIR}/out"
-  grep "The maximum resident set size" "${RUNDIR}/out"
+  grep --text "The total amount of wall time" "${RUNDIR}/out"
+  grep --text "The maximum resident set size" "${RUNDIR}/out"
   echo
   echo "Test ${TEST_ID} RUN_SUCCESS"
   echo;echo;echo
