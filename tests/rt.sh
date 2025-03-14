@@ -947,39 +947,6 @@ case ${MACHINE_ID} in
       ROCOTO_SCHEDULER="pbspro"
     fi
     ;;
-  stampede)
-    echo "rt.sh: Setting up stampede..."
-    export PYTHONPATH=
-    if [[ "${ECFLOW:-false}" == true ]] ; then
-      ECFLOW_START=
-    fi
-    QUEUE=skx-normal
-    COMPILE_QUEUE=skx-dev
-    PARTITION=
-    dprefix="${SCRATCH}/ufs-weather-model/run"
-    DISKNM="/work2/07736/minsukji/stampede2/ufs-weather-model/RT"
-    STMP="${dprefix}"
-    PTMP="${dprefix}"
-    SCHEDULER="slurm"
-    export MPIEXEC="ibrun"
-    export MPIEXECOPTS=
-    ;;
-  expanse)
-    echo "rt.sh: Setting up expanse..."
-    export PYTHONPATH=
-
-    if [[ "${ECFLOW:-false}" == true ]] ; then
-      export ECFLOW_START=
-    fi
-    QUEUE="compute"
-    COMPILE_QUEUE="shared"
-    PARTITION=
-    dprefix="/expanse/lustre/scratch/${USER}/temp_project/run"
-    DISKNM="/expanse/lustre/scratch/domh/temp_project/RT"
-    STMP="${dprefix}"
-    PTMP="${dprefix}"
-    SCHEDULER="slurm"
-    ;;
   noaacloud)
     echo "rt.sh: Setting up noaacloud..."
     export PATH="/contrib/EPIC/bin:${PATH}"
@@ -1049,8 +1016,7 @@ if [[ "${CREATE_BASELINE}" == false ]] ; then
 fi
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-${DISKNM}/NEMSfv3gfs/input-data-20240501}
-INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20250114
-INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC:-${DISKNM}/NEMSfv3gfs/BM_IC-20220207}
+INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20250212 
 INPUTDATA_LM4=${INPUTDATA_LM4:-${INPUTDATA_ROOT}/LM4_input_data}
 
 shift $((OPTIND-1))
@@ -1093,7 +1059,7 @@ if [[ ${ROCOTO} == true ]]; then
   echo "rt.sh: Verifying ROCOTO support..."
 
   case ${MACHINE_ID} in
-    wcoss2|acorn|expanse|stampede)
+    wcoss2|acorn)
       die "Rocoto not supported on this machine, please do not use '-r'."
       ;;
     *)
@@ -1121,7 +1087,6 @@ if [[ ${ROCOTO} == true ]]; then
   <!ENTITY RTPWD          "${RTPWD}">
   <!ENTITY INPUTDATA_ROOT "${INPUTDATA_ROOT}">
   <!ENTITY INPUTDATA_ROOT_WW3 "${INPUTDATA_ROOT_WW3}">
-  <!ENTITY INPUTDATA_ROOT_BMIC "${INPUTDATA_ROOT_BMIC}">
   <!ENTITY RUNDIR_ROOT    "${RUNDIR_ROOT}">
   <!ENTITY NEW_BASELINE   "${NEW_BASELINE}">
 ]>
@@ -1135,7 +1100,7 @@ fi
 if [[ ${ECFLOW} == true ]]; then
   echo "Verifying ECFLOW support..."
   case ${MACHINE_ID} in
-    expanse|stampede|noaacloud)
+    noaacloud)
       die "ECFLOW not supported on this machine, please do not use '-e'."
       ;;
     *)
@@ -1321,7 +1286,6 @@ export RT_COMPILER=${RT_COMPILER}
 export RTPWD=${RTPWD}
 export INPUTDATA_ROOT=${INPUTDATA_ROOT}
 export INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT_WW3}
-export INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC}
 export INPUTDATA_LM4=${INPUTDATA_LM4}
 export PATHRT=${PATHRT}
 export PATHTR=${PATHTR}

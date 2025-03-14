@@ -7,14 +7,18 @@
 #
 #  General settings
 #
-ae_matrix_nml: AE_cb6r3_ae6_aq.nml
-gc_matrix_nml: GC_cb6r3_ae6_aq.nml
-nr_matrix_nml: NR_cb6r3_ae6_aq.nml
+ae_matrix_nml: AE_cb6r5_ae7_aq.nml
+gc_matrix_nml: GC_cb6r5_ae7_aq.nml
+nr_matrix_nml: NR_cb6r5_ae7_aq.nml
 tr_matrix_nml: Species_Table_TR_0.nml
 
-csqy_data:   CSQY_DATA_cb6r3_ae6_aq
+csqy_data:   CSQY_DATA_cb6r5_ae7_aq
 optics_data: PHOT_OPTICS.dat
 omi_data:    omi_cmaq_2015_361X179.dat
+
+desid_chem_ctrl: CMAQ_Control_DESID_cb6r5_ae7_aq.nml
+desid_ctrl: CMAQ_Control_DESID.nml
+misc_ctrl:  CMAQ_Control_Misc.nml
 
 init_concentrations: false
 
@@ -28,6 +32,32 @@ ctm_pmdiag: true
 ctm_wb_dust: true
 
 ctm_stdout: maintask
+
+#
+# Inline Canopy Effects
+#
+canopy_yn: false
+
+canopy_type: canopy
+
+canopy_format: netcdf
+
+canopy_file: gfs.t12z.geo.08.canopy_regrid.nc
+
+canopy_frequency: static
+
+canopy_species::
+    FCH        1.00000   FCH      m
+    FRT        1.00000   FRT      1
+    CLU        1.00000   CLU      1
+    POPU       1.00000   POPU     10000_people/10km2
+    LAIE       1.00000   LAIE     1
+    C1R        1.00000   C1R      1
+    C2R        1.00000   C2R      1
+    C3R        1.00000   C3R      1
+    C4R        1.00000   C4R      1
+::
+
 
 #
 #  Input emissions
