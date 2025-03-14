@@ -18,7 +18,13 @@ jobs:
       actions: write
 
     steps:
-    
+
+    - name: "Install dependencies with APT"
+      shell: bash
+      run: |
+        mv /usr/local /usr/local_mv
+        sudo apt install openmpi cmake
+
     - name: "Build Spack package"
       uses: NOAA-EMC/ci-test-spack-package@develop
       with:
@@ -27,6 +33,7 @@ jobs:
         custom-recipe: ci/package.py
         spack-compiler: gcc
         repo-cache-key-suffix: ${{ matrix.os }}-1
+        spack-externals: openmpi gmake cmake python perl
 
   # This job validates the Spack recipe by making sure each cmake build option is represented
   recipe-check:
