@@ -13,14 +13,15 @@ jobs:
       matrix:
         config:
         - {
+            os: "ubuntu-latest"
             app: "S2SWA",
             ccpp_suites: "FV3_GFS_v17_coupled_p8,FV3_GFS_v17_coupled_p8_ugwpv1",
           }
         - {
+            os: "ubuntu-latest"
             app: "ATM",
             ccpp_suites: "FV3_GFS_v16,FV3_GFS_v16_flake,FV3_GFS_v16_ras,FV3_GFS_v17_p8,FV3_GFS_v17_p8_ugwpv1",
           }
-    runs-on: ubuntu-24.04
     permissions:
       actions: write # for repo-level build caching
 
@@ -36,10 +37,10 @@ jobs:
       uses: NOAA-EMC/ci-test-spack-package@develop
       with:
         package-name: ufs-weather-model
-        package-variants: ${{ matrix.variants }} mapl gftl-shared parallelio
+        package-variants: app=${{ matrix.config.app }} ccpp_physics=${{ matrix.config.ccpp_physics }} mapl gftl-shared parallelio
         custom-recipe: ci/package.py
         spack-compiler: gcc
-        repo-cache-key-suffix: ${{ matrix.os }}-1
+        repo-cache-key-suffix: ${{ matrix.config.os }}-1
         spack-externals: openmpi gmake cmake python perl git git-lfs
         use-common-build-cache: false
 
