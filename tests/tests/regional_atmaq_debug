@@ -1,6 +1,6 @@
 ###############################################################################
 #
-#  regional aqm test: GFSv15p2 atmosphere with aqm (CMAQ) in DEBUG mode C96L64
+#  regional aqm test: GFSv16 atmosphere with aqm (CMAQ) in DEBUG mode C96L64
 #
 ###############################################################################
 
@@ -22,6 +22,8 @@ export LIST_FILES="sfcf000.nc \
 
 export_fv3_v16
 
+export WLCLK=45
+
 export SYEAR=2019
 export SMONTH=08
 export SDAY=1
@@ -35,16 +37,8 @@ export IAER=5111
 export IOVR=3
 export OUTPUT_FH='0 1'
 
-#AQM Specifics
-#NPZ input.nml 64
-#DNATS input.nml 4
-#RES_LATLON_DYNAMICS input.nml 'fv3_increment.nc'
-#fhzero = 1.0 input.nml
-#fhcyc = 0 input.nml
-#cdmbgwd = 3.5, 0.25 input.nml
 export AQM=.true.
 export MAX_OUTPUT_FIELDS=450
-export OUTPUT_GRID='lambert_conformal'
 export CEN_LON=-97.5
 export CEN_LAT=38.5
 export LON1=-121.70231097
@@ -92,18 +86,5 @@ export FSCAV_AERO="'aacd:0.0', 'acet:0.0', 'acrolein:0.0', 'acro_primary:0.0',
 export INPUT_NML=regional_atmaq.nml.IN
 export MODEL_CONFIGURE=model_configure_atmaq.IN
 export UFS_CONFIGURE=ufs.configure.atmaq.IN
-export FV3_RUN=fv3_aqm.IN
-export CCPP_SUITE=FV3_GFS_v15p2
-
-if [[ $MACHINE_ID = hera ]]; then
-  TPN=30
-  WLCLK=60
-elif [[ $MACHINE_ID = gaeac5 ]]; then
-  TPN=16
-elif [[ $MACHINE_ID = gaeac6 ]]; then
-  TPN=128
-fi
-if [[ $MACHINE_ID = derecho ]]; then
-  WLCLK=60
-fi
-
+export FV3_RUN=regional_atmaq.IN
+export CCPP_SUITE=FV3_GFS_v16
