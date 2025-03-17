@@ -1,12 +1,12 @@
 &atmos_model_nml
     blocksize = 29
-    ccpp_suite = '@[CCPP_SUITE]'
+    ccpp_suite = 'FV3_GFS_v16'
     chksum_debug = .false.
     dycore_only = .false.
 /
 
 &diag_manager_nml
-    max_output_fields = @[MAX_OUTPUT_FIELDS]
+    max_output_fields = 450
     prepend_date = .false.
 /
 
@@ -40,14 +40,14 @@
     d_ext = 0.0
     dddmp = 0.1
     delt_max = 0.008
-    dnats = @[DNATS]
+    dnats = 5
     do_sat_adj = .true.
     do_schmidt = .true.
     do_vort_damp = .true.
     dwind_2d = .false.
     dz_min = 2
     external_eta = .true.
-    external_ic = @[EXTERNAL_IC]
+    external_ic = .true.
     fill = .true.
     full_zs_filter = .false.
     fv_debug = .false.
@@ -66,22 +66,22 @@
     kord_tm = -9
     kord_tr = 9
     kord_wz = 9
-    layout = @[INPES],@[JNPES]
-    make_nh = @[MAKE_NH]
-    mountain = @[MOUNTAIN]
+    layout = 33,8
+    make_nh = .true.
+    mountain = .false.
     n_split = 8
     n_sponge = 30
     n_zs_filter = 0
-    na_init = @[NA_INIT]
+    na_init = 1
     ncep_ic = .false.
-    nggps_ic = @[NGGPS_IC]
+    nggps_ic = .true.
     no_dycore = .false.
     nord = 3
-    npx = @[NPX]
-    npy = @[NPY]
-    npz = @[NPZ]
+    npx = 397
+    npy = 233
+    npz = 64
     nrows_blend = 0
-    ntiles = @[NTILES]
+    ntiles = 1
     nudge_qv = .true.
     nwat = 6
     p_fac = 0.1
@@ -89,11 +89,11 @@
     print_freq = 6
     psm_bc = 1
     range_warn = .false.
-    read_increment = @[READ_INCREMENT]
+    read_increment = .false.
     regional = .true.
     regional_bcs_from_gsi = .false.
-    res_latlon_dynamics = @[RES_LATLON_DYNAMICS]
-    increment_file_on_native_grid = @[INCREMENT_FILE_ON_NATIVE_GRID]
+    res_latlon_dynamics = ''
+    increment_file_on_native_grid = .false.
     reset_eta = .false.
     rf_cutoff = 750.0
     stretch_fac = 0.999
@@ -102,7 +102,7 @@
     tau = 5.0
     use_hydro_pressure = .false.
     vtdm4 = 0.075
-    warm_start = @[WARM_START]
+    warm_start = .false.
     write_restart_with_bcs = .false.
     z_tracer = .true.
 /
@@ -111,7 +111,7 @@
     checker_tr = .false.
     filtered_terrain = .true.
     gfs_dwinds = .true.
-    levp = @[NPZP]
+    levp = 65
     nt_checker = 0
 /
 
@@ -167,48 +167,60 @@
 
 &gfs_physics_nml
     cal_pre = .false.
-    cdmbgwd = @[CDMBWD]
-    cnvcld = @[CNVCLD]
+    cdmbgwd = 0.14,1.8,1.0,1.0
+    cnvcld = .true.
     cnvgwd = .true.
-    cplaqm = @[AQM]
-    cplchm = @[CPLCHM]
-    cplwav = @[CPLWAV]
-    cplwav2atm = @[CPLWAV2ATM]
+    cplaqm = .true.
+    cplchm = .false.
+    cplwav = .false.
+    cplwav2atm = .false.
     cplocn2atm = .false.
-    debug = .false.
-    do_myjpbl = .false.
-    do_myjsfc = .false.
-    do_RRTMGP = @[DO_RRTMGP]
-    do_shum = @[DO_SHUM]
-    do_skeb = @[DO_SKEB]
+    debug = .false.    
+    do_shum = .false.
+    do_skeb = .false.
     do_spp = .false.
-    do_sppt = @[DO_SPPT]
-    do_tofd = .false.
+    do_sppt = .false.
+    do_tofd = .true.
     do_ugwp = .false.
-    do_ysu = .false.
-    doGP_cldoptics_LUT = @[DOGP_CLDOPTICS_LUT]
-    doGP_lwscat = @[DOGP_LWSCAT]
     dspheat = .true.
     effr_in = .true.
-    fhcyc = @[FHCYC]
+    fhcyc = 24
     fhlwr = 3600.0
     fhswr = 3600.0
-    fhzero = @[FHZERO]
-    fscav_aero = @[FSCAV_AERO]
+    fhzero = 6
+    fscav_aero = 'aacd:0.0', 'acet:0.0', 'acrolein:0.0', 'acro_primary:0.0',
+                   'ald2:0.0', 'ald2_primary:0.0', 'aldx:0.0', 'benzene:0.0',
+                   'butadiene13:0.0', 'cat1:0.0', 'cl2:0.0', 'clno2:0.0',
+                   'co:0.0', 'cres:0.0', 'cron:0.0', 'ech4:0.0', 'epox:0.0',
+                   'eth:0.0', 'etha:0.0', 'ethy:0.0', 'etoh:0.0', 'facd:0.0',
+                   'fmcl:0.0', 'form:0.0', 'form_primary:0.0', 'gly:0.0',
+                   'glyd:0.0', 'h2o2:0.0', 'hcl:0.0', 'hg:0.0', 'hgiigas:0.0',
+                   'hno3:0.0', 'hocl:0.0', 'hono:0.0', 'hpld:0.0', 'intr:0.0',
+                   'iole:0.0', 'isop:0.0', 'ispd:0.0', 'ispx:0.0', 'ket:0.0',
+                   'meoh:0.0', 'mepx:0.0', 'mgly:0.0', 'n2o5:0.0', 'naph:0.0',
+                   'no:0.0', 'no2:0.0', 'no3:0.0', 'ntr1:0.0', 'ntr2:0.0',
+                   'o3:0.0', 'ole:0.0', 'opan:0.0', 'open:0.0', 'opo3:0.0',
+                   'pacd:0.0', 'pan:0.0', 'panx:0.0', 'par:0.0', 'pcvoc:0.0',
+                   'pna:0.0', 'prpa:0.0', 'rooh:0.0', 'sesq:0.0', 'so2:0.0',
+                   'soaalk:0.0', 'sulf:0.0', 'terp:0.0', 'tol:0.0', 'tolu:0.0',
+                   'vivpo1:0.0', 'vlvoo1:0.0', 'vlvoo2:0.0', 'vlvpo1:0.0',
+                   'vsvoo1:0.0', 'vsvoo2:0.0', 'vsvoo3:0.0', 'vsvpo1:0.0',
+                   'vsvpo2:0.0', 'vsvpo3:0.0', 'xopn:0.0', 'xylmn:0.0', '*:0.2'
     h2o_phys = .true.
-    hybedmf = .true.
-    iaer = @[IAER]
+    hybedmf = .false.
+    iaer = 5111
     ialb = 1
     iau_inc_files = ''
+    icliq_sw = 2
     ico2 = 2
     iems = 1
-    imfdeepcnv = @[IMFDEEPCNV]
-    imfshalcnv = @[IMFSHALCNV]
+    imfdeepcnv = 2
+    imfshalcnv = 2
     imp_physics = 11
     iopt_alb = 2
     iopt_btr = 1
     iopt_crs = 1
-    iopt_dveg = 2
+    iopt_dveg = 1
     iopt_frz = 1
     iopt_inf = 1
     iopt_rad = 1
@@ -217,22 +229,24 @@
     iopt_snf = 4
     iopt_stc = 1
     iopt_tbot = 2
-    iovr = @[IOVR]
+    iopt_trs = 2
+    iovr = 3
+    isatmedmf = 1
     isol = 2
     isot = 1
     isubc_lw = 2
     isubc_sw = 2
     ivegsrc = 1
-    ldiag3d = @[LDIAG3D]
+    ldiag3d = .false.
     ldiag_ugwp = .false.
     lgfdlmprad = .true.
-    lheatstrg = @[LHEATSTRG]
-    lndp_type = @[LNDP_TYPE]
-    lseaspray = @[LSEASPRAY]
+    lheatstrg = .true.
+    lndp_type = 0
+    lseaspray = .false.
     lsm = 1
     lsoil = 4
     lwhtr = .true.
-    n_var_lndp = @[N_VAR_LNDP]
+    n_var_lndp = 0
     n_var_spp = 0
     nsfullradar_diag = 3600
     nst_anl = .true.
@@ -240,22 +254,19 @@
     oz_phys = .false.
     oz_phys_2015 = .true.
     pdfcld = .false.
+    prautco = 0.00015, 0.00015
     pre_rad = .false.
-    print_diff_pgr = @[PRINT_DIFF_PGR]
+    print_diff_pgr = .false.
     prslrd0 = 0.0
-    qdiag3d = @[QDIAG3D]
-    random_clds = @[RANDOM_CLDS]
-    ras = @[RAS]
+    psautco = 0.0008, 0.0005
+    qdiag3d = .false.
+    random_clds = .false.
     redrag = .true.
-    satmedmf = .false.
+    satmedmf = .true.
     shal_cnv = .true.
-    shinhong = .false.
     swhtr = .true.
     trans_trac = .true.
     use_ufo = .true.
-    xkzm_h = 1.0
-    xkzm_m = 1.0
-    xkzminv = 0.3
 /
 
 &interpolator_nml
@@ -263,37 +274,9 @@
 /
 
 &nam_sfcperts
-  lndp_type      = @[LNDP_TYPE]
-  lndp_model_type = @[LNDP_MODEL_TYPE]
-  LNDP_TAU=21600,
-  LNDP_LSCALE=500000,
-  ISEED_LNDP=2010,
-  lndp_var_list = @[LNDP_VAR_LIST]
-  lndp_prt_list = @[LNDP_PRT_LIST]
 /
 
 &nam_stochy
-  STOCHINI=@[STOCHINI],
-  SKEBNORM=1,
-  SKEB_NPASS=30,
-  SKEB_VDOF=5,
-  SKEB=@[SKEB],
-  SKEB_TAU=2.16E4,
-  SKEB_LSCALE=1000.E3,
-  SKEBINT=1800,
-  SHUM=@[SHUM],
-  SHUM_TAU=21600,
-  SHUM_LSCALE=500000,
-  SHUMINT=3600,
-  SPPT=@[SPPT],
-  SPPT_TAU=21600,
-  SPPT_LSCALE=500000,
-  SPPT_LOGIT=.TRUE.,
-  SPPT_SFCLIMIT=.TRUE.,
-  SPPTINT=1800,
-  ISEED_SHUM=1,
-  ISEED_SKEB=2,
-  ISEED_SPPT=3,
 /
 
 
@@ -301,24 +284,24 @@
     fabsl = 99999
     faisl = 99999
     faiss = 99999
-    fnabsc = @[FNABSC]
+    fnabsc = 'C775.maximum_snow_albedo.tileX.nc'
     fnacna = ''
     fnaisc = 'CFSR.SEAICE.1982.2012.monthly.clim.grb'
-    fnalbc = @[FNALBC]
+    fnalbc = 'C775.snowfree_albedo.tileX.nc'
     fnalbc2 = 'C775.facsf.tileX.nc'
     fnglac = 'global_glacier.2x2.grb'
     fnmskh = 'seaice_newland.grb'
     fnmxic = 'global_maxice.2x2.grb'
     fnslpc = 'C775.slope_type.tileX.nc'
-    fnsmcc = @[FNSMCC]
+    fnsmcc = 'global_soilmgldas.t126.384.190.grb'
     fnsnoa = ''
     fnsnoc = 'global_snoclim.1.875.grb'
-    fnsotc = @[FNSOTC]
+    fnsotc = 'C775.soil_type.tileX.nc'
     fntg3c = 'C775.substrate_temperature.tileX.nc'
     fntsfa = ''
     fntsfc = 'RTGSST.1982.2012.monthly.clim.grb'
     fnvegc = 'C775.vegetation_greenness.tileX.nc'
-    fnvetc = @[FNVETC]
+    fnvetc = 'C775.vegetation_type.tileX.nc'
     fnvmnc = 'C775.vegetation_greenness.tileX.nc'
     fnvmxc = 'C775.vegetation_greenness.tileX.nc'
     fnzorc = 'igbp'
@@ -339,16 +322,16 @@
 /
 
 &cires_ugwp_nml
-  knob_ugwp_solver  = 2
-  knob_ugwp_source  = 1,1,0,0
-  knob_ugwp_wvspec  = 1,25,25,25
-  knob_ugwp_azdir   = 2,4,4,4
-  knob_ugwp_stoch   = 0,0,0,0
-  knob_ugwp_effac   = 1,1,1,1
-  knob_ugwp_doaxyz  = 1
-  knob_ugwp_doheat  = 1
-  knob_ugwp_dokdis  = 1
-  knob_ugwp_ndx4lh  = 1
-  knob_ugwp_version = 0
-  launch_level      = 54
+    knob_ugwp_azdir = 2, 4, 4, 4
+    knob_ugwp_doaxyz = 1
+    knob_ugwp_doheat = 1
+    knob_ugwp_dokdis = 1
+    knob_ugwp_effac = 1, 1, 1, 1
+    knob_ugwp_ndx4lh = 1
+    knob_ugwp_solver = 2
+    knob_ugwp_source = 1, 1, 0, 0
+    knob_ugwp_stoch = 0, 0, 0, 0
+    knob_ugwp_version = 0
+    knob_ugwp_wvspec = 1, 25, 25, 25
+    launch_level = 27
 /
