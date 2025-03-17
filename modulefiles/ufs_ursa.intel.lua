@@ -19,13 +19,12 @@ load("ufs_common")
 nccmp_ver=os.getenv("nccmp_ver") or "1.9.1.0"
 load(pathJoin("nccmp", nccmp_ver))
 
---setenv("CC", "mpiicc")
---setenv("CXX", "mpiicpc")
---setenv("FC", "mpiifort")
---
---setenv("I_MPI_CC", "icc")
---setenv("I_MPI_CXX", "icpc")
---setenv("I_MPI_F90", "ifort")
+setenv("CC", "mpiicx")
+setenv("CXX", "mpiicpx")
+setenv("FC", "mpiifort")
+setenv("I_MPI_CC", "icx")
+setenv("I_MPI_CXX", "icpx")
+setenv("I_MPI_F90", "ifort")
 
 setenv("CMAKE_Platform", "ursa.intel")
 
