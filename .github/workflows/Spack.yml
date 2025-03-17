@@ -11,11 +11,18 @@ jobs:
   Spack:
     strategy:
       matrix:
-        os: ["ubuntu-latest"]
-        variants: ["ccpp_suites=FV3_GFS_v16,FV3_GFS_v16_flake,FV3_GFS_v16_ras,FV3_GFS_v17_p8,FV3_GFS_v17_p8_ugwpv1"]
-    runs-on: ${{ matrix.os }}
+        config:
+        - {
+            app: "S2SWA",
+            ccpp_suites: "FV3_GFS_v17_coupled_p8,FV3_GFS_v17_coupled_p8_ugwpv1",
+          }
+        - {
+            app: "ATM",
+            ccpp_suites: "FV3_GFS_v16,FV3_GFS_v16_flake,FV3_GFS_v16_ras,FV3_GFS_v17_p8,FV3_GFS_v17_p8_ugwpv1",
+          }
+    runs-on: ubuntu-24.04
     permissions:
-      actions: write
+      actions: write # for repo-level build caching
 
     steps:
 
@@ -29,7 +36,7 @@ jobs:
       uses: NOAA-EMC/ci-test-spack-package@develop
       with:
         package-name: ufs-weather-model
-        package-variants: ${{ matrix.variants }}
+        package-variants: ${{ matrix.variants }} mapl gftl-shared parallelio
         custom-recipe: ci/package.py
         spack-compiler: gcc
         repo-cache-key-suffix: ${{ matrix.os }}-1
