@@ -38,7 +38,7 @@ jobs:
       uses: NOAA-EMC/ci-test-spack-package@develop
       with:
         package-name: ufs-weather-model
-        package-variants: app=${{ matrix.config.app }} ccpp_physics=${{ matrix.config.ccpp_physics }} mapl gftl-shared parallelio
+        package-variants: app=${{ matrix.config.app }} ccpp_suites=${{ matrix.config.ccpp_suites }} mapl gftl-shared parallelio
         custom-recipe: ci/package.py
         spack-compiler: gcc
         repo-cache-key-suffix: ${{ matrix.config.os }}-1
