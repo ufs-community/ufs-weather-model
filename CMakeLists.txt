@@ -41,6 +41,7 @@ set(FVCOM           OFF CACHE BOOL "Enable FVCOM")
 set(SCHISM          OFF CACHE BOOL "Enable SCHISM")
 set(ROMS            OFF CACHE BOOL "Enable ROMS")
 set(PAHM            OFF CACHE BOOL "Enable PAHM")
+set(GEOGATE         OFF CACHE BOOL "Enable GeoGate")
 
 # Configure selected application specific components
 message("")
@@ -66,6 +67,7 @@ message("FVCOM ............ ${FVCOM}")
 message("SCHISM ........... ${SCHISM}")
 message("ROMS ............. ${ROMS}")
 message("PAHM ............. ${PAHM}")
+message("GEOGATE .......... ${GEOGATE}")
 
 ###############################################################################
 ### Build Options
@@ -162,7 +164,9 @@ if(OPENMP)
 endif()
 
 find_package(NetCDF 4.7.4 REQUIRED C Fortran)
-find_package(ESMF 8.3.0 MODULE REQUIRED)
+if(NOT ESMF_FOUND)
+  find_package(ESMF 8.3.0 MODULE REQUIRED)
+endif()
 if(FMS)
   find_package(FMS 2022.04 REQUIRED COMPONENTS R4 R8)
   if(APP MATCHES "^(HAFSW)$")
@@ -313,6 +317,13 @@ if(FIRE_BEHAVIOR)
 endif()
 
 ###############################################################################
+### GEOGATE
+###############################################################################
+if(GEOGATE)
+  add_subdirectory(GeoGate/src)
+endif()
+
+###############################################################################
 ### UFS Library
 ###############################################################################
 add_library(ufs driver/UFSDriver.F90)
@@ -431,6 +442,12 @@ if(PAHM)
   add_dependencies(ufs pahm)
   list(APPEND _ufs_defs_private FRONT_PAHM=pahm_cap)
   list(APPEND _ufs_libs_public pahm)
+endif()
+
+if(GEOGATE)
+  add_dependencies(ufs geogate)
+  list(APPEND _ufs_defs_private FRONT_GEOGATE=geogate_nuopc)
+  list(APPEND _ufs_libs_public geogate)
 endif()
 
 target_compile_definitions(ufs PRIVATE "${_ufs_defs_private}")
