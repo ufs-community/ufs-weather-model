@@ -10,25 +10,26 @@ jobs:
   # This job builds the ufs-weather-model Spack recipe with a PR's modified code.
   Spack:
     strategy:
-      matrix
+      matrix:
         # See ci/package.py for variant definitions.
         config:
         - {
             os: "ubuntu-latest",
             app: "S2SWA",
             ccpp_suites: "FV3_GFS_v17_coupled_p8,FV3_GFS_v17_coupled_p8_ugwpv1",
-            other-variants: ''
+            other-variants: '',
           }
         - {
             os: "ubuntu-latest",
             app: "ATM",
             ccpp_suites: "FV3_GFS_v16,FV3_GFS_v16_flake,FV3_GFS_v16_ras,FV3_GFS_v17_p8,FV3_GFS_v17_p8_ugwpv1",
-            other-variants: ''
+            other-variants: '',
           }
 
     runs-on: ${{ matrix.config.os }}
     permissions:
-      actions: write # for repo-level build caching by NOAA-EMC/ci-test-spack-package action
+      # For repo-level build caching by NOAA-EMC/ci-test-spack-package action
+      actions: write
 
     steps:
 
