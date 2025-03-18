@@ -7,50 +7,60 @@ name: Spack
 on: [push,pull_request,workflow_dispatch]
 
 jobs:
-  # This job builds with Spack using every combination of variants and runs the CTest suite each time
+  # This job builds the ufs-weather-model Spack recipe with a PR's modified code.
   Spack:
     strategy:
-      matrix:
+      matrix
+        # See ci/package.py for variant definitions.
         config:
         - {
             os: "ubuntu-latest",
             app: "S2SWA",
             ccpp_suites: "FV3_GFS_v17_coupled_p8,FV3_GFS_v17_coupled_p8_ugwpv1",
+            other-variants: ''
           }
         - {
             os: "ubuntu-latest",
             app: "ATM",
             ccpp_suites: "FV3_GFS_v16,FV3_GFS_v16_flake,FV3_GFS_v16_ras,FV3_GFS_v17_p8,FV3_GFS_v17_p8_ugwpv1",
+            other-variants: ''
           }
+
     runs-on: ${{ matrix.config.os }}
     permissions:
-      actions: write # for repo-level build caching
+      actions: write # for repo-level build caching by NOAA-EMC/ci-test-spack-package action
 
     steps:
 
     - name: "Install dependencies with APT"
       shell: bash
       run: |
-        sudo mv /usr/local /usr/local_mv
+        sudo mv /usr/local /usr/local_mv # relocate so CMake doesn't pick up on bad libraries
         sudo apt install libopenmpi-dev openmpi-bin cmake
 
     - name: "Build Spack package"
       uses: NOAA-EMC/ci-test-spack-package@develop
       with:
         package-name: ufs-weather-model
-        package-variants: app=${{ matrix.config.app }} ccpp_suites=${{ matrix.config.ccpp_suites }} esmf@8.6.1 mapl gftl-shared parallelio +shared
+        # ufs-weather-model Spack recipe variants, plus additional package constraints:
+        package-variants: app=${{ matrix.config.app }} ccpp_suites=${{ matrix.config.ccpp_suites }} ${{ matrix.config.other-variants }} ^esmf@8.6.1
         custom-recipe: ci/package.py
-        spack-compiler: gcc
-        repo-cache-key-suffix: ${{ matrix.config.os }}-1
-        spack-externals: openmpi gmake cmake python perl git git-lfs
-        use-common-build-cache: false
-        spack-test-flag: ''
         spack-ref: develop
+        spack-compiler: gcc
+        spack-externals: openmpi gmake cmake python perl git git-lfs
+        spack-test-flag: '' # disable 'make test' for Spack
+        use-common-build-cache: false
+        repo-cache-key-suffix: ${{ matrix.config.os }}-2 # Update to create and use a fresh cache
+        save-repo-cache: ${{ matrix.config.app == 'S2SWA' }} # Only need to save cache from one job
         # Set to save to a different cache key than the restored one (in order to add new packages etc.):
         repo-save-key-suffix: ''
 
-  # This job validates the Spack recipe by making sure each cmake build option is represented
+  # The recipe-check job validates the Spack recipe by making sure each CMake
+  # build option is represented. If this check fails due to the addition of a
+  # new CMake options, ci/package.py should be updated in order to make that
+  # new build option configurable through Spack.
   recipe-check:
+
     runs-on: ubuntu-latest
 
     steps:
