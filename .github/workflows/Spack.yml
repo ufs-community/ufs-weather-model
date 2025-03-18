@@ -51,10 +51,10 @@ jobs:
         spack-externals: openmpi gmake cmake python perl git git-lfs
         spack-test-flag: '' # disable 'make test' for Spack
         use-common-build-cache: false
-        repo-cache-key-suffix: ${{ matrix.config.os }}-2 # Update to create and use a fresh cache
+        repo-cache-key-suffix: ${{ matrix.config.os }}-1 # Update to create and use a fresh cache
         save-repo-cache: ${{ matrix.config.app == 'S2SWA' }} # Only need to save cache from one job
         # Set to save to a different cache key than the restored one (in order to add new packages etc.):
-        repo-save-key-suffix: ''
+        repo-save-key-suffix: 'b'
 
   # The recipe-check job validates the Spack recipe by making sure each CMake
   # build option is represented. If this check fails due to the addition of a
