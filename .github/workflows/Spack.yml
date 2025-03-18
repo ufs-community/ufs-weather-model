@@ -46,7 +46,7 @@ jobs:
         package-variants: app=${{ matrix.config.app }} ccpp_suites=${{ matrix.config.ccpp_suites }} ${{ matrix.config.other-variants }} ^esmf@8.6.1
         custom-recipe: ci/package.py
         spack-ref: develop
-        spack-compiler: gcc
+        spack-compiler: gcc@13
         spack-externals: openmpi gmake cmake python perl git git-lfs
         spack-test-flag: '' # disable 'make test' for Spack
         use-common-build-cache: false
