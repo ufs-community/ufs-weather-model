@@ -14,13 +14,13 @@ jobs:
         # See ci/package.py for variant definitions.
         config:
         - {
-            os: "ubuntu-latest",
+            os: "ubuntu-24.04",
             app: "S2SWA",
             ccpp_suites: "FV3_GFS_v17_coupled_p8,FV3_GFS_v17_coupled_p8_ugwpv1",
             other-variants: '',
           }
         - {
-            os: "ubuntu-latest",
+            os: "ubuntu-24.04",
             app: "ATM",
             ccpp_suites: "FV3_GFS_v16,FV3_GFS_v16_flake,FV3_GFS_v16_ras,FV3_GFS_v17_p8,FV3_GFS_v17_p8_ugwpv1",
             other-variants: '',
@@ -53,16 +53,17 @@ jobs:
         use-common-build-cache: false
         repo-cache-key-suffix: ${{ matrix.config.os }}-1b # Update to create and use a fresh cache
         save-repo-cache: ${{ matrix.config.app == 'S2SWA' }} # Only need to save cache from one job
-        # Set to save to a different cache key than the restored one (in order to add new packages etc.):
+        # Set to save to a different cache key than the restored one (in order to add new packages etc.).
+        #  Be sure to unset it after a new cache is generated or a new one will be created each time!
         repo-save-key-suffix: ''
 
   # The recipe-check job validates the Spack recipe by making sure each CMake
   # build option is represented. If this check fails due to the addition of a
-  # new CMake options, ci/package.py should be updated in order to make that
+  # new CMake option, ci/package.py should be updated in order to make that
   # new build option configurable through Spack.
   recipe-check:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
     
