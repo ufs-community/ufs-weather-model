@@ -1,13 +1,11 @@
-# This is a CI workflow for the UFS Weather model.
+# This is a CI workflow for the ufs-weather-model repository that builds the
+# modified UWM in a given PR with Spack.
 #
-# This workflow builds UWM with Spack.
-#
-# Alex Richert, Sep 2023
+# Alex Richert, Mar 2025
 name: Spack
 on: [push,pull_request,workflow_dispatch]
 
 jobs:
-  # This job builds the ufs-weather-model Spack recipe with a PR's modified code.
   Spack:
     strategy:
       matrix:
@@ -51,7 +49,7 @@ jobs:
         spack-externals: openmpi gmake cmake python perl git git-lfs
         spack-test-flag: '' # disable 'make test' for Spack
         use-common-build-cache: false
-        repo-cache-key-suffix: ${{ matrix.config.os }}-1b # Update to create and use a fresh cache
+        repo-cache-key-suffix: ${{ matrix.config.os }}-1 # Update to create and use a fresh cache
         save-repo-cache: ${{ matrix.config.app == 'S2SWA' }} # Only need to save cache from one job
         # Set to save to a different cache key than the restored one (in order to add new packages etc.).
         #  Be sure to unset it after a new cache is generated or a new one will be created each time!
