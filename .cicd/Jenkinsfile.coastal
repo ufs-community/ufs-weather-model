@@ -1,0 +1,144 @@
+matchedNode = []
+for (label in pullRequest.labels) {
+   listOfLabelNodeNames = jenkins.model.Jenkins.instance.nodes.collect {
+   node -> node.getLabelString().contains(label) ? node.name : null
+
+   if ((label.matches(node.getLabelString()+"-nos(.*)"))) {
+     matchedNode += node.getLabelString()+"-nos"
+   }
+ }
+}
+
+modifiedLabels = matchedNode.collect{"'" + it + "'"} 
+def generateStage(nodeLabel) {
+    return {
+        stage("Running on ${nodeLabel}") {
+            node(nodeLabel) {
+               cleanWs()
+               script {
+                    echo "Running on ${nodeLabel}"
+                    if (modifiedLabels.contains(nodeLabel)) {
+                       sh '''
+                          export machine="${NODE_NAME}"
+                          export PATH=$PATH:~/bin
+                          echo "Running as expected on $machine."
+
+                          GIT_OWNER=$(echo $GIT_URL | cut -d '/' -f4)
+                          GIT_REPO_NAME=$(echo $GIT_URL | cut -d '/' -f5 | cut -d '.' -f1) 
+                          
+                          echo $CHANGE_ID
+
+                          export ufs_machine=hercules
+                          pwd
+                          echo hostname=$(hostname)
+                          [[ -e ufs-weather-model ]] && rm -rf ufs-weather-model
+                          ls -al
+                          export workspace=.
+                          [[ -d .git/ ]] || git clone -b ${CHANGE_BRANCH} --quiet https://github.com/${CHANGE_FORK}/${GIT_REPO_NAME}.git ${workspace}
+                          date | tee date.txt
+                          [[ -d ufs-weather-model/ ]] && cd ufs-weather-model
+                          ls -al
+                          if [[ -d .git/ ]] ; then
+                            git branch
+                            git status
+                            git log -1
+                            
+                            # load modules
+                            set +x
+                            module use $PWD/modulefiles
+                            module load ufs_${ufs_machine}.intel
+                            module list
+
+                            # set custom DISKNM for the platform
+                            cd tests
+                            disknm_old=`awk '/hercules/{f=1} f && /DISKNM/ {print; exit}' rt.sh`
+                            disknm_new='    DISKNM="/work2/noaa/nems/tufuk/RT"'
+                            sed -i "s:${disknm_old}:${disknm_new}:g" rt.sh
+                            
+                            # set custom DPREFIX for the platform
+                            dprefix_old=`awk '/hercules/{f=1} f && /dprefix/ {print; exit}' rt.sh`
+                            dprefix_new='    dprefix="/work2/noaa/nosofs/UFS-Coastal-Jenkins-RT"'
+                            sed -i "s:${dprefix_old}:${dprefix_new}:g" rt.sh
+                            
+                            # run regression test
+                            export ACCNR=nosofs
+                            echo "Running regression tests..."
+                            ./rt.sh -l rt_coastal.conf -a $ACCNR
+                                echo "Pipeline Completed Regression Tests on ${NODE_NAME}! status=$?"
+                             
+                          fi
+         
+                          echo "Testing concluded...removing labels for $machine from $GIT_URL"
+                          curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/$machine-RT
+
+                          cd ${WORKSPACE}/tests && tar --create --gzip --verbose --dereference --file "${ufs_machine}.tgz" ${WORKSPACE}/tests/logs/*.log
+               
+
+                          RESULTS=`grep 'Result:' logs/RegressionTests_$ufs_machine.log | awk '{print $2}'` 
+                             if [[ $RESULTS == "FAILURE" ]] ; then
+                                echo "Regression tests failed on ${NODE_NAME}!"
+                                exit 1
+
+                            fi
+
+                       '''
+                    }
+                    else {
+                       echo "${NODE_NAME} not supported yet."
+                    }
+                }
+              }
+           }
+       }
+}
+
+def parallelStagesMap = modifiedLabels.collectEntries {
+    ["${it}" : generateStage(it)]
+}
+
+pipeline {
+    agent none
+    environment {
+        ACCNR = 'nosofs'
+        AWS_PROD_ACCOUNT_ID = credentials('AWS_PROD_ACCOUNT_ID')
+        AWS_PROD_SNS_TOPIC = credentials('AWS_PROD_SNS_TOPIC')
+        GITHUB_TOKEN = credentials('GithubJenkinsNew')
+        GIT_URL = 'https://github.com/oceanmodeling/ufs-weather-model.git'
+    }
+    stages {
+        stage('Run Regression Tests in Parallel') {
+            steps {
+                script {
+                    parallel parallelStagesMap
+                }
+            }
+        }       
+    }   
+        post {
+         always {
+             node('hercules-nos') {
+               s3Upload consoleLogLevel: 'INFO', dontSetBuildResultOnFailure: false, dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'noaa-epic-prod-jenkins-artifacts/NOS', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false, managedArtifacts: true, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: "**/*tgz*", storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'main', userMetadata: []
+            }
+         }
+         success {
+             node('built-in') {
+                echo 'This will run only if successful.'
+
+                sh '''
+                  aws sns publish --topic-arn "arn:aws:sns:us-east-1:${AWS_PROD_ACCOUNT_ID}:${AWS_PROD_SNS_TOPIC}" --region us-east-1 --message '{"version":"1.0","source":"custom","content":{"description":":sunny: Jenkins build *'"$JOB_NAME"' '"$BUILD_NUMBER"'* with *PR-'"$CHANGE_ID"'*  *succeeded*"}}'
+
+               '''
+
+             }
+         }
+         failure {
+             node('built-in') {
+                echo 'This will run only if the run was marked as unstable.'
+                sh '''
+                  aws sns publish --topic-arn "arn:aws:sns:us-east-1:${AWS_PROD_ACCOUNT_ID}:${AWS_PROD_SNS_TOPIC}" --region us-east-1 --message '{"version":"1.0","source":"custom","content":{"description":":warning: Jenkins build *'"$JOB_NAME"' '"$BUILD_NUMBER"'* with *PR-'"$CHANGE_ID"'*  *failed!*"}}'
+               '''
+
+             }
+         }
+     } 
+}
