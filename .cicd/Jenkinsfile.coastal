@@ -35,11 +35,11 @@ def generateStage(nodeLabel) {
                           [[ -e ufs-weather-model ]] && rm -rf ufs-weather-model
                           ls -al
                           export workspace=.
-
-                          if (${CHANGE_FORK} == '' || ${CHANGE_FORK} == null) {
-                             [[ -d .git/ ]] || git clone -b ${CHANGE_BRANCH} --quiet https://github.com/oceanmodeling/${GIT_REPO_NAME}.git ${workspace}
-                          } else {
-                             [[ -d .git/ ]] || git clone -b ${CHANGE_BRANCH} --quiet https://github.com/${CHANGE_FORK}/${GIT_REPO_NAME}.git ${workspace}
+                          if (env.CHANGE_FORK != null) {
+                            [[ -d .git/ ]] || git clone -b ${CHANGE_BRANCH} --quiet https://github.com/${CHANGE_FORK}/${GIT_REPO_NAME}.git ${workspace}
+                          }
+                          else {
+                            [[ -d .git/ ]] || git clone -b ${CHANGE_BRANCH} --quiet https://github.com/oceanmodeling/${GIT_REPO_NAME}.git ${workspace}
                           }
                           date | tee date.txt
                           [[ -d ufs-weather-model/ ]] && cd ufs-weather-model
