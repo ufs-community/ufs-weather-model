@@ -11,8 +11,6 @@ for (label in pullRequest.labels) {
 
 modifiedLabels = matchedNode.collect{"'" + it + "'"} 
 
-String fork() { env.CHANGE_FORK ?: "oceanmodeling" }
-
 def generateStage(nodeLabel) {
     return {
         stage("Running on ${nodeLabel}") {
@@ -38,7 +36,11 @@ def generateStage(nodeLabel) {
                           ls -al
                           export workspace=.
 
-                          [[ -d .git/ ]] || git clone -b ${CHANGE_BRANCH} --quiet https://github.com/${fork()}/${GIT_REPO_NAME}.git ${workspace}
+                          if (${CHANGE_FORK} == '' || ${CHANGE_FORK} == null) {
+                             [[ -d .git/ ]] || git clone -b ${CHANGE_BRANCH} --quiet https://github.com/oceanmodeling/${GIT_REPO_NAME}.git ${workspace}
+                          } else {
+                             [[ -d .git/ ]] || git clone -b ${CHANGE_BRANCH} --quiet https://github.com/${CHANGE_FORK}/${GIT_REPO_NAME}.git ${workspace}
+                          }
                           date | tee date.txt
                           [[ -d ufs-weather-model/ ]] && cd ufs-weather-model
                           ls -al
