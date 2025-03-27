@@ -35,7 +35,7 @@ def generateStage(nodeLabel) {
                           [[ -e ufs-weather-model ]] && rm -rf ufs-weather-model
                           ls -al
                           export workspace=.
-                          fork = env.CHANGE_FORK ?: 'oceanmodeling'
+                          export fork="${BRANCH_NAME:-oceanmodeling}"
                           [[ -d .git/ ]] || git clone -b ${CHANGE_BRANCH} --quiet https://github.com/${fork}/${GIT_REPO_NAME}.git ${workspace}
                           date | tee date.txt
                           [[ -d ufs-weather-model/ ]] && cd ufs-weather-model
