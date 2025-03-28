@@ -141,7 +141,10 @@ else()
   set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Set type of build to Release." FORCE)
 endif()
 
-include(cmake/${CMAKE_Fortran_COMPILER_ID}.cmake)
+# Detect and set UFS_COMPILER_SUITE in detect_compiler_suite.cmake
+set(UFS_COMPILER_SUITE)
+include(cmake/detect_compiler_suite.cmake)
+include(cmake/${UFS_COMPILER_SUITE}.cmake)
 
 ###############################################################################
 ### Find Dependencies
