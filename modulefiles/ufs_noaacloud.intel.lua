@@ -2,7 +2,7 @@ help([[
 loads UFS Model prerequisites for NOAA Parallelworks/Intel
 ]])
 
-prepend_path("MODULEPATH", "/contrib/spack-stack-rocky8/spack-stack-1.6.0/envs/fms-2024.01/install/modulefiles/Core")
+prepend_path("MODULEPATH", "/contrib/spack-stack-rocky8/spack-stack-1.9.1/envs/ue-oneapi-2024.2.1/install/modulefiles/Core")
 prepend_path("MODULEPATH", "/apps/modules/modulefiles")
 
 gnu_ver=os.getenv("gnu_ver") or ""
@@ -17,7 +17,7 @@ load(pathJoin("stack-intel-oneapi-mpi", stack_intel_oneapi_mpi_ver))
 gnu_ver=os.getenv("gnu_ver") or ""
 unload(pathJoin("gnu", gnu_ver))
 
-cmake_ver=os.getenv("cmake_ver") or "3.23.1"
+cmake_ver=os.getenv("cmake_ver") or "3.27.9"
 load(pathJoin("cmake", cmake_ver))
 
 load("ufs_common")
