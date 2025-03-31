@@ -54,7 +54,7 @@ export LIST_FILES="sfcf003.tile1.nc \
                    RESTART/iced.2021-03-22-32400.nc \
                    RESTART/ufs.cpld.cpl.r.2021-03-22-32400.nc \
                    ufs.cpld.ww3.r.2021-03-22-32400.nc \
-                   20210322.090000.out_pnt.ww3 \
+                   20210322.090000.out_pnt.ww3.nc \
                    20210322.090000.out_grd.ww3 "
 export_fv3
 export_ugwpv1
@@ -112,6 +112,9 @@ if [[ $MACHINE_ID = gaeac5 ]] && [[ $RT_COMPILER = intelllvm ]]; then
   WLCLK=40
 fi
 if [[ $MACHINE_ID = gaeac6 ]] && [[ $RT_COMPILER = intelllvm ]]; then
+  WLCLK=40
+fi
+if [[ $MACHINE_ID = derecho ]]; then
   WLCLK=40
 fi
 
