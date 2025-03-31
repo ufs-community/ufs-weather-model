@@ -159,7 +159,7 @@ else
 fi
 
 # Set IAU Global workflow related tags to ' '
-export HIDE_IAU=' '
+export HIDE_AIAU=' '
 export HIDE_LIAU=' '
 
 if [[ ${DATM_CDEPS} = 'true' ]] || [[ ${FV3} = 'true' ]] || [[ ${S2S} = 'true' ]]; then
