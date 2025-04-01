@@ -967,6 +967,9 @@ export WW3_OUTDTHR=1
 WW3_DTFLD="$(printf "%02d" $(( WW3_OUTDTHR*3600 )))"
 export WW3_DTFLD
 WW3_DTPNT="$(printf "%02d" $(( WW3_OUTDTHR*3600 )))"
+export WW3_GRD_OUTDIR='./'
+export WW3_PNT_OUTDIR='./'
+export WW3_RST_OUTDIR='./'
 export WW3_DTPNT
 export DTRST=0
 export RSTTYPE=T
