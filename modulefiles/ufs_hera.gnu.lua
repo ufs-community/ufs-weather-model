@@ -2,6 +2,8 @@ help([[
 loads UFS Model prerequisites for Hera/GNU
 ]])
 
+prepend_path("MODULEPATH", "/contrib/spack-stack/installs/gnu/modulefiles")
+prepend_path("MODULEPATH", "/contrib/spack-stack/installs/openmpi/modulefiles")
 prepend_path("MODULEPATH", "/contrib/spack-stack/spack-stack-1.9.1/envs/ue-gcc-13.2.0/install/modulefiles/Core")
 
 stack_gnu_ver=os.getenv("stack_gnu_ver") or "13.2.0"

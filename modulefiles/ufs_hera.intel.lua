@@ -25,9 +25,6 @@ setenv("I_MPI_CC", "icx")
 setenv("I_MPI_CXX", "icpx")
 setenv("I_MPI_F90", "ifort")
 
---setenv("CC", "mpiicc")
---setenv("CXX", "mpiicpc")
---setenv("FC", "mpiifort")
 setenv("CMAKE_Platform", "hera.intel")
 
 whatis("Description: UFS build environment")
