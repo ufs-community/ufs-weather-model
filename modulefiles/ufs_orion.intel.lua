@@ -20,6 +20,8 @@ hdf5_ver=os.getenv("hdf5_ver") or "1.14.3"
 load(pathJoin("hdf5", hdf5_ver))
 nccmp_ver=os.getenv("nccmp_ver") or "1.9.0.1"
 load(pathJoin("nccmp", nccmp_ver))
+tar_ver=os.getenv("tar_ver") or "1.34"
+load(pathJoin("tar", tar_ver))
 
 setenv("CC", "mpiicc")
 setenv("CXX", "mpiicpc")
