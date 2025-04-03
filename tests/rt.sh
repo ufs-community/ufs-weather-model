@@ -786,7 +786,7 @@ case ${MACHINE_ID} in
     COMPILE_QUEUE="batch"
 
     PARTITION=
-    dprefix="/scratch1/NCEPDEV"
+    dprefix=${dprefix:-"/scratch1/NCEPDEV"}
     DISKNM="/scratch2/NAGAPE/epic/UFS-WM_RT"
     STMP="${dprefix}/stmp4"
     PTMP="${dprefix}/stmp2"
@@ -812,7 +812,7 @@ case ${MACHINE_ID} in
     QUEUE="batch"
     COMPILE_QUEUE="batch"
     PARTITION="orion"
-    dprefix="/work/noaa/stmp/${USER}"
+    dprefix=${dprefix:-"/work/noaa/stmp/${USER}"}
     DISKNM="/work/noaa/epic/UFS-WM_RT"
     STMP="${dprefix}/stmp"
     PTMP="${dprefix}/stmp"
@@ -840,7 +840,7 @@ case ${MACHINE_ID} in
     QUEUE="batch"
     COMPILE_QUEUE="batch"
     PARTITION="hercules"
-    dprefix="/work2/noaa/stmp/${USER}"
+    dprefix=${dprefix:-"/work2/noaa/stmp/${USER}"}
     DISKNM="/work/noaa/epic/hercules/UFS-WM_RT"
     STMP="${dprefix}/stmp"
     PTMP="${dprefix}/stmp"
@@ -903,7 +903,7 @@ case ${MACHINE_ID} in
     COMPILE_QUEUE="s4"
 
     PARTITION="s4"
-    dprefix="/data/prod"
+    dprefix=${dprefix:-"/data/prod"}
     DISKNM="${dprefix}/emc.nemspara/RT"
     STMP="/scratch/short/users"
     PTMP="/scratch/users"
@@ -934,7 +934,7 @@ case ${MACHINE_ID} in
     QUEUE="main"
     COMPILE_QUEUE="main"
     PARTITION=
-    dprefix="/glade/derecho/scratch"
+    dprefix=${dprefix:-"/glade/derecho/scratch"}
     DISKNM="/glade/derecho/scratch/epicufsrt/ufs-weather-model/RT/"
     STMP="${dprefix}"
     PTMP="${dprefix}"
@@ -960,7 +960,7 @@ case ${MACHINE_ID} in
     QUEUE="batch"
     COMPILE_QUEUE="batch"
     PARTITION=
-    dprefix="/lustre/"
+    dprefix=${dprefix:-"/lustre/"}
     DISKNM="/contrib/ufs-weather-model/RT"
     STMP="${dprefix}/stmp4"
     PTMP="${dprefix}/stmp2"
@@ -1016,8 +1016,7 @@ if [[ "${CREATE_BASELINE}" == false ]] ; then
 fi
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-${DISKNM}/NEMSfv3gfs/input-data-20240501}
-INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20250114
-INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC:-${DISKNM}/NEMSfv3gfs/BM_IC-20220207}
+INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20250225
 INPUTDATA_LM4=${INPUTDATA_LM4:-${INPUTDATA_ROOT}/LM4_input_data}
 
 shift $((OPTIND-1))
@@ -1088,7 +1087,6 @@ if [[ ${ROCOTO} == true ]]; then
   <!ENTITY RTPWD          "${RTPWD}">
   <!ENTITY INPUTDATA_ROOT "${INPUTDATA_ROOT}">
   <!ENTITY INPUTDATA_ROOT_WW3 "${INPUTDATA_ROOT_WW3}">
-  <!ENTITY INPUTDATA_ROOT_BMIC "${INPUTDATA_ROOT_BMIC}">
   <!ENTITY RUNDIR_ROOT    "${RUNDIR_ROOT}">
   <!ENTITY NEW_BASELINE   "${NEW_BASELINE}">
 ]>
@@ -1288,7 +1286,6 @@ export RT_COMPILER=${RT_COMPILER}
 export RTPWD=${RTPWD}
 export INPUTDATA_ROOT=${INPUTDATA_ROOT}
 export INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT_WW3}
-export INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC}
 export INPUTDATA_LM4=${INPUTDATA_LM4}
 export PATHRT=${PATHRT}
 export PATHTR=${PATHTR}
