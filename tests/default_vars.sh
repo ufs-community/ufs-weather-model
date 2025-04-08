@@ -515,7 +515,7 @@ export_mpas ()
     export DYCORE_ONLY=.false
 
     # MPAS dynamical core defaults for RRFS
-    export MPAS_RESOLUTION=384
+    export MPAS_RESOLUTION=120
     
     #DJS2025 START: We don't need this for MPAS, but to setup the tests we do. CLEAN THIS UP!!!
     #Set defaults if ATMRES and DT_ATMOS are not set
