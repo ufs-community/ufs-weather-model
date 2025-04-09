@@ -858,6 +858,7 @@ export CPLWAV=.false.
 export CPLWAV2ATM=.false.
 export CPLLND=.false.
 export CPLLND2ATM=.false.
+export CPLOCN2ATM=.false.
 export USE_MED_FLUX=.false.
 export DAYS=1
 export NPX=97
@@ -1183,9 +1184,9 @@ export_ugwpv1() {
   esac
 
   if [[ ${DO_GSL_DRAG_SS} = .true. ]]; then export CDMBGWD=${CDMBGWD_GSL}; fi
-  if [[ ${SEDI_SEMI} = .false. ]]; then 
+  if [[ ${SEDI_SEMI} = .false. ]]; then
     export DT_INNER=$((DT_ATMOS/2))
-  else 
+  else
     export DT_INNER=${DT_ATMOS}
   fi
   export default_dt_atmos=0
@@ -1547,6 +1548,7 @@ export CPLWAV2ATM=.true.
 export USE_MED_FLUX=.false.
 export CPLCHM=.true.
 export CPLLND=.false.
+export CPLOCN2ATM=.false.
 
 # for FV3: default values will be changed if doing a warm-warm restart
 export WARM_START=.false.
