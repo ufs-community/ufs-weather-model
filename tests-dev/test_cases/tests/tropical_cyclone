@@ -4,18 +4,13 @@
 #
 ###############################################################################
 
-export TEST_DESCR="Compare baroclinic wave test case C768L127 results with previous trunk version"
+export TEST_DESCR="Compare tropical cyclone test case C768L127 results with previous trunk version"
 
 export CNTL_DIR=tropical_cyclone
 
-#export LIST_FILES="sfcf000.nc \
-#                   sfcf024.nc \
-#                   atmf000.nc \
-#                   atmf024.nc \
-#                   GFSFLX.GrbF00 \
-#                   GFSFLX.GrbF24 \
-#                   GFSPRS.GrbF00 \
-#                   GFSPRS.GrbF24"
+export LIST_FILES="sfcf006.nc \
+                   atmf006.nc \
+                   HURPRS.GrbF06"
 
 export ATMRES=C768
 
@@ -23,7 +18,6 @@ export_fv3
 export_hafs
 
 export HAFS=true
-export WRTTASK_PER_GROUP=15
 export SYEAR=2019
 export SMONTH=08
 export SDAY=24
@@ -31,8 +25,6 @@ export SHOUR=00
 export DT_ATMOS=72
 export FH_MAX=1
 export RESTART_INTERVAL='3 6 9'
-export OUTPUT_GRID='gaussian_grid'
-export NSTF_NAME='2,0,0,0,0'
 #export WRITE_DOPOST=.true.
 export IDEFLATE=1
 export ICHUNK2D=-1
@@ -40,10 +32,11 @@ export JCHUNK2D=-1
 export ICHUNK3D=-1
 export JCHUNK3D=-1
 export KCHUNK3D=-1
-export OUTPUT_FH='0 6 12 18 24'
+export OUTPUT_FH='3 -1'
+export WRTTASK_PER_GROUP=15
 
 export BLOCKSIZE=40
-export CCPP_SUITE=FV3_HAFS_v1_gfdlmp_tedmf
+export CCPP_SUITE=FV3_HAFS_v1_thompson_nonsst
 export DEFLATE_LEVEL=-1
 export INPES=20
 export JNPES=12
@@ -59,8 +52,8 @@ export EXTERNAL_IC=.true.
 export NGGPS_IC=.true.
 export MOUNTAIN=.false.
 export WARM_START=.false.
-export TARGET_LAT="22.0"
-export TARGET_LON="-62.0"
+#export TARGET_LAT="22.0"
+#export TARGET_LON="-62.0"
 export STRETCH_FAC=1.0001
 export REGIONAL=.true.
 export BC_UPDATE_INTERVAL=3
@@ -78,9 +71,26 @@ export LAT2=31.000000
 export DLON=0.04
 export DLAT=0.04
 
-#export FV3_RUN=baroclinic_wave.IN
-#export INPUT_NML=baroclinic_wave.nml.IN
-#export CCPP_SUITE='FV3_GFS_v17_p8_ugwpv1'
+export GRID_PES="240"
+export TILE_COARSE="0"
+export NUM_TILE_TOP=1
+export NEST_REFINE="0"
+export NEST_IOFFSETS="999"
+export NEST_JOFFSETS="999"
+
+export FHCYC=0
+export FHSWR=1800
+export FHLWR=1800
+export NSTF_NAME=2,0,0,0,0
+export CPLFLX=.false.
+export CPLOCN2ATM=.false.
+export CPLWAV=.false.
+export CPLWAV2ATM=.false.
+export CPL_IMP_MRG=.false.
+
+export CMEPS=false
+export RUNTYPE=startup
+export USE_COLDSTART=false
 
 export FIELD_TABLE=field_table_hafs
 export DIAG_TABLE=diag_table_hafs_template
@@ -89,4 +99,3 @@ export MODEL_CONFIGURE=model_configure_hafs.IN
 export UFS_CONFIGURE=ufs.configure.hafs_atm.IN
 export FV3_RUN=tropical_cyclone.IN
 export HSD_CASE=true
-
