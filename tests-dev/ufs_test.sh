@@ -212,6 +212,9 @@ if [[ ${LINK_TESTS} == true ]]; then
     cp "${PATHRT}"/test_cases/tests/* "${PATHRT}"/tests
     cp "${PATHRT}"/test_cases/exp_conf/* "${PATHRT}"/fv3_conf
     cp "${PATHRT}"/test_cases/parm/* "${PATHRT}"/parm
+    cp "${PATHRT}"/test_cases/parm/diag_table/* "${PATHRT}"/parm/diag_table
+    cp "${PATHRT}"/test_cases/parm/field_table/* "${PATHRT}"/parm/field_table
+
 fi
 
 #Check to error out if incompatible options are chosen together
