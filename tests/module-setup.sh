@@ -77,10 +77,11 @@ elif [[ ${MACHINE_ID} = gaeac6 ]]; then
 
 elif [[ $MACHINE_ID = container ]] ; then
     # We are in a container
-    if ( ! eval module help > /dev/null 2>&1 ) ; then
+    # if ( ! eval module help > /dev/null 2>&1 ) ; then
         source /usr/lmod/lmod/init/bash
-    fi
+    # fi
     module purge
+    unset MODULEPATH
 
 elif [[ ${MACHINE_ID} = noaacloud ]] ; then
     # We are on NOAA Cloud

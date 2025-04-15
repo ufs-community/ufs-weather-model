@@ -69,16 +69,19 @@ fi
 # Overwrite auto-detect with MACHINE if set
 MACHINE_ID=${MACHINE:-${MACHINE_ID}}
 
+# Overwrite auto-detect if in container
+if [[ -d /opt/spack-stack ]]; then
+  # We are in a container
+  MACHINE_ID=container
+fi
+
 # If MACHINE_ID is no longer UNKNNOWN, return it
 if [[ "${MACHINE_ID}" != "UNKNOWN" ]]; then
   return
 fi
 
 # Try searching based on paths since hostname may not match on compute nodes
-if [[ -d /opt/spack-stack ]]; then
-  # We are in a container
-  MACHINE_ID=container
-elif [[ -d /lfs/h3 ]]; then
+if [[ -d /lfs/h3 ]]; then
   # We are on NOAA Cactus or Dogwood
   MACHINE_ID=wcoss2
 elif [[ -d /lfs/h1 && ! -d /lfs/h3 ]]; then
