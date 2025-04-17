@@ -15,48 +15,26 @@
 /
 
 &mpas_nhyd_model
-  mpas_time_integration         = 'SRK3'
   mpas_time_integration_order   = 2
-  mpas_dt                       = 720.
-  mpas_split_dynamics_transport = .true.
-  mpas_number_of_sub_steps      = 2
+  mpas_dt                       = 720.0
+  mpas_split_dynamics_transport = true
+  mpas_number_of_sub_steps      = 4
   mpas_dynamics_split_steps     = 3
-  mpas_h_mom_eddy_visc2         = 0.
-  mpas_h_mom_eddy_visc4         = 0.
-  mpas_v_mom_eddy_visc2         = 0.
-  mpas_h_theta_eddy_visc2       = 0.
-  mpas_h_theta_eddy_visc4       = 0.
-  mpas_v_theta_eddy_visc2       = 0.
   mpas_horiz_mixing             = '2d_smagorinsky'
-  mpas_len_disp                 = 120000.
   mpas_visc4_2dsmag             = 0.05
-  mpas_del4u_div_factor         = 10
-  mpas_w_adv_order              = 3
-  mpas_theta_adv_order          = 3
-  mpas_scalar_adv_order         = 3
-  mpas_u_vadv_order             = 3
-  mpas_w_vadv_order             = 3
-  mpas_theta_vadv_order         = 3
-  mpas_scalar_vadv_order        = 3
-  mpas_scalar_advection         = .true.
-  mpas_positive_definite        = .false.
-  mpas_monotonic                = .true.
+  mpas_scalar_advection         = true
+  mpas_monotonic                = true
   mpas_coef_3rd_order           = 0.25
-  mpas_smagorinsky_coef         = 0.125
-  mpas_mix_full                 = .true.
   mpas_epssm                    = 0.1
   mpas_smdiv                    = 0.1
-  mpas_apvm_upwinding           = 0.5
-  mpas_h_ScaleWithMesh          = .true.
 /
 &mpas_damping
-  mpas_zd                             = 22000.
-  mpas_xnutr                          = 0.2
-  mpas_cam_coef                       = 0.
-  mpas_cam_damping_levels             = 0
-  mpas_rayleigh_damp_u                = .true.
-  mpas_rayleigh_damp_u_timescale_days = 5.
-  mpas_number_rayleigh_damp_u_levels  = 3
+  mpas_cam_coef                  = 2.0
+  mpas_rayleigh_damp_u           = true
+  mpas_zd                        = 16000.0
+  mpas_xnutr                     = 0.2
+  mpas_cam_damping_levels        = 8
+/
 
 &mpas_limited_area
   mpas_apply_lbcs = .false.
@@ -67,7 +45,7 @@
 /
 
 &mpas_decomposition
-  mpas_block_decomp_file_prefix = 'x1.2562.graph.info.part.'
+  mpas_block_decomp_file_prefix = 'conus.120km.graph.info.part.'
 /
 
 &mpas_restart
