@@ -44,7 +44,7 @@ export LIST_FILES="sfcf000.nc \
                    RESTART/20210322.180000.sfc_data.tile4.nc \
                    RESTART/20210322.180000.sfc_data.tile5.nc \
                    RESTART/20210322.180000.sfc_data.tile6.nc \
-		   RESTART/ufs.atmw.cpl.r.2021-03-22-64800.nc \
+                   RESTART/ufs.atmw.cpl.r.2021-03-22-64800.nc \
                    20210322.180000.out_pnt.ww3.nc \
                    20210322.180000.out_grd.ww3 \
                    ufs.atmw.ww3.r.2021-03-22-64800.nc"
@@ -99,7 +99,11 @@ export CPLMODE=ufs.frac
 export RUNTYPE=startup
 export CMEPS_RESTART_DIR=./RESTART/
 export cap_dbug_flag=0
-export pio_rearranger=box
+export CMEPS_PIO_FORMAT='pnetcdf'
+export CMEPS_PIO_STRIDE=4
+export CMEPS_PIO_IOTASKS=-99
+export CMEPS_PIO_REARR='box'
+export CMEPS_PIO_ROOT=-99
 
 export IALB=2
 export IEMS=2
