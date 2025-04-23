@@ -19,6 +19,7 @@ module shr_is_restart_fh_mod
   end type is_restart_fh_type
 
   public :: init_is_restart_fh, is_restart_fh, finalize_restart_fh, is_restart_fh_type
+  public :: log_restart_fh
 
 contains
 
@@ -81,7 +82,7 @@ contains
       call ESMF_ConfigDestroy(CF_mc, rc=rc)
       if (ESMF_LogFoundError(rcToCheck=rc, msg=ESMF_LOGERR_PASSTHRU, line=__LINE__, file=__FILE__)) return
     end if !model_configure
-  
+
   end subroutine init_is_restart_fh
 
   subroutine is_restart_fh(clock, restartfh_info, lWrite)
@@ -91,7 +92,7 @@ contains
     !
     ! !USES:
     use ESMF, only : ESMF_ClockGetNextTime
-    
+
     !
     ! !ARGUMENTS:
     type(ESMF_Clock), intent(in) :: clock
@@ -114,8 +115,59 @@ contains
     end if
 
     lWrite = restartfh_info%write_restartfh
-    
+
   end subroutine is_restart_fh
+  !===============================================================================
+  !> Write a log file
+  !!
+  !> @details Write a log file for a named component when a restart file is written
+  !!
+  !! @param[in]   nextTime      the ESMF time at the end of a ModelAdvance
+  !! @param[in]   startTime     the ESMF time at the Model Start
+  !! @param[in]   complog       the named component
+  !! @param[out]  rc return code
+  !!
+  !> @authorDenise.Worthen@noaa.gov
+  !> @date 04-14-2025
+  subroutine log_restart_fh(nextTime, startTime, complog, rc)
+
+    use ESMF,              only : ESMF_SUCCESS, ESMF_MAXSTR, ESMF_Time, ESMF_TimeInterval
+    use ESMF,              only : ESMF_TimeGet, ESMF_TimeIntervalGet
+    use ESMF,              only : operator(==), operator(-)
+
+    type(ESMF_Time),  intent(in) :: nextTime, startTime
+    character(len=*), intent(in) :: complog
+    integer,         intent(out) :: rc
+
+    ! local variables
+    type(ESMF_TimeInterval)     :: elapsedTime
+    real(ESMF_KIND_R8)          :: fhour
+    character(ESMF_MAXSTR)      :: filename
+    character(ESMF_MAXSTR)      :: nexttimestring
+    integer                     :: fh_logunit
+    integer                     :: yr,mon,day,hour,minute,sec ! time units
+    character(len=*), parameter :: subname='(log_restart_fh)'
+    !-----------------------------------------------------------------------
+
+    call ESMF_LogWrite(trim(subname)//": called", ESMF_LOGMSG_INFO)
+    rc = ESMF_SUCCESS
+
+    elapsedTime = nextTime - startTime
+    call ESMF_TimeIntervalGet(elapsedTime, h_r8=fhour,rc=rc)
+    if (ESMF_LogFoundError(rcToCheck=rc, msg=ESMF_LOGERR_PASSTHRU, line=__LINE__, file=__FILE__)) return
+
+    call ESMF_TimeGet(nexttime, yy=yr, mm=mon, dd=day, h=hour, m=minute, s=sec, rc=rc)
+    if (ESMF_LogFoundError(rcToCheck=rc, msg=ESMF_LOGERR_PASSTHRU, line=__LINE__, file=__FILE__)) return
+    write(nexttimestring,'(6i8)')yr,mon,day,hour,minute,sec
+
+    write(filename,'(a,i4.4)')'log.'//trim(complog)//'.f',int(fhour)
+    open(newunit=fh_logunit,file=trim(filename))
+    write(fh_logunit,'(a)')'completed: '//trim(complog)
+    write(fh_logunit,'(a,f10.3)')'forecast hour:',fhour
+    write(fh_logunit,'(a)')'valid time: '//trim(nexttimestring)
+    close(fh_logunit)
+
+  end subroutine log_restart_fh
 
   subroutine finalize_restart_fh(restartfh_info)
     !
