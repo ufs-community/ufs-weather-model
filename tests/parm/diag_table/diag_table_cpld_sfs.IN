@@ -5,7 +5,8 @@
 "fv3_history2d",  0,  "hours",  1,  "hours",  "time"
 ######################
 "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr",      6,  "hours", 1, "hours", "time", 6, "hours", "@[SYEAR] @[SMONTH] @[SDAY] @[CHOUR] 0 0"
-"@[MOM6_OUTPUT_DIR]/SST%4yr%2mo%2dy",      1,  "days",  1, "days",  "time", 1, "days",  "@[SYEAR] @[SMONTH] @[SDAY] @[CHOUR] 0 0"
+"@[MOM6_OUTPUT_DIR]/SST%4yr%2mo%2dy",          1,  "days",  1, "days",  "time", 1, "days",  "@[SYEAR] @[SMONTH] @[SDAY] @[CHOUR] 0 0"
+"@[MOM6_OUTPUT_DIR]/ocn_scalar%4yr%2mo%2dy",   3,  "hours", 1, "days",  "time", 1, "days",  "@[SYEAR] @[SMONTH] @[SDAY] @[CHOUR] 0 0"
 ##############################################
 # static fields
  "ocean_model", "geolon",      "geolon",      "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr", "all", .false., "none", 2
@@ -63,6 +64,25 @@
  "ocean_model", "fprec",     "fprec",                    "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr","all",.true.,"none",2
  "ocean_model", "LwLatSens", "LwLatSens",                "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr","all",.true.,"none",2
  "ocean_model", "Heat_PmE",  "Heat_PmE",                 "@[MOM6_OUTPUT_DIR]/ocn%4yr%2mo%2dy%2hr","all",.true.,"none",2
+
+# Scalar fields for run-time monitoring:
+"ocean_model", "masso",               "masso",               "@[MOM6_OUTPUT_DIR]/ocn_scalar%4yr%2mo%2dy",  "all", .true.,  "none",2  # global mean masscello
+"ocean_model", "thetaoga",            "thetaoga",            "@[MOM6_OUTPUT_DIR]/ocn_scalar%4yr%2mo%2dy",  "all", .true.,  "none",2  # global mean theta
+"ocean_model", "soga",                "soga",                "@[MOM6_OUTPUT_DIR]/ocn_scalar%4yr%2mo%2dy",  "all", .true.,  "none",2  # global mean salinity
+"ocean_model", "tosga",               "tosga",               "@[MOM6_OUTPUT_DIR]/ocn_scalar%4yr%2mo%2dy",  "all", .true.,  "none",2  # area mean SST
+"ocean_model", "sosga",               "sosga",               "@[MOM6_OUTPUT_DIR]/ocn_scalar%4yr%2mo%2dy",  "all", .true.,  "none",2  # area mean SSS
+"ocean_model", "volo",                "volo",                "@[MOM6_OUTPUT_DIR]/ocn_scalar%4yr%2mo%2dy",  "all", .true.,  "none",2  # ocean volume
+"ocean_model", "ssh_ga",              "ssh_ga",              "@[MOM6_OUTPUT_DIR]/ocn_scalar%4yr%2mo%2dy",  "all", .true.,  "none",2  # global mean ssh
+"ocean_model", "prcme_ga",            "prcme_ga",            "@[MOM6_OUTPUT_DIR]/ocn_scalar%4yr%2mo%2dy",  "all", .true.,  "none",2  # global mean prcme
+"ocean_model", "precip_ga",           "precip_ga",           "@[MOM6_OUTPUT_DIR]/ocn_scalar%4yr%2mo%2dy",  "all", .true.,  "none",2  # global mean precip
+"ocean_model", "evap_ga",             "evap_ga",             "@[MOM6_OUTPUT_DIR]/ocn_scalar%4yr%2mo%2dy",  "all", .true.,  "none",2  # global mean evaporation
+"ocean_model", "net_heat_coupler_ga", "net_heat_coupler_ga", "@[MOM6_OUTPUT_DIR]/ocn_scalar%4yr%2mo%2dy",  "all", .true.,  "none",2  # global mean net heat coupler
+"ocean_model", "net_heat_surface_ga", "net_heat_surface_ga", "@[MOM6_OUTPUT_DIR]/ocn_scalar%4yr%2mo%2dy",  "all", .true.,  "none",2  # global mean net heat surface
+"ocean_model", "sens_ga",             "sens_ga",             "@[MOM6_OUTPUT_DIR]/ocn_scalar%4yr%2mo%2dy",  "all", .true.,  "none",2  # global mean sensible heat
+"ocean_model", "LwLatSens_ga",        "LwLatSens_ga",        "@[MOM6_OUTPUT_DIR]/ocn_scalar%4yr%2mo%2dy",  "all", .true.,  "none",2  # global mean LW + latent + sensible
+"ocean_model", "sw_ga",               "sw_ga",               "@[MOM6_OUTPUT_DIR]/ocn_scalar%4yr%2mo%2dy",  "all", .true.,  "none",2  # global mean SW
+"ocean_model", "lw_ga",               "lw_ga",               "@[MOM6_OUTPUT_DIR]/ocn_scalar%4yr%2mo%2dy",  "all", .true.,  "none",2  # global mean LW
+"ocean_model", "lat_ga",              "lat_ga",              "@[MOM6_OUTPUT_DIR]/ocn_scalar%4yr%2mo%2dy",  "all", .true.,  "none",2  # global mean latent
 #
 ###
 # FV3 variabls needed for NGGPS evaluation
