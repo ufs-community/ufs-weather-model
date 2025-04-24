@@ -205,7 +205,7 @@ endif()
 ###          dycores, not multiple atmospheric components (one for each dycore).
 ###          So, - rename the atmospheric component FV3 to UFSATM or ATM, then
 ###              - if FV3 or MPAS, add_sudirectory(UFSATM or ATM)
-###   
+###
 ###############################################################################
 if(FV3)
   add_subdirectory(FV3)
@@ -338,8 +338,8 @@ endif()
 
 if(FV3)
   add_dependencies(ufs ufsatm_fv3)
-  list(APPEND _ufs_defs_private FRONT_FV3=fv3atm_cap_mod)
-  list(APPEND _ufs_libs_public ufsatm_fv3)
+  list(APPEND _ufs_defs_private FRONT_FV3=${DYCORE_TARGET_CAP_MOD})
+  list(APPEND _ufs_libs_public ${DYCORE_TARGET})
 endif()
 
 if(MPAS)

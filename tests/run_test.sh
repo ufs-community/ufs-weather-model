@@ -157,6 +157,9 @@ else
   export HIDE_UGWPV0=' '
   export HIDE_UGWPV1='!'
 fi
+# Set IAU Global workflow related tags to ' '
+export HIDE_AIAU=' '
+export HIDE_LIAU=' '
 
 if [[ ${DATM_CDEPS} = 'true' ]] || [[ ${FV3} = 'true' ]] || [[ ${S2S} = 'true' ]] || [[ ${MPAS} = 'true' ]]; then
   if [[ ${HAFS} = 'false' ]] || [[ ${FV3} = 'true' && ${HAFS} = 'true' ]]; then
