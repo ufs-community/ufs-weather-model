@@ -33,6 +33,7 @@ case $(hostname -f) in
   ufe01) MACHINE_ID=ursa ;; ### ursa
   ufe02) MACHINE_ID=ursa ;; ### ursa
   ufe03) MACHINE_ID=ursa ;; ### ursa
+  ufe04) MACHINE_ID=ursa ;; ### ursa
 
   s4-submit.ssec.wisc.edu) MACHINE_ID=s4 ;; ### s4
 
