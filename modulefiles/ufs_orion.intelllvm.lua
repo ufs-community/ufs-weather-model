@@ -3,6 +3,7 @@ loads UFS Model prerequisites for OrionLLVM/Intel
 ]])
 
 prepend_path("MODULEPATH", "/apps/contrib/spack-stack/spack-stack-1.9.1/envs/ue-oneapi-2024.1.0/install/modulefiles/Core")
+prepend_path("MODULEPATH", "/work/noaa/epic/role-epic/spack-stack/orion/modulefiles")
 
 stack_intel_ver=os.getenv("stack_intel_ver") or "2024.2.1"
 load(pathJoin("stack-oneapi", stack_intel_ver))
@@ -22,11 +23,11 @@ load(pathJoin("tar", tar_ver))
 
 setenv("I_MPI_CC", "icx")
 setenv("I_MPI_CXX", "icpx")
-setenv("I_MPI_F90", "ifx")
+setenv("I_MPI_F90", "ifort")
 
-setenv("CC", "mpiicc")
-setenv("CXX", "mpiicpc")
-setenv("FC", "mpiifort")
+setenv("CC", "mpiicx")
+setenv("CXX", "mpiicpx")
+setenv("FC", "mpiifx")
 setenv("CMAKE_Platform", "orion.intel")
 
 whatis("Description: UFS build environment")
