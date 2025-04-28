@@ -208,7 +208,7 @@ elif [[ ${MACHINE_ID} = hera ]]; then
 
 elif [[ ${MACHINE_ID} = ursa ]]; then
 
-  export TPN=192
+  export TPN=384
 
   export INPES_dflt=3
   export JNPES_dflt=8
