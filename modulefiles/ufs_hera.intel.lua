@@ -3,6 +3,7 @@ loads UFS Model prerequisites for Hera/Intel
 ]])
 
 prepend_path("MODULEPATH", "/contrib/spack-stack/spack-stack-1.9.1/envs/ue-oneapi-2024.2.1/install/modulefiles/Core")
+prepend_path("MODULEPATH", "/contrib/spack-stack/modulefiles")
 
 stack_intel_ver=os.getenv("stack_intel_ver") or "2024.2.1"
 load(pathJoin("stack-oneapi", stack_intel_ver))
