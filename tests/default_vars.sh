@@ -1183,9 +1183,9 @@ export_ugwpv1() {
   esac
 
   if [[ ${DO_GSL_DRAG_SS} = .true. ]]; then export CDMBGWD=${CDMBGWD_GSL}; fi
-  if [[ ${SEDI_SEMI} = .false. ]]; then 
+  if [[ ${SEDI_SEMI} = .false. ]]; then
     export DT_INNER=$((DT_ATMOS/2))
-  else 
+  else
     export DT_INNER=${DT_ATMOS}
   fi
   export default_dt_atmos=0
@@ -1369,7 +1369,11 @@ export_cmeps() {
   export MESH_ICE=mesh.mx${OCNRES}.nc
   export MESH_WAV=mesh.${WW3_DOMAIN}.nc
   export CPLMODE=ufs.frac
-  export pio_rearranger=box
+  export CMEPS_PIO_FORMAT='pnetcdf'
+  export CMEPS_PIO_STRIDE=4
+  export CMEPS_PIO_IOTASKS=-99
+  export CMEPS_PIO_REARR='box'
+  export CMEPS_PIO_ROOT=-99
   export RUNTYPE=startup
   export RESTART_N=${FHMAX}
   export RESTART_FH=" "
@@ -1685,7 +1689,11 @@ export_hafs_docn_cdeps ()
 
   export ocn_model=docn
   export ocn_datamode=sstdata
-  export pio_rearranger=box
+  export CMEPS_PIO_FORMAT='pnetcdf'
+  export CMEPS_PIO_STRIDE=4
+  export CMEPS_PIO_IOTASKS=-99
+  export CMEPS_PIO_REARR='box'
+  export CMEPS_PIO_ROOT=-99
   export DOCN_IN_CONFIGURE=docn_in.IN
   export DOCN_STREAM_CONFIGURE=hafs_docn.streams.IN
 }
