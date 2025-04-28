@@ -3,9 +3,7 @@ loads UFS Model prerequisites for NOAA Parallelworks/Intel
 ]])
 
 setenv("LMOD_TMOD_FIND_FIRST","yes")
---prepend_path("MODULEPATH", "/glade/work/epicufsrt/contrib/spack-stack/derecho/modulefiles")
---load("ecflow/5.8.4")
---load("mysql/8.0.33")
+prepend_path("MODULEPATH", "/glade/work/epicufsrt/contrib/spack-stack/derecho/modulefiles")
 
 setenv("LMOD_TMOD_FIND_FIRST","yes")
 prepend_path("MODULEPATH", "/lustre/desc1/scratch/epicufsrt/contrib/modulefiles_extra")
@@ -26,5 +24,8 @@ load(pathJoin("stack-python", stack_python_ver))
 
 setenv("CMAKE_Platform", "derecho.intel")
 load("ufs-weather-model-env")
+load("sp/2.5.0")
+load("crtm/2.4.0.1")
+load("scotch/7.0.7")
 
 whatis("Description: UFS build environment")
