@@ -459,7 +459,7 @@ EOF
 EOF
   elif [[ "${MACHINE_ID}" == ursa ]] ; then
     cat << EOF >> "${ROCOTO_XML}"
-    <partition>compute</partition>
+    <partition>${PARTITION}</partition>
 EOF
   elif [[ -n "${PARTITION}" || ${MACHINE_ID} != hera ]] ; then
     cat << EOF >> "${ROCOTO_XML}"
@@ -508,7 +508,7 @@ EOF
 
   elif [[ "${MACHINE_ID}" == ursa ]] ; then
     cat << EOF >> "${ROCOTO_XML}"
-    <partition>compute</partition>
+    <partition>${PARTITION}</partition>
 
 EOF
 
