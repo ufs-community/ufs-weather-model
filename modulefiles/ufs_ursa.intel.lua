@@ -2,7 +2,6 @@ help([[
 loads UFS Model prerequisites for Ursa/Intel
 ]])
 
---prepend_path("MODULEPATH", "/contrib/spack-stack/envs/1.6.0/fms-2024.01/install/modulefiles/Core")
 prepend_path("MODULEPATH", "/contrib/spack-stack/spack-stack-1.9.1/envs/ue-oneapi-2024.2.1/install/modulefiles/Core")
 
 stack_oneapi_ver=os.getenv("stack_oneapi_ver") or "2024.2.1"
