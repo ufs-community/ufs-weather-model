@@ -808,7 +808,7 @@ case ${MACHINE_ID} in
     QUEUE="batch"
     COMPILE_QUEUE="batch"
 
-    PARTITION="ursa"
+    PARTITION="u1"
     #dprefix="/tds_scratch2/SYSADMIN/pilot-users/${USER}"
     #DISKNM="/tds_scratch2/SYSADMIN/pilot-users/role.epic/UFS-WM_RT"
     dprefix="/scratch4/NAGAPE/epic/${USER}"
