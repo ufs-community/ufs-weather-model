@@ -19,9 +19,6 @@ particle_density: 2500. 2650. 2650. 2650. 2650.
 # Resolution dependent tuning constant for emissions (a,b,c,d,e,f) (Ginoux, K14)
 Ch_DU: 0.2 0.2 0.07 0.07 0.07 0.056
 
-# Scavenging efficiency per bin [km-1]
-fscav: 0.2  0.2  0.2  0.2  0.2   #
-
 # Molecular weight of species [kg mole-1]
 molecular_weight: 0.1  0.1  0.1  0.1  0.1
 
@@ -46,3 +43,18 @@ gamma: 1.0
 soil_moisture_factor: 1
 soil_drylimit_factor: 1
 vertical_to_horizontal_flux_ratio_limit: 2.e-04
+drag_partition_option: 1
+
+# clay fraction scaling factor
+soil_clay_factor: 1.0
+
+# Wet Removal Scheme Option | gocart, ufs
+wet_removal_scheme: ufs ! default value
+
+# Scavenging efficiency per bin [km-1]
+fscav: 0.2  0.2  0.2  0.2  0.2
+
+# Rainout efficiency per bin for wet_removal_scheme == ufs
+fwet_ice: 0.8 0.8 0.8 1.0 1.0
+fwet_snow: 0.8 0.8 0.8 1.0 1.0
+fwet_rain: 0.8 0.8 0.8 1.0 1.0
