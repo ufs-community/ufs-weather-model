@@ -237,6 +237,8 @@ list(APPEND mom6_src_files
   MOM6/src/tracer/pseudo_salt_tracer.F90
   MOM6/src/tracer/tracer_example.F90
   MOM6/src/tracer/MOM_CFC_cap.F90
+  MOM6/src/tracer/MARBL_forcing_mod.F90
+  MOM6/src/tracer/MARBL_tracers.F90
 
   MOM6/src/user/BFB_initialization.F90
   MOM6/src/user/BFB_surface_forcing.F90
@@ -301,6 +303,10 @@ list(APPEND mom6_src_files
   MOM6/config_src/infra/FMS2/MOM_interp_infra.F90
   MOM6/config_src/infra/FMS2/MOM_io_infra.F90
   MOM6/config_src/infra/FMS2/MOM_time_manager.F90
+  MOM6/config_src/external/MARBL/marbl_constants_mod.F90
+  MOM6/config_src/external/MARBL/marbl_interface.F90
+  MOM6/config_src/external/MARBL/marbl_interface_public_types.F90
+  MOM6/config_src/external/MARBL/marbl_logging.F90
 
 )
 
