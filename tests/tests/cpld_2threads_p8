@@ -55,7 +55,7 @@ export LIST_FILES="sfcf024.tile1.nc \
                    RESTART/iced.2021-03-23-21600.nc \
                    RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc \
                    ufs.cpld.ww3.r.2021-03-23-21600.nc \
-                   20210323.060000.out_pnt.ww3 \
+                   20210323.060000.out_pnt.ww3.nc \
                    20210323.060000.out_grd.ww3 "
 
 export DT_ATMOS=720
@@ -93,7 +93,7 @@ export eps_imesh=2.5e-1
 
 export FV3_RUN=cpld_control_run.IN
 
-if [[ $MACHINE_ID = derecho ]]; then
+if [[ ${MACHINE_ID} = derecho ]]; then
   TPN=96
 fi
 
@@ -103,3 +103,10 @@ export N_SPLIT=5
 # HR4 GFSv17 GWD update
 export DO_GWD_OPT_PSL=.true.
 export DO_GSL_DRAG_SS=.false.
+
+ESMF_THREADING=false
+THRD=$THRD_cpl_thrd
+
+if [[ ${MACHINE_ID} = orion || ${MACHINE_ID} = wcoss2 ]]; then
+  WLCLK=40
+fi

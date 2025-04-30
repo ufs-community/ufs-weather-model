@@ -709,8 +709,8 @@ case ${MACHINE_ID} in
     PTMP="/lfs/h2/emc/ptmp"
     SCHEDULER="pbs"
     ;;
-  gaea)
-    echo "rt.sh: Setting up gaea..."
+  gaeac5)
+    echo "rt.sh: Setting up gaea c5..."
     if [[ "${ROCOTO:-false}" == true ]] ; then
       module use /ncrc/proj/epic/rocoto/modulefiles
       module load rocoto
@@ -740,6 +740,37 @@ case ${MACHINE_ID} in
 
     SCHEDULER="slurm"
     ;;
+  gaeac6)
+    echo "rt.sh: Setting up gaea c6..."
+    if [[ "${ROCOTO:-false}" == true ]] ; then
+      module use /ncrc/proj/epic/c6/modulefiles
+      module load rocoto/1.3.7
+      ROCOTO_SCHEDULER="slurm"
+    fi
+
+    export LD_PRELOAD=/usr/lib64/libstdc++.so.6
+    module use /ncrc/proj/epic/spack-stack/c6/spack-stack-1.6.0/envs/fms-2024.01/install/modulefiles/Core
+    module load stack-intel/2023.2.0
+    module load cray-mpich/8.1.29
+    module load python/3.10.13
+    if [[ "${ECFLOW:-false}" == true ]] ; then
+      module use /ncrc/proj/epic/spack-stack/modulefiles
+      module load ecflow/5.8.4
+      ECF_HOST=$(hostname)
+      ECF_PORT=$(( $(id -u) + 1500 ))
+      export ECF_PORT ECF_HOST
+    fi
+
+    DISKNM=/gpfs/f6/bil-fire8/world-shared/role.epic/UFS-WM_RT
+    QUEUE=normal
+    COMPILE_QUEUE=normal
+    PARTITION=c6
+    dprefix=${dprefix:-/gpfs/f6/${ACCNR}/proj-shared/${USER}}
+    STMP=${STMP:-${dprefix}/RT_BASELINE}
+    PTMP=${PTMP:-${dprefix}/RT_RUNDIRS}
+
+    SCHEDULER="slurm"
+    ;;
   hera)
     echo "rt.sh: Setting up hera..."
     if [[ "${ROCOTO:-false}" == true ]] ; then
@@ -755,7 +786,7 @@ case ${MACHINE_ID} in
     COMPILE_QUEUE="batch"
 
     PARTITION=
-    dprefix="/scratch1/NCEPDEV"
+    dprefix=${dprefix:-"/scratch1/NCEPDEV"}
     DISKNM="/scratch2/NAGAPE/epic/UFS-WM_RT"
     STMP="${dprefix}/stmp4"
     PTMP="${dprefix}/stmp2"
@@ -781,7 +812,7 @@ case ${MACHINE_ID} in
     QUEUE="batch"
     COMPILE_QUEUE="batch"
     PARTITION="orion"
-    dprefix="/work/noaa/stmp/${USER}"
+    dprefix=${dprefix:-"/work/noaa/stmp/${USER}"}
     DISKNM="/work/noaa/epic/UFS-WM_RT"
     STMP="${dprefix}/stmp"
     PTMP="${dprefix}/stmp"
@@ -809,7 +840,7 @@ case ${MACHINE_ID} in
     QUEUE="batch"
     COMPILE_QUEUE="batch"
     PARTITION="hercules"
-    dprefix="/work2/noaa/stmp/${USER}"
+    dprefix=${dprefix:-"/work2/noaa/stmp/${USER}"}
     DISKNM="/work/noaa/epic/hercules/UFS-WM_RT"
     STMP="${dprefix}/stmp"
     PTMP="${dprefix}/stmp"
@@ -872,7 +903,7 @@ case ${MACHINE_ID} in
     COMPILE_QUEUE="s4"
 
     PARTITION="s4"
-    dprefix="/data/prod"
+    dprefix=${dprefix:-"/data/prod"}
     DISKNM="${dprefix}/emc.nemspara/RT"
     STMP="/scratch/short/users"
     PTMP="/scratch/users"
@@ -903,7 +934,7 @@ case ${MACHINE_ID} in
     QUEUE="main"
     COMPILE_QUEUE="main"
     PARTITION=
-    dprefix="/glade/derecho/scratch"
+    dprefix=${dprefix:-"/glade/derecho/scratch"}
     DISKNM="/glade/derecho/scratch/epicufsrt/ufs-weather-model/RT/"
     STMP="${dprefix}"
     PTMP="${dprefix}"
@@ -915,39 +946,6 @@ case ${MACHINE_ID} in
     if [[ "${ROCOTO:-false}" == true ]] ; then
       ROCOTO_SCHEDULER="pbspro"
     fi
-    ;;
-  stampede)
-    echo "rt.sh: Setting up stampede..."
-    export PYTHONPATH=
-    if [[ "${ECFLOW:-false}" == true ]] ; then
-      ECFLOW_START=
-    fi
-    QUEUE=skx-normal
-    COMPILE_QUEUE=skx-dev
-    PARTITION=
-    dprefix="${SCRATCH}/ufs-weather-model/run"
-    DISKNM="/work2/07736/minsukji/stampede2/ufs-weather-model/RT"
-    STMP="${dprefix}"
-    PTMP="${dprefix}"
-    SCHEDULER="slurm"
-    export MPIEXEC="ibrun"
-    export MPIEXECOPTS=
-    ;;
-  expanse)
-    echo "rt.sh: Setting up expanse..."
-    export PYTHONPATH=
-
-    if [[ "${ECFLOW:-false}" == true ]] ; then
-      export ECFLOW_START=
-    fi
-    QUEUE="compute"
-    COMPILE_QUEUE="shared"
-    PARTITION=
-    dprefix="/expanse/lustre/scratch/${USER}/temp_project/run"
-    DISKNM="/expanse/lustre/scratch/domh/temp_project/RT"
-    STMP="${dprefix}"
-    PTMP="${dprefix}"
-    SCHEDULER="slurm"
     ;;
   noaacloud)
     echo "rt.sh: Setting up noaacloud..."
@@ -962,7 +960,7 @@ case ${MACHINE_ID} in
     QUEUE="batch"
     COMPILE_QUEUE="batch"
     PARTITION=
-    dprefix="/lustre/"
+    dprefix=${dprefix:-"/lustre/"}
     DISKNM="/contrib/ufs-weather-model/RT"
     STMP="${dprefix}/stmp4"
     PTMP="${dprefix}/stmp2"
@@ -1018,8 +1016,7 @@ if [[ "${CREATE_BASELINE}" == false ]] ; then
 fi
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-${DISKNM}/NEMSfv3gfs/input-data-20240501}
-INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20240214
-INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC:-${DISKNM}/NEMSfv3gfs/BM_IC-20220207}
+INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20250225
 INPUTDATA_LM4=${INPUTDATA_LM4:-${INPUTDATA_ROOT}/LM4_input_data}
 
 shift $((OPTIND-1))
@@ -1062,7 +1059,7 @@ if [[ ${ROCOTO} == true ]]; then
   echo "rt.sh: Verifying ROCOTO support..."
 
   case ${MACHINE_ID} in
-    wcoss2|acorn|expanse|stampede)
+    wcoss2|acorn)
       die "Rocoto not supported on this machine, please do not use '-r'."
       ;;
     *)
@@ -1090,7 +1087,6 @@ if [[ ${ROCOTO} == true ]]; then
   <!ENTITY RTPWD          "${RTPWD}">
   <!ENTITY INPUTDATA_ROOT "${INPUTDATA_ROOT}">
   <!ENTITY INPUTDATA_ROOT_WW3 "${INPUTDATA_ROOT_WW3}">
-  <!ENTITY INPUTDATA_ROOT_BMIC "${INPUTDATA_ROOT_BMIC}">
   <!ENTITY RUNDIR_ROOT    "${RUNDIR_ROOT}">
   <!ENTITY NEW_BASELINE   "${NEW_BASELINE}">
 ]>
@@ -1104,7 +1100,7 @@ fi
 if [[ ${ECFLOW} == true ]]; then
   echo "Verifying ECFLOW support..."
   case ${MACHINE_ID} in
-    expanse|stampede|noaacloud)
+    noaacloud)
       die "ECFLOW not supported on this machine, please do not use '-e'."
       ;;
     *)
@@ -1266,7 +1262,11 @@ EOF
     (
       source "${PATHRT}/tests/${TEST_NAME}"
 
-      compute_petbounds_and_tasks
+      if [[ ${ESMF_THREADING} == true ]]; then
+        compute_petbounds_and_tasks_esmf_threading
+      else
+        compute_petbounds_and_tasks_traditional_threading
+      fi
 
       TPN=$(( TPN / THRD ))
       NODES=$(( TASKS / TPN ))
@@ -1286,7 +1286,6 @@ export RT_COMPILER=${RT_COMPILER}
 export RTPWD=${RTPWD}
 export INPUTDATA_ROOT=${INPUTDATA_ROOT}
 export INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT_WW3}
-export INPUTDATA_ROOT_BMIC=${INPUTDATA_ROOT_BMIC}
 export INPUTDATA_LM4=${INPUTDATA_LM4}
 export PATHRT=${PATHRT}
 export PATHTR=${PATHTR}

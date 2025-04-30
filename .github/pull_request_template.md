@@ -145,8 +145,8 @@ Please delete what is not needed.
   - [ ] Hera
   - [ ] Orion
   - [ ] Hercules
-  - [ ] Jet
-  - [ ] Gaea
+  - [ ] GaeaC5
+  - [ ] GaeaC6
   - [ ] Derecho
 - WCOSS2
   - [ ] Dogwood/Cactus

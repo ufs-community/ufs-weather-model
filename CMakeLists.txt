@@ -16,7 +16,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules/Modules)
 ###############################################################################
 
 # Valid applications and choices
-list(APPEND VALID_APPS ATM ATMAERO ATMAQ ATMW ATMWM ATML ATMF LND LND-LM4 S2S S2SA S2SW S2SWA S2SWAL ATM_DS2S ATM_DS2S-PCICE HAFS HAFSW HAFS-MOM6 HAFS-MOM6W HAFS-ALL NG-GODAS)
+list(APPEND VALID_APPS ATM ATMAERO ATMAQ ATMW ATMWM ATML ATMF LND LND-LM4 S2S S2SL S2SA S2SW S2SWA S2SWL S2SWAL ATM_DS2S ATM_DS2S-PCICE HAFS HAFSW HAFS-MOM6 HAFS-MOM6W HAFS-ALL NG-GODAS)
 set(APP NONE CACHE BOOL "Application Name")
 if(NOT (APP IN_LIST VALID_APPS))
   message(FATAL_ERROR "${APP} is not a valid application.\nValid Applications are: ${VALID_APPS}")
@@ -43,7 +43,7 @@ include(cmake/configure_apps.cmake)
 
 message("")
 message("FMS .............. ${FMS}")
-message("FV3 .............. ${FV3}")
+message("FV3_dy ........... ${FV3}")
 message("AQM .............. ${AQM}")
 message("GOCART ........... ${UFS_GOCART}")
 message("MOM6 ............. ${MOM6}")
@@ -75,7 +75,8 @@ set(OPENMP          ON  CACHE BOOL "Enable OpenMP threading")
 set(PARALLEL_NETCDF OFF CACHE BOOL "Enable parallel NetCDF")
 set(JEDI_DRIVER     OFF CACHE BOOL "Enable JEDI as top level driver")
 set(CMEPS_AOFLUX    OFF CACHE BOOL "Enable atmosphere-ocean flux calculation in mediator")
-set(PDLIB           OFF CACHE BOOL "Enable Domain Decomposition in WW3 via PDLIB")
+set(PDLIB           OFF CACHE BOOL "Enable Domain Decomposition in WW3 via PDLIB with BT1")
+set(PDLIB_BT4       OFF CACHE BOOL "Enable Domain Decomposition in WW3 via PDLIB with BT4")
 set(CDEPS_INLINE    OFF CACHE BOOL "Enable CDEPS inline capability")
 set(HYDRO           OFF CACHE BOOL "Enable hydrostatic set")
 
@@ -140,7 +141,10 @@ else()
   set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Set type of build to Release." FORCE)
 endif()
 
-include(cmake/${CMAKE_Fortran_COMPILER_ID}.cmake)
+# Detect and set UFS_COMPILER_SUITE in detect_compiler_suite.cmake
+set(UFS_COMPILER_SUITE)
+include(cmake/detect_compiler_suite.cmake)
+include(cmake/${UFS_COMPILER_SUITE}.cmake)
 
 ###############################################################################
 ### Find Dependencies
@@ -156,7 +160,7 @@ if(FMS)
   find_package(FMS 2022.04 REQUIRED COMPONENTS R4 R8)
   if(APP MATCHES "^(HAFSW)$")
     add_library(fms ALIAS FMS::fms_r4)
-  elseif (APP MATCHES "^(S2S|S2SA|S2SW|S2SWA|S2SWAL|ATM_DS2S|ATM_DS2S-PCICE|NG-GODAS|HAFS-MOM6|HAFS-MOM6W)$")
+  elseif (APP MATCHES "^(S2S|S2SA|S2SL|S2SW|S2SWL|S2SWA|S2SWAL|ATM_DS2S|ATM_DS2S-PCICE|NG-GODAS|HAFS-MOM6|HAFS-MOM6W)$")
     add_library(fms ALIAS FMS::fms_r8)
   endif()
   if(APP MATCHES "^(ATM|ATMAERO|ATMAQ|ATMWM|ATMW|ATML|ATMF|ATML-LM4|LND-LM4|HAFS|HAFS-ALL)$")
@@ -189,6 +193,11 @@ endif()
 
 ###############################################################################
 ### Atmosphere Components [FV3, MPAS?]
+### DJS2024: There will be a generalized atmospheric component with multiple
+###          dycores, not multiple atmospheric components (one for each dycore).
+###          So, - rename the atmospheric component FV3 to UFSATM or ATM, then
+###              - if FV3 or MPAS, add_sudirectory(UFSATM or ATM)
+###
 ###############################################################################
 if(FV3)
   add_subdirectory(FV3)
@@ -217,8 +226,12 @@ if(WW3)
     set(UFS_CAP "MULTI_ESMF" CACHE STRING "Build with MULTI_ESMF cap")
     list(APPEND _ufs_defs_private FRONT_WW3=WMESMFMD)
   else()
+    if(PDLIB OR PDLIB_BT4)
     if(PDLIB)
       set(SWITCH "meshcap_pdlib" CACHE STRING "NUOPC mesh cap")
+      else()
+	set(SWITCH "meshcap_pdlib_bt4" CACHE STRING "NUOPC mesh cap")
+      endif()
     else()
       set(SWITCH "meshcap" CACHE STRING "NUOPC mesh cap")
     endif()
@@ -313,9 +326,9 @@ if(STOCH_PHYS)
 endif()
 
 if(FV3)
-  add_dependencies(ufs fv3atm)
-  list(APPEND _ufs_defs_private FRONT_FV3=fv3atm_cap_mod)
-  list(APPEND _ufs_libs_public fv3atm)
+  add_dependencies(ufs ufsatm_fv3)
+  list(APPEND _ufs_defs_private FRONT_FV3=${DYCORE_TARGET_CAP_MOD})
+  list(APPEND _ufs_libs_public ${DYCORE_TARGET})
 endif()
 
 if(MOM6)

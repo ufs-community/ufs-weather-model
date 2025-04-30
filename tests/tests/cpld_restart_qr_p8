@@ -55,7 +55,7 @@ export LIST_FILES="sfcf024.tile1.nc \
                    RESTART/iced.2021-03-23-21600.nc \
                    RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc \
                    ufs.cpld.ww3.r.2021-03-23-21600.nc \
-                   20210323.060000.out_pnt.ww3 \
+                   20210323.060000.out_pnt.ww3.nc \
                    20210323.060000.out_grd.ww3 "
 
 export DT_ATMOS=720
@@ -100,3 +100,7 @@ export N_SPLIT=5
 # HR4 GFSv17 GWD update
 export DO_GWD_OPT_PSL=.true.
 export DO_GSL_DRAG_SS=.false.
+
+if [[ $MACHINE_ID = gaeac6 ]]; then
+  TPN=96
+fi
