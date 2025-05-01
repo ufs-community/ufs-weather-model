@@ -93,7 +93,7 @@ pathes[noahmp]='NOAHMP-interface/noahmp'
 
 urls[cubed_sphere]='https://github.com/NOAA-GFDL/GFDL_atmos_cubed_sphere'
 branches[cubed_sphere]='dev/emc'
-pathes[cubed_sphere]='FV3/atmos_cubed_sphere'
+pathes[cubed_sphere]='FV3/fv3/atmos_cubed_sphere'
 
 for submodule in $submodules; do
     url=${urls[$submodule]}
