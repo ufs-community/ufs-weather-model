@@ -405,7 +405,7 @@ preceding component, incremented by one.
 Example: 5-component ufs.configure
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-A sample ``ufs.configure`` is shown below for the :wm-repo:`cpld_control_gefs <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/tests/cpld_control_gefs>` test, which is a fully coupled S2SWA run. This test uses the :wm-repo:`ufs.configure.s2swa.IN <blob/develop/tests/parm/ufs.configure.s2swa.IN>` template to generate ``ufs.configure``.
+A sample ``ufs.configure`` is shown below for the :wm-repo:`cpld_control_gefs <blob/develop/tests/tests/cpld_control_gefs>` test, which is a fully coupled S2SWA run. This test uses the :wm-repo:`ufs.configure.s2swa.IN <blob/develop/tests/parm/ufs.configure.s2swa.IN>` template to generate ``ufs.configure``.
 
 
 .. code-block:: console

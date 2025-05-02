@@ -25,7 +25,13 @@ mediator). Currently, supported configurations include:
    * - :ref:`ATMAQ <atmaq>`
      - :term:`ATM` coupled to :term:`CMAQ`
    * - :ref:`ATML <atml>`
-     - :term:`ATM` coupled to :term:`LND`
+     - :term:`ATM` coupled to :term:`NOAHMP`
+   * - :ref:`ATMF <atmf>`
+     - :term:`ATM` coupled to the Community Fire Behavior Model (aka :term:`UFS FIRE`) 
+   * - :ref:`ATM_DS2S <atm_ds2s>`
+     - Coupled :term:`ATM` - :term:`DOCN` - :term:`DICE` - :term:`CDEPS`
+   * - :ref:`ATM_DS2S-PCICE <atm_ds2s-pcice>`
+     - Coupled :term:`ATM` - :term:`DOCN` - :term:`CICE6` (prescribed ice mode) - :term:`CDEPS`
    * - :ref:`S2S <s2s>`
      - Coupled :term:`ATM` - :term:`MOM6` - :term:`CICE6` - :term:`CMEPS`
    * - :ref:`S2SA <s2sa>`
@@ -34,18 +40,25 @@ mediator). Currently, supported configurations include:
      - Coupled :term:`ATM` - :term:`MOM6` - :term:`CICE6` - :term:`WW3` - :term:`CMEPS`
    * - :ref:`S2SWA <s2swa>`
      - Coupled :term:`ATM` - :term:`MOM6` - :term:`CICE6` - :term:`GOCART` - :term:`WW3` - :term:`CMEPS`
+   * - :ref:`S2SWAL <s2swal>`
+     - Coupled :term:`ATM` - :term:`MOM6` - :term:`CICE6` - :term:`GOCART` - :term:`WW3` - :term:`CMEPS` - :term:`NOAHMP`
    * - :ref:`NG-GODAS <ng-godas>`
      - Coupled :term:`CDEPS` - :term:`DATM` - :term:`MOM6` - :term:`CICE6` - :term:`CMEPS`
    * - :ref:`LND <lnd>`
-     - Coupled :term:`CDEPS` - :term:`DATM` - :term:`LND` -:term:`CMEPS`
+     - Coupled :term:`CDEPS` - :term:`DATM` - :term:`NOAHMP`
+   * - :ref:`LND-LM4 <lnd-lm4>`
+     - Coupled :term:`CDEPS` - :term:`DATM` - :term:`LM4`
    * - :ref:`HAFS <hafs>`
      - Coupled :term:`ATM` - :term:`HYCOM` - :term:`CMEPS`
    * - :ref:`HAFSW <hafsw>`
      - Coupled :term:`ATM` - :term:`HYCOM` - :term:`WW3` - :term:`CMEPS`
+   * - :ref:`HAFS-MOM6W <hafs-mom6w>`
+     - Coupled :term:`ATM` - :term:`HYCOM` - :term:`CMEPS`
    * - :ref:`HAFS-ALL <hafs-all>`
      - Coupled :term:`CDEPS` - :term:`ATM` - :term:`HYCOM` - :term:`WW3` - :term:`CMEPS`
 
 .. COMMENT: Should HAFS-ALL be DATM instead of ATM?
+.. COMMENT: No RTs for these apps: ATMWM, S2SL, S2SWL, HAFS-MOM6
 
 This chapter describes the input and output files needed for executing the model in the various supported configurations (see :numref:`Table %s <UFS-configurations>`). Each of the component models for a given configuration requires specific input files, and each component model outputs a particular set of files. Each configuration requires a set of model configuration files, as well. This chapter describes the input and output files involved with each component model. It also discusses the various configuration files involved in running the model. Users will need to view the input file requirements for each component model involved in the configuration they are running. For example, users running the *S2S* configuration would need to gather input data required for the *ATM*, *MOM6*, and *CICE6* component models. Then, they would need to alter certain model configuration files to reflect the ``ufs-weather-model`` configuration that they plan to run. 
 
