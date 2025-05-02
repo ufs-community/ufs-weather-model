@@ -809,10 +809,8 @@ case ${MACHINE_ID} in
     COMPILE_QUEUE="batch"
 
     PARTITION="u1"
-    #dprefix="/tds_scratch2/SYSADMIN/pilot-users/${USER}"
-    #DISKNM="/tds_scratch2/SYSADMIN/pilot-users/role.epic/UFS-WM_RT"
     dprefix="/scratch4/NAGAPE/epic/${USER}"
-    DISKNM="/scratch4/NAGAPE/epic/Ratko.Vasic/UFS-WM_RT"
+    DISKNM="/scratch4/NAGAPE/epic/role-epic/UFS-WM_RT"
     STMP="${STMP:-${dprefix}/RT_BASELINE}"
     PTMP="${PTMP:-${dprefix}/RT_RUNDIRS}"
 
