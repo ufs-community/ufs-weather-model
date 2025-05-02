@@ -158,6 +158,10 @@ else
   export HIDE_UGWPV1='!'
 fi
 
+# Set IAU Global workflow related tags to ' '
+export HIDE_AIAU=' '
+export HIDE_LIAU=' '
+
 if [[ ${DATM_CDEPS} = 'true' ]] || [[ ${FV3} = 'true' ]] || [[ ${S2S} = 'true' ]]; then
   if [[ ${HAFS} = 'false' ]] || [[ ${FV3} = 'true' && ${HAFS} = 'true' ]]; then
     atparse < "${PATHRT}/parm/${INPUT_NML:-input.nml.IN}" > input.nml
@@ -270,8 +274,11 @@ if [[ ${FV3} == true ]]; then
 fi
 
 # NoahMP table file
+if [[ ${BMIC} == .true. ]]; then
+  cp "${PATHRT}/parm/noahmptable-gefs.tbl" noahmptable.tbl
+else
   cp "${PATHRT}/parm/noahmptable.tbl" .
-
+fi
 
 # AQM
 if [[ ${AQM} == .true. ]]; then
@@ -294,8 +301,13 @@ if [[ ${CPLWAV} == .true. ]]; then
 fi
 
 if [[ ${CPLCHM} == .true. ]]; then
-  cp "${PATHRT}"/parm/gocart/*.rc .
-  atparse < "${PATHRT}/parm/gocart/AERO_HISTORY.rc.IN" > AERO_HISTORY.rc
+  if [[ ${BMIC} == .true. ]]; then
+    cp "${PATHRT}"/parm/gocart/gefs/*.rc .
+    atparse < "${PATHRT}/parm/gocart/gefs/AERO_HISTORY.rc.IN" > AERO_HISTORY.rc
+  else
+    cp "${PATHRT}"/parm/gocart/*.rc .
+    atparse < "${PATHRT}/parm/gocart/AERO_HISTORY.rc.IN" > AERO_HISTORY.rc
+  fi
 fi
 
 #TODO: this logic needs to be cleaned up for datm applications w/o
