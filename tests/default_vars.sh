@@ -1006,7 +1006,6 @@ export WW3_ICE='F'
 export WW3_IC1='F'
 export WW3_IC5='F'
 # ATMW
-export WW3_MULTIGRID=true
 export WW3_MODDEF=mod_def.glo_1deg
 export MESH_WAV=mesh.glo_1deg.nc
 export WW3_RSTFLDS=" "
@@ -1392,8 +1391,6 @@ export_cmeps() {
   # mediator ocean albedo
   export ocean_albedo_limit=0.06
   export use_mean_albedos=.false.
-  # WW3 (used in run_test only)
-  export WW3_MULTIGRID=false
 }
 
 export_cpl ()
