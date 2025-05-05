@@ -16,7 +16,7 @@ Glossary
       The Weather Model configuration that runs only the standalone atmospheric model. 
 
    ATMF
-      The Weather Model configuration that runs only the FV3 atmospheric model with the Community Fire Behavior Model. 
+      The Weather Model configuration that runs the FV3 atmospheric model with the Community Fire Behavior Model. 
 
    AQM
       The `Air Quality Model <https://github.com/NOAA-EMC/AQM>`_ (AQM) is a UFS Application that dynamically couples the Community Multiscale Air Quality (:term:`CMAQ`) model with the UFS Weather Model through the :term:`NUOPC` Layer to simulate temporal and spatial variations of atmospheric compositions (e.g., ozone and aerosol compositions). The CMAQ, treated as a column chemistry model, updates concentrations of chemical species (e.g., ozone and aerosol compositions) at each integration time step. The transport terms (e.g., :term:`advection` and diffusion) of all chemical species are handled by the UFS Weather Model as :term:`tracers<tracer>`.
