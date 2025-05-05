@@ -766,7 +766,7 @@ decrease testing time by using a workflow manager (ecFlow or Rocoto, respectivel
 according to dependencies and run them concurrently. 
 The ``-n`` option can be used to run a single test; for example, ``./rt.sh -a epic -n "control_c48 intel"`` 
 will build the ATM model and run the ``control_c48`` test with an Intel compiler using the "epic" account 
-(an account where the user can charge compute respurces should be used). 
+(users should substitute an account where they can charge computational resources).
 The ``-c`` option is used to create a baseline. New baselines are needed when code changes lead 
 to result changes and therefore deviate from existing baselines on a bit-for-bit basis.
 
