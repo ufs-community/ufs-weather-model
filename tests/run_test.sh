@@ -158,6 +158,10 @@ else
   export HIDE_UGWPV1='!'
 fi
 
+# Set IAU Global workflow related tags to ' '
+export HIDE_AIAU=' '
+export HIDE_LIAU=' '
+
 if [[ ${DATM_CDEPS} = 'true' ]] || [[ ${FV3} = 'true' ]] || [[ ${S2S} = 'true' ]]; then
   if [[ ${HAFS} = 'false' ]] || [[ ${FV3} = 'true' && ${HAFS} = 'true' ]]; then
     atparse < "${PATHRT}/parm/${INPUT_NML:-input.nml.IN}" > input.nml
@@ -288,12 +292,8 @@ cp "${PATHRT}/parm/fd_ufs.yaml" fd_ufs.yaml
 source ./fv3_run
 
 if [[ ${CPLWAV} == .true. ]]; then
-  if [[ ${WW3_MULTIGRID} = 'true' ]]; then
-    atparse < "${PATHRT}/parm/ww3_multi.inp.IN" > ww3_multi.inp
-  else
     atparse < "${PATHRT}/parm/ww3_shel.nml.IN" > ww3_shel.nml
     cp "${PATHRT}/parm/ww3_points.list" .
-  fi
 fi
 
 if [[ ${CPLCHM} == .true. ]]; then
