@@ -155,7 +155,7 @@ Glossary
 
    NOAHMP
    Noah-MP
-      The Noah Multi-Physics (Noah-MP) land surface model (LSM) is an open-source, community-developed LSM that has been incorporated into the UFS Weather Model (WM). It is the UFS WM's land component. 
+      The Noah Multi-Physics (Noah-MP) land surface model (LSM) is an open-source, community-developed LSM that has been incorporated into the UFS Weather Model (WM). It is a UFS WM land component. 
 
    NUOPC
    National Unified Operational Prediction Capability

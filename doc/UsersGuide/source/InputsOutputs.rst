@@ -11,7 +11,7 @@ mediator). Currently, supported configurations include:
 .. _UFS-configurations:
 
 .. list-table:: *Supported ufs-weather-model applications*
-   :widths: 10 70
+   :widths: 20 70
    :header-rows: 1
 
    * - Configuration Name
