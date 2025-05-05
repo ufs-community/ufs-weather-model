@@ -800,10 +800,9 @@ case ${MACHINE_ID} in
       ROCOTO_SCHEDULER=slurm
     fi
 
-    # ecflow not yet available on ursa
-    #if [[ "${ECFLOW:-false}" == true ]] ; then
-    #  module load ecflow/5.11.4
-    #fi
+    if [[ "${ECFLOW:-false}" == true ]] ; then
+      module load ecflow/5.11.4
+    fi
 
     QUEUE="batch"
     COMPILE_QUEUE="batch"
