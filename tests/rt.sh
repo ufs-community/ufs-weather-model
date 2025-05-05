@@ -803,7 +803,7 @@ case ${MACHINE_ID} in
     if [[ "${ECFLOW:-false}" == true ]] ; then
       module load ecflow/5.11.4
       ECF_HOST="uecflow01"
-      ECF_PORT="1864"
+      ECF_PORT="$(( $(id -u) + 1500 ))"
       export ECF_HOST ECF_PORT
     fi
 
