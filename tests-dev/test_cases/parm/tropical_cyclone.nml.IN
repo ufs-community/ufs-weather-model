@@ -11,21 +11,6 @@
   prepend_date = .false.
 /
 
-&mpp_io_nml
-  header_buffer_val = 16384,
-  global_field_on_root_pe = .true.,
-  io_clocks_on = .false.,
-  shuffle = 0,
-  deflate_level = ,
-  cf_compliance = .false.
-/
-
-&fms_io_nml
-  checksum_required = .false.
-  max_files_r = 1000,
-  max_files_w = 1000,
-/
-
 &fms2_io_nml
   netcdf_default_format="netcdf4"
 /
@@ -130,8 +115,6 @@
   n_zs_filter = 1
   nord_zs_filter = 4
   pass_full_omega_to_physics_in_non_hydrostatic_mode = .false.
-
-  sa3dtke_dyco = .false.
 /
 
 &fv_nest_nml
@@ -207,7 +190,6 @@
   cal_pre        = .false.
   redrag         = .true.
   dspheat        = .true.
-  sa3dtke        = .false.
   hybedmf        = .false.
   hurr_pbl       = .true. ! HWRF moninedmf
   moninq_fac     = -1.0   ! HWRF_moninedmf
@@ -272,8 +254,6 @@
   iau_delthrs    = 6
   iaufhrs        = 0
   iau_inc_files  = ,
-  iau_regional   = .false.
-  iau_inc_scale  = -999
   iau_drymassfixer = .false.
   lgfdlmprad     = .false.
   effr_in        = .true.
