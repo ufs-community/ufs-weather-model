@@ -1391,6 +1391,8 @@ export_cmeps() {
   # mediator ocean albedo
   export ocean_albedo_limit=0.06
   export use_mean_albedos=.false.
+  # vector remapping
+  export MAPUV3D=true
 }
 
 export_cpl ()
@@ -1631,6 +1633,8 @@ export_datm_cdeps ()
 
   # Set CMEPS component defaults
   export_cmeps
+  # vector remapping
+  export MAPUV3D=false
   # default configure
   export UFS_CONFIGURE=ufs.configure.datm_cdeps.IN
   export atm_model=datm
