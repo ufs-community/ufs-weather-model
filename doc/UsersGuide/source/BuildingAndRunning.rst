@@ -15,7 +15,7 @@ through NOAA and its affiliates. These systems are named (e.g., Hera, Orion, Der
 Level 3 & 4 systems include certain personal computers or non-NOAA-affiliated HPC systems. 
 The prerequisite software libraries for building the WM already exist in a centralized location on Level 1/preconfigured 
 systems, so users may skip directly to :ref:`getting the data <GetData>` and downloading the code. 
-On other systems, users will need to build the prerequisite libraries using :term:`spack-stack`. 
+On other systems, users will need to build the prerequisite libraries using :term:`spack-stack`.
 
 =======================
 Prerequisite Libraries
@@ -63,7 +63,7 @@ As of February 24, 2025, the UFS WM Regression Tests (:term:`RTs <RT>`) on Level
    zlib/1.2.13
 
 The most updated list of common modules can be viewed in ``ufs_common.lua`` 
-`here <https://github.com/ufs-community/ufs-weather-model/blob/develop/modulefiles/ufs_common.lua>`_.
+:wm-repo:`here <blob/develop/modulefiles/ufs_common.lua>`.
 
 .. attention::
    Documentation is available for installing `spack-stack <https://spack-stack.readthedocs.io/en/latest/>`_. 
@@ -145,7 +145,7 @@ To clone the develop branch of the ``ufs-weather-model`` repository and update i
   git clone --recursive https://github.com/ufs-community/ufs-weather-model.git
   cd ufs-weather-model
 
-Compiling the model will take place within the ``ufs-weather-model`` directory created by this command.
+Compiling the model will take place within the ``ufs-weather-model`` directory created by this clone command.
 
 .. _build-wm:
 
@@ -271,6 +271,38 @@ For the ``ufs-weather-model ATML`` configuration (standalone ATM coupled to :ter
 
     export CMAKE_FLAGS="-DAPP=ATML -DCCPP_SUITES=FV3_GFS_v17_p8"
 
+.. _atmf:
+
+**ATMF**
+
+For the ``ufs-weather-model ATMF`` configuration (standalone ATM coupled to :term:`UFS Fire`):
+
+.. code-block:: console
+
+    export CMAKE_FLAGS="-DAPP=ATMF -DCCPP_SUITES=FV3_HRRR -D32BIT=ON"
+
+.. _atm_ds2s:
+
+**ATM_DS2S**
+
+For the ``ufs-weather-model ATM_DS2S`` configuration (:term:`ATM`/:term:`DOCN`/:term:`DICE`):
+
+.. code-block:: console
+
+    export CMAKE_FLAGS="-DAPP=ATM_DS2S  -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_ugwpv1"
+
+
+.. _atm_ds2s-pcice:
+
+**ATM_DS2S-PCICE**
+
+For the ``ufs-weather-model ATM_DS2S-PCICE`` configuration (:term:`ATM`/:term:`DOCN`/:term:`CICE6` [prescribed ice mode]):
+
+.. code-block:: console
+
+    export CMAKE_FLAGS="-DAPP=ATM_DS2S-PCICE -DCCPP_SUITES=FV3_GFS_v17_coupled_p8"
+
+
 S2S Configurations 
 ----------------------
 
@@ -327,6 +359,17 @@ For the ``ufs-weather-model S2SWA`` configuration (atm/ice/ocean/wave/aerosols):
 
     export CMAKE_FLAGS="-DAPP=S2SWA -DCCPP_SUITES=FV3_GFS_v17_coupled_p8,FV3_GFS_cpld_rasmgshocnsstnoahmp_ugwp"
 
+.. _s2swal:
+
+**S2SWAL**
+
+For the ``ufs-weather-model S2SWAL`` configuration (atm/ice/ocean/wave/aerosols/land):
+
+.. code-block:: console
+
+    export CMAKE_FLAGS="-DAPP=S2SWAL -DCCPP_SUITES=FV3_GFS_v17_coupled_p8,FV3_GFS_v17_coupled_p8_ugwpv1"
+
+
 .. _ng-godas:
 
 NG-GODAS Configuration
@@ -355,11 +398,21 @@ For the ``ufs-weather-model HAFS`` configuration (atm/ocean) in 32 bit:
 
 **HAFSW**
 
-For the ``ufs-weather-model HAFSW`` configuration (atm/ocean/wave) in 32-bit with moving nest:
+For the ``ufs-weather-model HAFSW`` configuration (atm/:term:`HYCOM`/wave) in 32-bit with moving nest:
 
 .. code-block:: console
 
     export CMAKE_FLAGS="-DAPP=HAFSW -D32BIT=ON -DMOVING_NEST=ON -DCCPP_SUITES=FV3_HAFS_v0_gfdlmp_tedmf,FV3_HAFS_v0_gfdlmp_tedmf_nonsst,FV3_HAFS_v0_thompson_tedmf_gfdlsf"
+
+.. _hafs-mom6w:
+
+**HAFS-MOM6W**
+
+For the ``ufs-weather-model HAFS-MOM6`` configuration (atm/:term:`MOM6`/wave) in 32-bit with moving nest:
+
+.. code-block:: console
+
+    export CMAKE_FLAGS="-DAPP=HAFS-MOM6W -DREGIONAL_MOM6=ON -DCDEPS_INLINE=ON -DMOVING_NEST=ON -DCCPP_SUITES=FV3_HAFS_v1_gfdlmp_tedmf,FV3_HAFS_v1_gfdlmp_tedmf_nonsst,FV3_HAFS_v1_thompson,FV3_HAFS_v1_thompson_nonsst -D32BIT=ON"
 
 .. _hafs-all:
 
@@ -371,24 +424,32 @@ For the ``ufs-weather-model HAFS-ALL`` configuration (data/atm/ocean/wave) in 32
 
     export CMAKE_FLAGS="-DAPP=HAFS-ALL -D32BIT=ON -DCCPP_SUITES=FV3_HAFS_v0_gfdlmp_tedmf,FV3_HAFS_v0_gfdlmp_tedmf_nonsst"
 
-LND Configuration
+Land Configurations
 ----------------------
 
 .. _lnd:
 
 **LND**
 
-For the ``ufs-weather-model LND`` configuration (datm/land):
+For the ``ufs-weather-model LND`` configuration (:term:`DATM`/land [:term:`NOAHMP`]):
 
 .. code-block:: console
 
     export CMAKE_FLAGS="-DAPP=LND"
 
+.. _lnd-lm4:
+
+**LM4**
+
+For the ``ufs-weather-model LND-LM4`` configuration (:term:`DATM`/land [:term:`LM4`]):
+
+.. code-block:: console
+
+    export CMAKE_FLAGS="-DAPP=LND-LM4"
+
 ------------------
 Building the Model
 ------------------
-
-.. COMMENT: Is the "Building the Model" section necessary? Can users just run the RT without?
 
 The UFS Weather Model uses the CMake build system. There is a build script called ``build.sh`` in the
 top-level directory of the WM repository that configures the build environment and runs the ``make``
@@ -706,8 +767,9 @@ To display detailed information on how to use ``rt.sh``, users can simply run ``
 When running a large number (10's or 100's) of tests, the ``-e`` or ``-r`` options can significantly
 decrease testing time by using a workflow manager (ecFlow or Rocoto, respectively) to queue the jobs 
 according to dependencies and run them concurrently. 
-The ``-n`` option can be used to run a single test; for example, ``./rt.sh -n "control_c48 intel"`` 
-will build the ATM model and run the ``control_c48`` test with an Intel compiler. 
+The ``-n`` option can be used to run a single test; for example, ``./rt.sh -a epic -n "control_c48 intel"`` 
+will build the ATM model and run the ``control_c48`` test with an Intel compiler using the "epic" account 
+(users should substitute an account where they can charge computational resources).
 The ``-c`` option is used to create a baseline. New baselines are needed when code changes lead 
 to result changes and therefore deviate from existing baselines on a bit-for-bit basis.
 
