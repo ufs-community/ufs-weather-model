@@ -966,6 +966,24 @@ case ${MACHINE_ID} in
     PTMP="${dprefix}/stmp2"
     SCHEDULER="slurm"
     ;;
+  frontera)
+    echo "rt.sh: Setting up frontera..."
+    set -x
+    export PYTHONPATH=
+    if [[ "${ECFLOW:-false}" == true ]] ; then
+      ECFLOW_START=
+    fi
+    QUEUE=development
+    COMPILE_QUEUE=development
+    PARTITION=
+    dprefix="${SCRATCH}/frontera"
+    DISKNM="/work2/01118/tg803972/frontera/RT"
+    STMP=${dprefix}
+    PTMP=${dprefix}
+    SCHEDULER=slurm
+    export MPIEXEC="ibrun"
+    export MPIEXECOPTS=
+    ;;
   *)
     die "Unknown machine ID, please edit detect_machine.sh file"
     ;;

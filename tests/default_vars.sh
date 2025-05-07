@@ -402,6 +402,10 @@ elif [[ ${MACHINE_ID} = noaacloud ]] ; then
     export ICE_tasks_cpl_thrd=10
     export WAV_tasks_cpl_thrd=12
 
+elif [[ ${MACHINE_ID} = frontera ]]; then
+
+  TPN=56
+
 else
 
   echo "Unknown MACHINE_ID ${MACHINE_ID}"
@@ -1006,7 +1010,6 @@ export WW3_ICE='F'
 export WW3_IC1='F'
 export WW3_IC5='F'
 # ATMW
-export WW3_MULTIGRID=true
 export WW3_MODDEF=mod_def.glo_1deg
 export MESH_WAV=mesh.glo_1deg.nc
 export WW3_RSTFLDS=" "
@@ -1392,8 +1395,8 @@ export_cmeps() {
   # mediator ocean albedo
   export ocean_albedo_limit=0.06
   export use_mean_albedos=.false.
-  # WW3 (used in run_test only)
-  export WW3_MULTIGRID=false
+  # vector remapping
+  export MAPUV3D=true
 }
 
 export_cpl ()
@@ -1634,6 +1637,8 @@ export_datm_cdeps ()
 
   # Set CMEPS component defaults
   export_cmeps
+  # vector remapping
+  export MAPUV3D=false
   # default configure
   export UFS_CONFIGURE=ufs.configure.datm_cdeps.IN
   export atm_model=datm

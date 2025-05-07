@@ -113,7 +113,7 @@ case ${MACHINE_ID} in
     module load miniconda/3.9.12
     module load nccmp/1.9.0.1
     ;;
-  noaacloud)
+  noaacloud|frontera)
     echo "No special nccmp load necessary"
     ;;
   gaeac5)
@@ -292,12 +292,8 @@ cp "${PATHRT}/parm/fd_ufs.yaml" fd_ufs.yaml
 source ./fv3_run
 
 if [[ ${CPLWAV} == .true. ]]; then
-  if [[ ${WW3_MULTIGRID} = 'true' ]]; then
-    atparse < "${PATHRT}/parm/ww3_multi.inp.IN" > ww3_multi.inp
-  else
     atparse < "${PATHRT}/parm/ww3_shel.nml.IN" > ww3_shel.nml
     cp "${PATHRT}/parm/ww3_points.list" .
-  fi
 fi
 
 if [[ ${CPLCHM} == .true. ]]; then
