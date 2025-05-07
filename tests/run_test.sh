@@ -113,7 +113,7 @@ case ${MACHINE_ID} in
     module load miniconda/3.9.12
     module load nccmp/1.9.0.1
     ;;
-  noaacloud)
+  noaacloud|frontera)
     echo "No special nccmp load necessary"
     ;;
   gaeac5)
