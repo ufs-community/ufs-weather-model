@@ -11,7 +11,7 @@ mediator). Currently, supported configurations include:
 .. _UFS-configurations:
 
 .. list-table:: *Supported ufs-weather-model applications*
-   :widths: 10 70
+   :widths: 20 70
    :header-rows: 1
 
    * - Configuration Name
@@ -25,7 +25,13 @@ mediator). Currently, supported configurations include:
    * - :ref:`ATMAQ <atmaq>`
      - :term:`ATM` coupled to :term:`CMAQ`
    * - :ref:`ATML <atml>`
-     - :term:`ATM` coupled to :term:`LND`
+     - :term:`ATM` coupled to :term:`NOAHMP`
+   * - :ref:`ATMF <atmf>`
+     - :term:`ATM` coupled to the Community Fire Behavior Model (aka :term:`UFS FIRE`) 
+   * - :ref:`ATM_DS2S <atm_ds2s>`
+     - Coupled :term:`ATM` - :term:`DOCN` - :term:`DICE` - :term:`CDEPS`
+   * - :ref:`ATM_DS2S-PCICE <atm_ds2s-pcice>`
+     - Coupled :term:`ATM` - :term:`DOCN` - :term:`CICE6` (prescribed ice mode) - :term:`CDEPS`
    * - :ref:`S2S <s2s>`
      - Coupled :term:`ATM` - :term:`MOM6` - :term:`CICE6` - :term:`CMEPS`
    * - :ref:`S2SA <s2sa>`
@@ -34,18 +40,25 @@ mediator). Currently, supported configurations include:
      - Coupled :term:`ATM` - :term:`MOM6` - :term:`CICE6` - :term:`WW3` - :term:`CMEPS`
    * - :ref:`S2SWA <s2swa>`
      - Coupled :term:`ATM` - :term:`MOM6` - :term:`CICE6` - :term:`GOCART` - :term:`WW3` - :term:`CMEPS`
+   * - :ref:`S2SWAL <s2swal>`
+     - Coupled :term:`ATM` - :term:`MOM6` - :term:`CICE6` - :term:`GOCART` - :term:`WW3` - :term:`CMEPS` - :term:`NOAHMP`
    * - :ref:`NG-GODAS <ng-godas>`
      - Coupled :term:`CDEPS` - :term:`DATM` - :term:`MOM6` - :term:`CICE6` - :term:`CMEPS`
    * - :ref:`LND <lnd>`
-     - Coupled :term:`CDEPS` - :term:`DATM` - :term:`LND` -:term:`CMEPS`
+     - Coupled :term:`CDEPS` - :term:`DATM` - :term:`NOAHMP`
+   * - :ref:`LND-LM4 <lnd-lm4>`
+     - Coupled :term:`CDEPS` - :term:`DATM` - :term:`LM4`
    * - :ref:`HAFS <hafs>`
      - Coupled :term:`ATM` - :term:`HYCOM` - :term:`CMEPS`
    * - :ref:`HAFSW <hafsw>`
      - Coupled :term:`ATM` - :term:`HYCOM` - :term:`WW3` - :term:`CMEPS`
+   * - :ref:`HAFS-MOM6W <hafs-mom6w>`
+     - Coupled :term:`ATM` - :term:`HYCOM` - :term:`CMEPS`
    * - :ref:`HAFS-ALL <hafs-all>`
      - Coupled :term:`CDEPS` - :term:`ATM` - :term:`HYCOM` - :term:`WW3` - :term:`CMEPS`
 
 .. COMMENT: Should HAFS-ALL be DATM instead of ATM?
+.. COMMENT: No RTs for these apps: ATMWM, S2SL, S2SWL, HAFS-MOM6
 
 This chapter describes the input and output files needed for executing the model in the various supported configurations (see :numref:`Table %s <UFS-configurations>`). Each of the component models for a given configuration requires specific input files, and each component model outputs a particular set of files. Each configuration requires a set of model configuration files, as well. This chapter describes the input and output files involved with each component model. It also discusses the various configuration files involved in running the model. Users will need to view the input file requirements for each component model involved in the configuration they are running. For example, users running the *S2S* configuration would need to gather input data required for the *ATM*, *MOM6*, and *CICE6* component models. Then, they would need to alter certain model configuration files to reflect the ``ufs-weather-model`` configuration that they plan to run. 
 
@@ -1659,18 +1672,18 @@ A sample of the file contents is shown below:
 
 However, ``ufs.configure`` files for other configurations of the Weather Model are more complex. A full set of ``ufs.configure`` templates is available in the ``ufs-weather-model/tests/parm/`` directory `here <https://github.com/ufs-community/ufs-weather-model/tree/develop/tests/parm>`__. Template names follow the pattern ``ufs.configure.*.IN``. A number of samples are available below: 
 
-   * `ATMAQ <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.atmaq.IN>`__ configuration
-   * `S2S <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.s2s_aoflux_esmf.IN>`__ (fully coupled ``S2S`` configuration that receives atmosphere-ocean fluxes from a mediator)
-   * `S2SW <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.s2sw.IN>`__ (fully coupled ``S2SW`` configuration)
-   * `S2SWA <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.s2swa.IN>`__ (coupled GOCART in the S2SAW configuration)
-   * `ATM-LND <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.atm_lnd.IN>`__ (ATML configuration)
+   * `ATMAQ <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.atmaq.IN>`_ configuration
+   * `S2S <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.s2s_aoflux.IN>`_ (fully coupled ``S2S`` configuration that receives atmosphere-ocean fluxes from a mediator)
+   * `S2SW <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.s2sw.IN>`_ (fully coupled ``S2SW`` configuration)
+   * `S2SWA <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.s2swa.IN>`_ (coupled GOCART in the S2SAW configuration)
+   * `ATM-LND <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.atm_lnd.IN>`_ (ATML configuration)
 
    * For more HAFS, HAFSW, and HAFS-ALL configurations please see the following ``ufs.configure`` templates:
 
-      * `HAFS ATM-OCN <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.hafs_atm_ocn.IN>`__
-      * `HAFS ATM-WAV <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.hafs_atm_wav.IN>`__
-      * `HAFS ATM-OCN-WAV <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.hafs_atm_ocn_wav.IN>`__
-      * `HAFS ATM-DOCN <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.hafs_atm_docn.IN>`__
+      * `HAFS ATM-OCN <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.hafs_atm_ocn.IN>`_
+      * `HAFS ATM-WAV <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.hafs_atm_wav.IN>`_
+      * `HAFS ATM-OCN-WAV <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.hafs_atm_ocn_wav.IN>`_
+      * `HAFS ATM-DOCN <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/parm/ufs.configure.hafs_atm_docn.IN>`_
 
 .. note:: The ``aoflux_grid`` option is used to select the grid/mesh to perform atmosphere-ocean flux calculation. The possible options are ``xgrid`` (exchange grid), ``agrid`` (atmosphere model grid) and ``ogrid`` (ocean model grid).
 
@@ -2208,10 +2221,10 @@ Two files (``model_configure`` and ``diag_table``) control the output that is ge
 
    Relationship between ``diag_table``, ``model_configure`` and generated output files
 
-Standard output files are ``logfHHH`` (one per forecast hour), and out and err as specified by the job submission. ESMF may also produce log
+Standard output files are ``logfHHH`` (one per forecast hour), and ``out`` and ``err`` as specified by the job submission. ESMF may also produce log
 files (controlled by variable print_esmf in the ``model_configure`` file), called ``PETnnn.ESMF_LogFile`` (one per MPI task).
 
-Additional output files include: ``nemsusage.xml``, a timing log file; `time_stamp.out`, contains the model init time; ``RESTART/*nc``, files needed for restart runs.
+Additional output files include: ``nemsusage.xml``, a timing log file; ``time_stamp.out``, contains the model init time; ``RESTART/*nc``, files needed for restart runs.
 
 .. _mom-out:
 
