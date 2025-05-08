@@ -810,7 +810,7 @@ case ${MACHINE_ID} in
     QUEUE="batch"
     COMPILE_QUEUE="batch"
 
-    PARTITION="u1"
+    PARTITION="u1-compute"
     dprefix="/scratch4/NAGAPE/epic/${USER}"
     DISKNM="/scratch4/NAGAPE/epic/role-epic/UFS-WM_RT"
     STMP="${STMP:-${dprefix}/RT_BASELINE}"
