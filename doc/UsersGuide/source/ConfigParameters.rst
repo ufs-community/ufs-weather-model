@@ -4,6 +4,8 @@
 Configuration Parameters
 ******************************************
 
+The UFS Weather Model build parameters are set in :wm-repo:`CMakeLists.txt <blob/develop/CMakeLists.txt>` or in the ``CMakeLists.txt`` file of one of its subrepositories. 
+
 =================================
 Build Configuration Parameters
 =================================
@@ -15,7 +17,7 @@ Configuration Options
 
 ``-DAPP``:
    Sets the :term:`WM` configuration to build. 
-   Valid values: ``ATM``, ``ATMW``, ``ATMAERO``, ``ATMAQ``, ``S2S``, ``S2SA``, ``S2SW``, ``S2SWA``, ``NG-GODAS``, ``HAFS``, ``HAFSW``, ``HAFS-ALL``
+   Valid values: ``ATM``, ``ATMW``, ``ATMAERO``, ``ATMAQ``, ``ATMWM``, ``ATML``, ``ATMF``, ``ATM_DS2S``, ``ATM_DS2S-PCICE``, ``LND``, ``LND-LM4``, ``S2S``, ``S2SA``, ``S2SW``, ``S2SWA``, ``S2SL``, ``S2SWL``, ``S2SWAL``, ``NG-GODAS``, ``HAFS``, ``HAFSW``, ``HAFS-MOM6``, ``HAFS-MOM6W``, ``HAFS-ALL``
 
 
 .. _suites:
@@ -28,100 +30,39 @@ Physics Options
    
    Physics suites supported in regression testing:
    
-   | ``FV3_GFS_cpld_rasmgshocnsstnoahmp_ugwp``
-   | ``FV3_GFS_v15p2``
-   | ``FV3_GFS_v15_thompson_mynn``
-   | ``FV3_GFS_v15_thompson_mynn_lam3km``
-   | ``FV3_GFS_v16``
-   | ``FV3_GFS_v16_csawmg``
-   | ``FV3_GFS_v16_fv3wam``
-   | ``FV3_GFS_v16_noahmp``
-   | ``FV3_GFS_v16_ras``
-   | ``FV3_GFS_v16_ugwpv1``
-   | ``FV3_GFS_v17_p8``
-   | ``FV3_GFS_v17_p8_rrtmgp``
    | ``FV3_GFS_v17_coupled_p8``
    | ``FV3_GFS_v17_coupled_p8_sfcocn``
-   | ``FV3_HAFS_v0_gfdlmp_tedmf``
-   | ``FV3_HAFS_v0_gfdlmp_tedmf_nonsst``
-   | ``FV3_HAFS_v0_thompson_tedmf_gfdlsf``
-   | ``FV3_HRRR``
-   | ``FV3_HRRR_smoke``
-   | ``FV3_RAP``
-   | ``FV3_RAP_RRTMGP``
-   | ``FV3_RAP_sfcdiff``
-   | ``FV3_RRFS_v1beta``
-   | ``FV3_RRFS_v1nssl``
-
-   Other valid values: 
-
-   | ``FV3_CPT_v0``
-   | ``FV3_GFS_2017``
-   | ``FV3_GFS_2017_csawmg``
-   | ``FV3_GFS_2017_csawmgshoc``
-   | ``FV3_GFS_2017_gfdlmp``
-   | ``FV3_GFS_2017_gfdlmp_noahmp``
-   | ``FV3_GFS_2017_gfdlmp_regional``
-   | ``FV3_GFS_2017_gfdlmp_regional_c768``
-   | ``FV3_GFS_2017_h2ophys``
-   | ``FV3_GFS_2017_myj``
-   | ``FV3_GFS_2017_ntiedtke``
-   | ``FV3_GFS_2017_ozphys_2015``
-   | ``FV3_GFS_2017_sas``
-   | ``FV3_GFS_2017_satmedmf``
-   | ``FV3_GFS_2017_satmedmfq``
-   | ``FV3_GFS_2017_shinhong``
-   | ``FV3_GFS_2017_stretched``
-   | ``FV3_GFS_2017_ysu``
-   | ``FV3_GFS_cpld_rasmgshoc``
-   | ``FV3_GFS_cpld_rasmgshocnsst``
-   | ``FV3_GFS_cpld_rasmgshocnsst_flake``
-   | ``FV3_GFS_cpld_rasmgshocnsst_ugwp``
-   | ``FV3_GFS_cpldnst_rasmgshoc``
-   | ``FV3_GFS_rasmgshoc``
-   | ``FV3_GFS_v15``
-   | ``FV3_GFS_v15_gf``
-   | ``FV3_GFS_v15_gf_thompson``
-   | ``FV3_GFS_v15_mynn``
-   | ``FV3_GFS_v15_ras``
-   | ``FV3_GFS_v15_rasmgshoc``
-   | ``FV3_GFS_v15_thompson``
-   | ``FV3_GFS_v15p2_no_nsst``
-   | ``FV3_GFS_v15plus``
-   | ``FV3_GFS_v15plusras``
-   | ``FV3_GFS_v16_coupled``
-   | ``FV3_GFS_v16_coupled_noahmp``
-   | ``FV3_GFS_v16_coupled_nsstNoahmp``
-   | ``FV3_GFS_v16_coupled_nsstNoahmpUGWPv1``
-   | ``FV3_GFS_v16_coupled_p8``
-   | ``FV3_GFS_v16_coupled_p8_sfcocn``
-   | ``FV3_GFS_v16_couplednsst``
+   | ``FV3_GFS_v17_coupled_p8_ugwpv1`` 
+   | ``FV3_GFS_v17_p8``
+   | ``FV3_GFS_v17_p8_mynn``
+   | ``FV3_GFS_v17_p8_rrtmgp``
+   | ``FV3_GFS_v17_p8_ugwpv1``
+   | ``FV3_GFS_v16``
+   | ``FV3_GFS_v16_csawmg``
    | ``FV3_GFS_v16_flake``
-   | ``FV3_GFS_v16_no_nsst``
-   | ``FV3_GFS_v16_nsstNoahmpUGWPv1``
-   | ``FV3_GFS_v16_p8``
-   | ``FV3_GFS_v16_thompson``
-   | ``FV3_GFSv17alp_cpldnsstrasnoahmp``
-   | ``FV3_GFSv17alp_cpldnsstrasugwpnoahmp``
-   | ``FV3_GFSv17alp_cpldnsstsasugwpnoahmp``
-   | ``FV3_GFSv17alpha_cpldnsstras``
-   | ``FV3_GFSv17alpha_cpldnsstras_flake``
-   | ``FV3_GFSv17alpha_cpldnsstras_ugwp``
-   | ``FV3_GFSv17alpha_cpldnsstrasnoshal``
-   | ``FV3_GFSv17alpha_cpldnsstsas``
-   | ``FV3_GFSv17alpha_cpldnsstsas_ugwp``
-   | ``FV3_GFSv17alpha_ras``
-   | ``FV3_GFSv17alpha_ras_flake``
-   | ``FV3_GFSv17alpha_ras_ugwp``
-   | ``FV3_GFSv17alpha_sas``
+   | ``FV3_GFS_v16_ras``
+   | ``FV3_GFS_v15p2``
+   | ``FV3_GFS_v15_thompson_mynn_lam3km``
+   | ``FV3_global_nest_v1``
+   | ``FV3_HAFS_v1_gfdlmp_tedmf``
+   | ``FV3_HAFS_v1_gfdlmp_tedmf_nonsst``
+   | ``FV3_HAFS_v1_thompson``
+   | ``FV3_HAFS_v1_thompson_nonsst``
+   | ``FV3_HAFS_v1_thompson_tedmf_gfdlsf``
+   | ``FV3_HRRR``
+   | ``FV3_HRRR_c3``
+   | ``FV3_HRRR_gf``
+   | ``FV3_RAP``
    | ``FV3_RAP_cires_ugwp``
+   | ``FV3_RAP_clm_lake``
    | ``FV3_RAP_flake``
    | ``FV3_RAP_noah``
    | ``FV3_RAP_noah_sfcdiff_cires_ugwp``
-   | ``FV3_RAP_noah_sfcdiff_ugwpv1``
-   | ``FV3_RAP_noah_sfcdiff_unified_ugwp``
+   | ``FV3_RAP_sfcdiff``
    | ``FV3_RAP_unified_ugwp``
-   | ``FV3_RRFS_v1alpha``
+   | ``FV3_RRFS_v1beta``
+   | ``FV3_RRFS_v1nssl``
+   | ``FV3_WoFS_v0``
 
 .. _other-build-options:
 
