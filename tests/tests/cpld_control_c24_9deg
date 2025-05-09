@@ -1,22 +1,12 @@
 #
-#  cpld_control_c48 test
+#  cpld_control_c24 test
 #
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C48MX500"
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-WW3-CMEPS system - C24MX900 with 900km unstructured WW3"
 
-export CNTL_DIR=cpld_control_c48
+export CNTL_DIR=cpld_control_c24_9deg
 
-export LIST_FILES="sfcf024.tile1.nc \
-                   sfcf024.tile2.nc \
-                   sfcf024.tile3.nc \
-                   sfcf024.tile4.nc \
-                   sfcf024.tile5.nc \
-                   sfcf024.tile6.nc \
-                   atmf024.tile1.nc \
-                   atmf024.tile2.nc \
-                   atmf024.tile3.nc \
-                   atmf024.tile4.nc \
-                   atmf024.tile5.nc \
-                   atmf024.tile6.nc \
+export LIST_FILES="sfcf024.nc \
+                   atmf024.nc \
                    RESTART/20210323.060000.coupler.res \
                    RESTART/20210323.060000.fv_core.res.nc \
                    RESTART/20210323.060000.fv_core.res.tile1.nc \
@@ -51,42 +41,63 @@ export LIST_FILES="sfcf024.tile1.nc \
                    RESTART/20210323.060000.sfc_data.tile6.nc \
                    RESTART/20210323.060000.MOM.res.nc \
                    RESTART/iced.2021-03-23-21600.nc \
-                   RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc"
-export ATMRES=C48
+                   RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc \
+                   ufs.cpld.ww3.r.2021-03-23-21600.nc \
+                   20210323.060000.out_grd.ww3 \
+                   20210323.060000.out_pnt.ww3.nc"
 
-export_fv3
-export_ugwpv1
+export_fv3_v16
 export_cpl
-export CCPP_SUITE=FV3_GFS_v17_coupled_p8_ugwpv1
+export CCPP_SUITE=FV3_coupled_lowres
+
+export ULTRALOW=.true.
+export ATMRES=C24
 
 export RESTART_N=12
 export RESTART_INTERVAL="${RESTART_N} -1"
 
-export INPES=$INPES_cpl_c48
-export JNPES=$JNPES_cpl_c48
-export atm_omp_num_threads=$THRD_cpl_c48
-export WRTTASK_PER_GROUP=$WPG_cpl_c48
-export OUTPUT_GRID='cubed_sphere_grid'
+export INPES=1
+export JNPES=1
+export NPZ=41
+export NPZP=42
+export TAU=10.
+export N_SPONGE=5
+export D2_BG_K2=0.0
+export N_SPLIT=6
+export DNATS=1
+export MAKE_NH=.false.
+export HYDROSTATIC=.true.
+export GWD_OPT=0
+export DO_UGWP_V1=.false.
+export atm_omp_num_threads=1
+export WRTTASK_PER_GROUP=1
+export LSM=1
+export ISATMEDMF=1
+export IMP_PHYSICS=11
+export OUTPUT_GRID='gaussian_grid'
 
-export WAV_tasks=0
+export OCN_tasks=2
+export ICE_tasks=2
+export WAV_tasks=2
 export CHM_tasks=0
-OCN_tasks=$OCN_tasks_cpl_c48
-ICE_tasks=$ICE_tasks_cpl_c48
 
 # atm/ocn/ice resolution
-export NPX=49
-export NPY=49
+export NPX=25
+export NPY=25
 export IMO=192
 export JMO=94
 
-export OCNRES=500
-export ICERES=5.00
-export NX_GLB=72
-export NY_GLB=35
+export OCNRES=900
+export ICERES=9.00
+export NX_GLB=40
+export NY_GLB=20
 export CICE_NPROC=$ICE_tasks
 export CICE_DECOMP=slenderX1
 export CICE_BLCKX=`expr $NX_GLB / $CICE_NPROC`
 export CICE_BLCKY=$NY_GLB
+export WW3_DOMAIN=uglo_900km
+export MESH_WAV=mesh.${WW3_DOMAIN}.nc
+export WW3_MODDEF=mod_def.${WW3_DOMAIN}
 
 # set component and coupling timesteps
 export DT_ATMOS=1200
@@ -110,37 +121,44 @@ export MOM6_RIVER_RUNOFF=False
 export MOM6_DIAG_COORD_DEF_Z_FILE=oceanda_zgrid_25L.nc
 export MOM6_RESTART_SETTING=r
 
-export FNALBC="'C48.snowfree_albedo.tileX.nc'"
-export FNALBC2="'C48.facsf.tileX.nc'"
-export FNTG3C="'C48.substrate_temperature.tileX.nc'"
-export FNVEGC="'C48.vegetation_greenness.tileX.nc'"
-export FNVETC="'C48.vegetation_type.tileX.nc'"
-export FNSOTC="'C48.soil_type.tileX.nc'"
-export FNSOCC="'C48.soil_color.tileX.nc'"
-export FNVMNC="'C48.vegetation_greenness.tileX.nc'"
-export FNVMXC="'C48.vegetation_greenness.tileX.nc'"
-export FNSLPC="'C48.slope_type.tileX.nc'"
-export FNABSC="'C48.maximum_snow_albedo.tileX.nc'"
+export CICE_RESTART_IOTASKS=1
+export CICE_RESTART_STRIDE=1
+export CICE_HISTORY_IOTASKS=1
+export CICE_HISTORY_STRIDE=1
+
+export WW3_RSTFLDS="ice"
+# For either history_nc or restart_nc true
+export WW3_PIO_FORMAT='pnetcdf'
+export WW3_PIO_STRIDE=1
+export WW3_PIO_IOTASKS=2
+export WW3_PIO_REARR='box'
+export WW3_PIO_ROOT=-99
+
+export FNALBC="'C24.snowfree_albedo.tileX.nc'"
+export FNALBC2="'C24.facsf.tileX.nc'"
+export FNTG3C="'C24.substrate_temperature.tileX.nc'"
+export FNVEGC="'C24.vegetation_greenness.tileX.nc'"
+export FNVETC="'C24.vegetation_type.tileX.nc'"
+export FNSOTC="'C24.soil_type.tileX.nc'"
+export FNSOCC="'C24.soil_color.tileX.nc'"
+export FNVMNC="'C24.vegetation_greenness.tileX.nc'"
+export FNVMXC="'C24.vegetation_greenness.tileX.nc'"
+export FNSLPC="'C24.slope_type.tileX.nc'"
+export FNABSC="'C24.maximum_snow_albedo.tileX.nc'"
 export FNSMCC="'global_soilmgldas.statsgo.t92.192.94.grb'"
 export FNMSKH="'global_slmask.t62.192.94.grb'"
 
 # resolution dependent setting
-export CDMBWD=${CDMBWD_c48}
+export CDMBWD=0.0,0.0,0.0,0.0
 export DT_INNER=${DT_ATMOS}
 
-# no aero, no waves
 export CPLCHM=.false.
-export CPLWAV=.false.
-export CPLWAV2ATM=.false.
-export MOM6_USE_WAVES=False
-export eps_imesh=4.0e-1
+
+export eps_imesh=1.0e0
 
 export DIAG_TABLE=diag_table_template
-export FIELD_TABLE=field_table_thompson_noaero_tke
-export UFS_CONFIGURE=ufs.configure.s2s.IN
+export FIELD_TABLE=field_table_gfsv16
+export UFS_CONFIGURE=ufs.configure.s2sw.IN
 
 export FV3_RUN=cpld_control_run.IN
-
-# HR4 GFSv17 GWD update
-export DO_GWD_OPT_PSL=.true.
-export DO_GSL_DRAG_SS=.false.
+export INPUT_NML=cpld_lowres.nml.IN
