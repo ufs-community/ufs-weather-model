@@ -26,6 +26,7 @@ export JNPES_cpl_c48=1
 export WPG_cpl_c48=6
 export OCN_tasks_cpl_c48=4
 export ICE_tasks_cpl_c48=4
+export WAV_tasks_cpl_c48=4
 
 export THRD_cpl_dflt=1
 export INPES_cpl_dflt=3
@@ -1411,6 +1412,7 @@ export DOCN_CDEPS=false
 export DICE_CDEPS=false
 export CICE_PRESCRIBED=false
 export CDEPS_INLINE=false
+export ULTRALOW=.false.
 export DAYS=1
 
 #model configure
@@ -1483,7 +1485,7 @@ export DIAG_TABLE=diag_table_cpld.IN
 export DIAG_TABLE_ADDITIONAL=''
 export FIELD_TABLE_ADDITIONAL=''
 export FV3_RUN=cpld_control_run.IN
-export TILEDFIX=.false.
+export TILEDFIX=.true.
 
 export FHZERO=6
 
