@@ -76,6 +76,9 @@ if [[ $CPLWAV == .true. ]]; then
     if [[ ${WW3_DOMAIN:0:2} != mx ]]; then
         cp @[INPUTDATA_ROOT_WW3]/@[MESH_WAV] .
     fi
+    if [[ ${WW3_DOMAIN} = global_270k ]]; then 
+        cp @[INPUTDATA_ROOT_WW3]/pnt_wght.global_270k.nc pnt_wght.ww3.nc
+    fi
 fi
 
 #rrtmgp
