@@ -22,6 +22,7 @@ The top level directory structure groups source code and input files as follow:
 | ```CMEPS-interface/```    | Contains CMEPS mediator |
 | ```CICE-interface/```     | Contains CICE sea-ice model component including CICE6 and Icepack |
 | ```CDEPS-interface/```    | Contains CDEPS data components, including data-atmosphere (DATM) and data-ocean (DOCN) model components|
+| ```fire_behavior/```      | Contains the Community Fire Behavior Model component |
 | ```FV3/```                | Contains FV3 atmosphere model component including FV3 dynamical core, dynamics to physics driver, physics and IO. |
 | ```GOCART/```             | Contains GOCART aerosol model component |
 | ```HYCOM-interface/```    | Contains HYCOM ocean model component |
@@ -33,6 +34,7 @@ The top level directory structure groups source code and input files as follow:
 | ```cmake/```              | Contains compile option files on various platforms. |
 | ```modulefiles/```        | Contains module files on various platforms. |
 | ```tests/```              | Regression and unit testing framework scripts. |
+| ```tests-dev/```          | Developmental testing framework scripts. |
 | ```build.sh```            | Script to build the model executable (also used by `tests/`) |
 
 E.g. use of `build.sh` to build the coupled model with `FV3_GFS_v15p2` as the CCPP suite.
