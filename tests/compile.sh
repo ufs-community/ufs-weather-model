@@ -52,8 +52,6 @@ fi
 
 BUILD_JOBS=${BUILD_JOBS:-8}
 
-#hostname
-
 set +x
 case ${MACHINE_ID} in
   macosx|linux)
@@ -63,9 +61,12 @@ case ${MACHINE_ID} in
     # Activate lua environment for gaea c5
     if [[ ${MACHINE_ID} == gaeac5 ]]; then
       module reset
-    fi
-    if [[ ${MACHINE_ID} == gaeac6 ]]; then
+    elif [[ ${MACHINE_ID} == gaeac6 ]]; then
       module reset
+    elif [[ ${MACHINE_ID} == container ]]; then
+      source /usr/lmod/lmod/init/bash
+      module purge
+      unset MODULEPATH
     elif [[ ${MACHINE_ID} == hercules ]]; then
       module purge
     fi
