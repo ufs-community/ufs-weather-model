@@ -1821,6 +1821,7 @@ export_coastal ()
   export CPLWAV2ATM=.false.
   export CPLLND=.false.
   export CDEPS_INLINE=.false.
+  export FV3ATM_OUTPUT_DIR="./"
   export HISTORY_FILE_ON_NATIVE_GRID=.false.
   export QUANTIZE_NSD=0
   export WAV_STANDALONE=.false.
