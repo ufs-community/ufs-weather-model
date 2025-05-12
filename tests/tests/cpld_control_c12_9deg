@@ -1,0 +1,165 @@
+#
+#  cpld_control_c12 test
+#
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-WW3-CMEPS system - C12MX900 with 900km unstructured WW3"
+
+export CNTL_DIR=cpld_control_c12_9deg
+
+export LIST_FILES="sfcf024.nc \
+                   atmf024.nc \
+                   RESTART/20210323.060000.coupler.res \
+                   RESTART/20210323.060000.fv_core.res.nc \
+                   RESTART/20210323.060000.fv_core.res.tile1.nc \
+                   RESTART/20210323.060000.fv_core.res.tile2.nc \
+                   RESTART/20210323.060000.fv_core.res.tile3.nc \
+                   RESTART/20210323.060000.fv_core.res.tile4.nc \
+                   RESTART/20210323.060000.fv_core.res.tile5.nc \
+                   RESTART/20210323.060000.fv_core.res.tile6.nc \
+                   RESTART/20210323.060000.fv_srf_wnd.res.tile1.nc \
+                   RESTART/20210323.060000.fv_srf_wnd.res.tile2.nc \
+                   RESTART/20210323.060000.fv_srf_wnd.res.tile3.nc \
+                   RESTART/20210323.060000.fv_srf_wnd.res.tile4.nc \
+                   RESTART/20210323.060000.fv_srf_wnd.res.tile5.nc \
+                   RESTART/20210323.060000.fv_srf_wnd.res.tile6.nc \
+                   RESTART/20210323.060000.fv_tracer.res.tile1.nc \
+                   RESTART/20210323.060000.fv_tracer.res.tile2.nc \
+                   RESTART/20210323.060000.fv_tracer.res.tile3.nc \
+                   RESTART/20210323.060000.fv_tracer.res.tile4.nc \
+                   RESTART/20210323.060000.fv_tracer.res.tile5.nc \
+                   RESTART/20210323.060000.fv_tracer.res.tile6.nc \
+                   RESTART/20210323.060000.phy_data.tile1.nc \
+                   RESTART/20210323.060000.phy_data.tile2.nc \
+                   RESTART/20210323.060000.phy_data.tile3.nc \
+                   RESTART/20210323.060000.phy_data.tile4.nc \
+                   RESTART/20210323.060000.phy_data.tile5.nc \
+                   RESTART/20210323.060000.phy_data.tile6.nc \
+                   RESTART/20210323.060000.sfc_data.tile1.nc \
+                   RESTART/20210323.060000.sfc_data.tile2.nc \
+                   RESTART/20210323.060000.sfc_data.tile3.nc \
+                   RESTART/20210323.060000.sfc_data.tile4.nc \
+                   RESTART/20210323.060000.sfc_data.tile5.nc \
+                   RESTART/20210323.060000.sfc_data.tile6.nc \
+                   RESTART/20210323.060000.MOM.res.nc \
+                   RESTART/iced.2021-03-23-21600.nc \
+                   RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc \
+                   ufs.cpld.ww3.r.2021-03-23-21600.nc \
+                   20210323.060000.out_grd.ww3 \
+                   20210323.060000.out_pnt.ww3.nc"
+
+export_fv3_v16
+export_cpl
+export CCPP_SUITE=FV3_coupled_lowres
+
+export ULTRALOW=.true.
+export ATMRES=C12
+export BLOCKSIZE=12
+
+export RESTART_N=12
+export RESTART_INTERVAL="${RESTART_N} -1"
+
+export INPES=1
+export JNPES=1
+export NPZ=41
+export NPZP=42
+export TAU=10.
+export N_SPONGE=5
+export D2_BG_K2=0.0
+export N_SPLIT=6
+export DNATS=1
+export MAKE_NH=.false.
+export HYDROSTATIC=.true.
+export GWD_OPT=0
+export DO_UGWP_V1=.false.
+export atm_omp_num_threads=1
+export WRTTASK_PER_GROUP=1
+export LSM=1
+export ISATMEDMF=1
+export IMP_PHYSICS=11
+export OUTPUT_GRID='gaussian_grid'
+
+export OCN_tasks=2
+export ICE_tasks=2
+export WAV_tasks=2
+export CHM_tasks=0
+
+# atm/ocn/ice resolution
+export NPX=13
+export NPY=13
+export IMO=192
+export JMO=94
+
+export OCNRES=900
+export ICERES=9.00
+export NX_GLB=40
+export NY_GLB=20
+export CICE_NPROC=$ICE_tasks
+export CICE_DECOMP=slenderX1
+export CICE_BLCKX=`expr $NX_GLB / $CICE_NPROC`
+export CICE_BLCKY=$NY_GLB
+export WW3_DOMAIN=uglo_900km
+export MESH_WAV=mesh.${WW3_DOMAIN}.nc
+export WW3_MODDEF=mod_def.${WW3_DOMAIN}
+
+# set component and coupling timesteps
+export DT_ATMOS=1800
+export DT_CICE=${DT_ATMOS}
+export DT_DYNAM_MOM6=3600
+export DT_THERM_MOM6=3600
+
+# ufs.configure
+export coupling_interval_slow_sec=${DT_THERM_MOM6}
+export coupling_interval_fast_sec=${DT_ATMOS}
+
+# resolution dependent files
+export MOM6_INPUT=MOM_input_${OCNRES}.IN
+export MESH_ICE=mesh.mx${OCNRES}.nc
+export MESH_OCN=mesh.mx${OCNRES}.nc
+export CICE_GRID=grid_cice_NEMS_mx${OCNRES}.nc
+export CICE_MASK=kmtu_cice_NEMS_mx${OCNRES}.nc
+export MOM6_CHLCLIM=''
+export MOM6_FRUNOFF=''
+export MOM6_RIVER_RUNOFF=False
+export MOM6_DIAG_COORD_DEF_Z_FILE=oceanda_zgrid_25L.nc
+export MOM6_RESTART_SETTING=r
+
+export CICE_RESTART_IOTASKS=1
+export CICE_RESTART_STRIDE=1
+export CICE_HISTORY_IOTASKS=1
+export CICE_HISTORY_STRIDE=1
+
+export WW3_RSTFLDS="ice"
+# For either history_nc or restart_nc true
+export WW3_PIO_FORMAT='pnetcdf'
+export WW3_PIO_STRIDE=1
+export WW3_PIO_IOTASKS=2
+export WW3_PIO_REARR='box'
+export WW3_PIO_ROOT=-99
+
+export FNALBC="'C12.snowfree_albedo.tileX.nc'"
+export FNALBC2="'C12.facsf.tileX.nc'"
+export FNTG3C="'C12.substrate_temperature.tileX.nc'"
+export FNVEGC="'C12.vegetation_greenness.tileX.nc'"
+export FNVETC="'C12.vegetation_type.tileX.nc'"
+export FNSOTC="'C12.soil_type.tileX.nc'"
+export FNSOCC="'C12.soil_color.tileX.nc'"
+export FNVMNC="'C12.vegetation_greenness.tileX.nc'"
+export FNVMXC="'C12.vegetation_greenness.tileX.nc'"
+export FNSLPC="'C12.slope_type.tileX.nc'"
+export FNABSC="'C12.maximum_snow_albedo.tileX.nc'"
+export FNSMCC="'global_soilmgldas.statsgo.t92.192.94.grb'"
+export FNMSKH="'global_slmask.t62.192.94.grb'"
+
+# resolution dependent setting
+export CDMBWD=0.0,0.0,0.0,0.0
+export DT_INNER=${DT_ATMOS}
+
+export CPLCHM=.false.
+
+export eps_imesh=1.0e0
+
+export DIAG_TABLE=diag_table_template
+export FIELD_TABLE=field_table_gfsv16
+export UFS_CONFIGURE=ufs.configure.s2sw.IN
+
+export FV3_RUN=cpld_control_run.IN
+export INPUT_NML=cpld_lowres.nml.IN
