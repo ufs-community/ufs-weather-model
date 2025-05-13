@@ -1,3 +1,5 @@
+.. _hsd-tech-doc:
+
 Technical Documentation for ``tests-dev``
 ==========================================
 
