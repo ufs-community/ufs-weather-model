@@ -26,6 +26,7 @@ export JNPES_cpl_c48=1
 export WPG_cpl_c48=6
 export OCN_tasks_cpl_c48=4
 export ICE_tasks_cpl_c48=4
+export WAV_tasks_cpl_c48=4
 
 export THRD_cpl_dflt=1
 export INPES_cpl_dflt=3
@@ -401,6 +402,10 @@ elif [[ ${MACHINE_ID} = noaacloud ]] ; then
     export OCN_tasks_cpl_thrd=20
     export ICE_tasks_cpl_thrd=10
     export WAV_tasks_cpl_thrd=12
+
+elif [[ ${MACHINE_ID} = frontera ]]; then
+
+  TPN=56
 
 else
 
@@ -1006,7 +1011,6 @@ export WW3_ICE='F'
 export WW3_IC1='F'
 export WW3_IC5='F'
 # ATMW
-export WW3_MULTIGRID=true
 export WW3_MODDEF=mod_def.glo_1deg
 export MESH_WAV=mesh.glo_1deg.nc
 export WW3_RSTFLDS=" "
@@ -1183,9 +1187,9 @@ export_ugwpv1() {
   esac
 
   if [[ ${DO_GSL_DRAG_SS} = .true. ]]; then export CDMBGWD=${CDMBGWD_GSL}; fi
-  if [[ ${SEDI_SEMI} = .false. ]]; then 
+  if [[ ${SEDI_SEMI} = .false. ]]; then
     export DT_INNER=$((DT_ATMOS/2))
-  else 
+  else
     export DT_INNER=${DT_ATMOS}
   fi
   export default_dt_atmos=0
@@ -1369,7 +1373,11 @@ export_cmeps() {
   export MESH_ICE=mesh.mx${OCNRES}.nc
   export MESH_WAV=mesh.${WW3_DOMAIN}.nc
   export CPLMODE=ufs.frac
-  export pio_rearranger=box
+  export CMEPS_PIO_FORMAT='pnetcdf'
+  export CMEPS_PIO_STRIDE=4
+  export CMEPS_PIO_IOTASKS=-99
+  export CMEPS_PIO_REARR='box'
+  export CMEPS_PIO_ROOT=-99
   export RUNTYPE=startup
   export RESTART_N=${FHMAX}
   export RESTART_FH=" "
@@ -1388,8 +1396,8 @@ export_cmeps() {
   # mediator ocean albedo
   export ocean_albedo_limit=0.06
   export use_mean_albedos=.false.
-  # WW3 (used in run_test only)
-  export WW3_MULTIGRID=false
+  # vector remapping
+  export MAPUV3D=true
 }
 
 export_cpl ()
@@ -1404,6 +1412,7 @@ export DOCN_CDEPS=false
 export DICE_CDEPS=false
 export CICE_PRESCRIBED=false
 export CDEPS_INLINE=false
+export ULTRALOW=.false.
 export DAYS=1
 
 #model configure
@@ -1476,7 +1485,7 @@ export DIAG_TABLE=diag_table_cpld.IN
 export DIAG_TABLE_ADDITIONAL=''
 export FIELD_TABLE_ADDITIONAL=''
 export FV3_RUN=cpld_control_run.IN
-export TILEDFIX=.false.
+export TILEDFIX=.true.
 
 export FHZERO=6
 
@@ -1630,6 +1639,8 @@ export_datm_cdeps ()
 
   # Set CMEPS component defaults
   export_cmeps
+  # vector remapping
+  export MAPUV3D=false
   # default configure
   export UFS_CONFIGURE=ufs.configure.datm_cdeps.IN
   export atm_model=datm
@@ -1685,7 +1696,11 @@ export_hafs_docn_cdeps ()
 
   export ocn_model=docn
   export ocn_datamode=sstdata
-  export pio_rearranger=box
+  export CMEPS_PIO_FORMAT='pnetcdf'
+  export CMEPS_PIO_STRIDE=4
+  export CMEPS_PIO_IOTASKS=-99
+  export CMEPS_PIO_REARR='box'
+  export CMEPS_PIO_ROOT=-99
   export DOCN_IN_CONFIGURE=docn_in.IN
   export DOCN_STREAM_CONFIGURE=hafs_docn.streams.IN
 }
