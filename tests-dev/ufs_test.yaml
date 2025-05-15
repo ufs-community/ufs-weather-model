@@ -82,14 +82,6 @@ s2s_aoflux_intel:
     option: '-DAPP=S2S -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_sfcocn -DCMEPS_AOFLUX=ON'
   tests: 
     - cpld_control_noaero_p8_agrid: {'project':['daily'],'baseline': 'True'}
-s2s_intel:
-  build: 
-    compiler: 'intel'
-    option: '-DAPP=S2S -DCCPP_SUITES=FV3_GFS_v17_coupled_p8,FV3_GFS_v17_coupled_p8_ugwpv1'
-  tests: 
-    - cpld_control_c48: {'project':['daily'],'baseline': 'True'}
-    - cpld_warmstart_c48: {'project':['daily'],'baseline': 'True','turnoff':['noaacloud']}
-    - cpld_restart_c48: {'project':['daily'],'dependency':'cpld_warmstart_c48','turnoff':['noaacloud']}
 s2swa_faster_intel:
   build: 
     compiler: 'intel'
@@ -100,12 +92,24 @@ s2swa_faster_intel:
 s2sw_pdlib_intel:
   build: 
     compiler: 'intel'
-    option: '-DAPP=S2SW -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_ugwpv1 -DPDLIB=ON'
+    option: '-DAPP=S2SW -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_ugwpv1,FV3_coupled_lowres -DPDLIB=ON'
     turnoff: ['noaacloud']
   tests: 
     - cpld_control_pdlib_p8: {'project':['daily'],'baseline': 'True','turnoff':['noaacloud']}
     - cpld_restart_pdlib_p8: {'project':['daily'],'dependency':'cpld_control_pdlib_p8','turnoff':['noaacloud']}
-    - cpld_mpi_pdlib_p8: {'project':['daily'],'dependency':'cpld_control_pdlib_p8','turnoff':['noaacloud']}
+    - cpld_mpi_pdlib_p8: {'project':['daily'],'turnoff':['noaacloud']}
+    - cpld_control_c48_5deg: {'project':['daily'],'baseline': 'True','turnoff':['noaacloud']}
+    - cpld_warmstart_c48_5deg: {'project':['daily'],'baseline': 'True','turnoff':['noaacloud']}
+    - cpld_restart_c48_5deg: {'project':['daily'],'dependency':'cpld_warmstart_c48_5deg','turnoff':['noaacloud']}
+    - cpld_control_c24_5deg: {'project':['daily'],'baseline': 'True','turnoff':['noaacloud']}
+    - cpld_warmstart_c24_5deg: {'project':['daily'],'baseline': 'True','turnoff':['noaacloud']}
+    - cpld_restart_c24_5deg: {'project':['daily'],'dependency':'cpld_warmstart_c24_5deg','turnoff':['noaacloud']}
+    - cpld_control_c24_9deg: {'project':['daily'],'baseline': 'True','turnoff':['noaacloud']}
+    - cpld_warmstart_c24_9deg: {'project':['daily'],'baseline': 'True','turnoff':['noaacloud']}
+    - cpld_restart_c24_9deg: {'project':['daily'],'dependency':'cpld_warmstart_c24_9deg','turnoff':['noaacloud']}
+    - cpld_control_c12_9deg: {'project':['daily'],'baseline': 'True','turnoff':['noaacloud']}
+    - cpld_warmstart_c12_9deg: {'project':['daily'],'baseline': 'True','turnoff':['noaacloud']}
+    - cpld_restart_c12_9deg: {'project':['daily'],'dependency':'cpld_warmstart_c12_9deg','turnoff':['noaacloud']}
 s2sw_pdlib_debug_intel:
   build: 
     compiler: 'intel'
@@ -296,9 +300,8 @@ rrfs_dyn64_phy32_debug_intel:
 hafsw_intel:
   build: 
     compiler: 'intel'
-    option: '-DAPP=HAFSW -DMOVING_NEST=ON -DCCPP_SUITES=FV3_HAFS_v1_thompson_nonsst,FV3_HAFS_v1_gfdlmp_tedmf,FV3_HAFS_v1_gfdlmp_tedmf_nonsst,FV3_HAFS_v1_thompson_tedmf_gfdlsf,FV3_global_nest_v1 -D32BIT=ON'
+    option: '-DAPP=HAFSW -DMOVING_NEST=ON -DCCPP_SUITES=FV3_HAFS_v1_gfdlmp_tedmf,FV3_HAFS_v1_gfdlmp_tedmf_nonsst,FV3_HAFS_v1_thompson_tedmf_gfdlsf,FV3_global_nest_v1 -D32BIT=ON'
   tests: 
-    - tropical_cyclone: {'project':['test_case'],'baseline': 'True'}
     - hafs_regional_atm: {'project':['daily'],'baseline': 'True'}
     - hafs_regional_atm_thompson_gfdlsf: {'project':['daily'],'baseline': 'True'}
     - hafs_regional_atm_ocn: {'project':['daily'],'baseline': 'True'}
@@ -313,6 +316,7 @@ hafsw_intel:
     - hafs_regional_storm_following_1nest_atm_ocn: {'project':['daily'],'baseline': 'True','turnoff':['jet','s4','noaacloud']}
     - hafs_global_storm_following_1nest_atm: {'project':['daily'],'baseline': 'True','turnoff':['jet','s4','noaacloud']}
     - gnv1_nested: {'project':['daily'],'baseline': 'True','turnoff':['hercules','wcoss2','s4','noaacloud']}
+    - tropical_cyclone: {'project':['test_case'],'baseline': 'True'}
 hafsw_debug_intel:
   build: 
     compiler: 'intel'
@@ -517,16 +521,16 @@ datm_cdeps_intelllvm:
   build: 
     compiler: 'intelllvm'
     option: '-DAPP=NG-GODAS'
-    turnon: ['hercules']
+    turnon: ['gaeac5']
   tests: 
-    - datm_cdeps_control_cfsr: {'project':['daily'],'baseline': 'True','turnon':['hercules']}
+    - datm_cdeps_control_cfsr: {'project':['daily'],'baseline': 'True','turnon':['gaeac5']}
 datm_cdeps_debug_intelllvm:
   build: 
     compiler: 'intelllvm'
     option: '-DAPP=NG-GODAS -DDEBUG=ON'
-    turnon: ['hercules']
+    turnon: ['gaeac5']
   tests: 
-    - datm_cdeps_debug_cfsr: {'project':['daily'],'baseline': 'True','turnon':['hercules']}
+    - datm_cdeps_debug_cfsr: {'project':['daily'],'baseline': 'True','turnon':['gaeac5']}
 atm_gnu:
   build: 
     compiler: 'gnu'
@@ -596,7 +600,7 @@ wam_debug_gnu:
     option: '-DAPP=ATM -DCCPP_SUITES=FV3_GFS_v17_p8 -D32BIT=ON -DMULTI_GASES=ON -DDEBUG=ON'
     turnon: ['hera','hercules']
   tests: 
-    - control_wam_debug: {'project':['daily'],'baseline': 'True','turnon':['hercules']}
+    - control_wam_debug: {'project':['daily'],'baseline': 'True','turnon':['hera','hercules']}
 rrfs_dyn32_phy32_gnu:
   build: 
     compiler: 'gnu'
@@ -642,8 +646,10 @@ atm_dyn64_phy32_debug_gnu:
 s2swa_gnu:
   build: 
     compiler: 'gnu'
-    option: '-DAPP=S2SWA -DCCPP_SUITES=FV3_GFS_v17_coupled_p8'
+    option: '-DAPP=S2SWA -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_ugwpv1'
     turnon: ['hera','hercules']
+  tests: 
+    - cpld_control_p8: {'project':['daily'],'baseline': 'True','turnon':['hera','hercules']}
 s2s_gnu:
   build: 
     compiler: 'gnu'
@@ -654,8 +660,10 @@ s2s_gnu:
 s2swa_debug_gnu:
   build: 
     compiler: 'gnu'
-    option: '-DAPP=S2SWA -DDEBUG=ON -DCCPP_SUITES=FV3_GFS_v17_coupled_p8'
+    option: '-DAPP=S2SWA -DDEBUG=ON -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_ugwpv1'
     turnon: ['hera','hercules']
+  tests: 
+    - cpld_debug_p8: {'project':['daily'],'baseline': 'True','turnon':['hera','hercules']}
 s2sw_pdlib_gnu:
   build: 
     compiler: 'gnu'
@@ -669,7 +677,7 @@ s2sw_pdlib_debug_gnu:
     option: '-DAPP=S2SW -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_ugwpv1 -DPDLIB=ON -DDEBUG=ON'
     turnon: ['hera','hercules']
   tests: 
-    - cpld_debug_pdlib_p8: {'project':['daily'],'baseline': 'True','turnon':['hercules']}
+    - cpld_debug_pdlib_p8: {'project':['daily'],'baseline': 'True','turnon':['hera','hercules']}
 datm_cdeps_gnu:
   build: 
     compiler: 'gnu'
