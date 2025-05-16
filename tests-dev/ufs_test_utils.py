@@ -171,7 +171,7 @@ def create_yaml():
                 if depend:
                     baseline_creation = False
                 if baseline and depend:
-                    baseline_creation = False
+                    baseline_creation = True
                 if not baseline and not depend:
                     baseline_creation = False                    
                 if (machine.find('-') != -1):

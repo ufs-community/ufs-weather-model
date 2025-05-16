@@ -2,8 +2,10 @@ help([[
 loads UFS Model prerequisites for Hera/GNU
 ]])
 
-prepend_path("MODULEPATH", "/contrib/spack-stack/spack-stack-1.9.1/envs/ue-gcc-13.2.0/install/modulefiles/Core")
+prepend_path("MODULEPATH", "/contrib/spack-stack/spack-stack-1.9.1/envs/ue-gcc-13.3.0/install/modulefiles/Core")
 prepend_path("MODULEPATH", "/contrib/spack-stack/installs/scotch-gnu/modulefiles")
+prepend_path("MODULEPATH", "/contrib/spack-stack/installs/gnu/modulefiles")
+prepend_path("MODULEPATH", "/contrib/spack-stack/installs/openmpi/modulefiles")
 
 stack_gnu_ver=os.getenv("stack_gnu_ver") or "13.2.0"
 load(pathJoin("stack-gcc", stack_gnu_ver))
@@ -21,6 +23,7 @@ load(pathJoin("nccmp", nccmp_ver))
 
 prepend_path("CPPFLAGS", " -I/apps/slurm_hera/23.11.3/include/slurm"," ")
 prepend_path("LD_LIBRARY_PATH", "/apps/slurm_hera/23.11.3/lib")
+setenv("OMPI_MCA_btl_openib_allow_ib","true")
 
 setenv("CC", "mpicc")
 setenv("CXX", "mpic++")
