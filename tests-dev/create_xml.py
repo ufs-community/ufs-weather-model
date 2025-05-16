@@ -454,6 +454,10 @@ def xml_loop():
                                         rc_set_run_task = subprocess.Popen(['bash', '-c', '. ufs_test_utils.sh; set_run_task'])
                                         rc_set_run_task.wait()
                                         case_count+=1
+                                    if ('dependency' in config.keys() and 'baseline' in config.keys()):
+                                        rc_set_run_task = subprocess.Popen(['bash', '-c', '. ufs_test_utils.sh; set_run_task'])
+                                        rc_set_run_task.wait()
+                                        case_count+=1                                    
                                 else:
                                     rc_set_run_task = subprocess.Popen(['bash', '-c', '. ufs_test_utils.sh; set_run_task'])
                                     rc_set_run_task.wait()
