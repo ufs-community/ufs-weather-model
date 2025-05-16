@@ -8,246 +8,255 @@ mkdir -p $CICE_HISTORY_DIR
 mkdir -p $MOM6_OUTPUT_DIR
 
 if [[ $ATMRES == C96 ]]; then
-  FV3_DIR=FV3_input_data
+    FV3_DIR=FV3_input_data
 else
-  FV3_DIR=FV3_input_data${ATMRES#C}
+    FV3_DIR=FV3_input_data${ATMRES#C}
+fi
+
+if [[ $ATMRES == C24 ]] || [[ $ATMRES == C12 ]]; then
+    LEVELS=L41
+else
+    LEVELS=L127
 fi
 
 ICERES=${OCNRES:0:1}.${OCNRES:1}
 
 V2_SFC_FILE=${V2_SFC_FILE:-false}
 
+# IC input directories
 if [[ ${BMIC} == .true. ]]; then
-  FV3_IC=@[INPUTDATA_ROOT]/GEFS/${SYEAR}${SMONTH}${SDAY}${SHOUR}/
-  MOM_IC=${FV3_IC}; ICE_IC=${FV3_IC}; WAV_IC=${FV3_IC};
+    FV3_IC=@[INPUTDATA_ROOT]/GEFS/${SYEAR}${SMONTH}${SDAY}${SHOUR}/
+    MOM_IC=${FV3_IC}; ICE_IC=${FV3_IC}; WAV_IC=${FV3_IC};
+elif [[ $ULTRALOW == .true. ]]; then
+    FV3_IC=@[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_${LEVELS}_mx${OCNRES}/${SYEAR}${SMONTH}${SDAY}${SHOUR}
+    MOM_IC=@[INPUTDATA_ROOT]/MOM6_IC/${ATMRES}mx${OCNRES}/${SYEAR}${SMONTH}${SDAY}${SHOUR}
+    ICE_IC=@[INPUTDATA_ROOT]/CICE_IC/${ATMRES}mx${OCNRES}/${SYEAR}${SMONTH}${SDAY}${SHOUR}
 else
-  if [[ $ATMRES == C48 ]]; then
-     FV3_IC=@[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127_mx${OCNRES}/${SYEAR}${SMONTH}${SDAY}${SHOUR}
-     MOM_IC=@[INPUTDATA_ROOT]/MOM6_IC/${OCNRES}/${SYEAR}${SMONTH}${SDAY}${SHOUR}
-     ICE_IC=@[INPUTDATA_ROOT]/CICE_IC/${OCNRES}/${SYEAR}${SMONTH}${SDAY}${SHOUR}
-  else
-     if [ "$V2_SFC_FILE" = "true" ]; then
-       FV3_IC=@[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127_mx${OCNRES}_v2_sfc
-     else
-       FV3_IC=@[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127_mx${OCNRES}
-     fi
-     MOM_IC=@[INPUTDATA_ROOT]/MOM6_IC
-     ICE_IC=@[INPUTDATA_ROOT]/CICE_IC
-  fi
+    if [ "$V2_SFC_FILE" = "true" ]; then
+        FV3_IC=@[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127_mx${OCNRES}_v2_sfc
+    else
+        FV3_IC=@[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127_mx${OCNRES}
+    fi
+    MOM_IC=@[INPUTDATA_ROOT]/MOM6_IC
+    ICE_IC=@[INPUTDATA_ROOT]/CICE_IC
 fi
 
 # FV3 fixed input
-cp    @[INPUTDATA_ROOT]/${FV3_DIR}/@[FNSMCC] .
-cp    @[INPUTDATA_ROOT]/${FV3_DIR}/@[FNMSKH] .
+cp @[INPUTDATA_ROOT]/${FV3_DIR}/@[FNSMCC] .
+cp @[INPUTDATA_ROOT]/${FV3_DIR}/@[FNMSKH] .
+cp @[INPUTDATA_ROOT]/FV3_fix/@[FNGLAC] .
+cp @[INPUTDATA_ROOT]/FV3_fix/@[FNMXIC] .
+cp @[INPUTDATA_ROOT]/FV3_fix/@[FNTSFC] .
+cp @[INPUTDATA_ROOT]/FV3_fix/@[FNSNOC] .
+cp @[INPUTDATA_ROOT]/FV3_fix/@[FNAISC] .
 
-cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/oro_@[ATMRES].mx@[OCNRES].tile1.nc INPUT/oro_data.tile1.nc
-cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/oro_@[ATMRES].mx@[OCNRES].tile2.nc INPUT/oro_data.tile2.nc
-cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/oro_@[ATMRES].mx@[OCNRES].tile3.nc INPUT/oro_data.tile3.nc
-cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/oro_@[ATMRES].mx@[OCNRES].tile4.nc INPUT/oro_data.tile4.nc
-cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/oro_@[ATMRES].mx@[OCNRES].tile5.nc INPUT/oro_data.tile5.nc
-cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/oro_@[ATMRES].mx@[OCNRES].tile6.nc INPUT/oro_data.tile6.nc
-cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/@[ATMRES]*.nc .
+cp @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]mx@[OCNRES]/oro_@[ATMRES].mx@[OCNRES].tile1.nc INPUT/oro_data.tile1.nc
+cp @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]mx@[OCNRES]/oro_@[ATMRES].mx@[OCNRES].tile2.nc INPUT/oro_data.tile2.nc
+cp @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]mx@[OCNRES]/oro_@[ATMRES].mx@[OCNRES].tile3.nc INPUT/oro_data.tile3.nc
+cp @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]mx@[OCNRES]/oro_@[ATMRES].mx@[OCNRES].tile4.nc INPUT/oro_data.tile4.nc
+cp @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]mx@[OCNRES]/oro_@[ATMRES].mx@[OCNRES].tile5.nc INPUT/oro_data.tile5.nc
+cp @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]mx@[OCNRES]/oro_@[ATMRES].mx@[OCNRES].tile6.nc INPUT/oro_data.tile6.nc
+cp @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]mx@[OCNRES]/@[ATMRES]*.nc .
 
-cp    @[INPUTDATA_ROOT]/CPL_FIX/a@[ATMRES]o@[OCNRES]/grid_spec.nc ./INPUT
-cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/@[ATMRES]_grid*.nc ./INPUT
-cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/grid_spec.nc ./INPUT/@[ATMRES]_mosaic.nc
+cp @[INPUTDATA_ROOT]/CPL_FIX/a@[ATMRES]o@[OCNRES]/grid_spec.nc ./INPUT
+cp @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/@[ATMRES]_grid*.nc ./INPUT
+cp @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/grid_spec.nc ./INPUT/@[ATMRES]_mosaic.nc
 
 # MOM6 fixed input
-cp    @[INPUTDATA_ROOT]/MOM6_FIX/@[OCNRES]/* ./INPUT
+cp @[INPUTDATA_ROOT]/MOM6_FIX/@[OCNRES]/* ./INPUT
 
 # CICE fixed input
-cp    @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/grid_cice_NEMS_mx@[OCNRES].nc .
-cp    @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/kmtu_cice_NEMS_mx@[OCNRES].nc .
-cp    @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/mesh.mx@[OCNRES].nc .
+cp @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/grid_cice_NEMS_mx@[OCNRES].nc .
+cp @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/kmtu_cice_NEMS_mx@[OCNRES].nc .
+cp @[INPUTDATA_ROOT]/CICE_FIX/@[OCNRES]/mesh.mx@[OCNRES].nc .
 
 # WW3 fix/input
 if [[ $CPLWAV == .true. ]]; then
-  cp @[INPUTDATA_ROOT_WW3]/@[WW3_MODDEF] mod_def.ww3
-  if [[ ${WW3_DOMAIN:0:2} != mx ]]; then
-    cp  @[INPUTDATA_ROOT_WW3]/@[MESH_WAV] .
-  fi
+    cp @[INPUTDATA_ROOT_WW3]/@[WW3_MODDEF] mod_def.ww3
+    if [[ ${WW3_DOMAIN:0:2} != mx ]]; then
+        cp @[INPUTDATA_ROOT_WW3]/@[MESH_WAV] .
+    fi
 fi
 
 #rrtmgp
 if [ $DO_RRTMGP = .true. ]; then
-  cp    @[INPUTDATA_ROOT]/FV3_input_data_RRTMGP/* .
+    cp @[INPUTDATA_ROOT]/FV3_input_data_RRTMGP/* .
 fi
 
 OPNREQ_TEST=${OPNREQ_TEST:-false}
 SUFFIX=${RT_SUFFIX}
 # No restart
-if [ $WARM_START = .false. ]; then
-  # ICs
-  cp    ${FV3_IC}/sfc_data*.nc ./INPUT
-  cp    ${FV3_IC}/gfs_data*.nc ./INPUT
-  cp    ${FV3_IC}/gfs_ctrl.nc ./INPUT
-  if [[ $ATMRES == C48 ]]; then
-    cp    ${MOM_IC}/MOM.res.nc ./INPUT
-    cp    ${ICE_IC}/cice_model_@[ICERES].cpc.res_* ./cice_model.res.nc
-  else
-    if [[ $OCNICE_WARMSTART == .true. ]]; then
-      cp   ${MOM_IC}/mom6.mx@[OCNRES].${SYEAR}${SMONTH}${SDAY}${SHOUR}.warmstart.nc ./INPUT/mom6.warmstart.nc
-      cp   ${ICE_IC}/cice.mx@[OCNRES].${SYEAR}${SMONTH}${SDAY}${SHOUR}.warmstart.nc ./cice.warmstart.nc
+if [[ $WARM_START == .false. ]]; then
+    # ICs
+    cp ${FV3_IC}/sfc_data*.nc ./INPUT
+    cp ${FV3_IC}/gfs_data*.nc ./INPUT
+    cp ${FV3_IC}/gfs_ctrl.nc ./INPUT
+    if [[ $ULTRALOW == .true. ]]; then
+        cp ${MOM_IC}/MOM.res.nc ./INPUT
+        cp ${ICE_IC}/* ./cice_model.res.nc
+    elif [[ $OCNICE_WARMSTART == .true. ]]; then
+        cp ${MOM_IC}/mom6.mx@[OCNRES].${SYEAR}${SMONTH}${SDAY}${SHOUR}.warmstart.nc ./INPUT/mom6.warmstart.nc
+        cp ${ICE_IC}/cice.mx@[OCNRES].${SYEAR}${SMONTH}${SDAY}${SHOUR}.warmstart.nc ./cice.warmstart.nc
     else
-      cp    ${MOM_IC}/MOM6_IC_TS_${SYEAR}${SMONTH}${SDAY}${SHOUR}.nc ./INPUT/MOM6_IC_TS.nc
-      cp    ${ICE_IC}/${OCNRES}/cice_model_@[ICERES].cpc.res_${SYEAR}${SMONTH}${SDAY}.nc ./cice_model.res.nc
+        cp ${MOM_IC}/MOM6_IC_TS_${SYEAR}${SMONTH}${SDAY}${SHOUR}.nc ./INPUT/MOM6_IC_TS.nc
+        cp ${ICE_IC}/${OCNRES}/cice_model_@[ICERES].cpc.res_${SYEAR}${SMONTH}${SDAY}.nc ./cice_model.res.nc
     fi
-  fi
 else
 #Restart from checkpoint restart
-  if [[ "Q${DEP_RUN:-}" != Q ]] ; then
-     if [[ ${OPNREQ_TEST} == true ]]; then
-       SUFFIX=${BL_SUFFIX}
-     fi
-
-     # Restart files
-     cp -r ../${DEP_RUN}${SUFFIX}/INPUT/* ./INPUT
-     cp -r ../${DEP_RUN}${SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.* ./INPUT
-     for RFILE in INPUT/${RESTART_FILE_PREFIX}.*; do
-       [ -e $RFILE ] || exit 1
-       RFILE_OLD=$(basename $RFILE)
-          mv -f $RFILE INPUT/"${RFILE_OLD//${RESTART_FILE_PREFIX}./}"
-     done
-     if [[ $IAU_OFFSET == 6 ]] && [[ $FHROT -le 6 ]]; then
-       cp @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127_mx${OCNRES}/fv_increment*.nc ./INPUT/.
-     fi
-
-     #if not mx025, then mom6 restart is a single file
-     if [[ $OCNRES == 025 ]]; then
-      cp ../${DEP_RUN}${SUFFIX}/${MOM6_RESTART_DIR}/${RESTART_FILE_PREFIX}.MOM.res.nc ./INPUT/MOM.res.nc
-      cp ../${DEP_RUN}${SUFFIX}/${MOM6_RESTART_DIR}/${RESTART_FILE_PREFIX}.MOM.res_1.nc ./INPUT/MOM.res_1.nc
-      cp ../${DEP_RUN}${SUFFIX}/${MOM6_RESTART_DIR}/${RESTART_FILE_PREFIX}.MOM.res_2.nc ./INPUT/MOM.res_2.nc
-      cp ../${DEP_RUN}${SUFFIX}/${MOM6_RESTART_DIR}/${RESTART_FILE_PREFIX}.MOM.res_3.nc ./INPUT/MOM.res_3.nc
-     else
-      cp ../${DEP_RUN}${SUFFIX}/${MOM6_RESTART_DIR}/${RESTART_FILE_PREFIX}.MOM.res.nc ./INPUT/MOM.res.nc
-      if [[ $ODA_INCUPD == 'True' ]] && [[ $FHROT -le 6 ]]; then
-        if [[ ${BMIC} ]]; then
-          cp ${MOM_IC}/mom6_increment.nc ./INPUT
-        else
-          cp @[INPUTDATA_ROOT]/MOM6_IC/mom6_increment.nc ./INPUT/mom6_increment.nc
+    if [[ "Q${DEP_RUN:-}" != Q ]] ; then
+        if [[ ${OPNREQ_TEST} == true ]]; then
+            SUFFIX=${BL_SUFFIX}
         fi
-      fi
-     fi
 
-     # CMEPS restart and pointer files
-     RFILE=ufs.cpld.cpl.r.${RESTART_FILE_SUFFIX_SECS}.nc
-     cp  ../${DEP_RUN}${SUFFIX}/${CMEPS_RESTART_DIR}/${RFILE} .
-     ls -1 ${RFILE}>rpointer.cpl
+        # Restart files
+        cp -r ../${DEP_RUN}${SUFFIX}/INPUT/* ./INPUT
+        cp -r ../${DEP_RUN}${SUFFIX}/RESTART/${RESTART_FILE_PREFIX}.* ./INPUT
+        for RFILE in INPUT/${RESTART_FILE_PREFIX}.*; do
+            [ -e $RFILE ] || exit 1
+            RFILE_OLD=$(basename $RFILE)
+            mv -f $RFILE INPUT/"${RFILE_OLD//${RESTART_FILE_PREFIX}./}"
+        done
+        if [[ $IAU_OFFSET == 6 ]] && [[ $FHROT -le 6 ]]; then
+            cp @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127_mx${OCNRES}/fv_increment*.nc ./INPUT/.
+        fi
 
-     # CMEPS/CCPP restart file
-     if [[ $CPLMODE =~ 'ufs.frac.aoflux' ]]; then
-       RFILE_CCPP=ufs.cpld.cpl.ccpp.${RESTART_FILE_SUFFIX_SECS}.nc
-       cp ../${DEP_RUN}${SUFFIX}/${RFILE_CCPP} .
-     fi
+        #if not mx025, then mom6 restart is a single file
+        if [[ $OCNRES == 025 ]]; then
+            cp ../${DEP_RUN}${SUFFIX}/${MOM6_RESTART_DIR}/${RESTART_FILE_PREFIX}.MOM.res.nc ./INPUT/MOM.res.nc
+            cp ../${DEP_RUN}${SUFFIX}/${MOM6_RESTART_DIR}/${RESTART_FILE_PREFIX}.MOM.res_1.nc ./INPUT/MOM.res_1.nc
+            cp ../${DEP_RUN}${SUFFIX}/${MOM6_RESTART_DIR}/${RESTART_FILE_PREFIX}.MOM.res_2.nc ./INPUT/MOM.res_2.nc
+            cp ../${DEP_RUN}${SUFFIX}/${MOM6_RESTART_DIR}/${RESTART_FILE_PREFIX}.MOM.res_3.nc ./INPUT/MOM.res_3.nc
+        else
+            cp ../${DEP_RUN}${SUFFIX}/${MOM6_RESTART_DIR}/${RESTART_FILE_PREFIX}.MOM.res.nc ./INPUT/MOM.res.nc
+            if [[ $ODA_INCUPD == 'True' ]] && [[ $FHROT -le 6 ]]; then
+                if [[ ${BMIC} ]]; then
+                    cp ${MOM_IC}/mom6_increment.nc ./INPUT
+                else
+                    cp @[INPUTDATA_ROOT]/MOM6_IC/mom6_increment.nc ./INPUT/mom6_increment.nc
+                fi
+            fi
+        fi
 
-     # CICE restart and pointer files
-     RFILE=iced.${RESTART_FILE_SUFFIX_SECS}.nc
-     cp  ../${DEP_RUN}${SUFFIX}/${CICE_RESTART_DIR}/${RFILE} ./INPUT
-     ls -1 ./INPUT/${RFILE}>ice.restart_file
+        # CMEPS restart and pointer files
+        RFILE=ufs.cpld.cpl.r.${RESTART_FILE_SUFFIX_SECS}.nc
+        cp  ../${DEP_RUN}${SUFFIX}/${CMEPS_RESTART_DIR}/${RFILE} .
+        ls -1 ${RFILE}>rpointer.cpl
 
-     # WAVE restart file
-     if [[ $CPLWAV == .true. ]]; then
-       RFILE=ufs.cpld.ww3.r.${RESTART_FILE_SUFFIX_SECS}.nc
-       cp ../${DEP_RUN}${SUFFIX}/${RFILE} .
-     fi
+        # CMEPS/CCPP restart file
+        if [[ $CPLMODE =~ 'ufs.frac.aoflux' ]]; then
+            RFILE_CCPP=ufs.cpld.cpl.ccpp.${RESTART_FILE_SUFFIX_SECS}.nc
+            cp ../${DEP_RUN}${SUFFIX}/${RFILE_CCPP} .
+        fi
 
-     # LAND restart file
-     if [ $CPLLND = .true. ]; then
-       cp ../${DEP_RUN}${SUFFIX}/ufs.cpld.lnd.out.${RESTART_FILE_SUFFIX_SECS}.tile*.nc RESTART/.
-     fi
+        # CICE restart and pointer files
+        RFILE=iced.${RESTART_FILE_SUFFIX_SECS}.nc
+        cp  ../${DEP_RUN}${SUFFIX}/${CICE_RESTART_DIR}/${RFILE} ./INPUT
+        ls -1 ./INPUT/${RFILE}>ice.restart_file
 
-  else
-     if [[ ${BMIC} == .true. ]]; then
-       cp ${FV3_IC}/fv*.nc ./INPUT
-       cp ${FV3_IC}/sfc_data*.nc ./INPUT
-       cp ${FV3_IC}/phy_data*.nc ./INPUT
-       cp ${MOM_IC}/MOM*.nc ./INPUT
-       cp ${MOM_IC}/mom6_increment.nc ./INPUT
-       cp ${MOM_IC}/interpolate_zgrid_26L.nc ./INPUT
-       cp ${ICE_IC}/cice*nc ./INPUT
-       ls -1 ./INPUT/cice*nc>ice.restart_file
-       cp ${FV3_IC}/*stoch*nc ./INPUT
-       cp ${FV3_IC}/ca_data*nc ./INPUT
-       cp ${FV3_IC}/ufs.cpld.cpl*nc .
-       ls -1 ufs.cpld.cpl*nc>rpointer.cpl
-       cp ${WAV_IC}/ufs.cpld.ww3.r.${RESTART_FILE_SUFFIX_SECS}.nc .
-     else
-       # C48mx500 warm start from ICs
-       cp    ${FV3_IC}/*.nc ./INPUT
-       cp    ${MOM_IC}/MOM.res.nc ./INPUT
-       cp    ${ICE_IC}/* .
-       cp    @[INPUTDATA_ROOT]/CMEPS_IC/${ATMRES}mx${OCNRES}/${SYEAR}${SMONTH}${SDAY}${SHOUR}/* .
-     fi
-  fi
+        # WAVE restart file
+        if [[ $CPLWAV == .true. ]]; then
+            RFILE=ufs.cpld.ww3.r.${RESTART_FILE_SUFFIX_SECS}.nc
+            cp ../${DEP_RUN}${SUFFIX}/${RFILE} .
+        fi
+
+        # LAND restart file
+        if [ $CPLLND = .true. ]; then
+            cp ../${DEP_RUN}${SUFFIX}/ufs.cpld.lnd.out.${RESTART_FILE_SUFFIX_SECS}.tile*.nc RESTART/.
+        fi
+    elif [[ $ULTRALOW == .true. ]]; then
+        # Warm starts from ICs; all cases use 9km unstructured WW3
+        cp ${FV3_IC}/*.nc ./INPUT
+        cp ${MOM_IC}/MOM.res.nc ./INPUT
+        cp ${ICE_IC}/iced* ./INPUT
+        cp ${ICE_IC}/ice.restart_file .
+        cp @[INPUTDATA_ROOT]/CMEPS_IC/${ATMRES}mx${OCNRES}/${SYEAR}${SMONTH}${SDAY}${SHOUR}/* .
+        cp @[INPUTDATA_ROOT]/WW3_IC/${ATMRES}mx${OCNRES}/${SYEAR}${SMONTH}${SDAY}${SHOUR}/* .
+    elif [[ ${BMIC} == .true. ]]; then
+        cp ${FV3_IC}/fv*.nc ./INPUT
+        cp ${FV3_IC}/sfc_data*.nc ./INPUT
+        cp ${FV3_IC}/phy_data*.nc ./INPUT
+        cp ${MOM_IC}/MOM*.nc ./INPUT
+        cp ${MOM_IC}/mom6_increment.nc ./INPUT
+        cp ${MOM_IC}/interpolate_zgrid_26L.nc ./INPUT
+        cp ${ICE_IC}/cice*nc ./INPUT
+        ls -1 ./INPUT/cice*nc>ice.restart_file
+        cp ${FV3_IC}/*stoch*nc ./INPUT
+        cp ${FV3_IC}/ca_data*nc ./INPUT
+        cp ${FV3_IC}/ufs.cpld.cpl*nc .
+        ls -1 ufs.cpld.cpl*nc>rpointer.cpl
+        cp ${WAV_IC}/ufs.cpld.ww3.r.${RESTART_FILE_SUFFIX_SECS}.nc .
+    fi
 fi
 
 #inline post
 if [ $WRITE_DOPOST = .true. ]; then
-  if [[ ${BMIC} == .true. ]]; then
-    cp    ${PATHRT}/../FV3/upp/parm/gefs/post_itag_gefs128 itag
-    cp    ${PATHRT}/../FV3/upp/parm/gefs/postxconfig-NT-gefs.txt postxconfig-NT.txt
-    cp    ${PATHRT}/../FV3/upp/parm/gefs/postxconfig-NT-gefs-f00.txt postxconfig-NT_FH00.txt
-    cp    ${PATHRT}/../FV3/upp/parm/params_grib2_tbl_new params_grib2_tbl_new
-    cp    ${PATHRT}/../FV3/upp/fix/chem/optics_luts*nasa.dat .
-  else
-    cp    ${PATHRT}/parm/post_itag_gfs itag
-    cp    ${PATHRT}/parm/postxconfig-NT-gfs.txt postxconfig-NT.txt
-    cp    ${PATHRT}/parm/postxconfig-NT-gfs_FH00.txt postxconfig-NT_FH00.txt
-    cp    ${PATHRT}/parm/params_grib2_tbl_new params_grib2_tbl_new
-  fi
+    if [[ ${BMIC} == .true. ]]; then
+        cp ${PATHRT}/../FV3/upp/parm/gefs/post_itag_gefs128 itag
+        cp ${PATHRT}/../FV3/upp/parm/gefs/postxconfig-NT-gefs.txt postxconfig-NT.txt
+        cp ${PATHRT}/../FV3/upp/parm/gefs/postxconfig-NT-gefs-f00.txt postxconfig-NT_FH00.txt
+        cp ${PATHRT}/../FV3/upp/parm/params_grib2_tbl_new params_grib2_tbl_new
+        cp ${PATHRT}/../FV3/upp/fix/chem/optics_luts*nasa.dat .
+    else
+        cp ${PATHRT}/parm/post_itag_gfs itag
+        cp ${PATHRT}/parm/postxconfig-NT-gfs.txt postxconfig-NT.txt
+        cp ${PATHRT}/parm/postxconfig-NT-gfs_FH00.txt postxconfig-NT_FH00.txt
+        cp ${PATHRT}/parm/params_grib2_tbl_new params_grib2_tbl_new
+    fi
 fi
 
 #prognostic aerosols
 if [ $CPLCHM = .true. ]; then
-  if [[ ${BMIC} == .true. ]]; then
-    ln -sf ${FV3_IC}/../ExtData .
-  else
-    ln -sf  @[INPUTDATA_ROOT]/GOCART/p8c_5d/ExtData .
-  fi
+    if [[ ${BMIC} == .true. ]]; then
+        ln -sf ${FV3_IC}/../ExtData .
+    else
+        ln -sf  @[INPUTDATA_ROOT]/GOCART/p8c_5d/ExtData .
+    fi
 fi
 
 #merra2
 if [ $IAER = 1011 ]; then
-  for n in 01 02 03 04 05 06 07 08 09 10 11 12; do
-    cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/MERRA2_y14_24/merra2_1423_${n}.nc aeroclim.m${n}.nc
-  done
-  cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_BC.v1_3.dat  optics_BC.dat
-  cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_OC.v1_3.dat  optics_OC.dat
-  cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_DU.v15_3.dat optics_DU.dat
-  cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_SS.v3_3.dat  optics_SS.dat
-  cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_SU.v1_3.dat  optics_SU.dat
-fi  
+    for n in 01 02 03 04 05 06 07 08 09 10 11 12; do
+        cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/MERRA2_y14_24/merra2_1423_${n}.nc aeroclim.m${n}.nc
+    done
+    cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_BC.v1_3.dat  optics_BC.dat
+    cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_OC.v1_3.dat  optics_OC.dat
+    cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_DU.v15_3.dat optics_DU.dat
+    cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_SS.v3_3.dat  optics_SS.dat
+    cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_SU.v1_3.dat  optics_SU.dat
+fi
 
 #rad_c_gocart
 if [ $IAER = 2011 ]; then
-  for n in 01 02 03 04 05 06 07 08 09 10 11 12; do
-    cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/MERRA2_y14_24/merra2_1423_${n}.nc aeroclim.m${n}.nc
-  done
-  cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_BC.v1_3.dat  optics_BC.dat
-  cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_OC.v1_3.dat  optics_OC.dat
-  cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_DU.v15_3.dat optics_DU.dat
-  cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_SS.v3_3.dat  optics_SS.dat
-  cp    @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_SU.v1_3.dat  optics_SU.dat
+    for n in 01 02 03 04 05 06 07 08 09 10 11 12; do
+        cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/MERRA2_y14_24/merra2_1423_${n}.nc aeroclim.m${n}.nc
+    done
+    cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_BC.v1_3.dat  optics_BC.dat
+    cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_OC.v1_3.dat  optics_OC.dat
+    cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_DU.v15_3.dat optics_DU.dat
+    cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_SS.v3_3.dat  optics_SS.dat
+    cp @[INPUTDATA_ROOT]/FV3_input_data_INCCN_aeroclim/aer_data/LUTS/optics_SU.v1_3.dat  optics_SU.dat
 
-  if [[ ${BMIC} == .true. ]]; then
-    DIR_OPT=./ExtData/monochromatic
-    cp ${DIR_OPT}/optics_BC.v1_3.nc  optics_BC.nc
-    cp ${DIR_OPT}/optics_OC.v1_3.nc  optics_OC.nc 
-    cp ${DIR_OPT}/optics_DU.v15_3.nc optics_DU.nc
-    cp ${DIR_OPT}/optics_SS.v3_3.nc  optics_SS.nc
-    cp ${DIR_OPT}/optics_SU.v1_3.nc  optics_SU.nc
-    cp ${DIR_OPT}/optics_BRC.v1_5.nc  optics_BRC.nc
-    cp ${DIR_OPT}/optics_NI.v2_5.nc  optics_NI.nc
-  fi
+    if [[ ${BMIC} == .true. ]]; then
+        DIR_OPT=./ExtData/monochromatic
+        cp ${DIR_OPT}/optics_BC.v1_3.nc  optics_BC.nc
+        cp ${DIR_OPT}/optics_OC.v1_3.nc  optics_OC.nc
+        cp ${DIR_OPT}/optics_DU.v15_3.nc optics_DU.nc
+        cp ${DIR_OPT}/optics_SS.v3_3.nc  optics_SS.nc
+        cp ${DIR_OPT}/optics_SU.v1_3.nc  optics_SU.nc
+        cp ${DIR_OPT}/optics_BRC.v1_5.nc  optics_BRC.nc
+        cp ${DIR_OPT}/optics_NI.v2_5.nc  optics_NI.nc
+    fi
 fi
 
-cp    @[INPUTDATA_ROOT]/FV3_input_data/ugwp_c384_tau.nc ./ugwp_limb_tau.nc
-cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127_gfsv17/oro_data_ls* ./INPUT
-cp    @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127_gfsv17/oro_data_ss* ./INPUT
+if [ $GWD_OPT -ne 0 ]; then
+    cp @[INPUTDATA_ROOT]/FV3_input_data/ugwp_c384_tau.nc ./ugwp_limb_tau.nc
+    cp @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127_gfsv17/oro_data_ls* ./INPUT
+    cp @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT_L127_gfsv17/oro_data_ss* ./INPUT
+fi
 
 if [ $IMP_PHYSICS = 8 ]; then
-  cp    @[INPUTDATA_ROOT]/FV3_fix/CCN_ACTIVATE.BIN CCN_ACTIVATE.BIN
-  cp    @[INPUTDATA_ROOT]/FV3_fix/freezeH2O.dat freezeH2O.dat
-  cp    @[INPUTDATA_ROOT]/FV3_fix/qr_acr_qgV2.dat qr_acr_qgV2.dat
-  cp    @[INPUTDATA_ROOT]/FV3_fix/qr_acr_qsV2.dat qr_acr_qsV2.dat
+    cp @[INPUTDATA_ROOT]/FV3_fix/CCN_ACTIVATE.BIN CCN_ACTIVATE.BIN
+    cp @[INPUTDATA_ROOT]/FV3_fix/freezeH2O.dat freezeH2O.dat
+    cp @[INPUTDATA_ROOT]/FV3_fix/qr_acr_qgV2.dat qr_acr_qgV2.dat
+    cp @[INPUTDATA_ROOT]/FV3_fix/qr_acr_qsV2.dat qr_acr_qsV2.dat
 fi
