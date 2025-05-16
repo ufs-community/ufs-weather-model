@@ -1,9 +1,9 @@
 &atmos_model_nml
-  blocksize = 70
+  blocksize = @[BLOCKSIZE]
   chksum_debug = .false.
   dycore_only = .false.
   avg_max_length = 10800.
-  ccpp_suite = 'FV3_HAFS_v1_thompson_nonsst'
+  ccpp_suite = '@[CCPP_SUITE]'
   ignore_rst_cksum = .true.
 /
 
@@ -27,10 +27,10 @@
 
 &fv_core_nml
   ignore_rst_cksum = .true.
-  layout = 15,15
+  layout = @[INPES],@[JNPES]
   io_layout = 1,1
-  npx = 1051
-  npy = 1051
+  npx = @[NPX]
+  npy = @[NPY]
   ntiles = 1
   npz = 81
  !grid_type = -1
@@ -58,8 +58,8 @@
   beta = 0.
   a_imp = 1.
   p_fac = 0.1
-  k_split = 2
-  n_split = 5
+  k_split = @[K_SPLIT]
+  n_split = @[N_SPLIT]
   nwat = 6
   na_init = 1
   d_ext = 0.0
@@ -94,7 +94,7 @@
   fill = .true.
   dwind_2d = .false.
   print_freq = 3
-  warm_start = .false.
+  warm_start = @[WARM_START]
   no_dycore = .false.
   z_tracer = .true.
   agrid_vel_rst = .true.
@@ -103,8 +103,8 @@
   write_3d_diags = .true.
 
   do_schmidt = .true.
-  target_lat = 10.0
-  target_lon = -179.9
+  target_lat = @[TARGET_LAT]
+  target_lon = @[TARGET_LON]
   stretch_fac = 1.0001
   regional = .true.
   bc_update_interval = 126
