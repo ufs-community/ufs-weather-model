@@ -5,6 +5,7 @@ elif [ $NPX = 49 ]; then
   inputdir=FV3_input_data48
 elif [ $NPX = 193 ]; then
   inputdir=FV3_input_data192
+  ores=050
 elif [ $NPX = 385 ]; then
   inputdir=FV3_input_data384
 elif [ $NPX = 769 ]; then
@@ -101,7 +102,7 @@ if [ $TILEDFIX = .true. ]; then
     if [ $CPLLND == .true. ]; then
         cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/@[ATMRES]*.nc INPUT/.
     else
-        cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/@[ATMRES]*.nc .
+        cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]mx${ores}/@[ATMRES]*.nc .
     fi
     cp    @[INPUTDATA_ROOT]/FV3_fix/global_glacier.2x2.grb .
     cp    @[INPUTDATA_ROOT]/FV3_fix/global_maxice.2x2.grb .
