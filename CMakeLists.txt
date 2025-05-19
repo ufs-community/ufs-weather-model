@@ -43,7 +43,7 @@ include(cmake/configure_apps.cmake)
 
 message("")
 message("FMS .............. ${FMS}")
-message("FV3 .............. ${FV3}")
+message("FV3_dy ........... ${FV3}")
 message("AQM .............. ${AQM}")
 message("GOCART ........... ${UFS_GOCART}")
 message("MOM6 ............. ${MOM6}")
@@ -141,7 +141,10 @@ else()
   set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Set type of build to Release." FORCE)
 endif()
 
-include(cmake/${CMAKE_Fortran_COMPILER_ID}.cmake)
+# Detect and set UFS_COMPILER_SUITE in detect_compiler_suite.cmake
+set(UFS_COMPILER_SUITE)
+include(cmake/detect_compiler_suite.cmake)
+include(cmake/${UFS_COMPILER_SUITE}.cmake)
 
 ###############################################################################
 ### Find Dependencies
@@ -190,6 +193,11 @@ endif()
 
 ###############################################################################
 ### Atmosphere Components [FV3, MPAS?]
+### DJS2024: There will be a generalized atmospheric component with multiple
+###          dycores, not multiple atmospheric components (one for each dycore).
+###          So, - rename the atmospheric component FV3 to UFSATM or ATM, then
+###              - if FV3 or MPAS, add_sudirectory(UFSATM or ATM)
+###
 ###############################################################################
 if(FV3)
   add_subdirectory(FV3)
@@ -318,9 +326,9 @@ if(STOCH_PHYS)
 endif()
 
 if(FV3)
-  add_dependencies(ufs fv3atm)
-  list(APPEND _ufs_defs_private FRONT_FV3=fv3atm_cap_mod)
-  list(APPEND _ufs_libs_public fv3atm)
+  add_dependencies(ufs ufsatm_fv3)
+  list(APPEND _ufs_defs_private FRONT_FV3=${DYCORE_TARGET_CAP_MOD})
+  list(APPEND _ufs_libs_public ${DYCORE_TARGET})
 endif()
 
 if(MOM6)

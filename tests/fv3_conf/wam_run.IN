@@ -7,12 +7,12 @@ if [ $WARM_START = .true. ]; then
 else
   mkdir INPUT RESTART
   cp -r @[INPUTDATA_ROOT]/${inputdir}/INPUT_C/* ./INPUT/.
-fi  
+fi
 if [ $TILEDFIX = .true. ]; then
     if [ $CPLLND == .true. ]; then
-        cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/@[ATMRES]*.nc INPUT/.
+        cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]mx100/@[ATMRES].nc INPUT/.
     else
-        cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/@[ATMRES]*.nc .
+        cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]mx100/@[ATMRES]*.nc .
     fi
     cp    @[INPUTDATA_ROOT]/FV3_fix/global_glacier.2x2.grb .
     cp    @[INPUTDATA_ROOT]/FV3_fix/global_maxice.2x2.grb .
@@ -26,14 +26,8 @@ else
 fi
 
 if [ $CPLWAV = .true. ]; then
-  if [ $WW3_MULTIGRID = 'true' ]; then
-    cp    @[INPUTDATA_ROOT_WW3]/mod_def.pointsatmw mod_def.points
-    cp    @[INPUTDATA_ROOT_WW3]/@[WW3_MODDEF] .
-    cp    @[INPUTDATA_ROOT_WW3]/rmp_src* .
-  else
     cp    @[INPUTDATA_ROOT_WW3]/@[WW3_MODDEF] mod_def.ww3
     cp    @[INPUTDATA_ROOT_WW3]/@[MESH_WAV] .
-  fi
 fi
 
 #inline post
