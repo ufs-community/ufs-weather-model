@@ -217,6 +217,16 @@ if [[ ${LINK_TESTS} == true ]]; then
 
 fi
 
+echo ${SRT_NAME} "is this the cup??"
+if [[ ${SRT_NAME} == "tropical_cyclone" ]]; then
+  if [[ ${MACHINE_ID} == "hercules" ]]; then
+    sed -i 's/@\[TASKS\]/220/g' "${PATHRT}"/fv3_conf/fv3_slurm.IN_hercules
+  elif [[ ${MACHINE_ID} == "noaacloud" ]]; then
+    sed -i 's/@\[TASKS\]/220/g' "${PATHRT}"/fv3_conf/fv3_slurm.IN_noaacloud
+  fi
+fi
+
+
 #Check to error out if incompatible options are chosen together
 [[ ${KEEP_RUNDIR} == true && ${delete_rundir} == true ]] && die "-k and -d options cannot be used at the same time"
 [[ ${ECFLOW} == true && ${ROCOTO} == true ]] && die "-r and -e options cannot be used at the same time"
