@@ -217,7 +217,6 @@ if [[ ${LINK_TESTS} == true ]]; then
 
 fi
 
-echo ${SRT_NAME} "is this the cup??"
 if [[ ${SRT_NAME} == "tropical_cyclone" ]]; then
   if [[ ${MACHINE_ID} == "hercules" ]]; then
     sed -i 's/@\[TASKS\]/220/g' "${PATHRT}"/fv3_conf/fv3_slurm.IN_hercules
