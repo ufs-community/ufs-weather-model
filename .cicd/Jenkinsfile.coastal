@@ -56,11 +56,15 @@ def generateStage(nodeLabel) {
                             cd tests
                             disknm_old=`awk '/hercules/{f=1} f && /DISKNM/ {print; exit}' rt.sh`
                             disknm_new='    DISKNM="/work2/noaa/nems/tufuk/RT"'
+                            echo "disknm_old = $disknm_old"
+                            echo "disknm_new = $disknm_new"
                             sed -i "s:${disknm_old}:${disknm_new}:g" rt.sh
                             
                             # set custom DPREFIX for the platform
                             dprefix_old=`awk '/hercules/{f=1} f && /dprefix/ {print; exit}' rt.sh`
                             dprefix_new='    dprefix="/work2/noaa/nosofs/UFS-Coastal-Jenkins-RT"'
+                            echo "dprefix_old = $dprefix_old"
+                            echo "dprefix_new = $dprefix_new"
                             sed -i "s:${dprefix_old}:${dprefix_new}:g" rt.sh
                             
                             # run regression test
