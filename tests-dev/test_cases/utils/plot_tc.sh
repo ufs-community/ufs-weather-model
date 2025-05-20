@@ -9,7 +9,7 @@ step=3
   lon2=200
 ###############################################################
 # initialize module
-. $LMOD_ROOT/lmod/init/bash
+. "${LMOD_ROOT}"/lmod/init/bash
 
 # update path with current directory
 export PATH=.:$PATH
@@ -24,11 +24,11 @@ module load grads wgrib2
 # check existance of model output file:
 if [ ! -f HURPRS.GrbF00 ] ; then echo "No model output (HURPRS.GrbF00)" ; exit ; fi
 nfiles=`ls HURPRS.GrbF* | grep -v idx | grep -v ctl | wc -l`
-echo === Using model file: HURPRS.GrbF\*\*
-echo === Number of files: $nfiles Step: $step hours
+echo "=== Using model file: HURPRS.GrbF\*\*"
+echo "=== Number of files: $nfiles Step: $step hours"
 
 # Create control and index files
-echo === G2CTL:
+echo "=== G2CTL:"
 g2ctl HURPRS.GrbF00 HURPRS.idx > temp.ctl
 
 cat temp.ctl | sed s:"options pascals":"options pascals template":g \
@@ -37,7 +37,7 @@ cat temp.ctl | sed s:"options pascals":"options pascals template":g \
              | sed s:"tdef 2":"tdef $nfiles":g \
              > HURPRS.ctl
 rm -f temp.ctl
-echo === GRIBMAP:
+echo "=== GRIBMAP:"
 gribmap -i HURPRS.ctl > /dev/null 2>&1
 
 ###############################################################
@@ -49,7 +49,7 @@ while [ $ntime -lt $nfiles ]; do
   nhour=$((ntime * step))
   sett=$((ntime + 1))
   printf -v nhour "%03d" $nhour
-  echo === Plotting hour $nhour file: w10-$nhour.png
+  echo "=== Plotting hour $nhour file: w10-$nhour.png"
 
 if [ -f w10-$nhour.png ] ; then rm w10-$nhour.png ; fi
 cat << EOF > plot.gs
@@ -75,5 +75,5 @@ rm -f plot.gs
 
   ntime=$((ntime + 1))
 done
-echo === Done!
+echo "=== Done!"
 ###############################################################
