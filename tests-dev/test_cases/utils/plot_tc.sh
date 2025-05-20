@@ -33,8 +33,8 @@ g2ctl HURPRS.GrbF00 HURPRS.idx > temp.ctl
 
 cat temp.ctl | sed s:"options pascals":"options pascals template":g \
              | sed s:"dset ^HURPRS.GrbF00":"dset ^HURPRS.GrbF%f2":g \
-             | sed s:1mn:${step}hr:g \
-             | sed s:"tdef 2":"tdef $nfiles":g \
+             | sed s:1mn:"${step}"hr:g \
+             | sed s:"tdef 2":"tdef ${nfiles}":g \
              > HURPRS.ctl
 rm -f temp.ctl
 echo "=== GRIBMAP:"
@@ -45,28 +45,28 @@ gribmap -i HURPRS.ctl > /dev/null 2>&1
 ###############################################################
 echo "=== Plot 10m wind "
 ntime=0
-while [ $ntime -lt $nfiles ]; do
+while [[ "${ntime}" -lt "${nfiles}" ]]; do
   nhour=$((ntime * step))
   sett=$((ntime + 1))
-  printf -v nhour "%03d" $nhour
-  echo "=== Plotting hour $nhour file: w10-$nhour.png"
+  printf -v nhour "%03d" "${nhour}"
+  echo "=== Plotting hour ${nhour} file: w10-${nhour}.png"
 
-if [ -f w10-$nhour.png ] ; then rm w10-$nhour.png ; fi
+if [[ -f w10-"${nhour}".png ]] ; then rm w10-"${nhour}".png ; fi
 cat << EOF > plot.gs
 'reinit'
 'open HURPRS.ctl'
 'set gxout shaded'
 'set display color white'
 'c'
-'set t $sett'
+'set t ${sett}'
 'set grads off'
-'set lat $lat1 $lat2'
-'set lon $lon1 $lon2'
+'set lat ${lat1} ${lat2}'
+'set lon ${lon1} ${lon2}'
 'set clevs 1 2 3 4 6 10 20 30 40'
 'd SQRT(UGRD10m*UGRD10m+VGRD10m*VGRD10m)'
 'run cbar.gs'
-'draw title Wind 10m $nhour HR'
-'printim w10-$nhour.png x1200 y1000 '
+'draw title Wind 10m ${nhour} HR'
+'printim w10-${nhour}.png x1200 y1000 '
 'c'
 'quit'
 EOF
