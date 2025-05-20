@@ -947,24 +947,6 @@ case ${MACHINE_ID} in
       ROCOTO_SCHEDULER="pbspro"
     fi
     ;;
-  frontera)
-    echo "rt.sh: Setting up frontera..."
-    set -x
-    export PYTHONPATH=
-    if [[ "${ECFLOW:-false}" == true ]] ; then
-      ECFLOW_START=
-    fi
-    QUEUE=development
-    COMPILE_QUEUE=development
-    PARTITION=
-    dprefix="${SCRATCH}/frontera"
-    DISKNM="/work2/01118/tg803972/frontera/RT"
-    STMP=${dprefix}
-    PTMP=${dprefix}
-    SCHEDULER=slurm
-    export MPIEXEC="ibrun"
-    export MPIEXECOPTS=
-    ;;
   noaacloud)
     echo "rt.sh: Setting up noaacloud..."
     export PATH="/contrib/EPIC/bin:${PATH}"
