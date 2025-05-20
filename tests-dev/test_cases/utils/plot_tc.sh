@@ -23,7 +23,7 @@ module load grads wgrib2
 
 # check existance of model output file:
 if [[ ! -f HURPRS.GrbF00 ]] ; then echo "No model output (HURPRS.GrbF00)" ; exit ; fi
-nfiles=$(ls HURPRS.GrbF* | grep -v idx | grep -v ctl | wc -l)
+nfiles=$(find . -maxdepth 1 -type f -name 'HURPRS.GrbF*' ! -name '*idx*' ! -name '*ctl*' | wc -l)
 echo "=== Using model file: HURPRS.GrbF\*\*"
 echo "=== Number of files: ${nfiles} Step: ${step} hours"
 
