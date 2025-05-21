@@ -69,16 +69,16 @@ def finish_log():
                                             RUNDIR_ROOT=line.split("=")[1]
                                             break
                                     compile_err = RUNDIR_ROOT.strip('\n')+'/compile_'+COMPILE_ID+'/err'
+                                    count_warning =0
+                                    count_remarks =0
                                     with open(compile_err) as ferr:
                                         contents = ferr.read()
                                         count_warning = contents.count(": warning #")
                                         count_remarks = contents.count(": remark #")
                                         ferr.close()
                                     warning_log = ""
-                                    if count_warning > 0:
-                                        warning_log = "("+str(count_warning)+" warnings"
-                                    if count_remarks > 0:
-                                        warning_log+= ","+str(count_remarks)+" remarks)"
+                                    warning_log = "("+str(count_warning)+" warnings"
+                                    warning_log+= ","+str(count_remarks)+" remarks)"
                                     flog = open('./logs/log_'+MACHINE_ID+'/'+COMPILE_LOG_TIME)
                                     timing_data = flog.read()
                                     first_line = timing_data.split('\n', 1)[0]
