@@ -23,20 +23,19 @@ module load grads wgrib2
 
 # check existance of model output file:
 if [[ ! -f HURPRS.GrbF00 ]] ; then echo "No model output (HURPRS.GrbF00)" ; exit ; fi
-nfiles=$(find . -maxdepth 1 -type f -name 'HURPRS.GrbF*' ! -name '*idx*' ! -name '*ctl*' | wc -l)
+nfiles=$(find . -maxdepth 1 -type f -name 'HURPRS.GrbF*' ! -name '*idx*' ! -name '*ctl*' | wc -l) || true
 echo "=== Using model file: HURPRS.GrbF\*\*"
 echo "=== Number of files: ${nfiles} Step: ${step} hours"
 
 # Create control and index files
 echo "=== G2CTL:"
-g2ctl HURPRS.GrbF00 HURPRS.idx > temp.ctl
+g2ctl HURPRS.GrbF00 HURPRS.idx > HURPRS.ctl
 
-cat temp.ctl | sed s:"options pascals":"options pascals template":g \
-             | sed s:"dset ^HURPRS.GrbF00":"dset ^HURPRS.GrbF%f2":g \
-             | sed s:1mn:"${step}"hr:g \
-             | sed s:"tdef 2":"tdef ${nfiles}":g \
-             > HURPRS.ctl
-rm -f temp.ctl
+sed -i "s/options pascals/options pascals template/" HURPRS.ctl
+sed -i "s/dset ^HURPRS.GrbF00/dset ^HURPRS.GrbF%f2/" HURPRS.ctl
+sed -i "s/1mn/${step}hr/" HURPRS.ctl
+sed -i "s/tdef 2/tdef ${nfiles}/" HURPRS.ctl
+
 echo "=== GRIBMAP:"
 gribmap -i HURPRS.ctl > /dev/null 2>&1
 

@@ -16,3 +16,9 @@ To run the scripts, invoke from the command line via `./plot_<bcw/cape/tc>.sh`.
 Users can adjust the experiment name, standard pressure level, and forecast hour in the baroclinic wave script. 
 For the CAPE script, users can choose between global/regional(CONUS) domain, as well as which 
 analysis file resolution to generate plots for.
+
+To generate an animated GIF for the TC case, users can do the following:
+module load imagemagick
+convert -delay 20 -loop 0 *.png w10.gif
+
+
