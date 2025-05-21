@@ -12,9 +12,10 @@ The idealized, regional tropical cyclone case is derived from the I-HAFS configu
 Initial and lateral boundary conditions (ICs/LBCs) are derived from a large-scale, idealized global FV3-based atmospheric forecast. The initial vortex is constructed using the Reed and Jablonowski (2011) method, introducing a weak, balanced storm into an environment favorable for rapid intensification. The preprocessing system generates fixed distributions of geography-related variables and constructs the ICs/LBCs from ``tcvitals`` and GRIB input files.
 
 The configuration mirrors the operational HAFS structure but simplifies terrain and surface properties. It includes:
-- Preprocessing to set up the forecast and nest domains
-- Optional vortex initialization
-- FV3-based forecast integration
+
+- Preprocessing to set up the forecast and nest domains  
+- Optional vortex initialization  
+- FV3-based forecast integration  
 - Postprocessing to generate GRIB2 and ATCF output files
 
 A utility called ``cal_vortex`` is available to recalculate wind, temperature, and humidity fields based on user-defined vortex specifications. In a recent experiment, altering damping settings resulted in a stronger, more compact vortex and a rightward track shift after 48 hours of forecast time.
