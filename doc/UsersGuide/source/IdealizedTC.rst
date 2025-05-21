@@ -4,7 +4,7 @@
 .. _idealized-tc:
 
 **************************************
-Idealized Tropical Cyclone Test Case
+Idealized Tropical Cyclone Case
 **************************************
 
 The idealized, regional tropical cyclone case is derived from the I-HAFS configuration (:cite:t:`Wang2024`) and is designed to support controlled studies of tropical cyclone dynamics and forecast development. This configuration removes real-world data assimilation and ocean coupling, focusing solely on atmospheric forecasts using idealized inputs.
