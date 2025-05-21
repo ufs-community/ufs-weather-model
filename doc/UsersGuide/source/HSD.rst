@@ -17,6 +17,7 @@ Although the UFS Weather Model (WM) can be run in any of several configurations,
    CAPE2020
    baroclinic_wave
    IdealizedTC
+   AddingHSDCase
    HSDcontainer
 
 Currently, users can find information on running the following HSD cases:
