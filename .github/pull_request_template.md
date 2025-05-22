@@ -50,6 +50,7 @@ Please delete what is not needed.
   * ROMS -
   * SCHISM -
   * SCHISM-ESMF -
+  * GEOGATE -
 ```
 
 ### Priority:
@@ -104,6 +105,7 @@ Example:
 * ROMS:
 * SCHISM:
 * SCHISM-ESMF:
+* GEOGATE:
 * None
 
 ### UFSWM Blocking Dependencies:
