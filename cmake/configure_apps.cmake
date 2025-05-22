@@ -72,7 +72,6 @@ if(APP MATCHES "^(S2S|S2SL|S2SA|S2SW|S2SWL|S2SWA|S2SWAL)$")
   if(APP MATCHES "^(S2SL|S2SWL|S2SWAL)")
     set(NOAHMP     ON  CACHE BOOL "Enable NOAHMP"            FORCE)
   endif()
-  set(GEOGATE      ON  CACHE BOOL "Enable GEOGATE"           FORCE)
   message("${APP_MSG} mode")
 endif()
 
