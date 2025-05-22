@@ -24,7 +24,7 @@ Currently, users can find information on running the following HSD cases:
 
    * The :ref:`July 2020 CAPE Case <cape-2020>`
    * The :ref:`Baroclinic Instability Case <baroclinic-wave>`
-   * The :ref:`Idealized Tropical Cyclone Case <idealized-tc>`
+   * The :ref:`Idealized, Regional Tropical Cyclone Case <idealized-tc>`
 
 For a full list of supported WM configurations, view the `rt.conf <https://github.com/ufs-community/ufs-weather-model/blob/develop/tests/rt.conf>`_ file.
 
