@@ -92,11 +92,15 @@ user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Ge
 
 # Ignore anchor tags for links that show Not Found even when they exist.
 linkcheck_anchors_ignore = [r"L\d*",
+                            r"BM_IC-20220207",
+                            r"input-data-20240501*",
+                            #r"input-data-20240501/WW3_input_data_20240214",
                             ]
 # Ignore working links that cause a linkcheck 403 error.
 linkcheck_ignore = [r'https://agupubs\.onlinelibrary\.wiley\.com/doi/10\.1029/2020MS002260',
                     r'https://glossary.ametsoc.org/wiki/*',
                     r'https://www.intel.com/content/www/us/en/developer/tools/oneapi/hpc-toolkit-download.html',
+                    r'https://doi.org/https://doi.org/10.1256/qj.06.12',
                    ]
 
 linkcheck_allowed_redirects = {r"https://doi.org/.*": 
