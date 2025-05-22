@@ -9,7 +9,7 @@ Idealized, Regional Tropical Cyclone Case
 
 The idealized, regional tropical cyclone case is derived from the I-HAFS configuration (:cite:t:`Wang2024`) and is designed to support controlled studies of tropical cyclone dynamics and forecast development. This configuration removes real-world data assimilation and ocean coupling, focusing solely on atmospheric forecasts using idealized inputs.
 
-Initial and lateral boundary conditions (ICs/LBCs) are derived from a large-scale, idealized global FV3-based atmospheric forecast. The initial vortex is constructed using the Reed and Jablonowski (2011) method, introducing a weak, balanced storm into an environment favorable for rapid intensification. The preprocessing system generates fixed distributions of geography-related variables and constructs the ICs/LBCs from ``tcvitals`` and GRIB input files.
+The case is configured to run at 4-km resolution, with 81 vertical levels. The forecast is initialized on 24 August 2019, and initial/lateral boundary conditions are provided for up to a five-day forecast duration. Initial and lateral boundary conditions (ICs/LBCs) are derived from a large-scale, idealized global FV3-based atmospheric forecast. The initial vortex is constructed using the Reed and Jablonowski (2011) method, introducing a weak, balanced storm into an environment favorable for rapid intensification. 
 
 This idealized test case uses components derived from the I-HAFS configuration, but within the UFS HSD framework the workflow is simplified. The following capabilities are available to users running this case:
 
