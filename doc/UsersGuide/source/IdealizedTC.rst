@@ -22,12 +22,11 @@ This idealized test case uses components derived from the I-HAFS configuration, 
 
    While the I-HAFS system includes preprocessing to set up the forecast and nest domains and postprocessing to generate GRIB2 and ATCF output files, this UFS HSD test case **does not** perform those steps. It relies on pre-generated ICs/LBCs, which are provided as part of the test data.
 
+The script below generates 10-m wind plots from the model's GRIB output and can create an animated GIF to visualize the tropical cyclone's evolution.
+
 .. code-block:: console
 
    ufs-weather-model/tests-dev/test_cases/utils/plot_tc.sh 
-  
-This script generates 10-m wind plots from the model's GRIB output and can create an animated GIF to visualize the tropical cyclone's evolution.
-
 
 This test case provides a simplified environment to study TC dynamics and forecast behavior. Future development plans include incorporating idealized ocean and wave modules and expanding vortex customization options.
 
