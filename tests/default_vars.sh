@@ -418,6 +418,7 @@ export WLCLK_dflt=30
 
 export WLCLK=${WLCLK_dflt}
 export CMP_DATAONLY=false
+export nccmp_exclude=""
 
 # Defaults for ufs.configure
 export esmf_logkind="ESMF_LOGKIND_MULTI"
@@ -940,6 +941,9 @@ export EPBL=0.8,0.4,0.2,0.08,0.04
 export EPBL_LSCALE=500.E3,1000.E3,2000.E3,2000.E3,2000.E3
 export EPBL_TAU=2.16E4,2.592E5,2.592E6,7.776E6,3.1536E7
 export ISEED_EPBL=20210325000113,20210325000114,20210325000115,20210325000116,20210325000117
+export SKEBINT=1800
+export SHUMINT=3600
+export SPPTINT=1800
 
 #IAU
 export IAU_INC_FILES="''"
