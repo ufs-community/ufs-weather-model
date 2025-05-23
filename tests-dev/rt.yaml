@@ -17,6 +17,8 @@ s2swa_32bit_pdlib_intel:
     - cpld_control_gfsv17_iau: {'project':['daily'],'baseline': 'True','dependency':'cpld_control_gfsv17','turnoff':['noaacloud']}
     - cpld_restart_gfsv17: {'project':['daily'],'dependency':'cpld_control_gfsv17','turnoff':['noaacloud']}
     - cpld_mpi_gfsv17: {'project':['daily'],'turnoff':['noaacloud']}
+    - cpld_control_gfsv17_nowav_iau: {'project':['daily'],'baseline': 'True','dependency':'cpld_control_gfsv17','turnoff':['noaacloud']}
+    - cpld_restart_gfsv17_nowav_iau: {'project':['daily'],'dependency':'cpld_control_gfsv17_nowav_iau','turnoff':['noaacloud']}
 s2swa_32bit_pdlib_sfs_intel:
   build: 
     compiler: 'intel'
@@ -121,7 +123,7 @@ atm_dyn32_intel:
   build: 
     compiler: 'intel'
     option: '-DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16,FV3_GFS_v16_flake,FV3_GFS_v17_p8,FV3_GFS_v17_p8_rrtmgp,FV3_GFS_v15_thompson_mynn_lam3km,FV3_WoFS_v0,FV3_GFS_v17_p8_mynn,FV3_GFS_v17_p8_ugwpv1 -D32BIT=ON'
-  tests:
+  tests: 
     - control_flake: {'project':['daily'],'baseline': 'True'}
     - control_CubedSphereGrid: {'project':['daily'],'baseline': 'True'}
     - control_CubedSphereGrid_parallel: {'project':['daily'],'baseline': 'True','turnoff':['noaacloud']}
@@ -298,7 +300,7 @@ rrfs_dyn64_phy32_debug_intel:
 hafsw_intel:
   build: 
     compiler: 'intel'
-    option: '-DAPP=HAFSW -DMOVING_NEST=ON -DCCPP_SUITES=FV3_HAFS_v1_thompson_nonsst,FV3_HAFS_v1_gfdlmp_tedmf,FV3_HAFS_v1_gfdlmp_tedmf_nonsst,FV3_HAFS_v1_thompson_tedmf_gfdlsf,FV3_global_nest_v1 -D32BIT=ON'
+    option: '-DAPP=HAFSW -DMOVING_NEST=ON -DCCPP_SUITES=FV3_HAFS_v1_gfdlmp_tedmf,FV3_HAFS_v1_gfdlmp_tedmf_nonsst,FV3_HAFS_v1_thompson_tedmf_gfdlsf,FV3_global_nest_v1 -D32BIT=ON'
   tests: 
     - hafs_regional_atm: {'project':['daily'],'baseline': 'True'}
     - hafs_regional_atm_thompson_gfdlsf: {'project':['daily'],'baseline': 'True'}
@@ -533,7 +535,7 @@ atm_gnu:
     compiler: 'gnu'
     option: '-DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16,FV3_GFS_v16_flake,FV3_GFS_v16_ras,FV3_GFS_v17_p8,FV3_GFS_v17_p8_ugwpv1'
     turnon: ['hera','hercules']
-  tests:
+  tests: 
     - control_c48: {'project':['daily'],'baseline': 'True','turnon':['hera','hercules']}
     - control_stochy: {'project':['daily'],'baseline': 'True','turnon':['hera','hercules']}
     - control_ras: {'project':['daily'],'baseline': 'True','turnon':['hera','hercules']}
