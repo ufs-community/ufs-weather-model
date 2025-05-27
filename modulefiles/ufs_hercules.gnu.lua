@@ -2,7 +2,7 @@ help([[
 loads UFS Model prerequisites for Hercules/GNU
 ]])
 
-prepend_path("MODULEPATH", "/apps/contrib/spack-stack/spack-stack-1.6.0/envs/gnu-fms-2024.01/install/modulefiles/Core")
+prepend_path("MODULEPATH", "/apps/contrib/spack-stack/spack-stack-1.9.1/envs/ue-gcc-13.3.0/install/modulefiles/Core")
 prepend_path("MODULEPATH", "/work/noaa/epic/role-epic/spack-stack/hercules/installs/scotch-gnu/modulefiles")
 prepend_path("MODULEPATH", "/apps/contrib/spack-stack/modulefiles")
 
