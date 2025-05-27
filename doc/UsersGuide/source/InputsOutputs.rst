@@ -2081,8 +2081,7 @@ A sample subset of this namelist is shown below:
      FNABSC   = 'global_mxsnoalb.uariz.t126.384.190.rg.grb'
    /
 
-Additional variables for the ``&namsfc`` namelist can be found in the ``FV3/ccpp/physics/physics/sfcsub.F``
-file.
+Additional variables for the ``&namsfc`` namelist can be found in the ``FV3/ccpp/physics/physics/Interstitials/UFS_SCM_NEPTUNE/sfcsub.F`` file.
 
 .. _atmos_model_nml_section:
 
