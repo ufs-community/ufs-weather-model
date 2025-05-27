@@ -107,6 +107,8 @@ case ${MACHINE_ID} in
     module load intel/19.1.3.304
     module load craype/2.7.13 cray-mpich/8.1.12
     module load netcdf-D/4.9.2
+    module load pnetcdf-D/1.12.2
+    module load hdf5-D/1.14.0
     module load nccmp-D/1.9.0.1
     ;;
   s4)
