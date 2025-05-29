@@ -9,11 +9,7 @@ prepend_path("MODULEPATH", "/apps/contrib/spack-stack/modulefiles")
 stack_gnu_ver=os.getenv("stack_gnu_ver") or "13.3.0"
 load(pathJoin("stack-gcc", stack_gnu_ver))
 
-<<<<<<< HEAD
-stack_mvapich2_ver=os.getenv("stack_openmpi_ver") or "4.1.4"
-=======
 stack_openmpi_ver=os.getenv("stack_openmpi_ver") or "4.1.6"
->>>>>>> develop
 load(pathJoin("stack-openmpi", stack_openmpi_ver))
 
 cmake_ver=os.getenv("cmake_ver") or "3.27.9"
