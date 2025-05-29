@@ -7,7 +7,7 @@ prepend_path("MODULEPATH", "/contrib/spack-stack/installs/scotch-gnu/modulefiles
 prepend_path("MODULEPATH", "/contrib/spack-stack/installs/gnu/modulefiles")
 prepend_path("MODULEPATH", "/contrib/spack-stack/installs/openmpi/modulefiles")
 
-stack_gnu_ver=os.getenv("stack_gnu_ver") or "13.2.0"
+stack_gnu_ver=os.getenv("stack_gnu_ver") or "13.3.0"
 load(pathJoin("stack-gcc", stack_gnu_ver))
 
 stack_openmpi_ver=os.getenv("stack_openmpi_ver") or "4.1.6"
