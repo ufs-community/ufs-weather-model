@@ -2,8 +2,8 @@ help([[
 loads UFS Model prerequisites for Ursa/GNU
 ]])
 
---prepend_path("MODULEPATH", "/contrib/spack-stack/spack-stack-1.9.1/envs/ue-gcc-11.4.1/install/modulefiles/Core")
 prepend_path("MODULEPATH", "/contrib/spack-stack/spack-stack-1.9.1/envs/ue-gcc-12.4.0/install/modulefiles/Core")
+prepend_path("MODULEPATH", "/scratch4/NAGAPE/epic/role-epic/gnu-modulefiles")
 
 stack_gnu_ver=os.getenv("stack_gnu_ver") or "12.4.0"
 load(pathJoin("stack-gcc", stack_gnu_ver))
