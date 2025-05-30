@@ -2,6 +2,7 @@
   blocksize = 32
   dycore_only = .false.
   ccpp_suite = '@[CCPP_SUITE]'
+  ic_filename = '@[IC_FILENAME]'
 /
 
 &fms_nml
@@ -18,7 +19,7 @@
   mpas_time_integration_order   = 2
   mpas_dt                       = 720.0
   mpas_split_dynamics_transport = true
-  mpas_number_of_sub_steps      = 4
+  mpas_number_of_sub_steps      = 2
   mpas_dynamics_split_steps     = 3
   mpas_horiz_mixing             = '2d_smagorinsky'
   mpas_visc4_2dsmag             = 0.05
@@ -29,15 +30,17 @@
   mpas_smdiv                    = 0.1
 /
 &mpas_damping
-  mpas_cam_coef                  = 2.0
-  mpas_rayleigh_damp_u           = true
-  mpas_zd                        = 16000.0
+  mpas_zd                        = 50000.0
   mpas_xnutr                     = 0.2
-  mpas_cam_damping_levels        = 8
 /
 
 &mpas_limited_area
   mpas_apply_lbcs = .false.
+/
+
+&mpas_io
+  mpas_pio_num_iotasks = @[ATM_compute_tasks]
+  mpas_pio_stride = 1
 /
 
 &mpas_assimilation
@@ -45,7 +48,7 @@
 /
 
 &mpas_decomposition
-  mpas_block_decomp_file_prefix = 'conus.120km.graph.info.part.'
+  mpas_block_decomp_file_prefix = '@[GRID_FILENAME]'
 /
 
 &mpas_restart
