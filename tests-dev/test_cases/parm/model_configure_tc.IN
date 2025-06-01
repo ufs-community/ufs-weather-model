@@ -1,0 +1,56 @@
+start_year:              2019
+start_month:             08
+start_day:               24
+start_hour:              00
+start_minute:            0
+start_second:            0
+nhours_fcst:             @[FHMAX]
+fhrot:                   0
+dt_atmos:                @[DT_ATMOS]
+calendar:                'julian'
+restart_interval:        0
+output_1st_tstep_rst:    .false.
+
+quilting:                .true.
+quilting_restart:        .false.
+write_groups:            @[WRITE_GROUP]
+write_tasks_per_group:   @[WRTTASK_PER_GROUP]
+num_files:               2
+filename_base:           'atm' 'sfc'
+output_file:             'netcdf_parallel' 'netcdf_parallel'
+write_dopost:            @[WRITE_DOPOST]
+output_history:          .true.
+ichunk2d:                -1
+jchunk2d:                -1
+ichunk3d:                -1
+jchunk3d:                -1
+kchunk3d:                -1
+ideflate:                1
+quantize_mode:           'quantize_bitround'
+quantize_nsd:            0
+
+output_grid:             regional_latlon     # gaussian_grid, global_latlon, regional_latlon, rotated_latlon, lambert_conformal, cubed_sphere_grid
+imo:                     1051             # number of grid points along longitude/latitude direction
+jmo:                     1051             # needed for gaussian_grid or global_latlon
+cen_lon:                 -179.9         # central longitude/latitude (degrees)
+cen_lat:                 10.0         # needed for rotated_latlon, lambert_conformal
+lon1:                    -200.900000            # longitude/latitude of lower-left corner
+lat1:                    -11.000000            # needed for regional_latlon, rotated_latlon, lambert_conformal
+lon2:                    -158.900000            # longitude/latitude of upper-right corner
+lat2:                    31.000000            # needed for regional_latlon, rotated_latlon
+dlon:                    .04            # grid spacing in longitude/latitude direction (degrees)
+dlat:                    .04            # needed for regional_latlon, rotated_latlon
+stdlat1:                          # latitude of first/second standard parallel (degrees)
+stdlat2:                          # needed for lambert_conformal
+nx:                                    # number of grid cells along x/y-axis
+ny:                                    # needed for lambert_conformal
+dx:                                    # grid cell size in x/y direction (meters)
+dy:                                    # needed for lambert_conformal
+iau_offset:              0                  # IAU offset hours
+
+
+output_fh:               3 -1       # Output forecast hours controlled by output_fh (see notes below)
+# a) An array of output_fh means to output history files at those forecast time (e.g., "output_fh: 0 1 2 3 12 24 48")
+#    If the first elelment is zero, it means the first time step output
+# b) If there are two elements in output_fh and the second one is -1, then the first element is output frequency. e.g.
+#    For example, "output_fh: 6 -1" will output the history file every 6 hours.

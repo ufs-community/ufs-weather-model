@@ -113,7 +113,7 @@ case ${MACHINE_ID} in
     module load miniconda/3.9.12
     module load nccmp/1.9.0.1
     ;;
-  noaacloud)
+  noaacloud|frontera)
     echo "No special nccmp load necessary"
     ;;
   gaeac5)
@@ -292,12 +292,8 @@ cp "${PATHRT}/parm/fd_ufs.yaml" fd_ufs.yaml
 source ./fv3_run
 
 if [[ ${CPLWAV} == .true. ]]; then
-  if [[ ${WW3_MULTIGRID} = 'true' ]]; then
-    atparse < "${PATHRT}/parm/ww3_multi.inp.IN" > ww3_multi.inp
-  else
     atparse < "${PATHRT}/parm/ww3_shel.nml.IN" > ww3_shel.nml
     cp "${PATHRT}/parm/ww3_points.list" .
-  fi
 fi
 
 if [[ ${CPLCHM} == .true. ]]; then
@@ -498,11 +494,10 @@ if [[ ${skip_check_results} == false ]]; then
           if [[ " orion hercules hera wcoss2 acorn derecho gaeac5 gaeac6 jet s4 noaacloud frontera" =~ ${MACHINE_ID} ]]; then
             printf "USING NCCMP.." >> "${RT_LOG}"
             printf "USING NCCMP.."
-              if [[ ${CMP_DATAONLY} == false ]]; then
-                nccmp -d -S -q -f -g -B --Attribute=checksum --warn=format "${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i}" "${RUNDIR}/${i}" > "${i}_nccmp.log" 2>&1 && d=$? || d=$?
-              else
-                nccmp -d -S -q -f -B --Attribute=checksum --warn=format "${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i}" "${RUNDIR}/${i}" > "${i}_nccmp.log" 2>&1 && d=$? || d=$?
-              fi
+              nccmp_args=(-d -S -q -f -B --Attribute=checksum --warn=format)
+              if [[ ${CMP_DATAONLY} == false ]]; then nccmp_args+=("-g"); fi
+              if [[ -n "${nccmp_exclude// }" ]]; then nccmp_args+=("${nccmp_exclude}"); fi
+              nccmp "${nccmp_args[@]}" "${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i}" "${RUNDIR}/${i}" > "${i}_nccmp.log" 2>&1 && d=$? || d=$?
               if [[ ${d} -ne 0 && ${d} -ne 1 ]]; then
                 printf "....ERROR" >> "${RT_LOG}"
                 printf "....ERROR"
