@@ -109,7 +109,7 @@ On many NOAA :term:`RDHPCS`, a container named ``ubuntu22.04-intel-wm-dev-hsd-te
    +--------------------+--------------------------------------------------------+
    | Machine            | File location                                          |
    +====================+========================================================+
-   | Gaea               | /gpfs/f5/epic/world-shared/containers                  |
+   | Gaea               | /gpfs/f6/bil-fire8/world-shared/containers             |
    +--------------------+--------------------------------------------------------+
    | Hera               | /scratch1/NCEPDEV/nems/role.epic/containers            |
    +--------------------+--------------------------------------------------------+
@@ -130,7 +130,7 @@ If users prefer, they may copy the container to their local working directory. F
 
 .. code-block:: console
 
-   cp /gpfs/f5/epic/world-shared/containers/ubuntu22.04-intel-wm-dev-hsd-test.img .
+   cp /gpfs/f6/bil-fire8/world-shared/containers/ubuntu22.04-intel-wm-dev-hsd-test.img .
 
 Other Systems
 ----------------
@@ -233,9 +233,9 @@ Run the ``stage-rt.sh`` script with the proper arguments.
 
 where:
 
-   * ``-c`` is the compiler on the user's local machine (e.g., ``intel/2022.1.2``)
-   * ``-m`` is the :term:`MPI` on the user's local machine (e.g., ``impi/2022.1.2``)
-   * ``-p`` refers to the local machine/platform (e.g., ``hera``, ``gaea``, ``noaacloud``). Required for Gaea only. 
+   * ``-c`` is the compiler on the user's local machine (e.g., ``intel/2022.1.2``, ``intel-oneapi-compilers/2022.2.1``, ``intel/2023.2.0``)
+   * ``-m`` is the :term:`MPI` on the user's local machine (e.g., ``impi/2022.1.2``, ``intel-oneapi-mpi/2021.7.1``, ``cray-mpich/8.1.28``)
+   * ``-p`` refers to the local machine/platform (e.g., ``hera``, ``gaea``, ``noaacloud``). Required for Gaea, Hercules, and Orion only.
    * ``-i`` is the full path to the container image (e.g., ``$img`` or ``$HSD/ubuntu22.04-intel-wm-dev-hsd-test.img``).
 
 .. note::
