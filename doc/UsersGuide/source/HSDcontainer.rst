@@ -135,19 +135,19 @@ If users prefer, they may copy the container to their local working directory. F
 Other Systems
 ----------------
 
-On other systems, users can build the Singularity container from a public Docker :term:`container` image or download the ``ubuntu22.04-intel-wm-dev-hsd.img`` container from the `UFS Hierarchical Testing Framework (HTF) Data Bucket <https://registry.opendata.aws/noaa-ufs-htf-pds/>`_. Downloading may be faster depending on the download speed on the user's system. Note that the container in the data bucket is from the May 30, 2025 ``develop`` branch.
+On other systems, users can build the Singularity container from a public Docker :term:`container` image or download the ``ubuntu22.04-intel-wm-dev-hsd-test.img`` container from the `UFS Hierarchical Testing Framework (HTF) Data Bucket <https://registry.opendata.aws/noaa-ufs-htf-pds/>`_. Downloading may be faster depending on the download speed on the user's system. Note that the container in the data bucket is from the May 30, 2025 ``develop`` branch.
 
 To download from the data bucket, users can run:
 
 .. code-block:: console
 
-   wget https://noaa-ufs-htf-pds.s3.amazonaws.com/develop-20250530/ubuntu22.04-intel-wm-dev-hsd.img
+   wget https://noaa-ufs-htf-pds.s3.amazonaws.com/develop-20250530/ubuntu22.04-intel-wm-dev-hsd-test.img
 
 To build the container from a Docker image, users can run:
 
 .. code-block:: console
 
-   singularity build --force ubuntu22.04-intel-wm-dev-hsd.img docker://noaaepic/ubuntu22.04-intel21.10-wm:ue160-fms202505-dev
+   singularity build --force ubuntu22.04-intel-wm-dev-hsd-test.img docker://noaaepic/ubuntu22.04-intel21.10-wm:ue160-fms202401-dev-tc
 
 This process may take several hours depending on the system. 
 
@@ -190,20 +190,20 @@ Save the location of the container in an environment variable.
 
 .. code-block:: console
 
-   export img=/path/to/ubuntu22.04-intel-wm-dev-hsd.img
+   export img=/path/to/ubuntu22.04-intel-wm-dev-hsd-test.img
 
 Users may convert a container ``.img`` file to a writable sandbox. This step is optional and unnecessary on most systems (it can take several hours):
 
 .. code-block:: console
 
-   singularity build --sandbox ubuntu22.04-intel-wm-dev-hsd $img
+   singularity build --sandbox ubuntu22.04-intel-wm-dev-hsd-test $img
 
 When making a writable sandbox on NOAA :term:`RDHPCS`, the following warnings commonly appear and can be ignored:
 
 .. code-block:: console
 
    INFO:    Starting build...
-   INFO:    Verifying bootstrap image ubuntu22.04-intel-wm-dev-hsd.img
+   INFO:    Verifying bootstrap image ubuntu22.04-intel-wm-dev-hsd-test.img
    WARNING: integrity: signature not found for object group 1
    WARNING: Bootstrap image could not be verified, but build will continue.
 
@@ -236,7 +236,7 @@ where:
    * ``-c`` is the compiler on the user's local machine (e.g., ``intel/2022.1.2``)
    * ``-m`` is the :term:`MPI` on the user's local machine (e.g., ``impi/2022.1.2``)
    * ``-p`` refers to the local machine/platform (e.g., ``hera``, ``gaea``, ``noaacloud``). Required for Gaea only. 
-   * ``-i`` is the full path to the container image (e.g., ``$img`` or ``$HSD/ubuntu22.04-intel-wm-dev-hsd.img``).
+   * ``-i`` is the full path to the container image (e.g., ``$img`` or ``$HSD/ubuntu22.04-intel-wm-dev-hsd-test.img``).
 
 .. note::
 
