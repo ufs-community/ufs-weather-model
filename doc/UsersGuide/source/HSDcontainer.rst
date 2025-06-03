@@ -13,6 +13,7 @@ This chapter provides instructions for building and running the Unified Forecast
 
    * The :ref:`July 2020 CAPE Case <cape-2020>`
    * The :ref:`Baroclinic Instability Case <baroclinic-wave>`
+   * The :ref:`Idealized, Regional Tropical Cyclone Case <idealized-tc>`
 
 .. attention::
 
@@ -108,18 +109,16 @@ On many NOAA :term:`RDHPCS`, a container named ``ubuntu22.04-intel-wm-dev-hsd-te
    +--------------------+--------------------------------------------------------+
    | Machine            | File location                                          |
    +====================+========================================================+
-   | Gaea               | /gpfs/f5/epic/world-shared/containers                  |
+   | Gaea               | /gpfs/f6/bil-fire8/world-shared/containers             |
    +--------------------+--------------------------------------------------------+
    | Hera               | /scratch1/NCEPDEV/nems/role.epic/containers            |
-   +--------------------+--------------------------------------------------------+
-   | Jet                | /mnt/lfs5/HFIP/hfv3gfs/role.epic/containers            |
    +--------------------+--------------------------------------------------------+
    | NOAA Cloud [#fn]_  | /contrib/EPIC/containers                               |
    +--------------------+--------------------------------------------------------+
    | Orion/Hercules     | /work/noaa/epic/role-epic/contrib/containers           |
    +--------------------+--------------------------------------------------------+
 
-.. [#fn] The CAPE case can run on the NOAA Cloud ParallelWorks (PW) platforms, but the baroclinic wave case cannot.
+.. [#fn] The CAPE case can run on the NOAA Cloud ParallelWorks (PW) platforms, but the baroclinic wave and tropical cyclone cases cannot.
 
 Users can simply set an environment variable to point to the container: 
 
@@ -127,28 +126,28 @@ Users can simply set an environment variable to point to the container:
 
    export img=path/to/ubuntu22.04-intel-wm-dev-hsd-test.img
 
-If users prefer, they may copy the container to their local working directory. For example, on Jet:
+If users prefer, they may copy the container to their local working directory. For example, on Gaea
 
 .. code-block:: console
 
-   cp /mnt/lfs5/HFIP/hfv3gfs/role.epic/containers/ubuntu22.04-intel-wm-dev-hsd-test.img .
+   cp /gpfs/f6/bil-fire8/world-shared/containers/ubuntu22.04-intel-wm-dev-hsd-test.img .
 
 Other Systems
 ----------------
 
-On other systems, users can build the Singularity container from a public Docker :term:`container` image or download the ``ubuntu22.04-intel-wm-dev-hsd-test.img`` container from the `UFS Hierarchical Testing Framework (HTF) Data Bucket <https://registry.opendata.aws/noaa-ufs-htf-pds/>`_. Downloading may be faster depending on the download speed on the user's system. Note that the container in the data bucket is from the November 20, 2024 ``develop`` branch.
+On other systems, users can build the Singularity container from a public Docker :term:`container` image or download the ``ubuntu22.04-intel-wm-dev-hsd-test.img`` container from the `UFS Hierarchical Testing Framework (HTF) Data Bucket <https://registry.opendata.aws/noaa-ufs-htf-pds/>`_. Downloading may be faster depending on the download speed on the user's system. Note that the container in the data bucket is from the May 30, 2025 ``develop`` branch.
 
 To download from the data bucket, users can run:
 
 .. code-block:: console
 
-   wget https://noaa-ufs-htf-pds.s3.amazonaws.com/develop-20241115/ubuntu22.04-intel-wm-dev-hsd-test.img
+   wget https://noaa-ufs-htf-pds.s3.amazonaws.com/develop-20250530/ubuntu22.04-intel-wm-dev-hsd-test.img
 
 To build the container from a Docker image, users can run:
 
 .. code-block:: console
 
-   singularity build --force ubuntu22.04-intel-wm-dev-hsd-test.img docker://noaaepic/ubuntu22.04-intel21.10-wm:ue160-fms202401-dev
+   singularity build --force ubuntu22.04-intel-wm-dev-hsd-test.img docker://noaaepic/ubuntu22.04-intel21.10-wm:ue160-fms202401-dev-tc
 
 This process may take several hours depending on the system. 
 
@@ -168,7 +167,7 @@ Users on any system may download and untar the data from the `UFS Hierarchical T
 .. code-block:: console
 
    cd $HSD
-   wget https://noaa-ufs-htf-pds.s3.amazonaws.com/develop-20241115/HSD_fix_files_and_case_data.tar.gz
+   wget https://noaa-ufs-htf-pds.s3.amazonaws.com/develop-20250530/HSD_fix_files_and_case_data.tar.gz
    tar xvfz HSD_fix_files_and_case_data.tar.gz
 
 .. _RunContainer:
@@ -234,9 +233,9 @@ Run the ``stage-rt.sh`` script with the proper arguments.
 
 where:
 
-   * ``-c`` is the compiler on the user's local machine (e.g., ``intel/2022.1.2``)
-   * ``-m`` is the :term:`MPI` on the user's local machine (e.g., ``impi/2022.1.2``)
-   * ``-p`` refers to the local machine/platform (e.g., ``hera``, ``jet``, ``gaea``, ``noaacloud``). Required for Gaea and Jet only. 
+   * ``-c`` is the compiler on the user's local machine (e.g., ``intel/2022.1.2``, ``intel-oneapi-compilers/2022.2.1``, ``intel/2023.2.0``)
+   * ``-m`` is the :term:`MPI` on the user's local machine (e.g., ``impi/2022.1.2``, ``intel-oneapi-mpi/2021.7.1``, ``cray-mpich/8.1.28``)
+   * ``-p`` refers to the local machine/platform (e.g., ``hera``, ``gaea``, ``noaacloud``). Required for Gaea, Hercules, and Orion only.
    * ``-i`` is the full path to the container image (e.g., ``$img`` or ``$HSD/ubuntu22.04-intel-wm-dev-hsd-test.img``).
 
 .. note::
@@ -259,9 +258,8 @@ Additionally, the user should see the ``ufs-weather-model`` directory in the ``$
 
 .. note::
 
-   Gaea and Jet:
+   Gaea:
       * Gaea uses a different compiler and MPI to run with the container: ``-c=intel-classic/2023.2.0 -m=cray-mpich/8.1.28``
-      * On Jet, ``cd`` to ``/mnt`` first before navigating to individual user workspaces to use the container.
 
 .. _ConfigureExptC:
 
@@ -287,6 +285,7 @@ Additional configuration may be needed for the specific test the user plans to r
 
    * The :ref:`July 2020 CAPE Test Configuration <cape-config>`
    * The :ref:`Baroclinic Instability Test Configuration <bw-config>`
+   * The :ref:`Idealized, Regional Tropical Cyclone Test Configuration <idealized-config>`
 
 .. _RunExptC:
 
@@ -303,7 +302,7 @@ To start the experiment, run:
 where:
 
 * ``<ACCOUNT>``: Account/project number for batch jobs.
-* ``<CASE_NAME>``: Name of the test case (e.g., ``2020_CAPE`` or ``baroclinic_wave``).
+* ``<CASE_NAME>``: Name of the test case (e.g., ``2020_CAPE``, ``baroclinic_wave``, or ``tropical_cyclone``).
 * ``<COMPILER>``: Compiler used for the tests (``intel`` or ``gnu``).
 
 The script will loop until it runs both tasks or crashes. ``rococtostat`` can be used to track its progress; see the :ref:`Track Progress <TrackProgress>` section for details.
