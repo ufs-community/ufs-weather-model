@@ -2,15 +2,15 @@ help([[
 loads UFS Model prerequisites for Hercules/GNU
 ]])
 
-prepend_path("MODULEPATH", "/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.6.0/envs/fms-2024.01/install/modulefiles/Core")
--- for mvapich2, need:
-prepend_path("MODULEPATH", "/work/noaa/epic/role-epic/spack-stack/hercules/modulefiles")
+prepend_path("MODULEPATH", "/apps/contrib/spack-stack/spack-stack-1.6.0/envs/gnu-fms-2024.01/install/modulefiles/Core")
+-- for gnu and openmpi, need:
+prepend_path("MODULEPATH", "/apps/contrib/spack-stack/modulefiles")
 
-stack_gnu_ver=os.getenv("stack_gnu_ver") or "12.2.0"
+stack_gnu_ver=os.getenv("stack_gnu_ver") or "13.3.0"
 load(pathJoin("stack-gcc", stack_gnu_ver))
 
-stack_mvapich2_ver=os.getenv("stack_mvapich2_ver") or "2.3.7"
-load(pathJoin("stack-mvapich2", stack_mvapich2_ver))
+stack_openmpi_ver=os.getenv("stack_openmpi_ver") or "4.1.6"
+load(pathJoin("stack-openmpi", stack_openmpi_ver))
 
 cmake_ver=os.getenv("cmake_ver") or "3.23.1"
 load(pathJoin("cmake", cmake_ver))
