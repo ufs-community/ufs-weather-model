@@ -1746,7 +1746,6 @@ export_hafs_regional ()
   export FILENAME_BASE="'atm' 'sfc'"
   export OUTPUT_GRID="'regional_latlon'"
   export OUTPUT_FILE="'netcdf'"
-  export ZSTANDARD_LEVEL=0
   export IDEFLATE=0
   export QUANTIZE_NSD=0
   export CEN_LON=-62.0
