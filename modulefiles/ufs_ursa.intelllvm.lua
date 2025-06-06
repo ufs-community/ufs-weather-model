@@ -25,8 +25,8 @@ setenv("FC", "mpiifx")
 setenv("I_MPI_CC", "icx")
 setenv("I_MPI_CXX", "icpx")
 setenv("I_MPI_FC", "ifx")
-setenv("I_MPI_F90", "ifx")
-setenv("I_MPI_F77", "ifx")
+--setenv("I_MPI_F90", "ifx")
+--setenv("I_MPI_F77", "ifx")
 
 setenv("CMAKE_Platform", "ursa.intel")
 
