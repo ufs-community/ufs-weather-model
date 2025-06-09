@@ -54,13 +54,12 @@ export LIST_FILES=""
 #                    RESTART/iced.2021-03-23-43200.nc \
 #                    RESTART/ufs.cpld.cpl.r.2021-03-23-43200.nc "
 
-
 export ATMRES=C192
 export_fv3
 export_ugwpv1
 export_cpl
 
-export CCPP_SUITE=FV3_GFS_v17_coupled_p8_ugwpv1
+#export CCPP_SUITE=FV3_GFS_v17_coupled_p8_ugwpv1
 
 export DAYS=1.
 export FHMAX=24
@@ -68,6 +67,14 @@ export RESTART_N=12
 export RESTART_INTERVAL="${RESTART_N} -1"
 export OUTPUT_FH="24 -1"
 export FHZERO=6
+
+export SFS=.true.
+export SYEAR=1994
+export SMONTH=05
+export SDAY=01
+export SHOUR=00
+export SECS=`expr $SHOUR \* 3600`
+export FHROT=0
 
 export DOMAINS_STACK_SIZE=16000000
 
@@ -102,8 +109,8 @@ export CICE_BLCKY=`expr $NY_GLB / 2`
 export DT_ATMOS=600
 export DT_INNER=${DT_ATMOS}
 export DT_CICE=${DT_ATMOS}
-export DT_DYNAM_MOM6=1800
-export DT_THERM_MOM6=3600
+export DT_DYNAM_MOM6=900
+export DT_THERM_MOM6=1800
 export CICE_DIAGFREQ=`expr $((FHMAX-$FHROT)) \* 3600 / $DT_CICE`
 
 # ufs.configure
@@ -123,8 +130,9 @@ export MOM6_USE_WAVES=False
 
 # ATM IAU
 export READ_INCREMENT=.true.
-export RES_LATLON_DYNAMICS="'fv3_increment.nc'"
-export IAU_INC_FILES="'fv3_increment.nc'"
+export RES_LATLON_DYNAMICS="'atminc.nc'"
+export IAU_INC_FILES="'atminc.nc'"
+
 # MOM6 IAU
 export ODA_INCUPD=True
 export ODA_INCUPD_NHOURS=0
@@ -134,11 +142,13 @@ export ODA_THK_VAR="'h_anl'"
 export ODA_INCUPD_UV=True
 export ODA_UINC_VAR="'u_pert'"
 export ODA_VINC_VAR="'v_pert'"
+
 # MOM6 stochastics
 export DO_OCN_SPPT=True
 export PERT_EPBL=True
-export OCN_SPPT=-999.
-export EPBL=-999.
+export OCN_SPPT=0.56,0.28,0.14,0.056,0.028
+export EPBL=0.8,0.4,0.2,0.08,0.04
+
 # use downscaled warmstarts for ocean and ice
 export OCNICE_WARMSTART=.true.
 export MOM6_INIT_FROM_Z=False
@@ -159,43 +169,73 @@ export FNSLPC="'C192.slope_type.tileX.nc'"
 export FNABSC="'C192.maximum_snow_albedo.tileX.nc'"
 
 # input.nml from SFS sandbox
-export TAU=6.
-export UPDATE_FULL_OMEGA=.false.
+# damping coefficients
 export N_SPLIT=4
-export RF_CUTOFF=.true.
+
+#input file
+export FV3_RUN=cpld_control_run.IN
+export CCPP_SUITE=FV3_GFS_v17_coupled_p8_ugwpv1
+export DT_INNER=${DT_INNER_c192}
+#export CCPP_SUITE=FV3_GFS_v17_p8
+export FIELD_TABLE=field_table_thompson_noaero_tke_progsigma
+#export DIAG_TABLE=diag_table_cpld_sfs.IN
+#export INPUT_NML=global_control.nml.IN
+
+export HYDROSTATIC=.true.
+export KORD_MT=12
+export KORD_WZ=12
+export KORD_TR=12
+export KORD_TM=-12
+export DNATS=0
+export DDDMP=0.
+export VTDM4=0.05
+export DO_VORT_DAMP=.false.
+export D_CON=0.
+export HORD_MT=10
+export HORD_VT=10
+export HORD_TM=10
+export HORD_DP=10
+export HORD_TR=8
+export MAKE_NH=.false.
+export NUDGE_QV=.false.
+export RF_CUTOFF=100.0
+export PROGSIGMA=.true.
+export LRADAR=.true.
+export TAU=6.0
+export UPDATE_FULL_OMEGA=.false.
+
 export CDMBGWD_GSL="10.0,3.5,1.0,1.0"
 export NSTF_NAME=2,1,0,0,0
 export DOGP_CLDOPTICS_LUT=.false.
 export DOGP_LWSCAT=.false.
 export DO_SPPT=.true.
+export CPLCHM=.false.
 export CPLWAV=.false.
 export CPLWAV2ATM=.false.
-export PERT_CLDS=.false.
+export PERT_CLDS=.true.
 export ISEED_CA=1115337723
-export SKEB_TAU = 2.16E4,2.592E5,2.592E6,7.776E6,3.1536E7
-export SKEB_LSCALE = 500.E3,1000.E3,2000.E3,2000.E3,2000.E3
-export SKEBNORM = 1
-export SKEB_NPASS = 30
-export SKEB_VDOF = 5
+export SKEB_TAU=2.16E4,2.592E5,2.592E6,7.776E6,3.1536E7
+export SKEB_LSCALE=500.E3,1000.E3,2000.E3,2000.E3,2000.E3
+export SKEBNORM=1
+export SKEB_NPASS=30
+export SKEB_VDOF=5
 export ISEED_SHUM=0
 export SHUM_TAU=-999.
 export SHUM_LSCALE=-999.
-export SPPT=-999.
+export SPPT=0.56,0.28,0.14,0.056,0.028
 export ISEED_SPPT=19940501000103,19940501000104,19940501000105,19940501000106,19940501000107
 export SPPT_LOGIT=.true.
 export SPPT_SFCLIMIT=.true.
-export ISEED_OCNSPPT=20210325000108,20210325000109,20210325000110,20210325000111,20210325000112
+export ISEED_OCNSPPT=19940501000108,19940501000109,19940501000110,19940501000111,19940501000112
 export ISEED_EPBL=19940501000113,19940501000114,19940501000115,19940501000116,19940501000117
 export ISEED_LNDP=0
 
-export FV3_RUN=cpld_control_run.IN
-
-if [[ $MACHINE_ID = derecho ]]; then
-  TPN=96
-fi
-if [[ $MACHINE_ID = gaeac6 ]]; then
-  TPN=144
-fi
+#if [[ $MACHINE_ID = derecho ]]; then
+#  TPN=96
+#fi
+#if [[ $MACHINE_ID = gaeac6 ]]; then
+#  TPN=144
+#fi
 
 # HR4 GFSv17 GWD update
 export DO_UGWP_V0=.false.
@@ -204,3 +244,6 @@ export DO_GSL_DRAG_LS_BL=.true.
 export DO_GWD_OPT_PSL=.true.
 export DO_GSL_DRAG_SS=.false.
 export DO_GSL_DRAG_TOFD=.true.
+
+export FV3_RUN=cpld_control_run.IN
+export UFS_CONFIGURE=ufs.configure.s2s.IN
