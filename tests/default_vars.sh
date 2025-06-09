@@ -121,6 +121,7 @@ export fbh_omp_num_threads=1
 
 export histaux_enabled=.false.
 export BMIC=.false.
+export SFS=.false.
 
 if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
 
