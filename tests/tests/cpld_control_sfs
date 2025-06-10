@@ -59,7 +59,7 @@ export_fv3
 export_ugwpv1
 export_cpl
 
-#export CCPP_SUITE=FV3_GFS_v17_coupled_p8_ugwpv1
+export CCPP_SUITE=FV3_GFS_v17_coupled_p8_ugwpv1
 
 export DAYS=1.
 export FHMAX=24
@@ -67,12 +67,15 @@ export RESTART_N=12
 export RESTART_INTERVAL="${RESTART_N} -1"
 export OUTPUT_FH="24 -1"
 export FHZERO=24
+export OUTPUT_GRID=gaussian_grid
+export WRITE_DOPOST=.true.
 
 export SFS=.true.
 export SYEAR=1994
 export SMONTH=05
 export SDAY=01
 export SHOUR=00
+export CHOUR=00
 export SECS=`expr $SHOUR \* 3600`
 export FHROT=0
 
@@ -86,7 +89,7 @@ export WLCLK=${WLCLK_cpl_c192:-$WLCLK}
 OCN_tasks=$OCN_tasks_cpl_bmrk
 ICE_tasks=$ICE_tasks_cpl_bmrk
 
-export atm_omp_num_threads=$THRD_cpl_c192
+export atm_omp_num_threads=1
 export chm_omp_num_threads=$atm_omp_num_threads
 export med_omp_num_threads=$atm_omp_num_threads
 
@@ -129,19 +132,24 @@ export MOM6_RIVER_RUNOFF=True
 export MOM6_USE_WAVES=False
 
 # ATM IAU
+export IAUFHRS=0
+export DO_LAND_IAU=.false.
 export READ_INCREMENT=.true.
 export RES_LATLON_DYNAMICS="'atminc.nc'"
-export IAU_INC_FILES="'atminc.nc'"
+export IAU_INC_FILES="''"
 
 # MOM6 IAU
 export ODA_INCUPD=True
-export ODA_INCUPD_NHOURS=0
-export ODA_TEMPINC_VAR="'t_pert'"
-export ODA_SALTINC_VAR="'s_pert'"
-export ODA_THK_VAR="'h_anl'"
+export ODA_INCUPD_NHOURS=0.0
+export ODA_TEMPINC_VAR="t_pert"
+export ODA_SALTINC_VAR="s_pert"
+export ODA_THK_VAR="h_anl"
 export ODA_INCUPD_UV=True
-export ODA_UINC_VAR="'u_pert'"
-export ODA_VINC_VAR="'v_pert'"
+export ODA_UINC_VAR="u_pert"
+export ODA_VINC_VAR="v_pert"
+
+# CICE frequency
+export CICE_HISTFREQ_N=24
 
 # MOM6 stochastics
 export DO_OCN_SPPT=True
@@ -168,19 +176,28 @@ export FNVMXC="'C192.vegetation_greenness.tileX.nc'"
 export FNSLPC="'C192.slope_type.tileX.nc'"
 export FNABSC="'C192.maximum_snow_albedo.tileX.nc'"
 
-# input.nml from SFS sandbox
+export UFS_CONFIGURE=ufs.configure.s2s.IN
+export FV3_RUN=cpld_control_run.IN
+export DT_INNER=${DT_INNER_c192}
+export FIELD_TABLE=field_table_thompson_noaero_tke_progsigma
+export DIAG_TABLE=diag_table_cpld_sfs.IN
+export INPUT_NML=global_control.nml.IN
+
+# Match input.nml settings to SFS sandbox
+
 # damping coefficients
 export N_SPLIT=4
 
-#input file
-export FV3_RUN=cpld_control_run.IN
-export CCPP_SUITE=FV3_GFS_v17_coupled_p8_ugwpv1
-export DT_INNER=${DT_INNER_c192}
-#export CCPP_SUITE=FV3_GFS_v17_p8
-export FIELD_TABLE=field_table_thompson_noaero_tke_progsigma
-#export DIAG_TABLE=diag_table_cpld_sfs.IN
-#export INPUT_NML=global_control.nml.IN
-
+# GWD
+export GWD_OPT=2
+export DO_UGWP_V1=.true.
+export DO_GSL_DRAG_LS_BL=.true.
+export DO_GSL_DRAG_SS=.false.
+export DO_GWD_OPT_PSL=.true.
+export DO_GSL_DRAG_TOFD=.true.
+export DO_GSL_DRAG_TOFD=.true.
+# TODO: the input.nml expects variable "@[CDMBWD]"
+export CDMBWD="10.0,3.5,1.0,1.0"
 
 #
 export HYDROSTATIC=.true.
@@ -239,25 +256,3 @@ export ISEED_LNDP=0
 #if [[ $MACHINE_ID = gaeac6 ]]; then
 #  TPN=144
 #fi
-
-# GWD
-export GWD_OPT=2
-export DO_UGWP_V1=.true.
-export DO_GSL_DRAG_LS_BL=.true.
-export DO_GSL_DRAG_SS=.false.
-export DO_GWD_OPT_PSL=.true.
-export DO_GSL_DRAG_TOFD=.true.
-export DO_GSL_DRAG_TOFD=.true.
-# note the input.nml expects variable "@[CDMBWD]"
-export CDMBWD="10.0,3.5,1.0,1.0"
-
-# HR4 GFSv17 GWD update
-# export DO_UGWP_V0=.false.
-# export DO_UGWP_V1=.true.
-# export DO_GSL_DRAG_LS_BL=.true.
-# export DO_GWD_OPT_PSL=.true.
-# export DO_GSL_DRAG_SS=.false.
-# export DO_GSL_DRAG_TOFD=.true.
-
-export FV3_RUN=cpld_control_run.IN
-export UFS_CONFIGURE=ufs.configure.s2s.IN
