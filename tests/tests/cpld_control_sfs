@@ -66,7 +66,7 @@ export FHMAX=24
 export RESTART_N=12
 export RESTART_INTERVAL="${RESTART_N} -1"
 export OUTPUT_FH="24 -1"
-export FHZERO=6
+export FHZERO=24
 
 export SFS=.true.
 export SYEAR=1994
@@ -181,6 +181,8 @@ export FIELD_TABLE=field_table_thompson_noaero_tke_progsigma
 #export DIAG_TABLE=diag_table_cpld_sfs.IN
 #export INPUT_NML=global_control.nml.IN
 
+
+#
 export HYDROSTATIC=.true.
 export KORD_MT=12
 export KORD_WZ=12
@@ -204,7 +206,8 @@ export LRADAR=.true.
 export TAU=6.0
 export UPDATE_FULL_OMEGA=.false.
 
-export CDMBGWD_GSL="10.0,3.5,1.0,1.0"
+export MAX_OUTPUT_FIELDS=300
+
 export NSTF_NAME=2,1,0,0,0
 export DOGP_CLDOPTICS_LUT=.false.
 export DOGP_LWSCAT=.false.
@@ -237,13 +240,23 @@ export ISEED_LNDP=0
 #  TPN=144
 #fi
 
-# HR4 GFSv17 GWD update
-export DO_UGWP_V0=.false.
+# GWD
+export GWD_OPT=2
 export DO_UGWP_V1=.true.
 export DO_GSL_DRAG_LS_BL=.true.
-export DO_GWD_OPT_PSL=.true.
 export DO_GSL_DRAG_SS=.false.
+export DO_GWD_OPT_PSL=.true.
 export DO_GSL_DRAG_TOFD=.true.
+export DO_GSL_DRAG_TOFD=.true.
+export CDMBGWD="10.0,3.5,1.0,1.0"
+
+# HR4 GFSv17 GWD update
+# export DO_UGWP_V0=.false.
+# export DO_UGWP_V1=.true.
+# export DO_GSL_DRAG_LS_BL=.true.
+# export DO_GWD_OPT_PSL=.true.
+# export DO_GSL_DRAG_SS=.false.
+# export DO_GSL_DRAG_TOFD=.true.
 
 export FV3_RUN=cpld_control_run.IN
 export UFS_CONFIGURE=ufs.configure.s2s.IN
