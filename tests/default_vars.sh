@@ -1496,6 +1496,7 @@ export FHZERO=6
 export IALB=2
 export IEMS=2
 export LSM=2
+export LANDICE=.false.
 export IOPT_DVEG=4
 export IOPT_CRS=2
 export IOPT_RAD=3
@@ -1823,6 +1824,7 @@ export IOPT_RAD=1
 export IOPT_ALB=2
 export IOPT_STC=1
 export LSM=1
+export LANDICE=.true.
 export DO_GSL_DRAG_LS_BL=.true.
 export DO_GSL_DRAG_SS=.true.
 export DO_GSL_DRAG_TOFD=.true.
@@ -2182,4 +2184,5 @@ export_rrfs_v1()
   export LHEATSTRG=.false.
   export LSM=2
   export LSOIL_LSM=4
+  export LANDICE=.false.
 }
