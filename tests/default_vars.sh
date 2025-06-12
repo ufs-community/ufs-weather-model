@@ -93,6 +93,13 @@ export ICE_tasks_cdeps_025=48
 export INPES_aqm=33
 export JNPES_aqm=8
 
+export INPES_sfs=4
+export JNPES_sfs=6
+export THRD_sfs=1
+export WPG_sfs=24
+export OCN_tasks_sfs=168
+export ICE_tasks_sfs=48
+
 export THRD_cpl_unstr=1
 export INPES_cpl_unstr=3
 export JNPES_cpl_unstr=8
