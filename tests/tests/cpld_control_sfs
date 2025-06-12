@@ -176,17 +176,19 @@ export FNVMXC="'C192.vegetation_greenness.tileX.nc'"
 export FNSLPC="'C192.slope_type.tileX.nc'"
 export FNABSC="'C192.maximum_snow_albedo.tileX.nc'"
 
-export UFS_CONFIGURE=ufs.configure.s2s.IN
-export FV3_RUN=cpld_control_run.IN
-export DT_INNER=${DT_INNER_c192}
-export FIELD_TABLE=field_table_thompson_noaero_tke_progsigma
-export DIAG_TABLE=diag_table_cpld_sfs.IN
-export INPUT_NML=global_control.nml.IN
-
 # Match input.nml settings to SFS sandbox
+export DT_INNER=${DT_INNER_c192}
+export MAX_OUTPUT_FIELDS=300
+export UPDATE_FULL_OMEGA=.false.
+export DDDMP=0.
+export CPLCHM=.false.
+export CPLWAV=.false.
+export CPLWAV2ATM=.false.
 
 # damping coefficients
 export N_SPLIT=4
+export TAU=6.0
+export RF_CUTOFF=100.0
 
 # GWD
 export GWD_OPT=2
@@ -199,39 +201,40 @@ export DO_GSL_DRAG_TOFD=.true.
 # TODO: the input.nml expects variable "@[CDMBWD]"
 export CDMBWD="10.0,3.5,1.0,1.0"
 
-#
+# Coldstart/warmstart
+export MAKE_NH=.false.
+export DO_VORT_DAMP=.false.
+export NUDGE_QV=.false.
 export HYDROSTATIC=.true.
 export KORD_MT=12
 export KORD_WZ=12
 export KORD_TR=12
 export KORD_TM=-12
-export DNATS=0
-export DDDMP=0.
 export VTDM4=0.05
-export DO_VORT_DAMP=.false.
 export D_CON=0.
 export HORD_MT=10
 export HORD_VT=10
 export HORD_TM=10
 export HORD_DP=10
 export HORD_TR=8
-export MAKE_NH=.false.
-export NUDGE_QV=.false.
-export RF_CUTOFF=100.0
+
+# Shallow/deep convection
 export PROGSIGMA=.true.
+
+# GFDL MP
+export DNATS=0
+# Thompson MP
 export LRADAR=.true.
-export TAU=6.0
-export UPDATE_FULL_OMEGA=.false.
 
-export MAX_OUTPUT_FIELDS=300
-
+# Merra2 Aerosols & NSST
 export NSTF_NAME=2,1,0,0,0
+
+# RRTMGP
 export DOGP_CLDOPTICS_LUT=.false.
 export DOGP_LWSCAT=.false.
+
+# Stochastic physics
 export DO_SPPT=.true.
-export CPLCHM=.false.
-export CPLWAV=.false.
-export CPLWAV2ATM=.false.
 export PERT_CLDS=.true.
 export ISEED_CA=1115337723
 export SKEB_TAU=2.16E4,2.592E5,2.592E6,7.776E6,3.1536E7
@@ -250,9 +253,9 @@ export ISEED_OCNSPPT=19940501000108,19940501000109,19940501000110,19940501000111
 export ISEED_EPBL=19940501000113,19940501000114,19940501000115,19940501000116,19940501000117
 export ISEED_LNDP=0
 
-#if [[ $MACHINE_ID = derecho ]]; then
-#  TPN=96
-#fi
-#if [[ $MACHINE_ID = gaeac6 ]]; then
-#  TPN=144
-#fi
+export UFS_CONFIGURE=ufs.configure.s2s.IN
+export FV3_RUN=cpld_control_run.IN
+
+export FIELD_TABLE=field_table_thompson_noaero_tke_progsigma
+export DIAG_TABLE=diag_table_cpld_sfs.IN
+export INPUT_NML=global_control.nml.IN
