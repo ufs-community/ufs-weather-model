@@ -12,7 +12,35 @@ load(pathJoin("stack-intel", stack_intel_ver))
 load(pathJoin("stack-intel-oneapi-mpi", stack_impi_ver))
 unload("gnu")
 
-load("ufs_common")
+-- load("ufs_common")
+local ufs_modules = {
+  {["jasper"]          = "2.0.32"},
+  {["zlib"]            = "1.2.13"},
+  {["libpng"]          = "1.6.37"},
+  {["hdf5"]            = "1.14.0"},
+  {["netcdf-c"]        = "4.9.2"},
+  {["netcdf-fortran"]  = "4.6.1"},
+  {["parallelio"]      = "2.5.10"},
+  {["esmf"]            = "8.6.0"},
+  {["fms"]             = "2024.01"},
+  {["bacio"]           = "2.4.1"},
+  {["crtm"]            = "2.4.0.1"},
+  {["g2"]              = "3.5.1"},
+  {["g2tmpl"]          = "1.13.0"},
+  {["ip"]              = "4.3.0"},
+  {["sp"]              = "2.5.0"},
+  {["w3emc"]           = "2.10.0"},
+  {["gftl-shared"]     = "1.6.1"},
+  {["mapl"]            = "2.40.3-esmf-8.6.0"},
+  {["scotch"]          = "7.0.4"},
+}
+
+for i = 1, #ufs_modules do
+  for name, default_version in pairs(ufs_modules[i]) do
+    local env_version_name = string.gsub(name, "-", "_") .. "_ver"
+    load(pathJoin(name, os.getenv(env_version_name) or default_version))
+  end
+end
 
 nccmp_ver=os.getenv("nccmp_ver") or "1.9.0.1"
 load(pathJoin("nccmp", nccmp_ver))

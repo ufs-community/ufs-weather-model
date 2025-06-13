@@ -52,6 +52,8 @@ fi
 
 BUILD_JOBS=${BUILD_JOBS:-8}
 
+#hostname
+
 set +x
 case ${MACHINE_ID} in
   macosx|linux)
