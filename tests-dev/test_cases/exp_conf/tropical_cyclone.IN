@@ -1,0 +1,16 @@
+rm -fr INPUT RESTART
+
+mkdir INPUT RESTART
+
+cp -r @[INPUTDATA_ROOT]/HSD_input_data/tropical_cyclone/input/* ./INPUT/.
+cp -r @[INPUTDATA_ROOT]/HSD_input_data/tropical_cyclone/fix/* .
+
+rm ./fd_ufs.yaml
+mv ./fd_ufs.tc.yaml ./fd_ufs.yaml
+
+if [ $WRITE_DOPOST = .true. ]; then
+  cp ${PATHRT}/parm/post_itag_hafs itag
+  cp ${PATHRT}/parm/postxconfig-NT-hafs.txt postxconfig-NT.txt
+  cp ${PATHRT}/parm/postxconfig-NT-hafs.txt postxconfig-NT_FH00.txt
+  cp ${PATHRT}/parm/params_grib2_tbl_new params_grib2_tbl_new
+fi
