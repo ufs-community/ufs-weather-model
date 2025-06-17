@@ -3,7 +3,7 @@ loads UFS Model prerequisites for OrionLLVM/Intel
 ]])
 
 prepend_path("MODULEPATH", "/apps/contrib/spack-stack/spack-stack-1.9.2/envs/ue-oneapi-2024.1.0/install/modulefiles/Core")
-prepend_path("MODULEPATH", "/work/noaa/epic/role-epic/spack-stack/orion/modulefiles")
+prepend_path("MODULEPATH", "/apps/contrib/spack-stack/spack-stack-1.9.2/envs/ue-oneapi-2024.1.0/install/modulefiles/intel-oneapi-mpi/2021.13-li242lf/gcc/12.2.0")
 
 stack_intel_ver=os.getenv("stack_intel_ver") or "2024.2.1"
 load(pathJoin("stack-oneapi", stack_intel_ver))
