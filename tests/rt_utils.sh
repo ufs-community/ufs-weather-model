@@ -682,9 +682,13 @@ ecflow_run() {
     save_traps=$(trap)
     trap "" SIGINT  # Ignore INT signal during ecflow startup
     case ${MACHINE_ID} in
-      wcoss2|acorn|hera|ursa|jet)
+      wcoss2|acorn|hera|jet)
         #shellcheck disable=SC2029
         ssh "${ECF_HOST}" "bash -l -c \"module load ecflow && ${ECFLOW_START} -p ${ECF_PORT}\""
+        ;;
+      ursa)
+        #shellcheck disable=SC2029
+        ssh "${ECF_HOST}" "bash -l -c \"module load ecflow && export ECF_HOST=${ECF_HOST} && ${ECFLOW_START} -p ${ECF_PORT}\""
         ;;
       *)
         ${ECFLOW_START} -p "${ECF_PORT}" -d "${RUNDIR_ROOT}/ecflow_server"
