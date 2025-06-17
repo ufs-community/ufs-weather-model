@@ -2,8 +2,7 @@ help([[
 loads UFS Model prerequisites for Ursa/GNU
 ]])
 
-prepend_path("MODULEPATH", "/contrib/spack-stack/spack-stack-1.9.1/envs/ue-gcc-12.4.0/install/modulefiles/Core")
-prepend_path("MODULEPATH", "/scratch4/NAGAPE/epic/role-epic/gnu-modulefiles")
+prepend_path("MODULEPATH", "/contrib/spack-stack/spack-stack-1.9.2/envs/gcc-12.4.0/install/modulefiles/Core")
 
 stack_gnu_ver=os.getenv("stack_gnu_ver") or "12.4.0"
 load(pathJoin("stack-gcc", stack_gnu_ver))
@@ -22,7 +21,6 @@ load(pathJoin("nccmp", nccmp_ver))
 setenv("MPI_CC", "mpicc")
 setenv("MPI_CXX", "mpic++")
 setenv("MPI_FC", "mpifort")
-
 setenv("FC", "mpifort")
 
 setenv("CMAKE_Platform", "ursa.gnu")
