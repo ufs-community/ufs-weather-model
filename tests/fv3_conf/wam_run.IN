@@ -10,9 +10,9 @@ else
 fi
 if [ $TILEDFIX = .true. ]; then
     if [ $CPLLND == .true. ]; then
-        cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/@[ATMRES]*.nc INPUT/.
+        cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]mx100/@[ATMRES].nc INPUT/.
     else
-        cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/@[ATMRES]*.nc .
+        cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]mx100/@[ATMRES]*.nc .
     fi
     cp    @[INPUTDATA_ROOT]/FV3_fix/global_glacier.2x2.grb .
     cp    @[INPUTDATA_ROOT]/FV3_fix/global_maxice.2x2.grb .
@@ -35,7 +35,7 @@ if [[ $POSTAPP = 'global' ]]; then
   cp    ${PATHRT}/parm/post_itag_gfs itag
   cp    ${PATHRT}/parm/postxconfig-NT-gfs.txt postxconfig-NT.txt
   cp    ${PATHRT}/parm/postxconfig-NT-gfs_FH00.txt postxconfig-NT_FH00.txt
-  cp    ${PATHRT}/parm/params_grib2_tbl_new params_grib2_tbl_new
+  cp    ${PATHRT}/../FV3/upp/parm/params_grib2_tbl_new params_grib2_tbl_new
 fi
 
 #rrtmgp
