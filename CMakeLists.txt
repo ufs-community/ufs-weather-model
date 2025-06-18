@@ -338,13 +338,13 @@ endif()
 
 if(FV3)
   add_dependencies(ufs ufsatm_fv3)
-  list(APPEND _ufs_defs_private FRONT_FV3=${DYCORE_TARGET_CAP_MOD})
+  list(APPEND _ufs_defs_private FRONT_UFSATM=${DYCORE_TARGET_CAP_MOD})
   list(APPEND _ufs_libs_public ${DYCORE_TARGET})
 endif()
 
 if(MPAS)
   add_dependencies(ufs ufsatm_mpas)
-  list(APPEND _ufs_defs_private FRONT_MPAS=mpasatm_cap_mod)
+  list(APPEND _ufs_defs_private FRONT_UFSATM=ufsatm_cap_mod)
   list(APPEND _ufs_libs_public ufsatm_mpas)
 endif()
 

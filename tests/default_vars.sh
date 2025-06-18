@@ -489,8 +489,8 @@ export_mpas ()
     export MODEL_CONFIGURE=mpasatm_configure.IN
     export atm_model=mpas
 
-    export DIAG_TABLE=diag_table_rrfs_mpas
-    export FIELD_TABLE=field_table_rrfs_mpas
+    export DIAG_TABLE=diag_table_rrfs_a
+    export FIELD_TABLE=field_table_regional_rrfs_a
     export FV3_RUN=rrfs_mpas_run.IN
     export INPUT_NML=control_mpas.nml.IN
     export CCPP_SUITE=MPAS_RRFS
@@ -560,9 +560,10 @@ export_mpas ()
     fi
     #DJS2025 END:
 
-    # DJS2025: This is needed by rt_utils.sh, but not applicable to MPAS forecasts.
+    # DJS2025: This is needed by rt_utils.sh, but not applicable to MPAS forecasts yet...
     export NTILES=1
     export QUILTING=.false.
+    export QUILTING_RESTART=.false.
 
     # stochastic phsyics (NOT USED in MPAS yet)
     export DO_SPPT=.false.
