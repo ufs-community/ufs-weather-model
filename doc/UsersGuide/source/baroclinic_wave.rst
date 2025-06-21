@@ -55,17 +55,6 @@ It is recommended that users adjust certain values in the baroclinic wave case. 
 
 In general, it is preferable to make ``FHMAX`` a multiple of 24. 
 
-.. note:: 
-
-   On Jet, users will also need to adjust ``${UFS_WM}/tests/fv3_conf/compile_slurm.IN_jet`` in order to manage memory requirements for longer runs of the ``baroclinic_wave`` test. Users will need to change the number of tasks per node from 8 to 6 and add ``#SBATCH --mem=0``. 
-
-   The file should include: 
-
-   .. code-block:: console 
-      
-      #SBATCH --ntasks-per-node=6
-      #SBATCH --mem=0
-
 Baseline Configuration
 ----------------------
 
