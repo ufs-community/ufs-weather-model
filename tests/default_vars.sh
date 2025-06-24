@@ -1103,7 +1103,7 @@ export_ugwpv1() {
     "C48")
       if [[ ${default_dt_atmos} = 1 ]]; then export DT_ATMOS=720; fi
       export XR_CNVCLD=.false.
-      export CDMBGWD="0.071,2.1,1.0,1.0"
+      export CDMBWD="0.071,2.1,1.0,1.0"
       export CDMBGWD_GSL="40.0,1.77,1.0,1.0"
       export KNOB_UGWP_TAUAMP=6.0e-3
       export K_SPLIT=1
@@ -1115,7 +1115,7 @@ export_ugwpv1() {
     "C96")
       if [[ ${default_dt_atmos} = 1 ]]; then export DT_ATMOS=720; fi
       export XR_CNVCLD=.false.
-      export CDMBGWD="0.14,1.8,1.0,1.0"
+      export CDMBWD="0.14,1.8,1.0,1.0"
       export CDMBGWD_GSL="20.0,2.5,1.0,1.0"
       export KNOB_UGWP_TAUAMP=3.0e-3
       export K_SPLIT=1
@@ -1127,7 +1127,7 @@ export_ugwpv1() {
     "C192")
       if [[ ${default_dt_atmos} = 1 ]]; then export DT_ATMOS=600; fi
       export XR_CNVCLD=.true.
-      export CDMBGWD="0.23,1.5,1.0,1.0"
+      export CDMBWD="0.23,1.5,1.0,1.0"
       export CDMBGWD_GSL="5.0,5.0,1.0,1.0"
       export KNOB_UGWP_TAUAMP=1.5e-3
       export K_SPLIT=2
@@ -1139,7 +1139,7 @@ export_ugwpv1() {
     "C384")
       if [[ ${default_dt_atmos} = 1 ]]; then export DT_ATMOS=300; fi
       export XR_CNVCLD=.true.
-      export CDMBGWD="1.1,0.72,1.0,1.0"
+      export CDMBWD="1.1,0.72,1.0,1.0"
       export CDMBGWD_GSL="5.0,5.0,1.0,1.0"
       export KNOB_UGWP_TAUAMP=0.8e-3
       export K_SPLIT=2
@@ -1151,7 +1151,7 @@ export_ugwpv1() {
     "C768")
       if [[ ${default_dt_atmos} = 1 ]]; then export DT_ATMOS=150; fi
       export XR_CNVCLD=.true.
-      export CDMBGWD="4.0,0.15,1.0,1.0"
+      export CDMBWD="4.0,0.15,1.0,1.0"
       export CDMBGWD_GSL="2.5,7.5,1.0,1.0"
       export KNOB_UGWP_TAUAMP=0.5e-3
       export K_SPLIT=2
@@ -1163,7 +1163,7 @@ export_ugwpv1() {
     "C1152")
       if [[ ${default_dt_atmos} = 1 ]]; then export DT_ATMOS=150; fi
       export XR_CNVCLD=.true.
-      export CDMBGWD="4.0,0.10,1.0,1.0"
+      export CDMBWD="4.0,0.10,1.0,1.0"
       export CDMBGWD_GSL="1.67,8.8,1.0,1.0"
       export KNOB_UGWP_TAUAMP=0.35e-3
       export K_SPLIT=2
@@ -1175,7 +1175,7 @@ export_ugwpv1() {
     "C3072")
       if [[ ${default_dt_atmos} = 1 ]]; then export DT_ATMOS=90; fi
       export XR_CNVCLD=.true.
-      export CDMBGWD="4.0,0.05,1.0,1.0"
+      export CDMBWD="4.0,0.05,1.0,1.0"
       export CDMBGWD_GSL="0.625,14.1,1.0,1.0"
       export KNOB_UGWP_TAUAMP=0.13e-3
       export K_SPLIT=4
@@ -1190,7 +1190,7 @@ export_ugwpv1() {
       ;;
   esac
 
-  if [[ ${DO_GSL_DRAG_SS} = .true. ]]; then export CDMBGWD=${CDMBGWD_GSL}; fi
+  if [[ ${DO_GSL_DRAG_SS} = .true. ]]; then export CDMBWD=${CDMBGWD_GSL}; fi
   if [[ ${SEDI_SEMI} = .false. ]]; then
     export DT_INNER=$((DT_ATMOS/2))
   else
