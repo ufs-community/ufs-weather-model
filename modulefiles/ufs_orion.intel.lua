@@ -15,6 +15,7 @@ cmake_ver=os.getenv("cmake_ver") or "3.27.9"
 load(pathJoin("cmake", cmake_ver))
 
 load("ufs_common")
+load("zlib/1.2.13")
 
 -- HDF5 needed for LM4
 hdf5_ver=os.getenv("hdf5_ver") or "1.14.3"
