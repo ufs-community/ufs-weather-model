@@ -1,7 +1,7 @@
 #
-#  cpld_control_sfs test
+#  cpld_restart_sfs test
 #
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C192 MX025 - SFS test"
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C192 MX025 - SFS restart test"
 
 export CNTL_DIR=cpld_control_sfs
 
@@ -63,12 +63,14 @@ export CCPP_SUITE=FV3_GFS_v17_coupled_p8_ugwpv1
 
 export DAYS=1.
 export FHMAX=24
-export RESTART_N=12
-export RESTART_INTERVAL="${RESTART_N} -1"
-export FHROT=0
+export FHROT=12
+export RESTART_N=$((FHMAX-$FHROT))
+export RESTART_FILE_PREFIX="${SYEAR}${SMONTH}${SDAY}.$(printf "%02d" $(( ${FHROT} + ${SHOUR} )))0000"
+export RESTART_FILE_SUFFIX_SECS="${SYEAR}-${SMONTH}-${SDAY}-$(printf "%05d" $(( (${FHROT}+ ${SHOUR})*3600 )))"
 
 export OUTPUT_FH="24 -1"
 export FHZERO=24
+
 export OUTPUT_GRID=gaussian_grid
 export WRITE_DOPOST=.true.
 export QUILTING_RESTART=.true.
@@ -165,12 +167,21 @@ export PERT_EPBL=True
 export OCN_SPPT=0.56,0.28,0.14,0.056,0.028
 export EPBL=0.8,0.4,0.2,0.08,0.04
 
-# use downscaled warmstarts for ocean and ice
-export OCNICE_WARMSTART=.true.
-export MOM6_INIT_FROM_Z=False
-export MOM6_INIT_UV=file
-export MOM6_WARMSTART_FILE=mom6.warmstart.nc
-export CICE_ICE_IC=cice.warmstart.nc
+# ATM warm start
+export WARM_START=.true.
+export MAKE_NH=.false.
+export NA_INIT=0
+export EXTERNAL_IC=.false.
+export NGGPS_IC=.false.
+export MOUNTAIN=.true.
+
+# ICE warm start
+export CICE_RUNTYPE=continue
+export RUNTYPE=continue
+export CICE_USE_RESTART_TIME=.true.
+
+# MOM6 warm start
+export MOM6_RESTART_SETTING=r
 
 export FNALBC="'C192.snowfree_albedo.tileX.nc'"
 export FNALBC2="'C192.facsf.tileX.nc'"
