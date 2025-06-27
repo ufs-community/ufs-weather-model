@@ -1,14 +1,20 @@
 rm -fr INPUT RESTART
+# Set default ores to determine fix_tiled input directory
 if [ $NPX = 97 ]; then
   inputdir=FV3_input_data
+  ores=100
 elif [ $NPX = 49 ]; then
   inputdir=FV3_input_data48
+  ores=500
 elif [ $NPX = 193 ]; then
   inputdir=FV3_input_data192
+  ores=050
 elif [ $NPX = 385 ]; then
   inputdir=FV3_input_data384
+  ores=025
 elif [ $NPX = 769 ]; then
   inputdir=FV3_input_data768
+  ores=025
 fi
 
 echo "inputdir=$inputdir,NPX=$NPX,NESTED=$NESTED"
@@ -93,7 +99,11 @@ else
 fi
 
 if [ $TILEDFIX = .true. ]; then
-    cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/@[ATMRES]*.nc .
+    if [ "$NESTED" = .true. ]; then
+        cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]/@[ATMRES]*.nc .
+    else
+        cp    @[INPUTDATA_ROOT]/FV3_fix_tiled/@[ATMRES]mx${ores}/@[ATMRES]*.nc .
+    fi
     cp    @[INPUTDATA_ROOT]/FV3_fix/global_glacier.2x2.grb .
     cp    @[INPUTDATA_ROOT]/FV3_fix/global_maxice.2x2.grb .
     cp    @[INPUTDATA_ROOT]/FV3_fix/RTGSST.1982.2012.monthly.clim.grb .
@@ -106,14 +116,8 @@ else
 fi
 
 if [ $CPLWAV = .true. ]; then
-  if [ $WW3_MULTIGRID = 'true' ]; then
-    cp    @[INPUTDATA_ROOT_WW3]/mod_def.pointsatmw mod_def.points
-    cp    @[INPUTDATA_ROOT_WW3]/@[WW3_MODDEF] .
-    cp    @[INPUTDATA_ROOT_WW3]/rmp_src* .
-  else
     cp    @[INPUTDATA_ROOT_WW3]/@[WW3_MODDEF] mod_def.ww3
     cp    @[INPUTDATA_ROOT_WW3]/@[MESH_WAV] .
-  fi
 fi
 
 #inline post
@@ -121,7 +125,7 @@ if [[ $POSTAPP = 'global' ]]; then
   cp    ${PATHRT}/parm/@[POST_ITAG] itag
   cp    ${PATHRT}/parm/@[POSTXCONFIG] postxconfig-NT.txt
   cp    ${PATHRT}/parm/@[POSTXCONFIG_FH00] postxconfig-NT_FH00.txt
-  cp    ${PATHRT}/parm/params_grib2_tbl_new params_grib2_tbl_new
+  cp    ${PATHRT}/../FV3/upp/parm/params_grib2_tbl_new params_grib2_tbl_new
 fi
 
 #rrtmgp
