@@ -3,7 +3,9 @@ loads UFS Model prerequisites for NOAA Parallelworks/Intel
 ]])
 
 prepend_path("MODULEPATH", "/contrib/spack-stack-rocky8/spack-stack-1.9.2/envs/ue-oneapi-2024.2.1/install/modulefiles/Core")
-prepend_path("MODULEPATH", "/contrib/spack-stack-rocky8/spack-stack-1.9.2/envs/ue-oneapi-2024.2.1/install/modulefiles/intel-oneapi-mpi/2021.13-fosayin/gcc/13.2.0")
+prepend_path("MODULEPATH", "/contrib/spack-stack-rocky8/spack-stack-1.9.2/envs/ue-oneapi-2024.2.1/install/modulefiles/intel-oneapi-mpi/2021.13-mg3hegm/gcc/13.2.0")  -- path for NOAA AWS
+prepend_path("MODULEPATH", "/contrib/spack-stack-rocky8/spack-stack-1.9.2/envs/ue-oneapi-2024.2.1/install/modulefiles/intel-oneapi-mpi/2021.13-fosayin/gcc/13.2.0")  -- path for NOAA GCP
+prepend_path("MODULEPATH", "/contrib/spack-stack-rocky8/spack-stack-1.9.2/envs/ue-oneapi-2024.2.1/install/modulefiles/intel-oneapi-mpi/2021.13-u7pshji/gcc/13.2.0")  -- path for NOAA Azure
 prepend_path("MODULEPATH", "/apps/modules/modulefiles")
 
 gnu_ver=os.getenv("gnu_ver") or "14.2.0"
