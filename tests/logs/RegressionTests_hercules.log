@@ -1,7 +1,7 @@
 ====START OF HERCULES REGRESSION TESTING LOG====
 
 UFSWM hash used in testing:
-e129f8f9df846ef1bad1abc959affcda0aa37d12
+ac2ec7fbe6cecc3021c53434a2bbc639654c272c
 
 Submodule hashes used in testing:
  d3c1bc45492f8b35948c97021e4e6ab4d4c203e4 AQM (v0.2.0-38-gd3c1bc4)
@@ -11,11 +11,11 @@ Submodule hashes used in testing:
  43ead56380bf11ecad66f165dcd736ed0c278763 CICE-interface/CICE/icepack (Icepack1.1.0-200-g43ead56)
  a2833b0f53682ed80dff68e9af6d0347c1ea64d2 CMEPS-interface/CMEPS (cmeps_v0.4.1-2317-ga2833b0)
  cabd7753ae17f7bfcc6dad56daf10868aa51c3f4 CMakeModules (v1.0.0-28-gcabd775)
- eeaec64368ba1375ee03f6ae936d5634a012d355 FV3 (remotes/origin/feature/3dtke_gfspbl)
+ 640427df13f99c5cbf1f7be6a49a85da915376e4 FV3 (heads/develop)
  11359cb04a420fc87e4cf0f035f4d1215ab24488 FV3/ccpp/framework (2025-01-06-dev-5-g11359cb)
- 845246c2f173652ec803ad180b80b5cab2852449 FV3/ccpp/physics (master-tag-before-replacing-with-ipd-setup-step-fast-5983-g845246c2)
+ 65a25474e96977737532f86d199c39dc74b5dc28 FV3/ccpp/physics (EP4-1538-g65a25474)
  74a0e098b2163425e4b5466c2dfcf8ae26d560a5 FV3/ccpp/physics/physics/Radiation/RRTMGP/rte-rrtmgp (v1.6)
- ec21a2a5e0e70d167041f75f1470c1b223aaf063 FV3/fv3/atmos_cubed_sphere (remotes/origin/feature/3dtke_gfspbl)
+ 4f1a5ef4b83461a79a62c8d965ebc2b26cf5eba8 FV3/fv3/atmos_cubed_sphere (201912_public_release-416-g4f1a5ef)
  e5f9fcb5d4607e3576c7d507da594a9d3b516adc FV3/upp (upp_v10.2.0-272-ge5f9fcb5)
 -179cae1dd84401cf25d250bd9102e66560a9d328 FV3/upp/sorc/libIFI.fd
 -3d35332fe66e3e63a285cc8d96facdf255a33481 FV3/upp/sorc/ncep_post.fd/post_gtg.fd
@@ -23,11 +23,11 @@ Submodule hashes used in testing:
  bcf7777bb037ae2feb2a8a8ac51aacb3511b52d9 HYCOM-interface/HYCOM (2.3.00-122-gbcf7777)
  c4d2337d8607ec994b3cd61179eb974e0a237841 LM4-driver (baseline_change_240904-6-gc4d2337)
  c03c4f68816030f726785daf0db6150aa1e9cc6f LM4-driver/LM4 (land_lad2_2021.02)
- c987a8b70d3772d258db62c9081a249b94935b39 MOM6-interface/MOM6 (dev/master/repository_split_2014.10.10-10633-gc987a8b70)
+ f9e6e2e1686458df842a0b92c61ff241a920ed84 MOM6-interface/MOM6 (dev/master/repository_split_2014.10.10-10634-gf9e6e2e16)
  65ef5c73bc7f5663d5688f75c3855d431da4baea MOM6-interface/MOM6/pkg/CVMix-src (65ef5c7)
  29e64d652786e1d076a05128c920f394202bfe10 MOM6-interface/MOM6/pkg/GSW-Fortran (29e64d6)
  1a2d2fcb02da38e975f252ef743af24b68b3cc7f NOAHMP-interface/noahmp (v3.7.1-455-g1a2d2fc)
- bc43396f06c3f9e4608e5bc835815cc15adcf158 WW3 (6.07.1-441-gbc43396f)
+ aa508be6c472a3f36d02521122af593069ff96ee WW3 (6.07.1-505-gaa508be6)
  05cad173feeb598431e3ef5f17c2df6562c8d101 fire_behavior (v0.2.0-1-g05cad17)
  97b24f8e40f1de0980388c8326c48b442e5a5e61 stochastic_physics (ufs-v2.0.0-282-g97b24f8)
 
@@ -38,401 +38,550 @@ The first time is for the full script (prep+run+finalize).
 The second time is specifically for the run phase.
 Times/Memory will be empty for failed tests.
 
-BASELINE DIRECTORY: /work/noaa/epic/hercules/UFS-WM_RT/NEMSfv3gfs/develop-20250623
-COMPARISON DIRECTORY: /work2/noaa/epic/role-epic/stmp/role-epic/FV3_RT/rt_3423957
+BASELINE DIRECTORY: /work/noaa/epic/hercules/UFS-WM_RT/NEMSfv3gfs/develop-20250630
+COMPARISON DIRECTORY: /work2/noaa/epic/role-epic/stmp/role-epic/FV3_RT/rt_2954895
 
 RT.SH OPTIONS USED:
 * (-a) - HPC PROJECT ACCOUNT: epic
 * (-l) - USE CONFIG FILE: rt.conf
 * (-e) - USE ECFLOW
 
-PASS -- COMPILE 's2swa_32bit_intel' [14:11, 12:42] ( 1 warnings 5 remarks )
-PASS -- TEST 'cpld_control_p8_mixedmode_intel' [27:10, 09:30](2165 MB)
-PASS -- TEST 'cpld_control_gefs_intel' [39:33, 18:54](3110 MB)
-PASS -- TEST 'cpld_restart_gefs_intel' [22:03, 06:13](2824 MB)
-PASS -- TEST 'cpld_dcp_gefs_intel' [27:42, 15:45](3162 MB)
+PASS -- COMPILE 's2swa_32bit_intel' [13:11, 11:56] ( 1 warnings 5 remarks )
+FAILED: RUN DID NOT COMPLETE -- TEST 'cpld_control_p8_mixedmode_intel' [, ]( MB)
+FAILED: DISK QUOTA ISSUE -- TEST 'cpld_control_gefs_intel' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'cpld_restart_gefs_intel' [, ]( MB)
+FAILED: DISK QUOTA ISSUE -- TEST 'cpld_dcp_gefs_intel' [, ]( MB)
 
-PASS -- COMPILE 's2swa_32bit_pdlib_intel' [20:11, 18:48] ( 1 warnings 5 remarks )
-PASS -- TEST 'cpld_control_gfsv17_intel' [31:08, 19:38](2013 MB)
-PASS -- TEST 'cpld_control_gfsv17_iau_intel' [24:36, 20:40](2321 MB)
-PASS -- TEST 'cpld_restart_gfsv17_intel' [11:34, 08:15](1349 MB)
-PASS -- TEST 'cpld_mpi_gfsv17_intel' [31:08, 19:19](1928 MB)
-PASS -- TEST 'cpld_control_gfsv17_nowav_iau_intel' [09:12, 05:43](2292 MB)
-PASS -- TEST 'cpld_restart_gfsv17_nowav_iau_intel' [06:47, 03:42](2193 MB)
+FAILED: DISK QUOTA ISSUE -- COMPILE 's2swa_32bit_pdlib_intel' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'cpld_control_gfsv17_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'cpld_control_gfsv17_iau_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'cpld_restart_gfsv17_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'cpld_mpi_gfsv17_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'cpld_control_gfsv17_nowav_iau_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'cpld_restart_gfsv17_nowav_iau_intel' [, ]( MB)
 
-PASS -- COMPILE 's2swa_32bit_pdlib_sfs_intel' [22:11, 20:44] ( 1 warnings 5 remarks )
-PASS -- TEST 'cpld_control_sfs_intel' [28:40, 19:02](1993 MB)
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 's2swa_32bit_pdlib_sfs_intel' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'cpld_control_sfs_intel' [, ]( MB)
 
-PASS -- COMPILE 's2swa_32bit_pdlib_debug_intel' [07:11, 05:49] ( 1536 warnings 1942 remarks )
-PASS -- TEST 'cpld_debug_gfsv17_intel' [25:18, 19:07](1992 MB)
+PASS -- COMPILE 's2swa_32bit_pdlib_debug_intel' [11:11, 09:33] ( 1536 warnings 1942 remarks )
+FAILED: DISK QUOTA ISSUE -- TEST 'cpld_debug_gfsv17_intel' [, ]( MB)
 
-PASS -- COMPILE 's2swa_intel' [14:11, 12:22] ( 1 warnings 5 remarks )
-PASS -- TEST 'cpld_control_p8_intel' [28:17, 09:57](2272 MB)
-PASS -- TEST 'cpld_control_p8.v2.sfc_intel' [28:14, 10:02](2264 MB)
-PASS -- TEST 'cpld_restart_p8_intel' [12:22, 07:43](1966 MB)
-PASS -- TEST 'cpld_control_qr_p8_intel' [27:03, 09:34](2294 MB)
-PASS -- TEST 'cpld_restart_qr_p8_intel' [10:22, 06:55](1810 MB)
-PASS -- TEST 'cpld_2threads_p8_intel' [28:05, 10:20](2421 MB)
-PASS -- TEST 'cpld_decomp_p8_intel' [28:05, 09:55](2250 MB)
-PASS -- TEST 'cpld_mpi_p8_intel' [26:11, 08:40](2138 MB)
-PASS -- TEST 'cpld_control_ciceC_p8_intel' [28:13, 09:57](2271 MB)
-PASS -- TEST 'cpld_control_c192_p8_intel' [35:39, 16:32](2957 MB)
-PASS -- TEST 'cpld_restart_c192_p8_intel' [11:42, 07:03](2960 MB)
+PASS -- COMPILE 's2swa_intel' [14:11, 12:41] ( 1 warnings 5 remarks )
+FAILED: RUN DID NOT COMPLETE -- TEST 'cpld_control_p8_intel' [, ]( MB)
+FAILED: RUN DID NOT COMPLETE -- TEST 'cpld_control_p8.v2.sfc_intel' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'cpld_restart_p8_intel' [, ]( MB)
+FAILED: RUN DID NOT COMPLETE -- TEST 'cpld_control_qr_p8_intel' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'cpld_restart_qr_p8_intel' [, ]( MB)
+FAILED: RUN DID NOT COMPLETE -- TEST 'cpld_2threads_p8_intel' [, ]( MB)
+FAILED: RUN DID NOT COMPLETE -- TEST 'cpld_decomp_p8_intel' [, ]( MB)
+FAILED: RUN DID NOT COMPLETE -- TEST 'cpld_mpi_p8_intel' [, ]( MB)
+FAILED: RUN DID NOT COMPLETE -- TEST 'cpld_control_ciceC_p8_intel' [, ]( MB)
+FAILED: DISK QUOTA ISSUE -- TEST 'cpld_control_c192_p8_intel' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'cpld_restart_c192_p8_intel' [, ]( MB)
 
-PASS -- COMPILE 's2swal_intel' [14:11, 12:12] ( 1 warnings 6 remarks )
-PASS -- TEST 'cpld_control_p8_lnd_intel' [28:16, 10:00](2229 MB)
-PASS -- TEST 'cpld_restart_p8_lnd_intel' [10:22, 06:02](1953 MB)
-PASS -- TEST 'cpld_s2sa_p8_intel' [26:07, 08:36](2226 MB)
+PASS -- COMPILE 's2swal_intel' [14:11, 12:55] ( 1 warnings 6 remarks )
+FAILED: RUN DID NOT COMPLETE -- TEST 'cpld_control_p8_lnd_intel' [, ]( MB)
+FAILED: UNABLE TO START TEST -- TEST 'cpld_restart_p8_lnd_intel' [, ]( MB)
+FAILED: RUN DID NOT COMPLETE -- TEST 'cpld_s2sa_p8_intel' [, ]( MB)
 
-PASS -- COMPILE 's2sw_intel' [13:11, 11:14] ( 1 warnings 5 remarks )
-PASS -- TEST 'cpld_control_noaero_p8_intel' [21:59, 09:07](2057 MB)
-PASS -- TEST 'cpld_control_nowave_noaero_p8_intel' [18:07, 09:20](2161 MB)
+PASS -- COMPILE 's2sw_intel' [14:11, 12:14] ( 1 warnings 5 remarks )
+FAILED: RUN DID NOT COMPLETE -- TEST 'cpld_control_noaero_p8_intel' [, ]( MB)
+FAILED: RUN DID NOT COMPLETE -- TEST 'cpld_control_nowave_noaero_p8_intel' [, ]( MB)
 
-PASS -- COMPILE 's2swa_debug_intel' [06:11, 04:41] ( 1426 warnings 1173 remarks )
-PASS -- TEST 'cpld_debug_p8_intel' [21:24, 14:37](2290 MB)
+PASS -- COMPILE 's2swa_debug_intel' [08:11, 06:28] ( 1426 warnings 1173 remarks )
+FAILED: RUN DID NOT COMPLETE -- TEST 'cpld_debug_p8_intel' [, ]( MB)
 
-PASS -- COMPILE 's2sw_debug_intel' [06:11, 04:26] ( 1426 warnings 1173 remarks )
-PASS -- TEST 'cpld_debug_noaero_p8_intel' [13:26, 06:46](2071 MB)
+PASS -- COMPILE 's2sw_debug_intel' [06:11, 04:28] ( 1426 warnings 1173 remarks )
+FAILED: RUN DID NOT COMPLETE -- TEST 'cpld_debug_noaero_p8_intel' [, ]( MB)
 
-PASS -- COMPILE 's2s_aoflux_intel' [11:12, 09:46] ( 3 remarks )
-PASS -- TEST 'cpld_control_noaero_p8_agrid_intel' [14:22, 06:00](2136 MB)
+PASS -- COMPILE 's2s_aoflux_intel' [13:11, 11:29] ( 3 remarks )
+PASS -- TEST 'cpld_control_noaero_p8_agrid_intel' [07:54, 05:07](2124 MB)
 
-PASS -- COMPILE 's2swa_faster_intel' [14:11, 13:00] ( 1 warnings 5 remarks )
-PASS -- TEST 'cpld_control_p8_faster_intel' [21:16, 09:34](2271 MB)
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 's2swa_faster_intel' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'cpld_control_p8_faster_intel' [, ]( MB)
 
-PASS -- COMPILE 's2sw_pdlib_intel' [19:11, 17:21] ( 1 warnings 5 remarks )
-PASS -- TEST 'cpld_control_pdlib_p8_intel' [24:16, 15:27](2109 MB)
-PASS -- TEST 'cpld_restart_pdlib_p8_intel' [10:15, 08:07](1400 MB)
-PASS -- TEST 'cpld_mpi_pdlib_p8_intel' [22:15, 17:05](2011 MB)
-PASS -- TEST 'cpld_control_c48_5deg_intel' [13:15, 07:09](3033 MB)
-PASS -- TEST 'cpld_warmstart_c48_5deg_intel' [07:42, 02:58](3018 MB)
-PASS -- TEST 'cpld_restart_c48_5deg_intel' [08:39, 01:41](2470 MB)
-PASS -- TEST 'cpld_control_c24_5deg_intel' [05:27, 02:28](2224 MB)
-PASS -- TEST 'cpld_warmstart_c24_5deg_intel' [03:27, 01:55](2226 MB)
-PASS -- TEST 'cpld_restart_c24_5deg_intel' [03:24, 01:29](1547 MB)
-PASS -- TEST 'cpld_control_c24_9deg_intel' [04:27, 02:36](2228 MB)
-PASS -- TEST 'cpld_warmstart_c24_9deg_intel' [04:24, 02:29](2224 MB)
-PASS -- TEST 'cpld_restart_c24_9deg_intel' [07:33, 01:17](1550 MB)
-PASS -- TEST 'cpld_control_c12_9deg_intel' [03:24, 01:28](2155 MB)
-PASS -- TEST 'cpld_warmstart_c12_9deg_intel' [04:25, 02:16](2157 MB)
-PASS -- TEST 'cpld_restart_c12_9deg_intel' [08:26, 01:56](1502 MB)
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 's2sw_pdlib_intel' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'cpld_control_pdlib_p8_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'cpld_restart_pdlib_p8_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'cpld_mpi_pdlib_p8_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'cpld_control_c48_5deg_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'cpld_warmstart_c48_5deg_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'cpld_restart_c48_5deg_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'cpld_control_c24_5deg_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'cpld_warmstart_c24_5deg_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'cpld_restart_c24_5deg_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'cpld_control_c24_9deg_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'cpld_warmstart_c24_9deg_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'cpld_restart_c24_9deg_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'cpld_control_c12_9deg_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'cpld_warmstart_c12_9deg_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'cpld_restart_c12_9deg_intel' [, ]( MB)
 
-PASS -- COMPILE 's2sw_pdlib_debug_intel' [08:11, 03:47] ( 1536 warnings 1942 remarks )
-PASS -- TEST 'cpld_debug_pdlib_p8_intel' [39:05, 22:34](2066 MB)
+FAILED: DISK QUOTA ISSUE -- COMPILE 's2sw_pdlib_debug_intel' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'cpld_debug_pdlib_p8_intel' [, ]( MB)
 
-PASS -- COMPILE 'atm_dyn32_intel' [11:16, 09:28] ( 1 warnings 1 remarks )
-PASS -- TEST 'control_flake_intel' [12:22, 02:58](720 MB)
-PASS -- TEST 'control_CubedSphereGrid_intel' [14:33, 02:07](1601 MB)
-PASS -- TEST 'control_CubedSphereGrid_parallel_intel' [11:37, 02:15](1625 MB)
-PASS -- TEST 'control_latlon_intel' [14:29, 02:11](1614 MB)
-PASS -- TEST 'control_wrtGauss_netcdf_parallel_intel' [14:37, 02:13](1614 MB)
-PASS -- TEST 'control_c48_intel' [15:35, 06:34](1709 MB)
-PASS -- TEST 'control_c48.v2.sfc_intel' [15:26, 06:00](837 MB)
-PASS -- TEST 'control_c48_lnd_iau_intel' [08:31, 06:50](1710 MB)
-PASS -- TEST 'control_c192_intel' [08:39, 06:35](1814 MB)
-PASS -- TEST 'control_c384_intel' [12:24, 07:17](2010 MB)
-PASS -- TEST 'control_c384gdas_intel' [16:30, 10:40](1524 MB)
-PASS -- TEST 'control_stochy_intel' [05:21, 01:55](676 MB)
-PASS -- TEST 'control_stochy_restart_intel' [03:36, 00:51](551 MB)
-PASS -- TEST 'control_lndp_intel' [05:18, 01:52](677 MB)
-PASS -- TEST 'control_iovr4_intel' [06:20, 02:32](667 MB)
-PASS -- TEST 'control_iovr5_intel' [05:19, 02:39](680 MB)
-PASS -- TEST 'control_p8_intel' [08:03, 05:07](1910 MB)
-PASS -- TEST 'control_p8.v2.sfc_intel' [08:53, 03:33](1918 MB)
-PASS -- TEST 'control_p8_ugwpv1_intel' [09:55, 03:25](1918 MB)
-PASS -- TEST 'control_restart_p8_intel' [04:54, 02:46](1157 MB)
-PASS -- TEST 'control_noqr_p8_intel' [08:47, 03:59](1901 MB)
-PASS -- TEST 'control_restart_noqr_p8_intel' [06:57, 03:04](1219 MB)
-PASS -- TEST 'control_decomp_p8_intel' [09:47, 03:54](1911 MB)
-PASS -- TEST 'control_2threads_p8_intel' [09:44, 04:22](1981 MB)
-PASS -- TEST 'control_p8_lndp_intel' [08:44, 05:38](1902 MB)
-PASS -- TEST 'control_p8_rrtmgp_intel' [07:51, 04:41](1978 MB)
-PASS -- TEST 'control_p8_mynn_intel' [06:50, 03:51](1915 MB)
-PASS -- TEST 'merra2_thompson_intel' [06:55, 04:05](1920 MB)
-PASS -- TEST 'regional_control_intel' [07:26, 05:16](1196 MB)
-PASS -- TEST 'regional_restart_intel' [08:29, 06:16](1197 MB)
-PASS -- TEST 'regional_decomp_intel' [07:24, 05:41](1185 MB)
-PASS -- TEST 'regional_2threads_intel' [06:35, 04:39](1104 MB)
-PASS -- TEST 'regional_noquilt_intel' [07:35, 05:55](1524 MB)
-PASS -- TEST 'regional_netcdf_parallel_intel' [07:41, 05:30](1194 MB)
-PASS -- TEST 'regional_2dwrtdecomp_intel' [07:30, 05:37](1197 MB)
-PASS -- TEST 'regional_wofs_intel' [07:27, 05:51](2078 MB)
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 'atm_dyn32_intel' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_flake_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_CubedSphereGrid_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_CubedSphereGrid_parallel_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_latlon_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_wrtGauss_netcdf_parallel_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_c48_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_c48.v2.sfc_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_c48_lnd_iau_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_c192_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_c384_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_c384gdas_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_stochy_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_stochy_restart_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_lndp_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_iovr4_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_iovr5_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_p8_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_p8.v2.sfc_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_p8_ugwpv1_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_restart_p8_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_noqr_p8_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_restart_noqr_p8_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_decomp_p8_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_2threads_p8_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_p8_lndp_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_p8_rrtmgp_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_p8_mynn_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'merra2_thompson_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'regional_control_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'regional_restart_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'regional_decomp_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'regional_2threads_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'regional_noquilt_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'regional_netcdf_parallel_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'regional_2dwrtdecomp_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'regional_wofs_intel' [, ]( MB)
 
-PASS -- COMPILE 'rrfs_intel' [12:11, 09:06] ( 3 warnings 9 remarks )
-PASS -- TEST 'rap_control_intel' [08:48, 06:46](1200 MB)
-PASS -- TEST 'regional_spp_sppt_shum_skeb_intel' [06:49, 03:35](1432 MB)
-PASS -- TEST 'rap_decomp_intel' [14:03, 10:23](1155 MB)
-PASS -- TEST 'rap_2threads_intel' [11:48, 08:07](1218 MB)
-PASS -- TEST 'rap_restart_intel' [06:47, 03:28](1153 MB)
-PASS -- TEST 'rap_sfcdiff_intel' [12:54, 09:57](1208 MB)
-PASS -- TEST 'rap_sfcdiff_decomp_intel' [09:48, 07:08](1151 MB)
-PASS -- TEST 'rap_sfcdiff_restart_intel' [06:59, 04:59](1206 MB)
-PASS -- TEST 'hrrr_control_intel' [05:51, 03:26](1072 MB)
-PASS -- TEST 'hrrr_control_decomp_intel' [05:35, 03:31](1063 MB)
-PASS -- TEST 'hrrr_control_2threads_intel' [06:36, 04:06](1141 MB)
-PASS -- TEST 'hrrr_control_restart_intel' [04:24, 01:54](1053 MB)
-PASS -- TEST 'rrfs_v1beta_intel' [08:55, 06:29](1225 MB)
-PASS -- TEST 'rrfs_v1nssl_intel' [10:21, 08:11](2012 MB)
-PASS -- TEST 'rrfs_v1nssl_nohailnoccn_intel' [09:22, 07:56](2177 MB)
+FAILED: DISK QUOTA ISSUE -- COMPILE 'rrfs_intel' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_control_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'regional_spp_sppt_shum_skeb_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_decomp_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_2threads_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_restart_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_sfcdiff_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_sfcdiff_decomp_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_sfcdiff_restart_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hrrr_control_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hrrr_control_decomp_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hrrr_control_2threads_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hrrr_control_restart_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rrfs_v1beta_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rrfs_v1nssl_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rrfs_v1nssl_nohailnoccn_intel' [, ]( MB)
 
-PASS -- COMPILE 'csawmg_intel' [10:10, 08:35]
-PASS -- TEST 'control_csawmg_intel' [08:28, 06:54](1076 MB)
-PASS -- TEST 'control_ras_intel' [07:20, 05:10](843 MB)
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 'csawmg_intel' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_csawmg_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_ras_intel' [, ]( MB)
 
-PASS -- COMPILE 'wam_intel' [10:10, 08:13] ( 1 remarks )
-PASS -- TEST 'control_wam_intel' [12:41, 10:20](1694 MB)
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 'wam_intel' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_wam_intel' [, ]( MB)
 
-PASS -- COMPILE 'atm_faster_dyn32_intel' [10:10, 08:29] ( 1 remarks )
-PASS -- TEST 'control_p8_faster_intel' [06:00, 03:47](1909 MB)
-PASS -- TEST 'regional_control_faster_intel' [06:30, 04:58](1197 MB)
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 'atm_faster_dyn32_intel' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_p8_faster_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'regional_control_faster_intel' [, ]( MB)
 
-PASS -- COMPILE 'atm_debug_dyn32_intel' [10:10, 04:22] ( 883 warnings 9 remarks )
-PASS -- TEST 'control_CubedSphereGrid_debug_intel' [03:36, 01:57](1645 MB)
-PASS -- TEST 'control_wrtGauss_netcdf_parallel_debug_intel' [05:38, 02:03](1645 MB)
-PASS -- TEST 'control_stochy_debug_intel' [06:21, 02:45](852 MB)
-PASS -- TEST 'control_lndp_debug_intel' [05:20, 02:27](858 MB)
-PASS -- TEST 'control_csawmg_debug_intel' [09:33, 05:30](1160 MB)
-PASS -- TEST 'control_ras_debug_intel' [07:26, 03:47](856 MB)
-PASS -- TEST 'control_diag_debug_intel' [05:37, 02:26](1708 MB)
-PASS -- TEST 'control_debug_p8_intel' [09:34, 06:31](1943 MB)
-PASS -- TEST 'regional_debug_intel' [27:29, 24:51](1163 MB)
-PASS -- TEST 'rap_control_debug_intel' [07:19, 04:24](1240 MB)
-PASS -- TEST 'hrrr_control_debug_intel' [05:24, 04:10](1240 MB)
-PASS -- TEST 'hrrr_gf_debug_intel' [06:22, 04:17](1247 MB)
-PASS -- TEST 'hrrr_c3_debug_intel' [06:18, 04:21](1245 MB)
-PASS -- TEST 'rap_unified_drag_suite_debug_intel' [06:19, 04:16](1251 MB)
-PASS -- TEST 'rap_diag_debug_intel' [06:28, 04:36](1332 MB)
-PASS -- TEST 'rap_cires_ugwp_debug_intel' [09:20, 06:22](1251 MB)
-PASS -- TEST 'rap_unified_ugwp_debug_intel' [08:19, 06:14](1243 MB)
-PASS -- TEST 'rap_lndp_debug_intel' [11:19, 08:58](1247 MB)
-PASS -- TEST 'rap_progcld_thompson_debug_intel' [07:18, 04:21](1247 MB)
-PASS -- TEST 'rap_noah_debug_intel' [08:20, 04:19](1249 MB)
-PASS -- TEST 'rap_sfcdiff_debug_intel' [08:18, 04:32](1242 MB)
-PASS -- TEST 'rap_noah_sfcdiff_cires_ugwp_debug_intel' [10:20, 07:02](1242 MB)
-PASS -- TEST 'rap_clm_lake_debug_intel' [07:20, 04:14](1245 MB)
-PASS -- TEST 'rap_flake_debug_intel' [07:18, 04:16](1243 MB)
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 'atm_debug_dyn32_intel' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_CubedSphereGrid_debug_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_wrtGauss_netcdf_parallel_debug_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_stochy_debug_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_lndp_debug_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_csawmg_debug_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_ras_debug_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_diag_debug_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_debug_p8_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'regional_debug_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_control_debug_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hrrr_control_debug_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hrrr_gf_debug_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hrrr_c3_debug_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_unified_drag_suite_debug_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_diag_debug_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_cires_ugwp_debug_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_unified_ugwp_debug_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_lndp_debug_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_progcld_thompson_debug_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_noah_debug_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_sfcdiff_debug_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_noah_sfcdiff_cires_ugwp_debug_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_clm_lake_debug_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_flake_debug_intel' [, ]( MB)
 
-PASS -- COMPILE 'atm_debug_dyn32_gnu' [09:10, 03:02]
-PASS -- TEST 'control_csawmg_debug_gnu' [05:26, 02:57](824 MB)
+FAILED: DISK QUOTA ISSUE -- COMPILE 'atm_debug_dyn32_gnu' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_csawmg_debug_gnu' [, ]( MB)
 
-PASS -- COMPILE 'wam_debug_intel' [09:10, 03:31] ( 838 warnings 1 remarks )
+PASS -- COMPILE 'wam_debug_intel' [04:10, 02:57] ( 838 warnings 1 remarks )
 
-PASS -- COMPILE 'rrfs_dyn32_phy32_intel' [13:10, 09:00] ( 3 warnings 8 remarks )
-PASS -- TEST 'regional_spp_sppt_shum_skeb_dyn32_phy32_intel' [05:51, 03:20](1296 MB)
-PASS -- TEST 'rap_control_dyn32_phy32_intel' [07:51, 05:29](1154 MB)
-PASS -- TEST 'hrrr_control_dyn32_phy32_intel' [05:05, 02:49](1019 MB)
-PASS -- TEST 'rap_2threads_dyn32_phy32_intel' [08:45, 06:53](1126 MB)
-PASS -- TEST 'hrrr_control_2threads_dyn32_phy32_intel' [05:38, 03:33](1082 MB)
-PASS -- TEST 'hrrr_control_decomp_dyn32_phy32_intel' [04:56, 02:58](1003 MB)
-PASS -- TEST 'rap_restart_dyn32_phy32_intel' [09:57, 04:05](1105 MB)
-PASS -- TEST 'hrrr_control_restart_dyn32_phy32_intel' [08:24, 01:38](968 MB)
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 'rrfs_dyn32_phy32_intel' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'regional_spp_sppt_shum_skeb_dyn32_phy32_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_control_dyn32_phy32_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hrrr_control_dyn32_phy32_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_2threads_dyn32_phy32_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hrrr_control_2threads_dyn32_phy32_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hrrr_control_decomp_dyn32_phy32_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_restart_dyn32_phy32_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hrrr_control_restart_dyn32_phy32_intel' [, ]( MB)
 
-PASS -- COMPILE 'rrfs_dyn32_phy32_faster_intel' [13:10, 09:11] ( 3 warnings 8 remarks )
-PASS -- TEST 'conus13km_control_intel' [05:43, 04:04](1323 MB)
-PASS -- TEST 'conus13km_2threads_intel' [08:35, 00:55](1218 MB)
-PASS -- TEST 'conus13km_restart_mismatch_intel' [08:28, 01:05](1173 MB)
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 'rrfs_dyn32_phy32_faster_intel' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'conus13km_control_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'conus13km_2threads_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'conus13km_restart_mismatch_intel' [, ]( MB)
 
-PASS -- COMPILE 'rrfs_dyn64_phy32_intel' [11:10, 09:05] ( 3 warnings 8 remarks )
-PASS -- TEST 'rap_control_dyn64_phy32_intel' [05:35, 03:48](1105 MB)
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 'rrfs_dyn64_phy32_intel' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_control_dyn64_phy32_intel' [, ]( MB)
 
-PASS -- COMPILE 'rrfs_dyn32_phy32_debug_intel' [05:10, 03:31] ( 786 warnings 8 remarks )
-PASS -- TEST 'rap_control_debug_dyn32_phy32_intel' [06:20, 04:17](1121 MB)
-PASS -- TEST 'hrrr_control_debug_dyn32_phy32_intel' [06:19, 04:13](1117 MB)
-PASS -- TEST 'conus13km_debug_intel' [13:33, 11:56](1356 MB)
-PASS -- TEST 'conus13km_debug_qr_intel' [13:35, 12:01](1016 MB)
-PASS -- TEST 'conus13km_debug_2threads_intel' [14:31, 12:18](1254 MB)
-PASS -- TEST 'conus13km_radar_tten_debug_intel' [13:27, 12:03](1427 MB)
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 'rrfs_dyn32_phy32_debug_intel' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_control_debug_dyn32_phy32_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hrrr_control_debug_dyn32_phy32_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'conus13km_debug_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'conus13km_debug_qr_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'conus13km_debug_2threads_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'conus13km_radar_tten_debug_intel' [, ]( MB)
 
-PASS -- COMPILE 'rrfs_dyn64_phy32_debug_intel' [05:10, 02:52] ( 786 warnings 8 remarks )
-PASS -- TEST 'rap_control_dyn64_phy32_debug_intel' [06:21, 04:16](1219 MB)
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 'rrfs_dyn64_phy32_debug_intel' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_control_dyn64_phy32_debug_intel' [, ]( MB)
 
-PASS -- COMPILE 'hafsw_intel' [16:10, 10:35] ( 1 warnings 4 remarks )
-PASS -- TEST 'hafs_regional_atm_intel' [09:08, 06:25](1016 MB)
-PASS -- TEST 'hafs_regional_atm_thompson_gfdlsf_intel' [07:26, 05:55](1284 MB)
-PASS -- TEST 'hafs_regional_atm_ocn_intel' [11:22, 08:01](1071 MB)
-PASS -- TEST 'hafs_regional_atm_wav_intel' [21:07, 14:01](1127 MB)
-PASS -- TEST 'hafs_regional_atm_ocn_wav_intel' [21:18, 18:10](1285 MB)
-PASS -- TEST 'hafs_regional_1nest_atm_intel' [12:01, 05:00](605 MB)
-PASS -- TEST 'hafs_regional_telescopic_2nests_atm_intel' [09:20, 06:00](615 MB)
-PASS -- TEST 'hafs_global_1nest_atm_intel' [05:46, 02:24](430 MB)
-PASS -- TEST 'hafs_global_multiple_4nests_atm_intel' [10:15, 06:22](507 MB)
-PASS -- TEST 'hafs_regional_specified_moving_1nest_atm_intel' [09:49, 03:16](618 MB)
-PASS -- TEST 'hafs_regional_storm_following_1nest_atm_intel' [09:49, 03:24](616 MB)
-PASS -- TEST 'hafs_regional_storm_following_1nest_atm_ocn_intel' [07:50, 04:28](663 MB)
-PASS -- TEST 'hafs_global_storm_following_1nest_atm_intel' [06:28, 01:40](457 MB)
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 'hafsw_intel' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hafs_regional_atm_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hafs_regional_atm_thompson_gfdlsf_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hafs_regional_atm_ocn_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hafs_regional_atm_wav_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hafs_regional_atm_ocn_wav_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hafs_regional_1nest_atm_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hafs_regional_telescopic_2nests_atm_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hafs_global_1nest_atm_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hafs_global_multiple_4nests_atm_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hafs_regional_specified_moving_1nest_atm_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hafs_regional_storm_following_1nest_atm_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hafs_regional_storm_following_1nest_atm_ocn_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hafs_global_storm_following_1nest_atm_intel' [, ]( MB)
 
-PASS -- COMPILE 'hafsw_debug_intel' [09:10, 03:14] ( 1478 warnings 1445 remarks )
-PASS -- TEST 'hafs_regional_storm_following_1nest_atm_ocn_debug_intel' [18:56, 13:15](644 MB)
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 'hafsw_debug_intel' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hafs_regional_storm_following_1nest_atm_ocn_debug_intel' [, ]( MB)
 
-PASS -- COMPILE 'hafsw_faster_intel' [17:10, 11:01] ( 3 remarks )
-PASS -- TEST 'hafs_regional_storm_following_1nest_atm_ocn_wav_intel' [25:01, 18:56](763 MB)
-PASS -- TEST 'hafs_regional_storm_following_1nest_atm_ocn_wav_inline_intel' [24:59, 18:36](834 MB)
+FAILED: DISK QUOTA ISSUE -- COMPILE 'hafsw_faster_intel' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hafs_regional_storm_following_1nest_atm_ocn_wav_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hafs_regional_storm_following_1nest_atm_ocn_wav_inline_intel' [, ]( MB)
 
-PASS -- COMPILE 'hafs_mom6w_intel' [13:11, 11:04] ( 2 remarks )
-PASS -- TEST 'hafs_regional_storm_following_1nest_atm_ocn_wav_mom6_intel' [19:45, 12:11](785 MB)
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 'hafs_mom6w_intel' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hafs_regional_storm_following_1nest_atm_ocn_wav_mom6_intel' [, ]( MB)
 
-PASS -- COMPILE 'hafs_all_intel' [13:10, 11:16] ( 3 remarks )
-PASS -- TEST 'hafs_regional_docn_intel' [12:10, 05:38](1090 MB)
-PASS -- TEST 'hafs_regional_docn_oisst_intel' [14:06, 08:21](1088 MB)
-PASS -- TEST 'hafs_regional_datm_cdeps_intel' [21:58, 16:39](1336 MB)
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 'hafs_all_intel' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hafs_regional_docn_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hafs_regional_docn_oisst_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hafs_regional_datm_cdeps_intel' [, ]( MB)
 
-PASS -- COMPILE 'datm_cdeps_intel' [08:11, 06:41] ( 2 remarks )
-PASS -- TEST 'datm_cdeps_control_cfsr_intel' [06:18, 02:11](1138 MB)
-PASS -- TEST 'datm_cdeps_restart_cfsr_intel' [04:16, 01:19](1110 MB)
-PASS -- TEST 'datm_cdeps_control_gefs_intel' [06:14, 02:05](1014 MB)
-PASS -- TEST 'datm_cdeps_iau_gefs_intel' [05:15, 02:06](1025 MB)
-PASS -- TEST 'datm_cdeps_stochy_gefs_intel' [04:14, 02:05](1014 MB)
-PASS -- TEST 'datm_cdeps_ciceC_cfsr_intel' [04:15, 02:09](1160 MB)
-PASS -- TEST 'datm_cdeps_bulk_cfsr_intel' [04:15, 02:10](1166 MB)
-PASS -- TEST 'datm_cdeps_bulk_gefs_intel' [04:15, 02:04](1022 MB)
-PASS -- TEST 'datm_cdeps_mx025_cfsr_intel' [06:55, 04:55](1170 MB)
-PASS -- TEST 'datm_cdeps_mx025_gefs_intel' [06:53, 04:53](1159 MB)
-PASS -- TEST 'datm_cdeps_multiple_files_cfsr_intel' [03:15, 02:07](1159 MB)
-PASS -- TEST 'datm_cdeps_3072x1536_cfsr_intel' [04:17, 03:02](2362 MB)
-PASS -- TEST 'datm_cdeps_gfs_intel' [04:16, 03:02](2448 MB)
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 'datm_cdeps_intel' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'datm_cdeps_control_cfsr_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'datm_cdeps_restart_cfsr_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'datm_cdeps_control_gefs_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'datm_cdeps_iau_gefs_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'datm_cdeps_stochy_gefs_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'datm_cdeps_ciceC_cfsr_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'datm_cdeps_bulk_cfsr_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'datm_cdeps_bulk_gefs_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'datm_cdeps_mx025_cfsr_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'datm_cdeps_mx025_gefs_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'datm_cdeps_multiple_files_cfsr_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'datm_cdeps_3072x1536_cfsr_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'datm_cdeps_gfs_intel' [, ]( MB)
 
-PASS -- COMPILE 'datm_cdeps_debug_intel' [06:10, 04:08] ( 4 warnings 2 remarks )
-PASS -- TEST 'datm_cdeps_debug_cfsr_intel' [06:18, 05:08](1067 MB)
+FAILED: DISK QUOTA ISSUE -- COMPILE 'datm_cdeps_debug_intel' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'datm_cdeps_debug_cfsr_intel' [, ]( MB)
 
-PASS -- COMPILE 'datm_cdeps_faster_intel' [07:11, 05:54] ( 2 remarks )
-PASS -- TEST 'datm_cdeps_control_cfsr_faster_intel' [04:15, 02:12](1153 MB)
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 'datm_cdeps_faster_intel' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'datm_cdeps_control_cfsr_faster_intel' [, ]( MB)
 
-PASS -- COMPILE 'datm_cdeps_land_intel' [03:11, 00:51] ( 1 remarks )
-PASS -- TEST 'datm_cdeps_lnd_gswp3_intel' [02:34, 01:03](333 MB)
-PASS -- TEST 'datm_cdeps_lnd_era5_intel' [02:21, 00:46](573 MB)
-PASS -- TEST 'datm_cdeps_lnd_era5_rst_intel' [02:31, 00:38](560 MB)
+PASS -- COMPILE 'datm_cdeps_land_intel' [02:10, 01:04] ( 1 remarks )
+PASS -- TEST 'datm_cdeps_lnd_gswp3_intel' [03:25, 00:55](340 MB)
+PASS -- TEST 'datm_cdeps_lnd_era5_intel' [02:21, 00:42](565 MB)
+FAILED: DISK QUOTA ISSUE -- TEST 'datm_cdeps_lnd_era5_rst_intel' [, ]( MB)
 
-PASS -- COMPILE 'atm_ds2s_docn_pcice_intel' [11:11, 09:25] ( 3 remarks )
-PASS -- TEST 'atm_ds2s_docn_pcice_intel' [06:50, 04:11](2061 MB)
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 'atm_ds2s_docn_pcice_intel' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'atm_ds2s_docn_pcice_intel' [, ]( MB)
 
-PASS -- COMPILE 'atm_ds2s_docn_dice_intel' [11:10, 09:23] ( 1 warnings 1 remarks )
-PASS -- TEST 'atm_ds2s_docn_dice_intel' [09:45, 05:45](2057 MB)
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 'atm_ds2s_docn_dice_intel' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'atm_ds2s_docn_dice_intel' [, ]( MB)
 
-PASS -- COMPILE 'atml_intel' [11:10, 09:36] ( 9 warnings 2 remarks )
-PASS -- TEST 'control_p8_atmlnd_intel' [06:56, 04:12](1895 MB)
-PASS -- TEST 'control_restart_p8_atmlnd_intel' [04:50, 02:49](1140 MB)
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 'atml_intel' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_p8_atmlnd_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_restart_p8_atmlnd_intel' [, ]( MB)
 
-PASS -- COMPILE 'atml_debug_intel' [05:10, 03:40] ( 888 warnings 2 remarks )
-PASS -- TEST 'control_p8_atmlnd_debug_intel' [07:55, 05:11](1921 MB)
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 'atml_debug_intel' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_p8_atmlnd_debug_intel' [, ]( MB)
 
-PASS -- COMPILE 'atmw_intel' [14:10, 12:10] ( 3 remarks )
-PASS -- TEST 'atmwav_control_noaero_p8_intel' [05:48, 02:41](1946 MB)
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 'atmw_intel' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'atmwav_control_noaero_p8_intel' [, ]( MB)
 
-PASS -- COMPILE 'atmaero_intel' [14:10, 09:05] ( 1 remarks )
-PASS -- TEST 'atmaero_control_p8_intel' [07:49, 04:55](2018 MB)
-PASS -- TEST 'atmaero_control_p8_rad_intel' [07:47, 04:37](1793 MB)
-PASS -- TEST 'atmaero_control_p8_rad_micro_intel' [07:41, 04:34](1807 MB)
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 'atmaero_intel' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'atmaero_control_p8_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'atmaero_control_p8_rad_intel' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'atmaero_control_p8_rad_micro_intel' [, ]( MB)
 
-PASS -- COMPILE 'atmaq_intel' [13:11, 08:52] ( 8 warnings 4 remarks )
-PASS -- TEST 'regional_atmaq_intel' [17:32, 14:46](2942 MB)
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 'atmaq_intel' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'regional_atmaq_intel' [, ]( MB)
 
-PASS -- COMPILE 'atmaq_debug_intel' [07:11, 03:13] ( 863 warnings 4 remarks )
-PASS -- TEST 'regional_atmaq_debug_intel' [35:16, 32:20](2952 MB)
+PASS -- COMPILE 'atmaq_debug_intel' [04:10, 03:03] ( 863 warnings 4 remarks )
+FAILED: DISK QUOTA ISSUE -- TEST 'regional_atmaq_debug_intel' [, ]( MB)
 
-PASS -- COMPILE 'atm_fbh_intel' [12:11, 08:41] ( 3 warnings 8 remarks )
-PASS -- TEST 'cpld_regional_atm_fbh_intel' [11:31, 09:43](1083 MB)
+FAILED: DISK QUOTA ISSUE -- COMPILE 'atm_fbh_intel' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'cpld_regional_atm_fbh_intel' [, ]( MB)
 
-PASS -- COMPILE 'atm_gnu' [08:11, 04:25]
-PASS -- TEST 'control_c48_gnu' [09:42, 07:37](1586 MB)
-PASS -- TEST 'control_stochy_gnu' [04:24, 02:22](590 MB)
-PASS -- TEST 'control_ras_gnu' [05:19, 03:38](600 MB)
-PASS -- TEST 'control_p8_gnu' [06:56, 04:39](1553 MB)
-PASS -- TEST 'control_p8_ugwpv1_gnu' [06:41, 04:52](1562 MB)
-PASS -- TEST 'control_flake_gnu' [06:20, 04:38](638 MB)
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 'atm_gnu' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_c48_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_stochy_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_ras_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_p8_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_p8_ugwpv1_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_flake_gnu' [, ]( MB)
 
-PASS -- COMPILE 'rrfs_gnu' [07:11, 03:54]
-PASS -- TEST 'rap_control_gnu' [11:32, 10:06](947 MB)
-PASS -- TEST 'rap_decomp_gnu' [12:48, 10:31](947 MB)
-PASS -- TEST 'rap_2threads_gnu' [10:51, 08:19](1001 MB)
-PASS -- TEST 'rap_restart_gnu' [08:14, 05:08](683 MB)
-PASS -- TEST 'rap_sfcdiff_gnu' [11:52, 09:42](947 MB)
-PASS -- TEST 'rap_sfcdiff_decomp_gnu' [15:46, 13:21](947 MB)
-PASS -- TEST 'rap_sfcdiff_restart_gnu' [09:53, 07:29](685 MB)
-PASS -- TEST 'hrrr_control_gnu' [06:51, 05:00](940 MB)
-PASS -- TEST 'hrrr_control_noqr_gnu' [07:36, 05:11](930 MB)
-PASS -- TEST 'hrrr_control_2threads_gnu' [05:57, 04:06](991 MB)
-PASS -- TEST 'hrrr_control_decomp_gnu' [12:52, 10:30](940 MB)
-PASS -- TEST 'hrrr_control_restart_gnu' [04:37, 02:30](680 MB)
-PASS -- TEST 'hrrr_control_restart_noqr_gnu' [04:20, 02:42](766 MB)
-PASS -- TEST 'rrfs_v1beta_gnu' [11:59, 09:40](944 MB)
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 'rrfs_gnu' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_control_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_decomp_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_2threads_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_restart_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_sfcdiff_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_sfcdiff_decomp_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_sfcdiff_restart_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hrrr_control_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hrrr_control_noqr_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hrrr_control_2threads_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hrrr_control_decomp_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hrrr_control_restart_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hrrr_control_restart_noqr_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rrfs_v1beta_gnu' [, ]( MB)
 
-PASS -- COMPILE 'csawmg_gnu' [05:11, 03:18]
-PASS -- TEST 'control_csawmg_gnu' [16:25, 14:54](840 MB)
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 'csawmg_gnu' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_csawmg_gnu' [, ]( MB)
 
-PASS -- COMPILE 'atm_dyn32_debug_gnu' [07:11, 05:26]
-PASS -- TEST 'control_diag_debug_gnu' [03:39, 01:16](1374 MB)
-PASS -- TEST 'regional_debug_gnu' [10:27, 08:35](882 MB)
-PASS -- TEST 'rap_control_debug_gnu' [03:25, 01:59](958 MB)
-PASS -- TEST 'hrrr_control_debug_gnu' [03:23, 01:59](953 MB)
-PASS -- TEST 'hrrr_gf_debug_gnu' [03:18, 02:03](957 MB)
-PASS -- TEST 'hrrr_c3_debug_gnu' [03:22, 02:00](957 MB)
-PASS -- TEST 'rap_diag_debug_gnu' [04:35, 02:13](1041 MB)
-PASS -- TEST 'rap_noah_sfcdiff_cires_ugwp_debug_gnu' [05:19, 03:21](954 MB)
-PASS -- TEST 'rap_progcld_thompson_debug_gnu' [04:20, 02:10](956 MB)
-PASS -- TEST 'control_ras_debug_gnu' [03:21, 01:20](592 MB)
-PASS -- TEST 'control_stochy_debug_gnu' [03:20, 01:21](584 MB)
-PASS -- TEST 'control_debug_p8_gnu' [04:34, 02:44](1552 MB)
-PASS -- TEST 'rap_flake_debug_gnu' [03:17, 02:04](956 MB)
-PASS -- TEST 'rap_clm_lake_debug_gnu' [03:27, 02:06](958 MB)
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 'atm_dyn32_debug_gnu' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_diag_debug_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'regional_debug_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_control_debug_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hrrr_control_debug_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hrrr_gf_debug_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hrrr_c3_debug_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_diag_debug_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_noah_sfcdiff_cires_ugwp_debug_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_progcld_thompson_debug_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_ras_debug_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_stochy_debug_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_debug_p8_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_flake_debug_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_clm_lake_debug_gnu' [, ]( MB)
 
-PASS -- COMPILE 'wam_debug_gnu' [03:11, 01:44]
-PASS -- TEST 'control_wam_debug_gnu' [07:56, 05:56](1388 MB)
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 'wam_debug_gnu' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'control_wam_debug_gnu' [, ]( MB)
 
-PASS -- COMPILE 'rrfs_dyn32_phy32_gnu' [05:11, 03:30]
-PASS -- TEST 'rap_control_dyn32_phy32_gnu' [11:34, 09:16](800 MB)
-PASS -- TEST 'hrrr_control_dyn32_phy32_gnu' [06:38, 04:55](794 MB)
-PASS -- TEST 'rap_2threads_dyn32_phy32_gnu' [09:49, 08:06](833 MB)
-PASS -- TEST 'hrrr_control_2threads_dyn32_phy32_gnu' [06:01, 04:05](830 MB)
-PASS -- TEST 'hrrr_control_decomp_dyn32_phy32_gnu' [06:56, 04:43](794 MB)
-PASS -- TEST 'rap_restart_dyn32_phy32_gnu' [08:41, 06:48](651 MB)
-PASS -- TEST 'hrrr_control_restart_dyn32_phy32_gnu' [04:33, 02:41](647 MB)
-PASS -- TEST 'conus13km_control_gnu' [04:56, 02:47](985 MB)
-PASS -- TEST 'conus13km_2threads_gnu' [03:32, 01:24](954 MB)
-PASS -- TEST 'conus13km_restart_mismatch_gnu' [04:31, 02:29](698 MB)
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 'rrfs_dyn32_phy32_gnu' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_control_dyn32_phy32_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hrrr_control_dyn32_phy32_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_2threads_dyn32_phy32_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hrrr_control_2threads_dyn32_phy32_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hrrr_control_decomp_dyn32_phy32_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_restart_dyn32_phy32_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hrrr_control_restart_dyn32_phy32_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'conus13km_control_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'conus13km_2threads_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'conus13km_restart_mismatch_gnu' [, ]( MB)
 
-PASS -- COMPILE 'atm_dyn64_phy32_gnu' [10:11, 08:29]
-PASS -- TEST 'rap_control_dyn64_phy32_gnu' [08:40, 06:56](824 MB)
+FAILED: DISK QUOTA ISSUE -- COMPILE 'atm_dyn64_phy32_gnu' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_control_dyn64_phy32_gnu' [, ]( MB)
 
-PASS -- COMPILE 'atm_dyn32_phy32_debug_gnu' [08:11, 06:27]
-PASS -- TEST 'rap_control_debug_dyn32_phy32_gnu' [06:20, 04:21](807 MB)
-PASS -- TEST 'hrrr_control_debug_dyn32_phy32_gnu' [04:24, 02:11](804 MB)
-PASS -- TEST 'conus13km_debug_gnu' [07:32, 05:54](999 MB)
-PASS -- TEST 'conus13km_debug_qr_gnu' [07:33, 05:51](721 MB)
-PASS -- TEST 'conus13km_debug_2threads_gnu' [07:28, 05:17](971 MB)
-PASS -- TEST 'conus13km_radar_tten_debug_gnu' [07:29, 05:54](1070 MB)
+FAILED: DISK QUOTA ISSUE -- COMPILE 'atm_dyn32_phy32_debug_gnu' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_control_debug_dyn32_phy32_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'hrrr_control_debug_dyn32_phy32_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'conus13km_debug_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'conus13km_debug_qr_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'conus13km_debug_2threads_gnu' [, ]( MB)
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'conus13km_radar_tten_debug_gnu' [, ]( MB)
 
-PASS -- COMPILE 'atm_dyn64_phy32_debug_gnu' [07:11, 05:28]
-PASS -- TEST 'rap_control_dyn64_phy32_debug_gnu' [03:20, 02:06](830 MB)
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 'atm_dyn64_phy32_debug_gnu' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'rap_control_dyn64_phy32_debug_gnu' [, ]( MB)
 
-PASS -- COMPILE 's2swa_gnu' [21:10, 16:46]
-PASS -- TEST 'cpld_control_p8_gnu' [13:18, 11:10](1749 MB)
+FAILED: DISK QUOTA ISSUE -- COMPILE 's2swa_gnu' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'cpld_control_p8_gnu' [, ]( MB)
 
-PASS -- COMPILE 's2s_gnu' [19:10, 16:35]
-PASS -- TEST 'cpld_control_nowave_noaero_p8_gnu' [13:12, 10:31](1635 MB)
+FAILED: DISK QUOTA ISSUE -- COMPILE 's2s_gnu' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'cpld_control_nowave_noaero_p8_gnu' [, ]( MB)
 
-PASS -- COMPILE 's2swa_debug_gnu' [04:10, 02:10]
-PASS -- TEST 'cpld_debug_p8_gnu' [09:03, 06:47](1737 MB)
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 's2swa_debug_gnu' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'cpld_debug_p8_gnu' [, ]( MB)
 
-PASS -- COMPILE 's2sw_pdlib_gnu' [17:11, 15:53]
-PASS -- TEST 'cpld_control_pdlib_p8_gnu' [16:58, 14:44](1607 MB)
+FAILED: UNABLE TO FINISH COMPILE -- COMPILE 's2sw_pdlib_gnu' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'cpld_control_pdlib_p8_gnu' [, ]( MB)
 
-PASS -- COMPILE 's2sw_pdlib_debug_gnu' [04:11, 02:22]
-PASS -- TEST 'cpld_debug_pdlib_p8_gnu' [12:54, 10:27](1614 MB)
+FAILED: DISK QUOTA ISSUE -- COMPILE 's2sw_pdlib_debug_gnu' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'cpld_debug_pdlib_p8_gnu' [, ]( MB)
 
-PASS -- COMPILE 'datm_cdeps_gnu' [16:11, 14:45]
-PASS -- TEST 'datm_cdeps_control_cfsr_gnu' [04:15, 02:23](799 MB)
+FAILED: DISK QUOTA ISSUE -- COMPILE 'datm_cdeps_gnu' [, ]
+SKIPPED: ASSOCIATED COMPILE FAILED -- TEST 'datm_cdeps_control_cfsr_gnu' [, ]( MB)
 
 SYNOPSIS:
-Starting Date/Time: 20250626 21:11:07
-Ending Date/Time: 20250626 23:17:36
-Total Time: 02h:07m:08s
-Compiles Completed: 59/59
-Tests Completed: 258/258
+Starting Date/Time: 20250630 16:50:26
+Ending Date/Time: 20250630 18:22:33
+Total Time: 01h:32m:33s
+Compiles Completed: 11/59
+Tests Completed: 3/258
+Failed Compiles:
+* COMPILE s2swa_32bit_pdlib_intel: FAILED: DISK QUOTA ISSUE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_s2swa_32bit_pdlib_intel.log
+* COMPILE s2swa_32bit_pdlib_sfs_intel: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_s2swa_32bit_pdlib_sfs_intel.log
+* COMPILE s2swa_faster_intel: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_s2swa_faster_intel.log
+* COMPILE s2sw_pdlib_intel: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_s2sw_pdlib_intel.log
+* COMPILE s2sw_pdlib_debug_intel: FAILED: DISK QUOTA ISSUE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_s2sw_pdlib_debug_intel.log
+* COMPILE atm_dyn32_intel: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_atm_dyn32_intel.log
+* COMPILE rrfs_intel: FAILED: DISK QUOTA ISSUE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_rrfs_intel.log
+* COMPILE csawmg_intel: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_csawmg_intel.log
+* COMPILE wam_intel: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_wam_intel.log
+* COMPILE atm_faster_dyn32_intel: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_atm_faster_dyn32_intel.log
+* COMPILE atm_debug_dyn32_intel: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_atm_debug_dyn32_intel.log
+* COMPILE atm_debug_dyn32_gnu: FAILED: DISK QUOTA ISSUE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_atm_debug_dyn32_gnu.log
+* COMPILE rrfs_dyn32_phy32_intel: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_rrfs_dyn32_phy32_intel.log
+* COMPILE rrfs_dyn32_phy32_faster_intel: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_rrfs_dyn32_phy32_faster_intel.log
+* COMPILE rrfs_dyn64_phy32_intel: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_rrfs_dyn64_phy32_intel.log
+* COMPILE rrfs_dyn32_phy32_debug_intel: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_rrfs_dyn32_phy32_debug_intel.log
+* COMPILE rrfs_dyn64_phy32_debug_intel: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_rrfs_dyn64_phy32_debug_intel.log
+* COMPILE hafsw_intel: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_hafsw_intel.log
+* COMPILE hafsw_debug_intel: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_hafsw_debug_intel.log
+* COMPILE hafsw_faster_intel: FAILED: DISK QUOTA ISSUE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_hafsw_faster_intel.log
+* COMPILE hafs_mom6w_intel: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_hafs_mom6w_intel.log
+* COMPILE hafs_all_intel: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_hafs_all_intel.log
+* COMPILE datm_cdeps_intel: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_datm_cdeps_intel.log
+* COMPILE datm_cdeps_debug_intel: FAILED: DISK QUOTA ISSUE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_datm_cdeps_debug_intel.log
+* COMPILE datm_cdeps_faster_intel: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_datm_cdeps_faster_intel.log
+* COMPILE atm_ds2s_docn_pcice_intel: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_atm_ds2s_docn_pcice_intel.log
+* COMPILE atm_ds2s_docn_dice_intel: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_atm_ds2s_docn_dice_intel.log
+* COMPILE atml_intel: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_atml_intel.log
+* COMPILE atml_debug_intel: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_atml_debug_intel.log
+* COMPILE atmw_intel: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_atmw_intel.log
+* COMPILE atmaero_intel: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_atmaero_intel.log
+* COMPILE atmaq_intel: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_atmaq_intel.log
+* COMPILE atm_fbh_intel: FAILED: DISK QUOTA ISSUE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_atm_fbh_intel.log
+* COMPILE atm_gnu: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_atm_gnu.log
+* COMPILE rrfs_gnu: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_rrfs_gnu.log
+* COMPILE csawmg_gnu: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_csawmg_gnu.log
+* COMPILE atm_dyn32_debug_gnu: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_atm_dyn32_debug_gnu.log
+* COMPILE wam_debug_gnu: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_wam_debug_gnu.log
+* COMPILE rrfs_dyn32_phy32_gnu: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_rrfs_dyn32_phy32_gnu.log
+* COMPILE atm_dyn64_phy32_gnu: FAILED: DISK QUOTA ISSUE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_atm_dyn64_phy32_gnu.log
+* COMPILE atm_dyn32_phy32_debug_gnu: FAILED: DISK QUOTA ISSUE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_atm_dyn32_phy32_debug_gnu.log
+* COMPILE atm_dyn64_phy32_debug_gnu: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_atm_dyn64_phy32_debug_gnu.log
+* COMPILE s2swa_gnu: FAILED: DISK QUOTA ISSUE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_s2swa_gnu.log
+* COMPILE s2s_gnu: FAILED: DISK QUOTA ISSUE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_s2s_gnu.log
+* COMPILE s2swa_debug_gnu: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_s2swa_debug_gnu.log
+* COMPILE s2sw_pdlib_gnu: FAILED: UNABLE TO FINISH COMPILE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_s2sw_pdlib_gnu.log
+* COMPILE s2sw_pdlib_debug_gnu: FAILED: DISK QUOTA ISSUE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_s2sw_pdlib_debug_gnu.log
+* COMPILE datm_cdeps_gnu: FAILED: DISK QUOTA ISSUE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/compile_datm_cdeps_gnu.log
+Failed Tests:
+* TEST cpld_control_p8_mixedmode_intel: FAILED: RUN DID NOT COMPLETE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/run_cpld_control_p8_mixedmode_intel.log
+* TEST cpld_control_gefs_intel: FAILED: DISK QUOTA ISSUE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/run_cpld_control_gefs_intel.log
+* TEST cpld_restart_gefs_intel: FAILED: UNABLE TO START TEST
+-- LOG: N/A
+* TEST cpld_dcp_gefs_intel: FAILED: DISK QUOTA ISSUE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/run_cpld_dcp_gefs_intel.log
+* TEST cpld_debug_gfsv17_intel: FAILED: DISK QUOTA ISSUE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/run_cpld_debug_gfsv17_intel.log
+* TEST cpld_control_p8_intel: FAILED: RUN DID NOT COMPLETE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/run_cpld_control_p8_intel.log
+* TEST cpld_control_p8.v2.sfc_intel: FAILED: RUN DID NOT COMPLETE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/run_cpld_control_p8.v2.sfc_intel.log
+* TEST cpld_restart_p8_intel: FAILED: UNABLE TO START TEST
+-- LOG: N/A
+* TEST cpld_control_qr_p8_intel: FAILED: RUN DID NOT COMPLETE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/run_cpld_control_qr_p8_intel.log
+* TEST cpld_restart_qr_p8_intel: FAILED: UNABLE TO START TEST
+-- LOG: N/A
+* TEST cpld_2threads_p8_intel: FAILED: RUN DID NOT COMPLETE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/run_cpld_2threads_p8_intel.log
+* TEST cpld_decomp_p8_intel: FAILED: RUN DID NOT COMPLETE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/run_cpld_decomp_p8_intel.log
+* TEST cpld_mpi_p8_intel: FAILED: RUN DID NOT COMPLETE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/run_cpld_mpi_p8_intel.log
+* TEST cpld_control_ciceC_p8_intel: FAILED: RUN DID NOT COMPLETE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/run_cpld_control_ciceC_p8_intel.log
+* TEST cpld_control_c192_p8_intel: FAILED: DISK QUOTA ISSUE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/run_cpld_control_c192_p8_intel.log
+* TEST cpld_restart_c192_p8_intel: FAILED: UNABLE TO START TEST
+-- LOG: N/A
+* TEST cpld_control_p8_lnd_intel: FAILED: RUN DID NOT COMPLETE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/run_cpld_control_p8_lnd_intel.log
+* TEST cpld_restart_p8_lnd_intel: FAILED: UNABLE TO START TEST
+-- LOG: N/A
+* TEST cpld_s2sa_p8_intel: FAILED: RUN DID NOT COMPLETE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/run_cpld_s2sa_p8_intel.log
+* TEST cpld_control_noaero_p8_intel: FAILED: RUN DID NOT COMPLETE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/run_cpld_control_noaero_p8_intel.log
+* TEST cpld_control_nowave_noaero_p8_intel: FAILED: RUN DID NOT COMPLETE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/run_cpld_control_nowave_noaero_p8_intel.log
+* TEST cpld_debug_p8_intel: FAILED: RUN DID NOT COMPLETE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/run_cpld_debug_p8_intel.log
+* TEST cpld_debug_noaero_p8_intel: FAILED: RUN DID NOT COMPLETE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/run_cpld_debug_noaero_p8_intel.log
+* TEST datm_cdeps_lnd_era5_rst_intel: FAILED: DISK QUOTA ISSUE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/run_datm_cdeps_lnd_era5_rst_intel.log
+* TEST regional_atmaq_debug_intel: FAILED: DISK QUOTA ISSUE
+-- LOG: /work/noaa/epic/role-epic/jenkins/workspace/s-weather-model_pipeline_PR-2624/tests/logs/log_hercules/run_regional_atmaq_debug_intel.log
 
 NOTES:
-A file 'test_changes.list' was generated but is empty.
+A file 'test_changes.list' was generated with list of all failed tests.
+You can use './rt.sh -c -b test_changes.list' to create baselines for the failed tests.
 If you are using this log as a pull request verification, please commit 'test_changes.list'.
 
-Result: SUCCESS
+Result: FAILURE
 
 ====END OF HERCULES REGRESSION TESTING LOG====
