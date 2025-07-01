@@ -749,7 +749,7 @@ case ${MACHINE_ID} in
     fi
 
     export LD_PRELOAD=/usr/lib64/libstdc++.so.6
-    module use /ncrc/proj/epic/spack-stack/c6/spack-stack-1.9.1/envs/ue-intel-2023.2.0/install/modulefiles/Core
+    module use /ncrc/proj/epic/spack-stack/c6/spack-stack-1.9.2/envs/ue-intel-2023.2.0/install/modulefiles/Core
     module load stack-intel/2023.2.0
     module load cray-mpich/8.1.30
     module load python/3.11
