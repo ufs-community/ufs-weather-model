@@ -8,7 +8,7 @@ Launch tests from the ``${UFS_WM}/tests-dev`` directory with the following comma
 where:
 
 * ``<ACCOUNT>``: Account/project number for batch jobs.
-* ``<CASE_NAME>``: Name of the test case (e.g., ``2020_CAPE`` or ``baroclinic_wave``).
+* ``<CASE_NAME>``: Name of the test case (e.g., ``2020_CAPE``, ``baroclinic_wave``, or ``tropical_cyclone``).
 * ``<COMPILER>``: Compiler used for the tests (``intel`` or ``gnu``).
 
 **Command-line Options:**
