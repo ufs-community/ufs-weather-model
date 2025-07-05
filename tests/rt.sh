@@ -718,10 +718,10 @@ case ${MACHINE_ID} in
     fi
 
     export LD_PRELOAD=/usr/lib64/libstdc++.so.6
-    module load PrgEnv-intel/8.5.0
-    module load intel-classic/2023.2.0
-    module load cray-mpich/8.1.28
-    module load python/3.9.12
+    module use /ncrc/proj/epic/spack-stack/c5/spack-stack-1.9.1/envs/ue-intel-2023.2.0/install/modulefiles/Core
+    module load stack-intel/2023.2.0
+    module load cray-mpich/8.1.30
+    module load python/3.11
     module use /ncrc/proj/epic/spack-stack/modulefiles
     if [[ "${ECFLOW:-false}" == true ]] ; then
       module load ecflow/5.8.4
@@ -749,10 +749,10 @@ case ${MACHINE_ID} in
     fi
 
     export LD_PRELOAD=/usr/lib64/libstdc++.so.6
-    module use /ncrc/proj/epic/spack-stack/c6/spack-stack-1.6.0/envs/fms-2024.01/install/modulefiles/Core
+    module use /ncrc/proj/epic/spack-stack/c6/spack-stack-1.9.2/envs/ue-intel-2023.2.0/install/modulefiles/Core
     module load stack-intel/2023.2.0
-    module load cray-mpich/8.1.29
-    module load python/3.10.13
+    module load cray-mpich/8.1.30
+    module load python/3.11
     if [[ "${ECFLOW:-false}" == true ]] ; then
       module use /ncrc/proj/epic/spack-stack/modulefiles
       module load ecflow/5.8.4
