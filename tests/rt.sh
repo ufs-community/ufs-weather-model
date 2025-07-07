@@ -718,10 +718,10 @@ case ${MACHINE_ID} in
     fi
 
     export LD_PRELOAD=/usr/lib64/libstdc++.so.6
-    module load PrgEnv-intel/8.5.0
-    module load intel-classic/2023.2.0
-    module load cray-mpich/8.1.28
-    module load python/3.9.12
+    module use /ncrc/proj/epic/spack-stack/c5/spack-stack-1.9.1/envs/ue-intel-2023.2.0/install/modulefiles/Core
+    module load stack-intel/2023.2.0
+    module load cray-mpich/8.1.30
+    module load python/3.11
     module use /ncrc/proj/epic/spack-stack/modulefiles
     if [[ "${ECFLOW:-false}" == true ]] ; then
       module load ecflow/5.8.4
@@ -749,10 +749,10 @@ case ${MACHINE_ID} in
     fi
 
     export LD_PRELOAD=/usr/lib64/libstdc++.so.6
-    module use /ncrc/proj/epic/spack-stack/c6/spack-stack-1.6.0/envs/fms-2024.01/install/modulefiles/Core
+    module use /ncrc/proj/epic/spack-stack/c6/spack-stack-1.9.2/envs/ue-intel-2023.2.0/install/modulefiles/Core
     module load stack-intel/2023.2.0
-    module load cray-mpich/8.1.29
-    module load python/3.10.13
+    module load cray-mpich/8.1.30
+    module load python/3.11
     if [[ "${ECFLOW:-false}" == true ]] ; then
       module use /ncrc/proj/epic/spack-stack/modulefiles
       module load ecflow/5.8.4
@@ -792,6 +792,35 @@ case ${MACHINE_ID} in
     PTMP="${dprefix}/stmp2"
 
     SCHEDULER=slurm
+    ;;
+  ursa)
+    echo "rt.sh: Setting up ursa..."
+    if [[ "${ROCOTO:-false}" == true ]] ; then
+      module load rocoto
+      ROCOTO_SCHEDULER=slurm
+    fi
+
+    if [[ "${ECFLOW:-false}" == true ]] ; then
+      module load ecflow/5.11.4
+      ECF_HOST="uecflow01"
+      ECF_PORT="$(( $(id -u) + 1500 ))"
+      export ECF_HOST ECF_PORT
+    fi
+
+    QUEUE="batch"
+    COMPILE_QUEUE="batch"
+
+    PARTITION="u1-compute"
+    dprefix="/scratch4/NCEPDEV/stmp/${USER}"
+    if [[ "${ACCNR}" == 'epic' ]] ; then
+      dprefix="/scratch4/NAGAPE/epic/${USER}/stmp"
+    fi
+    DISKNM="/scratch4/NAGAPE/epic/role-epic/UFS-WM_RT"
+    STMP="${STMP:-${dprefix}/RT_BASELINE}"
+    PTMP="${PTMP:-${dprefix}/RT_RUNDIRS}"
+
+    SCHEDULER=slurm
+
     ;;
   orion)
     echo "rt.sh: Setting up orion..."
