@@ -1,20 +1,25 @@
 ###############################################################################
 ### Fortran compiler flags
 ###############################################################################
-
 if(CMAKE_Fortran_COMPILER_ID MATCHES "GNU")
+  set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -g -fbacktrace")
   set(CMAKE_Fortran_FLAGS_RELEASE "-O2")
   set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -fcheck=bounds -ffpe-trap=invalid,zero,overflow,underflow" )
-  set(CMAKE_Fortran_LINK_FLAGS "")
   set(Fortran_LINELENGTH_FLAG "-ffixed-line-length-none -ffree-form")
-elseif(CMAKE_Fortran_COMPILER_ID MATCHES "Intel")
+elseif(CMAKE_Fortran_COMPILER_ID MATCHES "^(Intel)$")
+  set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -g -traceback")
   set(CMAKE_Fortran_FLAGS_RELEASE "-O2 -debug minimal -fp-model source")
   set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -check -check noarg_temp_created -check nopointer -fpe0 -ftrapuv -init=snan,arrays")
-  set(CMAKE_Fortran_LINK_FLAGS "")
+  set(Fortran_LINELENGTH_FLAG "-free")
+elseif(CMAKE_Fortran_COMPILER_ID MATCHES "^(IntelLLVM)$")
+  set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -g -traceback")
+  set(CMAKE_Fortran_FLAGS_RELEASE "-O2 -debug minimal -fp-model precise")
+  set(CMAKE_Fortran_FLAGS_DEBUG "-O0 -check -check noarg_temp_created -check nopointer -fpe0 -ftrapuv -init=snan,arrays")
   set(Fortran_LINELENGTH_FLAG "-free")
 else()
   message(WARNING "Fortran compiler with ID ${CMAKE_Fortran_COMPILER_ID} will be used with CMake default options")
 endif()
+set(CMAKE_Fortran_LINK_FLAGS "")
 
 ###############################################################################
 ### Set variables
@@ -90,7 +95,7 @@ include("fvcom_files.cmake")
 
 add_library(fvcom STATIC ${fvcom_nuopc_files} ${fvcom_main_files} ${fvcom_mods_files} ${fvcom_modsw_files} ${fvcom_mainw_files} ${fvcom_bio_files} ${fvcom_extra_files})
 set_target_properties(fvcom PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
-set_target_properties(fvcom PROPERTIES COMPILE_FLAGS "${Fortran_LINELENGTH_FLAG}")
+target_compile_options(fvcom PRIVATE $<$<COMPILE_LANGUAGE:Fortran>:${Fortran_LINELENGTH_FLAG}>)
 set_target_properties(fvcom PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(fvcom PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod> $<INSTALL_INTERFACE:mod>)
 target_link_libraries(fvcom PRIVATE metis julian fproj proj esmf NetCDF::NetCDF_Fortran)
