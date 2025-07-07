@@ -87,6 +87,11 @@ if [ $DO_RRTMGP = .true. ]; then
     cp @[INPUTDATA_ROOT]/FV3_input_data_RRTMGP/* .
 fi
 
+# 1993,94,95 co2 for SFS
+if [[ $SFS == .true. ]]; then
+    cp ${FV3_IC}/co2historicaldata* ./.
+fi
+
 OPNREQ_TEST=${OPNREQ_TEST:-false}
 SUFFIX=${RT_SUFFIX}
 # No restart
@@ -106,7 +111,6 @@ if [[ $WARM_START == .false. ]]; then
         cp ${ICE_IC}/${OCNRES}/cice_model_@[ICERES].cpc.res_${SYEAR}${SMONTH}${SDAY}.nc ./cice_model.res.nc
     fi
     if [[ $SFS == .true. ]]; then
-        cp ${FV3_IC}/co2historicaldata* ./.
         cp ${FV3_IC}/atminc.nc ./INPUT/.
         cp ${MOM_IC}/mom6_increment.nc ./INPUT/.
     fi
