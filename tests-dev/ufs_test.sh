@@ -173,7 +173,7 @@ source rt_utils.sh
 source module-setup.sh
 
 check_machine=false
-platforms=( hera orion hercules gaea jet derecho noaacloud s4 )
+platforms=( hera orion hercules gaeac6 derecho noaacloud s4 )
 for name in "${platforms[@]}"
 do
   if [[ ${MACHINE_ID} == "${name}" ]]; then
@@ -209,9 +209,11 @@ if [[ ${LINK_TESTS} == true ]]; then
         exit 1
     fi
 
-    cp "${PATHRT}"/test_cases/tests/* "${PATHRT}"/tests
-    cp "${PATHRT}"/test_cases/exp_conf/* "${PATHRT}"/fv3_conf
-    cp "${PATHRT}"/test_cases/parm/* "${PATHRT}"/parm
+    cp "${PATHRT}"/../tests-dev/test_cases/tests/* "${PATHRT}"/tests
+    cp "${PATHRT}"/../tests-dev/test_cases/exp_conf/* "${PATHRT}"/fv3_conf
+    cp "${PATHRT}"/../tests-dev/test_cases/parm/* "${PATHRT}"/parm
+    cp "${PATHRT}"/../tests-dev/test_cases/diag_table/* "${PATHRT}"/parm/diag_table
+    cp "${PATHRT}"/../tests-dev/test_cases/field_table/* "${PATHRT}"/parm/field_table
 fi
 
 #Check to error out if incompatible options are chosen together
