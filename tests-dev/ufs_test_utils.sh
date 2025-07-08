@@ -1,6 +1,12 @@
 #!/bin/bash
 set -eux
 
+if [[ ${MACHINE_ID} == "ursa" ]]; then
+    PYTHON_VER="python3"
+else
+    PYTHON_VER="python"
+fi
+
 function set_run_task() {
     source default_vars.sh
     source rt_utils.sh
@@ -25,7 +31,7 @@ function set_run_task() {
 
     export WLCLK
      
-    python -c "import create_xml; create_xml.write_runtest_env()"
+    ${PYTHON_VER} -c "import create_xml; create_xml.write_runtest_env()"
     rocoto_create_run_task
    
 }

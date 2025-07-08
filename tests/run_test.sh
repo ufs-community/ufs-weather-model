@@ -104,8 +104,12 @@ cp "${PATHRT}/module-setup.sh" "module-setup.sh"
 
 case ${MACHINE_ID} in
   wcoss2|acorn)
-    module load intel/19.1.3.304 netcdf/4.7.4
-    module load nccmp
+    module load intel/19.1.3.304
+    module load craype/2.7.13 cray-mpich/8.1.12
+    module load netcdf-D/4.9.2
+    module load pnetcdf-D/1.12.2
+    module load hdf5-D/1.14.0
+    module load nccmp-D/1.9.0.1
     ;;
   s4)
     module use /data/prod/jedi/spack-stack/spack-stack-1.4.1/envs/ufs-pio-2.5.10/install/modulefiles/Core
@@ -491,7 +495,7 @@ if [[ ${skip_check_results} == false ]]; then
 
       else
         if [[ ${i##*.} == nc* ]] ; then
-          if [[ " orion hercules hera wcoss2 acorn derecho gaeac5 gaeac6 jet s4 noaacloud frontera" =~ ${MACHINE_ID} ]]; then
+          if [[ " orion hercules hera ursa wcoss2 acorn derecho gaeac5 gaeac6 jet s4 noaacloud frontera " =~ ${MACHINE_ID} ]]; then
             printf "USING NCCMP.." >> "${RT_LOG}"
             printf "USING NCCMP.."
               nccmp_args=(-d -S -q -f -B --Attribute=checksum --warn=format)
