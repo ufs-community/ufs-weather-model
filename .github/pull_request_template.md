@@ -170,7 +170,7 @@ Please delete what is not needed.
   - [ ] Hercules
   - [ ] GaeaC6
   - [ ] Derecho
-  - [ ] Frontera
+  - [ ] Ursa
 - WCOSS2
   - [ ] Dogwood/Cactus
   - [ ] Acorn

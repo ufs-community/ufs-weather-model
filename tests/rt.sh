@@ -793,6 +793,35 @@ case ${MACHINE_ID} in
 
     SCHEDULER=slurm
     ;;
+  ursa)
+    echo "rt.sh: Setting up ursa..."
+    if [[ "${ROCOTO:-false}" == true ]] ; then
+      module load rocoto
+      ROCOTO_SCHEDULER=slurm
+    fi
+
+    if [[ "${ECFLOW:-false}" == true ]] ; then
+      module load ecflow/5.11.4
+      ECF_HOST="uecflow01"
+      ECF_PORT="$(( $(id -u) + 1500 ))"
+      export ECF_HOST ECF_PORT
+    fi
+
+    QUEUE="batch"
+    COMPILE_QUEUE="batch"
+
+    PARTITION="u1-compute"
+    dprefix="/scratch4/NCEPDEV/stmp/${USER}"
+    if [[ "${ACCNR}" == 'epic' ]] ; then
+      dprefix="/scratch4/NAGAPE/epic/${USER}/stmp"
+    fi
+    DISKNM="/scratch4/NAGAPE/epic/role-epic/UFS-WM_RT"
+    STMP="${STMP:-${dprefix}/RT_BASELINE}"
+    PTMP="${PTMP:-${dprefix}/RT_RUNDIRS}"
+
+    SCHEDULER=slurm
+
+    ;;
   orion)
     echo "rt.sh: Setting up orion..."
 
