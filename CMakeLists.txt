@@ -238,7 +238,7 @@ endif()
 ### Wave components [WW3]
 ###############################################################################
 if(WW3)
-  if(APP MATCHES "^(ATMWM)$" )
+  if(APP MATCHES "^(ATMWM)$")
     set(SWITCH "multi_esmf" CACHE STRING "ESMF cap")
     set(UFS_CAP "MULTI_ESMF" CACHE STRING "Build with MULTI_ESMF cap")
     list(APPEND _ufs_defs_private FRONT_WW3=WMESMFMD)
