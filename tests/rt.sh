@@ -786,10 +786,10 @@ case ${MACHINE_ID} in
     COMPILE_QUEUE="batch"
 
     PARTITION=
-    dprefix=${dprefix:-"/scratch1/NCEPDEV"}
-    DISKNM="/scratch2/NAGAPE/epic/UFS-WM_RT"
-    STMP="${dprefix}/stmp4"
-    PTMP="${dprefix}/stmp2"
+    dprefix=${dprefix:-"/scratch3/NCEPDEV/stmp/${USER}"}
+    DISKNM="/scratch3/NAGAPE/epic/role-epic/UFS-WM_RT"
+    STMP="${dprefix}/RT_BASELINE"
+    PTMP="${dprefix}/RT_RUNDIRS"
 
     SCHEDULER=slurm
     ;;
