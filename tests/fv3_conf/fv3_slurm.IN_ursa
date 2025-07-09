@@ -1,53 +1,40 @@
-#!/bin/sh
+#!/bin/bash
 #SBATCH -e err
 #SBATCH -o out
 #SBATCH --account=@[ACCNR]
 #SBATCH --qos=@[QUEUE]
-#SBATCH --partition=@[PARTITION]
 ### #SBATCH --ntasks=@[TASKS]
 #SBATCH --nodes=@[NODES]
+#SBATCH --partition=@[PARTITION]
 #SBATCH --ntasks-per-node=@[TPN]
 #SBATCH --time=@[WLCLK]
 #SBATCH --job-name="@[JBNME]"
-#SBATCH --exclusive
+### #SBATCH --exclusive
 
 set -eux
-echo -n " $( date +%s )," >  job_timestamp.txt
+date_s_start=$(date +%s)
+echo -n "${date_s_start}," > job_timestamp.txt
 
 set +x
-MACHINE_ID=hercules
+export MACHINE_ID=ursa
 source ./module-setup.sh
-module use $PWD/modulefiles
+module use "${PWD}/modulefiles"
 module load modules.fv3
 module list
 set -x
 
-ulimit -s unlimited
+date_start=$(date)
+echo "Model started: ${date_start}"
 
-echo "Model started:  " `date`
-
-#export MPI_TYPE_DEPTH=20
+export MPI_TYPE_DEPTH=20
 export OMP_STACKSIZE=512M
-export KMP_AFFINITY=scatter
+# shellcheck disable=SC2125
 export OMP_NUM_THREADS=@[THRD]
-#export ESMF_RUNTIME_COMPLIANCECHECK=OFF:depth=4
-#export PSM_RANKS_PER_CONTEXT=4
-#export PSM_SHAREDCONTEXTS=1
+export ESMF_RUNTIME_COMPLIANCECHECK=OFF:depth=4
 export ESMF_RUNTIME_PROFILE=ON
 export ESMF_RUNTIME_PROFILE_OUTPUT="SUMMARY"
-
-# GNU was not compiled with right SLURM option:
-export PMI2=""
-if [[ @[RT_COMPILER] == intel ]]; then
-  export I_MPI_EXTRA_FILESYSTEM=ON
-elif [[ @[RT_COMPILER] == gnu ]]; then
-  export PMI2="--mpi=pmi2"
-  # For mvapich2
-  export MV2_SHMEM_COLL_NUM_COMM=128
-  export MV2_HOMOGENEOUS_CLUSTER=1
-  export MV2_USE_ALIGNED_ALLOC=1
-fi
-export FI_MLX_INJECT_LIMIT=0
+export PSM_RANKS_PER_CONTEXT=4
+export PSM_SHAREDCONTEXTS=1
 
 # Avoid job errors because of filesystem synchronization delays
 sync && sleep 1
@@ -59,7 +46,9 @@ if [ "${JOB_SHOULD_FAIL:-NO}" = WHEN_RUNNING ] ; then
     false
 fi
 
-srun ${PMI2} --label -n @[TASKS] ./fv3.exe
+srun --label -n @[TASKS] ./fv3.exe
 
-echo "Model ended:    " `date`
-echo -n " $( date +%s )," >> job_timestamp.txt
+date_end=$(date)
+echo "Model ended: ${date_end}"
+date_s_end=$(date +%s)
+echo -n "${date_s_end}," >> job_timestamp.txt
