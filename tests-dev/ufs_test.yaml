@@ -1,0 +1,21 @@
+atm_dyn32_intel:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16,FV3_GFS_v16_flake,FV3_GFS_v17_p8,FV3_GFS_v17_p8_rrtmgp,FV3_GFS_v15_thompson_mynn_lam3km,FV3_WoFS_v0,FV3_GFS_v17_p8_mynn,FV3_GFS_v17_p8_ugwpv1 -D32BIT=ON'
+  tests:
+    - 2020_CAPE: {'project':['test_case'],'baseline': 'True'}
+    - baroclinic_wave: {'project':['test_case'],'baseline': 'True'}  
+hafsw_intel:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=HAFSW -DMOVING_NEST=ON -DCCPP_SUITES=FV3_HAFS_v1_thompson_nonsst,FV3_HAFS_v1_gfdlmp_tedmf,FV3_HAFS_v1_gfdlmp_tedmf_nonsst,FV3_HAFS_v1_thompson_tedmf_gfdlsf,FV3_global_nest_v1 -D32BIT=ON'
+  tests: 
+    - tropical_cyclone: {'project':['test_case'],'baseline': 'True'}
+atm_gnu:
+  build: 
+    compiler: 'gnu'
+    option: '-DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16,FV3_GFS_v16_flake,FV3_GFS_v16_ras,FV3_GFS_v17_p8,FV3_GFS_v17_p8_ugwpv1'
+    turnon: ['hera','hercules']
+  tests:
+    - 2020_CAPE: {'project':['test_case'], 'baseline': 'True','turnon':['hera','hercules']}
+    - baroclinic_wave: {'project':['test_case'], 'baseline': 'True','turnon':['hera','hercules']}  

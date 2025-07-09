@@ -1,0 +1,97 @@
+mkdir -p INPUT RESTART 
+
+
+if [[ $atm_model == 'datm' ]]; then
+# need to make some adjustments for LM4's grid file requirements
+# assume LNDRES is defined
+
+  if [[ $LNDRES == 'C96' ]]; then
+    FV3_DIR=FV3_input_data
+  else
+    FV3_DIR=FV3_input_data${LNDRES#C}
+  fi
+
+  ## get these if don't already have:
+  rsync -arv @[INPUTDATA_ROOT]/CPL_FIX/a@[LNDRES]o@[OCNRES]/grid_spec.nc ./INPUT
+  rsync -arv @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/@[LNDRES]_grid*.nc ./INPUT
+  rsync -arv @[INPUTDATA_ROOT]/${FV3_DIR}/INPUT/grid_spec.nc ./INPUT/@[LNDRES]_mosaic.nc
+  rsync -arv @[INPUTDATA_ROOT]/MOM6_FIX/@[OCNRES]/* ./INPUT
+
+elif [[ $atm_model == 'fv3' ]]; then
+  # assume ATMRES is defined
+  if [[ $ATMRES == 'C96' ]]; then
+    FV3_DIR=FV3_input_data
+  else
+    FV3_DIR=FV3_input_data${ATMRES#C}
+  fi
+
+fi  
+
+
+
+## LM4
+
+# out of the box, LM4 expects aXl referenced in grid_spec.nc for grid land area. Include them for now.
+
+# check if ATMRES or LNDRES is equal to C96:
+if [[ $ATMRES == 'C96' || $LNDRES == 'C96' ]]; then
+  tar -xf @[INPUTDATA_LM4]/c96_grid/c96_OM4_025_grid_No_mg_drag_v20160808.tar -C ./INPUT/ \
+    --wildcards "C96_mosaic_tile?XC96_mosaic_tile?.nc"
+
+  tar -xvf @[INPUTDATA_LM4]/c96_LM4/c96_topo_rough_land.nc.tar -C ./INPUT/
+else
+   echo 'Only setup for C96 is supported'
+fi
+
+ln -s @[INPUTDATA_LM4]/common_LM4/biodata.nc                 ./INPUT/
+ln -s @[INPUTDATA_LM4]/common_LM4/cover_type.nc              ./INPUT/
+ln -s @[INPUTDATA_LM4]/common_LM4/geohydrology.nc            ./INPUT/
+ln -s @[INPUTDATA_LM4]/common_LM4/geohydrology_table_2a2n.nc ./INPUT/
+ln -s @[INPUTDATA_LM4]/common_LM4/ground_type.nc             ./INPUT/
+ln -s @[INPUTDATA_LM4]/common_LM4/landuse.nc                 ./INPUT/
+ln -s @[INPUTDATA_LM4]/common_LM4/soil_brdf.nc               ./INPUT/
+ln -s @[INPUTDATA_LM4]/common_LM4/soil_type_hwsd_5minute.nc  ./INPUT/soil_type.nc
+
+
+cd INPUT
+rsync -arv @[INPUTDATA_ROOT]/DATM_GSWP3_input_data/. .
+cd -
+
+SUFFIX=${RT_SUFFIX}
+# restart
+if [ $WARM_START = .true. ]; then
+  # # NoahMP restart files
+  # cp ../${DEP_RUN}${SUFFIX}/ufs.cpld.lnd.out.${RESTART_FILE_SUFFIX_SECS}.tile*.nc RESTART/.
+
+  # LM4 restart files
+  # expected checkpoint restarts are named like: YYYYMMDD.HHMMSS.*.res.tile?.nc
+
+  cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/${LM4_RESTART_PREFIX}.landuse.res        ./INPUT/
+  cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/${LM4_RESTART_PREFIX}.cana.res.tile*.nc  ./INPUT/
+  cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/${LM4_RESTART_PREFIX}.glac.res.tile*.nc  ./INPUT/
+  cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/${LM4_RESTART_PREFIX}.lake.res.tile*.nc  ./INPUT/
+  cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/${LM4_RESTART_PREFIX}.land.res.tile*.nc  ./INPUT/
+  cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/${LM4_RESTART_PREFIX}.snow.res.tile*.nc  ./INPUT/
+  cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/${LM4_RESTART_PREFIX}.soil.res.tile*.nc  ./INPUT/
+  cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/${LM4_RESTART_PREFIX}.vegn1.res.tile*.nc ./INPUT/
+  cp ../${DEP_RUN}${RT_SUFFIX}/RESTART/${LM4_RESTART_PREFIX}.vegn2.res.tile*.nc ./INPUT/
+
+  # remove datestamp
+  rename ${LM4_RESTART_PREFIX}. "" INPUT/${LM4_RESTART_PREFIX}.*.res*
+
+  # CMEPS restart and pointer files
+  RFILE1=ufs.cpld.cpl.r.${RESTART_FILE_SUFFIX_SECS}.nc
+  cp ../${DEP_RUN}${SUFFIX}/RESTART/${RFILE1} RESTART/.  
+  ls -1 "RESTART/${RFILE1}">rpointer.cpl
+
+  # CDEPS restart and pointer files
+  RFILE2=ufs.cpld.datm.r.${RESTART_FILE_SUFFIX_SECS}.nc
+  cp ../${DEP_RUN}${SUFFIX}/${RFILE2} RESTART/.
+  ls -1 "RESTART/${RFILE2}">rpointer.atm
+fi
+
+
+
+
+
+

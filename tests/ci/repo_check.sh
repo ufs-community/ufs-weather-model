@@ -40,7 +40,7 @@ branches[mom6]='dev/emc'
 pathes[mom6]='MOM6-interface/MOM6'
 
 urls[cice]='https://github.com/NOAA-EMC/CICE'
-branches[cice]='emc/develop'
+branches[cice]='develop'
 pathes[cice]='CICE-interface/CICE'
 
 urls[ww3]='https://github.com/NOAA-EMC/WW3'
@@ -93,7 +93,7 @@ pathes[noahmp]='NOAHMP-interface/noahmp'
 
 urls[cubed_sphere]='https://github.com/NOAA-GFDL/GFDL_atmos_cubed_sphere'
 branches[cubed_sphere]='dev/emc'
-pathes[cubed_sphere]='FV3/atmos_cubed_sphere'
+pathes[cubed_sphere]='FV3/fv3/atmos_cubed_sphere'
 
 for submodule in $submodules; do
     url=${urls[$submodule]}

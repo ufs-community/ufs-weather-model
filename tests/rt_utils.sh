@@ -14,7 +14,129 @@ ECFLOW_RUNNING=false
 
 jobid=0
 
-function compute_petbounds_and_tasks() {
+redirect_out_err() {
+    ( set -e -o pipefail ; ( "$@" 2>&1 1>&3 3>&- | tee err ) 3>&1 1>&2 | tee out )
+    # The above shell redirection copies stdout to "out" and stderr to "err"
+    # while still sending them to stdout and stderr. It ensures the entire
+    # redirect_out_err command will return non-zero if "$@" or tee return non-zero.
+}
+
+function compute_petbounds_and_tasks_traditional_threading() {
+
+  # each test MUST define ${COMPONENT}_tasks variable for all components it is using
+  # and MUST NOT define those that it's not using or set the value to 0.
+
+  # ATM is a special case since it is running on the sum of compute and io tasks.
+  # CHM component and mediator are running on ATM compute tasks only.
+
+  if [[ ${DATM_CDEPS} = 'false' ]]; then
+    if [[ ${ATM_compute_tasks:-0} -eq 0 ]]; then
+      ATM_compute_tasks=$((INPES * JNPES * NTILES))
+    fi
+    if [[ ${QUILTING} = '.true.' ]]; then
+      ATM_io_tasks=$((WRITE_GROUP * WRTTASK_PER_GROUP))
+    else
+      ATM_io_tasks=0
+    fi
+    ATM_tasks=$((ATM_compute_tasks + ATM_io_tasks))
+  fi
+
+  local n=0
+  unset atm_petlist_bounds ocn_petlist_bounds ice_petlist_bounds wav_petlist_bounds chm_petlist_bounds med_petlist_bounds aqm_petlist_bounds fbh_petlist_bounds
+
+  local _tasks
+
+  # ATM
+  if [[ ${ATM_tasks:-0} -gt 0 ]]; then
+     atm_petlist_bounds="${n} $((n + ATM_tasks - 1))"
+     n=$((n + ATM_tasks))
+     _tasks=$(( ATM_tasks*atm_omp_num_threads ))
+     atm_nodes=$(( _tasks / TPN ))
+     if (( atm_nodes * TPN < _tasks )); then
+       atm_nodes=$(( atm_nodes + 1 ))
+     fi
+  fi
+
+  # OCN
+  if [[ ${OCN_tasks:-0} -gt 0 ]]; then
+     ocn_petlist_bounds="${n} $((n + OCN_tasks - 1))"
+     n=$((n + OCN_tasks))
+     _tasks=$(( OCN_tasks*ocn_omp_num_threads ))
+     ocn_nodes=$(( _tasks / TPN ))
+     if (( ocn_nodes * TPN < _tasks )); then
+       ocn_nodes=$(( ocn_nodes + 1 ))
+     fi
+  fi
+
+  # ICE
+  if [[ ${ICE_tasks:-0} -gt 0 ]]; then
+     ice_petlist_bounds="${n} $((n + ICE_tasks - 1))"
+     n=$((n + ICE_tasks))
+     _tasks=$(( ICE_tasks*ice_omp_num_threads ))
+     ice_nodes=$(( _tasks / TPN ))
+     if (( ice_nodes * TPN < _tasks )); then
+       ice_nodes=$(( ice_nodes + 1 ))
+     fi
+  fi
+
+  # WAV
+  if [[ ${WAV_tasks:-0} -gt 0 ]]; then
+     wav_petlist_bounds="${n} $((n + WAV_tasks - 1))"
+     n=$((n + WAV_tasks))
+     _tasks=$(( WAV_tasks*wav_omp_num_threads ))
+     wav_nodes=$(( _tasks / TPN ))
+     if (( wav_nodes * TPN < _tasks )); then
+       wav_nodes=$(( wav_nodes + 1 ))
+     fi
+  fi
+
+  # CHM
+  chm_petlist_bounds="0 $((ATM_compute_tasks - 1))"
+
+  # MED - mediator (CMEPS) runs on at most 300 tasks.
+  MED_compute_tasks=$((ATM_compute_tasks<=300 ? ATM_compute_tasks : 300))
+  med_petlist_bounds="0 $((MED_compute_tasks - 1))"
+
+  # AQM
+  aqm_petlist_bounds="0 $((ATM_compute_tasks - 1))"
+
+  # LND
+  if [[ ${lnd_model:-} = "lm4" ]]; then
+      # set lnd_petlist_bounds to be same as ATM_compute_tasks
+      lnd_petlist_bounds="0 $((ATM_compute_tasks - 1))"
+  elif [[ ${LND_tasks:-0} -gt 0 ]]; then # noahmp component or other
+      lnd_petlist_bounds="${n} $((n + LND_tasks - 1))"
+      n=$((n + LND_tasks))
+  fi
+
+  # FBH
+  if [[ ${FBH_tasks:-0} -gt 0 ]]; then
+     fbh_petlist_bounds="${n} $((n + FBH_tasks - 1))"
+     n=$((n + FBH_tasks))
+  fi
+
+  unset _tasks
+
+  UFS_tasks=${n}
+
+  if [[ ${RTVERBOSE} == true ]]; then
+    echo "ATM_petlist_bounds: ${atm_petlist_bounds:-}"
+    echo "OCN_petlist_bounds: ${ocn_petlist_bounds:-}"
+    echo "ICE_petlist_bounds: ${ice_petlist_bounds:-}"
+    echo "WAV_petlist_bounds: ${wav_petlist_bounds:-}"
+    echo "CHM_petlist_bounds: ${chm_petlist_bounds:-}"
+    echo "MED_petlist_bounds: ${med_petlist_bounds:-}"
+    echo "AQM_petlist_bounds: ${aqm_petlist_bounds:-}"
+    echo "LND_petlist_bounds: ${lnd_petlist_bounds:-}"
+    echo "FBH_petlist_bounds: ${fbh_petlist_bounds:-}"
+    echo "UFS_tasks         : ${UFS_tasks:-}"
+  fi
+
+  # TASKS is now set to UFS_TASKS
+  export TASKS=${UFS_tasks}
+}
+
+function compute_petbounds_and_tasks_esmf_threading() {
 
   # each test MUST define ${COMPONENT}_tasks variable for all components it is using
   # and MUST NOT define those that it's not using or set the value to 0.
@@ -32,7 +154,7 @@ function compute_petbounds_and_tasks() {
   fi
 
   local n=0
-  unset atm_petlist_bounds ocn_petlist_bounds ice_petlist_bounds wav_petlist_bounds chm_petlist_bounds med_petlist_bounds aqm_petlist_bounds
+  unset atm_petlist_bounds ocn_petlist_bounds ice_petlist_bounds wav_petlist_bounds chm_petlist_bounds med_petlist_bounds aqm_petlist_bounds fbh_petlist_bounds
 
   # ATM
   ATM_io_tasks=${ATM_io_tasks:-0}
@@ -65,17 +187,28 @@ function compute_petbounds_and_tasks() {
   # CHM
   chm_petlist_bounds="0 $((ATM_compute_tasks * atm_omp_num_threads - 1))"
 
-  # MED
-  med_petlist_bounds="0 $((ATM_compute_tasks * atm_omp_num_threads - 1))"
+  # MED - mediator (CMEPS) runs on at most 300 tasks.
+  MED_compute_tasks=$((ATM_compute_tasks<=300 ? ATM_compute_tasks : 300))
+  med_petlist_bounds="0 $((MED_compute_tasks * atm_omp_num_threads - 1))"
 
   # AQM
   aqm_petlist_bounds="0 $((ATM_compute_tasks * atm_omp_num_threads - 1))"
 
   # LND
-  if [[ ${LND_tasks:-0} -gt 0 ]]; then
-     LND_tasks=$((LND_tasks * lnd_omp_num_threads))
-     lnd_petlist_bounds="${n} $((n + LND_tasks - 1))"
-     n=$((n + LND_tasks))
+  if [[ ${lnd_model:-} = "lm4" ]]; then
+      # set lnd_petlist_bounds to be same as ATM_compute_tasks
+      lnd_petlist_bounds="0 $((ATM_compute_tasks - 1))"
+  elif [[ ${LND_tasks:-0} -gt 0 ]]; then # noahmp component or other
+      LND_tasks=$((LND_tasks * lnd_omp_num_threads))
+      lnd_petlist_bounds="${n} $((n + LND_tasks - 1))"
+      n=$((n + LND_tasks))
+  fi
+
+  # FBH
+  if [[ ${FBH_tasks:-0} -gt 0 ]]; then
+     FBH_tasks=$((FBH_tasks * fbh_omp_num_threads))
+     fbh_petlist_bounds="${n} $((n + FBH_tasks - 1))"
+     n=$((n + FBH_tasks))
   fi
 
   UFS_tasks=${n}
@@ -89,6 +222,7 @@ function compute_petbounds_and_tasks() {
     echo "MED_petlist_bounds: ${med_petlist_bounds:-}"
     echo "AQM_petlist_bounds: ${aqm_petlist_bounds:-}"
     echo "LND_petlist_bounds: ${lnd_petlist_bounds:-}"
+    echo "FBH_petlist_bounds: ${fbh_petlist_bounds:-}"
     echo "UFS_tasks         : ${UFS_tasks:-}"
   fi
 
@@ -117,10 +251,6 @@ submit_and_wait() {
 
   local -r job_card=$1
 
-  ROCOTO=${ROCOTO:-false}
-  ECFLOW=${ECFLOW:-false}
-
-  local test_status='PASS'
   case ${SCHEDULER} in
     pbs)
       qsubout=$( qsub "${job_card}" )
@@ -180,25 +310,37 @@ submit_and_wait() {
         set +e
         job_info=$( qstat "${jobid}" )
         set -e
+        if grep -q "${jobid}" <<< "${job_info}"; then
+          job_running=true
+          # Getting the status letter from scheduler info
+          status=$( grep "${jobid}" <<< "${job_info}" )
+          status=$( awk '{print $5}' <<< "${status}" )
+        else
+          job_running=false
+          status='COMPLETED'
+          set +e
+          exit_status=$( qstat "${jobid}" -x -f | grep Exit_status | awk '{print $3}')
+          set -e
+          if [[ ${exit_status} != 0 ]]; then
+            status='FAILED'
+          fi
+        fi
         ;;
       slurm)
-        job_info=$( squeue -u "${USER}" -j "${jobid}" )
+        job_info=$( squeue -u "${USER}" -j "${jobid}" -o '%i %T' )
+        if grep -q "${jobid}" <<< "${job_info}"; then
+          job_running=true
+        else
+          job_running=false
+          job_info=$( sacct -n -j "${jobid}" --format=JobID,state%20,Jobname%128 | grep "^${jobid}" | grep "${JBNME}" )
+        fi
+        # Getting the status letter from scheduler info
+        status=$( grep "${jobid}" <<< "${job_info}" )
+        status=$( awk '{print $2}' <<< "${status}" )
         ;;
       *)
         ;;
     esac
-
-
-    if grep -q "${jobid}" <<< "${job_info}"; then
-      job_running=true
-    else
-      job_running=false
-      continue
-    fi
-
-    # Getting the status letter from scheduler info
-    status=$( grep "${jobid}" <<< "${job_info}" )
-    status=$( awk '{print $5}' <<< "${status}" )
 
     case ${status} in
       #waiting cases
@@ -210,7 +352,7 @@ submit_and_wait() {
       #running cases
       #pbs: R
       #slurm: (old: R, new: RUNNING)
-      R|RUNNING)
+      R|RUNNING|COMPLETING)
         status_label='Job running'
         ;;
       #held cases
@@ -222,14 +364,15 @@ submit_and_wait() {
       #fail/completed cases
       #slurm: F/FAILED TO/TIMEOUT CA/CANCELLED
       F|TO|CA|FAILED|TIMEOUT|CANCELLED)
-        echo "rt_utils.sh: !!!!!!!!!!JOB TERMINATED!!!!!!!!!!"
+        echo "rt_utils.sh: !!!!!!!!!!JOB TERMINATED!!!!!!!!!! status=${status}"
         job_running=false #Trip the loop to end with these status flags
         interrupt_job
         exit 1
         ;;
       #completed
-      #pbs only: C-Complete E-Exiting
-      C|E)
+      #pbs: C-Complete E-Exiting
+      #slurm: CD/COMPLETED
+      C|E|CD|COMPLETED)
         status_label='Completed'
         ;;
       *)
@@ -245,141 +388,6 @@ submit_and_wait() {
     sleep 60 & wait $!
   done
 }
-
-check_results() {
-  echo "rt_utils.sh: Checking results of the regression test: ${TEST_ID}"
-
-  ROCOTO=${ROCOTO:-false}
-  ECFLOW=${ECFLOW:-false}
-
-  local test_status='PASS'
-
-  # Give one minute for data to show up on file system
-  #sleep 60
-
-  {
-  echo
-  echo "baseline dir = ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}"
-  echo "working dir  = ${RUNDIR}"
-  echo "Checking test ${TEST_ID} results ...."
-  } > "${RT_LOG}"
-  echo
-  echo "baseline dir = ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}"
-  echo "working dir  = ${RUNDIR}"
-  echo "Checking test ${TEST_ID} results ...."
-
-  if [[ ${CREATE_BASELINE} = false ]]; then
-    #
-    # --- regression test comparison
-    #
-    for i in ${LIST_FILES} ; do
-      printf %s " Comparing ${i} ....." >> "${RT_LOG}"
-      printf %s " Comparing ${i} ....."
-
-      if [[ ! -f ${RUNDIR}/${i} ]] ; then
-
-        echo ".......MISSING file" >> "${RT_LOG}"
-        echo ".......MISSING file"
-        test_status='FAIL'
-
-      elif [[ ! -f ${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i} ]] ; then
-
-        echo ".......MISSING baseline" >> "${RT_LOG}"
-        echo ".......MISSING baseline"
-        test_status='FAIL'
-
-      else
-        if [[ ${i##*.} == nc* ]] ; then
-          if [[ " orion hercules hera wcoss2 acorn derecho gaea jet s4 noaacloud " =~ ${MACHINE_ID} ]]; then
-            printf "USING NCCMP.." >> "${RT_LOG}"
-            printf "USING NCCMP.."
-              if [[ ${CMP_DATAONLY} == false ]]; then
-                nccmp -d -S -q -f -g -B --Attribute=checksum --warn=format "${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i}" "${RUNDIR}/${i}" > "${i}_nccmp.log" 2>&1 && d=$? || d=$?
-              else
-                nccmp -d -S -q -f -B --Attribute=checksum --warn=format "${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i}" "${RUNDIR}/${i}" > "${i}_nccmp.log" 2>&1 && d=$? || d=$?
-              fi
-              if [[ ${d} -ne 0 && ${d} -ne 1 ]]; then
-                printf "....ERROR" >> "${RT_LOG}"
-                printf "....ERROR"
-                test_status='FAIL'
-              fi
-          fi
-        else
-          printf "USING CMP.." >> "${RT_LOG}"
-          printf "USING CMP.."
-          cmp "${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i}" "${RUNDIR}/${i}" >/dev/null 2>&1 && d=$? || d=$?
-          if [[ ${d} -eq 2 ]]; then
-            printf "....ERROR" >> "${RT_LOG}"
-            printf "....ERROR"
-            test_status='FAIL'
-          fi
-
-        fi
-
-        if [[ ${d} -ne 0 ]]; then
-          echo "....NOT IDENTICAL" >> "${RT_LOG}"
-          echo "....NOT IDENTICAL"
-          test_status='FAIL'
-        else
-          echo "....OK" >> "${RT_LOG}"
-          echo "....OK"
-        fi
-
-      fi
-
-    done
-
-  else
-    #
-    # --- create baselines
-    #
-    echo;echo "Moving baseline ${TEST_ID} files ...."
-    echo;echo "Moving baseline ${TEST_ID} files ...." >> "${RT_LOG}"
-
-    for i in ${LIST_FILES} ; do
-      printf %s " Moving ${i} ....."
-      printf %s " Moving ${i} ....."   >> "${RT_LOG}"
-      if [[ -f ${RUNDIR}/${i} ]] ; then
-        mkdir -p "${NEW_BASELINE}/${CNTL_DIR}_${RT_COMPILER}/$(dirname "${i}")"
-        cp "${RUNDIR}/${i}" "${NEW_BASELINE}/${CNTL_DIR}_${RT_COMPILER}/${i}"
-        echo "....OK" >> "${RT_LOG}"
-        echo "....OK"
-      else
-        echo "....NOT OK. Missing ${RUNDIR}/${i}" >> "${RT_LOG}"
-        echo "....NOT OK. Missing ${RUNDIR}/${i}"
-        test_status='FAIL'
-      fi
-    done
-
-  fi
-
-  {
-  echo
-  grep "The total amount of wall time" "${RUNDIR}/out"
-  grep "The maximum resident set size" "${RUNDIR}/out"
-  echo
-  } >> "${RT_LOG}"
-
-  TRIES=''
-  if [[ ${ECFLOW} == true ]]; then
-    if [[ ${ECF_TRYNO} -gt 1 ]]; then
-      TRIES=" Tries: ${ECF_TRYNO}"
-    fi
-  fi
-  echo "Test ${TEST_ID} ${test_status}${TRIES}" >> "${RT_LOG}"
-  echo                                          >> "${RT_LOG}"
-  echo "Test ${TEST_ID} ${test_status}${TRIES}"
-  echo
-
-  if [[ ${test_status} = 'FAIL' ]]; then
-    echo "${TEST_ID} failed in check_result" >> "${PATHRT}/fail_test_${TEST_ID}"
-
-    if [[ ${ROCOTO} = true || ${ECFLOW} == true ]]; then
-      exit 1
-    fi
-  fi
-}
-
 
 kill_job() {
   echo "rt_utils.sh: Killing job: ${jobid} on ${SCHEDULER}..."
@@ -411,6 +419,9 @@ rocoto_create_compile_task() {
   if [[ ${MACHINE_ID} == hera ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
+  if [[ ${MACHINE_ID} == ursa ]]; then
+    BUILD_WALLTIME="01:00:00"
+  fi
   if [[ ${MACHINE_ID} == orion ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
@@ -420,23 +431,35 @@ rocoto_create_compile_task() {
   if [[ ${MACHINE_ID} == s4 ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
-  if [[ ${MACHINE_ID} == gaea ]]; then
+  if [[ ${MACHINE_ID} == gaeac5 ]]; then
+    BUILD_WALLTIME="01:00:00"
+  fi
+  if [[ ${MACHINE_ID} == gaeac6 ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
 
 
   cat << EOF >> "${ROCOTO_XML}"
   <task name="compile_${COMPILE_ID}" maxtries="${ROCOTO_COMPILE_MAXTRIES:-3}">
-    <command>&PATHRT;/run_compile.sh &PATHRT; &RUNDIR_ROOT; "${MAKE_OPT}" ${COMPILE_ID} 2>&amp;1 | tee &LOG;/compile_${COMPILE_ID}.log</command>
+    <command>bash -c 'set -xe -o pipefail ; &PATHRT;/run_compile.sh &PATHRT; &RUNDIR_ROOT; "${MAKE_OPT}" ${COMPILE_ID} 2>&amp;1 | tee &LOG;/compile_${COMPILE_ID}.log'</command>
     <jobname>compile_${COMPILE_ID}</jobname>
     <account>${ACCNR}</account>
     <queue>${COMPILE_QUEUE}</queue>
 EOF
 
-  if [[ "${MACHINE_ID}" == gaea ]] ; then
+  if [[ "${MACHINE_ID}" == gaeac5 ]] ; then
     cat << EOF >> "${ROCOTO_XML}"
     <native>--clusters=es</native>
     <partition>eslogin_c5</partition>
+EOF
+  elif [[ "${MACHINE_ID}" == gaeac6 ]] ; then
+    cat << EOF >> "${ROCOTO_XML}"
+    <native>--clusters=es</native>
+    <partition>eslogin_c6</partition>
+EOF
+  elif [[ "${MACHINE_ID}" == ursa ]] ; then
+    cat << EOF >> "${ROCOTO_XML}"
+    <partition>${PARTITION}</partition>
 EOF
   elif [[ -n "${PARTITION}" || ${MACHINE_ID} != hera ]] ; then
     cat << EOF >> "${ROCOTO_XML}"
@@ -445,7 +468,7 @@ EOF
   fi
 
   cat << EOF >> "${ROCOTO_XML}"
-    <cores>${BUILD_CORES}</cores>
+    <nodes>1:ppn=${BUILD_CORES}</nodes>
     <walltime>${BUILD_WALLTIME}</walltime>
     <join>&RUNDIR_ROOT;/compile_${COMPILE_ID}.log</join>
     ${NATIVE}
@@ -471,16 +494,22 @@ rocoto_create_run_task() {
   cat << EOF >> "${ROCOTO_XML}"
     <task name="${TEST_ID}${RT_SUFFIX}" maxtries="${ROCOTO_TEST_MAXTRIES:-3}">
       <dependency> ${DEP_STRING} </dependency>
-      <command>&PATHRT;/run_test.sh &PATHRT; &RUNDIR_ROOT; ${TEST_NAME} ${TEST_ID} ${COMPILE_ID} 2>&amp;1 | tee &LOG;/run_${TEST_ID}${RT_SUFFIX}.log </command>
+      <command>bash -c 'set -xe -o pipefail ; &PATHRT;/run_test.sh &PATHRT; &RUNDIR_ROOT; ${TEST_NAME} ${TEST_ID} ${COMPILE_ID} 2>&amp;1 | tee &LOG;/run_${TEST_ID}${RT_SUFFIX}.log' </command>
       <jobname>${TEST_ID}${RT_SUFFIX}</jobname>
       <account>${ACCNR}</account>
       ${ROCOTO_NODESIZE:+<nodesize>${ROCOTO_NODESIZE}</nodesize>}
 EOF
 
-  if [[ "${MACHINE_ID}" == gaea ]] ; then
+  if [[ "${MACHINE_ID}" == gaeac5 || "${MACHINE_ID}" ==  gaeac6 ]] ; then
     cat << EOF >> "${ROCOTO_XML}"
       <native>--clusters=${PARTITION}</native>
       <native>--partition=batch</native>
+EOF
+
+  elif [[ "${MACHINE_ID}" == ursa ]] ; then
+    cat << EOF >> "${ROCOTO_XML}"
+    <partition>${PARTITION}</partition>
+
 EOF
 
   elif [[ -n "${PARTITION}" || ${MACHINE_ID} != hera ]] ; then
@@ -574,14 +603,16 @@ ecflow_create_compile_task() {
 
   cat << EOF > "${ECFLOW_RUN}/${ECFLOW_SUITE}/compile_${COMPILE_ID}.ecf"
 %include <head.h>
-${PATHRT}/run_compile.sh "${PATHRT}" "${RUNDIR_ROOT}" "${MAKE_OPT}" "${COMPILE_ID}" > "${LOG_DIR}/compile_${COMPILE_ID}.log" 2>&1 &
+(
+cd "${LOG_DIR}"
+ln -sf "compile_${COMPILE_ID}.log.\${ECF_TRYNO}" "compile_${COMPILE_ID}.log"
+)
+${PATHRT}/run_compile.sh "${PATHRT}" "${RUNDIR_ROOT}" "${MAKE_OPT}" "${COMPILE_ID}" > "${LOG_DIR}/compile_${COMPILE_ID}.log.\${ECF_TRYNO}" 2>&1 &
 %include <tail.h>
 EOF
   {
   echo "  task compile_${COMPILE_ID}"
   echo "      label build_options '${MAKE_OPT}'"
-  echo "      label job_id ''"
-  echo "      label job_status ''"
   echo "      inlimit max_builds"
   } >> "${ECFLOW_RUN}/${ECFLOW_SUITE}.def"
 }
@@ -590,13 +621,15 @@ ecflow_create_run_task() {
   echo "rt_utils.sh: ${TEST_ID}: Creating ECFLOW run task"
   cat << EOF > "${ECFLOW_RUN}/${ECFLOW_SUITE}/${TEST_ID}${RT_SUFFIX}.ecf"
 %include <head.h>
-${PATHRT}/run_test.sh "${PATHRT}" "${RUNDIR_ROOT}" "${TEST_NAME}" "${TEST_ID}" "${COMPILE_ID}" > "${LOG_DIR}/run_${TEST_ID}${RT_SUFFIX}.log" 2>&1 &
+(
+cd "${LOG_DIR}"
+ln -sf "run_${TEST_ID}${RT_SUFFIX}.log.\${ECF_TRYNO}" "${LOG_DIR}/run_${TEST_ID}${RT_SUFFIX}.log"
+)
+${PATHRT}/run_test.sh "${PATHRT}" "${RUNDIR_ROOT}" "${TEST_NAME}" "${TEST_ID}" "${COMPILE_ID}" > "${LOG_DIR}/run_${TEST_ID}${RT_SUFFIX}.log.\${ECF_TRYNO}" 2>&1 &
 %include <tail.h>
 EOF
   {
   echo "    task ${TEST_ID}${RT_SUFFIX}"
-  echo "      label job_id ''"
-  echo "      label job_status ''"
   echo "      inlimit max_jobs"
   } >> "${ECFLOW_RUN}/${ECFLOW_SUITE}.def"
   if [[ ${DEP_RUN} != '' ]]; then
@@ -616,17 +649,14 @@ ecflow_run() {
   # Make sure ECF_HOST and ECF_PORT are set/ready on systems that have an
   # explicit ecflow node
   if [[ ${MACHINE_ID} == wcoss2 || ${MACHINE_ID} == acorn ]]; then
-    readarray -t ECFHOSTLIST < "${ECF_HOSTFILE}"
-    for ECF_HOST in "${ECFHOSTLIST[@]}"
-    do
-      if ssh -q "${ECF_HOST}" "exit"; then
-        export ECF_HOST
-        break
-      else
-        ECF_HOST=''
-      fi
-    done
-  elif [[ ${MACHINE_ID} == hera || ${MACHINE_ID} == jet ]]; then
+    if [[ "${HOST::1}" == "a" ]]; then
+      ECF_HOST=aecflow01
+    elif [[ "${HOST::1}" == "c" ]]; then
+      ECF_HOST=cdecflow01
+    elif [[ "${HOST::1}" == "d" ]]; then
+      ECF_HOST=ddecflow01
+    fi
+  elif [[ ${MACHINE_ID} == hera || ${MACHINE_ID} == jet || ${MACHINE_ID} == ursa ]]; then
     module load ecflow
   fi
   if [[ -z ${ECF_HOST} || -z ${ECF_PORT} ]]; then
@@ -655,6 +685,10 @@ ecflow_run() {
       wcoss2|acorn|hera|jet)
         #shellcheck disable=SC2029
         ssh "${ECF_HOST}" "bash -l -c \"module load ecflow && ${ECFLOW_START} -p ${ECF_PORT}\""
+        ;;
+      ursa)
+        #shellcheck disable=SC2029
+        ssh "${ECF_HOST}" "bash -l -c \"module load ecflow && export ECF_HOST=${ECF_HOST} && ${ECFLOW_START} -p ${ECF_PORT}\""
         ;;
       *)
         ${ECFLOW_START} -p "${ECF_PORT}" -d "${RUNDIR_ROOT}/ecflow_server"
@@ -709,6 +743,7 @@ ecflow_run() {
     fi
     "${PATHRT}/abort_dep_tasks.py"
   done
+  echo
 
   sleep 65 # wait one ECF_INTERVAL plus 5 seconds
   echo "rt_utils.sh: ECFLOW tasks completed, cleaning up suite"

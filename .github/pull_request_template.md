@@ -42,6 +42,7 @@ Please delete what is not needed.
   * MOM6 - 
   * NOAHMP - 
   * WW3 - 
+  * fire_behavior
   * stochastic_physics - 
 ```
 
@@ -89,6 +90,7 @@ Example:
 * MOM6:
 * NOAHMP:
 * WW3:
+* fire_behavior:
 * stochastic_physics:
 * None
 
@@ -100,6 +102,15 @@ Please delete what is not needed.
 -->
 * Blocked by #
 * None
+
+### Documentation:
+<!--
+Indicate what documentation, if any, is needed for this PR and who will add it (if applicable).
+Please delete what is not needed.
+-->
+* This PR requires a documentation update, and the WM User's Guide has been updated based on the changes in this PR.
+* This PR requires a documentation update, and a WM issue has been opened to track the need for a documentation update; a person responsible for submitting the update has been assigned to the issue (link issue). 
+* No documentation update is required for this PR (please explain).
 
 ---
 ## Changes
@@ -143,9 +154,9 @@ Please delete what is not needed.
   - [ ] Hera
   - [ ] Orion
   - [ ] Hercules
-  - [ ] Jet
-  - [ ] Gaea
+  - [ ] GaeaC6
   - [ ] Derecho
+  - [ ] Ursa
 - WCOSS2
   - [ ] Dogwood/Cactus
   - [ ] Acorn

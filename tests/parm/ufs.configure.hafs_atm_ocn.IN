@@ -4,7 +4,7 @@
 
 # ESMF #
 logKindFlag:            ESMF_LOGKIND_MULTI
-globalResourceControl:  true
+globalResourceControl:  @[ESMF_THREADING]
 
 # EARTH #
 EARTH_component_list: MED ATM OCN
@@ -28,7 +28,11 @@ MED_attributes::
   coupling_mode = @[CPLMODE]
   normalization = none
   merge_type = copy
-  pio_rearranger = @[pio_rearranger]
+  pio_typename = @[CMEPS_PIO_FORMAT]
+  pio_numiotasks = @[CMEPS_PIO_IOTASKS]
+  pio_stride = @[CMEPS_PIO_STRIDE]
+  pio_rearranger = @[CMEPS_PIO_REARR]
+  pio_root = @[CMEPS_PIO_ROOT]
 ::
 
 # ATM #
@@ -128,7 +132,6 @@ ALLCOMP_attributes::
   orb_mode = fixed_year
   orb_mvelp = 1.e36
   orb_obliq = 1.e36
-  mediator_present = true
   stop_n = @[FHMAX]
   stop_option = nhours
   stop_ymd = -999

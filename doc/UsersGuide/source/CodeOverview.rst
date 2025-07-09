@@ -31,7 +31,7 @@ Currently, Level 1 (or Tier-1) platforms for regression testing are:
    * Hercules (Intel/GNU compilers)
    * AWS Docker container (Intel)
 
-More information is available in the `UFS WM wiki <https://github.com/ufs-community/ufs-weather-model/wiki/Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>`__. 
+More information is available in the :wm-wiki:`UFS WM wiki <Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>`. 
 
 Level 2-4 Systems
 ===================
@@ -86,6 +86,10 @@ The UFS :term:`WM` repository supports the :term:`UFS` short- and medium-range w
     - https://github.com/NOAA-EMC/AQM
   * - Noah-MP Land Surface Model (Noah-MP)
     - https://github.com/NOAA-EMC/noahmp
+  * - NOAA-GFDL Land Model (:term:`LM4`)
+    - https://github.com/NOAA-GFDL/LM4-NUOPC-driver
+  * - Community Fire Behavior Model
+    - https://github.com/NOAA-EMC/fire_behavior
 
 In the table, the left-hand column contains a description of each repository, and the 
 right-hand column shows the GitHub location of the authoritative component repositories. 
@@ -101,65 +105,72 @@ The umbrella repository for the UFS WM is named ``ufs-weather-model``. Under thi
 
    ufs-weather-model
     ├── AQM
-    │     └── (src)
-    │         ├── (model)
-    │            └── (CMAQ)                      -------- EPA Air Quality Model
-    ├── build.sh                                 -------- script for building the WM
+    │    └── (src)
+    │         └── (model)
+    │              └── (CMAQ)                       -------- EPA Air Quality Model
+    ├── build.sh                                    -------- script for building the WM
     ├── CDEPS-interface
-    │     └── CDEPS
-    │         ├── (datm)                         -------- CDEPS DATM
-    │         ├── (docn)                         -------- CDEPS DOCN
-    │         └── (dice)                         -------- CDEPS DICE
+    │    └── CDEPS
+    │         ├── (datm)                            -------- CDEPS DATM
+    │         ├── (docn)                            -------- CDEPS DOCN
+    │         └── (dice)                            -------- CDEPS DICE
     ├── CICE-interface
-    │    └── CICE                                -------- CICE6 sea ice model
-    │        ├── (icepack)                       -------- Sea ice column physics
-    │        └── (cicecore/drivers/nuopc/cmeps)  -------- NUOPC CICE6 cap
-    ├── cmake                                    -------- cmake configuration files
+    │    └── CICE                                   -------- CICE6 sea ice model
+    │         ├── (icepack)                         -------- Sea ice column physics
+    │         └── (cicecore/drivers/nuopc/cmeps)    -------- NUOPC CICE6 cap
+    ├── cmake                                       -------- cmake configuration files
     ├── CMakeLists.txt         
     ├── CMakeModules           
     ├── CMEPS-interface
     │    └── CMEPS
-    │         └── (cesm)                         -------- CMEPS CESM
-    ├── doc                                      -------- User Guide files
-    ├── driver                 
-    ├── FV3                                      -------- UFSAtm atmosphere model
-    │   ├── (atmos_cubed_sphere)                 -------- FV3 dynamical core
-    │   │   ├── (docs)
-    │   │   ├── (driver)
-    │   │   ├── (model)
-    │   │   └── (tools)
-    │   ├── (ccpp)                               -------- Common Community Physics Package
-    │   │   ├── (config)
-    │   │   ├── (driver)
-    │   │   ├── (framework)                      -------- CCPP framework
-    │   │   ├── (physics)                        -------- CCPP-compliant physics schemes
-    │   │   └── (suites)                         -------- CCPP physics suite definition files (SDFs)
-    │   ├── (cpl)                                -------- Coupling field data structures
-    │   ├── (io)                                 -------- UFSAtm write grid comp code
-    │   └── (stochastic_physics)                 -------- Wrapper for stochastic physics
+    │         └── (cesm)                            -------- CMEPS CESM
+    ├── doc                                         -------- User Guide files
+    ├── driver
+    ├── fire_behavior                               -------- Community Fire Behavior Model
+    ├── FV3                                         -------- UFSAtm atmosphere model
+    │    ├── (atmos_cubed_sphere)                   -------- FV3 dynamical core
+    │    │    ├── (docs)
+    │    │    ├── (driver)
+    │    │    ├── (model)
+    │    │    └── (tools)
+    │    ├── (ccpp)                                 -------- Common Community Physics Package
+    │    │    ├── (config)
+    │    │    ├── (driver)
+    │    │    ├── (framework)                       -------- CCPP framework
+    │    │    ├── (physics)                         -------- CCPP-compliant physics schemes
+    │    │    └── (suites)                          -------- CCPP physics suite definition files (SDFs)
+    │    ├── (cpl)                                  -------- Coupling field data structures
+    │    ├── (io)                                   -------- UFSAtm write grid comp code
+    │    └── (stochastic_physics)                   -------- Wrapper for stochastic physics
     ├── GOCART
-    │    └── (ESMF)                              -------- GOCART model
+    │    └── (ESMF)                                 -------- GOCART model
     ├── HYCOM-interface
-    │    └── HYCOM                               -------- HYCOM ocean model
-    │        └── (NUOPC)                         -------- NUOPC HYCOM cap
+    │    └── HYCOM                                  -------- HYCOM ocean model
+    │         └── (NUOPC)                           -------- NUOPC HYCOM cap
     ├── LICENSE.md
-    ├── modulefiles                              -------- system module files for supported HPC systems
+    ├── LM4-driver 
+    │    ├── (LM4)                                  -------- NUOPC NOAA-GFDL Land Model version 4
+    │    └── (nuopc_cap)                            -------- NUOPC LM4 cap
+    ├── modulefiles                                 -------- system module files for supported HPC systems
     ├── MOM6-interface
     │    └── MOM6
-    │        ├── (src)                           -------- MOM6 ocean model
-    │        └── (config_source/drivers/nuopc_cap)  -------- NUOPC MOM6 cap
+    │         ├── (src)                             -------- MOM6 ocean model
+    │         └── (config_source/drivers/nuopc_cap) -------- NUOPC MOM6 cap
     ├── NOAHMP-interface
     │    └── noahmp
-    │        ├── (cmake)                         -------- Noah-MP land model
-    │        ├── (drivers/nuopc)                 -------- NUOPC Noah-MP cap
-    │        ├── (parameters)
-    │        └── (src)
+    │         ├── (cmake)                           -------- Noah-MP land model
+    │         ├── (drivers/nuopc)                   -------- NUOPC Noah-MP cap
+    │         ├── (parameters)
+    │         └── (src)
     ├── README.md
-    ├── stochastic_physics                       -------- stochastic physics pattern generator
-    ├── tests                                    -------- regression test infrastructure
-    │   └── parm
-    │   └── tests
-    │   └── fv3_conf   
+    ├── stochastic_physics                          -------- stochastic physics pattern generator
+    ├── tests                                       -------- regression test infrastructure
+    │    ├── parm
+    │    ├── tests
+    │    └── fv3_conf
+    ├── tests-dev                                   -------- developmental testing framework
+    │    ├── test_cases
+    │    └── machine_config
     └── WW3
-         └── (model)                             -------- WW3 model
-             └── (src)                           -------- NUOPC WW3 caps
+         └── (model)                                -------- WW3 model
+             └── (src)                              -------- NUOPC WW3 caps

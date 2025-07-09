@@ -1,0 +1,20 @@
+atm_dyn32_intel:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16,FV3_GFS_v16_flake,FV3_GFS_v17_p8,FV3_GFS_v17_p8_rrtmgp,FV3_GFS_v15_thompson_mynn_lam3km,FV3_WoFS_v0,FV3_GFS_v17_p8_mynn,FV3_GFS_v17_p8_ugwpv1 -D32BIT=ON'
+  tests: 
+    - control_c48.v2.sfc: {'project':['daily']}
+    - fail_to_copy: {'project':['daily']}
+    - fail_to_run: {'project':['daily']}
+atm_dyn64_intel:
+  build: 
+    compiler: 'intel'
+    option: '-DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16,FV3_GFS_v16_flake,FV3_GFS_v17_p8,FV3_GFS_v17_p8_rrtmgp,FV3_GFS_v15_thompson_mynn_lam3km,FV3_WoFS_v0,FV3_GFS_v17_p8_mynn,FV3_GFS_v17_p8_ugwpv1'
+  tests: 
+    - control_c48: {'project':['daily']}
+fail_to_compile_intel:
+  build: 
+    compiler: 'intel'
+    option: '--invalid-argument -DAPP=ATM -DCCPP_SUITES=whatever'
+  tests: 
+    - dependency_unmet: {'project':['daily']}

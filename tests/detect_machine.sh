@@ -21,12 +21,19 @@ case $(hostname -f) in
   dlogin0[1-9].dogwood.wcoss2.ncep.noaa.gov) MACHINE_ID=wcoss2 ;; ### dogwood01-9
   dlogin10.dogwood.wcoss2.ncep.noaa.gov)     MACHINE_ID=wcoss2 ;; ### dogwood10
 
-  gaea5[1-8])          MACHINE_ID=gaea ;; ### gaea51-58
-  gaea5[1-8].ncrc.gov) MACHINE_ID=gaea ;; ### gaea51-58
+  gaea5[1-8])          MACHINE_ID=gaeac5 ;; ### gaea51-58
+  gaea5[1-8].ncrc.gov) MACHINE_ID=gaeac5 ;; ### gaea51-58
+  gaea6[1-8])          MACHINE_ID=gaeac6 ;; ### gaea61-68
+  gaea6[1-8].ncrc.gov) MACHINE_ID=gaeac6 ;; ### gaea61-68
 
   hfe0[1-9]) MACHINE_ID=hera ;; ### hera01-09
   hfe1[0-2]) MACHINE_ID=hera ;; ### hera10-12
   hecflow01) MACHINE_ID=hera ;; ### heraecflow01
+  
+  ufe01) MACHINE_ID=ursa ;; ### ursa
+  ufe02) MACHINE_ID=ursa ;; ### ursa
+  ufe03) MACHINE_ID=ursa ;; ### ursa
+  ufe04) MACHINE_ID=ursa ;; ### ursa
 
   s4-submit.ssec.wisc.edu) MACHINE_ID=s4 ;; ### s4
 
@@ -46,9 +53,8 @@ case $(hostname -f) in
   derecho7.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho7
   derecho8.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho8
   
-  login[1-4].stampede2.tacc.utexas.edu) MACHINE_ID=stampede ;; ### stampede1-4
-
-  login0[1-2].expanse.sdsc.edu) MACHINE_ID=expanse ;; ### expanse1-2
+  login[1-4].frontera.tacc.utexas.edu) MACHINE_ID=frontera ;; ### frontera1-4
+  c*.frontera.tacc.utexas.edu) MACHINE_ID=frontera ;; ### frontera compute 
 
   discover3[1-5].prv.cube) MACHINE_ID=discover ;; ### discover31-35
   *) MACHINE_ID=UNKNOWN ;;  # Unknown platform
@@ -82,6 +88,9 @@ elif [[ -d /mnt/lfs1 ]]; then
 elif [[ -d /scratch1 ]]; then
   # We are on NOAA Hera
   MACHINE_ID=hera
+elif [[ -d /collab1 ]]; then
+  # We are on NOAA Ursa
+  MACHINE_ID=ursa
 elif [[ -d /work ]]; then
   # We are on MSU Orion or Hercules
   mount=$(findmnt -n -o SOURCE /home)   
@@ -91,9 +100,12 @@ elif [[ -d /work ]]; then
   else
     MACHINE_ID=orion
   fi
-elif [[ -d /gpfs && -d /ncrc ]]; then
-  # We are on GAEA.
-  MACHINE_ID=gaea
+elif [[ -d /gpfs/f5 && -d /ncrc ]]; then
+  # We are on GAEA C5.
+  MACHINE_ID=gaeac5
+elif [[ -d /gpfs/f6 && -d /ncrc ]]; then
+  # We are on GAEA C6.
+  MACHINE_ID=gaeac6
 elif [[ -d /data/prod ]]; then
   # We are on SSEC's S4
   MACHINE_ID=s4

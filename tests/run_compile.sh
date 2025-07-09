@@ -1,5 +1,6 @@
 #!/bin/bash
 set -eux
+set -o pipefail
 
 echo "PID=$$"
 SECONDS=0
@@ -16,7 +17,16 @@ cleanup() {
 
 write_fail_test() {
   echo "${JBNME} failed in run_compile" >> "${PATHRT}/fail_${JBNME}"
-  exit 1
+  if [[ ${ROCOTO:-false} == true ]] || [[ ${ECFLOW:-false} == true ]]; then
+    # if this script has been submitted by a workflow return non-zero exit status
+    # so that workflow can resubmit it
+    exit 1
+  else
+    # if this script has been executed interactively, return zero exit status
+    # so that rt.sh can continue running, and hope that rt.sh's generate_log
+    # will catch failed tests
+    exit 0
+  fi
 }
 
 remove_fail_test() {
@@ -81,10 +91,7 @@ if [[ ${ROCOTO} = 'false' ]]; then
   submit_and_wait job_card
 else
   chmod u+x job_card
-  ( ./job_card 2>&1 1>&3 3>&- | tee err || true ) 3>&1 1>&2 | tee out
-  # The above shell redirection copies stdout to "out" and stderr to "err"
-  # while still sending them to stdout and stderr. It does this without
-  # relying on bash-specific extensions or non-standard OS features.
+  redirect_out_err ./job_card
 fi
 #ls -l "${PATHTR}/tests/fv3_${COMPILE_ID}.exe"
 

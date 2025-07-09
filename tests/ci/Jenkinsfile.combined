@@ -312,14 +312,6 @@ def generateStage(nodeLabel) {
                       echo "Testing concluded...removing labels for $machine from $GIT_URL"
                       git remote -v | grep -w sshorigin > /dev/null 2>&1 && git remote remove sshorigin > /dev/null 2>&1
                       git remote add sshorigin $SSH_ORIGIN > /dev/null 2>&1
-  
-                      if [[ -f $WORKSPACE/tests/logs/RT-run-$machine.log ]] ; then
-                         git add $WORKSPACE/tests/logs/RT-run-$machine.log
-                      fi
-                      git commit  --allow-empty -m "[AutoRT] $machine Job Failed!\n\n\n on-behalf-of @ufs-community <ecc.platform@noaa.gov>"
-                    
-                      git pull sshorigin $FORK_BRANCH
-                      git push sshorigin HEAD:$FORK_BRANCH
 
                       tar --create --gzip --verbose --dereference --file "${machine_name_logs}.tgz" ${WORKSPACE}/tests/logs/*.log
 
@@ -351,12 +343,18 @@ pipeline {
         GIT_URL = 'https://github.com/ufs-community/ufs-weather-model.git'
     }
     stages {
-        stage('Run SonarQube Testing') {
+        stage('Launch SonarQube') {
             steps {
                 script {
+                    echo "BRANCH_NAME=${env.CHANGE_BRANCH}"
+                    echo "FORK_NAME=${env.CHANGE_FORK}"
+                    echo "CHANGE_URL=${env.CHANGE_URL}"
+                    echo "CHANGE_ID=${env.CHANGE_ID}"
                     build job: '/ufs-weather-model/ufs-wm-sonarqube', parameters: [
                         string(name: 'BRANCH_NAME', value: env.CHANGE_BRANCH ?: 'develop'),
-                        string(name: 'FORK_NAME', value: env.CHANGE_FORK ?: '')
+                        string(name: 'FORK_NAME', value: env.CHANGE_FORK ?: ''),
+                        string(name: 'CHANGE_URL', value: env.CHANGE_URL ?: ''),
+                        string(name: 'CHANGE_ID', value: env.CHANGE_ID ?: '')
                     ], wait: false
                 }
             }

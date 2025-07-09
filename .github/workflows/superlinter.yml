@@ -24,7 +24,7 @@ jobs:
       - name: Super-Linter
         uses: super-linter/super-linter@v6.3.0
         env:
-          LINTER_RULES_PATH: /
+          LINTER_RULES_PATH: '.github/linters/'
           DEFAULT_BRANCH: origin/develop
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           FILTER_REGEX_EXCLUDE: .*(tests/fv3_conf/.*|tests/ci/.*|tests/auto/.*|tests/auto-jenkins/.*|tests/opnReqTests/.*|tests/opnReqTest|tests/atparse.bash).*
@@ -33,5 +33,5 @@ jobs:
           #VALIDATE_GITHUB_ACTIONS: true
           #VALIDATE_LUA: true
           #VALIDATE_MARKDOWN: true
-          #VALIDATE_PYTHON_PYLINT: true
-          #VALIDATE_YAML: true
+          VALIDATE_PYTHON_PYLINT: true
+          VALIDATE_YAML: true
