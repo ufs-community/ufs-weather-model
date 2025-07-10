@@ -202,6 +202,11 @@ endif()
 ###############################################################################
 ### Atmosphere Components [FV3, MPAS]
 ###############################################################################
+
+if(FV3 AND MPAS)
+  message(FATAL_ERROR "Multiple dynamical cores cannot be selected.")
+endif()
+
 if(FV3)
   add_subdirectory(UFSATM)
 endif()
