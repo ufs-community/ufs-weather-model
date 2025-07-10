@@ -44,8 +44,8 @@ include(cmake/configure_apps.cmake)
 
 message("")
 message("FMS .............. ${FMS}")
-message("FV3_dy ........... ${FV3}")
-message("MPAS_dy .......... ${MPAS}")
+message("FV3 .............. ${FV3}")
+message("MPAS ............. ${MPAS}")
 message("AQM .............. ${AQM}")
 message("GOCART ........... ${UFS_GOCART}")
 message("MOM6 ............. ${MOM6}")
@@ -186,7 +186,6 @@ find_package(w3emc 2.9.2 REQUIRED)
 if(MPAS)
   find_package(PnetCDF REQUIRED COMPONENTS Fortran)
   find_package(PIO REQUIRED COMPONENTS Fortran C)
-  set(FV3 OFF)
 endif()
 
 # Configure Python
@@ -201,18 +200,13 @@ if(STOCH_PHYS)
 endif()
 
 ###############################################################################
-### Atmosphere Components [FV3, MPAS?]
-### DJS2024: There will be a generalized atmospheric component with multiple
-###          dycores, not multiple atmospheric components (one for each dycore).
-###          So, - rename the atmospheric component FV3 to UFSATM or ATM, then
-###              - if FV3 or MPAS, add_sudirectory(UFSATM or ATM)
-###
+### Atmosphere Components [FV3, MPAS]
 ###############################################################################
 if(FV3)
-  add_subdirectory(FV3)
+  add_subdirectory(UFSATM)
 endif()
 if (MPAS)
-  add_subdirectory(FV3)
+  add_subdirectory(UFSATM)
 endif()
 
 ###############################################################################
