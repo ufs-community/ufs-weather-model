@@ -1035,7 +1035,7 @@ fi
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-${DISKNM}/NEMSfv3gfs/input-data-20250507}
 #INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20250225
-INPUTDATA_ROOT_WW3=/scratch2/NCEPDEV/marine/Ming.Chen/ufs-weather-model/ufs_IAU/ufs_iau_timefix/ww3_input_timefix
+INPUTDATA_ROOT_WW3=/scratch4/NCEPDEV/marine/Ming.Chen/ufs_iau_timefix/WW3_input_data_20250715
 INPUTDATA_LM4=${INPUTDATA_LM4:-${INPUTDATA_ROOT}/LM4_input_data}
 
 shift $((OPTIND-1))
