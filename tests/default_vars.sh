@@ -1024,6 +1024,7 @@ export EFFR_IN=.false.
 # Thompson MP
 export LRADAR=.false.
 export LTAEROSOL=.false.
+export LTHAILAWARE=.false.
 export EXT_DIAG_THOMPSON=.false.
 export SEDI_SEMI=.true.
 export DECFL=10
