@@ -718,10 +718,10 @@ case ${MACHINE_ID} in
     fi
 
     export LD_PRELOAD=/usr/lib64/libstdc++.so.6
-    module load PrgEnv-intel/8.5.0
-    module load intel-classic/2023.2.0
-    module load cray-mpich/8.1.28
-    module load python/3.9.12
+    module use /ncrc/proj/epic/spack-stack/c5/spack-stack-1.9.1/envs/ue-intel-2023.2.0/install/modulefiles/Core
+    module load stack-intel/2023.2.0
+    module load cray-mpich/8.1.30
+    module load python/3.11
     module use /ncrc/proj/epic/spack-stack/modulefiles
     if [[ "${ECFLOW:-false}" == true ]] ; then
       module load ecflow/5.8.4
@@ -736,7 +736,7 @@ case ${MACHINE_ID} in
     PARTITION=c5
     dprefix=${dprefix:-/gpfs/f5/${ACCNR}/scratch/${USER}}
     STMP=${STMP:-${dprefix}/RT_BASELINE}
-    PTMP=${PTMP:-${dprefix}/RT_RUNDIRS} 
+    PTMP=${PTMP:-${dprefix}/RT_RUNDIRS}
 
     SCHEDULER="slurm"
     ;;
@@ -749,10 +749,10 @@ case ${MACHINE_ID} in
     fi
 
     export LD_PRELOAD=/usr/lib64/libstdc++.so.6
-    module use /ncrc/proj/epic/spack-stack/c6/spack-stack-1.6.0/envs/fms-2024.01/install/modulefiles/Core
+    module use /ncrc/proj/epic/spack-stack/c6/spack-stack-1.9.2/envs/ue-intel-2023.2.0/install/modulefiles/Core
     module load stack-intel/2023.2.0
-    module load cray-mpich/8.1.29
-    module load python/3.10.13
+    module load cray-mpich/8.1.30
+    module load python/3.11
     if [[ "${ECFLOW:-false}" == true ]] ; then
       module use /ncrc/proj/epic/spack-stack/modulefiles
       module load ecflow/5.8.4
@@ -786,12 +786,41 @@ case ${MACHINE_ID} in
     COMPILE_QUEUE="batch"
 
     PARTITION=
-    dprefix="/scratch1/NCEPDEV"
-    DISKNM="/scratch2/NAGAPE/epic/UFS-WM_RT"
-    STMP="${dprefix}/stmp4"
-    PTMP="${dprefix}/stmp2"
+    dprefix=${dprefix:-"/scratch3/NCEPDEV/stmp/${USER}"}
+    DISKNM="/scratch3/NAGAPE/epic/role-epic/UFS-WM_RT"
+    STMP="${dprefix}/RT_BASELINE"
+    PTMP="${dprefix}/RT_RUNDIRS"
 
     SCHEDULER=slurm
+    ;;
+  ursa)
+    echo "rt.sh: Setting up ursa..."
+    if [[ "${ROCOTO:-false}" == true ]] ; then
+      module load rocoto
+      ROCOTO_SCHEDULER=slurm
+    fi
+
+    if [[ "${ECFLOW:-false}" == true ]] ; then
+      module load ecflow/5.11.4
+      ECF_HOST="uecflow01"
+      ECF_PORT="$(( $(id -u) + 1500 ))"
+      export ECF_HOST ECF_PORT
+    fi
+
+    QUEUE="batch"
+    COMPILE_QUEUE="batch"
+
+    PARTITION="u1-compute"
+    dprefix="/scratch4/NCEPDEV/stmp/${USER}"
+    if [[ "${ACCNR}" == 'epic' ]] ; then
+      dprefix="/scratch4/NAGAPE/epic/${USER}/stmp"
+    fi
+    DISKNM="/scratch4/NAGAPE/epic/role-epic/UFS-WM_RT"
+    STMP="${STMP:-${dprefix}/RT_BASELINE}"
+    PTMP="${PTMP:-${dprefix}/RT_RUNDIRS}"
+
+    SCHEDULER=slurm
+
     ;;
   orion)
     echo "rt.sh: Setting up orion..."
@@ -812,7 +841,7 @@ case ${MACHINE_ID} in
     QUEUE="batch"
     COMPILE_QUEUE="batch"
     PARTITION="orion"
-    dprefix="/work/noaa/stmp/${USER}"
+    dprefix=${dprefix:-"/work/noaa/stmp/${USER}"}
     DISKNM="/work/noaa/epic/UFS-WM_RT"
     STMP="${dprefix}/stmp"
     PTMP="${dprefix}/stmp"
@@ -840,7 +869,7 @@ case ${MACHINE_ID} in
     QUEUE="batch"
     COMPILE_QUEUE="batch"
     PARTITION="hercules"
-    dprefix="/work2/noaa/stmp/${USER}"
+    dprefix=${dprefix:-"/work2/noaa/stmp/${USER}"}
     DISKNM="/work/noaa/epic/hercules/UFS-WM_RT"
     STMP="${dprefix}/stmp"
     PTMP="${dprefix}/stmp"
@@ -903,7 +932,7 @@ case ${MACHINE_ID} in
     COMPILE_QUEUE="s4"
 
     PARTITION="s4"
-    dprefix="/data/prod"
+    dprefix=${dprefix:-"/data/prod"}
     DISKNM="${dprefix}/emc.nemspara/RT"
     STMP="/scratch/short/users"
     PTMP="/scratch/users"
@@ -934,7 +963,7 @@ case ${MACHINE_ID} in
     QUEUE="main"
     COMPILE_QUEUE="main"
     PARTITION=
-    dprefix="/glade/derecho/scratch"
+    dprefix=${dprefix:-"/glade/derecho/scratch"}
     DISKNM="/glade/derecho/scratch/epicufsrt/ufs-weather-model/RT/"
     STMP="${dprefix}"
     PTMP="${dprefix}"
@@ -960,11 +989,29 @@ case ${MACHINE_ID} in
     QUEUE="batch"
     COMPILE_QUEUE="batch"
     PARTITION=
-    dprefix="/lustre/"
+    dprefix=${dprefix:-"/lustre/"}
     DISKNM="/contrib/ufs-weather-model/RT"
     STMP="${dprefix}/stmp4"
     PTMP="${dprefix}/stmp2"
     SCHEDULER="slurm"
+    ;;
+  frontera)
+    echo "rt.sh: Setting up frontera..."
+    set -x
+    export PYTHONPATH=
+    if [[ "${ECFLOW:-false}" == true ]] ; then
+      ECFLOW_START=
+    fi
+    QUEUE=development
+    COMPILE_QUEUE=development
+    PARTITION=
+    dprefix="${SCRATCH}/frontera"
+    DISKNM="/work2/01118/tg803972/frontera/RT"
+    STMP=${dprefix}
+    PTMP=${dprefix}
+    SCHEDULER=slurm
+    export MPIEXEC="ibrun"
+    export MPIEXECOPTS=
     ;;
   *)
     die "Unknown machine ID, please edit detect_machine.sh file"
@@ -1015,8 +1062,8 @@ if [[ "${CREATE_BASELINE}" == false ]] ; then
   fi
 fi
 
-INPUTDATA_ROOT=${INPUTDATA_ROOT:-${DISKNM}/NEMSfv3gfs/input-data-20240501}
-INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20250212 
+INPUTDATA_ROOT=${INPUTDATA_ROOT:-${DISKNM}/NEMSfv3gfs/input-data-20250507}
+INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20250225
 INPUTDATA_LM4=${INPUTDATA_LM4:-${INPUTDATA_ROOT}/LM4_input_data}
 
 shift $((OPTIND-1))

@@ -15,6 +15,9 @@ Glossary
    ATM
       The Weather Model configuration that runs only the standalone atmospheric model. 
 
+   ATMF
+      The Weather Model configuration that runs the FV3 atmospheric model with the Community Fire Behavior Model. 
+
    AQM
       The `Air Quality Model <https://github.com/NOAA-EMC/AQM>`_ (AQM) is a UFS Application that dynamically couples the Community Multiscale Air Quality (:term:`CMAQ`) model with the UFS Weather Model through the :term:`NUOPC` Layer to simulate temporal and spatial variations of atmospheric compositions (e.g., ozone and aerosol compositions). The CMAQ, treated as a column chemistry model, updates concentrations of chemical species (e.g., ozone and aerosol compositions) at each integration time step. The transport terms (e.g., :term:`advection` and diffusion) of all chemical species are handled by the UFS Weather Model as :term:`tracers<tracer>`.
 
@@ -48,6 +51,11 @@ Glossary
    CMEPS
       The `Community Mediator for Earth Prediction Systems <https://github.com/NOAA-EMC/CMEPS>`_ (CMEPS) is a :term:`NUOPC`-compliant :term:`mediator` used for coupling Earth system model components. It is currently being used in NCAR's Community Earth System Model (:term:`CESM`) and NOAA's subseasonal-to-seasonal (S2S) coupled system. More information is available in the `CMEPS Documentation <https://escomp.github.io/CMEPS/versions/master/html/index.html>`_.
 
+   Community Fire Behavior Model
+   CFBM
+   UFS FIRE
+      The `Community Fire Behavior Model (CFBM) <https://ral.ucar.edu/model/community-fire-behavior-model>`_ is a wildland fire model coupled to the UFS Atmospheric Model. The capability to run this code is now available in the UFS Weather Model (WM) via the `fire_behavior repository <https://github.com/NCAR/fire_behavior>`_. This repository is a :term:`submodule` of the UFS Weather Model (WM), coupled through the :term:`NUOPC` Layer to provide direct feedback between the simulated atmosphere and the simulated fire. More information about the CFBM can be found in the `CFBM Users Guide <https://fire-behavior.readthedocs.io/en/latest/>`_.
+
    cron
    cron job
    crontab
@@ -59,6 +67,9 @@ Glossary
 
    DATM
       DATM is the *Data Atmosphere* component of :term:`CDEPS`. It uses static atmospheric forcing files (derived from observations or previous atmospheric model runs) instead of output from an active atmospheric model. This reduces the complexity and computational cost associated with coupling to an active atmospheric model. The *Data Atmosphere* component is particularly useful when employing computationally intensive Data Assimilation (DA) techniques to update ocean and/or sea ice fields in a coupled model. In general, use of DATM in place of :term:`ATM` can be appropriate when users are running a coupled model and only want certain components of the model to be active. More information about DATM is available in the `CDEPS DATM Documentation <https://escomp.github.io/CDEPS/versions/master/html/datm.html>`_.
+
+   DICE
+      DICE is the *Data Sea-Ice* component of :term:`CDEPS`. It uses static sea-ice forcing data (e.g., derived from observations) instead of output from an active sea-ice model (e.g., :term:`CICE6`). This reduces the complexity and computational cost associated with coupling to an active sea-ice model. The *Data Sea-Ice* component is particularly useful when employing computationally intensive Data Assimilation (DA) techniques to update atmospheric fields in a coupled model. In general, use of DICE in place of :term:`CICE6` can be appropriate when users are running a coupled model and only want certain components of the model to be active. More information about DICE is available in the `CDEPS DICE Documentation <https://escomp.github.io/CDEPS/versions/master/html/dice.html>`_.
 
    DOCN
       DOCN is the *Data Ocean* component of :term:`CDEPS`. It uses static ocean forcing files (derived from observations or previous ocean model runs) instead of output from an active ocean model. This reduces the complexity and computational cost associated with coupling to an active ocean model. The *Data Ocean* component is particularly useful when employing computationally intensive Data Assimilation (DA) techniques to update atmospheric fields in a coupled model. In general, use of DOCN in place of :term:`MOM6` or :term:`HYCOM` can be appropriate when users are running a coupled model and only want certain components of the model to be active. More information about DOCN is available in the `CDEPS DOCN Documentation <https://escomp.github.io/CDEPS/versions/master/html/docn.html>`_.
@@ -106,10 +117,6 @@ Glossary
    LM4
       NUOPC NOAA-GFDL Land Model version 4
 
-   LND
-   land component
-      The Noah Multi-Physics (Noah-MP) land surface model (LSM) is an open-source, community-developed LSM that has been incorporated into the UFS Weather Model (WM). It is the UFS WM's land component. 
-
    Mediator
       A mediator, sometimes called a coupler, is a software component that includes code for representing component interactions. Typical operations include merging data fields, ensuring consistent treatment of coastlines, computing fluxes, and temporal averaging.
 
@@ -126,7 +133,7 @@ Glossary
       The `National Center for Atmospheric Research <https://ncar.ucar.edu/>`_. 
 
    NCEP
-      National Centers for Environmental Prediction (NCEP) is a branch of the :term:`National Weather Service <NWS>` and consists of nine centers, including the :term:`Environmental Modeling Center <EMC>`. More information can be found at https://www.ncep.noaa.gov.
+      National Centers for Environmental Prediction (NCEP) is a branch of the :term:`National Weather Service <NWS>` and consists of nine centers, including the :term:`Environmental Modeling Center <EMC>`. More information can be found at https://www.weather.gov/ncep/.
 
    NCEPLIBS
       The software libraries created and maintained by :term:`NCEP` that are required for running 
@@ -145,6 +152,10 @@ Glossary
 
    NG-GODAS
       Next Generation-Global Ocean Data Assimilation System. NG-GODAS is a UFS Weather Model configuration that couples ocean (:term:`MOM6`), sea ice (:term:`CICE6`), and Data Assimilation (DA) capabilities with the :term:`DATM` component of :term:`CDEPS`.
+
+   NOAHMP
+   Noah-MP
+      The Noah Multi-Physics (Noah-MP) land surface model (LSM) is an open-source, community-developed LSM that has been incorporated into the UFS Weather Model (WM). It is a UFS WM land component. 
 
    NUOPC
    National Unified Operational Prediction Capability
@@ -181,6 +192,9 @@ Glossary
 
    spack-stack
       The `spack-stack <https://github.com/JCSDA/spack-stack>`_ is a collaborative effort between the NOAA Environmental Modeling Center (EMC), the UCAR Joint Center for Satellite Data Assimilation (JCSDA), and the Earth Prediction Innovation Center (EPIC). *spack-stack* is a repository that provides a Spack-based method for building the software stack required for numerical weather prediction (NWP) tools such as the `Unified Forecast System (UFS) <https://ufs.epic.noaa.gov/>`_ and the `Joint Effort for Data assimilation Integration (JEDI) <https://jointcenterforsatellitedataassimilation-jedi-docs.readthedocs-hosted.com/en/latest/>`_ framework. *spack-stack* uses the Spack package manager along with custom Spack configuration files and Python scripts to simplify installation of the libraries required to run various applications. The *spack-stack* can be installed on a range of platforms and comes pre-configured for many systems. Users can install the necessary packages for a particular application and later add the missing packages for another application without having to rebuild the entire stack.
+
+   submodule
+      A `submodule <https://git-scm.com/book/en/v2/Git-Tools-Submodules>`_ is a git repository linked to another repository as a subdirectory. Many UFS components are linked in this way; for example, the :term:`UPP` repository is a submodule of the :term:`FV3` repository.
 
    Suite Definition File (SDF)
      An external file containing information about the 
