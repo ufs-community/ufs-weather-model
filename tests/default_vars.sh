@@ -542,6 +542,8 @@ export FV3=true
 export S2S=false
 export HAFS=false
 export AQM=false
+export DO_AQM_CANOPY=.false.
+export aqm_rc_file=aqm.rc
 export FIRE_BEHAVIOR=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
@@ -703,6 +705,7 @@ export EFFR_IN=.false.
 # Thompson MP
 export LRADAR=.false.
 export LTAEROSOL=.false.
+export LTHAILAWARE=.false.
 export EXT_DIAG_THOMPSON=.false.
 export SEDI_SEMI=.true.
 export DECFL=10
