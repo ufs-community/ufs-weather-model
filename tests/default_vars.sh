@@ -207,6 +207,28 @@ elif [[ ${MACHINE_ID} = hera ]]; then
   export WPG_cpl_atmw_gdas=24
   export WAV_tasks_atmw_gdas=248
 
+elif [[ ${MACHINE_ID} = ursa ]]; then
+
+  export TPN=192
+
+  export INPES_dflt=3
+  export JNPES_dflt=8
+  export INPES_thrd=3
+  export JNPES_thrd=4
+  export INPES_c384=6
+  export JNPES_c384=8
+  export THRD_c384=2
+  export INPES_c768=8
+  export JNPES_c768=16
+  export THRD_c768=4
+
+  export THRD_cpl_atmw_gdas=2
+  export INPES_cpl_atmw_gdas=6
+  export JNPES_cpl_atmw_gdas=8
+  export WPG_cpl_atmw_gdas=24
+  export WAV_tasks_atmw_gdas=248
+
+
 elif [[ ${MACHINE_ID} = linux ]]; then
 
   export TPN=40
@@ -418,6 +440,7 @@ export WLCLK_dflt=30
 
 export WLCLK=${WLCLK_dflt}
 export CMP_DATAONLY=false
+export nccmp_exclude=""
 
 # Defaults for ufs.configure
 export esmf_logkind="ESMF_LOGKIND_MULTI"
@@ -520,6 +543,8 @@ export FV3=true
 export S2S=false
 export HAFS=false
 export AQM=false
+export DO_AQM_CANOPY=.false.
+export aqm_rc_file=aqm.rc
 export FIRE_BEHAVIOR=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
@@ -682,6 +707,7 @@ export EFFR_IN=.false.
 export LRADAR=.false.
 export LTAEROSOL=.false.
 export MRAEROSOL=.false.
+export LTHAILAWARE=.false.
 export EXT_DIAG_THOMPSON=.false.
 export SEDI_SEMI=.true.
 export DECFL=10
@@ -942,6 +968,9 @@ export EPBL=0.8,0.4,0.2,0.08,0.04
 export EPBL_LSCALE=500.E3,1000.E3,2000.E3,2000.E3,2000.E3
 export EPBL_TAU=2.16E4,2.592E5,2.592E6,7.776E6,3.1536E7
 export ISEED_EPBL=20210325000113,20210325000114,20210325000115,20210325000116,20210325000117
+export SKEBINT=1800
+export SHUMINT=3600
+export SPPTINT=1800
 
 #IAU
 export IAU_INC_FILES="''"
@@ -1155,7 +1184,7 @@ export_ugwpv1() {
       export K_SPLIT=2
       export N_SPLIT=4
       export TAU=3.0
-      export RF_CUTOFF=100.0
+      export RF_CUTOFF=300.0
       export FV_SG_ADJ=450
       ;;
     "C1152")
@@ -1167,7 +1196,7 @@ export_ugwpv1() {
       export K_SPLIT=2
       export N_SPLIT=6
       export TAU=2.5
-      export RF_CUTOFF=100.0
+      export RF_CUTOFF=300.0
       export FV_SG_ADJ=450
       ;;
     "C3072")
@@ -1179,7 +1208,7 @@ export_ugwpv1() {
       export K_SPLIT=4
       export N_SPLIT=5
       export TAU=0.5
-      export RF_CUTOFF=100.0
+      export RF_CUTOFF=300.0
       export FV_SG_ADJ=300
       ;;
     *)

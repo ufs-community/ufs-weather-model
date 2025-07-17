@@ -95,8 +95,6 @@ the data required to run the WM RTs are already available at the following ``DIS
      - /scratch2/NAGAPE/epic/UFS-WM_RT
    * - Hercules
      - /work/noaa/epic/hercules/UFS-WM_RT
-   * - Jet (Level 2)
-     - /mnt/lfs5/HFIP/hfv3gfs/role.epic/RT
    * - NOAA Cloud (Level 2)
      - /contrib/ufs-weather-model/RT
    * - Orion
