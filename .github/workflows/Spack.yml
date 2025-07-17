@@ -15,13 +15,13 @@ jobs:
             os: "ubuntu-24.04",
             app: "S2SWA",
             ccpp_suites: "FV3_GFS_v17_coupled_p8,FV3_GFS_v17_coupled_p8_ugwpv1",
-            other-variants: '',
+            other-variants: ' ^esmf@8.8.0',
           }
         - {
             os: "ubuntu-24.04",
             app: "ATM",
             ccpp_suites: "FV3_GFS_v16,FV3_GFS_v16_flake,FV3_GFS_v16_ras,FV3_GFS_v17_p8,FV3_GFS_v17_p8_ugwpv1",
-            other-variants: '',
+            other-variants: ' ^esmf@8.8.0',
           }
 
     runs-on: ${{ matrix.config.os }}
@@ -42,7 +42,7 @@ jobs:
       with:
         package-name: ufs-weather-model
         # ufs-weather-model Spack recipe variants, plus additional package constraints:
-        package-variants: app=${{ matrix.config.app }} ccpp_suites=${{ matrix.config.ccpp_suites }} ${{ matrix.config.other-variants }} ^esmf@8.6.1
+        package-variants: app=${{ matrix.config.app }} ccpp_suites=${{ matrix.config.ccpp_suites }} ${{ matrix.config.other-variants }}
         custom-recipe: ci/package.py
         spack-compiler: gcc@13
         spack-externals: openmpi gmake cmake python perl git git-lfs
