@@ -8,7 +8,7 @@ prepend_path("MODULEPATH", "/contrib/spack-stack-rocky8/spack-stack-1.9.2/envs/u
 prepend_path("MODULEPATH", "/contrib/spack-stack-rocky8/spack-stack-1.9.2/envs/ue-oneapi-2024.2.1/install/modulefiles/intel-oneapi-mpi/2021.13-u7pshji/gcc/13.2.0")  -- path for NOAA Azure
 prepend_path("MODULEPATH", "/apps/modules/modulefiles")
 
-gnu_ver=os.getenv("gnu_ver") or "13.2.0"
+gnu_ver=os.getenv("gnu_ver") or "14.2.0"
 load(pathJoin("gnu", gnu_ver))
 
 stack_intel_ver=os.getenv("stack_intel_ver") or "2024.2.1"
