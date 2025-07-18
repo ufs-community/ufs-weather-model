@@ -254,7 +254,7 @@ run_opnReqTests() {
     if [[ $ECFLOW == true ]]; then
       TEST_ID=${RT_SUFFIX:1}
       COMPILE_ID=$comp_nm
-      RT_COMPILER=${RT_COMPILER:-intel}
+      RT_COMPILER=${RT_COMPILER:-gnu}
       DEP_RUN=
       if [[ ${RT_SUFFIX} == _std || ${RT_SUFFIX} == _thr || ${RT_SUFFIX} == _mpi || ${RT_SUFFIX} == _dcp || ${RT_SUFFIX} == _rst || ${RT_SUFFIX} == _fhz ]]; then
         DEP_RUN="${TEST_NAME}_${RT_COMPILER}_std_base"
@@ -305,7 +305,7 @@ export CI_TEST=${CI_TEST:-false}
 [[ $# -eq 0 ]] && usage_and_exit 1
 
 # specify compiler
-export RT_COMPILER=${RT_COMPILER:-intel}
+export RT_COMPILER=${RT_COMPILER:-gnu}
 # detect_machine sets MACHINE_ID
 MACHINE=${MACHINE:-}
 source detect_machine.sh
@@ -328,9 +328,9 @@ rm -f fail_test* fail_compile*
 # Machine-dependent libraries, modules, variables, etc.
 if [[ $MACHINE_ID = hera ]]; then
 
-  PYTHONHOME=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3_new_20210629
-  export PATH=$PYTHONHOME/bin:$PATH
-  export PYTHONPATH=$PYTHONHOME/lib/python3.7/site-packages
+  #PYTHONHOME=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3_new_20210629
+  #export PATH=$PYTHONHOME/bin:$PATH
+  #export PYTHONPATH=$PYTHONHOME/lib/python3.7/site-packages
 
   module load ecflow
   ECFLOW_START=ecflow_start.sh
@@ -338,10 +338,10 @@ if [[ $MACHINE_ID = hera ]]; then
   PARTITION=
   QUEUE=batch
   COMPILE_QUEUE=batch
-  dprefix="/scratch1/NCEPDEV"
-  DISKNM="/scratch2/NAGAPE/epic/UFS-WM_RT"
-  STMP="${dprefix}/stmp4"
-  PTMP="${dprefix}/stmp2"
+  dprefix="/scratch3/NCEPDEV/stmp/${USER}"
+  DISKNM="/scratch3/NAGAPE/epic/role.epic/UFS-WM_RT"
+  STMP="${dprefix}/ORT-stmp"
+  PTMP="${dprefix}/ORT-ptmp"
   SCHEDULER=slurm
 
 elif [[ $MACHINE_ID = orion ]]; then
