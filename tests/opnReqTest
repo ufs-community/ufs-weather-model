@@ -254,7 +254,7 @@ run_opnReqTests() {
     if [[ $ECFLOW == true ]]; then
       TEST_ID=${RT_SUFFIX:1}
       COMPILE_ID=$comp_nm
-      RT_COMPILER=${RT_COMPILER:-gnu}
+      RT_COMPILER=${RT_COMPILER:-intel}
       DEP_RUN=
       if [[ ${RT_SUFFIX} == _std || ${RT_SUFFIX} == _thr || ${RT_SUFFIX} == _mpi || ${RT_SUFFIX} == _dcp || ${RT_SUFFIX} == _rst || ${RT_SUFFIX} == _fhz ]]; then
         DEP_RUN="${TEST_NAME}_${RT_COMPILER}_std_base"
@@ -305,7 +305,7 @@ export CI_TEST=${CI_TEST:-false}
 [[ $# -eq 0 ]] && usage_and_exit 1
 
 # specify compiler
-export RT_COMPILER=${RT_COMPILER:-gnu}
+export RT_COMPILER=${RT_COMPILER:-intel}
 # detect_machine sets MACHINE_ID
 MACHINE=${MACHINE:-}
 source detect_machine.sh
