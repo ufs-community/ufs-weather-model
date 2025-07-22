@@ -286,7 +286,7 @@ fi
 
 # AQM
 if [[ ${AQM} == .true. ]]; then
-  cp "${PATHRT}/parm/aqm/aqm.rc" .
+  cp "${PATHRT}/parm/aqm/${aqm_rc_file}" ./aqm.rc
 fi
 
 # Field Dictionary
