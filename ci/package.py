@@ -121,13 +121,13 @@ class UfsWeatherModel(CMakePackage):
     depends_on("w3nco", when="@:2.0.0")
     depends_on("bacio@2.4.0:", when="@develop")
     depends_on("crtm", when="@develop")
-    depends_on("esmf@8.3.0:", when="@develop")
+    depends_on("esmf@8.8.0:", when="@develop")
     depends_on("fms@2022.04: +deprecated_io precision=32,64 constants=GFS", when="@develop")
     depends_on("g2", when="@develop")
     depends_on("g2tmpl", when="@develop")
     depends_on("hdf5+hl+mpi", when="@develop")
     depends_on("ip@:4", when="@develop")
-    depends_on("netcdf-c~parallel-netcdf+mpi", when="@develop")
+    depends_on("netcdf-c@4.7.4: ~parallel-netcdf+mpi", when="@develop")
     for app in [
         "ATMW",
         "ATML",
