@@ -207,10 +207,7 @@ if(FV3 AND MPAS)
   message(FATAL_ERROR "Multiple dynamical cores cannot be selected.")
 endif()
 
-if(FV3)
-  add_subdirectory(UFSATM)
-endif()
-if (MPAS)
+if (FV3 OR MPAS)
   add_subdirectory(UFSATM)
 endif()
 
