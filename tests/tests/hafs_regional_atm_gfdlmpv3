@@ -1,27 +1,24 @@
 ###############################################################################
 #
-#  HAFS regional atmosphere-wave coupled with WW3
+#  HAFS regional atmosphere only using GFDLMP Version 3
 #
 ###############################################################################
 
-export TEST_DESCR="Compare HAFS regional atmosphere-wave coupled results with previous trunk version"
+export TEST_DESCR="Compare HAFS regional atmosphere only results with previous trunk version"
 
-export CNTL_DIR=hafs_regional_atm_wav
+export CNTL_DIR=hafs_regional_atm_gfdlmpv3
 
 export LIST_FILES="atmf006.nc \
                    sfcf006.nc \
-                   20190829.060000.out_grd.ww3 \
-                   20190829.060000.out_pnt.ww3.nc \
-                   ufs.hafs.ww3.r.2019-08-29-21600.nc \
-                   ufs.hafs.cpl.r.2019-08-29-21600.nc"
+                   HURPRS.GrbF06"
 
 export_fv3
 export_hafs
-export_hafs_regional
 
 export HAFS=true
 export FHMAX=6
 export RESTART_N=${FHMAX}
+export atm_omp_num_threads=2
 export DT_ATMOS=180
 export IDEFLATE=1
 export OUTPUT_FH='3 -1'
@@ -31,6 +28,10 @@ export SHOUR=00
 export SMONTH=08
 export SYEAR=2019
 export WRTTASK_PER_GROUP=60
+export WRITE_DOPOST=.true.
+export IAER=1011
+export USE_MERRA2=.true.
+export POSTAPP='hafs'
 
 export OUTPUT_GRID='regional_latlon'
 export CEN_LON=-62.0
@@ -43,7 +44,7 @@ export DLON=0.1
 export DLAT=0.1
 
 export BLOCKSIZE=40
-export CCPP_SUITE=FV3_HAFS_v1_gfdlmp_tedmf
+export CCPP_SUITE=FV3_HAFS_v1_gfdlmpv3_tedmf
 export DEFLATE_LEVEL=-1
 export INPES=20
 export JNPES=12
@@ -79,30 +80,19 @@ export FHCYC=0
 export FHSWR=1800
 export FHLWR=1800
 export NSTF_NAME=2,0,0,0,0
-export CPLFLX=.true.
-export CPLOCN2ATM=.false.
-export CPLWAV=.true.
-export CPLWAV2ATM=.true.
-export CPL_IMP_MRG=.true.
+export CPLFLX=.false.
+export CPLOCN2ATM=.true.
+export CPLWAV=.false.
+export CPLWAV2ATM=.false.
+export CPL_IMP_MRG=.false.
 
-export CDEPS_DOCN=false
-export OCEAN_START_DTG=43340.00000
-
-export atm_model=fv3
-export wav_model=ww3
-WAV_tasks=60
-export coupling_interval_sec=360
-export MESH_ATM=unset
-# ATM-WAV coupling only
-export WW3_CUR='F'
+export CMEPS=false
+export RUNTYPE=startup
+export USE_COLDSTART=false
 
 export FIELD_TABLE=field_table_hafs
 export DIAG_TABLE=diag_table_hafs_template
-export INPUT_NML=input_regional_hafs.nml.IN
+export INPUT_NML=input_regional_hafs_gfdlmpv3.nml.IN
 export MODEL_CONFIGURE=model_configure_hafs.IN
-export UFS_CONFIGURE=ufs.configure.hafs_atm_wav.IN
-export FV3_RUN="hafs_fv3_run.IN hafs_ww3_run.IN"
-
-if [[ ${MACHINE_ID} = ursa ]]; then
-   WLCLK=40
-fi
+export UFS_CONFIGURE=ufs.configure.hafs_atm.IN
+export FV3_RUN=hafs_fv3_run.IN
