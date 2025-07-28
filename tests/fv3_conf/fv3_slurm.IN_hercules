@@ -36,9 +36,12 @@ export OMP_NUM_THREADS=@[THRD]
 export ESMF_RUNTIME_PROFILE=ON
 export ESMF_RUNTIME_PROFILE_OUTPUT="SUMMARY"
 
+# GNU was not compiled with right SLURM option:
+export PMI2=""
 if [[ @[RT_COMPILER] == intel ]]; then
   export I_MPI_EXTRA_FILESYSTEM=ON
 elif [[ @[RT_COMPILER] == gnu ]]; then
+  export PMI2="--mpi=pmi2"
   # For mvapich2
   export MV2_SHMEM_COLL_NUM_COMM=128
   export MV2_HOMOGENEOUS_CLUSTER=1
@@ -56,7 +59,7 @@ if [ "${JOB_SHOULD_FAIL:-NO}" = WHEN_RUNNING ] ; then
     false
 fi
 
-srun --label -n @[TASKS] ./fv3.exe
+srun ${PMI2} --label -n @[TASKS] ./fv3.exe
 
 echo "Model ended:    " `date`
 echo -n " $( date +%s )," >> job_timestamp.txt

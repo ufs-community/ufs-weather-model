@@ -5,18 +5,18 @@ help([[
 
 whatis([===[Loads libraries needed for building the UFS Weather Model on Gaea C5 ]===])
 
-prepend_path("MODULEPATH", "/ncrc/proj/epic/spack-stack/spack-stack-1.6.0/envs/fms-2024.01/install/modulefiles/Core")
+prepend_path("MODULEPATH", "/ncrc/proj/epic/spack-stack/c5/spack-stack-1.9.1/envs/ue-intel-2023.2.0/install/modulefiles/Core")
 
 stack_intel_ver=os.getenv("stack_intel_ver") or "2023.2.0"
 load(pathJoin("stack-intel", stack_intel_ver))
 
-stack_cray_mpich_ver=os.getenv("stack_cray_mpich_ver") or "8.1.28"
+stack_cray_mpich_ver=os.getenv("stack_cray_mpich_ver") or "8.1.30"
 load(pathJoin("stack-cray-mpich", stack_cray_mpich_ver))
 
-stack_python_ver=os.getenv("stack_python_ver") or "3.10.13"
+stack_python_ver=os.getenv("stack_python_ver") or "3.11.7"
 load(pathJoin("stack-python", stack_python_ver))
 
-cmake_ver=os.getenv("cmake_ver") or "3.23.1"
+cmake_ver=os.getenv("cmake_ver") or "3.27.9"
 load(pathJoin("cmake", cmake_ver))
 
 load("ufs_common")
