@@ -1682,7 +1682,7 @@ export_datm_cdeps ()
   export DIAG_TABLE=diag_table_template
   export DATM_SRC=CFSR
   export FILEBASE_DATM=cfsr
-  export MESH_ATM=${FILEBASE_DATM}_mesh.nc
+  export MESH_ATM=mesh.datm.1760x880.nc
   export atm_datamode=GEFS
   export stream_files=INPUT/${FILEBASE_DATM}.201110.nc
   export EXPORT_ALL=.false.
