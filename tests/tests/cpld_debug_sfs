@@ -1,58 +1,46 @@
 #
-#  cpld_control_sfs test
+#  cpld_debug_sfs test
 #
-export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C192 MX025 - SFS test"
+export TEST_DESCR="Fully coupled FV3-CCPP-MOM6-CICE-CMEPS system - C192 MX025 - SFS debug test"
 
-export CNTL_DIR=cpld_control_sfs
+export CNTL_DIR=cpld_debug_sfs
 
 export LIST_FILES=""
-# export LIST_FILES="sfcf030.tile1.nc \
-#                    sfcf030.tile2.nc \
-#                    sfcf030.tile3.nc \
-#                    sfcf030.tile4.nc \
-#                    sfcf030.tile5.nc \
-#                    sfcf030.tile6.nc \
-#                    atmf030.tile1.nc \
-#                    atmf030.tile2.nc \
-#                    atmf030.tile3.nc \
-#                    atmf030.tile4.nc \
-#                    atmf030.tile5.nc \
-#                    atmf030.tile6.nc \
-#                    RESTART/19940501.120000.coupler.res \
-#                    RESTART/19940501.120000.fv_core.res.nc \
-#                    RESTART/19940501.120000.fv_core.res.tile1.nc \
-#                    RESTART/19940501.120000.fv_core.res.tile2.nc \
-#                    RESTART/19940501.120000.fv_core.res.tile3.nc \
-#                    RESTART/19940501.120000.fv_core.res.tile4.nc \
-#                    RESTART/19940501.120000.fv_core.res.tile5.nc \
-#                    RESTART/19940501.120000.fv_core.res.tile6.nc \
-#                    RESTART/19940501.120000.fv_srf_wnd.res.tile1.nc \
-#                    RESTART/19940501.120000.fv_srf_wnd.res.tile2.nc \
-#                    RESTART/19940501.120000.fv_srf_wnd.res.tile3.nc \
-#                    RESTART/19940501.120000.fv_srf_wnd.res.tile4.nc \
-#                    RESTART/19940501.120000.fv_srf_wnd.res.tile5.nc \
-#                    RESTART/19940501.120000.fv_srf_wnd.res.tile6.nc \
-#                    RESTART/19940501.120000.fv_tracer.res.tile1.nc \
-#                    RESTART/19940501.120000.fv_tracer.res.tile2.nc \
-#                    RESTART/19940501.120000.fv_tracer.res.tile3.nc \
-#                    RESTART/19940501.120000.fv_tracer.res.tile4.nc \
-#                    RESTART/19940501.120000.fv_tracer.res.tile5.nc \
-#                    RESTART/19940501.120000.fv_tracer.res.tile6.nc \
-#                    RESTART/19940501.120000.phy_data.tile1.nc \
-#                    RESTART/19940501.120000.phy_data.tile2.nc \
-#                    RESTART/19940501.120000.phy_data.tile3.nc \
-#                    RESTART/19940501.120000.phy_data.tile4.nc \
-#                    RESTART/19940501.120000.phy_data.tile5.nc \
-#                    RESTART/19940501.120000.phy_data.tile6.nc \
-#                    RESTART/19940501.120000.sfc_data.tile1.nc \
-#                    RESTART/19940501.120000.sfc_data.tile2.nc \
-#                    RESTART/19940501.120000.sfc_data.tile3.nc \
-#                    RESTART/19940501.120000.sfc_data.tile4.nc \
-#                    RESTART/19940501.120000.sfc_data.tile5.nc \
-#                    RESTART/19940501.120000.sfc_data.tile6.nc \
-#                    RESTART/19940501.120000.MOM.res.nc \
-#                    RESTART/iced.1994-05-01-43200.nc \
-#                    RESTART/ufs.cpld.cpl.r.1994-05-01-43200.nc "
+# export LIST_FILES="RESTART/19940501.030000.coupler.res \
+#                    RESTART/19940501.030000.fv_core.res.nc \
+#                    RESTART/19940501.030000.fv_core.res.tile1.nc \
+#                    RESTART/19940501.030000.fv_core.res.tile2.nc \
+#                    RESTART/19940501.030000.fv_core.res.tile3.nc \
+#                    RESTART/19940501.030000.fv_core.res.tile4.nc \
+#                    RESTART/19940501.030000.fv_core.res.tile5.nc \
+#                    RESTART/19940501.030000.fv_core.res.tile6.nc \
+#                    RESTART/19940501.030000.fv_srf_wnd.res.tile1.nc \
+#                    RESTART/19940501.030000.fv_srf_wnd.res.tile2.nc \
+#                    RESTART/19940501.030000.fv_srf_wnd.res.tile3.nc \
+#                    RESTART/19940501.030000.fv_srf_wnd.res.tile4.nc \
+#                    RESTART/19940501.030000.fv_srf_wnd.res.tile5.nc \
+#                    RESTART/19940501.030000.fv_srf_wnd.res.tile6.nc \
+#                    RESTART/19940501.030000.fv_tracer.res.tile1.nc \
+#                    RESTART/19940501.030000.fv_tracer.res.tile2.nc \
+#                    RESTART/19940501.030000.fv_tracer.res.tile3.nc \
+#                    RESTART/19940501.030000.fv_tracer.res.tile4.nc \
+#                    RESTART/19940501.030000.fv_tracer.res.tile5.nc \
+#                    RESTART/19940501.030000.fv_tracer.res.tile6.nc \
+#                    RESTART/19940501.030000.phy_data.tile1.nc \
+#                    RESTART/19940501.030000.phy_data.tile2.nc \
+#                    RESTART/19940501.030000.phy_data.tile3.nc \
+#                    RESTART/19940501.030000.phy_data.tile4.nc \
+#                    RESTART/19940501.030000.phy_data.tile5.nc \
+#                    RESTART/19940501.030000.phy_data.tile6.nc \
+#                    RESTART/19940501.030000.sfc_data.tile1.nc \
+#                    RESTART/19940501.030000.sfc_data.tile2.nc \
+#                    RESTART/19940501.030000.sfc_data.tile3.nc \
+#                    RESTART/19940501.030000.sfc_data.tile4.nc \
+#                    RESTART/19940501.030000.sfc_data.tile5.nc \
+#                    RESTART/19940501.030000.sfc_data.tile6.nc \
+#                    RESTART/19940501.030000.MOM.res.nc \
+#                    RESTART/iced.1994-05-01-10800.nc \
+#                    RESTART/ufs.cpld.cpl.r.1994-05-01-10800.nc "
 
 export ATMRES=C192
 export_fv3
@@ -62,8 +50,8 @@ export_cpl
 export CCPP_SUITE=FV3_GFS_v17_coupled_p8_ugwpv1
 
 export DAYS=1.
-export FHMAX=24
-export RESTART_N=12
+export FHMAX=3
+export RESTART_N=3
 export RESTART_INTERVAL="${RESTART_N} -1"
 export FHROT=0
 
