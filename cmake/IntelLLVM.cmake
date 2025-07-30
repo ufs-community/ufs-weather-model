@@ -17,6 +17,10 @@ if(CMAKE_Platform STREQUAL "derecho.intel")
   set(CMAKE_Fortran_LINK_FLAGS "-Wl,--copy-dt-needed-entries")
 endif()
 
+if(CMAKE_Platform STREQUAL "wcoss2")
+  set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -diag-disable 10448")
+endif()
+
 if(NOT 32BIT)
     set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -real-size 64")
 endif()
