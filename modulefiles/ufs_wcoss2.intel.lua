@@ -1,5 +1,5 @@
 help([[
-Load environment to build UFS on Acorn with Intel compiler
+Load environment to build UFS on Cactus/Dogwood with Intel compiler
 ]])
 
 prepend_path("MODULEPATH", "/apps/ops/test/spack-stack-nco-1.9/modulefiles/Core")
