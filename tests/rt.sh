@@ -787,7 +787,7 @@ case ${MACHINE_ID} in
 
     PARTITION=
     dprefix=${dprefix:-"/scratch3/NCEPDEV/stmp/${USER}"}
-    DISKNM="/scratch3/NAGAPE/epic/role-epic/UFS-WM_RT"
+    DISKNM="/scratch3/NAGAPE/epic/role.epic/UFS-WM_RT"
     STMP="${dprefix}/RT_BASELINE"
     PTMP="${dprefix}/RT_RUNDIRS"
 
