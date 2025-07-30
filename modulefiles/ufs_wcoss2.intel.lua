@@ -17,9 +17,9 @@ load("py-pyyaml")
 load("ufs_common")
 
 setenv("INTEL_COMPILER_TYPE", "RECOMMENDED")
-setenv("CC", "icx")
-setenv("CXX", "icpx")
-setenv("FC", "ifort")
+setenv("CC", "cc")
+setenv("CXX", "CC")
+setenv("FC", "ftn")
 setenv("CMAKE_Platform", "wcoss2")
 
 whatis("Description: UFS build environment")
