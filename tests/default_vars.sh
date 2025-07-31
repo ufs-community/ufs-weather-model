@@ -734,6 +734,7 @@ export RRFS_RESTART=NO
 export SEAS_OPT=2
 
 # GWD
+export DO_NGW_EC=.false.
 export LDIAG_UGWP=.false.
 export DO_UGWP=.false.
 export DO_TOFD=.false.
