@@ -26,6 +26,7 @@ export JNPES_cpl_c48=1
 export WPG_cpl_c48=6
 export OCN_tasks_cpl_c48=4
 export ICE_tasks_cpl_c48=4
+export WAV_tasks_cpl_c48=4
 
 export THRD_cpl_dflt=1
 export INPES_cpl_dflt=3
@@ -70,7 +71,7 @@ export OCN_tasks_cpl_bmrk=120
 export OCN_thrds_cpl_bmrk=1
 export ICE_tasks_cpl_bmrk=48
 export ICE_thrds_cpl_bmrk=1
-export WAV_tasks_cpl_bmrk=80
+export WAV_tasks_cpl_bmrk=120
 export WAV_thrds_cpl_bmrk=2
 
 export THRD_cpl_c192=2
@@ -119,6 +120,7 @@ export wav_omp_num_threads=1
 export fbh_omp_num_threads=1
 
 export histaux_enabled=.false.
+export BMIC=.false.
 
 if [[ ${MACHINE_ID} = wcoss2 || ${MACHINE_ID} = acorn ]]; then
 
@@ -204,6 +206,28 @@ elif [[ ${MACHINE_ID} = hera ]]; then
   export JNPES_cpl_atmw_gdas=8
   export WPG_cpl_atmw_gdas=24
   export WAV_tasks_atmw_gdas=248
+
+elif [[ ${MACHINE_ID} = ursa ]]; then
+
+  export TPN=192
+
+  export INPES_dflt=3
+  export JNPES_dflt=8
+  export INPES_thrd=3
+  export JNPES_thrd=4
+  export INPES_c384=6
+  export JNPES_c384=8
+  export THRD_c384=2
+  export INPES_c768=8
+  export JNPES_c768=16
+  export THRD_c768=4
+
+  export THRD_cpl_atmw_gdas=2
+  export INPES_cpl_atmw_gdas=6
+  export JNPES_cpl_atmw_gdas=8
+  export WPG_cpl_atmw_gdas=24
+  export WAV_tasks_atmw_gdas=248
+
 
 elif [[ ${MACHINE_ID} = linux ]]; then
 
@@ -363,20 +387,6 @@ elif [[ ${MACHINE_ID} = derecho ]]; then
   export WPG_cpl_atmw_gdas=24
   export WAV_tasks_atmw_gdas=248
 
-elif [[ ${MACHINE_ID} = stampede ]]; then
-
-  echo "Unknown MACHINE_ID ${MACHINE_ID}. Please update tasks configurations in default_vars.sh"
-  exit 1
-
-  # TPN_dflt=48 ; INPES_dflt=3 ; JNPES_dflt=8
-  # TPN_thrd=24 ; INPES_thrd=3 ; JNPES_thrd=4
-  # TPN_c384=20 ; INPES_c384=8 ; JNPES_c384=6
-  # TPN_c768=20 ; INPES_c768=8 ; JNPES_c768=16
-  # TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
-
-  # TPN_cpl_atmw_gdas=12; INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8
-  # THRD_cpl_atmw_gdas=4; WPG_cpl_atmw_gdas=24; APB_cpl_atmw_gdas="0 311"; WPB_cpl_atmw_gdas="312 559"
-
 elif [[ ${MACHINE_ID} = noaacloud ]] ; then
 
     if [[ ${PW_CSP} == aws ]]; then
@@ -415,17 +425,9 @@ elif [[ ${MACHINE_ID} = noaacloud ]] ; then
     export ICE_tasks_cpl_thrd=10
     export WAV_tasks_cpl_thrd=12
 
-elif [[ ${MACHINE_ID} = expanse ]]; then
+elif [[ ${MACHINE_ID} = frontera ]]; then
 
-  echo "Unknown MACHINE_ID ${MACHINE_ID}. Please update tasks configurations in default_vars.sh"
-  exit 1
-
-  # TPN_dflt=64 ; INPES_dflt=3 ; JNPES_dflt=8
-  # TPN_thrd=64 ; INPES_thrd=3 ; JNPES_thrd=4
-  # TPN_stretch=12 ; INPES_stretch=2 ; JNPES_stretch=4
-
-  # TPN_cpl_atmw_gdas=12; INPES_cpl_atmw_gdas=6; JNPES_cpl_atmw_gdas=8
-  # THRD_cpl_atmw_gdas=2; WPG_cpl_atmw_gdas=24; APB_cpl_atmw_gdas="0 311"; WPB_cpl_atmw_gdas="312 559"
+  TPN=56
 
 elif [[ ${MACHINE_ID} = frontera ]]; then
 
@@ -442,6 +444,7 @@ export WLCLK_dflt=30
 
 export WLCLK=${WLCLK_dflt}
 export CMP_DATAONLY=false
+export nccmp_exclude=""
 
 # Defaults for ufs.configure
 export esmf_logkind="ESMF_LOGKIND_MULTI"
@@ -486,6 +489,7 @@ export SATMEDMF=.false.
 export ISATMEDMF=0
 export LRADAR=.true.
 export LTAEROSOL=.true.
+export MRAEROSOL=.false.
 
 export LSM=1
 export LANDICE=.true.
@@ -543,6 +547,8 @@ export FV3=true
 export S2S=false
 export HAFS=false
 export AQM=false
+export DO_AQM_CANOPY=.false.
+export aqm_rc_file=aqm.rc
 export FIRE_BEHAVIOR=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
@@ -570,6 +576,7 @@ export OUTPUT_HISTORY=.true.
 export HISTORY_FILE_ON_NATIVE_GRID=.false.
 export WRITE_DOPOST=.false.
 export NUM_FILES=2
+export FV3ATM_OUTPUT_DIR="./"
 export FILENAME_BASE="'atm' 'sfc'"
 export OUTPUT_GRID="'cubed_sphere_grid'"
 export OUTPUT_FILE="'netcdf'"
@@ -614,6 +621,7 @@ export MODEL_INITIALIZATION=false
 export WARM_START=.false.
 export READ_INCREMENT=.false.
 export RES_LATLON_DYNAMICS="''"
+export ATM_IGNORE_RST_CKSUM=.false.
 export INCREMENT_FILE_ON_NATIVE_GRID=.false.
 export NGGPS_IC=.true.
 export EXTERNAL_IC=.true.
@@ -702,6 +710,8 @@ export EFFR_IN=.false.
 # Thompson MP
 export LRADAR=.false.
 export LTAEROSOL=.false.
+export MRAEROSOL=.false.
+export LTHAILAWARE=.false.
 export EXT_DIAG_THOMPSON=.false.
 export SEDI_SEMI=.true.
 export DECFL=10
@@ -962,6 +972,9 @@ export EPBL=0.8,0.4,0.2,0.08,0.04
 export EPBL_LSCALE=500.E3,1000.E3,2000.E3,2000.E3,2000.E3
 export EPBL_TAU=2.16E4,2.592E5,2.592E6,7.776E6,3.1536E7
 export ISEED_EPBL=20210325000113,20210325000114,20210325000115,20210325000116,20210325000117
+export SKEBINT=1800
+export SHUMINT=3600
+export SPPTINT=1800
 
 #IAU
 export IAU_INC_FILES="''"
@@ -994,6 +1007,9 @@ export WW3_OUTDTHR=1
 WW3_DTFLD="$(printf "%02d" $(( WW3_OUTDTHR*3600 )))"
 export WW3_DTFLD
 WW3_DTPNT="$(printf "%02d" $(( WW3_OUTDTHR*3600 )))"
+export WW3_GRD_OUTDIR='./'
+export WW3_PNT_OUTDIR='./'
+export WW3_RST_OUTDIR='./'
 export WW3_DTPNT
 export DTRST=0
 export RSTTYPE=T
@@ -1030,7 +1046,6 @@ export WW3_ICE='F'
 export WW3_IC1='F'
 export WW3_IC5='F'
 # ATMW
-export WW3_MULTIGRID=true
 export WW3_MODDEF=mod_def.glo_1deg
 export MESH_WAV=mesh.glo_1deg.nc
 export WW3_RSTFLDS=" "
@@ -1065,6 +1080,18 @@ export FNSNOC="'global_snoclim.1.875.grb'"
 export FNZORC="'igbp'"
 export FNAISC="'IMS-NIC.blended.ice.monthly.clim.grb'"
 export LDEBUG=.false.
+
+# Land IAU defaults
+export DO_LAND_IAU=.false.
+export LAND_IAU_FHRS=3,6,9
+export LAND_IAU_DELHRS=6
+export LAND_IAU_INC_FILES="'sfc_inc',''"
+export LSOIL_INCR=3
+export LAND_IAU_FILTER_INC=.false.
+export LAND_IAU_UPD_STC=.true.
+export LAND_IAU_UPD_SLC=.true.
+export LAND_IAU_DP_STCSMC_ADJ=.true.
+export LAND_IAU_MIN_T_INC=0.0001
 }
 
 # Add section for tiled grid namelist
@@ -1161,7 +1188,7 @@ export_ugwpv1() {
       export K_SPLIT=2
       export N_SPLIT=4
       export TAU=3.0
-      export RF_CUTOFF=100.0
+      export RF_CUTOFF=300.0
       export FV_SG_ADJ=450
       ;;
     "C1152")
@@ -1173,7 +1200,7 @@ export_ugwpv1() {
       export K_SPLIT=2
       export N_SPLIT=6
       export TAU=2.5
-      export RF_CUTOFF=100.0
+      export RF_CUTOFF=300.0
       export FV_SG_ADJ=450
       ;;
     "C3072")
@@ -1185,7 +1212,7 @@ export_ugwpv1() {
       export K_SPLIT=4
       export N_SPLIT=5
       export TAU=0.5
-      export RF_CUTOFF=100.0
+      export RF_CUTOFF=300.0
       export FV_SG_ADJ=300
       ;;
     *)
@@ -1195,9 +1222,9 @@ export_ugwpv1() {
   esac
 
   if [[ ${DO_GSL_DRAG_SS} = .true. ]]; then export CDMBGWD=${CDMBGWD_GSL}; fi
-  if [[ ${SEDI_SEMI} = .false. ]]; then 
+  if [[ ${SEDI_SEMI} = .false. ]]; then
     export DT_INNER=$((DT_ATMOS/2))
-  else 
+  else
     export DT_INNER=${DT_ATMOS}
   fi
   export default_dt_atmos=0
@@ -1279,6 +1306,7 @@ export_mom6() {
   export DT_THERM_MOM6=3600
   export MOM6_INPUT=MOM_input_100.IN
   export MOM6_OUTPUT_DIR=./MOM6_OUTPUT
+  export MOM6_OUTPUT_FH=6
   export MOM6_RESTART_DIR=./RESTART/
   export MOM6_RESTART_SETTING=n
   export MOM6_RIVER_RUNOFF=False
@@ -1380,7 +1408,11 @@ export_cmeps() {
   export MESH_ICE=mesh.mx${OCNRES}.nc
   export MESH_WAV=mesh.${WW3_DOMAIN}.nc
   export CPLMODE=ufs.frac
-  export pio_rearranger=box
+  export CMEPS_PIO_FORMAT='pnetcdf'
+  export CMEPS_PIO_STRIDE=4
+  export CMEPS_PIO_IOTASKS=-99
+  export CMEPS_PIO_REARR='box'
+  export CMEPS_PIO_ROOT=-99
   export RUNTYPE=startup
   export RESTART_N=${FHMAX}
   export RESTART_FH=" "
@@ -1399,8 +1431,8 @@ export_cmeps() {
   # mediator ocean albedo
   export ocean_albedo_limit=0.06
   export use_mean_albedos=.false.
-  # WW3 (used in run_test only)
-  export WW3_MULTIGRID=false
+  # vector remapping
+  export MAPUV3D=true
 }
 
 export_cpl ()
@@ -1416,8 +1448,7 @@ export DOCN_CDEPS=false
 export DICE_CDEPS=false
 export CICE_PRESCRIBED=false
 export CDEPS_INLINE=false
-export FV3BMIC='p8c'
-export BMIC=.false.
+export ULTRALOW=.false.
 export DAYS=1
 
 #model configure
@@ -1490,7 +1521,7 @@ export DIAG_TABLE=diag_table_cpld.IN
 export DIAG_TABLE_ADDITIONAL=''
 export FIELD_TABLE_ADDITIONAL=''
 export FV3_RUN=cpld_control_run.IN
-export TILEDFIX=.false.
+export TILEDFIX=.true.
 
 export FHZERO=6
 
@@ -1645,6 +1676,8 @@ export_datm_cdeps ()
 
   # Set CMEPS component defaults
   export_cmeps
+  # vector remapping
+  export MAPUV3D=false
   # default configure
   export UFS_CONFIGURE=ufs.configure.datm_cdeps.IN
   export atm_model=datm
@@ -1702,7 +1735,11 @@ export_hafs_docn_cdeps ()
 
   export ocn_model=docn
   export ocn_datamode=sstdata
-  export pio_rearranger=box
+  export CMEPS_PIO_FORMAT='pnetcdf'
+  export CMEPS_PIO_STRIDE=4
+  export CMEPS_PIO_IOTASKS=-99
+  export CMEPS_PIO_REARR='box'
+  export CMEPS_PIO_ROOT=-99
   export DOCN_IN_CONFIGURE=docn_in.IN
   export DOCN_STREAM_CONFIGURE=hafs_docn.streams.IN
 }
@@ -1815,6 +1852,7 @@ export_coastal ()
   export CPLWAV2ATM=.false.
   export CPLLND=.false.
   export CDEPS_INLINE=.false.
+  export FV3ATM_OUTPUT_DIR="./"
   export HISTORY_FILE_ON_NATIVE_GRID=.false.
   export QUANTIZE_NSD=0
   export WAV_STANDALONE=.false.
@@ -1860,6 +1898,7 @@ export IMP_PHYSICS=11
 export IAER=111
 export CNVGWD=.false.
 export LTAEROSOL=.false.
+export MRAEROSOL=.false.
 export CDMBWD=1.0,1.0,1.0,1.0
 export LHEATSTRG=.false.
 export LRADAR=.true.
@@ -2022,6 +2061,7 @@ export DNATS=0
 export DO_SAT_ADJ=.false.
 export LRADAR=.true.
 export LTAEROSOL=.true.
+export MRAEROSOL=.false.
 export IALB=2
 export IEMS=2
 export HYBEDMF=.false.
@@ -2168,6 +2208,7 @@ export DNATS=0
 export DO_SAT_ADJ=.false.
 export LRADAR=.true.
 export LTAEROSOL=.true.
+export MRAEROSOL=.false.
 export IALB=2
 export IEMS=2
 export HYBEDMF=.false.

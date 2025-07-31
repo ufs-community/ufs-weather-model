@@ -41,19 +41,6 @@ function post_test() {
 	GIT_URL=${GIT_URL:-"ufs-weather-model"}
 	CHANGE_ID=${CHANGE_ID:-"develop"}
 
-	GIT_OWNER=$(echo ${GIT_URL} | cut -d '/' -f4)
-	GIT_REPO_NAME=$(echo ${GIT_URL} | cut -d '/' -f5 | cut -d '.' -f1)
-
-set +x
-	echo "GIT_URL=${GIT_URL}"
-	echo "CHANGE_ID=${CHANGE_ID}"
-	echo "GIT_OWNER=${GIT_OWNER} GIT_REPO_NAME=${GIT_REPO_NAME}"
-
-	echo "Testing concluded...removing label ${label} for ${machine} from ${GIT_URL}"
-	echo "https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels /${machine}-${label}"
-	curl --silent -X DELETE -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer ${GITHUB_TOKEN}"  https://api.github.com/repos/${GIT_OWNER}/${GIT_REPO_NAME}/issues/${CHANGE_ID}/labels/${machine}-${label}
-set -x
-
 	git config user.email "ecc.platform@noaa.gov"
 	git config user.name "epic-cicd-jenkins"
 

@@ -8,136 +8,132 @@ FAQ
 How do I build and run a single test of the UFS Weather Model?
 ==============================================================
 
-An efficient way to build and run the UFS Weather Model is to use the regression test
-(``rt.sh``).  This script is widely used by model developers on Tier 1 and 2 platforms
-and is described in the UFS WM GitHub :wm-wiki:`wiki <Making-code-changes-in-the-UFS-weather-model-and-its-subcomponents>`.  The advantages to this approach are:
+An efficient way to build and run the UFS Weather Model is to use the regression test (RT) script
+(``rt.sh``). This script is widely used by model developers on :wm-wiki:`Tier 1 <Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>` and 2 platforms
+and is described in :numref:`Section %s <run-wm>`. 
 
-   * It does not require a workflow, pre- or post-processing steps.
-   * The batch submission script is generated.
-   * Any required input data is already available for machines used by the regression test.
-   * Once the ``rt.sh`` test completes, you will have a working copy in your run directory where you can
-     make modifications to the namelist and other files, and then re-run the executable.
+.. note::
+   
+   Users on Level 2-4 systems may need to perform additional steps prior to following the steps below. For example, they may need to :ref:`download data <GetData>` and :ref:`update files <other-systems>` with platform-specific information. 
 
-The steps are:
+For all systems, users will need to:
 
-   #. Clone the source code and all the submodules as described in :numref:`Section %s <DownloadingWMCode>`, then
-      go into the ``tests`` directory:
+   #. Clone the source code and submodules as described in :numref:`Section %s <DownloadingWMCode>`; then
+      navigate to the ``tests`` directory:
 
       .. code-block:: console
 
-         cd ufs-weather-model (or the top level where you checked out the code)
-         cd tests
+         git clone --recursive https://github.com/ufs-community/ufs-weather-model.git
+         cd ufs-weather-model/tests
 
-   #. Find a configure (``*.conf``) file that contains the machine and compiler you are using. For this
-      example, the Intel compiler on Derecho is used.  To create a custom configure file, two lines are
-      needed:  a ``COMPILE`` line and a ``RUN`` line.   The ``COMPILE`` line should contain the name
-      of the machine and compiler ``derecho.intel`` and the desired ``SUITES`` for the build.  Choose a
-      ``RUN`` line under this ``COMPILE`` command that uses the desired ``SUITE``.  For example:
+   #. Modify the ``rt.sh`` script to put the output in a run directory where they have write permissions. For example, on Hercules, users would update ``dprefix``:
 
       .. code-block:: console
 
-         COMPILE | 32BIT=Y CCPP=Y STATIC=Y SUITES=FV3_GFS_v15p2,FV3_GFS_v16beta,FV3_GFS_v15p2_no_nsst,FV3_GFS_v16beta_no_nsst                     | standard    | derecho.intel | fv3
-         RUN     | fv3_ccpp_gfs_v16beta                                                                                                           | standard    |                | fv3         |
-
-      Put these two lines into a file called ``my_test.conf``.  The parameters used in this run can be
-      found in the ``fv3_ccpp_gfs_v16beta`` file in the ``ufs-weather-model/tests/tests`` directory.
-
-      .. note::  These two lines are long and may not appear in entirety in your browser. Scroll to the right to see
-               the entire line.
-
-   #. Modify the ``rt.sh`` script to put the output in a run directory where you have write permission:
-
-      .. code-block:: console
-
-         if [[ $MACHINE_ID = derecho.* ]]; then stanza:
+         case ${MACHINE_ID} in
          ...
-         dprefix=/glade/scratch
+            hercules)
+         ...
+               dprefix="/work2/noaa/stmp/${USER}"
+               DISKNM="/work/noaa/epic/hercules/UFS-WM_RT"
+               STMP="${dprefix}/stmp"
+               PTMP="${dprefix}/stmp"
 
-      This works for Derecho, since ``$USER/FV3_RT`` will be appended.  Also check that ``RTPWD``
-      points to a diretory that exists:
+   #. Run the ``rt.sh`` script: 
+      
+      * To run one specific test, such as ``control_c48``, use the ``-n`` flag to designate the name of the test and the type of compiler: 
 
-      .. code-block:: console
+         .. code-block:: console
 
-         if [[ $MACHINE_ID = derecho.* ]]; then
-            RTPWD=${RTPWD:-$DISKNM/ufs-public-release-20200224/${COMPILER^^}}
+            ./rt.sh -a <account_name> -k -n "control_c48 intel"
 
-   #. Run the ``rt.sh`` script from the ``tests`` directory:
+         where ``<account_name>`` is replaced with the name of an account where the user can charge computational resources. 
+         The ``-k`` option will preserve the run directory after the forecast finishes. The :wm-repo:`rt.conf <blob/develop/tests/rt.conf>` file contains all of the currently maintained RTs. 
 
-      .. code-block:: console
+      * Users can run the entire RT suite using the ecFlow workflow manager:
 
-         ./rt.sh -k -l my_test.conf >& my_test.out &
+         .. code-block:: console
 
-      Check ``my_test.out`` for build and run status, plus other standard output. Check
-      ``/glade/scratch/$USER/FV3_RT/rt_PID`` for the model run, where ``PID`` is a process ID.
-      The build will take about 10-15 minutes and the run will be fast, depending on how long
-      it waits in the queue.  A message ``"REGRESSION TEST WAS SUCCESSFUL"`` will be written to this
-      file, along with other entertainment: ``'Elapsed time: 00h:14m:12s. Have a nice day!'``.
+            ./rt.sh -a <account_name> -e -k -l rt.conf
+      
+      * To run ``rt.sh`` using a custom configuration file and the Rocoto workflow manager, create a configuration file (e.g., ``my_tests.conf``) based on ``rt.conf``. For example, to run only a few S2S tests, create a file called ``s2s.conf``. 
+         
+         .. code-block:: console
 
-   #. When the build and run are complete, modify the namelist or ``model_configure`` files
-      and re-run by submitting the ``job_card`` file:
+            COMPILE | s2s | intel | -DAPP=S2S -DCCPP_SUITES=FV3_GFS_v17_coupled_p8,FV3_GFS_v17_coupled_p8_ugwpv1 |   | fv3 |
+            RUN | cpld_control_c48         |                            | baseline |
+            RUN | cpld_warmstart_c48       | - noaacloud                | baseline |
+            RUN | cpld_restart_c48         | - noaacloud                |          | cpld_warmstart_c48
+
+         Then run:
+
+         .. code-block:: console
+
+            ./rt.sh -a <account_name> -r -k -l s2s.conf
+
+         adding additional arguments as desired. 
+
+   #. Check ``${STMP}/FV3_RT/rt_PID/<test_name>`` for the model run, where ``PID`` is a process ID, and ``<test_name>`` refers to a specific test, such as ``control_c48_intel``.
+      A successful test will produce an ``out`` file with an exit code at the bottom. ``exit code 0:0`` indicates a successful run. For example: 
+
+      .. code-block:: console 
+
+         Job 7430255 finished for user Joe.Schmoe in partition hera with exit code 0:0
+
+      There is also a RESOURCE STATISTICS summary at the end of the test's ``out`` file. Errors will appear in the ``err`` file. Users can find log files with more detailed information in ``ufs-weather-model/tests/logs/log_<platform>`` (where platform is the name of the machine the user is running on, e.g., ``log_hercules``).
+   
+   #. When the build and run are complete, users can modify the namelist or ``model_configure`` files in the run directory (``${STMP}``) 
+      and re-run their forecast/test with modifications by submitting the ``job_card`` file:
 
       .. code-block:: console
 
          qsub job_card
+         # OR
+         sbatch job_card
 
 ============================================
 How do I change the length of the model run?
 ============================================
-In your run directory, there is a file named ``model_configure``.  Change the
-variable ``nhours_fcst`` to the desired number of hours.
+For individual RT tests, users can add the ``FHMAX`` variable to the test configuration file. For example, in the :wm-repo:`control_c48 <blob/develop/tests/tests/control_c48>` case, 
+users can increase the forecast duration from the default (``DAYS*24`` --- or 24 hours, in this case) to 48 hours by adding the statement:
+
+.. code-block:: console
+
+   export FHMAX=48
+
+Alternatively, users can set a different default value in :wm-repo:`default_vars.sh <blob/develop/tests/default_vars.sh>` by changing the ``FHMAX`` variable directly in ``default_vars.sh``
+or they can modify the ``nhours_fcst`` variable in the ``model_configure*`` file that their experiment uses. 
+
+To rerun a previously run test with a different forecast length, go to the run directory (usually ``${STMP}/FV3_RT/rt_PID/<test_name>``), and open the file named ``model_configure``.  
+Change the variable ``nhours_fcst`` to the desired number of hours for the forecast and rerun by sumbitting the job card, as described above.
 
 ==============================================================
 How do I set the output history interval?
 ==============================================================
 
-The interval at which output (history) files are written is controlled in two
-places, and depends on whether you are using the write component to generate your output files.
-:numref:`Table %s <OutputControl>` describes the relevant variables.  If the write_component is used, then the variables listed as ``model_configure`` are required.  It is however, also required that the settings in ``input.nml`` match those same settings in ``model_configure``.  If these settings are inconsistent, then unpredictable output files and intervals may occur!
+The interval at which output (history) files are written is controlled via the ``model_configure*`` files. 
+When using the RT framework, users can adjust values in the test file for the test they plan to run, and these will be fed into the appropriate ``model_configure`` file.
+To adjust the default values for entire sets of tests, values can be modified in the ``tests/default_vars.sh`` script. 
+:numref:`Table %s <OutputControl>` describes the relevant variables.  
 
 .. _OutputControl:
 
-.. list-table:: *Namelist variables used to control the output file frequency.*
+.. list-table:: *Variables used to control the output file frequency*
    :widths: 15 10 10 30
    :header-rows: 1
 
    * - Namelist variable
      - Location
-     - Default Value
+     - Default Value in ``export_fv3``
      - Description
-   * - fdiag
-     - input.nml
-     - 0
-     - Array with dimension ``maxhr`` = 4096 listing the diagnostic output times (in hours) for the GFS physics.
-       This can either be a list of times after initialization, or an interval if only the first entry is
-       nonzero. The default setting of 0 will result in no outputs.
-   * - fhmax
-     - input.nml
-     - 384
-     - The maximal forecast time for output.
-   * - fhmaxhf
-     - input.nml
-     - 120
-     - The maximal forecast hour for high frequency output.
-   * - fhout
-     - input.nml
-     - 3
-     - Output frequency during forecast time from 0 to ``fhmax``, or from ``fhmaxhf`` to ``fhmax`` if ``fhmaxf>0``.
-   * - fhouthf
-     - input.nml
-     - 1
-     - The high frequency output frequency during the forecast time from 0 to ``fhmaxhf`` hour.
-   * - nfhmax_hf
-     - model_configure
-     - 0
-     - forecast length of high history file
-   * - nfhout_hf
-     - model_configure
-     - 1
-     - high history file output frequency
-   * - nfhout
-     - model_configure
-     - 3
-     - history file output frequency
+   * - OUTPUT_FH
+     - ``model_configure``
+     - "12 -1"
+     - Array listing the forecast output frequency; this can either be a list of times after initialization or an interval. 
+   * - nhours_fcst
+     - ``model_configure`` (uses ``FHMAX`` value set in the test file or ``default_vars.sh``)
+     - 24
+     - The maximal output time for the forecast.
 
 =============================================================
 How do I turn off IO for the components of the coupled model?
@@ -147,7 +143,7 @@ FV3atm restart and history files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To turn off FV3atm restart files, set the ``restart_interval`` in
-``model_configure`` to a value greater than the forecast length.
+``model_configure*.IN`` to a value greater than the forecast length.
 
 To turn off history files, in ``model_configure`` there are two
 options:
@@ -166,17 +162,17 @@ options:
 MOM6, CICE6 and CMEPS restart files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In ``ufs.configure``, set the ALLCOMP_attribute ``restart_n`` to a
+In ``ufs.configure*.IN``, set the ALLCOMP_attribute ``restart_n`` to a
 value greater than the forecast length.
 
 MOM6 history files
 ^^^^^^^^^^^^^^^^^^
 
-In the ``diag_table`` file, remove the ``ocn`` and ``SST`` history
+In the ``diag_table*`` file, remove the ``ocn`` and ``SST`` history
 output file definitions and fields.
 
 MOM6 history output speed can also be increased by setting the
-``IO_LAYOUT`` parameter in ``INPUT/MOM_input``.
+``IO_LAYOUT`` parameter in the relevant ``parm/MOM_input*.IN`` file.
 
 ::
 
@@ -185,7 +181,7 @@ MOM6 history output speed can also be increased by setting the
 CICE history files
 ^^^^^^^^^^^^^^^^^^
 
-In the CICE namelist ``ice_in``, set the ``histfreq`` to none with
+In the CICE namelist ``ice_in.IN``, set the ``histfreq`` to none with
 
 ::
 
@@ -200,27 +196,20 @@ The initial condition file can be turned off using
 GOCART history files
 ^^^^^^^^^^^^^^^^^^^^
 
-In AERO_HISTORY.rc, remove all the fields listed in ``COLLECTIONS``
-
-::
-
-   COLLECTIONS:
-   ::
+In ``parm/gocart/AERO_HISTORY.rc.IN``, remove all the fields listed in ``COLLECTIONS``.
 
 WW3 history and restart files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In ``ww3_shel.inp``, change the output interval for gridded frequency from
 3600 to 0 on `line 68
-<https://github.com/NOAA-EMC/WW3/blob/5ebed915755da0b21cf4d20e21726411fb2948c4/model/inp/ww3_shel.inp#L68>`_. To
+<https://github.com/NOAA-EMC/WW3/blob/f1f14d582835ef77626aaf44146a53d60920a0f7/model/inp/ww3_shel.inp#L68>`_. To
 turn off point output, change the output frequency from 900 to 0 on
-`line 296
-<https://github.com/NOAA-EMC/WW3/blob/5ebed915755da0b21cf4d20e21726411fb2948c4/model/inp/ww3_shel.inp#L296>`_. To
+`line 298
+<https://github.com/NOAA-EMC/WW3/blob/f1f14d582835ef77626aaf44146a53d60920a0f7/model/inp/ww3_shel.inp#L298>`_. To
 turn off restart files, change the frequency from 3600 to 0 on `line
-321
-<https://github.com/NOAA-EMC/WW3/blob/5ebed915755da0b21cf4d20e21726411fb2948c4/model/inp/ww3_shel.inp#L321>`_.
-
-
+323
+<https://github.com/NOAA-EMC/WW3/blob/f1f14d582835ef77626aaf44146a53d60920a0f7/model/inp/ww3_shel.inp#L323>`_.
 
 ==============================================================
 How do I set the total number of tasks for my job?
@@ -228,12 +217,12 @@ How do I set the total number of tasks for my job?
 
 In the UFS WM, each component's MPI task information, including the
 starting and ending tasks and the number of threads, are specified
-using the component-specific ``petlist_bounds`` and
-``omp_num_threads`` in ``ufs.configure``. In general, the total
+using the component-specific ``*petlist_bounds`` and
+``*omp_num_threads`` in ``ufs.configure``. In general, the total
 number of MPI tasks required is the sum of all the sub-component
 tasks, as long as those components do not overlap (i.e., share the
-same PETs). An example of a global 5 component coupled configuration
-ufs.configure at the end of this section.
+same PETs). An example of a global five-component coupled configuration
+``ufs.configure`` appears at the end of this section.
 
 FV3atm
 ^^^^^^
@@ -243,7 +232,7 @@ and write grid components.
 
 The MPI tasks for the forecast grid components are specified in the
 layout variable in one or more namelist files ``input*.nml``
-(e.g. input.nml and input_nest02.nml). The total number of mpi tasks
+(e.g., ``input.nml`` and ``input_nest02.nml``). The total number of MPI tasks
 required is given by the product of the specified layout, summed over
 all domains. For example, for a global domain with 6 tiles and
 ``layout = 6,8``, the total number required is ``6*6*8 = 288``. For
@@ -262,8 +251,8 @@ a ``blocksize=32``. A layout of ``4,6`` is supported for C96 with a
 blocksize of 32.
 
 The FV3atm will utilize the write grid component if ``quilting`` is
-set to .true. In this case, the required mpi tasks for the
-write grid components is the product of the ``write_groups`` and the
+set to .true. In this case, the required MPI tasks for the
+write grid component are the product of the ``write_groups`` and the
 ``write_tasks_per_group`` in the ``model_configure`` file.
 
 ::
@@ -287,26 +276,26 @@ atmosphere component is given by the product of the number of threads
 requested and the total number of MPI ranks (both forecast and write
 grid component). If ``num_threads_atm`` is the number of threads
 specified for the FV3atm component, in ``ufs.configure`` the ATM PET
-bounds are given by
+bounds are given by:
 
 ::
 
    ATM_petlist_bounds     0 total_tasks_atm*num_threads_atm-1
    ATM_omp_num_threads    num_threads_atm
 
-Note that in UWM, the ATM component is normally listed first in
+Note that in UFS WM, the ATM component is normally listed first in
 ``ufs.configure`` so that the starting PET for the ATM is 0.
 
 GOCART
 ^^^^^^
 
-GOCART shares the same grid and forecast tasks as FV3atm but it does
+GOCART shares the same grid and forecast tasks as FV3atm, but it does
 not have a separate write grid component in its NUOPC CAP. Also, while
 GOCART does not have threading capability, it shares the same data
 structure as FV3atm and so it has to use the same number of threads
 used by FV3atm. Therefore, the total number of MPI ranks and threads
 in GOCART is the same as the those for the FV3atm forecast component
-(i.e., excluding any write grid component). Currently GOCART only runs
+(i.e., excluding any write grid component). Currently, GOCART only runs
 on the global forecast grid component, for which only one namelist is
 needed.
 
@@ -356,17 +345,17 @@ CICE
 CICE requires setting the decomposition shape, the number of requested
 processors and the calculated block sizes in the ``ice_in``
 namelist. In UFS, the decomposition shape is always ``SlenderX2``,
-except for the 5 deg configuration, which is ``SlenderX1``.
+except for the 5-degree configuration, which is ``SlenderX1``.
 
 For ``SlenderX2`` decomposition, a given ``nprocs``, and global domain
-``nx_global``, ``ny_global``, the block sizes are given by
+``nx_global``, ``ny_global``, the block sizes are given by:
 
 ::
 
   block_size_y = ny_global/2
   block_size_x = nx_global/(nprocs/2)
 
-Similarily, for ``SlenderX1``
+Similarily, for ``SlenderX1``:
 
 ::
 
@@ -374,7 +363,7 @@ Similarily, for ``SlenderX1``
    block_size_x = nx_global/nprocs
 
 
-For the 1-deg CICE domain for example, ``ice_in`` would be
+For the 1-degree CICE domain for example, ``ice_in`` would be:
 
 ::
 
@@ -387,7 +376,7 @@ For the 1-deg CICE domain for example, ``ice_in`` would be
     processor_shape   = 'slenderX2'
 
 
-In UFS, only a single thread is used for CICE so for ``nprocs`` set in
+In the UFS, only a single thread is used for CICE so for ``nprocs`` set in
 ``ice_in``, the tasks in ``ufs.configure`` are set as:
 
 ::
@@ -416,7 +405,7 @@ preceding component, incremented by one.
 Example: 5-component ufs.configure
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-For the fully coupled S2SWA application, a sample ``ufs.configure`` is shown below :
+A sample ``ufs.configure`` is shown below for the :wm-repo:`cpld_control_gefs <blob/develop/tests/tests/cpld_control_gefs>` test, which is a fully coupled S2SWA run. This test uses the :wm-repo:`ufs.configure.s2swa.IN <blob/develop/tests/parm/ufs.configure.s2swa.IN>` template to generate ``ufs.configure``.
 
 
 .. code-block:: console
@@ -432,107 +421,117 @@ For the fully coupled S2SWA application, a sample ``ufs.configure`` is shown bel
 		# EARTH #
 		EARTH_component_list: MED ATM CHM OCN ICE WAV
 		EARTH_attributes::
-		  Verbosity = 0
+		   Verbosity = 0
 		::
 
 		# MED #
 		MED_model:                      cmeps
-		MED_petlist_bounds:             0 767
+		MED_petlist_bounds:             0 599
 		MED_omp_num_threads:            2
 		::
 
 
 		# ATM #
 		ATM_model:                      fv3
-		ATM_petlist_bounds:             0 863
+		ATM_petlist_bounds:             0 959
 		ATM_omp_num_threads:            2
 		ATM_attributes::
-		  Verbosity = 0
-		  DumpFields = false
-		  ProfileMemory = false
-		  OverwriteSlice = true
+         Verbosity = 0
+         DumpFields = false
+         ProfileMemory = false
+         OverwriteSlice = true
 		::
 
-		 # CHM #
-		 CHM_model:                      gocart
-		 CHM_petlist_bounds:             0 767
-		 CHM_omp_num_threads:            2
-		 CHM_attributes::
-		   Verbosity = 0
-		 ::
+		# CHM #
+		CHM_model:                      gocart
+		CHM_petlist_bounds:             0 767
+		CHM_omp_num_threads:            2
+		CHM_attributes::
+         Verbosity = 0
+		::
 
-		 # OCN #
-		 OCN_model:                      mom6
-		 OCN_petlist_bounds:             864 983
-		 OCN_omp_num_threads:            1
-		 OCN_attributes::
+		# OCN #
+		OCN_model:                      mom6
+		OCN_petlist_bounds:             960 1079
+		OCN_omp_num_threads:            1
+		OCN_attributes::
 		   Verbosity = 0
 		   DumpFields = false
 		   ProfileMemory = false
 		   OverwriteSlice = true
 		   mesh_ocn = mesh.mx025.nc
-		 ::
+         use_coldstart = false
+         use_mommesh = true
+		::
 
-		 # ICE #
-		 ICE_model:                      cice6
-		 ICE_petlist_bounds:             984 1031
-		 ICE_omp_num_threads:            1
-		 ICE_attributes::
+		# ICE #
+		ICE_model:                      cice6
+		ICE_petlist_bounds:             1080 1127
+		ICE_omp_num_threads:            1
+		ICE_attributes::
 		   Verbosity = 0
 		   DumpFields = false
 		   ProfileMemory = false
 		   OverwriteSlice = true
 		   mesh_ice = mesh.mx025.nc
+         eps_imesh = 1.0e-1
 		   stop_n = 3
 		   stop_option = nhours
 		   stop_ymd = -999
-		 ::
+		::
 
-		 # WAV #
-		 WAV_model:                      ww3
-		 WAV_petlist_bounds:             1032 1191
-		 WAV_omp_num_threads:            2
-		 WAV_attributes::
+		# WAV #
+		WAV_model:                      ww3
+		WAV_petlist_bounds:             1128 1367
+		WAV_omp_num_threads:            2
+		WAV_attributes::
 		   Verbosity = 0
 		   OverwriteSlice = false
-		   diro = "."
-		   logfile = wav.log
-		   mesh_wav = mesh.gwes_30m.nc
-		   multigrid = false
-		 ::
+         mesh_wav = mesh.glo_025.nc
+		   user_histname = true
+         use_historync = true
+         use_restartnc = true
+         restart_from_binary = true
+         pio_typename = pnetcdf
+         pio_numiotasks = -99
+         pio_stride = 4
+         pio_rearranger = box
+         pio_root = -99
+		::
 
-		 CMEPS warm run sequence
-		 runSeq::
-		 @1800
-		 MED med_phases_prep_ocn_avg
-		 MED -> OCN :remapMethod=redist
-		 OCN
-		 @300
-		   MED med_phases_prep_atm
-		   MED med_phases_prep_ice
-		   MED med_phases_prep_wav_accum
-		   MED med_phases_prep_wav_avg
-		   MED -> ATM :remapMethod=redist
-		   MED -> ICE :remapMethod=redist
-		   MED -> WAV :remapMethod=redist
-		   ATM phase1
-		   ATM -> CHM
-		   CHM
-		   CHM -> ATM
-		   ATM phase2
-		   ICE
-		   WAV
-		   ATM -> MED :remapMethod=redist
-		   MED med_phases_post_atm
-		   ICE -> MED :remapMethod=redist
-		   MED med_phases_post_ice
-		   WAV -> MED :remapMethod=redist
-		   MED med_phases_post_wav
-		   MED med_phases_prep_ocn_accum
-		 @
-		 OCN -> MED :remapMethod=redist
-		 MED med_phases_post_ocn
-		 MED med_phases_restart_write
+		 # CMEPS warm run sequence
+		runSeq::
+		@1800
+         MED med_phases_prep_wav_avg
+         MED med_phases_prep_ocn_avg
+         MED -> WAV :remapMethod=redist
+         MED -> OCN :remapMethod=redist
+         WAV
+         OCN
+         @300
+            MED med_phases_prep_atm
+            MED med_phases_prep_ice
+            MED -> ATM :remapMethod=redist
+            MED -> ICE :remapMethod=redist
+            ATM phase1
+            ATM -> CHM
+            CHM
+            CHM -> ATM
+            ATM phase2
+            ICE
+            ATM -> MED :remapMethod=redist
+            MED med_phases_post_atm
+            ICE -> MED :remapMethod=redist
+            MED med_phases_post_ice
+            MED med_phases_ocnalb_run
+            MED med_phases_prep_ocn_accum
+            MED med_phases_prep_wav_accum
+         @
+         OCN -> MED :remapMethod=redist
+         WAV -> MED :remapMethod=redist
+         MED med_phases_post_ocn
+         MED med_phases_post_wav
+         MED med_phases_restart_write
 		@
 		::
 
@@ -542,32 +541,90 @@ For the fully coupled S2SWA application, a sample ``ufs.configure`` is shown bel
 		::
 
 		MED_attributes::
-		  ATM_model = fv3
-		  ICE_model = cice6
-		  OCN_model = mom6
-		  WAV_model = ww3
-		  history_n = 1
-		  history_option = nhours
-		  history_ymd = -999
-		  coupling_mode = nems_frac
-		  history_tile_atm = 384
+		   ATM_model = fv3
+         ICE_model = cice6
+         OCN_model = mom6
+         WAV_model = ww3
+         coupling_mode = ufs.frac
+         pio_rearranger = box
+         ocean_albedo_limit = 0.06
 		::
 		ALLCOMP_attributes::
-		  ScalarFieldCount = 2
-		  ScalarFieldIdxGridNX = 1
-		  ScalarFieldIdxGridNY = 2
-		  ScalarFieldName = cpl_scalars
-		  start_type = startup
-		  restart_dir = RESTART/
-		  case_name = ufs.cpld
-		  restart_n = 3
-		  restart_option = nhours
-		  restart_ymd = -999
-		  dbug_flag = 0
-		  use_coldstart = false
-		  use_mommesh = true
-		  eps_imesh = 1.0e-1
-		  stop_n = 6
-		  stop_option = nhours
-		  stop_ymd = -999
+		   ScalarFieldCount = 3
+         ScalarFieldIdxGridNX = 1
+         ScalarFieldIdxGridNY = 2
+         ScalarFieldIdxGridNTile = 3
+         ScalarFieldName = cpl_scalars
+         start_type = continue
+         restart_dir = ./RESTART/
+         case_name = ufs.cpld
+         restart_n = 3
+         restart_option = nhours
+         restart_ymd = -999
+         write_restart_at_endofrun = .false.
+         dbug_flag = 0
+         stop_n = 12
+         stop_option = nhours
+         stop_ymd = -999
+         orb_eccen = 1.e36
+         orb_iyear = 2000
+         orb_iyear_align = 2000
+         orb_mode = fixed_year
+         orb_mvelp = 1.e36
+         orb_obliq = 1.e36
 		::
+
+========================================================
+How can I get the UFS WM to output physics tendencies?
+========================================================
+
+Users will need to:
+
+#. Update ``input.nml`` by setting ``ldiag3d`` and ``qdiag3d`` to ``.true.``. 
+#. Update the ``diag_table`` according to the instructions in :numref:`Section %s <diag_tableFile>`.
+ 
+Although it may seem counterintuitive, the physics tendencies will be output in ``sfc*.nc`` files once the ``diag_table`` changes have been made. Even 3D fields will appear there. 
+
+Users may find the following GitHub Discussions on this topic informative: 
+
+* :wm-repo:`WM Discussion #1867<discussions/1867>` 
+* `SRW App Discussion #862 <https://github.com/ufs-community/ufs-srweather-app/discussions/862>`_ 
+* :wm-repo:`WM Discussion #1862 <discussions/1862>`
+
+===================================================================================================================
+How can I output a particular variable (e.g., accumulated precipitation) from the UFS WM atmospheric model (FV3)?
+===================================================================================================================
+
+To output a particular variable from FV3, users must update the field section of the ``diag_table`` file, which specifies the fields to be output at run time. 
+Only fields registered with ``register_diag_field()``, which is an API in the FMS ``diag_manager`` routine, can be used in the ``diag_table``. 
+A line in the field section of the ``diag_table`` file contains eight variables with the following format:
+
+.. code-block:: console
+
+   "module_name", "field_name", "output_name", "file_name", "time_sampling", "reduction_method", "regional_section", packing
+
+These variables are defined in :numref:`Table %s <diag-table-options>` of the UFS WM documentation on the ``diag_table`` file. 
+
+For example, to output accumulated precipitation, the following line must appear in the ``diag_table`` file: 
+
+.. code-block:: console
+
+   "gfs_phys", "totprcp_ave", "prate_ave", "fv3_history2d", "all", .false., "none", 2
+
+Users may refer to ``diag_table`` examples in the UFS WM repository. These files are used to configure groups of regression tests. 
+
+View GitHub :wm-repo:`Discussion #2016 <discussions/2016/>` for the question that inspired this FAQ. 
+
+===========================================================================================================
+Where can I find up-to-date documentation for the ``diag_table`` variables used in the UFS Weather Model?
+===========================================================================================================
+
+Information on ``diag_table`` variables has been added to the :ref:`diag_table section <diag-table-options>` of the UFS Weather Model documentation. 
+Currently, only variables coming from fv3atm and MOM6 are included, but ``diag_table`` variables from other components will be added as time permits. 
+
+* :ref:`FV3ATM diag_table variables <fv3diagtable>`
+* `MOM6 diag_table variables <https://ncar.github.io/MOM6/APIs/namespacemom__diagnostics.html>`_
+
+See ufs-community `Discussion #33 <https://github.com/orgs/ufs-community/discussions/33>`_ for the question that inspired this FAQ.
+
+
