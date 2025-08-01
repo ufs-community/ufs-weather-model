@@ -117,7 +117,7 @@ case ${MACHINE_ID} in
     module load miniconda/3.9.12
     module load nccmp/1.9.0.1
     ;;
-  noaacloud|frontera)
+  noaacloud)
     echo "No special nccmp load necessary"
     ;;
   gaeac5)
@@ -135,6 +135,12 @@ case ${MACHINE_ID} in
     ;;
   derecho)
     module load nccmp
+    ;;
+  frontera)
+    module use /work2/01118/tg803972/frontera/spack-stack/spack-stack-1.9.2/envs/unified-env/install/modulefiles/Core
+    module use /work2/01118/tg803972/frontera/spack-stack/spack-stack-1.9.2/envs/unified-env/install/modulefiles/intel-oneapi-mpi/2021.9.0-bwli7xy/intel/23.1.0
+    module load stack-intel/23.1.0 stack-intel-oneapi-mpi/2021.9.0
+    module load nccmp/1.9.0.1
     ;;
   *)
     module use modulefiles
