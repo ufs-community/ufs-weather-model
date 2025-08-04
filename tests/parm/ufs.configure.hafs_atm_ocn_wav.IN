@@ -4,7 +4,7 @@
 
 # ESMF #
 logKindFlag:            ESMF_LOGKIND_MULTI_ON
-globalResourceControl:  @[ESMF_THREADING]
+globalResourceControl:  true
 
 # EARTH #
 EARTH_component_list: MED ATM OCN WAV
@@ -86,15 +86,7 @@ WAV_attributes::
   OverwriteSlice = false
   merge_import = .true.
   mesh_wav = @[MESH_WAV]
-  user_histname = @[WW3_user_histname]
-  use_historync = @[WW3_historync]
-  use_restartnc = @[WW3_restartnc]
-  restart_from_binary = @[WW3_restart_from_binary]
-  pio_typename = @[WW3_PIO_FORMAT]
-  pio_numiotasks = @[WW3_PIO_IOTASKS]
-  pio_stride = @[WW3_PIO_STRIDE]
-  pio_rearranger = @[WW3_PIO_REARR]
-  pio_root = @[WW3_PIO_ROOT]
+  user_sets_restname = true
 ::
 
 # Run Sequence #
@@ -141,7 +133,6 @@ ALLCOMP_attributes::
   restart_n = 6
   restart_option = nhours
   restart_ymd = -999
-  write_restart_at_endofrun = @[WRITE_ENDOFRUN_RESTART]
   dbug_flag = @[cap_dbug_flag]
   orb_eccen = 1.e36
   orb_iyear = 2000
@@ -149,6 +140,7 @@ ALLCOMP_attributes::
   orb_mode = fixed_year
   orb_mvelp = 1.e36
   orb_obliq = 1.e36
+  mediator_present = true
   stop_n = @[FHMAX]
   stop_option = nhours
   stop_ymd = -999
