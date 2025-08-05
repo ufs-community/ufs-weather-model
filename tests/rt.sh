@@ -869,7 +869,7 @@ case ${MACHINE_ID} in
     QUEUE="batch"
     COMPILE_QUEUE="batch"
     PARTITION="hercules"
-    dprefix=${dprefix:-"/work2/noaa/vdatum/jsmith/stmp/${USER}"}
+    dprefix=${dprefix:-"/work2/noaa/stmp/${USER}"}
     DISKNM="/work/noaa/epic/hercules/UFS-WM_RT"
     STMP="${dprefix}/stmp"
     PTMP="${dprefix}/stmp"
