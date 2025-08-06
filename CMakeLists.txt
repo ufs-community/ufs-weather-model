@@ -161,6 +161,7 @@ if(OPENMP)
 endif()
 
 find_package(NetCDF 4.7.4 REQUIRED C Fortran)
+set(USE_ESMF_STATIC_LIBS ON)
 find_package(ESMF 8.8.0 MODULE REQUIRED)
 #add_library(ESMF::ESMF ALIAS esmf)
 if(FMS)

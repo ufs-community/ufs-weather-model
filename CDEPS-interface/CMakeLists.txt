@@ -101,7 +101,7 @@ add_dependencies(dglc share streams dshr)
 set_target_properties(dglc PROPERTIES Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod)
 target_include_directories(dglc PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/mod>)
 target_link_libraries(dglc PRIVATE dshr share streams)
-target_link_libraries(dglc PRIVATE esmf PIO::PIO_Fortran)
+target_link_libraries(dglc PRIVATE ESMF::ESMF PIO::PIO_Fortran)
 
 # CDEPS
 add_library(cdeps STATIC $<TARGET_OBJECTS:share>
