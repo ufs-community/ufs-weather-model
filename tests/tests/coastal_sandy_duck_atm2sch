@@ -1,0 +1,103 @@
+###############################################################################
+#
+# SCHISM coupled coastal_sandy_duck_atm2sch configuration
+#
+###############################################################################
+
+export TEST_DESCR="Compare coastal_sandy_duck_atm2sch results with previous trunk version"
+
+export CNTL_DIR=coastal_sandy_duck_atm2sch
+
+export LIST_FILES="outputs/schout_000000_1.nc \
+                   outputs/schout_000000_2.nc \
+                   outputs/schout_000001_1.nc \
+                   outputs/schout_000001_2.nc \
+                   outputs/schout_000002_1.nc \
+                   outputs/schout_000002_2.nc"
+# \
+#                   ufs.cpld.cpl.hi.2008-08-24-00000.nc"
+
+# default options
+export_coastal
+
+# model_configure
+export SYEAR=2012
+export SMONTH=10
+export SDAY=27
+export SHOUR=00
+export FHMAX=6
+export FHROT=0
+# not used
+export DT_ATMOS=720
+export RESTART_INTERVAL=0
+export QUILTING=.true.
+export QUILTING_RESTART=.false.
+export WRITE_GROUP=1
+export WRTTASK_PER_GROUP=6
+export ITASKS=1
+export OUTPUT_HISTORY=.true.
+export WRITE_DOPOST=.false.
+export NUM_FILES=2
+export FILENAME_BASE="'atm' 'sfc'"
+export OUTPUT_GRID="'cubed_sphere_grid'"
+export OUTPUT_FILE="'netcdf'"
+export IDEFLATE=0
+export NBITS=0
+export ICHUNK2D=0
+export JCHUNK2D=0
+export ICHUNK3D=0
+export JCHUNK3D=0
+export KCHUNK3D=0
+export IMO=384
+export JMO=190
+export WRITE_NSFLIP=.false.
+export OUTPUT_FH="12 -1"
+export IAU_OFFSET=0
+if [[ " hera orion hercules gaea jet frontera " =~ " ${MACHINE_ID} " ]] ; then
+  ZSTANDARD_LEVEL=5
+fi
+
+# datm
+export DATM_CDEPS=true
+export DATM_STREAM_CONFIGURE=datm.streams.coastal.IN
+export atm_datamode="ATMMESH"
+export MESH_ATM="era5_data_19941012_19941014_rot_fix_SCRIP_ESMF.nc"
+export ATM_NX_GLB=1440
+export ATM_NY_GLB=721
+export EXPORT_ALL=.true.
+export FILENAME_BASE='atmmesh.'
+export STREAM_VECTORS="null"
+export stream_files="\"INPUT/era5_data_30min_obs_wind_rot_fix_filled.nc\""
+export stream_variables="\"u10 Sa_u10m\" \"v10 Sa_v10m\" \"msl Sa_pslv\""
+export mapalgo=redist
+export dtlimit=1.5
+export STREAM_OFFSET=0
+
+# datm/ocean
+export HURR="Sandy"
+export CPL_CONF="atm2sch"
+
+# pes
+export ATM_compute_tasks=160
+export OCN_tasks=160
+
+# configuration
+export MODEL_CONFIGURE=model_configure.IN
+export UFS_CONFIGURE=ufs.configure.coastal_datm_ocn.IN
+export med_model=cmeps
+export med_petlist_bounds="0 159"
+export med_omp_num_threads=1
+export atm_model=datm
+export atm_petlist_bounds="0 159"
+export atm_omp_num_threads=1
+export ocn_model=schism
+export ocn_petlist_bounds="0 159"
+export ocn_omp_num_threads=1
+export coupling_interval_slow_sec=1800
+export RESTART_N=6
+export RUNTYPE=startup
+export CPLMODE=coastal
+export meshloc=element
+
+# input files
+export FV3_RUN="coastal_datm_atmmesh.IN coastal_schism_run.IN"
