@@ -10,10 +10,6 @@ endif()
 
 set(CMAKE_Platform $ENV{CMAKE_Platform})
 
-if(CMAKE_Platform STREQUAL "wcoss2")
-  list(APPEND CMAKE_MODULE_PATH $ENV{ESMF_ROOT}/include/ESMX/Driver/cmake)
-endif()
-
 list(APPEND CMAKE_MODULE_PATH $ENV{ESMF_ROOT}/cmake)
 list(APPEND CMAKE_MODULE_PATH $ENV{esmf_ROOT}/cmake)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules/Modules)
@@ -163,7 +159,6 @@ endif()
 find_package(NetCDF 4.7.4 REQUIRED C Fortran)
 set(USE_ESMF_STATIC_LIBS ON)
 find_package(ESMF 8.8.0 MODULE REQUIRED)
-#add_library(ESMF::ESMF ALIAS esmf)
 if(FMS)
   find_package(FMS 2022.04 REQUIRED COMPONENTS R4 R8)
   if(APP MATCHES "^(HAFSW)$")
