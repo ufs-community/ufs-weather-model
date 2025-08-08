@@ -942,18 +942,13 @@ case ${MACHINE_ID} in
   derecho)
     echo "rt.sh: Setting up derecho..."
     if [[ "${ROCOTO:-false}" == true ]] ; then
-      module use /glade/work/epicufsrt/contrib/derecho/rocoto/modulefiles
-      module load rocoto
+      module use /glade/work/epicufsrt/contrib/derecho/modulefiles
+      module load rocoto/1.3.7-fix
     fi
     module use /glade/work/epicufsrt/contrib/spack-stack/derecho/modulefiles
     if [[ "${ECFLOW:-false}" == true ]] ; then
       module load ecflow/5.8.4
     fi
-    module unload ncarcompilers
-    module use /glade/work/epicufsrt/contrib/spack-stack/derecho/spack-stack-1.5.1/envs/unified-env/install/modulefiles/Core
-    module load stack-intel/2021.10.0
-    module load stack-python/3.10.8
-  #  export PYTHONPATH=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/glade/p/ral/jntp/tools/miniconda3/4.8.3/lib/python3.8/site-packages
     if [[ "${ECFLOW:-false}" == true ]] ; then
       ECF_HOST=$(hostname)
       ECF_PORT=$(( $(id -u) + 1500 ))
