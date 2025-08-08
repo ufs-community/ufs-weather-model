@@ -786,12 +786,41 @@ case ${MACHINE_ID} in
     COMPILE_QUEUE="batch"
 
     PARTITION=
-    dprefix=${dprefix:-"/scratch1/NCEPDEV"}
-    DISKNM="/scratch2/NAGAPE/epic/UFS-WM_RT"
-    STMP="${dprefix}/stmp4"
-    PTMP="${dprefix}/stmp2"
+    dprefix=${dprefix:-"/scratch3/NCEPDEV/stmp/${USER}"}
+    DISKNM="/scratch3/NAGAPE/epic/role.epic/UFS-WM_RT"
+    STMP="${dprefix}/RT_BASELINE"
+    PTMP="${dprefix}/RT_RUNDIRS"
 
     SCHEDULER=slurm
+    ;;
+  ursa)
+    echo "rt.sh: Setting up ursa..."
+    if [[ "${ROCOTO:-false}" == true ]] ; then
+      module load rocoto
+      ROCOTO_SCHEDULER=slurm
+    fi
+
+    if [[ "${ECFLOW:-false}" == true ]] ; then
+      module load ecflow/5.11.4
+      ECF_HOST="uecflow01"
+      ECF_PORT="$(( $(id -u) + 1500 ))"
+      export ECF_HOST ECF_PORT
+    fi
+
+    QUEUE="batch"
+    COMPILE_QUEUE="batch"
+
+    PARTITION="u1-compute"
+    dprefix="/scratch4/NCEPDEV/stmp/${USER}"
+    if [[ "${ACCNR}" == 'epic' ]] ; then
+      dprefix="/scratch4/NAGAPE/epic/${USER}/stmp"
+    fi
+    DISKNM="/scratch4/NAGAPE/epic/role-epic/UFS-WM_RT"
+    STMP="${STMP:-${dprefix}/RT_BASELINE}"
+    PTMP="${PTMP:-${dprefix}/RT_RUNDIRS}"
+
+    SCHEDULER=slurm
+
     ;;
   orion)
     echo "rt.sh: Setting up orion..."
@@ -913,18 +942,13 @@ case ${MACHINE_ID} in
   derecho)
     echo "rt.sh: Setting up derecho..."
     if [[ "${ROCOTO:-false}" == true ]] ; then
-      module use /glade/work/epicufsrt/contrib/derecho/rocoto/modulefiles
-      module load rocoto
+      module use /glade/work/epicufsrt/contrib/derecho/modulefiles
+      module load rocoto/1.3.7-fix
     fi
     module use /glade/work/epicufsrt/contrib/spack-stack/derecho/modulefiles
     if [[ "${ECFLOW:-false}" == true ]] ; then
       module load ecflow/5.8.4
     fi
-    module unload ncarcompilers
-    module use /glade/work/epicufsrt/contrib/spack-stack/derecho/spack-stack-1.5.1/envs/unified-env/install/modulefiles/Core
-    module load stack-intel/2021.10.0
-    module load stack-python/3.10.8
-  #  export PYTHONPATH=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/glade/p/ral/jntp/tools/miniconda3/4.8.3/lib/python3.8/site-packages
     if [[ "${ECFLOW:-false}" == true ]] ; then
       ECF_HOST=$(hostname)
       ECF_PORT=$(( $(id -u) + 1500 ))
