@@ -1,5 +1,5 @@
 #
-# Resource file Dust parameters. 
+# Resource file Dust parameters.
 #
 
 aerosol_radBands_optics_file: ExtData/optics/opticsBands_DU.v15_3.RRTMG.nc
@@ -22,6 +22,17 @@ Ch_DU: 0.2 0.2 0.07 0.07 0.07 0.056
 # Scavenging efficiency per bin [km-1]
 fscav: 0.2  0.2  0.2  0.2  0.2   #
 
+# clay fraction scaling factor
+soil_clay_factor: 1.0
+
+# Wet Removal Scheme Option | gocart, ufs
+wet_removal_scheme: ufs
+
+# Rainout efficiency per bin for wet_removal_scheme == ufs
+fwet_ice: 0.8 0.8 0.8 1.0 1.0
+fwet_snow: 0.8 0.8 0.8 1.0 1.0
+fwet_rain: 0.8 0.8 0.8 1.0 1.0
+
 # Molecular weight of species [kg mole-1]
 molecular_weight: 0.1  0.1  0.1  0.1  0.1
 
@@ -31,7 +42,7 @@ fnum: 2.45e14  3.28e13  6.52e12  9.89e11 1.76e11
 rhFlag: 0
 
 # Maring settling velocity correction
-maringFlag: .true. 
+maringFlag: .true.
 
 nbins: 5
 
@@ -41,8 +52,9 @@ pressure_lid_in_hPa: 0.01
 emission_scheme: fengsha       # choose among: fengsha, ginoux, k14
 
 # FENGSHA settings
-alpha: 0.1
+alpha: 0.16
 gamma: 1.0
 soil_moisture_factor: 1
 soil_drylimit_factor: 1
 vertical_to_horizontal_flux_ratio_limit: 2.e-04
+drag_partition_option: 2

@@ -1,5 +1,5 @@
 #
-# Resource file for Black Carbon parameters. 
+# Resource file for Black Carbon parameters.
 #
 
 nbins:  2
@@ -16,8 +16,22 @@ aviation_vertical_layers: 0.0 100.0 9.0e3 10.0e3
 # Initially hydrophobic portion
 hydrophobic_fraction: 0.8
 
+# Rate of conversion of hydrophobic to hydrophilic [days]
+time_days_hydrophobic_to_hydrophilic: 2.5
+
+# Rate of chemical destruction of carbon species [days]
+time_days_chemical_destruction: -1.  -1.
+
+# Wet Removal Scheme Option | gocart, ufs
+wet_removal_scheme: ufs # default value
+
+# Rainout efficiency per bin for wet_removal_scheme == ufs
+fwet_ice: 0.0 1.0
+fwet_snow: 0.0 1.0
+fwet_rain: 0.0 1.0
+
 # Scavenging efficiency per bin [km-1] (NOT USED UNLESS RAS IS CALLED)
-fscav: 0.0  0.4 
+fscav: 0.0  0.4
 
 # Dry particle density [kg m-3]
 particle_density: 1800   1800
