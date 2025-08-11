@@ -45,11 +45,11 @@ jobs:
         package-variants: app=${{ matrix.config.app }} ccpp_suites=${{ matrix.config.ccpp_suites }} ${{ matrix.config.other-variants }}
         custom-recipe: ci/package.py
         spack-compiler: gcc@13
-        spack-externals: openmpi gmake cmake python perl git git-lfs
+        #spack-externals: openmpi gmake cmake python perl git git-lfs
         spack-test-flag: '' # disable 'make test' for Spack
-        use-common-build-cache: false
+        use-common-build-cache: true
         repo-cache-key-suffix: ${{ matrix.config.os }}-1 # Update to create and use a fresh cache
-        save-repo-cache: ${{ matrix.config.app == 'S2SWA' }} # Only need to save cache from one job
+        save-repo-cache: false # ${{ matrix.config.app == 'S2SWA' }} # Only need to save cache from one job
         # Set to save to a different cache key than the restored one (in order to add new packages etc.).
         #  Be sure to unset it after a new cache is generated or a new one will be created each time!
         repo-save-key-suffix: ''
