@@ -85,12 +85,15 @@ elif [[ -d /lfs/h1 && ! -d /lfs/h3 ]]; then
 elif [[ -d /mnt/lfs1 ]]; then
   # We are on NOAA Jet
   MACHINE_ID=jet
-elif [[ -d /scratch1 ]]; then
-  # We are on NOAA Hera
-  MACHINE_ID=hera
-elif [[ -d /collab1 ]]; then
-  # We are on NOAA Ursa
-  MACHINE_ID=ursa
+elif [[ -d /scratch3 ]]; then
+  # We are on NOAA Hera or Ursa
+  mount=$(findmnt -n -o SOURCE /home)   
+  if [[ ${mount} =~ "ursa" ]]; then
+    # We are on ursa
+    MACHINE_ID=ursa
+  elif [[ ${mount} =~ "hera" ]]; then
+    MACHINE_ID=hera
+  fi
 elif [[ -d /work ]]; then
   # We are on MSU Orion or Hercules
   mount=$(findmnt -n -o SOURCE /home)   
