@@ -754,8 +754,8 @@ case ${MACHINE_ID} in
     module load cray-mpich/8.1.30
     module load python/3.11
     if [[ "${ECFLOW:-false}" == true ]] ; then
-      module use /ncrc/proj/epic/spack-stack/modulefiles
-      module load ecflow/5.8.4
+      module use /ncrc/proj/epic/spack-stack/c6/spack-stack-1.9.2/envs/ue-intel-2023.2.0/install/modulefiles/gcc/12.3.0
+      module load ecflow/5.11.4
       ECF_HOST=$(hostname)
       ECF_PORT=$(( $(id -u) + 1500 ))
       export ECF_PORT ECF_HOST
@@ -1058,7 +1058,7 @@ if [[ "${CREATE_BASELINE}" == false ]] ; then
 fi
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-${DISKNM}/NEMSfv3gfs/input-data-20250507}
-INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20250225
+INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20250806
 INPUTDATA_LM4=${INPUTDATA_LM4:-${INPUTDATA_ROOT}/LM4_input_data}
 
 shift $((OPTIND-1))
