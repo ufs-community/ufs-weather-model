@@ -891,7 +891,6 @@ export CPLWAV=.false.
 export CPLWAV2ATM=.false.
 export CPLLND=.false.
 export CPLLND2ATM=.false.
-export ICPLOCN2ATM=0
 export USE_MED_FLUX=.false.
 export USE_OCEANUV=.false.
 export DAYS=1
@@ -1589,7 +1588,6 @@ export CPLWAV2ATM=.true.
 export USE_MED_FLUX=.false.
 export CPLCHM=.true.
 export CPLLND=.false.
-export ICPLOCN2ATM=0
 
 # for FV3: default values will be changed if doing a warm-warm restart
 export WARM_START=.false.
