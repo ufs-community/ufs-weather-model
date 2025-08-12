@@ -157,6 +157,9 @@ else
         if [[ $CPLWAV == .true. ]]; then
             RFILE=ufs.cpld.ww3.r.${RESTART_FILE_SUFFIX_SECS}.nc
             cp ../${DEP_RUN}${SUFFIX}/${RFILE} .
+            if [[ $WW3_DOMAIN == 'global_270k' ]]; then
+                cp ../${DEP_RUN}${SUFFIX}/out.pnt_wght.ww3.nc pnt_wght.ww3.nc
+            fi
         fi
 
         # LAND restart file
@@ -190,18 +193,18 @@ fi
 
 #inline post
 if [ $WRITE_DOPOST = .true. ]; then
-    if [[ ${BMIC} == .true. ]]; then
-        cp ${PATHRT}/../FV3/upp/parm/gefs/post_itag_gefs128 itag
-        cp ${PATHRT}/../FV3/upp/parm/gefs/postxconfig-NT-gefs.txt postxconfig-NT.txt
-        cp ${PATHRT}/../FV3/upp/parm/gefs/postxconfig-NT-gefs-f00.txt postxconfig-NT_FH00.txt
-        cp ${PATHRT}/../FV3/upp/parm/params_grib2_tbl_new params_grib2_tbl_new
-        cp ${PATHRT}/../FV3/upp/fix/chem/optics_luts*nasa.dat .
-    else
-        cp ${PATHRT}/parm/post_itag_gfs itag
-        cp ${PATHRT}/parm/postxconfig-NT-gfs.txt postxconfig-NT.txt
-        cp ${PATHRT}/parm/postxconfig-NT-gfs_FH00.txt postxconfig-NT_FH00.txt
-        cp ${PATHRT}/parm/params_grib2_tbl_new params_grib2_tbl_new
-    fi
+  if [[ ${BMIC} == .true. ]]; then
+    cp    ${PATHRT}/../FV3/upp/parm/gefs/post_itag_gefs128 itag
+    cp    ${PATHRT}/../FV3/upp/parm/gefs/postxconfig-NT-gefs.txt postxconfig-NT.txt
+    cp    ${PATHRT}/../FV3/upp/parm/gefs/postxconfig-NT-gefs-f00.txt postxconfig-NT_FH00.txt
+    cp    ${PATHRT}/../FV3/upp/parm/params_grib2_tbl_new params_grib2_tbl_new
+    cp    ${PATHRT}/../FV3/upp/fix/chem/optics_luts*nasa.dat .
+  else
+    cp    ${PATHRT}/parm/post_itag_gfs itag
+    cp    ${PATHRT}/parm/postxconfig-NT-gfs.txt postxconfig-NT.txt
+    cp    ${PATHRT}/parm/postxconfig-NT-gfs_FH00.txt postxconfig-NT_FH00.txt
+    cp    ${PATHRT}/../FV3/upp/parm/params_grib2_tbl_new params_grib2_tbl_new
+  fi
 fi
 
 #prognostic aerosols
