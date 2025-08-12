@@ -207,6 +207,28 @@ elif [[ ${MACHINE_ID} = hera ]]; then
   export WPG_cpl_atmw_gdas=24
   export WAV_tasks_atmw_gdas=248
 
+elif [[ ${MACHINE_ID} = ursa ]]; then
+
+  export TPN=192
+
+  export INPES_dflt=3
+  export JNPES_dflt=8
+  export INPES_thrd=3
+  export JNPES_thrd=4
+  export INPES_c384=6
+  export JNPES_c384=8
+  export THRD_c384=2
+  export INPES_c768=8
+  export JNPES_c768=16
+  export THRD_c768=4
+
+  export THRD_cpl_atmw_gdas=2
+  export INPES_cpl_atmw_gdas=6
+  export JNPES_cpl_atmw_gdas=8
+  export WPG_cpl_atmw_gdas=24
+  export WAV_tasks_atmw_gdas=248
+
+
 elif [[ ${MACHINE_ID} = linux ]]; then
 
   export TPN=40
@@ -463,6 +485,7 @@ export SATMEDMF=.false.
 export ISATMEDMF=0
 export LRADAR=.true.
 export LTAEROSOL=.true.
+export MRAEROSOL=.false.
 
 export LSM=1
 export LANDICE=.true.
@@ -520,6 +543,8 @@ export FV3=true
 export S2S=false
 export HAFS=false
 export AQM=false
+export DO_AQM_CANOPY=.false.
+export aqm_rc_file=aqm.rc
 export FIRE_BEHAVIOR=false
 export DATM_CDEPS=false
 export DOCN_CDEPS=false
@@ -681,6 +706,8 @@ export EFFR_IN=.false.
 # Thompson MP
 export LRADAR=.false.
 export LTAEROSOL=.false.
+export MRAEROSOL=.false.
+export LTHAILAWARE=.false.
 export EXT_DIAG_THOMPSON=.false.
 export SEDI_SEMI=.true.
 export DECFL=10
@@ -1655,7 +1682,7 @@ export_datm_cdeps ()
   export DIAG_TABLE=diag_table_template
   export DATM_SRC=CFSR
   export FILEBASE_DATM=cfsr
-  export MESH_ATM=${FILEBASE_DATM}_mesh.nc
+  export MESH_ATM=mesh.datm.1760x880.nc
   export atm_datamode=GEFS
   export stream_files=INPUT/${FILEBASE_DATM}.201110.nc
   export EXPORT_ALL=.false.
@@ -1830,9 +1857,11 @@ export IMP_PHYSICS=11
 export IAER=111
 export CNVGWD=.false.
 export LTAEROSOL=.false.
+export MRAEROSOL=.false.
 export CDMBWD=1.0,1.0,1.0,1.0
 export LHEATSTRG=.false.
 export LRADAR=.true.
+export ICPLOCN2ATM=0
 
 export FV_CORE_TAU=5.
 export RF_CUTOFF=30.e2
@@ -1992,6 +2021,7 @@ export DNATS=0
 export DO_SAT_ADJ=.false.
 export LRADAR=.true.
 export LTAEROSOL=.true.
+export MRAEROSOL=.false.
 export IALB=2
 export IEMS=2
 export HYBEDMF=.false.
@@ -2138,6 +2168,7 @@ export DNATS=0
 export DO_SAT_ADJ=.false.
 export LRADAR=.true.
 export LTAEROSOL=.true.
+export MRAEROSOL=.false.
 export IALB=2
 export IEMS=2
 export HYBEDMF=.false.
