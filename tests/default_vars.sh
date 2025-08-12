@@ -893,6 +893,7 @@ export CPLLND=.false.
 export CPLLND2ATM=.false.
 export ICPLOCN2ATM=0
 export USE_MED_FLUX=.false.
+export USE_OCEANUV=.false.
 export DAYS=1
 export NPX=97
 export NPY=97
@@ -1863,7 +1864,7 @@ export MRAEROSOL=.false.
 export CDMBWD=1.0,1.0,1.0,1.0
 export LHEATSTRG=.false.
 export LRADAR=.true.
-export ICPLOCN2ATM=0
+export USE_OCEANUV=.false.
 
 export FV_CORE_TAU=5.
 export RF_CUTOFF=30.e2
