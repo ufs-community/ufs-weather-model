@@ -1,5 +1,5 @@
 #
-# Resource file for Organic Carbon parameters. 
+# Resource file for Organic Carbon parameters.
 #
 
 aerosol_radBands_optics_file: ExtData/optics/opticsBands_OC.v1_3.RRTMG.nc
@@ -26,8 +26,22 @@ rhFlag: 0
 # Initially hydrophobic portion
 hydrophobic_fraction: 0.5
 
+# Rate of conversion of hydrophobic to hydrophilic [days]
+time_days_hydrophobic_to_hydrophilic: 2.5
+
+# Rate of chemical destruction of carbon species [days]
+time_days_chemical_destruction: -1.  -1.
+
+# Wet Removal Scheme Option | gocart, ufs
+wet_removal_scheme: ufs
+
+# Rainout efficiency per bin for wet_removal_scheme == ufs
+fwet_ice: 0.0 1.0
+fwet_snow: 0.0 1.0
+fwet_rain: 0.0 1.0
+
 # Scavenging efficiency per bin [km-1] (NOT USED UNLESS RAS IS CALLED)
-fscav: 0.0  0.4 
+fscav: 0.0  0.4
 
 # Dry particle density [kg m-3]
 particle_density: 1800   1800
@@ -43,6 +57,6 @@ sigma: 2.20  2.20
 
 pressure_lid_in_hPa: 0.01
 
-nbins: 2 
+nbins: 2
 
 point_emissions_srcfilen: /dev/null
