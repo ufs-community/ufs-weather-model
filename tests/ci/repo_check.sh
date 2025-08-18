@@ -1,5 +1,5 @@
 #!/bin/bash
-#set -eu
+set -eu
 
 get_shas () {
     cwd=$(pwd)
@@ -106,8 +106,7 @@ done
 if [[ ! $flag_sync ]]; then
     echo "** ${GITHUB_WORKSPACE} **NOT** up to date"
     exit 1
+else
+    echo "** ${GITHUB_WORKSPACE} up to date **"
+    exit 0
 fi
-
-echo "** ${GITHUB_WORKSPACE} up to date **"
-
-exit 0
