@@ -104,10 +104,12 @@ cp "${PATHRT}/module-setup.sh" "module-setup.sh"
 
 case ${MACHINE_ID} in
   wcoss2|acorn)
-    module use /lfs/h2/emc/eib/save/hang.lei/forgdit/nco_wcoss2/install2/modulefiles/compiler/intel/19.1.3.304
-    module use /lfs/h2/emc/eib/save/hang.lei/forgdit/nco_wcoss2/install2/modulefiles/mpi/intel/19.1.3.304/cray-mpich/8.1.12
-    module load intel/19.1.3.304 netcdf/4.9.2 pnetcdf/1.12.2 hdf5/1.14.0
-    module load nccmp/1.9.0.1
+    module load intel/19.1.3.304
+    module load craype/2.7.13 cray-mpich/8.1.12
+    module load netcdf-D/4.9.2
+    module load pnetcdf-D/1.12.2
+    module load hdf5-D/1.14.0
+    module load nccmp-D/1.9.0.1
     ;;
   s4)
     module use /data/prod/jedi/spack-stack/spack-stack-1.4.1/envs/ufs-pio-2.5.10/install/modulefiles/Core
@@ -284,7 +286,7 @@ fi
 
 # AQM
 if [[ ${AQM} == .true. ]]; then
-  cp "${PATHRT}/parm/aqm/aqm.rc" .
+  cp "${PATHRT}/parm/aqm/${aqm_rc_file}" ./aqm.rc
 fi
 
 # Field Dictionary
@@ -409,6 +411,8 @@ if [[ ${ESMF_THREADING} != true ]]; then
   PPN=${TPN}
 fi
 
+export NCPUS=$(( TPN * THRD ))
+
 if [[ ${SCHEDULER} = 'pbs' ]]; then
   if [[ -e ${PATHRT}/fv3_conf/fv3_qsub.IN_${MACHINE_ID} ]]; then
     atparse < "${PATHRT}/fv3_conf/fv3_qsub.IN_${MACHINE_ID}" > job_card
@@ -493,7 +497,7 @@ if [[ ${skip_check_results} == false ]]; then
 
       else
         if [[ ${i##*.} == nc* ]] ; then
-          if [[ " orion hercules hera wcoss2 acorn derecho gaeac5 gaeac6 jet s4 noaacloud frontera" =~ ${MACHINE_ID} ]]; then
+          if [[ " orion hercules hera ursa wcoss2 acorn derecho gaeac5 gaeac6 jet s4 noaacloud frontera " =~ ${MACHINE_ID} ]]; then
             printf "USING NCCMP.." >> "${RT_LOG}"
             printf "USING NCCMP.."
               nccmp_args=(-d -S -q -f -B --Attribute=checksum --warn=format)

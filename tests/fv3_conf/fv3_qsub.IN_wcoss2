@@ -5,7 +5,7 @@
 #PBS -N @[JBNME]
 #PBS -A @[ACCNR]
 #PBS -q @[QUEUE]
-#PBS -l place=vscatter,select=@[NODES]:ncpus=@[TPN]:mpiprocs=@[TPN]:mem=500G
+#PBS -l place=vscatter,select=@[NODES]:ncpus=@[NCPUS]:mpiprocs=@[TPN]:ompthreads=@[THRD]:mem=500G
 #PBS -l place=excl
 #PBS -l walltime=00:@[WLCLK]:00
 
@@ -38,7 +38,7 @@ if [ "${JOB_SHOULD_FAIL:-NO}" = WHEN_RUNNING ] ; then
     false
 fi
 
-mpiexec -n @[TASKS] -ppn @[TPN] -depth @[THRD] ./fv3.exe
+mpiexec -n @[TASKS] -ppn @[TPN] --cpu-bind core -depth @[THRD] ./fv3.exe
 
 echo "Model ended:    " `date`
 echo -n " $( date +%s )," >> job_timestamp.txt
