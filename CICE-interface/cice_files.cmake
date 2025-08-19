@@ -69,6 +69,7 @@ list(APPEND icepack_files
   CICE/icepack/columnphysics/icepack_itd.F90
   CICE/icepack/columnphysics/icepack_kinds.F90
   CICE/icepack/columnphysics/icepack_mechred.F90
+  CICE/icepack/columnphysics/icepack_meltpond_sealvl.F90
   CICE/icepack/columnphysics/icepack_meltpond_lvl.F90
   CICE/icepack/columnphysics/icepack_meltpond_topo.F90
   CICE/icepack/columnphysics/icepack_mushy_physics.F90
