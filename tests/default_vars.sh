@@ -1107,6 +1107,7 @@ export_tiled() {
   export FNVMXC="'${ATMRES}.vegetation_greenness.tileX.nc'"
   export FNSLPC="'${ATMRES}.slope_type.tileX.nc'"
   export FNABSC="'${ATMRES}.maximum_snow_albedo.tileX.nc'"
+  export LSM=2
   export LANDICE=".false."
 }
 
