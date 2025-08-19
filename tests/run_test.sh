@@ -286,7 +286,7 @@ fi
 
 # AQM
 if [[ ${AQM} == .true. ]]; then
-  cp "${PATHRT}/parm/aqm/aqm.rc" .
+  cp "${PATHRT}/parm/aqm/${aqm_rc_file}" ./aqm.rc
 fi
 
 # Field Dictionary
@@ -410,6 +410,8 @@ export UFS_TASKS
 if [[ ${ESMF_THREADING} != true ]]; then
   PPN=${TPN}
 fi
+
+export NCPUS=$(( TPN * THRD ))
 
 if [[ ${SCHEDULER} = 'pbs' ]]; then
   if [[ -e ${PATHRT}/fv3_conf/fv3_qsub.IN_${MACHINE_ID} ]]; then

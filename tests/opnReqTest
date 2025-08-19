@@ -328,9 +328,9 @@ rm -f fail_test* fail_compile*
 # Machine-dependent libraries, modules, variables, etc.
 if [[ $MACHINE_ID = hera ]]; then
 
-  PYTHONHOME=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3_new_20210629
-  export PATH=$PYTHONHOME/bin:$PATH
-  export PYTHONPATH=$PYTHONHOME/lib/python3.7/site-packages
+  #PYTHONHOME=/scratch1/NCEPDEV/nems/emc.nemspara/soft/miniconda3_new_20210629
+  #export PATH=$PYTHONHOME/bin:$PATH
+  #export PYTHONPATH=$PYTHONHOME/lib/python3.7/site-packages
 
   module load ecflow
   ECFLOW_START=ecflow_start.sh
@@ -338,10 +338,10 @@ if [[ $MACHINE_ID = hera ]]; then
   PARTITION=
   QUEUE=batch
   COMPILE_QUEUE=batch
-  dprefix="/scratch1/NCEPDEV"
-  DISKNM="/scratch2/NAGAPE/epic/UFS-WM_RT"
-  STMP="${dprefix}/stmp4"
-  PTMP="${dprefix}/stmp2"
+  dprefix="/scratch3/NCEPDEV/stmp/${USER}"
+  DISKNM="/scratch3/NAGAPE/epic/role.epic/UFS-WM_RT"
+  STMP="${dprefix}/ORT-stmp"
+  PTMP="${dprefix}/ORT-ptmp"
   SCHEDULER=slurm
 
 elif [[ $MACHINE_ID = orion ]]; then
