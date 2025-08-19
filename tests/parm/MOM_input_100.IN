@@ -1,6 +1,13 @@
 ! This file was written by the model and records all non-layout or debugging parameters used at run-time.
 ! === module MOM ===
-
+ENABLE_BUGS_BY_DEFAULT = False  !   [Boolean] default = True
+                                ! If true, the defaults for certain recently added bug-fix flags are set to
+                                ! recreate the bugs so that the code can be moved forward without changing
+                                ! answers for existing configurations.  The defaults for groups of bug-fix flags
+                                ! are periodcially changed to correct the bugs, at which point this parameter
+                                ! will no longer be used to set their default.  Setting this to false means that
+                                ! bugs are only used if they are actively selected, but it also means that
+                                ! answers may change when code is updated due to newly found bugs.
 ! === module MOM_unit_scaling ===
 ! Parameters for doing unit scaling of variables.
 USE_REGRIDDING = True           !   [Boolean] default = False
@@ -65,7 +72,7 @@ BAD_VAL_SST_MAX = 55.0          !   [deg C] default = 45.0
 BAD_VAL_SST_MIN = -3.0          !   [deg C] default = -2.1
                                 ! The value of SST below which a bad value message is triggered, if
                                 ! CHECK_BAD_SURFACE_VALS is true.
-DEFAULT_ANSWER_DATE = 20181231  ! default = 99991231
+DEFAULT_ANSWER_DATE = 20250818  ! default = 99991231
                                 ! This sets the default value for the various _ANSWER_DATE parameters.
 WRITE_GEOM = 2                  ! default = 1
                                 ! If =0, never write the geometry and vertical grid files. If =1, write the
@@ -103,13 +110,6 @@ GRID_CONFIG = "mosaic"          !
                                 !     mercator - use a Mercator spherical grid.
 GRID_FILE = "ocean_hgrid.nc"    !
                                 ! Name of the file from which to read horizontal grid data.
-GRID_ROTATION_ANGLE_BUGS = False  ! [Boolean] default = True
-                                ! If true, use an older algorithm to calculate the sine and
-                                ! cosines needed rotate between grid-oriented directions and
-                                ! true north and east.  Differences arise at the tripolar fold
-USE_TRIPOLAR_GEOLONB_BUG = False !   [Boolean] default = True
-                                ! If true, use older code that incorrectly sets the longitude in some points
-                                ! along the tripolar fold to be off by 360 degrees.
 TOPO_CONFIG = "file"            !
                                 ! This specifies how bathymetry is specified:
                                 !     file - read bathymetric information from the file
@@ -177,6 +177,14 @@ NK = 75                         !   [nondim]
 ! === module MOM_tracer_registry ===
 
 ! === module MOM_EOS ===
+ENABLE_BUGS_BY_DEFAULT = False  !   [Boolean] default = True
+                                ! If true, the defaults for certain recently added bug-fix flags are set to
+                                ! recreate the bugs so that the code can be moved forward without changing
+                                ! answers for existing configurations.  The defaults for groups of bug-fix flags
+                                ! are periodcially changed to correct the bugs, at which point this parameter
+                                ! will no longer be used to set their default.  Setting this to false means that
+                                ! bugs are only used if they are actively selected, but it also means that
+                                ! answers may change when code is updated due to newly found bugs.
 TFREEZE_FORM = "MILLERO_78"     ! default = "LINEAR"
                                 ! TFREEZE_FORM determines which expression should be used for the freezing
                                 ! point.  Currently, the valid choices are "LINEAR", "MILLERO_78", "TEOS10"
@@ -401,11 +409,11 @@ U_IC_VAR = "u"                  ! default = "u"
                                 ! The initial condition variable for zonal velocity in VELOCITY_FILE.
 V_IC_VAR = "v"                  ! default = "v"
 ! === module MOM_diag_mediator ===
-!Jiande NUM_DIAG_COORDS = 2             ! default = 1
+!NUM_DIAG_COORDS = 2             ! default = 1
 NUM_DIAG_COORDS = 1
                                 ! The number of diagnostic vertical coordinates to use.
                                 ! For each coordinate, an entry in DIAG_COORDS must be provided.
-!Jiande DIAG_COORDS = "z Z ZSTAR", "rho2 RHO2 RHO" !
+!DIAG_COORDS = "z Z ZSTAR", "rho2 RHO2 RHO" !
 DIAG_COORDS = "z Z ZSTAR"
                                 ! A list of string tuples associating diag_table modules to
                                 ! a coordinate definition used for diagnostics. Each string
