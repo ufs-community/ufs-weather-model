@@ -2,48 +2,30 @@ help([[
 Load environment to compile ufs-weather-model in a container using Intel
 ]])
 
-prepend_path("MODULEPATH", "/opt/spack-stack/spack-stack-1.6.0/envs/fms-2024.01/install/modulefiles/Core")
+prepend_path("MODULEPATH", "/opt/spack-stack/spack-stack-1.9.1/envs/unified-env/install/modulefiles/Core")
 
-stack_intel_ver=os.getenv("stack_intel_ver") or "2021.10.0"
-stack_impi_ver=os.getenv("stack_impi_ver") or "2021.9.0"
+stack_oneapi_ver=os.getenv("stack_oneapi_ver") or "2024.2.0"
+stack_impi_ver=os.getenv("stack_impi_ver") or "2021.13"
 
-load("gnu")
-load(pathJoin("stack-intel", stack_intel_ver))
+load(pathJoin("stack-oneapi", stack_oneapi_ver))
 load(pathJoin("stack-intel-oneapi-mpi", stack_impi_ver))
-unload("gnu")
 
--- load("ufs_common")
-local ufs_modules = {
-  {["jasper"]          = "2.0.32"},
-  {["zlib"]            = "1.2.13"},
-  {["libpng"]          = "1.6.37"},
-  {["hdf5"]            = "1.14.0"},
-  {["netcdf-c"]        = "4.9.2"},
-  {["netcdf-fortran"]  = "4.6.1"},
-  {["parallelio"]      = "2.5.10"},
-  {["esmf"]            = "8.6.0"},
-  {["fms"]             = "2024.01"},
-  {["bacio"]           = "2.4.1"},
-  {["crtm"]            = "2.4.0.1"},
-  {["g2"]              = "3.5.1"},
-  {["g2tmpl"]          = "1.13.0"},
-  {["ip"]              = "4.3.0"},
-  {["sp"]              = "2.5.0"},
-  {["w3emc"]           = "2.10.0"},
-  {["gftl-shared"]     = "1.6.1"},
-  {["mapl"]            = "2.40.3-esmf-8.6.0"},
-  {["scotch"]          = "7.0.4"},
-}
+cmake_ver=os.getenv("cmake_ver") or "3.27.9"
+load(pathJoin("cmake", cmake_ver))
 
-for i = 1, #ufs_modules do
-  for name, default_version in pairs(ufs_modules[i]) do
-    local env_version_name = string.gsub(name, "-", "_") .. "_ver"
-    load(pathJoin(name, os.getenv(env_version_name) or default_version))
-  end
-end
+setenv("mapl_ver", "2.53.0-esmf-8.8.0")
+
+load("ufs_common")
 
 nccmp_ver=os.getenv("nccmp_ver") or "1.9.0.1"
 load(pathJoin("nccmp", nccmp_ver))
+
+setenv("CC", "mpiicx")
+setenv("CXX", "mpiicpx")
+setenv("FC", "mpiifort")
+setenv("I_MPI_CC", "icx")
+setenv("I_MPI_CXX", "icpx")
+setenv("I_MPI_F90", "ifort")
 
 setenv("CMAKE_Platform", "container.intel")
 
