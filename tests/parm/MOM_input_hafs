@@ -847,6 +847,29 @@ MIX_LEN_EXPONENT = 1.0          !   [nondim] default = 2.0
 USE_LA_LI2016 = True            !   [nondim] default = False
                                 ! A logical to use the Li et al. 2016 (submitted) formula to determine the
                                 ! Langmuir number.
+USE_WAVES = True                !   [Boolean] default = False
+                                ! If true, enables surface wave modules.
+WAVE_METHOD = "SURFACE_BANDS"   ! default = "EMPTY"
+                                ! Choice of wave method, valid options include:
+                                !  TEST_PROFILE  - Prescribed from surface Stokes drift
+                                !                  and a decay wavelength.
+                                !  SURFACE_BANDS - Computed from multiple surface values
+                                !                  and decay wavelengths.
+                                !  DHH85         - Uses Donelan et al. 1985 empirical
+                                !                  wave spectrum with prescribed values.
+                                !  LF17          - Infers Stokes drift profile from wind
+                                !                  speed following Li and Fox-Kemper 2017.
+SURFBAND_SOURCE = "COUPLER"     ! default = "EMPTY"
+                                ! Choice of SURFACE_BANDS data mode, valid options include:
+                                !  DATAOVERRIDE  - Read from NetCDF using FMS DataOverride.
+                                !  COUPLER       - Look for variables from coupler pass
+                                !  INPUT         - Testing with fixed values.
+STK_BAND_COUPLER = 3            ! default = 1
+                                ! STK_BAND_COUPLER is the number of Stokes drift bands in the coupler. This has
+                                ! to be consistent with the number of Stokes drift bands in WW3, or the model
+                                ! will fail.
+SURFBAND_WAVENUMBERS = 0.04, 0.11, 0.3305 !   [rad/m] default = 0.12566
+                                ! Central wavenumbers for surface Stokes drift bands.
 EPBL_LANGMUIR_SCHEME = "ADDITIVE" ! default = "NONE"
                                 ! EPBL_LANGMUIR_SCHEME selects the method for including Langmuir turbulence.
                                 ! Valid values are:
@@ -942,7 +965,9 @@ LATENT_HEAT_VAPORIZATION = 2.5E+06 !   [J/kg] default = 2.5E+06
                                 ! surface anomaly (akin to a piston velocity).  Note the non-MKS units.
 GUST_CONST = 0.0                !   [Pa] default = 0.0
                                 ! The background gustiness in the winds.
-USTAR_GUSTLESS_BUG = False      !   [Boolean] default = True
+FIX_USTAR_GUSTLESS_BUG = True   !   [Boolean] default = True
+                                ! If true correct a bug in the time-averaging of the gustless wind friction
+                                ! velocity
 
 ! These parameters are used in CORE mode but should not be used in
 ! the coupled model (CM4).
