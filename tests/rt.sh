@@ -754,8 +754,8 @@ case ${MACHINE_ID} in
     module load cray-mpich/8.1.30
     module load python/3.11
     if [[ "${ECFLOW:-false}" == true ]] ; then
-      module use /ncrc/proj/epic/spack-stack/modulefiles
-      module load ecflow/5.8.4
+      module use /ncrc/proj/epic/spack-stack/c6/spack-stack-1.9.2/envs/ue-intel-2023.2.0/install/modulefiles/gcc/12.3.0
+      module load ecflow/5.11.4
       ECF_HOST=$(hostname)
       ECF_PORT=$(( $(id -u) + 1500 ))
       export ECF_PORT ECF_HOST
@@ -942,18 +942,13 @@ case ${MACHINE_ID} in
   derecho)
     echo "rt.sh: Setting up derecho..."
     if [[ "${ROCOTO:-false}" == true ]] ; then
-      module use /glade/work/epicufsrt/contrib/derecho/rocoto/modulefiles
-      module load rocoto
+      module use /glade/work/epicufsrt/contrib/derecho/modulefiles
+      module load rocoto/1.3.7-fix
     fi
     module use /glade/work/epicufsrt/contrib/spack-stack/derecho/modulefiles
     if [[ "${ECFLOW:-false}" == true ]] ; then
       module load ecflow/5.8.4
     fi
-    module unload ncarcompilers
-    module use /glade/work/epicufsrt/contrib/spack-stack/derecho/spack-stack-1.5.1/envs/unified-env/install/modulefiles/Core
-    module load stack-intel/2021.10.0
-    module load stack-python/3.10.8
-  #  export PYTHONPATH=/glade/p/ral/jntp/tools/miniconda3/4.8.3/envs/ufs-weather-model/lib/python3.8/site-packages:/glade/p/ral/jntp/tools/miniconda3/4.8.3/lib/python3.8/site-packages
     if [[ "${ECFLOW:-false}" == true ]] ; then
       ECF_HOST=$(hostname)
       ECF_PORT=$(( $(id -u) + 1500 ))
@@ -1063,7 +1058,7 @@ if [[ "${CREATE_BASELINE}" == false ]] ; then
 fi
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-${DISKNM}/NEMSfv3gfs/input-data-20250507}
-INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20250225
+INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20250807
 INPUTDATA_LM4=${INPUTDATA_LM4:-${INPUTDATA_ROOT}/LM4_input_data}
 
 shift $((OPTIND-1))
