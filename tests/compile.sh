@@ -63,7 +63,8 @@ case ${MACHINE_ID} in
     # Activate lua environment for gaea c5
     if [[ ${MACHINE_ID} == gaeac5 ]]; then
       module reset
-    elif [[ ${MACHINE_ID} == gaeac6 ]]; then
+    fi
+    if [[ ${MACHINE_ID} == gaeac6 ]]; then
       module reset
     elif [[ ${MACHINE_ID} == container ]]; then
       source /usr/lmod/lmod/init/bash
