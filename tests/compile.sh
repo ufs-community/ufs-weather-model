@@ -69,7 +69,6 @@ case ${MACHINE_ID} in
     elif [[ ${MACHINE_ID} == container ]]; then
       source /usr/lmod/lmod/init/bash
       module purge
-      unset MODULEPATH
     elif [[ ${MACHINE_ID} == hercules ]]; then
       module purge
     fi
