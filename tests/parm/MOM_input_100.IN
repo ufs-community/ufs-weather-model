@@ -533,9 +533,6 @@ KV_TBL_MIN = 0.0                !   [m2 s-1] default = 1.0E-04
                                 ! The minimum viscosities in the top boundary layer.
 
 ! === module MOM_thickness_diffuse ===
-USE_GM_WORK_BUG = True          !   [Boolean] default = False
-                                ! If true, compute the top-layer work tendency on the u-grid with the incorrect
-                                ! sign, for legacy reproducibility.
 
 ! === module MOM_dynamics_split_RK2 ===
 
@@ -746,14 +743,6 @@ VERTEX_SHEAR = False             !   [Boolean] default = False
 KD_TRUNC_KAPPA_SHEAR = 2.0E-07  !   [m2 s-1] default = 2.0E-07
                                 ! The value of shear-driven diffusivity that is considered negligible and is
                                 ! rounded down to 0. The default is 1% of KD_KAPPA_SHEAR_0.
-KAPPA_SHEAR_ITER_BUG = True     !   [Boolean] default = False
-                                ! If true, use an older, dimensionally inconsistent estimate of the derivative
-                                ! of diffusivity with energy in the Newton's method iteration.  The bug causes
-                                ! undercorrections when dz > 1 m.
-KAPPA_SHEAR_ALL_LAYER_TKE_BUG = True !   [Boolean] default = False
-                                ! If true, report back the latest estimate of TKE instead of the time average
-                                ! TKE when there is mass in all layers.  Otherwise always report the time
-                                ! averaged TKE, as is currently done when there are some massless layers.
 
 ! === module MOM_CVMix_shear ===
 ! Parameterization of shear-driven turbulence via CVMix (various options)

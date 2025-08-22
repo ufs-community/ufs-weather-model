@@ -546,9 +546,6 @@ KHTH_MAX_CFL = 0.1              !   [nondimensional] default = 0.8
                                 ! thickness diffusivity. 1.0 is the marginally unstable value in a pure layered
                                 ! model, but much smaller numbers (e.g. 0.1) seem to work better for ALE-based
                                 ! models.
-USE_GM_WORK_BUG = True          !   [Boolean] default = True
-                                ! If true, compute the top-layer work tendency on the u-grid with the incorrect
-                                ! sign, for legacy reproducibility.
 
 ! === module MOM_continuity ===
 
@@ -650,9 +647,6 @@ DTBT = -0.9                     !   [s or nondim] default = -0.98
                                 ! use 0, or a negative value gives the fraction of the stable value. Setting
                                 ! DTBT to 0 is the same as setting it to -0.98. The value of DTBT that will
                                 ! actually be used is an integer fraction of DT, rounding down.
-BT_USE_OLD_CORIOLIS_BRACKET_BUG = True !   [Boolean] default = False
-                                ! If True, use an order of operations that is not bitwise rotationally symmetric
-                                ! in the meridional Coriolis term of the barotropic solver.
 
 ! === module MOM_mixed_layer_restrat ===
 MIXEDLAYER_RESTRAT = True       !   [Boolean] default = False
@@ -778,14 +772,6 @@ MAX_RINO_IT = 25                !   [nondim] default = 50
 VERTEX_SHEAR = False             !   [Boolean] default = False
                                 ! If true, do the calculations of the shear-driven mixing
                                 ! at the cell vertices (i.e., the vorticity points).
-KAPPA_SHEAR_ITER_BUG = True     !   [Boolean] default = True
-                                ! If true, use an older, dimensionally inconsistent estimate of the derivative
-                                ! of diffusivity with energy in the Newton's method iteration.  The bug causes
-                                ! undercorrections when dz > 1 m.
-KAPPA_SHEAR_ALL_LAYER_TKE_BUG = True !   [Boolean] default = True
-                                ! If true, report back the latest estimate of TKE instead of the time average
-                                ! TKE when there is mass in all layers.  Otherwise always report the time
-                                ! averaged TKE, as is currently done when there are some massless layers.
 
 ! === module MOM_CVMix_shear ===
 ! Parameterization of shear-driven turbulence via CVMix (various options)
@@ -982,7 +968,6 @@ CD_TIDES = 0.0018               !   [nondim] default = 1.0E-04
                                 ! The drag coefficient that applies to the tides.
 GUST_CONST = 0.0                !   [Pa] default = 0.02
                                 ! The background gustiness in the winds.
-USTAR_GUSTLESS_BUG = True       !   [Boolean] default = False
 USE_RIGID_SEA_ICE = True        !   [Boolean] default = False
                                 ! If true, sea-ice is rigid enough to exert a nonhydrostatic pressure that
                                 ! resist vertical motion.
