@@ -441,6 +441,7 @@ export WLCLK_dflt=30
 export WLCLK=${WLCLK_dflt}
 export CMP_DATAONLY=false
 export nccmp_exclude=""
+export nccmp_exclude_attr=""
 
 # Defaults for ufs.configure
 export esmf_logkind="ESMF_LOGKIND_MULTI"
@@ -1682,7 +1683,7 @@ export_datm_cdeps ()
   export DIAG_TABLE=diag_table_template
   export DATM_SRC=CFSR
   export FILEBASE_DATM=cfsr
-  export MESH_ATM=${FILEBASE_DATM}_mesh.nc
+  export MESH_ATM=mesh.datm.1760x880.nc
   export atm_datamode=GEFS
   export stream_files=INPUT/${FILEBASE_DATM}.201110.nc
   export EXPORT_ALL=.false.
@@ -1861,6 +1862,7 @@ export MRAEROSOL=.false.
 export CDMBWD=1.0,1.0,1.0,1.0
 export LHEATSTRG=.false.
 export LRADAR=.true.
+export ICPLOCN2ATM=0
 
 export FV_CORE_TAU=5.
 export RF_CUTOFF=30.e2
@@ -2087,8 +2089,8 @@ export SHAL_CNV=.false.
 export DO_SAT_ADJ=.false.
 export DO_DEEP=.false.
 export CCPP_SUITE='FV3_HRRR'
-export INPES=12
-export JNPES=12
+export INPES=10
+export JNPES=8
 export NPX=397
 export NPY=233
 export NPZ=65
