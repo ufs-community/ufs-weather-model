@@ -173,7 +173,7 @@ source rt_utils.sh
 source module-setup.sh
 
 check_machine=false
-platforms=( hera orion hercules gaeac6 derecho noaacloud s4 )
+platforms=( hera ursa orion hercules gaeac6 derecho noaacloud s4 )
 for name in "${platforms[@]}"
 do
   if [[ ${MACHINE_ID} == "${name}" ]]; then
@@ -189,21 +189,29 @@ else
     exit 1
 fi
 
+if [[ ${MACHINE_ID} == "ursa" ]]; then
+    PYTHON_VER="python3"
+else 
+    PYTHON_VER="python"
+fi
+
+echo "using ursa py"
+
 if [[ ! ${NEW_BASELINES_FILE} == '' ]]; then
-    python -c "import ufs_test_utils; ufs_test_utils.update_testyaml_b()"
+    ${PYTHON_VER} -c "import ufs_test_utils; ufs_test_utils.update_testyaml_b()"
     UFS_TEST_YAML="ufs_test_temp.yaml"
     export UFS_TEST_YAML
 fi
 
 if [[ ${TEST_TEMP_YAML} == true ]]; then        
-    python -c "import ufs_test_utils; ufs_test_utils.update_testyaml_n()"
+    ${PYTHON_VER} -c "import ufs_test_utils; ufs_test_utils.update_testyaml_n()"
     UFS_TEST_YAML="ufs_test_temp.yaml"
     export UFS_TEST_YAML
 fi
 
 # If -s; link sharable test scripts from tests directory
 if [[ ${LINK_TESTS} == true ]]; then
-    if ! python -c "import ufs_test_utils; ufs_test_utils.sync_testscripts()"
+    if ! ${PYTHON_VER} -c "import ufs_test_utils; ufs_test_utils.sync_testscripts()"
     then
         echo "*** error: python sync_testscripts! ***"
         exit 1
@@ -265,7 +273,7 @@ export delete_rundir
 export skip_check_results
 export KEEP_RUNDIR  
 
-if ! python -c "import create_xml; create_xml.xml_loop()"
+if ! ${PYTHON_VER} -c "import create_xml; create_xml.xml_loop()"
 then
   echo "*** experiment setup didn't run successfully! ***"
   exit 1
@@ -280,11 +288,11 @@ fi
 
 # IF -c AND -b; LINK VERIFIED BASELINES TO NEW_BASELINE
 if [[ ${CREATE_BASELINE} == true && ${NEW_BASELINES_FILE} != '' ]]; then
-    python -c "import ufs_test_utils; ufs_test_utils.link_new_baselines()"
+    ${PYTHON_VER} -c "import ufs_test_utils; ufs_test_utils.link_new_baselines()"
 fi
 
 TEST_END_TIME="$(date '+%Y%m%d %T')"
 export TEST_END_TIME
 
 ## Lets verify all tests were run and that they passed
-python -c "import create_log; create_log.finish_log()"
+${PYTHON_VER} -c "import create_log; create_log.finish_log()"

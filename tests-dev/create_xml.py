@@ -62,6 +62,7 @@ def rocoto_create_compile_task(MACHINE_ID,COMPILE_ID,ROCOTO_COMPILE_MAXTRIES,MAK
     BUILD_WALLTIME="00:30:00"
     if ( MACHINE_ID == 'jet' ):  BUILD_WALLTIME="02:00:00"
     if ( MACHINE_ID == 'hera'):  BUILD_WALLTIME="01:00:00"
+    if ( MACHINE_ID == 'ursa'):  BUILD_WALLTIME="01:00:00"
     if ( MACHINE_ID == 'orion'): BUILD_WALLTIME="01:00:00"
     if ( MACHINE_ID == 'hercules'): BUILD_WALLTIME="01:00:00"
     if ( MACHINE_ID == 's4' ):   BUILD_WALLTIME="01:00:00"
