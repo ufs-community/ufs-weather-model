@@ -2502,6 +2502,7 @@ export_rap()
 {
   export_rap_common
 
+  export FHMAX=12
   export DIAG_TABLE=diag_table_rap
   export CCPP_SUITE=FV3_RAP
 
