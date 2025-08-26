@@ -33,7 +33,7 @@ pathes[base]=''
 
 urls[fv3]='https://github.com/NOAA-EMC/fv3atm'
 branches[fv3]='develop'
-pathes[fv3]='FV3'
+pathes[fv3]='UFSATM'
 
 urls[mom6]='https://github.com/NOAA-EMC/MOM6'
 branches[mom6]='dev/emc'
