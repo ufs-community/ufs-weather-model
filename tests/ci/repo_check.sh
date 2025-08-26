@@ -101,14 +101,12 @@ for submodule in $submodules; do
     workspace=${GITHUB_WORKSPACE}'/'${pathes[$submodule]}
     gitapi=$(echo "$url" | sed 's/github.com/api.github.com\/repos/g')'/branches/'$branch
     get_shas $url $gitapi $branch $workspace
-
-    if [[ $flag_sync=false ]]; then
-       echo "** ${GITHUB_WORKSPACE} **NOT** up to date"
-       exit 1
-    fi
 done
 
-
-echo "** ${GITHUB_WORKSPACE} up to date **"
-
-exit 0
+if [[ ! $flag_sync ]]; then
+    echo "** ${GITHUB_WORKSPACE} **NOT** up to date"
+    exit 1
+else
+    echo "** ${GITHUB_WORKSPACE} up to date **"
+    exit 0
+fi
