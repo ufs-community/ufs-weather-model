@@ -22,6 +22,9 @@ load(pathJoin("nccmp", nccmp_ver))
 tar_ver=os.getenv("tar_ver") or "1.34"
 load(pathJoin("tar", tar_ver))
 
+scotch_ver=os.getenv("scotch_ver") or "7.0.4"
+load(pathJoin("scotch", scotch_ver))
+
 setenv("I_MPI_CC", "icx")
 setenv("I_MPI_CXX", "icpx")
 setenv("I_MPI_F90", "ifort")

@@ -19,6 +19,9 @@ load("ufs_common")
 nccmp_ver=os.getenv("nccmp_ver") or "1.9.1.0"
 load(pathJoin("nccmp", nccmp_ver))
 
+scotch_ver=os.getenv("scotch_ver") or "7.0.4"
+load(pathJoin("scotch", scotch_ver))
+
 setenv("CC", "mpiicx")
 setenv("CXX", "mpiicpx")
 setenv("FC", "mpiifort")

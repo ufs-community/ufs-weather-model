@@ -26,6 +26,9 @@ load("zlib/1.2.13")
 nccmp_ver=os.getenv("nccmp_ver") or "1.9.0.1"
 load(pathJoin("nccmp", nccmp_ver))
 
+scotch_ver=os.getenv("scotch_ver") or "7.0.4"
+load(pathJoin("scotch", scotch_ver))
+
 unload("darshan-runtime")
 unload("cray-libsci")
 

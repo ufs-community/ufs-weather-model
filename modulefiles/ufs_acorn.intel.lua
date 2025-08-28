@@ -17,6 +17,9 @@ remove_path("MODULEPATH", "/apps/prod/lmodules/INTEL_cray_mpich/19.1.3.304/cray-
 load("cmake")
 load("ufs_common")
 
+scotch_ver=os.getenv("scotch_ver") or "7.0.4"
+load(pathJoin("scotch", scotch_ver))
+
 setenv("CC", "cc")
 setenv("CXX", "CC")
 setenv("FC", "ftn")
