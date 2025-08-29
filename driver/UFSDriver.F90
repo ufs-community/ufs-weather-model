@@ -23,13 +23,13 @@
 !          UFS Driver component
 !              /|\
 !             / | \
-!          ATM/OCN/ICE/WAV/LND/IPM/HYD/FIR .. components
+!          UFSATM/OCN/ICE/WAV/LND/IPM/HYD/FIR .. components
 !          |    |   |
 !          |    |   (CICE, etc.)
 !          |    |
 !          |    (MOM6, HYCOM, etc.)
 !          |
-!          (FV3, etc.)
+!          (FV3, MPAS, etc.)
 !
 !-----------------------------------------------------------------------
 !
@@ -45,8 +45,8 @@
       use NUOPC_Model, only: SetVM
 
   ! - Handle build time ATM options:
-#ifdef FRONT_FV3
-      use FRONT_FV3,        only: FV3_SS   => SetServices
+#ifdef FRONT_UFSATM
+      use FRONT_UFSATM,     only: UFSATM_SS => SetServices
 #endif
 #ifdef FRONT_CDEPS_DATM
       use FRONT_CDEPS_DATM, only: DATM_SS  => SetServices
@@ -362,9 +362,9 @@
           endif
 
           found_comp = .false.
-#ifdef FRONT_FV3
-          if (trim(model) == "fv3") then
-            call NUOPC_DriverAddComp(driver, trim(prefix), FV3_SS, &
+#ifdef FRONT_UFSATM
+          if (trim(model) == "mpas" .or. trim(model) == "fv3") then
+            call NUOPC_DriverAddComp(driver, trim(prefix), UFSATM_SS, &
               info=info, petList=petList, comp=comp, rc=rc)
             if (ChkErr(rc,__LINE__,u_FILE_u)) return
             found_comp = .true.

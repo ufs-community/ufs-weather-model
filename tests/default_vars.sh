@@ -511,6 +511,327 @@ export DO_CA=.false.
 export CA_SGS=.false.
 }
 
+export_mpas ()
+{
+    export_gfs_physics
+    # ufs.configure defaults
+    export UFS_CONFIGURE=ufs.configure.atm.IN
+    export MODEL_CONFIGURE=mpasatm_configure.IN
+    export atm_model=mpas
+
+    export DIAG_TABLE=diag_table_rrfs_a
+    export FIELD_TABLE=field_table_regional_rrfs_a
+    export FV3_RUN=rrfs_mpas_run.IN
+    export INPUT_NML=control_mpas.nml.IN
+    export CCPP_SUITE=MPAS_RRFS
+
+    #
+    export MPAS=true
+    export FV3=false
+    export S2S=false
+    export HAFS=false
+    export AQM=false
+    export FIRE_BEHAVIOR=false
+    export DATM_CDEPS=false
+    export DOCN_CDEPS=false
+    export DICE_CDEPS=false
+    export CICE_PRESCRIBED=false
+    export CDEPS_INLINE=false
+    export POSTAPP='global'
+    export USE_MERRA2=.true.
+    export NESTED=.false.
+    export BLOCKSIZE=32
+    export CHKSUM_DEBUG=.false.
+    export DYCORE_ONLY=.false
+
+    # MPAS dynamical core defaults for RRFS
+    export MPAS_RESOLUTION=120
+
+    export ATM_compute_tasks=4
+    
+    #DJS2025 START: We don't need this for MPAS, but to setup the tests we do. CLEAN THIS UP!!!
+    #Set defaults if ATMRES and DT_ATMOS are not set
+    export ATMRES=${ATMRES:-"C96"}
+    export DT_ATMOS=${DT_ATMOS:-"1800"}
+
+    export DAYS=1
+    export ENS_NUM=1
+    export SYEAR=2016 #mpasatm_configure.IN
+    export SMONTH=10 #mpasatm_configure.IN
+    export SDAY=03 #mpasatm_configure.IN
+    export SHOUR=00 #mpasatm_configure.IN
+    export SECS=$(( SHOUR*3600 )) #mpasatm_configure.IN
+    export FHMAX=$(( DAYS*24 )) #mpasatm_configure.IN
+    export FHCYC=0
+    export FHROT=0 #mpasatm_configure.IN
+    export LDIAG3D=.false.
+    export QDIAG3D=.false.
+    export PRINT_DIFF_PGR=.false.
+    export MAX_OUTPUT_FIELDS=310
+    export UPDATE_FULL_OMEGA=.false.
+    export FHZERO=6
+    export FHCYC=0
+    export CPLWAV=.false.
+    export CPLCHM=.false.
+    export CPLWAV2ATM=.false.
+
+    #DT_INNER=(Time step)/2
+    export DT_INNER_c96=360
+    export DT_INNER_c192=300
+    export DT_INNER_c384=150
+    export DT_INNER_c768=75
+
+    if [[ ${DT_ATMOS} = 1800 ]]; then
+	export default_dt_atmos=1
+	export DT_INNER=${DT_INNER_c96}
+    else
+	export default_dt_atmos=0
+	export DT_INNER=${DT_ATMOS}
+    fi
+    #DJS2025 END:
+
+    # DJS2025: This is needed by rt_utils.sh, but not applicable to MPAS forecasts yet...
+    export NTILES=1
+    export QUILTING=.false.
+    export QUILTING_RESTART=.false.
+
+    # stochastic phsyics (NOT USED in MPAS yet)
+    export DO_SPPT=.false.
+    export DO_SHUM=.false.
+    export DO_SKEB=.false.
+    export LNDP_TYPE=0
+    export N_VAR_LNDP=0
+
+
+    export INPES=${INPES_dflt}
+    export JNPES=${JNPES_dflt}
+
+    # DJS2025: Needed for mpasatm_configure
+    export RESTART_INTERVAL=0
+    export ITASKS=1
+    export OUTPUT_HISTORY=.true.
+    export HISTORY_FILE_ON_NATIVE_GRID=.true.
+    export NUM_FILES=2
+    export FV3ATM_OUTPUT_DIR="./"
+    export FILENAME_BASE="'atm' 'sfc'"
+    export OUTPUT_GRID="'mpas'"
+    export OUTPUT_FILE="'netcdf'"
+    export ZSTANDARD_LEVEL=0
+
+    export DOMAINS_STACK_SIZE=3000000
+}
+
+export_gfs_physics ()
+{
+    # Radiation
+    export ICLOUD=0
+    export ICLOUD_BL=1
+    export IAER=1011
+    export ICLIQ_SW=2
+    export IOVR=3
+    export LFNC_K=-999
+    export LFNC_P0=-999
+    export PDFCLD=.false.
+    export FHSWR=3600.
+    export FHLWR=3600.
+    export ICO2=2
+    export ISUBC_SW=2
+    export ISUBC_LW=2
+    export ISOL=2
+    export LWHTR=.true.
+    export SWHTR=.true.
+    export CNVGWD=.true.
+    export CAL_PRE=.false.
+    export REDRAG=.true.
+    export DSPHEAT=.true.
+    export HYBEDMF=.false.
+    # RRTMGP
+    export DO_RRTMGP=.false.
+    export DOGP_CLDOPTICS_LUT=.true.
+    export DOGP_LWSCAT=.true.
+    export DOGP_SGS_CNV=.true.
+    export USE_LW_JACOBIAN=.false.
+    export DAMP_LW_FLUXADJ=.false.
+    export RRTMGP_LW_PHYS_BLKSZ=2
+    export EFFR_IN=.true.
+    export ACTIVE_GASES="'h2o_co2_o3_n2o_ch4_o2'"
+    export NGASES=6
+    export LW_FILE_GAS="'rrtmgp-data-lw-g128-210809.nc'"
+    export LW_FILE_CLOUDS="'rrtmgp-cloud-optics-coeffs-lw.nc'"
+    export SW_FILE_GAS="'rrtmgp-data-sw-g112-210809.nc'"
+    export SW_FILE_CLOUDS="'rrtmgp-cloud-optics-coeffs-sw.nc'"
+    export RRTMGP_NGPTSSW=112
+    export RRTMGP_NGPTSLW=128
+    export RRTMGP_NBANDSLW=16
+    export RRTMGP_NBANDSSW=14
+    
+    # Microphysics
+    export IMP_PHYSICS=8
+    export NWAT=6
+    # GFDL MP
+    export DNATS=0
+    export DO_SAT_ADJ=.false.
+    export LHEATSTRG=.false.
+    export LSEASPRAY=.true.
+    export LGFDLMPRAD=.false.
+    export EFFR_IN=.false.
+    # Thompson MP
+    export LRADAR=.false.
+    export LTAEROSOL=.false.
+    export EXT_DIAG_THOMPSON=.false.
+    export SEDI_SEMI=.true.
+    export DECFL=10
+    # NSSL MP
+    export NSSL_CCCN=0.6e9
+    export NSSL_ALPHAH=0.0
+    export NSSL_ALPHAHL=1.0
+    export NSSL_HAIL_ON=.false.
+    export NSSL_CCN_ON=.true.
+    export NSSL_INVERTCCN=.true.
+
+    # Smoke
+    export RRFS_SMOKE=.false.
+    export SMOKE_FORECAST=0
+    export RRFS_RESTART=NO
+    export SEAS_OPT=2
+
+    # GWD
+    export LDIAG_UGWP=.false.
+    export DO_UGWP=.false.
+    export DO_TOFD=.false.
+    export GWD_OPT=2
+    export DO_UGWP_V0=.true.
+    export DO_UGWP_V1_W_GSLDRAG=.false.
+    export DO_UGWP_V0_OROG_ONLY=.false.
+    export DO_GSL_DRAG_LS_BL=.false.
+    export DO_GSL_DRAG_SS=.true.
+    export DO_GWD_OPT_PSL=.false.
+    export PSL_GWD_DX_FACTOR=6.0
+    export DO_GSL_DRAG_TOFD=.false.
+    export DO_UGWP_V1=.false.
+    export DO_UGWP_V1_OROG_ONLY=.false.
+    export KNOB_UGWP_SOLVER=2
+    export KNOB_UGWP_SOURCE=1,1,0,0
+    export KNOB_UGWP_WVSPEC=1,25,25,25
+    export KNOB_UGWP_AZDIR=2,4,4,4
+    export KNOB_UGWP_STOCH=0,0,0,0
+    export KNOB_UGWP_EFFAC=1,1,1,1
+    export KNOB_UGWP_DOAXYZ=1
+    export KNOB_UGWP_DOHEAT=1
+    export LAUNCH_LEVEL=54
+    export KNOB_UGWP_DOKDIS=1
+    export KNOB_UGWP_NDX4LH=1
+    export KNOB_UGWP_VERSION=0
+    export KNOB_UGWP_PALAUNCH=275.0e2
+    export KNOB_UGWP_NSLOPE=1
+    export KNOB_UGWP_LZMAX=15.750e3
+    export KNOB_UGWP_LZMIN=0.75e3
+    export KNOB_UGWP_LZSTAR=2.0e3
+    export KNOB_UGWP_TAUMIN=0.25e-3
+    export KNOB_UGWP_TAUAMP=3.0e-3
+    export KNOB_UGWP_LHMET=200.0e3
+    export KNOB_UGWP_OROSOLV="'pss-1986'"
+    
+    export KNOB_UGWP_TAUAMP=3.0e-3
+    export DO_UGWP_V0_NST_ONLY=.false.
+
+    # GWG resolution dependent settings
+    export CDMBWD_c48='0.071,2.1,1.0,1.0'
+    export CDMBWD_c96='0.14,1.8,1.0,1.0'
+    export CDMBWD_c192='0.23,1.5,1.0,1.0'
+    export CDMBWD_c384='1.1,0.72,1.0,1.0'
+    export CDMBWD_c768='4.0,0.15,1.0,1.0'
+
+    # set default
+    export CDMBWD=${CDMBWD_c96}
+
+    # PBL
+    export ISATMEDMF=1
+    export TRANS_TRAC=.true.
+    export SATMEDMF=.true.
+    export HYBEDMF=.false.
+    export SHINHONG=.false.
+    export DO_YSU=.false.
+    export DO_MYNNEDMF=.false.
+    export HURR_PBL=.false.
+    export MONINQ_FAC=1.0
+    export SFCLAY_COMPUTE_FLUX=.false.
+
+    # Shallow/deep convection
+    export DO_DEEP=.true.
+    export SHAL_CNV=.true.
+    export IMFSHALCNV=2
+    export HWRF_SAMFSHAL=.false.
+    export IMFDEEPCNV=2
+    export HWRF_SAMFDEEP=.false.
+    export RAS=.false.
+    export RANDOM_CLDS=.false.
+    export CNVCLD=.true.
+    export XR_CNVCLD=.false.
+    export PROGSIGMA=.false.
+    export BETASCU=8.0
+    export BETAMCU=1.0
+    export BETADCU=2.0
+
+    # Aerosol convective scavenging
+    export FSCAV_AERO='"*:0.3","so2:0.0","msa:0.0","dms:0.0","nh3:0.4","nh4:0.6","bc1:0.6","bc2:0.6","oc1:0.4","oc2:0.4","dust1:0.6","dust2:0.6","dust3:0.6","dust4:0.6","dust5:0.6","seas1:0.5","seas2:0.5","seas3:0.5","seas4:0.5","seas5:0.5"'
+
+    # SFC
+    export DO_MYJSFC=.false.
+    export DO_MYNNSFCLAY=.false.
+    export BL_MYNN_EDMF=1
+    export BL_MYNN_TKEADVECT=.true.
+    export BL_MYNN_EDMF_MOM=1
+
+    # LSM
+    export PRSLRD0=0.
+    export IVEGSRC=1
+    export ISOT=1
+    export LSOIL=4
+    export LSM=2
+    export LSOIL_LSM=4
+    export LANDICE=.false.
+    export KICE=2
+    export IALB=2
+    export IEMS=2
+    export IOPT_DVEG=4
+    export IOPT_CRS=2
+    export IOPT_BTR=1
+    export IOPT_RUN=1
+    export IOPT_RAD=3
+    export IOPT_ALB=1
+    export IOPT_STC=3
+    export IOPT_FRZ=1
+    export IOPT_INF=1
+    export IOPT_SFC=3
+    export IOPT_TRS=2
+    export IOPT_DIAG=2
+    export IOPT_SNF=4
+    export IOPT_TBOT=2
+    export DEBUG=.false.
+    export NST_ANL=.true.
+    export PSAUTCO=0.0008,0.0005
+    export PRAUTCO=0.00015,0.00015
+
+    export D2_BG_K1=0.20
+    export D2_BG_K2=0.04
+    export PSM_BC=1
+
+    export DDDMP=0.1
+
+    # Ozone / stratospheric H2O
+    export OZ_PHYS_OLD=.true.
+    export OZ_PHYS_NEW=.false.
+    export H2O_PHYS=.false.
+
+    # Lake models
+    export LKM=0 # 0=no lake, 1=run lake model, 2=run both lake and nsst on lake points
+    export IOPT_LAKE=2 # 1=flake, 2=clm lake
+    export LAKEFRAC_THRESHOLD=0.0 # lake fraction must be higher for lake model to run it
+    export LAKEDEPTH_THRESHOLD=1.0 # lake must be deeper (in meters) for a lake model to run it
+    export FRAC_ICE=.true. # should be false for flake, true for clm_lake
+}
+
 export_fv3 ()
 {
 #Set defaults if ATMRES and DT_ATMOS are not set
@@ -2181,6 +2502,7 @@ export_rap()
 {
   export_rap_common
 
+  export FHMAX=12
   export DIAG_TABLE=diag_table_rap
   export CCPP_SUITE=FV3_RAP
 
