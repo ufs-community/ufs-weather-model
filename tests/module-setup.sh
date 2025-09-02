@@ -82,7 +82,7 @@ elif [[ ${MACHINE_ID} = gaeac6 ]]; then
     fi
     module reset
 
-elif [[ $MACHINE_ID = container ]] ; then
+elif [[ ${MACHINE_ID} = container ]] ; then
     # We are in a container
     source /usr/lmod/lmod/init/bash
     module purge
