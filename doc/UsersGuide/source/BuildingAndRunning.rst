@@ -10,7 +10,7 @@ Supported Platforms & Compilers
 Before running the Weather Model (:term:`WM`), users should determine which of the 
 :ref:`levels of support <SupportedPlatforms>` 
 is applicable to their system. Generally, Level 1 & 2 systems are restricted to those with access 
-through NOAA and its affiliates. These systems are named (e.g., Hera, Orion, Derecho). 
+through NOAA and its affiliates. These systems are named (e.g., Ursa, Orion, Derecho). 
 Level 3 & 4 systems include certain personal computers or non-NOAA-affiliated HPC systems. 
 The prerequisite software libraries for building the WM already exist in a centralized location on Level 1/preconfigured 
 systems, so users may skip directly to :ref:`getting the data <GetData>` and downloading the code. 
@@ -91,8 +91,8 @@ the data required to run the WM RTs are already available at the following ``DIS
      - /glade/derecho/scratch/epicufsrt/ufs-weather-model/RT/
    * - Gaea-C6
      - /gpfs/f6/bil-fire8/world-shared/role.epic/UFS-WM_RT
-   * - Hera
-     - /scratch2/NAGAPE/epic/UFS-WM_RT
+   * - Ursa
+     - /scratch3/NAGAPE/epic/role.epic/UFS-WM_RT
    * - Hercules
      - /work/noaa/epic/hercules/UFS-WM_RT
    * - NOAA Cloud (Level 2)
@@ -165,12 +165,12 @@ On NOAA Level 1 & 2 Systems
 
 Modulefiles for :ref:`preconfigured platforms <SupportedPlatforms>` are located in 
 ``modulefiles/ufs_<platform>.<compiler>``. For example, to load the modules from the 
-``ufs-weather-model`` directory on Hera:
+``ufs-weather-model`` directory on Ursa:
 
 .. code-block:: console
 
     module use modulefiles
-    module load ufs_hera.intel
+    module load ufs_ursa.intel
 
 Note that loading this module file will also set the CMake environment variables shown in
 :numref:`Table %s <CMakeEnv>`.
@@ -180,7 +180,7 @@ Note that loading this module file will also set the CMake environment variables
 .. table:: *CMake environment variables required to configure the build for the Weather Model*
 
    +-------------------------+----------------------------------------------+----------------------+
-   | **EnvironmentVariable** | **Description**                              | **Hera Intel Value** |
+   | **EnvironmentVariable** | **Description**                              | **Ursa Intel Value** |
    +=========================+==============================================+======================+
    |  CMAKE_C_COMPILER       | Name of C compiler                           | mpiicc               |
    +-------------------------+----------------------------------------------+----------------------+
@@ -188,7 +188,7 @@ Note that loading this module file will also set the CMake environment variables
    +-------------------------+----------------------------------------------+----------------------+
    |  CMAKE_Fortran_COMPILER | Name of Fortran compiler                     | mpiifort             |
    +-------------------------+----------------------------------------------+----------------------+
-   |  CMAKE_Platform         | String containing platform and compiler name | hera.intel           |
+   |  CMAKE_Platform         | String containing platform and compiler name | ursa.intel           |
    +-------------------------+----------------------------------------------+----------------------+
 
 On Other Systems
@@ -454,7 +454,7 @@ If any of the environment variables have not been set, the ``build.sh`` script w
 
 .. code-block:: console
 
-   ./build.sh: line 11: CMAKE_Platform: Please set the CMAKE_Platform environment variable, e.g. [macosx.gnu|linux.gnu|linux.intel|hera.intel|...]
+   ./build.sh: line 11: CMAKE_Platform: Please set the CMAKE_Platform environment variable, e.g. [macosx.gnu|linux.gnu|linux.intel|ursa.intel|...]
 
 The WM can be built by running the following command from the ``ufs-weather-model`` directory:
 
@@ -643,7 +643,7 @@ The ``rt.conf`` file is a pipe-separated values (PSV) file grouped into sections
    #. **CMAKE Options** -- Provides all CMAKE options for the build. This typically includes the ``-DAPP`` and ``-DCCPP_SUITES`` flags; these flags set which components to build and which physics suites will be available at runtime. Additional options are documented in :numref:`Section %s <other-build-options>`, but users can examine the :wm-repo:`CMakeLists.txt <blob/develop/CMakeLists.txt>` file for the most up-to-date list of options. 
    #. **Machines** to run on (``-`` is used to ignore specified machines, ``+`` is used to run only on specified machines). For example: 
       
-      * ``+ hera orion gaea``: Compile will only run on Hera, Orion, and Gaea machines
+      * ``+ ursa orion gaea``: Compile will only run on Ursa, Orion, and Gaea machines
       * ``- wcoss2 acorn``: Compile will NOT be run on WCOSS2 or Acorn
 
    #. ``fv3``: Set as fv3. Previously, this was used to run a test without compiling code (e.g., if FV3 was already present). 
@@ -796,10 +796,10 @@ correctly. If there is a problem with these or other variables (e.g., file paths
 .. code-block:: console
    :emphasize-lines: 5,6
 
-   + echo 'Machine: ' hera.intel '    Account: ' nems
-   Machine:  hera.intel     Account:  nems
-   + mkdir -p /scratch1/NCEPDEV/stmp4/First.Last
-   mkdir: cannot create directory ‘/scratch1/NCEPDEV/stmp4/First.Last’: Permission denied
+   + echo 'Machine: ' ursa.intel '    Account: ' nems
+   Machine:  ursa.intel     Account:  nems
+   + mkdir -p /scratch3/NCEPDEV/stmp4/First.Last
+   mkdir: cannot create directory ‘/scratch3/NCEPDEV/stmp4/First.Last’: Permission denied
    ++ echo 'rt.sh error on line 370'
    rt.sh error on line 370
 

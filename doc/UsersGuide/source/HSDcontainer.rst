@@ -7,7 +7,7 @@
 Running UFS WM Idealized Cases in a Container
 **********************************************
 
-This chapter provides instructions for running the Unified Forecast System (:term:`UFS`) Weather Model (WM) Hierarchical System Develop (HSD) cases using a `Singularity/Apptainer <https://apptainer.org/docs/user/latest/>`_ container. Normally, the details of building and running Earth system models will vary based on the computing platform because there are many possible combinations of operating systems, compilers, :term:`MPIs <MPI>`, and package versions available. Installation via Singularity/Apptainer container reduces this variability and allows for a smoother experience building and running the UFS WM. This approach is recommended for users not running the UFS WM on a supported :wm-wiki:`Level 1 <Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>` system (e.g., Hera, Orion). 
+This chapter provides instructions for running the Unified Forecast System (:term:`UFS`) Weather Model (WM) Hierarchical System Develop (HSD) cases using a `Singularity/Apptainer <https://apptainer.org/docs/user/latest/>`_ container. Normally, the details of building and running Earth system models will vary based on the computing platform because there are many possible combinations of operating systems, compilers, :term:`MPIs <MPI>`, and package versions available. Installation via Singularity/Apptainer container reduces this variability and allows for a smoother experience building and running the UFS WM. This approach is recommended for users not running the UFS WM on a supported :wm-wiki:`Level 1 <Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>` system (e.g., Ursa, Orion). 
 
 This chapter provides instructions for building and running the Unified Forecast System UFS WM HSD cases using a container. Currently, users can select from the following cases: 
 
@@ -111,7 +111,7 @@ On many NOAA :term:`RDHPCS`, a container named ``ubuntu22.04-intel-wm-dev-hsd-te
    +====================+========================================================+
    | Gaea               | /gpfs/f6/bil-fire8/world-shared/containers             |
    +--------------------+--------------------------------------------------------+
-   | Hera               | /scratch1/NCEPDEV/nems/role.epic/containers            |
+   | Ursa               | /scratch3/NCEPDEV/nems/role.epic/containers            |
    +--------------------+--------------------------------------------------------+
    | NOAA Cloud [#fn]_  | /contrib/EPIC/containers                               |
    +--------------------+--------------------------------------------------------+
@@ -235,7 +235,7 @@ where:
 
    * ``-c`` is the compiler on the user's local machine (e.g., ``intel/2022.1.2``, ``intel-oneapi-compilers/2022.2.1``, ``intel/2023.2.0``)
    * ``-m`` is the :term:`MPI` on the user's local machine (e.g., ``impi/2022.1.2``, ``intel-oneapi-mpi/2021.7.1``, ``cray-mpich/8.1.28``)
-   * ``-p`` refers to the local machine/platform (e.g., ``hera``, ``gaea``, ``noaacloud``). Required for Gaea, Hercules, and Orion only.
+   * ``-p`` refers to the local machine/platform (e.g., ``ursa``, ``gaea``, ``noaacloud``). Required for Gaea, Hercules, and Orion only.
    * ``-i`` is the full path to the container image (e.g., ``$img`` or ``$HSD/ubuntu22.04-intel-wm-dev-hsd-test.img``).
 
 .. note::

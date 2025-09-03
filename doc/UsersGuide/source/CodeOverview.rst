@@ -25,7 +25,7 @@ Currently, Level 1 (or Tier-1) platforms for regression testing are:
 
    * WCOSS2 (Intel)
    * Gaea (Intel)
-   * Hera (Intel/GNU compilers)
+   * Ursa (Intel)
    * Jet (Intel)
    * Orion (Intel)
    * Hercules (Intel/GNU compilers)

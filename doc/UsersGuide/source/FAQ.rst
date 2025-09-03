@@ -78,7 +78,7 @@ For all systems, users will need to:
 
       .. code-block:: console 
 
-         Job 7430255 finished for user Joe.Schmoe in partition hera with exit code 0:0
+         Job 7430255 finished for user Joe.Schmoe in partition ursa with exit code 0:0
 
       There is also a RESOURCE STATISTICS summary at the end of the test's ``out`` file. Errors will appear in the ``err`` file. Users can find log files with more detailed information in ``ufs-weather-model/tests/logs/log_<platform>`` (where platform is the name of the machine the user is running on, e.g., ``log_hercules``).
    
