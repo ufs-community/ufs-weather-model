@@ -736,14 +736,14 @@ export_gfs_physics ()
     export DO_UGWP_V0_NST_ONLY=.false.
 
     # GWG resolution dependent settings
-    export CDMBWD_c48='0.071,2.1,1.0,1.0'
-    export CDMBWD_c96='0.14,1.8,1.0,1.0'
-    export CDMBWD_c192='0.23,1.5,1.0,1.0'
-    export CDMBWD_c384='1.1,0.72,1.0,1.0'
-    export CDMBWD_c768='4.0,0.15,1.0,1.0'
+    export CDMBGWD_c48='0.071,2.1,1.0,1.0'
+    export CDMBGWD_c96='0.14,1.8,1.0,1.0'
+    export CDMBGWD_c192='0.23,1.5,1.0,1.0'
+    export CDMBGWD_c384='1.1,0.72,1.0,1.0'
+    export CDMBGWD_c768='4.0,0.15,1.0,1.0'
 
     # set default
-    export CDMBWD=${CDMBWD_c96}
+    export CDMBGWD=${CDMBGWD_c96}
 
     # PBL
     export ISATMEDMF=1
