@@ -25,15 +25,15 @@ get_shas () {
 flag_sync=true
 
 declare -A urls branches pathes
-submodules="base fv3 mom6 cice ww3 stoch cmeps cdeps hycom ccpp_physics aqm noahmp cubed_sphere"
+submodules="base ufsatm mom6 cice ww3 stoch cmeps cdeps hycom ccpp_physics aqm noahmp cubed_sphere"
 
 urls[base]='https://github.com/ufs-community/ufs-weather-model'
 branches[base]='develop'
 pathes[base]=''
 
-urls[fv3]='https://github.com/NOAA-EMC/fv3atm'
-branches[fv3]='develop'
-pathes[fv3]='FV3'
+urls[ufsatm]='https://github.com/NOAA-EMC/fv3atm'
+branches[ufsatm]='develop'
+pathes[ufsatm]='UFSATM'
 
 urls[mom6]='https://github.com/NOAA-EMC/MOM6'
 branches[mom6]='dev/emc'
@@ -73,11 +73,11 @@ pathes[cmake]='CMakeModules'
 
 urls[ccpp_physics]='https://github.com/ufs-community/ccpp-physics'
 branches[ccpp_physics]='ufs/dev'
-pathes[ccpp_physics]='FV3/ccpp/physics'
+pathes[ccpp_physics]='UFSATM/ccpp/physics'
 
 urls[ccpp_framework]='https://github.com/NCAR/ccpp-framework'
 branches[ccpp_framework]='main'
-pathes[ccpp_framework]='FV3/ccpp/framework'
+pathes[ccpp_framework]='UFSATM/ccpp/framework'
 
 urls[aqm]='https://github.com/NOAA-EMC/AQM'
 branches[aqm]='develop'
@@ -93,7 +93,7 @@ pathes[noahmp]='NOAHMP-interface/noahmp'
 
 urls[cubed_sphere]='https://github.com/NOAA-GFDL/GFDL_atmos_cubed_sphere'
 branches[cubed_sphere]='dev/emc'
-pathes[cubed_sphere]='FV3/fv3/atmos_cubed_sphere'
+pathes[cubed_sphere]='UFSATM/fv3/atmos_cubed_sphere'
 
 for submodule in $submodules; do
     url=${urls[$submodule]}
