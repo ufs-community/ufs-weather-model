@@ -1,0 +1,232 @@
+&atmos_model_nml
+  blocksize = 32
+  dycore_only = .false.
+  ccpp_suite = '@[CCPP_SUITE]'
+  ic_filename = '@[IC_FILENAME]'
+  lbc_filename = '@[LBC_FILENAME]'
+/
+
+&fms_nml
+  clock_grain = 'ROUTINE'
+  domains_stack_size = 3000000
+  print_memory_usage = .false.
+/
+
+&fms2_io_nml
+  netcdf_default_format = "netcdf4"
+/
+
+&mpas_nhyd_model
+  mpas_time_integration_order   = 2
+  mpas_dt                       = 720.0
+  mpas_split_dynamics_transport = true
+  mpas_number_of_sub_steps      = 4
+  mpas_dynamics_split_steps     = 3
+  mpas_horiz_mixing             = '2d_smagorinsky'
+  mpas_visc4_2dsmag             = 0.05
+  mpas_scalar_advection         = true
+  mpas_monotonic                = true
+  mpas_coef_3rd_order           = 0.25
+  mpas_epssm                    = 0.1
+  mpas_smdiv                    = 0.1
+/
+&mpas_damping
+  mpas_cam_coef                  = 2.0
+  mpas_rayleigh_damp_u           = true
+  mpas_zd                        = 16000.0
+  mpas_xnutr                     = 0.2
+  mpas_cam_damping_levels        = 8
+/
+
+&mpas_limited_area
+  mpas_apply_lbcs = .true.
+/
+
+&mpas_io
+  mpas_pio_num_iotasks = @[ATM_compute_tasks]
+  mpas_pio_stride = 1
+/
+
+&mpas_assimilation
+  mpas_jedi_da = .false.
+/
+
+&mpas_decomposition
+  mpas_block_decomp_file_prefix = '@[GRID_FILENAME]'
+/
+
+&mpas_restart
+  mpas_do_restart = .false.
+/
+
+&mpas_printout
+  mpas_print_global_minmax_vel   = .false.
+  mpas_print_detailed_minmax_vel = .false.
+  mpas_print_global_minmax_sca   = .false.
+/
+
+&gfs_physics_nml
+    bl_mynn_edmf = 1
+    bl_mynn_edmf_mom = 1
+    bl_mynn_tkeadvect = .true.
+    cal_pre = .false.
+    cdmbgwd = 3.5, 1.0
+    cnvcld = .false.
+    cnvgwd = .false.
+    cplflx = .false.
+    debug = .false.
+    do_deep = .false.
+    do_gsl_drag_ls_bl = .true.
+    do_gsl_drag_ss = .true.
+    do_gsl_drag_tofd = .true.
+    do_mynnedmf = .true.
+    do_mynnsfclay = .true.
+    do_shum = .false.
+    do_skeb = .false.
+    do_spp = .false.
+    do_sppt = .false.
+    do_tofd = .false.
+    do_ugwp = .false.
+    do_ugwp_v0 = .false.
+    do_ugwp_v0_nst_only = .false.
+    do_ugwp_v0_orog_only = .false.
+    dspheat = .true.
+    dt_inner = 20
+    effr_in = .true.
+    fhcyc = 0
+    fhlwr = 900.0
+    fhswr = 900.0
+    fhzero = 1.0
+    gwd_opt = 3
+    h2o_phys = .true.
+    hybedmf = .false.
+    iaer = 1011
+    ialb = 2
+    iau_delthrs = 6
+    iau_inc_files = ''
+    iaufhrs = 30
+    iccn = 2
+    icliq_sw = 2
+    icloud_bl = 1
+    ico2 = 2
+    iems = 2
+    imfdeepcnv = -1
+    imfshalcnv = -1
+    imp_physics = 8
+    iopt_alb = 2
+    iopt_btr = 1
+    iopt_crs = 1
+    iopt_dveg = 2
+    iopt_frz = 1
+    iopt_inf = 1
+    iopt_rad = 1
+    iopt_run = 1
+    iopt_sfc = 1
+    iopt_snf = 4
+    iopt_stc = 1
+    iopt_tbot = 2
+    iovr = 3
+    isol = 2
+    isot = 1
+    isubc_lw = 2
+    isubc_sw = 2
+    ivegsrc = 1
+    kice = 9
+    ldiag3d = .false.
+    ldiag_ugwp = .false.
+    lgfdlmprad = .false.
+    lheatstrg = .false.
+    lndp_type = 0
+    lradar = .true.
+    lrefres = .true.
+    lsm = 3
+    lsoil = 9
+    lsoil_lsm = 9
+    ltaerosol = .true.
+    lwhtr = .true.
+    n_var_lndp = 0
+    n_var_spp = 0
+    nsfullradar_diag = 3600
+    oz_phys = .false.
+    oz_phys_2015 = .true.
+    pdfcld = .false.
+    pre_rad = .false.
+    print_diff_pgr = .true.
+    prslrd0 = 0.0
+    random_clds = .false.
+    redrag = .true.
+    satmedmf = .false.
+    sfclay_compute_flux = .true.
+    shal_cnv = .false.
+    swhtr = .true.
+    thsfc_loc = .false.
+    trans_trac = .true.
+    ttendlim = -999
+    use_ufo = .true.
+/
+
+&gfdl_cloud_microphysics_nml
+  sedi_transport = .true.
+  do_sedi_heat = .false.
+  rad_snow = .true.
+  rad_graupel = .true.
+  rad_rain = .true.
+  const_vi = .false.
+  const_vs = .false.
+  const_vg = .false.
+  const_vr = .false.
+  vi_max = 1.
+  vs_max = 2.
+  vg_max = 12.
+  vr_max = 12.
+  qi_lim = 1.
+  prog_ccn = .false.
+  do_qa = .true.
+  fast_sat_adj = .true.
+  tau_l2v = 225.
+  tau_v2l = 150.
+  tau_g2v = 900.
+  rthresh = 10.e-6  ! This is a key parameter for cloud water
+  dw_land  = 0.16
+  dw_ocean = 0.10
+  ql_gen = 1.0e-3
+  ql_mlt = 1.0e-3
+  qi0_crt = 8.0E-5
+  qs0_crt = 1.0e-3
+  tau_i2s = 1000.
+  c_psaci = 0.05
+  c_pgacs = 0.01
+  rh_inc = 0.30
+  rh_inr = 0.30
+  rh_ins = 0.30
+  ccn_l = 300.
+  ccn_o = 100.
+  c_paut = 0.5
+  c_cracw = 0.8
+  use_ppm = .false.
+  use_ccn = .true.
+  mono_prof = .true.
+  z_slope_liq  = .true.
+  z_slope_ice  = .true.
+  de_ice = .false.
+  fix_negative = .true.
+  icloud_f = 1
+  mp_time = 150.
+  reiflag = 2
+/
+
+&cires_ugwp_nml
+  knob_ugwp_solver  = 2
+  knob_ugwp_source  = 1,1,0,0
+  knob_ugwp_wvspec  = 1,25,25,25
+  knob_ugwp_azdir   = 2,4,4,4
+  knob_ugwp_stoch   = 0,0,0,0
+  knob_ugwp_effac   = 1,1,1,1
+  knob_ugwp_doaxyz  = 1
+  knob_ugwp_doheat  = 1
+  knob_ugwp_dokdis  = 1
+  knob_ugwp_ndx4lh  = 1
+  knob_ugwp_version = 0
+  launch_level      = 54
+/
+
