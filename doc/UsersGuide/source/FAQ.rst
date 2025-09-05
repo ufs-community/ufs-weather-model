@@ -142,7 +142,7 @@ How do I turn off IO for the components of the coupled model?
 UFSATM restart and history files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-To turn off ufsatm restart files, set the ``restart_interval`` in
+To turn off UFSATM restart files, set the ``restart_interval`` in
 ``model_configure*.IN`` to a value greater than the forecast length.
 
 To turn off history files, in ``model_configure`` there are two
