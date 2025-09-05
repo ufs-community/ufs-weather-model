@@ -432,7 +432,7 @@ A sample ``ufs.configure`` is shown below for the :wm-repo:`cpld_control_gefs <b
 
 
 		# ATM #
-		ATM_model:                      ufs
+		ATM_model:                      ufsatm
 		ATM_petlist_bounds:             0 959
 		ATM_omp_num_threads:            2
 		ATM_attributes::
@@ -541,7 +541,7 @@ A sample ``ufs.configure`` is shown below for the :wm-repo:`cpld_control_gefs <b
 		::
 
 		MED_attributes::
-		   ATM_model = :
+		   ATM_model = ufsatm
          ICE_model = cice6
          OCN_model = mom6
          WAV_model = ww3
