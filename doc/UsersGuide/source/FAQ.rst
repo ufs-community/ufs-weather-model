@@ -139,10 +139,10 @@ To adjust the default values for entire sets of tests, values can be modified in
 How do I turn off IO for the components of the coupled model?
 =============================================================
 
-FV3atm restart and history files
+UFSATM restart and history files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-To turn off FV3atm restart files, set the ``restart_interval`` in
+To turn off ufsatm restart files, set the ``restart_interval`` in
 ``model_configure*.IN`` to a value greater than the forecast length.
 
 To turn off history files, in ``model_configure`` there are two
@@ -151,7 +151,7 @@ options:
 * Set ``quilting`` to .false., then in ``diag_table``, remove the history
   output file definitions ``fv3_history`` and ``fv3_history2d`` and the
   associated fields. This will turn off the write_grid component and the
-  number of tasks used by FV3atm must also be adjusted to remove the
+  number of tasks used by UFSATM must also be adjusted to remove the
   tasks assigned to the write grid component.
 
 * Set ``quilting`` to .true., then in ``model_configure`` set
@@ -224,10 +224,10 @@ tasks, as long as those components do not overlap (i.e., share the
 same PETs). An example of a global five-component coupled configuration
 ``ufs.configure`` appears at the end of this section.
 
-FV3atm
+UFSATM
 ^^^^^^
 
-The FV3atm component consists of one or more forecast grid components
+The UFSATM component consists of one or more forecast grid components
 and write grid components.
 
 The MPI tasks for the forecast grid components are specified in the
@@ -250,7 +250,7 @@ not support an ``8,8`` layout for a blocksize of 32. If ``layout =
 a ``blocksize=32``. A layout of ``4,6`` is supported for C96 with a
 blocksize of 32.
 
-The FV3atm will utilize the write grid component if ``quilting`` is
+The UFSATM will utilize the write grid component if ``quilting`` is
 set to .true. In this case, the required MPI tasks for the
 write grid component are the product of the ``write_groups`` and the
 ``write_tasks_per_group`` in the ``model_configure`` file.
@@ -264,7 +264,7 @@ write grid component are the product of the ``write_groups`` and the
 
 In the above case, the write grid component requires 60 tasks.
 
-The total number of MPI ranks for FV3atm is the sum of the forecast tasks and any
+The total number of MPI ranks for UFSATM is the sum of the forecast tasks and any
 write grid component tasks.
 
 ::
@@ -275,7 +275,7 @@ If ESMF-managed threading is used, the total number of PETs for the
 atmosphere component is given by the product of the number of threads
 requested and the total number of MPI ranks (both forecast and write
 grid component). If ``num_threads_atm`` is the number of threads
-specified for the FV3atm component, in ``ufs.configure`` the ATM PET
+specified for the UFSATM component, in ``ufs.configure`` the ATM PET
 bounds are given by:
 
 ::
@@ -289,19 +289,19 @@ Note that in UFS WM, the ATM component is normally listed first in
 GOCART
 ^^^^^^
 
-GOCART shares the same grid and forecast tasks as FV3atm, but it does
+GOCART shares the same grid and forecast tasks as UFSATM, but it does
 not have a separate write grid component in its NUOPC CAP. Also, while
 GOCART does not have threading capability, it shares the same data
-structure as FV3atm and so it has to use the same number of threads
-used by FV3atm. Therefore, the total number of MPI ranks and threads
-in GOCART is the same as the those for the FV3atm forecast component
+structure as UFSATM and so it has to use the same number of threads
+used by UFSATM. Therefore, the total number of MPI ranks and threads
+in GOCART is the same as the those for the UFSATM forecast component
 (i.e., excluding any write grid component). Currently, GOCART only runs
 on the global forecast grid component, for which only one namelist is
 needed.
 
 ::
 
-   total_tasks_chm = FV3atm forecast tasks
+   total_tasks_chm = ufsatm forecast tasks
 
    CHM_petlist_bounds:             0 total_tasks_chm*num_threads_atm-1
    CHM_omp_num_threads:            num_threads_atm
@@ -310,14 +310,14 @@ CMEPS
 ^^^^^
 
 The mediator MPI tasks can overlap with other components and in UFS
-the tasks are normally shared on the FV3atm forecast tasks. However, a
+the tasks are normally shared on the UFSATM forecast tasks. However, a
 large number of tasks for the mediator is generally not recommended
 since it may cause slow performance. This means that the number of
 MPI tasks for CMEPS is given by
 
 ::
 
-   total_tasks_med = smaller of (300, FV3atm forecast tasks)
+   total_tasks_med = smaller of (300, ufsatm forecast tasks)
 
 and in ``ufs.configure``
 
@@ -432,7 +432,7 @@ A sample ``ufs.configure`` is shown below for the :wm-repo:`cpld_control_gefs <b
 
 
 		# ATM #
-		ATM_model:                      fv3
+		ATM_model:                      ufs
 		ATM_petlist_bounds:             0 959
 		ATM_omp_num_threads:            2
 		ATM_attributes::
@@ -541,7 +541,7 @@ A sample ``ufs.configure`` is shown below for the :wm-repo:`cpld_control_gefs <b
 		::
 
 		MED_attributes::
-		   ATM_model = fv3
+		   ATM_model = :
          ICE_model = cice6
          OCN_model = mom6
          WAV_model = ww3
@@ -620,9 +620,9 @@ Where can I find up-to-date documentation for the ``diag_table`` variables used 
 ===========================================================================================================
 
 Information on ``diag_table`` variables has been added to the :ref:`diag_table section <diag-table-options>` of the UFS Weather Model documentation. 
-Currently, only variables coming from fv3atm and MOM6 are included, but ``diag_table`` variables from other components will be added as time permits. 
+Currently, only variables coming from UFSATM and MOM6 are included, but ``diag_table`` variables from other components will be added as time permits. 
 
-* :ref:`FV3ATM diag_table variables <fv3diagtable>`
+* :ref:`UFSATM diag_table variables <UFSATMdiagtable>`
 * `MOM6 diag_table variables <https://ncar.github.io/MOM6/APIs/namespacemom__diagnostics.html>`_
 
 See ufs-community `Discussion #33 <https://github.com/orgs/ufs-community/discussions/33>`_ for the question that inspired this FAQ.

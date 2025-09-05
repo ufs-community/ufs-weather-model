@@ -63,7 +63,7 @@ The UFS :term:`WM` repository supports the :term:`UFS` short- and medium-range w
   * - CCPP library of physical parameterizations
     - https://github.com/NCAR/ccpp-physics
   * - Umbrella repository for the physics and dynamics of the atmospheric model (FV3) 
-    - https://github.com/NOAA-EMC/fv3atm
+    - https://github.com/NOAA-EMC/ufsatm
   * - :term:`FV3` dynamical core
     - https://github.com/NOAA-GFDL/GFDL_atmos_cubed_sphere
   * - Stochastic physics pattern generator
@@ -127,7 +127,7 @@ The umbrella repository for the UFS WM is named ``ufs-weather-model``. Under thi
     ├── doc                                         -------- User Guide files
     ├── driver
     ├── fire_behavior                               -------- Community Fire Behavior Model
-    ├── FV3                                         -------- UFSAtm atmosphere model
+    ├── FV3                                         -------- UFSATM atmosphere model
     │    ├── (atmos_cubed_sphere)                   -------- FV3 dynamical core
     │    │    ├── (docs)
     │    │    ├── (driver)
@@ -140,7 +140,7 @@ The umbrella repository for the UFS WM is named ``ufs-weather-model``. Under thi
     │    │    ├── (physics)                         -------- CCPP-compliant physics schemes
     │    │    └── (suites)                          -------- CCPP physics suite definition files (SDFs)
     │    ├── (cpl)                                  -------- Coupling field data structures
-    │    ├── (io)                                   -------- UFSAtm write grid comp code
+    │    ├── (io)                                   -------- UFSATM write grid comp code
     │    └── (stochastic_physics)                   -------- Wrapper for stochastic physics
     ├── GOCART
     │    └── (ESMF)                                 -------- GOCART model

@@ -972,7 +972,7 @@ Grid Description and Initial Condition Files
 
 Running GOCART in UFS does not require aerosol initial conditions, as aerosol models can always start from scratch (cold start). However, this approach does require more than two weeks of model spin-up to obtain reasonable aerosol simulation results. Therefore, the most popular method is to take previous aerosol simulation results. The result is not necessarily from the same model; it could be from a climatology result, such as MERRA2, or from a different model but with the same aerosol species and bin/size distribution.
 
-The aerosol initial input currently read by GOCART is the same format as the UFSAtm initial input data format of ``gfs_data_tile[1-6].nc`` in :numref:`Table %s <GridICFiles>`, so the aerosol initial conditions should be combined with the meteorological initial conditions as one initial input file. There are many tools available for this purpose. The `UFS_UTILS <https://github.com/ufs-community/UFS_UTILS>`__ preprocessing utilities provide a solution for this within the `Global Workflow <https://github.com/NOAA-EMC/global-workflow>`__.
+The aerosol initial input currently read by GOCART is the same format as the UFSATM initial input data format of ``gfs_data_tile[1-6].nc`` in :numref:`Table %s <GridICFiles>`, so the aerosol initial conditions should be combined with the meteorological initial conditions as one initial input file. There are many tools available for this purpose. The `UFS_UTILS <https://github.com/ufs-community/UFS_UTILS>`__ preprocessing utilities provide a solution for this within the `Global Workflow <https://github.com/NOAA-EMC/global-workflow>`__.
 
 .. _aqm-in:
 
@@ -1267,7 +1267,7 @@ Registration of diagnostic fields is done using the following syntax
 
    diag_id = register_diag_field(module_name, diag_name, axes, ...)
 
-in file ``FV3/atmos_cubed_sphere/tools/fv_diagnostics.F90``.  As an example, the sea level pressure is registered as:
+in file ``UFSATM/atmos_cubed_sphere/tools/fv_diagnostics.F90``.  As an example, the sea level pressure is registered as:
 
 .. code-block:: console
 
@@ -1330,9 +1330,9 @@ Each WM component has its own ``diag_table`` with associated variables. :numref:
    * - WM Component
      - Diag Table
      - Source File
-   * - FV3
-     - :ref:`FV3 Variables <fv3diagtable>`
-     - `GFS_diagnostics.F90 <https://github.com/NOAA-EMC/fv3atm/blob/develop/ccpp/driver/GFS_diagnostics.F90>`_
+   * - UFSATM
+     - :ref:`UFSATM Variables <UFSATMdiagtable>`
+     - `GFS_diagnostics.F90 <https://github.com/NOAA-EMC/ufsatm/blob/develop/ccpp/driver/GFS_diagnostics.F90>`_
    * - MOM6
      - `MOM6 Variables <https://ncar.github.io/MOM6/APIs/namespacemom__diagnostics.html>`_
      - `MOM_diagnostics.F90 <https://github.com/NOAA-EMC/MOM6/blob/main/src/diagnostics/MOM_diagnostics.F90>`_
@@ -1340,7 +1340,7 @@ Each WM component has its own ``diag_table`` with associated variables. :numref:
 
 A brief example of the diag_table is shown below.  ``"..."`` denotes where lines have been removed.
 
-.. _code-block-fv3-diag-table:
+.. _code-block-UFSATM-diag-table:
 
 .. code-block:: console
 
@@ -2081,7 +2081,7 @@ A sample subset of this namelist is shown below:
      FNABSC   = 'global_mxsnoalb.uariz.t126.384.190.rg.grb'
    /
 
-Additional variables for the ``&namsfc`` namelist can be found in the ``FV3/ccpp/physics/physics/Interstitials/UFS_SCM_NEPTUNE/sfcsub.F`` file.
+Additional variables for the ``&namsfc`` namelist can be found in the ``UFSATM/ccpp/physics/physics/Interstitials/UFS_SCM_NEPTUNE/sfcsub.F`` file.
 
 .. _atmos_model_nml_section:
 
@@ -2187,7 +2187,7 @@ A sample subset of this namelist is shown below:
      cplflx       = .true.
    /
 
-Additional variables for the ``&gfs_physics_nml`` namelist can be found in the ``FV3/ccpp/data/GFS_typedefs.F90``
+Additional variables for the ``&gfs_physics_nml`` namelist can be found in the ``UFSATM/ccpp/data/GFS_typedefs.F90``
 file.
 
 .. _OutputFiles:
@@ -2196,10 +2196,10 @@ file.
 Output files
 =============
 
-.. _fv3atm-out:
+.. _ufsatm-out:
 
 -------
-FV3Atm
+UFSATM
 -------
 
 The output files generated when running ``fv3.exe`` are defined in the ``diag_table`` file. For the default global configuration, the following files are output (six files of each kind, corresponding to the six tiles of the model grid):
