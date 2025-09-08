@@ -1,13 +1,8 @@
 &atmos_model_nml
   blocksize = 32
-  chksum_debug = .false.
   dycore_only = .false.
   ccpp_suite = '@[CCPP_SUITE]'
-/
-
-&diag_manager_nml
-  prepend_date = .false.
-  max_output_fields = @[MAX_OUTPUT_FIELDS]
+  ic_filename = '@[IC_FILENAME]'
 /
 
 &fms_nml
@@ -20,84 +15,50 @@
   netcdf_default_format = "netcdf4"
 /
 
-&fv_core_nml
-  layout = @[INPES],@[JNPES]
-  io_layout = 1,1
-  npx = @[NPX]
-  npy = @[NPY]
-  ntiles = 6
-  npz = @[NPZ]
-  grid_type = -1
-  make_nh = @[MAKE_NH]
-  fv_debug = .false.
-  range_warn = .false.
-  reset_eta = .false.
-  n_sponge = 42
-  nudge_qv = .true.
-  nudge_dz = .false.
-  tau = 10.
-  rf_cutoff = 7.5e2
-  d2_bg_k1 = 0.20
-  d2_bg_k2 = 0.0
-  kord_tm = -9
-  kord_mt = 9
-  kord_wz = 9
-  kord_tr = 9
-  hydrostatic = .false.
-  phys_hydrostatic = .false.
-  use_hydro_pressure = .false.
-  beta = 0.
-  a_imp = 1.
-  p_fac = 0.1
-  k_split = 2
-  n_split = 6
-  nwat = 6
-  na_init = @[NA_INIT]
-  d_ext = 0.
-  dnats = @[DNATS]
-  fv_sg_adj = 450
-  d2_bg = 0.
-  nord = 2
-  dddmp = 0.1
-  d4_bg = 0.12
-  vtdm4 = 0.02
-  delt_max = 0.002
-  ke_bg = 0.
-  do_vort_damp = .true.
-  external_ic = @[EXTERNAL_IC]
-  external_eta = .true.
-  gfs_phil = .false.
-  nggps_ic = @[NGGPS_IC]
-  mountain = @[MOUNTAIN]
-  ncep_ic = .false.
-  d_con = 1.
-  hord_mt = 5
-  hord_vt = 5
-  hord_tm = 5
-  hord_dp = -5
-  hord_tr = 8
-  adjust_dry_mass = .false.
-  consv_te = 1.
-  do_sat_adj = .true.
-  consv_am = .false.
-  fill = .true.
-  dwind_2d = .false.
-  print_freq = 6
-  warm_start = @[WARM_START]
-  no_dycore = .false.
-  z_tracer = .true.
-  agrid_vel_rst = .true.
-  read_increment = @[READ_INCREMENT]
-  res_latlon_dynamics = @[RES_LATLON_DYNAMICS]
-  increment_file_on_native_grid = @[INCREMENT_FILE_ON_NATIVE_GRID]
+&mpas_nhyd_model
+  mpas_time_integration_order   = 2
+  mpas_dt                       = 720.0
+  mpas_split_dynamics_transport = true
+  mpas_number_of_sub_steps      = 2
+  mpas_dynamics_split_steps     = 3
+  mpas_horiz_mixing             = '2d_smagorinsky'
+  mpas_visc4_2dsmag             = 0.05
+  mpas_scalar_advection         = true
+  mpas_monotonic                = true
+  mpas_coef_3rd_order           = 0.25
+  mpas_epssm                    = 0.1
+  mpas_smdiv                    = 0.1
+/
+&mpas_damping
+  mpas_zd                        = 50000.0
+  mpas_xnutr                     = 0.2
 /
 
-&external_ic_nml
-  filtered_terrain = .true.
-  levp = @[NPZP]
-  gfs_dwinds = .true.
-  checker_tr = .false.
-  nt_checker = 0
+&mpas_limited_area
+  mpas_apply_lbcs = .false.
+/
+
+&mpas_io
+  mpas_pio_num_iotasks = @[ATM_compute_tasks]
+  mpas_pio_stride = 1
+/
+
+&mpas_assimilation
+  mpas_jedi_da = .false.
+/
+
+&mpas_decomposition
+  mpas_block_decomp_file_prefix = '@[GRID_FILENAME]'
+/
+
+&mpas_restart
+  mpas_do_restart = .false.
+/
+
+&mpas_printout
+  mpas_print_global_minmax_vel   = .false.
+  mpas_print_detailed_minmax_vel = .false.
+  mpas_print_global_minmax_sca   = .false.
 /
 
 &gfs_physics_nml
@@ -109,7 +70,7 @@
   fhcyc        = @[FHCYC]
   use_ufo      = .true.
   pre_rad      = .false.
-  imp_physics  = 11
+  imp_physics  = 8
   pdfcld       = .false.
   fhswr        = 3600.
   fhlwr        = 3600.
@@ -246,92 +207,6 @@
   icloud_f = 1
   mp_time = 150.
   reiflag = 2
-/
-
-&interpolator_nml
-  interp_method = 'conserve_great_circle'
-/
-
-&namsfc
-  FNGLAC   = 'global_glacier.2x2.grb'
-  FNMXIC   = 'global_maxice.2x2.grb'
-  FNTSFC   = 'RTGSST.1982.2012.monthly.clim.grb'
-  FNSNOC   = 'global_snoclim.1.875.grb'
-  FNZORC   = 'igbp'
-  FNALBC   = @[FNALBC]
-  FNALBC2  = 'global_albedo4.1x1.grb'
-  FNAISC   = 'CFSR.SEAICE.1982.2012.monthly.clim.grb'
-  FNTG3C   = 'global_tg3clim.2.6x1.5.grb'
-  FNVEGC   = 'global_vegfrac.0.144.decpercent.grb'
-  FNVETC   = @[FNVETC]
-  FNSOTC   = @[FNSOTC]
-  FNSOCC   = @[FNSOCC]
-  FNSMCC   = @[FNSMCC_control]
-  FNMSKH   = @[FNMSKH_control]
-  FNTSFA   = ''
-  FNACNA   = ''
-  FNSNOA   = ''
-  FNVMNC   = 'global_shdmin.0.144x0.144.grb'
-  FNVMXC   = 'global_shdmax.0.144x0.144.grb'
-  FNSLPC   = 'global_slope.1x1.grb'
-  FNABSC   = @[FNABSC]
-  LDEBUG   = .false.
-  FSMCL(2) = 99999
-  FSMCL(3) = 99999
-  FSMCL(4) = 99999
-  LANDICE  = .true.
-  FTSFS    = 90
-  FAISL    = 99999
-  FAISS    = 99999
-  FSNOL    = 99999
-  FSNOS    = 99999
-  FSICL    = 99999
-  FSICS    = 99999
-  FTSFL    = 99999
-  FVETL    = 99999
-  FSOTL    = 99999
-  FvmnL    = 99999
-  FvmxL    = 99999
-  FSLPL    = 99999
-  FABSL    = 99999
-/
-
-&fv_grid_nml
-  grid_file = 'INPUT/grid_spec.nc'
-/
-
-&nam_stochy
-  STOCHINI=@[STOCHINI],
-  SKEBNORM=1,
-  SKEB_NPASS=30,
-  SKEB_VDOF=5,
-  SKEB=@[SKEB],
-  SKEB_TAU=2.16E4,
-  SKEB_LSCALE=1000.E3,
-  SKEBINT=1800,
-  SHUM=@[SHUM],
-  SHUM_TAU=21600,
-  SHUM_LSCALE=500000,
-  SHUMINT=3600,
-  SPPT=@[SPPT],
-  SPPT_TAU=21600,
-  SPPT_LSCALE=500000,
-  SPPT_LOGIT=.TRUE.,
-  SPPT_SFCLIMIT=.TRUE.,
-  SPPTINT=1800,
-  ISEED_SHUM=1,
-  ISEED_SKEB=2,
-  ISEED_SPPT=3,
-/
-
-&nam_sfcperts
-  lndp_type      = @[LNDP_TYPE]
-  lndp_model_type = @[LNDP_MODEL_TYPE]
-  LNDP_TAU=21600,
-  LNDP_LSCALE=500000,
-  ISEED_LNDP=2010,
-  lndp_var_list = @[LNDP_VAR_LIST]
-  lndp_prt_list = @[LNDP_PRT_LIST]
 /
 
 &cires_ugwp_nml

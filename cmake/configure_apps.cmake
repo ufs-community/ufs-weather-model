@@ -13,7 +13,7 @@
 ###############################################################################
 ### Configure Application Components
 ###############################################################################
-if(APP MATCHES "^(ATM|ATMW|ATMWM|ATMAQ|ATML|ATMF|ATML-LM4)$")
+if(APP MATCHES "^(ATM|ATMW|ATMWM|ATMAQ|ATML|ATMF|ATML-LM4|ATMMPAS)$")
   set(FMS        ON  CACHE BOOL "Enable FMS"                 FORCE)
   set(FV3        ON  CACHE BOOL "Enable FV3"                 FORCE)
   set(STOCH_PHYS ON  CACHE BOOL "Enable Stochastic Physics"  FORCE)
@@ -31,6 +31,14 @@ if(APP MATCHES "^(ATM|ATMW|ATMWM|ATMAQ|ATML|ATMF|ATML-LM4)$")
     set(CMEPS    ON  CACHE BOOL "Enable CMEPS"               FORCE)
     set(NOAHMP   ON  CACHE BOOL "Enable NOAHMP"              FORCE)
     message("Configuring UFS app in Atmosphere with Air Quality mode")
+  elseif(APP MATCHES "ATMMPAS")
+    set(MPAS     ON  CACHE BOOL "Enable MPAS dycore"         FORCE)
+    # DJS2025: FV3=ON has been factored out of all ATM applications, this line
+    #          reverts that when MPAS dycore is selected. Going forward, as diff. applications
+    #          rely on different dycores, this logic will need to expand to choose the
+    #          correct dycore.
+    set(FV3      OFF CACHE BOOL "Disable FV3 dycore"         FORCE)
+    message("Configuring UFS app in Atmosphere with MPAS dycore")
   elseif(APP MATCHES "ATML-LM4")
     set(CMEPS    ON  CACHE BOOL "Enable CMEPS"               FORCE)
     set(LM4      ON  CACHE BOOL "Enable LM4"                 FORCE)	    
