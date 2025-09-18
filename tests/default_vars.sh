@@ -1214,6 +1214,7 @@ export CPLWAV2ATM=.false.
 export CPLLND=.false.
 export CPLLND2ATM=.false.
 export USE_MED_FLUX=.false.
+export USE_OCEANUV=.false.
 export DAYS=1
 export NPX=97
 export NPY=97
@@ -1429,6 +1430,7 @@ export_tiled() {
   export FNVMXC="'${ATMRES}.vegetation_greenness.tileX.nc'"
   export FNSLPC="'${ATMRES}.slope_type.tileX.nc'"
   export FNABSC="'${ATMRES}.maximum_snow_albedo.tileX.nc'"
+  export LSM=2
   export LANDICE=".false."
 }
 
@@ -1845,6 +1847,7 @@ export FHZERO=6
 export IALB=2
 export IEMS=2
 export LSM=2
+export LANDICE=.false.
 export IOPT_DVEG=4
 export IOPT_CRS=2
 export IOPT_RAD=3
@@ -2172,6 +2175,7 @@ export IOPT_RAD=1
 export IOPT_ALB=2
 export IOPT_STC=1
 export LSM=1
+export LANDICE=.true.
 export DO_GSL_DRAG_LS_BL=.true.
 export DO_GSL_DRAG_SS=.true.
 export DO_GSL_DRAG_TOFD=.true.
@@ -2183,7 +2187,7 @@ export CDMBGWD=1.0,1.0,1.0,1.0
 export MRAEROSOL=.false.
 export LHEATSTRG=.false.
 export LRADAR=.true.
-export ICPLOCN2ATM=0
+export USE_OCEANUV=.false.
 
 export FV_CORE_TAU=5.
 export RF_CUTOFF=30.e2
@@ -2536,4 +2540,5 @@ export_rrfs_v1()
   export LHEATSTRG=.false.
   export LSM=2
   export LSOIL_LSM=4
+  export LANDICE=.false.
 }
