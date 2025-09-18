@@ -16,14 +16,15 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules/Modules)
 ###############################################################################
 
 # Valid applications and choices
-list(APPEND VALID_APPS ATM ATMAERO ATMAQ ATMW ATMWM ATML ATMF LND LND-LM4 S2S S2SL S2SA S2SW S2SWA S2SWL S2SWAL ATM_DS2S ATM_DS2S-PCICE HAFS HAFSW HAFS-MOM6 HAFS-MOM6W HAFS-ALL NG-GODAS)
+list(APPEND VALID_APPS ATM ATMAERO ATMAQ ATMW ATMWM ATML ATMF ATMMPAS LND LND-LM4 S2S S2SL S2SA S2SW S2SWA S2SWL S2SWAL ATM_DS2S ATM_DS2S-PCICE HAFS HAFSW HAFS-MOM6 HAFS-MOM6W HAFS-ALL NG-GODAS)
 set(APP NONE CACHE BOOL "Application Name")
 if(NOT (APP IN_LIST VALID_APPS))
   message(FATAL_ERROR "${APP} is not a valid application.\nValid Applications are: ${VALID_APPS}")
 endif()
 
 set(FMS             OFF CACHE BOOL "Enable FMS")
-set(FV3             OFF CACHE BOOL "Enable FV3")
+set(FV3             OFF CACHE BOOL "Enable FV3 dycore")
+set(MPAS            OFF CACHE BOOL "Enable MPAS dycore")
 set(AQM             OFF CACHE BOOL "Enable AQM")
 set(UFS_GOCART      OFF CACHE BOOL "Enable GOCART")
 set(MOM6            OFF CACHE BOOL "Enable MOM6")
@@ -43,7 +44,8 @@ include(cmake/configure_apps.cmake)
 
 message("")
 message("FMS .............. ${FMS}")
-message("FV3_dy ........... ${FV3}")
+message("FV3 .............. ${FV3}")
+message("MPAS ............. ${MPAS}")
 message("AQM .............. ${AQM}")
 message("GOCART ........... ${UFS_GOCART}")
 message("MOM6 ............. ${MOM6}")
@@ -164,7 +166,7 @@ if(FMS)
   elseif (APP MATCHES "^(S2S|S2SA|S2SL|S2SW|S2SWL|S2SWA|S2SWAL|ATM_DS2S|ATM_DS2S-PCICE|NG-GODAS|HAFS-MOM6|HAFS-MOM6W)$")
     add_library(fms ALIAS FMS::fms_r8)
   endif()
-  if(APP MATCHES "^(ATM|ATMAERO|ATMAQ|ATMWM|ATMW|ATML|ATMF|ATML-LM4|LND-LM4|HAFS|HAFS-ALL)$")
+  if(APP MATCHES "^(ATM|ATMAERO|ATMAQ|ATMWM|ATMW|ATML|ATMF|ATMMPAS|ATML-LM4|LND-LM4|HAFS|HAFS-ALL)$")
     if(32BIT)
       add_library(fms ALIAS FMS::fms_r4)
     else()
@@ -181,6 +183,11 @@ find_package(bacio 2.4.0 REQUIRED)
 find_package(sp 2.3.3 REQUIRED)
 find_package(w3emc 2.9.2 REQUIRED)
 
+if(MPAS)
+  find_package(PnetCDF REQUIRED COMPONENTS Fortran)
+  find_package(PIO REQUIRED COMPONENTS Fortran C)
+endif()
+
 # Configure Python
 find_package(Python 3.6 REQUIRED COMPONENTS Interpreter)
 message("Found Python: ${Python_EXECUTABLE}")
@@ -193,15 +200,15 @@ if(STOCH_PHYS)
 endif()
 
 ###############################################################################
-### Atmosphere Components [FV3, MPAS?]
-### DJS2024: There will be a generalized atmospheric component with multiple
-###          dycores, not multiple atmospheric components (one for each dycore).
-###          So, - rename the atmospheric component FV3 to UFSATM or ATM, then
-###              - if FV3 or MPAS, add_sudirectory(UFSATM or ATM)
-###
+### Atmosphere Components [FV3, MPAS]
 ###############################################################################
-if(FV3)
-  add_subdirectory(FV3)
+
+if(FV3 AND MPAS)
+  message(FATAL_ERROR "Multiple dynamical cores cannot be selected.")
+endif()
+
+if (FV3 OR MPAS)
+  add_subdirectory(UFSATM)
 endif()
 
 ###############################################################################
@@ -328,8 +335,14 @@ endif()
 
 if(FV3)
   add_dependencies(ufs ufsatm_fv3)
-  list(APPEND _ufs_defs_private FRONT_FV3=${DYCORE_TARGET_CAP_MOD})
+  list(APPEND _ufs_defs_private FRONT_UFSATM=${DYCORE_TARGET_CAP_MOD})
   list(APPEND _ufs_libs_public ${DYCORE_TARGET})
+endif()
+
+if(MPAS)
+  add_dependencies(ufs ufsatm_mpas)
+  list(APPEND _ufs_defs_private FRONT_UFSATM=ufsatm_cap_mod)
+  list(APPEND _ufs_libs_public ufsatm_mpas)
 endif()
 
 if(MOM6)
