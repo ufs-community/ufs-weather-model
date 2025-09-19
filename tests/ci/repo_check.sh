@@ -31,7 +31,7 @@ urls[base]='https://github.com/ufs-community/ufs-weather-model'
 branches[base]='develop'
 pathes[base]=''
 
-urls[ufsatm]='https://github.com/NOAA-EMC/fv3atm'
+urls[ufsatm]='https://github.com/NOAA-EMC/ufsatm'
 branches[ufsatm]='develop'
 pathes[ufsatm]='UFSATM'
 
