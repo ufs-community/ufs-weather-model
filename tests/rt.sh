@@ -811,7 +811,7 @@ case ${MACHINE_ID} in
     COMPILE_QUEUE="batch"
 
     PARTITION="u1-compute"
-    dprefix="/scratch4/NCEPDEV/stmp/${USER}"
+    dprefix="/scratch4/BMC/gsienkf/${USER}/stmp"
     if [[ "${ACCNR}" == 'epic' ]] ; then
       dprefix="/scratch4/NAGAPE/epic/${USER}/stmp"
     fi
