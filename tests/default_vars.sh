@@ -736,14 +736,14 @@ export_gfs_physics ()
     export DO_UGWP_V0_NST_ONLY=.false.
 
     # GWG resolution dependent settings
-    export CDMBWD_c48='0.071,2.1,1.0,1.0'
-    export CDMBWD_c96='0.14,1.8,1.0,1.0'
-    export CDMBWD_c192='0.23,1.5,1.0,1.0'
-    export CDMBWD_c384='1.1,0.72,1.0,1.0'
-    export CDMBWD_c768='4.0,0.15,1.0,1.0'
+    export CDMBGWD_c48='0.071,2.1,1.0,1.0'
+    export CDMBGWD_c96='0.14,1.8,1.0,1.0'
+    export CDMBGWD_c192='0.23,1.5,1.0,1.0'
+    export CDMBGWD_c384='1.1,0.72,1.0,1.0'
+    export CDMBGWD_c768='4.0,0.15,1.0,1.0'
 
     # set default
-    export CDMBWD=${CDMBWD_c96}
+    export CDMBGWD=${CDMBGWD_c96}
 
     # PBL
     export ISATMEDMF=1
@@ -1088,14 +1088,14 @@ export KNOB_UGWP_TAUAMP=3.0e-3
 export DO_UGWP_V0_NST_ONLY=.false.
 
 # resolution dependent settings
-export CDMBWD_c48='0.071,2.1,1.0,1.0'
-export CDMBWD_c96='0.14,1.8,1.0,1.0'
-export CDMBWD_c192='0.23,1.5,1.0,1.0'
-export CDMBWD_c384='1.1,0.72,1.0,1.0'
-export CDMBWD_c768='4.0,0.15,1.0,1.0'
+export CDMBGWD_c48='0.071,2.1,1.0,1.0'
+export CDMBGWD_c96='0.14,1.8,1.0,1.0'
+export CDMBGWD_c192='0.23,1.5,1.0,1.0'
+export CDMBGWD_c384='1.1,0.72,1.0,1.0'
+export CDMBGWD_c768='4.0,0.15,1.0,1.0'
 
 # set default
-export CDMBWD=${CDMBWD_c96}
+export CDMBGWD=${CDMBGWD_c96}
 
 if [[ ${default_dt_atmos} = 1 ]]; then
   export DT_INNER=${DT_INNER_c96}
@@ -1214,6 +1214,7 @@ export CPLWAV2ATM=.false.
 export CPLLND=.false.
 export CPLLND2ATM=.false.
 export USE_MED_FLUX=.false.
+export USE_OCEANUV=.false.
 export DAYS=1
 export NPX=97
 export NPY=97
@@ -1268,31 +1269,31 @@ export LNDP_LSCALE=500000,
 export ISEED_LNDP=2010,
 export ISEED_SKEB=0
 export SKEB_TAU=21600,
-export SKEB_LSCALE=500000,
-export SKEBNORM=1,
+export SKEB_LSCALE=250000,
+export SKEBNORM=0,
 export SKEB_NPASS=30,
 export SKEB_VDOF=5,
 export ISEED_SHUM=1,
 export SHUM_TAU=21600,
 export SHUM_LSCALE=500000,
-export ISEED_SPPT=20210325000103,20210325000104,20210325000105,20210325000106,20210325000107
-export SPPT_TAU=2.16E4,2.592E5,2.592E6,7.776E6,3.1536E7
-export SPPT_LSCALE=500.E3,1000.E3,2000.E3,2000.E3,2000.E3
+export ISEED_SPPT=20210325000103
+export SPPT_TAU=2.16E4
+export SPPT_LSCALE=500.E3
 export SPPT_LOGIT=.true.,
 export SPPT_SFCLIMIT=.true.,
 export USE_ZMTNBLCK=.true.
 export PBL_TAPER=0,0,0,0.125,0.25,0.5,0.75
-export OCNSPPT=0.8,0.4,0.2,0.08,0.04
-export OCNSPPT_LSCALE=500.E3,1000.E3,2000.E3,2000.E3,2000.E3
-export OCNSPPT_TAU=2.16E4,2.592E5,2.592E6,7.776E6,3.1536E7
-export ISEED_OCNSPPT=20210325000108,20210325000109,20210325000110,20210325000111,20210325000112
-export EPBL=0.8,0.4,0.2,0.08,0.04
-export EPBL_LSCALE=500.E3,1000.E3,2000.E3,2000.E3,2000.E3
-export EPBL_TAU=2.16E4,2.592E5,2.592E6,7.776E6,3.1536E7
-export ISEED_EPBL=20210325000113,20210325000114,20210325000115,20210325000116,20210325000117
-export SKEBINT=1800
-export SHUMINT=3600
-export SPPTINT=1800
+export OCNSPPT=-999.
+export OCNSPPT_LSCALE=500.E3
+export OCNSPPT_TAU=2.16E4
+export ISEED_OCNSPPT=20210325000108
+export EPBL=-999.
+export EPBL_LSCALE=500.E3
+export EPBL_TAU=2.16E4
+export ISEED_EPBL=20210325000113
+export SKEBINT=0
+export SHUMINT=0
+export SPPTINT=0
 
 #IAU
 export IAU_INC_FILES="''"
@@ -1429,6 +1430,7 @@ export_tiled() {
   export FNVMXC="'${ATMRES}.vegetation_greenness.tileX.nc'"
   export FNSLPC="'${ATMRES}.slope_type.tileX.nc'"
   export FNABSC="'${ATMRES}.maximum_snow_albedo.tileX.nc'"
+  export LSM=2
   export LANDICE=".false."
 }
 
@@ -1845,6 +1847,7 @@ export FHZERO=6
 export IALB=2
 export IEMS=2
 export LSM=2
+export LANDICE=.false.
 export IOPT_DVEG=4
 export IOPT_CRS=2
 export IOPT_RAD=3
@@ -2172,6 +2175,7 @@ export IOPT_RAD=1
 export IOPT_ALB=2
 export IOPT_STC=1
 export LSM=1
+export LANDICE=.true.
 export DO_GSL_DRAG_LS_BL=.true.
 export DO_GSL_DRAG_SS=.true.
 export DO_GSL_DRAG_TOFD=.true.
@@ -2179,11 +2183,11 @@ export IMP_PHYSICS=11
 export IAER=111
 export CNVGWD=.false.
 export LTAEROSOL=.false.
+export CDMBGWD=1.0,1.0,1.0,1.0
 export MRAEROSOL=.false.
-export CDMBWD=1.0,1.0,1.0,1.0
 export LHEATSTRG=.false.
 export LRADAR=.true.
-export ICPLOCN2ATM=0
+export USE_OCEANUV=.false.
 
 export FV_CORE_TAU=5.
 export RF_CUTOFF=30.e2
@@ -2437,7 +2441,7 @@ export RANDOM_CLDS=.false.
 export CNVCLD=.false.
 export IMFSHALCNV=-1
 export IMFDEEPCNV=-1
-export CDMBWD='3.5,1.0'
+export CDMBGWD='3.5,1.0'
 export DO_SPPT=.false.
 export DO_SHUM=.false.
 export DO_SKEB=.false.
@@ -2536,4 +2540,5 @@ export_rrfs_v1()
   export LHEATSTRG=.false.
   export LSM=2
   export LSOIL_LSM=4
+  export LANDICE=.false.
 }
