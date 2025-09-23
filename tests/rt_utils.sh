@@ -420,6 +420,9 @@ rocoto_create_compile_task() {
   if [[ ${MACHINE_ID} == hera ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
+  if [[ ${MACHINE_ID} == ursa ]]; then
+    BUILD_WALLTIME="01:00:00"
+  fi
   if [[ ${MACHINE_ID} == orion ]]; then
     BUILD_WALLTIME="01:00:00"
   fi
@@ -454,6 +457,10 @@ EOF
     cat << EOF >> "${ROCOTO_XML}"
     <native>--clusters=es</native>
     <partition>eslogin_c6</partition>
+EOF
+  elif [[ "${MACHINE_ID}" == ursa ]] ; then
+    cat << EOF >> "${ROCOTO_XML}"
+    <partition>${PARTITION}</partition>
 EOF
   elif [[ -n "${PARTITION}" || ${MACHINE_ID} != hera ]] ; then
     cat << EOF >> "${ROCOTO_XML}"
@@ -498,6 +505,12 @@ EOF
     cat << EOF >> "${ROCOTO_XML}"
       <native>--clusters=${PARTITION}</native>
       <native>--partition=batch</native>
+EOF
+
+  elif [[ "${MACHINE_ID}" == ursa ]] ; then
+    cat << EOF >> "${ROCOTO_XML}"
+    <partition>${PARTITION}</partition>
+
 EOF
 
   elif [[ -n "${PARTITION}" || ${MACHINE_ID} != hera ]] ; then
@@ -644,7 +657,7 @@ ecflow_run() {
     elif [[ "${HOST::1}" == "d" ]]; then
       ECF_HOST=ddecflow01
     fi
-  elif [[ ${MACHINE_ID} == hera || ${MACHINE_ID} == jet ]]; then
+  elif [[ ${MACHINE_ID} == hera || ${MACHINE_ID} == jet || ${MACHINE_ID} == ursa ]]; then
     module load ecflow
   fi
   if [[ -z ${ECF_HOST} || -z ${ECF_PORT} ]]; then
@@ -673,6 +686,10 @@ ecflow_run() {
       wcoss2|acorn|hera|jet)
         #shellcheck disable=SC2029
         ssh "${ECF_HOST}" "bash -l -c \"module load ecflow && ${ECFLOW_START} -p ${ECF_PORT}\""
+        ;;
+      ursa)
+        #shellcheck disable=SC2029
+        ssh "${ECF_HOST}" "bash -l -c \"module load ecflow && export ECF_HOST=${ECF_HOST} && ${ECFLOW_START} -p ${ECF_PORT}\""
         ;;
       *)
         ${ECFLOW_START} -p "${ECF_PORT}" -d "${RUNDIR_ROOT}/ecflow_server"
