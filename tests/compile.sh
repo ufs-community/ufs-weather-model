@@ -94,10 +94,6 @@ else
   fi
 fi
 
-if [[ ${MACHINE_ID} == wcoss2 ]] || [[ ${MACHINE_ID} == acorn ]]; then
-    CMAKE_FLAGS+=" -DENABLE_PARALLELRESTART=ON"
-fi
-
 # Check if suites argument is provided or not
 set +ex
 SUITES=$(grep -Po "\-DCCPP_SUITES=\K[^ ]*" <<< "${MAKE_OPT}")
@@ -116,7 +112,7 @@ export CMAKE_FLAGS
 
 bash -x "${PATHTR}/build.sh"
 
-rsync --remove-source-files "${BUILD_DIR}/ufs_model" "${PATHTR}/tests/${BUILD_NAME}.exe"
+mv "${BUILD_DIR}/ufs_model" "${PATHTR}/tests/${BUILD_NAME}.exe"
 if [[ ${MACHINE_ID} == linux ]]; then
   cp "${PATHTR}/modulefiles/ufs_${MACHINE_ID}.${RT_COMPILER}" "${PATHTR}/tests/modules.${BUILD_NAME}"
 else

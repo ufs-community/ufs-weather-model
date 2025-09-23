@@ -29,11 +29,6 @@ case $(hostname -f) in
   hfe0[1-9]) MACHINE_ID=hera ;; ### hera01-09
   hfe1[0-2]) MACHINE_ID=hera ;; ### hera10-12
   hecflow01) MACHINE_ID=hera ;; ### heraecflow01
-  
-  ufe01) MACHINE_ID=ursa ;; ### ursa
-  ufe02) MACHINE_ID=ursa ;; ### ursa
-  ufe03) MACHINE_ID=ursa ;; ### ursa
-  ufe04) MACHINE_ID=ursa ;; ### ursa
 
   s4-submit.ssec.wisc.edu) MACHINE_ID=s4 ;; ### s4
 
@@ -53,8 +48,12 @@ case $(hostname -f) in
   derecho7.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho7
   derecho8.hsn.de.hpc.ucar.edu) MACHINE_ID=derecho ;; ### derecho8
   
+  login[1-4].stampede2.tacc.utexas.edu) MACHINE_ID=stampede ;; ### stampede1-4
+
   login[1-4].frontera.tacc.utexas.edu) MACHINE_ID=frontera ;; ### frontera1-4
   c*.frontera.tacc.utexas.edu) MACHINE_ID=frontera ;; ### frontera compute 
+
+  login0[1-2].expanse.sdsc.edu) MACHINE_ID=expanse ;; ### expanse1-2
 
   discover3[1-5].prv.cube) MACHINE_ID=discover ;; ### discover31-35
   *) MACHINE_ID=UNKNOWN ;;  # Unknown platform
@@ -88,9 +87,6 @@ elif [[ -d /mnt/lfs1 ]]; then
 elif [[ -d /scratch1 ]]; then
   # We are on NOAA Hera
   MACHINE_ID=hera
-elif [[ -d /collab1 ]]; then
-  # We are on NOAA Ursa
-  MACHINE_ID=ursa
 elif [[ -d /work ]]; then
   # We are on MSU Orion or Hercules
   mount=$(findmnt -n -o SOURCE /home)   

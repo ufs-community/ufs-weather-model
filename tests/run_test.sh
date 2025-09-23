@@ -104,12 +104,8 @@ cp "${PATHRT}/module-setup.sh" "module-setup.sh"
 
 case ${MACHINE_ID} in
   wcoss2|acorn)
-    module load intel/19.1.3.304
-    module load craype/2.7.13 cray-mpich/8.1.12
-    module load netcdf-D/4.9.2
-    module load pnetcdf-D/1.12.2
-    module load hdf5-D/1.14.0
-    module load nccmp-D/1.9.0.1
+    module load intel/19.1.3.304 netcdf/4.7.4
+    module load nccmp
     ;;
   s4)
     module use /data/prod/jedi/spack-stack/spack-stack-1.4.1/envs/ufs-pio-2.5.10/install/modulefiles/Core
@@ -117,7 +113,7 @@ case ${MACHINE_ID} in
     module load miniconda/3.9.12
     module load nccmp/1.9.0.1
     ;;
-  noaacloud)
+  stampede|expanse|noaacloud)
     echo "No special nccmp load necessary"
     ;;
   gaeac5)
@@ -135,12 +131,6 @@ case ${MACHINE_ID} in
     ;;
   derecho)
     module load nccmp
-    ;;
-  frontera)
-    module use /work2/01118/tg803972/frontera/spack-stack/spack-stack-1.9.2/envs/unified-env/install/modulefiles/Core
-    module use /work2/01118/tg803972/frontera/spack-stack/spack-stack-1.9.2/envs/unified-env/install/modulefiles/intel-oneapi-mpi/2021.9.0-bwli7xy/intel/23.1.0
-    module load stack-intel/23.1.0 stack-intel-oneapi-mpi/2021.9.0
-    module load nccmp/1.9.0.1
     ;;
   *)
     module use modulefiles
@@ -167,10 +157,6 @@ else
   export HIDE_UGWPV0=' '
   export HIDE_UGWPV1='!'
 fi
-
-# Set IAU Global workflow related tags to ' '
-export HIDE_AIAU=' '
-export HIDE_LIAU=' '
 
 if [[ ${DATM_CDEPS} = 'true' ]] || [[ ${FV3} = 'true' ]] || [[ ${S2S} = 'true' ]]; then
   if [[ ${HAFS} = 'false' ]] || [[ ${FV3} = 'true' && ${HAFS} = 'true' ]]; then
@@ -286,15 +272,12 @@ if [[ ${FV3} == true ]]; then
 fi
 
 # NoahMP table file
-if [[ ${BMIC} == .true. ]]; then
-  cp "${PATHRT}/parm/noahmptable-gefs.tbl" noahmptable.tbl
-else
   cp "${PATHRT}/parm/noahmptable.tbl" .
-fi
+
 
 # AQM
 if [[ ${AQM} == .true. ]]; then
-  cp "${PATHRT}/parm/aqm/${aqm_rc_file}" ./aqm.rc
+  cp "${PATHRT}/parm/aqm/aqm.rc" .
 fi
 
 # Field Dictionary
@@ -304,18 +287,17 @@ cp "${PATHRT}/parm/fd_ufs.yaml" fd_ufs.yaml
 source ./fv3_run
 
 if [[ ${CPLWAV} == .true. ]]; then
+  if [[ ${WW3_MULTIGRID} = 'true' ]]; then
+    atparse < "${PATHRT}/parm/ww3_multi.inp.IN" > ww3_multi.inp
+  else
     atparse < "${PATHRT}/parm/ww3_shel.nml.IN" > ww3_shel.nml
     cp "${PATHRT}/parm/ww3_points.list" .
+  fi
 fi
 
 if [[ ${CPLCHM} == .true. ]]; then
-  if [[ ${BMIC} == .true. ]]; then
-    cp "${PATHRT}"/parm/gocart/gefs/*.rc .
-    atparse < "${PATHRT}/parm/gocart/gefs/AERO_HISTORY.rc.IN" > AERO_HISTORY.rc
-  else
-    cp "${PATHRT}"/parm/gocart/*.rc .
-    atparse < "${PATHRT}/parm/gocart/AERO_HISTORY.rc.IN" > AERO_HISTORY.rc
-  fi
+  cp "${PATHRT}"/parm/gocart/*.rc .
+  atparse < "${PATHRT}/parm/gocart/AERO_HISTORY.rc.IN" > AERO_HISTORY.rc
 fi
 
 #TODO: this logic needs to be cleaned up for datm applications w/o
@@ -503,13 +485,14 @@ if [[ ${skip_check_results} == false ]]; then
 
       else
         if [[ ${i##*.} == nc* ]] ; then
-          if [[ " orion hercules hera ursa wcoss2 acorn derecho gaeac5 gaeac6 jet s4 noaacloud frontera " =~ ${MACHINE_ID} ]]; then
+          if [[ " orion hercules hera wcoss2 acorn derecho gaeac5 gaeac6 jet s4 noaacloud frontera " =~ ${MACHINE_ID} ]]; then
             printf "USING NCCMP.." >> "${RT_LOG}"
             printf "USING NCCMP.."
-              nccmp_args=(-d -S -q -f -B --Attribute=checksum --warn=format)
-              if [[ ${CMP_DATAONLY} == false ]]; then nccmp_args+=("-g"); fi
-              if [[ -n "${nccmp_exclude// }" ]]; then nccmp_args+=("${nccmp_exclude}"); fi
-              nccmp "${nccmp_args[@]}" "${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i}" "${RUNDIR}/${i}" > "${i}_nccmp.log" 2>&1 && d=$? || d=$?
+              if [[ ${CMP_DATAONLY} == false ]]; then
+                nccmp -d -S -q -f -g -B --Attribute=checksum --warn=format "${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i}" "${RUNDIR}/${i}" > "${i}_nccmp.log" 2>&1 && d=$? || d=$?
+              else
+                nccmp -d -S -q -f -B --Attribute=checksum --warn=format "${RTPWD}/${CNTL_DIR}_${RT_COMPILER}/${i}" "${RUNDIR}/${i}" > "${i}_nccmp.log" 2>&1 && d=$? || d=$?
+              fi
               if [[ ${d} -ne 0 && ${d} -ne 1 ]]; then
                 printf "....ERROR" >> "${RT_LOG}"
                 printf "....ERROR"
