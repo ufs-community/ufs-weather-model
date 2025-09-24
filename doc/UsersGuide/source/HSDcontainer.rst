@@ -9,6 +9,8 @@ Running UFS WM Idealized Cases in a Container
 
 This chapter provides instructions for running the Unified Forecast System (:term:`UFS`) Weather Model (WM) Hierarchical System Develop (HSD) cases using a `Singularity/Apptainer <https://apptainer.org/docs/user/latest/>`_ container. Normally, the details of building and running Earth system models will vary based on the computing platform because there are many possible combinations of operating systems, compilers, :term:`MPIs <MPI>`, and package versions available. Installation via Singularity/Apptainer container reduces this variability and allows for a smoother experience building and running the UFS WM. This approach is recommended for users not running the UFS WM on a supported :wm-wiki:`Level 1 <Regression-Test-Policy-for-Weather-Model-Platforms-and-Compilers>` system (e.g., Hera, Orion). 
 
+The container includes: spack-stack, Intel’s runtime environment, ufs-weather-model repository, and the prebuilt executables for the HSD cases. These are all the components needed to run the HSD cases besides the HSD data, which is discussed later in this chapter.
+
 This chapter provides instructions for building and running the Unified Forecast System UFS WM HSD cases using a container. Currently, users can select from the following cases: 
 
    * The :ref:`July 2020 CAPE Case <cape-2020>`
@@ -100,7 +102,7 @@ where ``/path/to/hsd`` is the path to this top-level directory (e.g., ``/Users/J
 NOAA RDHPCS Systems
 ----------------------
 
-On many NOAA :term:`RDHPCS`, a container named ``ubuntu22.04-intel-wm-dev-hsd-test.img`` has already been built, and users may access the container at the locations in :numref:`Table %s <PreBuiltContainers>`.
+On many NOAA :term:`RDHPCS`, a container named ``ubuntu22.04-intel-ue-1.6.0-wm-hsd.img`` has already been built, and users may access the container at the locations in :numref:`Table %s <PreBuiltContainers>`.
 
 .. _PreBuiltContainers:
 
@@ -111,7 +113,7 @@ On many NOAA :term:`RDHPCS`, a container named ``ubuntu22.04-intel-wm-dev-hsd-te
    +====================+========================================================+
    | Gaea               | /gpfs/f6/bil-fire8/world-shared/containers             |
    +--------------------+--------------------------------------------------------+
-   | Hera               | /scratch1/NCEPDEV/nems/role.epic/containers            |
+   | Hera               | /scratch3/NCEPDEV/nems/role.epic/containers            |
    +--------------------+--------------------------------------------------------+
    | NOAA Cloud [#fn]_  | /contrib/EPIC/containers                               |
    +--------------------+--------------------------------------------------------+
@@ -124,30 +126,30 @@ Users can simply set an environment variable to point to the container:
 
 .. code-block:: console
 
-   export img=path/to/ubuntu22.04-intel-wm-dev-hsd-test.img
+   export img=path/to/ubuntu22.04-intel-ue-1.6.0-wm-hsd.img
 
 If users prefer, they may copy the container to their local working directory. For example, on Gaea
 
 .. code-block:: console
 
-   cp /gpfs/f6/bil-fire8/world-shared/containers/ubuntu22.04-intel-wm-dev-hsd-test.img .
+   cp /gpfs/f6/bil-fire8/world-shared/containers/ubuntu22.04-intel-ue-1.6.0-wm-hsd.img .
 
 Other Systems
 ----------------
 
-On other systems, users can build the Singularity container from a public Docker :term:`container` image or download the ``ubuntu22.04-intel-wm-dev-hsd-test.img`` container from the `UFS Hierarchical Testing Framework (HTF) Data Bucket <https://registry.opendata.aws/noaa-ufs-htf-pds/>`_. Downloading may be faster depending on the download speed on the user's system. Note that the container in the data bucket is from the May 30, 2025 ``develop`` branch.
+On other systems, users can build the Singularity container from a public Docker :term:`container` image or download the ``ubuntu22.04-intel-ue-1.6.0-wm-hsd.img`` container from the `UFS Hierarchical Testing Framework (HTF) Data Bucket <https://registry.opendata.aws/noaa-ufs-htf-pds/>`_. Downloading may be faster depending on the download speed on the user's system. Note that the container in the data bucket is from the May 30, 2025 ``develop`` branch.
 
 To download from the data bucket, users can run:
 
 .. code-block:: console
 
-   wget https://noaa-ufs-htf-pds.s3.amazonaws.com/develop-20250530/ubuntu22.04-intel-wm-dev-hsd-test.img
+   wget https://noaa-ufs-htf-pds.s3.amazonaws.com/develop-20250530/ubuntu22.04-intel-ue-1.6.0-wm-hsd.img
 
 To build the container from a Docker image, users can run:
 
 .. code-block:: console
 
-   singularity build --force ubuntu22.04-intel-wm-dev-hsd-test.img docker://noaaepic/ubuntu22.04-intel21.10-wm:ue160-fms202401-dev-tc
+   singularity build --force ubuntu22.04-intel-ue-1.6.0-wm-hsd.img docker://noaaepic/ubuntu22.04-intel2023.2.1-wm:ue160-fms202401-dev-hsd
 
 This process may take several hours depending on the system. 
 
@@ -190,20 +192,20 @@ Save the location of the container in an environment variable.
 
 .. code-block:: console
 
-   export img=/path/to/ubuntu22.04-intel-wm-dev-hsd-test.img
+   export img=/path/to/ubuntu22.04-intel-ue-1.6.0-wm-hsd.img
 
 Users may convert a container ``.img`` file to a writable sandbox. This step is optional and unnecessary on most systems (it can take several hours):
 
 .. code-block:: console
 
-   singularity build --sandbox ubuntu22.04-intel-wm-dev-hsd-test $img
+   singularity build --sandbox ubuntu22.04-intel-ue-1.6.0-wm-hsd $img
 
 When making a writable sandbox on NOAA :term:`RDHPCS`, the following warnings commonly appear and can be ignored:
 
 .. code-block:: console
 
    INFO:    Starting build...
-   INFO:    Verifying bootstrap image ubuntu22.04-intel-wm-dev-hsd-test.img
+   INFO:    Verifying bootstrap image ubuntu22.04-intel-ue-1.6.0-wm-hsd.img
    WARNING: integrity: signature not found for object group 1
    WARNING: Bootstrap image could not be verified, but build will continue.
 
@@ -211,13 +213,13 @@ From within the ``$HSD`` directory, copy the ``stage-rt.sh`` script out of the c
 
 .. code-block:: console
 
-   singularity exec -H $PWD $img cp /opt/stage-rt.sh .
+   singularity exec -H $PWD $img cp /opt/ufs-weather-model/container-scripts/stage-rt.sh .
 
 The ``stage-rt.sh`` script should now be in the ``$HSD`` directory. If for some reason, the previous command was unsuccessful, users may try a version of the following command instead: 
 
 .. code-block:: console
 
-   singularity exec -B /<local_base_dir>:/<container_dir> $img cp /opt/stage-rt.sh .
+   singularity exec -B /<local_base_dir>:/<container_dir> $img cp /opt/ufs-weather-model/container-scripts/stage-rt.sh .
 
 where ``<local_base_dir>`` and ``<container_dir>`` are replaced with a top-level directory on the local system and in the container, respectively. Additional directories can be bound by adding another ``-B /<local_base_dir>:/<container_dir>`` argument before the container location (``$img``). Note that if previous steps included a ``sudo`` command, ``sudo`` may be required in front of this command. 
 
@@ -236,7 +238,7 @@ where:
    * ``-c`` is the compiler on the user's local machine (e.g., ``intel/2022.1.2``, ``intel-oneapi-compilers/2022.2.1``, ``intel/2023.2.0``)
    * ``-m`` is the :term:`MPI` on the user's local machine (e.g., ``impi/2022.1.2``, ``intel-oneapi-mpi/2021.7.1``, ``cray-mpich/8.1.28``)
    * ``-p`` refers to the local machine/platform (e.g., ``hera``, ``gaea``, ``noaacloud``). Required for Gaea, Hercules, and Orion only.
-   * ``-i`` is the full path to the container image (e.g., ``$img`` or ``$HSD/ubuntu22.04-intel-wm-dev-hsd-test.img``).
+   * ``-i`` is the full path to the container image (e.g., ``$img`` or ``$HSD/ubuntu22.04-intel-ue-1.6.0-wm-hsd.img``).
 
 .. note::
 
@@ -251,6 +253,8 @@ When this command runs, ``stage-rt.sh`` will print the following message to the 
    Updating compiler and mpi in fv3_slurm.IN_singularity
    Creating ufs_singularity.intel.lua
    Tricking ufs_test.sh file
+   Updating various files with host paths
+   Removing compile task
    Updating various files with host paths
    Done
 
@@ -330,8 +334,7 @@ It will print a status table:
 
           CYCLE                     TASK   JOBID     STATE   EXIT STATUS  TRIES      DURATION
    ===========================================================================================
-   197001010000  compile_atm_dyn32_intel       1   RUNNING             -      0           0.0
-   197001010000          2020_CAPE_intel       -         -             -      -             -
+   197001010000          2020_CAPE_intel       1   RUNNING             -      0           0.0
 
 If the job hangs or otherwise fails, stop the workflow in the active terminal using ``(Ctrl+C)``. To resubmit the experiment, remove the ``rocoto_workflow*`` files and lock directory before rerunning the ``ufs_test.sh`` script again:
 
@@ -357,7 +360,7 @@ If the experiment completes successfully, the loop will exit with output similar
    + TEST_END_TIME='20241115 16:43:41'
    + export TEST_END_TIME
    + python -c 'import create_log; create_log.finish_log()'
-   running: /usr/bin/singularity exec --env-file /scratch1/NCEPDEV/stmp4/User.Name/hsd-test/new-cont/ufs-weather-model/container-scripts/ufswm.env -B /scratch1:/scratch1 /scratch1/NCEPDEV/stmp4/User.Name/hsd-test/new-cont/ubuntu22.04-intel-wm-dev-hsd-test.img python tmp_arg_file.py
+   running: /usr/bin/singularity exec --env-file /scratch1/NCEPDEV/stmp4/User.Name/hsd-test/new-cont/ufs-weather-model/container-scripts/ufswm.env -B /scratch1:/scratch1 /scratch1/NCEPDEV/stmp4/User.Name/hsd-test/new-cont/ubuntu22.04-intel-ue-1.6.0-wm-hsd.img python tmp_arg_file.py
    Performing Cleanup...
    REGRESSION TEST RESULT: SUCCESS
    + echo 'ufs_test.sh finished'
@@ -371,10 +374,9 @@ If the experiment completes successfully, the loop will exit with output similar
    + trap 0
    + exit
 
-The experiment output can be found under the run directory (``${PTMP}/${USER}/FV3_RT/rt_${pid}``), which will contain two subdirectories, two log files, and two environment variable files (one for the compile task and one for the experiment task). For example: 
+The experiment output can be found under the run directory (``${PTMP}/${USER}/FV3_RT/rt_${pid}``), which will contain one subdirectory and log file, and two environment variable files (one for the compile task, which doesn't run and one for the experiment task). For example: 
 
 .. code-block:: console
 
    $ ls run_dir/
-   baroclinic_wave_intel      compile_atm_dyn32_intel       compile_atm_dyn32_intel.log
-   baroclinic_wave_intel.log  compile_atm_dyn32_intel.env   run_test_baroclinic_wave_intel.env
+   baroclinic_wave_intel  baroclinic_wave_intel.log  compile_atm_dyn32_intel.env   run_test_baroclinic_wave_intel.env
