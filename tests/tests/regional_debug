@@ -36,10 +36,7 @@ export OUTPUT_FH="0 1"
 export WRITE_GROUP=1
 export WRTTASK_PER_GROUP=10
 export NTILES=1
-
-if [[ " hera orion hercules jet acorn wcoss2" =~ " ${MACHINE_ID} " ]] ; then
-  export ZSTANDARD_LEVEL=5
-fi
+export ZSTANDARD_LEVEL=5
 
 if [[ $MACHINE_ID = gaeac5 && $RT_COMPILER = intelllvm ]]; then
   export WLCLK=50
