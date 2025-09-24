@@ -37,7 +37,7 @@ Provide a concise commit message for the UFS WM and any subcomponents; delete un
   * CICE - 
   * CMEPS - 
   * CMakeModules - 
-  * FV3 - 
+  * UFSATM - 
     * ccpp-physics - 
     * atmos_cubed_sphere - 
   * GOCART - 
