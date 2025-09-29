@@ -1,31 +1,34 @@
 <!-- INSTRUCTIONS: 
-- PLEASE READ/FOLLOW THE DIRECTIONS IN EACH SECTION
+- READ/FOLLOW THE DIRECTIONS IN EACH SECTION
 - Complete the 'Commit Queue Requirements' below
-- Please use github markup as much as possible (https://docs.github.com/en/get-started/writing-on-github)
-- Please leave your PR in a draft state until all underlying work is completed.
+- Use GitHub markup as much as possible (https://docs.github.com/en/get-started/writing-on-github)
+- Leave your PR in a draft state until all underlying work is completed.
 -->
+
 ## Commit Queue Requirements:
 <!--
-- Please complete the items that follow this.
-- Please "check off" completed items. Use [X] for a filled in checkbox or leave it [ ] for an empty checkbox
-- Your PR will not be considered until all requirements are met.
+- Check off completed items. Use [X] for a filled in checkbox or leave it [ ] for an empty checkbox
+- Your pull request (PR) will not be considered until all requirements are met.
 - THIS IS YOUR RESPONSIBILITY
  -->
+- [ ] This PR addresses a relevant WM issue (if not, create an issue). 
+- [ ] All subcomponent pull requests (if any) have been reviewed by their code managers.
+- [ ] Run the full Intel+GNU RT suite (compared to current baselines), preferably on Ursa (Derecho or Hercules are acceptable alternatives). **Exceptions:** documentation-only PRs, CI-only PRs, etc.
+   - [ ] Commit log file w/full results from RT suite run (if applicable).
+   - [ ] Commit 'test_changes.list' (unless file is empty). 
 - [ ] Fill out all sections of this template.
-- [ ] All sub component pull requests have been reviewed by their code managers.
-- [ ] Run the full Intel+GNU RT suite (compared to current baselines) on either Hera/Derecho/Hercules
-- [ ] Commit 'test_changes.list' from previous step
+
 ---
+
 ## Description:
 <!--
-Please provide a detailed verbose description of what this PR does
+Provide a detailed verbose description of what this PR does
 -->
 
 
 ### Commit Message:
 <!--
-Please provide concise information for The UFS-WM and/or each sub-component:
-Please delete what is not needed.
+Provide a concise commit message for the UFS WM and any subcomponents; delete unnecessary info.
 -->
 ```
 * UFSWM - 
@@ -34,7 +37,7 @@ Please delete what is not needed.
   * CICE - 
   * CMEPS - 
   * CMakeModules - 
-  * FV3 - 
+  * UFSATM - 
     * ccpp-physics - 
     * atmos_cubed_sphere - 
   * GOCART - 
@@ -48,34 +51,27 @@ Please delete what is not needed.
 
 ### Priority:
 <!--
-Please provide the priority you would prefer this pull request to have.
-* Critical Bugfix: Model is wrong.
-* High: Time-sensitive project.
-* Normal.
-Please delete the ones that are not applicable
+Indicate PR priority and include a justification for high/critical priority PRs; delete options that are not applicable. 
 -->
-* Critical Bugfix: Reason
-* High: Reason
-* Normal
+- [ ] Critical Bugfix: Reason
+- [ ] High: Reason
+- [ ] Normal
 
 ## Git Tracking
 ### UFSWM:
 <!--
-Please add the UFS-WM github issue here if there is one
-Please delete the one that is not applicable.
+Add the related UFS WM Github Issue here:
 -->
 * Closes #
-* None
 
 ### Sub component Pull Requests:
 <!--
-Please provide a list of sub-components involved with this pull request.
-Please provide links to the sub-component pull requests as shown below.
-Please delete what is not needed.
+Provide a list of subcomponents involved with this PR and include links to subcomponent PRs.
 Example:
 * FV3: NOAA-EMC/fv3atm#734
   * ccpp-physics: ufs-community/ccpp-physics#33
 * WW3: NOAA-EMC/WW3#321
+Delete sections that are not needed.
 -->
 * AQM:
 * CDEPS:
@@ -96,56 +92,51 @@ Example:
 
 ### UFSWM Blocking Dependencies:
 <!--
-If there are any UFSWM PR's that are needed to be completed before this one, please add links
-to them here
-Please delete what is not needed.
+Please include any UFS WM PRs (with links) that need to be completed before this one; delete what is not needed.
 -->
-* Blocked by #
-* None
+- [ ] Blocked by #
+- [ ] None
 
 ### Documentation:
 <!--
 Indicate what documentation, if any, is needed for this PR and who will add it (if applicable).
-Please delete what is not needed.
+Delete what is not needed.
 -->
-* This PR requires a documentation update, and the WM User's Guide has been updated based on the changes in this PR.
-* This PR requires a documentation update, and a WM issue has been opened to track the need for a documentation update; a person responsible for submitting the update has been assigned to the issue (link issue). 
-* No documentation update is required for this PR (please explain).
+- [ ] Documentation update required. 
+   - [ ] Relevant updates are included with this PR. 
+   - [ ] A WM issue has been opened to track the need for a documentation update; a person responsible for submitting the update has been assigned to the issue (link issue).
+- [ ] Documentation update NOT required. 
+   - Explanation: 
 
 ---
 ## Changes
 ### Regression Test Changes (Please commit test_changes.list):
 <!--
-Please let us know if this PR creates new baselines, changes baselines or not.
-Please delete what is not needed.
-Please make sure you have properly submitted test_changes.list
+Indicate whether this PR creates new baselines, changes baselines, or not. Delete what is not needed.
+For baseline changes, make sure to submit the test_changes.list file generated by a full RT run (Intel+GNU)
 -->
-* PR Adds New Tests/Baselines.
-* PR Updates/Changes Baselines.
-* No Baseline Changes.
+- [ ] PR Adds New Tests/Baselines.
+- [ ] PR Updates/Changes Baselines.
+- [ ] No Baseline Changes.
 
 ### Input data Changes:
 <!--
-If there are any changes to input-data for a test, please provide information here.
-Please delete what is not needed.
+If there are changes to input data for a test, provide information here. Delete options that are not needed.
 -->
-* None.
-* New input data.
-* Updated input data.
+- [ ] None.
+- [ ] New input data.
+- [ ] Updated input data.
 
 ### Library Changes/Upgrades:
-<!-- Library updates take time. Please provide library and version information here.
+<!-- Library updates take time. Provide library and version information here, and delete what is not needed. 
 ** SPECIAL INSTRUCTIONS **
-If this PR needs updates to libraries please make sure to accomplish the following tasks:
-- Create separate issue in (https://github.com/JCSDA/spack-stack) asking for update to library. Include library name, library version.
+- Create a separate issue in (https://github.com/JCSDA/spack-stack) asking for update to library. Include library name, library version.
 - Add issue link from JCSDA/spack-stack following this item <!-- for example: "* JCSDA/spack-stack#1757"
-
-Please delete what is not needed.
 -->
-* Required
+- [ ] Required
   * Library names w/versions:
   * Git Stack Issue (JCSDA/spack-stack#)
-* No Updates
+- [ ] No Updates
   
 ---
 <!-- STOP!!! THE FOLLOWING IS FOR CODE MANAGERS ONLY. PLEASE DO NOT FILL OUT -->
