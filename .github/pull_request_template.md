@@ -15,7 +15,7 @@
 - [ ] All subcomponent pull requests (if any) have been reviewed by their code managers.
 - [ ] Run the full Intel+GNU RT suite (compared to current baselines), preferably on Ursa (Derecho or Hercules are acceptable alternatives). **Exceptions:** documentation-only PRs, CI-only PRs, etc.
    - [ ] Commit log file w/full results from RT suite run (if applicable).
-   - [ ] Verify that 'test_changes.list' indicates which tests, if any, are changed by this PR. If needed, commit the updated 'test_changes.list' file. 
+   - [ ] Verify that `test_changes.list` indicates which tests, if any, are changed by this PR. Commit `test_changes.list`, even if it is empty.
 - [ ] Fill out all sections of this template.
 
 ---
