@@ -66,6 +66,9 @@ case ${MACHINE_ID} in
     fi
     if [[ ${MACHINE_ID} == gaeac6 ]]; then
       module reset
+    elif [[ ${MACHINE_ID} == container ]]; then
+      source /usr/lmod/lmod/init/bash
+      module purge
     elif [[ ${MACHINE_ID} == hercules ]]; then
       module purge
     fi

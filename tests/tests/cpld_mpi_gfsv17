@@ -117,11 +117,14 @@ export DIAG_TABLE=diag_table_cpld.IN
 export INPUT_NML=global_control.nml.IN
 export UFS_CONFIGURE=ufs.configure.s2sw.IN
 # slow loop
-export WW3_RSTFLDS="ice"
+export WW3_RSTFLDS="ice itstep"
 
 #GFSv17 settings
 export PROGSIGMA=.true.
 export IOPT_DIAG=2
+
+export FSICL=99999
+export PBL_TAPER=0,0,0,0.1,0.2,0.4,0.6
 
 export K_SPLIT=4
 export N_SPLIT=5
@@ -129,3 +132,6 @@ export N_SPLIT=5
 # HR4 GFSv17 GWD update
 export DO_GWD_OPT_PSL=.true.
 export DO_GSL_DRAG_SS=.false.
+
+# for nccmp of cice history files
+export nccmp_exclude_attr="--globalex=date_created"
