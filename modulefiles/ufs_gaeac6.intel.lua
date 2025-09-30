@@ -15,6 +15,9 @@ load(pathJoin("stack-oneapi", stack_intel_ver))
 stack_cray_mpich_ver=os.getenv("stack_cray_mpich_ver") or "8.1.32"
 load(pathJoin("stack-cray-mpich", stack_cray_mpich_ver))
 
+libfabric_ver="1.20.1"
+load(pathJoin("libfabric", libfabric_ver))
+
 stack_python_ver=os.getenv("stack_python_ver") or "3.11.7"
 load(pathJoin("stack-python", stack_python_ver))
 
