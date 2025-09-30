@@ -5,7 +5,7 @@ help([[
 
 whatis([===[Loads libraries needed for building the UFS Weather Model on Gaea C6]===])
 
-prepend_path("MODULEPATJ", "/ncrc/proj/epic/spack-stack/c6/spack-stack-1.9.2/envs/ue-oneapi-2024.2.1/install/modulefiles/Core")
+prepend_path("MODULEPATH", "/ncrc/proj/epic/spack-stack/c6/spack-stack-1.9.2/envs/ue-oneapi-2024.2.1/install/modulefiles/Core")
 prepend_path("MODULEPATH", "/ncrc/proj/epic/spack-stack/c6/spack-stack-1.9.2/envs/ue-oneapi-2024.2.1/install/modulefiles/cray-mpich/8.1.32-64uo344/gcc/12.3.0")
 prepend_path("MODULEPATH", "/ncrc/proj/epic/spack-stack/c6/modulefiles")
 
