@@ -752,7 +752,7 @@ case ${MACHINE_ID} in
     module use /ncrc/proj/epic/spack-stack/c6/spack-stack-1.9.2/envs/ue-oneapi-2024.2.1/install/modulefiles/Core
     module use /ncrc/proj/epic/spack-stack/c6/spack-stack-1.9.2/envs/ue-oneapi-2024.2.1/install/modulefiles/cray-mpich/8.1.32-64uo344/gcc/12.3.0
     module load stack-oneapi/2024.2.1
-    module load stack-cray-mpich/8.1.32
+    module load cray-mpich/8.1.32
     module load libfabric/1.20.1
     module load python/3.11.7
     
