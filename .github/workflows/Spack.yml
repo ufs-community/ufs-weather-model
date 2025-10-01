@@ -1,0 +1,75 @@
+# This is a CI workflow for the ufs-weather-model repository that builds the
+# modified UWM in a given PR with Spack.
+#
+# Alex Richert, Mar 2025
+
+name: Spack
+on: [push,pull_request,workflow_dispatch]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  Spack:
+    strategy:
+      matrix:
+        # See ci/package.py for variant definitions.
+        config:
+        - {
+            os: "ubuntu-24.04",
+            app: "S2SWA",
+            ccpp_suites: "FV3_GFS_v17_coupled_p8,FV3_GFS_v17_coupled_p8_ugwpv1",
+            other-variants: ' ^esmf@8.8.0',
+          }
+        - {
+            os: "ubuntu-24.04",
+            app: "ATM",
+            ccpp_suites: "FV3_GFS_v16,FV3_GFS_v16_flake,FV3_GFS_v16_ras,FV3_GFS_v17_p8,FV3_GFS_v17_p8_ugwpv1",
+            other-variants: ' ^esmf@8.8.0',
+          }
+
+    runs-on: ${{ matrix.config.os }}
+    permissions:
+      # For repo-level build caching by NOAA-EMC/ci-test-spack-package action
+      actions: write
+
+    steps:
+
+    - name: "Install dependencies with APT"
+      shell: bash
+      run: |
+        sudo mv /usr/local /usr/local_mv # relocate so CMake doesn't pick up on bad libraries
+        sudo apt install libopenmpi-dev openmpi-bin cmake
+
+    - name: "Build Spack package"
+      uses: NOAA-EMC/ci-test-spack-package@develop
+      with:
+        package-name: ufs-weather-model
+        # ufs-weather-model Spack recipe variants, plus additional package constraints:
+        package-variants: app=${{ matrix.config.app }} ccpp_suites=${{ matrix.config.ccpp_suites }} ${{ matrix.config.other-variants }}
+        custom-recipe: ci/package.py
+        spack-compiler: gcc@13
+        spack-test-flag: '' # disable 'make test' for Spack
+        use-common-build-cache: true
+        repo-cache-key-suffix: ${{ matrix.config.os }}-1 # Update to create and use a fresh cache
+        save-repo-cache: ${{ matrix.config.app == 'S2SWA' }} # Only need to save cache from one job
+        # Set to save to a different cache key than the restored one (in order to add new packages etc.).
+        #  Be sure to unset it after a new cache is generated or a new one will be created each time!
+        repo-save-key-suffix: ''
+
+  # The recipe-check job validates the Spack recipe by making sure each CMake
+  # build option is represented. If this check fails due to the addition of a
+  # new CMake option, ci/package.py should be updated in order to make that
+  # new build option configurable through Spack.
+  recipe-check:
+
+    runs-on: ubuntu-24.04
+
+    steps:
+    
+    - name: recipe-check
+      uses: NOAA-EMC/ci-check-spack-recipe@develop
+      with:
+        recipe-file: package/spack/package.py
+        cmakelists-txt: package/CMakeLists.txt
