@@ -1,0 +1,86 @@
+name: Update Project Labels
+on:
+  pull_request_target:
+    types:
+      - opened
+      - reopened
+      - labeled
+      - unlabeled
+
+jobs:
+  baseline-labels:
+    name: Baseline labels
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+    steps:
+      - name: Lack of baseline labels
+        if: | 
+            !contains(github.event.pull_request.labels.*.name, 'No Baseline Change') && 
+            !contains(github.event.pull_request.labels.*.name, 'Baseline Updates') && 
+            !contains(github.event.pull_request.labels.*.name, 'New Baselines')
+        uses: nipe0324/update-project-v2-item-field@v2.0.2
+        with:
+          project-url: https://github.com/orgs/ufs-community/projects/70
+          github-token: ${{ secrets.PR_PROJECT_TOKEN }}
+          field-name: 'Baseline Changes'
+          field-value: 'Unknown'
+      - name: Contradictory labels
+        if: | 
+            contains(github.event.pull_request.labels.*.name, 'No Baseline Change') && 
+            (contains(github.event.pull_request.labels.*.name, 'Baseline Updates') || 
+            contains(github.event.pull_request.labels.*.name, 'New Baselines'))
+        uses: nipe0324/update-project-v2-item-field@v2.0.2
+        with:
+          project-url: https://github.com/orgs/ufs-community/projects/70
+          github-token: ${{ secrets.PR_PROJECT_TOKEN }}
+          field-name: 'Baseline Changes'
+          field-value: 'Unknown'
+      - name: Baseline changes labels
+        if: |
+            !contains(github.event.pull_request.labels.*.name, 'No Baseline Change') &&
+            ( contains(github.event.pull_request.labels.*.name, 'Baseline Updates') || 
+            contains(github.event.pull_request.labels.*.name, 'New Baselines') )
+        uses: nipe0324/update-project-v2-item-field@v2.0.2
+        with:
+          project-url: https://github.com/orgs/ufs-community/projects/70
+          github-token: ${{ secrets.PR_PROJECT_TOKEN }}
+          field-name: 'Baseline Changes'
+          field-value: 'Yes'
+      - name: No baseline changes label
+        if: | 
+            contains(github.event.pull_request.labels.*.name, 'No Baseline Change') && 
+            !contains(github.event.pull_request.labels.*.name, 'Baseline Updates') && 
+            !contains(github.event.pull_request.labels.*.name, 'New Baselines')
+        uses: nipe0324/update-project-v2-item-field@v2.0.2
+        with:
+          project-url: https://github.com/orgs/ufs-community/projects/70
+          github-token: ${{ secrets.PR_PROJECT_TOKEN }}
+          field-name: 'Baseline Changes'
+          field-value: 'No'
+  data-labels:
+    name: Input data
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+    steps:
+      - name: Input data required
+        if: contains(github.event.pull_request.labels.*.name, 'Input Data Changes')
+        uses: nipe0324/update-project-v2-item-field@v2.0.2
+        with:
+          project-url: https://github.com/orgs/ufs-community/projects/70
+          github-token: ${{ secrets.PR_PROJECT_TOKEN }}
+          field-name: "Input Data Req'd"
+          field-value: 'Yes'
+      - name: No input data changes
+        if: (!contains(github.event.pull_request.labels.*.name, 'Input Data Changes'))
+        uses: nipe0324/update-project-v2-item-field@v2.0.2
+        with:
+          project-url: https://github.com/orgs/ufs-community/projects/70
+          github-token: ${{ secrets.PR_PROJECT_TOKEN }}
+          field-name: "Input Data Req'd"
+          field-value: 'No'

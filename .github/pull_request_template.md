@@ -15,7 +15,7 @@
 - [ ] All subcomponent pull requests (if any) have been reviewed by their code managers.
 - [ ] Run the full Intel+GNU RT suite (compared to current baselines), preferably on Ursa (Derecho or Hercules are acceptable alternatives). **Exceptions:** documentation-only PRs, CI-only PRs, etc.
    - [ ] Commit log file w/full results from RT suite run (if applicable).
-   - [ ] Commit 'test_changes.list' (unless file is empty). 
+   - [ ] Verify that `test_changes.list` indicates which tests, if any, are changed by this PR. Commit `test_changes.list`, even if it is empty.
 - [ ] Fill out all sections of this template.
 
 ---
@@ -68,7 +68,7 @@ Add the related UFS WM Github Issue here:
 <!--
 Provide a list of subcomponents involved with this PR and include links to subcomponent PRs.
 Example:
-* FV3: NOAA-EMC/fv3atm#734
+* UFSATM: NOAA-EMC/UFSATM#734
   * ccpp-physics: ufs-community/ccpp-physics#33
 * WW3: NOAA-EMC/WW3#321
 Delete sections that are not needed.
@@ -78,7 +78,7 @@ Delete sections that are not needed.
 * CICE:
 * CMEPS:
 * CMakeModules:
-* FV3:
+* UFSATM:
   * ccpp-physics:
   * atmos_cubed_sphere:
 * GOCART:
