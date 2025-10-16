@@ -1,22 +1,18 @@
 help([[
   This module loads libraries required for building and running UFS Weather Model 
-  on the NOAA RDHPC machine Gaea C6 using Intel-2024.2.1.
+  on the NOAA RDHPC machine Gaea C6 using Intel-2023.2.0.
 ]])
 
 whatis([===[Loads libraries needed for building the UFS Weather Model on Gaea C6]===])
 
-prepend_path("MODULEPATH", "/ncrc/proj/epic/spack-stack/c6/spack-stack-1.9.2/envs/ue-oneapi-2024.2.1/install/modulefiles/Core")
-prepend_path("MODULEPATH", "/ncrc/proj/epic/spack-stack/c6/spack-stack-1.9.2/envs/ue-oneapi-2024.2.1/install/modulefiles/cray-mpich/8.1.32-64uo344/gcc/12.3.0")
+prepend_path("MODULEPATH", "/ncrc/proj/epic/spack-stack/c6/spack-stack-1.9.2/envs/ue-intel-2023.2.0/install/modulefiles/Core")
 prepend_path("MODULEPATH", "/ncrc/proj/epic/spack-stack/c6/modulefiles")
 
-stack_intel_ver=os.getenv("stack_intel_ver") or "2024.2.1"
-load(pathJoin("stack-oneapi", stack_intel_ver))
+stack_intel_ver=os.getenv("stack_intel_ver") or "2023.2.0"
+load(pathJoin("stack-intel", stack_intel_ver))
 
-stack_cray_mpich_ver=os.getenv("stack_cray_mpich_ver") or "8.1.32"
+stack_cray_mpich_ver=os.getenv("stack_cray_mpich_ver") or "8.1.30"
 load(pathJoin("stack-cray-mpich", stack_cray_mpich_ver))
-
-libfabric_ver="1.20.1"
-load(pathJoin("libfabric", libfabric_ver))
 
 stack_python_ver=os.getenv("stack_python_ver") or "3.11.7"
 load(pathJoin("stack-python", stack_python_ver))
@@ -31,6 +27,7 @@ nccmp_ver=os.getenv("nccmp_ver") or "1.9.0.1"
 load(pathJoin("nccmp", nccmp_ver))
 
 unload("darshan-runtime")
+unload("cray-libsci")
 
 setenv("CC","cc")
 setenv("CXX","CC")

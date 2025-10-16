@@ -126,10 +126,8 @@ case ${MACHINE_ID} in
     module load nccmp/1.9.0.1
     ;;
   gaeac6)
-    module use /ncrc/proj/epic/spack-stack/c6/spack-stack-1.9.2/envs/ue-oneapi-2024.2.1/install/modulefiles/Core
-    module use /ncrc/proj/epic/spack-stack/c6/spack-stack-1.9.2/envs/ue-oneapi-2024.2.1/install/modulefiles/cray-mpich/8.1.32-64uo344/gcc/12.3.0
-    module load stack-oneapi/2024.2.1 stack-cray-mpich/8.1.32
-    module load libfabric/1.20.1
+    module use /ncrc/proj/epic/spack-stack/c6/spack-stack-1.9.2/envs/ue-intel-2023.2.0/install/modulefiles/Core
+    module load stack-intel/2023.2.0 stack-cray-mpich/8.1.30
     module load nccmp/1.9.0.1
     #module use modulefiles
     #module load modules.fv3
