@@ -547,7 +547,7 @@ export_mpas ()
     export MPAS_RESOLUTION=120
 
     export ATM_compute_tasks=4
-    
+
     #DJS2025 START: We don't need this for MPAS, but to setup the tests we do. CLEAN THIS UP!!!
     #Set defaults if ATMRES and DT_ATMOS are not set
     export ATMRES=${ATMRES:-"C96"}
@@ -662,7 +662,7 @@ export_gfs_physics ()
     export RRTMGP_NGPTSLW=128
     export RRTMGP_NBANDSLW=16
     export RRTMGP_NBANDSSW=14
-    
+
     # Microphysics
     export IMP_PHYSICS=8
     export NWAT=6
@@ -729,7 +729,7 @@ export_gfs_physics ()
     export KNOB_UGWP_TAUAMP=3.0e-3
     export KNOB_UGWP_LHMET=200.0e3
     export KNOB_UGWP_OROSOLV="'pss-1986'"
-    
+
     export KNOB_UGWP_TAUAMP=3.0e-3
     export DO_UGWP_V0_NST_ONLY=.false.
 
@@ -1631,6 +1631,7 @@ export_mom6() {
   export MOM6_CHLCLIM=seawifs_1998-2006_smoothed_2X.nc
   export MOM6_USE_LI2016=True
   export MOM6_TOPOEDITS=''
+  export MOM6_HFREEZE=20.0
   # since CPL_SLOW is set to DT_THERM, this should be always be false
   export MOM6_THERMO_SPAN=False
   export MOM6_USE_WAVES=True
