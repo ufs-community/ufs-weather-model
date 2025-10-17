@@ -883,6 +883,7 @@ export NTILES=6
 export INPES=${INPES_dflt}
 export JNPES=${JNPES_dflt}
 export RESTART_INTERVAL=0
+export USE_FV3_ROUTEHANDLES=.false.
 export QUILTING=.true.
 export QUILTING_RESTART=.true.
 export WRITE_GROUP=1
