@@ -469,7 +469,6 @@ export FV3_RUN=control_run.IN
 export INPUT_NML=control.nml.IN
 export CCPP_SUITE=FV3_GFS_v16
 
-export DOGP_CLDOPTICS_LUT=.false.
 export DOGP_LWSCAT=.false.
 export IAER=111
 export ICLIQ_SW=1
@@ -647,7 +646,6 @@ export_gfs_physics ()
     export HYBEDMF=.false.
     # RRTMGP
     export DO_RRTMGP=.false.
-    export DOGP_CLDOPTICS_LUT=.true.
     export DOGP_LWSCAT=.true.
     export DOGP_SGS_CNV=.true.
     export USE_LW_JACOBIAN=.false.
@@ -986,9 +984,8 @@ export TTENDLIM=-999
 
 # Radiation
 export DO_RRTMGP=.false.
-export DOGP_CLDOPTICS_LUT=.true.
 export DOGP_LWSCAT=.true.
-export DOGP_SGS_CNV=.true.
+export DOGP_SGS_CNV=.false.
 export USE_LW_JACOBIAN=.false.
 export DAMP_LW_FLUXADJ=.false.
 export RRTMGP_LW_PHYS_BLKSZ=2
@@ -1269,31 +1266,31 @@ export LNDP_LSCALE=500000,
 export ISEED_LNDP=2010,
 export ISEED_SKEB=0
 export SKEB_TAU=21600,
-export SKEB_LSCALE=500000,
-export SKEBNORM=1,
+export SKEB_LSCALE=250000,
+export SKEBNORM=0,
 export SKEB_NPASS=30,
 export SKEB_VDOF=5,
 export ISEED_SHUM=1,
 export SHUM_TAU=21600,
 export SHUM_LSCALE=500000,
-export ISEED_SPPT=20210325000103,20210325000104,20210325000105,20210325000106,20210325000107
-export SPPT_TAU=2.16E4,2.592E5,2.592E6,7.776E6,3.1536E7
-export SPPT_LSCALE=500.E3,1000.E3,2000.E3,2000.E3,2000.E3
+export ISEED_SPPT=20210325000103
+export SPPT_TAU=2.16E4
+export SPPT_LSCALE=500.E3
 export SPPT_LOGIT=.true.,
 export SPPT_SFCLIMIT=.true.,
 export USE_ZMTNBLCK=.true.
 export PBL_TAPER=0,0,0,0.125,0.25,0.5,0.75
-export OCNSPPT=0.8,0.4,0.2,0.08,0.04
-export OCNSPPT_LSCALE=500.E3,1000.E3,2000.E3,2000.E3,2000.E3
-export OCNSPPT_TAU=2.16E4,2.592E5,2.592E6,7.776E6,3.1536E7
-export ISEED_OCNSPPT=20210325000108,20210325000109,20210325000110,20210325000111,20210325000112
-export EPBL=0.8,0.4,0.2,0.08,0.04
-export EPBL_LSCALE=500.E3,1000.E3,2000.E3,2000.E3,2000.E3
-export EPBL_TAU=2.16E4,2.592E5,2.592E6,7.776E6,3.1536E7
-export ISEED_EPBL=20210325000113,20210325000114,20210325000115,20210325000116,20210325000117
-export SKEBINT=1800
-export SHUMINT=3600
-export SPPTINT=1800
+export OCNSPPT=-999.
+export OCNSPPT_LSCALE=500.E3
+export OCNSPPT_TAU=2.16E4
+export ISEED_OCNSPPT=20210325000108
+export EPBL=-999.
+export EPBL_LSCALE=500.E3
+export EPBL_TAU=2.16E4
+export ISEED_EPBL=20210325000113
+export SKEBINT=0
+export SHUMINT=0
+export SPPTINT=0
 
 #IAU
 export IAU_INC_FILES="''"
@@ -1875,9 +1872,8 @@ export LSEASPRAY=.true.
 
 # RRTMGP
 export DO_RRTMGP=.false.
-export DOGP_CLDOPTICS_LUT=.true.
 export DOGP_LWSCAT=.true.
-export DOGP_SGS_CNV=.true.
+export DOGP_SGS_CNV=.false.
 
 # CA
 export DO_CA=.true.
@@ -2098,6 +2094,7 @@ export_hafs_regional ()
   export FILENAME_BASE="'atm' 'sfc'"
   export OUTPUT_GRID="'regional_latlon'"
   export OUTPUT_FILE="'netcdf'"
+  export ZSTANDARD_LEVEL=0
   export IDEFLATE=0
   export QUANTIZE_NSD=0
   export CEN_LON=-62.0

@@ -67,7 +67,7 @@ export LIST_FILES="sfcf021.tile1.nc \
                    RESTART/ufs.cpld.cpl.r.2021-03-23-21600.nc \
                    ufs.cpld.ww3.r.2021-03-23-21600.nc \
                    20210323.060000.out_pnt.ww3.nc \
-                   20210323.060000.out_grd.ww3 "
+                   20210323.060000.out_grd.ww3.nc "
 export DT_ATMOS=720
 export_fv3
 export_ugwpv1
@@ -121,3 +121,6 @@ fi
 if [[ $MACHINE_ID = wcoss2 ]]; then
   WLCLK=50
 fi
+
+#output WW3 history files directly in netcdf format
+export WW3_historync='true'
