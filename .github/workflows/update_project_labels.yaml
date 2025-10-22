@@ -171,3 +171,71 @@ jobs:
           github-token: ${{ secrets.PR_PROJECT_TOKEN }}
           field-name: 'Priority'
           field-value: 'Unknown'
+  subcomponent-labels:
+    name: Subcomponents involved
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+    env:
+      SUBCOMPONENTS: ''
+    steps:
+      - name: UFSATM
+        if: contains(github.event.pull_request.labels.*.name, 'UFSATM')
+        run: echo "SUBCOMPONENTS=${SUBCOMPONENTS} UFSATM" >> $GITHUB_ENV
+      - name: CCPP
+        if: contains(github.event.pull_request.labels.*.name, 'CCPP')
+        run: echo "SUBCOMPONENTS=${SUBCOMPONENTS} CCPP" >> $GITHUB_ENV
+      - name: atmos_cubed_sphere
+        if: contains(github.event.pull_request.labels.*.name, 'A3S')
+        run: echo "SUBCOMPONENTS=${SUBCOMPONENTS} A3S" >> $GITHUB_ENV
+      - name: UPP
+        if: contains(github.event.pull_request.labels.*.name, 'UPP')
+        run: echo "SUBCOMPONENTS=${SUBCOMPONENTS} UPP" >> $GITHUB_ENV
+      - name: stochastic_physics
+        if: contains(github.event.pull_request.labels.*.name, 'SP')
+        run: echo "SUBCOMPONENTS=${SUBCOMPONENTS} SP" >> $GITHUB_ENV
+      - name: AQM
+        if: contains(github.event.pull_request.labels.*.name, 'AQM')
+        run: echo "SUBCOMPONENTS=${SUBCOMPONENTS} AQM" >> $GITHUB_ENV
+      - name: CMEPS
+        if: contains(github.event.pull_request.labels.*.name, 'CMEPS')
+        run: echo "SUBCOMPONENTS=${SUBCOMPONENTS} CMEPS" >> $GITHUB_ENV
+      - name: CDEPS
+        if: contains(github.event.pull_request.labels.*.name, 'CDEPS')
+        run: echo "SUBCOMPONENTS=${SUBCOMPONENTS} CDEPS" >> $GITHUB_ENV
+      - name: CICE
+        if: contains(github.event.pull_request.labels.*.name, 'CICE')
+        run: echo "SUBCOMPONENTS=${SUBCOMPONENTS} CICE" >> $GITHUB_ENV
+      - name: GOCART
+        if: contains(github.event.pull_request.labels.*.name, 'GOC')
+        run: echo "SUBCOMPONENTS=${SUBCOMPONENTS} GOC" >> $GITHUB_ENV
+      - name: MOM6
+        if: contains(github.event.pull_request.labels.*.name, 'MOM')
+        run: echo "SUBCOMPONENTS=${SUBCOMPONENTS} MOM" >> $GITHUB_ENV
+      - name: NOAHMP
+        if: contains(github.event.pull_request.labels.*.name, 'NMP')
+        run: echo "SUBCOMPONENTS=${SUBCOMPONENTS} NMP" >> $GITHUB_ENV
+      - name: WW3
+        if: contains(github.event.pull_request.labels.*.name, 'WW3')
+        run: echo "SUBCOMPONENTS=${SUBCOMPONENTS} WW3" >> $GITHUB_ENV
+      - name: LM4
+        if: contains(github.event.pull_request.labels.*.name, 'LM4')
+        run: echo "SUBCOMPONENTS=${SUBCOMPONENTS} LM4" >> $GITHUB_ENV
+      - name: Update subcomponents text
+        if: ${{ env.SUBCOMPONENTS != '' }}
+        uses: nipe0324/update-project-v2-item-field@v2.0.2
+        with:
+          project-url: https://github.com/orgs/ufs-community/projects/70
+          github-token: ${{ secrets.PR_PROJECT_TOKEN }}
+          field-name: "Subcomponent PRs"
+          field-value: ${{ env.SUBCOMPONENTS }}
+      - name: WM only
+        if: ${{ env.SUBCOMPONENTS == '' }}
+        uses: nipe0324/update-project-v2-item-field@v2.0.2
+        with:
+          project-url: https://github.com/orgs/ufs-community/projects/70
+          github-token: ${{ secrets.PR_PROJECT_TOKEN }}
+          field-name: "Subcomponent PRs"
+          field-value: 'WM only'
