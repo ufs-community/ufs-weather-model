@@ -56,7 +56,7 @@ elif [[ ${MACHINE_ID} = derecho ]] ; then
     if ( ! eval module help > /dev/null 2>&1 ) ; then
         source /glade/u/apps/derecho/23.09/spack/opt/spack/lmod/8.7.24/gcc/7.5.0/c645/lmod/lmod/init/bash
     fi
-    module purge
+    module --force purge
     
 elif [[ ${MACHINE_ID} = frontera ]] ; then
     # We are on TACC Frontera
