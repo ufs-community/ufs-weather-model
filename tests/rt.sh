@@ -251,10 +251,10 @@ EOF
         RT_COMPILE_TIME=""
         COMPILE_WARNINGS=""
         if [[ ! -f "${LOG_DIR}/compile_${COMPILE_ID}.log" ]]; then
-          COMPILE_RESULT="FAILED: UNABLE TO START COMPILE"
+          COMPILE_RESULT="FAILED: COMPILE DID NOT START"
           FAIL_LOG="N/A"
         elif [[ -f fail_compile_${COMPILE_ID} ]]; then
-          COMPILE_RESULT="FAILED: UNABLE TO FINISH COMPILE"
+          COMPILE_RESULT="FAILED: COMPILE FAILURE"
           FAIL_LOG="${LOG_DIR}/compile_${COMPILE_ID}.log"
           if grep -q "quota" "${LOG_DIR}/compile_${COMPILE_ID}.log"; then
             COMPILE_RESULT="FAILED: DISK QUOTA ISSUE"
@@ -335,31 +335,24 @@ EOF
           TEST_RESULT="SKIPPED: ASSOCIATED COMPILE FAILED"
           SKIPPED_TESTS+=("TEST ${TEST_NAME}_${COMPILER}: ${TEST_RESULT}")
         elif [[ ! -f "${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log" ]]; then
-          TEST_RESULT="FAILED: UNABLE TO START TEST"
-          FAIL_LOG="N/A"
+          TEST_RESULT="FAILED: MODEL DID NOT START EXECUTION FOR THIS TEST"
+          FAIL_LOG="NONE"
+        elif grep -q "quota" "${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"; then
+          TEST_RESULT="FAILED: DISK QUOTA ISSUE"
+          FAIL_LOG="${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"
+        elif grep -q "TIME LIMIT" "${RUNDIR_ROOT}/${TEST_NAME}_${COMPILER}/err"; then
+          TEST_RESULT="FAILED: TEST TIMED OUT"
+          FAIL_LOG="${RUNDIR_ROOT}/${TEST_NAME}_${COMPILER}/err"
+        elif [[ ! -f "${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log" ]]; then
+          TEST_RESULT="FAILED: BASELINE COMPARISON NOT STARTED"
+          FAIL_LOG="NONE"
         elif [[ -f fail_test_${TEST_NAME}_${COMPILER} ]]; then
-          if [[ -f "${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log" ]]; then
-            if grep -q "FAIL" "${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log"; then
-              TEST_RESULT="FAILED: UNABLE TO COMPLETE COMPARISON"
-              FAIL_LOG="${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"
-            # We need to catch a "PASS" in rt_*.log even if a fail_test_* files exists
-            # I am not sure why this can happen.
-            elif grep -q "PASS" "${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log"; then
-              TEST_RESULT="PASS"
-            else
-              TEST_RESULT="FAILED: UNSUCCESSFUL BASELINE COMPARISON"
-              FAIL_LOG="${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log"
-            fi
+          if grep -q "PASS" "${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log"; then
+            TEST_RESULT="PASS"
+            FAIL_LOG="NONE"
           else
-            TEST_RESULT="FAILED: RUN DID NOT COMPLETE"
-            FAIL_LOG="${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"
-          fi
-          if grep -q "quota" "${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"; then
-            TEST_RESULT="FAILED: DISK QUOTA ISSUE"
-            FAIL_LOG="${LOG_DIR}/run_${TEST_NAME}_${COMPILER}.log"
-          elif grep -q "TIME LIMIT" "${RUNDIR_ROOT}/${TEST_NAME}_${COMPILER}/err"; then
-            TEST_RESULT="FAILED: TEST TIMED OUT"
-            FAIL_LOG="${RUNDIR_ROOT}/${TEST_NAME}_${COMPILER}/err"
+            TEST_RESULT="FAILED: BASELINE FAILED COMPARISONS"
+            FAIL_LOG="${LOG_DIR}/rt_${TEST_NAME}_${COMPILER}.log"
           fi
         else
           TEST_RESULT="PASS"
@@ -1041,21 +1034,22 @@ source bl_date.conf
 if [[ "${RTPWD_NEW_BASELINE}" == true ]] ; then
   RTPWD=${NEW_BASELINE}
 else
-  RTPWD=${RTPWD:-${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}}
+  #RTPWD=${RTPWD:-${DISKNM}/NEMSfv3gfs/develop-${BL_DATE}}
+  RTPWD=${RTPWD:-${DISKNM}/NEMSfv3gfs}
 fi
 
-if [[ "${CREATE_BASELINE}" == false ]] ; then
-  EMPTY_CHECK=$(find "${RTPWD}/" -type d -prune -empty)
-  if [[ ! -d "${RTPWD}" ]] ; then
-    echo "Baseline directory does not exist:"
-    echo "   ${RTPWD}"
-    exit 1
-  elif [[ -n ${EMPTY_CHECK} ]] ; then
-    echo "Baseline directory is empty:"
-    echo "   ${RTPWD}"
-    exit 1
-  fi
-fi
+# if [[ "${CREATE_BASELINE}" == false ]] ; then
+#   EMPTY_CHECK=$(find "${RTPWD}/" -type d -prune -empty)
+#   if [[ ! -d "${RTPWD}" ]] ; then
+#     echo "Baseline directory does not exist:"
+#     echo "   ${RTPWD}"
+#     exit 1
+#   elif [[ -n ${EMPTY_CHECK} ]] ; then
+#     echo "Baseline directory is empty:"
+#     echo "   ${RTPWD}"
+#     exit 1
+#   fi
+# fi
 
 INPUTDATA_ROOT=${INPUTDATA_ROOT:-${DISKNM}/NEMSfv3gfs/input-data-20250507}
 INPUTDATA_ROOT_WW3=${INPUTDATA_ROOT}/WW3_input_data_20250807

@@ -57,6 +57,23 @@ source default_vars.sh
 [[ -e ${RUNDIR_ROOT}/run_test_${TEST_ID}.env ]] && source "${RUNDIR_ROOT}/run_test_${TEST_ID}.env"
 source "tests/${TEST_NAME}"
 
+if [[ "${RTPWD_NEW_BASELINE}" == false ]] ; then
+  RTPWD=${RTPWD}/develop-${BL_DATE}
+fi
+
+if [[ "${CREATE_BASELINE}" == false ]] ; then
+  EMPTY_CHECK=$(find "${RTPWD}/" -type d -prune -empty)
+  if [[ ! -d "${RTPWD}" ]] ; then
+    echo "Baseline directory does not exist:"
+    echo "   ${RTPWD}"
+    exit 1
+  elif [[ -n ${EMPTY_CHECK} ]] ; then
+    echo "Baseline directory is empty:"
+    echo "   ${RTPWD}"
+    exit 1
+  fi
+fi
+
 rm -f "${PATHRT}/fail_test_${TEST_ID}"
 
 # Save original CNTL_DIR name as INPUT_DIR for regression
