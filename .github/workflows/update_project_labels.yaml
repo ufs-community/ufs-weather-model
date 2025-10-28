@@ -68,26 +68,26 @@ jobs:
       pull-requests: write
       issues: write
     steps:
-      - name: New input data required
+      - name: Additions to current input-data directory required
         if: |
-          contains(github.event.pull_request.labels.*.name, 'New Input Data') &&
-          !contains(github.event.pull_request.labels.*.name, 'Updated Input Data')
+          contains(github.event.pull_request.labels.*.name, 'Adds Input Data') &&
+          !contains(github.event.pull_request.labels.*.name, 'Changes Existing Input Data')
         uses: nipe0324/update-project-v2-item-field@v2.0.2
         with:
           project-url: https://github.com/orgs/ufs-community/projects/70
           github-token: ${{ secrets.PR_PROJECT_TOKEN }}
           field-name: "Input Data Req'd"
-          field-value: 'New'
-      - name: Updated input data required
+          field-value: 'Adds'
+      - name: New input-data directory required
         if: |
-          contains(github.event.pull_request.labels.*.name, 'Updated Input Data') &&
-          !contains(github.event.pull_request.labels.*.name, 'New Input Data')
+          contains(github.event.pull_request.labels.*.name, 'Changes Existing Input Data') &&
+          !contains(github.event.pull_request.labels.*.name, 'Adds Input Data')
         uses: nipe0324/update-project-v2-item-field@v2.0.2
         with:
           project-url: https://github.com/orgs/ufs-community/projects/70
           github-token: ${{ secrets.PR_PROJECT_TOKEN }}
           field-name: "Input Data Req'd"
-          field-value: 'Updated'
+          field-value: 'Create New'
       - name: No input data changes
         if: |
             (!contains(github.event.pull_request.labels.*.name, 'Updated Input Data')) && 
