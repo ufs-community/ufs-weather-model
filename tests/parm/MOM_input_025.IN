@@ -62,7 +62,7 @@ THERMO_SPANS_COUPLING = @[MOM6_THERMO_SPAN]    !   [Boolean] default = False
                                 ! longer than the coupling timestep. The actual thermodynamic timestep that is
                                 ! used in this case is the largest integer multiple of the coupling timestep
                                 ! that is less than or equal to DT_THERM.
-HFREEZE = 20.0                  !   [m] default = -1.0
+HFREEZE = @[MOM6_HFREEZE]       !   [m] default = -1.0
                                 ! If HFREEZE > 0, melt potential will be computed. The actual depth
                                 ! over which melt potential is computed will be min(HFREEZE, OBLD)
                                 ! where OBLD is the boundary layer depth. If HFREEZE <= 0 (default)
@@ -425,7 +425,7 @@ VELOCITY_CONFIG = @[MOM6_INIT_UV]     ! default = "zero"
                                 !     rossby_front - a mixed layer front in thermal wind balance.
                                 !     soliton - Equatorial Rossby soliton.
                                 !     USER - call a user modified routine.
-VELOCITY_FILE = @[MOM6_WARMSTART_FILE] 
+VELOCITY_FILE = @[MOM6_WARMSTART_FILE]
                                 ! The name of the velocity initial condition file.
 U_IC_VAR = "u"                  ! default = "u"
                                 ! The initial condition variable for zonal velocity in VELOCITY_FILE.
@@ -986,4 +986,4 @@ PERT_EPBL = @[PERT_EPBL]        ! [Boolean] default = False
 RESTART_CHECKSUMS_REQUIRED = False
 ! === module MOM_file_parser ===
 
-USE_HUYNH_STENCIL_BUG = True   
+USE_HUYNH_STENCIL_BUG = True
