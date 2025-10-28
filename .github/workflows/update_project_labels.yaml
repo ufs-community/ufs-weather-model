@@ -90,7 +90,7 @@ jobs:
           field-value: 'Create New'
       - name: No input data changes
         if: |
-            (!contains(github.event.pull_request.labels.*.name, 'Updated Input Data')) && 
+            (!contains(github.event.pull_request.labels.*.name, 'Changes Existing Input Data')) && 
             (!contains(github.event.pull_request.labels.*.name, 'Adds Input Data'))
         uses: nipe0324/update-project-v2-item-field@v2.0.2
         with:
